@@ -1,158 +1,347 @@
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5778361957
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 06:03:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4454E31E85B;
+	Thu, 13 Aug 2026 06:04:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786600998; cv=none; b=mCJ4gtVuj8CtCASx/WOw/mJUAu39a/5zsJZQAYQ5STspZwxlr5kC+uZ+fbBpI7GmJwnI4x4S+SXAxXY6ftDQUeOcXhUFmaLp5q+/qAshJ4SGaAyFQ8EbHReIKH9o+QaVGIf4yGGxnkhfFDLwgenQyxnb+KW8LDvWXPT7K/jNqzg=
+	t=1786601102; cv=none; b=VeIjBq8f4plqn/rLAsgB4YZJyU5arLeARnASuzibg2wwhcxpRTt7VCBn/0EmrK6MgvG0kqOi2AI6iC2uQTn6KKvuisjzAJ8MPRmZo1pkSBtS3ChczkuwsiOdU79WRDGXDu2lFDZK/+cwQmwjYqIYhL3RPCvEsKPAXvWDsnZm8Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786600998; c=relaxed/simple;
-	bh=k0IiTGCZPxaC6DbcUJgYzqOFviiZ29gLv8o0+WEHuhg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nq6x0aUD05VIJJ/TYwrrF2WavrDPdkKe2KFPFEX8Ib5humecd2rIF4d/BnJXTpI38p39k46ftcqcase0zoJHnEsVqpgJBc24wipWZ+8lT63LJujsKOzbHmS0ozIWyBR+CZzTPdzaXDCzmJ+1gE1GZTyTforpFJswQnPUACNteYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MS9JxpWm; arc=none smtp.client-ip=209.85.222.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786601102; c=relaxed/simple;
+	bh=bbxwC1dGLAocjADfImgKEIsAzacoaLNAbG5cwiAlLB4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version; b=XrLcHsCUNwQEpN+TiRkmPK00TPazOpb/IqyuVw3cVbHC4AQ6Rm4eU+lXHP/zYxaAsnTbbUXLMELkB3t7PI6FMkXj2sOpU65p7oNcTR5eRAWTgBzGHSuD6IxS9kwArFbcfS8q60XpYRMcgyddZSCUeaq116eCkoyCS8XepcuEwKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=qHR8JUlD; arc=none smtp.client-ip=115.124.30.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MS9JxpWm"
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-92e533aacf2so97408585a.2
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 23:03:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786600995; x=1787205795; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sox5TAGummL92plkwLvVOIoXFT28V3HCqptnK0dIWn0=;
-        b=MS9JxpWmvLPueWLkAXxV5lcN5Njx7fm87mG4+3RIz754FTrfJnGee4v/pDz4oZrr/H
-         GsG3DjY3zWXycrFCzDd78NX3cdukBAfDhiVv5DpE6ahoIDLe/6CRbUucA0441FJq/f7p
-         u0pUv4CNyos+Qb9URzS2A5kLSlPaPlo5Ph0Lh8ueWbR3x7Dey0WfKAEwNAZbVDx1CHzO
-         OZVMSv4Lze2sSH2xO8uxenhMSF3ZEEgKcdu6AOpsxcr+GhiVzVCxeVsriYZhxwI1CPM9
-         VlVlq33T73zz9fxR78yy+OXPUZL6aLYmjp//HLSJYuKdvZiG5/cpMXwVHwBWBtfbu2Au
-         gbJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786600995; x=1787205795;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=sox5TAGummL92plkwLvVOIoXFT28V3HCqptnK0dIWn0=;
-        b=Z6iGUtgjf1rJLZnWGDNr4hOHYnIZ9RowLBc5CUl5MmH/Vaa5ps8Pkmb4KGdraHoAI3
-         zHvzOLgPMqvd+BUR5byzaVuQ1SMjMDTcWsUjV5ieSmArS03D6MW2VF4cjoEvm3QaxqnG
-         mSE9xmXur8f7ecU/AmofWDDOQDKHPXZDgSLvbAR0G0y9Yufvi+SoRi0S/zhMG73sk5Er
-         S5GCsDWTYAm/NOk0FE2TTwyvIWI/SvCbzlFTatHoUn/aHh7n0GBdnTKGaAmuWmMv8zyb
-         2Z1teNKCNz3Sh5KZs5FwsAAKEwhqseRaRzRsT55b6P10QYVGCW46Yf6xbg/Rctnuo0Ny
-         TXLQ==
-X-Gm-Message-State: AOJu0Yy+gPcxbFfmCKS4T/ORuQj1CuZ0l+XeVh5M30Vqt1X/z1p3MjU+
-	bnaiBOLHUp63VcrObE2IS4PKdIB9IsSo5T9ZTQrqCfeNPYP0jgPyIUqKoqNppTcYVpQ=
-X-Gm-Gg: AR+sD12aVPpMvRynAV8+2DWXV+jslhYvpo82NxRPJjKWTBYqItjk5XzYvreCbisD7us
-	FyOJeuCDnWNxtasIjnA4KawCJKT18BPRsBCh6QjwVlMJOaw9VjnBxy+bl2unPc6GzvlAdgsr+da
-	qVqD4IqGxKHMf57EmqpLab5+1h140T8QM/l8ilGHCWKQbHsBqXKsyoPTY4OHIt5D98SHwfcMXnO
-	WC1/dg0kM7fdGkGxEe/9/hZMeFHZLAfn8muS5u1cITvwgQs6g2GuM0qZLIlncfm68HHyTBwLKu2
-	3X9HnPtpCx9RHXHnRSKDpBw7Ar0jo3TuEmGT68WDP9uDEf/0AsG7oEzUqV/g2UieEbrEVFUujhd
-	t13lloJWfTY3w0XSubrB90YPOhz4JpJqi9tB92xpQ0AwlJhPPs+mf+XsY28uxtJAVo6niw/QunE
-	FbXHsEHiGaEYKGm103z0QyoMw0+21gnugMABFZa3uwZmNUyvm8n2KLqSPyFmNZ9elWslDbBC4N
-X-Received: by 2002:a05:620a:3d06:b0:92e:7cc9:a888 with SMTP id af79cd13be357-936bf9637femr228866885a.2.1786600995425;
-        Wed, 12 Aug 2026 23:03:15 -0700 (PDT)
-Received: from localhost.localdomain ([38.91.104.44])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-936c1b4d57asm76880785a.35.2026.08.12.23.03.10
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 12 Aug 2026 23:03:14 -0700 (PDT)
-From: Jack Wang <163wangjack@gmail.com>
-To: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Elena Salomatkina <esalomatkina@ispras.ru>
-Subject: [PATCH net v3] net/sched: cbs: perform rate conversions in signed 64-bit arithmetic
-Date: Thu, 13 Aug 2026 14:02:56 +0800
-Message-ID: <20260813060256.28748-1-163wangjack@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="qHR8JUlD"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1786601092; h=From:To:Subject:Content-Type:MIME-Version;
+	bh=vPUsAAJPyI/7Wo4OsKpFc5p/AW0A2CygxeK27TYD8C0=;
+	b=qHR8JUlDdtt0D93QL/i3xeojWebqUr1vf5nkZugy4f4WAN8vnd+RgmyHeFf4V3YJKygn/M412HchheJ8Va6iBioGwOA0nBfkM78z2edC4UUG3N4P8OQgnKZWIHXwHQ/4vWYAqyNalarL4/HdkOfvP0C3zYJZKNIHTIvfYhFWJHM=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R421e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=chuyf26@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0X8tR4VW_1786601091;
+Received: from x31j07255.sqa.na131(mailfrom:Chuyf26@linux.alibaba.com fp:SMTPD_---0X8tR4VW_1786601091 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 13 Aug 2026 14:04:52 +0800
+From: Chuyf26 <Chuyf26@linux.alibaba.com>
+To: alibuda@linux.alibaba.com
+Cc: dust.li@linux.alibaba.com, sidraya@linux.ibm.com, mjambigi@linux.ibm.com,
+ tonylu@linux.alibaba.com, guwen@linux.alibaba.com, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org
+Subject: [PATCH v2] net/smc: release the internal TCP sock on IPPROTO_SMC
+ socket creation failure
+In-Reply-To: <5c80dd63-80bb-424b-894e-2f4ca3a5568b@linux.ibm.com>
+References: <20260812071538.o7mdtMhZ1eOzDgQnKZduQfWlq0FhL7OCAPLjt9AA11w@z>
+ <5c80dd63-80bb-424b-894e-2f4ca3a5568b@linux.ibm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <20260813060456.b48HqF9m6NTfFXvq_PL9w_Ih493OogqAqxfAHAfU74A@z>
 
-cbs_set_port_rate() and cbs_change() multiply link rates and slope values
-by BYTES_PER_KBIT, an unsigned long constant.  On 32-bit architectures,
-the multiplications therefore take place in 32-bit unsigned arithmetic
-before the results are assigned to s64 fields.
+IPPROTO_SMC sockets create an internal TCP sock ("clcsock") from the
+proto->init hook. When socket creation fails after proto->init has
+run - e.g. a cgroup BPF program attached to BPF_CGROUP_INET_SOCK_CREATE
+denies the socket - sk_common_release() only invokes sk_prot->destroy
+if it is set, but neither smc_inet_prot nor smc_inet6_prot defines it,
+and smc_destruct() returns early unless sk_state is SMC_CLOSED. As a
+result, every failing socket(AF_INET, SOCK_STREAM, IPPROTO_SMC) call
+leaks one tcp_sock, so an unprivileged task able to attach a deny-all
+BPF_CGROUP_INET_SOCK_CREATE program to its own cgroup can grow kernel
+memory unboundedly.
 
-For port rates above approximately 34.36 Gbit/s this wraps port_rate.
-The same conversion turns a negative sendslope into a large positive
-value, reversing the CBS credit adjustment.  This affects software CBS;
-port_rate is also refreshed on NETDEV_UP and NETDEV_CHANGE notifications.
+Add a .destroy hook to both protos that releases the clcsock via
+smc_clcsock_release(), which is safe here because it skips a NULL
+clcsock under clcsock_release_lock. Also initialize clcsock to NULL
+when setting the sock up: the smc_sock slab is SLAB_TYPESAFE_BY_RCU,
+so recycled objects are not zeroed.
 
-Cast the first operand of each multiplication to s64 so all intermediate
-operations use signed 64-bit arithmetic and preserve the value's sign on
-every architecture
-
-Also reject a negative idleslope. A negative idleslope can arm the
-watchdog in the past and busy-loop.
-
-Fixes: 585d763af09c ("net/sched: Introduce Credit Based Shaper (CBS) qdisc")
-Fixes: 397006ba5d918 ("net/sched: cbs: Fix integer overflow in cbs_set_port_rate()")
-
-Signed-off-by: Jack Wang <163wangjack@gmail.com>
+Fixes: d25a92ccae6b ("net/smc: Introduce IPPROTO_SMC")
+Reported-by: Abaci <abaci@linux.alibaba.com>
+Assisted-by: abaci:qwen3.8-max
+Signed-off-by: Chuyf26 <Chuyf26@linux.alibaba.com>
 ---
-v3:
-- Reject only negative idleslope values.
-- Keep idleslope 0 accepted for compatibility with existing tc-testing
-  defaults, fixing test 1820 regression reported by Victor.
-- Keep the timediff_to_credits() overflow out of this series as a separate
-  follow-up.
+ net/smc/smc_inet.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-v2:
-- Reject non-positive idleslope values to prevent scheduling the watchdog
-  in the past.
+diff --git a/net/smc/smc_inet.c b/net/smc/smc_inet.c
+index a94084b..b94a194 100644
+--- a/net/smc/smc_inet.c
++++ b/net/smc/smc_inet.c
+@@ -15,13 +15,16 @@
+=20
+ #include "smc_inet.h"
+ #include "smc.h"
++#include "smc_close.h"
+=20
+ static int smc_inet_init_sock(struct sock *sk);
++static void smc_inet_destroy_sock(struct sock *sk);
+=20
+ static struct proto smc_inet_prot =3D {
+ 	.name		=3D "INET_SMC",
+ 	.owner		=3D THIS_MODULE,
+ 	.init		=3D smc_inet_init_sock,
++	.destroy	=3D smc_inet_destroy_sock,
+ 	.hash		=3D smc_hash_sk,
+ 	.unhash		=3D smc_unhash_sk,
+ 	.release_cb	=3D smc_release_cb,
+@@ -68,6 +71,7 @@ static struct proto smc_inet6_prot =3D {
+ 	.name		=3D "INET6_SMC",
+ 	.owner		=3D THIS_MODULE,
+ 	.init		=3D smc_inet_init_sock,
++	.destroy	=3D smc_inet_destroy_sock,
+ 	.hash		=3D smc_hash_sk,
+ 	.unhash		=3D smc_unhash_sk,
+ 	.release_cb	=3D smc_release_cb,
+@@ -109,6 +113,14 @@ static struct inet_protosw smc_inet6_protosw =3D {
+ static int smc_inet_init_sock(struct sock *sk)
+ {
+ 	struct net *net =3D sock_net(sk);
++	struct smc_sock *smc =3D smc_sk(sk);
++
++	/*
++	 * The smc_sock slab is SLAB_TYPESAFE_BY_RCU and recycled objects
++	 * are not zeroed. .destroy may run even if .init never completed,
++	 * so make sure smc_clcsock_release() sees a valid clcsock.
++	 */
++	smc->clcsock =3D NULL;
+=20
+ 	/* init common smc sock */
+ 	smc_sk_init(net, sk, IPPROTO_SMC);
+@@ -116,6 +128,17 @@ static int smc_inet_init_sock(struct sock *sk)
+ 	return smc_create_clcsk(net, sk, sk->sk_family);
+ }
+=20
++static void smc_inet_destroy_sock(struct sock *sk)
++{
++	/*
++	 * If inet_create()/inet6_create() fail after .init has created the
++	 * internal TCP sock (e.g. rejected by a cgroup BPF program),
++	 * sk_common_release() ends up here. Release the TCP sock, otherwise
++	 * it leaks on every failed IPPROTO_SMC socket() call.
++	 */
++	smc_clcsock_release(smc_sk(sk));
++}
++
+ int __init smc_inet_init(void)
+ {
+ 	int rc;
+--=20
+2.43.5
 
-v1: https://lore.kernel.org/netdev/20260806155253.50252-1-163wangjack@gmail.com/
+Thanks for the review. Changes since v1:
 
- net/sched/sch_cbs.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+- Trimmed the commit message as suggested; the code is unchanged.
+- Kept the reproducer and measurements below this separator, in
+  case anyone wants to give the leak a spin or double-check the fix.
 
-diff --git a/net/sched/sch_cbs.c b/net/sched/sch_cbs.c
-index 1c93469c56e3..8db98d7c98a8 100644
---- a/net/sched/sch_cbs.c
-+++ b/net/sched/sch_cbs.c
-@@ -335,7 +335,7 @@ static void cbs_set_port_rate(struct net_device *dev, struct cbs_sched_data *q)
- 		speed = ecmd.base.speed;
- 
- skip:
--	port_rate = speed * 1000 * BYTES_PER_KBIT;
-+	port_rate = (s64)speed * 1000 * BYTES_PER_KBIT;
- 
- 	atomic64_set(&q->port_rate, port_rate);
- 	netdev_dbg(dev, "cbs: set %s's port_rate to: %lld, linkspeed: %d\n",
-@@ -392,6 +392,10 @@ static int cbs_change(struct Qdisc *sch, struct nlattr *opt,
- 	}
- 
- 	qopt = nla_data(tb[TCA_CBS_PARMS]);
-+	if (qopt->idleslope < 0) {
-+		NL_SET_ERR_MSG(extack, "Idleslope must not be negative");
-+		return -EINVAL;
-+	}
- 
- 	if (!qopt->offload) {
- 		cbs_set_port_rate(dev, q);
-@@ -405,8 +409,8 @@ static int cbs_change(struct Qdisc *sch, struct nlattr *opt,
- 	/* Everything went OK, save the parameters used. */
- 	WRITE_ONCE(q->hicredit, qopt->hicredit);
- 	WRITE_ONCE(q->locredit, qopt->locredit);
--	WRITE_ONCE(q->idleslope, qopt->idleslope * BYTES_PER_KBIT);
--	WRITE_ONCE(q->sendslope, qopt->sendslope * BYTES_PER_KBIT);
-+	WRITE_ONCE(q->idleslope, (s64)qopt->idleslope * BYTES_PER_KBIT);
-+	WRITE_ONCE(q->sendslope, (s64)qopt->sendslope * BYTES_PER_KBIT);
- 	WRITE_ONCE(q->offload, qopt->offload);
- 
- 	return 0;
+Reproducer (no clang/bpftool needed, hand-assembled BPF via bpf(2));
+run as root on a cgroup-v2 system, needs CAP_BPF and CONFIG_CGROUP_BPF:
 
-base-commit: 7b53449540502cb21b32bca62a6258e22cd97bbe
--- 
-2.53.0
+  $ gcc -O2 -o smc_leak smc_leak.c
+  $ ./smc_leak 20000
+
+It attaches a deny-all BPF_CGROUP_INET_SOCK_CREATE program to a fresh
+cgroup, enters it and loops socket(AF_INET, SOCK_STREAM, IPPROTO_SMC).
+Before this patch every call fails with EPERM and the slabinfo "TCP"
+active_objs count grows by ~1 per call (20004 for 20000 iterations,
+never shrinking); with this patch the count stays flat.
+
+/* --- smc_leak.c --- */
+/*
+ * IPPROTO_SMC socket-creation leak reproducer (no clang/bpftool needed).
+ *
+ * 1. creates a cgroupv2 subgroup, loads a hand-assembled deny-all
+ *    BPF_CGROUP_INET_SOCK_CREATE prog via bpf(2), attaches it;
+ * 2. moves itself into that cgroup;
+ * 3. loops socket(AF_INET, SOCK_STREAM, IPPROTO_SMC);
+ * 4. prints slabinfo "TCP" delta and kmemleak report.
+ *
+ * Run as root on a cgroup-v2 system:
+ *   ./smc_leak 20000
+ * Expected on buggy kernel: every socket() fails with EPERM and leaks one
+ * TCP sock per call (slabinfo "TCP" active_objs grows by ~1 per iteration;
+ * with CONFIG_DEBUG_KMEMLEAK, unreferenced tcp_sock objects are reported).
+ * On a fixed kernel: no growth.
+ */
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <sys/stat.h>
+#include <sys/mount.h>
+#include <sys/socket.h>
+#include <sys/syscall.h>
+#include <linux/bpf.h>
+#include <stdint.h>
+
+#ifndef IPPROTO_SMC
+#define IPPROTO_SMC 256
+#endif
+
+#define BPF_RAW(CODE, DST, SRC, OFF, IMM) ((struct bpf_insn){CODE, DST, SRC, =
+OFF, IMM})
+
+static int sys_bpf(int cmd, union bpf_attr *attr, unsigned int size)
+{
+	return syscall(__NR_bpf, cmd, attr, size);
+}
+
+static int load_deny_prog(void)
+{
+	/* r0 =3D 0 (deny); exit */
+	struct bpf_insn insns[] =3D {
+		BPF_RAW(BPF_ALU64 | BPF_MOV | BPF_K, BPF_REG_0, 0, 0, 0),
+		BPF_RAW(BPF_JMP | BPF_EXIT, 0, 0, 0, 0),
+	};
+	union bpf_attr attr;
+	memset(&attr, 0, sizeof(attr));
+	attr.prog_type =3D BPF_PROG_TYPE_CGROUP_SOCK;
+	attr.insns =3D (uint64_t)(unsigned long)insns;
+	attr.insn_cnt =3D 2;
+	attr.license =3D (uint64_t)(unsigned long)"GPL";
+	int fd =3D sys_bpf(BPF_PROG_LOAD, &attr, sizeof(attr));
+	if (fd < 0)
+		perror("BPF_PROG_LOAD");
+	return fd;
+}
+
+static int attach_prog(int prog_fd, const char *cgpath)
+{
+	int cg_fd =3D open(cgpath, O_RDONLY | O_DIRECTORY);
+	if (cg_fd < 0) {
+		perror("open cgroup");
+		return -1;
+	}
+	union bpf_attr attr;
+	memset(&attr, 0, sizeof(attr));
+	attr.link_create.prog_fd =3D prog_fd;
+	attr.link_create.target_fd =3D cg_fd;
+	attr.link_create.attach_type =3D BPF_CGROUP_INET_SOCK_CREATE;
+	int fd =3D sys_bpf(BPF_LINK_CREATE, &attr, sizeof(attr));
+	if (fd < 0) {
+		perror("BPF_LINK_CREATE");
+		close(cg_fd);
+		return -1;
+	}
+	return fd;
+}
+
+static long tcp_active_objs(void)
+{
+	FILE *f =3D fopen("/proc/slabinfo", "r");
+	char line[256];
+	long objs =3D -1;
+
+	if (!f)
+		return -1;
+	while (fgets(line, sizeof(line), f)) {
+		char name[64];
+		long active;
+		if (sscanf(line, "%63s %ld", name, &active) =3D=3D 2 &&
+		    !strcmp(name, "TCP")) {
+			objs =3D active;
+			break;
+		}
+	}
+	fclose(f);
+	return objs;
+}
+
+static void kmemleak_scan(void)
+{
+	mkdir("/sys/kernel/debug", 0755);
+	mount("debugfs", "/sys/kernel/debug", "debugfs", 0, NULL);
+	FILE *f =3D fopen("/sys/kernel/debug/kmemleak", "w");
+	if (f) {
+		fputs("scan", f);
+		fclose(f);
+		sleep(3);
+		system("grep -c 'unreferenced object' /sys/kernel/debug/kmemleak 2>/dev/nul=
+l | sed 's/^/kmemleak unreferenced objects: /'");
+		system("head -60 /sys/kernel/debug/kmemleak 2>/dev/null");
+	} else {
+		printf("(kmemleak unavailable: %s)\n", strerror(errno));
+	}
+}
+
+int main(int argc, char **argv)
+{
+	const char *name =3D argc > 1 ? argv[1] : "smctest";
+	long iters =3D argc > 2 ? atol(argv[2]) : 20000;
+	char cgpath[256], path[280];
+	int prog_fd, link_fd;
+
+	if (access("/sys/fs/cgroup/cgroup.controllers", F_OK)) {
+		fprintf(stderr, "cgroup v2 required\n");
+		return 1;
+	}
+
+	snprintf(cgpath, sizeof(cgpath), "/sys/fs/cgroup/%s", name);
+	mkdir(cgpath, 0755);
+
+	prog_fd =3D load_deny_prog();
+	if (prog_fd < 0)
+		return 1;
+	link_fd =3D attach_prog(prog_fd, cgpath);
+	if (link_fd =3D=3D -1)
+		return 1;
+
+	snprintf(path, sizeof(path), "%s/cgroup.procs", cgpath);
+	FILE *f =3D fopen(path, "w");
+	if (!f) {
+		perror("open cgroup.procs");
+		return 1;
+	}
+	fprintf(f, "%d", getpid());
+	fclose(f);
+
+	long before =3D tcp_active_objs();
+	printf("TCP slab objs before: %ld\n", before);
+
+	long denied =3D 0, ok =3D 0, other =3D 0;
+	for (long i =3D 0; i < iters; i++) {
+		int fd =3D socket(AF_INET, SOCK_STREAM, IPPROTO_SMC);
+		if (fd >=3D 0) {
+			close(fd);
+			ok++;
+		} else if (errno =3D=3D EPERM) {
+			denied++;
+		} else {
+			if (!other)
+				printf("socket error: %s\n", strerror(errno));
+			other++;
+			break;
+		}
+	}
+	long after =3D tcp_active_objs();
+	printf("iterations=3D%ld denied(EPERM)=3D%ld ok=3D%ld other=3D%ld\n",
+	       iters, denied, ok, other);
+	printf("TCP slab objs after: %ld  (delta %+ld)\n", after, after - before);
+	if (denied && after - before > denied / 2)
+		printf("=3D> LEAK CONFIRMED: ~%ld TCP socks leaked on error path\n",
+		       after - before);
+
+	kmemleak_scan();
+
+	/* leave cgroup so it can be removed */
+	f =3D fopen("/sys/fs/cgroup/cgroup.procs", "w");
+	if (f) {
+		fprintf(f, "%d", getpid());
+		fclose(f);
+	}
+	if (link_fd >=3D 0)
+		close(link_fd);
+	rmdir(cgpath);
+	return 0;
+}
+/* --- end smc_leak.c --- */
