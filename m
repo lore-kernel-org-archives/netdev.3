@@ -1,223 +1,281 @@
-Received: from mail-wm2-f9.google.com (mail-wm2-f9.google.com [74.125.225.137])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729A9351C3B
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 03:26:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A26F2DF6F4
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 03:30:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786591592; cv=none; b=CJI2gBHZnsWxQQLO0wqXkQnCZsSPWBXLVzqqURqLtnd1bFqXVqZzylVlTZV8CPocb/wesmPCa4m8Vm3ie2kNJCJ6YQtzV7ziNacDh5DmIsUzjudfExaVZSKIqNgObWzd9e7Igh91reU3bmQPC6fDugBV/5+Hta6Z9fx2IjBB/NY=
+	t=1786591832; cv=none; b=lVd+OgrI31jgSCf/ya0RqOA2aLT6F2AXP8WWFnFaismK2UTlmX2LUz15NVQkjOSy7NRDydZcY/CxoOS2226NNSnQQB0/jArYkSemCL3wpsY+2rdEuEXMRQtxPRpMbbzco9dmF/qgJ5+M+w4xhsumIwvgNXjv8filhJ7NUcBz2wI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786591592; c=relaxed/simple;
-	bh=X0pHP4S2OsRNcX4/HbKprcP2h56QDiwvZLsJATuwvS4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=gMLT8nbNbcluAkKcrHzrb6E85zjBO1SdTCJe0Xe9HGfnzUJBRDy3GEWxQjweVTsxTPtrK+Kh+/Z0rEjpbUVyi4GDJDpLDfOMAcxJGH3zqTg/NcazlFokaceeWYZ/ifOmYvLLtxDlZyzz4431UZmMveg7Y0uuFIXc8s5UvJ6R0Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OyGzc+CZ; arc=none smtp.client-ip=74.125.225.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786591832; c=relaxed/simple;
+	bh=m+LJwN5Fva5uOOTvKroFKr9SzWeoO5JMoQNzEyNTjLo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GBK/JaeO7s6yOWBp7BlE+Em05p7fEztZ/YRyt++hikYRRBDbXe8tZ+joIpbV4m2jTX+DtaTl7jDYDATXhcGAD6TIvrEMJIOElgJ/6xIi+QshvEOZ7MdIMPdjXgOnku3OTlrA2/Ed/XQfuomD/wdEWxYSi/8QGtEg4rhyq7qeHxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=0hOHO+Dz; arc=none smtp.client-ip=113.46.200.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OyGzc+CZ"
-Received: by mail-wm2-f9.google.com with SMTP id 5b1f17b1804b1-49556ce3549so6598035e9.0
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 20:26:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786591589; x=1787196389; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=glE18fTWGFGOtieGZ/t9cUibr9Ip5396IdYy4itNJLM=;
-        b=OyGzc+CZYyaigbVJVAELJ3hPfH3bFkcydqDPyzVpDTLspUl9dMB92tfymlwohqKazP
-         Ug4Yd+yHsVtYxlyNDZHc5WvTq8zmOtRitcivDH++cQDCss766gKdtsbTOExoUDZ+Gp2i
-         Mus2HK92AsvmSLPg0i0A1PEhW6M5oJnqFfO/pSc6E68EoWe8mNaQPiyfRMgEeXWYbHoA
-         JfZAkzOb3JMI9H+VUUvKNWw63ss7uMtCTNMu4vxzwDvCweoJFD0Wn5s2wUGn7idjv9Vk
-         BWWwX2VqK/c+Jyv/qvVUWxj38c5KILmrhF4Q2QiqbyQDZMn9oWY4TsvgO+9wqT7lDTbz
-         KD6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786591589; x=1787196389;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=glE18fTWGFGOtieGZ/t9cUibr9Ip5396IdYy4itNJLM=;
-        b=XPThv/H1UcXcHtgGX/j/yiiYhXzDFB68GFVKCJ8AXs+jxnWFso+H9/32wJ0N2V/iYx
-         FTZz74r5dSGtYK5AQBOSGYPmymdvsxqP6ew0Sa16WQPigeIsQY1KZxAyLeefOdytCTGP
-         +pcdfOqgcj0QDu8vsdq4AcshqmEAjwSjOv+GWXQLys7iHl2SHsIpx3CopIFUMzsAOJXP
-         r3OUy/CEqwcWvGnX0eH5ckc+eBDOTaALQRWeyKJukd/8LbFzKvcq7Imsony6YwuuQXPF
-         +YkHjUnEsEY9d0IzmJZIPkEZSYxu2FZkqPZZACrbUEQcC5ED02rPnH5O2eImszBTUnMp
-         Jsdg==
-X-Forwarded-Encrypted: i=1; AHgh+RoZhYMbogFPF1a8iXtLJGHLnGD2e5SNi9lyjsMuF/5l7JCdl97b0ZLIeiZVw6cOyW9gVsiiYp8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YweAMtZ0vM3f/DqL5HhkepHvex2S9PC5jEsPRFGo51vBUCjG+Pj
-	HWg6LnEHO0zZNwDVbKS2DcpjrbRWi3Eh15mcePqWPf2oGHrngc0IRWwW
-X-Gm-Gg: AR+sD10ALpqBNYYM/LNWKnLveBT3LK9xjOfFUpOPY7Aief2aCVq7jTciD9kVf9QD9kA
-	D3GDWOmUDzyUwO5Ac2t2bbFZWXbCeF0dPTp3G4v9EUXRzmmJGRlcs0T//RxYLb6h4/KmXkTHRcn
-	RceEY2wEgvKcmpFzHCx5uWUMpzEfJ7AXSuUxocphnF9eF0YTxDI12vDoBfvYU0WfEW5qx73hxID
-	8QxYhzx2HN/Vzn9KzKwLcXw6oqzE+h+7dgSqYXgXhUIw8WWeEk2YntHxz1QKohE/LZN8P1DQC7Z
-	DtExzjapoMhr2T5Tynv9fWN2U3a4KIR8iUGAcQeoM2pz97X7AqlF9V5Sy/7Tj0Nxba+Haz069f9
-	wIY6qd9v4pTYXA7gK6mS+O6Q1VU9l2P5eYjLaPQ3mYw6WCDzNlDZm33hCJDDc3c6l30bi4VE9UE
-	VR5twYfXCaN9fICktZpKtXtAXtCdPfud/Viz+cgvN98LuSNqieBFDDEWwHdJbDQf51F6EzcnxrR
-	Ee/Pja34T+pPXNDS+M20yzIMT5BLE5M4aBiFOrKw3doL276a/ADJ63h/gDA0+Ln00BurQ6JpZFX
-	qBMue5jmRaEKITdwfslj9NX3C9afVrcACl2dHQ==
-X-Received: by 2002:adf:e008:0:10b0:481:5167:d526 with SMTP id ffacd0b85a97d-48159c8d9f8mr2408652f8f.6.1786591588609;
-        Wed, 12 Aug 2026 20:26:28 -0700 (PDT)
-Received: from localhost (nat-icclus-192-26-29-3.epfl.ch. [192.26.29.3])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815a569ab3sm2609540f8f.11.2026.08.12.20.26.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Aug 2026 20:26:28 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="0hOHO+Dz"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=Ddx6m6WyvF4ptfyyfrysd4E1ZX4xUKEa8oeetJNKBBs=;
+	b=0hOHO+Dz9ifW5yfuv4GCu85uRMvkf0XCjw1StZEP/CQJu0XMH5e1XDi1LVL/A5WsEEhTAtBwB
+	BKFD0tUMCpycLEfGZTQCbk4GI0Egvcf8e832gn3XCyNljdQvY3tTsH3HTwVdXOY00+d+7OMc/5c
+	mkdxtXe1N8YlfaSBmZlYYyY=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4hL9Zc6hJLz1K96m;
+	Thu, 13 Aug 2026 11:19:36 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 74B914057A;
+	Thu, 13 Aug 2026 11:30:14 +0800 (CST)
+Received: from kwepemq200002.china.huawei.com (7.202.195.90) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 13 Aug 2026 11:30:14 +0800
+Received: from localhost.localdomain (10.50.85.175) by
+ kwepemq200002.china.huawei.com (7.202.195.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 13 Aug 2026 11:30:13 +0800
+From: Dong Chenchen <dongchenchen2@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
+	<kuba@kernel.org>, <horms@kernel.org>, <herbert@gondor.apana.org.au>,
+	<kuniyu@google.com>
+CC: <idosch@nvidia.com>, <andrew+netdev@lunn.ch>, <ap420073@gmail.com>,
+	<steffen.klassert@secunet.com>, <laforge@gnumonks.org>,
+	<jiayuan.chen@linux.dev>, <jhs@mojatatu.com>, <zhangchangzhong@huawei.com>,
+	<netdev@vger.kernel.org>, Dong Chenchen <dongchenchen2@huawei.com>,
+	<syzbot+83181a31faf9455499c5@syzkaller.appspotmail.com>
+Subject: [PATCH net] net: iptunnel: fix stale transport header during tunnel decapsulation
+Date: Thu, 13 Aug 2026 11:38:55 +0800
+Message-ID: <20260813033855.3372172-1-dongchenchen2@huawei.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 13 Aug 2026 05:26:26 +0200
-Message-Id: <DKNHV09PBQZP.IRQL20BY574I@gmail.com>
-Cc: "Hui Zhu" <zhuhui@kylinos.cn>
-Subject: Re: [PATCH bpf-next 2/4] bpf: add bpf_thread_wq kthread-backed
- workqueue with cgroup placement
-From: "Kumar Kartikeya Dwivedi" <memxor@gmail.com>
-To: "Hui Zhu" <hui.zhu@linux.dev>, "Alexei Starovoitov" <ast@kernel.org>,
- "Daniel Borkmann" <daniel@iogearbox.net>, "John Fastabend"
- <john.fastabend@gmail.com>, "Andrii Nakryiko" <andrii@kernel.org>, "Martin
- KaFai Lau" <martin.lau@linux.dev>, "Eduard Zingerman" <eddyz87@gmail.com>,
- "Song Liu" <song@kernel.org>, "Yonghong Song" <yonghong.song@linux.dev>,
- "Jiri Olsa" <jolsa@kernel.org>, "Johannes Weiner" <hannes@cmpxchg.org>,
- "Michal Hocko" <mhocko@kernel.org>, "Roman Gushchin"
- <roman.gushchin@linux.dev>, "Shakeel Butt" <shakeel.butt@linux.dev>,
- "Muchun Song" <muchun.song@linux.dev>, "JP Kobryn"
- <inwardvessel@gmail.com>, "Andrew Morton" <akpm@linux-foundation.org>,
- "Shuah Khan" <shuah@kernel.org>, <davem@davemloft.net>, "Jakub Kicinski"
- <kuba@kernel.org>, "Jesper Dangaard Brouer" <hawk@kernel.org>, "Stanislav
- Fomichev" <sdf@fomichev.me>, "KP Singh" <kpsingh@kernel.org>, "Tao Chen"
- <chen.dylane@linux.dev>, "Mykyta Yatsenko" <yatsenko@meta.com>, "Leon
- Hwang" <leon.hwang@linux.dev>, "Anton Protopopov"
- <a.s.protopopov@gmail.com>, "Amery Hung" <ameryhung@gmail.com>, "Tobias
- Klauser" <tklauser@distanz.ch>, "Eyal Birger" <eyal.birger@gmail.com>,
- "Rong Tao" <rongtao@cestc.cn>, "Hao Luo" <haoluo@google.com>, "Peter
- Zijlstra" <peterz@infradead.org>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Nathan Chancellor" <nathan@kernel.org>, "Kees Cook" <kees@kernel.org>,
- "Tejun Heo" <tj@kernel.org>, "Jeff Xu" <jeffxu@chromium.org>,
- <mkoutny@suse.com>, "Jan Hendrik Farr" <kernel@jfarr.cc>, "Christian
- Brauner" <brauner@kernel.org>, "Randy Dunlap" <rdunlap@infradead.org>,
- "Brian Gerst" <brgerst@gmail.com>, "Masahiro Yamada"
- <masahiroy@kernel.org>, "Willem de Bruijn" <willemb@google.com>, "Jason
- Xing" <kerneljasonxing@gmail.com>, "Paul Chaignon"
- <paul.chaignon@gmail.com>, "Lance Yang" <lance.yang@linux.dev>, "Jiayuan
- Chen" <jiayuan.chen@linux.dev>, "Emil Tsalapatis" <emil@etsalapatis.com>,
- "Ihor Solodrai" <ihor.solodrai@linux.dev>, "Barry Song"
- <baohua@kernel.org>, "Geliang Tang" <geliang@kernel.org>,
- <linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
- <cgroups@vger.kernel.org>, <linux-mm@kvack.org>, <netdev@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>
-X-Mailer: aerc 0.21.0
-References: <cover.1786086076.git.zhuhui@kylinos.cn>
- <cfb06f2626062fa60efbbd9d34089819b1a34522.1786086076.git.zhuhui@kylinos.cn>
-In-Reply-To: <cfb06f2626062fa60efbbd9d34089819b1a34522.1786086076.git.zhuhui@kylinos.cn>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemq200002.china.huawei.com (7.202.195.90)
 
-On Fri Aug 7, 2026 at 9:01 AM CEST, Hui Zhu wrote:
-> From: Hui Zhu <zhuhui@kylinos.cn>
->
-> Introduce bpf_thread_wq, a new BPF embedded map field similar to
-> bpf_wq but backed by a dedicated kthread_worker instead of a system
-> workqueue. The worker kthread can be attached to a specific cgroup at
-> init time so BPF-deferred callbacks run under the resource limits of
-> the target cgroup.
->
-> Three kfuncs are exposed:
->   bpf_thread_wq_init(twq, map, cgroup_id, flags)   [KF_SLEEPABLE]
->   bpf_thread_wq_set_callback(twq, cb, flags, aux)
->   bpf_thread_wq_start(twq, flags)
->
-> bpf_thread_wq_init() is registered only for BPF_PROG_TYPE_SYSCALL
-> programs. It creates a kthread worker and may attach it to a cgroup;
-> those paths can sleep and acquire kthread and cgroup locks. Restricting
-> init to syscall programs prevents it from running in BPF contexts that
-> may already hold locks which could deadlock with those paths.
->
-> bpf_thread_wq intentionally avoids the bpf_async infrastructure used by
-> bpf_timer and bpf_wq. That infrastructure drives cleanup from irq_work
-> in hardirq context, while bpf_thread_wq cancellation and final teardown
-> may need to sleep through kthread_cancel_work_sync(),
-> kthread_destroy_worker() and a final cgroup_put().
-> bpf_thread_wq_cancel_and_free() therefore cancels work synchronously and
-> drops the context reference; the last put waits for tasks-trace RCU
-> readers and then schedules process-context work to run bpf_prog_put(),
-> cgroup_put(), kthread_destroy_worker() and kfree().
->
-> Add BTF/map support for bpf_thread_wq fields, map teardown hooks,
-> verifier handling for the callback kfunc, and cgroup_kthread_attach() to
-> move the worker into the requested cgroup.
->
-> Supported map types are BPF_MAP_TYPE_HASH, BPF_MAP_TYPE_LRU_HASH, and
-> BPF_MAP_TYPE_ARRAY, consistent with bpf_wq and bpf_task_work.
->
-> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-> ---
+Syzbot reported a crash in qdisc_pkt_len_segs_init() caused by a stale
+transport_header offset after tunnel decapsulation.
 
-Hi Hui,
+BUG: unable to handle page fault for address: ffffed102091a42e
+Oops: Oops: 0000 [#1] SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 340 Comm: qdisc_uaf_repro Not tainted 7.2.0-rc4-00061-g248951ddc14d #256 PREEMPT(full)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:__asan_load2
+<IRQ>
+qdisc_pkt_len_segs_init (net/core/dev.c:4145)
+__dev_queue_xmit (net/core/dev.c:4787)
+br_dev_queue_push_xmit (net/bridge/br_forward.c:53)
+br_handle_frame_finish (net/bridge/br_input.c:229)
+br_handle_frame (net/bridge/br_input.c:315)
+__netif_receive_skb_core.constprop.0 (net/core/dev.c:6099)
+__netif_receive_skb_list_core (net/core/dev.c:6287)
+netif_receive_skb_list_internal (net/core/dev.c:6445)
+napi_complete_done (net/core/dev.c:6813)
+gro_cell_poll (net/core/gro_cells.c:74)
+__napi_poll (net/core/dev.c:7735)
+net_rx_action (net/core/dev.c:7798 net/core/dev.c:7955)
+handle_softirqs (kernel/softirq.c:622)
+do_softirq (kernel/softirq.c:523  kernel/softirq.c:510 )
+__local_bh_enable_ip (kernel/softirq.c:450)
+tun_get_user (drivers/net/tun.c:1986 (discriminator 1))
+tun_chr_write_iter (drivers/net/tun.c:2032)
 
-Thanks for sharing the patches. I think Sashiko and Mykyta already pointed =
-out a
-couple of issues with the current implementation, but I would like to comme=
-nt on
-the higher-level approach.
+The crash requires four conditions to line up:
 
-If I understood the past discussions and current set correctly, the reason =
-for
-your choice to move from bpf_wq to bpf_thread_wq was primarily to enable co=
-rrect
-CPU accounting of the work done by threads to specific cgroups.
+1. The incoming packet is encapsulated and carries GSO metadata.  The outer
+   transport header offset is stored in skb->transport_header while the
+   packet is still in the outer tunnel context.
+2. The tunnel receiver strips the outer headers.  skb->data is advanced to
+   the inner frame, but skb->transport_header is left pointing to the
+   now-removed outer L4 header, so it becomes a negative offset relative to
+   the new data.
+3. The inner frame is not delivered to the local IP stack.  Instead, it
+   is forwarded at L2 by a bridge or HSR, so ip_rcv_core() never runs and
+   the transport header is not reset to the inner L4 offset.
+4. The forwarding path calls __dev_queue_xmit(), which enters
+   qdisc_pkt_len_segs_init().  That function computes the GSO header length
+   from skb_transport_offset(skb).  Because the offset is negative, the
+   unsigned cast overflows and pskb_may_pull(skb, hdr_len +
+   sizeof(struct tcphdr)) reads past the end of the skb, triggering a
+   KASAN fault or page fault.
 
-I think this is a step in the right direction, but looking at the bigger
-picture, I feel we need a more flexible solution.
+Fix this by clearing skb->transport_header to the ~0U sentinel at the
+tunnel decapsulation boundary, after each tunnel receive function has
+finished all processing that needs the outer L4 header and before the skb
+is handed to GRO or the stack. The IP/GRO receive paths then set the
+transport header correctly when they parse the inner packet.
 
-In practice, users deciding to do async reclaim through such a BPF interfac=
-e
-would want to scale and compact the number of threads doing reclaim-related=
- work
-dynamically, based on available idle resources, but also application-specif=
-ic
-metrics, and I do not think the bpf_thread_wq abstraction provides enough
-flexibility in managing work scheduling related aspects precisely.
+Fixes: 7fb4c1967011 ("net: pull headers in qdisc_pkt_len_segs_init()")
+Reported-by: syzbot+83181a31faf9455499c5@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69de2bee.a00a0220.475f0.0041.GAE@google.com/T/
+Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
+---
+ drivers/net/amt.c              | 1 +
+ drivers/net/bareudp.c          | 2 ++
+ drivers/net/geneve.c           | 6 ++++--
+ drivers/net/gtp.c              | 1 +
+ drivers/net/pfcp.c             | 1 +
+ drivers/net/vxlan/vxlan_core.c | 1 +
+ include/linux/skbuff.h         | 5 +++++
+ net/ipv4/ip_tunnel.c           | 2 ++
+ net/ipv6/ip6_tunnel.c          | 2 ++
+ net/ipv6/sit.c                 | 1 +
+ net/xfrm/xfrm_input.c          | 1 +
+ 11 files changed, 21 insertions(+), 2 deletions(-)
 
-What we probably should expose is the ability for programs to manage their =
-own
-wait queues and subscribe kthreads managed by BPF programs dynamically to t=
-hem.
-User-defined policies can dictate how many threads remain active, whether t=
-hey
-busy poll, and when they go to sleep, completely under the program's contro=
-l.
+diff --git a/drivers/net/amt.c b/drivers/net/amt.c
+index 182a41d59a75..5968a08fcd5c 100644
+--- a/drivers/net/amt.c
++++ b/drivers/net/amt.c
+@@ -2355,6 +2355,7 @@ static bool amt_multicast_data_handler(struct amt_dev *amt, struct sk_buff *skb)
+ 
+ 	skb->pkt_type = PACKET_MULTICAST;
+ 	skb->ip_summed = CHECKSUM_NONE;
++	skb_unset_transport_header(skb);
+ 	len = skb->len;
+ 	err = gro_cells_receive(&amt->gro_cells, skb);
+ 	if (likely(err == NET_RX_SUCCESS))
+diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
+index 5ef841c85526..b92652ca91ec 100644
+--- a/drivers/net/bareudp.c
++++ b/drivers/net/bareudp.c
+@@ -191,6 +191,8 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
+ 		}
+ 	}
+ 
++	skb_unset_transport_header(skb);
++
+ 	len = skb->len;
+ 	err = gro_cells_receive(&bareudp->gro_cells, skb);
+ 	if (likely(err == NET_RX_SUCCESS))
+diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
+index 72023ebd0e1b..b632239c5e43 100644
+--- a/drivers/net/geneve.c
++++ b/drivers/net/geneve.c
+@@ -372,10 +372,12 @@ static void geneve_rx(struct geneve_dev *geneve, struct geneve_sock *gs,
+ 
+ 	/* Skip the additional GRO stage when hints are in use. */
+ 	len = skb->len;
+-	if (skb->encapsulation)
++	if (skb->encapsulation) {
+ 		err = netif_rx(skb);
+-	else
++	} else {
++		skb_unset_transport_header(skb);
+ 		err = gro_cells_receive(&geneve->gro_cells, skb);
++	}
+ 	if (likely(err == NET_RX_SUCCESS))
+ 		dev_dstats_rx_add(geneve->dev, len);
+ 
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index 9a12cc53da00..1e3013d49713 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -337,6 +337,7 @@ static int gtp_rx(struct pdp_ctx *pctx, struct sk_buff *skb,
+ 
+ 	dev_sw_netstats_rx_add(pctx->dev, skb->len);
+ 
++	skb_unset_transport_header(skb);
+ 	__netif_rx(skb);
+ 	return 0;
+ 
+diff --git a/drivers/net/pfcp.c b/drivers/net/pfcp.c
+index d8e4d60f5834..4b67906646ff 100644
+--- a/drivers/net/pfcp.c
++++ b/drivers/net/pfcp.c
+@@ -94,6 +94,7 @@ static int pfcp_encap_recv(struct sock *sk, struct sk_buff *skb)
+ 	skb_reset_mac_header(skb);
+ 	skb->dev = pfcp->dev;
+ 
++	skb_unset_transport_header(skb);
+ 	gro_cells_receive(&pfcp->gro_cells, skb);
+ 
+ 	return 0;
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 1ded27768a97..9366895856f6 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -1799,6 +1799,7 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
+ 
+ 	dev_dstats_rx_add(vxlan->dev, skb->len);
+ 	vxlan_vnifilter_count(vxlan, vni, vninode, VXLAN_VNI_STATS_RX, skb->len);
++	skb_unset_transport_header(skb);
+ 	gro_cells_receive(&vxlan->gro_cells, skb);
+ 
+ 	rcu_read_unlock();
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 22eda1d54a0e..626bbb9bae1a 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -3082,6 +3082,11 @@ static inline bool skb_transport_header_was_set(const struct sk_buff *skb)
+ 	return skb->transport_header != (typeof(skb->transport_header))~0U;
+ }
+ 
++static inline void skb_unset_transport_header(struct sk_buff *skb)
++{
++	skb->transport_header = (typeof(skb->transport_header))~0U;
++}
++
+ static inline unsigned char *skb_transport_header(const struct sk_buff *skb)
+ {
+ 	DEBUG_NET_WARN_ON_ONCE(!skb_transport_header_was_set(skb));
+diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
+index 9d114bd575f9..5e677c86f0e3 100644
+--- a/net/ipv4/ip_tunnel.c
++++ b/net/ipv4/ip_tunnel.c
+@@ -445,6 +445,8 @@ int ip_tunnel_rcv(struct ip_tunnel *tunnel, struct sk_buff *skb,
+ 	if (tun_dst)
+ 		skb_dst_set(skb, (struct dst_entry *)tun_dst);
+ 
++	skb_unset_transport_header(skb);
++
+ 	gro_cells_receive(&tunnel->gro_cells, skb);
+ 	return 0;
+ 
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index ebf83f090376..e7c8283a0e39 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -892,6 +892,8 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
+ 	if (tun_dst)
+ 		skb_dst_set(skb, (struct dst_entry *)tun_dst);
+ 
++	skb_unset_transport_header(skb);
++
+ 	gro_cells_receive(&tunnel->gro_cells, skb);
+ 	return 0;
+ 
+diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
+index a38b24fb8384..ad5adc5abe6e 100644
+--- a/net/ipv6/sit.c
++++ b/net/ipv6/sit.c
+@@ -726,6 +726,7 @@ static int ipip6_rcv(struct sk_buff *skb)
+ 
+ 		dev_sw_netstats_rx_add(tunnel->dev, skb->len);
+ 
++		skb_unset_transport_header(skb);
+ 		netif_rx(skb);
+ 
+ 		return 0;
+diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
+index eecab337bd0a..2767021c138a 100644
+--- a/net/xfrm/xfrm_input.c
++++ b/net/xfrm/xfrm_input.c
+@@ -744,6 +744,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 			skb_dst_drop(skb);
+ 		if (async)
+ 			dev_put(dev);
++		skb_unset_transport_header(skb);
+ 		gro_cells_receive(&gro_cells, skb);
+ 		rcu_read_unlock();
+ 		return 0;
+-- 
+2.25.1
 
-Looking beyond this particular example, there are cases where work is stash=
-ed in
-queues, and threads draw items from the pool and process them. In such case=
-s
-having flexibility in deciding the mapping between threads and queues is al=
-so
-important. We want to thus allow management of the work item queues from th=
-e
-program itself, and not hide it behind the API to offer the desired level o=
-f
-control.  The order in which items are ranked in individual queues, and the
-order in which queues are processed horizontally by threads is also a desir=
-able
-property.
-
-Correctly associating the BPF-managed kthread to a cgroup should still be
-possible in a manner similar to what you did in this set. But the amount of
-control programs can exert over how work is scheduled and the level of
-concurrency will be much higher if we disaggregate and generalize each part=
- of
-the picture (wait queues, kthreads, and work item queues, which can be
-implemented in BPF itself).
-
-I am not aware of ways to back charge time spent to remote cgroups, but if
-desired we could also explore that option when a single thread does work on
-behalf of multiple cgroups. It is something to be explored.
-
-I've been working on related patches, and will post RFC set for bpf_kthread=
- and
-bpf_waitq management in due time.  Until then I recommend that you continue
-experimenting with the existing async execution primitives for now.
-
-> [...]
