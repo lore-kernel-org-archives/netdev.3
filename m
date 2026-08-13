@@ -1,170 +1,170 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from usb-smtp-delivery-120.mimecast.com (usb-smtp-delivery-120.mimecast.com [170.10.151.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0B943B3CE;
-	Thu, 13 Aug 2026 21:08:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3ABC43BDB5
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 21:17:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.151.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786655332; cv=none; b=grhnJKmFH0JWxiJ5XkLtRpllxwVL73E37QeHyO6zxhfgs2OUDTa+CkHdRC4v+CB2e2mLpJf5Ib9KNwgwNBba/XfCPuaNvpmvCaBt2Rkkw5O5FYfuL1jyBYgWX3dQGJB+2clQneaKiYxko+8lwbsoQERY2U8foZmbqxeN4VM8Gwk=
+	t=1786655844; cv=none; b=hVSQXOUcmJcE4fPTB4KP3ZjuZ13uY0BkielNipx91rZn0DewsrP5ie1q4hJ2VSfRkiC9Mg5YH8+wWMYQCurcLzEWe/oAI9IHKa4ecSLuXWMnJt01sfp4aBXg/HBOPLavPg/6lkKqFuegENZaHtyxNg9v7HHLqIw0Hq9lLEQdyLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786655332; c=relaxed/simple;
-	bh=c/xVJaenqiH3+kv6cPVc5oy77RKGIT3baebVFmLyRJw=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=HDpeurHBNNnesv8Isixf4YtPJWjCoKoDiv65RvcvEbkedLKqiQEjGSgc2QbEBcW3nKR5Ca/AX887yAfTSiVtgFU0qcctJAnY09z5rc/JFPfJAt5Qm+h3tlrCTRtQm8H6E4+qUuCzDiCzrmXo64ZvCpa0LU+N0qtuzjXiNejtpjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Q4YQfrcK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786655844; c=relaxed/simple;
+	bh=dJWYJiopMkYjHNPQNrxwUXgEyoivEcIVLto09zQqNxs=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 MIME-Version:Content-Type; b=YLz0xogVkET+3mqRCL6WOceBrHaJh0ZM8jAFZ59o287egCuj0zvtH9NqCwbxLOnXlOqpJSo9g/SlmXpwyz88i2hCZmVhvXqBegQp1HjayAvYWpGPMzs5G55cjBTKEu+0Hi1P1XTwOOQ6frt/O3VTbFozL4iDnvo0KpVt2Ntpb5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com; spf=pass smtp.mailfrom=onsemi.com; dkim=pass (2048-bit key) header.d=onsemi.com header.i=@onsemi.com header.b=ZTylvJRt; arc=none smtp.client-ip=170.10.151.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onsemi.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Q4YQfrcK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C101F000E9;
-	Thu, 13 Aug 2026 21:08:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1786655330;
-	bh=+rfmKpCwzQzpk+tikICt/qpBa2ZKmVy8r8vWJfuUcCg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Q4YQfrcKimnxgsOB73ScRTbpcKxqS9TXj9swB6nrtcGomsUhyWVAhPxunMAJam5/i
-	 VM/fWzBtR5hmqR7PyhdkKbBQAsZKXRjIBN0HcX2dIobevXbwutiOHCYZ4gootTZ5y8
-	 8/Tx2eQfhk2wSP+Pj7O6ZXUKORtKrFHinU03XLRE=
-Date: Thu, 13 Aug 2026 14:08:49 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: syzbot <syzbot+237bbeed8dfe0699b7f5@syzkaller.appspotmail.com>
-Cc: hannes@cmpxchg.org, jackmanb@google.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, mhocko@suse.com, surenb@google.com,
- syzkaller-bugs@googlegroups.com, vbabka@kernel.org, ziy@nvidia.com, Amery
- Hung <ameryhung@gmail.com>, Martin KaFai Lau <martin.lau@kernel.org>,
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>, netdev@vger.kernel.org,
- bpf@vger.kernel.org
-Subject: Re: [syzbot] [mm?] BUG: Bad page state in corrupted
-Message-Id: <20260813140849.b8cb508d473a4d47ffed0afb@linux-foundation.org>
-In-Reply-To: <6a7d0b01.3668565d.e8814.0017.GAE@google.com>
-References: <6a7d0b01.3668565d.e8814.0017.GAE@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=onsemi.com header.i=@onsemi.com header.b="ZTylvJRt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onsemi.com;
+	s=mimecast20250127; t=1786655824;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dJWYJiopMkYjHNPQNrxwUXgEyoivEcIVLto09zQqNxs=;
+	b=ZTylvJRthHT4r13QK3uX55jMSpiNk/JkXOfRRToKb7TYzz6jsYhfk5hgJiEFymbZdcrKbz
+	/oDqKeOWg8NeLmCQKyB1sfevRicFdxrGNI0CqCMYsPpBeh5OPWkEdICmY847Y0m1XiF+cV
+	APjIXPf0KDMnqinRG6cSQP6DEcU3Zdl4m17XscKSO2DW1XlujtbWX7RQFLrTouuD9FEAS9
+	8225SGMH/kZfX7g+KmHFUX8wYJJZQgpSbkar/SE8tsY48Skb5FjIXPNqQDvYPiwFXpzjr1
+	FKelFGLjBaws1dmpvcOFTrYGrYdy+TEfrc1yK9RjxAnXP1oM9RGyWiBKoEWGUw==
+Received: from SJ2PR03CU001.outbound.protection.outlook.com
+ (mail-westusazon11012058.outbound.protection.outlook.com [52.101.43.58]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id usb-mta-17-K_7S68D0P4eW-swSsSrQrA-2; Thu,
+ 13 Aug 2026 14:17:01 -0700
+X-MC-Unique: K_7S68D0P4eW-swSsSrQrA-2
+X-Mimecast-MFC-AGG-ID: K_7S68D0P4eW-swSsSrQrA_1786655821
+Received: from DM5PR02MB3369.namprd02.prod.outlook.com (2603:10b6:4:68::27) by
+ DSWPR02MB11443.namprd02.prod.outlook.com (2603:10b6:8:353::12) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.315.12; Thu, 13 Aug 2026 21:16:58 +0000
+Received: from DM5PR02MB3369.namprd02.prod.outlook.com
+ ([fe80::a77f:334f:452d:2b3e]) by DM5PR02MB3369.namprd02.prod.outlook.com
+ ([fe80::a77f:334f:452d:2b3e%6]) with mapi id 15.21.0315.014; Thu, 13 Aug 2026
+ 21:16:57 +0000
+From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, Piergiorgio Beruto <Pier.Beruto@onsemi.com>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH net v6 1/4] net: ethernet: oa_tc6: Protect skb pointer
+ used by two different kernel instances
+Thread-Topic: [PATCH net v6 1/4] net: ethernet: oa_tc6: Protect skb pointer
+ used by two different kernel instances
+Thread-Index: AQHdKs/qH9kSA0y0qky/TWZL6h0yBLacGY3QgAA6PgCAACf34A==
+Date: Thu, 13 Aug 2026 21:16:57 +0000
+Message-ID: <DM5PR02MB3369B34BD9F03C712032939383DB2@DM5PR02MB3369.namprd02.prod.outlook.com>
+References: <20260812-fix-race-condition-and-crash-v6-0-6cf90f4a271a@onsemi.com>
+ <20260812-fix-race-condition-and-crash-v6-1-6cf90f4a271a@onsemi.com>
+ <DM5PR02MB3369B6A836C24C3DCE913F5683DB2@DM5PR02MB3369.namprd02.prod.outlook.com>
+ <190d172c-ee3c-4396-baef-1f0765f72ec8@lunn.ch>
+In-Reply-To: <190d172c-ee3c-4396-baef-1f0765f72ec8@lunn.ch>
+Accept-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM5PR02MB3369:EE_|DSWPR02MB11443:EE_
+x-ms-office365-filtering-correlation-id: b6c7d8f5-92c7-4843-71c8-08def980353a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|23010399003|366016|376014|4143699003|38070700021|10067099003|11063799006|56012099006|18002099003|22082099003
+x-microsoft-antispam-message-info: JpLIiDLQsw/YyZfzL+noU3ka5WMj8YFui6OzpFjapi5zXihN2YiCiC530FlGjXPKz/CszgGUeky6ZX2IG36kZk1OWFIXE5nl4XagN2vYLJ/yS92dk8QlQPrqqNXzVIu+z3VvkBXyIGHMT7m3TQFXrXdY2CeV9Mjr7/8s1Qw1gMIocIOW4hgowh8QrVm0TgpshIT6/KMblbpZDtfbBQ6eczW9fQ283MOWpDsOA0ssNTFGCNluF07n8zstwEykwsPb2LHqZJTcbTN+O1dFBBX+1hDx9/MOIb8gO3L0NE5MmIsRS1VJYnL0alksAown4RDm3XEtIP1sjLtjtmkuN2Xw9OKPlhMGhzYSu+GKffJC61iGWFwwFzlVkPeNyZCeJji2K3i22Hprn84e9m3EmXBXOMxOxqqIkeeu7RpUxg2Q43pjvckyB4G3edQXIdIIkFwVyNJ2IDNyfOkD4aF3dcR6YUMv0p3rhY+ncOva0EqUPCL/Mn/+b1xmPcttl4NlHtEhDZLHR2DzQfef4oWAKETxula0vLdBCFW+bKa9DC0ISjrGZjEYaMK9cn1OPqGNVKdC2LqLXaVhwII8NjiFnNeoCqDR/5hxAwt5En3myqCR1kDdBJ7MDumB4TAG/KO4SGcXyY/2U+Fpamt6dfPuaUXmB1ttldDgK8PgEKYHD0sYpN0xK704GeiQIBKuQX6T71D9HTFQ7FICiHICcyYWJAFEqxHOf+1Ca3HNHk8IGTsa5c0=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM5PR02MB3369.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(376014)(4143699003)(38070700021)(10067099003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Tm0zRW9MdnphWXQwOGJwMWNFajJhNXI0Z3I1RFZ1b3p6RmpsRE5aMVhQNWZN?=
+ =?utf-8?B?ZXIvTTNxVDhvOUllZVBDOVNSblo2L3JqRlVpSWNTYlgwMlU4SXp6aTN1N2pE?=
+ =?utf-8?B?YXFMeFhtWnpzczlPUmh5V2F2YWVvWGE4Ky8xdXFVdjdkZ0dKWi93djQ1Rm40?=
+ =?utf-8?B?ZHBvdzN5cjh4K2lQRFpsQjMwb3JEd0F2enZwTTVybjMzUWZibDdERGRnOGM1?=
+ =?utf-8?B?WGl6Slk1SUZXdDNkSUhhN2NZU1JzKzU3RzJIdTh2VUUxNjBUTE41WTBaSmZF?=
+ =?utf-8?B?Umxwa09wY1hyZ3g5bFcxUlNjbUs3NC9hVFRhcXJOTG1ybndjZ2ppL2pINXNz?=
+ =?utf-8?B?ZjJEVmZTZmVmR2xVdTZuRnVpUlhIc0lMUHJ0eXJaeHE5a21iV1VvRUJqSEpL?=
+ =?utf-8?B?MlRhZTNXZUdJK1pTQjU3N0tQU1FxY1JtSXZOWE1aWHVmNUVTYVo2a0NwM3Js?=
+ =?utf-8?B?dkZHaUVwMm5HZmZjeS9qOVdCMkpMTG5iaFBwRUlTZVJhVyt5RlpzYlNtbE9S?=
+ =?utf-8?B?NDExckxVdmdIQ0V4MXk3aVFQbVJ5RElXTFZPTkJLaUVXTHFyTHBUR1JMeVNk?=
+ =?utf-8?B?K0lFQUQxeVM2Y0EwK2tDbE1kRlR2b0Z1NlEvczNhSDVCU2MvdDhyVndoRlJP?=
+ =?utf-8?B?bHp5WXFsNCtQeDhwNVo0R0hjVlFRUlZHK25hc0M1OXN1Uld1RkJPQm5aWnhC?=
+ =?utf-8?B?SEYyeHhNeDU2QVhOVHF5RXR1ekxuMTM2clFFbVlIVWRRRzNMdzlHU2RGSWcr?=
+ =?utf-8?B?V1k5WUVlVXV6VVlsWlUzZTNLbkRkWWRhd3ZSbnVTZUFHRTZ2aDJNTnJqRm10?=
+ =?utf-8?B?dDN0TkJXam5oVFk4SS9BQlN0ZzlPTTZsS0FYWGNScmoxWXNqR3l5KzhmTmxx?=
+ =?utf-8?B?V05UeVRabndxNk9KUnpMSnhzcTNlVnhNMWlHV0pBeVJSSjJyK3BMd01mQnF2?=
+ =?utf-8?B?K0Ric0llQTAxc29NdWFkS0xjQXhSQjRFNElTaHZNV2hLbC8xMFF5emZnbXFu?=
+ =?utf-8?B?STdMMStyTm1LaW9oSEIxWnZNblU3eWVLQmcxVitRZDRMM3QzV0Irb0JaRzk1?=
+ =?utf-8?B?QlBwUUNqd2VVOWlVV3UybkUrOHpvSFBCbVVlejQzb3kwa0ZoblVQWmxaM0xt?=
+ =?utf-8?B?WG82QzUvSHp4akxmWUdzVFl5c1ZHN0lmKzBhb3dBVVI5eGZRT0RFSHJVbFh3?=
+ =?utf-8?B?SlF4eFp2OGN3Vkg5SFFsK0ZHZ1c5dzFQQ2VnQ3ZRZTRPZzhwYjVTR3AzVVZR?=
+ =?utf-8?B?VHRMUnRLOGlaak5FZUVyNi9FMUw3ZzEvNzBBYjdWc01ETm11OWUvOE9MQ2o4?=
+ =?utf-8?B?bDl3VGUvMjFWN2dTZkdqN0picUphanpzQS8xQXc2V0J5TnJKcDVDTlpxVEFx?=
+ =?utf-8?B?WHdBMDRra3d0b3JsalhyWnJrNTVwcEtFTTNCMHJjT0ROQWNVRnFPdkFXUS9I?=
+ =?utf-8?B?d3F5QW1QV3FHZ2J4SW9WejU4UEJmVEV0NTNXbjBCajFxdG9KckZ4NWovaTJk?=
+ =?utf-8?B?cWVXMnMxRXVtTUxUV1FERHUxNCtabTdaZngwbmFTNE44K3dzcmRyUytTdjhP?=
+ =?utf-8?B?aWVPQ1gySmR1eFpFdmlZT2ttUnlnNjZRdWZNcjdRZlpKNWVjQkJOb3lUM3pT?=
+ =?utf-8?B?Ynl0RnNDNTlJUTc1TGpraXlBSHZaS253dnlhLzhyRTRtTWs5RnFmdGNOU2Fv?=
+ =?utf-8?B?Zy94Y1J1RGMyUGU3WDF6Y3kzQVJYN0hMQ00rcU5tKzVTT2FJa2VyNUxwWEtS?=
+ =?utf-8?B?VlNvTjQvTnVXZ01EeEowcWpyZEh3em5ralBjck9tMGNCQUFCVHRWZ3JtRXVm?=
+ =?utf-8?B?YWRBZFFNeEJWTHptV093RjI3SjZCN3cyaXJqUnJTajZ4OWM5OEtzcWdxdVIr?=
+ =?utf-8?B?ZFZDSTQ5eElndjFnUHhXR1J1UGloSiszWXBmeEprLzAyZ3pubWlEVzdrMEYr?=
+ =?utf-8?B?U2Ywa0JBNzY2ZTFLa21XYnJleEFlRFM4cS91ZlBDZEthcWd3QzF1T0FSR0FY?=
+ =?utf-8?B?WTArRUYxM3pKZFNhbCtvNmZjUHl1bHBSMlNSdlRRUHBzOXorNGIvS3RIWGln?=
+ =?utf-8?B?ZjBDUmlMYStqMkJ5TlJPNGo2S3JLdUJXdmRqdU50MndnTUMvMmhEVGIvR1JJ?=
+ =?utf-8?B?Q1hTejVJM1p3S0E4eXFQUGwvcjZ3YkxLdzRkMFFQU2s0TnNQRVI2MWJFOWFh?=
+ =?utf-8?B?UTBHRmd6RWE2R01EOG1RNm5kSlkxSkpJYkJIbGlYWXJJSlBJNTd5Rk5BbHl1?=
+ =?utf-8?B?QTR4TGZyajlOTEhpSCtvaEZQV3FzYU4zZ0pIbzdkWE9sZUwwRE5xSGRyTjVj?=
+ =?utf-8?B?SjVvOTI2L01ES3YyME5uVXZwdXFYbWVEc1VkeWEwdytCQ2xNZGtmMFpOczZ3?=
+ =?utf-8?Q?qHaJgdQWDGBsCqjY=3D?=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+X-Exchange-RoutingPolicyChecked: sSBUqr+ahnGJTBKic8UbWC2w36zCsFxbtLWUpaWT5L35jdRyN+gn0eMFbFKiIVvmwkjhURqTvpEvn8NlhD4H3MM8fKbOz6aUSzj5aZ/wqenTqkcBSiJ3i99J44L6WSvDsNstj0ISZk7976gghSYukcEdVq9XRlgXlZEceA8Bhd7GFppVNSqctDocMUTcnzv9TgrsmNzODt++1tPINevQwlRrSPqA6gOAEKkUukbAKPXvc+JguYklWlqMKngaq5qMXfms0HY7gJPqDjXOBBTjKq9w9GMUAoUX1bOBs1AQukSy/+c+6KqPhxqhHnkaxI/UbWhnKKu9/74rGm3Bok2Wmw==
+X-OriginatorOrg: onsemi.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM5PR02MB3369.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b6c7d8f5-92c7-4843-71c8-08def980353a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Aug 2026 21:16:57.6788
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 04e1674b-7af5-4d13-a082-64fc6e42384c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 56m2p86E3SZXr6pf5zxNA1R8ejI1zby2+juBbX+ZpYhwqu9+L5TNbBF8ayGk6LnZPIKYj/nB/lmaEMOmIDE0CZmRjC/4YSrQCPe0DLkck7s=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DSWPR02MB11443
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: JtagTvMl4hfHkqDmFsdO8jFy1vof-nO_yBuXMb3yqb0_1786655821
+X-Mimecast-Originator: onsemi.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 
-On Wed, 12 Aug 2026 17:08:33 -0700 syzbot <syzbot+237bbeed8dfe0699b7f5@syzkaller.appspotmail.com> wrote:
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBBbmRyZXcgTHVubiA8YW5kcmV3
+QGx1bm4uY2g+DQo+IFNlbnQ6IFRodXJzZGF5LCBBdWd1c3QgMTMsIDIwMjYgMTE6NTEgQU0NCj4g
+VG86IFNlbHZhbWFuaSBSYWphZ29wYWwgPFNlbHZhbWFuaS5SYWphZ29wYWxAb25zZW1pLmNvbT4N
+Cj4gU3ViamVjdDogUmU6IFtQQVRDSCBuZXQgdjYgMS80XSBuZXQ6IGV0aGVybmV0OiBvYV90YzY6
+IFByb3RlY3Qgc2tiIHBvaW50ZXIgdXNlZCBieSB0d28NCj4gZGlmZmVyZW50IGtlcm5lbCBpbnN0
+YW5jZXMNCj4gDQo+IA0KPiBPbiBUaHUsIEF1ZyAxMywgMjAyNiBhdCAwMzo1Mzo0OVBNICswMDAw
+LCBTZWx2YW1hbmkgUmFqYWdvcGFsIHdyb3RlOg0KPiA+IFBhb2xvLCBBbmRyZXcgKG9yIGFueW9u
+ZSB3aG8ga25vd3MpDQo+IA0KPiBQYW9sbyBjYW4gcHJvYmFibHkgZ2l2ZSB5b3UgYSBiZXR0ZXIg
+YW5zd2VyLi4uDQo+IA0KPiBJIGFzc3VtZSB5b3UgYXJlIHN1Ym1pdHRpbmcgdG8gbmV0LCBhbmQg
+eW91ciBwYXRjaCBpcyBiYXNlZCBvbiB0aGUNCj4gbW9zdCByZWNlbnQgbmV0LiBTbyB0aGUgcGF0
+Y2ggYXBwbGllcyBjbGVhbmx5IHRoZXJlPyBUaGlzIGluIGl0c2VsZg0KPiBzaG91bGQgbm90IGJl
+IGEgcHJvYmxlbS4NCg0KWWVzLiBJdCBpcyBiYXNlZCBvbiByZWNlbnQgIm5ldCIgYnJhbmNoIGFu
+ZCBhcHBsaWVzIGNsZWFubHkgdGhlcmUuDQoNCj4gDQo+ID4gV2hhdCB0byBkbyBmb3IgdGhlIGZv
+bGxvd2luZyBlcnJvciBmb3IgbXkgc3VibWlzc2lvbiB0byB0aGUgbmV0IHJlcG8uIEkgc2VlIHRo
+ZSBmb2xsb3dpbmcNCj4gZXJyb3IgaW4gcGF0Y2h3b3JrLg0KPiA+ICJDb25mbGljdHMgd2l0aCBw
+ZW5kaW5nL25ldCBwYXRjaGVzIChuZXQtbmV4dC0yMDI2LTA4LTEzLS0wNi0wMCk6IGVycm9yOiBw
+YXRjaCBmYWlsZWQ6DQo+IGRyaXZlcnMvbmV0L2V0aGVybmV0L29hX3RjNi5jOjY5MyBlcnJvcjog
+ZHJpdmVycy9uZXQvZXRoZXJuZXQvb2FfdGM2LmM6IHBhdGNoIGRvZXMgbm90DQo+IGFwcGx5DQo+
+IA0KPiBJIHRoaW5rIHRoaXMgaXMgZ2l2aW5nIGEgd2FybmluZyB0aGF0IHdoZW4gbmV0IGlzIG1l
+cmdlZCB0byBuZXQtbmV4dCwNCj4gd2hpY2ggaGFwcGVucyBtb3N0IFRodXJzZGF5cywgdGhlcmUg
+aXMgZ29pbmcgdG8gYmUgYSBjb25mbGljdC4gSG93IGJhZA0KPiBpcyB0aGF0IGNvbmZsaWN0PyBJ
+ZiBpdCBpcyB0cml2aWFsLCBkb24ndCB3b3JyeSwgaXQgd2lsbCBnZXQNCj4gaGFuZGxlZC4gSWYg
+dGhlIGNvbmZsaWN0IHJlc29sdXRpb24gaXMgbm90IG9idmlvdXMsIG1heWJlIHlvdSBjYW4gbG9v
+aw0KPiBhdCBpdCBub3csIGFuZCBwcm92aWRlIHRoZSBhbnN3ZXI/DQoNCk91dCBvZiAyNCBodW5r
+cywgMiBmYWlscy4gTGV0IG1lIGNoZWNrIGlmIHRoZXJlIGlzIGEgd2F5IHRvIHJlc29sdmUgdGhv
+c2UNCmJ5IHNwbGl0dGluZyB0aGUgY2hhbmdlcyBpbiB0byBzbWFsbGVyIHBhdGNoZXMuDQoNCj4g
+DQo+IEFuZHJldw0KDQo=
 
-> Hello,
-> 
-> syzbot found the following issue on:
-> 
-> HEAD commit:    ba5cc80fd326 Merge branch 'for-next/core' into for-kernelci
-> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
-> console output: https://syzkaller.appspot.com/x/log.txt?x=14db42c6580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=ccf4bea59f67007
-> dashboard link: https://syzkaller.appspot.com/bug?extid=237bbeed8dfe0699b7f5
-> compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-> userspace arch: arm64
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1690bfb9580000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17fc0149580000
-> 
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/959ad5f4e730/disk-ba5cc80f.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/0787d25f251e/vmlinux-ba5cc80f.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/2e85c36fabac/Image-ba5cc80f.gz.xz
-> 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+237bbeed8dfe0699b7f5@syzkaller.appspotmail.com
-> 
-> BUG: Bad page state in process syz-executor210  pfn:112724
-
-(cc's added)
-
-Thanks.  I asked gemini to triage this and it suggested that
-bpf_xdp_shrink_data()'s callee is freeing a page directly via
-page_frag_free(), whereas it should have used the page_pool APIs.
-
-	https://gemini.google.com/app/5fde6de04c8e128f
-
-> page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff0000d2724480 pfn:0x112724
-> flags: 0x5ffc00000000000(node=0|zone=2|lastcpupid=0x7ff)
-> raw: 05ffc00000000000 dead000000000040 ffff0000c30e0000 0000000000000000
-> raw: ffff0000d2724480 3fffffffffffffff 00000000ffffffff 0000000000000000
-> page dumped because: page_pool leak
-> Modules linked in:
-> CPU: 1 UID: 0 PID: 4718 Comm: syz-executor210 Not tainted syzkaller #0 PREEMPT 
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/02/2026
-> Call trace:
->  show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:499 (C)
->  __dump_stack+0x30/0x40 lib/dump_stack.c:94
->  dump_stack_lvl+0xd8/0x12c lib/dump_stack.c:120
->  dump_stack+0x1c/0x28 lib/dump_stack.c:129
->  bad_page+0x194/0x1d0 mm/page_alloc.c:643
->  free_page_is_bad mm/page_alloc.c:1078 [inline]
->  __free_pages_prepare mm/page_alloc.c:1397 [inline]
->  __free_frozen_pages+0xb68/0xbb8 mm/page_alloc.c:2950
->  free_frozen_pages+0x14/0x20 mm/page_alloc.c:2988
->  page_frag_free+0x18c/0x1e0 mm/page_frag_cache.c:169
->  __xdp_return+0x200/0x738 net/core/xdp.c:448
->  bpf_xdp_shrink_data+0x288/0x348 net/core/filter.c:4294
->  bpf_xdp_frags_shrink_tail+0x1c0/0x424 net/core/filter.c:4318
->  ____bpf_xdp_adjust_tail net/core/filter.c:4340 [inline]
->  bpf_xdp_adjust_tail+0x198/0x1dc net/core/filter.c:4333
->  bpf_prog_5d7dc57dfd7f985a+0x38/0x58
->  bpf_dispatcher_xdp_func+0x30/0x44 net/core/filter.c:12027
->  __bpf_prog_run include/linux/filter.h:724 [inline]
->  bpf_prog_run_xdp include/net/xdp.h:696 [inline]
->  bpf_prog_run_generic_xdp+0x4a4/0x11e0 net/core/dev.c:5498
->  netif_receive_generic_xdp net/core/dev.c:5614 [inline]
->  do_xdp_generic+0x97c/0x11e0 net/core/dev.c:5676
->  tun_get_user+0x1e24/0x364c drivers/net/tun.c:1874
->  tun_chr_write_iter+0xfc/0x168 drivers/net/tun.c:2001
->  new_sync_write fs/read_write.c:595 [inline]
->  vfs_write+0x51c/0xa0c fs/read_write.c:687
->  ksys_write+0x12c/0x228 fs/read_write.c:739
->  __do_sys_write fs/read_write.c:750 [inline]
->  __se_sys_write fs/read_write.c:747 [inline]
->  __arm64_sys_write+0x84/0x98 fs/read_write.c:747
->  __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
->  invoke_syscall+0x98/0x244 arch/arm64/kernel/syscall.c:49
->  el0_svc_common+0xec/0x23c arch/arm64/kernel/syscall.c:121
->  do_el0_svc+0x4c/0x5c arch/arm64/kernel/syscall.c:140
->  el0_svc+0x64/0x260 arch/arm64/kernel/entry-common.c:738
->  el0t_64_sync_handler+0x48/0x148 arch/arm64/kernel/entry-common.c:757
->  el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:590
-> BUG: Bad page state in process syz-executor210  pfn:113883
-> page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff0000d3883c00 pfn:0x113883
-> flags: 0x5ffc00000000000(node=0|zone=2|lastcpupid=0x7ff)
-> raw: 05ffc00000000000 dead000000000040 ffff0000c30e0000 0000000000000000
-> raw: ffff0000d3883c00 0000000000000001 00000000ffffffff 0000000000000000
-> page dumped because: page_pool leak
-> Modules linked in:
-> CPU: 1 UID: 0 PID: 4718 Comm: syz-executor210 Tainted: G    B               syzkaller #0 PREEMPT 
-> Tainted: [B]=BAD_PAGE
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/02/2026
-> Call trace:
->  show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:499 (C)
->  __dump_stack+0x30/0x40 lib/dump_stack.c:94
->  dump_stack_lvl+0xd8/0x12c lib/dump_stack.c:120
->  dump_stack+0x1c/0x28 lib/dump_stack.c:129
->  bad_page+0x194/0x1d0 mm/page_alloc.c:643
-> 
-> 
-> ---
-> This report is generated by a bot. It may contain errors.
-> See https://goo.gl/tpsmEJ for more information about syzbot.
-> syzbot engineers can be reached at syzkaller@googlegroups.com.
-> 
-> syzbot will keep track of this issue. See:
-> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-> 
-> If the report is already addressed, let syzbot know by replying with:
-> #syz fix: exact-commit-title
-> 
-> If you want syzbot to run the reproducer, reply with:
-> #syz test: git://repo/address.git branch-or-commit-hash
-> If you attach or paste a git patch, syzbot will apply it before testing.
-> 
-> If you want to overwrite report's subsystems, reply with:
-> #syz set subsystems: new-subsystem
-> (See the list of subsystem names on the web dashboard)
-> 
-> If the report is a duplicate of another one, reply with:
-> #syz dup: exact-subject-of-another-report
-> 
-> If you want to undo deduplication, reply with:
-> #syz undup
