@@ -1,244 +1,175 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC02447668D
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 12:40:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6881C476CF1
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 12:42:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786624845; cv=none; b=IKZmsq+i4hH3cfIaq2u5Sg6+XxrS12z/ZM2ucbhe3Edxlhdt0COPWgDYEyaj5sDnnXoH8F/l/jtjXrEN2DB2y/u++EOfkIkO2gmRfMXrtwKx/x5wVg3RevLuu+3qWCP4tGPQ0GIcXdsC37Lpg6mcMLEcsso6k2PKDcs0ZMQev3M=
+	t=1786624960; cv=none; b=eK5xMb854/eNxkBNHX3xI+cPtyZy6Mv2nEcOF2GBVaLHe0UJW7gM9jbyYpbi7Bm4UD1W1fHHCwJcsMPOqmmgzteZ+Bhp/rt/IoDuIV4gh6gfWDVihYMd97y3LI73ILOihTHwIJH/aWPJ1JE43FaLEXdDkjRLk10HPzK7sgkhv9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786624845; c=relaxed/simple;
-	bh=WYwkX1yh0Pta1wRluTjZ/jH/1tys5sS0UlkmPOp1EPE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f1G0+XmHvDItL6qHHbUjERUubq3qxwZG/fGSgd4UHskX/9RrNAr2/wFuGTeqR3HKXIWVmz2oZd3leB83YaNUoC5i1gXMIWli0UzYlaBeLZ1+2TswzgJBKTwFjUQWMqJrwlk14amoROz8mImS1fo2+6HoOIva1lwqiHZ36erlupo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Pzf8go5x; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1786624960; c=relaxed/simple;
+	bh=MAyIhd4OTujjRAk3w4qWF6gNgHtM5mq9HxniGAv8O8E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=iSe6XfXFrymXODML++Qv+df6yrLb598q8ka6VbvL5AZAqQ3fPvIjTzK4SDRz9Zhuq9q9BPY791YYWl/rDvqLeppMIlh66ZU3/b9rF3C6v5q+QAeZczfu1CkuWi2U2prCHtNF0FCxnn7lF1TSEGrZCafAwXXJ04Qe1Gozd+M5LCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=BvY+8UrP; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Pzf8go5x"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-47db714766aso542652f8f.0
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 05:40:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1786624841; x=1787229641; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=VJPCpNnotx0ECpUt+MKP1Xchlx2xXWGrMhf2UEWt9n0=;
-        b=Pzf8go5xmCnqTVPBvSA1zSC+H6VD7PQdkhX0FU3lLPEStYw3qmZ7+zwju2ag1FzZR6
-         96qq144ifJzdovPioTgA4IdNM/dYk35bU/CEiJs2enSdwYyGyxGh4RBgAXqHff9iVybU
-         HdhSDID2rtQlUGJee4XMdyHCSDOrJTBAyDdVoxDWvGaEGlZPj3wc8rnUDkonOfrRMhMc
-         plkxg4rNAopcy1h0KBGG2Y6H/Z4qG8GDBwMRfVFchTqxvlD3Dofv12CKu1s+jO4nFSXO
-         tkU8lkClPyJ6TyFrX93aSQvYxnxMPBWeIKqza/FbaN0bDlUy6QIY1amV4R6tB7YH+WzN
-         2Gjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786624841; x=1787229641;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VJPCpNnotx0ECpUt+MKP1Xchlx2xXWGrMhf2UEWt9n0=;
-        b=CweR56dFb/YttWqUqGL9IHyNwh3iEEDAtLcZ60aHTNoDtPjMAZVCuaUCASxrqgJUJT
-         qdZOmbW6WdP0lV86uFokjqO1kAuPEuaXUGLpcGtDx7mTdnYFra+S1UZPMirkKJt9kmhc
-         lvnGYkEqcfmTFZ6ng/fh3PIHP6YKzc48JYtUSPuC6ACroFndCjWtbbtuwbSIEE1QS6/d
-         DalcLbXMVOWC/b22hsAln3k4hnvfnlV5tKlZZBQn6m60aSuftr0AFzUzh7Z2pf9tUe0y
-         CncVy1NJEofI+d7IARpUr8SwywmfSW2gcc/jtJnKfEkfFGZbAzR8CjqPFDxq9iNeyI6c
-         U5Tw==
-X-Forwarded-Encrypted: i=1; AHgh+Ro1+Xmz1aDb9p2PV5bUtlhB2ewOs8xgIsJuyXD7biGQ3XT7NwJBXVduxrrE3tD27RqFAf8G8x0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSYoPoprCsCOLtE/XGYt+k6EuVfI3FLVLRA9Ji/+C//zfFMovM
-	nDYPlOd1WdmH0e9z9oVvSPj5A3COTikta0pSYg+DMz7OmfTmmBuX+Ky0kHH/fMrqCQg=
-X-Gm-Gg: AR+sD12XmmOj84hJe2fJThlYOuhJhvqHycsIz75GwDlVqL/Y4aVDZcn/gRypgMu2Ywm
-	8UdGL9FrnSffopn6Vus9V+SGozK5H5c0f8HtqUuPJLamv4xQXgqN9wMC48/WUcCGzUVTbaBnZO5
-	J0SRKIVQvFszUb3/RZVWl4WmyAj+58PWFBzpGahT6LvZdOgnkyIvsP9Em6ZFS764r//xxmHy1Jx
-	me+06ATA+xVirkWO5qfMoRxH1T9fVgttGhQ9YYF4eV/1P5isBHfYuCyAehn8qT8R8D+9SclPdt8
-	Efja6BRVftvLlu3O4Yfaft2JSdnw919TTQn5Mj6zWFpM9GuN9zBSHdk/ENDje0S2GDM2WahSGTz
-	f1RJ1vflZCyauW/+TTOaUJadu87mvgaqXVy29njpTfawLTaS++4yUfkVAwgMyXRTavGE5Z49zOm
-	nBMx/2NEqQ9a25+08CTB02gqsT5bYkXDiAH1FxyjjsULczAfuqdukewZfLIvOur5yaht4iZig+
-X-Received: by 2002:a05:600d:6409:10b0:499:84fc:4548 with SMTP id 5b1f17b1804b1-49984fc45c0mr21387325e9.5.1786624840981;
-        Thu, 13 Aug 2026 05:40:40 -0700 (PDT)
-Received: from linaro.org ([2a02:2454:ff24:7210:4e0e:b1ef:ec35:a41b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49982121658sm65870555e9.3.2026.08.13.05.40.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 05:40:40 -0700 (PDT)
-Date: Thu, 13 Aug 2026 14:40:29 +0200
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
-To: Vishnu Santhosh <vishnu.santhosh@oss.qualcomm.com>
-Cc: Stephan Gerhold <stephan@gerhold.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	chris.lew@oss.qualcomm.com,
-	Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
-Subject: Re: [PATCH 2/2] net: wwan: qcom_bam_dmux: Alloc RX buffers as a
- single coherent block
-Message-ID: <an27PVxkCpD09xSR@linaro.org>
-References: <20260714-qcom-bam-dmux-vmid-ext-v1-0-3f29da7cca76@oss.qualcomm.com>
- <20260714-qcom-bam-dmux-vmid-ext-v1-2-3f29da7cca76@oss.qualcomm.com>
- <alXm0rp3NK62G3-3@linaro.org>
- <c8417ff3-db92-446a-acf8-8c73c83b85de@oss.qualcomm.com>
- <amMxkrW3mu48HIOr@linaro.org>
- <63bae39b-1256-4e19-a9de-840d8752ec69@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="BvY+8UrP"
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1wuUlR-002U7l-LO; Thu, 13 Aug 2026 14:42:29 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
+	bh=neIBxG1dO3Dd/8acsToTT3/rHql4H8HTe+mfnp9NxW0=; b=BvY+8UrPcxOAHxci4q5DjfXYnJ
+	MXYPtjbA7s1GvqehbHabnLmzUyspJjoq08fdrp+O3Q1RjO05ydQfMBCkNjCRAMh9xZblx4tluzQg7
+	COelmUh4pU02a0JsSWVbV8TVe5Rx0QUNoTpXUzwnTRYQ4Je2YTdNyoFE8URNNdW2A4Tk0/bwP4y6X
+	bWPDh+CAiELKjNwIL089od3nwIeRGNsQRuf4U4boaLHaWfcg7P0veZHr6AADGU29d4vUQiy7g4pdK
+	72gWzHs76ejBtsFrKqouXG+XJUqnm4AvcUVZUCrcFrFB/j+YLC0+il3ZWIqlR/oPv/dQPVpnHs1Qy
+	2HAeEvfA==;
+Received: from [10.9.9.74] (helo=submission03.runbox)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1wuUlQ-0007Dx-U0; Thu, 13 Aug 2026 14:42:28 +0200
+Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.95)
+	id 1wuUlE-001YW5-PS;
+	Thu, 13 Aug 2026 14:42:16 +0200
+From: Michal Luczaj <mhal@rbox.co>
+Date: Thu, 13 Aug 2026 14:41:59 +0200
+Subject: [PATCH bpf-next 1/2] bpf: Extract shared reqsk-to-listener upgrade
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <63bae39b-1256-4e19-a9de-840d8752ec69@oss.qualcomm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260813-sockmap-lookup-get-ref-v1-1-31f5d55f44ac@rbox.co>
+References: <20260813-sockmap-lookup-get-ref-v1-0-31f5d55f44ac@rbox.co>
+In-Reply-To: <20260813-sockmap-lookup-get-ref-v1-0-31f5d55f44ac@rbox.co>
+To: Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+ Eduard Zingerman <eddyz87@gmail.com>, 
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+ Emil Tsalapatis <emil@etsalapatis.com>, 
+ Ihor Solodrai <ihor.solodrai@linux.dev>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Jakub Sitnicki <jakub@cloudflare.com>, 
+ Jiayuan Chen <jiayuan.chen@linux.dev>, 
+ Kuniyuki Iwashima <kuniyu@google.com>, 
+ Willem de Bruijn <willemb@google.com>
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Michal Luczaj <mhal@rbox.co>
+X-Mailer: b4 0.15.2
 
-On Thu, Aug 13, 2026 at 02:35:01PM +0530, Vishnu Santhosh wrote:
-> On 24-07-2026 03:04 pm, Stephan Gerhold wrote:
-> > On Fri, Jul 24, 2026 at 10:16:31AM +0530, Vishnu Santhosh wrote:
-> > > On 14-07-2026 01:05 pm, Stephan Gerhold wrote:
-> > > > On Tue, Jul 14, 2026 at 11:02:32AM +0530, Vishnu Santhosh wrote:
-> > > > > On Qualcomm SoCs where the modem (e.g. the mDSP on Shikra, VMID 43 /
-> > > > > NAV) is the AXI master for BAM-DMUX RX transfers and the XPU enforces
-> > > > > per-region access control, each individually DMA-mapped RX buffer
-> > > > > requires its own XPU resource group (RG). With ~16 RGs available, the
-> > > > > 32 per-buffer dma_map_single() calls exhaust the table and the first
-> > > > > inbound transfer faults with an XPU violation.
-> > > > > 
-> > > > > BAM-DMUX is a singleton (exactly one instance per SoC), so the
-> > > > > destination VMID does not need to be a DT property; it is looked up
-> > > > > from the compatible string's match data instead. Add struct
-> > > > > bam_dmux_data with a single vmid field, and a shikra_data instance
-> > > > > hardcoding QCOM_SCM_VMID_NAV for qcom,shikra-bam-dmux.
-> > > > > 
-> > > > > When match data is present, allocate all BAM_DMUX_NUM_SKB RX buffers as
-> > > > > a single contiguous dma_alloc_coherent() block and SCM-assign that
-> > > > > block to HLOS plus the VMID once at probe. This reduces RG consumption
-> > > > > from 32 to 1. The block is never reclaimed across a modem power cycle
-> > > > > (bam_dmux_power_off() does not touch it), so the probe-time assignment
-> > > > > covers every subsequent restart without re-assigning or reclaiming. It
-> > > > > is reclaimed to HLOS only once, at remove or on a probe error, and if
-> > > > > that reclaim fails it is leaked rather than returned to the page
-> > > > > allocator.
-> > > > > 
-> > > > > Each rx_skbs[] slot is pre-assigned its virtual and DMA address from
-> > > > > the block, so no per-buffer mapping is needed at power-on. Because the
-> > > > > coherent block is not page-backed, received payload is copied into a
-> > > > > regular netdev skb before handoff to the network stack; this is an
-> > > > > unavoidable extra copy on the XPU-enforced RX path.
-> > > > > 
-> > > > > Platforms without match data are unaffected: rx_virt stays NULL, no
-> > > > > coherent memory is allocated, and the per-buffer dma_map_single() path
-> > > > > is unchanged.
-> > > > > 
-> > > > > Co-developed-by: Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
-> > > > > Signed-off-by: Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
-> > > > > Signed-off-by: Vishnu Santhosh <vishnu.santhosh@oss.qualcomm.com>
-> > > > So how do you handle TX buffers? Right now, they are just passed on from
-> > > > the net subsystem. There can be up to 32 TX buffers in progress as well.
-> > > > 
-> > > > Overall, I have mixed feelings about this patch. It looks reasonably
-> > > > simple, but fundamentally I don't understand why we need to go back to
-> > > > the old days of implementing protection using a highly limited MPU (in
-> > > > your case: the xPU).
-> > > > 
-> > > > Why does the setup of BAM-DMUX differ e.g. from the setup for the crypto
-> > > > engine? Crypto is also using bam-dma, but it avoids this inflexibility
-> > > > by making use of the &apps_smmu. Is BAM-DMUX not covered by the SMMU? Or
-> > > > did you just decide to bypass the SMMU in this case? (If so: Why?)
-> > > I checked with secure systems team on this. Crypto BAM is
-> > > behind apps_smmu, so protection is enforced through the SMMU's Stage-2
-> > > page tables.
-> > > 
-> > > A2 BAM (used by BAM-DMUX) is present in secure domain and does not
-> > > support Stage-2 translation on this SoC, and there is no IOMMU domain
-> > > that can be attached to it. The only protection mechanism available is
-> > > the xPU.
-> > > 
-> >
-> > Thanks for investigating this!
-> > 
-> > So is this a hardware limitation or something you could change with a
-> > firmware update? Could you move the A2 BAM out of the secure domain and
-> > protect it via the IOMMU instead of the xPU mechanism? The other modern
-> > platforms with IPA do not have this limitation, they can use the IOMMU
-> > for this.
-> > 
-> > We can try to support the xPU protection mechanism in the BAM-DMUX
-> > driver, but it's pretty bad from a performance and memory usage point of
-> > view if you need to copy buffers around multiple times. So if you have
-> > some way to change this in the firmware (and there is still time to do
-> > so before production boards ship), I would strongly recommend to
-> > investigate that.
-> > 
-> 
-> Based on what we confirmed with the Secure Systems team, this is a limitation
-> of the current Shikra platform rather than something that can be addressed
-> through a firmware-only update.
-> 
-> The A2 BAM used by BAM-DMUX is not connected to an SMMU/IOMMU domain on Shikra,
-> which means Stage-2 translation is not available for this path. As a result,
-> it is not possible to move this path behind an IOMMU.
-> 
-> Modern IPA-based platforms differ because their data paths are physically routed
-> through SMMU interfaces and therefore do not rely on VMID/xPU ownership assignment
-> for this type of access control. On Shikra, the A2 BAM path is protected using the
-> xPU3 VM-based access-control model, where DDR memory access is restricted and
-> granted through the request-based Hypervisor VM assignment framework. In contrast,
-> older targets relied on the earlier xPU2 resource-sharing model, in which modem
-> access did not require this type of explicit VM ownership configuration. This
-> architectural difference explains why the issue does not occur on those older platforms.
-> 
-> So, for this path on Shikra, SCM-driven VMID assignment remains the only practical solution.
-> 
+__bpf_sk_lookup() and bpf_sk_lookup() duplicate the same sk_to_full_sk()
+reqsk-to-listener upgrade. Extract it into a helper.
 
-Ok, thanks for looking into this further.
+Leave the currently unreachable WARN_ONCE as a defensive assert.
 
-Can you please try the following as alternative for the implementation?
+No functional change.
 
-1. Make sure that you have CONFIG_DMA_RESTRICTED_POOL=y.
-2. Define a restricted DMA pool for BAM-DMUX, e.g.:
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+---
+ net/core/filter.c | 58 +++++++++++++++++++++++++------------------------------
+ 1 file changed, 26 insertions(+), 32 deletions(-)
 
-&{/reserved-memory} {
-        bam_dmux_pool: restricted-dma-pool {
-	    compatible = "restricted-dma-pool";
-            size = <0x40000>;	/* 32*2K*2 = 128K minimum, but 256K might be safer */
-	    alignment = <...>;	/* Check xPU alignment requirements */
-        };
-};
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 3423734124a5..031fb2aad792 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -7167,6 +7167,28 @@ __bpf_skc_lookup(struct sk_buff *skb, struct bpf_sock_tuple *tuple, u32 len,
+ 	return sk;
+ }
+ 
++static struct sock *
++bpf_sk_lookup_full_sk(struct sock *sk)
++{
++	struct sock *sk2 = sk_to_full_sk(sk);
++
++	/*
++	 * sk_to_full_sk() may return sk->rsk_listener, make sure the original
++	 * sk sock refcnt is decremented to prevent a request_sock leak.
++	 */
++	if (sk2 != sk) {
++		sock_gen_put(sk);
++		/* Ensure there is no need to bump sk2 refcnt. */
++		if (unlikely(sk2 && !sock_flag(sk2, SOCK_RCU_FREE))) {
++			WARN_ONCE(1, "Found non-RCU, unreferenced socket!");
++			return NULL;
++		}
++		sk = sk2;
++	}
++
++	return sk;
++}
++
+ static struct sock *
+ __bpf_sk_lookup(struct sk_buff *skb, struct bpf_sock_tuple *tuple, u32 len,
+ 		struct net *caller_net, u32 ifindex, u8 proto, u64 netns_id,
+@@ -7176,22 +7198,8 @@ __bpf_sk_lookup(struct sk_buff *skb, struct bpf_sock_tuple *tuple, u32 len,
+ 					   ifindex, proto, netns_id, flags,
+ 					   sdif);
+ 
+-	if (sk) {
+-		struct sock *sk2 = sk_to_full_sk(sk);
+-
+-		/* sk_to_full_sk() may return (sk)->rsk_listener, so make sure the original sk
+-		 * sock refcnt is decremented to prevent a request_sock leak.
+-		 */
+-		if (sk2 != sk) {
+-			sock_gen_put(sk);
+-			/* Ensure there is no need to bump sk2 refcnt */
+-			if (unlikely(sk2 && !sock_flag(sk2, SOCK_RCU_FREE))) {
+-				WARN_ONCE(1, "Found non-RCU, unreferenced socket!");
+-				return NULL;
+-			}
+-			sk = sk2;
+-		}
+-	}
++	if (sk)
++		sk = bpf_sk_lookup_full_sk(sk);
+ 
+ 	return sk;
+ }
+@@ -7222,22 +7230,8 @@ bpf_sk_lookup(struct sk_buff *skb, struct bpf_sock_tuple *tuple, u32 len,
+ 	struct sock *sk = bpf_skc_lookup(skb, tuple, len, proto, netns_id,
+ 					 flags);
+ 
+-	if (sk) {
+-		struct sock *sk2 = sk_to_full_sk(sk);
+-
+-		/* sk_to_full_sk() may return (sk)->rsk_listener, so make sure the original sk
+-		 * sock refcnt is decremented to prevent a request_sock leak.
+-		 */
+-		if (sk2 != sk) {
+-			sock_gen_put(sk);
+-			/* Ensure there is no need to bump sk2 refcnt */
+-			if (unlikely(sk2 && !sock_flag(sk2, SOCK_RCU_FREE))) {
+-				WARN_ONCE(1, "Found non-RCU, unreferenced socket!");
+-				return NULL;
+-			}
+-			sk = sk2;
+-		}
+-	}
++	if (sk)
++		sk = bpf_sk_lookup_full_sk(sk);
+ 
+ 	return sk;
+ }
 
-3. Assign to BAM-DMUX together with the qcom,vmid:
+-- 
+2.55.0
 
-&bam_dmux {
-	memory-region = <&bam_dmux_pool>;
-	qcom,vmid = <QCOM_SCM_VMID_NAV>;
-};
-
-4. Extend qcom_bam_dmux.c to look up the DMA pool address and make it
-   accessible using SCM: Call of_reserved_mem_lookup() to get the
-   region, then invoke qcom_scm_assign_mem() with that.
-
-5. Keep RX/TX DMA code paths in qcom_bam_dmux.c unchanged.
-
-6. When testing, make sure the kernel log contains
-   "Reserved memory: created restricted DMA pool at %pa, size %ld MiB"
-
-7. Add memory-region and qcom,vmid as optional in dt-bindings.
-   Add dependency: if qcom,vmid is specified, memory-region must be
-   specified.
-
-In a quick test (without the VMID stuff) this worked quite well for me,
-SWIOTLB should handle the copying behind the scenes without further
-changes to the qcom_bam_dmux driver.
-
-I would prefer that over complicating the driver with two separate ways
-of buffer management. AFAICT, the restricted DMA feature is meant for
-this kind of setup where there is no IOMMU but the firmware can still
-restrict memory accesses to a limited amount of regions, see
-https://lwn.net/Articles/841916/ for a short introduction.
-
-Thanks,
-Stephan
