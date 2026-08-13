@@ -1,161 +1,75 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D48400962
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 09:44:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29396353EDF;
+	Thu, 13 Aug 2026 09:46:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786614285; cv=none; b=SaT1lQ1ffsJLxffosvXa+/Rl3bfoHQ0dDUFq9trPhlZH85PhE5t7oK2NM5rzXt1iuIXEZA1vFNOWhYSS5YwwUIrnW0IgOPKwkaEEopSTOvjZUoqLVwsqY3U3l2UVtqKN8c3+SvQKZw9axsvN0V78n5mqVdpJfzuCiV3QWAZ8NJw=
+	t=1786614366; cv=none; b=jUxSj/LLksLu5QBoFPt+BOFSyFWgBKoyLvU196eFj8Zgcsfhu86Mw6hMnW9BP5x/OivZIziFvHDLiAklfGjJf0qPm3JQSXfQY6Cm3RTZ+Od0mMajkdNk5wy7UGU51lG4pp01OJvDjosLLcBEwFfcMnITi2k7r6v4memq78tucT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786614285; c=relaxed/simple;
-	bh=3KTOKdTl547mjQ0PIdk9eF/gYC+A+z2iu/ylFNzV3rw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i2Aagt6RWRYyj7ZlAZ0cOTC8C3WFwQQpv3S1+z3cLf8DuKFXWvtmhypW1XO/EWsecL7rX8/DBm5L/zQTvE7gPZW0Nx4JVm7Y6hedVEvHRum7x70T3zKD0oCUO7AiGZUwuZrnm9Z/XmkXv/88QSwKgrtNxmKyQypSEw98Ae6l5/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QrHIx+Ex; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1786614366; c=relaxed/simple;
+	bh=Asfy3W2nPVPE/oIyIRQzD/mHd4wbc6vZc1m4e7AHJNQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a6Au2GEC6dIHDzfvyKngRw9JYfFxZJ7UV7+DIM/V4+nXvl2ellW2fs7c7oIMNMNcB5ZvQau8W3nZrDUYFla+wDJbnwOE3W8ixPTokltwDThgSCqREZrBo5B4k8YY0N38sgD82jUbLd8erNUdXJfDxaZbw3hGGljMaHVxO6+ZhyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AQPX9WgT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QrHIx+Ex"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786614283;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dF9v1idLVMGFCs33tHPlRdS0F3gORp7BYOQ7k7a0n1Y=;
-	b=QrHIx+Ex7XuziFJbyQL3eH7BF30VIVhMH5xGrQrWJncZ6gf0t0SIbRMJwy34kCXydEijd3
-	/2t/Ye0Fon3FvAioiU+OsbBdzRwsGjN4wQ9hY7hnNsH7nFEziSmW/l6CbA+dtueRHmWZx8
-	rf7y5YUT9Sb/l2YXJmxA6p+Eeydc5jQ=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-423-A0SKBaN5M9mIABt8vzepiw-1; Thu,
- 13 Aug 2026 05:44:37 -0400
-X-MC-Unique: A0SKBaN5M9mIABt8vzepiw-1
-X-Mimecast-MFC-AGG-ID: A0SKBaN5M9mIABt8vzepiw_1786614276
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 42AFE195604A;
-	Thu, 13 Aug 2026 09:44:36 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.48.120])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 84E19195608A;
-	Thu, 13 Aug 2026 09:44:33 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: achender@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	kuba@kernel.org,
-	horms@kernel.org,
-	jhubbard@nvidia.com,
-	leon@kernel.org
-Subject: Re: [PATCH net-next v2 2/2] net/rds: initialize i_conn_path in rds_inc_init()
-Date: Thu, 13 Aug 2026 11:44:26 +0200
-Message-ID: <20260813094426.120571-1-pabeni@redhat.com>
-In-Reply-To: <20260809005103.82371-3-achender@kernel.org>
-References: <20260809005103.82371-3-achender@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AQPX9WgT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FE31F000E9;
+	Thu, 13 Aug 2026 09:45:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786614364;
+	bh=94KZngccI045nRvys8eezH1GfpKKPqRGcEOkvAjloio=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AQPX9WgTX8qT4ToT5/172hs/Po43jnfpkRyqxQbRZDb4Do8q3HsgxL6HO0sTu5E5T
+	 eziVZEKMVigN1uUUOPw2P4ud+DGOSERL1VhuCt7KmBl+CGVqocT30XHfFpWE+LmVFY
+	 n0sm5Ari+ndCOY0sxai6PCIew26BzIyl5YPb4/riSDgaIAQaFkGm0QVTg1+0SmG+rc
+	 qZpNkNhHToA2sLnceRNRx+/OV2TrOoFuDqMctJbHkGdd4ufS3Dc5UINSYHa5UTZbjP
+	 BF8veJDnnJP0nWHjCC2BnbRO9IVBarF6kQkg1FagKpWxyQwYoSxKvidNTXN0PBDoND
+	 hz3w8nsRB2fzA==
+Date: Thu, 13 Aug 2026 11:45:54 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Alexander Stein <alexander.stein@ew.tq-group.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Oleksij Rempel <o.rempel@pengutronix.de>, 
+	Matthias Kaehlcke <mka@chromium.org>, Fabio Estevam <festevam@gmail.com>, linux-usb@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 1/8] dt-bindings: usb: ti,usb8041: document the TUSB8040A
+ hub
+Message-ID: <20260813-olive-kingfisher-of-greatness-f24ddf@quoll>
+References: <20260810-msm8974-onboard-usb-v1-0-08a805768328@oss.qualcomm.com>
+ <20260810-msm8974-onboard-usb-v1-1-08a805768328@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260810-msm8974-onboard-usb-v1-1-08a805768328@oss.qualcomm.com>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/
----
-net/rds: initialize i_conn_path in rds_inc_init()
+On Mon, Aug 10, 2026 at 03:42:32AM +0300, Dmitry Baryshkov wrote:
+> The TI TUSB8040A four-port USB 3.0 hub is not documented, so onboard
+> device nodes for it cannot be validated.
+> 
+> Document it next to its TUSB8041 sibling: the same reset-gpios/peer-hub
+> properties apply. Besides the datasheet default 0451:8040 / 0451:8042
+> IDs, also document 0451:8041 / 0451:8043: the configuration EEPROM can
+> override the product IDs, and e.g. the APQ8074 Dragonboard programs
+> these values, as seen when booting the vendor image.
+> 
+> Assisted-by: Claude:claude-fable-5
+> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+> ---
+>  Documentation/devicetree/bindings/usb/ti,usb8041.yaml | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 
-This sets inc->i_conn_path to NULL in rds_inc_init() so the field is no
-longer left holding stale slab contents, and switches rds_loop_xmit() to
-rds_inc_path_init() so the loopback path keeps a live path pointer in the
-message's embedded inc.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-> diff --git a/net/rds/loop.c b/net/rds/loop.c
-> index ac9295a766b1..e6b0750bbeda 100644
-> --- a/net/rds/loop.c
-> +++ b/net/rds/loop.c
-> @@ -89,7 +89,11 @@ static int rds_loop_xmit(struct rds_connection *conn, struct rds_message *rm,
->  
->  	BUG_ON(hdr_off || sg || off);
->  
-> -	rds_inc_init(&rm->m_inc, conn, &conn->c_laddr);
-> +	/* rds_send_queue_rm() stored the connection path in this embedded
-> +	 * inc; use the path init so the re-initialization keeps the field
-> +	 * valid instead of discarding it.
-> +	 */
-> +	rds_inc_path_init(&rm->m_inc, &conn->c_path[0], &conn->c_laddr);
-
-[Severity: Medium]
-Does this swap silently drop the i_rx_lat_trace[] zeroing for loopback
-incs?  rds_inc_init() in net/rds/recv.c ends with:
-
-	inc->i_usercopy.rx_tstamp = ktime_set(0, 0);
-
-	memset(inc->i_rx_lat_trace, 0, sizeof(inc->i_rx_lat_trace));
-
-while rds_inc_path_init() stops at:
-
-	inc->i_usercopy.rx_tstamp = ktime_set(0, 0);
-}
-EXPORT_SYMBOL_GPL(rds_inc_path_init);
-
-So after this change nothing in rds_loop_xmit() clears the array, and
-the RDS_MSG_RX_HDR and RDS_MSG_RX_START slots (written only by
-net/rds/ib_recv.c and net/rds/tcp_recv.c, never on the loopback path)
-are left to whatever rds_message_alloc()'s kzalloc() left behind rather
-than being explicitly initialized.
-
-The array is handed to userspace as RDS_CMSG_RXPATH_LATENCY deltas in
-rds_cmsg_recv():
-
-	inc->i_rx_lat_trace[RDS_MSG_RX_CMSG] = local_clock();
-	...
-		t.rx_trace[i] = inc->i_rx_lat_trace[j + 1] -
-				  inc->i_rx_lat_trace[j];
-
-Would it be preferable to move the memset() into rds_inc_path_init(), or
-have rds_inc_path_init() call rds_inc_init() and then assign
-i_conn_path?  That would also cover the other rds_inc_path_init() caller
-in rds_tcp_data_recv(), where tinc comes from a recycled, non-zeroing
-kmem_cache and therefore keeps the same stale-field property this patch
-sets out to remove.
-
->  	/* For the embedded inc. Matching put is in loop_inc_free() */
->  	rds_message_addref(rm);
->  
-> diff --git a/net/rds/recv.c b/net/rds/recv.c
-> index cf3884d87931..f1513dfb2716 100644
-> --- a/net/rds/recv.c
-> +++ b/net/rds/recv.c
-> @@ -47,6 +47,7 @@ void rds_inc_init(struct rds_incoming *inc, struct rds_connection *conn,
->  	refcount_set(&inc->i_refcount, 1);
->  	INIT_LIST_HEAD(&inc->i_item);
->  	inc->i_conn = conn;
-> +	inc->i_conn_path = NULL;
->  	inc->i_saddr = *saddr;
->  	inc->i_usercopy.rdma_cookie = 0;
->  	inc->i_usercopy.rx_tstamp = ktime_set(0, 0);
-
-[Severity: Medium]
-Related to the above, the commit message says:
-
-    "and so the two init helpers
-    (rds_inc_init/rds_inc_path_init) leave the structure in an
-    equivalent, fully-initialized state."
-
-Does that hold after this patch?  rds_inc_init() gains i_conn_path = NULL
-here, but rds_inc_path_init() still lacks the
-memset(inc->i_rx_lat_trace, 0, sizeof(inc->i_rx_lat_trace)) that
-rds_inc_init() performs, so the two helpers leave i_rx_lat_trace[] in
-different states.  Could the changelog be adjusted, or the missing
-memset() added to rds_inc_path_init() so the claim is accurate?
--- 
-This is an AI-generated review.
+Best regards,
+Krzysztof
 
