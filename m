@@ -1,113 +1,292 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698B2325726
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 02:59:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C227620D4F0;
+	Thu, 13 Aug 2026 03:00:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786589950; cv=none; b=AFy9uJUgpasq5RuaU8VuHWWgr96XvtT/xAea8JBNJNXxwTGWY5euOmgdedeIv8bZzb/556Zt4EtbT23aAchrguyL3UL0d/BM5N0DdcaRJJfS9EIVy7PUAnceqpfKnJfdcCFmUrfHZvAeq1r/nAAcPatCA1k1OLqnZvDSz5eC9u8=
+	t=1786590026; cv=none; b=Vozlus2oTQX07VsTW2C6/TvlV8Z+aL23FQs1jqtcRrT3drzLieW9M6FTRVMUgWwiRyw6MuGHah69l+EXsjoP0YrhMaYntmWSQOhNUdxulr879IlLfYVimUa4nI49YT446ocYNXrEMRFCmJFkvRgxLBckfeOToseL6vztitqTbTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786589950; c=relaxed/simple;
-	bh=SSIS66HuEe1Zon1uqQcO2mtIo5/d3TyQFLrQt7/aasU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=WeRkQoMx8LG6gvStdUV31poJPUUKP3eItqkzZ1toaKks9qlWnnqxLq0cChQp2NqcL4fBafRg9wcE/Ybv7leVuK9ivOOa83Bmf+a6Kor4SfkOO+B4iUpVOtjmSCEgAh39jLqKRFSa0xvdudA+7mwrPdRn64XpasimSw5t97zySOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=WfngGjvI; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1786590026; c=relaxed/simple;
+	bh=1LWOZA1JpmHoOap37jDVPpyz+UtWj4yhLw3/2VwgAtQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=EftIFMYBw5/jcn8oTSA9kHf1wY5ByITmtlCJjuhWOd91WQ1r09zrF1feEPKG7wbTU9XLvpj1dID01luxkZaewBpm9UkKy3QzziTFdqAXx64b7UsKzlkwgh1+1kB8embDwSqdkiu3MB03y3hP+FJBfC8B6W3AN4cBvdKNGq0bomI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oCnZpWP2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="WfngGjvI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=SSIS66HuEe1Zon1uqQcO2mtIo5/d3TyQFLrQt7/aasU=; b=W
-	fngGjvIZBJijs+1D6XQCYYdUcDUsFg1nhTC7zPfu2XvNFgpi+2vAG2dtTOdVC4Zf
-	XKoiHY45mD/ElpH2509pm1M5PuH5abQ9eFnkZkc32CjAUHLc0z6h41aafzNj0DAm
-	8NxbNtn3y7MVD7S/MeLXmSYBlaFenkurG4vXD56cG0=
-Received: from lange_tang$163.com ( [116.128.244.169] ) by
- ajax-webmail-wmsvr-40-137 (Coremail) ; Thu, 13 Aug 2026 10:58:22 +0800
- (CST)
-Date: Thu, 13 Aug 2026 10:58:22 +0800 (CST)
-From: "Lange Tang" <lange_tang@163.com>
-To: "Jakub Kicinski" <kuba@kernel.org>
-Cc: "mst@redhat.com" <mst@redhat.com>, jasowangio@gmail.com,
-	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
-	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"Tang Longjun" <tanglongjun@kylinos.cn>
-Subject: Re:Re: [PATCH] virtio_net: add rx-alloc-fail counter
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
-In-Reply-To: <20260812163427.3c44ac4d@kernel.org>
-References: <20260812012254.27668-1-lange_tang@163.com>
- <20260812163427.3c44ac4d@kernel.org>
-X-NTES-SC: AL_Qu2TBPmTtkEr5CGeZekfmUgRg+c/XsK4svUj24VVOJF8jBLo6A8JQnRkJlbs3/yqDDGzqhK4cwpw1sRqYoZdTqY0juOokbaQF7IX3AcSQQnUuw==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oCnZpWP2"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6E0CCC2BCF6;
+	Thu, 13 Aug 2026 03:00:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1786590026;
+	bh=1LWOZA1JpmHoOap37jDVPpyz+UtWj4yhLw3/2VwgAtQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=oCnZpWP2J+55tDkpZL8gIQhAYnCkVG7hVADKqpySv453bhwxRf9w5i71IfFJy+dWO
+	 iIrgLg/RdhZ1ted5wPgapxp4sieBufpl3JLVD1Bu6B/LfAqbPct+DnNLQ05VlzMeA2
+	 9lfLZOEnY/gQ9Y2gWYZi7/f8TzXqQJ7Jd3YQSkSjwKeLtBI1Bll/tV6T9xQPbswyVI
+	 thkdA1xHfcwEH5DG4h8XI73jEu//elG2lmfa9lQOSYGCU3Ritl+voVoGXl67bCuyia
+	 z1Z40TU2a94LkZBRpP8gGaHmcjbWD1ximnomqvAVYDMppcagGoZvr1a7jLrycAr4dq
+	 rrowZT6QNGDYg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4CFD1C5CFCF;
+	Thu, 13 Aug 2026 03:00:26 +0000 (UTC)
+From: Selvamani Rajagopal via B4 Relay <devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
+Date: Wed, 12 Aug 2026 20:00:09 -0700
+Subject: [PATCH net v6 1/4] net: ethernet: oa_tc6: Protect skb pointer used
+ by two different kernel instances
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <290bce53.25b3.19ff90e755a.Coremail.lange_tang@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:iSgvCgDX3xfPMn1qHcIwAA--.7607W
-X-CM-SenderInfo: 5odqwvxbwd0wi6rwjhhfrp/xtbC4g+552p9Ms-aOgAA35
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260812-fix-race-condition-and-crash-v6-1-6cf90f4a271a@onsemi.com>
+References: <20260812-fix-race-condition-and-crash-v6-0-6cf90f4a271a@onsemi.com>
+In-Reply-To: <20260812-fix-race-condition-and-crash-v6-0-6cf90f4a271a@onsemi.com>
+To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Piergiorgio Beruto <pier.beruto@onsemi.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Andrew Lunn <andrew@lunn.ch>, 
+ Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>, 
+ Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786590011; l=7043;
+ i=Selvamani.Rajagopal@onsemi.com; s=20260531; h=from:subject:message-id;
+ bh=rW7yFemdHnqXiztjqrxe7xKeq7fyewhO33EUFetWIc8=;
+ b=ASfcuP938L1XcmqVulLvRHTcMItj1ijp1FkHYvqAs98YiHvIJ8Xs3Hb8mQ7/+HKNOzDDEcWbH
+ 5soEo/CyTDFCby+ZaqauySKhMbTzbnogIrcQXpaaysRTgexwroIv1XO
+X-Developer-Key: i=Selvamani.Rajagopal@onsemi.com; a=ed25519;
+ pk=5QRdM0HS/LGWWcUZZ9hVfZ+qbPQGZCumcTXOiN7Fyug=
+X-Endpoint-Received: by B4 Relay for
+ Selvamani.Rajagopal@onsemi.com/20260531 with auth_id=803
+X-Original-From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+Reply-To: Selvamani.Rajagopal@onsemi.com
 
-CgpBdCAyMDI2LTA4LTEzIDA3OjM0OjI3LCAiSmFrdWIgS2ljaW5za2kiIDxrdWJhQGtlcm5lbC5v
-cmc+IHdyb3RlOgo+T24gV2VkLCAxMiBBdWcgMjAyNiAwOToyMjo1NCArMDgwMCBMb25nanVuIFRh
-bmcgd3JvdGU6Cj4+IEZyb206IHRhbmdsb25nanVuIDx0YW5nbG9uZ2p1bkBreWxpbm9zLmNuPgo+
-PiAKPj4gQ291bnQgYnVmZmVyIGFuZCBza2IgYWxsb2NhdGlvbiBmYWlsdXJlcyBvbiB0aGUgcngg
-cXVldWUgYW5kCj4+IHJlcG9ydCB0aGVtIHZpYSByeC1hbGxvYy1mYWlsIGluIG5ldGRldiBxc3Rh
-dHMuCj4KPllvdSBhcmUgbm90IHBsdW1iaW5nIHRoZSBuZXcgc3RhdCBpbnRvIHZpcnRuZXRfZ2V0
-X2Jhc2Vfc3RhdHMoKQo+VGhpcyBtYXkgYmUgYW4gZW50aXJlbHkgcmVhc29uYWJsZSBjaG9pY2Ug
-aWYgeW91IGNhbid0IC8gZG9uJ3QgCj53YW50IHRvIHJldGFpbiB0aGUgc3RhdHMgZm9yIHRoZSBl
-bnRpcmUgZGV2aWNlIChlLmcuIHdoZW4gcXVldWVzCj5nZXQgZGlzYWJsZWQpLiBCdXQgcGxlYXNl
-IGV4cGxhaW4gdGhlIGNob2ljZSBpbiB0aGUgY29tbWl0IG1zZy4KPgo+UGxlYXNlIGV4cGxhaW4g
-eW91ciBtb3RpdmF0aW9uIC8gd2hhdCBtYWRlIHlvdSB3cml0ZSB0aGlzIHBhdGNoLgo+VEJIIHRo
-ZSBwYXRjaGVzIGZyb20gS3lsaW5PUyBhZGRyZXNzZXMgYXJlIG9mdGVuIHNsb3Agc28gaXQgd291
-bGQKPmJlIHVzZWZ1bCB0byB1bmRlcnN0YW5kIHdoZXRoZXIgeW91ciBjaG9pY2VzIGhlcmUgYXJl
-IGd1aWRlZCBieQo+cHJvZHVjdGlvbiBleHBlcmllbmNlLCBvciBub3QuCgpJbiBteSB3b3JrLCBp
-IG9uY2UgZm91bmQgdGhhdCB0cnlfZmlsbF9yZWN2IHJldHVybmluZyBFTk9NRU0gbGVkIHRvCnRo
-ZSBxdWV1ZSBoYXZpbmcgbm8gYXZhaWxhYmxlIGRlc2NyaXB0b3JzLiBUbyBhZGRyZXNzIHRoaXMs
-IGkgd2FudGVkCnRvIHByb3ZpZGUgc29tZSBzdGF0cyB0byBpbmZvcm0gdXNlciB3aGVuIGl0IG9j
-Y3Vycy4gRm9ydHVuYXRlbHksIApyeC1hbGxvYy1mYWlsIGluIERvY3VtZW50YXRpb24vbmV0bGlu
-ay9zcGVjcy9uZXRkZXYueWFtbCBmaXQgdGhlIGJpbGwsCgpSZWdhcmRpbmcgd2h5IGkgZGlkbid0
-IGludG8gdmlydG5ldF9nZXRfYmFzZV9zdGF0cywgVEJIIGkgZGlkbid0IGdpdmUgaXQKbXVjaCB0
-aG91Z2h0LiBJZiB5b3UgdGhpbmsgaXQncyBuZWNlc3NhcnkgLGkgY2FuIGFkZCBpdCBpbiB0aGUg
-bmV4dCB2ZXJzaW9uLgoKCj5MYXN0IGJ1dCBub3QgbGVhc3QsIEFJIHN1Z2dlc3RzOgo+Cj4+IEBA
-IC0xOTE3LDggKzE5MTksMTAgQEAgc3RhdGljIHN0cnVjdCBza19idWZmICpyZWNlaXZlX3NtYWxs
-X3hkcChzdHJ1Y3QgbmV0X2RldmljZSAqZGV2LAo+PiAgCX0KPj4gIAo+PiAgCXNrYiA9IHZpcnRu
-ZXRfYnVpbGRfc2tiKGJ1ZiwgYnVmbGVuLCB4ZHAuZGF0YSAtIGJ1ZiwgbGVuKTsKPj4gLQlpZiAo
-dW5saWtlbHkoIXNrYikpCj4+ICsJaWYgKHVubGlrZWx5KCFza2IpKSB7Cj4+ICsJCXU2NF9zdGF0
-c19pbmMoJnN0YXRzLT5hbGxvY19mYWlsKTsKPj4gIAkJZ290byBlcnI7Cj4+ICsJfQo+PiAgCj4+
-ICAJaWYgKG1ldGFzaXplKQo+PiAgCQlza2JfbWV0YWRhdGFfc2V0KHNrYiwgbWV0YXNpemUpOwo+
-VGhlIGNvbW1pdCBtZXNzYWdlIHNheXMgdGhlIHBhdGNoIGNvdW50cyAiYnVmZmVyIGFuZCBza2Ig
-YWxsb2NhdGlvbgo+ZmFpbHVyZXMgb24gdGhlIHJ4IHF1ZXVlIiwgYW5kIHRoZSB1QVBJIGRlc2Ny
-aXB0aW9uIGluCj5Eb2N1bWVudGF0aW9uL25ldGxpbmsvc3BlY3MvbmV0ZGV2LnlhbWwgZm9yIHJ4
-LWFsbG9jLWZhaWwgc2F5cyAiTnVtYmVyIG9mCj50aW1lcyBza2Igb3IgYnVmZmVyIGFsbG9jYXRp
-b24gZmFpbGVkIG9uIHRoZSBSeCBkYXRhcGF0aCIuICBDYW4gc2V2ZXJhbAo+YWxsb2NhdGlvbiBm
-YWlsdXJlIHNpdGVzIG9uIHRoZSBzYW1lIGRhdGFwYXRoIHN0aWxsIGJlIG1pc3NlZD8KPkluIHRo
-aXMgc2FtZSBmdW5jdGlvbiB0aGUgZWFybGllciBidWZmZXIgYWxsb2NhdGlvbiBmYWlsdXJlIGlz
-IG5vdCBjb3VudGVkOgo+CXhkcF9wYWdlID0geGRwX2xpbmVhcml6ZV9wYWdlKGRldiwgcnEsICZu
-dW1fYnVmLCBwYWdlLAo+CQkJCSAgICAgIG9mZnNldCwgaGVhZGVyX29mZnNldCwKPgkJCQkgICAg
-ICAmdGxlbik7Cj4JaWYgKCF4ZHBfcGFnZSkKPgkJZ290byBlcnJfeGRwOwo+YW5kIHhkcF9saW5l
-YXJpemVfcGFnZSgpIHJldHVybnMgTlVMTCBleGFjdGx5IG9uIGFsbG9jYXRpb24gZmFpbHVyZToK
-PglwYWdlID0gcGFnZV9wb29sX2FsbG9jX3BhZ2VzKHJxLT5wYWdlX3Bvb2wsIEdGUF9BVE9NSUMp
-Owo+CWlmICghcGFnZSkKPgkJcmV0dXJuIE5VTEw7Cj5UaGUgbWVyZ2VhYmxlIFhEUCBwYXRoIGhh
-cyB0aGUgc2FtZSBzaGFwZSBpbiByZWNlaXZlX21lcmdlYWJsZV94ZHAoKToKPm1lcmdlYWJsZV94
-ZHBfZ2V0X2J1ZigpIHJldHVybnMgTlVMTCB3aGVuIGl0cyBwYWdlX3Bvb2xfYWxsb2NfcGFnZXMo
-KSBjYWxsCj5mYWlscywgYW5kIHRoYXQgZ29lcyB0byBlcnJfeGRwIGNvdW50aW5nIG9ubHkgeGRw
-X2Ryb3BzL2Ryb3BzLgo+VGhlIEFGX1hEUCByZWNlaXZlIHBhdGggaXMgbm90IGluc3RydW1lbnRl
-ZCBhdCBhbGwuICB4c2tfY29uc3RydWN0X3NrYigpLAo+Y2FsbGVkIGZyb20gdmlydG5ldF9yZWNl
-aXZlX3hza19zbWFsbCgpIGFuZCB2aXJ0bmV0X3JlY2VpdmVfeHNrX21lcmdlKCksCj5mYWlscyBs
-aWtlIHRoaXM6Cj4Jc2tiID0gbmFwaV9hbGxvY19za2IoJnJxLT5uYXBpLCBzaXplKTsKPglpZiAo
-dW5saWtlbHkoIXNrYikpIHsKPgkJeHNrX2J1ZmZfZnJlZSh4ZHApOwo+CQlyZXR1cm4gTlVMTDsK
-Pgl9Cj5hbmQgeHNrX2FwcGVuZF9tZXJnZV9idWZmZXIoKSBkcm9wcyB0aGUgcmVtYWluaW5nIGJ1
-ZmZlcnMgd2hlbgo+bmFwaV9hbGxvY19mcmFnKCkgb3IgdmlydG5ldF9za2JfYXBwZW5kX2ZyYWco
-KSBmYWlscywgYWdhaW4gd2l0aG91dAo+dG91Y2hpbmcgYWxsb2NfZmFpbC4KPlNvIHdpdGggYW4g
-WFNLIHBvb2wgYm91bmQgdG8gYSBxdWV1ZSwgb3Igd2l0aCBhbiBYRFAgcHJvZ3JhbSB0aGF0IG5l
-ZWRzCj5saW5lYXJpemF0aW9uLCBjYW4gcngtYWxsb2MtZmFpbCBzdGF5IGF0IDAgd2hpbGUgbWVt
-b3J5IHByZXNzdXJlIGlzCj5hY3R1YWxseSBjYXVzaW5nIHRoZSBkcm9wcz8KPi0tIAo+cHctYm90
-OiBjcgo=
+From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+
+Threaded IRQ uses waiting_tx_skb. Transmit path also uses this pointer
+without any mutual exclusion protection. As a result, it might leak skb
+buffer, particularly if threaded IRQ sets disable_traffic true after
+start_xmit already checked and found that disable_traffic being false,
+if they happen to run on different cores.
+
+On fatal error, where disable_traffic is set, transmit function drops the
+packet and return NETDEV_TX_OK. Due to this change, skb_linearize call
+is moved up to the beginning of the transmit function.
+
+Since skb buffer may be freed from different contexts, dev_kfree_skb_any
+is used to free skb buffer now, replacing one of the kfree_skb call.
+
+oa_tc6_exit disables the irq before setting disable_traffic true.
+
+Fixes: b542d13fab0f ("net: ethernet: oa_tc6: Interrupt is active low, level triggered.")
+Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+
+---
+changes in v6
+  - Updated the comment section for start_xmit function.
+  - disable_irq is called first before setting disable_traffic flag
+changes in v5
+  - Fixed the typo in commit message
+changes in v4
+  - No change
+changes in v3
+  - Added the missed out spin lock protection for waiting_tx_skb and
+    disable_traffic flag
+changes in v2
+  - added the missing prefix to the title
+---
+ drivers/net/ethernet/oa_tc6.c | 109 +++++++++++++++++++++++++++++-------------
+ 1 file changed, 76 insertions(+), 33 deletions(-)
+
+diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6.c
+index 0727d53345a3..62bcc2b01d83 100644
+--- a/drivers/net/ethernet/oa_tc6.c
++++ b/drivers/net/ethernet/oa_tc6.c
+@@ -652,6 +652,26 @@ static int oa_tc6_enable_data_transfer(struct oa_tc6 *tc6)
+ 	return oa_tc6_write_register(tc6, OA_TC6_REG_CONFIG0, value);
+ }
+ 
++/* Called when a frame that is meant to be transmitted, is dropped. */
++static void oa_tc6_drop_tx_skb(struct oa_tc6 *tc6, struct sk_buff *skb)
++{
++	if (skb) {
++		tc6->netdev->stats.tx_dropped++;
++		dev_kfree_skb_any(skb);
++	}
++}
++
++static struct sk_buff *oa_tc6_detach_waiting_tx_skb(struct oa_tc6 *tc6)
++{
++	struct sk_buff *skb;
++
++	lockdep_assert_held(&tc6->tx_skb_lock);
++	skb = tc6->waiting_tx_skb;
++	tc6->waiting_tx_skb = NULL;
++
++	return skb;
++}
++
+ static void oa_tc6_cleanup_ongoing_rx_skb(struct oa_tc6 *tc6)
+ {
+ 	if (tc6->rx_skb) {
+@@ -663,26 +683,30 @@ static void oa_tc6_cleanup_ongoing_rx_skb(struct oa_tc6 *tc6)
+ 
+ static void oa_tc6_cleanup_ongoing_tx_skb(struct oa_tc6 *tc6)
+ {
+-	if (tc6->ongoing_tx_skb) {
+-		tc6->netdev->stats.tx_dropped++;
+-		kfree_skb(tc6->ongoing_tx_skb);
+-		tc6->ongoing_tx_skb = NULL;
+-	}
++	oa_tc6_drop_tx_skb(tc6, tc6->ongoing_tx_skb);
++	tc6->ongoing_tx_skb = NULL;
+ }
+ 
+ static void oa_tc6_cleanup_waiting_tx_skb(struct oa_tc6 *tc6)
+ {
+-	if (tc6->waiting_tx_skb) {
+-		tc6->netdev->stats.tx_dropped++;
+-		kfree_skb(tc6->waiting_tx_skb);
+-		tc6->waiting_tx_skb = NULL;
+-	}
++	struct sk_buff *skb;
++
++	spin_lock_bh(&tc6->tx_skb_lock);
++	skb = oa_tc6_detach_waiting_tx_skb(tc6);
++	spin_unlock_bh(&tc6->tx_skb_lock);
++
++	oa_tc6_drop_tx_skb(tc6, skb);
+ }
+ 
+-static void oa_tc6_free_pending_skbs(struct oa_tc6 *tc6)
++static void oa_tc6_free_ongoing_skbs(struct oa_tc6 *tc6)
+ {
+ 	oa_tc6_cleanup_ongoing_tx_skb(tc6);
+ 	oa_tc6_cleanup_ongoing_rx_skb(tc6);
++}
++
++static void oa_tc6_free_pending_skbs(struct oa_tc6 *tc6)
++{
++	oa_tc6_free_ongoing_skbs(tc6);
+ 	oa_tc6_cleanup_waiting_tx_skb(tc6);
+ }
+ 
+@@ -693,9 +717,15 @@ static void oa_tc6_free_pending_skbs(struct oa_tc6 *tc6)
+ static void oa_tc6_disable_traffic(struct oa_tc6 *tc6)
+ {
+ 	u32 regval = INT_MASK0_ALL_INTERRUPTS;
++	struct sk_buff *skb;
+ 
++	spin_lock_bh(&tc6->tx_skb_lock);
+ 	tc6->disable_traffic = true;
+-	oa_tc6_free_pending_skbs(tc6);
++	skb = oa_tc6_detach_waiting_tx_skb(tc6);
++	spin_unlock_bh(&tc6->tx_skb_lock);
++
++	oa_tc6_drop_tx_skb(tc6, skb);
++	oa_tc6_free_ongoing_skbs(tc6);
+ 	oa_tc6_write_register(tc6, OA_TC6_REG_INT_MASK0, regval);
+ 	oa_tc6_read_register(tc6, OA_TC6_REG_STATUS0, &regval);
+ 	oa_tc6_write_register(tc6, OA_TC6_REG_STATUS0, regval);
+@@ -1136,8 +1166,7 @@ static int oa_tc6_try_spi_transfer(struct oa_tc6 *tc6)
+ 			if (ret == -EAGAIN)
+ 				continue;
+ 
+-			oa_tc6_cleanup_ongoing_tx_skb(tc6);
+-			oa_tc6_cleanup_ongoing_rx_skb(tc6);
++			oa_tc6_free_ongoing_skbs(tc6);
+ 			netdev_err(tc6->netdev, "Device error: %d\n", ret);
+ 			return ret;
+ 		}
+@@ -1159,15 +1188,20 @@ static irqreturn_t oa_tc6_macphy_threaded_irq(int irq, void *data)
+ 	 * no need to attempt spi transfer, once it fails. Pending skbs
+ 	 * are already freed.
+ 	 */
+-	if (!tc6->disable_traffic) {
+-		while (tc6->int_flag ||
+-		       (tc6->waiting_tx_skb && tc6->tx_credits)) {
+-			ret = oa_tc6_try_spi_transfer(tc6);
+-			if (ret) {
+-				disable_irq_nosync(tc6->spi->irq);
+-				oa_tc6_disable_traffic(tc6);
+-				break;
+-			}
++	spin_lock_bh(&tc6->tx_skb_lock);
++	if (tc6->disable_traffic) {
++		spin_unlock_bh(&tc6->tx_skb_lock);
++		return IRQ_HANDLED;
++	}
++	spin_unlock_bh(&tc6->tx_skb_lock);
++
++	while (tc6->int_flag ||
++	       (tc6->waiting_tx_skb && tc6->tx_credits)) {
++		ret = oa_tc6_try_spi_transfer(tc6);
++		if (ret) {
++			disable_irq_nosync(tc6->spi->irq);
++			oa_tc6_disable_traffic(tc6);
++			break;
+ 		}
+ 	}
+ 
+@@ -1245,23 +1279,30 @@ EXPORT_SYMBOL_GPL(oa_tc6_zero_align_receive_frame_enable);
+  * @tc6: oa_tc6 struct.
+  * @skb: socket buffer in which the ethernet frame is stored.
+  *
+- * Return: NETDEV_TX_OK if the transmit ethernet frame skb added in the tx_skb_q
+- * otherwise returns NETDEV_TX_BUSY.
++ * Return: NETDEV_TX_OK either on successful queueing of the packet for
++ * transmission, or on packet getting dropped. Packet can be dropped due to
++ * failure in linearizing the buffer or disable_traffic is set due to
++ * earlier fatal error. Returns NETDEV_TX_BUSY when there is no room
++ * to queue the packet.
+  */
+ netdev_tx_t oa_tc6_start_xmit(struct oa_tc6 *tc6, struct sk_buff *skb)
+ {
+-	if (tc6->disable_traffic || tc6->waiting_tx_skb) {
+-		netif_stop_queue(tc6->netdev);
+-		return NETDEV_TX_BUSY;
+-	}
+-
+ 	if (skb_linearize(skb)) {
+-		dev_kfree_skb_any(skb);
+-		tc6->netdev->stats.tx_dropped++;
++		oa_tc6_drop_tx_skb(tc6, skb);
+ 		return NETDEV_TX_OK;
+ 	}
+ 
+ 	spin_lock_bh(&tc6->tx_skb_lock);
++	if (tc6->waiting_tx_skb) {
++		netif_stop_queue(tc6->netdev);
++		spin_unlock_bh(&tc6->tx_skb_lock);
++		return NETDEV_TX_BUSY;
++	}
++	if (tc6->disable_traffic) {
++		spin_unlock_bh(&tc6->tx_skb_lock);
++		oa_tc6_drop_tx_skb(tc6, skb);
++		return NETDEV_TX_OK;
++	}
+ 	tc6->waiting_tx_skb = skb;
+ 	spin_unlock_bh(&tc6->tx_skb_lock);
+ 
+@@ -1393,8 +1434,10 @@ EXPORT_SYMBOL_GPL(oa_tc6_init);
+  */
+ void oa_tc6_exit(struct oa_tc6 *tc6)
+ {
+-	tc6->disable_traffic = true;
+ 	disable_irq(tc6->spi->irq);
++	spin_lock_bh(&tc6->tx_skb_lock);
++	tc6->disable_traffic = true;
++	spin_unlock_bh(&tc6->tx_skb_lock);
+ 	oa_tc6_phy_exit(tc6);
+ 	oa_tc6_free_pending_skbs(tc6);
+ }
+
+-- 
+2.43.0
+
+
