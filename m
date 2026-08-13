@@ -1,101 +1,131 @@
-Received: from mta1.migadu.com (out-157.mta1.migadu.com [95.215.58.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4478B412BFB
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 13:30:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1768412BFB;
+	Thu, 13 Aug 2026 13:33:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786627837; cv=none; b=B9O9/bvGpd7EgszMMpswmk+6qrjG/fYFUM5lr0WIa4xostwOgKqQ1k7IKKoNBOofWio77sC+qLIGV5yQqbt/xeq9wow5V6e8Q0oZj/rTyriNwzYVlV/1lpGpLx9yuN95h+hPotWmirDEecAEojYMmzrB3u2/yKb0ACsqFbiIZPY=
+	t=1786628034; cv=none; b=TrcZ8Lvo41RQJc0LY2Cj+ncmNbqAWB8411UtfNyxPMVT8JQhlVuBincxs3wbYT1yQqnDJYyIglZ4lQHUw9O2pDa2AzDPpopxUzCH420YMrVcziCnhz5kFkmZQNyxzaqucs3Y+RYGnccLLals1h1wN1s+X8+W/zrcnJlDEbE4f5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786627837; c=relaxed/simple;
-	bh=Nudt+IbkfkwauE6dUG3bv1rneSe/FGDN28GDWLG9XsU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DLctaus2LlnsbrXFV7sDZ7Ba2kOEpRdSXr+iWo3Ro7ZQP2/PTnIwEhAG3m2b/LDOOet0lJqW8FAjbIgfizkoOpuXh2Lpq2U4sSmiq34JtLNZoMGZnAxyVrAGaKsrAg1+7JkwiZIi47HI4GFmoOV8WVuqaBKhrnDhwdsTvrgWIq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Zpa1zCa6; arc=none smtp.client-ip=95.215.58.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1786628034; c=relaxed/simple;
+	bh=mvryYfPk6xan9iXAfWmk4+kCmkQXVt65mPUyB5k9Ebs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ufJwnPVUFtDmLM9rl/vyAQp04OuVF4l5ZROLdC5pxg3YchZlIQZ6NSf/kIrw0ElkqkEsMCzgZDX21JILnkzmn9yZ7DH8k1Z+yvRaiA9Vzmw7U7dEbZ1MNYgT0bi3oOqAW3lYLdM3nusxhzw0mWk2SPPbmiuiVfl0DIDYeQaAsrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=flKOaZpl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Zpa1zCa6"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=Nudt+IbkfkwauE6dUG3bv1rneSe/FGDN28GDWLG9XsU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786627834; v=1; x=1787232634;
- b=Zpa1zCa67sTsaAbldjGVJ8DiVZCwwB3MyeARtAD6F2Ndt1MgEY5Wj0d98WFY7WC4K4SPmGf5
- GYaRiTy+7zxF2kAJkRfDiCpBA6VTzISrpV0ygDLi8XRh8BhD26chM95FCfaCmtAnsaRvDV08hwo
- Jlyg/Cw9+Zw2cdI9pqrFLqNE=
-X-Envelope-To: netdev@vger.kernel.org
-Received: from localhost.localdomain (116.128.244.171)
-	by smtp.migadu.com with ESMTPS id 135311f7978a6c62;
-	Thu, 13 Aug 2026 13:30:34 +0000
-X-Migadu-Flow: FLOW_OUT
-From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
-To: netdev@vger.kernel.org,
-	andrew@lunn.ch,
-	maxime.chevallier@bootlin.com
-Cc: hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org,
-	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-Subject: [PATCH net v2 5/5] net: phy: propagate errors from default port setup
-Date: Thu, 13 Aug 2026 21:29:45 +0800
-Message-ID: <20260813132946.116176-6-xuanqiang.luo@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260813132946.116176-1-xuanqiang.luo@linux.dev>
-References: <20260813132946.116176-1-xuanqiang.luo@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="flKOaZpl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C19A1F000E9;
+	Thu, 13 Aug 2026 13:33:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786628032;
+	bh=nSLP590tH+YrdMCZ3ykFZ5UctbQuGnKXxbm3iof4jgE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=flKOaZplI1eVL+EvOd2ocj5LMKADV1j0JnLCz8Gat5bVdSlkgB2q9ssXUJZizXrXz
+	 rrfDBMm/Fs22loTiue3RGUKHjotJtgtXH2gWJgCfluyEnTrLmCtkuk1wCrwNjUp+gk
+	 3Oo3OSWQxgxbSVdQuCS+49XHH4bYQ957Wn8+W1KSUHf7kMTUsi4vDJE1n7CweiUiEa
+	 Rp+8PtYDCKzarwMz2tka4v1f2zDh5meSrs/J5j7+vGlMWMAykiPvlAhKo29SIjNFe9
+	 JwDrKtBw2e0kp5fjKvferDsaEyNU6/jjU01+EnjABnR0HyCVuT3Ywx23imI42sr+Mu
+	 c+vfOxSy7wR2g==
+Date: Thu, 13 Aug 2026 14:33:48 +0100
+From: Simon Horman <horms@kernel.org>
+To: Vitaliy Sochnev <sochnev.v.74@gmail.com>
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	stable@vger.kernel.org,
+	"moderated list:AIROHA ETHERNET DRIVER" <linux-arm-kernel@lists.infradead.org>,
+	"moderated list:AIROHA ETHERNET DRIVER" <linux-mediatek@lists.infradead.org>,
+	"open list:AIROHA ETHERNET DRIVER" <netdev@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net v2] net: airoha: npu: load the firmware without the
+ sysfs fallback
+Message-ID: <20260813133348.GB265046@horms.kernel.org>
+References: <20260811181717.19339-1-sochnev.v.74@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260811181717.19339-1-sochnev.v.74@gmail.com>
 
-From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+On Tue, Aug 11, 2026 at 07:16:59PM +0100, Vitaliy Sochnev wrote:
+> airoha_npu_load_firmware() maps a missing firmware file to -EPROBE_DEFER
+> so that the NPU can be brought up once the rootfs carrying /lib/firmware
+> has been mounted. That mapping holds only as long as request_firmware()
+> reports -ENOENT.
+> 
+> It does not when the sysfs fallback is in play. With
+> CONFIG_FW_LOADER_USER_HELPER_FALLBACK set, or with the fallback armed at
+> runtime through /proc/sys/kernel/firmware_config/force_sysfs_fallback,
+> request_firmware() hands the request to a userspace helper, waits out the
+> full loading_timeout and returns -ETIMEDOUT. The -ENOENT test no longer
+> matches, dev_err_probe() turns the result into a hard failure, and the
+> NPU is left unbound after stalling the boot for 60 seconds:
+> 
+>   airoha-npu 1e900000.npu: Direct firmware load for airoha/en7581_npu_rv32.bin failed with error -2
+>   airoha-npu 1e900000.npu: Falling back to sysfs fallback for: airoha/en7581_npu_rv32.bin
+>   airoha-npu 1e900000.npu: error -ETIMEDOUT: failed to run npu firmware
+>   airoha-npu 1e900000.npu: probe with driver airoha-npu failed with error -110
+> 
+> Clearing FW_LOADER_USER_HELPER in the configuration is not a dependable
+> guard against this, because unrelated drivers select it. On the affected
+> build the symbol was turned back on by LEDS_LP55XX_COMMON, even though
+> the platform had explicitly disabled it.
+> 
+> Use request_firmware_direct() instead. It sets FW_OPT_NOFALLBACK_SYSFS,
+> so a missing file is reported as -ENOENT whatever the firmware loader is
+> configured to do, and the deferred probe path works as intended.
+> 
+> Two consequences are worth stating plainly.
+> 
+> The helper is not merely bypassed for the boot-before-rootfs case.
+> fw_run_sysfs_fallback() returns early on FW_OPT_NOFALLBACK_SYSFS, so this
+> driver's firmware requests can no longer be served by a usermode helper
+> at all, including on a system where that is the only delivery route;
+> having no second firmware source, the driver would defer forever there.
+> That is a deliberate trade-off: the -ENOENT to -EPROBE_DEFER mapping was
+> written to wait for a filesystem, and the sysfs helper interface has had
+> no in-tree consumer since udev dropped firmware loading.
+> 
+> request_firmware_direct() also sets FW_OPT_NO_WARN, which drops the only
+> message naming the file that failed to load. Report it from the driver
+> instead, so the name lands in the deferred probe reason and shows up in
+> the "deferred probe pending" line emitted at
+> driver_deferred_probe_timeout. The generic report in airoha_npu_probe()
+> goes away with it, since it would otherwise overwrite that reason with a
+> message naming nothing; of the paths it covered, devm_ioremap_resource()
+> reports itself and the malformed firmware-name property now does too.
+> 
+> Measured on a Nokia XG-040G-MD with FW_LOADER_USER_HELPER=y and
+> FW_LOADER_USER_HELPER_FALLBACK=y forced on, two images from the same
+> tree differing only by this patch:
+> 
+>   without:  fallback at 2.477s -> -ETIMEDOUT at 64.555s -> probe failed
+>             with -110, preinit at 69.6s, NPU unbound
+>   with:     no fallback, NPU fw version 1456.62 at 3.665s, preinit at
+>             7.6s
+> 
+> Fixes: 23290c7bc190 ("net: airoha: Introduce Airoha NPU support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Vitaliy Sochnev <sochnev.v.74@gmail.com>
+> ---
+> v2:
+>  - Keep the file name in the diagnostics. request_firmware_direct() also
+>    sets FW_OPT_NO_WARN, which dropped the only message naming the file;
+>    report it from airoha_npu_load_firmware() through dev_err_probe() so
+>    the name lands in the deferred probe reason. Drop the generic report
+>    in airoha_npu_probe(), which would overwrite that reason, and give
+>    the malformed firmware-name path a message of its own.
+>  - Say in the changelog that the usermode helper path is disabled for
+>    this driver's requests rather than merely bypassed, and why that
+>    trade-off is acceptable.
+>  - Both points raised in review of v1:
+>    https://lore.kernel.org/netdev/20260807024125.434055-1-sochnev.v.74@gmail.com/
 
-phy_default_setup_single_port() ignores errors from phy_add_port() and
-always reports success. If a PHY driver attach_mdi_port() callback fails,
-the phy_port is leaked and PHY probing continues without the expected
-default port.
-
-Destroy the port and return the error.
-
-Fixes: 589e934d2735 ("net: phy: Introduce PHY ports representation")
-Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
----
- drivers/net/phy/phy_device.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index e429e6d702933..b0060b4147348 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -3458,6 +3458,7 @@ static int phy_default_setup_single_port(struct phy_device *phydev)
- {
- 	struct phy_port *port = phy_port_alloc();
- 	unsigned long mode;
-+	int ret;
- 
- 	if (!port)
- 		return -ENOMEM;
-@@ -3484,9 +3485,11 @@ static int phy_default_setup_single_port(struct phy_device *phydev)
- 		port->pairs = max_t(int, port->pairs,
- 				    ethtool_linkmode_n_pairs(mode));
- 
--	phy_add_port(phydev, port);
-+	ret = phy_add_port(phydev, port);
-+	if (ret)
-+		phy_port_destroy(port);
- 
--	return 0;
-+	return ret;
- }
- 
- static int of_phy_ports(struct phy_device *phydev)
--- 
-2.43.0
+Reviewed-by: Simon Horman <horms@kernel.org>
 
