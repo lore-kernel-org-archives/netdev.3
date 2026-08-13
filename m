@@ -1,82 +1,75 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55C538BF8D
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 17:35:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4511B399CF5
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 17:38:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786642536; cv=none; b=PekCnDpb2S82t4dZYH2HR1RKKS6tRUBOZYVEbiOCA3EearLxLvYSaYkL9Q1qyXCj2ItcReLJ9UbhGRZC9hOdVkVWvz8/YDEgxcrsWP0wJKFeAJ37piRQe2HcJUTa0NyrFu4HAOO9W/a7/yr/GybKKyrb8zqScvBnSApaFKeHULo=
+	t=1786642696; cv=none; b=KprBMCTTuIKoVYJlq1uc88l1jcdBHxK3a4T4dqdFZCME0NUlrG1XadrvOwe9gPVmkqmseVKJNmJyHgvsjEy44d7PflCAlBeSKwWC2Y6Ubq7u2zzKhlLRZqtHCQuG1zppMoWrlEeefyyuGBIbMQftgNgY9DWh+wqZ1EN4H58sF4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786642536; c=relaxed/simple;
-	bh=SDL1BOncGMiI4twGaAB7fz5vw+QNk2TwVXGWgpM5z5k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M4H+DnybRERWFWigJ+qGE3rBLOp2KCZvzeT4mBPuCfZbvddJ+aylR5mBIMTCeodk1rirG4ohCN4yfXh1rHUPsJHMZ+2Jg+Vljg1424QdksXaJ2v2fOhOTdywI4BNAkIHmqUEHNO9gBsBnqfokzsAwyPnyAs4AalkY0EzlsHe8oI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=f3QFUs5M; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1786642696; c=relaxed/simple;
+	bh=GeJKyQhEjxucbTah049sAwM735AMlWpxeAb6ZnkGHjg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BRHWEES/rtgdlG1H8Mxad/k9AG7p5QvQ+Dk7UPLsHmTFVQle+vth8OPAjmoAPvjiku/cdB+CazCXg4a/6lbnf+mpXd8Dkeo5HlZPDAngQNMwU01K9EnzdSGvtzDOxlebJ2Vqi8i0cOyFK7gDUl2KY8S4IP6B/jWChD6QTxhDKh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WjBEjZWm; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="f3QFUs5M"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2cc97653887so3668475ad.1
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 10:35:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WjBEjZWm"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6a17cb94b26so72208a12.3
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 10:38:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1786642535; x=1787247335; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=IiVPGOxJZE1G0Xem2Ig7DqOWCAoYKMvo5rpVz8uJBjA=;
-        b=f3QFUs5MnWzy3dLSvbDjL8+OC4c2BN2+TZLRHxjNKhPHaS4CzJC4WiC6cFayJOyQ+W
-         wq+Aiy15rq4R7RWRU96KXfPrP44pxSswbFMMM6Lc/UfgQuyZB1439u5Qn9fAQoRcZqYT
-         TA1lfCvUxHDTohkXKdJcoHQ/Dr3u/zFWFD6bZjvaDERUwx1RnZBqk/O1Fcp1gWll7iV7
-         17RzR7lsLTJDiKcwH9NfUKKkibvGxYiT7UvElw6K3kSp6xB8VOJyIM75FM9/ix1NRO+6
-         nddHmPl1s74qaJGAC4O9aSji/Nj2o1ke61V23xvOPsvrY2LZJmufbVmhXue9bS8fadgq
-         kflw==
+        d=gmail.com; s=20251104; t=1786642693; x=1787247493; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JfAvMGEbSBbRqdooleGngqLapQ1gPAZG8MmTQGDG2xY=;
+        b=WjBEjZWmGMqcYk0ZoxIyLI87JtNjnCYeOZSikUu3dJHrwGBNuzG0CSRYPktxoUrF67
+         Hq0IkuAff+YyHu/pTWS3fM5/pDF8RmeGQk3nXRiHpMGvcp82JPm+fIYdPk4GNwN61XwY
+         vUTQektMha5dM7rVUm/SoLvVzCNO6OioCvLNmPr93lLa+1gNEKWSeFYQPrkXsQ9hi0Jl
+         z8p4IjcnFE0Ezok1lLdOBBMxDFNiYcUvLWo3c9dLwq+k80zej+Yvcxv6hAV/PBsS/zJ1
+         z7UBGLnOXX2EE8Jv3b3PKX1p89i8NTLayfmCMnHeEFBUsMW5vcSx3iKsiwvmTfE5UGpd
+         QKZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786642535; x=1787247335;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=IiVPGOxJZE1G0Xem2Ig7DqOWCAoYKMvo5rpVz8uJBjA=;
-        b=nGV/jlJIO/OB2IgZBgDeWwDWBqnvfR6Nc/vFG+3caRQYpO0giYcXi/9Fr9iKfVivX7
-         9Hs2lApPjkFCi8cvJqWEVtCFBtUnjo0MHyAj3G0f+CXkhiHKpzd5Y9lLkUq1JdBQwX6c
-         HDtkmQAlWSFGBDMDB1EoSL54J9e0Qco4Hi3v9qBwUaW/JNO1ZR6sisoZQ+tLJraNFAkU
-         uSRldbhaFUuPvIy4wu+VIwFtVB7CDMVWsqZ7MJWp4ePNXDt0hHyl+11qpWaf4f4z2CrR
-         bXuPezZ+92FWL6aKTGBddxLVjQNB7bdrQWk9HzN3Hq6raVD9iAS9TZ0xX69yrR4K1us7
-         J8ew==
-X-Gm-Message-State: AOJu0YxUPum/F2liTDaKSraxICgRMOXIz2N2fyGs9puGegSumi2NZDgv
-	mfsrqAUU6F+nE388aHgGwFH9+be6MJE2UT9asgycVR1GbDG7tMwHD+RhYVnJ6TuoCZWukDFvuLI
-	Sn4iMt0rY
-X-Gm-Gg: AR+sD11VoJGcrCOTadRQArOfm9aVNbNGHZN0dBLn3/Yk8jAOUAClVxGuN9xQRAnkWl2
-	2YIo3PTYHU3srFD2ZT4XClRaWXsA86E/4yKrZuRTlIryNqHMC+iD+h0s78l7SHapibusOd0shAB
-	rKE8Ca31Zqyas6io7lQlPGnhOJ5QGYyzACq3tRtFCgwPJ3n+Vj8OnJdd2/3UaNV9SSZllKWftuk
-	DN2DDm768GBmE8lxFHOkXEjmOzVaGMFEk+56wij6CECsO8c8EIm98lQ/CUcTf3TlwEG7mxqJDWt
-	pdB/dg8C0OFNuhIbR+TEktRRz8tuwVHYlZcIsEFi7FPkeetq7WmCYNRpA2AJgBP42RYMSI29R75
-	pPwpZbDxhp1Af4oGe1/0O5PAfF19DkIa32ja0FfpDvLA0w1seG3kEfbmlU3ZnlqShaoHCadmCPl
-	/ZZMz5JRTytTSgbHuJSrwHYs3YYRCnLJVGiQIrub8MlXHZaEa8yxmOLdnMZJBk+PpX6qxd3NfZJ
-	S1QbppSFA==
-X-Received: by 2002:a17:90b:28ce:b0:38f:23d6:b4a9 with SMTP id 98e67ed59e1d1-3931e345ab1mr9378721a91.21.1786642534695;
-        Thu, 13 Aug 2026 10:35:34 -0700 (PDT)
-Received: from enjou-Legion-Y7000P-2019 ([165.232.167.5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39339eca063sm204504a91.1.2026.08.13.10.35.27
+        d=1e100.net; s=20251104; t=1786642693; x=1787247493;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JfAvMGEbSBbRqdooleGngqLapQ1gPAZG8MmTQGDG2xY=;
+        b=IV+vgMat27OfhdvZl2vaPAvUn3UyjJu17Pfibp6thjhoQaW5VT1/cIl3cgnLxsVymX
+         w6k7Wv5vr2OXXioCqLehgl0V6q0w5XxY7p1wCMbyUnL702TJjSMOpxZyFudDgtCeR9la
+         ljVyB9pDp1V08c9/sl4CNZ00Zu72qmzSNkU13AokQAAUh49YMux98yOjAcTDWS9knl/L
+         UZNZDsDBJAAHWYWYCdBmcKWcHGpRJJyytASihj/sQFeDIrDIbBRx80rxNI32sxSthxI1
+         TTwhe1dBr/DB0Ga58LNytTe4icSp+0SVx9oVkqkC2SJFwt/gs1p3832TKL8VGc/PqY46
+         T//A==
+X-Gm-Message-State: AOJu0YwV1HKog1lvAic+XcOuX1ZsQtyX1z4iqHa1cB5Q9ErRGaXPisPV
+	Ye4wd5mtoG7iVqwNnhUiisRCE52bakELZKO/PgH2UjaB49o4PogM+7g=
+X-Gm-Gg: AR+sD114vK/UexBYIwDP/AIPYdd/B9/6tIvpek6/DC5C4zCX7eTzpwvOYOapLy/t0fn
+	icjFe16Yd562YmJMdduF3+l6UegnHRpj8OrYYuSXtySx+CDlaereefVpdHCswqTuLAAWhQ4LiIn
+	zQ/IdNHeWvH0kJzcuZ6N1H7f3FWoA5y25epf4fmmD5EnpCAz6ctFKwAhU81qrfo7fAivvUXCWgv
+	LbrfOxVjM8hO68BKtqhcmb6sg2VjEkqw7bLg8Hvi/QSFPCmXHhAGEYFxPVYq63E5R7l9Io9u0tf
+	7m/Nz8r6NGkhu1RQMOukUGabSUbhMZN17UYGnuCGH5WFdXuTY2tFeIFUX6sE5D5FIymN5jVsWk6
+	pMQNapiVJ3Bm9fSlVwAaSQ5U9fXlqVb7XQHWFBYvqK1gU4VmSntLumfqxvK3VQusdReStqBwysB
+	+9UKJFQLvnMpCadkkMq8Hn0fdHlAeWYUv2BCXLOPlfYz2aXvVwWSfR2h1MfuIenrLhRgMd0SGGL
+	NARuNtP+9yb23L0RowkXZu0ZEEFZeH39WxxgQ==
+X-Received: by 2002:a05:6402:390a:b0:6a1:da7a:917b with SMTP id 4fb4d7f45d1cf-6a38a9972b6mr52128a12.20.1786642693249;
+        Thu, 13 Aug 2026 10:38:13 -0700 (PDT)
+Received: from arch.tail2fcf52.ts.net (223-143-146-85.ftth.glasoperator.nl. [85.146.143.223])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a37f8a3522sm1217468a12.17.2026.08.13.10.38.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 10:35:34 -0700 (PDT)
-From: Ren Wei <weir@nebusec.ai>
-To: netdev@vger.kernel.org
-Cc: dsahern@kernel.org,
-	idosch@nvidia.com,
-	davem@davemloft.net,
-	edumazet@google.com,
+        Thu, 13 Aug 2026 10:38:12 -0700 (PDT)
+From: Mark Sercombe <sercombe.joel.mark@gmail.com>
+To: cooldavid@cooldavid.org,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	horms@kernel.org,
-	vega@nebusec.ai,
-	edragain@163.com,
-	weir@nebusec.ai
-Subject: [PATCH net v2 1/1] ipv4: reject undersized MTUs in ip_do_fragment()
-Date: Fri, 14 Aug 2026 01:35:26 +0800
-Message-ID: <8809ef6314b98913681b0b370a05a85c2b6cd579.1786599079.git.edragain@163.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1786599079.git.edragain@163.com>
-References: <cover.1786599079.git.edragain@163.com>
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mark Sercombe <sercombe.joel.mark@gmail.com>
+Subject: [PATCH net-next] net: jme: fix typos in comments
+Date: Thu, 13 Aug 2026 19:36:34 +0200
+Message-ID: <20260813173634.461011-1-sercombe.joel.mark@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -85,48 +78,59 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Yong Wang <edragain@163.com>
+Fix several spelling mistakes in code comments in the jme driver:
+These are comment only changes with no functional impact.
 
-ip_do_fragment() subtracts the IPv4 header length from the effective
-MTU and passes the resulting payload MTU to ip_frag_next().
-
-If the effective MTU is smaller than hlen + 8, ip_frag_next() rounds
-the fragment payload length down to zero. The fragmentation state then
-never makes forward progress: state->left, state->ptr and state->offset
-stay unchanged while ip_do_fragment() keeps allocating and transmitting
-header-only fragments until the softlockup detector fires.
-
-This is reproducible with a route installed using "mtu lock 20", but it
-is also reproducible without route MTU lock, for example by forwarding a
-packet to a device whose MTU is 20.
-
-Fix it in ip_do_fragment() by rejecting mtu < hlen + 8 with -EMSGSIZE,
-matching the existing IPv6 fragmentation check.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: Codex:GPT-5.4
-Signed-off-by: Yong Wang <edragain@163.com>
-Signed-off-by: Ren Wei <weir@nebusec.ai>
+Signed-off-by: Mark Sercombe <sercombe.joel.mark@gmail.com>
 ---
- net/ipv4/ip_output.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/jme.c | 4 ++--
+ drivers/net/ethernet/jme.h | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index e6dd1e5b8c32..74e095b6b7ca 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -790,6 +790,10 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 	 */
+diff --git a/drivers/net/ethernet/jme.c b/drivers/net/ethernet/jme.c
+index 25ec5f757c68..31affb8e270a 100644
+--- a/drivers/net/ethernet/jme.c
++++ b/drivers/net/ethernet/jme.c
+@@ -826,7 +826,7 @@ jme_setup_rx_resources(struct jme_adapter *jme)
+ 		goto err_free_rxring;
  
- 	hlen = iph->ihl * 4;
-+	if (mtu < hlen + 8) {
-+		err = -EMSGSIZE;
-+		goto fail;
-+	}
- 	mtu = mtu - hlen;	/* Size of data space */
- 	IPCB(skb)->flags |= IPSKB_FRAG_COMPLETE;
- 	ll_rs = LL_RESERVED_SPACE(rt->dst.dev);
+ 	/*
+-	 * Initiallize Receive Descriptors
++	 * Initialize Receive Descriptors
+ 	 */
+ 	for (i = 0 ; i < jme->rx_ring_size ; ++i) {
+ 		if (unlikely(jme_make_new_rx_buf(jme, i))) {
+@@ -1740,7 +1740,7 @@ jme_phy_calibration(struct jme_adapter *jme)
+ 
+ 	jme_phy_off(jme);
+ 	jme_phy_on(jme);
+-	/*  Enabel PHY test mode 1 */
++	/*  Enable PHY test mode 1 */
+ 	ctrl1000 = jme_mdio_read(jme->dev, jme->mii_if.phy_id, MII_CTRL1000);
+ 	ctrl1000 &= ~PHY_GAD_TEST_MODE_MSK;
+ 	ctrl1000 |= PHY_GAD_TEST_MODE_1;
+diff --git a/drivers/net/ethernet/jme.h b/drivers/net/ethernet/jme.h
+index 860494ff3714..83a2f8ef6fda 100644
+--- a/drivers/net/ethernet/jme.h
++++ b/drivers/net/ethernet/jme.h
+@@ -465,7 +465,7 @@ jme_napi_priv(struct napi_struct *napi)
+ }
+ 
+ /*
+- * MMaped I/O Resters
++ * MMaped I/O Registers
+  */
+ enum jme_iomap_offsets {
+ 	JME_MAC		= 0x0000,
+@@ -660,7 +660,7 @@ enum jme_rxcs_bit_masks {
+ 	RXCS_WAKEUP	= 0x00000040, /* Enable receive wakeup packet */
+ 	RXCS_MAGIC	= 0x00000020, /* Enable receive magic packet */
+ 	RXCS_SHORT	= 0x00000010, /* Enable receive short packet */
+-	RXCS_ABORT	= 0x00000008, /* Enable receive errorr packet */
++	RXCS_ABORT	= 0x00000008, /* Enable receive error packet */
+ 	RXCS_QST	= 0x00000004, /* Receive queue start */
+ 	RXCS_SUSPEND	= 0x00000002,
+ 	RXCS_ENABLE	= 0x00000001,
 -- 
-2.53.0
+2.55.0
+
