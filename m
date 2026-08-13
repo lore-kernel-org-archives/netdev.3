@@ -1,240 +1,155 @@
-Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f0.google.com (mail-pj2-f0.google.com [74.125.227.128])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799DD417D7A
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 19:04:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810EB420E9F
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 19:08:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786647850; cv=none; b=eyg96dWweRagPgdWCHvVlVRv35bdnWeOuUN7GWgYqtANh99qcWZ3V1M6G5y12L2NQ8CjAxvYFMU2WdKdAf72UMAGI/xQTWP05DqjGIp/T/bYTsqmXiyG8/+lX7pCvvK4PPrgI3D2OJ67BN+IfdzuH/fFh1kS7JuYlclAI8+P2kA=
+	t=1786648084; cv=none; b=L+KBN5c/mIhTMKOyCFoHRb0YvZ5irDUsL4cvbZ/jEOyNk8bzjrcF9r1DQnbrGg9DvtYZz7irw3JFEgVrcvDZM16/O981D7oNakjKvifZduUZPxHKwsLzUA5TWX9px/AZZ6Q0YD1XeIi5/nuD2+9lU/jnoKXUTPqHsNOKUnFVU6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786647850; c=relaxed/simple;
-	bh=CPXDwaPbKTNDHjgs4dTLg2HNAE9Z3YzE8UwNjzdTlSk=;
+	s=arc-20240116; t=1786648084; c=relaxed/simple;
+	bh=Na7MS/Up8XTKb4IX9xJjbtZxGJ7cnEgnEI7V0oawB80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h47GmiXAQ/aHKOmr/crcjIUq5Tw9+6WWNdDU1mSmwlBEJrV/cODLNjS/AFQgSoyJWYWFfh9f6UHNBLIMg8oDGn079QQtE0+xivCm9QC+pJWsV3hGhnPYchgrP5xsS5PRO1sFllxrhh3hdbWZOrojwezkOyXF2fhtNRJTLqOMD9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tinyisr.com; spf=pass smtp.mailfrom=tinyisr.com; dkim=pass (2048-bit key) header.d=tinyisr.com header.i=@tinyisr.com header.b=Mxo8vglG; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=pP0wcYJR; arc=none smtp.client-ip=34.202.193.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tinyisr.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tinyisr.com
+	 MIME-Version; b=lb2emzgkk8PEPrzGilS0tKLztCwgSUIhxYcGy6zZ9goTHztNG5lLsyT6oMjF6ptZDLu9bCBKqBMJR5sRl6ImewNaUyzWy4h6NZp8Sx4mzIzFSa9qabwrSisHsl/RGxKhf6mKCFHOSXGuwVz5GW/MTDOU39XQlaqf+q5uyFhklOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SJzKuBu9; arc=none smtp.client-ip=74.125.227.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tinyisr.com header.i=@tinyisr.com header.b="Mxo8vglG";
-	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="pP0wcYJR"
-Authentication-Results: purelymail.com; auth=pass
-DKIM-Signature: a=rsa-sha256; b=Mxo8vglGMj+eF69AkTV/P1myTlXlubL8go1T5lx4LqCcgk8Wncut+NiqaiwRzWrS9gzW+mbaNz/A19EhvYH/nz940ANCPIaL+TigyKhzRjH6Ajd/7VpkF6b0mlfO3kA/hYiduVC1MkmZAGC/SdyPgcv68gllRm6PHUiRjcFcPnFACIFwNUCLg2lSLqFPEcA0IEGVDcpG7L7+asf3bISm3PmcHm5A5sSibMDbUfQMng+metmUMSwBmWC63NzwbG1JHbkfRfCK4ku3wgLxti7aZCP+pDqoCiTVwAr1Sc8bDLPb+u+M9imyJBgMKLWvM4YqipWo6R9LqlN0RsARRHV/SQ==; s=purelymail3; d=tinyisr.com; v=1; bh=CPXDwaPbKTNDHjgs4dTLg2HNAE9Z3YzE8UwNjzdTlSk=; h=Received:From:To:Subject:Date;
-DKIM-Signature: a=rsa-sha256; b=pP0wcYJRkZnnLoaiXl0ruVA57VVqSJPSO4f8BJ8ewSnyL53cyTxijhu0gwyVU2bg61HfaFhSG9gaL5DSl4YpXvrnDsgQHI5+iwsXM72mmL00R0R0pHgzHYTD7cuspO1776q+JeT64+XK66A+2yB6Nomg49pKLHKZowjMIAVsL7tLoPDs2MtOcoHgiKoJE8DBcKbqzqY9H5zxS79H8lxgZUNsXM2P37g7l8el6X4Y0sV7BhsUpS93rZymaACcRBGQUDyyE0bjcfdUl3WLnK1T/fzhYY+UrKcqoD6+rMqEt3Zkw0zeBm84kFuHD4+Gdq7AdgD0LlV+xWuVms+crWP/lg==; s=purelymail3; d=purelymail.com; v=1; bh=CPXDwaPbKTNDHjgs4dTLg2HNAE9Z3YzE8UwNjzdTlSk=; h=Feedback-ID:Received:From:To:Subject:Date;
-Feedback-ID: 99681:12517:null:purelymail
-X-Pm-Original-To: netdev@vger.kernel.org
-Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 1221505461;
-          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-          Thu, 13 Aug 2026 19:04:00 +0000 (UTC)
-From: Joris Vaisvila <joey@tinyisr.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SJzKuBu9"
+Received: by mail-pj2-f0.google.com with SMTP id 98e67ed59e1d1-380f4166f80so159521a91.1
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 12:08:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786648083; x=1787252883; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=akUZ9dYiYWC1oUDGRGEMMoCmBNHpXpllEedbay7GMFg=;
+        b=SJzKuBu9wHTjWU9bGfrFJ+r9NiOTAfKB6oHWsgxB2gGcLkXlNuw/60fSe5HwgLxFKV
+         Lwn4556+mOBdsiI1xDIPh3O2lmQ6ArIXj3+b2LhXe9HUec8/HhLOiCHa5iQfB6qbWsgK
+         gkTPoaLqhYPQTOwAyNbKLfgsPDnaFmboTGIA+m3HkrAezqlhff+2eenRlwrdR8qBgHGB
+         GaAFJfzp7ZVNjuBm0kL8g6b9xYAFVTqOXD1Xeh+RwfqPM3uMd70j83ZnmqtzwLZewAEc
+         OJjCSEiDCuCvk+9fRSvg9kV2LMeAGHfIoAkBMkixW1E1NLz/Om8a7iJ4OMGP94yaAnw3
+         rMaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786648083; x=1787252883;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=akUZ9dYiYWC1oUDGRGEMMoCmBNHpXpllEedbay7GMFg=;
+        b=MjqWY6Q8QXPlBiB9ZloJ5AU30UvO4IJxTWiu4T4ih0c2Xg3io2E2HKW/WgtVVCfmS6
+         0BBnZqOQb0zzoCigN64MDydJk/24Mxz6hlVYKKxrSn6BsLQgOnS3GZTQiKaw/W8IrpFC
+         A6a2eInWYW7IgtW1Z4/SREAsuwAAE0AeE8WzXuWQKc7EMQCGwNjkMM6cQfBdFSiJOBWA
+         t0R0UNIYwtWCSB7qqcEVsRqtKKm1BRwTtARw/MSMTPwg+mZWnOxP+3n/evUuBHfjZoEw
+         09U83Hrd8ziqg0YhWmgiQD0LgsizToMUoxe+D/H0wZK7pV7TGjUgOkm+F+/r6V/81tj6
+         OFKg==
+X-Gm-Message-State: AOJu0Yxr4/IBzpstwZn3cv5eA/w3p5ISpCjNSqMuNFeENS+X9fiWiqge
+	GyWRV/Dt+juHASKSlokh+99pdnBJpxCEsBSqTw4P08DAecmk6QBAqNLhmVNuN2pN
+X-Gm-Gg: AR+sD11S326iELRrDmi962Ud+BbmI1oHF9j25Oo8S06lihQPqX6otLwzpEb6k7f70Zb
+	847kv82IxUap1cun4XVgqUVUkkgomouhUghWN/HVYpHo+g6JQS9IlAN4e+6I5g/3BG/nhqNQ3x+
+	KpaxVCmm/huUFK8hCaP6cWhXRRFZReD1MvYPqhOedvN3I4TYXUjGYsYCY1Py4MpZoNRtTMQvirj
+	4yBbUJCi3hKQ0V3u3z6bSRcmkkxXEq50oOWSZE5MIXDiAv1AohTTZg43jl0n8eXGzxgQdJeTUpl
+	gtvR7zrmqkfnC463v/IVCP6inJkQhz3ZafeBjqfOn/Bssrdr7UOkqC/1eI8I3JdCy689iuauU5z
+	nWpgpjKTdIyxbISHFzQHCnitTiBq6jV2VlkO8FwswO++mkeY09GcQBjzwY1WMpvDWt6XlApcUvL
+	G+RGvH3X9HqyueJF/NBtY2Yp+s5QlwKhX6yl5pa/QcQglogD6WfXIAdA==
+X-Received: by 2002:a17:90b:2b8e:b0:38e:4f41:83df with SMTP id 98e67ed59e1d1-3933b8aa611mr183995a91.15.1786648082609;
+        Thu, 13 Aug 2026 12:08:02 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:4f::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3933a009f35sm492119a91.15.2026.08.13.12.08.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 12:08:02 -0700 (PDT)
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
-Cc: horms@kernel.org,
-	pabeni@redhat.com,
-	kuba@kernel.org,
+Cc: davem@davemloft.net,
 	edumazet@google.com,
-	davem@davemloft.net,
-	olteanv@gmail.com,
-	Andrew Lunn <andrew@lunn.ch>,
-	devicetree@vger.kernel.org,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-	Landen Chao <Landen.Chao@mediatek.com>,
-	DENG Qingfang <dqfext@gmail.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Joris Vaisvila <joey@tinyisr.com>
-Subject: [PATCH net-next v7 3/4] net: dsa: initial MT7628 tagging driver
-Date: Thu, 13 Aug 2026 22:02:40 +0300
-Message-ID: <20260813190241.789323-4-joey@tinyisr.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260813190241.789323-1-joey@tinyisr.com>
-References: <20260813190241.789323-1-joey@tinyisr.com>
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	saeedm@nvidia.com,
+	tariqt@nvidia.com,
+	mbloch@nvidia.com,
+	maxime.chevallier@bootlin.com,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	aleksander.lobakin@intel.com,
+	horms@kernel.org,
+	magnus.karlsson@intel.com,
+	maciej.fijalkowski@intel.com,
+	sdf@fomichev.me,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	witu@nvidia.com,
+	martin.lau@kernel.org,
+	yoong.siang.song@intel.com,
+	rohan.g.thomas@intel.com,
+	intel-wired-lan@lists.osuosl.org,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	bpf@vger.kernel.org,
+	leon@kernel.org
+Subject: [PATCH net v2 1/3] xsk: align TX metadata layout across ABIs
+Date: Thu, 13 Aug 2026 12:07:58 -0700
+Message-ID: <20260813190800.222527-2-sdf@fomichev.me>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260813190800.222527-1-sdf@fomichev.me>
+References: <20260813190800.222527-1-sdf@fomichev.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-MIME-Autoconverted: from 8bit to quoted-printable by Purelymail
-Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Add support for the MT7628 embedded switch's tag.
+Add explicit padding before launch_time so xsk_tx_metadata has the same
+layout on 32-bit and 64-bit systems.
 
-The MT7628 tag is merged with the VLAN TPID field when a VLAN is
-appended by the switch hardware. It is not installed if the VLAN tag is
-already there on ingress. Due to this hardware quirk the tag cannot be
-trusted for port 0 if we don't know that the VLAN was added by the
-hardware. As a workaround for this the switch is configured to always
-append the port PVID tag even if the incoming packet is already tagged.
-The tagging driver can then trust that the tag is always accurate and
-the whole VLAN tag can be removed on ingress as it's only metadata for
-the tagger.
+On i386 and m68k, the old native 32-bit layout put launch_time at offset 12
+and had a natural size of 20 bytes. Using sizeof(struct xsk_tx_metadata) as
+tx_metadata_len was already rejected because the length must be a multiple
+of eight, so the straightforward use of the interface was broken on those
+ABIs. Userspace could still register a padded length of 24 bytes, though;
+mixing the old and new layouts then silently reads launch_time from the
+wrong offset and misprograms packet launch times. This intentionally
+replaces that incompatible layout while the interface is still new.
 
-On egress the MT7628 tag allows precise TX, but the correct VLAN tag
-from tag_8021q is still appended or the switch will not forward the
-packet.
-
-Signed-off-by: Joris Vaisvila <joey@tinyisr.com>
+Fixes: ca4419f15abd ("xsk: Add launch time hardware offload support to XDP Tx metadata")
+Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 ---
- include/net/dsa.h    |  2 +
- net/dsa/Kconfig      |  6 +++
- net/dsa/Makefile     |  1 +
- net/dsa/tag_mt7628.c | 93 ++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 102 insertions(+)
- create mode 100644 net/dsa/tag_mt7628.c
+ include/uapi/linux/if_xdp.h       | 1 +
+ tools/include/uapi/linux/if_xdp.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/include/net/dsa.h b/include/net/dsa.h
-index 6f7f5c17b532..7507d632e7c6 100644
---- a/include/net/dsa.h
-+++ b/include/net/dsa.h
-@@ -60,6 +60,7 @@ struct tc_action;
- #define DSA_TAG_PROTO_MXL862_VALUE=09=0932
- #define DSA_TAG_PROTO_NETC_VALUE=09=0933
- #define DSA_TAG_PROTO_KSZ8463_VALUE=09=0934
-+#define DSA_TAG_PROTO_MT7628_VALUE=09=0935
-=20
- enum dsa_tag_protocol {
- =09DSA_TAG_PROTO_NONE=09=09=3D DSA_TAG_PROTO_NONE_VALUE,
-@@ -97,6 +98,7 @@ enum dsa_tag_protocol {
- =09DSA_TAG_PROTO_MXL862=09=09=3D DSA_TAG_PROTO_MXL862_VALUE,
- =09DSA_TAG_PROTO_NETC=09=09=3D DSA_TAG_PROTO_NETC_VALUE,
- =09DSA_TAG_PROTO_KSZ8463=09=09=3D DSA_TAG_PROTO_KSZ8463_VALUE,
-+=09DSA_TAG_PROTO_MT7628=09=09=3D DSA_TAG_PROTO_MT7628_VALUE,
- };
-=20
- struct dsa_switch;
-diff --git a/net/dsa/Kconfig b/net/dsa/Kconfig
-index d5e725b90d78..23b4b74004ed 100644
---- a/net/dsa/Kconfig
-+++ b/net/dsa/Kconfig
-@@ -98,6 +98,12 @@ config NET_DSA_TAG_EDSA
- =09  Say Y or M if you want to enable support for tagging frames for the
- =09  Marvell switches which use EtherType DSA headers.
-=20
-+config NET_DSA_TAG_MT7628
-+=09tristate "Tag driver for the MT7628 embedded switch"
-+=09help
-+=09  Say Y or M if you want to enable support for tagging frames for the
-+=09  switch embedded in the MT7628 SoC.
-+
- config NET_DSA_TAG_MTK
- =09tristate "Tag driver for Mediatek switches"
- =09help
-diff --git a/net/dsa/Makefile b/net/dsa/Makefile
-index b8c2667cd14a..d15bcf5c68f0 100644
---- a/net/dsa/Makefile
-+++ b/net/dsa/Makefile
-@@ -27,6 +27,7 @@ obj-$(CONFIG_NET_DSA_TAG_GSWIP) +=3D tag_gswip.o
- obj-$(CONFIG_NET_DSA_TAG_HELLCREEK) +=3D tag_hellcreek.o
- obj-$(CONFIG_NET_DSA_TAG_KSZ) +=3D tag_ksz.o
- obj-$(CONFIG_NET_DSA_TAG_LAN9303) +=3D tag_lan9303.o
-+obj-$(CONFIG_NET_DSA_TAG_MT7628) +=3D tag_mt7628.o
- obj-$(CONFIG_NET_DSA_TAG_MTK) +=3D tag_mtk.o
- obj-$(CONFIG_NET_DSA_TAG_MXL_862XX) +=3D tag_mxl862xx.o
- obj-$(CONFIG_NET_DSA_TAG_MXL_GSW1XX) +=3D tag_mxl-gsw1xx.o
-diff --git a/net/dsa/tag_mt7628.c b/net/dsa/tag_mt7628.c
-new file mode 100644
-index 000000000000..80b50ff08e53
---- /dev/null
-+++ b/net/dsa/tag_mt7628.c
-@@ -0,0 +1,93 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2026, Joris Vaisvila <joey@tinyisr.com>
-+ * MT7628 switch tag support
-+ */
-+
-+#include <linux/etherdevice.h>
-+#include <linux/dsa/8021q.h>
-+#include <net/dsa.h>
-+
-+#include "tag.h"
-+
-+/*
-+ * The MT7628 tag is encoded in the VLAN TPID field.
-+ * On TX the lower 6 bits encode the destination port bitmask.
-+ * On RX the lower 3 bits encode the source port number.
-+ *
-+ * The switch hardware will not modify the TPID of an incoming packet if i=
-t is
-+ * already VLAN tagged. To work around this the switch is configured to al=
-ways
-+ * append a tag_8021q standalone VLAN tag for each port. That means we can
-+ * safely strip the outer VLAN tag after parsing it.
-+ *
-+ * A VLAN tag is constructed on egress to target the standalone VLAN and
-+ * destination port.
-+ */
-+
-+#define MT7628_TAG_NAME "mt7628"
-+
-+#define MT7628_TAG_TX_PORT GENMASK(5, 0)
-+#define MT7628_TAG_RX_PORT GENMASK(2, 0)
-+#define MT7628_TAG_LEN 4
-+
-+static struct sk_buff *mt7628_tag_xmit(struct sk_buff *skb,
-+=09=09=09=09       struct net_device *dev)
-+{
-+=09struct dsa_port *dp;
-+=09u16 xmit_vlan;
-+=09__be16 *tag;
-+
-+=09dp =3D dsa_user_to_port(dev);
-+=09xmit_vlan =3D dsa_tag_8021q_standalone_vid(dp);
-+
-+=09skb_push(skb, MT7628_TAG_LEN);
-+=09dsa_alloc_etype_header(skb, MT7628_TAG_LEN);
-+
-+=09tag =3D dsa_etype_header_pos_tx(skb);
-+
-+=09tag[0] =3D htons(ETH_P_8021Q |
-+=09=09       FIELD_PREP(MT7628_TAG_TX_PORT,
-+=09=09=09=09  dsa_xmit_port_mask(skb, dev)));
-+=09tag[1] =3D htons(xmit_vlan);
-+
-+=09return skb;
-+}
-+
-+static struct sk_buff *mt7628_tag_rcv(struct sk_buff *skb,
-+=09=09=09=09      struct net_device *dev)
-+{
-+=09__be16 *phdr;
-+
-+=09if (unlikely(!pskb_may_pull(skb, MT7628_TAG_LEN))) {
-+=09=09kfree_skb(skb);
-+=09=09return NULL;
-+=09}
-+
-+=09phdr =3D dsa_etype_header_pos_rx(skb);
-+=09skb->dev =3D
-+=09    dsa_conduit_find_user(dev, 0,
-+=09=09=09=09  FIELD_GET(MT7628_TAG_RX_PORT, ntohs(*phdr)));
-+=09if (!skb->dev) {
-+=09=09kfree_skb(skb);
-+=09=09return NULL;
-+=09}
-+
-+=09skb_pull_rcsum(skb, MT7628_TAG_LEN);
-+=09dsa_strip_etype_header(skb, MT7628_TAG_LEN);
-+=09dsa_default_offload_fwd_mark(skb);
-+=09return skb;
-+}
-+
-+static const struct dsa_device_ops mt7628_tag_ops =3D {
-+=09.name =3D MT7628_TAG_NAME,
-+=09.proto =3D DSA_TAG_PROTO_MT7628,
-+=09.xmit =3D mt7628_tag_xmit,
-+=09.rcv =3D mt7628_tag_rcv,
-+=09.needed_headroom =3D MT7628_TAG_LEN,
-+};
-+
-+module_dsa_tag_driver(mt7628_tag_ops);
-+
-+MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_MT7628, MT7628_TAG_NAME);
-+MODULE_DESCRIPTION("DSA tag driver for MT7628 switch");
-+MODULE_LICENSE("GPL");
---=20
-2.55.0
+diff --git a/include/uapi/linux/if_xdp.h b/include/uapi/linux/if_xdp.h
+index 23a062781468..50d67df78911 100644
+--- a/include/uapi/linux/if_xdp.h
++++ b/include/uapi/linux/if_xdp.h
+@@ -149,6 +149,7 @@ struct xsk_tx_metadata {
+ 			__u16 csum_start;
+ 			/* Offset from csum_start where checksum should be stored. */
+ 			__u16 csum_offset;
++			__u32 reserved;
+ 
+ 			/* XDP_TXMD_FLAGS_LAUNCH_TIME */
+ 			/* Launch time in nanosecond against the PTP HW Clock */
+diff --git a/tools/include/uapi/linux/if_xdp.h b/tools/include/uapi/linux/if_xdp.h
+index 23a062781468..50d67df78911 100644
+--- a/tools/include/uapi/linux/if_xdp.h
++++ b/tools/include/uapi/linux/if_xdp.h
+@@ -149,6 +149,7 @@ struct xsk_tx_metadata {
+ 			__u16 csum_start;
+ 			/* Offset from csum_start where checksum should be stored. */
+ 			__u16 csum_offset;
++			__u32 reserved;
+ 
+ 			/* XDP_TXMD_FLAGS_LAUNCH_TIME */
+ 			/* Launch time in nanosecond against the PTP HW Clock */
+-- 
+2.53.0-Meta
 
