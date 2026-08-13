@@ -1,154 +1,140 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A947541E6DA
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 19:14:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=67.231.145.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786648464; cv=pass; b=bDxEXBYV3IT3WLkp8QFDTdQodFYDPEakPYtYMdopoS+XS2L2r0ySgLE1QwLQWE2gdHz9/rIdqDMXva7IpuM0wmbHob/kS0J/rJkVxpsexFG+4vuwabDxEDeJ0mV4rMc4rVtZwDP/vNvvygYMSpbHSEV4AqfQnFIVhyBkvpcVN7c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786648464; c=relaxed/simple;
-	bh=4qRIJ9bpinyu0DwZHr0aKQZUHjvNHbNe7UYL+kxds2k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Zeuk+N3m9YFGMZjM5mkoCO8fStCbRZoP1Ns1mF6YglgV16pixyo8fAdN21Mwq2wd5NEiIwAShXiKdM0AWojD4WOcW+m3k8q+nkm9zm3+Y1CdLLF05dBACsGQpWmrZ1uvGWKvP2zHwAs2DYNkGZZTC7Mk+rthWTOTWSs615kVTmU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=eR8ny32x; arc=pass smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB91A37FF6D
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 19:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786648899; cv=none; b=fZ7/YU0aBazwFP1v847eBWGIvtZYGLE8nuWaGDSLrVykT12C0dG3306XKyytTs1XMn5qV25blwaRtusn5L3obWkyWOZrYqf/zqv4cQIiI1xIXReNvCuDd/AsJt4AXaA1tE/tr2dSLDfDPSWO+Jntey4TyqlB9Ik4Bbz46GPPaN0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786648899; c=relaxed/simple;
+	bh=vv8PV5ubYJpjgCVez8EfNnQ5d2wjNYWxAZbqsZfNvpI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WeFTAbltToHoDOtP4kDnu72r6AZPCSoJe449+IK9sejrfxoU9wUi6CVosFlVWKq7zvj5q4mo35KNBs6ZUThnTPMKGpeg9B9Hv63hDX0Y/dlrCLP/o1SguQZJCqI4Asm/pi2NxCFgxDF5AlKaUwaxoMZj0SM2M3iw4vMDu0Hn8Ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gYGS83AU; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="eR8ny32x"
-Received: from pps.filterd (m0044012.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67DIg8VV1818401
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 12:14:22 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=aFRNQgb0jvgeXUeAY2YfTzMp8MmWSXmQ2d5I+
-	/uZ3LM=; b=eR8ny32xnvDwAoXod/G3V3tHF5Q8fON7TL8MSf37DfSW0wMMCVnN6
-	yFXzpsMvmkGVbUZCVJw1kGX+YJ355bKJ8pcZAxkivt3fi3sw32IcxyIg0sh6cHp6
-	sp0UO8E8/0Ya4qxF65cgTaDFgIbfMT3rdXoVwiQ82hfNNtY/cgpPhKPdB8YsXV8w
-	XXF+RhDJ1EH3jtJlTdgBeQWrZnyNms4elByzkb0z5B/rZ+G8mCOOLUe5CUsx80HA
-	AEMTEcXIzQJp+KviDn0ON0/aDrKlUQnunOqQcH3BRp9RGIGv32pvOxOH7LdzCQIq
-	T1AvcM/4LodqbxaL7P++a0zRp/Rk8DYAg==
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com [209.85.208.199])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4g07xd8m4g-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 12:14:21 -0700 (PDT)
-Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-39f60b70366so629361fa.0
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 12:14:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786648460; cv=none;
-        d=google.com; s=arc-20260327;
-        b=s2kgdvmVCmOGavyC4jwx//E4rKmc7jYeWwcQmei9X2anNxohoSE7pa47ZBgaPWnKdZ
-         QtXexEZcFE5yUlVSGLk7SdhWODUHW1gzwvT4IHdDqsFORaj7Ojj4P7S0Usqm+V+OE71z
-         4GWvsYKBOPhiGFiKGAlaTEyAefSlhhZA72Tv3nX+6UzF1+WY1EsewEc0GcEuTNHL0x3B
-         rJvMQSNWHd7bhBtUqV3lPvl27KpI6zv3VPJ3yT8K/8phgAxwwv5CAG5Xy5uMtn4owHH4
-         PQ8Ls3uDLApMdth9x44d7pzXS1C3/6vV4j27lV+eW1DSrQozzqKbO5CZmcbN/T/2uUBQ
-         LuuA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=aFRNQgb0jvgeXUeAY2YfTzMp8MmWSXmQ2d5I+/uZ3LM=;
-        fh=BuQ28IRtSljusvh1N0A3oQ48Y+e6r31pPIJX2kzLw+s=;
-        b=rCo2TJ7mUDFHNj2qOU+4NhW15yNHDvL58lL83M9iT9cirtutneR5WGmPvreKU90NOm
-         WBNJA7CAWBtorCgMNFJwmeMXjTblQQz5q5RriOY9MCzhT591Ndp861mgL6h9vVs8NtvV
-         GOxWh/P67OMmOss0jMDMUbkFPM2/kSMyheiLX2+DW3pMhy2uX/Jq5sniIoVA77b4TiYI
-         f52g27FFlvSI+kKGo3ZIqIRMDNDcU4+nZ6g2ee9thVaD7oWvZjw4UaioMj1nrd0M/5ka
-         QYm4PEhbGXd5SssaG9BseFNmuZx5TP78lt9Xb2e1Cek6Ch7wTK9BafoiLep14B2qkBQX
-         LeAw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gYGS83AU"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4954a2e73a9so2003405e9.3
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 12:21:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786648894; x=1787253694; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+7NB8ynmNItA2zqEEd8ZtdSkai2iXlE7wEPBOLcYnsQ=;
+        b=gYGS83AURLUwgq7r7T6XZKHBJevWsjxH44GPL6VZJr9+bkpOQL77vVDrUg5qT4BPDV
+         QHKC6Wre7EmUlvJ/eiU6QQUVrAJDJ+jLq9F5jpZoKhKDkxrz+3ONdr1yD759csWvSV2F
+         2E3A4SrFUYBXwI3GCpHUchVlBd0ybGfBc0qwA0xgQvVXW2UM5nTJyQzL7CATcJYnuRVL
+         GyE7GEFQJ0Xn2psjQLvRrtEUlK+MF/D1JVfkT7bcJ+tSnffONrg9AdirDq/Y0uaZh4+j
+         w+fkYXbigSEikTkEyuMWrjDiVWxiCmmbjvIkwuSG0d+ynExtkzQKeTSU9rydQbZqWv//
+         xijA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786648460; x=1787253260;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aFRNQgb0jvgeXUeAY2YfTzMp8MmWSXmQ2d5I+/uZ3LM=;
-        b=Q+4NbVRoUxZfvVtmpfj61F1NbRN9M6JscdE14UoJ5Tndy0u5cXWq/I/nfxzJn6Aktm
-         KZQK4ZzRIWZuSDfChT7jMj8eNYIe/2oNhmaMS2tZVc66kpSLsKzTnEJ+lKzsv1vKvAnd
-         4p9PyOwT1xFOFDYtIXevKlF96TptL5fWgMSFk1uAahqIdQq4Ya3NCZmiqPKkhUxwsTMX
-         vZoAFIKZkA4aW0rb+acuXcUU8AfQsMpSBFwwYTl/SOyCyru36CYSmQAUGtXE3VvUYIW+
-         UYauWGRC6WLOqXN9r/xj7WRLiCD54iklpJn6oWDbt0HAXVNKaAlsyZKSMDg8Jcyes2+M
-         jhXg==
-X-Forwarded-Encrypted: i=1; AHgh+RoWtgN49E1Prf80S+x4hYtrouJJUdJ1PSC2oQsyEa66FO9/MQROprb/JvvTA1I7JJuEqh5u008=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTKZUZM47XkcGk3pOuMRHU1qEKSkbdTqRqhxPWz+8r9frmOzi7
-	rWA/oY8xm+jMAk3Pmosd3mAhMbgbJ6fhiZebOl3vM+82aaY8MKVpx2jsZbHAxNK3kBmW4ZNcscY
-	xjQQTGgtQJLqyXykvRFLJA/Sc5l4os/LwspwGvN5iC6ZSwRLRF9CZmL0/uCSVDdMHHzZfh0lAsS
-	+GZnKxwpiloGuG0Ze+fRt/hbVbWprhCdy0FJPxx1UsQsEo
-X-Gm-Gg: AR+sD11q3/ctviOn4gv3ceXfaWNA6o0AxbMRvDmY9BXyVAp1lIC6FFul92u3H8BWdXY
-	WN98XeAvdZzt7OfMR+gTcWpb62u0JF5jHqsR1nN4FSApzuGUTa6RgannR7ZRXvXOWFlEfB4ewNo
-	ELShY6QtDZqppEjcchKnijSfdV3UpFwkEcdAYEmqkbakhcmW5WZ0KTEzuYKA==
-X-Received: by 2002:a05:651c:1504:b0:3a1:11d3:16f9 with SMTP id 38308e7fff4ca-3a1324cb6acmr650141fa.23.1786648459998;
-        Thu, 13 Aug 2026 12:14:19 -0700 (PDT)
-X-Received: by 2002:a05:651c:1504:b0:3a1:11d3:16f9 with SMTP id
- 38308e7fff4ca-3a1324cb6acmr650031fa.23.1786648459610; Thu, 13 Aug 2026
- 12:14:19 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1786648894; x=1787253694;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+7NB8ynmNItA2zqEEd8ZtdSkai2iXlE7wEPBOLcYnsQ=;
+        b=q1ULYVnAhkjMLyXh7h0vWOSaOjSaVXd0kbWfqjrg3m+L9yBTKBxuNCaqOjehOLYivU
+         RFVkLKI4UeylaEr/R97dIhQQeIizJB3DUjvXfsWRItRnv+cawUS+f0dQi7IQakQfBDC7
+         JEV2pe7kS5MPS7owxptbMyXqN/5/86AfLZruuVKRntnb4mn1jVMUTTxq35fqxZtVhzUO
+         DwPpIqRIgy7iLnDKJoBmFLAoJosY7Yx0JwAxdx/ftNn9qsjvH7ZkcaIW5CQT7em3SCAo
+         PT0KFhX2LUhvo84GCBGr+82HJ66MrG5QxiW22m3AlS4DIAyI/omXauhQCWISprrNlGcF
+         gCFA==
+X-Forwarded-Encrypted: i=1; AHgh+Ro1yD4FO0lMrWDDWIh2Sr1VOiJ+5QWUepXivPfRwXyuMdv1+JTFqX4zj2Ltn1PqBkHJ5MJ2Pts=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhyIy7EMRl4HaEUHhmJnO7IOlKkP5IGxqEMnUYaAoBFS1FNcjP
+	Xx6MCgdXBkIqKFtRmMGimbufA1GWmAKQQIxuVv272eidcfWchUtQ5v7l9q11/+qr
+X-Gm-Gg: AR+sD13RvKDp53A2G7oPTfenkK33+oGUM3KhwaqwNewKakwQOP2hp6h2MSflspx70tL
+	lmlM6+uTk+nu5FeWcKm9Uubv+3Ocgm9dA4H+ajE7TfTgBWeDzaoixgWIsRIZkZ1Pt9v/cI7LKyp
+	dYQcV6H0Lav2GynNriDJTUD/H3sIE6to9WAD17LMh3lWFWkh07fhWQCBBnTb7x4uNskERYue/0G
+	X17VHC6cSCwlkyoFKglN043WMDT0Fd7AR7RmyjTxT5IH0O9mJz4xppLEKX8oNoaltTXF7Z8jfo5
+	YM0SRLwD3qdFp5/lAmphcwi4Z5Nc+r0WC+tcy+7gXG34cvZdlUXZ0jmA/siRxGy93L5qrW8PF35
+	F9MNgPV6yVTnVlhUyEcvirb3YHb919XQvmaic5z8n7t1HzEJ2nCV/Z+44DbPs9by7jgplCh2BNh
+	g6sCXM99gnN/PnMnb2E6/O6/1WVpYGANM4dYcJ2tSMGgr4MehhhD3SV7yLNbhKwBP2yz1bh1CDX
+	R0mt86WYwyIpvuWI4mhn1xkRZXk4qbO5gsLuzcyQkP9CLVOdNuybBBbAEFYpdQPTvhtlgZq3/yj
+	yFEJOIObk4l0u3ZT8BpgfclvG0Z9aOXHPV4MFIA/7JgVfzIBSXI3qUL8f28MmjjXDj2V
+X-Received: by 2002:a05:600c:228e:b0:495:4e1d:82df with SMTP id 5b1f17b1804b1-499879774bamr6459735e9.10.1786648894179;
+        Thu, 13 Aug 2026 12:21:34 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-2a02-3100-9c79-1f01-1565-573d-10dc-99f9.310.pool.telefonica.de. [2a02:3100:9c79:1f01:1565:573d:10dc:99f9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49983f10469sm57977695e9.11.2026.08.13.12.21.33
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 13 Aug 2026 12:21:33 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] net_shaper: fix net_shaper_ops kernel-doc
+Date: Thu, 13 Aug 2026 21:21:31 +0200
+Message-Id: <20260813192131.21254-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260731185431.2777685-1-gmj@meta.com> <9e741e85-76ff-4625-85b0-62ee679aa2b0@gmail.com>
-In-Reply-To: <9e741e85-76ff-4625-85b0-62ee679aa2b0@gmail.com>
-From: Glenn Judd <gmj@meta.com>
-Date: Thu, 13 Aug 2026 13:14:07 -0600
-X-Gm-Features: AUfX_mzRStG8snbSZp9jy6R-MpmdyO8IqF5t2aItUDB0o5wfGhyd83XYPmU3rlM
-Message-ID: <CAD7-H+=o6afiydHrgdWpKRsy02fAwz-StUadCwWb3TprmMTukw@mail.gmail.com>
-Subject: Re: [RFC PATCH net-next] net: gro: coalesce padded small IPv4 TCP segments
-To: Richard Gobert <richardbgobert@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>,
-        Kuniyuki Iwashima <kuniyu@google.com>, Kees Cook <kees@kernel.org>,
-        Jiayuan Chen <jiayuan.chen@linux.dev>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEzMDEzOSBTYWx0ZWRfX3EGHgM6uCoP4
- BAY5UJAAOPmrjNh1TFa3kzQjpJPblA7GTfVZuVUcdzIuzY8BvfWuTkTrDFvPSutG9wUv8RamXI8
- JFbv2MpTrhKMv7gUNpnR7Iuj/UrX1s1+DY/44iHruuxqEeHHgjABt+E5kWc78/SsdXWKWdY3AbJ
- X/5mSu7mW1ZU/tFRi7of6X7wM7Y8dEQSvJNkgpY0NmSkJKuya+Wepjm/0Y5b1KcdZlP9ud7y3yA
- iddARCEdXrll4wOaFIZ4Ws1iMn14GVS+hmtXklomild8wzS4Z1JR62t+QjglawRevHzmnOHKAX0
- WkV5D+xcvhr+jrqV5gu2CySEAykIRIAjcboSKjHftcc8mMzHTy0uxaGpK29V2ln07EHUUCtfHbZ
- NIIS8VakGeMfH+EAPge/FBniWUhlG6Y3WUM3V3r2JM/AKIFB0jTHWDlR6Veuxyw+/s+xsUcg+eU
- D4gs3/XqGu1fhQm0oXw==
-X-Authority-Analysis: v=2.4 cv=Kvx9H2WN c=1 sm=1 tr=0 ts=6a7e178d cx=c_pps
- a=jH9SAkXWrj5X7T5/VHKg1Q==:117 a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=PAz_-FQ8hEVmOPYdF0yf:22
- a=pGLkceISAAAA:8 a=97N36fql_02kr_JmGwcA:9 a=QEXdDO2ut3YA:10
- a=uSDOZ7Pa92Zmn_oY2RqJ:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODEzMDEzOSBTYWx0ZWRfX5NcGY+V5dSl/
- ZHZvuxzTSXhufQVrCDs91IMHLyWi0eH430hgaWiAvnh4GD+BAhWtTcsjzEaF1dsDO3BhF/7B+px
- wuthKv5zIS2PHs6C8YmHQbd936g+lcM=
-X-Proofpoint-GUID: 0VQ-az08U3wjKwMIGF-wlLE66UsllJ32
-X-Proofpoint-ORIG-GUID: 0VQ-az08U3wjKwMIGF-wlLE66UsllJ32
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-13_06,2026-08-12_01,2025-10-01_01
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 10, 2026 at 6:11=E2=80=AFAM Richard Gobert <richardbgobert@gmai=
-l.com> wrote:
->
-> To address Jakub's question on the fast-path cost: I benchmarked GRO
-> forwarding with two-minute long iperf sessions using 1, 2 and 4 TCP strea=
-ms
-> (17 runs per configuration) and CPU frequency scaling disabled. I also
-> disabled RSS during the benchmarks because it caused a lot of noise - up =
-to
-> 20% variance in the deltas.
->
-> | streams | baseline (Gbit/s)  | patched (Gbit/s)  | delta  |
-> |---------|--------------------|-------------------|--------|
-> |    1    | 14.083 =C2=B1 1.01      | 14.065 =C2=B1 0.67     | =E2=88=920=
-.13% |
-> |    2    | 13.891 =C2=B1 0.75      | 13.926 =C2=B1 0.78     | +0.25% |
-> |    4    | 13.008 =C2=B1 1.26      | 13.029 =C2=B1 0.97     | +0.16% |
->
-> The two added fast-path operations (iph->tot_len read + the skb_gro_len()
-> comparison on every IPv4 GRO packet) produce no measurable throughput
-> change. The deltas are all well under the 95% confidence interval and
-> indistinguishable from noise.
+Everything from the "Driver ops vs uAPI" heading onward is dropped from
+the rendered net_shaper_ops documentation. Older Docutils versions do so
+silently, while Docutils 0.22 reports the nested headings and adjacent
+list as invalid.
 
-Thanks for that analysis. It's in the ballpark of what I see on my
-side, though I do see a small cost in my setup. I'll follow up with a
-revised approach in v2.
+Use bold labels and correct the list indentation.
+
+Fixes: 16812d9674d4 ("net_shaper: remove incorrect comment about group leaves")
+Fixes: 26bc4cfb1737 ("net_shaper: clarify the kernel API / comments")
+Assisted-by: Codex:gpt-5.6-sol
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+---
+The omission is visible in the current linux-next generated documentation:
+https://www.kernel.org/doc/html/next/networking/kapi.html#c.net_shaper_ops
+
+Tested with Sphinx 9.1.0 and Docutils 0.22.4:
+  make SPHINXDIRS=networking htmldocs
+
+ include/net/net_shaper.h | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
+
+diff --git a/include/net/net_shaper.h b/include/net/net_shaper.h
+index 05cb625b0fe54..a2eb616a19fd0 100644
+--- a/include/net/net_shaper.h
++++ b/include/net/net_shaper.h
+@@ -73,20 +73,21 @@ struct net_shaper {
+  * Each shaper is uniquely identified within the device with a 'handle'
+  * comprising the shaper scope and a scope-specific id.
+  *
+- * Driver ops vs uAPI
+- * ------------------
++ * **Driver ops vs uAPI**
++ *
+  * Members of the driver ops mirror the Netlink uAPI but driver calls do not
+  * map 1:1 to user calls. Drivers need to be careful when assuming that calls
+  * disallowed at the uAPI level will never be made at the driver level.
+  * The shaper core performs automatic reparenting and cleanup, generating
+  * additional calls. Notably:
+- *  - @group calls in the driver facing API may have nodes as leaves (user is
+- *    only allowed to construct groups with queues as leaves)
+- *  - @group calls may update leaf's parent if the parent is about
+- *    to be removed (re-parenting nodes explicitly is not supported in the uAPI)
+  *
+- * Implicit creation
+- * -----------------
++ * - @group calls in the driver facing API may have nodes as leaves (user is
++ *   only allowed to construct groups with queues as leaves)
++ * - @group calls may update leaf's parent if the parent is about
++ *   to be removed (re-parenting nodes explicitly is not supported in the uAPI)
++ *
++ * **Implicit creation**
++ *
+  * Shapers are created implicitly, meaning that @set and @group operations
+  * are called both for existing and new shapers. The driver has to infer
+  * whether the operation is an update or a creation by tracking the handles.
+
+base-commit: 3205699d79f262412c1be7fc1c04066610d3cd52
+-- 
+2.53.0
