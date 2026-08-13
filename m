@@ -1,185 +1,170 @@
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2FE38B7C3
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 05:13:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786598003; cv=pass; b=iyM9yS2nlNcEVGV2E6b8KLNB9LiNXfmKiEt25K9ql19OyzD6s+7lZtF/2MWK64llU+Z0DWBDTJ4RGnjSglML4dUYztMSFvkAYlXNiSAqZ+5MBNK7jkR2jsW2izdi4gvcmkGQtdHVpkdVvXiKoVBxC8Z2dQAdK0zmRHFHYX1Pmvc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786598003; c=relaxed/simple;
-	bh=jH269NUkneYji055jp93VCBiUHSr7s+k4kmOaLhCHds=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SyPaZ5/9myKgdi7x7IU/3Y3s/V7BNo1P9ZxzHmj6+mF1hKqETACPT1xzvR5TCCGwsCoPVTFbyiZoRU1P+D1oSaqrDYHVf0bJ9I6nSOE4zpfanJgt4Sn+UKuyhEgqzOAc4JPQL1ulKr7JGimHBK+PMDIXc2JMb7rAv4FoTcMrG0w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eQKPAb+G; arc=pass smtp.client-ip=209.85.222.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C5A3AEF54;
+	Thu, 13 Aug 2026 05:13:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786598074; cv=none; b=khrkx6MzwJMnYjtZqmxaHhBT/7iRDBpuuBgAUHXE7O5KwRhDvvRcE+edNAXDAabF5su7smTzhpOmFsgJfZJEfFhw+esymQMSF2zZ1aq8d0RGR0lrTztWYQmuIQGObd1xu3dnWHusOFmzS1rkJ8FTRu4L6a3Ks4PwRMpYdebyf9k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786598074; c=relaxed/simple;
+	bh=U359jvgB9lHxFvzrB10D/cY7D4DIMzHLKnRI9pPFbJI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EEEdVvwvq1av4pqe3T2fREi/+iilCamLFxO9ZHWOSH3p/lf0649JbY74NKugPUunS2naNVoqdwLk73h6hGlR0zQBKzA+jK+TkGb3Ttjsj1LjSQt5maTSVofewikYlPfVH1TOR5spuAT1vqTWo9VquZV9Wu1G4Fu1rwF+/RsMm6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=A+C/oUoy; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eQKPAb+G"
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-92e5c9211d2so23794085a.1
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 22:13:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786597986; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Lj0pojRsspow7cjyg3giN25/xOcwr+40lwm574rOjnGZF/uiqADF1D86pX6dax4IQ8
-         AVrKpW9OmiQZwQC9Ne1ZZAuZylHenXI3tgr+eQd1hd2/8wea2dXqx0QtYXaO+Acg64Xa
-         fupGEpF2yxmRgiQmKJAAx0q8ZopaIIjuIb4Ln1Tq94lmL6ydgJlC1RLpWXDlasp0Ybac
-         ykuWX+N4jytszCcqtXDgEEBFG9EKd1aUVewCnOOobqOjnPGxaWn+rWgANBGZiSmJnyDG
-         wbH7XOiMfcegoCZaZbU3MR3PtywWrB813liAn8vKzRE/enWuVRsco8r5pgS0KTNjoZLh
-         eLBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=uEtieVc9WSJ5PDHBcvuJibcDLApd92WXRwOLQpfbWq4=;
-        fh=zw2Tf0vMtu3hAEFoJbDfCjU/V/Fceeopbv+cwPpkdHc=;
-        b=kv5X3Zp8z07USQH+K+kjf+VPfD8a18eE2WRtp1tv/Q/i3lebHS5IPGPZcCRRbF/tfl
-         7LWmP88ZhxwQNCaoTxDGS1rk/X42MnyCT0b0PQ/XiBTUTHoKtoLttB637cRQOqhWHNce
-         gf5YPRzJVm5xQfviwep8uYnqLsLdCjFrl6c2mObJDlUQ0Tvx35ZDSGtQCPoBd2f8KCCR
-         oAJBcNyKJVtA+OfxFeII6ZLLJsR2slqBfFLApnNmDX09Me/19q25gOQVkticVC92GrLx
-         uN1dsyLayttlJ813zHOhczT7MgjD2zsIZ83aV5nTH+3irD/H8wNbZuvd0oIxOWnz+Fax
-         OO3w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786597986; x=1787202786; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=uEtieVc9WSJ5PDHBcvuJibcDLApd92WXRwOLQpfbWq4=;
-        b=eQKPAb+GVppOHChuW44mb7eGSzBl88RR4yOq6j3EbmiuUbu1PDF6YuIBEYfKcetBC2
-         lTSqkGCsyw+cdiWg006WsKvwQ0FZSBgMnLeNXsgcwUJyfA3TEXFOR5XFK+v/9lt7PgN4
-         zld4ukdhz5/KTRNzQHO0K07do4fa6ePZ4GQWoDQkPSWPat/gi6LdgnHcvpGr4lnSex8P
-         EzDWssQ2YxZS/GhRLSLPsyr3k2byP0ZxkZ5hY2ll7GfzJo5yqloB4T6Q4GVMp4xUip3Z
-         HHU6I0yc7AwgnnXk/cTBW9y7uN1OC1PBdY8/Dk3CkLyf7WvxqwBTEDb7ut3N19yfGA2H
-         YKzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786597986; x=1787202786;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uEtieVc9WSJ5PDHBcvuJibcDLApd92WXRwOLQpfbWq4=;
-        b=H9ea9+kpxjdwSVbXJhVfz+44kiEJg9eOySGO8PR4DrOAsq7KQ+ADQLG+0C2aquS6CY
-         DEkxDiFBhersOT9xCM5dOmgqLnXoZsk1adX7x1zQmC5St8PFH5oSyOD3xCkha7Qsn81y
-         X4JUqH6no8vWkOvMsuMFpnD2uW/u9L/MCV7VTjkcKkNbpgshuDCU8lfjHenVMqRR7o+d
-         M4q+9bidOXt4+MKFFdl3ur0obgD1/eLgDHZxSGRVLsKd+J9vHhDkvdtXkcZpV3YIP8Al
-         Tx7PAEaBIhkheQdjh7KxofHwajfv+KfNQGKNDCDuzoB3PLYPN/4VAldi5VlqRWRITNRg
-         GxIw==
-X-Gm-Message-State: AOJu0YxsXNLJW6Ue+VFx6LaF7DEDCMQMtJSV/Naj/p4w0nHw519nysBd
-	q7NkHktcmhp2lr4bRXLIDFGYcIiSI7jisBJvj/IthqT4rfyvd5o2RNHPuxJWQ5LY7fXx9UV9i+Y
-	lXNAmIgfvEcAlgFT8eML0itKnX8hcJOt+2vzjEi5athIT0ktu4eqX21S33CQ=
-X-Gm-Gg: AR+sD102Y8T1Qzd9r0x1gtdaWOSMEGUzMTy6lTjM7x1Do3OBCLXwB83kmiDFYdlOAUP
-	WQx9HXFqOcgj1nSPkqeOOSqCnSsLzRqkfuAsxewBsmhYOTq0/thDZNemf66WiX2TKtjrsyisZYk
-	9zX/4ffs6tdwANWO+eof2ahfqLKO60+0kejAyV9I4WM9/UvCZeoMMKzuEVpmjJJ2G9dZXNnUKSM
-	xvqRjtTgPDasY38b++y579i5Y266j8hozBW+OP9A7mMY9Xk8C7glVbRWXngvRcyI1s2GaYVcCzT
-	VVIXX8DlzmOTKEh7HS7xcpvt7y2jEpfF9mzUYbNdEiJhXjWeB5eu9Yi+w+orDCw0Cvhf4U62j5Z
-	Q8/APdD+mpH/UXUzWc+Z0tpwq56orQJMLbYHk5d3nf/H5Wa9FF/PCm6cnfhzPov+iyI7/i9AnAv
-	ezAOQi5imTwJCRmyI=
-X-Received: by 2002:a05:620a:19a1:b0:930:a718:bafb with SMTP id
- af79cd13be357-936bf8e9556mr236573185a.10.1786597985288; Wed, 12 Aug 2026
- 22:13:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="A+C/oUoy"
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67D37hJ12061660;
+	Thu, 13 Aug 2026 05:13:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=RjoX7sKAdg7B6M+YOHHZVDhjBV3ZT
+	tvzwcbFoavO/n4=; b=A+C/oUoy1yFof8LfftD8EFxpN027HwjCCTUU/zY9M0GTG
+	LynotjE2cq6K5GbLXV+lZLqcB/7nAl1uDd9fWTBcBKy47X+nCy6FmYDVGzALjR5K
+	cdtMp078DAW6YXUWTJeQZPMKdmvkQHrs6suvdAQ0ies/etc+SMFoVZWD4L8liLSl
+	iXzXRqOpv3lv+oaBofR9U9tECw/RQRiRstVSrHXvIXofAnYKzuLBdx50/AQ3KBD+
+	Sn/vF0WT+yYblQimGMztN3/3j0OzHzCmS32wQE8hkVCyQnAHZ2TyW54Kr2fI+tYc
+	u8/2IpJi5rpI9i2tK+KlB4cyTn06Vs0qlIq1+nURQ==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4fwvhe01m1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 13 Aug 2026 05:13:16 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 67D55mpi027729;
+	Thu, 13 Aug 2026 05:13:16 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4fwtwsjwf7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 13 Aug 2026 05:13:16 +0000 (GMT)
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 67D5DF9F008193;
+	Thu, 13 Aug 2026 05:13:15 GMT
+Received: from aakhoje-nft-test1.osdevelopmeniad.oraclevcn.com (aakhoje-nft-test1.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.248.219])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4fwtwsjwex-1;
+	Thu, 13 Aug 2026 05:13:15 +0000 (GMT)
+From: Anand Khoje <anand.a.khoje@oracle.com>
+To: Brett Creeley <brett.creeley@amd.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Abhijit Gangurde <abhijit.gangurde@amd.com>,
+        Shannon Nelson <sln@onemain.com>, Leon Romanovsky <leon@kernel.org>,
+        Eric Joyner <eric.joyner@amd.com>,
+        Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+        Kees Cook <kees@kernel.org>, Mohammad Heib <mheib@redhat.com>,
+        Jacob Keller <jacob.e.keller@intel.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc: anand.a.khoje@oracle.com
+Subject: [PATCH net-next v2] net/ionic: avoid OOB TX partner lookup for hwstamp RXQ
+Date: Thu, 13 Aug 2026 05:13:15 +0000
+Message-ID: <20260813051315.430146-1-anand.a.khoje@oracle.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260813020529.3506539-1-willemdebruijn.kernel@gmail.com> <20260813020529.3506539-3-willemdebruijn.kernel@gmail.com>
-In-Reply-To: <20260813020529.3506539-3-willemdebruijn.kernel@gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 13 Aug 2026 07:12:53 +0200
-X-Gm-Features: AUfX_my654oSCj8Jvfk9t6nV5AAv0jJoyfpxZTmlGpim3EaNPCSGd_HPp2788oY
-Message-ID: <CANn89iK6O7ujR9zCJzd04MNLQoDi3mA+HWsR-hgQWYzLS3gZfw@mail.gmail.com>
-Subject: Re: [PATCH net-next v6 2/6] net_sched: sch_fq: clear past skb->tstamp
- if offloading pacing
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, andrew+netdev@lunn.ch, 
-	Willem de Bruijn <willemb@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-13_01,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ adultscore=0 lowpriorityscore=0 mlxlogscore=999 mlxscore=0 bulkscore=0
+ malwarescore=0 phishscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2606160000 definitions=main-2608130033
+X-Proofpoint-ORIG-GUID: UFpWOBX7fWQiW0XTXSfV2xFXAafpASTj
+X-Proofpoint-GUID: UFpWOBX7fWQiW0XTXSfV2xFXAafpASTj
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEzMDAzNCBTYWx0ZWRfX52JmoUyyir8s
+ PAbp0WpWnfNY69uVOpjWSxWgP9+oa8me4DQcS+cqV3HfyqJzSkvVM7qtvjWSJlEwHyQyeZMjuG1
+ av97ACgQNktbpX/1oEnfMcmmq/UMvrvLq9SEzNAY/4q5cRAwRU542LuGojZQSq0eSExeQyL5vzI
+ N2mbafhh7PjJ6/O9U9+wX9QCvJ+erN8//hjhEEfeuQCfGajg3ADYYO3reU3kmI4pm65mLtFKt7P
+ EhpohGW1xhVw3pwmO20cdX+3xQkay06ZIO2Z3WAbDT3pDfb+GBVxGZvz9S1vYD0rV9S5h1cAnsX
+ /oAYGvSHzL1TTUJvbkOAkGF0lLWHNnVZI6MU/vfNa/Abgfs88QpppKrb6qRLiuhaIjbsvJ9nZA8
+ qAiu/XSX2fIuabcDJ7LwhBVytEaMN9lcUWJz7+d/8ERi/TAtbXZXS/k3paZUqsmQRmSlFMm4983
+ hqcc0L3MPC4/bFZ4KC91d5m//ciccCzt8uV71nAs=
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEzMDAzNCBTYWx0ZWRfX3NzAoW1f6zRz
+ NhzGwVB++mNI7A4IZN0CPl1RnEHgnBgshiEJ9UQXDXU0XPjK2P4Q4IIsx3iMMaMddN3GYIMlWqE
+ VA+oIxOxBbxAsU6MZSCovpu8hVMo1r1B3VXl4hj7qRmJe6oUMz3O
+X-Authority-Analysis: v=2.4 cv=L/YtheT8 c=1 sm=1 tr=0 ts=6a7d526c b=1 cx=c_pps
+ a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
+ a=BqU2WV_vvsyTyxaotp0D:22 a=yPCof4ZbAAAA:8 a=vHwtaBK_cnxrrt37sGYA:9
+ a=5yU3S35YU4bGjq-dph-N:22 a=Bho9c0fBagfJEIQBS7DQ:22 cc=ntf awl=host:12099
 
-On Thu, Aug 13, 2026 at 4:05=E2=80=AFAM Willem de Bruijn
-<willemdebruijn.kernel@gmail.com> wrote:
->
-> From: Willem de Bruijn <willemb@google.com>
->
-> When hardware offload is enabled, FQ will forward packets to the
-> netdevice for pacing. The device has to test that skb->tstamp is
-> in the future.
->
-> Avoid this cost for packets whose txtime has already passed, by
-> clearing skb->tstamp.
->
-> Also clear slightly into the future, for EDT timestamps that are
-> so close to now that they fall within a reasonable normal Tx
-> latency. This slack is set to 400 nsec.
->
-> Also disable timer drift logic when offload is enabled, because
-> time_next_packet can exceed now causing a negative value.
->
-> Signed-off-by: Willem de Bruijn <willemb@google.com>
->
-> ---
+The dedicated hardware timestamp RX queue is allocated with q->index
+equal to lif->ionic->nrxqs_per_lif. The normal txqcqs array only
+contains the regular queue pairs, so using that index to set rxq->partner
+can read one entry past txqcqs[] and then write through the derived
+pointer.
+Only link RX/TX partners for normal queue-pair indexes. Leave the hwstamp
+RX queue unpaired, and make the XDP_TX path abort cleanly if an RX queue
+has no TX partner.
 
-> @@ -828,11 +837,16 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch=
-)
->                  * f->time_next_packet was set when prior packet was sent=
-,
->                  * and current time (@now) can be too late by tens of us.
->                  */
-> -               if (f->time_next_packet)
-> +               if (f->time_next_packet && f->time_next_packet < now)
->                         len -=3D min(len/2, now - f->time_next_packet);
+Fixes: 8eeed8373e1c ("ionic: Add XDP_TX support")
+Signed-off-by: Anand Khoje <anand.a.khoje@oracle.com>
+Reviewed-by: Si-Wei Liu <si-wei.liu@oracle.com>
+---
+v2:
+ Fixed the Fixes tag.
 
-IMO this part deserves a patch on its own.
+ drivers/net/ethernet/pensando/ionic/ionic_lif.c     | 14 ++++++++++++++
+ drivers/net/ethernet/pensando/ionic/ionic_txrx.c    |  5 ++++-
+ 2 files changed, 20 insertions(+), 1 deletion(-)
 
-Using a variable adds no cost (compiler will generate the same code),
-but helps to understand what is going on?
-
-commit e51f3936aba0e5887cf5884b18ffa769dcb38523
-Author: Eric Dumazet <edumazet@google.com>
-Date:   Wed Jul 1 08:33:38 2026 +0000
-
-    net_sched: sch_fq: fix pacing delay underflow with pacing offload
-
-    When pacing offload is enabled (q->offload_horizon > 0),
-    FQ can dequeue packets early (now < f->time_next_packet).
-
-    In this case, the drift calculation (now - f->time_next_packet)
-    underflows to a large unsigned value.
-
-    min(len/2, now - f->time_next_packet) then evaluates to len/2,
-    incorrectly halving the pacing delay for the next packet.
-
-    Fix this by only applying drift compensation when now > f->time_next_pa=
-cket.
-
-    This bug was triggered when flow_max_rate was set on the qdisc
-    or for non EDT packets (packets with a zero skb->tstamp).
-
-    Fixes: f26080d47007 ("net_sched: sch_fq: add the ability to offload pac=
-ing")
-    Reported-by: Willem de Bruijn <willemb@google.com>
-    Signed-off-by: Eric Dumazet <edumazet@google.com>
-
-diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
-index 7cae082a984721215b17fea2d094095155580dcb..f2a65a7a928d5838547285921ce=
-0b42c99a96ef4
-100644
---- a/net/sched/sch_fq.c
-+++ b/net/sched/sch_fq.c
-@@ -828,8 +828,12 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
-                 * f->time_next_packet was set when prior packet was sent,
-                 * and current time (@now) can be too late by tens of us.
-                 */
--               if (f->time_next_packet)
--                       len -=3D min(len/2, now - f->time_next_packet);
-+               if (f->time_next_packet) {
-+                       s64 drift =3D now - f->time_next_packet;
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+index fd3ee9820531..1822361e1070 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+@@ -920,9 +920,23 @@ static int ionic_lif_rxq_init(struct ionic_lif *lif, struct ionic_qcq *qcq)
+ 	};
+ 	int err;
+ 
++	q->partner = NULL;
 +
-+                       if (drift > 0)
-+                               len -=3D min_t(u64, len/2, drift);
-+               }
-                f->time_next_packet =3D now + len;
-        }
- out:
++	/* Only normal RX queues have matching TX queue partners,
++	 * skip partner pairing for hwstamp RX queue.
++	 */
++	if (q->index >= lif->nxqs)
++		goto skip_partner;
++
++	if (WARN_ON_ONCE(!lif->txqcqs ||
++	    q->index >= lif->ionic->ntxqs_per_lif ||
++	    !lif->txqcqs[q->index]))
++		return -EINVAL;
++
+ 	q->partner = &lif->txqcqs[q->index]->q;
+ 	q->partner->partner = q;
+ 
++skip_partner:
+ 	if (!lif->xdp_prog ||
+ 	    (lif->xdp_prog->aux && lif->xdp_prog->aux->xdp_has_frags))
+ 		ctx.cmd.q_init.flags |= cpu_to_le16(IONIC_QINIT_F_SG);
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
+index 301ebee2fdc5..73998d61593 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
+@@ -543,13 +543,18 @@ static bool ionic_run_xdp(struct ionic_rx_stats *stats,
+ 		break;
+ 
+ 	case XDP_TX:
++		txq = rxq->partner;
++		if (unlikely(!txq)) {
++			err = -EIO;
++			break;
++		}
++
+ 		xdpf = xdp_convert_buff_to_frame(&xdp_buf);
+ 		if (!xdpf) {
+ 			err = -ENOSPC;
+ 			break;
+ 		}
+ 
+-		txq = rxq->partner;
+ 		nq = netdev_get_tx_queue(netdev, txq->index);
+ 		__netif_tx_lock(nq, smp_processor_id());
+ 		txq_trans_cond_update(nq);
+-- 
+2.47.3
