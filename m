@@ -1,239 +1,142 @@
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D924908B7
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 16:16:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786637784; cv=pass; b=cYS+y+jpck5Wb4uVWjfQZDU6v0soa/J4GUj6TBbcRArwvelvYgbl8voQum0S3iHB1v92oM1nNTTcasZ3D7gue95XLSyKxARUMLKTUQ2NsCi55jO7miux6vyZqRTO9Em2MjUSqlNr4plwYcE3gHkA1ODmfmJQitUJ45lXPss9+Dw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786637784; c=relaxed/simple;
-	bh=yXT4hLGt7i769MHmM0jT0+BLhbDOMzT/s5tyqBFLnb8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mqtRNtMxcTqqwC7zHE7YMMefvxowyN/VE18iP/d7nnKjEuKf6PqEvITzTP1DswYaSlcOjgnWsNBCt6VIxtpfOQeyOnbsIsJJiNtxUy76dQUEuw5J2OLMtmoesUm4qMNbRcta25IYY34VDboo6Gdej4FTO3MDPDb1QxUpO+tCV38=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m/akhVTI; arc=pass smtp.client-ip=209.85.215.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF37940626C
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 16:29:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.121.94.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786638553; cv=none; b=sa9hPUMUjzHc2oiOCncgB+UtE6S9tXkC9XscjS9QShTEE1EevDi8MYRPgrlvAQ3F3YZwQ2xnkzLSFrZLRwv07QblQnDV8Gr46NHjK0sDC8KwMXJBEelNgM/+y64YfPg7n8eV4YZ8q/bjW7qCMkcQhcG6Z/LZGLbRHdQxpgitQpw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786638553; c=relaxed/simple;
+	bh=6uL/fcMuXtkPICOYB8J42aD/5O5ueWcn9u4PGTRpS3c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hb2moZR45PoK+8LQyt3FSkNC4KdoSM+v+KHKXxT8ZVP4SnbmUl9nDGkAVj1tpictc3OSwVceR1eFmhzMHM7YnxKgzSsWthbBQIcbQ1JIlQzYts/D1EJELxE3WVYn9qFjPKsCaCDq1ifRlTEpENyOoql09Ew59gIenE6PXeIjBCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=xs4all.nl; dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b=K+fv5kJb; arc=none smtp.client-ip=195.121.94.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xs4all.nl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m/akhVTI"
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-cbeeaac53a9so1865801a12.1
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 09:16:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786637779; cv=none;
-        d=google.com; s=arc-20260327;
-        b=lAAUQ+cuY+7m4W1VAYcGWzAbmjnZUIJDXY0gil8nqZiLiMewB1Et3VUGTaINycGsA3
-         No05f6EZuPK7sJ+eaa+mJO4EQST2xjDAQB3SJPZzER+quf5CtqoxIK5SyGgtCB1/yktO
-         noTt9e7Q1egjbubTWz5JQFG2nK4+hQVkrGatWPpRv87PYCFp8gf9niSDu7O6sB2bqxD3
-         7mPvC2BaOkxTDMkNDQHKWxF0Zsz2TdfwiH22I2+paenBAV679GpGcWj8LVW77NNja4yh
-         /opBHw4ekbljnI/SuXekOamyWTsz/DXrlwTaRzBZmdaOXfWzp/Q21txOKtEp3Po87ig4
-         5fiQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=WKTV2ZTSUoxL0x2hN/gj5r+kKUiy8iekG3jkXHZrZMA=;
-        fh=ep6FBfCZQvhZvp5iweazYBMI/tXZAKfnV/TZGDpCbgs=;
-        b=Nn85hdLyT42FhCf1Jb0rzOVbBs2sjdRnfbDxZ1m3vxhQrBs97DzwIUSiakToJixfM9
-         GDlup6kmZrxvRXKe3u4L+kSbJnPP1J8OxVUVJb5bv7juFmVEOtCIQG8filRshhoiZzS2
-         4pvOqOhrHbJLbXX4Ik3Ae2G6yDQ3reeiMAnSyK5pQSssOEtytyMlF3Twy0QRu9ORPzLQ
-         7hB5jT5Gy/K6ccCKsDi2b+0Cn9fZncqgCPHDM0ow0uYZvH1HkEUG9mTDFqenkWjP00WJ
-         p6QMwkbZwZmdW4umGe7td2tXvGdKBvovygGF1ezCWjx2wSUzZuQxiCJP/p0dR5jVSr8G
-         9cfA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b="K+fv5kJb"
+X-KPN-MessageId: 19cc7cfb-9734-11f1-83b3-005056ab378f
+Received: from smtp.kpnmail.nl (unknown [10.31.155.39])
+	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
+	id 19cc7cfb-9734-11f1-83b3-005056ab378f;
+	Thu, 13 Aug 2026 18:29:05 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786637779; x=1787242579; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=WKTV2ZTSUoxL0x2hN/gj5r+kKUiy8iekG3jkXHZrZMA=;
-        b=m/akhVTI5BJIly6i96PXCZntNCESth4cJId9UsP4qlyexrh2SIG4k9G3kC8TNS7f4r
-         CfegBSjnIMvZy4DnLHirwqtZVu1t2CQY5gmEj4pqfCfJgjTVTOSFGsGbecKfWzINR1Dm
-         /MQtPkdJnPYaNpJe3ZLJ2Lh/40E/1YdCucvYa1McLaCWxysmRArUP6jbAKrGMhayrIx6
-         YGI0RwJltJb0Oh2kg9lq1fHARRpF3ZX/jRBxx19mpA1zCDhucFoGeeRRuLMSVqjElwq/
-         O/gUmmdR3aT3v8CfSVvcss3vJRN212ifkr8u3sP8ygZrpqvyHv5hXz3GABMlMQn9XU1X
-         BYUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786637779; x=1787242579;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WKTV2ZTSUoxL0x2hN/gj5r+kKUiy8iekG3jkXHZrZMA=;
-        b=r9HueRkxcgEZ/gFJyIOKclSLTyrxyNE+Hy9TGpove5k9wV5LtxaJipM8V5I5wTBtau
-         uqh2ki/z5edbF2z8OK7FfI8AMJ8VHaeZ+2mtyXVxiUnFubiivrxmNttdxRaLpoBrCSMD
-         yL7zyN85KyNOeXVWuhNogPA6th+Ww+OwQLO5PfjBcaBNz8PXhU/gJNW/AEBWHXq6i9d5
-         X6VoWl8NRhWn3vqq+sarAlVi9vhBJS82YEEzLEkOBNoXVw7gKL4r0dcNDIPa783O1TLM
-         Lg19tr9mKF/UxrG9ZgzkAzIjfAu0/rEaA5VahXRlDadZ8/VrLmsi8B+KJRtcWWE4P4R8
-         PLjQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqbJrE+/hmPxf85W5gR+3+mmP44eJq3KrJjAR4oKs3LssVz6eGiHbaijyBCc7XDeLk0RbRK6NE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxN5gCtN14EvIliM3Na0ateYKEI6VNpcQYMaTKprgbphWhHwlYR
-	eVvtLlx3OQTEQZ59sD4vNunHOPYrh9VD1GDRkZ0zJzAuA1r5zSb7nvqtCdGx0VIEE75EGyhQjKW
-	fVEr5ohHSD7rEmVKuQhf5jPn6LRBDbzo=
-X-Gm-Gg: AR+sD11VsPp8FvTP2jFXgoJAoFqY+uBLGZb4eDSgf3zGdQRf3RKYYETZjn7MdUkAbmb
-	lIhmbnPAKZ34JLcMcn+UBAd+rCtwnjoa5BLH3UVo+D2yiWfW+zyQ6yoviXRUZL+4g0NVV2JtQrA
-	lIvi5GDQcjZxyKWbbz+emGtr/Zs4oCWsBfLq8p2rBHb/svegp509Jnl3FOFrxrWJLn/5phhwRYR
-	FyGxfyAcWoHbwY5RUaRUwGyFon5CRlrHSiP3W1DIemMwvm8iZcpnIiUpmhA5VGbo5kwR/LZam7e
-	6s1RwJzaeTteeQnkvQCh8lYX3CsZuEj0IB/ozUGFeCoVo7RGlL7JAyIoQt1rqTwyEHJvnjQ7RKf
-	g6B8=
-X-Received: by 2002:a05:6a00:94f8:b0:848:4754:28e4 with SMTP id
- d2e1a72fcca58-84fc6dd20d5mr7964377b3a.15.1786637778230; Thu, 13 Aug 2026
- 09:16:18 -0700 (PDT)
+	d=xs4all.nl; s=xs4all01;
+	h=mime-version:message-id:date:subject:to:from;
+	bh=xjSiY7CwFEzTBp15J3jfhjr7XplKvsglGkeWNI/XNN4=;
+	b=K+fv5kJbIKBpPOiFIRpcWEVBeOl6fwFbeldAkzFTSnKvd+G0sPRWNSTSr4k7DqazVwKvVwBs55bek
+	 U8UL9KmTgt9OmL9rfGBKc6v4eOy/tqICPi/CqBulhhhFLJe/P4saAJAV2wrdCKBrAci5bWhQk22V37
+	 1xM+XDlQYN5CxRcc6O7fzLXL//IgsNsDTPbZ5zPy0ixHbQ67NZrK9hhphAHXBxnaHWDc3msrNrVj0y
+	 E40G3QgfWe6MxOcHOKYkVqNbHX0MpoaUkldSKFFHwQMUcDOZwUytReBCFRO6Xpkvf9LzkWzFAvi/DI
+	 tPMuZTBSxufwXOD/kDRozqc65+5Ho6A==
+X-KPN-MID: 33|RD+tCzaHEQ80tYDhw98zz5D4Kivv614fLVKWTC9XAV8bE08X7BNddDDK1FyRGwO
+ 21VZa+2/KUbQlnTQnJk7bYflpO3VLpgBEj1EGmEt4gqs=
+X-KPN-VerifiedSender: Yes
+X-CMASSUN: 33|Qr+J+ApZ0m9A0AEChGBwy1KJDxdAB7qnH9vGDkwq69kW4lAYKmkyOtTmmSvQ9Zz
+ OztFN5WHmxVOOjXLxXo/SQA==
+Received: from fedora (unknown [223.38.86.53])
+	by smtp.xs4all.nl (Halon) with ESMTPSA
+	id 1530837f-9734-11f1-a8bc-005056ab7447;
+	Thu, 13 Aug 2026 18:29:04 +0200 (CEST)
+From: Jori Koolstra <jkoolstra@xs4all.nl>
+To: brauner@kernel.org,
+	cyphar@cyphar.com,
+	kuniyu@google.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jkoolstra@xs4all.nl
+Subject: [PATCH net-next v7 1/4] net: af_unix: enable custom setsockopt for all socket types
+Date: Thu, 13 Aug 2026 12:28:15 -0400
+Message-ID: <20260813162818.149248-2-jkoolstra@xs4all.nl>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260813162818.149248-1-jkoolstra@xs4all.nl>
+References: <20260813162818.149248-1-jkoolstra@xs4all.nl>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260813014056.160533-1-zhaoping.shu@mediatek.com>
- <willemdebruijn.kernel.1372b82f50882@gmail.com> <0e1f71c4417099399eda78fd2a082b2444e42af9.camel@mediatek.com>
-In-Reply-To: <0e1f71c4417099399eda78fd2a082b2444e42af9.camel@mediatek.com>
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Date: Thu, 13 Aug 2026 12:15:40 -0400
-X-Gm-Features: AUfX_mznkHuU-cF144mVumH8tZacn1_Y1N_Jk90APs0ZCVnzLy3r3jqX6yEARUw
-Message-ID: <CAF=yD-+AF1aW5D5H_QPKE1yxyU2wLxOmT8c2Fm4CJsPY=BjW-g@mail.gmail.com>
-Subject: Re: [PATCH net v3] net: gro: Fix nesting of TCP GSO SKBs in skb_gro_receive_list()
-To: =?UTF-8?B?Wmhhb3BpbmcgU2h1ICjoiJLlj6zlubMp?= <Zhaoping.Shu@mediatek.com>
-Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>, 
-	"sd@queasysnail.net" <sd@queasysnail.net>, "imv4bel@gmail.com" <imv4bel@gmail.com>, 
-	"alice@isovalent.com" <alice@isovalent.com>, 
-	"eilaimemedsnaimel@gmail.com" <eilaimemedsnaimel@gmail.com>, =?UTF-8?B?SFcgSGUgKOS9leS8nyk=?= <HW.He@mediatek.com>, 
-	"horms@kernel.org" <horms@kernel.org>, "kuba@kernel.org" <kuba@kernel.org>, 
-	"pabeni@redhat.com" <pabeni@redhat.com>, "edumazet@google.com" <edumazet@google.com>, 
-	"willemb@google.com" <willemb@google.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"matthias.bgg@gmail.com" <matthias.bgg@gmail.com>, "davem@davemloft.net" <davem@davemloft.net>, 
-	"kuniyu@google.com" <kuniyu@google.com>, "ncardwell@google.com" <ncardwell@google.com>, 
-	=?UTF-8?B?SGFpanVuIExpdSAo5YiY5rW35YabKQ==?= <haijun.liu@mediatek.com>, 
-	=?UTF-8?B?WGlheXUgWmhhbmcgKOW8oOWkj+Wuhyk=?= <Xiayu.Zhang@mediatek.com>, 
-	=?UTF-8?B?TGFtYmVydCBXYW5nICjnjovkvJ8p?= <Lambert.Wang@mediatek.com>, 
-	=?UTF-8?B?SXZlbiBZYW5nICjpmLPlhYkp?= <Iven.Yang@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 13, 2026 at 4:40=E2=80=AFAM Zhaoping Shu (=E8=88=92=E5=8F=AC=E5=
-=B9=B3)
-<Zhaoping.Shu@mediatek.com> wrote:
->
-> On Wed, 2026-08-12 at 22:29 -0400, Willem de Bruijn wrote:
-> > External email : Please do not click links or open attachments until
-> > you have verified the sender or the content.
-> >
-> >
-> > zhaoping.shu@ wrote:
-> > > From: HW He <hw.he@mediatek.com>
-> > >
-> > > A device supports GRO_HW, and the device driver enables the
-> > > NETIF_F_GRO_FRAGLIST feature. During a tethering test,
-> > > skb_gro_receive_list() reaggregates the GSO packet. However,
-> > > skb_segment_list() cannot segment this packet back into
-> > > the original packets, which leads to IP fragmentation or packet
-> > > drop.
-> > >
-> > > Scenario (Tethering/Forwarding):
-> > > 1.Driver submits a single TCP packet, P1. P1 is kept in the
-> > > gro_list as the first packet.
-> > >
-> > > 2. The driver submits a TCP GSO skb, P2. P2 has already aggregated
-> > > multiple TCP packets by HW_GRO, and its non-linear data is stored
-> > > in
-> > > frags[].
-> > >
-> > > 3. P1 and P2 match the GRO rules, and since there is no local
-> > > socket,
-> > > they are aggregated by skb_gro_receive_list(). The resulting skb,
-> > > P3, has a frag_list entry that still contains frags[]:
-> > > P3: [ Linear Data ] -> frag_list -> [ Linear Data ]
-> > >                                     [ frag[1] ]
-> > >                                     [ frag[2] ]
-> > >                                     ...
-> > > 4. Later, tcp4_gso_segment() or tcp6_gso_segment() calls
-> > > skb_segment_list() to segment P3. However, skb_segment_list() only
-> > > segments the entries in frag_list. It does not segment the frags[]
-> > > inside P2, so P3 is not restored to the original packets, which
-> > > leads
-> > > to IP fragmentation or packet drop in the following path.
-> > >
-> > > When NETIF_F_GRO_HW is enabled, do not set NAPI_GRO_CB(skb)-
-> > > >is_flist.
-> > > Fall through to the regular skb_gro_receive() path instead of
-> > > skb_gro_receive_list().
-> > >
-> > > Fixes: 8d95dc474f85 ("net: add code for TCP fraglist GRO")
-> > > Signed-off-by: HW He <hw.he@mediatek.com>
-> > > Signed-off-by: Zhaoping Shu <zhaoping.shu@mediatek.com>
-> > > ---
-> > > [2]:
-> > > https://urldefense.com/v3/__https://patchwork.kernel.org/patch/147060=
-32__;!!CTRNKA9wMg0ARbw!kigb147-G9EgNqdWMhaQ43udYOvN90SG6bVjeM-GxTsPo3E07_tb=
-ysuoEieszr5CbCqT94AYpt1b_M7VsgNaZcjtBS_AnYo$
-> > > [1]:
-> > > https://urldefense.com/v3/__https://patchwork.kernel.org/patch/147022=
-09__;!!CTRNKA9wMg0ARbw!kigb147-G9EgNqdWMhaQ43udYOvN90SG6bVjeM-GxTsPo3E07_tb=
-ysuoEieszr5CbCqT94AYpt1b_M7VsgNaZcjtu0bQPNI$
-> > > ---
-> > >  net/ipv4/tcp_offload.c   | 7 +++----
-> > >  net/ipv6/tcpv6_offload.c | 3 ++-
-> > >  2 files changed, 5 insertions(+), 5 deletions(-)
-> > >
-> > > diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
-> > > index 3b1fdcd3cb29..641c47fb1ea2 100644
-> > > --- a/net/ipv4/tcp_offload.c
-> > > +++ b/net/ipv4/tcp_offload.c
-> > > @@ -395,9 +395,6 @@ static void tcp4_check_fraglist_gro(struct
-> > > list_head *head, struct sk_buff *skb,
-> > >       struct net *net;
-> > >       int iif, sdif;
-> > >
-> > > -     if (likely(!(skb->dev->features & NETIF_F_GRO_FRAGLIST)))
-> > > -             return;
-> > > -
-> >
-> > Interesting that ipv4 and ipv6 diverge here. Nice to try to make them
-> > more alike.
-> >
-> > >       p =3D tcp_gro_lookup(head, th);
-> > >       if (p) {
-> > >               NAPI_GRO_CB(skb)->is_flist =3D NAPI_GRO_CB(p)-
-> > > >is_flist;
-> > > @@ -430,7 +427,9 @@ struct sk_buff *tcp4_gro_receive(struct
-> > > list_head *head, struct sk_buff *skb)
-> > >       if (!th)
-> > >               goto flush;
-> > >
-> > > -     tcp4_check_fraglist_gro(head, skb, th);
-> > > +     if (unlikely((skb->dev->features & NETIF_F_GRO_FRAGLIST) &&
-> > > +                  !(skb->dev->features & NETIF_F_GRO_HW)))
-> >
-> > Would it be better to test skb_is_gso(skb) and only skip fraglist GRO
-> > for HW-GRO skbs, rather than disabling it for all skbs?
->
-> Yes, for tethering packets, HW-GRO skbs are aggregated by
-> skb_gro_receive(), while others go through fraglist GRO. However, care
-> must be taken to avoid packets arriving out of order. I will work on
-> it and submit V4.
+unix_setsockopt() and the SOCK_CUSTOM_SOCKOPT flag were only wired up
+for SOCK_STREAM (introduced along with the stream-only SO_INQ).
+Consequently custom AF_UNIX options are unreachable on SOCK_DGRAM and
+SOCK_SEQPACKET: those setsockopt() calls bypass unix_setsockopt() and
+fall through to the generic sock_setsockopt(), failing with
+-ENOPROTOOPT.
 
-Oh right.
+Set SOCK_CUSTOM_SOCKOPT for every AF_UNIX socket type in unix_create(), and
+also for accepted sockets in unix_accept() (reachable for stream and
+seqpacket).
 
-As long as the choice is only between fraglist GRO or not fraglist
-(rather than GRO or bypass GRO), it should not introduce any new
-reordering concerns.
+This is a prerequisite for making SO_RIGHTS_NOTRUNC settable on all AF_UNIX
+socket types.
 
-But the decision cannot be made based on skb_is_gso(skb) of an
-arriving skb. Because when such a HW-GRO skb arrives a SW GRO context
-in fraglist mode may already have been opened, and it is too late to
-convert that to non-fraglist.
+Signed-off-by: Jori Koolstra <jkoolstra@xs4all.nl>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+---
+ net/unix/af_unix.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-So essentially HW-GRO and fraglist are mutually exclusive.
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 10ed9421e43a..51cbf920130d 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -950,7 +950,7 @@ static int unix_setsockopt(struct socket *sock, int level, int optname,
+ 	switch (optname) {
+ 	case SO_INQ:
+ 		if (sk->sk_type != SOCK_STREAM)
+-			return -EINVAL;
++			return -ENOPROTOOPT;
+ 
+ 		if (val > 1 || val < 0)
+ 			return -EINVAL;
+@@ -1006,6 +1006,7 @@ static const struct proto_ops unix_dgram_ops = {
+ #endif
+ 	.listen =	sock_no_listen,
+ 	.shutdown =	unix_shutdown,
++	.setsockopt =	unix_setsockopt,
+ 	.sendmsg =	unix_dgram_sendmsg,
+ 	.read_skb =	unix_read_skb,
+ 	.recvmsg =	unix_dgram_recvmsg,
+@@ -1030,6 +1031,7 @@ static const struct proto_ops unix_seqpacket_ops = {
+ #endif
+ 	.listen =	unix_listen,
+ 	.shutdown =	unix_shutdown,
++	.setsockopt =	unix_setsockopt,
+ 	.sendmsg =	unix_seqpacket_sendmsg,
+ 	.recvmsg =	unix_seqpacket_recvmsg,
+ 	.mmap =		sock_no_mmap,
+@@ -1143,9 +1145,10 @@ static int unix_create(struct net *net, struct socket *sock, int protocol,
+ 	if (protocol && protocol != PF_UNIX)
+ 		return -EPROTONOSUPPORT;
+ 
++	set_bit(SOCK_CUSTOM_SOCKOPT, &sock->flags);
++
+ 	switch (sock->type) {
+ 	case SOCK_STREAM:
+-		set_bit(SOCK_CUSTOM_SOCKOPT, &sock->flags);
+ 		sock->ops = &unix_stream_ops;
+ 		break;
+ 		/*
+@@ -1865,8 +1868,7 @@ static int unix_accept(struct socket *sock, struct socket *newsock,
+ 	skb_free_datagram(sk, skb);
+ 	wake_up_interruptible(&unix_sk(sk)->peer_wait);
+ 
+-	if (tsk->sk_type == SOCK_STREAM)
+-		set_bit(SOCK_CUSTOM_SOCKOPT, &newsock->flags);
++	set_bit(SOCK_CUSTOM_SOCKOPT, &newsock->flags);
+ 
+ 	/* attach accepted sock to socket */
+ 	unix_state_lock(tsk);
+-- 
+2.55.0
 
-> >
-> > If treating the features as mutually exclusive, another option would
-> > be to replace these datapath checks with disabling one at
-> > configuration
-> > time, in netdev_fix_features.
-> >
-> If V4 work well, there will be no need to check netdev->features.
-> Linux kernel GRO will be more robust and able to handle scenarios
-> where both NETIF_F_GRO_HW and NETIF_F_GRO_FRAGLIST are enabled.
-
-What is your plan for v4?
