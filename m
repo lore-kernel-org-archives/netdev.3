@@ -1,64 +1,80 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B590D36A03F;
-	Thu, 13 Aug 2026 22:26:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FE9334C05
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 23:37:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786660015; cv=none; b=fExUTGnpwUK3JCv4epDx6o1NEsqR9B+i1ZUik6WvxSTpq2V9Z0xMYKhHab+jKzAJTAapj/MiO2gA/FyRYGP6dbgJ5j+cOpVfYsXtcpsjNEQ7mOj4C/2Y3IlPaaOZgpruKcv6UXEZsaHu0Kbeqh/IAbm5UGGENjl6ompfw2yxwSI=
+	t=1786664264; cv=none; b=IBCXrUQo0fY5pGPVL7L+H4bSXk7DJiNz9FXOUlmLULH6jG1dlM6MgM4H3vkPaPiCp0+Zeh9s1ahDP8WPcWUK7a9795WJxlnS3FXP3A2UrMwLX+0PiFur4VzdfuGK3ofTfRI3N/RSZGQOLAjz7Gnq3u+KWd/DkujXu145r6kzY28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786660015; c=relaxed/simple;
-	bh=LW0Zxgaa68V9M1e5cGrqOikFIYxTdAKZ5XjigJkx0rM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZK+5e2J2OywFtx09SB/ynxuyhsJXUQc0Tc2SbRIeR6H9NZmJjB3PNaDFO7Y5bDmGbyQiF87sq5e5Pwultm8zUc/6xA72uiMEWzrBHPvxMiXJyG8v6rTL4GPozi0bcEI92agPvUsx3PHIyQ7HuMN6gp6o3ualsowpyuKNMHzKRcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=Dj4rQWSQ; arc=none smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1786664264; c=relaxed/simple;
+	bh=tDRUIDreevjQ5U+dTowBbTn/xs7X/4tT+rcoNJtQp7M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D9fRr5ZLkqTMQXxbfhh0DzY4huM3kyOADeW+PEqZpzR0ZEfrs9Tioo5n3LKTYxMKJWwmv4ghou9Lk05sI6YCbH7/mx3gUUeXb5bhOYemvMNwmHussiqv5Q308AQihDHNuAjn32w096DnV6D8A9QIvuwgXdajURrxS3AFhjFYU6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GUEvf4Wv; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="Dj4rQWSQ"
-Received: from pps.filterd (m0109334.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67DLbfjD2770044;
-	Thu, 13 Aug 2026 15:26:39 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pps82601-s2048-2026-q3; bh=aPbtxV9k8
-	QHYoG/ws9KqDA3XKxY23j680+kzxXaQSqI=; b=Dj4rQWSQaR6l0LkbizcRgSbBm
-	a8ewuxUwoJ1fPLqrqLTHx/Snf2QH3/ebnvl5wRCLsSPI38XTN3RYEEODPxtXkaZI
-	1KDq7gS7my+/0lpgNlM03jYW+pk7rOn8cIQVxplahgZsUFNOKsxLX2PDB+t1Rfqm
-	BFc9Ah0AxH1PeYidH18LbqqOPeK4FfFoE2/PHWCiik5GLwjiu60YIAXTj/lREqo5
-	Z0rcvTO3wUtuWMLfp76UZK2b12i3FnW9+zEfY6RD4uf2o01vfLafAmThIR2X9DP2
-	Y+QrzzyOlOCflymavpiXxI0xqCclqk1NFHVqic809u/ODIkykW1NOOss2QMkA==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4g0a1nrmcy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Thu, 13 Aug 2026 15:26:39 -0700 (PDT)
-Received: from localhost (2620:10d:c085:208::f) by mail.thefacebook.com
- (2620:10d:c08b:78::c78f) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.45; Thu, 13 Aug
- 2026 22:26:38 +0000
-From: Glenn Judd <gmj@meta.com>
-To: "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
-	<pabeni@redhat.com>, <netdev@vger.kernel.org>
-CC: Simon Horman <horms@kernel.org>,
-        Richard Gobert
-	<richardbgobert@gmail.com>,
-        Willem de Bruijn <willemb@google.com>,
-        Kuniyuki
- Iwashima <kuniyu@google.com>, Kees Cook <kees@kernel.org>,
-        Jiayuan Chen
-	<jiayuan.chen@linux.dev>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick
- Desaulniers <ndesaulniers@google.com>,
-        Bill Wendling <morbo@google.com>,
-        Justin Stitt <justinstitt@google.com>, <llvm@lists.linux.dev>,
-        <linux-kernel@vger.kernel.org>
-Subject: [RFC PATCH net-next v2] net: gro: coalesce short IPv4 packets padded to the minimum frame size
-Date: Thu, 13 Aug 2026 15:26:29 -0700
-Message-ID: <20260813222629.492738-1-gmj@meta.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GUEvf4Wv"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cacf197759so7718235ad.2
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 16:37:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786664263; x=1787269063; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=E5sge5OLBjZqNmnWZTCO07UEdJPIZNcrGW9HCOI0cPo=;
+        b=GUEvf4WvTyHO4a8ERQzIKLX6mUaGujTgAcBTENQCxQZwHlpNnpweD/EJSpKSzgPK+H
+         kO426BB4W+Vnxm5LczDJrnETekoy66CgBW0Xt2rlJYitz1kMsswmxv8Na29a30+nR9no
+         feM+d42Es922TFrzgrxSooTwkjXHw/5nf+Sdvo1WC9ePhoaVAqhMYGSjYGocmbWb1UuI
+         GAhZqUpW4TvbS55irImvVhO2UaylcqvRZ+6GkTaPyQMPPgbquMptpDZhmoQpNr5hBWtu
+         S/Si5fCG70siRHeEWMD5Os6dx/ZYSHCND2bkRik86/ZDGlEOfrIbxrnOxA8E44fhsH/p
+         5kqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786664263; x=1787269063;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=E5sge5OLBjZqNmnWZTCO07UEdJPIZNcrGW9HCOI0cPo=;
+        b=oEw5HJS2DKY1rIBFPStx5CRPCmlloTej+UUcGnT55E7uDFrpA8sS/JP5SKBZu8lP0b
+         PG/xf6TGFiQ1gQ4I7f4vESgvfeX8jyAgkT+Kxg9/ctAHwDDfzcXcUIJVzkULlEUtBwN3
+         bqnj4k8ofKrNFoCZDd4E+XppPusWIUYC8c7K4jbgXRmIrld1V8CojKs/EO9/EU4Ah9Ko
+         4i7bFankcPsMNDwvruqmdtvadWKJcyofbwkovMqMNRy+z5ewCyiI29tMj1U+e5NhPGAF
+         2TRG/fJtBjBXljxw6KGdG8aVo4r49sYmRsx1ZM57TdYtEWKb9bH0umB31AkGmRtBCJjD
+         wZKg==
+X-Forwarded-Encrypted: i=1; AHgh+RrREr1MDQIWOaczurDvQgUvKTm/glmkAbnlu3EuJoIofRjwc1GRL8kGkKE3j05jHgA6BsYR7Mc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzz41oJdoQrEVu+r+TCGmL8xYjrM6AWHOYQHE9Zvwo5C23pNVek
+	XGho4gCyR0GjD+hE6mvTys2bnmof3QG1PysIslYRsuffh05k4ke5ImrR
+X-Gm-Gg: AR+sD12NHXRr53LnHeORSEugMY0iUoGYA+tiyfI2K8gLVymfsr9MRaJQIV/FItzkX9E
+	Kt/7pha05p5z+NZKu73vcYrecQNJCKJfl8peQlEr0Hnd8Oa98hge20Aqc2EglhrQ/uOkKCRW0Wj
+	xGedLl2MqlCvVa4wMn+Ou+1qiMn1NHV96AtBtFXF01FzGg1Mj7Dy7zb8pFwIrqtyoigNmm0OIdM
+	xS94cIhp9SyGFDRpB6ZxQfNBF6adyvdQ9ueouUSfT/fCpxaZx9vWndp3Q+npqiiIk4RvAbHcZiQ
+	xddneroMXrd217nTwYk5cYTO9x5HdI1H2Jv7nzUON6xtn67Ic6CTXYLRw/nE2/gR5wxVjFT6PG7
+	J8h/+sxD3D9laWFhbktLQZ1UUiiMWhzpk2l7oKNdmocbVqn8bpfzdZ47ZZLncwlJYLKRSCUL04Z
+	2Jnq01t+BYhPwr2cep0EyQHIYbF/CG0S/tFD3C7Ktx+BbmsD8pZRLQummYpDrSQq2fcLr3nVGq5
+	MYtd21HrjiiUIGf/8WZ4rsdEevzi5IxxkU73eUdkh9zcQtbHxTpIA==
+X-Received: by 2002:a05:6a21:4582:b0:39c:126c:93b5 with SMTP id adf61e73a8af0-3cc71c57b8cmr1688901637.21.1786664262754;
+        Thu, 13 Aug 2026 16:37:42 -0700 (PDT)
+Received: from lawlee-vm0.d4y3nv5wwgfelhhopdxv1tqjld.dx.internal.cloudapp.net ([13.93.150.60])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31ebf731dbasm14354359eec.17.2026.08.13.16.37.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 16:37:42 -0700 (PDT)
+From: Lawrence Lee <lfqlee314@gmail.com>
+To: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Arun Ajith S <aajith@arista.com>,
+	Roopa Prabhu <roopa@nvidia.com>,
+	Jaehee Park <jhpark1013@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Lawrence Lee <lfqlee314@gmail.com>
+Subject: [RFC net-next] ipv6: update NUD_FAILED neighbors from NA messages
+Date: Thu, 13 Aug 2026 23:33:44 +0000
+Message-ID: <20260813233344.445265-1-lfqlee314@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,336 +82,119 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODEzMDE2NCBTYWx0ZWRfX/cmQNNY38i99
- l8IXTheUfGDjOPcQnqnUFFb0Hy+QsdB4OAo5p89tsUhNxFBJnQhzZe3v7YQwQsyCF/RGQr2+z8U
- bcCsSO01DXkOvxHiAKXBAs8aepD2/uI=
-X-Proofpoint-ORIG-GUID: 9L9SdPmHkrf-_a9YJ968RCbqhS6N_xJX
-X-Proofpoint-GUID: 9L9SdPmHkrf-_a9YJ968RCbqhS6N_xJX
-X-Authority-Analysis: v=2.4 cv=aqiCzyZV c=1 sm=1 tr=0 ts=6a7e449f cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=crHB47gyY4rKiduisYu9:22 a=VwQbUJbxAAAA:8 a=VabnemYjAAAA:8
- a=8wkc0TWQQCn0lXJpwycA:9 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEzMDE2NCBTYWx0ZWRfX4x1giF6V8bdM
- WwYyjtCsoPlP970JlSz9enpe7otnwG8lBlgDjW23tHXWd9Kg7+tjZed5o/I/r7TRFuZ+4Y1jR+T
- Pq+bCuoQ0S6U/AEhGN9f2wKwxTfgGIcMsB8I4zZ0I0Gi9w7PHDubSUO1ivAuv+ggKzli+FrPnGW
- sr5dB2Mb0h67ITk0u3fGlehs34LOIxBHxNpB34Fq8YZZmvTgri7kImyBVZuRKMCj2Jzar+mOjtb
- DsIQ3g2WTHlDgO44BelJhFQWv60M0dmEB/8hwaEUHaH/v+vdz16VJqwQOCzB+1zt4yVFDNcpAhW
- IDioAGf3wN0NTzfiaAomoGRcmILsvgYUOeSkaa3WgY40CyzzUoUsq3tJ0B53uuptmw7oBDzb92K
- xJwCgxZV6ZqU4Jg4+GjpmPt4o02BfsmatIl/5lOrVX5KICXuL9r9r54BzKKAdo8WLpemwdGxvXI
- XPUi1DSrQwQA+D4IQtg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-13_07,2026-08-12_01,2025-10-01_01
 
-Software GRO fails to coalesce a small IPv4 segment that was
-padded up to the 60-byte minimum Ethernet frame.
+I noticed an inconsistency between IPv4 and IPv6 in how the kernel handles
+neighbor advertisements/ARP replies for NUD_FAILED neighbor entries
+and would like some guidance/input from maintainers.
 
-The selftest tools/testing/selftests/drivers/net/gro.py subtest
-sw_ipv4_data_lrg_1byte sends {100, 1} expecting to receive {101}.
-In current code, it receives {100, 1} (no coalescing) instead.
+For an existing IPv4 neighbor that is in the NUD_FAILED state, receiving an
+ARP reply for the neighbor IP will update the entry in the kernel to
+either NUD_STALE or NUD_REACHABLE depending on if the reply is unicast or
+broadcast.
 
-Cause: inet_gro_receive() computes its flush term from
-tot_len ^ skb_gro_len() before skb_gro_pull(), while skb_gro_len()
-still includes trailing Ethernet padding. A small IPv4 segment
-padded up to the 60-byte minimum frame has tot_len != skb_gro_len(),
-so flush is set and the runt never coalesces.
+For an existing IPv6 neighbor that is in the NUD_FAILED state, receiving a
+neighbor advertisement (NA) for the neighbor IP does nothing as
+ndisc_recv_na() explicitly ignores NUD_FAILED neighbor entries:
 
-v1 detected the padding with an added iph->tot_len read and
-skb_gro_len() comparison on every IPv4 GRO packet. Instead, split
-inet_gro_receive() so that everything after the header validation
-takes the flush term as a parameter, and pass a literal 0 on the
-common path. That folds away both flush updates and lets the
-transport dispatch become a tail call, leaving the common path
-shorter than before this patch rather than merely unchanged.
+        if (READ_ONCE(neigh->nud_state) & NUD_FAILED)
+                goto out;
 
-Assisted-by: Claude:claude-opus-5
-Assisted-by: Codex:gpt-5.6
-Assisted-by: Meta:internal-AI-tooling
-Signed-off-by: Glenn Judd <gmj@meta.com>
+This check was added by commit titled "[IPV6] Don't update FAILED
+entries on receipt of NAs." (Hideaki Yoshifuji, 2005-01-16; pre-git, in
+mainline since v2.6.12-rc2) with the justification "As NAs do not create
+new entries (RFC2461 7.2.5), NA should not change state of FAILED entries."
+
+However, RFC9131 introduced a method for NAs to create new neighbor entries
+(implemented as `accept_unsolicited_na` and later renamed to
+`accept_untracked_na`), which means the original justification for ignoring
+NAs for NUD_FAILED neighbor entries is no longer 100% correct. I think to
+remain logically consistent, it makes sense to allow NAs to update
+NUD_FAILED entries anytime we allow creating new entries with
+`accept_untracked_na`.
+
+I realize that RFC9131 section 4.2 states the following:
+
+    ... routers create a new Neighbor Cache entry upon
+    receiving an unsolicited Neighbor Advertisement for an address that
+    does not already have a Neighbor Cache entry. These changes do not
+    modify the router behavior specified in [RFC4861] for the scenario
+    when the corresponding Neighbor Cache entry already exists.
+
+However, I would argue that since NUD_FAILED is purely a kernel construct
+and has no equivalent state defined in RFC4861 section 7.3.2, a neighbor in
+state NUD_FAILED does not actually have a valid Neighbor Cache entry as
+defined by RFC4861 and should be treated as if the neighbor entry doesn't
+exist; therefore NUD_FAILED neighbors does fall within the scope of
+RFC9131.
+
+The motivation for this question comes from my work on SONiC, a network OS
+which is built on top of Debian and runs on switching hardware. We have
+encountered an issue where the switch receives traffic for an IPv6 neighbor
+before that neighbor is resolvable, which leads to the kernel neighbor
+being set to NUD_FAILED. When the IPv6 neighbor becomes ready to receive
+traffic, it sends an unsolicited NA to the switch which gets ignored
+because the kernel neighbor is NUD_FAILED. Subsequent traffic destined to
+this neighbor stays entirely within the switch ASIC and isn't visible to
+the kernel, so there's no stimulus for the kernel to send neighbor
+solicitations; as a result, the neighbor entry stays unresolved and traffic
+to the neighbor is dropped.
+
+The main questions I'd like to pose:
+
+1. When RFC9131 was implemented (`accept_untracked_na`), was an intentional
+   choice made to not update the handling of NUD_FAILED neighbors? I
+   searched through the discussions for all three commits relevant to this
+   feature but did not find any mention of NUD_FAILED handling:
+       commit f9a2fb73318e ("net/ipv6: Introduce accept_unsolicited_na knob to implement router-side changes for RFC9131")
+       commit 3e0b8f529c10 ("net/ipv6: Expand and rename accept_unsolicited_na to accept_untracked_na")
+       commit aaa5f515b16b ("net: ipv6: new accept_untracked_na option to accept na only if in-network")
+
+2. Should unsolicited NAs be allowed to update NUD_FAILED neighbors when
+   `accept_untracked_na` is enabled (this would align with existing
+   IPv4/ARP behavior that allows ARP replies to update NUD_FAILED
+   neighbors).
+
+I've included a proof-of-concept diff below for how this might be
+implemented (please note that this is just meant to help illustrate my
+point, the diff is untested). I'd be happy to follow up with a more
+thorough patch if the community decides that this is worth pursuing.
+
+References:
+  - commit titled "[IPV6] Don't update FAILED entries on receipt of NAs."
+    (Hideaki Yoshifuji, 2005-01-16; pre-git, in mainline since v2.6.12-rc2)
+  - net/ipv6/ndisc.c :: ndisc_recv_na(), accept_untracked_na()
+  - RFC 4861 sec 7.2.5, 7.3.2 ; RFC 9131 sec 3, 4.2
+
+Signed-off-by: Lawrence Lee <lfqlee314@gmail.com>
 ---
+ net/ipv6/ndisc.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-v1: https://lore.kernel.org/netdev/20260731185431.2777685-1-gmj@meta.com/
-
-v2:
- - reworked so the fix costs nothing on the common path: the
-   flush term is computed before the branch and passed to a split-out
-   inet_gro_receive_finish() as a literal 0, rather than adding an
-   iph->tot_len read and an skb_gro_len() comparison to every packet
- - the common path is now shorter than before the patch
- - retitled: the change is not TCP specific, it covers all IPv4 GRO
- - do not trim inner encapsulated headers, or under NETIF_F_RXFCS
- - spell the padding bound ETH_ZLEN - ETH_HLEN + ETH_FCS_LEN (unchanged
-   at 50); tag depth cancels, the ETH_FCS_LEN is deliberate slack
- - use mem_is_zero() to verify the pad rather than an open-coded scan
-
-Overview
-
-After a bit more work, I think that it's also worth considering another
-approach. By decomposing the logic in inet_gro_receive() into helpers, we
-can allow the compiler to remove code -- making the common path
-shorter/faster than the current code. The key motivation for this
-improvement is that coalescing padded runts can then be handled "for free"
-(no overhead on the common path).
-
-(As with the original RFC, the behavior that this addresses occurs under
-software gro for IPv4 with no timestamps.)
-
-The table below shows the non-blank, non-comment code, instruction count,
-and memory access differences relative to base unmodified code.
-(a is the original RFC. b is the new approach.)
-
-Instruction and memory access counts are for the common path only (function
-entry to the transport dispatch), measured with clang 22.1.3 x86_64.
-
-+--------+----------+----------+----------+
-|        | LoC      | insns    | mem      |
-+--------+----------+----------+----------+
-| base   |        - |        - |        - |
-| a      |      +17 |      +14 |       +3 |
-| b      |      +33 |       -9 |       -2 |
-+--------+----------+----------+----------+
-
-Note that the majority of the code change in b is decomposition of existing
-code. The new logic comprises 10 lines.
-
-Where the padding cannot be safely stripped (a tunnel, a retained FCS, a
-nonlinear skb, or a pad that is not zero), b does not trim, and the
-segment is simply not coalesced, exactly as base behaves today.
-
-
-Testing
-
-I have run a number of performance tests to analyze the bulk throughput
-performance of each approach, as well as the performance impact of
-coalescing the runt packet vs. not coalescing.
-
-In all cases I pinned both irq handling and the test application to 1 CPU.
-I turned off frequency scaling and restricted power states.
-Throughput below is CPU-bound rather than link-bound.
-
-
-Bulk Throughput
-
-I first measured bulk throughput for 8 independent TCP flows between a
-single sender and receiver. As shown below, the performance in this test
-matches the code analysis above. b's reduced common path results in better
-throughput.
-
-+---------+-----------+-----------+-----------+
-|         |      Gbps |   delta % |    95% CI |
-+---------+-----------+-----------+-----------+
-| base    |    12.222 |         - |         - |
-| a       |    12.173 |    -0.404 |   +-0.162 |
-| b       |    12.289 |    +0.543 |   +-0.147 |
-+---------+-----------+-----------+-----------+
-
-
-Padding Fix Performance Impact
-
-I then measured the performance impact of coalescing runts vs. not
-coalescing. I did this by sending 8 concurrent flows where each flow sent
-a pair of packets sized [1460], [l (length)]. The second packet shows up
-as a "runt", and triggers the packet coalescing behavior for lengths >= 6
-for all cases, and triggers the padding removal/coalescing for lengths
-< 6 for approaches a and b.
-
-The results below show the average time to process a single packet pair
-for the given scenarios. As stated above, packets with l=6 coalesce for
-all implementations (no padding is present). l=5 requires new logic to
-coalesce the padded runt. The last two columns show the average number
-of packets coalesced for each test (a sanity check to indicate when
-coalescing is happening [~2] vs. not happening [~1]).
-
-Computing l5-l6, we can measure the penalty (if any) of not coalescing
-packets for the base case, or the cost of handling the padded packet for
-cases a and b.
-
-This test shows a ~0.76 us penalty per failed coalesce for the base case,
-and ~0 us cost for coalescing with approach b.
-
-+-------+----------+----------+----------+-----------+---------+---------+
-|       |   l=5 us |   l=6 us | l5-l6 us |    95% CI |  gro l5 |  gro l6 |
-+-------+----------+----------+----------+-----------+---------+---------+
-| base  |   14.311 |   13.547 |   +0.764 |   +-0.130 |   0.993 |   1.974 |
-| a     |   13.470 |   13.359 |   +0.111 |   +-0.056 |   1.965 |   1.974 |
-| b     |   13.361 |   13.351 |   +0.010 |   +-0.040 |   1.964 |   1.974 |
-+-------+----------+----------+----------+-----------+---------+---------+
-
-
-Summary
-
-In short, improving the sw gro common path (9 fewer instructions, 0.54%
-more throughput) allows us to fix the failure to coalesce padded runts
-with zero additional overhead. The penalty for not coalescing a padded
-runt is ~0.76 us. Approach b recovers all of that.
-
- net/ipv4/af_inet.c | 136 ++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 103 insertions(+), 33 deletions(-)
-
-diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-index 32d006c1a8ee..6ac2089385dc 100644
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -1465,40 +1465,26 @@ static struct sk_buff *ipip_gso_segment(struct sk_buff *skb,
- 	return inet_gso_segment(skb, features);
- }
+diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+index fe36b3f51285..2a6fa1252a04 100644
+--- a/net/ipv6/ndisc.c
++++ b/net/ipv6/ndisc.c
+@@ -1086,8 +1086,17 @@ static enum skb_drop_reason ndisc_recv_na(struct sk_buff *skb)
+ 		u8 old_flags = neigh->flags;
+ 		struct net *net = dev_net(dev);
  
--struct sk_buff *inet_gro_receive(struct list_head *head, struct sk_buff *skb)
-+/* Non-zero means tot_len != gro_len OR IP_CE is set: ip_is_fragment() tests
-+ * only IP_MF and IP_OFFSET, and IP_DF is masked here, but IP_CE is not.
-+ * Recompute after trimming; never assume a trimmed packet has a zero term.
-+ */
-+static int inet_gro_flush_term(const struct iphdr *iph,
-+			       unsigned int gro_len)
- {
--	const struct net_offload *ops;
--	struct sk_buff *pp = NULL;
--	const struct iphdr *iph;
--	struct sk_buff *p;
--	unsigned int hlen;
--	unsigned int off;
--	int flush = 1;
--	int proto;
--
--	off = skb_gro_offset(skb);
--	hlen = off + sizeof(*iph);
--	iph = skb_gro_header(skb, hlen, off);
--	if (unlikely(!iph))
--		goto out;
--
--	proto = iph->protocol;
--
--	ops = rcu_dereference(inet_offloads[proto]);
--	if (!ops || !ops->callbacks.gro_receive)
--		goto out;
--
--	if (*(u8 *)iph != 0x45)
--		goto out;
--
--	if (ip_is_fragment(iph))
--		goto out;
--
--	if (unlikely(ip_fast_csum((u8 *)iph, 5)))
--		goto out;
-+	return (u16)((ntohl(*(__be32 *)iph) ^ gro_len) |
-+		     (ntohl(*(__be32 *)&iph->id) & ~IP_DF));
-+}
+-		if (READ_ONCE(neigh->nud_state) & NUD_FAILED)
+-			goto out;
++		if (READ_ONCE(neigh->nud_state) & NUD_FAILED) {
++			/* Update a FAILED entry when accept_untracked_na is
++			 * enabled, under the same conditions used to create a
++			 * new STALE entry (cf. IPv4 arp_process()).
++			 */
++			if (lladdr && idev && READ_ONCE(idev->cnf.forwarding) &&
++			    accept_untracked_na(idev, saddr))
++				new_state = NUD_STALE;
++			else
++				goto out;
++		}
  
--	NAPI_GRO_CB(skb)->proto = proto;
--	flush = (u16)((ntohl(*(__be32 *)iph) ^ skb_gro_len(skb)) | (ntohl(*(__be32 *)&iph->id) & ~IP_DF));
-+/* The common caller passes a literal 0 for flush, which (with
-+ * __always_inline) folds away both updates where it is used below.
-+ */
-+static __always_inline struct sk_buff *
-+inet_gro_receive_finish(struct list_head *head, struct sk_buff *skb,
-+			const struct net_offload *ops, const struct iphdr *iph,
-+			unsigned int off, int flush)
-+{
-+	struct sk_buff *pp, *p;
- 
- 	list_for_each_entry(p, head, list) {
- 		struct iphdr *iph2;
-@@ -1532,11 +1518,95 @@ struct sk_buff *inet_gro_receive(struct list_head *head, struct sk_buff *skb)
- 	pp = indirect_call_gro_receive(tcp4_gro_receive, udp4_gro_receive,
- 				       ops->callbacks.gro_receive, head, skb);
- 
--out:
- 	skb_gro_flush_final(skb, pp, flush);
- 
- 	return pp;
- }
-+
-+/* Superset gate: a VLAN tag lengthens both the padded frame and the L2 header
-+ * so tag depth cancels; gro_len > tot_len and the all-zero scan decide.
-+ */
-+static noinline struct sk_buff *
-+inet_gro_receive_slow(struct list_head *head, struct sk_buff *skb,
-+		      const struct net_offload *ops, const struct iphdr *iph,
-+		      unsigned int off)
-+{
-+	unsigned int tot_len = ntohs(iph->tot_len);
-+	unsigned int gro_len = skb->len - off;
-+
-+	if (NAPI_GRO_CB(skb)->encap_mark ||
-+	    (skb->dev->features & NETIF_F_RXFCS) ||
-+	    gro_len > ETH_ZLEN - ETH_HLEN + ETH_FCS_LEN || gro_len <= tot_len ||
-+	    tot_len < sizeof(*iph))
-+		goto no_trim;
-+
-+	/* A linear skb is contiguous through skb->len, so the scan below ends
-+	 * at skb->data + skb->len. Keep this test ahead of it.
-+	 */
-+	if (skb_is_nonlinear(skb))
-+		goto no_trim;
-+
-+	if (!mem_is_zero(skb->data + off + tot_len, gro_len - tot_len))
-+		goto no_trim;
-+
-+	/* Trailing zeros leave a one's-complement sum unchanged, so the
-+	 * NAPI_GRO_CB(skb)->csum cached before this call stays valid;
-+	 * __skb_trim() cannot reallocate, so iph stays valid.
-+	 */
-+	__skb_trim(skb, off + tot_len);
-+	NAPI_GRO_CB(skb)->frag0_len = skb->len;
-+	gro_len = tot_len;
-+
-+no_trim:
-+	return inet_gro_receive_finish(head, skb, ops, iph, off,
-+				       inet_gro_flush_term(iph, gro_len));
-+}
-+
-+struct sk_buff *inet_gro_receive(struct list_head *head, struct sk_buff *skb)
-+{
-+	const struct net_offload *ops;
-+	const struct iphdr *iph;
-+	unsigned int gro_len;
-+	unsigned int off;
-+	int proto;
-+
-+	off = skb_gro_offset(skb);
-+	iph = skb_gro_header(skb, off + sizeof(*iph), off);
-+	if (unlikely(!iph))
-+		goto out;
-+
-+	proto = iph->protocol;
-+
-+	ops = rcu_dereference(inet_offloads[proto]);
-+	if (!ops || !ops->callbacks.gro_receive)
-+		goto out;
-+
-+	if (*(u8 *)iph != 0x45)
-+		goto out;
-+
-+	if (ip_is_fragment(iph))
-+		goto out;
-+
-+	if (unlikely(ip_fast_csum((u8 *)iph, 5)))
-+		goto out;
-+
-+	NAPI_GRO_CB(skb)->proto = proto;
-+
-+	/* skb_gro_len(skb) without re-reading data_offset; the skb_gro_pull()
-+	 * in finish() must stay below this.
-+	 */
-+	gro_len = skb->len - off;
-+
-+	if (unlikely(inet_gro_flush_term(iph, gro_len)))
-+		return inet_gro_receive_slow(head, skb, ops, iph, off);
-+
-+	return inet_gro_receive_finish(head, skb, ops, iph, off, 0);
-+
-+out:
-+	skb_gro_flush_final(skb, NULL, 1);
-+
-+	return NULL;
-+}
- EXPORT_INDIRECT_CALLABLE(inet_gro_receive);
- 
- static struct sk_buff *ipip_gro_receive(struct list_head *head,
-base-commit: 2fbade66245059c78daeaccfce13ecf499fffb51
-
+ 		/*
+ 		 * Don't update the neighbor cache entry on a proxy NA from
 -- 
-2.53.0-Meta
+2.43.0
+
 
