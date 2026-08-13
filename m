@@ -1,79 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E217430D3E2;
-	Thu, 13 Aug 2026 01:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1C5B30DEB8;
+	Thu, 13 Aug 2026 01:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786582856; cv=none; b=rldnh7M6rxD/kf2Pl93VOyfLG9FJ1uwLq2440JkFCag9gyTNewCX6TIOoYiXk/2TRm2UHeG9lQt0pu7Y81VZKANEbNR+7dawwvQ5M0MBoRkFzGel+h9hPS8OZUmGBD29xkigrvUMYWx/pC+Z29DA88cOLRupUobR8tkLxCxfSOk=
+	t=1786582873; cv=none; b=kZiR20paw3WOQ1U0nhPgD/NA0K31hsO8uJfGcy06DbSBON++DD17QPcs/Jo0eFSiVwzGhB44LpRV4qrtXF5sRqHWjw8pUhIcneBhTJieqwVxh78YUQnbvgiseQT7Ts8i8E2jro9X9tK3MPFU3qCWW03GCNIgbOwAl1+s7ChrrrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786582856; c=relaxed/simple;
-	bh=L0sd/XWrAQ/aG3GU9qfMLBRUQjgi1pYtCBXu8H7grfg=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=RbIjL17SvPCvgiZ1ARaroGDfEHTzTom6FLHNXRs+5KrYySnFE7e33fVuncCpCo0OvqJ9NO/AKWCcRC9LZ/gJGUOvMkVtp1YpNK4ImVYXDSc/Fq/gJcyvAOqd7nov9kV5E++irxXvtkuxUnw2QDI6IOC7puCp2GzBKz0lmWEMfJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=or2f3zDo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786582873; c=relaxed/simple;
+	bh=PbgYrcKg9leEWlbXpeZXWHFCj1wF9VDh9cu0FdsX3dc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Zd6MXWBl9MxhDPVCate1Req2OV6J4TAPbVx0c1eiyeN6NLfTxzCKVMWneJ+ARxANxI1B8+gz66KCL1M82LbMaaKCpzKv6huvhiP4eDX4J97F0+7CCdjc0NBPc8OiQTYUyImNu03JvXye5Vluji9bEtzYmF2BeC2hiZ55rMs2F+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NLZvEfv6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="or2f3zDo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B30871F000E9;
-	Thu, 13 Aug 2026 01:00:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NLZvEfv6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FCBC1F00A3A;
+	Thu, 13 Aug 2026 01:01:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786582855;
-	bh=Z1qdc5dzE2Ugi5PO7Tw2p4z1qJ/OJlbg558wHGsrVYo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=or2f3zDoydYggF3CbUwVxP05NQ8TLQh+/lIc2BWbvavfghUf34iHzsf/JpVnG/0dF
-	 hRnE2KPcdZn2s80Xy84paTkanarCLB8qjWtVZZQ7phlp5+p9BKVmTEZQSNVDhRoTj5
-	 kRywOUH1ZIsB2vGCFO4oKurwUAAQfyJgx06be0CSLfpNeX9b1bVTjIB6HfLIbHCuf/
-	 pv6avs7UH0rMSmcbnKvKHyFPuI7jezx/ei+kGcL600J/EMFfwjskSIhfcSRyCge8C7
-	 u9i2eGlZ/qlvYUfYRUrl0sc8+pwZdk0EsBR9sn2hMz08YSslOqg76DgiR4GyGQQdLB
-	 OWzwyMSIqUgEw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19802380CED0;
-	Thu, 13 Aug 2026 01:00:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1786582872;
+	bh=23qWJPWUJcWMMuV7bdGgFVQ1ksa+LYNCOKi0qmBssDw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=NLZvEfv61To44BTmxlWEn7grD0AEB9VPNMFnybJ+6Tvy0Gu3ICQSS0HEEZptCCGYL
+	 Ag6mEoZiZmE5BDnY041ftfnOzHzcEp/jHLupYznab8MpRsjW1x9LCUjtarPrzGtRnZ
+	 b/JgtQQb+PJpw3Cy3xqcwr+OAvbEiGBQzn10beIk7H7EjTgpogO7ZiyhgiyYyaH9zq
+	 ozIS+3DL2d++LOjijWDFeTNNfNSFa9H8FagQ7OmbWvVabtVkuFrLLNyf9oc8kkWzFM
+	 r/FqI6+AqOuklpdcwvRL00oJj6Ttllu9vE9rD2nzQzfHzlSzEX6Bb0FCegM5UFh/A9
+	 Conff9GWpnKMA==
+Date: Wed, 12 Aug 2026 18:01:11 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Hangbin Liu <liuhangbin@gmail.com>
+Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Hangbin Liu
+ <liuhangbin@kylinos.cn>
+Subject: Re: [PATCH net] bonding: fix u32 overflow in compute_gap()
+Message-ID: <20260812180111.76d0cece@kernel.org>
+In-Reply-To: <20260810-bond_overflow-v1-1-c9ff29d76770@kylinos.cn>
+References: <20260810-bond_overflow-v1-1-c9ff29d76770@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] r8169: give RTL_GIGA_MAC_VER_EXTENDED a distinct
- value
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178658281064.2171351.14292582236575256726.git-patchwork-notify@kernel.org>
-Date: Thu, 13 Aug 2026 01:00:10 +0000
-References: <20260808101941.57666-1-kmehltretter@gmail.com>
-In-Reply-To: <20260808101941.57666-1-kmehltretter@gmail.com>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: hkallweit1@gmail.com, nic_swsd@realtek.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, javen_xu@realsil.com.cn, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+On Mon, 10 Aug 2026 10:38:23 +0800 Hangbin Liu wrote:
+> From: Hangbin Liu <liuhangbin@kylinos.cn>
+>=20
+> compute_gap() computes the gap between a slave's link capacity and its
+> current TLB load. Both terms use u32 left-shifts that overflow on modern
+> hardware:
+>=20
+>   - slave->speed is u32 in Mbps; speed << 20 overflows at > 4Gbps.
+>   - SLAVE_TLB_INFO(slave).load is u32; load << 3 overflows at > 512M.
+>=20
+> Cast both operands to s64 before shifting so the arithmetic is performed
+> in 64 bits. Also update the comment to make it more clear.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Could you clarify the impact in the commit message a little more
+explicitly? If the links are the same speed -- does this fix still
+matter?
 
-On Sat,  8 Aug 2026 12:19:41 +0200 you wrote:
-> RTL_GIGA_MAC_VER_EXTENDED implicitly follows
-> RTL_GIGA_MAC_VER_LAST = RTL_GIGA_MAC_NONE - 1, so it has the same value
-> as RTL_GIGA_MAC_NONE.
-> 
-> rtl_init_one() therefore sends unknown chips through extended detection.
-> If TX_CONFIG_V2 reads as zero, they are misidentified as RTL9151AS
-> instead of being rejected.
-> 
-> [...]
+AI over here says:
 
-Here is the summary with links:
-  - [net] r8169: give RTL_GIGA_MAC_VER_EXTENDED a distinct value
-    https://git.kernel.org/netdev/net-next/c/d77f3f016826
+  The fix is incomplete for very high loads: each hash bucket=E2=80=99s u32=
+ tx_bytes
+  already wraps above roughly 3.44 Gbit/s sustained over the 10-second inte=
+rval,
+  and aggregate u32 load wraps above roughly 34.4 Gbit/s.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+While these are not exactly the same lines of code - I think it'd be
+worth to address them all in one series.=20
 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
 
+Oh, you work at KylinOS now -- please clearly state in the commit
+message if the issue was seen in real life or AI-detected.
