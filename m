@@ -1,234 +1,166 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11020095.outbound.protection.outlook.com [52.101.201.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2C748CD6D
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 15:32:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786635165; cv=none; b=mWjC/wnVhQvlJbzpkP82q3WHsSbxBtNm5wfY3yq25IeGVTL5y+ovcBgYhyurPZW0yCsjtanBddXJWiqMuBtZdSjpcZMSL/O9NOIwfUmOcakGj7IagY24tD/ZtRSpF3FQdwCLbe8mX0OgAtuToSfjH+NL9BjkxAhKlOISpoCsj5g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786635165; c=relaxed/simple;
-	bh=5nyFkcfGjO2nKdnt4MrFfYvSJkGNB+5t+uK+n+vVHSI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nQN9b7T/S+nMfqH32JE7otHT9efGwaUD1l2CUSuUfMvksDp5yWKgRtJGVzVTMyM9iMvTaXODJB/1qlL/wnFgXQJevqZC2V563/H6oFhfk4TvuE/QpH7JKBfmy32Z68s0Q25A0KJvNdqBsJD6Ri2m5uSfhxo4bbf44nIBnPUYz4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=LAMLe8Kq; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB04481A94
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 15:37:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.95
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786635454; cv=fail; b=J+6E47bbsuEC2/kfEu7Q04waW12ipkYJG+gF1PINPWcsyAiC1X7AWG5gVnTOOKelDrfZfObtOT09PNTJW8xO4zd2Ll0OAZGmo48U0X23SdRxDBK3jnM3PK0wnd333exOW7jPPRYP+5eoNFpbUQ0VOXr992y6tmF8Dc1Se7bpgV8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786635454; c=relaxed/simple;
+	bh=N7hxNAuMzZJIPybPPUHWKhguBR4RrZHabiv0c0n4+1A=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=HJy7P/c5hZaP1dJcqsO7kQlpMk9SEjW3gC8uZwT+pKsS9TnUYL++biUWvNUzhViXjVXB2P1SAldLa8hSvm6oAydnzYxZrzBU+ElUzbxukOzT2L/cnng/AFY8gOpL+TRFU5ZQ2aw1qyI3idgYRqwnhHIZCtc5/LvIi6jhyzAxbT0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pa.msu.edu; spf=pass smtp.mailfrom=msu.edu; dkim=pass (2048-bit key) header.d=pa.msu.edu header.i=@pa.msu.edu header.b=OvcomtMZ; arc=fail smtp.client-ip=52.101.201.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pa.msu.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=msu.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="LAMLe8Kq"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-4815bce4652so495691f8f.1
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 08:32:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1786635161; x=1787239961; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hh0SUndwLfny2gaCNFFJUY/mRRIT8t3cH6db2/oiz+M=;
-        b=LAMLe8KqEpBEz1HgpevPJ9xjZZJP71bdLj67jVTpstJS4oOCxuWsBD/+nM2EvNcpwz
-         k9kwGFWYBRYRQG6tz/PK53Z8gonMa3ttrDWDgAD35gf5KgWv9B7kmvw8wZwy7VB0GEZs
-         e81ix2rlOlKf37AtK1KNYweCfG0HMDDGqqOSFYKRDd8VR7Dns3l9avP3rUejuF3m3U+K
-         SmiWxhx42QeIVHNQ8/6weVKZADdYNegHlTBtPcBfVOTKw1iG+XtS56Gj5yUWkEkkwK6x
-         FWl5X3c3T6LscikQl8ml22w27lfLtO2lTJJj+paC/bqOenk7KhgzrIGdFBwEFnX2PTmx
-         9wgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786635161; x=1787239961;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hh0SUndwLfny2gaCNFFJUY/mRRIT8t3cH6db2/oiz+M=;
-        b=HfdkP7uBMxNBAk53lNcS04khdlwbmPkWgZOa9zJOlb7eFtAgE6tX/kJbjMGVIa86SU
-         O2VADUxI+eoTQmePjfkOnRZIEKv98omOosEUTyFPljzOHSXwWChm/yVIxmbi/Gqpn/wz
-         2UARLyTolsGp70/PDLrh7XHT5LOsmo9M8Osxhzark7hI9mVGtDV0BGmtL0euEChZON1j
-         lGDZnWowBBFEVT+AJFaDpFM8VO0PJncUdQ/l3JhvDrlHt02H3OdeKd7U8ZwJ8jMW+baZ
-         DdCgHBnnU57Mk+qsBfdrf/QVl1P+kkVcbjpHQTWTGOmcD/rGTmdNg0GJG2YkkD8oL/bJ
-         DLCw==
-X-Forwarded-Encrypted: i=1; AHgh+RrdwvfPYIERqlbSmm6CjUPj+iS8DnhBGbo6R15sUjmv7JL6Me54VKIOB4XBty2MikREKGzH5F0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHkkoP4dcP7KX+FSZLSZ3MH+8nW6X0XA6eEehn+mKy5l3QIAGW
-	UmHHVb1uGlozoXO5SxomudFfXWR+Rp5CKVH4o/q6pJSA25U0/GgVoQCgu30M8a+5k+Y4IrxFHQx
-	ZKo3kRR0=
-X-Gm-Gg: AR+sD114sQxwvKuhNVI6BSQq1XbmbKTwXyqg+Jo1pfoKscKP59Fe6/rKY4njU6bnrhT
-	EpepHxOOr2EMLPIKRGdO2ccf0EPAiMruO+/sunglSnn/ZfZgLHzWpIXI9lho+qPV9l8/ALkqmUH
-	2OHlBDoaT3gXssJqOZhSsUD/pU/VdEvUlOtEEXXM252sPXDAKW5Moximl861KMzNtcitQii533G
-	g1Cfppa9Kx/90KTaJsmkysz4xX5Rw+Xe300D/KJUSp+elc6m9eD2qKnoIwAWyRRvQNJubT1jvpO
-	t/HUj5ZxtFM3L28/L9KtXfSmnD8UcnHBfP8bdD3U7sGxcy8oOfLta4nffyl6DiKNu/fEXrsA4XR
-	yoLe+l4C20Ym5AgdQtsIIkWwLiDKGHLMIiF1Geth3OSsbN6Yho/k54x9pKwU3URnPaY60IoYI1/
-	xVI9d4RUTRM6FvEw1FfUVdYWXfiYzh+LQDSU8D5SbG/diOrVb/Xrt3M+ulr0zPjQcFp2FoSqSQ/
-	jV49XtPT6BZpdLWxy0=
-X-Received: by 2002:a05:6000:46c9:b0:481:4fe8:696b with SMTP id ffacd0b85a97d-4815a05274dmr7972451f8f.29.1786635160907;
-        Thu, 13 Aug 2026 08:32:40 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f15b946sm278396f8f.0.2026.08.13.08.32.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Aug 2026 08:32:40 -0700 (PDT)
-Message-ID: <5276bb00-388b-4d44-ab02-022fd8119b55@blackwall.org>
-Date: Thu, 13 Aug 2026 18:32:39 +0300
+	dkim=pass (2048-bit key) header.d=pa.msu.edu header.i=@pa.msu.edu header.b="OvcomtMZ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fSJLoUDDX7OhWmZz5jw7Sz7M2EGTKlWkTtxdmfonf3bf4UwJqCIEkgm4RNWPwmHSs8mJBCR0lcvwSud04gT7P3F2NEWsW8Jk2tbKHplimclFHqvtetxR7imFuXyNFvJnvRPz33dDzzblo8W+d6UEWkkyBGFFPiniqi6zKDMYbse8gCiGyiGHLB5vs0/XGRx2DqEcJuwmdC2iBodtGTjP6FUmtrsetNEVOUnFnqiWtZGrzgNW/2wludDaweuor+bxjYYnnTAY2BvYYxOua0Gn004xNb9mG0FDmSYXERnUA1hTdw8wlEVXW+6qa0uZEOo+tpTb+Pn62lCqFWACNjpW7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QlaFsKdY86MPDp3aWJB2CkoDyvgcW29dJZfeKmIbAYo=;
+ b=pEjQU00CyEAuba/4ZpZvFPFBHApCgt70ptl28iyWQJViKc6eNxfh/q9yRZ73SmBxFfx0KcCG95m45u78Q9UmPZTyISfq0ujDmXum9AQBelJYbgF3zFnsIRWdEJkoSf+AckNcpcpLu3ymLXZhWemwJyuIIMYvVd2e/6HR1u+r22qlJOUnAVkX8HF3R220xWlUgFoLnkmTs22HAWpiFCEokAadyCisKfT+fFvpUjQHwWHYbrt2oWanNDlzmb8ahanL5rjSx5zyl+Rab6xtPiZe8xARj/icCM5EjjSbjap09huM8UpFFr2vATxNBXRwA6bpxOeZod8vClsvzfQf85vSgg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=msu.edu; dmarc=pass action=none header.from=pa.msu.edu;
+ dkim=pass header.d=pa.msu.edu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pa.msu.edu;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QlaFsKdY86MPDp3aWJB2CkoDyvgcW29dJZfeKmIbAYo=;
+ b=OvcomtMZxKYmwMMxOzP7HzAgc8+QocxT2QfNXwwMGOoEtAVR9o+Sj0WK0RdvE2Juq5PqVr+OBQsIi9h42HZf2gIsGuW9u7yD1atNKHd6CimPt5CAl6LQR1kqhprdq0yiZvDg6r7q11y8Di8hmse2KtHCSkqCHXFUxb9x7hVYqZitr12Ca7pi/Tf3lvmba2NJbL6Wk1THpujOVppVHSnoghE3IubGDusSDDyDdvDC5dVoEh+M375YA00MIhnH6VQqA2WtoLj919M9XYzpo6BXvEXRJxlcJv6Nr28rYS2rY+nZEKJz9XOWSm1iL0DlYiCysjQhx5oWnsGC/Sac/fVv1Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=pa.msu.edu;
+Received: from DM6PR12MB4337.namprd12.prod.outlook.com (2603:10b6:5:2a9::12)
+ by MW4PR12MB5643.namprd12.prod.outlook.com (2603:10b6:303:188::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.11; Thu, 13 Aug
+ 2026 15:37:16 +0000
+Received: from DM6PR12MB4337.namprd12.prod.outlook.com
+ ([fe80::b412:1b80:dfc:18c5]) by DM6PR12MB4337.namprd12.prod.outlook.com
+ ([fe80::b412:1b80:dfc:18c5%6]) with mapi id 15.21.0315.012; Thu, 13 Aug 2026
+ 15:37:16 +0000
+From: Nathan Whitehorn <nwhitehorn@pa.msu.edu>
+To: netdev@vger.kernel.org
+Cc: theo.lebrun@bootlin.com,
+	conor.dooley@microchip.com,
+	charles.perry@microchip.com,
+	andrew@lunn.ch,
+	kuba@kernel.org
+Subject: [PATCH net-next v5 0/2] net: macb: 1000BASE-X on internal PCS
+Date: Thu, 13 Aug 2026 11:26:08 -0400
+Message-ID: <20260813153705.23407-1-nwhitehorn@pa.msu.edu>
+X-Mailer: git-send-email 2.55.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: CH0PR03CA0067.namprd03.prod.outlook.com
+ (2603:10b6:610:cc::12) To DM6PR12MB4337.namprd12.prod.outlook.com
+ (2603:10b6:5:2a9::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 net-next 00/15] neighbour: Namespacify arp_tbl and
- nd_tbl.
-Content-Language: en-US, bg
-To: Kuniyuki Iwashima <kuniyu@google.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>,
- Ido Schimmel <idosch@nvidia.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>,
- netdev@vger.kernel.org
-References: <20260813080248.407680-1-kuniyu@google.com>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20260813080248.407680-1-kuniyu@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB4337:EE_|MW4PR12MB5643:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8970f156-9e06-4489-c6e3-08def950c080
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|366016|786006|10070799003|23010399003|18002099003|56012099006|11063799006|13003099007|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	DUXPmEqMrp2Kj4YLAcevx8YZ105F/1m7x/NI+9qfyKohb9StiwRgzwP9a4dqGuO09GiTt2gGXwjvfhuaSE0CBMVvBqsqIwp9ghx1EbypyJSXBUlv6Hk3vhnPdAXrZZyURrpXmQaCe4N2MIpqf22re7NNy1/SIlL56OboTcwmHJZLFhSdjuT8F5bTPGRci3fSxGZDihj+LfAgQ4Mp/1i1thZYn60GBgpkgQ5WnowSE7j/NAcdPCjtU68/I8AW2wBw8C2oBSDOgDqOGHmpRLH0P7P2YXLwZSOHsgCStKughrY8ivobn+8HUIygGNEM5bMgdxbwTLXKW8KMxgltGQilrKz7V/p65nq7vxvQm8CbrRuwaOtNt0NEZQqOdSLqMlWhh7mkHdjSIKmAo3+x5APu9ZXOjgFIZ0jH8FcjQvm5tRRhW+yAfs4vTMO04Qfa44QF7zukeTsOh3I2He438JrgqJ+IxMSkBaXprwABUmxTyS+YvKnLVqFnqHjNV+g64sFYDCjQN9AS3/HAe1NOIRUs8Cuc8vXmM/9Ku0yCpeRfRvZjs+RbFUZLPTBtW706cdiyOoSOg/HZDvusbBAnT0JQvOHCA/2QzNXXnvop0UcwybxFW3QptHdw5IIFJTZvBnWVY5l5UzKHslKYbmV8kJa2j1Vz4K9paWdPWLe+hx9UZI4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4337.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(786006)(10070799003)(23010399003)(18002099003)(56012099006)(11063799006)(13003099007)(10067099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SGlJekFYMWJmL1FWMzM4dGI4MXQzTkJiSUptZ3JUdUNlbmFjWFVNdTZEN3Vl?=
+ =?utf-8?B?dU5HTEVSMHkwTEVQYUwvTU1mUnFRNHVLMlhnZG9nRlRXa3IwMHlSakYyOEV2?=
+ =?utf-8?B?RldlQ295aGZJWndCNkVudllRQm80VkczZnVGbUE3YjIyUUZESFNpcGNFMGFi?=
+ =?utf-8?B?d2Uvd0tCL0FjQ0hPcGZBU1UrR01UMWR3TFdldlRISXMyL0o5Y01SekVuTW95?=
+ =?utf-8?B?OTFVMEwvenRHTDFib0hSRGpBN0hjUTFKNGRRQ2I0NW9tRWU3V04zU2M0dktV?=
+ =?utf-8?B?bUYxdFhCMjJ5NGN1T2lFemEzWFN6ZVNlSUQxMlBQNkVXVmp6emhYa1A2dldr?=
+ =?utf-8?B?N1RMa3J6cGwzdlYwNTNjTHRxUGoyR3dRWkNjUUc5NFRkL2ZWTmFOZlR5bVJD?=
+ =?utf-8?B?cjFtZkJZOXBIVWdZd05MY2FqUUJvaUtwNnBYdGEyL1k1VjhvQ1pWTEw5U2o5?=
+ =?utf-8?B?ODdQL0R2emNhdlN5eG9GcjhQNXZEYmIxTVFDVEsrdC9wTkJnL0RkWEoyMnZZ?=
+ =?utf-8?B?NU1jM2tmRXdaaXRoM3BoN1EvYXkzL0kzcWY5bE9ScjdRUUZTd3R2dUptLzho?=
+ =?utf-8?B?R1Z6d1RvVnZRZHVJSXJaQ0JzVXpnSEdzWU1ndlZ0ZmZ5Sm1WUnJLejZxb2RS?=
+ =?utf-8?B?RUZDaXFqb3JBYkdiT0FNN0VqU1JlT0Q3MWMwR2VXR3dwc2FxeStVbUNaYXpB?=
+ =?utf-8?B?U3QrUG1lckVmQkRsWHluUTRidC9oSjJKcm0rY0RZSjZHOU55eVBLZk5EdVRS?=
+ =?utf-8?B?V3N0OE1sbjMzMmFvVTdObXN6c094VG9URWRtdng3aFR1NTBJSUpoVFoxanZy?=
+ =?utf-8?B?S0FwNVhlY2ZoSFRlZFZZRmhkR1hZSlo0RFBKL01wVDlmWmJ2UUVxOWxNd1NQ?=
+ =?utf-8?B?U21nSDFYbU9NRkR6N3VKVEJrQllSLzY5emtjTnI2WkIwTkJac1NidG1tU1dR?=
+ =?utf-8?B?OE9HSTRXdGlWM1FNMW4rVDdGa3gzUWsyNUs2eVV5TUl6Z2YwWlJQZkRjUjJB?=
+ =?utf-8?B?amQ2VkRxUEZ5dTR2bVJXM0U2RVZFY0lXQndPbnRheitQWVJIanBaZjRlTmli?=
+ =?utf-8?B?Z0VNQWN4djgrcUtqc3hQVUgweHRCWGdjSkxiVlVkWTNkTDNtTEk4emovZm53?=
+ =?utf-8?B?dzd5N0VobjhOc3JaNzJ6OFlPWWJvUzRZZUt6bXhSSkpONDBXWjlIaWZtMVJ4?=
+ =?utf-8?B?ejdKaWdsV05lNGtrNmNFVkt5MjgxRnIzVVg2MXp5SDRDakJFMklhRzhlN3I2?=
+ =?utf-8?B?a1Z4cGdMcGRySUlaUlB6QzdZR3VmNE1lU3NzbTFhUnAxWmorUUFrL1lkRVNK?=
+ =?utf-8?B?UHk5VWJoZFo2ZDY1QTJMMSt2RmZucU9mVDlLMTl6anNaVUJpSVBOYzBIdW1J?=
+ =?utf-8?B?QkdXb0ZFNkN4MnZlMVY5VlhJSWpTVld6UDUxSjhEaFVSSjhTQnR4NzZjVUh3?=
+ =?utf-8?B?clplZXh1MmMwaTQyS0NLUGltdVBUUWtMNHBpOXBrOVpiVlpsNTl0b0xTQ2xJ?=
+ =?utf-8?B?UkNYemRUYnFVeFJyN010MDlHejdMVVJOV0NEdjc1MEtHNVJ0cXRWL2piZFBH?=
+ =?utf-8?B?M1grOVByUkdsWDZqK2FlaU1EOUdPM1RHMGRuYmIxcXdvajRoeU82SzZ0NUQ5?=
+ =?utf-8?B?TU1YN1JZZWRiZTJhWnpydncwemZYTmw4dlVPVU5oMm9nSWRteEE5Yi9sYkxr?=
+ =?utf-8?B?RGJvTVMyN1hhRU10ODRkU0ZXa0dBQUJ1c0pYQW1wS1FnN2JpV3RxSEFadlhr?=
+ =?utf-8?B?Sy82R01Hd1NKZ2ZqYk9IU3VDYnZPVCtFSU45NDkzR1RnbFF6RjFVaXc0dUp2?=
+ =?utf-8?B?KzExSlRRZWY5OG1VQ2JyYy9RSlBjOWpCaE1CK3diQ3dCdjV5V2pheVdRRnFl?=
+ =?utf-8?B?M1haa2NDbHJROFpmdk83ci9rcW5HV0QyYlRpRVcwQmJYTmZPZWxpbEFPaWR6?=
+ =?utf-8?B?SjkxY0tZcVkwUUlkUjJGMWNlamk3VEhLamdlY2M4NkV6WlZ0NU1IUEFEb0pP?=
+ =?utf-8?B?cWNjMEloTytQREd0NGtwRUIzcForcG1GMTRVdTFLT2xnRExqTWVnUGFVTWRu?=
+ =?utf-8?B?MnVid01Db2NWai9HVysyUmJ4TEp3bmQ3enFvNUJVVGRTQm9VMTlPSlo4NmF0?=
+ =?utf-8?B?UUU1SVBNelJyTURNUG1seFdKN0xrbFVjdHNlT0Y1N2RyQ05rQVlVTWthSk95?=
+ =?utf-8?B?eWZRWnhBc3YyM1VPeVdXNWgwVFJJeXc2UVI2NkhjZHlGekx3VWNLb2hWdEQw?=
+ =?utf-8?B?dFJ2d1BBOXhYU3M1Tlh0S0ZmeUo2bzliZjBUQzJac29PTksybUdaMFRYZ0V3?=
+ =?utf-8?B?RytWUEd3Z09RTjJ4cGQrQmRMZzdTbzJWMGNzR3pjT01IZFM0VTB5dz09?=
+X-OriginatorOrg: pa.msu.edu
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8970f156-9e06-4489-c6e3-08def950c080
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4337.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2026 15:37:15.9314
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 22177130-642f-41d9-9211-74237ad5687d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +nfo1OSJ4f7DTs+SQPpa5BmLLMzKCNT5sLq0y1VSMfwZckB9Cr/kpWplx74O/Ygx
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB5643
 
-On 13/08/2026 11:02, Kuniyuki Iwashima wrote:
-> The neighbour subsystem is almost ready to drop RTNL.
-> 
-> However, the control paths are serialised by the global
-> per-table lock.
-> 
-> This series converts arp_tbl and nd_tbl to per-netns table.
-> 
-> With the series, /proc/sys/net/ipv{4,6}/neigh/default/ can
-> be configured per netns, which was only configurable in
-> init_net.
-> 
-> To avoid potential regression, all the settings are inherited
-> from init_net by default, and this behaviour is controlled by
-> a new sysctl knob, net.core.neigh_inherit_init_net:
-> 
->    # sysctl net.core.neigh_inherit_init_net
->    net.core.neigh_inherit_init_net = 1
->    # sysctl net.ipv4.neigh.default.gc_thresh1
->    net.ipv4.neigh.default.gc_thresh1 = 128
->    # sysctl net.ipv4.neigh.default.gc_thresh1=129
->    net.ipv4.neigh.default.gc_thresh1 = 129
->    # unshare -n sysctl net.ipv4.neigh.default.gc_thresh1
->    net.ipv4.neigh.default.gc_thresh1 = 129
-> 
-> If it is turned off, all settings are reset in the new netns:
-> 
->    # sysctl net.core.neigh_inherit_init_net=0
->    net.core.neigh_inherit_init_net = 0
->    # unshare -n sysctl net.ipv4.neigh.default.gc_thresh1
->    net.ipv4.neigh.default.gc_thresh1 = 128
-> 
-> Series overview:
-> 
->    Patch 1 deflakes test_neigh.sh.
-> 
->    Patch 2 ~ 3 are misc cleanup.
-> 
->    Patch 4 ~ 7 store arp_tbl/nd_tbl to net->neigh_tables[] and
->    remove the global neigh_tables[].
-> 
->    Patch 8 ~ 9 replace the direct access to arp_tbl/nd_tbl to
->    net->neigh_tables[] using new helpers.
-> 
->    Patch 10 ~ 12 finally replace the global table with per-netns
->    table.
-> 
->    Patch 13 ~ 14 clean up unnecessary net_eq().
-> 
->    Patch 15 updates test_neigh.sh.
-> 
-> Note that some buggy drivers access nd_tbl without checking
-> disable_ipv6_mod, so nd_tbl's extern definition is still left.
-> 
-> 
-> Changes:
->    v4:
->      * Patch 12
->        * Add sysctl knob, net.core.neigh_inherit_init_net
->        * Inherit all neigh parms by default
-> 
->    v3: https://lore.kernel.org/netdev/20260811022448.116235-1-kuniyu@google.com/
->      * Add Patch 1 & 11
->      * Patch 12
->        * Remove timer_shutdown_sync() in neigh_flush_one() and
->          rely on tbl->entries (Patch 11) to free it in neigh_table_free().
->      * Patch 15
->        * Remove stale comments
-> 
->    v2: https://lore.kernel.org/netdev/20260807232932.3986667-1-kuniyu@google.com/
->      * Add Patch 11 & 13
->      * Patch 7
->        * Add note about mlx5e_tc_update_neigh_used_value()
->      * Patch 9
->        * Add __maybe_unused to net in neigh_table_clear()
->      * Patch 10
->        * panic() when register_pernet_subsys(&arp_net_ops) fails
->        * Add timer_shutdown_sync() in neigh_flush_one()
->      * Patch 11
->        * Split from the next patch
->        * Remove net comparison in pneigh_dump_table()
->        * Remove net arg of pneigh_create(), pneigh_delete(), and
->          pneigh_lookup()
-> 
->    v1: https://lore.kernel.org/netdev/20260806011152.1170012-1-kuniyu@google.com/
-> 
-> 
-> Kuniyuki Iwashima (15):
->    selftest: net: Deflake Periodic GC test in test_neigh.sh.
->    neighbour: Remove __neigh_for_each_release().
->    neighbour: Remove lock dance for neigh_update_{gc,managed}_list().
->    neighbour: Remove unnecessary EXPORT_SYMBOL().
->    neighbour: Remove __rcu from neigh_tables[].
->    neighbour: Store arp_tbl and nd_tbl in net->neigh_tables[].
->    neighbour: Remove neigh_tables[].
->    ipv4: Replace &arp_tbl with arp_table(net).
->    ipv6: Replace &nd_tbl with nd_table(net).
->    neighbour: Clean up neigh_table_init() and neigh_table_clear().
->    neighbour: Convert neigh_table.entries to refcount_t.
->    neighbour: Namespacify neigh_tables.
->    neighbour: Don't store net in struct pneigh_entry.
->    neighbour: Remove unnecessary net_eq().
->    selftest: net: Specify netns for ip ntable in test_neigh.sh.
-> 
->   Documentation/admin-guide/sysctl/net.rst      |  14 +
->   drivers/infiniband/ulp/ipoib/ipoib_main.c     |  27 +-
->   .../marvell/prestera/prestera_router.c        |  10 +-
->   .../mellanox/mlx5/core/en/rep/neigh.c         |  29 +-
->   .../mellanox/mlx5/core/en/tc_tun_encap.c      |  23 +-
->   .../mellanox/mlx5/core/en_accel/ipsec.c       |   6 +-
->   .../ethernet/mellanox/mlxsw/spectrum_router.c |  31 +-
->   .../ethernet/mellanox/mlxsw/spectrum_span.c   |  10 +-
->   .../netronome/nfp/flower/tunnel_conf.c        |  14 +-
->   drivers/net/ethernet/rocker/rocker_main.c     |   2 +-
->   drivers/net/ethernet/rocker/rocker_ofdpa.c    |   2 +-
->   drivers/net/ethernet/sfc/tc_counters.c        |   8 +-
->   drivers/net/ethernet/sfc/tc_encap_actions.c   |   4 +-
->   drivers/net/vrf.c                             |   2 +-
->   drivers/net/vxlan/vxlan_core.c                |  16 +-
->   include/net/arp.h                             |  10 +-
->   include/net/ndisc.h                           |  20 +-
->   include/net/neighbour.h                       |  22 +-
->   include/net/net_namespace.h                   |   4 +
->   include/net/route.h                           |   7 +-
->   net/bridge/br_arp_nd_proxy.c                  |   4 +-
->   net/core/neighbour.c                          | 400 +++++++++---------
->   net/core/sysctl_net_core.c                    |  12 +
->   net/ieee802154/6lowpan/tx.c                   |   3 +-
->   net/ipv4/arp.c                                | 131 ++++--
->   net/ipv4/devinet.c                            |  18 +-
->   net/ipv4/fib_semantics.c                      |   7 +-
->   net/ipv4/route.c                              |   2 +-
->   net/ipv6/addrconf.c                           |  17 +-
->   net/ipv6/ip6_output.c                         |   4 +-
->   net/ipv6/ndisc.c                              | 146 ++++---
->   net/ipv6/route.c                              |  18 +-
->   tools/testing/selftests/net/test_neigh.sh     |  66 +--
->   33 files changed, 620 insertions(+), 469 deletions(-)
-> 
+This series adds support for 1000BASE-X autonegotiation to the Cadence macb
+driver when using the MAC-internal PCS. The existing driver code is oriented
+toward the PCS being used with an on-board SGMII PHY, so uses Cisco
+SGMII-style autonegotiation exclusively and does not anticipate e.g. link
+state changes arising from fiber attach/detach events since the SGMII endpoint
+is permanently attached in such cases. The first patch changes the driver
+to monitor the PCS's link by polling, following the approach used currently
+by this driver for fixed links; the second extends the existing SGMII
+autonegotiation code to also support 1000BASE-X autonegotiation.
 
-Nice work! With init_net inherit as default, for the set:
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Changelog:
+- v1: Original patch
+  Link: https://lore.kernel.org/netdev/20260714200904.70428-1-nwhitehorn@pa.msu.edu/
+- v2: Split into two pieces and clean-up of a few details in anrestart().
+  Link: https://lore.kernel.org/netdev/20260714200904.70428-1-nwhitehorn@pa.msu.edu/
+- v3: Fix mistakes in commit message for patch 1 and improve wording.
+  Link: https://lore.kernel.org/netdev/20260729192748.6928-1-nwhitehorn@pa.msu.edu/
+- v4: Fix return value in macb_pcs_config() to indicate to phylink when the
+  autonegotiation advertisement has changed and autonegotiation needs to be
+  restarted.
+  Link: https://lore.kernel.org/r/20260807201741.3275-1-nwhitehorn@pa.msu.edu
+- v5: Fix bug in the v4 return value from macb_pcs_config() that caused
+  phylink to be informed in the wrong circumstances about updates. Also adjust
+  some whitespace issues in the earlier patch series.
 
-Cheers,
-  Nik
+Tested on Microchip PolarFire SoC with a variety of SFPs (copper, fiber, GPON)
+attached to the I/O Bank-5 PCS lines.
+
+Thanks to Charles Perry, Andrew Lunn, Paolo Abeni, Théo Lebrun, and
+Jakob Kicinski for helpful suggestions and discussion on this patch series.
+As a brief summary of that discussion, there are a few areas near this patch
+that are existing non-idealities in the macb driver, in particular that it uses
+polling to monitor link-state with the internal PCS and the driver does not
+currently have support for using the link-state change interrupt. The
+intention is to address this in a later patch that would remove polling from
+both this case and the fixed-link one.
 
