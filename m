@@ -1,164 +1,134 @@
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91DEC29BD8C
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 02:22:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26BA129BD8C
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 02:28:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786587779; cv=none; b=GG8CcNtyDG3uCZJh/ZlOBqOKO52A7RWLcmIFQxdKKvgN+mZkFU+OiL+VwIyGvayqhmThynMJZDgRd450fraph5sMFUsQsLfcaCPDI7vzsyiSsC6gLUlUSm8aLPuD9kfa3I8MzYLE8wXPjyaCzTvr113c7o5GFChChaXrJFFzmhU=
+	t=1786588135; cv=none; b=uhZ/cR+i+bJs2Ga6fNBeTcWg3XHijIVE+Xs/dgvR0RkjLPJyUDktQwYFtwkk/DyQLVb/D1TQTTQ+VKErecBMaenqR4l2sUfl3oafi9/tLSqPxeMrwjDBt/AxrDGG8T0znaroms7M6EKg+pLFkOLnFatqitFXhR84k/1JksWRdUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786587779; c=relaxed/simple;
-	bh=N0CDGf91ShSNx7NguKzYYvGCEE+SoDNyK4yIYae0qrs=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=i7/jcDxeqL2jdx5+gkJHA7LsAaFrWgvO3mVAhm0Q6aoLm2QBVqGqQSpKyngesioKPaM2oW2nflXR40Kzy2chNYXXclslyD5JlhlsS/fclOHlBgkC2wPcECeah0Xv5FsDgR/EWdqwS9Rzjp8jynGF7UjuEbAiDyGixOq3ZlSRous=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YahkbhiM; arc=none smtp.client-ip=209.85.128.182
+	s=arc-20240116; t=1786588135; c=relaxed/simple;
+	bh=2YHIkFSHjfogwm5MQi28k5ffHuwIyd+Q4x42ihCHNhw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lNLR5QBp/YbnGjb+EUdQBwRF/782f/J44FP9SJN5UQ0r/P70d9kZhhI2HfvorWgaqo67z3hsQUwt8YUXVRpGjdbkAdo9dFoBNX25xeXWtBk9DTHzmiGgzhD3JcR4DqANY9rXbHdGP0up7HXZbm08wIvFSnz4V7x0Sf1//5TYnIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F1dGph8Y; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YahkbhiM"
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-821106b5b64so10198407b3.1
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 19:22:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F1dGph8Y"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2d032846c95so19385335ad.1
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 19:28:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786587776; x=1787192576; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=COmSqf8nOGF9mKdU2rDmrVyiOuyrEua4dYaRNW04464=;
-        b=YahkbhiMNxKoh532gMxgB/p45FBlZepvAdHT+SVv4Qx+FN26qo/otSXWYcKZsxMpqw
-         LRLEMMznWYQ520udd12SgyD4RruuYe19cL5xBE6jgQFES+4Y5sewPprBSpN8DHgGlu2y
-         b9fGUhx9ok+Z5ayhtSp/FVcYkAOY2bhtO1BMJL8LaOeODkxu292BRBs8v3H26MVKgSeB
-         DghC8lz27vDij7O2XNcV3GhA3fqAivCKhHWeCMUn/G5Xw2vSudtfM1z0yX8Ei+dM8Kgf
-         oixdKky2FSXJHeCAXw5eEc2r/qh+OTDSZMutevjo6FrKtSZjYdR3BGMWpoc65wW+0cGb
-         ceBA==
+        d=gmail.com; s=20251104; t=1786588133; x=1787192933; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=cFUhdg34WYBiblmC3cyUKC57CljWkVyBVLDpxu/qTdQ=;
+        b=F1dGph8YOMCQ4Ty5shx4d1yTSFbXENIp/kZtyVLvIqll9KOQAmqfQTgkDHeaX4Ieck
+         k2e8vQITKBiyaiZ3Z6UkGuWfHTUUR6/lLBej1OU9ePrb8bT0gyKahlFhawKOvPzf+TJG
+         M0NuhAlJ/+L1SfopE2SN6T/B1t5v8wv53aPwxhkVnkSgPvX0BkrGyTSeODbxAJjtOpDl
+         X7D5Hldkjh75Mcf1wisLuyDQeteq8S48w4bB09o+MTJjPY/fzkf90+hsgkqXgBpHVGq6
+         rHUdf9jjkdmnn2X+UHJ1iY/aK+wQacWd78R7GDA+6SkiaaZefKOVq7PZy4FrFGXPH5E7
+         MymQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786587776; x=1787192576;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=COmSqf8nOGF9mKdU2rDmrVyiOuyrEua4dYaRNW04464=;
-        b=E1Ymyheh7LwbOUN44Ee3YCMPOy2Y2speROT5J9D28wD4/n5H3QQ7uLVWBxQX72E/MC
-         QffvwONl9Uj7Mt6UCd1IDzfUmp4OyE+gQC5981KR35rtg2KGhZeL9RCcUo7fGwLlW5uD
-         N3f7bqGe5j4t9UUfMLFrnmai5eNxWQMeIrW7Tm3Bi/9sZq+j7oUpXJ117wCcLyweDTcK
-         Mta+8ot+PrNvUC4kf3H8i3v67NNyoQQEpsLF9ylG54/uMPayD2ASMVcAk0793oe10OJ1
-         yGp+dEP6CwRGw1zmK0rgwxWUEfsOqopKzfdMHRLq6ozbdX2ZsjwixtbFiPInTTH7ITMx
-         VGLA==
-X-Gm-Message-State: AOJu0YxJsOgOE9LcxCIYDd5kE4Nsyk7FLJykej09m9OQYMF+QDNP7Q5G
-	GwVplb6NC4MOMmtNbGvPZMPzCjxayqi78th8oW6t7Zu8IN2++VN+9BLM
-X-Gm-Gg: AR+sD12gNAVY1AWfcoAlEbAP9heMpTMZGJ5JTad3gmJlP2SL4NlEn5zmnektDeEpKh1
-	Qsn3mWlsa2Jq9smSDn8N3wjya8b2u90LgkaryDHde5NtxPDMA6Zkdq0mNC70uJwfzabJqLqeTs5
-	bnXz63Hg0c9crPFgkm6Yn5ySAgkwHw9OIuXKOG9UiZEMGDQwJ6V43OdNOKxWMeWmXYP7LbdTDTR
-	QH5i7m4cvkPhu6PQZm7PcX7+bliBRxacGA0SInqHAO3T0h19Hi6hvZb7FYnX5eJ9YDdo6mN6Z9E
-	acmvH0QiRtLjty4r9mfyeJvTZLfECSosEFd1ZGpInl5iHmgUqQcGthfzVCdfAtkra9HdAH92ui4
-	lOTEb0x74Gv35kPhJCbgpSIg2RnCjQXsPoPxFX7vDhmHjuK2XCOKTQ1iQDlDzHHdwkjmnhaoPom
-	zKjLmjY6L9Rsd8QZSyuLBQ23vpgJ7tPCCjF7IPMBpaWS3INaUz0x4jwFPtZ8v4h3j0UcDYuq08Y
-	LMhrRwUF8+Wvnp5+jXAyV4qiOZ4mFWhrYo0
-X-Received: by 2002:a05:690c:385:b0:81e:f308:cfa3 with SMTP id 00721157ae682-83487fa7756mr9996857b3.14.1786587776591;
-        Wed, 12 Aug 2026 19:22:56 -0700 (PDT)
-Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-83465b080dfsm4775547b3.3.2026.08.12.19.22.55
+        d=1e100.net; s=20251104; t=1786588133; x=1787192933;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=cFUhdg34WYBiblmC3cyUKC57CljWkVyBVLDpxu/qTdQ=;
+        b=VBWlz6d+8Lz08qP9PZeT8r3RTcMcgEHUzdu2obkWq7oX2eF9f/Eml53WgG3XHXSmlK
+         cZgvm0mJdnOHaKuytEGgVdowhKPR9vs5PDNka3kbnoBXUp4cGtE+h6zTS7Bu9CFGHAet
+         0Znqlm2xqZFDAICcheCQuDUXNblMWm00UdIU5XvrwxfiT1Fa5sXIy6jxQd12Wyf/k389
+         6uaTafkdgZamYyBRXYdmjmECkToCn+YMgHyOEFQDDsEiVJfFzx6gu/3waiuMeZtfsRkN
+         poD3aNcx42EF1O9lZchSEjbbnGLmvDzygwWfGefRTs6jKToCXen3L5mmzEP09KyQ+e9R
+         UQ2w==
+X-Forwarded-Encrypted: i=1; AHgh+Rqb/9NlDplHtevLpRW+gGdkmQKUxYJoJq+RwNOlebDOODWeClpGKWUMOcPEG36q4bgnwfpT4Mw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNdB1SKrJKgA2/pPtFpz/stEo0aaoKQxD5AFhqd6z7ZA9y0QKj
+	KfY9TDhRrGh3gB28Ezsl340mNnMsKBDIaHb0dxcKJByWPgPrxD9NbXYkJKz+M2rV
+X-Gm-Gg: AR+sD12BVe7Pw5MvYQHwVO6GR8n8LS8i7gOyxFobP0qb44jKasUM2IKWXR6YMl2IXHz
+	b/iXletLxU7XddC3sCoQXGuQ44SsaNpN9GQoCBvgD0/hWYrzlIAsmK4tCugl2sCsvYjzxv9FfkS
+	ZEUZbFUFlgy+Nwcz2AsH44yWSgvgbilQY1Zapbxs2FNYisBd6WlAR5rrNuLuwfGbcLLe5TgYjhD
+	mb5YsTLE7P72Ak7/LTmmXs+Mk2YkUaDHK9fPiSXxNxwVWVV0rXn5Yg+5Uz+BpqB2ULuSrVcvv83
+	oHH4wbEyDtoWbZLWULc7M3KVkNUMVk7YkecKYRHv0A3bBkND4rT0lrn7eJ+MTLroltmC7JTesY3
+	5U0owRXHOiOZAw7v1I6rXDexUVyea31zHjExys3dILqLs3+OnwyYpJhId29Mepcwdb144xMonmA
+	+n8H4YQhHDLGas0XFoTLwLji3vTUxCZymglYBvM5Iw8BmFV2c9k7r/eto=
+X-Received: by 2002:a17:902:d551:b0:2d3:2e86:647a with SMTP id d9443c01a7336-2d37d5380ebmr30358795ad.5.1786588133158;
+        Wed, 12 Aug 2026 19:28:53 -0700 (PDT)
+Received: from fedora ([203.175.12.241])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d37c225c38sm2920215ad.22.2026.08.12.19.28.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Aug 2026 19:22:55 -0700 (PDT)
-Date: Wed, 12 Aug 2026 22:22:55 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Joe Damato <joe@dama.to>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, 
- "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- andrew+netdev@lunn.ch, 
- willemb@google.com, 
- linux-kernel@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.1ea7511ccd4a1@gmail.com>
-In-Reply-To: <any6TenWsCUdIPvX@devvm20253.cco0.facebook.com>
-References: <20260811184722.2612345-1-joe@dama.to>
- <20260811184722.2612345-2-joe@dama.to>
- <willemdebruijn.kernel.57d27685522a@gmail.com>
- <any6TenWsCUdIPvX@devvm20253.cco0.facebook.com>
-Subject: Re: [PATCH net-next 1/2] net/packet: Reduce VLAN tag code duplication
+        Wed, 12 Aug 2026 19:28:52 -0700 (PDT)
+Date: Thu, 13 Aug 2026 10:28:47 +0800
+From: Hangbin Liu <liuhangbin@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Hangbin Liu <liuhangbin@kylinos.cn>
+Subject: Re: [PATCH net] bonding: fix u32 overflow in compute_gap()
+Message-ID: <an0r33hYV6sJlfJX@fedora>
+References: <20260810-bond_overflow-v1-1-c9ff29d76770@kylinos.cn>
+ <20260812180111.76d0cece@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260812180111.76d0cece@kernel.org>
 
-Joe Damato wrote:
-> On Wed, Aug 12, 2026 at 08:28:39AM -0400, Willem de Bruijn wrote:
-> > Joe Damato wrote:
-> > > Reduce code duplication for VLAN tag extraction by factoring the
-> > > repeated code into a helper and using it.
-> > > 
-> > > Signed-off-by: Joe Damato <joe@dama.to>
+On Wed, Aug 12, 2026 at 06:01:11PM -0700, Jakub Kicinski wrote:
+> On Mon, 10 Aug 2026 10:38:23 +0800 Hangbin Liu wrote:
+> > From: Hangbin Liu <liuhangbin@kylinos.cn>
 > > 
-> > Especially with the improving AI bots, we're getting even more fixes
-> > to PF_PACKET lately. Cleanup patches can block fix backports to stable.
-> > The bar for pure cleanup patches has to be high to warrant that.
+> > compute_gap() computes the gap between a slave's link capacity and its
+> > current TLB load. Both terms use u32 left-shifts that overflow on modern
+> > hardware:
 > > 
-> > Plus, they add risk, if it is not trivial to review that they are NOOPs.
+> >   - slave->speed is u32 in Mbps; speed << 20 overflows at > 4Gbps.
+> >   - SLAVE_TLB_INFO(slave).load is u32; load << 3 overflows at > 512M.
 > > 
-> > Subjective, but not sure this one warrants the cost.
+> > Cast both operands to s64 before shifting so the arithmetic is performed
+> > in 64 bits. Also update the comment to make it more clear.
 > 
-> OK. In that case, I'll mark the series as rejected below. I was also working
-> on a test for ORIGDEV because many, many years ago I got bit by unexpected
-> results mixing packet sockets with bonded interfaces.
+> Could you clarify the impact in the commit message a little more
+> explicitly? If the links are the same speed -- does this fix still
+> matter?
+
+No, with same high speed NICs. If one save has lower load, e.g. 3Gbit/s,
+Another has higher load, e.g. 5Gbit/s. The higher load will overflow and
+became a smaller value.
+
 > 
-> But, I'll refrain from touching anything related to af_packet including tests
-> from now on.
-
-It only applies to pure code cleanups.
-
-> > > ---
-> > >  net/packet/af_packet.c | 95 +++++++++++++++++++++++-------------------
-> > >  1 file changed, 53 insertions(+), 42 deletions(-)
-
-As said it is a bit subjective (I did add a Reviewed-by to patch 2/2).
-And my opinion is just one. But this one to me makes the code less
-obvious, and no shorter.
-
-But, the real point remains that the bar for cleanups is high to
-offset the dual risk of unintended side-effects, and especially
-complicating (security) fix backports.
-
-> > > 
-> > > diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-> > > index 435756877aba..ee60dcc639ad 100644
-> > > --- a/net/packet/af_packet.c
-> > > +++ b/net/packet/af_packet.c
+> AI over here says:
 > 
-> [...]
+>   The fix is incomplete for very high loads: each hash bucket’s u32 tx_bytes
+>   already wraps above roughly 3.44 Gbit/s sustained over the 10-second interval,
+>   and aggregate u32 load wraps above roughly 34.4 Gbit/s.
 > 
-> > > @@ -997,20 +1018,19 @@ static void prb_fill_vlan_info(struct tpacket_kbdq_core *pkc,
-> > >  			struct tpacket3_hdr *ppd)
-> > >  {
-> > >  	struct packet_sock *po = container_of(pkc, struct packet_sock, rx_ring.prb_bdqc);
-> > > +	struct net_device *dev = NULL;
-> > > +	u16 tci, tpid;
-> > >  
-> > > -	if (skb_vlan_tag_present(pkc->skb)) {
-> > > -		ppd->hv1.tp_vlan_tci = skb_vlan_tag_get(pkc->skb);
-> > > -		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->vlan_proto);
-> > > -		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
-> > > -	} else if (unlikely(po->sk.sk_type == SOCK_DGRAM && eth_type_vlan(pkc->skb->protocol))) {
-> > > -		ppd->hv1.tp_vlan_tci = vlan_get_tci(pkc->skb, pkc->skb->dev);
-> > > -		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->protocol);
-> > > +	if (po->sk.sk_type == SOCK_DGRAM)
-> > > +		dev = pkc->skb->dev;
-> > > +
-> > > +	if (packet_get_vlan_tci_tpid(pkc->skb, dev, &tci, &tpid))
-> > >  		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
-> > 
-> > Does this change behavior, now setting tp_status also for the second
-> > branch, where previously the flags were not set?
-> 
-> If you apply the patch to the tree and look at it, it'll be less confusing. It
-> looks weird because of what git generated, but as far as my reading of the
-> code goes, there is no behavior change.
+> While these are not exactly the same lines of code - I think it'd be
+> worth to address them all in one series. 
 
-I see what you mean, thanks.
+Ah, yes. The load is already overflow here. Not in the gap compute.
+So the gap compute fix is mainly for different speed NICs.
+
+> 
+> > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> > Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+> 
+> Oh, you work at KylinOS now 
+
+Right.
+
+> -- please clearly state in the commit
+> message if the issue was seen in real life or AI-detected.
+
+OK, I will.
+
+Thanks
+Hangbin
