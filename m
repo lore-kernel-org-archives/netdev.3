@@ -1,68 +1,241 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDFFE4477F9;
-	Thu, 13 Aug 2026 09:39:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B923A44471C
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 09:40:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786613980; cv=none; b=rlavz32yG5TYiyTt4gx/IUrwOszOJPzcXOh8XrPuVotBZkgHbOL/wMlLostzDieh8LSfTkpsDFPEX2L69WTxnZvR10AEjkl5B9KG06KIODo6/sgYJuWvXEVma/MntWuIGtwdWjHonkAuGc2Ic6f5I8aW2tGJDldqj86gkPCB16I=
+	t=1786614048; cv=none; b=AlluotUCJVVNcn6zvR7x/+qAT9OBzWQF4QSUwGwqfVu+T5jrg/vELbu6z7TlrJp0vaxicZomavOYGAlcRAqQLrhgCicEDaGnpaUakcsYVA0IfJf4jhT+mqwzlLhEtqJTwU7ONzny9DrtabyolLiRTw6/5ysz8UlQdMA0hauMS38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786613980; c=relaxed/simple;
-	bh=L4XF8uNXcjv7VRkpB761vqjJh3OcVPeaLn6SeFuDq8o=;
+	s=arc-20240116; t=1786614048; c=relaxed/simple;
+	bh=RIJDgA6soFRVC0k78nWGXCgPMPcUzn7IBwof5CGhtdY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O2ZdUbdHx/E8HVbZtiPsco0eJMWcQaYqfR6llbrQxQDyzrYlslYfrtQNdysVFITk5v4GPUjPg2gFbcpDwkHkRS2pGmwj82csZVSmwyGVevgSlueiNX+oosfsCaNxJ1vCfSpVUQn7GmXgXf3ohdkhC8TTNs05aaTw39pTDLtIAGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AFGByBLx; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=eQgtIhPsmJgMjng/anPeDr28MfI4i24yds2JLIuNZ87Uo4nets4xP46h7NURGwa7Y1GkiK3sWeU4fy5xO9qN6GJ6SqRi5aPuvwbB1wtZAugt39refldskOT1yaP9iQweIUE/6gdqlsKg6AOAK46zrXyGpXd+iD7rxsTVim3pJ6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=V/AiFLvs; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=g4Rhbbso; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AFGByBLx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F31D1F000E9;
-	Thu, 13 Aug 2026 09:39:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786613978;
-	bh=6LOGg6GoL1PEr68ZyzKCZBBrW/+LY26NLdd/zdIlEio=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AFGByBLxo8ncBrW8FPbGI2kmqNHkQqM0xT6KlHKTdM3/6jtyKKZrh7SDM+soWabIe
-	 ROxnPYLUCmlBuG3cVyLZupKnJOPe49rCv6np3nNZterB/AlFixfpmNrPidRfSR5XON
-	 ZOE0VG0yzwZefF4C1Uc8UQKuCAkXq9m8XQ5BWCOfYpVgo6Fj2eG6PodykimKuvdkl6
-	 RJ001P2GF8k8WzyZvCq60oOY4x6p+s3DZP70vrhM07iWMwwY6cxg3cQAHQ7cuxe9rE
-	 IVhK4BZlFZhEEG00+9UQ3gfhhP/OS/akLpL/9mcL/7fT/XJGu1SddCvbL5ykLCtszQ
-	 ROhFeNau9UEwQ==
-Date: Thu, 13 Aug 2026 10:39:33 +0100
-From: Simon Horman <horms@kernel.org>
-To: Runyu Xiao <runyu.xiao@seu.edu.cn>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Jianhao Xu <jianhao.xu@seu.edu.cn>
-Subject: Re: [PATCH net] net: ibm: emac: mal: fix NAPI locking
-Message-ID: <20260813093933.GC196815@horms.kernel.org>
-References: <20260811070813.377573-1-runyu.xiao@seu.edu.cn>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="V/AiFLvs";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="g4Rhbbso"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786614045;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9F6N+VCq58ZT8xzy15i+HHmMii8MMNX7ejz2MgM7nfQ=;
+	b=V/AiFLvsJaRbsG2rzxFHNomXrLLdFx0wbJlEaEVnG6gIHX4tGYfgAoYNwDhDgC1K/VHz2X
+	N5/LDqgCIk/G+7sIX06Mq4Jqp+xqGbZ3eXyyQgZjb8bS52oeTpGo+r1HLirXxnVIRb6G0P
+	Kwai2yUBDr/l3oM3ONA+GHN+z/fOLfQ=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-582-zyJVtrfRMIqVwDKPnEFrKA-1; Thu, 13 Aug 2026 05:39:38 -0400
+X-MC-Unique: zyJVtrfRMIqVwDKPnEFrKA-1
+X-Mimecast-MFC-AGG-ID: zyJVtrfRMIqVwDKPnEFrKA_1786613977
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47f8398ed9fso492892f8f.0
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 02:39:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1786613977; x=1787218777; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=9F6N+VCq58ZT8xzy15i+HHmMii8MMNX7ejz2MgM7nfQ=;
+        b=g4RhbbsoWwZ6Qo89Ln/kJCk0roFSbuIkv5AqKjdrxS7eDIwmkbAoiWp9MSJmqI95j2
+         B0bJs2SLcsVSCJfgRidFnzQ1/bRDoqoL4YxJ+xq2xBSv9D4+Q6YfoFiIaLDuDSbwpBgR
+         fBUGeJfT1Ql/By4/LdULUbZxcX2nh7ZqL8IyN243D7iojjmT3T5r/uNQSaTRLh0LxeQy
+         R4dp4kqaAuCKyMYYED0EiSix9ffhlqkWsri0v30rylZuqPrOxNev594yn5TQ2oQsqFri
+         c30hH7pyjmY1CwMLZ82J/kUdE3UIB8THHhi2KVjlnPmawuqgnbprOqilwEZZa/e/3Eyt
+         hQqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786613977; x=1787218777;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9F6N+VCq58ZT8xzy15i+HHmMii8MMNX7ejz2MgM7nfQ=;
+        b=AblBcvmZekl8zqjoN7FERyt2l5zrH2wr9abhAZ8X0Gm4obCNL+L3eHs3jNGvniYwuI
+         XxKoTtS8OTOQdG0pgWH0KFtxhOvLYwhtG12dQMMlmC43gaxzj0HoIKUxpi5RYplQqoC7
+         S+HSq1OmBT1+wwJWOKfUPHbPPIsBdoaXiakrVX/RrXFdrdYdj2AnvNowbd8wYUgHJ1IL
+         4qEq1OMV9HErLhRZaXhk3FtM0z4fj23B+wZnLb9tuWJqnytUNn0LbMeCYZqe+utpfljR
+         g1sRazvi6IBlspfv2YVJmJopj3Ev2NYWNT/vAKSfZhLzDXmmqeRKUbV5l4c5ptZftLmu
+         YPKQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rps5YCYExwEPP9D2BYdxyuwTzZdDGWmhmg1sIdUQWCtIIuW/KqPvcMGehoMfQ4FLdU8JrE1aTM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvTu7k/nmrNwPo97YmNuJcjQckpYXX7Z4MpKlr5i39PBhmIaLU
+	JHUNA1+VeAYHd8p/6ZcOfGhz2lMqXVtCCdL3Onw0vVvEQNR85fwhHR3yTdjR/pf/gcHimES/IIg
+	IT08oe2TvYJvTcBZvazhc7aWzMh+jgSEMpepOMdljL/igkTVUAP972eK2sA==
+X-Gm-Gg: AR+sD13cu8OLiW5CFsJa5CvdhURpXz8D8BPijtuQK/Y9qSIOqx/CEaI7SUGM1xkY1kT
+	5D6Vqo5u4vFJd/7viq95TLyp4q3JIqoOVdnvCA29zNPzMU3d+VGUSO8h6/HpJwwLSPahwzsDnS4
+	+lE2a0ErLUhOhJOTqF3LDTC86d9bZwooTuabhtMaJm7MoyDw1Rw5R67xy26h57Vvb3LlyQOYKkg
+	KGH7oKgtGvqbalh4X1WOLnQN7DA+qSEJXNt5r51pi4uSCUh2ql3xUcU89p5KCp1EmRhQt72kiOL
+	cTuYx105ENlornIzc+CZKOw7w/2obK+49IxqAcIwOlUAjroGodR3Zh50qOkLiM4EW4Y369G1YrM
+	uLtez08sWWW7Als4OKNdLNa66TxfXi4A1vyBDYFLaJrjPxZFMYD2E
+X-Received: by 2002:a05:6000:220d:b0:475:3a97:8e2c with SMTP id ffacd0b85a97d-4815a01c666mr5772516f8f.16.1786613976690;
+        Thu, 13 Aug 2026 02:39:36 -0700 (PDT)
+X-Received: by 2002:a05:6000:220d:b0:475:3a97:8e2c with SMTP id ffacd0b85a97d-4815a01c666mr5772398f8f.16.1786613976129;
+        Thu, 13 Aug 2026 02:39:36 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-135-154.retail.telecomitalia.it. [82.53.135.154])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815a5612d0sm4972789f8f.2.2026.08.13.02.39.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 02:39:35 -0700 (PDT)
+Date: Thu, 13 Aug 2026 11:39:30 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Jia Jia <physicalmtea@gmail.com>
+Cc: stefanha@redhat.com, mst@redhat.com, jasowangio@gmail.com, 
+	eperezma@redhat.com, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] vhost/vsock: discard IOTLB when ACCESS_PLATFORM
+ is cleared
+Message-ID: <an2KTuUm-mZ0nnDQ@sgarzare-redhat>
+References: <20260810134018.143973-1-physicalmtea@gmail.com>
+ <20260810134018.143973-2-physicalmtea@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20260811070813.377573-1-runyu.xiao@seu.edu.cn>
+In-Reply-To: <20260810134018.143973-2-physicalmtea@gmail.com>
 
-On Tue, Aug 11, 2026 at 03:08:13PM +0800, Runyu Xiao wrote:
-> Since commit 413f0271f396 ("net: protect NAPI enablement with
-> netdev_lock()"), napi_enable() and napi_disable() take netdev_lock().
-> 
-> mal_register_commac() and mal_unregister_commac() call these helpers
-> while holding mal->lock with interrupts disabled. In the unregister
-> path, napi_disable() may also wait for polling to finish, while the poll
-> completion path takes mal->lock.
-> 
-> Take netdev_lock() before mal->lock, use the locked NAPI helpers, and
-> drop mal->lock before napi_disable_locked().
-> 
-> Fixes: 413f0271f396 ("net: protect NAPI enablement with netdev_lock()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+On Mon, Aug 10, 2026 at 09:40:17PM +0800, Jia Jia wrote:
+>vhost_vsock_set_features() leaves the device IOTLB attached when
+>userspace clears VIRTIO_F_ACCESS_PLATFORM. Descriptors can therefore
+>continue to use translations installed before the feature change,
+>including HVAs made stale by a later memory table update.
+>
+>Detach the device IOTLB before acknowledging a feature mask without
+>ACCESS_PLATFORM. Serialize each virtqueue handoff with its own mutex
+>while clearing its IOTLB pointer, resetting its metadata cache, and
+>updating its acknowledged features. Keep the old IOTLB alive until all
+>virtqueues have dropped their references, then free it.
+>
+>Also drop queued IOTLB miss messages and wake readers now that the
+>device no longer accepts IOTLB updates.
+>
+>Fixes: e13a6915a03f ("vhost/vsock: add IOTLB API support")
+>Suggested-by: Michael S. Tsirkin <mst@redhat.com>
+>Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+>---
+> drivers/vhost/vsock.c | 39 ++++++++++++++++++++++++++++++++++-----
+> 1 file changed, 34 insertions(+), 5 deletions(-)
+>
+>diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+>index 9aaab6bb8061..7372c22691de 100644
+>--- a/drivers/vhost/vsock.c
+>+++ b/drivers/vhost/vsock.c
+>@@ -851,6 +851,30 @@ static int vhost_vsock_set_cid(struct vhost_vsock *vsock, u64 guest_cid)
+> 	return 0;
+> }
+>
+>+/* Caller must hold the device mutex. */
+>+static void vhost_vsock_clear_iotlb(struct vhost_vsock *vsock, u64 features)
+>+{
+>+	struct vhost_iotlb *iotlb;
+>+	struct vhost_virtqueue *vq;
+>+	int i;
+>+
+>+	iotlb = vsock->dev.iotlb;
+>+	vsock->dev.iotlb = NULL;
+>+
+>+	for (i = 0; i < ARRAY_SIZE(vsock->vqs); i++) {
+>+		mutex_lock(&vsock->vqs[i].mutex);
+>+		vq = &vsock->vqs[i];
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+You can assing vq before the mutex_lock() and use it there too (and in 
+mutex_unlock()), as we do in all other places in this file.
+
+>+		vq->iotlb = NULL;
+>+		memset(vq->meta_iotlb, 0, sizeof(vq->meta_iotlb));
+>+		vq->acked_features = features;
+>+		mutex_unlock(&vsock->vqs[i].mutex);
+>+	}
+>+
+>+	vhost_clear_msg(&vsock->dev);
+>+	vhost_iotlb_free(iotlb);
+>+	wake_up_interruptible_poll(&vsock->dev.wait, EPOLLIN | EPOLLRDNORM);
+>+}
+
+I don't see anything vsock specific here. Would it be better to move 
+this to vhost.c and reuse some of the functions we have there?
+
+I mean something like this (untested and may be incomplete):
+
+
+void vhost_clear_device_iotlb(struct vhost_dev *d)
+{
+	struct vhost_iotlb *iotlb;
+	int i;
+
+	iotlb = d->iotlb;
+	d->iotlb = NULL;
+
+	for (i = 0; i < d->nvqs; ++i) {
+		struct vhost_virtqueue *vq = d->vqs[i];
+
+		mutex_lock(&vq->mutex);
+		vq->iotlb = NULL;
+		__vhost_vq_meta_reset(vq);
+		mutex_unlock(&vq->mutex);
+	}
+
+	vhost_clear_msg(d);
+	vhost_iotlb_free(iotlb);
+	wake_up_interruptible_poll(&d->wait, EPOLLIN | EPOLLRDNORM);
+}
+EXPORT_SYMBOL_GPL(vhost_clear_device_iotlb);
+
+
+>+
+> static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)
+> {
+> 	struct vhost_virtqueue *vq;
+>@@ -872,11 +896,16 @@ static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)
+>
+> 	vsock->seqpacket_allow = features & (1ULL << VIRTIO_VSOCK_F_SEQPACKET);
+>
+>-	for (i = 0; i < ARRAY_SIZE(vsock->vqs); i++) {
+>-		vq = &vsock->vqs[i];
+>-		mutex_lock(&vq->mutex);
+>-		vq->acked_features = features;
+>-		mutex_unlock(&vq->mutex);
+>+	if (!(features & (1ULL << VIRTIO_F_ACCESS_PLATFORM)) &&
+>+	    vsock->dev.iotlb) {
+>+		vhost_vsock_clear_iotlb(vsock, features);
+>+	} else {
+>+		for (i = 0; i < ARRAY_SIZE(vsock->vqs); i++) {
+>+			vq = &vsock->vqs[i];
+>+			mutex_lock(&vq->mutex);
+>+			vq->acked_features = features;
+>+			mutex_unlock(&vq->mutex);
+>+		}
+
+TBH I don't like this mix.
+
+Why assigning acked_features inside vhost_vsock_clear_iotlb()?
+
+IMO it's confusing. I see that you're saving another loop around the 
+VQs, but this code is not easy to understand IMO.
+
+I think we have 2 options:
+1. leave the loop for acked_features and don't set it in
+    vhost_vsock_clear_iotlb() (less code touched by this patch).
+    This is also what to do if we move the clear_iotlb() function
+    in vhost.c.
+2. change the code to have a single for loop with if block inside to
+    reset IOTLB stuff if needed. In this case maybe better to avoid the
+    function and move the entire code here.
+
+I prefer 1 with clear_iotlb() in vhost.c, but I'm not fully against 2.
+
+Thanks,
+Stefano
+
+
+> 	}
+> 	mutex_unlock(&vsock->dev.mutex);
+> 	return 0;
+>-- 
+>2.34.1
+>
 
