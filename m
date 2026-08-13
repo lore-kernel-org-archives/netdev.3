@@ -1,64 +1,68 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34853E49C6
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 11:20:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85F4468C1B
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 11:20:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786620052; cv=none; b=iGL9ZxJN37stB1RMwOEFZlG/pjWECvuKTLVJ3TEYVLN1+fMuaizftYMZ6Hkzkg4C/HgG4WTlWGOxEiFIr4Ci6sr3Hd/rgyYHHHNQV/T44bOolmdtMxdRO+JWSvtjiiQ6lDOBdRWEhspMb81LawoXeDneYYHlfMaVlTQNICj3AGo=
+	t=1786620053; cv=none; b=WF34Y+cmYFNbZpsgsQJe+M3xTa33ItKOER0n621Q44E0cXn9qbpsOb1Z5tKVUs8Egx+4f0kjiQGLwsYlknQ5rv/HR/aceGC5zzb+fGQqzNn5LjjmOvdmDRSFHQGq27LtOtOq339xi4lW9ZnIrcigeGz7dUf54Q58i60csP3UvHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786620052; c=relaxed/simple;
-	bh=309ZmjVPz5mgkiq/iuAYWpkubWoU29BzNrP5pOfXKDA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=IfTNbMcIJ97BagY+ffqgRbOuuWfiZGF0iphGVZ7bXIaBFQqYyO0o56H1lGeJlVMhCfFY2VQTvGA8qFi1fA02+sfhmJQeZ5MDVIgjx2tMJf++vqsWLjy6OoKL4f3ojrrzV6oktlK++sbTYLf+sipnizJ1++SbUtf+GauYnlUybuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--maze.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pDqemULj; arc=none smtp.client-ip=209.85.215.200
+	s=arc-20240116; t=1786620053; c=relaxed/simple;
+	bh=P5YIBD+IEF6HJRaAGNy7VzeGfJT29meHNSysVeIQ1pQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=puhhNC4ovAAf86Xuu3AeC02ajpsPVsvZP347kXCSXGAtmKWkwo5+yHSK+rO4YKOV8bH0LguPBL4BXQ0twNptrnBCUyLAEzdEwndpBVUMMa0PKlm0OQVIB6jZZh/D/RNjHJGMLStsVkKmwM/ew1vekhSVQ4LJES2RXA3k5kZqGB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--maze.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=afQ3Lhds; arc=none smtp.client-ip=209.85.216.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--maze.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pDqemULj"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cbeeaabcadfso770691a12.1
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 04:20:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="afQ3Lhds"
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38e25e4b41cso721792a91.0
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 04:20:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786620046; x=1787224846; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1786620049; x=1787224849; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:mime-version:date:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=+DTbEDzNAkDi7a4YLT3tc3XFoipA7stpV5ODIq5bMqk=;
-        b=pDqemULjKTwNOUUQJKGFodQIw5Ps12LW8Ck9gNh06Y2uF0Lh6nObcaoNs7nrvh/LK+
-         3Bkgp/oIUzMCiaHCz6vA2+h1vAOa4suYrECiEgooKf51MweNdUcn1LoLmk2u25ncyk9v
-         eb0GH++jggTVWtj5yCCQj0xEqFzp9SH1MPij2rWcIAt6dJFoMc2m2aJfXesZgr/1hvP0
-         C202L33zJRvVkwjHOxltWB31FSM/WcVPoCaVpYviwY3ZP/Z/+ylqUpNRkzvHKT//jUwh
-         mcS3oDC/qj4tzehcTLb3ASmfQ2QZwoYxBP7wwyWLi++UdU02KM/sP6RjgppjMRZKK8PP
-         vKxg==
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=N7j/+SMKaLuu1HBtE5dsP3tHnoNTq6cGaHA0oSdZ5Ek=;
+        b=afQ3Lhdsyb9f7UkdQzrMv8gCdxmE90rI0IwwDCEIqG78Oqi0IrmQk0V+LAM5vgs/wY
+         sgcoKlaOb/EwIM2Hb97/R/0utu6VZG+uVxNNug0hmefvaUMQJAlLwm/ExLWtiYoS8yY8
+         D9bKu4R3dYYlam23aOAPPxyuP+U0ByAYHuenGqs8g98hWxfLBXYNbNhHWBpVMjnKF+EG
+         jiZcGAkhrWodvpIYiW9CQsDa7/kf3GdVlPEtO3nPJJIrbr7lKFqeELosVQKgCxtxMsBj
+         qV2Dh2TnAnTS4XB3V7RlTXheqOzwtHEQTo4mqNtT8XeXtEzUz44SNX+cgPBb7YCxB1MN
+         7Beg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786620046; x=1787224846;
+        d=1e100.net; s=20251104; t=1786620049; x=1787224849;
         h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+DTbEDzNAkDi7a4YLT3tc3XFoipA7stpV5ODIq5bMqk=;
-        b=o+I1KtbtlQUoE/+wnZiOUSr/AG2EbO6tSEO6nEbLBQxhtQPT4KfJ9BnW/2wOcmd4d+
-         c1e01GKukbM9TSljwy/WmtZTXkIQLQSswIcizJEzdQOa4MUS5lu+2b9et7wVi+eQOQRA
-         LWlGr4ffWg5PUzpMB+Wl+wPzM718gwOjPie5qQf4YAMNVM9WFZCAKcBSs7b1auTlc68a
-         xyn6KhHeoT7FyWQULfbXJ27JjTze11OBfFkV5+MwVAkn0vz1d9GJ130nrm/KtfTyoq0C
-         Jicu6qvxVYq28t4txFfkvt0AoLPQOML3efPD/sjlchxGPYPSL0kePF1Z2LY0vEB5ElLl
-         niMg==
-X-Gm-Message-State: AOJu0YyPR1VKY82zhWSGJx5X+lve6vLGp3H3xGtPrsLC4x6M4tqCOGPJ
-	/aqXNaQ9VfXgU3ASxg3IhXY1stdX2R5Cc91iLwE47WoSo+5MRlXc8e5hf1yQP1e/xbNCXCOuEw=
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=N7j/+SMKaLuu1HBtE5dsP3tHnoNTq6cGaHA0oSdZ5Ek=;
+        b=dJ7NMaxFdJLHPWxOYpMb3+RC+zI2MpLR2795Rl0nqDGwDTYf4siYlqxGZUxmBKjX11
+         C3xRb3LyOW/LBFtQxTsbK+q00o3OfJenwn47fddTcnpT0CazkG3s+mjN3v3CIg47nWq6
+         UYA1Kuj5o3ojMGEuXuShB1U6rLgALoee0cttam8okGk/71al37eLR/atSXDtDA2gXwRv
+         3h1xhhDmhN3nIDPFDhusp2FePef4t5cLT+LeYxrmE52ZLwwRaXnZVJ/UVOIK1JyA6hRk
+         QTk5r2I3K0pYchENLerNW5V79BY2blrbJCeaB2rC/q8kOWPT52dmVWthcZu4vKNBY8sO
+         aSNw==
+X-Gm-Message-State: AOJu0Yxzuz9Y1BCMa7i5FcGBr+Zqw6vk9f+DUxLS5zGtvUA0USQIXUMG
+	TsMuuLKQnqC9mpqYIZRQ3iS5Kcsn9Je/IM1EUujimZMWCmNdi2PEKore3Zg66sSB1Hhj6wI56Q=
 	=
-X-Received: from dlep8-n2.prod.google.com ([2002:a05:701b:4588:20b0:141:729:41df])
- (user=maze job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:a8f:b0:3c3:a3f4:5485
- with SMTP id adf61e73a8af0-3cc54f9ccddmr6528786637.6.1786620045894; Thu, 13
- Aug 2026 04:20:45 -0700 (PDT)
-Date: Thu, 13 Aug 2026 04:20:38 -0700
+X-Received: from dlbcm36.prod.google.com ([2002:a05:7022:68a4:b0:13c:fa0e:4693])
+ (user=maze job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:224d:b0:37d:f983:7b5
+ with SMTP id 98e67ed59e1d1-3931e06a33bmr6076285a91.9.1786620048817; Thu, 13
+ Aug 2026 04:20:48 -0700 (PDT)
+Date: Thu, 13 Aug 2026 04:20:39 -0700
+In-Reply-To: <20260813112039.247862-1-maze@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260813112039.247862-1-maze@google.com>
 X-Mailer: git-send-email 2.55.0.691.gc56d675ccc-goog
-Message-ID: <20260813112039.247862-1-maze@google.com>
-Subject: [PATCH bpf-next 1/2] bpf: Support cgroup {get,set}sockopt hooks for
- compat syscalls
+Message-ID: <20260813112039.247862-2-maze@google.com>
+Subject: [PATCH bpf-next 2/2] selftests/bpf: Add tests for bpf_sockopt
+ is_compat field
 From: "=?UTF-8?q?Maciej=20=C5=BBenczykowski?=" <maze@google.com>
 To: "=?UTF-8?q?Maciej=20=C5=BBenczykowski?=" <zenczykowski@gmail.com>, Alexei Starovoitov <ast@kernel.org>, 
 	Daniel Borkmann <daniel@iogearbox.net>
@@ -68,156 +72,29 @@ Cc: Linux Network Development Mailing List <netdev@vger.kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Currently, BPF cgroup socket option programs (BPF_PROG_TYPE_CGROUP_SOCKOPT)
-are skipped for 32-bit compat tasks on 64-bit kernels via explicit
-!compat checks in do_sock_setsockopt() and do_sock_getsockopt().
+Sync tools/include/uapi/linux/bpf.h with the addition of the 'is_compat'
+field in 'struct bpf_sockopt' and add test cases to 'prog_tests/sockopt.c'
+to verify context access permissions:
 
-While this originally avoided issues with programs assuming native 64-bit
-sockopt structure layouts, completely bypassing BPF sockopt hooks allows
-32-bit binaries to bypass cgroup network policies and prevents BPF
-programs from managing sockopts for compat applications.
+ - Test reading 'ctx->is_compat' in 'cgroup/{g,s}etsockopt'
+   (expecting 0 in native execution).
+ - Check verifier rejects writes to 'ctx->is_compat'
+   in 'cgroup/{g,s}etsockopt'.
 
-Enable BPF cgroup sockopt hooks for compat syscalls by:
-1. Adding a read-only `is_compat` field to `struct bpf_sockopt` (and
-   `struct bpf_sockopt_kern`) which is 1 for compat syscalls and 0
-   otherwise.
-2. Passing the `compat` parameter through BPF_CGROUP_RUN_PROG_SETSOCKOPT
-   and BPF_CGROUP_RUN_PROG_GETSOCKOPT to populate `ctx.is_compat`.
-3. Removing the `!compat` guards in do_sock_setsockopt() and
-   do_sock_getsockopt().
-
-BPF programs can now inspect `ctx->is_compat` to handle any 32-bit vs
-64-bit layout differences for the very rare cases where it is needed.
-
-Behavioral Note for BPF Programs:
-  Previously, compat sockopt calls were completely invisible to BPF.
-  Now, attached BPF sockopt programs will run on compat calls.
-  For options with arch-dependent structures (e.g. SO_RCVTIMEO with 32-bit
-  vs 64-bit struct timeval), BPF programs must now check ctx->is_compat to
-  correctly parse/modify the buffer.
-  Due to 32-bit userspace being near dead and there being very few such
-  options that one would want to overwrite in eBpf, I'm judging this to
-  be acceptable (there's probably very few programs that would be affected)=
-.
+Tested via:
+  tools/testing/selftests/bpf/vmtest.sh -- ./test_progs -t sockopt
 
 Signed-off-by: Maciej =C5=BBenczykowski <maze@google.com>
 ---
- include/linux/bpf-cgroup.h | 35 ++++++++++++++++++-----------------
- include/linux/filter.h     |  1 +
- include/uapi/linux/bpf.h   |  1 +
- kernel/bpf/cgroup.c        |  9 +++++++--
- net/socket.c               | 17 +++++++----------
- 5 files changed, 34 insertions(+), 29 deletions(-)
+ tools/include/uapi/linux/bpf.h                |  1 +
+ .../selftests/bpf/prog_tests/sockopt.c        | 86 +++++++++++++++++++
+ 2 files changed, 87 insertions(+)
 
-diff --git a/include/linux/bpf-cgroup.h b/include/linux/bpf-cgroup.h
-index 4d0cc65976a1..943eb023b52b 100644
---- a/include/linux/bpf-cgroup.h
-+++ b/include/linux/bpf-cgroup.h
-@@ -138,14 +138,15 @@ int __cgroup_bpf_run_filter_sysctl(struct ctl_table_h=
-eader *head,
- 				   char **buf, size_t *pcount, loff_t *ppos,
- 				   enum cgroup_bpf_attach_type atype);
-=20
--int __cgroup_bpf_run_filter_setsockopt(struct sock *sock, int *level,
--				       int *optname, sockptr_t optval,
--				       int *optlen, char **kernel_optval);
-+int __cgroup_bpf_run_filter_setsockopt(struct sock *sock, bool compat,
-+				       int *level, int *optname,
-+				       sockptr_t optval, int *optlen,
-+				       char **kernel_optval);
-=20
--int __cgroup_bpf_run_filter_getsockopt(struct sock *sk, int level,
--				       int optname, sockptr_t optval,
--				       sockptr_t optlen, int max_optlen,
--				       int retval);
-+int __cgroup_bpf_run_filter_getsockopt(struct sock *sk, bool compat,
-+				       int level, int optname,
-+				       sockptr_t optval, sockptr_t optlen,
-+				       int max_optlen, int retval);
-=20
- int __cgroup_bpf_run_filter_getsockopt_kern(struct sock *sk, int level,
- 					    int optname, void *optval,
-@@ -376,21 +377,21 @@ static inline bool cgroup_bpf_sock_enabled(struct soc=
-k *sk,
- 	__ret;								       \
- })
-=20
--#define BPF_CGROUP_RUN_PROG_SETSOCKOPT(sock, level, optname, optval, optle=
-n,   \
--				       kernel_optval)			       \
-+#define BPF_CGROUP_RUN_PROG_SETSOCKOPT(sock, compat, level, optname, optva=
-l,   \
-+				       optlen, kernel_optval)		       \
- ({									       \
- 	int __ret =3D 0;							       \
- 	if (cgroup_bpf_enabled(CGROUP_SETSOCKOPT) &&			       \
- 	    cgroup_bpf_sock_enabled(sock, CGROUP_SETSOCKOPT))		       \
--		__ret =3D __cgroup_bpf_run_filter_setsockopt(sock, level,	       \
--							   optname, optval,    \
--							   optlen,	       \
-+		__ret =3D __cgroup_bpf_run_filter_setsockopt(sock, compat,       \
-+							   level, optname,     \
-+							   optval, optlen,     \
- 							   kernel_optval);     \
- 	__ret;								       \
- })
-=20
--#define BPF_CGROUP_RUN_PROG_GETSOCKOPT(sock, level, optname, optval, optle=
-n,   \
--				       max_optlen, retval)		       \
-+#define BPF_CGROUP_RUN_PROG_GETSOCKOPT(sock, compat, level, optname, optva=
-l,   \
-+				       optlen, max_optlen, retval)	       \
- ({									       \
- 	int __ret =3D retval;						       \
- 	if (cgroup_bpf_enabled(CGROUP_GETSOCKOPT) &&			       \
-@@ -400,7 +401,7 @@ static inline bool cgroup_bpf_sock_enabled(struct sock =
-*sk,
- 					tcp_bpf_bypass_getsockopt,	       \
- 					level, optname))		       \
- 			__ret =3D __cgroup_bpf_run_filter_getsockopt(	       \
--				sock, level, optname, optval, optlen,	       \
-+				sock, compat, level, optname, optval, optlen,  \
- 				max_optlen, retval);			       \
- 	__ret;								       \
- })
-@@ -504,11 +505,11 @@ static inline int bpf_percpu_cgroup_storage_update(st=
-ruct bpf_map *map,
- #define BPF_CGROUP_RUN_PROG_SOCK_OPS(sock_ops) ({ 0; })
- #define BPF_CGROUP_RUN_PROG_DEVICE_CGROUP(atype, major, minor, access) ({ =
-0; })
- #define BPF_CGROUP_RUN_PROG_SYSCTL(head,table,write,buf,count,pos) ({ 0; }=
-)
--#define BPF_CGROUP_RUN_PROG_GETSOCKOPT(sock, level, optname, optval, \
-+#define BPF_CGROUP_RUN_PROG_GETSOCKOPT(sock, compat, level, optname, optva=
-l, \
- 				       optlen, max_optlen, retval) ({ retval; })
- #define BPF_CGROUP_RUN_PROG_GETSOCKOPT_KERN(sock, level, optname, optval, =
-\
- 					    optlen, retval) ({ retval; })
--#define BPF_CGROUP_RUN_PROG_SETSOCKOPT(sock, level, optname, optval, optle=
-n, \
-+#define BPF_CGROUP_RUN_PROG_SETSOCKOPT(sock, compat, level, optname, optva=
-l, optlen, \
- 				       kernel_optval) ({ 0; })
-=20
- #endif /* CONFIG_CGROUP_BPF */
-diff --git a/include/linux/filter.h b/include/linux/filter.h
-index 4a9bc6a848f2..5ab7d606aea5 100644
---- a/include/linux/filter.h
-+++ b/include/linux/filter.h
-@@ -1702,6 +1702,7 @@ struct bpf_sockopt_kern {
- 	s32		level;
- 	s32		optname;
- 	s32		optlen;
-+	s32		is_compat;
- 	/* for retval in struct bpf_cg_run_ctx */
- 	struct task_struct *current_task;
- 	/* Temporary "register" for indirect stores to ppos. */
-diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.=
+h
 index ffd96e8b920b..15f712b5b164 100644
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
+--- a/tools/include/uapi/linux/bpf.h
++++ b/tools/include/uapi/linux/bpf.h
 @@ -7616,6 +7616,7 @@ struct bpf_sockopt {
  	__s32	optname;
  	__s32	optlen;
@@ -226,107 +103,111 @@ index ffd96e8b920b..15f712b5b164 100644
  };
 =20
  struct bpf_pidns_info {
-diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
-index 8fbc942a1cc3..910878e991a0 100644
---- a/kernel/bpf/cgroup.c
-+++ b/kernel/bpf/cgroup.c
-@@ -2055,7 +2055,7 @@ static bool sockopt_buf_allocated(struct bpf_sockopt_=
-kern *ctx,
- 	return ctx->optval !=3D buf->data;
- }
-=20
--int __cgroup_bpf_run_filter_setsockopt(struct sock *sk, int *level,
-+int __cgroup_bpf_run_filter_setsockopt(struct sock *sk, bool compat, int *=
-level,
- 				       int *optname, sockptr_t optval,
- 				       int *optlen, char **kernel_optval)
- {
-@@ -2065,6 +2065,7 @@ int __cgroup_bpf_run_filter_setsockopt(struct sock *s=
-k, int *level,
- 		.sk =3D sk,
- 		.level =3D *level,
- 		.optname =3D *optname,
-+		.is_compat =3D compat,
- 	};
- 	int ret, max_optlen;
-=20
-@@ -2146,7 +2147,7 @@ int __cgroup_bpf_run_filter_setsockopt(struct sock *s=
-k, int *level,
- 	return ret;
- }
-=20
--int __cgroup_bpf_run_filter_getsockopt(struct sock *sk, int level,
-+int __cgroup_bpf_run_filter_getsockopt(struct sock *sk, bool compat, int l=
-evel,
- 				       int optname, sockptr_t optval,
- 				       sockptr_t optlen, int max_optlen,
- 				       int retval)
-@@ -2157,6 +2158,7 @@ int __cgroup_bpf_run_filter_getsockopt(struct sock *s=
-k, int level,
- 		.sk =3D sk,
- 		.level =3D level,
- 		.optname =3D optname,
-+		.is_compat =3D compat,
- 		.current_task =3D current,
- 	};
- 	int orig_optlen;
-@@ -2705,6 +2707,9 @@ static u32 cg_sockopt_convert_ctx_access(enum bpf_acc=
-ess_type type,
- 		else
- 			*insn++ =3D CG_SOCKOPT_READ_FIELD(optlen);
- 		break;
-+	case offsetof(struct bpf_sockopt, is_compat):
-+		*insn++ =3D CG_SOCKOPT_READ_FIELD(is_compat);
-+		break;
- 	case offsetof(struct bpf_sockopt, retval):
- 		BUILD_BUG_ON(offsetof(struct bpf_cg_run_ctx, run_ctx) !=3D 0);
-=20
-diff --git a/net/socket.c b/net/socket.c
-index 63c69a0fa74e..f4549975f98b 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -2346,10 +2346,9 @@ int do_sock_setsockopt(struct socket *sock, bool com=
-pat, int level,
- 	if (err)
- 		goto out_put;
-=20
--	if (!compat)
--		err =3D BPF_CGROUP_RUN_PROG_SETSOCKOPT(sock->sk, &level, &optname,
--						     optval, &optlen,
--						     &kernel_optval);
-+	err =3D BPF_CGROUP_RUN_PROG_SETSOCKOPT(sock->sk, compat, &level, &optname=
-,
-+					     optval, &optlen,
-+					     &kernel_optval);
- 	if (err < 0)
- 		goto out_put;
- 	if (err > 0) {
-@@ -2447,8 +2446,7 @@ int do_sock_getsockopt(struct socket *sock, bool comp=
-at, int level,
- 	if (err)
- 		return err;
-=20
--	if (!compat)
--		copy_from_sockptr(&max_optlen, optlen, sizeof(int));
-+	copy_from_sockptr(&max_optlen, optlen, sizeof(int));
-=20
- 	ops =3D READ_ONCE(sock->ops);
- 	if (level =3D=3D SOL_SOCKET) {
-@@ -2477,10 +2475,9 @@ int do_sock_getsockopt(struct socket *sock, bool com=
-pat, int level,
- 		err =3D -EOPNOTSUPP;
- 	}
-=20
--	if (!compat)
--		err =3D BPF_CGROUP_RUN_PROG_GETSOCKOPT(sock->sk, level, optname,
--						     optval, optlen, max_optlen,
--						     err);
-+	err =3D BPF_CGROUP_RUN_PROG_GETSOCKOPT(sock->sk, compat, level, optname,
-+					     optval, optlen, max_optlen,
-+					     err);
-=20
- 	return err;
- }
+diff --git a/tools/testing/selftests/bpf/prog_tests/sockopt.c b/tools/testi=
+ng/selftests/bpf/prog_tests/sockopt.c
+index eaac83a7f388..c7dd22d0e3f8 100644
+--- a/tools/testing/selftests/bpf/prog_tests/sockopt.c
++++ b/tools/testing/selftests/bpf/prog_tests/sockopt.c
+@@ -215,6 +215,49 @@ static struct sockopt_test {
+ 		.get_optname =3D IP_TOS,
+ 		.get_optlen =3D 1,
+ 	},
++	{
++		.descr =3D "getsockopt: read ctx->is_compat",
++		.insns =3D {
++			/* r6 =3D ctx->is_compat */
++			BPF_LDX_MEM(BPF_W, BPF_REG_6, BPF_REG_1,
++				    offsetof(struct bpf_sockopt, is_compat)),
++
++			/* if (ctx->is_compat =3D=3D 0) { */
++			BPF_JMP_IMM(BPF_JNE, BPF_REG_6, 0, 4),
++			/* ctx->retval =3D 0 */
++			BPF_MOV64_IMM(BPF_REG_0, 0),
++			BPF_STX_MEM(BPF_W, BPF_REG_1, BPF_REG_0,
++				    offsetof(struct bpf_sockopt, retval)),
++			/* return 1 */
++			BPF_MOV64_IMM(BPF_REG_0, 1),
++			BPF_JMP_A(1),
++			/* } else { */
++			/* return 0 */
++			BPF_MOV64_IMM(BPF_REG_0, 0),
++			/* } */
++			BPF_EXIT_INSN(),
++		},
++		.attach_type =3D BPF_CGROUP_GETSOCKOPT,
++		.expected_attach_type =3D BPF_CGROUP_GETSOCKOPT,
++
++		.get_level =3D SOL_IP,
++		.get_optname =3D IP_TOS,
++		.get_optlen =3D 1,
++	},
++	{
++		.descr =3D "getsockopt: deny writing to ctx->is_compat",
++		.insns =3D {
++			/* ctx->is_compat =3D 1 */
++			BPF_MOV64_IMM(BPF_REG_0, 1),
++			BPF_STX_MEM(BPF_W, BPF_REG_1, BPF_REG_0,
++				    offsetof(struct bpf_sockopt, is_compat)),
++			BPF_EXIT_INSN(),
++		},
++		.attach_type =3D BPF_CGROUP_GETSOCKOPT,
++		.expected_attach_type =3D BPF_CGROUP_GETSOCKOPT,
++
++		.error =3D DENY_LOAD,
++	},
+ 	{
+ 		.descr =3D "getsockopt: deny writing to ctx->optname",
+ 		.insns =3D {
+@@ -609,6 +652,49 @@ static struct sockopt_test {
+ 		.get_optval =3D { 1 << 3 },
+ 		.get_optlen =3D 1,
+ 	},
++	{
++		.descr =3D "setsockopt: read ctx->is_compat",
++		.insns =3D {
++			/* r6 =3D ctx->is_compat */
++			BPF_LDX_MEM(BPF_W, BPF_REG_6, BPF_REG_1,
++				    offsetof(struct bpf_sockopt, is_compat)),
++
++			/* if (ctx->is_compat =3D=3D 0) { */
++			BPF_JMP_IMM(BPF_JNE, BPF_REG_6, 0, 4),
++			/* ctx->optlen =3D -1 */
++			BPF_MOV64_IMM(BPF_REG_0, -1),
++			BPF_STX_MEM(BPF_W, BPF_REG_1, BPF_REG_0,
++				    offsetof(struct bpf_sockopt, optlen)),
++			/* return 1 */
++			BPF_MOV64_IMM(BPF_REG_0, 1),
++			BPF_JMP_A(1),
++			/* } else { */
++			/* return 0 */
++			BPF_MOV64_IMM(BPF_REG_0, 0),
++			/* } */
++			BPF_EXIT_INSN(),
++		},
++		.attach_type =3D BPF_CGROUP_SETSOCKOPT,
++		.expected_attach_type =3D BPF_CGROUP_SETSOCKOPT,
++
++		.set_optname =3D 123,
++		.set_optlen =3D 1,
++		.io_uring_support =3D true,
++	},
++	{
++		.descr =3D "setsockopt: deny writing to ctx->is_compat",
++		.insns =3D {
++			/* ctx->is_compat =3D 1 */
++			BPF_MOV64_IMM(BPF_REG_0, 1),
++			BPF_STX_MEM(BPF_W, BPF_REG_1, BPF_REG_0,
++				    offsetof(struct bpf_sockopt, is_compat)),
++			BPF_EXIT_INSN(),
++		},
++		.attach_type =3D BPF_CGROUP_SETSOCKOPT,
++		.expected_attach_type =3D BPF_CGROUP_SETSOCKOPT,
++
++		.error =3D DENY_LOAD,
++	},
+ 	{
+ 		.descr =3D "setsockopt: read ctx->optlen",
+ 		.insns =3D {
 --=20
 2.55.0.691.gc56d675ccc-goog
 
