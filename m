@@ -1,184 +1,173 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011023.outbound.protection.outlook.com [40.107.208.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CAC442B35
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 08:03:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786608197; cv=none; b=hE1pUIdQEB9cwPfekA90gi2LvVZYpT+dLfEvBVwKDcNwFzoZjEJuQ/3CFUM3L9e6du2RiNG1cd1JhqBkeV8/6qATWngjkOH8ca6/gWTU9sI0sAcMgCksCJ7aDS2Oj1fPMvo3sNSpGVkWoj9B/K5cq1ED6ZlNxq/j1nMLI45a2rU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786608197; c=relaxed/simple;
-	bh=VCpdbD+IkWpETmBXX9b/ydQuHHYr7ZK7anBPRlurS+o=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nvbicyUfFzimXxkx27tNfbqWpFNY0+Ye0QJqSvbbTX3rN12KZ8cCQQ203fm5ECuSdMP4+G8vt4zwcCh9uSafbosC7SWYz617Kau4engsSfSEH4N4cgx8a7r9IbyHfMQPvTp7x8yJ9p2lixyolKb+b6HhF9HvJhveNqYqixzoBzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ATL+J0jC; arc=none smtp.client-ip=209.85.210.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36EFE361969;
+	Thu, 13 Aug 2026 08:05:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.23
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786608338; cv=fail; b=sAYySifXNUBKfetxGxD0/Mj84uFMgcLk2n0IPd6WW7qURBQjt/36l/a79mHXQEkQj1GzUyLzIUrdeqKhV6pQoQyDW1g+zjgKExAivJIA8QVUMHsxKrwglvgN0mlf+uGPWfglxbVyh8zGQ2AZwo6mjKuzlAbIeSkI+WfX0pk8gKM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786608338; c=relaxed/simple;
+	bh=v38aBFqrvu7YCyusv2NsxtG+Ak6/t1dIqlCmfrgywMI=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=o7JbFZ6tVAbuG1kmylIhri59gPdkvWNpl6QYcutK/j0eSB2RQbgLJMCKpNp8f0/YKnhoJT+9hyM3uZdRAiE2tDu5dXbiMjb9pRNrEVlm9qfV+js+ThbaYD7zdE7OVzF+ixy0cUGmmIDDAgSMx+rCF8v3JmoUUe7tY5EISmEKlkU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=jrc+DVm8; arc=fail smtp.client-ip=40.107.208.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ATL+J0jC"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8485d853b08so2725520b3a.1
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 01:03:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786608182; x=1787212982; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cfLlpTHOIDzROJiT9zoNyMSzftmDrpgJJ3BBfG/H4YE=;
-        b=ATL+J0jCHe3YpNKI1EVk3ZN1moBoJi+asrwl5gPc1Fwj/0ZICse5XoaXc1Xpp0PMG/
-         46DunniuAor6aiGE9ntQ4EWq8EQPKTleFR8Py1XThRmXkns3NWmh1vfHif4RAbfi1LnJ
-         wbA7p4J9fVVYUo6p7zkH0BgCOLYZqzH+j57sMWCfv3DAOO0B02SVp83fKwHjdCudfwzF
-         qEVN2PCnvNdPhglxvFrSS2WozjqPuOCpyeRQ8EWopBomQ/XS2//T4bPOs1MQ+qWkLcfu
-         1GrDcFUlGPf/bPC1w8Hc+sNTiRXXj5L9F4Hd9mgSoCnBvLuxIv65j8OXZoYKwNAgbBal
-         wpYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786608182; x=1787212982;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cfLlpTHOIDzROJiT9zoNyMSzftmDrpgJJ3BBfG/H4YE=;
-        b=lRdEKtH8pp44zRL3IM6RVTtOnWzJIPy8haueVYOeQL7Jyc8Uhqg4PWXTmbEiUo/zpV
-         lc+AwTAkfy25/VZ8mc2MVPhjiSKZs+bfkejNq33eyidm4LVmXcWPzDhJ4dB9STbJT/Pm
-         /FJYTSfmmNDtWnQ4fqf6U12x5sCHqHuUEMiyAl5qqZ430QkLv409e6A7KMTanQl2XDuA
-         suLx0zIrVszHgEUvf+Okf1tXKk2l22mDtlG2pqaVxsk7CHTOlHpKykDTpJ1fm8Pl9pwC
-         lN60AviTfJG0IFCBnCLVI2kkw+gbeBmfTNPvGSucK7yNcCrRLOLUcIBDMjaVf94z+3uQ
-         qnAQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpX08Z1B6mPpM787oIkV0CiCe0ONEzTZsB/5LlGoAkH/6nEZjSp85DVhzqlXHsxj1TGsZO3dDo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBlqPISwY7GTTF24YS9Q/dIT1S+ODOpwz7sUzijR+jpAFGpB28
-	m7veTjMKE/EM8EsYZkPlOosUNeeqNcfzwbmwY7wT1LwJ/RjwRHFArFILNJCVgrTwq5Qi2NlcrrI
-	Xs/6taw==
-X-Received: from pgww18.prod.google.com ([2002:a05:6a02:2c92:b0:cbe:e032:3b3d])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:188b:b0:84e:2f2e:8c4f
- with SMTP id d2e1a72fcca58-84fc6d8c95bmr3916440b3a.10.1786608182154; Thu, 13
- Aug 2026 01:03:02 -0700 (PDT)
-Date: Thu, 13 Aug 2026 08:02:29 +0000
-In-Reply-To: <20260813080248.407680-1-kuniyu@google.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="jrc+DVm8"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Btqyy+TN3zIVSTsnhtqY41xTXsPR2pTUPpY2HNmPEDWuolFziTfWrErGdh4ClTsA1pTISxNEbjWrie0SLQZktRzfGoqnCQBKtQ/2O37OZmDaIst2a6YiwLkQFvuxU8N0xEZ0GP0cI/XNDVc7h51bWi0oC4Z8Li3MY+WccliE3K639E5VbgdNUw1t9YttuYggzo2Mcxom3y/P94b7FZnX27XYH46eqTo1jIIx/srfOIY5tE0feGxLgmfS6jacJp3YaXFFn3fs6IupKDUvkfFifTwQ82tAZ7dMbfpgBWBujiPc+Q4PTu9Y+sd1uH1lyLx1sVeSVDP3RSQXNWC2AJ/68g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PHuqtOSiK/oFJTyqxyZbFMF04zwQZrzcuGRzmJA2Wvs=;
+ b=nZUhVUgY1I55o1sjd/fcnKL3DlBOP0QbpUk3ktM3GSu6ERENIqVLE2XFyG6Zp5s+fre+maSPjXUpLFePa81Ne44YPhcF+tRZx7KPRATY9QwLgdxjT8tYkXCMDQOhedEeDmbkuEZFeqI3AHiDl+ifq09yhn2wYIEwFoTUME5JOKiN3aPWXE7VMkUHpHlsZr20ZlFsnwnDO1GcqP8BtcCfje4TD/VS6xi2oZV4Wpt0hY2Oeg+9Zz/6nabt/H0v52k/utgylsrmlODNJt9A1DDKFLUV3RPD6rY41PnByuHVd/CoSUVKQINQ7ndjX1QWHBVpeqWVuqldIPxfhWGrPC0tOQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PHuqtOSiK/oFJTyqxyZbFMF04zwQZrzcuGRzmJA2Wvs=;
+ b=jrc+DVm86jCcjNvI7yIZi684ils5WGY4481LZ9mosECaEa5k+F0g0a2kHGqdP0Wno1Ssrg1PGaRsVBYE8g3w61ZFMSu0Zvx2mn9cU/1vVUM5Q9a4l0huXhw7u2ZT8oz7K8r8G4WmmBBEbNGr+kzL045X3DPZ2/AV6ktuqpIHo1ioci+rX1H4oiIh7u7uwP5LRIqwY89mQZG3D4SVR7OV1FyNGj/8LNVQ/iyb94zB9xH6uXf9YA0EPCAADQvL3CoGmsaRQw/t5fogg0HEz6wThcp0Q5Bts35UTYriHS/CdHYm42mNnFYQ7d3ROCgCaH0nH0o6WfWhl4jiH0w8L/0S0g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH8SPRMB0023.namprd12.prod.outlook.com (2603:10b6:510:1cd::15)
+ by DS0PR12MB6655.namprd12.prod.outlook.com (2603:10b6:8:d0::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.14; Thu, 13 Aug
+ 2026 08:04:20 +0000
+Received: from PH8SPRMB0023.namprd12.prod.outlook.com
+ ([fe80::669e:f092:306a:7983]) by PH8SPRMB0023.namprd12.prod.outlook.com
+ ([fe80::669e:f092:306a:7983%5]) with mapi id 15.21.0315.008; Thu, 13 Aug 2026
+ 08:04:20 +0000
+Message-ID: <fdb9ff70-07d9-4966-a893-11dd7c338e66@nvidia.com>
+Date: Thu, 13 Aug 2026 11:04:15 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] selftests: drv-net: bump the timeout to 15min
+To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, shuah@kernel.org,
+ linux-kselftest@vger.kernel.org, Tariq Toukan <tariqt@nvidia.com>,
+ Dragos Tatulea <dtatulea@nvidia.com>
+References: <20260812171302.1888667-1-kuba@kernel.org>
+Content-Language: en-US
+From: Nimrod Oren <noren@nvidia.com>
+In-Reply-To: <20260812171302.1888667-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR13CA0169.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c7::24) To PH8SPRMB0023.namprd12.prod.outlook.com
+ (2603:10b6:510:1cd::15)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260813080248.407680-1-kuniyu@google.com>
-X-Mailer: git-send-email 2.55.0.691.gc56d675ccc-goog
-Message-ID: <20260813080248.407680-16-kuniyu@google.com>
-Subject: [PATCH v4 net-next 15/15] selftest: net: Specify netns for ip ntable
- in test_neigh.sh.
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8SPRMB0023:EE_|DS0PR12MB6655:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5aba7024-2d1f-4e20-957e-08def9117ae7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|376014|366016|6133799003|56012099006|5023799004|11063799006|10067099003|3023799007|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	qdL6MwCp75fhd9gBiTs2FUdcrIn7EUZDu04OWP+IQd98fEFQ1+f3HlxJMbsyLymM8yQd82eDDgOJVK+yM8tTS/ownAh0MqgwdYk/bANtP298qZlQfEl0iY7+Cv6E70XKlyKzfBpWfL5B7D0oxMI8rUwhvgr5OpXZ7Szu5SHbW/TqS1e/KHOMXG6QNWZmOjCXG7Gvn+u0juVnurHRNSkCqAYud/fFxc/nCdgfa+lMTmdsGeoeu74Y7WsYN3+VpDygwfRy/zWOmlwuXVNQed5RrunLDiA4H9XDWUPRfMxJ7eKK4IDnQrrZ2ikq4jP7VUHTLVIcrnWPhhJdiHrT18kmK0cZtFfNkfGpXFb7zOlHPbgSwKidCvyJ6IB8QO3w9LED7Xugle5KymZ4jna3kjIBunCJtJ29n31ynoNn6oLDgr9WTvHi8H736fHRkPcObA3buOi0PgseCpRHwQQHZdmCzL72Y67xf66WNRF23eNFlDrmUI56OCw7+QxQkW49qtItvpPYcNTxyK8j3qUVFDqvUrWbRpNVZhb2un8GSql7Ej9BS7XIBzYcmz3lFLNVMuh7GSxhoyz2bLqOViWSe3GWkONCP8BV8dpo0+Ga0EZ3+TTYBbOTdxpNGiRCZWAixggnmwQSTzqV3SDU4wDUcaqpYd8+zbD4blJ0U3UdgJLoLek=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8SPRMB0023.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(366016)(6133799003)(56012099006)(5023799004)(11063799006)(10067099003)(3023799007)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Qmk4b1N4RTB5NUZVaWV0d3ZSb3VuSWdsK0JlMGs2dXo2aWZ3ajRCc1hUbU5Y?=
+ =?utf-8?B?QlBTNENBZ1hJWDZZWW9BYXR4L0R3R0FwK0xiS2dmNEhPY2haK3c1clpQSmFY?=
+ =?utf-8?B?bFhORkRtV2tzOFExbXJDYTN1U0lGdkMzakNpVXBIVUhycDhQa08vZTRrcUQ0?=
+ =?utf-8?B?UVVXakdzMGV2dmpNNkQwcUlTeDVzcDNuM2ZvVm5aY2NSclM0Ui9KRkR2SERq?=
+ =?utf-8?B?eTVQYktISll3YkFqOS9mNC9sWm05SDNSMm1xWWxxZ0RySlhIUWNsMmVhajJa?=
+ =?utf-8?B?YVlwTDhVeTl0RTFrVENqM2VibTFudkZYeHdPd2EyQXYzRUhNMDd5MFNyREFG?=
+ =?utf-8?B?OW9tejlZTFloR01QUzE5N2JpZVdLK29mQnZHckErNXhGSFRLejdzSlpmK2F0?=
+ =?utf-8?B?Y0ppNUF5MDgxb3NDWisrR1VvY1pENm43ZmYwVktQbFVObm8zQ0wvd3ZVNTNU?=
+ =?utf-8?B?UWMyNzVzOGpaaEZWTE9ZSlhIaTN4NVFudDU0NTVXM2s3WXFyazMrZllaTTlZ?=
+ =?utf-8?B?cHVFNk52Y0FMcGNVa1loWEZDeVJyR1hoQVhSNXA0WVZmRm9OMWJRcHJCTUgx?=
+ =?utf-8?B?UCtwY3lUTHVvL1ZaUnNHUjFMMElNQ1plOEtmVFBnWDVveEs0VzNLbWpvVFFa?=
+ =?utf-8?B?MTBIeUp2QXhRbmxLUVdneVk3YS85TU14UVRUSXIvTnd0U1NvSVZBaVRxam5B?=
+ =?utf-8?B?QlRyeGxHd0E4SzdtU0daYTZUbG1Sa1BCUnVTcy94M2dqejc2bGk0U2N2aEh0?=
+ =?utf-8?B?ejZYV0xCVGtmbEl3OVR0OERkVmJCTFAxQU51TENEYlZLZ1h4dVE5MHJRcFAv?=
+ =?utf-8?B?cWoyOWlkV3A4Q2xja2s2aVlNTDBDR0g4SUk3dTQwWVg5K1FTRHVHaXkyQkMz?=
+ =?utf-8?B?WVZRc1VwVEgzM3NoNWIvQjJ6QXgvbnpuZStBMXJGVjdxK3Ywd2ZyTWxoeDhn?=
+ =?utf-8?B?dnlHdVJ6QzZodnJXeDV5djlnTnZOcGtpTGRValVaZ0V1M0wwQWc5VE5SUkc1?=
+ =?utf-8?B?emNUTjJvZ041MVVJVTlrc0gxeE02bllOZjQ2c1orQkFSZ1FaNVVVanNHZERY?=
+ =?utf-8?B?MEEvNTZSdWtTcEd5VStpRVBCcHNHR0xqUit2RkxLeVJaMFA3a3pWemhBcWh6?=
+ =?utf-8?B?ckx2L29mMG1paVZ0c2JXTXFKR2o1azM1dHB5QkVETFZlV0dwU0RPR3NnYjdt?=
+ =?utf-8?B?bUswZk5PVE9xd2lNdndLa1VKL2cxVW1TTTcrWUxNTk1XckNYaTBkMGhZcVhE?=
+ =?utf-8?B?Uk5ZRW54NmFPbmhnWDhqcm5RS08rTmRLc08rZVpHSGZybkxqRjNMOWxHWHpm?=
+ =?utf-8?B?eENUWW9ZTDcyYWhYc1dQeFpnRUpvdFlQSEZVRXNsOUk0TEp1OTZLa0ZhSWlL?=
+ =?utf-8?B?SkV0UWxka1QzVmJUdXFRc0JNV3cxdXNCYVhlMWNaZGd6NGRDYnhxK0dOdm1L?=
+ =?utf-8?B?Y1ZyN3RjTHJOWDRpWGJUUFBXU2lpV3MrNVJWWmIycWFyVHVhNUJaeXFpc1Zw?=
+ =?utf-8?B?RlY1eENzODNqbGMya0QvL3pvdXNaNGtoQ0FnSFA0cEEwUHFQSFVHeDFteElT?=
+ =?utf-8?B?VGNwdWN2YTZZcXZOdk5QQnNjVC9oTG52WFBJOUtDUUdiTGt3UFJyT3ZNNzRm?=
+ =?utf-8?B?N3MzTDFZaWEzKzFjSEtwR2RIQ3lKQTJmRmEyZGUvMERWWTM3NFRmUGFLay9s?=
+ =?utf-8?B?bWsyQzlsYVlwblVUY0dGNjdjWUpqZ1FScWVETW1zYTA0TURkcFljeFBSck9G?=
+ =?utf-8?B?ZmoxK2tOVGp0M3c4TWxSYk5xdWRVU1VMY2pINFdRK1Q0K1l0SnprM0l0bm9x?=
+ =?utf-8?B?R2pPZ0p1ZnJwZzIyV0tHa05TY1dpTEdsY3cvU1ppMld5azBDanNyaktuSE1t?=
+ =?utf-8?B?VzdCSXNZclUwNTFONFNQSXcyYXIvVDlEVFJqWFdqanY2MTNJbHJGeTkwYm1m?=
+ =?utf-8?B?UEJtZjlEVDkrdHRGZ3g2UmtsT1JBRE1telVVR1VvZzBZTzc2Y1c3WllZVE9T?=
+ =?utf-8?B?RGI3N3JSUWg1RnN4NzNKeVZBZUJNOEhOSjdLdmljb3FwczN0L1NPa0ZwYk4x?=
+ =?utf-8?B?K1FoUXhFUHo0dUorNXBlN3JlKzRNZElJdXlBNG5XUmNUNTlGZFQyWTErMkNv?=
+ =?utf-8?B?RVNBdjBmVUREMW1hMExIVnF1dVN0dGpzc1hXN25ucDJuVlZhODJ4ek5NdmJM?=
+ =?utf-8?B?L3hYRDF5RnVEMW9jeXVMQ2JqT1Q2WFFkc0FQMUVpdkx1dGt1SUREdk44K3I0?=
+ =?utf-8?B?bVhNVGduNHY3MktsNU1kcisvbnlNUkNMQnVhalBqUDhhZERTWjBCQWhyQ3ZN?=
+ =?utf-8?Q?YCEyD67U48Il9PqJVC?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5aba7024-2d1f-4e20-957e-08def9117ae7
+X-MS-Exchange-CrossTenant-AuthSource: PH8SPRMB0023.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2026 08:04:20.7017
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2jvyUHK/lloxhq6EJL7g4bZarMcaZFk4MyzIKcGuhqBlzfiOD2yLa5KzlqmS+5jB0JqQYmbAa/KPsD7y8tFTCw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6655
 
-test_neigh.sh configures the following attributes in the root
-netns, but now these can be set per netns.
+On 12/08/2026 20:13, Jakub Kicinski wrote:
+> The GRO test takes extra time on NICs which support HW-GRO and LRO
+> (as it also runs the test cases against the NIC implementation).
+> gro.py takes 6min on bnxt and 10min on mlx5 with debug kernel builds.
 
-  * NDTA_THRESH1 / NDTA_THRESH2 / NDTA_THRESH3
-  * NDTPA_BASE_REACHABLE_TIME
+10m works for xdp.py but it seems that it isn't enough for gro.py :(
 
-Let's specify netns for "ip ntable".
+    # ok 265 gro.test.lro_ipip_ip_ecn
+    not ok 1 selftests: drivers/net: gro.py # exit=130
+    # Totals: pass:0 fail:1 xfail:0 xpass:0 skip:0 error:0
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
----
-v3: Remove stale comments
----
- tools/testing/selftests/net/test_neigh.sh | 41 ++++++++++++-----------
- 1 file changed, 22 insertions(+), 19 deletions(-)
+    NIPA RUNNER TIMEOUT 600 sec (graceful stop)
 
-diff --git a/tools/testing/selftests/net/test_neigh.sh b/tools/testing/selftests/net/test_neigh.sh
-index 447423713266..e70e31edf633 100755
---- a/tools/testing/selftests/net/test_neigh.sh
-+++ b/tools/testing/selftests/net/test_neigh.sh
-@@ -240,9 +240,6 @@ extern_valid_common()
- 	# Check that an "extern_valid" entry survives a forced garbage
- 	# collection. Add an entry, wait 5 seconds and add more entries than
- 	# "thresh3" so that forced garbage collection will run.
--	#
--	# Note that the garbage collection thresholds are global resources and
--	# that changes in the initial namespace affect all the namespaces.
- 	local forced_gc_runs_t0
- 	local forced_gc_runs_t1
- 	local orig_thresh1
-@@ -250,18 +247,23 @@ extern_valid_common()
- 	local orig_thresh3
- 
- 	run_cmd "ip -n $ns1 neigh flush dev veth0"
--	orig_thresh1=$(ip -j ntable show name "$tbl_name" | jq '.[] | select(has("thresh1")) | .["thresh1"]')
--	orig_thresh2=$(ip -j ntable show name "$tbl_name" | jq '.[] | select(has("thresh2")) | .["thresh2"]')
--	orig_thresh3=$(ip -j ntable show name "$tbl_name" | jq '.[] | select(has("thresh3")) | .["thresh3"]')
--	run_cmd "ip ntable change name $tbl_name thresh3 10 thresh2 9 thresh1 8"
-+	orig_thresh1=$(ip -n "$ns1" -j ntable show name "$tbl_name" | \
-+			jq '.[] | select(has("thresh1")) | .["thresh1"]')
-+	orig_thresh2=$(ip -n "$ns1" -j ntable show name "$tbl_name" | \
-+			jq '.[] | select(has("thresh2")) | .["thresh2"]')
-+	orig_thresh3=$(ip -n "$ns1" -j ntable show name "$tbl_name" | \
-+			jq '.[] | select(has("thresh3")) | .["thresh3"]')
-+	run_cmd "ip -n $ns1 ntable change name $tbl_name thresh3 10 thresh2 9 thresh1 8"
- 	run_cmd "ip -n $ns1 neigh add $ip_addr lladdr $mac nud stale dev veth0 extern_valid"
- 	run_cmd "ip -n $ns1 neigh add ${subnet}3 lladdr $mac nud stale dev veth0"
- 	run_cmd "sleep 5"
--	forced_gc_runs_t0=$(ip -j -s ntable show name "$tbl_name" | jq '.[] | select(has("forced_gc_runs")) | .["forced_gc_runs"]')
-+	forced_gc_runs_t0=$(ip -n "$ns1" -j -s ntable show name "$tbl_name" | \
-+				jq '.[] | select(has("forced_gc_runs")) | .["forced_gc_runs"]')
- 	for i in {1..20}; do
- 		run_cmd "ip -n $ns1 neigh add ${subnet}$((i + 4)) nud none dev veth0"
- 	done
--	forced_gc_runs_t1=$(ip -j -s ntable show name "$tbl_name" | jq '.[] | select(has("forced_gc_runs")) | .["forced_gc_runs"]')
-+	forced_gc_runs_t1=$(ip -n "$ns1" -j -s ntable show name "$tbl_name" | \
-+				jq '.[] | select(has("forced_gc_runs")) | .["forced_gc_runs"]')
- 	if [[ $forced_gc_runs_t1 -eq $forced_gc_runs_t0 ]]; then
- 		check_err 1 "Forced garbage collection did not run"
- 	fi
-@@ -272,7 +274,8 @@ extern_valid_common()
- 
- 	log_test "$af_str \"extern_valid\" flag: Forced garbage collection"
- 
--	run_cmd "ip ntable change name $tbl_name thresh3 $orig_thresh3 thresh2 $orig_thresh2 thresh1 $orig_thresh1"
-+	run_cmd "ip -n $ns1 ntable change name $tbl_name \
-+		thresh3 $orig_thresh3 thresh2 $orig_thresh2 thresh1 $orig_thresh1"
- 
- 	RET=0
- 
-@@ -284,10 +287,6 @@ extern_valid_common()
- 	# collection. Add an "extern_valid" entry, add more than "thresh1"
- 	# regular entries, wait "base_reachable" (longer than "gc_stale")
- 	# seconds and check that the "extern_valid" entry was not deleted.
--	#
--	# Note that the garbage collection thresholds and "base_reachable" are
--	# global resources and that changes in the initial namespace affect all
--	# the namespaces.
- 	local periodic_gc_runs_t0
- 	local periodic_gc_runs_t1
- 	local orig_base_reachable
-@@ -296,10 +295,13 @@ extern_valid_common()
- 	local timeout
- 
- 	run_cmd "ip -n $ns1 neigh flush dev veth0"
--	orig_thresh1=$(ip -j ntable show name "$tbl_name" | jq '.[] | select(has("thresh1")) | .["thresh1"]')
--	orig_base_reachable=$(ip -j ntable show name "$tbl_name" | jq '.[] | select(has("thresh1")) | .["base_reachable"]')
--	run_cmd "ip ntable change name $tbl_name thresh1 10 base_reachable $base_reachable"
--	orig_gc_stale=$(ip -n "$ns1" -j ntable show name "$tbl_name" dev veth0 | jq '.[]["gc_stale"]')
-+	orig_thresh1=$(ip -n "$ns1" -j ntable show name "$tbl_name" | \
-+			jq '.[] | select(has("thresh1")) | .["thresh1"]')
-+	orig_base_reachable=$(ip -n "$ns1" -j ntable show name "$tbl_name" | \
-+				jq '.[] | select(has("thresh1")) | .["base_reachable"]')
-+	run_cmd "ip -n $ns1 ntable change name $tbl_name thresh1 10 base_reachable $base_reachable"
-+	orig_gc_stale=$(ip -n "$ns1" -j ntable show name "$tbl_name" dev veth0 | \
-+			jq '.[]["gc_stale"]')
- 	run_cmd "ip -n $ns1 ntable change name $tbl_name dev veth0 gc_stale 1000"
- 	run_cmd "ip -n $ns1 neigh add $ip_addr lladdr $mac nud stale dev veth0 extern_valid"
- 	run_cmd "ip -n $ns1 neigh add ${subnet}3 lladdr $mac nud stale dev veth0"
-@@ -325,7 +327,8 @@ extern_valid_common()
- 	log_test "$af_str \"extern_valid\" flag: Periodic garbage collection"
- 
- 	run_cmd "ip -n $ns1 ntable change name $tbl_name dev veth0 gc_stale $orig_gc_stale"
--	run_cmd "ip ntable change name $tbl_name thresh1 $orig_thresh1 base_reachable $orig_base_reachable"
-+	run_cmd "ip -n $ns1 ntable change name $tbl_name \
-+		thresh1 $orig_thresh1 base_reachable $orig_base_reachable"
- }
- 
- extern_valid_ipv4()
--- 
-2.55.0.691.gc56d675ccc-goog
+https://netdev.bots.linux.dev/logs/hwksft/CX7-dbg/results/776322/test-outputs/0-gro-py/stdout
+
+> The delta between drivers is to some extent due to their defaults
+> (mlx5 sillily defaults to queue-per-thread, while bnxt follows
+> netif_get_num_default_rss_queues()).
+> 
+> At the end of the day the defaults don't matter much - on larger
+> machines all drivers will create more queues. We should bump
+> the timeout. Let's give ourselves a 50% margin over mlx5's needs
+> and set the timeout to 15min.
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> CC: noren@nvidia.com
+> CC: shuah@kernel.org
+> CC: linux-kselftest@vger.kernel.org
+> ---
+>  tools/testing/selftests/drivers/net/settings | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/drivers/net/settings b/tools/testing/selftests/drivers/net/settings
+> index eef533824a3c..e2206265f67c 100644
+> --- a/tools/testing/selftests/drivers/net/settings
+> +++ b/tools/testing/selftests/drivers/net/settings
+> @@ -1 +1 @@
+> -timeout=360
+> +timeout=900
 
