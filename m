@@ -1,97 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2EE38E8B9;
-	Thu, 13 Aug 2026 18:07:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F395D3A9D80
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 18:34:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786644475; cv=none; b=Y3Xaz4TRGP7x8opIeT/x4y+qdFmiviAKXESBQx/QxMRLgwP7d3veR4i85RG1Sl49kPr5ZM+iA0l+L1XkkaPpTQN+cbLtwsQevIMD0EmYjBZpKwKwoOxjW2GOhOn1TSEP2uanI6JL5A86nAW6sf5lKQ1mHl/RM2g9iYL7iHBUY+8=
+	t=1786646073; cv=none; b=XCDHsowhqER7KY/WXtBB5Xg+EVYONTZEffwfsMdebVq2PqbK008Utsmj9HiPW75EEbtAGqaMv26bZwn4eItkVgZxuRelRcC1upA3z2uG5CAFROHa/DTXnMhq4J1WOzzdGk9J/K9i4WIv+0So3mxOSpcyC8tf93EFxLiUwDN2Gvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786644475; c=relaxed/simple;
-	bh=U0CsGbZVBZQYPICZI9t0QBg90R7yXzsoiFCHaGVlwEk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=R2ykPm7k8tzPIzKCoN9P4yc8kJXj1jaXsgbGhE/bufasmgNywC7v0eBKw1vNVYCLjz+RdxFz1h0X/xpwclUu2+wCy5GEmqCm4l7i6u3wc5k/xDmOhVAqPch0aCF/jLUE1EkFOXNMw8KZFj3W0/+JwNyzf2jMm9Qi4yNPRYe4Bms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FV4+rJV5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1786646073; c=relaxed/simple;
+	bh=mqYEFzcu9adlmzMlbAGBlaKC7RKZhOj1IPYoG0xJLLg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Xtx91GIao8f6qNA9LNffTPVeHW/Nn/voFA/QtphkI69s8ZYA/eFdHxQ2bcYhq11B9iJFOuF0LTFFw8+bvigxX2wkqVEM+HoS/CxR9iJsOLcATbZAXF53syKvIshVx3cZFsfohIOpQigBCqVfk8ZCK4Iv8AUePdCLlcU/k1fAiI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=p/OKSJRx; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FV4+rJV5"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8D807C19425;
-	Thu, 13 Aug 2026 18:07:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1786644474;
-	bh=U0CsGbZVBZQYPICZI9t0QBg90R7yXzsoiFCHaGVlwEk=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=FV4+rJV5gb8Ffpn/UwlmMVhPQJHHDU7DzxsBWFhM4YfiOb3txWVmt73rW12mg8hOS
-	 AhRRCOYFyd8LweLXOoN0YoVXk5um62Gcc89fCTPONcujNztQxNe3hJnQXFDo4Um0SG
-	 1M6e7qYAOPNUWPby1wad5sHkjPI4Og8dKZ1fgi48SkJIrXp6KHnmeBoD7eiJ+4jXZB
-	 o1WsjyBffXswjBcgNO4FBa1zNWDdS3DzsEmpVptgLfuAZCaumBQK04+ehjwKGh3YX/
-	 72GjvYJj1Cjzyug2kAW4KR3YQd+/bmYu0p8/qtfwTX7Nd2FzQ7HEpAwCn5/s7oAoG7
-	 4oKf+eO2uYuDg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 68F92C5CFDB;
-	Thu, 13 Aug 2026 18:07:54 +0000 (UTC)
-From: Kyle Hendry via B4 Relay <devnull+khendry.reliablecontrols.com@kernel.org>
-Date: Thu, 13 Aug 2026 11:05:43 -0700
-Subject: [PATCH] net: pcs: rzn1-miic: Fix config array initialization
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="p/OKSJRx"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ced3386430so3054465ad.1
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 11:34:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786646071; x=1787250871; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7YHG5aECJfFEafyUES+0YBuoUGPDTuM9lTTdzyRLjcg=;
+        b=p/OKSJRxf7ptWC2hVbg2/OknYjufxh+QBNiirT0t5UCmjXMaoc5hnAAvmr2Dd2R4+M
+         4EtJjpqTS/xccoolIpkN2S0Z6vD14kfL6i8/AT/BLY5KgQiHCDaymj5d3sB6S0oooHP3
+         /MLB8CxWqNshYxTs+GPzVnlIK3RptOtj6enNt5e3biUZJZUJj/MkIle5jadep0o8tyh9
+         vuT49udVZdeEl1l5D/CWW1mj12JN8VSaTuk8M1UFgYhIrqFo0478G3QvD/pCjOIsRX1h
+         iqLxC8pRLyq3qHoNX1kesGVk6dnbEyCPp+lp1fKoKNmjNMMPEAqVodPD7+He9wGKcIa4
+         92rQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786646071; x=1787250871;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7YHG5aECJfFEafyUES+0YBuoUGPDTuM9lTTdzyRLjcg=;
+        b=hgUbEzr87/lbxAhthNPZXI4jZPbLWCXjpz0BC8UAiZ41hR929NPv/p2IsrFMrT/ll7
+         LtXvXccobTMPNW1VWzgfrOMkWael5S9VU0zEv5FgvKzP0x3GbcAPLvl6UROoOwq1kxrm
+         sD8ATMyByDTZCcavgqvySmK6WjIEVpZ2pnUkqyhZt938OTyisXGh7lwr1F+Jb0WMvoqk
+         HuOtSbtfTh/bQRMA7nOqKpSOm75QHASg8lsBbPpKlDxIkHHc3pnRQmCssTHz2jGc0pHb
+         vkKfrXg9LFzdFUGPhWrohgGAi7eoxhm6ExlZYZCIBxI6qpr9VJjX0urct+how3c5vVhu
+         ghDw==
+X-Gm-Message-State: AOJu0YyBfMx+ozh4kVl3jGzbCkHIgCPTqpaPuzLUoTcDYVIpkeZLwEfs
+	xRXcmVULYSSTWhkIJEeKvQlizsm/26TTQclyFiUVR1SgK08MQ7tXQ/wq
+X-Gm-Gg: AR+sD132qGVOHkxIPjpiim9yKUHIB7sYPlizWr9h1HlKOo2A47/Sg3VSNpO/5c1+2eK
+	XGOYu70488B277jh61MkDz7H2d9x2VXg338w3UIMyvFs2E2xKIG2yhJLU06rumF41JlwWC1hVtP
+	7Y1GL0eoXd4PdhU9UFKVblATsNWsCS18R8fJIbTp1qC1V8+dyzmA5zTUPm3NRoZ48aLGqEoi+l/
+	tBsYBIGJNQVH4pcj55IHwV+ZPR+qVRSGmyj26aOs9F4HM2qJzQQgMdLpWMQV/ABpilXuEm4ODXV
+	fl9V72Bjhg6yh5v6+lj1CKReSkU0t+liDaE7hjeJTz9MlhWHVZpbFHYh/pw3NaYmNyTS2nMT1bV
+	IstFzW+mULfcN4/mTniWdEiP2rv1T5SvGBgEzeb7CisSUAfX4UFaKeBqaP92yrLWX+9P04MIi3z
+	A8Bae5qmJYIj52Eqi0em6YckYhLlIRLGCHXy/9YeaYtB1lf06rgoeCLiGoX6joDK12Y9iiurUX7
+	V8Fxd5nHdmtWT5rWrBYbuZX/rAgtUEVRTy+115gIzoHrVKvHRjL4MBeP7c=
+X-Received: by 2002:a05:6a21:398:b0:3c4:1493:6822 with SMTP id adf61e73a8af0-3cc5527de3dmr10298362637.18.1786646071025;
+        Thu, 13 Aug 2026 11:34:31 -0700 (PDT)
+Received: from localhost.localdomain ([2804:7f0:b103:29aa:a46e:b8bb:4db6:5c63])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31ebfc3ca41sm10226567eec.21.2026.08.13.11.34.28
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 13 Aug 2026 11:34:30 -0700 (PDT)
+From: Joas Antonio <joasantonio108@gmail.com>
+To: horms@verge.net.au,
+	ja@ssi.bg,
+	pablo@netfilter.org,
+	fw@strlen.de
+Cc: netdev@vger.kernel.org,
+	lvs-devel@vger.kernel.org,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	linux-kernel@vger.kernel.org,
+	Joas Antonio dos Santos <joasantonio108@gmail.com>
+Subject: [PATCH v2 ipvs] ipvs: fix integer overflow in ftp helper port/address parsing
+Date: Thu, 13 Aug 2026 15:34:24 -0300
+Message-Id: <20260813183424.47522-1-joasantonio108@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260813-rzn1-miic-fix-array-v1-1-b58cafcc917e@reliablecontrols.com>
-X-B4-Tracking: v=1; b=H4sIAHYHfmoC/x2MywqAIBAAfyX23IJaWfQr0UFsqz1ksUL0wH9PO
- g7DzAuRhClCX7wgdHLkPWTQZQF+dWEh5CkzGGWs6nSF8gSNG7PHmS90Iu5Gso7qujFe6RZyeQh
- l+V+HMaUPc70WemUAAAA=
-To: =?utf-8?q?Cl=C3=A9ment_L=C3=A9ger?= <clement.leger@bootlin.com>, 
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Kyle Hendry <khendry@reliablecontrols.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786644474; l=955;
- i=khendry@reliablecontrols.com; s=20260813; h=from:subject:message-id;
- bh=BtDQcKBUscYFPfDwz7/zdJWFfzqi9hfRlPaUZT9xiEk=;
- b=A3twDS2mCEsk2z9LmIcqsg6FCVfB4pvoNTgeU/H8vkyZGDqhPHdv3nL8sYUfL3GCp/RNE8qX1
- D0GqCsLOo6zAL1sNOvbmkErvxWZtiIzD7UF/EeFQGWyifNxfmvEvUP4
-X-Developer-Key: i=khendry@reliablecontrols.com; a=ed25519;
- pk=gbK6oghz3qBlBiaGCsEzALLOtj5VklmsuolHQNhDV5M=
-X-Endpoint-Received: by B4 Relay for khendry@reliablecontrols.com/20260813
- with auth_id=946
-X-Original-From: Kyle Hendry <khendry@reliablecontrols.com>
-Reply-To: khendry@reliablecontrols.com
+Content-Transfer-Encoding: 8bit
 
-From: Kyle Hendry <khendry@reliablecontrols.com>
+From: Joas Antonio dos Santos <joasantonio108@gmail.com>
 
-Fix memset parameters to initialize the entire DT value array
+ip_vs_ftp_get_addrport() accumulates decimal digits into a __u16
+(hport) and into unsigned char (p[]) without checking for overflow.
+A crafted FTP PASV/EPSV response with an over-long port or address
+octet wraps the value, so the helper configures the data connection
+with a truncated port/address.
 
-Signed-off-by: Kyle Hendry <khendry@reliablecontrols.com>
+The netfilter conntrack FTP helper had the same defect, fixed in
+commit 2b413fc689ba ("netfilter: nf_conntrack_ftp: avoid u16
+overflows"). Apply the equivalent fix here: widen the port accumulator
+to u32 and reject values above 65535, and reject address octets above
+255.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
 ---
- drivers/net/pcs/pcs-rzn1-miic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v2: use real name in Signed-off-by, add subsystem tag to subject (per
+    Pablo Neira Ayuso)
 
-diff --git a/drivers/net/pcs/pcs-rzn1-miic.c b/drivers/net/pcs/pcs-rzn1-miic.c
-index 2b72fa98ddf1..ad4433971e50 100644
---- a/drivers/net/pcs/pcs-rzn1-miic.c
-+++ b/drivers/net/pcs/pcs-rzn1-miic.c
-@@ -683,7 +683,7 @@ static int miic_parse_dt(struct miic *miic, u32 *mode_cfg)
- 	if (!dt_val)
- 		return -ENOMEM;
+ net/netfilter/ipvs/ip_vs_ftp.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/net/netfilter/ipvs/ip_vs_ftp.c b/net/netfilter/ipvs/ip_vs_ftp.c
+index b315c608f..9e3e005a8 100644
+--- a/net/netfilter/ipvs/ip_vs_ftp.c
++++ b/net/netfilter/ipvs/ip_vs_ftp.c
+@@ -102,7 +102,7 @@ static int ip_vs_ftp_get_addrport(char *data, char *data_limit,
+ 	char *s, c;
+ 	unsigned char p[6];
+ 	char edelim;
+-	__u16 hport;
++	__u32 hport;
+ 	int i = 0;
  
--	memset(dt_val, MIIC_MODCTRL_CONF_NONE, sizeof(*dt_val));
-+	memset(dt_val, MIIC_MODCTRL_CONF_NONE, miic->of_data->conf_conv_count);
- 
- 	if (of_property_read_u32(np, "renesas,miic-switch-portin", &conf) == 0)
- 		dt_val[0] = conf;
-
----
-base-commit: 9006c116dd111d457bf5d074990210f70a4ad2c8
-change-id: 20260813-rzn1-miic-fix-array-e6ae4452c017
-
-Best regards,
+ 	if (data_limit - data < plen) {
+@@ -144,7 +144,11 @@ static int ip_vs_ftp_get_addrport(char *data, char *data_limit,
+ 				return -1;
+ 			c = *data;
+ 			if (isdigit(c)) {
+-				p[i] = p[i]*10 + c - '0';
++				unsigned int val = p[i] * 10 + c - '0';
++
++				if (val > 255)
++					return -1;
++				p[i] = val;
+ 			} else if (c == ',' && i < 5) {
+ 				i++;
+ 				p[i] = 0;
+@@ -222,6 +226,8 @@ static int ip_vs_ftp_get_addrport(char *data, char *data_limit,
+ 		if (!isdigit(*s))
+ 			break;
+ 		hport = hport * 10 + *s - '0';
++		if (hport > 65535)
++			return -1;
+ 	}
+ 	if (s == data_limit || !hport || *s != edelim)
+ 		return -1;
 -- 
-Kyle Hendry <khendry@reliablecontrols.com>
-
+2.39.5 (Apple Git-154)
 
