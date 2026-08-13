@@ -1,73 +1,73 @@
-Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
+Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476D435E94E
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 17:46:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E673955D3
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 17:46:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786643190; cv=none; b=uh7VrVQHeKiyWowRzRr83A0J66yvjM9QlIXT4LDE5HyCKoICc97153LDLdPe9+xGIlema6saioQbXbNUmZBSnNUxAM0HSxUazz+t036/RY3U5DdBotRW+885Y5v5D4754Ppg9UJYn1qA1anYd5aJjO2FPVzjy3hu6Gkn874ueJU=
+	t=1786643198; cv=none; b=UfoeO/mzM8jjfKlCldGqFAWtJs3reqeWcNVteWkBnY+eiC54zIT73dxGEI86QkyuT3wheKolfxf5XGrdrcgpMMVbLnin6gFjYFF+HJueqIjPLHUD6QB6KCV24WYRh00Jqy4Q6h030f6MfSiBTO9KiLBhqau/yuS86d103IvaKY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786643190; c=relaxed/simple;
-	bh=WM8/7uQH7kGGSI2iUE7IIkFdMZ0Ah9RwIFPt+XlWcA4=;
+	s=arc-20240116; t=1786643198; c=relaxed/simple;
+	bh=y1ZxZ6bn6iifQdN0di0FaK/JwoM3Lbyc9aGUXQBAQe8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FW/UCW4ysBIK+c8hFUba0wUQqkdxSUfRPWNA2kFPHqfxCTkj90ii4dZI/SiOQHPO6VW84mL68mAGi8pbqrCeeU8vFMG0NNi8ifbBVrIcbvq8U6X+/hOiWGlMsq+8eTAvEGlfMm1mZcotQ93H16eml9A290QqplUL7S+8y2ixNns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=ruXmmalM; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=W2LW5CUg; arc=none smtp.client-ip=202.12.124.146
+	 MIME-Version; b=TowcmLY/mcFPraYWp6cBFfAXJ0jtYeJe8+ClqipmTkSo6pwWODMpn6ZvPImFB3e6+1f/cVLTpNX6r9yxVipU82x2wevHFlfD9VussxU0XdQDhN9cM/rRv9WWjWcfOn8Xz64unMWz68OW4RM6UTe0v9AvNwiFtOFlZI3lrxhWF1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=s21+ADoX; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=EuJHqwsm; arc=none smtp.client-ip=202.12.124.155
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="ruXmmalM";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="W2LW5CUg"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id 35CF91D00141;
-	Thu, 13 Aug 2026 13:46:27 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="s21+ADoX";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="EuJHqwsm"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 605E67A0136;
+	Thu, 13 Aug 2026 13:46:33 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Thu, 13 Aug 2026 13:46:27 -0400
+  by phl-compute-01.internal (MEProxy); Thu, 13 Aug 2026 13:46:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1786643187; x=
-	1786729587; bh=Jl9KtGry6qthWjU6/o+GAD2xnJxgCR5Z3BWp3TaPVi8=; b=r
-	uXmmalMHmS9qSPclC6SQJCw0VKLWrKBkFaYaBgjIDMk6kG1oYea5MAkWsqVlQag9
-	Hn8N/YTEHqWmOgSTwadJ0a+ZAXcDGgU9u1TSTOzTe/RWgknhzhKhA8+e/QRTTsSC
-	M6cRLHmBuypyS6UxWIrggKMU/i0/Dsp5NxiE+xS5y2AfzY/QUhgfToAzYFCvawia
-	TQeENpasVRNnU9cbio+eLI5b9JPjFS1Sr0KATAxaqNKTsj282xK4Q8QF8nbLvmMZ
-	CRUYjZDjkPGt753PLVFLS7L6ivLhOQx3+Z0xosx4dc0GsO4Aje5lITRyaF+f0MqC
-	WX+lrt26WLirqs0ESmp4g==
+	:reply-to:subject:subject:to:to; s=fm3; t=1786643193; x=
+	1786729593; bh=OBqN4oPX5k7jbNY262d25bd+fETZWpbs7QqzWSt7ZVs=; b=s
+	21+ADoX2RxiShRoW3ZRzZIwayKsiJ/hHAESwtmskXTTWUXdTJZEOsNWuwW/4984n
+	fz2y78QinwZAmG87iSJJk379yzAyqzpBNEk54Ce14Rl8/FVtYa0ENTIIvKzatMgq
+	pbUy5AuYp+ruyZljpZjz7mWw9FQPFg8fWCetm4DedWvHqtRz8Qo+I0M8DleBNTiN
+	KQNw8LToUvqV7Gqn/Ei4MawUUAMgBY8dJpkogi6wbtpaNxou5QiPu1iN6xmKTrLP
+	lM1/32i8C06z/jjeDUsluR4xKRPhYk2wH0T2ssvT+AxTtnw9OQHM3xwr0IJm4x8B
+	a1iWxG5ZWBbwCOKmpmDUQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1786643187; x=1786729587; bh=J
-	l9KtGry6qthWjU6/o+GAD2xnJxgCR5Z3BWp3TaPVi8=; b=W2LW5CUglfx65GLuv
-	q0bsb53+7V/WbxSuj47O0wlCq74EDuD43rpeoFkwXS8GIjvMjs1mlkJo3GFdyFxf
-	BDbfHLFEoB1aSEFj2jV/fa2RaIOkKs3naySeKgsGg3py/V4N7AUo6YOd14N1388U
-	cnJZMo/UiXOwbnvQOQTCkm3l3lobvHzKVHFoCQ8RAEyWkW5PXhtn+nGX7V6o1zSP
-	8Eapyo3HJXBkozq49YPCF3hRIM7kdLInknt/xcx1pi30FilzPQ0HxmvEfNq6hdhb
-	QcFXTJ5Hwf0+C8pYfXyeiF0MKMAu73dL9iUaWjinwjQmGRtFkf45jwruVfgcf0nM
-	NOUnw==
-X-ME-Sender: <xms:8gJ-aiX_rQG4d4dC16bf_VktL3pajFySXD3hiP0JL0Bzm1I84MqAPg>
-    <xme:8gJ-ao_1od0lHpg-Wb1_4xHs3Y1ZxfKIV4eSRjKqvBizXQoqwMfj9rR3pHwd64XM2
-    wZcEQVujcNLwnVSNVMM7Ymry7ZuUip9k6AqqDQ6ZSs3Su_oBxpKIXg>
-X-ME-Received: <xmr:8gJ-asinLu9aWzdBwv-0sLd3TH6rNrJOj9niMPGziaWHQ53V_vKK2CKf-vA>
+	:x-me-sender:x-sasl-enc; s=fm3; t=1786643193; x=1786729593; bh=O
+	BqN4oPX5k7jbNY262d25bd+fETZWpbs7QqzWSt7ZVs=; b=EuJHqwsmb1vE6GlBY
+	Ja2JnZvKKMyOJ0jvP62Mh1kIcXmwaLFv7sNty8iflAXypAivnjVLhyDex0Egrw2J
+	Ut2u+TloxOHyMSvdaJCwfDN1+Aw+VePYhUR20thaZ7uECLxJ9GCVJ705SykL8wwQ
+	OWVw0OttLAmBj6XdbCUlUWmaymx6mbAtNuPz0WmNykam5a2PHnLYfKEMPQeBkswr
+	8LiFKZjkB0GbNAJ51M7wrR9HhE9XEBIqdpMDkNPaTYhh/rIb7ygxlmilpwfreo2P
+	xvbR9bOzLN44ZdQ9Hv72pD5XQVPOCpHiUFTfbbhjsGs31XKiYvQa4hpwfZVhxL34
+	P7Dow==
+X-ME-Sender: <xms:-QJ-akA4hpR-wahkzv0thoCA-ltBO61rZ8dk88Xo2VKUu9cv_YTSlw>
+    <xme:-QJ-aiUTdtsSPqhaepB4V63fV8n5SZQcAYCO6Ratlwr0PTM49v_jFoiQqTJlz8UzV
+    kJKjnxmCWdcwltQPs4WNf_XMWofoSPBGckSccfpEeuC6DsHmftcXpc>
+X-ME-Received: <xmr:-QJ-auCI_F2FKAK9FcdTt6TXNgEjNKPLor60fBrxWKNuuV8-MgulBdxcNqo>
 X-ME-Proxy-Cause: dmFkZTFXctAct/qj/pWj57H0QMq77XwiOX5uPEMTQ0XsGVQzoCUvbPCvOJgbQOjbgOcx2s
     RFyY4tQx0ICSsm68Vhku925KF4Bv2oZ0+3DfN9mH+3QT2CdHmbJx8H9jq3YtHGjMjz1Eqe
     dG+JdFyU0T2HUcca0LFHWdQ/3FPmNcsrxmgZSNKZVWh5g4ZzD5nlzl38TxB5ch6cKl+Q3X
     /KgFOvTrvOCxH9XMck87HvTgKkRiQeiKFAvEGEfssBJEpQcgcSRX6XzTPVurgcMrXMa4Sw
-    LvIqVjVyHtNQ3pCVeNQSwQjSCejtUAvRf8CP2VPFT8dUf88xemOoLvt8JCOKfx6nTzrnsn
-    W4zyxWwI9gnbjQuAo3XIUvVyeJNCmeZcytBXVQhtujAL3JVDU4XvLfnH1o9al3q3REKn0D
-    mdZqSLklGmKpDPxu5VApJioCjA2ss2cW2QEyc6MOGElFtQ0vWjwUr7k+3dBkBz+FmXqU++
-    2qDtWTL8UTJdzviIZD6ltMxByTXP9dKb7sXExqkH2obXInIplaIz3xPdlHFWDUi6ULxCsN
-    cBEaicdUnXDbqF8/pzi3cZhb0No7l1eaRelpvVdrzWiu+m7AxIF9LhIuRlqKZ47B2kTHOn
-    IBPV3VE9g8Yc6im5kWCyDmvanCrEpjejl02l7rSTEwToeFBLvjoXZ8KeKGrA
-X-ME-Proxy: <xmx:8gJ-akdEYvmYZNoC0cQgIw8fgGMUWe45yD2TzwVIjuVl-itzsN4ilg>
-    <xmx:8gJ-alLhzY_YDFHLQfzlCztSpnYuLzPaxbRa5NBNacpAg1SKAwelZA>
-    <xmx:8gJ-ahkPWzpKoM63SRO6swQISBX8pk7CM-LKi3i_vVEyZwB_xHorqw>
-    <xmx:8gJ-atdTRaKHsB4XvB5ArSskj7m6igyQFWPqka9x4_iHGJMYO7-_Sw>
-    <xmx:8wJ-au9T8qvpTDdyX6jI6PiR-mlguGGE3ZUT7V-NPVQGg4-PBVLwm2K9>
+    LvIqVjVyHtNQ3pCVeNQSwQjSCejtUAvRf8CP2VPFT8dUf88xemOoLvt8JCOKfx6nTzrnHD
+    ynFN4uqGN4N4szmcOh4LerWFhPqdyR+ZcLoHZaRc58mJUbgIROk+caIldt6MAWxgZmTZlP
+    anDtg2r603lpYMOnwD/ihWvY07AhzQH3DO37R+9VntwJuZEGVc24abfH9nbAcZTW6luALP
+    2xNyQF4RBH0/vjB3P8of68Ioeqx6utJB8T43aoeic5nV5jG8ZZleos6HkfiDsT/TGeJqIW
+    NSxAZd8ORTIUd1U3WpfZKlaDGo7fBcu1n6HBdsvH2Yc7b65yskyimrSiOhWqFLgEKCg9kw
+    KUTAGXXG6myXtycujNRUe+6EQxnrXJe6XudBhFBNDVDbVfQlpGOyhmC08OIg
+X-ME-Proxy: <xmx:-QJ-aneMKuq6VE8tifl3jNCA-aoa-lbxT2Auj5sjvFKKknVASkEC7A>
+    <xmx:-QJ-atorr9Fao__G0n79EJ8s18J1ZQhx12Yc174ZF794zOo2Xx7mzg>
+    <xmx:-QJ-agT41oLYyKcnOjM986ZhsKxyZASWD-DpNo87SuwADvTKqJehkw>
+    <xmx:-QJ-alUBnUrmcDqzu8Fli7coPk_rPoZL2DCjh9yzMd6NCPZ2LCywXA>
+    <xmx:-QJ-atWswKckS1oGslgMSgxGd4gyhOemHnPzIfA9Q2s7WUPqDZAaXBb7>
 Feedback-ID: i559e4809:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 13 Aug 2026 13:46:25 -0400 (EDT)
+ 13 Aug 2026 13:46:32 -0400 (EDT)
 From: Alice Mikityanska <alice.kernel@fastmail.im>
 To: Paolo Abeni <pabeni@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -84,9 +84,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Jiayuan Chen <jiayuan.chen@linux.dev>,
 	netdev@vger.kernel.org,
 	Alice Mikityanska <alice@isovalent.com>
-Subject: [PATCH net-next v2 1/2] net: Guard for gso_segs overflow in skb_segment
-Date: Thu, 13 Aug 2026 20:46:12 +0300
-Message-ID: <20260813174613.2920246-2-alice.kernel@fastmail.im>
+Subject: [PATCH net-next v2 2/2] virtio-net: Ensure that TCP packets don't overflow gso_segs
+Date: Thu, 13 Aug 2026 20:46:13 +0300
+Message-ID: <20260813174613.2920246-3-alice.kernel@fastmail.im>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260813174613.2920246-1-alice.kernel@fastmail.im>
 References: <20260813174613.2920246-1-alice.kernel@fastmail.im>
@@ -100,37 +100,45 @@ Content-Transfer-Encoding: 8bit
 
 From: Alice Mikityanska <alice@isovalent.com>
 
-skb_segment calculates 32-bit partial_segs as len / gso_size, and then
-assigns it to the 16-bit gso_segs field. The division might overflow in
-some edge cases where the SKB is BIG TCP (65536 <= len <= 8*65535), and
-gso_size < TCP_MIN_GSO_SIZE = 8. While normally this can't happen due to
-TCP_MIN_GSO_SIZE, an AF_PACKET PACKET_VNET_HDR socket can generate such
-a malformed packet.
+The user can specify any gso_size in a packet crafted with an AF_PACKET
+PACKET_VNET_HDR socket, even smaller than TCP_MIN_GSO_SIZE = 8. At the
+same time, GSO_MAX_SIZE = 8 * GSO_MAX_SEGS = 8 * 65535. When the user
+crafts a packet with gso_size < 8, there is a risk for partial GSO to
+overflow the 16-bit gso_segs field when dividing the SKB length by
+gso_size.
 
-Blocking malformed virtio_net packets is implemented in the next patch,
-but this patch clamps partial_segs in skb_segment itself for more
-generic robustness. Should len / gso_size happen to be bigger than
-65535 in partial GSO, skb_segment will now just produce more than two
-output SKBs, all of which will be valid with gso_segs <= 65535.
+Adjust gso_size of TCP packets to be at least TCP_MIN_GSO_SIZE = 8. Keep
+gso_size of UDP GSO packets, as gso_size=1 is valid and explicitly
+tested at tools/testing/selftests/net/tun.c:649.
 
 Signed-off-by: Alice Mikityanska <alice@isovalent.com>
+Suggested-by: Eric Dumazet <edumazet@google.com>
 ---
- net/core/skbuff.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/virtio_net.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index c82a1472a5ea..439cbfeb02bd 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -4860,7 +4860,7 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
- 		 * doesn't fit into an MSS sized block, so take care of that
- 		 * now.
- 		 */
--		partial_segs = len / mss;
-+		partial_segs = min(len / mss, GSO_MAX_SEGS);
- 		if (partial_segs > 1)
- 			mss *= partial_segs;
- 		else
+diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+index f36d21b5bc19..c381b916c1b5 100644
+--- a/include/linux/virtio_net.h
++++ b/include/linux/virtio_net.h
+@@ -6,6 +6,7 @@
+ #include <linux/ip.h>
+ #include <linux/ipv6.h>
+ #include <linux/udp.h>
++#include <net/tcp.h>
+ #include <uapi/linux/tcp.h>
+ #include <uapi/linux/virtio_net.h>
+ 
+@@ -179,6 +180,9 @@ static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 			if (skb->ip_summed == CHECKSUM_PARTIAL &&
+ 			    skb->csum_offset != offsetof(struct tcphdr, check))
+ 				return -EINVAL;
++
++			BUILD_BUG_ON(TCP_MIN_GSO_SIZE * GSO_MAX_SEGS < GSO_MAX_SIZE);
++			gso_size = max(gso_size, TCP_MIN_GSO_SIZE);
+ 			break;
+ 		}
+ 
 -- 
 2.55.0
 
