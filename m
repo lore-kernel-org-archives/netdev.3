@@ -1,131 +1,146 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A7043F4AD
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 08:19:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786609163; cv=pass; b=qdH9Yx/kkoOpWIyaAsETSd7RMh0YkeYF7Ok4ol66FxUzpnr6mCoiqnj14w6HhMDqvnB/xWx6LAXCHkrG+aTFZfsB2nqF/ctv5X1WRBCcSWHzNSibQowONxddPQCfluevhXy+G3SGGlhKZlm9K6mGvyv2LTV9+dsifLnQcsxLAWQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786609163; c=relaxed/simple;
-	bh=hVrUSNzIYXwmMA2xnmHjPXifoomFAeIS+si0eytqGMU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P+HibVZ5zdOaxSnDuQRaz2adc29nAwIAj7Vx9zkdfkt6EnqXEbsnNQMCJQixnNxbzb9Ykm0+jNYOM7QPsY0zTZjJrY0V1fLN4wsXUmuX7tzspzKwkgNNhGCWTIR4RH1NQxcLWHcBjannqrGeM4ZQlnijR0+jWaP2E/gVdwOcm+0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jiKXJg03; arc=pass smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E7F43B6D4
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 08:22:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786609375; cv=none; b=j96250cIYh+NMlzEmYd+U1SK9NTeyGHLuLHE7f9Uk6Vvd2VD5PUeDf2fswsC3at4uPcXNXJA2X0I/GLMWA25UMCRpzl/HH8Yj41XvpS/AXi/SDykNd8fk57b8/pVMQsEQllLo5r/H9V4cVOZfg9HjLxamLDwQbT6OccMopZzIg8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786609375; c=relaxed/simple;
+	bh=ufH+e66ZKDLiR/p5yTTn0dwbpGPytwbQwwdtwje203I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hUg02w16dAxS5hwUvUII3w2qVbj7P2F97/UnBsFqv4MJK5sZt+RrIklS0PtMuOdV2gRm/VOs0Yhr9DLqdlQ0G2OciKelJfr4wmoiojX6C8ePHU9GA9lBI4sZi8f8CWbJzQmaTxCZ9sgvh4ustFRGLh9s75F+UOWP0X+ZS7OI0T8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SOyKC2zu; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jiKXJg03"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-392af6bda98so354689a91.0
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 01:19:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786609160; cv=none;
-        d=google.com; s=arc-20260327;
-        b=HDBOh7vaaZq2KcOVfPJuPqmcRwQycfXRheECqdb0rYQDBqJ4L3kIr5xffgam/C+G8f
-         IA5PkMQRJkkYNG7LR9d70wBoQMo+tGO0r3w+rNwPmk8PqVCc+u4h8B9rmog85H279y1r
-         cyvrxmnCMiFcKrQiSrgU2ofI7dFJCVz8A7N2+nm2ppT/EPK8a6ITn0V24JOz2j5oT9aW
-         D5LNMKOLFkBFeYWHrj9Zr5WGh1GC99zMRTHsBNM8301Gi4eopuI7r+0JQS4Jhc6U5FG4
-         Ga8k+zvy+XcfhfoGRYg/3TEc50zSMz7QiCl0OFs61JTyokIURtAZj6UCZfbP6aTBYsvW
-         t2sw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=hVrUSNzIYXwmMA2xnmHjPXifoomFAeIS+si0eytqGMU=;
-        fh=/67wTBXLN34qN0Md/W27j4otZJorL4AmLQ4dmlMbp4g=;
-        b=LxLvr9flpERfm4m68XVtLtUaOLJFhwjW4YjF4K2sW9ip3/Vu0zzejD0WCoIzenVxow
-         d620pFd5qT4i9y/HBcN4G+Z2A7z3lqsHMfoMPXtPyVa1sNYX+dCZlxQTcRbzp9A1KUrR
-         x7iDMWC7HVdKRIh/F1NJKficqIUPsUnlTqZROm7IAKQAHmii6QC5hXoyWbZZAc98brsH
-         yIsOfytcxs3FX0SL1FGsA3nk6qvAtdDZZCH7uNvofHRQrUVnrrIG0FmnOMb0akYoitpJ
-         jErTLwxhzZ7591lT75E5pK8cy/j44HjUguca3rm+se4gSGYwl3sf7HZEt+DVjfTppmDK
-         7eEw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786609160; x=1787213960; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hVrUSNzIYXwmMA2xnmHjPXifoomFAeIS+si0eytqGMU=;
-        b=jiKXJg03ISCWp4I5Y7ccPMu321Ea6AemOZfQWlLgVESV0Vh7f3GfggkE0tt+xWkPpi
-         3ACJjmUZFwOHd4xdX45veGxbDPNmBHmWplhxbEmy/YKTVnkRGV5Zm9dXtlcLWuYbBACn
-         M3WXqdZUW47hmbmp3YHhFoRMGh3/FL8SbUiZfcchHI4i43vXfNupNOt0MQTPWpD74ajA
-         JptqLcLrvVjxvvALg1i53eNw8PTMq7AS0IgAzYWk1XBV0I7Hygmf7Me67r8NWsjqbyY8
-         7GNl2JTiQ+PfCLX7//mzkJspyqK6oK7NOLXJfN5pSltReyQsGmRqKK9Er43gYXiqaEdn
-         Bp2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786609160; x=1787213960;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hVrUSNzIYXwmMA2xnmHjPXifoomFAeIS+si0eytqGMU=;
-        b=CHeJldOdCB22SthRvBeXGZ6qm7dLOLuPAUJZizh3QgeLi6BLu0REv3u2SiCy6W21Of
-         pyzV+Mqb3P/E5EHojfP8GGdTUCPYdF5Fi9peoQ2dlsjreaYWZAUyI3BdheOU+2Ew7z4b
-         iQbl5jBp0rIBx2t+WdfZ2kUJIrOuBZgYZmsDcZ39aKU5an7Y+IWz7LHv2My2HqJMmxOo
-         HBCv0TIy00FrKYkVThTJ1NX5iBKFfGk4hzLeIbxl7Cn/ndNIxdHlYz5UDL3RW1N2nuaz
-         7MYbUk5VN6shR0ERL8FJ97SpXpTTEV6JeqnyTO5VKvivdeFAzZLeP4bjW9WhP+IMJMdY
-         VHrg==
-X-Forwarded-Encrypted: i=1; AHgh+RrRpsZqar61iG+7JZWVkjeu+fNyYtwWyz2tH7q30ffW3Uavd8VmP7sBViv3FMUmzlYwFAQV4SY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZyxvXRj5hDBQ3x+ft9pl7Hu9gWzzgwF8R8Ooleo7KqCpz15LC
-	3TtuLuRZJgI3tQ2vM5BSorZRx5uNj7TpX+I8R9zZ95LamPWMk4qNpCuPyWA4ho3rVEF9F9kRBV+
-	EDTIuIOesHDpDG6FIo36iG/4jIpSljZs=
-X-Gm-Gg: AR+sD10cepGjTD907AtWzCVTzZupPGSbvm0hHl11Sf0q57K/JBmhQl8uIclt4TXr0v4
-	AqZxaHx25T4RXxoH8oxJC4wY1zxDReYm1BihrqgZhLp8I8l5NoyblO/M/DxDQ0Gi6EyDuuLvRN3
-	BopNGoy17uCbKtJUAd1Q14D9sd6NaRLtlnNnR4g2H4E7oYtXWtvvJ6H0/mf4YHbMVDotF9rIE8i
-	QvJwGu3d7vrytXoAF/HC9Y2q5B9Velnp/I/89kOYvgO9tPv8EqEsmq9sgeTOV7qHoboDKSNifjb
-	8tIn2EkjZtM4+rgerw6Bm8ymWlUVucgPiM2RCP+Eol4+nzKR1dsMS6u5/VR/5cCGqJ6nT8GaAfk
-	HVSqtT6Q/JGzRUh90hxGRBaksSMIWx8uOx+LTzoVN0EwQ76lOn0KFRpB/L3fW8i/WF4aXJME=
-X-Received: by 2002:a17:90b:5807:b0:381:bcfb:e710 with SMTP id
- 98e67ed59e1d1-3931e2aa828mr3336244a91.3.1786609159836; Thu, 13 Aug 2026
- 01:19:19 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SOyKC2zu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786609373;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Qzc7A0H+LuzoGrsoEHxP9TNCNQHz6zDj0wB6rZ/NxjM=;
+	b=SOyKC2zupwZSFT3ZEQ22nSA9SFjnnvc4Nu+iKGlGXKg6bR+RMURgxxTGRvXJHSZYd1TUIK
+	fAviwo2lPznQN//8w166ApPnyHAb8CCbXrLCBA4csvav0r4JLldbiNUcZ0sBWnrZwvX9s3
+	fyarKa2FP6IEU3ezZdksmpxjEeMAVls=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-399-346GiGtfOHmuxEFLaE-1Hw-1; Thu,
+ 13 Aug 2026 04:22:49 -0400
+X-MC-Unique: 346GiGtfOHmuxEFLaE-1Hw-1
+X-Mimecast-MFC-AGG-ID: 346GiGtfOHmuxEFLaE-1Hw_1786609367
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 14EB11800614;
+	Thu, 13 Aug 2026 08:22:47 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.44.48.120])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6AF27423;
+	Thu, 13 Aug 2026 08:22:42 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: daniel@makrotopia.org
+Cc: jiri@resnulli.us,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	andrew@lunn.ch,
+	olteanv@gmail.com,
+	netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v10 3/5] net: dsa: mxl862xx: add devlink flash_update and info_get
+Date: Thu, 13 Aug 2026 10:22:33 +0200
+Message-ID: <20260813082233.71011-1-pabeni@redhat.com>
+In-Reply-To: <66aaa1b09b0f2e9e74a7274a878c6902e1aa2b9c.1786294649.git.daniel@makrotopia.org>
+References: <66aaa1b09b0f2e9e74a7274a878c6902e1aa2b9c.1786294649.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260811-fix-fops-owner-v10-0-7e71776f9dbe@linux.dev>
- <CANiq72=bhfofrbdf1qeA380-eWeKj5yXhC0NzaU_nbB9SpxYHA@mail.gmail.com> <0102f153-154b-430d-a3da-2c8423fb3f1f@linux.dev>
-In-Reply-To: <0102f153-154b-430d-a3da-2c8423fb3f1f@linux.dev>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 13 Aug 2026 10:19:07 +0200
-X-Gm-Features: AUfX_mwh5p3w0RKVhg92eH8jsf5k7VluJKRFIvAAaH6tiIul7a7G8q8L9_4Mlig
-Message-ID: <CANiq72mcFp-MODPkNGPcufxb0YhPDO_eN8J-ZFVzkd2-W6VK6A@mail.gmail.com>
-Subject: Re: [PATCH v10 00/10] Fix missing fops.owner in Rust DRM/misc abstractions
-To: Alvin Sun <alvin.sun@linux.dev>
-Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Aaron Tomlin <atomlin@atomlin.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <david@davidgow.net>, 
-	Rae Moar <raemoar63@gmail.com>, Breno Leitao <leitao@debian.org>, Jens Axboe <axboe@kernel.dk>, 
-	Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
-	Igor Korotin <igor.korotin@linux.dev>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-modules@vger.kernel.org, driver-core@lists.linux.dev, 
-	dri-devel@lists.freedesktop.org, nova-gpu@lists.linux.dev, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-pci@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-On Thu, Aug 13, 2026 at 10:15=E2=80=AFAM Alvin Sun <alvin.sun@linux.dev> wr=
-ote:
->
-> Thanks for applying the series and catching the stray Acked-by.
-> It was a v5 series-tag, from before the MAINTAINERS patch existed,
-> so no need to re-add it. I'll be more careful with tags in future
-> submissions.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev/
+---
+Subject: net: dsa: mxl862xx: add devlink flash_update and info_get
 
-Thanks for confirming! :)
+This commit implements runtime firmware upgrading for the MxL862xx switch
+using devlink dev flash. It transfers the firmware image over SB PDI,
+reboots the switch, and defers a device reprobe to re-initialize the driver
+using a workqueue.
 
-Cheers,
-Miguel
+> diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-fw.c b/drivers/net/dsa/mxl862xx/mxl862xx-fw.c
+> new file mode 100644
+> index 0000000000000..9799cf19d31a9
+> --- /dev/null
+> +++ b/drivers/net/dsa/mxl862xx/mxl862xx-fw.c
+
+[ ... ]
+
+> +static void mxl862xx_reprobe_work_fn(struct work_struct *work)
+> +{
+> +	struct mxl862xx_reprobe *rp =
+> +		container_of(work, struct mxl862xx_reprobe, work.work);
+> +	struct device *dev = rp->dev;
+> +	bool bound;
+> +
+> +	device_lock(dev);
+> +	bound = !!dev_get_drvdata(dev);
+> +	device_unlock(dev);
+> +
+> +	if (!bound)
+> +		dev_dbg(dev, "reprobe skipped, device is gone\n");
+> +	else if (device_reprobe(dev))
+
+[Severity: High]
+Is there a race window here that can lead to a use-after-free of priv?
+
+If device_shutdown() runs after device_unlock() but before
+device_reprobe(), it can clear drvdata. When device_reprobe() subsequently
+runs, it triggers the driver remove() function, which returns early because
+drvdata is NULL, bypassing dsa_unregister_switch().
+
+However, because priv was allocated with devm_kzalloc() during probe:
+
+drivers/net/dsa/mxl862xx/mxl862xx.c:mxl862xx_probe() {
+    priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+    ...
+}
+
+the driver core will still run devres_release_all() and free priv. The DSA
+switch remains registered, and any subsequent access to it via devlink or
+netlink could dereference the freed priv pointer.
+
+> +		dev_err(dev, "reprobe failed; device left unbound\n");
+> +
+> +	put_device(dev);
+> +	kfree(rp);
+> +	module_put(THIS_MODULE);
+> +}
+
+[Severity: High]
+Can this cause a kernel panic if the module is unloaded concurrently?
+
+Calling module_put(THIS_MODULE) at the very end of a work item means the
+module reference count drops to zero before the function fully returns to
+the workqueue core.
+
+A concurrent rmmod can then proceed and unmap the module text section. If
+the worker thread is preempted or delayed, it will resume execution from
+unmapped memory during the function epilogue, leading to a fatal page fault.
+-- 
+This is an AI-generated review.
+
