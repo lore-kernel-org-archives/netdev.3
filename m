@@ -1,227 +1,205 @@
-Received: from mta1.migadu.com (out-162.mta1.migadu.com [95.215.58.162])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8456039E9C8
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 08:48:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.162
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6111D353A9F
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 08:50:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786610919; cv=none; b=iWw8W3Z55rStgBYi3BzlpaOCyyyAPl1XlZeaEvZEJYzIYOs8tCEaXwx4bTQ7UxHMUk9Bw2Y40bXPJtoX5nP3kR8KOJycyBilnQdO0rjoiCyf0RzstzlOwlkuaqv+M1B9kT4k9PfXddjtA7rorBn236yQzqCgnLQ+yEo3SgwcuaQ=
+	t=1786611006; cv=none; b=av++hfo8Dnbz1Evs9Ya9iw0ez2nLbHBaOjoTomwQPOKkDJq5ADICSuMsrceZwZe899fnTIaMObcPTGnc+JF+x+YaZKZsMs7ZVPwebYRIet0lbXqx5rT96FeqKQGYxcQrdrobpsiepeyGddgEtZKE4vfquVbLzGFyoDjwd6YxtNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786610919; c=relaxed/simple;
-	bh=p/XR4dg0T6N6IfkAMZsaBbcOqjAF0woNribrNFPWFpw=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=PuXdcA02CPh6WwtRaZh+lO7El2cPLWg/D3l1HCzEvihlDeNXvX6slqJVdcMsN/EuE9D3TIsRy3/lTGVb6n7nfTDu75HWLN07vk/t81qPY/ndanBktds9NZgpk7D0Te0NlpSDcWksYt4340YNz6S3JFjzV3u5IZks86YvgnUcVgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=gWPrhjFc; arc=none smtp.client-ip=95.215.58.162
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1786611006; c=relaxed/simple;
+	bh=FjEGFFlm88Ei+R5EFTWOJ5+TvUYy5g7LTG3bgKw3bR4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=p7YpW8/03iYV8t+e+r1UD7kis8qq0oUrTFH7HKhzaa0pRwzkpeZ9hjGfQfjYRJIR+LQPN4H7VoQLAJgUr+EXY857bfZzjK5NiPzP5ujmUoeeseDSm4DFXVvtVgViDRBxrVg19Njk+NodItS7MAMB6GY7w6gRGdMHRbhOPhdU1fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y/HKpaQ/; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=P+AaFFmC; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="gWPrhjFc"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=p/XR4dg0T6N6IfkAMZsaBbcOqjAF0woNribrNFPWFpw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786610915; v=1; x=1787215715;
- b=gWPrhjFcy/OvwV5S+26LkK6yZVrPhXS7urmZBanQZUcX+IDLdxHymuWt8a0wdrQoM4qxj18H
- xg1vser9KsP6KJmDdwDajOEqXywP2ZKPh2O752Ag9Rnby518qFBi1Bk517cOT/3PoUixyBy3kHr
- v3iktNl4iEg1PlSiIfx+q6jU=
-X-Envelope-To: netdev@vger.kernel.org
-Received: from webmail.migadu.com (2001:41d0:303:fc7a::)
-	by mta12.migadu.com with ESMTPS id 1be4d382c922c9e0;
-	Thu, 13 Aug 2026 08:48:34 +0000
-X-Migadu-Flow: FLOW_OUT
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y/HKpaQ/";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="P+AaFFmC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786611000;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xhCeJuOeXQYs6cGlSqtvP+vdZHn0FA++1lLJa9BNjLw=;
+	b=Y/HKpaQ/m87UDZPsI0j6Xlyo0lkSNDX+VuQSRcr/XRcHWDUqfzX7tYALTlLljeytZjKf25
+	aaNAZKY3bHosou4u8ipnSeOg4cbrnmSrzclmYLyBq7eQ1Hqg0ZET+4/nh7S/cin/kwS1/P
+	aoRFx/aiTJQuqX8jW9dZVJ+qXOyw1Q0=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-86-VD7OYsGlNxW1M0-1sSH0TQ-1; Thu, 13 Aug 2026 04:49:53 -0400
+X-MC-Unique: VD7OYsGlNxW1M0-1sSH0TQ-1
+X-Mimecast-MFC-AGG-ID: VD7OYsGlNxW1M0-1sSH0TQ_1786610993
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-4814718d124so1220025f8f.1
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 01:49:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1786610992; x=1787215792; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xhCeJuOeXQYs6cGlSqtvP+vdZHn0FA++1lLJa9BNjLw=;
+        b=P+AaFFmCnMZlAYwcVRZq++IPjsaTcFT0oyXuVNumOz+S9h7Phys+StN1Ai95RXcOmF
+         PnueJk3FS+y+gSh0X5QRCJR82pQsuUZRnoSu5npWVOFCU7rodDQ0KYxicjDFrmLpLBGc
+         EHKbcWlx4JrV8jZpK31PJZbW3XONu+xAaKSFhEhsZvusMXSkm2rHQM8TUH++tbltPkHX
+         mWOpyP8u03SBQxH5pWucMbsejuvyTu3sHNzNwA1Pw2fH8jvAXGxO49IGET6CPwPlfEW4
+         fMTC8pcpzsM2B4sMnTuUhoWA9Eae99uILVPrOfI6WGKXno0PCrgQuPf1Gt6E7CcH6x/+
+         wO2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786610992; x=1787215792;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xhCeJuOeXQYs6cGlSqtvP+vdZHn0FA++1lLJa9BNjLw=;
+        b=o/3RlmPFgoZbosSH7MIfAm3FNMnd9Q8JRZuOeZ4fMX+KJ3ZaeLeFA1z+bu7PX8cSPY
+         gsZCFCUfo7X5PwtjX3dDsH7QLe9NySzZOXVfOGYcH+Vk8znCX4yXH2YXl/CuA8BSMvwa
+         GE9lTgJ1WYBTNUOaKvIjelrhDZUIZCEBgByUaZxHNK3d1w/LKRaq80O/atxAXv/SH5Ix
+         VtAYR6l/XsZ9n0PUYtTC0EWSxNdUhkyHtjZHwCJV2FdLIF8d4eKEcEsf8meojpF2o6xb
+         kjnzeegLzBL9zLZ0vKKwH/m98VlACjOBtsmXvZXK9ITPozmnTaPTUkT7Rl0/u1JrJd1R
+         WjrA==
+X-Forwarded-Encrypted: i=1; AHgh+RqvproAcfCBo5qoqn1V8NvNJzVXy+liVwYaGaDAPk2AZ9ZzumLmlI44lEOdVfjBDeD/Fklq4q0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyl3EWFPNypk2qttR9GiwIHmkVONOX9GPdYQZowVlp5YHosD4zh
+	YGG3Xtn9dg27QaLcdAorwNlsnGvW9hD9qcPv9ktFWYtV4W9tZzjjyy3JZLsbYHBTsJoPGe69zKc
+	PNjvZ3luS2G1t7kpVwDycww8yW/lVeVA9mbvWfoJVTL/HvI0gmVMJ1mRyf8Tkf8dLmA==
+X-Gm-Gg: AR+sD12Vg7i/PkOj4Cjpv3iO4V37bLiOU/lixYa3mUsxRJ3zeGkPalolD24PHHD2AeU
+	Xuj25nDjvOqabqIKleddQFlEC8S36FjbgVT75n+XdepdOy9VMnMoRdUnIrhbW0Rhbsj2xt+uZu+
+	1Bd5b4MlwG0NTLFLtyea0Eh6xcNykC/uka+Yk+aGHkCtx3AulYyiCFrFbCCVcztRLcSoCao1/ND
+	DMSVZ9dmLFkdOo0a3pNAkBjVn2ub579f2i6exix4o00ctB8QnA2NALoinq9+Nt9pW+e6LPc9tiU
+	aSAqgeW0Uec2YHxeYf8p/6Vs9hFuHqC9G6okf3KrzqLvzFFls/dbLi+qcH8dCR0fnmYY+fqjLdN
+	Q253vSj5AD1zcIetBaIXOe6hWViP8fMW6GwQndfuJ2lGth9koOKf85Dk5jgqpCKTZGiawLAQSmy
+	8=
+X-Received: by 2002:a05:600c:6995:b0:495:5890:8f6c with SMTP id 5b1f17b1804b1-4998216ad6cmr53122085e9.7.1786610992535;
+        Thu, 13 Aug 2026 01:49:52 -0700 (PDT)
+X-Received: by 2002:a05:600c:6995:b0:495:5890:8f6c with SMTP id 5b1f17b1804b1-4998216ad6cmr53121185e9.7.1786610992126;
+        Thu, 13 Aug 2026 01:49:52 -0700 (PDT)
+Received: from [192.168.188.103] (ip239-44-231-195.pool-bba.aruba.it. [195.231.44.239])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4998216cf70sm41013415e9.12.2026.08.13.01.49.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 13 Aug 2026 01:49:51 -0700 (PDT)
+Message-ID: <64a0b57c-040c-4703-95eb-886701bdf745@redhat.com>
+Date: Thu, 13 Aug 2026 10:49:50 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 13 Aug 2026 08:48:34 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-From: "Hui Zhu" <hui.zhu@linux.dev>
-Message-ID: <93e42fc2cd73bb1dd93fac74670899366ea58947@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH bpf-next 2/4] bpf: add bpf_thread_wq kthread-backed
- workqueue with cgroup placement
-To: "Kumar Kartikeya Dwivedi" <memxor@gmail.com>, "Alexei Starovoitov"
- <ast@kernel.org>, "Daniel Borkmann" <daniel@iogearbox.net>, "John
- Fastabend" <john.fastabend@gmail.com>, "Andrii Nakryiko"
- <andrii@kernel.org>, "Martin  KaFai Lau" <martin.lau@linux.dev>, "Eduard
- Zingerman" <eddyz87@gmail.com>, "Song Liu" <song@kernel.org>, "Yonghong
- Song" <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>,
- "Johannes Weiner" <hannes@cmpxchg.org>, "Michal Hocko"
- <mhocko@kernel.org>, "Roman Gushchin" <roman.gushchin@linux.dev>,
- "Shakeel Butt" <shakeel.butt@linux.dev>, "Muchun Song"
- <muchun.song@linux.dev>, "JP Kobryn" <inwardvessel@gmail.com>, "Andrew
- Morton" <akpm@linux-foundation.org>, "Shuah Khan" <shuah@kernel.org>,
- davem@davemloft.net, "Jakub Kicinski" <kuba@kernel.org>, "Jesper Dangaard
- Brouer" <hawk@kernel.org>, "Stanislav  Fomichev" <sdf@fomichev.me>, "KP
- Singh" <kpsingh@kernel.org>, "Tao Chen" <chen.dylane@linux.dev>, "Mykyta
- Yatsenko" <yatsenko@meta.com>, "Leon  Hwang" <leon.hwang@linux.dev>,
- "Anton Protopopov" <a.s.protopopov@gmail.com>, "Amery Hung"
- <ameryhung@gmail.com>, "Tobias  Klauser" <tklauser@distanz.ch>, "Eyal
- Birger" <eyal.birger@gmail.com>, "Rong Tao" <rongtao@cestc.cn>, "Hao Luo"
- <haoluo@google.com>, "Peter  Zijlstra" <peterz@infradead.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Nathan Chancellor" <nathan@kernel.org>, "Kees
- Cook" <kees@kernel.org>, "Tejun Heo" <tj@kernel.org>, "Jeff Xu"
- <jeffxu@chromium.org>, mkoutny@suse.com, "Jan Hendrik Farr"
- <kernel@jfarr.cc>, "Christian  Brauner" <brauner@kernel.org>, "Randy
- Dunlap" <rdunlap@infradead.org>, "Brian Gerst" <brgerst@gmail.com>,
- "Masahiro Yamada" <masahiroy@kernel.org>, "Willem de Bruijn"
- <willemb@google.com>, "Jason  Xing" <kerneljasonxing@gmail.com>, "Paul
- Chaignon" <paul.chaignon@gmail.com>, "Lance Yang" <lance.yang@linux.dev>,
- "Jiayuan  Chen" <jiayuan.chen@linux.dev>, "Emil Tsalapatis"
- <emil@etsalapatis.com>, "Ihor Solodrai" <ihor.solodrai@linux.dev>, "Barry
- Song" <baohua@kernel.org>, "Geliang Tang" <geliang@kernel.org>,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- cgroups@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-Cc: "Hui Zhu" <zhuhui@kylinos.cn>
-In-Reply-To: <DKNHV09PBQZP.IRQL20BY574I@gmail.com>
-References: <cover.1786086076.git.zhuhui@kylinos.cn>
- <cfb06f2626062fa60efbbd9d34089819b1a34522.1786086076.git.zhuhui@kylinos.cn>
- <DKNHV09PBQZP.IRQL20BY574I@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 net] vlan: fix skb_under_panic and races when toggling
+ HW VLAN offload
+To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com, Tangxin Xie <xietangxin@h-partners.com>,
+ stable@vger.kernel.org
+References: <20260811085246.2267779-1-edumazet@google.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260811085246.2267779-1-edumazet@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
->=20
->=20On Fri Aug 7, 2026 at 9:01 AM CEST, Hui Zhu wrote:
->=20
->=20>=20
->=20> From: Hui Zhu <zhuhui@kylinos.cn>
-> >=20
->=20>  Introduce bpf_thread_wq, a new BPF embedded map field similar to
-> >  bpf_wq but backed by a dedicated kthread_worker instead of a system
-> >  workqueue. The worker kthread can be attached to a specific cgroup a=
-t
-> >  init time so BPF-deferred callbacks run under the resource limits of
-> >  the target cgroup.
-> >=20
->=20>  Three kfuncs are exposed:
-> >  bpf_thread_wq_init(twq, map, cgroup_id, flags) [KF_SLEEPABLE]
-> >  bpf_thread_wq_set_callback(twq, cb, flags, aux)
-> >  bpf_thread_wq_start(twq, flags)
-> >=20
->=20>  bpf_thread_wq_init() is registered only for BPF_PROG_TYPE_SYSCALL
-> >  programs. It creates a kthread worker and may attach it to a cgroup;
-> >  those paths can sleep and acquire kthread and cgroup locks. Restrict=
-ing
-> >  init to syscall programs prevents it from running in BPF contexts th=
-at
-> >  may already hold locks which could deadlock with those paths.
-> >=20
->=20>  bpf_thread_wq intentionally avoids the bpf_async infrastructure us=
-ed by
-> >  bpf_timer and bpf_wq. That infrastructure drives cleanup from irq_wo=
-rk
-> >  in hardirq context, while bpf_thread_wq cancellation and final teard=
-own
-> >  may need to sleep through kthread_cancel_work_sync(),
-> >  kthread_destroy_worker() and a final cgroup_put().
-> >  bpf_thread_wq_cancel_and_free() therefore cancels work synchronously=
- and
-> >  drops the context reference; the last put waits for tasks-trace RCU
-> >  readers and then schedules process-context work to run bpf_prog_put(=
-),
-> >  cgroup_put(), kthread_destroy_worker() and kfree().
-> >=20
->=20>  Add BTF/map support for bpf_thread_wq fields, map teardown hooks,
-> >  verifier handling for the callback kfunc, and cgroup_kthread_attach(=
-) to
-> >  move the worker into the requested cgroup.
-> >=20
->=20>  Supported map types are BPF_MAP_TYPE_HASH, BPF_MAP_TYPE_LRU_HASH, =
-and
-> >  BPF_MAP_TYPE_ARRAY, consistent with bpf_wq and bpf_task_work.
-> >=20
->=20>  Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-> >  ---
-> >=20
->=20Hi Hui,
->=20
->=20Thanks for sharing the patches. I think Sashiko and Mykyta already po=
-inted out a
-> couple of issues with the current implementation, but I would like to c=
-omment on
-> the higher-level approach.
->=20
->=20If I understood the past discussions and current set correctly, the r=
-eason for
-> your choice to move from bpf_wq to bpf_thread_wq was primarily to enabl=
-e correct
-> CPU accounting of the work done by threads to specific cgroups.
->=20
->=20I think this is a step in the right direction, but looking at the big=
-ger
-> picture, I feel we need a more flexible solution.
->=20
->=20In practice, users deciding to do async reclaim through such a BPF in=
-terface
-> would want to scale and compact the number of threads doing reclaim-rel=
-ated work
-> dynamically, based on available idle resources, but also application-sp=
-ecific
-> metrics, and I do not think the bpf_thread_wq abstraction provides enou=
-gh
-> flexibility in managing work scheduling related aspects precisely.
->=20
->=20What we probably should expose is the ability for programs to manage =
-their own
-> wait queues and subscribe kthreads managed by BPF programs dynamically =
-to them.
-> User-defined policies can dictate how many threads remain active, wheth=
-er they
-> busy poll, and when they go to sleep, completely under the program's co=
-ntrol.
->=20
->=20Looking beyond this particular example, there are cases where work is=
- stashed in
-> queues, and threads draw items from the pool and process them. In such =
-cases
-> having flexibility in deciding the mapping between threads and queues i=
-s also
-> important. We want to thus allow management of the work item queues fro=
-m the
-> program itself, and not hide it behind the API to offer the desired lev=
-el of
-> control. The order in which items are ranked in individual queues, and =
-the
-> order in which queues are processed horizontally by threads is also a d=
-esirable
-> property.
->=20
->=20Correctly associating the BPF-managed kthread to a cgroup should stil=
-l be
-> possible in a manner similar to what you did in this set. But the amoun=
-t of
-> control programs can exert over how work is scheduled and the level of
-> concurrency will be much higher if we disaggregate and generalize each =
-part of
-> the picture (wait queues, kthreads, and work item queues, which can be
-> implemented in BPF itself).
->=20
->=20I am not aware of ways to back charge time spent to remote cgroups, b=
-ut if
-> desired we could also explore that option when a single thread does wor=
-k on
-> behalf of multiple cgroups. It is something to be explored.
->=20
->=20I've been working on related patches, and will post RFC set for bpf_k=
-thread and
-> bpf_waitq management in due time. Until then I recommend that you conti=
-nue
-> experimenting with the existing async execution primitives for now.
+On 8/11/26 10:52 AM, Eric Dumazet wrote:
+> Toggling hardware VLAN TX offload (NETIF_F_HW_VLAN_CTAG_TX or
+> NETIF_F_HW_VLAN_STAG_TX) on a lower device invokes vlan_transfer_features(),
+> which dynamically changed vlandev->hard_header_len.
+> 
+> This causes two issues:
+> 1. Lockless TX paths (e.g. packet_snd in af_packet.c, ip6_finish_output2)
+>    read dev->hard_header_len without holding RTNL lock. Mutating
+>    hard_header_len dynamically under RTNL creates a data race where upper
+>    layers reserve insufficient headroom based on a stale hard_header_len,
+>    resulting in skb_under_panic when vlan_dev_hard_header() is called.
+> 2. In addition, vlan_transfer_features() updated hard_header_len without
+>    updating header_ops, causing a mismatch between allocated headroom
+>    and header creation.
+> 
+> Always setting dev->hard_header_len = real_dev->hard_header_len and
+> dev->needed_headroom = real_dev->needed_headroom + VLAN_HLEN unconditionally
+> ensures:
+> - dev->hard_header_len remains 100% static and immutable at real_dev->hard_header_len,
+>   eliminating all dynamic runtime updates and data races on hard_header_len.
+> - Upper layers allocating skbs via LL_RESERVED_SPACE() will always reserve
+>   sufficient headroom for software VLAN tag insertion (real_dev->hard_header_len +
+>   real_dev->needed_headroom + VLAN_HLEN).
+> - vlandev inherits real_dev->needed_tailroom so underlying trailer/padding/ICV
+>   requirements are honored.
+> - AF_PACKET SOCK_RAW network header offsets remain correctly aligned at
+>   real_dev->hard_header_len.
+> - vlan_header_ops is used unconditionally.
+> 
+> Note to stable teams: Make sure to backport these commits:
+> 
+> e16e960d55a4 ("ipvlan: inherit needed_headroom and needed_tailroom from phy_dev")
+> cef51860becd ("macvlan: inherit needed_headroom and needed_tailroom from lowerdev")
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reported-by: Tangxin Xie <xietangxin@h-partners.com>
+> Closes: https://lore.kernel.org/netdev/99d678ae-c7b2-4b44-b534-b8320679deb3@h-partners.com/
+> Cc: <stable@vger.kernel.org> # 3.19: e16e960d55a4: ipvlan: inherit needed_headroom and needed_tailroom from phy_dev
+> Cc: <stable@vger.kernel.org> # 3.19: cef51860becd: macvlan: inherit needed_headroom and needed_tailroom from lowerdev
+> Cc: <stable@vger.kernel.org> # 3.19
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> ---
+> v3: propagate needed_tailroom, add stable tags.
+> v2: https://lore.kernel.org/netdev/20260724035419.1473174-1-edumazet@google.com/
+> 
+>  net/8021q/vlan_dev.c | 39 +++++++--------------------------------
+>  1 file changed, 7 insertions(+), 32 deletions(-)
+> 
+> diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
+> index ec2569b3f8dac629027b4344bc89402decf026d1..2859cbac3f266b7c4e3f44f41280d33ab69c5270 100644
+> --- a/net/8021q/vlan_dev.c
+> +++ b/net/8021q/vlan_dev.c
+> @@ -502,26 +502,6 @@ static const struct header_ops vlan_header_ops = {
+>  	.parse_protocol = vlan_parse_protocol,
+>  };
+>  
+> -static int vlan_passthru_hard_header(struct sk_buff *skb, struct net_device *dev,
+> -				     unsigned short type,
+> -				     const void *daddr, const void *saddr,
+> -				     unsigned int len)
+> -{
+> -	struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
+> -	struct net_device *real_dev = vlan->real_dev;
+> -
+> -	if (saddr == NULL)
+> -		saddr = dev->dev_addr;
+> -
+> -	return dev_hard_header(skb, real_dev, type, daddr, saddr, len);
+> -}
+> -
+> -static const struct header_ops vlan_passthru_header_ops = {
+> -	.create	 = vlan_passthru_hard_header,
+> -	.parse	 = eth_header_parse,
+> -	.parse_protocol = vlan_parse_protocol,
+> -};
+> -
+>  static const struct device_type vlan_type = {
+>  	.name	= "vlan",
+>  };
+> @@ -580,14 +560,10 @@ static int vlan_dev_init(struct net_device *dev)
+>  	dev->fcoe_ddp_xid = real_dev->fcoe_ddp_xid;
+>  #endif
+>  
+> -	dev->needed_headroom = real_dev->needed_headroom;
+> -	if (vlan_hw_offload_capable(real_dev->features, vlan->vlan_proto)) {
+> -		dev->header_ops      = &vlan_passthru_header_ops;
+> -		dev->hard_header_len = real_dev->hard_header_len;
+> -	} else {
+> -		dev->header_ops      = &vlan_header_ops;
+> -		dev->hard_header_len = real_dev->hard_header_len + VLAN_HLEN;
 
-Hi Kumar,
+Sashiko nipa points to a possible functional and performance regression
+with unusual config (reorder_hdr off):
 
-Agreed, the disaggregated design sounds like the right direction.
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260811085246.2267779-1-edumazet%40google.com
 
-I'll keep updating the remaining commits of this series, and wait
-for your bpf_kthread/bpf_waitq RFC.
+Arguably the current behavior is incorrect, but it's also the
+established one. WDYT?
 
-Best,
-Hui
+/P
 
->=20
->=20>=20
->=20> [...]
-> >
->
