@@ -1,160 +1,178 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10483EF663
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 05:47:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5ED3D5668;
+	Thu, 13 Aug 2026 05:47:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786600058; cv=none; b=ZaxkJVA5Xe9PJY0p2z/cUOsPy4bUkDcjnte8m11MfAf4PSouk8BMdJkheRTOmWUabsBpqLgPbSGXk2XjDxIDRTQDm0yZBGostjtHoms5qRiRs/POHvMgb2wEK/gE22JL0LOOEsxYR8oLAQgtC39p68hwAidEdAtI2a+SG8JREtM=
+	t=1786600061; cv=none; b=G9+ByPNVzpveis749to5Juq6ICA1S4um5RAKFkIuFkNgU5T33vdBq0ya6cywZctd54lWe+3MsNsyiP/ZCWJ8GfbwcMGgH7Nrn1WTtap3jsuVXg7Z4JbvWTv62rTRmF3huJLHjGH028iVVtavuCfZAk8eBgCr3UmSe/9sBnMsz/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786600058; c=relaxed/simple;
-	bh=21S1qZnq2KQIxbCTlIvk2KBTg6PbdZU54hPR6uEl4dA=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=cxzrX/V+0JPMb8vtWN2V2jBfZrxgGjVChp5ixqUOa2k6Xav8ftxKK4oTorBhfHjH+RVlZv2QcL34QnvsSbOPZFziiQ7F10rsgaENdCmGcaEnXXL20UhN4GXGAQuVRKafqDe9Hurja25nZPJZpGzq6z6bAONyckeTyjGUHYhU1Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com; spf=pass smtp.mailfrom=doyensec.com; dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b=dMSEAhKi; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=doyensec.com
+	s=arc-20240116; t=1786600061; c=relaxed/simple;
+	bh=HztUxp3cIY+LpIRNnKQK8Z3z9lqKE/Xm4f7f1K4oms4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nHMZeYnehLOv5Swr1pRIyoOBmByjb9u0ejjm1KkIY1a+qiO8df6Xr/LcRM8PdmhbQp4rMIUmKJcYPGPlW5+DN2pWd/Gg54R/sZ3scbxDf8APJMjMTXRYoNJpjttGpOBdIBOPq2KGREX6GSak/Mc0VbwBtIxSnJvvSXbon18Z5oI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=HwRQg9F2; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b="dMSEAhKi"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-47c2b362ee2so264585f8f.1
-        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 22:47:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=doyensec.com; s=google; t=1786600055; x=1787204855; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:content-type:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=kJdVd9JEvLI+gAaAJA/YXYI/7MyW6Qd+/+zQWas02oU=;
-        b=dMSEAhKiFqSD3nOjRkrxWi15OdNFqZnZ2xnc1RhS615WnYIfrOpkLs0Ag4I6ZviaND
-         GRYhHCmt2aDXXphTuCmdTnzUPOx634Wn5bhxj8rXv2GZ9FJmGYWr2ycmnhr1sgHhgdEw
-         3SgdnFxWKL/NBqAb/13OvH9DPspFEZz84m6MR+Wh/Iz6zFOR12urbMldd/0sjbwQdlH8
-         HmkNQJxq0ll9/+ZGA5q2bKOz1NgPmmg29Zho80XIi6sePwAMso8mRPixnqD0XDfDpfIs
-         Umy1JpzpUJv+i/ojn8m5Olf55jTJ1FZs0y9hODsIxf0dHGJojy3EVy64njkKwFzaGQV3
-         Mr7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786600055; x=1787204855;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kJdVd9JEvLI+gAaAJA/YXYI/7MyW6Qd+/+zQWas02oU=;
-        b=V7RR4Hx9EZmhW3WxDKNn4ocDwEQoNqvUnvjSzInab3twYff1AiO2D2lXMTJDajLwuZ
-         oFTVnx32q4NC1US531EkocR9XBKXu3lOO6IdypjDWo862XkznDvaBblwBhOYj26vAOil
-         LexVHsWTG7kMuNa412sNW2yx8sVenpgu5X9cfAI0X9Vw2FUYkfSJtcKI6W/4RhBoZemB
-         oGEP7KTPGkJuQLE4Hri1PyPCTUMkLMkD8SdI2eaN4XAog7BUDxb5lKxvC5PKtkT9xRpL
-         m72IJQTdM+IdccQboP8YJFO7e9WKQD5k4kgOJSbg0RNAXbzKWq64km4/Cau8FF7VHHJh
-         X8Dg==
-X-Gm-Message-State: AOJu0Yxr1xn7cwPoRePUf1dJJ+Rvy2CADkDtQ/ZgzrpYQtGUJveYUB1O
-	gUYUsmDfRqtBJPLoErSZKMkpIETLybxXZ/f+uaeL7wMhcAyy/tk+UXZav++xS/44FZifqBnNfGG
-	hd2Gm0Zeahw==
-X-Gm-Gg: AR+sD11itjiF6MDgB1Uakk/1mfoOEBJ9DhaARqE+Yc5vCg8d/Yjz4kYloBmVOBB9G2t
-	f4nkQHNe23zLS7beaj+GyfECwwdY/Co2mcq780ZXW0sagwWFwL1AVto5jJ6sJEgvrz2KJQ7w7uN
-	Shj8EWUnKky2/9wiuQqxq5OrvbM+FQdqisfIh4xyfnKQSb6dhAnh2OzOxv5aAFdvL2++wSxyTbe
-	cHvgGfLeCjKsnFT/wiEOG2CKyAmTozq3lv8MOE8SnTHcDt+opzNgazIka0/jWr/cQTB+VXRPeWu
-	B2lajH3tKQtDMYJKqsEdUGm26EqqqTVWUVCrC/vS+VgFSecktx/Ws731QuOkXMXmhZwwzaIS+iv
-	4JOGREQcD71WyGQuWKQTdlMpqFDc113xkRGifeVwdl32pi66d5vyi2N7tkUFkD238F8pzxqjfTA
-	AomR21/1mXFZRMVheso6aN6d2vijun23/AdKu/RvzVOHCwggCfa72cOXSANJV+XKRKvfxWM6zF8
-	PZQUCfdUaZsnCPxJkjVoU79F7AYb2wyrC6IT8pQUN8Q+I62BrorDvGdRGnTKDGM3+5wMpyGnDhh
-	lpIXosFmAZA3zumuQL4rxQ==
-X-Received: by 2002:a5d:45ca:0:b0:47f:ddc0:602a with SMTP id ffacd0b85a97d-4815a01ba47mr2905789f8f.18.1786600054954;
-        Wed, 12 Aug 2026 22:47:34 -0700 (PDT)
-Received: from smtpclient.apple (ip-88-212-19-42.antik.sk. [88.212.19.42])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815a5af441sm3741295f8f.22.2026.08.12.22.47.33
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 12 Aug 2026 22:47:34 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="HwRQg9F2"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67D2Vpfb1137963;
+	Thu, 13 Aug 2026 05:47:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=WTUZof
+	A5fhhsZLorPZqOKmWdsxRjs/jqPR4QojA7Uyk=; b=HwRQg9F2xQv20FlRxXnn20
+	bMi/pbMIipcgBo10tbRyI1m/jL8Ihyh9ZY5Fwv3H/7lUCcPSCxX4FwDmxZinvg1g
+	tCheO68yBRTurJuwWP8dEhxbWIxkX+IeeUs1iAwSpars4slizJngG/wE7E8Xbq2X
+	XwfIolvCYqQ4vrnb9XPGJ4Ijdwy++BpwQZmXKyqaZAAdPUfTDWFaWINSD4JO+8oz
+	4LGfVA3AI9SvJycrjIqiiMHAsuUF09UtUAl4UHtOasJHUIXOgrf/3oKkbS631vvT
+	/OqofGLb5xWAA0+Tr44Ec81ovJwu+a9gA4qqe7FAvZNmyW8xX4IAb+e6ncz/UNMA
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvnwdfk8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Aug 2026 05:47:32 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67D5g1jg029658;
+	Thu, 13 Aug 2026 05:47:31 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fxesq9v79-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Aug 2026 05:47:31 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67D5lR1D39911808
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 13 Aug 2026 05:47:27 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B2B1320043;
+	Thu, 13 Aug 2026 05:47:27 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C913620040;
+	Thu, 13 Aug 2026 05:47:24 +0000 (GMT)
+Received: from [9.123.7.41] (unknown [9.123.7.41])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 13 Aug 2026 05:47:24 +0000 (GMT)
+Message-ID: <d5a0c244-5dae-4cab-a583-554916f3a827@linux.ibm.com>
+Date: Thu, 13 Aug 2026 11:17:23 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
-Subject: [PATCH net 1/2] openvswitch: only skb_tx_error() a packet we are
- about to drop
-From: Norbert Szetei <norbert@doyensec.com>
-In-Reply-To: <8063260C-05C9-4997-B9B6-2135063C4858@doyensec.com>
-Date: Thu, 13 Aug 2026 07:47:23 +0200
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- Aaron Conole <aconole@redhat.com>,
- Eelco Chaudron <echaudro@redhat.com>,
- Ilya Maximets <i.maximets@ovn.org>,
- Steffen Klassert <steffen.klassert@secunet.com>,
- Kuan-Ting Chen <h3xrabbit@gmail.com>,
- Zoltan Kiss <zoltan.kiss@citrix.com>,
- dev@openvswitch.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <C35992B1-7740-4886-94FF-F85DE8B0106F@doyensec.com>
-References: <8063260C-05C9-4997-B9B6-2135063C4858@doyensec.com>
-To: netdev@vger.kernel.org
-X-Mailer: Apple Mail (2.3826.700.81.1.4)
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 2/2] net/smc: do not dereference an unset send
+ buffer on the SMC-D teardown path
+To: hexlabsecurity@proton.me, Dust Li <dust.li@linux.alibaba.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Wenjia Zhang <wenjia@linux.ibm.com>,
+        "D. Wythe" <alibuda@linux.alibaba.com>,
+        Mahanta Jambigi <mjambigi@linux.ibm.com>,
+        Tony Lu
+ <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
+        Eric Dumazet <edumazet@google.com>
+Cc: linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
+        netdev@vger.kernel.org, Simon Horman <horms@kernel.org>,
+        linux-s390@vger.kernel.org
+References: <20260808-b4-disp-22f119e6-v2-0-61647601a6f3@proton.me>
+ <20260808-b4-disp-22f119e6-v2-2-61647601a6f3@proton.me>
+Content-Language: en-US
+From: Sidraya Jayagond <sidraya@linux.ibm.com>
+In-Reply-To: <20260808-b4-disp-22f119e6-v2-2-61647601a6f3@proton.me>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=RsP16imK c=1 sm=1 tr=0 ts=6a7d5a74 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=gtJVlIiFC0nkM8rK_MsA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: JyJy2-MNmNE5AK77qfuxE_C8m-eN9rTL
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEzMDAzNiBTYWx0ZWRfXxKIRWwFGxtb9
+ vowUq0V2DwrVN4P3N/LReb++avlKQYoeNDI/fs/2VIYTv51w0+2Yw9xVMI9cI942IDnxKQOmdwB
+ G/tCRqQA3ykTuowPh1+ysJCJE3D7elW5glEHCM/RjjXlSLoXf9ZXRYdajuYSY7W+QCwIqk6bEZo
+ CMhP13z3lUk6iCYd05wG+6q60oOi7uo+QrCCRNFKjuzQv/9YhmutI6X3xLpCRLCM1zDsaRoJWq3
+ ed5xVY0zlsiSceJ9VzoD2Vc4j2F6XnV1MEUAbmP7T0aGB26qLN2pFJSVlAILD+VRLOk11D7oqDJ
+ CJI1paOrLQBZoffCxZQmaRgXu/Qqmxcz9AHugFFIhFklxVLALJxX/+VHyb8BbyFW/u6YftbDhVw
+ J6crKWt0hcxPjrRZs99MDPuOFwcXQeibq4NoJPZGn9cmMD4305OLcKA+h39MFyyqbbprokbu7/1
+ T+5GkhIMknxZCvD8U6w==
+X-Proofpoint-ORIG-GUID: zq2tARgAA9sCWM6IEnURL76Va5V9Nk1v
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEzMDAzNiBTYWx0ZWRfXwqW4UgQnevbK
+ GO5XSBK+dSDpHFlUHNu9/y3XzRJuvVkBksfj5q3ZBjPKKfGHU8fvjCeqb9V+QwXOupJHhH7sdhy
+ mFL+rIWppEnu+BvgbpZkBSsULMNIDKU=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-13_01,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0 suspectscore=0 clxscore=1015 malwarescore=0
+ phishscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608130036
 
-queue_userspace_packet() borrows the packet skb -- it only copies it =
-into
-a private netlink message (user_skb) and does not own it; on return
-do_execute_actions() keeps forwarding it through the flow's remaining
-actions. Its error path nevertheless calls skb_tx_error(skb), which via
-skb_zcopy_clear() does skb_shinfo(skb)->flags &=3D ~SKBFL_ALL_ZEROCOPY,
-stripping SKBFL_SHARED_FRAG from that live skb (skb_tx_error()'s =
-kerneldoc
-says "skb must be freed afterwards").
 
-For a MSG_ZEROCOPY skb carrying page-cache frags, SKBFL_SHARED_FRAG is
-what makes esp_input() skb_cow_data() before in-place AEAD; once it is
-stripped a later local ESP-in-UDP delivery decrypts in place over pages
-the sender does not own -- an unprivileged page-cache write (the
-"Fragnesia" primitive).
-do_execute_actions() ignores output_userspace()'s return value, so any
-action after a failed USERSPACE upcall inherits the stripped skb.
 
-Move the skb_tx_error() to the flow-miss drop path - the "default"
-branch of ovs_dp_process_packet()'s switch(error), before kfree_skb().
+On 08/08/26 12:51 pm, Bryam Vargas via B4 Relay wrote:
+> From: Bryam Vargas <hexlabsecurity@proton.me>
+> 
+> smc_close_stream_wait() calls smc_tx_prepared_sends() from inside its
+> sk_wait_event() condition, and sk_wait_event() evaluates that condition
+> once with the socket lock released. smcd_buf_detach() clears
+> conn->sndbuf_desc from smc_conn_kill() under lock_sock(), so a link group
+> terminating while a socket waits there leaves the helper dereferencing
+> NULL, faulting out of close(). SIOCOUTQ reads the field by hand, and
+> smc_close_cancel_work() drops the lock across two cancel_*_sync() calls.
+> 
+> Sample the pointer once in the helper, report nothing prepared while it is
+> unset, and bound the ioctl the same way. The receive tasklet dereferences
+> the field directly in smc_cdc_msg_recv_action(), not through this helper;
+> 1/2 is what keeps it from running that late.
+> 
+> Fixes: ae2be35cbed2 ("net/smc: {at|de}tach sndbuf to peer DMB if supported")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
+> ---
+>  net/smc/af_smc.c | 3 ++-
+>  net/smc/smc_tx.h | 6 +++++-
+>  2 files changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+> index 00403175b740..cff910cedbfc 100644
+> --- a/net/smc/af_smc.c
+> +++ b/net/smc/af_smc.c
+> @@ -3233,7 +3233,8 @@ int smc_ioctl(struct socket *sock, unsigned int cmd,
+>  			return -EINVAL;
+>  		}
+>  		if (smc->sk.sk_state == SMC_INIT ||
+> -		    smc->sk.sk_state == SMC_CLOSED)
+> +		    smc->sk.sk_state == SMC_CLOSED ||
+> +		    !READ_ONCE(smc->conn.sndbuf_desc))
+>  			answ = 0;
+>  		else
+>  			answ = smc->conn.sndbuf_desc->len -
+> diff --git a/net/smc/smc_tx.h b/net/smc/smc_tx.h
+> index a59f370b8b43..610a945aefd6 100644
+> --- a/net/smc/smc_tx.h
+> +++ b/net/smc/smc_tx.h
+> @@ -20,11 +20,15 @@
+>  
+>  static inline int smc_tx_prepared_sends(struct smc_connection *conn)
+>  {
+> +	struct smc_buf_desc *sndbuf_desc = READ_ONCE(conn->sndbuf_desc);
+>  	union smc_host_cursor sent, prep;
+>  
+> +	if (!sndbuf_desc)
+> +		return 0;
+> +
+>  	smc_curs_copy(&sent, &conn->tx_curs_sent, conn);
+>  	smc_curs_copy(&prep, &conn->tx_curs_prep, conn);
+> -	return smc_curs_diff(conn->sndbuf_desc->len, &sent, &prep);
+> +	return smc_curs_diff(sndbuf_desc->len, &sent, &prep);
+>  }
+>  
+>  void smc_tx_pending(struct smc_connection *conn);
+> 
 
-The call has been here since commit 36d5fe6a0007 ("core, nfqueue,
-openvswitch: Orphan frags in skb_zerocopy and handle errors") but was
-harmless until esp_input() began relying on SKBFL_SHARED_FRAG to gate
-in-place decrypt; only then did stripping it on a still-forwarded skb
-become a page-cache write primitive.
-
-Fixes: 36d5fe6a0007 ("core, nfqueue, openvswitch: Orphan frags in =
-skb_zerocopy and handle errors")
-Fixes: f4c50a4034e6 ("xfrm: esp: avoid in-place decrypt on shared skb =
-frags")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Norbert Szetei <norbert@doyensec.com>
----
- net/openvswitch/datapath.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
-index ae69b2cabab9..fff75c3eed11 100644
---- a/net/openvswitch/datapath.c
-+++ b/net/openvswitch/datapath.c
-@@ -285,6 +285,7 @@ void ovs_dp_process_packet(struct sk_buff *skb, =
-struct sw_flow_key *key)
- 			consume_skb(skb);
- 			break;
- 		default:
-+			skb_tx_error(skb);
- 			kfree_skb(skb);
- 			break;
- 		}
-@@ -601,8 +602,6 @@ static int queue_userspace_packet(struct datapath =
-*dp, struct sk_buff *skb,
- 	err =3D genlmsg_unicast(ovs_dp_get_net(dp), user_skb, =
-upcall_info->portid);
- 	user_skb =3D NULL;
- out:
--	if (err)
--		skb_tx_error(skb);
- 	consume_skb(user_skb);
- 	consume_skb(nskb);
-=20
---=20
-2.55.0
-
+Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
