@@ -1,112 +1,284 @@
-Received: from szelinsky.de (szelinsky.de [85.214.127.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010E942885E;
-	Thu, 13 Aug 2026 20:07:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF553B9D84
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 20:11:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786651664; cv=none; b=Z7o/Uq9lSEP9Iv9XPeHegeaMgQwnnfQch0JB0oIqowf1x8vVXE22PSenVJ6djs0oA/f3WZnZHABMT+2xauMESTwW2JDLrkmEhPznKFMMjYPwgO75TPE6j1TX+sM3y0mpWWO1m8niIjFayqPRQh73aAgIP9H6KmYIj3PSGC6CRfc=
+	t=1786651864; cv=none; b=YAd8a7mxrSK85CdLzLCD3/vDGywhNBC3hy9SJPERa8r+pPuba1tW7y+TFxXVjtAqvJcb77k2/i/jjmEDoHluQue1FftaJLl9yPFHVkS2E56ad4ZuxbepJVeB73P9Qjvt9iSuE4+BxLsY7w9mr/tIJ7/aHRtDll7/H187v+Dz3Pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786651664; c=relaxed/simple;
-	bh=wbp9h6Y5pc52QtRNdeDBp+B/zauhDHGFiKaLuutiUP4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BSqlCD0cr4s7jw5GWsjh7A7oS4mKMXS/53I1r/HIurXSMipRZKYV1T54hC6a2CMn5rFTVU3u8MzunQt8mFM0IWRyPpJpixSSUyXRg3SdY2rNLk6HT51GbtyFEEeG4mVwwsQkIsWb7dLziFxIRlqL7dn7b9UQKta4zuM/3uZ01pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=UWeEOw3t; arc=none smtp.client-ip=85.214.127.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
+	s=arc-20240116; t=1786651864; c=relaxed/simple;
+	bh=K+Z9T3zHkFd/SQrQ/BlNEowcwkDGxESE+3CbL0x4RcE=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=Fbi/8cytpZ8U/WQ2mtYk2yyK6MJp10AIWDLBHh/PHywlMnl0jCK0y/cauJTWoN4EW4kXEUGcaAYbPAloVibz7mdYOu0AKJR0il65tVHNYleFokpy0WtMBgemYQMXOP9D+c3Isx9BpEHvLXwz7dFpxG4XfQ4Knv3158iXUT27Ges=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KWbXyDBP; arc=none smtp.client-ip=74.125.224.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="UWeEOw3t"
-Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id A425BE838AA;
-	Thu, 13 Aug 2026 22:07:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1786651660;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JzAAq1WSL4B2IHkIqrCExFbnnVrV58+QG9UkUyf/Foc=;
-	b=UWeEOw3tmyLK6gfROiozfwVZGo4UgWoEKIcujSuH97SzNmNY+g4Gh/Lj4l6ZbjvjK6Aj9X
-	pR7QCFNLWo5xPdFlwZJcfGMS1sKv8a7Rmjpb6HC93B/G4aIdiWkEXFhYRm1UYD9DNCGe+s
-	pN2qghoeALO70Q0tlh93bV2/8MWaDh/PabYJAV7gndDoItoY5V6xDjBAQtIdtWt8EVByhw
-	hsx48hXNltTSrvpymJeRACB02O3eMzll13Q9lHktAxYuijLHBFUxQBKH4Ci1NWifxjeu0m
-	NNUD0cMahCe7gtlSXibSHg+l3anO3aQtyznkpOgFI5jNm6JdCjFAXVqqFSOvww==
-X-Virus-Scanned: Debian amavis at szelinsky.de
-Received: from szelinsky.de ([127.0.0.1])
- by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id aInJslAs_sWf; Thu, 13 Aug 2026 22:07:40 +0200 (CEST)
-Received: from p14sgen5.. (163.6.106.80.static.otenet.gr [80.106.6.163])
-	by szelinsky.de (Postfix) with ESMTPSA;
-	Thu, 13 Aug 2026 22:07:39 +0200 (CEST)
-From: Carlo Szelinsky <github@szelinsky.de>
-To: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Jonas Jelonek <jelonek.jonas@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Carlo Szelinsky <github@szelinsky.de>
-Subject: [PATCH net v3 3/3] net: pse-pd: unregister from the controller list before freeing PI data
-Date: Thu, 13 Aug 2026 23:06:53 +0300
-Message-ID: <20260813200653.980170-4-github@szelinsky.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260813200653.980170-1-github@szelinsky.de>
-References: <20260813200653.980170-1-github@szelinsky.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KWbXyDBP"
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-66c70f05859so456106d50.1
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 13:11:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786651862; x=1787256662; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=HzUdcmkK3u9r+OT8mch+I5+qedGO9AbIMjInXn7gYYc=;
+        b=KWbXyDBP+KFTAOIdXfdO5PjaIXiGqWTybtTUxPCgMvuktCJ6NGO9IMznBloNmTEinb
+         wlHyMe/TgZ/XMJa7sAbmw72yAKkfInjvXNPOcViVvcgN5cQCmyLkZCvnL7sJWyC1nSQV
+         k4tcPmPsrWclIAX5eb5kOA25N7UkqxdMzKSteMWJuUs42hQ/yE86NuM+r6TuMrE05TQv
+         7Oyc6TGu9/1oh/htfJVStdjwV5xWg3ROsq+bX2kmxdEE4NBYGhw2tTve7RT/uV7XgETW
+         D6kzbNc66UIKybkPcxQlQ+jiGodjm9arF7FyrU0zgk3uXOaJ3aKS4PK/t6yJLi4DF5xz
+         ewkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786651862; x=1787256662;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HzUdcmkK3u9r+OT8mch+I5+qedGO9AbIMjInXn7gYYc=;
+        b=MXuucSvmScCMz4TEDojp+LzdqfWaTwR2og4rdU6wIHrlGLJdDk+0pxmeR42AP9FaVf
+         uEk//5/gGG6GXFI4w5JxB7AYfOpkx8zOFn02R//pLxibgmZOC3xFDzqnxdnfkk5jHwoF
+         jeCEYvXvgnrBWQYmJYT45KkDRQhq+1UZYi+lrzoY0/JJrNejkHr/WfCE3YIZHkXCAhBo
+         KqLiUfhxubeGkfd4J9CAMnZxvxYwyxy2V+aTLFinjT5rUnTxmAN+93AWDNEUMigwZxsI
+         0Zau/CCF+VTUQN5g08XboZzH2LuqBbp3GP6rlpv+CEoTX5kEt7hkWIcYANXTXHjA0hDN
+         q/qg==
+X-Forwarded-Encrypted: i=1; AHgh+RogHEo+YcONwhsRrD/BBmCARhf6+g2WF5cP9z5VkI6IRinGCYq6GtRHJeFzeZZf0dhY3AdbEnM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5l/liUIT66KiNl/HX2Pg7Q/LUyG++UdSWJOaQZejWy/Peg6Fx
+	+ppx2+nPggnIZF6vlPyKeucDy2UoDu2ZQeqSgSNRKpkdY0OI65R5bROH
+X-Gm-Gg: AR+sD10U00xI0J075tGlZAF3B6Tujt3TZhNmNPzu8pUQD6fHNgFrVmXDxnF+3BuhB3w
+	gYmP/DdZJiqjHKJvHmSrpN+0S0qDWxFtTm5K0b6v2DxqCTItXkXDW5DKic5ZIYmMzvHYO9I7N8x
+	F5oGqDueVpOVAdPq9mroBE9G+Y9Nhh8oPDDe3fxEbPFXLUS7pwRRdGoCuWm9ITOQ1x39o3S3RzH
+	TNCUsLl4+VQLCixfBWAq2ZXiKDuGFS2LR/V7MOo5oEzVOkvRs2TgsulQg4er/SgPStcMHl4w3Nh
+	ldVhgrQ+jMuLeBVq3lqkc2pzAXWRS8cLSN6Kbnu8Z/i3gK2BUjTtUdRc7bxMOE7jz64bvbdxhTG
+	5p9NlXYdQnzk8sEkk3wrSl6zrGxoEDAn1pJO3+PYDuRgw7qzjdvlqNwoUaDd37fJPBhmfPIW2K0
+	pf3mi9oQ5uCTUCXwn+R7Ic7BRbgJcc1MDO99xsne7fSUzb1KaBAdHY4t/Fwn9NxxyYFwLyA2A2W
+	4mxINR0NG8dwVNcmDh6crTpEx44xVfMNSUu8SA=
+X-Received: by 2002:a05:690e:164f:b0:667:bd83:909c with SMTP id 956f58d0204a3-66c72c794bemr393438d50.35.1786651861723;
+        Thu, 13 Aug 2026 13:11:01 -0700 (PDT)
+Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66c574aec25sm1322076d50.21.2026.08.13.13.11.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Aug 2026 13:11:00 -0700 (PDT)
+Date: Thu, 13 Aug 2026 16:11:00 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Alice Mikityanska <alice.kernel@fastmail.im>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ David Ahern <dsahern@kernel.org>, 
+ Ido Schimmel <idosch@nvidia.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>, 
+ Hannes Frederic Sowa <hannes@stressinduktion.org>, 
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+ netdev@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, 
+ Alice Mikityanska <alice@isovalent.com>, 
+ syzbot+ce13c07d96d04716eaa2@syzkaller.appspotmail.com
+Message-ID: <willemdebruijn.kernel.f41e3c8f9a9e@gmail.com>
+In-Reply-To: <20260813120351.2807829-2-alice.kernel@fastmail.im>
+References: <20260813120351.2807829-1-alice.kernel@fastmail.im>
+ <20260813120351.2807829-2-alice.kernel@fastmail.im>
+Subject: Re: [PATCH net v2 1/2] net: Fix UDP length overflow with PMTU
+ discover and big MTU
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-pse_controller_unregister() frees the PI array with pse_release_pis()
-while the controller is still linked on pse_controller_list, and only
-removes it from the list afterwards. A concurrent consumer probe running
-of_pse_control_get() walks that list under pse_list_mutex and calls
-of_pse_match_pi(), which dereferences pcdev->pi[i].np. If the walk lands
-on a controller that is being torn down, it reads the freed (with the
-previous patch, NULLed) PI array.
+Alice Mikityanska wrote:
+> From: Alice Mikityanska <alice@isovalent.com>
+> 
+> This commit bounds cork->base.fragsize to IP(6)_MAX_MTU to avoid a
+> possible overflow of UDP length that triggers a WARN in
+> udp_set_len_short when setsockopt IP(V6)_MTU_DISCOVER is set to
+> IPV6_PMTUDISC_DO or IP(V6)_PMTUDISC_PROBE, and a large packet is sent
+> over a netdev with an unusually large MTU.
+> 
+> Steps to reproduce (included in the new selftest):
+> 
+> 1. Set device MTU bigger than IP6_MAX_MTU (or IP_MAX_MTU + 20).
+>    cork->base.fragsize will be set to that MTU in ip(6)_setup_cork.
+> 2. Set IP(V6)_MTU_DISCOVER to IP(V6)_PMTUDISC_PROBE or IPV6_PMTUDISC_DO.
+>    It lets maxnonfragsize be set to device MTU (cork->fragsize) in
+>    __ip(6)_append_data, rather than to IP(6)_MAX_MTU.
+> 3. Send 65528 bytes of payload (+8 bytes of UDP header, +20/40 bytes of
+>    IPv4/IPv6 header). Device MTU allows it (it's only one byte bigger
+>    than IP6_MAX_MTU or IP_MAX_MTU + IPv4 header, and the device MTU is
+>    bigger than that).
+> 4. The UDP length in the built packet is 65536, which overflows the
+>    16-bit length field and triggers the WARN in udp_set_len_short.
+> 
+> Note: IP_PMTUDISC_DO with IPv4 is safe, because ip_dst_mtu_maybe_forward
+> always clamps at IP_MAX_MTU, unlike ip6_dst_mtu_maybe_forward.
+> 
+> The Fixes tag points at the first commit where I could reproduce the
+> overflow with IPv4 and IP_PMTUDISC_PROBE.
+> 
+> Fixes: daba287b299e ("ipv4: fix DO and PROBE pmtu mode regarding local fragmentation with UFO/CORK")
+> Reported-by: syzbot+ce13c07d96d04716eaa2@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/netdev/6a6a966c.86abc875.e5c3d.0054.GAE@google.com/
+> Signed-off-by: Alice Mikityanska <alice@isovalent.com>
+> Assisted-by: Claude:claude-sonnet-4.6
+> Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 
-Move the list_del() ahead of pse_release_pis(). Both the lookup and the
-removal serialise on pse_list_mutex, so once the controller is unlinked
-no new lookup can reach it, and any lookup already in progress holds the
-mutex and has matched against a live pi before the free can run. No NULL
-checks are needed on the lookup path.
+Not sure whether IPv4 and IPv6 should be separate patches.
+IPv6 will have a different Fixes tag.
 
-Fixes: 9be9567a7c59 ("net: pse-pd: Add support for PSE PIs")
-Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
----
- drivers/net/pse-pd/pse_core.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+Per maintainer-netdev.rst, mixing code and test changes in the same
+patch is also discouraged.
 
-diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-index 21ccb5146616..2a9a07dc8c48 100644
---- a/drivers/net/pse-pd/pse_core.c
-+++ b/drivers/net/pse-pd/pse_core.c
-@@ -1143,11 +1143,15 @@ void pse_controller_unregister(struct pse_controller_dev *pcdev)
- 		disable_irq(pcdev->irq);
- 	cancel_work_sync(&pcdev->ntf_work);
- 	pse_flush_pw_ds(pcdev);
--	pse_release_pis(pcdev);
--	kfifo_free(&pcdev->ntf_fifo);
-+	/* Unlink before freeing pcdev->pi: of_pse_control_get() walks the
-+	 * list under pse_list_mutex and dereferences pcdev->pi[] via
-+	 * of_pse_match_pi(), so a lookup must never reach a freed array.
-+	 */
- 	mutex_lock(&pse_list_mutex);
- 	list_del(&pcdev->list);
- 	mutex_unlock(&pse_list_mutex);
-+	pse_release_pis(pcdev);
-+	kfifo_free(&pcdev->ntf_fifo);
- }
- EXPORT_SYMBOL_GPL(pse_controller_unregister);
- 
--- 
-2.43.0
+> ---
+>  net/ipv4/ip_output.c                         |  2 +
+>  net/ipv6/ip6_output.c                        |  2 +-
+>  tools/testing/selftests/net/Makefile         |  1 +
+>  tools/testing/selftests/net/cork_fragsize.py | 77 ++++++++++++++++++++
+>  4 files changed, 81 insertions(+), 1 deletion(-)
+>  create mode 100755 tools/testing/selftests/net/cork_fragsize.py
+> 
+> diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+> index e6dd1e5b8c32..2bc997c4fa7b 100644
+> --- a/net/ipv4/ip_output.c
+> +++ b/net/ipv4/ip_output.c
+> @@ -1299,6 +1299,8 @@ static int ip_setup_cork(struct sock *sk, struct inet_cork *cork,
+>  
+>  	cork->fragsize = ip_sk_use_pmtu(sk) ?
+>  			 dst4_mtu(&rt->dst) : READ_ONCE(rt->dst.dev->mtu);
+> +	if (cork->fragsize > IP_MAX_MTU)
+> +		cork->fragsize = IP_MAX_MTU;
+
+if respinning: use min(), like IPv6? It's even more concise and easier to read.
+
+>  
+>  	if (!inetdev_valid_mtu(cork->fragsize))
+>  		return -ENETUNREACH;
+> diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+> index 2c44e5ed6171..81fb61b94759 100644
+> --- a/net/ipv6/ip6_output.c
+> +++ b/net/ipv6/ip6_output.c
+> @@ -1430,7 +1430,7 @@ static int ip6_setup_cork(struct sock *sk, struct inet_cork_full *cork,
+>  	if (frag_size && frag_size < mtu)
+>  		mtu = frag_size;
+>  
+> -	cork->base.fragsize = mtu;
+> +	cork->base.fragsize = min(mtu, IP6_MAX_MTU);
+
+Not sure whether a limitation that we seriously have to care about, but:
+
+This restricts all IPv6 protocols, while only UDP has the length field
+limitation.
+
+With IPv6 jumbo frames and RAW sockets, could there be a valid case
+for larger fragsize?
+
+>  	cork->base.gso_size = ipc6->gso_size;
+>  	cork->base.tx_flags = 0;
+>  	cork->base.mark = ipc6->sockc.mark;
+> diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
+> index 708d960ae07d..82a1407f6a69 100644
+> --- a/tools/testing/selftests/net/Makefile
+> +++ b/tools/testing/selftests/net/Makefile
+> @@ -24,6 +24,7 @@ TEST_PROGS := \
+>  	cmsg_so_mark.sh \
+>  	cmsg_so_priority.sh \
+>  	cmsg_time.sh \
+> +	cork_fragsize.py \
+>  	double_udp_encap.sh \
+>  	drop_monitor_tests.sh \
+>  	ecmp_rehash.sh \
+> diff --git a/tools/testing/selftests/net/cork_fragsize.py b/tools/testing/selftests/net/cork_fragsize.py
+> new file mode 100755
+> index 000000000000..7a1bb069227a
+> --- /dev/null
+> +++ b/tools/testing/selftests/net/cork_fragsize.py
+> @@ -0,0 +1,77 @@
+> +#!/usr/bin/env python3
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +# Test possible UDP length overflow in udp_send_skb/udp_v6_send_skb.
+> +
+> +from lib.py import ksft_run, ksft_exit, ksft_true
+> +from lib.py import ip, NetNS, NetNSEnter
+> +import errno
+> +import socket
+> +import subprocess
+> +
+> +
+> +IP_MTU_DISCOVER = 10
+> +IP_PMTUDISC_PROBE = 3
+> +IPV6_MTU_DISCOVER = 23
+> +IPV6_PMTUDISC_DO = 2
+> +
+> +
+> +def check_dmesg_clean(func) -> bool:
+> +    dmesg = subprocess.Popen(['dmesg'], stdout=subprocess.PIPE)
+> +    result = subprocess.run(['grep', '-q', f'WARNING:.*{func}'], stdin=dmesg.stdout)
+> +    dmesg.wait()
+> +    return result.returncode != 0 and dmesg.returncode == 0
+> +
+> +
+> +def test_ipv6() -> None:
+> +    with NetNS() as ns:
+> +        ip('link add dummy type dummy', ns=ns)
+> +        ip('link set dummy mtu 65576', ns=ns)
+> +        ip('link set dummy up', ns=ns)
+> +        ip('-6 addr add fd00::1/64 dev dummy nodad', ns=ns)
+> +        ip('-6 neigh add fd00::2 lladdr 02:00:00:00:00:02 dev dummy nud permanent', ns=ns)
+> +
+> +        with NetNSEnter(ns):
+> +            with socket.socket(socket.AF_INET6, socket.SOCK_DGRAM) as fd:
+> +                fd.setsockopt(socket.IPPROTO_IPV6, IPV6_MTU_DISCOVER, IPV6_PMTUDISC_DO)
+> +                try:
+> +                    fd.sendto(b' ' * 65528, ('fd00::2', 1234))
+> +                except OSError as e:
+> +                    # Ignore EMSGSIZE: it happens on kernels with the fix.
+> +                    if e.errno != errno.EMSGSIZE:
+> +                        raise
+> +
+> +        ip('link del dummy', ns=ns)
+> +
+> +    ksft_true(check_dmesg_clean('udp_v6_send_skb'), 'WARNING detected in dmesg')
+> +
+> +
+> +def test_ipv4() -> None:
+> +    with NetNS() as ns:
+> +        ip('link add dummy type dummy', ns=ns)
+> +        ip('link set dummy mtu 65556', ns=ns)
+> +        ip('link set dummy up', ns=ns)
+> +        ip('addr add 10.0.0.1/24 dev dummy', ns=ns)
+> +        ip('neigh add 10.0.0.2 lladdr 02:00:00:00:00:02 dev dummy nud permanent', ns=ns)
+> +
+> +        with NetNSEnter(ns):
+> +            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as fd:
+> +                fd.setsockopt(socket.IPPROTO_IP, IP_MTU_DISCOVER, IP_PMTUDISC_PROBE)
+> +                try:
+> +                    fd.sendto(b' ' * 65528, ('10.0.0.2', 1234))
+> +                except OSError as e:
+> +                    # Ignore EMSGSIZE: the check happens after the WARN is printed.
+> +                    if e.errno != errno.EMSGSIZE:
+> +                        raise
+> +
+> +        ip('link del dummy', ns=ns)
+> +
+> +    ksft_true(check_dmesg_clean('udp_send_skb'), 'WARNING detected in dmesg')
+> +
+> +
+> +if __name__ == "__main__":
+> +    ksft_run([
+> +        test_ipv6,
+> +        test_ipv4,
+> +    ])
+> +    ksft_exit()
+> -- 
+> 2.55.0
+> 
+
 
