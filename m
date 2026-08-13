@@ -1,94 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D06F380FEC;
-	Thu, 13 Aug 2026 16:49:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786639784; cv=none; b=rPCxg2dr8kkUGZDLzOBxEBEY+/iRx3IviwGaPx8+Hnfmtd2gSxhDiabFyYWQ85fCtpE9lFMyVAt6okU2m/oQzpshOwYv/lWJ3cgdHkSzFRjUarzigBYDkfbTBkVm/+T7cL060evXxWaIDfCOdDcN8NNR6wumNYQCveZSgME68oo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786639784; c=relaxed/simple;
-	bh=lBoN8LZr7USo6wsCmncxwNdxRlJ/IqqsuOKtiqx1pQQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AjJOVkertuBgxOb6pLSPK2c1YtRJC6ttecTaCVnVX9CE6w3t96uByDcILWaXV/e3Y8djrqrH5gVF98Z3Ly2rNRkX7G5sTmyaRkUslfn9qrjxUWRR6mOiC9qmD83ezbgqstXmyshRtWL66Ed2Xnug6J5RI1DKJGH7c4T+1PSt/CQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GRSGVXHq; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C774921BC
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 16:59:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786640383; cv=pass; b=ta2rpfTZ3ru0H/5OGHKcP//ZgFqWwvQ6WlX4W0k6RFJjPkesHJiP87aUwKupy9lOowCAM9TBQh0pM9yYXps5I+VCQB1bSddrucU6I3xfaqjW88J2BXgptweUieUTIIAxt4TDVwSnb4enG6vPUSdOmSCaSYBovTs6tk2W2kGkj6o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786640383; c=relaxed/simple;
+	bh=xoBdWEtJTPlDLVyNbMab7t+/J7TUwi1z7zZtLQ6klVM=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=TQIHGXSF0Xu9KIlu3q3OQUMoTUZcz6DxAwhfSMhY28Xp6xN8QCFSWUVtBpE1p//2QTxAVdstkpgKVyYZC42pP+Qcv/TLVRwzHVMVyUG5+WzzDMp9SDgjoj6Tr9LjqCMOJfD+R+dO3DNihzBuZDj+LgMOqp0F7oiA3yW8uGNKcQo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Eoe0mBVp; arc=pass smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GRSGVXHq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AAA1F000E9;
-	Thu, 13 Aug 2026 16:49:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786639783;
-	bh=2i7/Mi/2ScY3ECi/mayRtWV4BESZL62I9XwQ0I+ivFg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GRSGVXHqds/t3EhBOJk6qaNKzeiOgS4+50Q2tm6ausN88Q5l6JmJ7qyAYfu7opuvA
-	 QCwhzeabiExWNdVPr95cnbtf8HyuH9GlZ7Mgktht4xegPAfpKNxZ9RL8NS6lKvS5vB
-	 6VohVgOAYAUe9aHz6vw9Lec8CUjYgyD7a5NNCCUZ+d7/FVh7UJTeTqzTOUPjF09oru
-	 pn0k2QbODcF116bXa2WAylIZXs8m9/sCvXa6TkDJZVKA9YUViTRO/2Hro7q+Zcph3P
-	 Jz8EBoAbApB/htOdjUVfzD7x9g8VrvgXfDqpi615fIREhV2MzRuhqCaOg9fUjbvg0q
-	 eMkVXCAqv9vVw==
-Date: Thu, 13 Aug 2026 09:49:43 -0700
-From: Kees Cook <kees@kernel.org>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: linux-atm-general@lists.sourceforge.net, linux-can@vger.kernel.org,
-	linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Remi Denis-Courmont <courmisch@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>, Petr Mladek <pmladek@suse.com>,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
-Subject: Re: [PATCH net-next v3] net: Replace %pK output with 0
-Message-ID: <202608130949.A391CBF6@keescook>
-References: <20260812110531.ITPqiY2O@linutronix.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Eoe0mBVp"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ce87c7e3bbso2053475ad.1
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 09:59:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786640382; cv=none;
+        d=google.com; s=arc-20260327;
+        b=USEI0W/mVLIr4iY9YrjEP6r0VFQo+Nk2XBqYImKpAoruDQ79IkAr9ojqHOT5HFJ+67
+         Cg5FQN/dxzrdsNyWl/5wDvuHl8WMmLg4IiM+KYr1pkClJ31n4UzABod6D04YEfQvKNmI
+         2G5D5LZOAVQGJPWxRNW05L1qtSRvUKjdiqH+srP//fahDWwOcSAWyU6uWvmyzNtWCUul
+         TxFRcylpW6XBRhWqH/X7wdROh9gPG9EZAJwSDq81EBm+rG9PBCUXe2pF9qJOOirVNUG+
+         P6EK9DoXATmfpgspmdK/CGsA/MR5He0CfUklu31e/3Uf022kRkLCiDhVYqa6lR+6Y69m
+         99Cw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=5PCXtpD2RlzIqld0EEK6YS2HyVzJj+XySKEtASyVQ20=;
+        fh=XtWWfWhnJU/p0luRkrXchL70fU7t0u2V5qIIFNsAXlU=;
+        b=CbNGFllimijcveVPHja8gXcaXdKryXLvhiaaRhLBNet2VVHou5VJ3PBZ3QjPEDgqoi
+         dKbh9hRtL4vkDTthWgODWuQCHv3LMxE+ViZbB3CsYYuTFDOtYMVbxaV2NvCaQB/7Af/o
+         ASkJPvUEancLlO/enRezldnwwFcYvkFZOkwWA+nFGIzgHDCQ1P0b3JbfzdrjepmxBgSo
+         p2ZxeyZz/CxmjSZgdYZub+F/PvUoJ3zNVw3OAbVX9LQH2gNLkwAj7mWfRBnfCAuoMB6P
+         iUrEldjSB/Uu7agjvTwDYbwGAvjP6Phbg2A3cwv9ZGD1U3eyCZmkTEw0viBMcfjclr2R
+         ZUZA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786640382; x=1787245182; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5PCXtpD2RlzIqld0EEK6YS2HyVzJj+XySKEtASyVQ20=;
+        b=Eoe0mBVpeSDdi7T3XLAxzyHYM/od6gilK0FfqVVaQnZJYb6FAffj76MwK44CEVzxo2
+         lXpLCcfWLZ8F4f6y7n9iprcEXpf/LB/QinAUhfqR85T/QRXVJw1zfPbfA213B4qaLDYp
+         atlsAA3O4a09qU+CdwO0K84bocjkDq/yaCphvjK/i9Lm2miLaRe3Ms3JgWyx3fyTMYZY
+         G8l+iTgvoJcNCBROZuHQp6E+SHjZpCP37JK8UdS4tVmvPl3nhciAGcSLLMV3Em4vNSGf
+         gsekNTEOAczWdL16NLWztGmQ4GbXSqn9UvXhmLELIa905JDObZu1vX4pO6TOTFFZLVKN
+         66iw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786640382; x=1787245182;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=5PCXtpD2RlzIqld0EEK6YS2HyVzJj+XySKEtASyVQ20=;
+        b=DoYuWtn0tQT8Oadz6V9Ysti3+e2N/w4vbcs8G993o01+XNdOmJMPj5T3+qBTvAIVDP
+         y6I0z9ro8V5cFE+31P+v2Asy5ktpdrxglBQnl4pGbAtOI6YYCtlzXovjPMWxL46hTghZ
+         3x6+3110AAHTWdSeyaK1CuCtg0bxZCZEYk+mvwYrt2ZfoCWgJyeTB4LWSO7FMCzgJuYx
+         YuNFPDf8a5jg4HS2PsSGnYMpxGRemLxdAoAalxhmF0xZThU6SrlvYXtdPrXKZQRV4Ev8
+         txSCu7JpHCrPz48HsFeuFMW4uUMEwmcc2U0+5gRKpn17Rd0GThJxTf433menq3SH1HqU
+         NnEQ==
+X-Gm-Message-State: AOJu0YyNZz9UHs19WgZzoZbqzPWCa0w0FMJyTxbF7gwLQJeFwT+Pm2CB
+	Z5H2LzkbosnRFWNcdd5Ck4umUas6SjYzUWtaiOVZMG7nXfl7QrDMH8apJkz8swmweNN7wUPU8wF
+	hWK88aAifPSG/esHe4t96+709pt2AOrM=
+X-Gm-Gg: AR+sD13JmGVxYMv1Y3EAZnEZmWGOuW3nClHghAFYKN6/QO0+DycUAb3560fR0cotz31
+	sZCXPsZ2lYbb9QrLtBCpNvrHL0yYA0Ez1Uniz7RjOG8gQauWp7DveLsOpwxAxtEzPTRjSZD8WvX
+	wxHEf0mbMIHdLCqUmwOltdSZRr8OSZSUpGv9V9ViMObS8+6pvMCtNSxoAU9vmOzaSGjEKhZlAgf
+	nfjhogl7fwMzQF3GPjn9Aw7GsMfxMIivwUyLHsF7LQNGQkCQQ4Anw9gMKyztWzfD+fwfsNrDgP+
+	fy+0u+Kg7AmTY86IyS5+pYE5KJiPHCTOoTeHS1PJ30ccOUkzWo2stx4y4N1rZfEQwYM7TGKDh/p
+	xs31IFyKY4Gf7Eah52OiVfX1diwkeJd2wSw==
+X-Received: by 2002:a17:903:40d1:b0:2ca:304:f93e with SMTP id
+ d9443c01a7336-2d37ebc2df5mr97346755ad.22.1786640381605; Thu, 13 Aug 2026
+ 09:59:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260812110531.ITPqiY2O@linutronix.de>
+From: Joas Antonio <joasantonio108@gmail.com>
+Date: Thu, 13 Aug 2026 13:59:30 -0300
+X-Gm-Features: AUfX_mwucnYyIHD3IqRl-RHeVt6sDZhmNV6nBBs18XEE_p_RDm2X2qFPzlzle-s
+Message-ID: <CAOCBhwHbcnuzP1fz=JLqeRA0xNU=QdqppeRy2y=wqhJR6k_VRQ@mail.gmail.com>
+Subject: [PATCH] ipvs: fix integer overflow in ftp helper port/address parsing
+To: horms@verge.net.au, ja@ssi.bg, pablo@netfilter.org, fw@strlen.de
+Cc: netdev@vger.kernel.org, lvs-devel@vger.kernel.org, 
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Aug 12, 2026 at 01:05:31PM +0200, Sebastian Andrzej Siewior wrote:
-> Commit 71338aa7d050c ("net: convert %p usage to %pK") which is from
-> 2011 and changed the %p annotation for pointer to %pK. Back then the
-> default behaviour for %p was to print the pointer. The %pK modifier was
-> introduced to able to control the behaviour of specific pointer values
-> without changing the behaviour of %p for everyone. It was dedicated to
-> avoid leaking pointers via /proc.
-> 
-> There was also the idea to remove the check from formatting the string
-> and move to the open callback with some helpers but this did not happen.
-> 
-> Things changed over time. The default behaviour for %p is now to print a
-> hash pointer which does not leak the address but allows to correlate if
-> two pointers are equal.
-> The policy on %p is to not introduce new ones. This is somehow in
-> between since it already exists. The pointer are usually socket pointers
-> and I don't see any value in exposing them. Therefore I am following the
-> recommendation of removing them. Since their usage in /proc/ can be
-> considered ABI I replace the pointer with a 0.
-> 
-> Replace the %pK annotation with 0 value. Correct the spacing for the
-> cases where pointer is at the beginning. Use %ps in CAN where the read
-> callback is used.
-> 
-> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+ip_vs_ftp_get_addrport() accumulates decimal digits into a __u16
+(hport) and into unsigned char (p[]) without checking for overflow.
+A crafted FTP PASV/EPSV response with an over-long port or address
+octet wraps the value, so the helper configures the data connection
+with a truncated port/address.
 
-I love this kind of replacement. :)
+The netfilter conntrack FTP helper had the same defect, fixed in
+commit 2b413fc689ba ("netfilter: nf_conntrack_ftp: avoid u16
+overflows"). Apply the equivalent fix here: widen the port accumulator
+to u32 and reject values above 65535, and reject address octets above
+255.
 
-Reviewed-by: Kees Cook <kees@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: CyberSecurityUP <joasantonio108@gmail.com>
+---
+ net/netfilter/ipvs/ip_vs_ftp.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
--- 
-Kees Cook
+diff --git a/net/netfilter/ipvs/ip_vs_ftp.c b/net/netfilter/ipvs/ip_vs_ftp.c
+index b315c608f..9e3e005a8 100644
+--- a/net/netfilter/ipvs/ip_vs_ftp.c
++++ b/net/netfilter/ipvs/ip_vs_ftp.c
+@@ -102,7 +102,7 @@ static int ip_vs_ftp_get_addrport(char *data, char
+*data_limit,
+  char *s, c;
+  unsigned char p[6];
+  char edelim;
+- __u16 hport;
++ __u32 hport;
+  int i = 0;
+
+  if (data_limit - data < plen) {
+@@ -144,7 +144,11 @@ static int ip_vs_ftp_get_addrport(char *data,
+char *data_limit,
+  return -1;
+  c = *data;
+  if (isdigit(c)) {
+- p[i] = p[i]*10 + c - '0';
++ unsigned int val = p[i] * 10 + c - '0';
++
++ if (val > 255)
++ return -1;
++ p[i] = val;
+  } else if (c == ',' && i < 5) {
+  i++;
+  p[i] = 0;
+@@ -222,6 +226,8 @@ static int ip_vs_ftp_get_addrport(char *data, char
+*data_limit,
+  if (!isdigit(*s))
+  break;
+  hport = hport * 10 + *s - '0';
++ if (hport > 65535)
++ return -1;
+  }
+  if (s == data_limit || !hport || *s != edelim)
+  return -1;
+--
+2.39.5 (Apple Git-154)
