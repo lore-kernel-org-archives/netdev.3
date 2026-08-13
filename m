@@ -1,132 +1,122 @@
-Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64361366042;
-	Thu, 13 Aug 2026 12:04:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786622683; cv=none; b=aENjXF0F3rkNBjuKKtn4ZlDyMXJXZc6qXBW/HdEaLe+dAA5XdoZ2WCcG2n+IIMRL2BzoeWGV6IkvZGu6s20EowSZT9CiizaMphj/5MZkd/Q0SMRnVQvtloGD1GCk2lTd3wzcV5q7GJAg9Bq8mI8MMmkWc9qWFE9/NyujiM2YLwk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786622683; c=relaxed/simple;
-	bh=+2bb1DEpsXOX5tNT+KJy5YjEo5qzpLPzb7BZHVBxkew=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G103mqgMvkKmwbKSOs3AlCYBnn4L4rtc3E7lNJWAWDpWxk39sVUiksd6iNj7kfJGZAAPvEGXhgq1k2ENqdEO8PMzySh94v+0x6t17rC8F46YDlN0T4dzZJDkKVjIXgtL8naNMUyP/X+rwhaFsg6yak1rDKjXr5Ert6r86hwIXG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=kIGNoZ9X; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=URdRJ84v; arc=none smtp.client-ip=202.12.124.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C4F3C5526;
+	Thu, 13 Aug 2026 12:04:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786622694; cv=pass; b=NM/JAIl3tddkR6vIt8e+CV2bN/8KsP3ryb+oCum0uE++9Bssm0YUDyJZ6BHJd93QlPP/n0xDVDscT9Ad0MqrQnR2OtZKAqUR9PqkNnSiZuHYK7TedOmAG2J75RydYXI9E2wpaEBLMAqTfFAbONd5mVpr7+Oks/bgOejiqRjN4Jk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786622694; c=relaxed/simple;
+	bh=+2IVcWkaY7KyMY/HLdEH7iCFCQtG4yKe5HjwWsqj6a0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qoQUC3ow5YOh3afLL82sCJj3ng1YTVKPWmnLhbGb9ND/8c8eP0+HX5bAE3cfZN9Zrub2U9Rrl0JPWupVh6rO83BmH7rjaIOxNEZASSsMZ7xYj4bnF6TP0sIdJqwkiTB6wFu86YRouk+tKk5A5i9IIO00L+FsPZTwO24Ja7HBaOk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=fail smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=qqr0LTp4; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=6wvpP7Am; arc=pass smtp.client-ip=85.215.255.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="kIGNoZ9X";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="URdRJ84v"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 684C97A00B7;
-	Thu, 13 Aug 2026 08:04:41 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Thu, 13 Aug 2026 08:04:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1786622681; x=
-	1786709081; bh=2TWS1+3v0QVto2rW8iK5a/xf/uV/OD+QdkwvW7tv00I=; b=k
-	IGNoZ9XX61NWYyWyAk8JdlTtCAvTM3Ueh2Z8yVID43WcC4C1JXYJmkmzD57wjLUM
-	Gh2GslF7O6zy3DSK2/jyBOhrUsqWvMGdlLiIO5co5LJFCfpzgBGTicjhRVrAVyzr
-	76vwRiCKtcseUVTENcqQ2tMO4xUYwbuYfb2JxgOIwGEkj3WU4qEjsaAyrUbSicU1
-	gk7hdVAznxYZjTVQX7wIvwT8crdHztmCo670io3qunpovbfcvJnL5LJzoF2R0GNa
-	ELGohSgbEJDfKnuLYVyHRgBrLs8uvSHnQZJnlTSSk0YLRkWgOhyA/0sqOhU/RvuI
-	b7XZuJtBOssujhf/dOjkA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1786622681; x=1786709081; bh=2
-	TWS1+3v0QVto2rW8iK5a/xf/uV/OD+QdkwvW7tv00I=; b=URdRJ84v90/hCzib3
-	EJALYQU5ns0RVBU/uSErY4zdur/2T8jwrwPtJolDDbRJa7Gwhk7ZlnOpimUuLdxa
-	i/4CWIu2Va6rO0C4NkyECJc9jcbhjT+Ii3CgzIjWv/FZelaZ8o8g6LakR8rXT7VH
-	Kr0ifzNjKLSbVZcKqJE0Ev2ibK5L3nKaOSPGBbSzeGypSRPddLbg1e/S1QsCp1tQ
-	cd/302gfSG++2MFvhjJlZszXJOQaCE243BsBELyj6rzqTlkRrHFt6T0ljVP9mYVZ
-	Jt8jXhQdD9GpYFpsbZJfBlLxn6irIw6zY7xWkMSZaUCRUOJSYvQtN8qX1MnLVIQC
-	YqRyA==
-X-ME-Sender: <xms:2bJ9as4U8pUXLBnDaQWe2s8btLBLX0-fy7Lpur0twREPrad8M809rw>
-    <xme:2bJ9ajE3LFldu6X5HuZTFy9xHE_5L13bq6yW8M4nJ2t9ZcecjJWmxOFbXh-dZopji
-    L2IIE4TTIHAhMbv7TSKZxQHscbYoTP2rN_B2kiDBBjgPyN0sgcoPRA>
-X-ME-Received: <xmr:2bJ9au0NADCYoS2vQTltru3kmW63ObX05tiCsfFlEinuD8YQonfZ8ZHD8xY>
-X-ME-Proxy-Cause: dmFkZTFXLItT+q8IbL6YV+xEy528T+8x4hka0zrMSCPitpBhuqC7Cgtig6s3qRJm6tiA60
-    wqlrRLUHwUl4AHrjyQMwTFw1XmWqrIRr+P7Bucrsnih5NwjX55Z/WkLCLCwyVU2+hCe6R9
-    9tQdgesWvIul4ph+Pl4lWAGBYXiVNOeEL2HhaoIPRCbS5P0ZLJSeOEawJ4rt+TzClXeNoB
-    YqJ+I5O6xFuSWXF2/yFycbsWwmR4+wmgeiDzky/gIyHMcmjc9QbmC5sVWZz7wP8B0315sD
-    lH+tIMhpMibJZJoj3Kgz9ge5wlTzh2lVtrvecEp2ML9zc+qGYyhyWM7Pdv6n4rFC4Pvbbg
-    1ecN0Wdxtr66H/RcFPmbcfbySCKcsmhqYu+85il8znvZ5DSvkcwRxNGfZt2r1m/95Wk+I3
-    KgUgmzFPKXiK847wECg9/e6FnAHipCd1J8do/rKxbHUgGA9/I3O5f1/xFKLIpW68o9bOmo
-    4bc186x4oQK2gVPTPUb6GYThWcp0PyQCgFUGr8f/5yOoDQ9XLxk8tgV9F0q8uu2d2crQOP
-    s36TbmvRVZMQyKtMK0bujXli9KM/+c15BHgEy8Q9NHJmeduAhWmaG+6bk3HySwAuTp0cms
-    AFdiYR3T3j2gHoYg2JHqkxkbabQ2whC8T1/aFIBbZGceMNHlztSU6m2G8cgg
-X-ME-Proxy: <xmx:2bJ9agobI3fC6Gkvds4WSTXaQCwhtZYDzXp6OiogabC-EBgGhiiPWw>
-    <xmx:2bJ9arMS8b-kYplAeuwBpQM9aRHsr2VCXvv_K1OgtG1pCWnGw9GFtQ>
-    <xmx:2bJ9aiVIVghfQLJwNWLRpV8i7LZnYlF8clY6OCPKX7iry5OoA82Tkw>
-    <xmx:2bJ9auuGZewN3fFuj4Ox-dZp4jQQa5ZY0cOs8VP_Y2DYKEt_6SA3uA>
-    <xmx:2bJ9aqydCdPl_OUVVaMHbknAOJs5nrilWKhTgsVh0N3-PLgufB75V6Cv>
-Feedback-ID: i559e4809:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 13 Aug 2026 08:04:39 -0400 (EDT)
-From: Alice Mikityanska <alice.kernel@fastmail.im>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Hannes Frederic Sowa <hannes@stressinduktion.org>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Alice Mikityanska <alice@isovalent.com>
-Subject: [PATCH net v2 2/2] net: ipv6: Clamp to IP6_MAX_MTU in ip6_dst_mtu_maybe_forward
-Date: Thu, 13 Aug 2026 15:03:51 +0300
-Message-ID: <20260813120351.2807829-3-alice.kernel@fastmail.im>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260813120351.2807829-1-alice.kernel@fastmail.im>
-References: <20260813120351.2807829-1-alice.kernel@fastmail.im>
+	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="qqr0LTp4";
+	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="6wvpP7Am"
+ARC-Seal: i=1; a=rsa-sha256; t=1786622502; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=XSnZukvFOEpILOciXBBByilFT/bpjnSXsAk3xP5z2X0LFtW08scjx/nFTk/0Qw7msJ
+    8i8qQYhjC1SnCDidPMldHBZ0ieBPPzFJOn6sQnAz0urCPZ6oWH+LYjJxoZ0BOSNDz/SM
+    Bf1ZTwU57fDbKqQX6Jzve5F9DNtqy2CVY3IJqHak9kOYujtQAjHAKNZoUzwZ3t5x9BCV
+    GAF6C4bMhUJEGZvodOtcqguCr6QpNu5JzyKzQ4nOAqMCpEsxDgVVrW6oj6HtMDlcCY6t
+    wuziFdCzzYXlKnqqaboopfcj103Di0KvIvD04QikX//MRaJf6z9/dDjs5Vu0pAWugU8a
+    6Okg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1786622502;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=RTcVkqtj+ZzuKqkzflCf0W648zoY7byAeauUzQlxVrk=;
+    b=M816gMw4e/AzVczHRgaAX7owPIZZSjXxHkUHu02HjYGvoC/0xQ3tSayg+pQFKpQcal
+    +bpxXvdTw5VKB2o1AT0Q7W3Fhts8wpE4HJUidT17cW/CYdvPSEQiPod55h+FMd9+eB7K
+    mGF11y/Rb/VpkkxaWeXiqSbK5kKGMBcbmyxIrKNe7o9FusUeZuPEUW2Ghm+qDrCSo2J6
+    gWjPnggVplskXoszLR2uBCTKrJ9hgy4xy1Y4N6EZBsSQVP7Z1XrCFoEbQRs2iziSGzlR
+    jlUAf3a5KqGnbgmnIrPnTMTM2uHYlGZyOSl2By9SJhn5PgPsW5cmQVr/lCtxhngDWtIE
+    uEaA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1786622502;
+    s=strato-dkim-0002; d=hartkopp.net;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=RTcVkqtj+ZzuKqkzflCf0W648zoY7byAeauUzQlxVrk=;
+    b=qqr0LTp46ZsEdiObb+8/Rp1lJfTDLBog2wJilkw18Z1JIupMFKKKNGICreSvEOeteU
+    o3vUTAzclqypWG7TQPxPZViPN74ojMB1X6HqRnXKSzxu+SbtaQxKWew0EtzUIqcWriTp
+    4eU6T352nbwB31RxmrMWQC3Oiur/rqIQIEJ6y/hnWI0XQvenu+g3N0hV+EAki8eRkjOA
+    q/HMe0ZtbSNzoYRJWHIMreS3VxswQ3MaKd2h2o23Dd8VGlFU7v+lA/KeGfW65hznj8CV
+    cAUjDXYQssvOIqD4yKAu9ecO8mI2hC6ByYem3an6yMAFykvdL1evt60VFW8DsFbifz7g
+    jczw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1786622502;
+    s=strato-dkim-0003; d=hartkopp.net;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=RTcVkqtj+ZzuKqkzflCf0W648zoY7byAeauUzQlxVrk=;
+    b=6wvpP7Ami0cWM+2FInuaKPZ1YAoT9KUDjEYYiouo6Esq16uGATqV3Q+CX+r2jc+VGU
+    ZdPITbPPLQgfvy0WwpCw==
+X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeEQ7s8bDup0Q=="
+Received: from [IPV6:2a00:6020:4a38:6810::989]
+    by smtp.strato.de (RZmta 55.5.6 AUTH)
+    with ESMTPSA id K5281927DC1fizf
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Thu, 13 Aug 2026 14:01:41 +0200 (CEST)
+Message-ID: <7cd9991f-57d8-47e4-83bc-2dfeb8a844ff@hartkopp.net>
+Date: Thu, 13 Aug 2026 14:01:36 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] team: reject ARPHRD_CAN devices in team_port_add
+To: jiale yao <19888972804@163.com>, Jakub Kicinski <kuba@kernel.org>
+Cc: Jiri Pirko <jiri@resnulli.us>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260723040032.2094322-1-yaojiale02@163.com>
+ <20260727182447.114f9fc5@kernel.org>
+ <6be0ce2c.3d2b.19fa728cd87.Coremail.19888972804@163.com>
+Content-Language: en-US
+From: Oliver Hartkopp <socketcan@hartkopp.net>
+In-Reply-To: <6be0ce2c.3d2b.19fa728cd87.Coremail.19888972804@163.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Alice Mikityanska <alice@isovalent.com>
+Hi,
 
-Commit 427faee167bc ("net: ipv6: introduce ip6_dst_mtu_maybe_forward")
-dropped the IP6_MAX_MTU clamp that used to be present in ip6_mtu(). A
-similar IPv4 commit ac6627a28dbf ("net: ipv4: Consolidate ipv4_mtu and
-ip_dst_mtu_maybe_forward") preserves the IP_MAX_MTU clamp.
+On 28.07.26 07:18, jiale yao wrote:
+> Hi
+> 
+> Sure, I will check, and send v2 patch if there are any others.
 
-Restore the upper bound in the IPv6 flow to avoid potential 16-bit
-overflows in forwarding paths.
+I've seen no follow-ups on this.
 
-Fixes: 427faee167bc ("net: ipv6: introduce ip6_dst_mtu_maybe_forward")
-Signed-off-by: Alice Mikityanska <alice@isovalent.com>
-Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
----
- include/net/ip6_route.h | 2 ++
- 1 file changed, 2 insertions(+)
+Did you check on other similarities between team and bonding drivers 
+according to reject ARPHRD_IEEE802154, ARPHRD_CAN and others?
 
-diff --git a/include/net/ip6_route.h b/include/net/ip6_route.h
-index 09ffe0f13ce7..fb59a5885faa 100644
---- a/include/net/ip6_route.h
-+++ b/include/net/ip6_route.h
-@@ -382,6 +382,8 @@ static inline unsigned int ip6_dst_mtu_maybe_forward(const struct dst_entry *dst
- 	rcu_read_unlock();
- 
- out:
-+	mtu = min_t(unsigned int, mtu, IP6_MAX_MTU);
-+
- 	return mtu - lwtunnel_headroom(dst->lwtstate, mtu);
- }
- 
--- 
-2.55.0
+Best regards,
+Oliver
+
+> 
+> Jiale Yao
+> 
+> At 2026-07-28 09:24:47, "Jakub Kicinski" <kuba@kernel.org> wrote:
+>> On Thu, 23 Jul 2026 12:00:32 +0800 Jiale Yao wrote:
+>>> Enslaving a CAN device (e.g. vxcan) to a team master triggers a
+>>> NULL pointer dereference in can_rx_unregister() inside
+>>> net/can/af_can.c.
+>>
+>> Gemini review says that similar issue is possible with
+>> ARPHRD_IEEE802154 devices, could you double check that,
+>> see if there are any others, and all these in a single
+>> patch?
+>> -- 
+>> pw-bot: cr
 
