@@ -1,168 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 612612E7179;
-	Thu, 13 Aug 2026 02:15:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15AD424DCF6
+	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 02:21:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786587351; cv=none; b=p5j6WZ1M8QBWy+BEr7AuBwJN4q1Rg+xniwo/ylphorX4Zo6VDh2qeQ4WGi9R1dBI1hJX1oTvdhRIypOX722Bp2s3+/5sVvUvfhMyJZrYRtpSG868TNVrPdrRSBDjuN4voB9XLUIYRfE2Ubg11WHb6v3NTu8reonQB5paIFQ31F0=
+	t=1786587674; cv=none; b=gdxzax7jFzzj6xRNeiHT8vPLroj1eDFAJXjlHE6l7LJMy4xQr/C+C2ntPAhPxhWN9hhk+FqYwx+EDuRyXfqy3vWa9hOmmEDjt8oo0sZGaWaAhoGu9j9o6Ri7CLGHO0h+UeoHYQM5PQxFvLFhmJxm0XAwYGQT+H/q8Q5OfCUU/ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786587351; c=relaxed/simple;
-	bh=4OIUTJXe9GSqb8P/4dlqiXPXQqiApCtV0xf4vpTT3bw=;
-	h=From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:Date; b=OBloUpDP2rB+EBuAR934Wa9E9GwaApex/1IKuLWZt2HqPen2c3taZSODYWmXgcLAzShsQJQkQzT95osDYjbPOZytDt1utlXo+0ksE+U9t0PehLgd9w7K/U1uZsHBgSybGj1xwfuM5pGbLQJyr1oojmUVgb+tQifcBPLjUroYl+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oBjfQEMC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786587674; c=relaxed/simple;
+	bh=uS9sWbpqDY7qVtQkvy/PC8zLLElz8q6kaRjwUGfvU7U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HX99okhDYvNsuxeog9t04JopjRQ5IQtaFtf38sPKC/qkp/lWtrX45WdeVY8nxg9WPFJEGVsPEyBAwMzHlfWkmUBr28hADgX/U7hGEc43T7+D/21urtP95dEMtCX4aXrt/5QJB+kPPwITouRu1+moATpnBKW1wggIzi0wJKrNBl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W0mbpK/j; arc=none smtp.client-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oBjfQEMC"
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 85EC51F000E9;
-	Thu, 13 Aug 2026 02:15:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786587350;
-	bh=YBAHVHUsoubUukRavwp2qvQV7W2bjorBbW7egYAeeMw=;
-	h=From:To:Cc:Subject:Date;
-	b=oBjfQEMC5hI9P8CUpOL1fwZkukLxTbM2H76e60HlvTdkoPRF+LMJ2Z+r3dA+IoDKS
-	 dssc2wYnTlrNr5WwP3KjOWtCpU6gmrZtBNokdB0POnJXt74CpaFYtA8Y7zihwy7cxB
-	 u4clfQm457xfUHyAXwsFLDimwYLYq0shq1SGayUCjZkQ2QH4+UvQDIW82rYoEWof/p
-	 RMyDJ5SEz5TQYuMdMPDGR5lA7n9JNTIZOV1sreoGf5Z0/5mHj1lxs6zaRvklroLSHy
-	 Hx0r1UfiIjl0baUYuE0RhaXLJL8gSdrJa8fOnkTYancEceXxkqA6TwUuZEJPZpodaC
-	 AznP5Ql0fyGxQ==
-From: "syzbot" <syzbot@kernel.org>
-To: syzkaller-bugs@googlegroups.com, Uladzislau Zhauniarovich <uladzislau.zhauniarovich@gmail.com>, "David S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jamal Hadi Salim" <jhs@mojatatu.com>, "Jiri Pirko" <jiri@resnulli.us>, "Jakub Kicinski" <kuba@kernel.org>, <netdev@vger.kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Vinicius Costa Gomes" <vinicius.gomes@intel.com>
-Cc: horms@kernel.org, linux-kernel@vger.kernel.org, syzbot@lists.linux.dev
-Subject: [PATCH] net/sched: taprio: enforce minimum software scheduling interval
-Message-ID: <afe041f6-ef7d-4434-b2d0-096be49b5bcb@mail.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W0mbpK/j"
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-92e6c4a867cso105826185a.0
+        for <netdev@vger.kernel.org>; Wed, 12 Aug 2026 19:21:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786587672; x=1787192472; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OQ0mOHVrQqy6gW071BjekeyZkSroC7y2i96KZ+jhet4=;
+        b=W0mbpK/jaV+KMTfBGpPRzEvB9DAoDlxyne+dQLwMj33MmMBTAktfw5ruGaizfyqutT
+         uHWFya/TUNipk6g6YJK53b20CbKwSdPaqEhK/shsZ07W5/E+6PYzOesFNPQEwFvIgWRU
+         9mwfV8w00rxf6v2W0i9xOo0ExB9MgUBoR7c3Yer3BWEBN2IP6ZQybui5aOoxmByiD0Wk
+         ErgQtHKu/L58ufbLtWFr3Jedtts9t5UoZ6eJIzOiwzOV5bD8dqiXnjE7O2bwA7Yu2z4O
+         vinWY5seT2zFj89XA58y91SIVmXPCXudJmQPj8uiRdtt6pI3axZ04CVay1QyUHBrMTTh
+         E7pA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786587672; x=1787192472;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=OQ0mOHVrQqy6gW071BjekeyZkSroC7y2i96KZ+jhet4=;
+        b=I9CCQLmXL8llfaiC10JTORN85pXl4ssq3jC1OAqjavtZ76Fc4BLZ++R2jPBzy0mW5M
+         WCeNmDlhiU72DDh97IzBwEbyr/khkhrz/rhgXNcWgEzhmtqYTgHOgnn5THCHDLVZaOgf
+         Gjbp4YGNWYkl8wssoSEsSys22FTBMleTugMtYaG00TG/1/KzUVCQS7320SsNqoKXExIQ
+         XWqzcBWNejKQ1CI0wVR8ZyoAjSOh5u/EbTNdslGGtj9/M3iKDWFJ0w1GthwmwvlMP3HU
+         HYctIS2CgIzsVg6I6f64PhYbVAvY7QyeLnF2UonJeFAUydtmllVN5ZtLgLACv2sP5L2J
+         MKlg==
+X-Forwarded-Encrypted: i=1; AHgh+RodmwTtc9jRrFyPwmQQL7+SEtM4B9cbgS6bqxsWQn7q3J0bzDyMuVoMPAo897Rjc/KI2ae8uN4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxf3NWJ1VuNHe5hXKUHYNU0IBUc1MIiI9k72Z1P8PaldUCh5xED
+	dZFXcrH0x2hY+nG/1Zq04LQ8C/FtnCBAQLaYyC5btQ6MtK23vie4/z3E
+X-Gm-Gg: AR+sD10JN7koMm+yGEejELPHILNJa4r9dJ3ONDuyT8pPNMBmSJL3sHKA1+UpwEtHXgI
+	vkspKDMG0C1KCcboRNmg9/8mKZml/bsivl/5gI3EWz6iYiC9qHOlYNyB002SaWMb4HogfwnOpI9
+	EYjURzAceaTFXYxuv7bEngU7IEnLUe52nW8uEI8tRlW3bsHIC8XEE4LSPuZqrwgjSkaXrGdphJ6
+	8NN34HvhZd/5J6Y/05zvNQCf093yu7mZFPFsaLcgCrFV+DtsOEKqqhOKjZJPhmoGzG46Ulb+km8
+	CPiBTibiRnKV6ssmAmMVvm6wwIpVJEw2fZE5EKEPTs5o67cD3g7aIESwyR6FZuBytzCTxm3yN51
+	vCSVMjuNajor5WgimJ1pjcwMt4ywoSjbOzC2M08wWCy9gzAdGFnVaoRD4RHkIMJbpim0AGf2rwn
+	Pbp1sFg1Lvqf7zXHgwtUpC5PUEbvRcdaAz/2gEcwyL0iO90D6lOvMC5kg=
+X-Received: by 2002:a05:620a:479a:b0:936:587d:338c with SMTP id af79cd13be357-936bfb39800mr173250485a.37.1786587671878;
+        Wed, 12 Aug 2026 19:21:11 -0700 (PDT)
+Received: from beelink.. ([185.217.69.177])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-936c1b11d44sm45064185a.22.2026.08.12.19.21.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Aug 2026 19:21:10 -0700 (PDT)
+From: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
+To: Jeremy Kerr <jk@codeconstruct.com.au>,
+	Matt Johnston <matt@codeconstruct.com.au>
+Cc: davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Aldo Ariel Panzardo <qwe.aldo@gmail.com>
+Subject: [PATCH] net: mctp: hold a reference to the route device in mctp_route_lookup()
+Date: Wed, 12 Aug 2026 23:21:02 -0300
+Message-ID: <20260813022102.2792032-1-qwe.aldo@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Date: Thu, 13 Aug 2026 02:15:49 +0000 (UTC)
 
-From: Uladzislau Zhauniarovich <uladzislau.zhauniarovich@gmail.com>
+mctp_route_lookup() uses rt->dev without holding a reference on it.
+mctp_route_lookup_single() returns the route under RCU only, so the
+route's device can be torn down concurrently: mctp_dev_put() drops the
+last reference and synchronously kfree()s mdev->addrs.  mctp_dev_saddr()
+then reads rt->dev->addrs[0], giving a use-after-free reachable by an
+unprivileged local AF_MCTP user on the receive/forwarding path (no
+CAP_NET_RAW required):
 
-When configuring taprio with a very small schedule interval (e.g., 129 ns),
-the kernel validates the interval against the time it takes to transmit a
-minimum-sized Ethernet frame (60 bytes). On high-speed links, this minimum
-duration is extremely small (e.g., 48 ns at 10 Gbps). Since the requested
-interval is larger than this, the validation passes. Virtual devices like
-veth or bonding can defeat this link-speed minimum check because they
-report inflated link speeds (e.g., veth reports 10 Gbps, and bonding sums
-member speeds).
+  BUG: KASAN: slab-use-after-free in mctp_route_lookup
+  Read of size 1 at addr ... by task mctp_uaf/...
+   mctp_route_lookup
+   mctp_pkttype_receive
+  Freed by task ...:
+   kfree
+   mctp_dev_put
+   mctp_dev_notify
 
-However, when hardware offload is not used, taprio falls back to software
-scheduling and arms an hrtimer. The hrtimer is programmed to fire at the
-configured interval. If this interval is too small, it cannot sustain the
-timer service cost of one advance_sched() invocation, which includes lock
-acquisition, budget recomputation, and TX softirq processing. As a result,
-the timer constantly falls behind, and the CPU is livelocked in hardirq
-context endlessly servicing the advance_sched() hrtimer. This starves the
-RCU grace-period kthreads, leading to an RCU stall panic:
+In the same window mctp_dst_from_route() -> mctp_dev_hold() also
+increments a refcount that has already reached zero
+("refcount_t: addition on 0 ... mctp_dev_hold").
 
-rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-rcu: 	1-...!: (1 GPs behind) idle=4854/0/0x1 softirq=136062/136068 fqs=0
-rcu: 	(detected by 0, t=10506 jiffies, g=161469, q=1866 ncpus=2)
-Sending NMI from CPU 0 to CPUs 1:
-NMI backtrace for cpu 1
-CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Not tainted
-Call Trace:
- <IRQ>
- lock_is_held include/linux/lockdep.h:249 [inline]
- enqueue_hrtimer+0x79/0x2c0 kernel/time/hrtimer.c:1107
- __run_hrtimer kernel/time/hrtimer.c:1946 [inline]
- __hrtimer_run_queues+0x4ce/0xa10 kernel/time/hrtimer.c:1994
- hrtimer_interrupt+0x448/0x910 kernel/time/hrtimer.c:2113
- local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1050 [inline]
- __sysvec_apic_timer_interrupt+0x102/0x430 arch/x86/kernel/apic/apic.c:1067
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1061
- [inline]
- sysvec_apic_timer_interrupt+0xa1/0xc0 arch/x86/kernel/apic/apic.c:1061
- </IRQ>
+This reintroduces the use-after-free class of CVE-2023-3439: the source
+address lookup was moved ahead of the point where the destination takes
+its device reference.
 
-To fix this, enforce a hard absolute minimum interval of 100 microseconds
-(TAPRIO_MIN_SW_INTERVAL_NS) for software-based scheduling, which provides
-enough margin over the timer service cost. Fully offloaded schedules are
-unaffected since they do not rely on the CPU's hrtimer. Introduce a helper
-taprio_min_interval() to consolidate the minimum interval logic for both
-individual schedule entries and the overall cycle_time validation.
+Take a reference with refcount_inc_not_zero() before touching rt->dev,
+skip a device that is already dead, and drop the reference once the
+destination has taken its own.
 
-Fixes: b5b73b26b3ca ("taprio: Fix allowing too small intervals")
-Assisted-by: Gemini:gemini-3.5-flash Gemini:gemini-3.1-pro-preview syzbot
-Reported-by: syzbot+19d01f6082ec61dd45b2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=19d01f6082ec61dd45b2
-Link: https://syzkaller.appspot.com/ai_job?id=37f064ee-e021-43aa-8cfc-9f2a5a7c35d7
-Signed-off-by: Uladzislau Zhauniarovich <uladzislau.zhauniarovich@gmail.com>
-
+Fixes: 22cb45afd221 ("net: mctp: perform source address lookups when we populate our dst")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
 ---
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index 45245157e..2bf4cae16 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -49,6 +49,13 @@ static struct static_key_false taprio_have_working_mqprio;
-  */
- #define TAPRIO_PICOS_PER_BYTE_MIN 17
- 
-+/* The software scheduler cannot sustain hrtimer intervals smaller than
-+ * this without livelocking the CPU. The value must exceed the cost of
-+ * one advance_sched() invocation (lock acquisition, budget recomputation,
-+ * TX softirq) with margin.
-+ */
-+#define TAPRIO_MIN_SW_INTERVAL_NS (100 * NSEC_PER_USEC)
-+
- struct sched_entry {
- 	/* Durations between this GCL entry and the GCL entry where the
- 	 * respective traffic class gate closes
-@@ -259,6 +266,16 @@ static int length_to_duration(struct taprio_sched *q, int len)
- 	return div_u64(len * atomic64_read(&q->picos_per_byte), PSEC_PER_NSEC);
- }
- 
-+static int taprio_min_interval(struct taprio_sched *q)
-+{
-+	int min_duration = length_to_duration(q, ETH_ZLEN);
-+
-+	if (!FULL_OFFLOAD_IS_ENABLED(q->flags))
-+		min_duration = max_t(int, min_duration, TAPRIO_MIN_SW_INTERVAL_NS);
-+
-+	return min_duration;
-+}
-+
- static int duration_to_length(struct taprio_sched *q, u64 duration)
- {
- 	return div_u64(duration * PSEC_PER_NSEC, atomic64_read(&q->picos_per_byte));
-@@ -1038,7 +1055,7 @@ static int fill_sched_entry(struct taprio_sched *q, struct nlattr **tb,
- 			    struct sched_entry *entry,
- 			    struct netlink_ext_ack *extack)
- {
--	int min_duration = length_to_duration(q, ETH_ZLEN);
-+	int min_duration = taprio_min_interval(q);
- 	u32 interval = 0;
- 
- 	if (tb[TCA_TAPRIO_SCHED_ENTRY_CMD])
-@@ -1054,7 +1071,8 @@ static int fill_sched_entry(struct taprio_sched *q, struct nlattr **tb,
- 			tb[TCA_TAPRIO_SCHED_ENTRY_INTERVAL]);
- 
- 	/* The interval should allow at least the minimum ethernet
--	 * frame to go out.
-+	 * frame to go out. When software scheduling is used, the
-+	 * interval must also be at least the minimum hrtimer interval.
- 	 */
- 	if (interval < min_duration) {
- 		NL_SET_ERR_MSG(extack, "Invalid interval for schedule entry");
-@@ -1166,7 +1184,7 @@ static int parse_taprio_schedule(struct taprio_sched *q, struct nlattr **tb,
- 		new->cycle_time = cycle;
- 	}
- 
--	if (new->cycle_time < new->num_entries * length_to_duration(q, ETH_ZLEN)) {
-+	if (new->cycle_time < (s64)new->num_entries * taprio_min_interval(q)) {
- 		NL_SET_ERR_MSG(extack, "'cycle_time' is too small");
- 		return -EINVAL;
- 	}
+A reproducer is available on request.
 
+ net/mctp/route.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-base-commit: 8cd9520d35a6c38db6567e97dd93b1f11f185dc6
+diff --git a/net/mctp/route.c b/net/mctp/route.c
+index 1f3dccbb7a..b19c63a569 100644
+--- a/net/mctp/route.c
++++ b/net/mctp/route.c
+@@ -998,14 +998,29 @@ int mctp_route_lookup(struct net *net, unsigned int dnet,
+ 			mtu = mtu ?: rt->mtu;
+ 
+ 		if (rt->dst_type == MCTP_ROUTE_DIRECT) {
+-			mctp_eid_t saddr = mctp_dev_saddr(rt->dev);
++			mctp_eid_t saddr;
++
++			/* rt->dev may be going away concurrently: its last
++			 * reference is dropped in mctp_dev_put(), which frees
++			 * mdev->addrs that mctp_dev_saddr() reads, and
++			 * mctp_dst_from_route() takes a reference on it.  Pin
++			 * it before use, and skip a device that is already
++			 * dead rather than resurrecting it.
++			 */
++			if (!refcount_inc_not_zero(&rt->dev->refs))
++				break;
++
++			saddr = mctp_dev_saddr(rt->dev);
+ 
+ 			/* cannot do gateway-ed routes without a src  */
+-			if (saddr == MCTP_ADDR_NULL && depth != 0)
++			if (saddr == MCTP_ADDR_NULL && depth != 0) {
++				mctp_dev_put(rt->dev);
+ 				break;
++			}
+ 
+ 			if (dst)
+ 				mctp_dst_from_route(dst, daddr, saddr, mtu, rt);
++			mctp_dev_put(rt->dev);
+ 			rc = 0;
+ 			break;
+ 
 -- 
-See https://goo.gle/syzbot-ai-patches for information about AI-generated patches.
-The person who has signed off on the patch is responsible for
-addressing comments.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+2.43.0
+
