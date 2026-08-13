@@ -1,105 +1,84 @@
-Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.168])
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40AC149505C
-	for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 16:30:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.121.94.168
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B2049503F;
+	Thu, 13 Aug 2026 16:32:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786638627; cv=none; b=O8VzeP71RJnHcvNyJPC5zukvHILbT0XADLv3vkn8pPDE/8V2v+YAx+xgh70sk6u69ge6gagli7xSS0958j+/5cgkKrukkYyBz5W+TvVwY6E8R4ACOFANQ5J2j9CK3xtEFgQEsezpVnHEfbdUJEkQ6MQbfgadntU9acuJkrKblJU=
+	t=1786638735; cv=none; b=e/xynovrpvcRv9GwWezVbROG2DOpRZFp3qKKjFeH/4PCUZdMC53gYUmfmdlWVJSvmKyw7e4Mb7JvuwHKU4T2Z1F4PL6UJoRTymueWroK1Uflem0eGsJjFJDwJWmqAfUwcmkk5vOdvguRP+OnDiGzYnKEuD1KgelGDBZsGjYfMYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786638627; c=relaxed/simple;
-	bh=QJQE/GXd0K169a8mwkplKKdkmQ5sBJfTjp2LDq9OYG0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GcrnuhmD7iwG247Q+IxOdj+xDUTqs1wNlEdX80NKzr5B68flO3LJvB8G2iDeIJGCpEezIRXJ2DiUcadH6NHYNb9Vm5BgtOUHtf8NahoEOWwXHnCTYloh2EFYbTSbcO6iR1OqG1g/af8HQamrYo5fVQKWwwly4hzFtcI4+4Esqhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=xs4all.nl; dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b=Ui8VzVTV; arc=none smtp.client-ip=195.121.94.168
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xs4all.nl
+	s=arc-20240116; t=1786638735; c=relaxed/simple;
+	bh=CTkqjLHeGvQBnnLHc5YZ7V+/yg9UN7vh6Nu4jRMQRe0=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=nVwSKzkW9aJKyssgbSUsbdjFqvHxktvjnLUY3ZgHUAxQroyXYaXbk+X/foOMjwpHC96O24MiMGriU3dM8Ry3vNosFwU9acFDup0t0cXtFgzwg+yzNohMmtXhX+YKoqJxqPIFCl07O2eyH1CcSNFvvPPa4lFN34GwHw8buuhesQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=kDBMkbMT; arc=none smtp.client-ip=80.241.56.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b="Ui8VzVTV"
-X-KPN-MessageId: 2086fad7-9734-11f1-861c-005056aba152
-Received: from smtp.kpnmail.nl (unknown [10.31.155.39])
-	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
-	id 2086fad7-9734-11f1-861c-005056aba152;
-	Thu, 13 Aug 2026 18:29:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xs4all.nl; s=xs4all01;
-	h=mime-version:message-id:date:subject:to:from;
-	bh=jTewONXvFxgGhvbpYUlhsacZJwkbZKyIKe17J6I4b48=;
-	b=Ui8VzVTVYXoSx4gljpDJhVvy0r0YXSYtKCq1OzhXDJUUZS2r9vU8Mmsv/NeoKsbpEEJK7LJrgbUkR
-	 sewS/9pSm0C/sJ74U63UpcRL9cVGWzFtAIjNyxzoOPut+LaUI+1PRQdB2Q6fshQZTfVmVSCHNYyaIc
-	 VNywoJyglO/kjpV/Swm2L2onM2L0C43Yj2ZMxfxTYgimT3QUN7LOzbUVQEdW5X0UO0fkKFR7Zr3gvd
-	 W4Q3bXRH/cItClrLnjeUKfYtzEEkxp30pHlg9X3bSPyWyIB6syR6hXnhKX9W2tgtuqC07vt2BqR058
-	 3EwkTjNmm9wlI5v67MUuSnC9OgT0gbQ==
-X-KPN-MID: 33|/TCCuN7hhmGA3NIotZ7mGUrPFVguPZBlcytE2VY1H+fBBaNzJJ/qgToCc5mc5jz
- R5tL1fe8/VQJRmodjIbnqe7yJ5MnDFu9Jkw/pRYpXVY4=
-X-KPN-VerifiedSender: Yes
-X-CMASSUN: 33|SUsaept8WAFZMntZOpPXVEVPMCkNMqQMUNLNMl52nPuS26v5dKxCmHODWAv1dXY
- 5dN1kWD9Bmc/WYSRLm7puXw==
-Received: from fedora (unknown [223.38.86.53])
-	by smtp.xs4all.nl (Halon) with ESMTPSA
-	id 1b71ed0b-9734-11f1-a8bc-005056ab7447;
-	Thu, 13 Aug 2026 18:29:15 +0200 (CEST)
-From: Jori Koolstra <jkoolstra@xs4all.nl>
-To: brauner@kernel.org,
-	cyphar@cyphar.com,
-	kuniyu@google.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jkoolstra@xs4all.nl
-Subject: [PATCH net-next v7 2/4] net: scm: move scm_detach_fds() from common path to scm_recv_unix()
-Date: Thu, 13 Aug 2026 12:28:16 -0400
-Message-ID: <20260813162818.149248-3-jkoolstra@xs4all.nl>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260813162818.149248-1-jkoolstra@xs4all.nl>
-References: <20260813162818.149248-1-jkoolstra@xs4all.nl>
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="kDBMkbMT"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4hLW902bX9zKmX4;
+	Thu, 13 Aug 2026 18:32:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1786638724;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jhYB31gK0RBUlszjo222A/qXdg2ZTJtwEYFPORH8z9M=;
+	b=kDBMkbMTc0vKozAQ547YlG++sKkyA52PNS9Dwh71FpPGWmAXXp5sT57QpcVITV3lpUz42x
+	CEwrL+tqX4adgDl03qvkiRjb5kYgRJhj7ZL6YYcpoSBkrmlunmFMgNt2/qyqMeS9kletCV
+	xMmCQbNeYeTMBCLcAf/Wcdsn9zGHbQDTxMuodJyeu4M+o7gDaY7vgU+MsF5yCbTPPc2wkk
+	4gzfcn6pCpi1tmz2KECUn/Y6PwPBtdXKP7u+d2fR7EjJCJcxWZjOOGns9l58CgNpv88u72
+	2bxpjcWki3iVjOawDRQQ28GokJR9CEEfYEdLcvg9Drpty80t3jxP+Xd57GKlsA==
+Date: Fri, 14 Aug 2026 00:31:59 +0800 (CST)
+From: Ming Qing <a0yami@mailbox.org>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Harald Welte <laforge@gnumonks.org>, horms@kernel.org,
+	andrew+netdev@lunn.ch, davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, osmocom-net-gprs@lists.osmocom.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-ID: <2125081283.36735.1786638719082@app.mailbox.org>
+In-Reply-To: <anrpdUa_ngVKH6NR@chamomile>
+References: <20260811022012.5416-1-a0yami@mailbox.org>
+ <anrpdUa_ngVKH6NR@chamomile>
+Subject: Re: [PATCH net v3] gtp: serialize PDP context updates
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Priority: 3
+Importance: Normal
+X-MBO-RS-ID: 0c489e9920faf4672b1
+X-MBO-RS-META: xo3xui45ft54u8hgbph669i3fsjsc6or
 
-scm->fp can only be set when using UNIX sockets, therefore we should
-move it out of the common path __scm_recv_common() into
-scm_recv_unix().
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Signed-off-by: Jori Koolstra <jkoolstra@xs4all.nl>
----
- net/core/scm.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> =E5=9C=A8 2026/08/11 17:20 CST Pablo Neira Ayuso <pablo@netfilter.org> =
+=E5=86=99=E9=81=93:
+> This can go away too, for gtp_genl_del_pdp(), the mutex replaces this
+> incorrect rcu read size lock.
+>=20
+> Thanks.
+>=20
+> > +=09mutex_unlock(&gtp_pdp_lock);
+> >  =09return err;
+> >  }
+> > =20
+> > --=20
+> > 2.53.0
+> >
 
-diff --git a/net/core/scm.c b/net/core/scm.c
-index eec13f50ecaf..a73b1eb30fd2 100644
---- a/net/core/scm.c
-+++ b/net/core/scm.c
-@@ -523,9 +523,6 @@ static bool __scm_recv_common(struct sock *sk, struct msghdr *msg,
- 
- 	scm_passec(sk, msg, scm);
- 
--	if (scm->fp)
--		scm_detach_fds(msg, scm);
--
- 	return true;
- }
- 
-@@ -545,6 +542,9 @@ void scm_recv_unix(struct socket *sock, struct msghdr *msg,
- 	if (!__scm_recv_common(sock->sk, msg, scm, flags))
- 		return;
- 
-+	if (scm->fp)
-+		scm_detach_fds(msg, scm);
-+
- 	if (sock->sk->sk_scm_pidfd)
- 		scm_pidfd_recv(msg, scm);
- 
--- 
-2.55.0
+gtp_find_pdp() calls gtp_find_dev(), which uses=20
+dev_get_by_index_rcu(). Should I keep a narrow RCU read-side section=20
+around gtp_find_pdp(), while using the mutex to protect the PDP context?
 
+Thanks,
+Qing
