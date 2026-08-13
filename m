@@ -1,178 +1,158 @@
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011065.outbound.protection.outlook.com [52.101.62.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD4E40862C;
-	Thu, 13 Aug 2026 10:41:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786617682; cv=none; b=HvvOF6UbyOSAUPyI3pOgxy560VyXfO2gCfFDhZz2C/OoujaE+8F5CnNN2D7NjnEaZKFkSPBFVgIa4TZCL6+mZK3lrbtSqRgXX5bnLyJ5YatDyth1cQlltTL+r2CR9GehEpnDg61MGFp32wqGDhOwirTb/PP8cfvcW4/oYgaISV4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786617682; c=relaxed/simple;
-	bh=40Hv8THBLGy9rCrzhYAdJjHwnEvnVqZko8YTkJjhKUw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l9tB07xfubkOP9CKY6Vd1X67NVxQMwq0eisWmJZkRcLIqxIUyCpQyNUvhPen7XY3wl/5xws/loWRaifHbSLJkpgXrq2zdMWmDf4CxpKqsXOJbkDw9++EGweRV+dy8LbrnyC+tGYy+GUWOY27mPLkjw/vCM3ZQG0iWg/OezVLh+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=g75u+Yyl; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=TgJ0qx0H; arc=none smtp.client-ip=202.12.124.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D5E44781A;
+	Thu, 13 Aug 2026 10:50:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786618255; cv=fail; b=dCmCwUGCFiwMoTQhZVktWtTC+LldeLch9VT23H8opj2xG5nkdWef26b3ec/zUC7f6vermtfLI7z3qrtcIQnHwfY32IlKsTHFjlJUxje88l65tKUhKz863z0e2CvpJrOLrYstZ2THmCsXxk8W5G07qVsGVenePP1ebu7Haqc/dj0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786618255; c=relaxed/simple;
+	bh=jtNQpjFFsj5GBpO4aKpgZj9Diwy4GtZgr7UdX0TIIOI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EbmNVjPn8t8UVOIfda1abmq44MPJahPO329uyOsKzzzjYrCtkNKaucphqhzAB/ezE8SI8zhthyqzsppFgtQG8Xe5z922nQlcdhjAopgbRZYmRJ8Ujm+r0eeXTDA3rET10LqCT4aOSvFdGHhX+gfsPnsZlX3q8pxqfXtAQsq2aH8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=0Mzuu52z; arc=fail smtp.client-ip=52.101.62.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="g75u+Yyl";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="TgJ0qx0H"
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id EE6927A00FE;
-	Thu, 13 Aug 2026 06:41:18 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Thu, 13 Aug 2026 06:41:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1786617678;
-	 x=1786704078; bh=N+TbeFEDz7QDJaax9vmGb90pQEB+ILX8FqA7sEhjdog=; b=
-	g75u+Yyl6+AtYqOyto1M2doXLU9tyjrKg/fQEdyk2eXNsCNamznXfIuoSCAFVU7l
-	MWhX2nuWJO2DbxgFYAHSsiLhDW54ucBm8kBod8P+8uCmhL0iTDvhI5nphoPI6odf
-	nJeJcAKZvxF4Trxo58dhqu6irHnHTzZRfDpfgiaFyxnzcTx5oPsv9KicDneIqfbA
-	Q4ry1XwiaAjJmw+YtsIJxbQkDK9qx0YOgaUxuX5OSXSw9QcrI4ka9czLmIn1rSOZ
-	RSTCLlHcZTg8qMPICm8X19ErNIDj6fO0+Rtxo27xcKhn2m5CbmLLYnMTxxACk0FC
-	wBH07omZdnDr1zV+TRCB8A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786617678; x=
-	1786704078; bh=N+TbeFEDz7QDJaax9vmGb90pQEB+ILX8FqA7sEhjdog=; b=T
-	gJ0qx0HgMgXtKxCH3NOxBjw/WSjqlj08thdff1yR/TiXc8v5SoK/u9csSEHQqFTN
-	WEIhKycbJTa6wQsaAHMBnarfPsG9h9LhL1xlN0/08AF80BWfhwVHIKx6DsG+M6cF
-	T4Pz5u9iTit4x1s9FBv/FZ9x03ASYdnbk3LvO2KCnrpv47YLAt2+RVI5hpbpghRt
-	w1aS2I/JR+CLxRSwgDT9jpY3SzIj7jELtAEjQdmYFSRhOqjItnI2aZVTEUAOo0K1
-	fJpPvbNwOamSxNgBH44RTfC+DuM/5vCp8EiubXWRD8unT6vDa1LezaZ5k6ZKju+V
-	A8hmUD4I99S8EPlHUgSXw==
-X-ME-Sender: <xms:TZ99apyPQoMRNJATwLqKEJ6Nxp_Yjc82J8VDsc9wAfHo2u2CVqn8eA>
-    <xme:TZ99avzsmsHIcRHhkh4eaMBzI15K-X0g7R6uLrABeIqB35l-uyG6YLAGcX3VAs-Uj
-    Ex5gKKs-72QYCciGBNcJMU4iwWst6wF9Gsjug7mlxAA-AwDTrRe-50>
-X-ME-Received: <xmr:TZ99ahVaGzkIhyKD0uiPfJeVMu_O1RJRDuLO2eXUDVKGIAiLgCoIeYZnnmOeYirxyxeqjL_GuJw8qd-oXJWjfogDPEvWToA>
-X-ME-Proxy-Cause: dmFkZTGsHrBP9vRnPwQ+Uv/DigyeHPgHhztGSjPtRV7GXJrXZw/OmOVXsxMdRvAavoeMIl
-    6SFyaFtLzVFEDfoqFbWnz+5odpBmlN70IBWgxBTIKjJXG5hXyeGB6Zi5nFUOzSZqunrq7i
-    //Wb7Dcfx1xidAAth6Hy2jDXr1RqofbYepQ649FnqvDfdFNPOtM4JfoRBlMNr1uOUPW7uo
-    43DRGZ58fkb4100Qm+ur+SIiI9hrXS/xdcpXo3m2yO6Kq43XQH40pupLrFQ7WDkr9bRrMA
-    o+TlsAhalcKNur2CDtfsq04sG/DRWH0PRkdh4w5nJxbVn0nNDy82J/NCSVy2YzjgPTq8DN
-    6bIOPgiJmmK0GJq56FVhsAd5JRU1laa+rU9fg8VIv1ZHt9hamSGUd7Wdu9q9lpBB/EdPb+
-    EbLXCZ+gHKfvd4mF3ecxVCWOfPZqs3FdLNzZBEb/InsLCeoEU0toaYm1S9reXQ3uDnqvdw
-    j0342OTINZNYeqpu96XiFv95OcBWG3n9QsCM8gyEcXtFqgyIe8coEs75V2weW/cwXnKgvd
-    91pDHJk6DmC44OGt9ZCqd0dlhANG/qkMWzZWHTkPTgR0j9LkaEEA/Sn0Yue2ZTmMcIFIeS
-    4jMBQu2oqwjmT16YQ01TArddZ/AnWnUQO7hS+1II6Go1a9S06m8NdrgKBK4g
-X-ME-Proxy: <xmx:TZ99auSEmjJJj7ZNfI2LheUylG2uk3rOZxL3e-6k_bCyEPO9gSAXuA>
-    <xmx:TZ99ahRQTRO9uHVnHgoqn-Ce0KpckrYEpcLvQCWePkr8XdlzaJW0qA>
-    <xmx:TZ99aucDE3bnUpo7YFtDoBIWldQ_RtN5LazlL2ioUuwSkZyu0f6fsw>
-    <xmx:TZ99aveABQ51zOaK1dykATsMyT2Gj-Ot_WR4k8X4heSieW2SEyP0iw>
-    <xmx:Tp99alUjMJ2-epFYOZ23TpMG3HJvkhNLP2wPhoibsx4XEEU8J450N8q1>
-Feedback-ID: i80c9496c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 13 Aug 2026 06:41:16 -0400 (EDT)
-Date: Thu, 13 Aug 2026 12:41:14 +0200
-From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
-To: Xuanqiang Luo <xuanqiang.luo@linux.dev>
-Cc: linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org,
-	kuba@kernel.org, vadim.fedorenko@linux.dev, paul@pbarker.dev,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	pabeni@redhat.com, richardcochran@gmail.com,
-	masaru.nagai.vx@renesas.com, luoxuanqiang@kylinos.cn
-Subject: Re: [PATCH net v4 0/2] net: ravb: fix PTP clock lifetime
-Message-ID: <20260813104114.GG2757863@ragnatech.se>
-References: <20260811103733.62599-1-xuanqiang.luo@linux.dev>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="0Mzuu52z"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hvJCDzzwFoxE9aCOsQ9z3DDDyGCLEDSHavwaAaHaEW7Nc36MWWFQ4BnONYAUumW7/zgS5FFORbYuq81xHsDMd8m1T3Z6rDU2UGxiz18r7zLe1NS1/S4H0H8zu3X6OWAQDq3PPGko96h5m2NsupllmSoHm5pdfdXBFHILtUnfAQkGs1a9tqd/C7KjxkGqQPyqlQciSJvIENpbritKjJk86CNesmKEsqgZ94bHDJ2RYo84iR8P5SJvZwrvkt8Jjtb6w4q+uu1AMVqXinMebUaUBWKqa/YL5a6DCILFGlFcoar7coidvsT7+5wwbDnLX/9e53mPNfMCDeCziSuP8e6W1A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NfUsOemL9TJsK643hysKjQyP+oBWafNO2xoTG6fZGvU=;
+ b=rlIiQAdtosIHZGIELr7PrbpLW2acFrub9QHykka4AJjHVk6x8a5J4/wVMwE7LBIQW74ya54PEFTgp9i/MYihthc6siXiXz2wECZPVZ43v7xkAhqzhUnmEJEU3TT/gLKuIPH8pHRkz4sbIGcIXagsQUr38SEIMXQZa56AqcKzomXMR3iBO7e7QcUjrEboqMYuMui0jTKHnNxWR4iaw5Da3DK3CI3m2YuybV2fSKZB1z7w9OXJ3pik3N0/PUs8TfjLfBi4kymhVizSA/fxVOZJFNVhM33iktp5h/P3Y2ix1++qzaJkIzmMzVLuKSURqsz2JjxXPKUv6/zR02qVT6An7Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=ziepe.ca smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NfUsOemL9TJsK643hysKjQyP+oBWafNO2xoTG6fZGvU=;
+ b=0Mzuu52zeH/4kQ5ht2bdtAHrPkOIZUQDCTX6JyvAAogwx+8oAUcEe5H+OhSTtbmD0nSEEgP3MKPjPh0j5iDW6XI2FB/FZa2VjOGD8XmRuYQYwL4E/4m28ZJnFNaGu4Nveg3iUYecjKsP5pu2oBAD6Q6u2OxRrSbjbnzX6O2T0nM=
+Received: from DS3P220CA0002.NAMP220.PROD.OUTLOOK.COM (2603:10b6:8:45f::16) by
+ IA0PR12MB7650.namprd12.prod.outlook.com (2603:10b6:208:436::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.15; Thu, 13 Aug
+ 2026 10:50:40 +0000
+Received: from CH3PEPF00000016.namprd21.prod.outlook.com
+ (2603:10b6:8:45f:cafe::2e) by DS3P220CA0002.outlook.office365.com
+ (2603:10b6:8:45f::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.315.15 via Frontend Transport; Thu,
+ 13 Aug 2026 10:50:40 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CH3PEPF00000016.mail.protection.outlook.com (10.167.244.121) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.339.0 via Frontend Transport; Thu, 13 Aug 2026 10:50:39 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 13 Aug
+ 2026 05:50:39 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 13 Aug
+ 2026 05:50:39 -0500
+Received: from xhdipdslab46.xilinx.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.45 via Frontend
+ Transport; Thu, 13 Aug 2026 05:50:34 -0500
+From: Abhijit Gangurde <abhijit.gangurde@amd.com>
+To: <jgg@ziepe.ca>, <leon@kernel.org>, <brett.creeley@amd.com>,
+	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>
+CC: <allen.hubbe@amd.com>, <nikhil.agarwal@amd.com>,
+	<linux-rdma@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Abhijit Gangurde <abhijit.gangurde@amd.com>
+Subject: [for-next v6 0/2] Add Reorder Completion Queue (RCQ) support
+Date: Thu, 13 Aug 2026 16:19:52 +0530
+Message-ID: <20260813104954.319065-1-abhijit.gangurde@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260811103733.62599-1-xuanqiang.luo@linux.dev>
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PEPF00000016:EE_|IA0PR12MB7650:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9d62d4f9-71ef-4c21-6344-08def928b762
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700016|23010399003|82310400026|376014|7416014|18002099003|56012099006|11063799006|13003099007|6133799003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	/jCAB4kib9OWfR01pUS1rk3pQ3K0Z5fzl9U3Ea9AnAcfhieE2+Hzj51hXoN3uqJXmgJSJaVPXfaivQxIsCa7IHqFdn/gPZR/g4lR7gExbqvxktYm1yna+Grdgz4eq6vGUOR635fXOUgpY4GcWTFUmA96m1ELqYWVkHN9J1cEP4X/XmXTfbQnjWRaU4wC5X8IfbeuvbBbrWv8hyuLuHo78cBhCN99g7PJJUAYPpDMtaTqDC7gTI7NsT5rErIpZIBiU+F7A5Q/4P/IcbVPY51eOnX29gfVyGQen04+k9/wSeAvMKWRymlUFQzc1MEJcaSW+Dy0m4xvEcPSb8wv9QrWBBJGAC6kfd3k4286byJWgPUwAsJhOY/TPFd0pxrANGnmFSpYee54ubRydJt6EDi9dMQEv0/rT1efR2KOiTVoT0R+RItpwfCYXs4gh7T1l4eNOUNgInMzOk75EOtvBzL04fkL9BTmVFaFIIr5g94iQfBQ1jQXQM0Dw44cs32hAkceixRR64A8G8P7TrAAQWnQDN6G+gpgaKJxD5Fv2wsKOOSYl875KXiSjCk+kCnpoXGZ2d5Pyz4lUuxGK8YcmwBrN2eiLLlvB7/eLVC9W7jvcplh061N0Yv4x/mDb4sbSxXqzJhsgU52hkTE9ocraE9jEbMbsO4aQlEi+9Kz5l1fudZakFy71FL1dCnzu0QjIhm7fosZcYpddRauZsddHgml6w==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(23010399003)(82310400026)(376014)(7416014)(18002099003)(56012099006)(11063799006)(13003099007)(6133799003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	nqCrNM36rNxhO8osAWxyvKQ4kbqkBlfbRD2ewtZ4ljIr4szVr/gONF8wGTubDSRqHeu/cMHcAyU+ppkElHP37MDx+MVazugSCBjdQPhskPxq0Comlz2tUzFIz9fcw+I2A2tjOTOtFHgZYtIXzV8Vem2oQwv880+lVvBZTJYqQHlUy87FTSCMSzUxDGsg7C1FFx8m+78KiSJGatEaZ2slX+jrR8MhfESGv0drY38wcVrZNTMm76LzgZpPVNjgq9cKjpP6iTYCcBgZnOVrTeT7cWF58naIOTmnlSAd4KVApc2/z55JUwsezAzbs0uFimfvCZMXsnERaEbFwZdOu/DpAqzByEnsqJwtXBBMMzmMD5amN3Pm4e3Fnjt9mehBibjAp/F6l9nk9p+jUnkLS1imUQRUacyx2+ulm32rLcVwN/EnSVSw9GN0F6GR7hnfAhmx
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2026 10:50:39.8629
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9d62d4f9-71ef-4c21-6344-08def928b762
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH3PEPF00000016.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7650
 
-Hi Xuanqiang,
+This series adds userspace support for the Reorder Completion Queue (RCQ)
+feature in the ionic RDMA driver.
 
-Thanks for your work.
+Patch 1 extends the net/ionic firmware identity structure to expose the
+rcq_sign_bit field from the RDMA LIF identity.
 
-On 2026-08-11 18:37:31 +0800, Xuanqiang Luo wrote:
-> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-> 
-> This series fixes RAVB PTP clock lifetime handling. It reports a cached PHC
-> index without accessing the clock pointer and drains PTP interrupts before
-> unregistering the clock.
-> 
-> Patch 1 caches the PHC index and handles registration failures.
-> 
-> Patch 2 detaches the clock with xchg() and drains the PTP IRQs before
-> unregistering it.
+Patch 2 plumbs the RCQ sign bit through the RDMA driver's LIF configuration,
+exposes it to userspace via the ucontext response, and allows userspace to
+specify ionic specific QP flags during QP creation. This enables rdma-core to
+discover RCQ capability at context allocation time and configure QPs with
+RCQ support.
 
-These patches are rather big change adding READ_ONCE() and WRITE_ONCE() 
-to avoid a LLM warning? Or have you hit a real issue? How have you 
-tested this work?
+PR: https://github.com/linux-rdma/rdma-core/pull/1733
 
-If you have a test-case could you share it? I have a pending series [1] 
-that cleans up the whole RAVB driver ptp management which have grown 
-rather organically. It have a small fix for the missing check of 
-registering the clock. Would it be possible for you to test your work 
-with that series too?
+v6:
+  - Rebased on latest for-next
+  - Added comp_mask in ucontext response
+v5:
+  - Rebased on latest for-next
+  - https://lore.kernel.org/linux-rdma/20260728111323.2559185-1-abhijit.gangurde@amd.com/
+v4:
+  - Dropped robust udata from this series and sent as a seperate patch
+    https://lore.kernel.org/linux-rdma/20260717092345.2533564-1-abhijit.gangurde@amd.com/
+  - Addressed sashiko review comments
+  - https://lore.kernel.org/linux-rdma/20260721121034.1616562-1-abhijit.gangurde@amd.com/
+v3:
+  - Added robust udata compatibility checks
+  - https://lore.kernel.org/linux-rdma/20260617132605.1888205-1-abhijit.gangurde@amd.com/
+v2:
+  - Dropped QP transport mode selection
+  - https://lore.kernel.org/linux-rdma/20260611092544.783731-1-abhijit.gangurde@amd.com/
+v1:
+  - https://lore.kernel.org/linux-rdma/20260430123931.3256130-1-abhijit.gangurde@amd.com/
 
-1.  https://lore.kernel.org/all/20260811160200.2049987-1-niklas.soderlund%2Brenesas@ragnatech.se/
+Abhijit Gangurde (2):
+  net: ionic: Fetch RCQ sign bit from firmware
+  RDMA/ionic: Add RCQ userspace support
 
-> 
-> ---
-> Changes:
-> v4:
->   - Rebase onto Linux 7.2-rc7.
->   Patch 1:
->   - Cache the PHC index separately instead of locking clock access.
->     (Vadim Fedorenko)
->   - Reword the subject and update the commit message for the cached PHC
->     index approach.
->   - Add Vadim Fedorenko's Reviewed-by tag.
->   Patch 2:
->   - Replace priv->lock serialization with PTP interrupt disabling and IRQ
->     draining before unregistering the clock. (Vadim Fedorenko)
->   - Use READ_ONCE() and WRITE_ONCE() for lockless clock pointer access and
->     xchg() to detach the clock atomically.
->   - Track the error and management IRQs and synchronize all IRQs that can
->     invoke the PTP handler.
->   - Update the commit message to describe the interrupt handler race and
->     the new teardown sequence.
-> 
-> v3: https://lore.kernel.org/all/20260806095126.57803-1-xuanqiang.luo@linux.dev/
->   Patch 1:
->   - Omit Niklas Söderlund's Reviewed-by tag because the implementation he
->     reviewed has changed.
->   - Describe the NULL pointer dereference before the first open as the most
->     likely failure mode in the commit message. (Jakub Kicinski, Sashiko)
->   - Normalize PTP clock registration failures to NULL.
->     (Jakub Kicinski, Sashiko)
->   - Keep hardware timestamping capabilities independent of PHC
->     availability. (Jakub Kicinski, Sashiko)
->   Patch 2 (new):
->   - Serialize PTP clock publication and access with priv->lock, and detach
->     the clock before unregistering it. (Jakub Kicinski, Sashiko)
-> 
-> v2: https://lore.kernel.org/all/20260802090750.116215-1-xuanqiang.luo@linux.dev/
->   - Only advertise hardware timestamping support when a PHC is available
->     (Niklas Söderlund).
-> 
-> v1: https://lore.kernel.org/all/20260731063254.71260-1-xuanqiang.luo@linux.dev/
-> 
-> Xuanqiang Luo (2):
->   net: ravb: avoid dereferencing an invalid PTP clock
->   net: ravb: serialize PTP clock teardown
-> 
->  drivers/net/ethernet/renesas/ravb.h      |  3 ++
->  drivers/net/ethernet/renesas/ravb_main.c |  9 +++--
->  drivers/net/ethernet/renesas/ravb_ptp.c  | 44 ++++++++++++++++++++----
->  3 files changed, 47 insertions(+), 9 deletions(-)
-> 
-> 
-> base-commit: db2ddb87143519e20a95aa36c60b36107b736a58
-> -- 
-> 2.43.0
+ .../infiniband/hw/ionic/ionic_controlpath.c   | 20 ++++++++++++++++---
+ drivers/infiniband/hw/ionic/ionic_fw.h        |  2 ++
+ drivers/infiniband/hw/ionic/ionic_lif_cfg.c   |  1 +
+ drivers/infiniband/hw/ionic/ionic_lif_cfg.h   |  1 +
+ .../net/ethernet/pensando/ionic/ionic_if.h    |  6 +++++-
+ include/uapi/rdma/ionic-abi.h                 |  9 ++++++++-
+ 6 files changed, 34 insertions(+), 5 deletions(-)
 
 -- 
-Kind Regards,
-Niklas Söderlund
+2.43.0
+
