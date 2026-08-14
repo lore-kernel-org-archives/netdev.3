@@ -1,53 +1,61 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A071A3D47C0;
-	Fri, 14 Aug 2026 01:52:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E24A3D669F;
+	Fri, 14 Aug 2026 02:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786672360; cv=none; b=uDiMKN+3ZNlAMinu1grFxQjSAR1W+m2kjaRLjORiEeZnQZRvnaGVGTfL2grLUB1bUipogISCIG7yPCElWvqIMnfqdIdq2VmCGiiW1MkOWDpvYyUZV+RDMy69v2BZ2fxrCcSXP5UM9HJSvhTqy7upgi3RZAyh7aKXNzJeUtlYSyY=
+	t=1786672813; cv=none; b=hdbLQx/uh3Gs/wguPhSIuZIyLu0DU7O9pm7r8flKTCX9IwLIC//eBA9kvx8NNyXSX26dqTCdC8ozXDtbeslCr5633AQd3fhbcCFRGOEk18aZIKl1cSQP26N/N2YHImcqQybOTcaJd6mqV3HKKEK/OqSScBV28iEOpsl+3Pf7Ofg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786672360; c=relaxed/simple;
-	bh=x6bV40paVO5KlURhUuIJRVrjQfWHiYkCdt9s3N9oomc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=k4OaoklVXHcxBIu+90p3ddu5KHW48mKAvz7pHhoofJkcThoru2WWcMCd319ZiDnGhrs0+xE2Q3rJUVZun8s1gQLiubv6grvul9V+Cp0V1hy085FE1tjt98rOgXHGlmztw52+K4Q/HiERVQZyjGeug7FlbVlaf/QccPqdBThTabc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=DufXOOrG; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
+	s=arc-20240116; t=1786672813; c=relaxed/simple;
+	bh=BkqYISZMCE3I+d1zkMHciIyUm3StjDP5HyE61566S/A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jUdgG3anaaa2HSOoVbE2hFmdhaP9TggYfaqbl2cl428kHAPC/ItjHDxMDp9Ldls327bHzNA5BTXqM2llRRLPJl/1vnPhtQ403ajsdnjpW/bnblgMRCJAidFilfrvV5wUl1q2W70gf2CXGZKFUovtq1G7H+chkOlFsz28JyLVX1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bpMHf3tI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="DufXOOrG"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 67E1q6ZD1864084, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1786672327;
-	bh=wh9UxNeg75bZWpCOJOQu12hHljl/1xlLk6SC+H2YNtA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=DufXOOrG2O7MpsC9pCoXipkXI6sA6SiTSQAbeUs2xpl1x1c6COJrWDR+22gJqSykZ
-	 E+yca69YY0PB9PPc6Hc2IuCM4N5CBwABK/NvUnpwuSGIGUWGea6pyB7XWnDzXoIQG2
-	 KNRlr8NTxKnLQOwZJQZi9Lk2Gyj4aMG50D2Z4CRmblew6uw74koAeYsrTksG+h4WbT
-	 spaOtt3Fz7Xo7FhmjAePM7gfWT0PYz1cip7BTxopbpyHAb88BX/EXZb20WkOJBZEMu
-	 NpDS3Hv8lb173NJpb4O02ueAOr0u5EjIp9Pr3zxeo02l10PknrjbcmiQgBPTVOkGR6
-	 ix8QocDK8zYWw==
-Received: from RS-EX-MBS1.realsil.com.cn ([172.29.17.101])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 67E1q6ZD1864084
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 14 Aug 2026 09:52:07 +0800
-Received: from RS-EX-MBS1.realsil.com.cn (172.29.17.101) by
- RS-EX-MBS1.realsil.com.cn (172.29.17.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Fri, 14 Aug 2026 09:52:06 +0800
-Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS1.realsil.com.cn
- (172.29.17.101) with Microsoft SMTP Server id 15.2.2562.43 via Frontend
- Transport; Fri, 14 Aug 2026 09:52:06 +0800
-From: javen <javen_xu@realsil.com.cn>
-To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Javen Xu
-	<javen_xu@realsil.com.cn>
-Subject: [PATCH net-next v11 0/7] r8169: add RSS support for RTL8127
-Date: Fri, 14 Aug 2026 09:51:56 +0800
-Message-ID: <20260814015203.1328-1-javen_xu@realsil.com.cn>
-X-Mailer: git-send-email 2.50.1.windows.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bpMHf3tI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB2941F000E9;
+	Fri, 14 Aug 2026 02:00:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786672811;
+	bh=PgzYGdP7hVdfZzBeBpIunkbp2WU5NvkodaLDGdLR/cY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=bpMHf3tIMupXhpzArrZD1ueX4IKpCH4XTvAZmMnDuR/G2eHuHL2xopLeHLtzWxvxt
+	 Pcbh/nvnNDXuBv1hxBz+9LdF145InvAtHN0Rm5Opk3Stk3KMFm2u4L5nLmp5cu/VhX
+	 20JQxG5Q4/pwqLM+7XnisC8J5xHBUOutcr217ZT8kBip6AiXTpWSjHKY8mB/X/22Yu
+	 9yAz5byd22gAulSFP5ESw7bqd1GY/H0VEiQhPHyNWRiZHNTGOuo/KAOJiWkkFBMWxs
+	 rb9q4bn5kcPFH0n4aw7/nUeF1gM8BAtQhKR6HwlStWXGVPWyWc3RsgsP0P0DLIqN0P
+	 6EqaVxkEZxdrQ==
+From: Jakub Kicinski <kuba@kernel.org>
+To: bigeasy@linutronix.de
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	linux-atm-general@lists.sourceforge.net,
+	linux-can@vger.kernel.org,
+	linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	herbert@gondor.apana.org.au,
+	kuniyu@google.com,
+	mkl@pengutronix.de,
+	marcelo.leitner@gmail.com,
+	ncardwell@google.com,
+	socketcan@hartkopp.net,
+	pabeni@redhat.com,
+	courmisch@gmail.com,
+	horms@kernel.org,
+	steffen.klassert@secunet.com,
+	willemdebruijn.kernel@gmail.com,
+	lucien.xin@gmail.com,
+	pmladek@suse.com,
+	thomas.weissschuh@linutronix.de,
+	kees@kernel.org
+Subject: Re: [PATCH net-next v3] net: Replace %pK output with 0
+Date: Thu, 13 Aug 2026 18:58:01 -0700
+Message-ID: <20260814015800.2837019-2-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260812110531.ITPqiY2O@linutronix.de>
+References: <20260812110531.ITPqiY2O@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,57 +63,221 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 
-From: Javen Xu <javen_xu@realsil.com.cn>
+Hi Sebastian!
 
-This patch series adds RSS (Receive Side Scaling) support for the r8169
-ethernet driver, specifically for RTL8127 (RTL_GIGA_MAC_VER_80).
+We have upgraded the slop...itifier since v2, it has more comments now...
+The one about %ps potentially leaking more rather than less looks legit?
+---
+This is an AI-generated review of your patch.
+---
+net: Replace %pK output with 0
 
-RSS enables packet distribution across multiple receive queues, which can
-significantly improve network throughput on multi-core systems by allowing
-parallel processing of incoming packets.
+This replaces the %pK socket/object pointers printed by various /proc/net
+files with a literal 0, adjusts the spacing of the affected header lines,
+and switches the CAN receive list to print the receive callback with %ps.
 
-Key features:
-- Multi-queue RX support (up to 8 queues)
-- MSI-X interrupt with vector mapping
-- Dynamic queue configuration via ethtool (-L)
-- RSS hash computation for flow classification
+> diff --git a/net/atm/proc.c b/net/atm/proc.c
+> index 8f20b49b9c02..ca0fc6b90998 100644
+> --- a/net/atm/proc.c
+> +++ b/net/atm/proc.c
 
-Experiments:
-Platform: AMD Ryzen Embedded R2514 with Radeon Graphics(4 Cores/8 Threads)
-Arch: x86_64
-Test command: 
-  Server: iperf3 -s
-  Client: iperf3 -c 192.168.2.1 -P 20 -t 3600
-Monitor: mpstat -P ALL 1
+The changelog says:
 
-Before this patch (Without RSS):
-  Throughput: Unstable, fluctuating between 3.76 Gbits/sec and
-  8.2 Gbits/sec.
-  CPU Usage: A single CPU core is fully occupied with softirq reaching 
-  up to 96%.
+    The pointer are usually socket pointers and I don't see any value in
+    exposing them. Therefore I am following the recommendation of removing
+    them.
 
-After this patch (With RSS enabled):
-  Throughput: Stable at 9.42 Gbits/sec.
-  CPU Usage: The traffic load is evenly distributed across multiple CPU
-  cores. The maximum softirq on a single core dropped to 63%.
-  
-Other Experiments:
-Link: https://lore.kernel.org/netdev/0A5279953D81BB9C+f50c9b49-3e5d-467f-b69a-7e49ed223383@radxa.com/
+[Severity: Low]
+This isn't something introduced by this patch, but after it is applied
+net/bluetooth/af_bluetooth.c bt_seq_show() is the only remaining %pK
+socket-pointer printer under net/:
 
-Javen Xu (7):
-  r8169: add support for multi irqs
-  r8169: refactor RX path to prepare for multi-queue
-  r8169: add support for new interrupt mapping
-  r8169: enable new interrupt mapping
-  r8169: add support and enable rss
-  r8169: move struct ethtool_ops
-  r8169: add get_channel support for ethtool
+  net/bluetooth/af_bluetooth.c:bt_seq_show() {
+      ...
+      seq_printf(seq,
+                 "%pK %-6d %-6u %-6u %-6u %-6llu %-6llu",
+                 sk,
+                 refcount_read(&sk->sk_refcnt),
+      ...
+  }
 
- drivers/net/ethernet/realtek/r8169_main.c | 1076 ++++++++++++++++++---
- 1 file changed, 929 insertions(+), 147 deletions(-)
+That site was converted by the very commit 71338aa7d050c quoted in the
+changelog.  Was it intentionally left out, and could the changelog say so
+(for example that net/bluetooth goes through a separate tree)?
 
+> @@ -159,7 +159,7 @@ static void vcc_info(struct seq_file *seq, struct atm_vcc *vcc)
+>  {
+>  	struct sock *sk = sk_atm(vcc);
+>  
+> -	seq_printf(seq, "%pK ", vcc);
+> +	seq_puts(seq, "      0 ");
+>  	if (!vcc->dev)
+>  		seq_printf(seq, "Unassigned    ");
+>  	else
+> @@ -228,9 +228,8 @@ static const struct seq_operations pvc_seq_ops = {
+>  static int vcc_seq_show(struct seq_file *seq, void *v)
+>  {
+>  	if (v == SEQ_START_TOKEN) {
+> -		seq_printf(seq, sizeof(void *) == 4 ? "%-8s%s" : "%-16s%s",
+> -			"Address ", "Itf VPI VCI   Fam Flags Reply "
+> -			"Send buffer     Recv buffer      [refcnt]\n");
+> +		seq_puts(seq, "Address Itf VPI VCI   Fam Flags Reply "
+> +			 "Send buffer     Recv buffer     [refcnt]\n");
+
+[Severity: Low]
+The changelog describes this as "Correct the spacing for the cases where
+pointer is at the beginning", but the first column changes width in
+several files, so the byte offsets of every following column move:
+
+  vcc_seq_show()            /proc/net/atm/vc     16 -> 8 chars (64-bit)
+  netlink_native_seq_show() /proc/net/netlink    17 -> 3
+  packet_seq_show()         /proc/net/packet     17 -> 3
+  pfkey_seq_show()          /proc/net/pfkey       9 -> 3
+  unix_seq_show()           /proc/net/unix       18 -> 10
+
+Whitespace/field-index parsers still work since the trailing column widths
+are preserved, but anything indexing by fixed byte offset sees a new
+layout.  Is that worth spelling out in the changelog, given it also states
+that the /proc format can be considered ABI?
+
+Separately, this hunk drops one space before "[refcnt]" in the header
+("Recv buffer      [refcnt]" becomes "Recv buffer     [refcnt]"), which
+isn't mentioned in the changelog at all.  Was that intended?
+
+> diff --git a/net/can/proc.c b/net/can/proc.c
+> index de4d05ae3459..4314180fd7a1 100644
+> --- a/net/can/proc.c
+> +++ b/net/can/proc.c
+> @@ -192,12 +192,11 @@ static void can_print_rcvlist(struct seq_file *m, struct hlist_head *rx_list,
+>  
+>  	hlist_for_each_entry_rcu(r, rx_list, list) {
+>  		char *fmt = (r->can_id & CAN_EFF_FLAG)?
+> -			"   %-5s  %08x  %08x  %pK  %pK  %8ld  %s\n" :
+> -			"   %-5s     %03x    %08x  %pK  %pK  %8ld  %s\n";
+> +			"   %-5s  %08x  %08x  %-20ps %8u %8ld  %s\n" :
+> +			"   %-5s     %03x    %08x  %-20ps %8u %8ld  %s\n";
+>  
+>  		seq_printf(m, fmt, DNAME(dev), r->can_id, r->mask,
+> -			   r->func, r->data, atomic_long_read(&r->matches),
+> -			   r->ident);
+> +			   r->func, 0, atomic_long_read(&r->matches), r->ident);
+>  	}
+>  }
+
+[Severity: Medium]
+Does this widen what unprivileged readers can see, rather than narrow it?
+The rcvlist_* files are created world readable by can_init_proc():
+
+  net/can/proc.c:can_init_proc() {
+      ...
+      net->can.pde_rcvlist_all = proc_create_net_single(CAN_PROC_RCVLIST_ALL,
+                      0644, net->can.proc_dir, can_rcvlist_proc_show,
+                      (void *)RX_ALL);
+      ...
+  }
+
+Unlike %pK, %ps is not filtered by kptr_restrict and is never hashed.  With
+CONFIG_KALLSYMS=n, symbol_string() takes the fallback branch:
+
+  lib/vsprintf.c:symbol_string() {
+      ...
+      return string_nocheck(buf, end, sym, spec);
+  #else
+      return special_hex_number(buf, end, value, sizeof(void *));
+  #endif
+  }
+
+so the raw kernel/module text address of the receive callback is printed to
+any local reader, even with kptr_restrict=2.
+
+With CONFIG_KALLSYMS=y the address is not printed, but the symbol plus the
+owning module name is now disclosed unconditionally, since
+__sprint_symbol() appends the module:
+
+  kernel/kallsyms.c:__sprint_symbol() {
+      ...
+      if (modname) {
+              len += sprintf(buffer + len, " [%s", modname);
+      ...
+  }
+
+Previously kptr_restrict >= 1 censored this field for readers without
+CAP_SYSLOG.  Would the literal 0 placeholder used for the other 14 sites
+work here too?
+
+> @@ -207,10 +206,7 @@ static void can_print_recv_banner(struct seq_file *m)
+>  	 *                  can1.  00000000  00000000  00000000
+>  	 *                 .......          0  tp20
+>  	 */
+
+[Severity: Low]
+This example comment still shows the old layout, where the receive callback
+was an 8-hex-digit %pK value (the third 00000000 column) and userdata was a
+pointer.  can_print_rcvlist() now emits a left-justified symbol name via
+%-20ps and a constant 0 for userdata, so nothing the code can produce
+matches this example.  Should the comment be refreshed?
+
+> -	if (IS_ENABLED(CONFIG_64BIT))
+> -		seq_puts(m, "  device   can_id   can_mask      function          userdata       matches  ident\n");
+> -	else
+> -		seq_puts(m, "  device   can_id   can_mask  function  userdata   matches  ident\n");
+> +	seq_puts(m, "  device   can_id   can_mask  function             userdata  matches  ident\n");
+>  }
+
+[Severity: Low]
+The new banner advertises a fixed 20-character "function" column, but does
+the row format actually stay inside it?
+
+Module symbols printed by %ps carry the module suffix, e.g.
+"bcm_rx_handler [can_bcm]" (24 chars), "j1939_can_recv [can_j1939]" (26)
+or "isotp_rcv [can_isotp]" (21), so userdata/matches/ident get pushed to
+the right whenever can_bcm, can_isotp or can_j1939 is loaded.
+
+In the CONFIG_KALLSYMS=n case symbol_string() calls
+
+      return special_hex_number(buf, end, value, sizeof(void *));
+
+which discards the caller's spec, so the field is an unpadded 18-character
+0xffffffffXXXXXXXX and the following columns shift left instead.
+
+[Severity: Low]
+Documentation/networking/can.rst still documents the previous output of
+/proc/net/can/rcvlist_*:
+
+        device   can_id   can_mask  function  userdata   matches  ident
+         vcan0     000    00000000  f88e6370  f6c6f400         0  raw
+
+After this change the banner is spaced differently, "function" is a symbol
+name that may itself contain a space before "[module]", and "userdata" is
+always 0.  Should can.rst be updated in the same patch?
+
+> diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+> index b8887cdd66c5..2cd8ae4a0e4b 100644
+> --- a/net/ipv4/tcp_ipv4.c
+> +++ b/net/ipv4/tcp_ipv4.c
+
+[ ... ]
+
+> @@ -2811,7 +2810,7 @@ static void get_tcp4_sock(struct sock *sk, struct seq_file *f, int i)
+>  					      READ_ONCE(tp->copied_seq), 0);
+>  
+>  	seq_printf(f, "%4d: %08X:%04X %08X:%04X %02X %08X:%08X %02X:%08lX "
+> -			"%08X %5u %8d %llu %d %pK %lu %lu %u %u %d",
+> +			"%08X %5u %8d %llu %d 0 %lu %lu %u %u %d",
+
+[Severity: Low]
+Documentation/networking/proc_net_tcp.rst still describes this field as the
+
+    |          |    |     |    |------------------> location of socket in memory
+
+and names tcp4_seq_show()/tcp6_seq_show() as the implementation, with a
+nonzero example value.  With get_tcp4_sock(), get_tcp6_sock(),
+get_openreq4()/get_openreq6() and get_timewait4_sock()/get_timewait6_sock()
+all emitting a literal 0 there, no code path can produce the documented
+value any more.  Could that documentation be adjusted along with this
+change?
+
+[ ... ]
 -- 
-2.43.0
-
+pw-bot: cr
