@@ -1,130 +1,131 @@
-Received: from mta0.migadu.com (out-50.mta0.migadu.com [91.218.175.50])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792103655FA
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 22:36:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B3F3914F5
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 22:36:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786746962; cv=none; b=ab9tIrboeSxdpv68RrWN2iYaOGc/aNCR+xPUGXjJiWji+1hBjFXHTpPx56OhSROHR2S2WBQEsZrN5uZ7zjixHmQ/BU17+8LZ1r4iCZ+Ni/+ciQcMGi5hqLfslnoS5NEE36TWw0bLpgqr7sZk9ogoILvFrom10Q4+SYSPQQTsvOQ=
+	t=1786746985; cv=none; b=j8krEPukt6D1xG5M/FEm2zyZd3gtlraRf5QBMlnOypboBO7q5i4URoV79e4JWqwSOHf+XgvA6p0Bf4iuJI6at1lCOERWlx/fkzVaBRmJuU3hJwXQ6vw1vZ0pyzERDB/rkWwypt75M/DOKgxfZ2j2+atbOdCu2m+MzvRF+wuMHyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786746962; c=relaxed/simple;
-	bh=j2vVLjujy7J9hnG+a/goyUa1CpfWLRBE4wlmyu83kyE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o8E4e7Rv7f+frB3xnQd06fD/IMEvsOTob5W0Cn8uQnuEler4AbQl1kEhNc1iMVT//GnwQ66ojispOSbGnAyDv7X0oiRfc191agoOCqZiy+Pduzx8pbIyuJ5iPSCYbl+64kqCEBEaC6NmsD9xheuQ+DLFVnubHBIZBPJi4y2PcG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=X/wRroek; arc=none smtp.client-ip=91.218.175.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1786746985; c=relaxed/simple;
+	bh=naYiAPIkKFS4lMIHjw1ww11hOjagpIMam5a2heARA7w=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=k52Ia4o+QTveca6/7YWHHYr3IyEHxIiH+SFBKTqBF9HmkYUPyNnFPAK2io5BhjlpK6RQKOJISga9Sp0M65PYphIIxN098z6jGhNZKk5yd4np22k12dtJxRMoBw5jS+ywqwZJevw2EpFzA0aG8vy53ZTIFWTwLgTUvOWAXJYhKEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kT+Wn9u9; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="X/wRroek"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=j2vVLjujy7J9hnG+a/goyUa1CpfWLRBE4wlmyu83kyE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786746958; v=1; x=1787351758;
- b=X/wRroekMAtHeYIa2hYbdhfd02Tqc3sJ4PzIFO00GuXszbd9KmPbx91/7lIqTKyXWR8bn08P
- sP2w+nZZzioXgTunusjbACS6gwBw7r6e8d4KlGohHcfR0/s7EHrczfjujWmtvBDPGvWH9enCJ/L
- c/SatSxSMFpRfbRMf9Xi/KPY=
-X-Envelope-To: netdev@vger.kernel.org
-Received: from [192.168.1.24] (109.76.33.138)
-	by smtp.migadu.com with ESMTPS id b78091e580d1a043;
-	Fri, 14 Aug 2026 22:35:58 +0000
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <e28dd09f-be7b-4f74-9d42-95baca307db0@linux.dev>
-Date: Fri, 14 Aug 2026 23:35:57 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kT+Wn9u9"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-381b831d535so2402641a91.0
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 15:36:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786746983; x=1787351783; darn=vger.kernel.org;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HNmr1ayQAvvric/X7TwlZcEWHDeDXUjRegOVWX5UQX0=;
+        b=kT+Wn9u97JmLpZVmMcWJFQl8etvGXoIFyzFIRry/pcHztrWtQNcDoknJ/dNzH8YEmA
+         8yXYpiKpVQBCDvf2KGsdYBRCg3tdQw102erdP20dJ6iYj/j7YK9X33L9LLX/tX8gflSt
+         RkoownteWmRjZ4eMPI/Cig1Ra0OEX+tI+gWiIIyyOICcx4XvAaZ0UshcX14XFNIM6W1R
+         eOv56zv0yQIkn93+9GPjQthELzbwmZcXNVY7LI+IBeBpCPXKzXY2vaYteq5Yx268Poxv
+         CM4zzKMnxsPVkSkeA+xu9Jufm9rqvo03l+DvmlZ4xqNVq3h6ZdCkT6K4w+hM6NTKKUY+
+         m2Vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786746983; x=1787351783;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=HNmr1ayQAvvric/X7TwlZcEWHDeDXUjRegOVWX5UQX0=;
+        b=SQdFqg8xsuOJVBkfDUBpQbiRZ9Kg9l2P+U6YPsfScE+dHLf6vbACQEqK7e5BR/loCw
+         4uS91SSniMCL5DK+D88NpCUjvFjguJKcY7T+GyfpOFOvGQporScnN87oCSDP6K7w3yF3
+         ICkKyGtJO9Ng726dfhnEpMdaLEI+PzArb6EaMI7/3V6DNnMLp1G8ocYxBjAImx3hn7P+
+         bqIZzBMz85ea8CA0aeXIuZhOn9437IHwSYtYn/uB/HDZBx7/pakaXTvWCmyQptW9PDLj
+         a8jf3hqHzQZFssbSoiqLsVdwSJczjtkHH8oyqQohwlwdHEjNFbPkdvKF8gTqCfvUH6cM
+         QblA==
+X-Forwarded-Encrypted: i=1; AHgh+RqS4L5LylqjlZFo5TdIxBXZMrmskjPlC85ny4pjO/P2+tlmQzMvwrxzNb2bSuAtJ06nAOXTABs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0vUubN/HMM+84ZWPAp67bFxbu80Umd+hkC+eZdx9mN/aiBsV2
+	CUEqlqkHENXTgD4XE+ciubdjoqkSXme62L3yZuxSXe5BTz4VcQdLDwEZeGp3nA==
+X-Gm-Gg: AR+sD11hHh8qpmAYxaj9PjAp406gFOBLxPKbW0JZym68QYstK62B0jiyZaMuuChAmZY
+	R0MK3ZNKf9jv8YlScYBj9pbDgwlhL2bIvDhfjI+2w/mZp5b3mp+bfkU5r+Dj1gJCe+oB/u+Wf8e
+	/ujX2I5/m2oRGtdxYSET+dP9YKmk0GQj4GZtvhpD3SOCJxhBG3sQs35q3MxGYEvdM/9MLYuO7fE
+	cPeUJKea0XORrr+6eveuojPziu4p+7Q6zCN4Fc2Hvky5ZVNdsIK0oyXJ3GSLq6z4fDXVxH/bOSV
+	ORrbrPUaIgGIrCEtcWjAlIkxkJsXLV5IQD5cpbeqj+7kTnNVSjpsuehgdVmPP2PGqwGCXw0hdnK
+	SRixvZ09wSZ7ubQWCRC913vT4cSntdWuEsvxQWbIkI15PBtagBGY9ek7KKzESHvC+/A7r+b/vA0
+	0TQIJtmbR2xu70EF8qB8NLUNlVVwgDaa+u2NwKzjOPhcKKxQVPcXlgH8qWqirisAKsPQ0toFCWl
+	Y9dMvPu
+X-Received: by 2002:a17:90b:4cc4:b0:38e:101f:c867 with SMTP id 98e67ed59e1d1-3933b927a55mr10641828a91.18.1786746983082;
+        Fri, 14 Aug 2026 15:36:23 -0700 (PDT)
+Received: from v4bel ([58.123.110.97])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3933b649975sm1818011a91.2.2026.08.14.15.36.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Aug 2026 15:36:22 -0700 (PDT)
+Date: Sat, 15 Aug 2026 07:36:18 +0900
+From: Hyunwoo Kim <imv4bel@gmail.com>
+To: marcelo.leitner@gmail.com, lucien.xin@gmail.com, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org
+Cc: linux-sctp@vger.kernel.org, netdev@vger.kernel.org, imv4bel@gmail.com
+Subject: [PATCH net] sctp: stop processing a packet once its association is
+ deleted
+Message-ID: <an-YYtoqw1QpTXUL@v4bel>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] dpll: fix NULL deref in dpll_device_ops() during
- teardown race
-To: Petr Oros <poros@redhat.com>, netdev@vger.kernel.org
-Cc: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Jiri Pirko <jiri@resnulli.us>, Michal Michalik <michal.michalik@intel.com>,
- Milena Olech <milena.olech@intel.com>, linux-kernel@vger.kernel.org,
- ivecera@redhat.com
-References: <20260813140817.1051388-1-poros@redhat.com>
-Content-Language: en-US
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20260813140817.1051388-1-poros@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 13/08/2026 15:08, Petr Oros wrote:
-> When the last owner of a dpll device unregisters while a foreign driver
-> still holds a pin on it via dpll_pin_on_pin_register(), the dpll object
-> stays alive with an empty registration list. A pin notification queued
-> before the unregister (e.g. ice reacting to zl3073x_i2c removal) then
-> walks pin->dpll_refs into dpll_device_ops(), which trips the WARN_ON and
-> dereferences the missing registration. dpll_lock cannot help because the
-> notification work was queued before the unregistering driver took the
-> lock.
-> 
-> Treat the empty registration list as a legitimate transient state. Make
-> dpll_priv() and dpll_device_ops() return NULL in that case and make
-> every pin netlink path that resolves a device from a pin skip such
-> dplls. dpll_cmd_pin_get_one() picks a ref with a live registration and
-> returns -ENODEV when there is none, the pin dumpit skips such a pin
-> instead of aborting the dump, dpll_msg_add_pin_dplls() and the
-> frequency, esync, reference sync and phase adjust set paths skip dead
-> refs, and dpll_pin_parent_device_set() validates the parent with
-> dpll_device_get_by_id(). dpll_pin_register() is the last caller that
-> dereferenced the device ops without a check, so move its frequency
-> monitor validation under dpll_lock and tolerate a missing registration
-> there as well.
-> 
-> The empty registration list is equivalent to a cleared DPLL_REGISTERED
-> mark, both transitions happen under dpll_lock in dpll_device_register()
-> and dpll_device_unregister(). A pin notification for a pin whose dplls
-> are all gone is now dropped with -ENODEV instead of crashing, all
-> callers in the core ignore that return value.
-> 
->   WARNING: drivers/dpll/dpll_core.c:1092 at dpll_device_ops+0x24/0x40,
->   CPU#83: kworker/u576:3/23471
->   Modules linked in: ... ice ... zl3073x_i2c(-) ... zl3073x ...
->   Workqueue: ice_dpll_wq ice_dpll_pin_notify_work [ice]
->   RIP: 0010:dpll_device_ops+0x24/0x40
->   Call Trace:
->    <TASK>
->    dpll_cmd_pin_get_one+0x336/0x520
->    dpll_pin_event_send+0x82/0x140
->    dpll_pin_on_pin_unregister+0xbb/0x160
->    ice_dpll_pin_notify_work+0x1bc/0x1f0 [ice]
->    process_one_work+0x19e/0x370
->    worker_thread+0x1a6/0x310
->    kthread+0xe4/0x120
->    ret_from_fork+0x1a1/0x270
->    ret_from_fork_asm+0x1a/0x30
->    </TASK>
->   ---[ end trace 0000000000000000 ]---
->   BUG: kernel NULL pointer dereference, address: 0000000000000010
->   #PF: supervisor read access in kernel mode
->   #PF: error_code(0x0000) - not-present page
-> 
-> Fixes: 9431063ad323 ("dpll: core: Add DPLL framework base functions")
-> Signed-off-by: Petr Oros <poros@redhat.com>
-> ---
-> v2:
-> - guard every path that resolves a device from a pin, not only the
->    first ref in dpll_cmd_pin_get_one(); skip half-dead refs in
->    dpll_msg_add_pin_dplls() and the set paths, select a live
->    representative ref and turn the pin dumpit -ENODEV into a per pin
->    skip (Jakub)
-> - validate the parent device in dpll_pin_parent_device_set() via
->    dpll_device_get_by_id()
-> - guard the frequency monitor validation in dpll_pin_register() and
->    perform it under dpll_lock, it was the only remaining unchecked
->    dereference of the device ops
-> - drop patch 2/2, superseded by commit 32239d600236 ("dpll: fix stale
->    iteration in dpll_pin_on_pin_unregister()")
-> 
-> v1: https://lore.kernel.org/all/20260516191317.1005612-2-poros@redhat.com/
-> ---
->   drivers/dpll/dpll_core.c    | 24 +++++++++------
->   drivers/dpll/dpll_netlink.c | 59 ++++++++++++++++++++++++++++++++-----
->   2 files changed, 67 insertions(+), 16 deletions(-)
-> 
+sctp_endpoint_bh_rcv() looks the association up only when chunk->asoc is
+NULL, and caches the result in chunk->asoc and chunk->transport without
+taking a reference.
 
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+A packet that matches no association is handed to the endpoint, so a peer
+can bundle COOKIE ECHO, SHUTDOWN and SHUTDOWN ACK in one packet. The
+COOKIE ECHO creates the association, the SHUTDOWN chunk caches it, and
+with the outqueue empty the SHUTDOWN ACK reaches sctp_sf_do_9_2_final(),
+so the association and its transports are freed.
+
+The endpoint loop has no counterpart to the asoc->base.dead check in
+sctp_assoc_bh_rcv(). The next chunk writes to last_time_heard in the freed
+transport and is then passed to sctp_do_sm() with the freed association.
+The transport is freed through RCU, so this needs the packet to come off
+the socket backlog, where the loop runs in task context.
+
+The endpoint loop cannot do the same check: it holds no reference on the
+association, so reading asoc->base.dead would itself be a use-after-free.
+Mark the packet for discard in the command interpreter, just before it
+deletes the association. That is also before sctp_inq_free() releases the
+chunk on the association receive path.
+
+sctp_sf_do_5_2_4_dupcook() issues SCTP_CMD_DELETE_TCB for the temporary
+association, while the one the packet belongs to stays alive. A restarting
+peer can bundle DATA behind its COOKIE ECHO, so compare against
+chunk->asoc and leave that case alone.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+---
+ net/sctp/sm_sideeffect.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/net/sctp/sm_sideeffect.c b/net/sctp/sm_sideeffect.c
+index 424f10a6fdba9b..94716406d602ce 100644
+--- a/net/sctp/sm_sideeffect.c
++++ b/net/sctp/sm_sideeffect.c
+@@ -1332,6 +1332,10 @@ static int sctp_cmd_interpreter(enum sctp_event_type event_type,
+ 				sctp_outq_uncork(&asoc->outqueue, gfp);
+ 				local_cork = 0;
+ 			}
++			/* No chunk left in this packet may use this asoc. */
++			if (event_type == SCTP_EVENT_T_CHUNK &&
++			    chunk->asoc == asoc)
++				chunk->pdiscard = 1;
+ 			/* Delete the current association.  */
+ 			sctp_cmd_delete_tcb(commands, asoc);
+ 			asoc = NULL;
+-- 
+2.43.0
+
