@@ -1,134 +1,199 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A0F4582EA;
-	Fri, 14 Aug 2026 11:01:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D68448B9C;
+	Fri, 14 Aug 2026 11:02:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786705288; cv=none; b=JmXnPUYcuCICDJ0MTB/BanhB05pgIWgGcic9fso1YAGsYoajjUVA3C3hs7IBFj+uY55a2z3ULrsqc3LWN+N5uD7xptSVwWWhVRpNmcdbLwI+Vi+YmbYAzYo2Hj3HI6HWtx2YyW22rJHQSGs7EABC1+OMc3ol8kx0CO+60M47qTA=
+	t=1786705328; cv=none; b=EnI/bGipJWwCXqhY1lD3FeXzKmAPnW68Zf5DAt9i/IXkHD4JJ1jHXHfOu/FiB8qX4Lc31xqJBGf8Pa1WquXoy8mYPKcF40/jt7fTa8681x9nzjNaeHIOgSmmFdJoDkT4p5aCaNOKlmcHi/0209rdYZppokjaigngU5S+V6lyIv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786705288; c=relaxed/simple;
-	bh=0ghVpFavg1/uLlMHIuze0nLyf4DDxLIRKpsZBa0Bw+Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kr73oSoWQ9B9f8B8xF40CaqpJAK8F3326lfw6H6ZzZAifv6IT1lmd9cO8cQd8hoJaCBZe87gE1iN6Q5cZF9akSyrUPrJ2USGVs/xmHnJ7JRSbGU7k8Cxf2k465q3woN0IUNQYzzhQG8suoQ3jOhG4k7BcYQJTQ6RqpaE+81ut1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 7F9212021EB;
-	Fri, 14 Aug 2026 13:01:03 +0200 (CEST)
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wupep-001RYy-1H;
-	Fri, 14 Aug 2026 13:01:03 +0200
-Received: from ore by dude04 with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1wupep-00000009uX9-1HEL;
-	Fri, 14 Aug 2026 13:01:03 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Linus Walleij <linusw@kernel.org>,
-	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	stable@vger.kernel.org,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Alvin=20=C5=A0ipraga?= <alvin.sipraga@analog.com>,
-	netdev@vger.kernel.org
-Subject: [PATCH net v1 1/1] net: dsa: realtek: use gpiod_set_value_cansleep for reset GPIO
-Date: Fri, 14 Aug 2026 13:01:02 +0200
-Message-ID: <20260814110102.2362246-1-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1786705328; c=relaxed/simple;
+	bh=B58AR9SQxBsV/7KuARWZd24/yABrrClZf+v4qU7pT3Q=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=f2tmGrJWlM0gSkyowSvJi0U4coJA++WqTKQdMprMLiAWdufrdhtpUXn1fKwGmCPf6Z/wL3YLeH/bBZ91IUvvDxIx/RHHFos/qM/E8UwsnOwrXz9Q+BoBkI6kUO/o/kIoeXhLSFphmnzQ3uJ6njc7GfwX0Nbwo7CCcIjNQF8K4U8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AAIzFiaq; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AAIzFiaq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B76EC1F000E9;
+	Fri, 14 Aug 2026 11:01:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786705319;
+	bh=B58AR9SQxBsV/7KuARWZd24/yABrrClZf+v4qU7pT3Q=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=AAIzFiaq2dOHpKq0+Ggb5pBcRqHh26XNnXgCQt2n2JtPhVercUzKMgIHx4dMGL1x6
+	 /+anNoh/KgVuFBIeWu7xMDr+dBKNNhUfv5GqKCJek3KE8DTjverL/XVYSiCVZyKgSo
+	 mRE+pVPiktBslvFYTG+g3jIvsQTnxH2TcdcZVdiEk0ZShv3XynnquzrVHgmbpgnjHP
+	 spCljb/3R102e99PvHaakJug63nc7hOT08HhLUnrAWvt9nvFWfgUTrdXxKZ/+vOi6/
+	 Rwgu+1uIhnxphT3bc5PzyTE28C7NwOhKA/ul26RNdUTU5cR7jVY3MIYpuDf82yCc7F
+	 LPCdrau9EfPQQ==
+Message-ID: <a8f5840cf3f2cbf71de7a1f3957f70d9897adfa2.camel@kernel.org>
+Subject: Re: [PATCH v2 4/8] SUNRPC: undo partial rpcbind registrations when
+ svc_register() fails
+From: Jeff Layton <jlayton@kernel.org>
+To: Chuck Lever <cel@kernel.org>, NeilBrown <neil@brown.name>, Olga
+ Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom
+ Talpey <tom@talpey.com>, Trond Myklebust <trondmy@kernel.org>, Anna
+ Schumaker <anna@kernel.org>, "David S. Miller"	 <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski	 <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman	 <horms@kernel.org>, "J. Bruce
+ Fields" <bfields@fieldses.org>, Shuah Khan	 <shuah@kernel.org>
+Cc: linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, Trond Myklebust <trondmy@gmail.com>, 
+	linux-kselftest@vger.kernel.org
+Date: Fri, 14 Aug 2026 07:01:55 -0400
+In-Reply-To: <572f0269-9bf4-4a80-8e9c-3c4614d45f7e@app.fastmail.com>
+References: <20260811-nfsd-nl-hang-v2-0-c0c92b3953c3@kernel.org>
+	 <20260811-nfsd-nl-hang-v2-4-c0c92b3953c3@kernel.org>
+	 <e1706a70-d9f8-423e-9462-2d77b2e444b1@app.fastmail.com>
+	 <26486c88075a0b1e3c1cb088fe97d39e0051b5d3.camel@kernel.org>
+	 <572f0269-9bf4-4a80-8e9c-3c4614d45f7e@app.fastmail.com>
+Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
+ keydata=mQINBE6V0TwBEADXhJg7s8wFDwBMEvn0qyhAnzFLTOCHooMZyx7XO7dAiIhDSi7G1NPxw
+ n8jdFUQMCR/GlpozMFlSFiZXiObE7sef9rTtM68ukUyZM4pJ9l0KjQNgDJ6Fr342Htkjxu/kFV1Wv
+ egyjnSsFt7EGoDjdKqr1TS9syJYFjagYtvWk/UfHlW09X+jOh4vYtfX7iYSx/NfqV3W1D7EDi0PqV
+ T2h6v8i8YqsATFPwO4nuiTmL6I40ZofxVd+9wdRI4Db8yUNA4ZSP2nqLcLtFjClYRBoJvRWvsv4lm
+ 0OX6MYPtv76hka8lW4mnRmZqqx3UtfHX/hF/zH24Gj7A6sYKYLCU3YrI2Ogiu7/ksKcl7goQjpvtV
+ YrOOI5VGLHge0awt7bhMCTM9KAfPc+xL/ZxAMVWd3NCk5SamL2cE99UWgtvNOIYU8m6EjTLhsj8sn
+ VluJH0/RcxEeFbnSaswVChNSGa7mXJrTR22lRL6ZPjdMgS2Km90haWPRc8Wolcz07Y2se0xpGVLEQ
+ cDEsvv5IMmeMe1/qLZ6NaVkNuL3WOXvxaVT9USW1+/SGipO2IpKJjeDZfehlB/kpfF24+RrK+seQf
+ CBYyUE8QJpvTZyfUHNYldXlrjO6n5MdOempLqWpfOmcGkwnyNRBR46g/jf8KnPRwXs509yAqDB6sE
+ LZH+yWr9LQZEwARAQABtCVKZWZmIExheXRvbiA8amxheXRvbkBwb29jaGllcmVkcy5uZXQ+iQI7BB
+ MBAgAlAhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAUCTpXWPAIZAQAKCRAADmhBGVaCFc65D/4
+ gBLNMHopQYgG/9RIM3kgFCCQV0pLv0hcg1cjr+bPI5f1PzJoOVi9s0wBDHwp8+vtHgYhM54yt43uI
+ 7Htij0RHFL5eFqoVT4TSfAg2qlvNemJEOY0e4daljjmZM7UtmpGs9NN0r9r50W82eb5Kw5bc/r0km
+ R/arUS2st+ecRsCnwAOj6HiURwIgfDMHGPtSkoPpu3DDp/cjcYUg3HaOJuTjtGHFH963B+f+hyQ2B
+ rQZBBE76ErgTDJ2Db9Ey0kw7VEZ4I2nnVUY9B5dE2pJFVO5HJBMp30fUGKvwaKqYCU2iAKxdmJXRI
+ ONb7dSde8LqZahuunPDMZyMA5+mkQl7kpIpR6kVDIiqmxzRuPeiMP7O2FCUlS2DnJnRVrHmCljLkZ
+ Wf7ZUA22wJpepBligemtSRSbqCyZ3B48zJ8g5B8xLEntPo/NknSJaYRvfEQqGxgk5kkNWMIMDkfQO
+ lDSXZvoxqU9wFH/9jTv1/6p8dHeGM0BsbBLMqQaqnWiVt5mG92E1zkOW69LnoozE6Le+12DsNW7Rj
+ iR5K+27MObjXEYIW7FIvNN/TQ6U1EOsdxwB8o//Yfc3p2QqPr5uS93SDDan5ehH59BnHpguTc27Xi
+ QQZ9EGiieCUx6Zh2ze3X2UW9YNzE15uKwkkuEIj60NvQRmEDfweYfOfPVOueC+iFifbQgSmVmZiBM
+ YXl0b24gPGpsYXl0b25AcmVkaGF0LmNvbT6JAjgEEwECACIFAk6V0q0CGwMGCwkIBwMCBhUIAgkKC
+ wQWAgMBAh4BAheAAAoJEAAOaEEZVoIViKUQALpvsacTMWWOd7SlPFzIYy2/fjvKlfB/Xs4YdNcf9q
+ LqF+lk2RBUHdR/dGwZpvw/OLmnZ8TryDo2zXVJNWEEUFNc7wQpl3i78r6UU/GUY/RQmOgPhs3epQC
+ 3PMJj4xFx+VuVcf/MXgDDdBUHaCTT793hyBeDbQuciARDJAW24Q1RCmjcwWIV/pgrlFa4lAXsmhoa
+ c8UPc82Ijrs6ivlTweFf16VBc4nSLX5FB3ls7S5noRhm5/Zsd4PGPgIHgCZcPgkAnU1S/A/rSqf3F
+ LpU+CbVBDvlVAnOq9gfNF+QiTlOHdZVIe4gEYAU3CUjbleywQqV02BKxPVM0C5/oVjMVx3bri75n1
+ TkBYGmqAXy9usCkHIsG5CBHmphv9MHmqMZQVsxvCzfnI5IO1+7MoloeeW/lxuyd0pU88dZsV/riHw
+ 87i2GJUJtVlMl5IGBNFpqoNUoqmvRfEMeXhy/kUX4Xc03I1coZIgmwLmCSXwx9MaCPFzV/dOOrju2
+ xjO+2sYyB5BNtxRqUEyXglpujFZqJxxau7E0eXoYgoY9gtFGsspzFkVNntamVXEWVVgzJJr/EWW0y
+ +jNd54MfPRqH+eCGuqlnNLktSAVz1MvVRY1dxUltSlDZT7P2bUoMorIPu8p7ZCg9dyX1+9T6Muc5d
+ Hxf/BBP/ir+3e8JTFQBFOiLNdFtB9KZWZmIExheXRvbiA8amxheXRvbkBzYW1iYS5vcmc+iQI4BBM
+ BAgAiBQJOldK9AhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRAADmhBGVaCFWgWD/0ZRi4h
+ N9FK2BdQs9RwNnFZUr7JidAWfCrs37XrA/56olQl3ojn0fQtrP4DbTmCuh0SfMijB24psy1GnkPep
+ naQ6VRf7Dxg/Y8muZELSOtsv2CKt3/02J1BBitrkkqmHyni5fLLYYg6fub0T/8Kwo1qGPdu1hx2BQ
+ RERYtQ/S5d/T0cACdlzi6w8rs5f09hU9Tu4qV1JLKmBTgUWKN969HPRkxiojLQziHVyM/weR5Reu6
+ FZVNuVBGqBD+sfk/c98VJHjsQhYJijcsmgMb1NohAzwrBKcSGKOWJToGEO/1RkIN8tqGnYNp2G+aR
+ 685D0chgTl1WzPRM6mFG1+n2b2RR95DxumKVpwBwdLPoCkI24JkeDJ7lXSe3uFWISstFGt0HL8Eew
+ P8RuGC8s5h7Ct91HMNQTbjgA+Vi1foWUVXpEintAKgoywaIDlJfTZIl6Ew8ETN/7DLy8bXYgq0Xzh
+ aKg3CnOUuGQV5/nl4OAX/3jocT5Cz/OtAiNYj5mLPeL5z2ZszjoCAH6caqsF2oLyAnLqRgDgR+wTQ
+ T6gMhr2IRsl+cp8gPHBwQ4uZMb+X00c/Amm9VfviT+BI7B66cnC7Zv6Gvmtu2rEjWDGWPqUgccB7h
+ dMKnKDthkA227/82tYoFiFMb/NwtgGrn5n2vwJyKN6SEoygGrNt0SI84y6hEVbQlSmVmZiBMYXl0b
+ 24gPGpsYXl0b25AcHJpbWFyeWRhdGEuY29tPokCOQQTAQIAIwUCU4xmKQIbAwcLCQgHAwIBBhUIAg
+ kKCwQWAgMBAh4BAheAAAoJEAAOaEEZVoIV1H0P/j4OUTwFd7BBbpoSp695qb6HqCzWMuExsp8nZjr
+ uymMaeZbGr3OWMNEXRI1FWNHMtcMHWLP/RaDqCJil28proO+PQ/yPhsr2QqJcW4nr91tBrv/MqItu
+ AXLYlsgXqp4BxLP67bzRJ1Bd2x0bWXurpEXY//VBOLnODqThGEcL7jouwjmnRh9FTKZfBDpFRaEfD
+ FOXIfAkMKBa/c9TQwRpx2DPsl3eFWVCNuNGKeGsirLqCxUg5kWTxEorROppz9oU4HPicL6rRH22Ce
+ 6nOAON2vHvhkUuO3GbffhrcsPD4DaYup4ic+DxWm+DaSSRJ+e1yJvwi6NmQ9P9UAuLG93S2MdNNbo
+ sZ9P8k2mTOVKMc+GooI9Ve/vH8unwitwo7ORMVXhJeU6Q0X7zf3SjwDq2lBhn1DSuTsn2DbsNTiDv
+ qrAaCvbsTsw+SZRwF85eG67eAwouYk+dnKmp1q57LDKMyzysij2oDKbcBlwB/TeX16p8+LxECv51a
+ sjS9TInnipssssUDrHIvoTTXWcz7Y5wIngxDFwT8rPY3EggzLGfK5Zx2Q5S/N0FfmADmKknG/D8qG
+ IcJE574D956tiUDKN4I+/g125ORR1v7bP+OIaayAvq17RP+qcAqkxc0x8iCYVCYDouDyNvWPGRhbL
+ UO7mlBpjW9jK9e2fvZY9iw3QzIPGKtClKZWZmIExheXRvbiA8amVmZi5sYXl0b25AcHJpbWFyeWRh
+ dGEuY29tPokCOQQTAQIAIwUCU4xmUAIbAwcLCQgHAwIBBhUIAgkKCwQWAgMBAh4BAheAAAoJEAAOa
+ EEZVoIVzJoQALFCS6n/FHQS+hIzHIb56JbokhK0AFqoLVzLKzrnaeXhE5isWcVg0eoV2oTScIwUSU
+ apy94if69tnUo4Q7YNt8/6yFM6hwZAxFjOXR0ciGE3Q+Z1zi49Ox51yjGMQGxlakV9ep4sV/d5a50
+ M+LFTmYSAFp6HY23JN9PkjVJC4PUv5DYRbOZ6Y1+TfXKBAewMVqtwT1Y+LPlfmI8dbbbuUX/kKZ5d
+ dhV2736fgyfpslvJKYl0YifUOVy4D1G/oSycyHkJG78OvX4JKcf2kKzVvg7/Rnv+AueCfFQ6nGwPn
+ 0P91I7TEOC4XfZ6a1K3uTp4fPPs1Wn75X7K8lzJP/p8lme40uqwAyBjk+IA5VGd+CVRiyJTpGZwA0
+ jwSYLyXboX+Dqm9pSYzmC9+/AE7lIgpWj+3iNisp1SWtHc4pdtQ5EU2SEz8yKvDbD0lNDbv4ljI7e
+ flPsvN6vOrxz24mCliEco5DwhpaaSnzWnbAPXhQDWb/lUgs/JNk8dtwmvWnqCwRqElMLVisAbJmC0
+ BhZ/Ab4sph3EaiZfdXKhiQqSGdK4La3OTJOJYZphPdGgnkvDV9Pl1QZ0ijXQrVIy3zd6VCNaKYq7B
+ AKidn5g/2Q8oio9Tf4XfdZ9dtwcB+bwDJFgvvDYaZ5bI3ln4V3EyW5i2NfXazz/GA/I/ZtbsigCFc
+ 8ftCBKZWZmIExheXRvbiA8amxheXRvbkBrZXJuZWwub3JnPokCOAQTAQIAIgUCWe8u6AIbAwYLCQg
+ HAwIGFQgCCQoLBBYCAwECHgECF4AACgkQAA5oQRlWghUuCg/+Lb/xGxZD2Q1oJVAE37uW308UpVSD
+ 2tAMJUvFTdDbfe3zKlPDTuVsyNsALBGclPLagJ5ZTP+Vp2irAN9uwBuacBOTtmOdz4ZN2tdvNgozz
+ uxp4CHBDVzAslUi2idy+xpsp47DWPxYFIRP3M8QG/aNW052LaPc0cedYxp8+9eiVUNpxF4SiU4i9J
+ DfX/sn9XcfoVZIxMpCRE750zvJvcCUz9HojsrMQ1NFc7MFT1z3MOW2/RlzPcog7xvR5ENPH19ojRD
+ CHqumUHRry+RF0lH00clzX/W8OrQJZtoBPXv9ahka/Vp7kEulcBJr1cH5Wz/WprhsIM7U9pse1f1g
+ Yy9YbXtWctUz8uvDR7shsQxAhX3qO7DilMtuGo1v97I/Kx4gXQ52syh/w6EBny71CZrOgD6kJwPVV
+ AaM1LRC28muq91WCFhs/nzHozpbzcheyGtMUI2Ao4K6mnY+3zIuXPygZMFr9KXE6fF7HzKxKuZMJO
+ aEZCiDOq0anx6FmOzs5E6Jqdpo/mtI8beK+BE7Va6ni7YrQlnT0i3vaTVMTiCThbqsB20VrbMjlhp
+ f8lfK1XVNbRq/R7GZ9zHESlsa35ha60yd/j3pu5hT2xyy8krV8vGhHvnJ1XRMJBAB/UYb6FyC7S+m
+ QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+On Wed, 2026-08-12 at 15:57 -0400, Chuck Lever wrote:
+>=20
+> On Wed, Aug 12, 2026, at 3:38 PM, Jeff Layton wrote:
+> > On Tue, 2026-08-11 at 15:19 -0400, Chuck Lever wrote:
+>=20
+> > > For an IPv4 listener, the port-zero callback falls back through
+> > > __svc_rpcb_register4() to rpcb_register(). PMAPPROC_UNSET ignores
+> > > its protocol argument, so unwinding a partially successful TCP
+> > > registration also removes the mappings for existing listeners on
+> > > other transports, I would think.
+> > >=20
+> > > It might be that the best the kernel can do here is tear everything
+> > > down if one registration fails.
+> > >=20
+> >=20
+> > What I was thinking for NFSv2/3 was to just have the listener set
+> > netlink call wait for registration to complete before returning to
+> > userland. That would mean we'd have to block even longer to try and
+> > unregister things if things fail.
+> >=20
+> > Alternate proposal: let's just declare rpcbind reg errors to be non-
+> > fatal: do a pr_warn() and just leave it up to the admin to sort it out
+> > if that happens instead of trying to fail the startup.
+> >=20
+> > The resulting situation for the server is no worse off (it's just
+> > running instead of being down), and I move that we're better off
+> > leaving it up to a human to clean up the mess instead of trying to fix
+> > things up from the kernel.
+>=20
+> I was thinking of this in terms of a declarative administrative UI:
+> If the kernel can't set the requested configuration, it should
+> fail back to the previous configuration. Maybe that's not possible.
+>=20
 
-rtl83xx_reset_assert() and rtl83xx_reset_deassert() are only called from
-the probe path, which may sleep and is not timing-critical.  When the
-reset GPIO is provided by a sleeping controller such as an I2C I/O
-expander, gpiod_set_value() warns:
+It's possible, but difficult. The original /proc interfaces were never
+this clean, so making the underlying bits behave this way for the
+netlink interfaces, but not the legacy /proc ones will be hard.
 
-  WARNING: drivers/gpio/gpiolib.c:4030 at gpiod_set_value+0x44/0x80, CPU#1: kworker/u16:4/61
-  Hardware name: B&O MAP CA33 Rev f (UNKNOWN) (DT)
-  Workqueue: events_unbound deferred_probe_work_func
-  pc : gpiod_set_value+0x44/0x80
-  lr : rtl83xx_probe+0x1d8/0x3a0
-  Call trace:
-   gpiod_set_value+0x44/0x80 (P)
-   rtl83xx_probe+0x1d8/0x3a0
-   realtek_mdio_probe+0x24/0xa0
-   mdio_probe+0x38/0x78
-   really_probe+0xc4/0x3e0
-   __driver_probe_device+0x15c/0x1b8
-   driver_probe_device+0xb4/0x120
-   __device_attach_driver+0xb8/0x1a0
-   bus_for_each_drv+0x88/0xf0
-   __device_attach+0xa0/0x1d8
-   device_initial_probe+0x54/0x68
-   bus_probe_device+0x38/0xa0
-   deferred_probe_work_func+0xb8/0x120
-   process_one_work+0x184/0x4e8
-   worker_thread+0x188/0x308
-   kthread+0x130/0x150
-   ret_from_fork+0x10/0x20
+Also, today we don't take any steps to try and preserve the old
+listener table. That would have to be done here as well.
 
-Switch both helpers to gpiod_set_value_cansleep() so such a reset GPIO can
-be used without triggering the warning.
+> On the other hand, what might be better is to handle the rpcbind
+> registration from user space instead of the kernel, after the
+> kernel listener is set up.
+>=20
 
-The reset GPIO has been driven with the non-sleeping gpiod_set_value()
-since the driver was added in v4.19.  The call has since been refactored
-across several files - from realtek-smi.c / realtek-mdio.c into the common
-rtl83xx.c module and then into the rtl83xx_reset_assert() and
-rtl83xx_reset_deassert() helpers (both in v6.9).  This patch therefore
-applies as-is only to kernels that carry those helpers (v6.9+); older
-stable kernels need the same gpiod_set_value_cansleep() conversion at the
-corresponding open-coded call sites.
+That's possible I guess. We could send a new boolean down in the
+listener call that says "don't do any rpcbind registration" and then if
+the kernel indicates that it understands that message then userland
+could do the registration.
 
-Fixes: d8652956cf37 ("net: dsa: realtek-smi: Add Realtek SMI driver")
-Cc: <stable@vger.kernel.org> # 6.9.x
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Co-developed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- drivers/net/dsa/realtek/rtl83xx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+That's a major undertaking though and I don't like fundamentally
+changing the interface here, particularly when we'll still have to cope
+with doing this from the kernel for legacy cases.
 
-diff --git a/drivers/net/dsa/realtek/rtl83xx.c b/drivers/net/dsa/realtek/rtl83xx.c
-index 09fd64880232..8121ec12fd8b 100644
---- a/drivers/net/dsa/realtek/rtl83xx.c
-+++ b/drivers/net/dsa/realtek/rtl83xx.c
-@@ -334,7 +334,7 @@ void rtl83xx_reset_assert(struct realtek_priv *priv)
- 			 "Failed to assert the switch reset control: %pe\n",
- 			 ERR_PTR(ret));
- 
--	gpiod_set_value(priv->reset, true);
-+	gpiod_set_value_cansleep(priv->reset, true);
- }
- 
- void rtl83xx_reset_deassert(struct realtek_priv *priv)
-@@ -347,7 +347,7 @@ void rtl83xx_reset_deassert(struct realtek_priv *priv)
- 			 "Failed to deassert the switch reset control: %pe\n",
- 			 ERR_PTR(ret));
- 
--	gpiod_set_value(priv->reset, false);
-+	gpiod_set_value_cansleep(priv->reset, false);
- }
- 
- /**
--- 
-2.47.3
+I still think the best solution of all would be to just say
+"henceforth, rpcbind registration is non-fatal". That just leaves the
+kernel succeeding the listener set today when it would have failed
+before, but will still printk() an appropriate warning in that case, so
+the admin should be aware that rpcbind registration failed, even though
+the server is up.
 
+Right now, I'm really unclear on what sort of changes you want to see
+here as a final patchset. What would make this mergeable for you?
+--=20
+Jeff Layton <jlayton@kernel.org>
