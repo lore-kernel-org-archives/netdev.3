@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82BD42EEE84;
-	Fri, 14 Aug 2026 01:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB43351C1C;
+	Fri, 14 Aug 2026 01:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786670866; cv=none; b=FsP4SXV0BHzzxhgLqO8n6PvkpXrqhcBtoRE3vB7Bse1k3e2Dwz+xzg1oKdl0X/+bl31y1pxEWzf7jGHYrBqhpk2EfdPdstSRQojAvDSKEczVsif4paGQajyQJfCpZ9T3LCYg5MfjFSBGJwoXq2uQaVVOZs0LcyebjtZxkmAo1ak=
+	t=1786671016; cv=none; b=RLQNssBR2d0Hh3NS1u4hDvT2eC2oSNlEMq1z0zRJauW7obOw50kE19Dzg1jZUTikcPvfeAtJvGNFyGy7SeVl9cKGLVrN2yVEez1rcITD0oVJNaHG41W4nWrNzDWRsrM8pe4mrL24Ad1j0MNDr9gV11bLoHGt3ScptgiLbdCTVfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786670866; c=relaxed/simple;
-	bh=bTrY53xmDU/m68zrX8h4ihP8/74jSNSEuu254deFRYQ=;
+	s=arc-20240116; t=1786671016; c=relaxed/simple;
+	bh=YV5FlQb2I83Z8zwE+O4pS+iUBmpFSNtmtYYaGlYE330=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hSgCzItbSD6vi6N2GAgRurPoEKNNS+Zfn8e5ut9nETAR6TqmzHHfHsUmXxB7pFjQwjBmLr6ONq0PTv6iqOgL5eGql7vCSMg6sOdEskRNjDAIBlcv3LCky/OfmrkMNy79B7AQQYDaqPNYHZabfIou7Z7pLZ7IqjNH0fJ7EyXhZHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bRnmkH/D; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=UcDY+f2wL1pS/odK+eddZ9AmhIATOyL5MuRE7/INLl2c69QN0xwC9eBe3PkGz3f7m1msPaJqOla8pr5CMb4n6F6jnpwu90Jc1eRtla0pgNeci54zzakjW5m1dBJKrNo8zg7XbSRW0hOoLypbKDmAuGdL6cSLML/CzRgBoEW4BXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NYVTmlEO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bRnmkH/D"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D1431F000E9;
-	Fri, 14 Aug 2026 01:27:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NYVTmlEO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B531F000E9;
+	Fri, 14 Aug 2026 01:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786670865;
-	bh=IY33QpInoKWY6iHHAuzKwNM0KrzwB5d8UOXp1QCwtAE=;
+	s=k20260515; t=1786671009;
+	bh=pl/zgS/0jykM3Z7zE5Mqv+2yJ7UKl83IvSkTTU1YVxk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=bRnmkH/DsYJ5fEIPC30YDz/wMXm3XhJOU5nYDMR01n+67LTRsK3wfxOJlENpK0+xK
-	 oPSkeVpWP+z6ZaojawXuKXA9PuR69n35LAICkaJ/bne1BdEWFrqaSE0Z3AxnkSnWF9
-	 GokAop5+J7f7jeQmHk+Hd5fTHosiNdOpiVlbWYzz2DDshskOomYWKzd2kgfl1PO0dr
-	 7okBSe40vX/ZcRlC932Fg+M31bDX5mjE64r7eXHrXwSlQ/D/s2vxknhtHyLV4pCZA6
-	 2GOTeJXLseAdbt+o5khMu5E7re8mkUHbvD3HODRv1W+jyVaWkOsR79bxDor6TieDNi
-	 5Pi5XOZ1WUvWA==
-Date: Thu, 13 Aug 2026 18:27:44 -0700
+	b=NYVTmlEOLBv6gN6L1vVcOZFqFUF/CUOALWlH97m0VgNKMLJoqfF81xV66eCBHSBn6
+	 6lThBy/UQhn8CD6DIwXqhwG9iy+s7aZFPJyRwvuXzKxTTWpmphxuS92TllO5Se2lIW
+	 mJ6bDY2y7Q/k1+UC4lO6QjaZY3TYbp54jzwXDG77GT2nXEDnIt12zjhCMG8hZg1JRA
+	 0TcGOnBObfkIAWihAOq/xQlmDWcctc14URzggDoFIKU3HQrx63rzGY7OXM12i7BnkM
+	 /TwaM0JzpNzZ4i3M0h9PzkiYMYJ4k/0UtSNif87AffRnbLoHE+vswq0iv9lltD/JNC
+	 EQExiRX6IGdag==
+Date: Thu, 13 Aug 2026 18:30:08 -0700
 From: Jakub Kicinski <kuba@kernel.org>
 To: Xin Xie <xiexinet@gmail.com>
 Cc: davem@davemloft.net, pabeni@redhat.com, edumazet@google.com,
@@ -34,12 +34,12 @@ Cc: davem@davemloft.net, pabeni@redhat.com, edumazet@google.com,
  fmaurer@redhat.com, luka.gejak@linux.dev, bigeasy@linutronix.de,
  ali@iusegentoo.com, qingfang.deng@linux.dev, netdev@vger.kernel.org,
  linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net v3 1/3] net: hsr: privatize interlink-bound skbs
- before address mutation
-Message-ID: <20260813182744.4bd0002f@kernel.org>
-In-Reply-To: <20260808004525.1551-2-xiexinet@gmail.com>
+Subject: Re: [PATCH net v3 3/3] selftests: net: hsr: add shared-mutation
+ regression test
+Message-ID: <20260813183008.31e14297@kernel.org>
+In-Reply-To: <20260808004525.1551-4-xiexinet@gmail.com>
 References: <20260808004525.1551-1-xiexinet@gmail.com>
-	<20260808004525.1551-2-xiexinet@gmail.com>
+	<20260808004525.1551-4-xiexinet@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,10 +49,13 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat,  8 Aug 2026 02:45:22 +0200 Xin Xie wrote:
-> +	if (port->type == HSR_PT_INTERLINK &&
-> +	    (frame->port_rcv->type == HSR_PT_MASTER ||
-> +	     (frame->is_local_dest && !frame->is_local_exclusive)) &&
-> +	    skb_cow(skb, 0)) {
+On Sat,  8 Aug 2026 02:45:24 +0200 Xin Xie wrote:
+> +	nsx python3 /dev/stdin <<'PYF1'
+> +import socket, select, sys, time
 
-Would skb_cow_head() be sufficient? It's much cheaper, at least for TCP.
+It's a "no" on embedded Python in bash scripts.
+Where do people get that from? Did AI generate it or are there projects
+in which this is common practice?
+
+Please write the whole test in Python (see .../net/lib/py/ helpers),
+or move the python code out to its own scrip under TEST_FILES
