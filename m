@@ -1,120 +1,215 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B6A47606E;
-	Fri, 14 Aug 2026 15:28:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15FCC3BCD3C
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 15:33:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786721323; cv=none; b=HWqKYAe26pKys1R4Pz64ktVV92VKqVsTwJjOAJzGrVK7ZUefiprGPCnEsUfVM69jqeHqCKN/skrU7kmtO5340BBY1aypiFUSHGf6ctb+ETvIlUYWy9y0I76ynhDRT3F4BzIT+7rozBE3pgTt9as4mJZWd3Jdp5H5zfgESasDJzQ=
+	t=1786721588; cv=none; b=cqajBOrFwlahPIRJenBBbKAHoPMOibno9bfT+NJEuIJc9KgXjWcr431qX6g6fMEh89ynvkbI82L2Or89K/rbujAsR3knWioRXYEk2iFJ+5Lb9o/pxGi8JGU8kYgxlRtrC24HaM5/nShhp6GQKTxzTMBXBZn355b3LsYUBsWBs1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786721323; c=relaxed/simple;
-	bh=nM2KpLAD+dQ4Lc9S8GqnM/gjeb+efgIynIrAPZqM9Bk=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=aMJxCxELIlsbvOfrcQTyjEbCeZymLN1HRPiGIQ6MvOTro/4AvVG1s9sxmIDoDwUd+wu7AyaaE4q9KheGuCUs/6GmTV5sVVvwFC994J9oSZe44fQ0OntjIkmzBquz4d4UMEz++IVEqdGGCtLqHn2idUnRIhNIPY7slkzeOLCNO9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GLqgq6Fg; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786721588; c=relaxed/simple;
+	bh=l6ZVF6Xg5OfhCSgAF1VZK6EQ6CumsxwL38iwWWa4I1M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NzauuegMIJy9LyjPuxq7swQ+pBtIRx19KWuXwNe7vprLGR5uFriMN7gEME27Kd7nQ7pp+XKE91maW4ncPyvrlmnzFCtxUAdw+Uyu5Qtfv84Mfeb0NNzB15exr1IJiHQ1Gw/qVQGvc2ZPvA8NYl3fZK4iEcNAuVFRUuBuvlK00+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H23r9Hny; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GLqgq6Fg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF1F1F00A3D;
-	Fri, 14 Aug 2026 15:28:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786721321;
-	bh=KitOUslk+18qH3Fpmqr2kv9IYMnx8rgJ/awcl8hCp38=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=GLqgq6FgjleJZrv/0WD+jXDedrNVZ6uzo1BN4AjyGbxKeJBMXbxYtpLBLC5TaRnl0
-	 gOi7bTv3T7DolDqm7NaT8uyXcx4k4IkePEQNQA4E9rLAZRnXYqf6nNS1t4T3WsomHJ
-	 xSRaEpggt6SdBn+/NFIT4M9ii4lIXZSFDpnR1Ag16dfPGNSQwddGnSZ7tgdn9Ujv+h
-	 YVMIfIO+2V+EzbHU80c+qxTjg5Zc7BKX/Z15te/NHV4qMGdtthYzqDy6ovzqYRsSns
-	 I7BzQkb6wjlitagN09CuC3ZkJXDNn43AuTFHeMdxLFuwyXG7gtaTnujGGKyLxzkGU7
-	 ZkjfOFp06yP3w==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 55858F4006B;
-	Fri, 14 Aug 2026 11:28:40 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Fri, 14 Aug 2026 11:28:40 -0400
-X-ME-Sender: <xms:KDR_agih36I9vX1bg8KhMnC9qpSpApSxNSt1N0lUuDrULj6NeclTRQ>
-    <xme:KDR_aj2U04JPrni11F1cOcFDR-ZZm4x9MmrqHNjwW81ijlkhptYcCakaWMFLYfMvo
-    62gJh4V907Af0FYuCLzEOa_XZs7DqqebBSOdWQUTT4vpkQWUI6Hfc4a>
-X-ME-Proxy-Cause: dmFkZTEGStmNNX26DAxDIcjkyicgJ1tisH3i7jCTFxIriRsENLcLDfFwm35RsshH3i7m24
-    9rNg7ApoXWaNiQrVA0Nbw6RBpIYzLVwv8O95ks12I8jLDG2yXWmRCPZukUox0O65+o2W7b
-    O+pQTdMu+6TXOmWt7k7NsAZHcenVbcd4afn/pi2im5yxTIMTTOWz+0JigG4tGQORGjmRgK
-    3k14CR2zxuERiDQjf8CuWF96H80skMEOFyNQULD7m9vB6ECO0MhXp1ESiZCAR7JD+3vsy0
-    rl0zIT6vn05s59S8W7vacK/RVSGq9w3iQqBCYitxdOcBm3P3dg9wmBjaMgHQ8nXf1A8PRi
-    TxQOwap/SQtHBe91A6+X+pjvtkxQXFmUpnlxuHI04XnRo/MN3Ivpehv8B7klgHbuB01sXP
-    Qkp3HSDV1AARXL2ocoHfETcYGThYRO3TFUuLWplhZPVnO93prYzNcR2d0VLN2AsOBrdRFg
-    Xr1HDLzpY3D9ctvIOKbx1v1ulcGtbeNJ/JhMFJBXltMBaRnKL7tuLpWr4LwmejeY5bLwuW
-    9NC8yDimzFST1RTvRUbaMMdZoVXNqrWVXA9jD7JT5B5QUjnx5gHqPRT0wFd56v9AJtHI33
-    fiy1zDQBwNkrQ8fhbArqjPBEBYOgVPJ52Lbo8tsbzneEmJOTo02qFOJv6S2g
-X-ME-Proxy: <xmx:KDR_aoRXc_F1yjO5AScwdica1xhpeuMS5wspOXn6ow2a91II2-tXLQ>
-    <xmx:KDR_aq7Py65iwuXISfcB5cAGFe78eIxGLpnaI7OmmRPlp7DIc8DbJA>
-    <xmx:KDR_aoyYl178X7ozW28irZzYWeG2ZuAM4NYseOzU3RnUin26oF2i3w>
-    <xmx:KDR_aiAE9rUg60aB-qv385KDa-W-8sjd63rtdzDLXjQhfxaQudgTsQ>
-    <xmx:KDR_aobQ9-pWhwctq5qs7FcakZ62r7kyRVOO83qUWgBLlgyDgWYq0ORY>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 2E3897811F0; Fri, 14 Aug 2026 11:28:40 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H23r9Hny"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786721586;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ssDOB7cblcv2badYSas4RkixSUJbeVmGWSrOHTtHIGw=;
+	b=H23r9Hny+zNzNaUhjPeO2STNvzuUEsLl0BTlTtnxfAGxCyUzB0FGyamuzBx5GsvYkX6L1Y
+	caSi3RMtzYQjvvwYNM7yUwaSzQXzvaEzjG4ky7BnGC+HKNd5PbrSVeYeDCy5Av+5tyon25
+	CacaY5aWkeFFbB30eP0lJLPECNOuZUs=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-583-R8Tk7Ev2Nym8VsWypDwZvA-1; Fri,
+ 14 Aug 2026 11:32:59 -0400
+X-MC-Unique: R8Tk7Ev2Nym8VsWypDwZvA-1
+X-Mimecast-MFC-AGG-ID: R8Tk7Ev2Nym8VsWypDwZvA_1786721578
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B9110195605E;
+	Fri, 14 Aug 2026 15:32:57 +0000 (UTC)
+Received: from p16v.redhat.com (unknown [10.44.32.140])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6798030001A2;
+	Fri, 14 Aug 2026 15:32:55 +0000 (UTC)
+From: Ivan Vecera <ivecera@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Vincent Jardin <vjardin@free.fr>,
+	Min Li <min.li@microchip.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net-next] dpll: zl3073x: add chip-specific minimum input reference frequency
+Date: Fri, 14 Aug 2026 17:32:52 +0200
+Message-ID: <20260814153253.900280-1-ivecera@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: A4afRqWdro9F
-Date: Fri, 14 Aug 2026 11:28:20 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: "Jeff Layton" <jlayton@kernel.org>, NeilBrown <neil@brown.name>,
- "Olga Kornievskaia" <okorniev@redhat.com>, "Dai Ngo" <Dai.Ngo@oracle.com>,
- "Tom Talpey" <tom@talpey.com>, "Trond Myklebust" <trondmy@kernel.org>,
- "Anna Schumaker" <anna@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
- "J. Bruce Fields" <bfields@fieldses.org>, "Shuah Khan" <shuah@kernel.org>
-Cc: linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, "Trond Myklebust" <trondmy@gmail.com>,
- linux-kselftest@vger.kernel.org
-Message-Id: <a33c928b-d579-47c5-8a54-714277398f05@app.fastmail.com>
-In-Reply-To: <a8f5840cf3f2cbf71de7a1f3957f70d9897adfa2.camel@kernel.org>
-References: <20260811-nfsd-nl-hang-v2-0-c0c92b3953c3@kernel.org>
- <20260811-nfsd-nl-hang-v2-4-c0c92b3953c3@kernel.org>
- <e1706a70-d9f8-423e-9462-2d77b2e444b1@app.fastmail.com>
- <26486c88075a0b1e3c1cb088fe97d39e0051b5d3.camel@kernel.org>
- <572f0269-9bf4-4a80-8e9c-3c4614d45f7e@app.fastmail.com>
- <a8f5840cf3f2cbf71de7a1f3957f70d9897adfa2.camel@kernel.org>
-Subject: Re: [PATCH v2 4/8] SUNRPC: undo partial rpcbind registrations when
- svc_register() fails
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
+Commit 24e4aff8983fe6 ("dpll: zl3073x: recognize the ZL30643 chip ID
+(0x0E3B)") added support for the ZL30643, a ZL3064x line-card variant
+that is register-compatible with ZL3073x. However, ZL3064x chips
+require a minimum input reference frequency of 1 kHz, not 1 Hz like
+other ZL3073x parts.
 
-On Fri, Aug 14, 2026, at 7:01 AM, Jeff Layton wrote:
-> I still think the best solution of all would be to just say
-> "henceforth, rpcbind registration is non-fatal".
+Add a min_ref_freq field to zl3073x_chip_info and validate it in both
+the DT property parser and the ref-sync pair configuration to prevent
+configuring unsupported frequencies on ZL3064x parts.
 
-Fair enough, let's go with that.
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+---
+ drivers/dpll/zl3073x/core.c | 43 +++++++++++++++++++------------------
+ drivers/dpll/zl3073x/core.h |  2 ++
+ drivers/dpll/zl3073x/dpll.c | 10 +++++----
+ drivers/dpll/zl3073x/prop.c | 10 ++++++---
+ 4 files changed, 37 insertions(+), 28 deletions(-)
 
+diff --git a/drivers/dpll/zl3073x/core.c b/drivers/dpll/zl3073x/core.c
+index 5b2d77f2c2288e..c0b3b0d579d524 100644
+--- a/drivers/dpll/zl3073x/core.c
++++ b/drivers/dpll/zl3073x/core.c
+@@ -20,29 +20,30 @@
+ #include "dpll.h"
+ #include "regs.h"
+ 
+-#define ZL_CHIP_INFO(_id, _nchannels, _flags)				\
+-	{ .id = (_id), .num_channels = (_nchannels), .flags = (_flags) }
++#define ZL_CHIP_INFO(_id, _nchannels, _flags, _min_freq)		\
++	{ .id = (_id), .num_channels = (_nchannels), .flags = (_flags),	\
++	  .min_ref_freq = (_min_freq) }
+ 
+ static const struct zl3073x_chip_info zl3073x_chip_ids[] = {
+-	ZL_CHIP_INFO(0x0E30, 2, ZL3073X_FLAG_REF_PHASE_COMP_32),
+-	ZL_CHIP_INFO(0x0E3B, 3, ZL3073X_FLAG_REF_PHASE_COMP_32),
+-	ZL_CHIP_INFO(0x0E93, 1, ZL3073X_FLAG_REF_PHASE_COMP_32),
+-	ZL_CHIP_INFO(0x0E94, 2, ZL3073X_FLAG_REF_PHASE_COMP_32),
+-	ZL_CHIP_INFO(0x0E95, 3, ZL3073X_FLAG_REF_PHASE_COMP_32),
+-	ZL_CHIP_INFO(0x0E96, 4, ZL3073X_FLAG_REF_PHASE_COMP_32),
+-	ZL_CHIP_INFO(0x0E97, 5, ZL3073X_FLAG_REF_PHASE_COMP_32),
+-	ZL_CHIP_INFO(0x1E93, 1, ZL3073X_FLAG_DIE_TEMP),
+-	ZL_CHIP_INFO(0x1E94, 2, ZL3073X_FLAG_DIE_TEMP),
+-	ZL_CHIP_INFO(0x1E95, 3, ZL3073X_FLAG_DIE_TEMP),
+-	ZL_CHIP_INFO(0x1E96, 4, ZL3073X_FLAG_DIE_TEMP),
+-	ZL_CHIP_INFO(0x1E97, 5, ZL3073X_FLAG_DIE_TEMP),
+-	ZL_CHIP_INFO(0x1F60, 2, ZL3073X_FLAG_REF_PHASE_COMP_32),
+-	ZL_CHIP_INFO(0x2E93, 1, ZL3073X_FLAG_DIE_TEMP),
+-	ZL_CHIP_INFO(0x2E94, 2, ZL3073X_FLAG_DIE_TEMP),
+-	ZL_CHIP_INFO(0x2E95, 3, ZL3073X_FLAG_DIE_TEMP),
+-	ZL_CHIP_INFO(0x2E96, 4, ZL3073X_FLAG_DIE_TEMP),
+-	ZL_CHIP_INFO(0x2E97, 5, ZL3073X_FLAG_DIE_TEMP),
+-	ZL_CHIP_INFO(0x3FC4, 2, ZL3073X_FLAG_DIE_TEMP),
++	ZL_CHIP_INFO(0x0E30, 2, ZL3073X_FLAG_REF_PHASE_COMP_32, 1),
++	ZL_CHIP_INFO(0x0E3B, 3, ZL3073X_FLAG_REF_PHASE_COMP_32, 1000),
++	ZL_CHIP_INFO(0x0E93, 1, ZL3073X_FLAG_REF_PHASE_COMP_32, 1),
++	ZL_CHIP_INFO(0x0E94, 2, ZL3073X_FLAG_REF_PHASE_COMP_32, 1),
++	ZL_CHIP_INFO(0x0E95, 3, ZL3073X_FLAG_REF_PHASE_COMP_32, 1),
++	ZL_CHIP_INFO(0x0E96, 4, ZL3073X_FLAG_REF_PHASE_COMP_32, 1),
++	ZL_CHIP_INFO(0x0E97, 5, ZL3073X_FLAG_REF_PHASE_COMP_32, 1),
++	ZL_CHIP_INFO(0x1E93, 1, ZL3073X_FLAG_DIE_TEMP, 1),
++	ZL_CHIP_INFO(0x1E94, 2, ZL3073X_FLAG_DIE_TEMP, 1),
++	ZL_CHIP_INFO(0x1E95, 3, ZL3073X_FLAG_DIE_TEMP, 1),
++	ZL_CHIP_INFO(0x1E96, 4, ZL3073X_FLAG_DIE_TEMP, 1),
++	ZL_CHIP_INFO(0x1E97, 5, ZL3073X_FLAG_DIE_TEMP, 1),
++	ZL_CHIP_INFO(0x1F60, 2, ZL3073X_FLAG_REF_PHASE_COMP_32, 1),
++	ZL_CHIP_INFO(0x2E93, 1, ZL3073X_FLAG_DIE_TEMP, 1),
++	ZL_CHIP_INFO(0x2E94, 2, ZL3073X_FLAG_DIE_TEMP, 1),
++	ZL_CHIP_INFO(0x2E95, 3, ZL3073X_FLAG_DIE_TEMP, 1),
++	ZL_CHIP_INFO(0x2E96, 4, ZL3073X_FLAG_DIE_TEMP, 1),
++	ZL_CHIP_INFO(0x2E97, 5, ZL3073X_FLAG_DIE_TEMP, 1),
++	ZL_CHIP_INFO(0x3FC4, 2, ZL3073X_FLAG_DIE_TEMP, 1),
+ };
+ 
+ #define ZL_RANGE_OFFSET		0x80
+diff --git a/drivers/dpll/zl3073x/core.h b/drivers/dpll/zl3073x/core.h
+index 78dc208f3eea2a..51014463377356 100644
+--- a/drivers/dpll/zl3073x/core.h
++++ b/drivers/dpll/zl3073x/core.h
+@@ -42,11 +42,13 @@ enum zl3073x_flags {
+  * @id: chip ID
+  * @num_channels: number of DPLL channels supported by this variant
+  * @flags: chip variant flags
++ * @min_ref_freq: minimum input reference frequency in Hz
+  */
+ struct zl3073x_chip_info {
+ 	u16		id;
+ 	u8		num_channels;
+ 	unsigned long	flags;
++	u32		min_ref_freq;
+ };
+ 
+ /**
+diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
+index 83bd3027dbaa1e..ee077c3e68da83 100644
+--- a/drivers/dpll/zl3073x/dpll.c
++++ b/drivers/dpll/zl3073x/dpll.c
+@@ -281,7 +281,8 @@ zl3073x_dpll_input_pin_ref_sync_set(const struct dpll_pin *dpll_pin,
+ 		sync_freq = zl3073x_ref_freq_get(sync_ref);
+ 
+ 		/* Sync signal must be 8 kHz or less and clock reference
+-		 * must be 1 kHz or more and higher than the sync signal.
++		 * must meet the chip's minimum frequency requirement and be
++		 * higher than the sync signal.
+ 		 */
+ 		if (sync_freq > 8000) {
+ 			NL_SET_ERR_MSG(extack,
+@@ -289,9 +290,10 @@ zl3073x_dpll_input_pin_ref_sync_set(const struct dpll_pin *dpll_pin,
+ 			rc = -EINVAL;
+ 			goto unlock;
+ 		}
+-		if (ref_freq < 1000) {
+-			NL_SET_ERR_MSG(extack,
+-				       "clock frequency must be 1 kHz or more");
++		if (ref_freq < zldev->info->min_ref_freq) {
++			NL_SET_ERR_MSG_FMT(extack,
++					   "clock frequency must be %u Hz or more",
++					   zldev->info->min_ref_freq);
+ 			rc = -EINVAL;
+ 			goto unlock;
+ 		}
+diff --git a/drivers/dpll/zl3073x/prop.c b/drivers/dpll/zl3073x/prop.c
+index ac9d41d0f978ef..cdceddcf353e46 100644
+--- a/drivers/dpll/zl3073x/prop.c
++++ b/drivers/dpll/zl3073x/prop.c
+@@ -20,9 +20,9 @@
+  * @freq: frequency to check
+  *
+  * The function checks the given frequency is valid for the device. For input
+- * pins it checks that the frequency can be factorized using supported base
+- * frequencies. For output pins it checks that the frequency divides connected
+- * synth frequency without remainder.
++ * pins it checks that the frequency is above the chip's minimum and can be
++ * factorized using supported base frequencies. For output pins it checks that
++ * the frequency divides connected synth frequency without remainder.
+  *
+  * Return: true if the frequency is valid, false if not.
+  */
+@@ -36,6 +36,10 @@ zl3073x_pin_check_freq(struct zl3073x_dev *zldev, enum dpll_pin_direction dir,
+ 	if (dir == DPLL_PIN_DIRECTION_INPUT) {
+ 		int rc;
+ 
++		/* Check minimum frequency */
++		if (freq < zldev->info->min_ref_freq)
++			goto err_inv_freq;
++
+ 		/* Check if the frequency can be factorized */
+ 		rc = zl3073x_ref_freq_factorize(freq, NULL, NULL);
+ 		if (rc)
 
-> Right now, I'm really unclear on what sort of changes you want to see
-> here as a final patchset. What would make this mergeable for you?
-
-Sorry for the ambiguity. For the re-roll:
-
-- 1, 2, 3 and 5 don't need change.
-
-- Let's drop patch 4/8.
-
-- Make registration failure non-fatal for NFSv2 and NFSv3, as
-  proposed.
-  
-- Extend the extack in 6/8 to report a listener that came up without
-  registering. dmesg is the only channel write_ports() has. Perhaps
-  the netlink path can do better?
-
-- Fix the netns leak in 8/8.
-
-- Ensure that any test that asserts the unwind or the abort is moved
-  over to the new failure policy.
-
-HTH.
-
+base-commit: 4f93b12cf7b25fbf8e73d222722805b049f0a6d3
 -- 
-Chuck Lever
+2.54.0
+
