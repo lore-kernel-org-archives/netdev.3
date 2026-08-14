@@ -1,105 +1,94 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mta1.migadu.com (out-81.mta1.migadu.com [95.215.58.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D056D45C716
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 10:42:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F7A3BE161
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 10:43:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786704167; cv=none; b=GnaIHHM/hHUcKiTygjxvxDyU5+sjRV/MNGM1oo8rRfO++nsVufT1DfLYKUSC/t/ZdVKmXx7cfVQRRLMak74K6O8OpYLBzum61podANT9xCoti9zSn5GsuCPLdnfcKjwiq9NlNO4TqcaRPQl78MhYe5lJNQ2VVz468+ST54249AY=
+	t=1786704193; cv=none; b=G+olj3RY8EQNRyjzCiJD0ivD5HHSmYGHqyq5uO9VN5t5ZRfYV7dbBCONXjR9gc63iosxp0lN4ROzG7NeFbSZP7+XqnQmvYvxq65vwRyhEEn7/yLRHzGbydqxZRNqcen1i9aFLmS14reG2lPlzk13oY0TPn2kPBi+Oa5T+zHB+50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786704167; c=relaxed/simple;
-	bh=QToTVh6/Mnx9ZpECqcu86BEjK/YNJA8QQpFCROHIGrQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=u+dTbpKT5/NUJy0lWSXJX4zTCyaG3nxqWMlNm6ozgkYOgQWmCiKub1ueI2M5tcczolKYCZZirKTU8Jpo0fC2G2Rb9eFb3DMz20krPggjFA+QhF55VZ/ztwyHpcjGi2RLsiZENTbL+NWeDSrw43d1A73x6SeST0GeQj9OjfrUwQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=ZNcWxW4X; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1786704193; c=relaxed/simple;
+	bh=TkMHXxDX3Q0Ph7sOnBczYV2bh5oVujI/gXqvKj6gW+A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l6A3XIhdPQsxvx31+/3uIngpw/bmt4sLDRffPfB46n7jaSfVvTxiDDbiR+v2HR/a5T5LUz6yJq60izh8gJgqHqQ0i5VTBZOuoCJOb+Z1h3O6feF5D0CbVKaEh4f2a12/w+q3P8BFGGXI2MfXWGHDPzF7K/lmfWmOfUgzXOllfeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=XWTUi3xt; arc=none smtp.client-ip=95.215.58.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="ZNcWxW4X"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6a0794669a6so1342322a12.2
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 03:42:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1786704159; x=1787308959; darn=vger.kernel.org;
-        h=content-type:mime-version:message-id:date:user-agent:references
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=QToTVh6/Mnx9ZpECqcu86BEjK/YNJA8QQpFCROHIGrQ=;
-        b=ZNcWxW4X+EjxgNmXm8R2cPAWq+NDyZA0BGhSxbHKKfXMLnYgiN+/8mz57XbfkwLZmj
-         yYL8enZqSfv1GnxT//hOA4X/UFx2D7eh8qeYYnN8jSfXyHcZxVQMHeS1hDemVIw8DMTA
-         VIvUATCLAvGq8yUbkZRQ3nd7HULGGw8uiPtXGHLFMJx5vPmRLQxjPemTDaJ3AUtLDbqD
-         IPRp5EciMPfpWqCHfJL5iQ7VhYPMFUHqKEFakkVOV7Fu8dvrgNoMP8n2K7dl3b2OhVGg
-         czLtNf1ehT/iPoYKmfL/11FJoFdC8Q/q4jkIMXpEfN54cI2tkIkaw6mINq3Nntx6IK7n
-         WXpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786704159; x=1787308959;
-        h=content-type:mime-version:message-id:date:user-agent:references
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=QToTVh6/Mnx9ZpECqcu86BEjK/YNJA8QQpFCROHIGrQ=;
-        b=tA2sah+5yQX0rwhgmDg1C/8wYCWHUj8t77hCg4GnYb0MHXMnU+c1MZyet0JFHjfBSl
-         9CCM/04KEOw4FkDeATdJLhZvSyfjm7kG3rSORVStrMJiDOh/nnqU3KKawrYXgXsBHAXH
-         kS6VEJWLwZzc758/3LJk6Gwx+3kCiJL9ye0Y7gqhNCkVQMt3yZAuesf/IgHziCODH5qp
-         O5ahttPi6egs3JyhOcwHZ+PkIRtWaJCG66wfUTWHS46PuxdMZq1CaA/OwO9K7Dbt8XFj
-         SUKBUMUFnMeCRlKFkW16yYlx8xdAV5AC7K48BbwfnIIoW9E90uGzXzTpfGw94DPl8QRn
-         udLA==
-X-Forwarded-Encrypted: i=1; AHgh+RpbRTI5qIMUyRjz5F2Tfo8zwZYJp5vBl9WH39EfgvNEj7wZulkWOiKZ1Os2msoyTBsN8ipZsOc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpoYuXFoCrUbCfyFmsDMqhj+1Odr+2rA1MvQxVaYRB/95s8LoQ
-	fqLm29W4WPwWIscxDF45YQWGnIJejdvc1lg+TF/aatarkh6+LN1S9RLsk2BOIMsQ6VI=
-X-Gm-Gg: AR+sD11iCPPM4CnevA/cN4fd1ssEtTkGmaXMVedqPi2gED1hIFBTWtkSve4XDcX2fQN
-	UN6zspHU7KcboRUMSWImXU0IovZBC+aB/jiUgmH3zhk7lQloi8P4COI8tS42DtFEunPR+yPj6SV
-	nKu8MJIyRWug9HDymnpNVXM1Qyv++A9FcZH6WT1Pbu3WvBAnNuP4ZNR0QpJ6Fpyz8CmRJEicwPf
-	33Yi+6uo9ZYV07TUURX0xN5W0Qa48iH+wam7wp8LAmdhWwtBkag9LcMGe7jGeXNgWNrXIKkNsGc
-	kLa/Td48kqTmlo9CC44jLHSHBKsZ8mRFhAS+RG9vAo9GTgnHMhqX3L0swCpY00/uQMna9VWekrR
-	5QwTMmFTqBbJh8xZzo0SEICybXGEieC2SLdEyzjihBhtL1oVC83qT+GC0QZ+mhM8+1lRZ9HqKsF
-	fxNqJH/0C4yh2XH3AJuaOce/QedguiqogLiRKxk2/h8t9VKB0wuAXOzrPpLwrxqwc=
-X-Received: by 2002:a05:6402:914:b0:6a3:691a:9d71 with SMTP id 4fb4d7f45d1cf-6a38a957c26mr2538574a12.11.1786704158754;
-        Fri, 14 Aug 2026 03:42:38 -0700 (PDT)
-Received: from cloudflare.com ([104.28.21.182])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a38c9ea527sm621948a12.12.2026.08.14.03.42.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 03:42:38 -0700 (PDT)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: Alexei Starovoitov <ast@kernel.org>,  Daniel Borkmann
- <daniel@iogearbox.net>,  Andrii Nakryiko <andrii@kernel.org>,  Eduard
- Zingerman <eddyz87@gmail.com>,  Kumar Kartikeya Dwivedi
- <memxor@gmail.com>,  Martin KaFai Lau <martin.lau@linux.dev>,  Song Liu
- <song@kernel.org>,  Yonghong Song <yonghong.song@linux.dev>,  Jiri Olsa
- <jolsa@kernel.org>,  Emil Tsalapatis <emil@etsalapatis.com>,  Ihor
- Solodrai <ihor.solodrai@linux.dev>,  John Fastabend
- <john.fastabend@gmail.com>,  Stanislav Fomichev <sdf@fomichev.me>,  "David
- S. Miller" <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,
-  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,
-  Simon Horman <horms@kernel.org>,  Jiayuan Chen <jiayuan.chen@linux.dev>,
-  Kuniyuki Iwashima <kuniyu@google.com>,  Willem de Bruijn
- <willemb@google.com>,  bpf@vger.kernel.org,  netdev@vger.kernel.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH bpf-next 2/2] bpf, sockmap: Use sock_hold() instead of
- refcount_inc_not_zero() in lookup
-In-Reply-To: <20260813-sockmap-lookup-get-ref-v1-2-31f5d55f44ac@rbox.co>
-	(Michal Luczaj's message of "Thu, 13 Aug 2026 14:42:00 +0200")
-References: <20260813-sockmap-lookup-get-ref-v1-0-31f5d55f44ac@rbox.co>
-	<20260813-sockmap-lookup-get-ref-v1-2-31f5d55f44ac@rbox.co>
-User-Agent: mu4e 1.14.1; emacs 30.2
-Date: Fri, 14 Aug 2026 12:42:37 +0200
-Message-ID: <877blt0yqq.fsf@cloudflare.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="XWTUi3xt"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=TkMHXxDX3Q0Ph7sOnBczYV2bh5oVujI/gXqvKj6gW+A=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786704184; v=1; x=1787308984;
+ b=XWTUi3xtv0DhqULhZCV1gNc6B8YE/IqELnyQnyoVy3j44nyUhn+uAbiBr/fRiVY1At78T025
+ x5vYmdsYPA0PrTKHpYJ1Wmymodk0+s0kxdfGO/ThA6m5IKUjAgD0oDfunPh1fI0uKp+BggtIXUo
+ SS1j46xiFKytlnPiiXXwG0tg=
+X-Envelope-To: netdev@vger.kernel.org
+Received: from [10.54.25.56] (210.22.144.162)
+	by smtp.migadu.com with ESMTPS id 2962fc705d168a82;
+	Fri, 14 Aug 2026 10:42:54 +0000
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <cede3131-202a-4468-b848-f3ed2e721c72@linux.dev>
+Date: Fri, 14 Aug 2026 18:42:47 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] net: advertise TCP MSS from the configured MTU,
+ not the learned PMTU
+To: Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>,
+ Willem de Bruijn <willemb@google.com>
+Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
+ Ido Schimmel <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org
+References: <20260814063545.225896-1-jiayuan.chen@linux.dev>
+ <CANn89iJ-2Z5eFZKRAWS_MxVosr8Xe76k-P2djBX+JVfsH57heA@mail.gmail.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <CANn89iJ-2Z5eFZKRAWS_MxVosr8Xe76k-P2djBX+JVfsH57heA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 13, 2026 at 02:42 PM +02, Michal Luczaj wrote:
-> psock's hold on the looked up socket isn't dropped until sk_psock_drop() ->
-> queue_rcu_work() -> sk_psock_destroy() runs, which happens only after the
-> entry is unlinked and an RCU grace period elapses. Since the lookup runs
-> under RCU, a non-NULL result guarantees sk_refcnt >= 1:
-> refcount_inc_not_zero() can never fail here. Use sock_hold() instead.
+
+On 8/14/26 5:21 PM, Eric Dumazet wrote:
+> On Fri, Aug 14, 2026 at 8:36 AM Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
+>> The MSS a host puts in its SYN tells the peer how big a segment it may
+>> send us. Right now we can shrink it with a PMTU we learned on our own
+>> send path, which is the wrong direction entirely.
+>>
+>> On asymmetric paths this bites - think DSR load balancers, where the
+>> request side goes through a smaller-MTU overlay. We learn a small PMTU
+>> going out, then advertise a small MSS, and the peer stays capped for the
+>> whole connection even though its path back to us is wide. MSS only shows
+>> up in the SYN and never grows back.
+>>
+>> On symmetric paths we lose nothing by dropping it either: the peer runs
+>> its own PMTU discovery and usually already knows the real path MTU.
+>>
+>> So work out the advertised MSS from the configured route or device MTU
+>> and ignore the learned PMTU. Our send side is unchanged, still clamped by
+>> tcp_current_mss(). Add ip_dst_mtu_configured()/ip6_dst_mtu_configured()
+>> and use them from the two default_advmss() paths.
+>>
+>> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 >
-> Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-> Signed-off-by: Michal Luczaj <mhal@rbox.co>
-> ---
+> LGTM, but this probably needs Fixes: tags and should be sent to net tree.
+>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Fixes: 164a5e7ad531 ("ipv4: ipv4_default_advmss() should use route mtu")
+> Cc: stable@vger.kernel.org
+>
+> I added the following packetdrill test, please add it in a series.
+>
+> commit f0c619ca446b669c48b5c2e2c78e23af1a0850b6
+> Author: Eric Dumazet <edumazet@google.com>
 
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+
+Thanks Eric, I will do it after cold time.
+
+
+
