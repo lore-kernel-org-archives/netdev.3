@@ -1,115 +1,129 @@
-Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A12F36EA80
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 08:11:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC3841D22E
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 08:14:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786695103; cv=none; b=rBsRhLoolBaB6oElhoTJ7Zo8zGEelOkkZwkUvD9XfAJeH1Hd4IfjljlSFgla8WjMhWrXtkS+26NzSSTCBE2rXTac+e79wPTWRNjs00/aEh6YdK+3iflmytfKegZs1YOU2KyhEwC1vZu43Y5BxfA5bBfOoulogizKcAZUUvEdGuo=
+	t=1786695275; cv=none; b=W+1dUX8LxrlvZKpk6mbT4fpP2p7pRsqPewkr2O9k+u2IHfx2ycXKDukyX02iHwbhLDZK1VN9dy9qZP9GIYm3jC58VshwV1B+Sk6W1wX3/dDZkSGiHGZB79PbvJTJkEMyyPF4FXaDYb0OQyiQoK1/TSumgTj5nVHJXQMJpr4qgT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786695103; c=relaxed/simple;
-	bh=v4T9gW2vRafpBzkxZdBtZpKsNvF0AsQmaXCfNQoj2eA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=E+NXg+8gxFkSBYCcgjC+dCCoOexj23+foLHwjV9+bSBiLuemh3Cy3YNP7QWLynJZgHlm8VjOkeHBUjwQfC7ZKiZKFiIXfrBs3qV34oLvUOsF39q2C0at5ie8wUKRkbKq7U5jTe7UsO7fRfA7jLpszGY7R0SJwZoNceIf1ybE8UU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-977168e4f3dso427480241.0
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 01:11:41 -0700 (PDT)
+	s=arc-20240116; t=1786695275; c=relaxed/simple;
+	bh=GWMIgRU7hJHE19eCMOV5fPNk6nbqQSNe9ghsyWvs5Xk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=RgxBd++GPyVrr2T7Xr7m2fzkmkAYl3Dd6Ptm9k0iTBmmIjtIy0BYXUCM5H7Oe/UGlnuTcuyMixIjYT1rqFDIxSd+iIhIR/VxFta3Eizx1EmYW1M+bjnx/CmvsaS46lTPqAIprE465k1qstgS4vTPZRMxzY3HAtjarBnq3cPGIYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=YDTxZYy3; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="YDTxZYy3"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c1671ec8692so114665466b.0
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 01:14:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1786695264; x=1787300064; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=LW5lsZ0VEj7q9b4aIg7tkbaMUTRMsphp7Z75hiq3gTk=;
+        b=YDTxZYy3izrrDHZ8Xi+N8Sn+SWkzkON3Rb8TVMHxXzNrg4i7YVT8Jxped2AyTQABRj
+         jfB7y9mNGU5HX4R2mc/+cLKV46ZYGl+W47DhqRuIys8eo5gdCTE2eEJ7HtVtvg5wrxzx
+         ckeBKQ6e0YFwkxN8bmxJehqzqppOa1atLwacHDx7zj15EwN95pWeta0pS5Si9ggpxUHR
+         ntaXcwpoeoamOkdguInqAJeU5VdhfR9nCEE6VfKX49AiUHzs3VZNRd84aEieVZ9jUsRW
+         uOqD8SxFHqoMc+QhO12ZYDMbLA7yzu1VbOFF9YXhpcTbJBJgyKNdHgeJsdCj1IYPBxra
+         P8RQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786695101; x=1787299901;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=YieQAOiAXoJTqhAtI5XvMETug9uQQrcB1boOOSb1fXw=;
-        b=KE/OqdA1xbLucalPyCxgjYp9nyf67p/8/DCiaNjgj9jtK/lo/KZaNJXMTZ488FLFpq
-         omWRH5/u+7N3F2rUXZcEHBFwQPQGkfA6qaKjWPW2c0gvkEPlAwUSjOpGJ3mFXFv7Up36
-         MdBF4/EwapEhdy4c4eJQxMhgBi5vxPG9emD7OkZguNKOKfByeUlo0hsPlYBtUWwSuXs5
-         KvKcb8+u+SM8Oy9ed1XlT6IrgquPc+mQlO4HtdXV+hEn42VgUlLuu+GodJ8Nmfd9cbxz
-         KLoU7IGdh4XSxf/ACz8cPD/4zT1qJEIsaEqrblHZ2HWH4A+1C6dckJSTnSd6HsJ1E6wK
-         jJCw==
-X-Forwarded-Encrypted: i=1; AHgh+RqCQjfMcj3Eoy44COlbMPeuarKs2Bz1fNKOV/kyUGqmRpadwfWbdsqZEGQxlCb6nrahZkpEb0w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxtoYsf0PhL4DHWuQQyWNNNlIa+NSJVc7Y0Wm9giIM2d/QQea/a
-	/X3ZA4hRaf8f8qRdLnfZoXvLaZuDxAIN76phQueenKeZK/TFfuRckKcjWW+U9TPR8CE=
-X-Gm-Gg: AR+sD11qSyEpx+YQEbW9zZ1XsjyxgYloN7wv3vnsTrMFbIHzGACabjnlcu+2vZMT4An
-	fvw2Zn6atNr5R8e1LXN3Fjh2uxIXgTZ4NgDvNQFiZ1rKdEHVytq+FEF5VtPYCCnGAu7JJno6l2z
-	WXokp7h7Knj9jgHzrv34JQHFPTY3vj5H9ql4Z7goh+bc4usLHXdA17ayqEKzEy2I2ohq2AAOXf8
-	GzzZjO8GDwYfGm7QsgklITpi8Nwgr5dV6GOQRLMSE0reNMSdDgtFUjMoVFhGDL1Jhi6cfGDWwag
-	JomcytbRECYsfk/08imPOEoIF1GISAU8OopcTV+vC3V9Cj4tfXoB0d61J87h5r0o1Ci/MfqFnIn
-	5MfMpKwCeJPxcWVVAQe0dWOzaJ5DTXfsXN8W3wBHWzb5SPldZSUGrxPLxKb2cMWK8lcDuyKXlYP
-	D0HRyofOYd9dEj+TcLWig5GBnSMmfnxDGHnCc/X9V2uxURnnrbhrDhOTygxQNXblMXywwqH5DaL
-	AU2ijJ1fdfLK/oCJHNpWiUQ3rOigg==
-X-Received: by 2002:a05:6102:1607:b0:738:fd01:5b60 with SMTP id ada2fe7eead31-76f2a5dc579mr942366137.3.1786695100916;
-        Fri, 14 Aug 2026 01:11:40 -0700 (PDT)
-Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com. [209.85.221.180])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-97bfbdafba7sm501447241.12.2026.08.14.01.11.39
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 Aug 2026 01:11:39 -0700 (PDT)
-Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-59cd803792aso552249e0c.3
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 01:11:39 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqoaPrbb1aT99AckcCZk7YfM4xd+BFOLl/1Bs4/nLCHc3cUe4LTOROqO1TNDycEdiQ07Qj4hvA=@vger.kernel.org
-X-Received: by 2002:a05:6122:e183:b0:5bf:ac34:ce26 with SMTP id
- 71dfb90a1353d-5c591f2c240mr938238e0c.11.1786695099116; Fri, 14 Aug 2026
- 01:11:39 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1786695264; x=1787300064;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LW5lsZ0VEj7q9b4aIg7tkbaMUTRMsphp7Z75hiq3gTk=;
+        b=Ln+DB7LqKT2m8T4uvI0VsyCuoDJCqqly7KfxsM2AEgmcpMzflK8BBjA1eVoOGtdbqw
+         NBWEedffHKHA8/3pMhZHZbgqj6ufVSI/lBGeDc4mzk39OnROZxPmb2EQPAsXSxDNJFEZ
+         1+a1+1drZOG+8dazD0bvqjsc4Xcw6ql7DO/UQEJXhdE2cBDntiQ2dX6PbjWc6mQaL9x2
+         VhDa/bA07fBBg1kkVZicGE4Fo7IHz+9PmYGYJUKsRX89PqeTFAhrEXycqjtUWu8Apvcx
+         Fg9tDCUIDHtNhUBkUgz2sAwN9RLC+CXqdbH/rGms/NoVHuxP8RDOPwP1wMOSmmZ2vMnf
+         RTiQ==
+X-Gm-Message-State: AOJu0Yw9f+sJr6RVKdtYYCvGnY4MkTJQgM2VoquWXDCoiJRnZTapN9xU
+	TMn6L+p+Sdv5O8QWqKpwp06f4tpXgFMbogyoJuvkwmlalJQqDKZYq4YCnVWB+gsEH/s=
+X-Gm-Gg: AR+sD1162MdDMVKOOX+wysn9yLvzjvpcxyQ0ntASRs05W0ka/UebsIQcsocMvsl6LiT
+	sLswYv5f3xmrkYoiiJCz+4owBEaTfCKi8YEYxlyyBXj85tSW/FGj6en7LGhclpqNOB0uEAR9/XV
+	B2D2SCT+yorkDvKRdVYRggfdvL7mdXbh7UbAqN2861WnbQLrqlXzQgx3qKLOKc1udRObGE0Y7Wy
+	damoyN9rqcszQmrEfc9ybNieg+xYrRMrIoMcUEOegJai9OgtxqpCI0f7Y2b3mm55D5q7bsmkh93
+	o2WhAYUlUZc6NwrEYj1LUKZ2JtKZiQQyncAzEHbpZSA7wbC1pQwUlFnjGZA7cvTvIltpVkDKNGG
+	cK2tzlFeXhkaIdXztsAAzNW4RbV7IEeIQh0/Klz3QdmftNGzima509bSyJ4SZJWloHw51yiGjxb
+	zpndXPHQA36BLPACEs2kurSsLZaAze2VB+7Mjs9uO8Iwe5d6JOXLRRaJs8t0BJz9X3RhCB9Tp/g
+	HxYAxFBSsrW8rPVd3K58XHN2SL2WM0SjzRETg==
+X-Received: by 2002:a17:907:928c:b0:bf0:b39:dcc8 with SMTP id a640c23a62f3a-c212a1da2bamr186235466b.26.1786695264486;
+        Fri, 14 Aug 2026 01:14:24 -0700 (PDT)
+Received: from cloudflare.com (79.184.184.176.ipv4.supernova.orange.pl. [79.184.184.176])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2123787af1sm76854066b.30.2026.08.14.01.14.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Aug 2026 01:14:24 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+Date: Fri, 14 Aug 2026 10:14:03 +0200
+Subject: [PATCH net-next 02/14] bpf: Allow access to bpf_sock_ops_kern->skb
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260813-rzn1-miic-fix-array-v1-1-b58cafcc917e@reliablecontrols.com>
-In-Reply-To: <20260813-rzn1-miic-fix-array-v1-1-b58cafcc917e@reliablecontrols.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 14 Aug 2026 10:11:28 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWUrabJOWLAiSrSm=r7KbuZn4CrVZiswJsf96U3STaNTw@mail.gmail.com>
-X-Gm-Features: AcwNN1VBy68t135CijNHMQtqI6g9Xvn6Re0OoflxL4rb6mgUvwNTcbJNfwwBIdI
-Message-ID: <CAMuHMdWUrabJOWLAiSrSm=r7KbuZn4CrVZiswJsf96U3STaNTw@mail.gmail.com>
-Subject: Re: [PATCH] net: pcs: rzn1-miic: Fix config array initialization
-To: khendry@reliablecontrols.com
-Cc: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>, 
-	Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260814-bpf-meta-inside-skb-ext-v1-2-767edd862656@cloudflare.com>
+References: <20260814-bpf-meta-inside-skb-ext-v1-0-767edd862656@cloudflare.com>
+In-Reply-To: <20260814-bpf-meta-inside-skb-ext-v1-0-767edd862656@cloudflare.com>
+To: netdev@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+ Paolo Abeni <pabeni@redhat.com>, Stanislav Fomichev <sdf@fomichev.me>
+Cc: bpf@vger.kernel.org, kernel-team@cloudflare.com, 
+ Daniel Borkmann <daniel@iogearbox.net>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+ Emil Tsalapatis <emil@etsalapatis.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Simon Horman <horms@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+X-Mailer: b4 0.16.0
 
-CC Prabhakar
+sock_ops programs receive bpf_sock_ops_kern as their kernel context, which
+holds a pointer to the sk_buff being processed. Mark bpf_sock_ops_kern->skb
+as BTF_TYPE_SAFE_TRUSTED_OR_NULL so that BPF programs can dereference it
+and pass it to kfuncs expecting a trusted sk_buff pointer, such as
+bpf_skb_storage_get().
 
-On Thu, 13 Aug 2026 at 20:09, Kyle Hendry via B4 Relay
-<devnull+khendry.reliablecontrols.com@kernel.org> wrote:
-> From: Kyle Hendry <khendry@reliablecontrols.com>
->
-> Fix memset parameters to initialize the entire DT value array
->
-> Signed-off-by: Kyle Hendry <khendry@reliablecontrols.com>
+Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+---
+ kernel/bpf/verifier.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Fixes: f39e968dc168a7bd ("net: pcs: rzn1-miic: Move configuration data
-to SoC-specific struct")
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-
-> --- a/drivers/net/pcs/pcs-rzn1-miic.c
-> +++ b/drivers/net/pcs/pcs-rzn1-miic.c
-> @@ -683,7 +683,7 @@ static int miic_parse_dt(struct miic *miic, u32 *mode_cfg)
->         if (!dt_val)
->                 return -ENOMEM;
->
-> -       memset(dt_val, MIIC_MODCTRL_CONF_NONE, sizeof(*dt_val));
-> +       memset(dt_val, MIIC_MODCTRL_CONF_NONE, miic->of_data->conf_conv_count);
->
->         if (of_property_read_u32(np, "renesas,miic-switch-portin", &conf) == 0)
->                 dt_val[0] = conf;
->
-
-Gr{oetje,eeting}s,
-
-                        Geert
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 1fab69fec478..b0ddaccf61b3 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -5684,6 +5684,10 @@ BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct vm_area_struct) {
+ 	struct file *vm_file;
+ };
+ 
++BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct bpf_sock_ops_kern) {
++	struct sk_buff *skb;
++};
++
+ static bool type_is_rcu(struct bpf_verifier_env *env,
+ 			struct bpf_reg_state *reg,
+ 			const char *field_name, u32 btf_id)
+@@ -5726,6 +5730,7 @@ static bool type_is_trusted_or_null(struct bpf_verifier_env *env,
+ 	BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct socket));
+ 	BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct dentry));
+ 	BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct vm_area_struct));
++	BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct bpf_sock_ops_kern));
+ 
+ 	return btf_nested_type_is_trusted(&env->log, reg, field_name, btf_id,
+ 					  "__safe_trusted_or_null");
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.43.0
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
