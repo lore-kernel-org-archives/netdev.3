@@ -1,98 +1,77 @@
-Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.184])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C0948D864
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 17:11:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.121.94.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A24241B36E
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 17:13:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786727493; cv=none; b=QB8nhqghM3UAxOVF2bZ5qusK3Ya5z+Jzgz/HPoWmJTbbuTYngBG1rlC2eiw3pKCf/ldAfiUqZSGpzahqWhWTr5JKf9gM06eXPPfrHNeKWQWZU8sn6NTYYTODCjnUHaK3S1C5JTzgJjuiTnFFlhFfVyOUA5DHlTDOUuNj6ygJ3ic=
+	t=1786727597; cv=none; b=D/a7lCJ7H99DRkSLrfnFQsZYZl4vd9JK8HDy3kzE+DxZyxMn1oHAjEI8lPIyPV4FObCkekwyzDVJwTbSCM8BPXPFuTBkr56wBcPm4vzKAno0lkxpKfPxbvGOO2WeBhmG2fV27maxylLouwQXHP2K7fMXSXre0h3gv+4Ce0pBgIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786727493; c=relaxed/simple;
-	bh=FhEtj15wjnMeErkkmMqpImECkf4rarJWJJl67l4mdmM=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=WdNEKnwlhKyoioEwAU2J0W9xYW01Lg5AdBh4+hNsssn9VVM4zAMBjL/NXAdpN/jSrPpSa7Tl8/PtVq5HNLOTU60ChtzmSCU5s5FM8RxZdRjFMZTnNqtoVsC6Y6gMYnpN/XObEZihRsg9KmMWFP0+mH/2t5SDCWLiTsxBs8mgyUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=xs4all.nl; dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b=kdLs6o5C; arc=none smtp.client-ip=195.121.94.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xs4all.nl
+	s=arc-20240116; t=1786727597; c=relaxed/simple;
+	bh=dijG+0HIV0gEFNoCi2L3dwBYdG0jZbEEdAlhRmZue2E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PL/8vAe8SvwAbABCnUOReddaNqqXejm9XQAAqw2DCOQAIuM+fCYpBR2UwMRtvCgkvP1ey0/RF6m65UJtdlsh9ZDbdmMmwl8IUL9kjwPdXhngk9nC1ZDdjlMH60LYFnCKZrZ+xdKcTQKLMhP4Piwd+buuVT0eCuRCmxnRmhBjMmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ap0NjStZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b="kdLs6o5C"
-X-KPN-MessageId: 06dbf0d1-9803-11f1-a5a2-005056994fde
-Received: from mta.kpnmail.nl (unknown [10.31.161.188])
-	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
-	id 06dbf0d1-9803-11f1-a5a2-005056994fde;
-	Fri, 14 Aug 2026 19:10:19 +0200 (CEST)
-Received: from mtaoutbound.kpnmail.nl (unknown [10.128.135.190])
-	by mta.kpnmail.nl (Halon) with ESMTP
-	id 06dad6fb-9803-11f1-ac0a-00505699693e;
-	Fri, 14 Aug 2026 19:10:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xs4all.nl; s=xs4all01;
-	h=content-type:mime-version:subject:message-id:to:from:date;
-	bh=AzP2lR0vTf8TmxPBEWtjcvGIt6IQe1WpxGHRhjuSXkk=;
-	b=kdLs6o5CX9yOjFKHoR/yN8rhBgqhK9w0WQfhRKTcZ17OeBKzaSbwInElVWDrhIXigWIdkNPWzEfvL
-	 voyQg8bRVn9IbRV5WUiynisxgzHZns6Ypskbi81Z2LiQZeTMAdS9pGXJnzlcAm1my5AYITYJ4+gJFt
-	 vljfixpK4Bx6q06mczb2BAYlgQt6t2ZvQok1jZ4cr2UHdZ8bYkDtPcvqnGN6X2XMWkMZq78C0hzfHd
-	 gfYHemR29kDRfFzqLefCRc2R33GSDAWKiDh7JNKRRPP7+7P7DAQxe1/EybzqMYog5Hiv8sN16BGCPG
-	 J10Ul+efteYLFrFTbGUFO5J1bXZfH4w==
-X-KPN-MID: 33|VX9fPnJFxnxchsqyrKvMP7wq8iM3Sc0nmBKB+IjQGnv/ES9inkdiDRFvmNEOBg2
- A5sUlGR1+iPwuske83kQfGDANnNQS/zChZzLunVM9fbs=
-X-CMASSUN: 33|EhVoIpc83iWIixecPhQtDljQWoDQSz/BVE6+GddXAM0yXB6ClUZrMMptLNEr8s9
- wNGXUD/5SX7xyZY6SXg+v8w==
-X-KPN-VerifiedSender: Yes
-Received: from cpxoxapps-mh03 (cpxoxapps-mh03.personalcloud.so.kpn.org [10.128.135.209])
-	by mtaoutbound.kpnmail.nl (Halon) with ESMTPSA
-	id 06cd2fd7-9803-11f1-916a-005056995d6c;
-	Fri, 14 Aug 2026 19:10:19 +0200 (CEST)
-Date: Fri, 14 Aug 2026 19:10:19 +0200 (CEST)
-From: Jori Koolstra <jkoolstra@xs4all.nl>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: brauner@kernel.org, cyphar@cyphar.com, kuniyu@google.com,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	horms@kernel.org, netdev@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Message-ID: <68018741.501644.1786727419159@kpc.webmail.kpnmail.nl>
-In-Reply-To: <20260814095511.4e302a24@kernel.org>
-References: <20260814121131.151003-1-jkoolstra@xs4all.nl>
- <20260814095511.4e302a24@kernel.org>
-Subject: Re: [PATCH net-next v7 4/4] selftest: Add tests for useful handling
- of LSM denials on SCM_RIGHTS
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ap0NjStZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F091F000E9;
+	Fri, 14 Aug 2026 17:13:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786727596;
+	bh=YaXokq/jwa69UJnq1v+qyDsRIIhNY7ILrAsoqR2NL7s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Ap0NjStZi3zbG96GSxBfMHuLu1HnWHMh6F3irxr3VArBtl+D3HcOq7JFV6jYFV4zI
+	 VA13z13mmW7nIMT0ueFOyBp2jPHarEhyxMj07j82WJK3GO88UE/KCriMgyyZUBZjSU
+	 lHMBqHo51FhYz80O3dvlLEy8ud0cJanVawQhUCWk1367SkQ/8wmAcZqe9NYL2VKkka
+	 wNNKt/q97F+jWcC9TFg/YsoWYlmz00aoXmLlWtAloq4uKei7y63UXq4j2XWIT9++Hy
+	 kPbQxnqPvvRO8aIeh13GfAk2u9QlwOGJnExlpX+H2hHP8aIFBOl0zB7LR7qypaiwJ/
+	 fVnOtXtTPam+w==
+Date: Fri, 14 Aug 2026 18:13:12 +0100
+From: Simon Horman <horms@kernel.org>
+To: Jiawen Wu <jiawenwu@trustnetic.com>
+Cc: netdev@vger.kernel.org, Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>
+Subject: Re: [PATCH net] net: txgbe: fix interrupt mask for MISC cause in
+ non-MSI-X mode
+Message-ID: <20260814171312.GR265046@horms.kernel.org>
+References: <59215DA27859BC49+20260813073305.360251-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-Importance: Normal
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <59215DA27859BC49+20260813073305.360251-1-jiawenwu@trustnetic.com>
 
-
-> Op 14-08-2026 12:55 EDT schreef Jakub Kicinski <kuba@kernel.org>:
+On Thu, Aug 13, 2026 at 03:33:05PM +0800, Jiawen Wu wrote:
+> In txgbe_misc_irq_thread_fn(), the driver unmasks the miscellaneous
+> interrupt at the end of the handler using TXGBE_INTR_MISC(wx) (which
+> resolves to BIT(wx->num_q_vectors)). While this is correct for MSI-X
+> mode, it is incorrect for legacy INTx or single MSI modes.
 > 
->  
-> On Fri, 14 Aug 2026 08:11:31 -0400 Jori Koolstra wrote:
-> > Tests SCM_RIGHTS fd passing on a socket with the new socket option
-> > SO_RIGHTS_NOTRUNC turned on. To hook into the security_file_receive()
-> > call, BPF is used. The BPF program shares a hashmap with userspace that
-> > lists the inos to be blocked (of the receiver tgid).
+> Due to hardware behavior, the WX_PX_MISC_IVAR register is completely
+> ignored by the hardware when MSI-X is disabled. In non-MSI-X mode, the
+> hardware forcibly merges all interrupt causes (both Queue and MISC) into
+> a single bit: BIT(0) of the interrupt register.
 > 
-> Sigh. You are ccing netdev@ only on the selftest.
-> I think that this is a clear indication that the selftest 
-> does not belong under tools/testing/selftests/net
+> Unconditionally unmasking TXGBE_INTR_MISC(wx) (e.g., BIT(1)) in non-MSI-X
+> mode means the actual MISC interrupt bit (BIT(0)) is not unmasked
+> promptly at the end of the MISC thread. Instead, it remains masked until
+> NAPI completes its polling and unmasks the shared BIT(0). This delays the
+> assertion of subsequent MISC interrupts, preventing timely handling of
+> events like link state changes.
+> 
+> Fix this by explicitly checking `pdev->msix_enabled` and falling back
+> to BIT(0) as the interrupt mask for the MISC cause when MSI-X is disabled.
+> 
+> Fixes: e37546ad1f9b ("net: wangxun: revert the adjustment of the IRQ vector sequence")
+> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 
-Oh no it absolutely should and this series has gone through several iterations
-at this point through the netdev list.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-Sorry about this, I am abroad and my email provider apparently has some ridiculous
-rate limiting for foreign IPs, so I sent the series and only the first 3 got through.[1]
-I contacted them and they basically said "screw you." I wanted to attach this message to
-the other ones, but apparently that didn't go as intended.
-
-Can this be taken like this, or does it screw with the CI? Basically it was some
-minor fixes and everything has been reviewed by Brauner and Iwashima already.
-
-Thanks,
-Jori.
-
-[1]: https://lore.kernel.org/linux-fsdevel/1036785927.390839.1786639504241@kpc.webmail.kpnmail.nl/T/#m4faa7ec5fea0e075b3db9113fa3d9faf7e2cd1d6
