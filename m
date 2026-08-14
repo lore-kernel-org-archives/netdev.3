@@ -1,58 +1,57 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619F8420881
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6E9400983
 	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 07:38:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786693131; cv=none; b=Dg5ULAgx1xLQWPT10goy3EPF5t1zNIAua6t+XQul/c8Y/gbEcI3XtXH84pwBoOoF6MOOARmzu4b34VWk6eLFU2BoBvNZNbHWlMz8KHTIscdNd8o0vGXJrmRsXdPIJ8Ry296J+BX08f2S2vWHy3yH4Y4DaGmFozM0EW+Dz7T3cwM=
+	t=1786693132; cv=none; b=ZsAFN4O6wxm302g3zc16cPZnrKRvP8Yk6a9moQ09hcezAdpUjGe6N0qsEJp0YhZ9czy43t05or74puPf+e1T150sNWxN8oz5fcMzc12FB7dlLExY9t3l2ovv27ZT8gg/BXzHBbnbz3wYX6M+NQ+IaYBzhn8Ojhr0lqs3nkKia8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786693131; c=relaxed/simple;
-	bh=cchnubClHiLjFwcoLFSFYd8dfZBokcolGFUyE/qKkFQ=;
+	s=arc-20240116; t=1786693132; c=relaxed/simple;
+	bh=SsArAHj5wVgUhNdcgiwTRdwlH12cOYde/sK01jGvhdM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HVWGE/U+wyL1G8f+wJJAevWGHrchQW+IMM+AFyf5Xmgc0e79Lhj1QCKp2QzizNKZEcCTmYTzjYSXrZLWPcH45Boj3URHSAzrLVh9MeO3hRCrNa55uCuSz8qb9zM0dacTbKhmoMOmZU+FZSweRYX7Sbyut7BsT61bUg+QQHZb2pE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=QkybJNob; arc=none smtp.client-ip=148.163.156.1
+	 MIME-Version; b=Hg9qH83mHR2G0jRH0hmMsk60pApqk0kq7ARCvncaFKGHkcJNgBYvnZST6KqiwpMhruXFJU4iVm1xRrWv5AZhd617ao0e8lfauD5jr8ojQ1POAIwEBm3jNUW9SX3cDtjUGBkVpdN/0wx61u/vcLwUw36e4M+haxcFSjELdZK9x5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=mjCAuhHc; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="QkybJNob"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67E4VZcU2471424;
-	Fri, 14 Aug 2026 07:38:29 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="mjCAuhHc"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67E4WN9w059711;
+	Fri, 14 Aug 2026 07:38:26 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=mybhAP
-	VWk3CE1qcKccKk4St5ozcEMoWgSJIf+sQq0vE=; b=QkybJNobGUsHG9y7GMezMF
-	CuAn7NZZeFbITZon+y3YTpc2b/3LrdA5sNG+dg3iKWwKXRaB02v48LFr7Uwfldp2
-	S2yPnuq/Y3TtQtj4Ic6KmQICtpnMGLJkiyx1K39cBlnHQ4jyi6mwa6UxqocEwBb1
-	IIOQ6RFTMuknCGgq32aMmlthpLOILKY9/+KrlX/N+CIjdP3j88XiTOAq/ziruw5p
-	BfuUSbOGqW9Q7zrsMhzGQgIFblqG8Q9INVO9jQuzCg0HWgFUG3ETPY1rFqSWuaeK
-	SX2gTYVotWhy/KyABsX1gLisRndFybB14x+XELjcILOicVAW0yOu8xotX2K1rBTA
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvk0bqvj-1
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=PbVAUNGx9/XtU8ujm
+	ggUMLnWn0arc3l3krHyL1I6sxY=; b=mjCAuhHctJ4ID4+1Xr9TWaUIcSu/onDi2
+	sgbcQa2yN6qLxmtxQJppNyjjWzejXhiBLLqlSQE2kz9zuLpST0RkhpOtX0a8Olbo
+	mrJ74H6ApltLq69ofIMf99DEwz2vgwu85PzaxbFZhaSSrkIg9W3g6sx9y2mS/IC4
+	IODbEoqPD7kLFbF8XrnYhbbytaIEeFmgyjxSFUWMzfW5ogebu7fIU4ZwSdOgS3jj
+	NAFSWy0equgc1qaL4BhvBi+1FnzdDsWNoyjlsTdQ7xOQ87liW1e08ZT1omOkBH3K
+	wPUKgM7m8MTIoMlHPnqW0MPT3G88Huda8kUpa9rphXOYIxmfu5JFA==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fwvp3amq9-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Aug 2026 07:38:28 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67E7QRAl001607;
-	Fri, 14 Aug 2026 07:38:27 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxg9heb3t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Aug 2026 07:38:27 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67E7cOCJ33555020
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 14 Aug 2026 07:38:25 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67E7QK1J017907;
 	Fri, 14 Aug 2026 07:38:24 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3161858058;
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxf5wegca-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Fri, 14 Aug 2026 07:38:24 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67E7cKrM18547288
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 14 Aug 2026 07:38:21 GMT
 Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 28E9058057;
-	Fri, 14 Aug 2026 07:38:22 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id CF5CD58057;
+	Fri, 14 Aug 2026 07:38:20 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C907B58062;
+	Fri, 14 Aug 2026 07:38:18 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.67.89.186])
 	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 14 Aug 2026 07:38:22 +0000 (GMT)
+	Fri, 14 Aug 2026 07:38:18 +0000 (GMT)
 From: Mingming Cao <mmc@linux.ibm.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
@@ -61,9 +60,9 @@ Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
         haren@linux.ibm.com, ricklind@linux.ibm.com, davemarq@linux.ibm.com,
         bjking1@linux.ibm.com, shaik.abdulla1@ibm.com,
         Mingming Cao <mmc@linux.ibm.com>
-Subject: [PATCH net-next v5 13/15] ibmveth: Expose per-queue buffer pool details via debugfs
-Date: Fri, 14 Aug 2026 00:36:40 -0700
-Message-Id: <20260814073642.24630-14-mmc@linux.ibm.com>
+Subject: [PATCH net-next v5 12/15] ibmveth: Report MQ-aware RX counts in ethtool get_channels
+Date: Fri, 14 Aug 2026 00:36:39 -0700
+Message-Id: <20260814073642.24630-13-mmc@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20260814073642.24630-1-mmc@linux.ibm.com>
 References: <20260814073642.24630-1-mmc@linux.ibm.com>
@@ -73,60 +72,48 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=true
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE0MDA1OCBTYWx0ZWRfXwhOuZBXszpxK
- Mn4+COLCQKM2A0Xdhy6Q46k+5SV2mSoboAzayrOXGh40HPr3O+4SczyVZzD6AMIowcFCkFYvz58
- lrpKqDICvq96aJvOwcGy5tMYLZm26zCpLb+QK0zrIppRYZBlofqqu2jP0WT0+dztbJu8/ApfqfH
- TiJEnBRQ2i4k6aZaDLZ3nF+BbLYl3jgDk34JnfOK3fNVO1Ot3OQj33TxkznPPDAOSgLxoyZFCyn
- Z7VRONobib2/LwC37OHNLG8h1pb4fWVqY7z1eKNuXil7fq8TPa0K9U1tMDwJT5e6EO/ZkI8YSMr
- W/2ikmagk9bYXdeS1CWSrVIzKecMys8Pqq3pOtMJR3LjMj6Gb1YeELAuTch2gRWdtqh7GNY1S3R
- JHYOdQzlX06jvABFKgA8SO9GQNJV4P8O9BhETs5oDUErMGCN35bzOLGZDDNpEEzeS9UifaNZkgI
- leY4XEGqz1Ssyy4Q9dw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODE0MDA1OCBTYWx0ZWRfXxYh+bMAeGm5O
- bCH8NnjLbbGriZ6+gJ/PUg55CnnAIwXs8EMOPKebZK+6bn4o4H3w57HleQXnelPPs7QO+592zqZ
- iw2ksPOHpHNdWkx/Y9VAvy7vCG9+kQo=
-X-Authority-Analysis: v=2.4 cv=RqD16imK c=1 sm=1 tr=0 ts=6a7ec5f5 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=9GrW9DZCARAA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
- a=jUfSrZ0QlCeJWHBOPV4A:9 a=3ZKOabzyN94A:10 a=47kamO7So9gA:10
-X-Proofpoint-GUID: FzaXOr2PaNrdiGmz2ECFt4l3fXV5RPJb
-X-Proofpoint-ORIG-GUID: qhhl8OlwWbB2Utls_hdje6wGh6HNFm5c
+X-Authority-Analysis: v=2.4 cv=AMtp2X5w c=1 sm=1 tr=0 ts=6a7ec5f1 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=PA20WcGQiNPz0IH_SaMA:9
+X-Proofpoint-GUID: OFY_pIYdNsnMHERuVagvMTdclJeUo0W5
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE0MDA1OCBTYWx0ZWRfX4M+9+NbxmhbL
+ N2a4zIwmYqkGt+Czu0KwV3u/qkGKaICmcHH0xMDqM37auC807ZigNf3+1J8j9I1duI+6ulM0/kV
+ a8uDLTQRmKJ6lSRM1N3a0b4efseQOf/iMvy39ETN6RQ6e0m6NTyxIGu2w1TGm5I76fR8QbaJ62k
+ +T7H7MYFpdusxjp73J0WX36gywAYWIxruarj6qjrSPcAKhu2OLi7wCNHAbNgNXXqdNMpmZ/ECdr
+ AGuRh0rqd+xxOJny9VK28/s5Vwr68MrkaUBQxxSB7miX62Hvx33i9W02lCSbBr87Y4PHEKZ9nQ4
+ xFT2Be91i6/jILff/WV1YeZKawki3WQv3TTN5CIJRzSucWi8IZJl4xuPPUVsTt+HmlDUNuIJm2k
+ lpRc5NwNS1dQBe4kqqu2WCjIWN952vlv9yGaVczONL8VC07EROT7MuImC1gbBJLbKJscaztlMER
+ 8tmzlAcHgoVafGznW8A==
+X-Proofpoint-ORIG-GUID: keTKK_sb57NeJGs1ev2ZJFw4dfENrEur
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE0MDA1OCBTYWx0ZWRfXxpy/nK/C46SL
+ nhbSoeZZDvTRdfbpHerqwqGeOR93yhwB/RJsPrqteaPZ0B4zEfagjHy00u20nwkIAZbrOcn+t0Y
+ xTkWJekYyVaekL7c1ODEDe+S6nz3ZEw=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-14_02,2026-08-12_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 priorityscore=1501 suspectscore=0 lowpriorityscore=0
- clxscore=1015 adultscore=0 bulkscore=0 malwarescore=0 impostorscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ suspectscore=0 adultscore=0 lowpriorityscore=0 clxscore=1015
+ priorityscore=1501 impostorscore=0 phishscore=0 spamscore=0 bulkscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
  definitions=main-2608140058
 
-Add a read-only buffer_pools debugfs file that lists size, buff_size,
-active, and available for every RX queue and buffer pool. That is the
-MQ diagnostic view (multi-line table), which does not belong in sysfs.
+Report MQ-aware channel limits and counts from get_channels():
 
-Keep the historical queue-0 poolN sysfs ABI unchanged:
+  - max_rx is IBMVETH_MAX_RX_QUEUES when MQ firmware is enabled, else 1
+  - rx_count tracks the driver's published num_rx_queues
 
-  .../poolN/{active,num,size}
+Previously get_channels() mirrored netdev->real_num_rx_queues for both
+fields, which under-reports max_rx on MQ firmware and can disagree with
+the driver's private RX count before the next open.
 
-Those are one-value-per-file *configuration* knobs for buffer-pool
-classes on queue 0, not one directory per RX queue. With MQ, queue 0
-pool geometry remains the shared template: open copies it to queues
-1..N. Per-queue runtime pressure is what debugfs shows; this series
-does not add per-queue pool sysfs dirs.
-
-Unlike ibmvnic (one RX pool per RX queue, sized from firmware, almost
-no pool sysfs), ibmveth historically has multiple size-class pools and
-already exported poolN via sysfs. Moving only the new all-queue dump
-to debugfs matches sysfs "one value per file" review feedback without
-breaking that config ABI.
-
-Path: /sys/kernel/debug/ibmveth/<dev_name>/buffer_pools
-  (e.g. /sys/kernel/debug/ibmveth/30000002/buffer_pools)
+Keep this out of the stats patch: channel reporting is ethtool -l ABI,
+independent of per-queue counters, so it can be reviewed and blamed on
+its own.
 
 Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
 Reviewed-by: Dave Marquardt <davemarq@linux.ibm.com>
@@ -134,145 +121,37 @@ Tested-by: Shaik Abdulla <shaik.abdulla1@ibm.com>
 ---
 
 Changes in v5:
-- debugfs buffer_pools_show walks get_num_rx_queues()
-- Series renumber: mailed v4 11/14 debugfs -> tip P13 (14->15)
-- Path uses stable vio dev_name under a driver-owned root (not netdev
-  name - avoids rename/collide)
-- rtnl_lock around dump (writers are under RTNL)
-- Show Active/Available as 0 when pool !live (debugfs view; free-path
-  available clear already in the buffer-submit patch)
+- get_channels rx_count via get_num_rx_queues() (READ_ONCE consistency)
+- New peel: get_channels from v4 stats -> tip P12 (14->15)
+- get_channels: max_rx = MAX_RX_QUEUES when MQ else 1; rx_count =
+  get_num_rx_queues() (was mirroring real_num_rx_queues for both)
 
-Changes in v4:
-- Move the all-queue buffer_pools diagnostic from sysfs to debugfs;
-  subject updated to match.
-- Keep historical queue-0 poolN/{active,num,size} sysfs as one-value
-  config (template for MQ); do not add per-queue pool sysfs dirs.
-
- drivers/net/ethernet/ibm/ibmveth.c | 69 ++++++++++++++++++++++++++++++
- drivers/net/ethernet/ibm/ibmveth.h |  2 +
- 2 files changed, 71 insertions(+)
+ drivers/net/ethernet/ibm/ibmveth.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-index 5d4ca4b3d3d0..1b58a3c6ce77 100644
+index 3202b657c9b8..5d4ca4b3d3d0 100644
 --- a/drivers/net/ethernet/ibm/ibmveth.c
 +++ b/drivers/net/ethernet/ibm/ibmveth.c
-@@ -31,6 +31,7 @@
- #include <linux/ipv6.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
-+#include <linux/debugfs.h>
- #include <asm/hvcall.h>
- #include <linux/atomic.h>
- #include <asm/vio.h>
-@@ -3421,6 +3422,68 @@ static const struct net_device_ops ibmveth_netdev_ops = {
- #endif
- };
- 
-+static int ibmveth_buffer_pools_show(struct seq_file *m, void *v)
-+{
-+	struct ibmveth_adapter *adapter = m->private;
-+	int i, j;
-+
-+	/*
-+	 * Writers (veth_pool_store, open template copy, reset close/open)
-+	 * update these fields under RTNL. Take the same lock so the dump
-+	 * is not a torn scalar snapshot. Not required for
-+	 * memory safety — embedded arrays only.
-+	 */
-+	rtnl_lock();
-+
-+	seq_puts(m, "Queue  Pool  Size  BuffSize  Active  Available\n");
-+	seq_puts(m, "-----  ----  ----  --------  ------  ---------\n");
-+	if (!adapter->opened)
-+		seq_puts(m, "# down: Active/Available 0 unless allocated\n");
-+
-+	for (i = 0; i < ibmveth_get_num_rx_queues(adapter); i++) {
-+		for (j = 0; j < IBMVETH_NUM_BUFF_POOLS; j++) {
-+			struct ibmveth_buff_pool *pool =
-+				&adapter->rx_buff_pool[i][j];
-+			bool live = pool->skbuff && pool->free_map;
-+			int active = live ? pool->active : 0;
-+			int available = live ? atomic_read(&pool->available)
-+					     : 0;
-+
-+			seq_printf(m, "%5d  %4d  %4u  %8u  %6d  %9d\n",
-+				   i, j, pool->size, pool->buff_size,
-+				   active, available);
-+		}
-+	}
-+
-+	rtnl_unlock();
-+	return 0;
-+}
-+DEFINE_SHOW_ATTRIBUTE(ibmveth_buffer_pools);
-+
-+/* Driver-owned root so per-adapter dirs use a stable vio name, not the
-+ * mutable netdev->name (avoids stale names / eth0 collisions after rename).
-+ */
-+static struct dentry *ibmveth_dbg_root;
-+
-+static void ibmveth_debugfs_init(struct ibmveth_adapter *adapter)
-+{
-+	if (!ibmveth_dbg_root)
-+		ibmveth_dbg_root =
-+			debugfs_create_dir(ibmveth_driver_name, NULL);
-+
-+	adapter->debugfs_dir =
-+		debugfs_create_dir(dev_name(&adapter->vdev->dev),
-+				   ibmveth_dbg_root);
-+	debugfs_create_file("buffer_pools", 0400, adapter->debugfs_dir,
-+			    adapter, &ibmveth_buffer_pools_fops);
-+}
-+
-+static void ibmveth_debugfs_exit(struct ibmveth_adapter *adapter)
-+{
-+	debugfs_remove_recursive(adapter->debugfs_dir);
-+	adapter->debugfs_dir = NULL;
-+}
-+
- static void ibmveth_put_pool_kobjs(struct ibmveth_adapter *adapter,
- 				   int pools_ready)
+@@ -2522,11 +2522,16 @@ static void ibmveth_get_ethtool_stats(struct net_device *dev,
+ static void ibmveth_get_channels(struct net_device *netdev,
+ 				 struct ethtool_channels *channels)
  {
-@@ -3647,6 +3710,8 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
- 
- 	netdev_dbg(netdev, "registered\n");
- 
-+	ibmveth_debugfs_init(adapter);
++	struct ibmveth_adapter *adapter = netdev_priv(netdev);
 +
- 	return 0;
+ 	channels->max_tx = ibmveth_real_max_tx_queues();
+ 	channels->tx_count = netdev->real_num_tx_queues;
+ 
+-	channels->max_rx = netdev->real_num_rx_queues;
+-	channels->rx_count = netdev->real_num_rx_queues;
++	if (adapter->multi_queue)
++		channels->max_rx = IBMVETH_MAX_RX_QUEUES;
++	else
++		channels->max_rx = 1;
++	channels->rx_count = ibmveth_get_num_rx_queues(adapter);
  }
  
-@@ -3656,6 +3721,8 @@ static void ibmveth_remove(struct vio_dev *dev)
- 	struct ibmveth_adapter *adapter = netdev_priv(netdev);
- 	int i;
- 
-+	ibmveth_debugfs_exit(adapter);
-+
- 	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
- 		kobject_put(&adapter->rx_buff_pool[0][i].kobj);
- 
-@@ -3891,6 +3958,8 @@ static int __init ibmveth_module_init(void)
- static void __exit ibmveth_module_exit(void)
- {
- 	vio_unregister_driver(&ibmveth_driver);
-+	debugfs_remove_recursive(ibmveth_dbg_root);
-+	ibmveth_dbg_root = NULL;
- }
- 
- module_init(ibmveth_module_init);
-diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
-index 0960448f53ea..8c826d23ddf4 100644
---- a/drivers/net/ethernet/ibm/ibmveth.h
-+++ b/drivers/net/ethernet/ibm/ibmveth.h
-@@ -392,6 +392,8 @@ struct ibmveth_adapter {
- 	struct ibmveth_rx_queue_stats *rx_qstats;
- 	struct ibmveth_tx_queue_stats *tx_qstats;
- 
-+	struct dentry *debugfs_dir;
-+
- 	/* Ethtool settings */
- 	u8 duplex;
- 	u32 speed;
+ static int ibmveth_set_channels(struct net_device *netdev,
 -- 
 2.50.1 (Apple Git-155)
 
