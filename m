@@ -1,166 +1,197 @@
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1563AB29E
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 11:06:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8372E3B6C1C;
+	Fri, 14 Aug 2026 11:14:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.169.211.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786705592; cv=none; b=mCQQinzncdtSTvAjotfi25FcbTjGzFvXMMdSfZjUn+a/WMTK9yAQCI8MKXWReDlup87Th5AA4ij6vGkhmSse8bLvxhrzuDTy0TjvQBW1aQD6cXwAFwY+UeINdmQpVN7c2PGxyrdXiVsyT0stp3jjR0/pgyR5m/3TFrivYJiU2G4=
+	t=1786706090; cv=none; b=O3ifsvC9CLmEsdajeiWYmcGA4CXADz1lSY4kLlKzdetKtgZWt5UeKlgTEZaMCLhHN8cTwC4v3ZqU+LxHQVaT33G76pIjGqVyMWERdRa1/4a7kLcwcFFKInXLSisGb5GZGUjR/a0ofZqjh/zHHZBbQR4cRQqRiMqbz9nSzqrrpeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786705592; c=relaxed/simple;
-	bh=sTEaSzZGZ7wzz3nSZfYyiBfSaTay8Nqwy+y6SfFbCOo=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=EcOCBjsUENRTeFCSxrwz82DJvXNS3MWcPzvNZ4HqAN1RkvBFoZ9wxJv1UYBy9QdtLL8MFS6gf5jWkdPBLTQab2OwUWbIdDX+ndrELt96Jdrpvf6ay6Q+BsdxlFpg0T0eoEutWpYbi0eiP2wau9IrrRwLaGoXC8rLxUTLcplnqQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-6acbcb92d31so694586eaf.1
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 04:06:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786705585; x=1787310385;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mD+AN/ziivY+94sIbJ3DI1SGLR/569rJOQ1PlTZUJdw=;
-        b=ceRE+R8P5cVUWGBOXFSCGReuaBafg5aGiXlcOr2mmA8xchL77mB8IrFtr8p82oJW09
-         j6NBI3dh53aK+9HfXVTKX7MGho5Zg7CARLlMVi6TIKfb0U320XwXelG+xRYbrXEpSpFo
-         MI16Xo6QU1l7Q1IKbLoiHE+kNOJv5bI5Xn/i6QoWLMFqC+pYG9ei5QTgk63Regd+3bMW
-         CY43QKSVlPXl3f1hLdwwbtzNfZYGN5v7S7CBOhMWRQgoJOK6h0sbrNONv/4Kld2RoFlQ
-         lfjgH1UUCF3TIQWztYDwo7/JKaEUZotY0mE1LEX72WuWq3iRQ8s7u4Ap+dhYoJ9yw5cl
-         jITg==
-X-Forwarded-Encrypted: i=1; AHgh+RoaX9AhgXP9iZPBffBSzaVRMjHNNePa92txfH1jv+6ifOvChTFOQEr9tMb7nMSVK2BtrseSulM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyA95eFDIMGKgBHEEo/q3aSjAfZbP+rW9oVTqOaMtbtUwMnCjLK
-	tbUAMaMnu8xncmLMZBb/VSWi8sRFSfbcsFNpPNQuu0oBDo5Oi6QB4CAkGteqMY3m09ho2JU/N6o
-	Xqnld363o7Jhi62/Scn5l0T4cUoTib06ndTFySilQPSIOvWTf87n6CYCSgKY=
+	s=arc-20240116; t=1786706090; c=relaxed/simple;
+	bh=yXI1Skm0SYGOiPM7dM/ilapcquqNyA2Kg0BdR+BMuPM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CJdkbhVcbo7B8SijvWpOcJ8XQASuff5viKRLB5XPuM9+zAL32/Is4+epggk0bRhnfcddlWjP6kINMC5pyFZX+yn35XypiHE7JffUWSP/bboCGKZlTN+S9yyiqYHghf2lCmaway+RTlabM5YeYFHY3Dahk8n9wgvbv1m3Am7bKVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com; spf=pass smtp.mailfrom=mucse.com; arc=none smtp.client-ip=18.169.211.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mucse.com
+X-QQ-mid: zesmtpgz7t1786706011tbb4e26e0
+X-QQ-Originating-IP: QoR5ZQbZgkgPATOPBIHkdD4xw+P1vWidXwJTbgtSWUs=
+Received: from localhost.localdomain ( [203.174.112.180])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 14 Aug 2026 19:13:28 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 13407255322965497549
+EX-QQ-RecipientCnt: 11
+From: Dong Yibo <dong100@mucse.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	vadim.fedorenko@linux.dev,
+	u.kleine-koenig@baylibre.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	dong100@mucse.com,
+	yaojun@mucse.com
+Subject: [PATCH net-next v9 0/4] net: rnpgbe: Add TX/RX and link status support
+Date: Fri, 14 Aug 2026 19:13:13 +0800
+Message-Id: <20260814111317.1741087-1-dong100@mucse.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:4b09:b0:6ae:8b66:8726 with SMTP id
- 006d021491bc7-6b0d62583e1mr4149900eaf.18.1786705584977; Fri, 14 Aug 2026
- 04:06:24 -0700 (PDT)
-Date: Fri, 14 Aug 2026 04:06:24 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a7ef6b0.10853dc7.22f513.0004.GAE@google.com>
-Subject: [syzbot] [net?] WARNING: refcount bug in new_device_store
-From: syzbot <syzbot+989ff6506f5c6d1ff56b@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:mucse.com:qybglogicsvrgz:qybglogicsvrgz3a-1
+X-QQ-XMAILINFO: MShfLn39PbN2Jn574Rdnk8oPpRybFA8KDHhgcaNeQ1T7gDcjOwzfRDQZ
+	UyE2ddHkQxvJXp+GBhSQsExI/flZ8vMJn87FzS0p3VcOvJIIJBksH/GUGgHBA4yXUU9+PpJ
+	D6SHCm0cLItL3VmO+XoQr4c9ZdAtr9VXMW2cX/cFobI094oe/ZEh0BniL/DDlLcl2DkvA+K
+	hibrJOLdAMYQWazxN9ZwatJD+h/FQlcwUTJ4z9FeYSmyG60P1Wcj+Mw1AZvoF5GPFkE+WKq
+	hME4E2iaPJyD5W3edBSuWoE4RFTafsLPymj0sxEAfHcx3O5GlE4KDtvfFHdd5zpiBigamUn
+	QPsf9vdKJ/IyU629m40/IytKdS88EiBOTNcgs+ZIkZkDvKJ7rgmVYCpYz55WruDvmt829Bz
+	cjBywC1jKarKEWQETbuWP51e7MsPIWjZwXgvzLox9Pe/3LC0cbNuUiVDJ9gkdKE5iYE5nj6
+	zjD36b9OL7lgYEAvnUAm8XlhyG1MzOSGHcYgbeS6NxJ/cd8j/jtoI9VrS+iuPrrEb3PyZ1L
+	xJKodsdwi4/V7easaeooFM72cFSfVL7hpfL7b9sELcPYsG2x1+2SCq3vNCWihX1NDw1png3
+	gdD6I8lC3xTdwu4ih8Or+E1ojEVfCzuY0zQRRxsW7nNQFAjCoKS0Yh/7LyIpRrF1WVON49t
+	/Ea2lxFM2NcrjT90aYPN1+40LVZAF5a9BqAptqz2AqmvPXT/HFwE9grAbFuIlz8JTQdL73g
+	RUM0/b7bIW+7y7Uj31Cr4kDFjIZ0r2FKm6mkxROhdyZZOEs+KOCcpmkMaMZZl/DyDiHTy8Y
+	Dbyq4hYdK3cSzjf/XRi70YHC/9A0dmyVvVEjaJLzRNHuZcwM3CMtJ+q2RpmWm43nPpUePxK
+	zu3Tw/6XxntCdRf7io3nuAL9td4HyAmudDDhvKarcFgjB1hwJNMJQXW0R4mPiO49Bimtv9G
+	vlRB7+carT6KELku//71srUbHoXUfFfficM0mbMFuHwVJ24b5WWAy2Pi/zcjjLT6r9klgpN
+	kcuf9tLo+ABlggetp8X6K2oPs3Qrl4DL+CHGSrA/G8ANrire99JXpJxZjYPs2eVI+qO7jcQ
+	/ZEC/K1+SZK
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-RECHKSPAM: 0
 
-Hello,
+Hi maintainers,
 
-syzbot found the following issue on:
+This patch series adds the packet transmission, reception, and link status
+management features to the RNPGBE driver, building upon the previously
+introduced mailbox communication and basic driver infrastructure.
 
-HEAD commit:    2f1baf1fc892 Merge tag 'trace-v7.2-rc7' of git://git.kerne..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=170d8a25580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=c44651ea7dd2f307
-dashboard link: https://syzkaller.appspot.com/bug?extid=989ff6506f5c6d1ff56b
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=148d8a25580000
+The series introduces:
+- MSI-X/MSI interrupt handling with NAPI support
+- TX path with scatter-gather DMA and completion handling
+- RX path with page pool buffer management
+- Firmware link-event processing and carrier management
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+989ff6506f5c6d1ff56b@syzkaller.appspotmail.com
-
- </TASK>
-kobject: kobject_add_internal failed for netdevsim1 (error: -12 parent: devices)
-------------[ cut here ]------------
-refcount_t: addition on 0; use-after-free.
-WARNING: lib/refcount.c:25 at refcount_warn_saturate+0x111/0x130 lib/refcount.c:25, CPU#2: syz-executor324/6031
-Modules linked in:
-CPU: 2 UID: 0 PID: 6031 Comm: syz-executor324 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:refcount_warn_saturate+0x111/0x130 lib/refcount.c:25
-Code: 06 e8 b3 92 ec fc 48 8d 3d bc c2 0e 0c 67 48 0f b9 3a e8 a2 92 ec fc 5b 5d c3 cc cc cc cc e8 96 92 ec fc 48 8d 3d af c2 0e 0c <67> 48 0f b9 3a e8 85 92 ec fc 5b 5d c3 cc cc cc cc 48 89 df e8 36
-RSP: 0018:ffffc90003587b80 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffffffff9ba33900 RCX: ffffffff851de03b
-RDX: ffff88802a11a540 RSI: ffffffff851de0ea RDI: ffffffff912ca3a0
-RBP: 0000000000000002 R08: 0000000000000005 R09: 0000000000000004
-R10: 0000000000000002 R11: 0000000000000000 R12: 0000000000000005
-R13: 0000000000000000 R14: 0000000000000002 R15: 0000000000000001
-FS:  000055558c1ff400(0000) GS:ffff8880d5fe9000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000558dbbbdfda8 CR3: 000000003f842000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- __refcount_add include/linux/refcount.h:289 [inline]
- __refcount_inc include/linux/refcount.h:366 [inline]
- refcount_inc include/linux/refcount.h:383 [inline]
- new_device_store+0x682/0x700 drivers/net/netdevsim/bus.c:197
- bus_attr_store+0x74/0xb0 drivers/base/bus.c:172
- sysfs_kf_write+0xf2/0x150 fs/sysfs/file.c:145
- kernfs_fop_write_iter+0x3e0/0x5f0 fs/kernfs/file.c:345
- new_sync_write fs/read_write.c:595 [inline]
- vfs_write+0x6ac/0x1050 fs/read_write.c:687
- ksys_pwrite64 fs/read_write.c:794 [inline]
- __do_sys_pwrite64 fs/read_write.c:802 [inline]
- __se_sys_pwrite64 fs/read_write.c:799 [inline]
- __x64_sys_pwrite64+0x1eb/0x250 fs/read_write.c:799
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7ff5691f4237
-Code: 48 89 fa 4c 89 df e8 98 1d 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
-RSP: 002b:00007fffaed29530 EFLAGS: 00000202 ORIG_RAX: 0000000000000012
-RAX: ffffffffffffffda RBX: 000055558c1ff400 RCX: 00007ff5691f4237
-RDX: 0000000000000005 RSI: 00007ff56922d0cd RDI: 0000000000000004
-RBP: 0000000000000004 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000003
-R13: 00007fffaed29580 R14: 0000000000000007 R15: 00007ff56922d4c2
- </TASK>
-----------------
-Code disassembly (best guess), 1 bytes skipped:
-   0:	e8 b3 92 ec fc       	call   0xfcec92b8
-   5:	48 8d 3d bc c2 0e 0c 	lea    0xc0ec2bc(%rip),%rdi        # 0xc0ec2c8
-   c:	67 48 0f b9 3a       	ud1    (%edx),%rdi
-  11:	e8 a2 92 ec fc       	call   0xfcec92b8
-  16:	5b                   	pop    %rbx
-  17:	5d                   	pop    %rbp
-  18:	c3                   	ret
-  19:	cc                   	int3
-  1a:	cc                   	int3
-  1b:	cc                   	int3
-  1c:	cc                   	int3
-  1d:	e8 96 92 ec fc       	call   0xfcec92b8
-  22:	48 8d 3d af c2 0e 0c 	lea    0xc0ec2af(%rip),%rdi        # 0xc0ec2d8
-* 29:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
-  2e:	e8 85 92 ec fc       	call   0xfcec92b8
-  33:	5b                   	pop    %rbx
-  34:	5d                   	pop    %rbp
-  35:	c3                   	ret
-  36:	cc                   	int3
-  37:	cc                   	int3
-  38:	cc                   	int3
-  39:	cc                   	int3
-  3a:	48 89 df             	mov    %rbx,%rdi
-  3d:	e8                   	.byte 0xe8
-  3e:	36                   	ss
-
+These changes enable the RNPGBE driver to support basic TX/RX
+network operations.
 
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Changelog:
+v8 -> v9:
+[patch 1/4]:
+1. Remove the unused MSI mode flag and separate the q_vector array index
+   from the hardware interrupt vector number. (sashiko-nipa)
+2. Read back a valid per-ring interrupt mask register once after masking
+   all queues to flush posted writes. (sashiko-nipa)
+3. Document that TX and RX rings are allocated as pairs and share interrupt
+   control registers. (sashiko-nipa)
+4. Remove redundant ring checks before scheduling NAPI. (sashiko-nipa)
+5. Fix the kernel-doc descriptions for the q_vector and ring
+   parameters. (sashiko-nipa)
+6. Make rnpgbe_down() and rnpgbe_close() idempotent to avoid repeated NAPI
+   disabling and IRQ release during shutdown. (sashiko-nipa)
+7. Drop the unnecessary pci_set_drvdata(pdev, NULL) change from this
+   series. (sashiko-nipa)
+8. Queue mailbox event handling on system_percpu_wq, the supported
+   replacement for system_wq.
+[patch 2/4]:
+1. Use DMA_STATUS_REG to wait for TX read and write AXI transactions
+   to complete before releasing TX DMA mappings. (sashiko-nipa)
+2. Disable TX AXI read/write paths while programming TX ring registers,
+   and enable them only after ring configuration is
+   complete. (sashiko-nipa)
+3. Enforce the hardware-required 33-byte minimum packet length in the
+   chip-specific transmit entry point. (sashiko-nipa)
+4. Advertise NETIF_F_HIGHDMA only when a DMA mask wider than 32 bits is
+   available, while retaining the 32-bit DMA fallback. (sashiko-nipa)
+5. Update TX cleanup documentation and comments to describe the DMA stop
+   and ring reconfiguration ordering. (sashiko-nipa)
+6. Reword the DMA mask setup as a prerequisite for the new TX DMA path,
+   rather than a fix for a previously unused streaming DMA mask.
+   (sashiko-nipa)
+[patch 3/4]:
+1. Replace per-ring delayed work and system_wq usage for RX refill
+   recovery with one timer shared by each q_vector; cancel the timer
+   before RX cleanup and q_vector teardown. (sashiko-nipa)
+2. Publish the RX tail after every refill attempt, including when the
+   first page allocation fails, to avoid using a stale tail after
+   reopen. (sashiko-nipa)
+3. Track packet-level NAPI work separately from successful RX statistics;
+   count complete dropped, malformed, skb-build, and header-cleanup
+   failures against the NAPI budget. (sashiko-nipa)
+4. Clarify that 16 descriptors are reserved in the fixed 512-descriptor
+   ring, leaving at most 496 descriptors posted to hardware. (sashiko-nipa)
+5. Correct the kernel-doc for rnpgbe_process_skb_fields(). (sashiko-nipa)
+6. Wait for RX DMA to become idle before disabling RX AXI and releasing
+   RX mappings, and flush the posted register write. (sashiko-nipa)
+7. Preserve the NAPI completion contract during teardown; do not complete
+   NAPI when the full poll budget was consumed, and do not re-enable queue
+   interrupts after the device is down. (sashiko-nipa)
+[patch 4/4]:
+1. Take a lock-protected snapshot of link, speed, and duplex after
+   consuming a pending link event, avoiding mismatched link-state
+   data. (sashiko-gemini)
+2. Set carrier off before registering the netdev, so the initial
+   RTM_NEWLINK reports no carrier. (sashiko-gemini)
+3. Serialize resetting the firmware link-state snapshot with clearing the
+   driver DOWN state, so a link event cannot be discarded during
+   open. (sashiko-nipa)
+4. Fail ndo_open() when firmware port-up notification or link-report
+   enablement fails. (sashiko-nipa)
+5. Validate firmware link events before updating cached link
+   state. (sashiko-nipa)
+6. Clarify the driver-owned link-state snapshot, firmware link speed
+   encoding, and LINK_REPORT_EN mailbox payload layout. (sashiko-nipa)
+7. Document firmware link-event rate limiting and mailbox worker
+   behavior. (sashiko-nipa)
+8. Queue the link service task on system_percpu_wq.
+9. Document that link-up enables the GMAC receiver and bypasses its frame
+   filter so the chip-level packet filter can receive all frames.
+   (sashiko-nipa)
+10. Include the LLDP status bit in the documented driver-owned link-state
+    fields and reset semantics. (sashiko-nipa)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+Links:
+v1: https://lore.kernel.org/netdev/20260325091204.94015-1-dong100@mucse.com/
+v2: https://lore.kernel.org/netdev/20260403025713.527841-1-dong100@mucse.com/
+v3: https://lore.kernel.org/netdev/20260507081539.171844-1-dong100@mucse.com/
+v4: https://lore.kernel.org/netdev/20260526033539.164061-1-dong100@mucse.com/
+v5: https://lore.kernel.org/netdev/20260528023150.239532-1-dong100@mucse.com/
+v6: https://lore.kernel.org/netdev/20260604112750.769215-1-dong100@mucse.com/
+v7: https://lore.kernel.org/netdev/20260611100036.36370-1-dong100@mucse.com/
+v8: https://lore.kernel.org/netdev/20260731120322.895955-1-dong100@mucse.com/
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+---
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+Dong Yibo (4):
+  net: rnpgbe: Add interrupt handling
+  net: rnpgbe: Add basic TX packet transmission support
+  net: rnpgbe: Add RX packet reception support
+  net: rnpgbe: Add link status handling support
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+ drivers/net/ethernet/mucse/Kconfig            |    1 +
+ drivers/net/ethernet/mucse/rnpgbe/Makefile    |    3 +-
+ drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h    |  196 +-
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_chip.c   |   45 +-
+ drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h |   30 +
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_lib.c    | 2253 +++++++++++++++++
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_lib.h    |   87 +
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_main.c   |  124 +-
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c    |   32 +-
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx.h    |    1 +
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c |  206 ++
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h |   51 +
+ 12 files changed, 3006 insertions(+), 23 deletions(-)
+ create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
+ create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.h
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+-- 
+2.25.1
 
-If you want to undo deduplication, reply with:
-#syz undup
