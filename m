@@ -1,303 +1,143 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086D7421F05
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 07:38:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C3B34404E
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 07:53:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786693141; cv=none; b=Xw6Qf2fhU9zKO3KKczP7J2V0BdyvGFTqKY1pyfPgKUwC86LBhXMd5s0RtZWadu+z6yn7MxfsnhJAZU/Hwoq3S5qIIRBm5AJpID9DP+bbPyfqvkRaN3OVtBIfSDYlXIPRZxkWZWmTYvvqC2rGrSGdueG6EilGG2Djf7X7Kkjik98=
+	t=1786693987; cv=none; b=fv0TPSfkZARWBxlEyI0/ZClZUJ2SvsQN5lUmfaMPauPFcfj0PE1PQERB3dzmfuXSxMNtZYgtvkyRYaP37/bXOPA/b3ZgGtM7i2vKZN/3q4duaimjhlOEFNduaxgoi17tiHBxFS+BBGNb0TO+UJIli6H8LUD5vlZf1tkVfajOcgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786693141; c=relaxed/simple;
-	bh=8tL5mNSDersZuzJKQgFpIDcUhez+30+Nv8Sv/ZkEwsU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RkO8nrNLahlqB4E5aSvlVA1NpigQOZQqRafroYKvMJMe8MsiHaNRdSjpN+zKmtZGLkFTbmdsghGPzrAzemxnuisdeTMWxHrV3iNFf0cHTZT4CZEO1mgeV0yY/f7sgdqFmgB3803t0hLIpizk6OqwGmGNT2C4+HuNbG3B5Tc5eoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=YOZfQIN6; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1786693987; c=relaxed/simple;
+	bh=H+L3QTFFkyCFXwrBvc0mOg6GVJz81+DSixh03RV0aKI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RxCiZMURTXh1J1XVE0et56iZr5R23O69/KHkTPS/cgjmgkgxP24DaUa/Ux/ke8NpKU7SaACazdk0TlnHQtVKIzX3CXaeIbGHztE0zf2tUXM6f6DTw319jsNiOUpdgfqzTlUT2speJYWjsw0VIz0NgykU6y5GsTyDdb48zy1kVXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KMtsaBpl; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=CaibKQi6; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="YOZfQIN6"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67E4VodL3237324;
-	Fri, 14 Aug 2026 07:38:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=i0Ob56bdaQXu+NPSg
-	/gxxc0DgxDJPgGLTYyIyrexD/c=; b=YOZfQIN636c1OCOp102BzkYOqiTS/ae0E
-	24g6vt/TtmxXLrCd+n4+SuI3JYNOqSo+h5Q6xwe3JnAH09nbCdACihhdws23NoIr
-	BB0B4/vDp6wtCqBBXSaErXmjNXPYj17919dNJ8Bee2x8Uy6Cw/BrdcB7+F5+IP14
-	sp0FthMQt+brQFsOAwJg/98tLwmb4LOylp2ypTBtwDi2H7pUb24ZYMs/eTR1Cqwk
-	fuCXgTWRg7aK/mzIftTu3V6qj3+wUYRFG0v1SlSglO+iTUdLsnRMAYczIVsHaq6v
-	ASfgJpN3XskJVTFys6BxvOewgixb5w4Uby/ql3NZjzcp34ewZA3hw==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fyb244044-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Aug 2026 07:38:33 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67E7QK1N017907;
-	Fri, 14 Aug 2026 07:38:33 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fxf5wegd1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Aug 2026 07:38:33 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67E7cUjd27919004
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 14 Aug 2026 07:38:31 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D537058059;
-	Fri, 14 Aug 2026 07:38:30 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C2B0658057;
-	Fri, 14 Aug 2026 07:38:28 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.67.89.186])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 14 Aug 2026 07:38:28 +0000 (GMT)
-From: Mingming Cao <mmc@linux.ibm.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
-        pabeni@redhat.com, andrew+netdev@lunn.ch, nnac123@linux.ibm.com,
-        maddy@linux.ibm.com, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
-        haren@linux.ibm.com, ricklind@linux.ibm.com, davemarq@linux.ibm.com,
-        bjking1@linux.ibm.com, shaik.abdulla1@ibm.com,
-        Mingming Cao <mmc@linux.ibm.com>
-Subject: [PATCH net-next v5 15/15] ibmveth: Wire ethtool set_channels to MQ RX queue resize
-Date: Fri, 14 Aug 2026 00:36:42 -0700
-Message-Id: <20260814073642.24630-16-mmc@linux.ibm.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20260814073642.24630-1-mmc@linux.ibm.com>
-References: <20260814073642.24630-1-mmc@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KMtsaBpl";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="CaibKQi6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786693985;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IBgk91sGaugiFnpdKSnVzGaySlJCzjj+raiMAVYJqa0=;
+	b=KMtsaBplfarol0WkJai7Tffqts6cAqP6TjPQ+pm0sHRAHb348oQ6gL2UIgGJntHfYFITlc
+	tvMxw5an/s8Yubpm8Oj0NpEafmX8RFVlMl+Q8qF5mw4TyRymmW9RTFdLXrOYWzDdSwkUBy
+	tcrP+LfF45xLByNV3qXkvtXJju8eqXY=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-313-zFGxPmNRPk6kByT2lDqclw-1; Fri, 14 Aug 2026 03:52:52 -0400
+X-MC-Unique: zFGxPmNRPk6kByT2lDqclw-1
+X-Mimecast-MFC-AGG-ID: zFGxPmNRPk6kByT2lDqclw_1786693972
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-47fecbb553bso619067f8f.2
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 00:52:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1786693972; x=1787298772; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=IBgk91sGaugiFnpdKSnVzGaySlJCzjj+raiMAVYJqa0=;
+        b=CaibKQi6Z2Cjpv5z+P01h6ZWOJt/krxFAdig4XJwVq2jxrSVMB0fck7ke4TrXpJHq3
+         KE9c0bTsp0+7s8hI3bq4AO7S9kzCquI/V1eej7Th05+xozWGVmKT/VxWQXVmatBWSnf5
+         GVjKYPvWB2g/SQhtgIym6+CfAn1W0EkdO4sPktLWtryo4h/sfmmKubiZ+wkPmMfc/17/
+         1NlGf1RUFu5ntXPMebygayoqcfsMQnZ1iQYHI9xEvR0BJ/PmPSTV8Bd1F8Z1YQ779PP/
+         PmOgSJ+IDy/0VCvoTHdUAlobXDZt2+5bId/IWCIe02v3XJ9csz5tVFDk93aXFsGJU/C9
+         dptw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786693972; x=1787298772;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IBgk91sGaugiFnpdKSnVzGaySlJCzjj+raiMAVYJqa0=;
+        b=lhotvS1iTwXtu2Cy5GVZOjpP+xvWgMkh7a3+dbKTfWh8lcH1TXyKqN27ppnPHz+QT6
+         3ueayJt84O3Ion22ByTApgA78/PAMi2ujwjQfU347tZKiG3xCBW46ZWwaEddebg8iCuL
+         0cK5qSkDyHFBC/6HI9LVO+XQP8zNy6p8oLH0Q8pSTiSMjoIL25TG4dCMy9XA/qvWXwM5
+         a0U5u09gQL/Sh0e8/S0NhzdGXnWfJWIK6yYShsl/uSamPIrmdjoq8sjiCclAWicQyHEP
+         j8nE3TA/IRrEV74uxm0pHqlIe3tIjIjIUkgRZm7Sd+1ZdgmcbHI4xGcz1f0MFto74vM7
+         VphQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr3AFD3Rp0nJL8f4tphMClwRz6uVJENHp+qHK5gfYEghVsVzs7Fqugshv1EqDlQEWzKkSLFV60=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxY+YyslVXoRtaxENKeNJHXMXtkBPJAb86UkrMS7hr3SCLLKqvJ
+	cSiwRyN8HDTi7jvSGx8X0GyM4HDJ8zIXZeHkmRbQOVoyhkM0iFXglGDePcob7yJiWFPqd8YJBkf
+	SGna/VtwMhlVfRhFfYtrpBUCDhz30EAa5xIczPmJqV+sOnTKb2iixNEOMBg==
+X-Gm-Gg: AR+sD11qrA4vfXzYXycyqPzojrKZ63PP4/Bp6KXTUxoxIRPKk+S0CFtlhCqHKbOYi/n
+	p6mgdqBNotoinkp6BHUBOEVxaiGD+kp2Pf38oLfag29azudfrQJaRrq7422arLvoMwWY30f/yYR
+	uGUOOeT0L3eN3IyqWke4euQyCbaWDmLlIPYYkHWHTI4tmVn27uC4tDnRDi1uTMcqXDvXpoBuFG/
+	7huWODlpnqym49lMBDaHpN4eRRMtfz64fA1jcibk7/PM8cS6SG/gSY5UgUngZNujcDWl8OaYjuT
+	Lf9QySdiNDfgCVDlL13TO8ZeuRBJSXGYSURSwB77OBwgphCduw4i/6jGXO8+t7YM34+LurcjWTb
+	kmrooA5gmJzqqDNTM6Zsm9PTdo//qF8Gm+NXRNEyRgjyqy0hCvAT8
+X-Received: by 2002:a05:600c:1da8:b0:496:bbce:fc with SMTP id 5b1f17b1804b1-4998798467amr50729635e9.12.1786693971597;
+        Fri, 14 Aug 2026 00:52:51 -0700 (PDT)
+X-Received: by 2002:a05:600c:1da8:b0:496:bbce:fc with SMTP id 5b1f17b1804b1-4998798467amr50729125e9.12.1786693971141;
+        Fri, 14 Aug 2026 00:52:51 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-135-154.retail.telecomitalia.it. [82.53.135.154])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49988b1d33asm33182265e9.10.2026.08.14.00.52.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Aug 2026 00:52:50 -0700 (PDT)
+Date: Fri, 14 Aug 2026 09:52:44 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Jia Jia <physicalmtea@gmail.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
+	"Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 0/3] vhost/vsock: fix device IOTLB feature lifecycle
+Message-ID: <an7JAlFpRVOiC4WQ@sgarzare-redhat>
+References: <20260814072903.124991-1-physicalmtea@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=XqfK/1F9 c=1 sm=1 tr=0 ts=6a7ec5fa cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=yMe-tZgr8oQhn_PHCEoA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE0MDA1OCBTYWx0ZWRfXx910BPO3twxO
- X9Lu4TJlIh9jzXxio6MDKB00qIu0/viq2TFk4GF+KQUnycRt5G0GWQrSw3RE1mJi2JgVdgSrAPU
- pn6fN6dYjvq4KVt1luapemth1nVNcIcn1EXjg6T/xqWbzkQTVTqdxUkDwVd9vR0z6za6A0r47PC
- lcEWJwvRRLZ2a98/Mxd7WmSWa2MLHtevjJ5MrCxgvtCVGWeYpltT/qi/FagFmiAsQf7fuAOzur1
- NDjs/pYewVehj2eaLRiQCOiah2pCr2VLIAF3hIOXaPDhO2cbkXbI7T9ab3paLgACyOIeaksucbv
- P05bYO7dt2pb8cz7ckyb49d/jEa9qfnp4E1PghDOqOt8xcuy7+O+55BIxNZNeFBJpJm/o/+LqF/
- dic5NlJrTJVpEoc514+EKcxKw73yRUv1WyQnRSjCTbCuBkUNZoaTTCC3sw5roVDcGT97/yjucQC
- umiMQgfEXzhPmP+FNPw==
-X-Proofpoint-ORIG-GUID: pJasYkd_CJgL4bvWVKovMJRwwljdPdsO
-X-Proofpoint-GUID: kKG07ru1zU5sOqLLAEMRIUBHhRnmDwTI
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODE0MDA1OCBTYWx0ZWRfX8rZkpqxcKT2m
- P+x73RLBOt7Iir/q1w4Ru6bfKo2UnhpTRFf571J8tuY4/GnrgTDG3+hDG9jnkFy4hQi+OWZtiuf
- U4b9z+q+sVknmEBjCBG5rP0Xas4+4io=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-14_02,2026-08-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 spamscore=0 adultscore=0 malwarescore=0 clxscore=1015
- suspectscore=0 priorityscore=1501 impostorscore=0 phishscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608140058
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260814072903.124991-1-physicalmtea@gmail.com>
 
-Complete set_channels() RX handling around ibmveth_resize_rx_channels():
+On Fri, Aug 14, 2026 at 03:29:00PM +0800, Jia Jia wrote:
+>vhost-vsock leaves the device IOTLB attached when userspace clears
+>VIRTIO_F_ACCESS_PLATFORM. It also replaces an existing IOTLB with an
+>empty one whenever a later feature update keeps ACCESS_PLATFORM enabled.
+>
+>Patch 1 adds a common vhost helper that detaches the device IOTLB from
+>all virtqueues, clears their metadata caches, drops queued IOTLB miss
+>messages, and frees the old table after all virtqueues have released
+>their pointers.
 
-  - When down: set TX queues first, then stash the desired RX count
-    in adapter->num_rx_queues for the next open() (open publishes via
-    netif_set_real_num_rx_queues). There are no RX mappings/buffers/IRQs
-    to grow or shrink while down, so do not allocate immediately.
-  - When up: resize RX, then adjust TX LTBs with the existing
-    stop/alloc/set_real_num_tx/free/wake path.
-  - Skip TX stop/wake when the TX count is unchanged.
+In the v3 you mentioned that this could be used also in vhost-net and 
+maybe vhost-scsi. Would it be better to include the other patches in 
+this series as well, since we're basically fixing the same issues, or 
+have they already been merged?
 
-Make TX/RX updates fail atomically: validate both ranges up front;
-apply TX before stashing RX while down; when up, roll RX back if TX
-cannot reach the requested count. Initialize the TX alloc loop bound
-so a scale-down path that never allocates still has defined cleanup
-if set_real_num_tx_queues() fails.
+Thanks,
+Stefano
 
-Gate live RX resize on adapter->opened (not IFF_UP): RX resources
-exist only after a successful open, matching the while-down stash path.
-
-Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
-Reviewed-by: Dave Marquardt <davemarq@linux.ibm.com>
-Tested-by: Shaik Abdulla <shaik.abdulla1@ibm.com>
----
-
-Changes in v5:
-- set_channels / resize_rx_channels read via get_num_rx_queues()
-- Series renumber: mailed v4 13/14 set_channels -> tip P15 (end; 14->15)
-- set_channels: gate on adapter->opened (not IFF_UP) for live RX resize
-  vs while-down stash
-- Down-path RX stash also refreshes CMO (publish + set_real_num_rx)
-- When up: resize RX then TX; roll RX back if TX cannot reach goal
-
-Changes in v4:
-- On !IFF_UP, stash num_rx_queues only after TX set succeeds; do not
-  allocate live subordinate IRQs/buffers while down.
-- Initialize i = old_tx on the TX adjust path.
-- Always return rc from set_channels().
-- Split from the resize-helper patch (same split as v3) while keeping
-  a live caller of resize_rx_channels() in the previous patch.
-
- drivers/net/ethernet/ibm/ibmveth.c | 107 +++++++++++++++++++++++------
- 1 file changed, 85 insertions(+), 22 deletions(-)
-
-diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-index 84f4a0deb0c5..35cbd2553e86 100644
---- a/drivers/net/ethernet/ibm/ibmveth.c
-+++ b/drivers/net/ethernet/ibm/ibmveth.c
-@@ -800,6 +800,7 @@ ibmveth_kick_rx_queue_if_pending(struct ibmveth_adapter *adapter,
- 	if (ibmveth_rxq_pending_buffer(adapter, queue_index))
- 		ibmveth_schedule_rx_queue(adapter, queue_index);
- }
-+
- /* setup the initial settings for a buffer pool */
- static void ibmveth_init_buffer_pool(struct ibmveth_buff_pool *pool,
- 				     u32 pool_index, u32 pool_size,
-@@ -3175,28 +3176,75 @@ static int ibmveth_set_channels(struct net_device *netdev,
- 				struct ethtool_channels *channels)
- {
- 	struct ibmveth_adapter *adapter = netdev_priv(netdev);
--	unsigned int old = netdev->real_num_tx_queues,
--		     goal = channels->tx_count;
-+	unsigned int old_rx = ibmveth_get_num_rx_queues(adapter);
-+	unsigned int goal_rx = channels->rx_count;
-+	unsigned int old_tx = netdev->real_num_tx_queues;
-+	unsigned int goal_tx = channels->tx_count;
-+	unsigned int want_tx = goal_tx;
-+	int rxq_entries = adapter->rx_queue[0].num_slots;
-+	bool rx_changed = false;
- 	int rc, i;
- 
--	/* Validate RX (and resize when opened) before the down-path early
--	 * return so MQ/range errors are not deferred to the wiring patch.
--	 * RX stash + CMO while down still lands with that patch.
--	 */
--	rc = ibmveth_resize_rx_channels(adapter, channels->rx_count);
-+	if (goal_tx < 1 || goal_tx > ibmveth_real_max_tx_queues()) {
-+		netdev_err(netdev,
-+			   "Invalid TX queue count %u (must be 1-%u)\n",
-+			   goal_tx, ibmveth_real_max_tx_queues());
-+		return -EINVAL;
-+	}
-+
-+	/* RX range / MQ checks live in ibmveth_resize_rx_channels(). */
-+	rc = ibmveth_resize_rx_channels(adapter, goal_rx);
- 	if (rc)
- 		return rc;
- 
--	if (!adapter->opened)
--		return netif_set_real_num_tx_queues(netdev, goal);
-+	/* If RX resources are not live (never opened, or close+open failed
-+	 * while IFF_UP stayed set), only stash desired queue counts.
-+	 */
-+	if (!adapter->opened) {
-+		/* Apply TX first so a failure leaves RX stash unchanged. */
-+		rc = netif_set_real_num_tx_queues(netdev, goal_tx);
-+		if (rc)
-+			return rc;
-+
-+		/* Stash desired RX count; open() publishes it via
-+		 * netif_set_real_num_rx_queues() after queue registration.
-+		 * Refresh CMO now so open() can map the larger footprint;
-+		 * open itself does not call vio_cmo_set_dev_desired.
-+		 */
-+		if (goal_rx != ibmveth_get_num_rx_queues(adapter)) {
-+			ibmveth_publish_num_rx_queues(adapter, goal_rx);
-+			rc = netif_set_real_num_rx_queues(netdev, goal_rx);
-+			if (rc) {
-+				ibmveth_publish_num_rx_queues(adapter, old_rx);
-+				return rc;
-+			}
-+			if (firmware_has_feature(FW_FEATURE_CMO)) {
-+				unsigned long dma;
-+
-+				dma = ibmveth_get_desired_dma(adapter->vdev);
-+				vio_cmo_set_dev_desired(adapter->vdev, dma);
-+			}
-+		}
-+		return 0;
-+	}
-+
-+	if (goal_rx != old_rx)
-+		rx_changed = true;
- 
- 	/* We have IBMVETH_MAX_QUEUES netdev_queue's allocated
- 	 * but we may need to alloc/free the ltb's.
- 	 */
-+	if (goal_tx == old_tx)
-+		return 0;
-+
- 	netif_tx_stop_all_queues(netdev);
- 
--	/* Allocate any queue that we need */
--	for (i = old; i < goal; i++) {
-+	/* Allocate any new TX LTBs. i starts at old_tx for the free walk
-+	 * below when this loop body never runs (goal_tx == old_tx already
-+	 * returned; goal_tx < old_tx is scale-down).
-+	 */
-+	i = old_tx;
-+	for (; i < goal_tx; i++) {
- 		if (adapter->tx_ltb_ptr[i])
- 			continue;
- 
-@@ -3205,28 +3253,43 @@ static int ibmveth_set_channels(struct net_device *netdev,
- 			continue;
- 
- 		/* if something goes wrong, free everything we just allocated */
--		netdev_err(netdev, "Failed to allocate more tx queues, returning to %d queues\n",
--			   old);
--		goal = old;
--		old = i;
-+		netdev_err(netdev, "Failed to allocate more tx queues, returning to %u queues\n",
-+			   old_tx);
-+		goal_tx = old_tx;
-+		old_tx = i;
- 		break;
- 	}
--	rc = netif_set_real_num_tx_queues(netdev, goal);
-+	rc = netif_set_real_num_tx_queues(netdev, goal_tx);
- 	if (rc) {
--		netdev_err(netdev, "Failed to set real tx queues, returning to %d queues\n",
--			   old);
--		goal = old;
--		old = i;
-+		netdev_err(netdev, "Failed to set real tx queues, returning to %u queues\n",
-+			   old_tx);
-+		goal_tx = old_tx;
-+		old_tx = i;
- 	}
- 	/* Free any that are no longer needed */
--	for (i = old; i > goal; i--) {
-+	for (i = old_tx; i > goal_tx; i--) {
- 		if (adapter->tx_ltb_ptr[i - 1])
- 			ibmveth_free_tx_ltb(adapter, i - 1);
- 	}
- 
- 	netif_tx_wake_all_queues(netdev);
- 
--	return rc;
-+	if (netdev->real_num_tx_queues != want_tx) {
-+		if (rx_changed) {
-+			int rb;
-+
-+			rb = ibmveth_resize_rx_queues_incremental(adapter,
-+								  old_rx,
-+								  rxq_entries);
-+			if (rb)
-+				netdev_err(netdev,
-+					   "Failed to roll back RX queues to %u after TX failure: %d\n",
-+					   old_rx, rb);
-+		}
-+		return rc ? rc : -ENOMEM;
-+	}
-+
-+	return 0;
- }
- 
- static const struct ethtool_ops netdev_ethtool_ops = {
--- 
-2.50.1 (Apple Git-155)
+>
+>Patch 2 uses the helper when vhost-vsock clears ACCESS_PLATFORM. The
+>acked_features update remains in the vhost-vsock-specific loop.
+>
+>Patch 3 avoids replacing an existing IOTLB when ACCESS_PLATFORM remains
+>enabled across a feature update.
+>
+>Changes since v3:
+>- move the IOTLB teardown helper from vhost-vsock into common vhost code
+>- keep acked_features updates in the backend-specific loop
+>- add the common helper as a separate first patch
+>
+>Jia Jia (3):
+>  vhost: add helper to clear device IOTLB
+>  vhost/vsock: discard IOTLB when ACCESS_PLATFORM is cleared
+>  vhost/vsock: keep IOTLB across feature updates
+>
+> drivers/vhost/vhost.c | 24 ++++++++++++++++++++++++
+> drivers/vhost/vhost.h |  1 +
+> drivers/vhost/vsock.c |  7 ++++++-
+> 3 files changed, 31 insertions(+), 1 deletion(-)
+>
+>-- 
+>2.34.1
+>
 
