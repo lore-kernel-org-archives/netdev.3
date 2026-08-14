@@ -1,68 +1,66 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CE743CEF5
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 08:14:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780E9434E30
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 08:14:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786695274; cv=none; b=EKy8WON2BqrljsToMp6K80Mc1fES5BAzzUGWAq+34a2zShu30wzr0XVZRd9Hk5NfKXvS5cRYS8oBm1UFnOFUHJox1JFWC3J4y/+f6s0Km4+R1cNqp8jFtpZrQw0Az3H6JNz+iUOenKZ4Vx9a6LtPLWYmLG3HLYPXVIcflqgj/R4=
+	t=1786695272; cv=none; b=uwvvkqBwMENolX1fEW/MWPNKJJVhA4AKOPMIs9aObtmz8SPckYQK1t4r/RmdyR8TfGP11oUDkqOpW4uJtTxlGcEyH//DSSmVRks5cPQ+m88L1teLlPYf/vTJiKNIPbkWfp4Z6SNqrE5ijXu+W4p+rimZ8Ds5llZV68DQK6OXIeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786695274; c=relaxed/simple;
-	bh=UE5DRFZOKnQaYeGHQLt4eABPM3k+kmQkLB0O6N3lk/E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Or2VkMfu8rIaZfIzKZGNSkGYMCqd1MHamiPdgMKcRNgiFJ9TznWzhWjPbLQfhhbGbhogB2EKhdId0Efvdgxjf9hi/h+T+amMUK/yQsVIYDjQGvQBHQL874Hl3mrPNpSi2o4CFlFB/bd95NjcbUVV8t00GnRC5knFzXkYgMOigQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=VB/uxmJF; arc=none smtp.client-ip=209.85.208.53
+	s=arc-20240116; t=1786695272; c=relaxed/simple;
+	bh=bHZsfLLl5vwCbNfcZaQIZTl5GdjBuDhT51CRLHiccZE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LmhTbikzupj0J60BYeMSRG+25pTB2zJkqDl50P/ulx0BEdX7Em2DpgpRWhVx+RGxRqeP81MoZcExX10hPjvYzZlYnfCw0Y48+CbhPNm9TftHZ/8LXQ2EjoOeVC/6R/Z/RqDQlyh1LcjPSpMkOMaMd9VWJ+RnlPT9DveRgzfHxhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=SBf1sa+f; arc=none smtp.client-ip=209.85.208.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="VB/uxmJF"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6a1a546a6bbso1015916a12.1
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 01:14:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="SBf1sa+f"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6a15d54ac95so1093527a12.0
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 01:14:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1786695266; x=1787300066; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=NdS4PTcnBXYPQ/ZcnsNa4+BIFfCsI8ES9G95f05212Y=;
-        b=VB/uxmJFeYRltX0v/6h1K2iV1hqfVOjYFXNSPv+u2qwfHgoKGEqeOQPjYf04G2Q6JX
-         tTGKvbq9VX5ZDH3USE/5OkxUY3/VFeoz//mmpjqVXKiMzPxRIVvbqrSbBbvHy/f+9/tM
-         g3gpbbpZHnPlph7P74AmxnQ+cX9notCNPOhVLMJIvrxpS61Es189jAgfVSrbM/ciMC8G
-         RRKdjNprJ/y8eioVLDsl+BAs6t6fDTpa4zHdVVZNjPpastdEJ3L2fSzUqHfkogdQb00T
-         dAOMrN6eijMpb6GEBd3xjXwzZdiNPI8reezbu7LP9NoLi5n8q8hz9Mck8CEgjc7ME9IR
-         OukQ==
+        d=cloudflare.com; s=google09082023; t=1786695261; x=1787300061; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=yPXr0G+xg2fjcvTsT5qtmvvWszHpLn8rkkUHyiWVWks=;
+        b=SBf1sa+fJYMgtQZbA/Pr/WGeqXN4SH0tI/lCt1mGSZmzIfSnq60UKTBm6XMav+1PPr
+         oXGNFxQ27tmH6Mfy2X14H/44rMFqhy1QFEay/6i4xvYc8kVUozS+s1Mp48Lt2foT8m5E
+         jTxSwPWTZXCP36GXehDCrMelb8fFZk2H54TQglHx9XoH1Cy07bKX8cWR1OCb/s7gMdly
+         MU/UvMBL/+EbolRCrGV88JfS6qDgrnWmajoDvfn05vSiBnwSyZPfGGvAB5k28Z6ZJvcv
+         LS67IcdxSdCbe8PvPZQZPinyEz8kHjgPa55XBgV0b8oPdNIO2ZOfX7w7UQSd/60oVpfS
+         mUZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786695266; x=1787300066;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NdS4PTcnBXYPQ/ZcnsNa4+BIFfCsI8ES9G95f05212Y=;
-        b=Rywi0mmxQNzjI4Xenu8LYDmf7s1gIzY92BOsqBsxbhxp/En/znkRJuFjh8XpWK7lZI
-         CDid6G9W3qU6syFxI0xMu8zkiKdEXXyQwrLWtLIXIHz+JIurTeJD0hIwiaYkjl5XIb9M
-         algO22XKU3GtD7nJSBjkCK3O006Kcg7Ov3c4vOuhiD5i/JcQYjvy9CCFeqQuqGBG9pTe
-         uoD0Jcir/Fys0wf+S0wq51+qFhozO+x1rKGKX/gHcW3yB9R9wIu4gmJDmc/tSMHCml7e
-         NoeHjWKppraDpfTCXT0E+S2f6uJ5qwSVgyQmMv/qTgXY6Oe5pbudpV0ISTOAGDmvq3FH
-         3s2Q==
-X-Gm-Message-State: AOJu0YwJJF1Rl94DSAOuAsah31sgSq5cS5fOYqvteWSfV4zpGJHoxz5b
-	pNw3jbC1Z6Fw9a613oYunIiqGIKv/u9DPrPBRey7pmO1NPmeLe6+sgLszwFQN+EPU+g=
-X-Gm-Gg: AR+sD13+G6D1RDGiEDXHKPCKPvuhHor5He777aTKgYGWvk0wMuI+DWaLYYUQhD8Oa9v
-	r84V9Idz/P8sk8XYc789w1hk9T78tna/FQ4mxmMt9s2cyuA43Cxoq4VPUwxEpIQvQrDEiTLtGuE
-	0Da6JT4NHUyT3i/oWPR0WCvsAsK0kIzRUGajnRsIdmt0ApsYgofmDN45HMVpO2UZhiSWdYCNFzN
-	bPgsjCd59lOVxAJ9ZIfiJtLrUpvtqi7nvI8l2+X71IeaFbG5NQhwZiOBxK+vCMdBn4NB9WB+3Xh
-	ISwVkviAJaIUlckoYlFYgBf3NQTRlF6t1YmcXub1b10eSm+MH6Mws3t8H0Ah/rOWC36NtZT1Hrn
-	ua549GiIQsyrxMC7aJp+qnaAVEUyD3YMxq36fr6CkfLHMUvsidlumLfCzVIlqLC7bGDDz8IMo3i
-	bWkbJfgFlzDwdzrrZiW9Vd6x9VxKGULA49GuDgo4pHb4wtBVtKf67WcQz1N0hG0tNuwYWrQpUbd
-	GV1AEXLHt23MroncFlD/xgAga0eUAyFwTq6ow==
-X-Received: by 2002:a05:6402:249c:b0:6a3:8586:9b73 with SMTP id 4fb4d7f45d1cf-6a38a926287mr1781400a12.6.1786695266582;
-        Fri, 14 Aug 2026 01:14:26 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1786695261; x=1787300061;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=yPXr0G+xg2fjcvTsT5qtmvvWszHpLn8rkkUHyiWVWks=;
+        b=KIHC4xphBH34PdK0fMXavataXzxpbPVPKEC8aceyMHe7KJ4tlaIT79I/kMJzd2EAkE
+         xpdphb4CHVM3nTPPJpLQXehApHbVMYy6zY/rvESmaxOl9MtD1y48yAzNUUu5OCUTeJql
+         dtrDgMyCfcAs54tX5UVwcdhZ5MMz3Qv5I+tmgO9QenIMCfgmsTsKP2izcuDdmb9/PFvt
+         ojjUFCXesZA8ju+GM4ZX17R4YU8haYyl+wAmDMTaKp2UT/OICUtuODgejCn2Oo2kipA9
+         rBiqHTno815sKa8fVrxPtCa1xeJ48yZuC+Flh8/j5RKzf+lbCk2PeQq/lMeaVne3NnL5
+         0yIA==
+X-Gm-Message-State: AOJu0YxS49w4h5klml6ElxibRKhZn75g6A8jtqV8m+6fYddBhSYQmWht
+	xFxIAqfJxhNhavj0LXdqr170+gqaLc8CYjWtxRrLxsVYhqihyCHJZMHufW5xpJFc3CI=
+X-Gm-Gg: AR+sD13KvSRNmpEGMIR9rP0V176p6/NJQY4KQt4zc+d93EM8C5XIuLmRnGE+9QaoIK4
+	MZhs/5wsI2QwE8hFCF2r/9EWhS6ah4w6+K0MoPvNnIGLZPSZKWknMKS2ewyn2dCQiL+3VewS0sz
+	4+aRa9mzcCGHeGg59DM/UlkxoJEXW3pSDMrO3dQEj1cRQmnly7RYochXN+eFWuuEop1kRTCP1n1
+	qvy9ucStl1fDIbnbLxUQfVjPcd3e19RvxVVKXFmG5Efhr7Ke1lfWrdFpTmu5QkzBFFcdvacpH2G
+	/kGYV9uuZP4RuKakUKWSHuCnJrErThNhuPa4RBxwyZSGu/0GOYmG79se+uEiEN++rooIR/3eNnW
+	wPwvof+FBo8QMN4K4/YtCSXGJYchmmpxyYTjFo2suOvGKakI6bs0gOczkEOUe9+sbSRrZ+CI451
+	5pnIVFToD5EWQw1sT4FCcef0mGGuNGhHOkZmfDwPFJHAUIVbJYE4AOYBObyDUTtj16MHxS8zcPg
+	Xsay+S+VBsXuQ0Tfi0DTStsI3WViHx65B7iHA==
+X-Received: by 2002:a05:6402:3894:b0:6a3:6d6d:2296 with SMTP id 4fb4d7f45d1cf-6a38a8f5391mr1871067a12.5.1786695260946;
+        Fri, 14 Aug 2026 01:14:20 -0700 (PDT)
 Received: from cloudflare.com (79.184.184.176.ipv4.supernova.orange.pl. [79.184.184.176])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a38d79e437sm407521a12.31.2026.08.14.01.14.25
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a38c9d7f0dsm520559a12.3.2026.08.14.01.14.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 01:14:25 -0700 (PDT)
+        Fri, 14 Aug 2026 01:14:19 -0700 (PDT)
 From: Jakub Sitnicki <jakub@cloudflare.com>
-Date: Fri, 14 Aug 2026 10:14:04 +0200
-Subject: [PATCH net-next 03/14] bpf: Make BPF skb extension survive packet
- scrubbing
+Subject: [PATCH net-next 00/14] skb extension for BPF metadata
+Date: Fri, 14 Aug 2026 10:14:01 +0200
+Message-Id: <20260814-bpf-meta-inside-skb-ext-v1-0-767edd862656@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,9 +69,11 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260814-bpf-meta-inside-skb-ext-v1-3-767edd862656@cloudflare.com>
-References: <20260814-bpf-meta-inside-skb-ext-v1-0-767edd862656@cloudflare.com>
-In-Reply-To: <20260814-bpf-meta-inside-skb-ext-v1-0-767edd862656@cloudflare.com>
+X-B4-Tracking: v=1; b=H4sIAEnOfmoC/3WOQQ6CMBREr0L+2m9oVUBX3sOwKO2vVKElbSEYw
+ t0tuHY5mXkzs0AgbyjALVvA02SCcTYJdshAtsI+CY1KGnjOi7zgJ2wGjT1FgcYGowjDu0GaI2r
+ NmbyyiiqpIdGDJ23mvfkBliLalIL654SxeZGMW/GWbU2Izn/2ExPbiX2vZOe/exPDHC9VyWRei
+ kqp4i47NyrdCU9H6Xqo13X9ArNmfKDfAAAA
+X-Change-ID: 20260623-bpf-meta-inside-skb-ext-ff21c918e8cf
 To: netdev@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
  Jakub Kicinski <kuba@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
  Paolo Abeni <pabeni@redhat.com>, Stanislav Fomichev <sdf@fomichev.me>
@@ -90,197 +90,118 @@ Cc: bpf@vger.kernel.org, kernel-team@cloudflare.com,
  Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 X-Mailer: b4 0.16.0
 
-skb_scrub_packet() drops all skb extensions unconditionally via
-skb_ext_reset(). It runs on tunnel encap/decap (ip_tunnel_rcv,
-vxlan_rcv, etc.) and cross-netns forwarding (dev_forward_skb).
+[I realize net-next closes soon. Posting only to collect more feedback.]
 
-This makes it impossible for a BPF program to pass metadata via
-bpf_skb_ext through a tunnel or across a netns boundary. The extension
-is always lost at the scrub point.
+Please see the RFC cover letter for the overview [1].
+I will focus here just on the latest developments.
 
-Introduce skb_ext_scrub() which consults each active extension before
-discarding it. Extensions that request preservation are kept while the
-rest are torn down. When the extension slab is shared with clones, COW
-ensures isolation. Replace the skb_ext_reset() call in
-skb_scrub_packet() with skb_ext_scrub().
+1) Based on feedback from the RFC - the BPF skb extension is *no longer
+scrubbed* on tunnel encap/decap or veth traversal. There is also *no
+mechanism* to enable scrubbing as we don't seem to have a use case for it.
 
-Switch udp_try_make_stateless() to skb_ext_scrub() as well, so that the
-metadata stays readable until the packet is queued on a UDP socket
-receive queue (e.g. for a sockmap verdict program). Only mark the skb
-stateless when no extension survives the scrub. Otherwise
-skb_consume_udp() would take the __consume_stateless_skb() fast path,
-which skips skb_release_head_state(), and leak the extension slab.
+2) Since the RFC I've enabled access to BPF skb extension for the remaining
+BPF program types which operate on skbs, namely netfilter, lwt family, and
+- everyone's favorite - sk_skb.
 
-Finally, make BPF skb extension survive skb scrubbing.
+Outside the patch set, two things happened:
+
+3) At NetConf 2026 Kuniyuki presented effectively the same idea with a use
+case in mind to attach metadata to packets on egress (IIRC). Hoping for
+feedback if this meets your needs as well.
+
+4) At BPF Summit 2026, Alexei asked - I'm paraphrasing: What percentage of
+skbs will carry metadata in our workload? This determines if the cost of
+attaching a tracing prog to consume_skb gets amortized. We've run
+experiments and have some answers.
+
+If bpf skb ext existed today, we would adopt it to attach metadata to
+incoming TCP connections and ingress UDP packets to CDN to identify flows
+that have been forwarded from one PoP to another.
+
+Based on stats from a production node where we've been testing this patch
+set, the fraction of skbs that would carry the metadata is <1% (~0.7%):
+
+```
+923m16$ sudo perf stat -a -r 10 \
+            -e skb:consume_skb -e skb:kfree_skb \
+            -e probe:skb_ext_add -- sleep 1
+
+ Performance counter stats for 'system wide' (10 runs):
+
+           334,256      skb:consume_skb                            ( +-  1.63% )
+             1,525      skb:kfree_skb                              ( +-  4.09% )
+             2,218      probe:skb_ext_add                          ( +- 18.58% )
+
+           1.02305 +- 0.00243 seconds time elapsed  ( +-  0.24% )
+```
+
+I expect that even if we adopted bpf skb ext for other use cases we have in
+mind, like labeling egress CDN packets with a customer identifier, we would
+attach metadata only to around 5% of all skbs in flight.
+
+We've run an experiment to evaluate this patch set - bpf skb extension -
+against the alternative - using a BPF map keyed by &skb (LRU_HASH) to stash
+metadata plus consume/kfree_skb tracepoint programs to clean up the
+entries.
+
+To do that we've modified the CDN component that labels the incoming
+connections forwarded from another PoP:
+
+- with bpf skb ext, BPF progs involved in processing consumed 7.5..10 CPU%,
+- with BPF map + consume/kfree_skb tp, the overhead was between 15..20 CPU%
+
+Not surprising considering the low fraction of skbs we attach metadata to.
+(For graphs see slides 30 & 40 from our presentation at Netdev 0x1A [2].)
+
+Note that we have not tried using RHASH as a BPF metadata stash, to see if
+that could bridge the overhead gap, as that would involve deploying a
+non-LTS kernel ATM.
+
+Thanks,
+-jkbs
+
+[1] https://patch.msgid.link/20260714-bpf-meta-inside-skb-ext-v1-0-5871c07a8dd6@cloudflare.com
+[2] https://github.com/jsitnicki/talks/blob/5d64c151f4dc0c38b2832fdcbce7284ec93fdca2/Netdev%200x1A%20-%20Thrice%20the%20charm%20-%20an%20skb%20extension%20for%20BPF%20metadata.pdf
 
 Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
 ---
- include/linux/skbuff.h |  2 ++
- net/core/skbuff.c      | 78 +++++++++++++++++++++++++++++++++++++++++++-------
- net/ipv4/udp.c         |  9 ++++--
- 3 files changed, 76 insertions(+), 13 deletions(-)
+Changes in v1:
+- Don't scrub BPF skb extension. Remove F_NO_SCRUB flag. (Stan)
+- Allow calling bpf_dynptr_from_skb_ext from NETFILTER, LWT_*, SK_SKB progs.
+- Reorg tests into smaller commits. Add missing coverage.
+- Link to RFC: https://patch.msgid.link/20260714-bpf-meta-inside-skb-ext-v1-0-5871c07a8dd6@cloudflare.com
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index a4f88107c2d5..286f2e4cdbb1 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -5061,6 +5061,7 @@ void *__skb_ext_set(struct sk_buff *skb, enum skb_ext_id id,
- void *skb_ext_add(struct sk_buff *skb, enum skb_ext_id id);
- void __skb_ext_del(struct sk_buff *skb, enum skb_ext_id id);
- void __skb_ext_put(struct skb_ext *ext);
-+void skb_ext_scrub(struct sk_buff *skb);
- 
- static inline void skb_ext_put(struct sk_buff *skb)
- {
-@@ -5130,6 +5131,7 @@ static inline bool skb_has_extensions(struct sk_buff *skb)
- static inline void __skb_ext_put(struct skb_ext *ext) {}
- static inline void skb_ext_put(struct sk_buff *skb) {}
- static inline void skb_ext_reset(struct sk_buff *skb) {}
-+static inline void skb_ext_scrub(struct sk_buff *skb) {}
- static inline void skb_ext_del(struct sk_buff *skb, int unused) {}
- static inline void __skb_ext_copy(struct sk_buff *d, const struct sk_buff *s) {}
- static inline void skb_ext_copy(struct sk_buff *dst, const struct sk_buff *s) {}
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 9947d2ed6635..700bee045b5c 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -83,6 +83,7 @@
- #include <net/page_pool/helpers.h>
- #include <net/psp/types.h>
- #include <net/dropreason.h>
-+#include <linux/bpf.h>
- #include <net/xdp_sock.h>
- 
- #include <linux/uaccess.h>
-@@ -6284,7 +6285,7 @@ void skb_scrub_packet(struct sk_buff *skb, bool xnet)
- 	skb->skb_iif = 0;
- 	skb->ignore_df = 0;
- 	skb_dst_drop(skb);
--	skb_ext_reset(skb);
-+	skb_ext_scrub(skb);
- 	nf_reset_ct(skb);
- 	nf_reset_trace(skb);
- 
-@@ -7258,6 +7259,20 @@ void __skb_ext_del(struct sk_buff *skb, enum skb_ext_id id)
- }
- EXPORT_SYMBOL(__skb_ext_del);
- 
-+static void skb_ext_put_each(struct skb_ext *ext, unsigned int skip)
-+{
-+#ifdef CONFIG_XFRM
-+	if (!(skip & (1 << SKB_EXT_SEC_PATH)) &&
-+	    __skb_ext_exist(ext, SKB_EXT_SEC_PATH))
-+		skb_ext_put_sp(skb_ext_get_ptr(ext, SKB_EXT_SEC_PATH));
-+#endif
-+#ifdef CONFIG_MCTP_FLOWS
-+	if (!(skip & (1 << SKB_EXT_MCTP)) &&
-+	    __skb_ext_exist(ext, SKB_EXT_MCTP))
-+		skb_ext_put_mctp(skb_ext_get_ptr(ext, SKB_EXT_MCTP));
-+#endif
-+}
-+
- void __skb_ext_put(struct skb_ext *ext)
- {
- 	/* If this is last clone, nothing can increment
-@@ -7269,18 +7284,61 @@ void __skb_ext_put(struct skb_ext *ext)
- 	if (!refcount_dec_and_test(&ext->refcnt))
- 		return;
- free_now:
--#ifdef CONFIG_XFRM
--	if (__skb_ext_exist(ext, SKB_EXT_SEC_PATH))
--		skb_ext_put_sp(skb_ext_get_ptr(ext, SKB_EXT_SEC_PATH));
--#endif
--#ifdef CONFIG_MCTP_FLOWS
--	if (__skb_ext_exist(ext, SKB_EXT_MCTP))
--		skb_ext_put_mctp(skb_ext_get_ptr(ext, SKB_EXT_MCTP));
--#endif
--
-+	skb_ext_put_each(ext, 0);
- 	kmem_cache_free(skbuff_ext_cache, ext);
- }
- EXPORT_SYMBOL(__skb_ext_put);
-+
-+static unsigned int skb_ext_no_scrub(struct skb_ext *ext)
-+{
-+	unsigned int keep = 0;
-+
-+#if IS_ENABLED(CONFIG_BPF_SKB_EXT)
-+	if (__skb_ext_exist(ext, SKB_EXT_BPF))
-+		keep |= (1 << SKB_EXT_BPF);
-+#endif
-+	return keep;
-+}
-+
-+static int __skb_ext_scrub(struct sk_buff *skb, unsigned int keep)
-+{
-+	struct skb_ext *old = skb->extensions;
-+	struct skb_ext *ext;
-+	int i;
-+
-+	if (refcount_read(&old->refcnt) == 1) {
-+		skb_ext_put_each(old, keep);
-+		ext = old;
-+	} else {
-+		ext = skb_ext_maybe_cow(old, keep);
-+		if (!ext)
-+			return -ENOMEM;
-+		skb->extensions = ext;
-+	}
-+
-+	for (i = 0; i < SKB_EXT_NUM; i++) {
-+		if (!(keep & (1 << i)))
-+			ext->offset[i] = 0;
-+	}
-+	skb->active_extensions = keep;
-+	return 0;
-+}
-+
-+void skb_ext_scrub(struct sk_buff *skb)
-+{
-+	unsigned int keep;
-+
-+	if (likely(!skb->active_extensions))
-+		return;
-+
-+	keep = skb_ext_no_scrub(skb->extensions);
-+	if (keep && !__skb_ext_scrub(skb, keep))
-+		return;
-+
-+	skb_ext_reset(skb);
-+}
-+EXPORT_SYMBOL(skb_ext_scrub);
-+
- #endif /* CONFIG_SKB_EXTENSIONS */
- 
- static void kfree_skb_napi_cache(struct sk_buff *skb)
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index af9603217444..865655db2185 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -1530,7 +1530,10 @@ void udp_splice_eof(struct socket *sock)
-  * We need to preserve secpath, if present, to eventually process
-  * IP_CMSG_PASSSEC at recvmsg() time.
-  *
-- * Other extensions can be cleared.
-+ * Other extensions get scrubbed. If any extension survives scrubbing
-+ * (e.g. SKB_EXT_BPF), the skb must stay stateful, so that
-+ * skb_consume_udp() releases it via skb_release_head_state() instead of
-+ * leaking the extension slab on the __consume_stateless_skb() path.
-  */
- static bool udp_try_make_stateless(struct sk_buff *skb)
- {
-@@ -1538,8 +1541,8 @@ static bool udp_try_make_stateless(struct sk_buff *skb)
- 		return true;
- 
- 	if (!secpath_exists(skb)) {
--		skb_ext_reset(skb);
--		return true;
-+		skb_ext_scrub(skb);
-+		return !skb_has_extensions(skb);
- 	}
- 
- 	return false;
+---
+Jakub Sitnicki (14):
+      bpf: Introduce per-packet metadata storage for BPF programs
+      bpf: Allow access to bpf_sock_ops_kern->skb
+      bpf: Make BPF skb extension survive packet scrubbing
+      selftests/bpf: Add tests for bpf_dynptr_from_skb_ext
+      selftests/bpf: Test skb_ext on cloned skbs
+      selftests/bpf: Test skb_ext survival across veth and GRE
+      selftests/bpf: Test skb_ext read from cgroup_skb and sk_filter hooks
+      selftests/bpf: Test skb_ext read from sock_ops and LSM hooks
+      selftests/bpf: Test skb_ext read from kfree_skb tracepoint
+      selftests/bpf: Test skb_ext read from netfilter hook
+      selftests/bpf: Test skb_ext from LWT in, out, and xmit hooks
+      selftests/bpf: Test skb_ext read from seg6local End.BPF hook
+      selftests/bpf: Test skb_ext read from sk_skb stream verdict hook
+      selftests/bpf: Use non-trivial test payload in xdp_context tests
 
--- 
-2.43.0
+ include/linux/bpf.h                                |  10 +
+ include/linux/filter.h                             |  26 +
+ include/linux/skbuff.h                             |   5 +
+ include/uapi/linux/bpf.h                           |   5 +
+ kernel/bpf/helpers.c                               |   7 +
+ kernel/bpf/log.c                                   |   2 +
+ kernel/bpf/verifier.c                              |  15 +-
+ net/Kconfig                                        |  20 +
+ net/core/filter.c                                  | 135 +++
+ net/core/skbuff.c                                  |  81 +-
+ net/ipv4/udp.c                                     |   9 +-
+ tools/testing/selftests/bpf/config                 |   1 +
+ .../selftests/bpf/prog_tests/socket_helpers.h      |   1 +
+ .../bpf/prog_tests/xdp_context_test_run.c          | 988 ++++++++++++++++++++-
+ tools/testing/selftests/bpf/progs/test_xdp_meta.c  | 489 +++++++++-
+ 15 files changed, 1772 insertions(+), 22 deletions(-)
 
