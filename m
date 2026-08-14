@@ -1,110 +1,61 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86C84908B6;
-	Fri, 14 Aug 2026 17:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2457346AA66;
+	Fri, 14 Aug 2026 17:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786726829; cv=none; b=tbsvWimKCYbJNxiz7TIoqDKV0QKInWMfsxxFO+eOVunEOuaM6CBLQJJw4YLOtp7+xKG+oAhOSbqkphr7RsZAS4pF3zC8b9hqh0BcslHNviHID73mQq09ghbnu8v70eGF/5zkD/r5Ohd5ddVqXv/zPhFBWuk0ZXj7p9d2uWxl7ts=
+	t=1786726887; cv=none; b=cWwCzpoRjnMpruoDL6+nho+O1prtfLx1K5BZpSCjcy21GRRBzcH7Hq3Ty5+011EZkqIAaHlhV2ivnuraLNdVnnJ1SBKY6uaQuW5ncphaMEyKl3KRvkQEifCmlmdA4iLYSw6iKGVtsnLS647qKxobR4ONG8YerKREMW+/DDCF7Kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786726829; c=relaxed/simple;
-	bh=6RBeCqShFjrmmMLQoKBTpxnQ4vzjHJes+sJbqNicTs4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kA/Cn95OwFnNuRr+uFzAdxzAhDjwOU9PB9ZXU4Gc+/Q9lgnOtKugR+as9ufRft2y99K6Xds2vPXoOT813eOhkrmecMEWrT7AGZdfymNzVhOwP+iLuAiwXDDg1SjvdtGmehNJW7v4emPTubz7u3UYkb4+vxg62hEvNJFjdrA1OPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iYr4Y5Eh; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786726887; c=relaxed/simple;
+	bh=n6dme3HZcFicPImyg0QNMpnOA85/wNW95eAMmIA9fN8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ejw87Uc2pwaq3xnHazQSQMEspXT6DWOVW1Jk/ou0Co8JpdunjWvDfCytCy5kNkP1j8QyO1kY20WUmRAAgL6VqDsQ+m+tv8Db8BV9eTuHt7/Pwqy/5YB0gvWg6as9WMiUAdx1566xq8urIw8WUGmbLr2q5geGpFZR8uYynnsfaic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G3NgCqgU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iYr4Y5Eh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1039E1F000E9;
-	Fri, 14 Aug 2026 17:00:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G3NgCqgU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB691F000E9;
+	Fri, 14 Aug 2026 17:01:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786726818;
-	bh=5h8TZyTAoXCJSe2JoTmpCYR1pmYfom6HhzPNs541mqc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=iYr4Y5Eh/+tycun1pMxUojBy/q6lPiP/keXRcHaBSkCOTsADvBhLlq+k7j88jjymh
-	 DDXubt+0LZkSN6Z13OvJ3eigY9EN1hRhm0cim5eRZrl2weUSwJc/Sb35LlzlPTOOKF
-	 Piycj7xXDFFeH49JTzrBnCtj1kvrd11LTxepjpWutUfA//aO4mCWwS807TwQzvsOOq
-	 S7JaEOBq8CgJ8mrw0eBmcaAr/7wSxTYrVWUjv1yv9JF89Mn2z5yZDKFPsNgusYJsMH
-	 rXsgxwZBSLlIydhx3Np+3edmXbhgfv+Hmg0esZ2rRDRS/VjQuGFDxrgntyW5z8Ld+3
-	 UHJTvK91M4aTA==
-Date: Fri, 14 Aug 2026 18:00:01 +0100
-From: Simon Horman <horms@kernel.org>
-To: phucduc.bui@gmail.com
-Cc: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Michal Simek <michal.simek@amd.com>, linux-arm-msm@vger.kernel.org,
-	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] net: xilinx: axienet: Propagate errors from
- optional IRQ lookup
-Message-ID: <20260814170001.GQ265046@horms.kernel.org>
-References: <20260813042012.17631-1-phucduc.bui@gmail.com>
+	s=k20260515; t=1786726885;
+	bh=z/adx9u+3OiPBT0d+mc8OvaOlugkErjVWDWRXBBIINM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=G3NgCqgUb1n8qmdbk6p25PmKqH0vIzn1yrT3+6hJwhyiK+ReEfczlkLmPqR1mAk3F
+	 ZZx5w+8+W2so3geMEPVd4wCBNsXw3YxvBoDhoV+uuv9zz4C9Guy2XCb/QYSbjhNvLf
+	 IdsNTQrG/Ni8AIgC58leaqUpDjh2IupLrriWUyg7e0W0a2xBB4zVTokyuRXr/+Ivvp
+	 8tTyZhyRXmtm6WegFGGQtZvlIZMsEfjCJH0Q8Fe/Zs4Ni28NXn950S9GMVGhWGeAJG
+	 GQ2kGd+/dJnufnbA3JxhtGCjG2bMnMz/6KtRxGHu4tBoblveVO/5XD8HtBMsRx391j
+	 U1oDoiLNIQQpg==
+Date: Fri, 14 Aug 2026 10:01:24 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: <nshettyj@marvell.com>
+Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Viswajith
+ Murali <viswajithm@marvell.com>, Jiri Pirko <jiri@resnulli.us>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jonathan Corbet
+ <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Sunil Goutham
+ <sgoutham@marvell.com>, "Ratheesh Kannoth" <rkannoth@marvell.com>, Geetha
+ sowjanya <gakula@marvell.com>, Subbaraya Sundeep <sbhatta@marvell.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Bharat Bhushan <bbhushan2@marvell.com>
+Subject: Re: [PATCH net-next] octeontx2-pf: add devlink param to reset MAC
+ stats
+Message-ID: <20260814100124.6411cece@kernel.org>
+In-Reply-To: <20260814104256.743844-1-nshettyj@marvell.com>
+References: <20260814104256.743844-1-nshettyj@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260813042012.17631-1-phucduc.bui@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 13, 2026 at 11:20:11AM +0700, phucduc.bui@gmail.com wrote:
-> From: bui duc phuc <phucduc.bui@gmail.com>
-> 
-> platform_get_irq_optional() returns a positive IRQ number on success or
-> a negative error code on failure. For an optional IRQ, -ENXIO indicates
-> that no optional IRQ is available, while other errors should be propagated.
-> 
-> Propagate all error codes returned by platform_get_irq_optional() other
-> than -ENXIO.
-> 
-> Another call to platform_get_irq_optional() in the same function already
-> handles the return value this way. Apply the same error handling to this
-> call site for consistency.
+On Fri, 14 Aug 2026 16:12:55 +0530 nshettyj@marvell.com wrote:
+> Add a runtime devlink parameter to reset CGX/RPM MAC hardware
+> statistics.
 
-It would be useful to explain how this problem was discovered,
-and what testing the patch has seen. Please add an Assisted-by
-tag if appropriate.
-
-Link: https://docs.kernel.org/process/coding-assistants.html
-
-> 
-> Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
-> ---
->  drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> index fcf517069d16..d23e9796725d 100644
-> --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> @@ -2957,12 +2957,16 @@ static int axienet_probe(struct platform_device *pdev)
->  			lp->tx_irq = irq_of_parse_and_map(np, 0);
->  			of_node_put(np);
->  			lp->eth_irq = platform_get_irq_optional(pdev, 0);
-> +			if (lp->eth_irq < 0 && lp->eth_irq != -ENXIO)
-> +				return lp->eth_irq;
->  		} else {
->  			/* Check for these resources directly on the Ethernet node. */
->  			lp->dma_regs = devm_platform_get_and_ioremap_resource(pdev, 1, NULL);
->  			lp->rx_irq = platform_get_irq(pdev, 1);
->  			lp->tx_irq = platform_get_irq(pdev, 0);
->  			lp->eth_irq = platform_get_irq_optional(pdev, 2);
-> +			if (lp->eth_irq < 0 && lp->eth_irq != -ENXIO)
-> +				return lp->eth_irq;
->  		}
-
-The same check seems to have been added to both arms of the if/else
-condition. So it seems to me that it could be moved out of that condition.
-
-I would suggest placing it below the existing rx_irq/tx_irq condition
-which appears a few lines below this hunk so that those and
-dma_regs errors are still propagated.
-
->  		if (IS_ERR(lp->dma_regs)) {
->  			dev_err(&pdev->dev, "could not map DMA regs\n");
-> -- 
-> 2.43.0
-> 
+parameters are not actions, you should be looking at reset APIs.
+There's already one for resetting netdev blocks via ethtool
+-- 
+pw-bot: cr
