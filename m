@@ -1,197 +1,179 @@
-Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10FF3B9DA2
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 14:11:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786716684; cv=none; b=GrGjQjnou7udgwE8+KaUy7W1qbdSpA8itfaD90pGF6c99mbpqfyHI9vr5t6t8y6FI0PDEvA9Km2g+5Ls1ySVEsuQA2cHRCc2+YBjdDKVfL14a0nTyHR0uhzsUY1Irja7Sx8ls9vw+7efOslrSTC8TnN4dr/uRr4eqv8gAq81MOU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786716684; c=relaxed/simple;
-	bh=esHp+c46NHWZqA28j+A1hShu8h8QA8zkHE3mnLSTAGM=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=IvZD1SOyNeZT+X+r1x6uQqq+UHJsJzqtZ/FpSGzfAt85s0TJTcjGg5SV8WJp+zGeD3IlzT8efLQcUUUIqWdkLTu749DZsc3wrug61KMizsjJC/E/X7igKszY6zn8HDHDAByb6w4GkBsI3kCGeJHHzXu5CzhJTXbc2atIocwr1ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N2fyyG4P; arc=none smtp.client-ip=74.125.224.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098BD3C1996;
+	Fri, 14 Aug 2026 14:16:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=103.117.158.91
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786717014; cv=pass; b=bQrjNHU07Va6qhg9QcHSL8UgxO+sI2NTWapuaiqDFs4Qfm20fHK3DPcs4J7MBDXcAtyhVProSd2KGfKOJLqliWjmk5zDCl1+7RWc8Q26mLWUl1/uFKDW6E7Yx07tX5mOMpadTiIZalPevD6FczeIWo+bnLr/kUxsnz6ylcCum7c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786717014; c=relaxed/simple;
+	bh=gVoHh9TkCVZhnsk1QXTLXJVMBTczX2KmNWyOD+ybfEE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B5yd038XLn7lIxsxqZoxbHGiz0ZMwcLvS8xbfdRTMtjKkGBK+teATSvd8PLeszTAQVbq/QOa7aZXh/p/7hOCQLUOswI6ZuOEaGPLlNlUHQ8W8qcSboXUpUrHusqfkqLYOCPcav75MbgigLPZ0LCBiM925bN+nL00Lq9G8/J6/HU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.in; spf=pass smtp.mailfrom=zohomail.in; dkim=pass (1024-bit key) header.d=zohomail.in header.i=kshitiz.bartariya@zohomail.in header.b=CNCKHwx1; arc=pass smtp.client-ip=103.117.158.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.in
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.in
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N2fyyG4P"
-Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-669944f60b3so1249542d50.1
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 07:11:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786716681; x=1787321481; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=a6Tr53R1oyo5DF6Qa5INdwaCZq7w4p85RVWoodqQmV8=;
-        b=N2fyyG4PK+eV6k0QED0gabpFP8ZTevaXgAI+1p1WurVlMt1KzCF07m7y79XBGRwnf3
-         TI/QK0HyGl9djAfsvktTO/+uEnjhgpFvFBHUjejr43vnNwzFYoxWhq149Fo9kRmZltX3
-         4zMKpy9EH3VkslEXO9rKb0aXr0v9FQdAdf2s5OYWjqFMbe5qGbxoAD6LOwoD4+IbACGp
-         XFHNMOR8v1leC1CY81LXLBhcEBxOaWpdssEg1IFLam6JfU2Jyl7Lg4fL9JWGodNLEF3C
-         KXUXHZRPG8w/ZJcS2HCdZHBkTQVYmNtTxsGXaohjEyfY5tAiUn2Pg2RKKE4TV65iWupL
-         6k8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786716681; x=1787321481;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=a6Tr53R1oyo5DF6Qa5INdwaCZq7w4p85RVWoodqQmV8=;
-        b=p3E39XnbKp2F62W2a2NY6xzIWcDAfHM0FOvMGMoB3jI19LKYVxilrR9+EK4I3w8DV7
-         E/o077xF7qRt/6s6b0ImoLJ4NBHuW8YvDg5ldhOiaRKKHA2FlBUGbbu7IY34s4Vqf0an
-         f8HRA7cJPDL/+Y6UQRuV4+8SvKSTuPKS7GUEV/hgkC1+yP8RBtSmKVIp6qmoYXkrOs9m
-         kzkGFNsQUt+0Jj4TEWS37vGIR1BEnRXCzkRGDEh0TR1HfpJ5OxsWjWUwb3wQuNAHdFlB
-         2CAE3oSLH9VimrRixes9VswJDRqNImOE7F0CpPxuJwGn0hSkoPVQVoL8rkNiAX8PuF7q
-         qz/A==
-X-Forwarded-Encrypted: i=1; AHgh+RoumUQNExqA/et5L2G3CG8qAAWva/aT+tmhMfCFd2bxb3UDaSuq3oh+KwaDkxjlZPinrOW9iOI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDkVMWsCmU4AJP/Q2JrYBLnkAiPmS22DH+F2axCCZNZzFyCKQN
-	JgvIL0AgQctFEfZY5PN1egb+JwbhwV8ab/Mb4FP82AnPq2tuBz8ZQhqC
-X-Gm-Gg: AR+sD12TVM6Yf/53h66jIrG/hcpQzsnn6iPd05YjUI8lm/IkYW3CPJgP5/KO12bWkjI
-	OPXzhs4Zg7mwdWc6spi0d+pPncN3gT+GElqGWMYWLN2GeqWy1nfJX5qrv0pgxdDIOBP9ijVxXSl
-	HG5roS0PEgF1mjdD5I1xoA/T9KYaNTYLrg7WG2R/SnqvBnnmG89YyalyTN8lDvwBj+RY4mRTBvF
-	RLlM9Ov3t6rEgXUmLSyFwOztjNVwpQ8uTOlFkuifDSzCBukD4fo2lbn9AufpelYtDu+XWQMonuR
-	zkj8Kac7vP4uBy/fD6muQAnD0aH3hCRMXle+NBM9vS27xdfOA9sMznl8n9StdamlkKQr0iSJI5m
-	SZqD3FKKuD8XfI+K2qjyb6ADxRDexi6x4ROgCwYq/PAHS/rHsSiHW6DrM1FpsrG1O6YRsCS645m
-	mv5lE41k2msyGQImV7maQlUi5lQk8uPNwJzoDr91gcx3qF4DFTcZmjn7Gm5nwPkTixopR7R5Ji1
-	PCsBOw6yE+l06gIUW42sYE/YhlxXu6IPmWPV9QNLKT5lmA=
-X-Received: by 2002:a05:690e:1c0a:b0:66c:4163:c4e6 with SMTP id 956f58d0204a3-66c72c75dc1mr2777139d50.26.1786716681408;
-        Fri, 14 Aug 2026 07:11:21 -0700 (PDT)
-Received: from gmail.com (250.4.48.34.bc.googleusercontent.com. [34.48.4.250])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66c79390cd0sm895319d50.19.2026.08.14.07.11.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 07:11:19 -0700 (PDT)
-Date: Fri, 14 Aug 2026 10:11:19 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: =?UTF-8?B?Wmhhb3BpbmcgU2h1ICjoiJLlj6zlubMp?= <Zhaoping.Shu@mediatek.com>, 
- "willemdebruijn.kernel@gmail.com" <willemdebruijn.kernel@gmail.com>
-Cc: "kuniyu@google.com" <kuniyu@google.com>, 
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
- "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>, 
- "imv4bel@gmail.com" <imv4bel@gmail.com>, 
- "eilaimemedsnaimel@gmail.com" <eilaimemedsnaimel@gmail.com>, 
- "alice@isovalent.com" <alice@isovalent.com>, 
- =?UTF-8?B?SFcgSGUgKOS9leS8nyk=?= <HW.He@mediatek.com>, 
- =?UTF-8?B?SGFpanVuIExpdSAo5YiY5rW35YabKQ==?= <haijun.liu@mediatek.com>, 
- =?UTF-8?B?SXZlbiBZYW5nICjpmLPlhYkp?= <Iven.Yang@mediatek.com>, 
- "horms@kernel.org" <horms@kernel.org>, 
- "kuba@kernel.org" <kuba@kernel.org>, 
- =?UTF-8?B?WGlheXUgWmhhbmcgKOW8oOWkj+Wuhyk=?= <Xiayu.Zhang@mediatek.com>, 
- "pabeni@redhat.com" <pabeni@redhat.com>, 
- "edumazet@google.com" <edumazet@google.com>, 
- "willemb@google.com" <willemb@google.com>, 
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
- =?UTF-8?B?TGFtYmVydCBXYW5nICjnjovkvJ8p?= <Lambert.Wang@mediatek.com>, 
- "matthias.bgg@gmail.com" <matthias.bgg@gmail.com>, 
- "davem@davemloft.net" <davem@davemloft.net>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- "sd@queasysnail.net" <sd@queasysnail.net>, 
- "ncardwell@google.com" <ncardwell@google.com>
-Message-ID: <willemdebruijn.kernel.82fd3c4505e2@gmail.com>
-In-Reply-To: <ddb39bf238a544cb5c8a178dd0fc6e5cb682bbb1.camel@mediatek.com>
-References: <20260813014056.160533-1-zhaoping.shu@mediatek.com>
- <willemdebruijn.kernel.1372b82f50882@gmail.com>
- <0e1f71c4417099399eda78fd2a082b2444e42af9.camel@mediatek.com>
- <CAF=yD-+AF1aW5D5H_QPKE1yxyU2wLxOmT8c2Fm4CJsPY=BjW-g@mail.gmail.com>
- <ddb39bf238a544cb5c8a178dd0fc6e5cb682bbb1.camel@mediatek.com>
-Subject: Re: [PATCH net v3] net: gro: Fix nesting of TCP GSO SKBs in
- skb_gro_receive_list()
+	dkim=pass (1024-bit key) header.d=zohomail.in header.i=kshitiz.bartariya@zohomail.in header.b="CNCKHwx1"
+ARC-Seal: i=1; a=rsa-sha256; t=1786716950; cv=none; 
+	d=zohomail.in; s=zohoarc; 
+	b=DsyX1NpykwINFvpa0gxLI9NhnUBmDy9gS4DdSYaBcBI4jq9x9Oe6K0fMO7edmBjuD5MNUwofj7YnAdhjEg/fZYKoncdrDbc1rd9prRbZkwdOct+LmpnMSQV37K9iKMGIkVybkHHfgPf6VK8yfSmVtfv9LGXiN2TKmQD1L9esbMo=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+	t=1786716950; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=9DBH7XKlPfrjHaUVL3AZlDDm3gDjRrjfpvNdyzQnvkU=; 
+	b=YQ9QtpXUtVAiqr9OTTd2CszqDKiJr4t8ah/rv9F5u1E3MMSsohLprUgoeujBlZMBijYBrasEbPiITgu43uBSR6uE5y1h7ikWoCgpnF1cAF3M7tb3qhU9Y/1Qqkr8KCrWf6mAs7F4xZoPvSQDAeFLVA6489fzbyQD2GwCQTrs65A=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+	dkim=pass  header.i=zohomail.in;
+	spf=pass  smtp.mailfrom=kshitiz.bartariya@zohomail.in;
+	dmarc=pass header.from=<kshitiz.bartariya@zohomail.in>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1786716950;
+	s=zoho; d=zohomail.in; i=kshitiz.bartariya@zohomail.in;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=9DBH7XKlPfrjHaUVL3AZlDDm3gDjRrjfpvNdyzQnvkU=;
+	b=CNCKHwx1jI01l8CTNhS0BSS6keDRNsCF3gnTA+HVqZdvEr/OnmK1MJ6MMgQ4EPQR
+	BtAhM1wjZf3Vq6Y0pcJVA/7H0zbcn4ELfhS27PtOvMQ5SD+hpu3b18jrgua4lyamWI4
+	XAnOSEuK4wZ52fdQTTveqp7KcJQ23k4JMkt40gdM=
+Received: by mx.zoho.in with SMTPS id 17867169433445.956065004386005;
+	Fri, 14 Aug 2026 19:45:43 +0530 (IST)
+From: Kshitiz Bartariya <kshitiz.bartariya@zohomail.in>
+To: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: Kshitiz Bartariya <kshitiz.bartariya@zohomail.in>,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v5] ixgbe: implement get_queue_stats_rx
+Date: Fri, 14 Aug 2026 19:44:36 +0530
+Message-ID: <20260814141446.90544-1-kshitiz.bartariya@zohomail.in>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-> > > > Would it be better to test skb_is_gso(skb) and only skip fraglist
-> > > > GRO
-> > > > for HW-GRO skbs, rather than disabling it for all skbs?
-> > > 
-> > > Yes, for tethering packets, HW-GRO skbs are aggregated by
-> > > skb_gro_receive(), while others go through fraglist GRO. However,
-> > > care
-> > > must be taken to avoid packets arriving out of order. I will work
-> > > on
-> > > it and submit V4.
-> > 
-> > Oh right.
-> > 
-> > As long as the choice is only between fraglist GRO or not fraglist
-> > (rather than GRO or bypass GRO), it should not introduce any new
-> > reordering concerns.
-> > 
-> > But the decision cannot be made based on skb_is_gso(skb) of an
-> > arriving skb. Because when such a HW-GRO skb arrives a SW GRO context
-> > in fraglist mode may already have been opened, and it is too late to
-> > convert that to non-fraglist.
-> > 
-> > So essentially HW-GRO and fraglist are mutually exclusive.
-> > 
-> > > > 
-> > > > If treating the features as mutually exclusive, another option
-> > > > would
-> > > > be to replace these datapath checks with disabling one at
-> > > > configuration
-> > > > time, in netdev_fix_features.
-> > > > 
-> > > 
-> > > If V4 work well, there will be no need to check netdev->features.
-> > > Linux kernel GRO will be more robust and able to handle scenarios
-> > > where both NETIF_F_GRO_HW and NETIF_F_GRO_FRAGLIST are enabled.
-> > 
-> > What is your plan for v4?
-> Based on kernel 7.2.0.rc7 code:
-> Add logic in tcp4/6_check_fraglist_gro() as follow:
-> if an arriving skb is the first packet in the GRO list.
-> 	NAPI_GRO_CB(skb)->is_flist = !sk && !skb_is_gso(skb);
-> 
-> /*
-> * Otherwise, the arriving skb is not the first packet, which means
-> * that struct sk_buff *p exists.
-> */
-> if (!skb_is_gso(skb) || !NAPI_GRO_CB(p)->is_flist) {
-> 	/* Aggregate the skb using p's GRO method. */
-> 	NAPI_GRO_CB(skb)->is_flist = NAPI_GRO_CB(p)->is_flist;
-> } else {
-> 	NAPI_GRO_CB(skb)->is_flist = 0;
-> 	/* Flush p and start a new GRO list using the non-fraglist
-> method. */
-> }
-> 
-> Another code change in
-> tcp_gro_receive() {
-> 	...
-> 	if (unlikely(NAPI_GRO_CB(p)->is_flist)) {
-> 		...
-> 		/* if aggregate method changed, flush current gro list
-> */
-> 		flush |= NAPI_GRO_CB(skb)->is_flist != NAPI_GRO_CB(p)-
-> >is_flist;
-> 		if (flush || skb_gro_receive_list())
-> 			...
-> 	}
-> }
-> 
-> After this change:
-> - NETIF_F_GRO_HW and NETIF_F_GRO_FRAGLIST are no longer mutually
-> exclusive.
-> - In tethering scenarios, TCP fraglist GRO applies only to consecutive
-> non-GSO skbs(!skb_is_gso(skb)).
->   others will adopt skb_gro_receive() path.
-> 
-> Please provide some suggestions on the changes above. Should I prepare
-> V4 patch based on these changes?
+Hook into the netdev_stat_ops interface to expose per RX queue
+statistics through the netdev generic netlink API.
 
-Thanks. This sounds good to me.
+The following counters are filled:
+ - bytes: maps directly to bytes
+ - packets: maps directly to packets
+ - alloc_fail: sum of alloc_rx_page_failed and alloc_rx_buff_failed
+ - csum_bad: maps directly to csum_err, which is incremented for both
+   IP header and L4 checksum errors in ixgbe_rx_checksum().
 
-The risk is that GRO might be less effective at coalescing, if HW-GRO
-and non HW-GRO packets alternate regularly.
+The new per-queue stats can be observed with:
+  $ ynltool qstats show scope queue
 
-The alternative to make HW-GRO and fraglist GRO mutually exclusive
-does not have that problem, but on the flipside cannot use the fraglist
-optimization (esp for forwarding path).
+Signed-off-by: Kshitiz Bartariya <kshitiz.bartariya@zohomail.in>
+---
+v5:
+ - Added READ_ONCE() and NULL check for accessing adapter->rx_ring[i]
+ - Added u64_stats_fetch_begin before reading stats from rx_ring
+ Suggested by Simon Horman
 
-So no free lunch. Either works.
+v4:
+ - Changed comment format from // to /* */
+ - Moved ixgbe_stat_ops declaration next to the ixgbe_netdev_ops
+ Suggested by Jedrzej Jagielski.
+https://lore.kernel.org/lkml/19ed3cf767d.36a9bda531830.5017017162150392549@zohomail.in/
+
+v3:
+ - Added bytes and packets stats counters
+ - Implemented ixgbe_get_base_stats function
+ As suggested by AI on 
+ https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260603174857.78666-1-kshitiz.bartariya%40zohomail.in
+ https://lore.kernel.org/lkml/20260612084605.19785-1-kshitiz.bartariya@zohomail.in/
+
+v2:
+ Amended commit message with command to get RX queue stats as 
+ suggested by Jedrzej Jagielski.
+ https://lore.kernel.org/lkml/20260603174857.78666-1-kshitiz.bartariya@zohomail.in/
+
+v1: 
+ https://lore.kernel.org/lkml/20260602100932.21838-1-kshitiz.bartariya@zohomail.in/
+
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 45 +++++++++++++++++++
+ 1 file changed, 45 insertions(+)
+
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+index 8873a8cc4a18..560177f135ff 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+@@ -9760,6 +9760,45 @@ static void ixgbe_get_stats64(struct net_device *netdev,
+ 	stats->rx_missed_errors	= netdev->stats.rx_missed_errors;
+ }
+ 
++static void ixgbe_get_queue_stats_rx(struct net_device *dev, int idx,
++				     struct netdev_queue_stats_rx *stats)
++{
++	struct ixgbe_adapter *adapter = ixgbe_from_netdev(dev);
++	struct ixgbe_ring *ring = READ_ONCE(adapter->rx_ring[idx]);
++	u64 bytes, packets, alloc_rx_page_failed, alloc_rx_buff_failed,
++		csum_err;
++	unsigned int start;
++
++	if (ring) {
++		do {
++			start = u64_stats_fetch_begin(&ring->syncp);
++			bytes = ring->stats.bytes;
++			packets = ring->stats.packets;
++			alloc_rx_page_failed =
++				ring->rx_stats.alloc_rx_page_failed;
++			alloc_rx_buff_failed =
++				ring->rx_stats.alloc_rx_buff_failed;
++			csum_err = ring->rx_stats.csum_err;
++		} while (u64_stats_fetch_retry(&ring->syncp, start));
++	}
++
++	stats->bytes = bytes;
++	stats->packets = packets;
++	stats->alloc_fail = alloc_rx_page_failed + alloc_rx_buff_failed;
++	stats->csum_bad = csum_err;
++}
++
++static void ixgbe_get_base_stats(struct net_device *dev,
++				 struct netdev_queue_stats_rx *rx,
++				 struct netdev_queue_stats_tx *tx)
++{
++	/* ixgbe has no inactive queues */
++	rx->bytes = 0;
++	rx->packets = 0;
++	rx->alloc_fail = 0;
++	rx->csum_bad = 0;
++}
++
+ static int ixgbe_ndo_get_vf_stats(struct net_device *netdev, int vf,
+ 				  struct ifla_vf_stats *vf_stats)
+ {
+@@ -11117,6 +11156,11 @@ static const struct net_device_ops ixgbe_netdev_ops = {
+ 	.ndo_hwtstamp_set	= ixgbe_ptp_hwtstamp_set,
+ };
+ 
++static const struct netdev_stat_ops ixgbe_stat_ops = {
++	.get_queue_stats_rx = ixgbe_get_queue_stats_rx,
++	.get_base_stats = ixgbe_get_base_stats,
++};
++
+ static void ixgbe_disable_txr_hw(struct ixgbe_adapter *adapter,
+ 				 struct ixgbe_ring *tx_ring)
+ {
+@@ -11663,6 +11707,7 @@ static int ixgbe_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	hw->phy.mdio.mdio_write = ixgbe_mdio_write;
+ 
+ 	netdev->netdev_ops = &ixgbe_netdev_ops;
++	netdev->stat_ops = &ixgbe_stat_ops;
+ 	ixgbe_set_ethtool_ops(netdev);
+ 	netdev->watchdog_timeo = 5 * HZ;
+ 	strscpy(netdev->name, pci_name(pdev), sizeof(netdev->name));
+-- 
+2.50.1 (Apple Git-155)
+
