@@ -1,127 +1,104 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA6446A618
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 12:47:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826A82931F1
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 12:55:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786711664; cv=none; b=DAMTlRJmDo4senimcbmoJV57anLsLyNCMtayVuXgWk3B+Gl7lKC4kOzQwPeRGwgz85rcfsZpsJ1rAaSDbT1WBBU19nFFOAkfR5KMNAvNJv3rNXA+a023siHbLebOdCX5FyKJ7AhkxsL1Zb0N5zVtqbbXb0tJ+s5Qha9uE8SIJUo=
+	t=1786712157; cv=none; b=dFQRfpzniztPluJcGLZTJqG/rcnDuY7wat18qSrgnovjUXTaDNiKw7Zo2jdy5z8H0xbpRTBnTC6gG4ICMIvkyOehYW9fncAnVADCa/hdQ1p2tTwxJKBxiW/bfcIIW1N99jVmZ/y4APTVevIhVwmSilkMdTDd8/9L7cfAKZOouLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786711664; c=relaxed/simple;
-	bh=xvfx/moOkT2h4GZX1Fs/7NTDvFkIDV+3cyhwuuNPRqg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gUDr7YFCzwr0heSHscYpXqHcP4rayBCHEkBkbBZkwuugWuthmnPPkonYpTjcnRa2iFxHy0P0aqr5Y2fZ1IkYK/vtmT88RNglpcm5Skk7jcIqL+z96cGGUU8YHzdSvg/o1RP7VMxDlqzQA8EKkZWFAWppLHN40mB4VMJHgwxTITo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NKuXiLT0; arc=none smtp.client-ip=209.85.210.177
+	s=arc-20240116; t=1786712157; c=relaxed/simple;
+	bh=VOLyJV1YMB6RvEcrxsyVYQqdA4BdqXzTeKLscx7inso=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CCKW58UU/bU9K4uPCE94Ph5QGJXXnRutsaL7hcz56R3ToXgPHbLvDv0Q+Aa1YyidVw9U3VoIK69ib3bqCdcRsAJ71KSMX2yLawmBF/VB8iETCW3hc/p9ZwVpQyjOUG/DoKx3EWQI8Iqb+YCbL5b5ayVHQDwj+tfe60o34GqFu4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=liba3xSS; arc=none smtp.client-ip=209.85.215.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NKuXiLT0"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-84f3ab8750cso650834b3a.0
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 05:47:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="liba3xSS"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c9cf07d2df6so560173a12.2
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 05:55:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786711659; x=1787316459; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Y0Ss5UBO53f0Pcaxk+k2Mmu7Q5/xIRbA3U9GF2OMgG8=;
-        b=NKuXiLT00X3Xdmzryth0cWcc84Mvz+fdRWeyd8jVzOUqh4/MhPKObpoD67ZbyUeI3p
-         IJMjREvZNgIbLa3PXV8GF2b4YXhMff5Dr7a0PKHhF/d2t2N3ZyndQQHPjkI86pLUZuq3
-         ism3ogaJjSWm4HfFQ+4Dq7mKeK5ieNWrjKTnYH9GoHyU9WYTND2eXxMwJbrmTYxskvXj
-         3Zhbf3yFC2g73ZupXO97swXSQIZWrnqT4HBqJBsrlCahVXPdul7fSDeYrGYw+JB8UHmr
-         8asab0oMkMgjzKsUH59Vnjg9jXIWBYxSYlBO8xMkcQdDwKY9apkp8SyTKZ0uQayNx47c
-         5Q3w==
+        d=gmail.com; s=20251104; t=1786712156; x=1787316956; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gzHTwgGGGJTxkksfQ8obu4C7cz59h4eFFJA17GQX+k0=;
+        b=liba3xSSw8K3a+PfgIBkfr9s/QCfTb6UCcjzgcLTW2/R+UOejQl5UOvbisGkJzg6gs
+         /W+jUoJR3dBe2Kgq5jn7g+/XFTcUGgWKeDySfGCmOwN4AflyJcwypLzzRmU7/vNdFbXV
+         fuXZg6ummXQiW+digGKWLeFN9i7uyxzAxHTPMikScB3rauK5lQR36D4lJPZPWNFnLcU2
+         1jmOi0TRBBf21L0LVAKcqzYTD67WgZQZ/J9ylxQHYIFSeByLuOSh2oaFcQEQw+Avjb8y
+         fAs4ed7Jc3P+xbeWaLOxwIk3ppONtDM6cHrXe8Spmmbn5we6eieIzwHAecxa6y6mxEyL
+         U8Dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786711659; x=1787316459;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Y0Ss5UBO53f0Pcaxk+k2Mmu7Q5/xIRbA3U9GF2OMgG8=;
-        b=bINBa96+IATpEgG/46zLK9meovJwppdNPylTio0H4uEXA7wd7+EzUjVSCmWFgBPo/j
-         HNBjbLsWm9QtxSBSDiPhDQe0UNSMz7ykkvEefRMnXzRqW1UDGw/yuv5psqJllqynZtB1
-         rnQzSXOyaCS9k4tVl2apL/b/PoOWCl856MbJwCeQTvmlgtZ/N4c9wGRIFiWM2l6sEicK
-         +Kq/ppzK5fDG+UCpQF1P6jNutwtBbssTalvEcWS9T75UFuCbC5LuEiYojeblqiNBLWct
-         uA6EKv8b5TnnlzFh4FhXFke1DBfNq6JWRCtA0NMqKvI6RxD3bp9W/16p53X1uKzTu3Hc
-         ZW3Q==
-X-Forwarded-Encrypted: i=1; AHgh+RrBkFnK/PpTVx/1m3spL6+Dpn96a8jMcZWa0oWtyz9DD2N+cC4TeOEvhWOXAL9odCFRCqsfd8o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyuwpt+JrdiILxU1PN48o7Hb/I5cFHssV6I7vGqQeykQZ3/qnxs
-	YDeFZAHL+3A6HDWUjJ8R1t+6FQgN4o3Imt/o1M96MhxzsWyNdAD5b3eI
-X-Gm-Gg: AR+sD100zaVZuAtf1HSrY2F/xRJSTWzaM6874S93JRmSyj/zRyW+yg4yym1d1Oxq5wE
-	FAiJGNjlFb/oYIrFYPjzksocmCdeHdHVED+IAiGakUa6W4ZEr8JDEMLq6JrhpUCYIhjUpKgSLkr
-	dX5CgGLQYlCvCRi2X4T9qpCMQdLexfaikg93UP+rS9XnhbgJvSH+BVX1CY+aAwOgtqdbFvOmpVt
-	WMRJ+KrkhwYWRdHAMpif0RvFs5laVYoe9uVGIi0XG7mxX8oItD4S6RDtWn+NXFYFcZYN7Qy5MXz
-	jSTecm54u3Tja9e8wUBPyk2YxNIxHEP6xbJ3naUW5SToiMQPa1Fy/MaJGpXiYSLZAuatw1Yh8cQ
-	hKWMMkoV6aML4E1e2Hn0xPa3Jjnhdvg8SmQtlfwM6RsRP6sWATvsZoPNfVJWgSFhhScnVdEognN
-	oOn4faCKqr9DFRandLaYlqDP8alhEr8vn0rLL6tJWy6QX589TiVzG4WFiZuCdNilSaGg==
-X-Received: by 2002:a05:6a00:6087:b0:848:67ca:bfd with SMTP id d2e1a72fcca58-84fddfed4a0mr6329559b3a.16.1786711658869;
-        Fri, 14 Aug 2026 05:47:38 -0700 (PDT)
-Received: from fedora ([203.175.12.241])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8517d2675b0sm409628b3a.59.2026.08.14.05.47.34
+        d=1e100.net; s=20251104; t=1786712156; x=1787316956;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gzHTwgGGGJTxkksfQ8obu4C7cz59h4eFFJA17GQX+k0=;
+        b=PKSwYZY2Oh8akP8wW3wBqppQFkZaMdzxrEBf2YR9f+bJ+4tM8MwYWcHLLqb3UuScum
+         5ShJ6dmTYgACYwgmmdNvaix3k7UYlF+2oT+D3ZAWXkTXWWzVvNapxAGSlulYPRQBXopY
+         iyGJe+ws2tQxsQb8nsV7fn3WJSxh8zG9sJ2XvQxl08XfXdALiouUy1HbxjUKaMWAziaV
+         vMq+LJpeXpMVJq1BtYJiUBnqWG/xEQxZKWo6f4rnWS7LAKZU/1kVMwVFzb9qVo/xBoZ2
+         FRsrxrkMsY2mUzbN97LYjw/+mNqyHO5oyayhAJgDn8euhJpfqOg3hozYDi2thbMeSx+K
+         v+FA==
+X-Gm-Message-State: AOJu0YwdMZoDaEiDGWoaCglUBg47pYXXVJJDBbx0UHxC6KvMHsifRn4A
+	gcLVnlHeAPFZWtyaFy2U5OSiTMpThAuic41hcGTm7JSeESIpooE47ru3
+X-Gm-Gg: AR+sD11Elw7SarxSQAxhlN7roC4NjiV6PyjuZ4rYtKFwvdMxvCwRd3zrfgobFAeoTpf
+	VuM293byqHl/ITsS+HiJs524MPMytGG7ckPgSUsryP9lz6RdbZVDUQ/RpPJXVvMa5aHXzlwwX9L
+	XUMwWE5NhBmd7aLjz7meJls+4WbCyW4X5rO1tRBqKBAQeNNKRO3NxjC1LydWRil/NFODlbEbVHI
+	I/dDa6kCnMC1ceiDL0GqdC9CSusjIYDYNBZVXe+1BjNr7CJSh2ask+0+XnBrvWr0xK/AryVZ0Aj
+	R3DRItV948KFBZakKggD9L7FhXBOxobRdHhjut+e5+GHryTjeSB9TnBP0l08JpkAov7ToVVUTjv
+	sRBZ+C3jUOjcgqd8cQIeyWBY4A7FjJhHbpdiq83FDAQGE7XEnvG5wYaniqE5sMa+Ij7sw106aVw
+	u2tfql22NIuD4bzN2m2/x+4jGxRyASmRU8d3pZm/veFNxMI1f831mWX+i5Wbj+CjdBR8UyjOaXv
+	ddQfl1YEoRwPw==
+X-Received: by 2002:a05:6a21:6b12:b0:3c3:b57b:6459 with SMTP id adf61e73a8af0-3cc719931b7mr6115725637.7.1786712155691;
+        Fri, 14 Aug 2026 05:55:55 -0700 (PDT)
+Received: from ubuntu.. ([49.205.39.116])
+        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-cc08f3ab9d6sm532293a12.13.2026.08.14.05.55.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 05:47:37 -0700 (PDT)
-Date: Fri, 14 Aug 2026 20:47:31 +0800
-From: Hangbin Liu <liuhangbin@gmail.com>
-To: Matthieu Baerts <matttbe@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Jakub Raczynski <j.raczynski@samsung.com>, netdev@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH net-next 2/2] docs: netdev: clarify expected interactions
- with LLMs
-Message-ID: <an8OY1XeDr1ajATf@fedora>
-References: <cover.1784884817.git.pabeni@redhat.com>
- <83360de7addb13a3b5f4d5e722148f248fdb2ae0.1784884817.git.pabeni@redhat.com>
- <CGME20260724115642eucas1p29f9c8bdc59a889ad66cb7b2a52cdaef7@eucas1p2.samsung.com>
- <amNS9/owsgr44v7w@AMDC4622.eu.corp.samsungelectronics.net>
- <68b50e02-c238-48c6-b2aa-98eb21077329@kernel.org>
+        Fri, 14 Aug 2026 05:55:55 -0700 (PDT)
+From: Ajith P V <ajithpv.linux@gmail.com>
+To: tung.quang.nguyen@est.tech,
+	jmaloy@redhat.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3] tipc: replace deprecated strcpy with strscpy in tipc_bearer_get_name()
+Date: Fri, 14 Aug 2026 12:55:47 +0000
+Message-ID: <20260814125547.325298-1-ajithpv.linux@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <GV1P189MB198852836DD6CF9922258C7AC6DA2@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
+References: <GV1P189MB198852836DD6CF9922258C7AC6DA2@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <68b50e02-c238-48c6-b2aa-98eb21077329@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-Hi Paolo,
+> It seems your patch is not based on net-next tree:
+> "Conflicts with pending/net patches (net-next-2026-08-13--12-00): error: patch failed: net/tipc/bearer.c:209 error: net/tipc/bearer.c: patch does not apply"
 
-Excuse me for the late reply, just some thoughts.
-On Fri, Jul 24, 2026 at 03:39:15PM +0200, Matthieu Baerts wrote:
-> Hi Paolo, Jakub,
-> 
-> On 24/07/2026 13:56, Jakub Raczynski wrote:
-> > On Fri, Jul 24, 2026 at 11:24:05AM +0200, Paolo Abeni wrote:
-> >> +both use the Sashiko infrastructure on top of different models. Reviews are
-> >> +available after 24h. Patch authors are expected to proactively look into the
-> >> +AI-generated reviews and handle such feedback as any other kind of review:
-> >> +either debate it or address it. In both cases a reply on the mailing list is
-> >> +expected.
-> >> +
-> > 
-> > Would it be reasonable to implement automatic response from Sashiko to
-> > mailing list? Some mailing lists (eg. dri-devel as far as I have seen) post
-> > all replies from Sashiko to thread, which is imo not bad,
-> > although it could be filtered by High/Critical severity.
-> > 
-> > What do you think about potential for similar solution on netdev,
-> > since AI review has become 'basic' check in patchwork?
-> I was thinking that too: it would be easier to reply to the comments,
-> and help the authors to remember about them. That will not help to
-> decrease the traffic on the netdev ML, but it is also possible to
-> configure Sashiko to email only the authors:
-> 
->   https://github.com/sashiko-dev/sashiko/blob/main/docs/configuration.md#email_policytoml
+> Could you please apply your patch to net-next tree and resubmit ?
 
-+1 for reply_to_author first. Copying & pasting and reformatting the AI review
-comments takes time. Maybe some maintainers also want to receive the AI review
-report. But I feel the netdev list is already very busy, and replying to the
-mailing list would flood it with more messages.
+First time net contributor and I'm a bit confused here. When I cloned the net-next, it applied the same patch without the error as shown below:
+<path of the linux tree >net-next$ ls
+arch   certs    CREDITS  Documentation  fs       init      ipc     Kconfig  lib       MAINTAINERS  mm   README  samples  security  tools  virt
+block  COPYING  crypto   drivers        include  io_uring  Kbuild  kernel   LICENSES  Makefile     net  rust    scripts  sound     usr
+<path of the linux tree/net-next$ git remote -v
+origin	https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git (fetch)
+origin	https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git (push)
+<path of the linux tree/net-next$ git branch
+* main
+<path of the linux tree/net-next$ git am ../../patches/v3-0001-tipc-replace-deprecated-strcpy-with-strscpy-in-ti.patch
+Applying: tipc: replace deprecated strcpy with strscpy in tipc_bearer_get_name()
+<path of the linux tree/net-next$
 
-I think the ideal way is for the result to be subscribed to. With this, users
-who are interested in the review results can receive the replies separately.
-
-Thanks
-Hangbin
+May I know the correct way of getting the latest net-next so that I can reproduce the same error and patch on top of it?
