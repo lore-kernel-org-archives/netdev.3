@@ -1,56 +1,76 @@
-Received: from sender-pp-o91.zoho.in (sender-pp-o91.zoho.in [103.117.158.91])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098BD3C1996;
-	Fri, 14 Aug 2026 14:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=103.117.158.91
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786717014; cv=pass; b=bQrjNHU07Va6qhg9QcHSL8UgxO+sI2NTWapuaiqDFs4Qfm20fHK3DPcs4J7MBDXcAtyhVProSd2KGfKOJLqliWjmk5zDCl1+7RWc8Q26mLWUl1/uFKDW6E7Yx07tX5mOMpadTiIZalPevD6FczeIWo+bnLr/kUxsnz6ylcCum7c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786717014; c=relaxed/simple;
-	bh=gVoHh9TkCVZhnsk1QXTLXJVMBTczX2KmNWyOD+ybfEE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B5yd038XLn7lIxsxqZoxbHGiz0ZMwcLvS8xbfdRTMtjKkGBK+teATSvd8PLeszTAQVbq/QOa7aZXh/p/7hOCQLUOswI6ZuOEaGPLlNlUHQ8W8qcSboXUpUrHusqfkqLYOCPcav75MbgigLPZ0LCBiM925bN+nL00Lq9G8/J6/HU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.in; spf=pass smtp.mailfrom=zohomail.in; dkim=pass (1024-bit key) header.d=zohomail.in header.i=kshitiz.bartariya@zohomail.in header.b=CNCKHwx1; arc=pass smtp.client-ip=103.117.158.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.in
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.in
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73ED63537FB
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 14:16:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786717027; cv=none; b=IYdSY5SGDGjZSDGxGMyE5VhRA77bQ8N4n/oZREi651iptXNBbdC7BdaQ/+yJMBG7G9O7b3ICdn3yzgWApqAS9GX52Rz2DGPwfIhuR45/9Hvi+LCXvh/tWTzjrRD7OluA8V3i3nOWW5KVxMA0mnXriWhu0bHy3iyDH6kd8kzmJuk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786717027; c=relaxed/simple;
+	bh=+1pofQkSiSZNjqrELg6oiqQLO30fdl24DyzOPTIA+do=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n3Bnd+pARLKqaYkI3tn8LJgXVyKXZPtCXuxzrNf6iUikm5AdjRZitRBeoP+G+4Y9m6JQBp4xVpH2zRHW6hH2icPFVgKJyu/4G+nrvb/AvyQI0pFLne3S2Y3Ht+ZmUMDjH0EQ7Y4sk+gtT5jbZsvu6B35v9+9hbwlk5R7NYptFmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=ngUxSkXh; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zohomail.in header.i=kshitiz.bartariya@zohomail.in header.b="CNCKHwx1"
-ARC-Seal: i=1; a=rsa-sha256; t=1786716950; cv=none; 
-	d=zohomail.in; s=zohoarc; 
-	b=DsyX1NpykwINFvpa0gxLI9NhnUBmDy9gS4DdSYaBcBI4jq9x9Oe6K0fMO7edmBjuD5MNUwofj7YnAdhjEg/fZYKoncdrDbc1rd9prRbZkwdOct+LmpnMSQV37K9iKMGIkVybkHHfgPf6VK8yfSmVtfv9LGXiN2TKmQD1L9esbMo=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-	t=1786716950; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=9DBH7XKlPfrjHaUVL3AZlDDm3gDjRrjfpvNdyzQnvkU=; 
-	b=YQ9QtpXUtVAiqr9OTTd2CszqDKiJr4t8ah/rv9F5u1E3MMSsohLprUgoeujBlZMBijYBrasEbPiITgu43uBSR6uE5y1h7ikWoCgpnF1cAF3M7tb3qhU9Y/1Qqkr8KCrWf6mAs7F4xZoPvSQDAeFLVA6489fzbyQD2GwCQTrs65A=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-	dkim=pass  header.i=zohomail.in;
-	spf=pass  smtp.mailfrom=kshitiz.bartariya@zohomail.in;
-	dmarc=pass header.from=<kshitiz.bartariya@zohomail.in>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1786716950;
-	s=zoho; d=zohomail.in; i=kshitiz.bartariya@zohomail.in;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=9DBH7XKlPfrjHaUVL3AZlDDm3gDjRrjfpvNdyzQnvkU=;
-	b=CNCKHwx1jI01l8CTNhS0BSS6keDRNsCF3gnTA+HVqZdvEr/OnmK1MJ6MMgQ4EPQR
-	BtAhM1wjZf3Vq6Y0pcJVA/7H0zbcn4ELfhS27PtOvMQ5SD+hpu3b18jrgua4lyamWI4
-	XAnOSEuK4wZ52fdQTTveqp7KcJQ23k4JMkt40gdM=
-Received: by mx.zoho.in with SMTPS id 17867169433445.956065004386005;
-	Fri, 14 Aug 2026 19:45:43 +0530 (IST)
-From: Kshitiz Bartariya <kshitiz.bartariya@zohomail.in>
-To: anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="ngUxSkXh"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4998b5a63e2so1979965e9.1
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 07:16:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1786717014; x=1787321814; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JW1WdEQv/IZL7koXdWZmPocV2txIARzi4HLvEvaMHqU=;
+        b=ngUxSkXhrIDGFp7vs5+LnAs0pXwpb4qqKdPHdt0jNUvldlZVdwC8llp4HafI8p83OU
+         1mUWC/vnd1+1k5hOozR6uJLutqVj23r25l6CoK66Jvl466ID+yPr6WlF/YFPL3k6xLKd
+         aa4poN/OED9Lfy8/2aDPP80aDVl9Zx1wqX2Kkfo3KX7/LXsql788kYdWrxyFJlvyM/by
+         Ets+WaRackghNFxAfJrTGlxq2WdwrmjYW9scPG0tnyToEldkWBUCvO4g504H+GdH6vpp
+         2FV3itjHkQXzPIiiyPm9eQwRk6R40h0ZghAhoiXAxvKUcIvKN+tQfPfYor4HTHg/3TIh
+         BTWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786717014; x=1787321814;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JW1WdEQv/IZL7koXdWZmPocV2txIARzi4HLvEvaMHqU=;
+        b=hYWxMinZcNOSxX0MJHt5fHb/YM3MEGEvGucVFmiLXVj+RzNojSrqhvzCI84GUTYO51
+         52ifuA6I8BKW3CRuQM5P6FNnKZQExJiCblEeXhD9T0FdcZbl46J+RXPoo68Kd+cWxG2z
+         8d6MIU+RRBQ1gFMAXZm8/VV5GrkS/QjG5dlg5h0E6uFgtwNM2ZixQeRwHi2q6bHB9SF5
+         7ziMDXRpoonV4t44lEAonXtcshVKk4V7Pmz3kxwld59XESuiTPLoXIY5TJrleKaS+E43
+         BnHdBDVAHpjV6crJ4gyZ2X5vR2fqQZY+b//JmWhrtKXGF0WF2CUNZw2E7bIrVdd7C3ZC
+         CLug==
+X-Gm-Message-State: AOJu0YyRElPWfbSsLrF/su/DtEYQfsO8uSIfKfuj5cQpfbSY6Cbmg+2Z
+	qkP3Brkfz4t7XB9fDn26EUjwg0MAjdB5iFjL8exyFTYkG+Z/mUduCxVxy+tQ0Iz/6bZuzvlRpS7
+	po/ZSha8=
+X-Gm-Gg: AR+sD13TaEBd8b0vgCaBVIdLpKu/w/gPfTFtBUoTVG3QLVnvauZlizyEFkno/dlRm5V
+	I+gZpYLhHoKf5mHCkJq77nyPGOuPiD/OfAgesNuHy0uOMg3arb964D/ovAlo3hTR/MIABrr+lj1
+	BuGYJOgKzVE0H3ehEzULeVkV7usoZTR2yWGvcXs0nkcxzPTW+9RUyjqxQyImEJllRXgRGO/3LAM
+	qVRPULwXNaRnUFNLtX9zY2V+neUtqZfAdfctIHhM+u7zHl+M1yESzyiLe1hw00SzMmn+oUiexaV
+	4Aihg5t9BxwSv0nPCXvJ3Jo3ocGKWhabQnGrLQC6N4+xwOjVcFSU6isvTIHJ2j9KaXEV1EzwbfG
+	2FAzq3Pag1Gs1CvO3RNr72GnV0VNXXaqcDLRb0lG23XtVhY8sFywxK6pC7SlouQpcXgxc30yUsg
+	ErWJz+YvDdkA6WiqiaY3NBLZsnn5r7wu0PtOV38C7LpOjQ1MTP/sBrl2lvOC7enTOTXdMdf1Nyn
+	hdIVnQNXmxYQFmbBvPmpg==
+X-Received: by 2002:a05:600c:5392:b0:495:48d7:f178 with SMTP id 5b1f17b1804b1-4998795d6bemr97219905e9.11.1786717013727;
+        Fri, 14 Aug 2026 07:16:53 -0700 (PDT)
+Received: from localhost (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-499899753ccsm36764805e9.0.2026.08.14.07.16.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Aug 2026 07:16:53 -0700 (PDT)
+From: Nikolay Aleksandrov <razor@blackwall.org>
+To: netdev@vger.kernel.org
+Cc: idosch@nvidia.com,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: Kshitiz Bartariya <kshitiz.bartariya@zohomail.in>,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v5] ixgbe: implement get_queue_stats_rx
-Date: Fri, 14 Aug 2026 19:44:36 +0530
-Message-ID: <20260814141446.90544-1-kshitiz.bartariya@zohomail.in>
-X-Mailer: git-send-email 2.50.1
+	pabeni@redhat.com,
+	horms@kernel.org,
+	bridge@lists.linux.dev,
+	Nikolay Aleksandrov <razor@blackwall.org>
+Subject: [PATCH net] net: bridge: vlan: fix inverted default vlan notification
+Date: Fri, 14 Aug 2026 17:16:40 +0300
+Message-ID: <20260814141640.64958-1-razor@blackwall.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,122 +78,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
 
-Hook into the netdev_stat_ops interface to expose per RX queue
-statistics through the netdev generic netlink API.
+A notification should be emitted only when the vlan delete was successful
+and not otherwise. The proper check is if br/nbp_vlan_delete returned 0.
 
-The following counters are filled:
- - bytes: maps directly to bytes
- - packets: maps directly to packets
- - alloc_fail: sum of alloc_rx_page_failed and alloc_rx_buff_failed
- - csum_bad: maps directly to csum_err, which is incremented for both
-   IP header and L4 checksum errors in ixgbe_rx_checksum().
-
-The new per-queue stats can be observed with:
-  $ ynltool qstats show scope queue
-
-Signed-off-by: Kshitiz Bartariya <kshitiz.bartariya@zohomail.in>
+Fixes: f545923b4a6b ("net: bridge: vlan: notify on vlan add/delete/change flags")
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
 ---
-v5:
- - Added READ_ONCE() and NULL check for accessing adapter->rx_ring[i]
- - Added u64_stats_fetch_begin before reading stats from rx_ring
- Suggested by Simon Horman
+Found this issue while preparing some vlan code cleanups.
 
-v4:
- - Changed comment format from // to /* */
- - Moved ixgbe_stat_ops declaration next to the ixgbe_netdev_ops
- Suggested by Jedrzej Jagielski.
-https://lore.kernel.org/lkml/19ed3cf767d.36a9bda531830.5017017162150392549@zohomail.in/
+ net/bridge/br_vlan.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-v3:
- - Added bytes and packets stats counters
- - Implemented ixgbe_get_base_stats function
- As suggested by AI on 
- https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260603174857.78666-1-kshitiz.bartariya%40zohomail.in
- https://lore.kernel.org/lkml/20260612084605.19785-1-kshitiz.bartariya@zohomail.in/
-
-v2:
- Amended commit message with command to get RX queue stats as 
- suggested by Jedrzej Jagielski.
- https://lore.kernel.org/lkml/20260603174857.78666-1-kshitiz.bartariya@zohomail.in/
-
-v1: 
- https://lore.kernel.org/lkml/20260602100932.21838-1-kshitiz.bartariya@zohomail.in/
-
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 45 +++++++++++++++++++
- 1 file changed, 45 insertions(+)
-
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-index 8873a8cc4a18..560177f135ff 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-@@ -9760,6 +9760,45 @@ static void ixgbe_get_stats64(struct net_device *netdev,
- 	stats->rx_missed_errors	= netdev->stats.rx_missed_errors;
- }
+diff --git a/net/bridge/br_vlan.c b/net/bridge/br_vlan.c
+index 31c1b2cf75d9..1e0e436629ec 100644
+--- a/net/bridge/br_vlan.c
++++ b/net/bridge/br_vlan.c
+@@ -1136,7 +1136,7 @@ int __br_vlan_set_default_pvid(struct net_bridge *br, u16 pvid,
+ 		if (err)
+ 			goto out;
  
-+static void ixgbe_get_queue_stats_rx(struct net_device *dev, int idx,
-+				     struct netdev_queue_stats_rx *stats)
-+{
-+	struct ixgbe_adapter *adapter = ixgbe_from_netdev(dev);
-+	struct ixgbe_ring *ring = READ_ONCE(adapter->rx_ring[idx]);
-+	u64 bytes, packets, alloc_rx_page_failed, alloc_rx_buff_failed,
-+		csum_err;
-+	unsigned int start;
-+
-+	if (ring) {
-+		do {
-+			start = u64_stats_fetch_begin(&ring->syncp);
-+			bytes = ring->stats.bytes;
-+			packets = ring->stats.packets;
-+			alloc_rx_page_failed =
-+				ring->rx_stats.alloc_rx_page_failed;
-+			alloc_rx_buff_failed =
-+				ring->rx_stats.alloc_rx_buff_failed;
-+			csum_err = ring->rx_stats.csum_err;
-+		} while (u64_stats_fetch_retry(&ring->syncp, start));
-+	}
-+
-+	stats->bytes = bytes;
-+	stats->packets = packets;
-+	stats->alloc_fail = alloc_rx_page_failed + alloc_rx_buff_failed;
-+	stats->csum_bad = csum_err;
-+}
-+
-+static void ixgbe_get_base_stats(struct net_device *dev,
-+				 struct netdev_queue_stats_rx *rx,
-+				 struct netdev_queue_stats_tx *tx)
-+{
-+	/* ixgbe has no inactive queues */
-+	rx->bytes = 0;
-+	rx->packets = 0;
-+	rx->alloc_fail = 0;
-+	rx->csum_bad = 0;
-+}
-+
- static int ixgbe_ndo_get_vf_stats(struct net_device *netdev, int vf,
- 				  struct ifla_vf_stats *vf_stats)
- {
-@@ -11117,6 +11156,11 @@ static const struct net_device_ops ixgbe_netdev_ops = {
- 	.ndo_hwtstamp_set	= ixgbe_ptp_hwtstamp_set,
- };
- 
-+static const struct netdev_stat_ops ixgbe_stat_ops = {
-+	.get_queue_stats_rx = ixgbe_get_queue_stats_rx,
-+	.get_base_stats = ixgbe_get_base_stats,
-+};
-+
- static void ixgbe_disable_txr_hw(struct ixgbe_adapter *adapter,
- 				 struct ixgbe_ring *tx_ring)
- {
-@@ -11663,6 +11707,7 @@ static int ixgbe_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	hw->phy.mdio.mdio_write = ixgbe_mdio_write;
- 
- 	netdev->netdev_ops = &ixgbe_netdev_ops;
-+	netdev->stat_ops = &ixgbe_stat_ops;
- 	ixgbe_set_ethtool_ops(netdev);
- 	netdev->watchdog_timeo = 5 * HZ;
- 	strscpy(netdev->name, pci_name(pdev), sizeof(netdev->name));
+-		if (br_vlan_delete(br, old_pvid))
++		if (!br_vlan_delete(br, old_pvid))
+ 			br_vlan_notify(br, NULL, old_pvid, 0, RTM_DELVLAN);
+ 		br_vlan_notify(br, NULL, pvid, 0, RTM_NEWVLAN);
+ 		__set_bit(0, changed);
+@@ -1158,7 +1158,7 @@ int __br_vlan_set_default_pvid(struct net_bridge *br, u16 pvid,
+ 				   &vlchange, extack);
+ 		if (err)
+ 			goto err_port;
+-		if (nbp_vlan_delete(p, old_pvid))
++		if (!nbp_vlan_delete(p, old_pvid))
+ 			br_vlan_notify(br, p, old_pvid, 0, RTM_DELVLAN);
+ 		br_vlan_notify(p->br, p, pvid, 0, RTM_NEWVLAN);
+ 		__set_bit(p->port_no, changed);
 -- 
-2.50.1 (Apple Git-155)
+2.47.3
 
