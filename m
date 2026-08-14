@@ -1,144 +1,285 @@
-Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA501F9C0;
-	Fri, 14 Aug 2026 00:31:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02F819E839;
+	Fri, 14 Aug 2026 00:43:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786667497; cv=none; b=BkRLCREwc92702wK76R0CWh7YbWX4nGHT1A/upPd5tXMOtiq24tQb5s3AyT2HfTxHrF5v1FvOXSyTcAqZ6/Gn/4neLu2OBNd5oHJfKaAZ4vBdoDWipZCewlJKgsMlczjVjokeAHKDn0dCTA1exfX5hqiZ1qlBBng3hTibtqIMUs=
+	t=1786668228; cv=none; b=Z3J39XEuc2RxqIh5hsbiQ8H1FA3k4J5tWjdChJMwyB5XF1tyv9vDwAnqndEcH/Y1kLxj0Ta9sJs4M4+utbAr135ipNbKFYntPgpljBhAHmL3y7gkc4wk/eZwflN17CZxDgBJLsJf6P+6VVMMqzE/zTv/0CKuLs1+ZnRFMkhcvhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786667497; c=relaxed/simple;
-	bh=ePt9FIxzsKiy+/S/AiBxIasEfraMp66B4kzTIJ+Bthk=;
-	h=From:To:cc:Subject:In-reply-to:References:MIME-Version:
-	 Content-Type:Date:Message-ID; b=LmCrT3mmd4J5ywWu7WT9iMUUbWLxPs2r+6ioIVimLGdkos3X0NhUmqsFWha0Gf5ktQaMeGtZPOrDjbgaMnyubGI/yWW9H8HykRuANA7EEUjM10QHdniqQoj0gs2M66XIrnI63C6uM9sFq46tcP0ax7u6faWTKKiXQVHrW826usY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net; spf=pass smtp.mailfrom=jvosburgh.net; dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b=Ls3nZRv7; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=BCBTXOIo; arc=none smtp.client-ip=103.168.172.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jvosburgh.net
+	s=arc-20240116; t=1786668228; c=relaxed/simple;
+	bh=mhzvxLW1qFnzIbEY84rZTKxZLkrCLaH6jjyvuLmDRPc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=vC2MC5tJ4c3jKPxocy2KQ/0NLwlwWAAtFLrIrKEy9c7H4NL7BYTT0peJlZvvn2o0iVnQzEWHNhWIMGFLxk6UXJNkzootGCiIaKXcdSRisNAhJvjB4K64vZtEz9t0xSIbOGulKBcYUfElBAf/cvULJQMlce/jXieA+BQr3FN8nJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lpDlKTHO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b="Ls3nZRv7";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="BCBTXOIo"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 04B811400139;
-	Thu, 13 Aug 2026 20:31:34 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Thu, 13 Aug 2026 20:31:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jvosburgh.net;
-	 h=cc:cc:content-id:content-transfer-encoding:content-type
-	:content-type:date:date:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to; s=fm1; t=1786667494; x=1786753894; bh=YW95wxb2gasWrxs0AjrAJ
-	qxSGnka00SgQI7gCddwfXo=; b=Ls3nZRv7xrCcKX8YUWwEF2pFoQGPRrLz8YdHH
-	djbZEjIhNVc0CJ8IyO78erEMA7whuiXrnmFtrg96rYIdLBA+eWRVlcSHihiHpK2u
-	4c0n48xk6myQMCGECA7oF6PyzO2p71U5CKWE2wlQmvQ6AtiuC+ZxYkDZIa1XhHRw
-	jEP4ZPf9J699APf61Xwq4EhamI8NkYXZrMsFs+PpGJLA6UqY52eVzfaLi96wH7y0
-	iZPo/kQpySpxMszeZ3ImbeEEAKmSeyclL7NFyYWQjLkIMPoSYNnu2Wf/AgjoDcIJ
-	k29qCmJUCbEI0TzEe1JEKun58UHXR6gmJVwVJ7UccaOCvDkYA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-id
-	:content-transfer-encoding:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1786667494; x=1786753894; bh=YW95wxb2gasWrxs0AjrAJqxSGnka00SgQI7
-	gCddwfXo=; b=BCBTXOIoGJGpDzh8uR/3+UtoVKyi4c06Zl4tvGbMzkwFwuIixkQ
-	28rEFu1hgCcYLra14rIPI0+0tt5Lk209jWvIX/RXYsYcxPEa1dKg7K4l7KcJkLF0
-	R0RCzkDusKcATgzpThs9y4mDy+SAmTYes5R8BVH1Q1l7poaduJOLORo/uq0pxQxx
-	jyycnipClYzg9pcA0d/eoYQmnecYQMzDzEO2cxUQrbjta+pKuwLAu8X2BQROduFv
-	PQqr6+/+AA/x2LQQMlSlV6W3439NfcBNHhw7IMChypUdwBYhSQ4YOsvH5qvYynS9
-	3xoG+gcniTeAekMrxwpcDVEr+tTTPNvyalg==
-X-ME-Sender: <xms:5WF-aipSoeuVugz7kl9zL7r2aWXtAS-Hh3RFi0tFH0N_xJy0ctEl7A>
-    <xme:5WF-alltxntd2N-JotUHqeQgz8keaK4eOgGhGEiPBkJ6XTzdwfDVPcyb2eBtDKtQP
-    AAOgUKL-5W1ODZ9LDCqyn1nLdLV1lDG94y-n_hgimRb_FVrPXtYvGFT>
-X-ME-Received: <xmr:5WF-are0Rnc1epL6O4gZdWW3aC3ym7OmIiscM1Ixw2AxkVyy0eYwOJWWhhd2ylhe3s6xEw>
-X-ME-Proxy-Cause: dmFkZTEYkLz5gKQpUmAUbevK5DIgmTW2FxsP0412JkTTBeOSW99+dfzhi8l1X5+cY95owo
-    F3RQoVI9xXD3o7+h3Zgjs3ihCMOeDTTm7NHMVJVi7K5tOsuwxrl/lSTRZ0oRURf9Ho5Enm
-    SmmFLjd0s/bBoyxq3GbGrtkPj8XDdEKcE6761vjVm4x9rVZceMlIV9+N26JepeIwSzoBLQ
-    +hfL72WV3/R1M/RPAKOON4pv9bTH2UOI67zGdEcaNhFaDrXv76krBszhDhtlBD8Vl+7YlU
-    etez2IRIRDhF/I+nVXUna9IvNjLXFEx4bz2jzKF9EKFJ21l/84NZLO3s9SIJ1sC21eF9UK
-    Df0HMihm4UN238mHttug7smvdpN8NvF4rAwZzBreNTW0u1RBU2TUnO2TE8uKh9lxls12Mx
-    7wiLSmw6cdvJ56FwEvxDZy6ruj1SaxGrAcT9SlOaSpdr3AgEnUmS1bqL0kQaL9sDS1C5oH
-    ZiTTWBhfeAtpVbU73WTXkVACZoEvK1S6VgzZ0/elQQrHQalnoeYSZ/REn9evp+S49nzFtR
-    0XIyWkb9sKgsWscLgZpAUB9K9+j/hp+7Coho42etcvmAZ6WA0aDasLkuVjR9AwRSroqKGS
-    VCqKfElyWklMWYulEc//RCyQvqwPhseOoImpBbwkmqan8X9O+RBuizz3ucgQ
-X-ME-Proxy: <xmx:5WF-ahoSzaswSppC_wvmoWCkL7QGoliYdZFRQqBqmLy5dqNG3dMZ5Q>
-    <xmx:5WF-alMNk2kZAwNnre_jx0WnI59meEDk94xg9EbK7h4m6nKyVPVLDg>
-    <xmx:5WF-akgl5cuG8DdlAURe2gu4wUpfB0E2ldBklNGATsiVHSJuUo16sA>
-    <xmx:5WF-aovIFfKZgMuTkdO6QYovzvQkYpceqacZcagGbWwokjBwG9HzrA>
-    <xmx:5mF-atxLqgeorlCNJlHSj1NHac2a_mUjb_SCnUn8jNf79jVmcWS0rIYW>
-Feedback-ID: i53714940:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 13 Aug 2026 20:31:33 -0400 (EDT)
-Received: by famine.localdomain (Postfix, from userid 1000)
-	id 07BB19FC6D; Thu, 13 Aug 2026 17:31:32 -0700 (PDT)
-Received: from famine (localhost [127.0.0.1])
-	by famine.localdomain (Postfix) with ESMTP id 046479FB9E;
-	Thu, 13 Aug 2026 17:31:32 -0700 (PDT)
-From: Jay Vosburgh <jv@jvosburgh.net>
-To: Ruoyu Wang <ruoyuw560@gmail.com>
-cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-    edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-    linux-kernel@vger.kernel.org,
-    Nikolay Aleksandrov <razor@blackwall.org>
-Subject: Re: [PATCH net] bonding: initialize err for empty target lists
-In-reply-to: <20260813153126.3952893-1-ruoyuw560@gmail.com>
-References: <20260813153126.3952893-1-ruoyuw560@gmail.com>
-Comments: In-reply-to Ruoyu Wang <ruoyuw560@gmail.com>
-   message dated "Thu, 13 Aug 2026 23:31:26 +0800."
-X-Mailer: MH-E 8.6+git; nmh 1.8+dev; Emacs 29.3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lpDlKTHO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11D571F000E9;
+	Fri, 14 Aug 2026 00:43:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786668226;
+	bh=D02NEgizCXyw2zjc/lKoGm9/FhM8pyBnoyvGH4+7bVU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=lpDlKTHOmnb7t/4QryvbQZmP4zz8HhKFvq6JV9zpC7NH3IiHE6etMOLeN4aennZRP
+	 Ddxs3zPyopSBNsyiLrEW6ZHJCQZuPrucbb9XgRR0OaICtoTDUIh1NU+Wt1/Su2QWNk
+	 teujTR1oDU/f2Pr10BrNVR0AjHKO3I4eVgotCHDoRtcKBBi8g/GZaBy4Z2rtv66VwR
+	 QUCprFis2gLeXQWe++vN7qs7gy584J9rHURsgrnC5WxMS99zrC//t6woEfMbf8wyGo
+	 4huBdulWKCQvMYn7+7Q/aoLlA00p9gIzkssexy9Ik9iLkhKjSAp+6d0btrz9jrk+Pt
+	 IeKuOj+dEcHXw==
+From: Jakub Kicinski <kuba@kernel.org>
+To: nagarevaibhav@gmail.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	horms@kernel.org,
+	davem@davemloft.net,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	matvey.kovalev@ispras.ru,
+	Pavel.Zhigulin@kaspersky.com,
+	aelior@marvell.com,
+	manishc@marvell.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	vnagare@redhat.com
+Subject: Re: [PATCH net v4] qede: Fix NULL pointer dereference in TPA fragment processing
+Date: Thu, 13 Aug 2026 17:42:52 -0700
+Message-ID: <20260814004251.2757568-2-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260810131859.1870628-1-vnagare@redhat.com>
+References: <20260810131859.1870628-1-vnagare@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3995446.1786667491.1@famine>
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 13 Aug 2026 17:31:31 -0700
-Message-ID: <3995447.1786667491@famine>
+Content-Transfer-Encoding: 8bit
 
-Ruoyu Wang <ruoyuw560@gmail.com> wrote:
+This is an AI-generated review of your patch. The human sending this
+email says: "Looks like AI is questioning whether some of the extra
+code is really needed. Please TAL, the incorrect indent definitely
+needs fixing, however trivial that is."
+---
+qede: Fix NULL pointer dereference in TPA fragment processing
 
->Empty NLA_NESTED attributes are valid, and bonding uses them to clear
->the ARP and NS target lists. When either target attribute is empty,
->nla_for_each_nested() does not execute, so err retains an uninitialized
->value before it is tested. The request can consequently return an
->unpredictable error after clearing the targets.
->
->Initialize err to zero so an empty target list completes successfully.
->Non-empty lists still propagate errors from __bond_opt_set() unchanged.
->
->This issue was found by a static analysis checker and confirmed by manual
->source review.
->
->Fixes: 4fb0ef585eb2 ("bonding: convert arp_ip_target to use the new optio=
-n API")
->Signed-off-by: Ruoyu Wang <ruoyuw560@gmail.com>
+This restores the tpa_info->buffer.data assignment in qede_tpa_start() that
+commit 8a8633978b84 ("qede: Add build_skb() support.") dropped, and adds a
+NULL page check plus early error-state exits in the TPA fragment paths.  The
+new early exits recycle or consume the BDs described by cqe->len_list.
 
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+A few questions on the commit message and on the added hardening below.
 
+First, on the enumerated list of changes:
 
->---
-> drivers/net/bonding/bond_netlink.c | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
->
->diff --git a/drivers/net/bonding/bond_netlink.c b/drivers/net/bonding/bon=
-d_netlink.c
->index 4a11572f663d31..87d92d3cce4a88 100644
->--- a/drivers/net/bonding/bond_netlink.c
->+++ b/drivers/net/bonding/bond_netlink.c
->@@ -220,7 +220,7 @@ static int bond_changelink(struct net_device *bond_de=
-v, struct nlattr *tb[],
-> 	struct bonding *bond =3D netdev_priv(bond_dev);
-> 	struct bond_opt_value newval;
-> 	int miimon =3D 0;
->-	int err;
->+	int err =3D 0;
-> =
+>     Fix the root cause by:
+>     1. Restoring the tpa_info->buffer.data assignment in qede_tpa_start().
+>     2. Reverting the error recovery block in qede_tpa_end() to rely on
+>        tpa_start_fail, which safely recycles the page without causing
+>        double DMA unmaps.
 
-> 	if (!data)
-> 		return 0;
->-- =
+[Severity: Medium]
+Does item 2 correspond to anything in this patch?  In the tree being
+patched, the err: label in qede_tpa_end() already reads:
 
->2.51.0
->
+	if (tpa_info->tpa_start_fail) {
+		qede_reuse_page(rxq, &tpa_info->buffer);
+		tpa_info->tpa_start_fail = false;
+	}
+
+and that block is not touched by any hunk here, so there is nothing being
+reverted relative to the base tree.
+
+>     4. Correct bounds checking logic in TPA error loops (evaluating bounds
+>        before reading the array elements to prevent out-of-bounds reads).
+
+[Severity: Medium]
+Similarly, which out-of-bounds read does item 4 fix?  The existing loops in
+qede_tpa_cont() and qede_tpa_end() already evaluate the bound first:
+
+	for (i = 0; i < ARRAY_SIZE(cqe->len_list) && cqe->len_list[i]; i++)
+
+and they appear only as unchanged context lines in the hunks below.  Both
+items 2 and 4 look like deltas against the earlier v3 posting rather than
+against the tree, and an advertised out-of-bounds-read fix in a Cc: stable
+patch tends to get picked up by backport and CVE tooling.  Could the message
+describe only what this patch changes, namely restoring buffer.data, the
+NULL page guard, and the early error-state exits with the consume and
+filled_buffers accounting?
+
+> diff --git a/drivers/net/ethernet/qlogic/qede/qede_fp.c b/drivers/net/ethernet/qlogic/qede/qede_fp.c
+> index c11e0d8f98aa5..ed9db7399d2fc 100644
+> --- a/drivers/net/ethernet/qlogic/qede/qede_fp.c
+> +++ b/drivers/net/ethernet/qlogic/qede/qede_fp.c
+> @@ -670,13 +670,23 @@ static int qede_fill_frag_skb(struct qede_dev *edev,
+>  							 NUM_RX_BDS_MAX];
+>  	struct qede_agg_info *tpa_info = &rxq->tpa_info[tpa_agg_index];
+>  	struct sk_buff *skb = tpa_info->skb;
+> +	struct page *page = current_bd->data;
+>  
+>  	if (unlikely(tpa_info->state != QEDE_AGG_STATE_START))
+>  		goto out;
+>  
+> +	/* Avoid NULL pointer dereference when under severe memory pressure */
+> +	if (unlikely(!page)) {
+> +		if (net_ratelimit())
+> +			DP_NOTICE(edev,
+> +				  "Failed to allocate RX buffer for TPA agg %u\n",
+> +				  tpa_agg_index);
+> +		goto out;
+> +	}
+
+[Severity: Low]
+Do the comment and the message here describe the condition that is actually
+detected?  current_bd is just a ring slot:
+
+	struct sw_rx_data *current_bd = &rxq->sw_rx_ring[rxq->sw_rx_cons &
+							 NUM_RX_BDS_MAX];
+
+so no allocator runs between function entry and this test, and a NULL data
+means the sw_rx_ring entry at the consumer index is the "ghost" BD (valid
+mapping, NULL page) that the commit message describes qede_reuse_page() as
+pushing back into the ring.  That is a ring bookkeeping inconsistency rather
+than an allocation failure.
+
+The text is also very close to the genuine allocation-failure notice already
+present in qede_tpa_rx_build_skb():
+
+	DP_NOTICE(edev,
+		  "Failed to allocate RX buffer for tpa start\n");
+
+Would wording that names the ghost descriptor make the two distinguishable
+in field logs?
+
+[ ... ]
+
+> @@ -698,8 +708,12 @@ static int qede_fill_frag_skb(struct qede_dev *edev,
+>  
+>  out:
+>  	tpa_info->state = QEDE_AGG_STATE_ERROR;
+> -	qede_recycle_rx_bd_ring(rxq, 1);
+> -
+> +	if (current_bd->data) {
+> +		qede_recycle_rx_bd_ring(rxq, 1);
+> +	} else {
+> +		qede_rx_bd_ring_consume(rxq);
+> +		rxq->filled_buffers--;
+> +	}
+>  	return -ENOMEM;
+>  }
+>  
+> @@ -850,7 +864,7 @@ static void qede_tpa_start(struct qede_dev *edev,
+>  					      pad, false);
+>  	tpa_info->buffer.page_offset = sw_rx_data_cons->page_offset;
+>  	tpa_info->buffer.mapping = sw_rx_data_cons->mapping;
+> -
+> +	tpa_info->buffer.data = sw_rx_data_cons->data;
+
+[Severity: Low]
+This one assignment appears to be the whole crash fix.  Would it be worth
+splitting it out as the Fixes: / Cc: stable patch and sending items 3 to 6
+as a separate hardening patch?
+
+Two things make the added hardening look inconsistent with itself.  If a
+descriptor with a valid mapping but NULL data really can reach the driver,
+the regular receive path still dereferences the same field unguarded:
+
+qede_build_skb()
+	buf = page_address(bd->data) + bd->page_offset;
+
+qede_rx_build_skb()
+	skb_put_data(skb, page_address(bd->data) + offset, len);
+
+and qede_tpa_start() itself hands sw_rx_data_cons to
+qede_tpa_rx_build_skb() -> qede_build_skb() just above this new assignment,
+before any validation.  Should those consumers get the same treatment, or is
+the ghost BD no longer reachable once buffer.data is restored?
+
+[Severity: Low]
+This isn't a bug introduced by this patch, but the comment on
+struct qede_agg_info::buffer in qede.h is now stale in a way that touches
+this hunk:
+
+	/* rx_buf is a data buffer that can be placed / consumed from rx bd
+	 * chain. It has two purposes: We will preallocate the data buffer
+	 * for each aggregation when we open the interface and will place this
+	 * buffer on the rx-bd-ring when we receive TPA_START.
+	 ...
+
+There is no such preallocation any more.  The only TPA initialisation,
+qede_set_tpa_param() in qede_main.c, just does:
+
+	tpa_info->state = QEDE_AGG_STATE_NONE;
+
+and nothing allocates, unmaps or frees tpa_info->buffer.data; the real
+implementation is the copy of the current Rx consumer descriptor being
+completed here.  Since this patch makes that field live again, could the
+comment be refreshed to match?
+
+>  	if (unlikely(!tpa_info->skb)) {
+>  		DP_NOTICE(edev, "Failed to allocate SKB for gro\n");
+>  
+> @@ -964,8 +978,24 @@ static inline void qede_tpa_cont(struct qede_dev *edev,
+>  				 struct qede_rx_queue *rxq,
+>  				 struct eth_fast_path_rx_tpa_cont_cqe *cqe)
+>  {
+> +	struct qede_agg_info *tpa_info = &rxq->tpa_info[cqe->tpa_agg_index];
+>  	int i;
+>  
+> +	/* Don't process fragments if TPA start failed */
+> +	if (unlikely(tpa_info->state != QEDE_AGG_STATE_START)) {
+> +		for (i = 0; i < ARRAY_SIZE(cqe->len_list) && cqe->len_list[i]; i++) {
+> +			struct sw_rx_data *rx_bd = &rxq->sw_rx_ring[rxq->sw_rx_cons &
+> +								NUM_RX_BDS_MAX];
+> +				if (likely(rx_bd->data)) {
+> +					qede_recycle_rx_bd_ring(rxq, 1);
+> +				} else {
+> +					qede_rx_bd_ring_consume(rxq);
+> +					rxq->filled_buffers--;
+> +				}
+> +		}
+> +		return;
+> +	}
+> +
+
+[Severity: Low]
+The if (likely(rx_bd->data)) block carries two extra tabs relative to the
+enclosing for loop; checkpatch should flag that.
+
+Beyond the indentation, is this new loop doing anything the existing call
+did not?  With state != QEDE_AGG_STATE_START, qede_fill_frag_skb() takes its
+out: path immediately and, with this patch applied, runs exactly the same
+rx_bd->data test and recycle-or-consume sequence once per len_list entry.
+
+> @@ -991,6 +1021,22 @@ static int qede_tpa_end(struct qede_dev *edev,
+>  		dma_unmap_page(rxq->dev, tpa_info->buffer.mapping,
+>  			       PAGE_SIZE, rxq->data_direction);
+>  
+> +	/* Drop the packet if TPA start failed */
+> +	if (unlikely(tpa_info->state != QEDE_AGG_STATE_START || !skb)) {
+> +		/* Recycle BDs from cqe->len_list to keep ring synchronized */
+> +		for (i = 0; i < ARRAY_SIZE(cqe->len_list) && cqe->len_list[i]; i++) {
+> +			struct sw_rx_data *rx_bd = &rxq->sw_rx_ring[rxq->sw_rx_cons &
+> +								NUM_RX_BDS_MAX];
+> +			if (likely(rx_bd->data)) {
+> +				qede_recycle_rx_bd_ring(rxq, 1);
+> +			} else {
+> +				qede_rx_bd_ring_consume(rxq);
+> +				rxq->filled_buffers--;
+> +			}
+> +		}
+> +		goto err;
+> +	}
+> +
+
+[Severity: Low]
+Same question here: the existing fill loop below already falls through to
+qede_fill_frag_skb()'s out: path when state != QEDE_AGG_STATE_START, and
+then reaches the err: label via the following check.  Is this open-coded
+copy of that behaviour needed, given it enlarges a patch marked for stable?
+
+>  	for (i = 0; i < ARRAY_SIZE(cqe->len_list) && cqe->len_list[i]; i++)
+>  		qede_fill_frag_skb(edev, rxq, cqe->tpa_agg_index,
+>  				   le16_to_cpu(cqe->len_list[i]));
+-- 
+pw-bot: cr
