@@ -1,121 +1,98 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8DD9476064
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 13:41:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CCA470422
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 13:42:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786714865; cv=none; b=UGauIQIMOIdMjdaD4OGAV0jyoEscVS4CANiPGU6ORt4JT1VCAww3d0fmHslW60O1tfxwz+Di4Lsj1QzGZ1U3iW7cHx/iVAEYW3JO2lpzYS5kLmU0dO/hou+FgVyr7TsrtZUQXbFHhrRXJbYNuBTeiAfusrMRtKmsbzU1PT7HWpE=
+	t=1786714959; cv=none; b=R1TnOix4v5BJ6++wH6EEQFX+6DLlLZoHlDqJsoTIBAZhsjYKelc9JvSrGIwTStLFH2EdQNtktG9EWOIdav0AnfjiBhM62u0q/WR04L3XfFnF2swLkV7yBuQLuLj7ok+bRMWibtps+snzqS+Teq/m9LvzEJpSwAig+rTkM7ZqBvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786714865; c=relaxed/simple;
-	bh=ZCtbq8/4454INlMgyOXmWQio4JxckUhjzIjAlzKMO7U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i6xlK8T5R5i6FgJEszstaqygbtzNcAD7mO1ywym7E7VR96MIppZrLszK/UpBFR/RJKtkkxvCJoAQ6bdGq0JYDqV9r7p3UuQ4Wx0Tx8e4DcesoV0fSTMD9C23XfRkmefoT0q9qpRgNifbjeQUWb7DfUlapUzCRCH1lM668br7Hhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IPF5sU2t; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786714959; c=relaxed/simple;
+	bh=urM1Ez5AKgAVckZqy4lwPptZkRQY3xrKlWi5RgIOXls=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qZ2nLOfBQ/pciRZ3QdoInNsijBT+VUnqkCIXEqEciPcW/QJnqLKGi/v03bTPMW7yVxp0iXRFqBfYtkMJCowDmVJYoK8wqdirpeofkGZC8T1agy2QsEVf4dSV92MzdNP+eWY7js0dUYxbTQNtK0m4Hw0UVGMQOBQcAxfsvbZoZGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C5rnwbMU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IPF5sU2t"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ccf2360620so10361675ad.3
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 06:41:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786714860; x=1787319660; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zipcP6cMMo2au5RIIwFC0kV7yCXjZzf04W+orfthdMs=;
-        b=IPF5sU2t+w+zGBXl4fBjW1eQIaPlw1mE7+ayIL8d6oiCv22lIW3VxjNARsUVPUmx0T
-         HE6qdpEE5R42KV06+NtzSZvgg01Wn/dCHl+uJbff7RN3nn1KLCJHm7OX+mR3i81Un4s5
-         LH9HBXQcbU4XSyz+VHAb9ooI29pZVpmfN/hYAz4/AunQGT6A/heqpyvG1C3qpCWNSPJb
-         cEVDeiQd+P09PRDVfBeQFTq7ISKgt9LLrH+nuoN6e/xfBC+d4tIrK66VloiwaCN95zeN
-         6HYIu/MNax+DSYdToreIKAD7YfAJgKrtauyUFSrtCxzmZkh1GFPy3/STM7F2fq4PwL9c
-         LJow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786714860; x=1787319660;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zipcP6cMMo2au5RIIwFC0kV7yCXjZzf04W+orfthdMs=;
-        b=JNnomY37djMNdIWOIerABB/aqjyQ5jF67WbY6ISICfz22I1JVuI0YVGNXd7QOnv6+P
-         ODsxDDiLP068pKkAQn76F0diWW4k9mCOnAyIgzYCRlBLrwGE+VB5wuv/2i9h5T2k+i6h
-         G70jkihKlGbeF3FVr6y0TWd8h1ndjZF/B66a8NZiM1mKak2eX/Z6kieC78aC1NFK2qCg
-         7yY+qhMo5gwk4CIyCyGUC4upsshbIRneLL8bSuE9vNfAC7AzKnardVdfdsdUGbjTqBy9
-         HsjD71egFezQXl2F5kgchqi/B1/e+RIvIONDxfgbuD6H3/TMGbU3lepaHHzQqGzhYOnY
-         reOA==
-X-Forwarded-Encrypted: i=1; AHgh+Roy3tyTUVUYTdW3XvyJNOKamO+7unyHSwcR9kRwvqJ/3/lYDrzrahSDyJiDplvFq3T6/O6/8vE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YweGcNIZhI/x1KTQyBB9eOKZHa5rIQvUdIHtE7+P71ueeTH74Cr
-	f0iu0iCxJ30jh6wvna/JlSXphzzPkakKqMahzvUAvlff7acjQbZb1ehY
-X-Gm-Gg: AR+sD12aoCXdNfqLREaV24VnsIUDYkixmS4jCe3qbDcqHHFmrC4Dz82dJ3HquVewfhC
-	5GR09b6O7dsjx2ZEuDrQE64dsx6XG43UZBajg2O6Ipl88NhCfIKczxQRliorNKwM0zLVUIinypi
-	kh/SiOOSNMWo6AJTCWkXnr4Vz9LRHHFg3Ktp6vMo2prmZoHei2DZwSFcGb+kbS0irt55ejjzwvk
-	5zY3myroX/0XIXz8ERYAsM4WZlmIkQwJlny+eYYU9psAz2CbjxHE2cZ2AqKbhS/mVDSKlz3U2LH
-	GZX5tmt/OwdawcByl/cJG78VLY+z9nS9t+KhwH/AdJoRgKMnL8K/ZENdyddVAjajGZrcVdQBpO7
-	2/lOrCfslXlupDVhKpOi/MtrjG9FB0+A4XgtZBKerZDp0CfCd8UiQ4A3H8k9pgCDBNlfMjj42Eg
-	4Xpj1JYQtrPPUGokZrFO16GNebutiJzCH+NcN9FWltVNiHNJqYufBp3tJzE5UwOtQUvUgQfFAU1
-	khmIj6Y
-X-Received: by 2002:a17:902:e547:b0:2c1:ee75:56bb with SMTP id d9443c01a7336-2d3b0dc57d3mr63121865ad.20.1786714860112;
-        Fri, 14 Aug 2026 06:41:00 -0700 (PDT)
-Received: from haichao.tail057a43.ts.net ([2001:da8:e000:1206:e9af:7c0e:be31:2c3f])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d3aebc3de2sm9822995ad.70.2026.08.14.06.40.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 06:40:59 -0700 (PDT)
-From: Ruoyu Wang <ruoyuw560@gmail.com>
-To: Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: bridge@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ruoyu Wang <ruoyuw560@gmail.com>
-Subject: [PATCH net] net: bridge: Reject descending VLAN tunnel ranges
-Date: Fri, 14 Aug 2026 21:40:53 +0800
-Message-ID: <20260814134053.1387275-1-ruoyuw560@gmail.com>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C5rnwbMU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E73061F000E9;
+	Fri, 14 Aug 2026 13:42:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786714958;
+	bh=G2wlQ++SrqOjnyYGzGvnChmHZ65blav55hsa9U+uC3E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=C5rnwbMUSf8pKazm4MARh/SExoTMDWkXsiQpfR6v5WlUVhf7Q9StHnFdphpSUY2OF
+	 yNf7FG1kaAsUBVc9jWEY0xijUf2KgvAME5kZE5G3uVgk3Z/l5c6KG2GJNk0ANSwJdi
+	 ilobYx9zHRjHfEtQNzzWx6HRaB9K2whVGz8sxhvmRD5rHJ3bXtYkW96+uTwFfAyIz2
+	 u8VFw6lJyJquAojv2s8yIfBAx/xllGTNevA5tVgUmb+KI2zU7NP0rodwKNA/eTh+xP
+	 +ur57zdG7r2nPvmhBfWqKamTFYrZTai7R5ea8Dw59vEsNpBdSnFUo0J+yerHR9ZTAq
+	 Qatz7J6s+Fo3w==
+Date: Fri, 14 Aug 2026 14:42:34 +0100
+From: Simon Horman <horms@kernel.org>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org,
+	eric.dumazet@gmail.com
+Subject: Re: [PATCH v4 net-next] gre: fix ERSPAN o_flags race/corruption in
+ xmit and fill_info
+Message-ID: <20260814134234.GM265046@horms.kernel.org>
+References: <20260812142257.21283-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260812142257.21283-1-edumazet@google.com>
 
-A pair of descending VLAN and tunnel IDs can pass the tunnel range span
-check. The VLAN subtraction produces a negative int, which is converted
-to unsigned when compared with the u32 tunnel ID subtraction. It can
-therefore equal the wrapped tunnel ID delta.
+On Wed, Aug 12, 2026 at 02:22:57PM +0000, Eric Dumazet wrote:
+> For IPv4 ERSPAN:
+> In erspan_xmit(), the driver clears IP_TUNNEL_SEQ_BIT (for version 0)
+> and IP_TUNNEL_KEY_BIT directly in the shared tunnel->parms.o_flags
+> structure. Since transmit paths can run locklessly and concurrently,
+> this leads to a data race.
+> 
+> Furthermore, modifying tunnel->parms.o_flags permanently alters the
+> tunnel configuration. To work around this, erspan_fill_info() (which
+> reports config to userspace) was setting IP_TUNNEL_KEY_BIT back. If
+> erspan_fill_info (running under RTNL) and erspan_xmit (running locklessly)
+> race, erspan_xmit might see IP_TUNNEL_KEY_BIT set when it shouldn't,
+> leading to GRE header corruption (injecting a key field into the ERSPAN
+> GRE header).
+> 
+> Fix this by:
+> 1) Passing flags as an argument to __gre_xmit().
+> 2) Using local stack flags in ipgre_xmit(), gre_tap_xmit(), and erspan_xmit()
+>    to prevent TOCTOU data races with concurrent configuration updates,
+>    and passing them to __gre_xmit().
+> 3) Removing the racy modification of t->parms.o_flags in erspan_fill_info().
+> 4) Forcing IP_TUNNEL_KEY_BIT in the reported flags for ERSPAN locally
+>    in ipgre_fill_info().
+> 
+> For IPv6 ERSPAN:
+> ip6erspan_tunnel_xmit() was locklessly clearing IP_TUNNEL_KEY_BIT in
+> t->parms.o_flags even though it does not use these flags for building
+> the GRE header (it uses local flags). This permanently corrupts the
+> configuration and races with ip6gre_fill_info() which reads it.
+> 
+> Remove the redundant and racy modification.
+> This should remove false sharing in a fast path.
+> 
+> Add const qualifiers in ipgre_fill_info(), erspan_fill_info()
+> and ip6gre_fill_info() to clarify that these methods are not
+> supposed to write any live parameters.
+> 
+> Fixes: 84e54fe0a5ea ("gre: introduce native tunnel support for ERSPAN")
+> Fixes: ee496694b9ee ("ip_gre: do not report erspan version on GRE interface")
+> Fixes: 5a963eb61b7c ("ip6_gre: Add ERSPAN native tunnel support")
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> ---
+> v4: addressed sashiko's feedback.
+> v3: https://lore.kernel.org/netdev/20260811095237.2314234-1-edumazet@google.com/
+> v2: https://lore.kernel.org/netdev/20260720135132.3957146-1-edumazet@google.com/
 
-The range loop then performs no iterations. Since the batched
-notification handling added a post-loop error check, this leaves err
-uninitialized and makes the request's return value unpredictable.
 
-Reject descending VLAN ranges before comparing the spans. Valid
-ascending and single-entry ranges remain unchanged, while malformed
-descending ranges consistently return -EINVAL.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-This issue was found by a static analysis checker and confirmed by
-manual source review.
-
-Fixes: 94339443686b ("net: bridge: notify on vlan tunnel changes done via the old api")
-Signed-off-by: Ruoyu Wang <ruoyuw560@gmail.com>
----
- net/bridge/br_netlink_tunnel.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/bridge/br_netlink_tunnel.c b/net/bridge/br_netlink_tunnel.c
-index 71a12da30004c..05f560eeb789c 100644
---- a/net/bridge/br_netlink_tunnel.c
-+++ b/net/bridge/br_netlink_tunnel.c
-@@ -301,7 +301,8 @@ int br_process_vlan_tunnel_info(const struct net_bridge *br,
- 
- 		if (!(tinfo_last->flags & BRIDGE_VLAN_INFO_RANGE_BEGIN))
- 			return -EINVAL;
--		if ((tinfo_curr->vid - tinfo_last->vid) !=
-+		if (tinfo_curr->vid < tinfo_last->vid ||
-+		    (tinfo_curr->vid - tinfo_last->vid) !=
- 		    (tinfo_curr->tunid - tinfo_last->tunid))
- 			return -EINVAL;
- 		t = tinfo_last->tunid;
--- 
-2.51.0
