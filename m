@@ -1,48 +1,41 @@
-Received: from mta0.migadu.com (out-128.mta0.migadu.com [91.218.175.128])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward103b.mail.yandex.net (forward103b.mail.yandex.net [178.154.239.150])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B0E35E1AE
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 06:36:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B7336308E
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 06:42:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786689370; cv=none; b=SrLO3pV55LfCqWFCJ+nT02o8v7kGCCvLt5cAW7WEX2sbxETWYUrjmHt+1myrYcCzMc5PFidiQMrPEUl0wL1bbVdzmnJfICuz5bPAm/HWSa7YezZ87xT9uxLcqHANxp9Q0Jcuxne+8Hj0/HIoPYIKhgifZbeu+QLPPPdk5JAnknE=
+	t=1786689757; cv=none; b=Azla3yWH4frqMFIg68BhphH2wEffDseKLnFxzXHXurcV0c6Aeu1KZi3YLjdaOOoBjjhxwClKk3hhaotoq2sTm6kzP4WMQSWCnClZT63FFKMIqG/WzyXDjN7Pn10xCEFPfeieCAokgv1fEfwrL6PwGbKcolRkYGGXgf8aVpoqqwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786689370; c=relaxed/simple;
-	bh=YWfBLkfminW2fEFyfEKhAu+hPo/HrLPBOYLF83LLvHA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PM6epjdKWpMi9rOO+VB6TJmen9fJTnrXI7Ird4SJL8UhVWnCpxYXWAdKBF8Bsu04a0ocVjD94TsS1gh0M4ldvidw4LH5gzPWzVL2xL11yNXDmFTxBVDsJml2LFFTjNwdRI2iAN9YOflSPwF+7SiyRWvwpk8fGuEK9uHGh2QSG1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=AaEdyIwm; arc=none smtp.client-ip=91.218.175.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1786689757; c=relaxed/simple;
+	bh=ORhhQ9n/sav7gjBxoMp6d9oqxDDNFHBWcaAYyE2pe0c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZUoYy5wKfpVsUBNd0S9MKiZgN9uHrg3k/Rx2ZeL34IE23CAJYdMDZ8wQW1PEO9P4Q6TJfFhpVb9LcJX/xSqdJL/VJpkDcWZVZ5Mn6pD5Vg/huyXH6mG5gbOX4IhjkIi/tL20zGJB3Ldz2oHZF78X8p14Hk6+HyVxHy2VpJfONvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=GeNGHsOy; arc=none smtp.client-ip=178.154.239.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="AaEdyIwm"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=YWfBLkfminW2fEFyfEKhAu+hPo/HrLPBOYLF83LLvHA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786689366; v=1; x=1787294166;
- b=AaEdyIwmdd6AN0f5QKpaq8LkbvrnU7Y0IFg5QfqiBxFDsq0anoLqL0R7afQ2xJozV6vk/mVK
- XC0FQv1lYcrbkVKqQ7V3KO8ZaOB5ZF44V8UhtNxUjjQ559Vw0PIOPHoPang8Wm584VQ/JUSPJ78
- 5I4R7C2p1XeDEPfg7SqN4rUY=
-X-Envelope-To: netdev@vger.kernel.org
-Received: from localhost.localdomain (147.136.157.3)
-	by smtp.migadu.com with ESMTPS id d3e0458ca6c5652b;
-	Fri, 14 Aug 2026 06:36:05 +0000
-X-Migadu-Flow: FLOW_OUT
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: netdev@vger.kernel.org
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] net: advertise TCP MSS from the configured MTU, not the learned PMTU
-Date: Fri, 14 Aug 2026 14:35:43 +0800
-Message-ID: <20260814063545.225896-1-jiayuan.chen@linux.dev>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="GeNGHsOy"
+Received: from mail-nwsmtp-smtp-production-main-92.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-92.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:f25:0:640:1f20:0])
+	by forward103b.mail.yandex.net (postfix) with ESMTPS id 8D1F8C00AE;
+	Fri, 14 Aug 2026 09:42:31 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-92.iva.yp-c.yandex.net (smtp) with ESMTPSA id UgKwCtUgIqM0-79WUZrFV;
+	Fri, 14 Aug 2026 09:42:31 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1786689751; bh=bKsAZKs09uVQkYWKTikTEkkI/pO2NSRM2EVzEHdCPLA=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=GeNGHsOyQAXmQkMRf/uFN20Y6D6ZcDlidPBSUpa0bYfnqve1zltPK6XfBp1cNnh9R
+	 6+1Dh29MNupUqnOIEyZxQ81PlsfrNJU01C/UAvVcjWw/lWaXuwkQsMznCwAuW9KTno
+	 qfcLJ91qnlqekx+Ljl6fbRAYE47WS1bQ0Li2LZ9w=
+Authentication-Results: mail-nwsmtp-smtp-production-main-92.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: Potnuri Bharat Teja <bharat@chelsio.com>
+Cc: netdev@vger.kernel.org,
+	Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] cxgb4: use kstrtou16_from_user() in tp_la_write()
+Date: Fri, 14 Aug 2026 09:41:27 +0300
+Message-ID: <20260814064127.1957130-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,144 +44,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The MSS a host puts in its SYN tells the peer how big a segment it may
-send us. Right now we can shrink it with a PMTU we learned on our own
-send path, which is the wrong direction entirely.
+Since actual value used for 'la_mask' can't exceed 0xffff, it
+doesn't make sense to parse larger values as 'unsigned long'.
+So switch to 'u16' to store an expected value and use the
+convenient 'kstrtou16_from_user()' to simplify 'tp_la_write()'
 
-On asymmetric paths this bites - think DSR load balancers, where the
-request side goes through a smaller-MTU overlay. We learn a small PMTU
-going out, then advertise a small MSS, and the peer stays capped for the
-whole connection even though its path back to us is wide. MSS only shows
-up in the SYN and never grows back.
-
-On symmetric paths we lose nothing by dropping it either: the peer runs
-its own PMTU discovery and usually already knows the real path MTU.
-
-So work out the advertised MSS from the configured route or device MTU
-and ignore the learned PMTU. Our send side is unchanged, still clamped by
-tcp_current_mss(). Add ip_dst_mtu_configured()/ip6_dst_mtu_configured()
-and use them from the two default_advmss() paths.
-
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 ---
- include/net/ip.h        | 25 +++++++++++++++++++++++++
- include/net/ip6_route.h | 37 +++++++++++++++++++++++++++++++++++++
- net/ipv4/route.c        |  4 ++--
- net/ipv6/route.c        |  2 +-
- 4 files changed, 65 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_debugfs.c | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
 
-diff --git a/include/net/ip.h b/include/net/ip.h
-index 7f2fe1a8401b..a8f57b4f4aa2 100644
---- a/include/net/ip.h
-+++ b/include/net/ip.h
-@@ -506,6 +506,31 @@ static inline unsigned int ip_dst_mtu_maybe_forward(const struct dst_entry *dst,
- 	return res;
- }
- 
-+/* Configured/administrative MTU of a route, for advertising the TCP MSS.
-+ *
-+ * Unlike ip_dst_mtu_maybe_forward(), this deliberately ignores the
-+ * ICMP-learned path MTU (rt->rt_pmtu).  The advertised MSS bounds what the
-+ * peer may send to us and must reflect our receive capability (the device or
-+ * route-configured MTU), not a path MTU learned on the reverse (send)
-+ * direction, which may not apply to the peer->us path and outlives the fnhe
-+ * for the whole connection.  See RFC 2923 section 2.3 and the comment above
-+ * tcp_advertise_mss().
-+ */
-+static inline unsigned int ip_dst_mtu_configured(const struct dst_entry *dst)
-+{
-+	unsigned int mtu, res;
-+
-+	rcu_read_lock();
-+	mtu = dst_metric_raw(dst, RTAX_MTU);
-+	if (!mtu)
-+		mtu = READ_ONCE(dst_dev_rcu(dst)->mtu);
-+	mtu = min_t(unsigned int, mtu, IP_MAX_MTU);
-+	res = mtu - lwtunnel_headroom(dst->lwtstate, mtu);
-+	rcu_read_unlock();
-+
-+	return res;
-+}
-+
- static inline unsigned int ip_skb_dst_mtu(struct sock *sk,
- 					  const struct sk_buff *skb)
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_debugfs.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_debugfs.c
+index f521737d1275..5c6c27418891 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_debugfs.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_debugfs.c
+@@ -664,20 +664,13 @@ static ssize_t tp_la_write(struct file *file, const char __user *buf,
+ 			   size_t count, loff_t *pos)
  {
-diff --git a/include/net/ip6_route.h b/include/net/ip6_route.h
-index 09ffe0f13ce7..ac1acc0b7436 100644
---- a/include/net/ip6_route.h
-+++ b/include/net/ip6_route.h
-@@ -385,6 +385,43 @@ static inline unsigned int ip6_dst_mtu_maybe_forward(const struct dst_entry *dst
- 	return mtu - lwtunnel_headroom(dst->lwtstate, mtu);
- }
+ 	int err;
+-	char s[32];
+-	unsigned long val;
+-	size_t size = min(sizeof(s) - 1, count);
++	u16 val;
+ 	struct adapter *adap = file_inode(file)->i_private;
  
-+/* Configured/administrative MTU of a route, for advertising the TCP MSS.
-+ *
-+ * Unlike ip6_dst_mtu_maybe_forward(), this ignores any ICMPv6-learned path
-+ * MTU (which is kept on the RTF_CACHE exception route) and returns the MTU of
-+ * the underlying route (fib6_pmtu) or the egress device.  The advertised MSS
-+ * bounds what the peer may send to us and must reflect our receive
-+ * capability, not a path MTU learned on the reverse (send) direction.  See
-+ * RFC 2923 section 2.3 and the comment above tcp_advertise_mss().
-+ */
-+static inline unsigned int ip6_dst_mtu_configured(const struct dst_entry *dst)
-+{
-+	const struct rt6_info *rt = dst_rt6_info(dst);
-+	const struct fib6_info *from;
-+	struct inet6_dev *idev;
-+	unsigned int mtu = 0;
-+
-+	rcu_read_lock();
-+	/* IPv6 keeps the learned PMTU and the configured MTU in the same
-+	 * RTAX_MTU slot: the learned value sits on this (possibly RTF_CACHE)
-+	 * dst, the configured one on the underlying route.  Reach the latter
-+	 * via ->from (fib6_pmtu), populated by ip6_route_info_create().
-+	 */
-+	from = rcu_dereference(rt->from);
-+	if (from)
-+		mtu = from->fib6_pmtu;
-+	if (!mtu) {
-+		mtu = IPV6_MIN_MTU;
-+		idev = __in6_dev_get(dst_dev_rcu(dst));
-+		if (idev)
-+			mtu = max_t(unsigned int, mtu, READ_ONCE(idev->cnf.mtu6));
-+	}
-+	rcu_read_unlock();
-+
-+	mtu = min_t(unsigned int, mtu, IP6_MAX_MTU);
-+	return mtu - lwtunnel_headroom(dst->lwtstate, mtu);
-+}
-+
- u32 ip6_mtu_from_fib6(const struct fib6_result *res,
- 		      const struct in6_addr *daddr,
- 		      const struct in6_addr *saddr);
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index fd688e1f879f..46aa98c92183 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -1334,8 +1334,8 @@ static unsigned int ipv4_default_advmss(const struct dst_entry *dst)
- 
- 	rcu_read_lock();
- 	net = dst_dev_net_rcu(dst);
--	advmss = max_t(unsigned int, ipv4_mtu(dst) - header_size,
--				   net->ipv4.ip_rt_min_advmss);
-+	advmss = max_t(unsigned int, ip_dst_mtu_configured(dst) - header_size,
-+		       net->ipv4.ip_rt_min_advmss);
- 	rcu_read_unlock();
- 
- 	return min(advmss, IPV4_MAX_PMTU - header_size);
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 5968ce5ad150..e2056bd0df3c 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -3261,7 +3261,7 @@ void ip6_sk_redirect(struct sk_buff *skb, struct sock *sk)
- 
- static unsigned int ip6_default_advmss(const struct dst_entry *dst)
- {
--	unsigned int mtu = dst6_mtu(dst);
-+	unsigned int mtu = ip6_dst_mtu_configured(dst);
- 	struct net *net;
- 
- 	mtu -= sizeof(struct ipv6hdr) + sizeof(struct tcphdr);
+-	if (copy_from_user(s, buf, size))
+-		return -EFAULT;
+-	s[size] = '\0';
+-	err = kstrtoul(s, 0, &val);
++	err = kstrtou16_from_user(buf, count, 0, &val);
+ 	if (err)
+ 		return err;
+-	if (val > 0xffff)
+-		return -EINVAL;
+-	adap->params.tp.la_mask = val << 16;
++	adap->params.tp.la_mask = (unsigned int)val << 16;
+ 	t4_set_reg_field(adap, TP_DBG_LA_CONFIG_A, 0xffff0000U,
+ 			 adap->params.tp.la_mask);
+ 	return count;
 -- 
-2.43.0
+2.55.0
 
