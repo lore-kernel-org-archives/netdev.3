@@ -1,94 +1,86 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1566926A1A4;
-	Fri, 14 Aug 2026 00:44:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8A718D636
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 01:05:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786668272; cv=none; b=nNqezWJ5GrJ/uBpObdTq2qXAIPd4FPUm1myS1WVk/90dic2MSa9vslY0nn4McgZHCd9FvvjdoMQVhJInV+5kIuQEzuH0ptgRayAsV3wS/hR/rVwIiPgFX99RZklpJOwAGwbZppsU2njaYWkc0+AuxfkvKRGtuQMdEDXfEGtAllg=
+	t=1786669534; cv=none; b=X4dv7H8bdvLccWRGpln2pwaQKmewlc+872EzeMmWJiWZMrYxERDGONOjGcs8EizBIy3G8ncz5crMgFn+lFVAFdFD2GBu+sduU7FnK6xX6J5IVqLJ21svLIAcx7QVtVHNriKum3Nz8tJ6IWzmKUlxBtm5Gm8h+fQhG+qL5aEW7BI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786668272; c=relaxed/simple;
-	bh=LhVlxNN3jvA/l5gpfa9/ZaNbEbKfUkv8Yc9IYae/Y/o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OEUhfObP2cjzXVacdk3KIXuJqJHnVpTrTIscBVa+SRj/KfnwQd+2OzxItTE1v6JC9JvAI20rSC4h/MPDBDKzGCNkEfeyuJZeQgo65hTbNx9xtkFOtKGlRy+3iI2EX6mxekEMJQEvOlRQV5IToz2LKDYK/70n+0MhDKWt8V89Ov8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=4qgzIeLB; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1786669534; c=relaxed/simple;
+	bh=5wopqXQQTitJ4kiUoXjA3wrt5w/XRVQlGiApMt3/t6I=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mrKr1iVYUQvi2TBe7QA8QcFBdrpP21jRI/yiSs7hHzbLiGdy7pp5s8YJUyVrjM1Y1WV5wRhjBYbSqjDOlsPbktbRoA98slpVH+Tv72gihUFDNkDH0psecdL40+eSpUIVQ8MWHpOWxD2DZGuVXQdmRcDKIUwubl1G4ribMLtOCgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V8tUtPQG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="4qgzIeLB"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=wUZxdmhlCblRJR1IqF9OBxvODhE3LY7hit+LlMALFso=; b=4qgzIeLB5mNwp/DSDHAqA/+z7Z
-	ZIwCSgJOhLhP2HTpGw+iAMWgPIJUpooAzuOzGkMgl2i3QS6qG1y7E/0ssF+c9J0a1zyIomZUTLYic
-	hPCjpYrT6Tt/WecvNb+FRRTyhp9IqhabOaMpCW7gXY+bvwUfz3Ou+RpBW/fLCD7HmvyQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wug1r-00HVrL-CV; Fri, 14 Aug 2026 02:44:11 +0200
-Date: Fri, 14 Aug 2026 02:44:11 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Ruoyu Wang <ruoyuw560@gmail.com>, netdev@vger.kernel.org,
-	jv@jvosburgh.net, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] bonding: initialize err for empty target lists
-Message-ID: <0ad34e55-8f3f-4847-a885-854ad62afc9f@lunn.ch>
-References: <20260813153126.3952893-1-ruoyuw560@gmail.com>
- <4b095542-6656-467a-93ce-4a39c6c80c46@blackwall.org>
- <9ee8e417-e626-45c3-8c4d-cd605123ff37@lunn.ch>
- <an4pYO_Co20iITY4@penguin>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V8tUtPQG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9816F1F000E9;
+	Fri, 14 Aug 2026 01:05:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786669532;
+	bh=7iUYHczkM8ggxniKLtcHr2bhd+vgzUTFNILXhpxAeg8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=V8tUtPQGR/8qdh+OMCCst5huDIIjOuZs9sMrFEUBobOgVgae+xOGmnr4iEzixXvx7
+	 ySTDeV7Jm2KpgIb4NMmwfTuahMybH8nE66j1DV/F/aao6QQ7bG3IgZW+DABwsiOj7m
+	 T8uw/pWPbOQGaUQV0q/l0QaYK607AUv0TW3UTWR9OeVBRxRM/UOcAA6LkFU/wbqlm9
+	 /ri0kHam+z7lHH6tAygaIiKMdQuAwMd6op3Hc25wScEs1lI/UiQBZy5Ff83D1vDGz9
+	 TvrtwjevLo925327sxFkp2fJOaOubz98nl4Krbclx3zk6hZhSGrOEF0kFDxcfbx74Y
+	 eF3MbIr99njJQ==
+Date: Thu, 13 Aug 2026 18:05:32 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Daniel Pawlik <pawlik.dan@gmail.com>
+Cc: netdev@vger.kernel.org, lorenzo@kernel.org, win847@gmail.com,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH v6] net: airoha: npu: use coherent DMA for mailbox
+ messages
+Message-ID: <20260813180532.3683abc7@kernel.org>
+In-Reply-To: <20260809152813.585797-1-pawlik.dan@gmail.com>
+References: <20260809152813.585797-1-pawlik.dan@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <an4pYO_Co20iITY4@penguin>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 13, 2026 at 11:30:24PM +0300, Nikolay Aleksandrov wrote:
-> On Thu, Aug 13, 2026 at 10:25:13PM +0200, Andrew Lunn wrote:
-> > > By the way you haven't CCed the Fixes commit author (me).
-> > 
-> > Hi Nikolay
-> > 
-> > ./scripts/get_maintainer.pl drivers/net/bonding/bond_netlink.c
-> > Jay Vosburgh <jv@jvosburgh.net> (maintainer:BONDING DRIVER)
-> > Andrew Lunn <andrew+netdev@lunn.ch> (maintainer:NETWORKING DRIVERS)
-> > "David S. Miller" <davem@davemloft.net> (maintainer:NETWORKING DRIVERS)
-> > Eric Dumazet <edumazet@google.com> (maintainer:NETWORKING DRIVERS)
-> > Jakub Kicinski <kuba@kernel.org> (maintainer:NETWORKING DRIVERS)
-> > Paolo Abeni <pabeni@redhat.com> (maintainer:NETWORKING DRIVERS)
-> > netdev@vger.kernel.org (open list:BONDING DRIVER)
-> > linux-kernel@vger.kernel.org (open list)
-> > 
-> > You are not listed. Maybe you can submit a patch to MAINTAINERS?
-> > 
-> >     Andrew
-> 
-> I didn't mean it as a maintainer, it is customary and good practice
-> to email the author of the commit that introduced the regression,
-> that is all I was trying to say.
+On Sun,  9 Aug 2026 17:28:13 +0200 Daniel Pawlik wrote:
+> Commit 6f884eb87a79 ("net: airoha: Fix DMA direction for NPU mailbox
+> buffer") switched airoha_npu_send_msg() to DMA_BIDIRECTIONAL so
+> non-coherent CPUs invalidate caches before reading NPU GET responses.
+>=20
+> On EN7581 + MT7996 that change regresses probe: the mailbox completes
+> successfully, but WLAN_FUNC_GET_WAIT_NPU_VERSION still reads as 0.0 and
+> mt76 never binds NPU offload. Healthy boards report 0.1111.
 
-Interesting:
+This sounds very odd. Is the DMA API broken on the platforms you are
+testing? The code looks correct as is.
 
-scripts/get_maintainer.pl --help
-usage: scripts/get_maintainer.pl [options] patchfile
-       scripts/get_maintainer.pl [options] -f file|directory
-version: 0.26
+FWIW here's what GPT suggests:
 
-MAINTAINER field selection options:
-  --email => print email address(es) if any
-...
-    --fixes => for patches, add signatures of commits with 'Fixes: <commit>' (default: 1 (on))
+  Indeed, HEAD^ uses the DMA API correctly:
+  DMA_BIDIRECTIONAL map/unmap must make the NPU response visible to the CPU.
 
-So it should of done it, if it was run on the patch, rather than the
-file.
+  The important wrinkle is that, on arm64, these small kzalloc() buffers are
+  forced through SWIOTLB when mapped bidirectionally. DMA_TO_DEVICE did not
+  bounce them. HEAD switches to coherent memory and therefore bypasses SWIO=
+TLB
+  entirely. That suggests the actual problem is one of:
 
-I wounder what "b4 prep --auto-to-cc" does?
+  - SWIOTLB memory is outside the NPU=E2=80=99s real DMA aperture.
+  - The platform=E2=80=99s dma-ranges/DMA mask does not describe that apert=
+ure.
+  - SWIOTLB copyback or cache handling is broken.
 
-  Andrew
+  Using coherent memory for a mailbox is reasonable, but this patch masks t=
+hat
+  underlying problem rather than explaining it. Before accepting it, I would
+  test a cacheline-aligned, rounded-size streaming buffer with
+  DMA_BIDIRECTIONAL, while programming the original payload length into the
+  mailbox. If that works, it strongly implicates the SWIOTLB/platform setup.
+
+We can take a revert of the patch under Fixes if it's urgent.
+The real fix requires a deeper investigation.
+--=20
+pw-bot: cr
