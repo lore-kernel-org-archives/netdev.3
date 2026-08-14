@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F9A3DC4D3;
-	Fri, 14 Aug 2026 03:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0503DD867;
+	Fri, 14 Aug 2026 03:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786677906; cv=none; b=bmItAeHxyMePFf6eNDMgE674xKIcFuwMnNOFHHDf2oiDBfo9DNtbK7IjWx+9h2W3TizAybX+W6VJ3+ohtsa6zDDL0YK/bSr724vEaqLXpE18DgHzxSVxafCReTAmKhBkv/LhrdxqgE/cmAKovZ+9QOkUvrlSYXg3yJuVcUGyfoY=
+	t=1786677908; cv=none; b=WukG7VGxUkfOCu3E4Mvf854pDAo1UcuSGVEWnRcsKUMVNUBQDhONLzP2mN3ynYXCl3ypxhehgsmMrgk+N3hHorGDyiMhyAD0E75PhTkU+YeLKNCaijB+Yj94L5thgyuGU5b1TfNLtll1Z78yQckRfgMMx3Z8IL5yJGiFCZAZAEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786677906; c=relaxed/simple;
-	bh=HG7yMl1fiHIA7F3Ob8V0YGHV5wZKXcZwBw84TGgIeH0=;
+	s=arc-20240116; t=1786677908; c=relaxed/simple;
+	bh=hiuOb9mLTgzxkzWra2Jsqk1XqW6Itffmw3SJeK5BZ4U=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=gM9I65AUJmBNuZRy4fyWbOEieVnoZbeL0i2JgimAsqYfwHCyAhQw6srpOOckK0O8qPqtQECDkkrX0oMm270PqDAVCjUoEIwTv8z9ofzS1G34mvVbbOZiFSZXrnEdCX1IOjO+K9Sp0FVIcQmhz5jESTD5LDW58OX3Lnp0fqBswk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g+IhfJPR; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=N6zjkt1wJeXW9O9ZzBJy9Wn3jBA/IT4JzvbIPi3jZjzIo233FdJzn9bbJwvfJMg+cgMPSZ+OftWyyxXIYl4r7L+boLMeP0Lfa9Za1mZ1GDstCxb40YwuflkFSm9SbjE42yxAYx08jYa9TVxkzIBVip9fqPEpqt1mGvv4EfHzB7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=no0Nym9g; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g+IhfJPR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29AF21F000E9;
-	Fri, 14 Aug 2026 03:25:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="no0Nym9g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A189D1F000E9;
+	Fri, 14 Aug 2026 03:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786677905;
-	bh=aWp1YHiBJbCs/EP0NMgAa7XsggFzI5w05Kjt4g6NKd0=;
+	s=k20260515; t=1786677906;
+	bh=vCT0qdQhfQSbZw5isYG4GE84Wg3N/y5lMkvApTL2Qwg=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=g+IhfJPRuhrMApU3e5N4QpY7wvnz28PTXlQan9NhXK4VCQSWEB1mB4iNVa93O+/29
-	 4QdRBL+/tCXl3f36woIvi1PhTzuiNzwUwbUFSph/v54CdRX5mkCzDXO3AcrebBJul6
-	 4wki+P0P5Omp4ZjB1Wz8bmGeQ8KyFtXE9ElobBlfbBzH6yZidAd8lrU99rGTGzbvuf
-	 4HeHgXTjzI3tbMAdQ1F9amlcPAS+psw/payKmLTW7O712G5ljDw1x12Lx+XcyGAgMX
-	 DBvE5PE9PBwjflelMo6q4UVHH3D+adIVB9gXPj95OgmWUK82tuye0A+jSSKOu5vX1Y
-	 bh94fC2vbGpYg==
+	b=no0Nym9gI1uJXovVGlux48XGRxiIGtzJ8I0OHIyKqgXo2PcgLTZEOg4ErsFeL7B4n
+	 dtd9eY7oL7v1giraU85MjTCl7NTkvw+NGQ76llkUEFefyi7qXGyijc9tmTd5Bhaoqx
+	 2QFODpzWwH0mr6qaNFIbCONVVb9MRR0C4lsH29PTLz8PwNKYtP1HuY+VKhS9fMI25k
+	 ts9UGSZBpNWJJuae1LK8lxsFq2yzAOKP8/p3Zo7HTbIUZlHqzrXwkHrOIlB4e6+iW3
+	 YrE9v/4h/5ncua8OfnTfDaTODdeO/NdIwb3nducqIceaZTZNiijzar6eqluBgAzNeE
+	 B4I5nXJbs1UbQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A793810900;
-	Fri, 14 Aug 2026 03:24:20 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568BC3810900;
+	Fri, 14 Aug 2026 03:24:22 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,42 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] l2tp: send netlink notifications in the tunnel's net
- namespace
+Subject: Re: [PATCH net-next v10] selftests/net/openvswitch: add SCTP flow key
+ support and test
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178667785939.3150297.10317133569625215552.git-patchwork-notify@kernel.org>
-Date: Fri, 14 Aug 2026 03:24:19 +0000
-References: <20260809094252.2107242-1-maoyixie.tju@gmail.com>
-In-Reply-To: <20260809094252.2107242-1-maoyixie.tju@gmail.com>
-To: Maoyi Xie <maoyixie.tju@gmail.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, jchapman@katalix.com, tparkin@katalix.com,
- gnault@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
+ <178667786089.3150297.9426672814575487514.git-patchwork-notify@kernel.org>
+Date: Fri, 14 Aug 2026 03:24:20 +0000
+References: <20260811181645.1918420-1-houminxi@gmail.com>
+In-Reply-To: <20260811181645.1918420-1-houminxi@gmail.com>
+To: Minxi Hou <houminxi@gmail.com>
+Cc: netdev@vger.kernel.org, aconole@redhat.com, davem@davemloft.net,
+ dev@openvswitch.org, echaudro@redhat.com, edumazet@google.com,
+ horms@kernel.org, i.maximets@ovn.org, i.maximets@redhat.com, kuba@kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ pabeni@redhat.com, shuah@kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sun,  9 Aug 2026 17:42:52 +0800 you wrote:
-> l2tp_tunnel_notify() and l2tp_session_notify() use
-> genlmsg_multicast_allns(), which delivers to listeners in every network
-> namespace. l2tp is per-namespace, and a tunnel records the namespace it
-> belongs to in tunnel->l2tp_net. Each event concerns one namespace, yet
-> every namespace is told about it. A tunnel event carries the tunnel and
-> peer tunnel ids, plus the socket's addresses with both ports for a UDP
-> tunnel. A session event carries the session and peer session ids, the
-> interface name, plus the L2TP cookies where those are set. A listener
-> needs no privilege for any of this, because l2tp_multicast_group[]
-> carries no flags and genl_bind() asks for no capability.
+On Tue, 11 Aug 2026 14:16:45 -0400 you wrote:
+> The ovskey flow-string parser has no OVS_KEY_ATTR_SCTP entry, so a
+> flow string containing sctp(src=.../dst=...) parses without error but
+> silently drops the L4 key. The resulting flow carries only
+> ipv4(proto=132), and the kernel rejects it: match_validate() in
+> flow_netlink.c requires OVS_KEY_ATTR_SCTP when the IP protocol is
+> IPPROTO_SCTP and returns -EINVAL for the missing key.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] l2tp: send netlink notifications in the tunnel's net namespace
-    https://git.kernel.org/netdev/net-next/c/ed267f783c0c
+  - [net-next,v10] selftests/net/openvswitch: add SCTP flow key support and test
+    https://git.kernel.org/netdev/net-next/c/07a9e3975039
 
 You are awesome, thank you!
 -- 
