@@ -1,129 +1,103 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9AA330D3EE
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 23:43:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E66F36308D
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 23:49:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786751008; cv=none; b=TFuN78XkKTb0V83ko5LHD+4RL6feJU29S1bFT0d4eyhTBGWhN1wNtDhs1xIATnvjuMMRqKeJ9PT+IifD9y1te7I2RP1rqyKBdquGNNuJcU3vGAzdfkGoLHtxWMgYBbAbv6oGaXFyIlGcUE8HdvDMjSSbHCaV13aZoeP/0wm3G78=
+	t=1786751354; cv=none; b=llc31fxS27GvJNfT29f3KCtFUf3AlwU7rmEVf/yDXUhBjK9jZOEiv32lveV74ZVwsi+E8C8PSpn3gZJ+9/sHNwNLUr28sNNpAyC3y8FgTfX5BuOMwFJAWpuw45Qbx6BiPWggVzgXKY8iJZO8Lsm+nvef6H3pwPxjYLdRA/lifrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786751008; c=relaxed/simple;
-	bh=uXCmLdtsriIwhfcLVZktZxvc59oX7Vo3jJiEN92QLWA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=tstR9K2C5KEXdcVbxH36pIWKDjp3Au9/CIGyLr4x/3N5lP24AhOmqcGRQe9NJVE0OUHv948fiF9CqAsd1H57MnudlkcSO1oGw75t8M0nqJLfnDbfUxrYYJU6RmMRSp7c87LyXLxt44t3/kYSMbV+F7cdJjQFM8TQ19OSZN1QMWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=suKRTKQ3; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786751354; c=relaxed/simple;
+	bh=x8eg9Jt6w3cS6X7e91rfazYnIdbQdxW90QnuVAm/iJY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=dt2niTJmLLYG3feJnFC0h+ddQLBCCHtcxOBdeURyRUlYsqSWRvyvtKy6jAgudl0784FcQVVvD7Dlske8/KGtZmQ15rst3u+SeVQvEml+Q4eNRUjQVYkvbuIimU/xsYibn+7AAWJ6/tnK1PI+o430OxNpnokI9GRgaqXI2gajHYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EzGLCdLA; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="suKRTKQ3"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-38e08baf860so1667746a91.2
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 16:43:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EzGLCdLA"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-848568a6f62so1632377b3a.0
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 16:49:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786751006; x=1787355806; darn=vger.kernel.org;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=o1OOjpIXR/O1gcOMsnaXMiF57IBf3F++it76I8JlmO8=;
-        b=suKRTKQ35s7VhrLwFvFByXaqsstmnTEBgu9tMPsCMMXNHBPv+DICEY6Nkz7o3Kb5q2
-         4+AnOVK0pbqg1dHQGFWbjurwPUZIDV2lCCsL4kacHD2SvhytPA0mrf7/ctIucjBfACVw
-         RT6ch+TXTv5kOeI1NAct5ZX6D/hJgytiC9ty41kIKbWbMkxebCRmuSCE2ttFMCJVRiIS
-         bacaOR5M9YNS1yvLWS3qG4tiH0Jz5PoZ4womCJjIpDffAQZalFWyj5xZ+QZLoljVIfh6
-         PASfDEXWYj+jstQrjpndeIDu0oViSgTberhKQeV1qhGAKAqHtQjTVmJFb7znbw0vUgaX
-         uwtw==
+        d=google.com; s=20251104; t=1786751352; x=1787356152; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=s1YbbHnn1o8ujr85Ja1lB8ygXtUPaAp528+7LLKHOkI=;
+        b=EzGLCdLAMV6cboWVOOULUgjfPL/wuUwLk6sNd8y2I+U/slTKDjNDgaEUpe4bMAasWE
+         wGIAuefZhE/jX2JHhdfGTS3oEJ0dqzdBTWvW8paT+3bF6TOF1MQlL3pkX49zuhiGbUUK
+         R0hz3dNLZgq0eSIqTVn9C+LPLizDRuXH4PmkTRAy1lszBjDOMu4JYbCcRIIUvASxdm5T
+         jVvwrjpopExyITWd2RKOzVzg52u4lQ8LiJquJtJDQaFGr27hu+UL7PhN7gsjsZpMB4RP
+         XSxju9gAzQ3VBrZLoLnNSIq88fhfAfntBm3NUg0tyeRrXVrOWxSJpPyUAkd8//v3z8uE
+         5csQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786751006; x=1787355806;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=o1OOjpIXR/O1gcOMsnaXMiF57IBf3F++it76I8JlmO8=;
-        b=Y/saQADBzJ7o+y3hhrITzIS9hRdWB0JMxcZCDUTJ4UhVCeft476Z08w7zmd99opBui
-         dr2uqDIjlj1SEvZEs2EJjUbB9+6z/iRdmtMhVwjvSmW70o6CF3ZjoAnVCLFwQSGchSmr
-         eSGdNw98/7diPbqgWMKvDyA9AFiGj00HkN6D2kDxo08NKILYwri6XSmRkckigiQJjll8
-         lu29HZxVmx9ary8PD5aaD2IeTV3utTooQAHE2ybQ5/7a9XYJhqxKQ6wQYC70AanJ355P
-         lNCCDVPrv2nQSjmmdzsSSnb2yb1yHna5DjPACvdqaFE8v+cHUkZShhpY6li9FHilEw/6
-         Kpmg==
-X-Forwarded-Encrypted: i=1; AHgh+RrL49nOxeEHfp8ccyA2pAd9M0K7tjGSnObKF+GnzdyUEkpOyGGGAdFb0/DAWeh5uY1ClmmSKAQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyytwKo1gTEqtvoirFvodihlH7qWanuOvlyTKWIdwHk6GJaLyIj
-	h3zreWjExY/wW1nd9jniNufm0MydtYy/igZOPfGEl9jB0f0IWyVkrHRb
-X-Gm-Gg: AR+sD11q9yW4EBEqh/Qrwl9nFtdDYDG71VsGxKRV0ee+VcrDvROToKK9NcAcpiQgojZ
-	+T11kovMIbWaq/hRRpy4VFleFNseYgbkitXn0EAcNGSYJF1uxHrzZ5e8NpoA9sRQ2BmxrHtzXj/
-	k3p/PPWj7jLhqLhlv7QSxumwl+eqBn+3h0hhMfS77gKO+af61V/odY7CQayuR6VdTpMf5+J5oTb
-	SZb8kCEoC8U3I0sUMxuR5HUIg9M2zi4/xZLWyyu0gIKwjLzcoivUzIQa+X/F3+0MKRvWMXZY64M
-	IFQlZy7m2p+gYuBkxPJ3fOjYygNSRDLWD2HQXb4XaIvS1wD5bW+8UEdPecZjmoGtrA3zgpmwcDx
-	zrPwNJp/ROPw8WcpdwGczFtC1JmTt/0b0Aw7FesdoZeJ4z4l/2Hj+TEH1kmkanF33V2pFJW6iIT
-	qmx+t1yk07VPl1oog7C1iwuTGagBbMwc4sejHXHQnWN6l5f4665pG2yCDXnGciCEEjffuLyo4wc
-	pepkl+1pQmOc50FK9w=
-X-Received: by 2002:a17:90b:2d07:b0:381:3b5d:30f4 with SMTP id 98e67ed59e1d1-3933bd18856mr10849816a91.1.1786751006145;
-        Fri, 14 Aug 2026 16:43:26 -0700 (PDT)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-394ea9a1301sm4537942a91.7.2026.08.14.16.43.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 16:43:25 -0700 (PDT)
-Date: Sat, 15 Aug 2026 08:43:21 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: marcelo.leitner@gmail.com, lucien.xin@gmail.com, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org
-Cc: linux-sctp@vger.kernel.org, netdev@vger.kernel.org, imv4bel@gmail.com
-Subject: [PATCH net] sctp: drop a backlogged chunk if its transport was
- removed
-Message-ID: <an-oGfEatacPTSX-@v4bel>
+        d=1e100.net; s=20251104; t=1786751352; x=1787356152;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=s1YbbHnn1o8ujr85Ja1lB8ygXtUPaAp528+7LLKHOkI=;
+        b=dCwJwRL+ZKBj1rzbQi/Dgqx1P30jRA63wmGLZnI7IGrc/i6PYU6FduNpV3dfJusarG
+         KIeG0DKl076I+KZLxDQInjCtJp4EdP6KMYTfETbnipXH88QqWJTParyyX64Io34IAmES
+         LDliNy10rBoFhUyDKmEU3T145bE7VvKflQ8XJEso3fucAwdumo6AUeparnC982EN7XYl
+         AkMBf4TLJKORg1QtTGZbDO0zZLmCzI9bCPeklBWmehmcC929AY85rWITIYoyfIcJrifl
+         lv+2hTMz7cmA8CnuTzeAXPgp9tBE41puxJ8H9oq9drK880LC072yOHU+Ot4J9q7ep/+N
+         cdgw==
+X-Gm-Message-State: AOJu0Yz1ZnOhyVouSZYHnLg+f5/sST4+AqEPcuSDx92m3PG8oMBfT1oH
+	6YA/YwgtB8UvUoFFtJ687kcIjyT4tE84fC7nkqWpvImXycP48lU7h0fNSD3mHbAJX1vZHawlBOS
+	v6g2WLYwC5fnCmdWuVYtDIkq7ezuY63qFZzp9HRD4RHU6v41+ldFTv9XzaxQLed8J29sOBryrEv
+	pqPynwoKB4SQxquABKG2ZQCJvFs1K2MHHHrxcqk9QuxCygk4s=
+X-Received: from pglf1.prod.google.com ([2002:a63:1001:0:b0:c9e:a22d:15e8])
+ (user=joshwash job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:1895:b0:845:4928:8655 with SMTP id d2e1a72fcca58-84fde33319bmr9287557b3a.39.1786751351767;
+ Fri, 14 Aug 2026 16:49:11 -0700 (PDT)
+Date: Fri, 14 Aug 2026 16:48:39 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.691.gc56d675ccc-goog
+Message-ID: <20260814234845.773189-1-joshwash@google.com>
+Subject: [PATCH net 0/6] gve: various XDP fixes
+From: Joshua Washington <joshwash@google.com>
+To: netdev@vger.kernel.org
+Cc: Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Jordan Rhee <jordanrhee@google.com>, Willem de Bruijn <willemb@google.com>, 
+	Ankit Garg <nktgrg@google.com>, Tim Hostetler <thostet@google.com>, 
+	Praveen Kaligineedi <pkaligineedi@google.com>, Jeroen de Borst <jeroendb@google.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-sctp_rcv() resolves the transport once per packet and leaves it in
-chunk->transport. If the socket is owned by userspace the packet goes to
-the socket backlog, and sctp_add_backlog() takes a reference on that
-transport.
+This patch series includes a number of XDP-related fixes, both in the
+control plane and the dataplane.
 
-An authenticated ASCONF DEL-IP in an earlier backlogged packet can remove
-it. sctp_assoc_rm_peer() takes the transport out of the association and
-calls sctp_transport_free(), which tags it dead and drops the reference
-the association held. The backlogged packet still holds a reference, so
-the transport stays around.
+A summary of the changes:
+1) fix an issue where XDP packets weren't being counted against NAPI
+   budget
+2) fix an issue where XSK buffers that have not been processed are
+   leaked when disabling XSK pools
+3) fix an XSK buffer leak when an RX error descriptor comes back from
+   the hardware
+4) fix a NULL dereference due to incorrect registration of XSK pools on
+   queues not set up in XSK zero copy mode
+5) fix a deadlock introduced by attempting to acquire the netdev lock
+   after it has already been acquired
+6) fix a racy NULL dereference due to DMA umapping the XSK pool before
+   queues are fully stopped
 
-The DATA chunk in that packet puts the removed transport back into
-asoc->peer.last_data_from. Once the packet is done that reference goes
-away and the transport is freed by RCU, so the next delayed SACK carries
-the pointer into the SACK chunk and sctp_outq_select_transport() reads the
-freed transport's state.
+Joshua Washington (6):
+  gve: increment work_done for XDP and error packets
+  gve: fix XSK buffer leak when rings are stopped
+  gve: fix XSK buffer leak on error descriptor
+  gve: don't register xsk pool on pre-existing queues in RDA mode
+  gve: fix napi_disable deadlock when attempting to disable XSK pools
+  gve: fix NULL dereference from premature XSK pool DMA unmap
 
-Drop the chunk in sctp_backlog_rcv(), next to the existing rcvr->dead
-check. The peer retransmits it. Guarding the last_data_from assignment is
-not enough, sctp_assoc_rm_peer() clears more than that one pointer and
-letting the packet run fills them in again. sctp_wait_for_sndbuf() already
-uses the dead flag this way on the send side.
+ drivers/net/ethernet/google/gve/gve_main.c   | 51 ++++++++++----------
+ drivers/net/ethernet/google/gve/gve_rx_dqo.c | 20 ++++++--
+ 2 files changed, 42 insertions(+), 29 deletions(-)
 
-Fixes: df132eff4638 ("sctp: clear the transport of some out_chunk_list chunks in sctp_assoc_rm_peer")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
----
- net/sctp/input.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/net/sctp/input.c b/net/sctp/input.c
-index 864741fae4187e..83b8361d149251 100644
---- a/net/sctp/input.c
-+++ b/net/sctp/input.c
-@@ -285,9 +285,10 @@ int sctp_backlog_rcv(struct sock *sk, struct sk_buff *skb)
- 
- 	/* If the rcvr is dead then the association or endpoint
- 	 * has been deleted and we can safely drop the chunk
--	 * and refs that we are holding.
-+	 * and refs that we are holding.  Same if the transport
-+	 * we looked up has been removed in the meantime.
- 	 */
--	if (rcvr->dead) {
-+	if (rcvr->dead || (t && t->dead)) {
- 		sctp_chunk_free(chunk);
- 		goto done;
- 	}
 -- 
-2.43.0
+2.55.0.691.gc56d675ccc-goog
 
