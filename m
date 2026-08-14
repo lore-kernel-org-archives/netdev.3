@@ -1,88 +1,105 @@
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381EF3A874D;
-	Fri, 14 Aug 2026 10:32:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D056D45C716
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 10:42:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786703575; cv=none; b=tP9TzItcHWlrXhMIeZZmdNNQQGES4U8wcyl4D6S0SOAP0tUjj5mbIUAvQbzQdxhJAPrqCxKG5Q2/ko1UxQgmXIXcBaHPeCbXYS7+n16aYaZs1FaZI1uhF6/sSxbeerqs3O0zkA5M45nZcTt67rX3ZzQH0nt/rrq+nr+dZMFUM1o=
+	t=1786704167; cv=none; b=GnaIHHM/hHUcKiTygjxvxDyU5+sjRV/MNGM1oo8rRfO++nsVufT1DfLYKUSC/t/ZdVKmXx7cfVQRRLMak74K6O8OpYLBzum61podANT9xCoti9zSn5GsuCPLdnfcKjwiq9NlNO4TqcaRPQl78MhYe5lJNQ2VVz468+ST54249AY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786703575; c=relaxed/simple;
-	bh=YVKfJkEmhEBY2ZixU/EKQfOZB2OvWex9FXCEwRtir/w=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=LGFKIPTrpApOJg+rrymQuwuqAvJ1UMB4n9lE9HWtUAnnWxD49y+iD/2WthWBbDYixKF7u+mkzSXYwsK9QPvAef4Qo1vpBn2YMkj0OR8p4krrHbU/IzFlNtgUIO0JSPm7pShb0HoQlTBr5x7f28/f97gllVfoIz8olLl+mWVPL74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=cownlQAU; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
+	s=arc-20240116; t=1786704167; c=relaxed/simple;
+	bh=QToTVh6/Mnx9ZpECqcu86BEjK/YNJA8QQpFCROHIGrQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=u+dTbpKT5/NUJy0lWSXJX4zTCyaG3nxqWMlNm6ozgkYOgQWmCiKub1ueI2M5tcczolKYCZZirKTU8Jpo0fC2G2Rb9eFb3DMz20krPggjFA+QhF55VZ/ztwyHpcjGi2RLsiZENTbL+NWeDSrw43d1A73x6SeST0GeQj9OjfrUwQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=ZNcWxW4X; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="cownlQAU"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id AB4EC3EBD9;
-	Fri, 14 Aug 2026 10:32:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
-	s=gm1; t=1786703556;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VgawlBX9Lnoo774oQSAS2j9ow5Dx0wAgHiOuNqve2GU=;
-	b=cownlQAU137Y8F+DcWvvD+6laWc2zqF6GbVi4g7MMltvRDZaJ1LqmKqx3z9QR5KQJLsEBe
-	KBmcIZ57XSwgX2W2bKN2gz4LA5BIUY4BNaE/gMUCZK0ETzp9jygwMeg2czpi8e71//pEPH
-	btibkBZZPbK51Op2migAPQpRa+BmRlUYhZjrQyzSXlVFypHEKwti+1CkPyPkq7ZVxit6e+
-	E8jm7ggsa0mJzi0vzmzIDzNB7arihQkWNZHOLoLTi3hlLdX5GVtQGajOEw/swALZV8OYYC
-	mcNzXOprjRaB9YBOQ49REFKC/r15K6aKZAvo2FV4vwNBuilP/Qtywcj6I7Ebtw==
-Date: Fri, 14 Aug 2026 12:32:33 +0200
-From: Arthur Crepin Leblond <arthur@marmottus.net>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_net-next_v5_1/3=5D_dt-bindings=3A?=
- =?US-ASCII?Q?_net=3A_wiznet=2Cw5100=3A_convert_to_DT_schema?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <20260814-violet-condor-of-expression-c491ed@quoll>
-References: <20260813-wiznet-link-gpio-v5-0-ac8046f24413@marmottus.net> <20260813-wiznet-link-gpio-v5-1-ac8046f24413@marmottus.net> <20260814-violet-condor-of-expression-c491ed@quoll>
-Message-ID: <C9FB7BBB-9E55-44CE-8E9A-2C827E2B8070@marmottus.net>
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="ZNcWxW4X"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6a0794669a6so1342322a12.2
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 03:42:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1786704159; x=1787308959; darn=vger.kernel.org;
+        h=content-type:mime-version:message-id:date:user-agent:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=QToTVh6/Mnx9ZpECqcu86BEjK/YNJA8QQpFCROHIGrQ=;
+        b=ZNcWxW4X+EjxgNmXm8R2cPAWq+NDyZA0BGhSxbHKKfXMLnYgiN+/8mz57XbfkwLZmj
+         yYL8enZqSfv1GnxT//hOA4X/UFx2D7eh8qeYYnN8jSfXyHcZxVQMHeS1hDemVIw8DMTA
+         VIvUATCLAvGq8yUbkZRQ3nd7HULGGw8uiPtXGHLFMJx5vPmRLQxjPemTDaJ3AUtLDbqD
+         IPRp5EciMPfpWqCHfJL5iQ7VhYPMFUHqKEFakkVOV7Fu8dvrgNoMP8n2K7dl3b2OhVGg
+         czLtNf1ehT/iPoYKmfL/11FJoFdC8Q/q4jkIMXpEfN54cI2tkIkaw6mINq3Nntx6IK7n
+         WXpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786704159; x=1787308959;
+        h=content-type:mime-version:message-id:date:user-agent:references
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=QToTVh6/Mnx9ZpECqcu86BEjK/YNJA8QQpFCROHIGrQ=;
+        b=tA2sah+5yQX0rwhgmDg1C/8wYCWHUj8t77hCg4GnYb0MHXMnU+c1MZyet0JFHjfBSl
+         9CCM/04KEOw4FkDeATdJLhZvSyfjm7kG3rSORVStrMJiDOh/nnqU3KKawrYXgXsBHAXH
+         kS6VEJWLwZzc758/3LJk6Gwx+3kCiJL9ye0Y7gqhNCkVQMt3yZAuesf/IgHziCODH5qp
+         O5ahttPi6egs3JyhOcwHZ+PkIRtWaJCG66wfUTWHS46PuxdMZq1CaA/OwO9K7Dbt8XFj
+         SUKBUMUFnMeCRlKFkW16yYlx8xdAV5AC7K48BbwfnIIoW9E90uGzXzTpfGw94DPl8QRn
+         udLA==
+X-Forwarded-Encrypted: i=1; AHgh+RpbRTI5qIMUyRjz5F2Tfo8zwZYJp5vBl9WH39EfgvNEj7wZulkWOiKZ1Os2msoyTBsN8ipZsOc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzpoYuXFoCrUbCfyFmsDMqhj+1Odr+2rA1MvQxVaYRB/95s8LoQ
+	fqLm29W4WPwWIscxDF45YQWGnIJejdvc1lg+TF/aatarkh6+LN1S9RLsk2BOIMsQ6VI=
+X-Gm-Gg: AR+sD11iCPPM4CnevA/cN4fd1ssEtTkGmaXMVedqPi2gED1hIFBTWtkSve4XDcX2fQN
+	UN6zspHU7KcboRUMSWImXU0IovZBC+aB/jiUgmH3zhk7lQloi8P4COI8tS42DtFEunPR+yPj6SV
+	nKu8MJIyRWug9HDymnpNVXM1Qyv++A9FcZH6WT1Pbu3WvBAnNuP4ZNR0QpJ6Fpyz8CmRJEicwPf
+	33Yi+6uo9ZYV07TUURX0xN5W0Qa48iH+wam7wp8LAmdhWwtBkag9LcMGe7jGeXNgWNrXIKkNsGc
+	kLa/Td48kqTmlo9CC44jLHSHBKsZ8mRFhAS+RG9vAo9GTgnHMhqX3L0swCpY00/uQMna9VWekrR
+	5QwTMmFTqBbJh8xZzo0SEICybXGEieC2SLdEyzjihBhtL1oVC83qT+GC0QZ+mhM8+1lRZ9HqKsF
+	fxNqJH/0C4yh2XH3AJuaOce/QedguiqogLiRKxk2/h8t9VKB0wuAXOzrPpLwrxqwc=
+X-Received: by 2002:a05:6402:914:b0:6a3:691a:9d71 with SMTP id 4fb4d7f45d1cf-6a38a957c26mr2538574a12.11.1786704158754;
+        Fri, 14 Aug 2026 03:42:38 -0700 (PDT)
+Received: from cloudflare.com ([104.28.21.182])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a38c9ea527sm621948a12.12.2026.08.14.03.42.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Aug 2026 03:42:38 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: Alexei Starovoitov <ast@kernel.org>,  Daniel Borkmann
+ <daniel@iogearbox.net>,  Andrii Nakryiko <andrii@kernel.org>,  Eduard
+ Zingerman <eddyz87@gmail.com>,  Kumar Kartikeya Dwivedi
+ <memxor@gmail.com>,  Martin KaFai Lau <martin.lau@linux.dev>,  Song Liu
+ <song@kernel.org>,  Yonghong Song <yonghong.song@linux.dev>,  Jiri Olsa
+ <jolsa@kernel.org>,  Emil Tsalapatis <emil@etsalapatis.com>,  Ihor
+ Solodrai <ihor.solodrai@linux.dev>,  John Fastabend
+ <john.fastabend@gmail.com>,  Stanislav Fomichev <sdf@fomichev.me>,  "David
+ S. Miller" <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,
+  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,
+  Simon Horman <horms@kernel.org>,  Jiayuan Chen <jiayuan.chen@linux.dev>,
+  Kuniyuki Iwashima <kuniyu@google.com>,  Willem de Bruijn
+ <willemb@google.com>,  bpf@vger.kernel.org,  netdev@vger.kernel.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH bpf-next 2/2] bpf, sockmap: Use sock_hold() instead of
+ refcount_inc_not_zero() in lookup
+In-Reply-To: <20260813-sockmap-lookup-get-ref-v1-2-31f5d55f44ac@rbox.co>
+	(Michal Luczaj's message of "Thu, 13 Aug 2026 14:42:00 +0200")
+References: <20260813-sockmap-lookup-get-ref-v1-0-31f5d55f44ac@rbox.co>
+	<20260813-sockmap-lookup-get-ref-v1-2-31f5d55f44ac@rbox.co>
+User-Agent: mu4e 1.14.1; emacs 30.2
+Date: Fri, 14 Aug 2026 12:42:37 +0200
+Message-ID: <877blt0yqq.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: arthur@marmottus.net
-X-GND-Cause: dmFkZTGN/cT0JjojJWfPg5GFRPZBWitIMu4DmlreldVHaSzqSlFBTwGubqlGUyN28v/mAgpBYDIorspQ/BrN+IakmiC8besX35C3gcU6w9rDaTH7r6w5J0saKhNNl8HxkBxo+iCdjUDezathGQOoN9fJUUAtnyqJfo5GQFlnygUWltKStgkjXrBjJIjvCM8PpPhtFQei1ghq3ZwcS4G8eeBMwNggYlxkAObuT1Tc8ukh0+2DxwnTpKi2zmNxREYxwJsr9snMBlQa0m9ZvYLql96xjCd+fB1llYeJcy+YPRjeH2T056GDjufL6tMsTcgc7DSy56b6IZ3WfZkwNggL74Ce3DmjUqpHVP0fbm+u9k+0tYevmH9KGzuXcw373LP9LECYTCeaT4214UTrnRqzzcNhUUoZTjkk6Wv3YPYBGeKHNOsjKfhepbgvxDTQM+Nig07mkdGPtdkQCFaTy0Vl/1ncJ+kXSrk3NKsUrmtJruCsTLyae5WdZMgQXJiYaRnLOyEtPHlHbO8/29ZDZzppl/bXFXckq/3mSQ/8gugnSimfy9eiF1TYJTfPmqZ5sELX0WeBUnhBMm7JSiGyGOtLtIZDACJIfPh5E7RDSWgd9Jf3hK86ssVFZPY1mMVyhuAAX0Fvw8tWp1ba/1mSjvuP8xYr4Yz8vPDZ7r+OGk5gAMp0cQjDwQ
-X-GND-State: clean
-X-GND-Score: -100
+Content-Type: text/plain
 
-On 14 August 2026 09:15:27 CEST, Krzysztof Kozlowski <krzk@kernel=2Eorg> wr=
-ote:
->On Thu, Aug 13, 2026 at 10:58:14AM +0200, Arthur Crepin Leblond wrote:
->> Convert the Wiznet w5x00 SPI Ethernet controller binding from
->> plain text to DT schema=2E
->>=20
->> Signed-off-by: Arthur Crepin Leblond <arthur@marmottus=2Enet>
->> ---
->>  =2E=2E=2E/devicetree/bindings/net/wiznet,w5100=2Eyaml      | 67 ++++++=
-++++++++++++++++
->>  =2E=2E=2E/devicetree/bindings/net/wiznet,w5x00=2Etxt       | 50 ------=
-----------
->>  2 files changed, 67 insertions(+), 50 deletions(-)
+On Thu, Aug 13, 2026 at 02:42 PM +02, Michal Luczaj wrote:
+> psock's hold on the looked up socket isn't dropped until sk_psock_drop() ->
+> queue_rcu_work() -> sk_psock_destroy() runs, which happens only after the
+> entry is unlinked and an RCU grace period elapses. Since the lookup runs
+> under RCU, a non-NULL result guarantees sk_refcnt >= 1:
+> refcount_inc_not_zero() can never fail here. Use sock_hold() instead.
 >
->Where did you explain reasons of dropping tags? Why would I need to do
->the work twice?
->
-Hi,
+> Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+> Signed-off-by: Michal Luczaj <mhal@rbox.co>
+> ---
 
-I did remove the tag as I made a small change by removing the unused
-gpio/gpio=2Eh include and commented in the cover letter changelog=2E
-
-Apologies, I found it fair to request a new review not to go behind
-your back but it was indeed a very insignificant change and I did not
-give enough context in the changelog=2E
-
-Arthur
+Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
