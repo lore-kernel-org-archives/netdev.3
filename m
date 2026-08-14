@@ -1,62 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B451FBC8E;
-	Fri, 14 Aug 2026 17:31:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F10E4921A6
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 17:32:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.121.94.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786728668; cv=none; b=kHXOW6AytDHSGl0WIF2hTRUZonKtS9D0kEnA9R4bV8KxirFn6rkSzgZ+K9orHbp9BpUmjjQaz7uoxRdWbl0fpbQooz8fdJpH/maFBDCubO+W5CJtsFBqVWNfGZ60DahkgoW/qnOD2p8MRYfyS04fiiWOfH1qUYiUDGNr5yEEsR8=
+	t=1786728770; cv=none; b=m50p6oTQne51aM7bUFqe3CFpg/qebHq+D4IIuieJWYdzEUWct7Zi8TTsOQVyS0mSkTvZ0k0dKlZIGxIiQ8+bWkTZIIGkjNZYfYA7Uc+T0BnlqNhZnkTCBua77sGK9QISNVsCQXifNIio40HvrtBP4dkgmKurPqkvgv6D1mL3k3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786728668; c=relaxed/simple;
-	bh=cvxnz7KXDHrkwfkxnBG9ncWYHyaIUJgFITUptxeW6oE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Lwp8mQJr7c60vp1e/jDQGC17NBklcRVJ+w+pV9JlpqY/UZmMWtuxvxc0NtLoQL0QkrRCwTPPcqrmQ7fZNeleH0q9JqHIVTXNHphESI4Mp57wlu8cD48JYt/Us8jPsyIy/82SYmrq0284+0cxAKENxBj7ttOUB5kRItDD69pTc5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bOoQQjrm; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786728770; c=relaxed/simple;
+	bh=lBkNxyY5Lg0P9/At5SSNBwvhdaxhIMnJHjhjyoc+SBo=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=bv1/EqczOGRxFjgvDU9eiOKQWPw55nW00dGPVyZbquVT8Rjh4fm9fy/jar6Z+qMa5P4cZ9kbfpGb0WiAlLG9AdK1AC8Z80J9KVEWcx4zdKH5jnqGJpKBNPeHl8AeXjznF/S+86V27dHBqiSEQx3Uk8gC/5Y4ZlafPHH9JdCM+kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=xs4all.nl; dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b=DWYJEAfe; arc=none smtp.client-ip=195.121.94.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xs4all.nl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bOoQQjrm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C03FC1F000E9;
-	Fri, 14 Aug 2026 17:31:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786728667;
-	bh=cvxnz7KXDHrkwfkxnBG9ncWYHyaIUJgFITUptxeW6oE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=bOoQQjrmoDhnmeQdZfa9EvRn//ebeE4AckBE+s3QTdeomyogYgdiTkjPXY1Oh1GKk
-	 30x8abuNj2t/Kid9S+nI7AQosZGTXzDCGduoZEifbvWOdlw4lWjZNm74VZmZPFCJPX
-	 uinAZHyDc4mN8pdRR3hqZkkV78GfJJTLewVvH68F61EJ54ebDj/nTPPk8STbd9THbQ
-	 e+aptXge14IVI4cEaTS1JhCM+x+5pQQlskIr41M0WyvIn8HoU/EsEmvVIAc0YeN0Ju
-	 Hv/y6szcFIrIaTyManSEg/wTkS+gH3rFA5XzFhy9EULn2JjXDCwrsEPXKO9Bc6h4Wx
-	 SdackYvC4XmtQ==
-Date: Fri, 14 Aug 2026 10:31:06 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Anand Khoje <anand.a.khoje@oracle.com>
-Cc: Shannon Nelson <sln@onemain.com>, "Creeley, Brett"
- <Brett.Creeley@amd.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S .
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Abhijit Gangurde <abhijit.gangurde@amd.com>,
- Leon Romanovsky <leon@kernel.org>, "Joyner, Eric" <Eric.Joyner@amd.com>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>, Kees Cook <kees@kernel.org>,
- Mohammad Heib <mheib@redhat.com>, Jacob Keller <jacob.e.keller@intel.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH net-next v2] net/ionic: avoid OOB TX partner lookup for
- hwstamp RXQ
-Message-ID: <20260814103106.7d8a23ef@kernel.org>
-In-Reply-To: <DM4PR10MB61118B1CBA5845B1502EA476C5DB2@DM4PR10MB6111.namprd10.prod.outlook.com>
-References: <20260813051315.430146-1-anand.a.khoje@oracle.com>
-	<5c7cf96a-74a6-46c2-bde3-f39b25a2d09e@onemain.com>
-	<DM4PR10MB61118B1CBA5845B1502EA476C5DB2@DM4PR10MB6111.namprd10.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b="DWYJEAfe"
+X-KPN-MessageId: 28db6f04-9806-11f1-a5a2-005056994fde
+Received: from mta.kpnmail.nl (unknown [10.31.161.191])
+	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
+	id 28db6f04-9806-11f1-a5a2-005056994fde;
+	Fri, 14 Aug 2026 19:32:44 +0200 (CEST)
+Received: from mtaoutbound.kpnmail.nl (unknown [10.128.135.190])
+	by mta.kpnmail.nl (Halon) with ESMTP
+	id 28daf301-9806-11f1-91dc-00505699891e;
+	Fri, 14 Aug 2026 19:32:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=xs4all.nl; s=xs4all01;
+	h=content-type:mime-version:subject:message-id:to:from:date;
+	bh=PVZA9SOcMA7rE4UELcQpr/u/JowHJR3hHwvCUT0RBUc=;
+	b=DWYJEAfeCKvWQHtvAYlcWoNT7RnjiAMcGyC3q3qX1LAVXoxboHZ6iKAmnea3si3vRYdrsZH23/SdD
+	 8lgOQzqlz/33naw3SjF/O1WeAYc5xSpHKy+iz4c1kZjoq4t4c9usMIMjkltNX3iTRYZ0zEsqm+XNlW
+	 +oBBZfQuMgblubj5bCNVjuD9WuffKVCANEwZs74IlSEhbpLeGw9eF8BPBA9PFTeJoVjczotObnY8su
+	 3duF/rUF3x1tt7OJAsgrRVKLYj17ChWlTPoTdAskzvvZZys9rjm6U8TxFiXIVQFJSSEnPTkfAOlsWB
+	 iU4KOR+Mxw1mhK3uPOXwPaPexNF9rHg==
+X-KPN-MID: 33|rjG0Br6vS5RDwLieExIyY3mBoE6ZDDRAhRmcSibHzKNFRsupXxGRfwweAXM2zLu
+ WmoU7WoYGaJau2Z/X46RMIxdyFDf+ht0hqy47WiYhYQU=
+X-CMASSUN: 33|waToJdTtHouo4HlvNG4Kh00LdkHBb5h2orZlxJcKj4f71Kiggv9ARys6Ofkhl1S
+ MCNy+ikVsk6GHL3i8wh+3ow==
+X-KPN-VerifiedSender: Yes
+Received: from cpxoxapps-mh03 (cpxoxapps-mh03.personalcloud.so.kpn.org [10.128.135.209])
+	by mtaoutbound.kpnmail.nl (Halon) with ESMTPSA
+	id 28c9e8a2-9806-11f1-916a-005056995d6c;
+	Fri, 14 Aug 2026 19:32:44 +0200 (CEST)
+Date: Fri, 14 Aug 2026 19:32:44 +0200 (CEST)
+From: Jori Koolstra <jkoolstra@xs4all.nl>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: brauner@kernel.org, cyphar@cyphar.com, kuniyu@google.com,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	horms@kernel.org, netdev@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-ID: <710021802.503191.1786728764671@kpc.webmail.kpnmail.nl>
+In-Reply-To: <20260814101828.2ea54f8a@kernel.org>
+References: <20260813162818.149248-1-jkoolstra@xs4all.nl>
+ <1036785927.390839.1786639504241@kpc.webmail.kpnmail.nl>
+ <20260814101828.2ea54f8a@kernel.org>
+Subject: Re: [PATCH net-next v7 0/4] net: af_unix: useful handling of LSM
+ denials on SCM_RIGHTS
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Priority: 3
+Importance: Normal
 
-On Thu, 13 Aug 2026 08:17:27 +0000 Anand Khoje wrote:
-> Oracle Confidential
 
-Please configure your email client to stop sending those tags,
-and to properly quote the replies.
+> Op 14-08-2026 13:18 EDT schreef Jakub Kicinski <kuba@kernel.org>:
+> 
+>  
+> On Thu, 13 Aug 2026 18:45:04 +0200 (CEST) Jori Koolstra wrote:
+> > My "smart" email provider blocker me from sending more email. Since I am in South Korea
+> > that is apparently suspicious. Now patch 4 is missing. I'll try to rectify that. Is there
+> > any sane email provider that any of you use?
+> 
+> Ah.. shit.  I crashed out at you on patch 4 assuming the rest of 
+> the code is in LSM.
+> 
+> You gotta repost the whole thing, sorry. Patchwork (and lore) weren't
+> able to connect the dots. We have 2 separate incomplete series in PW.
+
+Don't worry about it. I attached the 4/4 path now to this thread (apparently I didn't do that
+well at first.)
+
+Does that work now for you? Otherwise, I literally cannot fix it until I get home, because
+it's more messages than the rate limit allows.
+
+Thanks,
+Jori,
