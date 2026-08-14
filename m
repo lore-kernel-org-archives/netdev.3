@@ -1,150 +1,216 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f97.google.com (mail-pj1-f97.google.com [209.85.216.97])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A127433049
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 08:02:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D9C433049
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 08:06:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786694559; cv=none; b=dt4F93eHdHfJuYAwBF3vUR6e9vazBPubwWMknM4YTgleEM2Meef0Yf368404zWLUFkew3lY/8dLOxMnf+3yVYJ9/eAYGEtflH3rMz5I/V2I7Fw3xbe9L1lT+GCJ5eTkPMtefRaAnc4jywMvSNEolGDUeSiqPoeMs/w5N4NK8ckM=
+	t=1786694802; cv=none; b=rTyw75JqsDeLot/lnYMCYefTeqMgEzj1f7LwR2T80RK/D1igWfbvDsU72000hcKR5lw0X3weU7fWMcOUEaA1i3Mb0kb364mQS07vA1wRE4z1b0yth2dhhYepA9jqjgfX3A2zpRi9mBN+FvVuauo6IJNfAwgl52A7RzPnyySkYI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786694559; c=relaxed/simple;
-	bh=Vc1VdbJaZLwkkuXSzA3lP748RejM2wNnDWqBh3Asdxc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ANOz+wVQwIjrWnhKXP/Xh4VlxwFAXHGWZWmCww2bkViCcGiKqZvPv7j2XX6/2mkLoURXBF65lEe+Aqpnaph/3OoRnYj5q7Fop1zMl6nyYxw/lny0H93jSvTXHe5i+eCE1iDymiJ+BdPyWcoFymKw70dG6zOO7jNAL5rHtiLt5h8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Wnmx3PW2; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=dJ5XS4HY; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1786694802; c=relaxed/simple;
+	bh=GjQoSJRB9iBeKD8TwMiGrgkI5CsB3lUt3aVChmpQoWQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UcdrVIOuYTaRyjFlvzcyyw+eMhKVuuUYnc+5eRVDjwwzi612Z+W+UOFz12VX4gG8LcTUCGOMkes+7r37mH6G3uQvcTFbPEsDLbJFCC47xf4zvN3VcOyNyxBjhgD+i+QxyTM/bS2e8owUXk+brkP/5D5nbTd4cLiTRhjn6ac/4bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Q14eH3p3; arc=none smtp.client-ip=209.85.216.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Wnmx3PW2";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="dJ5XS4HY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786694556;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xuTGLTHVcUVUR8K491MTuND5/r0LYsPN8mtppCx6Zuw=;
-	b=Wnmx3PW2YbDJQpl7xSFVDFO0WdEFQ+ewrkfhxVj9uDmCB1M2ed6X4noenfpEhhEA+08f77
-	eMTnovVMnHjWcoH7TcwjDlSxN1+f2/FQ29QRSI3ILVzPwHTW7SbuPRKjMzWPfjHTYrzt0U
-	FJptWthJeqbnifISfweAAcUia0qO8ao=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-312-I8Pau__pNtKhvG8fkoQUmA-1; Fri, 14 Aug 2026 04:02:34 -0400
-X-MC-Unique: I8Pau__pNtKhvG8fkoQUmA-1
-X-Mimecast-MFC-AGG-ID: I8Pau__pNtKhvG8fkoQUmA_1786694553
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4954b1c6310so6958855e9.0
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 01:02:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1786694553; x=1787299353; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xuTGLTHVcUVUR8K491MTuND5/r0LYsPN8mtppCx6Zuw=;
-        b=dJ5XS4HYRcGv2kO6+u4pnL35LDewVkD4y0fH50FuSZocOQnEGBOSz0EgIuYKu1aaAU
-         yaVk6ou1kGuMD5kHT8oOSJqj1MvmIa/1ihQMUewYBbUaITMHQAmc5Smys0ggBrtzTLcB
-         Fdb566LRWIa/9qlimEF+43iMNY4xbF1x/ufMDVcHSECHdefHSc+0qrFNClAHk9g1RcNb
-         wmGW6f2yUfavOiCwOdPOn41Kq2m7knnXJ5bWIXHfYGbjCZZnyBFXAPP8OEtswOZArmYu
-         uxPh6fgltzxHF0L+95ahm8Qc/V7WfaDylT0v5e56eVKvNOu6TBIVVcAJW/WMm3EbRoXq
-         2BYQ==
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Q14eH3p3"
+Received: by mail-pj1-f97.google.com with SMTP id 98e67ed59e1d1-38fdeaed181so1032186a91.1
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 01:06:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786694553; x=1787299353;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=1e100.net; s=20251104; t=1786694800; x=1787299600;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=mDKZHarfUnZgnziLn844h18VwkDCs8/WXTsXuE9a9E8=;
+        b=NGWqmrrzC5tJBmauWHVpiEh410e3MnOdEUKZoLOmRnDx+pmEurT8cJVbvdxcTCTcO/
+         53W0Reiwhlp725sB0IxzWZ0RoWuk91jgQFz6CdwDDzfwGfAxg7jfpNd39abth/3I01XQ
+         9MTAG2MqQptdwvzwg7YCfMnSnsy+pZZodqrr2OfSEptBFtkPmDvlTjVZ3somgsLnoai3
+         dWfksG1063U7Vh1RJ7BYWf4u4mi13lAzOkmvklCBJIPAcNnngxVIsFdaJMbG9DFBtR1z
+         jJz8IsUI1K4YtRdIus+4mfra79wmb1NxKLtctoxMvnqvTvAdmrrWbd7/5P3cmFRlM84y
+         nQyQ==
+X-Forwarded-Encrypted: i=1; AHgh+RphkGk48d7sENpVw9a8ZukBQQZsdHFymEOeYwlDMBzVAa3C1HkrX+aAHbwPXm2krfA7zAupaHQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2AWFUEVs1QfEEUcNCsh9XX6OmozeX0SvdWTxItv+kYUE9HUMD
+	8duEeD0aHYZm/EgH90SWu3QGp9VawH/2Lm2yEQubW7mzd17/zP8wex6p5UDC4pCWtc6kAHSGXjV
+	fDdg5820tptqbVWQ03ver5if8YEZURjJ8R9MEtiRFA8VHZPCFktHupqJuQm7mwaSPlqe5zmK081
+	tB3jtY53BNsbMkwkO1TPxHmJ1UQCoDHtWeB7txD8V7rvKab9S2FA6ArSYT6xpWjb697A7/ohKGd
+	dt5rDNvIxg=
+X-Gm-Gg: AR+sD12r4B3y2jRNdiLL/O4U7Yf/rV3ThpxSExtiTSFPVxtg8QMm2ArXONyTws/0ysC
+	3pN8X11EBDgRPctn2Wc6liVPITCILfw2MfTIDtb0RBxvujZOLBq/3iLn4sZf8IM/IW1r6VTham0
+	2iaqp0mn8AbArJEh3HqBBzC5tuFueV7aPWKIfaLoCEx8MXa/WIO4B3GaKHnZqzYGj83v6ESo3vO
+	zXjg6fbdA8uqXyTkRpSOIC90G0P47j7me+uKn5JKqfsjj5Ab8gjjPCz0QXYim40RNwyb8kXJH2W
+	zXlCu8uNPk+N37EhD8LVC7Pxpt12NRt8AqIJ0YpruD8S0IPoRjqXdWX/LxLYrdu14MiPC3RHOba
+	Fmh+ICwnThQUDralJY4UeXOfADSCrmSlasTkToNVdPPd5uAIwhp4OKuBpXo/+N5CMBX6rUgEQaL
+	2vW9JZc58njBlDU4XjnFKKqorFV+C82wmsrWg=
+X-Received: by 2002:a17:90b:1dcc:b0:38e:6d4c:14e6 with SMTP id 98e67ed59e1d1-3933b77c874mr4951501a91.3.1786694799962;
+        Fri, 14 Aug 2026 01:06:39 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-16.dlp.protect.broadcom.com. [144.49.247.16])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-394eb765cedsm572381a91.11.2026.08.14.01.06.39
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 14 Aug 2026 01:06:39 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8485d853b08so1089481b3a.1
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 01:06:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1786694798; x=1787299598; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=xuTGLTHVcUVUR8K491MTuND5/r0LYsPN8mtppCx6Zuw=;
-        b=pwJ1MfOYnSxEfko2AzZJAHPeBDx4jJS89EskrROsMaWOp0vYZjOGBGJ66+3NDmJ2V0
-         SDsqnn1UGuMtK/hDX/oaK4YMsLEur5nQkHrCu/T837DB4bm6oN9lsRlV5h6xbhnD2pRR
-         N6EQ1sSlpgcNsq9BTPZ1tgZUu6WTbmdO9ROheAS07hj4N/CoUN6KUgoEje0L/05MP9pc
-         U3jyBTfxVaQQ/mjgQaTBZUZg4lFov3gswpI8RXCMNmCf1M1+HvfI3zTMI3Sk1v41CYfb
-         u6tTwW0qIckljwu/++fof5MayN0aNfVvXQbjJTI3ICUihMFJoWz5aW+tg4raguB8K1DM
-         +53g==
-X-Forwarded-Encrypted: i=1; AHgh+Rp/MehskKLJibmQD08rVNrX/PTFwumMvT/ocify9KrynvV8Ek73Qh4qAJhyNHEM6XAEsT+4buw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YysXMru93QK+SUCM1QKneLURIThYSvYKedNYXbAherKOQScs4cU
-	wnT9mKuDa0a8r4MhQU6IgoRZBlIJBqRGyIzCpSVo38dlTlx8co32r80p1bXGLIs2uaUmiKnAgRH
-	DCwHLDihjpNsrMN8Sn0JDU+DYCWXyBvCI7rW8MoQSx8cFD6Zl7auE8pg9MQ==
-X-Gm-Gg: AR+sD10zdPwcOnz2lfQACJfJeUa3Xe1FR0mhO1XRwG6mm2ujnxua2Qbl1KQC6KWay5l
-	6er5yzh/uR4xxmBnu7ei+EgiPX55uIBywfXNRr6xX32oCRhOofvbur7Ah+OTCfyhKAPYx9E5Hy8
-	w20t45L5tONS564ZzEIaDGZlgRrfeUbs85K88BLtn4xKRaBvYYi0ncl/eOIDvKcYe5jfz01hNX2
-	cjsrv+0bCpwfVhf2DRjg0wKimX2O2wPLL0Jy4ADfHzi6fcOytrwKgr1FCS/sCzR2T8i242DhhKv
-	psmeyV8QieQNxwPZWreGNaP9RkIOFH3cooc3cg6NoZEUR3xONPJpA1DZgayC5K2YdkDqpojYuqK
-	71XyrISe15D7oay9mKEMv6kpzpdsPy+iOPMGIgPnn1VcTBJgZxN41
-X-Received: by 2002:a05:600c:3e15:b0:498:ee7:e407 with SMTP id 5b1f17b1804b1-49987999622mr51703105e9.17.1786694553398;
-        Fri, 14 Aug 2026 01:02:33 -0700 (PDT)
-X-Received: by 2002:a05:600c:3e15:b0:498:ee7:e407 with SMTP id 5b1f17b1804b1-49987999622mr51702145e9.17.1786694552788;
-        Fri, 14 Aug 2026 01:02:32 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-135-154.retail.telecomitalia.it. [82.53.135.154])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49988adfbd5sm33234215e9.1.2026.08.14.01.02.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 01:02:32 -0700 (PDT)
-Date: Fri, 14 Aug 2026 10:02:24 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Jia Jia <physicalmtea@gmail.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
-	"Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 3/3] vhost/vsock: keep IOTLB across feature updates
-Message-ID: <an7KyotZ5vZOURu2@sgarzare-redhat>
-References: <20260814072903.124991-1-physicalmtea@gmail.com>
- <20260814072903.124991-4-physicalmtea@gmail.com>
+        bh=mDKZHarfUnZgnziLn844h18VwkDCs8/WXTsXuE9a9E8=;
+        b=Q14eH3p34uE6Kvap+jDlRs0SFanAl7RbZcThjEv4ajmgDYkKwvqB52+MGyqZEmFyrP
+         aSwzvQ1hLFzkN95L88ScovBjgJnstsl3fo8XgQXKXDkZ03JaJ/XfiUBXN+zH42wnqzFE
+         DuBsq2uihlQrxcNaZlzUnOl2wcGh00qMy9I0s=
+X-Forwarded-Encrypted: i=1; AHgh+RqBemgrOE+8IJBQ9xYdJZQYx+3yCpeWxQ+xn1pDBen/Ux4POj/ixKgNZKNtGoIKgCyOTOnB2a4=@vger.kernel.org
+X-Received: by 2002:a05:6a00:4b07:b0:84f:21ba:54e9 with SMTP id d2e1a72fcca58-84fde33d143mr3956312b3a.38.1786694798378;
+        Fri, 14 Aug 2026 01:06:38 -0700 (PDT)
+X-Received: by 2002:a05:6a00:4b07:b0:84f:21ba:54e9 with SMTP id
+ d2e1a72fcca58-84fde33d143mr3956269b3a.38.1786694797753; Fri, 14 Aug 2026
+ 01:06:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260814072903.124991-4-physicalmtea@gmail.com>
+References: <20260813193248.2578626-1-kuba@kernel.org> <20260813193248.2578626-2-kuba@kernel.org>
+In-Reply-To: <20260813193248.2578626-2-kuba@kernel.org>
+From: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Date: Fri, 14 Aug 2026 13:36:25 +0530
+X-Gm-Features: AUfX_mwB8aX29cWsymSvhbx8eMlz3Vot0njsOyTzf9ERXV6rbKoL04kWjZYrorc
+Message-ID: <CALs4sv0sncUd8b1mGNr7Pw-v2a_caGxqxzdD8kSjccDQnyKgHQ@mail.gmail.com>
+Subject: Re: [PATCH net-next 1/2] eth: bnxt: decrease indent in bnxt_init_int_mode()
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, michael.chan@broadcom.com
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="000000000000ce6c330658fd4c98"
 
-On Fri, Aug 14, 2026 at 03:29:03PM +0800, Jia Jia wrote:
->VHOST_SET_FEATURES is also used to update logging while a device is
->running. When ACCESS_PLATFORM stays enabled, allocating a new empty
->IOTLB on every call drops valid translations and forces avoidable
->misses.
+--000000000000ce6c330658fd4c98
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Aug 14, 2026 at 1:02=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
 >
->Initialize the device IOTLB only when one does not already exist.
+> Handle the IRQ table allocation failure right away instead of
+> wrapping the rest of the function in an if. Purely to make
+> upcoming changes more readable.
 >
->Fixes: e13a6915a03f ("vhost/vsock: add IOTLB API support")
->Signed-off-by: Jia Jia <physicalmtea@gmail.com>
->---
-> drivers/vhost/vsock.c | 3 ++-
-> 1 file changed, 2 insertions(+), 1 deletion(-)
+> While refactoring, drop the init of rc which is not necessary.
 >
->diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
->index b69c260eaeff..9142fa1143b2 100644
->--- a/drivers/vhost/vsock.c
->+++ b/drivers/vhost/vsock.c
->@@ -869,6 +869,7 @@ static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)
-> 	    vsock->dev.iotlb)
-> 		vhost_clear_device_iotlb(&vsock->dev);
+> No functional changes.
 >
-
-Ah, okay, now I see why you did it in the other patch, but if we move 
-dev.iotlb checks in the functions we can still do that.
-
->-	if ((features & (1ULL << VIRTIO_F_ACCESS_PLATFORM))) {
->+	if ((features & (1ULL << VIRTIO_F_ACCESS_PLATFORM)) &&
->+	    !vsock->dev.iotlb) {
-> 		if (vhost_init_device_iotlb(&vsock->dev))
-
-IIUC vhost_init_device_iotlb() handles the case where dev.iotlb is 
-already initialized and override it. Here we are preventing that.
-
-Will we do the same in vhost-net? If yes, all the callers will call 
-vhost_init_device_iotlb() with `dev.iotlb` NULL, so should we remove 
-that behaviour and add the check we are adding here inside the 
-vhost_init_device_iotlb()?
-
-Or there is an use case where vhost_init_device_iotlb() is called with 
-an already initialized dev.iotlb ?
-
-Thanks,
-Stefano
-
-> 			goto err;
->-- 
->2.34.1
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+>  drivers/net/ethernet/broadcom/bnxt/bnxt.c | 36 +++++++++++------------
+>  1 file changed, 18 insertions(+), 18 deletions(-)
 >
 
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+
+--000000000000ce6c330658fd4c98
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+/HTPxpDrr4vzZL0yoc9XefyCbdiwfyFl99oBekp+1ZxXc5bZsVhRPVyEWFtCys66nqu5cU2GPT3a
+ySQEHOtIKyGGgzMVvitOzO2suQkoMvu/swsftfgCY/PObdlBZhv0BD97+WwR6CQJh/YEuDDEHYCy
+NDeiVtF3/jwT04bHB7lR9n+AiCSLr9wlgBHGdBFIOmT/XMX3K8fuMMGLq9PpGQEMvYa9QTkE9+zc
+MddiNNh1xtCTG0+kC7KIttdXTnffisXKsX44B8ECAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
+oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
+Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
+BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
+IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
+FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
+hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
+BB0wG4EZcGF2YW4uY2hlYmJpQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
+HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUxJ6fps/yOGneJRYDWUKPuLPk
+miYwDQYJKoZIhvcNAQELBQADggIBAI2j2qBMKYV8SLK1ysjOOS54Lpm3geezjBYrWor/BAKGP7kT
+QN61VWg3QlZqiX21KLNeBWzJH7r+zWiS8ykHApTnBlTjfNGF8ihZz7GkpBTa3xDW5rT/oLfyVQ5k
+Wr2OZ268FfZPyAgHYnrfhmojupPS4c7bT9fQyep3P0sAm6TQxmhLDh/HcsloIn7w1QywGRyesbRw
+CFkRbTnhhTS9Tz3pYs5kHbphHY5oF3HNdKgFPrfpF9ei6dL4LlwvQgNlRB6PhdUBL80CJ0UlY2Oz
+jIAKPusiSluFH+NvwqsI8VuId34ug+B5VOM2dWXR/jY0as0Va5Fpjpn1G+jG2pzr1FQu2OHR5GAh
+6Uw50Yh3H77mYK67fCzQVcHrl0qdOLSZVsz/T3qjRGjAZlIDyFRjewxLNunJl/TGtu1jk1ij7Uzh
+PtF4nfZaVnWJowp/gE+Hr21BXA1nj+wBINHA0eufDHd/Y0/MLK+++i3gPTermGBIfadXUj8NGCGe
+eIj4fd2b29HwMCvfX78QR4JQM9dkDoD1ZFClV17bxRPtxhwEU8DzzcGlLfKJhj8IxkLoww9hqNul
+Md+LwA5kUTLPBBl9irP7Rn3jfftdK1MgrNyomyZUZSI1pisbv0Zn/ru3KD3QZLE17esvHAqCfXAZ
+a2vE+o+ZbomB5XkihtQpb/DYrfjAMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
+ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
+MjAyMwIMClwVCDIzIfrgd31IMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCBubctL
+zRDmyA3qHYSYpfXn0vKTYYdp+6wKn8rAm0TzPjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
+CSqGSIb3DQEJBTEPFw0yNjA4MTQwODA2MzhaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
+MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
+SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBPAcWmtA3J1Afvhi+ilsnQhHn10rwtZPD5DThjKB1v
+4+ddsDYD7uk65e6sTiSnqyYiauUwOokLSoz9pNR56jUxKztsqXCJP7AaJCVbzZikxQsRxVjfd/BN
+Goe6cbxz8ztCkfMPBQAfTgn20Aj07u9wrP0kOlBIPT33sQmNXttbLk6gnysOtV8P0GxHGggyOMhe
+/XYnAq9fLW4YYyjI5JLeI8jFxydGTDqVROgOXgzXSlUltop//X4xTPJqUKISCG0orLnts4MdZmAb
+pxxno4JKcZpk7bm8RDGOTyz9m8h/g0Nc+6KH0CvxMiRmYr1rJYiL9jDN77mse4Jd64kiZCp6
+--000000000000ce6c330658fd4c98--
