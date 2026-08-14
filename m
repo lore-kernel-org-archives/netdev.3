@@ -1,96 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mta-65-226.siemens.flowmailer.net (mta-65-226.siemens.flowmailer.net [185.136.65.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDFCA44C66D;
-	Fri, 14 Aug 2026 09:07:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B094582E2
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 09:09:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786698454; cv=none; b=OBC4TP/NFpc4ZmRojtjdQ47PH5S3u3IU1y6G3H2yfyiiJ0ilvp0QMpBhA6SP2cW722tpPV6evoPl9zmMwloVFeTe7UjgPRgYMXuIkfZ32sQgVouR1DW6/tO8ehCZdYyAlpdFZ0YvseRktGYZ2m6rlNsIAXDXMzStpgGOhtHAAjY=
+	t=1786698564; cv=none; b=aA1UDXAsPh+3dc//DlyAQGGfIGqN6n9KGIQme1qVUj6NhI5J3UKskYgXKFbLNJU5+XdD3XZ5LA2FLEtPlqn0gK+uL3vWlWU6yB3kTJv1IyxGJVs+XJUTzWpYaLxUsYx9fmN4iT5Oda3knL5ZEnT4YNB4HKYbDht7XSXmTfM7gF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786698454; c=relaxed/simple;
-	bh=2H53DttV5BdZmzreQWs0C+zv9sMRKgxsrWwHz2IaFnM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XHl2sFGmv+9+loAjVhjpPpZrDCklUDwXJGR7SaGs/IeTQQCldl5KqjwrHEJB19x3qZ7nOEgVw6+lERYmvKbKweAA/rtuSsfFMj7lUF0Vf7wng15ETLgsiohAHiHY045nKfNM5SJfKsfNWwqAYN+sc0w5OVL3g48bpO42kf7G0qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mrDcHrek; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786698564; c=relaxed/simple;
+	bh=ajhbPbhhFDopfE+pfRmjoiyf+z5rmdgu/+yBZgxSJn8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U17/xNgZ9ei4gf5AYVxe7rZha3lqjBuimIIrZMBOqakSJ6Eh5vfoyep80Rl8efXjS3ZIA9bL7USYrFCCXKLb/TcBsFW26gmupPZZR18msyH49teVmEwjEKrh3Sab7/0ItV9enpEPvLsCOMelFPUpFCuRfBQqTxh3vl9/7Dp+GJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=L8+DGK+m; arc=none smtp.client-ip=185.136.65.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mrDcHrek"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3FAA1F000E9;
-	Fri, 14 Aug 2026 09:07:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786698452;
-	bh=oQuZysmKK6PrvHBQnl/k8KCAszznUjD2fZKyBp7qo9k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mrDcHreksz0lD1JAi3AcNxO9iDKeN/55r3qiwzhSKgBGHwA/DFrl5gMUOj903YGOJ
-	 u6cqXW/UhCMO7bGw5xxwCEYjYV8SdUB0F4JDub/DVGxytLL+Aq3GT2/yq131q1c8V6
-	 8ax9IUekMd/QN1Wy/naiBKFIDq1EKUkgyn3kIC6+F/8z7mwwUqqlKW7ttTluxE7TZB
-	 etdBZhAnZHV5a+F1wEiLbYmnxiyV0nLKF2OkhzHMfHiwdMGugVmXRvAQlCfEU71KZ2
-	 MFXi0cLZL343t5LPgtw/Ypxv5cOEeF7/4y2QmdJH1rOveLQuupwN/H1Rs34PA6spIh
-	 es6gE/6xASwkQ==
-Date: Fri, 14 Aug 2026 10:07:28 +0100
-From: Simon Horman <horms@kernel.org>
-To: Qi Zhang <marsy12010123@gmail.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	nicoyip.dev@gmail.com
-Subject: Re: [PATCH net v2] net: pktgen: use a consistent flow count
-Message-ID: <20260814090728.GJ265046@horms.kernel.org>
-References: <20260812052130.32823-1-marsy12010123@gmail.com>
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="L8+DGK+m"
+Received: by mta-65-226.siemens.flowmailer.net with ESMTPSA id 20260814090909a120f7058400020721
+        for <netdev@vger.kernel.org>;
+        Fri, 14 Aug 2026 11:09:10 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
+ d=siemens.com; i=alexander.sverdlin@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=G0t4G5gv+ZWxMZdsCXrUvBl9B11OyaGMOviXCuRt+tI=;
+ b=L8+DGK+msJ7hvV0zCpHlpoTSEbQOk4zqT96RCUI6bgzHAuMSfXR7eampmcl23y830PLb1N
+ 1n5cX7QopuN2I3LYm1Qh9K0HxqzvqE+L5ZUS/wFbgKQH6Cd59XH8SUPsOcUNlBh+U9Dfudcx
+ XFt9BnVUs3g6zSKvJ9Fu5ivnc4bghdw303xrqMHz/8Iezq5p2lFr6XgTRXP60BgRQ3PbyDUm
+ 7Q746Bfk/2DmzFctcMVeejlwV6Z7keBOQTktbVayMUz4Op2S5f/Gv8Ge2HJkeTc+eShXr5ln
+ Djg6mSwrSZtkRtvJTLw2hg1Cz1WgxPCPITWwHx7RGJp/Shw6Flx1magA==;
+From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+To: netdev@vger.kernel.org
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Frank Li <frank.li@nxp.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Linux Team <linux-imx@nxp.com>,
+	imx@lists.linux.dev,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next 0/2] net: fec: support RX flushing via fsl,rx-flush-queues
+Date: Fri, 14 Aug 2026 11:08:59 +0200
+Message-ID: <20260814090906.2225075-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260812052130.32823-1-marsy12010123@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-456497:519-21489:flowmailer
 
-On Wed, Aug 12, 2026 at 01:21:30PM +0800, Qi Zhang wrote:
-> pktgen_if_write() can update cflows while the packet generator thread is
-> inside mod_cur_headers(). The latter first tests cflows, but f_pick() then
-> reloads it when selecting a random flow.
-> 
-> This allows the following interleaving:
-> 
->   CPU 0 (kpktgend)                 CPU 1 (proc write)
->   if (pkt_dev->cflows) // 10
->                                    pkt_dev->cflows = 0
->   get_random_u32_below(pkt_dev->cflows)
-> 
-> get_random_u32_below(0) returns a full-width random value. Using that
-> value as an index into the fixed-size flows array causes an out-of-bounds
-> access. The kernel reported:
-> 
->   BUG: unable to handle page fault for address: ffffc8fe2d2674bc
->   #PF: supervisor read access in kernel mode
->   Oops: Oops: 0000 [#1] SMP KASAN NOPTI
->   CPU: 0 UID: 0 PID: 65 Comm: kpktgend_0
->   RIP: 0010:mod_cur_headers+0x16f8/0x2840
->   Call Trace:
->    <TASK>
->    pktgen_thread_worker+0x305a/0x6bc0
->    kthread+0x2c6/0x3b0
->    ret_from_fork+0x36e/0x5a0
->    ret_from_fork_asm+0x1a/0x30
->    </TASK>
-> 
-> Read cflows once at the start of mod_cur_headers(), pass the snapshot to
-> f_pick(), and use it for later flow-state decisions in the same packet.
-> Publish proc updates with WRITE_ONCE(). Flow selection then always uses a
-> nonzero count bounded by MAX_CFLOWS, while a concurrent update takes
-> effect on a later packet.
-> 
-> Fixes: 007a531b0a0c ("[PKTGEN]: Introduce sequential flows")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
-> Signed-off-by: Qi Zhang <marsy12010123@gmail.com>
-> ---
-> v2:
->   - Use the written value when reporting the new flow count.
->   - Add READ_ONCE() to the remaining lockless cflows reads, including
->     pktgen_if_show(), as suggested by Paolo Abeni.
-> v1: https://lore.kernel.org/r/20260802152309.821584-1-marsy12010123@gmail.com
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+The FEC/ENET controller can flush frames that get stuck at the head of the
+RX FIFO because their destination ring has no empty buffer descriptor
+(RxBD[E] clear or ENET_RDARn not set). Without flushing, such a frame blocks
+the FIFO and stalls reception on all queues; with flushing enabled the
+offending frame is discarded instead. Flushing is configured per RX queue
+through the RX_FLUSHn bits of the QOS Scheme register (FEC_QOS_SCHEME).
+
+This series adds a device tree property, fsl,rx-flush-queues, listing the RX
+queues for which flushing should be enabled, and programs the corresponding
+RX_FLUSHn bits.
+
+Erratum ERR050395 (e.g. i.MX8QXP) can lock up the RX path when flushing is
+enabled on more than one queue at the same time; recovery requires a full
+ENET reset. Rather than encoding that hardware limitation in the binding,
+the DT property is kept generic and the single-queue restriction is enforced
+in the driver: a configuration enabling flushing on multiple queues is
+rejected unless the controller advertises FEC_QUIRK_HAS_MULTI_RX_FLUSH.
+Future parts with the erratum fixed can set that quirk to allow flushing on
+several queues.
+
+Example:
+
+    &fec {
+        fsl,num-rx-queues = <3>;
+        fsl,rx-flush-queues = <1>;
+    };
+
+Alexander Sverdlin (2):
+  dt-bindings: net: fsl,fec: add fsl,rx-flush-queues
+  net: fec: support receive flushing via fsl,rx-flush-queues
+
+ .../devicetree/bindings/net/fsl,fec.yaml      | 14 ++++++++
+ drivers/net/ethernet/freescale/fec.h          | 14 ++++++++
+ drivers/net/ethernet/freescale/fec_main.c     | 34 +++++++++++++++++++
+ 3 files changed, 63 insertions(+)
+
+-- 
+2.55.0
 
