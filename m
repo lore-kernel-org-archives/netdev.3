@@ -1,116 +1,130 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED8918FDDE
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 01:23:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A8E254AFF;
+	Fri, 14 Aug 2026 01:23:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786670626; cv=none; b=d+vBcu80MwaY2cvzdpDbN43o16D508EhiZAoTVnBo/ADDBUaINyNZ1Z3rXVv8ng1Lk6N4FqnrY/YTU1wxkaWub4PbSyJMkhXmy56ts4csMWKrW9Hrwm3CNvB/awpOgcntgDP8T0zIhgGuoOU5fGPO+UA7N0Om6XMF0YK75btcFg=
+	t=1786670636; cv=none; b=gLRsoUvia99eDfXZZN4m3ae8SRL/XCCdTuUHtiP+RZj9R4NiJCjdVqi3KU1ci8TyMi54KbVrAC1yRmi2o2+i9eohRid8R0kMhhovOWMZs2nqH3WvPHHVH8JNStyx1TQ6yt4IzuEg4ZHulw8gFIByJk2UJmJqkGKNo968YlIl0mA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786670626; c=relaxed/simple;
-	bh=k1PdrtA/9PqMB4Q/KFzTfjWb3Z2R+facX6ikbQwV5ho=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eA2hnbeHM8JZsuf6z1ZtE2Azs5cIZaCxv3Il1347ePAEGoFoJyfLcliL3P0DuehgGnZBjYR8PGVlocYdqzP89BZb9E104Oaw9VX99YKFoK/aa03yxgC5QE+zDqGSeN7EYbo9eE1B2WR7ygKb3RyMj74QyVlYZHbtDGNo9z6b4i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M8aam0fa; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786670636; c=relaxed/simple;
+	bh=+zmeW9MT0lrfSPGlWuxHOU1VmCjQetEN/rUoTJiMmK4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sZqk1csQm/shyooYoICgjiS56k/rMWhUfVSCA/qpv/RgO5OgAZUadQ8sVMQ7+XNq2pp+y2Af0FydTBBLOQgSlac114Lb+7mH0dx29ran4HhKYytN9Go5lThBSsB4HhM0do3To6QifDwZbpOgNtVH0f/x74yOB5375VIR4BfR/2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com; spf=pass smtp.mailfrom=fastmail.com; dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b=h3DKAm9D; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=BhtN5Td6; arc=none smtp.client-ip=202.12.124.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M8aam0fa"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-84faf87d19dso397441b3a.3
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 18:23:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786670624; x=1787275424; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Ec9denQCMG1siPi/j1GAugEq6qMWjv0MMecbi60zlMI=;
-        b=M8aam0faoKFfAN3E2M0QjZaPvQhMkWoqM1z9QvW+oWj8Rfl1lVxlzWcb3Wd7FHIewb
-         0RqlBQFdPTbyz9+wCOm2BJZLzAwsMaan8ajP/tH/Pwyz7oTYtsIUwIcSfY0m5ZXTUcaq
-         lZfCwgQkpY7vUS+xlte/q9nfrnobu2Vgd1zhzgCQyhq8UwK4gD778IaVV/T40MBDabzD
-         9dy6H/PvsA+YPkDdrkBuAoQSE+NDNDFIjkAbuU4kVY97+Kj35Y05dJUsAnih1cYDwhWY
-         3qjbyDk92C21qcwyq6q/VEHurj5cI6xEcIntdqhxv5/S30+jbHSFu8HjfUP0UEvf+uTH
-         X8NA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786670624; x=1787275424;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ec9denQCMG1siPi/j1GAugEq6qMWjv0MMecbi60zlMI=;
-        b=e4YzoevEM6qY+IrOOJWbMGfpCm0I2vz/NaQVwI8J33cJqHuHz2PstbweeSKFsynBlU
-         OLxsEg6/N9Tvd81+gv21U8dsSPiY/gPL7sR7z5CAxwGOHQNiyOWCnjthUCWzqOoRrNFW
-         GyeEGh6u1Rk1Vw3COJ8IYYdBs+F2c2GP2fCvfxvLlPGycBRMaaagqIg/SSX/MCfHzCOL
-         77sO/Z+0OGq2YCtL4+JVQxD1AwELg61RwNs/4JIWI7s2fvebzgK7yXDZg4VJJ64SFLnn
-         i8nJcy+UnOcivXdy+//NOJnUzkU/K6npPmctyqBS4Wuqg+1nFdDfbpnlvxgrWajJqwPq
-         KMtw==
-X-Gm-Message-State: AOJu0YzQut3KPkOIGAtke+Daxtbgl61TKC832KbhcVhN4IV1A7ARqq1T
-	sxd4c5tL0HPKpJOiEUOik39sdVM8Z+31TawsadwWDDPnLXBr3oz2DlS2
-X-Gm-Gg: AR+sD13cU3T6MC6+++iWTOs0wtm+IlaTYMEEXm8DnBvWzpOnwwr8vU4w7pEgjK+HqkY
-	YuI8MPiv53bWn6pwcSuiffR1uSi3rSI9EvFiOQ6W3KXzkHiKtgZlT2a2Ex8QpAnzZov5l72XbTb
-	fVTfTLowOAFsYXP/TV+6466IXaYpieV+ChXn0qYdhp6wE4bnglCj8ZM919CEVi9IvscauTBsxzE
-	oWgjJGPu4q14w3FZ24vQivar2NEW3JMk7qpYXNvtc1pYcVksxbM7Bz9BRK3i/F+jXlxqmXAEwQH
-	Pfe63L2DXixHCZC/mzBS1tzkce2LaPSSv18TjU5dQyDxxyvphUZzvQv2qsKDcWSpGgW+scdNnk0
-	ExVeS3grySLtZaKAL4G4jRsKOAIgA6wYlYZR/jJf+OmbDUzcoeq6KF0KI5n5LaV53MMHEzfqXL7
-	naCncJYqvQ/Pecxaa5ajfVnyPHANYcAP+r1GLuKuun4Mmj7bRLdzsNzbA=
-X-Received: by 2002:a05:6a21:688:b0:3c3:92ba:c61f with SMTP id adf61e73a8af0-3cc71c1b043mr2280234637.8.1786670623990;
-        Thu, 13 Aug 2026 18:23:43 -0700 (PDT)
-Received: from fedora ([203.175.12.240])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbef710a897sm1667083a12.18.2026.08.13.18.23.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 18:23:42 -0700 (PDT)
-Date: Fri, 14 Aug 2026 09:23:36 +0800
-From: Hangbin Liu <liuhangbin@gmail.com>
-To: Ruoyu Wang <ruoyuw560@gmail.com>
-Cc: netdev@vger.kernel.org, jv@jvosburgh.net, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] bonding: initialize err for empty target lists
-Message-ID: <an5uGF7AR2H-NJgf@fedora>
-References: <20260813153126.3952893-1-ruoyuw560@gmail.com>
+	dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b="h3DKAm9D";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="BhtN5Td6"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id AB0857A03FD;
+	Thu, 13 Aug 2026 21:23:53 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Thu, 13 Aug 2026 21:23:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.com; h=
+	cc:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm3; t=1786670633; x=1786757033; bh=KrhbtMYFaxGVwuXnzMlWh
+	0sdoirPJyp1eBdn9qbz2HI=; b=h3DKAm9DGkMiwCUcTeLxXRJVMVa3WBB6IUNSz
+	v0XFPoBORwnJLNulQJ0cHc2jbkvGBMBeA2pg4qqwHy4fPctYnbkTfVS9wB7Rre+m
+	3JROaruJshp/spA23BEKIkpjU4sR2kJV5YhCyiMoLXoA9CxkJe/Y3yuC70BHsfcd
+	t2yhI3iMrWPhsXpIjn4OyIqmgsq7o67KmvHXXFQoUe+1LA8BAjwanW1K9BiDoHCV
+	x56hyL1pyQ1dI7sKKeK373598hFmZfLn+RXKaUAYoaUMJl3PPOFidgqyGuqDn6Qe
+	dnh1K+kUsE8z2Mb5EsTWOwBkLxtsbs/jHU3ahzy6LA3XCjvSA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1786670633; x=1786757033; bh=KrhbtMYFaxGVwuXnzMlWh0sdoirPJyp1eBd
+	n9qbz2HI=; b=BhtN5Td6OKTJ/YXqub1pYaMEbLOH6tI743ffObhe6+USFKtuec5
+	g8GPKJlquyNt6uBSWm3ejDooar8nrG/Q1p0IJ3PQYr/hztOkamyCuBTpwFpiImwC
+	0AEqdffIr8Ap4hYbTyb+YOSHGdVokVLsD95TI+TzLgCpmzbB6wTtzus74nKW3tka
+	hkMYLV20J4Jc0HxYz08f+x645yBB9wOSrGKf5PVUTkYIxSRJJcVQ2thZlU0rh81J
+	52qMIE0KiUtdhKp1amB4g8eBxbs1k4aIhZd0gTdz/rOy8o4Bm+0PXBZU33LhtjXf
+	WJ9qA68EXvbszhTonE+O1f2A1ksKNhYr8rQ==
+X-ME-Sender: <xms:KW5-ajGLWKHW44ZJCiue-KnllJKDzB0P3XyoDSI34MJRzPdtL2njZw>
+    <xme:KW5-aohaX9F8fs_qj12q0axooYJMC5lE42XwIABYG1bc1G0bYLgHagUHuTHt_R528
+    KfTeBgK2jj0O0fm1wArOTD74LvHmtXLoO3oDd9mWr8uDI0Wh6DPyPHL>
+X-ME-Received: <xmr:KW5-agt-yr8ZUe3JFvQGdxHvEdK9fUILvUABX_5XTfUB-6WlPaJ21Vckf5DYajDBaJh6w9PbwqaKG_rYFrK7xsfhMm-BW0U>
+X-ME-Proxy-Cause: dmFkZTF9Oum5zaWpSobsGjnHrZzXYENcktdJq7zh1+dARcDl8OcqaR+P1iz0bf7lSClaN+
+    b2DcXIKpxnAoRTM2CBHRM2hjzg57ch/9U/cItae80BmIVS+mDzfF1EQRzgxvJ8rMxucCbs
+    2s5GLGRRGaBA/mBCPnq9kZ/LGSdyb/1kvzmLC7jcVLJ1/j9bBbArhWRc2WAmMuhLDZadQq
+    JvoIzQuolGp36SGXYFjfsqaBZ0Hzc6q8vcGFsw5RB+7kiEtT2zjG6NBMBVuaHJ4iP8Lgqf
+    RCg6OeUwxsRy11g4tjvc6xrNmfT5b1E1S2BTz2+79brtIXZboPYnvBnoOwbkDjQyGLtunU
+    ScLNcZaBsn1n6WO3aNLHPPiI6k27VQu87tXbg5XOS7q3blej5tv9Z3muk2SRNzVBiUQXub
+    YDSneotab1DzZDQo0ZEW9N9i9l/bwqfs8lflpL29FwIu9uThDVGQd5nvkaJ6edqhdZdluz
+    NxBWDBnoIs7QFixFFcSnr/8xT2//QvqsQ1WuHyc3xe63M0eU5mEUD3bq8sV6NScHfqXDMs
+    5ePO7qkVXyYM6Y7Rk1tVNgGW1v89pCQjOU2VtI7uxqjNxkbSBhyyV+5mATdoqIaImw0v+b
+    lYGr3RfImWTSiXoQicEuqIJem0TNg2VTEvJTgYWdgae4waOSfwE/6nxI6Kxw
+X-ME-Proxy: <xmx:KW5-arsSErWAKtWNZowKl0oOEaPPLQMACWWcewdIbA4gMhycdempwg>
+    <xmx:KW5-alE_OLuscZzoFsn0htx-BCZJlxj06K99D_D8aScG1rPhejX5Jg>
+    <xmx:KW5-amOOZtMX4czn29_U32gfZ15PFLAepF8adCEi9QNwIe2XwaNVcw>
+    <xmx:KW5-akKtphM2Tj0s5CmHwVasuU2sEu5zHnJ4tYYk-qj-USgj48JjeQ>
+    <xmx:KW5-ajtBlE_XYcJ_O0ndnf0fjGzQUHijW6qpyZ1i5XvAa5puRWHWk0Ad>
+Feedback-ID: i80b64ba7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 13 Aug 2026 21:23:52 -0400 (EDT)
+From: Juanlu Herrero <juanlu@fastmail.com>
+To: netdev@vger.kernel.org,
+	dw@davidwei.uk
+Cc: io-uring@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kuba@kernel.org,
+	asml.silence@gmail.com,
+	pabeni@redhat.com,
+	shuah@kernel.org,
+	Juanlu Herrero <juanlu@fastmail.com>
+Subject: [PATCH net-next v5 0/6] selftests: net: multithreaded multiqueue iou-zcrx
+Date: Thu, 13 Aug 2026 20:23:42 -0500
+Message-ID: <20260814012348.46958-1-juanlu@fastmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260813153126.3952893-1-ruoyuw560@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 13, 2026 at 11:31:26PM +0800, Ruoyu Wang wrote:
-> Empty NLA_NESTED attributes are valid, and bonding uses them to clear
-> the ARP and NS target lists. When either target attribute is empty,
-> nla_for_each_nested() does not execute, so err retains an uninitialized
-> value before it is tested. The request can consequently return an
-> unpredictable error after clearing the targets.
-> 
-> Initialize err to zero so an empty target list completes successfully.
-> Non-empty lists still propagate errors from __bond_opt_set() unchanged.
-> 
-> This issue was found by a static analysis checker and confirmed by manual
-> source review.
-> 
-> Fixes: 4fb0ef585eb2 ("bonding: convert arp_ip_target to use the new option API")
-> Signed-off-by: Ruoyu Wang <ruoyuw560@gmail.com>
-> ---
->  drivers/net/bonding/bond_netlink.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/bonding/bond_netlink.c b/drivers/net/bonding/bond_netlink.c
-> index 4a11572f663d31..87d92d3cce4a88 100644
-> --- a/drivers/net/bonding/bond_netlink.c
-> +++ b/drivers/net/bonding/bond_netlink.c
-> @@ -220,7 +220,7 @@ static int bond_changelink(struct net_device *bond_dev, struct nlattr *tb[],
->  	struct bonding *bond = netdev_priv(bond_dev);
->  	struct bond_opt_value newval;
->  	int miimon = 0;
-> -	int err;
-> +	int err = 0;
->  
->  	if (!data)
->  		return 0;
-> -- 
-> 2.51.0
-> 
+This series extends the iou-zcrx selftests to be multithreaded while
+preserving existing single-threaded tests.
 
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Patches 1 and 2 are prep fixes/cleanups. Patch 3 refactors the server's
+global state. Patches 4 and 5 add the multithreaded client and server.
+Finally, patch 6 adds the python side multithreaded test case.
+
+Changes since v4:
+- In patch 4, make cfg_num_threads the default value and remove
+  CONNS_PER_THREAD and associated ternary (David)
+- Use reverse christmas tree for variables (Paolo, David)
+- Address race condition identified by Sashiko (Paolo)
+- use thread barriers to get rid of epoll in the main thread (David)
+- Make napi id matcher helper take a connfd as a param and return the
+  index directly (David)
+
+
+v4: https://lore.kernel.org/netdev/20260729221825.42773-1-juanlu@fastmail.com/
+v3: https://lore.kernel.org/netdev/20260722203950.58550-1-juanlu@fastmail.com/
+v2: https://lore.kernel.org/netdev/20260418094907.3cde57ca@kernel.org/
+v1: https://lore.kernel.org/netdev/20260408163816.2760-1-juanlu@fastmail.com/
+
+Juanlu Herrero (6):
+  selftests: net: fix get_refill_ring_size() to use its local variable
+  selftests: net: remove unused variable in process_recvzc()
+  selftests: net: refactor server state into struct thread_ctx
+  selftests: net: add multithread client support to iou-zcrx
+  selftests: net: add multithread server support to iou-zcrx
+  selftests: net: add rss_multiqueue test variant to iou-zcrx
+
+ .../testing/selftests/drivers/net/hw/Makefile |   7 +-
+ .../selftests/drivers/net/hw/iou-zcrx.c       | 406 ++++++++++++------
+ .../selftests/drivers/net/hw/iou-zcrx.py      |  50 ++-
+ 3 files changed, 332 insertions(+), 131 deletions(-)
+
+
+base-commit: 3da8c3c8b8fa99505624b65ef590482f48e766b6
+-- 
+2.53.0-Meta
+
