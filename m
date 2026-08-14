@@ -1,143 +1,162 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C3B34404E
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 07:53:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2032A35C687;
+	Fri, 14 Aug 2026 07:56:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786693987; cv=none; b=fv0TPSfkZARWBxlEyI0/ZClZUJ2SvsQN5lUmfaMPauPFcfj0PE1PQERB3dzmfuXSxMNtZYgtvkyRYaP37/bXOPA/b3ZgGtM7i2vKZN/3q4duaimjhlOEFNduaxgoi17tiHBxFS+BBGNb0TO+UJIli6H8LUD5vlZf1tkVfajOcgY=
+	t=1786694207; cv=none; b=FHEmJQaDx6dJKDMjb/MyzF+cW2NxeIOgBDxkJt/sBjNshxd68KHWMkJUyVEH4Q30aUNhzE9qXpU15UXHLxNdT5imZGCjiy4s6MoGLfMZsOK8rokJYVY2XYcvE309rU+lcZBvpOj0xX4UJw/tY2uuzAdMplKrX09gCxLPw9PM6og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786693987; c=relaxed/simple;
-	bh=H+L3QTFFkyCFXwrBvc0mOg6GVJz81+DSixh03RV0aKI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RxCiZMURTXh1J1XVE0et56iZr5R23O69/KHkTPS/cgjmgkgxP24DaUa/Ux/ke8NpKU7SaACazdk0TlnHQtVKIzX3CXaeIbGHztE0zf2tUXM6f6DTw319jsNiOUpdgfqzTlUT2speJYWjsw0VIz0NgykU6y5GsTyDdb48zy1kVXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KMtsaBpl; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=CaibKQi6; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1786694207; c=relaxed/simple;
+	bh=eTiQlI25pBUjs/a9n63tNedaT8j+Ade7BZd8Ai/s8mk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=La9Xn0i1dicgpympjDBcax1JllO6UTTDdHnUS8Uty/CM8ix3ZjNSfUkj5UshHLhuoqGp1LcQ5Q6fgEuDdlf6kmJ5UZdk/wH8h0vm6sApIjnsp+5IZ6+YTMFiqutC+yQ+uPVokavPDrh2TwKYlrZtK71qtdsuKtyAOBwEVUztNtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=tVnoJQpO; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KMtsaBpl";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="CaibKQi6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786693985;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IBgk91sGaugiFnpdKSnVzGaySlJCzjj+raiMAVYJqa0=;
-	b=KMtsaBplfarol0WkJai7Tffqts6cAqP6TjPQ+pm0sHRAHb348oQ6gL2UIgGJntHfYFITlc
-	tvMxw5an/s8Yubpm8Oj0NpEafmX8RFVlMl+Q8qF5mw4TyRymmW9RTFdLXrOYWzDdSwkUBy
-	tcrP+LfF45xLByNV3qXkvtXJju8eqXY=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-313-zFGxPmNRPk6kByT2lDqclw-1; Fri, 14 Aug 2026 03:52:52 -0400
-X-MC-Unique: zFGxPmNRPk6kByT2lDqclw-1
-X-Mimecast-MFC-AGG-ID: zFGxPmNRPk6kByT2lDqclw_1786693972
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-47fecbb553bso619067f8f.2
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 00:52:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1786693972; x=1787298772; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=IBgk91sGaugiFnpdKSnVzGaySlJCzjj+raiMAVYJqa0=;
-        b=CaibKQi6Z2Cjpv5z+P01h6ZWOJt/krxFAdig4XJwVq2jxrSVMB0fck7ke4TrXpJHq3
-         KE9c0bTsp0+7s8hI3bq4AO7S9kzCquI/V1eej7Th05+xozWGVmKT/VxWQXVmatBWSnf5
-         GVjKYPvWB2g/SQhtgIym6+CfAn1W0EkdO4sPktLWtryo4h/sfmmKubiZ+wkPmMfc/17/
-         1NlGf1RUFu5ntXPMebygayoqcfsMQnZ1iQYHI9xEvR0BJ/PmPSTV8Bd1F8Z1YQ779PP/
-         PmOgSJ+IDy/0VCvoTHdUAlobXDZt2+5bId/IWCIe02v3XJ9csz5tVFDk93aXFsGJU/C9
-         dptw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786693972; x=1787298772;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IBgk91sGaugiFnpdKSnVzGaySlJCzjj+raiMAVYJqa0=;
-        b=lhotvS1iTwXtu2Cy5GVZOjpP+xvWgMkh7a3+dbKTfWh8lcH1TXyKqN27ppnPHz+QT6
-         3ueayJt84O3Ion22ByTApgA78/PAMi2ujwjQfU347tZKiG3xCBW46ZWwaEddebg8iCuL
-         0cK5qSkDyHFBC/6HI9LVO+XQP8zNy6p8oLH0Q8pSTiSMjoIL25TG4dCMy9XA/qvWXwM5
-         a0U5u09gQL/Sh0e8/S0NhzdGXnWfJWIK6yYShsl/uSamPIrmdjoq8sjiCclAWicQyHEP
-         j8nE3TA/IRrEV74uxm0pHqlIe3tIjIjIUkgRZm7Sd+1ZdgmcbHI4xGcz1f0MFto74vM7
-         VphQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rr3AFD3Rp0nJL8f4tphMClwRz6uVJENHp+qHK5gfYEghVsVzs7Fqugshv1EqDlQEWzKkSLFV60=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxY+YyslVXoRtaxENKeNJHXMXtkBPJAb86UkrMS7hr3SCLLKqvJ
-	cSiwRyN8HDTi7jvSGx8X0GyM4HDJ8zIXZeHkmRbQOVoyhkM0iFXglGDePcob7yJiWFPqd8YJBkf
-	SGna/VtwMhlVfRhFfYtrpBUCDhz30EAa5xIczPmJqV+sOnTKb2iixNEOMBg==
-X-Gm-Gg: AR+sD11qrA4vfXzYXycyqPzojrKZ63PP4/Bp6KXTUxoxIRPKk+S0CFtlhCqHKbOYi/n
-	p6mgdqBNotoinkp6BHUBOEVxaiGD+kp2Pf38oLfag29azudfrQJaRrq7422arLvoMwWY30f/yYR
-	uGUOOeT0L3eN3IyqWke4euQyCbaWDmLlIPYYkHWHTI4tmVn27uC4tDnRDi1uTMcqXDvXpoBuFG/
-	7huWODlpnqym49lMBDaHpN4eRRMtfz64fA1jcibk7/PM8cS6SG/gSY5UgUngZNujcDWl8OaYjuT
-	Lf9QySdiNDfgCVDlL13TO8ZeuRBJSXGYSURSwB77OBwgphCduw4i/6jGXO8+t7YM34+LurcjWTb
-	kmrooA5gmJzqqDNTM6Zsm9PTdo//qF8Gm+NXRNEyRgjyqy0hCvAT8
-X-Received: by 2002:a05:600c:1da8:b0:496:bbce:fc with SMTP id 5b1f17b1804b1-4998798467amr50729635e9.12.1786693971597;
-        Fri, 14 Aug 2026 00:52:51 -0700 (PDT)
-X-Received: by 2002:a05:600c:1da8:b0:496:bbce:fc with SMTP id 5b1f17b1804b1-4998798467amr50729125e9.12.1786693971141;
-        Fri, 14 Aug 2026 00:52:51 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-135-154.retail.telecomitalia.it. [82.53.135.154])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49988b1d33asm33182265e9.10.2026.08.14.00.52.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 00:52:50 -0700 (PDT)
-Date: Fri, 14 Aug 2026 09:52:44 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Jia Jia <physicalmtea@gmail.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
-	"Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 0/3] vhost/vsock: fix device IOTLB feature lifecycle
-Message-ID: <an7JAlFpRVOiC4WQ@sgarzare-redhat>
-References: <20260814072903.124991-1-physicalmtea@gmail.com>
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="tVnoJQpO"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 67E7tImyD1074346, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
+	s=dkim; t=1786694119;
+	bh=XjwKhCLzTFGd9ljvZBxi4xT+iS+CaIyZ+A2Fo8m4oCc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=tVnoJQpOP8gJTM9qQdWY57EWS6HfepMONkiO4W0k+C3BWE2E+TFiMEWgFxa90R8k8
+	 72TvCkkWaUbecyWbJxekkeoeHq+3Jz6SNc76HzPBR6HE9MsaLBC2CgHzmJO+8bwghi
+	 weQkqGAC4jDi/IE5tlBFZSN3BPwo0jSzakg2T7RC/X4dCyfZj3xF1qfwllX+XK0DQ1
+	 cazvW3NgzfXeav85IoT11LZDPVkU4jHkST8b+g92sh2azLXLjmZUtSUrUYB1e+VsHs
+	 X7Fy1QvSlK3fS4LxGZLflfIuAMXwvepf3baB6LpXLymNEk44/3dxWiL7pOiZpbkvb1
+	 Zn08VsGeYMn4Q==
+Received: from RS-EX-MBS4.realsil.com.cn ([172.29.17.104])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 67E7tImyD1074346
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 14 Aug 2026 15:55:19 +0800
+Received: from RS-EX-MBS3.realsil.com.cn (172.29.17.103) by
+ RS-EX-MBS4.realsil.com.cn (172.29.17.104) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Fri, 14 Aug 2026 15:55:17 +0800
+Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) by
+ RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) with mapi id 15.02.2562.043; Fri,
+ 14 Aug 2026 15:55:17 +0800
+From: Javen <javen_xu@realsil.com.cn>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: "hkallweit1@gmail.com" <hkallweit1@gmail.com>, "nic_swsd@realtek.com"
+	<nic_swsd@realtek.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
+	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "maxime.chevallier@bootlin.com"
+	<maxime.chevallier@bootlin.com>, "horms@kernel.org" <horms@kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"daniel@makrotopia.org" <daniel@makrotopia.org>, "linux@armlinux.org.uk"
+	<linux@armlinux.org.uk>, "enelsonmoore@gmail.com" <enelsonmoore@gmail.com>,
+	"daniel@thingy.jp" <daniel@thingy.jp>
+Subject: RE: [PATCH net-next v8 3/7] r8169: add support for phylink
+Thread-Topic: [PATCH net-next v8 3/7] r8169: add support for phylink
+Thread-Index: AQHdH++uiKR31q7P6ECrRxr8Kj4WuraKV/oAgAFWRmD//4C4AIASEvEw
+Date: Fri, 14 Aug 2026 07:55:17 +0000
+Message-ID: <13ac909ae522426f9352fe8770ba2a5c@realsil.com.cn>
+References: <20260730065014.883-1-javen_xu@realsil.com.cn>
+ <20260730065014.883-4-javen_xu@realsil.com.cn>
+ <cfcf87aa-3d4d-411a-9af0-5a5b78c9ae89@lunn.ch>
+ <4338caa7b5d244e1b0d9a6713ed8fce3@realsil.com.cn>
+ <0ddca9cd-4834-4d00-adc5-520e74a803eb@lunn.ch>
+In-Reply-To: <0ddca9cd-4834-4d00-adc5-520e74a803eb@lunn.ch>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260814072903.124991-1-physicalmtea@gmail.com>
-
-On Fri, Aug 14, 2026 at 03:29:00PM +0800, Jia Jia wrote:
->vhost-vsock leaves the device IOTLB attached when userspace clears
->VIRTIO_F_ACCESS_PLATFORM. It also replaces an existing IOTLB with an
->empty one whenever a later feature update keeps ACCESS_PLATFORM enabled.
->
->Patch 1 adds a common vhost helper that detaches the device IOTLB from
->all virtqueues, clears their metadata caches, drops queued IOTLB miss
->messages, and frees the old table after all virtqueues have released
->their pointers.
-
-In the v3 you mentioned that this could be used also in vhost-net and 
-maybe vhost-scsi. Would it be better to include the other patches in 
-this series as well, since we're basically fixing the same issues, or 
-have they already been merged?
-
-Thanks,
-Stefano
 
 >
->Patch 2 uses the helper when vhost-vsock clears ACCESS_PLATFORM. The
->acked_features update remains in the vhost-vsock-specific loop.
+>On Mon, Aug 03, 2026 at 03:32:12AM +0000, Javen wrote:
+>> >
+>> >> +static void rtl_mac_link_up(struct phylink_config *config, struct
+>> >> +phy_device
+>> >*phydev,
+>> >> +                         unsigned int mode, phy_interface_t interfac=
+e,
+>> >> +                         int speed, int duplex, bool tx_pause,
+>> >> +bool
+>> >> +rx_pause) {
+>> >> +     struct rtl8169_private *tp =3D container_of(config, struct
+>> >> +rtl8169_private,
+>> >phylink_config);
+>> >> +     struct device *d =3D tp_to_dev(tp);
+>> >> +
+>> >> +     tp->speed =3D speed;
+>> >> +     rtl_link_chg_patch(tp, speed);
+>> >> +
+>> >> +     pm_request_resume(d);
+>> >
+>> >This does nothing with rx_pause and tx_pause. How is the MAC getting
+>> >configured for flow control?
+>>
+>> To actually generate pause frames, the MAC needs Rx FIFO "Near Full" and
+>"Near Empty" thresholds. The driver configures these statically during
+>hardware initialization (rtl_hw_start_xxx) by writing to ERI registers 0xC=
+C
+>(RFIFONFULL_TH) and 0xD0 (RFIFOEMPTY_TH) via
+>rtl8168g_set_pause_thresholds().
+>>
+>> Software enables/disables flow control by setting the Local PHY register=
+s
+>phy_set_asym_pause(). After auto-negotiation with the Link Partner, the PH=
+Y
+>resolves the flow control capabilities. Once the link is up and flow contr=
+ol is
+>negotiated, the integrated Realtek MAC hardware automatically reads the PH=
+Y
+>result.
+>>
+>> Therefore, we don't need to do anything with tx_pause and rx_pause in
+>mac_link_up.
 >
->Patch 3 avoids replacing an existing IOTLB when ACCESS_PLATFORM remains
->enabled across a feature update.
+>Yes you do.
 >
->Changes since v3:
->- move the IOTLB teardown helper from vhost-vsock into common vhost code
->- keep acked_features updates in the backend-specific loop
->- add the common helper as a separate first patch
+>ethtool -A|--pause devname [autoneg on|off] [rx on|off] [tx on|off]
 >
->Jia Jia (3):
->  vhost: add helper to clear device IOTLB
->  vhost/vsock: discard IOTLB when ACCESS_PLATFORM is cleared
->  vhost/vsock: keep IOTLB across feature updates
+>Pause configuration falls into three major categories:
 >
-> drivers/vhost/vhost.c | 24 ++++++++++++++++++++++++
-> drivers/vhost/vhost.h |  1 +
-> drivers/vhost/vsock.c |  7 ++++++-
-> 3 files changed, 31 insertions(+), 1 deletion(-)
+>1: The link is negotiated, and pause is negotiated
+>2: The link is negotiated, but pause is forced. ethtool -A autoneg off ...
+>3: The link is forced, ethtool -s autoneg off, and pause is forced, ethtoo=
+l -A
+>netneg off ...
 >
->-- 
->2.34.1
->
+>The PHY registers only tell you about 1:. phylink mac_link_up tells you th=
+e right
+>thing to do for all three.
 
+Hi Andrew,
+
+Thanks for pointing this out. I have double-checked with our team, and the =
+driver currently cannot handle Cases 2 & 3.
+
+Here is the exact hardware limitation regarding flow control on our chip:
+There are no independent software registers to configure Tx/Rx pause. The M=
+AC hardware is completely hardwired:
+
+When Autoneg is OFF (Forced mode): The hardware automatically locks Tx and =
+Rx pause to DISABLED.
+When Autoneg is ON: The MAC automatically polls the PHY and enables/disable=
+s flow control based purely on the negotiation result.
+Because software cannot override this hardware behavior, we cannot explicit=
+ly force tx_pause or rx_pause via mac_link_up when autoneg is disabled.
+
+How would you prefer I handle this limitation?
+Should I just add a clear comment in mac_link_up explaining this, or is the=
+re a specific way in phylink to report that forced pause is unsupported so =
+ethtool rejects Cases 2 & 3?
+
+Best regards,
+Javen
+
+>
+>    Andrew
