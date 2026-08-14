@@ -1,171 +1,75 @@
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B753349B19;
-	Fri, 14 Aug 2026 13:57:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786715865; cv=pass; b=LtJ/zlUGrFKavXAJZgQ36frOVjXHAzL4/OLjAccpcqpxtrn0g9DhZpsx7MiEYc3Vwyyaf+a0SqUC5VhfqiRBR2Mw28EoDgZsquRM8XyrmonsLa+sNbKz1CPZs4uUkjWhBljVS/uyitYZuLSiVnKRvWU4OxNvC2XqR22RVB/oUFA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786715865; c=relaxed/simple;
-	bh=o1Db18j81xA4/xwGnSukztQQZFiMVFxCTOZEv3/22u4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bTwCVBN0Yfy+WdSbkEVwVRHwFqPhXr6cIL6lRb5qdKEdmsijXaWp71Rp+AuSJuWAAMidL3RCN3XzBJn4aezBVfiPc7VZ3xdKxi4b0PCUqdxdvdpTfZWZOoENpa3Qk9byztXtzK0DrYuKQC6wCgjB0zFiubAX2IYIyuZYHhzyqCI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=fail smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=dekO12xW; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=9t0pH4d7; arc=pass smtp.client-ip=85.215.255.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="dekO12xW";
-	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="9t0pH4d7"
-ARC-Seal: i=1; a=rsa-sha256; t=1786715855; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=JvkAPr8+gnqAY3e3TkQIFX3/Y+80TJRpyCSNlTJMiMXw3lImY75T1yVdw7+GQNs2Gc
-    7DJRIVmaW/6oTWonrIGzpeYhaXZ4dajsF2VGc3tHfxL5RjDb8adnl5YMpCWb/n06V+d8
-    ZK4KuC6/j7RZRKj2defdUCZYvVqTtDLTK5z6CTpCq9W8Rukf2PpRmOZtMcgD8v4svLMB
-    INmOCVSIn6pWx7SR22TmWqF0Y5puQH6X+CKCJZVu+5uejpfGumBPEnHLIceOStxnbbDe
-    ZpGKyaAgMSKq9yaBz3G72t7+2dyVhqVs/wk5tTYgvNE106/ID8YIxaXCBAMAKKHT7mHG
-    RQmA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1786715855;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=cFE+OBmuV+KjANFVwFc82zAOyA8fBUyjee5TS9Uuotw=;
-    b=cDc/id/CaZYIpZH2okQ99rl7x09p5wmixC8ljPy13kioaQo3qBb/OjhYSX5B6nBu4B
-    mmOpMklcp6NUjZXCAWyaVESA97tFSoBr4fa6LyOnvAiEp6T9k3ffyGbvOrmzt9KdRZeg
-    6lfKIUfN7FogXyb9HEOMB6EfBHgluCmFT8NF6iIbZ0Db2iL3/MCta84hC3mvw+VHtF1u
-    u2/G6OxZDvYxczyGHwqENpSOZVngJXx9rh+vBq7MjduPRcXHmaXuloNgo9hJkaSlE9Q5
-    /XcO1kl0d/rAHFLGGDCIGCElXbZpMR2Jm9xYH/7d/9T9pkDujZU8tNXH5xzSzMrVpWEz
-    w73g==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1786715855;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=cFE+OBmuV+KjANFVwFc82zAOyA8fBUyjee5TS9Uuotw=;
-    b=dekO12xWtCc0NYaZSUce4qsa+jy0gcqkw99svupGfztNkNJ2fqEQkBaE0/lg+Y4PVS
-    zIzBjFpVu5C1TDhtlQlK9OoHnnmezvtlBcdbXcYxCOkBQTnk2uwlNIbcB1Mv/An+hgVx
-    To/w1S095IOjn9kTmQ40bl2WPS6LvTXmzXyPpKbCOyBgtGfhIFET00nkynB8CuE8cnMS
-    NutJTXXI6KJ5gNOp+dR+VJ3rU7OErcxOHm+nZqO1u4KY3rJtf9swpXlo9E73dPA97YyZ
-    /ZhFDPOxc7zc8Xvn/qseP3iwHHPVl/ZalLXmKZG4Ea+XoygZk0aMmpAdRH3rQVhMYrsm
-    JOJg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1786715855;
-    s=strato-dkim-0003; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=cFE+OBmuV+KjANFVwFc82zAOyA8fBUyjee5TS9Uuotw=;
-    b=9t0pH4d79/73TOkjylw/K0/R13FSuyWMQtkGT9lJfshIhTRiX4rZRv6Qyu3+S6Te2C
-    6m/BBZsse5QCf1dQooCQ==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeEQ7s8bDup0Q=="
-Received: from [IPV6:2a00:6020:4a38:6810::989]
-    by smtp.strato.de (RZmta 55.6.2 AUTH)
-    with ESMTPSA id K171b727EDvZ3TC
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Fri, 14 Aug 2026 15:57:35 +0200 (CEST)
-Message-ID: <23ad673f-9622-42c6-afcb-1aeacbe6d733@hartkopp.net>
-Date: Fri, 14 Aug 2026 15:57:35 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9FB345EB4
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 14:00:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.197
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786716004; cv=none; b=M0dCMo8WCNsJxGNv6blBV5jVCq18UkpgaKUh8AbPQWKTCoRo6a93lNsN1GnrKWo4xNTV++peJ/05lX5JEW1zmcjTWpauswmhZlpGeOHcvhfURqrwhjEAv/65ViVx/qfFRxoPkSuAu55/JsWMX/5Z9CBOF9E9sAL7Cn4RjGb5FMY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786716004; c=relaxed/simple;
+	bh=IVdLexSuZcROpf/hvkp6Xr6NU1ovmiPX66oJB2ozh1w=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=qNCRFfPuTG0FbGuB7ADa3kdz1rQJroZUuzHoQzWuvpFeme0d67HfoZ4Pe3GR0gSkTA3hzkl92d/AbRd3WY8O7NWs6LeTaCcRBxT4sDXl7iD1Y9Pj9LDYsLSVAiWA2AmxdBanznv6m1YvTg7B3lHd22COqO322qDYnPBuuZg0Wrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-49d4cb3ca23so1150765b6e.3
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 07:00:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786716002; x=1787320802;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=VgtFeurelXguNoym2EWTBBoks03AOBv9fhnKhit1Czo=;
+        b=BXxASjxEXy6EjqDmZ+QXURCxzTFEVi1H6HobFDsKPuxX4lCA8u0YOsPWwU+/LwKftT
+         7jU9GqWhw/oVtxgHcJmBoi5Bhwie9l49BYfM+MaKyEm2VzEsZa6fSQWGnZKeVkU6AY05
+         hxnR3KN1i+VaRGv0CjDqbDkl1qYHQHYVhXp3ZCfQk7zAr2JUdQz68riasOvNKDD94VCl
+         10mnlfE++JLMWZs8Hgc3WXrXZe91zsmcf+lNvBDKigSdo+Q9nvCZ3RPXRSZYEj0m648c
+         T4S0fkZzD3F2hZYA9zJAlXAO/HnmjmwKIEAU10CZFNOLHHeMaxmXkwiYtqVmZC1/O5fc
+         TDFQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rry92kpC/SjpVRzzZp8rylmkgOzPgSfMU5t1VXwPCXQfRRNqYgBfyGZyEQTS4PAf8xK6UM6eDo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8AGA2nVyoo0iWE3LTGPQpC0qd7xtqCC+o9CjrQOGRh8PUhDYR
+	yaHnh4ggVONLAb2Ul121Z3uEGCDlQuMh+HSKVNO0LsADJ65LiyVX52/Kk1QqRkRKnjJbBS7CBG4
+	PH8aI8tWU8vJO16dt549d1AgwehnUuwK3LhwWzJ7dx7ISGWwPVJ+H1YDkVkA=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [can-next] can: proc: remove pointers from CAN specific proc
- output
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: linux-can@vger.kernel.org, netdev@vger.kernel.org
-References: <20260814105438.49657-1-socketcan@hartkopp.net>
- <20260814123141.opZ1ZwYC@linutronix.de>
- <7b538342-0914-409c-a679-87a567d4150e@hartkopp.net>
- <20260814135248.OO4H1uIt@linutronix.de>
-Content-Language: en-US
-From: Oliver Hartkopp <socketcan@hartkopp.net>
-In-Reply-To: <20260814135248.OO4H1uIt@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6820:338a:20b0:6a1:98e6:a8f5 with SMTP id
+ 006d021491bc7-6b0d691c798mr3967518eaf.36.1786716002180; Fri, 14 Aug 2026
+ 07:00:02 -0700 (PDT)
+Date: Fri, 14 Aug 2026 07:00:02 -0700
+In-Reply-To: <178671419949.2648204.15668657474779239190@gmail.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a7f1f62.f7a79266.2f965f.0003.GAE@google.com>
+Subject: Re: [syzbot] [tipc?] BUG: soft lockup in do_sock_setsockopt
+From: syzbot <syzbot+10a41dc44eef71aa9450@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
+	immersa.bartosz.chronowski@gmail.com, jmaloy@redhat.com, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	syzbot@kernel.org, syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com, 
+	tipc-discussion@lists.sourceforge.net, tung.quang.nguyen@est.tech
+Content-Type: text/plain; charset="UTF-8"
 
+Hello,
 
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-On 14.08.26 15:52, Sebastian Andrzej Siewior wrote:
-> On 2026-08-14 15:36:03 [+0200], Oliver Hartkopp wrote:
->>>> --- a/Documentation/networking/can.rst
->>>> +++ b/Documentation/networking/can.rst
->>>> @@ -1040,19 +1040,19 @@ As described in :ref:`socketcan-receive-lists` the SocketCAN core uses several f
->>>>    lists to deliver received CAN frames to CAN protocol modules. These
->>>>    receive lists, their filters and the count of filter matches can be
->>>>    checked in the appropriate receive list. All entries contain the
->>>>    device and a protocol module identifier::
->>>> -    foo@bar:~$ cat /proc/net/can/rcvlist_all
->>>> +    foo@bar:~$ cat /proc/net/can/rcvlist_fil
->>>
->>> Is this _fil a typo?
->>
->> No, it's a slightly different example.
-> okay then.
-> 
->>>> diff --git a/net/can/proc.c b/net/can/proc.c
->>>> index de4d05ae3459..b7858fb66178 100644
->>>> --- a/net/can/proc.c
->>>> +++ b/net/can/proc.c
->>>> @@ -189,30 +189,35 @@ static void can_print_rcvlist(struct seq_file *m, struct hlist_head *rx_list,
->>>>    			      struct net_device *dev)
->>>>    {
->>>>    	struct receiver *r;
->>>>    	hlist_for_each_entry_rcu(r, rx_list, list) {
->>>> -		char *fmt = (r->can_id & CAN_EFF_FLAG)?
->>>> -			"   %-5s  %08x  %08x  %pK  %pK  %8ld  %s\n" :
->>>> -			"   %-5s     %03x    %08x  %pK  %pK  %8ld  %s\n";
->>>> +		char *fmt;
->>>> +#if IS_ENABLED(CONFIG_KALLSYMS)
->>>
->>> Please don't. I fix %ps and then there is no leak. There will be then
->>> the 0 and everything will be fine.
->>>
->>
->> I can wait for your changes before the v2 posting.
->>
->> Btw. do you think "0" is a good return value, when people expect a function
->> name?
->>
->> What about "(unknown)" or something similar?
-> 
-> Yeah, that '(unknown)' looks slightly better.
-> 
->>>> +		fmt = (r->can_id & CAN_EFF_FLAG)?
->>>> +			"  %6s  %08x  %08x  %8ld  %016llx  %ps\n" :
->>>> +			"  %6s     %03x    %08x  %8ld  %016llx  %ps\n";
->>>>    		seq_printf(m, fmt, DNAME(dev), r->can_id, r->mask,
->>>> -			   r->func, r->data, atomic_long_read(&r->matches),
->>>> -			   r->ident);
->>>> +			   atomic_long_read(&r->matches), r->ino, r->func);
->>>> +#else
->>>> +		fmt = (r->can_id & CAN_EFF_FLAG)?
->>>> +			"  %6s  %08x  %08x  %8ld  %016llx  (unknown)\n" :
->>>> +			"  %6s     %03x    %08x  %8ld  %016llx  (unknown)\n";
->>>> +		seq_printf(m, fmt, DNAME(dev), r->can_id, r->mask,
->>>> +			   atomic_long_read(&r->matches), r->ino);
->>>> +#endif
->>>>    	}
->>>>    }
->>> …
->>>
->>> So if you do this now, then I probably should remove that hunk from my
->>> patch.
->>
->> IMHO these /proc/net/can changes go far beyond replacing the pointer values
->> with "0".
->>
->> I hope the
->> Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
->> is ok for your attribution?!?
-> 
-> That is fine. I just mean I should drop that hunk and repost to avoid
-> the pointless collision here.
+Reported-by: syzbot+10a41dc44eef71aa9450@syzkaller.appspotmail.com
+Tested-by: syzbot+10a41dc44eef71aa9450@syzkaller.appspotmail.com
 
-Yep. Thanks!
+Tested on:
 
+commit:         1590cf03 Linux 7.2-rc4
+git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=17a00949580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=8e9390a601b4f3bd
+dashboard link: https://syzkaller.appspot.com/bug?extid=10a41dc44eef71aa9450
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=10baba9e580000
 
+Note: testing is done by a robot and is best-effort only.
