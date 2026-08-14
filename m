@@ -1,146 +1,182 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC68306B3B;
-	Fri, 14 Aug 2026 23:07:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8CA3CC9F6
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 23:11:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786748862; cv=none; b=etNzlIFio2eYp7eZgiO5R0d2bgYCrMJ/rixFxK8WVb8ERfXjdMX1ru9oiNtmgRC353zfq9smWa7CBKvAKB50mbirD4AVlrwzn35y+eZOn4YDlaIZ7c4Jzk6PEVZNz8DhatOyZFI0Pwxk1m/lNGULvFgvkY2aSBL7m5WpMdYXgC0=
+	t=1786749066; cv=none; b=iVa8uGxJ0kda8l4FW58YlQMKFTjVEis9J5xottRK9B9gUhRWJlF2hZKqQ8FZpeWEUdEIrxUAe36kltF9mHt14sCcQZIfO1zIKokDrXcBjWORxRQGiIR64hZs7QqBlM7q18nFYr2WFp/Tb917D8tPZOBcxZZRionba/vpGdgXmYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786748862; c=relaxed/simple;
-	bh=jQ6Y6dcMSrpMjKg2pUFiZ7XSVpb7Ji+fdOVYlNkB+uE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gjM5WnkUQfuZVzlrr0T4ltgP14JKK2lmZZX/5g+lp7KivIgX/+tQVLMkk0+ylshgr83oHAErKTQ9Ex1xSRnMwaq+u4flZ9AZTHCYhwU7pxdE2NuFvuCa/hOq5/4Jz38PhfXBRkH8Y6h6mMj9GtoeX+Wec7qCA/+PRXRIVlCRXhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KREDyTY/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786749066; c=relaxed/simple;
+	bh=wGdVXlAMvX7tE0cwCy+Em1rumWHMNHO70xxu6sxLlu0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E6qV1PyP+KcYIAH257Jkpm0gZNesRqyzv0Zy/8H4sLSeLJZOK67nCifAEVIp8P0h3ZN+9OpVVqie8gnCbbPieIoIiMONx0sQzZ72XY1FTJJTJYk8KrEYYm+qzXgEF3vbZc0L6X3skwDYag5atlfb0wSd3I9/ET3fSw0I/dcoORA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mdf/Zc5k; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KREDyTY/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC961F000E9;
-	Fri, 14 Aug 2026 23:07:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786748861;
-	bh=Rf8rFsByb/4KElgDc0YWPuNcgqqu3Ti02BSgkxOh9O8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=KREDyTY/6s9bebcbPqSDHbBV2v6Wc2lgKUo9R94XFgsl5YtMkwEdUUttdX90czi1U
-	 K/dMe13vM8dXkonj8mNS6BJevGa0qo1ilAaL8waLtP4ymHwVH4cFX6kfPwIRbfXOfp
-	 xjRP8YFyicoFIpRTwMqkyPKyOO2vz6KpV5NkRXniRttNPiNk1SYQ8KxZAN93xEWhp9
-	 Y6HQn5YU4+mG3xkJQEVDt8ahBcEFmBme7XADblbyCQIPsoXl0s1MKq5zfEyv8X7Dd3
-	 JQcgvUHGlh2FtQdxS/otG0rccVM92mDNPdDm91AHXcmL6my0FClQDOyER8GXk2IelU
-	 K4DnvABAUlL6w==
-Message-ID: <ea0ae140-86e9-4578-a24a-d50fc0b19c4a@kernel.org>
-Date: Sat, 15 Aug 2026 01:07:36 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mdf/Zc5k"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-cc11a30a259so605085a12.3
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 16:11:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786749063; x=1787353863; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gGvwPOiibGAV/zYgpHRwEPNgFrWcL2aKuRnGK18Zsbk=;
+        b=Mdf/Zc5knMvoA2RovLv8h6x11TqECpq8rhXXi8PjD5o08xws9gqi1Ma/CItVJiC5Ak
+         8mYNDYTqPOoFI6tgjY64xmQup6ymx20IfJxUJRCluENxnsXyqCDnUl5Mod96yHHLYid8
+         oZRsdmwb5+DuaHJtJO7tqUz+/72RqNbESCcPyG4shCmvxwD5VKi8AucBGFKv/TO+qSUt
+         jOXCI77U7OuT/dn8NlyIn95YhSBjfGlo+shgHd/rBJ5QIC71tdq2F7kBfMR311NTsU+r
+         2N7nCP5ZT4Xk1DK7C3CXny238HTyQijbOwJ4Hh2Y5zDTbh29zc4OokCQve7yoho0ZNBQ
+         9T7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786749063; x=1787353863;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gGvwPOiibGAV/zYgpHRwEPNgFrWcL2aKuRnGK18Zsbk=;
+        b=BdBT9kTdfnpMj8ftD7ly4+mUpMoBYSwBcPlvu5g1Aik0oRPJs5fKlcR8CVqTgx7Pga
+         Be6Lm2h4mVDbSR+H9ba6LYRtYOmWew6PMdTUSv4SluHI9TVh3ycRuVKsQ1eTRDr/jpxb
+         pcWpF/mE7EAtHXSgyRpe53cCe5zRRuk+lutHmDmOPxBXLDuNuis2oboY/SVmPoP0Z4a4
+         hksEAO+C9Jtzj+07Y2ho4gEwcLzYtQsFZ7XLfdMeyAXDpVa+86CGYCrUD2AWa8zoj4KC
+         gL8lNcVpwaXWG79zQLcnijn2R7h7G6X6QcsbL09uAn8lNog3l7d2Oz3rz190wYuUMc9o
+         DiRA==
+X-Gm-Message-State: AOJu0Yyu7ZDMUhTOO1M8NLgFcrUfzDiuQbxVq/7UgPPTNRysffRheO+3
+	/2TLvR2hfj/m4CUX1nlg8u3wHCMTX3BdvaKf3BdJ0J50ikSUel5sYRAda0oTMceY
+X-Gm-Gg: AR+sD12GHlg8zmxmGK+TOJaDl+9FZVAHpAzIOcg+fkChFspk8d+ln0MXgsz8X31tB+K
+	yVUcsOkHDdWLvuGF9yUiNLclNG/fRgaCnBha5EcqS1Zyy6cXJxFaWww5Sy2p3570npcmKyTaNln
+	eA2Bo4ufkQA3qy1fDOHHo3FiBkWPimpoYfCCmum2u8MpWrCdqx2ggcENvl64Jv7sdF3LNojV/mb
+	TpYNfKo1V4QBTsFZKB3Ro85HCR+tlGJ2YTKfwc5e2kvTMAEbNCYJNw/SECGDCTEYYALf+zdob8p
+	8VfXc1IZ3nD36RFRpkSFPtUJXA8COoaATJFK3Ocrek5Ent6OjuX9PYwlDiXlg/zPgf0Ylg5fntf
+	T6bYdBoQxStgGFt+8UFIZi6PszQCIrg0bolLFXu1iDd94YU7QTveyM2qtSICx5jChZcD7j8SYVl
+	zYaEGw7zdMKJr1tIjlxyOSk/a7IjRsRyfw4Lb80Qs+BKnvEEb6QCdNFCU3N2kxN/MHpDUZli55x
+	Sj0/g==
+X-Received: by 2002:a05:6a21:1f88:b0:3cb:9bb0:27a2 with SMTP id adf61e73a8af0-3cc71e8382cmr11015578637.34.1786749062904;
+        Fri, 14 Aug 2026 16:11:02 -0700 (PDT)
+Received: from Mac.localdomain ([12.162.234.74])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-320d61e1568sm8563607eec.11.2026.08.14.16.10.58
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 14 Aug 2026 16:11:02 -0700 (PDT)
+From: Ahmad Byagowi <ahmadexp@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Peter Rosin <peda@lysator.liu.se>,
+	Nam Tran <trannamatk@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	linux-leds@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH net-next v5 0/7] ptp: ocp: Add R4006 and V9 I2C peripheral support
+Date: Fri, 14 Aug 2026 16:10:48 -0700
+Message-ID: <cover.1786746757.git.ahmadexp@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net-next 2/4] selftests: net: Lower threshold on debug
- kernels for big_tcp_tunnels.sh
-Content-Language: fr
-To: Alice Mikityanska <alice.kernel@fastmail.im>,
- Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>
-Cc: Eric Dumazet <edumazet@google.com>, "David S. Miller"
- <davem@davemloft.net>, Simon Horman <horms@kernel.org>,
- Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, Alice Mikityanska <alice@isovalent.com>
-References: <20260814194124.3102581-1-alice.kernel@fastmail.im>
- <20260814194124.3102581-3-alice.kernel@fastmail.im>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20260814194124.3102581-3-alice.kernel@fastmail.im>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Alice,
+Add the generic LED and I2C-mux support needed to describe peripherals
+behind the FPGA I2C controller, then use it to instantiate the R4006 and
+Time Card V9 board topologies from software nodes.
 
-On 14/08/2026 21:41, Alice Mikityanska wrote:
-> From: Alice Mikityanska <alice@isovalent.com>
-> 
-> CONFIG_DEBUG_NET kernels run slower and generate fewer BIG TCP packets,
-> making the test flaky on upstream CI runners. Lower the default
-> threshold for those kernels.
+Patches 1 and 2 add the binding and LED-class driver for the Lumissil
+IS32FL3207. The driver supports individual and multicolor LEDs, enforces
+per-output current limits, and keeps the controller shut down until every
+channel has been configured.
 
-Thank you for looking at that!
+Patch 3 propagates software-node channel descriptions to adapters created
+by i2c-mux. It preserves an ACPI primary firmware node, makes I2C adapter
+lookup recognize the attached secondary node, and keeps that node alive
+through child-client teardown.
 
-> Signed-off-by: Alice Mikityanska <alice@isovalent.com>
-> ---
->  tools/testing/selftests/net/big_tcp_tunnels.sh | 18 ++++++++++++++++--
->  1 file changed, 16 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/net/big_tcp_tunnels.sh b/tools/testing/selftests/net/big_tcp_tunnels.sh
-> index 9b7d0456bcc1..e27774eae20e 100755
-> --- a/tools/testing/selftests/net/big_tcp_tunnels.sh
-> +++ b/tools/testing/selftests/net/big_tcp_tunnels.sh
-> @@ -17,11 +17,25 @@ CLIENT_IP6="2001:db8::1:2"
->  CLIENT_IP4_TUN="192.168.2.2"
->  CLIENT_IP6_TUN="2001:db8::2:2"
->  
-> -: "${PACKETS_THRESHOLD:=1000}"
-> -
->  # Kselftest framework requirement - SKIP code is 4.
->  ksft_skip=4
->  
-> +is_debug() {
-> +	local config="/proc/config.gz"
-> +	[ -f "$config" ] || config="/boot/config-$(uname -r)"
-> +	[ -f "$config" ] || return 1 # No config found; assume non-debug.
-> +	gzip -dcfq "$config" | grep -qx 'CONFIG_DEBUG_NET=y' || return 1
+Patch 4 tracks the fixed-width board ID and serial number independently.
+Profile selection can therefore proceed when the board ID is valid even
+if the separate serial EEPROM is absent.
 
-Are you sure it is CONFIG_DEBUG_NET that causes that? It shouldn't be
-that heavy.
+Patch 5 adds the reusable profile-driven topology and recovery lifecycle.
+It stops topology work and removes the mux before the root I2C controller
+unbinds, preventing new child creation after adapter teardown has begun.
 
-Do you not want to change the thresholds only for the -dbg runners using
-kernel/configs/debug.config? If yes, you should check if
-KSFT_MACHINE_SLOW == yes:
+Patch 6 adds the R4006 temperature, humidity, pressure, GNSS LED, and four
+SMA LED groups. The BNO08x channel remains empty because no upstream driver
+binds that device. Production R4006 IDs may carry a revision suffix.
 
-https://github.com/linux-netdev/nipa/wiki/How-to-run-netdev-selftests-CI-style#dealing-with-slow-runners-in-performancelatency-tests
+Patch 7 adds the V9 BME280, BNO055, two GNSS LEDs, and four SMA LEDs. It
+uses the exact fixed-width ID "TIMECARD-V9" because earlier revisions
+expose the same detectable I2C devices with different LED routing.
 
-Cheers,
-Matt
+The prerequisite patches touch DT bindings, LED, and I2C code. Reviews or
+acks from those maintainers are requested so the complete dependency series
+can be carried through net-next.
+
+Hardware and build validation:
+  - Exercised the R4006 LED routing on hardware.
+  - Checked the V9 controller address, 4.7 kohm RISET, sequential RGB
+    routing, and second GNSS LED against the V9 schematic.
+  - Ran dt_binding_check for issi,is32fl3207.yaml.
+  - Built i2c-core-base.o, i2c-mux.o, leds-is32fl3207.o, and ptp_ocp.o
+    with W=1 for x86-64 and arm64 using defconfig and allmodconfig.
+  - Ran strict checkpatch with an 80-column limit on all seven patches.
+  - Applied the generated mailbox to the stated base and compared the
+    resulting tree with the source branch.
+
+Changes since v4:
+  - Split EEPROM readiness, generic topology lifecycle, R4006, and V9 into
+    separate patches.
+  - Track board-ID and serial-number readiness independently and publish
+    each field only after a successful EEPROM read.
+  - Replace the atomic retry counter with worker-serialized state, bounded
+    logging, and synchronized root-controller teardown.
+  - Support multicolor groups whose final components use outputs 16 and 17,
+    and document current limits relative to the RISET-derived full scale.
+  - Serialize multicolor calculation, PWM updates, and controller shutdown.
+  - Match secondary software nodes while preserving an ACPI primary, and
+    balance software-node ownership on failure and teardown paths.
+  - Clarify that the BNO08x and LM75B at address 0x4a occupy different mux
+    channels.
+  - Rebase onto current net-next.
+
+v4:
+https://lore.kernel.org/r/cover.1786543681.git.ahmadexp@gmail.com/
+
+Review of v4 patch 4:
+https://lore.kernel.org/r/62242142-0d27-425c-88d6-db65e80bbcea@linux.dev/
+
+Ahmad Byagowi (7):
+  dt-bindings: leds: Add IS32FL3207 controller
+  leds: is32fl3207: Add controller driver
+  i2c: mux: Propagate software nodes to channel adapters
+  ptp: ocp: Track EEPROM fields independently
+  ptp: ocp: Add profile-driven I2C topology support
+  ptp: ocp: Add R4006 I2C peripheral topology
+  ptp: ocp: Add Time Card V9 I2C peripheral topology
+
+ .../bindings/leds/issi,is32fl3207.yaml        |  281 +++++
+ MAINTAINERS                                   |    7 +
+ drivers/i2c/i2c-core-base.c                   |   24 +-
+ drivers/i2c/i2c-mux.c                         |   77 +-
+ drivers/leds/rgb/Kconfig                      |   11 +
+ drivers/leds/rgb/Makefile                     |    1 +
+ drivers/leds/rgb/leds-is32fl3207.c            |  736 ++++++++++++
+ drivers/ptp/ptp_ocp.c                         | 1025 +++++++++++++++--
+ 8 files changed, 2083 insertions(+), 79 deletions(-)
+base-commit: e6a5d573d24cd375e09d24f136523cb3cc85c9d3
 -- 
-Sponsored by the NGI0 Core fund.
-
+2.50.1 (Apple Git-155)
