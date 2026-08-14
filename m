@@ -1,70 +1,162 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EE341D12C
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 08:07:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09154322F7
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 08:07:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786694835; cv=none; b=kTVTPaDFTOT4o8pmpaWWNKDCbS8v5r6MBgGKn4mPWr599tMT5WuJ1fIf2oz7nbc6LYSFrtk4tq1B+jYK6ERBBFX0VX5lnh+IXER78LK9/+iwnliRgSne3cauqxCndzwAHp9tlICMyAECssVResMg90TJHRt5bKcrkgp0Tx4vja0=
+	t=1786694841; cv=none; b=byWDM/L2ExAJcZk6InrsMa9pYSmqlDEyQ9W9i3dVofGGcEfW4nVcQe6lGYqrVFPwD2cJNZ7EIGf8fHlpur2TSrEw3U+MQRuFm2sz5r8kcoHb+gqGc1VlG07FXd3mzbXlUWWiuSuwIwxz9fPxIYAnKpJiRRW5jTJPHRlPhRVoPR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786694835; c=relaxed/simple;
-	bh=Qx4LScBx71WFu++/USfAsOmtzilPUJrY4828cipc2EI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L5xlWX4DpIjTqRkTilUnREmi5vC5jApaJM8btnjzDFT9atGBBRbuK8ebTNueOUSgV7vRsyiM9HieqixdFluncVzfRyLtDes6DYswr0QNcTm6Y8O1Vk33+K4pc9OY10F7fhhDmAgoV1rSdCZ7kwoehOjL3BPK2V/98jhh3mUMxuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oqw68CnD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786694841; c=relaxed/simple;
+	bh=lozlP9L3eAY8D2lHlsSzUNCV3D/66XCaVi1LGP3HanI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KYKN678EsO5FdH6uaB+fd5abfTN/gmBUJolJvU6s5DFygl37EdPhmP57R9lIEUDAPbC6UAQsM08RqDzr10w/UQgO/UUK+fhIj9//hUBUEOkJBnvL/N8Ihr8/ews7i+tkdHvdxTV6uTZDNbAusNgyh2kH9aCtYF3Jxs6ytedTBjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IQ96MLZb; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oqw68CnD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D121C1F00A3A;
-	Fri, 14 Aug 2026 08:07:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786694833;
-	bh=O2KvK+dDWD+lxggjkeFjWjKL6VrmWECW2QAh9Fd6p8A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Oqw68CnD/2E21tXqxDG4JzzNMlTCe5opETTVeoyA/RJiIDbJie0HV0g81Is5cT2Cb
-	 nX4Eu4y/yiVSv50nH/sLk/YtRoyjDui05afb06saBvIxGswSIjNE6xMoGzoVXxLebH
-	 nChijFRo07KX7FKVQxKFwlyJN6kyvAtn9BPf/9vA+W839itprAT4wH9fhhd4qLdIz+
-	 AwWFOZQQay39XYev3HiappYIq1PAfhEWfN2qyGVh9DWI/4+wn95sEvCUrGWx3iPXs4
-	 sdN5UC7B5vo63Vd8zTU7lL8wbOnZ/4tmvlxfd/CXcvYXQtRntBE1TWyxKDn16+E1UX
-	 FSZYYO2WMiZjA==
-Date: Fri, 14 Aug 2026 09:07:09 +0100
-From: Simon Horman <horms@kernel.org>
-To: Dave Ertman <david.m.ertman@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: Re: [Intel-wired-lan] [PATCH iwl-net v2] ice: Fix incorrect LLDP
- filter assumptions
-Message-ID: <20260814080709.GF265046@horms.kernel.org>
-References: <20260811181127.1142095-1-david.m.ertman@intel.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IQ96MLZb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786694838;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CIAD1LGu+O2XyRQe94lFbXJERGzEOqBmE4EAxJP+aNc=;
+	b=IQ96MLZbQABp7TjHbRoMpbzJlqCD7EEp/HZdHiNCi9CKHYKsGq//4mLg+4Ia76QCc+ChfU
+	X0WnPC2EzE1DIaWHduD7qleW1qbIAUwyYO5JKIMTADn4lLU2EGa6iBdsDoY/A72ow4qKW4
+	QOqB94GluCmlSjp+UZI/kl1ZwouEbkw=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-126-zbEVyS8-NjyajH5-aXNWbQ-1; Fri,
+ 14 Aug 2026 04:07:15 -0400
+X-MC-Unique: zbEVyS8-NjyajH5-aXNWbQ-1
+X-Mimecast-MFC-AGG-ID: zbEVyS8-NjyajH5-aXNWbQ_1786694833
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 032DE180074B;
+	Fri, 14 Aug 2026 08:07:13 +0000 (UTC)
+Received: from [10.44.32.131] (unknown [10.44.32.131])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AE723180049F;
+	Fri, 14 Aug 2026 08:07:09 +0000 (UTC)
+Message-ID: <49dd691c-088f-41f9-8334-a6319096caed@redhat.com>
+Date: Fri, 14 Aug 2026 10:07:08 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260811181127.1142095-1-david.m.ertman@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v7 2/3] dpll: zl3073x: add channel ToD, phase
+ step and TIE operations
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>, netdev@vger.kernel.org
+Cc: Petr Oros <poros@redhat.com>,
+ Chris du Quesnay <Chris.duQuesnay@microchip.com>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Jakub Kicinski <kuba@kernel.org>, Jiri Pirko <jiri@resnulli.us>,
+ Min Li <min.li@microchip.com>, Paolo Abeni <pabeni@redhat.com>,
+ Richard Cochran <richardcochran@gmail.com>, linux-kernel@vger.kernel.org
+References: <20260811134700.1211010-1-ivecera@redhat.com>
+ <20260811134700.1211010-3-ivecera@redhat.com>
+ <dfbb7647-8c39-4620-9eb6-74d84b066f19@linux.dev>
+Content-Language: en-US
+From: Ivan Vecera <ivecera@redhat.com>
+In-Reply-To: <dfbb7647-8c39-4620-9eb6-74d84b066f19@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On Tue, Aug 11, 2026 at 02:11:27PM -0400, Dave Ertman wrote:
-> In commit 4d5a1c4e6d49 ("ice: do not add LLDP-specific filter if not
-> necessary"), it was assumed that llpd_fltr_ctrl was a unique application
-> of a filter instance and the other command in the flow was generic.
-> This is an incorrect assumption, they are both meant to add a filter to
-> handle LLDP packets and only varied in the actual AQ call made.  The
-> newer AQ call was created to handle a special case in some NVM images
-> where a LLDP filter was already existent and the old AQ command would
-> generate an error if a new filter was attempted to be added. The newer
-> AQ command would detect this case and instead would add the current
-> target to the existing filter rule.
+On 8/13/26 11:21 PM, Vadim Fedorenko wrote:
+> On 11/08/2026 14:46, Ivan Vecera wrote:
 > 
-> Fix the flow so that the newer command is always used if available and
-> only fall back to the older command when that is the only solution.
+> [...]
 > 
-> Also remove the obsolete state flag from the PF struct.
+>> + * zl3073x_chan_tod_adjust - atomic ToD read-modify-write with 
+>> rollover guard
+>> + * @zldev: pointer to zl3073x device
+>> + * @ch: DPLL channel index
+>> + * @delta: time adjustment to apply
+>> + *
+>> + * Reads the next-Hz ToD and current ToD, then checks whether enough 
+>> time
+>> + * remains before the next 1 Hz rollover to safely complete the write.
+>> + * Re-reads if the 1 Hz tick crossed between the two reads or if less
+>> + * than 20 ms remains before the next rollover. Applies @delta and 
+>> writes
+>> + * the result back.
 > 
-> Fixes: 4d5a1c4e6d49 ("ice: do not add LLDP-specific filter if not necessary")
-> Signed-off-by: Dave Ertman <david.m.ertman@intel.com>
-> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+> you keep 20ms threshold based on the avg read/write transaction time (I
+> assume), but it may happen, that this call will be preempted in between
+> reads and write, and 20ms will not be enough before 1Hz rollover. Have
+> you though about such option?
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Yes, this is a possibility. The 20 ms threshold provides margin for
+the write sequence (ready-wait + three register writes + command)
+which normally completes in single-digit milliseconds, but a
+scheduling delay could consume the remaining margin.
+
+If that happens, the hardware applies the written value at the
+following 1 Hz edge instead of the intended one, resulting in a
+1 second ToD offset. The PTP servo detects and corrects this in the
+next cycle. There is no atomic ToD update command in the hardware,
+so this trade-off is inherent to the device's register interface.
+
+I tried to run 1000x times loop with comparing jiffies after ToD read
+and after ToD write. The testptp that adjusted ToD has been pinned to
+single CPU and parallel stress CPU program on the same CPU during
+testing. The average time for write-tod operation was 9ms with maximum
+of 10ms.
+
+> 
+>> + *
+>> + * Context: Caller must serialize all zl3073x_chan_tod_* calls 
+>> externally.
+>> + * Return: 0 on success, <0 on error
+>> + */
+>> +int zl3073x_chan_tod_adjust(struct zl3073x_dev *zldev, u8 ch,
+>> +                struct timespec64 delta)
+>> +{
+>> +#define ZL_TOD_MAX_RETRIES    20
+>> +    static const long threshold_ns = 20 * NSEC_PER_MSEC;
+>> +    struct timespec64 ts_next, ts_cur, diff;
+>> +    int rc, i;
+>> +
+>> +    for (i = 0; i < ZL_TOD_MAX_RETRIES; i++) {
+>> +        rc = zl3073x_chan_tod_read(zldev, ch, true, &ts_next, NULL);
+>> +        if (rc)
+>> +            return rc;
+>> +
+>> +        rc = zl3073x_chan_tod_read(zldev, ch, false, &ts_cur, NULL);
+>> +        if (rc)
+>> +            return rc;
+>> +
+>> +        /* Ensure the 1 Hz tick did not cross between the two reads
+>> +         * and that enough margin remains to complete the write.
+>> +         */
+>> +        diff = timespec64_sub(ts_next, ts_cur);
+>> +        if (diff.tv_sec > 0 ||
+>> +            (!diff.tv_sec && diff.tv_nsec >= threshold_ns))
+>> +            break;
+>> +    }
+>> +    if (i == ZL_TOD_MAX_RETRIES) {
+>> +        dev_warn(zldev->dev,
+>> +             "DPLL%u ToD adjust failed to get stable margin\n",
+>> +             ch);
+>> +        return -EBUSY;
+>> +    }
+>> +
+>> +    /* Apply delta to the next-Hz ToD */
+>> +    ts_next = timespec64_add(ts_next, delta);
+>> +    if (!timespec64_valid(&ts_next))
+> 
+> maybe timespec64_valid_settod() will be better as the code is about
+> modifying ToD?
+
+Good point. Will switch to timespec64_valid_settod() in v8.
+
+Ivan
 
