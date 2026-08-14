@@ -1,72 +1,52 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0402445D1B9
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 11:00:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A0F4582EA;
+	Fri, 14 Aug 2026 11:01:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786705243; cv=none; b=elpP0n7B/TdHUjvhp3pKELBVWFnQ4Q23R9UCuv3yr3j2AaPP8ICsd1LUjNbaji19D/rRdvjpQNec6rKSej5t532MG/QqZrUdNYuh8Ggmtst/v1KBlK7MHP5fH5IRpn2x78mmAIu2Em4akIrrwG3/hDjAF9hqJhb94fAMM2J0t+g=
+	t=1786705288; cv=none; b=JmXnPUYcuCICDJ0MTB/BanhB05pgIWgGcic9fso1YAGsYoajjUVA3C3hs7IBFj+uY55a2z3ULrsqc3LWN+N5uD7xptSVwWWhVRpNmcdbLwI+Vi+YmbYAzYo2Hj3HI6HWtx2YyW22rJHQSGs7EABC1+OMc3ol8kx0CO+60M47qTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786705243; c=relaxed/simple;
-	bh=5c1qzxn3eQTa/iff3NtZx81Q1PIOKP+L6PkEFSu6JWo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JkjUIybWMKjO8xcynKxHQ13GJjfDHrO4kNnbpZ5/S6A5Vc9LiO5Azzu8TPDZc3m8YcKWIwsvh23KQ3Ct6cZG1isHVHSNQ7IqM3xH+qVBjNYAFrjsudLgU4lMAYqdlfg+M2VyKjl+bbqclXtLD9eq0laAidEz5v7h1TzbPsdN6vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AjBUwR3i; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AjBUwR3i"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4956242332dso9083805e9.2
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 04:00:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786705234; x=1787310034; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZWrUQY6MdEmAwjEPwEDco+lhwZ1hkXa6LAwLt7wwMi0=;
-        b=AjBUwR3i+AQFDjsOatR8Zcd33zWRdlY6xijrfPWOjHccniHcEXpSQPoZRg0R9DmWJx
-         iJFQyMzSWpy3oZom/CSjA6H/Sazah+ifEsQpCTwBZp9b3lXPUz09oYfA2XlV/MsdJO7B
-         i5CTL6nBvUOAW26b6GU90SBQZevvFaAItqShYwMoRjlVZ7wltb/9N+Ec51OfFe6/fhSe
-         SoiGZatvcKwM2soNvd2UxDMoIVz1c8PC+k+1y+xula7SmW0w/aZDdtOcaOe/udvWL3z/
-         fqhHmxboaINEbwzH3Jue85V6zZAXluEnjKr4pDa7dDVERK0Tb7DzigndMppag+hX7hHs
-         uY/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786705234; x=1787310034;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZWrUQY6MdEmAwjEPwEDco+lhwZ1hkXa6LAwLt7wwMi0=;
-        b=CJr/Pd60S/lOINlyEL0YusYM+rVbO883pOpz1+X122FGyAJB6cxDfppwnRYArAsn9O
-         tOrRvE1UTw0o3FJ0t4MRBGGC+vz5+OAs+DW8mStOB0G65POHLz8A58+tJXsuHytUE3iq
-         R+AwTiKQyQYmGYilMeNmNdakLBJJdSxsknf2Rlr/6PP1VRALRiti3gCywUbUO/QIl+PG
-         g26x93FyhhASggICDbYddXHSVVScqrGgGQnRkbosJNaDl1i9lBX4YLnVfhRNO9IZ6GIB
-         fss768dn0+ROxDPTKqTps+Tdx6r/tKbjelCnvibQmGbi2f1JQp27s1CRRuJrlIBrOfqc
-         Lmwg==
-X-Gm-Message-State: AOJu0Yy/XtXDs0DpUTJIo/j2t0ErvXWhVgO/harZwgg7XuZsvdiFMfRR
-	2Gb3qjuADaOADN7vzdiNt40XpYxR9hnvDSEj29tIn8N2s7V/Pf8Vuioqk0XyLrcn
-X-Gm-Gg: AR+sD10Ug1aotoi20mvB3TAZka3vvwb+EeMrrZB568yDdwlKuaQ0yJ5KXSyb3tDfJj6
-	nw9iQ4ihGW6u+gUn8h1ftxxcIDIplG66V4YCyURrj+beXr+hKrNMQolGtxAD4B2HJe2DTTDZF/r
-	Phi/zGP8C+epNc3nDOOQLM2iXOs1iSILc3B/ZeGEom9VCN7bbkzPrhF1XWxBXvRFPCVikez7n1J
-	BeK3gbPCDEghJFVWzNQy9Y8iW8aY2h6Ky07aA3Er0D+YNMH2MKx7EmqyEX3Jolw++WqHvXahxxw
-	yu2jlcFwD03SSlQmWUbWT8M5zWpVgEdFJqync3G15wFM93sQEzQaB0GGyGnGyRPgwewg7GvRNI0
-	x0V+VCmC9FR+ton1hXFRvVVnixBdnQxCTagMUun3zW4mW0SlFCUk4YE1e+l1yWQij1jLPIAVV0C
-	vEUCIoB3FILQwpk5PHBrcvCqhI2f6AOmFVfWap3JiqWpgXccIjoGlxDZ/YOBWj/K4qFyaVx62L/
-	xtNCIE+DWbNK2Hm3Ofbp4FqSja73kTGkT28npC6Fc0=
-X-Received: by 2002:a05:600c:6dc3:b0:499:78b3:7b36 with SMTP id 5b1f17b1804b1-4998798091amr44356085e9.11.1786705234133;
-        Fri, 14 Aug 2026 04:00:34 -0700 (PDT)
-Received: from fedora ([46.205.219.15])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f200752sm7813507f8f.1.2026.08.14.04.00.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 04:00:33 -0700 (PDT)
-From: Daniel Pawlik <pawlik.dan@gmail.com>
-To: netdev@vger.kernel.org
-Cc: lorenzo@kernel.org,
-	win847@gmail.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Daniel Pawlik <pawlik.dan@gmail.com>
-Subject: [PATCH v7] net: airoha: npu: use aligned streaming DMA for mailbox messages
-Date: Fri, 14 Aug 2026 13:00:17 +0200
-Message-ID: <20260814110017.2795022-1-pawlik.dan@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	s=arc-20240116; t=1786705288; c=relaxed/simple;
+	bh=0ghVpFavg1/uLlMHIuze0nLyf4DDxLIRKpsZBa0Bw+Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kr73oSoWQ9B9f8B8xF40CaqpJAK8F3326lfw6H6ZzZAifv6IT1lmd9cO8cQd8hoJaCBZe87gE1iN6Q5cZF9akSyrUPrJ2USGVs/xmHnJ7JRSbGU7k8Cxf2k465q3woN0IUNQYzzhQG8suoQ3jOhG4k7BcYQJTQ6RqpaE+81ut1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 7F9212021EB;
+	Fri, 14 Aug 2026 13:01:03 +0200 (CEST)
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wupep-001RYy-1H;
+	Fri, 14 Aug 2026 13:01:03 +0200
+Received: from ore by dude04 with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wupep-00000009uX9-1HEL;
+	Fri, 14 Aug 2026 13:01:03 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Linus Walleij <linusw@kernel.org>,
+	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	stable@vger.kernel.org,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Alvin=20=C5=A0ipraga?= <alvin.sipraga@analog.com>,
+	netdev@vger.kernel.org
+Subject: [PATCH net v1 1/1] net: dsa: realtek: use gpiod_set_value_cansleep for reset GPIO
+Date: Fri, 14 Aug 2026 13:01:02 +0200
+Message-ID: <20260814110102.2362246-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -75,167 +55,80 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On EN7581 + MT7996 (Gemtek W1700K), mapping small caller buffers with
-DMA_BIDIRECTIONAL regresses NPU version probe: the mailbox completes
-successfully but WLAN_FUNC_GET_WAIT_NPU_VERSION reads as 0.0 instead of
-0.1111.
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Bounce mailbox traffic through a per-core cacheline-aligned buffer
-allocated at probe. Map ALIGN(len, SMP_CACHE_BYTES) with
-DMA_BIDIRECTIONAL while programming the original payload length into the
-mailbox length register. Copy the reply only after dma_unmap_single() so
-the CPU sees the NPU-written payload on non-coherent DMA.
+rtl83xx_reset_assert() and rtl83xx_reset_deassert() are only called from
+the probe path, which may sleep and is not timing-critical.  When the
+reset GPIO is provided by a sleeping controller such as an I2C I/O
+expander, gpiod_set_value() warns:
 
-Introduce __airoha_npu_send_msg() with an optional reply pointer so GET
-callers can copy the trailing response payload once. Keep
-airoha_npu_send_msg() as a wrapper that copies the full response back
-into the caller buffer, matching the old bidirectional mapping.
+  WARNING: drivers/gpio/gpiolib.c:4030 at gpiod_set_value+0x44/0x80, CPU#1: kworker/u16:4/61
+  Hardware name: B&O MAP CA33 Rev f (UNKNOWN) (DT)
+  Workqueue: events_unbound deferred_probe_work_func
+  pc : gpiod_set_value+0x44/0x80
+  lr : rtl83xx_probe+0x1d8/0x3a0
+  Call trace:
+   gpiod_set_value+0x44/0x80 (P)
+   rtl83xx_probe+0x1d8/0x3a0
+   realtek_mdio_probe+0x24/0xa0
+   mdio_probe+0x38/0x78
+   really_probe+0xc4/0x3e0
+   __driver_probe_device+0x15c/0x1b8
+   driver_probe_device+0xb4/0x120
+   __device_attach_driver+0xb8/0x1a0
+   bus_for_each_drv+0x88/0xf0
+   __device_attach+0xa0/0x1d8
+   device_initial_probe+0x54/0x68
+   bus_probe_device+0x38/0xa0
+   deferred_probe_work_func+0xb8/0x120
+   process_one_work+0x184/0x4e8
+   worker_thread+0x188/0x308
+   kthread+0x130/0x150
+   ret_from_fork+0x10/0x20
 
-Tested on Quantum Fiber / Gemtek W1700K (EN7581 + MT7996), kernel
-6.18.44, including two cold reboots and sustained WiFi use.
+Switch both helpers to gpiod_set_value_cansleep() so such a reset GPIO can
+be used without triggering the warning.
 
-Fixes: 6f884eb87a79 ("net: airoha: Fix DMA direction for NPU mailbox buffer")
-Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20260805070851.2885888-1-pawlik.dan@gmail.com/
-Assisted-by: Cursor:composer-2
-Signed-off-by: Daniel Pawlik <pawlik.dan@gmail.com>
+The reset GPIO has been driven with the non-sleeping gpiod_set_value()
+since the driver was added in v4.19.  The call has since been refactored
+across several files - from realtek-smi.c / realtek-mdio.c into the common
+rtl83xx.c module and then into the rtl83xx_reset_assert() and
+rtl83xx_reset_deassert() helpers (both in v6.9).  This patch therefore
+applies as-is only to kernels that carry those helpers (v6.9+); older
+stable kernels need the same gpiod_set_value_cansleep() conversion at the
+corresponding open-coded call sites.
+
+Fixes: d8652956cf37 ("net: dsa: realtek-smi: Add Realtek SMI driver")
+Cc: <stable@vger.kernel.org> # 6.9.x
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Co-developed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/net/ethernet/airoha/airoha_npu.c  | 62 ++++++++++++++++++-----
- include/linux/soc/airoha/airoha_offload.h |  1 +
- 2 files changed, 49 insertions(+), 14 deletions(-)
+ drivers/net/dsa/realtek/rtl83xx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ethernet/airoha/airoha_npu.c
-index b679bed952de..2ba78bf0e97b 100644
---- a/drivers/net/ethernet/airoha/airoha_npu.c
-+++ b/drivers/net/ethernet/airoha/airoha_npu.c
-@@ -5,6 +5,7 @@
-  */
+diff --git a/drivers/net/dsa/realtek/rtl83xx.c b/drivers/net/dsa/realtek/rtl83xx.c
+index 09fd64880232..8121ec12fd8b 100644
+--- a/drivers/net/dsa/realtek/rtl83xx.c
++++ b/drivers/net/dsa/realtek/rtl83xx.c
+@@ -334,7 +334,7 @@ void rtl83xx_reset_assert(struct realtek_priv *priv)
+ 			 "Failed to assert the switch reset control: %pe\n",
+ 			 ERR_PTR(ret));
  
- #include <linux/devcoredump.h>
-+#include <linux/dma-mapping.h>
- #include <linux/firmware.h>
- #include <linux/platform_device.h>
- #include <linux/of_net.h>
-@@ -23,6 +24,8 @@
- #define NPU_EN7581_FIRMWARE_RV32_MAX_SIZE	0x200000
- #define NPU_EN7581_FIRMWARE_DATA_MAX_SIZE	0x10000
- #define NPU_DUMP_SIZE				512
-+/* Maximum mailbox DMA payload (PPE ~28 bytes, WLAN TLV up to 24). */
-+#define AIROHA_NPU_MBOX_SIZE			256
- 
- #define REG_NPU_LOCAL_SRAM		0x0
- 
-@@ -160,23 +163,33 @@ struct wlan_mbox_data {
- 	DECLARE_FLEX_ARRAY(u8, d);
- };
- 
--static int airoha_npu_send_msg(struct airoha_npu *npu, int func_id,
--			       void *p, int size)
-+static int __airoha_npu_send_msg(struct airoha_npu *npu, int func_id,
-+				 const void *data, int len, void *reply,
-+				 u16 reply_len)
- {
--	u16 core = 0; /* FIXME */
--	u32 val, offset = core << 4;
-+	struct airoha_npu_core *core = &npu->cores[0]; /* FIXME: core */
- 	dma_addr_t dma_addr;
-+	unsigned int map_len = ALIGN(len, SMP_CACHE_BYTES);
-+	u32 val, offset = 0;
- 	int ret;
- 
--	dma_addr = dma_map_single(npu->dev, p, size, DMA_BIDIRECTIONAL);
-+	if (len <= 0 || len > AIROHA_NPU_MBOX_SIZE)
-+		return -EINVAL;
-+
-+	if (reply && reply_len > len)
-+		return -EINVAL;
-+
-+	spin_lock_bh(&core->lock);
-+
-+	memcpy(core->buf, data, len);
-+
-+	dma_addr = dma_map_single(npu->dev, core->buf, map_len, DMA_BIDIRECTIONAL);
- 	ret = dma_mapping_error(npu->dev, dma_addr);
- 	if (ret)
--		return ret;
--
--	spin_lock_bh(&npu->cores[core].lock);
-+		goto unlock;
- 
- 	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(0) + offset, dma_addr);
--	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(1) + offset, size);
-+	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(1) + offset, len);
- 	regmap_read(npu->regmap, REG_CR_MBQ0_CTRL(2) + offset, &val);
- 	regmap_write(npu->regmap, REG_CR_MBQ0_CTRL(2) + offset, val + 1);
- 	val = FIELD_PREP(MBOX_MSG_FUNC_ID, func_id) | MBOX_MSG_WAIT_RSP;
-@@ -189,13 +202,23 @@ static int airoha_npu_send_msg(struct airoha_npu *npu, int func_id,
- 	if (!ret && FIELD_GET(MBOX_MSG_STATUS, val) != NPU_MBOX_SUCCESS)
- 		ret = -EINVAL;
- 
--	spin_unlock_bh(&npu->cores[core].lock);
-+	dma_unmap_single(npu->dev, dma_addr, map_len, DMA_BIDIRECTIONAL);
- 
--	dma_unmap_single(npu->dev, dma_addr, size, DMA_BIDIRECTIONAL);
-+	/* Copy the trailing reply_len bytes of the response. */
-+	if (!ret && reply)
-+		memcpy(reply, core->buf + len - reply_len, reply_len);
-+unlock:
-+	spin_unlock_bh(&core->lock);
- 
- 	return ret;
+-	gpiod_set_value(priv->reset, true);
++	gpiod_set_value_cansleep(priv->reset, true);
  }
  
-+static int airoha_npu_send_msg(struct airoha_npu *npu, int func_id,
-+			       void *data, int len)
-+{
-+	return __airoha_npu_send_msg(npu, func_id, data, len, data, len);
-+}
-+
- static int airoha_npu_load_firmware(struct device *dev, void __iomem *addr,
- 				    const char *fw_name, int fw_max_size)
- {
-@@ -497,9 +520,8 @@ static int airoha_npu_wlan_msg_get(struct airoha_npu *npu, int ifindex,
- 	wlan_data->func_type = NPU_OP_GET;
- 	wlan_data->func_id = func_id;
+ void rtl83xx_reset_deassert(struct realtek_priv *priv)
+@@ -347,7 +347,7 @@ void rtl83xx_reset_deassert(struct realtek_priv *priv)
+ 			 "Failed to deassert the switch reset control: %pe\n",
+ 			 ERR_PTR(ret));
  
--	err = airoha_npu_send_msg(npu, NPU_FUNC_WIFI, wlan_data, len);
--	if (!err)
--		memcpy(data, wlan_data->d, data_len);
-+	err = __airoha_npu_send_msg(npu, NPU_FUNC_WIFI, wlan_data, len,
-+				    data, data_len);
- 	kfree(wlan_data);
+-	gpiod_set_value(priv->reset, false);
++	gpiod_set_value_cansleep(priv->reset, false);
+ }
  
- 	return err;
-@@ -770,6 +792,18 @@ static int airoha_npu_probe(struct platform_device *pdev)
- 	if (err)
- 		return err;
- 
-+	for (i = 0; i < ARRAY_SIZE(npu->cores); i++) {
-+		struct airoha_npu_core *core = &npu->cores[i];
-+		void *raw;
-+
-+		raw = devm_kmalloc(dev, AIROHA_NPU_MBOX_SIZE + SMP_CACHE_BYTES,
-+				   GFP_KERNEL);
-+		if (!raw)
-+			return -ENOMEM;
-+
-+		core->buf = PTR_ALIGN(raw, SMP_CACHE_BYTES);
-+	}
-+
- 	err = airoha_npu_run_firmware(dev, base, &res);
- 	if (err)
- 		return dev_err_probe(dev, err, "failed to run npu firmware\n");
-diff --git a/include/linux/soc/airoha/airoha_offload.h b/include/linux/soc/airoha/airoha_offload.h
-index 7589fccfeef6..f635766e3dba 100644
---- a/include/linux/soc/airoha/airoha_offload.h
-+++ b/include/linux/soc/airoha/airoha_offload.h
-@@ -173,6 +173,7 @@ struct airoha_npu {
- 		/* protect concurrent npu memory accesses */
- 		spinlock_t lock;
- 		struct work_struct wdt_work;
-+		void *buf; /* mailbox DMA bounce buffer */
- 	} cores[NPU_NUM_CORES];
- 
- 	int irqs[NPU_NUM_IRQ];
+ /**
 -- 
-2.55.0
+2.47.3
 
