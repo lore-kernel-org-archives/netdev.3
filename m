@@ -1,157 +1,145 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B001948D87C;
-	Fri, 14 Aug 2026 19:04:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732504963C3
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 19:04:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786734251; cv=none; b=pGrivYim3g+Eph6pu5WmxutVprVT1evwO/dslptIKFYhgfHc53iS++yKwZbG827T/H6OBc5CCWvPcgNK06ikVXgyOwSvkXSfa4oKf87MfQd3HopkzLDHlq0JOuwP5Mj8R7sIWDn1ZgRHyNgSbc1J+ef7mMuM6JnC3ZZsZKqptDk=
+	t=1786734283; cv=none; b=oRXv3GhAdZq6+YuN80gFQDhQSi9+yJKSQ/O2Ns22GLyVBRDfD5fK6gsde90UFc5edk993Chw5XBAJi8ZCLli0bPUU3hMgrvw7EghTtNf3F7eXUMB/pvYa6R0z0o5zv2uNl7Vy0KrSfIyylxv7KK0PS9Db/UtxouoHqSG1VfJLh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786734251; c=relaxed/simple;
-	bh=wRz5Xlhwy1OlLKPH1eMWymtQEb5RB/jQvPdq71Vl1iM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CKrvVDreYrfp84BPQ1xDwXmLIC1r8NhOVEBcy93e/x9B+xUh2mAKwHGPVpuemnMcYzdVtycpVEo4kitFPKeT5Kk/+0ImZWLjMV/V+GFDfWzIicDTv/jiIZ8YoJnuwy4L+pg2cU7nwXsB125lFcHIQaq0WlP76HQrsEM8pT2dyQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=lQJKs7E5; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1786734283; c=relaxed/simple;
+	bh=Pw0NZaYpiHcJ6LnUczkxjh53XdpFkgJeSJbVi1h9dsQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VYib13csPOsr5UAindb18w7BbG/dD+YVbMdxqLErGQldNEIMJsEBMGkWVc24FN9vOGNKZtWS1lYPbOAqj2q4uEm16d+eDlH8GwfHyNNFlm/bZfZzB+Ql8JT7Bq0i1ZYMCwWpfNbgL3VpdiDmckPcKcy+KI4osCwD47CMbhDDzIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=goHqpxBt; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="lQJKs7E5"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=AOAe2niGdV1VluiuMFqrsIhLOofuHSBhfowvnlRihrg=; b=lQJKs7E5VxRFcNdrCiwiZC8jI2
-	m0Z8+B+gU6Tm9i/sbjuL8Di4+8rdp1sfpSsZVJUHkALbxwpJkAtzq9ssVJDgWJyZILienSAJ+GvsT
-	elCnGhbPyHCEFLxx6cT+wx96I4b3F3dzl7ql37sfHt90kc+BTGG8MT0mn1K4XIC29xmMuuUbCcrfK
-	1ggex12RZ1D9UPyFG+Yb05qPBnTDfpoEjIeIKLCwBjt119oySuhFgWKpmsfDC9Jl4fc/sHiBrX7T3
-	SmWPAufurIdZ3h/Afy2ngEzA52Dsa/puh+VBWH+2hD/cUyV0rTJAkDsJM3LfnKymII2vCiiINFrbi
-	C0B2XXMw==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wuxCI-000000034cd-0ihN;
-	Fri, 14 Aug 2026 19:04:06 +0000
-Message-ID: <984e036c-0d90-435f-a56b-ea39a2adf923@infradead.org>
-Date: Fri, 14 Aug 2026 12:04:05 -0700
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="goHqpxBt"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38a0c7e841fso1924202a91.2
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 12:04:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786734282; x=1787339082; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=WKJuMY/9Z2qQ1nJiebk6zH8BqGVpVFHJzd3jEHA9B+4=;
+        b=goHqpxBtML0Hd5R/s3QPhKzDLtTfWQGXxtEDCwRmoUzZq8yZ1/sK6OMkizPM0yVvYA
+         fRACJiPV80hTDTfEShUgccW8DAg5zadLHujwfwSw9XeXkgagpuVUe8a1gS6i9fnueEhn
+         SfaGlfPhrp0CYGi+lePlSJN3/fJFgW+Do712cY8ZYCbyAAvH49CJJFB6nPhhGQK26mzq
+         EFPOp3YjaF5AhU4pzuTqQIf4dm0SpB8jFYcEeyse22H7EpAlANqDS32LDDzDkVeRnpWa
+         +QeyJ9VY1Bx6AKbXzJxCoFvR12G+En7xTSs1pfD+ikh7riUXIHJvIO48G+LrpVvgR4za
+         ONQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786734282; x=1787339082;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=WKJuMY/9Z2qQ1nJiebk6zH8BqGVpVFHJzd3jEHA9B+4=;
+        b=oTKan2+gM0VZBOJ6ij1eKLLIX4Ag/2j4Kx32gfyERFw7wTVXmGOEbxVyXQnEbM8DSf
+         hJZyaI0FCknLM2fAx6OLlwNMv8uqW6ztkkcBDjXLa4htQX0bR45VRwOWKFAVQ0eQqEGo
+         IDT06gLGanK4/tGWkijDYqO0F0jjFg4TcQh+1mdN6dtJUF256Ex9C4K/LtJ0rgyhvX/H
+         98kuPggjrJU7errGgVX9dkMgCeQvoUeYHN7G386n5ueDc4nGAW6MhfqlcqexJizyr1UG
+         taV/Mvn27Mcf0Y7VmSr/qyDWvBuWYajOFEYZzj6VY77EyTzBjfH3dQyjlbRvRbkShMky
+         jCkg==
+X-Forwarded-Encrypted: i=1; AHgh+RpDkRIeXfmGARpY7dE6YoRP2Z6qUk6hIzzLVVEWibMBSI/rsXXhydzAL0yRSV75Hblg8TsKNcw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFmOdIf5b8TlFeC6S/cpgE3tmTAI7xX6TctrkBoxdSIvDU7Yfr
+	lVbiGukwJB9BuCKbAQaBpNNnPSb6JWHCr5VV2/Jh8XuvXTSTZFjvK7lh9iux5L/lnqg=
+X-Gm-Gg: AR+sD13PpmLFF80e4sG0Aa9UXJllkAAbrVdbG5c1A7bJKqkHLywc+BbK8SVAUK4siB4
+	WEHofs95sR35bK+HcLhQk8/5TxUHnkiLRDxKVsO3RTMTa03AlKuyQ/RyvmFY1OcAEf8D3M86LLh
+	S5OT5CeUQCsRtSz/3XY2/Exm875HOUKJQbLEq/n9dHZ26Nrv+vWT6JPWRJkZdwCVQWX5FHkpweO
+	5XK5tc+9hrt6O1tlafJ6T8EyHMr0Z0XTS06Si1xW8DP3CGVgZVU7tghrQyf7OM7yg4hVhkTRAaY
+	bxxqPZd4XzSRVI3CvlHXXkNvHkoNfwSu94vv6obcknpz3YMO2YaoZ/UmrgY2dH4eTB89FnAK9Ly
+	FegMIzMZIQbRYD2cTxnvqRafhbGNI7tQc2I4ZbLQxMjN1+UA5Aw3Cxz7niYad8L2Puq8HDhF//8
+	fXUmX9g3ixtjxqEYxBmDtx8NcKQEPrGU0/JYNgTkEa1w065/YcA4eBrxlYOQNe7bz54oIUY2lvn
+	NgLX4jQVvepfNIZsws7yBsL3ovdBHRHKxqkJVZNami3rGlDzd1Mfd7Yf0mBE1mLwd6LI+e13QMM
+	6z51hYCG07yw
+X-Received: by 2002:a17:90b:2b8e:b0:38e:4f41:83df with SMTP id 98e67ed59e1d1-3933b8aa611mr9883133a91.15.1786734281764;
+        Fri, 14 Aug 2026 12:04:41 -0700 (PDT)
+Received: from localhost.localdomain ([2406:7400:94:ab62:887d:e555:df21:3318])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-141388b2554sm16952785c88.14.2026.08.14.12.04.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Aug 2026 12:04:41 -0700 (PDT)
+From: manushprajwal <manushprajwal555@gmail.com>
+To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	Manush Prajwal <manushprajwal555@gmail.com>
+Subject: [PATCH v2] net: ethernet: renesas: rswitch: fix device_node refcount leak in rswitch_get_port_node()
+Date: Sat, 15 Aug 2026 00:34:23 +0530
+Message-ID: <20260814190423.933-1-manushprajwal555@gmail.com>
+X-Mailer: git-send-email 2.46.2.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net_shaper: fix net_shaper_ops kernel-doc
-To: Jakub Kicinski <kuba@kernel.org>,
- Karl Mehltretter <kmehltretter@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20260813192131.21254-1-kmehltretter@gmail.com>
- <20260814101408.13bc8cc2@kernel.org>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20260814101408.13bc8cc2@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+From: Manush Prajwal <manushprajwal555@gmail.com>
 
+On an of_property_read_u32() failure, rswitch_get_port_node() set port
+to NULL and jumped to the out label before releasing the reference the
+for_each_available_child_of_node() iterator was holding on it. Once
+port was overwritten with NULL, that reference could never be
+released since out: only put "ports", the parent node.
 
-On 8/14/26 10:14 AM, Jakub Kicinski wrote:
-> Adding the missing CC of linux-doc
-> 
-> On Thu, 13 Aug 2026 21:21:31 +0200 Karl Mehltretter wrote:
->> Everything from the "Driver ops vs uAPI" heading onward is dropped from
->> the rendered net_shaper_ops documentation. Older Docutils versions do so
->> silently, while Docutils 0.22 reports the nested headings and adjacent
->> list as invalid.
-> 
-> Isn't this a problem in kernel-doc extraction / how we embed it for
-> rendering? Heading are quite useful and IMHO far more natural to use.
-> My understanding was that kdoc should be able to use basic ReST
-> formatting.
-> 
-> Ack on the list indent fix
-> 
->> Use bold labels and correct the list indentation.
->>
->> Fixes: 16812d9674d4 ("net_shaper: remove incorrect comment about group leaves")
->> Fixes: 26bc4cfb1737 ("net_shaper: clarify the kernel API / comments")
-> 
-> This is a doc patch, please don't sprinkle Fixes tag on patches which
-> don't fix bugs.
-> 
+Rework the function around for_each_available_child_of_node_scoped()
+instead of adding a manual of_node_put(), so the iterator's reference
+is dropped automatically on every exit path. Since port is the
+function's return value, take an explicit reference with of_node_get()
+on the match before breaking out of the loop.
 
-I would prefer to also see the actual warning messages in the patch description,
-but that's up to the maintainer(s).  (or just one of them would be OK)
+Signed-off-by: Manush Prajwal <manushprajwal555@gmail.com>
+---
+v2: Rework using for_each_available_child_of_node_scoped() instead of
+    a manual of_node_put(), per Andrew Lunn's review.
 
-Documentation/networking/kapi:107: ../include/net/net_shaper.h:75: ERROR: A level 3 section cannot be used here.
+ drivers/net/ethernet/renesas/rswitch_main.c | 20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
-Driver ops vs uAPI
-------------------
+diff --git a/drivers/net/ethernet/renesas/rswitch_main.c b/drivers/net/ethernet/renesas/rswitch_main.c
+index 6fe9648163..ffdc42f430 100644
+--- a/drivers/net/ethernet/renesas/rswitch_main.c
++++ b/drivers/net/ethernet/renesas/rswitch_main.c
+@@ -1303,8 +1303,8 @@
+ /* Call of_node_put(port) after done */
+ static struct device_node *rswitch_get_port_node(struct rswitch_device *rdev)
+ {
+-	struct device_node *ports, *port;
+-	int err = 0;
++	struct device_node *ports;
++	struct device_node *port = NULL;
+ 	u32 index;
 
-Established title styles: =/= = -
+ 	ports = of_get_child_by_name(rdev->ndev->dev.parent->of_node,
+@@ -1312,17 +1312,15 @@ static struct device_node *rswitch_get_port_node(struct rswitch_device *rdev)
+ 	if (!ports)
+ 		return NULL;
 
-The parent of level 3 sections cannot be reached. The parser is at section level 3 but the current node has only 0 parent section(s).
-One reason may be a high level section used in a directive that parses its content into a base node not attached to the document
-(up to Docutils 0.21, these sections were silently dropped). [docutils]
-Documentation/networking/kapi:107: ../include/net/net_shaper.h:82: ERROR: Unexpected indentation. [docutils]
+-	for_each_available_child_of_node(ports, port) {
+-		err = of_property_read_u32(port, "reg", &index);
+-		if (err < 0) {
+-			port = NULL;
+-			goto out;
+-		}
+-		if (index == rdev->etha->index)
++	for_each_available_child_of_node_scoped(ports, child) {
++		if (of_property_read_u32(child, "reg", &index))
++			break;
++		if (index == rdev->etha->index) {
++			port = of_node_get(child);
+ 			break;
++		}
+ 	}
 
+-out:
+ 	of_node_put(ports);
 
-I don't know of another reasonable solution for this (although I'm no expert
-on ReST), so
-
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
-
-Thanks.
-
->> Assisted-by: Codex:gpt-5.6-sol
->> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
->> ---
->> The omission is visible in the current linux-next generated documentation:
->> https://www.kernel.org/doc/html/next/networking/kapi.html#c.net_shaper_ops
->>
->> Tested with Sphinx 9.1.0 and Docutils 0.22.4:
->>   make SPHINXDIRS=networking htmldocs
->>
->>  include/net/net_shaper.h | 17 +++++++++--------
->>  1 file changed, 9 insertions(+), 8 deletions(-)
->>
->> diff --git a/include/net/net_shaper.h b/include/net/net_shaper.h
->> index 05cb625b0fe54..a2eb616a19fd0 100644
->> --- a/include/net/net_shaper.h
->> +++ b/include/net/net_shaper.h
->> @@ -73,20 +73,21 @@ struct net_shaper {
->>   * Each shaper is uniquely identified within the device with a 'handle'
->>   * comprising the shaper scope and a scope-specific id.
->>   *
->> - * Driver ops vs uAPI
->> - * ------------------
->> + * **Driver ops vs uAPI**
->> + *
->>   * Members of the driver ops mirror the Netlink uAPI but driver calls do not
->>   * map 1:1 to user calls. Drivers need to be careful when assuming that calls
->>   * disallowed at the uAPI level will never be made at the driver level.
->>   * The shaper core performs automatic reparenting and cleanup, generating
->>   * additional calls. Notably:
->> - *  - @group calls in the driver facing API may have nodes as leaves (user is
->> - *    only allowed to construct groups with queues as leaves)
->> - *  - @group calls may update leaf's parent if the parent is about
->> - *    to be removed (re-parenting nodes explicitly is not supported in the uAPI)
->>   *
->> - * Implicit creation
->> - * -----------------
->> + * - @group calls in the driver facing API may have nodes as leaves (user is
->> + *   only allowed to construct groups with queues as leaves)
->> + * - @group calls may update leaf's parent if the parent is about
->> + *   to be removed (re-parenting nodes explicitly is not supported in the uAPI)
->> + *
->> + * **Implicit creation**
->> + *
->>   * Shapers are created implicitly, meaning that @set and @group operations
->>   * are called both for existing and new shapers. The driver has to infer
->>   * whether the operation is an update or a creation by tracking the handles.
->>
->> base-commit: 3205699d79f262412c1be7fc1c04066610d3cd52
-> 
-> 
+ 	return port;
+--
+2.46.2.windows.1
