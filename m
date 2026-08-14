@@ -1,66 +1,68 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780E9434E30
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 08:14:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D4543D4FA
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 08:14:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786695272; cv=none; b=uwvvkqBwMENolX1fEW/MWPNKJJVhA4AKOPMIs9aObtmz8SPckYQK1t4r/RmdyR8TfGP11oUDkqOpW4uJtTxlGcEyH//DSSmVRks5cPQ+m88L1teLlPYf/vTJiKNIPbkWfp4Z6SNqrE5ijXu+W4p+rimZ8Ds5llZV68DQK6OXIeg=
+	t=1786695280; cv=none; b=THkhHUo5oiq5O/ihkS6w3ba+Dugwocqnt+EdVsIB4UK7OKgALmNvPLZqSQwrQp2SVNCnsEx7+Lt3zqzazgR+ib+DvqIkUYf9Egp396Z5+dhkjCtYn0xks2OPHQfxYoJSQ3qil82vUniKx1lHwuzYC/bG9NkMn9tZNvpSxLeYPt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786695272; c=relaxed/simple;
-	bh=bHZsfLLl5vwCbNfcZaQIZTl5GdjBuDhT51CRLHiccZE=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LmhTbikzupj0J60BYeMSRG+25pTB2zJkqDl50P/ulx0BEdX7Em2DpgpRWhVx+RGxRqeP81MoZcExX10hPjvYzZlYnfCw0Y48+CbhPNm9TftHZ/8LXQ2EjoOeVC/6R/Z/RqDQlyh1LcjPSpMkOMaMd9VWJ+RnlPT9DveRgzfHxhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=SBf1sa+f; arc=none smtp.client-ip=209.85.208.45
+	s=arc-20240116; t=1786695280; c=relaxed/simple;
+	bh=ImEMAg08xglhxwTRkHlgdJ5hJbBLdzMEk0BUv9IF5NA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=c/83XugH0wWvuMYJ+CpUqAAM0udLdjosVWv4WESM2ozqwKrKU6M/JtKVchaCPyk/Nw9wh5IsKxPgwv8APJJtCkCcOcIupdwIFPZ5dp/DG2AG/3X2ahLcFYv+e2m5j8L7+BZQkFpkaw5B9qZzn6zRCs4R+UBsHiuKZMFSJg+pgvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=NJnd2uz7; arc=none smtp.client-ip=209.85.208.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="SBf1sa+f"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6a15d54ac95so1093527a12.0
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 01:14:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="NJnd2uz7"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6a378f90555so1122332a12.3
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 01:14:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1786695261; x=1787300061; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=yPXr0G+xg2fjcvTsT5qtmvvWszHpLn8rkkUHyiWVWks=;
-        b=SBf1sa+fJYMgtQZbA/Pr/WGeqXN4SH0tI/lCt1mGSZmzIfSnq60UKTBm6XMav+1PPr
-         oXGNFxQ27tmH6Mfy2X14H/44rMFqhy1QFEay/6i4xvYc8kVUozS+s1Mp48Lt2foT8m5E
-         jTxSwPWTZXCP36GXehDCrMelb8fFZk2H54TQglHx9XoH1Cy07bKX8cWR1OCb/s7gMdly
-         MU/UvMBL/+EbolRCrGV88JfS6qDgrnWmajoDvfn05vSiBnwSyZPfGGvAB5k28Z6ZJvcv
-         LS67IcdxSdCbe8PvPZQZPinyEz8kHjgPa55XBgV0b8oPdNIO2ZOfX7w7UQSd/60oVpfS
-         mUZw==
+        d=cloudflare.com; s=google09082023; t=1786695273; x=1787300073; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=kxh7WgjaXDX/penZLLTnZGb1oR++GKW11HucUTA4OG0=;
+        b=NJnd2uz7Q2StMHB8mYLUNUvIoC0OzqdTTPHKskzt93K68iUKp5/X9sRb3zR8MkQ/7k
+         RgSW4FCKkM7pHz5YWHDkpIrcfbuqgorSQPbV8L6heAfKsnVZ7ozPAYZfo+V5uZDxNTLA
+         yLK3GLuyypNdOYd4FQaW0XVa46C7QrgOhIU2XgUsDkGSEUoo1mka+J/8PtXFYbvP1dKw
+         YmqwwQSaWPkt7RV7UtL7xdOHZopynSe3Gz5D5Zb84ovZJVmmHJhqqY6UXqz4zEkFb0QN
+         YVsSg+3XtMIeScmqQeliIjaUpltD5EhtSfGJ/g6LNMYssAxvn0dsEQAJxRWb0MOheGiq
+         Mi+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786695261; x=1787300061;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=yPXr0G+xg2fjcvTsT5qtmvvWszHpLn8rkkUHyiWVWks=;
-        b=KIHC4xphBH34PdK0fMXavataXzxpbPVPKEC8aceyMHe7KJ4tlaIT79I/kMJzd2EAkE
-         xpdphb4CHVM3nTPPJpLQXehApHbVMYy6zY/rvESmaxOl9MtD1y48yAzNUUu5OCUTeJql
-         dtrDgMyCfcAs54tX5UVwcdhZ5MMz3Qv5I+tmgO9QenIMCfgmsTsKP2izcuDdmb9/PFvt
-         ojjUFCXesZA8ju+GM4ZX17R4YU8haYyl+wAmDMTaKp2UT/OICUtuODgejCn2Oo2kipA9
-         rBiqHTno815sKa8fVrxPtCa1xeJ48yZuC+Flh8/j5RKzf+lbCk2PeQq/lMeaVne3NnL5
-         0yIA==
-X-Gm-Message-State: AOJu0YxS49w4h5klml6ElxibRKhZn75g6A8jtqV8m+6fYddBhSYQmWht
-	xFxIAqfJxhNhavj0LXdqr170+gqaLc8CYjWtxRrLxsVYhqihyCHJZMHufW5xpJFc3CI=
-X-Gm-Gg: AR+sD13KvSRNmpEGMIR9rP0V176p6/NJQY4KQt4zc+d93EM8C5XIuLmRnGE+9QaoIK4
-	MZhs/5wsI2QwE8hFCF2r/9EWhS6ah4w6+K0MoPvNnIGLZPSZKWknMKS2ewyn2dCQiL+3VewS0sz
-	4+aRa9mzcCGHeGg59DM/UlkxoJEXW3pSDMrO3dQEj1cRQmnly7RYochXN+eFWuuEop1kRTCP1n1
-	qvy9ucStl1fDIbnbLxUQfVjPcd3e19RvxVVKXFmG5Efhr7Ke1lfWrdFpTmu5QkzBFFcdvacpH2G
-	/kGYV9uuZP4RuKakUKWSHuCnJrErThNhuPa4RBxwyZSGu/0GOYmG79se+uEiEN++rooIR/3eNnW
-	wPwvof+FBo8QMN4K4/YtCSXGJYchmmpxyYTjFo2suOvGKakI6bs0gOczkEOUe9+sbSRrZ+CI451
-	5pnIVFToD5EWQw1sT4FCcef0mGGuNGhHOkZmfDwPFJHAUIVbJYE4AOYBObyDUTtj16MHxS8zcPg
-	Xsay+S+VBsXuQ0Tfi0DTStsI3WViHx65B7iHA==
-X-Received: by 2002:a05:6402:3894:b0:6a3:6d6d:2296 with SMTP id 4fb4d7f45d1cf-6a38a8f5391mr1871067a12.5.1786695260946;
-        Fri, 14 Aug 2026 01:14:20 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1786695273; x=1787300073;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kxh7WgjaXDX/penZLLTnZGb1oR++GKW11HucUTA4OG0=;
+        b=LMMgtkmZ0g1epSMw7hQ4tjuCx4S2WupUfjefP82HxjGa0CqNJZImQH1Ri05ZwNbQo0
+         7lq+GPeb9cTu/XdLbD8XUIy51ozjILmYLrKrr4zKt9XJn39tIxfDpefWfO3evYSeS/gX
+         z+rmZaUKy6aHTwtwNtVVz6FbIr79HAaWz0LCdOCexZqkKNpgb8KagKVfJj6thXZcnDQI
+         07CnWmo+MXRqgpT/H/lTf58eGigCOm0JgZcZ1NYHVw5suZYMh5ZrQZdO9q63TCFffMv9
+         XXzfvts7aqPtolKmGFNzy2dfw0ocnbGcOdX7vPHAQSIb31xAW+XOIw+g9e9VNcAdNrtK
+         Fr6A==
+X-Gm-Message-State: AOJu0YzvwjR1/QDzQWuzVEzACOCHI71jxz6dQTL8Kl0AAC1Ifg6jtot8
+	3UPMRB5pQTnYn8IdXWWDgN5ArNq5e+PiZG+YYNUo2Q1CvNW3vDu+esDFYKDIYz243ng=
+X-Gm-Gg: AR+sD13CzoRK4NwTJHUHPHjFsCti0TE85zgorEwKy5IKhw+Xz17iu7et90Aq3Yycb58
+	AvPjj+FEkiJii5yw+EfChRoxt7iP3ClPxj5rrPCKFkJ9x85Fa3VUkieqfEBIH+DWI2HHJEQiLZJ
+	WtSYpM6EuYXI2X4tsD0rGY+d9nDZHPRAhtbELliYIvY71e4PO2yIyLTVNyyeyumPR7RE3Gvgwik
+	QOHEoSXYzDZPrt2+e+py6ZL4/4L8y2fsM9yL7/61W4N6qOY/IdKb+SLaqMPk47pMCKIZCCqFing
+	M1j32b/KTWKClYOpomwz3rb97yJVvboBdZv9JbW+pos9ZdnzOcsjF1kdpaKTglmLs09UUDTJq26
+	uHk1m2HfXbPSOxRY+4SuBBUHpQMDVdP6HA2+jpn/XaSZgCDYjIK6MQvglD+cuDZUT4YngyhfSNI
+	tiiTh1UDUL6QSMgz31ENKliGu4kOAW7xbcBF8zIzSEp45OMmJ0zF92ZY3t3uMffsR7I43PkMueH
+	oA9gxnqiQh+NwXJc16Bd5X3zXHQOvXsDx4UHw==
+X-Received: by 2002:a17:907:8b89:b0:c16:29eb:e81a with SMTP id a640c23a62f3a-c212ac25d1fmr175551166b.29.1786695273362;
+        Fri, 14 Aug 2026 01:14:33 -0700 (PDT)
 Received: from cloudflare.com (79.184.184.176.ipv4.supernova.orange.pl. [79.184.184.176])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a38c9d7f0dsm520559a12.3.2026.08.14.01.14.19
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c21234c4b03sm77692766b.17.2026.08.14.01.14.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 01:14:19 -0700 (PDT)
+        Fri, 14 Aug 2026 01:14:32 -0700 (PDT)
 From: Jakub Sitnicki <jakub@cloudflare.com>
-Subject: [PATCH net-next 00/14] skb extension for BPF metadata
-Date: Fri, 14 Aug 2026 10:14:01 +0200
-Message-Id: <20260814-bpf-meta-inside-skb-ext-v1-0-767edd862656@cloudflare.com>
+Date: Fri, 14 Aug 2026 10:14:08 +0200
+Subject: [PATCH net-next 07/14] selftests/bpf: Test skb_ext read from
+ cgroup_skb and sk_filter hooks
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,11 +71,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAEnOfmoC/3WOQQ6CMBREr0L+2m9oVUBX3sOwKO2vVKElbSEYw
- t0tuHY5mXkzs0AgbyjALVvA02SCcTYJdshAtsI+CY1KGnjOi7zgJ2wGjT1FgcYGowjDu0GaI2r
- NmbyyiiqpIdGDJ23mvfkBliLalIL654SxeZGMW/GWbU2Izn/2ExPbiX2vZOe/exPDHC9VyWRei
- kqp4i47NyrdCU9H6Xqo13X9ArNmfKDfAAAA
-X-Change-ID: 20260623-bpf-meta-inside-skb-ext-ff21c918e8cf
+Message-Id: <20260814-bpf-meta-inside-skb-ext-v1-7-767edd862656@cloudflare.com>
+References: <20260814-bpf-meta-inside-skb-ext-v1-0-767edd862656@cloudflare.com>
+In-Reply-To: <20260814-bpf-meta-inside-skb-ext-v1-0-767edd862656@cloudflare.com>
 To: netdev@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
  Jakub Kicinski <kuba@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
  Paolo Abeni <pabeni@redhat.com>, Stanislav Fomichev <sdf@fomichev.me>
@@ -90,118 +90,194 @@ Cc: bpf@vger.kernel.org, kernel-team@cloudflare.com,
  Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 X-Mailer: b4 0.16.0
 
-[I realize net-next closes soon. Posting only to collect more feedback.]
-
-Please see the RFC cover letter for the overview [1].
-I will focus here just on the latest developments.
-
-1) Based on feedback from the RFC - the BPF skb extension is *no longer
-scrubbed* on tunnel encap/decap or veth traversal. There is also *no
-mechanism* to enable scrubbing as we don't seem to have a use case for it.
-
-2) Since the RFC I've enabled access to BPF skb extension for the remaining
-BPF program types which operate on skbs, namely netfilter, lwt family, and
-- everyone's favorite - sk_skb.
-
-Outside the patch set, two things happened:
-
-3) At NetConf 2026 Kuniyuki presented effectively the same idea with a use
-case in mind to attach metadata to packets on egress (IIRC). Hoping for
-feedback if this meets your needs as well.
-
-4) At BPF Summit 2026, Alexei asked - I'm paraphrasing: What percentage of
-skbs will carry metadata in our workload? This determines if the cost of
-attaching a tracing prog to consume_skb gets amortized. We've run
-experiments and have some answers.
-
-If bpf skb ext existed today, we would adopt it to attach metadata to
-incoming TCP connections and ingress UDP packets to CDN to identify flows
-that have been forwarded from one PoP to another.
-
-Based on stats from a production node where we've been testing this patch
-set, the fraction of skbs that would carry the metadata is <1% (~0.7%):
-
-```
-923m16$ sudo perf stat -a -r 10 \
-            -e skb:consume_skb -e skb:kfree_skb \
-            -e probe:skb_ext_add -- sleep 1
-
- Performance counter stats for 'system wide' (10 runs):
-
-           334,256      skb:consume_skb                            ( +-  1.63% )
-             1,525      skb:kfree_skb                              ( +-  4.09% )
-             2,218      probe:skb_ext_add                          ( +- 18.58% )
-
-           1.02305 +- 0.00243 seconds time elapsed  ( +-  0.24% )
-```
-
-I expect that even if we adopted bpf skb ext for other use cases we have in
-mind, like labeling egress CDN packets with a customer identifier, we would
-attach metadata only to around 5% of all skbs in flight.
-
-We've run an experiment to evaluate this patch set - bpf skb extension -
-against the alternative - using a BPF map keyed by &skb (LRU_HASH) to stash
-metadata plus consume/kfree_skb tracepoint programs to clean up the
-entries.
-
-To do that we've modified the CDN component that labels the incoming
-connections forwarded from another PoP:
-
-- with bpf skb ext, BPF progs involved in processing consumed 7.5..10 CPU%,
-- with BPF map + consume/kfree_skb tp, the overhead was between 15..20 CPU%
-
-Not surprising considering the low fraction of skbs we attach metadata to.
-(For graphs see slides 30 & 40 from our presentation at Netdev 0x1A [2].)
-
-Note that we have not tried using RHASH as a BPF metadata stash, to see if
-that could bridge the overhead gap, as that would involve deploying a
-non-LTS kernel ATM.
-
-Thanks,
--jkbs
-
-[1] https://patch.msgid.link/20260714-bpf-meta-inside-skb-ext-v1-0-5871c07a8dd6@cloudflare.com
-[2] https://github.com/jsitnicki/talks/blob/5d64c151f4dc0c38b2832fdcbce7284ec93fdca2/Netdev%200x1A%20-%20Thrice%20the%20charm%20-%20an%20skb%20extension%20for%20BPF%20metadata.pdf
+Extend skb_ext cross-hook coverage to UDP readers: attach a TC
+ingress program on loopback that writes the extension, send a UDP
+datagram over loopback, and read the extension back from a
+cgroup_skb/ingress program and from a socket filter attached with
+SO_ATTACH_BPF.
 
 Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
 ---
-Changes in v1:
-- Don't scrub BPF skb extension. Remove F_NO_SCRUB flag. (Stan)
-- Allow calling bpf_dynptr_from_skb_ext from NETFILTER, LWT_*, SK_SKB progs.
-- Reorg tests into smaller commits. Add missing coverage.
-- Link to RFC: https://patch.msgid.link/20260714-bpf-meta-inside-skb-ext-v1-0-5871c07a8dd6@cloudflare.com
+ .../bpf/prog_tests/xdp_context_test_run.c          | 121 +++++++++++++++++++++
+ tools/testing/selftests/bpf/progs/test_xdp_meta.c  |  37 +++++++
+ 2 files changed, 158 insertions(+)
 
----
-Jakub Sitnicki (14):
-      bpf: Introduce per-packet metadata storage for BPF programs
-      bpf: Allow access to bpf_sock_ops_kern->skb
-      bpf: Make BPF skb extension survive packet scrubbing
-      selftests/bpf: Add tests for bpf_dynptr_from_skb_ext
-      selftests/bpf: Test skb_ext on cloned skbs
-      selftests/bpf: Test skb_ext survival across veth and GRE
-      selftests/bpf: Test skb_ext read from cgroup_skb and sk_filter hooks
-      selftests/bpf: Test skb_ext read from sock_ops and LSM hooks
-      selftests/bpf: Test skb_ext read from kfree_skb tracepoint
-      selftests/bpf: Test skb_ext read from netfilter hook
-      selftests/bpf: Test skb_ext from LWT in, out, and xmit hooks
-      selftests/bpf: Test skb_ext read from seg6local End.BPF hook
-      selftests/bpf: Test skb_ext read from sk_skb stream verdict hook
-      selftests/bpf: Use non-trivial test payload in xdp_context tests
+diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
+index de6030302536..808eb158fe0f 100644
+--- a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
++++ b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
+@@ -992,3 +992,124 @@ void test_skb_ext_basic(void)
+ 
+ 	test_xdp_meta__destroy(skel);
+ }
++
++/* Send test_payload over loopback UDP to recv_fd */
++static int send_loopback_udp(int recv_fd)
++{
++	struct sockaddr_in addr = {
++		.sin_family = AF_INET,
++		.sin_addr.s_addr = htonl(INADDR_LOOPBACK),
++	};
++	char buf[TEST_PAYLOAD_LEN];
++	int ret = -1;
++	int fd = -1;
++	__be16 port;
++
++	port = get_socket_local_port(recv_fd);
++	if (!ASSERT_GE(port, 0, "get_port"))
++		goto out;
++
++	fd = socket(AF_INET, SOCK_DGRAM, 0);
++	if (!ASSERT_GE(fd, 0, "socket"))
++		goto out;
++
++	addr.sin_port = port;
++	sendto(fd, test_payload, TEST_PAYLOAD_LEN, 0,
++	       (void *)&addr, sizeof(addr));
++	recvfrom(recv_fd, buf, sizeof(buf), 0, NULL, NULL);
++	ret = 0;
++out:
++	if (fd >= 0)
++		close(fd);
++	return ret;
++}
++
++enum udp_reader_type {
++	READER_CGRP_SKB,
++	READER_SK_FILTER,
++};
++
++/* Test skb_ext survival across TC ingress -> UDP reader hook */
++static void test_skb_ext_udp(struct test_xdp_meta *skel, const char *name,
++			     enum udp_reader_type reader)
++{
++	LIBBPF_OPTS(bpf_tc_hook, tc_hook,
++		    .ifindex = 1 /* IFINDEX_LO */,
++		    .attach_point = BPF_TC_INGRESS);
++	LIBBPF_OPTS(bpf_tc_opts, tc_opts, .handle = 1, .priority = 1);
++	struct bpf_link *reader_link = NULL;
++	struct netns_obj *ns = NULL;
++	int server_fd = -1;
++	int cgroup_fd = -1;
++	int filter_fd;
++	int ret;
++
++	ns = netns_new(name, true);
++	if (!ASSERT_OK_PTR(ns, "netns_new"))
++		return;
++
++	cgroup_fd = test__join_cgroup(name);
++	if (!ASSERT_GE(cgroup_fd, 0, "join_cgroup"))
++		goto cleanup;
++
++	server_fd = start_server(AF_INET, SOCK_DGRAM, "127.0.0.1", 0, 0);
++	if (!ASSERT_GE(server_fd, 0, "start_server"))
++		goto cleanup;
++
++	skel->bss->test_pass = false;
++
++	ret = bpf_tc_hook_create(&tc_hook);
++	if (!ASSERT_OK(ret, "bpf_tc_hook_create"))
++		goto cleanup;
++
++	tc_opts.prog_fd = bpf_program__fd(skel->progs.tc_skb_ext_write);
++	ret = bpf_tc_attach(&tc_hook, &tc_opts);
++	if (!ASSERT_OK(ret, "bpf_tc_attach"))
++		goto cleanup;
++
++	switch (reader) {
++	case READER_CGRP_SKB:
++		reader_link = bpf_program__attach_cgroup(skel->progs.cgrp_skb_ext_read,
++							 cgroup_fd);
++		if (!ASSERT_OK_PTR(reader_link, "attach_cgroup"))
++			goto cleanup;
++		break;
++	case READER_SK_FILTER:
++		filter_fd = bpf_program__fd(skel->progs.sk_filter_skb_ext_read);
++		ret = setsockopt(server_fd, SOL_SOCKET, SO_ATTACH_BPF,
++				 &filter_fd, sizeof(filter_fd));
++		if (!ASSERT_OK(ret, "attach_socket_filter"))
++			goto cleanup;
++		break;
++	}
++
++	if (send_loopback_udp(server_fd))
++		goto cleanup;
++
++	ASSERT_TRUE(skel->bss->test_pass, "test_pass");
++
++cleanup:
++	bpf_link__destroy(reader_link);
++	bpf_tc_hook_destroy(&tc_hook);
++	if (server_fd >= 0)
++		close(server_fd);
++	if (cgroup_fd >= 0)
++		close(cgroup_fd);
++	netns_free(ns);
++}
++
++void test_skb_ext_cross_hook(void)
++{
++	struct test_xdp_meta *skel = NULL;
++
++	skel = test_xdp_meta__open_and_load();
++	if (!ASSERT_OK_PTR(skel, "open and load skeleton"))
++		return;
++
++	if (test__start_subtest("tc_to_cgrp_ingress"))
++		test_skb_ext_udp(skel, "tc_to_cgrp_ingress", READER_CGRP_SKB);
++	if (test__start_subtest("tc_to_sk_filter"))
++		test_skb_ext_udp(skel, "tc_to_sk_filter", READER_SK_FILTER);
++
++	test_xdp_meta__destroy(skel);
++}
+diff --git a/tools/testing/selftests/bpf/progs/test_xdp_meta.c b/tools/testing/selftests/bpf/progs/test_xdp_meta.c
+index 1b6bb20ee7e8..0a3afb5c3461 100644
+--- a/tools/testing/selftests/bpf/progs/test_xdp_meta.c
++++ b/tools/testing/selftests/bpf/progs/test_xdp_meta.c
+@@ -920,4 +920,41 @@ int BPF_PROG(tp_kfree_skb_cow_check, struct sk_buff *skb)
+ 	return 0;
+ }
+ 
++/* Read skb_ext from cgroup/skb ingress -- tests cross-hook survival */
++SEC("cgroup_skb/ingress")
++int cgrp_skb_ext_read(struct __sk_buff *ctx)
++{
++	__u8 meta_have[META_SIZE];
++	struct bpf_dynptr meta;
++
++	if (bpf_dynptr_from_skb_ext(ctx, 0, 0, &meta))
++		return 1;
++	if (bpf_dynptr_read(meta_have, META_SIZE, &meta, 0, 0))
++		return 1;
++	if (!check_metadata(meta_have))
++		return 1;
++
++	test_pass = true;
++	return 1;
++}
++
++/* Read skb_ext from socket filter -- tests TC -> sk_filter path */
++SEC("socket")
++int sk_filter_skb_ext_read(struct __sk_buff *ctx)
++{
++	__u8 meta_have[META_SIZE];
++	struct bpf_dynptr meta;
++
++	if (bpf_dynptr_from_skb_ext(ctx, 0, 0, &meta))
++		goto out;
++	if (bpf_dynptr_read(meta_have, META_SIZE, &meta, 0, 0))
++		goto out;
++	if (!check_metadata(meta_have))
++		goto out;
++
++	test_pass = true;
++out:
++	return ctx->len;
++}
++
+ char _license[] SEC("license") = "GPL";
 
- include/linux/bpf.h                                |  10 +
- include/linux/filter.h                             |  26 +
- include/linux/skbuff.h                             |   5 +
- include/uapi/linux/bpf.h                           |   5 +
- kernel/bpf/helpers.c                               |   7 +
- kernel/bpf/log.c                                   |   2 +
- kernel/bpf/verifier.c                              |  15 +-
- net/Kconfig                                        |  20 +
- net/core/filter.c                                  | 135 +++
- net/core/skbuff.c                                  |  81 +-
- net/ipv4/udp.c                                     |   9 +-
- tools/testing/selftests/bpf/config                 |   1 +
- .../selftests/bpf/prog_tests/socket_helpers.h      |   1 +
- .../bpf/prog_tests/xdp_context_test_run.c          | 988 ++++++++++++++++++++-
- tools/testing/selftests/bpf/progs/test_xdp_meta.c  | 489 +++++++++-
- 15 files changed, 1772 insertions(+), 22 deletions(-)
+-- 
+2.43.0
 
