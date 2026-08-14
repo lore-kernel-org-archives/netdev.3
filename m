@@ -1,35 +1,52 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BAEA3D6497;
-	Fri, 14 Aug 2026 19:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2319830594E
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 20:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786737108; cv=none; b=kXIzcQAXuEmPA2jPKsRm6aWvCwx92Aq3/3LVOMZeXAhDIQp1IT5qJJWqnRieYRfidhe2hHE8lcamJt/wZKevLvwqQsZZXkNJualO3VwtCbpMO35x27ecn7nBvQaDaSzG+Vp23XCI5y7WSCg/yrccg1ItlcBmbCCt7wCyENd2/3g=
+	t=1786737663; cv=none; b=AYpGZShNscyao52M3bp3OBwzma9hzIMq9+NXQRKCxzSfWYpGb79TvaJBjpfeAP/RbmTr8sX72TlzwCaLLaJ0gCo5zakcRxgVIUqShcSZvuoYDoOH3zZ4NjT5xHQ9hGFfInN8jonviglobKa5hIQ78rROvE6UTMAz36ZocOdESPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786737108; c=relaxed/simple;
-	bh=ucz3xcI7CN3gWwYeFKoJfCXBpuEUOGHap4+57fpSpE0=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=RRHe1shvZgG+OBMgodb68x6p7PubR/H1M2e5WsiKUyfII5rEldpYDay0DYLr5vRizDAK1TWRJ4xxV5iSbfXqFjsVI/A7+h8B1Gd9XohK2AttNkYvkFgUVGHAMrgLXP3dfXEvDZqgxzZ+5iJ90AdDveZzsdPW3//9Ud8aEpaFF3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iK8sp9ap; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786737663; c=relaxed/simple;
+	bh=wTbyYVm20xFpL1eE9N0P4hCI3XhjJsLIb+mTbuYr9Tw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WvbHBcqiWDCMRlAE+sl14ShaIHSO7/tFMP/qV1IzmzPq8dxxV+4CBhiqFWmrIPJ8NA7zIXaqIgCu/wOlaiqagRDJ/nwxxkDsgsBNHsZ9TVZFhnNVGN2pQiSINwa0rbzhTN1MPJmOZvGJtS+Yrx9OI077dH5xqT2OcJVKhA1LStQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bcKUtAcw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iK8sp9ap"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FFA21F000E9;
-	Fri, 14 Aug 2026 19:51:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bcKUtAcw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 505BA1F000E9;
+	Fri, 14 Aug 2026 20:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786737107;
-	bh=+anBlQKHwLQ/a2iQCppghPiMvff7zUTrKYrfWIi5EN4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=iK8sp9apQEi8Y038r7UF2VtavDNRqtiQm7ciC8JN/Ieo0L5NBOrX8S5CtZIIBNw4e
-	 HgrHpno+ACRH8WQYuUzA3ErvaT4UJSVO39+c9KBrpm2x2CPYCGg98G8Hx1VlujZMjp
-	 8kSNyoYqcgcNZTBXvVNOiyk0+RB0YpNXuc7u/cwAZE189/Rei+QttZNlPKnfXw/sDe
-	 JFWFrQwMAIzvI/sGbYaHhA10ni96YpTGfvNo7LyMMX5qbiN8eyvSSvkcYivxGldVww
-	 13KJPJi5SYo2I10fNBFmBzqksN8Q2F4SYaIVvnmLKA0IkNPXcPKeMYGloG5QoXMFbS
-	 arhBT4Yrgsaig==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568F1392445C;
-	Fri, 14 Aug 2026 19:51:02 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1786737661;
+	bh=rr50PdXiSMwjkX0ZulbE9Lzk/+vx3f75lp+ecBp/Z4A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=bcKUtAcwzfG4WJYCc45yqRFnilVN/Xom7Bv0dENuoK42piTYKMkwoPbQTkIE0GfZG
+	 HypMG/Z1f3BuGnGqIYAuYeeHmQ6ikS53s5w3+sC8+Fnoil7jHAZILFcfHgJ27HCWb6
+	 BH7C3XT7WOTP1XDgXR5Pi9gCPlWkSwoczPqeLdxPsMd+mymsZdu1DNrBt5xJg/h63q
+	 hgrjrpB9hi0Is9HzyOriGnhCD9cVJmBffA4AND6BmGRtmuQSTfYNewWRxhRqbQ60VY
+	 gE8Yogg/AyCOzxNiiSHYtnPbQvZ6lJk+0B/m2GxVAKJBh9YMPlQMxt7DbgZuXGG9/+
+	 L3hVoi4I6mysA==
+From: Jakub Kicinski <kuba@kernel.org>
+To: jiawenwu@trustnetic.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	mengyuanlou@net-swift.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	richardcochran@gmail.com,
+	jacob.e.keller@intel.com,
+	kees@kernel.org,
+	aleksandr.loktionov@intel.com,
+	larysa.zaremba@intel.com,
+	leitao@debian.org
+Subject: Re: [PATCH net-next] net: libwx: rename wx_pf_flags to wx_flags
+Date: Fri, 14 Aug 2026 13:00:53 -0700
+Message-ID: <20260814200052.3211538-2-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <D43B3418D188B057+20260811065038.58345-1-jiawenwu@trustnetic.com>
+References: <D43B3418D188B057+20260811065038.58345-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,45 +54,86 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net/mlx5: SD,
- prefer sd_group_size from vport context
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178673706087.3935546.2900041521932070149.git-patchwork-notify@kernel.org>
-Date: Fri, 14 Aug 2026 19:51:00 +0000
-References: <20260810093037.3138197-1-tariqt@nvidia.com>
-In-Reply-To: <20260810093037.3138197-1-tariqt@nvidia.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, gal@nvidia.com,
- leon@kernel.org, linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
- mbloch@nvidia.com, moshe@nvidia.com, saeedm@nvidia.com, shayd@nvidia.com,
- horms@kernel.org
 
-Hello:
+This is an AI-generated review of your patch. The human sending this
+email says "Sashiko points out a pre-existing issue. Let's fix it
+first since the rename will conflict with the fix?"
+---
+net: libwx: rename wx_pf_flags to wx_flags
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+This renames enum wx_pf_flags to enum wx_flags and its terminator
+WX_PF_FLAGS_NBITS to WX_FLAGS_NBITS, since the flags are used by both the
+PF and VF drivers.  The three users of the old terminator name in wx_hw.c,
+wx_ptp.c and wx_type.h are updated accordingly.
 
-On Mon, 10 Aug 2026 12:30:37 +0300 you wrote:
-> From: Shay Drory <shayd@nvidia.com>
-> 
-> Newer FW reports the SD group size directly in the NIC vport context
-> via the sd_group_size field, gated by the sd_group_size capability.
-> Switch sd_init() to source the group size from there and fall back to
-> the MPIR-based host_buses query only when the cap is absent.
-> sd_group_size might return 1 in some FW configuration. Add explicit
-> check to disable SD creation in this case.
-> 
-> [...]
+> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
+> index 3eea647c4742c..e35e854652ece 100644
+> --- a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
+> +++ b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
+> @@ -558,7 +558,7 @@ static int wx_ptp_set_timestamp_mode(struct wx *wx,
+>  {
+>  	u32 tsync_tx_ctl = WX_TSC_1588_CTL_ENABLED;
+>  	u32 tsync_rx_ctl = WX_PSR_1588_CTL_ENABLED;
+> -	DECLARE_BITMAP(flags, WX_PF_FLAGS_NBITS);
+> +	DECLARE_BITMAP(flags, WX_FLAGS_NBITS);
+>  	u32 tsync_rx_mtrl = PTP_EV_PORT << 16;
+>  	bool is_l2 = false;
+>  	u32 regval;
 
-Here is the summary with links:
-  - [net-next] net/mlx5: SD, prefer sd_group_size from vport context
-    https://git.kernel.org/netdev/net-next/c/486e5419b7ec
+[Severity: Medium]
+This isn't a bug introduced by this patch, but while this local bitmap is
+being touched by the rename: can the copy-in/copy-out of wx->flags in
+wx_ptp_set_timestamp_mode() drop bits that another CPU sets atomically?
 
-You are awesome, thank you!
+The function snapshots the whole bitmap, changes only the two
+WX_FLAG_RX_HWTSTAMP_* bits in the local copy, programs several registers,
+and then writes the entire bitmap back:
+
+drivers/net/ethernet/wangxun/libwx/wx_ptp.c:wx_ptp_set_timestamp_mode() {
+	DECLARE_BITMAP(flags, WX_FLAGS_NBITS);
+	...
+	memcpy(flags, wx->flags, sizeof(wx->flags));
+	...
+	set_bit(WX_FLAG_RX_HWTSTAMP_ENABLED, flags);
+	set_bit(WX_FLAG_RX_HWTSTAMP_IN_REGISTER, flags);
+	...
+	WX_WRITE_FLUSH(wx);
+
+	/* configure adapter flags only when HW is actually configured */
+	memcpy(wx->flags, flags, sizeof(wx->flags));
+}
+
+All WX_FLAG_* bits fit in one unsigned long, and every other user in the
+driver updates individual bits with atomic bitops.  Some of those writers do
+not take rtnl, so they are not serialized against the ndo_hwtstamp_set path:
+
+drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c:txgbe_gpio_irq_handler_aml()
+	set_bit(WX_FLAG_NEED_MODULE_RESET, wx->flags);
+
+drivers/net/ethernet/wangxun/libwx/wx_err.c:wx_tx_timeout_reset()
+	set_bit(WX_FLAG_NEED_DO_RESET, wx->flags);
+
+drivers/net/ethernet/wangxun/libwx/wx_err.c:wx_tx_timeout_recovery()
+	set_bit(WX_FLAG_NEED_PCIE_RECOVERY, wx->flags);
+
+So a request set between the two memcpy calls would be overwritten by the
+write-back, and the service task would then find nothing to do:
+
+drivers/net/ethernet/wangxun/txgbe/txgbe_main.c:txgbe_service_event_sfp() {
+	if (!test_and_clear_bit(WX_FLAG_NEED_MODULE_RESET, wx->flags))
+		return;
+	...
+}
+
+The mirror case is a bit another CPU has just cleared being restored by the
+write-back, for example the clear in wx_err.c:
+
+	if (!test_and_clear_bit(WX_FLAG_NEED_DO_RESET, wx->flags))
+
+which would then look like a fresh reset request.
+
+Would applying the two bit changes directly to wx->flags with set_bit() and
+clear_bit() after the registers are programmed, instead of copying the whole
+bitmap in and out, work here?
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
