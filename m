@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0503DD867;
-	Fri, 14 Aug 2026 03:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798A23DB337;
+	Fri, 14 Aug 2026 03:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786677908; cv=none; b=WukG7VGxUkfOCu3E4Mvf854pDAo1UcuSGVEWnRcsKUMVNUBQDhONLzP2mN3ynYXCl3ypxhehgsmMrgk+N3hHorGDyiMhyAD0E75PhTkU+YeLKNCaijB+Yj94L5thgyuGU5b1TfNLtll1Z78yQckRfgMMx3Z8IL5yJGiFCZAZAEQ=
+	t=1786677909; cv=none; b=fah8uSgCAph6/AiDI17LrPwC/mEbxRDbZgsH923km3cwUhahsAb7e0MKX4mYC7QuwTQKlUdiJlDUjhUlP0c/zmKscJ5b06JZCOOb7eL17dmPxsLn19fSXiGiBZB2K3jNz9HyqJ4X55xHO4PXxQjcOhehwBFtdXS59EQ2KYdMrR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786677908; c=relaxed/simple;
-	bh=hiuOb9mLTgzxkzWra2Jsqk1XqW6Itffmw3SJeK5BZ4U=;
+	s=arc-20240116; t=1786677909; c=relaxed/simple;
+	bh=rrJLqI5L3XDl2608oj8KosFurOpFQrUYdFPe2EsvyOo=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=N6zjkt1wJeXW9O9ZzBJy9Wn3jBA/IT4JzvbIPi3jZjzIo233FdJzn9bbJwvfJMg+cgMPSZ+OftWyyxXIYl4r7L+boLMeP0Lfa9Za1mZ1GDstCxb40YwuflkFSm9SbjE42yxAYx08jYa9TVxkzIBVip9fqPEpqt1mGvv4EfHzB7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=no0Nym9g; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=YNo7qQ7UYgUmQIkjy2AbCeiZLKatJDHUrh7QXM13ZwyrsxC0013gu3D6XaiySofQPdp2Ihsi7XPFToUHXQChrldq9Ldaly05lLpgFq/KQF16wD6X8hY/QkT9cHpdqGbotXjTeD/UseyQmukp9tptq7qYHy4+Qnwbmkj5LqKeHq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VzacpZbi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="no0Nym9g"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A189D1F000E9;
-	Fri, 14 Aug 2026 03:25:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VzacpZbi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29D521F00A3A;
+	Fri, 14 Aug 2026 03:25:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786677906;
-	bh=vCT0qdQhfQSbZw5isYG4GE84Wg3N/y5lMkvApTL2Qwg=;
+	s=k20260515; t=1786677908;
+	bh=iH8eSdEYw4RB1vwQf/Hy10ZBq5zezQ1OD40p5kCGoYw=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=no0Nym9gI1uJXovVGlux48XGRxiIGtzJ8I0OHIyKqgXo2PcgLTZEOg4ErsFeL7B4n
-	 dtd9eY7oL7v1giraU85MjTCl7NTkvw+NGQ76llkUEFefyi7qXGyijc9tmTd5Bhaoqx
-	 2QFODpzWwH0mr6qaNFIbCONVVb9MRR0C4lsH29PTLz8PwNKYtP1HuY+VKhS9fMI25k
-	 ts9UGSZBpNWJJuae1LK8lxsFq2yzAOKP8/p3Zo7HTbIUZlHqzrXwkHrOIlB4e6+iW3
-	 YrE9v/4h/5ncua8OfnTfDaTODdeO/NdIwb3nducqIceaZTZNiijzar6eqluBgAzNeE
-	 B4I5nXJbs1UbQ==
+	b=VzacpZbiRwyxeqc9LKxXTS1BJBPiKaK8AQaMOqrBofFSENutHQyBLCD1i4g4mlHay
+	 h1Kjtjx/87QMOEp1m2Kimph69BTWI6HyrD8Pk52J63k8/iHKFce++NWXxrXu636IP0
+	 Xx3B2k2tTTmgYGh0/4Zll5uM31Ji53WQ4u63FSJKIcrnakbinqfoV2xOqzrTJISqOw
+	 lJXldtxRpSbAH3SrjEwKDull2bXv2N1sNYu+YDvZgwV4lVPnviirfeRm17XOvdM21Z
+	 DVB/29btucxPA2x0tVF/1n1sxGLXm6zrMmQQMeKKr8ThxCFZ2rL8xjECc8u2ySZ/pG
+	 C4moMYBLlAs7w==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568BC3810900;
-	Fri, 14 Aug 2026 03:24:22 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09EE3810900;
+	Fri, 14 Aug 2026 03:24:23 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v10] selftests/net/openvswitch: add SCTP flow key
- support and test
+Subject: Re: [PATCH v2] netdevsim: drop the ability to change max_vfs via
+ debugfs
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178667786089.3150297.9426672814575487514.git-patchwork-notify@kernel.org>
-Date: Fri, 14 Aug 2026 03:24:20 +0000
-References: <20260811181645.1918420-1-houminxi@gmail.com>
-In-Reply-To: <20260811181645.1918420-1-houminxi@gmail.com>
-To: Minxi Hou <houminxi@gmail.com>
-Cc: netdev@vger.kernel.org, aconole@redhat.com, davem@davemloft.net,
- dev@openvswitch.org, echaudro@redhat.com, edumazet@google.com,
- horms@kernel.org, i.maximets@ovn.org, i.maximets@redhat.com, kuba@kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- pabeni@redhat.com, shuah@kernel.org
+ <178667786239.3150297.10278646018244471870.git-patchwork-notify@kernel.org>
+Date: Fri, 14 Aug 2026 03:24:22 +0000
+References: <20260810085717.570382-1-sst@poczta.fm>
+In-Reply-To: <20260810085717.570382-1-sst@poczta.fm>
+To: Slawomir Stepien <sst@poczta.fm>
+Cc: kuba@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com,
+ syzbot@lists.linux.dev, syzbot+3147c5de186107ffc7a1@syzkaller.appspotmail.com
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 11 Aug 2026 14:16:45 -0400 you wrote:
-> The ovskey flow-string parser has no OVS_KEY_ATTR_SCTP entry, so a
-> flow string containing sctp(src=.../dst=...) parses without error but
-> silently drops the L4 key. The resulting flow carries only
-> ipv4(proto=132), and the kernel rejects it: match_validate() in
-> flow_netlink.c requires OVS_KEY_ATTR_SCTP when the IP protocol is
-> IPPROTO_SCTP and returns -EINVAL for the missing key.
+On Mon, 10 Aug 2026 10:57:17 +0200 you wrote:
+> This debugfs file isn't used by kernel's selftests, so drop it.
+> 
+> Reported-by: syzbot+3147c5de186107ffc7a1@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3147c5de186107ffc7a1
+> Suggested-by: Jakub Kicinski <kuba@kernel.org>
+> Signed-off-by: Slawomir Stepien <sst@poczta.fm>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v10] selftests/net/openvswitch: add SCTP flow key support and test
-    https://git.kernel.org/netdev/net-next/c/07a9e3975039
+  - [v2] netdevsim: drop the ability to change max_vfs via debugfs
+    https://git.kernel.org/netdev/net-next/c/b3217bdb0091
 
 You are awesome, thank you!
 -- 
