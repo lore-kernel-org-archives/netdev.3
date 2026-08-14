@@ -1,94 +1,121 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80437363C63;
-	Fri, 14 Aug 2026 20:05:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900FE3D649A
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 20:06:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786737950; cv=none; b=IItBHUzjJFYBciWgiqBK8WYCfh2t47OPCm7dIuk+9Pl21lt65xVsouumpF1ghEKoiQf3PEjX9I1LdJsIEVhekJeFRXuu9oMSDJJDWjg8t8RH79zlBtVh6+G9xHze6kNtb4mizxBLOUZ3IgMPhpURBYRyLTrrGI8Ar+EfwOq8VVA=
+	t=1786737998; cv=none; b=PTGL6MPlchJ6+cu4bMsOBpaU22PkpgJfobhWk307Qtq0mbaqPjXBt5w0VLIH4hAXgcIP3fIGqqf6elioYrkheIPt1oQvHjfkyimR8AwpcmZUL6zW4RG8O0VaYbsU/MQSgXNRxKQlbjCy7N3s6ZZDp52JJWM0agFOxEiwwkONJ5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786737950; c=relaxed/simple;
-	bh=DfRmGwwhWA+PDT9H2T5WgzBgB2msEY0/Noq1YWZ8rY8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XNGiSMQB3Z72kHvmAxhMt5myoSwqCrnRelgmr6F0RI/zQ6Jc/cDnxVJ81GLwD1HrVkex+7YGiR1POu5u+sCpnKpLIT3ruabGYUhSd7oXbfC0/D493KjTEJIE+rrahHeFWiEerAoJGGqsTwE8R6dL5/LQNTGA9MKlRkR0g3RPswE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=pxW+mPWd; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1786737998; c=relaxed/simple;
+	bh=yhcZ1G2iM4MIK0Jb6mnbZ904HAhDwWSVELtIHajuFrI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CrDgLOP5YWwAafUjmASvU/Bgaq4vEmS3cUEHzziq/m9IRMm56nNHbGiF/jX/hvybWSyjEIv8KwZEwT11rNfT/My0/XTEjrZ5kpjiiiyUxYH3yYYRJAKDwq6EKp5iQS5BIFJV8XwH7SBtd33lMUD0OjR+b5KwxTQXw0XkDPkgH4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nB/L8k1Z; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="pxW+mPWd"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=R0Z7G9sdQmKFAKT8myKnZjHkurnu+Xzu3iiP/oFOmb4=; b=pxW+mPWdxyEONJEWwQgJUDpdt4
-	UvWMOe4XgtGTGp5dCJcn/nnRzrkaT8g0/9yd4vYcLBvrid4r6q0U8WkJ4B96JOmbNwoQMbmT1hwcD
-	ETkYWQf3fvzUWWsAEWmXjIKApphiJ0LAVGDcdnOn35/M44LVUCZ037QfM0lRDuiGFI+c=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wuy9n-0002U8-BV; Fri, 14 Aug 2026 22:05:35 +0200
-Date: Fri, 14 Aug 2026 22:05:35 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: manushprajwal <manushprajwal555@gmail.com>
-Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH v2] net: ethernet: renesas: rswitch: fix device_node
- refcount leak in rswitch_get_port_node()
-Message-ID: <bf97ed42-5a1c-4c90-93dc-808f43b4be06@lunn.ch>
-References: <20260814190423.933-1-manushprajwal555@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nB/L8k1Z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E6E1F00A3E
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 20:06:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786737995;
+	bh=79pIxoYm5mk7b3kAefC9hN4ARNrWNULO/5RLuPzCwU8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=nB/L8k1ZkMNgGRzZdax/nJQxNw1o2VOcvEXqE94H1G2Dtil/FrkBm+6vblVBvdLcO
+	 HVTe3vrNvHtChFADOIkIjouNeQJ8oqfSehDcrm4R8Fo2+0lmeEDf3h5vLxWyhFDNl6
+	 /fAEW943U6qy189bPgscEoZer5+csOMbUQxm1XnPUEc3zMKKgKPVVvvx4k/Q8EsbIZ
+	 BFA88eC1GEZzn8F6SfbSyfvV6jIBXsSCFfkDnF5+iULzAZhqTnj4amXeg/F37P7r2O
+	 uWl2yzCQWEFEUbOq3Afpf68NOWIX8cZRWSTDaQugpMeZmx3rYtq9GIL2NUqOfK4z1b
+	 pAanEEZMA20og==
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-39faf9e2c62so8565601fa.3
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 13:06:35 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rq6eELmVG8t4fCuwRqSmR+TJWw2RhKN6aT42aj+liTxKhXYEFaLNDL35/YPC2LpHnJAxYlURH8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9bTNOdZlOAxgCBXCwds9xTNJOxwCij0XvHVFNNP+NbxDO7gUA
+	ONoJ3T9C/xo6LBzkmmMaFkEZmbtPRattHbfxkChh+LIy6vmmojFK7PKhZSaz80ZMzj5ykZRKOfZ
+	sR7f3aTdfMXms6YfJAXxnbZRiBm0OOXU=
+X-Received: by 2002:a05:6512:23a9:b0:5b0:ce5:a063 with SMTP id
+ 2adb3069b0e04-5b459188066mr1101451e87.42.1786737994716; Fri, 14 Aug 2026
+ 13:06:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260814190423.933-1-manushprajwal555@gmail.com>
+References: <20260814110102.2362246-1-o.rempel@pengutronix.de>
+In-Reply-To: <20260814110102.2362246-1-o.rempel@pengutronix.de>
+From: Linus Walleij <linusw@kernel.org>
+Date: Fri, 14 Aug 2026 22:06:22 +0200
+X-Gmail-Original-Message-ID: <CAD++jLm2vzq1t8c9664xKA+vPK69syMsnU-dyMEKnL6wbNhOcg@mail.gmail.com>
+X-Gm-Features: AcwNN1Xj1Orrn3dsVyyoZswTmpjVuq_pyxwrJ_A4bvW94rRHITkMVbt7PIMfgB4
+Message-ID: <CAD++jLm2vzq1t8c9664xKA+vPK69syMsnU-dyMEKnL6wbNhOcg@mail.gmail.com>
+Subject: Re: [PATCH net v1 1/1] net: dsa: realtek: use gpiod_set_value_cansleep
+ for reset GPIO
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Luiz Angelo Daros de Luca <luizluca@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Ahmad Fatoum <a.fatoum@pengutronix.de>, stable@vger.kernel.org, kernel@pengutronix.de, 
+	linux-kernel@vger.kernel.org, =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Aug 15, 2026 at 12:34:23AM +0530, manushprajwal wrote:
-> From: Manush Prajwal <manushprajwal555@gmail.com>
-> 
-> On an of_property_read_u32() failure, rswitch_get_port_node() set port
-> to NULL and jumped to the out label before releasing the reference the
-> for_each_available_child_of_node() iterator was holding on it. Once
-> port was overwritten with NULL, that reference could never be
-> released since out: only put "ports", the parent node.
-> 
-> Rework the function around for_each_available_child_of_node_scoped()
-> instead of adding a manual of_node_put(), so the iterator's reference
-> is dropped automatically on every exit path. Since port is the
-> function's return value, take an explicit reference with of_node_get()
-> on the match before breaking out of the loop.
-> 
-> Signed-off-by: Manush Prajwal <manushprajwal555@gmail.com>
-> ---
-> v2: Rework using for_each_available_child_of_node_scoped() instead of
->     a manual of_node_put(), per Andrew Lunn's review.
-> 
->  drivers/net/ethernet/renesas/rswitch_main.c | 20 +++++++++-----------
->  1 file changed, 9 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/renesas/rswitch_main.c b/drivers/net/ethernet/renesas/rswitch_main.c
-> index 6fe9648163..ffdc42f430 100644
-> --- a/drivers/net/ethernet/renesas/rswitch_main.c
-> +++ b/drivers/net/ethernet/renesas/rswitch_main.c
-> @@ -1303,8 +1303,8 @@
->  /* Call of_node_put(port) after done */
->  static struct device_node *rswitch_get_port_node(struct rswitch_device *rdev)
->  {
-> -	struct device_node *ports, *port;
-> -	int err = 0;
-> +	struct device_node *ports;
-> +	struct device_node *port = NULL;
->  	u32 index;
+On Fri, Aug 14, 2026 at 1:01=E2=80=AFPM Oleksij Rempel <o.rempel@pengutroni=
+x.de> wrote:
 
-Reverse Christmas tree.
+> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>
+> rtl83xx_reset_assert() and rtl83xx_reset_deassert() are only called from
+> the probe path, which may sleep and is not timing-critical.  When the
+> reset GPIO is provided by a sleeping controller such as an I2C I/O
+> expander, gpiod_set_value() warns:
+>
+>   WARNING: drivers/gpio/gpiolib.c:4030 at gpiod_set_value+0x44/0x80, CPU#=
+1: kworker/u16:4/61
+>   Hardware name: B&O MAP CA33 Rev f (UNKNOWN) (DT)
+>   Workqueue: events_unbound deferred_probe_work_func
+>   pc : gpiod_set_value+0x44/0x80
+>   lr : rtl83xx_probe+0x1d8/0x3a0
+>   Call trace:
+>    gpiod_set_value+0x44/0x80 (P)
+>    rtl83xx_probe+0x1d8/0x3a0
+>    realtek_mdio_probe+0x24/0xa0
+>    mdio_probe+0x38/0x78
+>    really_probe+0xc4/0x3e0
+>    __driver_probe_device+0x15c/0x1b8
+>    driver_probe_device+0xb4/0x120
+>    __device_attach_driver+0xb8/0x1a0
+>    bus_for_each_drv+0x88/0xf0
+>    __device_attach+0xa0/0x1d8
+>    device_initial_probe+0x54/0x68
+>    bus_probe_device+0x38/0xa0
+>    deferred_probe_work_func+0xb8/0x120
+>    process_one_work+0x184/0x4e8
+>    worker_thread+0x188/0x308
+>    kthread+0x130/0x150
+>    ret_from_fork+0x10/0x20
+>
+> Switch both helpers to gpiod_set_value_cansleep() so such a reset GPIO ca=
+n
+> be used without triggering the warning.
+>
+> The reset GPIO has been driven with the non-sleeping gpiod_set_value()
+> since the driver was added in v4.19.  The call has since been refactored
+> across several files - from realtek-smi.c / realtek-mdio.c into the commo=
+n
+> rtl83xx.c module and then into the rtl83xx_reset_assert() and
+> rtl83xx_reset_deassert() helpers (both in v6.9).  This patch therefore
+> applies as-is only to kernels that carry those helpers (v6.9+); older
+> stable kernels need the same gpiod_set_value_cansleep() conversion at the
+> corresponding open-coded call sites.
+>
+> Fixes: d8652956cf37 ("net: dsa: realtek-smi: Add Realtek SMI driver")
+> Cc: <stable@vger.kernel.org> # 6.9.x
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Co-developed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 
-    Andrew
+Reviewed-by: Linus Walleij <linusw@kernel.org>
 
----
-pw-bot: cr
+Yours,
+Linus Walleij
