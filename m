@@ -1,152 +1,103 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A01A3BFE3C
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 16:08:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.181
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786723707; cv=pass; b=Ukmm7Ntdetn2g6nEYmCTx6RhFAC4p0O+dWNc4Q29AXQfKaKicumA5rwnQKVpXXJ/sHqPC4qD5Ng36iyb9Ru7K6OR6AswERk2wv9BarlE5mCjMvOt+CVq7i1/2hb1bUonBSwT8/mHNt+iXqPSVF+s3xOS7Uqd9Z8XgNQk2Am9HL8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786723707; c=relaxed/simple;
-	bh=jSdd9p2V3k30mbNVX/TWrC1/BDiG02JSQF1h1wOMsXk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kXWxELW4mkNWcC+I2oCp9lYW1y3vQD19ITt36fv/agGPPV06UyXdPiu217BNvE81jdG+397SxBNNAXWmcMrirPdg83Bo+Dqoeq6NmuhqiyT8TxlJuOkzzT+ko4lMZhvCIwSpfZ+hsz7Rqezl5XbSyLaPBwJr3GmjDREbkGVpg+E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e19qioLJ; arc=pass smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29C8489863
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 16:08:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786723740; cv=none; b=TgBHPna0g+3Dyeapo1wvsH0kZi6K12TmUul4vp1unHdOMScusJaPZcrfmWfiI8alurF+oDd2YLsQdgQkvsBOICwYhGH+VfyAMFq9hpBreVu9yPj9xvX4qc9kTxumQBr7f5AhL4EV5w5FDOMDteSZr0tpv389JasUtyZ1lusXzD8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786723740; c=relaxed/simple;
+	bh=XKh2YeO4EAsYmdzfnzNNmoZOno1d9kIUe9waeMV0ULo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=s6AkvpEjep3vMo57W8h2opQuPJIjEPADjEuc9+A3r9i9ab8zogvSEKf+C6T1ZBRef0b8WVlXYMRZXBFtiBozAoWj9bvxDC7bCO8BW3zXelt41CZWkkHZ6FG/YmW037PBFSA7T7Yp8QikNb/S0E0s55+WF6jui9knuscppmIwGO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KVoz/+ij; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e19qioLJ"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cede6375caso126465ad.0
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 09:08:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786723692; cv=none;
-        d=google.com; s=arc-20260327;
-        b=FR1l81Mui0H3VfTC4t8widQQe47Y/fTMZiduf7w7yJ+rNbMzeelQbXMlx8b0u1wdoW
-         sNbMi1HYGzp+nKJhIUCjvGamJAxI+wzMF9BFN6LICTOm6mW4OWxvcluidtYSVCh2aYSL
-         x+lO0suswvOkDxv97JY37wCZpgloUjsC4nvuIaS4AE+k70E117uMxRFrEenZ+vcr672i
-         zPf+O+6Ci5jL1bml/VyBpA66k1p6cuX3s8c65KBI7XSyoGO5juwBXThdXEyDJaAfcIBN
-         gBLYwISxyNacohGFA1lJB7ciBPLSwrl2l62/zOT5BPRne6eeoMYnrUyudjZi7UtnSTuz
-         uCbg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=jSdd9p2V3k30mbNVX/TWrC1/BDiG02JSQF1h1wOMsXk=;
-        fh=bepHynd6dELgt9s+VtU+NEGntPD7c0zqFdJ3u5DAStM=;
-        b=K7G69Qqtp02BUjfSg0UWlWnEeyOZS2k8D44+GBp2Vaat4GYp1DCWGvLE9KzbEfBZEZ
-         Wkf5sG/xo5cCo3HEP77jZRYBO4IVSHssO+/4FUMwsBh9P+H8RcYrSGpEGNwgTrlQNOAs
-         Ks5/ORLVAC9IvgyT21iItnD6FXtlakMc9ndA9uE/ULVmabBgSkhWjO4plvRih0sHV9kD
-         11TpJT608SlHvGBXoTv8POs2AwpmleoFDzqwTxW09E8oyil9GapZ9p8XjKZfE1D42V0x
-         ejxGmuoTbJYcBJgEy+eDjXzbiqq0qkYvq/ApH3pblL68kd7WgOjx2RhDaXfJMUZiP1dW
-         UiuA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KVoz/+ij"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8487b7b3fc8so1188001b3a.3
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 09:08:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786723692; x=1787328492; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=jSdd9p2V3k30mbNVX/TWrC1/BDiG02JSQF1h1wOMsXk=;
-        b=e19qioLJZzkGCqWbzQIOYzYcMfT9Zlnyo7LdFLq3SkpzgYzdmGsStlQws2n/xsguk9
-         UDLioN7xDFHXmdOPis7Mm68GSO9KnOMh67tRmiNVoCcSSx3dUkpwDJP1JWrBCZ1K34u4
-         EZkPdMojzYK3QkEjGDi0jZ8BjulfWKV8pskTdYYq2ft1F3ExlGR9XipYGKQmuFyUvJzK
-         3Rir/Koy33AmzjDVcfizXPr0V6PDc7Fdt1w+23/5w+hme9tuzi+OtaXW+uuAbfQqQmi4
-         C//Kk7s83VStKJjDurqNnpC8OfJqN4iUJbXYfikcmq4wQmjDWl81d2p7DMe3MdRm3TPG
-         rT7A==
+        d=gmail.com; s=20251104; t=1786723735; x=1787328535; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=O2CdDW2946UxRO03u0geIdvw1xXuEfDohd1faqEthz4=;
+        b=KVoz/+ijod7nSg5oi/rk3e0mbbVMYvO1poXRyvY/i40O7OvV18hSrJAvseuRrIlPdP
+         a7SrBTuWL8y3KCH1XqsqIloXyMhAcgkqJeJ+WwR/UaHIbWHinQFHzSJwkMF1mPG+UDSq
+         V9IP0oEX1wN0r5Q4rmQktyR32enaN5Ldh2LfW+Ix8p8JXBGShLCpjgWIUuSicF7wrfV0
+         /i42xuYKDJ1MU6BttMzv+ZCZm6O2Ye6bO4yQm2fi90n9/fy4fXh6n6BkgJe72vmDnSf8
+         0T4qEI0xBOZkS3okPRfSEj4zU9Gh29bBxwLyxS0sY0SSJn9B9yayFNqvSa2lWzmgGQvh
+         nEHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786723692; x=1787328492;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jSdd9p2V3k30mbNVX/TWrC1/BDiG02JSQF1h1wOMsXk=;
-        b=AuhojBWQ2adWIBD6G9aqEnUcEtZ8tZ3pXiPkYNrsqR07L1a/6BxSxdZlZ1AhTpSMVy
-         13TVmOYnqqGBroPmR9xjHOZE3LZH5hvh4C4/5hCrNmSkj6atAAm1vg+SklvW8IESl733
-         zguprleFDkVJ14UmIF7/9G9rvm/W4xn4XleFUSlcbZcpEedoQl7LKx5/ZV9eGl3d1GpL
-         EGZBe5p/nAKQX3kYd3G0MABhJnUWiIVOTOqGdFe35X0DtHIXK91nJJWTDEZXZHvBsLRF
-         Sf7HzgyU1Pb+y/9FOBj6cx1yUWjmV/lGFb6mI6jNGGeSdEV/txR+2YbtOGLhvabu7RVm
-         xQ9w==
-X-Forwarded-Encrypted: i=1; AHgh+Rrcqg7jTzZ2aJw+ws6sA90xK89YWSNx3ApiUhFqrBAEqNHBTa7K+EuR3nloUKwF6NugCRdx7Sc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwR/vEqCsOcc6lPC4Azsl7AUJlYuNBFWySwHmCQbU2800+VVtmt
-	SrZSfq+rcic+8g9d0fgF3U9ECNR/hM5u6L4FoIj1QJfVRigzP3wP9ya+Wh9glx0WisiEdsNaZqb
-	iqVjdektI9C4DKLnDZ0/ebY+V8st2YDgBkHTv+YE/
-X-Gm-Gg: AR+sD13plcT9PZzpBwRA3NKxKTDcDADKceX6OYGZT9eFljKED61EHq7teZW/sKvQntv
-	msqMPz/XcMEwTJfWh+Vdb/VceswpgvsPPHK05fMktJCSnALvZxvc4XZU8rbAwRaSKU//J5/LF6H
-	DBGfwmnBQbAnVKj2VUQ3qqSOosvfPAkzOqJdG1uC0+ckdft+b9VE92WHqsqtGi4lEQpJC1Pg1eW
-	vIUDyMXAzrfjF7xFBCa8S2BEIZ9/nzEkr2t5IjUWAp0IcpJZOby8Xjo3jRIzZ1NJpnmCHRT6TAj
-	4mygxZwhm6fvYS5Mn/K3aYs8LsCm1SK4HegohT8HaKEU9uFEkICbinJrHILZCoPJ2sEaDhFNrEA
-	=
-X-Received: by 2002:a17:902:e54c:b0:2bd:3bfd:74f1 with SMTP id
- d9443c01a7336-2d3aef4c328mr9091665ad.2.1786723691080; Fri, 14 Aug 2026
- 09:08:11 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1786723735; x=1787328535;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=O2CdDW2946UxRO03u0geIdvw1xXuEfDohd1faqEthz4=;
+        b=qoMtsoq2h0VV1rSoOnIjbLRiTfPQL5wiUBG6FiBTxixs5/q12G2iTnkA6ZuGx0mi70
+         sKzEfzYkJCrYycmO09WglVt57wWWoFFHm8sqJ0VEy+vL8NBzYiA+90R5d6KA6P30KPOq
+         Xwxzm/5QlXLepFYFBK4S9KVuL/LWy962fcIQYxQIduvpElar3BooJdKCfjEX8cTNc/D5
+         IuVUhk7ZD0Nb+fGPzeqFe9EALWsO4x5/1hIzR72QMTs0nZ98pD3d1kJtBtTzNyDhMm+3
+         K7fK6xrgxlk4lFGxQV5kxRCCjhlqyYso569epG+hpLuDUfuGlKJGrMLeloemzhoGZHqX
+         1QAQ==
+X-Gm-Message-State: AOJu0Yz8g5O+Z64P4SxLJ47rQWGey+4k9OtLuwsHr1lKXi+7j9lMgRSl
+	X/fgjQVgTK1wE+Xjl68BTetTGCwXjkdj4+yIU49MnyeJWJzwfsZbyFbT
+X-Gm-Gg: AR+sD13heRX4Ry5TlOSSj3UFHAWw8h17T15Y1ywklPwCj4dPrI4NWvxO1XB5d6Sj6GK
+	/7w62Mpgkrzkkt77rM2uyhGHKTzADjHmFGrpH1Hopn1QnVqhKWub1yHwwptNKz3c8Yw62kMGU8G
+	Ozt0NnZI0gVOceJ1tWQJOz60mYwWKyH3RSq1wzVHSYLhwOIoCZHDfUNxZ3PkyNkhHgNf+JV4fd6
+	lgtsPUZ6cKL5wanQOOALIlcIM4f2h3/EeTy40pymkZ5YzsUWat7TpFTjRRHh9K7F6eMYkDGys+0
+	gek/1AuX/mBKy99FdZO5iz1M0PIdJXZ6KwTOvohdKC0MnOuZh4wMVEAHvPHipGCCVeyOypyVGxT
+	emLXaT4m69kU+cgGfV2+ZFFb4L7UtH4HvCRtXVu/0mtTJXSpBB08K94SCZ9VMcCOZvKc3c9/xZR
+	lR7XMV95UIIEH9TOAngFMukO8gafMd4PrcbHtG1rxKSeWJLsP9sQT0/TVNyaqY1/zj2W2avyaRD
+	2A=
+X-Received: by 2002:a05:6a00:2e97:b0:848:2e7e:353a with SMTP id d2e1a72fcca58-84fdde538d4mr7343867b3a.0.1786723734621;
+        Fri, 14 Aug 2026 09:08:54 -0700 (PDT)
+Received: from ubuntu.. ([49.205.39.116])
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-8517d248b8fsm694402b3a.44.2026.08.14.09.08.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Aug 2026 09:08:54 -0700 (PDT)
+From: Ajith P V <ajithpv.linux@gmail.com>
+To: tung.quang.nguyen@est.tech,
+	jmaloy@redhat.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3] tipc: replace deprecated strcpy with strscpy in tipc_bearer_get_name()
+Date: Fri, 14 Aug 2026 16:08:46 +0000
+Message-ID: <20260814160846.338273-1-ajithpv.linux@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <GV1P189MB1988CAF7D299010DB0C80031C6DA2@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
+References: <GV1P189MB1988CAF7D299010DB0C80031C6DA2@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260811142958.160088-1-shivajikant@google.com>
- <20260812172824.724ec190@kernel.org> <CAMEhMpmq7ZrW+4Q19gsF9k3v6S90k61oEXB6t4Oc4d9EU_QAbw@mail.gmail.com>
- <20260814065054.55333a89@kernel.org>
-In-Reply-To: <20260814065054.55333a89@kernel.org>
-From: Mina Almasry <almasrymina@google.com>
-Date: Fri, 14 Aug 2026 09:07:58 -0700
-X-Gm-Features: AcwNN1XmYQtLYEPfdFDj93v3iXF6ptcsl-9oVEUHFiyvmnmPUGim2Kmsw7vpEsg
-Message-ID: <CAHS8izOyEXCPPBfM_-Xtz5W2ULG8gyT9batC5aP7hvXNpw3seQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v2] net: convert netdev_nl_sock bindings list to xarray
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Shivaji Kant <shivajikant@google.com>, netdev@vger.kernel.org, praan@google.com, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Bobby Eshleman <bobbyeshleman@meta.com>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Dragos Tatulea <dtatulea@nvidia.com>, Kees Cook <kees@kernel.org>, 
-	David Carlier <devnexen@gmail.com>, Yue Haibing <yuehaibing@huawei.com>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Nikolay Aleksandrov <razor@blackwall.org>, David Wei <dw@davidwei.uk>, 
-	Maoyi Xie <maoyixie.tju@gmail.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 14, 2026 at 6:50=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Fri, 14 Aug 2026 12:04:59 +0530 Shivaji Kant wrote:
-> > I understand, my thinking for this was removing priv->lock is more
-> > than just simplification, it can be a concurrency win. Sorry for not
-> > making it more explicit in the patch description.
-> > As you pointed out, priv->lock current serializes the entire doit
-> > block (including netdev_get_by_index_lock() and the entire
-> > net_devmem_bind_dmabuf_to_queue() loop). Furthermore,
-> > net_devmem_unbind_dmabuf() blocks on synchronize_net(). With the
-> > current mutex implementation, if one thread is destroying a socket or
-> > unbinding a dmabuf, it holds priv->lock across synchronize_net(),
-> > completely blocking any concurrent netlink commands on the same socket
-> > (e.g., binding to a different queue/interface).
-> > Converting to an xarray allows us to cleanly dissolve this wide
-> > serialization scope. xa_for_each() handles the RCU grace periods
-> > internally without holding a manual lock across synchronize_net(). I
-> > agree the changelog must be updated to clearly state that reducing
-> > this serialization scope is the explicit goal.
->
-> If it's an optimization you have to show prod data (as in not a micro
-> benchmark) that the problem actually exists.
->
+> net tree: https://git.kernel.org/pub/scm/linux/kernel/git/davem/net.git
+> net-next tree: https://git.kernel.org/pub/scm/linux/kernel/git/davem/net-next.git
 
-Sorry for the late reply. My reasoning for this change is code
-simplification, not optimization.
+Thank you. I tried the correct net-next tree. The same patch applied successfully here also as shown below.
 
-The history of priv->lock is that it was added to protect concurrent
-access to priv->bindings and only locked around list access to
-priv->bindings. But then Stan and Taehee ran into deadlocks in
-relation with locking order with the netdev_lock and the binding->lock
-so we ended up defining intricate (undocumented) locking order between
-the 3 locks and expanding the code serialized by priv->lock and the
-code now feels confusing. Removing 1 of these 3 locks to simplify the
-mental model seemed like a clear win for me. We do not need priv->lock
-if we use a data structure that manages its own concurrency like
-xarray.
+<path of the linux tree>/net-next$ ls
+arch   certs    CREDITS  Documentation  fs       init      ipc     Kconfig  lib       MAINTAINERS  mm   README  samples  security  tools  virt
+block  COPYING  crypto   drivers        include  io_uring  Kbuild  kernel   LICENSES  Makefile     net  rust    scripts  sound     usr
+<path of the linux tree>/net-next$ git remote -v
+origin	https://git.kernel.org/pub/scm/linux/kernel/git/davem/net-next.git (fetch)
+origin	https://git.kernel.org/pub/scm/linux/kernel/git/davem/net-next.git (push)
+<path of the linux tree>/net-next$ git am ../../patches/v3-0001-tipc-replace-deprecated-strcpy-with-strscpy-in-ti.patch
+Applying: tipc: replace deprecated strcpy with strscpy in tipc_bearer_get_name()
+<path of the linux tree>/net-next$ git branch
+* main
+<path of the linux tree>/net-next$
 
-But this is not a huge issue worth burning your review cycles on. If
-you don't want us to resolve the clashiko issues and follow up on
-this, we will drop it indeed :-). Sorry about that!
-
---=20
-Thanks,
-Mina
+Am I missing something?
