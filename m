@@ -1,184 +1,162 @@
-Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE21E30566A;
-	Fri, 14 Aug 2026 01:24:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.145
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786670654; cv=none; b=EdE2CfGIXO6G+Xpi50CR0GD5t3LIIJtp8qI+U/jwEKm6CKalEhB60nW9Tx2GNqkV4DntuAresjhtcv8k6XJVk0OyGMidEKK0MY/4OvgE1gy1Neh7EUOxYSMPSYGqbXYINJHsvyy1+XjkjlrKL7ur2+a8qVu2I0/43b9tZUNv7rs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786670654; c=relaxed/simple;
-	bh=e7LYKBFbEvthm11PSs/C6zIgbmJth/AwSzGHUbofwiE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EQTiWsazqd5CIVKoMC9osN+SZhrDBE+B6vyXehM0xR1LcwC0wzdE+FOSDHRLU+3RuuekZag3OPoIOMx75r0v9dUmOUltuxWCAnt1/QVcfsIEBNMhuOFRyfaZixVAD5F4q7Iqylg1PGOZU1RNNIFvzFehMyXQc+DRe3QxV24SN80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com; spf=pass smtp.mailfrom=fastmail.com; dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b=TIcpuIbl; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=MZER5n+P; arc=none smtp.client-ip=202.12.124.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921422F8EAC
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 01:24:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786670658; cv=pass; b=EszbIGsgFdq1Nq0SS54Xii4H3rgy9kvl8zWAON567PqADP51Q8ZjZqtqwRfE8PIBPpZudQdHF0abk3HlJ03x2zBT4DA5u8JY6MQTPp0BkYJ0dANbtrEs2gp6CWzaMvMdHtzyP1wMesxIBKujAVsriLiUObBbKyQZwHGlmnLtT1w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786670658; c=relaxed/simple;
+	bh=cuyeLpBNdLoVcolWTIViFV7hFI/ReZfXIFwBtv+1YCs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XQfHStQrqufziYD6ot8DUdeCff7YMgMM7M/bMS8fqUELYFwT68mthJuzEK1Q20bS02MXZ9/10ocey06R7svL7Asl/kekFBKbBcQOyjPSOWwmioJsTJMgBXWzS+gaMKl6B/T0q9ZUKowJ33PH8++fGcaWYiGKTRt9x57SWR0+WYg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HqY2Ikix; arc=pass smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b="TIcpuIbl";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="MZER5n+P"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.stl.internal (Postfix) with ESMTP id 95DF31D00367;
-	Thu, 13 Aug 2026 21:24:01 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Thu, 13 Aug 2026 21:24:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.com; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1786670641; x=
-	1786757041; bh=z7+hOQG2YGb/JFBuAeH6YH/vIHUf6ESYw2NhiMLrbag=; b=T
-	IcpuIblS6p05P19hgoz9Sqtwr2qCqmsjhRy29FgBheIpDfX70SA6RdvVvqV+vP3W
-	KpV3Mrc7xWrdy8pwAaTnPBhyuQViEsrJU/fvrit2dPz4VGfAJ/1Tz4azLUs4ufqP
-	5VW8tXcQF9aOElyusst2sGAettNuJgIW2GHd1J4gKrC5bgBRAjKOdQFOjkFoOog8
-	5/cqlL8xWXYwnAfKtZhaUs6oDUVVz0o0jROn6tUuWlwnMB64q1OY5D2KVhBJU9Dw
-	7YYJKqTDFpnOZWh1+kbp2FLiOIbSDn14nskmTeUrwFnP7gmSvqM2euSlzYF4xvUh
-	+pgKCtc+azHXtV7tWbW/A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1786670641; x=1786757041; bh=z
-	7+hOQG2YGb/JFBuAeH6YH/vIHUf6ESYw2NhiMLrbag=; b=MZER5n+P0Nt1r0WsF
-	RH/Uni2DpF5ql//WpK5+PNbi8nVzjfMX8ihbQ73xu5EpT+IVgpk5bxvzTgaYB/EQ
-	aR7+I3p7+v/QcfnFZiP5RAnCcu/YfOQFG5sV4yPHioDwQ/uy07lc4+9+5RHhw8M7
-	z5G5x8dk0xcJMOAMHYhRR7GIxfd56ZSeFB6TCOPAoNfVelwd9eD3K0ytsUn9XgzA
-	0WLDicWUz3ahZKhcylRHXFJ7ghJbHaWiiifW1d5yltMelKzvejH+XHFvV0lyiLnB
-	dTqO2VyUeIJbZdN/Njr8m5OT7+DrkRa1d+6HoeeO6PwOGXo+KHp1JNjFtGU/TXq4
-	K5Spg==
-X-ME-Sender: <xms:MW5-ahUGjCNSx9K--ZtFh7YP_MpMcHBVAtE8VUbuPT__19xl_4m0xw>
-    <xme:MW5-apyF44NDxjIRw1Oo8yI9RcGRuvWYnF0A9CyKARxmKHJUyFKMBL_nPyNmUk5Pq
-    rU-aMZ45-_dJKUNnWpDFE8e_tZl9dxi5ZsJmIrwMnzdYEwxlaPNdOjk>
-X-ME-Received: <xmr:MW5-ao_NNI9kdYeX3vARyTjGVMvUjFBXXG29sZ6hrghw4ju4Wv51oHkJXpWCteAL2l_5OSTJhaEBs3HoXOR9T85EYwUM3lk>
-X-ME-Proxy-Cause: dmFkZTGlnKkc0TwPTb5JNCkAi+5Y8WSjcjjDWnkOIL2wNpUcV13CZto/qOXRm0nqGz7tPy
-    KJEebetoFzGPCWAi43zBJPWh3lU6UkLAyBFZ6j4oxxM9R/f/XZ4XCVK2pzL/y7LQGFZvpR
-    D/CrmLT9KZ1KsmxXyRJ2t1g6Nt6RO09HBhWhLe5eSw/EkIsnwI9+bk4+c3v7X8vnF67GAZ
-    x5aPFmOtLpYkgdaSPCL5jXIqRgeyslKNbDZfP9OeqYyBjk5QInrgyNovvVM3MvStCRC0Vf
-    KMYutq9dcLsVOl/YKHQj65USZyVlLayx+Z5CvgQ+ECO90Jd7U6/TgSqqZrFbLu3cB39ndQ
-    uWN+CX7tAeFgFapYKKYoGHb8QyK+5VbnCb3J1/DnlUAdrjsE22npxMMBlj4hxfc0mEa2jH
-    Scv4dg+wSRORVy/gw7xCQFDaP4cepXQ+r2lJSaVm+Te41finFYW5xCl/1RoABDMjUy8mkR
-    olODTuBT9a3NYwJ7Up7qxU4XE3+vWFd4EDm1jo3lW6pwkK4w9qkeJriaExiHLh0y3V0ugl
-    dUDUMAJRbRiY28p4aTU9zZ4aS+6n4jos1DAZWBWoW8SU0mQU6oAoobSNS1NxFdP/83YeTN
-    Z/X6CNNE9Yo5l4bcdDGJuBrXnlXIRq/NN75m3rX0aE6ncS/Z7dDEnBiI2Jnw
-X-ME-Proxy: <xmx:MW5-au-Fdk6eSnpjDQxBOfTPmmlvrVHoudODIWXdGLO_JsSWl-ItiA>
-    <xmx:MW5-anUEbpaPPSf1mK1lwdbRWD-AneGFyTBx4b__X94lVfFN3k_oEA>
-    <xmx:MW5-arfWmW2pLgy1LduHUZBhIxp2DtpeGtFDqEkAhAGjJVUg1tymOw>
-    <xmx:MW5-agbx51OmcnUcNe9lFZwA0SHXnxEzqdBMDfXChsWZyoKGB2HE-g>
-    <xmx:MW5-av9-xe1jfLjtftVTSqNRmGSDjACtkhWA1hYE3MAsnQFdvFsqITT7>
-Feedback-ID: i80b64ba7:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 13 Aug 2026 21:24:00 -0400 (EDT)
-From: Juanlu Herrero <juanlu@fastmail.com>
-To: netdev@vger.kernel.org,
-	dw@davidwei.uk
-Cc: io-uring@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kuba@kernel.org,
-	asml.silence@gmail.com,
-	pabeni@redhat.com,
-	shuah@kernel.org,
-	Juanlu Herrero <juanlu@fastmail.com>
-Subject: [PATCH net-next v5 6/6] selftests: net: add rss_multiqueue test variant to iou-zcrx
-Date: Thu, 13 Aug 2026 20:23:48 -0500
-Message-ID: <20260814012348.46958-7-juanlu@fastmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260814012348.46958-1-juanlu@fastmail.com>
-References: <20260814012348.46958-1-juanlu@fastmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HqY2Ikix"
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8f23e851626so2833956d6.3
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 18:24:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786670642; cv=none;
+        d=google.com; s=arc-20260327;
+        b=sYVGADTN+gYoSEbrPs0XI2vIVy/ZYrsy4ZyiCYOqsbFuoRzO4eVFIOHVQyOhdujFN1
+         KVaX/l59XyOmXwlsQ9Rswv7yHyDHmM3+1B8//7N/w8QHx4pfJv8TmsX9IKsrfdZ7by3e
+         Cqw58wFRpce8rzINVrfx7VdwFbhJsyOC5diJuML8nZatKhQi/Fq4F3ARjA7QTe6i9I9/
+         O3KhQ2wRmP0U0s7W+4g7l6wfu9KJ1Vsuhqrk3XliujuLzWfV6reoATE8L9ABaEM/PzmF
+         MDv7LczciPbmt1JTBbfehn8sphpeAgtKT+dqMWe3HSDI+hz2hMeDhq/B7OC3IxtMcNk0
+         TRgw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=dIqhgTXMNMbYFoYNlDKpK72/trU4eGHf7U7lg59BcD8=;
+        fh=at5QiDAsnqHHBGb+D2vyl3YTr90DvshA1PVSzmISjsY=;
+        b=BI2+g42ujzZ2BdHlxeEeQOf/bQg0KnsGkDpRIN7+nJno/xbQ6jDvxtannvgioBpK9n
+         8MQudb3GvaqWFMppEi9co8yE3BVhdsWCoP7ULLzhN4BSZkWFjHmlyYlbExsfLABl85Td
+         P7A68Td/RCrXXHCv2CB6gATb9tJ/C+600bOMoDUBKlZ446vlsDRTPyVMCd1ppyB6mtGM
+         U4gKujigujR/pBMDodVQ3OmqPJ2ctPoaAAUwSclKSe1C/ldFhzvYIU3tGTX6hN1xEATK
+         Bu74R3nQ6GbkxYiH5YlnOAIiqQ2hBpWjqQRFko5FXGocF7n1H3ampxCZJTL4xVqsfE3W
+         rekQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786670642; x=1787275442; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=dIqhgTXMNMbYFoYNlDKpK72/trU4eGHf7U7lg59BcD8=;
+        b=HqY2Ikixkwkg9v/A1z7DUT21E3D83h9z8nanVnZ5kCqZcKtdWqzfkZ30wvjNKUwlVb
+         IbWU6Wi3gTlEz3EsQYWXLITp6N0HjYPttgqGG8ttpoQpcpsvALEC/26FArDkjswvHQRf
+         k9uny4qXWAbCQqLSx2yS+rVTtXcbV5ydsWO/KsF4Nv4jWqJoBFpXLmJcbTrbxEtWPMdg
+         f9PNDnCiiZc43Bih20nR+ba8XeifPorPz2pETiE14oL4YSP5hdTonuq6Hu6JD7JVv9+k
+         gZd6HFh157LWofHRIewcmSfIV8n4Il6bgB/EjbFDoAj+mKYZJ7qOrKnjVMRPbKxFsfGe
+         I4iQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786670642; x=1787275442;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dIqhgTXMNMbYFoYNlDKpK72/trU4eGHf7U7lg59BcD8=;
+        b=bZ3smcG3c7v012e2FEPzr6qjjHEWXZRFp8bZcbY0jqqOhFbYQOK6aR6I/RTFKevfQ2
+         cg0KQRO4u+JqNwH6mxVIbBrsOJ3gRBMW2m0QfSUFlMWryLTMevf5tj9QBGhbYrhjbxrf
+         XOGKyncXq+TNuSNj1aDZiGTHPuhvn6ifBxBC4Zo8h4N71zGjaRG3i+i98JclYU1U8qSm
+         jcUCV6GgQA4BKZSNBYwtlyUcDATYA5zN7rE4K+8KlnqiJjj/geweYJS13f9TbYJihCn/
+         NBqNnGsi9UJH4Owsc/5OzYj/fxly7lDKKThLtGeN81P9dd5M6kegPEYI7lxh9EyyRUu4
+         pQTg==
+X-Forwarded-Encrypted: i=1; AHgh+Rp483t7cRzsDgF51+/J6H+232fJPODLnsVC30sumGRjpT80i46IKm19iaG38RVUTIUcAVZQP1A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyu8UUDxtd1VMu0BZQuZ7o7OtmDb2QBy/bhE6cHelcQc3t2rW0l
+	bEWdbRzBeiEqklzncKDD1GR7EAD2O7aZRJbJgeggtuO3mZuPuRvsGDO/9ryPcEDakIlSBOn2Cl0
+	kLfAvrtTsBVC5jZr0rzyRuZ6yn+Dfpnw2jJyn1INI
+X-Gm-Gg: AR+sD11lnXwAhueBbitVsKe6vS6jm/hiWcH2FB01tRb8bv6lVYolVS4WRJR6mc0O6ud
+	fzU61DlSKRWjem/tWjmKx/cdeIYjBAXANa5T19/gSE+4iinR9Qhjsq5GIZG/SwoP4vsIWUbA19U
+	RWgec+U/7QwDFo84sq0SlpILCxIXcU8RO8roPjqGAvbBWq0rdgBtVveu+fUoq8ZbYltuU0HmZKm
+	j9xobw/ct7i0YXWq9hlJVmZffMLGcP/5QoCgDxWVoibryAQPjL06mn/AOFeA6OSifcOKWjh62rj
+	MFoZKG4Tx8uKD8OLB8nNB+GO553LBSHJltrvnlhHJKL9RjravaXwkTscoDx+LObCTvUMZKjuPsC
+	ZuVM0La46KbdCB0hl4/BJGAxKQTs6Y+86mhjsXIBMTFXr2OnwjgADw7ea
+X-Received: by 2002:a05:622a:4c8e:b0:52d:7a9f:57ed with SMTP id
+ d75a77b69052e-52d85381ed8mr28730751cf.5.1786670641602; Thu, 13 Aug 2026
+ 18:24:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260813222629.492738-1-gmj@meta.com>
+In-Reply-To: <20260813222629.492738-1-gmj@meta.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Fri, 14 Aug 2026 03:23:49 +0200
+X-Gm-Features: AUfX_my5-_1sQD24ajVztBBHmvhJOEErJJXlcG4I6zdgItnN7gZx2Uy1YTDUI70
+Message-ID: <CANn89iKFHCA9B1+0FkML=BxZ+0ytu3s5YBLjbt5-+X+CCox09A@mail.gmail.com>
+Subject: Re: [RFC PATCH net-next v2] net: gro: coalesce short IPv4 packets
+ padded to the minimum frame size
+To: Glenn Judd <gmj@meta.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, Simon Horman <horms@kernel.org>, 
+	Richard Gobert <richardbgobert@gmail.com>, Willem de Bruijn <willemb@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Kees Cook <kees@kernel.org>, 
+	Jiayuan Chen <jiayuan.chen@linux.dev>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, llvm@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add a rss_multiqueue Python test variant that exercises multi-queue
-zero-copy receive on a single listening socket.
+On Fri, Aug 14, 2026 at 12:26=E2=80=AFAM Glenn Judd <gmj@meta.com> wrote:
+>
+> Software GRO fails to coalesce a small IPv4 segment that was
+> padded up to the 60-byte minimum Ethernet frame.
+>
+> The selftest tools/testing/selftests/drivers/net/gro.py subtest
+> sw_ipv4_data_lrg_1byte sends {100, 1} expecting to receive {101}.
+> In current code, it receives {100, 1} (no coalescing) instead.
+>
+> Cause: inet_gro_receive() computes its flush term from
+> tot_len ^ skb_gro_len() before skb_gro_pull(), while skb_gro_len()
+> still includes trailing Ethernet padding. A small IPv4 segment
+> padded up to the 60-byte minimum frame has tot_len !=3D skb_gro_len(),
+> so flush is set and the runt never coalesces.
+>
+> v1 detected the padding with an added iph->tot_len read and
+> skb_gro_len() comparison on every IPv4 GRO packet. Instead, split
+> inet_gro_receive() so that everything after the header validation
+> takes the flush term as a parameter, and pass a literal 0 on the
+> common path. That folds away both flush updates and lets the
+> transport dispatch become a tail call, leaving the common path
+> shorter than before this patch rather than merely unchanged.
+>
+> Assisted-by: Claude:claude-opus-5
+> Assisted-by: Codex:gpt-5.6
+> Assisted-by: Meta:internal-AI-tooling
+> Signed-off-by: Glenn Judd <gmj@meta.com>
+> ---
 
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Juanlu Herrero <juanlu@fastmail.com>
----
- .../selftests/drivers/net/hw/iou-zcrx.py      | 50 ++++++++++++++++++-
- 1 file changed, 48 insertions(+), 2 deletions(-)
+I am pretty sure I met NIC where the extra bytes were not zero.
+Unfortunately I no longer have access to them.
 
-diff --git a/tools/testing/selftests/drivers/net/hw/iou-zcrx.py b/tools/testing/selftests/drivers/net/hw/iou-zcrx.py
-index b7a225fe4beae..c833535d8a03c 100755
---- a/tools/testing/selftests/drivers/net/hw/iou-zcrx.py
-+++ b/tools/testing/selftests/drivers/net/hw/iou-zcrx.py
-@@ -30,6 +30,13 @@ def create_rss_ctx(cfg):
-     return int(values)
- 
- 
-+def create_rss_ctx_multi(cfg, start, count):
-+    """Create an RSS context spanning count queues from start, return its ID."""
-+    output = ethtool(f"-X {cfg.ifname} context new start {start} equal {count}").stdout
-+    values = re.search(r'New RSS context is (\d+)', output).group(1)
-+    return int(values)
-+
-+
- def set_flow_rule(cfg):
-     output = ethtool(f"-N {cfg.ifname} flow-type tcp6 dst-port {cfg.port} action {cfg.target}").stdout
-     values = re.search(r'ID (\d+)', output).group(1)
-@@ -127,17 +134,56 @@ def _require_ntuple(cfg):
-         defer(ethtool, f"-K {cfg.ifname} ntuple-filters off")
- 
- 
-+def rss_multiqueue(cfg):
-+    """Steer the test flow to a multi-queue RSS context for multi-thread zcrx."""
-+    channels = cfg.ethnl.channels_get({'header': {'dev-index': cfg.ifindex}})
-+    channels = channels['combined-count']
-+    if channels < 3:
-+        raise KsftSkipEx('Test requires NETIF with at least 3 combined channels')
-+
-+    rings = cfg.ethnl.rings_get({'header': {'dev-index': cfg.ifindex}})
-+    rx_rings = rings['rx']
-+    hds_thresh = rings.get('hds-thresh', 0)
-+
-+    cfg.ethnl.rings_set({'header': {'dev-index': cfg.ifindex},
-+                         'tcp-data-split': 'enabled',
-+                         'hds-thresh': 0,
-+                         'rx': 64})
-+    defer(cfg.ethnl.rings_set, {'header': {'dev-index': cfg.ifindex},
-+                                'tcp-data-split': 'unknown',
-+                                'hds-thresh': hds_thresh,
-+                                'rx': rx_rings})
-+    defer(mp_clear_wait, cfg)
-+
-+    cfg.num_threads = 2
-+    cfg.target = channels - cfg.num_threads
-+    ethtool(f"-X {cfg.ifname} equal {cfg.target}")
-+    defer(ethtool, f"-X {cfg.ifname} default")
-+
-+    rss_ctx_id = create_rss_ctx_multi(cfg, cfg.target, cfg.num_threads)
-+    defer(ethtool, f"-X {cfg.ifname} delete context {rss_ctx_id}")
-+
-+    flow_rule_id = set_flow_rule_rss(cfg, rss_ctx_id)
-+    defer(ethtool, f"-N {cfg.ifname} delete {flow_rule_id}")
-+
-+
- @ksft_variants([
-     KsftNamedVariant("single", single),
-     KsftNamedVariant("rss", rss),
-+    KsftNamedVariant("rss_multiqueue", rss_multiqueue),
- ])
- def test_zcrx(cfg, setup) -> None:
-     cfg.require_ipver('6')
-     _require_ntuple(cfg)
- 
-+    cfg.num_threads = 1
-+
-     setup(cfg)
--    rx_cmd = f"{cfg.bin_local} -s -p {cfg.port} -i {cfg.ifname} -q {cfg.target}"
--    tx_cmd = f"{cfg.bin_remote} -c -h {cfg.addr_v['6']} -p {cfg.port} -l 12840"
-+
-+    rx_cmd = (f"{cfg.bin_local} -s -p {cfg.port} -i {cfg.ifname} "
-+              f"-q {cfg.target} -t {cfg.num_threads}")
-+    tx_cmd = (f"{cfg.bin_remote} -c -h {cfg.addr_v['6']} -p {cfg.port} "
-+              f"-l 12840 -t {cfg.num_threads}")
-     with bkg(rx_cmd, exit_wait=True):
-         wait_port_listen(cfg.port, proto="tcp")
-         cmd(tx_cmd, host=cfg.remote)
--- 
-2.53.0-Meta
+Your patch seems to target a specific NIC.
 
+Look at my prior commit : I made it generic. Checking if the bytes are
+zero has the same cost as computing their partial checksum.
+(real cost is the cache line miss)
+
+commit 88078d98d1bb085d72af8437707279e203524fa5
+Author: Eric Dumazet <edumazet@google.com>
+Date:   Wed Apr 18 11:43:15 2018 -0700
+
+    net: pskb_trim_rcsum() and CHECKSUM_COMPLETE are friends
+
+    After working on IP defragmentation lately, I found that some large
+    packets defeat CHECKSUM_COMPLETE optimization because of NIC adding
+    zero paddings on the last (small) fragment.
+
+    While removing the padding with pskb_trim_rcsum(), we set skb->ip_summe=
+d
+    to CHECKSUM_NONE, forcing a full csum validation, even if all prior
+    fragments had CHECKSUM_COMPLETE set.
+
+    We can instead compute the checksum of the part we are trimming,
+    usually smaller than the part we keep.
+
+    Signed-off-by: Eric Dumazet <edumazet@google.com>
+    Signed-off-by: David S. Miller <davem@davemloft.net>
