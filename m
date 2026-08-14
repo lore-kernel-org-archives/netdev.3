@@ -1,93 +1,78 @@
-Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.184])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F10E4921A6
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 17:32:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.121.94.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515AE31813A;
+	Fri, 14 Aug 2026 17:36:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786728770; cv=none; b=m50p6oTQne51aM7bUFqe3CFpg/qebHq+D4IIuieJWYdzEUWct7Zi8TTsOQVyS0mSkTvZ0k0dKlZIGxIiQ8+bWkTZIIGkjNZYfYA7Uc+T0BnlqNhZnkTCBua77sGK9QISNVsCQXifNIio40HvrtBP4dkgmKurPqkvgv6D1mL3k3U=
+	t=1786728994; cv=none; b=u4bJnli8BggeQN3KvCjUbMPIPZyo6PlNm5Mgv1pxlKbMcnKle+B3pUsHL/xdrsN98t5cwc8kkD9t7XdXuDYkc4DhbRMONhD7ge3DxMT7qArml9xghMkTbP9vvurTQRXYp3CRGrKzG0mUdTAHndakDAvr7hZQYn6/LKxTvgIeZ2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786728770; c=relaxed/simple;
-	bh=lBkNxyY5Lg0P9/At5SSNBwvhdaxhIMnJHjhjyoc+SBo=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=bv1/EqczOGRxFjgvDU9eiOKQWPw55nW00dGPVyZbquVT8Rjh4fm9fy/jar6Z+qMa5P4cZ9kbfpGb0WiAlLG9AdK1AC8Z80J9KVEWcx4zdKH5jnqGJpKBNPeHl8AeXjznF/S+86V27dHBqiSEQx3Uk8gC/5Y4ZlafPHH9JdCM+kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=xs4all.nl; dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b=DWYJEAfe; arc=none smtp.client-ip=195.121.94.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xs4all.nl
+	s=arc-20240116; t=1786728994; c=relaxed/simple;
+	bh=aU76XfWZ2B+xn8IINbF4JMOjzQ0EYKoYBBnnLBIgVFY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ugAf8YjvzIgY4e9lrGcfWyWt64Oz07DgwpUoonmP7tDkovdsmC6RNTNrTp0ZcJO+IR5MBb9Jv52jR6z5kAFFNJxqH+ygU7vRtsoiY9aAJkoFcpWurYx0oylhIFFAwjF8LY5BTnfrdm5x4oTgAcDpKWpVNrV/f7oouP4gVLXBWB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dMQvC10H; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b="DWYJEAfe"
-X-KPN-MessageId: 28db6f04-9806-11f1-a5a2-005056994fde
-Received: from mta.kpnmail.nl (unknown [10.31.161.191])
-	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
-	id 28db6f04-9806-11f1-a5a2-005056994fde;
-	Fri, 14 Aug 2026 19:32:44 +0200 (CEST)
-Received: from mtaoutbound.kpnmail.nl (unknown [10.128.135.190])
-	by mta.kpnmail.nl (Halon) with ESMTP
-	id 28daf301-9806-11f1-91dc-00505699891e;
-	Fri, 14 Aug 2026 19:32:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xs4all.nl; s=xs4all01;
-	h=content-type:mime-version:subject:message-id:to:from:date;
-	bh=PVZA9SOcMA7rE4UELcQpr/u/JowHJR3hHwvCUT0RBUc=;
-	b=DWYJEAfeCKvWQHtvAYlcWoNT7RnjiAMcGyC3q3qX1LAVXoxboHZ6iKAmnea3si3vRYdrsZH23/SdD
-	 8lgOQzqlz/33naw3SjF/O1WeAYc5xSpHKy+iz4c1kZjoq4t4c9usMIMjkltNX3iTRYZ0zEsqm+XNlW
-	 +oBBZfQuMgblubj5bCNVjuD9WuffKVCANEwZs74IlSEhbpLeGw9eF8BPBA9PFTeJoVjczotObnY8su
-	 3duF/rUF3x1tt7OJAsgrRVKLYj17ChWlTPoTdAskzvvZZys9rjm6U8TxFiXIVQFJSSEnPTkfAOlsWB
-	 iU4KOR+Mxw1mhK3uPOXwPaPexNF9rHg==
-X-KPN-MID: 33|rjG0Br6vS5RDwLieExIyY3mBoE6ZDDRAhRmcSibHzKNFRsupXxGRfwweAXM2zLu
- WmoU7WoYGaJau2Z/X46RMIxdyFDf+ht0hqy47WiYhYQU=
-X-CMASSUN: 33|waToJdTtHouo4HlvNG4Kh00LdkHBb5h2orZlxJcKj4f71Kiggv9ARys6Ofkhl1S
- MCNy+ikVsk6GHL3i8wh+3ow==
-X-KPN-VerifiedSender: Yes
-Received: from cpxoxapps-mh03 (cpxoxapps-mh03.personalcloud.so.kpn.org [10.128.135.209])
-	by mtaoutbound.kpnmail.nl (Halon) with ESMTPSA
-	id 28c9e8a2-9806-11f1-916a-005056995d6c;
-	Fri, 14 Aug 2026 19:32:44 +0200 (CEST)
-Date: Fri, 14 Aug 2026 19:32:44 +0200 (CEST)
-From: Jori Koolstra <jkoolstra@xs4all.nl>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: brauner@kernel.org, cyphar@cyphar.com, kuniyu@google.com,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	horms@kernel.org, netdev@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Message-ID: <710021802.503191.1786728764671@kpc.webmail.kpnmail.nl>
-In-Reply-To: <20260814101828.2ea54f8a@kernel.org>
-References: <20260813162818.149248-1-jkoolstra@xs4all.nl>
- <1036785927.390839.1786639504241@kpc.webmail.kpnmail.nl>
- <20260814101828.2ea54f8a@kernel.org>
-Subject: Re: [PATCH net-next v7 0/4] net: af_unix: useful handling of LSM
- denials on SCM_RIGHTS
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dMQvC10H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2C1C1F000E9;
+	Fri, 14 Aug 2026 17:36:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786728993;
+	bh=mf/Oh0CJVBa+xZqD6qZtecCPEbP/GK8ZbDOjo/ee+Tw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=dMQvC10HO/12daVYPH1Tp+Kri4AR+S9nXRhciTzc4EdixwE72DYh6juUzOKfWBKzK
+	 QkMX1QUgw8DiXS3rIuXJR6gi8qKIjvAzIJZoowZ8oJ6xmu3tNaCoKim6gabKPT0Il9
+	 7ml/9Y5BbY/S377lEUSgPwXeV9gcZFXZjy+ykYtDkFrIiIcWdXFR/ksrLDh2323RAV
+	 I6OdoaFBdUCLi5RVxrqC/qm0AJDgzo986k01ZPG3599KTKF3kSmhHnr04B2+h8v4Rn
+	 JxFRcsJnQRlaekHetckegNVx8tdQC43hbYQ+UPjtXbldR5Exs59TbwZv+z6632jQx5
+	 hkO8vzUUAB/AA==
+Date: Fri, 14 Aug 2026 10:36:32 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Paolo Abeni <pabeni@redhat.com>, Parthiban
+ Veerasooran <parthiban.veerasooran@microchip.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Piergiorgio Beruto <Pier.Beruto@onsemi.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net v6 1/4] net: ethernet: oa_tc6: Protect skb pointer
+ used by two different kernel instances
+Message-ID: <20260814103632.4d620d22@kernel.org>
+In-Reply-To: <DM5PR02MB33697DFABDC38A6C5C0946CD83DA2@DM5PR02MB3369.namprd02.prod.outlook.com>
+References: <20260812-fix-race-condition-and-crash-v6-0-6cf90f4a271a@onsemi.com>
+	<20260812-fix-race-condition-and-crash-v6-1-6cf90f4a271a@onsemi.com>
+	<DM5PR02MB3369B6A836C24C3DCE913F5683DB2@DM5PR02MB3369.namprd02.prod.outlook.com>
+	<190d172c-ee3c-4396-baef-1f0765f72ec8@lunn.ch>
+	<DM5PR02MB3369B34BD9F03C712032939383DB2@DM5PR02MB3369.namprd02.prod.outlook.com>
+	<DM5PR02MB33697DFABDC38A6C5C0946CD83DA2@DM5PR02MB3369.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-Importance: Normal
 
-
-> Op 14-08-2026 13:18 EDT schreef Jakub Kicinski <kuba@kernel.org>:
+On Fri, 14 Aug 2026 05:20:48 +0000 Selvamani Rajagopal wrote:
+> > > I think this is giving a warning that when net is merged to net-next,
+> > > which happens most Thursdays, there is going to be a conflict. How bad
+> > > is that conflict? If it is trivial, don't worry, it will get
+> > > handled. If the conflict resolution is not obvious, maybe you can look  
 > 
->  
-> On Thu, 13 Aug 2026 18:45:04 +0200 (CEST) Jori Koolstra wrote:
-> > My "smart" email provider blocker me from sending more email. Since I am in South Korea
-> > that is apparently suspicious. Now patch 4 is missing. I'll try to rectify that. Is there
-> > any sane email provider that any of you use?
 > 
-> Ah.. shit.  I crashed out at you on patch 4 assuming the rest of 
-> the code is in LSM.
+> After little investigation, looks like it is trivial issue and mainly it can't be handled by 
+> rearranging/changing the patches. Issue is the context differs between "net" and "net-next" branch. 
+> I am hoping that this can be resolved while merging.
 > 
-> You gotta repost the whole thing, sorry. Patchwork (and lore) weren't
-> able to connect the dots. We have 2 separate incomplete series in PW.
+> In the following example, "net" branch has INT_MASK0_ALL_INTERRUPTS. But it is changed to
+> OA_TC6_INT_MASK0_ALL_INTERRUPTS in net-next branch. So, no matter how I move the code around,
+> this will not apply cleanly.
 
-Don't worry about it. I attached the 4/4 path now to this thread (apparently I didn't do that
-well at first.)
+Ignore that warning and wait for a human review.
 
-Does that work now for you? Otherwise, I literally cannot fix it until I get home, because
-it's more messages than the rate limit allows.
+The patchwork warnings are _for maintainers_.
 
-Thanks,
-Jori,
+As Andrew explained the best way to avoid this is to upstream fixes
+first, but if the conflicting stuff is already in net-next we will 
+deal with the conflict.
