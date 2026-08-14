@@ -1,172 +1,194 @@
-Received: from usb-smtp-delivery-120.mimecast.com (usb-smtp-delivery-120.mimecast.com [170.10.151.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB743348896
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 05:20:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.151.120
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786684857; cv=none; b=WdikuoZ65pJQVhdBgwasH9wVqYzDaeVlQkeae2RvJqbYpeewWhDUFkqwRWPGZYy4JmqEUHJmtIIZp6NcbmQRdU5Sor8j0oN/Vpj73x5DTeDJvGwHSOYxCVwXIxId2YYoU8pNZjfveFQnFOvcPJ3xBeQ1yKoQ080iNjxmiTvHfds=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786684857; c=relaxed/simple;
-	bh=1QYi/OSJX35siUuIQe3jVlfCU0H2MpuUaMKBVP65dVo=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 MIME-Version:Content-Type; b=n6edqt66F6vpBQifsLG18yqOkzJWSZunjY/GukhHk9j5eyXdUkKPZNEqXB3HGmOGwGeN2KeRvoKoWcr3tMGLUXra66K2ONlTRac1/dZdNHvzuUEXelqXweH6GOJ8dRI11OLq1cj5luAVzwSRx7DifPECfGH58dGReLDDzqQyp68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com; spf=pass smtp.mailfrom=onsemi.com; dkim=pass (2048-bit key) header.d=onsemi.com header.i=@onsemi.com header.b=Acb7RPHv; arc=none smtp.client-ip=170.10.151.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onsemi.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89EAA2737F9
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 05:22:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786684935; cv=pass; b=jRHRsQsqkkWPzayVz2cBiWAJi1wX45bDznbyv/MN3arQxfpKyvM+CjMZIq862a4L4IM+V6MakrMqhf+AFghlbCHjy6uq3yELgAvmrKfXPgBRgtrWYMb8bOSIzJ7csjq3IIIW3p61uyrOaPAA0X0r6ELyLl/bqQq1LqrDlpGRbiY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786684935; c=relaxed/simple;
+	bh=ohlmMtYRUDHzK2SRXr8jtcqSs6B3bzuBWR5f8Vws71o=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=GVuDMuypENNHIaN59Gr28L26TQFmMz5pisy9KNVRS8kxq3xEAM2pEtcaOI0UUphMMqp/2b7xhXRiswtAxazwTC43NpNQfqOfPImNpeZLLF0ZshY7yGye4iEXGZBk+EQiboEcvA4cqAu3XJX3hYs1LEVE/BMMv9GLnoW7nC0zJug=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HDAc+Fjc; arc=pass smtp.client-ip=209.85.160.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onsemi.com header.i=@onsemi.com header.b="Acb7RPHv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onsemi.com;
-	s=mimecast20250127; t=1786684855;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1QYi/OSJX35siUuIQe3jVlfCU0H2MpuUaMKBVP65dVo=;
-	b=Acb7RPHvGA7f9yU0IM2b6DjXw21FpyTzH8Yy9gDWfjpA9XZA1+KXq9XP8fYSu+miMXGVxH
-	hMjK/vOz6BgUw/X7mip8kNVp/nPlYYEL47VkffqHyhShnhPfqiJTZzfYDGX6pnSPUFrKJy
-	C0CYweIIEv7wMmdOmkw4OmiJaSA7NwI3tWPjaflIWDDhGCpZbFWlsCrGVHdtKjGXGEKWx9
-	7Wg8/FNKgN0dXtsJX04SCJ9jB7+CA5Qg4O8z9aCpP0qi30bLaxogEeC/1YWU4NRnMdeJOy
-	aDUGqos2Zm85d48xvVsD8vOh/CMFhWsQS1yT8AaNaDKdee6P6o2I6JtmopfgaA==
-Received: from MW6PR02CU001.outbound.protection.outlook.com
- (mail-westus2azon11012002.outbound.protection.outlook.com [52.101.48.2]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id usb-mta-29-7U7Jp38UP3ypbkxdLFaBBA-2; Thu,
- 13 Aug 2026 22:20:52 -0700
-X-MC-Unique: 7U7Jp38UP3ypbkxdLFaBBA-2
-X-Mimecast-MFC-AGG-ID: 7U7Jp38UP3ypbkxdLFaBBA_1786684851
-Received: from DM5PR02MB3369.namprd02.prod.outlook.com (2603:10b6:4:68::27) by
- SA3PR02MB10083.namprd02.prod.outlook.com (2603:10b6:806:3a0::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.14; Fri, 14 Aug
- 2026 05:20:49 +0000
-Received: from DM5PR02MB3369.namprd02.prod.outlook.com
- ([fe80::a77f:334f:452d:2b3e]) by DM5PR02MB3369.namprd02.prod.outlook.com
- ([fe80::a77f:334f:452d:2b3e%6]) with mapi id 15.21.0315.014; Fri, 14 Aug 2026
- 05:20:48 +0000
-From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
-To: Andrew Lunn <andrew@lunn.ch>, Paolo Abeni <pabeni@redhat.com>
-CC: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, Piergiorgio Beruto <Pier.Beruto@onsemi.com>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH net v6 1/4] net: ethernet: oa_tc6: Protect skb pointer
- used by two different kernel instances
-Thread-Topic: [PATCH net v6 1/4] net: ethernet: oa_tc6: Protect skb pointer
- used by two different kernel instances
-Thread-Index: AQHdKs/qH9kSA0y0qky/TWZL6h0yBLacGY3QgAA6PgCAACf34IAAhaUw
-Date: Fri, 14 Aug 2026 05:20:48 +0000
-Message-ID: <DM5PR02MB33697DFABDC38A6C5C0946CD83DA2@DM5PR02MB3369.namprd02.prod.outlook.com>
-References: <20260812-fix-race-condition-and-crash-v6-0-6cf90f4a271a@onsemi.com>
- <20260812-fix-race-condition-and-crash-v6-1-6cf90f4a271a@onsemi.com>
- <DM5PR02MB3369B6A836C24C3DCE913F5683DB2@DM5PR02MB3369.namprd02.prod.outlook.com>
- <190d172c-ee3c-4396-baef-1f0765f72ec8@lunn.ch>
- <DM5PR02MB3369B34BD9F03C712032939383DB2@DM5PR02MB3369.namprd02.prod.outlook.com>
-In-Reply-To: <DM5PR02MB3369B34BD9F03C712032939383DB2@DM5PR02MB3369.namprd02.prod.outlook.com>
-Accept-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM5PR02MB3369:EE_|SA3PR02MB10083:EE_
-x-ms-office365-filtering-correlation-id: 7951c978-095f-404f-d389-08def9c3cd22
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|10067099003|38070700021|56012099006|18002099003|4143699003|11063799006|22082099003
-x-microsoft-antispam-message-info: 145FWaBAX3QmoMIPERmOgEfhymZXHIGbTlDJHh47aOkh6deCfu+bNdNoKenmopM1XuXnXPgeCgYEYe7D7gIdC6PcN9CguKbQhVD623loRYV8ED/o2xoWY31eDk9lnsh3CpGQJKrEuJcW2PjCVutqyFzD8ZRrpDt1txAvviztF7b2n0guv4gu/h176ANn8tBnzLzePGWagM/IbbaEz5Ut7m61W79X1eJEcW1DD9rms1q/EtCWGHwbqBa5BBzwhcy5UeKQ2q5AD+VbGQuVNg7bd3bLcgQk00Qd65KzIUGa8mp999qXKWuaAaonnYogPLmr1XPGgNJhYjwx2JFrXcPSsH3PlPOHC52TYWuRDIaoJHp2ctUvmYCldBVR+2vj0jBU3QX++DXeFvj3g3vzpGkfWUKMitRHKCJfuUMNALYx0dF6T9Z7eZQ7vcI8PK1QNtmj9hkmPw9hLg94RZvatIW+Cq/MLz5FainiGGEPgJdTMIibJVRpZeY2FVmgoJqDTCg9+e0hXkfPs0hLbxyxVnWtUZtzHR465fqEbWc6wUykWB26ceDIf3JzhUVaB3IlzyDIVTYYOgFnGD8zAemtkLQfKCp8+vejk0vBBSLYld6mXXA7AuD/GHX9/SDqYbc2KDXsfg5aQ8d82RxrGvsyy6+FPPy8CwGZhX2Dx/NOhpcXwsfjU1pOgWhSEIQql54LOrNjxQ9E0zEkOgr//gtelBVefSQ/Gw4RETc/Y3PE86SbBlE=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM5PR02MB3369.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(10067099003)(38070700021)(56012099006)(18002099003)(4143699003)(11063799006)(22082099003);DIR:OUT;SFP:1101
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TDZKWWp4S2N4OTRIQktFS2tYK0UwYktob2xTWVJJRE1wMXYyc1BlZzYxZDJo?=
- =?utf-8?B?WGdlRW5HRFRjb1JQWXdjV2lmcjV3czVyOXdqbkRmS202Sm93L2RwS2c5UkFr?=
- =?utf-8?B?bzluTFFhK0RPME9DbERCemlwQVVKT1dHZVZKOTNkVCtDaXRQTlBYMVErV3pO?=
- =?utf-8?B?MDRpZytnYkdZOGlKRmVKT2Q1aFdMTFRtVS9kMmtEVGRYaWFmK0FaeVRZaHNG?=
- =?utf-8?B?T2N6VWxKQWM3VFRJVVZRdDJWWWlvb2JxWVpucEFpOGVtT0Y3a0g5VUI1ZHIr?=
- =?utf-8?B?OFo4YjJCaXZRUlZsdWJhZUlab05JWElibXlobytDUWY2bys1S0xmVjY5OEZQ?=
- =?utf-8?B?Nm5RZytXUHFLa1dNZFA0MGVrL2xJYVRGY3ZCZ2J1RjhueHhmN0tQaGtSRTYz?=
- =?utf-8?B?dk0zYzRjM091Ynlaek1uL3dUd0d2UmdZYThPWGJKZlJUbEF1MXcvTDN4dU8z?=
- =?utf-8?B?MVJOLzcyN1RzMFJITHdZKzk5SEhiNHowYUJwZXE2N0VUMEZZdys1RnZqQW5j?=
- =?utf-8?B?MzJVazhhc0hvdEMxYkQxY25hQUdKdk9iQXU5VnNIcjMvNjFJNUpzaG1pQ1Fi?=
- =?utf-8?B?dHBIWTNPRG5BbGR4dG1jcFRmdGw2VG91UU1MdFU0RnMzdlVkbTlDT0VibWtU?=
- =?utf-8?B?QmMvdEIrU0pxYVgrd1B3U1d2aHVXMXNncW1XWTZBYU1XMlhmWWk0VTZpZmVG?=
- =?utf-8?B?OFlmZExoMmtHYVZYbGF0TUZyMENOY1drYXJicnB6L0ZPL3BTa083MWU0RXI1?=
- =?utf-8?B?ZDRIUHUxZk13bWdsTGQ0NEZlRHBzUkhTdG9mUWh6aEo4YjJ5YWx1Ri9rMEVO?=
- =?utf-8?B?V3BrTkVGNTdlZEI3dEE4N3VVdFQrZjJtekJobmtOeTk1VGsvV0Q2cm9nSm9H?=
- =?utf-8?B?Vk5ZNkVhQ2Q1aURFaW10S0padjdoUnU3eHRQK2E2dGZWa001c1hRWXhqejNk?=
- =?utf-8?B?bElqaSs2MmdUaTBTbjk0aGlvRzlUYmRsTFNxclcvbWEvKy9tbk5Ic2ZvVmM0?=
- =?utf-8?B?VU1oaUVlcEEwWE5vYXMrTGJOWmQzVjlqZllJVEVzY1Q4cHpueEF4K0RqZ3ha?=
- =?utf-8?B?ZmlmYTh2a1d1V0syaURZaEpqcHg0cTFNVlNGTmpROHlGS2VIUkpuL3dCejU0?=
- =?utf-8?B?Y3RVNHZ1K2xTRW1RalRYN1NqL1dESkVaNkxsQVlyYnJONFZ2Z1JMT25GRTI3?=
- =?utf-8?B?Q3RTM0p6ekdPenNBc292TDJGc3lNUUxNSWR5WnoyRnhmeGh4OFJ0cDl5SW9a?=
- =?utf-8?B?MDNISDc1WjBxSDZPa3Nvd2ZkTHVFZHhvTWhsalRGQ2Z5MkFrR1ZCLzh1UHNZ?=
- =?utf-8?B?dlpmaWFNazk5VU5WZTdRUnZtZWhjVmRHcXZoeUpGNklxTFVzNmdLTVpWS1Zh?=
- =?utf-8?B?RjZJdzV0enowVEc2cDlBenc4Z2ZTZVpaYlR3cFZiNzRiVGErclZ0ekNjMFM0?=
- =?utf-8?B?K3gvV1FSTlpsZWkzZGRybk1OZTVvTVY0VnN1YVo5TEd2NzExeVFlQUFqMWVU?=
- =?utf-8?B?cFQwdkNhNDRka1JyWmhpMmt2UjBmbWtoMjQzaTRPSG1FSWFsZlVla3ZlTU51?=
- =?utf-8?B?MjF2REFmRlVIOWpSSEtxWFUzV3pMS0xYRHFkQ1BtRGxES0s1NW9Lc2UvZ2Ro?=
- =?utf-8?B?V0Jlb0wzNU5SaEUwWFh3WnR3My9lNnRPR1ZTNFh3YXFBYXpIZE8rbm1RTzRP?=
- =?utf-8?B?S2Q2NFdQaTRiMmJFOFg5TDRIQnpCKzY5Z251MkFOWjlQTy94d1A0UGMrVHlF?=
- =?utf-8?B?VUJCVERWZ3lxRmdHRC9nZ01sUlZZTitUY1dzS3R5cFVxWHRvVUYzdFhXK0dk?=
- =?utf-8?B?bDY3Q01TRjBvMnJPQWdxQ3lWRVFxcHVLRXpWalVGMFNRU3dlcG0xMENQb2xW?=
- =?utf-8?B?bEFvT0NKcFhzVWdOVmIzdTUyTm9IcisyV1d3SXBHZ1pqeXlhK0R3Wmx0YTJv?=
- =?utf-8?B?c2NuREJ4b0hEb1E3TVdEazRSSEpoM0Z3MWdreG9vK3BVazRVMVNNeTBjNUs1?=
- =?utf-8?B?c2dzZmZCTDVIZHJpR2VaZjdCM2ZiZU9uQ1F2ZUd1VWpjdGlNcmZkNGtkZE5C?=
- =?utf-8?B?M2Y0djNTNzJsRzZ5V0hhQzVKcFFGOVJKUWVsaForT3JoRHNvbTJwT1gvSnZ0?=
- =?utf-8?B?Nlp0S3d0RFVPNCs1Qmk0dG02RDBBZEJDSzhBVlRUdEo5YmZyb2NPdVlmY045?=
- =?utf-8?B?K1VFbllTbkN5a2dXMEVxbUFEcEkweGRuQW9jVExHQlN3cXNVWFZnbXhxR0lm?=
- =?utf-8?B?UzYyMVM5TWdZUDZwa1lqUzQ1NXVmQ21JN2xpMUxZNEZrVkhJclIzWUd1dzA0?=
- =?utf-8?B?L3FVaVZ6OVQwejBGb2Fuai9qN3NMVUt4U1daVFNNRWVjdkhJL0tCWmJOcFBW?=
- =?utf-8?Q?Det3H6PiAoex5ulU=3D?=
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HDAc+Fjc"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-51c16ac21acso4354051cf.0
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 22:22:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786684931; cv=none;
+        d=google.com; s=arc-20260327;
+        b=qF9RCeHeXMETLlOWjkftViLu6N7a3JxeK7X1M62pu0xTOl132DqPrhO0IErMYV0YcX
+         W0ol9MiD1mDn7uVva2F2TvNtzk73fY9hPGnymfg/CsR0DEZ9tGbje+qPO2qMSLM5ICrT
+         z+1FYi2mPWibqIWtntoRk733Hhn3qeAglhO5FT53uYEgk/4zWmjeK6wzgvtp8yjhN9/8
+         SsCLFUfhIwrvFXy0UaGYPgeLh98rPSEwi5KfM6V0zECfWRWy10HNdsQXyAPQ8bq9OGI6
+         8OBY2bsI5NyCU+B/AgD6uj3HedBVGAx4PBfvCWN1IAZReXASb/MZIfRFnKAm7tiAy3+Q
+         gy1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=3JXE+rmvpEkwSkNziwCSQtGp5waZRrqyKerzZGgG2sY=;
+        fh=VhJHrUiILU09V2g814CeciQkw6eEF/YpX1SmDx5g63Y=;
+        b=W1gUgKI9icAxB86i/sFEk3MnEnAmUUGjqScwQiSHOanNCh1Q8fWWqEQ6Usj/D0E8lp
+         RRwnID//vhb4fX/FQjDZyxcq4++lnKiVt+YRXMG21CnlR8LXYyh5SNLgvodOQiGobAZ1
+         7e3MjeEVTxNjsXE4cbABPy0w1hE1QAQ2XDxZsT6sFlFvS+d2tXZC7VC8/lEFLupToiz+
+         2HWI4LyXN7TuX4VUVw3UKhafKVTnWcOe+g3YakM+l5cOl3hjP8Y5+60svVYKvhP+jsD/
+         QDm8RXPzXFmfO8qaPkXWggDxswf2T9fY1oTtQHOh1V48LrXq8FUhpmtp2OuT/mnG7GkI
+         rdzg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786684931; x=1787289731; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3JXE+rmvpEkwSkNziwCSQtGp5waZRrqyKerzZGgG2sY=;
+        b=HDAc+FjcNeppvJc8NTCgpcC/yZXXpm5Qk6JcLBuPq0FbJT65ELvxvNJnYFrjxB1xnM
+         VERePqHJtM46jtMkD7jc/uWqtaLuGYg1LWE2mU+5EwSrYvvBEMNKsRpu8jZ2jdHZRX2P
+         JxaRE/HN99y15TRSJeK/6K/h9PeGfllYEOkbMJYKsjlGKG0JwK2dXHsl+7IWjrOuzQw0
+         GfLnkM5ZGMmRJj3J7JjGndpOLMa4B2m0FSnwJD+t62jjmHY5MAZxkdwwExjb1Hs3R93V
+         V96d5a3v3B+oPfFn118gy+5dO5ZZMbb4H4BHbRwufExTjbALl5u2CXqwIU6R7dAvwF7u
+         nQTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786684931; x=1787289731;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=3JXE+rmvpEkwSkNziwCSQtGp5waZRrqyKerzZGgG2sY=;
+        b=NxHHRfuekYZtt+8WBHxBCTllWcSXGvzS6TTBlndZljVkM9F8jhvKFhAmmF5/BIUXFA
+         dF4SgopRb07I53tnPbL2LKQHPUNR6Ndf0BWnZydKiYSTg6xnYmeZrlzP3++fNZfiCa5S
+         55MzSybbAGMMNX6kksdUlh1q4TcUpkrqSbmYF8xJ5rEvnw+DoEy0fEcsphcYJK2lRmPZ
+         FZzJ/TLSMCHtEOA33gvqHar9oVwDlC2gkQCxO6Id/dLty0F3rqx5adIFWnILF6IyGPnX
+         FK92LlytTvbZL7g4kwAOL4gB/fOXaIPerzCQnXBdeFl6GisivpfyoTIKRvf920cDM00J
+         yweA==
+X-Gm-Message-State: AOJu0Yx1X92kCC6YXboHJLhNUesa2eHfqOxuMEsj6q5lgYJmLUSRXcQr
+	jYGLMyPn8+EPv0nPN2bxCG4SFwqyYDhmYUqvRnW3GvtzGF5ojfGXJsN30KaHcVyjpyTj5DSmRix
+	j2dlhKQxqBhqMFdeUZrP5koirtOjvDG4=
+X-Gm-Gg: AR+sD10RHKdTg0vPzzsBwdfsbha6PztECj5j2ThOiDQ1uSjRlMIP/QoH5MPkE4YoIGi
+	gImiymFDkFloQg/lIe11OsLaihZvP9jsOrgcgXJjVnnH08eImhvKvm8GmH8HNlvDgN2FlooFA+O
+	8pqM8l3xpEnZjft3FFexJWMYMYAIaGr93RHi7aTvj3FWf6BjLvsCW8JGCDLEq7DJnHMYQYstVG1
+	kvQwHBz8kPULcpVrT8G/cEULPHtvlTz3O5sJD3i044dhS/arbaud4Lpzfu4NudrTDp2IyFfmnUm
+	QRe5U7JnIY+zBjzZeYXrw2Tiyb/41eUbomA+SOFegLM=
+X-Received: by 2002:a05:622a:4185:b0:528:3882:386a with SMTP id
+ d75a77b69052e-52d8534fbbcmr45236501cf.11.1786684931381; Thu, 13 Aug 2026
+ 22:22:11 -0700 (PDT)
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Thu, 13 Aug 2026 22:22:10 -0700
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Thu, 13 Aug 2026 22:22:10 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: OyCS4OOYbMmyV21S9ObKob9v2eqVh18F0OY4ScAYsAy850BddJ3VDoCoUae58YrQtxH58JzEoe9Rl8GmtJ4ZYc1JUgm5f1YrnKCYL8hR2SZ1X/IpjnHD/ljUZQDalR5XN2oUva29ooEPtH6ISpObpzgvlIWZJkZS7GCA3y06b/KyYbs/Ntl5Usr8elQSwoeO7K4Go7Y+hI38fjZTwkb6S0C7Ffwcid2VF+a5nmBR6nsnbl+P5DuRmMvk2/P1fAFxkfWMAENyfg3CRLeW5T6Yz4iQHtHd+TAOiTys6XZa2QtmaM9O26y/RsXazzF71fGQl7KTDCvBZcNO3pY3f3pIZg==
-X-OriginatorOrg: onsemi.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM5PR02MB3369.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7951c978-095f-404f-d389-08def9c3cd22
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Aug 2026 05:20:48.8395
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 04e1674b-7af5-4d13-a082-64fc6e42384c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 5UNBRDYT2V+Xy4fTnp7eTrfWoAEFQwGtoYVwAYF6rzPXUZtVotC1ilZk0pdao3y3RqK4wB1UyHnENbeyQfJlFWI1Cl0LHlLw/vpVfFkBH2s=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR02MB10083
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: _0dviqtq6SST1RWH26f08IjQTMX1G8yi-vcEhZUyBok_1786684851
-X-Mimecast-Originator: onsemi.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+From: diegomancera.dev@gmail.com
+Date: Thu, 13 Aug 2026 22:22:10 -0700
+X-Gm-Features: AUfX_mwI94UpPhk7GoTpsv7_OM87DrWKt8F-iw2PwKxn6igkpnk3x07qqidsnKw
+Message-ID: <CALruWrVTmdRYoCQ9kh7n2KJ_HjGKhMkhX5_ybMYwCgeCJiTnKQ@mail.gmail.com>
+Subject: [PATCH] net: stmmac: restore XDP configuration when reopen fails
+To: maxime.chevallier@bootlin.com
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-QW5kcmV3LCBQYW9sbywNCg0KPiANCj4gPiBJIHRoaW5rIHRoaXMgaXMgZ2l2aW5nIGEgd2Fybmlu
-ZyB0aGF0IHdoZW4gbmV0IGlzIG1lcmdlZCB0byBuZXQtbmV4dCwNCj4gPiB3aGljaCBoYXBwZW5z
-IG1vc3QgVGh1cnNkYXlzLCB0aGVyZSBpcyBnb2luZyB0byBiZSBhIGNvbmZsaWN0LiBIb3cgYmFk
-DQo+ID4gaXMgdGhhdCBjb25mbGljdD8gSWYgaXQgaXMgdHJpdmlhbCwgZG9uJ3Qgd29ycnksIGl0
-IHdpbGwgZ2V0DQo+ID4gaGFuZGxlZC4gSWYgdGhlIGNvbmZsaWN0IHJlc29sdXRpb24gaXMgbm90
-IG9idmlvdXMsIG1heWJlIHlvdSBjYW4gbG9vaw0KDQoNCkFmdGVyIGxpdHRsZSBpbnZlc3RpZ2F0
-aW9uLCBsb29rcyBsaWtlIGl0IGlzIHRyaXZpYWwgaXNzdWUgYW5kIG1haW5seSBpdCBjYW4ndCBi
-ZSBoYW5kbGVkIGJ5IA0KcmVhcnJhbmdpbmcvY2hhbmdpbmcgdGhlIHBhdGNoZXMuIElzc3VlIGlz
-IHRoZSBjb250ZXh0IGRpZmZlcnMgYmV0d2VlbiAibmV0IiBhbmQgIm5ldC1uZXh0IiBicmFuY2gu
-IA0KSSBhbSBob3BpbmcgdGhhdCB0aGlzIGNhbiBiZSByZXNvbHZlZCB3aGlsZSBtZXJnaW5nLg0K
-DQpJbiB0aGUgZm9sbG93aW5nIGV4YW1wbGUsICJuZXQiIGJyYW5jaCBoYXMgSU5UX01BU0swX0FM
-TF9JTlRFUlJVUFRTLiBCdXQgaXQgaXMgY2hhbmdlZCB0bw0KT0FfVEM2X0lOVF9NQVNLMF9BTExf
-SU5URVJSVVBUUyBpbiBuZXQtbmV4dCBicmFuY2guIFNvLCBubyBtYXR0ZXIgaG93IEkgbW92ZSB0
-aGUgY29kZSBhcm91bmQsDQp0aGlzIHdpbGwgbm90IGFwcGx5IGNsZWFubHkuDQoNCnN0YXRpYyB2
-b2lkIG9hX3RjNl9kaXNhYmxlX3RyYWZmaWMoc3RydWN0IG9hX3RjNiAqdGM2KQ0KIHsNCiAgICAg
-ICAgdTMyIHJlZ3ZhbCA9IElOVF9NQVNLMF9BTExfSU5URVJSVVBUUzsNCisgICAgICAgc3RydWN0
-IHNrX2J1ZmYgKnNrYjsNCg0KDQpTZWNvbmQgcGxhY2UsIFNUQVRVUzBfUlhfQlVGRkVSX09WRVJG
-TE9XX0VSUk9SIGluIG5ldCBkaWZmZXJzIGZyb20gDQpPQV9UQzZfIFNUQVRVUzBfUlhfQlVGRkVS
-X09WRVJGTE9XX0VSUk9SIHRoYXQgaXMgaW4gbmV0LW5leHQgYnJhbmNoLiANCg0KICAgICAgICBp
-ZiAoRklFTERfR0VUKFNUQVRVUzBfUlhfQlVGRkVSX09WRVJGTE9XX0VSUk9SLCB2YWx1ZSkpIHsN
-Ci0gICAgICAgICAgICAgICB0YzYtPnJ4X2J1Zl9vdmVyZmxvdyA9IHRydWU7DQotICAgICAgICAg
-ICAgICAgb2FfdGM2X2NsZWFudXBfb25nb2luZ19yeF9za2IodGM2KTsNCisgICAgICAgICAgICAg
-ICBvYV90YzZfbG9va19mb3JfbmV3X2ZyYW1lKHRjNik7DQoNCg0KPiA+IGF0IGl0IG5vdywgYW5k
-IHByb3ZpZGUgdGhlIGFuc3dlcj8NCj4gDQo+IE91dCBvZiAyNCBodW5rcywgMiBmYWlscy4gTGV0
-IG1lIGNoZWNrIGlmIHRoZXJlIGlzIGEgd2F5IHRvIHJlc29sdmUgdGhvc2UNCj4gYnkgc3BsaXR0
-aW5nIHRoZSBjaGFuZ2VzIGluIHRvIHNtYWxsZXIgcGF0Y2hlcy4NCj4gDQo+ID4NCj4gPiBBbmRy
-ZXcNCg0K
+Exit code: 0
+Wall time: 0.3 seconds
+Output:
+From 7691567e29d241f28d1525d99b11faa2d5831f3f Mon Sep 17 00:00:00 2001
+From: Diego Fernando Mancera Gomez <diegomancera.dev@gmail.com>
+Date: Thu, 13 Aug 2026 23:03:56 -0600
+Subject: [PATCH] net: stmmac: restore XDP configuration when reopen fails
 
+stmmac_xdp_set_prog() tears down the datapath of a running interface,
+replaces priv->xdp_prog and then ignores the return value of
+stmmac_xdp_open().  If reopening fails, the interface is left running
+without DMA descriptors, IRQs and queues while userspace is told the
+attach/detach succeeded.
+
+Propagate the reopen error and roll back the program swap on failure:
+quiesce the partially reopened datapath, restore the previous program,
+release the reference moved in for the new one, recompute the SPH state
+and try to reopen the device with the old configuration so the interface
+remains usable.  Preserve the original reopen error and only log the
+failed restore attempt.  Also update the XDP redirect-target feature only
+once the request succeeded.
+
+Fixes: ac746c8520d9 ("net: stmmac: enhance XDP ZC driver level
+switching performance")
+Signed-off-by: Diego Fernando Mancera Gomez <diegomancera.dev@gmail.com>
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c
+b/drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c
+index d7e4db7224b0..c90a1eb2ed31 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c
+@@ -104,8 +104,10 @@ int stmmac_xdp_set_prog(struct stmmac_priv *priv,
+struct bpf_prog *prog,
+ {
+ 	struct net_device *dev = priv->dev;
+ 	struct bpf_prog *old_prog;
++	struct bpf_prog *new_prog;
+ 	bool need_update;
+ 	bool if_running;
++	int ret = 0;
+
+ 	if_running = netif_running(dev);
+
+@@ -117,25 +119,48 @@ int stmmac_xdp_set_prog(struct stmmac_priv
+*priv, struct bpf_prog *prog,
+ 		return -EOPNOTSUPP;
+ 	}
+
+-	if (!prog)
+-		xdp_features_clear_redirect_target(dev);
+-
+ 	need_update = !!priv->xdp_prog != !!prog;
+ 	if (if_running && need_update)
+ 		stmmac_xdp_release(dev);
+
+ 	old_prog = xchg(&priv->xdp_prog, prog);
+-	if (old_prog)
+-		bpf_prog_put(old_prog);
+
+ 	/* Disable RX SPH for XDP operation */
+ 	priv->sph_active = priv->sph_capable && !stmmac_xdp_is_enabled(priv);
+
+-	if (if_running && need_update)
+-		stmmac_xdp_open(dev);
++	if (if_running && need_update) {
++		ret = stmmac_xdp_open(dev);
++		if (ret) {
++			/* stmmac_xdp_release() tore down the datapath and
++			 * reopening failed. A failed open may leave the MAC
++			 * and DMA running, so quiesce the device again,
++			 * restore the previous program and try to reopen
++			 * with it, while preserving the original error.
++			 */
++			stmmac_xdp_release(dev);
++			new_prog = xchg(&priv->xdp_prog, old_prog);
++			if (new_prog)
++				bpf_prog_put(new_prog);
++			old_prog = NULL;
++
++			priv->sph_active = priv->sph_capable &&
++					  !stmmac_xdp_is_enabled(priv);
++
++			if (stmmac_xdp_open(dev))
++				netdev_err(dev, "failed to restore the previous XDP configuration\n");
++		}
++	}
++
++	if (old_prog)
++		bpf_prog_put(old_prog);
++
++	if (ret)
++		return ret;
+
+ 	if (prog)
+ 		xdp_features_set_redirect_target(dev, false);
++	else
++		xdp_features_clear_redirect_target(dev);
+
+ 	return 0;
+ }
+-- 
+2.54.0.windows.1
