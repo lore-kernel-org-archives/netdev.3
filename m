@@ -1,479 +1,160 @@
-Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.186])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010053.outbound.protection.outlook.com [52.101.69.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2F3485CCF
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 17:29:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.121.94.186
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786728578; cv=none; b=Bir7/j0dywuJeI3YRKdbFiq8XE9sJZkT5ppDThUVZesvrcM0al0k3BwdV2VXa7ntxbJgYf4K+ovsBhRy4ncuAattDA34WZ2Pf00lPHmGYsBSeqpc1tPT2XRaZF2N8ZiMxQ0CBquZi1wDDIUD6xBk3bDydbtwEihxcTXeD2tXlYM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786728578; c=relaxed/simple;
-	bh=qRP6Fzrjzx581TLe+ODwZowV0EVL4ovgm7DtoSn/IK0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N4GrvyCfzGXVrz6lpH2LnBRS5t+jmPBeuhRqa+xAvg6EpleJgyDEipb4HIUTJnJpAvK6HuXG2m+hdcykYpFe6qYcM/zDmkafb1Ifl8AA4ljrqdGCXTjxRcoIo1Dus3oVUKw2zr+1cACdb18hIIVg4TVWhncFPfFCYnFUh2EK258=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=xs4all.nl; dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b=KGLCyum5; arc=none smtp.client-ip=195.121.94.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xs4all.nl
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E7048EBF7;
+	Fri, 14 Aug 2026 17:30:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786728656; cv=fail; b=fKtGSk1tg2ginJ606eUPLRMjcs5gG9zy1I99nH4amYe4CWwCAFsGT6IjyKU90JPt/sfcYl5Sub8O8fjP/PjpYC0s0MuyRSjXApBHNfXLa2I4m4p/bw2SbV5Spe1cXKGPuFElbmT3KcmKZG9/Up2Q6k6/sZoqXlwY9HzS7xgzN+Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786728656; c=relaxed/simple;
+	bh=ZV6B+KrMFtNFfyQ/kwd8qJx/1MvHBXvx/GnO+HQnw7g=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=E9xXvt2ExBI4/Vifc1QDTl2j7O4Rk02xlkUurTSD5uJg7SjoFHnAk2yWDlCVz1ty5q6YCdWFd1EAyPo/hHWi+iw7cwcjY8N7+zcov2yQ+myfqKVW7YnIN+zAR2plRJMOVo/yuN3RgOurE+RQU4LNnrXKYhCTn+zCY9WaBNxoKJE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com; spf=fail smtp.mailfrom=nokia-bell-labs.com; dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b=Bxpk/Rog; arc=fail smtp.client-ip=52.101.69.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nokia-bell-labs.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b="KGLCyum5"
-X-KPN-MessageId: b39acb9e-9805-11f1-bfbb-00505699b430
-Received: from smtp.kpnmail.nl (unknown [10.31.155.8])
-	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
-	id b39acb9e-9805-11f1-bfbb-00505699b430;
-	Fri, 14 Aug 2026 19:29:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xs4all.nl; s=xs4all01;
-	h=mime-version:message-id:date:subject:to:from;
-	bh=yuhW5fo8gy1KkAMB4l09VmCtFZcOuXgv/fiRdg5ZL1E=;
-	b=KGLCyum53+XmV5S6ATj7uHO9TLhn2Kn0gS4xKSiVEFVp0WbEbLX2cPwDX9ELqy4KrjyncWeDXUnek
-	 coJXce0CddFWuxfq1e8fLrmQTgzhk0/YF+qUH+4q80oWHBMteNY2E5Ivla2s19vKbrEmQwdK/QW1Nm
-	 KFzF+0cFi7v5qyqXbDp9jm44nsqx4OngRBK2eCMkaoZo9x0jC3y5+Nmtt9voX+alQ50t5itUpGJcv2
-	 e1Y2VjhHa8xJWZ536SWEytjPwWV1YMfMrEZ5vppH+t4s3S7GM9nmJWD8Ur/QLTIVDp+fsaJcXtcmRO
-	 IuiNy1hhYdd3gVGZvUVSUBQCgcsZSCA==
-X-KPN-MID: 33|z2VfLob3x0ZwACcXMDEtiWbjkvvHAVYu/HytlrEhyimL1vnwAJ/bD6LRSGFc97t
- 7xAMk/dNHaT3Pa/rrSOnH8JeK0GYXaY0b3u9ye8x0wAQ=
-X-KPN-VerifiedSender: Yes
-X-CMASSUN: 33|V/RJD6lPIMVNghFN/+E8FZFhK/71A3hofhx5fDF61az3ubWBpgh5s9Xx2qrKUYb
- USXWJhGcxb4jNuOletpvRBQ==
-Received: from fedora (unknown [27.1.3.178])
-	by smtp.xs4all.nl (Halon) with ESMTPSA
-	id 906404dc-9805-11f1-8ddb-00505699d6e5;
-	Fri, 14 Aug 2026 19:29:25 +0200 (CEST)
-From: Jori Koolstra <jkoolstra@xs4all.nl>
-To: brauner@kernel.org,
-	cyphar@cyphar.com,
-	kuniyu@google.com,
+	dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b="Bxpk/Rog"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Z823Cbhniy1PK7+Yz5gxWdjEOxXHsIP0BoA+HHkB0Ox+m820m/S9W7zT3YvUPt2TRF1Gbe2GbNRwM4CGRfBxKAxgSkmCT0LnF0ZZli3n+pUfvTxrLOtvlnBxAaWdcJsG7IvXtrxRC0YQeDtxpB4aIReWW86J7dpZztStm1daniwI4Hh977VcxTZYMvaniY/nSrtd8sTuOTeNx8xoj/Ea+yq4wq/hSC4c0se8NoEF6yn6LujZCNKmdvKCOTDwBDeUqJu+qhERSINlGw1Oy1LF5thsgxc5CJVfliZ6EuIQl6XHrjhD095+8+0VM0SrfuQKw+x99Cf2O2Es4lnv+Zy/8Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QW1K3o/DxTEJcZZNxTSXA79SY51ZfehKOe8fy8RaHI4=;
+ b=IYowF20RtIcb0/0mN5SordoZIFWoJ7kDbxzzHF4nYtuAWW8AxSxSfIBiMth20g5HtEsaM5a/bA5eEuUf0A/zu6JHkcl8NHWOiiHbN4BrwBB7WQeehP9SNFo9uaNRc06uKP+6lmhqXCRP+XH9LVVDgSu+03dWTXklHBBr08BRa/E1RG508qxcNJ75w+6MY8XTgTSgJpdab3dXP0u/bGATp1f8Uaju6QhN52Rsx9wdA/oX5CAvx+0nDwtr40eCgSmc7Ru99Lsl9ogv8owunkf3Nbe9uiyIwuej6DqAz0qCTeZ2iQnA51mES3rXH4o288bs3AiOZnnUvlglvDh/lYW8ig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 131.228.2.84) smtp.rcpttodomain=apple.com smtp.mailfrom=nokia-bell-labs.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nokia-bell-labs.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia-bell-labs.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QW1K3o/DxTEJcZZNxTSXA79SY51ZfehKOe8fy8RaHI4=;
+ b=Bxpk/Rog/2HRzOqrYxO8SwP4Ns5uWR/XvW5svUQ8uHdOjiwC+ZCE4ZBX55cDcm6yeVg7S6e+h5Dt3xZial0fiabmUaaq1jVlWGycjcNqRCorpewNX6fxOQGBQ+iJRHrSBwJZk1RVMtKYh48zmVdlCP3PrfItz9aAarg1XYYdDoiO0f2H3PR1yrsMX5mBvfpZT9e2Skkn0W0WrG43lGuN1fd+cm5uZMeJ1QRhhQYthUfRmxDZ6ewMYALQKW3ng/1h1+lmnHYjqNgcmoAS7WOvfCBVthjgWG3QYcMmGnPa/kMQ51yfRjHehslC/407B1kPIwY1uVf5bAjZCk4VwKa4tg==
+Received: from AM0PR10CA0044.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:150::24)
+ by PR3PR07MB6971.eurprd07.prod.outlook.com (2603:10a6:102:5e::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.5; Fri, 14 Aug
+ 2026 17:30:44 +0000
+Received: from AMS1EPF00000048.eurprd04.prod.outlook.com
+ (2603:10a6:20b:150:cafe::63) by AM0PR10CA0044.outlook.office365.com
+ (2603:10a6:20b:150::24) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.315.16 via Frontend Transport; Fri,
+ 14 Aug 2026 17:30:44 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 131.228.2.84)
+ smtp.mailfrom=nokia-bell-labs.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nokia-bell-labs.com;
+Received-SPF: Pass (protection.outlook.com: domain of nokia-bell-labs.com
+ designates 131.228.2.84 as permitted sender) receiver=protection.outlook.com;
+ client-ip=131.228.2.84; helo=fihe01smtplvp01.emea.nsn-net.net; pr=C
+Received: from fihe01smtplvp01.emea.nsn-net.net (131.228.2.84) by
+ AMS1EPF00000048.mail.protection.outlook.com (10.167.16.132) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.3
+ via Frontend Transport; Fri, 14 Aug 2026 17:30:44 +0000
+Received: from sarah.nbl.nsn-rdnet.net (sarah.nbl.nsn-rdnet.net [10.0.73.150])
+	by fihe01smtplvp01.emea.nsn-net.net (Postfix) with ESMTP id 74F9C8000096;
+	Fri, 14 Aug 2026 20:30:42 +0300 (EEST)
+From: chia-yu.chang@nokia-bell-labs.com
+To: john.fastabend@gmail.com,
+	jakub@cloudflare.com,
+	jiayuan.chen@linux.dev,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	martin.lau@linux.dev,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	jolsa@kernel.org,
+	emil@etsalapatis.com,
+	linux-kselftest@vger.kernel.org,
+	shuah@kernel.org,
+	horms@kernel.org,
+	dsahern@kernel.org,
+	pabeni@redhat.com,
+	jhs@mojatatu.com,
+	kuba@kernel.org,
+	stephen@networkplumber.org,
 	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jkoolstra@xs4all.nl
-Subject: [PATCH net-next v7 4/4] selftest: Add tests for useful handling of LSM denials on SCM_RIGHTS
-Date: Fri, 14 Aug 2026 13:28:06 -0400
-Message-ID: <20260814172806.158954-1-jkoolstra@xs4all.nl>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260813162818.149248-1-jkoolstra@xs4all.nl>
-References: <20260813162818.149248-1-jkoolstra@xs4all.nl>
+	andrew+netdev@lunn.ch,
+	donald.hunter@gmail.com,
+	kuniyu@google.com,
+	ij@kernel.org,
+	ncardwell@google.com,
+	koen.de_schepper@nokia-bell-labs.com,
+	g.white@cablelabs.com,
+	ingemar.s.johansson@ericsson.com,
+	mirja.kuehlewind@ericsson.com,
+	cheshire@apple.com,
+	rs.ietf@gmx.at,
+	Jason_Livingood@comcast.com,
+	vidhi_goel@apple.com
+Cc: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+Subject: [PATCH v7 net-next 0/2] Explicit TSO segment count
+Date: Fri, 14 Aug 2026 19:30:32 +0200
+Message-Id: <20260814173034.749151-1-chia-yu.chang@nokia-bell-labs.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AMS1EPF00000048:EE_|PR3PR07MB6971:EE_
+X-MS-Office365-Filtering-Correlation-Id: a0ccf979-5b3f-4558-84be-08defa29c542
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|23010399003|82310400026|376014|36860700016|10067099003|56012099006|3023799007|18002099003|11063799006|921020;
+X-Microsoft-Antispam-Message-Info:
+	Fo11J2xnzz4XwY3CUMCWTGJgeJvgvRkAo6uWWBDci09OGnvrRafu0KCjhIc+Dzp4Tbk5F1aofVheu8xlEa3XNUGfEJgUq9hS0eFHMuocoeOYn2qNB2fDJ2xmhFjsW/9Ta39PHY6jhSQHK05intBDJfNa+ZrOpu1c+WM1mSrjt/o8mgmKSyoGAiA/6rn7IG/v3xT3ixVjWsKNBX+9pQSLRCQ1lD3nGxnUkp0GnU44Z7LjYiE8V7GMqdGeHc4mYLBOC6SDB8YtAjRpW8tpgjvDEU3z661f3itpyJbWUw5JTexMSzzdVDO2jjNopVZEEo4OEuNahPDomGmE1QyVtO58ZzfBXU9gUgRc8YIPQvcXNClNCVksoyDyTZx1Aylka9xG6R4uhRaB4cITIO9FVTxcsfyO1hhgUi9QO2jJ6b7IwY4OBdsJPO68nhfSQW53953pLdPYiwOiLL7UW5NZpA7MoF8A2W/D3mnhm7ui4LEGkTStU/OEHzj53Vz50l9wjto1O1Y6xXevEsfKtfNAsbkhWH+FnrfdKR3Q2nIS1zkwiu1amegnR6pvGPQZrtkgYo7nAEBF1DA4ce82XoqwYEu3iWd2pabPATab+k0ymbO6A5XkFeA0NMLaKCgK+Xx1ywU8yRfleuAIecrf+LHDMUvwVMWO9U1OWMDHOp74t98FKDwNAz3qMHhOV2z0CtDktqmVzMXfjHzDBFQMEcJiC4v8xrJtR/9dTkguuHD1GA66dlhqf0Jjpyva3XTOfVudmFFg
+X-Forefront-Antispam-Report:
+	CIP:131.228.2.84;CTRY:FI;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:fihe01smtplvp01.emea.nsn-net.net;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(23010399003)(82310400026)(376014)(36860700016)(10067099003)(56012099006)(3023799007)(18002099003)(11063799006)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	cmTftJwmUPY4M8yOyM7DFuAEkx9eULXITI6Ip1FHMbmkY13h3/AqguyTWNBgY1EjfLN3XTyZTwVnZxgCM3PnWYRhDboDAW+oOH0jkfrRkOUjbw8QRBKLhg146TuupZY55KMsV1EjpynhChqEiZw2MkE0rU6Hu2Lo9MW5jfcbwObcNeVSBeatmvOWNjjuz9xdtdnt9Gf6UAwHOqw9NGUDsNKCCYw8Z/Da3Qe8MSw5LKf8mfYQtgyFAz/YUsWTbXDVgh3Z3tm1nsGwBtcnDXuewbz/PgUqvbGOfWrf8orMwdjBFNhjWpehEuhMdq4iYhyfYDlNbgw0htFTy2RHeUCJDEEI1qlpIxV7xuhfP+RjymenEf5vq0w2aKjLjbTJyvM8OQe8e/dgN+GrilsR4NtoI5Skup57iwJN6VuTzF4CKY7FB44dW9AIYTcksWiIxXmc
+X-OriginatorOrg: nokia-bell-labs.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2026 17:30:44.2591
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a0ccf979-5b3f-4558-84be-08defa29c542
+X-MS-Exchange-CrossTenant-Id: 5d471751-9675-428d-917b-70f44f9630b0
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=5d471751-9675-428d-917b-70f44f9630b0;Ip=[131.228.2.84];Helo=[fihe01smtplvp01.emea.nsn-net.net]
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-AMS1EPF00000048.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR07MB6971
 
-Tests SCM_RIGHTS fd passing on a socket with the new socket option
-SO_RIGHTS_NOTRUNC turned on. To hook into the security_file_receive()
-call, BPF is used. The BPF program shares a hashmap with userspace that
-lists the inos to be blocked (of the receiver tgid).
+From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
 
-Signed-off-by: Jori Koolstra <jkoolstra@xs4all.nl>
+Hello,
+
+Please find the v7 explicit tso segment count series.
+It replacece min_tso_segs() with tso_segs() CC callback and make
+tcp_tso_autosize() available to BPF congestion controls.
+
+Best regards,
+Chia-Yu
+
 ---
- .../testing/selftests/net/af_unix/.gitignore  |   2 +
- tools/testing/selftests/net/af_unix/Makefile  |   8 +
- tools/testing/selftests/net/af_unix/config    |   7 +
- .../net/af_unix/scm_rights_denial_lsm.bpf.c   |  36 +++
- .../net/af_unix/scm_rights_denial_lsm.c       | 292 ++++++++++++++++++
- 5 files changed, 345 insertions(+)
- create mode 100644 tools/testing/selftests/net/af_unix/scm_rights_denial_lsm.bpf.c
- create mode 100644 tools/testing/selftests/net/af_unix/scm_rights_denial_lsm.c
+Chia-Yu Chang (2):
+  tcp: Replace min_tso_segs() with tso_segs() CC callback
+  bpf: make tcp_tso_autosize() available to BPF congestion controls
 
-diff --git a/tools/testing/selftests/net/af_unix/.gitignore b/tools/testing/selftests/net/af_unix/.gitignore
-index 973176644103..954f0958dd03 100644
---- a/tools/testing/selftests/net/af_unix/.gitignore
-+++ b/tools/testing/selftests/net/af_unix/.gitignore
-@@ -3,6 +3,8 @@ msg_oob
- scm_inq
- scm_pidfd
- scm_rights
-+scm_rights_denial_lsm
-+scm_rights_denial_lsm.bpf.o
- so_peek_off
- unix_connect
- unix_connreset
-diff --git a/tools/testing/selftests/net/af_unix/Makefile b/tools/testing/selftests/net/af_unix/Makefile
-index 57d159803a3a..a66f10fb0c23 100644
---- a/tools/testing/selftests/net/af_unix/Makefile
-+++ b/tools/testing/selftests/net/af_unix/Makefile
-@@ -11,10 +11,18 @@ TEST_GEN_PROGS := \
- 	scm_inq \
- 	scm_pidfd \
- 	scm_rights \
-+	scm_rights_denial_lsm \
- 	so_peek_off \
- 	unix_connect \
- 	unix_connreset \
- 	unix_listen \
- # end of TEST_GEN_PROGS
- 
-+TEST_GEN_FILES := scm_rights_denial_lsm.bpf.o
-+
- include ../../lib.mk
-+include ../bpf.mk
-+
-+$(OUTPUT)/scm_rights_denial_lsm: $(BPFOBJ)
-+$(OUTPUT)/scm_rights_denial_lsm: CFLAGS += -I$(SCRATCH_DIR)/include
-+$(OUTPUT)/scm_rights_denial_lsm: LDLIBS += -lelf -lz
-diff --git a/tools/testing/selftests/net/af_unix/config b/tools/testing/selftests/net/af_unix/config
-index 41dbb03c747e..46450fea8407 100644
---- a/tools/testing/selftests/net/af_unix/config
-+++ b/tools/testing/selftests/net/af_unix/config
-@@ -1,4 +1,11 @@
- CONFIG_AF_UNIX_OOB=y
-+CONFIG_BPF=y
-+CONFIG_BPF_EVENTS=y
-+CONFIG_BPF_JIT=y
-+CONFIG_BPF_LSM=y
-+CONFIG_BPF_SYSCALL=y
-+CONFIG_DEBUG_INFO_BTF=y
-+CONFIG_SECURITY=y
- CONFIG_UNIX=y
- CONFIG_UNIX_DIAG=m
- CONFIG_USER_NS=y
-diff --git a/tools/testing/selftests/net/af_unix/scm_rights_denial_lsm.bpf.c b/tools/testing/selftests/net/af_unix/scm_rights_denial_lsm.bpf.c
-new file mode 100644
-index 000000000000..4f2414465bfd
---- /dev/null
-+++ b/tools/testing/selftests/net/af_unix/scm_rights_denial_lsm.bpf.c
-@@ -0,0 +1,36 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <linux/bpf.h>
-+#include <linux/errno.h>
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_tracing.h>
-+
-+char _license[] SEC("license") = "GPL";
-+
-+struct inode {
-+	unsigned long i_ino;
-+} __attribute__((preserve_access_index));
-+
-+struct file {
-+	struct inode *f_inode;
-+} __attribute__((preserve_access_index));
-+
-+struct {
-+	__uint(type, BPF_MAP_TYPE_HASH);
-+	__uint(max_entries, 16);
-+	__type(key, __u64);	/* inode number */
-+	__type(value, __u32);	/* tgid of the receiver being tested */
-+} denied_inodes SEC(".maps");
-+
-+SEC("lsm/file_receive")
-+int BPF_PROG(scm_rights_deny, struct file *file)
-+{
-+	__u32 tgid = bpf_get_current_pid_tgid() >> 32;
-+	__u64 ino = file->f_inode->i_ino;
-+	__u32 *owner;
-+
-+	owner = bpf_map_lookup_elem(&denied_inodes, &ino);
-+	if (owner && *owner == tgid)
-+		return -EPERM;
-+
-+	return 0;
-+}
-diff --git a/tools/testing/selftests/net/af_unix/scm_rights_denial_lsm.c b/tools/testing/selftests/net/af_unix/scm_rights_denial_lsm.c
-new file mode 100644
-index 000000000000..55c7ecdbb5fe
---- /dev/null
-+++ b/tools/testing/selftests/net/af_unix/scm_rights_denial_lsm.c
-@@ -0,0 +1,292 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#define _GNU_SOURCE
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+#include <sys/socket.h>
-+#include <sys/stat.h>
-+#include <sys/types.h>
-+
-+#include <bpf/bpf.h>
-+#include <bpf/libbpf.h>
-+
-+#include "kselftest_harness.h"
-+
-+#ifndef SO_RIGHTS_NOTRUNC
-+#define SO_RIGHTS_NOTRUNC 85
-+#endif
-+
-+#define NR_FILES 2
-+
-+/* Per-file content, so a received fd can be matched to the file sent */
-+#define SECRET(n) "secret %d", (n)
-+
-+/* Indices into the socketpair */
-+#define SK_SENDER 0
-+#define SK_RECEIVER 1
-+
-+FIXTURE(scm_rights_denial_bpf)
-+{
-+	struct bpf_object *obj;
-+	struct bpf_link *link;
-+	int map_fd;
-+	int sk[2];
-+	int files[NR_FILES];
-+	__u64 inos[NR_FILES];
-+	char paths[NR_FILES][64];
-+};
-+
-+FIXTURE_VARIANT(scm_rights_denial_bpf)
-+{
-+	int sock_type;
-+};
-+
-+FIXTURE_VARIANT_ADD(scm_rights_denial_bpf, stream)
-+{
-+	.sock_type = SOCK_STREAM,
-+};
-+
-+FIXTURE_VARIANT_ADD(scm_rights_denial_bpf, dgram)
-+{
-+	.sock_type = SOCK_DGRAM,
-+};
-+
-+FIXTURE_VARIANT_ADD(scm_rights_denial_bpf, seqpacket)
-+{
-+	.sock_type = SOCK_SEQPACKET,
-+};
-+
-+FIXTURE_SETUP(scm_rights_denial_bpf)
-+{
-+	struct bpf_program *prog;
-+	char lsms[256] = {};
-+	int i, fd;
-+
-+	if (geteuid() != 0)
-+		SKIP(return, "requires root");
-+
-+	fd = open("/sys/kernel/security/lsm", O_RDONLY);
-+	ASSERT_GE(fd, 0);
-+	ASSERT_LT(0, read(fd, lsms, sizeof(lsms) - 1));
-+	close(fd);
-+
-+	if (!strstr(lsms, "bpf"))
-+		SKIP(return, "BPF LSM not active (boot with lsm=...,bpf)");
-+
-+	self->obj = bpf_object__open_file("scm_rights_denial_lsm.bpf.o", NULL);
-+	ASSERT_NE(NULL, self->obj);
-+	ASSERT_EQ(0, bpf_object__load(self->obj));
-+
-+	prog = bpf_object__find_program_by_name(self->obj, "scm_rights_deny");
-+	ASSERT_NE(NULL, prog);
-+
-+	self->link = bpf_program__attach_lsm(prog);
-+	ASSERT_NE(NULL, self->link);
-+
-+	self->map_fd = bpf_object__find_map_fd_by_name(self->obj,
-+						       "denied_inodes");
-+	ASSERT_GE(self->map_fd, 0);
-+
-+	ASSERT_EQ(0, socketpair(AF_UNIX, variant->sock_type, 0, self->sk));
-+
-+	for (i = 0; i < NR_FILES; i++) {
-+		struct stat st;
-+
-+		snprintf(self->paths[i], sizeof(self->paths[i]),
-+			 "/tmp/scm_rights_denial_bpf.%d.XXXXXX", i);
-+		self->files[i] = mkstemp(self->paths[i]);
-+		ASSERT_GE(self->files[i], 0);
-+
-+		ASSERT_LT(0, dprintf(self->files[i], SECRET(i)));
-+
-+		ASSERT_EQ(0, fstat(self->files[i], &st));
-+		self->inos[i] = st.st_ino;
-+	}
-+}
-+
-+FIXTURE_TEARDOWN(scm_rights_denial_bpf)
-+{
-+	bpf_link__destroy(self->link);
-+	bpf_object__close(self->obj);
-+
-+	for (int i = 0; i < NR_FILES; i++) {
-+		if (self->files[i] >= 0) {
-+			close(self->files[i]);
-+			unlink(self->paths[i]);
-+		}
-+	}
-+
-+	close(self->sk[SK_SENDER]);
-+	close(self->sk[SK_RECEIVER]);
-+}
-+
-+static int deny_inode(int map_fd, __u64 ino)
-+{
-+	__u32 tgid = getpid();
-+
-+	return bpf_map_update_elem(map_fd, &ino, &tgid, BPF_ANY);
-+}
-+
-+static int set_notrunc(int sk)
-+{
-+	int one = 1;
-+
-+	return setsockopt(sk, SOL_SOCKET, SO_RIGHTS_NOTRUNC,
-+			  &one, sizeof(one));
-+}
-+
-+static int send_fds(int sk, int *fds, int n)
-+{
-+	char ctrl[CMSG_SPACE(NR_FILES * sizeof(int))] = {};
-+	char data = 'x';
-+	struct iovec iov = {
-+		.iov_base = &data,
-+		.iov_len = sizeof(data),
-+	};
-+	struct msghdr msg = {
-+		.msg_iov = &iov,
-+		.msg_iovlen = 1,
-+		.msg_control = ctrl,
-+		.msg_controllen = CMSG_SPACE(n * sizeof(int)),
-+	};
-+	struct cmsghdr *cmsg = CMSG_FIRSTHDR(&msg);
-+	int ret;
-+
-+	cmsg->cmsg_level = SOL_SOCKET;
-+	cmsg->cmsg_type = SCM_RIGHTS;
-+	cmsg->cmsg_len = CMSG_LEN(n * sizeof(int));
-+	memcpy(CMSG_DATA(cmsg), fds, n * sizeof(int));
-+
-+	ret = sendmsg(sk, &msg, 0);
-+	if (ret != 1)
-+		return -1;
-+
-+	return 0;
-+}
-+
-+static int recv_fd_slots(int sk, int *slots, int *msg_flags)
-+{
-+	int nr_slots;
-+	char ctrl[CMSG_SPACE(NR_FILES * sizeof(int))];
-+	char data;
-+	struct iovec iov = {
-+		.iov_base = &data,
-+		.iov_len = sizeof(data),
-+	};
-+	struct msghdr msg = {
-+		.msg_iov = &iov,
-+		.msg_iovlen = 1,
-+		.msg_control = ctrl,
-+		.msg_controllen = sizeof(ctrl),
-+	};
-+	struct cmsghdr *cmsg;
-+
-+	if (recvmsg(sk, &msg, 0) < 0)
-+		return -1;
-+
-+	*msg_flags = msg.msg_flags;
-+
-+	cmsg = CMSG_FIRSTHDR(&msg);
-+	if (!cmsg)
-+		return 0;
-+
-+	nr_slots = (cmsg->cmsg_len - CMSG_LEN(0)) / sizeof(int);
-+	memcpy(slots, CMSG_DATA(cmsg), nr_slots * sizeof(int));
-+
-+	return nr_slots;
-+}
-+
-+/* Prove a received fd works by reading back the file's content. */
-+static int check_secret(int fd, int idx)
-+{
-+	char want[32], got[32] = {};
-+
-+	snprintf(want, sizeof(want), SECRET(idx));
-+	if (pread(fd, got, sizeof(got) - 1, 0) < 0)
-+		return -1;
-+
-+	return strcmp(want, got);
-+}
-+
-+TEST_F(scm_rights_denial_bpf, all_allowed)
-+{
-+	int slots[NR_FILES], nr_slots, flags;
-+
-+	ASSERT_EQ(0, set_notrunc(self->sk[SK_RECEIVER]));
-+	ASSERT_EQ(0, send_fds(self->sk[SK_SENDER], self->files, NR_FILES));
-+	nr_slots = recv_fd_slots(self->sk[SK_RECEIVER], slots, &flags);
-+
-+	ASSERT_EQ(NR_FILES, nr_slots);
-+	EXPECT_EQ(0, flags & MSG_CTRUNC);
-+
-+	for (int i = 0; i < nr_slots; i++) {
-+		ASSERT_GE(slots[i], 0);
-+		EXPECT_EQ(0, check_secret(slots[i], i));
-+		close(slots[i]);
-+	}
-+}
-+
-+TEST_F(scm_rights_denial_bpf, first_denied)
-+{
-+	int slots[NR_FILES], nr_slots, flags;
-+
-+	ASSERT_EQ(0, deny_inode(self->map_fd, self->inos[0]));
-+
-+	ASSERT_EQ(0, set_notrunc(self->sk[SK_RECEIVER]));
-+	ASSERT_EQ(0, send_fds(self->sk[SK_SENDER], self->files, NR_FILES));
-+	nr_slots = recv_fd_slots(self->sk[SK_RECEIVER], slots, &flags);
-+
-+	ASSERT_EQ(NR_FILES, nr_slots);
-+	EXPECT_EQ(0, flags & MSG_CTRUNC);
-+	
-+	EXPECT_EQ(-EPERM, slots[0]);
-+	for (int i = 1; i < nr_slots; i++) {
-+		ASSERT_GE(slots[i], 0);
-+		EXPECT_EQ(0, check_secret(slots[i], i));
-+		close(slots[i]);
-+	}
-+}
-+
-+TEST_F(scm_rights_denial_bpf, all_denied)
-+{
-+	int slots[NR_FILES], nr_slots, flags, i;
-+
-+	for (i = 0; i < NR_FILES; i++)
-+		ASSERT_EQ(0, deny_inode(self->map_fd, self->inos[i]));
-+
-+	ASSERT_EQ(0, set_notrunc(self->sk[SK_RECEIVER]));
-+	ASSERT_EQ(0, send_fds(self->sk[SK_SENDER], self->files, NR_FILES));
-+	nr_slots = recv_fd_slots(self->sk[SK_RECEIVER], slots, &flags);
-+
-+	ASSERT_EQ(NR_FILES, nr_slots);
-+	EXPECT_EQ(0, flags & MSG_CTRUNC);
-+
-+	for (i = 0; i < nr_slots; i++)
-+		EXPECT_EQ(-EPERM, slots[i]);
-+}
-+
-+TEST_F(scm_rights_denial_bpf, denied_without_notrunc)
-+{
-+	int slots[NR_FILES], nr_slots, flags;
-+
-+	/*
-+	 * Baseline behaviour without SO_RIGHTS_NOTRUNC: the fd array is
-+	 * truncated at the first denied fd and MSG_CTRUNC is set.
-+	 */
-+	ASSERT_EQ(0, deny_inode(self->map_fd, self->inos[1]));
-+
-+	ASSERT_EQ(0, send_fds(self->sk[SK_SENDER], self->files, NR_FILES));
-+	nr_slots = recv_fd_slots(self->sk[SK_RECEIVER], slots, &flags);
-+
-+	ASSERT_EQ(1, nr_slots);
-+	EXPECT_NE(0, flags & MSG_CTRUNC);
-+
-+	ASSERT_GE(slots[0], 0);
-+	EXPECT_EQ(0, check_secret(slots[0], 0));
-+	close(slots[0]);
-+}
-+
-+TEST_HARNESS_MAIN
+ include/net/tcp.h                              | 12 ++++++++++--
+ net/ipv4/bpf_tcp_ca.c                          |  5 +++--
+ net/ipv4/tcp_bbr.c                             | 13 ++++++++++---
+ net/ipv4/tcp_output.c                          | 18 +++++++++---------
+ .../testing/selftests/bpf/progs/tcp_ca_kfunc.c | 16 ++++++++++++----
+ 5 files changed, 44 insertions(+), 20 deletions(-)
+
 -- 
-2.55.0
+2.34.1
 
