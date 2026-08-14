@@ -1,80 +1,52 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29C8489863
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 16:08:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1465247253A;
+	Fri, 14 Aug 2026 16:13:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786723740; cv=none; b=TgBHPna0g+3Dyeapo1wvsH0kZi6K12TmUul4vp1unHdOMScusJaPZcrfmWfiI8alurF+oDd2YLsQdgQkvsBOICwYhGH+VfyAMFq9hpBreVu9yPj9xvX4qc9kTxumQBr7f5AhL4EV5w5FDOMDteSZr0tpv389JasUtyZ1lusXzD8=
+	t=1786724029; cv=none; b=K8fzQDRpmlZWzopnNA1vYE3e49dufkKfsSlg2bm//9ep6wff9aD/TCIyWdn6Xxg9JYcB33uQqPG1NSJYcQ5O8HJOn/wKndbgTWRfMwJqoTvvtDSC2AuW/SskgcGz5iudSfjYXtV6sLK+L8PioWAq7FqlZ69gIQjw3muEMDvN5qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786723740; c=relaxed/simple;
-	bh=XKh2YeO4EAsYmdzfnzNNmoZOno1d9kIUe9waeMV0ULo=;
+	s=arc-20240116; t=1786724029; c=relaxed/simple;
+	bh=d2ZPHDF4CCdlLavqUC4topkd7UbczcJgZ+Epbzwsd8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s6AkvpEjep3vMo57W8h2opQuPJIjEPADjEuc9+A3r9i9ab8zogvSEKf+C6T1ZBRef0b8WVlXYMRZXBFtiBozAoWj9bvxDC7bCO8BW3zXelt41CZWkkHZ6FG/YmW037PBFSA7T7Yp8QikNb/S0E0s55+WF6jui9knuscppmIwGO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KVoz/+ij; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 MIME-Version; b=JnjaAq5Qz8kALOwQ1BZTCQkoZSn6+9PplykUuIN87w0EecgW/r82oYEhJaF8xWiRuYiC/hg4e8ofx0kv0Wxjbf1GYhwaEk1PIlx2kYsqLDIRzk0fhVdPsy4+xvinh+yVH2+qsklXfGVB2SH+8Jzj4hTLNlMWeEnQmfQIhoS38t4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MFRkW9lr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KVoz/+ij"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8487b7b3fc8so1188001b3a.3
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 09:08:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786723735; x=1787328535; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=O2CdDW2946UxRO03u0geIdvw1xXuEfDohd1faqEthz4=;
-        b=KVoz/+ijod7nSg5oi/rk3e0mbbVMYvO1poXRyvY/i40O7OvV18hSrJAvseuRrIlPdP
-         a7SrBTuWL8y3KCH1XqsqIloXyMhAcgkqJeJ+WwR/UaHIbWHinQFHzSJwkMF1mPG+UDSq
-         V9IP0oEX1wN0r5Q4rmQktyR32enaN5Ldh2LfW+Ix8p8JXBGShLCpjgWIUuSicF7wrfV0
-         /i42xuYKDJ1MU6BttMzv+ZCZm6O2Ye6bO4yQm2fi90n9/fy4fXh6n6BkgJe72vmDnSf8
-         0T4qEI0xBOZkS3okPRfSEj4zU9Gh29bBxwLyxS0sY0SSJn9B9yayFNqvSa2lWzmgGQvh
-         nEHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786723735; x=1787328535;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=O2CdDW2946UxRO03u0geIdvw1xXuEfDohd1faqEthz4=;
-        b=qoMtsoq2h0VV1rSoOnIjbLRiTfPQL5wiUBG6FiBTxixs5/q12G2iTnkA6ZuGx0mi70
-         sKzEfzYkJCrYycmO09WglVt57wWWoFFHm8sqJ0VEy+vL8NBzYiA+90R5d6KA6P30KPOq
-         Xwxzm/5QlXLepFYFBK4S9KVuL/LWy962fcIQYxQIduvpElar3BooJdKCfjEX8cTNc/D5
-         IuVUhk7ZD0Nb+fGPzeqFe9EALWsO4x5/1hIzR72QMTs0nZ98pD3d1kJtBtTzNyDhMm+3
-         K7fK6xrgxlk4lFGxQV5kxRCCjhlqyYso569epG+hpLuDUfuGlKJGrMLeloemzhoGZHqX
-         1QAQ==
-X-Gm-Message-State: AOJu0Yz8g5O+Z64P4SxLJ47rQWGey+4k9OtLuwsHr1lKXi+7j9lMgRSl
-	X/fgjQVgTK1wE+Xjl68BTetTGCwXjkdj4+yIU49MnyeJWJzwfsZbyFbT
-X-Gm-Gg: AR+sD13heRX4Ry5TlOSSj3UFHAWw8h17T15Y1ywklPwCj4dPrI4NWvxO1XB5d6Sj6GK
-	/7w62Mpgkrzkkt77rM2uyhGHKTzADjHmFGrpH1Hopn1QnVqhKWub1yHwwptNKz3c8Yw62kMGU8G
-	Ozt0NnZI0gVOceJ1tWQJOz60mYwWKyH3RSq1wzVHSYLhwOIoCZHDfUNxZ3PkyNkhHgNf+JV4fd6
-	lgtsPUZ6cKL5wanQOOALIlcIM4f2h3/EeTy40pymkZ5YzsUWat7TpFTjRRHh9K7F6eMYkDGys+0
-	gek/1AuX/mBKy99FdZO5iz1M0PIdJXZ6KwTOvohdKC0MnOuZh4wMVEAHvPHipGCCVeyOypyVGxT
-	emLXaT4m69kU+cgGfV2+ZFFb4L7UtH4HvCRtXVu/0mtTJXSpBB08K94SCZ9VMcCOZvKc3c9/xZR
-	lR7XMV95UIIEH9TOAngFMukO8gafMd4PrcbHtG1rxKSeWJLsP9sQT0/TVNyaqY1/zj2W2avyaRD
-	2A=
-X-Received: by 2002:a05:6a00:2e97:b0:848:2e7e:353a with SMTP id d2e1a72fcca58-84fdde538d4mr7343867b3a.0.1786723734621;
-        Fri, 14 Aug 2026 09:08:54 -0700 (PDT)
-Received: from ubuntu.. ([49.205.39.116])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-8517d248b8fsm694402b3a.44.2026.08.14.09.08.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 09:08:54 -0700 (PDT)
-From: Ajith P V <ajithpv.linux@gmail.com>
-To: tung.quang.nguyen@est.tech,
-	jmaloy@redhat.com,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MFRkW9lr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 892AC1F000E9;
+	Fri, 14 Aug 2026 16:13:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786724024;
+	bh=BRqukDhn6eBkNjfhUGraJ7Ie6vboLLwk71IvURgPqZs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=MFRkW9lrWZ3yE+gp2EvqFsjGzixLlPcAeb9eMYEXR5CBhX8qkawTMMMHmNebgEwUe
+	 qQuE6FEPK9CMPzet7SyT6njveVp6JagagEFbf/tpJ6b/oF18jZk7jujvREPv6qfgN+
+	 335vArRsG/3rMNfG6qxDb8DbOzn11LBzLIFucZs4eMX4KZ7lY5IPrLENSXXrwUgHzy
+	 U/6Hsq29zgBjw06g/4RDay0jyFCB8/OZARCzIA6XOOAmmjvn9mj/mAvhLzNieAqUHE
+	 CmeqKtUU2ujxCzYXVfmuxrR217cYk2vnvNSD6MskI7ctXn/ugaI2xsAsntIX5Fv+H3
+	 nQkcNUMmRewJg==
+From: Simon Horman <horms@kernel.org>
+To: syzbot@kernel.org
+Cc: Simon Horman <horms@kernel.org>,
+	syzkaller-bugs@googlegroups.com,
+	uladzislau.zhauniarovich@gmail.com,
 	davem@davemloft.net,
 	edumazet@google.com,
+	jhs@mojatatu.com,
+	jiri@resnulli.us,
 	kuba@kernel.org,
+	netdev@vger.kernel.org,
 	pabeni@redhat.com,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3] tipc: replace deprecated strcpy with strscpy in tipc_bearer_get_name()
-Date: Fri, 14 Aug 2026 16:08:46 +0000
-Message-ID: <20260814160846.338273-1-ajithpv.linux@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <GV1P189MB1988CAF7D299010DB0C80031C6DA2@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
-References: <GV1P189MB1988CAF7D299010DB0C80031C6DA2@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
+	vinicius.gomes@intel.com,
+	linux-kernel@vger.kernel.org,
+	syzbot@lists.linux.dev
+Subject: Re: [PATCH] net/sched: taprio: enforce minimum software scheduling interval
+Date: Fri, 14 Aug 2026 17:13:27 +0100
+Message-ID: <20260814161327.382965-1-horms@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <afe041f6-ef7d-4434-b2d0-096be49b5bcb@mail.kernel.org>
+References: <afe041f6-ef7d-4434-b2d0-096be49b5bcb@mail.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,21 +55,123 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-> net tree: https://git.kernel.org/pub/scm/linux/kernel/git/davem/net.git
-> net-next tree: https://git.kernel.org/pub/scm/linux/kernel/git/davem/net-next.git
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev/#/patchset/afe041f6-ef7d-4434-b2d0-096be49b5bcb@mail.kernel.org?part=1
+---
+--- Patch [1]: [PATCH] net/sched: taprio: enforce minimum software scheduling interval ---
+commit 984087f4873d7bad874b78ae4728e68b305dd5dc
+Author: Uladzislau Zhauniarovich <uladzislau.zhauniarovich@gmail.com>
+net/sched: taprio: enforce minimum software scheduling interval
 
-Thank you. I tried the correct net-next tree. The same patch applied successfully here also as shown below.
+This commit introduces a minimum interval of 100 microseconds for the
+software scheduler in taprio to prevent CPU livelocking from excessive
+hrtimer interrupts. It skips this check for fully offloaded schedules.
 
-<path of the linux tree>/net-next$ ls
-arch   certs    CREDITS  Documentation  fs       init      ipc     Kconfig  lib       MAINTAINERS  mm   README  samples  security  tools  virt
-block  COPYING  crypto   drivers        include  io_uring  Kbuild  kernel   LICENSES  Makefile     net  rust    scripts  sound     usr
-<path of the linux tree>/net-next$ git remote -v
-origin	https://git.kernel.org/pub/scm/linux/kernel/git/davem/net-next.git (fetch)
-origin	https://git.kernel.org/pub/scm/linux/kernel/git/davem/net-next.git (push)
-<path of the linux tree>/net-next$ git am ../../patches/v3-0001-tipc-replace-deprecated-strcpy-with-strscpy-in-ti.patch
-Applying: tipc: replace deprecated strcpy with strscpy in tipc_bearer_get_name()
-<path of the linux tree>/net-next$ git branch
-* main
-<path of the linux tree>/net-next$
+Link: https://syzkaller.appspot.com/bug?extid=19d01f6082ec61dd45b2
+Link: https://syzkaller.appspot.com/ai_job?id=37f064ee-e021-43aa-8cfc-9f2a5a7c35d7
 
-Am I missing something?
+> diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+> index 45245157e00a6..2bf4cae164bc2 100644
+> --- a/net/sched/sch_taprio.c
+> +++ b/net/sched/sch_taprio.c
+
+[ ... ]
+
+> @@ -259,6 +266,16 @@ static int length_to_duration(struct taprio_sched *q, int len)
+>  	return div_u64(len * atomic64_read(&q->picos_per_byte), PSEC_PER_NSEC);
+>  }
+>  
+> +static int taprio_min_interval(struct taprio_sched *q)
+> +{
+> +	int min_duration = length_to_duration(q, ETH_ZLEN);
+> +
+> +	if (!FULL_OFFLOAD_IS_ENABLED(q->flags))
+> +		min_duration = max_t(int, min_duration, TAPRIO_MIN_SW_INTERVAL_NS);
+
+[Severity: High]
+Does this limit erroneously catch TXTIME_ASSIST offload configurations?
+
+The code applies the software interval limit when FULL_OFFLOAD_IS_ENABLED
+is false, which subjects TXTIME_ASSIST setups to the 100 microseconds limit.
+However, TXTIME_ASSIST mode does not use the software advance_sched
+hrtimer; it relies on Earliest Departure Time and NIC pacing instead.
+
+Could this break valid hardware-assisted TSN schedules that require smaller
+intervals by rejecting them during netlink configuration?
+
+> +
+> +	return min_duration;
+> +}
+
+[ ... ]
+
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does the budget calculation
+suffer from truncation on high-speed links?
+
+When converting long gate durations to byte lengths, truncation from a 64-bit
+unsigned integer to a 32-bit signed integer can occur:
+
+net/sched/sch_taprio.c:taprio_set_budgets() {
+    ...
+    budget = div64_u64((u64)entry->gate_duration[tc] * PSEC_PER_NSEC,
+                       atomic64_read(&q->picos_per_byte));
+    atomic_set(&entry->budget[tc], budget);
+    ...
+}
+
+A valid schedule with a gate duration long enough to exceed INT_MAX bytes at
+high link speeds (e.g., 400 Gbps where picos_per_byte = 20) yields a budget
+exceeding 2,147,483,647 bytes.
+
+Because the budget is a signed 32-bit int, it overflows to a negative value.
+Can this cause taprio_update_budgets() to return a negative value and
+taprio_dequeue_from_txq() to perpetually stall and drop packets?
+
+
+[Severity: High]
+This is a pre-existing issue, but do failed configuration changes leave the
+taprio qdisc in a partially modified state?
+
+If a taprio_change() request passes early validation but fails later, it
+appears to leave hardware and software out of sync:
+
+net/sched/sch_taprio.c:taprio_change() {
+    ...
+    if (FULL_OFFLOAD_IS_ENABLED(q->flags))
+        err = taprio_enable_offload(dev, q, new_admin, extack);
+    ...
+    if (tb[TCA_TAPRIO_ATTR_TXTIME_DELAY]) {
+        if (!TXTIME_ASSIST_IS_ENABLED(q->flags)) {
+            NL_SET_ERR_MSG_MOD(extack, "txtime-delay can only be set when txtime-assist mode is enabled");
+            err = -EINVAL;
+            goto unlock;
+        }
+    ...
+}
+
+Hardware offload is enabled with the new schedule, but a subsequent failure
+(like the TXTIME_DELAY check) jumps to the unlock and free_sched labels.
+Does this discard the software schedule without reverting the hardware
+offload, causing the two to become permanently desynchronized?
+
+Additionally, in taprio_parse_tc_entries():
+
+net/sched/sch_taprio.c:taprio_parse_tc_entries() {
+    for (tc = 0; tc < TC_QOPT_MAX_QUEUE; tc++) {
+        q->max_sdu[tc] = max_sdu[tc];
+        q->fp[tc] = fp[tc];
+    ...
+    if (have_preemption) {
+        if (!FULL_OFFLOAD_IS_ENABLED(q->flags)) {
+            ...
+            return -EOPNOTSUPP;
+        }
+    ...
+}
+
+Internal state like q->max_sdu and q->fp are updated directly in the
+software state before checking if preemption is actually supported. Does this
+return an error without reverting them on failure?
