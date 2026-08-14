@@ -1,177 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1465247253A;
-	Fri, 14 Aug 2026 16:13:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1853C0610;
+	Fri, 14 Aug 2026 16:45:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786724029; cv=none; b=K8fzQDRpmlZWzopnNA1vYE3e49dufkKfsSlg2bm//9ep6wff9aD/TCIyWdn6Xxg9JYcB33uQqPG1NSJYcQ5O8HJOn/wKndbgTWRfMwJqoTvvtDSC2AuW/SskgcGz5iudSfjYXtV6sLK+L8PioWAq7FqlZ69gIQjw3muEMDvN5qw=
+	t=1786725922; cv=none; b=Va/Og+/z0SvXeoWtVsFizPvFEta4tMg5slQqjoCsoAlUwOqPDMrgi65Q4qrMjByd9gN/iSsEO4bvKQajvcrUKutSGOZ42kcFJx4uW23F5df38sqnGimHqNWg/aMgug7PCRjAAhG2adyn1gftGKgPdGb2ZnEBausKmo7reC320eY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786724029; c=relaxed/simple;
-	bh=d2ZPHDF4CCdlLavqUC4topkd7UbczcJgZ+Epbzwsd8Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JnjaAq5Qz8kALOwQ1BZTCQkoZSn6+9PplykUuIN87w0EecgW/r82oYEhJaF8xWiRuYiC/hg4e8ofx0kv0Wxjbf1GYhwaEk1PIlx2kYsqLDIRzk0fhVdPsy4+xvinh+yVH2+qsklXfGVB2SH+8Jzj4hTLNlMWeEnQmfQIhoS38t4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MFRkW9lr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786725922; c=relaxed/simple;
+	bh=i97wqRxEuYgvW0GU1KHpu3c0BzFs9JJAJuGwUWJm9jM=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=CVCK7nbZiPnzf28AkA6arGkTvrsaECTkEy5E8FlDJjqbOEKVCNAOucKuXA2Mjqa1rcHvPwZeFcpCNSfoBLjPivEa77vBONT5ThQLh0ZOgnjL+WHWhdRf0TB6VrDMhxsF4fNkVW6zrXQ2K1bPR34WyQocKv3ItTh1HaY9omVR9OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=1xMqX5KC; arc=none smtp.client-ip=193.238.174.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MFRkW9lr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 892AC1F000E9;
-	Fri, 14 Aug 2026 16:13:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786724024;
-	bh=BRqukDhn6eBkNjfhUGraJ7Ie6vboLLwk71IvURgPqZs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MFRkW9lrWZ3yE+gp2EvqFsjGzixLlPcAeb9eMYEXR5CBhX8qkawTMMMHmNebgEwUe
-	 qQuE6FEPK9CMPzet7SyT6njveVp6JagagEFbf/tpJ6b/oF18jZk7jujvREPv6qfgN+
-	 335vArRsG/3rMNfG6qxDb8DbOzn11LBzLIFucZs4eMX4KZ7lY5IPrLENSXXrwUgHzy
-	 U/6Hsq29zgBjw06g/4RDay0jyFCB8/OZARCzIA6XOOAmmjvn9mj/mAvhLzNieAqUHE
-	 CmeqKtUU2ujxCzYXVfmuxrR217cYk2vnvNSD6MskI7ctXn/ugaI2xsAsntIX5Fv+H3
-	 nQkcNUMmRewJg==
-From: Simon Horman <horms@kernel.org>
-To: syzbot@kernel.org
-Cc: Simon Horman <horms@kernel.org>,
-	syzkaller-bugs@googlegroups.com,
-	uladzislau.zhauniarovich@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	jhs@mojatatu.com,
-	jiri@resnulli.us,
-	kuba@kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	vinicius.gomes@intel.com,
-	linux-kernel@vger.kernel.org,
-	syzbot@lists.linux.dev
-Subject: Re: [PATCH] net/sched: taprio: enforce minimum software scheduling interval
-Date: Fri, 14 Aug 2026 17:13:27 +0100
-Message-ID: <20260814161327.382965-1-horms@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <afe041f6-ef7d-4434-b2d0-096be49b5bcb@mail.kernel.org>
-References: <afe041f6-ef7d-4434-b2d0-096be49b5bcb@mail.kernel.org>
+	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="1xMqX5KC"
+Received: from mx.ssi.bg (localhost [127.0.0.1])
+	by mx.ssi.bg (Potsfix) with ESMTP id 51BA320679;
+	Fri, 14 Aug 2026 19:45:04 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
+	:content-type:content-type:date:from:from:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
+	 bh=6MWF3vNBbqdNiUcImcYTP+CIQAWlFlhRC2kEEqVGdMo=; b=1xMqX5KCnPy1
+	+VGeguvzR4cagKl9iK3wJnb0bwhpt4L3gPA4vUWRpW4y0+OKUXCRTMetijxIgGaT
+	LEy6n94TiCBjVTlNJqFhlukYY91q1xd8ANGIt/XZUvdXaBrUDeAm8kZIvUb5thQR
+	tZu1av+8JU7nxHHfDFvkkLBFkVfth9XPpxleOT62F3Q027EuqUoffsZdgowYEQRz
+	9qcatcH50LTeLJNM7Ej0mwKUcQhOq5dCgvNBkut2E1meOr0zBCtxOVjpRzUqqIZJ
+	uDO0ZIY39GskoW+Sg1UizwKPlM4Kukiri7GqZUEEM85r50XDpXWiCs0jqrewkLeU
+	bN3XLmq6iCQ7C+X2E5SCioIgfWGu3cLdm5hIn5LNQMhYA//FaCeNHnJ9tsGJeovN
+	kzQYaPRiG69O7MQ7fBVJNDbYaRMeXxDwSNkhCL781KClO5MY/1rxaaJh5rCSIaJo
+	Qf1mjEUiGZy6kJGl1Qxf/uvzkq8geykIxfJ7W3WUJPvIGUI89bzW93VL744xqM/g
+	EWfScGjWkgm8JSziEPq4RLagsyz/Yo2zoakEtXN75FlIUYUGmINb8Hs9SRrwDeR/
+	8OKf7ajmHQ4zysETv3ZO22epewBCaxi3P4qi4oWZFOglMjjc6d7yOXuJa1VOOxzH
+	V/FQFTHCKUp6EqUmSJBlAHgNet6hxY4=
+Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
+	by mx.ssi.bg (Potsfix) with ESMTPS;
+	Fri, 14 Aug 2026 19:45:04 +0300 (EEST)
+Received: from ja.ssi.bg (unknown [213.16.62.126])
+	by box.ssi.bg (Potsfix) with ESMTPSA id 21065603AF;
+	Fri, 14 Aug 2026 19:45:06 +0300 (EEST)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 67EGip8R038282;
+	Fri, 14 Aug 2026 19:44:52 +0300
+Date: Fri, 14 Aug 2026 19:44:51 +0300 (EEST)
+From: Julian Anastasov <ja@ssi.bg>
+To: Joas Antonio <joasantonio108@gmail.com>
+cc: horms@verge.net.au, pablo@netfilter.org, fw@strlen.de,
+        netdev@vger.kernel.org, lvs-devel@vger.kernel.org,
+        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 ipvs] ipvs: fix integer overflow in ftp helper
+ port/address parsing
+In-Reply-To: <20260813183424.47522-1-joasantonio108@gmail.com>
+Message-ID: <97c4a8a9-cebd-c2cd-7852-34e080d3fe23@ssi.bg>
+References: <20260813183424.47522-1-joasantonio108@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev/#/patchset/afe041f6-ef7d-4434-b2d0-096be49b5bcb@mail.kernel.org?part=1
----
---- Patch [1]: [PATCH] net/sched: taprio: enforce minimum software scheduling interval ---
-commit 984087f4873d7bad874b78ae4728e68b305dd5dc
-Author: Uladzislau Zhauniarovich <uladzislau.zhauniarovich@gmail.com>
-net/sched: taprio: enforce minimum software scheduling interval
 
-This commit introduces a minimum interval of 100 microseconds for the
-software scheduler in taprio to prevent CPU livelocking from excessive
-hrtimer interrupts. It skips this check for fully offloaded schedules.
+	Hello,
 
-Link: https://syzkaller.appspot.com/bug?extid=19d01f6082ec61dd45b2
-Link: https://syzkaller.appspot.com/ai_job?id=37f064ee-e021-43aa-8cfc-9f2a5a7c35d7
+On Thu, 13 Aug 2026, Joas Antonio wrote:
 
-> diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-> index 45245157e00a6..2bf4cae164bc2 100644
-> --- a/net/sched/sch_taprio.c
-> +++ b/net/sched/sch_taprio.c
+> From: Joas Antonio dos Santos <joasantonio108@gmail.com>
+> 
+> ip_vs_ftp_get_addrport() accumulates decimal digits into a __u16
+> (hport) and into unsigned char (p[]) without checking for overflow.
+> A crafted FTP PASV/EPSV response with an over-long port or address
+> octet wraps the value, so the helper configures the data connection
+> with a truncated port/address.
+> 
+> The netfilter conntrack FTP helper had the same defect, fixed in
+> commit 2b413fc689ba ("netfilter: nf_conntrack_ftp: avoid u16
+> overflows"). Apply the equivalent fix here: widen the port accumulator
+> to u32 and reject values above 65535, and reject address octets above
+> 255.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
 
-[ ... ]
+	Looks good to me for the nf tree, thanks!
 
-> @@ -259,6 +266,16 @@ static int length_to_duration(struct taprio_sched *q, int len)
->  	return div_u64(len * atomic64_read(&q->picos_per_byte), PSEC_PER_NSEC);
->  }
+Acked-by: Julian Anastasov <ja@ssi.bg>
+
+> ---
+> v2: use real name in Signed-off-by, add subsystem tag to subject (per
+>     Pablo Neira Ayuso)
+> 
+>  net/netfilter/ipvs/ip_vs_ftp.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/netfilter/ipvs/ip_vs_ftp.c b/net/netfilter/ipvs/ip_vs_ftp.c
+> index b315c608f..9e3e005a8 100644
+> --- a/net/netfilter/ipvs/ip_vs_ftp.c
+> +++ b/net/netfilter/ipvs/ip_vs_ftp.c
+> @@ -102,7 +102,7 @@ static int ip_vs_ftp_get_addrport(char *data, char *data_limit,
+>  	char *s, c;
+>  	unsigned char p[6];
+>  	char edelim;
+> -	__u16 hport;
+> +	__u32 hport;
+>  	int i = 0;
 >  
-> +static int taprio_min_interval(struct taprio_sched *q)
-> +{
-> +	int min_duration = length_to_duration(q, ETH_ZLEN);
+>  	if (data_limit - data < plen) {
+> @@ -144,7 +144,11 @@ static int ip_vs_ftp_get_addrport(char *data, char *data_limit,
+>  				return -1;
+>  			c = *data;
+>  			if (isdigit(c)) {
+> -				p[i] = p[i]*10 + c - '0';
+> +				unsigned int val = p[i] * 10 + c - '0';
 > +
-> +	if (!FULL_OFFLOAD_IS_ENABLED(q->flags))
-> +		min_duration = max_t(int, min_duration, TAPRIO_MIN_SW_INTERVAL_NS);
+> +				if (val > 255)
+> +					return -1;
+> +				p[i] = val;
+>  			} else if (c == ',' && i < 5) {
+>  				i++;
+>  				p[i] = 0;
+> @@ -222,6 +226,8 @@ static int ip_vs_ftp_get_addrport(char *data, char *data_limit,
+>  		if (!isdigit(*s))
+>  			break;
+>  		hport = hport * 10 + *s - '0';
+> +		if (hport > 65535)
+> +			return -1;
+>  	}
+>  	if (s == data_limit || !hport || *s != edelim)
+>  		return -1;
+> -- 
+> 2.39.5 (Apple Git-154)
 
-[Severity: High]
-Does this limit erroneously catch TXTIME_ASSIST offload configurations?
+Regards
 
-The code applies the software interval limit when FULL_OFFLOAD_IS_ENABLED
-is false, which subjects TXTIME_ASSIST setups to the 100 microseconds limit.
-However, TXTIME_ASSIST mode does not use the software advance_sched
-hrtimer; it relies on Earliest Departure Time and NIC pacing instead.
+--
+Julian Anastasov <ja@ssi.bg>
 
-Could this break valid hardware-assisted TSN schedules that require smaller
-intervals by rejecting them during netlink configuration?
-
-> +
-> +	return min_duration;
-> +}
-
-[ ... ]
-
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does the budget calculation
-suffer from truncation on high-speed links?
-
-When converting long gate durations to byte lengths, truncation from a 64-bit
-unsigned integer to a 32-bit signed integer can occur:
-
-net/sched/sch_taprio.c:taprio_set_budgets() {
-    ...
-    budget = div64_u64((u64)entry->gate_duration[tc] * PSEC_PER_NSEC,
-                       atomic64_read(&q->picos_per_byte));
-    atomic_set(&entry->budget[tc], budget);
-    ...
-}
-
-A valid schedule with a gate duration long enough to exceed INT_MAX bytes at
-high link speeds (e.g., 400 Gbps where picos_per_byte = 20) yields a budget
-exceeding 2,147,483,647 bytes.
-
-Because the budget is a signed 32-bit int, it overflows to a negative value.
-Can this cause taprio_update_budgets() to return a negative value and
-taprio_dequeue_from_txq() to perpetually stall and drop packets?
-
-
-[Severity: High]
-This is a pre-existing issue, but do failed configuration changes leave the
-taprio qdisc in a partially modified state?
-
-If a taprio_change() request passes early validation but fails later, it
-appears to leave hardware and software out of sync:
-
-net/sched/sch_taprio.c:taprio_change() {
-    ...
-    if (FULL_OFFLOAD_IS_ENABLED(q->flags))
-        err = taprio_enable_offload(dev, q, new_admin, extack);
-    ...
-    if (tb[TCA_TAPRIO_ATTR_TXTIME_DELAY]) {
-        if (!TXTIME_ASSIST_IS_ENABLED(q->flags)) {
-            NL_SET_ERR_MSG_MOD(extack, "txtime-delay can only be set when txtime-assist mode is enabled");
-            err = -EINVAL;
-            goto unlock;
-        }
-    ...
-}
-
-Hardware offload is enabled with the new schedule, but a subsequent failure
-(like the TXTIME_DELAY check) jumps to the unlock and free_sched labels.
-Does this discard the software schedule without reverting the hardware
-offload, causing the two to become permanently desynchronized?
-
-Additionally, in taprio_parse_tc_entries():
-
-net/sched/sch_taprio.c:taprio_parse_tc_entries() {
-    for (tc = 0; tc < TC_QOPT_MAX_QUEUE; tc++) {
-        q->max_sdu[tc] = max_sdu[tc];
-        q->fp[tc] = fp[tc];
-    ...
-    if (have_preemption) {
-        if (!FULL_OFFLOAD_IS_ENABLED(q->flags)) {
-            ...
-            return -EOPNOTSUPP;
-        }
-    ...
-}
-
-Internal state like q->max_sdu and q->fp are updated directly in the
-software state before checking if preemption is actually supported. Does this
-return an error without reverting them on failure?
