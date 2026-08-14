@@ -1,199 +1,174 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D68448B9C;
-	Fri, 14 Aug 2026 11:02:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F2945D5D2
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 11:02:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786705328; cv=none; b=EnI/bGipJWwCXqhY1lD3FeXzKmAPnW68Zf5DAt9i/IXkHD4JJ1jHXHfOu/FiB8qX4Lc31xqJBGf8Pa1WquXoy8mYPKcF40/jt7fTa8681x9nzjNaeHIOgSmmFdJoDkT4p5aCaNOKlmcHi/0209rdYZppokjaigngU5S+V6lyIv4=
+	t=1786705335; cv=none; b=QVQPj+7iqGKBl/jRraz6GacxuABjFhQZRzGW0bUThwst2AKMLO/pjM6O9bQ9v4bRUgpSNKSw5hV71oVbrv5CIPidVzpuICkNDGPMbHnkUk5mtELIbp5NZLnlRgFoIW11ApAUOpZ7QUl7AgNGonAnCBKO47el13r766diID1vxJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786705328; c=relaxed/simple;
-	bh=B58AR9SQxBsV/7KuARWZd24/yABrrClZf+v4qU7pT3Q=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=f2tmGrJWlM0gSkyowSvJi0U4coJA++WqTKQdMprMLiAWdufrdhtpUXn1fKwGmCPf6Z/wL3YLeH/bBZ91IUvvDxIx/RHHFos/qM/E8UwsnOwrXz9Q+BoBkI6kUO/o/kIoeXhLSFphmnzQ3uJ6njc7GfwX0Nbwo7CCcIjNQF8K4U8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AAIzFiaq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786705335; c=relaxed/simple;
+	bh=+bWiNOik+q50L+Rqo4L0aat23qr7vzWhlqwMS6QFHZ8=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=A/yMwnSPbETJyPz6mOtvUALRFg2uIqSp/EbuxinsFOBsPGw3n36B65Fj09GUJkCAnMQPLdmq81C5wZQRgL8Dr35v9ygaYF2gpqkz2Wt87DeppuCaaTdauiFt825nzoLik9+6reL60eICeOHjpwDJ9okScHEn7kN2sH/+mR6bLqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com; spf=pass smtp.mailfrom=doyensec.com; dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b=P6HhFqwP; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=doyensec.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AAIzFiaq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B76EC1F000E9;
-	Fri, 14 Aug 2026 11:01:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786705319;
-	bh=B58AR9SQxBsV/7KuARWZd24/yABrrClZf+v4qU7pT3Q=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=AAIzFiaq2dOHpKq0+Ggb5pBcRqHh26XNnXgCQt2n2JtPhVercUzKMgIHx4dMGL1x6
-	 /+anNoh/KgVuFBIeWu7xMDr+dBKNNhUfv5GqKCJek3KE8DTjverL/XVYSiCVZyKgSo
-	 mRE+pVPiktBslvFYTG+g3jIvsQTnxH2TcdcZVdiEk0ZShv3XynnquzrVHgmbpgnjHP
-	 spCljb/3R102e99PvHaakJug63nc7hOT08HhLUnrAWvt9nvFWfgUTrdXxKZ/+vOi6/
-	 Rwgu+1uIhnxphT3bc5PzyTE28C7NwOhKA/ul26RNdUTU5cR7jVY3MIYpuDf82yCc7F
-	 LPCdrau9EfPQQ==
-Message-ID: <a8f5840cf3f2cbf71de7a1f3957f70d9897adfa2.camel@kernel.org>
-Subject: Re: [PATCH v2 4/8] SUNRPC: undo partial rpcbind registrations when
- svc_register() fails
-From: Jeff Layton <jlayton@kernel.org>
-To: Chuck Lever <cel@kernel.org>, NeilBrown <neil@brown.name>, Olga
- Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom
- Talpey <tom@talpey.com>, Trond Myklebust <trondmy@kernel.org>, Anna
- Schumaker <anna@kernel.org>, "David S. Miller"	 <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski	 <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman	 <horms@kernel.org>, "J. Bruce
- Fields" <bfields@fieldses.org>, Shuah Khan	 <shuah@kernel.org>
-Cc: linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, Trond Myklebust <trondmy@gmail.com>, 
-	linux-kselftest@vger.kernel.org
-Date: Fri, 14 Aug 2026 07:01:55 -0400
-In-Reply-To: <572f0269-9bf4-4a80-8e9c-3c4614d45f7e@app.fastmail.com>
-References: <20260811-nfsd-nl-hang-v2-0-c0c92b3953c3@kernel.org>
-	 <20260811-nfsd-nl-hang-v2-4-c0c92b3953c3@kernel.org>
-	 <e1706a70-d9f8-423e-9462-2d77b2e444b1@app.fastmail.com>
-	 <26486c88075a0b1e3c1cb088fe97d39e0051b5d3.camel@kernel.org>
-	 <572f0269-9bf4-4a80-8e9c-3c4614d45f7e@app.fastmail.com>
-Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
- keydata=mQINBE6V0TwBEADXhJg7s8wFDwBMEvn0qyhAnzFLTOCHooMZyx7XO7dAiIhDSi7G1NPxw
- n8jdFUQMCR/GlpozMFlSFiZXiObE7sef9rTtM68ukUyZM4pJ9l0KjQNgDJ6Fr342Htkjxu/kFV1Wv
- egyjnSsFt7EGoDjdKqr1TS9syJYFjagYtvWk/UfHlW09X+jOh4vYtfX7iYSx/NfqV3W1D7EDi0PqV
- T2h6v8i8YqsATFPwO4nuiTmL6I40ZofxVd+9wdRI4Db8yUNA4ZSP2nqLcLtFjClYRBoJvRWvsv4lm
- 0OX6MYPtv76hka8lW4mnRmZqqx3UtfHX/hF/zH24Gj7A6sYKYLCU3YrI2Ogiu7/ksKcl7goQjpvtV
- YrOOI5VGLHge0awt7bhMCTM9KAfPc+xL/ZxAMVWd3NCk5SamL2cE99UWgtvNOIYU8m6EjTLhsj8sn
- VluJH0/RcxEeFbnSaswVChNSGa7mXJrTR22lRL6ZPjdMgS2Km90haWPRc8Wolcz07Y2se0xpGVLEQ
- cDEsvv5IMmeMe1/qLZ6NaVkNuL3WOXvxaVT9USW1+/SGipO2IpKJjeDZfehlB/kpfF24+RrK+seQf
- CBYyUE8QJpvTZyfUHNYldXlrjO6n5MdOempLqWpfOmcGkwnyNRBR46g/jf8KnPRwXs509yAqDB6sE
- LZH+yWr9LQZEwARAQABtCVKZWZmIExheXRvbiA8amxheXRvbkBwb29jaGllcmVkcy5uZXQ+iQI7BB
- MBAgAlAhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAUCTpXWPAIZAQAKCRAADmhBGVaCFc65D/4
- gBLNMHopQYgG/9RIM3kgFCCQV0pLv0hcg1cjr+bPI5f1PzJoOVi9s0wBDHwp8+vtHgYhM54yt43uI
- 7Htij0RHFL5eFqoVT4TSfAg2qlvNemJEOY0e4daljjmZM7UtmpGs9NN0r9r50W82eb5Kw5bc/r0km
- R/arUS2st+ecRsCnwAOj6HiURwIgfDMHGPtSkoPpu3DDp/cjcYUg3HaOJuTjtGHFH963B+f+hyQ2B
- rQZBBE76ErgTDJ2Db9Ey0kw7VEZ4I2nnVUY9B5dE2pJFVO5HJBMp30fUGKvwaKqYCU2iAKxdmJXRI
- ONb7dSde8LqZahuunPDMZyMA5+mkQl7kpIpR6kVDIiqmxzRuPeiMP7O2FCUlS2DnJnRVrHmCljLkZ
- Wf7ZUA22wJpepBligemtSRSbqCyZ3B48zJ8g5B8xLEntPo/NknSJaYRvfEQqGxgk5kkNWMIMDkfQO
- lDSXZvoxqU9wFH/9jTv1/6p8dHeGM0BsbBLMqQaqnWiVt5mG92E1zkOW69LnoozE6Le+12DsNW7Rj
- iR5K+27MObjXEYIW7FIvNN/TQ6U1EOsdxwB8o//Yfc3p2QqPr5uS93SDDan5ehH59BnHpguTc27Xi
- QQZ9EGiieCUx6Zh2ze3X2UW9YNzE15uKwkkuEIj60NvQRmEDfweYfOfPVOueC+iFifbQgSmVmZiBM
- YXl0b24gPGpsYXl0b25AcmVkaGF0LmNvbT6JAjgEEwECACIFAk6V0q0CGwMGCwkIBwMCBhUIAgkKC
- wQWAgMBAh4BAheAAAoJEAAOaEEZVoIViKUQALpvsacTMWWOd7SlPFzIYy2/fjvKlfB/Xs4YdNcf9q
- LqF+lk2RBUHdR/dGwZpvw/OLmnZ8TryDo2zXVJNWEEUFNc7wQpl3i78r6UU/GUY/RQmOgPhs3epQC
- 3PMJj4xFx+VuVcf/MXgDDdBUHaCTT793hyBeDbQuciARDJAW24Q1RCmjcwWIV/pgrlFa4lAXsmhoa
- c8UPc82Ijrs6ivlTweFf16VBc4nSLX5FB3ls7S5noRhm5/Zsd4PGPgIHgCZcPgkAnU1S/A/rSqf3F
- LpU+CbVBDvlVAnOq9gfNF+QiTlOHdZVIe4gEYAU3CUjbleywQqV02BKxPVM0C5/oVjMVx3bri75n1
- TkBYGmqAXy9usCkHIsG5CBHmphv9MHmqMZQVsxvCzfnI5IO1+7MoloeeW/lxuyd0pU88dZsV/riHw
- 87i2GJUJtVlMl5IGBNFpqoNUoqmvRfEMeXhy/kUX4Xc03I1coZIgmwLmCSXwx9MaCPFzV/dOOrju2
- xjO+2sYyB5BNtxRqUEyXglpujFZqJxxau7E0eXoYgoY9gtFGsspzFkVNntamVXEWVVgzJJr/EWW0y
- +jNd54MfPRqH+eCGuqlnNLktSAVz1MvVRY1dxUltSlDZT7P2bUoMorIPu8p7ZCg9dyX1+9T6Muc5d
- Hxf/BBP/ir+3e8JTFQBFOiLNdFtB9KZWZmIExheXRvbiA8amxheXRvbkBzYW1iYS5vcmc+iQI4BBM
- BAgAiBQJOldK9AhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRAADmhBGVaCFWgWD/0ZRi4h
- N9FK2BdQs9RwNnFZUr7JidAWfCrs37XrA/56olQl3ojn0fQtrP4DbTmCuh0SfMijB24psy1GnkPep
- naQ6VRf7Dxg/Y8muZELSOtsv2CKt3/02J1BBitrkkqmHyni5fLLYYg6fub0T/8Kwo1qGPdu1hx2BQ
- RERYtQ/S5d/T0cACdlzi6w8rs5f09hU9Tu4qV1JLKmBTgUWKN969HPRkxiojLQziHVyM/weR5Reu6
- FZVNuVBGqBD+sfk/c98VJHjsQhYJijcsmgMb1NohAzwrBKcSGKOWJToGEO/1RkIN8tqGnYNp2G+aR
- 685D0chgTl1WzPRM6mFG1+n2b2RR95DxumKVpwBwdLPoCkI24JkeDJ7lXSe3uFWISstFGt0HL8Eew
- P8RuGC8s5h7Ct91HMNQTbjgA+Vi1foWUVXpEintAKgoywaIDlJfTZIl6Ew8ETN/7DLy8bXYgq0Xzh
- aKg3CnOUuGQV5/nl4OAX/3jocT5Cz/OtAiNYj5mLPeL5z2ZszjoCAH6caqsF2oLyAnLqRgDgR+wTQ
- T6gMhr2IRsl+cp8gPHBwQ4uZMb+X00c/Amm9VfviT+BI7B66cnC7Zv6Gvmtu2rEjWDGWPqUgccB7h
- dMKnKDthkA227/82tYoFiFMb/NwtgGrn5n2vwJyKN6SEoygGrNt0SI84y6hEVbQlSmVmZiBMYXl0b
- 24gPGpsYXl0b25AcHJpbWFyeWRhdGEuY29tPokCOQQTAQIAIwUCU4xmKQIbAwcLCQgHAwIBBhUIAg
- kKCwQWAgMBAh4BAheAAAoJEAAOaEEZVoIV1H0P/j4OUTwFd7BBbpoSp695qb6HqCzWMuExsp8nZjr
- uymMaeZbGr3OWMNEXRI1FWNHMtcMHWLP/RaDqCJil28proO+PQ/yPhsr2QqJcW4nr91tBrv/MqItu
- AXLYlsgXqp4BxLP67bzRJ1Bd2x0bWXurpEXY//VBOLnODqThGEcL7jouwjmnRh9FTKZfBDpFRaEfD
- FOXIfAkMKBa/c9TQwRpx2DPsl3eFWVCNuNGKeGsirLqCxUg5kWTxEorROppz9oU4HPicL6rRH22Ce
- 6nOAON2vHvhkUuO3GbffhrcsPD4DaYup4ic+DxWm+DaSSRJ+e1yJvwi6NmQ9P9UAuLG93S2MdNNbo
- sZ9P8k2mTOVKMc+GooI9Ve/vH8unwitwo7ORMVXhJeU6Q0X7zf3SjwDq2lBhn1DSuTsn2DbsNTiDv
- qrAaCvbsTsw+SZRwF85eG67eAwouYk+dnKmp1q57LDKMyzysij2oDKbcBlwB/TeX16p8+LxECv51a
- sjS9TInnipssssUDrHIvoTTXWcz7Y5wIngxDFwT8rPY3EggzLGfK5Zx2Q5S/N0FfmADmKknG/D8qG
- IcJE574D956tiUDKN4I+/g125ORR1v7bP+OIaayAvq17RP+qcAqkxc0x8iCYVCYDouDyNvWPGRhbL
- UO7mlBpjW9jK9e2fvZY9iw3QzIPGKtClKZWZmIExheXRvbiA8amVmZi5sYXl0b25AcHJpbWFyeWRh
- dGEuY29tPokCOQQTAQIAIwUCU4xmUAIbAwcLCQgHAwIBBhUIAgkKCwQWAgMBAh4BAheAAAoJEAAOa
- EEZVoIVzJoQALFCS6n/FHQS+hIzHIb56JbokhK0AFqoLVzLKzrnaeXhE5isWcVg0eoV2oTScIwUSU
- apy94if69tnUo4Q7YNt8/6yFM6hwZAxFjOXR0ciGE3Q+Z1zi49Ox51yjGMQGxlakV9ep4sV/d5a50
- M+LFTmYSAFp6HY23JN9PkjVJC4PUv5DYRbOZ6Y1+TfXKBAewMVqtwT1Y+LPlfmI8dbbbuUX/kKZ5d
- dhV2736fgyfpslvJKYl0YifUOVy4D1G/oSycyHkJG78OvX4JKcf2kKzVvg7/Rnv+AueCfFQ6nGwPn
- 0P91I7TEOC4XfZ6a1K3uTp4fPPs1Wn75X7K8lzJP/p8lme40uqwAyBjk+IA5VGd+CVRiyJTpGZwA0
- jwSYLyXboX+Dqm9pSYzmC9+/AE7lIgpWj+3iNisp1SWtHc4pdtQ5EU2SEz8yKvDbD0lNDbv4ljI7e
- flPsvN6vOrxz24mCliEco5DwhpaaSnzWnbAPXhQDWb/lUgs/JNk8dtwmvWnqCwRqElMLVisAbJmC0
- BhZ/Ab4sph3EaiZfdXKhiQqSGdK4La3OTJOJYZphPdGgnkvDV9Pl1QZ0ijXQrVIy3zd6VCNaKYq7B
- AKidn5g/2Q8oio9Tf4XfdZ9dtwcB+bwDJFgvvDYaZ5bI3ln4V3EyW5i2NfXazz/GA/I/ZtbsigCFc
- 8ftCBKZWZmIExheXRvbiA8amxheXRvbkBrZXJuZWwub3JnPokCOAQTAQIAIgUCWe8u6AIbAwYLCQg
- HAwIGFQgCCQoLBBYCAwECHgECF4AACgkQAA5oQRlWghUuCg/+Lb/xGxZD2Q1oJVAE37uW308UpVSD
- 2tAMJUvFTdDbfe3zKlPDTuVsyNsALBGclPLagJ5ZTP+Vp2irAN9uwBuacBOTtmOdz4ZN2tdvNgozz
- uxp4CHBDVzAslUi2idy+xpsp47DWPxYFIRP3M8QG/aNW052LaPc0cedYxp8+9eiVUNpxF4SiU4i9J
- DfX/sn9XcfoVZIxMpCRE750zvJvcCUz9HojsrMQ1NFc7MFT1z3MOW2/RlzPcog7xvR5ENPH19ojRD
- CHqumUHRry+RF0lH00clzX/W8OrQJZtoBPXv9ahka/Vp7kEulcBJr1cH5Wz/WprhsIM7U9pse1f1g
- Yy9YbXtWctUz8uvDR7shsQxAhX3qO7DilMtuGo1v97I/Kx4gXQ52syh/w6EBny71CZrOgD6kJwPVV
- AaM1LRC28muq91WCFhs/nzHozpbzcheyGtMUI2Ao4K6mnY+3zIuXPygZMFr9KXE6fF7HzKxKuZMJO
- aEZCiDOq0anx6FmOzs5E6Jqdpo/mtI8beK+BE7Va6ni7YrQlnT0i3vaTVMTiCThbqsB20VrbMjlhp
- f8lfK1XVNbRq/R7GZ9zHESlsa35ha60yd/j3pu5hT2xyy8krV8vGhHvnJ1XRMJBAB/UYb6FyC7S+m
- QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b="P6HhFqwP"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4980dc26022so9289385e9.1
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 04:02:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=doyensec.com; s=google; t=1786705323; x=1787310123; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:content-type:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=+gRbGCV0XxLdSaF9vYVqo8y9b5Wisj9Pp825VEoZ6Mw=;
+        b=P6HhFqwPciepmA87l8MnANTlMFqBizlX/AdJjhmjqeEnVcHABgd5vMuuYAYPTQgSUJ
+         hQSypaVHw6bAzkTs/wA53kIKCk6WsQeloxMNQJkmHWYfmeCEOB39Y57+6SBVJb1U7AFo
+         axuNFbibpeXAwQfLS+xNx66DSGqccwpELiCLoEfziUraWRfqt2vX4/vvapVt6+fXDI7u
+         4fqvAmC1nqMYkQg6qK8YqwxgaRCtskxCi2z1sSVhn1RhLGJn1HbgYYYD2Md1HVtPcL/g
+         SwacYOf3EafwUF5pj1nwSnpkIss5F/yo/B0ZzKWe8RthQeeR0xW2Hki+ghMsoxt4W3YG
+         CrvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786705323; x=1787310123;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+gRbGCV0XxLdSaF9vYVqo8y9b5Wisj9Pp825VEoZ6Mw=;
+        b=DUjZT8uydu1ueFw+JWB1qHdXMOpFaABkUtRbRt42MvZqTYVBeEk1r+7/jLNXXJtJBv
+         adP0gTIReW1onT3f0IrGkozSjz7hYH4bKbAYhCSM4dwUTkjplYb7uCl61f+gu6ltRQNV
+         CSoV6Ik6eq381Z6yfwfzyg10VkfUTOWKBBnA2P3JcM+G4ufAg0nhfYtnga4MJG9O1kRS
+         tJpindtrapOXoa7lZHMzqtYZrd9nw8vRQq+8FBEmvMInSpqBr2fZnqTuB/7FIBQKF1y0
+         mUM+4/eiWc2f8wakRVvmJKyKylCSE8DJ1IDapsKkTitynYn4oWHqQyImDznqsK/EEJgb
+         +z8w==
+X-Gm-Message-State: AOJu0Yx1V+Yg0L2AfAUdoedaz4Co7dvb2lKYBzgUIzYO2oZGxlBcsjAq
+	YfSaFiUvOLCuUjYfbJe6kEhoUoABLP6MPWeDUkuVqxxgPSWF9Z0324qdwY9spV7NQ5g=
+X-Gm-Gg: AR+sD12lga4ECITQik+r67joS+8415/3n9m7/CY1YqXFrdwM1PS/pURXiUuCFjZ7VtI
+	sTHjiuJc6AmhwMm4qVydRb4cSxLpWXteKOj4m/ONph4IYLTHAcmsCG/6IsNpw78kUlihWO/vK6H
+	s3Eq0rYAUuuWVnP40P0sE8KG9Xe5KAZ+rOMSSVgtPI3YJ+i/a2hfdvCpr08lzp1vLuRPYCB/y70
+	izC9umAnMY+fC25dfignMdWELSCiltFbmO/741RG97/hK8/x8bsgL580ujKxGO/QhqN2hfkMclM
+	PL0yPgrTTCIZH8VhR/+DhkrCayNQyvNuvSX3XBlMTIyYsX1Nkg2KRHkwTrIfNa5l9xy9qIHsvv1
+	R4zVu6BKLI3QrDLDgIm1bBWB79Qoy3VvycLgxtqDoThI+tftQOwwnXFH1qs+RScLUuQ1KsMrluJ
+	DvEWUAn7uVob3kuou7suznGlKB+QvIRAgCrEaqfBwefnAqmtDqG7SoIXaMWpxZdHXeojIVR+4Zh
+	v5SkF6wcPxwaRxK0tBiE9TjYBRYnzdHpYUuv4LuVyl6SfgwZ4jxkKUSYkie4lA96sUFTbF3acjR
+	cRU+Vnl/6Gnksoyg
+X-Received: by 2002:a05:600c:1395:b0:499:872b:abd4 with SMTP id 5b1f17b1804b1-4998797684cmr58239365e9.6.1786705322547;
+        Fri, 14 Aug 2026 04:02:02 -0700 (PDT)
+Received: from smtpclient.apple (ip-88-212-19-42.antik.sk. [88.212.19.42])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499899afa39sm24363595e9.2.2026.08.14.04.02.01
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 14 Aug 2026 04:02:01 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
+Subject: Re: [PATCH net 1/2] openvswitch: only skb_tx_error() a packet we are
+ about to drop
+From: Norbert Szetei <norbert@doyensec.com>
+In-Reply-To: <b20650c2-1adb-4902-b2b1-9bca91b95dec@ovn.org>
+Date: Fri, 14 Aug 2026 13:01:50 +0200
+Cc: netdev@vger.kernel.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>,
+ Aaron Conole <aconole@redhat.com>,
+ Eelco Chaudron <echaudro@redhat.com>,
+ Steffen Klassert <steffen.klassert@secunet.com>,
+ Kuan-Ting Chen <h3xrabbit@gmail.com>,
+ Zoltan Kiss <zoltan.kiss@citrix.com>,
+ dev@openvswitch.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <741D4072-50EE-437B-BFC3-CDFE94C93F8A@doyensec.com>
+References: <8063260C-05C9-4997-B9B6-2135063C4858@doyensec.com>
+ <C35992B1-7740-4886-94FF-F85DE8B0106F@doyensec.com>
+ <b20650c2-1adb-4902-b2b1-9bca91b95dec@ovn.org>
+To: Ilya Maximets <i.maximets@ovn.org>
+X-Mailer: Apple Mail (2.3826.700.81.1.4)
 
-On Wed, 2026-08-12 at 15:57 -0400, Chuck Lever wrote:
+Thanks for the review. Sashiko flagged that the moved call may still be
+reachable through the RECIRC action, and I confirmed dynamically that it =
+is.
+With 1/2 applied, a flow matching recirc_id 0 exactly, with actions
+RECIRC(1), OUTPUT(0) instead of USERSPACE(unbound), OUTPUT(0), =
+reproduces
+the same issue. So please hold off on 1/2.
+
+Moving the call to the "default" branch assumes that branch only sees a
+packet the datapath owns. For a non-last OVS_ACTION_ATTR_RECIRC,
+clone_execute() does
+
+	skb =3D last ? skb : skb_clone(skb, GFP_ATOMIC);
+	...
+	ovs_dp_process_packet(skb, clone);
+
+so a clone lands there while do_execute_actions() carries on with the
+original. The clone shares skb_shinfo() exactly for the skbs this series =
+is
+about, since skb_clone() -> skb_orphan_frags() returns early on
+SKBFL_DONT_ORPHAN and does not copy the frags - so settling the uarg
+through the clone clears SKBFL_SHARED_FRAG for the skb still being
+forwarded.
+
+Removing the call, as I originally suggested, does fix this in my =
+testing.
+If you would still rather keep it, how would you prefer to solve this?
+
+Thanks,
+Norbert
+
+> On Aug 13, 2026, at 12:00, Ilya Maximets <i.maximets@ovn.org> wrote:
 >=20
-> On Wed, Aug 12, 2026, at 3:38 PM, Jeff Layton wrote:
-> > On Tue, 2026-08-11 at 15:19 -0400, Chuck Lever wrote:
->=20
-> > > For an IPv4 listener, the port-zero callback falls back through
-> > > __svc_rpcb_register4() to rpcb_register(). PMAPPROC_UNSET ignores
-> > > its protocol argument, so unwinding a partially successful TCP
-> > > registration also removes the mappings for existing listeners on
-> > > other transports, I would think.
-> > >=20
-> > > It might be that the best the kernel can do here is tear everything
-> > > down if one registration fails.
-> > >=20
-> >=20
-> > What I was thinking for NFSv2/3 was to just have the listener set
-> > netlink call wait for registration to complete before returning to
-> > userland. That would mean we'd have to block even longer to try and
-> > unregister things if things fail.
-> >=20
-> > Alternate proposal: let's just declare rpcbind reg errors to be non-
-> > fatal: do a pr_warn() and just leave it up to the admin to sort it out
-> > if that happens instead of trying to fail the startup.
-> >=20
-> > The resulting situation for the server is no worse off (it's just
-> > running instead of being down), and I move that we're better off
-> > leaving it up to a human to clean up the mess instead of trying to fix
-> > things up from the kernel.
->=20
-> I was thinking of this in terms of a declarative administrative UI:
-> If the kernel can't set the requested configuration, it should
-> fail back to the previous configuration. Maybe that's not possible.
->=20
+> On 8/13/26 7:47 AM, Norbert Szetei wrote:
+>> queue_userspace_packet() borrows the packet skb -- it only copies it =
+into
+>> a private netlink message (user_skb) and does not own it; on return
+>> do_execute_actions() keeps forwarding it through the flow's remaining
+>> actions. Its error path nevertheless calls skb_tx_error(skb), which =
+via
+>> skb_zcopy_clear() does skb_shinfo(skb)->flags &=3D =
+~SKBFL_ALL_ZEROCOPY,
+>> stripping SKBFL_SHARED_FRAG from that live skb (skb_tx_error()'s =
+kerneldoc
+>> says "skb must be freed afterwards").
+>>=20
+>> For a MSG_ZEROCOPY skb carrying page-cache frags, SKBFL_SHARED_FRAG =
+is
+>> what makes esp_input() skb_cow_data() before in-place AEAD; once it =
+is
+>> stripped a later local ESP-in-UDP delivery decrypts in place over =
+pages
+>> the sender does not own -- an unprivileged page-cache write (the
+>> "Fragnesia" primitive).
+>> do_execute_actions() ignores output_userspace()'s return value, so =
+any
+>> action after a failed USERSPACE upcall inherits the stripped skb.
+>>=20
+>> Move the skb_tx_error() to the flow-miss drop path - the "default"
+>> branch of ovs_dp_process_packet()'s switch(error), before =
+kfree_skb().
+>>=20
+>> The call has been here since commit 36d5fe6a0007 ("core, nfqueue,
+>> openvswitch: Orphan frags in skb_zerocopy and handle errors") but was
+>> harmless until esp_input() began relying on SKBFL_SHARED_FRAG to gate
+>> in-place decrypt; only then did stripping it on a still-forwarded skb
+>> become a page-cache write primitive.
+>>=20
+>> Fixes: 36d5fe6a0007 ("core, nfqueue, openvswitch: Orphan frags in =
+skb_zerocopy and handle errors")
+>> Fixes: f4c50a4034e6 ("xfrm: esp: avoid in-place decrypt on shared skb =
+frags")
+>> Cc: stable@vger.kernel.org
+>> Assisted-by: Claude:claude-opus-5
+>> Signed-off-by: Norbert Szetei <norbert@doyensec.com>
+>> ---
+> Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
 
-It's possible, but difficult. The original /proc interfaces were never
-this clean, so making the underlying bits behave this way for the
-netlink interfaces, but not the legacy /proc ones will be hard.
-
-Also, today we don't take any steps to try and preserve the old
-listener table. That would have to be done here as well.
-
-> On the other hand, what might be better is to handle the rpcbind
-> registration from user space instead of the kernel, after the
-> kernel listener is set up.
->=20
-
-That's possible I guess. We could send a new boolean down in the
-listener call that says "don't do any rpcbind registration" and then if
-the kernel indicates that it understands that message then userland
-could do the registration.
-
-That's a major undertaking though and I don't like fundamentally
-changing the interface here, particularly when we'll still have to cope
-with doing this from the kernel for legacy cases.
-
-I still think the best solution of all would be to just say
-"henceforth, rpcbind registration is non-fatal". That just leaves the
-kernel succeeding the listener set today when it would have failed
-before, but will still printk() an appropriate warning in that case, so
-the admin should be aware that rpcbind registration failed, even though
-the server is up.
-
-Right now, I'm really unclear on what sort of changes you want to see
-here as a final patchset. What would make this mergeable for you?
---=20
-Jeff Layton <jlayton@kernel.org>
