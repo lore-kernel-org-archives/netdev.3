@@ -1,175 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5BA5390613;
-	Fri, 14 Aug 2026 22:56:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35DC3B8D75;
+	Fri, 14 Aug 2026 22:56:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786748199; cv=none; b=Z0UOtighp/pfSJIUb5JM2ZyKMUs/ZECFp0KKExi2NpB5m37ixu9PHMbLQXHCjARQSp1IXifAGNMdM7CWEuVpm0u3chFHPf/8DCvwgxOdPqR9Laz/+PHn3TnJsJP+kwt04Y83JiHCc9XQdsqGHl03HNbAe3Z+biXsxOLg6RTLQlk=
+	t=1786748202; cv=none; b=RZ/JyLnzHdq13TC91OMGUWgR6Q0oRP+gRhiqtVJqK+HshKWn57lnwkMoaJiZlc660CozzRHCX4trBGNkhuKlA3GLI+GUck0uzlpn+puKcES4nchaDIoIlk3CVLJ3VLiMt35t0jLmVq8PMDBbhlGJ3kQlM48me8tAxJY3tR77aGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786748199; c=relaxed/simple;
-	bh=pPtwt9Rj/CD0WdnVJjiyoCyv9cPuh/TKcGvumGpIcHY=;
+	s=arc-20240116; t=1786748202; c=relaxed/simple;
+	bh=Dr0sxwTILYFz6f2PUInpf/nod16F/yTP+TE5nAkzaBQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GdcVPp0S13XHYPDuoPzJp1hZi76KgbOPWPIog6jV5xzcclrLuqEw04B/wFjM42WoR4Ge1kYWNmUNbDa3aepmXBZehdcpTsA/1PAUrupkvYi6unZnGckNyCzciVYsKle7ln+RvvcvmQPRw+8tcZnH2M57T21R3Oxur2TjaiKy6uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C8QtIz/r; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=JUnZpbVGzg+NFw7WeEAyzeZWfzj+Uk7Wj+AimcaMNbSbbaJiGCvUr9TkuWpCzhQXxHT8hDuvAcuH0Z5SzaW98KI6rJGf3QF86UzMZSg/gFmMGy1C/cN/oq12BAmkKblvA7vYJ2/3lNPYPcTk2WR92qXevQ/wDbDJ0xTyU3obrvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ea5s+v9A; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C8QtIz/r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1318A1F000E9;
-	Fri, 14 Aug 2026 22:56:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786748197;
-	bh=LLFnFhnp99EnYI29eLdFXvcM8Xtxvy/M4cbmIx4N5lA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=C8QtIz/rZ24VbATHU7zfijy8olR+PSXnXTa++kP1UV1pV1HKuUGQkmptJZzLVMHDi
-	 FFhyAKcPPCquUZt7nMkrYPnYmk8SzXpvFOJx1jquBP3QMIkMaaXBTja+YBRlcUlEyB
-	 vEXHBRup8fnRGHfF2IqxUWoLvPJ2eLn5avEQk5iq3QI0fDTKJyHRt4DLjiwXJYGlqp
-	 BH2zNX0bhMD6/gRA/VnWCYg82ulC5NA3Pnqrtgt/3losOPJsNRaRB/QQM/93REXQxH
-	 GdCGSxxwUkm01hSB/Qjmq8HoS0RiehzqgA6iB5tp4j/SVytZGj60QtLD81+hZ3EV8G
-	 lAfwkgTqyIF9Q==
-Message-ID: <fd6e2e14-4fd2-42fb-8edf-818fe9e90a38@kernel.org>
-Date: Sat, 15 Aug 2026 00:56:33 +0200
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ea5s+v9A"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=tpV7TjA5NxUkOWKtQkMobLldwiPfnra+K0egCk9VvfU=; b=ea5s+v9AZDmZXhb1EOUiDsX/T6
+	eQsZ0xhkx5dSVXBMmprOd8nXuXYaVHPxNvGFhStGMOBYhqtK87rXMPIu7Qf5klIr7AlO0gd5jwZAL
+	LlHLgN8btradOyfnYiS6DW/kDuXtUc8drkBJ8kblOqHQYMVDf/rGP2bIMN/KAHeBQ7oTT1OX4/eC0
+	or/udf+2hZjtGSMqHd44QfAufT8ZsUGI7kgWl3zmeFPxGqbWHEwK87U1jrmXFb90MDGPLkVuwBKFe
+	GZvPIGteJqtdaqyRt+U3goubTPQfRyvq0EC5vcM5X7BNcIi8BYsF2/wHzayzfEFyEbRwqKsE4BIyj
+	cXS121Eg==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wv0pK-00000003Ha7-0K8s;
+	Fri, 14 Aug 2026 22:56:38 +0000
+Message-ID: <b428b0d8-5e5e-4e37-aef7-be0c2d0f76f0@infradead.org>
+Date: Fri, 14 Aug 2026 15:56:37 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH mptcp v2] mptcp: restore full join state in syncookie
- MP_JOIN reconstruction
-Content-Language: fr
-To: Paolo Abeni <pabeni@redhat.com>, Harshit Varu <harshitvaru666@gmail.com>,
- netdev@vger.kernel.org
-Cc: mptcp@lists.linux.dev, martineau@kernel.org, security@kernel.org,
- stable@vger.kernel.org
-References: <20260811215135.87756-1-harshitvaru666@gmail.com>
- <20260811222325.90426-1-harshitvaru666@gmail.com>
- <d98287c8-0925-4e70-8cb7-c5703d8145fa@redhat.com>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <d98287c8-0925-4e70-8cb7-c5703d8145fa@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] net_shaper: fix net_shaper_ops kernel-doc
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>
+References: <20260813192131.21254-1-kmehltretter@gmail.com>
+ <20260814101408.13bc8cc2@kernel.org>
+ <984e036c-0d90-435f-a56b-ea39a2adf923@infradead.org>
+ <an-ZnZWVWtDemvSv@gmail.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <an-ZnZWVWtDemvSv@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi Harshit, Paolo,
 
-@Paolo: thank you for the review!
 
-On 12/08/2026 11:10, Paolo Abeni wrote:
-> On 8/12/26 12:23 AM, Harshit Varu wrote:
->> mptcp_token_join_cookie_init_state() rebuilds the request socket for a
->> MP_JOIN 4th-ACK that was handled under SYN cookies, but it only restores
->> remote_nonce, local_nonce, backup, join_id, token and msk from the saved
->> cookie entry. local_id, request_bkup and thmac are never restored, even
->> though the SYN path saves local_id and computes the other two.
+On 8/14/26 3:49 PM, Karl Mehltretter wrote:
+> On Fri, Aug 14, 2026 at 12:04:05PM +0100, Randy Dunlap wrote:
+>> On 8/14/26 10:14 AM, Jakub Kicinski wrote:
+>>>
+>>> Isn't this a problem in kernel-doc extraction / how we embed it for
+>>> rendering? Heading are quite useful and IMHO far more natural to use.
+>>> My understanding was that kdoc should be able to use basic ReST
+>>> formatting.
+>>>
+>>> Ack on the list indent fix
+>>>
 >>
->> subflow_ulp_clone() then reads those three fields and copies them into the
->> joined subflow context (local_id, request_bkup, thmac). Because the
->> request-sock slab is SLAB_TYPESAFE_BY_RCU and not zeroed on allocation, the
->> values are stale bytes of previously freed request sockets, which an
->> off-path peer can influence by sending concurrent MP_JOIN SYNs. A corrupted
->> local_id breaks id-based path-manager bookkeeping, and a corrupted
->> request_bkup misclassifies the subflow in the packet scheduler's
->> backup/active selection.
+>> I don't know of another reasonable solution for this (although I'm no expert
+>> on ReST), so
 >>
->> Save and restore request_bkup and thmac as well, completing the state
->> restore.
->>
->> Fixes: 9466a1ccebbe ("mptcp: enable JOIN requests even if cookies are in use")
->> Cc: stable@vger.kernel.org
->> Assisted-by: opencode:deepseek-v4-flash
->> Signed-off-by: Harshit Varu <harshitvaru666@gmail.com>
->> ---
->>  net/mptcp/syncookies.c | 7 +++++++
->>  1 file changed, 7 insertions(+)
->>
->> diff --git a/net/mptcp/syncookies.c b/net/mptcp/syncookies.c
->> index 7f2252634..3c25ff627 100644
->> --- a/net/mptcp/syncookies.c
->> +++ b/net/mptcp/syncookies.c
->> @@ -27,7 +27,9 @@ struct join_entry {
->>  	u8 join_id;
->>  	u8 local_id;
->>  	u8 backup;
->> +	u8 request_bkup;
->>  	u8 valid;
->> +	u64 thmac;
 > 
-> Is thmac used for passive flows after
-> mptcp_token_join_cookie_init_state()? I think it's not. If so just init
-> to 0 in mptcp_token_join_cookie_init_state (with a comment) and remove
-> remove the new field from here.
+> Yes, this is a problem in how Documentation/sphinx/kerneldoc.py embeds
+> kernel-doc output. It parses generated content into a detached node while
+> retaining the surrounding title hierarchy.
 > 
-> Same for request_bkup, AFAICS both are used in syn_ack only.
+> The key kerneldoc.py change is replacing the parser call:
 > 
-> The bottom line is that we don't want to increase `struct join_entry`
-> size without good reasons.
+> -            self.state.nested_parse(result, 0, node, match_titles=1)
+> +            nested_parse_with_titles(self.state, result, node)
+> 
+> This preserves the headings.
+> 
+> I tested the networking documentation with Sphinx 9.1.0 and Docutils
+> 0.21.2 and 0.22.4, and a full htmldocs build with Docutils 0.22.4. The
+> full build produced only unrelated existing warnings.
+> 
+> I can send this as a two-patch v2, with the list correction first.
 
-@Harshit: I agree with Paolo. So at the end, the v1 was good.
+Please do so.
+Thanks.
 
-Can you please send a new version with what you had in the v1? Before
-you do so, I have a few requests:
-
-- Do not send a new version as a reply to another [1]
-
-- Use 'PATCH net' [1]
-
-- Wait 24h between submissions [1]
-
-- Remove 'security@k.o' from Cc as it is sent to public MLs [2]
-
-- Use ./scripts/get_maintainer.pl to cc the right people [3]
-
-[1] https://docs.kernel.org/process/maintainer-netdev.html
-[2] https://docs.kernel.org/process/submitting-patches.html
-[3]
-https://netdev-ctrl.bots.linux.dev/logs/build/1144354/14744385/cc_maintainers/desc
-
-Cheers,
-Matt
 -- 
-Sponsored by the NGI0 Core fund.
+~Randy
 
