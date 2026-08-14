@@ -1,94 +1,93 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EF741D630
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 07:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A127433049
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 08:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786694350; cv=none; b=UcCsV2TF06KlLzpJWQjdFV/BRorMaP7oZK6s80FspQWH6irqiwhkjscj+B+EARSQkg7gF18ZBxhkbKb+lM7QYrCph736TIeRJvaK+BmJGRqemKihkBae6huFTBte6VwreS6g4XiEWtSQnW8LF7htEOpQ3ru1ukVFG/kyzM9Zr5s=
+	t=1786694559; cv=none; b=dt4F93eHdHfJuYAwBF3vUR6e9vazBPubwWMknM4YTgleEM2Meef0Yf368404zWLUFkew3lY/8dLOxMnf+3yVYJ9/eAYGEtflH3rMz5I/V2I7Fw3xbe9L1lT+GCJ5eTkPMtefRaAnc4jywMvSNEolGDUeSiqPoeMs/w5N4NK8ckM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786694350; c=relaxed/simple;
-	bh=FC1U7Bkume/g43id9Gi5fvJ0O8FBhgcpEYLYobLKUS8=;
+	s=arc-20240116; t=1786694559; c=relaxed/simple;
+	bh=Vc1VdbJaZLwkkuXSzA3lP748RejM2wNnDWqBh3Asdxc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U04SYYr/8wAv2qAIR00IIWonWuphu8ckclF+ZSyDIc/vpCpaWc0u72fdEykQSUKeIUh0EjScsLck8hMEjZb66TupbFhcv9ch1WgvOlQFq6yHi9TCVLmYK84ERAHXygBzpGsu0W3rKsKE3GXSoKUWUaURAdo+TJbIvFDlbLlSYw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FZDZIpip; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=XyNHQ6vl; arc=none smtp.client-ip=170.10.133.124
+	 Content-Type:Content-Disposition:In-Reply-To; b=ANOz+wVQwIjrWnhKXP/Xh4VlxwFAXHGWZWmCww2bkViCcGiKqZvPv7j2XX6/2mkLoURXBF65lEe+Aqpnaph/3OoRnYj5q7Fop1zMl6nyYxw/lny0H93jSvTXHe5i+eCE1iDymiJ+BdPyWcoFymKw70dG6zOO7jNAL5rHtiLt5h8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Wnmx3PW2; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=dJ5XS4HY; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FZDZIpip";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="XyNHQ6vl"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Wnmx3PW2";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="dJ5XS4HY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786694347;
+	s=mimecast20190719; t=1786694556;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FO98RYWplbEpkXEISYhcLGNF6lZeNFPlJN8RWdcoifw=;
-	b=FZDZIpipvFTIbcROU0tsDTCeNz1E8s9vDcqJTpro+lSKsDrDAY5NUDkE83t+kM3MLS00r7
-	1C+ps18+wH1IoyqxTl1IYLUUv7+P0tiz/42JQL4zQBGTkYoJIT1KUKee+iqP8V8J3mNgtW
-	hVh5L0iaaZodUkesBtsPZLx7lb4/b0M=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=xuTGLTHVcUVUR8K491MTuND5/r0LYsPN8mtppCx6Zuw=;
+	b=Wnmx3PW2YbDJQpl7xSFVDFO0WdEFQ+ewrkfhxVj9uDmCB1M2ed6X4noenfpEhhEA+08f77
+	eMTnovVMnHjWcoH7TcwjDlSxN1+f2/FQ29QRSI3ILVzPwHTW7SbuPRKjMzWPfjHTYrzt0U
+	FJptWthJeqbnifISfweAAcUia0qO8ao=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-190-0EbuoarPOIi1w080_DrP9g-1; Fri, 14 Aug 2026 03:59:04 -0400
-X-MC-Unique: 0EbuoarPOIi1w080_DrP9g-1
-X-Mimecast-MFC-AGG-ID: 0EbuoarPOIi1w080_DrP9g_1786694343
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-4815b878101so205796f8f.1
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 00:59:04 -0700 (PDT)
+ us-mta-312-I8Pau__pNtKhvG8fkoQUmA-1; Fri, 14 Aug 2026 04:02:34 -0400
+X-MC-Unique: I8Pau__pNtKhvG8fkoQUmA-1
+X-Mimecast-MFC-AGG-ID: I8Pau__pNtKhvG8fkoQUmA_1786694553
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4954b1c6310so6958855e9.0
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 01:02:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1786694343; x=1787299143; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1786694553; x=1787299353; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=FO98RYWplbEpkXEISYhcLGNF6lZeNFPlJN8RWdcoifw=;
-        b=XyNHQ6vlc0imLuYxfdzQfnUrwkCfguoqg0x3XNKXRiXgLe3XojxKHHoSOS8c6Ez7Ft
-         ZsGdbADeFDB3kSQ04Ozj153aJdTCIrRP8LBXZeuzVJVrWdrSfF392Lpqs9uWHDIAeNEs
-         toJ7RZ7cupkfQmHBS1t7SkaBlYoGS2PowRYazPG178qiU0qBCR3aOOJARy4dH/YSwrxD
-         vOEJstep+E/8kBdowmpEfgDK/ViwWiWeNZyI1yqO9bo7LaFFjJAR6mUXQsVN9ZpK+4+i
-         E6LpBuVaAARLemDDzoXWB1Ba+L2LkdqKYZMuMVVVbv8GnAtuwVWo2xRpdCsjQImeMUuI
-         ZQ8Q==
+        bh=xuTGLTHVcUVUR8K491MTuND5/r0LYsPN8mtppCx6Zuw=;
+        b=dJ5XS4HYRcGv2kO6+u4pnL35LDewVkD4y0fH50FuSZocOQnEGBOSz0EgIuYKu1aaAU
+         yaVk6ou1kGuMD5kHT8oOSJqj1MvmIa/1ihQMUewYBbUaITMHQAmc5Smys0ggBrtzTLcB
+         Fdb566LRWIa/9qlimEF+43iMNY4xbF1x/ufMDVcHSECHdefHSc+0qrFNClAHk9g1RcNb
+         wmGW6f2yUfavOiCwOdPOn41Kq2m7knnXJ5bWIXHfYGbjCZZnyBFXAPP8OEtswOZArmYu
+         uxPh6fgltzxHF0L+95ahm8Qc/V7WfaDylT0v5e56eVKvNOu6TBIVVcAJW/WMm3EbRoXq
+         2BYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786694343; x=1787299143;
+        d=1e100.net; s=20251104; t=1786694553; x=1787299353;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=FO98RYWplbEpkXEISYhcLGNF6lZeNFPlJN8RWdcoifw=;
-        b=lbHr9yodYgZFo+f4J/O6MHGr/gL17xhm5LT/lybpK9jNn/fZneZlgNAdWb7Eel9KBj
-         Qz+N2pouyfbCo6lN/gO4bi/cTbRTwMJO19uwOiKnEkPnyB+ruSIWHxWOVvkDMiHIXhIO
-         bOzoRLnpvH+4ee1Rumt7NUR/wfJj2UtNsYssAOUyGsHzCVlEYXSV8x8IYt/YTL7Lx/nD
-         NTpn5qoe2ewsCjJzDJMnYWT76kJXNtZZziUaPhHL4+5q3QrULM7Gas8tHDw0894pUJUT
-         Ms1KdBg8Jcki5DlcH8K0JJ71Va8pyYyfN98reo73VdP69jSkJRz7qv2Fm2zPpO5Zt69w
-         3prw==
-X-Forwarded-Encrypted: i=1; AHgh+RrpeU5CYtHxR3125mBcywR1Wbwe76u93n4xb7zTyAj2SdC1A4XhbXr350qVAro1XbClM0zDzhc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFKvtLm1R9n67QTOKcmkSPaYNVP4ZEl2YKRf0DYqjKZTQco3jY
-	HYCkwVSYS2GS1V2iNlZVY0yRRpNEL5GvbTSz72uk97t+Jyoz/BA5BqI9jqU82Y6dYWSH+XYasZn
-	R3e8MdjPlKEmAgkLg0hQf7w+j11x5xP9WbjRPInLpgK9TuZDSc3WXQ07A5A==
-X-Gm-Gg: AR+sD11J2rp9/bIP2U50RHOL9nmWkfXaHspRi8K3YucXwyBvsM8FVD9Ih0LWZUS7lEI
-	nsJPbArp4bRMPhhL0vtfPU6A+uRz+ZuXErbLum1Vpfrcv06cRxzIs8qewRy2x4ZH9kl92lsdM65
-	ODGqR/KrOffHnbzSR0JuikBKAhVUjWVvcfPA9zpJXZZFfIEt17RJbzttqW36YCzf4QWkSOh+O2/
-	201vbM0dJGztz9ZkhWlzi/fGGt91Z5cwOQvU4X6ZMFjyM2ct/X2TzIpYtoJYL+hineBoyU3Z6FT
-	M3PpiEp26cco5sg8x5yv9tKmCwiSYx9NjPDTnhoRYSNMjdYV9tFpwkx0TrLmW8k1K7TotpsEMBj
-	1nkpzCm6O8ATNh+HNmYyxU6y6RKW5/17s+BXww69vzhSEWpZZJQQZ
-X-Received: by 2002:a05:6000:26c4:b0:47f:9283:1fb3 with SMTP id ffacd0b85a97d-481606d2962mr5222669f8f.0.1786694343279;
-        Fri, 14 Aug 2026 00:59:03 -0700 (PDT)
-X-Received: by 2002:a05:6000:26c4:b0:47f:9283:1fb3 with SMTP id ffacd0b85a97d-481606d2962mr5222619f8f.0.1786694342786;
-        Fri, 14 Aug 2026 00:59:02 -0700 (PDT)
+        bh=xuTGLTHVcUVUR8K491MTuND5/r0LYsPN8mtppCx6Zuw=;
+        b=pwJ1MfOYnSxEfko2AzZJAHPeBDx4jJS89EskrROsMaWOp0vYZjOGBGJ66+3NDmJ2V0
+         SDsqnn1UGuMtK/hDX/oaK4YMsLEur5nQkHrCu/T837DB4bm6oN9lsRlV5h6xbhnD2pRR
+         N6EQ1sSlpgcNsq9BTPZ1tgZUu6WTbmdO9ROheAS07hj4N/CoUN6KUgoEje0L/05MP9pc
+         U3jyBTfxVaQQ/mjgQaTBZUZg4lFov3gswpI8RXCMNmCf1M1+HvfI3zTMI3Sk1v41CYfb
+         u6tTwW0qIckljwu/++fof5MayN0aNfVvXQbjJTI3ICUihMFJoWz5aW+tg4raguB8K1DM
+         +53g==
+X-Forwarded-Encrypted: i=1; AHgh+Rp/MehskKLJibmQD08rVNrX/PTFwumMvT/ocify9KrynvV8Ek73Qh4qAJhyNHEM6XAEsT+4buw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YysXMru93QK+SUCM1QKneLURIThYSvYKedNYXbAherKOQScs4cU
+	wnT9mKuDa0a8r4MhQU6IgoRZBlIJBqRGyIzCpSVo38dlTlx8co32r80p1bXGLIs2uaUmiKnAgRH
+	DCwHLDihjpNsrMN8Sn0JDU+DYCWXyBvCI7rW8MoQSx8cFD6Zl7auE8pg9MQ==
+X-Gm-Gg: AR+sD10zdPwcOnz2lfQACJfJeUa3Xe1FR0mhO1XRwG6mm2ujnxua2Qbl1KQC6KWay5l
+	6er5yzh/uR4xxmBnu7ei+EgiPX55uIBywfXNRr6xX32oCRhOofvbur7Ah+OTCfyhKAPYx9E5Hy8
+	w20t45L5tONS564ZzEIaDGZlgRrfeUbs85K88BLtn4xKRaBvYYi0ncl/eOIDvKcYe5jfz01hNX2
+	cjsrv+0bCpwfVhf2DRjg0wKimX2O2wPLL0Jy4ADfHzi6fcOytrwKgr1FCS/sCzR2T8i242DhhKv
+	psmeyV8QieQNxwPZWreGNaP9RkIOFH3cooc3cg6NoZEUR3xONPJpA1DZgayC5K2YdkDqpojYuqK
+	71XyrISe15D7oay9mKEMv6kpzpdsPy+iOPMGIgPnn1VcTBJgZxN41
+X-Received: by 2002:a05:600c:3e15:b0:498:ee7:e407 with SMTP id 5b1f17b1804b1-49987999622mr51703105e9.17.1786694553398;
+        Fri, 14 Aug 2026 01:02:33 -0700 (PDT)
+X-Received: by 2002:a05:600c:3e15:b0:498:ee7:e407 with SMTP id 5b1f17b1804b1-49987999622mr51702145e9.17.1786694552788;
+        Fri, 14 Aug 2026 01:02:32 -0700 (PDT)
 Received: from sgarzare-redhat (host-82-53-135-154.retail.telecomitalia.it. [82.53.135.154])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f15b946sm6204391f8f.0.2026.08.14.00.59.01
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49988adfbd5sm33234215e9.1.2026.08.14.01.02.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 00:59:02 -0700 (PDT)
-Date: Fri, 14 Aug 2026 09:58:58 +0200
+        Fri, 14 Aug 2026 01:02:32 -0700 (PDT)
+Date: Fri, 14 Aug 2026 10:02:24 +0200
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: Jia Jia <physicalmtea@gmail.com>
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
 	"Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
 	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
 	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/3] vhost/vsock: discard IOTLB when ACCESS_PLATFORM
- is cleared
-Message-ID: <an7HhRxxjv09faBX@sgarzare-redhat>
+Subject: Re: [PATCH v4 3/3] vhost/vsock: keep IOTLB across feature updates
+Message-ID: <an7KyotZ5vZOURu2@sgarzare-redhat>
 References: <20260814072903.124991-1-physicalmtea@gmail.com>
- <20260814072903.124991-3-physicalmtea@gmail.com>
+ <20260814072903.124991-4-physicalmtea@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -97,53 +96,55 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20260814072903.124991-3-physicalmtea@gmail.com>
+In-Reply-To: <20260814072903.124991-4-physicalmtea@gmail.com>
 
-On Fri, Aug 14, 2026 at 03:29:02PM +0800, Jia Jia wrote:
->vhost_vsock_set_features() leaves the device IOTLB attached when
->userspace clears VIRTIO_F_ACCESS_PLATFORM. Descriptors can therefore
->continue to use translations installed before the feature change,
->including HVAs made stale by a later memory table update.
+On Fri, Aug 14, 2026 at 03:29:03PM +0800, Jia Jia wrote:
+>VHOST_SET_FEATURES is also used to update logging while a device is
+>running. When ACCESS_PLATFORM stays enabled, allocating a new empty
+>IOTLB on every call drops valid translations and forces avoidable
+>misses.
 >
->Use the common vhost helper to detach the device IOTLB before
->acknowledging a feature mask without ACCESS_PLATFORM. The helper clears
->each virtqueue's IOTLB pointer and metadata cache under its mutex, then
->frees the old IOTLB after all virtqueues have dropped their references.
+>Initialize the device IOTLB only when one does not already exist.
 >
 >Fixes: e13a6915a03f ("vhost/vsock: add IOTLB API support")
->Suggested-by: Michael S. Tsirkin <mst@redhat.com>
 >Signed-off-by: Jia Jia <physicalmtea@gmail.com>
 >---
-> drivers/vhost/vsock.c | 4 ++++
-> 1 file changed, 4 insertions(+)
+> drivers/vhost/vsock.c | 3 ++-
+> 1 file changed, 2 insertions(+), 1 deletion(-)
 >
 >diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
->index 9aaab6bb8061..b69c260eaeff 100644
+>index b69c260eaeff..9142fa1143b2 100644
 >--- a/drivers/vhost/vsock.c
 >+++ b/drivers/vhost/vsock.c
->@@ -863,7 +863,11 @@ static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)
-> 	if ((features & (1 << VHOST_F_LOG_ALL)) &&
-> 	    !vhost_log_access_ok(&vsock->dev)) {
-> 		goto err;
-> 	}
+>@@ -869,6 +869,7 @@ static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)
+> 	    vsock->dev.iotlb)
+> 		vhost_clear_device_iotlb(&vsock->dev);
 >
->+	if (!(features & (1ULL << VIRTIO_F_ACCESS_PLATFORM)) &&
->+	    vsock->dev.iotlb)
->+		vhost_clear_device_iotlb(&vsock->dev);
->+
 
-Why checking the feature again instead of adding an `else if` in the 
-already existing check?
+Ah, okay, now I see why you did it in the other patch, but if we move 
+dev.iotlb checks in the functions we can still do that.
 
-I mean this...
-
-> 	if ((features & (1ULL << VIRTIO_F_ACCESS_PLATFORM))) {
+>-	if ((features & (1ULL << VIRTIO_F_ACCESS_PLATFORM))) {
+>+	if ((features & (1ULL << VIRTIO_F_ACCESS_PLATFORM)) &&
+>+	    !vsock->dev.iotlb) {
 > 		if (vhost_init_device_iotlb(&vsock->dev))
-> 			goto err;
-	} else if (vsock->dev.iotlb) {
-		vhost_clear_device_iotlb(&vsock->dev);
-	}
 
->-- 2.34.1
+IIUC vhost_init_device_iotlb() handles the case where dev.iotlb is 
+already initialized and override it. Here we are preventing that.
+
+Will we do the same in vhost-net? If yes, all the callers will call 
+vhost_init_device_iotlb() with `dev.iotlb` NULL, so should we remove 
+that behaviour and add the check we are adding here inside the 
+vhost_init_device_iotlb()?
+
+Or there is an use case where vhost_init_device_iotlb() is called with 
+an already initialized dev.iotlb ?
+
+Thanks,
+Stefano
+
+> 			goto err;
+>-- 
+>2.34.1
 >
 
