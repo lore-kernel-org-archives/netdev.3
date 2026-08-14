@@ -1,148 +1,115 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E023F3D1AA4
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 01:45:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BE42F7F00;
+	Fri, 14 Aug 2026 01:48:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786671920; cv=none; b=kRxSQX6y5H7tVrMtw27oiUlPwOfPO9WPgHIfLhPfeIU8WmtqHLIGFFGZdfA03kJeTeqQ4DKE85Wv6dArDCPf8zJ5YmbG39+Dj1ORmNpeQMDEPw2iCLdgsBLGh1UluCydFhHlNo/V85gT38ETSwt0nS2PAaRdCjc9XpUqyw3rKtI=
+	t=1786672089; cv=none; b=MMWkn2970QBG5woTjW7q1mCgowftIENVyTRofYTzBn56uMRSwu7Tf4jql0o7wbnESMcG1jUCOPQ7OsMQSq/RuSIl2zSvz4eHparuriIT7sYWq7cFTbYk9IN7reLsuHbLFyfZJ/eUnSvYLIYPr46uNzWBZemZhwvuiYa2Ej+/gk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786671920; c=relaxed/simple;
-	bh=heykRPKxHEV0qeGdFAlsBWMKyo8f6xdx4ceOTJOlyac=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kbS7UKt8HNFr1ajKQpYHALzEG+NkijTWwqHQV3oC2riVHtvwxqfvK/Y9fX3tauAub+dE+3EeJqaphPBpVrQidMnFOdsME0/Zz8lYCs+ZCTElUerP7E1wxaO7xQmlPcCMEoCcNIlOcwxnvX5akEWMIbt5D9MVYQMKl+L+/JpIpIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RwrDRU1y; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RwrDRU1y"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-84e0688b7e8so355135b3a.1
-        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 18:45:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786671918; x=1787276718; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mi5MeuhJzZM9OklNSe8gi6ctTiynO5KFec8hcGTI+Lc=;
-        b=RwrDRU1y20OHPd0MAgJOgHx4jXC+LeBhkmidspCBGOviTsJLTxxH33AO0A07Xtt7Qv
-         joUJIKsBXg4IE91YVL5WKkz83MA82DZ4g9keiqdC8IOqrEqd8zprbSl7zvX46LXK8tsA
-         kMwDIbyFl/Ytv/kxa+eyG4rnAydww/vxF1ISTtVgaM1DQWsXv+5DZyjZMHa/ybOzFUoK
-         0l1c1awCc0tFI4Ep5on5hIBz10luqoTTbR9wXZHapNi8EPygyWYyGfXl3JEfltuxwA8H
-         0Wvu45DDr9eqJKbXKKw6scgnnc/mteGoNy6/cE5APn/OOrNQCeq1pBJFqEH8RaNecQKK
-         d7Wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786671918; x=1787276718;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mi5MeuhJzZM9OklNSe8gi6ctTiynO5KFec8hcGTI+Lc=;
-        b=DECnPs8GxADeZpzvJnzYgkERtn5m4Y2qa1l6iXCreHt/5tnMO4D0ReeeE2gGnECZEP
-         Bx/oLWqAhvOUze4Xeu6zZjB2p33bkl8Tjl4S8yq/amEqFUReEM6+F9vGRSaTdBEGkYXk
-         +AHEGClpbfncCYaX361XsEon/lDImgIfv2X4nUEhAK7IMaZOKmzWByJGH2m5unungsM+
-         oewLelmb/cc5Rbsexl7IdvdI56bEhV/Gf4Y1QchUkFHQ2PP6X0athCCrIrkTpeWalmWt
-         44qsOVFDQQZ6k4LUfpZHry4TqAJMvtH+9+z6Iog5lndlH2ht/hNwFUb1gQwlZAmEU5Qh
-         T9lw==
-X-Forwarded-Encrypted: i=1; AHgh+RreaNJZxneyiH99dXr/vCUCTt7NZiH+E7aCmfs0qBpyt57kqgB+X9krbepkGYtxT0TVh9RR+RY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZ0NbunwNYLfe1xzLQ517BgRm1Q4u2ajmQAwbfresj8TZw/3Q7
-	HtTbtkxhPw0CWlcGnMyDoaZDCSc0kBV1evXFtkjTEqJZXDxdQhTApNkl
-X-Gm-Gg: AR+sD10RmewnWtvBJusQexpqOGIEndiAZMLr5C2HcCxx+1wcU5BcXlfgOTVFwxdR2kz
-	gWoUBTyEuO0kGuRLiLn6Xj0U+3F54AqwNKGhX9WgPEp0/AJF9ITIazruNzLyENA43sCdksdPpAR
-	elEcCG+c6Sb4/2FBKI1Zw91LOw7O42e3ATK4Tw7RtXLUssBcxIf9q+Bnhi+B3mij9kD3vXmippB
-	cNvrH70pYRnHW1zOuM4VvJ7wE3pCUDGlzxLCEvl32Tsa1ZVB6VKCr27fB5YAMb6WeDhiyB3iFFV
-	IiUe1unBysTaq0WsFvXH0GnuB84aV/v4HEuhjXJv1z2e3UQCE2rMjFHV7mFiXR56w0jAheglfCB
-	BX05cJ62AkonXF9sk/BQ9Q1yfQrlPHXvqiOr9/CiVY+mCHGZXPSMw7UvdAMwQOhEePAvCKwyD5Y
-	myiPXyb8DJYN1omFvCb3bShJYznV7R5aSoek3dYi535V1fQM+/fiwOy2JR8es4ArNhWPOC9QCQw
-	J1TcQoY
-X-Received: by 2002:a05:6a00:8d5:b0:847:926c:582c with SMTP id d2e1a72fcca58-84fde266faamr2008039b3a.29.1786671918198;
-        Thu, 13 Aug 2026 18:45:18 -0700 (PDT)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84fc4563649sm1508027b3a.7.2026.08.13.18.45.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Aug 2026 18:45:16 -0700 (PDT)
-Date: Fri, 14 Aug 2026 10:45:11 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: sgarzare@redhat.com, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	leonardi@redhat.com, bobbyeshleman@meta.com, stefanha@redhat.com,
-	mst@redhat.com, virtualization@lists.linux.dev,
-	netdev@vger.kernel.org, imv4bel@gmail.com
-Subject: Re: [PATCH net] vsock: do not reset a socket in connect() once it
- has connected
-Message-ID: <an5zJ9Uf94_L9TyB@v4bel>
-References: <anzT1fREOSyHT99k@v4bel>
- <218226a4-38e6-4a16-a660-6c1bb92f9f96@rbox.co>
+	s=arc-20240116; t=1786672089; c=relaxed/simple;
+	bh=Npm1VJwOUjR3nAJW9jyBhnhhNvzReghvRrGLQNnz6us=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=c/2NRBkFMDVGP43CDeMQdhvzrwi+gFdtF66m/WAfXfaLH66g7N87kb0tycWJWc88uCyeDzRmrPC7wVJiuJDS+8vouvub0ZmrpPpl1DXMPVZDpPEqssZ3W4QPmiJ0rXTxcNHdS70887uIyzXBSMdVXGM8JEcvYI2ZviL5oNL9mFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.204.34.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid:tivesync9t1786672069t3e22f4ae
+Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [36.24.185.99])
+X-QQ-SSF:0000000000000000000000000000000
+From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
+X-BIZMAIL-ID: 6294584403336118590
+To: <diegomancera.dev@gmail.com>,
+	<mengyuanlou@net-swift.com>
+Cc: <netdev@vger.kernel.org>,
+	<stable@vger.kernel.org>
+References: <CALruWrXs490+d7tx82mLG3rmH_H-svkwA=zXggr0qOeEhG3GmA@mail.gmail.com>
+In-Reply-To: <CALruWrXs490+d7tx82mLG3rmH_H-svkwA=zXggr0qOeEhG3GmA@mail.gmail.com>
+Subject: RE: [PATCH] net: txgbe: use vector 0 for misc interrupts without MSI-X
+Date: Fri, 14 Aug 2026 09:47:49 +0800
+Message-ID: <000a01dd2b8e$e95b5450$bc11fcf0$@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <218226a4-38e6-4a16-a660-6c1bb92f9f96@rbox.co>
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQC5ugZ0JSr9nHsiDy822BEagLVNa7jjqH9A
+Content-Language: zh-cn
+X-QQ-SENDSIZE: 520
+Feedback-ID: tivesync:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: MJoD6689lyY1jXJuXQzHKyHhZcnRErh+CJSHDIulcew3zHGo/d6nYWjE
+	uNP7xaLvsApekYDM6S8GPTfVyf0+9IC48/hIf+iPj4sLaO7+tcNV/f+dAzJhSKZQlUk1MDf
+	zIP8bvNJMkIyUyeZBZOgW2SPTOSu0RdlFoA1CureQCeK8Jc4qIg+Z+Fm0fARf8EHCQFjyjP
+	sMSGhheeKA2FUMippjnXvWRc1iFdW5/keRW4CBURNnokUGZRAamkeAbwL7Lv1Gzr+CGFMvZ
+	4bnJ7F3OkBNbIkLGWonRBWLuIYb/+qQvy43c1jy1YYfEInwIITcb/pdj1Yqeoa9jYv2GLkt
+	n1ieI/vTK6OS22ZBqbGHWMYv3WZ6qHtoce8SfX/6EQ9gjeakPfUBneCC2qCTHUmzIBoGig6
+	NUdCMLOmqISPQwWvjXrasa7c8+hD4yuEYVV+mOdO3FSEsZKkEPI6iO+CBl3JbN13vinY5qd
+	tFtnoWj8EIMQGH+1UHrj+jootpfeu5+yx9LdhAZwKk0NFgFO1aBHFrNAPY2IgDP/IWhE/CA
+	8KvIO+p06Vy4v+crfFItn9CVxtL2swnfteD0zGN3dK/BZq993CcO2+bbG/J9AIozwoLd+4m
+	B/6i1RLgls2eAh8uCU/jfWW8gPDzzXTzKhRtylzISkwvrGeB4MAWN/38NUobUzXCWOcg6fd
+	zh/Ic7aqfzxH3p/OdRUc2DmSGOUOqrz2tIpPZv0nRafVWwEYWzCDS/3w/Efd90vrzcL6w32
+	JyrfyGeB/SLDPsWgQSBlQuMFIjJbRUUbSRq0I9UCMpM42Y/giYLYqQWua2m7EQ7pPbd5zcd
+	8nmFBj+hwVCzH1/8FY5XGh4hn03trycIJZKNp3qLM7YUBTHAZ0L4X1B9cDT+TL9JsO+cZJ5
+	Sj52lN3BqtqF5oaZo1il4Gh/ivSW/awRDAnnPEJFzFRJSx4Gxrnm3dW4chsDgcxGYRjV41X
+	EgyPvRdKgHdcc3o4HLy9LN2jiD3LIp5hVHpfdqepgaAFVFz/feFR71E/gO07qZ1f9ABeXKM
+	My9vmUVfdwIv6E9NfF4dfffcR0EKaUN5KHpzq8dt8YS9+upEscxpgSAbmpj9hf4psCFJ69x
+	+k/aSTysrU2J0q3sD3wS4OVPgtmVnqTdP/qguQWTSd3JerAdGsDSTM=
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+X-QQ-RECHKSPAM: 0
 
-On Thu, Aug 13, 2026 at 11:42:17AM +0200, Michal Luczaj wrote:
-> On 8/12/26 22:13, Hyunwoo Kim wrote:
-> > commit 002541ef650b ("vsock: Ignore signal/timeout on connect() if
-> > already established") stopped connect() from resetting an established
-> > socket. The check only looks at whether sk_state is TCP_ESTABLISHED at
-> > that moment, and the state can change while connect() sleeps.
+On Fri, Aug 14, 2026 8:13 AM, diegomancera.dev@gmail.com wrote:
+> In non-MSI-X mode, queue and miscellaneous interrupts share vector 0.
+> TXGBE_INTR_MISC(wx) instead selects the MSI-X-only miscellaneous vector,
+> leaving vector 0 masked after it is serviced. Use BIT(0) for the
+> non-MSI-X fallback at each miscellaneous interrupt unmask site.
+
+Hi,
+
+Thanks for the fix. I've already submitted the relevant patch[1].
+
+[1] https://lore.kernel.org/all/59215DA27859BC49+20260813073305.360251-1-jiawenwu@trustnetic.com
+
+> Fixes: e37546ad1f9b ("net: wangxun: revert the adjustment of the IRQ
+> vector sequence")
+> Signed-off-by: Diego Fernando Mancera Gomez <diegomancera.dev@gmail.com>
+> ---
+>  drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
 > 
-> I guess this makes my fix incomplete. "Fixes: 002541ef650b"?
-
-It is incomplete, yes. But this has been triggerable since d021c344051a, so
-I'd keep Fixes: d021c344051a.
-
+> diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
+> b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
+> index 8746318ad3bc..6b5542cb2161 100644
+> --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
+> +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
+> @@ -31,7 +31,10 @@ void txgbe_irq_enable(struct wx *wx, bool queues)
+>  	wr32(wx, WX_PX_MISC_IEN, misc_ien);
 > 
-> > A peer RST moves the socket to TCP_CLOSING, and it is not removed from
-> > vsock_connected_table on that path. connect() then wakes up, fails the
-> > check, and resets a socket that had actually connected to TCP_CLOSE and
-> > SS_UNCONNECTED.
+>  	/* unmask interrupt */
+> -	wx_intr_enable(wx, TXGBE_INTR_MISC(wx));
+> +	if (wx->pdev->msix_enabled)
+> +		wx_intr_enable(wx, TXGBE_INTR_MISC(wx));
+> +	else
+> +		wx_intr_enable(wx, BIT(0));
+>  	if (queues)
+>  		wx_intr_enable(wx, TXGBE_INTR_QALL(wx));
+>  }
+> @@ -183,7 +186,10 @@ static irqreturn_t txgbe_misc_irq_thread_fn(int
+> irq, void *data)
+>  		nhandled++;
+>  	}
 > 
-> Thanks for the details. Do I get it right: connect() misses the fact that
-> socket might have already transitioned TCP_ESTABLISHED -> TCP_CLOSING
-> during schedule_timeout()?
+> -	wx_intr_enable(wx, TXGBE_INTR_MISC(wx));
+> +	if (wx->pdev->msix_enabled)
+> +		wx_intr_enable(wx, TXGBE_INTR_MISC(wx));
+> +	else
+> +		wx_intr_enable(wx, BIT(0));
+>  	return (nhandled > 0 ? IRQ_HANDLED : IRQ_NONE);
+>  }
+> --
+> 2.54.0.windows.1
 
-Yes, that's it.
-
-> 
-> How about:
-> 
-> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-> index 622dbd046799..39c42ef016c3 100644
-> --- a/net/vmw_vsock/af_vsock.c
-> +++ b/net/vmw_vsock/af_vsock.c
-> @@ -1807,15 +1807,18 @@ static int vsock_connect(struct socket *sock, struct sockaddr_unsized *addr,
->  		timeout = schedule_timeout(timeout);
->  		lock_sock(sk);
->  
-> -		/* Connection established. Whatever happens to socket once we
-> +		/* Connection (has been) established. Whatever happens to socket once we
->  		 * release it, that's not connect()'s concern. No need to go
->  		 * into signal and timeout handling. Call it a day.
->  		 *
->  		 * Note that allowing to "reset" an already established socket
->  		 * here is racy and insecure.
->  		 */
-> -		if (sk->sk_state == TCP_ESTABLISHED)
-> -			break;
-> +		if (sk->sk_state == TCP_ESTABLISHED ||
-> +		    sk->sk_state == TCP_CLOSING) {
-> +			err = -sk->sk_err;
-> +			goto out_wait;
-> +		}
->  
->  		/* If connection was _not_ established and a signal/timeout came
->  		 * to be, we want the socket's state reset. User space may want
-> 
-> ?
-
-Yes, I like it better than mine. I confirmed it fixes the issue.
-
-If you don't mind, would you take the patch from here?
-
-
-Best regards,
-Hyunwoo Kim
