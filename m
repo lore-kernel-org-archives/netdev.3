@@ -1,161 +1,202 @@
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DD0489894
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 17:54:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E07C31813A;
+	Fri, 14 Aug 2026 18:04:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786730088; cv=none; b=iuM8bMhlIfMrdWNsEw6rL2lI8DtYKiHtj4Tz0ICgTnFxaCK6/VvzHzkp4T5rGEWBzLTdLV5UTZOXHXCKIXKaT5rndVHrK8L6ATlyuQuzUExFndkzp2MfS9E6tgcKlPfKbWnC1EPC1yGKExfRLCyjvnGQyV/v9iGupegJsSGb+g0=
+	t=1786730656; cv=none; b=pvd7TfFoxpw3X5vinuAfjQiJvxXU3azgU3VVb/VD8zDxpZISSjpLOF6gzSukk7gosfjTAturSwMozyscznkrK+Jx6p384VhkK0kJ8AXBWLBBKdnUvJQ0WgCwldF/lWEFIPHqvgNRpKDXBINEM7m4KwJS5aq+mD4RRvsHQQrR+U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786730088; c=relaxed/simple;
-	bh=tctOPcRlvU9BNw3/GcokUhL0uuzIoz6qCeUXB4fX8qQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gpHUX0OYjOsQacONJlQIEYRFTW3cyNOZWh9T9Gt/miAHo30pLakTKEJtbuWfEuVKegdnTmHmnholOm4RDVUe8LJ41VqapIlH2Xvy/kc2XD0cuXPU84zN7G/GDnsy6RdarbRBRm2N4FccUb3cgchxYo6Q7Ddc+BOM9AgLo7juVH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LE7ExIDZ; arc=none smtp.client-ip=209.85.161.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786730656; c=relaxed/simple;
+	bh=0ZKZ5jySEEJEV5qsbPIioMhFsdBHIiJ9xZchvIeeUpk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gqex3Weway8s/K/FK+XInwkZT701ZKYyi3GpKQt3pjPU1rB4H4zzdgGRKcxVzTI/f3wSCY5Ii+gDfcac54aZnTEoFr5pzfur/1JMpWxvbHU4fBOWqRbKA1Wy0Mjhtt8m/lMSITxp4tEUK92Q6JkOWK7POuh84ktoH5TkpzB2ARI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jubd+W1N; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LE7ExIDZ"
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-6b026020b92so726725eaf.1
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 10:54:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786730085; x=1787334885; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tnUiJhTni7wF1/vS/NeDygrn2VesXGugWJxtxx6vI6A=;
-        b=LE7ExIDZAatd+F91zNvPPEgPgwKtsJ9ijqg7wnWT+ciyMd2i8yMSj0sO8RV8Y9Ncod
-         xlCpZ5gIQYJG7Ykx3xYu/yjVKHdV/PA5B/W8zmSt7B6kte/I4pJOeTAAUtUKgoJobxHI
-         eSQPivpMiePoWvYdNaaCtqp4DBxH6rcQiCvnNvT5b8usc/k+mSDowyPrEhyb/pm+uHqj
-         Rh9YcF27U9O44kyWOqbSumIYiRPJVLRTpeJ/I38c6cMbvLpHQu/pMY549zpLgjiYAeKM
-         u/3/5e28MBU36QWraZjfFpb76pBT0gx74bRUjZBoLNOm8FMBLJIC8FI+VWGoJCOICwg/
-         IhIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786730085; x=1787334885;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tnUiJhTni7wF1/vS/NeDygrn2VesXGugWJxtxx6vI6A=;
-        b=ePocspnZUMEckVSQGhJEhSJPUzqAw7IbEUjv+qoCuTgVEbjdy6ir9UCRUBHYx4IAGs
-         0wyLYaReGCp6ytJrPkBi5s98/PFJg4aCziqrfSsEdhWAa5PHsxAU49DVyVu21O4cAH2x
-         uqOQMCjDJgUpShVBCbescc+hZli2ay0vifWwNCU2oR1lhbt0z0SPeJ1q47FO92ljGdaW
-         Gfz+b354fa+EfXG0YvGVFoFWN0cnGIy8SXtPo3w9YGXYmssQZhyJGfbH6r8GJSvCLG2n
-         O52ef4c3JZxjOZDu7q5voF4BQRWmcGOCBJz4NaD90XRW/jDBpv/IQ5jCC2dLoMShartQ
-         mLvA==
-X-Gm-Message-State: AOJu0YwPsN1upe4PWsr5vTcx/8N3dtwjBHnvFGpzqn/247/F3DhBQruu
-	9itTsKfy+Q2uiC4iaeK/ptJE17jxEdDiyd27QVjza1OS0YXYSP7kEqM+HweVxw==
-X-Gm-Gg: AR+sD13OrF7imF3kcHoFuY1GjKon/vIoBVJkC5tNpinsVT1MKidf05ARq2t2m9r9qJo
-	1au9KNJqR2bwcSWIBiYOjPdYgbgdyPPY88C6S+GUr+4jP77UZB2Ug/bCfMQ1oV3qe4BXAWX1A25
-	fpZbfhxw9oEzuP0i1cujFB9ZudYjb71dMS+QHnr3pLR3Ii9pp+SRDungvTivx1ZR0y5b4eGR38O
-	POcFatyHz+WDgCeALG+TzRcmBPM/QW/So1wKEKYxiFVzNRcbcOEHh2AyPBFG6/o09ROfH0MYXBh
-	O6T/IL+X3+NPc1HAKmqurodmKHx1Fg9/FQXRA8S/Exy/tSApBJRZ4U1XMmvHfp0YSIWKJMi0jdN
-	eGo7xKDT9Z/gUfyLO1Yh4fNUZ9kYeohyWBqZGnQaPraRcjBYCnuIXRpbpTo62BlG/IJJXmiEEr6
-	K4pw9j/lig8f6ZdEw3z7vB1pBbnRHmm4vgLtQ3JHCCKIlDsqITJwWekwyY3PLMy0GCf7AI9D4=
-X-Received: by 2002:a05:6820:f02f:b0:6ac:c531:2ef4 with SMTP id 006d021491bc7-6b0d68c0240mr5561219eaf.26.1786730085367;
-        Fri, 14 Aug 2026 10:54:45 -0700 (PDT)
-Received: from capidev ([2806:264:548c:900d:c985:8bca:7059:269a])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6b0d963f345sm2423729eaf.7.2026.08.14.10.54.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 10:54:44 -0700 (PDT)
-From: Diego Fernando Mancera Gomez <diegomancera.dev@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	jonas.jensen@gmail.com
-Subject: [PATCH] net: moxa: dispose IRQ mappings on probe failure and device removal
-Date: Fri, 14 Aug 2026 11:54:03 -0600
-Message-ID: <20260814175404.1616-1-diegomancera.dev@gmail.com>
-X-Mailer: git-send-email 2.54.0.windows.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jubd+W1N"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A4081F000E9;
+	Fri, 14 Aug 2026 18:04:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786730654;
+	bh=lJGYR95OzBj8QQrlKrddVqSXRN2vXQMzoaoigQ4hsXo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Jubd+W1NfLbtm6lAdMzClqirXNT6srtJHwF3bT3W3ckPhpJ9UESTWVxCB29x4ZPL6
+	 uILMjE3VnYiLS0JnIvquRq/8A96z4UAS33vieWjkGE3tRzSZqCqQV2qPKmlBri0kOQ
+	 ZKkrI6zT5HtNmJMnbdQSV9GGc81InAaSpdqwD8FB0xWMV6CLoaxhydpnP07yd1DAuD
+	 bKGKc3Ws9DgmTQ+yrZfV0jkOKTNr7R/Ux1aciFjPxUAUSQBUy6fZ6XZ2OX40zocjFE
+	 qZcHdlAiP+bVfGMfISAddMV6i6GbhvOqprelXrjq486McTmoeANEiMssh6dXm0Akwo
+	 rEPqjJEuGZCMg==
+Date: Fri, 14 Aug 2026 13:04:13 -0500
+From: Rob Herring <robh@kernel.org>
+To: "Neeli, Srinivas" <srneeli@amd.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, nagadheeraj.rottela@amd.com,
+	srinivas.neeli@amd.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, pabeni@redhat.com, krzk+dt@kernel.org,
+	conor+dt@kernel.org, richardcochran@gmail.com, michal.simek@amd.com,
+	andrew@lunn.ch, olteanv@gmail.com, horms@kernel.org,
+	linux@armlinux.org.uk, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, git-dev@amd.com
+Subject: Re: [PATCH 01/20] dt-bindings: net: add Xilinx TSN Endpoint Ethernet
+ MAC
+Message-ID: <20260814180413.GF1981719-robh@kernel.org>
+References: <20260807104431.157230-2-nagadheeraj.rottela@amd.com>
+ <20260808194815.132344-1-kuba@kernel.org>
+ <ba624013-e8e2-4262-a451-650c29dc6b8f@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Antivirus: Norton (VPS 260814-6, 14/8/2026), Outbound message
-X-Antivirus-Status: Clean
+In-Reply-To: <ba624013-e8e2-4262-a451-650c29dc6b8f@amd.com>
 
-moxart_mac_probe() maps the interrupt with irq_of_parse_and_map() but
-never disposes of the mapping on the error paths that follow a
-successful mapping, and neither does moxart_remove().  Every failed
-probe (for example EPROBE_DEFER from platform_get_ethdev_address(),
-DMA allocation failures or register_netdev() failure) and every device
-removal therefore leaks the interrupt mapping.
+On Fri, Aug 14, 2026 at 03:59:27PM +0530, Neeli, Srinivas wrote:
+> Hi Jakub,
+> 
+> On 8/9/2026 1:18 AM, Jakub Kicinski wrote:
+> > This is an AI-generated review of your patch. The human sending this
+> > email has considered the AI review valid, or at least plausible.
+> > ---
+> > dt-bindings: net: add Xilinx TSN Endpoint Ethernet MAC
+> > 
+> > This adds a new binding for the Xilinx TSN Endpoint Ethernet MAC IP,
+> > describing a wrapper node that owns the six IP clocks and
+> > xlnx,num-priorities, plus an endpoint MAC child and a three-port switch
+> > child.  A MAINTAINERS entry is added for the new file.
+> > 
+> > A few questions about the schema below.
+> > 
+> > > diff --git a/Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml b/Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml
+> > > new file mode 100644
+> > > index 000000000000..00f52b7b623c
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml
+> > > @@ -0,0 +1,343 @@
+> > [ ... ]
+> > 
+> > > +properties:
+> > > +  compatible:
+> > > +    const: xlnx,tsn-endpoint-ethernet-mac-3.0
+> > > +
+> > > +  reg:
+> > > +    maxItems: 1
+> > [Severity: Low]
+> > Should the wrapper node have a reg at all?  It is listed in the top-level
+> > required list alongside ranges, and in the example the two describe the
+> > same window:
+> > 
+> >      reg = <0x80040000 0x40000>;
+> >      ranges = <0x0 0x80040000 0x40000>;
+> > 
+> > Every child window (mac1 0x0+0x14000, ep-mac 0x16000+0xa000, mac2
+> > 0x20000+0x14000, switch 0x38000+0x8000) falls inside the parent's own
+> > reg.
+> > 
+> > The commit message says the wrapper only owns the six shared clocks and
+> > xlnx,num-priorities, and the wrapper driver in this series never maps
+> > that region:
+> > 
+> > drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c:tsn_ip_probe() {
+> >      ...
+> >      ret = devm_clk_bulk_get(dev, TSN_NUM_CLOCKS, w->clks);
+> >      ...
+> >      return devm_of_platform_populate(dev);
+> > }
+> > 
+> > Would it be cleaner for a bus node that translates its children through
+> > ranges to either drop reg or describe only a wrapper-private register
+> > block that no child window overlaps?
+> Thanks. We would prefer to keep reg as a required property of the wrapper,
+> for two reasons.
+> 
+> First, reg describes the whole TSN IP register window, which is a hardware
+> property of the IP, and ranges translates the child offsets within it. The
+> child windows do not fully cover the IP window, mac1, ep-mac, mac2 and the
+> switch fabric account for 232 KB of the 256 KB window, leaving 24 KB
+> unmapped by any child (0x14000..0x16000 and 0x34000..0x38000). That reserved
+> space is where the IP places top-level registers that are not owned by any
+> child node.
 
-Register the disposal as a devres action with devm_add_action_or_reset()
-immediately after irq_of_parse_and_map() and before devm_request_irq(),
-so on unwind devres disposes of the mapping only after the handler has
-been released, and devm_add_action_or_reset() disposes of the mapping
-itself if the action cannot be registered.  Since devres_release_all()
-runs only after the probe error path frees the netdev, release the
-handler with devm_free_irq() before free_netdev() on the error paths
-that follow a successful devm_request_irq(), and likewise in
-moxart_remove().
+Why not describe those 2 ranges in reg? Otherwise, you are mapping the 
+child addresses twice potentially.
 
-Fixes: 6c821bd9edc9 ("net: Add MOXA ART SoCs ethernet driver")
-Signed-off-by: Diego Fernando Mancera Gomez <diegomancera.dev@gmail.com>
----
- drivers/net/ethernet/moxa/moxart_ether.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+> Second, we intend to use that space. A planned use is a wrapper-level
+> build/configuration register that tells software which sub-blocks the IP
+> instantiates, so the wrapper can decide which children to populate. For
+> example, an endpoint-only build has no switch block, and the wrapper would
+> read that register to skip the switch node instead of relying on the child
+> nodes alone. That register lives in the wrapper window, not in any child, so
+> the wrapper needs its own reg to reach it.
+> 
+> Because reg is in the required list, making it optional later and then
+> requiring it again would be an ABI change. Keeping it required now avoids
+> that
+> churn once the wrapper starts reading its own register. The wrapper driver
+> in
+> this series does not map reg yet, which is a driver limitation rather than a
+> reason to drop the hardware description.
 
-diff --git a/drivers/net/ethernet/moxa/moxart_ether.c b/drivers/net/ethernet/moxa/moxart_ether.c
-index 8bd60168624a..7b5720f993ae 100644
---- a/drivers/net/ethernet/moxa/moxart_ether.c
-+++ b/drivers/net/ethernet/moxa/moxart_ether.c
-@@ -451,6 +451,13 @@ static const struct net_device_ops moxart_netdev_ops = {
- 	.ndo_validate_addr	= eth_validate_addr,
- };
- 
-+static void moxart_irq_dispose_mapping(void *data)
-+{
-+	unsigned int irq = (unsigned int)(uintptr_t)data;
-+
-+	irq_dispose_mapping(irq);
-+}
-+
- static int moxart_mac_probe(struct platform_device *pdev)
- {
- 	struct device *p_dev = &pdev->dev;
-@@ -459,6 +466,7 @@ static int moxart_mac_probe(struct platform_device *pdev)
- 	struct moxart_mac_priv_t *priv;
- 	struct resource *res;
- 	unsigned int irq;
-+	bool irq_requested = false;
- 	int ret;
- 
- 	ndev = alloc_etherdev(sizeof(struct moxart_mac_priv_t));
-@@ -472,6 +480,16 @@ static int moxart_mac_probe(struct platform_device *pdev)
- 		goto irq_map_fail;
- 	}
- 
-+	/* Dispose of the IRQ mapping after the devres-managed handler has
-+	 * been released: devres runs actions in reverse registration order,
-+	 * so registering this before devm_request_irq() guarantees the
-+	 * correct order on probe unwind and device removal.
-+	 */
-+	ret = devm_add_action_or_reset(p_dev, moxart_irq_dispose_mapping,
-+				       (void *)(uintptr_t)irq);
-+	if (ret)
-+		goto irq_map_fail;
-+
- 	priv = netdev_priv(ndev);
- 	priv->ndev = ndev;
- 	priv->pdev = pdev;
-@@ -533,6 +551,7 @@ static int moxart_mac_probe(struct platform_device *pdev)
- 		netdev_err(ndev, "devm_request_irq failed\n");
- 		goto init_fail;
- 	}
-+	irq_requested = true;
- 
- 	ndev->netdev_ops = &moxart_netdev_ops;
- 	netif_napi_add_weight(ndev, &priv->napi, moxart_rx_poll, RX_DESC_NUM);
-@@ -552,6 +571,8 @@ static int moxart_mac_probe(struct platform_device *pdev)
- 
- init_fail:
- 	netdev_err(ndev, "init failed\n");
-+	if (irq_requested)
-+		devm_free_irq(p_dev, irq, ndev);
- 	moxart_mac_free_memory(ndev);
- irq_map_fail:
- 	free_netdev(ndev);
--- 
-2.54.0.windows.1
+If there are registers outside of the child nodes, then absolutely you 
+should have 'reg'. But please describe what registers and functionality 
+are there.
 
+[...]
+
+> > > +      mdio-mac1:
+> > > +        $ref: /schemas/net/mdio.yaml#
+> > > +        description:
+> > > +          MDIO bus controller for MAC1. Registers reside inside the mac1
+> > > +          reg-names window.
+> > > +        unevaluatedProperties: false
+> > > +
+> > > +      mdio-mac2:
+> > > +        $ref: /schemas/net/mdio.yaml#
+> > > +        description:
+> > > +          MDIO bus controller for MAC2. Registers reside inside the mac2
+> > > +          reg-names window.
+> > > +        unevaluatedProperties: false
+> > [Severity: Low]
+> > This isn't a bug, but the child node names contradict the $nodename
+> > patterns of the generic schemas this binding references.
+> > 
+> > mdio.yaml documents:
+> > 
+> >      pattern: '^mdio(-(bus|external))?(@.+|-([0-9]+))?$'
+> > 
+> > and -mac1 / -mac2 matches none of the allowed suffixes (-bus, -external,
+> > @<addr>, -<digits>).  Similarly the patternProperties key "^ep-mac@"
+> > forces names like the example's ep-mac@16000, while
+> > ethernet-controller.yaml documents:
+> > 
+> >      pattern: "^ethernet(@.*)?$"
+> > 
+> > Other in-tree bindings that $ref mdio.yaml for a child use a conforming
+> > name (qca8k.yaml, realtek.yaml, renesas,rzn1-a5psw.yaml,
+> > renesas,etheravb.yaml, faraday,ftgmac100.yaml, microchip,lan7800.yaml).
+> > Would mdio@<offset> (or mdio-0 / mdio-1) and ethernet@<offset> work here
+> > instead?
+> > 
+> > Related: the mdio-mac<N> nodes carry no reg, so nothing in DT locates the
+> > MDIO block inside the parent mac1/mac2 window.  The offset is instead
+> > hard-coded in the driver added later in this series:
+> > 
+> > drivers/net/dsa/xilinx/xilinx_tsn.h:
+> >      #define TSN_MDIO_MC_OFFSET		0x00000500
+> > 
+> > Could the buses be described as mdio@500 with a reg so the offset comes
+> > from DT?
+>  Thanks, accepted. In next version renames ep-mac@ to ethernet@ and
+> mdio-mac1/mdio-mac2 to
+>   mdio-1/mdio-2 to match the referenced schemas. The MDIO registers sit at a
+>   fixed offset inside the per-MAC window the driver already maps and have no
+>   standalone address, so the mdio-1/2 nodes keep that form without a reg
+>   rather than mdio@500.
+
+If there is a register address associated with them, then using that is 
+strongly preferred over mdio-N.
+
+Rob
