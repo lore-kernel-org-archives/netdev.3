@@ -1,63 +1,63 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3001D3DAAB5
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 23:11:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67333B71AC
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 23:11:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786749076; cv=none; b=iRKBibgRSpAQ+9gjAob4SdSoLzU8enbGsooFXpc5vcul8T4DvZJfVqVMwqqcOa7JP8Pn8WMTiA9MZzGD80piJmjG9Z4mKatyn2LVvzJeL3iQ/5pMXQKZAXHBettQ3Sf8WAYcfwbehg323bl0Mukmt8Qg2qHzIeWvHCjmO46h+js=
+	t=1786749080; cv=none; b=k+xTPF09yZN5qAjeDUrDjkuPvYQ2/79CxAVZQr8OhYfK6iPe7nja67MYTEgcx8PYGBD6uGAnLfZ5zf9bDx+MktvYtUuzx2aOePmngYJ2KDdJG8Rsv2UmErZsMtCOHi9FwH2dMbiX09tpwJVI/dkMfUbWADyzBo5539ZKjckPXoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786749076; c=relaxed/simple;
-	bh=yGy1Yh/NZzloouf3D9OwqAHLenu2a8wvCFWmQFmOEWQ=;
+	s=arc-20240116; t=1786749080; c=relaxed/simple;
+	bh=RYpZR0sDvcmY2jyiYZI8hciof+9imEqq4HibNvC273c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JlBHQ+990r30WBvTUKWuNBDSR7dJCSWlzAKlG5bwNx53ef+Zd1t+9UT6t5fhyKg0ml4ma9WZOf0d6xU7zVHTsjKq227AFI6L2ZYZr/R5rITCZ30mnkuAdAogQ3KptjdVUdV1WNwUuClyiR8R4Pz54oqFqiFyrzxYgeOtQXQlmIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o7wjfDKW; arc=none smtp.client-ip=209.85.215.178
+	 MIME-Version; b=aBkkB7LfGeCl+5Mypj+erijynaGU4YivTGsVItL/3TT4YS00WtmTAsv8coQEbef7SrzkdwydTu7uyx9q706zjCt0y22HmcSMGwD4rhfEycnbcpE7OjEMWj/1CXaHZnITfS9yIXeJkaNbCj2g5A3UAZrWiWfdAIVGwTjEdaHJk+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EA1hwfEz; arc=none smtp.client-ip=209.85.210.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o7wjfDKW"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cbf0dc8c871so924675a12.1
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 16:11:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EA1hwfEz"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8518b3ff3e9so64651b3a.2
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 16:11:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786749071; x=1787353871; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786749076; x=1787353876; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=8K54vjc5Ca57j/7S2eaUMSZWs9fNAeOAqhLSnXjalJg=;
-        b=o7wjfDKWirZS3d8bW1ALwpwuazqUE+KKaxJXzwKVSt3lEKqIpXq3++YIjdtabLX1gL
-         YvVZHaQBrA/U8aUsJ443DGuNNvY0uIrwJPUmdVeyOpa9O+JR9FlLJUu83pbP3BscxiZR
-         EA9SOd6XZ/exMFX8NN2cZJ+KyVz9e9qkPvocQ0fMZ0NqHXuLnXa3MJDD5EqorST9lQYs
-         1JAmSDl71sNb0oyrqutkSdl6mFMbMdHIsKtCpKvIWIalWKn8UqqahBcFOS2AkLuSXNPw
-         Wdwcyz/q1n3g8Xz+mjjh1nr2UoRisjiirDoxEd5nRALxsluays4pJe8XxLqCEf0JaygM
-         KYUQ==
+        bh=Haj+ZUCxdgSDciu2KvIwXZABMW8X15ZHr1Rjfu8Dbzk=;
+        b=EA1hwfEzqbHH7ARy3QZRd8LirsHpv83R27QGDLyUQftT2OXZhTJ7n+h4219/9H8fFM
+         rk7g0QWkVXYOCd8+qXvCEM/S6tP/HaFuDfmY/LyP8SXWP7MyqauscNFmrASpJhakBgNG
+         QLbZyE+dnoi9Fxm1cqcFRSem2HoVLMA+eb60tC9WxpzzyqaMOgY4IVF26FOnzsnQX8vC
+         9muXib160oNFt32vb+v1UXQhIW3xJWIZrX0Mn7m0kOmHm2xJH+RuMp6iNH50phv010WP
+         UPWlfRi59lT0l3KBM6heRV6fnVpd9QAfvVuGCBXXlyocS6kv8Sth8M7HFmylWilJUTfb
+         6xMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786749071; x=1787353871;
+        d=1e100.net; s=20251104; t=1786749076; x=1787353876;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8K54vjc5Ca57j/7S2eaUMSZWs9fNAeOAqhLSnXjalJg=;
-        b=CQitt36Gllbrdx8uJqBMiT32iefgH45oOC9GaYe8JelewZQO2ML+Jyzlx+skkwdnuT
-         LDugBd7IauwOV1Hp6x65+D3myYCpGLVczqNBwNUbvOPFDieG6QOnEZ5HNojN6siIpuEd
-         vFCDe4S1mY+g01nsdt7iYju10mbgtLGxzm2vkNNo7zNt5nXzOasd17g1/PreS5NqB9AF
-         OYzftdJXDliuDnD4FO8ZBWULfBjgzvRlkzgnK0mlKoBjPH05n6iXYXZquALvDuBeibH+
-         x1DQWAgvULdgLHKu2h/HCPXmPBkIpJV7AGj5S8dhr1wGD1u+GFht2NmAxAoCT+hNFL2a
-         uu5Q==
-X-Gm-Message-State: AOJu0YxFF4hDeG3jAmlKR3UgjFZXB/kjNAI3AVh1jiud57wZWpOpJTmj
-	+VF2xDAzkVxmcBI0fbD9VP+eHTnl9bLNbDX5CQAjlpCYB5XvT9IAw0mK6P0sP+FR
-X-Gm-Gg: AR+sD11tBtQhQls4WsA/TCXvRju0fy5d2BH6tQ8c7+HUtrNTd3pCmyztlCPShPZHj3Y
-	RdF4wPkV5RXl8Kw8DhA+6rve0Cf9a4HFLApkGTZkz8McOlrTrZfrADkRlI0rc9MyoBp6cU75y7D
-	kUKYRtCQ6AvbvfQPWz8GMAEuunZCgHyR+6wzQIKmvouSUShaVzTFxzFDV6LBCE8Ij32vzMxxzbp
-	3fcibRuGMwJuLi1TPRkh0PBOZgWVJlCy+A8BiWlqOqg9FZgXCHyRwyBEVyb21yQVVSJ7rXi2YT9
-	o74z5Wj79jITYpH7kLob4RTLTfc7gAgblFOUmt6KFo9ZMi9b8eTqo5doiPhuVvsCBqiLuKiphn3
-	QIbc3JVuPzSEp95mO11IEpoww0xR2K+T30Ih45smKrp3l/D9a85x6VyEFyjSPpuzIJpn7OG3Pwu
-	Su5STEgqAXOSWzNkhRotJ8zAV3+WZ7OPw7mkvyiwZ11ghG3bmaeo9JR000Yj9w0ITL08HPJRne+
-	ulp/g==
-X-Received: by 2002:a05:6a20:9143:b0:3c3:76a8:c0f with SMTP id adf61e73a8af0-3cc7196e809mr9113639637.4.1786749071235;
-        Fri, 14 Aug 2026 16:11:11 -0700 (PDT)
+        bh=Haj+ZUCxdgSDciu2KvIwXZABMW8X15ZHr1Rjfu8Dbzk=;
+        b=CgmHVzKoPIwO9Adl+amIRR0QETfF7BvHQonRZEsMOavaUqEOl8dKNxHAjWZIdgGafy
+         kG6YfbeLqjeHnpRYigOqTvjC2zaJ2C9rw8+ce0FL2g5xrjg41rb/E3eb/E+RPkBG3OiQ
+         b+wZV49J305424sw8Glyt07uG2x5N5HHB7MWdRCZRRDPdWs2WSYaxZc6IXrKTzFhcmXa
+         doAx/vOcGETiY3h5At1QatS38XYz+bGjfIkQoum/rTw6dFMFMFV21VRA3NbD5qkPWBBs
+         vBMtMojAw8xdWa60q7bd1U+WC36EbelcUVR+Tb4lsoKz1kISfjpN+GTGBeSXrkVePwM7
+         aqlQ==
+X-Gm-Message-State: AOJu0YzxpPKo7mz2IRV6WPLcMgYOfjE+A7wli2V8oj7rIX4jO4qK5ih/
+	sC/EYJ03+9xUHtMy8bLyrUo/tks1XB0fsdHK6OHc6RIyvJGMC5panuPT945qSx2D
+X-Gm-Gg: AR+sD11ndBifxiwsmy97Ldbg8WqARaISfUygkqdb8Ids8GVeJU3M/1aQeCnsKhpEPsr
+	j4Mw18noPCb9qWKPNsFM4+oHDMZIpjRYXvHsqi2IZGi4vxKDxfdjSplBCncywijhWH9nqWwaaXl
+	6PEvaT7YgPtt7BGvNK0M3MI30gtn+wJHdGx7CevOI0j0s4Nq7wtNCGGiq/2M9Lk9WSk7U4j2ixf
+	ai1YtVhUdfF2nRuQQ4aWJAei3QoRpt9/FLKIcq8lYN3wcdlw7j7cQcj5x7Xka8jidu50A6nL2mM
+	81ho4CKw54BWR1eUd/w1o5EB5bAiO3Sc6/odtBqq3gHkvLVngXxtjv2NOPELjJ9VdYntJvsyePg
+	TJCDYR7wWr8E8nq31YWwdZQEklmWQg2Ff1J4SUi+h3OkVj2858++50fX2Rz1LsF0QSD6jxQ5LHR
+	GMss5YHLTRIrR0ZwGG+0ZCJWASv/dEF7kTgAx1cB6hgj4TxFasqv+/fEpsPj8HwgEGo91j0a+ox
+	NJ1z2vYOGo=
+X-Received: by 2002:a05:6300:2208:b0:3c3:ab31:3d2c with SMTP id adf61e73a8af0-3cc71e684aamr10443008637.35.1786749075489;
+        Fri, 14 Aug 2026 16:11:15 -0700 (PDT)
 Received: from Mac.localdomain ([12.162.234.74])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-320d61e1568sm8563607eec.11.2026.08.14.16.11.07
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-320d61e1568sm8563607eec.11.2026.08.14.16.11.11
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 14 Aug 2026 16:11:10 -0700 (PDT)
+        Fri, 14 Aug 2026 16:11:14 -0700 (PDT)
 From: Ahmad Byagowi <ahmadexp@gmail.com>
 To: netdev@vger.kernel.org
 Cc: Lee Jones <lee@kernel.org>,
@@ -82,9 +82,9 @@ Cc: Lee Jones <lee@kernel.org>,
 	linux-i2c@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-hardening@vger.kernel.org
-Subject: [PATCH net-next v5 2/7] leds: is32fl3207: Add controller driver
-Date: Fri, 14 Aug 2026 16:10:50 -0700
-Message-ID: <200b35cd5847c318f4330dd162147b648c402601.1786747084.git.ahmadexp@gmail.com>
+Subject: [PATCH net-next v5 3/7] i2c: mux: Propagate software nodes to channel adapters
+Date: Fri, 14 Aug 2026 16:10:51 -0700
+Message-ID: <a758b93f394ecfd4dfa65517782530d4a8c45e39.1786747084.git.ahmadexp@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1786746757.git.ahmadexp@gmail.com>
 References: <cover.1786746757.git.ahmadexp@gmail.com>
@@ -96,820 +96,224 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add an I2C driver for the Lumissil IS32FL3207 18-channel LED controller.
+Device Tree channel nodes are associated with the adapters created by
+i2c-mux, but equivalent software-node descriptions are not.
 
-Expose individual and multicolor LEDs through the LED class. Use the
-default 8-bit, 62 kHz PWM mode, derive output current from RISET, and
-enforce each output current limit with the scaling registers. Serialize
-multicolor calculation, scaling, PWM, and controller-wide update
-operations.
+Find the software-node child whose reg value matches the channel and
+attach it to the new adapter. Preserve an ACPI primary node when present
+and extend I2C firmware-node adapter lookup to match the attached
+secondary node.
 
-Clear retained scaling while SDB holds the outputs disabled. Release SDB
-and briefly enable normal operation to issue the required software reset,
-then keep the controller in software shutdown while registering every LED.
-Enable outputs only after all limits and initial brightness values are
-programmed.
-
-Handle an optional supply and enable GPIO. Serialize shutdown against
-pending brightness updates and honor retained shutdown state.
+Track attachment ownership so failure cleanup cannot detach a
+pre-existing node. Keep the owned node attached through child-client
+removal, then release its reference after adapter deletion.
 
 Signed-off-by: Ahmad Byagowi <ahmadexp@gmail.com>
 ---
- MAINTAINERS                        |   1 +
- drivers/leds/rgb/Kconfig           |  11 +
- drivers/leds/rgb/Makefile          |   1 +
- drivers/leds/rgb/leds-is32fl3207.c | 736 +++++++++++++++++++++++++++++
- 4 files changed, 749 insertions(+)
- create mode 100644 drivers/leds/rgb/leds-is32fl3207.c
+ drivers/i2c/i2c-core-base.c | 24 +++++++++---
+ drivers/i2c/i2c-mux.c       | 77 ++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 93 insertions(+), 8 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 448e7b7be8df..c6bd00f80cea 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -13832,6 +13832,7 @@ M:	Ahmad Byagowi <ahmadexp@gmail.com>
- L:	linux-leds@vger.kernel.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/leds/issi,is32fl3207.yaml
-+F:	drivers/leds/rgb/leds-is32fl3207.c
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+index 3ec04787a737..f39575ee0244 100644
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -1876,12 +1876,22 @@ int devm_i2c_add_adapter(struct device *dev, struct i2c_adapter *adapter)
+ }
+ EXPORT_SYMBOL_GPL(devm_i2c_add_adapter);
  
- IT87 HARDWARE MONITORING DRIVER
- M:	Jean Delvare <jdelvare@suse.com>
-diff --git a/drivers/leds/rgb/Kconfig b/drivers/leds/rgb/Kconfig
-index 6e9ab5f60714..c896be1318dc 100644
---- a/drivers/leds/rgb/Kconfig
-+++ b/drivers/leds/rgb/Kconfig
-@@ -14,6 +14,17 @@ config LEDS_GROUP_MULTICOLOR
- 	  To compile this driver as a module, choose M here: the module
- 	  will be called leds-group-multicolor.
+-static int i2c_dev_or_parent_fwnode_match(struct device *dev, const void *data)
++static bool i2c_device_match_fwnode(struct device *dev, const void *data)
+ {
++	struct fwnode_handle *fwnode = dev_fwnode(dev);
++
+ 	if (device_match_fwnode(dev, data))
++		return true;
++
++	return !IS_ERR_OR_NULL(fwnode) && fwnode->secondary == data;
++}
++
++static int i2c_dev_or_parent_fwnode_match(struct device *dev, const void *data)
++{
++	if (i2c_device_match_fwnode(dev, data))
+ 		return 1;
  
-+config LEDS_IS32FL3207
-+	tristate "LED support for ISSI IS32FL3207"
-+	depends on I2C
-+	select REGMAP_I2C
-+	help
-+	  Say Y here to include support for the Lumissil IS32FL3207
-+	  18-channel I2C LED controller.
-+
-+	  To compile this driver as a module, choose M here: the module will
-+	  be called leds-is32fl3207.
-+
- config LEDS_KTD202X
- 	tristate "LED support for KTD202x Chips"
- 	depends on I2C
-diff --git a/drivers/leds/rgb/Makefile b/drivers/leds/rgb/Makefile
-index cc0f2df66286..228923e8bb11 100644
---- a/drivers/leds/rgb/Makefile
-+++ b/drivers/leds/rgb/Makefile
-@@ -1,6 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
+-	if (dev->parent && device_match_fwnode(dev->parent, data))
++	if (dev->parent && i2c_device_match_fwnode(dev->parent, data))
+ 		return 1;
  
- obj-$(CONFIG_LEDS_GROUP_MULTICOLOR)	+= leds-group-multicolor.o
-+obj-$(CONFIG_LEDS_IS32FL3207)		+= leds-is32fl3207.o
- obj-$(CONFIG_LEDS_KTD202X)		+= leds-ktd202x.o
- obj-$(CONFIG_LEDS_LP5812)		+= leds-lp5812.o
- obj-$(CONFIG_LEDS_LP5860_CORE)		+= leds-lp5860-core.o
-diff --git a/drivers/leds/rgb/leds-is32fl3207.c b/drivers/leds/rgb/leds-is32fl3207.c
-new file mode 100644
-index 000000000000..6a46f97ba50a
---- /dev/null
-+++ b/drivers/leds/rgb/leds-is32fl3207.c
-@@ -0,0 +1,736 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * ISSI IS32FL3207 LED controller driver
-+ *
-+ * Copyright 2026 Ahmad Byagowi
-+ */
-+
-+#include <linux/bitmap.h>
-+#include <linux/delay.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/i2c.h>
-+#include <linux/led-class-multicolor.h>
-+#include <linux/math64.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
+ 	return 0;
+@@ -1891,8 +1901,9 @@ static int i2c_dev_or_parent_fwnode_match(struct device *dev, const void *data)
+  * i2c_find_adapter_by_fwnode() - find an i2c_adapter for the fwnode
+  * @fwnode: &struct fwnode_handle corresponding to the &struct i2c_adapter
+  *
+- * Look up and return the &struct i2c_adapter corresponding to the @fwnode.
+- * If no adapter can be found, or @fwnode is NULL, this returns NULL.
++ * Look up and return the &struct i2c_adapter corresponding to the @fwnode,
++ * including a secondary firmware node. If no adapter can be found, or
++ * @fwnode is NULL, this returns NULL.
+  *
+  * The user must call put_device(&adapter->dev) once done with the i2c adapter.
+  */
+@@ -1922,8 +1933,9 @@ EXPORT_SYMBOL(i2c_find_adapter_by_fwnode);
+  * @fwnode: &struct fwnode_handle corresponding to the &struct i2c_adapter
+  *
+  * Look up and return the &struct i2c_adapter corresponding to the @fwnode,
+- * and increment the adapter module's use count. If no adapter can be found,
+- * or @fwnode is NULL, this returns NULL.
++ * including a secondary firmware node, and increment the adapter module's
++ * use count. If no adapter can be found, or @fwnode is NULL, this returns
++ * NULL.
+  *
+  * The user must call i2c_put_adapter(adapter) once done with the i2c adapter.
+  * Note that this is different from i2c_find_adapter_by_node().
+diff --git a/drivers/i2c/i2c-mux.c b/drivers/i2c/i2c-mux.c
+index 681a201c239b..3bca123907b3 100644
+--- a/drivers/i2c/i2c-mux.c
++++ b/drivers/i2c/i2c-mux.c
+@@ -20,11 +20,13 @@
+  */
+ 
+ #include <linux/acpi.h>
++#include <linux/err.h>
+ #include <linux/i2c.h>
+ #include <linux/i2c-mux.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
 +#include <linux/property.h>
-+#include <linux/regmap.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/string.h>
-+
-+#include <dt-bindings/leds/common.h>
-+
-+#define IS32FL3207_NUM_CHANNELS		18
-+#define IS32FL3207_MAX_BRIGHTNESS	255
-+
-+#define IS32FL3207_REG_CONTROL		0x00
-+#define IS32FL3207_REG_PWM_LOW(channel)	(0x01 + 2 * (channel))
-+#define IS32FL3207_REG_PWM_UPDATE	0x49
-+#define IS32FL3207_REG_SCALING(channel)	(0x4a + (channel))
-+#define IS32FL3207_REG_GLOBAL_CURRENT	0x6e
-+#define IS32FL3207_REG_RESET		0x7f
-+
-+#define IS32FL3207_CONTROL_ENABLE	BIT(0)
-+#define IS32FL3207_GLOBAL_CURRENT_MAX	0xff
-+
-+/* IOUT(MAX) in microamperes = 76,500,000 / RISET in ohms. */
-+#define IS32FL3207_CURRENT_NUMERATOR	76500000ULL
-+
-+struct is32fl3207;
-+
-+struct is32fl3207_led {
-+	struct is32fl3207 *chip;
-+	struct led_classdev *led_cdev;
-+	union {
-+		struct led_classdev cdev;
-+		struct led_classdev_mc mcdev;
-+	};
-+	unsigned int channel;
-+};
-+
-+struct is32fl3207 {
-+	struct device *dev;
-+	struct regmap *regmap;
-+	struct gpio_desc *enable_gpio;
-+	struct mutex lock; /* Serializes controller register updates. */
-+	unsigned long channels[BITS_TO_LONGS(IS32FL3207_NUM_CHANNELS)];
-+	u32 output_max_microamp;
-+	unsigned int num_leds;
-+	bool shutting_down;
-+	struct is32fl3207_led leds[] __counted_by(num_leds);
-+};
-+
-+static int is32fl3207_parse_led_properties(struct is32fl3207 *chip,
-+					   struct fwnode_handle *fwnode,
-+					   unsigned int *max_brightness,
-+					   unsigned int *brightness)
+ #include <linux/slab.h>
+ #include <linux/sysfs.h>
+ 
+@@ -33,6 +35,7 @@ struct i2c_mux_priv {
+ 	struct i2c_adapter adap;
+ 	struct i2c_algorithm algo;
+ 	struct i2c_mux_core *muxc;
++	struct fwnode_handle *swnode;
+ 	u32 chan_id;
+ };
+ 
+@@ -264,10 +267,60 @@ static const struct i2c_lock_operations i2c_parent_lock_ops = {
+ 	.unlock_bus =  i2c_parent_unlock_bus,
+ };
+ 
++static struct fwnode_handle *
++i2c_mux_get_channel_swnode(struct i2c_mux_core *muxc, u32 chan_id)
 +{
-+	enum led_default_state default_state;
-+	u32 value;
-+	int ret;
-+
-+	*max_brightness = IS32FL3207_MAX_BRIGHTNESS;
-+	if (fwnode_property_present(fwnode, "max-brightness")) {
-+		ret = fwnode_property_read_u32(fwnode, "max-brightness",
-+					       &value);
-+		if (ret)
-+			return dev_err_probe(chip->dev, ret,
-+					     "failed to read maximum brightness for %pfw\n",
-+					     fwnode);
-+		if (!value || value > IS32FL3207_MAX_BRIGHTNESS)
-+			return dev_err_probe(chip->dev, -EINVAL,
-+					     "invalid maximum brightness %u for %pfw\n",
-+					     value, fwnode);
-+
-+		*max_brightness = value;
-+	}
-+
-+	value = *max_brightness;
-+	if (fwnode_property_present(fwnode, "default-brightness")) {
-+		ret = fwnode_property_read_u32(fwnode, "default-brightness",
-+					       &value);
-+		if (ret)
-+			return dev_err_probe(chip->dev, ret,
-+					     "failed to read default brightness for %pfw\n",
-+					     fwnode);
-+		if (value > *max_brightness)
-+			return dev_err_probe(chip->dev, -EINVAL,
-+					     "invalid default brightness %u for %pfw\n",
-+					     value, fwnode);
-+	}
-+
-+	default_state = led_init_default_state_get(fwnode);
-+	if (default_state == LEDS_DEFSTATE_KEEP)
-+		return dev_err_probe(chip->dev, -EINVAL,
-+				     "default state keep is not supported for %pfw\n",
-+				     fwnode);
-+
-+	*brightness = default_state == LEDS_DEFSTATE_ON ? value : LED_OFF;
-+	return 0;
-+}
-+
-+static int is32fl3207_validate_component(struct is32fl3207 *chip,
-+					 struct fwnode_handle *fwnode)
-+{
-+	static const char * const unsupported[] = {
-+		"default-brightness",
-+		"default-state",
-+		"max-brightness",
-+		"retain-state-shutdown",
-+	};
-+	unsigned int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(unsupported); i++)
-+		if (fwnode_property_present(fwnode, unsupported[i]))
-+			return dev_err_probe(chip->dev, -EINVAL,
-+					     "%s is not supported for component %pfw\n",
-+					     unsupported[i], fwnode);
-+
-+	return 0;
-+}
-+
-+static int is32fl3207_write_channels_locked(struct is32fl3207 *chip,
-+					    const struct mc_subled *subleds,
-+					    unsigned int num_channels)
-+{
-+	unsigned int i;
-+	int ret;
-+
-+	for (i = 0; i < num_channels; i++) {
-+		ret = regmap_write(chip->regmap,
-+				   IS32FL3207_REG_PWM_LOW(subleds[i].channel),
-+				   subleds[i].brightness);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return regmap_write(chip->regmap, IS32FL3207_REG_PWM_UPDATE, 0);
-+}
-+
-+static int is32fl3207_brightness_set(struct led_classdev *cdev,
-+				     enum led_brightness brightness)
-+{
-+	struct is32fl3207_led *led = container_of(cdev, struct is32fl3207_led,
-+						     cdev);
-+	struct mc_subled subled = {
-+		.brightness = brightness,
-+		.channel = led->channel,
-+	};
-+
-+	guard(mutex)(&led->chip->lock);
-+	if (led->chip->shutting_down)
-+		return 0;
-+
-+	return is32fl3207_write_channels_locked(led->chip, &subled, 1);
-+}
-+
-+static int is32fl3207_mc_brightness_set(struct led_classdev *cdev,
-+					enum led_brightness brightness)
-+{
-+	struct led_classdev_mc *mcdev = lcdev_to_mccdev(cdev);
-+	struct is32fl3207_led *led = container_of(mcdev, struct is32fl3207_led,
-+						     mcdev);
-+
-+	guard(mutex)(&led->chip->lock);
-+	if (led->chip->shutting_down)
-+		return 0;
-+
-+	led_mc_calc_color_components(mcdev, brightness);
-+
-+	return is32fl3207_write_channels_locked(led->chip, mcdev->subled_info,
-+						   mcdev->num_colors);
-+}
-+
-+static int is32fl3207_turn_off_locked(struct is32fl3207 *chip,
-+				      struct is32fl3207_led *led)
-+{
-+	struct led_classdev *cdev = led->led_cdev;
-+	struct mc_subled subled = {
-+		.brightness = LED_OFF,
-+		.channel = led->channel,
-+	};
-+
-+	if (cdev->flags & LED_MULTI_COLOR) {
-+		struct led_classdev_mc *mcdev = lcdev_to_mccdev(cdev);
-+
-+		led_mc_calc_color_components(mcdev, LED_OFF);
-+		return is32fl3207_write_channels_locked(chip,
-+							   mcdev->subled_info,
-+							   mcdev->num_colors);
-+	}
-+
-+	return is32fl3207_write_channels_locked(chip, &subled, 1);
-+}
-+
-+static int is32fl3207_configure_channel(struct is32fl3207 *chip,
-+					struct fwnode_handle *fwnode,
-+					unsigned int *channel)
-+{
-+	u64 scaling;
-+	u32 max_microamp;
++	struct fwnode_handle *dev_node = dev_fwnode(muxc->dev);
++	struct fwnode_handle *mux_node, *child = NULL;
 +	u32 reg;
-+	int ret;
 +
-+	ret = fwnode_property_read_u32(fwnode, "reg", &reg);
-+	if (ret)
-+		return dev_err_probe(chip->dev, ret,
-+				     "failed to read channel for %pfw\n",
-+				     fwnode);
-+
-+	if (reg >= IS32FL3207_NUM_CHANNELS)
-+		return dev_err_probe(chip->dev, -EINVAL,
-+				     "channel %u is out of range\n", reg);
-+
-+	if (test_bit(reg, chip->channels))
-+		return dev_err_probe(chip->dev, -EINVAL,
-+				     "channel %u is used more than once\n",
-+				     reg);
-+
-+	ret = fwnode_property_read_u32(fwnode, "led-max-microamp",
-+				       &max_microamp);
-+	if (ret)
-+		return dev_err_probe(chip->dev, ret,
-+				     "failed to read current limit for channel %u\n",
-+				     reg);
-+
-+	if (!max_microamp || max_microamp > chip->output_max_microamp)
-+		return dev_err_probe(chip->dev, -EINVAL,
-+				     "invalid current limit %u uA for channel %u\n",
-+				     max_microamp, reg);
-+
-+	/* GCC is fixed at 0xff, so use each output's scaling register. */
-+	scaling = div_u64((u64)max_microamp * 256 * 256,
-+			  (u64)chip->output_max_microamp *
-+			  IS32FL3207_GLOBAL_CURRENT_MAX);
-+	if (!scaling)
-+		return dev_err_probe(chip->dev, -EINVAL,
-+				     "current limit %u uA is below channel %u resolution\n",
-+				     max_microamp, reg);
-+
-+	scaling = min_t(u64, scaling, 0xff);
-+
-+	guard(mutex)(&chip->lock);
-+	ret = regmap_write(chip->regmap, IS32FL3207_REG_SCALING(reg),
-+			   (unsigned int)scaling);
-+	if (ret)
-+		return ret;
-+
-+	set_bit(reg, chip->channels);
-+	*channel = reg;
-+
-+	return 0;
-+}
-+
-+static int is32fl3207_register_single(struct is32fl3207 *chip,
-+				      struct fwnode_handle *fwnode,
-+				      struct is32fl3207_led *led)
-+{
-+	struct led_init_data init_data = {
-+		.devicename = dev_name(chip->dev),
-+		.devname_mandatory = true,
-+		.fwnode = fwnode,
-+	};
-+	unsigned int max_brightness;
-+	unsigned int brightness;
-+	u32 color;
-+	int ret;
-+
-+	if (!fwnode_property_present(fwnode, "function") &&
-+	    !fwnode_property_present(fwnode, "color"))
-+		return dev_err_probe(chip->dev, -EINVAL,
-+				     "single LED %pfw requires function or color\n",
-+				     fwnode);
-+
-+	ret = is32fl3207_parse_led_properties(chip, fwnode,
-+					      &max_brightness, &brightness);
-+	if (ret)
-+		return ret;
-+
-+	if (fwnode_property_present(fwnode, "color")) {
-+		ret = fwnode_property_read_u32(fwnode, "color", &color);
-+		if (ret)
-+			return dev_err_probe(chip->dev, ret,
-+					     "failed to read color for %pfw\n",
-+					     fwnode);
-+		if (color >= LED_COLOR_ID_MAX || color == LED_COLOR_ID_MULTI ||
-+		    color == LED_COLOR_ID_RGB)
-+			return dev_err_probe(chip->dev, -EINVAL,
-+					     "invalid single LED color %u\n",
-+					     color);
++	/* A software node supplementing ACPI is the secondary fwnode. */
++	if (!is_software_node(dev_node)) {
++		if (IS_ERR_OR_NULL(dev_node))
++			return NULL;
++		dev_node = dev_node->secondary;
 +	}
-+
-+	ret = is32fl3207_configure_channel(chip, fwnode, &led->channel);
-+	if (ret)
-+		return ret;
-+	led->chip = chip;
-+	led->led_cdev = &led->cdev;
-+	led->cdev.brightness = brightness;
-+	led->cdev.max_brightness = max_brightness;
-+	led->cdev.brightness_set_blocking = is32fl3207_brightness_set;
-+
-+	ret = is32fl3207_brightness_set(&led->cdev, brightness);
-+	if (ret)
-+		return ret;
-+
-+	return devm_led_classdev_register_ext(chip->dev, &led->cdev,
-+					      &init_data);
-+}
-+
-+static int is32fl3207_register_multicolor(struct is32fl3207 *chip,
-+					  struct fwnode_handle *fwnode,
-+					  struct is32fl3207_led *led)
-+{
-+	struct led_init_data init_data = {
-+		.devicename = dev_name(chip->dev),
-+		.devname_mandatory = true,
-+		.fwnode = fwnode,
-+	};
-+	struct mc_subled *subleds;
-+	DECLARE_BITMAP(color_map, LED_COLOR_ID_MAX);
-+	unsigned int max_brightness;
-+	unsigned int brightness;
-+	unsigned int count;
-+	unsigned int i = 0;
-+	bool has_group_reg;
-+	u32 group_color;
-+	u32 group_reg;
-+	unsigned int first_channel = IS32FL3207_NUM_CHANNELS;
-+	int ret;
-+
-+	ret = is32fl3207_parse_led_properties(chip, fwnode,
-+					      &max_brightness, &brightness);
-+	if (ret)
-+		return ret;
-+
-+	ret = fwnode_property_read_u32(fwnode, "color", &group_color);
-+	if (ret)
-+		return dev_err_probe(chip->dev, ret,
-+				     "failed to read color for %pfw\n", fwnode);
-+
-+	if (group_color != LED_COLOR_ID_RGB &&
-+	    group_color != LED_COLOR_ID_MULTI)
-+		return dev_err_probe(chip->dev, -EINVAL,
-+				     "invalid multicolor LED color %u\n",
-+				     group_color);
-+
-+	has_group_reg = fwnode_property_present(fwnode, "reg");
-+	if (has_group_reg) {
-+		ret = fwnode_property_read_u32(fwnode, "reg", &group_reg);
-+		if (ret)
-+			return dev_err_probe(chip->dev, ret,
-+					     "failed to read group index for %pfw\n",
-+					     fwnode);
-+	}
-+
-+	count = fwnode_get_child_node_count(fwnode);
-+	if (!count || count > LED_COLOR_ID_MAX)
-+		return dev_err_probe(chip->dev, -EINVAL,
-+				     "invalid component count %u for %pfw\n",
-+				     count, fwnode);
-+
-+	subleds = devm_kcalloc(chip->dev, count, sizeof(*subleds), GFP_KERNEL);
-+	if (!subleds)
-+		return -ENOMEM;
-+	bitmap_zero(color_map, LED_COLOR_ID_MAX);
-+
-+	fwnode_for_each_child_node_scoped(fwnode, child) {
-+		u32 color;
-+
-+		ret = is32fl3207_validate_component(chip, child);
-+		if (ret)
-+			return ret;
-+
-+		ret = fwnode_property_read_u32(child, "color", &color);
-+		if (ret)
-+			return dev_err_probe(chip->dev, ret,
-+					     "failed to read color for %pfw\n",
-+					     child);
-+
-+		if (color >= LED_COLOR_ID_MAX || color == LED_COLOR_ID_MULTI ||
-+		    color == LED_COLOR_ID_RGB)
-+			return dev_err_probe(chip->dev, -EINVAL,
-+					     "invalid component color %u\n",
-+					     color);
-+		if (test_and_set_bit(color, color_map))
-+			return dev_err_probe(chip->dev, -EINVAL,
-+					     "component color %u is used more than once\n",
-+					     color);
-+
-+		ret = is32fl3207_configure_channel(chip, child,
-+						   &subleds[i].channel);
-+		if (ret)
-+			return ret;
-+
-+		subleds[i].color_index = color;
-+		subleds[i].intensity = max_brightness;
-+		subleds[i].max_intensity = 0;
-+		first_channel = min(first_channel, subleds[i].channel);
-+		i++;
-+	}
-+
-+	if (has_group_reg && group_reg != first_channel)
-+		return dev_err_probe(chip->dev, -EINVAL,
-+				     "group index %u does not match first channel %u\n",
-+				     group_reg, first_channel);
-+
-+	led->chip = chip;
-+	led->led_cdev = &led->mcdev.led_cdev;
-+	led->mcdev.num_colors = count;
-+	led->mcdev.subled_info = subleds;
-+	led->mcdev.led_cdev.brightness = brightness;
-+	led->mcdev.led_cdev.max_brightness = max_brightness;
-+	led->mcdev.led_cdev.brightness_set_blocking =
-+		is32fl3207_mc_brightness_set;
-+
-+	ret = is32fl3207_mc_brightness_set(&led->mcdev.led_cdev,
-+					   brightness);
-+	if (ret)
-+		return ret;
-+
-+	return devm_led_classdev_multicolor_register_ext(chip->dev, &led->mcdev,
-+						     &init_data);
-+}
-+
-+static int is32fl3207_register_led(struct is32fl3207 *chip,
-+				   struct fwnode_handle *fwnode,
-+				   struct is32fl3207_led *led)
-+{
-+	unsigned int count = fwnode_get_child_node_count(fwnode);
-+	bool has_color = fwnode_property_present(fwnode, "color");
-+	u32 color = LED_COLOR_ID_MAX;
-+	int ret;
-+
-+	if (has_color) {
-+		ret = fwnode_property_read_u32(fwnode, "color", &color);
-+		if (ret)
-+			return dev_err_probe(chip->dev, ret,
-+					     "failed to read color for %pfw\n",
-+					     fwnode);
-+	}
-+
-+	if (color == LED_COLOR_ID_RGB || color == LED_COLOR_ID_MULTI) {
-+		if (!count)
-+			return dev_err_probe(chip->dev, -EINVAL,
-+					     "multicolor LED %pfw has no components\n",
-+					     fwnode);
-+
-+		return is32fl3207_register_multicolor(chip, fwnode, led);
-+	}
-+
-+	if (count)
-+		return dev_err_probe(chip->dev, -EINVAL,
-+				     "single LED %pfw must not have components\n",
-+				     fwnode);
-+
-+	return is32fl3207_register_single(chip, fwnode, led);
-+}
-+
-+static int is32fl3207_clear_retained_scaling(struct is32fl3207 *chip)
-+{
-+	u8 scaling[IS32FL3207_NUM_CHANNELS] = { };
-+	int ret;
-+
-+	ret = regmap_write(chip->regmap, IS32FL3207_REG_CONTROL, 0);
-+	if (ret)
-+		return ret;
-+
-+	return regmap_bulk_write(chip->regmap,
-+				 IS32FL3207_REG_SCALING(0), scaling,
-+				 sizeof(scaling));
-+}
-+
-+static int is32fl3207_hw_init(struct is32fl3207 *chip)
-+{
-+	u8 scaling[IS32FL3207_NUM_CHANNELS] = { };
-+	u8 pwm[2 * IS32FL3207_NUM_CHANNELS] = { };
-+	int disable_ret;
-+	int ret;
-+
-+	/* Software reset requires normal operation (SSD = 1). */
-+	ret = regmap_write(chip->regmap, IS32FL3207_REG_CONTROL,
-+			   IS32FL3207_CONTROL_ENABLE);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_write(chip->regmap, IS32FL3207_REG_RESET, 0);
-+	if (ret)
-+		return ret;
-+	usleep_range(200, 300);
-+
-+	ret = regmap_write(chip->regmap, IS32FL3207_REG_CONTROL, 0);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_write(chip->regmap, IS32FL3207_REG_GLOBAL_CURRENT,
-+			   IS32FL3207_GLOBAL_CURRENT_MAX);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_bulk_write(chip->regmap, IS32FL3207_REG_SCALING(0),
-+				scaling, sizeof(scaling));
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_bulk_write(chip->regmap, IS32FL3207_REG_PWM_LOW(0), pwm,
-+				sizeof(pwm));
-+	if (ret)
-+		return ret;
-+
-+	/* PWM data can be latched only in normal operation. */
-+	ret = regmap_write(chip->regmap, IS32FL3207_REG_CONTROL,
-+			   IS32FL3207_CONTROL_ENABLE);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_write(chip->regmap, IS32FL3207_REG_PWM_UPDATE, 0);
-+	disable_ret = regmap_write(chip->regmap, IS32FL3207_REG_CONTROL, 0);
-+
-+	return ret ?: disable_ret;
-+}
-+
-+static int is32fl3207_enable(struct is32fl3207 *chip)
-+{
-+	int ret;
-+
-+	guard(mutex)(&chip->lock);
-+
-+	ret = regmap_write(chip->regmap, IS32FL3207_REG_CONTROL,
-+			   IS32FL3207_CONTROL_ENABLE);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_write(chip->regmap, IS32FL3207_REG_PWM_UPDATE, 0);
-+	if (ret)
-+		regmap_write(chip->regmap, IS32FL3207_REG_CONTROL, 0);
-+
-+	return ret;
-+}
-+
-+static void is32fl3207_disable_locked(struct is32fl3207 *chip)
-+{
-+	regmap_write(chip->regmap, IS32FL3207_REG_CONTROL, 0);
-+	if (chip->enable_gpio)
-+		gpiod_set_value_cansleep(chip->enable_gpio, 0);
-+}
-+
-+static void is32fl3207_disable(void *data)
-+{
-+	struct is32fl3207 *chip = data;
-+
-+	guard(mutex)(&chip->lock);
-+	chip->shutting_down = true;
-+	is32fl3207_disable_locked(chip);
-+}
-+
-+static const struct regmap_config is32fl3207_regmap_config = {
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.max_register = IS32FL3207_REG_RESET,
-+};
-+
-+static int is32fl3207_probe(struct i2c_client *client)
-+{
-+	struct device *dev = &client->dev;
-+	struct is32fl3207 *ddata;
-+	unsigned int count;
-+	unsigned int i = 0;
-+	u32 riset_ohms;
-+	int ret;
-+
-+	count = device_get_child_node_count(dev);
-+	if (!count || count > IS32FL3207_NUM_CHANNELS)
-+		return dev_err_probe(dev, -EINVAL,
-+				     "invalid LED count %u\n", count);
-+
-+	ddata = devm_kzalloc(dev, struct_size(ddata, leds, count), GFP_KERNEL);
-+	if (!ddata)
-+		return -ENOMEM;
-+
-+	ddata->dev = dev;
-+	ddata->num_leds = count;
-+	i2c_set_clientdata(client, ddata);
-+
-+	ret = device_property_read_u32(dev, "issi,riset-ohms", &riset_ohms);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to read RISET value\n");
-+
-+	if (riset_ohms < 2000)
-+		return dev_err_probe(dev, -EINVAL,
-+				     "RISET value %u is below 2000 ohms\n",
-+				     riset_ohms);
-+
-+	ddata->output_max_microamp = div_u64(IS32FL3207_CURRENT_NUMERATOR,
-+					     riset_ohms);
-+	if (!ddata->output_max_microamp)
-+		return dev_err_probe(dev, -EINVAL,
-+				     "RISET value %u is too large\n",
-+				     riset_ohms);
-+
-+	ddata->enable_gpio = devm_gpiod_get_optional(dev, "enable",
-+						     GPIOD_OUT_LOW);
-+	if (IS_ERR(ddata->enable_gpio))
-+		return dev_err_probe(dev, PTR_ERR(ddata->enable_gpio),
-+				     "failed to get enable GPIO\n");
-+
-+	ddata->regmap = devm_regmap_init_i2c(client,
-+					     &is32fl3207_regmap_config);
-+	if (IS_ERR(ddata->regmap))
-+		return dev_err_probe(dev, PTR_ERR(ddata->regmap),
-+				     "failed to allocate register map\n");
-+
-+	ret = devm_mutex_init(dev, &ddata->lock);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_regulator_get_enable_optional(dev, "vcc");
-+	if (ret && ret != -ENODEV)
-+		return dev_err_probe(dev, ret,
-+				     "failed to enable VCC regulator\n");
-+
-+	ret = devm_add_action_or_reset(dev, is32fl3207_disable, ddata);
-+	if (ret)
-+		return ret;
-+
-+	/* Let VCC settle while SDB keeps the outputs disabled. */
-+	usleep_range(1000, 2000);
-+
-+	/*
-+	 * Registers remain accessible with SDB low. Clear retained scaling
-+	 * before releasing hardware shutdown.
-+	 */
-+	ret = is32fl3207_clear_retained_scaling(ddata);
-+	if (ret)
-+		return dev_err_probe(dev, ret,
-+				     "failed to clear retained current scaling\n");
-+
-+	if (ddata->enable_gpio)
-+		gpiod_set_value_cansleep(ddata->enable_gpio, 1);
-+
-+	/* The SDB rising edge resets the I2C interface; allow it to settle. */
-+	usleep_range(1000, 2000);
-+
-+	ret = is32fl3207_hw_init(ddata);
-+	if (ret)
-+		return dev_err_probe(dev, ret,
-+				     "failed to initialize controller\n");
-+
-+	device_for_each_child_node_scoped(dev, child) {
-+		struct is32fl3207_led *led = &ddata->leds[i];
-+
-+		ret = is32fl3207_register_led(ddata, child, led);
-+		if (ret)
-+			return ret;
-+
-+		i++;
-+	}
-+
-+	ret = is32fl3207_enable(ddata);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to enable controller\n");
-+
-+	return 0;
-+}
-+
-+static void is32fl3207_shutdown(struct i2c_client *client)
-+{
-+	struct is32fl3207 *chip = i2c_get_clientdata(client);
-+	bool retain_state = false;
-+	unsigned int i;
-+	int ret = 0;
-+
-+	guard(mutex)(&chip->lock);
-+	chip->shutting_down = true;
-+
-+	for (i = 0; i < chip->num_leds; i++)
-+		if (chip->leds[i].led_cdev->flags & LED_RETAIN_AT_SHUTDOWN) {
-+			retain_state = true;
-+			break;
-+		}
-+
-+	if (!retain_state) {
-+		is32fl3207_disable_locked(chip);
-+		return;
-+	}
-+
-+	for (i = 0; i < chip->num_leds; i++) {
-+		struct led_classdev *cdev = chip->leds[i].led_cdev;
-+
-+		if (cdev->flags & LED_RETAIN_AT_SHUTDOWN)
-+			continue;
-+		ret = is32fl3207_turn_off_locked(chip, &chip->leds[i]);
-+
-+		if (ret) {
-+			dev_warn(chip->dev,
-+				 "failed to turn off LEDs during shutdown: %d\n",
-+				 ret);
-+			break;
++	if (!is_software_node(dev_node))
++		return NULL;
++
++	if (muxc->arbitrator)
++		mux_node = fwnode_get_named_child_node(dev_node, "i2c-arb");
++	else if (muxc->gate)
++		mux_node = fwnode_get_named_child_node(dev_node, "i2c-gate");
++	else
++		mux_node = fwnode_get_named_child_node(dev_node, "i2c-mux");
++
++	if (mux_node) {
++		/* A "reg" property indicates an old-style firmware entry. */
++		if (!fwnode_property_read_u32(mux_node, "reg", &reg)) {
++			fwnode_handle_put(mux_node);
++			mux_node = NULL;
 +		}
 +	}
++
++	if (!mux_node)
++		mux_node = fwnode_handle_get(dev_node);
++	else if (muxc->arbitrator || muxc->gate)
++		child = fwnode_handle_get(mux_node);
++
++	if (!child) {
++		fwnode_for_each_child_node(mux_node, child) {
++			if (fwnode_property_read_u32(child, "reg", &reg))
++				continue;
++			if (chan_id == reg)
++				break;
++		}
++	}
++
++	fwnode_handle_put(mux_node);
++	return child;
 +}
 +
-+static const struct of_device_id is32fl3207_of_match[] = {
-+	{ .compatible = "issi,is32fl3207" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, is32fl3207_of_match);
+ int i2c_mux_add_adapter(struct i2c_mux_core *muxc,
+ 			u32 force_nr, u32 chan_id)
+ {
+ 	struct i2c_adapter *parent = muxc->parent;
++	struct fwnode_handle *channel_node = NULL;
+ 	struct i2c_mux_priv *priv;
+ 	char symlink_name[20];
+ 	int ret;
+@@ -324,8 +377,8 @@ int i2c_mux_add_adapter(struct i2c_mux_core *muxc,
+ 		priv->adap.lock_ops = &i2c_parent_lock_ops;
+ 
+ 	/*
+-	 * Try to populate the mux adapter's of_node, expands to
+-	 * nothing if !CONFIG_OF.
++	 * Associate the mux adapter with its DT or software-node channel.
++	 * DT support expands to nothing if !CONFIG_OF.
+ 	 */
+ 	if (muxc->dev->of_node) {
+ 		struct device_node *dev_node = muxc->dev->of_node;
+@@ -364,6 +417,8 @@ int i2c_mux_add_adapter(struct i2c_mux_core *muxc,
+ 
+ 		priv->adap.dev.of_node = child;
+ 		of_node_put(mux_node);
++	} else {
++		channel_node = i2c_mux_get_channel_swnode(muxc, chan_id);
+ 	}
+ 
+ 	/*
+@@ -374,6 +429,16 @@ int i2c_mux_add_adapter(struct i2c_mux_core *muxc,
+ 				      ACPI_COMPANION(muxc->dev),
+ 				      chan_id);
+ 
++	if (channel_node) {
++		ret = device_add_software_node(&priv->adap.dev,
++					       to_software_node(channel_node));
++		if (!ret)
++			priv->swnode = channel_node;
++		fwnode_handle_put(channel_node);
++		if (ret)
++			goto err_free_priv;
++	}
 +
-+static const struct i2c_device_id is32fl3207_id[] = {
-+	{ .name = "is32fl3207" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(i2c, is32fl3207_id);
-+
-+static struct i2c_driver is32fl3207_driver = {
-+	.driver = {
-+		.name = "is32fl3207",
-+		.of_match_table = is32fl3207_of_match,
-+	},
-+	.probe = is32fl3207_probe,
-+	.shutdown = is32fl3207_shutdown,
-+	.id_table = is32fl3207_id,
-+};
-+module_i2c_driver(is32fl3207_driver);
-+
-+MODULE_AUTHOR("Ahmad Byagowi <ahmadexp@gmail.com>");
-+MODULE_DESCRIPTION("Lumissil IS32FL3207 LED controller driver");
-+MODULE_LICENSE("GPL");
+ 	if (force_nr) {
+ 		priv->adap.nr = force_nr;
+ 		ret = i2c_add_numbered_adapter(&priv->adap);
+@@ -408,6 +473,8 @@ int i2c_mux_add_adapter(struct i2c_mux_core *muxc,
+ 	return 0;
+ 
+ err_free_priv:
++	if (priv->swnode)
++		device_remove_software_node(&priv->adap.dev);
+ 	kfree(priv);
+ 	return ret;
+ }
+@@ -429,7 +496,13 @@ void i2c_mux_del_adapters(struct i2c_mux_core *muxc)
+ 		sysfs_remove_link(&muxc->dev->kobj, symlink_name);
+ 
+ 		sysfs_remove_link(&priv->adap.dev.kobj, "mux_device");
++		/*
++		 * Keep the software node through child removal. The adapter
++		 * device is cleared on deletion, so release the software-node
++		 * attachment reference via the saved handle afterwards.
++		 */
+ 		i2c_del_adapter(adap);
++		fwnode_handle_put(priv->swnode);
+ 		of_node_put(np);
+ 		kfree(priv);
+ 	}
 -- 
 2.50.1 (Apple Git-155)
 
