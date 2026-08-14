@@ -1,84 +1,67 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D030D3C0619
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 20:10:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 017A13314D2;
+	Fri, 14 Aug 2026 20:11:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786738254; cv=none; b=Whu/bePFdpOroXtHPhjz8TdVCbztAVf7g5SwvuMrZKsnfOnZGwN0De3AGbZVyp7v+fPLq6MXO1PxTfw1PtOv40+YS5AocjK3n3ZxVhpUnjjUmvF384I1vqS9r8jjOHYzS3jVbUzdx56sRYq5tZE9JCWUHqL5xADYqJaDdSNsqO0=
+	t=1786738321; cv=none; b=Aoxn+zWM20GzrggQcxqy/9pmhwi9NVfTiY/rOIcpzbXRKf/5TAghndImsWXIzKzyt/wI8xGYHs/5T6UpgmEG8SA4PacoWqHEWo2mOAu7bVUyFA9t4luhjHiVFIxCwqrXUS83qVxtU1B6bypVAE4KGo98oiTliyHhyFwHhWN3I3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786738254; c=relaxed/simple;
-	bh=1bzxb9qJHFKKK9er7USAB95hrkuB2XjthksqqBONPjM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=j36N/6UPGzx1HBhEMU/T2ZwC/GDRvGicft3RbwSVKw6wPNcjyePzJ4cemEqKozbbV7DlDwAOCI9sL0W2HM7ws8VTmIXo6NuOFrifhol7S/xm/hrHmPetf6YivbellEpBMPx4yZobK8BzzFhJYI/CqThO9uJjYd0sDKqq9j8J5Ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W5LT7/FZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786738321; c=relaxed/simple;
+	bh=wnvQzKguxPov0pXd/96m+nYEqJuD3W4fY7K+WrCiZWE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nkmtSj3aie7+2RXblhAeotqzE42yWtN4Rp6qTIq6mVCbE3cVA4+OXT9OCwASuukMhfC5hwp7B0pBPn2MExMx21Q+Ef5rOMlYcfEuxTnAV7AQK1tr2h67xWn1UwF0T5sJLcHKihnk86rrwzjQuQBLrvByRIFLJpapTWZOEOWpujU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=i+2V4XGp; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W5LT7/FZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC3E1F000E9;
-	Fri, 14 Aug 2026 20:10:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786738251;
-	bh=u5JsqoFJbnJQCq+WE1mKAHT/3lMeKVwXtya7ujYh3yw=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=W5LT7/FZ6lZ07/N/REReDDfvxfv8iGEArK8jBQHW6Fw13X2Nh63Tb9w9eO6H23oUL
-	 YdeFPCIGST+f0byZ/Y96gRFWa94pXtsceRTCV47kgt76vwfiKT1V2LvtwNmONJvrzl
-	 5Rw1FLo0RswVbs2sTcunUbT4sDFZqXMMRj6rqvVgqBMe1hUcm4hstmzcYxl+DusSLl
-	 FnHtqG8SMfm7063Hp4foYAe4PIRUEKTyV/EyqrLchnWOssWpnnBtzZ+N0LeQ9QH9uy
-	 5NNoAkCs47MzXSK7hwWDxsltARhk0pCzgLxHFeKwoLIU48KfWj9oekdCt4mbmrwq8W
-	 +yBi3o4W92s4w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09BD392445C;
-	Fri, 14 Aug 2026 20:10:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="i+2V4XGp"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=PxpdOmXm8nHLvIh8dI4mjC2w14RXShnV3+KF8Fge3dM=; b=i+2V4XGpn7JwTaS+sSwfT1hO2m
+	KASgnVVLspqnTMwhNC6I4+UM3fJYo+k92RGuN+fPQwJCOVFgFdBzhIaRAqDuMEDxTGCGmYtx8yIh8
+	O1ZIikVQ71Wpvb4IOxiSjpYEeelS8tEOyKDbQYPy54HeOKYa29lml7ZVMHidHtu8Zyh8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wuyFw-0002b4-Jp; Fri, 14 Aug 2026 22:11:56 +0200
+Date: Fri, 14 Aug 2026 22:11:56 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Jason Winter <jjx@live.nl>
+Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, linux@rainbow-software.org,
+	gregkh@linuxfoundation.org
+Subject: Re: [PATCH net] net: usb: cx82310_eth: bound partial-frame remainder
+ by current skb length
+Message-ID: <dfa12d31-275f-426f-8cb2-594a823dbd82@lunn.ch>
+References: <BESP194MB28324DC870B7DE2E694CCEEEB8DA2@BESP194MB2832.EURP194.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v4 net-next] gre: fix ERSPAN o_flags race/corruption in
- xmit
- and fill_info
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178673820545.3942175.10731267597939666545.git-patchwork-notify@kernel.org>
-Date: Fri, 14 Aug 2026 20:10:05 +0000
-References: <20260812142257.21283-1-edumazet@google.com>
-In-Reply-To: <20260812142257.21283-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- idosch@nvidia.com, netdev@vger.kernel.org, eric.dumazet@gmail.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BESP194MB28324DC870B7DE2E694CCEEEB8DA2@BESP194MB2832.EURP194.PROD.OUTLOOK.COM>
 
-Hello:
+On Fri, Aug 14, 2026 at 09:08:14PM +0200, Jason Winter wrote:
+> When a frame straddles two bulk URBs, cx82310_rx_fixup() stores the
+> number of bytes still expected in dev->partial_rem and on the next call
+> memcpy()s that many bytes from the new skb without checking that the new
+> URB actually delivered that much data. A malicious device
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+So this is somewhat theoretical. Maybe less so than average, since
+this is a USB dongle, but still, does it bother people?
 
-On Wed, 12 Aug 2026 14:22:57 +0000 you wrote:
-> For IPv4 ERSPAN:
-> In erspan_xmit(), the driver clears IP_TUNNEL_SEQ_BIT (for version 0)
-> and IP_TUNNEL_KEY_BIT directly in the shared tunnel->parms.o_flags
-> structure. Since transmit paths can run locklessly and concurrently,
-> this leads to a data race.
-> 
-> Furthermore, modifying tunnel->parms.o_flags permanently alters the
-> tunnel configuration. To work around this, erspan_fill_info() (which
-> reports config to userspace) was setting IP_TUNNEL_KEY_BIT back. If
-> erspan_fill_info (running under RTNL) and erspan_xmit (running locklessly)
-> race, erspan_xmit might see IP_TUNNEL_KEY_BIT set when it shouldn't,
-> leading to GRE header corruption (injecting a key field into the ERSPAN
-> GRE header).
-> 
-> [...]
+Please drop the Fixes: tag and post for net-next.
 
-Here is the summary with links:
-  - [v4,net-next] gre: fix ERSPAN o_flags race/corruption in xmit and fill_info
-    https://git.kernel.org/netdev/net-next/c/9958e69b9893
+https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+    Andrew
 
-
+---
+pw-bot: cr
