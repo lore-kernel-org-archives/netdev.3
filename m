@@ -1,150 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE6018FDDE;
-	Fri, 14 Aug 2026 02:04:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FDF3D47A5
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 02:14:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786673054; cv=none; b=LDHOnUacqwa8wfHQkzpyC1RXglyNzIPHRVbJmpNe+oBMHrWA+m05DficOS3joYB6wmaxoeTy2Q/dFfSVM9glPzhT8V7yx9DO4DlZ8JSRV4uufkQGZqbPsZj47QUL6pClWFo4MqbVBx7ZIgNel9jlhlbTgjqTwZ+x8m/k4T6WqZ8=
+	t=1786673650; cv=none; b=s7Lv4p/9stnyegVgU4xz9ii1JjrGMvFc6N119xsTH7WS/f/Y0pS9pEgA8hZzAlqy4PMKEGkew/HFRAB5TcZ4uoUQCka7Y7FvVkJ5/NiDorbCuvDRbE1CFscJJh2hJL2V95Am8CzSYOY4VCsJJTCjOWiVRh33907Po0oTHzzOfks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786673054; c=relaxed/simple;
-	bh=hHpR18k9I+Ngs5LkxTU+erd1qOKO2BBGAXXDDlgkbLE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r0eGc9hKGKrIaa1wgy2AeBGFudZX38LJcaXZ4Wjf6n+RxViB+YpQVnJy2O2N3Drrs9HxZMNnyNZrVuH2DcZrARFaw4yqpRM87jtFtxsJZ4qmqZhcnLRQaRF2jVQht/JGPeNUkJYriCgi3JMZHUbyGU4sUjfBRZzDe/UTJmcOEm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AlNB+gkl; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786673650; c=relaxed/simple;
+	bh=QpYUCLZj1yfN3gVx4tQscwbqaJGdHlE7TtXcacBdEao=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=C5+eRO9tgHHCEnCuIStzvLTu/x3ym3sPfGz8xbXOj1zKPCsDh+/g5u1nVNeMzpmLtVAOGsA3FSgVwnDFYxCOIJP1N9cEa5d7fQ9LZ3Gp0pLjgsn5snNymf70AfVBA+D6dbp0ZivptWmw+tmbsicP5dO+ORn58iKucWyr3X9RVqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CsTV+bXf; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AlNB+gkl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C611F000E9;
-	Fri, 14 Aug 2026 02:04:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786673052;
-	bh=i0GveM913yNieNQlwzfbV2Ur/22VUi/L//5uORRBYR4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AlNB+gklfdvt+kF/Xfx+X74t8uOMr8fDwY7pvZaGNm6pU5QPbUEzi13v/QW7tK9vR
-	 5YU4Et0xiFHSSV97rX59idXOo1iaS7DNL3NfmQXmlKS64C9oNtYAR4WBwN8wv3RdjM
-	 yHBiuEjgIzzCRHrG2sRQ5lbvxvTVFrOAGnHafuIbGBnz2i3ml0QV+YumZ1UDwR1RvN
-	 40cCQwMlq9mXLYF4XIoQfEhInd64TtpVqzdaT9zetQAo9Ae7RtDNFM3lydW7IdgssI
-	 rZVxa/c47ZxuUf32px7CVLOKE/QJ7gPcr6vikL5h/d4wzez8JZgefCQn+LiNuyunL5
-	 GaHeGrDM35smQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: christophe.roullier@foss.st.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	rmk+kernel@armlinux.org.uk,
-	maxime.chevallier@bootlin.com,
-	vladimir.oltean@nxp.com,
-	netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [net-next,PATCH 1/1] net: stmmac: Fix manage error case during stmmac_dvr_probe
-Date: Thu, 13 Aug 2026 19:02:36 -0700
-Message-ID: <20260814020235.2839045-2-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260810150749.458682-2-christophe.roullier@foss.st.com>
-References: <20260810150749.458682-2-christophe.roullier@foss.st.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CsTV+bXf"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8487eb67173so708057b3a.2
+        for <netdev@vger.kernel.org>; Thu, 13 Aug 2026 19:14:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786673648; x=1787278448; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=W0Oe/LvifeLBGooF3p0AWcsDdEJir2qt3r/dB6w0lF4=;
+        b=CsTV+bXfDBUhGIptasP/+61KIFA/mInVApSF2tyXdlWAgZXc9sc8gs+PsbffJQ/3HG
+         xI3Lo3nzD7rLLe4vRHTdvx9hWl+b3Hh/CqjH1IEj/vKvnOQQQ3HFdje9lHk8yPfxm17Z
+         nVP3/r3NglcjKO4M2Z6UfB4Rhzr9ftEqkl+TPZjaQw44BVCelkk995+vgdZt3hrbMCEY
+         hGC9N7c7wNRriystU/zHe/fTVLs7euWI1vO2MZeMuXlun+0QwYhijt/m0ucW1yPH74jK
+         6SowOW2sZw6o0vWNCENj5U73BMuMdmJZ4SwYAIeI5w+OLxEWoWPqvemNhMBjXMKq/Lyd
+         rQ7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786673648; x=1787278448;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=W0Oe/LvifeLBGooF3p0AWcsDdEJir2qt3r/dB6w0lF4=;
+        b=FPwKleqQs1uqMORdfaCsn4O6MGXVwa0Rhk+6O/S24wteEefdGFRsa4UPeuuzJ3hSbb
+         dAl/ruoEWqfnfUVCE2VPqM0t/XJx8at8k14Oan2HUzBgS2uLFgLZNFoAyPtFnu8chzJU
+         o4gh6ti4uPaY09sSDKWbMgYWv9hvHwMhHT1ZJwpA/G0m43IJgPyhay/f1BKWogUdlaVO
+         j/8ez1sMVBuUGazsJQQSuHT3G8coS6BYN+LiiHUEsOM0dR0EQdLJl/86O/nxbflzsOhX
+         861kpCNI2PSIVmjafO8b1pbNG15KfmFmlMVG19zeQQPwQF0ICGNAL5Vpzzzx9x2LVp+d
+         3DRA==
+X-Gm-Message-State: AOJu0Yx75aoSn1Nq7glU2JWivGHVIby3dumueXVnCSzAhv3qR94y/+I3
+	OW/d/biFicTO5/KbJJa8GkNl1fyTCzKjWpgDB1NX7f/+sUFC408On3PHVntV8qU6jr6daHQA0w4
+	UoWtjpPxm+Aersub0kGlGgxmRoNN4TX/vi9js9ZraW8B9ThwcisfSI27Ox8WtSFzY8KC6evaHuw
+	5WlwmPOY0nfjAASbHfShrdSoQOA/1KXeDRiywP8zNuyXfgh3vcMYCn64GEdI3uxo4=
+X-Received: from pfbdu12.prod.google.com ([2002:a05:6a00:2b4c:b0:84e:46e0:6349])
+ (user=hramamurthy job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:368f:b0:845:e97d:447e with SMTP id d2e1a72fcca58-84fde32499fmr2662134b3a.26.1786673647787;
+ Thu, 13 Aug 2026 19:14:07 -0700 (PDT)
+Date: Fri, 14 Aug 2026 02:13:50 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.691.gc56d675ccc-goog
+Message-ID: <20260814021406.3044324-1-hramamurthy@google.com>
+Subject: [PATCH net-next v4 00/15] gve: AdminQ mode related refactors
+From: Harshitha Ramamurthy <hramamurthy@google.com>
+To: netdev@vger.kernel.org
+Cc: joshwash@google.com, hramamurthy@google.com, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, 
+	john.fastabend@gmail.com, sdf@fomichev.me, jordanrhee@google.com, 
+	willemb@google.com, nktgrg@google.com, maolson@google.com, thostet@google.com, 
+	jacob.e.keller@intel.com, przemyslaw.kitszel@intel.com, debarghyak@google.com, 
+	kees@kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi!
+This series is preparing the driver for the addition of a new control
+plane mode(MailboxQ) by commonizing and reusing as much code as possible.
+MailboxQ is a new control plane infrastructure which uses mailbox queues.
+This is a new control plane to communicate with the device when the driver
+is running on bare-metal instances as well as newer versions of the device.
 
-Please see the AI-generated review of your patch below.
+This series contains 2 main changes to the gve driver's existing control
+plane(AdminQ):
+1) refactor some initialization/teardown path methods to make it work for
+   both control planes.
+2) add gve_ctrl_ops structure to the driver for various control plane
+   operations
 
-If what the AI suggests (flipping the order) is correct -
-we definitely need a comment on this, 'cause it's counter-intuitive.
----
-net: stmmac: Fix manage error case during stmmac_dvr_probe
+The refactors are mainly around the init, reset and recover paths so that
+functionalities could be moved into the control ops like 'set_num_queues',
+'set_num_ntfy_blks' etc.
 
-The probe error path starting at the error_mdio_register label in
-__stmmac_dvr_probe() did not undo the runtime PM setup done just before
-stmmac_mdio_register(). This patch adds a put and a disable of runtime PM
-to that label.
+This patch series only sets the control ops for AdminQ mode. This is
+intended as a preparation for adding MailboxQ mode in upcoming series
+which will add the new control plane infrastructure and then introduce
+the corresponding control ops for MailboxQ mode.
 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index b2b7d0242dd3c..37d06fc6dba47 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -8080,6 +8080,8 @@ static int __stmmac_dvr_probe(struct device *device,
->  error_pcs_setup:
->  	stmmac_mdio_unregister(ndev);
->  error_mdio_register:
-> +	pm_runtime_put_sync(device);
-> +	pm_runtime_disable(device);
+The entire list of future patches can be found here for reference:
+https://github.com/hramamurthy12/linux/commits/gve-mailbox-queues/
 
-[Severity: High]
-Should the order of these two calls be swapped, as in stmmac_dvr_remove()?
+Changes in v4:
+- Reduce code churn by placing new functions directly in gve_adminq.c, introducing final tab spacing
+  and using local variable (Przemek Kitszel)
+- Fix kdoc formatting and drop spurious management interrupt(patch 9)
+- Propagate release_db_resources naming change (patch 12)
+- Remove double logging in destroy queues path (patch 14)
+- v3: https://lore.kernel.org/netdev/20260803184630.3813311-1-hramamurthy@google.com/
 
-As written, pm_runtime_put_sync() runs while runtime PM is still enabled
-and the status is RPM_ACTIVE (set earlier in __stmmac_dvr_probe() by
-pm_runtime_get_noresume() / pm_runtime_set_active() / pm_runtime_enable()).
-There is no ->runtime_idle callback and no autosuspend in this driver:
+Changes in v3:
+- Fix driver compatibility verification in the reset and recovery paths (patches 2, 8).
+- Mark gve_adminq_get_device_properties() with __maybe_unused ahead of its usage (patch 7).
+- Refine error handling and resource cleanup in reset, probe, and queue creation paths (patches 8, 9, 11, 14).
+- Keep IRQ doorbell allocation/release in control plane resource helpers (patch 12).
+- Minor fixes: fix TOCTOU issue for link speed, correct kdoc comments, and remove redundant teardown calls (patches 4, 11, 15). 
+- v2: https://lore.kernel.org/netdev/20260602235900.3050782-1-hramamurthy@google.com/
 
-drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c:
-	SET_RUNTIME_PM_OPS(stmmac_runtime_suspend, stmmac_runtime_resume, NULL)
+Changes in v2:
+- Rebased against latest net-next to resolve apply failure for patch 5
+- Fixed a few typos in commit messages of patch 9 and 14
+- Fixed a kdoc warning in patch 9
+- v1: https://lore.kernel.org/netdev/20260601175437.3767283-1-hramamurthy@google.com/
+Harshitha Ramamurthy (9):
+  gve: don't pass in unused parameter to gve_adminq_free
+  gve: refactor initialization with helper functions
+  gve: add a few helper functions to set device properties
+  gve: add struct gve_device_info to hold device properties
+  gve: introduce control plane operations structure
+  gve: introduce ctrl ops to set vectors and Qs
+  gve: introduce gve_adminq_get_device_properties()
+  gve: refactor gve_init_priv for reset path
+  gve: add ctrl ops to for queue operations
 
-so dropping the usage count to zero synchronously runs
-stmmac_runtime_suspend() -> stmmac_bus_clks_config(priv, false):
+Joshua Washington (6):
+  gve: simplify reset logic
+  gve: add gve_ctrl_ops for gve initialization/teardown sequences
+  gve: split up notify block allocation and setup paths
+  gve: introduce new methods to handle IRQ doorbells
+  gve: setup and teardown management interrupts
+  gve: add link status/speed ctrl ops
 
-	} else {
-		clk_disable_unprepare(plat_dat->stmmac_clk);
-		clk_disable_unprepare(plat_dat->pclk);
-		if (plat_dat->clks_config)
-			plat_dat->clks_config(plat_dat->bsp_priv, enabled);
-	}
+ drivers/net/ethernet/google/gve/gve.h         |  89 +-
+ drivers/net/ethernet/google/gve/gve_adminq.c  | 437 ++++++--
+ drivers/net/ethernet/google/gve/gve_adminq.h  |  25 +-
+ drivers/net/ethernet/google/gve/gve_dqo.h     |   2 +-
+ drivers/net/ethernet/google/gve/gve_ethtool.c |   5 +-
+ .../net/ethernet/google/gve/gve_flow_rule.c   |  15 +-
+ drivers/net/ethernet/google/gve/gve_main.c    | 940 +++++++++---------
+ 7 files changed, 957 insertions(+), 556 deletions(-)
 
-But pm_runtime_set_active() is only bookkeeping - runtime PM never took a
-clock reference of its own. stmmac_clk and pclk were prepared/enabled once
-in stmmac_probe_config_dt(), and devm_stmmac_probe_config_dt() registered
-the devres action that disables them again:
-
-drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c:devm_stmmac_remove_config_dt() {
-	clk_disable_unprepare(plat->stmmac_clk);
-	clk_disable_unprepare(plat->pclk);
-	...
-}
-
-Can this lead to a double clk_disable_unprepare() when probe unwinds?  The
-new put gates the clocks, then the error propagates out and the glue driver
-error path plus devres unwinding disable the same clocks again, for example
-in dwmac-imx:
-
-	ret = stmmac_pltfr_probe(pdev, plat_dat, &stmmac_res);
-	if (ret)
-		imx_dwmac_clks_config(dwmac, false);
-
-which would hit the clk core warnings in clk_core_disable()
-("%s already disabled") and clk_core_unprepare() ("%s already unprepared"),
-with a panic on panic_on_warn systems.  25 glue drivers reference
-stmmac_pltfr_pm_ops, so the same callback applies broadly.
-
-Is this reachable in practice?  stmmac_mdio_register() returns -ENODEV on
-the "No PHY found" path, and stmmac_pcs_setup(), stmmac_phylink_setup(),
-stmmac_register_devlink() and register_netdev() all fall through to this
-same label.
-
-A related question: since the clocks are now gated for the rest of the
-teardown, is it still safe for the plat_dat->exit() callback invoked by
-stmmac_dvr_probe() on failure to touch MAC registers?
-
-Would the following match the existing convention in stmmac_dvr_remove(),
-which disables first and then uses a put that cannot invoke
-->runtime_suspend, leaving the clocks on for the platform/devres teardown?
-
-	pm_runtime_disable(device);
-	pm_runtime_put_noidle(device);
-
->  	stmmac_napi_del(ndev);
->  error_hw_init:
->  	destroy_workqueue(priv->wq);
 -- 
-pw-bot: cr
+2.55.0.691.gc56d675ccc-goog
+
