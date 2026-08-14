@@ -1,306 +1,175 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1C4B2BEFEF
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 22:54:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5BA5390613;
+	Fri, 14 Aug 2026 22:56:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786748056; cv=none; b=sLFxvLXZDWP9opyxNDhV7Hooeuk6qQJwnPUG2NEwjfWWJxTYlZGnnBiGXJ4+O629vxO0srJVYyNwFK/Hw90ohp7lqcKnuRWht98V7WsrgMAB8GzIiT2yREPAt9mn4kO67/HESjOZSxtZ7j/GC1+RqO3Ox86i0nHqc9ftEr9sVlo=
+	t=1786748199; cv=none; b=Z0UOtighp/pfSJIUb5JM2ZyKMUs/ZECFp0KKExi2NpB5m37ixu9PHMbLQXHCjARQSp1IXifAGNMdM7CWEuVpm0u3chFHPf/8DCvwgxOdPqR9Laz/+PHn3TnJsJP+kwt04Y83JiHCc9XQdsqGHl03HNbAe3Z+biXsxOLg6RTLQlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786748056; c=relaxed/simple;
-	bh=2iKXdr6QXSyjPn85CuyZW+p5YOArKwI+0Qk5/NokLEM=;
+	s=arc-20240116; t=1786748199; c=relaxed/simple;
+	bh=pPtwt9Rj/CD0WdnVJjiyoCyv9cPuh/TKcGvumGpIcHY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hX+6o08cIyca0ILKyH6wg702vnhOoi/7NB7Q7ABuNixeCSf+rlvknLTVuXbTkz5ME7OGAHU5QEJMUjHJNbmHoQpdEOIPNjLQm9ghdRZYzfSxFQDW7ODP07eMl+PSL73SsPNuL2+TTBwZX9bKR5icMC1nC/3PmSmN4CWdJnvXgqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xa/fPEn9; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=GdcVPp0S13XHYPDuoPzJp1hZi76KgbOPWPIog6jV5xzcclrLuqEw04B/wFjM42WoR4Ge1kYWNmUNbDa3aepmXBZehdcpTsA/1PAUrupkvYi6unZnGckNyCzciVYsKle7ln+RvvcvmQPRw+8tcZnH2M57T21R3Oxur2TjaiKy6uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C8QtIz/r; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xa/fPEn9"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38dc4553f62so2107927a91.0
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 15:54:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786748054; x=1787352854; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RHBkDnmyOPFi5TUloKF73rijfsvcu5cEOfTWvQpbO80=;
-        b=Xa/fPEn92VCr+ubjk5DIwUyVuWJ08WZw+Dx7CMfFvqGq3jmon5+2dm21xXMAtD9DTu
-         rm0yRzr18mtF4J/ZrV2JGi7RjuR/UJev0oEqyx8nWinL+PE3I3TOCAgSK21zOKObdChx
-         zHQujAFqWdb2XWnMV+ztmFDdPm2zmpk2PrYdJ2rRpvaWVAyW/veK/uZ9mNI/vUSNsJj9
-         +kej8b9PSz2L1f/N3JEIoVf8UKRuKhtcKdmk4FujU5572peCn7nmYkgNn5SwATwH3f+I
-         kF18Y40PrhVhoyV0dN2/DuT2by2aCEO2rYYF9ej5VRzbAbaLw8W73YazDXc8cwFKZmVW
-         Hntw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786748054; x=1787352854;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=RHBkDnmyOPFi5TUloKF73rijfsvcu5cEOfTWvQpbO80=;
-        b=aMlTZHP2hr8wS4aHbN/BW8wkmqIFwA8r3EGB7/vlOaBWxp9f8qXzoQY20DKy/0ONFx
-         HBYXwipvrkPrXKNWYAsvi52/ZoqCsflxVBpTv8w8z1YHc/NXw8/HFzWD00bryk5NF1i5
-         S16mi3fxRUr/kwDfhNCSF6cDSVaLDvdlCyYBhfflymr8uFnJj7qg8GQLhIzJ9GQmM8fe
-         olcNVAoRg8WfDRaYJGlgz3FbMcEh3CkeFTZIfg2TDMDuiq85MZc56SkfdVyiEYTFUZg9
-         TECRdysdylSIz6QcxPboDooLwPcKh0MD0zBa3+c32zyTuIKG1i8sgBxLr7D1bcZY+AB3
-         rRRQ==
-X-Gm-Message-State: AOJu0Yx/sHSk+a+0IKNi1tkK9wniejlUJxl6pbfKuDjtCPxMAUsrHiLU
-	nMe9if8ly5LdGCNfQ5X2qDVo3fTMHPcxjKQSjRYyd6wN6NLzXbmEATeZ
-X-Gm-Gg: AR+sD11LAGgnlbFFkiXxCk5Sn60XfQG8jaEwlrsgUI2RAlvX+ANu+woeqSieU5DWmtw
-	cYKZqPc6Eix4CVItVS9m8USSOR7UgrJ4bPhu09ut1iWoYpy7YKbBaT8fRhKQmW7bLwhV9zjM3Jr
-	r3WN1ccqqsdqliWtDJTpUspVMrWwndqAwc2BRzM5DyY6hWOsSKyTXBjAP8nSnj+dWJMXS0x4L19
-	W2nD3PVOCyZrWfG4kZB2aJ1ha7dzWS7KkBB8WN4WSKcrICK2HSJA5iMg6C9+OaOw0GnsQAPOBwc
-	riDWzMVzFiFZrgS0dsDU5/X+OfocfYtWHziZq1vTz0E2qJa107B4YUdIMZ/g3j8dDL4n3bIU2et
-	9aY5fTjs1zB0Bu38foBUtMdR8Ynxz2s+GqD8DVhDP1JzCN6RpsTgRH7DOqln2IPc3KGRpIBWF/z
-	rq+PByzlOXZA5Y1hW4tdyvHCv3JAq6Ca51w9p+gJfTeKonZSMFpg4oq5LkM/saIgnETPACS+sRI
-	7nAnuLWVj3ZReR5105vvRzaZ8r56izS0HMq7J7a
-X-Received: by 2002:a17:90b:3d43:b0:37f:c97a:939f with SMTP id 98e67ed59e1d1-3933b811e2dmr10688037a91.7.1786748053832;
-        Fri, 14 Aug 2026 15:54:13 -0700 (PDT)
-Received: from ?IPV6:2a03:83e0:1151:15:c56:221b:35d5:85f? ([2620:10d:c090:500::7:8615])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-320ea8fe3cdsm8532422eec.28.2026.08.14.15.54.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 Aug 2026 15:54:12 -0700 (PDT)
-Message-ID: <9c73a611-8aab-411a-968f-86757e2756e5@gmail.com>
-Date: Fri, 14 Aug 2026 15:54:11 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C8QtIz/r"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1318A1F000E9;
+	Fri, 14 Aug 2026 22:56:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786748197;
+	bh=LLFnFhnp99EnYI29eLdFXvcM8Xtxvy/M4cbmIx4N5lA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=C8QtIz/rZ24VbATHU7zfijy8olR+PSXnXTa++kP1UV1pV1HKuUGQkmptJZzLVMHDi
+	 FFhyAKcPPCquUZt7nMkrYPnYmk8SzXpvFOJx1jquBP3QMIkMaaXBTja+YBRlcUlEyB
+	 vEXHBRup8fnRGHfF2IqxUWoLvPJ2eLn5avEQk5iq3QI0fDTKJyHRt4DLjiwXJYGlqp
+	 BH2zNX0bhMD6/gRA/VnWCYg82ulC5NA3Pnqrtgt/3losOPJsNRaRB/QQM/93REXQxH
+	 GdCGSxxwUkm01hSB/Qjmq8HoS0RiehzqgA6iB5tp4j/SVytZGj60QtLD81+hZ3EV8G
+	 lAfwkgTqyIF9Q==
+Message-ID: <fd6e2e14-4fd2-42fb-8edf-818fe9e90a38@kernel.org>
+Date: Sat, 15 Aug 2026 00:56:33 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v11 4/7] r8169: enable new interrupt mapping
-To: javen <javen_xu@realsil.com.cn>, hkallweit1@gmail.com,
- nic_swsd@realtek.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260814015203.1328-1-javen_xu@realsil.com.cn>
- <20260814015203.1328-5-javen_xu@realsil.com.cn>
-Content-Language: en-US
-From: Mohsin Bashir <mohsin.bashr@gmail.com>
-In-Reply-To: <20260814015203.1328-5-javen_xu@realsil.com.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH mptcp v2] mptcp: restore full join state in syncookie
+ MP_JOIN reconstruction
+Content-Language: fr
+To: Paolo Abeni <pabeni@redhat.com>, Harshit Varu <harshitvaru666@gmail.com>,
+ netdev@vger.kernel.org
+Cc: mptcp@lists.linux.dev, martineau@kernel.org, security@kernel.org,
+ stable@vger.kernel.org
+References: <20260811215135.87756-1-harshitvaru666@gmail.com>
+ <20260811222325.90426-1-harshitvaru666@gmail.com>
+ <d98287c8-0925-4e70-8cb7-c5703d8145fa@redhat.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <d98287c8-0925-4e70-8cb7-c5703d8145fa@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
+Hi Harshit, Paolo,
 
+@Paolo: thank you for the review!
 
-On 8/13/26 6:52 PM, javen wrote:
-> From: Javen Xu <javen_xu@realsil.com.cn>
+On 12/08/2026 11:10, Paolo Abeni wrote:
+> On 8/12/26 12:23 AM, Harshit Varu wrote:
+>> mptcp_token_join_cookie_init_state() rebuilds the request socket for a
+>> MP_JOIN 4th-ACK that was handled under SYN cookies, but it only restores
+>> remote_nonce, local_nonce, backup, join_id, token and msk from the saved
+>> cookie entry. local_id, request_bkup and thmac are never restored, even
+>> though the SYN path saves local_id and computes the other two.
+>>
+>> subflow_ulp_clone() then reads those three fields and copies them into the
+>> joined subflow context (local_id, request_bkup, thmac). Because the
+>> request-sock slab is SLAB_TYPESAFE_BY_RCU and not zeroed on allocation, the
+>> values are stale bytes of previously freed request sockets, which an
+>> off-path peer can influence by sending concurrent MP_JOIN SYNs. A corrupted
+>> local_id breaks id-based path-manager bookkeeping, and a corrupted
+>> request_bkup misclassifies the subflow in the packet scheduler's
+>> backup/active selection.
+>>
+>> Save and restore request_bkup and thmac as well, completing the state
+>> restore.
+>>
+>> Fixes: 9466a1ccebbe ("mptcp: enable JOIN requests even if cookies are in use")
+>> Cc: stable@vger.kernel.org
+>> Assisted-by: opencode:deepseek-v4-flash
+>> Signed-off-by: Harshit Varu <harshitvaru666@gmail.com>
+>> ---
+>>  net/mptcp/syncookies.c | 7 +++++++
+>>  1 file changed, 7 insertions(+)
+>>
+>> diff --git a/net/mptcp/syncookies.c b/net/mptcp/syncookies.c
+>> index 7f2252634..3c25ff627 100644
+>> --- a/net/mptcp/syncookies.c
+>> +++ b/net/mptcp/syncookies.c
+>> @@ -27,7 +27,9 @@ struct join_entry {
+>>  	u8 join_id;
+>>  	u8 local_id;
+>>  	u8 backup;
+>> +	u8 request_bkup;
+>>  	u8 valid;
+>> +	u64 thmac;
 > 
-> This patch enables new interrupt mapping for RTL8127 and add error pkts
-> counter per ring.
+> Is thmac used for passive flows after
+> mptcp_token_join_cookie_init_state()? I think it's not. If so just init
+> to 0 in mptcp_token_join_cookie_init_state (with a comment) and remove
+> remove the new field from here.
 > 
-> Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
-> ---
-> Changes in v2:
->   - no changes
+> Same for request_bkup, AFAICS both are used in syn_ack only.
 > 
-> Changes in v3:
->   - no changes
-> 
-> Changes in v4:
->   - no changes
-> 
-> Changes in v5:
->   - no changes
-> 
-> Changes in v6:
->   - no changes
-> 
-> Changes in v7:
->   - no changes
-> 
-> Changes in v8:
->   - no changes
-> 
-> Changes in v9:
->   - no changes
-> 
-> Changes in v10:
->   - no changes
-> 
-> Changes in v11:
->   - add error pkts counter per ring
-> ---
->   drivers/net/ethernet/realtek/r8169_main.c | 80 +++++++++++++++++++----
->   1 file changed, 68 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-> index b30f0a31d7c7..aa72c42c374d 100644
-> --- a/drivers/net/ethernet/realtek/r8169_main.c
-> +++ b/drivers/net/ethernet/realtek/r8169_main.c
-> @@ -29,6 +29,7 @@
->   #include <linux/prefetch.h>
->   #include <linux/ipv6.h>
->   #include <linux/unaligned.h>
-> +#include <linux/u64_stats_sync.h>
->   #include <net/ip6_checksum.h>
->   #include <net/netdev_queues.h>
->   #include <net/phy/realtek_phy.h>
-> @@ -754,6 +755,15 @@ struct rtl8169_rx_ring {
->   	dma_addr_t rx_desc_phy_addr[NUM_RX_DESC];
->   	dma_addr_t rx_phy_addr;
->   	struct page *rx_databuff[NUM_RX_DESC];
-> +
-> +	struct {
-> +		u64 rx_errors;
-> +		u64 rx_dropped;
-> +		u64 rx_length_errors;
-> +		u64 rx_crc_errors;
-> +		u64 multicast;
-> +		struct u64_stats_sync syncp;
-> +	} stats;
->   };
->   
->   struct rtl8169_private {
-> @@ -3939,6 +3949,15 @@ DECLARE_RTL_COND(rtl_mac_ocp_e00e_cond)
->   	return r8168_mac_ocp_read(tp, 0xe00e) & BIT(13);
->   }
->   
-> +static void rtl8169_hw_enable_vec_mapping(struct rtl8169_private *tp)
-> +{
-> +	u8 tmp;
-> +
-> +	tmp = RTL_R8(tp, INT_CFG0_8125);
-> +	tmp |= INT_CFG0_ENABLE_8125;
-> +	RTL_W8(tp, INT_CFG0_8125, tmp);
-> +}
-> +
->   static void rtl_hw_start_8125_common(struct rtl8169_private *tp)
->   {
->   	rtl_pcie_state_l2l3_disable(tp);
-> @@ -3947,6 +3966,9 @@ static void rtl_hw_start_8125_common(struct rtl8169_private *tp)
->   	RTL_W32(tp, RSS_CTRL_8125, 0);
->   	RTL_W16(tp, Q_NUM_CTRL_8125, 0);
->   
-> +	if (tp->irq_nvecs > 1)
-> +		rtl8169_hw_enable_vec_mapping(tp);
-> +
->   	/* disable UPS */
->   	r8168_mac_ocp_modify(tp, 0xd40a, 0x0010, 0x0000);
->   
-> @@ -4347,7 +4369,7 @@ static int rtl8169_init_ring(struct rtl8169_private *tp)
->   
->   	memset(tp->tx_skb, 0, sizeof(tp->tx_skb));
->   
-> -	for (i = 0; i < tp->num_rx_rings; i++) {
-> +	for (int i = 0; i < tp->num_rx_rings; i++) {
+> The bottom line is that we don't want to increase `struct join_entry`
+> size without good reasons.
 
-This looks like an unrelated change. Looking the function body, this is 
-introducing a new bug on the cleanup path by changing the scope of i.
+@Harshit: I agree with Paolo. So at the end, the v1 was good.
 
->   		struct rtl8169_rx_ring *ring = &tp->rx_ring[i];
->   
->   		memset(ring->rx_databuff, 0, sizeof(ring->rx_databuff));
-> @@ -4926,15 +4948,16 @@ static inline void rtl8169_rx_csum(struct sk_buff *skb,
->   		skb_checksum_none_assert(skb);
->   }
->   
-> -static bool rtl8169_check_rx_desc_error(struct net_device *dev,
-> -					struct rtl8169_private *tp,
-> +static bool rtl8169_check_rx_desc_error(struct rtl8169_rx_ring *ring,
->   					u32 status)
->   {
->   	if (unlikely(status & RxRES)) {
-> +		u64_stats_update_begin(&ring->stats.syncp);
->   		if (status & (RxRWT | RxRUNT))
-> -			dev->stats.rx_length_errors++;
-> +			ring->stats.rx_length_errors++;
->   		if (status & RxCRC)
-> -			dev->stats.rx_crc_errors++;
-> +			ring->stats.rx_crc_errors++;
-> +		u64_stats_update_end(&ring->stats.syncp);
->   		return true;
->   	}
->   	return false;
-> @@ -4965,11 +4988,13 @@ static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp,
->   		 */
->   		dma_rmb();
->   
-> -		if (rtl8169_check_rx_desc_error(dev, tp, status)) {
-> +		if (rtl8169_check_rx_desc_error(ring, status)) {
->   			if (net_ratelimit())
->   				netdev_warn(dev, "Rx ERROR. status = %08x\n",
->   					    status);
-> -			dev->stats.rx_errors++;
-> +			u64_stats_update_begin(&ring->stats.syncp);
-> +			ring->stats.rx_errors++;
-> +			u64_stats_update_end(&ring->stats.syncp);
->   
->   			if (!(dev->features & NETIF_F_RXALL))
->   				goto release_descriptor;
-> @@ -4985,14 +5010,18 @@ static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp,
->   		 * They are seen as a symptom of over-mtu sized frames.
->   		 */
->   		if (unlikely(rtl8169_fragmented_frame(status))) {
-> -			dev->stats.rx_dropped++;
-> -			dev->stats.rx_length_errors++;
-> +			u64_stats_update_begin(&ring->stats.syncp);
-> +			ring->stats.rx_dropped++;
-> +			ring->stats.rx_length_errors++;
-> +			u64_stats_update_end(&ring->stats.syncp);
->   			goto release_descriptor;
->   		}
->   
->   		skb = napi_alloc_skb(napi, pkt_size);
->   		if (unlikely(!skb)) {
-> -			dev->stats.rx_dropped++;
-> +			u64_stats_update_begin(&ring->stats.syncp);
-> +			ring->stats.rx_dropped++;
-> +			u64_stats_update_end(&ring->stats.syncp);
->   			goto release_descriptor;
->   		}
->   
-> @@ -5011,8 +5040,11 @@ static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp,
->   
->   		rtl8169_rx_vlan_tag(desc, skb);
->   
-> -		if (skb->pkt_type == PACKET_MULTICAST)
-> -			dev->stats.multicast++;
-> +		if (skb->pkt_type == PACKET_MULTICAST) {
-> +			u64_stats_update_begin(&ring->stats.syncp);
-> +			ring->stats.multicast++;
-> +			u64_stats_update_end(&ring->stats.syncp);
-> +		}
->   
->   		napi_gro_receive(napi, skb);
->   
-> @@ -5428,6 +5460,27 @@ rtl8169_get_stats64(struct net_device *dev, struct rtnl_link_stats64 *stats)
->   	netdev_stats_to_stats64(stats, &dev->stats);
->   	dev_fetch_sw_netstats(stats, dev->tstats);
->   
-> +	for (int i = 0; i < tp->num_rx_rings; i++) {
-> +		u64 errors, dropped, length_errors, crc_errors, multicast;
-> +		struct rtl8169_rx_ring *ring = &tp->rx_ring[i];
-> +		unsigned int start;
-> +
-> +		do {
-> +			start = u64_stats_fetch_begin(&ring->stats.syncp);
-> +			errors = ring->stats.rx_errors;
-> +			dropped = ring->stats.rx_dropped;
-> +			length_errors = ring->stats.rx_length_errors;
-> +			crc_errors = ring->stats.rx_crc_errors;
-> +			multicast = ring->stats.multicast;
-> +		} while (u64_stats_fetch_retry(&ring->stats.syncp, start));
-> +
-> +		stats->rx_errors += errors;
-> +		stats->rx_dropped += dropped;
-> +		stats->rx_length_errors += length_errors;
-> +		stats->rx_crc_errors += crc_errors;
-> +		stats->multicast += multicast;
-> +	}
-> +
->   	/*
->   	 * Fetch additional counter values missing in stats collected by driver
->   	 * from tally counters.
-> @@ -6166,6 +6219,9 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
->   	if (!tp->rx_ring)
->   		return -ENOMEM;
->   
-> +	for (int i = 0; i < tp->num_rx_rings; i++)
-> +		u64_stats_init(&tp->rx_ring[i].stats.syncp);
-> +
->   	tp->rtl8169_napi = kcalloc(tp->irq_nvecs, sizeof(struct napi_struct),
->   				   GFP_KERNEL);
->   	if (!tp->rtl8169_napi) {
+Can you please send a new version with what you had in the v1? Before
+you do so, I have a few requests:
+
+- Do not send a new version as a reply to another [1]
+
+- Use 'PATCH net' [1]
+
+- Wait 24h between submissions [1]
+
+- Remove 'security@k.o' from Cc as it is sent to public MLs [2]
+
+- Use ./scripts/get_maintainer.pl to cc the right people [3]
+
+[1] https://docs.kernel.org/process/maintainer-netdev.html
+[2] https://docs.kernel.org/process/submitting-patches.html
+[3]
+https://netdev-ctrl.bots.linux.dev/logs/build/1144354/14744385/cc_maintainers/desc
+
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
 
