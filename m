@@ -1,139 +1,235 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B41B48988D
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 17:02:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786726954; cv=pass; b=gD3ghgrk9jr2ZMRPmh692Y6e2hJq0RLpf1bNaTEgWG11/GGJT6eoznNyUpsQCyvHQkBbIQNmolnSrdB+vprcwS1TnsC7MVTITbmchPR6+YSjdOcGEV1YvvWu07ZjV47gBQGmvSf7bNizYrZzC4Wj2D89PN09/iiXGMsBYQpR3wQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786726954; c=relaxed/simple;
-	bh=/l+8sEY4fVIcObetwhlkFIug59o+dvPR7HAFl9MXUwc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=J32TKLshEdS8ePol3jtseNCE+UcSPwuY7/OEhEPUI1cjqd8HxZc+wKTi3KYceAFaWvm5uORvq9SfidBe9NbnxRcXCL+4NvFVubUlEvnze3DOVBTpGVnguLqjhAPdbOvLAELEpapy99asP67GZy+ido7zQi541wRcizTCSdd1OyQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=Hi5YwYB7; arc=pass smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BEC4908D5
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 17:02:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786726959; cv=none; b=OyYOAUHTQDknsUpV4rKd93ndbGbA8aB1rZFUw1Dnvq6dnzj8NN2cY+5rxgau99uwcbRArXZ8V3F9zyxVR3v9rv0m8gBRQ/1l9tJjCjS+eJ+gEHgNvjkkHzN4kifYqFmBNFKTCmULLDZ/vsMsu9N1wmgkkbOnYGnoZMKLjdWpNPM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786726959; c=relaxed/simple;
+	bh=V3nvXf3+/CFfWZbw5zMeH8gJw9d23Xs5gUZiRrc+CtI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X4QG55UGZb6XST41iqLvl+g4+q3pss4jYPSn+AaW3dqwIntAK0A3CwBBnvg6Y7VYBzIDm24Hhvx6ryG3GVcVQURESUcoo0hoobNbDgh0Cz7KVybs9LuAVVcGNjHql21OlTzD0l4qOByepDViGYaecRr8bXKS8aNU02pqZrtr2is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=be2E5FL4; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="Hi5YwYB7"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c9b373d5af0so947315a12.2
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 10:02:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786726952; cv=none;
-        d=google.com; s=arc-20260327;
-        b=pPxaFHaCxRUlf4KBhmUCIRUosPKT/pXQR4VTJ6cGsWCfgHsOiBa+qckemGbxR7Qweg
-         ioYvmGV9gnlEZ6+JlX/SLRcYVQe9Qqj5OHtzSX2K2EfMbL8UkzXFa7jYs6Aqv4rpAs0R
-         NnUJK+vzMpBz1bP3mtrT/jzfi7If6eXYwnfJfNlWFT1W8IrzRaeA2smsE7Z+/VHsOAb2
-         m2ELr8PziDCMKPNAR6OCZscHNebF6/1k5KowfYQEnQ3mbLEI742mwHHhQsaXNPrZW9yw
-         7VDp80zJrlOANZMEx22MiReQQE/P7xD3kyDLKA3hlRgUslTXhkMW0g4k/Qc1OvQ3Mtt8
-         M4rA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/l+8sEY4fVIcObetwhlkFIug59o+dvPR7HAFl9MXUwc=;
-        fh=Rdd81fncOk1+iqUXGNo6CoHWfyBNxYVJfzA8H8dUscQ=;
-        b=iiPaFysqFXZa/djurqVsmNxBy+CA2v91naU6Uhn8s/l9p3BeULwD5Olv3QH71T1Wbm
-         UkK1+6P8KdcGjsbUdIG73NPqeBc0Kp0d87Na6XfLXuxHL7JJcwyHH8lGXqNjQjSuHaJx
-         aN6HXkO0l8Z1oqC+aROkqYTAvsLv2wyi+EQdeAc3xBAy5+krujiziVd8+rJuTrVJB5wt
-         TYbx/4SHxNetBQFHI+5+7Eo70EbIbJnJeyucXXhUAl5W9o2V0C3kT+bZoEqothJLt4SF
-         KoUeHq1nHbVxM1wAGuECJEp93bRpZ+Odg9Psu8qzErXwdZG/uN5KfvlhW436QHqDT/aU
-         evmg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="be2E5FL4"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-496bb7cdf51so16811135e9.2
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 10:02:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1786726952; x=1787331752; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1786726955; x=1787331755; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=/l+8sEY4fVIcObetwhlkFIug59o+dvPR7HAFl9MXUwc=;
-        b=Hi5YwYB7xeueQ81NLg48IsZTjqgbslSM+Z2e0vOLdckwawmKSfSHXGKjFEMwXCxlxz
-         J364SAAG3mccSrvGmqESRz8e+gMtw5CgB14q1cRWPQiZ+psVnelvqX/djLHS9ulupvXC
-         w5nq6mqyE0sghA49l4iM2CdqNjOC6wyrzbKiX1MhoZ+w6M7QoKJRqAUajCeKS3+vcQPy
-         E5wlvQWXcKqRZxlB/q4DgB4iouGeh3BUJG5NW7g8v3yvbazV2fJS0Snsm45U29uZAszZ
-         PcaSGI81I9/M4+chuR1Htz4qAvuUE9YRWanY1lNRZXCORCEu5x0SZtN3GHOjAh8QK5+p
-         8BSg==
+        bh=IF42ZuIW9yF9A7a9sUDgQVbQl7kYmWIXZAUKHoESs64=;
+        b=be2E5FL422+5MsZjYpw2lonQOTFDa2GD7ETWm9FgaGjgqsQXgd9lZVOZlpFH9WYJf7
+         tEdg20iQ0LCNyPHfyxv+6P/HODDd0EWRlXvdt5g9FhduCuOWW0NpQEG+Nh0s0fix2vWD
+         nFFVV9fgLoY8GmO/XEq1m4nps9WrGKGTVmVI3izxCUCmvUkCx2kP4Zbdc+PQqxIY/uDR
+         h+Roz5/K96FNJbUC0QWSskYXHolOlIrc/IqgbeK6Z7XUvjAF1L/KWeywBqHhWfg+NGMo
+         mWnGXSLznhBVD4w0I/CLnuTYQwrMeZ93lDa/g3Y7Ja01WOXi+dY+JIyvUl8agXI/MjfB
+         bNxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786726952; x=1787331752;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1786726955; x=1787331755;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/l+8sEY4fVIcObetwhlkFIug59o+dvPR7HAFl9MXUwc=;
-        b=lgruTb6MboW4YRgUcXUUA20COYaUqUYjTE+MdumEavuHk57tqlIczscGHoLoCwWR83
-         3DOQeW948I57J4CrTusPwz7OZawpKYfxGKf+2A9yfNk3T/VY2NWxa0+V7AT7gl7So1Ap
-         RjiVTb47Y4xW0+ET5FG8D0IEYpNEiNXxqrfhoz1NWKhJzZg3KhcneZkN11w6sG6LDH4M
-         zsGe3G5nMDKzdNxPPyhdQMXV4gpAD1SqcjGRXWUR7NQeWLyWBXd3/UuZOnkDvTnaB2Ty
-         iYC8VoMkYwDLXhjqrzCSa7tW9O6U7zXw2f0qLaTGPy9CFM71S6kcvyHPZKTIkeh7Gd8R
-         IFFw==
-X-Forwarded-Encrypted: i=1; AHgh+Rojf4ob1G4uasAk+vpU0KBmruonDcLB42pcCZeeC9m5qSj7A+SvReIXXNJCT3wMaEBxpCDdKJY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHAr69deJ4LPDp7bLmfKpjfbdmFEhGuVp0x7DBt0Lllt4agcMS
-	1DSOn2oA5Wo2Z2ob7Y/j/7b04theYsuyWJ8Eu2bKwWJPxzibKNlsE5tfrtLnTGv1KOn0EdsPAjy
-	8eibTdyh2GaBrZ7rMlBf+1///a2dtC85nYbU0qPa7JokAuDexcXF8875n
-X-Gm-Gg: AR+sD11MJPZ+T5ZWHhQDLIDpiFNzUayOsW0xiJOy7NYS7CSosbuK/LkeyWCFztXKg2R
-	/HTURmSZWqaUwTRDf/tnGwD6676HDUKefEXwIqLkGw1MTE7UOq3QPCHhVY/bfoZ3rHkcFLYf6Lo
-	TCt9gsXna5jpwyAOILL/ZX4qkt94kAF5jeewBx3aryqC7cxsVqoywujydy+vso0woxuhKJrcgxa
-	UG7oDQ1xmBGPZ2F38XkTCDI2q9T4IezCFIK57L06kzdJ/t124KcZyIEX7sJgl/q/jhtvOiFAxBd
-	N0hm31qD8xbDx9FFza5yzcy3/FWKeBri+NleW7T1VefcCw==
-X-Received: by 2002:a05:6a20:c6c1:b0:3c4:48da:8102 with SMTP id
- adf61e73a8af0-3cc71e1b525mr8653190637.29.1786726951998; Fri, 14 Aug 2026
- 10:02:31 -0700 (PDT)
+        bh=IF42ZuIW9yF9A7a9sUDgQVbQl7kYmWIXZAUKHoESs64=;
+        b=i+P3LC1NI6sNF6L1lwy0+wGM1FUuYopXKYE0ADQwLtZSpGVvVGnb7yfoScQjy1Mqxs
+         yYfX3sD/MMyH7hlBBo2F42bXO5KcvQJyLUGQyz3ukTzFOci2iK/f19XA0SY4riKE/dUT
+         uGttTvduy4HozfqDUh83y0Vj+k/845dxIPPI9KLFkw98CEQBa/OqHlTiGoKgMiXvXpad
+         aBf3sRjBnUhYy9zy7UKZ4QLMjPillpu3KbiTkSOBQMbNJR4JYMyU3OrdwFNbalkZpsbR
+         HVl9mdgNQWg9EljXm9wbc17Jf3RiNEOoEr4CdVyvDJelZmPinQfJgLVi4FsbZvDdEq4a
+         HFrw==
+X-Forwarded-Encrypted: i=1; AHgh+RosxF57gzT2s9kHf/pYL9EoSoTdLlfgc4uRiWa88B3rIP6DHes6a8bpuSitoSXvq5JUukvG0uM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHIHPmiTKLz2upoQ/9jRPZffbIDCi2fHfvP8QpFn09rqmvPW5U
+	8zfZpmGnlqpBkq9IFU+CZE1ll0Val8EkzZETgl+UWWLdTdjFGAEaxWxS
+X-Gm-Gg: AR+sD13fZ47Udzo+xk/TkBUtuyhWw/WR/AqMno6oW/K3h2Gtmi0Rxps+4cg53iseCpu
+	rrwy5DBC/p/wwGqqC3sSxx1UyTegrYDZzSsHuvQ4Mr6HsBM+0cFerJysgxuM/S/ULNZ7MGmGPWh
+	Rx6JWfzg8TesPHmccQaw9YwKw4Ox5UfJK7YgRMNSZGqnxZXC2++yXRGn4HS918PTHrzswHPfP7Z
+	I4Y2Hq89ceEF70ZBHZP7hO+nyLsTOGR0vkmOxJkQypwo5Uaf5gEaqHCozPof2Hunx761rVbr9XN
+	IEGjlvCze+HornelMagQMQQWu2KeiTdAaCfdpF4MQnUW/svSzCf7qdnzcud7YjBSK79agvIcPMT
+	BG95CwiKQQQ1BnQzNaL8yuIbvaCMXkp9DcJhB+wG05dIRCwfIDtz7tZJ34sncwlmjCejJd2H4aF
+	VSO+U/Alky+MSPtkQBWwW4KfEPEZd0b+TEvVc+VhpeSWSyvlPo/V11iQ9XE8Ys+6W8zvfuTYFH4
+	+uvdS3bcD2OZ5+ZgDSW2aObzYC8K98=
+X-Received: by 2002:a05:600c:8b05:b0:499:7a15:fcec with SMTP id 5b1f17b1804b1-499879923ecmr110696545e9.13.1786726954708;
+        Fri, 14 Aug 2026 10:02:34 -0700 (PDT)
+Received: from gmail.com (deskosmtp.auranext.com. [195.134.167.217])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f2c18cbsm8431365f8f.29.2026.08.14.10.02.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Aug 2026 10:02:34 -0700 (PDT)
+Date: Fri, 14 Aug 2026 19:02:32 +0200
+From: Mahe Tardy <mahe.tardy@gmail.com>
+To: bot+bpf-ci@kernel.org
+Cc: bpf@vger.kernel.org, andrew+netdev@lunn.ch, andrii@kernel.org,
+	ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net,
+	eddyz87@gmail.com, edumazet@google.com, john.fastabend@gmail.com,
+	kuba@kernel.org, liamwisehart@meta.com, martin.lau@linux.dev,
+	pabeni@redhat.com, song@kernel.org, netdev@vger.kernel.org,
+	sdf.kernel@gmail.com, ameryhung@gmail.com, kuniyu@google.com,
+	memxor@gmail.com, jiayuan.chen@linux.dev, sdf@fomichev.me,
+	martin.lau@kernel.org, yonghong.song@linux.dev, clm@meta.com,
+	ihor.solodrai@linux.dev
+Subject: Re: [PATCH bpf-next v7 5/5] selftests/bpf: Add ksock test for async
+ callback guard
+Message-ID: <an9KKJtU5XrastyR@gmail.com>
+References: <20260813110540.103550-6-mahe.tardy@gmail.com>
+ <62274a8d6156015b945bc8e7b5b8c2962332b104e3484a5a2d0e0b0c95b531b1@mail.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260521200859.816b8923b5f27bba6124461e@uniroma2.it>
- <20260814052541.1198373-1-xmei5@asu.edu> <CAPpSM+RCXzepVid2qnPky33Sx4j4uy-gWZ74UuG6E1k3pGsKeg@mail.gmail.com>
- <20260814151453.4d45d5af5fd7bcecf0e0dbdf@uniroma2.it>
-In-Reply-To: <20260814151453.4d45d5af5fd7bcecf0e0dbdf@uniroma2.it>
-From: Xiang Mei <xmei5@asu.edu>
-Date: Fri, 14 Aug 2026 10:02:21 -0700
-X-Gm-Features: AUfX_mxtrL3Wam_weCjrMzDuL-wUbcw55UCi0JBIG1z06zuBFY6JgqeKDdO-beA
-Message-ID: <CAPpSM+TRJc6ALASmezNPV49osyc3gvw3Ea8-1aGYPdfXgYhe1g@mail.gmail.com>
-Subject: Re: [PATCH net v2] ipv6: rpl: add NULL check for idev in ipv6_rpl_srh_rcv()
-To: Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: dsahern@kernel.org, edumazet@google.com, netdev@vger.kernel.org, 
-	bestswngs@gmail.com, justin.iurman@gmail.com, alex.aring@gmail.com, 
-	davem@davemloft.net, horms@kernel.org, idosch@nvidia.com, kuba@kernel.org, 
-	pabeni@redhat.com, stefano.salsano@uniroma2.it, stable@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <62274a8d6156015b945bc8e7b5b8c2962332b104e3484a5a2d0e0b0c95b531b1@mail.kernel.org>
 
-On Fri, Aug 14, 2026 at 6:15=E2=80=AFAM Andrea Mayer <andrea.mayer@uniroma2=
-.it> wrote:
->
-> On Thu, 13 Aug 2026 22:31:18 -0700
-> Xiang Mei <xmei5@asu.edu> wrote:
->
-> >> [snip]
+On Thu, Aug 13, 2026 at 12:13:31PM +0000, bot+bpf-ci@kernel.org wrote:
+> > diff --git a/tools/testing/selftests/bpf/prog_tests/ksock_wq.c b/tools/testing/selftests/bpf/prog_tests/ksock_wq.c
+> > new file mode 100644
+> > index 0000000000000..d6dc20b8f95bb
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/bpf/prog_tests/ksock_wq.c
+> > @@ -0,0 +1,45 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/* Copyright (c) 2026 Isovalent */
+> > +
+> > +#include <unistd.h>
+> > +
+> > +#include "test_progs.h"
+> > +#include "ksock_wq.skel.h"
+> > +
+> > +#define CALLBACK_WAIT_RETRIES 1000
+> > +#define CALLBACK_WAIT_US 1000
+> > +
+> > +void test_ksock_wq(void)
+> 
+> This commit adds a new standalone test file for the workqueue guard check.
+> The same directory already has prog_tests/ksock.c (from commit a529f8c4d088b
+> two patches earlier in this series) which is the home of the ksock kfunc
+> tests. Notably, the immediately preceding commit in this series
+> (75ef545fdff15) added its negative test as a new function inside the
+> existing prog_tests/ksock.c rather than creating a new file. A subsystem
+> pattern flags this as potentially concerning: should test_ksock_wq() be
+> another function/subtest in prog_tests/ksock.c, consistent with how patch
+> 4 of this same series added its case? The split means the ksock feature's
+> tests are now across two files with generated test names 'ksock_lsm',
+> 'ksock_lsm_verifier' and 'ksock_wq' rather than grouped together.
+
+Yes indeed this one was added in a separate file, not sure it's
+important.
+
+> 
+> > +{
+> > +	LIBBPF_OPTS(bpf_test_run_opts, opts);
+> > +	struct ksock_wq *skel;
+> > +	u32 callback_done;
+> > +	int err, i;
+> > +
+> > +	skel = ksock_wq__open_and_load();
+> > +	if (!ASSERT_OK_PTR(skel, "ksock_wq open and load"))
+> > +		return;
+> > +
+> > +	err = bpf_prog_test_run_opts(bpf_program__fd(skel->progs.ksock_wq_start),
+> > +				     &opts);
+> > +	if (!ASSERT_OK(err, "run ksock_wq_start"))
+> > +		goto out;
+> > +	if (!ASSERT_OK(opts.retval, "ksock_wq_start retval"))
+> > +		goto out;
+> > +
+> > +	for (i = 0; i < CALLBACK_WAIT_RETRIES; i++) {
+> > +		if (__atomic_load_n(&skel->bss->callback_done, __ATOMIC_ACQUIRE))
+> > +			break;
+> > +		usleep(CALLBACK_WAIT_US);
+> > +	}
+> > +	callback_done = __atomic_load_n(&skel->bss->callback_done,
+> > +					__ATOMIC_ACQUIRE);
+> > +	if (!ASSERT_EQ(callback_done, 1, "workqueue callback completed"))
+> > +		goto out;
+> > +
+> > +	ASSERT_EQ(skel->bss->create_err, -EOPNOTSUPP,
+> > +		  "workqueue create rejected");
+> > +
+> > +out:
+> > +	ksock_wq__destroy(skel);
+> > +}
+> > diff --git a/tools/testing/selftests/bpf/progs/ksock_wq.c b/tools/testing/selftests/bpf/progs/ksock_wq.c
+> > new file mode 100644
+> > index 0000000000000..16a1873d132ed
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/bpf/progs/ksock_wq.c
+> > @@ -0,0 +1,62 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/* Copyright (c) 2026 Isovalent */
+> > +
+> > +#include "vmlinux.h"
+> > +#include <bpf/bpf_helpers.h>
+> > +#include "bpf_experimental.h"
+> > +#include "bpf_tracing_net.h"
+> > +#include "errno.h"
+> > +#include "ksock_common.h"
+> > +
+> > +struct ksock_wq_value {
+> > +	struct bpf_wq work;
+> > +};
+> > +
+> > +struct {
+> > +	__uint(type, BPF_MAP_TYPE_ARRAY);
+> > +	__uint(max_entries, 1);
+> > +	__type(key, u32);
+> > +	__type(value, struct ksock_wq_value);
+> > +} work_map SEC(".maps");
+> > +
+> > +int create_err;
+> > +u32 callback_done;
+> > +
+> > +static int ksock_wq_callback(void *map, int *key, void *value)
+> > +{
+> > +	struct bpf_ksock_create_opts opts = {
+> > +		.family = AF_INET,
+> > +		.type = SOCK_DGRAM,
+> > +		.protocol = IPPROTO_UDP,
+> > +	};
+> > +	struct bpf_ksock *ks;
+> > +	int err = 0;
+> > +
+> > +	ks = bpf_ksock_create(&opts, sizeof(opts), &err);
+> > +	if (ks)
+> > +		bpf_ksock_release(ks);
+> > +	create_err = err;
+> > +	__sync_fetch_and_add(&callback_done, 1);
+> > +	return 0;
+> > +}
+> 
+> [ ... ]
+> 
+> >     selftests/bpf: Add ksock test for async callback guard
 > >
-> > Sorry for my English. I mean, if you agree with this patch, you can
-> > take it (it's based on the proposed version you mentioned).
-> > You don't need to follow our version of imp.
-> >
-> > Thanks,
-> > Xiang
->
-> Hi Xiang,
->
-> thank you for testing this and for the kind offer.
->
-> I will go with option (a) from my earlier reply [1].
->
-> I will send v3. It is identical to the diff you posted, so what you teste=
-d
-> is what I am sending. If you want a Tested-by on it, please tell me and I
-> will add it before I post. Otherwise you can reply with it once v3 is on
-> the list.
->
-Feel free to add my Tested-by to the identical diff.
+> >     Because the kfuncs are going through LSM hooks, allowing their use via
+> >     workqueue callbacks would expose the wrong credentials. This test
+> >     ensures the kfunc are preventing any use from these contexts.
+> 
+> This isn't a bug, but the changelog says the test "ensures the kfunc are
+> preventing any use from these contexts", which reads as covering the
+> whole kfunc set. The added program exercises exactly one kfunc from the
+> workqueue callback, bpf_ksock_create(). The other two kfuncs that carry
+> the same runtime guard, bpf_ksock_connect() and bpf_ksock_send(), are not
+> exercised from an async callback anywhere in the tree. Would it be worth
+> either narrowing the changelog to say the test covers bpf_ksock_create(),
+> or extending the callback to also call bpf_ksock_send() on a stashed kptr
+> so all three guarded kfuncs are pinned?
 
-Thanks,
-Xiang
+Yeah, eventually they all call bpf_ksock_has_user_task_context() so the
+runtime guard tested is the same.
 
-> [1] https://lore.kernel.org/netdev/20260521200859.816b8923b5f27bba6124461=
-e@uniroma2.it/
->
-> Ciao,
-> Andrea
+> 
+> 
+> ---
+> AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+> 
+> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/31694719067
+
