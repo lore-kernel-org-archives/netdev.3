@@ -1,90 +1,204 @@
-Received: from mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845A6463B7E
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 12:14:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9125361958
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 12:23:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786709672; cv=none; b=JtCbt/RgL8GnFC/V0n/xv6D1NyhLpOjXmG3l7UBhbv/YOPKZVY1zYtjxZKCt8pJgxmm5CUhO71oiukxhiGaSjrwZAi1N+wPMQdIcNA0X7GxMH7MCwWLhh8v/Sevoo4vp9LKN6SvtcNapT1ozJvasfGw4QqhKVTXbLme1gMwh5QQ=
+	t=1786710198; cv=none; b=XrufPykKx/lSaIMERyQqnb0kJiVRnwnpNzdhdIi2+4aYSV2XIAct6BLW8v5tMEJ6iTuN6dGGETBpU2vR3qsjgNIw4EWsz5SJIlStfQYO1ko3DfMD45wmmbXREnSzhZxzvwrhI10ni4Hh0/BZmkpJOdrCcAJfyh3eA9YPxFUd6jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786709672; c=relaxed/simple;
-	bh=6xc4JhVmtnhSwu0D0J538FsnQ7L/YF3FppETHLlREa8=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=pjQK1361UQXeAyosTY1Q8ibmUJ8SisxfAxh1wawihwh4LfDw70fAhi6dDXX9W2urVNtGtLMYpYGV7RnV/0TGazSKn/siDqJidnbOUZNCG9Uzf07Ui1PzyIc9dzX7dAelE7HttudxiN2kb+cSJFM5FS4nONc5uQ4Pg45Vt6TzB04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=LC1ke4Q/; arc=none smtp.client-ip=91.218.175.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1786710198; c=relaxed/simple;
+	bh=PjgjwZnGgTn6iqnEiUJ3bPEVMifERR8pCitafp8p2xk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fEVN0wmSn6ncpFavzUq0v7rxlb/L63PxQX+SKHBR/HKjiDptslgNNMrNOAf3al/eVElZhInzAtLmp63do0aWK7RXyksQkKuMSd5QqH6Lxg10EcEjUAajio0s8KCtcUz7JWQ0FaF1IpQnkYV/KarP09NKOaG3PIpo99pZdUi3EBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NyfKtwFJ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=HxKBrwKZ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="LC1ke4Q/"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=6xc4JhVmtnhSwu0D0J538FsnQ7L/YF3FppETHLlREa8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786709668; v=1; x=1787314468;
- b=LC1ke4Q/1IG8igYZOeVialRHhKa7k7qDBPLJVA1r+7dtt3Bmv+7TpSVyVVJOOgeUKZXjH+hq
- rhLlQNjb/GvDjOiSmG+EdqObQ/L7GqOKfjNFCDr4LK5tBy6p9dC5IQaJadBbYF+FwjO6s0hRHGR
- 03LtBkVm5zofLa6WawvANNkE=
-X-Envelope-To: netdev@vger.kernel.org
-Received: from webmail.migadu.com (2001:41d0:303:fc7a::)
-	by mta12.migadu.com with ESMTPS id 528848ced92cc84f;
-	Fri, 14 Aug 2026 12:14:28 +0000
-X-Migadu-Flow: FLOW_OUT
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NyfKtwFJ";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="HxKBrwKZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786710195;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PdXWuErOvyDV9Y8ztCqoO/f6xuxZcnsGekDRRKOGqDQ=;
+	b=NyfKtwFJg40KApYJl7HMc5X/BHYsCfipWWJbE7G7rfTniXhpV3Nc6eTpW4ZuRC82N5pjW4
+	7A7BqGs5QBltHw9v7MohdKA1sku94li4uveIlVNoG6HJcML18GOgSnHYVNCy6MhphoHq+L
+	VaGxxw/XbM75XpoSmIFFnN349SGHZjQ=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-572-PGAynhCOOiOfEpXUbSzGTQ-1; Fri, 14 Aug 2026 08:23:14 -0400
+X-MC-Unique: PGAynhCOOiOfEpXUbSzGTQ-1
+X-Mimecast-MFC-AGG-ID: PGAynhCOOiOfEpXUbSzGTQ_1786710193
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-474170b59dfso573913f8f.3
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 05:23:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1786710193; x=1787314993; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=PdXWuErOvyDV9Y8ztCqoO/f6xuxZcnsGekDRRKOGqDQ=;
+        b=HxKBrwKZhHhN+M0pEN33Tm9M5ZWp2DKrTB2+8kCkCGA69bwlcPXpEzdxRilumJdL6s
+         tta5DpD0/oa+GZI6kKLeXYskl8homjPmuzy/wm/rhme2n//Ma/KO+kT8H22haVPtDa2x
+         rfBGXcrgBRpvCinACPaGy/Otc4chPImQd43x5zWopyjTVKaRL26+sY9tViWYnmfqFPnF
+         jCWaGbv85s56uCnyrTAzCj/pxeRJEdUvyKL5JRo+53TxZEonkXZdwFluPRpAiAykM9G2
+         5iRYSGArzxZMbGD7uyj9cSb2OhlUc7B7azLW+1D4xhqgDYGh8nX5iEotcr6aFyuaz3IQ
+         YY1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786710193; x=1787314993;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PdXWuErOvyDV9Y8ztCqoO/f6xuxZcnsGekDRRKOGqDQ=;
+        b=biP+LFIv/mNEeRzQufDzp853azNUxF/BUoA93gE/lhxcKixf87N1aOQr9N7SLcF6sk
+         c3NrSV9MElYAkgUxR8cvCNdlUhFo803NKmLO2cpNe/iXQOLY4DEQ3hbNIPPY2E+A8866
+         tFImpw9RDYY9EaRsDA0B3sDV4lM+ThakIuuEW6N6CdUNG+y3EagszcvGCb78R7uDTkft
+         r/LDJHVs48quldzDfvNxbrCmoqKR9BkYc5J5IX/lyHCxjLc4ECVltIcoiNJU/5K5gk8E
+         zqxJ6Z8rDiPFMuuMIHaa4v3jCUYjKOHlUT4QI1r2TWFFRmm6fLo069yhpze+5DeOCOpA
+         vupA==
+X-Gm-Message-State: AOJu0YyJA04/ur/xT5nKhkfWOzPv6jbJqubDDS5RtRr3TvFij9p0UKGD
+	bzlzghUauAX6KpZ8Oq+lxRdF9ojmmb7zhGPd70EzwOMqnA2TAAP+b3I2qS1If+W2Fn7CY/wvkT2
+	gSNMpKnku3OVu75IALd94U0G/PvJJKZmkpMCIs3debH6YVcq6RBc/7Mm48g==
+X-Gm-Gg: AR+sD13rpvkUM7EPvfUBEZboN8RQ22EgKP+0IbHNeT6ZxhPKnk/N70QaU/DdfKVXLVV
+	nNS4e/3NKtLK3RpGsFzUeh73IIrb6Tu8bGrfO8hoDnavad57HBRgEkKMvGTeoDUBCwfFbeCOhwi
+	TwvgIwjZWrE+WBoxCmEa6X4YABb86DJKynr2vMgWOqlYqoE0YaUm+rExD2QgMY97/LUHUzz8woS
+	/M2VrDOnfFP+IXQHylbJyEnYgQD0kB2IBGRGZzqOfg44wNy19wjHFwQmED+oUzu/QHPsXIslL0w
+	apy0xyeIg1Cu5Fd3Pt6SL4gf/vKZbV2DpjZy2Duo6CKV+R2nmil3sZK/mRtQXnFXpaY6hGmsIqV
+	jZoPdHoDtcKxwma/K74NN/zjhL/Y23YRegFBhMFRZyHMyprEUlPmZ
+X-Received: by 2002:a05:600c:1d1e:b0:496:bbcb:b0bb with SMTP id 5b1f17b1804b1-49987992addmr59968685e9.18.1786710193299;
+        Fri, 14 Aug 2026 05:23:13 -0700 (PDT)
+X-Received: by 2002:a05:600c:1d1e:b0:496:bbcb:b0bb with SMTP id 5b1f17b1804b1-49987992addmr59967975e9.18.1786710192832;
+        Fri, 14 Aug 2026 05:23:12 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-135-154.retail.telecomitalia.it. [82.53.135.154])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f2b27bfsm7763993f8f.23.2026.08.14.05.23.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Aug 2026 05:23:12 -0700 (PDT)
+Date: Fri, 14 Aug 2026 14:23:05 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Daehyeon Ko <4ncienth@gmail.com>
+Cc: netdev@vger.kernel.org, Stefan Hajnoczi <stefanha@redhat.com>, 
+	virtualization@lists.linux.dev, kvm@vger.kernel.org
+Subject: Re: [PATCH net] vsock/virtio: validate packet source for connected
+ sockets
+Message-ID: <an7vDxDT-N6xi-3l@sgarzare-redhat>
+References: <20260813121236.2328599-1-4ncienth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 14 Aug 2026 12:14:28 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-From: vadim.fedorenko@linux.dev
-Message-ID: <8213af42c3779472a1e1480a8a3fbbcfde6fe03f@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH net-next] ionic: Add .get_fec_stats ethtool handler
-To: "Eric Joyner" <eric.joyner@amd.com>, netdev@vger.kernel.org
-Cc: "Brett Creeley" <brett.creeley@amd.com>, "Andrew Lunn"
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Nikhil P . Rao" <nikhil.rao@amd.com>
-In-Reply-To: <a834d76e-9b31-4241-9442-0a69ab96cfc1@amd.com>
-References: <20260731214021.15279-1-eric.joyner@amd.com>
- <95d9b473-71ea-4324-b673-db68140782fa@linux.dev>
- <a834d76e-9b31-4241-9442-0a69ab96cfc1@amd.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260813121236.2328599-1-4ncienth@gmail.com>
 
-On 14/08/2026 05:42, Eric Joyner wrote:
-> On 8/4/2026 3:27 AM, Vadim Fedorenko wrote:
->> Caution: This message originated from an External Source. Use proper c=
-aution
->> when opening attachments, clicking links, or responding.
->>
->>
->> On 31/07/2026 22:40, Eric Joyner wrote:
->>> Reports FEC statistics totals and an 802.3ck FEC histogram. Per-lane =
-counts
->>> currently aren't supported, and the only expected histogram format fr=
-om
->>> firmware is the one with 16 bins from RS(544,514) FEC.
->>
->> does it mean the FW will return IONIC_STAT_INVALID for 100G CWDM4 mode
->> on newest devices?
->>
->>
-> > The only device we have that supports reporting these FEC histograms =
-doesn't
-> have a PHY that supports 100G CWDM4; the IP block for it only supports =
-PAM4
-> media types and not NRZ. So for now, it would return IONIC_STAT_INVALID=
- for
-> that mode.
-> > Though, I don't know if that'll be the case for future devices; maybe=
- they will
-> support FEC histogram stat collection with NRZ media that has fewer tha=
-n 16
-> histogram bins. I just don't know if it's worth supporting that possibi=
-lity
-> right now since I don't know when or if that will happen.
+On Thu, Aug 13, 2026 at 09:12:36PM +0900, Daehyeon Ko wrote:
+>virtio_transport_recv_pkt() first looks up a socket using the full source
+>and destination tuple.  If that misses, it falls back to a bound-socket
+>lookup using only the destination address.  The fallback is needed for
+>listening and connecting sockets, but it can also select an established
+>socket that remains in the bound table.
+>
+>As a result, a packet from an unrelated source can be dispatched to a
+>non-listening socket.  In TCP_SYN_SENT, a source-blind RESPONSE marks the
+>selected socket established while retaining its original remote address.
+>Subsequent RW packets can likewise be delivered through the
+>destination-only fallback.
+>
+>This was reproduced with two capless processes under different UIDs.  The
+>attacker discovered the victim tuple through unprivileged AF_VSOCK
+>sock_diag and injected a chosen 16-byte payload into the victim established
+>loopback socket.  The legitimate peer received none of those bytes.
 
-Ok, thanks for explaining.
+I don't understand this, what it means? If the receiver doesn't receive
+those injected bytes, should be fine, no?
 
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+>
+>After taking the socket lock, verify that packets for non-listening sockets
+>come from the peer stored in remote_addr.  Listening sockets continue to
+>accept packets from any source.
+
+IMO this description should be improved, it's quite hard to follow.
+This is an idea IIUC the issue:
+
+   virtio_transport_recv_pkt() looks up sockets in two steps: first by
+   the full source and destination tuple in the connected table, then by
+   destination only in the bound table. The fallback is needed for
+   listening and connecting sockets, but it never validates the source
+   address in the packet header. Since sockets remain in the bound table
+   after connect(), a packet from any source can be dispatched to a
+   non-listening socket.
+
+   An unprivileged process can discover the target tuple through AF_VSOCK
+   sock_diag (no capabilities required), send a forged RESPONSE to a
+   TCP_SYN_SENT socket to establish the connection, and then inject
+   arbitrary data through subsequent RW packets, all delivered via the
+   destination-only fallback.
+
+   After lock_sock(), verify that the packet source matches the
+   remote_addr stored during connect().
+
+>
+>Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
+>Cc: stable@vger.kernel.org
+>Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+>---
+> net/vmw_vsock/virtio_transport_common.c | 10 +++++++---
+> 1 file changed, 7 insertions(+), 3 deletions(-)
+>
+>diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+>index 8becad812..f73e0406a 100644
+>--- a/net/vmw_vsock/virtio_transport_common.c
+>+++ b/net/vmw_vsock/virtio_transport_common.c
+>@@ -1822,11 +1822,15 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
+>
+> 	lock_sock(sk);
+>
+>-	/* Check if sk has been closed or assigned to another transport before
+>-	 * lock_sock (note: listener sockets are not assigned to any transport)
+>+	/* Check if sk has been closed, assigned to another transport, or if the
+>+	 * packet is from a different peer than the one connected to sk.  These
+>+	 * properties could have changed before lock_sock.  Listener sockets are
+>+	 * not assigned to any transport and accept packets from any peer.
+
+Please keeps changes minimal, why adding "These properties could have
+changed before lock_sock." and changing the phrase related to listener
+socket?
+
+Also the new part is not clear IMO, we should explain why we are adding
+this new check, not what we are doing which is clear looking at the
+code.
+
+IMO we should just add something like this (feel free to change it):
+
+   Also verify the packet source: the bound-table fallback lookup
+   matches by destination only, so a non-listening socket can be
+   reached by a packet from an unrelated peer. Drop it unless the
+   source matches the peer the socket is connecting or connected to.
+
+> 	 */
+> 	if (sock_flag(sk, SOCK_DONE) ||
+>-	    (sk->sk_state != TCP_LISTEN && vsk->transport != &t->transport)) {
+>+	    (sk->sk_state != TCP_LISTEN &&
+>+	     (vsk->transport != &t->transport ||
+>+	      !vsock_addr_equals_addr(&src, &vsk->remote_addr)))) {
+
+Do we need to add the same check also in the VMCI transport?
+
+Hyper-V seems different.
+
+Thanks,
+Stefano
+
+> 		(void)virtio_transport_reset_no_sock(t, skb, net);
+> 		release_sock(sk);
+> 		sock_put(sk);
+>
+>base-commit: 9006c116dd111d457bf5d074990210f70a4ad2c8
+>-- 
+>2.54.0
+>
+
