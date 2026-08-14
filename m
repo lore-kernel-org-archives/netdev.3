@@ -1,57 +1,57 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE9A342146
-	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 01:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FE03446C7
+	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 01:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786757176; cv=none; b=T9DW7XvRON1tI0P6WmaxaR75uzvcVcAoL7gNzG2oHpTxZO1SAHSK10jZOM3aRhgWJqP9mYk9sKKxmivhpToaDvEfaVlX1DB4C/5HK37FFjUwpzFCNbf/1jlf0TQWbfSOTAhbN6TGgPJgG+RanLkNajq4cNhZTpuHImGINli52Yg=
+	t=1786757176; cv=none; b=dLHdug995k2XRpUFrzoaD7UCry6x0Gthu6EMEuf9mc6cZsdcBn6sw8pcY4ybvOW+HuMPHOiJ+00GXGwiOyyaJqesVUxhilS2WLwxNPbYgdvXmFX4g6yZPxO/D262k2zbvPS4/L2okZjJee4wC711lmR9RNT2nwpBjV07HiLWqFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1786757176; c=relaxed/simple;
-	bh=uId5g3DqFv4eHYhtqK7IUw6Taku6sM+8MhYTCS58Kv0=;
+	bh=DqNEJHngMI5Aj5jr60He9n9Z3oFvJWI3UNo7njmOW+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bdtYmD8HMRyy5KhrtXRx6IwqaQb15MCHpaO5tXx0EYqIT87Y5MUoAfF9pBkTEFDfyvRBnYvsHIAFywQpt+9sU4oc2vWNzVimTwwDaofSXyamQCwtbfA+z9TWuNUFnStjAnyg9GL09UEG2UlVfPDl1jFuzkmBlot4fGd4AN8cEB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=brYD4rrh; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=Y7aJ1Otbd0nFRDH6FRbVxi+ytoDdrEyvtc+d3ER8gAQdTgM5Gjuy0M3asFB2aTUO+vl7MVlzOsYxcmUYPG6ISzsv99tMhjLc1xlLSd9p+ETiKgvGl053DN8IUKgu6RZ0L+7dBG1Dd8v0tsnaC9Is4qY035Rp5r2BJlt45tQuwhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lDtQDs4L; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="brYD4rrh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lDtQDs4L"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786757174; x=1818293174;
+  t=1786757175; x=1818293175;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=uId5g3DqFv4eHYhtqK7IUw6Taku6sM+8MhYTCS58Kv0=;
-  b=brYD4rrhHPiPlNq0b/yU6Hm5A2XXhUjfnsgPF6PnEFBLW+UfMqWOmr59
-   uHu/w7TU+Xg6/YGRI8aMnLMmZ0V4nz1WzyvMZT0ITvA9Z2kalEHMkvyqq
-   A/ZPbxfWn372Guj6M1GMkktGG7NrBYhV/L8ZaY7GiODA7DbPKSKp2QPm8
-   Qh6Bux3VKTBS2g98TQwQSRV4oVS8zdTnRdjWP18bgmOu0dmlTIT64gJXT
-   mC98To48zlyY+pBYBdSntaIdJfeAAQEq5ohMYskhCgmwZeLVAjSyUe9RN
-   J6KEpz91LzNigccLDjmQndGrpRbppdw2/qDpA7g+MW9MvjXPjP5lp7i2O
+  bh=DqNEJHngMI5Aj5jr60He9n9Z3oFvJWI3UNo7njmOW+Q=;
+  b=lDtQDs4L5abQXokODX4bqBGbtt0OcoxR69IECLuJdzdp3HNPzK9ve9ed
+   /qeF1tn7QT8YKDNO9UZJfL6ehyutgS89tyRtiy5ObvQuWcMsQw3zmW3u+
+   G1uhpg3ED4RCtOP2fW1DsD6i5KasqFmaGrienBMYrj8S7VduSDjTMpfsx
+   ysT4CfAI1KYOW7WlPr70hsQeM6r0n7UsXrLKuILWSkGaqD1Z3Sz+6NoI0
+   1Djf2NJkRvNDUD3qys+qxsvo6BLvSCJjlQp9FUxxIl/2Rz3ee7NBMZV+R
+   7FcQzbExmvyGBxCF9/HCdmGLZOT1L/SpdZUa6V2Wp4r/gdMk99bStVzts
    g==;
-X-CSE-ConnectionGUID: vPjKBR24QkmppXXzQ2v4zw==
-X-CSE-MsgGUID: QM44anZYQeGUGfXxzJPD4Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11875"; a="87194379"
+X-CSE-ConnectionGUID: echPY8cOTXW81TlPn1qZ+g==
+X-CSE-MsgGUID: ppXsja1eQjuxWzBNaCiw9g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11875"; a="87194381"
 X-IronPort-AV: E=Sophos;i="6.25,224,1779174000"; 
-   d="scan'208";a="87194379"
+   d="scan'208";a="87194381"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2026 18:26:13 -0700
-X-CSE-ConnectionGUID: qJO4KlTBTPKnguV/y4uTNg==
-X-CSE-MsgGUID: 6MQ8ykKgSAqWKDXNAnkRkQ==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2026 18:26:15 -0700
+X-CSE-ConnectionGUID: K9lZFHETTEmkRuXx7ows8A==
+X-CSE-MsgGUID: 102eXBiAT3GQbhGdICh7jQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,224,1779174000"; 
-   d="scan'208";a="287844731"
+   d="scan'208";a="287844739"
 Received: from unknown (HELO fedora.jf.intel.com) ([10.166.5.147])
-  by fmviesa002.fm.intel.com with ESMTP; 14 Aug 2026 18:26:13 -0700
+  by fmviesa002.fm.intel.com with ESMTP; 14 Aug 2026 18:26:14 -0700
 From: Paul Greenwalt <paul.greenwalt@intel.com>
 To: intel-wired-lan@lists.osuosl.org
 Cc: netdev@vger.kernel.org,
 	Paul Greenwalt <paul.greenwalt@intel.com>,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH iwl-next 1/3] idpf: clear drvdata on probe error path
-Date: Fri, 14 Aug 2026 13:49:17 -0400
-Message-ID: <20260814174919.4177289-2-paul.greenwalt@intel.com>
+Subject: [PATCH iwl-next 2/3] idpf: add devlink info support
+Date: Fri, 14 Aug 2026 13:49:18 -0400
+Message-ID: <20260814174919.4177289-3-paul.greenwalt@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260814174919.4177289-1-paul.greenwalt@intel.com>
 References: <20260814174919.4177289-1-paul.greenwalt@intel.com>
@@ -63,30 +63,298 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-If idpf_probe() fails after idpf_cfg_device() succeeds,
-pci_set_drvdata() leaves a pointer to freed memory. Clear
-it before freeing the adapter to prevent potential
-use-after-free if anything accesses pci_get_drvdata().
+Add devlink info support for idpf, reporting:
+  - serial_number: device serial number (DSN) for device identification
+  - fw.mgmt.api: running version reporting driver-device communication
+    version
+
+This enables NIPA CI and other tools to uniquely identify devices under
+test and track device capabilities. This phased implementation initially
+focuses on stable, readily available information (serial number and
+virtchnl version from negotiation). Firmware version information will be
+added in future patches as support is exposed through virtchnl and the
+driver architecture allows reliable retrieval.
+
+$ devlink dev show
+pci/0000:85:00.0
+
+$ devlink dev info pci/0000:85:00.0
+pci/0000:85:00.0:
+  driver idpf
+  serial_number 00-a0-c9-ff-ff-23-45-67
+  versions:
+      running:
+        fw.mgmt.api 2.0
 
 Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Link: https://github.com/linux-netdev/nipa/wiki/Netdev-CI-system#device-information
 Signed-off-by: Paul Greenwalt <paul.greenwalt@intel.com>
 ---
- drivers/net/ethernet/intel/idpf/idpf_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/networking/devlink/idpf.rst     | 29 +++++++
+ Documentation/networking/devlink/index.rst    |  1 +
+ drivers/net/ethernet/intel/idpf/Makefile      |  1 +
+ .../net/ethernet/intel/idpf/idpf_devlink.c    | 79 +++++++++++++++++++
+ .../net/ethernet/intel/idpf/idpf_devlink.h    | 45 +++++++++++
+ drivers/net/ethernet/intel/idpf/idpf_main.c   | 12 ++-
+ 6 files changed, 164 insertions(+), 3 deletions(-)
+ create mode 100644 Documentation/networking/devlink/idpf.rst
+ create mode 100644 drivers/net/ethernet/intel/idpf/idpf_devlink.c
+ create mode 100644 drivers/net/ethernet/intel/idpf/idpf_devlink.h
 
+diff --git a/Documentation/networking/devlink/idpf.rst b/Documentation/networking/devlink/idpf.rst
+new file mode 100644
+index 000000000000..9262844a1b3f
+--- /dev/null
++++ b/Documentation/networking/devlink/idpf.rst
+@@ -0,0 +1,29 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++====================
++idpf devlink support
++====================
++
++This document describes the devlink features implemented by the ``idpf``
++device driver.
++
++Info versions
++=============
++
++The following table lists the version reported by the ``idpf`` driver.
++
++.. list-table:: devlink info versions implemented
++    :widths: 5 5 5 90
++
++    * - Name
++      - Type
++      - Example
++      - Description
++    * - ``fw.mgmt.api``
++      - running
++      - 2.0
++      - 2-digit version number (major.minor) of the communication channel
++        (virtchnl) used by the device.
++
++The driver also reports the PCI Device Serial Number through the
++``serial_number`` attribute.
+diff --git a/Documentation/networking/devlink/index.rst b/Documentation/networking/devlink/index.rst
+index e371be30b99e..09e49b74712c 100644
+--- a/Documentation/networking/devlink/index.rst
++++ b/Documentation/networking/devlink/index.rst
+@@ -85,6 +85,7 @@ parameters, info versions, and other features it supports.
+    hns3
+    i40e
+    ice
++   idpf
+    ionic
+    iosm
+    ixgbe
+diff --git a/drivers/net/ethernet/intel/idpf/Makefile b/drivers/net/ethernet/intel/idpf/Makefile
+index 4aaafa175ec3..81b27a406747 100644
+--- a/drivers/net/ethernet/intel/idpf/Makefile
++++ b/drivers/net/ethernet/intel/idpf/Makefile
+@@ -7,6 +7,7 @@ obj-$(CONFIG_IDPF) += idpf.o
+ 
+ idpf-y := \
+ 	idpf_dev.o		\
++	idpf_devlink.o		\
+ 	idpf_ethtool.o		\
+ 	idpf_idc.o		\
+ 	idpf_lib.o		\
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_devlink.c b/drivers/net/ethernet/intel/idpf/idpf_devlink.c
+new file mode 100644
+index 000000000000..70de76c88aa5
+--- /dev/null
++++ b/drivers/net/ethernet/intel/idpf/idpf_devlink.c
+@@ -0,0 +1,79 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Copyright (C) 2026 Intel Corporation */
++
++#include "idpf.h"
++#include "idpf_devlink.h"
++
++/**
++ * idpf_info_get_dsn - format the DSN as the serial number
++ * @adapter: the idpf adapter structure
++ * @buf: buffer to store the formatted serial number
++ */
++static void idpf_info_get_dsn(struct idpf_adapter *adapter, char *buf)
++{
++	u8 dsn[8];
++
++	/* Copy the DSN into an array in Big Endian format */
++	put_unaligned_be64(pci_get_dsn(adapter->pdev), dsn);
++
++	snprintf(buf, IDPF_DEVLINK_INFO_LEN, "%8phD", dsn);
++}
++
++/**
++ * idpf_devlink_info_get - get IDPF devlink info
++ * @devlink: devlink instance structure
++ * @req: the devlink info request
++ * @extack: extended netlink ack structure
++ *
++ * Callback for the devlink .info_get operation. Reports information about the
++ * device.
++ *
++ * Return: zero on success or a negative error code on failure.
++ */
++static int idpf_devlink_info_get(struct devlink *devlink,
++				 struct devlink_info_req *req,
++				 struct netlink_ext_ack *extack)
++{
++	struct idpf_adapter *adapter = devlink_priv(devlink);
++	char buf[IDPF_DEVLINK_INFO_LEN];
++	int err;
++
++	idpf_info_get_dsn(adapter, buf);
++	err = devlink_info_serial_number_put(req, buf);
++	if (err)
++		return err;
++
++	snprintf(buf, sizeof(buf), "%u.%u",
++		 adapter->virt_ver_maj, adapter->virt_ver_min);
++
++	err = devlink_info_version_running_put(req, "fw.mgmt.api", buf);
++	if (err)
++		return err;
++
++	return 0;
++}
++
++static const struct devlink_ops idpf_devlink_ops = {
++	.info_get = idpf_devlink_info_get,
++};
++
++/**
++ * idpf_adapter_alloc - allocate devlink and return adapter
++ * @dev: IDPF device to allocate for
++ *
++ * Allocate a devlink instance for this device and return the private area as
++ * the adapter structure.
++ *
++ * Return: adapter structure on success, NULL on failure
++ */
++struct idpf_adapter *idpf_adapter_alloc(struct device *dev)
++{
++	struct devlink *devlink;
++
++	devlink = devlink_alloc(&idpf_devlink_ops, sizeof(struct idpf_adapter),
++				dev);
++	if (!devlink)
++		return NULL;
++
++	return devlink_priv(devlink);
++}
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_devlink.h b/drivers/net/ethernet/intel/idpf/idpf_devlink.h
+new file mode 100644
+index 000000000000..ff18b4e7358d
+--- /dev/null
++++ b/drivers/net/ethernet/intel/idpf/idpf_devlink.h
+@@ -0,0 +1,45 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (C) 2026, Intel Corporation. */
++
++#ifndef _IDPF_DEVLINK_H_
++#define _IDPF_DEVLINK_H_
++#include <net/devlink.h>
++
++#define IDPF_DEVLINK_INFO_LEN	128
++
++struct idpf_adapter *idpf_adapter_alloc(struct device *dev);
++
++/**
++ * idpf_devlink_free - teardown the devlink
++ * @adapter: IDPF adapter structure to free
++ */
++static inline void idpf_devlink_free(struct idpf_adapter *adapter)
++{
++	struct devlink *devlink = priv_to_devlink(adapter);
++
++	devlink_free(devlink);
++}
++
++/**
++ * idpf_devlink_register - register the devlink
++ * @adapter: IDPF adapter structure
++ */
++static inline void idpf_devlink_register(struct idpf_adapter *adapter)
++{
++	struct devlink *devlink = priv_to_devlink(adapter);
++
++	devlink_register(devlink);
++}
++
++/**
++ * idpf_devlink_unregister - unregister the devlink
++ * @adapter: IDPF adapter structure
++ */
++static inline void idpf_devlink_unregister(struct idpf_adapter *adapter)
++{
++	struct devlink *devlink = priv_to_devlink(adapter);
++
++	devlink_unregister(devlink);
++}
++
++#endif /* _IDPF_DEVLINK_H_ */
 diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
-index 807608899084..6f9579c39342 100644
+index 6f9579c39342..a1156b142119 100644
 --- a/drivers/net/ethernet/intel/idpf/idpf_main.c
 +++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
-@@ -364,6 +364,7 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- err_init_wq:
+@@ -3,6 +3,7 @@
+ 
+ #include "idpf.h"
+ #include "idpf_devids.h"
++#include "idpf_devlink.h"
+ #include "idpf_lan_vf_regs.h"
+ #include "idpf_virtchnl.h"
+ 
+@@ -123,6 +124,8 @@ static void idpf_remove(struct pci_dev *pdev)
+ 
+ 	set_bit(IDPF_REMOVE_IN_PROG, adapter->flags);
+ 
++	idpf_devlink_unregister(adapter);
++
+ 	/* Wait until vc_event_task is done to consider if any hard reset is
+ 	 * in progress else we may go ahead and release the resources but the
+ 	 * thread doing the hard reset might continue the init path and
+@@ -181,7 +184,8 @@ static void idpf_remove(struct pci_dev *pdev)
+ 
+ 	idpf_decfg_device(adapter);
+ 	pci_set_drvdata(pdev, NULL);
+-	kfree(adapter);
++
++	idpf_devlink_free(adapter);
+ }
+ 
+ /**
+@@ -260,7 +264,7 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	struct idpf_adapter *adapter;
+ 	int err;
+ 
+-	adapter = kzalloc_obj(*adapter);
++	adapter = idpf_adapter_alloc(dev);
+ 	if (!adapter)
+ 		return -ENOMEM;
+ 
+@@ -346,6 +350,8 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	INIT_DELAYED_WORK(&adapter->stats_task, idpf_statistics_task);
+ 	INIT_DELAYED_WORK(&adapter->vc_event_task, idpf_vc_event_task);
+ 
++	idpf_devlink_register(adapter);
++
+ 	adapter->dev_ops.reg_ops.reset_reg_init(adapter);
+ 	set_bit(IDPF_HR_DRV_LOAD, adapter->flags);
+ 	queue_delayed_work(adapter->vc_event_wq, &adapter->vc_event_task,
+@@ -365,7 +371,7 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
  	idpf_decfg_device(adapter);
  err_free:
-+	pci_set_drvdata(pdev, NULL);
- 	kfree(adapter);
+ 	pci_set_drvdata(pdev, NULL);
+-	kfree(adapter);
++	idpf_devlink_free(adapter);
  	return err;
  }
+ 
 -- 
 2.52.0
 
