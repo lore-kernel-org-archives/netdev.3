@@ -1,204 +1,118 @@
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB5347668D;
-	Fri, 14 Aug 2026 14:45:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786718710; cv=pass; b=C37z2p40cYUCEMYb3nx7xSmweS+7vXXvZLtYXpB6gmFgJGnHkmIf+HyyF2yw+4MUl68R4Mh0CEVvO+CsJBM3wqfpYiomyrA6PaNUoqzr/hsOg4S9wVnsYo5UkhISHbPM26m26ZtBx8RhdjfJ7VdUvCpyelww164Q4bs/VyCdKls=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786718710; c=relaxed/simple;
-	bh=ZA28xr+iVjgCaxfE1UtWH+qWgeVBONXZlg6K/q8kG2Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CbdLiggXE4COmYTpgTRDWJzS3ZSVTgVn2qs5b4hUpr3wPuLYSvznKPBO3Wpucwf9xO9FAXMK1HAJRx2LyTrmnj/00lXBlcKrM1YL/eVqNPHI5km+8zWFl8/StAxIlYKbpUT/hhTn4qsQT3cV8Kp06Kzs+Mwf8qrRA2hlui4W9t0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=fail smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=ar0kp1ve; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=DmgzzMn+; arc=pass smtp.client-ip=85.215.255.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D333BED66
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 14:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786718774; cv=none; b=K0fxUOJbGxz5NdIEbNx0N4zLCNE8HvY34ndpnU3z5yBa5y1p5jby9uoMAwRm3BVhPocNaDeaD0+EGIQvK3gXJAcqhMkmXp3abtYub0NSXz9Q4l6p3fmSTz4zsWSMB8ehm/d/mhlCSPiW3EDx+ULlS8pAu+gCcl48dD3pX4/EU1w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786718774; c=relaxed/simple;
+	bh=j/48CqOv5Aa/AgwEHKe/KPlAizt7dHvsChDRKjlkCf4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=j+srU55RDKXWqV2Anl7/O9SVoBRNplqvQb5Cs8btRVEdp9l7L8Yhu0tF3LaiF2MnUY1lvDjkcvdKQA1VP1OTgEH1kNHGBTizRFF/MPfIOXxNnVyKa6VbSedssmp8s3RUuxrP6hS5/k/fk4/f7dHTyhbxONYdsNtw8Nk0twau+7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RAP8DK/G; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="ar0kp1ve";
-	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="DmgzzMn+"
-ARC-Seal: i=1; a=rsa-sha256; t=1786718703; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=PqW6b6UDgxsXNyKAfADxsD5uPXMZU9KULHkd+EcAUOCL68AB0fHd6I8AABIhkhopZf
-    HL7TBT4qed5GkkZFZ2UUbmtLrsb1oLFCgcS5LjqVwGrE6zxVAPnDcqzjf9Zzn8YSsJyw
-    8uzPUJXO42UgQDSWQq2fUGMpCX8vJR9603niMME4rWP4kx3VKh5bwv1zQVuEpam7E9bY
-    iM+I7t6u4b+EIjOjHrOqLSAyjy54BFvx201IlMzAdH0Ma9JnmDDLw521U+EJf4IWO6Tv
-    sXTIckjDAem4s7CzwjO9FVfzC8IV2MvmWpCaaoxr8oZi7q8zEi2raNMpYST4SGXO2QNb
-    AJJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1786718703;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=EsqOj8Ow7/SXlnyAiIvTkIIyt5WvYytlt6ZVXM/E3R4=;
-    b=Ib3l4fScBkTFD+VyFezBqNid+js9Z857A5u6rDE5ipNTL1ALTmK2QC1mORBSCH8Rmn
-    LZVTf57AjBU9gDY70vSLZQczasSQl0QtVzZc47nxdDe+HfDj/n6G1g5f2XLvDzlNGr3P
-    RLTqrDEKKSZN1cO5MDNUwhdHPCOV3M7ECxiMX5MKnqKIll/ENf+iaY4dC/R8GRMq/dmQ
-    dMyok+5Iz8kMD9eFZFdmUiV8pevLmh/IahalCApQovfbXma68COm70oD37mtjsjUCB+e
-    8iuwzKrGPtl06cyZ5kXmb19pLM/MvE04grklRe97DoeApso/kIoVaIn+RkSFqwpAjvtM
-    soYQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1786718703;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=EsqOj8Ow7/SXlnyAiIvTkIIyt5WvYytlt6ZVXM/E3R4=;
-    b=ar0kp1veVR6ZZdHmvx7oLg4WqAPmMOiePhg75Klw9JKWNq5JrIFwd8efoG3scmV6C2
-    uS3HsASESv2lSnsEAqKF/HmA2zivwp5czs/8c9dedwOLtYmCZ9qaiBkgo5S5QD145FnN
-    hck75abvX3DQ6qE4BHjk9YKh/hmnXht1n41ZwoDcFnSlRwuNyrs9oaSxt/7KC1ecey89
-    e1T+gdxljTsuHk/zYhQIBoCQXV+7j+ueZP5yeOphmROdhp1hvOlNrTRJrqmF6FkBYquJ
-    8qwKhLevYzjY16ezHHtUPgq+x58hYYsj3VOPFcMeYmkXf07X1L3jmGte2bD/BOXJCeYy
-    IX0g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1786718703;
-    s=strato-dkim-0003; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=EsqOj8Ow7/SXlnyAiIvTkIIyt5WvYytlt6ZVXM/E3R4=;
-    b=DmgzzMn+dcd5BBdTfcQX24zm4Aj1Fw2P74Yu3QNyhR5z0kdurv3Pcnn3ZRaaV+pITd
-    sVgHI4kLkozoBcYLZVAA==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeEQ7s8bDup0Q=="
-Received: from [IPV6:2a00:6020:4a38:6810::989]
-    by smtp.strato.de (RZmta 55.6.2 AUTH)
-    with ESMTPSA id K171b727EEj33aj
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Fri, 14 Aug 2026 16:45:03 +0200 (CEST)
-Message-ID: <23268b84-a1c5-4551-91ba-0a596cff21a1@hartkopp.net>
-Date: Fri, 14 Aug 2026 16:45:02 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RAP8DK/G"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2cc891373e0so15777265ad.2
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 07:46:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786718772; x=1787323572; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ktbN0mlbgnTk1vGFkp72jrY6OVL4246SkIwlC5oRky4=;
+        b=RAP8DK/GufnOjCir6ZqbbpbWfoQar+pEL4RsGpQcBSPHOJKnIn4EX0QSB35N6Pk5cm
+         BgArLTE14CLbyxP/vJ0zD4qEg7LQXj7cAS/lE21FuN7V8LqRTIoB6bVF+wjNGa3BGNS3
+         lf6uraxdHHEgi3qonzY0VFfesqq+td2wr5VBTEWi/6uTz7m+oJGCRHNZ3OewouU4sU1T
+         fHVERZEAuuxCcyTrEK5Uexivyk+s1LfQE5DxPP4d2JilTBScBWrYG0oehy4WwPxVAzQN
+         sCPkkTVSkEDwizj+yNWw2aZBRXhrKKn3k3/heG4udP1JkLfcgdvBbrNIQzTcTmTYIl0W
+         luFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786718772; x=1787323572;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ktbN0mlbgnTk1vGFkp72jrY6OVL4246SkIwlC5oRky4=;
+        b=DFNQ6AWa4FgvgTImDyI7UaHbpk+fB2nq0KWJsrNmQPQaAq/j4EmciW/h4qjR2LwVaf
+         4nOt2oKYsvCfBSf1sbpybD05hupQS5q+ha8URmt4P3GWC5BhiGUBX4xsGVHcfaU02x0t
+         6ns0M9wOKN7Haf6PFDya8iRP8NcBmJf7/Kht8fHUWXFyZnGm04V7BgFrUNtrEr1oWbNG
+         nQhR+he8sywZGFcpk2s4lhMb+HTZzDJ5KluIIoNS20QnpXy3XyImYEuX42s7cJUkfKas
+         Fjr+Hx76rkTlVqT5I3Cab3/eIVfD/jdmfct6W2yAqGtsc6yoODygjLuQ7StQGyMRfaaI
+         bWpQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpPLxnIc4yoPb05krE17BeMUCSXpWv1CReVEibHh8QYJ3vb4OOCJ2naTafjTERYxGNSwbVHikw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2rG6CdstAN40n2PrsNoeQfuLcdpV8yCF0mTXn547XwHRnwmPn
+	md4e2i0YvdUSQt0cWBfJSAbO3cUAV7udoSPI3N+o8pslBowaKP2WNpVn
+X-Gm-Gg: AR+sD13f0kM2nquTXQWyS9UpppH7XCr9rYLBrNGFkt41YgdIWpjHbSMhZcW+pgcpVkB
+	9jllB9d+NFMyljRztiiaRu4neSv3jpai9OqQRXC0UJCrP2gZZPa5/g722stw3MKoCpFKvzw6sFS
+	BCRVLdnvThB8nezHljewwkXSAiQYlNqJSVveqNuBbMEwKUtZ5LSG0ERHGo0qrbzYoRpNIfGnVku
+	UjMxb4mCreAnm3i4KTugM94XvtZquA46CzEQtWIpTH3+1OsiPAL8XISPynlrV2Rl7YOk2eP63Lz
+	r64j1rKTDKeazg1brx5P99OJq4OFbldMh3fsz+0Fip6qs/5unfnpEi9KeAnMTtJ813vpYdlEHSV
+	jbgGOW2exqSB8mdSg5kSffRkmVMIoEHJ6Bzch7NeGS1zZggdCcUFiF30f9PcFlgBch8DOJ5ycE5
+	qraMH/f6aMKgpLAaY6AGZXQHxVpYlrneXb2T3toBdLbAfDCHu6VvlMf3fFud/Ga1s=
+X-Received: by 2002:a05:6a20:4325:b0:3bf:7eb5:9459 with SMTP id adf61e73a8af0-3cc71fa8cd1mr7381930637.20.1786718771362;
+        Fri, 14 Aug 2026 07:46:11 -0700 (PDT)
+Received: from [127.0.1.1] ([188.253.12.32])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-320d60eb8eesm5547344eec.10.2026.08.14.07.46.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Aug 2026 07:46:10 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: stefanha@redhat.com,
+	sgarzare@redhat.com,
+	mst@redhat.com,
+	jasowangio@gmail.com
+Cc: eperezma@redhat.com,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v5 0/3] vhost: fix device IOTLB feature lifecycle
+Date: Fri, 14 Aug 2026 22:45:55 +0800
+Message-Id: <20260814144558.134314-1-physicalmtea@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] team: reject CAN and IEEE 802.15.4 devices in
- team_port_add
-To: jiale yao <19888972804@163.com>, Jiri Pirko <jiri@resnulli.us>,
- Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- "linux-can@vger.kernel.org" <linux-can@vger.kernel.org>
-References: <20260728151240.89434-1-yaojiale02@163.com>
- <amnESUrOtl0dXaXk@FV6GYCPJ69>
- <4d056e9f.8019.19fadc9deb5.Coremail.19888972804@163.com>
-Content-Language: en-US
-From: Oliver Hartkopp <socketcan@hartkopp.net>
-In-Reply-To: <4d056e9f.8019.19fadc9deb5.Coremail.19888972804@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-+CC: linux-can ML
+Both vhost-vsock and vhost-net can leave the device IOTLB attached when
+userspace clears VIRTIO_F_ACCESS_PLATFORM. They also replace an existing
+IOTLB with a new empty table when a later feature update keeps
+ACCESS_PLATFORM enabled, for example when updating logging.
 
-On 29.07.26 14:11, jiale yao wrote:
-> How about adding a helper in include/linux/if_arp.h, similar to dev_is_mac_header_xmit()? Perhaps
-> something like dev_is_can_or_ieee802154()?
-> 
+The stale IOTLB can keep old translations active after a memory table
+change, while replacing an existing table discards valid translations and
+causes avoidable IOTLB misses.
 
-Good idea.
+Patch 1 makes device IOTLB initialization idempotent and adds a common
+teardown helper. The helper detaches the table from every virtqueue,
+resets metadata caches, clears queued IOTLB miss messages, and frees the
+old table after the virtqueue handoff. It is a no-op when no device IOTLB
+is installed.
 
-But I would rather suggest some
+Patches 2 and 3 use the common helper when vhost-vsock and vhost-net clear
+ACCESS_PLATFORM. The backend-specific code continues to update
+acked_features in its own virtqueue loop.
 
-static inline bool netdev_has_ml_priv(struct net_device *dev)
+Changes since v4:
+- move the existing-IOTLB check into vhost_init_device_iotlb()
+- remove the vhost-vsock-specific keep-IOTLB patch
+- add the corresponding ACCESS_PLATFORM teardown to vhost-net
+- make vhost_clear_device_iotlb() handle an absent device IOTLB
 
-in
+Jia Jia (3):
+  vhost: add helpers for device IOTLB lifecycle
+  vhost/vsock: discard IOTLB when ACCESS_PLATFORM is cleared
+  vhost/net: discard IOTLB when ACCESS_PLATFORM is cleared
 
-include/linux/netdevice.h
+ drivers/vhost/net.c   |  4 ++++
+ drivers/vhost/vhost.c | 28 ++++++++++++++++++++++++++++
+ drivers/vhost/vhost.h |  1 +
+ drivers/vhost/vsock.c |  4 ++++
+ 4 files changed, 36 insertions(+), 3 deletions(-)
 
-next to
-
-netdev_set_ml_priv() / netdev_get_ml_priv()
-
-Currently only the CAN subsystem properly handles the dev->ml_priv_type 
-to make sure the correct "user" of the ml_priv pointer:
-
-/* Specifies the type of the struct net_device::ml_priv pointer */
-enum netdev_ml_priv_type {
-	ML_PRIV_NONE,
-	ML_PRIV_CAN,
-}
-
-There are some other ethernet adapters of dev->ml_priv beyond 
-ARPHRD_IEEE802154, and ARPHRD_IEEE802154_MONITOR. Not sure if those 
-adapters need to be fixed.
-
-But to be sure we don't run into problems with bonding or teaming we 
-should probably simply check for (dev->ml_priv != NULL) to reject them.
-No matter which netdev_ml_priv_type is set.
-
-static inline bool netdev_has_ml_priv(struct net_device *dev) {
-
-	return (dev->ml_priv != NULL);
-}
-
-Would you like to provide a patch introducing this helper and directly 
-use it for bonding/team (with some updated comments, as the problem is 
-not related to CAN and IEEE 802.15.4 devices but to the use of ml_priv)?
-
-Best regards,
-Oliver
-
-
-> 
-> At 2026-07-29 17:15:06, "Jiri Pirko" <jiri@resnulli.us> wrote:
->> Tue, Jul 28, 2026 at 05:12:40PM +0200, yaojiale02@163.com wrote:
->>> Enslaving a CAN or IEEE 802.15.4 device (e.g. vxcan, wpan0) to a
->>> team master triggers a NULL pointer dereference because these
->>> device types use different Layer 2 architectures from Ethernet and
->>> the team driver never initializes their private mid-layer data
->>> structures.
->>>
->>> Reject ARPHRD_CAN, ARPHRD_IEEE802154, and ARPHRD_IEEE802154_MONITOR
->>> devices in team_port_add(), mirroring the existing CAN check already
->>> present in the bonding driver since commit 8ba68464e478 ("bonding:
->>> refuse to enslave CAN devices").
->>
->> Can we perhaps have a unified helper for the check?
->>
->>
->>>
->>> Link: https://lore.kernel.org/all/b58d98e0-8fe3-4e4e-b8a5-c1c7e647ccca@hartkopp.net/
->>> Fixes: 1d76efe1577b ("team: add support for non-ethernet devices")
->>> Assisted-by: Claude:deepseek-v4-pro
->>
->> Looks your ai gone a bit wild here...
->>
->>
->>> Signed-off-by: Jiale Yao <yaojiale02@163.com>
->>> ---
->>> V1 -> V2: Extended check to also reject ARPHRD_IEEE802154 and
->>>   ARPHRD_IEEE802154_MONITOR devices per review feedback
->>> ---
->>> drivers/net/team/team_core.c | 11 +++++++++++
->>> 1 file changed, 11 insertions(+)
->>>
->>> diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
->>> index feaa75fbf8fc..d8c46105fc8b 100644
->>> --- a/drivers/net/team/team_core.c
->>> +++ b/drivers/net/team/team_core.c
->>> @@ -1224,6 +1224,17 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
->>> 		return -EINVAL;
->>> 	}
->>>
->>> +		if (port_dev->type == ARPHRD_CAN ||
->>> +		    port_dev->type == ARPHRD_IEEE802154 ||
->>> +		    port_dev->type == ARPHRD_IEEE802154_MONITOR) {
->>> +			NL_SET_ERR_MSG(extack,
->>> +				       "CAN and IEEE 802.15.4 devices can't be added as a team port");
->>> +			netdev_err(dev, "Device %s is CAN or IEEE 802.15.4. These device types can't be added as a team port\n",
->>> +				   portname);
->>> +			return -EINVAL;
->>> +		}
->>> +	}
->>> +
->>> 	if (netif_is_team_port(port_dev)) {
->>> 		NL_SET_ERR_MSG(extack, "Device is already a port of a team device");
->>> 		netdev_err(dev, "Device %s is already a port "
->>> -- 
->>> 2.34.1
->>>
-
+-- 
+2.34.1
