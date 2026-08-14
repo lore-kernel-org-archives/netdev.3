@@ -1,204 +1,227 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f1.google.com (mail-wr2-f1.google.com [74.125.225.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9125361958
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 12:23:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D31744BC87
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 12:31:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786710198; cv=none; b=XrufPykKx/lSaIMERyQqnb0kJiVRnwnpNzdhdIi2+4aYSV2XIAct6BLW8v5tMEJ6iTuN6dGGETBpU2vR3qsjgNIw4EWsz5SJIlStfQYO1ko3DfMD45wmmbXREnSzhZxzvwrhI10ni4Hh0/BZmkpJOdrCcAJfyh3eA9YPxFUd6jA=
+	t=1786710699; cv=none; b=pBk/GhzDnEFpRBDYMO9Yzs7RvfQ8ISc7W37yI4dt2HQDSr5a4pZOxrmstEgWFC4s+t0m6sO8mFYKG0D7nvq9hEWBdLUsbDlu1Y0wRf24jDQ+NOyZ2xxuRfDA0mHfKBBjbnyju5gziw+eFr2o3012iv+tlal8sFZAYFzAEgsIbSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786710198; c=relaxed/simple;
-	bh=PjgjwZnGgTn6iqnEiUJ3bPEVMifERR8pCitafp8p2xk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fEVN0wmSn6ncpFavzUq0v7rxlb/L63PxQX+SKHBR/HKjiDptslgNNMrNOAf3al/eVElZhInzAtLmp63do0aWK7RXyksQkKuMSd5QqH6Lxg10EcEjUAajio0s8KCtcUz7JWQ0FaF1IpQnkYV/KarP09NKOaG3PIpo99pZdUi3EBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NyfKtwFJ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=HxKBrwKZ; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NyfKtwFJ";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="HxKBrwKZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786710195;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PdXWuErOvyDV9Y8ztCqoO/f6xuxZcnsGekDRRKOGqDQ=;
-	b=NyfKtwFJg40KApYJl7HMc5X/BHYsCfipWWJbE7G7rfTniXhpV3Nc6eTpW4ZuRC82N5pjW4
-	7A7BqGs5QBltHw9v7MohdKA1sku94li4uveIlVNoG6HJcML18GOgSnHYVNCy6MhphoHq+L
-	VaGxxw/XbM75XpoSmIFFnN349SGHZjQ=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-572-PGAynhCOOiOfEpXUbSzGTQ-1; Fri, 14 Aug 2026 08:23:14 -0400
-X-MC-Unique: PGAynhCOOiOfEpXUbSzGTQ-1
-X-Mimecast-MFC-AGG-ID: PGAynhCOOiOfEpXUbSzGTQ_1786710193
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-474170b59dfso573913f8f.3
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 05:23:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1786710193; x=1787314993; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=PdXWuErOvyDV9Y8ztCqoO/f6xuxZcnsGekDRRKOGqDQ=;
-        b=HxKBrwKZhHhN+M0pEN33Tm9M5ZWp2DKrTB2+8kCkCGA69bwlcPXpEzdxRilumJdL6s
-         tta5DpD0/oa+GZI6kKLeXYskl8homjPmuzy/wm/rhme2n//Ma/KO+kT8H22haVPtDa2x
-         rfBGXcrgBRpvCinACPaGy/Otc4chPImQd43x5zWopyjTVKaRL26+sY9tViWYnmfqFPnF
-         jCWaGbv85s56uCnyrTAzCj/pxeRJEdUvyKL5JRo+53TxZEonkXZdwFluPRpAiAykM9G2
-         5iRYSGArzxZMbGD7uyj9cSb2OhlUc7B7azLW+1D4xhqgDYGh8nX5iEotcr6aFyuaz3IQ
-         YY1A==
+	s=arc-20240116; t=1786710699; c=relaxed/simple;
+	bh=qjLkC0II1gWuixXIMLNRItr0stMYFMauGKoO9+GqDyk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dpQwsvg29Z+yAeI2w/gOzOIAOsYSqKOhVb3j/1YHj8lztcKUTkhwjaf88O89QGgHm3OgOtSx5LAUdlWZgv5Y3Zvm6otHHhyCknTlTHt4+ugk43+i37q9DgrbHKbfj2hVjjMBGRj9GLcqPR99PAuLb8rJzvXpeqWRWc2a80IeDNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr2-f1.google.com with SMTP id ffacd0b85a97d-47fd1b2021fso220815f8f.1
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 05:31:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786710193; x=1787314993;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PdXWuErOvyDV9Y8ztCqoO/f6xuxZcnsGekDRRKOGqDQ=;
-        b=biP+LFIv/mNEeRzQufDzp853azNUxF/BUoA93gE/lhxcKixf87N1aOQr9N7SLcF6sk
-         c3NrSV9MElYAkgUxR8cvCNdlUhFo803NKmLO2cpNe/iXQOLY4DEQ3hbNIPPY2E+A8866
-         tFImpw9RDYY9EaRsDA0B3sDV4lM+ThakIuuEW6N6CdUNG+y3EagszcvGCb78R7uDTkft
-         r/LDJHVs48quldzDfvNxbrCmoqKR9BkYc5J5IX/lyHCxjLc4ECVltIcoiNJU/5K5gk8E
-         zqxJ6Z8rDiPFMuuMIHaa4v3jCUYjKOHlUT4QI1r2TWFFRmm6fLo069yhpze+5DeOCOpA
-         vupA==
-X-Gm-Message-State: AOJu0YyJA04/ur/xT5nKhkfWOzPv6jbJqubDDS5RtRr3TvFij9p0UKGD
-	bzlzghUauAX6KpZ8Oq+lxRdF9ojmmb7zhGPd70EzwOMqnA2TAAP+b3I2qS1If+W2Fn7CY/wvkT2
-	gSNMpKnku3OVu75IALd94U0G/PvJJKZmkpMCIs3debH6YVcq6RBc/7Mm48g==
-X-Gm-Gg: AR+sD13rpvkUM7EPvfUBEZboN8RQ22EgKP+0IbHNeT6ZxhPKnk/N70QaU/DdfKVXLVV
-	nNS4e/3NKtLK3RpGsFzUeh73IIrb6Tu8bGrfO8hoDnavad57HBRgEkKMvGTeoDUBCwfFbeCOhwi
-	TwvgIwjZWrE+WBoxCmEa6X4YABb86DJKynr2vMgWOqlYqoE0YaUm+rExD2QgMY97/LUHUzz8woS
-	/M2VrDOnfFP+IXQHylbJyEnYgQD0kB2IBGRGZzqOfg44wNy19wjHFwQmED+oUzu/QHPsXIslL0w
-	apy0xyeIg1Cu5Fd3Pt6SL4gf/vKZbV2DpjZy2Duo6CKV+R2nmil3sZK/mRtQXnFXpaY6hGmsIqV
-	jZoPdHoDtcKxwma/K74NN/zjhL/Y23YRegFBhMFRZyHMyprEUlPmZ
-X-Received: by 2002:a05:600c:1d1e:b0:496:bbcb:b0bb with SMTP id 5b1f17b1804b1-49987992addmr59968685e9.18.1786710193299;
-        Fri, 14 Aug 2026 05:23:13 -0700 (PDT)
-X-Received: by 2002:a05:600c:1d1e:b0:496:bbcb:b0bb with SMTP id 5b1f17b1804b1-49987992addmr59967975e9.18.1786710192832;
-        Fri, 14 Aug 2026 05:23:12 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-135-154.retail.telecomitalia.it. [82.53.135.154])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f2b27bfsm7763993f8f.23.2026.08.14.05.23.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 05:23:12 -0700 (PDT)
-Date: Fri, 14 Aug 2026 14:23:05 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Daehyeon Ko <4ncienth@gmail.com>
-Cc: netdev@vger.kernel.org, Stefan Hajnoczi <stefanha@redhat.com>, 
-	virtualization@lists.linux.dev, kvm@vger.kernel.org
-Subject: Re: [PATCH net] vsock/virtio: validate packet source for connected
- sockets
-Message-ID: <an7vDxDT-N6xi-3l@sgarzare-redhat>
-References: <20260813121236.2328599-1-4ncienth@gmail.com>
+        d=1e100.net; s=20251104; t=1786710695; x=1787315495;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=bwjQek05MIazSEQ3Y5aXRo+nFR/zivlxhlf5ewgEipU=;
+        b=B2dgogWM0To8HE4nwv4GLLUc8IgazbdMStN7I8eBVUiZ9RPMieCj1ZRKXKZoqXYjl9
+         Wsr6gN7MiA52yMrNxieZDaGitW5UVKqrUjSrDR/j9ENvFlMwJryC9UX0mZvirIGO/vUU
+         Igd+KzDVeDzuxASDl0VQgJV1wRXIuQDM+2QYEaiGqZ62mEMEcP9B3dIQpgqrdoTDVnr6
+         EQXF7ba9+lymonlfgRLdg9XN2KePCnQsitH2Kx9eqtJij/ncPWgQ/PCcLckvFCqUTIvj
+         6j13fH61bLlIsDz2rX7Ax+K+RoEOQwD/FoVvQmvLwLL7RWSGlFeOrUL9AXTgupomlXFg
+         rnNg==
+X-Gm-Message-State: AOJu0Yx4Z0bxezNL7bv+UwM0gEm84r1/yrlJrBQYPWL9Qyd3zhAqiyyC
+	cL+Lx/+T1KMFqla8jyW9ReE1yhcEatQ1Zx7ODgz1kAOBFNuVPo8d3tmU
+X-Gm-Gg: AR+sD11kRWxCcBOjOohBQHmAMEoeCB81Tiobj7L81tzMdaS3QKZCtSbTenmp6C/XxpU
+	jgdfgDk23VAZxpG7XlJCA7hB2sLzLYs+XLB1wlAvN1DWcM9G69pufAu7rPjuk5M3kLCgdtYoSxI
+	QHbIjspZCfG4Ybim0m8htR6nPnBTedZB4P7DgXEmFwmI+tR18obkVtYQhrGDOT3HcE0Ey1+bs7Y
+	HzrOUm7xFcTQxTp/J9qYH+Abui2MIiaC6w99qU/G2J1glrdST/tIBDTSzPOXAEcHLLKSQESJAgr
+	1oNOXkjTdLnBzj5k9NVxa40/sAlYftiuFhW2aAgLXDso+olJ9AZhZYZ1CRRpzKJOfCbLhMqpTgn
+	nRrDE+kEcTOPtXt9Jb5Cvw8VWZIGGKVzOF2oTk3OSES5aAmkuvus5wB7BjMIdH6yLebvZLuJR2X
+	JCcpPjbKuV8OCFcDVFiWw/O0UuJ5TaiJWV36qzXNGgHKv6bYrhPhA4mbAiwCoqPCbQvUmBVRR3f
+	qJMsPKb9BuOADC0
+X-Received: by 2002:a05:6000:46cf:b0:481:5048:1b78 with SMTP id ffacd0b85a97d-481606f7266mr5720430f8f.5.1786710695234;
+        Fri, 14 Aug 2026 05:31:35 -0700 (PDT)
+Received: from [192.168.88.241] (89-24-57-65.nat.epc.tmcz.cz. [89.24.57.65])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f2c129dsm7841103f8f.26.2026.08.14.05.31.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 14 Aug 2026 05:31:34 -0700 (PDT)
+Message-ID: <00a1176a-8b1f-47b1-9376-349cd08ad313@ovn.org>
+Date: Fri, 14 Aug 2026 14:31:32 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260813121236.2328599-1-4ncienth@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/2] openvswitch: only skb_tx_error() a packet we are
+ about to drop
+To: Norbert Szetei <norbert@doyensec.com>, Ilya Maximets
+ <i.maximets@ovn.org>, Willem de Bruijn <willemb@google.com>,
+ Pavel Begunkov <asml.silence@gmail.com>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>,
+ Steffen Klassert <steffen.klassert@secunet.com>,
+ Kuan-Ting Chen <h3xrabbit@gmail.com>, dev@openvswitch.org,
+ linux-kernel@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>
+References: <8063260C-05C9-4997-B9B6-2135063C4858@doyensec.com>
+ <C35992B1-7740-4886-94FF-F85DE8B0106F@doyensec.com>
+ <b20650c2-1adb-4902-b2b1-9bca91b95dec@ovn.org>
+ <741D4072-50EE-437B-BFC3-CDFE94C93F8A@doyensec.com>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <741D4072-50EE-437B-BFC3-CDFE94C93F8A@doyensec.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 13, 2026 at 09:12:36PM +0900, Daehyeon Ko wrote:
->virtio_transport_recv_pkt() first looks up a socket using the full source
->and destination tuple.  If that misses, it falls back to a bound-socket
->lookup using only the destination address.  The fallback is needed for
->listening and connecting sockets, but it can also select an established
->socket that remains in the bound table.
->
->As a result, a packet from an unrelated source can be dispatched to a
->non-listening socket.  In TCP_SYN_SENT, a source-blind RESPONSE marks the
->selected socket established while retaining its original remote address.
->Subsequent RW packets can likewise be delivered through the
->destination-only fallback.
->
->This was reproduced with two capless processes under different UIDs.  The
->attacker discovered the victim tuple through unprivileged AF_VSOCK
->sock_diag and injected a chosen 16-byte payload into the victim established
->loopback socket.  The legitimate peer received none of those bytes.
+On 8/14/26 1:01 PM, Norbert Szetei wrote:
+> Thanks for the review. Sashiko flagged
 
-I don't understand this, what it means? If the receiver doesn't receive
-those injected bytes, should be fine, no?
+Hmm.  I do not see any reports in either of the instances.  Do you have a link?
 
->
->After taking the socket lock, verify that packets for non-listening sockets
->come from the peer stored in remote_addr.  Listening sockets continue to
->accept packets from any source.
+> that the moved call may still be
+> reachable through the RECIRC action, and I confirmed dynamically that it is.
+> With 1/2 applied, a flow matching recirc_id 0 exactly, with actions
+> RECIRC(1), OUTPUT(0) instead of USERSPACE(unbound), OUTPUT(0), reproduces
+> the same issue. So please hold off on 1/2.
+> 
+> Moving the call to the "default" branch assumes that branch only sees a
+> packet the datapath owns. For a non-last OVS_ACTION_ATTR_RECIRC,
+> clone_execute() does
+> 
+> 	skb = last ? skb : skb_clone(skb, GFP_ATOMIC);
+> 	...
+> 	ovs_dp_process_packet(skb, clone);
+> 
+> so a clone lands there while do_execute_actions() carries on with the
+> original. The clone shares skb_shinfo() exactly for the skbs this series is
+> about, since skb_clone() -> skb_orphan_frags() returns early on
+> SKBFL_DONT_ORPHAN and does not copy the frags - so settling the uarg
+> through the clone clears SKBFL_SHARED_FRAG for the skb still being
+> forwarded.
 
-IMO this description should be improved, it's quite hard to follow.
-This is an idea IIUC the issue:
+AFAIU, operations on a cloned skb performed via proper skb helpers must
+not affect the original.  That's the whole point of the clone.  However,
+in this case indeed it looks like the skb_tx_copy() just modifies the
+shared info not checking if it is shared or not.  And this sounds like
+a bug in skb_tx_copy().
 
-   virtio_transport_recv_pkt() looks up sockets in two steps: first by
-   the full source and destination tuple in the connected table, then by
-   destination only in the bound table. The fallback is needed for
-   listening and connecting sockets, but it never validates the source
-   address in the packet header. Since sockets remain in the bound table
-   after connect(), a packet from any source can be dispatched to a
-   non-listening socket.
+> 
+> Removing the call, as I originally suggested, does fix this in my testing.
+> If you would still rather keep it, how would you prefer to solve this?
 
-   An unprivileged process can discover the target tuple through AF_VSOCK
-   sock_diag (no capabilities required), send a forged RESPONSE to a
-   TCP_SYN_SENT socket to establish the connection, and then inject
-   arbitrary data through subsequent RW packets, all delivered via the
-   destination-only fallback.
+Just removing the call from openvswitch module doesn't solve the problem.
+Packet may enter OVS already cloned somewhere else in the stack, and at
+any other point in the kernel where skb_tx_copy() is called it may be
+operating on a clone of some other skb causing the exact same issue.  So,
+it needs to be addressed inside the skb_tx_copy() itself.
 
-   After lock_sock(), verify that the packet source matches the
-   remote_addr stored during connect().
+On the other hand, reading the history of this function, it seems like it
+lost of its meaning with commit 1f8b977ab32d ("sock: enable MSG_ZEROCOPY")
+from Willem that changed it to just call skb_zcopy_clear(skb, true);  This
+changed the "false" signaling to "true".  So it doesn't even signal an error
+anymore.
 
->
->Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
->Cc: stable@vger.kernel.org
->Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
->---
-> net/vmw_vsock/virtio_transport_common.c | 10 +++++++---
-> 1 file changed, 7 insertions(+), 3 deletions(-)
->
->diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->index 8becad812..f73e0406a 100644
->--- a/net/vmw_vsock/virtio_transport_common.c
->+++ b/net/vmw_vsock/virtio_transport_common.c
->@@ -1822,11 +1822,15 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
->
-> 	lock_sock(sk);
->
->-	/* Check if sk has been closed or assigned to another transport before
->-	 * lock_sock (note: listener sockets are not assigned to any transport)
->+	/* Check if sk has been closed, assigned to another transport, or if the
->+	 * packet is from a different peer than the one connected to sk.  These
->+	 * properties could have changed before lock_sock.  Listener sockets are
->+	 * not assigned to any transport and accept packets from any peer.
+Later, in commit 753f1ca4e1e5 ("net: introduce managed frags infrastructure")
+Pavel added skb_zcopy_downgrade_managed(skb); call that takes extra frag
+references.  Though it seems pointless for an skb that must be freed right
+after.
 
-Please keeps changes minimal, why adding "These properties could have
-changed before lock_sock." and changing the phrase related to listener
-socket?
+So, I'm not sure if this function is useful in general.  Feels like it is
+only harmful as it directly modifies shared data with no regards to clones.
 
-Also the new part is not clear IMO, we should explain why we are adding
-this new check, not what we are doing which is clear looking at the
-code.
+We have two options here:
 
-IMO we should just add something like this (feel free to change it):
+1. Minimal fix: add something like skb_cloned() guard into skb_tx_copy().
 
-   Also verify the packet source: the bound-table fallback lookup
-   matches by destination only, so a non-listening socket can be
-   reached by a packet from an unrelated peer. Drop it unless the
-   source matches the peer the socket is connecting or connected to.
+2. Remove skb_tx_copy() entirely (all calls and the definition) as it
+   seems pointless after 1f8b977ab32d.
 
-> 	 */
-> 	if (sock_flag(sk, SOCK_DONE) ||
->-	    (sk->sk_state != TCP_LISTEN && vsk->transport != &t->transport)) {
->+	    (sk->sk_state != TCP_LISTEN &&
->+	     (vsk->transport != &t->transport ||
->+	      !vsock_addr_equals_addr(&src, &vsk->remote_addr)))) {
+Any thoughts?  Willem, Pavel, others?
 
-Do we need to add the same check also in the VMCI transport?
-
-Hyper-V seems different.
-
-Thanks,
-Stefano
-
-> 		(void)virtio_transport_reset_no_sock(t, skb, net);
-> 		release_sock(sk);
-> 		sock_put(sk);
->
->base-commit: 9006c116dd111d457bf5d074990210f70a4ad2c8
->-- 
->2.54.0
->
+> 
+> Thanks,
+> Norbert
+> 
+>> On Aug 13, 2026, at 12:00, Ilya Maximets <i.maximets@ovn.org> wrote:
+>>
+>> On 8/13/26 7:47 AM, Norbert Szetei wrote:
+>>> queue_userspace_packet() borrows the packet skb -- it only copies it into
+>>> a private netlink message (user_skb) and does not own it; on return
+>>> do_execute_actions() keeps forwarding it through the flow's remaining
+>>> actions. Its error path nevertheless calls skb_tx_error(skb), which via
+>>> skb_zcopy_clear() does skb_shinfo(skb)->flags &= ~SKBFL_ALL_ZEROCOPY,
+>>> stripping SKBFL_SHARED_FRAG from that live skb (skb_tx_error()'s kerneldoc
+>>> says "skb must be freed afterwards").
+>>>
+>>> For a MSG_ZEROCOPY skb carrying page-cache frags, SKBFL_SHARED_FRAG is
+>>> what makes esp_input() skb_cow_data() before in-place AEAD; once it is
+>>> stripped a later local ESP-in-UDP delivery decrypts in place over pages
+>>> the sender does not own -- an unprivileged page-cache write (the
+>>> "Fragnesia" primitive).
+>>> do_execute_actions() ignores output_userspace()'s return value, so any
+>>> action after a failed USERSPACE upcall inherits the stripped skb.
+>>>
+>>> Move the skb_tx_error() to the flow-miss drop path - the "default"
+>>> branch of ovs_dp_process_packet()'s switch(error), before kfree_skb().
+>>>
+>>> The call has been here since commit 36d5fe6a0007 ("core, nfqueue,
+>>> openvswitch: Orphan frags in skb_zerocopy and handle errors") but was
+>>> harmless until esp_input() began relying on SKBFL_SHARED_FRAG to gate
+>>> in-place decrypt; only then did stripping it on a still-forwarded skb
+>>> become a page-cache write primitive.
+>>>
+>>> Fixes: 36d5fe6a0007 ("core, nfqueue, openvswitch: Orphan frags in skb_zerocopy and handle errors")
+>>> Fixes: f4c50a4034e6 ("xfrm: esp: avoid in-place decrypt on shared skb frags")
+>>> Cc: stable@vger.kernel.org
+>>> Assisted-by: Claude:claude-opus-5
+>>> Signed-off-by: Norbert Szetei <norbert@doyensec.com>
+>>> ---
+>> Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
+> 
 
