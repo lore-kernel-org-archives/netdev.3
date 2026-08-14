@@ -1,46 +1,39 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F351C3BED6A;
-	Fri, 14 Aug 2026 14:18:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CAB3C5DDE
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 14:18:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786717097; cv=none; b=V785HTDXkZ61IXYKivkH6315wicLGRgxISBIXXnqVJWUX49DB0bNs6ljNZ49jhN1KNDwKj8F5EcWrl48s5hiuAErPar7kE3R/aFyyXC9SDbk7XWCNulrezxnNpOGeoRkAvx7qcm6bWCJ3qmFr/XwNM4QgFt2KSFh9xtjwE0qpA4=
+	t=1786717125; cv=none; b=lifglCdS5ImwNfI7z1VRpIBCkL3AvGftb2qhmbvjaljtboIwKU+nj7WmufPXCCkYy7n0wz7EdHzDxyBRlExwTbrXKUh0do+pW+RxeracyTCn8xfzhFDd4t15uarQl5UjTS24bn/bhju3NB5SYT58ZJvyjADOPn9kFX53W4ZEY4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786717097; c=relaxed/simple;
-	bh=85qsFmALYx0XgSn1U2PCyouY2SHFzBxGYNNNftneUAE=;
+	s=arc-20240116; t=1786717125; c=relaxed/simple;
+	bh=BCHoRF8o9Z05Fhp0WEe4Pr78updsK5bwAuofbTQLP2Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rycIH/oSwjtgpl6nuzqF/7o+yH0R6NoTfgvl/KiBLOeYgyIsLhNV8I0dobcoO8vI8QX75zQHw3/URmx24h9gmXM/ZdJfWEMck0u7myYSA573biq4iJIIkEZCtMLmdck8ixYmOqu+aFvCrFGvU1rz4go01oErvOo3QXr96OBk4tQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=b2Qbivzg; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=dHkRSYliPcYDKCJgSUvYE2f+RSuxkfClZeHiERl8wuAwuNJeDg5pjaHmhQt7A+rm2w2BzvwQwMGvT9Mi4+NgFzRMW7wUso1Wj2MKRThV/MTtH+AWiJJGH3XsFbWgnb9uE+Wx5Mp6f3cnLdWYuWZV/q38S1QlcAu+EW4MFsFFIIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X0DzFwRV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="b2Qbivzg"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=rVc/1WiG5+2xwUrmVt7kAUJxHNr1G9W8pSEB42oZO98=; b=b2Qbivzg+rUo1riqRxNontWbfn
-	xulOUhUT7ch+t+zfAbRtlEYAFfcz/zsbl/I7ZR4TXKJJ4XFgIzAh7pyPdhvu83pDAOnvgvjtibAGS
-	j5VILfWxHJ9mjsvMuocvytJfDXMQ/4aeeaxL6NF3mBePiJiaSatC3ZslhdIKnvh8duAs=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wusjU-00Haqi-41; Fri, 14 Aug 2026 16:18:04 +0200
-Date: Fri, 14 Aug 2026 16:18:04 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Ruoyu Wang <ruoyuw560@gmail.com>
-Cc: Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vivien Didelot <vivien.didelot@gmail.com>,
-	Florian Fainelli <f.fainelli@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: dsa: mv88e6xxx: Avoid uninitialized value on
- MDIO read error
-Message-ID: <131ce445-605c-4408-aa25-fcd32f53c301@lunn.ch>
-References: <20260814134006.1386372-1-ruoyuw560@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X0DzFwRV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33CDA1F000E9;
+	Fri, 14 Aug 2026 14:18:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786717114;
+	bh=r3ybb0M+f0MzRSCdHXPFPlw0Ty14F6E85o5D53OtLns=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=X0DzFwRVBNqGoCeFJHRACoMRnwuZ8Zkb+NSyejhskzEI8EICrBEq769p/9SYUpuVe
+	 Q18L4SO+x+9klDNaOurjQBb08nQ18wKByhaHctjlC2wWB8d7vMtau/SNdfGwmB7RJ9
+	 3KrJM6qtSycAupVt6U9dz5eoBGcdJbvJevXOJXrQHwrTGYbl+7nq+gRKF2ea8e9kMc
+	 x1AEn9rs42jUT7FA/qrTjO4NAZ5OZosXp9lszY6SQso2c3DoOFOY33SwmJNh2Ucwp/
+	 w5yH9TU1DWXEcZooWPwqYaTtaTseQ0lBzyGPh8iXg1kyhFBq3yhlYPOF9K8bei3+7e
+	 KprU31YpkIY5A==
+Date: Fri, 14 Aug 2026 15:18:32 +0100
+From: Simon Horman <horms@kernel.org>
+To: Wong Boon Jhee <wongboonjhee52@gmail.com>
+Cc: netdev@vger.kernel.org
+Subject: Re: [PATCH] net/ncsi: Fix Use-After-Free in
+ ncsi_remove_channel/package
+Message-ID: <20260814141832.GO265046@horms.kernel.org>
+References: <CAOvhtVvk+HmPeyT94dumkmf2U-O032esD-hRmj2yp12gyUvMTw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,46 +42,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260814134006.1386372-1-ruoyuw560@gmail.com>
+In-Reply-To: <CAOvhtVvk+HmPeyT94dumkmf2U-O032esD-hRmj2yp12gyUvMTw@mail.gmail.com>
 
-On Fri, Aug 14, 2026 at 09:40:06PM +0800, Ruoyu Wang wrote:
-> An SMI timeout or PPU access failure can make a Clause 22 PHY read
-> return without initializing its output value. When reading MII_PHYSID2,
-> mv88e6xxx_mdio_read() still passes that value through the internal PHY
-> model-number workaround before returning the error, causing an
-> uninitialized stack read.
+On Thu, Aug 13, 2026 at 12:29:42AM +0800, Wong Boon Jhee wrote:
+> From af39fbef05b309b7e183690dbb7e63295ff0be5a Mon Sep 17 00:00:00 2001
+> From: Wong Boon Jhee <wongboonjhee52@gmail.com>
+> Date: Thu, 13 Aug 2026 00:25:47 +0800
+> Subject: [PATCH] net/ncsi: Fix Use-After-Free in NCSI channel and package
+>  removal
 > 
-> Run the workaround only after a successful PHY read. This preserves the
-> original error and leaves successful PHY ID reads unchanged.
+> In net/ncsi/ncsi-manage.c, ncsi_remove_channel() and
+> ncsi_remove_package() remove objects from an RCU-protected linked list
+> using list_del_rcu() and immediately free them using kfree().
 > 
-> This issue was found by a static analysis checker and confirmed by
-> manual source review.
+> Because there is no call to synchronize_rcu() or kfree_rcu(), concurrent
+> readers traversing these lists under rcu_read_lock() (such as Netlink
+> dump handlers) can still hold a valid pointer to the object. When kfree()
+> executes, the reader is left holding a dangling pointer to freed memory,
+> resulting in a slab-use-after-free.
 > 
-> Fixes: da9f33018e2c ("net: dsa: mv88e6xxx: Workaround missing PHY ID on mv88e6390")
-> Signed-off-by: Ruoyu Wang <ruoyuw560@gmail.com>
-> ---
->  drivers/net/dsa/mv88e6xxx/chip.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> This patch fixes the issue by replacing kfree() with kfree_rcu(), which
+> defers the memory freeing until all pre-existing RCU readers have finished
+> their critical sections. To support this, a struct rcu_head has been
+> added to struct ncsi_channel, struct ncsi_package, and struct ncsi_dev_priv.
 > 
-> diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-> index 80b877c74513d..e71707ce71cbc 100644
-> --- a/drivers/net/dsa/mv88e6xxx/chip.c
-> +++ b/drivers/net/dsa/mv88e6xxx/chip.c
-> @@ -3770,7 +3770,7 @@ static int mv88e6xxx_mdio_read(struct mii_bus *bus, int phy, int reg)
->  	mv88e6xxx_reg_unlock(chip);
->  
->  	/* Some internal PHYs don't have a model number. */
-> -	if (reg == MII_PHYSID2 && !(val & 0x3f0) &&
-> +	if (!err && reg == MII_PHYSID2 && !(val & 0x3f0) &&
->  	    chip->info->family < ARRAY_SIZE(family_prod_id_table)) {
->  		prod_id = family_prod_id_table[chip->info->family];
->  		if (prod_id)
+> KASAN confirms the freed object belongs to the kmalloc-96 cache, and the
+> fix completely eliminates the crash.
+> 
+> Fixes: 2d283bdd079c ("net/ncsi: Resource management")
+> Signed-off-by: Wong Boon Jhee <wongboonjhee52@gmail.com>
 
-Ugly.
+Thanks for your patch.
+Unfortunately, it does not seem to apply.
 
-Please do the usual for checking for errors and returning.
+Please:
 
-Also, this is not worthy of stable, please drop the Fixes tag, and
-post to net-next.
+1. Rebase the patch on the current net tree
 
-       Andrew
+2. Target that tree when you resubmit the patch
+
+   Subject: [PATCH net v2] ...
+
+3. Include a changelog that describes this change
+
+The b4 tool can help you.
+
+-- 
+pw-bot: changes-requested
