@@ -1,234 +1,130 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E7622D4C3
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 21:16:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786742169; cv=none; b=ciLrgRQw9A5H2nv3I55qbPNMztxBTJtzZc+U86zUIPUKs2B+EOjSuGxQI0w5HYq0oTNAk92moBGbZpNSPZHKZyRTS7+Rw27/qNcqn4ZGgbbR2xs/naXqMMIxefbuK7aZsWHCqplIVt7ligFjLzqIIpnHMMDM/4YzBpldovejNPk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786742169; c=relaxed/simple;
-	bh=olW/oaiu18B2Xf7Gdi6WTgFTrvmTZ5V4wg8vNM698Lg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GJkNuqLmM/JeuvShyZGNhCqe3zhSa1dJFQSUzUEmPGwkUuv66F7E9tBEdt2fwJ5tkJIqOOodb7cLgN84qbv74rVYYi7KiRPBRZrHK3B0LEisYoFSKDp95r03Rz4ocIpFp1cJmaexT/ZlpjeeZ9CJwXiPiKWOIB+5aRMD1oaLoB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D+/YL2sR; arc=none smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE9D3D8125
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 21:17:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786742249; cv=pass; b=JJhAjCRiUgqTwJfoUx3YGoJIO0081l02ubN9XX4KAsNzTjjWMXK/VHVOZWaGhoh8/KZxy48VnI4Kd/O6shIIN933acJ6g8cX6cpQhhRspO97SqB9So2zrgG60AH3hUEajA9cbfmE7edQKtC56kBHgJFLTqE9yZD4gyBq0fiHY/o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786742249; c=relaxed/simple;
+	bh=weqXldJIdnSFw7RHim4Ib/9v4hGZebyt8X64A7KIjlE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DoMOniBWer5UryCeeC8JhWn49bRloc13QfyBmrSjVVodUh3X7EetQ429Of3Cq2sRvUCyHKzJ/YEmdmb3bGBt+kWXvYb2SPk+NqsX1xg3joMQt5yFlI3FNfP3fsfbahs0J2jvuhRHaRrpd+coPxmQl/wkP02i4a8v2f+nofeY9do=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A1ynqKsi; arc=pass smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D+/YL2sR"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-51bfe810293so7647001cf.1
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 14:16:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A1ynqKsi"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ccdf36f63dso164175ad.0
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 14:17:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786742247; cv=none;
+        d=google.com; s=arc-20260327;
+        b=AoLnQu7UY66IyPTp3FzC2o1PWcORexv7oqNxaZtxwax7GJt6qauP2BCczMJI9WG90E
+         IcSKouF2nYniZgBppJIO5auNKPYN6ii52V0Xet/OCQu1shKrvkG9WdzM8il/WIjCq1pl
+         XcO4knPajkUWFhS4NjXC5wm9wvPMLjjD2WX01OmcMonZNAAj0u+W9eMA86fKgBnJMcl/
+         BFh6fbSTXLqMP2P9XMYMkl41nD+JCj0OnGOegdRYO8xJS51ygulRDVDYArhafJJXqe6X
+         G8xXtxkN6EuxZVs7Mh/CfeAj5Eh1phno3GM2KvO0Fg4L1g1r48v7LgfIEG9xSbl4kaFR
+         tkmA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=weqXldJIdnSFw7RHim4Ib/9v4hGZebyt8X64A7KIjlE=;
+        fh=yTYzHmnr1B5+GGzLzQABnUXmsXy/GUneDJ7UnyoZNkI=;
+        b=pH/YV4+GSsD7rleQeIzP9aT4KuTDKT87TJe4zkZX0XfnAbrKrqEn3dzyagixLqX+8S
+         gjYZx/OQ4/grDHIA3zuh1scioQnki6zpwJX7MEKXaKRr8zsSrq+SHH71DrS7hoLL05c4
+         g87HYugItNUdVHd9klRiZ76r/kCAm4mIFX2zG7zXK2K8RPfHgfYWiqd2QtFRm2GbrEOR
+         TKnrkgo0We7WJM6wqlpfIJBqFhV1eq7DMJdRZAQNZ6A0hdy3Fw6CuwAt/j4+8rNu39O2
+         WO8DNflqyW2Aj2POGcBN4iH2psr54emxcJqIHfUvFOEEpdTjyoaReC7GcjPgQBlGretM
+         MdZQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786742167; x=1787346967; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=iUuph7+GUGabAzz9uo8lYg5bSl89amlm6cPhmSveu4Q=;
-        b=D+/YL2sRf/UTeI/YrpGvUMDKhJdiVvqMUMpDKe5T7pfpH6g6maZ25JUDxHim095Vbg
-         CGPgvboJL0elz5fMHcRlqON6ZOyIbDnMNnJTaCRZbLFdK5pg9/FZQUwOXEAFUrTEVFz+
-         ll08XVpUjujb/662c5K9Lejb/U3aUy38hDEynbx4d5WK/JV1cxI870wXFJ0Xnry8jUVk
-         0NeFURUuWrtyfg2sJ55llAcqOkovjHS8InJhxtBqex9yVVgx8qa58cClCSLHho8mhNUc
-         GviGnyjcWGNwLQeKxB95mCv48GQjjEdAz50yeHVn3eLfN8/7JpEVagZFTjB/+XqlKKgy
-         580A==
+        d=google.com; s=20251104; t=1786742247; x=1787347047; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=weqXldJIdnSFw7RHim4Ib/9v4hGZebyt8X64A7KIjlE=;
+        b=A1ynqKsihUIK+JD7zuFjbCnwoRmOIJ6r+3SI1kLXjGj/sukDEN9dKFgulFZEXqtuVt
+         RucO37MvgVgGEL29gTE+DTwvPL1PQP7wfSUUAjbIn+w5vDrBpgmdD795KVq/uhKJOoVZ
+         7oPgEGjH9BnTGXZEGRUMzmsffUfGmzIny5nyLmJMPvuU8DTdj16imCBkCpWBnWIircX2
+         UZFERhizveP7CRZ5K8QENpKytQAuglLcL2j5TN3MeYxnBci4JP2M61YLSXcW77PyGvPq
+         6M1S0miYrkY7ZXy7ScfYEj0AkP02B70n2lF5RJUX7zjQtRm0xc7TIgvjSpmYIqLEatLk
+         jr7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786742167; x=1787346967;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=iUuph7+GUGabAzz9uo8lYg5bSl89amlm6cPhmSveu4Q=;
-        b=k2V74sRtEzAh0KWJNG8VhqVuNY3mGtpZ4kEHLKhz/OdLKWUHcAnAk3v4LzPMUaEIvG
-         k/4Z37r0B2fTqjT6SouaRQzAHNfmL7yDWLNJb3bKkm8iybQ2ZCGBmUsv2j0/48ZesScy
-         w+3HMfWbHAwjB+Mv+L3fOjFc1/4hiiN8h4q3Bt5wpBZYD09XA06kjRF/RDzWOLbthS5I
-         logzud3YIjr/JpgY76U2N1McncD3h9YOGxGdDDFV8k/YxJiVtQwmyL3WKE4nEQxIL2Pl
-         Nl9hs33yb7Y1neTPyBJxKikPK/Dy1oc/EUlf0fbpQwlfDSmja7iab88QwMbyeTyi95EQ
-         XRXQ==
-X-Gm-Message-State: AOJu0YwHqPCIEJ8aZI/tIgWesHv9MlWJV/luEkuySp9L6pIpFM5rW/bV
-	GqGlH/bYCwvPh3KS4OX97DPDoQFWAlQbxXU5UhqcKs2NDa9AY9gZOLdsof7rSg==
-X-Gm-Gg: AR+sD12m6TJrqAz1u1DxKUiAEwoqQnqmucjFR+TX9EC2RWAcHuGghKHn9yDwdrrnYd6
-	ClN3BsjKy9Pldg/d9QxBT4rOy9AzXj4YRC0bPCC+O6l2W0NLPFXLp/mTcBUtJE9aKoARx46Fzpl
-	oR1LFmmCOwW8+2F7habE2+dyQOT0rlLpk97ioDcAqMHGnqBAS4N0rj0OIvgrk4E42RfFPIK62IO
-	zWAou+xfLclbsnw6+b4Zlnq57jH6hGwcI/ymsrIHvMcBOTzcSNP3qttYGMCNyqfT6Td8JkwOXQF
-	XUWSDaudCteLdloqGbfBgoib8X5uFbY6wMrDqksAN0a8Yytu2fq77fpw7+gmkXlmH6akYgrjW2X
-	Yaix56QQH05T93uVS6esX0NkxwblS+IBQQjnGdqACrI7g1E7ZjqXGqdgYfBFPg0a1Fty6uAn2OP
-	yUiz2htmz5U3wRYtFjr7BcPw7QGh2tJ1Ku2MRd0DZHVV2wCh/VjXuUgriz8hQyWDzbrn0VeeTm0
-	uQGwv0/Zaa+92c4Ci0D1V+gua9GLOhAsrc24FyB92v4xhVzfDS6QKqYqaNy3NQUNLR/o+VouI7Y
-	UBlImBQJti4JeFDYr1XcM5fKLWeu9Gwfgz1rKjLx61gU1duT
-X-Received: by 2002:a05:622a:418d:b0:517:72e0:612 with SMTP id d75a77b69052e-52d855ae71emr113034251cf.42.1786742167082;
-        Fri, 14 Aug 2026 14:16:07 -0700 (PDT)
-Received: from ryzen.lan ([2601:644:8000:7a86::e34])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90a9359338dsm25695766d6.44.2026.08.14.14.16.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 14:16:06 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCHv4 net-next] net: dsa: b53: srab: propagate errors from init helpers
-Date: Fri, 14 Aug 2026 14:16:03 -0700
-Message-ID: <20260814211603.53670-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20251104; t=1786742247; x=1787347047;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=weqXldJIdnSFw7RHim4Ib/9v4hGZebyt8X64A7KIjlE=;
+        b=evFG723MBfrDd2HCvsg4gGyhZ4KANtdvzMOBLfjGiSwtxGmHlmni3ToKGFCPjRG8u2
+         ijtDwjEgEUnDqn9RyxtndP59mximfhSagR5UBEycGDl4OqsJIIB9OIz0G95nf+wzK6PW
+         W35u6ES/OElb3TqLzh4ZiZhf6g/u9cYO7aQgBKhLSlBOVa9eytIfW7gt8iZENquKkVP1
+         WCwdWL6Sh8XRt5hBfa0VYmxr3ihQ/wFHfWAuTtv2XipT+f5YhgTG2l6p9+PUYC69oJtQ
+         cEWW3AcPQi5zPSQI63VKXoIYaoyalm+sHJKkwqepwEeYJJXSETGjhO1btOCWYWS8lg98
+         TqDw==
+X-Gm-Message-State: AOJu0Yx2Xemnl3ol00pfn9sz26yFHpiAhnL3s0Eb7byPBFSDHHmE9luT
+	4YHk69mfKr0dnfKmWtvwxlOPWO9nnOLn20PLtPwJ+oK4lD2q33gDT3Xxlbq0ErIh0uWZ5ZubPxX
+	6QEj4BzmYlHmlDZH9c8pN0xdXtNclv0behyIw9bR4
+X-Gm-Gg: AR+sD10nEEDi2CLGq4jKEP44P50UQwo4xW+yNmkd+O6iaJ1/+UOiIrjcv98DiJpSZzF
+	/lNFXSpfopbSwVpMd6eQZ0a1hkYJnnnmfRzz6owGy7LvNPHN4S8sUtdhb8VFhjWhKVQjCHU1d9c
+	YkGY5wrsOxqFF2WZ7j9eLFvexloKAK87+pv578bEyrFTRQiZjeVX6pA7VPm8dKYhaH0zCKu5UIB
+	KjwINP9iuCYuNN9RTCDFqGCnO+C/YDa6EPG4Crx3jjFxw2wbThjozwcoF+N3OAYGlPgrw1POlJ0
+	ocBCUFry5HuntqIqwyLcRI6yoAMfrEPzgBEFpaj9yhY=
+X-Received: by 2002:a17:902:ccc9:b0:2d3:153d:acae with SMTP id
+ d9443c01a7336-2d3aeb797a9mr11982755ad.0.1786742246677; Fri, 14 Aug 2026
+ 14:17:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260803181852.491437-1-almasrymina@google.com>
+ <20260806121631.13175f7e@kernel.org> <CAHS8izP=mgsdxv3AtjJo9JY5OHC17zeX-VbPPH_gFF=Ndb_qjw@mail.gmail.com>
+ <20260806133435.38c34e31@kernel.org> <CAHS8izOU2pxfQH0Wo1DrqajOb54wv3Y1rMryGpwjNnoUsEufew@mail.gmail.com>
+ <20260807145444.6acf9c08@kernel.org> <CAHS8izPQn6a_eUgeL5otUESTRud1COHXg2SuR5g9qce1xJogvA@mail.gmail.com>
+ <20260814133943.45c411d3@kernel.org>
+In-Reply-To: <20260814133943.45c411d3@kernel.org>
+From: Mina Almasry <almasrymina@google.com>
+Date: Fri, 14 Aug 2026 14:17:14 -0700
+X-Gm-Features: AUfX_mzht8NILGOg0TkAAMoATbNVLNe_NrQHwRZTWSWRTEzdY2uBLBo45E3kVag
+Message-ID: <CAHS8izPpeFTWw9rVW9XaKEf_9hds=Gh_Zsp-DCU7CVpPYkCSnw@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 1/2] selftests: drv-net: devmem: fix 5-tuple
+ flow steering
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Bobby Eshleman <bobbyeshleman@meta.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Convert b53_srab_prepare_irq() and b53_srab_mux_init() from void to
-int-returning functions so probe failures are properly propagated.
+On Fri, Aug 14, 2026 at 1:39=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> On Fri, 14 Aug 2026 13:24:48 -0700 Mina Almasry wrote:
+> > > No no, I just meant a trivial test that installs the rule and maybe
+> > > sends a packet to check via getsockopt(NAPI_ID) that it arrived on
+> > > the right queue.
+> > >
+> > > You can probably extend ntuple.py instead. I was thinking yesterday
+> > > that it's nice to have all zcrx stuff in one place. But in reality
+> > > we already have a bunch of scripts testing zcrx so ntuple.py is
+> > > probably better.
+> >
+> > Ack, will do. I assume you mean do that in a separate series. I'll
+> > submit another series that extends ntuple.py with 2 tests, one for
+> > 3-tuple and one for 5-tuple flow steering.
+>
+> Same series, please.
 
-b53_srab_prepare_irq() now returns -ENOMEM on allocation failure and
--EPROBE_DEFER if any port IRQ is not yet available.
+Ack, I will do that, but I had already posted this fix alone. Feel
+free to drop that one while I work on another revision with the added
+tests. Sorry about that!
 
-b53_srab_mux_init() now returns PTR_ERR on ioremap failure instead of
-silently ignoring it. To keep the same behavior, warn on failure and
-continue. Return on -EPROBE_DEFER.
-
-Check and propagate both return values in b53_srab_probe() so the
-driver core sees the real error instead of always reaching
-b53_switch_register().
-
-Add error handling in probe as a result of b53_srab_prepare_irq().
-
-Assisted-by: Opencode:Big-Pickle
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- v4: ignore b53_srab_mux_init() failure to keep same behavior.
- v3: move mux_config to function.
- v2: address memory leak in b53_srab_prepare_irq().
- drivers/net/dsa/b53/b53_srab.c | 51 +++++++++++++++++++++++++---------
- 1 file changed, 38 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/net/dsa/b53/b53_srab.c b/drivers/net/dsa/b53/b53_srab.c
-index b9939bbd2cd5..d5213e34266a 100644
---- a/drivers/net/dsa/b53/b53_srab.c
-+++ b/drivers/net/dsa/b53/b53_srab.c
-@@ -84,7 +84,6 @@ struct b53_srab_port_priv {
- 
- struct b53_srab_priv {
- 	void __iomem *regs;
--	void __iomem *mux_config;
- 	struct b53_srab_port_priv port_intrs[B53_N_PORTS];
- };
- 
-@@ -531,7 +530,7 @@ static void b53_srab_intr_set(struct b53_srab_priv *priv, bool set)
- 	writel(reg, priv->regs + B53_SRAB_CTRLS);
- }
- 
--static void b53_srab_prepare_irq(struct platform_device *pdev)
-+static int b53_srab_prepare_irq(struct platform_device *pdev)
- {
- 	struct b53_device *dev = platform_get_drvdata(pdev);
- 	struct b53_srab_priv *priv = dev->priv;
-@@ -551,32 +550,37 @@ static void b53_srab_prepare_irq(struct platform_device *pdev)
- 
- 		name = kasprintf(GFP_KERNEL, "link_state_p%d", i);
- 		if (!name)
--			return;
-+			return -ENOMEM;
- 
- 		port->num = i;
- 		port->dev = dev;
- 		port->irq = platform_get_irq_byname_optional(pdev, name);
- 		kfree(name);
-+		if (port->irq == -EPROBE_DEFER)
-+			return port->irq;
- 	}
- 
- 	b53_srab_intr_set(priv, true);
-+
-+	return 0;
- }
- 
--static void b53_srab_mux_init(struct platform_device *pdev)
-+static int b53_srab_mux_init(struct platform_device *pdev)
- {
- 	struct b53_device *dev = platform_get_drvdata(pdev);
- 	struct b53_srab_priv *priv = dev->priv;
- 	struct b53_srab_port_priv *p;
-+	void __iomem *mux_config;
- 	unsigned int port;
- 	u32 reg, off = 0;
- 	int ret;
- 
--	if (dev->pdata && dev->pdata->chip_id != BCM58XX_DEVICE_ID)
--		return;
-+	if (!dev->pdata || dev->pdata->chip_id != BCM58XX_DEVICE_ID)
-+		return 0;
- 
--	priv->mux_config = devm_platform_ioremap_resource(pdev, 1);
--	if (IS_ERR(priv->mux_config))
--		return;
-+	mux_config = devm_platform_ioremap_resource(pdev, 1);
-+	if (IS_ERR(mux_config))
-+		return PTR_ERR(mux_config);
- 
- 	/* Obtain the port mux configuration so we know which lanes
- 	 * actually map to SerDes lanes
-@@ -584,7 +588,7 @@ static void b53_srab_mux_init(struct platform_device *pdev)
- 	for (port = 5; port > 3; port--, off += 4) {
- 		p = &priv->port_intrs[port];
- 
--		reg = readl(priv->mux_config + B53_MUX_CONFIG_P5 + off);
-+		reg = readl(mux_config + B53_MUX_CONFIG_P5 + off);
- 		switch (reg & MUX_CONFIG_MASK) {
- 		case MUX_CONFIG_SGMII:
- 			p->mode = PHY_INTERFACE_MODE_SGMII;
-@@ -613,6 +617,8 @@ static void b53_srab_mux_init(struct platform_device *pdev)
- 			dev_info(&pdev->dev, "Port %d mode: %s\n",
- 				 port, phy_modes(p->mode));
- 	}
-+
-+	return 0;
- }
- 
- static int b53_srab_probe(struct platform_device *pdev)
-@@ -622,6 +628,7 @@ static int b53_srab_probe(struct platform_device *pdev)
- 	const struct of_device_id *of_id = NULL;
- 	struct b53_srab_priv *priv;
- 	struct b53_device *dev;
-+	int err;
- 
- 	if (dn)
- 		of_id = of_match_node(b53_srab_of_match, dn);
-@@ -651,10 +658,28 @@ static int b53_srab_probe(struct platform_device *pdev)
- 
- 	platform_set_drvdata(pdev, dev);
- 
--	b53_srab_prepare_irq(pdev);
--	b53_srab_mux_init(pdev);
-+	err = b53_srab_prepare_irq(pdev);
-+	if (err)
-+		return err;
-+
-+	err = b53_srab_mux_init(pdev);
-+	if (err == -EPROBE_DEFER)
-+		goto err_irq;
-+
-+	if (err)
-+		dev_warn(&pdev->dev,
-+			 "failed to read port mux config, ports 4 and 5 may be unavailable: %pe\n",
-+			 ERR_PTR(err));
-+
-+	err = b53_switch_register(dev);
-+	if (err)
-+		goto err_irq;
-+
-+	return 0;
- 
--	return b53_switch_register(dev);
-+err_irq:
-+	b53_srab_intr_set(priv, false);
-+	return err;
- }
- 
- static void b53_srab_remove(struct platform_device *pdev)
--- 
-2.55.0
-
+--=20
+Thanks,
+Mina
