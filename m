@@ -1,309 +1,476 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.167])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1499941A507
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 12:07:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B21463B7E
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 12:13:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.121.94.167
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786709254; cv=none; b=ldxSonJJswLHHVJZJJU6YwFUMrSrj5XEwQiYZ40l7+GHbwLlzm0cHeTx99XXhpc6r8Vy4cwPEWK03t0oRrjxnYwUzSrNAqAxbWp56cyYWlidP1xMg5y6nhekSoSCQeGnFsrI/6ftYVQScJob35/eQtKD4zBrtKhbtXTDIk0eC44=
+	t=1786709595; cv=none; b=sQ9SU/9E78be7ERV3Qx7wHgo3P1jOxyD4YRbZ6qxkRb6CB4s4ZomScYIAGY9mzM/LZTQk/jua+z1GGLn8+4f22GwikB28cZp+aeO0T5hn7BjmZ3qlCAe29f8crZyMa0lPa+xFLdeivSqZNJ3mNYBcjg+efvM8YAY2EZH8adFjH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786709254; c=relaxed/simple;
-	bh=/dJOlPt9+aDTsVN8f7vGpfqLyyvD8u+8QGIo3/kyDhA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ItPfw3llHnBiYqdaplC9ZEZSggZ7zhTSvHDGw4/S+BkSNHHUeuCYbwVwSPZU50VIJieZowmEeybPaQ96lrhiRfFgoUioNpQhKt3g+5l77/vx5iwfJC9wu9FPSqNT/eTgtnx9YrEpH9C22ZLdDPBrtziBur6xePoevlcOB+XYo40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yv65DuZq; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786709595; c=relaxed/simple;
+	bh=qRP6Fzrjzx581TLe+ODwZowV0EVL4ovgm7DtoSn/IK0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VpAmo2L5VgJLc18x3UbHOmOTE3sIP+7ng7qNKrGKgjMGCKul9jx0R2OzAJh9E65r3dnB0qmBp/UweTwiZg5gs8M2WweSdRWjKNYbqbJL/hGDS2aH0m73vnsepeU1F34YAWnTbO7Fi/qMLy81PV3yBtp4zt07f0BPiHXS1Y2lit4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=xs4all.nl; dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b=qOZjTn35; arc=none smtp.client-ip=195.121.94.167
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xs4all.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xs4all.nl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yv65DuZq"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-383b4a3755fso958628a91.3
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 05:07:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b="qOZjTn35"
+X-KPN-MessageId: 59c7a061-97d9-11f1-b2a8-005056abbe64
+Received: from smtp.kpnmail.nl (unknown [10.31.155.40])
+	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
+	id 59c7a061-97d9-11f1-b2a8-005056abbe64;
+	Fri, 14 Aug 2026 14:11:59 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786709250; x=1787314050; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Iqn1uiDWgSvKCjqu1BHEGLhPdwV2ZOubviHkY4jibc4=;
-        b=Yv65DuZqzTF3Q5YUPf/t2oKxrvrYuxu5WeTNudB+oBSW+rypUqURh9A4dL8NpnT/l4
-         HG7y4qZTN/yW24pvxmbaPnTYUXkyFl/nissI34jEXnxvOdRevGO6q8qX3L5WhoHiAVNb
-         XSvrr1h050cdWecd7OvcLnPO/8j7T9Bj8AtQ0QfKtjf6iWNqAjnThoM8Wkd18iFiixR1
-         Hky440EouYQX8CDkfnSZY06QUW+L0LW08ECDLshIWElQytAaoJs6MPFuwrmIr23GjOlv
-         oZI/II2qUoNMhEkXFepCWViiJQuK09/Gs0S/WXY2DVCIjAO72cu2LlXuzYxnA1cPPU/E
-         CnWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786709250; x=1787314050;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Iqn1uiDWgSvKCjqu1BHEGLhPdwV2ZOubviHkY4jibc4=;
-        b=Q4I0l7IzQ3y7n9h1hZ9ACgFd/zPbi9uHGhOPdAzgLjyy3ThLE7cV71tg1u0onh/GO9
-         T4bNCzFGQDKbNnayprtS8jNQ4ygbSsWIyPtN6xARWzKWEAA94WSOjBOTvmKGdlNqeQ75
-         0sb25L1lfBdjgEv9whtl0tic7kgGEx/2JUdBIKrHxcQ/9CqPQ5HrRZ4J5tPEZ8qkxONU
-         mxRvCpGle1M4vMKqEZHiGn45UTdqJcsdO6kbVOnrxWt9p6zDU2G/eBjJe17kf59JkzJP
-         Yi1zBRZBZf9LYDkObRqlAJpN1EXTi89v9N5TrT8uiOdIHd6pIf5t/u41yb6x4HUgZAqQ
-         Et9Q==
-X-Gm-Message-State: AOJu0YwJ04/WSbATbGpAFUC71onK/6JKR+yBJvXc+48kNNYLGtkl+QUI
-	Bk1nRUeXXI6jwAs2yiigBdWlQP7KZQax9NmrPCxsZwQuD0o6vy3deCHnepgRq2Yq
-X-Gm-Gg: AR+sD13CE5xWdgpp1U/OzZEFytfNYB7MSZ/P193AdrNzCKFZaausKvL+hHRCUn8zQOA
-	caZc5mqueliW6z9cPuWOkqmem3r5TVlV2UESXW70OvdCJdWu8nC44eXjiAT9hNM/lGNARdZMM7K
-	sHkRST9OS6fjq0JC5viZbXSoXVjLxJF2Zl017NS1pwpFrmiP4XhW7bepakh6OVJp0kuwMmUQ9jG
-	eRs9eYRWw7hCxAjUPquM4eScGAD/1JQuvInMOl4s7TTAkW9JPmsTJxq+VfUSEZEsCSaTh+BOnyW
-	vsovQgYFq+AC8FpPqGi9v2Ezz7E4W7lqwzq5j6WG2bk3Ah9kVbBwaetecfrXFANPpVdAbLGeJcZ
-	8j5EiAAlCJDxWyVdZdM1xCgAAUs5ZFWDQ3memc19AmHNSkUSCgyeLrZ56XMxlAfo7ZqxEYnXOrF
-	S6OlpAnjGAgDNMtW6hwBJUbY2YRghrYB3VtvNSQjE/OpOlAqIAoAO72KE=
-X-Received: by 2002:a17:90b:520d:b0:38f:5801:cd76 with SMTP id 98e67ed59e1d1-3933b6d0171mr6355069a91.3.1786709249856;
-        Fri, 14 Aug 2026 05:07:29 -0700 (PDT)
-Received: from fedora ([203.175.12.241])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-394eb7539d3sm2629381a91.15.2026.08.14.05.07.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 05:07:27 -0700 (PDT)
-Date: Fri, 14 Aug 2026 20:07:20 +0800
-From: Hangbin Liu <liuhangbin@gmail.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
-	Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
-Subject: Re: [PATCH net-next] selftests: net: move log_test to lib file and
- remove duplicate code
-Message-ID: <an8E-JDiGdmWbQdt@fedora>
-References: <20260813-self_log_test-v1-1-f88b1107842e@kylinos.cn>
+	d=xs4all.nl; s=xs4all01;
+	h=mime-version:message-id:date:subject:to:from;
+	bh=yuhW5fo8gy1KkAMB4l09VmCtFZcOuXgv/fiRdg5ZL1E=;
+	b=qOZjTn35WUPpguvHoJUiq/w/F87r48/DKoCLIVB6VEI1Ojr+PoJdj+7+fc6CzIA4AWIjatAG8cljV
+	 igs2WgsjszQQfa6lvlOwzJDiQu06eKn6267iD/KpnbNUZhtQkp3QyCI/kecrL5bPUqqlhLY+J9FZ3F
+	 7/f3NlFv+jlVPzyH48JQmBo3Cmeq8oRfa1Pr0BRXSRnwrpN4uuG1TKdKAnq0i0LaOYJ8bwBcvnRuSa
+	 UTfL3fcrKE/D/36VCWI52MYZNovWIeQ8Qh8pPq9UbQNk64cp0Bsqtqe5U3Pen97XSU+peY2NIUeDrj
+	 brCUyAaraqHZBCcBAB6R/tyxS8+zW6Q==
+X-KPN-MID: 33|9ChYjJnDPT3l0Ays0qVKIsUU0iOj+G1ghhU6+jGgrKsrFVLeCq8BHvF2W3el+m/
+ gXAtcGZaYxxFo5ktPjS6njplZ+Bsh0iMqPO2yDPaPE/I=
+X-KPN-VerifiedSender: Yes
+X-CMASSUN: 33|RlvkgBEKurAXFDxvQ1VjkPWifvkAUeqkGFL1vKyY2Sq+my5Cejil7lel/aEqUlo
+ GiWenWiTmiUPfFK+fbtDHKg==
+Received: from fedora (unknown [223.38.87.107])
+	by smtp.xs4all.nl (Halon) with ESMTPSA
+	id 4f9dcac9-97d9-11f1-86b3-005056ab7584;
+	Fri, 14 Aug 2026 14:11:58 +0200 (CEST)
+From: Jori Koolstra <jkoolstra@xs4all.nl>
+To: brauner@kernel.org,
+	cyphar@cyphar.com,
+	kuniyu@google.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jkoolstra@xs4all.nl
+Subject: [PATCH net-next v7 4/4] selftest: Add tests for useful handling of LSM denials on SCM_RIGHTS
+Date: Fri, 14 Aug 2026 08:11:31 -0400
+Message-ID: <20260814121131.151003-1-jkoolstra@xs4all.nl>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260813-self_log_test-v1-1-f88b1107842e@kylinos.cn>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 13, 2026 at 04:11:57PM +0800, Hangbin Liu wrote:
-> From: Hangbin Liu <liuhangbin@kylinos.cn>
-> 
-> When reviewing the test code, I saw many tests using the same or similar
-> log_test functions. We can move them to lib.sh to save effort. However,
-> due to historical reasons, we moved the log_test from the forwarding lib
-> first, which has different usage. So, rename the log_test in the net
-> folder to log_test_expected. Since renaming all the log_test functions
-> in the test cases would change too many lines, I just use a wrapper in
-> the old code.
-> 
-> The fourth argument in icmp_redirect.sh is not needed, as the xfail issue
-> has already been fixed and it should always pass. But I still keep the
-> xfail logic in the log_test in lib.sh in case other tests need it.
-> 
-> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
-> ---
+Tests SCM_RIGHTS fd passing on a socket with the new socket option
+SO_RIGHTS_NOTRUNC turned on. To hook into the security_file_receive()
+call, BPF is used. The BPF program shares a hashmap with userspace that
+lists the inos to be blocked (of the receiver tgid).
 
-[...]
+Signed-off-by: Jori Koolstra <jkoolstra@xs4all.nl>
+---
+ .../testing/selftests/net/af_unix/.gitignore  |   2 +
+ tools/testing/selftests/net/af_unix/Makefile  |   8 +
+ tools/testing/selftests/net/af_unix/config    |   7 +
+ .../net/af_unix/scm_rights_denial_lsm.bpf.c   |  36 +++
+ .../net/af_unix/scm_rights_denial_lsm.c       | 292 ++++++++++++++++++
+ 5 files changed, 345 insertions(+)
+ create mode 100644 tools/testing/selftests/net/af_unix/scm_rights_denial_lsm.bpf.c
+ create mode 100644 tools/testing/selftests/net/af_unix/scm_rights_denial_lsm.c
 
-> diff --git a/tools/testing/selftests/net/fib_nexthops.sh b/tools/testing/selftests/net/fib_nexthops.sh
-> index 3d347126730a..16fe92775ae0 100755
-> --- a/tools/testing/selftests/net/fib_nexthops.sh
-> +++ b/tools/testing/selftests/net/fib_nexthops.sh
-> @@ -70,44 +70,7 @@ nsid=100
->  
->  log_test()
->  {
-> -	local rc=$1
-> -	local expected=$2
-> -	local msg="$3"
-> -
-> -	if [ ${rc} -eq ${expected} ]; then
-> -		printf "TEST: %-60s  [ OK ]\n" "${msg}"
-> -		nsuccess=$((nsuccess+1))
-> -	else
-> -		if [[ $rc -eq $ksft_skip ]]; then
-> -			[[ $ret -eq 0 ]] && ret=$ksft_skip
-> -			nskip=$((nskip+1))
-> -			printf "TEST: %-60s  [SKIP]\n" "${msg}"
-> -		else
-> -			ret=1
-> -			nfail=$((nfail+1))
-> -			printf "TEST: %-60s  [FAIL]\n" "${msg}"
-> -		fi
-> -
-> -		if [ "$VERBOSE" = "1" ]; then
-> -			echo "    rc=$rc, expected $expected"
-> -		fi
-> -
-> -		if [ "${PAUSE_ON_FAIL}" = "yes" ]; then
-> -		echo
-> -			echo "hit enter to continue, 'q' to quit"
-> -			read a
-> -			[ "$a" = "q" ] && exit 1
-> -		fi
-> -	fi
-> -
-> -	if [ "${PAUSE}" = "yes" ]; then
-> -		echo
-> -		echo "hit enter to continue, 'q' to quit"
-> -		read a
-> -		[ "$a" = "q" ] && exit 1
-> -	fi
-> -
-> -	[ "$VERBOSE" = "1" ] && echo
-> +	log_test_expected "$1" "$2" "$3"
->  }
->  
->  run_cmd()
+diff --git a/tools/testing/selftests/net/af_unix/.gitignore b/tools/testing/selftests/net/af_unix/.gitignore
+index 973176644103..954f0958dd03 100644
+--- a/tools/testing/selftests/net/af_unix/.gitignore
++++ b/tools/testing/selftests/net/af_unix/.gitignore
+@@ -3,6 +3,8 @@ msg_oob
+ scm_inq
+ scm_pidfd
+ scm_rights
++scm_rights_denial_lsm
++scm_rights_denial_lsm.bpf.o
+ so_peek_off
+ unix_connect
+ unix_connreset
+diff --git a/tools/testing/selftests/net/af_unix/Makefile b/tools/testing/selftests/net/af_unix/Makefile
+index 57d159803a3a..a66f10fb0c23 100644
+--- a/tools/testing/selftests/net/af_unix/Makefile
++++ b/tools/testing/selftests/net/af_unix/Makefile
+@@ -11,10 +11,18 @@ TEST_GEN_PROGS := \
+ 	scm_inq \
+ 	scm_pidfd \
+ 	scm_rights \
++	scm_rights_denial_lsm \
+ 	so_peek_off \
+ 	unix_connect \
+ 	unix_connreset \
+ 	unix_listen \
+ # end of TEST_GEN_PROGS
+ 
++TEST_GEN_FILES := scm_rights_denial_lsm.bpf.o
++
+ include ../../lib.mk
++include ../bpf.mk
++
++$(OUTPUT)/scm_rights_denial_lsm: $(BPFOBJ)
++$(OUTPUT)/scm_rights_denial_lsm: CFLAGS += -I$(SCRATCH_DIR)/include
++$(OUTPUT)/scm_rights_denial_lsm: LDLIBS += -lelf -lz
+diff --git a/tools/testing/selftests/net/af_unix/config b/tools/testing/selftests/net/af_unix/config
+index 41dbb03c747e..46450fea8407 100644
+--- a/tools/testing/selftests/net/af_unix/config
++++ b/tools/testing/selftests/net/af_unix/config
+@@ -1,4 +1,11 @@
+ CONFIG_AF_UNIX_OOB=y
++CONFIG_BPF=y
++CONFIG_BPF_EVENTS=y
++CONFIG_BPF_JIT=y
++CONFIG_BPF_LSM=y
++CONFIG_BPF_SYSCALL=y
++CONFIG_DEBUG_INFO_BTF=y
++CONFIG_SECURITY=y
+ CONFIG_UNIX=y
+ CONFIG_UNIX_DIAG=m
+ CONFIG_USER_NS=y
+diff --git a/tools/testing/selftests/net/af_unix/scm_rights_denial_lsm.bpf.c b/tools/testing/selftests/net/af_unix/scm_rights_denial_lsm.bpf.c
+new file mode 100644
+index 000000000000..4f2414465bfd
+--- /dev/null
++++ b/tools/testing/selftests/net/af_unix/scm_rights_denial_lsm.bpf.c
+@@ -0,0 +1,36 @@
++// SPDX-License-Identifier: GPL-2.0
++#include <linux/bpf.h>
++#include <linux/errno.h>
++#include <bpf/bpf_helpers.h>
++#include <bpf/bpf_tracing.h>
++
++char _license[] SEC("license") = "GPL";
++
++struct inode {
++	unsigned long i_ino;
++} __attribute__((preserve_access_index));
++
++struct file {
++	struct inode *f_inode;
++} __attribute__((preserve_access_index));
++
++struct {
++	__uint(type, BPF_MAP_TYPE_HASH);
++	__uint(max_entries, 16);
++	__type(key, __u64);	/* inode number */
++	__type(value, __u32);	/* tgid of the receiver being tested */
++} denied_inodes SEC(".maps");
++
++SEC("lsm/file_receive")
++int BPF_PROG(scm_rights_deny, struct file *file)
++{
++	__u32 tgid = bpf_get_current_pid_tgid() >> 32;
++	__u64 ino = file->f_inode->i_ino;
++	__u32 *owner;
++
++	owner = bpf_map_lookup_elem(&denied_inodes, &ino);
++	if (owner && *owner == tgid)
++		return -EPERM;
++
++	return 0;
++}
+diff --git a/tools/testing/selftests/net/af_unix/scm_rights_denial_lsm.c b/tools/testing/selftests/net/af_unix/scm_rights_denial_lsm.c
+new file mode 100644
+index 000000000000..55c7ecdbb5fe
+--- /dev/null
++++ b/tools/testing/selftests/net/af_unix/scm_rights_denial_lsm.c
+@@ -0,0 +1,292 @@
++// SPDX-License-Identifier: GPL-2.0
++#define _GNU_SOURCE
++#include <errno.h>
++#include <fcntl.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <unistd.h>
++#include <sys/socket.h>
++#include <sys/stat.h>
++#include <sys/types.h>
++
++#include <bpf/bpf.h>
++#include <bpf/libbpf.h>
++
++#include "kselftest_harness.h"
++
++#ifndef SO_RIGHTS_NOTRUNC
++#define SO_RIGHTS_NOTRUNC 85
++#endif
++
++#define NR_FILES 2
++
++/* Per-file content, so a received fd can be matched to the file sent */
++#define SECRET(n) "secret %d", (n)
++
++/* Indices into the socketpair */
++#define SK_SENDER 0
++#define SK_RECEIVER 1
++
++FIXTURE(scm_rights_denial_bpf)
++{
++	struct bpf_object *obj;
++	struct bpf_link *link;
++	int map_fd;
++	int sk[2];
++	int files[NR_FILES];
++	__u64 inos[NR_FILES];
++	char paths[NR_FILES][64];
++};
++
++FIXTURE_VARIANT(scm_rights_denial_bpf)
++{
++	int sock_type;
++};
++
++FIXTURE_VARIANT_ADD(scm_rights_denial_bpf, stream)
++{
++	.sock_type = SOCK_STREAM,
++};
++
++FIXTURE_VARIANT_ADD(scm_rights_denial_bpf, dgram)
++{
++	.sock_type = SOCK_DGRAM,
++};
++
++FIXTURE_VARIANT_ADD(scm_rights_denial_bpf, seqpacket)
++{
++	.sock_type = SOCK_SEQPACKET,
++};
++
++FIXTURE_SETUP(scm_rights_denial_bpf)
++{
++	struct bpf_program *prog;
++	char lsms[256] = {};
++	int i, fd;
++
++	if (geteuid() != 0)
++		SKIP(return, "requires root");
++
++	fd = open("/sys/kernel/security/lsm", O_RDONLY);
++	ASSERT_GE(fd, 0);
++	ASSERT_LT(0, read(fd, lsms, sizeof(lsms) - 1));
++	close(fd);
++
++	if (!strstr(lsms, "bpf"))
++		SKIP(return, "BPF LSM not active (boot with lsm=...,bpf)");
++
++	self->obj = bpf_object__open_file("scm_rights_denial_lsm.bpf.o", NULL);
++	ASSERT_NE(NULL, self->obj);
++	ASSERT_EQ(0, bpf_object__load(self->obj));
++
++	prog = bpf_object__find_program_by_name(self->obj, "scm_rights_deny");
++	ASSERT_NE(NULL, prog);
++
++	self->link = bpf_program__attach_lsm(prog);
++	ASSERT_NE(NULL, self->link);
++
++	self->map_fd = bpf_object__find_map_fd_by_name(self->obj,
++						       "denied_inodes");
++	ASSERT_GE(self->map_fd, 0);
++
++	ASSERT_EQ(0, socketpair(AF_UNIX, variant->sock_type, 0, self->sk));
++
++	for (i = 0; i < NR_FILES; i++) {
++		struct stat st;
++
++		snprintf(self->paths[i], sizeof(self->paths[i]),
++			 "/tmp/scm_rights_denial_bpf.%d.XXXXXX", i);
++		self->files[i] = mkstemp(self->paths[i]);
++		ASSERT_GE(self->files[i], 0);
++
++		ASSERT_LT(0, dprintf(self->files[i], SECRET(i)));
++
++		ASSERT_EQ(0, fstat(self->files[i], &st));
++		self->inos[i] = st.st_ino;
++	}
++}
++
++FIXTURE_TEARDOWN(scm_rights_denial_bpf)
++{
++	bpf_link__destroy(self->link);
++	bpf_object__close(self->obj);
++
++	for (int i = 0; i < NR_FILES; i++) {
++		if (self->files[i] >= 0) {
++			close(self->files[i]);
++			unlink(self->paths[i]);
++		}
++	}
++
++	close(self->sk[SK_SENDER]);
++	close(self->sk[SK_RECEIVER]);
++}
++
++static int deny_inode(int map_fd, __u64 ino)
++{
++	__u32 tgid = getpid();
++
++	return bpf_map_update_elem(map_fd, &ino, &tgid, BPF_ANY);
++}
++
++static int set_notrunc(int sk)
++{
++	int one = 1;
++
++	return setsockopt(sk, SOL_SOCKET, SO_RIGHTS_NOTRUNC,
++			  &one, sizeof(one));
++}
++
++static int send_fds(int sk, int *fds, int n)
++{
++	char ctrl[CMSG_SPACE(NR_FILES * sizeof(int))] = {};
++	char data = 'x';
++	struct iovec iov = {
++		.iov_base = &data,
++		.iov_len = sizeof(data),
++	};
++	struct msghdr msg = {
++		.msg_iov = &iov,
++		.msg_iovlen = 1,
++		.msg_control = ctrl,
++		.msg_controllen = CMSG_SPACE(n * sizeof(int)),
++	};
++	struct cmsghdr *cmsg = CMSG_FIRSTHDR(&msg);
++	int ret;
++
++	cmsg->cmsg_level = SOL_SOCKET;
++	cmsg->cmsg_type = SCM_RIGHTS;
++	cmsg->cmsg_len = CMSG_LEN(n * sizeof(int));
++	memcpy(CMSG_DATA(cmsg), fds, n * sizeof(int));
++
++	ret = sendmsg(sk, &msg, 0);
++	if (ret != 1)
++		return -1;
++
++	return 0;
++}
++
++static int recv_fd_slots(int sk, int *slots, int *msg_flags)
++{
++	int nr_slots;
++	char ctrl[CMSG_SPACE(NR_FILES * sizeof(int))];
++	char data;
++	struct iovec iov = {
++		.iov_base = &data,
++		.iov_len = sizeof(data),
++	};
++	struct msghdr msg = {
++		.msg_iov = &iov,
++		.msg_iovlen = 1,
++		.msg_control = ctrl,
++		.msg_controllen = sizeof(ctrl),
++	};
++	struct cmsghdr *cmsg;
++
++	if (recvmsg(sk, &msg, 0) < 0)
++		return -1;
++
++	*msg_flags = msg.msg_flags;
++
++	cmsg = CMSG_FIRSTHDR(&msg);
++	if (!cmsg)
++		return 0;
++
++	nr_slots = (cmsg->cmsg_len - CMSG_LEN(0)) / sizeof(int);
++	memcpy(slots, CMSG_DATA(cmsg), nr_slots * sizeof(int));
++
++	return nr_slots;
++}
++
++/* Prove a received fd works by reading back the file's content. */
++static int check_secret(int fd, int idx)
++{
++	char want[32], got[32] = {};
++
++	snprintf(want, sizeof(want), SECRET(idx));
++	if (pread(fd, got, sizeof(got) - 1, 0) < 0)
++		return -1;
++
++	return strcmp(want, got);
++}
++
++TEST_F(scm_rights_denial_bpf, all_allowed)
++{
++	int slots[NR_FILES], nr_slots, flags;
++
++	ASSERT_EQ(0, set_notrunc(self->sk[SK_RECEIVER]));
++	ASSERT_EQ(0, send_fds(self->sk[SK_SENDER], self->files, NR_FILES));
++	nr_slots = recv_fd_slots(self->sk[SK_RECEIVER], slots, &flags);
++
++	ASSERT_EQ(NR_FILES, nr_slots);
++	EXPECT_EQ(0, flags & MSG_CTRUNC);
++
++	for (int i = 0; i < nr_slots; i++) {
++		ASSERT_GE(slots[i], 0);
++		EXPECT_EQ(0, check_secret(slots[i], i));
++		close(slots[i]);
++	}
++}
++
++TEST_F(scm_rights_denial_bpf, first_denied)
++{
++	int slots[NR_FILES], nr_slots, flags;
++
++	ASSERT_EQ(0, deny_inode(self->map_fd, self->inos[0]));
++
++	ASSERT_EQ(0, set_notrunc(self->sk[SK_RECEIVER]));
++	ASSERT_EQ(0, send_fds(self->sk[SK_SENDER], self->files, NR_FILES));
++	nr_slots = recv_fd_slots(self->sk[SK_RECEIVER], slots, &flags);
++
++	ASSERT_EQ(NR_FILES, nr_slots);
++	EXPECT_EQ(0, flags & MSG_CTRUNC);
++	
++	EXPECT_EQ(-EPERM, slots[0]);
++	for (int i = 1; i < nr_slots; i++) {
++		ASSERT_GE(slots[i], 0);
++		EXPECT_EQ(0, check_secret(slots[i], i));
++		close(slots[i]);
++	}
++}
++
++TEST_F(scm_rights_denial_bpf, all_denied)
++{
++	int slots[NR_FILES], nr_slots, flags, i;
++
++	for (i = 0; i < NR_FILES; i++)
++		ASSERT_EQ(0, deny_inode(self->map_fd, self->inos[i]));
++
++	ASSERT_EQ(0, set_notrunc(self->sk[SK_RECEIVER]));
++	ASSERT_EQ(0, send_fds(self->sk[SK_SENDER], self->files, NR_FILES));
++	nr_slots = recv_fd_slots(self->sk[SK_RECEIVER], slots, &flags);
++
++	ASSERT_EQ(NR_FILES, nr_slots);
++	EXPECT_EQ(0, flags & MSG_CTRUNC);
++
++	for (i = 0; i < nr_slots; i++)
++		EXPECT_EQ(-EPERM, slots[i]);
++}
++
++TEST_F(scm_rights_denial_bpf, denied_without_notrunc)
++{
++	int slots[NR_FILES], nr_slots, flags;
++
++	/*
++	 * Baseline behaviour without SO_RIGHTS_NOTRUNC: the fd array is
++	 * truncated at the first denied fd and MSG_CTRUNC is set.
++	 */
++	ASSERT_EQ(0, deny_inode(self->map_fd, self->inos[1]));
++
++	ASSERT_EQ(0, send_fds(self->sk[SK_SENDER], self->files, NR_FILES));
++	nr_slots = recv_fd_slots(self->sk[SK_RECEIVER], slots, &flags);
++
++	ASSERT_EQ(1, nr_slots);
++	EXPECT_NE(0, flags & MSG_CTRUNC);
++
++	ASSERT_GE(slots[0], 0);
++	EXPECT_EQ(0, check_secret(slots[0], 0));
++	close(slots[0]);
++}
++
++TEST_HARNESS_MAIN
+-- 
+2.55.0
 
-[...]
-
-> diff --git a/tools/testing/selftests/net/icmp_redirect.sh b/tools/testing/selftests/net/icmp_redirect.sh
-> index b13c89a99ecb..0107af73aef4 100755
-> --- a/tools/testing/selftests/net/icmp_redirect.sh
-> +++ b/tools/testing/selftests/net/icmp_redirect.sh
-> @@ -61,28 +61,7 @@ log_section()
->  
->  log_test()
->  {
-> -	local rc=$1
-> -	local expected=$2
-> -	local msg="$3"
-> -	local xfail=$4
-> -
-> -	if [ ${rc} -eq ${expected} ]; then
-> -		printf "TEST: %-60s  [ OK ]\n" "${msg}"
-> -		nsuccess=$((nsuccess+1))
-> -	elif [ ${rc} -eq ${xfail} ]; then
-> -		printf "TEST: %-60s  [XFAIL]\n" "${msg}"
-> -		nxfail=$((nxfail+1))
-> -	else
-> -		ret=1
-> -		nfail=$((nfail+1))
-> -		printf "TEST: %-60s  [FAIL]\n" "${msg}"
-> -		if [ "${PAUSE_ON_FAIL}" = "yes" ]; then
-> -			echo
-> -			echo "hit enter to continue, 'q' to quit"
-> -			read a
-> -			[ "$a" = "q" ] && exit 1
-> -		fi
-> -	fi
-> +	log_test_expected "$1" "$2" "$3"
->  }
-
-[...]
->  
-> diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
-> index d46d2cec89e4..e02a6a91ff91 100644
-> --- a/tools/testing/selftests/net/lib.sh
-> +++ b/tools/testing/selftests/net/lib.sh
-> @@ -454,6 +454,44 @@ log_test_xfail()
->  	RET=$ksft_xfail retmsg= log_test "$@"
->  }
->  
-> +# Log test result with expected return value
-> +log_test_expected()
-> +{
-> +	local rc=$1
-> +	local expected=$2
-> +	local msg="$3"
-> +
-> +	if [ "${rc}" -eq "${expected}" ]; then
-> +		nsuccess=$((nsuccess+1))
-> +		printf "TEST: %-60s  [ OK ]\n" "${msg}"
-> +	elif [ "${rc}" -eq "${ksft_skip}" ]; then
-> +		[[ "$ret" -eq 0 ]] && ret="$ksft_skip"
-> +		nskip=$((nskip+1))
-> +		printf "TEST: %-60s  [SKIP]\n" "${msg}"
-> +	elif [ "${rc}" -eq "${ksft_xfail}" ]; then
-> +		nxfail=$((nxfail+1))
-> +		printf "TEST: %-60s  [XFAIL]\n" "${msg}"
-> +	else
-> +		ret=$(ksft_exit_status_merge "$ret" "$ksft_fail")
-> +		nfail=$((nfail+1))
-> +		printf "TEST: %-60s  [FAIL]\n" "${msg}"
-> +		if [ "$VERBOSE" = "1" ]; then
-> +			echo "    rc=$rc, expected $expected"
-> +		fi
-> +
-> +		pause_on_fail
-> +	fi
-> +
-> +	if [ "${PAUSE}" = "yes" ]; then
-> +		echo
-> +		echo "hit enter to continue, 'q' to quit"
-> +		read -r a
-> +		[ "$a" = "q" ] && exit 1
-> +	fi
-> +
-> +	[ "$VERBOSE" = "1" ] && echo
-> +}
-> +
-
-Reply to sashiko's review.
-
-  """
-  fib_nexthops.sh has two unconditional hard-failure calls:
-  tools/testing/selftests/net/fib_nexthops.sh:ipv6_fcnal_runtime() {
-  	...
-  	else
-  		log_test 2 0 "Ping - multipath failed"
-  	fi
-  	...
-  }
-  """
-
-Correct, this need to be updated, otherwise the report will be xfail.
-
-  """
-  The same concern applies to ordinary positive checks written as
-  "log_test $? 0 ...".  iproute2 returns 2 for kernel-reported errors and ping
-  returns 2 for local errors such as "Network is unreachable", for example in
-  fcnal-test.sh:
-  	run_cmd ping -c1 -w1 -I br0 ${NSB_IP}
-  	log_test $? 0 "Bridge into VRF - IPv4 ping out"
-  and fcnal-test.sh decides its verdict from nfail alone:
-  	if [ $nfail -ne 0 ]; then
-  		exit 1 # KSFT_FAIL
-  Would it be safer to only take the SKIP/XFAIL arms when "expected" itself is
-  ksft_skip/ksft_xfail?
-  """
-
-If "expected" itself is ksft_skip/ksft_xfail, and we got the expected number,
-then the result should be PASS.
-
-
-  """
-  In the other direction, icmp_redirect.sh's checks are grep pipelines that
-  only produce 0 or 1, so after dropping the fourth argument its nxfail
-  counter and the "Tests xfailed" line can no longer be reached.
-  """
-
-We can remove the xfail count in icmp_redirect.sh testing
-
-
-> diff --git a/tools/testing/selftests/net/test_bridge_neigh_suppress.sh b/tools/testing/selftests/net/test_bridge_neigh_suppress.sh
-> index e9ed0d750996..9d2dc0faf741 100755
-> --- a/tools/testing/selftests/net/test_bridge_neigh_suppress.sh
-> +++ b/tools/testing/selftests/net/test_bridge_neigh_suppress.sh
-> @@ -72,39 +72,7 @@ PAUSE=no
->  
->  log_test()
->  {
-
-[...]
-> -
-> -	[ "$VERBOSE" = "1" ] && echo
-> -	return 0
-> +	log_test_expected "$1" "$2" "$3"
->  }
->  
-
-  """
-  Is dropping this "return 0" safe here?
-  """
-
-Hmm, yes, we'd better add return 0 in log_test as the read may return 1 if
-it's not "q".
-
-I will update the patch.
-
-Thanks
-Hangbin
