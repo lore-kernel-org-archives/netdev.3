@@ -1,165 +1,124 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D8744BC87;
-	Fri, 14 Aug 2026 12:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1CCA46EF97
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 12:36:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786710707; cv=none; b=A+HcEITNIgc0fERFPdvZmIvQS47304T5gWSVKvxxyankBS9wc2YWkXyth+fnWktyPUo23dbcYiaOneaRUBYkNC7OIuPEFDNPgigEEqcZB4fpW9BGVexd/VZh8bi2RtTJnMjNlgke2hP3y4fHull/k0F1L2+PBGkAU3chzBY+CXI=
+	t=1786711023; cv=none; b=seH+1fza7sSidjBm3P2Grx26QSHwG7q2qilGa964zj4VQdxrLMRBgLT6PWO1RYCnUfmUQDCI5GGPDm+Z3cDcFoz1PVTvrnxgnxAjG/k+ZHPe9osUH5ptMN09jD02cETope+VMND8K7Z9ItcBIzA3e49uGJGOoyHS4E+ZIMZC9xE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786710707; c=relaxed/simple;
-	bh=xk0cP6G0Olm4ctR0A9rAJrc0qZQMQQVe/WakGt9JJd4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nunhCV9Z/NSSnwvdV7tO4k899Nfo401fp7YnGCPYS/7geDd1sLkjdcDdYaWqQnW2GrZnPB4vOiTdJlCA5LCRKn4B/Q+Ce2P7FZnkjN10u6vUGb+23gCYtGdca54BfyRZRua6lXKunQZvm6YsJM+ScABt8Wyaud1iLgeRB+hDm64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=htMb5fBq; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MkU21qEP; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1786711023; c=relaxed/simple;
+	bh=zbCPmLSYPzSecacm2kZhMaPNfy6mLvOWBvNzT7UcJyk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GJclBd5l2FoEyCfhDg9/331sVnaOeJi3I6drkLngb5YgEwnb2XOFjOZkdiabblKJeERxwWtNjFhi0nHV2wdROls4kyyHVo4WTu65GIQ+3s5I529OVcHpqWdm4+/pltOIreUfzH7OUJGzrM4EXUpH9GANPleMUqwL1KXfP8m6tic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com; spf=pass smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=n6f9/T+0; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smartx.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="htMb5fBq";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MkU21qEP"
-Date: Fri, 14 Aug 2026 14:31:41 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1786710703;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7q2YiWr34ORh103g7lswThMsgQ7+8htnnKNASOY82Vo=;
-	b=htMb5fBqMdiIlrZEf2n+66Ei/DTaBbiNJEw8+0et2hQhs3YQAv89Qh4MJ9nzzprPwrnxxA
-	pKxnPXFHB3BDNRHLyTugdMfxfwyj4Q+fsd76Abecb6u/wihJdoZps6toqv389jxyEfUtO0
-	xvYjXFyOwpkZFBSQdjd/IQc7hIOJG5hIeRPwV0otD5lM6PYw8pjje+g9kP0fTr/dFSxJet
-	+tuuYuDg76JgLwW4fFDjFqwO4+oXhiNwTdttF72tDwyxlgx9nNsIg7vvq/QYxumLqqtrmp
-	lKy/qIGdnw8t+hfygJony6xYwTKHi/MwzUXFggM07piizV90XVBmg7i/ByzafA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1786710703;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7q2YiWr34ORh103g7lswThMsgQ7+8htnnKNASOY82Vo=;
-	b=MkU21qEPaN4RHWjVSY/H+pQvaWGK7AzK6VrtYPoPolwNvrgkcQKz4addkbz2sw3GusgsGW
-	Pk4P5M0wMklANTDw==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Oliver Hartkopp <socketcan@hartkopp.net>
-Cc: linux-can@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [can-next] can: proc: remove pointers from CAN specific proc
- output
-Message-ID: <20260814123141.opZ1ZwYC@linutronix.de>
-References: <20260814105438.49657-1-socketcan@hartkopp.net>
+	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="n6f9/T+0"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cc61541f8cso26267085ad.0
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 05:36:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1786711016; x=1787315816; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2CjBGjaEFFchL1KWOeP5fpFy0zzjwwZigEt2JZsjGGs=;
+        b=n6f9/T+0RXh/7a3fr0yU7FYRHFHgAuxhGnbo8w0KcTB039sW7VuMEYMPZTghao4HDz
+         1SjHHJsvIPUHJisNgZC/ztmRmNSvNgXXtbNpfnCjfXY9P5Ed04QnTA80U4yvJCnAIu7E
+         D6stMa40wVAonLTvxJNxHK5Xx06A5KmNzpCK+rPFISRnsOD8XrFSjOal4qtwu1ElKrUw
+         K7tAkYeojbEbDKrCu6t5DL/Ido+1VODPfSEMqXawo8XIT5ZSQEcGz/HVMS2l00yfwGWz
+         dQRo7I1ovXzxuQF1pAi57V6XgrEoXe5DbAbt3Z6KUi5EtTXQRY/BeIGwxf28Kuv+jMb3
+         s57g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786711016; x=1787315816;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2CjBGjaEFFchL1KWOeP5fpFy0zzjwwZigEt2JZsjGGs=;
+        b=oDatjgpZp7xWJ2GU9yHeq+8lbJbEF+HL40hgCmFrHMMMGEuNgTXPKjYuxh8nTB9e4g
+         JK62tb7Ds9dH63eWJclj6UITma6EM01Gh0A421aa2zEP7R/sAsqCGWaABHIAz4C9aPBn
+         OM/RsigMFTQrYaGV3micK2UbJa0H26XlmVcinO2TWT48+K4XD177nZTSUrHTfjEJij9a
+         fMUuuMSWFLf5PyQ8w6WslzNDeGhc/t+KGMQaifygW/kdE3nmcLHAr8qs69yBKBhSJq+A
+         dPGV+fdzZvIFog9ZOB4CN+9JjmoYwrg8IZDlztpPbEYxYqlX1e4hjaiGG5XdrfzG9tJX
+         JsMQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrlJl50BW6vcoCEqxwkDnhN72NajriZfC6KfjZg7q0YHIjY6NRU2OXPtECFpM7EBLE1Qltesf8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyM1NvlMgW+MC6FzKsiQnP2Gs6kl5XXWI/C0Jmi/ud3+g2XIwP6
+	dgonGX+Zqs/wA4WUK2d7Q4i3eAlIVxTV//3w4uw+8W+MvZvKPAin0h7TEJDNR18NBsYhf4mGSfX
+	i2GWnYFey2rfqpLK2Atr7k9w6FkcjMKnPtx98HM6yW1t6VSGNz8fnMVDWVvVvClQYVgQgI9QszI
+	0=
+X-Gm-Gg: AR+sD13da2I7xoQy91+efP4hhan47rzsspKb7I47xVxNjeI3tcqIv9JfySe6Ejiogq0
+	tsj7i9wcAsPJe28KEwIJ3gCapSztKzvgRKlf6tAuit7ZY3Ak4iQPJiAF/yekbmQcULDK9kkjp1M
+	IHVQSxnTxilh+IZz1PJW04KrkonXWoSU22+JmxmofRnFf71wsYfAXc7XTBckfqkBAfzNKT4Tr3P
+	CYilQxX55ZIl1QfRclJxnA5M15ShCeHxqKj/DDsOwF4upTpXOOKyRtMI060n+g9cK9V4lgK+ycl
+	iMmdRL1IwlfJ9Iy6cbxIio5Wp8ENVmk47R2MtJ0haObOkSYfP6QRq2TliMloa3msMfX6KN8OxrS
+	lKfZtEYRbeyZEYOqeEyG6wN4FD7lUg1fawrRmNBfMaXERbfFwqfUVNPjNLAmiGjt5Q6W94L5mqk
+	EXx7D2ahwNA0dmrI3TyVyDeCNIv5ApadOQPFFJq0qT5jDj6E4BmUIr/hO/kXMEaNGH1BYielFMc
+	g==
+X-Received: by 2002:a17:902:db03:b0:2d3:c3b:c7cc with SMTP id d9443c01a7336-2d37f5d0f8fmr136484435ad.3.1786711015671;
+        Fri, 14 Aug 2026 05:36:55 -0700 (PDT)
+Received: from localhost.localdomain ([23.148.204.128])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-320d5ff42b7sm4827969eec.7.2026.08.14.05.36.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Aug 2026 05:36:55 -0700 (PDT)
+From: Wang Zhan <wang.zhan@smartx.com>
+To: Ilya Maximets <i.maximets@ovn.org>
+Cc: Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	keyong.sun@smartx.com,
+	netdev@vger.kernel.org,
+	dev@openvswitch.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] openvswitch: enable ops lock for internal ports
+Date: Fri, 14 Aug 2026 20:36:39 +0800
+Message-ID: <20260814123639.3815307-1-wang.zhan@smartx.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <9f1d9db6-a39d-4c3b-aa94-9a70e979ce71@ovn.org>
+References: <20260812123003.3634034-1-wang.zhan@smartx.com> <20260812164156.6bde8f4e@kernel.org> <20260813074007.3669651-1-wang.zhan@smartx.com> <9f1d9db6-a39d-4c3b-aa94-9a70e979ce71@ovn.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20260814105438.49657-1-socketcan@hartkopp.net>
+Content-Transfer-Encoding: 8bit
 
-On 2026-08-14 12:54:38 [+0200], Oliver Hartkopp wrote:
-=E2=80=A6
-> function names and sock inode numbers when available. As there's no known
-> tooling around the CAN specific proc output breaking the ABI with this
-> rework creates no issue.
+On Thu, 13 Aug 2026 19:55:27 +0200 Ilya Maximets wrote:
+> I'd say this is more indicative of the issues in other places, like mlx5
+> driver.  IIRC, it can call synchronize_net under rtnl many times in a row
+> causing any other application that needs rtnl to stall.  We've seen this
+> behavior blocking OVS in ovn-kubernetes setups many times in the past few
+> years and it needs to be addressed in the driver.
+>
+> While we could avoid rtnl here, it won't save us in other operations that
+> do require rtnl.
 
-I let you be the judge of that.
+Right. As Jakub pointed out, mlx5 slowness was one of the reasons for
+introducing unlocked ethtool operations. However, netdev sysfs operations
+can still invoke driver callbacks while holding RTNL on current upstream,
+so contention from slow callbacks has not been fully removed. I agree that
+long RTNL holds should ultimately be addressed at their source.
 
-=E2=80=A6
-> --- a/Documentation/networking/can.rst
-> +++ b/Documentation/networking/can.rst
-> @@ -1040,19 +1040,19 @@ As described in :ref:`socketcan-receive-lists` th=
-e SocketCAN core uses several f
->  lists to deliver received CAN frames to CAN protocol modules. These
->  receive lists, their filters and the count of filter matches can be
->  checked in the appropriate receive list. All entries contain the
->  device and a protocol module identifier::
-> =20
-> -    foo@bar:~$ cat /proc/net/can/rcvlist_all
-> +    foo@bar:~$ cat /proc/net/can/rcvlist_fil
+> This doesn't sound right.  netdev_linux_set_ol() is only called if userspace
+> TSO is enabled, and that doesn't make much sense for the kernel datapath.
+> But also, userspace datapath doesn't create internal type devices, it creates
+> tap devices instead.  So, it doesn't look like a real use case, unless I'm
+> missing something.
 
-Is this _fil a typo?
+userspace-tso-enable is a global setting. Kernel and userspace datapaths
+can coexist in the same ovs-vswitchd. In this setup, enabling it for the
+userspace datapath also causes netdev_linux_construct() to probe ports
+belonging to the kernel datapath, including internal ports. This is what
+the current code does and is the path we observed.
 
-> -    receive list 'rx_all':
-> -      (vcan3: no entry)
-> -      (vcan2: no entry)
-> -      (vcan1: no entry)
-> -      device   can_id   can_mask  function  userdata   matches  ident
-> -       vcan0     000    00000000  f88e6370  f6c6f400         0  raw
-> +    receive list 'rx_fil':
->        (any: no entry)
-> +      device   can_id   can_mask   matches     sock_inode     function
-> +       vcan0  80000123  c00007ff         0  000000000000f862  raw_rcv [c=
-an_raw]
-> +      (vcan1: no entry)
-> +      (vcan2: no entry)
-> +      (vcan3: no entry)
-> =20
->  In this example an application requests any CAN traffic from vcan0::
-> =20
->      rcvlist_all - list for unfiltered entries (no filter operations)
->      rcvlist_eff - list for single extended frame (EFF) entries
-=E2=80=A6
-> --- a/net/can/bcm.c
-> +++ b/net/can/bcm.c
-> @@ -2039,11 +2038,11 @@ static int bcm_connect(struct socket *sock, struc=
-t sockaddr_unsized *uaddr, int
->  	}
-> =20
->  #if IS_ENABLED(CONFIG_PROC_FS)
->  	if (net->can.bcmproc_dir) {
->  		/* unique socket address as filename */
-> -		sprintf(bo->procname, "%llu", sock_i_ino(sk));
-> +		sprintf(bo->procname, "%016llx", sock_i_ino(sk));
+As a side note, perhaps this probing should be limited to ports used by
+the userspace datapath?
 
-snprintf() would be a bit bulletproof
+> All in all, the change itself may be fine, but I'm not sure it actually helps
+> with anything in a grand scheme of things.
 
->  		bo->bcm_proc_read =3D proc_create_net_single(bo->procname, 0644,
->  						     net->can.bcmproc_dir,
->  						     bcm_proc_show, sk);
->  		if (!bo->bcm_proc_read) {
->  			ret =3D -ENOMEM;
-=E2=80=A6
-> diff --git a/net/can/proc.c b/net/can/proc.c
-> index de4d05ae3459..b7858fb66178 100644
-> --- a/net/can/proc.c
-> +++ b/net/can/proc.c
-> @@ -189,30 +189,35 @@ static void can_print_rcvlist(struct seq_file *m, s=
-truct hlist_head *rx_list,
->  			      struct net_device *dev)
->  {
->  	struct receiver *r;
-> =20
->  	hlist_for_each_entry_rcu(r, rx_list, list) {
-> -		char *fmt =3D (r->can_id & CAN_EFF_FLAG)?
-> -			"   %-5s  %08x  %08x  %pK  %pK  %8ld  %s\n" :
-> -			"   %-5s     %03x    %08x  %pK  %pK  %8ld  %s\n";
-> +		char *fmt;
-> =20
-> +#if IS_ENABLED(CONFIG_KALLSYMS)
-
-Please don't. I fix %ps and then there is no leak. There will be then
-the 0 and everything will be fine.
-
-> +		fmt =3D (r->can_id & CAN_EFF_FLAG)?
-> +			"  %6s  %08x  %08x  %8ld  %016llx  %ps\n" :
-> +			"  %6s     %03x    %08x  %8ld  %016llx  %ps\n";
->  		seq_printf(m, fmt, DNAME(dev), r->can_id, r->mask,
-> -			   r->func, r->data, atomic_long_read(&r->matches),
-> -			   r->ident);
-> +			   atomic_long_read(&r->matches), r->ino, r->func);
-> +#else
-> +		fmt =3D (r->can_id & CAN_EFF_FLAG)?
-> +			"  %6s  %08x  %08x  %8ld  %016llx  (unknown)\n" :
-> +			"  %6s     %03x    %08x  %8ld  %016llx  (unknown)\n";
-> +		seq_printf(m, fmt, DNAME(dev), r->can_id, r->mask,
-> +			   atomic_long_read(&r->matches), r->ino);
-> +#endif
->  	}
->  }
-=E2=80=A6
-
-So if you do this now, then I probably should remove that hunk from my
-patch.
-
-Sebastian
+I agree that it is not the primary fix for long RTNL holds. I had treated
+this as a straightforward conversion to per-netdev ops locking. If this
+conversion is not considered worthwhile on its own, I'm fine with dropping
+the patch.
