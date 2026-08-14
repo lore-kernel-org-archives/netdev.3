@@ -1,56 +1,56 @@
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930EB30C16F
-	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 23:49:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931CF370D54
+	for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 23:49:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786751367; cv=none; b=fysarTiXvi3Bd9erKKlEaqvjeSSRbxpNLniVZF9I5bs17xXrPeIe2beJLiLWrcwK2N6Em8kO/PGS0KgRre14hITyc5jdRDwtcZ4XqvJGExP3iI/Ht8S9wGoTIxKdPhIn7VhCOfzVRJ3+itGRQVLjVYrXQt+pSoKJsJM30vAktSw=
+	t=1786751368; cv=none; b=hQfrBNVImQsl2vk//JK2gdp7NlxCcC4rNrGC5dXPPAbR8SaZ0O8iAyxZLdKpd5KKBqIBynxyw+oga6lgrx7V9LeiMT0AqnddNJQbqzVDGjdiv83aOBNjhssEvwXVfj2dEVM9uzO9dw4byksu88cDfdh5p4bBDHL9bNCktEwx8ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786751367; c=relaxed/simple;
-	bh=bkqjE8H5yLsZzATIYsHOfEIXGXzmrV039SYCCUNAerQ=;
+	s=arc-20240116; t=1786751368; c=relaxed/simple;
+	bh=KmaIFs7Rsf1wuaaVKDkIGKBAJHwoNkoAEaDWZtWjD3U=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Jq5CDirCtwygjK0UZI9eDA3AxtgYN4FaY/fN1IpMkfpAC8DRdirzVB/TBEkieqyM5qsSLnXM1DqZXagq+GdRYgBmJ8MEOsd3v6paQ0L+MepzUoUiWyVKD5nDfFX9/FCBlYRM6Qr/tLXCqbWQrB30pFTyqIMTTiWrneAgJ1BN0Zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bHCdyhQW; arc=none smtp.client-ip=209.85.210.198
+	 To:Cc:Content-Type; b=E/zWb1eUL67QS1mi0q7s7TblFPzyyAHc9jAU6rwnUlq7MTfGdekmr4jmGbSBL7WqEjXRg7rlV9iqAu+G79JJSsIFbXVC13ADFfJKZVS5NoxCcNJiIHPzs+jW8hBi97PCBLUdh8HLFsP3PyBjFVN8PR/h1ZSaHRYuDgd8MGSFq9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UVaaoPbs; arc=none smtp.client-ip=209.85.215.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bHCdyhQW"
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84859a64079so2248626b3a.3
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 16:49:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UVaaoPbs"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc11b5dd54dso939505a12.3
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 16:49:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786751363; x=1787356163; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1786751361; x=1787356161; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=QIhn3gnxRLM65UuEQqpJlwUN/Y3dZ7RL7buNA7bnsTY=;
-        b=bHCdyhQWUHNaZY9a4NHf1W+9G4LZ9K1zlVlUQ69CxObm+rBVovJAhrkGgxUVPjp4g8
-         0wxFcvrIDdt4xYdBTUxUOlHtQATM6EGBtLSkmi3FfQ29wY2H330eDl3UPqYdspOX31HW
-         xi3tSxYqI1tKwZniUI1f6OuieboWS52NdUPZLpUwt6CMt/nyu6zC0thUdHiMUqC4t4UK
-         b2EEUiOFY01J7XoQbHGn8yuauXrD2mJt5PhJ0DQJ+idibY93rGJm+K+MRlh5t5ncajuE
-         37DPaoJIOBlS83R8wPPnQhiKWBMNtKeVgqyE+1pIVQwQWKA0Rb8wyBtgipk6trlfuDLJ
-         ILrw==
+        bh=QlrIN2FE+vOMvXseiBIppZAdIzkDPz9iddK1/8i1Wos=;
+        b=UVaaoPbsqrV5ch0ZVmXBRc+6nwn8OWS97VXQgVgCHyRF1es8O5mvIp80nCjIhUXpi2
+         Kjo77kNN0L+w8iz1WjyR7lxcYokrQtEgj3R4R1n6Hr4DE4XCrqGzfKCLkwZB+xQwWuH1
+         9+HMJlKuRW4fPc2DxC+EnpnBGrrrRlGrxCuOtXzjlqSchzQn3iGdMWcONKg/xV9XxNs/
+         ePccmBWTFjwkNA8ydXi2gV9IxgXapuS8WwolD4FV3EU/3xVuJXPGauTVFzjipmQ6gLuf
+         kphBUOPAmr1ayp55feEGIlSylEO5xN8pZbfTDXGBgrrD6fDlm43tmFEs+zk+osPhpw+z
+         2otA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786751363; x=1787356163;
+        d=1e100.net; s=20251104; t=1786751361; x=1787356161;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=QIhn3gnxRLM65UuEQqpJlwUN/Y3dZ7RL7buNA7bnsTY=;
-        b=MsNSLCVjaMmEnL0c8vAYbiIBIk5pQSih2P2hfZ7yFpsWaHGhAAP7nIUqZ8k7NOQIcz
-         BIMKccnIYILGkp3usA40+SSamQz1gKC1KwvoP7Q3NiPP32T3K9lSVLIhGG5G53c6IHud
-         lS36v4QUM4oPHmkOqhH68zMDDDaielXfUL53GLW+sD7Eh9CsEfgBL7k3CCug1tiBMZFl
-         616NPdd0mKUKB2XkyZ1Ev9ZqcuCjDt0r3TBnX29VnwIqJ+G6wfSHu0X0sN0PVsuenMD3
-         OHTjPwxiN9tfwr9BGV45YJjke2asl773wbLOgQXrIpVDqvC6wGNa3Qtpqf+zfAKBWM2r
-         clhA==
-X-Gm-Message-State: AOJu0YwoXxQmsd3lk+eLSy2iLmxA/Gd4FWkZLL3ySmRftaQAvoxeeizh
-	Ql0kPoK6zu1e0TuVVVwFEVBUlWSeVlfltF2nYih2lGx85IyzBc+7QsT6xamTWicS+287OkArFCX
-	QQiRR7sv3CzTWSbPoMb3H5CHR3u5CDhdA4a8501foRm8r11n/7iVE349JhW8zeGJ0fcLQUtyWIR
-	YZS69STf6i3cJJEcFYm6hh6+gdyaWWxIGyw2vpMpD1pmTvfeQ=
-X-Received: from pfbfq10.prod.google.com ([2002:a05:6a00:60ca:b0:84a:3bc9:3bcd])
+        bh=QlrIN2FE+vOMvXseiBIppZAdIzkDPz9iddK1/8i1Wos=;
+        b=NlYCj+zFsUly1wBjVMyZAaMw7PL3ySTSLaMRsnSwiZ0A6csiyxQush/werWxm5g8wz
+         3XFwlOeYpnus3AWsqu4qiEdfcSEdN+qsu7LUw1IjytPek5OE/MzRPRA8gKTTh7JemMDD
+         sn/9l+rQi/KbgOONJ559rZ31opto+TdHeUdtShvsPKTKZLk6Lu3J7hSxuxi6ZpDI/U9G
+         EJrFiUCrqlgzvQ1/NAozysj6SQYQJcaY/BBbznM75wq13hIMMFkxRl6p8hHaqTeJ3sSU
+         IYJvgMlfEL7QoGHc2XiUTlJ/YdacvKqjPaEQHLlSHW1u/zx/uUtrB6L4KLTf8sqU1y2G
+         V6lA==
+X-Gm-Message-State: AOJu0Yx7gLe+QLhyf2Tc4BUjjVyPhkcuXX7EnsV+vcinr1cDWsRWtyu+
+	fmoSuAlEmi54ODQMcwk7JrwPEKBkHpOs5MXUI3qhbzClU7clSep0qRyCkDVSr015WXGXr0jqquC
+	pOoakb+AsENP5JE9bH+V/s9trmkZNhMCJF6zi0+hPhDVofqTg4M8eFocT2GK7faYmC10IoJ5R2C
+	8G1vUduwbtyVkbQASyHlSsLuQuXtECTl9gwNaJ5bOxnywCLiY=
+X-Received: from pgcm29.prod.google.com ([2002:a63:711d:0:b0:cbe:ddc9:c670])
  (user=joshwash job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:2d86:b0:848:2c6c:dfe3 with SMTP id d2e1a72fcca58-84fde00dea1mr8295276b3a.17.1786751362579;
- Fri, 14 Aug 2026 16:49:22 -0700 (PDT)
-Date: Fri, 14 Aug 2026 16:48:45 -0700
+ 2002:a05:6a21:350f:b0:3c3:724d:ae7a with SMTP id adf61e73a8af0-3cc71a2975amr12638942637.9.1786751360785;
+ Fri, 14 Aug 2026 16:49:20 -0700 (PDT)
+Date: Fri, 14 Aug 2026 16:48:44 -0700
 In-Reply-To: <20260814234845.773189-1-joshwash@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260814234845.773189-1-joshwash@google.com>
 X-Mailer: git-send-email 2.55.0.691.gc56d675ccc-goog
-Message-ID: <20260814234845.773189-7-joshwash@google.com>
-Subject: [PATCH net 6/6] gve: fix NULL dereference from premature XSK pool DMA unmap
+Message-ID: <20260814234845.773189-6-joshwash@google.com>
+Subject: [PATCH net 5/6] gve: fix napi_disable deadlock when attempting to
+ disable XSK pools
 From: Joshua Washington <joshwash@google.com>
 To: netdev@vger.kernel.org
 Cc: Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
@@ -74,98 +75,50 @@ Cc: Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@g
 	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-To ensure that XSK pools are DMA unmapped in all scenarios, GVE performs
-the unmapping before validating if the interface is up and early
-returning.
+When disabling XSK pools, GVE calls the unlocked versions of
+napi_disable and napi_enable. However, the netdev lock has already been
+acquired before ndo_bpf is called because GVE supports queue management
+ops. Calling the unlocked versions of napi_disable/enable results in a
+deadlock when attempting to disable XSK pools, as the thread attempts to
+re-acquire a lock it already holds.
 
-However, if rings are up, this introduces a race between the RX NAPI and
-the control plane. As part of DMA unmapping the XSK pool, the kernel
-sets pool->dev to NULL. Because xsk_buff_dma_sync_for_cpu() relies on
-pool->dev, this results in a kernel panic:
+Update the NAPI calls to use the locked versions.
 
-BUG: kernel NULL pointer dereference, address: 000000000000030c
-...
-RIP: 0010:gve_rx_poll_dqo+0x2e2/0x13b0 [gve]
-...
-Call Trace:
- <IRQ>
- gve_napi_poll_dqo+0x88/0x170 [gve]
- __napi_poll+0x30/0x210
- net_rx_action+0x210/0x410
- ? dst_destroy_rcu+0x12/0x20
- handle_softirqs+0xe4/0x310
- __irq_exit_rcu+0x10e/0x130
- irq_exit_rcu+0xe/0x20
- common_interrupt+0xb6/0xe0
- </IRQ>
-
-Leave the XSK pool DMA mapped until after rings are guaranteed to no
-longer rely on the pool.
-
-Fixes: d57ae093c887 ("gve: deduplicate xdp info and xsk pool registration logic")
+Fixes: 606048cbd834 ("net: designate XSK pool pointers in queues as "ops protected"")
 Cc: stable@vger.kernel.org
+Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
 Reviewed-by: Jordan Rhee <jordanrhee@google.com>
 Signed-off-by: Joshua Washington <joshwash@google.com>
 ---
- drivers/net/ethernet/google/gve/gve_main.c | 27 ++++++++++++----------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ drivers/net/ethernet/google/gve/gve_main.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index e084b367a92d..ccaf5f86a1e6 100644
+index 453b304016b6..e084b367a92d 100644
 --- a/drivers/net/ethernet/google/gve/gve_main.c
 +++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -1681,28 +1681,24 @@ static int gve_xsk_pool_disable(struct net_device *dev,
- 	struct napi_struct *napi_rx;
- 	struct napi_struct *napi_tx;
- 	struct xsk_buff_pool *pool;
-+	int err = 0;
- 	int tx_qid;
--	int err;
- 
--	if (qid >= priv->rx_cfg.num_queues)
--		return -EINVAL;
-+	if (qid >= priv->rx_cfg.num_queues) {
-+		err = -EINVAL;
-+		goto unmap_and_return;
-+	}
- 
- 	clear_bit(qid, priv->xsk_pools);
- 
--	pool = xsk_get_pool_from_qid(dev, qid);
--	if (pool)
--		xsk_pool_dma_unmap(pool,
--				   DMA_ATTR_SKIP_CPU_SYNC |
--				   DMA_ATTR_WEAK_ORDERING);
--
- 	if (!netif_running(dev) || !priv->tx_cfg.num_xdp_queues)
--		return 0;
-+		goto unmap_and_return;
- 
- 	/* Stop and start RDA queues to repost buffers. */
- 	if (!gve_is_qpl(priv) && priv->xdp_prog) {
- 		err = gve_configure_rings_xdp(priv, priv->rx_cfg.num_queues);
- 		if (err)
--			return err;
-+			goto unmap_and_return;
+@@ -1706,17 +1706,17 @@ static int gve_xsk_pool_disable(struct net_device *dev,
  	}
  
  	napi_rx = &priv->ntfy_blocks[priv->rx[qid].ntfy_id].napi;
-@@ -1725,7 +1721,14 @@ static int gve_xsk_pool_disable(struct net_device *dev,
- 			napi_schedule(napi_tx);
- 	}
+-	napi_disable(napi_rx); /* make sure current rx poll is done */
++	napi_disable_locked(napi_rx); /* make sure current rx poll is done */
  
--	return 0;
-+unmap_and_return:
-+	pool = xsk_get_pool_from_qid(dev, qid);
-+	if (pool)
-+		xsk_pool_dma_unmap(pool,
-+				   DMA_ATTR_SKIP_CPU_SYNC |
-+				   DMA_ATTR_WEAK_ORDERING);
-+
-+	return err;
- }
+ 	tx_qid = gve_xdp_tx_queue_id(priv, qid);
+ 	napi_tx = &priv->ntfy_blocks[priv->tx[tx_qid].ntfy_id].napi;
+-	napi_disable(napi_tx); /* make sure current tx poll is done */
++	napi_disable_locked(napi_tx); /* make sure current tx poll is done */
  
- static int gve_xsk_wakeup(struct net_device *dev, u32 queue_id, u32 flags)
+ 	gve_unreg_xsk_pool(priv, qid);
+ 	smp_mb(); /* Make sure it is visible to the workers on datapath */
+ 
+-	napi_enable(napi_rx);
+-	napi_enable(napi_tx);
++	napi_enable_locked(napi_rx);
++	napi_enable_locked(napi_tx);
+ 	if (gve_is_gqi(priv)) {
+ 		if (gve_rx_work_pending(&priv->rx[qid]))
+ 			napi_schedule(napi_rx);
 -- 
 2.55.0.691.gc56d675ccc-goog
 
