@@ -1,146 +1,133 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011036.outbound.protection.outlook.com [52.101.62.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f11.google.com (mail-wm2-f11.google.com [74.125.225.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF69223BD05
-	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 00:00:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.36
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786752056; cv=fail; b=GVZHJtGIurP7E3NzLBqN+t21yShp/EaAjxFbHRu7p3SyeJnW7qiDMshyPyQf6PCYyqxg0H0CLqn+W5JSQoNimmJXAHGesjUGbgQ16NtO1qlDWHqpgr2ekHMQpEQgJI0M9D6OvkaEqNaVJ109OdyQz7zjEJrF+Tif3pPBe+JKro0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786752056; c=relaxed/simple;
-	bh=PlCErsVsd90vQI2RkPDS2KhW3sagpqBziDU/v3ZoLAg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=HA0DQ8vxLP5yVmt/mvXTupJQlJcTvOBrEnZ/6wAi2R2ZK4RCYnx4i1NvE9QHNVIJoCwmGotWrJCLDU3k4XuY7S8TF9DaCL8WE9xwT3IwsMyR4fsgAWATmCO9Mk46IYX2XWrLFwuhPKK6c6n5D28jP7Ap5zafGG3Buujc8rMU98I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=X8nfwwHC; arc=fail smtp.client-ip=52.101.62.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="X8nfwwHC"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UcQSgA8OVBMGJoCDtqSkxG59L16lH4Ji9dgghlE4sT8eoW+SUemgmwj6ium4vt8tRNJbSx3QuzsDY/2gApi1Xxqgae0H/ccuN4+llycqIPGjxbg8ayGp70vWXw40q9YqMFK09b92w4UV+dw67ljfNdmy+Zs+YdEQihAMHiZDjTZUryBrdEVWMnqyN/NV9DkuQFmdwiqu3dm4stIYZxsCIn2Pc9Fd0yxsu/VvRiJvLKz2xSan3IgWCWPVmdDzN4zmo+tQbhQ++dazdTTkWP1UCfa7gtxLG9UjBo7ocOlfywGuDuZ6SCX0PxDGgTfIPnbMoWsDsL8D5RUz+nzJeDbATQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2gccDFyDZyvqgvGM1nDW3/wWSNVuLlyzAQxcR4J0qtQ=;
- b=wQlOmtctldmujYH9TSClKAv3AADAz+jWvy826cNsbNmD5pfW9p7k6TqAAt1c4fjpg1oxTtKeD0GwZGgqrdobovTctMSxdS3Zls43Y0IArVZIqnXPD/HuFtJ2GTfUtHXfzljGE0JNQ7NceOLw9hgCS7QX/whh9kd6Ted95kA9k2EUt9uyCzVz76ZeDsgn8Fw6tBrUD/y0BBmpJ+2VdzY9vzegwnI7+ZhYWjHLZf+VGKt1W0mektZ3+r/JihWZ+lILZpotu6xJbPFzAPXduTfZDeaLRiZLmSAI0KkGYPZhw5poOPA8OygoHaufcUhsAnBipZ0iFCrmtdb0lV1ZDDn/Sg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lunn.ch smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2gccDFyDZyvqgvGM1nDW3/wWSNVuLlyzAQxcR4J0qtQ=;
- b=X8nfwwHCdgh5pBc8kROnC2Ij1GRJ/Cfjo5L8BOnlJKaw0kiPlUjtj1v3BGDHi/fnnHcuiiNK0y/j593DFGQ1JvTS6685pu0ll6+bONDBXVi8kPvXpeBihh+/ZtmzAhMrLTOmDFO53N6P8kefAsQgQESaUc7FkSebWgaq9bQuLeU=
-Received: from BL1PR13CA0104.namprd13.prod.outlook.com (2603:10b6:208:2b9::19)
- by PH7PR12MB5998.namprd12.prod.outlook.com (2603:10b6:510:1da::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.13; Sat, 15 Aug
- 2026 00:00:46 +0000
-Received: from BN3PEPF0000B374.namprd21.prod.outlook.com
- (2603:10b6:208:2b9:cafe::96) by BL1PR13CA0104.outlook.office365.com
- (2603:10b6:208:2b9::19) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.6 via Frontend Transport; Sat, 15
- Aug 2026 00:00:46 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BN3PEPF0000B374.mail.protection.outlook.com (10.167.243.171) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.360.0 via Frontend Transport; Sat, 15 Aug 2026 00:00:46 +0000
-Received: from SCSEJOYNER01.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Fri, 14 Aug
- 2026 19:00:44 -0500
-From: Eric Joyner <eric.joyner@amd.com>
-Date: Fri, 14 Aug 2026 17:00:21 -0700
-Subject: [PATCH net 2/3] ionic: detach the netdev in the PCI reset handler
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC9E4B0483
+	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 00:19:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.139
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786753189; cv=none; b=Jt3bl62ZXB3iXBBxBCgeDjXkT3bXXxTEfRyATJvfR0b0PTFlQjMNWgt60aodx14zZuMxxEh/65p95NIKA2cCbVAEFbf7u631+HQeme5QVN0WtE/7sNarimPQ/x8Yksq+taDXqtFCZJEatipJ5eJLKWaa/15T3hN+pQmWjeOPhzw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786753189; c=relaxed/simple;
+	bh=l5/rNrEDt25wZjSYD0pdYsmPtVIz8KgPZOALlUh8zJE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mzUJZeQOn9/6MY1H/sX9fr0o07cgKrCqUDwBC6Li9bbMsstibb1iQdYEFvuS1mFh5zlkyJjE6h0lgpUAwVhVOvKUrXkiud/AH6npT9MAL+ifxW4xTDyNIqxBAFFCP9ub70XQh0ble+tPS18tiXnY5iSXRzvR2Bdv9NFwtmDOZWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm2-f11.google.com with SMTP id 5b1f17b1804b1-4994d67d2e7so4229885e9.0
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 17:19:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786753186; x=1787357986;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=M7IMe4hja9o/pB0bltn5i8OvJ0zh8ZQVJDZUWcTaB8E=;
+        b=cHYvXRngRdfDJJIaptFXkPlyZ1xO6AjEFOPdOCxTL5NBzwsl1hQX7lqkwndTMsq281
+         GEj0K1Me4Aa3Ht6XyzLbY8x4R3ULjbSBzktScV/ynhKaEk3SfTSHejl7OTAQS8WfolbP
+         f+ipY+++5VJmbpmne5kYsGsbcDzLke8AQU+gToFZ1P1bK6uYtpo/VgYpM4vfnVLmQk2k
+         c7bsg7sia2+HI5MNRPZBkEmhNucxqwu//+UhFmtHUqu5++up03HnDpjjw/BP4W8ncF6X
+         OeVlqQbd5I1GqCUR2Nsk0AO8xmE4myQNq0TwaSnMIck9mOvi8+oi35mI1Ih+Xll60tXB
+         QEsA==
+X-Gm-Message-State: AOJu0YyNuSm1Hvw0xS2F+UZZ4F6GqX+58Sq2yNHHyX1bJyLoxmAYrm66
+	PwmipYLxgiJa32HPj+4l42ZP7RNeYIdARng2AWfYokVY1h7iFzYeKRPp5IhzYT+J
+X-Gm-Gg: AR+sD10u2AjEOVtUvoOypIGls8pdXbq8mHtWQuxI1+4JkTJ77F5FZmWlxYGWsKeRhio
+	4nTHuU27XFBKOl+pk8QF4JNFlCU+kE+ux2Ga3wsYcW/rT3nKBBrzbshWcUayvVgevJLDEtIaHZs
+	EzWNq8ElnqLZUAkeJraE4aPmA7ut9B6hSnbMY257k5Mkhjv+zl5yLRzSA7mO9oEiBGnWmV4LXIv
+	eGcmTuIcIpgQqZazGVpeN+6IpuFej4eMyeEPp7wPPfJjC12+cjcDM9eVebQXfaEZKGm5dE7mfeN
+	Ah971v68uaVTqsmKVx9xyBa5opua+O9pMndNB4vTAl99LETHS25U1BE9t07/3XjD5gZA5R2gAgp
+	mJu7kg3e20yBgkC6Tev19LJIdYyUPaLeZAt03qhPHU7dE9lH2Slb3xJctmYXZYvZjNN/w1A9tky
+	kRDdn+EqhrB1PAv4TUjoagbMK48xmLVZutX4nWJ4lzs18q42lZLCLVkmcr6azuCCNAJ6edBWNwB
+	amQnfsAcWsRMfcIeqVP
+X-Received: by 2002:a05:600c:628c:b0:499:87f3:a2a3 with SMTP id 5b1f17b1804b1-49987f3a33emr150605915e9.15.1786753185926;
+        Fri, 14 Aug 2026 17:19:45 -0700 (PDT)
+Received: from im-t490s.redhat.com (89-24-57-65.nat.epc.tmcz.cz. [89.24.57.65])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f2b1d9bsm12315595f8f.24.2026.08.14.17.19.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Aug 2026 17:19:45 -0700 (PDT)
+From: Ilya Maximets <i.maximets@ovn.org>
+To: netdev@vger.kernel.org
+Cc: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Ilya Maximets <i.maximets@ovn.org>
+Subject: [PATCH net-next] net: ip_tunnel: remove unused non-strict __ip_tunnel_change_mtu
+Date: Sat, 15 Aug 2026 02:19:32 +0200
+Message-ID: <20260815001942.1089545-1-i.maximets@ovn.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20260814-ionic-port-info-lifetime-v1-2-f73b1a06c5f6@amd.com>
-References: <20260814-ionic-port-info-lifetime-v1-0-f73b1a06c5f6@amd.com>
-In-Reply-To: <20260814-ionic-port-info-lifetime-v1-0-f73b1a06c5f6@amd.com>
-To: <netdev@vger.kernel.org>
-CC: Brett Creeley <brett.creeley@amd.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, "Nikhil P. Rao" <nikhil.rao@amd.com>, Eric Joyner
-	<eric.joyner@amd.com>
-X-Mailer: b4 0.13.0
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B374:EE_|PH7PR12MB5998:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4afb5e96-38b1-4952-3e52-08defa6041e0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|36860700016|23010399003|376014|18002099003|22082099003|56012099006|11063799006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	J6IeKm7sdkAoCKrPrmgFdvYAsaxNYK0kwI/tHgZ6Dk5KSDhtTgO5KsqfLRpm0V9NRxxuq0XhF/sljl3oFlbCHJWzMrLOwUHfVuoZhgMDPPv0e44F1CLEBe9/T7zY384iuhYT/5VsrVym/UnOYoNORdPdEssFXRs7GKgn9/hzwsckRLUHe8jC0doBRI7ZmWudlzun8gC45WcR8dH7GZoICTJpJKteFJ/8ycm23dca/nH5HFQodn5TifNqrM+5nU9SLG66DJ/WxwbqZ0sQzEANfge6xlRBDqzVialrqEVbYBfO0fpxUE2PIY6XviPT34pXvVraze6s/+IS7KEweSXQfMTYWOYoK5GUuSgDjRuDw4RTq1SXdMrCYA3NiWczUK9S0xWFpjaLrwu08Et+JVBb7BX8wZI5+TUO8OkJ4heY9vWpBHdECrj9gS5RdRMJbpiGOhuByHAe6BZ3dwWpEYZiIC2cgZ05PrJ8W70zSMG3OYf6zHM0eSAaLDtuFNMjFao3QDg/HVF3ENtaqg07kOt6QvW1gc3fUhoEZkEY/TG5eF80z1XsGUox2qHG4qW+AVVDc+MG8hFQa3+fU8+xswPP7ME7iy6m9NIu8SCkzpcvrArDv6O+cpKuqrJumhRXEHhMJW/ydqT6ApfI4CCZ6P95Y1pZYyeDXLDTjB/+PUJngd8=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700016)(23010399003)(376014)(18002099003)(22082099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	F3baMHL5vtBdbFq/YGAb6n2+5y8d5JcZtbLs+uV62A86CBLCh9rmMNhaON7bsX0aWkdSLb3Dcevkj7JZl8HAOIEq6ACDSzIKniZr4c0m8/oW6QoIVzbX2w0LTiDWPzECzQcogcVqy1HD5kNUkkZOhskhQsCHLawFhDPsPXgP1yCDGfHdWPGkuW5fwhsSLwWCt+b9wFh3wJgWl3kh7nsQG5CeJ2sX7s10xR15g+AiEAU0OBGvD44wQG7SqtVUi9cYRBsP/E37Kgy+GRnPuBGaiPKFG+gbafmzoZHx7PJg0rarkfDfH49qeJYQMHF8pe5+GBDG9U1g1QpIXVmfkUI7c84rr/YU+/dODfvtYPhRJ42xWQ6wkv/grGv+crGJk2gY03kP6QrvPQiXBOpsuXQRsQYmVpKvAlvyCdFXKqP40UzczwxytfML2O0sqh8WASlC
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Aug 2026 00:00:46.1810
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4afb5e96-38b1-4952-3e52-08defa6041e0
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF0000B374.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5998
+Content-Transfer-Encoding: 8bit
 
-ionic_reset_prepare() tears down the queues, unmaps the BARs and calls
-ionic_dev_teardown(), but leaves the netdev attached and registered for
-the whole reset window. The ethtool core only refuses to call into a
-driver when netif_device_present() is false, so ethtool ops keep running
-against a device that is being dismantled underneath them, and
-ionic_reset_done() can free idev->port_info out from under one of them
-via ionic_setup_one() -> ionic_port_init().
+The last user of this function was the recently removed vport-gre
+module from openvswitch.  Let's drop the function.  All other modules
+use the strict variant.
 
-The firmware recovery path already handles this properly:
-ionic_lif_handle_fw_down() detaches before tearing anything down; so do
-the same here.
-
-No matching netif_device_attach() is needed on the way back up, since
-ionic_reset_done() completes through ionic_restart_lif(), which already
-re-attaches once the queues are alive again.
-
-Fixes: a79b559e99be ("ionic: add FLR recovery support")
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Eric Joyner <eric.joyner@amd.com>
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/net/ip_tunnels.h |  1 -
+ net/ipv4/ip_tunnel.c     | 17 ++---------------
+ 2 files changed, 2 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-index 05f19489ec5c..c15c4c705155 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-@@ -447,6 +447,7 @@ static void ionic_reset_prepare(struct pci_dev *pdev)
- 	dev_dbg(ionic->dev, "%s: device stopping\n", __func__);
+diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
+index d708b66e55cd..a8bbbc5db5cb 100644
+--- a/include/net/ip_tunnels.h
++++ b/include/net/ip_tunnels.h
+@@ -412,7 +412,6 @@ bool ip_tunnel_parm_from_user(struct ip_tunnel_parm_kern *kp,
+ bool ip_tunnel_parm_to_user(void __user *data, struct ip_tunnel_parm_kern *kp);
+ int ip_tunnel_siocdevprivate(struct net_device *dev, struct ifreq *ifr,
+ 			     void __user *data, int cmd);
+-int __ip_tunnel_change_mtu(struct net_device *dev, int new_mtu, bool strict);
+ int ip_tunnel_change_mtu(struct net_device *dev, int new_mtu);
  
- 	set_bit(IONIC_LIF_F_FW_RESET, lif->state);
-+	netif_device_detach(lif->netdev);
+ struct ip_tunnel *ip_tunnel_lookup(struct ip_tunnel_net *itn,
+diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
+index 9d114bd575f9..609aed527dda 100644
+--- a/net/ipv4/ip_tunnel.c
++++ b/net/ipv4/ip_tunnel.c
+@@ -1054,7 +1054,7 @@ int ip_tunnel_siocdevprivate(struct net_device *dev, struct ifreq *ifr,
+ }
+ EXPORT_SYMBOL_GPL(ip_tunnel_siocdevprivate);
  
- 	timer_delete_sync(&ionic->watchdog_timer);
- 	cancel_work_sync(&lif->deferred.work);
-
+-int __ip_tunnel_change_mtu(struct net_device *dev, int new_mtu, bool strict)
++int ip_tunnel_change_mtu(struct net_device *dev, int new_mtu)
+ {
+ 	struct ip_tunnel *tunnel = netdev_priv(dev);
+ 	int t_hlen = tunnel->hlen + sizeof(struct iphdr);
+@@ -1063,25 +1063,12 @@ int __ip_tunnel_change_mtu(struct net_device *dev, int new_mtu, bool strict)
+ 	if (dev->type == ARPHRD_ETHER)
+ 		max_mtu -= dev->hard_header_len;
+ 
+-	if (new_mtu < ETH_MIN_MTU)
++	if (new_mtu < ETH_MIN_MTU || new_mtu > max_mtu)
+ 		return -EINVAL;
+ 
+-	if (new_mtu > max_mtu) {
+-		if (strict)
+-			return -EINVAL;
+-
+-		new_mtu = max_mtu;
+-	}
+-
+ 	WRITE_ONCE(dev->mtu, new_mtu);
+ 	return 0;
+ }
+-EXPORT_SYMBOL_GPL(__ip_tunnel_change_mtu);
+-
+-int ip_tunnel_change_mtu(struct net_device *dev, int new_mtu)
+-{
+-	return __ip_tunnel_change_mtu(dev, new_mtu, true);
+-}
+ EXPORT_SYMBOL_GPL(ip_tunnel_change_mtu);
+ 
+ static void ip_tunnel_dev_free(struct net_device *dev)
 -- 
-2.43.0
+2.55.0
 
