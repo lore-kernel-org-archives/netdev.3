@@ -1,183 +1,149 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0DA814BF92
-	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 02:49:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786762182; cv=none; b=SQUIiHs378Ha2i9SgsINgpVHBFs57KdLzNcDWTDHQcphZR9Dh98N1rifpk5kaLQfwEUIN78maAqZCbRECEAl9DdSbOt1UwKuW54WkDOY0ptMkyU2YcrKM5R5kRFjQb/lOhN6fGhpQTkeCEGTSV1zicgsKtRXmAB+DEgaEzFN/fE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786762182; c=relaxed/simple;
-	bh=8erP/Asya2a+kNntt8VAAbctyJ5EvZRb6q6Emq0p8mA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=O0A37h0aqZCTHhhmDUPFgmKRtSG5at9ClZZTd7XGVTQam/nHwwQ4bGBKPqdvCd1l7M8hhHBgjWqOPKV7RTZmpIfKQYCJuDIN/NZNAA2B1iNqN9bbP5x2dX2nYIu/Scxgv/VkWl7ZXSYcklBKReGuCsbe4xCNGMBUHmPFn8iFHow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kC1gyp7x; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169FA2248BE
+	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 03:14:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786763652; cv=pass; b=pkMOxU+oRL//ucg5PjyEq0KW5eDhYLCgRIOcOiquCrTduMHEd+pyD/doYn3sTOKdIPpA4di6zGN0Ysjfz6S4U+Fw8EdVKux5ej8TlVEin1jC5eG/9NegdnClm8Q+MgJ9do1BeCDF23tbe9gtZdeCEsG427FGj3WfHF4Aeia5gpA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786763652; c=relaxed/simple;
+	bh=C3V/eB2si6PnrWffympSjftN4xffJyXASce7EUYZ4LY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HzOey2T46KpiCd08UxPWAnxwUEgyTUgympN1qo/3bbypD1twkwJc7R1fTPJzCxWVgUy/8FjQ0u5HYF8ZuIuGaudx0Jcub9XS/WQXoYH+P/yXFxqJyMFzITUwNztvd/V8vgArWKTMZNjk/A0M3lhTIse7gBA0VZK62Inz8EQfxIg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BG0stGcZ; arc=pass smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kC1gyp7x"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ce98cb8165so16922665ad.1
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 19:49:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BG0stGcZ"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ccf2360620so17580865ad.3
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 20:14:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786763650; cv=none;
+        d=google.com; s=arc-20260327;
+        b=s2EoeatUkRvabO2TuL8czC5GL2X6ZORlYindr6VXS3q6QhQIiej4CI7X5MTEQMF7UG
+         EsBRhIsIw7/pgTkWHu7W9PYRCC2P/cUlaSkc2pMo7KDLn1Z1HE6PfObZjA3m/ehxRcfd
+         xw0pS0Y10dzOj8Y79cemd46o/IL2TE/3UYAvxzbepOTwtAEl+B72oQKlLbdiRBg6SV+7
+         mFxqRHtSTiiX07p+geg0P4ok4h5nZKLIeRC1XOHP0FKzDhE+W3zb/dH6UhJmYTl42WmW
+         smgO8OuPpjvPEV4lxDwNZD4Pa4ZyB291Ze5hOWRUqwGcYCY+FBmDwZBVuhyDuLiMd+cJ
+         iKeA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=C3V/eB2si6PnrWffympSjftN4xffJyXASce7EUYZ4LY=;
+        fh=/jQPyImdig9EisHABK3v1vHC+erBTOjliFAZb6muLIQ=;
+        b=bMUoDN1MOu+k2vRt1RqcvOmVG2ycOB4q9c1fULblU6vRcbWpr+78ZrjqSglQwlfXcA
+         VvX5hzN0NJWn88+Ikuk92oHIpHvQxV4CIygvoLiIz0yLKyKRcRQw/5thGkqwNfypHgrI
+         k/5eGEy56vJlO8ybbk07CcE/IRMV8o9WhSK1vZARK/aNwKNABPbasd5hNbEI7S0bLbrp
+         4jb9vT5RaUc/Tdo6ExtkkAnR/qRHw8YKUYg/Sae99UvBQ4pDkixuzlm+LhO+N5hbZYgs
+         Rfo9c9lYfvq2QSB/Fpa+Zx183IO6+mgcceK1Re6Xy6QacIAiXXo7EmjaKTQ/4l9Xc8pt
+         jU3Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786762180; x=1787366980; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=IIvJ1blTz+UFWJgsOaLwrhZp/iq583kjurc/RnG/+o0=;
-        b=kC1gyp7xsgMniYuWwZXrC5+ZOmsiGYY6kprbMKvvWxj6YhP9PNtIKSwQBnxVjG3atr
-         y90wKEeNPSqy9RMboiXKJXPAU0NL5WRN3vRYe3QXmwp0g/cyEauxNwGSBhAQs9gyxhfH
-         PXmqlrI7RlULUK9Dwq7S0Zw2v/d/KUWnwk3oQdo39gz3izGtNptYHxHpw7hfN7ex54Nh
-         RTKjZgUfmFI9goJg+ZOx1+YmA1a9nmVjao3/FLD+v9XGzHnvtTLN1dBft+OojYd2v+EC
-         WbHXsJxQQyjLrrLWXHjGb7PsS+ZJ0yNZbY+81qQdeigkCsGm7Ie59KtZFF7Uq7m0NAtX
-         I0oQ==
+        d=gmail.com; s=20251104; t=1786763650; x=1787368450; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=C3V/eB2si6PnrWffympSjftN4xffJyXASce7EUYZ4LY=;
+        b=BG0stGcZSpUWRLj2nQICD66E/CXAsKhssCpp+LXbKWq9H1O30a6NGQOcx4mNQtLEu3
+         4xrMW3TiWNKNjJtlM5l5S6VxMpGx+4Zsv2KEo7N8ypZbw0bSlZdK/sG1DLfsUNXvH6Fc
+         1MjtLnbGwO1AIIqWJS0Io61Efq49GO395iQf8mIN47E/KVxgmteHOrqBtQAp7tGR886V
+         oeeeP9q7R1l8rgwW0OnOA8W1UAbckiijH+s1I19R+eb9tgjFZ/tukyQ14X4sCcq4tfHZ
+         fvKyPmDUubqmAj8I8Oh8L+1wAHU088JZEOqupB9xwNolyMYqKCmZCJ+IB9Xs53DdlzeB
+         OiSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786762180; x=1787366980;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=IIvJ1blTz+UFWJgsOaLwrhZp/iq583kjurc/RnG/+o0=;
-        b=p21wGDBBK7D6kdIhnUYpUz1Z/ItHr0KTCO8NXHA7bQf9/7T3v4jY8Nt7rlU8VcmVIO
-         wlzcdT/1t7+NqMLgmEoPneajPoaJ5kuu+wK2FOIOvGKzW0FFGCrw3pldc4ngf+xp9G8n
-         sBmD9kLC/86I4h6OWv7/15DZu7THQVBvU5q/Y7210DMVXZOketxy0iTMCEMNvVtKQ2gU
-         PNRALfdG4eskpAd0hK67cwavzPVedWBmhjub8zAWxuStscjVN7dhZ29bcdQ1NKLP9iJp
-         KUECwBNsHaBUZncW41V8s0zd136NAqCiCjYJdb++t8d2MBkpStANV7zJy5c8+x48ESpr
-         eCVg==
-X-Gm-Message-State: AOJu0YyA7fZJlqaWAVb2v09dfgccqPa3YQSY25/i55Ck7LBKtLZ/S+zB
-	Kzi05xuow3lxcT7BxFLCzOzYBSdDk6WeVANR5qtnSHVYDSHrXAOop6Gt
-X-Gm-Gg: AR+sD10IMXLGJTGkf+fx3qtqDJdMXbHd44quhvaAqpomURtJN0tNfkloOuUEM8cDt0j
-	QRKL4MipJS2+Uy4Kb8SdeCGBESiYJTmeIg1NIZWULBM1DmtH6t2GEJRVRlIwq/qLYwYc+P45zgo
-	OYRU43kZBYsSdtAzU6J9LsJYQA4m0Qk4xVa1X3nBfIv2cF/pzGsROPPJKBFfgfKDxvqRPMArezB
-	bs3cdd+AvgKxhU/+pYmCcClA+nQzqY+7kEIISX0dMKOJofP3JM9O77zJs6YCDm21d+/aPi1uMEC
-	dKn7EHPkd0LYn5q/2S9YV+ogNnhPGbGxrt06AKlroi5ic4dV+sGRSdyI1e79Y7fF17EjiojP4wC
-	3+HybYJV4EWQDTDmsEVyizMopi/44yFhYafcbutssYeHlwCf5QtRXXvH7/zceqBp0kbSWBBHzli
-	1ovUqGCLoPQclKAUyGvqVADPlWBNpzwEIJmDntfYGL2u88u34nOd1lBUjrO62hbYLH
-X-Received: by 2002:a17:903:28f:b0:2cc:db7a:251 with SMTP id d9443c01a7336-2d37f5cdcebmr193217485ad.2.1786762180080;
-        Fri, 14 Aug 2026 19:49:40 -0700 (PDT)
-Received: from [127.0.1.1] ([2404:f801:8028:3:acc1:3aed:cc76:df6c])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-320e9df03f9sm10088705eec.19.2026.08.14.19.49.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 19:49:39 -0700 (PDT)
-From: Subasri S <subasris1210@gmail.com>
-Date: Sat, 15 Aug 2026 08:19:32 +0530
-Subject: [PATCH v2] netdevsim: update rxq->napi pointer during queue reset
+        d=1e100.net; s=20251104; t=1786763650; x=1787368450;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=C3V/eB2si6PnrWffympSjftN4xffJyXASce7EUYZ4LY=;
+        b=da7t4DCCZ4+3NgPoMJ7wTdjpkKNJ8/mkxWyzhcJYxcZqo3xzj4cGQUIcBYzaEaEMDG
+         36LinI/LeQjMaAglxmqtCR1+FajQUh5AhOgy7zaWjH0c6rc+QnsL63nlG4ewVw+gaE6x
+         m/9CAFnqtQoEM06BZ93TCGDTNFxQYQzKJIMdg+5Ju9CCsRctdcW0DPIb/wAdnBkyUmmc
+         Oiiv1DT3VSYfABIgqUjc1/PyEIYzof0maxy9X/BtwYtOUgEez+ZdQDzc5lPlPH/xNUoo
+         x+e9Qbo2dL+yiwa6bCnU+3iGZuplwL5yebKUqhyE004azuJUAYq1gIm8U2yHefNJ0Ar/
+         idng==
+X-Forwarded-Encrypted: i=1; AHgh+RpT14Y76lkpDfeC/kzZ+uHUxTcG/lKA5bxnEaeyTw+RlGy6o4M16ibnpu52IaIx4zoM7DDaeig=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyuMoppdbbIIC4V/WQgPsFlWTiMc21AckV8KwJzEV0od2ByC8To
+	5qHDmp8YelKVWg3tONiKQMEzUM1Z3QS15yYQz1sRbfgOhx/hguwvcO3+03Qw3JR6DvaoTUFeBaV
+	jW6MQJDl7ZiXqvLMb6SYFTSSlDkcYmPPhceI9
+X-Gm-Gg: AR+sD12V+JUu4ykIczZFSAk0XmU18ZrFYWE1qpQNRSpPMCLyYzGDRFQ+PMhoFcJhLkh
+	wxf1ppSZaA/viMs/8pq60+hhLQQt6T99r1bzKYMzIGZosrXzkRYHukPac9uiq48Toa8FkSozBqc
+	LKMoSBe1GOy+ojTXwQ7aoy5dVxWW3eph0LCFBbK+/IyBrryaE+FZFxwf2BudR/VKqmUAx0zC6tC
+	jJn2gf29YYDN9t9VY1H82cJxZ6Nxr+LMoZzev2yiJClqbWF3DUJ2RuCrUgi64jOb7/nacMnoFT9
+	v+LvmT3EQOSnqLslTnWE1mTTWdGnE3RGvnBE3ZuvDgzfrajSQCzwVKsFlhcGjDpheHLR7T3duIP
+	WHXqF+2FnsVYP30Ff7hi8PWWnkirzGcJ1GyLDp0YeYgWYR0A+5H0oeL9PpskQyDcWSYbE20qAXh
+	Sqfp2b890QTRTJlIY=
+X-Received: by 2002:a17:903:1b04:b0:2ca:bf8e:35fe with SMTP id
+ d9443c01a7336-2d3b0d9591emr116157115ad.16.1786763650444; Fri, 14 Aug 2026
+ 20:14:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260815-net-netdevsim-v2-1-d6c85c5157a7@gmail.com>
-X-B4-Tracking: v=1; b=H4sIALvTf2oC/3WMQQqDMBBFryKzbkomVUm78h7FRTCjDjRJSSS0S
- O7e6L6Lv3gf3tshUWRK8Gh2iJQ5cfAV1KWBaTV+IcG2MiipeqlRCU/bMUs5sRPG2B6l1LfWWqj
- OO9LMn7P3HCuvnLYQv2c+4/H+K2UUKDqFRnfUznTHYXGGX9cpOBhLKT9RVi+YqgAAAA==
-To: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, Willem de Bruijn <willemb@google.com>, 
- Mina Almasry <almasrymina@google.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- bpf@vger.kernel.org, syzbot+c06674caba265dc61d46@syzkaller.appspotmail.com, 
- Subasri S <subasris1210@gmail.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786762174; l=3558;
- i=subasris1210@gmail.com; s=20260709; h=from:subject:message-id;
- bh=8erP/Asya2a+kNntt8VAAbctyJ5EvZRb6q6Emq0p8mA=;
- b=O+eSHxzLdB1EtYOQbQ9sXoXITZP5TFippK4+RNrQuwJrewJQL9FPYqtY+fpt8x+8+K32adMz1
- e117INoBBaVAcAwu7heRrUWcjUP5xdv8iOLbjQUjQl8eDQCbYrCFeAN
-X-Developer-Key: i=subasris1210@gmail.com; a=ed25519;
- pk=6C4wavGFy/OsR8yQQKNWuDXoYPHp2L3sfgNfyzTruTk=
+References: <20260813042012.17631-1-phucduc.bui@gmail.com> <20260814170001.GQ265046@horms.kernel.org>
+In-Reply-To: <20260814170001.GQ265046@horms.kernel.org>
+From: Bui Duc Phuc <phucduc.bui@gmail.com>
+Date: Sat, 15 Aug 2026 10:13:59 +0700
+X-Gm-Features: AUfX_myDmZ1LURZeKvvYo1pSU4U_UuWwDBLuj9naedtztPbUm-U9GqL07KDvox0
+Message-ID: <CAABR9nFxfzf8QP-wq5iaJRTL+HG+a+tNqqX2daj-=Cwp46hPJQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] net: xilinx: axienet: Propagate errors from
+ optional IRQ lookup
+To: Simon Horman <horms@kernel.org>
+Cc: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Michal Simek <michal.simek@amd.com>, linux-arm-msm@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In netdevsim, when queue reset is performed using debugfs, it triggers
-these sequence of operations: nsim_queue_stop() -> nsim_queue_start()
--> nsim_queue_mem_free(). nsim_queue_mem_free() frees the old
-nsim_rq struct which embeds the napi_struct. But the rxq->napi pointer
-in the struct netdev_rx_queue still points to the old nsim_rq's embedded
-napi_struct. So, any subsequent xsk_bind() which reads rxq->napi->napi_id
-after a queue reset is a use-after-free.
+Hi Simon,
 
-Add netif_queue_set_napi() calls to nsim_queue_stop() and
-nsim_queue_start() which clears the rxq->napi during stop
-and sets it to the new napi instance during start.
+Thank you for you review
 
-KASAN report:
+>
+> It would be useful to explain how this problem was discovered,
+> and what testing the patch has seen. Please add an Assisted-by
+> tag if appropriate.
+>
+> Link: https://docs.kernel.org/process/coding-assistants.html
+>
 
-Call Trace:
- kasan_report+0xdf/0x1c0 mm/kasan/report.c:595
- xsk_bind+0x1582/0x16c0 net/xdp/xsk.c:1758
- __sys_bind_socket net/socket.c:1920 [inline]
- __sys_bind_socket net/socket.c:1912 [inline]
- __sys_bind+0x1a9/0x260 net/socket.c:1951
+Greg Kroah-Hartman previously asked about how this issue was discovered
+and how the patch was tested, and I provided the details here:
 
-Allocated by task 5622:
- nsim_queue_alloc+0x3c/0x140 drivers/net/netdevsim/netdev.c:715
- nsim_queue_init drivers/net/netdevsim/netdev.c:1012 [inline]
- nsim_init_netdevsim drivers/net/netdevsim/netdev.c:1059 [inline]
- nsim_create+0xb13/0x1420 drivers/net/netdevsim/netdev.c:1152
- __nsim_dev_port_add+0x3ba/0x8f0 drivers/net/netdevsim/dev.c:1509
- nsim_dev_port_add_all drivers/net/netdevsim/dev.c:1570 [inline]
- nsim_drv_probe+0xdbd/0x13a0 drivers/net/netdevsim/dev.c:1731
+https://lore.kernel.org/all/CAABR9nEfPqXAt8wDo597qDS3b3KMaHeF6-swAFg9RLanap=
+DnBQ@mail.gmail.com/
 
-Freed by task 5659:
- slab_free mm/slub.c:6377 [inline]
- kfree+0x22b/0x6c0 mm/slub.c:6692
- nsim_queue_mem_free+0xfe/0x190 drivers/net/netdevsim/netdev.c:796
- netdev_rx_queue_reconfig+0x405/0x630 net/core/netdev_rx_queue.c:144
- netdev_rx_queue_restart+0x8f/0xc0 net/core/netdev_rx_queue.c:183
- nsim_qreset_write+0x2e3/0x410 drivers/net/netdevsim/netdev.c:887
+Regarding AI assistance, I addressed the same question from another
+maintainer here:
 
-Reported-by: syzbot+c06674caba265dc61d46@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c06674caba265dc61d46
-Fixes: 5bc8e8dbef27 ("netdevsim: add queue management API support")
-Tested-by: syzbot+c06674caba265dc61d46@syzkaller.appspotmail.com
-Signed-off-by: Subasri S <subasris1210@gmail.com>
----
-Changes in v2:
-- Restore rxq->napi when reset mode is 1
-- Link to v1: https://lore.kernel.org/r/20260812-net-netdevsim-v1-1-521a85e4fe91@gmail.com
----
- drivers/net/netdevsim/netdev.c | 5 +++++
- 1 file changed, 5 insertions(+)
+https://lore.kernel.org/all/CAABR9nFgiNv6cnYa3+ZY3KnjbKpcF-JHpZY8TVcR7H40vO=
+oR=3DQ@mail.gmail.com/
 
-diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
-index 4e9d7e10b527..291d34718b2e 100644
---- a/drivers/net/netdevsim/netdev.c
-+++ b/drivers/net/netdevsim/netdev.c
-@@ -808,6 +808,8 @@ nsim_queue_start(struct net_device *dev, struct netdev_queue_config *qcfg,
- 
- 	if (ns->rq_reset_mode == 1) {
- 		ns->rq[idx]->page_pool = qmem->pp;
-+		netif_queue_set_napi(dev, idx, NETDEV_QUEUE_TYPE_RX,
-+				     &ns->rq[idx]->napi);
- 		napi_enable_locked(&ns->rq[idx]->napi);
- 		return 0;
- 	}
-@@ -826,6 +828,8 @@ nsim_queue_start(struct net_device *dev, struct netdev_queue_config *qcfg,
- 	}
- 
- 	ns->rq[idx] = qmem->rq;
-+	netif_queue_set_napi(dev, idx, NETDEV_QUEUE_TYPE_RX,
-+			     &ns->rq[idx]->napi);
- 	napi_enable_locked(&ns->rq[idx]->napi);
- 
- 	return 0;
-@@ -838,6 +842,7 @@ static int nsim_queue_stop(struct net_device *dev, void *per_queue_mem, int idx)
- 
- 	netdev_assert_locked(dev);
- 
-+	netif_queue_set_napi(dev, idx, NETDEV_QUEUE_TYPE_RX, NULL);
- 	napi_disable_locked(&ns->rq[idx]->napi);
- 
- 	if (ns->rq_reset_mode == 1) {
+The answers are the same in both cases, so I hope it is okay to refer
+to those replies
+rather than repeating the same information here.
 
----
-base-commit: a59f57e2aa127c5354168d2ec4bac920df1be4f4
-change-id: 20260812-net-netdevsim-aad6100834dd
+>
+> The same check seems to have been added to both arms of the if/else
+> condition. So it seems to me that it could be moved out of that condition=
+.
+>
+> I would suggest placing it below the existing rx_irq/tx_irq condition
+> which appears a few lines below this hunk so that those and
+> dma_regs errors are still propagated.
+>
+
+Previously, I understood that errors should be returned as early as possibl=
+e.
+However, with the current implementation, I agree that your approach
+makes more sense.
+I=E2=80=99ll send v3 soon.
 
 Best regards,
--- 
-Subasri S <subasris1210@gmail.com>
-
+Phuc
