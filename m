@@ -1,53 +1,51 @@
-Received: from mta1.migadu.com (out-247.mta1.migadu.com [95.215.58.247])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5362D594F
-	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 07:15:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.247
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42517190462
+	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 07:42:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786778154; cv=none; b=ZLFB7vEA3w+Bgov507Kf5eYIQHwO1UeAXUs5B+Xa3IzyF5mpkwqkEuhXmV2+WzhlcfJG9HB7xlW5Xp6bmAfdMiKAUvuHOvwpiU6GM+FOx/Ph1n1Cbaxas7Sj6O+EIr4K5swWfJ9j9ELZxaxuExdjPRP2wxQtpH0eydZkB98tLKE=
+	t=1786779748; cv=none; b=SpIYQLECmqZQk/XczowNQDazJf3ktmkc6JeQjUF0A+M5K3Ha2GzZ7z5mYIGXVYyW5yqJikC7d2314n9B3yoDqwDsmz57FpoyBzPMaIKGhwdXDj2KAPtMvB5BkiSz1tre7H3Qng0zaHqT1GgtWFL6hsaDLkiMiIOZKmm6hrq9wyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786778154; c=relaxed/simple;
-	bh=9CzrLhRoKq+qS18iCs8Ie0gpwrvllBmTQsF5jWCnFzk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CceFLtZVN1sugmOEl2+LUspB0Ag0HGEMU4qe0ZI5EHDXveABBhT+SjADhiblQHsCpIhBS/TqGkPCIA49LXcfB6wN/ner8DtvG+efOeDpE3rhaaoBOjKM96x4gOIeB45ArEb9+9K1FohB11qYiudCMdjDcE/eLhBIxIcUYZf/caI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=OI0gzZ8S; arc=none smtp.client-ip=95.215.58.247
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1786779748; c=relaxed/simple;
+	bh=EjwSSC8bnvMcTZFASyRaGDdx1oJMWy9Tm/8iXx9H+50=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qhXSmfhBi12DsHJ1R4r6gRLQVrH8nAsq5xlx/4orZLSzdxGk0BmnJXrywNt4k8X/JM6rA+5X8nXG32zqNkNp652Fvlwcp/IrfUseqiFHZONi7NoBu/idzFleFJxaiSiKMmwLcWvcSGmskpBfrrMqpSAQgmNdljCjb7E5UGwYAPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=rgyZBblk; arc=none smtp.client-ip=113.46.200.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="OI0gzZ8S"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=9CzrLhRoKq+qS18iCs8Ie0gpwrvllBmTQsF5jWCnFzk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786778148; v=1; x=1787382948;
- b=OI0gzZ8SlY3bM7KxV+0DZO0nRQy4WFs4kAMqTWzAF0i9Gr+/Gaz7iMnuzbH4oWLO5fwgTv0d
- 8ux/qGGoygEh3An/kSNcY6pQaYidK3A2pAAtplx3T+Qx/wjIWqmcd7v4IKN+tLIVPIlgPPQ2PNH
- Tf4fFcj31qchrk4wkIRwe1d8=
-X-Envelope-To: netdev@vger.kernel.org
-Received: from localhost.localdomain (147.136.157.3)
-	by smtp.migadu.com with ESMTPS id b4549a7fe812b398;
-	Sat, 15 Aug 2026 07:15:48 +0000
-X-Migadu-Flow: FLOW_OUT
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: netdev@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net v2 2/2] selftests: net: packetdrill: add tests for advertised MSS with PMTU exceptions
-Date: Sat, 15 Aug 2026 15:15:08 +0800
-Message-ID: <20260815071532.301908-1-jiayuan.chen@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260815070413.294559-1-jiayuan.chen@linux.dev>
-References: <20260815070413.294559-1-jiayuan.chen@linux.dev>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="rgyZBblk"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=JFSSVEc4yWIt6RK2R6BNTxwii/iqR0aq6Dbp1rMtYi0=;
+	b=rgyZBblkaWAGhuNYxx3eul4VCl1r66bJMj0s4Ao0zA57gnm5CexXR0ESfbp3DZiRt4TLJNL58
+	rG3Z8pRs3GXzdmlWfog4Ucb4aJ6l+lEpIuq2bxSEK021MpqnksOn0o7GxAh4HScSAC0PmGS/DXP
+	S81hTJlZ9ntZ+I11LR2LtEM=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4hMW4v4Pcqzcb0T;
+	Sat, 15 Aug 2026 15:31:59 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3337A20333;
+	Sat, 15 Aug 2026 15:42:12 +0800 (CST)
+Received: from kwepemq200002.china.huawei.com (7.202.195.90) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Sat, 15 Aug 2026 15:42:11 +0800
+Received: from localhost.localdomain (10.50.85.175) by
+ kwepemq200002.china.huawei.com (7.202.195.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Sat, 15 Aug 2026 15:42:11 +0800
+From: Dong Chenchen <dongchenchen2@huawei.com>
+To: <dsahern@kernel.org>, <idosch@nvidia.com>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<horms@kernel.org>, <herbert@gondor.apana.org.au>
+CC: <netdev@vger.kernel.org>, <zhangchangzhong@huawei.com>, Dong Chenchen
+	<dongchenchen2@huawei.com>
+Subject: [PATCH net v2] ipv4: icmp: reject RTN_UNREACHABLE input routes in icmp_route_lookup
+Date: Sat, 15 Aug 2026 15:51:02 +0800
+Message-ID: <20260815075102.3426068-1-dongchenchen2@huawei.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,169 +53,63 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemq200002.china.huawei.com (7.202.195.90)
 
-From: Eric Dumazet <edumazet@google.com>
+When the forward output route cannot be used in icmp_route_lookup(),
+it enters the "reverse path" and calls ip_route_input() on fl4_dec.daddr,
+the original packet's source address.
 
-Add packetdrill tests for IPv4 and IPv6 to verify that the advertised
-MSS in SYN-ACK is derived from the configured interface/route MTU,
-and is not shrunk by learned Path MTU exceptions from previous
-outbound connections.
+ip_route_input() only returns an error for truly invalid packets. For
+unreachable addresses it will succeed and return an input route whose
+dst.output is set to ip_rt_bug(). The existing check only rejects
+RTN_LOCAL routes, so the RTN_UNREACHABLE route types can still be returned
+and later used for output, syzkaller triggering a WARN_ON_ONCE()
+in ip_rt_bug() as bellow:
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+ ------------[ cut here ]------------
+ WARNING: net/ipv4/route.c:1273 at ip_rt_bug+0x14/0x20
+ RIP: 0010:ip_rt_bug+0x14/0x20
+ Call Trace:
+  ip_push_pending_frames+0xfa/0x100
+  __icmp_send+0x905/0xf10
+  ip_options_compile+0xc0/0xd0
+  ip_rcv_finish_core+0x321/0xae0
+  ip_rcv+0x1de/0x260
+  __netif_receive_skb_one_core+0x11a/0x130
+  netif_receive_skb+0x7b/0x260
+  tun_get_user+0x11bf/0x1c10
+ ------------[ cut here ]------------
+
+Reject any input route that is RTN_UNREACHABLE to fix it.
+
+Fixes: 8b7817f3a959 ("[IPSEC]: Add ICMP host relookup support")
+Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
 ---
- .../net/packetdrill/tcp_advmss_pmtu_ipv4.pkt  | 67 +++++++++++++++++++
- .../net/packetdrill/tcp_advmss_pmtu_ipv6.pkt  | 67 +++++++++++++++++++
- 2 files changed, 134 insertions(+)
- create mode 100644 tools/testing/selftests/net/packetdrill/tcp_advmss_pmtu_ipv4.pkt
- create mode 100644 tools/testing/selftests/net/packetdrill/tcp_advmss_pmtu_ipv6.pkt
+ net/ipv4/icmp.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_advmss_pmtu_ipv4.pkt b/tools/testing/selftests/net/packetdrill/tcp_advmss_pmtu_ipv4.pkt
-new file mode 100644
-index 000000000000..f2ef931b77a1
---- /dev/null
-+++ b/tools/testing/selftests/net/packetdrill/tcp_advmss_pmtu_ipv4.pkt
-@@ -0,0 +1,67 @@
-+// SPDX-License-Identifier: GPL-2.0
-+//
-+// Test that IPv4 advertised MSS in SYN-ACK is derived from the configured
-+// interface MTU (1500 -> MSS 1460), not the ICMP-learned Path MTU.
-+
-+--ip_version=ipv4
-+
-+`./defaults.sh
-+ethtool -K tun0 tso off
-+`
-+
-+//
-+// Connection 1: Learn PMTU exception (MTU 1200 -> MSS 1160)
-+//
-+    0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-+   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-+   +0 bind(3, ..., ...) = 0
-+   +0 listen(3, 1) = 0
-+
-+   +0 < S 0:0(0) win 65535 <mss 1460,sackOK,nop,nop,nop,wscale 8>
-+   +0 > S. 0:0(0) ack 1 <mss 1460,nop,nop,sackOK,nop,wscale 8>
-+  +.1 < . 1:1(0) ack 1 win 257
-+   +0 accept(3, ..., ...) = 4
-+
-+// Send a full 1460-byte segment
-+   +0 write(4, ..., 1460) = 1460
-+   +0 > P. 1:1461(1460) ack 1
-+
-+// ICMP Fragmentation Needed arrives indicating next-hop MTU 1200
-+   +0 < icmp unreachable frag_needed mtu 1200 [1:1461(1460)]
-+
-+// Local host retransmits using the learned MTU 1200 (MSS = 1200 - 40 = 1160)
-+   +0 > . 1:1161(1160) ack 1
-+   +0 > P. 1161:1461(300) ack 1
-+   +0 < R 1:1(0) ack 1461 win 0
-+
-+// Close connection 1 and listener
-+   +0 close(4) = 0
-+   +0 close(3) = 0
-+
-+//
-+// Connection 2: New connection from the same peer
-+//
-+   +0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-+   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-+   +0 bind(3, ..., ...) = 0
-+   +0 listen(3, 1) = 0
-+
-+   +0 < S 0:0(0) win 65535 <mss 1460,sackOK,nop,nop,nop,wscale 8>
-+
-+// Verify: SYN-ACK MUST advertise configured MSS 1460, NOT the learned PMTU MSS 1160
-+   +0 > S. 0:0(0) ack 1 <mss 1460,nop,nop,sackOK,nop,wscale 8>
-+   +0 < . 1:1(0) ack 1 win 257
-+   +0 accept(3, ..., ...) = 4
-+
-+// Verify: Outgoing transmit MSS is still constrained by the learned PMTU 1200
-+   +0 write(4, ..., 1460) = 1460
-+   +0 > . 1:1161(1160) ack 1
-+   +0 > P. 1161:1461(300) ack 1
-+   +0 < . 1:1(0) ack 1461 win 257
-+
-+// Clean up
-+   +0 close(4) = 0
-+   +0 > F. 1461:1461(0) ack 1
-+   +0 < F. 1:1(0) ack 1462 win 257
-+   +0 > . 1462:1462(0) ack 2
-+   +0 close(3) = 0
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_advmss_pmtu_ipv6.pkt b/tools/testing/selftests/net/packetdrill/tcp_advmss_pmtu_ipv6.pkt
-new file mode 100644
-index 000000000000..c7638b11a815
---- /dev/null
-+++ b/tools/testing/selftests/net/packetdrill/tcp_advmss_pmtu_ipv6.pkt
-@@ -0,0 +1,67 @@
-+// SPDX-License-Identifier: GPL-2.0
-+//
-+// Test that IPv6 advertised MSS in SYN-ACK is derived from the configured
-+// interface MTU (1520 -> MSS 1460), not the ICMPv6-learned Path MTU.
-+
-+--ip_version=ipv6
-+
-+`./defaults.sh
-+ethtool -K tun0 tso off
-+`
-+
-+//
-+// Connection 1: Learn PMTU exception (MTU 1280 -> MSS 1220)
-+//
-+    0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-+   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-+   +0 bind(3, ..., ...) = 0
-+   +0 listen(3, 1) = 0
-+
-+   +0 < S 0:0(0) win 65535 <mss 1460,sackOK,nop,nop,nop,wscale 8>
-+   +0 > S. 0:0(0) ack 1 <mss 1460,nop,nop,sackOK,nop,wscale 8>
-+  +.1 < . 1:1(0) ack 1 win 257
-+   +0 accept(3, ..., ...) = 4
-+
-+// Send a full 1460-byte segment
-+   +0 write(4, ..., 1460) = 1460
-+   +0 > P. 1:1461(1460) ack 1
-+
-+// ICMPv6 Packet Too Big arrives indicating next-hop MTU 1280
-+   +0 < icmp packet_too_big mtu 1280 [1:1461(1460)]
-+
-+// Local host retransmits using the learned MTU 1280 (MSS = 1280 - 40 - 20 = 1220)
-+   +0 > . 1:1221(1220) ack 1
-+   +0 > P. 1221:1461(240) ack 1
-+   +0 < R 1:1(0) ack 1461 win 0
-+
-+// Close connection 1 and listener
-+   +0 close(4) = 0
-+   +0 close(3) = 0
-+
-+//
-+// Connection 2: New connection from the same peer
-+//
-+   +0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-+   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-+   +0 bind(3, ..., ...) = 0
-+   +0 listen(3, 1) = 0
-+
-+   +0 < S 0:0(0) win 65535 <mss 1460,sackOK,nop,nop,nop,wscale 8>
-+
-+// Verify: SYN-ACK MUST advertise configured MSS 1460, NOT the learned PMTU MSS 1220
-+   +0 > S. 0:0(0) ack 1 <mss 1460,nop,nop,sackOK,nop,wscale 8>
-+   +0 < . 1:1(0) ack 1 win 257
-+   +0 accept(3, ..., ...) = 4
-+
-+// Verify: Outgoing transmit MSS is still constrained by the learned PMTU 1280
-+   +0 write(4, ..., 1460) = 1460
-+   +0 > . 1:1221(1220) ack 1
-+   +0 > P. 1221:1461(240) ack 1
-+   +0 < . 1:1(0) ack 1461 win 257
-+
-+// Clean up
-+   +0 close(4) = 0
-+   +0 > F. 1461:1461(0) ack 1
-+   +0 < F. 1:1(0) ack 1462 win 257
-+   +0 > . 1462:1462(0) ack 2
-+   +0 close(3) = 0
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index 0caedfc7ca92..4703d8dd6b47 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -585,11 +585,11 @@ static struct rtable *icmp_route_lookup(struct net *net, struct flowi4 *fl4,
+ 		 * checked fl4_dec.saddr above). However, a race condition
+ 		 * may occur if the address is added to the interface
+ 		 * concurrently. In that case, ip_route_input() returns a
+-		 * LOCAL route with dst.output=ip_rt_bug, which must not
+-		 * be used for output.
++		 * LOCAL or UNREACHABLE route with dst.output=ip_rt_bug,
++		 * which must not be used for output.
+ 		 */
+-		if (!err && rt2 && rt2->rt_type == RTN_LOCAL) {
+-			net_warn_ratelimited("detected local route for %pI4 during ICMP sending, src %pI4\n",
++		if (!err && rt2 && (rt2->rt_type == RTN_LOCAL || rt2->rt_type == RTN_UNREACHABLE)) {
++			net_warn_ratelimited("detected unusable input route for %pI4 during ICMP sending, src %pI4\n",
+ 					     &fl4_dec.daddr, &fl4_dec.saddr);
+ 			dst_release(&rt2->dst);
+ 			err = -EINVAL;
 -- 
-2.43.0
+2.25.1
 
