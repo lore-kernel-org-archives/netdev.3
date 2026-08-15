@@ -1,174 +1,219 @@
-Received: from mail-wr2-f2.google.com (mail-wr2-f2.google.com [74.125.225.66])
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97E62C3768
-	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 01:05:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7537F31986C
+	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 01:08:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786755943; cv=none; b=mTAU2UFP1ghrMdLKFzEDeCDnVtF1WHJW5MzPpw54O9wumIs6sRuEKgrGMRW/RJenhZQmT1AIx7zYF7WYMf4e2zpmnd8PEMLBGeMdse2qzUzywcHNNOyEXPaY8UlJAkfWUth3WkwZOCjTR6U9hj+6g8m2MRYW/e0zW7V1N24bghw=
+	t=1786756110; cv=none; b=aggF5gK3SIfEf7SVE5HfYe9n3qecvqbkrB1fqHOS/cDFAcjA/2dAJsdIYtcuvqgpK8WRHx0gqowxSVVchsy3abqSFIKx5+dKNjtJKZBOhRIgHoW6FH9W2+5CGOEEkyrUhGomfU2jqE0oQ4Q5FOrmNMYpjMYNMeTZBGb0kuEQf1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786755943; c=relaxed/simple;
-	bh=RaNUnABHFAZxh2tCweFZbu/vd0qHX6aPMsu31EcizMA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RKOEPDMnnf8936hdPnNfxWa4GO+nLFYcShov1+bsVoB46+GABy06t/x3/y3nsjwjb2Sj4ZhWD4WBXPq3abDb5D88JgYeSuADXD3II/y5jY4h3jjOMrP1YlhVtCx5b4/uXssQSAS+1pKt+ejp2AFCDEhTawyfx6CeAxi47xuCS9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+	s=arc-20240116; t=1786756110; c=relaxed/simple;
+	bh=Aa3x4hIztegYvcTbIqhvp4D7IHwChEh3gYm0aBgAdNQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QJ8ZYiwUR1oZiP3OBefF85TrIXklIkqG85YufV5IsCbPVsDPeT6EqsH3VHuiOfavYBtNHQ30b1TGV+hem7SDHzZGGHyxeAldkTL70Q3/5avrZTkvO0mDF5B2PYxOBa8RQspD5EHXYqTAhyUWWckk0G6fkJRsMzN6EWGAjMtEhnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KuXqthXG; arc=none smtp.client-ip=209.85.210.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr2-f2.google.com with SMTP id ffacd0b85a97d-4730b8edae6so461567f8f.0
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 18:05:41 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KuXqthXG"
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-7eb1dc6bd53so1209182a34.2
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 18:08:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786756107; x=1787360907; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2WaeFHY8Amefx+z0iRX7zRmJGE/YSFA3BET5wf4LK6c=;
+        b=KuXqthXGWEPfbZWOWQETcI7FaVEIB02EYmxoospc8KemE9adbEEZy4YbZO1D7Vxu8q
+         5zXPM91QzU6VkpJxMsxAfeoxi0vpqAnHST59G1bLgoKCT7W2FyEMBxjSaduG9G2QQuYf
+         QZ7+bC7KrD3ObFc0wK15/FgBjNFEbMyuRHUOK8WBgCuV1igpGCNzUy1ItK3vMQnJogV4
+         LyRQ0wH3mavqlq+dUUBc1WXjtdI0m1VERvcgTqJbyrnS6yBuieDfvGT/01ZDH/zWx+lX
+         J63HcYH6WerZ52IN5Y2lrXSLnvf4EP4N3KYH38223UhZLcX/Hq/Zf7TeL9FnEcQxhF3P
+         KRuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786755940; x=1787360740;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1786756107; x=1787360907;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=/qWu3OPyPzae/szxt8i2u7TrHzlI1Tw94MmPg8jResw=;
-        b=RB2ewAaPVap5KyHDPMmDpRGedwAdhUsXRGDp+DunO+zL+Kep21AhWaBXR5Bzmt+YX5
-         0YHwmVET1Qnc3Q6aVUhQb+ADcTrjliQq1EejuNyLjmcgc6/e4f4o/Y1BnY4xRroy8vu8
-         apk2SCosagLvCSzTaU6p8QRusG+2njnzZ/2nGwUHsYquPNaPwWyxf4B2pIwUuMHf3g8l
-         otOdTwlOOm6L1BYlsHG4TR/ElVrErFquIeKKi4vCmiRjCLRGqvR20PMzT8liJRLTmDB9
-         3hil/AVIj1uCbhv7XByr0mWp3YW67+efZmm2CnUtaxZxKNmAI0/cKhQ6L+L/Rl++aBhs
-         5VEQ==
-X-Gm-Message-State: AOJu0YwDmX4oj5HRnbxLHWnGiXKY7IlTGrFU7zUgOHNZqMA3Prn5xr6B
-	497t/F9pIHccX/iZT4+2AMuwe+qLcSE1BLS9c8YGrRe6G1GMSqKq8D52
-X-Gm-Gg: AR+sD13TfRdzIMEistxpLvaeYB6jdhrOPJW9aprYnSmjr99fPqO5sXcwF/onUCZVhH6
-	SJd0h6yPp574wK+zTz25kgAIPWw/EX0s12fQocIEKaIQKumVc/ghsC3ERhFAFq1+az27INS4Gia
-	jDPd92ZohD4hh123epdqfKRf4kwe0HqB1rKMANgXQSjKQcl/S6uAOX9jUlnF06sywVUWBOLbkgS
-	9JGxniSBYyT5IL9maPHnDGirLAT0rys9RO8YEfHwB3df0HDLxA5EPKjvLty/fXsMQQN5Cm4Xv4x
-	w8gxQx7EoymzGO1XTzANa0Rj1FcHlw2EKibFNbSbexHy4nzJuJFxotjz9b9epgYHMwN2PsG6ji9
-	RocuIo3Szw7dj5sVq92VMdvlRTPo6Q4qT8GHwdS6oFD/o760NRXKlOSZq074ypFu/NkA3kaV5M9
-	US2Z2E11ShHrbVEBU17H4wqy96Pl2TjmBYEAb6AS1EbIrody2daLuwuFpLYBnP3sPdO9YTzNPdw
-	TXR6Q+dKFhwUXqr
-X-Received: by 2002:a7b:c4d0:0:b0:498:1595:be7b with SMTP id 5b1f17b1804b1-4998792f242mr102892195e9.4.1786755939885;
-        Fri, 14 Aug 2026 18:05:39 -0700 (PDT)
-Received: from [192.168.88.241] (89-24-57-65.nat.epc.tmcz.cz. [89.24.57.65])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49987b203cfsm83100405e9.3.2026.08.14.18.05.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 Aug 2026 18:05:39 -0700 (PDT)
-Message-ID: <fbc62629-9c81-4a01-8bb6-7a19635b4b1d@ovn.org>
-Date: Sat, 15 Aug 2026 03:05:38 +0200
+        bh=2WaeFHY8Amefx+z0iRX7zRmJGE/YSFA3BET5wf4LK6c=;
+        b=kPr5+nEs61kp/8im+Ovlseb2rT/mqbNHI+mEavKQ3GcC2IuA67uoHv3priJyKJJpSu
+         gXjposCzJmABqiItfbx5nqu9EJUvUgWeGySqKxRcpOXRjXeWcszVfOko47bgcSBc+cRl
+         z3lM8d8pW4ZEGYBVzefD5baWGh38CA6Gmm9K/MsDV5UFzfjw6icwQYrxdW09udj2muGZ
+         uUDfsoq+zCVTix3iaKlMvrRJLCa7g22oxBdd737Fp0bR7nmbmz1QTl34YKpVn3X5lTzP
+         Z4rpbMTyNyI0/Ie5Siq71pVy/8SuVpeZVcse7SHFTAsP9uwPAoje73k281Cs0rZf7/K5
+         etjw==
+X-Gm-Message-State: AOJu0YwhQ+WfEvibkBD9ne+W3XkmszV/O1oaeaoPQtVg7P3UgItgM7J+
+	qptrOG7HBSexITdch/+u2tAHsBHNPLJz+LkcUv7CKSi2q5auLLELpIpq
+X-Gm-Gg: AR+sD130QtBtueZBzSolLNvP85swTEE82uqDfERLYkRAwEpyWQwbccvxwlUwKsmK18M
+	W/FQPt/do9CW4kWZu9uFElodo//ojLrusV5yGhcxC1ELemsNPbZaYFLyK/L0ovH1dxCMdy/n9Cv
+	g/BKfh/5S7pokd7mRjXTd2OVfjUwCjHBsXhpmdwGgVjoQ6N6g/7BD0zJW/Lpj9l+Riv3CjvVWAb
+	mAQPDJg0SukQD3qVDul+3plNjARNZ8Lx3ktswIwrWS/PjQtDChglx+zm1skrfQR/lw0FUXAdqKQ
+	7oxplJSeICYi0ekM8utu1KhnDJ5KMeCHHo5IoeIcA7nrrXKihWREZCWuo64fSiOtv2VMBYx0bNu
+	D6X5yfDLJ3F/BRqJf4e/EbzwAdqU2bfx1xpb01BHO4XnJHW6gn3Q3daihAbo0LFDZFRt/LKl0Tu
+	TPCj7hsFKy/BR5I75oscqfZvCR8TXo6ztyq/oz3ncjI0xkqQeGbAevYG8ixDRWlTP4ypwQwRBVm
+	FIh0K6QH+GKsyu/2Qa6/hJJHu2sTgg=
+X-Received: by 2002:a05:6830:3813:b0:7e9:d3aa:e391 with SMTP id 46e09a7af769-7f3de4ea83dmr9379236a34.6.1786756107331;
+        Fri, 14 Aug 2026 18:08:27 -0700 (PDT)
+Received: from shiv-machina.. (174-16-201-18.hlrn.qwest.net. [174.16.201.18])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f3e869f65fsm2320947a34.26.2026.08.14.18.08.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Aug 2026 18:08:26 -0700 (PDT)
+From: Shivani Gupta <shivani07g@gmail.com>
+To: intel-wired-lan@lists.osuosl.org,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Alessio Igor Bogani <alessio.bogani@elettra.eu>
+Subject: [PATCH iwl-net] igb: Reject hwtstamp requests when PTP is unavailable
+Date: Sat, 15 Aug 2026 01:08:15 +0000
+Message-Id: <20260815010815.91898-1-shivani07g@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: openvswitch: fix nf_connlabels leak in
- ovs_ct_init
-To: Ruoyu Wang <ruoyuw560@gmail.com>
-Cc: netdev@vger.kernel.org, dev@openvswitch.org,
- linux-kernel@vger.kernel.org, Yi-Hung Wei <yihung.wei@gmail.com>,
- Simon Horman <horms@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Eelco Chaudron <echaudro@redhat.com>, Paolo Abeni <pabeni@redhat.com>,
- Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Aaron Conole <aconole@redhat.com>, Ilya Maximets <i.maximets@ovn.org>
-References: <20260814134040.1386967-1-ruoyuw560@gmail.com>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <20260814134040.1386967-1-ruoyuw560@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 8/14/26 3:40 PM, Ruoyu Wang wrote:
-> ovs_ct_init() acquires a connlabels reference before initializing the
-> conntrack limit state. If ovs_ct_limit_init() fails, its error is returned
-> directly. The pernet core does not invoke the exit callback for the
-> operation whose initialization failed, so ovs_ct_exit() cannot drop the
-> reference.
-> 
-> This leaves labels_used elevated when Open vSwitch pernet registration
-> fails for an existing network namespace. Subsequent conntrack entries in
-> that namespace may allocate label extensions even though Open vSwitch
-> failed to register.
-> 
-> Drop the connlabels reference before returning a conntrack limit
-> initialization error. ovs_ct_limit_init() already releases its partial
-> state, and the original error remains unchanged.
-> 
-> This issue was found by a static analysis checker and confirmed by
-> manual source review.
-> 
-> Fixes: 11efd5cb04a1 ("openvswitch: Support conntrack zone limit")
+IGB depends on PTP_1588_CLOCK_OPTIONAL, so ptp_clock_register() can
+return NULL when PTP is compiled out and can fail at runtime.
 
-Should add Cc: for the stable here.
+Commit b888c510f7b3 ("igb: Avoid starting unnecessary workqueues")
+moved the PTP locks, work items, timestamp configuration, and clock
+reset behind successful clock registration. The netdev is already
+registered when igb_ptp_init() runs, however, and the hwtstamp entry
+points were not gated on registration. On 82576 a TX timestamp request
+can therefore schedule a never-initialized ptp_tx_work.
 
-> Signed-off-by: Ruoyu Wang <ruoyuw560@gmail.com>
-> ---
->  net/openvswitch/conntrack.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
-> index 95697d4e16e64..fbaa677144143 100644
-> --- a/net/openvswitch/conntrack.c
-> +++ b/net/openvswitch/conntrack.c
-> @@ -2001,6 +2001,9 @@ int ovs_ct_init(struct net *net)
->  {
->  	unsigned int n_bits = sizeof(struct ovs_key_ct_labels) * BITS_PER_BYTE;
->  	struct ovs_net *ovs_net = net_generic(net, ovs_net_id);
-> +#if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
-> +	int err;
-> +#endif
+Initialize the passive PTP state and hardware clock before registering
+the PHC. INIT_WORK() and INIT_DELAYED_WORK() do not queue any work; the
+overflow work is started only after registration succeeds. This also
+ensures that PHC callbacks and the netdev timestamping paths never
+observe partially initialized state.
 
-No need to guard it with a macro.  It should be cleaner to initialize
-as zero and return err in both cases in the end.
+Reject hwtstamp get and set requests with -EOPNOTSUPP while no PTP clock
+is registered, and advertise software timestamping only in that state.
+Successful registration retains the existing behavior on 82576, 82580,
+i350, i354, i210, and i211. On 82575, an OFF request that was previously
+accepted as a no-op now reports that hardware timestamping is
+unsupported.
 
->  
->  	if (nf_connlabels_get(net, n_bits - 1)) {
->  		ovs_net->xt_label = false;
-> @@ -2010,7 +2013,10 @@ int ovs_ct_init(struct net *net)
->  	}
->  
->  #if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
-> -	return ovs_ct_limit_init(net, ovs_net);
-> +	err = ovs_ct_limit_init(net, ovs_net);
-> +	if (err && ovs_net->xt_label)
-> +		nf_connlabels_put(net);
-> +	return err;
->  #else
->  	return 0;
->  #endif
+Reproduced with CONFIG_IGB=y and CONFIG_PTP_1588_CLOCK=n on the QEMU
+82576 model: SIOCSHWTSTAMP(HWTSTAMP_TX_ON) followed by a hardware
+timestamp request warned in __queue_work() before this change and
+returns EOPNOTSUPP afterwards.
 
+Fixes: b888c510f7b3 ("igb: Avoid starting unnecessary workqueues")
+Signed-off-by: Shivani Gupta <shivani07g@gmail.com>
+---
+ drivers/net/ethernet/intel/igb/igb_ethtool.c |  9 +++++
+ drivers/net/ethernet/intel/igb/igb_ptp.c     | 40 ++++++++++++++------
+ 2 files changed, 38 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+index f7938c1da835..4ebd447117cc 100644
+--- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
++++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+@@ -2396,6 +2396,15 @@ static int igb_get_ts_info(struct net_device *dev,
+ 	case e1000_i354:
+ 	case e1000_i210:
+ 	case e1000_i211:
++		/* No PTP clock, no hardware timestamping. Advertise what
++		 * igb_ptp_hwtstamp_set() will actually accept.
++		 */
++		if (!(adapter->ptp_flags & IGB_PTP_ENABLED)) {
++			info->so_timestamping =
++				SOF_TIMESTAMPING_TX_SOFTWARE;
++			return 0;
++		}
++
+ 		info->so_timestamping =
+ 			SOF_TIMESTAMPING_TX_SOFTWARE |
+ 			SOF_TIMESTAMPING_TX_HARDWARE |
+diff --git a/drivers/net/ethernet/intel/igb/igb_ptp.c b/drivers/net/ethernet/intel/igb/igb_ptp.c
+index 638d8242b66b..01992a73b37b 100644
+--- a/drivers/net/ethernet/intel/igb/igb_ptp.c
++++ b/drivers/net/ethernet/intel/igb/igb_ptp.c
+@@ -1104,6 +1104,9 @@ int igb_ptp_hwtstamp_get(struct net_device *netdev,
+ {
+ 	struct igb_adapter *adapter = netdev_priv(netdev);
+ 
++	if (!(adapter->ptp_flags & IGB_PTP_ENABLED))
++		return -EOPNOTSUPP;
++
+ 	*config = adapter->tstamp_config;
+ 
+ 	return 0;
+@@ -1285,6 +1288,9 @@ int igb_ptp_hwtstamp_set(struct net_device *netdev,
+ 	struct igb_adapter *adapter = netdev_priv(netdev);
+ 	int err;
+ 
++	if (!(adapter->ptp_flags & IGB_PTP_ENABLED))
++		return -EOPNOTSUPP;
++
+ 	err = igb_ptp_set_timestamp_mode(adapter, config);
+ 	if (err)
+ 		return err;
+@@ -1378,6 +1384,25 @@ void igb_ptp_init(struct igb_adapter *adapter)
+ 		return;
+ 	}
+ 
++	/* Initialize all state used by the PHC and timestamping paths before
++	 * registering either interface. INIT_WORK() only initializes the work
++	 * item; no work is queued until timestamping is enabled.
++	 */
++	spin_lock_init(&adapter->tmreg_lock);
++	INIT_WORK(&adapter->ptp_tx_work, igb_ptp_tx_work);
++
++	if (adapter->ptp_flags & IGB_PTP_OVERFLOW_CHECK)
++		INIT_DELAYED_WORK(&adapter->ptp_overflow_work,
++				  igb_ptp_overflow_check);
++
++	adapter->tstamp_config.rx_filter = HWTSTAMP_FILTER_NONE;
++	adapter->tstamp_config.tx_type = HWTSTAMP_TX_OFF;
++
++	/* Initialize the hardware clock before ptp_clock_register() makes its
++	 * callbacks visible. The overflow work is started after registration.
++	 */
++	igb_ptp_reset(adapter);
++
+ 	adapter->ptp_clock = ptp_clock_register(&adapter->ptp_caps,
+ 						&adapter->pdev->dev);
+ 	if (IS_ERR(adapter->ptp_clock)) {
+@@ -1388,17 +1413,9 @@ void igb_ptp_init(struct igb_adapter *adapter)
+ 			 adapter->netdev->name);
+ 		adapter->ptp_flags |= IGB_PTP_ENABLED;
+ 
+-		spin_lock_init(&adapter->tmreg_lock);
+-		INIT_WORK(&adapter->ptp_tx_work, igb_ptp_tx_work);
+-
+ 		if (adapter->ptp_flags & IGB_PTP_OVERFLOW_CHECK)
+-			INIT_DELAYED_WORK(&adapter->ptp_overflow_work,
+-					  igb_ptp_overflow_check);
+-
+-		adapter->tstamp_config.rx_filter = HWTSTAMP_FILTER_NONE;
+-		adapter->tstamp_config.tx_type = HWTSTAMP_TX_OFF;
+-
+-		igb_ptp_reset(adapter);
++			schedule_delayed_work(&adapter->ptp_overflow_work,
++					      IGB_SYSTIM_OVERFLOW_PERIOD);
+ 	}
+ }
+ 
+@@ -1513,7 +1530,8 @@ void igb_ptp_reset(struct igb_adapter *adapter)
+ 
+ 	wrfl();
+ 
+-	if (adapter->ptp_flags & IGB_PTP_OVERFLOW_CHECK)
++	if ((adapter->ptp_flags & IGB_PTP_ENABLED) &&
++	    (adapter->ptp_flags & IGB_PTP_OVERFLOW_CHECK))
+ 		schedule_delayed_work(&adapter->ptp_overflow_work,
+ 				      IGB_SYSTIM_OVERFLOW_PERIOD);
+ }
