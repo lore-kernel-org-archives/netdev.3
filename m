@@ -1,112 +1,160 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAA1D3955CF;
-	Sat, 15 Aug 2026 12:22:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 353092AD2E
+	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 12:36:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786796528; cv=none; b=noWtZf+0Yljew7GrpkY+GxLF4l4XjzAmT25caePqANoPJ9I9mQYzOlQRaStgx0vVFNMyWCUPh6oF/b9VjxN1PML3siMVAsCLPQBqY6ZzcLRXEljKS3SycCs5x0jnqP+7IKkK3USY34NiuKGc3QSVG/3dRXSlhorNQwx1p015E5s=
+	t=1786797399; cv=none; b=bqm4WJoGyYYn3n0uN3y89IoPdWHwXP2+mScUSVNHuiTuQ4dG6vIUKM6ukmRPHvAE4WcV91d3UFoOdiM/J7/NTgqQuVF757FPDcxesV6KVonAz9K/XFm2xlLyeKZJOE3OV0Tz131csxB8YiGcqSaUSAzzZJw4CeerF2x0xNG3qq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786796528; c=relaxed/simple;
-	bh=5l2zL5dw71luzsXSML5roIyPsJ8k4xPSOwMrGJC8PyA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CTnt/N76cwLrrHqYN2HXCLAfUlSj1D7kJSAhr4s9EB4mLpCJPP6+qKw67G0ECotj/set8KXTCBECGnA5Kz9gfQEE7kcDFxqud9ypGHAHnMEL5ObhqCq1sa6WcMlx7QQA7BDZCxu4g34UCICpes+ZPJ1DcRpC1ZJAtrDZTBUstv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: e7578df498a311f19a56ed5b684f684d-20260815
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_UNTRUSTED, SRC_UNTRUSTED, IP_UNFAMILIAR, SRC_UNFAMILIAR
-	DN_TRUSTED, SRC_TRUSTED, SA_TRUSTED, SA_EXISTED, SN_TRUSTED
-	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD_SPF
-	CIE_UNKNOWN, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD
-	ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:ca538dfc-363e-4297-bece-360936701f60,IP:15,
-	URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:10
-X-CID-INFO: VERSION:1.3.19,REQID:ca538dfc-363e-4297-bece-360936701f60,IP:15,UR
-	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:10
-X-CID-META: VersionHash:7db8b62,CLOUDID:b57ee303c727c7c0c3cb942751e99da7,BulkI
-	D:260815202157VZOPJS5V,BulkQuantity:0,SF:10|38|66|78|102|127|865|898,TC:ni
-	l,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:n
-	il,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: e7578df498a311f19a56ed5b684f684d-20260815
-X-User: yijiangshan@kylinos.cn
-Received: from lazy-pc.www.tendawifi.com [(118.251.48.97)] by mailgw.kylinos.cn
-	(envelope-from <yijiangshan@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 932793120; Sat, 15 Aug 2026 20:21:55 +0800
-From: Jiangshan Yi <yijiangshan@kylinos.cn>
-To: skalluru@marvell.com,
-	manishc@marvell.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: vladz@broadcom.com,
-	eilong@broadcom.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	13667453960@163.com,
-	Jiangshan Yi <yijiangshan@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] bnx2x: fix double free in bnx2x_init_firmware() error path
-Date: Sat, 15 Aug 2026 20:21:49 +0800
-Message-Id: <20260815122149.951215-1-yijiangshan@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1786797399; c=relaxed/simple;
+	bh=upPbpF5Ns7qjSG+Be6PRgfPc4f8xoS3GZ+mZqvs9saw=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=K04mo7q1WOD8T/nO5nkvBF+IMCXDO462RkNQbGPQsxe6B0ZHRCzbWw7MFMJdZceNNgP9yJeOhMYr44TVn8vWrFmcbpIxvPFaw2pqKJ0aY+dxB5Z0MYupWVtP9NAnZKvgsNwvkG395xUD+o70iKTZ/toacV726wMy3KFtOy85gmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-7e9dee2f7b5so3201836a34.1
+        for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 05:36:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786797397; x=1787402197;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=3xZSYDBIyjPwAGqMxYB6n/h7DUmVr2x6TyLtNgxh4p8=;
+        b=nY9TBeGhVu2YXDBpxEjwltoG3iyL9R+mB7UT8zRBJlC4+DWPDFkyAv4l8pOe2naT4B
+         zj9mz5U/Yip5VNQZWMK5R3cOePjjsWZXEzexbfCopRGBJlQkWaKIUkuIo8uUQElMkYNh
+         7i38dFubiWOcqnHsiB/CS/xrKo5CodrDIFA+JyPERDK0yKRkI3KsMy0b14cNYFuHElN5
+         wpEWzutTp70Sk5Fzz44M1lmd/TV22OUIcN6DfTlE+jMHjE1tx8sZVqqYtsAFhTWZmF9L
+         wkd97xcxTrCrON1PdBIKWDK4EHS1+jGPzUsWckEgg6Yn2UBESHysTXJvI4DgqAi/QGkT
+         NVsQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpHRPzIJpNPoNqmxi6z1U4AAm11nsZj7krry7Y2C8Jx1rwxgqAj/IDFapVCbbJQGNdm09//ZUw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxy677o7yLZLNg+eHkH0IkxAlvpuyG0ZfVWNDGgMDGai5CLmNbI
+	5/Puis0yqjGV8dhqIC3W3iL5nZiftDLSjRm4+Tb+p+C0bNinTE6KHF/aKplIOZEuR1HXlaqgb9V
+	VcaRGFH7XpYlPUp6BPENn3i0ZPOoH5rpDOrbU+xo/bJxzGI7qTM+OCSvmc6Y=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6820:f029:b0:6b0:4a08:17d9 with SMTP id
+ 006d021491bc7-6b0d68f6815mr9877005eaf.28.1786797397106; Sat, 15 Aug 2026
+ 05:36:37 -0700 (PDT)
+Date: Sat, 15 Aug 2026 05:36:37 -0700
+In-Reply-To: <6a0ca269.a70a0220.1a69d3.0014.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a805d55.dbb3a75c.20434b.0016.GAE@google.com>
+Subject: Re: [syzbot] [net?] WARNING in stack_depot_save_flags (2)
+From: syzbot <syzbot+1827030ed7bc886dd0a5@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	pabeni@redhat.com, syzkaller-bugs@googlegroups.com, 
+	willemdebruijn.kernel@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-bnx2x_init_firmware() frees bp->init_ops, bp->init_data and
-bp->init_ops_offsets in its error path without setting them to NULL.
-The cleanup function bnx2x_release_firmware() frees the same three
-pointers unconditionally, so if init_firmware fails and
-release_firmware is later called (e.g. from __bnx2x_remove or through
-the function state machine), all three are freed a second time.
+syzbot has found a reproducer for the following issue on:
 
-Set each pointer to NULL after kfree() in the error path so that the
-subsequent kfree(NULL) in bnx2x_release_firmware() is a safe no-op.
+HEAD commit:    15ef2f78c49d Merge tag 'input-for-v7.2-rc7' of git://git.k..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=15b53279580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=1d67342c314f228d
+dashboard link: https://syzkaller.appspot.com/bug?extid=1827030ed7bc886dd0a5
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=137fa949580000
 
-Fixes: 94a78b79cb5f ("bnx2x: Separated FW from the source.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiangshan Yi <yijiangshan@kylinos.cn>
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+1827030ed7bc886dd0a5@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+Stack depot reached limit capacity
+WARNING: lib/stackdepot.c:302 at depot_init_pool lib/stackdepot.c:302 [inline], CPU#1: syz-executor190/6024
+WARNING: lib/stackdepot.c:302 at depot_pop_free_pool lib/stackdepot.c:371 [inline], CPU#1: syz-executor190/6024
+WARNING: lib/stackdepot.c:302 at depot_alloc_stack lib/stackdepot.c:462 [inline], CPU#1: syz-executor190/6024
+WARNING: lib/stackdepot.c:302 at stack_depot_save_flags+0x9a2/0x9d0 lib/stackdepot.c:706, CPU#1: syz-executor190/6024
+Modules linked in:
+CPU: 1 UID: 0 PID: 6024 Comm: syz-executor190 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:depot_init_pool lib/stackdepot.c:302 [inline]
+RIP: 0010:depot_pop_free_pool lib/stackdepot.c:371 [inline]
+RIP: 0010:depot_alloc_stack lib/stackdepot.c:462 [inline]
+RIP: 0010:stack_depot_save_flags+0x9a2/0x9d0 lib/stackdepot.c:706
+Code: 0b 90 eb bf 48 85 ed 74 c6 48 89 2d 80 32 6c 16 48 89 ea 31 ed e9 0b ff ff ff 39 c1 72 1f 48 85 d2 74 20 48 8d 3d 6e e9 f9 0b <67> 48 0f b9 3a 45 31 f6 48 85 ed 0f 85 37 fa ff ff eb 92 90 0f 0b
+RSP: 0018:ffffc90003d5f240 EFLAGS: 00010086
+RAX: 0000000000002000 RBX: 0000000000000000 RCX: 0000000000002000
+RDX: ffff88804f060000 RSI: ffffffff8e387082 RDI: ffffffff914d07e0
+RBP: 0000000000000000 R08: 0000000000000001 R09: 000000001f92056e
+R10: 00000000000000a0 R11: 0000000000000000 R12: ffffc90003d5f298
+R13: 000000000000000f R14: ffff88816cc056e0 R15: ffff88816cc056e0
+FS:  0000555582e6b400(0000) GS:ffff8880d5cde000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000556e2ead1be0 CR3: 00000000368af000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ kasan_save_stack+0x3f/0x50 mm/kasan/common.c:58
+ kasan_save_track+0x14/0x30 mm/kasan/common.c:78
+ unpoison_slab_object mm/kasan/common.c:340 [inline]
+ __kasan_slab_alloc+0x89/0x90 mm/kasan/common.c:366
+ kasan_slab_alloc include/linux/kasan.h:253 [inline]
+ slab_post_alloc_hook mm/slub.c:4584 [inline]
+ slab_alloc_node mm/slub.c:4917 [inline]
+ kmem_cache_alloc_node_noprof+0x27d/0x6b0 mm/slub.c:4989
+ kmalloc_reserve+0x148/0x350 net/core/skbuff.c:615
+ pskb_expand_head+0x249/0x10e0 net/core/skbuff.c:2312
+ skb_ensure_writable+0x2e9/0x480 net/core/skbuff.c:6377
+ __bpf_try_make_writable net/core/filter.c:1685 [inline]
+ bpf_try_make_writable net/core/filter.c:1691 [inline]
+ bpf_try_make_head_writable net/core/filter.c:1699 [inline]
+ ____bpf_clone_redirect net/core/filter.c:2491 [inline]
+ bpf_clone_redirect+0x1f7/0x500 net/core/filter.c:2460
+ bpf_prog_93719f3005523967+0x168e/0x33be
+ bpf_dispatcher_nop_func include/linux/bpf.h:1454 [inline]
+ __bpf_prog_run include/linux/filter.h:724 [inline]
+ bpf_prog_run include/linux/filter.h:731 [inline]
+ bpf_test_run+0x39c/0xa40 net/bpf/test_run.c:422
+ bpf_prog_test_run_skb+0x15c4/0x3540 net/bpf/test_run.c:1225
+ bpf_prog_test_run kernel/bpf/syscall.c:4859 [inline]
+ __sys_bpf+0x2a12/0x4e80 kernel/bpf/syscall.c:6436
+ __do_sys_bpf kernel/bpf/syscall.c:6537 [inline]
+ __se_sys_bpf kernel/bpf/syscall.c:6534 [inline]
+ __x64_sys_bpf+0xce/0x140 kernel/bpf/syscall.c:6534
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fe84f88ff59
+Code: c0 79 93 eb d5 48 8d 7c 1d 00 eb 99 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 d8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fff9fca9ef8 EFLAGS: 00000246 ORIG_RAX: 0000000000000141
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fe84f88ff59
+RDX: 0000000000000098 RSI: 00007fff9fcaa040 RDI: 000000000000000a
+RBP: 0000000d00000085 R08: 0000555582e74770 R09: 0000555582e74770
+R10: 00007fe84f9181a0 R11: 0000000000000246 R12: 00000001000002b7
+R13: 00000000000001ce R14: 0000555582e6c760 R15: 0000000000000e14
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	0b 90 eb bf 48 85    	or     -0x7ab74015(%rax),%edx
+   6:	ed                   	in     (%dx),%eax
+   7:	74 c6                	je     0xffffffcf
+   9:	48 89 2d 80 32 6c 16 	mov    %rbp,0x166c3280(%rip)        # 0x166c3290
+  10:	48 89 ea             	mov    %rbp,%rdx
+  13:	31 ed                	xor    %ebp,%ebp
+  15:	e9 0b ff ff ff       	jmp    0xffffff25
+  1a:	39 c1                	cmp    %eax,%ecx
+  1c:	72 1f                	jb     0x3d
+  1e:	48 85 d2             	test   %rdx,%rdx
+  21:	74 20                	je     0x43
+  23:	48 8d 3d 6e e9 f9 0b 	lea    0xbf9e96e(%rip),%rdi        # 0xbf9e998
+* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
+  2f:	45 31 f6             	xor    %r14d,%r14d
+  32:	48 85 ed             	test   %rbp,%rbp
+  35:	0f 85 37 fa ff ff    	jne    0xfffffa72
+  3b:	eb 92                	jmp    0xffffffcf
+  3d:	90                   	nop
+  3e:	0f 0b                	ud2
+
+
 ---
- drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c
-index 208a894d6190..39eb6ab5f805 100644
---- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c
-+++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c
-@@ -13473,10 +13473,13 @@ static int bnx2x_init_firmware(struct bnx2x *bp)
- 
- iro_alloc_err:
- 	kfree(bp->init_ops_offsets);
-+	bp->init_ops_offsets = NULL;
- init_offsets_alloc_err:
- 	kfree(bp->init_ops);
-+	bp->init_ops = NULL;
- init_ops_alloc_err:
- 	kfree(bp->init_data);
-+	bp->init_data = NULL;
- request_firmware_exit:
- 	release_firmware(bp->firmware);
- 	bp->firmware = NULL;
--- 
-2.25.1
-
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
