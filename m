@@ -1,78 +1,75 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7EC32B13F
-	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 14:11:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3CA231F9A6
+	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 15:17:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786803097; cv=none; b=J81NKRgoQFXRmZvh5JmsdbGmug/qSJ8/3rKHLetNjxrjIhsi/ONgrU8blx4GdelqqhoUQLSkzlIv/m/hXY60n5p/d2gwjOVOtoITuK99BDT76KlZdTFSVjhw70Obq0HwiPKZjmjpfH2bCMUaK96tahT+h3NFm6H8IvvzEl5giyc=
+	t=1786807040; cv=none; b=KYLdqjB24AG5/011ZmIUZrs0NsN2SqPTt2H3bLPQAG7a299i7xgNx0M3FiGXdstdbxAgGTul7nDYWYYKsyNHpnPIbQgGxWQUpk0zNuutZP30G7T2vYqMm/PmiW7qrFAKmeSupDqfMbMSy7f07fLkNb7Yqjg0S/YfzydS6pbSU70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786803097; c=relaxed/simple;
-	bh=XAwpnSNYe5Kl/s+V54s0e7qW12A5Bz3fnfCDDkBa2NA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VoSCPPH7le4e+HfV713UiY4l5rL/zZilkKrCedC1usxUIu6rmDBCSaRznRbjz0KgTfVf6Vzind/KI1RnCNyoRI/vobq/bLgINRQ+Hx8+qpPrXb5cLAtbUPmbXof8Pypgc6U8XJuGzYf2HZfaPGG9Ni3W1MzM0zZs1tsMz/66T+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MyvP2pNd; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+	s=arc-20240116; t=1786807040; c=relaxed/simple;
+	bh=hhD2mGryTKedERHeusMb7zNvptKpXuKvxwJCD2TDNT4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fkYGmAkJ8+GkIa/hADkoPq6He58f2fBBARCoXxIKuzxFiMB+Qh357M/3n2c8bKLY/eM+kuJoilws3gh0yapj8AxuO60V7MLcj5o2EMizn/ZdQ2vnM47UWnc8/6ZU+QHkwJ6eBiU9ud9a/FelwG+BsjzRhes0c3+a13XcEJdAwIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VxZAwgSD; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MyvP2pNd"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3810c5d691bso1452003a91.1
-        for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 07:11:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VxZAwgSD"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-38e58034d05so1699071a91.2
+        for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 08:17:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786803095; x=1787407895; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786807039; x=1787411839; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qDm28i0miTI7hdZzDddvPXPqbAsLb0juDmWra4xeuko=;
-        b=MyvP2pNds/H5vlvcmS11EL6uZyOwpEwxg13GCqDWYoGwhXCWWaRgGV7xUeyobooEp2
-         qM2LzApql0IppXYh8DUbi8MtRKhgutQhxd/MicUa8T32U6ckbUOSY1xlwi/lbp1nUXDM
-         JuyGKSq/PlIFiu6Qz6ntw3Gkma7UUr0qLaMVc4WzzE5k6x0g2vTg6cNO1xGBwhAXPFQf
-         A/SDGzOw/M6yoSV8+IdZT4yVg7g4fAWSi1191kgPZfT+0IE9Ffk/5JHYQfz87aUBB4j6
-         IUVNBI8q7xRSBYUCVNXilXoRgzBt3nXhxMmwjb8Y8kaOsSvwnL6AOGX8CqlN9ygr7Kxw
-         oMnA==
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xU5wuQl05hqAdfOQzR7Ny4Xs5wY+Yxu1qGS7dRLraAA=;
+        b=VxZAwgSD7thkn4Nm9amxL2AMJe3hIATPOJFJ7x2GJ3WK6H2U3w6p9ojDncGFAhB9Ku
+         0icuSL5/frlqdI2XJENr7lVl6Upct7lS+k/FovrgQseTanAcz2Id7hpXwofswOzpSIYG
+         GQm5Zv4oyPMQWHGxmxlQ/M1a2zUWatnqBDNYc1RdE1D/hAhLbgAwu96kv5wP4wIfO60M
+         CDrHWr0AnnP92e9YLWzIPFiT/iRZ4tpaK7ag1Mvzslobq5qMwaEzcbYrlkpj4NePqLcA
+         YYicm4qk/5yOyDLaP+fOVlRg83bYTs5WldCePzuoWS3UFl2kFef/hkzZ4fZmb0bZyw7J
+         /xfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786803095; x=1787407895;
+        d=1e100.net; s=20251104; t=1786807039; x=1787411839;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=qDm28i0miTI7hdZzDddvPXPqbAsLb0juDmWra4xeuko=;
-        b=iRwUvAByRk5Vh3RabPHxGLvjhI8dSG1FVdSupT/iHwqqbhS3daxA7PFSJGvbrAJ5AO
-         EdLiqzROWnVFN1yVxdqquR/sEn3RuwS3sZeVOyZ1yIfrA+K349TVu8hfuU4tPsgqbK1k
-         EIL1SkMeRP6iK9PyXO4gAMtTyw/OAlV2+iJUc4paSEYxl30b4tdkq+7a/SK9XaMOUJ8l
-         csAuN7nGQbFCslo4Yl3ujZ+d/bYxFmbyccK16eVkI1TRp86+UnYY0FJ8FFGjxCrTrAVk
-         jUf/NpFrii9IG9jYWIZUX0Rj+yynsvrUUZE29fuQmsTfeMvuQhqBh0/3iqoI6WheauHc
-         hxOg==
-X-Gm-Message-State: AOJu0YxXc2G8R43xGyePupBHkMgaTcS3mREIjVInY5F/F68heEf1Z0Qv
-	wC3XDT5ZWitUVwqifg8l9yTfIdnjxy7NNryxWGMbd7xzbGXEBwagIaR/0wgfj9Dt
-X-Gm-Gg: AR+sD10UujUHLlqc6e3ca0yNVQAaaKV4f9Tjma9YZd6Qy3+bKhdVnV25Y/xHlKQei6V
-	dB9mjMPQOfVLHwHZ1IS3UW1S/h1SI/4YZ/frKHD4a7B9Viwl7OLlKf/MIqc1oOEaokd5ClelBg7
-	bPANVkVUIhTaIlrEmFCZf2dHFu2EmRsEfHcwbAWo4F7TZqnhwoTJ4rK+03/70yvI9Eu9O1ZlS/8
-	WagSLDGXtgaQzrAxgRg4aZYQ4EX6mbsgL2ktQcUYgNX8Mzjzd2f5TEgIN375VOELR9FLo4YUiR5
-	uaWWbEjJnI1LPf9JPrYL720+BtK5klhQaf0jwvnQ7jxS4rvDfrbR8MbWLy3CT+90zwBJJWZ4/Tk
-	PxTxus63ae5eJ9xFzRUZ/1c+dv0JHj6Hy1MqkfsKcdC46oYzoP/aVyoxcGmWu8Vf7j8oQ/RKBHS
-	vPU4m0kGg9ZvuTs4ronaS4b++98/CgMfYxuT9CAdUqREtbvOXMRIKvGUzt4NI2wzlVoAVoshEgL
-	hzkg+9qQUx9+uWHB7qJwySche618fFtd1Q=
-X-Received: by 2002:a17:90b:586b:b0:381:bc4c:da5b with SMTP id 98e67ed59e1d1-3933b91c2ddmr13297173a91.18.1786803094806;
-        Sat, 15 Aug 2026 07:11:34 -0700 (PDT)
-Received: from fedora.fibertel.com.ar ([200.55.79.212])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1413887ee65sm18943747c88.10.2026.08.15.07.11.31
+        bh=xU5wuQl05hqAdfOQzR7Ny4Xs5wY+Yxu1qGS7dRLraAA=;
+        b=EWcQJz5zXsG/ZX6jJtObseLGlkLw8APyUQRE5QbEKJ38I8rOlYIg7/xluBMxeHVEZ4
+         ZNmlyXoms+5aO/q+j6q+9s4Yg7VoBkwofk4drCPr//w0bBEY5vA++4+0/qXZSup0Vp20
+         2DOeNEhuIIDqc1+SVONqGXoBBn5f74QJKUWdEd19qtZqpznoilXNbADUy+zspGw87J2Z
+         LFQXIZ+SNLQg2Ib6a2p/PWOJvJlpsoLBA5VneaT2wLOhTEQJTgEvAJLzpwyDIca6X4xZ
+         4eaPG2osOYcakF8Vp6tBJwSZ8M/skamlU8oqZYqbjfBwOx/mm56t3Bk0unabusDR5oIf
+         7Exg==
+X-Gm-Message-State: AOJu0YxzZAoLYkFTVb8FX8aZnWOAk3qZ5okYkjhNCELRRuM8d4I42KUN
+	SHUBfTWcxMKjVyldNuZ7j33EgbubkM2rUIWVVzHwYdvkXWgjNeRb6Uwe
+X-Gm-Gg: AR+sD12aS2JTHP+NQv/wygw/fImIA2JrLe8/T0NaibkSLMlMXsGp3d1OCYvg35PHV7Z
+	KPbAQRGIQhy+cT2VGHjghk5KcMt9CctGtI4F38DhSw6mPBxsaG0UPIAUwkZTVdopuuT9UTz8oKF
+	tDaFJBFTXAHQm0dVhsXTraQtmrzNvZZ1HePI8QEujN1U+mJ6XhXryJurtN4DhLuITNk6qV6wRjK
+	dGKtdtHEcOsnepH1gKdKCD2IP3EisYsQgoWsvaYf8X7gydMf28qvA62vqKIcUkGY7Ar2N+r4bzz
+	ILWmEHLoXujFTxsna+dfizKEmwGWDchG6OXFLwYy1KinWY318IWYa/IqMIzmt5p0G6RkuEsnm0P
+	PywV0V9Bvnqp2gsXvNf6+m0U3xJZ+S3hHdlfNgvCGe5AEUsmn//YvlTlXXs7gigyCAlcZSRxCWV
+	cDNRY/LxNvMXunbq/ef7Bu9gj2FhnvbJZ01rVIrl4pbLUox5LsmN6eunjOvCbWJ73KacDSF3/Dt
+	XGXPCfz
+X-Received: by 2002:a17:90b:4d85:b0:37f:fb1d:63fa with SMTP id 98e67ed59e1d1-3933b8b5de6mr14246772a91.15.1786807039021;
+        Sat, 15 Aug 2026 08:17:19 -0700 (PDT)
+Received: from haichao.tail057a43.ts.net ([2001:da8:e000:1206:5225:2a2e:8e7c:13a7])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-394e920ba18sm6515825a91.0.2026.08.15.08.17.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Aug 2026 07:11:34 -0700 (PDT)
-Sender: Mariano Baragiola <mariano.ignacio.baragiola@gmail.com>
-From: Mariano Baragiola <mbaragiola@linux.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	willemb@google.com,
-	kuniyu@google.com,
-	littlesmilingcloud@gmail.com,
-	Mariano Baragiola <mbaragiola@linux.com>
-Subject: [PATCH] udp: resubmit encapsulation packets on all multicast listeners
-Date: Sat, 15 Aug 2026 11:11:28 -0300
-Message-ID: <20260815141128.1564949-1-mbaragiola@linux.com>
-X-Mailer: git-send-email 2.55.0
+        Sat, 15 Aug 2026 08:17:18 -0700 (PDT)
+From: Ruoyu Wang <ruoyuw560@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ruoyu Wang <ruoyuw560@gmail.com>
+Subject: [PATCH net-next v2] net: dsa: mv88e6xxx: Avoid uninitialized value on MDIO read error
+Date: Sat, 15 Aug 2026 23:17:13 +0800
+Message-ID: <20260815151713.3757248-1-ruoyuw560@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,114 +78,55 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-UDP encapsulation handlers (FOU/GUE and similar) return a positive
-protocol number from udp_queue_rcv_skb()/udpv6_queue_rcv_skb() when the
-UDP header has been consumed and the packet must be resubmitted to the
-IP protocol handler. Unicast paths already propagate that return value.
+mv88e6xxx_mdio_read() applies the internal PHY model-number workaround
+before returning a Clause 22 read error. Since the PHY read may leave
+val untouched on failure, the workaround can consume an uninitialized
+value.
 
-Multicast delivery called consume_skb() on every positive return, so the
-inner packet was dropped instead of being reinjected.
+Return the PHY read error immediately after dropping the register lock.
+Successful reads continue through the workaround and return val as
+before.
 
-Commit 3cb8d4b9bfeb ("udp: fix encapsulation packet resubmit in multicast
-deliver") fixed only the primary ("first") socket path on net-next and is
-not yet in net. Secondary listeners still clone the skb and drop it on a
-positive return, and net itself still drops the primary socket path too.
+This issue was found by a static analysis checker and confirmed by
+manual source review.
 
-Resubmit secondary clones inline via ip_protocol_deliver_rcu() /
-ip6_protocol_deliver_rcu() (matching the GSO segment path in
-udp_queue_rcv_skb()/udpv6_queue_rcv_skb()), and propagate the primary
-socket return value with the same IPv4/IPv6 sign convention as the
-unicast helpers.
+Assisted-by: unnamed:deepseek-v4-pro typestate
+Signed-off-by: Ruoyu Wang <ruoyuw560@gmail.com>
 
-Fixes: ca065d0cf80f ("udp: no longer use SLAB_DESTROY_BY_RCU")
-Signed-off-by: Mariano Baragiola <mbaragiola@linux.com>
 ---
- net/ipv4/udp.c | 16 ++++++++++++----
- net/ipv6/udp.c | 16 ++++++++++++----
- 2 files changed, 24 insertions(+), 8 deletions(-)
+Changes in v2:
+- Return immediately on PHY read errors.
+- Target net-next and drop the Fixes tag, as requested.
+- Add the Assisted-by tag.
 
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index 70f6cbd4ef73..d6a17b0462b6 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -2475,6 +2475,7 @@ static int __udp4_lib_mcast_deliver(struct net *net, struct sk_buff *skb,
- 	struct udp_hslot *hslot;
- 	struct sk_buff *nskb;
- 	bool use_hash2;
-+	int ret;
+v1: https://lore.kernel.org/r/20260814134006.1386372-1-ruoyuw560@gmail.com/
+---
+ drivers/net/dsa/mv88e6xxx/chip.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 80b877c74513d6..432285e2881715 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -3769,6 +3769,9 @@ static int mv88e6xxx_mdio_read(struct mii_bus *bus, int phy, int reg)
+ 	err = chip->info->ops->phy_read(chip, bus, phy, reg, &val);
+ 	mv88e6xxx_reg_unlock(chip);
  
- 	hash2_any = 0;
- 	hash2 = 0;
-@@ -2508,8 +2509,13 @@ static int __udp4_lib_mcast_deliver(struct net *net, struct sk_buff *skb,
- 			__UDP_INC_STATS(net, UDP_MIB_INERRORS);
- 			continue;
- 		}
--		if (udp_queue_rcv_skb(sk, nskb) > 0)
--			consume_skb(nskb);
-+		/* >0 means the encap handler wants IP-level resubmit. Do that
-+		 * inline for secondary listeners; only the first socket can
-+		 * propagate the protocol number to the caller.
-+		 */
-+		ret = udp_queue_rcv_skb(sk, nskb);
-+		if (ret > 0)
-+			ip_protocol_deliver_rcu(net, nskb, ret);
++	if (err)
++		return err;
++
+ 	/* Some internal PHYs don't have a model number. */
+ 	if (reg == MII_PHYSID2 && !(val & 0x3f0) &&
+ 	    chip->info->family < ARRAY_SIZE(family_prod_id_table)) {
+@@ -3777,7 +3780,7 @@ static int mv88e6xxx_mdio_read(struct mii_bus *bus, int phy, int reg)
+ 			val |= prod_id >> 4;
  	}
  
- 	/* Also lookup *:port if we are using hash2 and haven't done so yet. */
-@@ -2519,8 +2525,10 @@ static int __udp4_lib_mcast_deliver(struct net *net, struct sk_buff *skb,
- 	}
+-	return err ? err : val;
++	return val;
+ }
  
- 	if (first) {
--		if (udp_queue_rcv_skb(first, skb) > 0)
--			consume_skb(skb);
-+		ret = udp_queue_rcv_skb(first, skb);
-+		/* Match udp_unicast_rcv_skb(): return -protocol for IPv4. */
-+		if (ret > 0)
-+			return -ret;
- 	} else {
- 		kfree_skb(skb);
- 		__UDP_INC_STATS(net, UDP_MIB_IGNOREDMULTI);
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index 15e032194ecc..65dd944211e9 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -949,6 +949,7 @@ static int __udp6_lib_mcast_deliver(struct net *net, struct sk_buff *skb,
- 	struct udp_hslot *hslot;
- 	struct sk_buff *nskb;
- 	bool use_hash2;
-+	int ret;
- 
- 	hash2_any = 0;
- 	hash2 = 0;
-@@ -987,8 +988,13 @@ static int __udp6_lib_mcast_deliver(struct net *net, struct sk_buff *skb,
- 			continue;
- 		}
- 
--		if (udpv6_queue_rcv_skb(sk, nskb) > 0)
--			consume_skb(nskb);
-+		/* >0 means the encap handler wants IP-level resubmit. Do that
-+		 * inline for secondary listeners; only the first socket can
-+		 * propagate the nexthdr to the caller.
-+		 */
-+		ret = udpv6_queue_rcv_skb(sk, nskb);
-+		if (ret > 0)
-+			ip6_protocol_deliver_rcu(net, nskb, ret, true);
- 	}
- 
- 	/* Also lookup *:port if we are using hash2 and haven't done so yet. */
-@@ -998,8 +1004,10 @@ static int __udp6_lib_mcast_deliver(struct net *net, struct sk_buff *skb,
- 	}
- 
- 	if (first) {
--		if (udpv6_queue_rcv_skb(first, skb) > 0)
--			consume_skb(skb);
-+		ret = udpv6_queue_rcv_skb(first, skb);
-+		/* Match udp6_unicast_rcv_skb(): return protocol for IPv6. */
-+		if (ret > 0)
-+			return ret;
- 	} else {
- 		kfree_skb(skb);
- 		__UDP6_INC_STATS(net, UDP_MIB_IGNOREDMULTI);
+ static int mv88e6xxx_mdio_read_c45(struct mii_bus *bus, int phy, int devad,
 -- 
-2.55.0
+2.51.0
 
