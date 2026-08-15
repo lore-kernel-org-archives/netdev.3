@@ -1,76 +1,80 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A7D337BBD
-	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 09:37:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CCF1E98EF
+	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 09:54:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786786673; cv=none; b=luJUY7cli7sTDq7cMBdK1dgV/Ui+oGgQTHEnUoPfQgR8Yctrag1MvS8MAbMPJ1vOiMI2V0GrjfxI8IO8hLKcTUOXE5ptIfDzb8HoXnnhJiKq9dOrbOrCmzxxQQ1J7opNUnEKIDTYUd8NGQ34peWXVzH31Bg1L7pddEIPHb6e/xA=
+	t=1786787686; cv=none; b=px4EfHSD3NvHqzBoTNIF38a3ljd1rs1wWW2NhpDeKchPZmnR9nkPLY9FwzbJnB6DxqAL0o45zxyDRYfKPOR9Di8ljGQNwS3wRCgWl2q6nMu6/0gITAyuJ7mjfKy+noznEXoop6Iq5YvZk2M4w/qEGc2H29CW8/rL3tCSQzyD8Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786786673; c=relaxed/simple;
-	bh=C60xoHz78mVIHVo6a9Ng+WxKZVa581Uh2S6njcyV4Uc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OH7OtAc5crT6qmWctf1A/yOwwNC2/UP93YHJ/+BiRK70LIGHzMdWrVEL/PrL8kGV1MsYXYteCN2bkGlws7qmOyayanSCVzTbYraWsFR/Cv39n1Rd4XVyHs/vkf3/XAffGvFqgtGNGgwY+Zh2z7GNZdFoXS4Ezs0w0sepkPznKXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CXp7rLTU; arc=none smtp.client-ip=209.85.214.181
+	s=arc-20240116; t=1786787686; c=relaxed/simple;
+	bh=M7iRHTBJPb2PRUhzJpwM2pWCP7DsDz6g+JsmfNbD8NM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mtOc+DxDuEOSqya8aZBWkehrDkTGBw503h1V0U8pMlsbwFyfMFBjkO7Npz/tUZ/9yfGhBHyMtvLJ8h4OYrl8L/t4Ldqod/COw+AE0C5bmphMXxsCu8Gw+FRmH6DV2hS17aoKBl+GuVNb6QCfa07qMJGfsLTrvVPRWEKPv52RwfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BWhtpDv5; arc=none smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CXp7rLTU"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ccf2360620so18961545ad.3
-        for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 02:37:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BWhtpDv5"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2caced6038eso21308895ad.0
+        for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 02:54:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786786671; x=1787391471; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786787684; x=1787392484; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=5x53/rxHYSkRal7lhppMKIPimu8T59g1z/jaHnIAFZc=;
-        b=CXp7rLTUfKwNNkRa09Eggq58kecqjsLB0+ESWnTzFkUAQrNEXzMdUrEV7Y67iJ2t6v
-         EDni5wY7Fl3+V1RkpXv5YCm4HXenBPCV00+4qht1GK27jHUqaAT4g9viz+2wieNHcbSB
-         M57osyhnOlecrUxwFO6wdbcQPw42LNp/9lHCArfBpP9XulgfFDPLHrOkW2crkhFkAGzY
-         PpBnPPkVTBeQcQZIGYUUdsrGdezquUa6O3yfxGZMuGiCt31cw8tpJf7F65+u6absEQ3b
-         QG1JfzRDJBN9b4Tt8PFquafZGQGl/CHwsP7aNfyd+/+1EQdgY9TxRxKcXEHd6Ta42H/S
-         GL7g==
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3F6IAQ4pKsreYQprgJ/5sDlA3ah7ieVyFMiRIBIZuFw=;
+        b=BWhtpDv55GzXL7G/r+wNpARgJVWNYb5teTfADde/7Hi2qHLIdg/BHtUa16MNJk+ZDj
+         AiB5QshqVeOytky9RbxmH2Y+DvRul+6mN0WFoCkbA1aOPdYZu9kSeK0wc/qxXsftQb9L
+         HvBjtIccTGWYYDBAfFogr1yqe2To5CkK6GNAdxk0+TUPfdBbekPXwCYL5I0xsQm04OB9
+         Kl6JMCvXKIBSKCNBY4jZrg0SK2+ePFwIKd/NarvTBov/D/LXvMqzZkimhpCaFZo9SfxE
+         11VOwDmtz0JC1gC3DpGAPkQgC8xGd0gV6sjY6PDI7ycN4fRxqYmN7YA+x4ojOpBieIaw
+         4W5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786786671; x=1787391471;
+        d=1e100.net; s=20251104; t=1786787684; x=1787392484;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=5x53/rxHYSkRal7lhppMKIPimu8T59g1z/jaHnIAFZc=;
-        b=Dc8aJEKJ79PILdSl0vJqym0coNjDyYV8RECFzP100LsHWLAskvUEsikH0d7WWhvbxN
-         lEw2f7bdXH8drlDJoCPplsTwWNr8GlZ57oebY1QKze6QTsfudtHQQrIgdUAa9/56eUvQ
-         JDHhYz1lpdZjcIGQETI9beEZmfz2nR9pM3+pKVhWWQGPAzDuSlyETIPaVZ/Lqza3aXZz
-         FDQGDGGWzsCkxZWKZEb6udouQdjQOZos64o/5FL1RNfEsKTKj2HtA7ztc7NJSNq8lHy9
-         V7WbeocTVj2BLumW24h9/SaiB73V0NFhrYD8eTz+60cpCLxaUMopqIOcNuSyKatSqHut
-         zOlA==
-X-Forwarded-Encrypted: i=1; AHgh+RrX9PUy3YD5HxAbM9CoaUe1jWFAaQhagfVTJbLmBpGVEoy2UUwwfZTMEZaDASPOhb3O3hU64rI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAiq84EW2MDkmQPlAxdJAt0uUK4PK8PU+rCuRksNoGyBjgnFGN
-	3b5aCRnsxa6xmhkZTK8ek35Dcph7p+J27B0B7L4fUpgN/Vaq3ko5U/99Fff7Sd1M
-X-Gm-Gg: AR+sD13Wc95fS8Hqd11cOQN5Ax3iscrmM6Ox1CWhczlRAhENaC+m7azJgObvu6Ty7oi
-	6o4R8ple8xM49bH7WE9M21DVDw/lGQ6RPodn3eSxk/wO23ubLYw7+YA7luwYPe7PMc9g+M3HuTC
-	Qeb1eD24n82STI98SIrRyxxESNtkoScCEnwIFHl36GQR9gjaLlljPi/jV0vV9D3sutD8za31BRS
-	XHzoaVV58UcNQGdzsShQJ7Xd88DnvQDhWUFSNrKRUdKikHqcTolHgugWXwpt1sKtG3cxHJe46vU
-	WKVTUMtU79fWdTriLDYwo88H0zcUAjf9RTLGzY8UV/iv0a67smjkXE2Y4M0vyf+j3/F5Sd5Quqi
-	PJvHaAW8miZbjWHcYM37akKsGw8TwkdLrHImvwA1hshaEGJAPxxz4k3w7xZoJAj46eHzazryea8
-	N7oom8j+zdAcNU3j3mKwbnKA2oxM6v4ygmDNNKc24/TFFWPfLDlJtUjAaaaPNrSIi13NLB6I5KV
-	R0inMopPhThq6R+34gGfpKoyG4M
-X-Received: by 2002:a17:902:ce86:b0:2c8:f34c:82c0 with SMTP id d9443c01a7336-2d3b0aeeb6cmr124415255ad.2.1786786671056;
-        Sat, 15 Aug 2026 02:37:51 -0700 (PDT)
-Received: from Ellen ([114.8.222.210])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d3aebf17absm18004055ad.80.2026.08.15.02.37.45
+        bh=3F6IAQ4pKsreYQprgJ/5sDlA3ah7ieVyFMiRIBIZuFw=;
+        b=SzOu8oGAxpx9NcCO1Cd+WOG5EerzFQZLuK4BOgeC5/X7BAm/xDnK/Av0zcZMNn1Got
+         Z5O+CVcNWSr4Kf5VWpOurs7so6tikisoiE0tEQcYz/ABbN6OkImSzS4ct3pC1bJ+PM/X
+         4x1axez03Y/rZS0LFWOfjJuzPguYZO5hJub+r+NO7f5WEWq/rBvdNg5Y4xe8bP7rBl/1
+         8u9oEx0jVJxx0N2E+wDXgoYgw7Waggd4XWTOQbHBR8hBQVZrpKY8LRc9M4TJfdS79t3h
+         +tgttvJqNKqtLHBphrtRHkbMCs+L60JYRgF1Qd4ok21OeqdsyFOvn5Mz0OOp+zPZBHmu
+         EbfQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqPY2jjy30itQXfGfkAG/tidrFf8Y+aQmdLB2Xi5CssoA2sQmXIwV0p+xUm9VafHSjtFW+GPHM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzhmi7kJPP7jIcuAmML3RyAAeuRXqmFRxRKN1tVSlhmyLF1s80g
+	1fVY1j/qJPhaytAWoTluYAESJQ/X1FW4Itx7XqtDil5A0PED39m9RHcu
+X-Gm-Gg: AR+sD11gjRVf7tgruSU0RLaMLupogiZZcmhXA+TRDy42zD/FRdfwxg8Zdlj5rrW9ukd
+	I+9Rg7NUhxipqHB64wy3s4P8lYdPMP/ZP+aXH2FoojX4q11CJ7lCh9OkGFhsdPd0e3YObRA9udY
+	HmCgyJosHXENYro7SaNl//UouJsH9l1vIUpb//7Jomc4eHMI66nxZx4LFbQr3brludDheGin4Zj
+	VMkwk5SkWe5cRcPPJofGlqWevJB4mZo9Eywa5yQvBlQpywQ2HD0lvx7no1zHHvvU3SafTzc8A8m
+	OqEI/kGqWr9+nFbsZylKrhxF/CCCz4pvtY3JrLv+U8GXJKAaQD7r9weYqBWU/L7kToW96WyL+Zt
+	doDl2EiOKzUECHgCXGiFUaTSdTHismM/4CX8HUNKFYMr8O3V+bO0+P4ZAtYldwb5ZaHy3wG5dCs
+	+KqMOV+cnPiO0F9YffTIcC3XhBJ9QwE1oN1gGtbaiYYLa7aIqw1QSTErLZE8/uPpdiR3t+QBLpf
+	aLdqge74mGTiXPfEDF7Mo5ZiyEk7GHBpGlHpRI7TFfv/zHkmw==
+X-Received: by 2002:a17:902:ce83:b0:2ca:e496:5f19 with SMTP id d9443c01a7336-2d3b0043318mr99627235ad.19.1786787684016;
+        Sat, 15 Aug 2026 02:54:44 -0700 (PDT)
+Received: from m-upc-A520M-HDV.flets-east.jp ([2400:2410:3f60:500:959f:bb81:fb2:a537])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d3ae7d16e8sm18107435ad.31.2026.08.15.02.54.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Aug 2026 02:37:50 -0700 (PDT)
-From: Hilal Rahmatullah <hilalrahmatullah11@gmail.com>
-To: Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+        Sat, 15 Aug 2026 02:54:42 -0700 (PDT)
+Sender: Yuyang Huang <uyoko90@gmail.com>
+From: Yuyang Huang <sigefriedhyy@gmail.com>
+To: Yuyang Huang <sigefriedhyy@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Amit Cohen <amcohen@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
 	Eric Dumazet <edumazet@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org (open list:NETWORKING [GENERAL]),
-	linux-kernel@vger.kernel.org (open list)
-Cc: Hilal Rahmatullah <hilalrahmatullah11@gmail.com>
-Subject: [PATCH v2] wifi: nl80211: document sta-info nested attribute
-Date: Sat, 15 Aug 2026 16:37:28 +0700
-Message-ID: <20260815093729.150037-1-hilalrahmatullah11@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next] ipv6: Serialize hardware flag notifications
+Date: Sat, 15 Aug 2026 18:54:36 +0900
+Message-ID: <20260815095436.90534-1-sigefriedhyy@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,405 +83,83 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add NL80211_ATTR_STA_INFO nested attributes definition, from
-the previous binary type.
+fib6_info_hw_flags_set() first performs a lockless check of fib6_node.
+It then allocates a notification skb with GFP_KERNEL, which can sleep. A
+concurrent route deletion can remove the route, set fib6_node to NULL, and
+emit RTM_DELROUTE while the allocation sleeps. When the thread wakes up,
+it can emit RTM_NEWROUTE for the already deleted route.
 
-Signed-off-by: Hilal Rahmatullah <hilalrahmatullah11@gmail.com>
+This can cause userspace routing daemons to receive RTM_DELROUTE followed
+by RTM_NEWROUTE and incorrectly believe that the deleted route still
+exists in the kernel.
+
+Allocate the skb before taking tb6_lock, then recheck fib6_node while
+holding the lock. Keep the lock until RTM_NEWROUTE is published. If route
+deletion wins the race, the recheck sees NULL and drops the notification.
+Otherwise, deletion cannot remove the route until RTM_NEWROUTE has been
+published, preserving notification order.
+
+RTM_DELROUTE is sent by fib6_del_route() with tb6_lock held, so
+publishing RTM_NEWROUTE under the same lock is sufficient to guarantee
+ordering. rt6_fill_node() does not sleep in this path, and the
+notification uses GFP_ATOMIC, matching inet6_rt_notify() which already
+broadcasts under tb6_lock.
+
+The race was found by Sashiko during code review.
+
+Fixes: 907eea486888 ("net: ipv6: Emit notification when fib hardware flags are changed")
+Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
 ---
-changes in v2:
-- Fix nested attribute name
-- Add double for numeric enum member
+ net/ipv6/route.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
----
- Documentation/netlink/specs/nl80211.yaml | 347 ++++++++++++++++++++++-
- 1 file changed, 346 insertions(+), 1 deletion(-)
-
-diff --git a/Documentation/netlink/specs/nl80211.yaml b/Documentation/netlink/specs/nl80211.yaml
-index 802097128bda..4068406a8875 100644
---- a/Documentation/netlink/specs/nl80211.yaml
-+++ b/Documentation/netlink/specs/nl80211.yaml
-@@ -211,6 +211,70 @@ definitions:
-       - ht20
-       - ht40minus
-       - ht40plus
-+  -
-+    name: eht-gi
-+    type: enum
-+    entries:
-+      - 0-8
-+      - 1-6
-+      - 3-2
-+  -
-+    name: eht-ru-alloc
-+    type: enum
-+    entries:
-+      - "26"
-+      - "52"
-+      - 52p26
-+      - "106"
-+      - 106p26
-+      - "242"
-+      - "484"
-+      - 484p242
-+      - "996"
-+      - 996p484
-+      - 996p484p242
-+      - 2x996
-+      - 2x996p484
-+      - 3x996
-+      - 3x996p484
-+      - 4x996
-+  -
-+    name: he-gi
-+    type: enum
-+    entries:
-+      - 0-8
-+      - 1-6
-+      - 3-2
-+  -
-+    name: he-ru-alloc
-+    type: enum
-+    entries:
-+      - "26"
-+      - "52"
-+      - "106"
-+      - "242"
-+      - "484"
-+      - "996"
-+      - 2x996
-+  -
-+    name: mesh-power-mode
-+    type: enum
-+    entries:
-+      - unknown
-+      - active
-+      - light-sleep
-+      - deep-sleep
-+  -
-+    name: plink-state
-+    type: enum
-+    entries:
-+      - listen
-+      - opn-snt
-+      - opn-rcvd
-+      - cnf-rcvd
-+      - estab
-+      - holding
-+      - blocked
-   -
-     name: sta-flag-update
-     type: struct
-@@ -297,7 +361,8 @@ attribute-sets:
-         type: u32
-       -
-         name: sta-info
--        type: binary  # TODO: nest
-+        type: nest
-+        nested-attributes: sta-info-attrs
-       -
-         name: wiphy-bands
-         type: nest
-@@ -1601,6 +1666,98 @@ attribute-sets:
-         name: nan
-         type: nest
-         nested-attributes: frame-type-attrs
-+  -
-+    name: rate-info-attrs
-+    enum-name: nl80211-rate-info
-+    name-prefix: nl80211-rate-info-
-+    attributes:
-+      -
-+        name: bitrate
-+        type: u16
-+      -
-+        name: mcs
-+        type: u8
-+      -
-+        name: 40-mhz-width
-+        type: flag
-+      -
-+        name: short-gi
-+        type: flag
-+      -
-+        name: bitrate32
-+        type: u32
-+      -
-+        name: vht-mcs
-+        type: u8
-+      -
-+        name: vht-nss
-+        type: u8
-+      -
-+        name: 80-mhz-width
-+        type: flag
-+      -
-+        name: 80p80-mhz-width
-+        type: unused
-+      -
-+        name: 160-mhz-width
-+        type: flag
-+      -
-+        name: 10-mhz-width
-+        type: flag
-+      -
-+        name: 5-mhz-width
-+        type: flag
-+      -
-+        name: he-mcs
-+        type: u8
-+      -
-+        name: he-nss
-+        type: u8
-+      -
-+        name: he-dcm
-+        type: u8
-+      -
-+        name: he-ru-alloc
-+        type: u8
-+        enum: he-ru-alloc
-+      -
-+        name: 320-mhz-width
-+        type: flag
-+      -
-+        name: eht-mcs
-+        type: u8
-+      -
-+        name: eht-nss
-+        type: u8
-+      -
-+        name: eht-gi
-+        type: u8
-+        enum: eht-gi
-+      -
-+        name: eht-ru-alloc
-+        type: u8
-+        enum: eht-ru-alloc
-+      -
-+        name: s1g-mcs
-+        type: u8
-+      -
-+        name: s1g-nss
-+        type: u8
-+      -
-+        name: 1-mhz-width
-+        type: flag
-+      -
-+        name: 2-mhz-width
-+        type: flag
-+      -
-+        name: 4-mhz-width
-+        type: flag
-+      -
-+        name: 8-mhz-width
-+        type: flag
-+      -
-+        name: 16-mhz-width
-+        type: flag
-   -
-     name: sar-attributes
-     enum-name: nl80211-sar-attrs
-@@ -1631,6 +1788,170 @@ attribute-sets:
-       -
-         name: end-freq
-         type: u32
-+  -
-+    name: sta-bss-param-attrs
-+    enum-name: nl80211-sta-bss-param
-+    name-prefix: nl80211-sta-bss-param-
-+    attributes:
-+      -
-+        name: cts-prot
-+        type: flag
-+      -
-+        name: short-preamble
-+        type: flag
-+      -
-+        name: short-slot-time
-+        type: flag
-+      -
-+        name: dtim-period
-+        type: u8
-+      -
-+        name: beacon-interval
-+        type: u16
-+  -
-+    name: sta-info-attrs
-+    enum-name: nl80211-sta-info
-+    name-prefix: nl80211-sta-info-
-+    attributes:
-+      -
-+        name: inactive-time
-+        type: u32
-+      -
-+        name: rx-bytes
-+        type: u32
-+      -
-+        name: tx-bytes
-+        type: u32
-+      -
-+        name: rx-bytes64
-+        type: u64
-+      -
-+        name: tx-bytes64
-+        type: u64
-+      -
-+        name: signal
-+        type: u8
-+      -
-+        name: tx-bitrate
-+        type: nest
-+        nested-attributes: rate-info-attrs
-+      -
-+        name: rx-packets
-+        type: u32
-+      -
-+        name: tx-packets
-+        type: u32
-+      -
-+        name: tx-retries
-+        type: u32
-+      -
-+        name: tx-failed
-+        type: u32
-+      -
-+        name: signal-avg
-+        type: u8
-+      -
-+        name: llid
-+        type: u16
-+      -
-+        name: plid
-+        type: u16
-+      -
-+        name: plink-state
-+        type: u8
-+        enum: plink-state
-+      -
-+        name: rx-bitrate
-+        type: nest
-+        nested-attributes: rate-info-attrs
-+      -
-+        name: bss-param
-+        type: nest
-+        nested-attributes: sta-bss-param-attrs
-+      -
-+        name: connected-time
-+        type: u32
-+      -
-+        name: sta-flags
-+        type: binary
-+        struct: sta-flag-update
-+      -
-+        name: beacon-loss
-+        type: u32
-+      -
-+        name: t-offset
-+        type: s64
-+      -
-+        name: local-pm
-+        type: u32
-+        enum: mesh-power-mode
-+      -
-+        name: peer-pm
-+        type: u32
-+        enum: mesh-power-mode
-+      -
-+        name: nonpeer-pm
-+        type: u32
-+        enum: mesh-power-mode
-+      -
-+        name: chain-signal
-+        type: u8
-+      -
-+        name: chain-signal-avg
-+        type: u8
-+      -
-+        name: expected-throughput
-+        type: u32
-+      -
-+        name: rx-drop-misc
-+        type: u64
-+      -
-+        name: beacon-rx
-+        type: u64
-+      -
-+        name: beacon-signal-avg
-+        type: u8
-+      -
-+        name: tid-stats
-+        type: indexed-array
-+        sub-type: nest
-+        nested-attributes: tid-stats-attrs
-+      -
-+        name: rx-duration
-+        type: u64
-+      -
-+        name: pad
-+        type: binary
-+      -
-+        name: ack-signal
-+        type: u8
-+      -
-+        name: ack-signal-avg
-+        type: u8
-+      -
-+        name: rx-mpdus
-+        type: u32
-+      -
-+        name: fcs-error-count
-+        type: u32
-+      -
-+        name: connected-to-gate
-+        type: u8
-+      -
-+        name: tx-duration
-+        type: u64
-+      -
-+        name: airtime-weight
-+        type: u16
-+      -
-+        name: airtime-link-metric
-+        type: u32
-+      -
-+        name: assoc-at-boottime
-+        type: u64
-+      -
-+        name: connected-to-as
-+        type: u8
-   -
-     name: supported-iftypes
-     enum-name: nl80211-iftype
-@@ -1672,6 +1993,30 @@ attribute-sets:
-       -
-         name: nan
-         type: flag
-+  -
-+    name: tid-stats-attrs
-+    enum-name: nl80211-tid-stats
-+    name-prefix: nl80211-tid-stats-
-+    attributes:
-+      -
-+        name: rx-msdu
-+        type: u64
-+      -
-+        name: tx-msdu
-+        type: u64
-+      -
-+        name: tx-msdu-retries
-+        type: u64
-+      -
-+        name: tx-msdu-failed
-+        type: u64
-+      -
-+        name: pad
-+        type: binary
-+      -
-+        name: txq-stats
-+        type: nest
-+        nested-attributes: txq-stats-attrs
-   -
-     name: txq-stats-attrs
-     name-prefix: nl80211-txq-stats-
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 16dfac54a259..73db4f630dcc 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -6463,6 +6463,7 @@ void fib6_info_hw_flags_set(struct net *net, struct fib6_info *f6i,
+ 			    bool offload, bool trap, bool offload_failed)
+ {
+ 	u8 fib_notify_on_flag_change;
++	struct fib6_table *table;
+ 	struct sk_buff *skb;
+ 	int err;
+ 
+@@ -6491,22 +6492,33 @@ void fib6_info_hw_flags_set(struct net *net, struct fib6_info *f6i,
+ 	if (!fib_notify_on_flag_change)
+ 		return;
+ 
++	table = f6i->fib6_table;
+ 	skb = nlmsg_new(rt6_nlmsg_size(f6i), GFP_KERNEL);
+ 	if (!skb) {
+ 		err = -ENOBUFS;
+ 		goto errout;
+ 	}
+ 
++	spin_lock_bh(&table->tb6_lock);
++	if (!rcu_dereference_protected(f6i->fib6_node,
++				       lockdep_is_held(&table->tb6_lock))) {
++		spin_unlock_bh(&table->tb6_lock);
++		kfree_skb(skb);
++		return;
++	}
++
+ 	err = rt6_fill_node(net, skb, f6i, NULL, NULL, NULL, 0, RTM_NEWROUTE, 0,
+ 			    0, 0, RT_DEL_REASON_UNSPEC);
+ 	if (err < 0) {
+ 		/* -EMSGSIZE implies BUG in rt6_nlmsg_size() */
+ 		WARN_ON(err == -EMSGSIZE);
++		spin_unlock_bh(&table->tb6_lock);
+ 		kfree_skb(skb);
+ 		goto errout;
+ 	}
+ 
+-	rtnl_notify(skb, net, 0, RTNLGRP_IPV6_ROUTE, NULL, GFP_KERNEL);
++	rtnl_notify(skb, net, 0, RTNLGRP_IPV6_ROUTE, NULL, GFP_ATOMIC);
++	spin_unlock_bh(&table->tb6_lock);
+ 	return;
+ 
+ errout:
 -- 
-2.53.0
+2.43.0
 
