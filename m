@@ -1,148 +1,162 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256D037F33C;
-	Sat, 15 Aug 2026 22:54:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E803A54788;
+	Sat, 15 Aug 2026 23:16:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786834453; cv=none; b=CGAIK3grMLLVK69CmuqGF1QbmAf2RyYJMCwq7Gcizt0aIaNjpi+X27Ptg9N/wLa0XFh6+dvI3UkfODC/jWSNC0T+b1DZphrjSBHACJilo6et6Y6OXbDOEdI2cNQ4thlPnnQWwXdtsg9AXuDbZvUueCP62mY8HBYSJQBU4vIMLHI=
+	t=1786835818; cv=none; b=ldqUlg+Iu/7AAAFSAia9HQCZuxWfaNyoWd9gVaqMKjMuUX9LBIDR/okGkiFYEd/1rK5aPGlh7G/oomTig432EmMo9e/hxss93wfqSknvyK8T4EqYFT2lFrFtdAIDbYByQ5RiNppMejQiNIspNuan5CvJCgb+3QLKez6IR2vMJ2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786834453; c=relaxed/simple;
-	bh=46MagpPgc7+72ubN2uRXXArgdMJ8e1WdukG4842XJA0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=siKeH0Mwb2nSmjxugoOyj3OcexmN5kfT5z/GDg0FV+SmBw0g8L85ygwAjwH4Q0GXbjbKUj9X/Y66OdSzaAzBUgpcVlf7m62Gm4AQegcDmlzLS1FzmuBYin87V/uS7tRGbyfIhM9pPiox6wHZHvTUQk5hbQ7tSivmmrQLJYHwjUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yk5Tm/oe; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786835818; c=relaxed/simple;
+	bh=bbZeRCOBRUO/ne6MNZpttW400VANN08aMmfw52Ynaaw=;
+	h=Date:Message-ID:From:To:Cc:Subject; b=CUJPU38rtCyeV+rHD2qmriZRzvKEwT9+eW2ZaPVuo8fsWV610ry9rwXh25eRkLPjZabaSPgJjbGGl4EnqElVP+glPbjwIFrwuhky985nZxmAQag/bfwUmcKZjWMDNcwH0zB5dQg1tBNYo3b2y1uxY2xSpjZUJtSSucYRwWM5W5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=fail (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XnYnKaVJ reason="signature verification failed"; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yk5Tm/oe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786834451; x=1818370451;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=46MagpPgc7+72ubN2uRXXArgdMJ8e1WdukG4842XJA0=;
-  b=Yk5Tm/oeiiiAnDkKLS8kF63bIVsC/aJleykR7+kNwndvOtxx3eJgteCr
-   XOB3lDfqjGjVNCxb/zdWWye5Nyk9lknHFVN/vIXJ/TKYpaE+gJSpncxCV
-   nYoL73SgrFqfbY1F7UoIJ/rw6kndAHsvQjIc8q+tYmv4CJOO3XXRtFm4H
-   /3uXcg1HTzFtotr2pquvi6SbPAS/3GUxpk31UcwFCpDbddNHSiACvEWIh
-   kz8gZ7eYDuTfARsNN3YOGqxHEITiY+VCAbAUltduZJrVGy67HbtT7qgUZ
-   4iP7CJf3jBKYRYdHiDQwpSjWNl9VL3pVQuBIkaq9b9rNGdSbEKkJ5mQS4
-   g==;
-X-CSE-ConnectionGUID: GjHLQIhFQkWvcbiPl/txDg==
-X-CSE-MsgGUID: hrAJ0I6xT/eO0nCcl6nVvw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11876"; a="89882233"
-X-IronPort-AV: E=Sophos;i="6.25,226,1779174000"; 
-   d="scan'208";a="89882233"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2026 15:54:10 -0700
-X-CSE-ConnectionGUID: zLC6DnfFSC6gmqXW0eAt4g==
-X-CSE-MsgGUID: BBgyLqU8SrGLrwta3FT9Sw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,226,1779174000"; 
-   d="scan'208";a="269740300"
-Received: from igk-lkp-server01.igk.intel.com (HELO 3cba2a188a06) ([10.211.93.152])
-  by fmviesa005.fm.intel.com with ESMTP; 15 Aug 2026 15:54:07 -0700
-Received: from kbuild by 3cba2a188a06 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wvNGP-000000006Un-39Za;
-	Sat, 15 Aug 2026 22:54:05 +0000
-Date: Sun, 16 Aug 2026 00:53:21 +0200
-From: kernel test robot <lkp@intel.com>
-To: Sagi Maimon <maimon.sagi@gmail.com>, jonathan.lemon@gmail.com,
-	vadim.fedorenko@linux.dev, richardcochran@gmail.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, Sagi Maimon <maimon.sagi@gmail.com>
-Subject: Re: [PATCH v6] ptp: ocp: add CPLD ISP support for ADVA TimeCard X1
-Message-ID: <202608160048.0KcqzO98-lkp@intel.com>
-References: <20260723143908.4019-1-maimon.sagi@gmail.com>
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XnYnKaVJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB7031F000E9;
+	Sat, 15 Aug 2026 23:16:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786835816;
+	bh=EZONV+mmqNKg90YlXURJ16OttGU6ksDb+t7bA0yxhVE=;
+	h=Date:From:To:Cc:Subject;
+	b=XnYnKaVJQRmhZcR+cx6mS+WlPzl6KXRLlMp4EbEXgk5YLxL+Bi+XyOVvcV94RH0Bq
+	 wfluspLE4iVxMx7qQC/T991QE6o9eqzjy8eDDJezullDY8yfe5WNiOpAecb8XHvMEI
+	 J6UwMwYvHU4aieUlqsDXJehQQzLknt+M5pDHGg3kGhIUv8UL4fTGPkw3I0VUpgt3JB
+	 6pG3gCRMQP3TwICeICKo/RWm7ltabykGtlGqWsJjiAYkALL9cZOa08gApZrKNaM0tu
+	 OLctSUJnHnMo+FhgRcF044dKNDONqy0MJrzbCS5O9UFXQJTEqAGhTRW06YML3bPGwr
+	 u/b/3xoHv1IrQ==
+Date: Sat, 15 Aug 2026 13:16:55 -1000
+Message-ID: <a974e086e6aa42e341612cbd240bc971@kernel.org>
+From: Tejun Heo <tj@kernel.org>
+To: netdev@vger.kernel.org
+Cc: Birger Koblitz <mail@birger-koblitz.de>,
+	Hayes Wang <hayeswang@realtek.com>,
+	Chih Kai Hsu <hsu.chih.kai@realtek.com>,
+	linux-usb@vger.kernel.org
+Subject: RTL8157 (0bda:8157): intermittent silent traffic stalls with in-tree r8152 (v7.1+)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260723143908.4019-1-maimon.sagi@gmail.com>
 
-Hi Sagi,
+Hello,
 
-kernel test robot noticed the following build warnings:
+This report was researched and written by an AI agent (Claude Code)
+going through the affected machine's logs at my direction. It is
+informational. I'm not asking for immediate action, just putting the
+data points on the list for whoever is working on RTL8157 support.
+Uncertainties are marked inline.
 
-[auto build test WARNING on net-next/main]
-[also build test WARNING on net/main linus/master v7.2-rc7 next-20260814]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Setup: a small Alder Lake-N box (AZW MINI S) acting as a network
+gateway, running Arch distro kernels. Two Realtek USB NICs are ports of
+the same bridge (so both run promiscuous): an RTL8157 (0bda:8157,
+bcdDevice 30.00, USB 3.2 Gen2) on the LAN-facing leg and an RTL8156
+(0bda:8156) on the WAN-facing leg. The RTL8157 leg is TX-heavy (~35GB
+TX vs ~5GB RX over a typical two-day window).
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Sagi-Maimon/ptp-ocp-add-CPLD-ISP-support-for-ADVA-TimeCard-X1/20260813-075719
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20260723143908.4019-1-maimon.sagi%40gmail.com
-patch subject: [PATCH v6] ptp: ocp: add CPLD ISP support for ADVA TimeCard X1
-compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
-docutils: docutils (Docutils 0.21.2, Python 3.13.5, on linux)
-reproduce: (https://download.01.org/0day-ci/archive/20260816/202608160048.0KcqzO98-lkp@intel.com/reproduce)
+The RTL8157 has been in service since 2025-10. Kernels before v7.1
+don't bind it to r8152, so it ran via cdc_ncm with zero incidents,
+including a clean 30-day uptime on 7.0.11 ending 2026-07-09. That day
+the box moved to 7.1.3, where the new native support (fd3c7d080df5
+("r8152: Add support for the RTL8157 hardware")) took over. Since then
+the bridge has stopped passing traffic four times in five weeks:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608160048.0KcqzO98-lkp@intel.com/
+- 2026-07-13 (7.1.3): outside access lost in the morning, power-cycled
+  hours later. That evening the RTL8157 flapped carrier several times
+  over ~40 minutes and twice spontaneously dropped off the bus and
+  re-enumerated, all within 3 seconds. Stable after a reboot.
 
-All warnings (new ones prefixed by >>):
+- 2026-07-29 (7.1.5): same silent loss in the morning, recovered by
+  power cycle ~8 hours later.
 
-   WARNING: /sys/bus/usb/devices/<busnum>-<devnum>:<config num>.<interface num>/<hid-bus>:<vendor-id>:<product-id>.<num>/os_mode is defined 2 times: Documentation/ABI/testing/sysfs-driver-hid-lenovo-go:364; Documentation/ABI/testing/sysfs-driver-hid-lenovo-go-s:234
-   WARNING: /sys/bus/usb/devices/<busnum>-<devnum>:<config num>.<interface num>/<hid-bus>:<vendor-id>:<product-id>.<num>/os_mode_index is defined 2 times: Documentation/ABI/testing/sysfs-driver-hid-lenovo-go:373; Documentation/ABI/testing/sysfs-driver-hid-lenovo-go-s:243
-   WARNING: /sys/bus/usb/devices/<busnum>-<devnum>:<config num>.<interface num>/<hid-bus>:<vendor-id>:<product-id>.<num>/touchpad/enabled is defined 2 times: Documentation/ABI/testing/sysfs-driver-hid-lenovo-go:636; Documentation/ABI/testing/sysfs-driver-hid-lenovo-go-s:252
-   WARNING: /sys/bus/usb/devices/<busnum>-<devnum>:<config num>.<interface num>/<hid-bus>:<vendor-id>:<product-id>.<num>/touchpad/enabled_index is defined 2 times: Documentation/ABI/testing/sysfs-driver-hid-lenovo-go:645; Documentation/ABI/testing/sysfs-driver-hid-lenovo-go-s:261
-   Documentation/ABI/testing/sysfs-timecard:14: ERROR: Unexpected indentation. [docutils]
->> Documentation/ABI/testing/sysfs-timecard:14: WARNING: Block quote ends without a blank line; unexpected unindent. [docutils]
-   Documentation/ABI/testing/sysfs-timecard:14: ERROR: Unexpected indentation. [docutils]
-   WARNING: ./block/blk-map.c:366 Excess function parameter 'op' description in 'bio_copy_kern'
-   Documentation/driver-api/basics:42: ./kernel/time/time.c:370: WARNING: Duplicate C declaration, also defined at driver-api/basics:436.
-   Declaration is '.. c:function:: unsigned int jiffies_to_msecs (const unsigned long j)'. [duplicate_declaration.c]
-   Documentation/driver-api/basics:42: ./kernel/time/time.c:393: WARNING: Duplicate C declaration, also defined at driver-api/basics:453.
+- 2026-08-06 (7.1.5): network path dead in the morning while the box
+  itself was fine (sshable from the LAN). Both adapters were manually
+  replugged. The RTL8157 re-enumerated and got carrier, dropped off
+  the bus again 2 seconds later, and on the next enumeration the first
+  init pass failed: a control read failed with -71 and
+  r8157_hw_phy_cfg() hit its WARN (never reached PHY_STAT_LAN_ON).
+  The driver's follow-up reset then succeeded and the network
+  recovered without a reboot. Splat below.
 
+- 2026-08-13 (7.1.8): network path dead in the morning, kernel alive.
+  Both adapters replugged (clean re-enumeration this time), box
+  rebooted for good measure. Stable since.
 
-vim +14 Documentation/ABI/testing/sysfs-timecard
+In every dead window the logs show nothing at all: no carrier loss, no
+USB events, no driver or xhci errors. Interfaces stay present with
+carrier up while traffic stops. The only artifacts are what surfaced
+during recovery, i.e. the -71/WARN above.
 
-  > 14	What:		/sys/class/timecard/ocpN/cpld_i2c_xfer
-    15	Date:		July 2026
-    16	Contact:	Sagi Maimon <sagi.maimon@adva.com>
-    17	Description:	(RW) Binary sysfs attribute providing a raw I2C passthrough to
-    18			the CPLD and I2C mux on ADVA x1 TAP boards.  Only present on
-    19			that board variant.
-    20	
-    21			Each write initiates one I2C transaction.  The write payload
-    22			must be exactly four header bytes followed by the write data:
-    23	
-    24			  Byte 0: slave address (only 0x40 and 0x74 are permitted)
-    25			  Byte 1: number of bytes to write (0..67)
-    26			  Byte 2: number of bytes to read back (0..20)
-    27			  Byte 3: flags
-    28			            bit 0 - suppress the repeated START before the
-    29			                    read segment (I2C_M_NOSTART); only valid
-    30			                    when both write and read lengths are
-    31			                    non-zero
-    32			  Bytes 4..: write data (write_len bytes)
-    33	
-    34			A subsequent read() returns:
-    35	
-    36			  Byte 0: status (0 = success, positive errno on error)
-    37			  Bytes 1..: read data (read_len bytes), present only when
-    38			             status is 0 and read_len > 0
-    39	
-    40			The write and read portions of the sysfs file share a single
-    41			per-device response buffer protected by a mutex; a single
-    42			open() / write() / read() sequence must be used to avoid
-    43			data races between concurrent users.
-    44	
-    45			Only slave addresses 0x40 (Lattice CPLD) and 0x74 (PCA9548
-    46			I2C mux) are accepted; all others return EPERM.
-    47	
+Caveats: the association with v7.1 is timing-based. For the 07-13 and
+07-29 morning incidents the journal is simply silent, so a system-level
+hang can't be ruled out for those two. The 08-06 and 08-13 incidents
+are confirmed to be network-path-only. On 08-06 the box was reachable
+over the RTL8157 leg minutes before the replug, so which leg had
+stalled first isn't proven either. The companion RTL8156 has run on
+native r8152 on this box since 2024-09 without issues.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Possibly related (conjecture): the RTL8157 firmware lockup reported in
+2025-12 against the out-of-tree Realtek driver, where sustained SG/GSO
+TX wedges the firmware until a full USB reset, with control transfers
+timing out, and disabling NETIF_F_SG/NETIF_F_FRAGLIST mitigates it:
+
+  https://lore.kernel.org/netdev/CACw+751Y=f4ARfdiPYAMaXrE0jCBGkrL-k3+XDoCHEo-6kZxzw@mail.gmail.com/
+
+The in-tree driver enables SG/TSO/FRAGLIST by default and this box's
+RTL8157 leg is TX-heavy, while cdc_ncm's linear NTB TX path wouldn't
+exercise scatter-gather, which would fit the before/after behavior.
+
+Checked v7.1..current mainline (3eb40771c00a): the r8152 changes there
+(RTL8159 support, 10G EEE, PHY firmware upload capability, a
+r8157_hw_phy_cfg() refactor, a double bit-clear fix) don't appear to
+address this, and the failing PHY_STAT_LAN_ON check is unchanged.
+
+The WARN captured on 2026-08-06 (7.1.5-arch1-1):
+
+  r8152-cfgselector 2-1: reset SuperSpeed Plus Gen 2x1 USB device number 6 using xhci_hcd
+  r8152 2-1:1.0: skip request firmware
+  r8152-cfgselector 2-1: Failed to read 4 bytes at 0xb6d4/0x0133 (-71)
+  ------------[ cut here ]------------
+  ret != PHY_STAT_LAN_ON
+  WARNING: drivers/net/usb/r8152.c:7991 at r8157_hw_phy_cfg+0xe9b/0xeb0 [r8152], CPU#3: kworker/3:2/1002949
+  Modules linked in: wireguard libcurve25519 ip6_udp_tunnel snd_hda_codec_intelhdmi udp_tunnel cdc_mbim snd_hda_codec_hdmi cdc_wdm bridge cdc_ncm stp cdc_ether llc snd_hda_codec_alc662 usbnet snd_hda_codec_realtek_lib snd_hda_codec_generic snd_hda_intel snd_sof_pci_intel_tgl snd_sof_pci_intel_cnl snd_sof_intel_hda_generic soundwire_intel snd_sof_intel_hda_sdw_bpt snd_sof_intel_hda_common snd_soc_hdac_hda snd_sof_intel_hda_mlink snd_sof_intel_hda soundwire_cadence snd_sof_pci snd_sof_xtensa_dsp snd_sof snd_sof_utils snd_soc_acpi_intel_match snd_soc_acpi_intel_sdca_quirks soundwire_generic_allocation snd_soc_sdw_utils snd_soc_acpi soundwire_bus snd_soc_sdca intel_rapl_msr crc8 intel_rapl_common snd_soc_avs snd_soc_hda_codec snd_hda_ext_core x86_pkg_temp_thermal snd_hda_codec intel_powerclamp coretemp snd_hda_core snd_intel_dspcfg kvm_intel snd_intel_sdw_acpi snd_hwdep snd_soc_core kvm snd_compress ac97_bus r8169 irqbypass iTCO_wdt snd_pcm_dmaengine btusb aesni_intel realtek intel_pmc_b
+ xt snd_pcm ee1004 btmtk
+   nf_tables btrtl phy_package snd_timer i2c_i801 btbcm gf128mul nfnetlink mdio_devres iwlmvm btintel i2c_smbus libphy rapl snd intel_cstate spi_nor wmi_bmof mdio_bus pcspkr intel_uncore mtd soundcore i2c_mux mei_me bluetooth 8250_dw mac80211 mei r8152 mii ptp pps_core libarc4 aead intel_pmc_core iwlwifi pmt_telemetry pmt_discovery intel_oc_wdt pmt_class pps_gen_tio joydev intel_pmc_ssram_telemetry mousedev pps_gen_core pinctrl_alderlake vfat cfg80211 fat acpi_pad acpi_tad igen6_edac rfkill mac_hid xe intel_vsec drm_ttm_helper drm_suballoc_helper gpu_sched drm_gpuvm drm_exec drm_gpusvm_helper spi_pxa2xx_platform i915 dw_dmac spi_pxa2xx_core drm_buddy i2c_algo_bit video spi_intel_pci intel_lpss_pci ttm spi_intel intel_lpss intel_gtt idma64 drm_display_helper wmi cec uas usb_storage
+  CPU: 3 UID: 0 PID: 1002949 Comm: kworker/3:2 Tainted: G S                  7.1.5-arch1-1 #1 PREEMPT(full)  bce30b97cc4aafc7123e6f9c4abbbcae2d599f9c
+  Tainted: [S]=CPU_OUT_OF_SPEC
+  Hardware name: AZW MINI S/MINI S, BIOS ADLNV105 12/12/2023
+  Workqueue: events_long rtl_hw_phy_work_func_t [r8152]
+  RIP: 0010:r8157_hw_phy_cfg+0xe9b/0xeb0 [r8152]
+  Code: be 7e b8 00 00 48 89 df 0f b6 d0 80 ce 50 e8 1c 20 ff ff e9 bc f2 ff ff be 01 00 00 00 48 89 df e8 ba ec ff ff e9 cd f3 ff ff <0f> 0b e9 0a f2 ff ff e8 89 ce dc ec 66 0f 1f 84 00 00 00 00 00 90
+  RSP: 0018:ffffcfed84c77de0 EFLAGS: 00010293
+  RAX: 0000000000000000 RBX: ffff8e8e47256ac0 RCX: 0000000000000002
+  RDX: 0000000000000000 RSI: 0000000000000287 RDI: 0000000000000000
+  RBP: ffff8e8e47256ac0 R08: 000259f6d0b2aeef R09: 0000000000000001
+  R10: 0000000000000010 R11: 0000000000000000 R12: ffff8e8e47256e98
+  R13: ffff8e8e401c1805 R14: 0000000000000000 R15: ffff8e8e47256e98
+  FS:  0000000000000000(0000) GS:ffff8e92006d0000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 00007f8135c4d480 CR3: 0000000455a22000 CR4: 0000000000f52ef0
+  PKRU: 55555554
+  Call Trace:
+   <TASK>
+   rtl_hw_phy_work_func_t+0x205/0x8f0 [r8152 ce92b748190746793289ba069c4da29ccde93c48]
+   process_one_work+0x19f/0x390
+   worker_thread+0x1b1/0x310
+   ? __pfx_worker_thread+0x10/0x10
+   kthread+0xe4/0x120
+   ? __pfx_kthread+0x10/0x10
+   ret_from_fork+0x2a7/0x330
+   ? __pfx_kthread+0x10/0x10
+   ret_from_fork_asm+0x1a/0x30
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
+
+Happy to provide more logs. The box is a small production gateway, so
+live experimentation on it is limited.
+
+Thanks.
+
+-- 
+tejun
