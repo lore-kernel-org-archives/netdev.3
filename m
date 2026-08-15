@@ -1,183 +1,194 @@
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BEC2561A7;
-	Sat, 15 Aug 2026 13:57:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7EC32B13F
+	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 14:11:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786802235; cv=none; b=mO9SD6lKHRuEYLdi1jCfZnnqjkyNB1599CLHYWEyQUZF7wA0Gl+n/g0uitpIHbvdQVsls7o/XoPgab30CfsJzjE52vlu76YeEr1NgEYT2posVM3tuMlUKj3KUVrKOoUEi4cbv5aWXqA0hFpwCAfR3bbm4vlvpYG+QT9CYgNNEwk=
+	t=1786803097; cv=none; b=J81NKRgoQFXRmZvh5JmsdbGmug/qSJ8/3rKHLetNjxrjIhsi/ONgrU8blx4GdelqqhoUQLSkzlIv/m/hXY60n5p/d2gwjOVOtoITuK99BDT76KlZdTFSVjhw70Obq0HwiPKZjmjpfH2bCMUaK96tahT+h3NFm6H8IvvzEl5giyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786802235; c=relaxed/simple;
-	bh=QUfQXo0zNp+7ulCmKOxf92wLx8UuYdhxR10nqKuOodY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=vDhxXEIkEEP2FRrV7XyeAGd7BWiTciljkzaIyTsvV30IDDe2C5pJT59x9Z5S5HBiw6O88WbO+UnG4pXTTMfAOxy0Slznqv16pLofDY+LnkRv86w/qm/edhkM1Slc9YG8SPq7NRD0voxbzrYuuAodfvKeg+J5pfnCpyGTROpzDxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [111.196.241.250])
-	by APP-05 (Coremail) with SMTP id zQCowAB3p0EtcIBqbYHRBQ--.24051S2;
-	Sat, 15 Aug 2026 21:57:01 +0800 (CST)
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
-To: anthony.l.nguyen@intel.com,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Karol Kolacinski <karol.kolacinski@intel.com>,
-	Sergey Temerkhanov <sergey.temerkhanov@intel.com>,
-	Michal Michalik <michal.michalik@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH iwl-net v3] ice: propagate ETH56G deskew poll failures
-Date: Sat, 15 Aug 2026 21:57:00 +0800
-Message-ID: <20260815135700.54202-1-pengpeng@iscas.ac.cn>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1786803097; c=relaxed/simple;
+	bh=XAwpnSNYe5Kl/s+V54s0e7qW12A5Bz3fnfCDDkBa2NA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VoSCPPH7le4e+HfV713UiY4l5rL/zZilkKrCedC1usxUIu6rmDBCSaRznRbjz0KgTfVf6Vzind/KI1RnCNyoRI/vobq/bLgINRQ+Hx8+qpPrXb5cLAtbUPmbXof8Pypgc6U8XJuGzYf2HZfaPGG9Ni3W1MzM0zZs1tsMz/66T+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MyvP2pNd; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MyvP2pNd"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3810c5d691bso1452003a91.1
+        for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 07:11:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786803095; x=1787407895; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qDm28i0miTI7hdZzDddvPXPqbAsLb0juDmWra4xeuko=;
+        b=MyvP2pNds/H5vlvcmS11EL6uZyOwpEwxg13GCqDWYoGwhXCWWaRgGV7xUeyobooEp2
+         qM2LzApql0IppXYh8DUbi8MtRKhgutQhxd/MicUa8T32U6ckbUOSY1xlwi/lbp1nUXDM
+         JuyGKSq/PlIFiu6Qz6ntw3Gkma7UUr0qLaMVc4WzzE5k6x0g2vTg6cNO1xGBwhAXPFQf
+         A/SDGzOw/M6yoSV8+IdZT4yVg7g4fAWSi1191kgPZfT+0IE9Ffk/5JHYQfz87aUBB4j6
+         IUVNBI8q7xRSBYUCVNXilXoRgzBt3nXhxMmwjb8Y8kaOsSvwnL6AOGX8CqlN9ygr7Kxw
+         oMnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786803095; x=1787407895;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=qDm28i0miTI7hdZzDddvPXPqbAsLb0juDmWra4xeuko=;
+        b=iRwUvAByRk5Vh3RabPHxGLvjhI8dSG1FVdSupT/iHwqqbhS3daxA7PFSJGvbrAJ5AO
+         EdLiqzROWnVFN1yVxdqquR/sEn3RuwS3sZeVOyZ1yIfrA+K349TVu8hfuU4tPsgqbK1k
+         EIL1SkMeRP6iK9PyXO4gAMtTyw/OAlV2+iJUc4paSEYxl30b4tdkq+7a/SK9XaMOUJ8l
+         csAuN7nGQbFCslo4Yl3ujZ+d/bYxFmbyccK16eVkI1TRp86+UnYY0FJ8FFGjxCrTrAVk
+         jUf/NpFrii9IG9jYWIZUX0Rj+yynsvrUUZE29fuQmsTfeMvuQhqBh0/3iqoI6WheauHc
+         hxOg==
+X-Gm-Message-State: AOJu0YxXc2G8R43xGyePupBHkMgaTcS3mREIjVInY5F/F68heEf1Z0Qv
+	wC3XDT5ZWitUVwqifg8l9yTfIdnjxy7NNryxWGMbd7xzbGXEBwagIaR/0wgfj9Dt
+X-Gm-Gg: AR+sD10UujUHLlqc6e3ca0yNVQAaaKV4f9Tjma9YZd6Qy3+bKhdVnV25Y/xHlKQei6V
+	dB9mjMPQOfVLHwHZ1IS3UW1S/h1SI/4YZ/frKHD4a7B9Viwl7OLlKf/MIqc1oOEaokd5ClelBg7
+	bPANVkVUIhTaIlrEmFCZf2dHFu2EmRsEfHcwbAWo4F7TZqnhwoTJ4rK+03/70yvI9Eu9O1ZlS/8
+	WagSLDGXtgaQzrAxgRg4aZYQ4EX6mbsgL2ktQcUYgNX8Mzjzd2f5TEgIN375VOELR9FLo4YUiR5
+	uaWWbEjJnI1LPf9JPrYL720+BtK5klhQaf0jwvnQ7jxS4rvDfrbR8MbWLy3CT+90zwBJJWZ4/Tk
+	PxTxus63ae5eJ9xFzRUZ/1c+dv0JHj6Hy1MqkfsKcdC46oYzoP/aVyoxcGmWu8Vf7j8oQ/RKBHS
+	vPU4m0kGg9ZvuTs4ronaS4b++98/CgMfYxuT9CAdUqREtbvOXMRIKvGUzt4NI2wzlVoAVoshEgL
+	hzkg+9qQUx9+uWHB7qJwySche618fFtd1Q=
+X-Received: by 2002:a17:90b:586b:b0:381:bc4c:da5b with SMTP id 98e67ed59e1d1-3933b91c2ddmr13297173a91.18.1786803094806;
+        Sat, 15 Aug 2026 07:11:34 -0700 (PDT)
+Received: from fedora.fibertel.com.ar ([200.55.79.212])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1413887ee65sm18943747c88.10.2026.08.15.07.11.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 15 Aug 2026 07:11:34 -0700 (PDT)
+Sender: Mariano Baragiola <mariano.ignacio.baragiola@gmail.com>
+From: Mariano Baragiola <mbaragiola@linux.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	willemb@google.com,
+	kuniyu@google.com,
+	littlesmilingcloud@gmail.com,
+	Mariano Baragiola <mbaragiola@linux.com>
+Subject: [PATCH] udp: resubmit encapsulation packets on all multicast listeners
+Date: Sat, 15 Aug 2026 11:11:28 -0300
+Message-ID: <20260815141128.1564949-1-mbaragiola@linux.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAB3p0EtcIBqbYHRBQ--.24051S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxWryDCw43ZrWUWry7ur45KFg_yoWrCr18pF
-	sakr9FyF1Fqw18XFWxJa1Iya15GanFyr4UGwsYyw1vyryUJFy5XF10yFyrt3WUKa4kC3W7
-	ZFn7AF1xuFnrZF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9I14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
-	1j6rxdM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
-	6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr
-	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
-	8cxan2IY04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFV
-	Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
-	x4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1I6r
-	4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1lIxAIcVCF04k26cxKx2IYs7xG6r1j
-	6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJb
-	IYCTnIWIevJa73UjIFyTuYvjTRCMKZDUUUU
-X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
 
-ice_ptp_calc_deskew_eth56g() ignores the return value of
-read_poll_timeout(). If register reads succeed but the DESKEW valid bit
-never appears, the timeout is treated as success. If a register read fails,
-the poll condition can also inspect deskew_i before a successful read and
-continue polling instead of stopping on the hard error. The function then
-returns an int error through its u32 deskew return type.
+UDP encapsulation handlers (FOU/GUE and similar) return a positive
+protocol number from udp_queue_rcv_skb()/udpv6_queue_rcv_skb() when the
+UDP header has been consumed and the packet must be resubmitted to the
+IP protocol handler. Unicast paths already propagate that return value.
 
-Return the deskew value through an output parameter. Stop polling when
-either the read fails or the valid bit appears, then propagate the register
-error or the poll timeout separately before calculating and applying the
-deskew value.
+Multicast delivery called consume_skb() on every positive return, so the
+inner packet was dropped instead of being reinjected.
 
-Fixes: 7cab44f1c35f ("ice: Introduce ETH56G PHY model for E825C products")
+Commit 3cb8d4b9bfeb ("udp: fix encapsulation packet resubmit in multicast
+deliver") fixed only the primary ("first") socket path on net-next and is
+not yet in net. Secondary listeners still clone the skb and drop it on a
+positive return, and net itself still drops the primary socket path too.
 
-Assisted-by: Codex:gpt-5
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Resubmit secondary clones inline via ip_protocol_deliver_rcu() /
+ip6_protocol_deliver_rcu() (matching the GSO segment path in
+udp_queue_rcv_skb()/udpv6_queue_rcv_skb()), and propagate the primary
+socket return value with the same IPv4/IPv6 sign convention as the
+unicast helpers.
+
+Fixes: ca065d0cf80f ("udp: no longer use SLAB_DESTROY_BY_RCU")
+Signed-off-by: Mariano Baragiola <mbaragiola@linux.com>
 ---
-Changes since v2: https://lore.kernel.org/all/20260706144325.91320-1-pengpeng@iscas.ac.cn/
-- capture and propagate the read_poll_timeout() result
-- stop the poll immediately on a register read error
-- initialize deskew_i before it is used by the poll condition
-- do not carry the v2 Reviewed-by because the poll logic changed
+ net/ipv4/udp.c | 16 ++++++++++++----
+ net/ipv6/udp.c | 16 ++++++++++++----
+ 2 files changed, 24 insertions(+), 8 deletions(-)
 
- drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 42 ++++++++++++++++++----------
- 1 file changed, 28 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-index 8e5f97835954..76ee71400163 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-@@ -1736,24 +1736,30 @@ static u32 ice_ptp_calc_bitslip_eth56g(struct ice_hw *hw, u8 port, u32 bs,
-  * @ds: deskew multiplier
-  * @rs: RS-FEC enabled
-  * @spd: link speed
-+ * @deskew: output parameter for the calculated deskew value
-  *
-- * Return: calculated deskew value
-+ * Return: 0 on success, negative error code otherwise
-  */
--static u32 ice_ptp_calc_deskew_eth56g(struct ice_hw *hw, u8 port, u32 ds,
--				      bool rs, enum ice_eth56g_link_spd spd)
-+static int ice_ptp_calc_deskew_eth56g(struct ice_hw *hw, u8 port, u32 ds,
-+				      bool rs, enum ice_eth56g_link_spd spd,
-+				      u32 *deskew)
- {
--	u32 deskew_i, deskew_f;
--	int err;
-+	u32 deskew_i = 0, deskew_f;
-+	int err, ret;
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index 70f6cbd4ef73..d6a17b0462b6 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -2475,6 +2475,7 @@ static int __udp4_lib_mcast_deliver(struct net *net, struct sk_buff *skb,
+ 	struct udp_hslot *hslot;
+ 	struct sk_buff *nskb;
+ 	bool use_hash2;
++	int ret;
  
--	if (!ds)
-+	if (!ds) {
-+		*deskew = 0;
- 		return 0;
-+	}
+ 	hash2_any = 0;
+ 	hash2 = 0;
+@@ -2508,8 +2509,13 @@ static int __udp4_lib_mcast_deliver(struct net *net, struct sk_buff *skb,
+ 			__UDP_INC_STATS(net, UDP_MIB_INERRORS);
+ 			continue;
+ 		}
+-		if (udp_queue_rcv_skb(sk, nskb) > 0)
+-			consume_skb(nskb);
++		/* >0 means the encap handler wants IP-level resubmit. Do that
++		 * inline for secondary listeners; only the first socket can
++		 * propagate the protocol number to the caller.
++		 */
++		ret = udp_queue_rcv_skb(sk, nskb);
++		if (ret > 0)
++			ip_protocol_deliver_rcu(net, nskb, ret);
+ 	}
  
--	read_poll_timeout(ice_read_ptp_reg_eth56g, err,
--			  FIELD_GET(PHY_REG_DESKEW_0_VALID, deskew_i), 500,
--			  50 * USEC_PER_MSEC, false, hw, port, PHY_REG_DESKEW_0,
--			  &deskew_i);
-+	ret = read_poll_timeout(ice_read_ptp_reg_eth56g, err,
-+				err || FIELD_GET(PHY_REG_DESKEW_0_VALID, deskew_i),
-+				500, 50 * USEC_PER_MSEC, false, hw, port,
-+				PHY_REG_DESKEW_0, &deskew_i);
- 	if (err)
- 		return err;
-+	if (ret)
-+		return ret;
+ 	/* Also lookup *:port if we are using hash2 and haven't done so yet. */
+@@ -2519,8 +2525,10 @@ static int __udp4_lib_mcast_deliver(struct net *net, struct sk_buff *skb,
+ 	}
  
- 	deskew_f = FIELD_GET(PHY_REG_DESKEW_0_RLEVEL_FRAC, deskew_i);
- 	deskew_i = FIELD_GET(PHY_REG_DESKEW_0_RLEVEL, deskew_i);
-@@ -1766,7 +1772,9 @@ static u32 ice_ptp_calc_deskew_eth56g(struct ice_hw *hw, u8 port, u32 ds,
- 	deskew_i = FIELD_PREP(ICE_ETH56G_MAC_CFG_RX_OFFSET_INT, deskew_i);
- 	/* Shift 3 fractional bits to the end of the integer part */
- 	deskew_f <<= ICE_ETH56G_MAC_CFG_FRAC_W - PHY_REG_DESKEW_0_RLEVEL_FRAC_W;
--	return mul_u32_u32_fx_q9(deskew_i | deskew_f, ds);
-+	*deskew = mul_u32_u32_fx_q9(deskew_i | deskew_f, ds);
-+
-+	return 0;
- }
+ 	if (first) {
+-		if (udp_queue_rcv_skb(first, skb) > 0)
+-			consume_skb(skb);
++		ret = udp_queue_rcv_skb(first, skb);
++		/* Match udp_unicast_rcv_skb(): return -protocol for IPv4. */
++		if (ret > 0)
++			return -ret;
+ 	} else {
+ 		kfree_skb(skb);
+ 		__UDP_INC_STATS(net, UDP_MIB_IGNOREDMULTI);
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 15e032194ecc..65dd944211e9 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -949,6 +949,7 @@ static int __udp6_lib_mcast_deliver(struct net *net, struct sk_buff *skb,
+ 	struct udp_hslot *hslot;
+ 	struct sk_buff *nskb;
+ 	bool use_hash2;
++	int ret;
  
- /**
-@@ -1789,6 +1797,7 @@ static int ice_phy_set_offsets_eth56g(struct ice_hw *hw, u8 port,
- {
- 	u32 rx_offset, tx_offset, bs_ds;
- 	bool onestep, sfd;
-+	int err;
+ 	hash2_any = 0;
+ 	hash2 = 0;
+@@ -987,8 +988,13 @@ static int __udp6_lib_mcast_deliver(struct net *net, struct sk_buff *skb,
+ 			continue;
+ 		}
  
- 	onestep = hw->ptp.phy.eth56g.onestep_ena;
- 	sfd = hw->ptp.phy.eth56g.sfd_ena;
-@@ -1805,11 +1814,16 @@ static int ice_phy_set_offsets_eth56g(struct ice_hw *hw, u8 port,
- 	if (sfd)
- 		rx_offset = add_u32_u32_fx(rx_offset, cfg->rx_offset.sfd);
+-		if (udpv6_queue_rcv_skb(sk, nskb) > 0)
+-			consume_skb(nskb);
++		/* >0 means the encap handler wants IP-level resubmit. Do that
++		 * inline for secondary listeners; only the first socket can
++		 * propagate the nexthdr to the caller.
++		 */
++		ret = udpv6_queue_rcv_skb(sk, nskb);
++		if (ret > 0)
++			ip6_protocol_deliver_rcu(net, nskb, ret, true);
+ 	}
  
--	if (spd < ICE_ETH56G_LNK_SPD_40G)
-+	if (spd < ICE_ETH56G_LNK_SPD_40G) {
- 		bs_ds = ice_ptp_calc_bitslip_eth56g(hw, port, bs_ds, fc, rs,
- 						    spd);
--	else
--		bs_ds = ice_ptp_calc_deskew_eth56g(hw, port, bs_ds, rs, spd);
-+	} else {
-+		err = ice_ptp_calc_deskew_eth56g(hw, port, bs_ds, rs, spd,
-+						 &bs_ds);
-+		if (err)
-+			return err;
-+	}
-+
- 	rx_offset = add_u32_u32_fx(rx_offset, bs_ds);
- 	rx_offset &= ICE_ETH56G_MAC_CFG_RX_OFFSET_INT |
- 		     ICE_ETH56G_MAC_CFG_RX_OFFSET_FRAC;
+ 	/* Also lookup *:port if we are using hash2 and haven't done so yet. */
+@@ -998,8 +1004,10 @@ static int __udp6_lib_mcast_deliver(struct net *net, struct sk_buff *skb,
+ 	}
+ 
+ 	if (first) {
+-		if (udpv6_queue_rcv_skb(first, skb) > 0)
+-			consume_skb(skb);
++		ret = udpv6_queue_rcv_skb(first, skb);
++		/* Match udp6_unicast_rcv_skb(): return protocol for IPv6. */
++		if (ret > 0)
++			return ret;
+ 	} else {
+ 		kfree_skb(skb);
+ 		__UDP6_INC_STATS(net, UDP_MIB_IGNOREDMULTI);
 -- 
-2.50.1 (Apple Git-155)
+2.55.0
 
