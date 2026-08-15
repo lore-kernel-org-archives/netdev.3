@@ -1,44 +1,78 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B473515EC;
-	Sat, 15 Aug 2026 16:28:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782CF13D891
+	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 17:20:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786811329; cv=none; b=jLeGXLnwbk2pQaNgdON8IW6IxZzzu8WI6bKyj5kQM/wbQJ0YxPqkX68Nki+IEiHyNCzhR0Pfv6MIE31G3qE9QiKaq4nc7yw9gC8JO5Gprl6yXLH6NR4po7gBZ5vTUCSFr+2XuW44GeroolFbZUrO60RuS7osWMqLVRz4h1kltlo=
+	t=1786814443; cv=none; b=W01NJsF8QNaSN/thcf8eD59gPZ1On2aGfHRAFBM6N7OvLRGwgQOkYBmRxSQy9hW6awpCFYlWhI1tmRz3AjgkOoOacutp/sPNlrI9E27oDHn6NjZ6tva0eikMPuTV3nbEsw2+oEdIz6ktfEvgTgcgGcHKS0L4cX/+607X7cZ+6AA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786811329; c=relaxed/simple;
-	bh=PzOgzoX3wL+JjnMa1MbkzGOiI4sG8s2IYs1W9kEdR6c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qrNS3KfeO6yPxiIYkmlmXyCoZ2XiRFubffZqgmu01LT1CsxuT+VmBAybb7xf7mLwG4i3Ie+KTAG8mu1U9o1oV4Wzy0PNSk9PLYUpH21/Wnin9tXS9IqGbXylwX75MmxQBLEMzzQcSHsdwXpCxmEnZBkWmc6NtQWEmQuQgkJxEPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=od6xgNS8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786814443; c=relaxed/simple;
+	bh=GkYUEAY9Fh48b1cuYNZukFRNDJzRytRYQTNsi8EW33Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gf+NpPFRf1pP5dz4FCVrlppWBsGaYrIFlPO6DfZb2Bp8qdETbHLziyEo/DSkK8t0CxD9rK2JbcJ4IoFZ6DkKrkPSBSEyc8ZwSDR88pXysB57X8UTBUIbIhx8HyTSUCfB6ETsdj9GWZY+3ZHRM+UHZ4YhAZpIhIExmj0hQs4F++I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xbow.com; spf=pass smtp.mailfrom=xbow.com; dkim=pass (2048-bit key) header.d=xbow.com header.i=@xbow.com header.b=MykriOWo; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xbow.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xbow.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="od6xgNS8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 612F51F000E9;
-	Sat, 15 Aug 2026 16:28:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786811328;
-	bh=ShiSCIL+jwy2kKkLVlLV1PebMFsO8hLbpmFevVT9ZxE=;
-	h=From:To:Cc:Subject:Date;
-	b=od6xgNS8xG/bGCfWgmBttOChZemLdT9e4HXroXS/Psmvnul+lCgvCwsWjT2hf4rxO
-	 7KJqZNtBILyCnK2RFo9xZvGwwaMuIHvvKFWBtou3c0NM5ORfwY4t51U9N+IjbzqCkB
-	 7RDTJt7aua4pXtIocCsxOiOmD9LxpoCoEXYKM288iTB5eakFAGmZKk03FOoAWMzECX
-	 E6kN8VvMpQgUKx6Yk9W5bubCuzM/lhuNJpIFCW9JCo0dvk4MME4pbDczD6lhij/SN1
-	 bh9WtYbXh/0h+GSgbWvdwKhtCJFDvw7fc6FUppYPVFvLPghXDUrpO1+1FXtqDD1/f2
-	 GRx+ypNqMBnNw==
-From: Chuck Lever <cel@kernel.org>
-To: NeilBrown <neil@brown.name>,
-	Jeff Layton <jlayton@kernel.org>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Tom Talpey <tom@talpey.com>
-Cc: <linux-nfs@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>,
-	syzbot+54cdc566f64abf51b7f1@syzkaller.appspotmail.com
-Subject: [PATCH v1] SUNRPC: Reject a socket that already has an svc_sock attached
-Date: Sat, 15 Aug 2026 12:28:44 -0400
-Message-ID: <20260815162844.8219-1-cel@kernel.org>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=xbow.com header.i=@xbow.com header.b="MykriOWo"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2cc61541f8cso38672945ad.0
+        for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 10:20:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=xbow.com; s=google; t=1786814442; x=1787419242; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xOhXcLJBN0+9oZqIF3HKJ0CWwKJoc7ILQyCOL2sYC5k=;
+        b=MykriOWoezWMRmPtljr+z9uIcB/KcRAZwrbmfCV5GVSiQBwhpiU1/cR2+6EtvG6aVa
+         jvO9/eJMOidEDREBxd0c//3gSOkBU6m+XkRnui/xhE3wnYDZyfjc/gOEIDbk3dNSB9Zl
+         acYpdFE36nO0FPtq9M5xHOn82U4q4PPBcY0o4xZA5tk0tvhhTgTGnUDS47KzrrrUZzWh
+         zm99zmGXYjbqAYcLSmkohlvMqc0Eb0GXfFqhGwLC+SSWJInZBKwlc1Y4r8LqrH3Ur/Xk
+         +tyTze1jwXCSwHXWr6Ta+cjiQW3tNHqGfnvD5fQEOJRWs4/Bi1Gi177h9+Pchlz40MKh
+         OMHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786814442; x=1787419242;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xOhXcLJBN0+9oZqIF3HKJ0CWwKJoc7ILQyCOL2sYC5k=;
+        b=MfIHy1LBnuis8la/phhW/oOkwqHGdugZg/iTEM1H/RmIzLpS1QaX8h8tyUb0hLW5dU
+         79x51+IrcJmunHZe5clZJRFhBTG041RkO1WBXN88IchVpewXMOLxrTo0azNKzPo5m8gT
+         iHbSvWOIU61teBQsjMwkNwvzEu+hCdbbLyWjd0JhQ8GUrbldDZKaLS4A5EPK2A3IP4K3
+         WPbDMzTJUAROBc6zGp88rlelWnkYDovu3CHuQ1hqXtLsL36mTfesGm1dkAovgFIfCXRW
+         2jtGSwagCmvvC/S6zSCVy+OZTkS3newWKZV2PF1o8M+IYifo91OpAsL78M1CupCYIhcb
+         wD6w==
+X-Forwarded-Encrypted: i=1; AHgh+Ro6Higz1vHvQ6NyWVyStnIj7PZIlGqhB0QP2mIwr2ShejPVcI4IjOd/2fZiyRD25W3H1wNSbmU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjVw6HGcncoIGlU5nXGFKU400i+iAAHg6dk1Mlknv3pG8MszTh
+	JV0fP91UgMDCL4HwFfThHwjEVrzQfp9Eunzp82Uez3EOVPNa81x2uQlQXdex93UYLvA=
+X-Gm-Gg: AR+sD13a4sNsVHyxFEKCjaGKPpbXeCNOVUJwswEyyGXIZV/wg2Pero+XqwCzwLWnEB7
+	SisRhxz9m/6rbZ4hCVfjZFCKoXJip+5Y51hdKCzAAUgJctAbIf/OiPRcuQwZ0aF/kMCjpBu0AmM
+	tBXLfpwHRqBNI30RCG0+7JizQsGWuXmQpEBdd/xQ0MS5N7hUs72fNKWGni+0T5kMrDvRtTeKYpY
+	UTgYG72A/Gj4GbEQ+ZA+L0cF7un/xSMqKB0x1DJbyrfRFLJx7x8bkG/RaWes151gOu6k8fWPeYw
+	EYCkF/yugNInDNzlZ694dbV3FuyuuUjjfQojszG2fvJ3/hOQBrOBcPZzZs433pM7XXA4t/IUvt1
+	RkBHSbpadeD0FVqAIQBSJViRoGF6iQWqkHSaOzHQ6DzgKWUa9huXCGg73MTyVawDblwY7MrRMUu
+	Mr3+gvGz6iPYoibYZ6ej2ZEtRkBQzIme2Hqr9HLKEDeErcgeE2yWA/0RME2PJ/7HBPxGTRzUVxF
+	0brAKA0iKavtOvCBea/AoSj1fvq2bK7poMTEvfuyXuL0A==
+X-Received: by 2002:a17:90b:48c2:b0:385:3ab:fecb with SMTP id 98e67ed59e1d1-3933af07e4dmr11226876a91.4.1786814441698;
+        Sat, 15 Aug 2026 10:20:41 -0700 (PDT)
+Received: from localhost.localdomain ([125.181.61.26])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-394ea99ab1dsm6576459a91.7.2026.08.15.10.20.37
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 15 Aug 2026 10:20:40 -0700 (PDT)
+From: Baul Lee <baul.lee@xbow.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	dsahern@kernel.org,
+	idosch@nvidia.com
+Cc: jiri@resnulli.us,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	federico.kirschbaum@xbow.com
+Subject: [PATCH net] ipv4: Fix in_device refcount resurrection in in_dev_get()
+Date: Sun, 16 Aug 2026 02:20:32 +0900
+Message-ID: <20260815172032.79740-1-baul.lee@xbow.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,59 +81,59 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Writing the same socket descriptor to /proc/fs/nfsd/portlist twice
-attaches a second svc_sock to one socket. svc_setup_socket() saves
-the socket's callbacks before installing its own, so the second
-attach records svc_write_space() as the old write_space callback.
-svc_udp_init() invokes that callback by way of svc_sock_setbufsize(),
-and svc_write_space() then calls itself until the kernel stack is
-exhausted:
+in_dev_get() reads dev->ip_ptr under RCU and then unconditionally
+increments its refcount. inetdev_destroy() clears the pointer and drops
+the last reference under RTNL, with no grace period in between, so a
+reader that fetched the pointer before the store can increment a
+refcount that has already reached zero. That resurrects an object whose
+RCU free is queued: dropping the resurrected reference re-enters
+in_dev_finish_destroy() for a second netdev_put() and a second
+call_rcu() on the same rcu_head, and if the grace period elapses first
+the drop itself is a use-after-free.
 
-  BUG: TASK stack guard page was hit at ffffc900037d7ff8
-   svc_write_space+0x90/0x2b0 net/sunrpc/svcsock.c:429
-   svc_write_space+0xe6/0x2b0 net/sunrpc/svcsock.c:430
-   ... 700 more ...
-   svc_sock_setbufsize+0x18d/0x220 net/sunrpc/svcsock.c:386
-   svc_udp_init net/sunrpc/svcsock.c:854 [inline]
-   svc_setup_socket+0xb2f/0x1090 net/sunrpc/svcsock.c:1498
-   svc_addsock+0x2fd/0x760 net/sunrpc/svcsock.c:1547
-   __write_ports_addfd fs/nfsd/nfsctl.c:742 [inline]
-   write_ports+0xa5b/0xcc0 fs/nfsd/nfsctl.c:861
-   nfsctl_transaction_write+0x106/0x1a0 fs/nfsd/nfsctl.c:112
+inet_netconf_get_devconf() is registered RTNL_FLAG_DOIT_UNLOCKED, and
+rtnetlink_rcv_msg() exempts RTNL_KIND_GET from the CAP_NET_ADMIN check,
+so an unprivileged user can drive the reader side. Reproduced as UID
+65534 on v7.2-rc7:
 
-svc_data_ready() and svc_tcp_state_change() chain through their saved
-callbacks the same way, so a TCP descriptor added twice recurses on
-the next incoming segment instead. Reaching any of this takes a
-writer on portlist, and the nfsd filesystem sets no FS_USERNS_MOUNT,
-so the reproducer needs CAP_SYS_ADMIN in the initial user namespace.
+  refcount_t: addition on 0; use-after-free.
+  WARNING: lib/refcount.c:25 at refcount_warn_saturate+0x14c/0x180
+  CPU: 0 UID: 65534 PID: 655 Comm: j1_poc
+   refcount_warn_saturate+0x14c/0x180 (P)
+   inet_netconf_get_devconf+0x4b0/0x4c4
+   rtnetlink_rcv_msg+0x434/0x4d0
 
-Reject a socket that already carries sk_user_data. svc_setup_socket()
-overwrites that field unconditionally, so a socket some other
-consumer has claimed is one NFSD would corrupt whether or not the
-callbacks recurse.
+followed by the matching underflow when the reference is dropped.
 
-Fixes: b41b66d63c73 ("[PATCH] knfsd: allow sockets to be passed to nfsd via 'portlist'")
-Reported-by: syzbot+54cdc566f64abf51b7f1@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=54cdc566f64abf51b7f1
-Signed-off-by: Chuck Lever <cel@kernel.org>
+Use refcount_inc_not_zero() and return NULL for an in_device that has
+already reached zero. All callers already handle a NULL return, which
+in_dev_get() gives today whenever dev->ip_ptr is NULL. Callers under
+RTNL see no change: ip_ptr is cleared before the last put, so a non-NULL
+ip_ptr there implies a non-zero refcount.
+
+Discovered by XBOW, triaged by Baul Lee <baul.lee@xbow.com>
+
+Fixes: bbcf91053bb6 ("inet: do not use RTNL in inet_netconf_get_devconf()")
+Signed-off-by: Baul Lee <baul.lee@xbow.com>
 ---
- net/sunrpc/svcsock.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/inetdevice.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
-index 7a423e9ee74d..5a2d52284d75 100644
---- a/net/sunrpc/svcsock.c
-+++ b/net/sunrpc/svcsock.c
-@@ -1614,6 +1614,9 @@ int svc_addsock(struct svc_serv *serv, struct net *net, const int fd,
- 	err = -EISCONN;
- 	if (so->state > SS_UNCONNECTED)
- 		goto out;
-+	err = -EBUSY;
-+	if (so->sk->sk_user_data)
-+		goto out;
- 	err = -ENOENT;
- 	if (!try_module_get(THIS_MODULE))
- 		goto out;
+diff --git a/include/linux/inetdevice.h b/include/linux/inetdevice.h
+index 6032eea2539a..a1446da64200 100644
+--- a/include/linux/inetdevice.h
++++ b/include/linux/inetdevice.h
+@@ -245,8 +245,8 @@ static inline struct in_device *in_dev_get(const struct net_device *dev)
+ 
+ 	rcu_read_lock();
+ 	in_dev = __in_dev_get_rcu(dev);
+-	if (in_dev)
+-		refcount_inc(&in_dev->refcnt);
++	if (in_dev && !refcount_inc_not_zero(&in_dev->refcnt))
++		in_dev = NULL;
+ 	rcu_read_unlock();
+ 	return in_dev;
+ }
 -- 
-2.54.0
+2.50.1
 
