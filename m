@@ -1,196 +1,141 @@
-Received: from sender6-of-o54.zoho.com (sender6-of-o54.zoho.com [165.173.180.54])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D872380FF4
-	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 06:32:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.180.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786775559; cv=pass; b=jVRSoMtmodL2HsBjdDEMq0HRR9hM0ejaY7vatocRPDLMdOsAHGrhq7topm3BEDgXW7DpEt2Cdb2blJZ3hcbDYuLD9O1qISAIVM2Vwnd28cnCsT5hWNnVjNqOHFHye3T7tYfd/Id3uYP8VCJtct7vhFBIi1cC3CO6y+mzZqnfsOw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786775559; c=relaxed/simple;
-	bh=JZxxV+sttVLVKkTjRCWJtGSLltG1nriJdWGoPs6sLDE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y4Vt4ot/sMIAELvgx76VCKk1dn6cWMxhSV//BYY7xzWFzzmBtzXWdMBRhalJor3o6aGVxScAVvX1/1yRJFFMiajj5uv++xCce5j2ocCTCT9ghShLss9zGEbZg0Z+PuALwrEQaqXIP1cDTDhvftDR4DN7t+m5itGPHz42OSbZMjk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=machnikowski.net; spf=pass smtp.mailfrom=machnikowski.net; dkim=pass (2048-bit key) header.d=machnikowski.net header.i=maciek@machnikowski.net header.b=CMfwzz6d; arc=pass smtp.client-ip=165.173.180.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=machnikowski.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=machnikowski.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=machnikowski.net header.i=maciek@machnikowski.net header.b="CMfwzz6d"
-ARC-Seal: i=1; a=rsa-sha256; t=1786775523; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=OuTnDP8fMU2j6GgsnmwzSwrLXFtvzNHHBOUqlHsjKHKBvFfFLsfzMd/05TdhvhiieOUat59CNeHyK/ftM4Ai1s7YXKH21+Eo2pralMk8SfN3SAK2BvG47M/ut4csHerYHDQGvWUP6h2BH8L5UrVQVfeIxGFvEj9YlZhb8sIXiDo=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1786775523; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=dcPQlaisPKUT/laURq5jklWbnDY8vId+pgQgNCuFyKA=; 
-	b=knFBtNMVXObT42o5f03CI7iii2TL+zCVsyNZb7AAFVBa+pC5rafYUi5Asx6lsx8eUfSQk2znNy9YnSQ7smqmw5wzmWT57mXc3YXu3NMkE9EdADrMpi906GIWjkSFbwtdBUfLDQ7whJr07iGQSqA4khWTbeXVYetU/bmB7s68B/8=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=machnikowski.net;
-	spf=pass  smtp.mailfrom=maciek@machnikowski.net;
-	dmarc=pass header.from=<maciek@machnikowski.net>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1786775523;
-	s=zoho; d=machnikowski.net; i=maciek@machnikowski.net;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=dcPQlaisPKUT/laURq5jklWbnDY8vId+pgQgNCuFyKA=;
-	b=CMfwzz6dLWr7bOtf+ilpaSn+nxeq2mTxhRa333ZA35Nf2brgMlRBqpFNbE/zwAzK
-	wa2pgQ0RJzNzxDsY8MOOzk6ssAIdH+RSq8rzFINuEO5XYGSDbLJFPGug0HwNN5uWGKf
-	vGk0aKZOR7CLC62xiScMf5EdUxOWjogUKzdj+xN7XUqSIAWZRLmkKC3sUU0O058DYnU
-	4drmvfAknElz9gmxQad1m0Yolx/hVorIDQMDx6TW3lI24lY/MRFtBNsOEoKZZS5gbtM
-	N4GmVyFwl8xL9FisGcUwasop/+HmWXe4l1/kng1Ps2NssgtQvmLnUXDVrIvH0gGm/eg
-	ZVBJl5Kdew==
-Received: by mx.zohomail.com with SMTPS id 1786775519019885.8072579744174;
-	Fri, 14 Aug 2026 23:31:59 -0700 (PDT)
-From: Maciek Machnikowski <maciek@machnikowski.net>
-To: netdev@vger.kernel.org
-Cc: kuba@kernel.org,
-	maciek@machnikowski.net,
-	richardcochran@gmail.com,
-	milena.olech@intel.com,
-	willemdebruijn.kernel@gmail.com,
-	andrew@lunn.ch,
-	vadim.fedorenko@linux.dev,
-	horms@kernel.org
-Subject: [PATCH v10 net-next 3/3] selftests: drivers/net: Implement ptp4l sync test using netdevsim
-Date: Sat, 15 Aug 2026 08:31:48 +0200
-Message-ID: <20260815063148.2952-4-maciek@machnikowski.net>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260815063148.2952-1-maciek@machnikowski.net>
-References: <20260815063148.2952-1-maciek@machnikowski.net>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3784388382;
+	Sat, 15 Aug 2026 06:39:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786775990; cv=none; b=gdhj8SWGteFQQjqyOugxfIsA3aKChXmchC1ZrTTSXsaCz+QxIWjlLKQY5JEQjVZpnz8T05YS+O3Zlq6QkZaDYm2dIaLHUiReAs89vsmrZ2G2xe8EwnMwiVrBOdyRXZgjFCyFbWkqTPWgJ/zUZaybwkMEfXMMUIatPYtSKgzWHa4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786775990; c=relaxed/simple;
+	bh=/edWCjiVu+sbigUe+FHOtOYxGN8+f7sFD2mbLNHE69s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=exlWSxb+cSEdCkf/AxfHTzJJqyILYdwbJF2BhNp68wdxH94En3dlRrJLSyj8HVnNrszAXo0pFJ7jhJ+IO1E4pW2veAFBCOL0Xi8vTPi9RoxnT4q5rw+AbLtWCJWc9HAXicBB+bAy4dRjiDrX6wRl03nqMCWuBdIq7WIvIBBGFQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.99)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1wv83E-00000000721-35cH;
+	Sat, 15 Aug 2026 06:39:28 +0000
+Date: Sat, 15 Aug 2026 07:39:25 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>, netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	driver-core@lists.linux.dev
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	"Srivatsa, Ravishankar" <ravishankar.srivatsa@intel.com>,
+	Kiran K <kiran.k@intel.com>,
+	ChandraShekar <chandrashekar.devegowda@intel.com>
+Subject: [PATCH net-next v11 1/6] net: dsa: add devlink flash_update callback
+ to dsa_switch_ops
+Message-ID: <a851f724dec0433015141e208b371f704640b300.1786773971.git.daniel@makrotopia.org>
+References: <cover.1786773971.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1786773971.git.daniel@makrotopia.org>
 
-Add PTP synchronization test using ptp4l and netdevsim.
-The test uses the NetDrvEpEnv to link a local netdevsim
-device to a remote endpoint, runs ptp4l as leader and follower
-on the two ends, and waits for the follower to report the
-synchronized state (s2).
+Add a devlink_flash_update callback to dsa_switch_ops so that DSA
+drivers can support devlink dev flash without open-coding the devlink
+plumbing. Like the other trampolines in net/dsa/devlink.c, the op
+returns -EOPNOTSUPP when the driver does not implement the callback;
+the devlink core will then have fetched the firmware file from
+userspace before the request fails, which is acceptable for an
+operation as infrequent as a firmware update.
 
-Signed-off-by: Maciek Machnikowski <maciek@machnikowski.net>
+The devlink core calls the op with the devlink instance lock held and
+without rtnl_lock, whereas DSA serialises its switch and port ops
+under rtnl_lock, so a driver has to serialise a flash against its own
+ops itself.
+
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 ---
- tools/testing/selftests/drivers/net/Makefile |  1 +
- tools/testing/selftests/drivers/net/config   |  1 +
- tools/testing/selftests/drivers/net/ptp.py   | 84 ++++++++++++++++++++
- 3 files changed, 86 insertions(+)
- create mode 100755 tools/testing/selftests/drivers/net/ptp.py
+v11: no changes
+v10: no changes
+v9: install the flash_update op unconditionally and return -EOPNOTSUPP
+    from the trampoline like the other DSA devlink trampolines,
+    instead of a second devlink_ops permutation (Andrew Lunn)
+v8:
+ - retitled: this patch adds the callback, its first user is patch 3
+ - describe the op's calling context in the commit message
+v7: no changes
+v6: no changes
+v5: no changes
+v4: only install the flash_update op for drivers implementing the
+    callback so the devlink core keeps rejecting unsupported flash
+    requests before fetching the firmware file
+v3: no changes
+v2: align continuation lines with the open parenthesis
 
-diff --git a/tools/testing/selftests/drivers/net/Makefile b/tools/testing/selftests/drivers/net/Makefile
-index d5bf4cb638a8..18bb7c693b69 100644
---- a/tools/testing/selftests/drivers/net/Makefile
-+++ b/tools/testing/selftests/drivers/net/Makefile
-@@ -19,6 +19,7 @@ TEST_PROGS := \
- 	netpoll_basic.py \
- 	ping.py \
- 	psp.py \
-+	ptp.py \
- 	queues.py \
- 	ring_reconfig.py \
- 	shaper.py \
-diff --git a/tools/testing/selftests/drivers/net/config b/tools/testing/selftests/drivers/net/config
-index b6989c7d3d9d..7be30a72e119 100644
---- a/tools/testing/selftests/drivers/net/config
-+++ b/tools/testing/selftests/drivers/net/config
-@@ -21,5 +21,6 @@ CONFIG_NET_SCH_INGRESS=y
- CONFIG_NET_SCH_PRIO=m
- CONFIG_PPP=y
- CONFIG_PPPOE=y
-+CONFIG_PTP_1588_CLOCK_MOCK=y
- CONFIG_VLAN_8021Q=m
- CONFIG_XDP_SOCKETS=y
-diff --git a/tools/testing/selftests/drivers/net/ptp.py b/tools/testing/selftests/drivers/net/ptp.py
-new file mode 100755
-index 000000000000..57ea77659b11
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/ptp.py
-@@ -0,0 +1,84 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# By Maciek Machnikowski <maciek@machnikowski.net> (c) 2026,
+ include/net/dsa.h |  3 +++
+ net/dsa/devlink.c | 13 +++++++++++++
+ 2 files changed, 16 insertions(+)
+
+diff --git a/include/net/dsa.h b/include/net/dsa.h
+index 6f7f5c17b532..58597b14e592 100644
+--- a/include/net/dsa.h
++++ b/include/net/dsa.h
+@@ -1172,6 +1172,9 @@ struct dsa_switch_ops {
+ 	int	(*devlink_info_get)(struct dsa_switch *ds,
+ 				    struct devlink_info_req *req,
+ 				    struct netlink_ext_ack *extack);
++	int	(*devlink_flash_update)(struct dsa_switch *ds,
++					struct devlink_flash_update_params *params,
++					struct netlink_ext_ack *extack);
+ 	int	(*devlink_sb_pool_get)(struct dsa_switch *ds,
+ 				       unsigned int sb_index, u16 pool_index,
+ 				       struct devlink_sb_pool_info *pool_info);
+diff --git a/net/dsa/devlink.c b/net/dsa/devlink.c
+index ed342f345692..25311a87cbc5 100644
+--- a/net/dsa/devlink.c
++++ b/net/dsa/devlink.c
+@@ -20,6 +20,18 @@ static int dsa_devlink_info_get(struct devlink *dl,
+ 	return -EOPNOTSUPP;
+ }
+ 
++static int dsa_devlink_flash_update(struct devlink *dl,
++				    struct devlink_flash_update_params *params,
++				    struct netlink_ext_ack *extack)
++{
++	struct dsa_switch *ds = dsa_devlink_to_ds(dl);
 +
-+"""
-+Test suite for PTP sync using ptp4l.
++	if (!ds->ops->devlink_flash_update)
++		return -EOPNOTSUPP;
 +
-+Start a ptp4l leader and follower and check that the follower locks onto the
-+leader (state s2)
-+"""
++	return ds->ops->devlink_flash_update(ds, params, extack);
++}
 +
-+import time
-+
-+from lib.py import (
-+    NetDrvEpEnv,
-+    bkg,
-+    fd_read_timeout,
-+    ksft_exit,
-+    ksft_pr,
-+    ksft_run,
-+    ksft_true,
-+)
-+
-+PTP4L_SYNC_TIMEOUT = 40
-+
-+
-+def _poll_follower_sync(follower, timeout):
-+    """Read the follower stdout pipe until ptp4l reports sync state s2.
-+
-+    Returns a tuple (synced, output) where output is the text read so far.
-+    The synchronized ptp4l log line looks like this:
-+    ptp4l[18374.558]: master offset        844 s2 freq    +822 path delay       521
-+    """
-+    fd_file = follower.proc.stdout
-+    fd = fd_file.fileno()
-+    buf = b""
-+    deadline = time.monotonic() + timeout
-+    while time.monotonic() < deadline:
-+        if b" s2 " in buf:
-+            break
-+        if follower.proc.poll() is not None:
-+            chunk = fd_file.read()
-+            if chunk:
-+                buf += chunk
-+            break
-+        try:
-+            remaining = deadline - time.monotonic()
-+            buf += fd_read_timeout(fd, max(0, min(1, remaining)))
-+        except TimeoutError:
-+            continue
-+    return b" s2 " in buf, buf.decode("utf-8", "replace")
-+
-+
-+def ptp_sync_test(cfg):
-+    """Verify ptp4l leader/follower synchronization reaches state s2."""
-+    cfg.require_cmd("ptp4l", remote=True)
-+
-+    leader_cmd = f"ptp4l -i {cfg.remote_ifname} -m -2"
-+    follower_cmd = f"ptp4l -i {cfg.ifname} -m -s -2"
-+
-+    with bkg(leader_cmd, host=cfg.remote), \
-+         bkg(follower_cmd) as follower:
-+        synced, output = _poll_follower_sync(follower, PTP4L_SYNC_TIMEOUT)
-+
-+    if synced:
-+        return
-+
-+    ksft_pr(f"ptp4l follower did not reach locked state (s2) within "
-+            f"{PTP4L_SYNC_TIMEOUT}s")
-+    tail = output.strip().split("\n")[-10:]
-+    ksft_pr("Follower log (last 10 lines): " + " | ".join(tail))
-+    ksft_true(False, "PTP sync timeout")
-+
-+
-+def main():
-+    """Run ksft tests."""
-+    with NetDrvEpEnv(__file__) as cfg:
-+        ksft_run([ptp_sync_test], args=(cfg, ))
-+    ksft_exit()
-+
-+
-+if __name__ == "__main__":
-+    main()
+ static int dsa_devlink_sb_pool_get(struct devlink *dl,
+ 				   unsigned int sb_index, u16 pool_index,
+ 				   struct devlink_sb_pool_info *pool_info)
+@@ -169,6 +181,7 @@ dsa_devlink_sb_occ_tc_port_bind_get(struct devlink_port *dlp,
+ 
+ static const struct devlink_ops dsa_devlink_ops = {
+ 	.info_get			= dsa_devlink_info_get,
++	.flash_update			= dsa_devlink_flash_update,
+ 	.sb_pool_get			= dsa_devlink_sb_pool_get,
+ 	.sb_pool_set			= dsa_devlink_sb_pool_set,
+ 	.sb_port_pool_get		= dsa_devlink_sb_port_pool_get,
 -- 
 2.55.0
-
