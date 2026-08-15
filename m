@@ -1,60 +1,82 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5A117C211
-	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 01:26:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57BAE1C2324
+	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 01:33:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786757212; cv=none; b=WqfsayhfJ2yILUiXis3jgg10jS4m8qjwKn3RmTMkW28IXvEze/y22gZ8yRJWbhlxgRetV/CWZPmWW6oMyGyEtcnzxkYi96rdozXxDudb8n28DnZA5GYT1hkIS7mzRK63ZcapuKlQpxIoXoJNZv6fsXdVaMxaLOTvtxEQP4iRuAU=
+	t=1786757581; cv=none; b=YR5z4GiAFWTi9BRTQy6WPvb2bWzAHEvB6kkiO861SZqoCX/7fh+UIYdTr1NYib5Jb5l7i6hMwM5sl7eiYxCCT0LKngaalDUDthTIuJk19KiC27RfaC7QLRQDd+BLM4CbRFjanexYv5ZcL1fczsYqhTrbxcHWeWaBIdE+8cpkNME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786757212; c=relaxed/simple;
-	bh=YpwQUnVulG9JPuLMVdRLJcAsL52MULHCbieWy635i+E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Db0LsLYsos5XzeHFj3fMlRITe6AGgGZNwAu3FvN++vZZCdnuez4kTCz17QaL+I3CCvqeoEz2uZZLNMLI4sKplqIx8iIFL3aoW8vn/3N1W4KkwJHcKhyzM5C1FBCAot5P/ZTbiWHB9dpooLWuPjhdweXvfdui9Wxd7nEGAZRYWFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g02itqCG; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786757581; c=relaxed/simple;
+	bh=mDgAsKs6meo//NBXXLbI4OKPjgjud9Wvq+usYByvNDk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fo95zuv+LCO6rCxX43V0My5IFV3+Cg1AvJcveDJ9Tk+Vl0tSdEh8YPBjT7g6SM6tn4cl6qdCGt1PXm+nrBro3pxCKC3Vx/PqKpd+S7hgIbGaZ9x34r+CeK8FVlngjjZMC6abvDI1uIYj+41BCOlZ1FHEh/wph/W5WFbRnPFklxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K5a5Jwzw; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g02itqCG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786757210; x=1818293210;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=YpwQUnVulG9JPuLMVdRLJcAsL52MULHCbieWy635i+E=;
-  b=g02itqCGteKvHUC3Kz7DwO4RXslZtBTicToO/AKRzmIzCeEhk6aqPyMB
-   nWifFDsdXLaNKSWr+2oER0ZOQvjvGseR/ORJviy3z/T10qVQELRmHexkz
-   AZJWY7ZUrT95z61Ysq/2DhE+g0w8xN+/dIvEMaclSh/si8YLRrtODn8KA
-   1yt4X2CaWUifIdm9KouxJigZGiLE9RLdYzTvM5sgnSuLVlBzPgcrFE9zm
-   WuR5y8zlZ9sYnj7SenXcuKRmdfPO/9SRDuNGD0hfzfopqhqXwe+sWE+oT
-   whL+DVgh+HWaJBTHno6M5MHJ3+9YANCeNtdYu64LNxE0/6F14GOHrnzUU
-   w==;
-X-CSE-ConnectionGUID: XntJoBwSSXOUV0z/0QXwtg==
-X-CSE-MsgGUID: yZ6pN2WXQ8+wK5x3XD5Gtg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11875"; a="87194397"
-X-IronPort-AV: E=Sophos;i="6.25,224,1779174000"; 
-   d="scan'208";a="87194397"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2026 18:26:50 -0700
-X-CSE-ConnectionGUID: kngVLNCwSeSMPGzIZqsrdw==
-X-CSE-MsgGUID: z3gaX29YQhC+dN/q9xJ2sg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,224,1779174000"; 
-   d="scan'208";a="287844776"
-Received: from unknown (HELO fedora.jf.intel.com) ([10.166.5.147])
-  by fmviesa002.fm.intel.com with ESMTP; 14 Aug 2026 18:26:50 -0700
-From: Paul Greenwalt <paul.greenwalt@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	Paul Greenwalt <paul.greenwalt@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH iwl-next 3/3] selftests: net: hw: add devlink info test
-Date: Fri, 14 Aug 2026 13:49:19 -0400
-Message-ID: <20260814174919.4177289-4-paul.greenwalt@intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260814174919.4177289-1-paul.greenwalt@intel.com>
-References: <20260814174919.4177289-1-paul.greenwalt@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K5a5Jwzw"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-49556f97a9dso11343045e9.1
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 18:33:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786757578; x=1787362378; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=b+EBtOS3yArt80y5oN+qnjKWVwEXEBrwucchm/mxHIo=;
+        b=K5a5Jwzw3tm37oBhTUkKHQMR82eb1IGEfsZ1l18+RcsHFlgC+4on6OooCAZmQF+vJl
+         B7lojnRhXV852EbJyAamAR3NTRkuz5hRWJbQ50mWLtC6oZtQDdRKErgXaWtd+rjEk7iM
+         Gq6wJkCZHvkBg22ZfaUilig+7Y3lWXKMKmDO/uGdyq4/P1/pUM7ccYS4DRUKnQDozMRK
+         OU5OTyPtgMTtJDcF/CdbMU218X4kcQ2HgGlTfy/Z7e7srxjecaZ5oxuUcfNmuqVFTxi/
+         rS1Cga+rSS/oKfWwJFwTfvFXBMBoX/IpUT7h2u7fqBOaXhiyHIVck3i3RQgs7y1mfjRA
+         W0+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786757578; x=1787362378;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=b+EBtOS3yArt80y5oN+qnjKWVwEXEBrwucchm/mxHIo=;
+        b=VrZ+9FeuRD+WH/Qx6ZkLU/eeEysPLGaup5/WIhyuQOkvqex3C5nmrnMclhv07vrLgd
+         xrMshZU1sojTnfPfecHodaq7Tyexe1Jy9LxCSoKLqbS2Zlhh3sLeSN6Qu/g9KmWSDHmk
+         446LYUfOezA355WHBsL2lR7X3enV18Z+p3GEiuSFz7c7RWernv3OSTLxB65UJZ1QonNs
+         2aNeZfPd9JAOUvymGlsGKjPYOYZ5mvXLL7nZXGSoNnF64L4FxHbC/njzc4BGunfR6o7M
+         yhi1xKHFBDP7uD4A4fKb3KOtATbKdfz7+Rqg044tZ9RDnpdfo8W2Onri6m4nn3n8N4o/
+         BchA==
+X-Forwarded-Encrypted: i=1; AHgh+RrNR9iMU5cWxgNUTztJ4msbHi1hLw6HZZJveR13hNlnRuBB1+1lQ169tPyl/xIsNs9FygGS4oo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyc/76GbTKjbLFc0GrXZlZpJiCATEjR9RksyOVkwM+f5gz+Nlwq
+	QQ+3CYMS3W76grLH5bALldswteOLVxPA5W8qLodp+4fvsbLSdn6Lt3tP
+X-Gm-Gg: AR+sD11eSw4iO/PCso25pIppSoxrPa5jOYlxlUiC8/30vwzAfO55HxhSdJb+vmCdAkq
+	44xCMIxNs6mn2OYtjtVGxNqP1zKOtaT4kZutxv4XO7TzJ4N4/c7vIqGlEKI8wov5jqB5Uh2DJxr
+	Ml0qcd6aSlyxmHtAhs9cDdhBagWm3iRgN8ybj/VNVqICHKiceqwDcsd/Nm487uM5GQ0uL8sU3YR
+	GmEl6nUHXEm2o713NnUbdM4K732QCbVUCkYs0VLcbakf0ugEHs5zE43Eqp3+VLkWD1ghNMwS2Fz
+	VbyHZ7+FWPnqPTM/vjW233mbxIujKV4AmBaAl8PPcgjxT7zn5BAYlTbum9mGkertXsj2Bd/daiL
+	mTAVl+hHbbNITKlPDIOMp1TYIUhra7bpsfLi/BtTyFBSUIB7VJgTW9PCd1DCRuWzLT6ryFGGSLy
+	c8MBBSV/MxHyOY6M1tCzNY8hLiYHkitMgiVQFE52tjdgSE3J94/cgxwcDybWpeYVcIOCm8wT9x0
+	KIbzyT+o8W2UzI5brTaJI6igmiOqzqcoCPmeYXv/ttp31oIDaIzMNW9sRIcScG51bDfQhhG0vO6
+	sLu1OR9iPxlQkkdF0v3YP4ODdsSme179EnmMIVNkJkrPrw5n1wCNHp24cDpQ+26SufXzQe00xp2
+	Zgg0=
+X-Received: by 2002:a05:600c:3491:b0:498:952:e276 with SMTP id 5b1f17b1804b1-499879653bbmr149398885e9.8.1786757578369;
+        Fri, 14 Aug 2026 18:32:58 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-2a02-3100-9d7d-f301-9495-44ec-73e6-1be7.310.pool.telefonica.de. [2a02:3100:9d7d:f301:9495:44ec:73e6:1be7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49987b1a31esm110672885e9.2.2026.08.14.18.32.56
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 14 Aug 2026 18:32:57 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Simon Horman <horms@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2 0/2] net_shaper: fix kernel-doc rendering
+Date: Sat, 15 Aug 2026 03:32:27 +0200
+Message-Id: <cover.1786751700.git.kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,172 +85,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a selftest that verifies drivers properly report device information
-through the devlink info interface. This test validates:
+The net_shaper_ops documentation contains a malformed ReST list and
+exposes a kerneldoc.py title-context bug which drops valid headings.
+Fix the list first because the parser correction makes it visible. The
+parser fix also restores three Xe DRM RAS headings already in mainline.
 
-  - devlink dev info command succeeds
-  - driver name is reported and matches ethtool output
-  - at least one version or serial_number is reported
+Tested with Sphinx 9.1.0:
 
-The output format matches what NIPA CI uses for device regression
-tracking, helping maintainers identify pass/fail status changes due
-to FW updates.
+  Docutils 0.21.2 and 0.22.4:
+    make SPHINXDIRS=networking htmldocs
 
-Example usage:
+  Docutils 0.22.4:
+    make htmldocs
 
-  sudo NETIF=eth0 ./tools/testing/selftests/drivers/net/hw/devlink_info.sh
+The full output differed only in the intended net_shaper and Xe rendering
+and checkout-path-dependent build artifacts.
 
-  INFO: driver: idpf
-  INFO: serial_number: 00-a0-c9-ff-ff-23-45-67
-  TEST: devlink info                                                  [ OK ]
+Changes from v1:
+- fix heading parsing instead of replacing headings with bold labels
+- split the list and parser fixes
+- add diagnostics and point the Fixes tag at the kerneldoc.py regression
 
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Link: https://github.com/linux-netdev/nipa/wiki/Netdev-CI-system#device-information
-Signed-off-by: Paul Greenwalt <paul.greenwalt@intel.com>
----
- .../testing/selftests/drivers/net/hw/Makefile |   1 +
- .../selftests/drivers/net/hw/devlink_info.sh  | 119 ++++++++++++++++++
- 2 files changed, 120 insertions(+)
- create mode 100755 tools/testing/selftests/drivers/net/hw/devlink_info.sh
+v1: https://lore.kernel.org/netdev/20260813192131.21254-1-kmehltretter@gmail.com/
 
-diff --git a/tools/testing/selftests/drivers/net/hw/Makefile b/tools/testing/selftests/drivers/net/hw/Makefile
-index 78bb0169350b..edd353f27a39 100644
---- a/tools/testing/selftests/drivers/net/hw/Makefile
-+++ b/tools/testing/selftests/drivers/net/hw/Makefile
-@@ -19,6 +19,7 @@ TEST_GEN_FILES := \
- 
- TEST_PROGS = \
- 	csum.py \
-+	devlink_info.sh \
- 	devlink_rate_cross_esw.py \
- 	devlink_rate_tc_bw.py \
- 	devmem.py \
-diff --git a/tools/testing/selftests/drivers/net/hw/devlink_info.sh b/tools/testing/selftests/drivers/net/hw/devlink_info.sh
-new file mode 100755
-index 000000000000..b2ee880590c4
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/hw/devlink_info.sh
-@@ -0,0 +1,119 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Test devlink info support
-+#
-+# This test verifies that the driver properly reports device information
-+# through the devlink info interface. The output format matches what
-+# NIPA CI uses for regression tracking (see Device information section
-+# at https://github.com/linux-netdev/nipa/wiki/Netdev-CI-system).
-+#
-+# Validates:
-+#   - devlink dev info command succeeds
-+#   - driver name is reported and matches ethtool
-+#   - at least one version or serial_number is reported
-+#   - serial_number is logged if present
-+#
-+# Usage:
-+#   NETIF=eth0 ./devlink_info.sh
-+
-+lib_dir=$(dirname "$0")/../../../net
-+
-+ALL_TESTS="devlink_info_test"
-+source "$lib_dir"/lib.sh
-+
-+require_command devlink
-+require_command jq
-+require_command ethtool
-+
-+DL_HANDLE=""
-+
-+setup_prepare()
-+{
-+	# Try to get devlink handle from devlink port first
-+	DL_HANDLE=$(devlink -j port show 2>/dev/null |
-+		jq -r --arg netif "$NETIF" \
-+			'.port | to_entries[] |
-+			 select(.value.netdev == $netif) | .key' 2>/dev/null |
-+		cut -d/ -f1-2)
-+
-+	# Fallback: get PCI address from ethtool and check if devlink device exists
-+	if [ -z "$DL_HANDLE" ]; then
-+		local bus_info
-+		bus_info=$(ethtool -i "$NETIF" 2>/dev/null | awk '/^bus-info:/ {print $2}')
-+		if [ -n "$bus_info" ]; then
-+			DL_HANDLE="pci/$bus_info"
-+			# Verify this devlink device exists
-+			if ! devlink dev show "$DL_HANDLE" &>/dev/null; then
-+				DL_HANDLE=""
-+			fi
-+		fi
-+	fi
-+
-+	if [ -z "$DL_HANDLE" ]; then
-+		echo "SKIP: Could not find devlink handle for $NETIF"
-+		exit $ksft_skip
-+	fi
-+}
-+
-+info_get()
-+{
-+	local name
-+
-+	name=$1
-+	cmd_jq "devlink dev info $DL_HANDLE -j" ".[][][\"$name\"]" "-e"
-+}
-+
-+has_any_version()
-+{
-+	local info
-+	info=$(devlink -j dev info $DL_HANDLE)
-+
-+	# Check if any version category exists and has at least one entry
-+	echo "$info" | jq -e '.[][].versions | length > 0' > /dev/null 2>&1
-+}
-+
-+devlink_info_test()
-+{
-+	RET=0
-+
-+	# Test devlink info command succeeds
-+	devlink dev info $DL_HANDLE > /dev/null
-+	check_err $? "devlink dev info failed for $DL_HANDLE"
-+
-+	# Test driver name is reported
-+	local driver
-+	driver=$(info_get "driver")
-+	check_err $? "Failed to get driver name"
-+
-+	# Verify driver matches ethtool output
-+	local expected_driver
-+	expected_driver=$(ethtool -i "$NETIF" | awk '/^driver:/ {print $2}')
-+	check_err $? "Failed to get driver from ethtool"
-+	if [ -z "$expected_driver" ]; then
-+		check_err 1 "Failed to get driver from ethtool"
-+	fi
-+	if [ "$driver" != "$expected_driver" ]; then
-+		check_err 1 "Driver mismatch: devlink='$driver' ethtool='$expected_driver'"
-+	else
-+		log_info "driver: $driver"
-+	fi
-+
-+	# Test at least one version OR serial_number is reported (needed for device tracking)
-+	local serial
-+	serial=$(info_get "serial_number" 2>/dev/null)
-+	if [ -n "$serial" ]; then
-+		log_info "serial_number: $serial"
-+	fi
-+
-+	if ! has_any_version && [ -z "$serial" ]; then
-+		check_err 1 "No versions or serial_number reported"
-+	fi
-+
-+	log_test "devlink info"
-+}
-+
-+setup_prepare
-+tests_run
-+
-+exit $EXIT_STATUS
+Karl Mehltretter (2):
+  net_shaper: fix kernel-doc list indentation
+  docs: kerneldoc.py: preserve headings in kernel-doc output
+
+ Documentation/sphinx/kerneldoc.py | 3 ++-
+ include/net/net_shaper.h          | 9 +++++----
+ 2 files changed, 7 insertions(+), 5 deletions(-)
+
+
+base-commit: 3205699d79f262412c1be7fc1c04066610d3cd52
 -- 
-2.52.0
-
+2.53.0
