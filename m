@@ -1,159 +1,115 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793F9352009
-	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 19:12:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88281340DB8
+	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 19:24:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786821131; cv=none; b=JliKadwR39F4ywaGSfuykPNtidq5c8C5/MD+vk9MDYYZ+0SDN1g5yN8Qcz1GoQ7Xyv/H3/nvYgtfb0VEYsjySTGhKT3Fpkja3pYByMwslEgSgtviEtuWtAVxVMQYBGZjdtJKSXYyBx6A7OuJDNYybgUbd3PdypktCfeXmkitmR4=
+	t=1786821887; cv=none; b=A5P2zMg/PR3KJslEDUbIy5qUAI84McdPxOnZHcYQKkSq0qu4WBSssBp368NXw2HvfLeTIkkG2W3bK4fT7E1yre5reRDLslCmaB70vGnaf9ZkLpXMIP3ag2Yy/z0eaaZYBDWZeQRZ9GrA+AG+Op8/fNS7cwKzkhUWM6QlXVcHn4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786821131; c=relaxed/simple;
-	bh=5RkMUJ1444X2cAUbWcMBKjhTBMhgCS7gOIBcS9lYMPs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=uPc/7kDL4nymeqJ+5woxE8+vSMbVcU+/jgjm5duIdxAd4uwVQ7LurnHPiIPHNORpGKMU3RXm0fGiYk9E6lEnmM1qVjGKnM47zfUzT2WqonyR4jBUCzt/nR0NquQdz4UzWFQwf7fDEncyJX+eQGulNZqtmTL1Nw18NjCFB1jYKSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OGvpzoKv; arc=none smtp.client-ip=209.85.218.45
+	s=arc-20240116; t=1786821887; c=relaxed/simple;
+	bh=szdQC/NtX3xi3uNHpemQZn4gh9hnWCosDs8lG/Mt8hY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nriEa41fdUBdymp4aG0LBMmZWp9tIjhgLGijUaPa4wocGy49i2P/WCPZcmihivIhDGrUkdYQLJGZF7qBhjWm75To4x4l3VCM02R/2Qp9jFZc2OBPl0tx6DQxdrgrWaFqaJ8UkL1QRTb8mO/aVIdFiuRjvOrgL0B88cNVCUUsfYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TqjOLuxG; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OGvpzoKv"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c167aa9500dso295850466b.3
-        for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 12:12:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TqjOLuxG"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2caea3f742bso36418615ad.0
+        for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 12:24:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786821128; x=1787425928; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=88izO+QaB/O00yTBhu9wQoygITPFWyCSorKc++U3zBY=;
-        b=OGvpzoKvC/8HTbmaFB/nErXD6qnlhk/zmsXYD1OoN7t5w35IW4M0y+EYsAKrhWKfyR
-         ufdqcKHJCBbLpLj1obAkoaZkYYY1zrjg8byCGapnQDz/fViPHjZ8ihPMv2Rl3rk1Urou
-         MWX5hktfymmp3wuZlZXPITJfxQA1nVgtyU2O5Bom3kdZh9kDedUJuFfrdwceIOJSqeTu
-         hzpQE9FPQktvXr2EhyD53G57Kbe3eG6BkXbu5Sm/MjTJo2emI50CU60khHg4ZyHZ4w29
-         NlWfVs+GMpGmmVsoKZO45DrVYz+IuNGsk0HjiL6lrnjbwuF7ZWpdYvvOQZRMWm13Oic4
-         g0sQ==
+        d=gmail.com; s=20251104; t=1786821886; x=1787426686; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=v+cg1OP18itWhQOmvdwkWYBWY3QqDqTh8gAXvCoG3WU=;
+        b=TqjOLuxGUyNlqbkhYwwWnWAg9vOvPcB7WHLtMWK7iZfFJiwFYSlLy0tk9BajM3yw7f
+         2gmUEUoFouREF4PXsDe79NYsPIq3ImGzhNISXLo4Ky0LssCr+upXl0UPdQzE50jkeRfj
+         LxgzHe5APHecHv45h9tDZLALRg2W5S8wfylMgDJDKSyEjKol6lD1bELA6y9MmBiAT5Bh
+         I2P291Iyl3VL9aYhd47WpPjEZpRjbkHG/3JRtRWk7iHm2Pdq89JlCo90JzXPD0W0lwwx
+         LZB0L/lgqFJJ4BwmCIWjhPiIqTj3OT8taHt9KztZxN0qPIabWZUcGWYTAbKLaBX8npRH
+         7z4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786821128; x=1787425928;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1786821886; x=1787426686;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=88izO+QaB/O00yTBhu9wQoygITPFWyCSorKc++U3zBY=;
-        b=HDvzEZzhNa1wMQZUJ9hPh8HJ7ySCTGNgD4ZF+Tugu1b6k10YflhABq8mJp5hMaZWBK
-         EH4vTE3rz9ixPFe/PqN0ZsfiwPQsg2u5v1qHITQnz1caD0MERG/fI+BG1vE/1qx6joAc
-         oYKYmQu2jwPvy/JbGOe+dZ3BP64xelZ9D60fhJKxPZFVThvQChKjNKzRKg5JcBIO0eUQ
-         OhKUuHbq2zweq1lSMfffYOvedDLsauBc5YnYEyUA3YfJPYXSA/X4jcmXWywoecCIKj6P
-         WGk2rCFwEE4gMTkwl7QS2xOj5ikIY+weeePyHNVJdl+OW1nl36ciVlT99bug0pqmS+9F
-         DDug==
-X-Forwarded-Encrypted: i=1; AHgh+RqvDvSYAJElBF0k0Yt4MkXpfps2z9/omaN/QrtgyQy7auST60B8CtggSYsqrFJjz8l/lAIS3ns=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEZIZxoGG1D6EbjlaL1bBIZ4rwd9TGDlBPKZdojyED8KBvcv5j
-	cD7RqwwsClwbdMI7vLm7+zC737ptqadqbi1qAfKEfvGeR85QHybv/X3nQO5GLY/Y
-X-Gm-Gg: AR+sD11twNBnvWfsJGoWzsZhDYKpNRwe+oqWZ5JaLPgyZEPzDg/NEYN3jkwovonMn0L
-	EbrBb5Q0bW7vrKoTLEXJN7udzEop1KsCqLbRYjrhktkbLcTnUk1cZL4MDhr+WEXhTHHpiax9xlY
-	ZZKzHoGVcM8mG0Yjz1/YGf12QXn6wDq0xaENF/iYBHgUkcnFkA0HcqAvhiyRncWIRGVAy0vnxCL
-	AXzbBIG+QKdH7LcQZmBflGJyZ7tmv+DIIpgGlFmbUsn3wAJb6CbRJ5a2cXSuqdpKKmxlwUwt80v
-	tUHHdUc50DkC5gvcYLhxAEnqIT7xhy2an5Kds4hOYXun1ElF2dzsfNWrcGZb3OLZ9cyHS4qMUu+
-	oSm8Cv5vKrpQGzRHQblmo+MAUsB1flGkg54fKVgnlvIXKz3Ii4b1aA/BA/KkqZdY6ZXxIfNNwq6
-	Lh59mkJvNEm8VvlGfvDdwZ+lhi7IcC3N4W8J5fmn62HmEWr4yvUFxrMXaZQdDRnrNQ/FtEb3XDX
-	zYCYg0O0OOXmfxE/1H4emJASlRkcL3sOxsdIaTUtw==
-X-Received: by 2002:a17:906:eeca:b0:c1a:5d49:f99d with SMTP id a640c23a62f3a-c2129ab6c24mr672768166b.7.1786821127686;
-        Sat, 15 Aug 2026 12:12:07 -0700 (PDT)
-Received: from ?IPV6:2a00:1fa0:28f:426f:2aa1:8f7:f8a6:4f89? ([2a00:1fa0:28f:426f:2aa1:8f7:f8a6:4f89])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c212339f744sm252129866b.10.2026.08.15.12.12.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 15 Aug 2026 12:12:06 -0700 (PDT)
-Message-ID: <f140a168-0f92-4507-bf07-f5297ad92159@gmail.com>
-Date: Sat, 15 Aug 2026 22:12:03 +0300
+        bh=v+cg1OP18itWhQOmvdwkWYBWY3QqDqTh8gAXvCoG3WU=;
+        b=baxicFCRTVtLkp/WR01D7Ib+Zba1eGRV6TXQOAZFbuxRi9vVuuCiRapxiMXormYs5T
+         6ta12Mkiz11gCPoKMJclOQWD2flhQbKTPsBPw0hWy3fsQHfSGW4S43nYys0xhJdKvSwg
+         jez10ZyiVh7Ruf764DrkDAd02iOjI3E/4SxRZ+G6KYnYMBrzE1M8amL6R6hQUuXcX657
+         ag4cE1VXOoE8mPItHH2pVtQTdkkPkToF7Z8v3hMRdR9YXI5k8Zbj+y5LPLuOJnDDiFeZ
+         b5H3JCnlui/2f4yfrfHacK21UK536gekeR7qkNYQu0sf61wuOnHpHEx0Z4wkOQATkGGc
+         Ytvg==
+X-Gm-Message-State: AOJu0Yx9toRe+zmehGBxGLaKePD4mhVMIeGOsL1tX9zTYlv4eWXG1EN5
+	aDpqVqW+yAyTAiIvDSeeYjUvtbyFxg+R6rDZx4eGiyQ8CL4B70RHwL+J
+X-Gm-Gg: AR+sD11jvumKhhUB+Og4TQkobJzLcJ1lQ0sT+qFFkG/3N3nukSjiehPQY3XQpYn0Bqe
+	D8P9/7iJ0XHPeX5euF1K1QczIB4S1tyo+cr1eWhwDihzXwO7YGFEWZAsB1EqfF/UwIdFYHgH2GZ
+	fE+qHxu5sESV8/WYpbY4pf8Yo5mCoJ0fDPufxM8HzU2IbOiz1pVUuEDCGbrWj+kWtfM7WOtgiCS
+	P1rFnkVQu/TasfCuUSpp9HNXjH5JrutnCix7qG8ezWe2y6hvUrEaFwSRc2504eD2ggSg6Q25U4D
+	BGsKa6pUiWKKi0B0jzAfHeIK4QsDWO+OoUpJN2bDwwcMLC5F1dgpP5aToOYSVbBez0SLOvqlErh
+	3xMGdb1gnszXjHCgh9zxBQV/8CHrNycd+GcvpDuKMzvnTqaJETmrVRH8y5MuuiaRk35OvcvjSlH
+	RcP+n+YoKEwKAWhIoX7Von6lc96zMqJZ4tYrCU/xZTetxqnTnQnnGmnQ==
+X-Received: by 2002:a05:6a21:7316:b0:3b4:b276:a789 with SMTP id adf61e73a8af0-3cc71ed6b3bmr16610653637.36.1786821885735;
+        Sat, 15 Aug 2026 12:24:45 -0700 (PDT)
+Received: from bloom.localdomain ([2604:3d09:178e:e100::6868])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc08f388356sm2024947a12.2.2026.08.15.12.24.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 15 Aug 2026 12:24:44 -0700 (PDT)
+From: Ivy Lopez <skunkolee@gmail.com>
+To: Ion Badulescu <ionut@badula.org>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Ivy Lopez <skunkolee@gmail.com>
+Subject: [PATCH] net: starfire: fix ioaddr sign-extension causing ioremap() failure
+Date: Sat, 15 Aug 2026 13:24:32 -0600
+Message-ID: <20260815192432.38951-1-skunkolee@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 10/10] net: ethernet: ravb: Add gPTP support
- for Gen4
-To: =?UTF-8?Q?Niklas_S=C3=B6derlund?=
- <niklas.soderlund+renesas@ragnatech.se>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>,
- Magnus Damm <magnus.damm@gmail.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "DavidS. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Vadim Fedorenko
- <vadim.fedorenko@linux.dev>, linux-renesas-soc@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20260811160200.2049987-1-niklas.soderlund+renesas@ragnatech.se>
- <20260811160200.2049987-11-niklas.soderlund+renesas@ragnatech.se>
-Content-Language: en-US
-From: Sergey Shtylyov <sergei.shtylyov@gmail.com>
-In-Reply-To: <20260811160200.2049987-11-niklas.soderlund+renesas@ragnatech.se>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 8/11/26 7:02 PM, Niklas Söderlund wrote:
+ioaddr is declared as a signed long, but is assigned the result of
+pci_resource_start(), which returns an unsigned resource_size_t.
+On configurations where the BAR address has its high bit set, the
+value sign-extends when passed to ioremap(), producing a bogus
+64-bit address and causing device probe to fail:
 
-> While driver advertises gPTP support on Gen4 platforms it is in fact
-> completely broken. On R-Car Gen4 devices the RAVB module have no
-> internal gPTP clock as generations before it. Instead it utilizes a
-> system-wide gPTP clock.
-> 
-> This change utilizes the refactoring of the RAVB gPTP code to add
-> support for a system-wide clock and stops the Gen4 devices trying to use
-> the non-existing internal gPTP clock.
-> 
-> To remain backward compatible the ptp-timer property is optional.If not
-> present, or not enabled, the RAVB driver will no longer advertise gPTP
-> support to user-space.
-> 
-> Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-> Reviewed-by: Sergey Shtylyov <sergei.shtylyov@gmail.com>
-[...]
+  ioremap: invalid physical address fffffffffe480000
+  starfire 0000:08:04.0: cannot Remap 0x80000 @ 0xfe480000, aborting
 
-> diff --git a/drivers/net/ethernet/renesas/ravb.h b/drivers/net/ethernet/renesas/ravb.h
-> index b4df5cab0e5c..4c8dc02022e2 100644
-> --- a/drivers/net/ethernet/renesas/ravb.h
-> +++ b/drivers/net/ethernet/renesas/ravb.h
-> @@ -249,6 +249,8 @@ enum APSR_BIT {
->  	APSR_RDM	= 0x00002000,
->  	APSR_TDM	= 0x00004000,
->  	APSR_MIISELECT	= 0x01000000,	/* R-Car V4M only */
-> +	APSR_GPTPTIMER_SOURCE = BIT(25), /* Gen4 */
-> +	APSR_GPTPCLOCK	= BIT(29),	/* Gen4 */
+Change ioaddr to unsigned long so pci_resource_start()'s value is
+preserved correctly.
 
-   Again, I don't quite like that you switched to using BIT() all of a sudden...
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=198035
+Signed-off-by: Ivy Lopez <skunkolee@gmail.com>
 
-[...]> diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-> index 12877a8488ed..30170e92d3d7 100644
-> --- a/drivers/net/ethernet/renesas/ravb_main.c
-> +++ b/drivers/net/ethernet/renesas/ravb_main.c
-> @@ -2752,6 +2752,59 @@ static const struct ravb_hw_info ravb_gen3_hw_info = {
->  	.magic_pkt = 1,
->  };
->  
-> +static int ravb_gen4_ptp_probe(struct net_device *ndev)
-> +{
-> +	struct ravb_private *priv = netdev_priv(ndev);
-> +
-> +	priv->of_gptp =
-> +		of_parse_phandle(priv->pdev->dev.of_node, "ptp-timer", 0);
+Signed-off-by: Ivy Lopez <skunkolee@gmail.com>
+---
+ drivers/net/ethernet/adaptec/starfire.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-   You now have full 100 columns, no need to break that line... :-)
-
-> +	if (!priv->of_gptp)
-> +		return 0;
-> +
-> +	if (!of_device_is_available(priv->of_gptp)) {
-> +		of_node_put(priv->of_gptp);
-> +		priv->of_gptp = NULL;
-> +		return 0;
-
-   This *return* seems superfluous...
-
-> +	}
-> +
-> +	return 0;
-> +}[...]
-
-MBR, Sergey
+diff --git a/drivers/net/ethernet/adaptec/starfire.c b/drivers/net/ethernet/adaptec/starfire.c
+index f1109d90e1fc..b72b393e6fb2 100644
+--- a/drivers/net/ethernet/adaptec/starfire.c
++++ b/drivers/net/ethernet/adaptec/starfire.c
+@@ -634,7 +634,7 @@ static int starfire_init_one(struct pci_dev *pdev,
+ 	int i, irq, chip_idx = ent->driver_data;
+ 	struct net_device *dev;
+ 	u8 addr[ETH_ALEN];
+-	long ioaddr;
++	unsigned long ioaddr;
+ 	void __iomem *base;
+ 	int drv_flags, io_size;
+ 	int boguscnt;
+-- 
+2.55.0
 
