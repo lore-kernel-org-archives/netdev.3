@@ -1,51 +1,53 @@
-Received: from mta1.migadu.com (out-158.mta1.migadu.com [95.215.58.158])
+Received: from mta1.migadu.com (out-247.mta1.migadu.com [95.215.58.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C76931327D
-	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 07:04:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5362D594F
+	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 07:15:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.247
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786777478; cv=none; b=VQRlGVWDBNpxov3zOlF80I1UtinZobSq6/GGwjh+Ti0vGXK5VhqinUBGIhHxHBk8FZdgFse1UCBsMPOG24kRnVBWWDnubdpE4VhrxA+ix3iUp74wm45JANk2bBXPz/qSbUY42LkJWSiB1YfRIwWdFintEvRD6SXnaYgNCJG95NI=
+	t=1786778154; cv=none; b=ZLFB7vEA3w+Bgov507Kf5eYIQHwO1UeAXUs5B+Xa3IzyF5mpkwqkEuhXmV2+WzhlcfJG9HB7xlW5Xp6bmAfdMiKAUvuHOvwpiU6GM+FOx/Ph1n1Cbaxas7Sj6O+EIr4K5swWfJ9j9ELZxaxuExdjPRP2wxQtpH0eydZkB98tLKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786777478; c=relaxed/simple;
-	bh=Plc0Kt9hQSOO2hAwQfBHQn2XESD4nkRSF2HP4J+dWpo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RXdDEjq2TOtHAbk9v8AHRmi+It2x2V3qruPv0AZXP1cPnQS3EBlq/mxJhcW6BuLtuX+xvlWaOQ0XCsrlYOtnmB2x+qiANkEBIr83TdzMTg83nnvX8omighGQdOzfsuWaSR1pVBbZo5OpCaPfTtURP7jkxa9pGB/Aci0XmIKEQiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=T2JWz4QX; arc=none smtp.client-ip=95.215.58.158
+	s=arc-20240116; t=1786778154; c=relaxed/simple;
+	bh=9CzrLhRoKq+qS18iCs8Ie0gpwrvllBmTQsF5jWCnFzk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CceFLtZVN1sugmOEl2+LUspB0Ag0HGEMU4qe0ZI5EHDXveABBhT+SjADhiblQHsCpIhBS/TqGkPCIA49LXcfB6wN/ner8DtvG+efOeDpE3rhaaoBOjKM96x4gOIeB45ArEb9+9K1FohB11qYiudCMdjDcE/eLhBIxIcUYZf/caI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=OI0gzZ8S; arc=none smtp.client-ip=95.215.58.247
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="T2JWz4QX"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="OI0gzZ8S"
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=Plc0Kt9hQSOO2hAwQfBHQn2XESD4nkRSF2HP4J+dWpo=;
+DKIM-Signature: a=rsa-sha256; bh=9CzrLhRoKq+qS18iCs8Ie0gpwrvllBmTQsF5jWCnFzk=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786777474; v=1; x=1787382274;
- b=T2JWz4QXzEPrVXbDnrpi+9f5d3NAbV+kAMRlOAPvrtq/eEoAz7epjxN8hIPKGO/8Ow61KZVi
- O+Q0UvPnGC1NoxaZW+F16AGf8EIADdt7qHbq5GxhZzvnOu4sJOqbSYiN5TUmIB3mP4sARDA24az
- iA9wwhu5jXJ6fQCh/Dbl4/lY=
+ t=1786778148; v=1; x=1787382948;
+ b=OI0gzZ8SlY3bM7KxV+0DZO0nRQy4WFs4kAMqTWzAF0i9Gr+/Gaz7iMnuzbH4oWLO5fwgTv0d
+ 8ux/qGGoygEh3An/kSNcY6pQaYidK3A2pAAtplx3T+Qx/wjIWqmcd7v4IKN+tLIVPIlgPPQ2PNH
+ Tf4fFcj31qchrk4wkIRwe1d8=
 X-Envelope-To: netdev@vger.kernel.org
 Received: from localhost.localdomain (147.136.157.3)
-	by smtp.migadu.com with ESMTPS id 2d80237f62a346b7;
-	Sat, 15 Aug 2026 07:04:33 +0000
+	by smtp.migadu.com with ESMTPS id b4549a7fe812b398;
+	Sat, 15 Aug 2026 07:15:48 +0000
 X-Migadu-Flow: FLOW_OUT
 From: Jiayuan Chen <jiayuan.chen@linux.dev>
 To: netdev@vger.kernel.org
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	stable@vger.kernel.org,
+Cc: Eric Dumazet <edumazet@google.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
 	David Ahern <dsahern@kernel.org>,
 	Ido Schimmel <idosch@nvidia.com>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	Shuah Khan <shuah@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH net v2 1/2] net: advertise TCP MSS from the configured MTU, not the learned PMTU
-Date: Sat, 15 Aug 2026 15:03:36 +0800
-Message-ID: <20260815070413.294559-1-jiayuan.chen@linux.dev>
+Subject: [PATCH net v2 2/2] selftests: net: packetdrill: add tests for advertised MSS with PMTU exceptions
+Date: Sat, 15 Aug 2026 15:15:08 +0800
+Message-ID: <20260815071532.301908-1-jiayuan.chen@linux.dev>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260815070413.294559-1-jiayuan.chen@linux.dev>
+References: <20260815070413.294559-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,152 +56,168 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The MSS a host puts in its SYN tells the peer how big a segment it may
-send us. Right now we can shrink it with a PMTU we learned on our own
-send path, which is the wrong direction entirely.
+From: Eric Dumazet <edumazet@google.com>
 
-On asymmetric paths this bites - think DSR load balancers, where the
-request side goes through a smaller-MTU overlay. We learn a small PMTU
-going out, then advertise a small MSS, and the peer stays capped for the
-whole connection even though its path back to us is wide. MSS only shows
-up in the SYN and never grows back.
+Add packetdrill tests for IPv4 and IPv6 to verify that the advertised
+MSS in SYN-ACK is derived from the configured interface/route MTU,
+and is not shrunk by learned Path MTU exceptions from previous
+outbound connections.
 
-On symmetric paths we lose nothing by dropping it either: the peer runs
-its own PMTU discovery and usually already knows the real path MTU.
-
-So work out the advertised MSS from the configured route or device MTU
-and ignore the learned PMTU. Our send side is unchanged, still clamped by
-tcp_current_mss(). Add ip_dst_mtu_configured()/ip6_dst_mtu_configured()
-and use them from the two default_advmss() paths.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Fixes: 164a5e7ad531 ("ipv4: ipv4_default_advmss() should use route mtu")
-Cc: stable@vger.kernel.org
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 ---
-v1 -> v2: carry with Eric's selftest and target to net tree with Fixes
-tags.
+ .../net/packetdrill/tcp_advmss_pmtu_ipv4.pkt  | 67 +++++++++++++++++++
+ .../net/packetdrill/tcp_advmss_pmtu_ipv6.pkt  | 67 +++++++++++++++++++
+ 2 files changed, 134 insertions(+)
+ create mode 100644 tools/testing/selftests/net/packetdrill/tcp_advmss_pmtu_ipv4.pkt
+ create mode 100644 tools/testing/selftests/net/packetdrill/tcp_advmss_pmtu_ipv6.pkt
 
-v1: https://lore.kernel.org/netdev/20260814063545.225896-1-jiayuan.chen@linux.dev/
----
- include/net/ip.h        | 25 +++++++++++++++++++++++++
- include/net/ip6_route.h | 37 +++++++++++++++++++++++++++++++++++++
- net/ipv4/route.c        |  4 ++--
- net/ipv6/route.c        |  2 +-
- 4 files changed, 65 insertions(+), 3 deletions(-)
-
-diff --git a/include/net/ip.h b/include/net/ip.h
-index 7f2fe1a8401b..a8f57b4f4aa2 100644
---- a/include/net/ip.h
-+++ b/include/net/ip.h
-@@ -506,6 +506,31 @@ static inline unsigned int ip_dst_mtu_maybe_forward(const struct dst_entry *dst,
- 	return res;
- }
- 
-+/* Configured/administrative MTU of a route, for advertising the TCP MSS.
-+ *
-+ * Unlike ip_dst_mtu_maybe_forward(), this deliberately ignores the
-+ * ICMP-learned path MTU (rt->rt_pmtu).  The advertised MSS bounds what the
-+ * peer may send to us and must reflect our receive capability (the device or
-+ * route-configured MTU), not a path MTU learned on the reverse (send)
-+ * direction, which may not apply to the peer->us path and outlives the fnhe
-+ * for the whole connection.  See RFC 2923 section 2.3 and the comment above
-+ * tcp_advertise_mss().
-+ */
-+static inline unsigned int ip_dst_mtu_configured(const struct dst_entry *dst)
-+{
-+	unsigned int mtu, res;
+diff --git a/tools/testing/selftests/net/packetdrill/tcp_advmss_pmtu_ipv4.pkt b/tools/testing/selftests/net/packetdrill/tcp_advmss_pmtu_ipv4.pkt
+new file mode 100644
+index 000000000000..f2ef931b77a1
+--- /dev/null
++++ b/tools/testing/selftests/net/packetdrill/tcp_advmss_pmtu_ipv4.pkt
+@@ -0,0 +1,67 @@
++// SPDX-License-Identifier: GPL-2.0
++//
++// Test that IPv4 advertised MSS in SYN-ACK is derived from the configured
++// interface MTU (1500 -> MSS 1460), not the ICMP-learned Path MTU.
 +
-+	rcu_read_lock();
-+	mtu = dst_metric_raw(dst, RTAX_MTU);
-+	if (!mtu)
-+		mtu = READ_ONCE(dst_dev_rcu(dst)->mtu);
-+	mtu = min_t(unsigned int, mtu, IP_MAX_MTU);
-+	res = mtu - lwtunnel_headroom(dst->lwtstate, mtu);
-+	rcu_read_unlock();
++--ip_version=ipv4
 +
-+	return res;
-+}
++`./defaults.sh
++ethtool -K tun0 tso off
++`
 +
- static inline unsigned int ip_skb_dst_mtu(struct sock *sk,
- 					  const struct sk_buff *skb)
- {
-diff --git a/include/net/ip6_route.h b/include/net/ip6_route.h
-index 09ffe0f13ce7..ac1acc0b7436 100644
---- a/include/net/ip6_route.h
-+++ b/include/net/ip6_route.h
-@@ -385,6 +385,43 @@ static inline unsigned int ip6_dst_mtu_maybe_forward(const struct dst_entry *dst
- 	return mtu - lwtunnel_headroom(dst->lwtstate, mtu);
- }
- 
-+/* Configured/administrative MTU of a route, for advertising the TCP MSS.
-+ *
-+ * Unlike ip6_dst_mtu_maybe_forward(), this ignores any ICMPv6-learned path
-+ * MTU (which is kept on the RTF_CACHE exception route) and returns the MTU of
-+ * the underlying route (fib6_pmtu) or the egress device.  The advertised MSS
-+ * bounds what the peer may send to us and must reflect our receive
-+ * capability, not a path MTU learned on the reverse (send) direction.  See
-+ * RFC 2923 section 2.3 and the comment above tcp_advertise_mss().
-+ */
-+static inline unsigned int ip6_dst_mtu_configured(const struct dst_entry *dst)
-+{
-+	const struct rt6_info *rt = dst_rt6_info(dst);
-+	const struct fib6_info *from;
-+	struct inet6_dev *idev;
-+	unsigned int mtu = 0;
++//
++// Connection 1: Learn PMTU exception (MTU 1200 -> MSS 1160)
++//
++    0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
++   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
++   +0 bind(3, ..., ...) = 0
++   +0 listen(3, 1) = 0
 +
-+	rcu_read_lock();
-+	/* IPv6 keeps the learned PMTU and the configured MTU in the same
-+	 * RTAX_MTU slot: the learned value sits on this (possibly RTF_CACHE)
-+	 * dst, the configured one on the underlying route.  Reach the latter
-+	 * via ->from (fib6_pmtu), populated by ip6_route_info_create().
-+	 */
-+	from = rcu_dereference(rt->from);
-+	if (from)
-+		mtu = from->fib6_pmtu;
-+	if (!mtu) {
-+		mtu = IPV6_MIN_MTU;
-+		idev = __in6_dev_get(dst_dev_rcu(dst));
-+		if (idev)
-+			mtu = max_t(unsigned int, mtu, READ_ONCE(idev->cnf.mtu6));
-+	}
-+	rcu_read_unlock();
++   +0 < S 0:0(0) win 65535 <mss 1460,sackOK,nop,nop,nop,wscale 8>
++   +0 > S. 0:0(0) ack 1 <mss 1460,nop,nop,sackOK,nop,wscale 8>
++  +.1 < . 1:1(0) ack 1 win 257
++   +0 accept(3, ..., ...) = 4
 +
-+	mtu = min_t(unsigned int, mtu, IP6_MAX_MTU);
-+	return mtu - lwtunnel_headroom(dst->lwtstate, mtu);
-+}
++// Send a full 1460-byte segment
++   +0 write(4, ..., 1460) = 1460
++   +0 > P. 1:1461(1460) ack 1
 +
- u32 ip6_mtu_from_fib6(const struct fib6_result *res,
- 		      const struct in6_addr *daddr,
- 		      const struct in6_addr *saddr);
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index fd688e1f879f..46aa98c92183 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -1334,8 +1334,8 @@ static unsigned int ipv4_default_advmss(const struct dst_entry *dst)
- 
- 	rcu_read_lock();
- 	net = dst_dev_net_rcu(dst);
--	advmss = max_t(unsigned int, ipv4_mtu(dst) - header_size,
--				   net->ipv4.ip_rt_min_advmss);
-+	advmss = max_t(unsigned int, ip_dst_mtu_configured(dst) - header_size,
-+		       net->ipv4.ip_rt_min_advmss);
- 	rcu_read_unlock();
- 
- 	return min(advmss, IPV4_MAX_PMTU - header_size);
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 5968ce5ad150..e2056bd0df3c 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -3261,7 +3261,7 @@ void ip6_sk_redirect(struct sk_buff *skb, struct sock *sk)
- 
- static unsigned int ip6_default_advmss(const struct dst_entry *dst)
- {
--	unsigned int mtu = dst6_mtu(dst);
-+	unsigned int mtu = ip6_dst_mtu_configured(dst);
- 	struct net *net;
- 
- 	mtu -= sizeof(struct ipv6hdr) + sizeof(struct tcphdr);
++// ICMP Fragmentation Needed arrives indicating next-hop MTU 1200
++   +0 < icmp unreachable frag_needed mtu 1200 [1:1461(1460)]
++
++// Local host retransmits using the learned MTU 1200 (MSS = 1200 - 40 = 1160)
++   +0 > . 1:1161(1160) ack 1
++   +0 > P. 1161:1461(300) ack 1
++   +0 < R 1:1(0) ack 1461 win 0
++
++// Close connection 1 and listener
++   +0 close(4) = 0
++   +0 close(3) = 0
++
++//
++// Connection 2: New connection from the same peer
++//
++   +0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
++   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
++   +0 bind(3, ..., ...) = 0
++   +0 listen(3, 1) = 0
++
++   +0 < S 0:0(0) win 65535 <mss 1460,sackOK,nop,nop,nop,wscale 8>
++
++// Verify: SYN-ACK MUST advertise configured MSS 1460, NOT the learned PMTU MSS 1160
++   +0 > S. 0:0(0) ack 1 <mss 1460,nop,nop,sackOK,nop,wscale 8>
++   +0 < . 1:1(0) ack 1 win 257
++   +0 accept(3, ..., ...) = 4
++
++// Verify: Outgoing transmit MSS is still constrained by the learned PMTU 1200
++   +0 write(4, ..., 1460) = 1460
++   +0 > . 1:1161(1160) ack 1
++   +0 > P. 1161:1461(300) ack 1
++   +0 < . 1:1(0) ack 1461 win 257
++
++// Clean up
++   +0 close(4) = 0
++   +0 > F. 1461:1461(0) ack 1
++   +0 < F. 1:1(0) ack 1462 win 257
++   +0 > . 1462:1462(0) ack 2
++   +0 close(3) = 0
+diff --git a/tools/testing/selftests/net/packetdrill/tcp_advmss_pmtu_ipv6.pkt b/tools/testing/selftests/net/packetdrill/tcp_advmss_pmtu_ipv6.pkt
+new file mode 100644
+index 000000000000..c7638b11a815
+--- /dev/null
++++ b/tools/testing/selftests/net/packetdrill/tcp_advmss_pmtu_ipv6.pkt
+@@ -0,0 +1,67 @@
++// SPDX-License-Identifier: GPL-2.0
++//
++// Test that IPv6 advertised MSS in SYN-ACK is derived from the configured
++// interface MTU (1520 -> MSS 1460), not the ICMPv6-learned Path MTU.
++
++--ip_version=ipv6
++
++`./defaults.sh
++ethtool -K tun0 tso off
++`
++
++//
++// Connection 1: Learn PMTU exception (MTU 1280 -> MSS 1220)
++//
++    0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
++   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
++   +0 bind(3, ..., ...) = 0
++   +0 listen(3, 1) = 0
++
++   +0 < S 0:0(0) win 65535 <mss 1460,sackOK,nop,nop,nop,wscale 8>
++   +0 > S. 0:0(0) ack 1 <mss 1460,nop,nop,sackOK,nop,wscale 8>
++  +.1 < . 1:1(0) ack 1 win 257
++   +0 accept(3, ..., ...) = 4
++
++// Send a full 1460-byte segment
++   +0 write(4, ..., 1460) = 1460
++   +0 > P. 1:1461(1460) ack 1
++
++// ICMPv6 Packet Too Big arrives indicating next-hop MTU 1280
++   +0 < icmp packet_too_big mtu 1280 [1:1461(1460)]
++
++// Local host retransmits using the learned MTU 1280 (MSS = 1280 - 40 - 20 = 1220)
++   +0 > . 1:1221(1220) ack 1
++   +0 > P. 1221:1461(240) ack 1
++   +0 < R 1:1(0) ack 1461 win 0
++
++// Close connection 1 and listener
++   +0 close(4) = 0
++   +0 close(3) = 0
++
++//
++// Connection 2: New connection from the same peer
++//
++   +0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
++   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
++   +0 bind(3, ..., ...) = 0
++   +0 listen(3, 1) = 0
++
++   +0 < S 0:0(0) win 65535 <mss 1460,sackOK,nop,nop,nop,wscale 8>
++
++// Verify: SYN-ACK MUST advertise configured MSS 1460, NOT the learned PMTU MSS 1220
++   +0 > S. 0:0(0) ack 1 <mss 1460,nop,nop,sackOK,nop,wscale 8>
++   +0 < . 1:1(0) ack 1 win 257
++   +0 accept(3, ..., ...) = 4
++
++// Verify: Outgoing transmit MSS is still constrained by the learned PMTU 1280
++   +0 write(4, ..., 1460) = 1460
++   +0 > . 1:1221(1220) ack 1
++   +0 > P. 1221:1461(240) ack 1
++   +0 < . 1:1(0) ack 1461 win 257
++
++// Clean up
++   +0 close(4) = 0
++   +0 > F. 1461:1461(0) ack 1
++   +0 < F. 1:1(0) ack 1462 win 257
++   +0 > . 1462:1462(0) ack 2
++   +0 close(3) = 0
 -- 
 2.43.0
 
