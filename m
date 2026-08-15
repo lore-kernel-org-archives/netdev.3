@@ -1,137 +1,200 @@
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
+Received: from mail-wm2-f9.google.com (mail-wm2-f9.google.com [74.125.225.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA8A265623
-	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 00:48:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E47323BD05
+	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 00:59:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786754922; cv=none; b=ePN+LxkeAebdiquAIKipTNJnyG2Rhf/ewI0RNoi9AuStnYniHAWi1zYIPAtVcdjPdLvk+QqyhA7woRpXFPXS+bnqFIooHyJQkUeymd0fhLO+B71hPV2CmTouQgWfDzcypMsDTkDJYEayHluI6MOPDYiXEZDwmHheE/Ob3W+D484=
+	t=1786755565; cv=none; b=cN4NtuPzgLr+2jBfhDz85cTAMZedBVyzeLmDWK5NrIkercP4XM7EzfMA0AD/gXKJjNjvwUgRItgYRn0cevwFXbl16U/CBjQ87xfjxo/IDPkvCS4BjY1ELICn1c71Kbc5LyWR383QRFj0hI/W/nklO+oo1A+sjmoeAVoNNZW6NaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786754922; c=relaxed/simple;
-	bh=1LnCRgjE5GrtVilnDq6Mw+CJnt8OEZLKDembPlnG1UE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PSvI99viecoJCDTE6h5YPvzSl/jeKNt1Eq0KmvCnICzZxMMOwdkb0sXYYT9fAANFR+/1T+5wvO+HdrQns1YKePgoH4rZCsiWLo+6epiUrnOXcJ3JR3LdFrXfIFhFKiNFNWlunLlv6N6QmAcIQ/I7yi+ynRV7+fMQLZO1bOvcYww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=biDmOmnD; arc=none smtp.client-ip=209.85.161.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1786755565; c=relaxed/simple;
+	bh=0Z4P/jp0fu6vykOGEa30QqlDY/ioWFuKUDyZe5Zm+uk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R75vGgsosZEPt3vtYg6ovM3PAY3tv8XqPcMpbI0sK7y/Y2VbbTcys+Ro1caxTh4xEz7TkBCGQkTIMS9GUBeVeM6gx/wJWXGbNR73TVoyIBrcHISTMaM0oKaDO6TWdXMhpSfBggc2Ou9q4nKRGPW3O70KgEJ5R9sdMbiOlbQixuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="biDmOmnD"
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-6b04c0b9159so1003193eaf.3
-        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 17:48:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786754919; x=1787359719; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Kbg4qcFK/mBxoYXCkGvYYK5TXUGZpjr2DCvrJZaXNS8=;
-        b=biDmOmnD7DTVdha8hx+DQkfJo+m7eWvL2KNHnqgpVwgSSBQp4dOSCQPg2JstGhupJZ
-         jLCmqX9/opdGbGpQ6VCF2jtojZ/XPIw2RT49PkObJiL9A0lkqYMjAF529RapyAHlSqZ8
-         CFPOA70KWgu223eIeQaXrx5HR1l/8TVpcv8EALoO3sPJPcLMpZBoUIMN0T48HUpu9jO0
-         37RxqNjymsIGuyzmQ4GhjIvh9QQyiWlLLuIOLbRPODyrQNNm5eoUZZIEcR7tWKppgn3M
-         HJ7FVSiGMbwbqqfJLxMBSvMWJ5irY8iYLLHZ2um3OC3sHOdTO0A345PHRsZ/cOmm/Ket
-         /xGQ==
+Received: by mail-wm2-f9.google.com with SMTP id 5b1f17b1804b1-4955674321eso3036875e9.0
+        for <netdev@vger.kernel.org>; Fri, 14 Aug 2026 17:59:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786754919; x=1787359719;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Kbg4qcFK/mBxoYXCkGvYYK5TXUGZpjr2DCvrJZaXNS8=;
-        b=Jm1vmiIpBJ5MZu72Rt0XGuBy5LFbp49DOMeWc7QbJaYWz/dadYI1JWx3bJUTL72srS
-         R+PUElspbR2Tnvck8GQsKZE0fPtJeUjtiAp1vfSI/CMt+TYDB8rn/o+ZIkOJw8d81oBi
-         Q+xLTK0uUHLBIgeUTADzSseUPh6eo/7VbKtAAN8iaiyJIwpYLmSMZqz31V9XwNp4dHKM
-         PuCSb93+YEFrkL2TKKXXLqXWv0h/CNwpnqMIbPFo+8PoubACZikwanx/62ZB3j1d31lt
-         X4eqXezjrKuK/Sqnwr53e/IPV7Civ4IIPw/GXgI28S3cWwR9vpHmyI5XWtFjlXa2Wl/e
-         PR/A==
-X-Forwarded-Encrypted: i=1; AHgh+RooezBQS3UABXxY6I8jtNNn+yO7kwyhHcm2NiPdJ7IfcfkAS3ZcK/7TH7s7xMO9vfRlQyogA7Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwY8XeWRhyl3OyyN2hzfPMChqQwu9v+NBeYNPrFNraur9k+ybWw
-	oS+phlao1O2Sa9sH/zdRz3kILxyrz2r12sufk84rFwAHJLIVimblePBswknHRQ==
-X-Gm-Gg: AR+sD10JXj42tcAvQ2QPr5Lh3gvaXl6+TVArL1DYDFxe3Vx8zazYoMndd3QN5o0hOWc
-	cz0GzTcTs25xSJ7VM5UEHy7uxyqGToLP2otLE68h5Gcv6aVs+a3+ELE2f/viIH1swWpczysgWWe
-	UYMRynq6WObJaIY2zT0uIw40KnI3pymcOh6hYXZZxxtSoB5lz9WRA251K1j4TC3N983UP/AWScQ
-	hmuHB0I+PL31TNenPPy1NoeO7qbbiysgKoJt44khZrls/ajFi/vVuoL98N8NowL6ShOtx3n3iKb
-	0MOwDIIA3jjiPKLwrR2w0kBE26q4Q5cR0/dV53o1qytm42yaiSZoTIdu/LSPHrQYxiof01Wlz3W
-	e0wlQtTAajEcO3fPuDIV+bLdHxzb+8b4vlXHkiTInj9Th/xT8vtAHRTKAwiSkXWJIUQCvreGQW+
-	RToUMoGRNbKDihWAE/XndoxAxm3X/bjnNXFDHwtWdASCtXQfmSiacPC26arjBp5q8nyDxcK8LwH
-	9Q9GVRdElFFLyRhx1LPJE+C7ieoRvzkZeRyQWpWZDCUN1ktKvzt+ak40xHDNZXn+ANaF552ZNX6
-	WPvtaMMqeUtpOMhWuMx10nQpSRHWVggEJohF+WKj0K8S58cejXb9lFvp98HrHasl+5fcNMH8/rH
-	ZC7sf3uGhjbt8zkFQsQ==
-X-Received: by 2002:a05:6820:2916:b0:6ac:9729:6710 with SMTP id 006d021491bc7-6b0d6a8e9b9mr8697804eaf.18.1786754919602;
-        Fri, 14 Aug 2026 17:48:39 -0700 (PDT)
-Received: from [127.0.1.1] (184-96-154-59.hlrn.qwest.net. [184.96.154.59])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6b0d9574d7csm3240730eaf.2.2026.08.14.17.48.38
+        d=1e100.net; s=20251104; t=1786755562; x=1787360362;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oMe+JVngFFXsUJ2EY92OUmaJ2oOmTOXC99ljO0kx/ac=;
+        b=lQrruFvBkp7MJjhRQQoA2C6op31KL/YW6y18IDH3M9QXHJNUmTrIj2Tzj6fPBOKh9D
+         Cr3UhnoutvMUN7lQs6KRsZgHEUnKpo3b8iXo/YHzKNlQ9eVhSKcHnvJB55vfwb5Vzae7
+         Djo1f71bwmlL7kyE/f5YlCfKArVZzKDwyiWO2+9sDzoLg1XqdvEg/1CAmWVhWcK0HXPE
+         6TjNIo3io7tB7OawI59R/OZ/cRYOva7NSLYhT7nwT7lWDUY/Y1rOS3h7owEqR/ozVyQ2
+         g4R/kyJf8N1e8XHOGvLN2Tr3mtdfsLd1beOvGECKcMY2bmnxl089kfH18K932DtidJVm
+         fsNA==
+X-Gm-Message-State: AOJu0YzQuEChubnH2ZcOYeftUFHBbqtm8yo+2XBSVs51YEZ3SEqydL0E
+	+SZiZHUxq+j+YccHYwR/RMzdES8bsi4Ww9uDFj/94PTEZzqnMaRxvwTho9E1V72I
+X-Gm-Gg: AR+sD1282kXqhdUP3yFIuWYItje5QqryJnUZ7fjP2RsE/fdBkSX+C/yOKnntyiVe4Wg
+	1V1iqcwrqG9vnJ+FO4DG1v1kx+NlgbV/u81U9B0yrkVi5zuMM0CLG0RmRd6KXWhpjv839pXDTJy
+	W6Qmb+sKl9t4k+u0+ZGpkuf+yOlIBQvJ95y6OnytQ8Vfhzzw7c9eFiks1Jht6No8V0eD9v/L9Gu
+	kultDKBgdge3+0RtokOGxozbDB943kZojs8V7psbfOvnJ0alpo3gpJkp7tcRYnqj5T2ZQsz5erS
+	WoaWovs9Xi43m6JVzPoL7dVUsem0LPic8l4s/z1gxaOTYaq7noICCcaLgP+bIOkPUYr3J89Y4HN
+	mQ0l91qur8BhMS1LAImAC+UCrNS02R5FuMuA6ddDfHe60iCPGsiQftUMet/CIgQyf1Bd3dA+FVI
+	5Egevd8euRwzikpI48FrScbDVuXxn7Gw+kbOyBuNYGssm60kieA9sBSx9xTnac4ZDM3y0Jd/SaX
+	JPXGBv2o2Lu+4BQb0ZW
+X-Received: by 2002:a05:600c:1c07:b0:495:4d5c:903e with SMTP id 5b1f17b1804b1-49987950d78mr129085315e9.7.1786755561664;
+        Fri, 14 Aug 2026 17:59:21 -0700 (PDT)
+Received: from im-t490s.redhat.com (89-24-57-65.nat.epc.tmcz.cz. [89.24.57.65])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f2b1d9bsm12532061f8f.24.2026.08.14.17.59.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Aug 2026 17:48:39 -0700 (PDT)
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Fri, 14 Aug 2026 18:46:17 -0600
-Subject: [PATCH net-next 3/3] net: mdio: release fw_devlink proxies after
- population
+        Fri, 14 Aug 2026 17:59:21 -0700 (PDT)
+From: Ilya Maximets <i.maximets@ovn.org>
+To: netdev@vger.kernel.org
+Cc: Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	dev@openvswitch.org,
+	linux-kernel@vger.kernel.org,
+	Ilya Maximets <i.maximets@ovn.org>,
+	stable@vger.kernel.org
+Subject: [PATCH net] net: openvswitch: fix flow mask use-after-free on flow deletion
+Date: Sat, 15 Aug 2026 02:58:56 +0200
+Message-ID: <20260815005915.1097270-1-i.maximets@ovn.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260814-submit-phy-package-fwdevlink-v1-v1-3-2319844f057a@gmail.com>
-References: <20260814-submit-phy-package-fwdevlink-v1-v1-0-2319844f057a@gmail.com>
-In-Reply-To: <20260814-submit-phy-package-fwdevlink-v1-v1-0-2319844f057a@gmail.com>
-To: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Christian Marangi <ansuelsmth@gmail.com>, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, driver-core@lists.linux.dev, 
- netdev@vger.kernel.org, James Hilliard <james.hilliard1@gmail.com>
-X-Mailer: b4 0.15.2
+Content-Transfer-Encoding: 8bit
 
-fw_devlink creates sync-state-only links from the closest existing
-ancestor device to suppliers of child devices which have not been added
-yet. It normally drops those proxy links when the ancestor driver
-finishes probing.
+The commit in the Fixes tag below made so flow->mask free is scheduled
+via RCU right after it is removed from the flow table.  The pointer
+stays in the flow structure and it can be accessible while in the same
+RCU critical section.  This is done to avoid requiring ovs_mutex for
+the ovs_flow_free().
 
-An MDIO bus is a driverless class device, so successful OF population
-never reaches that lifecycle point. Its proxy links can consequently
-remain forever and prevent suppliers from receiving sync_state() even
-after the real PHY devices have acquired and activated their own links.
+However, while removing the flow during processing of CMD_DEL, we do
+not take RCU read lock before the removal, and ovs_flow_cmd_fill_info()
+uses the flow->mask pointer afterwards.  The RCU read lock is taken,
+but it's already late at that point.  The comment on that line
+acknowledges that the lock is cosmetic and doesn't serve a real purpose.
 
-Call the driver-core cleanup helper after successful OF MDIO population.
-Only sync-state-only links are removed; the real PHY links continue to
-enforce dependency and runtime-PM ordering.
+This leads to use-after-free if the RCU grace period passes between
+removal and the filling.  It is a short race window, but it is there
+and can lead to a real crash in case memory allocation for the info
+takes a bit longer:
 
-Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+ BUG: KASAN: slab-use-after-free in __ovs_nla_put_key
+             net/openvswitch/flow_netlink.c:1996
+ BUG: KASAN: slab-use-after-free in ovs_nla_put_key+0x2463/0x2e30
+             net/openvswitch/flow_netlink.c:2250
+ Read of size 4 at addr ffff88801ee89970 by task ovs_flow_del_ec/9487
+
+ Call Trace:
+  <TASK>
+  __ovs_nla_put_key net/openvswitch/flow_netlink.c:1996
+  ovs_nla_put_key+0x2463/0x2e30 net/openvswitch/flow_netlink.c:2250
+  ovs_flow_cmd_fill_info+0x420/0x9c0 net/openvswitch/datapath.c:930
+  ovs_flow_cmd_del+0x53a/0x970 net/openvswitch/datapath.c:1467
+  ...
+  netlink_rcv_skb+0x156/0x420 net/netlink/af_netlink.c:2556
+  </TASK>
+
+ Allocated by task 9487:
+  mask_alloc net/openvswitch/flow_table.c:967
+  flow_mask_insert net/openvswitch/flow_table.c:1012
+  ovs_flow_tbl_insert+0xea2/0x1a90 net/openvswitch/flow_table.c:1084
+  ovs_flow_cmd_new+0x7e3/0xd90 net/openvswitch/datapath.c:1086
+  ...
+  netlink_rcv_skb+0x156/0x420 net/netlink/af_netlink.c:2556
+
+ Freed by task 9485:
+  rcu_free_sheaf+0x1e/0x100 mm/slub.c:5978
+  rcu_do_batch kernel/rcu/tree.c:2645
+  rcu_core+0x59c/0x10c0 kernel/rcu/tree.c:2897
+  handle_softirqs+0x1e4/0x9a0 kernel/softirq.c:622
+  ...
+  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062
+
+ovs_flow_tbl_remove() must be called after the ovs_flow_cmd_fill_info()
+to avoid this race.  This also helps with cleaning up the forced cast
+and the cosmetic RCU read lock.  Before the commit in the Fixes tag the
+order did not matter as long as the flow object itself was not freed.
+
+A wider RCU critical section could be another option, but we have a
+GFP_KERNEL allocation in the way.
+
+Reported by Trend Micro's Zero Day Initiative as ZDI-CAN-32042.
+
+Fixes: 56c19868e115 ("openvswitch: Make flow mask removal symmetric.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
 ---
- drivers/net/mdio/of_mdio.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/openvswitch/datapath.c | 45 +++++++++++++++++++-------------------
+ 1 file changed, 23 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/net/mdio/of_mdio.c b/drivers/net/mdio/of_mdio.c
-index b8d298c04d3f..49f9b4062cf5 100644
---- a/drivers/net/mdio/of_mdio.c
-+++ b/drivers/net/mdio/of_mdio.c
-@@ -229,7 +229,7 @@ int __of_mdiobus_register(struct mii_bus *mdio, struct device_node *np,
- 		goto unregister;
- 
- 	if (!scanphys)
--		return 0;
-+		goto done;
- 
- 	/* auto scan for PHYs with empty reg property */
- 	for_each_available_child_of_node(np, child) {
-@@ -261,6 +261,9 @@ int __of_mdiobus_register(struct mii_bus *mdio, struct device_node *np,
- 		}
+diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
+index ae69b2cabab9..ded46d993a4e 100644
+--- a/net/openvswitch/datapath.c
++++ b/net/openvswitch/datapath.c
+@@ -1473,33 +1473,34 @@ static int ovs_flow_cmd_del(struct sk_buff *skb, struct genl_info *info)
+ 		goto unlock;
  	}
  
-+done:
-+	device_links_drop_sync_state_only(&mdio->dev);
-+
- 	return 0;
+-	ovs_flow_tbl_remove(&dp->table, flow);
+-	ovs_unlock();
+-
+-	reply = ovs_flow_cmd_alloc_info((const struct sw_flow_actions __force *) flow->sf_acts,
++	reply = ovs_flow_cmd_alloc_info(ovsl_dereference(flow->sf_acts),
+ 					&flow->id, info, false, ufid_flags);
+-	if (likely(reply)) {
+-		if (!IS_ERR(reply)) {
+-			rcu_read_lock();	/*To keep RCU checker happy. */
+-			err = ovs_flow_cmd_fill_info(flow, ovs_header->dp_ifindex,
+-						     reply, info->snd_portid,
+-						     info->snd_seq, 0,
+-						     OVS_FLOW_CMD_DEL,
+-						     ufid_flags);
+-			rcu_read_unlock();
+-			if (WARN_ON_ONCE(err < 0)) {
+-				kfree_skb(reply);
+-				goto out_free;
+-			}
++	if (IS_ERR(reply)) {
++		netlink_set_err(sock_net(skb->sk)->genl_sock, 0, 0,
++				PTR_ERR(reply));
++		reply = NULL;
++	}
  
- put_unregister:
-
+-			ovs_notify(&dp_flow_genl_family, reply, info);
+-		} else {
+-			netlink_set_err(sock_net(skb->sk)->genl_sock, 0, 0,
+-					PTR_ERR(reply));
++	if (likely(reply)) {
++		err = ovs_flow_cmd_fill_info(flow, ovs_header->dp_ifindex,
++					     reply, info->snd_portid,
++					     info->snd_seq, 0,
++					     OVS_FLOW_CMD_DEL, ufid_flags);
++		if (WARN_ON_ONCE(err < 0)) {
++			kfree_skb(reply);
++			reply = NULL;
+ 		}
+ 	}
++	/* Removal has to happen after ovs_flow_cmd_fill_info(), as it uses
++	 * the flow->mask that can be scheduled to be freed by the
++	 * ovs_flow_tbl_remove() and we're not holding the RCU read lock.
++	 */
++	ovs_flow_tbl_remove(&dp->table, flow);
++	ovs_unlock();
++
++	if (likely(reply))
++		ovs_notify(&dp_flow_genl_family, reply, info);
+ 
+-out_free:
+ 	ovs_flow_free(flow, true);
+ 	return 0;
+ unlock:
 -- 
-2.53.0
+2.55.0
 
