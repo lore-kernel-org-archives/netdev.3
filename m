@@ -1,157 +1,207 @@
-Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 353092AD2E
-	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 12:36:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8D04192F7
+	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 12:51:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786797399; cv=none; b=bqm4WJoGyYYn3n0uN3y89IoPdWHwXP2+mScUSVNHuiTuQ4dG6vIUKM6ukmRPHvAE4WcV91d3UFoOdiM/J7/NTgqQuVF757FPDcxesV6KVonAz9K/XFm2xlLyeKZJOE3OV0Tz131csxB8YiGcqSaUSAzzZJw4CeerF2x0xNG3qq4=
+	t=1786798286; cv=none; b=KVH3JpuF7IC08Ack5C29Y6SVA6U5frcflds/ffTIlXgxufj0rCs4Dtv91RQodeJuomucEBKChmGTKkRmJxEMaMndzqcPnQaMuC5frDMtIyFDKtNHWYRuf0VhEcTy8pLSxiqHRAsU069+MwlaXTdX7DqJe9O8dqGSvTIIxTxcRAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786797399; c=relaxed/simple;
-	bh=upPbpF5Ns7qjSG+Be6PRgfPc4f8xoS3GZ+mZqvs9saw=;
+	s=arc-20240116; t=1786798286; c=relaxed/simple;
+	bh=HIbQ+JpYX0jXmi8cSJxSlzmovPVYMmN7thbmjNK6mfg=;
 	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=K04mo7q1WOD8T/nO5nkvBF+IMCXDO462RkNQbGPQsxe6B0ZHRCzbWw7MFMJdZceNNgP9yJeOhMYr44TVn8vWrFmcbpIxvPFaw2pqKJ0aY+dxB5Z0MYupWVtP9NAnZKvgsNwvkG395xUD+o70iKTZ/toacV726wMy3KFtOy85gmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.72
+	 Content-Type; b=jDWUm1AJ9dBoRhzMRM7z1ief/VvW4883MWmILSnWT0KuSKZm63JVRFMfzzP9qgoU7xMreEH9ExI1boluSo4NDPCcrYDcMXTxy8EjmismLkQUOybwhCwubkVHANwo7muZcL3k9tkwJDmPqyVrLsJhaHLEAxq30IrRoWptIiJzU+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-7e9dee2f7b5so3201836a34.1
-        for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 05:36:38 -0700 (PDT)
+Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-6b0597e2448so1710954eaf.1
+        for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 05:51:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786797397; x=1787402197;
+        d=1e100.net; s=20251104; t=1786798283; x=1787403083;
         h=content-type:to:from:subject:message-id:in-reply-to:date
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=3xZSYDBIyjPwAGqMxYB6n/h7DUmVr2x6TyLtNgxh4p8=;
-        b=nY9TBeGhVu2YXDBpxEjwltoG3iyL9R+mB7UT8zRBJlC4+DWPDFkyAv4l8pOe2naT4B
-         zj9mz5U/Yip5VNQZWMK5R3cOePjjsWZXEzexbfCopRGBJlQkWaKIUkuIo8uUQElMkYNh
-         7i38dFubiWOcqnHsiB/CS/xrKo5CodrDIFA+JyPERDK0yKRkI3KsMy0b14cNYFuHElN5
-         wpEWzutTp70Sk5Fzz44M1lmd/TV22OUIcN6DfTlE+jMHjE1tx8sZVqqYtsAFhTWZmF9L
-         wkd97xcxTrCrON1PdBIKWDK4EHS1+jGPzUsWckEgg6Yn2UBESHysTXJvI4DgqAi/QGkT
-         NVsQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpHRPzIJpNPoNqmxi6z1U4AAm11nsZj7krry7Y2C8Jx1rwxgqAj/IDFapVCbbJQGNdm09//ZUw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxy677o7yLZLNg+eHkH0IkxAlvpuyG0ZfVWNDGgMDGai5CLmNbI
-	5/Puis0yqjGV8dhqIC3W3iL5nZiftDLSjRm4+Tb+p+C0bNinTE6KHF/aKplIOZEuR1HXlaqgb9V
-	VcaRGFH7XpYlPUp6BPENn3i0ZPOoH5rpDOrbU+xo/bJxzGI7qTM+OCSvmc6Y=
+        bh=dddfo1vyS814kxJG2CMmVaBkCCAcVL7znNO+WyfKBjU=;
+        b=NSY/qlb9nb83DKzf9I7iS4fb5swOXoX+uBL5LO8vd2US8wazr1duaSnb/bO6vJWrP1
+         hdGxlPHI1e3e2V1mUfgeeZwBjy3eH1U9XCX15yxq9ZYaJ0cvb6JECzsm5/Uj5RJVY10c
+         2blHkTw/dROLFHV87N1yF9zOP5WjOM6gjEW8oBVWhquMjUGvROJVoo5J1/iUXEo16RsV
+         1ehZ8tNIHrqfqVtBSyTqglkLIilxKm1iqxczbxnrTyGDarULe0ErkZtOKWVqu61hS6zO
+         VNLFRwwNtqs90RmJJsfQcG8uC/0hfFr8ccKVYiJpltODTynFaZaQXep+BDCHqaFQVAx6
+         omPg==
+X-Forwarded-Encrypted: i=1; AHgh+RrH0CakbBfo8gKbOfiNNbI7YNyk5ya9IHCgGnYZ0BcKmMIgYdvwFQVOnwAm611Luay0KoY5HEo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxN21u9v8mYX5JIbYyYQHwKKfB4UlXUYD1HWjWVONDaB14z3zr5
+	C6N80iCDkH+QtlltXOcn+xeSjs4tFZ197zsB/3J4AXBAch+2ghbihI/KRjT5rD2daV1kp9rZCJT
+	lf7cBj1QaKw4eiJUl/MMSfWw/gQNiP/GAHfJ6V8hzQ5HK1zn/R2SbbF1/oxc=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:f029:b0:6b0:4a08:17d9 with SMTP id
- 006d021491bc7-6b0d68f6815mr9877005eaf.28.1786797397106; Sat, 15 Aug 2026
- 05:36:37 -0700 (PDT)
-Date: Sat, 15 Aug 2026 05:36:37 -0700
-In-Reply-To: <6a0ca269.a70a0220.1a69d3.0014.GAE@google.com>
+X-Received: by 2002:a4a:e911:0:b0:6ae:8a52:ffa5 with SMTP id
+ 006d021491bc7-6b0d6885374mr10618841eaf.23.1786798283707; Sat, 15 Aug 2026
+ 05:51:23 -0700 (PDT)
+Date: Sat, 15 Aug 2026 05:51:23 -0700
+In-Reply-To: <6a1d714e.c1435f33.295d1e.2a35.GAE@google.com>
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a805d55.dbb3a75c.20434b.0016.GAE@google.com>
-Subject: Re: [syzbot] [net?] WARNING in stack_depot_save_flags (2)
-From: syzbot <syzbot+1827030ed7bc886dd0a5@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	pabeni@redhat.com, syzkaller-bugs@googlegroups.com, 
-	willemdebruijn.kernel@gmail.com
+Message-ID: <6a8060cb.5ca1970b.32aa76.0008.GAE@google.com>
+Subject: Re: [syzbot] [bridge?] KASAN: use-after-free Read in filemap_map_pages
+From: syzbot <syzbot+b72767277f29b6407083@syzkaller.appspotmail.com>
+To: bridge@lists.linux.dev, davem@davemloft.net, edumazet@google.com, 
+	horms@kernel.org, idosch@nvidia.com, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	razor@blackwall.org, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 
 syzbot has found a reproducer for the following issue on:
 
 HEAD commit:    15ef2f78c49d Merge tag 'input-for-v7.2-rc7' of git://git.k..
 git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=15b53279580000
+console output: https://syzkaller.appspot.com/x/log.txt?x=11cfe279580000
 kernel config:  https://syzkaller.appspot.com/x/.config?x=1d67342c314f228d
-dashboard link: https://syzkaller.appspot.com/bug?extid=1827030ed7bc886dd0a5
+dashboard link: https://syzkaller.appspot.com/bug?extid=b72767277f29b6407083
 compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=137fa949580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15cfe279580000
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+1827030ed7bc886dd0a5@syzkaller.appspotmail.com
+Reported-by: syzbot+b72767277f29b6407083@syzkaller.appspotmail.com
 
-------------[ cut here ]------------
-Stack depot reached limit capacity
-WARNING: lib/stackdepot.c:302 at depot_init_pool lib/stackdepot.c:302 [inline], CPU#1: syz-executor190/6024
-WARNING: lib/stackdepot.c:302 at depot_pop_free_pool lib/stackdepot.c:371 [inline], CPU#1: syz-executor190/6024
-WARNING: lib/stackdepot.c:302 at depot_alloc_stack lib/stackdepot.c:462 [inline], CPU#1: syz-executor190/6024
-WARNING: lib/stackdepot.c:302 at stack_depot_save_flags+0x9a2/0x9d0 lib/stackdepot.c:706, CPU#1: syz-executor190/6024
-Modules linked in:
-CPU: 1 UID: 0 PID: 6024 Comm: syz-executor190 Not tainted syzkaller #0 PREEMPT(full) 
+==================================================================
+BUG: KASAN: use-after-free in ptep_get include/linux/pgtable.h:495 [inline]
+BUG: KASAN: use-after-free in filemap_map_folio_range mm/filemap.c:3820 [inline]
+BUG: KASAN: use-after-free in filemap_map_pages+0x1b75/0x1f80 mm/filemap.c:3955
+Read of size 8 at addr ffff88803f851a00 by task syz-executor403/6035
+
+CPU: 2 UID: 0 PID: 6035 Comm: syz-executor403 Not tainted syzkaller #0 PREEMPT(full) 
 Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:depot_init_pool lib/stackdepot.c:302 [inline]
-RIP: 0010:depot_pop_free_pool lib/stackdepot.c:371 [inline]
-RIP: 0010:depot_alloc_stack lib/stackdepot.c:462 [inline]
-RIP: 0010:stack_depot_save_flags+0x9a2/0x9d0 lib/stackdepot.c:706
-Code: 0b 90 eb bf 48 85 ed 74 c6 48 89 2d 80 32 6c 16 48 89 ea 31 ed e9 0b ff ff ff 39 c1 72 1f 48 85 d2 74 20 48 8d 3d 6e e9 f9 0b <67> 48 0f b9 3a 45 31 f6 48 85 ed 0f 85 37 fa ff ff eb 92 90 0f 0b
-RSP: 0018:ffffc90003d5f240 EFLAGS: 00010086
-RAX: 0000000000002000 RBX: 0000000000000000 RCX: 0000000000002000
-RDX: ffff88804f060000 RSI: ffffffff8e387082 RDI: ffffffff914d07e0
-RBP: 0000000000000000 R08: 0000000000000001 R09: 000000001f92056e
-R10: 00000000000000a0 R11: 0000000000000000 R12: ffffc90003d5f298
-R13: 000000000000000f R14: ffff88816cc056e0 R15: ffff88816cc056e0
-FS:  0000555582e6b400(0000) GS:ffff8880d5cde000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000556e2ead1be0 CR3: 00000000368af000 CR4: 0000000000352ef0
 Call Trace:
  <TASK>
- kasan_save_stack+0x3f/0x50 mm/kasan/common.c:58
- kasan_save_track+0x14/0x30 mm/kasan/common.c:78
- unpoison_slab_object mm/kasan/common.c:340 [inline]
- __kasan_slab_alloc+0x89/0x90 mm/kasan/common.c:366
- kasan_slab_alloc include/linux/kasan.h:253 [inline]
- slab_post_alloc_hook mm/slub.c:4584 [inline]
- slab_alloc_node mm/slub.c:4917 [inline]
- kmem_cache_alloc_node_noprof+0x27d/0x6b0 mm/slub.c:4989
- kmalloc_reserve+0x148/0x350 net/core/skbuff.c:615
- pskb_expand_head+0x249/0x10e0 net/core/skbuff.c:2312
- skb_ensure_writable+0x2e9/0x480 net/core/skbuff.c:6377
- __bpf_try_make_writable net/core/filter.c:1685 [inline]
- bpf_try_make_writable net/core/filter.c:1691 [inline]
- bpf_try_make_head_writable net/core/filter.c:1699 [inline]
- ____bpf_clone_redirect net/core/filter.c:2491 [inline]
- bpf_clone_redirect+0x1f7/0x500 net/core/filter.c:2460
- bpf_prog_93719f3005523967+0x168e/0x33be
- bpf_dispatcher_nop_func include/linux/bpf.h:1454 [inline]
- __bpf_prog_run include/linux/filter.h:724 [inline]
- bpf_prog_run include/linux/filter.h:731 [inline]
- bpf_test_run+0x39c/0xa40 net/bpf/test_run.c:422
- bpf_prog_test_run_skb+0x15c4/0x3540 net/bpf/test_run.c:1225
- bpf_prog_test_run kernel/bpf/syscall.c:4859 [inline]
- __sys_bpf+0x2a12/0x4e80 kernel/bpf/syscall.c:6436
- __do_sys_bpf kernel/bpf/syscall.c:6537 [inline]
- __se_sys_bpf kernel/bpf/syscall.c:6534 [inline]
- __x64_sys_bpf+0xce/0x140 kernel/bpf/syscall.c:6534
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x13d/0x4b0 mm/kasan/report.c:482
+ kasan_report+0xdf/0x1c0 mm/kasan/report.c:595
+ ptep_get include/linux/pgtable.h:495 [inline]
+ filemap_map_folio_range mm/filemap.c:3820 [inline]
+ filemap_map_pages+0x1b75/0x1f80 mm/filemap.c:3955
+ do_fault_around mm/memory.c:5818 [inline]
+ do_read_fault mm/memory.c:5851 [inline]
+ do_fault+0x985/0x1750 mm/memory.c:5994
+ do_pte_missing mm/memory.c:4566 [inline]
+ handle_pte_fault mm/memory.c:6379 [inline]
+ __handle_mm_fault+0x187d/0x2a00 mm/memory.c:6517
+ handle_mm_fault+0x37b/0xa30 mm/memory.c:6686
+ do_user_addr_fault+0x74c/0x12f0 arch/x86/mm/fault.c:1394
+ handle_page_fault arch/x86/mm/fault.c:1483 [inline]
+ exc_page_fault+0x6f/0xd0 arch/x86/mm/fault.c:1536
+ asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:595
+RIP: 0010:fault_in_readable+0xde/0x190 mm/gup.c:2161
+Code: 68 46 ae ff 4c 89 f0 48 85 c0 0f 85 bf 00 00 00 e8 77 4c ae ff 0f 01 cb 0f ae e8 4c 89 fb 4d 85 ff 75 31 eb 48 e8 62 4c ae ff <44> 8a 33 e8 5a 4c ae ff 48 81 c3 00 10 00 00 31 ff 48 81 e3 00 f0
+RSP: 0018:ffffc90003a87af8 EFLAGS: 00050293
+RAX: 0000000000000000 RBX: 00007fe62c200000 RCX: ffffffff825c2758
+RDX: ffff888033b84a80 RSI: ffffffff825c271e RDI: ffff888033b84a80
+RBP: 00007fe62c200001 R08: 0000000000000006 R09: 00007fe62c200001
+R10: 00007fe62c200000 R11: 0000000000000000 R12: 0000000000000001
+R13: 1ffff92000750f60 R14: 0000000000000000 R15: 00007fe62c200000
+ fault_in_iov_iter_readable+0x101/0x2c0 lib/iov_iter.c:106
+ generic_perform_write+0x863/0xa40 mm/filemap.c:4413
+ shmem_file_write_iter+0x10e/0x140 mm/shmem.c:3424
+ new_sync_write fs/read_write.c:595 [inline]
+ vfs_write+0x6ac/0x1050 fs/read_write.c:687
+ ksys_pwrite64 fs/read_write.c:794 [inline]
+ __do_sys_pwrite64 fs/read_write.c:802 [inline]
+ __se_sys_pwrite64 fs/read_write.c:799 [inline]
+ __x64_sys_pwrite64+0x1eb/0x250 fs/read_write.c:799
  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
  do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fe84f88ff59
-Code: c0 79 93 eb d5 48 8d 7c 1d 00 eb 99 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 d8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fff9fca9ef8 EFLAGS: 00000246 ORIG_RAX: 0000000000000141
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fe84f88ff59
-RDX: 0000000000000098 RSI: 00007fff9fcaa040 RDI: 000000000000000a
-RBP: 0000000d00000085 R08: 0000555582e74770 R09: 0000555582e74770
-R10: 00007fe84f9181a0 R11: 0000000000000246 R12: 00000001000002b7
-R13: 00000000000001ce R14: 0000555582e6c760 R15: 0000000000000e14
+RIP: 0033:0x7fe62c7fce5e
+Code: 08 0f 85 f5 e2 ff ff 49 89 fb 48 89 f0 48 89 d7 48 89 ce 4c 89 c2 4d 89 ca 4c 8b 44 24 08 4c 8b 4c 24 10 4c 89 5c 24 08 0f 05 <c3> 90 41 57 41 56 4d 89 c6 41 55 4d 89 cd 41 54 55 53 48 83 ec 08
+RSP: 002b:00007fe62b9fe1a8 EFLAGS: 00000246 ORIG_RAX: 0000000000000012
+RAX: ffffffffffffffda RBX: 00007fe62b9fe6c0 RCX: 00007fe62c7fce5e
+RDX: 0000000000000001 RSI: 00007fe62c200000 RDI: 0000000000000003
+RBP: 0000000000000021 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: ffffffffffffffd0
+R13: 0000000000000000 R14: 00007ffdde346d90 R15: 00007ffdde346e78
  </TASK>
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff888000000000 pfn:0x3f851
+flags: 0xfff00000000000(node=0|zone=1|lastcpupid=0x7ff)
+raw: 00fff00000000000 dead000000000100 dead000000000122 0000000000000000
+raw: ffff888000000000 0000000000000000 00000000ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as freed
+page last allocated via order 0, migratetype Unmovable, gfp_mask 0x440dc0(GFP_KERNEL_ACCOUNT|__GFP_ZERO|__GFP_COMP), pid 6004, tgid 6004 (cmp), ts 79653237963, free_ts 79740307238
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0xfd/0x120 mm/page_alloc.c:1859
+ prep_new_page mm/page_alloc.c:1867 [inline]
+ get_page_from_freelist+0xf48/0x3530 mm/page_alloc.c:3946
+ __alloc_frozen_pages_noprof+0x299/0x2dc0 mm/page_alloc.c:5304
+ alloc_pages_mpol+0x1fb/0x540 mm/mempolicy.c:2490
+ alloc_pages_noprof+0x1a/0x160 mm/mempolicy.c:2581
+ pagetable_alloc_noprof include/linux/mm.h:3685 [inline]
+ pmd_alloc_one_noprof include/asm-generic/pgalloc.h:143 [inline]
+ __pmd_alloc+0x3b/0x950 mm/memory.c:6772
+ pmd_alloc include/linux/mm.h:3601 [inline]
+ __handle_mm_fault+0xa9c/0x2a00 mm/memory.c:6469
+ handle_mm_fault+0x37b/0xa30 mm/memory.c:6686
+ do_user_addr_fault+0x5a3/0x12f0 arch/x86/mm/fault.c:1343
+ handle_page_fault arch/x86/mm/fault.c:1483 [inline]
+ exc_page_fault+0x6f/0xd0 arch/x86/mm/fault.c:1536
+ asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:595
+page last free pid 6002 tgid 6002 stack trace:
+ reset_page_owner include/linux/page_owner.h:25 [inline]
+ __free_pages_prepare mm/page_alloc.c:1406 [inline]
+ __free_frozen_pages+0x79f/0x1090 mm/page_alloc.c:2950
+ __pagetable_free include/linux/mm.h:3695 [inline]
+ pagetable_free include/linux/mm.h:3719 [inline]
+ pagetable_dtor_free include/linux/mm.h:3818 [inline]
+ __tlb_remove_table include/asm-generic/tlb.h:221 [inline]
+ __tlb_remove_table_free mm/mmu_gather.c:228 [inline]
+ tlb_remove_table_rcu+0x2cf/0x380 mm/mmu_gather.c:291
+ rcu_do_batch kernel/rcu/tree.c:2645 [inline]
+ rcu_core+0x5a2/0x10d0 kernel/rcu/tree.c:2897
+ handle_softirqs+0x1ea/0x9b0 kernel/softirq.c:622
+ __do_softirq kernel/softirq.c:656 [inline]
+ invoke_softirq kernel/softirq.c:496 [inline]
+ __irq_exit_rcu+0x162/0x210 kernel/softirq.c:735
+ irq_exit_rcu+0x9/0x30 kernel/softirq.c:752
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062 [inline]
+ sysvec_apic_timer_interrupt+0xa3/0xc0 arch/x86/kernel/apic/apic.c:1062
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:674
+
+Memory state around the buggy address:
+ ffff88803f851900: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+ ffff88803f851980: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+>ffff88803f851a00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+                   ^
+ ffff88803f851a80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+ ffff88803f851b00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+==================================================================
 ----------------
 Code disassembly (best guess):
-   0:	0b 90 eb bf 48 85    	or     -0x7ab74015(%rax),%edx
-   6:	ed                   	in     (%dx),%eax
-   7:	74 c6                	je     0xffffffcf
-   9:	48 89 2d 80 32 6c 16 	mov    %rbp,0x166c3280(%rip)        # 0x166c3290
-  10:	48 89 ea             	mov    %rbp,%rdx
-  13:	31 ed                	xor    %ebp,%ebp
-  15:	e9 0b ff ff ff       	jmp    0xffffff25
-  1a:	39 c1                	cmp    %eax,%ecx
-  1c:	72 1f                	jb     0x3d
-  1e:	48 85 d2             	test   %rdx,%rdx
-  21:	74 20                	je     0x43
-  23:	48 8d 3d 6e e9 f9 0b 	lea    0xbf9e96e(%rip),%rdi        # 0xbf9e998
-* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
-  2f:	45 31 f6             	xor    %r14d,%r14d
-  32:	48 85 ed             	test   %rbp,%rbp
-  35:	0f 85 37 fa ff ff    	jne    0xfffffa72
-  3b:	eb 92                	jmp    0xffffffcf
-  3d:	90                   	nop
-  3e:	0f 0b                	ud2
+   0:	68 46 ae ff 4c       	push   $0x4cffae46
+   5:	89 f0                	mov    %esi,%eax
+   7:	48 85 c0             	test   %rax,%rax
+   a:	0f 85 bf 00 00 00    	jne    0xcf
+  10:	e8 77 4c ae ff       	call   0xffae4c8c
+  15:	0f 01 cb             	stac
+  18:	0f ae e8             	lfence
+  1b:	4c 89 fb             	mov    %r15,%rbx
+  1e:	4d 85 ff             	test   %r15,%r15
+  21:	75 31                	jne    0x54
+  23:	eb 48                	jmp    0x6d
+  25:	e8 62 4c ae ff       	call   0xffae4c8c
+* 2a:	44 8a 33             	mov    (%rbx),%r14b <-- trapping instruction
+  2d:	e8 5a 4c ae ff       	call   0xffae4c8c
+  32:	48 81 c3 00 10 00 00 	add    $0x1000,%rbx
+  39:	31 ff                	xor    %edi,%edi
+  3b:	48                   	rex.W
+  3c:	81                   	.byte 0x81
+  3d:	e3 00                	jrcxz  0x3f
+  3f:	f0                   	lock
 
 
 ---
