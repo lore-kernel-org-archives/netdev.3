@@ -1,39 +1,56 @@
-Received: from out-2z4y-a154.jellyfish.systems (out-2z4y-a154.jellyfish.systems [198.54.127.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-of-o54.zoho.com (sender4-of-o54.zoho.com [136.143.188.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7CE321CA03
-	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 04:03:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.154
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786766630; cv=none; b=D5sXXbEpp1f7T+yZ10HAOPy1sFss2Wa2X+id94sRdHeKb/jwlPt+IvBor85EpbQEv0fUVbe3Amu1EAa5DD01JrwvMLvg2ka+tNhfjNteJ7AC2x6gtFCPN7zSMlqlsI0TvdiE26m494kZg2YFWchdeVxfqIY8KYpV3i/OpKCH7ng=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786766630; c=relaxed/simple;
-	bh=j2L20HA/mXZnb77nZmAi2TZ8QCYorDhYrYS/xT/HHcQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C9Co1UAHPxilb0A+wlpuyv0nlxfYH0GIvQBWpF7vldjG3kXZu400K3SHx5J72UVDEO+g6DxVrckC51oEze/GQrSt4GqHd8kTt35FxWKjjtXmSQSh6mL0GT2BHRAlLNs8y9ZrwJDVuA+Cv+1BPULLR9p/yXk9Lwa0NNNn+Gjvq1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=catcrafts.net; spf=pass smtp.mailfrom=catcrafts.net; arc=none smtp.client-ip=198.54.127.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=catcrafts.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=catcrafts.net
-Received: from mail.privateemail.com (unknown [87.215.145.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.privateemail.com (Postfix) with ESMTPSA id 4hMQSB4brgz8sWQ;
-	Sat, 15 Aug 2026 04:03:22 +0000 (UTC)
-From: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
-To: Alex Elder <elder@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: ipa: fix stalled modem TX queue after runtime resume
-Date: Sat, 15 Aug 2026 06:03:02 +0200
-Message-ID: <20260815040302.653650-1-jorijnvdgraaf@catcrafts.net>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677CD37F737
+	for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 06:32:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786775528; cv=pass; b=ueygqnA+Qs9K8+8ZRCEEGP+74epcyJ1ZNhqpK/cmBmmL0BqCzQcsHd7C8jxPl1b8QmPS3sGwdox61z7tu0jQpo/VFtISg+GJ6A7d/OLmlFaQY2gwPdqEpn4mAN0sw9f3ctWL14oJD5lDsKormWZDom2ZsdjLu78ANV9OOvoHhkY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786775528; c=relaxed/simple;
+	bh=TE/N6rHSkxPNEhcY19wCoeaqnSNiDhbj0nTVCqykoWM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hlxzJ0BwviyjZHQ4wC68RTJVDiThY/F8DrBsmnBNnhGaZvXJpUe0FJQMpUY5psZCKujzn/Bted6r2ruSHeDQtrO/AkBF18JlLhzmRxM0AAv6MnKtyJqlKgJXsigwYZR7DfAEPVXmOEmSo+p4I/WGjC4/Gww2k1/y0uiZfXcrYPM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=machnikowski.net; spf=pass smtp.mailfrom=machnikowski.net; dkim=pass (2048-bit key) header.d=machnikowski.net header.i=maciek@machnikowski.net header.b=PuuPasgZ; arc=pass smtp.client-ip=136.143.188.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=machnikowski.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=machnikowski.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=machnikowski.net header.i=maciek@machnikowski.net header.b="PuuPasgZ"
+ARC-Seal: i=1; a=rsa-sha256; t=1786775514; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=TCQCnaM477ANyRGaP9RMsZdi5spikUB61CSaQ4MTAcXlBJHozKOc9+Iczl4q2wuuMIkgCzdQrTThxpiFpN6Ud/+ayxYSxKvAyJWOzc7lKP6PhQ1prHqh8rQgfQTPk52L1yQ2ZO/qoYifff9Edmg18KY3+SIoRCWiRB2tXKM7l+w=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1786775514; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=OMSROwWdNvjpLayLYD5dyAlB5wZ0AnTBTj8Uagsr+QU=; 
+	b=Sj1aXmwXjpECySl5Rv8gVPs+ImPi0afeYp3f0b7f2jRVYMwO5hyI0ZEtwIq2Jyb+Z+Lv7RWG/W8GGpKyh1f+N+IvXVyvkcAFwr0JXghzUnPwiSaWEjO+ONYiIuL3vx+KjFsPNrI910ue1f99R093QR95SKAdhA6uyJEjObgxgrA=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=machnikowski.net;
+	spf=pass  smtp.mailfrom=maciek@machnikowski.net;
+	dmarc=pass header.from=<maciek@machnikowski.net>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1786775514;
+	s=zoho; d=machnikowski.net; i=maciek@machnikowski.net;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=OMSROwWdNvjpLayLYD5dyAlB5wZ0AnTBTj8Uagsr+QU=;
+	b=PuuPasgZZqTFqu3uwhQgRvuEbACFD/TnwTPVyXGSkLZ7OXfZr4E1M+tJv07DmfQ/
+	XekCv19G2AxeV5sXna8HEsggkfPvfq8MZmUNMQEzYyLLql/nxkpOo5zmG6dK6CZNGEm
+	sth5Bzj5xqMy3DtOfSzR3HkLbdFMbg5vDm4MVMl8mAU2ROHyqnXHN+5IudxJar6JUnl
+	7uIBe5oWopX67yfS5AIitUelG/aaSBT7MCryB/2sIioyd7JXkztkuQWdzdSkRNXndLd
+	lJg5a/2DAbrJYoegM/9z6+jc/uh88FOT66bnRLnu7UTNmWxm9GVKsytFH3lx4boyDPf
+	2RlVOAmQug==
+Received: by mx.zohomail.com with SMTPS id 1786775512356944.5447179774208;
+	Fri, 14 Aug 2026 23:31:52 -0700 (PDT)
+From: Maciek Machnikowski <maciek@machnikowski.net>
+To: netdev@vger.kernel.org
+Cc: kuba@kernel.org,
+	maciek@machnikowski.net,
+	richardcochran@gmail.com,
+	milena.olech@intel.com,
+	willemdebruijn.kernel@gmail.com,
+	andrew@lunn.ch,
+	vadim.fedorenko@linux.dev,
+	horms@kernel.org
+Subject: [PATCH v10 net-next 0/3] Implement PTP support in netdevsim
+Date: Sat, 15 Aug 2026 08:31:45 +0200
+Message-ID: <20260815063148.2952-1-maciek@machnikowski.net>
 X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -42,95 +59,72 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Envelope-From: jorijnvdgraaf@catcrafts.net
+X-ZohoMailClient: External
 
-ipa_start_xmit() unconditionally stops the TX queue before calling
-pm_runtime_get(), relying on the wake scheduled by runtime resume
-(ipa_modem_wake_queue_work()) to restart it once power is ACTIVE.
-But that work is queued from within the runtime resume callback,
-before the device's power state reaches RPM_ACTIVE, so it can run
-while the device is still RPM_RESUMING.  The wake is then consumed
-too early: the transmit it restarts stops the queue again,
-pm_runtime_get() returns -EINPROGRESS without arranging any future
-wake (deferred_resume exists only for RPM_SUSPENDING), and after the
-resume completes nothing is left to wake the queue.  Transmit stalls
-permanently: packets pile up in the qdisc behind the stopped queue,
-the device runtime-suspends, and since the netdev registers no
-ndo_tx_timeout the watchdog never fires.  Observed on SM7635
-(Fairphone 6) as the cellular data path going permanently deaf
-within hours, RX included, since nothing resumes the suspended
-endpoints.
+This patchset adds support to the PTP HW timestamping emulation in the
+netdevsim. It uses existing binding between netdevsim and ptp_mock
+driver to generate transmit and receive timestamps.
 
-Close the window by making the wake work wait for the resume to
-complete (pm_runtime_get_sync()) before waking the queue.  Every
-queue stop is then guaranteed a later wake that happens while power
-is ACTIVE; a transmit racing a new suspend/resume cycle re-schedules
-the work.  If the device could not be resumed, wake the queue anyway
-so pending packets are dropped by the transmit path rather than
-stranded.
+It also adds the selftest to verify the hw timestamping functionality
+running over netdevsim.
 
-The STARTED power flag used to narrow this window: a wake running
-before the transmit path's stop suppressed that stop, but only once,
-as the flag was cleared by the first stop it absorbed.  Removing the
-flag made a single transmit during an in-flight resume sufficient to
-strand the queue, which is the form observed.
+v10:
+- Drop the local_irq_save()/local_irq_restore() around the PHC reads.
 
-With an accelerated reproducer (autosuspend delay shortened to 5 ms,
-~20 packets/s of TX), an unpatched kernel stalled three times in
-230 s / 4380 packets; with this patch the same test ran 3601 s /
-70298 packets without a stall.
+v9:
+- Unshare the skb instead of copying it
+- Move the PTP timestamping off the xmit fast path
+- Sample the TX and RX PHCs with IRQs disabled to keep the reads adjacent
+- Validate the hwtstamp config before touching device state
+- Report a -1 PHC index from ethtool for ports without a PHC (VFs)
+- Clamp the ptp4l poll timeout in the selftest to a non-negative value
 
-Fixes: 688de12f080f ("net: ipa: kill the STARTED IPA power flag")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-fable-5
-Signed-off-by: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
----
+v8:
+- Fix the lockless tstamp_config access in netdevsim with
+  READ_ONCE()/WRITE_ONCE()
+- Clarify the TX/RX timestamp handling in netdevsim comments
 
-Runtime testing was done on a v7.1.2-based device kernel carrying
-this same change, on a drivers/net/ipa/ipa_modem.c otherwise identical
-to this tree's; the patch as posted was build-tested on net at the
-base commit.
+v7:
+- Moved the test script to tools/testing/selftest/drivers/net
+- Optimized implementation to avoid potential edge cases reported
 
- drivers/net/ipa/ipa_modem.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+v6:
+- Enable PTP Mock in the tools/testing/selftests/net/config
 
-diff --git a/drivers/net/ipa/ipa_modem.c b/drivers/net/ipa/ipa_modem.c
-index 9b136f6b8b4a..d84c1dbd3b1a 100644
---- a/drivers/net/ipa/ipa_modem.c
-+++ b/drivers/net/ipa/ipa_modem.c
-@@ -266,13 +266,29 @@ void ipa_modem_suspend(struct net_device *netdev)
-  * the modem.  We can't enable the queue directly in ipa_modem_resume()
-  * because transmits restart the instant the queue is awakened; but the
-  * device power state won't be ACTIVE until *after* ipa_modem_resume()
-- * returns.
-+ * returns.  A transmit restarted before that would stop the queue
-+ * again and get -EINPROGRESS from pm_runtime_get(), and with this
-+ * work having already run, nothing would ever wake the queue again.
-+ * So wait for the resume to complete before waking the queue.
-  */
- static void ipa_modem_wake_queue_work(struct work_struct *work)
- {
- 	struct ipa_priv *priv = container_of(work, struct ipa_priv, work);
-+	struct device *dev = priv->ipa->dev;
-+	int ret;
-+
-+	ret = pm_runtime_get_sync(dev);
- 
-+	/* Wake the queue even if the device could not be resumed, so
-+	 * that pending packets are dropped by the transmit path rather
-+	 * than stranded behind a stopped queue.
-+	 */
- 	netif_wake_queue(priv->tx->netdev);
-+
-+	if (ret < 0)
-+		pm_runtime_put_noidle(dev);
-+	else
-+		(void)pm_runtime_put_autosuspend(dev);
- }
- 
- /** ipa_modem_resume() - resume callback for runtime_pm
+v5:
+- Rebase
 
-base-commit: 24ef02f934eeb48830cff6b739abc3c62b1d107b
--- 
+v4:
+- Check if Rx timestamps are enabled before generating a timestamp
+- Replace bash selftest script with a python one
+- Optimized Tx timestamp generation
+
+v3:
+- Fixed shellcheck issues in the selftest/net/ptp.sh
+- Added selftest/net/ptp.sh to the selftest/net/Makefile
+- Modified ptp_mock to use spin_lock_irqsave
+
+v2:
+- Added selftest/net/ptp.sh
+- Modified ptp_mock to use spin_lock_bh
+- Populate ethtool defaults using ethtool_op_get_ts_info
+
+Maciek Machnikowski (3):
+  ptp_mock: Expose ptp_clock_info to external drivers
+  netdevsim: Implement basic ptp support
+  selftests: drivers/net: Implement ptp4l sync test using netdevsim
+
+ drivers/net/netdevsim/ethtool.c              |  15 +++
+ drivers/net/netdevsim/netdev.c               | 104 +++++++++++++++++++
+ drivers/net/netdevsim/netdevsim.h            |   1 +
+ drivers/ptp/ptp_mock.c                       |  26 +++--
+ include/linux/ptp_mock.h                     |   5 +
+ tools/testing/selftests/drivers/net/Makefile |   1 +
+ tools/testing/selftests/drivers/net/config   |   1 +
+ tools/testing/selftests/drivers/net/ptp.py   |  84 +++++++++++++++
+ 8 files changed, 229 insertions(+), 8 deletions(-)
+ create mode 100755 tools/testing/selftests/drivers/net/ptp.py
+
+--
 2.55.0
 
