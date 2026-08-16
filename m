@@ -1,127 +1,121 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F2134250E
-	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 13:55:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F2E2472AE
+	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 14:11:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786888516; cv=none; b=aXhOrVMaFuEbSxF3uCyFhnA1vx51WideBPepdsK468VppCAexMZVBp+oto2YzY8ZzD1wqp2Q8bvVq9RPWsGkWyp5CQBDQH1ipo2ryNSC6rxq7RQA25jgUL/s/jTjChaktRSz/uR8vHITmkbw1yv1cZWQN0MyY/4U34T8Mqc5/iI=
+	t=1786889508; cv=none; b=dcdJC3nhdoUXC7mephPj18WwUU5Q1gnensBvjVOT2dUf8LnNmS64rny3zX3CDU+TaGYF1fbLTAp2yofJsbiuH4+3jrffmbXdDqVa7zWRjelye8IfhULagVt6Kq+uXrdh6oeuYcUDbgisOza3Hvm3YoEMkyR/xhCayrHD2TiFXHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786888516; c=relaxed/simple;
-	bh=6gXzcdUOI2C/JorOCTroU4TApGBlIDqM/twHJT8nr/4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T/U2XvRBhn0gH16S+1fkcA2wqCLtaOxEuiwPfsmy5OJsYOtvnNxqMrHsHhAyAH5vTdq8f3c3+xOYWTZLhE3JuotWfQN0rJ9sChLW1ZtGShPZxRRwoXhhwFegI09o2VhnAw8fumsl3fce989hkyRUlmsakHz/EaprWUf6vd2sRgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i48S9VjG; arc=none smtp.client-ip=209.85.128.44
+	s=arc-20240116; t=1786889508; c=relaxed/simple;
+	bh=JvzbmD28/bNeGCCQoldoWDuq4Wtj8kCRwNsgVLm/HzA=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=HNrEIUo1O0/q1VLlfhy1MApMXxL/MxmBzfkeiERLbqT1fC1uE6nES8numhLGZryw5kkrsaNIE5TeahlkGh1Nvh81ZogRVWUEXDzYVw5c2RkS+AHGQYv87Pv0PRR9OnuVA+ZMKrmKrQl3xGjwnhwGgmINnJE1hF3mlQkESAB0sFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=komJFJSg; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i48S9VjG"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4954a32cf1eso12807615e9.3
-        for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 06:55:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="komJFJSg"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-382ef647e20so2374403a91.1
+        for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 07:11:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786888512; x=1787493312; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uClaKJD4Ir9tR/GTyjo/ABX39e0TSK4z5x2QoXKCFyM=;
-        b=i48S9VjGJ2nN+FeVkUwvOu8DGkPszlyjOHgoJTzLBXcIrQNvnWHJ2Bq2fOKPpAFT+S
-         fKimLN+IkWWm8uBdrOTTl7f/mt5zzjP1b7I2vl4bKYqPpIMWJ+4S/9CB9Zib3ty06ILc
-         gntvFwNqxPa7tfCnBZmqzmhbRigpTzj4ymdKmqPnnJEYuJqU+jDgJTdOwBnxrtHso7qc
-         W5eN6ITAbQ81L3BnKK43RkKgrJzAQ+nfEDnQ5RVnOdjZLmFq2xk6A/PUaYCAxJdvt2bm
-         R4M4QRx2fbI9hFbUk7pfOBvpdvVrN17qhqWX/x317C1Jl82va3jIuybEReNC0KG28hKD
-         av/Q==
+        d=gmail.com; s=20251104; t=1786889507; x=1787494307; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:content-type:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=zAUnw4mdqI35ASBg3kZRAyJOQp+N9wA36536RXbz8QE=;
+        b=komJFJSggft2Xix3MPZKmGjRxc8JR6U58fnJDg7XCwI5lBeWLz0mBPx8XUi+7aOVyO
+         1r9AuZg8o1jert1hUbvuWduN+9yHILmHk9PQ8wxTz29kkoupnzWooRdvosDCT0aLnVv0
+         hxwRQnFBRViewrRo1d0UgpOVwycvYqfmOup0tb71NdIDFkzbq3Cmkgbe/rE583hAsf4D
+         4SvGkLFSCmjlJooReTPIZfvAy5ankqUdX96F0/aiymLJEK4yquNrxLucPlPnC9Ukta8B
+         e8j/BGCER9VE8CpBl6FbcFMsMoEZAoxamIOtU6xgCQ1ELs9Sf/e918vBVifXUxoMnEch
+         hyHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786888512; x=1787493312;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uClaKJD4Ir9tR/GTyjo/ABX39e0TSK4z5x2QoXKCFyM=;
-        b=ggjijJXC0O1yPejq2OS6w7nV4knYabNzYfvw2QCHQZ2RELHWKLoihU+cCf/Lz9LKPp
-         hZH3a2hr0Mj0PqnoQMATqzSqaq/78OGh2GUTWZWjLCV8uGPscmHLV0Q5NozBludgY8Vk
-         6m+rqYhfNDZroRI+33xHO8ZSZ7Gq2Uw6UOyphZ4X+XzYAq6YR/fYtwvP9s33l6iMb0tt
-         XrwqnPy2zw0pT0MCRlMcYfldySdICd6KpClH5tK7HR7Q8ujajuxtH4Gqeelpqc/99aOU
-         fVZsLdIbz8XlMMLhgH4GQlR5Zwz6T5qM0lGHrhpL6/aljDyFoymtlcSqAdVdtVxtlgas
-         rC7A==
-X-Forwarded-Encrypted: i=1; AHgh+RpkRXX2Ek80+azZ3qgBVbMKYl8pZ0ivuHAFRVhpBzYmkxV+QXRAlOVOZP9o+Lr4nPsGWL1ukg4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw04WRoBjegW/8sE6ov0a2RynYDO+p7XoIuo8riU87tSqXPiqIj
-	aOiOsEaZMiGF6Zw1efDvOSE5gjDYbhebz57RXRzJ1+zCdkeeLC+HEwM=
-X-Gm-Gg: AR+sD12Va5z1tVGd0GP1+jAKmZSUEIDfjOgCQlfX997w2MU7f76UNkHgo/VC3Y/Y7HB
-	skyeQWU9wsO65CIe1qBrQo4Arb35sn6J9aooHzbZWGpYbnJ0OOJ0sNBNrdulR3uOaqqaReyWkHj
-	9ZlnfuZCvDzBnvv2UxHztgPTpn7jlWBjxIT0Tm5vZSVuTNL8dffDhXdyuaGL48EWaZyw73BEOxw
-	O/SURL3U82rat/tLCKYJrbXCAhUo4Ah25PSkDxFNCH8dnTJemWoF1iGfMJE79w9yj1c7Cda5CMa
-	ON6uk3Kezz8HyytyXevRwATNosAFmOE2Xo/DJ9aSwB+/cA5Z/uQ9K/fK8YmBOJSOj2Q5jx8YeUw
-	EkIbk7da9DrEGxafyHeEqEF/l8zDLcL7nie69OzJZwZYvNphSYtcODx+Ymu6oBUgqmEy+mQmKcH
-	hmXqi0P7FDpNfQx6XxIqOk5Y6AQ1Qa9A==
-X-Received: by 2002:a05:600c:3485:b0:499:726a:a017 with SMTP id 5b1f17b1804b1-49987938e19mr302694185e9.1.1786888511685;
-        Sun, 16 Aug 2026 06:55:11 -0700 (PDT)
-Received: from debian.. ([2001:41d0:303:db6b::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f2c0a75sm24312488f8f.25.2026.08.16.06.55.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Aug 2026 06:55:10 -0700 (PDT)
-From: Tristan Madani <tristmd@gmail.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: Grzegorz Nitka <grzegorz.nitka@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org,
-	Tristan Madani <tristan@talencesecurity.com>
-Subject: [PATCH net] ice: fix metadata_dst refcount handling on representor teardown
-Date: Sun, 16 Aug 2026 13:55:10 +0000
-Message-ID: <20260816135510.1015041-1-tristmd@gmail.com>
-X-Mailer: git-send-email 2.47.3
+        d=1e100.net; s=20251104; t=1786889507; x=1787494307;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zAUnw4mdqI35ASBg3kZRAyJOQp+N9wA36536RXbz8QE=;
+        b=rCNZzJdeXguuEufwZB5jYP79AdmiZ1GCxMuEC1SsVe6ny/m3uz19lY3N+TRAAOYlJt
+         QZ98YYXqKXYzlT+6VoeMO7Y16r1qSE8vM2IZuZhPf9QyuAJwVlIfPhh13fQhOMpBT23x
+         Fbt0Cdcu6v8kiTCflEujIxpABJSLcSa4ZzIF0LxDRCBaAElbUAKLzK0C+GYjgt263tn4
+         pQBMHBGLc19YaZlumHhptRVbCnWMPmcXPCcl4PmRx9RJN4YLNb9R8S7GBa2z3SHpebe8
+         gUX5Mr5201E/N0vWXkkeGsdG/i9rTDzuI2dLOW4kfOdjbGD6KykFPseQnHykvouv0daB
+         Mlqw==
+X-Forwarded-Encrypted: i=1; AHgh+RqLFz5GAqNxIlas/GqT8GJZwkNffRUzsEApCijEi/qKsJpPx94GxOO9qpXqAIxsYUrsbW3Oz5s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTWPaTYIVbHxFwId4pXE+X8FDfJ7ANOKfzJlMow0CTWju9nL/Q
+	ifzKqZP8SkYt5e98Mk5p3RjWaayvZ9owkIfghlhS4BzxOpKdUUVSJub1xaRJsY83
+X-Gm-Gg: AR+sD1084AM1midCWxiVckbFHr9Ypx+Pz9PuzpwLkz9Qog8yw8Nb1Y8+EDbBn2O030/
+	VrRq1lvJxlpwExG6YvgEt+M7FT4mvpIzO9y21Bq02oJ9bhqoKi4pRI9PUMJYTesI/z/Pj3oPQCV
+	P5cNuZTQIRitKPEWBokcjIao/zhj975PzC6hnw7iiI/70j8YFHzublJHzxIFZikqlIZxbdZeBr7
+	IJ26BoK+C56AuzGzcjCObJNyAEVe/vUTj14cECw1I7R0s/2QkKdR7K4UPwoYbcCofhRLNHL+ci1
+	k5qRUs6TnB40vVZpV5MJKRVyozYw11eSiloAwYaxIhBUnVeU4Z9cuCprWerq1RabZ6mhEiYQiJY
+	pkcUbosidVca4XSWggJv39uI6nVTqi17gx1zzmJy5xY7JL4TCRLhWxw4jx305QRLFgWw/aQeKBr
+	7QwZXO0Veza/cZnANEQ5jyHREAa1FM0S+13fQeZTwEn927epepXciaV48MTFxBc67HY6QmrqL/7
+	dnYm51lHJTE4pB+y1eNvqw=
+X-Received: by 2002:a17:90a:e7c1:b0:36a:8240:2477 with SMTP id 98e67ed59e1d1-3933ed1ba09mr18711493a91.19.1786889506906;
+        Sun, 16 Aug 2026 07:11:46 -0700 (PDT)
+Received: from smtpclient.apple ([144.52.150.206])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39531fbc08bsm1618477a91.12.2026.08.16.07.11.37
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 16 Aug 2026 07:11:44 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH net-next 13/14] selftests/bpf: Test skb_ext read from
+ sk_skb stream verdict hook
+From: Jack Wang <163wangjack@gmail.com>
+In-Reply-To: <20260814-bpf-meta-inside-skb-ext-v1-13-767edd862656@cloudflare.com>
+Date: Sun, 16 Aug 2026 22:11:23 +0800
+Cc: bpf@vger.kernel.org,
+ kernel-team@cloudflare.com,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Andrii Nakryiko <andrii@kernel.org>,
+ Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Martin KaFai Lau <martin.lau@linux.dev>,
+ Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>,
+ Jiri Olsa <jolsa@kernel.org>,
+ Emil Tsalapatis <emil@etsalapatis.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Simon Horman <horms@kernel.org>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <CDD06D53-6209-47BE-944C-B02F1DA82246@gmail.com>
+References: <20260814-bpf-meta-inside-skb-ext-v1-0-767edd862656@cloudflare.com>
+ <20260814-bpf-meta-inside-skb-ext-v1-13-767edd862656@cloudflare.com>
+To: Jakub Sitnicki <jakub@cloudflare.com>,
+ netdev@vger.kernel.org,
+ Alexei Starovoitov <ast@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Kuniyuki Iwashima <kuniyu@google.com>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Stanislav Fomichev <sdf@fomichev.me>
+X-Mailer: Apple Mail (2.3864.600.51.1.1)
 
-From: Tristan Madani <tristan@talencesecurity.com>
+On Fri Aug 14, 2026 at 4:14 PM CST, Jakub Sitnicki wrote:
+> +	n =3D send(p1, test_payload, TEST_PAYLOAD_LEN, 0);
+> +	if (!ASSERT_EQ(n, TEST_PAYLOAD_LEN, "send"))
+> +		goto cleanup;
+> +
+> +	n =3D recv(c1, buf, sizeof(buf), 0);
+send() and recv() are stream sockets,so either operation may return a =
+short count
+even though this will usually not happen on loopback. Maybe use =
+send/receive helpers
+or loop til TEST_PAYLOAD_LEN bytes is a better choice,the blocking =
+recv() can leave
+the test stuck instead of reporting a timeout when data path regresses.
 
-ice_eswitch_release_repr() uses metadata_dst_free() to release the
-representor's metadata_dst.  metadata_dst_free() directly frees the
-underlying memory without checking the dst_entry refcount.
-
-When ice_eswitch_port_start_xmit() processes a packet, it takes a
-reference via dst_hold() and attaches the metadata_dst to the skb.
-If the representor is torn down while packets are still queued on
-the lower device (e.g. in a qdisc), the metadata_dst is freed while
-references are still held.
-
-Use dst_release() instead, which correctly decrements the refcount
-and only frees the object when all references are dropped.  The dst
-subsystem already handles metadata_dst cleanup in dst_destroy() when
-DST_METADATA is set.
-
-Other drivers sharing this pattern (nfp, airoha, bnxt) already use
-dst_release() for their metadata_dst lifecycle.
-
-Fixes: f5396b8a663f7 ("ice: switchdev slow path")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
----
- drivers/net/ethernet/intel/ice/ice_eswitch.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch.c b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-index c30e27bbfe6e2..96174fca3984a 100644
---- a/drivers/net/ethernet/intel/ice/ice_eswitch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-@@ -95,7 +95,7 @@ ice_eswitch_release_repr(struct ice_pf *pf, struct ice_repr *repr)
- 		return;
- 
- 	ice_vsi_update_security(vsi, ice_vsi_ctx_set_antispoof);
--	metadata_dst_free(repr->dst);
-+	dst_release(&repr->dst->dst);
- 	repr->dst = NULL;
- 	ice_fltr_add_mac_and_broadcast(vsi, repr->parent_mac,
- 				       ICE_FWD_TO_VSI);
--- 
-2.47.3
-
+cheers
+Jack Wang
