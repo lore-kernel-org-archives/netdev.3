@@ -1,45 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0175E3B388F
-	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 22:59:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2603B47DE;
+	Sun, 16 Aug 2026 23:23:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786921196; cv=none; b=s/WlPTr4BeaVnF+lwxNRqmMc2OFEzTTVmzUm6UyVMUih70UeJQTpookQYdX1oAFfwQbz9G6U8zsD1lgr+5Q9XEcW+SEn/CFzkepKl9gJJMl88KmB5mPsM7eHt9YdWaLhAOUGIWd5MN/vMEaTOiyKb2bU/SHcad1PdyVIVhnuiJ8=
+	t=1786922613; cv=none; b=FXmTK6TuO7B8Qg/1geyziY9eeHNKbwOC6xGtveyrFu86tr3A7LSH9EXlk7yrwAOMemIG1jo1MgH/W6VbeA7iovhI97RbSB/oSmrGH7cNh4Tb90Ei/9pNePq1OQuC+qU+qoRAkvwwf6CLlItCDUyDrmUXmDmiK2hHPAKOIuJkkTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786921196; c=relaxed/simple;
-	bh=m1hIj45rBCsnQEDRiYtKB+o/8QDizGsoyYI9mzepPSg=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=Qo/RlKe60x+ITgkeORlJxrMzVyu3goTJWVl18qZwaCFQgFCVTcpS1yC+9pc1aeacQeITKGijBq94Q3Zdz0TG+YppxQ8cNHvw5Cg93pFX++G1hkXNbD3o2Ks0QX9eyud9U4gFQfsgMVweWM3kxDApavDN/goYcWNWuQtfx9WEXEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bkAthDdh; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bkAthDdh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D31481F000E9
-	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 22:59:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786921193;
-	bh=m1hIj45rBCsnQEDRiYtKB+o/8QDizGsoyYI9mzepPSg=;
-	h=Date:From:To:Subject;
-	b=bkAthDdhbkWO/325xeCzZkOfF+I/w1RAWS+mrtuG/wy0RRYGvUpdf1lHZqAV1n0km
-	 qFuJypg0p3GKSUpaL0k88ZzF502Z4IfydPOE/pcXLvG4HXsW8Q0wJ3mGtxFDR37k10
-	 VnkbFPY0DpFtA91stNHD3bODyEvh8oQigBtgD+tTI1LGaQNcw2lVzSHjMrm9qQZ3Ro
-	 Rgy+lRkXmifKZLgNm7f49OyLF2XdDT82O6341noO0jWvHRzuDVVYh+apUOlNx+EvUq
-	 7MvltOW2vX10iXxRWXD883zLZl34mz10JdS5Zudmx9Paw9QzF1s93gbsnsJu1UBfat
-	 WZ1gbQ0zcOG+Q==
-Date: Sun, 16 Aug 2026 15:59:53 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: [ANN] net-next is CLOSED
-Message-ID: <20260816155953.072d73da@kernel.org>
+	s=arc-20240116; t=1786922613; c=relaxed/simple;
+	bh=mF1iOb+brPNOMgH2Y9y7SEqWosOBxAgGhAa+Ig0kvmQ=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=it2JbRxzGYcmR4cB6M05B4n46CBdsIT+UZqHx8dVWjVIGHIKcNyAyVeqzIefTbquolGzPjhtOmTzcyNibgfkxfjMtACh2nCa69zNPLOAyfW34nKjuZCsVHHgqcQsdPtr9Arq4kmrsc61/ELfB9wl2G49wqemNjoUMoWpXLYrNpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.99)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1wvkCN-00000000587-1Z4s;
+	Sun, 16 Aug 2026 23:23:27 +0000
+Date: Mon, 17 Aug 2026 00:23:24 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>, netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	driver-core@lists.linux.dev
+Subject: [PATCH net-next v12 1/6] net: dsa: add devlink flash_update callback
+ to dsa_switch_ops
+Message-ID: <15292a8ada0b8866614a5d1c92d215ffa3b994c1.1786922210.git.daniel@makrotopia.org>
+References: <cover.1786922210.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1786922210.git.daniel@makrotopia.org>
 
-Hi!
+Add a devlink_flash_update callback to dsa_switch_ops so that DSA
+drivers can support devlink dev flash without open-coding the devlink
+plumbing. Like the other trampolines in net/dsa/devlink.c, the op
+returns -EOPNOTSUPP when the driver does not implement the callback;
+the devlink core will then have fetched the firmware file from
+userspace before the request fails, which is acceptable for an
+operation as infrequent as a firmware update.
 
-Linus tagged final v7.2 so net-next is closed. We will look thru
-what's one the list, new net-next postings have to wait until Aug 31st.
+The devlink core calls the op with the devlink instance lock held and
+without rtnl_lock, whereas DSA serialises its switch and port ops
+under rtnl_lock, so a driver has to serialise a flash against its own
+ops itself.
+
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+---
+v12: no changes
+v11: no changes
+v10: no changes
+v9: install the flash_update op unconditionally and return -EOPNOTSUPP
+    from the trampoline like the other DSA devlink trampolines,
+    instead of a second devlink_ops permutation (Andrew Lunn)
+v8:
+ - retitled: this patch adds the callback, its first user is patch 3
+ - describe the op's calling context in the commit message
+v7: no changes
+v6: no changes
+v5: no changes
+v4: only install the flash_update op for drivers implementing the
+    callback so the devlink core keeps rejecting unsupported flash
+    requests before fetching the firmware file
+v3: no changes
+v2: align continuation lines with the open parenthesis
+
+ include/net/dsa.h |  3 +++
+ net/dsa/devlink.c | 13 +++++++++++++
+ 2 files changed, 16 insertions(+)
+
+diff --git a/include/net/dsa.h b/include/net/dsa.h
+index 6f7f5c17b532..58597b14e592 100644
+--- a/include/net/dsa.h
++++ b/include/net/dsa.h
+@@ -1172,6 +1172,9 @@ struct dsa_switch_ops {
+ 	int	(*devlink_info_get)(struct dsa_switch *ds,
+ 				    struct devlink_info_req *req,
+ 				    struct netlink_ext_ack *extack);
++	int	(*devlink_flash_update)(struct dsa_switch *ds,
++					struct devlink_flash_update_params *params,
++					struct netlink_ext_ack *extack);
+ 	int	(*devlink_sb_pool_get)(struct dsa_switch *ds,
+ 				       unsigned int sb_index, u16 pool_index,
+ 				       struct devlink_sb_pool_info *pool_info);
+diff --git a/net/dsa/devlink.c b/net/dsa/devlink.c
+index ed342f345692..25311a87cbc5 100644
+--- a/net/dsa/devlink.c
++++ b/net/dsa/devlink.c
+@@ -20,6 +20,18 @@ static int dsa_devlink_info_get(struct devlink *dl,
+ 	return -EOPNOTSUPP;
+ }
+ 
++static int dsa_devlink_flash_update(struct devlink *dl,
++				    struct devlink_flash_update_params *params,
++				    struct netlink_ext_ack *extack)
++{
++	struct dsa_switch *ds = dsa_devlink_to_ds(dl);
++
++	if (!ds->ops->devlink_flash_update)
++		return -EOPNOTSUPP;
++
++	return ds->ops->devlink_flash_update(ds, params, extack);
++}
++
+ static int dsa_devlink_sb_pool_get(struct devlink *dl,
+ 				   unsigned int sb_index, u16 pool_index,
+ 				   struct devlink_sb_pool_info *pool_info)
+@@ -169,6 +181,7 @@ dsa_devlink_sb_occ_tc_port_bind_get(struct devlink_port *dlp,
+ 
+ static const struct devlink_ops dsa_devlink_ops = {
+ 	.info_get			= dsa_devlink_info_get,
++	.flash_update			= dsa_devlink_flash_update,
+ 	.sb_pool_get			= dsa_devlink_sb_pool_get,
+ 	.sb_pool_set			= dsa_devlink_sb_pool_set,
+ 	.sb_port_pool_get		= dsa_devlink_sb_port_pool_get,
+-- 
+2.55.0
