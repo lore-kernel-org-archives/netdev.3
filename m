@@ -1,149 +1,162 @@
-Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CEE11CA9
-	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 00:02:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9D339D6FC;
+	Sun, 16 Aug 2026 00:15:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786838541; cv=none; b=Ep4wqT1nez0WA6gvbSxVdfHVJGNEo64O1dCMg6AoiwaBzLR9oqU6x4ig0pwOUvhP8GLUc6vu/40cMIgPnvg+P0WCgR6MZT1Op0fdrtBlR5P1qCf5oIXCJDNbRTJQVfnPgUMj8X0F/QhH0XQXs5OOwklVuC90rpq6asfKV0KDXq4=
+	t=1786839316; cv=none; b=TNDNOy3BWtyW6qV7L4vbnXtqg+ors8Uzfsx1+4RXjIuCTySGE6zK2agQ55NO8c7V4EcI7N1M/kggMnNTRnCMXyL5yiZgcjKwEB6xij5P46QREOjxzdrcjVC3PilXK5Su7tLEykjvX29/vBRIVAC9gcRPkQEXNFh15C0xQfqbTf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786838541; c=relaxed/simple;
-	bh=d8phVPdEHqp16VgqSLVJvjQs29buELJ4498RhK31tVE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=pTIgTK0NZ+iMN+L35vTayROrb0bttNlT1+BAVJgJ1URn3/Op2cGpwa/RitNPRGbDdvZYWhz8l3fnQUDTNREFRQ6wyJuxX7zOqJwitAe4SkM9Dho6FEuuoD+JyNeASIWgMKcXLQxKaDfPnXWQEaULTqT6Dc+HU1lPHTEgXNmQE8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=CbAKXYYo; arc=none smtp.client-ip=209.85.167.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+	s=arc-20240116; t=1786839316; c=relaxed/simple;
+	bh=W6qu68Y0sF/RmgnNlJ5t+f2KFKsn+b7zH1XS8a0UlHE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=QDzp6HK+T4BLGIj3pBy2k0/X6zLKweBIZ5WY5e8utfyZ6C2k8qlmhN5XUsVB0eu6GpOtPoC/wZ+dw9khE8Vy/CHiA9AenTTHhHI5sdoDx9aZL3IEMzVQ+2UNUacZwfQfVYHh1bSFH+4nuCTxiBXqWH5+akMVl6tnguFhUjka2wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P+drIrwS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="CbAKXYYo"
-Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-49c38a4f110so1374311b6e.1
-        for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 17:02:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1786838538; x=1787443338; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:date:message-id
-         :subject:references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ogWrJClySs3xUgtcSiXTo+teNL0Cts1zb6TqI5m5YlU=;
-        b=CbAKXYYorXb44hqvUgUr23yFex+EZW+PvNKzDgA0da9gk9Sh56QEI8tIYrNNV7ffZW
-         cKOMGUsAJwMQJtrczQAkkfAGFr5H3RZ7VXEED8n6CzLX4TRIUHuF13MOS17PjVo+fWPl
-         1qMb6xYzT6MzZzxF/MyaJbn1z35w93ilOVJ9rLOwq5TEXIU9XPT2wyo/X3Jemdj+7PI5
-         s1x1fH3l+ozx6W7OBuIMKKdTF7+RVSQGsp0DCD5HDNZtZnGk7tQsVh9a0NSmbDgV8PbQ
-         X/KqB7tYqW9YXikzBxxU4KZgCFKQzu9EfY3GBlBOdTYCdAeo/vLzAmF7QIq8h8vGDH9k
-         lDow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786838538; x=1787443338;
-        h=content-transfer-encoding:content-type:mime-version:date:message-id
-         :subject:references:in-reply-to:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ogWrJClySs3xUgtcSiXTo+teNL0Cts1zb6TqI5m5YlU=;
-        b=O7u8MKbj1xi24f6vNZ8j9rGWMMFJy9b+rvaFXw9J8Xj6bhy7jNuY/A7Y9NbuTNc+ZU
-         Z6hadfyrhuKuhxsaU/eLr5uew64RdrOxVF9+pQzR0cbP9wnnGPr49kFy+klyHs9L3NXz
-         4eOjNZhisfSzMJgv+lu2WP6SOu1cdaNkJ41rf02Kb1Q3G2isX6XkweyCSI0mNj6COBFF
-         2ubSZpFjLzdpuOSLqNlgglR0SlDY5vYoFhdLcOSu2yg59KzG0sfQEEXTj8g99gOUJd39
-         VG86ae/B89GeJDn6Q3J2aNZ4PwtSNmRjtXxHP/JcTXGIVSDFFxucf6N0p+/eVHHbvs42
-         i5fQ==
-X-Gm-Message-State: AOJu0YztEGew+xokGWHb23AKwKi2MfeFATGjVXBbnvPueHNJXbJhDqKR
-	OVgPF+5H705kCoFqsxmsVU1aFGZe9Mvru+G/aZdBmBj5cUJPsL0gKbFlO8b4WpV3HnUtTc+I7C9
-	g9fmvLBTVXg==
-X-Gm-Gg: AR+sD10xv9Mf/flyQzt1HkUPJh6pOxoqsZYsU1PcwZSBpCl0VrZqIP00M/tFAxCGYkS
-	SIz4HqX3dB6C30yVTrAAlbz9Jm+42lt55xms2Qn+SJs6FwKmCuqSBTYGB+At2Fcz66hqWJVvrgX
-	v9yRR54s85hBraFiBhNty7QMxlNax/MueZu7nyYCXk1t1Xzw0wkJhqPIiWVsW629pIFKhPmKdOG
-	YuGVyHxkFhGlL052T28/hA6VC5U/ya801jAW/8nJgROg0lnuV8f6K4w69UfKXZG5BLaE3fzg/5I
-	nzf2X4Qoqd2Yle6sNfbUxZEOGjPKrkrEjOzhyt7Xwmy983m4f5Ned5n533Dkv319WtWWB63lmGL
-	omib0AAngW1z+ZnZK+xCM9S/RP4Eqgk0P5Acdm+hrWrJFBlsOPm6XKHLgnDe1hkHoLPWWaOzH/+
-	TISnT3PXeLVlxo82tmQhGMmzFuJ3YbyBQfWB7pkKfYx4k7hdqZv6O9NtXuyCLWIp64zrnx+pSas
-	vNqSHHSIl5EqApoo2WsJ4BgJ0zHVOq5k+oMSXcMpg==
-X-Received: by 2002:a05:6808:3092:b0:4a0:d9a1:1a95 with SMTP id 5614622812f47-4b241cfd572mr15604177b6e.14.1786838538325;
-        Sat, 15 Aug 2026 17:02:18 -0700 (PDT)
-Received: from [127.0.0.1] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4b24d92462dsm4347729b6e.5.2026.08.15.17.02.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Aug 2026 17:02:15 -0700 (PDT)
-From: Jens Axboe <axboe@kernel.dk>
-To: io-uring@vger.kernel.org, Pavel Begunkov <asml.silence@gmail.com>
-Cc: netdev@vger.kernel.org
-In-Reply-To: <cover.1786108672.git.asml.silence@gmail.com>
-References: <cover.1786108672.git.asml.silence@gmail.com>
-Subject: Re: [PATCH io_uring 00/16] zcrx update for-7.3
-Message-Id: <178683853475.1984298.4698280029125415324.b4-ty@b4>
-Date: Sat, 15 Aug 2026 18:02:14 -0600
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P+drIrwS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 964331F000E9;
+	Sun, 16 Aug 2026 00:15:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786839311;
+	bh=tP28fDcSsnIfsgwDwUNi0ImPaSZ2lrWzcry1YZUjLq0=;
+	h=From:To:Cc:Subject:Date;
+	b=P+drIrwS3mlwq5vb/baFfR4qMegYZrD4DwVPfjLuN+Myz7YJYTugPt/VsOnts7QLJ
+	 gf+JV+LAjA5OD2KQj0vrHOkxFc1W1ZNuEHpFS6ykZMhK+I2st7e0l3z8dF90mTYWa7
+	 6WNNzpYnKvAeVds3pXjUbtu2X5Eo9L1hsHAo7kJOkOKLjbWmPrJp0kG5V9ZdDmTaNY
+	 GVbGPjjB9pDK6j6qJ84fH0ErsBHRC0aRKqoc5o4nU32HVLwdYKdEaZVu5XA2I7VQwr
+	 YiQwz4LwvCaFKqoMfz0pJIVJM9crPm+V8h6SM24HD8fjAccdCXFdP9BwNFsbVZwETm
+	 5JK6Nj8xWIP+Q==
+From: Allison Henderson <achender@kernel.org>
+To: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	kuba@kernel.org,
+	horms@kernel.org
+Cc: achender@kernel.org,
+	jhubbard@nvidia.com,
+	woni9911@gmail.com,
+	michal.kubiak@intel.com,
+	leon@kernel.org
+Subject: [PATCH net-next v2 0/5] net/rds: own the fastpath locks across connection teardown
+Date: Sat, 15 Aug 2026 17:15:05 -0700
+Message-Id: <20260816001510.73645-1-achender@kernel.org>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Hi all,
+
+This is v2 of the follow-up set to "net/rds: Bug fix ports, part 2"
+[1] (v1 of this set is at [2]).  During review of part 2, the later
+half of that series needed more work than a respin, so it was split
+off into this set together with the companion fixes identified along
+the way.
+
+RDS connection teardown quiesces the transmit and receive-refill fast
+paths by waiting for the RDS_IN_XMIT/RDS_RECV_REFILL bits to be
+sampled clear.  Sampling a bit clear is not owning it: the fast path
+can re-take its bit right after the wait returns and then run
+concurrently with the transport shutdown and the send-state reset.
+Oracle UEK closed this by making teardown acquire the bits as locks
+("rds: Make sure transmit path and connection tear-down does not run
+concurrently"); patches 4 and 5 do the same for the two
+rds_send_path_reset() call sites upstream.  These two are effectively
+v3 of patches 4 and 3 of "net/rds: Bug fix ports, part 2" [1].
+
+Making teardown block on the bits as locks promotes three latent
+ordering bugs from rare to load-bearing, so they are fixed first:
+
+  Patch 1: release_in_xmit() checks waitqueue_active() after
+  clear_bit_unlock(), which does not order that read; the wake-up of
+  the (now uninterruptible, untimed) teardown wait can be lost.  Use
+  wq_has_sleeper().
+
+  Patch 2: rds_conn_path_reset() wipes the whole cp_flags word with a
+  plain store.  Once teardown owns bits in that word across the
+  reset, a blanket store would end lock ownership early - and it
+  already races atomic RMWs on the same word today.  Clear the bits
+  the reset is responsible for individually, as Oracle UEK also does.
+
+  Patch 3: rds_tcp_reset_callbacks() stores RDS_CONN_RESETTING
+  unconditionally, which can overwrite the RDS_CONN_ERROR or
+  RDS_CONN_DISCONNECTING of a shutdown already in progress on the
+  same path and send that shutdown through an extra drop cycle.  Once
+  the accept path can park for the duration of a teardown (patch 5)
+  that window widens, so make the transition conditional first, as
+  Oracle UEK does.
+
+With those in place, patch 4 converts rds_tcp_reset_callbacks() from
+waiting on RDS_IN_XMIT to acquiring it, holding it across the socket
+swap and rds_send_path_reset(), and patch 5 has rds_conn_shutdown()
+hold both bit locks across the transport shutdown and path reset.
+The order matters: with the accept path owning the lock first, no
+intermediate commit leaves it resuming on a socket pointer that a
+lock-holding teardown has already released.
+
+[PATCH net-next 1/5] net/rds: use wq_has_sleeper() in release_in_xmit()
+  Restore full barrier before wake-up checks in release_in_xmit()
+
+[PATCH net-next 2/5] net/rds: clear cp_flags bits individually in rds_conn_path_reset()
+  Partial port of commit d04896037223 ("net/rds: Preserve essential connection state flags")
+  https://github.com/oracle/linux-uek/commit/d04896037223
+
+[PATCH net-next 3/5] net/rds: tcp: don't force RDS_CONN_RESETTING over a concurrent shutdown
+  Port of commit 72c176a1d9ac ("net/rds: Don't force state RDS_CONN_RESETTING")
+  https://github.com/oracle/linux-uek/commit/72c176a1d9ac
+
+[PATCH net-next 4/5] net/rds: acquire RDS_IN_XMIT in rds_tcp_reset_callbacks()
+  Extend the port in patch 5 to the second rds_send_path_reset() call site
+
+[PATCH net-next 5/5] net/rds: acquire the fastpath locks in rds_conn_shutdown()
+  Port of commit 2b8aaa4f163b ("rds: Make sure transmit path and connection tear-down does not run concurrently")
+  https://github.com/oracle/linux-uek/commit/2b8aaa4f163b
+
+Changes since v1 [2]:
+  - New patch 3, porting the UEK fix for the accept-vs-shutdown state
+    race; the RESETTING store is now a conditional transition.
+  - Patches 4 and 5 (formerly 4 and 3) reordered so that
+    rds_tcp_reset_callbacks() owns RDS_IN_XMIT before
+    rds_conn_shutdown() does; no intermediate commit is a bisect
+    hazard.
+  - Patch 2 gains a Fixes tag; patch 4 refreshes the stale block
+    comment above rds_tcp_reset_callbacks(); patch 5's changelog
+    describes the accept-side waiter parking on krdsd for the
+    duration of a TCP teardown and why that is preferable to the race.
+
+Questions and comments appreciated!
+
+Thanks,
+Allison
+
+[1] https://lore.kernel.org/netdev/20260806072045.1092968-1-achender@kernel.org/
+[2] https://lore.kernel.org/netdev/20260814013501.43760-1-achender@kernel.org/
 
 
-On Fri, 07 Aug 2026 14:19:18 +0100, Pavel Begunkov wrote:
-> zcrx update for 7.3. Patch 1 fixes RQ processing over-throttling,
-> which shows up with larger page sizes. Patches 2-5 makes the RQ
-> use more scalable for multi-CPU setups, including softirq running
-> on a different CPU from CPU. Patches 9-16 implement dynamic area
-> provisioning.
-> 
-> Pavel Begunkov (16):
->   io_uring/zcrx: scale refilling with large pages
->   io_uring/zcrx: move RQ head/tail to separate cache lines
->   io_uring/zcrx: add RQ iterator
->   io_uring/zcrx: cache RQ tail
->   io_uring/zcrx: coalesce same-niov RQEs on refill
->   io_uring/zcrx: constify area_reg on import
->   io_urint/zcrx: narrow var scope in io_zcrx_recv_skb()
->   io_uring/zcrx: don't reload skb_shinfo
->   io_uring/zcrx: add helper for deriving area token
->   io_uring/zcrx: don't pass ifq_reg to area creation
->   io_uring/zcrx: split dmabuf unmap and release
->   io_uring/zcrx: unmap under netdev lock
->   io_uring/zcrx: move freelist lock to struct zcrx
->   io_uring/zcrx: keep array of areas
->   io_uring/zcrx: lock area creation with pp_lock
->   io_uring/zcrx: add dynamic area provisioning
-> 
-> [...]
+Allison Henderson (3):
+  net/rds: use wq_has_sleeper() in release_in_xmit()
+  net/rds: clear cp_flags bits individually in rds_conn_path_reset()
+  net/rds: acquire RDS_IN_XMIT in rds_tcp_reset_callbacks()
 
-Applied, thanks!
+Gerd Rausch (1):
+  net/rds: tcp: don't force RDS_CONN_RESETTING over a concurrent
+    shutdown
 
-[01/16] io_uring/zcrx: scale refilling with large pages
-        commit: 1afcef59fea02c271f5bcf3496402c34b3508a0f
-[02/16] io_uring/zcrx: move RQ head/tail to separate cache lines
-        commit: 433c57e9b175ed82c0f68a58200d2f10a6ea5580
-[03/16] io_uring/zcrx: add RQ iterator
-        commit: 2292f4fbc54ed15b6ad07bf788a17903a3337730
-[04/16] io_uring/zcrx: cache RQ tail
-        commit: 888f7ab164508b4c7246dcb4475294d61b2db055
-[05/16] io_uring/zcrx: coalesce same-niov RQEs on refill
-        commit: 7b188cf990abe5e1f7bbc9d79db22ce1b414d7c3
-[06/16] io_uring/zcrx: constify area_reg on import
-        commit: ebb2b81a2d063675a09186a9dffd627ce50e5b9b
-[07/16] io_urint/zcrx: narrow var scope in io_zcrx_recv_skb()
-        commit: 7f32f17ffbcd2bd8157b9602e1e50b0129ef4522
-[08/16] io_uring/zcrx: don't reload skb_shinfo
-        commit: 2d837b9961ec7ce46d1f1241a88d2b1f57e87f5a
-[09/16] io_uring/zcrx: add helper for deriving area token
-        commit: 84a7fc9b1862dfe9e2e743ca6627d311a5e03545
-[10/16] io_uring/zcrx: don't pass ifq_reg to area creation
-        commit: eb840beb51bb17da87968f3b8359183bde11be22
-[11/16] io_uring/zcrx: split dmabuf unmap and release
-        commit: be94c24ce377c528f10176906f2b939d90b53716
-[12/16] io_uring/zcrx: unmap under netdev lock
-        commit: 6bc4d9dec9059f1373eb140fc80b6f64fd153ecd
-[13/16] io_uring/zcrx: move freelist lock to struct zcrx
-        commit: 7d5d94fe9af1b402271236ff8536252789f3eb17
-[14/16] io_uring/zcrx: keep array of areas
-        commit: ef0f0e10ee66d9c96298b5331515f46ab074957e
-[15/16] io_uring/zcrx: lock area creation with pp_lock
-        commit: 5a22bfdd615bf47a0ea5e11f5090b1011764b3a4
-[16/16] io_uring/zcrx: add dynamic area provisioning
-        commit: 3c8a5e271594f6ba6d2af40f229cbcd0bcb08c06
+Håkon Bugge (1):
+  net/rds: acquire the fastpath locks in rds_conn_shutdown()
 
-Best regards,
+ net/rds/connection.c | 32 +++++++++++++++++--
+ net/rds/send.c       | 12 +++++--
+ net/rds/tcp.c        | 76 +++++++++++++++++++++++++++++---------------
+ 3 files changed, 88 insertions(+), 32 deletions(-)
+
+
+base-commit: 3da8c3c8b8fa99505624b65ef590482f48e766b6
 -- 
-Jens Axboe
-
-
+2.25.1
 
