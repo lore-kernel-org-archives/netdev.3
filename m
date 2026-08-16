@@ -1,170 +1,160 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012009.outbound.protection.outlook.com [52.101.53.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253F613D891;
-	Sun, 16 Aug 2026 06:43:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786862617; cv=fail; b=ATorZiitU/IZ17qMdEUT5Og5ow3VLVdMZBQBTMrD6n4Z2zE2RTfnT1QjmwqnhwVCNkv6yI9GBIpswX0mZDwIz+O8LW6w52g0NAKwjHEVN5paEPCSp7JV9vfAUEWxaYAuYX9bHyO+zpXLKxo6CMivn1ePb5Q6RYGuB4d1reCHQnU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786862617; c=relaxed/simple;
-	bh=P4htu1gUEDhT44U6eY0p5bi3JXKa+N6pyAcXYhmX/5s=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EtqFiw/isfkZV6B9bGnuyiZyqNOZcJYtbu2OGjf4eJxa8SnVoyOXybpw1eA/rcKFEjLcZyN2GMK9GrYCJZ5Lc54dobdh+ICKdRTP03JZbHyTgcoH/eevf/LwbekI8qK02w2dxKCkyMkoqIXZT/go5szsKOm1UFMshsD9RINsHpU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=daxJob02; arc=fail smtp.client-ip=52.101.53.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564ED3D3326
+	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 06:48:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786862917; cv=none; b=QM1KnRe98lyi51a3ytTJzJgyUE8hUZF8Idkc6S3L8WjjTxsTjraWy8Ds9zK03ion1mk0o2jk+l5fdbIVsALgRDUKw51VK4LYfwvSY2GewCCuK5WRSoQ0kViMVQ8sRM0WzdE0DmmSxC0nYE5E7ESGdSJoU6Sg+P58VHw8BpCdsm8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786862917; c=relaxed/simple;
+	bh=F+bGEiS5gw0FZej2DVGzweBwyXymBwF74IVfFGxRT58=;
+	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=mHigz5boZbgN4Rw7omBaH1IyevF2ktDXmJEA0d3HVqE8Prb04bLkwEcreBX//4ZaQwfvh/1OpuCJF5hrjTtc6PDt3x8O/pvsoSs3mape529OYJOGeLcwqMsDI9NokIjhgxBNs5uwVscsaMICElIjkkb+cxkeJUKIneR7UydSgCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com; spf=pass smtp.mailfrom=doyensec.com; dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b=RDJ2l4wm; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=doyensec.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="daxJob02"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VYGMCUNsmWXJb+S/lakiyssVXj7C/KNKEOIzcCq6paThcoLGPvniul5tGIgIVEwyuV8IGKMqRc9nrrz4N5/Xg/i3Lq+A0X2GYdjVgbMpDVSUSXCMEjqgdM1oWQalD0CxfZNl9AMtryN4FKrDV95K1q2nPzbgF6hEo+BupMRdzySHH9Km4ILS3MRXnbOibB1YvxWjIxnQePjkdeTZcpccscA7HC57JTJhT5SEeGZO8C12aqIcAoq3vI5tmTyg7JmE0vU4hXETMmq1r+UKT8O7wafbTwahWOEf2oAbEK3kukzwUc6QNc+gaOSNYEt5MtFBY8JkMwh3/LuVjxjVAcpCrQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wQ6XAIkZBiPZcTW5iW07orGvVmdAzkRfE7dhMseytq8=;
- b=hcJn5bvR1bvyKujY+3oc2aLULv7kRJ+HRu6tx0uB2SRXu7AbGQaBYLY2c/zPekHSQ1b5+dHp0aM3w4Ymja1DCM7Xxvd2StB9E7vBA/eB1yxK9tDT/iy5HFernOc7cXxgaKnt+a3np+W+KqaK5kgWkPo6tuiOHSN+rvdDyLqAbVPtEAAgmdHr/HfxjsKhjPhIDfvcINzXfaXtvxNx4zIAmzdQ9cDwcN7R3rlEECnxSEFwFau+MDfDV6ldhjiqJpkJXTB65FzS7CLQ08tEd/t49cOZfJo14rCC+E/OUoygGUhHjSxzEUdBS9Hxju78/sxmberXeU1ais0qrfUVhBm2DA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wQ6XAIkZBiPZcTW5iW07orGvVmdAzkRfE7dhMseytq8=;
- b=daxJob02RTKKDjGyvtrZB1Ggz6qqSCcI5ZDKo5h3ODKXmQ7swge2bMBUYMNldcxJfjtlnpdptszQXso8qHYdVAX0nUeBGMDCH8YJb1PMpqVyY4SurguJY4jM52nFlhymtfjCRsdyelv7vyG+0xjTN4lfGCBBN3nw31lKj/2MXzuiFBH6SUISQwyKU5pctVtHG5VAwOQkBl1hQ4F+YYpFyAR+tKS3Z0Q8sBCeUVu7ZzczKuyWcgA6PbtKuhSyqx6cPnMxfJVtEhCR0CGZFJbwfsMHvUu8MfbjGElvmVDmceLbChbEkXyT2rwcgSfuKuOWO/1C06yq5AiK+x4H6DpZrQ==
-Received: from SJ0PR13CA0012.namprd13.prod.outlook.com (2603:10b6:a03:2c0::17)
- by DM6PR12MB4387.namprd12.prod.outlook.com (2603:10b6:5:2ac::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Sun, 16 Aug
- 2026 06:43:29 +0000
-Received: from SJ5PEPF00000207.namprd05.prod.outlook.com
- (2603:10b6:a03:2c0:cafe::38) by SJ0PR13CA0012.outlook.office365.com
- (2603:10b6:a03:2c0::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.7 via Frontend Transport; Sun, 16
- Aug 2026 06:43:29 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- SJ5PEPF00000207.mail.protection.outlook.com (10.167.244.40) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.339.3 via Frontend Transport; Sun, 16 Aug 2026 06:43:28 +0000
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Sat, 15 Aug
- 2026 23:43:14 -0700
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail203.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Sat, 15 Aug
- 2026 23:43:14 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.9)
- with Microsoft SMTP Server id 15.2.2562.46 via Frontend Transport; Sat, 15
- Aug 2026 23:43:10 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: Ben Ben-Ishay <benishay@nvidia.com>, Gal Pressman <gal@nvidia.com>, "Glenn
- Judd" <gmj@meta.com>, Khalid Manaa <khalidm@nvidia.com>, Leon Romanovsky
-	<leon@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, Mark Bloch <mbloch@nvidia.com>, Saeed Mahameed
-	<saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
-	<stable@vger.kernel.org>
-Subject: [PATCH net V3 RESEND] net/mlx5e: do not HW-GRO coalesce small frames
-Date: Sun, 16 Aug 2026 09:42:59 +0300
-Message-ID: <20260816064259.3279548-1-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
+	dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b="RDJ2l4wm"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-47f633e6058so2102879f8f.0
+        for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 23:48:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=doyensec.com; s=google; t=1786862913; x=1787467713; darn=vger.kernel.org;
+        h=to:cc:date:message-id:subject:mime-version
+         :content-transfer-encoding:content-type:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0R0Zw/HkUDZMbi5hHNtxhDJIPUOrTmG22sQlP42xSfw=;
+        b=RDJ2l4wmxQbL1cZGgtjsxsSCskNccmSTaDpdz6i8HWyHBvRYzjJ4hsF0R9E84Ha47w
+         1Hi90UdoSlR27Erkl8djHLvbV57CXLYkpyOl8g9CzL81HWsSK2Vl7v+9ywUvK/hFRI+x
+         dGv0uuQA8+h85PrS1GjO2lX1PDzXuMVv7RicQ34ckuUVVZbghXTmPii2aqkORvVwV+CB
+         84Ka6DaIN/XGPpd3dULasGWmt0eof0Fn9NrQvJhjhb7Ic/Yv6eH534hesqO21bqBSU7O
+         M0fz09oEpBwe6tWMYD2kRTvbn7YG5sp7tR9UKhM2mSjk8jizdIxvcP8MVOw/5ZB27AEj
+         69Hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786862913; x=1787467713;
+        h=to:cc:date:message-id:subject:mime-version
+         :content-transfer-encoding:content-type:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0R0Zw/HkUDZMbi5hHNtxhDJIPUOrTmG22sQlP42xSfw=;
+        b=pLdiuQZioq0wqAMizVTW+l5gg/5gqYOqQ8oX6UPBpxknJNgVrqAZhpgGFyZnmbYNiy
+         QZ5nPlcaxA7Kg0bgcCBqp9ztqKsZorCYA5JK7OOGEm9uUgtQ9iNBPHLNBCGviJfO72rE
+         EylBVBpLfbGFh1GjR7ccnEER7TfWAxP826t0JrykLmYr8fxysuxrod/EeaFinyQVX2Jh
+         7nxk7ybys6pZv3YfWmz/jOs6DWNyke7+KHcBAm1pOxmmnlWVz3AYo4ko175pVrGKkgxm
+         RIE9oLtr+PqzUQbAESoUK5YtvvJWGm0DCPGenUKD2GLJgtZXX283+8LvpCRNOej96EVg
+         PyEw==
+X-Gm-Message-State: AOJu0YwNE8Wf+4jQc2vNpeAQV3FiiusOVm9P50cDcEkhbjlIy3IrxcqH
+	MDIblUPvjAcwnP101sv6AlJoCMtEGcgb2fDedTqtp97CNMolvjkZHuh8Gr3KarQeTrpLYKBBL/p
+	bwrMHTJ7/4w==
+X-Gm-Gg: AR+sD13Ihc5LP+TBVQ8Y/BCv+DRCujhUzvu/uQN/NHlOoqdJK3iSeEceo8e87PElxWl
+	sRpHOHgEPRAzaPoRXWxvI1vxhOXFq9b1gS0EFQj4SsZgFaJQLVvGRevCnSLl4Qj/7HP5cYZJW1U
+	8MALJ6SPKowEmUyqRAPcLVm5GBrqimukg3FxKcpASg+FPjxq9FgchWcrEfiy7spP4NpUivRNaEs
+	DmluV5IzgEFy4qBlJ8TlLHr8SoxqfkWHopqMivttccE0v3PgCBqvh08a24tzjemGEcuTZZeq5T8
+	lhhpBICZN9VNPD9rov8TGnafSnAIl164JJjUB+0FwZzTaw544uBmox3w3OLhertOphFjnKCAHeV
+	EDcESHxoN5fdVlTqFI5xW6HgrTZF1vC4J7RvBlHq3tjWaqKhtsk8Z0GlFGilY4LC2xR2V33SO26
+	kMPLFCHMUjMT0Jf3iNEfAP7YG5a2VaMZRvoLYyUiil7nChE+pCb+QU0gVhaXW6tXADAyiDb3kI8
+	bbZ/sepF+xjzgs0zHvKVF32hTTMm2tHqniMWcMMjatvM5AQ+mi1Pw7K+8/4f912IxpsKgbVXpzN
+	gkRfIRwjqzXcsaGuUo86AA==
+X-Received: by 2002:a05:6000:18a6:b0:47f:5ec2:d54 with SMTP id ffacd0b85a97d-481607351d6mr27938390f8f.5.1786862913396;
+        Sat, 15 Aug 2026 23:48:33 -0700 (PDT)
+Received: from smtpclient.apple (78-141-71-213.dynamic.orange.sk. [78.141.71.213])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4815f2c6115sm21793691f8f.32.2026.08.15.23.48.32
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 15 Aug 2026 23:48:32 -0700 (PDT)
+From: Norbert Szetei <norbert@doyensec.com>
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF00000207:EE_|DM6PR12MB4387:EE_
-X-MS-Office365-Filtering-Correlation-Id: d400d50e-2db3-4c91-e8e7-08defb61ae44
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|23010399003|82310400026|376014|7416014|1800799024|10067099003|11063799006|56012099006|6133799003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	LAJrKwn64fi7JT0gYG2hY6hFN9B9T/F55zTJ3qk5Q+q9UZyRD3JEaRfq8iug+EBLcJOyt2QO0XaETaXJ/MMnW66TW7Ci4BmYZdTwMdSt1rgbYTlFN9wJDpQQV1aLC4gCxBiqOqRMbXMmfzus4/6P3mj4OqocmhQvhtdu/pw30ushdJVSmx7eCCoEhOMUE0r0EKuF8uW7/e6xOdhlVMoIgFtzn1JLDuMf14QSOENPDHewRSvwGZ0Ee8MgIEP6Lq3Hb+vPq21BbisJ87PuAJtE8WbMJg+n61eU4INtlSHsLoQKNKHFddVyvTSeBoCHog7RLUPWsgc3oDjGw18pfOW+461++sGjZjxR8zsUeEVgivu2MngzLk0Wy6M8AdiOIKy0r4JUfkCK7+zeRq9sVKnnZ+/l7AJPc3fjxw4JDvgU9iDIAG7rHwNMVWduYzAk5T84qE1OPU9NT76umg4vs8TplKpluC8/+upf9w17aRq3IqdmJGrTWtKNI6I0yzlJoXbW520Tb0z1j8K4Szn6NWsv16hxbJSWTv0HRE4ql2FGiEDPQdmLfPUxgwWrjGXdm3yWPkUPzL/y9/50jqRDn4DGID1efKFjit/5SN++u0DaUw/jQrycHY7+mwHhmy0WJB6BvLe78/QJdnYlUNI56/y1Ky9NC9t7dyLWEOs2fDlIaCDm+VeRA6fEkyRlx3NalJK5t7YPBxYzl0RKgRwC5DuKFQ==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(82310400026)(376014)(7416014)(1800799024)(10067099003)(11063799006)(56012099006)(6133799003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	B5EWHEZLR9AExHeBLURY6wRn3Cv0XGrGHpEiEKX/P/TE6d48gUZsTe4o7tBdrGlrHXbl1KrM1tYDrvdKsxBlcXpSQ43NshhORPIPexOJGasZwJQsypy1EHDaOtC3h+xNV4xz8Kp7xcFsHxCsODNU4OLWvL6LzemZ6QuF88dJ26DsYaqrj8ZgMkDzxuKP466pRKMMXvjLqJQl9ier02QCNVdTmTpVIhkdLzF34wS4VTsXQxgO8Ag4lgMnGIbOqFmwydgB5cpyIvRfYqFLnw5BLr9JDRl+E2jkxPKtcdldKIBkPGQ/bTI8j8i/NTfaOiWbREBimILNgEA1sZpDBQNwCa9sa+LWCLCHNq7SEZ/WunwGSunm8PImXu9csC2726f9GthMzyLjXsRag1+gzgMmixsbfND1TAzsbS1NREAQFZX8Lp1fyET1hHipBm6AepEA
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Aug 2026 06:43:28.6089
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d400d50e-2db3-4c91-e8e7-08defb61ae44
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF00000207.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4387
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
+Subject: [PATCH net v2 0/3] net: don't strip zerocopy frag markers from a
+ forwarded skb
+Message-Id: <AD1B7BEE-C04C-4A1B-982C-8385F1908911@doyensec.com>
+Date: Sun, 16 Aug 2026 08:48:21 +0200
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>,
+ Aaron Conole <aconole@redhat.com>,
+ Eelco Chaudron <echaudro@redhat.com>,
+ Ilya Maximets <i.maximets@ovn.org>,
+ linux-kernel@vger.kernel.org,
+ dev@openvswitch.org
+To: netdev@vger.kernel.org
+X-Mailer: Apple Mail (2.3826.700.81.1.4)
 
-From: Glenn Judd <gmj@meta.com>
+queue_userspace_packet() calls skb_tx_error() on the packet skb in its
+error path, but it only borrows that skb: on the =
+OVS_ACTION_ATTR_USERSPACE
+action path do_execute_actions() ignores output_userspace()'s return =
+value
+and keeps forwarding the same skb through the flow's remaining actions.
+skb_tx_error() completes the zerocopy uarg and clears =
+SKBFL_ALL_ZEROCOPY,
+and with it SKBFL_SHARED_FRAG.
 
-When hardware GRO (SHAMPO) coalesces a small IPv4/TCP segment that was
-padded up to the 60-byte minimum Ethernet frame, the trailing padding is
-folded into the merged payload causing padding to be delivered
-to the user as payload.
+For a MSG_ZEROCOPY skb carrying page-cache frags, SKBFL_SHARED_FRAG is
+what makes esp_input() skb_cow_data() instead of taking the in-place =
+AEAD
+path. Once it is stripped, a later local ESP delivery decrypts in place
+over pages the sender still shares with the page cache.
 
-Detecting and reproducing the issue: the selftest
-tools/testing/selftests/drivers/net/gro.py subtest
-hw_ipv4_data_lrg_1byte sends {100, 1} expecting to receive {101}.
-In current code, it receives {106} (100 + 1 payload + 5 pad) instead.
+Patch 1 moves the skb_tx_error() into the one path that does drop the
+packet, the "default" arm of ovs_dp_process_packet()'s switch(error).
 
-This patch avoids giving the user padding as payload by simply not
-coalescing small packets (which fails the subtest; the same approach
-and behavior as sw gro). This gains code simplicity at the cost of
-more computation (passing an extra skb up the stack) for small packets
-that could be coalesced.
+Patch 2 removes a second such strip, in skb_zerocopy(), which calls
+skb_tx_error() on its source when skb_orphan_frags() fails. A copy =
+helper
+should not perform a destructive action on its source, and both callers
+already report the error on their own drop path. MSG_ZEROCOPY skbs =
+cannot
+reach that one -- SKBFL_DONT_ORPHAN makes skb_orphan_frags() return =
+early
+-- but producers that do not set that flag, such as af_packet's TX_RING
+path, can.
 
-The threshold is chosen as ETH_ZLEN + 2 * VLAN_HLEN. This is the largest
-frame that may still contain minimum-frame padding (+ 2 VLAN tags), so
-anything larger is safe to consider for coalesce. (We do not include
-ETH_FCS_LEN in that threshold computation as netdev_fix_features()
-drops NETIF_F_GRO_HW whenever NETIF_F_RXFCS is set, so retained FCS
-can't reach this path.)
+Patch 3 is new in v2. It stops skb_tx_error() from touching skb_shinfo()
+state that is shared with clones, so patch 1's new call site cannot =
+reach
+a live skb either. For a non-last OVS_ACTION_ATTR_RECIRC action
+clone_execute() sends a skb_clone() into ovs_dp_process_packet() while
+do_execute_actions() keeps forwarding the original, and skb_clone() does
+not privatise the frags for these skbs -- skb_orphan_frags() returns =
+early
+on SKBFL_DONT_ORPHAN -- so a flow miss on the clone strips
+SKBFL_SHARED_FRAG from the packet still in flight.
 
-Fixes: 92552d3abd32 ("net/mlx5e: HW_GRO cqe handler implementation")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-5
-Assisted-by: Meta:internal-AI-tooling
-Signed-off-by: Glenn Judd <gmj@meta.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
----
- drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+As Ilya noted, that makes patch 3 the general fix -- an skb can enter =
+any
+skb_tx_error() caller already cloned elsewhere in the stack -- while
+patches 1 and 2 keep the callers from acting on an skb they do not own.
+Removing skb_tx_error() altogether looks like the right long-term =
+cleanup
+and is planned as a net-next follow-up.
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-index 6fbc0441c4b8..6fc6605d2054 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-@@ -2263,6 +2263,11 @@ static void mlx5e_handle_rx_cqe_mpwrq_shampo(struct mlx5e_rq *rq, struct mlx5_cq
- 
- 	data_offset = wqe_offset & (page_size - 1);
- 	page_idx = wqe_offset >> rq->mpwqe.page_shift;
-+	if (unlikely(cqe_bcnt <= ETH_ZLEN + 2 * VLAN_HLEN)) {
-+		match = false;
-+		flush = true;
-+	}
-+
- 	if (*skb &&
- 	    !(match && mlx5e_hw_gro_skb_has_enough_space(*skb, data_bcnt,
- 							 page_size))) {
+v2:
+  - new patch 3: skip the shared skb_shinfo() work in skb_tx_error() =
+when
+    the skb is cloned, which also covers the OVS_ACTION_ATTR_RECIRC path
+    that patch 1 alone leaves open (suggested by Ilya Maximets)
+  - patches 1 and 2 unchanged, Reviewed-by from Ilya Maximets picked up
+  - v1: =
+https://lore.kernel.org/netdev/8063260C-05C9-4997-B9B6-2135063C4858@doyens=
+ec.com/
 
-base-commit: 24ef02f934eeb48830cff6b739abc3c62b1d107b
--- 
-2.44.0
+Norbert Szetei (3):
+  openvswitch: only skb_tx_error() a packet we are about to drop
+  net: skbuff: don't skb_tx_error() the source skb in skb_zerocopy()
+  net: skbuff: don't touch shared zerocopy state in skb_tx_error()
+
+ net/core/skbuff.c          | 10 ++++++----
+ net/openvswitch/datapath.c |  3 +--
+ 2 files changed, 7 insertions(+), 6 deletions(-)
+
+--=20
+2.55.0
 
