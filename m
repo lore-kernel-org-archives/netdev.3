@@ -1,158 +1,208 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011048.outbound.protection.outlook.com [40.107.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42BD63D9050
-	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 06:51:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786863117; cv=none; b=SfCsAtaE/+loXzXE3dmeKM9fF3sg/UC06Z9Y3WhnWwQ3FhgrK5VHP874Qu8lLDylWDQFa7CFLkKyiUqDvySgHUnN/+Lvk5hFuXBo+90VpxFg4fzfFBI9IF3m3n+XPGj2TX+wxV9pl7W9AyKQpFpgwSpQgxI7RYQkM5yhcqdan4g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2957D13D891;
+	Sun, 16 Aug 2026 06:51:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786863117; cv=fail; b=psce6avbELrrcE+olqQVo0vENcMPiGWzMPJFsGHNUa1veTynw9BSCSgq4i1IUQE3TMCpNmRfC1pyeLnp0OlWe4FicmbQYD01bYxYLkdQK9fYw1kK87YI6xNQK7Z8SnZi2pgfncCFKQ2GLPKJ3fbbasBG07b0jCw/yGSvs383qgw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1786863117; c=relaxed/simple;
-	bh=srCYszWAcdgznXWtRfGPPvWPK2RnT/DOB9GIiYtsDbw=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Slm8Pp9B+i1dIDLH5DgNqN2g0xP/1yTDXWaRBwE6EQmhtld4CjjWjp/nr8Unq4d2UFuC3Y3fS5h+Y9CA5UXBm+sIMuR0TCEBSXKP4W79Jkc2EFnf9KXTYrZ5e06q84aKPkryFJmHtm37tw/eEabFua5OW9ML6ClPFaufEi/EIv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com; spf=pass smtp.mailfrom=doyensec.com; dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b=RBv/UoFb; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=doyensec.com
+	bh=dHsfmF2U6ZOntvXnXhsWorV4JKxwUAAkuSqY0Oc3GxU=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=E/UIF3zbfzgMxXFKgxoTDhC+WaTZKK/3j7PnAmdFDSuove/b0jn114T0sTKF06Clu+TtGiNQcgy9Cvs2JNXKNfc8lsGDPlwMjh6l/QHkVYFBvl6lR/BBlOBu3ZI0nZCcGSRxfsr21d7Amc4o7o8x/9/j2yaNtd5n8kqU1UVt8rw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Az133bMT; arc=fail smtp.client-ip=40.107.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b="RBv/UoFb"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-495590dde14so30088425e9.0
-        for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 23:51:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=doyensec.com; s=google; t=1786863104; x=1787467904; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:content-type:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=7376kWLfWmn46Je92wOLnlrU4XOrzSlKYQnPz7TuXoc=;
-        b=RBv/UoFbC2+xQq6fwBlbLdKPrbn+jhHlU44VwYFZQGAFMlSvNllTf9RDgH3D+VyzIe
-         A8Y6DGMynzv+YMqSK0b1CnJfWXSw6Cuy+TwMjUqz1dIeCZoQXvRJ4ZrfM4mKAUHscrea
-         Q1nqjl4d3MO18ynANL3UXNsLUw19O0//YiPQ2Ym5ULZBP+R+ksDTk2Ryezr66RJ/Dyjc
-         O+qGVcz6psPlimAhteaXQxjBK73XIwHEX2D3BNccIszZX6okpOujm5W6yMfCg89YAdm2
-         hoNzZH1nd8gXt47jA28c8dBtyL7Bxuh5QXapnzoJaT9qV6xsIYYGAzC+gCBxSjZNApau
-         RJIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786863104; x=1787467904;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7376kWLfWmn46Je92wOLnlrU4XOrzSlKYQnPz7TuXoc=;
-        b=qZ221TqlSPJyF40g+qfoph9jlGkHnbwqqGhxO41yKwgvYkP06v6b9ZJj+VpVOI0ewj
-         0+4Qzi5Bpe1+raUss8UIAgMnPdh0T/t4ACW1qYdiwiCyawiZWaKdv3zsUStL5pt2gxcv
-         TZUU13fc4hsQ8xR7oxhCFZU3geyHM6yOOvQ84cBlf5uUgLRhax1o74Yav/y9pMWkz1nR
-         Jnr8x0JjIUHITkKUBWymLom+jQZsSZYjKr7X+uNruAMuYVdUiEwyqgLuoQwCrjphK5LH
-         NPMJ2sA4cemQ2f1MvfZrUZxpG1QRZC39VcZwHt3acdjbAXtAXx/cdPQA8NxERrV9XBWa
-         ARmg==
-X-Gm-Message-State: AOJu0Ywo9gs5tH0mraCaBEPqBFG08ITc/4KGXHl14fgS61DhxHm0uqEf
-	aG7gjB2gYdd/414BF4BxvF8450ZF4IlXICpJ1c/9ncgW39aA/JUWbQNs/FXwqDdy+GNtZYw1pMB
-	IAL1AttVulA==
-X-Gm-Gg: AR+sD12k7HtCUZGCx20tjvEDGMD3h3tQyw03yIV3PuybJ+KwghJABVXzfnHqkSClICf
-	kl0nRMU4Z0TY0fsDJkRI/NKdKwxd7pz60czX7nhYQINx4Ht7Upz5RjFA1j0CpKWsjpWtcs7NoN3
-	bCTWoYFUfG49RUKPPysEjAbCfIBBhJhsomh+dT+yYTfcrSzBv7kQep6MX7AmaiZpq4hj7Po592a
-	BNtHyTA6k1VU87KO2eUlvFGd884XnYnWGdwEm440RUwPu3lib7JwsTWYsstE46jGIDRwijcAai/
-	UdxYEB2WRjpqqdlHWhVOTrobMrw5IYxCJbsyewRx+9Xa/smdzq4bvkkFqQa/rKRurYguVYg47SQ
-	kQZv9RElvqoA2oxiedjKX6iH0QN63HroIeK1yqzxsRo1J9ExQzYyjjQcZw9INDfV+JItbPtieEv
-	UCtHMBgfqTkvD9mCPlvuJ71J5NRH5wEBxS7RoJ/ZLGTYadqIHs+sAwdguHZRHuQ4sQU/jQ758Vz
-	DDgmHM0ZxiLyld+yCzV0nWtiVqdje5/FlG5chxsnI9f161mV0ZfiIsX4cS4hjMvGSQ7sfP/pKSs
-	fWA/Pkv0x3lMpD1mMwDfdg==
-X-Received: by 2002:a05:600c:6a10:b0:499:79ba:a754 with SMTP id 5b1f17b1804b1-49987973094mr211636735e9.11.1786863104314;
-        Sat, 15 Aug 2026 23:51:44 -0700 (PDT)
-Received: from smtpclient.apple (78-141-71-213.dynamic.orange.sk. [78.141.71.213])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49996128cffsm18511335e9.15.2026.08.15.23.51.43
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 15 Aug 2026 23:51:43 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Az133bMT"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wIQ8twdMxdsnOGeAU1Z7mA+CrrqVyD/xdoC2dOk6rzntNPGR/Iq06QoKcBUpmb5zHpHzBZ9PTL0WshDJ9o1ttfMWU4JvXcBfqSkK2jj/AKubtTOTV90b/+42BVMRx5CadDDBMmwVxOAtHm7Uy1vN9gDU4W+F9FaT4Z2YVXeqb9sDO13NhqOspnKjrPdjURLlyilzzg9wt+2DDW3XPgmnynxe970ijzc69pxqTx3UgwZarDT4L0QcvA1XdCmj1+8yTff2hqnX75z+JvEVzNHGL324I4fqs3rSAwUv6/Xqdol7gFaBRyCt22MovJgfSWyPzhFGVcrAgWeIhYdhQ5x2TA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FKKzik78GGbxbXM9mmMjt3gZ8GBvGTo4/2FS+z2t19A=;
+ b=ZmQJEKJNsXwK7xFd5OCeiuWMb4u+3szXm7MJVTSzdsh+gsJxCXVxhoyoj1hL58M39idztBRBpPW9jQVxjL6EszU3OulordTWy34g7pPP0s4vuf0rF1+//dk8GBRT7Q8kX1PmND6tLwovBwCblEUJk7DQdc8H5DOCANAMIOezazXraZz04NX7b38BZCUnGNGxFWxPt7fJoipepij+xJbBcOlBD8alECS8ZUClTZiCGf+TY4mfXOVfloQX1UuBs66EuLx3YB4krO+g5Na3MqMr+XpHqPL+PeA5tz5y7sk9UcskYaWxOJoO54K6Qxq4RbpYFwzVZcfDkoMKQmzplEtdzQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FKKzik78GGbxbXM9mmMjt3gZ8GBvGTo4/2FS+z2t19A=;
+ b=Az133bMTCIby2TgXD+IknJoY234mVoMq8ULokeRuWyG+xpQPaRH7+ebgsMJfmbiAhuCViKwXzUVRNBKFNsovJgnaI1pwi2bBsoTteXggaIAPPEock+/5d4gDp7Brxbx0R7gw8LPIY0bwCtexlLkbkIR6hkR/p7lMiojrgVpU+6jff31rt++36BDWwnRA1gG8GrYrSlFiivDpzSgfbOQtLSHcdZoZx/ne0nZbFsN+EbJFlaxQNlWVYlS+sQqk6Cuo/1H1ppWiPW2jLCLzSFxE53ycCYCk2//F4H/jBjdawvqEgfsIFFfas9WncmXdm3vmsW/Hw+MfnaNU5whhJnGgkA==
+Received: from SJ0PR13CA0018.namprd13.prod.outlook.com (2603:10b6:a03:2c0::23)
+ by CH3PR12MB8725.namprd12.prod.outlook.com (2603:10b6:610:170::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Sun, 16 Aug
+ 2026 06:51:48 +0000
+Received: from MWH0EPF000C6192.namprd02.prod.outlook.com
+ (2603:10b6:a03:2c0:cafe::54) by SJ0PR13CA0018.outlook.office365.com
+ (2603:10b6:a03:2c0::23) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.8 via Frontend Transport; Sun, 16
+ Aug 2026 06:51:47 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ MWH0EPF000C6192.mail.protection.outlook.com (10.167.249.102) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.339.3 via Frontend Transport; Sun, 16 Aug 2026 06:51:46 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Sat, 15 Aug
+ 2026 23:51:32 -0700
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Sat, 15 Aug 2026 23:51:31 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.126.190.182) with Microsoft SMTP Server id 15.2.2562.46 via Frontend
+ Transport; Sat, 15 Aug 2026 23:51:26 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: Adithya Jayachandran <ajayachandra@nvidia.com>, Edward Srouji
+	<edwards@nvidia.com>, Gal Pressman <gal@nvidia.com>, Jason Gunthorpe
+	<jgg@ziepe.ca>, Jiri Pirko <jiri@resnulli.us>, Leon Romanovsky
+	<leon@kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, Maher Sanalla <msanalla@nvidia.com>, Mark Bloch
+	<mbloch@nvidia.com>, Moshe Shemesh <moshe@nvidia.com>, Or Har-Toov
+	<ohartoov@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Shay Drori
+	<shayd@nvidia.com>, Simon Horman <horms@kernel.org>, Tariq Toukan
+	<tariqt@nvidia.com>
+Subject: [PATCH net 3/3] net/mlx5: E-Switch, preserve max tx speed on vport state modification
+Date: Sun, 16 Aug 2026 09:50:15 +0300
+Message-ID: <20260816065015.3280733-4-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20260816065015.3280733-1-tariqt@nvidia.com>
+References: <20260816065015.3280733-1-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
-Subject: [PATCH net v2 1/3] openvswitch: only skb_tx_error() a packet we are
- about to drop
-From: Norbert Szetei <norbert@doyensec.com>
-In-Reply-To: <AD1B7BEE-C04C-4A1B-982C-8385F1908911@doyensec.com>
-Date: Sun, 16 Aug 2026 08:51:32 +0200
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- Aaron Conole <aconole@redhat.com>,
- Eelco Chaudron <echaudro@redhat.com>,
- Ilya Maximets <i.maximets@ovn.org>,
- linux-kernel@vger.kernel.org,
- dev@openvswitch.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <3766FAA3-D915-4ECD-B51D-DCF390F3C03C@doyensec.com>
-References: <AD1B7BEE-C04C-4A1B-982C-8385F1908911@doyensec.com>
-To: netdev@vger.kernel.org
-X-Mailer: Apple Mail (2.3826.700.81.1.4)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000C6192:EE_|CH3PR12MB8725:EE_
+X-MS-Office365-Filtering-Correlation-Id: c490f31c-30c9-4fb6-14fb-08defb62d742
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|23010399003|7416014|376014|1800799024|82310400026|10067099003|11063799006|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	+/N8oZTq6prVh7Io7aqEposdPGFKA/iqKz4QL0rFnRplskVNgv7/Syj+Hg67O2Y0FWBbi3CzWsBXzUlkXWNCNASb6jwn/CxBVpb35lorrLmsfdvxDe/hqJH28AB2Br2rKt8vjSC9ZsA0ZxFx1GjqkvGT/OJtOcO9fFE7Ll6Hv2B25I909BOMedCcbGUL2vNVtQnbDMBXKyi8f5eJCAm7YLZLpfwO4T2e8Js0bEud3BXZOrco/vg/69ba8bnipIX1oiwD3LUc1Qqg6qGaU0d57a2KFMJvHSGi20+XiIcye+W9wJafLXy5XSdpo2DJ67Kpvm6QYwolgrJh5sKyq7qcBjKXkvDysvKJOQtxhe8fSPZSG4Tswb9j3WW9HEJEvARtaO0rEdO75RJoCFfhe7d2SEXjCDBMzZ34lYnnDqBoo+kfaMUZtwE5aVoeeTH/pkli21Ha73NaAPNIdHlgys/GTbHLKqW16MHki2UDFufVKo+8Sxi8qsrL63GaJ+HOlm4ctlarObP2Jd+qsP9XPI8HFGBZmOTBVrb6B0uI52IOI4noc69dfPcqndAsI1fKsRwUMXcSoOMyjpgnj+9Gf6WFpTkKxaJnRkGL8DVDiqH+bhSBYjoAfIkk+sgypgWgiya9VZlWy8FzjR+5X9ll1uN2RPwGqiwLWKN7Oge/ilgFFAtSKzDBZpEj6TgnytvQrDxjMjA3IyuiQrAp3L8KKsoRiA==
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(7416014)(376014)(1800799024)(82310400026)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	esEBKLwEns0PpEDTrKABTazJdO/Y7BJazsih8Sg0lsgqMYo1HWHFgjg/NVQwsfjkSduvqDIoAWwN8PzlpwImP+6RG0Epr3GNdTDjAZvXpC4f8rxfNLFZpn4RuZyqXxgDnXNPHgLPI+V1RHkHQtHJ4cNV4m1Iulbr1odS34wo/u7KqMU0prFJ7ZjSPuYpFyWzy0KgZgzQA7pQVamJw4wbv0lixIaJCmLJoHnhScyscz/YtegAFXT2UF5SZqA3MGwxGVlcpjCOflC8/LXQghrzkHDCe4upihCyAkVCBL5Ag2qiueaYenbIbjl/cXN0i5y+JPoqfEl8buWAN0UpuzhlfwqBvpeO6L4y62B6vp/sk9bEadfhBeAfRMtf08EVkX3zxuikIUvyhGA9GJbnSQ54qTJ5cw+071eX7iMGq+pcg6YavWjTzr95UEP4wsvchwro
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Aug 2026 06:51:46.9036
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c490f31c-30c9-4fb6-14fb-08defb62d742
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MWH0EPF000C6192.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8725
 
-queue_userspace_packet() borrows the packet skb -- it only copies it =
-into
-a private netlink message (user_skb) and does not own it; on return
-do_execute_actions() keeps forwarding it through the flow's remaining
-actions. Its error path nevertheless calls skb_tx_error(skb), which via
-skb_zcopy_clear() does skb_shinfo(skb)->flags &=3D ~SKBFL_ALL_ZEROCOPY,
-stripping SKBFL_SHARED_FRAG from that live skb (skb_tx_error()'s =
-kerneldoc
-says "skb must be freed afterwards").
+From: Or Har-Toov <ohartoov@nvidia.com>
 
-For a MSG_ZEROCOPY skb carrying page-cache frags, SKBFL_SHARED_FRAG is
-what makes esp_input() skb_cow_data() before in-place AEAD; once it is
-stripped a later local ESP-in-UDP delivery decrypts in place over pages
-the sender does not own -- an unprivileged page-cache write (the
-"Fragnesia" primitive).
-do_execute_actions() ignores output_userspace()'s return value, so any
-action after a failed USERSPACE upcall inherits the stripped skb.
+When modifying vport state, the firmware interprets a zero in the max tx
+speed field as an intentional reset, which can overwrite previously set
+values. This patch attempts to fix this by querying the current max tx
+speed from firmware before modifying the vport state and passing it back
+in the modification command. If the query fails, fall back to the cached
+agg_max_tx_speed value to avoid inadvertently resetting the speed.
 
-Move the skb_tx_error() to the flow-miss drop path - the "default"
-branch of ovs_dp_process_packet()'s switch(error), before kfree_skb().
-
-The call has been here since commit 36d5fe6a0007 ("core, nfqueue,
-openvswitch: Orphan frags in skb_zerocopy and handle errors") but was
-harmless until esp_input() began relying on SKBFL_SHARED_FRAG to gate
-in-place decrypt; only then did stripping it on a still-forwarded skb
-become a page-cache write primitive.
-
-Fixes: 36d5fe6a0007 ("core, nfqueue, openvswitch: Orphan frags in =
-skb_zerocopy and handle errors")
-Fixes: f4c50a4034e6 ("xfrm: esp: avoid in-place decrypt on shared skb =
-frags")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Norbert Szetei <norbert@doyensec.com>
-Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
+Fixes: 50f1d188c580 ("net/mlx5: Propagate LAG effective max_tx_speed to vports")
+Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Reviewed-by: Shay Drori <shayd@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 ---
- net/openvswitch/datapath.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ .../mellanox/mlx5/core/esw/adj_vport.c        | 20 ++++++++++++++++
+ .../net/ethernet/mellanox/mlx5/core/vport.c   | 24 +++++++++++++++++++
+ 2 files changed, 44 insertions(+)
 
-diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
-index ae69b2cabab9..fff75c3eed11 100644
---- a/net/openvswitch/datapath.c
-+++ b/net/openvswitch/datapath.c
-@@ -285,6 +285,7 @@ void ovs_dp_process_packet(struct sk_buff *skb, =
-struct sw_flow_key *key)
- 			consume_skb(skb);
- 			break;
- 		default:
-+			skb_tx_error(skb);
- 			kfree_skb(skb);
- 			break;
- 		}
-@@ -601,8 +602,6 @@ static int queue_userspace_packet(struct datapath =
-*dp, struct sk_buff *skb,
- 	err =3D genlmsg_unicast(ovs_dp_get_net(dp), user_skb, =
-upcall_info->portid);
- 	user_skb =3D NULL;
- out:
--	if (err)
--		skb_tx_error(skb);
- 	consume_skb(user_skb);
- 	consume_skb(nskb);
-=20
---=20
-2.55.0
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/adj_vport.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/adj_vport.c
+index 3624c680a861..7950b82d8b8a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/adj_vport.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/adj_vport.c
+@@ -11,6 +11,26 @@ int mlx5_esw_adj_vport_modify(struct mlx5_core_dev *dev, u16 vport,
+ 
+ 	lockdep_assert_held(&dev->priv.eswitch->state_lock);
+ 
++	if (MLX5_CAP_ESW(dev, esw_vport_state_max_tx_speed)) {
++		u8 op_mod = MLX5_VPORT_STATE_OP_MOD_ESW_VPORT;
++		struct mlx5_vport *esw_vport;
++		u32 speed = 0;
++		int err;
++
++		err = mlx5_query_vport_max_tx_speed(dev, op_mod, vport,
++						    true, &speed, NULL);
++		if (err) {
++			esw_vport = mlx5_eswitch_get_vport(dev->priv.eswitch,
++							   vport);
++			speed = IS_ERR(esw_vport) ? 0 :
++				esw_vport->agg_max_tx_speed;
++			mlx5_core_dbg(dev,
++				      "Failed to query vport %d max tx speed, err=%d, using cached %u\n",
++				      vport, err, speed);
++		}
++		MLX5_SET(modify_vport_state_in, in, max_tx_speed, speed);
++	}
++
+ 	MLX5_SET(modify_vport_state_in, in, opcode,
+ 		 MLX5_CMD_OP_MODIFY_VPORT_STATE);
+ 	MLX5_SET(modify_vport_state_in, in, op_mod,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/vport.c b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
+index edac2d694e0f..8aa94ec87a0e 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/vport.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
+@@ -93,6 +93,30 @@ int mlx5_modify_vport_admin_state(struct mlx5_core_dev *mdev, u8 opmod,
+ 	lockdep_assert_held(&mdev->priv.eswitch->state_lock);
+ #endif
+ 
++	if (MLX5_CAP_ESW(mdev, esw_vport_state_max_tx_speed) &&
++	    opmod == MLX5_VPORT_STATE_OP_MOD_ESW_VPORT &&
++	    vport != MLX5_VPORT_UPLINK) {
++		u32 speed = 0;
++		int err;
++
++		err = mlx5_query_vport_max_tx_speed(mdev, opmod, vport,
++						    other_vport, &speed, NULL);
++		if (err) {
++#ifdef CONFIG_MLX5_ESWITCH
++			struct mlx5_vport *esw_vport;
++
++			esw_vport = mlx5_eswitch_get_vport(mdev->priv.eswitch,
++							   vport);
++			speed = IS_ERR(esw_vport) ? 0 :
++				esw_vport->agg_max_tx_speed;
++#endif
++			mlx5_core_dbg(mdev,
++				      "Failed to query vport %d max tx speed, err=%d, using cached %u\n",
++				      vport, err, speed);
++		}
++		MLX5_SET(modify_vport_state_in, in, max_tx_speed, speed);
++	}
++
+ 	MLX5_SET(modify_vport_state_in, in, opcode,
+ 		 MLX5_CMD_OP_MODIFY_VPORT_STATE);
+ 	MLX5_SET(modify_vport_state_in, in, op_mod, opmod);
+-- 
+2.44.0
 
