@@ -1,179 +1,197 @@
-Received: from outbound.baidu.com (mx14.baidu.com [220.181.3.101])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id 02786201278;
-	Sun, 16 Aug 2026 03:56:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.181.3.101
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604A332E692;
+	Sun, 16 Aug 2026 03:57:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786852596; cv=none; b=Qe+ZaYY4x9eoWpKhbXgUfqALNZWB7wQLAC8qHTqLGJc2qt+nju4Kb8McM4aQsn+T7odVJ//TeavNqU2fb80aYDeeFI8RcIbv3GS6RWskkMU7TpiVtU5QIQOpSTmtBxLUo36EpGXGfuE+y+oaWvqKpoZN7I9iklriTWL8kZrbGkI=
+	t=1786852632; cv=none; b=qRpNtybW8QX0nHS63ZXxqNu0kPO1GH1xL8CGPxC0Nbw9ZUIpoJnn4yMvaSzaE+5cyPX8toX5h2G6NST0tcmP0BU8GEIqRPN7fiHNvGTlLVr4XXTTWb2eikcU6U21Lop+QXnCWE5iSDUTccpT1hkunE+OeDCsuxjDekxpoxMAwy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786852596; c=relaxed/simple;
-	bh=6cbLuym+1cqRI7P7D4gMdqm+OHpINkJYcn9natJyGsk=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Oie0GtLXvxSfWw5YGXDMUw7AvnbWSUxc3X7kyIu6eo9g3omFCQiXIulbhKv6bQvKgYIWkihOdKQkyf7ceMLhtzcYJTKMECKgXY+m6iH0z0587JTu7bgTfxKaAu8hpe/HrAC2lwowa3qSAV/Sm71I73wpyAB0MsEJRblwsJi+PlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b=NTLoGFoI; arc=none smtp.client-ip=220.181.3.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
+	s=arc-20240116; t=1786852632; c=relaxed/simple;
+	bh=UQHRxft1KsS/aFZvHFWgo+Psihj9kavT5p7UuMJyZyY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I6IkTqVwysepmfW5ebAGC169lJ/kqImg1I0SXCvjbpQ9eTpUpFQiOSepd3NZzIXaUXyRF5x0MvGa0DYDy093/oPHR04tjmceE5RpSWbgvj+Y7FKy4cNtcjQEJMXk1P6147Q/dPMMcA8T9k1Qs4/TDW51c5jZg6NEVnmWJPjdI4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C22MmoWI; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b="NTLoGFoI"
-X-MD-Sfrom: lirongqing@baidu.com
-X-MD-SrcIP: 172.31.50.47
-From: lirongqing <lirongqing@baidu.com>
-To: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
-	<daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
- Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>,
-	Boris Pismenny <borisp@nvidia.com>, Richard Cochran
-	<richardcochran@gmail.com>, Cosmin Ratiu <cratiu@nvidia.com>, Dragos Tatulea
-	<dtatulea@nvidia.com>, Carolina Jubran <cjubran@nvidia.com>, Li RongQing
-	<lirongqing@baidu.com>, Kees Cook <kees@kernel.org>, Akiva Goldberger
-	<agoldberger@nvidia.com>, Simon Horman <horms@kernel.org>,
-	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>
-Subject: [PATCH net-next, v3] net/mlx5: Use dma_wmb() for completion queue doorbell updates
-Date: Sun, 16 Aug 2026 11:56:05 +0800
-Message-ID: <20260816035605.1873-1-lirongqing@baidu.com>
-X-Mailer: git-send-email 2.17.1
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C22MmoWI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786852629; x=1818388629;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=UQHRxft1KsS/aFZvHFWgo+Psihj9kavT5p7UuMJyZyY=;
+  b=C22MmoWI1piNQhbOcPLfE8WQ3baNprxZcVBO3qjEjfPNEknc7w2CMwCg
+   a+A87sSrOzQvicDO/JUlNBLSh2GyB+nOabaHoiJP8ggvv5AMacp/rByX7
+   anWtHlnCrhsBNnnG/Gvh36YFjIPbluxAXvw3PuY42neDRxWdW7bqfoPq3
+   iM5ttPNnbY67CySoyzEZC2zIIo3y37qaUYCgmIx+Zrt9EWt+6A2b4VinI
+   jozDobDs03mrl3dzRw1UZa5S49j42dtPs/QFgyMBlQII/iedG91k23cIT
+   YOBuP6QnsYbs8EC+6vOZsweEsCdd6mzhqtAe0dNRS80IfUiAetoRQH7ch
+   w==;
+X-CSE-ConnectionGUID: GMfilnW5RNuen5kQR6Kb2g==
+X-CSE-MsgGUID: 3te+rkcxSIuT29P8sVt0TQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11876"; a="112914617"
+X-IronPort-AV: E=Sophos;i="6.25,226,1779174000"; 
+   d="scan'208";a="112914617"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2026 20:57:08 -0700
+X-CSE-ConnectionGUID: 7Yz3BHHaQBuWeYFy04JM/g==
+X-CSE-MsgGUID: seXVRYuMS3OoIX1W8HK3MQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,226,1779174000"; 
+   d="scan'208";a="268441462"
+Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 15 Aug 2026 20:57:06 -0700
+Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wvRza-00000000cjG-2hxX;
+	Sun, 16 Aug 2026 03:57:02 +0000
+Date: Sun, 16 Aug 2026 11:56:35 +0800
+From: kernel test robot <lkp@intel.com>
+To: zhang.enpei@zte.com.cn, chessman@tux.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] ethernet: tlan: Convert to use jiffies macro
+Message-ID: <202608161140.4HTNVNNa-lkp@intel.com>
+References: <20250827155455583-PdvmDYA9SD3J37_XRza5@zte.com.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: bjhj-exc3.internal.baidu.com (172.31.3.13) To
- bjkjy-exc3.internal.baidu.com (172.31.50.47)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
-	s=selector1; t=1786852580;
-	bh=CoCztr6XAGEBvv7TN377FtTXgA/2hXdT8SEOdZBtANs=;
-	h=From:To:Subject:Date:Message-ID:Content-Type;
-	b=NTLoGFoISOzPQiSktm5+AmMXT1oHO6xmi7YjLpp4ef+j/cHW/39vT0qO07iS9Cyds
-	 iRVl5U1hhMKpyY1n9Qkl5MHPTMfCWXRqcVSx6DbDu1NHghuNstnSo3x46l1WfZcmPr
-	 Dwy7WJ5yG3tQeBk7TtIz+rcg932cZWY8tqybGRRlAFw6OA842IlQJUebVUCypAKB9X
-	 9Osx1tvQcids58cPMCMxVsECaqYhU7QMSq3IbsLlLkTVG4opZOprA+J3MyHu/ve34c
-	 BehnyyN7WgbejNu7v6GlY/Dj/FtTD/8nLY5MCSf3jKtnAFBjx9LmXa6IYvptfHqC14
-	 AKKYEs/UB27zg==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250827155455583-PdvmDYA9SD3J37_XRza5@zte.com.cn>
 
-From: Li RongQing <lirongqing@baidu.com>
+Hi,
 
-dma_*() barriers are specifically for ordering writes to DMA
-coherent memory that is accessible to both the CPU and DMA capable
-devices.
+kernel test robot noticed the following build warnings:
 
-The dma_wmb() barrier is lighter than wmb() on some architectures
-because it only ensures ordering for DMA writes, not for all writes
-including MMIO accesses.
+[auto build test WARNING on net-next/main]
+[also build test WARNING on net/main linus/master v7.2-rc7 next-20260814]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-In the MLX5 driver, completion queue (CQ) doorbell records are
-allocated as DMA coherent memory via mlx5_dma_zalloc_coherent_node().
-The CQ update pattern is:
-  1. Update CQ space (device reads via DMA)
-  2. Update doorbell record (device reads via DMA)
-  3. Memory barrier
-  4. Enable more CQEs
-Since only DMA coherent memory accesses are involved (no MMIO accesses
-follow), we can safely use dma_wmb() instead of wmb().
+url:    https://github.com/intel-lab-lkp/linux/commits/zhang-enpei-zte-com-cn/ethernet-tlan-Convert-to-use-jiffies-macro/20260813-185229
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20250827155455583-PdvmDYA9SD3J37_XRza5%40zte.com.cn
+patch subject: [PATCH v3] ethernet: tlan: Convert to use jiffies macro
+config: x86_64-kexec (https://download.01.org/0day-ci/archive/20260816/202608161140.4HTNVNNa-lkp@intel.com/config)
+compiler: clang version 22.1.3 (https://github.com/llvm/llvm-project e9846648fd6183ee6d8cbdb4502213fcf902a211)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260816/202608161140.4HTNVNNa-lkp@intel.com/reproduce)
 
-This change improves performance slightly on architectures where
-dma_wmb() is lighter than wmb().
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202608161140.4HTNVNNa-lkp@intel.com/
 
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
----
-V3: Kept the original wmb() barrier inside wc.c 
+All warnings (new ones prefixed by >>):
 
-V2: rebased.
-https://patchwork.kernel.org/project/netdevbpf/patch/20260811064750.3218024-1-tariqt@nvidia.com/
+>> drivers/net/ethernet/ti/tlan.c:1833:8: warning: comparison of distinct pointer types ('unsigned long *' and 'typeof (priv->timer_set_at + (250 / 10)) *' (aka 'unsigned int *')) [-Wcompare-distinct-pointer-types]
+    1833 |                         if (time_is_before_eq_jiffies(priv->timer_set_at + TLAN_TIMER_ACT_DELAY)) {
+         |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/jiffies.h:288:38: note: expanded from macro 'time_is_before_eq_jiffies'
+     288 | #define time_is_before_eq_jiffies(a) time_after_eq(jiffies, a)
+         |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/jiffies.h:145:3: note: expanded from macro 'time_after_eq'
+     145 |          typecheck(unsigned long, b) && \
+         |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/typecheck.h:12:18: note: expanded from macro 'typecheck'
+      12 |         (void)(&__dummy == &__dummy2); \
+         |                ~~~~~~~~ ^  ~~~~~~~~~
+   drivers/net/ethernet/ti/tlan.c:2057:7: warning: variable 'def_tx' set but not used [-Wunused-but-set-variable]
+    2057 |         u32             def_tx, crc, code;
+         |                         ^
+   2 warnings generated.
 
-V1:
-https://patchwork.kernel.org/project/netdevbpf/patch/20260402055206.2311-1-lirongqing@baidu.com/
 
- drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c    | 2 +-
- drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c    | 2 +-
- drivers/net/ethernet/mellanox/mlx5/core/en_rx.c     | 2 +-
- drivers/net/ethernet/mellanox/mlx5/core/en_tx.c     | 2 +-
- drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c | 2 +-
- drivers/net/ethernet/mellanox/mlx5/core/lib/aso.c   | 2 +-
- 6 files changed, 6 insertions(+), 6 deletions(-)
+vim +1833 drivers/net/ethernet/ti/tlan.c
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
-index 723f66a..17084d7 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
-@@ -259,7 +259,7 @@ static bool mlx5e_ptp_poll_ts_cq(struct mlx5e_cq *cq, int napi_budget)
- 	mlx5_cqwq_update_db_record(cqwq);
- 
- 	/* ensure cq space is freed before enabling more cqes */
--	wmb();
-+	dma_wmb();
- 
- 	while (metadata_buff_sz > 0)
- 		mlx5e_ptp_metadata_fifo_push(&ptpsq->metadata_freelist,
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-index 77ea51b..ee0986b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-@@ -817,7 +817,7 @@ bool mlx5e_poll_xdpsq_cq(struct mlx5e_cq *cq)
- 	mlx5_cqwq_update_db_record(&cq->wq);
- 
- 	/* ensure cq space is freed before enabling more cqes */
--	wmb();
-+	dma_wmb();
- 
- 	sq->cc = sqcc;
- 	return (i == MLX5E_TX_CQ_POLL_BUDGET);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-index 6fbc044..3c80193 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-@@ -2507,7 +2507,7 @@ int mlx5e_poll_rx_cq(struct mlx5e_cq *cq, int budget)
- 	mlx5_cqwq_update_db_record(cqwq);
- 
- 	/* ensure cq space is freed before enabling more cqes */
--	wmb();
-+	dma_wmb();
- 
- 	return work_done;
- }
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-index 0b5e600..14479da 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-@@ -849,7 +849,7 @@ bool mlx5e_poll_tx_cq(struct mlx5e_cq *cq, int napi_budget)
- 	mlx5_cqwq_update_db_record(&cq->wq);
- 
- 	/* ensure cq space is freed before enabling more cqes */
--	wmb();
-+	dma_wmb();
- 
- 	sq->dma_fifo_cc = dma_fifo_cc;
- 	sq->cc = sqcc;
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c b/drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c
-index 1f6bde5..1341874 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c
-@@ -384,7 +384,7 @@ static inline void mlx5_fpga_conn_cqes(struct mlx5_fpga_conn *conn,
- 
- 	mlx5_fpga_dbg(conn->fdev, "Re-arming CQ with cc# %u\n", conn->cq.wq.cc);
- 	/* ensure cq space is freed before enabling more cqes */
--	wmb();
-+	dma_wmb();
- 	mlx5_fpga_conn_arm_cq(conn);
- }
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/aso.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/aso.c
-index 614cd57..8f7a89a 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/aso.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/aso.c
-@@ -421,7 +421,7 @@ int mlx5_aso_poll_cq(struct mlx5_aso *aso, bool with_data)
- 	mlx5_cqwq_update_db_record(&cq->wq);
- 
- 	/* ensure cq space is freed before enabling more cqes */
--	wmb();
-+	dma_wmb();
- 
- 	if (with_data)
- 		aso->cc += MLX5_ASO_WQEBBS_DATA;
--- 
-2.9.4
+  1771	
+  1772	
+  1773	/***************************************************************
+  1774	 *	tlan_timer
+  1775	 *
+  1776	 *	Returns:
+  1777	 *		Nothing
+  1778	 *	Parms:
+  1779	 *		data	A value given to add timer when
+  1780	 *			add_timer was called.
+  1781	 *
+  1782	 *	This function handles timed functionality for the
+  1783	 *	TLAN driver.  The two current timer uses are for
+  1784	 *	delaying for autonegotionation and driving the ACT LED.
+  1785	 *	-	Autonegotiation requires being allowed about
+  1786	 *		2 1/2 seconds before attempting to transmit a
+  1787	 *		packet.  It would be a very bad thing to hang
+  1788	 *		the kernel this long, so the driver doesn't
+  1789	 *		allow transmission 'til after this time, for
+  1790	 *		certain PHYs.  It would be much nicer if all
+  1791	 *		PHYs were interrupt-capable like the internal
+  1792	 *		PHY.
+  1793	 *	-	The ACT LED, which shows adapter activity, is
+  1794	 *		driven by the driver, and so must be left on
+  1795	 *		for a short period to power up the LED so it
+  1796	 *		can be seen.  This delay can be changed by
+  1797	 *		changing the TLAN_TIMER_ACT_DELAY in tlan.h,
+  1798	 *		if desired.  100 ms  produces a slightly
+  1799	 *		sluggish response.
+  1800	 *
+  1801	 **************************************************************/
+  1802	
+  1803	static void tlan_timer(struct timer_list *t)
+  1804	{
+  1805		struct tlan_priv	*priv = timer_container_of(priv, t, timer);
+  1806		struct net_device	*dev = priv->dev;
+  1807		unsigned long	flags = 0;
+  1808	
+  1809		priv->timer.function = NULL;
+  1810	
+  1811		switch (priv->timer_type) {
+  1812		case TLAN_TIMER_PHY_PDOWN:
+  1813			tlan_phy_power_down(dev);
+  1814			break;
+  1815		case TLAN_TIMER_PHY_PUP:
+  1816			tlan_phy_power_up(dev);
+  1817			break;
+  1818		case TLAN_TIMER_PHY_RESET:
+  1819			tlan_phy_reset(dev);
+  1820			break;
+  1821		case TLAN_TIMER_PHY_START_LINK:
+  1822			tlan_phy_start_link(dev);
+  1823			break;
+  1824		case TLAN_TIMER_PHY_FINISH_AN:
+  1825			tlan_phy_finish_auto_neg(dev);
+  1826			break;
+  1827		case TLAN_TIMER_FINISH_RESET:
+  1828			tlan_finish_reset(dev);
+  1829			break;
+  1830		case TLAN_TIMER_ACTIVITY:
+  1831			spin_lock_irqsave(&priv->lock, flags);
+  1832			if (priv->timer.function == NULL) {
+> 1833				if (time_is_before_eq_jiffies(priv->timer_set_at + TLAN_TIMER_ACT_DELAY)) {
+  1834					tlan_dio_write8(dev->base_addr,
+  1835							TLAN_LED_REG, TLAN_LED_LINK);
+  1836				} else  {
+  1837					priv->timer.expires = priv->timer_set_at
+  1838						+ TLAN_TIMER_ACT_DELAY;
+  1839					spin_unlock_irqrestore(&priv->lock, flags);
+  1840					add_timer(&priv->timer);
+  1841					break;
+  1842				}
+  1843			}
+  1844			spin_unlock_irqrestore(&priv->lock, flags);
+  1845			break;
+  1846		default:
+  1847			break;
+  1848		}
+  1849	
 
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
