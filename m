@@ -1,16 +1,16 @@
 Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1923B47DE;
-	Sun, 16 Aug 2026 23:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6375F3D6472;
+	Sun, 16 Aug 2026 23:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786922628; cv=none; b=lCJA5r+C8PYOp7IUkVbQ0gbVQMeT6HQnrK7TM3CpdZ5FcDAFI3zb+QSlO4oF3mwCfUpHMNbygfLTrqojvCzDuafn+sQWNn+2P6EXiUkJekGTvqyfVCaFaZoEl4cQ0udsnxAheKpauZkDeFfLQmFUIYNpV8Ay06Xp241qtSc5uiM=
+	t=1786922638; cv=none; b=jbMgF4Frp1jZC4Q6E2ZbqvifyyUrJS52i6F0H3TY/JJG54MnzWs+SaFB9Ni9pGG8k/rJhGLa/80JbMDxfOASEb1hoe7KULXMscSnq5mTeHlbucjhM949xrH/mfjn4eJumiB4d2Qv/FdXfGxHMvxgOih9Nb/J38U//tKEL+P50js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786922628; c=relaxed/simple;
-	bh=H3FtySf38Yq4G9TjyzEl8+fXF2sqJhVk8nNQfhm7Y+M=;
+	s=arc-20240116; t=1786922638; c=relaxed/simple;
+	bh=Daxu4qAEolLVNWjU2mO71/1aVNa4zwG8pFHndrU253I=;
 	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J5BquNbFDZ6RByD76nr2jbuwQkVHtvU5GXP2oOrMGN48EUz3G5Mzl9tweHek6sMC4eA6dLTUWqBqOyYzmXcgo3lVQgnvvGqBu0t8sT+2qwPqFzmQ/XokuDvH4oA0X/LdDpaSYulpVgoahQDL0FogI1nnNMjMOebBbJMnIPxW6yw=
+	 Content-Type:Content-Disposition:In-Reply-To; b=OyFl+NC5APgPunit8QsLpBYAWpR+xOwDZ/MvwcRLRSzXOQi85eV7hU4Z3r4l91cu86+twoGNltp1NOkwCbMAmIUQWwy1gJS68Zbj8hu9WQscnIDCUORuCFC1vDEWXOtqQLNqFahb4dqDHQp8HN3RKYGCldni5GIDflTZUOXsQNE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
@@ -18,9 +18,9 @@ Received: from local
 	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
 	 (Exim 4.99)
 	(envelope-from <daniel@makrotopia.org>)
-	id 1wvkCb-0000000058k-3qdF;
-	Sun, 16 Aug 2026 23:23:42 +0000
-Date: Mon, 17 Aug 2026 00:23:38 +0100
+	id 1wvkCk-0000000059O-3yzb;
+	Sun, 16 Aug 2026 23:23:51 +0000
+Date: Mon, 17 Aug 2026 00:23:47 +0100
 From: Daniel Golle <daniel@makrotopia.org>
 To: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
@@ -34,9 +34,8 @@ To: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
 	Vladimir Oltean <olteanv@gmail.com>, netdev@vger.kernel.org,
 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
 	driver-core@lists.linux.dev
-Subject: [PATCH net-next v12 2/6] net: dsa: mxl862xx: add SMDIO clause-22
- register access
-Message-ID: <05e3f9442956a62e2af7844cc5ab75092bc26560.1786922210.git.daniel@makrotopia.org>
+Subject: [PATCH net-next v12 3/6] driver core: add device_schedule_reprobe()
+Message-ID: <4c9f0d64759d0ee8fa616429b87b3218bbde439b.1786922210.git.daniel@makrotopia.org>
 References: <cover.1786922210.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -48,108 +47,251 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <cover.1786922210.git.daniel@makrotopia.org>
 
-Add mxl862xx_smdio_read() and mxl862xx_smdio_write() for clause-22
-SMDIO register access. The switch's MCUboot bootloader exposes only
-clause-22 registers; the clause-45 MMD interface needs the running
-firmware and is unavailable while the switch is in MCUboot. The MDIO
-bus lock is held per-transaction (not across polls) so that SB PDI
-polling during flash erase does not starve other non-switch users of
-the same MDIO bus, such as separate PHYs providing WAN or management
-interfaces.
+Three in-tree drivers schedule a deferred re-probe of their own device
+from a work item whose work function lives in module text: iwlwifi
+(iwl_trans_schedule_reprobe(), firmware crash recovery when a lighter
+restart is not sufficient), hci_h5 (h5_btrtl_resume(), RTL devices
+lose their firmware state over suspend) and btintel_pcie (synchronous
+device_reprobe() from its own reset work, with a hand-rolled locking
+contract spanning several comments).
 
-Unlike mxl862xx_api_wrap(), which takes the bus lock with
-MDIO_MUTEX_NESTED because it can be entered from the accessors of
-the switch-internal MDIO bus while that bus's lock of the same lock
-class is already held, the SMDIO helpers take it with a plain
-mutex_lock(). They are only called from probe and devlink flash
-contexts where no other MDIO bus lock can be held.
+Two bug classes affect the hand-rolled implementations:
+
+1. The work function ends with put_device(); kfree();
+   module_put(THIS_MODULE); in module text. After the atomic decrement
+   a concurrent rmmod can free the module text before the function
+   epilogue has finished executing. This is exactly the race
+   module_put_and_kthread_exit() exists to close for kthreads; there
+   is no work-item equivalent.
+
+2. There is no synchronization between the deferred device_reprobe()
+   and device_shutdown() or a driver unbind. The drivers do not check
+   any bound state before calling device_reprobe(), so a stale
+   re-probe can undo an administrative unbind, and the detach half can
+   run against a device whose ->shutdown() callback has already run.
+   The core already blocks the attach half during shutdown
+   (device_shutdown() calls device_block_probing() before any
+   callback, and really_probe() honors defer_all_probes), but nothing
+   blocks the detach half. For drivers which clear their drvdata in
+   ->shutdown() so that a subsequent ->remove() becomes a no-op this
+   escalates to use-after-free of driver state which other subsystem
+   structures still reference.
+
+Both classes disappear when the driver core owns the deferred work.
+Add device_schedule_reprobe(), which schedules a detach and re-probe
+of a device after a caller-specified delay:
+
+- The work function is builtin text, so callers do not need to hold a
+  module reference. If the driver module is unloaded before the work
+  runs, driver_unregister() has already unbound the device, the bound
+  driver no longer matches the driver recorded at scheduling time and
+  the work does nothing.
+
+- The recorded driver pointer is only ever compared, never
+  dereferenced, so it may legitimately point to freed memory.
+
+- The bound-state check and __device_release_driver() run under a
+  single __device_driver_lock() hold, the same lock dance
+  device_release_driver_internal() uses. This closes the
+  check-vs-detach TOCTOU that drivers cannot close themselves,
+  because device_reprobe() takes the device lock internally.
+
+- A new shutdown_done flag in struct device_private, set under the
+  device lock once device_shutdown() reaches a device, suppresses the
+  detach half during shutdown. It occupies a spare bit in an existing
+  byte, mirroring how kill_device() sets the dead flag.
+
+- The attach half is plain device_attach(), which already honors both
+  the dead flag and defer_all_probes: a re-probe landing during
+  system suspend detaches immediately and the probe is deferred until
+  device_restore_probing() at resume time. The detach half
+  deliberately does not check defer_all_probes so that a re-probe
+  scheduled before suspend is not silently dropped.
+
+One pre-existing window remains: __device_release_driver()
+transiently drops the locks while consumer device links are busy, so
+for devices with busy consumers a ->shutdown() can still interleave
+in the middle of the release. That window exists identically for
+every unbind path in the kernel, sysfs unbind included, and is not
+made worse by this helper.
 
 Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
-v12: no changes
-v11: no changes
-v10: no changes
-v9: no changes, picked up Andrew's v5 Reviewed-by
-v8: document the paged register window and the per-transaction bus
-    locking next to the helpers, rather than only in this changelog
-    (found by Sashiko AI review)
-v7: no changes
-v6: no changes
-v5: no changes
-v4: no changes
-v3: explain the plain mutex_lock() vs MDIO_MUTEX_NESTED choice in
-    the commit message
-v2: clarify in the commit message that the per-transaction bus
-    locking is about unrelated non-switch devices on the same MDIO
-    bus (Andrew Lunn)
+v12:
+ - pin the parent device across the deferred work; a reference on the
+   child alone left device_reprobe_work_fn() dereferencing a freed
+   dev->parent under __device_driver_lock() when the device was
+   unregistered before the work ran (found by Sashiko AI review)
+ - take the parent lock across device_attach() on buses that require
+   it, matching bus_rescan_devices_helper() (found by Sashiko AI review)
 
- drivers/net/dsa/mxl862xx/mxl862xx-host.c | 40 ++++++++++++++++++++++++
- drivers/net/dsa/mxl862xx/mxl862xx-host.h |  2 ++
- 2 files changed, 42 insertions(+)
+v11: new patch: add device_schedule_reprobe() to the driver core (posted
+     earlier as an RFC) so mxl862xx can schedule its post-flash and
+     post-drain re-probe through the core instead of open-coding a work
+     item
 
-diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-host.c b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
-index 4acd216f7cc0..11759fa6069b 100644
---- a/drivers/net/dsa/mxl862xx/mxl862xx-host.c
-+++ b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
-@@ -495,6 +495,46 @@ int mxl862xx_reset(struct mxl862xx_priv *priv)
- 	return ret;
+ drivers/base/base.h    |  5 +++
+ drivers/base/core.c    |  3 ++
+ drivers/base/dd.c      | 99 ++++++++++++++++++++++++++++++++++++++++++
+ include/linux/device.h |  2 +
+ 4 files changed, 109 insertions(+)
+
+diff --git a/drivers/base/base.h b/drivers/base/base.h
+index a5b7abc10ff0..6234e37de7e9 100644
+--- a/drivers/base/base.h
++++ b/drivers/base/base.h
+@@ -106,6 +106,10 @@ struct driver_private {
+  * @dead: This device is currently either in the process of or has been
+  *	  removed from the system. Any asynchronous events scheduled for this
+  *	  device should exit without taking any action.
++ * @shutdown_done: Set once device_shutdown() has reached this device, under
++ *	  the device lock, before any shutdown callback runs. Read under the
++ *	  device lock. A deferred re-probe scheduled with
++ *	  device_schedule_reprobe() must not detach the device anymore.
+  *
+  * Nothing outside of the driver core should ever touch these fields.
+  */
+@@ -120,6 +124,7 @@ struct device_private {
+ 	char *deferred_probe_reason;
+ 	struct device *device;
+ 	u8 dead:1;
++	u8 shutdown_done:1;
+ };
+ #define to_device_private_parent(obj)	\
+ 	container_of(obj, struct device_private, knode_parent)
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 4d026682944f..8a7dbe4e8362 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -4906,6 +4906,9 @@ void device_shutdown(void)
+ 			device_lock(parent);
+ 		device_lock(dev);
+ 
++		if (dev->p)
++			dev->p->shutdown_done = true;
++
+ 		/* Don't allow any more runtime suspends */
+ 		pm_runtime_get_noresume(dev);
+ 		pm_runtime_barrier(dev);
+diff --git a/drivers/base/dd.c b/drivers/base/dd.c
+index 60c005223844..3394b1c7ed18 100644
+--- a/drivers/base/dd.c
++++ b/drivers/base/dd.c
+@@ -1436,3 +1436,102 @@ void driver_detach(const struct device_driver *drv)
+ 		put_device(dev);
+ 	}
  }
- 
-+#define MXL862XX_SMDIO_ADDR_REG		0x1f
-+#define MXL862XX_SMDIO_PAGE_MASK	0xfff0
-+#define MXL862XX_SMDIO_OFF_MASK		0x000f
 +
-+/* Paged clause-22 window: the page goes into MII register 0x1f, the low nibble
-+ * of addr selects one of the 16 registers within it. Both helpers take the MDIO
-+ * bus lock per transaction, so callers must not already hold it -- unlike
-+ * mxl862xx_api_wrap(), which holds it across a whole firmware command.
++struct device_reprobe {
++	struct delayed_work work;
++	struct device *dev;
++	struct device *parent;
++	const struct device_driver *drv;
++};
++
++static void device_reprobe_work_fn(struct work_struct *work)
++{
++	struct device_reprobe *rp = container_of(work, struct device_reprobe,
++						 work.work);
++	struct device *dev = rp->dev;
++	struct device *parent = rp->parent;
++	bool detached = false;
++
++	__device_driver_lock(dev, parent);
++	/*
++	 * rp->drv is only ever compared, never dereferenced: the driver it
++	 * points to may have been unregistered and freed by now.
++	 */
++	if (!dev->p->dead && !dev->p->shutdown_done &&
++	    dev->driver && dev->driver == rp->drv) {
++		__device_release_driver(dev, parent);
++		detached = true;
++	}
++	__device_driver_unlock(dev, parent);
++
++	if (detached) {
++		/*
++		 * device_attach() must run with the parent locked on buses
++		 * that require it, mirroring bus_rescan_devices_helper().
++		 */
++		if (parent && dev->bus->need_parent_lock)
++			device_lock(parent);
++		if (device_attach(dev) < 0)
++			dev_err(dev, "re-probe failed, device left unbound\n");
++		if (parent && dev->bus->need_parent_lock)
++			device_unlock(parent);
++	}
++
++	put_device(dev);
++	put_device(parent);
++	kfree(rp);
++}
++
++/**
++ * device_schedule_reprobe - schedule a deferred detach and re-probe
++ * @dev: device to detach and re-probe
++ * @delay_ms: delay in milliseconds before the re-probe runs
++ *
++ * Schedule a detach and re-probe of @dev after @delay_ms milliseconds.
++ * The re-probe is skipped if, by the time the scheduled work runs, the
++ * device has been removed, the system shutdown sequence has reached the
++ * device, or @dev is no longer bound to the driver that was bound at
++ * scheduling time. In particular an administrative unbind is never
++ * undone by a stale re-probe.
++ *
++ * The work function is built-in text, so the bound driver may call this
++ * from its own code without holding a module reference. If the driver
++ * module is unloaded before the work runs, driver unregistration unbinds
++ * @dev first and the scheduled work does nothing.
++ *
++ * Multiple pending re-probes for the same device are individually safe;
++ * a caller that wants at most one pending re-probe must gate scheduling
++ * itself.
++ *
++ * May only be called from process context.
++ *
++ * Returns: 0 on success, -EINVAL if @dev is not a registered device
++ * bound to a driver, -ENOMEM on allocation failure.
 + */
-+int mxl862xx_smdio_read(struct mxl862xx_priv *priv, u32 addr)
++int device_schedule_reprobe(struct device *dev, unsigned int delay_ms)
 +{
-+	struct mii_bus *bus = priv->mdiodev->bus;
-+	int phy = priv->mdiodev->addr;
-+	int ret;
++	struct device_reprobe *rp;
 +
-+	mutex_lock(&bus->mdio_lock);
-+	ret = __mdiobus_write(bus, phy, MXL862XX_SMDIO_ADDR_REG,
-+			      addr & MXL862XX_SMDIO_PAGE_MASK);
-+	if (ret >= 0)
-+		ret = __mdiobus_read(bus, phy, addr & MXL862XX_SMDIO_OFF_MASK);
-+	mutex_unlock(&bus->mdio_lock);
-+	return ret;
++	if (!dev->bus || !dev->p || !device_is_registered(dev))
++		return -EINVAL;
++	if (!dev->driver)
++		return -EINVAL;
++
++	rp = kzalloc_obj(*rp);
++	if (!rp)
++		return -ENOMEM;
++
++	rp->dev = get_device(dev);
++	/*
++	 * Pin the parent too: the work locks it, and an unregister of @dev
++	 * would otherwise drop the last reference before the work runs.
++	 */
++	rp->parent = get_device(dev->parent);
++	rp->drv = READ_ONCE(dev->driver);
++	INIT_DELAYED_WORK(&rp->work, device_reprobe_work_fn);
++	queue_delayed_work(system_dfl_wq, &rp->work,
++			   msecs_to_jiffies(delay_ms));
++
++	return 0;
 +}
-+
-+int mxl862xx_smdio_write(struct mxl862xx_priv *priv, u32 addr, u16 val)
-+{
-+	struct mii_bus *bus = priv->mdiodev->bus;
-+	int phy = priv->mdiodev->addr;
-+	int ret;
-+
-+	mutex_lock(&bus->mdio_lock);
-+	ret = __mdiobus_write(bus, phy, MXL862XX_SMDIO_ADDR_REG,
-+			      addr & MXL862XX_SMDIO_PAGE_MASK);
-+	if (ret >= 0)
-+		ret = __mdiobus_write(bus, phy, addr & MXL862XX_SMDIO_OFF_MASK,
-+				      val);
-+	mutex_unlock(&bus->mdio_lock);
-+	return ret;
-+}
-+
- void mxl862xx_host_init(struct mxl862xx_priv *priv)
- {
- 	INIT_WORK(&priv->crc_err_work, mxl862xx_crc_err_work_fn);
-diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-host.h b/drivers/net/dsa/mxl862xx/mxl862xx-host.h
-index 66d6ae198aff..4e054c6e4c0e 100644
---- a/drivers/net/dsa/mxl862xx/mxl862xx-host.h
-+++ b/drivers/net/dsa/mxl862xx/mxl862xx-host.h
-@@ -18,5 +18,7 @@ int mxl862xx_api_wrap(struct mxl862xx_priv *priv, u16 cmd, void *data, u16 size,
- 	mxl862xx_api_wrap(dev, cmd, &(data), sizeof((data)), true, true)
++EXPORT_SYMBOL_GPL(device_schedule_reprobe);
+diff --git a/include/linux/device.h b/include/linux/device.h
+index aee79fd6b32b..7a9916950577 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -1314,6 +1314,8 @@ int  __must_check device_attach(struct device *dev);
+ int __must_check driver_attach(const struct device_driver *drv);
+ void device_initial_probe(struct device *dev);
+ int __must_check device_reprobe(struct device *dev);
++int __must_check device_schedule_reprobe(struct device *dev,
++					 unsigned int delay_ms);
  
- int mxl862xx_reset(struct mxl862xx_priv *priv);
-+int mxl862xx_smdio_read(struct mxl862xx_priv *priv, u32 addr);
-+int mxl862xx_smdio_write(struct mxl862xx_priv *priv, u32 addr, u16 val);
+ bool device_is_bound(struct device *dev);
  
- #endif /* __MXL862XX_HOST_H */
 -- 
 2.55.0
