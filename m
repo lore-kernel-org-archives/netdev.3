@@ -1,180 +1,137 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-26.mta1.migadu.com [95.215.58.26])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC9D18BC3B
-	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 02:12:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050AB29ACC5
+	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 03:13:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.26
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786846356; cv=none; b=HRkmzGb5pioqWmd606RgBGH3CS92SAyoi+RWrjXGiudFhDf6rTL6NxIc99RIxVMC6NS9HMUjUUHkP+zTm2kL8VbeX9wtX0gcXrUMjAdoueBJm8EHOsqlgtSM/oTSshT5ptjQU+6oi/6xFmSc8ekocvekVJxELk3IHT0A5kByVwI=
+	t=1786849985; cv=none; b=UZnt7MrPZivvnl0FEajn7dKNcDK4taZIi7JkntdWuJ3Cqo530qzS5UuZQgn2L2YUZnKPznPzj65FwlMmtYdhkrFGDimoByrAfO1+qn96CkLDp8dUplPzhQWTPcHPNR23q4LNyZD8Cspg6igwy9/Wucshm4k9t0F5DDF57a+UfgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786846356; c=relaxed/simple;
-	bh=FNcJBW2fZpfcG72m7YD8cMo3vuAaGA7fVmhcO/olNII=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z1U0IPA5lgHUTM6PA4Gc3HCfliz0ll+o0RO5gmF2QVf0dEM2tKqud83iQCWUsPPx9SHIg5XtWDfU9vxvCZ563PEioH1WvIiqz4m+5cqMCaHwTGG5BgU5ad/7MclmWhFEiJHysMtheZm+DELMaEdceQBp5zrPCLQYYg+Tg6XH4s8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=P3/vRRwQ; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=I6c5xdzN; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1786849985; c=relaxed/simple;
+	bh=tdSXhfKPBmr6MST1I8C/uR1Kdmcx+UL4ewFZ1ZQwFTw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=brFRErYp59wPKkVq7IKdpfzw5NbOlZRjhqToFqYNplw3JJsDxmm/9nN0V90KvornhSzoXv0iufsIgSXFkB2hvt9u4CQZKmXcXcTsRH7ydQorjmMnMXm5QISS1O8vzJhQ/pgnQeAKvnFmqAeB+AoKcMc/39Do/QZIt+by4sbN4tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=IyS1C8rp; arc=none smtp.client-ip=95.215.58.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="P3/vRRwQ";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="I6c5xdzN"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67FNlKpw1540746
-	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 02:12:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=FNcJBW2fZpfcG72m7YD8cMo3
-	vuAaGA7fVmhcO/olNII=; b=P3/vRRwQAsaGG6Ms3wMZIdSL/xzhY8fvHKlty6Vk
-	uLn1xFRjQ1nKZZaSakV8NWFTbr7jibmOaYe2FQE030CbnGDf02LdVb/G/a2jm+Fy
-	FDXCz3ZhySGoVGrnHadDE8sV9FHw9khRFQYWyscIPuL1DvQ/qb154tAT56kSm4HO
-	EoYSzCl4FYiLGs1FcwVSnqiGJmwxg5X/BwojGfKVndg6KwF98chSXh3N1Tw27CYD
-	U7psRQWitjKxcRi6VIF2uoqpP8LfpM2LO2Y3+XsBxcBh5/ETHehr7CjO9rcaV+Lu
-	/bYmhOOGYV+HsEXJcvnLLJEcgPp9Mqh22HEi3U5C3kSrOg==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4g322q87cm-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 02:12:34 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3823dcc1647so3327110a91.3
-        for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 19:12:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1786846354; x=1787451154; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=FNcJBW2fZpfcG72m7YD8cMo3vuAaGA7fVmhcO/olNII=;
-        b=I6c5xdzNKOS0gXjZJ1o4OgRhMl0hbWyNA6AzlYgvx32enXMacsIFuXsf960iACTXAk
-         ELKbrpRyxzju9zlCyMyKM1g03gt624S+IPJb/bCgrNKfl9Xabz9FVThEehIG5M06MP4e
-         Q6ZuG+IPVomXv7o9OI9WRQNXwPluIyX/gvyN+fxgh7M2Bo9qStZNvZmq0G8zQHUhNtYz
-         kOWsOwHTaJSTcJOBGh5+wbXbr/OlEbV+ml5BxpToyrI07sZ0AhgLEJ4mA4CgOVuPC59l
-         GOkOCqBNKe6gzMLwOcmrYYReH7xSnBSW2D0UbjPBbDbYol9vItl7WCobddZm5WKiy9EY
-         WRZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786846354; x=1787451154;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FNcJBW2fZpfcG72m7YD8cMo3vuAaGA7fVmhcO/olNII=;
-        b=jcm50u3yhmoBFvx5Py73RJwkdf0eNsZbbXmWjySR3n1kIGta+PXNlpSrrbknJb3xSm
-         nLcOzRlNSehyXdq3lHa2XsR8xF9bOCuHDOoVfbTgbbsZgPcHqYBd0oEOCqScs5/xZKEJ
-         ROJ6cyHgkZADc7PBxoKoNk6M57GaZZwOqvrDjVVl/JzIk05ONctc8sTtORzvj0B+Gc4R
-         3XkOCoe2NnN3MhFP3F6B2h5ngt6Iak5NRAZ4bH16vEpQsjSY2M1hOrobBYSSsxKkfNA5
-         ouhVCs4R3SRmtGlQAKiEM3sItPnvUgNhxq7+tq3hj9s3P0ZPZVe02LPxKYibt3rt1TXI
-         +b0Q==
-X-Forwarded-Encrypted: i=1; AHgh+RoF+qqJBU5S0AOZ/oi28srqnbvRe64yRJEsM/UeUcCkDZou8KRDmjaihEkqbOh/DIEn8MV8dX0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMdfpXUJKdsqqOdWCfqWbhYwuc7D46tqF0x9a+80FCmOkrii4v
-	Y9mRrpxx/3z+0e8tpc7jBY/TLDsIiPo9bw6+yYhT5jHvfwWE8NAcnF5iXYxLkVnWmmQPM16e+Ea
-	e+tyv37XV5c3YKY9Fj27Ya9DV1hSsoUzHTftqoN1XtWTWRKuaILjle8P1uio=
-X-Gm-Gg: AR+sD13gnfggYmbKABkdtdsYR1tx7GV4I4cMGjWsttX//M9dZPkhA5adYWqr0UhvEZR
-	/lGf0zm/XixVAePSAgilTFqGG91s/5Q6Kpo2mwcytlR6rVr0aHSm9p+YX8qu8wM7dvCEoFnctqR
-	ZPu5lZs+ht9wjZ4t9YIQx2pi0GYfuvQwO682zKJz9lruiHnulyo2pMarMILB6oFrfM2aWy8duwI
-	nPUWRpRtCYCT9YTIFn/XmUAeqfkWobdRP9JLKehREA5lsPADMrYxyQ9PvIsWTQEYQYKklzcZySw
-	hAozdGBA3osig8Zy/XCd/1Jtf1UV9Cf4w57e93rvu5m2BWaZgD9X2Hp2HDQOTgxOzlRHsUnGddt
-	4NG/onEYoRHTI8g==
-X-Received: by 2002:a17:90b:2c8d:b0:38f:caa2:5721 with SMTP id 98e67ed59e1d1-3933e62f4f8mr17525818a91.17.1786846353600;
-        Sat, 15 Aug 2026 19:12:33 -0700 (PDT)
-X-Received: by 2002:a17:90b:2c8d:b0:38f:caa2:5721 with SMTP id 98e67ed59e1d1-3933e62f4f8mr17525772a91.17.1786846352936;
-        Sat, 15 Aug 2026 19:12:32 -0700 (PDT)
-Received: from localhost ([4.43.230.125])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39531e142dbsm150525a91.1.2026.08.15.19.12.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Aug 2026 19:12:32 -0700 (PDT)
-Date: Sun, 16 Aug 2026 04:12:30 +0200
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Daniel Thompson <daniel@riscstar.com>, Alex Elder <elder@riscstar.com>,
-        Davide Caratti <dcaratti@redhat.com>, netdev@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH net-next v3 2/3] net: stmmac: add tc-mqprio qdisc offload
-Message-ID: <aoEcjrBy6h7E22dI@lore-qca>
-References: <20260808-stmmac-ets-offload-v3-0-b714466142b9@oss.qualcomm.com>
- <20260808-stmmac-ets-offload-v3-2-b714466142b9@oss.qualcomm.com>
- <20260814135631.766ceb41@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="IyS1C8rp"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=tdSXhfKPBmr6MST1I8C/uR1Kdmcx+UL4ewFZ1ZQwFTw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786849979; v=1; x=1787454779;
+ b=IyS1C8rpkAUMAgHyk3BDRZj9nCeV2MJuCw5IqcRdfFABrIiskYUHhPtwvVJAaPd6bjo1ETSl
+ n4hyGkpMacRlKRkmyEy5r08VZDKfftUtHXkZdQclEDQ4NlHmDsusutKYsgWheRCrQMW0GFDVQH5
+ ElGQdaueA1LbK7UvqioXSMus=
+X-Envelope-To: netdev@vger.kernel.org
+Received: from localhost.localdomain (147.136.157.0)
+	by smtp.migadu.com with ESMTPS id 32598bf85429cbd8;
+	Sun, 16 Aug 2026 03:12:59 +0000
+X-Migadu-Flow: FLOW_OUT
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: bpf@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
+	syzbot+237bbeed8dfe0699b7f5@syzkaller.appspotmail.com,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Toke Hoiland-Jorgensen <toke@redhat.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH bpf] bpf: free page_pool frags via the page_pool path in bpf_xdp_shrink_data
+Date: Sun, 16 Aug 2026 11:12:44 +0800
+Message-ID: <20260816031245.268898-1-jiayuan.chen@linux.dev>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="mwF8KmuxzVjuS+UV"
-Content-Disposition: inline
-In-Reply-To: <20260814135631.766ceb41@kernel.org>
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODE2MDAxNCBTYWx0ZWRfX4CCKoN5jx8IE
- 0Sl8AwR5TRGqfAmZEYptsT1KGTJ2m8Z54nKc/bkXq05pXcpnWN6QqV5CwAPtNIJvJEV24tPic0s
- C+ltABHRY1K1QT+1HG/pWFx7xbTTpt0=
-X-Proofpoint-GUID: 2HMIvXvFD8kB3-YYnE2a7Ut-LYK-UtFw
-X-Authority-Analysis: v=2.4 cv=C5PZDwP+ c=1 sm=1 tr=0 ts=6a811c92 cx=c_pps
- a=RP+M6JBNLl+fLTcSJhASfg==:117 a=y9u56/S6JbnHW3dtX7SsYA==:17
- a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22 a=1LTPP7CxEm4iLMqfjvUA:9
- a=CjuIK1q_8ugA:10 a=abe5JHccC3Obh-31B2kA:9 a=iS9zxrgQBfv6-_F4QbHw:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE2MDAxNCBTYWx0ZWRfX8FlK5e6Dh0QV
- 7sELl+M2u4ZqUMDFFSvsZr/vGUKF2CwX+JYxEB+3GXfRl+gGXgJ2RVv0dgpGcMCr2hbpGcYfFyS
- bsAwQWseZ+CrZSBSlQWLVbtoV1vFYJ+oOXv9EOEbBmKBqm6kkwrs+KmO9ODUpAQNyHWhTtdlVQC
- j93Rp/DDZl2QjQo99i3afLIrP+Vh8BrH3Szj2qnib6dXvxu5hZe2Z5WUsG3IUAr3eQQi3TOCbq9
- v/qN6ubzVzZXDEXnG83cWwof8IoqsK5DiUzQdZnohU/1tPvRQcxg2yZsUTiGoM6WY5gT1VcuvBv
- BusvWZ0da6RjVKlWn2ddzBD3jvmBCp4/3su+fqXgUANt5Z1Lt+cOd5rDPfCRYYQdmYcEX1bgBe8
- HNjoIQ416n9GRwtiwzKSsb/3iNspnZX7NIqRwkh3s82Srm1fg3D11Fhiqh7P8u6v/9o/O6gZWIL
- xjPqrBaqZnNTZzhL9BQ==
-X-Proofpoint-ORIG-GUID: 2HMIvXvFD8kB3-YYnE2a7Ut-LYK-UtFw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-15_07,2026-08-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 suspectscore=0 lowpriorityscore=0 phishscore=0 bulkscore=0
- priorityscore=1501 clxscore=1015 impostorscore=0 malwarescore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608160014
+Content-Transfer-Encoding: 8bit
 
---mwF8KmuxzVjuS+UV
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+syzbot reported a "Bad page state ... page_pool leak" when a generic XDP
+program shrinks an skb into its frags on the tun write() path:
 
-> On Sat, 08 Aug 2026 16:49:58 +0200 Lorenzo Bianconi wrote:
-> > Subject: [PATCH net-next v3 2/3] net: stmmac: add tc-mqprio qdisc offlo=
-ad
-> >=20
-> > Implement offload of the tc-mqprio qdisc in the stmmac driver. The MTL =
-TX
-> > scheduler is switched to strict priority, and the PSTQX/PSTC priority
-> > bitmask of each TX queue is programmed from the set of frame priorities
-> > mapped to the owning traffic class (qopt->prio_tc_map).
-> >=20
-> > The offload requires the DCB feature and a 1:1 TC to TX queue mapping,
-> > with the queue ranges bounded by the number of queues the MAC implement=
-s.
-> > Configurations with AVB queues are rejected, since forcing strict
-> > priority conflicts with the CBS algorithm.
->=20
-> Clashiko has a bunch of comments, I assume at least one of them is
-> actionable. High level - you say "add tc-mqprio qdisc offload"
-> but the driver already has a bunch of mqprio code. Background
-> would be useful. You also say "1:1 TC to TX queue mapping", if there's
-> only one queue per priority why offload mqprio and not prio?
-> At least a note in the commit message would be useful.
+  page_frag_free
+  __xdp_return
+  bpf_xdp_shrink_data
+  bpf_xdp_frags_shrink_tail
+  bpf_xdp_adjust_tail
 
-ack, thx. I will address them in v4.
+When a program shrinks a whole frag, bpf_xdp_shrink_data() frees it via
+__xdp_return() using xdp->rxq->mem.type. For skb-backed XDP the skb is
+first rebuilt into page_pool memory (skb_cow_data_for_xdp() for generic
+XDP, skb_pp_cow_data() for veth), so the frag is a page_pool page. But the
+rxq was registered as MEM_TYPE_PAGE_SHARED, so __xdp_return() calls
+page_frag_free() on a page_pool page: its base refcount drops to 0 and the
+page is freed to the buddy allocator with pp_magic still set.
 
-Regards,
-Lorenzo
+The rxq mem model cannot be relied on here because the rxq is shared and
+does not describe the frag's real memory. The netdev generic rxq is used
+both by generic XDP (page_pool frags) and by bpf_prog_test_run_xdp(), which
+borrows the loopback rxq for plain alloc_page() frags; veth uses one rxq
+for cow'd (page_pool) skbs and for redirected frames of any memory type. A
+single rxq->mem.type can be wrong in either direction.
 
---mwF8KmuxzVjuS+UV
-Content-Type: application/pgp-signature; name=signature.asc
+The memory type is really a property of the page. Check the frag itself
+with netmem_is_pp() and return page_pool frags to their pool, keeping the
+rxq mem type only for non page_pool pages. The page_pool is taken from the
+page (netmem_get_pp()), so no rxq registration is involved.
 
------BEGIN PGP SIGNATURE-----
+Fixes: e6d5dbdd20aa ("xdp: add multi-buff support for xdp running in generic mode")
+Fixes: 0ebab78cbcbf ("net: veth: add page_pool for page recycling")
+Reported-by: syzbot+237bbeed8dfe0699b7f5@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=237bbeed8dfe0699b7f5
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+---
+ net/core/filter.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaoEcjgAKCRA6cBh0uS2t
-rPLaAPwNhvlwtI5cH91/8Oj5jzqnm4RKoWFYOWz0EWyv0Vw1xwD/QjanQNDBanDr
-aT49OJ+Y1YE70hdbgSPIwPHmy9KRHAc=
-=PVBu
------END PGP SIGNATURE-----
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 3423734124a5..4536bd147c25 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -89,6 +89,7 @@
+ #include <net/ip6_route.h>
+ 
+ #include "dev.h"
++#include "netmem_priv.h"
+ 
+ /* Keep the struct bpf_fib_lookup small so that it fits into a cacheline */
+ static_assert(sizeof(struct bpf_fib_lookup) == 64, "struct bpf_fib_lookup size check");
+@@ -4293,6 +4294,14 @@ static bool bpf_xdp_shrink_data(struct xdp_buff *xdp, skb_frag_t *frag,
+ 	if (mem_type == MEM_TYPE_XSK_BUFF_POOL) {
+ 		netmem = 0;
+ 		zc_frag = bpf_xdp_shrink_data_zc(xdp, shrink, tail, release);
++	} else if (netmem_is_pp(netmem)) {
++		/* The rxq mem model does not always describe how a released
++		 * frag must be freed: the generic-XDP and veth paths run the
++		 * program on a shared rxq while the frag has been cow'd into
++		 * page_pool memory. Trust the page itself and return a
++		 * page_pool frag to its pool regardless of rxq->mem.type.
++		 */
++		mem_type = MEM_TYPE_PAGE_POOL;
+ 	}
+ 
+ 	if (release) {
+-- 
+2.43.0
 
---mwF8KmuxzVjuS+UV--
