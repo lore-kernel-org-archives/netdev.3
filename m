@@ -1,98 +1,168 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FF84B04A3
-	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 14:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D8C222590
+	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 14:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786891686; cv=none; b=WeEztniaPnumHiRPvoPi0s8s2FaMclsdMShuCHmZ8LEV5W6WcuABQ9Nrn40wEJKi61POCtdCHcXayByjcmU0YnL+fskw3liKV1QTulwWuyWCi6xSI0pBdSngjru/VaLYJlSv1/yrg0/+XabQXp0aVrs997djqEToGvmA3Z5mJZ8=
+	t=1786891960; cv=none; b=sZczIjKXmq/jylEy92Y9ZIChzLDQp5ERkqgTT4kPimcY9j3S1qTmfMud9mQBr9cRgFn/283620YE7+3L8AlioI1ZG41PG/MxS98CFTViR7zrHPLjNpYGEkMQV1W/YeMjWdiz+ch9R+WpKYSVo6hVVE56brz/IYTW6hPx1N0wsQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786891686; c=relaxed/simple;
-	bh=g9o4fmsQQ0ZYb51H9mi3ELNVu8/0tt7RS4X9ffMDFw0=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=NC0ki3pq8E7iIL9bopyBFZQvJ83OYtQcd4O3isecR17Ko/A0IuTcaBdHJ9MYaHABxByUeYjIdkjuEaEJaB4fQaQslp7obN2KeWsETxUcqCYfMVj6U9X2iUEWxTYGm5Hl3hJNqSMqazQs9Jw4QpiD8X5ugkfHPeaElkvdBxMoNUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q65g+cLv; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1786891960; c=relaxed/simple;
+	bh=TZ/jMhLpSpiWuZYwnBKNAAe642VAkQvXE89J79snnF4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=E1lvx6NEdXg1EvICcqeprKxdEVsmZS6vWn06wv7LCzXGFVWlrMfuUrJf2w8q5ERnbPo7pBF5rQdHcgOYHCk44uT3dHQ606pkp3YDfEHBbeYLjiIVbkgHtGky94PiAooC+bsigJhooW3kLg/MIbSkNFcjpdgjlJ2ZuowSz75+ElM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Wn7PqjSR; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q3mJ0Vpm; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q65g+cLv"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Wn7PqjSR";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q3mJ0Vpm"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786891684;
+	s=mimecast20190719; t=1786891958;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=g9o4fmsQQ0ZYb51H9mi3ELNVu8/0tt7RS4X9ffMDFw0=;
-	b=Q65g+cLvl6z2bdqgPiuxsRqN6PlOYGKzWNsejx6H2xeERevzv3t70Jbu5rlwBULHpPgkNZ
-	TBtuEi4BXKRrAvM/jhtUkCKfPOd30B1BSiO2SPYO/007BwmhWAqGnKNVqXJwbL+ooHr5Sn
-	LYYDIGrrMSCiZr8Vt/iQzTdnKbS8q/U=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-433-q09vjwjjNfu97Yc-p_tTcg-1; Sun,
- 16 Aug 2026 10:48:00 -0400
-X-MC-Unique: q09vjwjjNfu97Yc-p_tTcg-1
-X-Mimecast-MFC-AGG-ID: q09vjwjjNfu97Yc-p_tTcg_1786891679
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 379431956095;
-	Sun, 16 Aug 2026 14:47:59 +0000 (UTC)
-Received: from [10.44.48.13] (unknown [10.44.48.13])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 32FEF1800346;
-	Sun, 16 Aug 2026 14:47:54 +0000 (UTC)
-Message-ID: <9c89e4e6-8dd8-4353-9354-1f85eb17fbc9@redhat.com>
-Date: Sun, 16 Aug 2026 16:47:53 +0200
+	bh=RVhpy17ZCwCJlu7ncEkrfmPtQ9a8yWWDGxgf/0hovtk=;
+	b=Wn7PqjSRNWbMg+ZShYhCC6YXCjYZNhL6dWS7JYqichFXsdjavcUO7EE51+RrNF+w1hkaUR
+	ewqi9vo0XqTLW4krY9Sp6WxPtwZ2TVy6fFWxiXVwfEelyitlEQ05VqqF4YGm2UQPf7Mlzv
+	LRWOv5UNszwI36x2WfhTll3uyhbpsqA=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-213-B5gu0iZtMSG2Y8P3E66VeA-1; Sun, 16 Aug 2026 10:52:36 -0400
+X-MC-Unique: B5gu0iZtMSG2Y8P3E66VeA-1
+X-Mimecast-MFC-AGG-ID: B5gu0iZtMSG2Y8P3E66VeA_1786891956
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-930edb4362dso244237185a.3
+        for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 07:52:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1786891956; x=1787496756; darn=vger.kernel.org;
+        h=content-type:mime-version:user-agent:message-id:date:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=RVhpy17ZCwCJlu7ncEkrfmPtQ9a8yWWDGxgf/0hovtk=;
+        b=Q3mJ0VpmOcL35+Cglw8zZrJEvGVCd1/VBVmmW4zVUlKzS7lwNzFlqe/037liYojHrM
+         SeD5mBxM9JkJ/NaIk5u/EkMK+L1kFXoIAPXgNXapHGUAOJFAjZjbi33jyegrxakBNnek
+         Py0JSn1N9wpGcqFy+2eyFnwudYvbF9XlEciTlkzKoHM6inlZtQzZyecRT4DnO+r/rNPX
+         jczBXrMMJ8uvyvHcPNq2tm2u19JJNW+axTdiM+iWE82eyoWQV1KwcwUYK6ALV6LG1Ii1
+         ETWD8eZwvnbyu6aP8cT97JXJQZfjR2ESmyzPCoEob6t3mwzHqIwOhHpz/lRnoCOayUbI
+         3JtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786891956; x=1787496756;
+        h=content-type:mime-version:user-agent:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=RVhpy17ZCwCJlu7ncEkrfmPtQ9a8yWWDGxgf/0hovtk=;
+        b=Am+wgxCP0H+ZvSnjXz9IMhQb5gUiCkluI5oaOV35SzDTDC+GCnyTpJqkrnZh9q48bZ
+         7rFSWjsIaRVejAOIJsIk22NaAV5Tobf25PkYKcnIugL3Rejk5wi8dE5tvD+Uqnh0kyt8
+         8otPIZLyjxPAcqe1/5l8fCvNG/uRzrurWc3l9NDle10u+6/OG59b5ba23v45Kau0nSnW
+         5Q5gw6xui0WH4cWfCR08PvJ73EfHXrwhPZ63WbWDFK5AVc7OAoUFr0YwIztbhFqaSAaL
+         7HpN3JzouKNiZnopMZ7hXj0Z63BJiYkaBqZdyJdfkFI5sROz4AtFS7ZxMNIHW79CCBWy
+         24Ew==
+X-Gm-Message-State: AOJu0YzEKjX1+hLdJJGVxkkF9gzd8hYYVII9eUqUhchDdlLMou1J+7MN
+	zyu4eNWId9fWDyVUhHtDraJWaCMluYkqb57CtB7dNaSO2X18JuO/eYPxPv1Wzd1DJwLx81dPPWk
+	j3xv36Ndpk6VQnjQMd67GYQ1zpbedxa+AsWATUeqtuItpj+8TfthCX9s9dA==
+X-Gm-Gg: AR+sD11ceC2J/gdgyCHa5Pn7zMP2iVtycGwIK+tDP2tl86bQ1YjcH5fjxLNCYp/dMiq
+	5N9SUlH2x1UbM3lELpje1mNYuO4ECXCo2IFlO7+2U/8WjNhpyK/ahihtbKR8In7PY/USAeQIiND
+	YiCXJkO7i9dUpLk0KrKdDiokXU3n965nHQ7Q+AmPY3VOdX09IIPpZbCaGOkCdhCPmegh21NHwhX
+	a9Gu+Zw1ZWBOKXMXC/FntJTAeg5IDMzl/S0hljqRZ1EquHh8cvRrfyLxRoCDokOZQgFv/B1EemA
+	hFqR8GAK0pcMP0Xl9xZv7ZY8b6dWBDxD2paGFCE+ech+PeZyLjUlqmKtDYluzv8bl0mpcJZ/GIb
+	oSEPLm486dtHJIbPP1MtRfkl3EhbF
+X-Received: by 2002:a05:620a:7103:b0:936:dbf1:f4c6 with SMTP id af79cd13be357-936dbf20ccbmr1613141985a.25.1786891956026;
+        Sun, 16 Aug 2026 07:52:36 -0700 (PDT)
+X-Received: by 2002:a05:620a:7103:b0:936:dbf1:f4c6 with SMTP id af79cd13be357-936dbf20ccbmr1613137385a.25.1786891955558;
+        Sun, 16 Aug 2026 07:52:35 -0700 (PDT)
+Received: from aconole-thinkpadt14gen4.rmtusnh.csb ([216.212.25.12])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-936ce250c20sm760155685a.47.2026.08.16.07.52.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 Aug 2026 07:52:35 -0700 (PDT)
+From: Aaron Conole <aconole@redhat.com>
+To: Ilya Maximets <i.maximets@ovn.org>
+Cc: netdev@vger.kernel.org,  Eelco Chaudron <echaudro@redhat.com>,  "David
+ S. Miller" <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,
+  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,
+  Simon Horman <horms@kernel.org>,  dev@openvswitch.org,
+  linux-kernel@vger.kernel.org,  stable@vger.kernel.org
+Subject: Re: [PATCH net] net: openvswitch: fix flow mask use-after-free on
+ flow deletion
+In-Reply-To: <20260815005915.1097270-1-i.maximets@ovn.org> (Ilya Maximets's
+	message of "Sat, 15 Aug 2026 02:58:56 +0200")
+References: <20260815005915.1097270-1-i.maximets@ovn.org>
+Date: Sun, 16 Aug 2026 10:52:33 -0400
+Message-ID: <f7t5x1anmmm.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v8 2/3] dpll: zl3073x: add channel ToD, phase
- step and TIE operations
-From: Ivan Vecera <ivecera@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Petr Oros <poros@redhat.com>,
- Chris du Quesnay <Chris.duQuesnay@microchip.com>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Jakub Kicinski <kuba@kernel.org>, Jiri Pirko <jiri@resnulli.us>,
- Min Li <min.li@microchip.com>, Paolo Abeni <pabeni@redhat.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>, linux-kernel@vger.kernel.org
-References: <20260814082656.306534-1-ivecera@redhat.com>
- <20260814082656.306534-3-ivecera@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260814082656.306534-3-ivecera@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Type: text/plain
 
-Sashiko comments with my replies:
+Ilya Maximets <i.maximets@ovn.org> writes:
 
- > Can this loop spin out its retry budget without ever giving the
- > condition a chance to become true? [...]
- > On a fast bus where the ToD command completes before the semaphore
- > is re-read, all 20 iterations can finish well inside the 20 ms window
+> The commit in the Fixes tag below made so flow->mask free is scheduled
+> via RCU right after it is removed from the flow table.  The pointer
+> stays in the flow structure and it can be accessible while in the same
+> RCU critical section.  This is done to avoid requiring ovs_mutex for
+> the ovs_flow_free().
+>
+> However, while removing the flow during processing of CMD_DEL, we do
+> not take RCU read lock before the removal, and ovs_flow_cmd_fill_info()
+> uses the flow->mask pointer afterwards.  The RCU read lock is taken,
+> but it's already late at that point.  The comment on that line
+> acknowledges that the lock is cosmetic and doesn't serve a real purpose.
+>
+> This leads to use-after-free if the RCU grace period passes between
+> removal and the filling.  It is a short race window, but it is there
+> and can lead to a real crash in case memory allocation for the info
+> takes a bit longer:
+>
+>  BUG: KASAN: slab-use-after-free in __ovs_nla_put_key
+>              net/openvswitch/flow_netlink.c:1996
+>  BUG: KASAN: slab-use-after-free in ovs_nla_put_key+0x2463/0x2e30
+>              net/openvswitch/flow_netlink.c:2250
+>  Read of size 4 at addr ffff88801ee89970 by task ovs_flow_del_ec/9487
+>
+>  Call Trace:
+>   <TASK>
+>   __ovs_nla_put_key net/openvswitch/flow_netlink.c:1996
+>   ovs_nla_put_key+0x2463/0x2e30 net/openvswitch/flow_netlink.c:2250
+>   ovs_flow_cmd_fill_info+0x420/0x9c0 net/openvswitch/datapath.c:930
+>   ovs_flow_cmd_del+0x53a/0x970 net/openvswitch/datapath.c:1467
+>   ...
+>   netlink_rcv_skb+0x156/0x420 net/netlink/af_netlink.c:2556
+>   </TASK>
+>
+>  Allocated by task 9487:
+>   mask_alloc net/openvswitch/flow_table.c:967
+>   flow_mask_insert net/openvswitch/flow_table.c:1012
+>   ovs_flow_tbl_insert+0xea2/0x1a90 net/openvswitch/flow_table.c:1084
+>   ovs_flow_cmd_new+0x7e3/0xd90 net/openvswitch/datapath.c:1086
+>   ...
+>   netlink_rcv_skb+0x156/0x420 net/netlink/af_netlink.c:2556
+>
+>  Freed by task 9485:
+>   rcu_free_sheaf+0x1e/0x100 mm/slub.c:5978
+>   rcu_do_batch kernel/rcu/tree.c:2645
+>   rcu_core+0x59c/0x10c0 kernel/rcu/tree.c:2897
+>   handle_softirqs+0x1e4/0x9a0 kernel/softirq.c:622
+>   ...
+>   instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062
+>
+> ovs_flow_tbl_remove() must be called after the ovs_flow_cmd_fill_info()
+> to avoid this race.  This also helps with cleaning up the forced cast
+> and the cosmetic RCU read lock.  Before the commit in the Fixes tag the
+> order did not matter as long as the flow object itself was not freed.
+>
+> A wider RCU critical section could be another option, but we have a
+> GFP_KERNEL allocation in the way.
+>
+> Reported by Trend Micro's Zero Day Initiative as ZDI-CAN-32042.
+>
+> Fixes: 56c19868e115 ("openvswitch: Make flow mask removal symmetric.")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+> ---
 
-Testing on I2C at both 100 kHz and 400 kHz shows that a single
-iteration takes approximately 17-19 ms regardless of bus speed.
-The iteration time is dominated by the device's internal processing
-of the ToD read commands, not bus transfer time. With 20 retries
-the budget is 340-380 ms, well beyond the 20 ms margin window.
-
- > the kerneldoc for zl3073x_chan_tie_write() states delta_ns "must be
- > in (-1s, 1s)" and nothing in the function enforces it. [...]
- > Would an explicit range check on delta_ns be worth adding here?
-
-Both in-tree callers already bound the input as you noted. The range
-guard was intentionally removed in this version at the reviewer's
-request — the internal API should trust its callers rather than
-re-validate inputs already checked by the PTP core. The kernel-doc
-documents the precondition for future callers.
-
-Thanks,
-Ivan
+Reviewed-by: Aaron Conole <aconole@redhat.com>
 
