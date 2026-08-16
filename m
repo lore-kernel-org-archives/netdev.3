@@ -1,131 +1,179 @@
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C57C52DB798
-	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 03:52:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+Received: from outbound.baidu.com (mx14.baidu.com [220.181.3.101])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 02786201278;
+	Sun, 16 Aug 2026 03:56:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.181.3.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786852374; cv=none; b=B4xlOSIVP+ZFMB80zLNUM/BzGKTbDFlxFWSfkqJlef2cXp9OztdMs7cLAJ5UBB8Mliu8nWJex0KPNtwmy3QXH0mJBZp+UVW4RkyI4A9vgXikGnGEPRzdRlDmYJizDm0UaQqulSYSlqCDoWHBvCZF9fQyhpZ8rjeDQQ08pZ6wUps=
+	t=1786852596; cv=none; b=Qe+ZaYY4x9eoWpKhbXgUfqALNZWB7wQLAC8qHTqLGJc2qt+nju4Kb8McM4aQsn+T7odVJ//TeavNqU2fb80aYDeeFI8RcIbv3GS6RWskkMU7TpiVtU5QIQOpSTmtBxLUo36EpGXGfuE+y+oaWvqKpoZN7I9iklriTWL8kZrbGkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786852374; c=relaxed/simple;
-	bh=8Cvz4eTiI579s3pzrKy1RBfabCztHCQjMvVEIwjAt74=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=poisv4ufRFDFCkkUZfFzjUKCW3XDcxMM6/mCW1YhifNR9VKE5aMfAqUGZrQ8L5vPp+4mldvjOJjNlovKa6CFXOK+k2L25r64ueSaXwlyWfR6upGmB4fq35i56rgPhq3R1Ek+n+l3KRwvOGWgAoTwg9zo9mgpSZODc62uHJX9CZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XPi2G+iv; arc=none smtp.client-ip=209.85.128.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786852596; c=relaxed/simple;
+	bh=6cbLuym+1cqRI7P7D4gMdqm+OHpINkJYcn9natJyGsk=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Oie0GtLXvxSfWw5YGXDMUw7AvnbWSUxc3X7kyIu6eo9g3omFCQiXIulbhKv6bQvKgYIWkihOdKQkyf7ceMLhtzcYJTKMECKgXY+m6iH0z0587JTu7bgTfxKaAu8hpe/HrAC2lwowa3qSAV/Sm71I73wpyAB0MsEJRblwsJi+PlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b=NTLoGFoI; arc=none smtp.client-ip=220.181.3.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XPi2G+iv"
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-8200b55dc47so31744567b3.3
-        for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 20:52:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786852372; x=1787457172; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=XgEkc435J86T5Q5eFf1ikI6/hg2tuHj/BT8NQuyczkc=;
-        b=XPi2G+ivUpbwQ6ouMd+sv4Y9cgmNeRc37OQdSeQvGZ9s9E6SLwEZCBjHkIj5EcPTbi
-         8Qs+WAzTMyK2/PX78M7pTZwD29mVNi7HVZh4DdkIYWxRtoMKxc9q9YvW5ecP1xyh1lES
-         gJh/EjdThjBZ/U/7bzNeO54/EbyHDMH/7rmV8BolDSLlijtLtGJeuizvYcFDHTnIu4nP
-         e+ztWDX82l3qxPHwXQNZ8n9iszH7xOO95S10ZHUJo9xCYcF1Ftaq1AaPXIHEjXyb/2ND
-         veHtPc4BbOLKiOGR9u4pq6ZyPJXk1U58GomW7ZT1GopAMi09DmbuG7LupWlOmV5DAz9N
-         D4Sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786852372; x=1787457172;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XgEkc435J86T5Q5eFf1ikI6/hg2tuHj/BT8NQuyczkc=;
-        b=HB75HKkQzg5536vJFcCET8X0BpXhjyrb7iGCqDBnDNtQChUIj5Cbs8SIPbpq0VMPGE
-         TjGkP7c7/nLiZCV8/t0gTTeLGeJ8LROaoO/Hs5gpkXJikhEBwj9o23LMajRh4ajb0CWO
-         UnHuvOk5qgcyhT3F8XZwM0lUsvsKQsl4edmf1XLT0SiI0wahML2cyIWyrAH9cE741/oM
-         y3+fcLutSXwRSN4kp58080b88ReRro0j47Lf4S9z5zRY0OSBSqv2aMO4aNzXXRWCwK8l
-         Exce/pyK8Om8O0KxTBLA3oQ+nXr1XE+3gBtEvVOUjhmvupIqL+ibK6LAPzFsiJ7Z13ZE
-         oL9w==
-X-Forwarded-Encrypted: i=1; AHgh+RpIPbjRq2TiP9y/s0iy0/aehFvClM8CTAsiNUDRZyIdJyEMS4WAmfc8da0YSIBisKkvQxZnpVg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzMVNuhCy0bCdjIxjnRrSj9GJMKeipaxUmY5bBJoAPP9127mEr
-	C9yLE2QQweqzpaxnBZEVKXy9d+QHa8ggGUEQB1ctnDo3jGUlsotJDR2E
-X-Gm-Gg: AR+sD10BVMNKa1rXhW8o//fDeR2pFQeEca/Aaw3kyVCtLnxNnHwU49fkMprhm9suWmS
-	Hv/cqvWuRkG1FtycJ5UjpsuPc70mLNg6Nrb0oTFgCIh9uD4yfDu40u6obxhJstpeUaNzHSjcS7T
-	7g8l0WfwLzRPk/k7/ET0wEqo05QctaLOEZbLxnURBnLseHOFrFDYHdrpiXIcnpkFT0T42naxjRS
-	gpsEBuHGLPAQLm4Mp+HjNQuFF8OGTdC4/4kg9xYe11NNEeZS/kHVkfe4bQXDUV/mriFkbWnPkS5
-	ramAcWmuIgIO0Ba5ECxTU2zZD+dVDp4WidpyEs5v6pv74jo4maQTV+vCH3bABqF3p7oOrC2P36r
-	NM0sQkZSKfG3rm+/cO0fy/eJfD1bJX/uYz1oCC2qClCc8whZbJ97CqEfeOh9fpE+X4zu1T9P0lj
-	zs8IZNb44DEyExZvJqhHFH2NwHErihrKn8vqPcpIxkvYoygdxH+0lvS+wUUEaIKDNfrVE=
-X-Received: by 2002:a05:690c:e68f:20b0:815:bc6a:2e48 with SMTP id 00721157ae682-8370ea71c6bmr46941407b3.14.1786852371654;
-        Sat, 15 Aug 2026 20:52:51 -0700 (PDT)
-Received: from mac.lan ([136.55.173.105])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-836bc49fee2sm32016057b3.16.2026.08.15.20.52.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Aug 2026 20:52:51 -0700 (PDT)
-From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-To: pablo@netfilter.org,
-	laforge@gnumonks.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: osmocom-net-gprs@lists.osmocom.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	AutonomousCodeSecurity@microsoft.com,
-	tgopinath@linux.microsoft.com,
-	kys@microsoft.com,
-	blbllhy@gmail.com,
-	"Xiang Mei (Microsoft)" <xmei5@asu.edu>
-Subject: [PATCH net] gtp: fix NULL pointer dereference in gtp0_handle_echo_resp()
-Date: Sat, 15 Aug 2026 23:52:05 -0400
-Message-ID: <20260816035205.57966-1-blbllhy@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b="NTLoGFoI"
+X-MD-Sfrom: lirongqing@baidu.com
+X-MD-SrcIP: 172.31.50.47
+From: lirongqing <lirongqing@baidu.com>
+To: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
+	<daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
+ Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>,
+	Boris Pismenny <borisp@nvidia.com>, Richard Cochran
+	<richardcochran@gmail.com>, Cosmin Ratiu <cratiu@nvidia.com>, Dragos Tatulea
+	<dtatulea@nvidia.com>, Carolina Jubran <cjubran@nvidia.com>, Li RongQing
+	<lirongqing@baidu.com>, Kees Cook <kees@kernel.org>, Akiva Goldberger
+	<agoldberger@nvidia.com>, Simon Horman <horms@kernel.org>,
+	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>
+Subject: [PATCH net-next, v3] net/mlx5: Use dma_wmb() for completion queue doorbell updates
+Date: Sun, 16 Aug 2026 11:56:05 +0800
+Message-ID: <20260816035605.1873-1-lirongqing@baidu.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: bjhj-exc3.internal.baidu.com (172.31.3.13) To
+ bjkjy-exc3.internal.baidu.com (172.31.50.47)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
+	s=selector1; t=1786852580;
+	bh=CoCztr6XAGEBvv7TN377FtTXgA/2hXdT8SEOdZBtANs=;
+	h=From:To:Subject:Date:Message-ID:Content-Type;
+	b=NTLoGFoISOzPQiSktm5+AmMXT1oHO6xmi7YjLpp4ef+j/cHW/39vT0qO07iS9Cyds
+	 iRVl5U1hhMKpyY1n9Qkl5MHPTMfCWXRqcVSx6DbDu1NHghuNstnSo3x46l1WfZcmPr
+	 Dwy7WJ5yG3tQeBk7TtIz+rcg932cZWY8tqybGRRlAFw6OA842IlQJUebVUCypAKB9X
+	 9Osx1tvQcids58cPMCMxVsECaqYhU7QMSq3IbsLlLkTVG4opZOprA+J3MyHu/ve34c
+	 BehnyyN7WgbejNu7v6GlY/Dj/FtTD/8nLY5MCSf3jKtnAFBjx9LmXa6IYvptfHqC14
+	 AKKYEs/UB27zg==
 
-In gtp_create_sockets(), gtp->sk_created is set to true before gtp->sk0
-and gtp->sk1u are assigned. A concurrent GTP Echo Response packet on
-another CPU observes sk_created == true and dereferences the still-NULL
-gtp->sk0 in gtp0_handle_echo_resp(), causing a kernel panic.
+From: Li RongQing <lirongqing@baidu.com>
 
-  KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
-  RIP: 0010:gtp_encap_recv  (drivers/net/gtp.c:542 gtp0_handle_echo_resp)
-  Call Trace:
-   <IRQ>
-   udp_queue_rcv_one_skb
-   ip_protocol_deliver_rcu
-   ip_local_deliver
-  Kernel panic - not syncing: Fatal exception in interrupt
+dma_*() barriers are specifically for ordering writes to DMA
+coherent memory that is accessible to both the CPU and DMA capable
+devices.
 
-Reorder the assignments so that gtp->sk0 and gtp->sk1u are fully visible
-before gtp->sk_created is set to true. This ensures no concurrent packet
-path can observe the flag without valid socket pointers.
+The dma_wmb() barrier is lighter than wmb() on some architectures
+because it only ensures ordering for DMA writes, not for all writes
+including MMIO accesses.
 
-Fixes: b20dc3c68458 ("gtp: Allow to create GTP device without FDs")
-Reported-by: AutonomousCodeSecurity@microsoft.com
-Reported-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
-Reported-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
-Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
+In the MLX5 driver, completion queue (CQ) doorbell records are
+allocated as DMA coherent memory via mlx5_dma_zalloc_coherent_node().
+The CQ update pattern is:
+  1. Update CQ space (device reads via DMA)
+  2. Update doorbell record (device reads via DMA)
+  3. Memory barrier
+  4. Enable more CQEs
+Since only DMA coherent memory accesses are involved (no MMIO accesses
+follow), we can safely use dma_wmb() instead of wmb().
+
+This change improves performance slightly on architectures where
+dma_wmb() is lighter than wmb().
+
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 ---
- drivers/net/gtp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+V3: Kept the original wmb() barrier inside wc.c 
 
-diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-index 9a12cc53da00..2b5a8f6d24d0 100644
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -1456,9 +1456,9 @@ static int gtp_create_sockets(struct gtp_dev *gtp, const struct nlattr *nla,
- 		return PTR_ERR(sk1u);
- 	}
+V2: rebased.
+https://patchwork.kernel.org/project/netdevbpf/patch/20260811064750.3218024-1-tariqt@nvidia.com/
+
+V1:
+https://patchwork.kernel.org/project/netdevbpf/patch/20260402055206.2311-1-lirongqing@baidu.com/
+
+ drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c    | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c    | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/en_rx.c     | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/en_tx.c     | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/lib/aso.c   | 2 +-
+ 6 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
+index 723f66a..17084d7 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
+@@ -259,7 +259,7 @@ static bool mlx5e_ptp_poll_ts_cq(struct mlx5e_cq *cq, int napi_budget)
+ 	mlx5_cqwq_update_db_record(cqwq);
  
--	gtp->sk_created = true;
- 	gtp->sk0 = sk0;
- 	gtp->sk1u = sk1u;
-+	gtp->sk_created = true;
+ 	/* ensure cq space is freed before enabling more cqes */
+-	wmb();
++	dma_wmb();
  
- 	return 0;
+ 	while (metadata_buff_sz > 0)
+ 		mlx5e_ptp_metadata_fifo_push(&ptpsq->metadata_freelist,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+index 77ea51b..ee0986b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+@@ -817,7 +817,7 @@ bool mlx5e_poll_xdpsq_cq(struct mlx5e_cq *cq)
+ 	mlx5_cqwq_update_db_record(&cq->wq);
+ 
+ 	/* ensure cq space is freed before enabling more cqes */
+-	wmb();
++	dma_wmb();
+ 
+ 	sq->cc = sqcc;
+ 	return (i == MLX5E_TX_CQ_POLL_BUDGET);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+index 6fbc044..3c80193 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+@@ -2507,7 +2507,7 @@ int mlx5e_poll_rx_cq(struct mlx5e_cq *cq, int budget)
+ 	mlx5_cqwq_update_db_record(cqwq);
+ 
+ 	/* ensure cq space is freed before enabling more cqes */
+-	wmb();
++	dma_wmb();
+ 
+ 	return work_done;
  }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
+index 0b5e600..14479da 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
+@@ -849,7 +849,7 @@ bool mlx5e_poll_tx_cq(struct mlx5e_cq *cq, int napi_budget)
+ 	mlx5_cqwq_update_db_record(&cq->wq);
+ 
+ 	/* ensure cq space is freed before enabling more cqes */
+-	wmb();
++	dma_wmb();
+ 
+ 	sq->dma_fifo_cc = dma_fifo_cc;
+ 	sq->cc = sqcc;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c b/drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c
+index 1f6bde5..1341874 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c
+@@ -384,7 +384,7 @@ static inline void mlx5_fpga_conn_cqes(struct mlx5_fpga_conn *conn,
+ 
+ 	mlx5_fpga_dbg(conn->fdev, "Re-arming CQ with cc# %u\n", conn->cq.wq.cc);
+ 	/* ensure cq space is freed before enabling more cqes */
+-	wmb();
++	dma_wmb();
+ 	mlx5_fpga_conn_arm_cq(conn);
+ }
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/aso.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/aso.c
+index 614cd57..8f7a89a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/aso.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/aso.c
+@@ -421,7 +421,7 @@ int mlx5_aso_poll_cq(struct mlx5_aso *aso, bool with_data)
+ 	mlx5_cqwq_update_db_record(&cq->wq);
+ 
+ 	/* ensure cq space is freed before enabling more cqes */
+-	wmb();
++	dma_wmb();
+ 
+ 	if (with_data)
+ 		aso->cc += MLX5_ASO_WQEBBS_DATA;
 -- 
-2.52.0
+2.9.4
 
