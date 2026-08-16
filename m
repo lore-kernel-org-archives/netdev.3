@@ -1,316 +1,302 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com [209.85.160.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D3C1FC0EA
-	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 12:56:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C42535674A
+	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 13:45:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786884982; cv=none; b=ifg7aV1n7W54BfUX9irE5ZHfnVCL3cBxjpkYyVoFtk93tM+6ttbgYONvLQPJReYCr/Sjh8cdXKrWxHa1wEO/WRPf1LUIFtb6sN9f+dKod6o4i5QesJsWMYBXWm5TJHQMsg95OT8+yPhaTF059W02KjeLQWk/jxtJob7uP919aSM=
+	t=1786887937; cv=none; b=f8T/dWCUdfZvBR1CKe4GuI6QI7qhRfdvaVuEcNmzUC/dbiPprABd4gH7LtQlBfdfDsSqiGT02lA0s/2YcSwz8Nx5dmDjnuxqotm7GHoEq/XB3lHJxI/XaZJfNfmFGC/Fwl+0etSBwd+JT8pMvKl5pJmu4/fLeRweoN/ThFjCjQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786884982; c=relaxed/simple;
-	bh=XmbiCSUSDiVAiNmSRbJ2PxwSgZsTdKwWMDpotU+cRFQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LBsvlUlkTAyMBaqAYwuw4VRZ35VdJg9fU2c/AV/EQ4L7fE2rFXPu1GAJAYYfIQYeIXH3ZYJjUWVHMHpj8UcM/gAJvV3cWpU0dXtwiMeoDR+SjdeWNS/qkxYvzdBYLK1UaUJhTIolYk5TOCr9+9WqwGmOJR1OlRhVh86NJnIbX0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F4EX4hnG; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F4EX4hnG"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4998b5a63e2so17799365e9.1
-        for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 05:56:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786884979; x=1787489779; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Vrd+QFouPQzWgEI6eWzCwSjjj2vAhx5C8gTbTzA/yUI=;
-        b=F4EX4hnGSTuLpEoNJxspMedlkC/ntvu9Cd1HWdksL5UUcLMvjyCC/76DNTYFDWfM4M
-         qh2MYUPf1bQeBqEwDtk207PUE+1binTNFXYkvfthRYOHOAnjWyeRiZ7WoBGZB+31KidT
-         bx+JvN72AvZf+j/D87jJAJssKXWWBjARAUmN44BPo6WGkUFRp7joW+LzEmG+05DBRm2l
-         GhBvl+9hQtUXWP171jofz5yNKMmyAHqCihs44dLS1hA1dGUNwdc1QkV0VsuosB8P9qZw
-         /XMfXUWACuCQuiAb36J40breuV5m4yT6+PWCg/nXAvA8PFcMHitq5Z7c+EKaw+DCayxt
-         cRqQ==
+	s=arc-20240116; t=1786887937; c=relaxed/simple;
+	bh=Du/vOM0bE9iJZfH//3Dxe+lDliwwSlmnC3zcoSENi+w=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=B4b9Xv1xNRLmxFhMkNzxcO3y7adJxwDml9PxdVvtLNEG5YV89sMX0fXZqZhsJ7fmVGjnv9StSsu/PLbqfWn6ZnLumgz7r/FXDObc1cxs3sUmZjwfw0MFr4cGE/gKJCnMtrG0PcqSNv16Z8aYgzofX9AfeHSh+ELpDRWoSsQ4h3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oa1-f72.google.com with SMTP id 586e51a60fabf-44aeefa1c36so1086839fac.3
+        for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 06:45:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786884979; x=1787489779;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Vrd+QFouPQzWgEI6eWzCwSjjj2vAhx5C8gTbTzA/yUI=;
-        b=WPtUxzuDFCxXMjpVmh0vhN+vqeNG5oaD7AdZhqfF9AHwKBWmov2fQ9cLyfNfrDomL3
-         UrrnrmHTFAu32/2iAUgbGMnphHvy3lIk1v8RvrUTstkAwg+50ZKe7ku50ESVoMH9OSPf
-         REW1rfe8U0g8zAWK6B+SAPhyatHXXQVwGNvOYsferQ/bSC98lnPM9+SHcIGQpJJecziP
-         EAEQify9Toz+bmIdNGWm2bN4PmHeuHSlN4U+lZwMtyM7tS/f8wSmhKnWRNgHLO2gHv86
-         WnNXznpJZuPTMLkKV1uomAb1nuflAxz1ItqQzva3LVEzx+fuEihd3z+z3dZVpWZqxCTL
-         s5mA==
-X-Forwarded-Encrypted: i=1; AHgh+RqqKm0/Rr7G1jbNA7av70UzOchA/T8W6fa9hIq6EEse/jNckVGeFgZ2Lc37UxzDKWkLkf0WOEA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyaP7u4J8R4pFn5JRgpTzpPNEocH6Rero0T7gVC2mvI0A5XgU2d
-	SoKmX8xOdqJm0K58i2Bn4HF33RxYqae1RgQuxHz1TpvOoF5hNIkwZeZu
-X-Gm-Gg: AR+sD13BlmlSx/8EHk/J0F0UkzcvbpXuCK3yUNZGxvIvB1QpzzdxEz7bhkuLJ2QTgRH
-	b3/6Jmw4WhsxfGy7bGswd9iVEhj3c68bWwQs7QuBP4q4POk0pLp197P3OBRF7xyKi4GqHdhMkDE
-	w+VCBmWRh0uhP3G+t1R+2HCc0FpL7jpnhLR3yDIgVsJiteSJUF9LWPwWXf6kv+j/ZCQctSpl407
-	aoHSYkgR0xG2+KKjYZtnierdHo65/GhV9dNvMnapIy+3nndzqaYEp9iH71SL/q8p3eBvNHVBIEe
-	/EhDL+N0h8bae6/IVHyNX454hcn8cgfvQwUiIeVhUnfzJrI31gVpCCx39mADcPrIBwbcztsbX74
-	RN8vyM4jNz7EwznFJVcAJ4msiaIpRPTYURVP5fl9kdM6hSDl7PtqFgCitQ0wKzYW1W4rzszr0ZO
-	Fu2vA1+CzKDjvhCCsMSXMBFtWNdny/EFMrrqSHv1W2QCpHUnxaOBnoNtWK02/pYv+/gr8AhssmB
-	WpXAgqBRz5c+ZezIqqqm2oITMbp2GzOpp6e/D5klJPVrjfM4UNv
-X-Received: by 2002:a05:600c:17d1:b0:495:7a04:b006 with SMTP id 5b1f17b1804b1-49987948adamr180850505e9.8.1786884979064;
-        Sun, 16 Aug 2026 05:56:19 -0700 (PDT)
-Received: from nixos-office (195-23-151-163.net.novis.pt. [195.23.151.163])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4999610e381sm63085105e9.9.2026.08.16.05.56.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Aug 2026 05:56:18 -0700 (PDT)
-Sender: Julian Braha <julian.braha@gmail.com>
-From: Julian Braha <julianbraha@gmail.com>
-To: maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	chleroy@kernel.org,
-	Frank.Li@kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: linusw@kernel.org,
-	kees@kernel.org,
-	colin.i.king@gmail.com,
-	rosenp@gmail.com,
-	joao@joaoff.com,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	dmaengine@vger.kernel.org,
-	netdev@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Julian Braha <julianbraha@gmail.com>
-Subject: [PATCH] powerpc: remove dead 440SP code
-Date: Sun, 16 Aug 2026 13:56:15 +0100
-Message-ID: <20260816125615.985387-1-julianbraha@gmail.com>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20251104; t=1786887934; x=1787492734;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=3HiKop/xw7nR5E6/mneXFNUAVrRueAu4qxjmpz4NUdg=;
+        b=d+c13Kvq9WfQifgAGMGs1k52Qn7bFVUulq97l2LwO45A8SJmFyk4zYO2dKdEKfxoi8
+         +8hRfDlDwPQNWh1P/WtCMpHD/JJb70QZ/9P0rytHiT/NBIQOz/BrJBTxIU1UvYpGVg9A
+         e3am7cDGDGnTrW9bycuiMSiw/AUt+ZIFbOP7MSFkCdRGqgQyYB0K4clbbxHLbihLmzAw
+         r0KUdMzK6/uBT21MXbiXwn1GTgkteIkbp3L5+RcKU5HG8eC5wfqfCC7JcGtFQfv10nYh
+         65Rvj8ROPVs+B6OmNJ+Xk8bKVJlmgVPjZSMJMMJtYENUVm9C8fTQLkslro9r5MvtNfI2
+         ih6A==
+X-Forwarded-Encrypted: i=1; AHgh+Rp96A0HP0YaNg3OlaWlM0HzDX2suaaDeM73/ao6QeVZVOmgMt1tqhUH4WYryKNeqi5mIy2H1FI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVEdDbc0H2yNQotwX8OVo4ZdCJf55+PP+T8AOwf+Cm+YsoUJz5
+	nWs+LiE+exM9Kl+CG/88o0vNYoIyPqroDPxDoGAsK6TSkZpmDhtHgwtVJfVph1PHI4zZhDfX/Aa
+	UaqJ0asevKxqWXTz3bLDs5qttXdIP66an/FiEXkZ3eK+Ad7oE81iby57SFSQ=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6808:690b:b0:4ae:f5be:fe29 with SMTP id
+ 5614622812f47-4b241917e16mr19106105b6e.5.1786887933926; Sun, 16 Aug 2026
+ 06:45:33 -0700 (PDT)
+Date: Sun, 16 Aug 2026 06:45:33 -0700
+In-Reply-To: <6a57ad78.9d83364e.246513.0004.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a81befd.dbb3a75c.20434b.0030.GAE@google.com>
+Subject: Re: [syzbot] [net?] KASAN: slab-use-after-free Read in llc_conn_ac_send_sabme_cmd_p_set_x
+From: syzbot <syzbot+44efda9647c52be29d9c@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
+	jeffinphilip14@gmail.com, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-The 440SP config option can never be enabled, making all references to it
-dead code.
+syzbot has found a reproducer for the following issue on:
 
-Let's remove support for 440SP, since nobody can be using it anyway.
+HEAD commit:    3eb40771c00a Merge tag 'soc-fixes-7.2-3' of git://git.kern..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=13e296c6580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=1d67342c314f228d
+dashboard link: https://syzkaller.appspot.com/bug?extid=44efda9647c52be29d9c
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=109f1949580000
 
-This dead code was found by kconfirm, a static analysis tool for Kconfig.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+44efda9647c52be29d9c@syzkaller.appspotmail.com
 
-Signed-off-by: Julian Braha <julianbraha@gmail.com>
+==================================================================
+BUG: KASAN: slab-use-after-free in llc_conn_ac_send_sabme_cmd_p_set_x+0x442/0x470 net/llc/llc_c_ac.c:782
+Read of size 1 at addr ffff888058d87010 by task syz-executor377/6034
+
+CPU: 3 UID: 0 PID: 6034 Comm: syz-executor377 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <IRQ>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x13d/0x4b0 mm/kasan/report.c:482
+ kasan_report+0xdf/0x1c0 mm/kasan/report.c:595
+ llc_conn_ac_send_sabme_cmd_p_set_x+0x442/0x470 net/llc/llc_c_ac.c:782
+ llc_exec_conn_trans_actions net/llc/llc_conn.c:437 [inline]
+ llc_conn_service net/llc/llc_conn.c:362 [inline]
+ llc_conn_state_process+0x3ec/0x1480 net/llc/llc_conn.c:66
+ llc_process_tmr_ev net/llc/llc_c_ac.c:1442 [inline]
+ llc_conn_tmr_common_cb+0x2d4/0x880 net/llc/llc_c_ac.c:1325
+ call_timer_fn+0x19a/0x610 kernel/time/timer.c:1748
+ expire_timers kernel/time/timer.c:1799 [inline]
+ __run_timers+0x757/0xb00 kernel/time/timer.c:2374
+ __run_timer_base kernel/time/timer.c:2386 [inline]
+ __run_timer_base kernel/time/timer.c:2378 [inline]
+ run_timer_base+0x114/0x190 kernel/time/timer.c:2395
+ run_timer_softirq+0x1a/0x50 kernel/time/timer.c:2405
+ handle_softirqs+0x1ea/0x9b0 kernel/softirq.c:622
+ __do_softirq kernel/softirq.c:656 [inline]
+ invoke_softirq kernel/softirq.c:496 [inline]
+ __irq_exit_rcu+0x162/0x210 kernel/softirq.c:735
+ irq_exit_rcu+0x9/0x30 kernel/softirq.c:752
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062 [inline]
+ sysvec_apic_timer_interrupt+0xa3/0xc0 arch/x86/kernel/apic/apic.c:1062
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:674
+RIP: 0010:preempt_count_sub+0x0/0x160 kernel/sched/core.c:6004
+Code: 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 48 c7 c7 e0 bd 8a 94 e9 10 95 71 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 <f3> 0f 1e fa 48 c7 c0 00 96 93 9b 53 89 fb 48 ba 00 00 00 00 00 fc
+RSP: 0018:ffffc900016bfda8 EFLAGS: 00000246
+RAX: 0000000000000001 RBX: ffff88803d884380 RCX: ffffffff81e65993
+RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000001
+RBP: 1ffff920002d7fba R08: 0000000000000000 R09: ffffed1007b10870
+R10: ffff88803d884383 R11: 0000000000000000 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ __raw_spin_unlock include/linux/spinlock_api_smp.h:169 [inline]
+ _raw_spin_unlock+0x28/0x50 kernel/locking/spinlock.c:190
+ spin_unlock include/linux/spinlock.h:390 [inline]
+ setfl fs/fcntl.c:85 [inline]
+ do_fcntl+0x5da/0x1670 fs/fcntl.c:477
+ __do_sys_fcntl fs/fcntl.c:602 [inline]
+ __se_sys_fcntl fs/fcntl.c:587 [inline]
+ __x64_sys_fcntl+0x163/0x200 fs/fcntl.c:587
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7ff89b73ab00
+Code: 00 00 0f 1f 84 00 00 00 00 00 48 83 ec 18 64 48 8b 04 25 28 00 00 00 48 89 44 24 08 31 c0 83 fe 09 74 27 b8 48 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 40 48 8b 54 24 08 64 48 2b 14 25 28 00 00 00
+RSP: 002b:00007ff8986ff130 EFLAGS: 00000293 ORIG_RAX: 0000000000000048
+RAX: ffffffffffffffda RBX: 0000000000000006 RCX: 00007ff89b73ab00
+RDX: 0000000000000802 RSI: 0000000000000004 RDI: 0000000000000006
+RBP: 000000000000005c R08: 0000000000000004 R09: 0000000000000017
+R10: 00007ff8986ff1b4 R11: 0000000000000293 R12: 0000000000000007
+R13: 0000000000000022 R14: 0000000088888889 R15: 000000000000002e
+ </TASK>
+
+Allocated by task 6032:
+ kasan_save_stack+0x30/0x50 mm/kasan/common.c:57
+ kasan_save_track+0x14/0x30 mm/kasan/common.c:78
+ poison_kmalloc_redzone mm/kasan/common.c:398 [inline]
+ __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:415
+ kasan_kmalloc include/linux/kasan.h:263 [inline]
+ __kmalloc_cache_noprof+0x2e5/0x6c0 mm/slub.c:5489
+ _kmalloc_noprof include/linux/slab.h:988 [inline]
+ _kzalloc_noprof include/linux/slab.h:1309 [inline]
+ llc_sap_alloc net/llc/llc_core.c:29 [inline]
+ llc_sap_open+0x120/0x3b0 net/llc/llc_core.c:96
+ llc_ui_bind+0xb67/0xe40 net/llc/af_llc.c:386
+ __sys_bind_socket net/socket.c:1920 [inline]
+ __sys_bind_socket net/socket.c:1912 [inline]
+ __sys_bind+0x1a9/0x260 net/socket.c:1951
+ __do_sys_bind net/socket.c:1956 [inline]
+ __se_sys_bind net/socket.c:1954 [inline]
+ __x64_sys_bind+0x72/0xb0 net/socket.c:1954
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Freed by task 33:
+ kasan_save_stack+0x30/0x50 mm/kasan/common.c:57
+ kasan_save_track+0x14/0x30 mm/kasan/common.c:78
+ kasan_save_free_info+0x3b/0x70 mm/kasan/generic.c:584
+ poison_slab_object mm/kasan/common.c:253 [inline]
+ __kasan_slab_free+0x5f/0x80 mm/kasan/common.c:285
+ kasan_slab_free include/linux/kasan.h:235 [inline]
+ slab_free_hook mm/slub.c:2677 [inline]
+ __rcu_free_sheaf_prepare+0x5d/0x2f0 mm/slub.c:2928
+ rcu_free_sheaf+0x1a/0xe0 mm/slub.c:5978
+ rcu_do_batch kernel/rcu/tree.c:2645 [inline]
+ rcu_core+0x5a2/0x10d0 kernel/rcu/tree.c:2897
+ handle_softirqs+0x1ea/0x9b0 kernel/softirq.c:622
+ run_ksoftirqd kernel/softirq.c:1076 [inline]
+ run_ksoftirqd+0x38/0x60 kernel/softirq.c:1068
+ smpboot_thread_fn+0x3d3/0xaa0 kernel/smpboot.c:160
+ kthread+0x370/0x450 kernel/kthread.c:436
+ ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+The buggy address belongs to the object at ffff888058d87000
+ which belongs to the cache kmalloc-2k of size 2048
+The buggy address is located 16 bytes inside of
+ freed 2048-byte region [ffff888058d87000, ffff888058d87800)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x58d80
+head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+flags: 0xfff00000000040(head|node=0|zone=1|lastcpupid=0x7ff)
+page_type: f5(slab)
+raw: 00fff00000000040 ffff88801c042f00 dead000000000100 dead000000000122
+raw: 0000000000000000 0000000800080008 00000000f5000000 0000000000000000
+head: 00fff00000000040 ffff88801c042f00 dead000000000100 dead000000000122
+head: 0000000000000000 0000000800080008 00000000f5000000 0000000000000000
+head: 00fff00000000003 fffffffffffffe01 00000000ffffffff 00000000ffffffff
+head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd2820(GFP_ATOMIC|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 6028, tgid 6024 (syz-executor377), ts 76930678762, free_ts 76926318518
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0xfd/0x120 mm/page_alloc.c:1859
+ prep_new_page mm/page_alloc.c:1867 [inline]
+ get_page_from_freelist+0xf48/0x3530 mm/page_alloc.c:3946
+ __alloc_frozen_pages_noprof+0x299/0x2dc0 mm/page_alloc.c:5304
+ alloc_slab_page mm/slub.c:3266 [inline]
+ allocate_slab mm/slub.c:3380 [inline]
+ new_slab+0xa2/0x640 mm/slub.c:3426
+ refill_objects+0xe3/0x410 mm/slub.c:7310
+ refill_sheaf mm/slub.c:2804 [inline]
+ __pcs_replace_empty_main+0x376/0x680 mm/slub.c:4675
+ alloc_from_pcs mm/slub.c:4773 [inline]
+ slab_alloc_node mm/slub.c:4905 [inline]
+ __kmalloc_cache_noprof+0x479/0x6c0 mm/slub.c:5485
+ _kmalloc_noprof include/linux/slab.h:988 [inline]
+ _kzalloc_noprof include/linux/slab.h:1309 [inline]
+ llc_sap_alloc net/llc/llc_core.c:29 [inline]
+ llc_sap_open+0x120/0x3b0 net/llc/llc_core.c:96
+ llc_ui_bind+0xb67/0xe40 net/llc/af_llc.c:386
+ __sys_bind_socket net/socket.c:1920 [inline]
+ __sys_bind_socket net/socket.c:1912 [inline]
+ __sys_bind+0x1a9/0x260 net/socket.c:1951
+ __do_sys_bind net/socket.c:1956 [inline]
+ __se_sys_bind net/socket.c:1954 [inline]
+ __x64_sys_bind+0x72/0xb0 net/socket.c:1954
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+page last free pid 6028 tgid 6024 stack trace:
+ reset_page_owner include/linux/page_owner.h:25 [inline]
+ __free_pages_prepare mm/page_alloc.c:1406 [inline]
+ __free_frozen_pages+0x79f/0x1090 mm/page_alloc.c:2950
+ qlink_free mm/kasan/quarantine.c:163 [inline]
+ qlist_free_all+0x47/0xf0 mm/kasan/quarantine.c:179
+ kasan_quarantine_reduce+0x1a0/0x1f0 mm/kasan/quarantine.c:286
+ __kasan_slab_alloc+0x69/0x90 mm/kasan/common.c:350
+ kasan_slab_alloc include/linux/kasan.h:253 [inline]
+ slab_post_alloc_hook mm/slub.c:4584 [inline]
+ slab_alloc_node mm/slub.c:4917 [inline]
+ __kmalloc_cache_noprof+0x265/0x6c0 mm/slub.c:5485
+ _kmalloc_noprof include/linux/slab.h:988 [inline]
+ _kzalloc_noprof include/linux/slab.h:1309 [inline]
+ ref_tracker_alloc+0x190/0x590 lib/ref_tracker.c:270
+ __netdev_tracker_alloc include/linux/netdevice.h:4496 [inline]
+ netdev_tracker_alloc include/linux/netdevice.h:4508 [inline]
+ llc_ui_bind+0x77b/0xe40 net/llc/af_llc.c:412
+ __sys_bind_socket net/socket.c:1920 [inline]
+ __sys_bind_socket net/socket.c:1912 [inline]
+ __sys_bind+0x1a9/0x260 net/socket.c:1951
+ __do_sys_bind net/socket.c:1956 [inline]
+ __se_sys_bind net/socket.c:1954 [inline]
+ __x64_sys_bind+0x72/0xb0 net/socket.c:1954
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Memory state around the buggy address:
+ ffff888058d86f00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff888058d86f80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+>ffff888058d87000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                         ^
+ ffff888058d87080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff888058d87100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+==================================================================
+----------------
+Code disassembly (best guess):
+   0:	90                   	nop
+   1:	90                   	nop
+   2:	90                   	nop
+   3:	90                   	nop
+   4:	90                   	nop
+   5:	90                   	nop
+   6:	90                   	nop
+   7:	90                   	nop
+   8:	90                   	nop
+   9:	90                   	nop
+   a:	f3 0f 1e fa          	endbr64
+   e:	48 c7 c7 e0 bd 8a 94 	mov    $0xffffffff948abde0,%rdi
+  15:	e9 10 95 71 00       	jmp    0x71952a
+  1a:	90                   	nop
+  1b:	90                   	nop
+  1c:	90                   	nop
+  1d:	90                   	nop
+  1e:	90                   	nop
+  1f:	90                   	nop
+  20:	90                   	nop
+  21:	90                   	nop
+  22:	90                   	nop
+  23:	90                   	nop
+  24:	90                   	nop
+  25:	90                   	nop
+  26:	90                   	nop
+  27:	90                   	nop
+  28:	90                   	nop
+  29:	90                   	nop
+* 2a:	f3 0f 1e fa          	endbr64 <-- trapping instruction
+  2e:	48 c7 c0 00 96 93 9b 	mov    $0xffffffff9b939600,%rax
+  35:	53                   	push   %rbx
+  36:	89 fb                	mov    %edi,%ebx
+  38:	48                   	rex.W
+  39:	ba 00 00 00 00       	mov    $0x0,%edx
+  3e:	00 fc                	add    %bh,%ah
+
+
 ---
- arch/powerpc/boot/cuboot-katmai.c   |  2 +-
- arch/powerpc/include/asm/async_tx.h |  2 +-
- arch/powerpc/include/asm/dcr-regs.h | 10 +++++-----
- arch/powerpc/kernel/cpu_specs_44x.h | 12 ------------
- arch/powerpc/platforms/44x/Kconfig  |  3 ---
- drivers/dma/Kconfig                 |  2 +-
- drivers/dma/ppc4xx/adma.c           |  9 ---------
- drivers/dma/ppc4xx/adma.h           |  2 +-
- drivers/dma/ppc4xx/dma.h            |  9 ---------
- drivers/net/ethernet/ibm/emac/mal.h |  2 +-
- 10 files changed, 10 insertions(+), 43 deletions(-)
-
-diff --git a/arch/powerpc/boot/cuboot-katmai.c b/arch/powerpc/boot/cuboot-katmai.c
-index 034a748fde24..fcd71e76309f 100644
---- a/arch/powerpc/boot/cuboot-katmai.c
-+++ b/arch/powerpc/boot/cuboot-katmai.c
-@@ -31,7 +31,7 @@ static void katmai_fixups(void)
- {
- 	unsigned long sysclk = 33333000;
- 
--	/* 440SP Clock logic is all but identical to 440GX
-+	/* 440SPe Clock logic is all but identical to 440GX
- 	 * so we just use that code for now at least
- 	 */
- 	ibm440spe_fixup_clocks(sysclk, 6 * 1843200, 0);
-diff --git a/arch/powerpc/include/asm/async_tx.h b/arch/powerpc/include/asm/async_tx.h
-index a14758426dd5..1ff5b2ca3ed1 100644
---- a/arch/powerpc/include/asm/async_tx.h
-+++ b/arch/powerpc/include/asm/async_tx.h
-@@ -7,7 +7,7 @@
- #ifndef _ASM_POWERPC_ASYNC_TX_H_
- #define _ASM_POWERPC_ASYNC_TX_H_
- 
--#if defined(CONFIG_440SPe) || defined(CONFIG_440SP)
-+#if defined(CONFIG_440SPe)
- extern struct dma_chan *
- ppc440spe_async_tx_find_best_channel(enum dma_transaction_type cap,
- 	struct page **dst_lst, int dst_cnt, struct page **src_lst,
-diff --git a/arch/powerpc/include/asm/dcr-regs.h b/arch/powerpc/include/asm/dcr-regs.h
-index 5c1a4973f46a..e39a55e527da 100644
---- a/arch/powerpc/include/asm/dcr-regs.h
-+++ b/arch/powerpc/include/asm/dcr-regs.h
-@@ -25,11 +25,11 @@
-  * of the driver main register set
-  */
- 
--/* CPRs (440GX and 440SP/440SPe) */
-+/* CPRs (440GX and 440SPe) */
- #define DCRN_CPR0_CONFIG_ADDR	0xc
- #define DCRN_CPR0_CONFIG_DATA	0xd
- 
--/* SDRs (440GX and 440SP/440SPe) */
-+/* SDRs (440GX and 440SPe) */
- #define DCRN_SDR0_CONFIG_ADDR 	0xe
- #define DCRN_SDR0_CONFIG_DATA	0xf
- 
-@@ -159,18 +159,18 @@
- #define  L2C_SNP_ESR		0x00000800
- 
- /*
-- * DCR register offsets for 440SP/440SPe I2O/DMA controller.
-+ * DCR register offsets for 440SPe I2O/DMA controller.
-  * The base address is configured in the device tree.
-  */
- #define DCRN_I2O0_IBAL		0x006
- #define DCRN_I2O0_IBAH		0x007
- #define I2O_REG_ENABLE		0x00000001	/* Enable I2O/DMA access */
- 
--/* 440SP/440SPe Software Reset DCR */
-+/* 440SPe Software Reset DCR */
- #define DCRN_SDR0_SRST		0x0200
- #define DCRN_SDR0_SRST_I2ODMA	(0x80000000 >> 15)	/* Reset I2O/DMA */
- 
--/* 440SP/440SPe Memory Queue DCR offsets */
-+/* 440SPe Memory Queue DCR offsets */
- #define DCRN_MQ0_XORBA		0x04
- #define DCRN_MQ0_CF2H		0x06
- #define DCRN_MQ0_CFBHL		0x0f
-diff --git a/arch/powerpc/kernel/cpu_specs_44x.h b/arch/powerpc/kernel/cpu_specs_44x.h
-index 69c4cdc0cdee..41ed2c16d8cc 100644
---- a/arch/powerpc/kernel/cpu_specs_44x.h
-+++ b/arch/powerpc/kernel/cpu_specs_44x.h
-@@ -172,18 +172,6 @@ static struct cpu_spec cpu_specs[] __initdata = {
- 		.machine_check		= machine_check_440A,
- 		.platform		= "ppc440",
- 	},
--	{ /* 440SP Rev. A */
--		.pvr_mask		= 0xfff00fff,
--		.pvr_value		= 0x53200891,
--		.cpu_name		= "440SP Rev. A",
--		.cpu_features		= CPU_FTRS_44X,
--		.cpu_user_features	= COMMON_USER_BOOKE,
--		.mmu_features		= MMU_FTR_TYPE_44x,
--		.icache_bsize		= 32,
--		.dcache_bsize		= 32,
--		.machine_check		= machine_check_4xx,
--		.platform		= "ppc440",
--	},
- 	{ /* 440SPe Rev. A */
- 		.pvr_mask               = 0xfff00fff,
- 		.pvr_value              = 0x53400890,
-diff --git a/arch/powerpc/platforms/44x/Kconfig b/arch/powerpc/platforms/44x/Kconfig
-index 150813cea945..b481ef2b0f4c 100644
---- a/arch/powerpc/platforms/44x/Kconfig
-+++ b/arch/powerpc/platforms/44x/Kconfig
-@@ -260,9 +260,6 @@ config 440GX
- 	select IBM_EMAC_ZMII if IBM_EMAC #test only
- 	select IBM_EMAC_TAH if IBM_EMAC  #test only
- 
--config 440SP
--	bool
--
- config 440SPe
- 	bool
- 	select IBM_EMAC_EMAC4 if IBM_EMAC
-diff --git a/drivers/dma/Kconfig b/drivers/dma/Kconfig
-index ae6a682c9f76..f0f61b4932f5 100644
---- a/drivers/dma/Kconfig
-+++ b/drivers/dma/Kconfig
-@@ -77,7 +77,7 @@ config AMBA_PL08X
- 
- config AMCC_PPC440SPE_ADMA
- 	tristate "AMCC PPC440SPe ADMA support"
--	depends on 440SPe || 440SP
-+	depends on 440SPe
- 	select DMA_ENGINE
- 	select DMA_ENGINE_RAID
- 	select ARCH_HAS_ASYNC_TX_FIND_CHANNEL
-diff --git a/drivers/dma/ppc4xx/adma.c b/drivers/dma/ppc4xx/adma.c
-index 279a431ccae3..ecbf4c84a318 100644
---- a/drivers/dma/ppc4xx/adma.c
-+++ b/drivers/dma/ppc4xx/adma.c
-@@ -4349,14 +4349,9 @@ static ssize_t poly_show(struct device_driver *dev, char *buf)
- 	ssize_t size = 0;
- 	u32 reg;
- 
--#ifdef CONFIG_440SP
--	/* 440SP has fixed polynomial */
--	reg = 0x4d;
--#else
- 	reg = dcr_read(ppc440spe_mq_dcr_host, DCRN_MQ0_CFBHL);
- 	reg >>= MQ0_CFBHL_POLY;
- 	reg &= 0xFF;
--#endif
- 
- 	size = sysfs_emit(buf, "PPC440SP(e) RAID-6 driver "
- 			"uses 0x1%02x polynomial.\n", reg);
-@@ -4368,10 +4363,6 @@ static ssize_t poly_store(struct device_driver *dev, const char *buf,
- {
- 	unsigned long reg, val;
- 	int err;
--#ifdef CONFIG_440SP
--	/* 440SP uses default 0x14D polynomial only */
--	return -EINVAL;
--#endif
- 
- 	if (!count || count > 6)
- 		return -EINVAL;
-diff --git a/drivers/dma/ppc4xx/adma.h b/drivers/dma/ppc4xx/adma.h
-index f8a5d7c1fb40..0ec35382d274 100644
---- a/drivers/dma/ppc4xx/adma.h
-+++ b/drivers/dma/ppc4xx/adma.h
-@@ -19,7 +19,7 @@
- #define tx_to_ppc440spe_adma_slot(tx) \
- 		container_of(tx, struct ppc440spe_adma_desc_slot, async_tx)
- 
--/* Default polynomial (for 440SP is only available) */
-+/* Default polynomial */
- #define PPC440SPE_DEFAULT_POLY	0x4d
- 
- #define PPC440SPE_ADMA_ENGINES_NUM	(XOR_ENGINES_NUM + DMA_ENGINES_NUM)
-diff --git a/drivers/dma/ppc4xx/dma.h b/drivers/dma/ppc4xx/dma.h
-index b5725481bfa6..17cbb2d1ee1c 100644
---- a/drivers/dma/ppc4xx/dma.h
-+++ b/drivers/dma/ppc4xx/dma.h
-@@ -70,20 +70,11 @@
- 
- #define DMA_CUED_XOR_BASE	(0x10000000)
- #define DMA_CUED_XOR_HB		(0x00000008)
--
--#ifdef CONFIG_440SP
--#define DMA_CUED_MULT1_OFF	0
--#define DMA_CUED_MULT2_OFF	8
--#define DMA_CUED_MULT3_OFF	16
--#define DMA_CUED_REGION_OFF	24
--#define DMA_CUED_XOR_WIN_MSK	(0xFC000000)
--#else
- #define DMA_CUED_MULT1_OFF	2
- #define DMA_CUED_MULT2_OFF	10
- #define DMA_CUED_MULT3_OFF	18
- #define DMA_CUED_REGION_OFF	26
- #define DMA_CUED_XOR_WIN_MSK	(0xF0000000)
--#endif
- 
- #define DMA_CUED_REGION_MSK	0x3
- #define DMA_RXOR123		0x0
-diff --git a/drivers/net/ethernet/ibm/emac/mal.h b/drivers/net/ethernet/ibm/emac/mal.h
-index e0ddc41186a2..6cdd40bca2cd 100644
---- a/drivers/net/ethernet/ibm/emac/mal.h
-+++ b/drivers/net/ethernet/ibm/emac/mal.h
-@@ -26,7 +26,7 @@
-  * We call MAL 1 the version in 405GP, 405GPR, 405EP, 440EP, 440GR and
-  * NP405H.
-  *
-- * We call MAL 2 the version in 440GP, 440GX, 440SP, 440SPE and Axon
-+ * We call MAL 2 the version in 440GP, 440GX, 440SPE and Axon
-  *
-  * The driver expects a "version" property in the emac node containing
-  * a number 1 or 2. New device-trees for EMAC capable platforms are thus
--- 
-2.55.0
-
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
