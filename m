@@ -1,102 +1,100 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47ADD33C198
-	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 05:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786858197; cv=pass; b=gZpfrXKA8zWny+JbnXnLjFipNZQZvkLVmTh/8JQ8BgFNyxyMmB07oneOS8AZXjQcMLVbwBq3U76vDBf1TbkLWOyhsFTIKFbLe2a+VQUi7ay3ZP6gOzvpTDsNCaOrNiUKtu2wO8b5Q3wVriMkR0ndjN9lFI35XBxD7fufWIGF55E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786858197; c=relaxed/simple;
-	bh=0GMogYTNpbTF5VIQI3Tj0Z3WDeNmKEadOpeGZiPUrEs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Dnd5vy4xifClSrn5nC16GkAVn8J4tnWb2mzJYD/Slq4Y0UQ1a/nLZQA1OTmzrvdAE8+49EZIsuaJtybC8TCdy2hrtLMtGNaKfwt8tJQx6MQuXLlRDI4coIdzYfrHqbGtNaC1qPSjUkdEpq35ou+OfsAPAKHlBFzEHCv7DFdY9h4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i6efumHj; arc=pass smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i6efumHj"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c2022323c37so288953766b.0
-        for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 22:29:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786858194; cv=none;
-        d=google.com; s=arc-20260327;
-        b=L/ipFYJRvpaDhZPqzbV63Hp2moOOugNQN/h1JMvXBmR3GgUcTdnaLqz5tHBZ7UgWIX
-         PFa4xMRrcTsBGjlkbdoarYg4KLvrppg2JREpwpRtH7auWiXxtT915VMGGl4KixD9bfku
-         SKn8mJU7VpsplaHuu16A1xUEMKnaJCtpDOlDxUludF+j80qY888QsJPsEhEU2DlRg011
-         KnrAPJPXPT5YdKLkv6YCEPjQK4np0vCJit/xbqA4pPT1J6u7zr95wRc80Fs6alwpEy6v
-         CJro6o0te6pn9sAPI/KQlCWGeq7+wujK5lN2r5o+Tc/o14BO276a69qjS5gCE3JmyZg/
-         xg6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=0GMogYTNpbTF5VIQI3Tj0Z3WDeNmKEadOpeGZiPUrEs=;
-        fh=iL0iEV4AHQxfGf/WPI/HVQ7GVVTlf9FiwbD/1gWXnFk=;
-        b=KNnKJn7MLMbSrhAAsp8ruIA7tIfyEDCiXjrfmT9CAnTK72nR2LGapwj1oMxRgpbv3Q
-         kBOuhm/mDu+fEcWdb2IHwfAJRXNuqH+mkxEN+gU1tgS7zg4HKuy4UneogxqofThf7goO
-         ENMVfDHlEFDJDQ97rL4m9ekZNJ8d0f3mUvDu8PS0K687AcIS0mdGqLxoV2jIax54yEVD
-         W4RYJiTFUr8zPtn4k2q54eRaTyP0tiTCzAl8ORAiR+WHaBNZuH9xUtFFL2hFquK2lAP+
-         28cuikcqiG87kNTFqLJDJqUmgCn5BpA0NrbkCI/GOKCUow2tesGxTBvK+nvBVXuFdvkv
-         P2yg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786858194; x=1787462994; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0GMogYTNpbTF5VIQI3Tj0Z3WDeNmKEadOpeGZiPUrEs=;
-        b=i6efumHj/UP+vr0j5972EHSS85O4+ucNdfTNSumbKdzLdUK2PqmMDO0qUkMuY3r7MN
-         NQtMqDc3zLRBXNWr7MWgkxeAYe5AX+0/ATwihgSODSJr7uWKlbPbn/PjrBkXsBcR/S/V
-         nkVFuUEWQWt5eeDKjhDCoToqJiqMnV1wIRZu9gvrBM2FD3wuqOBvh4Z+LoyLuEl2Xo8k
-         QiJDB+n8rHrGE+ktrlHj3dV4+DVluPb4T3UnWpDUokyRrMPPCRprYpj/jhrZDP6iZvbi
-         1NzH63US02YXSPcZECYasB9f7TqWeWkfa/cHBeTXPPVrDKEA4EvT09C5s0dNrDBHGwEQ
-         xj2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786858194; x=1787462994;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=0GMogYTNpbTF5VIQI3Tj0Z3WDeNmKEadOpeGZiPUrEs=;
-        b=A260j29zdHRPnrNsFUxoTX0+oNM1N2METij9V8QFo8ZVS2goOA6RvZmDfsKomkGPjz
-         jaCqcEDN6YbSRY0nBCSw+ICpZ3GqRuc9YmVZ5QbOv95J1WQzCABXvaXNLrLhWjRkPX3/
-         pRwO4kE6+kjoCjGkl5/z64Q/ir63E4y7vh3JxZgptTxo72La8DC2oax7364T2aGruIR3
-         s/XwS8kU974qrSZZQpPSFXHFzqpXizXrdRJdlIhEKwYYtHnF12cqni4cG4fq8omKJjJw
-         lSKh4iF2h2RNj6cE4XcI7W9QXaArLrlEUFZWgHfA/ibrww8TjTGMF5/V+zy67dsgb1BV
-         Ca3g==
-X-Gm-Message-State: AOJu0YxI1udPkX5xwblq91g1CVcxJZ8OYA9BsYoIFtj/+6125lsCoOBF
-	R86wCcTsV575RESVhbbbzempMlEh2Wta4B1nbyGU8EVJ7ELAB4/UXMwOoMsxjliUyZXLgrvcQNU
-	4cvOEis2IrzUw6M3Lx7J7RVwcY33kIuZYlZM/BX6iDXZZ6g6Bo5DxBPlq
-X-Gm-Gg: AR+sD12czltGV3xK4Um3qf4m3J7B8lwz8tirXdHvH+L/BogQAqwbejtHskmUx8VerdE
-	r7MNtd4hUf+KX9nXvYT/SIahvMqrc826WAyFvjMpkb0yyKwxJPoeoVRNuU6TzmlS9HK6CZO2acZ
-	7smwlDaA6WEYYv9O6uNNJLIlJrsYNdp+zNgmdCFVPZrAIUPN2ngmbkXKBW+iSDp+s161GlMSAdJ
-	lXnmvC8+cAZ5broISZgWWldegfhuh8r4U3ljjP9dk17aCmziSTz9Sc/Q+qA5G4CS/D48qT9jAO9
-	k+6RUyLHVbyOgjCO/LpBtIcqR9flixB20t7FIAKH6Bj9rQ==
-X-Received: by 2002:a17:907:7b9e:b0:c20:33db:41d3 with SMTP id
- a640c23a62f3a-c2129bd0001mr748392866b.11.1786858193993; Sat, 15 Aug 2026
- 22:29:53 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB281448E0;
+	Sun, 16 Aug 2026 05:52:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786859544; cv=none; b=ePm3LFhaIUYzxK7Qi6SSWD5dxCeuc2m8/d31n7WUj9iY2DFM3Gp2Zi+Z+kiEDLfVIMooOSQnSRPDGDQA8xmC1Lh+ntAUoLbj3KyoQzH6DzIFjFqe2DKrGW4K8yX6DlEbJVWFSg11Xp0rtw5ZJ227AYQu5t3SRHyh0yi2Xv0oRlQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786859544; c=relaxed/simple;
+	bh=jjLYOtMsf/8X5ap5w+BIuUhN1645Je41drTCwqcwytA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Lx+duZK1o++MwKROsFUhHKaMqurUM7ID9se7mTyA4Ob41OOZHlLZVevyjutmau0i1QshWc8S4k8JOWc01pLHCu6sQGmoxiThomdSBpacLnI0HpTCn4wWUbK7hzF1hI7oXHz0fi8smBkEvqBFV4ToSMPEOcFu7NO/4iZjuiJ3gv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 767052010F4;
+	Sun, 16 Aug 2026 07:52:12 +0200 (CEST)
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wvTn2-001jWm-1I;
+	Sun, 16 Aug 2026 07:52:12 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wvTn2-000000077D7-19nU;
+	Sun, 16 Aug 2026 07:52:12 +0200
+Date: Sun, 16 Aug 2026 07:52:12 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Linus Walleij <linusw@kernel.org>,
+	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>, stable@vger.kernel.org,
+	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
+	Alvin =?utf-8?Q?=C5=A0ipraga?= <alvin.sipraga@analog.com>,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH net v1 1/1] net: dsa: realtek: use
+ gpiod_set_value_cansleep for reset GPIO
+Message-ID: <aoFQDApDOdRLANZa@pengutronix.de>
+References: <20260814110102.2362246-1-o.rempel@pengutronix.de>
+ <e52dcc7b-3545-4e43-888f-7a7b3811af8a@lunn.ch>
+ <20260814100014.1122e66a@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260814234845.773189-1-joshwash@google.com>
-In-Reply-To: <20260814234845.773189-1-joshwash@google.com>
-From: Joshua Washington <joshwash@google.com>
-Date: Sat, 15 Aug 2026 22:29:39 -0700
-X-Gm-Features: AcwNN1UyYmeHLBsfX_QGjqXqAtj1GIDQi_SA3bNYfMThTGhnY9c3uKATUeY0Mxk
-Message-ID: <CALuQH+WN+xftDONAk=T8zeB1qF5y=yaJ4F23DAg4W6puP+jToA@mail.gmail.com>
-Subject: Re: [PATCH net 0/6] gve: various XDP fixes
-To: netdev@vger.kernel.org
-Cc: Harshitha Ramamurthy <hramamurthy@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jordan Rhee <jordanrhee@google.com>, 
-	Willem de Bruijn <willemb@google.com>, Ankit Garg <nktgrg@google.com>, 
-	Tim Hostetler <thostet@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, 
-	Jeroen de Borst <jeroendb@google.com>, Stanislav Fomichev <sdf@fomichev.me>, linux-kernel@vger.kernel.org, 
-	bpf@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260814100014.1122e66a@kernel.org>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 
-Quite a few review bot concerns on this patch series. I will respin to
-address the concerns and manually run Sashiko to hopefully catch any
-other lingering issues before resubmitting.
+On Fri, Aug 14, 2026 at 10:00:14AM -0700, Jakub Kicinski wrote:
+> On Fri, 14 Aug 2026 16:09:04 +0200 Andrew Lunn wrote:
+> > On Fri, Aug 14, 2026 at 01:01:02PM +0200, Oleksij Rempel wrote:
+> > > From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> > > 
+> > > rtl83xx_reset_assert() and rtl83xx_reset_deassert() are only called from
+> > > the probe path, which may sleep and is not timing-critical.  When the
+> > > reset GPIO is provided by a sleeping controller such as an I2C I/O
+> > > expander, gpiod_set_value() warns:
+> > > 
+> > > Switch both helpers to gpiod_set_value_cansleep() so such a reset GPIO can
+> > > be used without triggering the warning.
+> > > 
+> > > The reset GPIO has been driven with the non-sleeping gpiod_set_value()
+> > > since the driver was added in v4.19.  The call has since been refactored
+> > > across several files - from realtek-smi.c / realtek-mdio.c into the common
+> > > rtl83xx.c module and then into the rtl83xx_reset_assert() and
+> > > rtl83xx_reset_deassert() helpers (both in v6.9).  This patch therefore
+> > > applies as-is only to kernels that carry those helpers (v6.9+); older
+> > > stable kernels need the same gpiod_set_value_cansleep() conversion at the
+> > > corresponding open-coded call sites.  
+> > 
+> > This is one of those fuzzy cases. It never worked, so this is not a
+> > regression. Nobody has needed it up until now. So it probably should
+> > be considered a new feature, and merged via net-next.
+> 
+> Sounds like it's a false positive, but it's a WARN, so if it hits on
+> real platforms -- I think it's a real fix?
+
+We can back port it for related product by our self. Otherwise, the
+LLM back port bot from Sasha Levin will do it any way, as soon as it is
+taken. no matter as net or net-next. Flip a coin :)
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
