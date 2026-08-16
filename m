@@ -1,164 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sender4-of-o54.zoho.com (sender4-of-o54.zoho.com [136.143.188.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACB12DB798;
-	Sun, 16 Aug 2026 03:57:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786852681; cv=none; b=dfePsv7+AeCxXx840f/HaIs2/C0a1mS1Xo2vg30DK3gE9fCB0LAkbZ0jKFQjVBUawaDY1WVXqYObmeKJ/rCSteKiDZil/Omxc7njRRd4kObD2SKUJOXjpXIvZFcyDnwb1TKlYyzsM5hJx01McMJz/uJ5M+dUkrbJpc4qZWlMgXE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786852681; c=relaxed/simple;
-	bh=gECAAk/4ExcxETs+rIfYIcGaME31GhWzE7ijuaUeZpg=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=iwgfymJh3lDnbGzFPzR5WBrL7w9XZO9bnuXFrzJrw1DSbeVJwDgCEVKpOc968dWl2svYkA2anTG1FGk6Ui511sXk5itGJa1sIl4tSegfdZ02LHjN7PR9wjo+k6wYjpi9EPOfiWHRMicp26o/9ZoEe+SYdk5Ctm21yJ43z5XrI/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZfFx4bQ1; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60D6211A14;
+	Sun, 16 Aug 2026 04:04:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786853090; cv=pass; b=SvplJ/1N35D1nPO4VozphJoRA/p4bU+ppkuPSdwDQDU+kWxUYS7SfesndWbvMAGrM5KfT7jKUFujRyOYhSHjdOx7kg5jdJbv7a3R37A6Ig+Us98HjVPx8ZLx3nwOvK5KAZDXU7UPEOwsoOkR2w7s01GPjUfrou387WVxxn2GmY8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786853090; c=relaxed/simple;
+	bh=vnWbeG6jNjVzSW5eXOTDCKHq88HEcr/5VLWlIp2mAuU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WvikAZHQLK6T0FhSozBtgyxpF+Yhcy7yiRYAQDiNQFXeAfwqDJ3iDwLE5BkJswP9kfSi7Q7+zRZf8TnsEUCmkUpmds+v4fCHVTN3LEBesB6CozvF1Uw+viGRKrrbqphOUUinZQxcGWhXP7ra4tBNnG2bO8PxfrPwldYMWGEfTo0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=signeen.com; spf=pass smtp.mailfrom=signeen.com; dkim=pass (1024-bit key) header.d=signeen.com header.i=mehrdad@signeen.com header.b=XHtxE/HP; arc=pass smtp.client-ip=136.143.188.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=signeen.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=signeen.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZfFx4bQ1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED3B1F000E9;
-	Sun, 16 Aug 2026 03:57:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786852679;
-	bh=MTSysb65ADjtlvNFIs4wkzTc2eQHtgkj3pmYPJpa6YI=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=ZfFx4bQ1/rLRgacIfeaiHLgahxI7FbPQnye+g4au0ZWrMMsRZ442SZ4K0i/3sLg2k
-	 kfkQdRMZoGSsp8ndeuczeouSWKE9xPji5wrWANmwmk+41eoCYmC4lG/V8J57oVCYg+
-	 Ww0dewOSz2ul17pLmtfxAxApXC0ytvqvp8E3uy4lKwsbXflFyEThJKWmitBwDj5H06
-	 jRzwwO0WRPNkZnZg67ODvyVzcwV1Tu00TxwhM1pdTrLT1bebV+wi+YoQY+vsiqt1Nc
-	 mc3SXQmkN/8IRm/yQ/GVrQZCewGTiBV773IryqnJhxis+CIF8Hslde9YD88kmDazKN
-	 XZ22JM8WliQ3Q==
-Content-Type: multipart/mixed; boundary="===============2544190724305362226=="
+	dkim=pass (1024-bit key) header.d=signeen.com header.i=mehrdad@signeen.com header.b="XHtxE/HP"
+ARC-Seal: i=1; a=rsa-sha256; t=1786853071; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=NnM+AJjMQ91dAHuXd1JiKMRVgrkXyvWiLfimKCE4i9uyKNPbBhh2wuBwGTwFSdvhQsX5n/nFbOYyWT4H801p1DWTF2ytGMQg7pld6o4oa89Dc1b9Xn76tfefbO+r4yWRVn/r3JYPt6k1cPJoJciJ4BvmwZxxc/X3S/Ok/Njhcsg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1786853071; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=lQRqyJJ6rsb6/t6lPsSdDdhPi5P5tAJq6wXmkDnZVkA=; 
+	b=Ff/yKULjbEYHAlheJ4NgLMbrZYyc1NzPWARCqhYFbJ9YKWt+Zv9AqUliVkM1xCHMiEPsQkd59M1hvu6qaW9IwARHj5jcdefvDEep4JZI4GOkiRbG88PnWHL0FON/RJWR6FX2JdNIvdFfTJ7ZIQRJv5+q4pD1S3JhP1Z/oKuMj9E=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=signeen.com;
+	spf=pass  smtp.mailfrom=mehrdad@signeen.com;
+	dmarc=pass header.from=<mehrdad@signeen.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1786853071;
+	s=zmail; d=signeen.com; i=mehrdad@signeen.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=lQRqyJJ6rsb6/t6lPsSdDdhPi5P5tAJq6wXmkDnZVkA=;
+	b=XHtxE/HPFdt0SZUXQtcDCVOo2c6HAz0WaUruCGPVY6Kd+QQvfH6uZKGheV8RiBqM
+	xtgsCdtCxKCCR0faxCv4+m8Ci1EpCry+2bjUQhuknOiz9wlLnO3mGC1Q6Y6YcnXJyaf
+	Gd0nIAecljTUD51HZIxprrclAC2yBFT0toRHoSss=
+Received: by mx.zohomail.com with SMTPS id 1786853068327967.7775185495542;
+	Sat, 15 Aug 2026 21:04:28 -0700 (PDT)
+From: Mehrdad Afshari <mehrdad@signeen.com>
+To: Oliver Neukum <oliver@neukum.org>,
+	netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-usb@vger.kernel.org,
+	Mehrdad Afshari <mehrdad@signeen.com>
+Subject: [PATCH] net: usb: cdc_ncm: add Apple MacBook Pro USB product ID 0x1902
+Date: Sat, 15 Aug 2026 21:04:26 -0700
+Message-ID: <20260816040426.57132-1-mehrdad@signeen.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <5aa97a9a0b8cd20feda29b304874967a8019d8b4b3dd4021dc5c0dac43c10d05@mail.kernel.org>
-In-Reply-To: <20260816031245.268898-1-jiayuan.chen@linux.dev>
-References: <20260816031245.268898-1-jiayuan.chen@linux.dev>
-Subject: Re: [PATCH bpf] bpf: free page_pool frags via the page_pool path in bpf_xdp_shrink_data
-From: bot+bpf-ci@kernel.org
-To: jiayuan.chen@linux.dev,bpf@vger.kernel.org,netdev@vger.kernel.org
-Cc: jiayuan.chen@linux.dev,syzbot+237bbeed8dfe0699b7f5@syzkaller.appspotmail.com,daniel@iogearbox.net,john.fastabend@gmail.com,sdf@fomichev.me,martin.lau@linux.dev,ast@kernel.org,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ihor.solodrai@linux.dev,davem@davemloft.net,edumazet@google.com,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,hawk@kernel.org,toke@redhat.com,lorenzo@kernel.org,linux-kernel@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Sun, 16 Aug 2026 03:57:58 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
---===============2544190724305362226==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The cdc_devs[] quirk table special-cases the Mac CDC-NCM private
+interface personality only for USB product ID 0x1905.
+Some MacBook Pro models (e.g. M1 Max) connected over a
+USB4/Thunderbolt 3/4 cable to a host whose Thunderbolt controller
+lacks PCIe tunneling support (no NHI function, USB4-only mode)
+present themselves with product ID 0x1902 instead,
+using the same descriptor layout as 0x1905: a Communications
+control interface with zero endpoints (no interrupt/status endpoint)
+paired with a CDC Data interface, at
+interface numbers 0 and 2.
 
-> diff --git a/net/core/filter.c b/net/core/filter.c
-> index 16845987b244..3aab5556abe2 100644
-> --- a/net/core/filter.c
-> +++ b/net/core/filter.c
-> @@ -86,6 +86,7 @@
->  #include <net/inet_dscp.h>
->
->  #include "dev.h"
-> +#include "netmem_priv.h"
->
->  /* Keep the struct bpf_fib_lookup small so that it fits into a cacheline */
->  static_assert(sizeof(struct bpf_fib_lookup) == 64, "struct bpf_fib_lookup size check");
-> @@ -4288,6 +4289,14 @@ static bool bpf_xdp_shrink_data(struct xdp_buff *xdp, skb_frag_t *frag,
->  	if (mem_type == MEM_TYPE_XSK_BUFF_POOL) {
->  		netmem = 0;
->  		zc_frag = bpf_xdp_shrink_data_zc(xdp, shrink, tail, release);
-> +	} else if (netmem_is_pp(netmem)) {
-> +		/* The rxq mem model does not always describe how a released
-> +		 * frag must be freed: the generic-XDP and veth paths run the
-> +		 * program on a shared rxq while the frag has been cow'd into
-> +		 * page_pool memory. Trust the page itself and return a
-> +		 * page_pool frag to its pool regardless of rxq->mem.type.
-> +		 */
-> +		mem_type = MEM_TYPE_PAGE_POOL;
->  	}
->
->  	if (release) {
+Because 0x1902 is unmatched, these devices fall through to the
+generic cdc_ncm_info driver_info, which sets FLAG_LINK_INTR and
+therefore requires an interrupt endpoint on the control interface.
+Apple's private NCM interface never provides one, so cdc_ncm_bind()
+fails outright:
 
-The comment says the fix handles rxq->mem.type "regardless" of its value,
-but the implementation still checks MEM_TYPE_XSK_BUFF_POOL first. When the
-shared rxq has been left with mem_type == MEM_TYPE_XSK_BUFF_POOL by
-veth_xdp_rcv_one() (which writes frame->mem_type into the shared rxq on
-XDP_TX/XDP_REDIRECT and never restores it), a page_pool frag skips the new
-netmem_is_pp() branch entirely and goes to bpf_xdp_shrink_data_zc() instead.
+  cdc_ncm 2-1:1.0: bind() failure
+  cdc_ncm 2-1:1.2: bind() failure
 
-Should the comment say "regardless of rxq->mem.type, unless the rxq claims
-XSK memory" or should the netmem_is_pp() test be unconditional so the stale
-MEM_TYPE_XSK_BUFF_POOL case is also handled?
+and no network device is created, breaking Ethernet-over-USB4
+between the Mac and any USB4 host lacking Thunderbolt PCIe
+tunneling.
 
-The commit message states: "A single rxq->mem.type can be wrong in either
-direction." The code, however, only corrects one direction: it upgrades
-mem_type to MEM_TYPE_PAGE_POOL when the frag is a page_pool page, but it
-never downgrades when rxq->mem.type already says MEM_TYPE_PAGE_POOL and the
-frag is not a page_pool page.
+Add matching entries for 0x1902 alongside the existing 0x1905
+ones, reusing apple_private_interface_info as with the other Mac
+ID.
 
-That second direction is reachable on the very path the commit message
-cites. veth_xdp_rcv_one() (drivers/net/veth.c:638) points the buff at the
-shared rxq and then, on XDP_TX/XDP_REDIRECT, writes the frame's type into
-it:
-
-    xdp->rxq = &rq->xdp_rxq;
-    ...
-    case XDP_TX:
-            xdp->rxq->mem.type = frame->mem_type;
-    case XDP_REDIRECT:
-            xdp->rxq->mem.type = frame->mem_type;
-
-Once one redirected frame with mem_type == MEM_TYPE_PAGE_POOL is TX'd or
-redirected, rq->xdp_rxq.mem.type stays MEM_TYPE_PAGE_POOL for every
-subsequent packet on that queue.
-
-A later frame whose frags are plain pages then reaches:
-
-    } else if (netmem_is_pp(netmem)) {   /* false, mem_type left as PAGE_POOL */
-    ...
-    __xdp_return(netmem, mem_type, false, zc_frag);
-
-and __xdp_return()'s MEM_TYPE_PAGE_POOL arm (net/core/xdp.c:436-446) skips
-the check and dereferences a garbage pool pointer:
-
-    /* No need to check netmem_is_pp() as mem->type knows this a page_pool page */
-    page_pool_put_full_netmem(netmem_get_pp(netmem), netmem, napi_direct);
-
-netmem_get_pp() reads page->pp, which for a non-page_pool page holds
-whatever the allocator left there.
-
-This specific crash is pre-existing rather than introduced by the patch, but
-the patch is the change that claims to make the frag itself authoritative,
-and it had the netmem in hand. Could the decision be unconditional:
-
-    } else {
-            mem_type = netmem_is_pp(netmem) ? MEM_TYPE_PAGE_POOL : mem_type;
-
-plus a guard for the stale-MEM_TYPE_PAGE_POOL case, or should the "wrong in
-either direction" claim be dropped from the commit message so the remaining
-hole is not reported as fixed?
-
-This isn't a bug, but a subsystem pattern flags this as potentially
-concerning: the new multi-line block comment added at net/core/filter.c
-starts its text on the same line as the opening:
-
-    /* The rxq mem model does not always describe how a released
-     * frag must be freed: ...
-     */
-
-The BPF subsystem style required for net/core/filter.c puts the opening on
-a line of its own:
-
-    /*
-     * The rxq mem model does not always describe how a released
-     * frag must be freed: ...
-     */
-
-Most existing multi-line comments in net/core/filter.c use the old style, so
-the new comment matches its immediate neighbours and checkpatch will not
-complain. The guide says the rule applies even where surrounding code uses
-the old style, but the decision is yours.
-
-
+Signed-off-by: Mehrdad Afshari <mehrdad@signeen.com>
 ---
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+ drivers/net/usb/cdc_ncm.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/31924332756
---===============2544190724305362226==--
+diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
+index 0223a17..35db38c 100644
+--- a/drivers/net/usb/cdc_ncm.c
++++ b/drivers/net/usb/cdc_ncm.c
+@@ -2013,6 +2013,12 @@ static const struct usb_device_id cdc_devs[] = {
+ 	},
+ 
+ 	/* Mac */
++	{ USB_DEVICE_INTERFACE_NUMBER(0x05ac, 0x1902, 0),
++		.driver_info = (unsigned long)&apple_private_interface_info,
++	},
++	{ USB_DEVICE_INTERFACE_NUMBER(0x05ac, 0x1902, 2),
++		.driver_info = (unsigned long)&apple_private_interface_info,
++	},
+ 	{ USB_DEVICE_INTERFACE_NUMBER(0x05ac, 0x1905, 0),
+ 		.driver_info = (unsigned long)&apple_private_interface_info,
+ 	},
+-- 
+2.55.0
+
