@@ -1,183 +1,129 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013017.outbound.protection.outlook.com [40.107.201.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7523939A5;
-	Sun, 16 Aug 2026 11:13:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786878831; cv=none; b=iFEME3LYHyeLoYKdpuBU66kvBk2d/rmJoGIUfqnDmbbQCLAhT4fYugP//suibiPZqnS3qnISNEbLhVy+kMt2fY1toeCAaidtQF5gxXP/chO8uWgcseNgTnMViJwH3cn0yM8shCrCOmYXWA25/MwWUK/mt7O7+qhs/h+a9/tHKVA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786878831; c=relaxed/simple;
-	bh=90yihhOGUyrauzMhklE1nAOYqnEPs8ry9JwiGaH7Jd8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jVT9yp/kWtspAEqev8weFa8GviKuP3EYFf2yODsdHPupugPRpXQoR5uJyH4mcqRBh4ukdlE///YIakHDfTJkTApRgEMbC+7+12bUg+nTGop0jLdSnaSTliOKQ3iHFzska0ao/nw5qUl9s6vnQlcOL7t/NaZYfjRCzJx4dflrQcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NxWtecWA; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E1B1A5BAE;
+	Sun, 16 Aug 2026 11:23:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786879416; cv=fail; b=elNU3CRFC2i368VwhEBZSXIENivwJ8Wxnfd8IkvmDJQII2hrNNKzPBc6fxTYiVQLed/MkgEaVREUo+skdET97bOK04ucAkRgcUurpAD+2BI+/XQz7orIeR5gFKRHZyp88iCf966JrjMwexuCTcHILGs+xRsHj834rTwSmQvP970=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786879416; c=relaxed/simple;
+	bh=dO4c4wgp4mUmMdKUXI460ALMJVnAEMkxoekaPV9lXRI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=HD1PRWM11Kw0l5vNKMnRa1k8MAdm4bAvRj/tstTJByPmDjZomKssacNCErK4JUSOGAECMa4I/XZKZih4XLudBzEpUz8fe8AXYLQIV74PIXao/YplE1165ZUF+X3S6160WuRFRepJ/9twd9CJrU3CDJoEldtj+tbd09gbuGuzFuc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=f+zRyvON; arc=fail smtp.client-ip=40.107.201.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NxWtecWA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786878829; x=1818414829;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=90yihhOGUyrauzMhklE1nAOYqnEPs8ry9JwiGaH7Jd8=;
-  b=NxWtecWAiUw7Q+NhaAlALCY+wtrF6pW0XIV8iVfjJr80QU4fWHIgmMAk
-   zUkNXqGM9wk7Lb9C3AzMWwP6QUcTGNYgBAdisBPsu1y8uaQyPxtpAn7Xr
-   q5Zng3XmgRfgygMd3kw5ngpdDyPIGWX90QapamyhSiz0SefQV9d3oARmU
-   h0rqNKokQlG2GC53lAkLoDS4H0CKHVa/aJx497g5kNIivqq2XicF1hQJp
-   SYWWlQPwEMczuI/G1L1sk4kqqCWqwgKKFjnsNqivsJjkvinS9o7QTMJRO
-   Nv+BpmMhT+ctRSwOLIulacP0HODNBKK+dxlZnez7qpGb6al42dGbc9MLC
-   Q==;
-X-CSE-ConnectionGUID: scyKuChZQvC13qfvtkrWAw==
-X-CSE-MsgGUID: CgixAdv1Qj+aaR7e5+xjSg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11876"; a="87507715"
-X-IronPort-AV: E=Sophos;i="6.25,226,1779174000"; 
-   d="scan'208";a="87507715"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2026 04:13:48 -0700
-X-CSE-ConnectionGUID: BD65+aCBQO6WqSIml+moGg==
-X-CSE-MsgGUID: 195bUM0zSbS6Pz9hPtI/Fw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,226,1779174000"; 
-   d="scan'208";a="294566699"
-Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 16 Aug 2026 04:13:46 -0700
-Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wvYoA-00000000crm-44zD;
-	Sun, 16 Aug 2026 11:13:42 +0000
-Date: Sun, 16 Aug 2026 19:13:27 +0800
-From: kernel test robot <lkp@intel.com>
-To: zhang.enpei@zte.com.cn, chessman@tux.org
-Cc: oe-kbuild-all@lists.linux.dev, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] ethernet: tlan: Convert to use jiffies macro
-Message-ID: <202608161916.ywuToiQt-lkp@intel.com>
-References: <20250827155455583-PdvmDYA9SD3J37_XRza5@zte.com.cn>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="f+zRyvON"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EKMnQwPE8iGFaAjC0bmiXmqrsZeqCueOf1h2VxkxSfSRLS3AZOFgzm2AKJfAdjVXURkZtHYQS6OFXa0GyzSdxFca0KCE+RKysnwkA4BpdXSbJ/xi79NP/5sTd6uGhsnmtQsatIsNRYfvG+HUULzJwTmckyCqlm4fBqtS3BMcZuzP7XjMketWK3zgGlygHrH0JWaPst9nwu5d8Bo/O8S3cxPQxxPfEZ9ZFMXip4w3zyWAtd1wHJl+nrFKnrIekAM+GTsEIsZLnOeJcpBTVIVAO4wcXYnBh4hpM4yHQyG5+sSn5/nsWuUaOw11ZfX/YrejfX9hgDObktI9tDvbUib6sA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Vce/palwPHaAOv13RiXOQ5fDLbfgF5Y2x1ZhvBriLEw=;
+ b=EYhZa1XCMmwk8eRDGqJ/N8xkFxkRIcbZ6e5i2YemFDOEI6tOBtsIMDSZbf4A1RyGFQjEPuCFbx6b14u9eW9dK429RdHRfsHU12yDCJ/8LupqvSCLGUS/+4ue7VAo2njFOySz8o+zqdsTQ1RaIzTTCTgv8RfXo5AYkvNFJ5jKoXXyyaOA414TkRcZhEL+591kcShiCslPFJL4LYRQYLz0/cWj5BMftcuJM0hxVvPkm7uqMtF1aThxLPafVC3Nm1rbsQP+TOKgYrjhHj1NpUzNBkSpcW9AmAIccIVxUwclR7rzGXOw0gqcQp7d74TaGFgj1Lf45xwMTHubrDF2P7XpXw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Vce/palwPHaAOv13RiXOQ5fDLbfgF5Y2x1ZhvBriLEw=;
+ b=f+zRyvONY7FTh4ZkU9ZfrYjTmUt8A0ca53UJXm9CyRfnQ0PC4uaHpgWDYL7bFqz0JgdjJnr5XsBA0MgDW1jEUBrqKrLz5vknSsGZLYhO/6zOxdr9NaD8TWYkJym8ZulDkeakLworP44RyV7sMo05ZAhNVkxXTfdTMcd8Iu7fkbE743DDFA4QJ/43y8NSTzjQxONz+XpAojtQlLKE0REZRAEpCCNxsj80GEJ6Pz3gYLwVk75xuCWBHmSlIk8N+Q1SaML6N2/yrFrRmmMBbn0oQalCdk9BGu5oVeJitwXNWhn7fldI14ytvoi00ZiHXbdrb2ZxKY/7k+OJljhY++Uybw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
+ by IA0PR12MB7649.namprd12.prod.outlook.com (2603:10b6:208:437::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Sun, 16 Aug
+ 2026 11:23:31 +0000
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0315.016; Sun, 16 Aug 2026
+ 11:23:31 +0000
+Date: Sun, 16 Aug 2026 14:23:22 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Ilya Maximets <i.maximets@ovn.org>
+Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: ip_tunnel: remove unused non-strict
+ __ip_tunnel_change_mtu
+Message-ID: <20260816112322.GA30325@shredder>
+References: <20260815001942.1089545-1-i.maximets@ovn.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260815001942.1089545-1-i.maximets@ovn.org>
+X-ClientProxiedBy: FRYP281CA0005.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10::15)
+ To SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250827155455583-PdvmDYA9SD3J37_XRza5@zte.com.cn>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|IA0PR12MB7649:EE_
+X-MS-Office365-Filtering-Correlation-Id: a42a1f5e-d3fe-4f3a-abe5-08defb88cd30
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|22082099003|18002099003|56012099006|11063799006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	X9xlwt0gcr1mNJg2cKPsq/bCw8XE5eajjqOGk713LP7+PVmkP5lDoNP/xwXmdpQVQ+GT/ecLZN8Fcx6MjnwkCm4xmqjTYH3uBRNdvvaECcpuDBIyXV4ToFavy1SaZ9t0U+HKgmJSDVX06M8knt7Ulzi4CEF0/lsnrFbipZvVDMm87w6txMISoVyKnsR96tjhgN7xyXVjXmIcEYDHxuojyl0UueUC4oCVcW2xqPWHWzP5CuTAVEXXcw5gWLaZ79rX4bLzoc/jf/Fs8wOBqdxZDtWwxcfDQXvWabx2sPxGoVW93+1GToAxZMwQu5uupPNbNCm2AL3w5+AvdX3PEyaDv2PG03PAE3ewssf3NzGRmUaue7qHuPQMwHQe09f8N7+ctFfljgIlVjcn06i8lfq+TUPAOgFpGH9R+EYgh/n1Y8RagbXtEUudf8EXbOlGvFF3HZKEVj+5amr0O8EWbfojNG/3ul6awyd24SwWaiexatbefbYo08ZmabXFSqg1uJFMEb8VEsANpQHNLgLdTWF9776M7//ZfFC9szOHNLKMnkqVxaiAmtJ4h/H51m4LQGGjCSOdc3e7LI1hzmygGZwZUy/6F+Y04tMNYptKw6SyHywUoYmX+U5GuZuNXUqqHE8vBW4TqPhYe4XrCla72mD+NXlldeTqSX9Uadx9qAo5IiQ=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(22082099003)(18002099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?6IYqdCcbORpvvdoRBSHMZrkjN8R8fOqZfINFXJq1KwdrJ996cU/fO82YTGux?=
+ =?us-ascii?Q?wlBqDucYsHJpPVRLVJKYJFLabHtIlPD1CYyqANOEXUcnkybzJqb16qdrexRP?=
+ =?us-ascii?Q?ZpWS2xab6l+FHVH/fYWfIefem0gKS2ZHSjC+3sTY2jFY2i7IPIXasVhatG+M?=
+ =?us-ascii?Q?UqI//Uns9YMw7aVRw9AclKZDKYkcbCzl4qW1nWg23Tw812FKAGPNXHcQtVTb?=
+ =?us-ascii?Q?fH8UYU3yYjfN8J+7QWMOain4uFTTJWJRguW350/7pEFH6OZSEkZu+mb3b21r?=
+ =?us-ascii?Q?xxSP2zvvtibkLON5iWXJNTvNf2+SKTNwKn9c7YFpIEacW48X5afszofRuMwd?=
+ =?us-ascii?Q?jyTU2UdzT0nK5EKYrtSWC0Gvjz+OmbOcmdzRGwMcnr+gpKN1QYcVo9/piqFb?=
+ =?us-ascii?Q?b6hpOAdjFqpAPT6awj8zYWixHFAuWKzLR+GNU//xVIG6uW9rIMzhW1IYgYeW?=
+ =?us-ascii?Q?9UIFe+th8hb+uSoVwOI6oXP731aHD6SDf8o4jLrVDVGvspBdvJ1T7XrtLs06?=
+ =?us-ascii?Q?OGmT7SgCJSlrLmiVWe4PsRJXrTiSsyLc8kC80p0ZBPA6mfCEPMLGQEjxs+UU?=
+ =?us-ascii?Q?mT3O4kZbecmjgMe0L829orFElQldIJ4Vk9LN3EDQzfiK+fAI4R505z3eHHS5?=
+ =?us-ascii?Q?DL3E0jyynolKEZO1WhfZfmQDdCns8S/IX7w3UqidsVMwGZMjzOgHf1mqqR59?=
+ =?us-ascii?Q?KBJOLUjzC8crT1Y5ZTYU09Hr2vMSVuoAwctDBeDgloTlMs2uVtvui4CEFJlr?=
+ =?us-ascii?Q?ztsfRkNYDKKR8z2dJOyRp5neycxUgm+6zwZHYYIFvlGsd0iJXUnJheQxZuo1?=
+ =?us-ascii?Q?CvBq79mngfwHtKY8eq8FFMTS0Vn8tpyHYYgsVJsnaClShikAJEXwWIuJomVs?=
+ =?us-ascii?Q?gzHczNvxZ+TE5SZi9fZ9wklczhhFpGpZiRpErjaAbwDz2Jdkv58sb5PDvOHI?=
+ =?us-ascii?Q?yc123oTbOaULjg31XWT/PxPMF3biilBJg5NVSWs1wtxxOKAPhaSsEhc90/hT?=
+ =?us-ascii?Q?Lrii1jDbfLtTrxgBo7JBhOKj4GPOp0ChQ9J3cpQv/Rf4YlfagP2unumUrEPt?=
+ =?us-ascii?Q?HxoHgUsNbVP/BYiLEcIxIvMw13wAXQQ0q4ZQDOKGnI1+XiqC3a0ZYJcAhXNm?=
+ =?us-ascii?Q?6oL8brjPzzKCygFG2tDfoHCGZ/BYobgWP0iIeAnIqtuartophzZsVG4E9otg?=
+ =?us-ascii?Q?pXooYcaMUnKVu0KTRvTMW2kNRZUnoYiwKYSaagLg+ksZXTGp6FoyrJurDBKD?=
+ =?us-ascii?Q?LKZ0M24fRmi1KanZ/ED4cPIl5mmKcYSknZowvnw7+Z1S4E0Gpme3DZ2LecIv?=
+ =?us-ascii?Q?Y2lLpfFQ4MZuEjgHAr03zRSMxLMY2EXTa0bJ5LsnSx1GtX2Ngd/mv6/B/AMC?=
+ =?us-ascii?Q?BSlLKNlLlcI7p77SqyqNQqQh77Ztfi00KgwlYi1xq3hyx7uZO1wFI/lwhPUb?=
+ =?us-ascii?Q?82tQqa3elcEZ1P9ika4l1A4S6zQrM6m3DVxsWhBniPQVVj81J3lO72yoO94N?=
+ =?us-ascii?Q?uUOm31ZEdNDf38oLO2KRGAsHmjkzwd4TaX6iwO9+N2YllJO23r8kLw4G0bhy?=
+ =?us-ascii?Q?79PVR45juIldMhG4DzjP4MekKXTtCC5dtmB2Tq/cIGRY2CdaC2wC6WTPAh4+?=
+ =?us-ascii?Q?qDjgi//tlkxLLbbMK48wTBaY973csb7ZfcTQORGl9XvYlavKngrXyL5U1LTR?=
+ =?us-ascii?Q?S74R6bLE/A6Cd+QhoiKg8KsweuhBXMI1W+8lj17cgRdh1ZOi?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a42a1f5e-d3fe-4f3a-abe5-08defb88cd30
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Aug 2026 11:23:31.1636
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: w1GgGqZe8VdLLGuFcGpfNs7kS0jpQ59GRDHme3eK2BfUjt5+1dmxpe2u8A/ErZy+8LQcNAVT/snNZfNUKvhy9g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7649
 
-Hi,
+On Sat, Aug 15, 2026 at 02:19:32AM +0200, Ilya Maximets wrote:
+> The last user of this function was the recently removed vport-gre
+> module from openvswitch.  Let's drop the function.  All other modules
+> use the strict variant.
+> 
+> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
 
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on net-next/main]
-[also build test WARNING on net/main linus/master v7.2-rc7 next-20260814]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/zhang-enpei-zte-com-cn/ethernet-tlan-Convert-to-use-jiffies-macro/20260813-185229
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20250827155455583-PdvmDYA9SD3J37_XRza5%40zte.com.cn
-patch subject: [PATCH v3] ethernet: tlan: Convert to use jiffies macro
-config: i386-randconfig-063-20260816 (https://download.01.org/0day-ci/archive/20260816/202608161916.ywuToiQt-lkp@intel.com/config)
-compiler: clang version 22.1.3 (https://github.com/llvm/llvm-project e9846648fd6183ee6d8cbdb4502213fcf902a211)
-sparse: v0.6.5-rc1
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260816/202608161916.ywuToiQt-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608161916.ywuToiQt-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
->> drivers/net/ethernet/ti/tlan.c:1833:29: sparse: sparse: incompatible types in comparison expression (different type sizes):
-   drivers/net/ethernet/ti/tlan.c:1833:29: sparse:    unsigned long *
-   drivers/net/ethernet/ti/tlan.c:1833:29: sparse:    unsigned int *
-
-vim +1833 drivers/net/ethernet/ti/tlan.c
-
-  1771	
-  1772	
-  1773	/***************************************************************
-  1774	 *	tlan_timer
-  1775	 *
-  1776	 *	Returns:
-  1777	 *		Nothing
-  1778	 *	Parms:
-  1779	 *		data	A value given to add timer when
-  1780	 *			add_timer was called.
-  1781	 *
-  1782	 *	This function handles timed functionality for the
-  1783	 *	TLAN driver.  The two current timer uses are for
-  1784	 *	delaying for autonegotionation and driving the ACT LED.
-  1785	 *	-	Autonegotiation requires being allowed about
-  1786	 *		2 1/2 seconds before attempting to transmit a
-  1787	 *		packet.  It would be a very bad thing to hang
-  1788	 *		the kernel this long, so the driver doesn't
-  1789	 *		allow transmission 'til after this time, for
-  1790	 *		certain PHYs.  It would be much nicer if all
-  1791	 *		PHYs were interrupt-capable like the internal
-  1792	 *		PHY.
-  1793	 *	-	The ACT LED, which shows adapter activity, is
-  1794	 *		driven by the driver, and so must be left on
-  1795	 *		for a short period to power up the LED so it
-  1796	 *		can be seen.  This delay can be changed by
-  1797	 *		changing the TLAN_TIMER_ACT_DELAY in tlan.h,
-  1798	 *		if desired.  100 ms  produces a slightly
-  1799	 *		sluggish response.
-  1800	 *
-  1801	 **************************************************************/
-  1802	
-  1803	static void tlan_timer(struct timer_list *t)
-  1804	{
-  1805		struct tlan_priv	*priv = timer_container_of(priv, t, timer);
-  1806		struct net_device	*dev = priv->dev;
-  1807		unsigned long	flags = 0;
-  1808	
-  1809		priv->timer.function = NULL;
-  1810	
-  1811		switch (priv->timer_type) {
-  1812		case TLAN_TIMER_PHY_PDOWN:
-  1813			tlan_phy_power_down(dev);
-  1814			break;
-  1815		case TLAN_TIMER_PHY_PUP:
-  1816			tlan_phy_power_up(dev);
-  1817			break;
-  1818		case TLAN_TIMER_PHY_RESET:
-  1819			tlan_phy_reset(dev);
-  1820			break;
-  1821		case TLAN_TIMER_PHY_START_LINK:
-  1822			tlan_phy_start_link(dev);
-  1823			break;
-  1824		case TLAN_TIMER_PHY_FINISH_AN:
-  1825			tlan_phy_finish_auto_neg(dev);
-  1826			break;
-  1827		case TLAN_TIMER_FINISH_RESET:
-  1828			tlan_finish_reset(dev);
-  1829			break;
-  1830		case TLAN_TIMER_ACTIVITY:
-  1831			spin_lock_irqsave(&priv->lock, flags);
-  1832			if (priv->timer.function == NULL) {
-> 1833				if (time_is_before_eq_jiffies(priv->timer_set_at + TLAN_TIMER_ACT_DELAY)) {
-  1834					tlan_dio_write8(dev->base_addr,
-  1835							TLAN_LED_REG, TLAN_LED_LINK);
-  1836				} else  {
-  1837					priv->timer.expires = priv->timer_set_at
-  1838						+ TLAN_TIMER_ACT_DELAY;
-  1839					spin_unlock_irqrestore(&priv->lock, flags);
-  1840					add_timer(&priv->timer);
-  1841					break;
-  1842				}
-  1843			}
-  1844			spin_unlock_irqrestore(&priv->lock, flags);
-  1845			break;
-  1846		default:
-  1847			break;
-  1848		}
-  1849	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
