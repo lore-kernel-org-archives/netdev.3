@@ -1,211 +1,393 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566D83B19B5;
-	Sun, 16 Aug 2026 21:02:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786914164; cv=none; b=dqeVCW4ST02qXXCnVzscL/UVVLKsn+Ve994el0yWl59dDm9jbhP4PIGaD9w0xULUtNofac2ENyqUFnWUM2NjEkg2bv6Go1kkRxjOQW45n6kfCO/oyc4+T7N1ZMIdKvga9pvUFHjXidgignsr9NlAGogxFNW9r1aVcbNOTxjrIE4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786914164; c=relaxed/simple;
-	bh=zB+bLSx2ZDwxjjitDphKtVLI6sAuY5BuNf+XJgmiv0w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ROpvRMo+Xt3Bahz1TajRnOdVdaMWMQKRWvpKjdRGSRfmv+B0fcVtm+JYALtYN1SGySJzOS/fiWEZA5n7gjxngjolFBGKSueLiFKsImQm6Bra/Iqe+YUBm59sj+uXzzY8a+eSLMRsrFjgqZBGz1hJMpSMq5wPOgfAeC2NzRgIZdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=a6xXXiFA; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460F52C3255
+	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 21:18:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786915112; cv=pass; b=rBfeMQzFCspc+jX//FXTT3ajdp2wZqRtP8eVRJjei0UDrcmE/hZ53WMzJXeVby6eNOuyhVKslrGSK+/CPH8HWf3MEtaM+RzRKkz4h1apH+8dheu42aqxpd+5onHl3GiZntEUldjpTsuxUTuzprsGi9rKDm1WI8NloTeyyKoPvHo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786915112; c=relaxed/simple;
+	bh=nzU39/xPi5RUCSNf2YWsuHIa7xL5WKrFcmyscJvDE9o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=f0zZigua9uqbiI09oTYdT6hWk8lvyni2g8dMMnqr7qYSFyvTaXttlxE3Pmrhb6LJuKuL1bh4fY44EUzlxnjY/dn9xpJembkn4zZUvoWtQhi7WomXn0agtaYCYNp34Z3TUHJ+MvhWwgDUP7XC8woOQHvgvLS/CR59RdGBh3yGKZE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=r7KmfxM8; arc=pass smtp.client-ip=209.85.167.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="a6xXXiFA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1786914150;
-	bh=RQDgQIDpq2a95XlpjXPV52Y4fURSPzXkE3dG47J0Rhk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=a6xXXiFAb795zWbC9VDi88AjoYoyA6na2Z00HTHv2QnJfq1Qx1VTuf28vOP74WDEs
-	 3zSgUOMTop4LnnOvdWArttddCzu8zHKHVRwC7SgFEo+66S6l2EanmDcPvwK9YRTf0K
-	 8Cq64ZE8gXG+UkIOH5cItXfVcATp/suhAQxh6omtqGNBsmtZqHwZA218Zgk7t/1NnE
-	 GXSBqYwACeYCv7SSbkyw9A5uzc4+cQg4QrIyMduADhD3qFMNdIUpu3CfLPYuE8VB6B
-	 lNmVlEku/zfsY0S5daTY548jF8AH3OBgHKLmR5KNsPmUgqzJoGWIVGzQYwA1a/daGz
-	 zZKZaQF1Tcw7g==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id B838D6005E;
-	Sun, 16 Aug 2026 23:02:30 +0200 (CEST)
-Date: Sun, 16 Aug 2026 23:02:27 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Qing Ming <a0yami@mailbox.org>
-Cc: Harald Welte <laforge@gnumonks.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	horms@kernel.org, kuniyu@google.com,
-	osmocom-net-gprs@lists.osmocom.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v4] gtp: serialize PDP context updates
-Message-ID: <aoIlY3NaRtICIQZV@chamomile>
-References: <20260814031526.118216-1-a0yami@mailbox.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="r7KmfxM8"
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-4a071495be0so1486329b6e.0
+        for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 14:18:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786915110; cv=none;
+        d=google.com; s=arc-20260327;
+        b=STR3AYMrIHln84OY6NsRHhFU81TTGRiLLfFkvv9hY2rlwahDYN+evB2sNOIhbnnklj
+         cIRh0L2xsw6YmMOssYrVnNxOKVZyBx/gjvPpcAo68CHfuceZ4Mv2iTGfMb7ux+7HPczE
+         qRywmYy2V/Xs7TcpQ8V5mktIwmg4DQ3LPkw9jWOnkipG3coalgzgGTgNYwTXQjpwfMRh
+         4tuU53XoOd864ckr+s4pOgF72g0BpaOC4zBIVNEV4zy1JiFfER6tKi1ZghG7XIYGwnDt
+         T8ow2loJ6nl1VsaO7MG9Ol26gUQbtIZ29TRmoLJzm6c4qrE6WJBBJlDlUdPDl8pgMwDQ
+         j1IQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Txf9T/VPFRoAzPIj+vLb/VV3F8dxT+F11tLYGRitn74=;
+        fh=e/mEzYcsLqic/1S/H5WRhy283x3VJXBYFA3HYVVUXTY=;
+        b=Otvkxyt6qLS6SXI8hlczyb0lP7ZZ4Y8aHrKd48LLNIGMYmfTf6QiUUUTozAk0btN5I
+         u0gAZ4jWdmc+D4RgJX6IOJWYAbIQkvWwGT/ErgTLqbv4QNGbiRn1zeAc94Ku3K5U+1vd
+         b/DGk3t2X5C8miwgKVcElbc030rZoU/ecE7QMZtg5Pc1XKixhbmiO8allZufYsLUlLdS
+         YfY0gGDi0KqQbn57FCdjV1ibyIGBXRUXIHZGkuXbRGAqtd5HnMUFLDem0zuNjeKEeHwY
+         /RYTZv3HZmNUrMkBEKRynoBtyRLDjurGLXjYjaG9vxBrQoqpA/J1J0kd+5MaQruomD4n
+         R6eQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786915110; x=1787519910; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Txf9T/VPFRoAzPIj+vLb/VV3F8dxT+F11tLYGRitn74=;
+        b=r7KmfxM8uMduOTznZPQ2Nm656Iuue27G3HXyUG09tgf4QWc/QRUd5rFf6PEyZOlXaj
+         wS7XGkTDFJtaJmTQ03sD0jrH5HTK71iq1xxQM/5Ry5hV+0d9MjXFgsho9GLkj9woIZNt
+         ra4ZP2GfklpuIGviEuRiv9PZfhstR9hMwRv9yP0pHigkv5cyi3cvW/61TCQfxWI1IV6X
+         6gE2OEvXXqVuxOaqbmkiLfReIdcipbwQUAUsUyNfdYKbpbLSFtEUr1tYTF3JN9Zl4Yxz
+         Sw0wpT3Vxrj5he8VaRNJNJw9QUYNeXx6iSbf7n+NeLGYojWTqYmk34MzbudERrd2hOsE
+         pcNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786915110; x=1787519910;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Txf9T/VPFRoAzPIj+vLb/VV3F8dxT+F11tLYGRitn74=;
+        b=pow82BrCClaRmsl8smKADTEO1wwGAKDecnkMXkNcPdjlubKccXoL0UWGaWnn0qzDLi
+         U2jqiYk8PyIfmiWMNpyWDwa5mdreEdxHGX4YhIY3ctvec7rgpczW4zUjFVcNwgK/bg+a
+         c7/l03HPRRspY8FNF/mpHDrxYuFn10l5ihEU9MG+ONAoblI4hoSh8X/YcEDoBHijb1a7
+         jp6NDqgFzsDQFgTq3DxGrumJPBNt7UbEgsX9m8BZhFwZCih//yZMUtrCTsUFn24uFRcy
+         HeVeZ5zB97PCAd7/tzcyWup1Runlx0DQSrr3lHUDxu9/hL9UV03IcPVCgGY+ysxbA1dq
+         uOTg==
+X-Forwarded-Encrypted: i=1; AHgh+RqeRMJmEiB1Pa45vhbJtQU98iM6u0agLpFq50kk+/57eWgLBDdRvz5apDyDGF/w/hsNkIjGmFA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLqWv2ONSkDAsmY4Xqq9KpRyq6Gak8mMO+tycaI3zSatoEr964
+	efZ/w8gStxZtADg+eRwRBcHTADODNbx5mMzXCEbhSOu63SnOrjtHozB609hdKM1URZ9xqjOpKuD
+	0H8Tf8NOCFWrqjW5cH71ZiamBdMICvdw=
+X-Gm-Gg: AR+sD13NLAqMDYQ6AsfLMD2qKLHNkrvhxUKo/JDH3HCb3bdkdUYj2HVHnqOoMucCyLt
+	HLG47S/gyPnzoBudD41g2YQ1HVDgi14jt4VKfUNTC3fvJ8ZAGsNwXzAgaaZnJCcZ8L7VfAF2d5j
+	du9/G7k0YMI31ySXgL7c/p4nIoQ6jNQvrgBbh3+8QduhiHgxqhdVkbmF8NTja7EiL67FM/Ty4Dq
+	feqkvgsQtNSQNgB0DfOn3YaneEh2Cn6eJ8/aNhnwYbUgtohYzvN6Qvfj2jLR7BV6gZUps/9IWFB
+	u81dfVUiChSFArgM1VcS7BRgpL5acZdvBIzWrfk89pve7XEwkLt9ZWOe5jaIWvEEq6cOCR6Cmg0
+	k/AuQHfJUVl+yTw==
+X-Received: by 2002:a05:6808:1982:b0:496:1ca:e437 with SMTP id
+ 5614622812f47-4b241cbb476mr17942343b6e.12.1786915110128; Sun, 16 Aug 2026
+ 14:18:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260814031526.118216-1-a0yami@mailbox.org>
+References: <20260813104137.55550-1-kyle.switch@motor-comm.com>
+In-Reply-To: <20260813104137.55550-1-kyle.switch@motor-comm.com>
+From: David Yang <mmyangfl@gmail.com>
+Date: Mon, 17 Aug 2026 05:17:54 +0800
+X-Gm-Features: AcwNN1UUiFSbFv3afFTfS0Vgi0UIcR14LVmsm5H9CcdDTIHfcDeu4glOzSkDLv4
+Message-ID: <CAAXyoMP=-YXbdgCWXRbPqmQXwPuRegHSDvDm9_+hhmf9ev2CAQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v1] net:dsa:yt922x: Add support for Motorcomm YT922x
+To: Kyle Switch <kyle.switch@motor-comm.com>
+Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com, 
+	jianmin.wang@motor-comm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 14, 2026 at 11:15:26AM +0800, Qing Ming wrote:
-> PDP contexts can be deleted through GTP_CMD_DELPDP or while the GTP
-> network device is being unregistered. The latter is serialized by RTNL,
-> but the generic-netlink delete path only holds RCU.
-> 
-> Running both paths concurrently can therefore make both paths delete the
-> same PDP context. The issue was found through static analysis and
-> reproduced on a KASAN-enabled kernel by a simple two-thread program
-> racing GTP_CMD_DELPDP against RTM_DELLINK:
-> 
->   Oops: general protection fault, probably for non-canonical address
->   KASAN: maybe wild-memory-access in range
->          [0xdead000000000120-0xdead000000000127]
->   RIP: gtp_genl_del_pdp+0x1c1/0x420 [gtp]
->   RBP: dead000000000122
-> 
-> The second deletion dereferenced the poisoned hlist pprev pointer.
-> 
-> Serialize gtp_pdp_add(), gtp_genl_del_pdp(), and gtp_dellink() with a
-> shared mutex. With this change, the same reproducer completed 50 races
-> on a KASAN- and lockdep-enabled kernel without a KASAN report, oops, or
-> lockdep warning.
-> 
-> Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunneling Protocol (GTP-U)")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Codex:gpt-5
-> Signed-off-by: Qing Ming <a0yami@mailbox.org>
-> ---
-> v4:
-> - Replace guard() with plain mutex_lock()/mutex_unlock() in the
->   GTP_CMD_NEWPDP path.
-> - Narrow the RCU read-side section in gtp_genl_del_pdp() to
->   gtp_find_pdp(); gtp_find_dev() uses dev_get_by_index_rcu().
-> - Add mutex-aware lockdep conditions to the shared PDP lookup helpers.
-> 
-> v3: https://lore.kernel.org/netdev/20260811022012.5416-1-a0yami@mailbox.org/
->  drivers/net/gtp.c | 25 +++++++++++++++++++------
->  1 file changed, 19 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-> index 9a12cc53da00..ea83a6b6aa1a 100644
-> --- a/drivers/net/gtp.c
-> +++ b/drivers/net/gtp.c
-> @@ -12,6 +12,7 @@
->  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
->  
->  #include <linux/module.h>
-> +#include <linux/mutex.h>
->  #include <linux/skbuff.h>
->  #include <linux/udp.h>
->  #include <linux/rculist.h>
-> @@ -108,6 +109,7 @@ struct gtp_net {
+On Fri, Aug 14, 2026 at 9:50=E2=80=AFAM Kyle Switch <kyle.switch@motor-comm=
+.com> wrote:
+
+> @@ -148,10 +148,15 @@ static const struct yt921x_info yt921x_infos[] =3D =
+{
+>                 YT921X_PORT_MASK_INT0_n(8),
+>                 YT921X_PORT_MASK_EXT0 | YT921X_PORT_MASK_EXT1,
+>         },
+> +       {
+> +               "YT9224", YT9224_MAJOR, 0, 0,
+> +               0x1f1,
+> +               0x0,
+> +       },
+
+Why plain magic numbers here, despite what the above entries shows?
+
+>         {}
 >  };
->  
->  static u32 gtp_h_initval;
-> +static DEFINE_MUTEX(gtp_pdp_lock);
->  
->  static struct genl_family gtp_genl_family;
->  
-> @@ -151,7 +153,8 @@ static struct pdp_ctx *gtp0_pdp_find(struct gtp_dev *gtp, u64 tid, u16 family)
->  
->  	head = &gtp->tid_hash[gtp0_hashfn(tid) % gtp->hash_size];
->  
-> -	hlist_for_each_entry_rcu(pdp, head, hlist_tid) {
-> +	hlist_for_each_entry_rcu(pdp, head, hlist_tid,
-> +				 lockdep_is_held(&gtp_pdp_lock)) {
->  		if (pdp->af == family &&
->  		    pdp->gtp_version == GTP_V0 &&
->  		    pdp->u.v0.tid == tid)
-> @@ -168,7 +171,8 @@ static struct pdp_ctx *gtp1_pdp_find(struct gtp_dev *gtp, u32 tid, u16 family)
->  
->  	head = &gtp->tid_hash[gtp1u_hashfn(tid) % gtp->hash_size];
->  
-> -	hlist_for_each_entry_rcu(pdp, head, hlist_tid) {
-> +	hlist_for_each_entry_rcu(pdp, head, hlist_tid,
-> +				 lockdep_is_held(&gtp_pdp_lock)) {
->  		if (pdp->af == family &&
->  		    pdp->gtp_version == GTP_V1 &&
->  		    pdp->u.v1.i_tei == tid)
-> @@ -185,7 +189,8 @@ static struct pdp_ctx *ipv4_pdp_find(struct gtp_dev *gtp, __be32 ms_addr)
->  
->  	head = &gtp->addr_hash[ipv4_hashfn(ms_addr) % gtp->hash_size];
->  
-> -	hlist_for_each_entry_rcu(pdp, head, hlist_addr) {
-> +	hlist_for_each_entry_rcu(pdp, head, hlist_addr,
-> +				 lockdep_is_held(&gtp_pdp_lock)) {
->  		if (pdp->af == AF_INET &&
->  		    pdp->ms.addr.s_addr == ms_addr)
->  			return pdp;
-> @@ -220,7 +225,8 @@ static struct pdp_ctx *ipv6_pdp_find(struct gtp_dev *gtp,
->  
->  	head = &gtp->addr_hash[ipv6_hashfn(ms_addr) % gtp->hash_size];
->  
-> -	hlist_for_each_entry_rcu(pdp, head, hlist_addr) {
-> +	hlist_for_each_entry_rcu(pdp, head, hlist_addr,
-> +				 lockdep_is_held(&gtp_pdp_lock)) {
->  		if (pdp->af == AF_INET6 &&
->  		    ipv6_pdp_addr_equal(&pdp->ms.addr6, ms_addr))
->  			return pdp;
-> @@ -1555,9 +1561,11 @@ static void gtp_dellink(struct net_device *dev, struct list_head *head)
->  	struct pdp_ctx *pctx;
->  	int i;
->  
-> +	mutex_lock(&gtp_pdp_lock);
->  	for (i = 0; i < gtp->hash_size; i++)
->  		hlist_for_each_entry_safe(pctx, next, &gtp->tid_hash[i], hlist_tid)
->  			pdp_context_delete(pctx);
-> +	mutex_unlock(&gtp_pdp_lock);
->  
->  	list_del(&gtp->list);
->  	unregister_netdevice_queue(dev, head);
-> @@ -2053,7 +2061,9 @@ static int gtp_genl_new_pdp(struct sk_buff *skb, struct genl_info *info)
->  		goto out_unlock;
->  	}
->  
-> +	mutex_lock(&gtp_pdp_lock);
->  	pctx = gtp_pdp_add(gtp, sk, info)
+>
+> -#define YT921X_NAME    "yt921x"
+> +#define YT92XX_NAME    "yt92xx"
 
-This does not look fine, it should protect the entire section where
-this pctx object is used.
+This changed the module name which may affect end users. While I have
+no objection to this, subsystem maintainers may have different
+opinions.
 
-> +	mutex_unlock(&gtp_pdp_lock);
->  	if (IS_ERR(pctx)) {
->  		err = PTR_ERR(pctx);
->  	} else {
-> @@ -2134,9 +2144,12 @@ static int gtp_genl_del_pdp(struct sk_buff *skb, struct genl_info *info)
->  	if (!info->attrs[GTPA_VERSION])
->  		return -EINVAL;
->  
-> -	rcu_read_lock();
-> +	mutex_lock(&gtp_pdp_lock);
->  
-> +	/* gtp_find_dev() uses dev_get_by_index_rcu(). */
-> +	rcu_read_lock();
->  	pctx = gtp_find_pdp(sock_net(skb->sk), info->attrs);
+> +static int
+> +yt922x_intif_ext_read(struct yt921x_priv *priv, int port, int reg, u16 *=
+valp)
 
-Same here.
+[...]
 
-> +	rcu_read_unlock();
->  	if (IS_ERR(pctx)) {
->  		err = PTR_ERR(pctx);
->  		goto out_unlock;
-> @@ -2153,7 +2166,7 @@ static int gtp_genl_del_pdp(struct sk_buff *skb, struct genl_info *info)
->  	pdp_context_delete(pctx);
->  
->  out_unlock:
-> -	rcu_read_unlock();
-> +	mutex_unlock(&gtp_pdp_lock);
->  	return err;
->  }
->  
-> 
-> base-commit: 24ef02f934eeb48830cff6b739abc3c62b1d107b
-> -- 
-> 2.53.0
-> 
+> +static int
+> +yt921x_intif_ext_write(struct yt921x_priv *priv, int port, int reg, u16 =
+val)
+
+Place them with yt921x_*if_*().
+
+> +static int yt922x_internal_phyaddr_get(int port,
+> +                                      enum yt922x_phy_reg_type reg_type,
+> +                                      enum yt922x_phy_reg_space reg_spac=
+e)
+
+[...]
+
+This makes me headache and is prone to errors (an example below).
+Reorder it with early returns and/or lookup tables so that it is
+obviously correct.
+
+> +               default:
+> +                       if (reg_space !=3D YT922X_PHY_REG_SPACE_PHY)
+> +                               res =3D -EINVAL;
+> +                       break;
+
+What would you expect here, when reg_space =3D=3D YT922X_PHY_REG_SPACE_PHY?
+
+> +static int yt922x_port_sds_init(struct yt921x_priv *priv, int port,
+> +                               phy_interface_t interface)
+
+[...]
+
+> +       addr =3D yt922x_internal_phyaddr_get(port, YT922X_PHY_REG_TYPE_MI=
+I,
+> +                                          YT922X_PHY_REG_SPACE_SGMII);
+> +       if (addr < 0)
+> +               return res;
+> +       res =3D yt921x_intif_read(priv, addr, 0x2000, &data);
+> +       if (res)
+> +               return res;
+> +       data &=3D ~(1 << 15);
+> +       res =3D yt921x_intif_write(priv, addr, 0x2000, data);
+> +       if (res)
+> +               return res;
+> +       addr =3D yt922x_internal_phyaddr_get(port, YT922X_PHY_REG_TYPE_MI=
+I,
+> +                                          YT922X_PHY_REG_SPACE_USXGMII);
+> +       if (addr < 0)
+> +               return res;
+> +       res =3D yt921x_intif_read(priv, addr, 0x0, &data);
+> +       if (res)
+> +               return res;
+> +       data |=3D 1 << 15;
+> +       res =3D yt921x_intif_write(priv, addr, 0x0, data);
+> +       if (res)
+> +               return res;
+
+Numerous magic numbers. On YT9215, same finetunes are not required for
+a usable port. If you cannot name it, drop it if it is not mandatory.
+
+> +static int yt922x_cpu_tag_mode_set(struct yt921x_priv *priv)
+> +{
+> +       struct device *dev =3D to_device(priv);
+> +       u16 eth_p_tag;
+> +       u32 val;
+> +       u32 val1;
+> +       int res;
+> +
+> +       /* cpu tag mode set */
+> +       res =3D yt921x_reg_read(priv, YT922X_CPU_TAG_RX_CTRL, &val);
+> +       if (res)
+> +               return res;
+> +       res =3D yt921x_reg_read(priv, YT922X_CPU_TAG_TX_CTRL, &val1);
+> +       if (res)
+> +               return res;
+> +       val &=3D ~YT922X_CPU_TAG_RX_MODE;
+> +       val1 &=3D ~YT922X_CPU_TAG_TX_MODE;
+> +       val1 &=3D ~YT922X_CPU_TAG_TX_TYPE;
+> +       res =3D yt921x_reg_write(priv, YT922X_CPU_TAG_RX_CTRL, val);
+> +       if (res)
+> +               return res;
+> +       res =3D yt921x_reg_write(priv, YT922X_CPU_TAG_TX_CTRL, val1);
+> +       if (res)
+> +               return res;
+> +
+> +       /* tpid check */
+> +       res =3D yt921x_reg_read(priv, YT921X_CPU_TAG_TPID, &val);
+> +       if (res)
+> +               return res;
+> +       eth_p_tag =3D FIELD_GET(YT921X_CPU_TAG_TPID_TPID_M, val);
+> +       if (eth_p_tag !=3D ETH_P_YT921X) {
+> +               dev_err(dev, "Tag type 0x%x !=3D 0x%x\n", eth_p_tag,
+> +                       ETH_P_YT921X);
+> +               return -EINVAL;
+> +       }
+> +
+> +       return 0;
+> +}
+
+This looks similar to yt921x_chip_reset(), so you'd better merge it
+into yt922x_chip_reset() above.
+
+> +static int yt922x_cpu_port_set(struct yt921x_priv *priv)
+> +{
+> +       struct dsa_switch *ds =3D &priv->ds;
+> +       u32 ctrl;
+> +       int res;
+> +
+> +       /* cpu tag mode */
+> +       res =3D yt922x_cpu_tag_mode_set(priv);
+> +       if (res)
+> +               return res;
+> +
+> +       /* Enable DSA */
+> +       priv->cpu_ports_mask =3D dsa_cpu_ports(ds);
+> +       ctrl =3D YT921X_EXT_CPU_PORT_TAG_EN | YT921X_EXT_CPU_PORT_PORT_EN=
+ |
+> +              YT921X_EXT_CPU_PORT_PORT(__ffs(priv->cpu_ports_mask));
+> +       res =3D yt921x_reg_write(priv, YT921X_EXT_CPU_PORT, ctrl);
+> +       if (res)
+> +               return res;
+> +
+> +       /* Setup software switch */
+> +       ctrl =3D YT922X_CPU_COPY_TO_EXT_CPU;
+> +       res =3D yt921x_reg_write(priv, YT922X_CPU_COPY, ctrl);
+> +       if (res)
+> +               return res;
+> +
+> +       return res;
+> +}
+
+Also, snippets from yt921x_chip_setup_dsa() and unaligned function names.
+
+> -static void yt921x_mdio_remove(struct mdio_device *mdiodev)
+> +static void yt92xx_mdio_remove(struct mdio_device *mdiodev)
+
+Unnecessary renaming.
+
+> +#define YT922X_PORT_SDS_MODE           0x400
+> +#define YT922X_PORT_SDS_MODE_M         GENMASK(6, 4)
+> +#define YT92XX_SERDES_MODE_SGMII                       0
+> +#define YT92XX_SERDES_MODE_REVSGMII                    1
+> +#define YT92XX_SERDES_MODE_1000BASEX                   2
+> +#define YT92XX_SERDES_MODE_100BASEX                    3
+> +#define YT92XX_SERDES_MODE_2500BASEX                   4
+> +#define YT92XX_SERDES_MODE_USXGMII                     6
+
+Not an objection, but better to keep the formats with YT921X_SERDESn:
+
+#define YT922X_PORT_SERDES           0x400
+#define  YT922X_PORT_SERDES_MODE_M           GENMASK(6, 4)
+#define   YT922X_PORT_SERDES_MODE(x)
+FIELD_PREP(YT922X_PORT_SERDES_MODE_M, (x))
+#define   YT922X_PORT_SERDES_MODE_SGMII              YT922X_PORT_SERDES_MOD=
+E(0)
+
+> +#define YT922X_ACT_UNK_ACTn_M(port)            GENMASK(2 * (port) + 1, 2=
+ * (port))
+> +#define YT922X_ACT_UNK_ACTn(port, x)           ((x) << (2 * (port)))
+> +#define YT922X_ACT_UNK_ACTn_FORWARD(port)      YT922X_ACT_UNK_ACTn(port,=
+ 0)  /* flood */
+> +#define YT922X_ACT_UNK_ACTn_TRAP(port)         YT922X_ACT_UNK_ACTn(port,=
+ 3)  /* steer to CPU */
+> +#define YT922X_ACT_UNK_ACTn_DROP(port)         YT922X_ACT_UNK_ACTn(port,=
+ 1)  /* discard */
+> +/* NEVER use this action; see comments in the tag driver */
+> +#define YT922X_ACT_UNK_ACTn_COPY(port)         YT922X_ACT_UNK_ACTn(port,=
+ 2)  /* flood and copy */
+
+Sort them in numerical order.
+
+> +
+> +/* CPU PORT */
+> +#define YT922X_CPU_COPY                        0x181100
+> +#define YT922X_CPU_COPY_TO_INT_CPU     BIT(1)
+> +#define YT922X_CPU_COPY_TO_EXT_CPU     BIT(0)
+> +#define YT922X_CPU_TAG_RX_CTRL         0x80504
+> +#define YT922X_CPU_TAG_RX_MODE         BIT(0)
+> +#define YT922X_CPU_TAG_TX_CTRL         0x100710
+> +#define YT922X_CPU_TAG_TX_TYPE         BIT(0)
+> +#define YT922X_CPU_TAG_TX_MODE         BIT(1)
+> +#define YT922X_CPU_TAG_TX_CTAG_OP      BIT(2)
+> +#define YT922X_CPU_TAG_TX_STAG_OP      BIT(3)
+
+Not an objection, but better to keep the indentation formats of yt921x
+register definitions above.
+
+> +struct yt92xx_chip_info {
+> +       enum yt92xx_mode mode;
+> +       const char *name;
+> +       unsigned int ports;
+> +       unsigned int lag_id;
+
+lag_ids, or num_lag_ids (and num_ports) for consistency.
+
+>  struct yt921x_priv {
+>         struct dsa_switch ds;
+>
+> +       const struct yt92xx_chip_info *chip_info;
+>         const struct yt921x_info *info;
+
+yt921x_priv :: info is chip info already. You may want `series_info`,
+or more straightforward, `series` and `struct yt92xx_series`.
+
+> diff --git a/net/dsa/tag_yt921x.c b/net/dsa/tag_yt921x.c
+> index 294784ab6694..a3012ec39868 100644
+> --- a/net/dsa/tag_yt921x.c
+> +++ b/net/dsa/tag_yt921x.c
+
+[...]
+
+> +/* To define the from cpu tag format 8 bytes:
+> + *
+> + * 0 1 2 3 4 5 6 7 |0 1 2 3 4 5 6 7
+> + *|<------------TPID 0x9988------->|
+> + *|<--RESERVE-->|<-----DST POR---->|
+> + *|-|<---------RESERVE------------>|
+> + *|<------------------------------>|
+> + */
+> +#define YT922X_TAG_NAME                        "yt922x"
+> +#define YT922X_TAG_PORTMASK_0          BIT(15)
+
+Sort them according to their corresponding word.
+
+> +#define YT922X_TAG_PORTMASK_M          GENMASK(8, 0)
+> +#define YT922X_TAG_PORTS(x)            FIELD_PREP(YT922X_TAG_PORTMASK_M,=
+ (x))
+> +#define YT922X_TAG_FORCE_DST           BIT(9)
+> +#define YT922X_TAG_PRIO_M              GENMASK(12, 10)
+> +#define YT922X_TAG_PRIO_EN             BIT(13)
+> +#define YT922X_TAG_PRIO(x)             (FIELD_PREP(YT922X_TAG_PRIO_M, (x=
+)) | YT922X_TAG_PRIO_EN)
+> +#define YT922X_TAG_RX_PORT_M           GENMASK(5, 2)
+> +#define YT922X_TAG_RX_PRIO_M           GENMASK(15, 13)
+
+This did not answer the question in the previous review: do tag_yt922x
+and tag_yt921x share any common routines? If not, better to make
+tag_yt922x a separate file.
+
+> +static struct sk_buff *
+> +yt922x_tag_xmit(struct sk_buff *skb, struct net_device *netdev)
+> +{
+> +       struct dsa_port *dp =3D dsa_user_to_port(netdev);
+> +       __be16 *tag;
+> +       u16 ctrl;
+> +
+> +       skb_push(skb, YT921X_TAG_LEN);
+> +       dsa_alloc_etype_header(skb, YT921X_TAG_LEN);
+> +       tag =3D dsa_etype_header_pos_tx(skb);
+> +
+> +       tag[0] =3D htons(ETH_P_YT921X);
+> +       if (dp->index !=3D 0) {
+> +               /* Port index is not equal 0 in tag[1] */
+> +               ctrl =3D YT922X_TAG_PRIO(skb->priority) | YT922X_TAG_FORC=
+E_DST |
+> +                       YT922X_TAG_PORTS(dsa_xmit_port_mask(skb, netdev) =
+- 1);
+
+dsa_xmit_port_mask() returns a bit mask - you won't do arithmetic
+operations to a bit mask normally.
+
+The field name does suggest it is a port mask. Have you noticed
+excessive packets on other ports?
