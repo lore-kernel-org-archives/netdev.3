@@ -1,172 +1,124 @@
-Received: from mail-oi1-f205.google.com (mail-oi1-f205.google.com [209.85.167.205])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443383403FF
-	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 07:29:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB711C5499
+	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 07:33:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786865365; cv=none; b=pIU1hnnllDuXID/WgtABVIDNd+79epvgZ67D8eaUyi2ovNBd/DSTuLPb5v9vcN/AqyU3oKt6DaJpIoDPe5yKQs/mMpTJtJxX9GSkqc1n2QNU6iGM7XEgHfdBzra32e0Z2YsPfO0qysodnC4CQdvW4ndedom0/V4Wr0eToQhUMQY=
+	t=1786865594; cv=none; b=tOM72abqyD5zrEIOTM2VW3UHCMNRLhS/hTX0+0CYbomgApBkdg7Sf5+eJA5He3VfqJBSaBZ/OrmnHKHMvKUFTos/NuXTeamvJlWbtXbmIchURdVTpzmJX3m1atI+yws6U+WOoFLG1CEp9u3bql/1Nni7U4yEyKSS6WcJaXkZ7kU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786865365; c=relaxed/simple;
-	bh=WmZphvtE1BQNd8vk74XA18i5Fgu3ou3hMfWuxOjzI5M=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=Vy28hTGM9H0sTFiwsaxXlzwCqXuCbrLlak1mJLpCj6VgiWDcA1/4aZoO+23JY1AoU+i7bLbYGKagKsfLeHx8PEmncTLVIL9Qd9Ypn/Pbwtkw3AAkJuyT5S8kaQN8IL6yWbfcnTVA1T2oHXNftgMK8ZlCtIdDNuqAnyk4MiG00Pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f205.google.com with SMTP id 5614622812f47-4af9bf0f53bso2911648b6e.1
-        for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 00:29:24 -0700 (PDT)
+	s=arc-20240116; t=1786865594; c=relaxed/simple;
+	bh=y6QcRCCfW4d495k95HuIQw2UVSsdUa46AUu5XwAig4Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NmSQYFpG4t6Guug68KFVLRbuBe1gVZzhImljfKNjCuqbv9/xi5ctpMl1CriZLJy7plno4METJvjcKJrqrCh0+hMOEOYNx5GzQiS0Gtu4tsPtdGM93p6VKsJ9QJA+0OtgJ1xjRMarSwAwHNE3qkeEVTPl4+B06p4Q7YznEWfeZAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=TFuw2vXn; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="TFuw2vXn"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-49800c6a846so27497445e9.3
+        for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 00:33:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1786865591; x=1787470391; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=V4Dxzk9SYkYwJWvs5z6wDXm/t0KB0vBdS9GjuR4ntoo=;
+        b=TFuw2vXnxoOW3L4BrSg8lW59lHoNHG7x/vt3XCJpW+VlNy/kKOT/GErNa57tEr30HI
+         cr0u5NBjN+0iVoegqWZSM9uO0Db5uoiaBgbtHWh6im09gZ2XFgiTFJdjSKRGg5hKZ031
+         0FZzUU/nIHCxAqYL49JobuXbBtiyMUDmc71aDt+BAGgupSeaUYxaXfl4ow5C9Zf59WU8
+         9fN7xI+RUQ3mO25xq/Id5/l8Yi4rzg8oIlwJeAVGibJIK09RMLguUw0zsDa0rzrQQAPs
+         WhuEosuLmEi9JUgDp7zNv24MjQNEiuuYNHkle9qypNr81sjriXgNr530gbPPf77pSFg4
+         1vXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786865363; x=1787470163;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=bWBxWeN+PrBCWKECGhpw+SwY5KcGyzTXh/pPfmx183o=;
-        b=HeHoUzRD/R7/Z8oSAOV9Pj8iDKKalXDD104sYPDT3g6EOsXGhQVToH0PYR/8ukrIRZ
-         mBFnDLeTqjKCSVziWBdzRDHMOgBP5aGHrCQX8rYlkyxgx6GdB3BD7mK11NJSupOTas9b
-         WO2lTQqjpEQLp0BRhFI/FMBWal2C0ogPoFQQW0EfUYp6WJKAKScqKGUYMBDcvcDRnzJA
-         Dlp2ssNESkUQQw4P85mRJLlAH+8SY174Px/2YftswjfdBhgYRrXylYTn2UZdP2h96okR
-         a7jLsXZvJJrDfrPC4C+Hf+2ObzVMAivt7mNvWyOuOW1YJOJ+REeV9pJrGLv//P8hZuZM
-         I/tw==
-X-Forwarded-Encrypted: i=1; AHgh+RpECH2fL8jcznqSfg7Sd+nPcAKMLi3rzjqcrmW5dUnA/xhnadWFw76gEK+KpHwwwFj6r0EmRKk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxon2zBFSr0rU4Z4p85fMe0WPn35+DatRNfL8ZBX/j5NpueiRHV
-	BrxceJuyAmGYPZbU10W0PR+MrYJIAj4je4U527D7hw+F5naoZGe9Lo3NEm+/J0CSegbkxWCcBU2
-	nLaAtr8Ji0MVM93dWRe081GDXd1mvxuvQXgKKxVFs6rTbFCcyVD43M2NFphc=
+        d=1e100.net; s=20251104; t=1786865591; x=1787470391;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=V4Dxzk9SYkYwJWvs5z6wDXm/t0KB0vBdS9GjuR4ntoo=;
+        b=FbdgFmNeao2CTvvrXlwfeBkYwYdzGRVSO4ZsmDCA3GgxenJwXi7yI6M0xTezi7G+3M
+         u2TO0MdOescMbSLA4Yat37wqbxFITUeiZHTJed/feUPDhJyFDUri9EAYef81libo1xaq
+         nIhLzkWshFFnjswJfoxQIkTPMpPET3cZJukySmIh3lVHDzys4Fjh3YyPBOhrVOhHq+8Y
+         YjV81A26iBofBdOGZrqGJuMDhmU7xKQ6muhJn0NEI983q9r1HGTGMOtupPDGHrtOs5wb
+         SQ+5tydlbezWYcF+dTOOkyplWXIPw3j6T/AgpAK2m4HqNbgVFEtZEHWRcMlRjfdA+6EY
+         VwLw==
+X-Forwarded-Encrypted: i=1; AHgh+RqTAEk8viVybwl1rg0+IjhPmdLu4U7daejC520EWUHf6PQQPr2QS7dm1H6nG693J/peB3MljjU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywnc0yKnM/iBoSQvTaRM/UhOUiIJss63w9CxoKRV/t65EW9K8CP
+	/+sNN7+TYLa4Gdlr89rIG/WKRZUkI2AVFMAqmzinLncRL0TxiWBNwrMeRbl0SJd9pEo=
+X-Gm-Gg: AR+sD116Wah5lCizMHFHOWjSRqTB5GAly2qZkhnqSeatu9CA/ItYU586k9+9v+iZj7O
+	siM+YIyEiU06mdfs3hlNx9us2F9GfwEE68/IMzc1Dg/zTevdG8tTzuUChsyZ1icHxcWyTPrQRiN
+	o5JpjuN8CsLif7WXwbhUIdgVFnKgJ0UwMkJqjP2y9/xcHVsdEGEfCcwNlniMTXLWcG4YRyG7pNc
+	bGQ/e+yrX5knwlH3srh/OBZanXXka0PKaFYxMNFwnsNvzT4HhjmSsXFIick3+DcHju8FqBPwU5h
+	zH64fw9pFjkUSjJfOxu03Plgs2PF9EuRjc57p3Hi8SBBBpSIvL/cUcXD4nej4gFsjSpP5SX1gMz
+	hb5oaM/ncWTd6ErGkKxSxasJgDmjzZISdsXHuT9vPA57a5oiwZbOHHMQig/g794TkctLxrKuvD8
+	lO1wf2rjpLKJbtklChUod/MDsYlt4uszz5mg9MNNGiktdXoHiy2mIwPc59J8lafu4om7ulmgIQC
+	O4Yj/sv2vUGzKz/9Z/KAcs7L854Bzw=
+X-Received: by 2002:a05:600c:528d:b0:499:900c:9c69 with SMTP id 5b1f17b1804b1-499900c9e99mr124668415e9.9.1786865591344;
+        Sun, 16 Aug 2026 00:33:11 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49996188217sm53667815e9.13.2026.08.16.00.33.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 16 Aug 2026 00:33:10 -0700 (PDT)
+Message-ID: <0d917407-feaf-41c6-af7f-080aced09bf3@blackwall.org>
+Date: Sun, 16 Aug 2026 10:33:09 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:f07:b0:495:da3c:1aa with SMTP id
- 5614622812f47-4b241e16cbfmr16800896b6e.16.1786865363281; Sun, 16 Aug 2026
- 00:29:23 -0700 (PDT)
-Date: Sun, 16 Aug 2026 00:29:23 -0700
-In-Reply-To: <6a74aa44.01d0871a.3a0d52.0029.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a8166d3.f7a79266.2f965f.000f.GAE@google.com>
-Subject: Re: [syzbot] [intel-wired-lan?] BUG: unable to handle kernel paging
- request in e1000_get_cfg_done_82571
-From: syzbot <syzbot+8ce4dba751e79facdc38@syzkaller.appspotmail.com>
-To: andrew+netdev@lunn.ch, andrew@lunn.ch, anthony.l.nguyen@intel.com, 
-	davem@davemloft.net, edumazet@google.com, intel-wired-lan-owner@osuosl.org, 
-	intel-wired-lan@lists.osuosl.org, kuba@kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
-	przemyslaw.kitszel@intel.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: bridge: Reject descending VLAN tunnel ranges
+Content-Language: en-US, bg
+To: Ruoyu Wang <ruoyuw560@gmail.com>, Ido Schimmel <idosch@nvidia.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>
+Cc: bridge@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260814134053.1387275-1-ruoyuw560@gmail.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20260814134053.1387275-1-ruoyuw560@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-syzbot has found a reproducer for the following issue on:
+On 14/08/2026 16:40, Ruoyu Wang wrote:
+> A pair of descending VLAN and tunnel IDs can pass the tunnel range span
+> check. The VLAN subtraction produces a negative int, which is converted
+> to unsigned when compared with the u32 tunnel ID subtraction. It can
+> therefore equal the wrapped tunnel ID delta.
+> 
+> The range loop then performs no iterations. Since the batched
+> notification handling added a post-loop error check, this leaves err
+> uninitialized and makes the request's return value unpredictable.
+> 
+> Reject descending VLAN ranges before comparing the spans. Valid
+> ascending and single-entry ranges remain unchanged, while malformed
+> descending ranges consistently return -EINVAL.
+> 
+> This issue was found by a static analysis checker and confirmed by
+> manual source review.
+> 
+> Fixes: 94339443686b ("net: bridge: notify on vlan tunnel changes done via the old api")
+> Signed-off-by: Ruoyu Wang <ruoyuw560@gmail.com>
+> ---
+>   net/bridge/br_netlink_tunnel.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/bridge/br_netlink_tunnel.c b/net/bridge/br_netlink_tunnel.c
+> index 71a12da30004c..05f560eeb789c 100644
+> --- a/net/bridge/br_netlink_tunnel.c
+> +++ b/net/bridge/br_netlink_tunnel.c
+> @@ -301,7 +301,8 @@ int br_process_vlan_tunnel_info(const struct net_bridge *br,
+>   
+>   		if (!(tinfo_last->flags & BRIDGE_VLAN_INFO_RANGE_BEGIN))
+>   			return -EINVAL;
+> -		if ((tinfo_curr->vid - tinfo_last->vid) !=
+> +		if (tinfo_curr->vid < tinfo_last->vid ||
+> +		    (tinfo_curr->vid - tinfo_last->vid) !=
+>   		    (tinfo_curr->tunid - tinfo_last->tunid))
+>   			return -EINVAL;
+>   		t = tinfo_last->tunid;
 
-HEAD commit:    3eb40771c00a Merge tag 'soc-fixes-7.2-3' of git://git.kern..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1553c6c6580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=1d67342c314f228d
-dashboard link: https://syzkaller.appspot.com/bug?extid=8ce4dba751e79facdc38
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15c39279580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17167279580000
-
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-3eb40771.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/08eda747d304/vmlinux-3eb40771.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/24378ecbcb01/bzImage-3eb40771.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+8ce4dba751e79facdc38@syzkaller.appspotmail.com
-
-e1000e 0000:00:03.0: The NVM Checksum Is Not Valid
-BUG: unable to handle page fault for address: ffffc9000374c0b0
-#PF: supervisor read access in kernel mode
-#PF: error_code(0x0000) - not-present page
-PGD 1c000067 P4D 1c000067 PUD 1d6a8067 PMD 2645e067 PTE 0
-Oops: Oops: 0000 [#1] SMP KASAN NOPTI
-CPU: 1 UID: 0 PID: 5948 Comm: syz.3.20 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:readl arch/x86/include/asm/io.h:59 [inline]
-RIP: 0010:__er32 drivers/net/ethernet/intel/e1000e/e1000.h:604 [inline]
-RIP: 0010:e1000_get_cfg_done_82571+0x68/0x150 drivers/net/ethernet/intel/e1000e/82571.c:850
-Code: 00 00 ba 02 00 00 00 e8 c6 6e c5 04 31 ff 89 ee e8 3d 77 10 fb 85 ed 74 4e e8 c4 7c 10 fb 41 80 7d 00 00 75 5e 49 8b 44 24 08 <8b> 98 10 10 00 00 81 e3 00 00 04 00 31 ff 89 de e8 13 77 10 fb 85
-RSP: 0018:ffffc90003737850 EFLAGS: 00010246
-RAX: ffffc9000374b0a0 RBX: ffff88802c8d15b8 RCX: ffffffff86ffdd0d
-RDX: ffff888024450000 RSI: ffffffff86f9f6bc RDI: ffff88802c8d15b8
-RBP: 0000000000000064 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: ffff88802c8d15b8
-R13: ffffed100591a2b8 R14: ffff88802c8d15c0 R15: 1ffff920006e6f25
-FS:  00007f474f1f86c0(0000) GS:ffff8880d5cde000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffc9000374c0b0 CR3: 000000002793c000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- e1000e_phy_hw_reset_generic+0x1f2/0x260 drivers/net/ethernet/intel/e1000e/phy.c:2167
- e1000_phy_hw_reset drivers/net/ethernet/intel/e1000e/e1000.h:542 [inline]
- e1000_probe+0x2446/0x36b0 drivers/net/ethernet/intel/e1000e/netdev.c:7725
- local_pci_probe+0xdd/0x1b0 drivers/pci/pci-driver.c:332
- pci_call_probe+0x176/0x800 drivers/pci/pci-driver.c:394
- __pci_device_probe drivers/pci/pci-driver.c:455 [inline]
- pci_device_probe+0x1cd/0x370 drivers/pci/pci-driver.c:489
- call_driver_probe drivers/base/dd.c:628 [inline]
- really_probe+0x241/0xa60 drivers/base/dd.c:706
- __driver_probe_device+0x20e/0x450 drivers/base/dd.c:868
- device_driver_attach+0xd1/0x220 drivers/base/dd.c:1203
- bind_store+0xf4/0x190 drivers/base/bus.c:267
- drv_attr_store+0x74/0xb0 drivers/base/bus.c:125
- sysfs_kf_write+0xf2/0x150 fs/sysfs/file.c:145
- kernfs_fop_write_iter+0x3e0/0x5f0 fs/kernfs/file.c:345
- new_sync_write fs/read_write.c:595 [inline]
- vfs_write+0x6ac/0x1050 fs/read_write.c:687
- ksys_write+0x12a/0x250 fs/read_write.c:739
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f474e39e0d9
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f474f1f8028 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00007f474e625fa0 RCX: 00007f474e39e0d9
-RDX: 000000000000000d RSI: 0000200000000240 RDI: 0000000000000005
-RBP: 00007f474e435024 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f474e626038 R14: 00007f474e625fa0 R15: 00007fff59364b48
- </TASK>
-Modules linked in:
-CR2: ffffc9000374c0b0
----[ end trace 0000000000000000 ]---
-RIP: 0010:readl arch/x86/include/asm/io.h:59 [inline]
-RIP: 0010:__er32 drivers/net/ethernet/intel/e1000e/e1000.h:604 [inline]
-RIP: 0010:e1000_get_cfg_done_82571+0x68/0x150 drivers/net/ethernet/intel/e1000e/82571.c:850
-Code: 00 00 ba 02 00 00 00 e8 c6 6e c5 04 31 ff 89 ee e8 3d 77 10 fb 85 ed 74 4e e8 c4 7c 10 fb 41 80 7d 00 00 75 5e 49 8b 44 24 08 <8b> 98 10 10 00 00 81 e3 00 00 04 00 31 ff 89 de e8 13 77 10 fb 85
-RSP: 0018:ffffc90003737850 EFLAGS: 00010246
-RAX: ffffc9000374b0a0 RBX: ffff88802c8d15b8 RCX: ffffffff86ffdd0d
-RDX: ffff888024450000 RSI: ffffffff86f9f6bc RDI: ffff88802c8d15b8
-RBP: 0000000000000064 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: ffff88802c8d15b8
-R13: ffffed100591a2b8 R14: ffff88802c8d15c0 R15: 1ffff920006e6f25
-FS:  00007f474f1f86c0(0000) GS:ffff8880d5cde000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffc9000374c0b0 CR3: 000000002793c000 CR4: 0000000000352ef0
-----------------
-Code disassembly (best guess):
-   0:	00 00                	add    %al,(%rax)
-   2:	ba 02 00 00 00       	mov    $0x2,%edx
-   7:	e8 c6 6e c5 04       	call   0x4c56ed2
-   c:	31 ff                	xor    %edi,%edi
-   e:	89 ee                	mov    %ebp,%esi
-  10:	e8 3d 77 10 fb       	call   0xfb107752
-  15:	85 ed                	test   %ebp,%ebp
-  17:	74 4e                	je     0x67
-  19:	e8 c4 7c 10 fb       	call   0xfb107ce2
-  1e:	41 80 7d 00 00       	cmpb   $0x0,0x0(%r13)
-  23:	75 5e                	jne    0x83
-  25:	49 8b 44 24 08       	mov    0x8(%r12),%rax
-* 2a:	8b 98 10 10 00 00    	mov    0x1010(%rax),%ebx <-- trapping instruction
-  30:	81 e3 00 00 04 00    	and    $0x40000,%ebx
-  36:	31 ff                	xor    %edi,%edi
-  38:	89 de                	mov    %ebx,%esi
-  3a:	e8 13 77 10 fb       	call   0xfb107752
-  3f:	85                   	.byte 0x85
-
-
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
