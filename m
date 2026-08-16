@@ -1,56 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D15A279DC3;
-	Sun, 16 Aug 2026 01:01:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59073230BDB
+	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 01:21:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786842088; cv=none; b=J9tHRpL9TyYgI1HszKYIgY/pmKyNL2xVBBF0EZ+Se28x7KLSJpkLDyKaLTDw6anqWSANwm6u19Zh3Ovc5w6nugzo0EIovQ+gjHpHVyt029vLBIVD5HksCGcN8cm5SzHd3nnqXvJOSHTxbueyuG3qO03Yf6YhWVSWzQcZ7dRxmdo=
+	t=1786843282; cv=none; b=Q3N0bc9IR5A1BdqwneOsJHvHvIfayp2p4Jd34qMVnj7kUUe/nrl9glllFudtiQRhK8KLn2aXw7r2r4izkNOpgUisKXx9n8HAoI7ug5ByqIN6jWHRaX+qZlPFIUnGfQqMpB8TpQb9BPKcFmL2BwkJNJjyWU5R+zsPcmh6QhCSS3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786842088; c=relaxed/simple;
-	bh=zXDAcRDLBJrRg4o3QL9h9fE4Lo8nThxModYg1NaH38M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZoMcrqDmIXtFy38v56pNcmSPfUmPLXtYYuw1XemDO7pczemcHtydlnZz2JDVmkJdYPKEigfaFnAaNt0itUNsdXdS6OnDdOHHc9RSQNfeJ5U9VpyoN+8ANV6wDxayazay1/Di6F3OUk6ReDqvH6dQLWhMgEJa3AveQVECaw2TtSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=czfC8R9y; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786843282; c=relaxed/simple;
+	bh=Gen9hwbb5IzqFoip7jeIVRTXtpYL4kYgrsAnLhvo1OA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D3v4qY8bSKyQDTnDQbtj0WonM11ZrpVF74WWSpqVJrT76fGGi0ZkLqwyQFm9Z19RTKFyx3lo8SkHTBg7mk2nUX2DXNdPRbR/PI40Kp9lSevG6iqpP1lNLPZONRCJnkdjS1u3qcLkD2ROqUo+EVc7L+RXlOCgDXAVcGN+C6xfwhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=czBQ/w41; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="czfC8R9y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB3381F000E9;
-	Sun, 16 Aug 2026 01:01:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786842087;
-	bh=M6/oWTjVc32MSJeTmKKP99yPQCYD/FPPYy/T9OozK4A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=czfC8R9yOs75jdwhylZECirPrZ5LlFYiOGNl7SyrCzDk/hQEp49PzzjdZsoRTGwyK
-	 sxYe6s5mAAvklYBDo5JbOr2JWgxcQBd4Dp+v9Ysdq9Mf/ukqIvSROiEaH2eBoIHLQ8
-	 uTbXbz/AO9VNVvCYqxlyy9i4zsrMP83e4ddibTA6P3dp8u5kGNH4n75ZCD2vMn1+7x
-	 dlrvIVmOXecnsyxGFX3OhRpNGy4i/oRa27+fanm0ZItA9lg+9zvn2EMcBUlSEF7QCd
-	 ja5wozZpXe67dMf7onmYXMRCTur+1KrmXKiSV809R/jUAEBR2On4VqOZ/fMGohj1We
-	 EVcPy66PeLaPA==
-From: Geliang Tang <geliang@kernel.org>
-To: Keith Busch <kbusch@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="czBQ/w41"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-472326ca506so1537626f8f.2
+        for <netdev@vger.kernel.org>; Sat, 15 Aug 2026 18:21:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786843279; x=1787448079; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZxQftwL2PECJ4SpESVyGEcp2FdWssPfyBN4bxwXPtrQ=;
+        b=czBQ/w41rPrfdhEgTGwVExUj4ebWs06JJCopyhkGf7UeixJLyFbKxkyHn0UT14HgTY
+         RipN5lVnVObDGwOaA9ehgHKEi5/SKd3N66BOmBBoqYvyNJFF4yfuz6XEFiV2Lwww8faZ
+         6Ir4ewRoAJCTCwvWt/rQJ3APdUgmUmQMSkSZsfUnIobRnFPnYAZBr44D+mdf4iHt8FZr
+         NTssM39Qh5Ist4QyWz1v/MUHYechX9B2N4DZETuZJlm9qblBDxOxzv9WCxCH+KNTlt6n
+         dDzacIDqrN4A9VhYhv3S7cAkuqQmxYxWrZfrMfe2dJVOgX4dRWUnmjihupnXPKQVHwhn
+         4H7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786843279; x=1787448079;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ZxQftwL2PECJ4SpESVyGEcp2FdWssPfyBN4bxwXPtrQ=;
+        b=moXq9tgpaa4VYoWULze0AiDDTLrOVF2kt9mq3gZVKNU7gMkbQYsEwJxzW8tnodD8fc
+         R+Zu48xLUbGwharTyU3K0LmXUlbDCtc/qrt1brzBgTp+8wJOMOYceui8t2S+Qnrx4mNM
+         tLpgDRGMsYUxjPBwHpdenaE++R47XVaDtSFXxsJuOC/6iNmldU9PtnAG9pVHim1ihZRM
+         svv7817fngzoyDSFJEbfznbPXnQcXSkZZID5NF1Yk+3aWzTjmpYvvJIRr+Wrmcu7t0BG
+         7MwlmIA0Zj3cRP3XgXHkVE4uGCr+FK0XCeO1JZQwnN48G2HXoI/hlXZO4IeYWnOHTFkB
+         Fuuw==
+X-Forwarded-Encrypted: i=1; AHgh+RpOE7W22LS9yhJ+IX8auZODOoeMClWqXaWXm5zmWJY7jcI+32R8YHsOThcj/fzCOR8ueftcnss=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvD3QHmvkMqvgRxwZUPF4ivXILg8WqeHbIHzpdNHUDAdFWU5Ni
+	7HQwNvvUZ5HETxQk3hKR62tsH8mlTfw8YdxwvTRGdBRVAcaQxp2f88b1
+X-Gm-Gg: AR+sD10fLEePQUc0C+ohy93prHpD3zm49BuzHPub03mChWJe/ey3ayupbqrvf6QTdhS
+	r8ga1N56lRFSRT3pK7tGp0yuEp/gRc9Xn7zAyANm0aCG9w3Ewp9hUITzstbbfXfOUFFDizepcbA
+	PLN0cvBgmwfq2BHMXpPlky2qp+LyWFKu9NhfkhqjVFbsGewYZqYExpXWR+fsNd9Aw52izsyk99L
+	BsNS4vfSWdDdcSA9cx8TQqTqDGuLmbJIPTpyQl+4IOd2ZN6pMpSqaLmNMlnZNFf4VDjXJGgZpZe
+	Cx2CJ5QimoiaFKIdwzWyTSXaD2wJpQWh4A6qH7Unzh0X+0+Ij9eBji9L2xAJKkoQRqHGCggmr6n
+	+dKSdYbJU3RR9GkWYXX/+FVzuWdKWHm0wwbklcCsBu4DJd117rMcJ6zNsZ7QbrxYxHfLfr9i37D
+	1tlAiCl02d+fwREYGy0o7VgXpH7I4EyV7A6AANs6yU2mEXRyelBpfplsWfMPJ+mDKKSq/tyh3E
+X-Received: by 2002:a05:600c:4e14:b0:499:7e2b:8e5 with SMTP id 5b1f17b1804b1-4998793ffe7mr247502565e9.5.1786843279382;
+        Sat, 15 Aug 2026 18:21:19 -0700 (PDT)
+Received: from unicorn.lan.internal ([2a0d:3341:b894:4600:78e4:e92e:b052:d281])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499961767f5sm923525e9.9.2026.08.15.18.21.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 15 Aug 2026 18:21:18 -0700 (PDT)
+From: ooonea <ooonea@gmail.com>
+To: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Stanislav Fomichev <sdf@fomichev.me>
-Cc: Geliang Tang <tanggeliang@kylinos.cn>,
-	linux-nvme@lists.infradead.org,
+	cake@lists.bufferbloat.net,
 	netdev@vger.kernel.org,
-	mptcp@lists.linux.dev
-Subject: [PATCH v3 4/4] nvme-tcp: support IPv6 traffic class
-Date: Sun, 16 Aug 2026 09:00:00 +0800
-Message-ID: <52c4840e36ee6016d18806c2d205f4f9fdc1e830.1786841319.git.tanggeliang@kylinos.cn>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1786841319.git.tanggeliang@kylinos.cn>
-References: <cover.1786841319.git.tanggeliang@kylinos.cn>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] net/sched: sch_cake: fix autorate reconfiguration throttling
+Date: Sun, 16 Aug 2026 03:21:09 +0200
+Message-ID: <20260816012109.2865223-1-ooonea@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,52 +80,36 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+CAKE's autorate-ingress path intends to limit shaper reconfiguration to
+once per 250 ms, but last_reconfig_time is only checked and never updated.
+Since the field stays zero, every qualifying capacity-estimate window can
+call cake_reconfigure(), causing avoidable rate churn and scheduler work
+under bursty traffic.
 
-Currently, nvme-tcp host only supports setting the IPv4 TOS value when a
-TOS is specified, but does not handle the IPv6 traffic class.
+Store the current timestamp when autorate actually reconfigures the qdisc
+so the guard enforces the intended interval.
 
-Extend the queue socket setup to handle AF_INET6 sockets by applying the
-TOS value to both IPv4 and IPv6 sockets. For IPv6, the TOS value is set
-as the IPv6 traffic class via IPV6_TCLASS using do_sock_setsockopt().
-
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Fixes: 7298de9cd725 ("sch_cake: Add ingress mode")
+Assisted-by: Codex:gpt-5.5
+Signed-off-by: ooonea <ooonea@gmail.com>
 ---
- drivers/nvme/host/tcp.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ net/sched/sch_cake.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index 89a82e8248d2..657acae9e4a4 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -1815,6 +1815,15 @@ static void nvme_tcp_sock_set_tos(struct sock *sk, int tos)
- 			   KERNEL_SOCKPTR(&tos), sizeof(tos));
- }
- 
-+static void nvme_tcp_sock_set_tclass(struct sock *sk, int tclass)
-+{
-+#if IS_ENABLED(CONFIG_IPV6)
-+	if (sk->sk_family == AF_INET6)
-+		do_sock_setsockopt(sk->sk_socket, false, SOL_IPV6, IPV6_TCLASS,
-+				   KERNEL_SOCKPTR(&tclass), sizeof(tclass));
-+#endif
-+}
-+
- static int nvme_tcp_alloc_queue(struct nvme_ctrl *nctrl, int qid,
- 				key_serial_t pskid)
- {
-@@ -1876,8 +1885,10 @@ static int nvme_tcp_alloc_queue(struct nvme_ctrl *nctrl, int qid,
- 		nvme_tcp_sock_set_priority(queue->sock->sk, so_priority);
- 
- 	/* Set socket type of service */
--	if (nctrl->opts->tos >= 0)
-+	if (nctrl->opts->tos >= 0) {
- 		nvme_tcp_sock_set_tos(queue->sock->sk, nctrl->opts->tos);
-+		nvme_tcp_sock_set_tclass(queue->sock->sk, nctrl->opts->tos);
-+	}
- 
- 	/* Set 10 seconds timeout for icresp recvmsg */
- 	queue->sock->sk->sk_rcvtimeo = 10 * HZ;
+diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+index f25f60978..dc9326702 100644
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -1907,6 +1907,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 					ktime_add_ms(q->last_reconfig_time,
+ 						     250))) {
+ 				q->config->rate_bps = (q->avg_peak_bandwidth * 15) >> 4;
++				q->last_reconfig_time = now;
+ 				cake_reconfigure(sch);
+ 			}
+ 		}
+
+base-commit: 24ef02f934eeb48830cff6b739abc3c62b1d107b
 -- 
-2.53.0
+2.54.0
 
