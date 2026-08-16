@@ -1,138 +1,378 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mta0.migadu.com (out-74.mta0.migadu.com [91.218.175.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D673BE16E
-	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 21:28:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AEB03DCDBF
+	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 22:19:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786915729; cv=none; b=JylbWlHVlRt3GRW0lvS6eDRSctqPOZ62s86T63CoEs7FjF2EzdOri9MMhn4vsPYztS1tf+sKr62Y07DRrZ52OO7/wilMB7Q8KBwwx0np9VTR9ZzJ04v6hA6s1oMyaylUwP0k2kCgZjY3E2f9G5qDmton7ep6W/J9kbn2C4alLlE=
+	t=1786918797; cv=none; b=saO2kb5f3xP7VTgRCUnOIX7/ZSVr7mikxvX1hArY5umoWkOjSyDR8U2WmjcrHMRhOE0tKZkYGddYH8nSLQ3yf4AYilaZ10tfiEou1ftqa+MOaCFV3wEy/H8jlgAHT1uujd/qCRApXOb2YLeVItX/AiW8YXh7T4TJa6np7eVd/4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786915729; c=relaxed/simple;
-	bh=vmIxoTgp5rXYjZdZndNXm3cLoC2gVg/UZ/rKhIyR3LU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=BczQLr1nqDdBykgxNEDwRdB6C2iHNdQ88hXDRCFWcmpOUBW5cOWj9/MBJ1UcUIPo3iIR4Zjm7yR5RPcyRUL1EqI56x1mHdE2g9UHgNG6RYEEcb2zstQpgO9Vq/Mg21EFprYwWBowJaiYK2OPrisINrlS8DmlzFiWQF9K4xiC3Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DVlru5pW; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786918797; c=relaxed/simple;
+	bh=cQzpTJIcL0FxmqDTSIPae51v+jtcUsta0N2xhAsJmDU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YT1dyaQ7rS+Oyf6bL/SklvgqYDSH0OpB8n26/MJjtohirz/H0hSInO6NuGv3UQW531puN9RAJdAxbTqsG0QqiRDeiJFadn8j5bfN6FnaO3kxAxnihIiIBHfSkh8D018eRJCD2lRKCK/lr8BXMunCZy0kgX/jBs87qAylbOpJgmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cs2fls47; arc=none smtp.client-ip=91.218.175.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DVlru5pW"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38101f85591so3408518a91.1
-        for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 14:28:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786915728; x=1787520528; darn=vger.kernel.org;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fF53IEOcm9r8UrH8QRiLlfPiEelq6tdSUeYZh5gr9es=;
-        b=DVlru5pWvatU3fVVu4TnesqmNtLJI8CyX/r7tMhWO1nUjeQR02Q0T6irT+cVmRDdzG
-         M1XlCAbohjqmfOAb25+wRAr/lnWKN6dq9NV837pm5DysdFjNhw7iFqkQXim0a1f1Nncd
-         wmadfQfBNg+gB7Os8iAidsXBFfSdU0gwz1sIUaoRZkQPy2+t+qd4GoWnPylUk4+R4Ypj
-         bqh+H/8PIAZcpmJNQuL5ke9AfQ1os4WsO2OTm3QIRfw75y0Xqnw48dTiEx0DDfJZDAH0
-         1pDXMTWHZlkboyG/KZkRqrAvJ2QGJj1aFLsHgOY/D5pgDapFNEx/mvIaKpIXBDr/FaoS
-         6YfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786915728; x=1787520528;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fF53IEOcm9r8UrH8QRiLlfPiEelq6tdSUeYZh5gr9es=;
-        b=Zye+03MEhWJXOJ8M85ppaPbF4aSQ8NT7+HYbKW8A+qPHIZc8nPtrXFKrPe5JzneyrZ
-         AIZT2I++FvnPUWrPM7CjAB2ZHVO8PhGjZM8yklRkC1J+FctBlOEdOgWl0xSkdRCJsCiK
-         qVAEYpImlQuwGFbXeqjbuluqWu9vomD3UwAr17yn9dl6sJhipCiuqPvz9Jus/dm5O+at
-         DvLY7YoGilx/2lgLD1XhVRE/tFtXvQZ99LYzkC04W4iAM2mfu50/MfB2itd32h+nOKx0
-         1rxhhf+Y7rKczTyaK7GPHli7+NbaPOqIHCCsSVdBqLtFuGU1kqhSmWvJr7xU0u3IZe6O
-         T4dQ==
-X-Gm-Message-State: AOJu0Yy98XxYpbbrjoXgiZNdlABIjQ8KZ6sWwSmys79UmA8ezUvMOXIo
-	VBjmbVNy7PkgkOjbPSL8dTtJuF0/t5Ffa6X8GdVLDYRErfTe0hsXV4oB
-X-Gm-Gg: AR+sD12Y8KNUroX0rQfO4YVsXGSuuZP8aclJXrY6v6BWrx4fHPQbkEhnFwhwWEC8NMp
-	iNRlPO85EbcjHOXiKSC0IMiYzn0AbDUnIG5uv3WDsbBpSpE6qZmddJRHKE1/YDC6G54VoHdvdvt
-	juQzKh6DyVCQRJTkS5HmIPuZr/vU9ab7Bo19ELThGAlv7FwlIG6wjlpCLzXNZlbe6wHDXygzBUW
-	mRCcly587kga+WrVQcpkoNMo4xRxd9KA1VfL1VdW43Ypkyy6bhXvKzaUbLZEMs2YnDxqWC5MajG
-	pNwsvWtbXNlbKWxSQicq5xwZQYmQoDx5POgPSoimqryVC7s16KvYcIYRqK3zUV+pquGSdVUhp4A
-	TqQ1/zhnNiu3yY12wTW2wfdDKexUTRlCkM+SbXTzwuO8f6U1L8Vb2XeImZ3QEAcoYCnJlbQBuZ5
-	lmiqTXIfsSIcr1uARLLsc+NzWwKMTI6d1FmqUQRz/NLqyE4AmVth53PXOLYExouF81DDHZdriRd
-	1t+Kzx2
-X-Received: by 2002:a17:90b:33c1:b0:390:b3c5:e2c9 with SMTP id 98e67ed59e1d1-3933b0d5d31mr13369403a91.17.1786915727596;
-        Sun, 16 Aug 2026 14:28:47 -0700 (PDT)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39531e13744sm2389297a91.2.2026.08.16.14.28.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Aug 2026 14:28:47 -0700 (PDT)
-Date: Mon, 17 Aug 2026 06:28:42 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: edumazet@google.com, ncardwell@google.com, kuniyu@google.com,
-	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, dsahern@kernel.org, 0x7f454c46@gmail.com,
-	fruggeri@arista.com, noureddine@arista.com
-Cc: netdev@vger.kernel.org, imv4bel@gmail.com
-Subject: [PATCH net] net/tcp-ao: fix use-after-free of current_key on
- reconnect to another peer
-Message-ID: <aoIriv3pHDgII2YR@v4bel>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cs2fls47"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=cQzpTJIcL0FxmqDTSIPae51v+jtcUsta0N2xhAsJmDU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786918792; v=1; x=1787523592;
+ b=cs2fls47hq/GUfhR4LUGqD6zZMYew7rs+qMnZgHOWSQrPqstQsTa8rCbYysnOqnisSzFVNqm
+ zhC1tZPNtr8uLYukyEmnmYVGZ7W7whB2WRSfKbHeVEuhp2DqxHLHOrsqlydcQnUlwxDnGICPVPF
+ 4TvQo9Y2vmVJ3wX9FxV6djwY=
+X-Envelope-To: netdev@vger.kernel.org
+Received: from [192.168.1.24] (51.37.165.162)
+	by smtp.migadu.com with ESMTPS id 189be061e3611b45;
+	Sun, 16 Aug 2026 22:19:52 +0000
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <882712e7-b13e-47a6-91f0-998dc59e8eb8@linux.dev>
+Date: Sun, 16 Aug 2026 23:19:51 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v11 2/2] ptp: ocp: add TAP CPLD firmware upload
+ for ADVA TimeCard X1
+To: Sagi Maimon <maimon.sagi@gmail.com>, netdev@vger.kernel.org
+Cc: richardcochran@gmail.com, kuba@kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org
+References: <20260811135720.109580-1-maimon.sagi@gmail.com>
+ <20260811135720.109580-3-maimon.sagi@gmail.com>
+Content-Language: en-US
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20260811135720.109580-3-maimon.sagi@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-tcp_inbound_ao_hash() is called before bh_lock_sock_nested() is taken,
-with only rcu_read_lock() held. On the fast path for established
-sockets, if the rnext_keyid sent by the peer differs from
-current_key->sndid, the key the peer asked for is looked up and stored
-in current_key. The lookup is inside the RCU read side, but current_key
-outlives it.
+On 11/08/2026 14:57, Sagi Maimon wrote:
+> The Lattice MachXO3 CPLD on the ADVA TimeCard X1 is programmed over I2C
+> using in-system programming (ISP).  Build on the TMC bus arbitration
+> added previously and expose the update path through the kernel
+> firmware-upload subsystem.
+> 
+> The framework acquires the bus, erases the configuration flash, programs
+> the image page-by-page and activates it with the MachXO3 REFRESH
+> command.  The upload node is registered per card as adva-cpld.N, using
+> the same index as the owning ocpN device, so a host with more than one
+> X1 board gets one node each:
+> 
+>    /sys/class/firmware/adva-cpld.N/
+> 
+> The whole prepare/write/poll_complete/cleanup sequence runs under
+> cpld_lock and the i2c adapter lock, so an EEPROM read blocks for as long
+> as programming takes; the alternative is reading the TMC bus instead.
+> The upload is unregistered first on detach, which cancels and flushes an
+> in-flight programming cycle while the I2C controller is still up.
+> 
+> Select FW_LOADER and FW_UPLOAD, as the documented update path does not
+> exist without them.
+> 
+> Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
+> ---
+>   Documentation/ABI/testing/sysfs-timecard |   5 +
+>   drivers/ptp/Kconfig                      |   2 +
+>   drivers/ptp/ptp_ocp.c                    | 313 ++++++++++++++++++++++-
+>   3 files changed, 319 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-timecard b/Documentation/ABI/testing/sysfs-timecard
+> index 26a93cee0b89..41eeadd46330 100644
+> --- a/Documentation/ABI/testing/sysfs-timecard
+> +++ b/Documentation/ABI/testing/sysfs-timecard
+> @@ -30,6 +30,11 @@ Description:	(RO, root only) The status register of the TAP CPLD, in
+>   		ID of the CPLD is reported as the fixed "cpld.id" version by
+>   		devlink dev info.
+>   
+> +		To program new CPLD firmware use the standard kernel
+> +		firmware-upload interface, registered per card at:
+> +		/sys/class/firmware/adva-cpld.N/
+> +		where N is the index of this ocpN device.
+> +
+>   What:		/sys/class/timecard/ocpN/available_clock_sources
+>   Date:		September 2021
+>   Contact:	Jonathan Lemon <jonathan.lemon@gmail.com>
+> diff --git a/drivers/ptp/Kconfig b/drivers/ptp/Kconfig
+> index b93640ca08b7..0c2c7dd32e7f 100644
+> --- a/drivers/ptp/Kconfig
+> +++ b/drivers/ptp/Kconfig
+> @@ -218,6 +218,8 @@ config PTP_1588_CLOCK_OCP
+>   	select NET_DEVLINK
+>   	select CRC16
+>   	select DPLL
+> +	select FW_LOADER
+> +	select FW_UPLOAD
+>   	help
+>   	  This driver adds support for an OpenCompute time card.
+>   
+> diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
+> index 41a7fde1ae6a..4a0bd9b89452 100644
+> --- a/drivers/ptp/ptp_ocp.c
+> +++ b/drivers/ptp/ptp_ocp.c
+> @@ -20,12 +20,14 @@
+>   #include <linux/spi/altera.h>
+>   #include <net/devlink.h>
+>   #include <linux/i2c.h>
+> +#include <linux/iopoll.h>
+>   #include <linux/mtd/mtd.h>
+>   #include <linux/nvmem-consumer.h>
+>   #include <linux/crc16.h>
+>   #include <linux/dpll.h>
+>   #include <linux/unaligned.h>
+>   #include <linux/delay.h>
+> +#include <linux/firmware.h>
+>   
+>   #define PCI_DEVICE_ID_META_TIMECARD		0x0400
+>   
+> @@ -426,6 +428,9 @@ struct ptp_ocp {
+>   	struct i2c_adapter	*cpld_adap;           /* claimed adapter; valid under cpld_lock */
+>   	u32			cpld_id;              /* cached Lattice device ID; 0 if unread */
+>   	bool			has_cpld;             /* x1 TAP CPLD present */
+> +	struct fw_upload	*cpld_fw_upload;      /* firmware upload handle; NULL if absent */
+> +	bool			cpld_cancel;          /* cancellation requested */
+> +	bool			cpld_in_config_mode;  /* EN_CFG_TP issued but not yet REFRESH'd */
+>   };
+>   
+>   #define OCP_REQ_TIMESTAMP	BIT(0)
+> @@ -459,6 +464,8 @@ static int ptp_ocp_art_board_init(struct ptp_ocp *bp, struct ocp_resource *r);
+>   
+>   static int ptp_ocp_adva_board_init(struct ptp_ocp *bp, struct ocp_resource *r);
+>   
+> +static const struct fw_upload_ops adva_cpld_upload_ops;
+> +
+>   static const struct ocp_sma_op ocp_adva_sma_op;
+>   static const struct ocp_sma_op ocp_adva_x1_sma_op;
+>   static int adva_x1_cpld_device_id(struct ptp_ocp *bp, u32 *id);
+> @@ -3225,6 +3232,29 @@ ptp_ocp_adva_board_init(struct ptp_ocp *bp, struct ocp_resource *r)
+>   	ptp_ocp_sma_init(bp);
+>   
+>   	bp->has_cpld = info->has_cpld;
+> +	if (bp->has_cpld) {
+> +		struct fw_upload *fwl;
+> +		const char *name;
+> +
+> +		/* One instance per card, numbered like the ocpN device.
+> +		 * firmware_upload_register() keeps the pointer rather than
+> +		 * copying the string, so it has to outlive the registration.
+> +		 */
+> +		name = devm_kasprintf(&bp->pdev->dev, GFP_KERNEL,
+> +				      "adva-cpld.%d", bp->id);
+> +		if (!name)
+> +			return -ENOMEM;
+> +
+> +		fwl = firmware_upload_register(THIS_MODULE, &bp->pdev->dev,
+> +					       name, &adva_cpld_upload_ops, bp);
+> +		if (IS_ERR(fwl))
+> +			dev_warn(&bp->pdev->dev,
+> +				 "CPLD firmware upload unavailable: %pe\n",
+> +				 fwl);
+> +		else
+> +			bp->cpld_fw_upload = fwl;
+> +	}
+> +
+>   	return ptp_ocp_init_clock(bp, &info->servo);
+>   }
+>   
+> @@ -4283,6 +4313,15 @@ static const struct ocp_attr_group art_timecard_groups[] = {
+>   /* Lattice LCMXO3LF ISC command codes */
+>   #define CPLD_CMD_READ_ID      0xE0000000UL
+>   #define CPLD_CMD_READ_STATUS  0x3C000000UL
+> +#define CPLD_CMD_EN_CFG_TP    0x74   /* enable config, transparent mode */
+> +#define CPLD_CMD_DIS_CFG      0x26
+> +#define CPLD_CMD_ERASE        0x0E
+> +#define CPLD_CMD_RESET_ADDR   0x46
+> +#define CPLD_CMD_WRITE_PAGE   0x70
+> +#define CPLD_CMD_SET_DONE     0x5E
+> +#define CPLD_CMD_REFRESH      0x79
+> +#define CPLD_PAGE_SIZE        16
+> +#define CPLD_POLL_US          10000  /* status poll interval while busy */
+>   
+>   /* Status register bit positions (Lattice LCMXO3LF datasheet) */
+>   #define CPLD_STATUS_DONE   BIT(8)
+> @@ -4408,7 +4447,8 @@ static void adva_x1_bus_release(struct ptp_ocp *bp)
+>    * Claim the TMC bus for a CPLD operation.  Holding the adapter lock over
+>    * the handshake keeps ptp_ocp_read_eeprom(), the nvmem attributes and the
+>    * at24 sysfs files off the controller while it is routed away from the
+> - * EEPROMs.
+> + * EEPROMs.  A firmware upload holds it across the whole prepare/write/poll
+> + * sequence, so an EEPROM read blocks for as long as programming takes.
+>    */
+>   static int adva_x1_bus_claim(struct ptp_ocp *bp)
+>   {
+> @@ -4442,6 +4482,20 @@ static int adva_x1_mux_select(struct ptp_ocp *bp, int ch)
+>   	return adva_x1_i2c_xfer(bp, ADVA_MUX_ADDR, &val, 1, NULL, 0);
+>   }
+>   
+> +/* Send 1-byte ISC command + optional arguments. */
+> +static int adva_x1_cpld_write(struct ptp_ocp *bp,
+> +			      u8 cmd, const u8 *args, u8 nargs)
+> +{
+> +	u8 buf[1 + 64];
+> +
+> +	if (nargs > 64)
+> +		return -EINVAL;
+> +	buf[0] = cmd;
+> +	if (nargs)
+> +		memcpy(&buf[1], args, nargs);
+> +	return adva_x1_i2c_xfer(bp, ADVA_CPLD_ADDR, buf, 1 + nargs, NULL, 0);
+> +}
 
-When the socket is disconnected and connect() is called again for
-another peer, tcp_ao_connect_init() unlinks every key that does not
-match the new peer and frees it with call_rcu(). If current_key points
-at such a key, it is cleared to NULL.
+this function looks like not needed. basically, all callers of this 
+function use either static, or stack-allocated buffurs, which are copied
+to another 65-byte stack allocated buffer, which is later copied to a
+heap-allocated buffer in adva_x1_i2c_xfer(). I think it's too much of
+copying for a command interface. It can be simplified to actually copy
+a command byte to a very last buffer only. The check can also be moved
+to adva_x1_i2c_xfer(). Even static per-command data can be returned as
+a pointer via helper with switch-case block. I believe it will make code
+much simplier and more readable.
 
-The fast path reads sk_state only once on entry, so a softirq that got
-into it while the socket was still established can update current_key
-after that loop has already run. The update is inside the RCU read side,
-so it comes before the call_rcu() callback, and once the callback frees
-the key, current_key is left pointing at freed memory.
+> +
+>   /*
+>    * Send a 4-byte command then read data back without an intermediate STOP
+>    * (Lattice combined write->repeated-START->read).  Two messages in one
+> @@ -4467,6 +4521,38 @@ static int adva_x1_cpld_read_status(struct ptp_ocp *bp, u32 *status)
+>   	return 0;
+>   }
+>   
 
-The next transmission picks that pointer up in tcp_get_current_key().
-tcp_ao_transmit_skb() then reads the traffic key from the freed object,
-which is the use-after-free.
+[...]
 
-Wait for one grace period before unlinking, and only if a key is going
-to be removed. By the time tcp_connect() runs the socket is already in
-TCP_SYN_SENT, and TCP_AO_ESTABLISHED does not contain TCPF_SYN_SENT, so
-a softirq entering after the wait cannot reach the fast path, and the
-ones already in it have finished. The existing NULL handling in the loop
-is then enough.
+> +static enum fw_upload_err
+> +adva_cpld_prepare(struct fw_upload *fwl, const u8 *data, u32 size)
+> +{
+> +	static const u8 era_args[3] = { 0x04, 0x00, 0x00 }; /* cfg sector only */
+> +	static const u8 en_args[2]  = { 0x08, 0x00 };
+> +	static const u8 dis_args[2] = { 0x00, 0x00 };
 
-Fixes: 0a3a809089eb ("net/tcp: Verify inbound TCP-AO signed segments")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
----
- net/ipv4/tcp_ao.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+here dis_args are copying another static const buffer from
+adva_cpld_cleanup()
 
-diff --git a/net/ipv4/tcp_ao.c b/net/ipv4/tcp_ao.c
-index e4ec60a3349635..5094267447aee5 100644
---- a/net/ipv4/tcp_ao.c
-+++ b/net/ipv4/tcp_ao.c
-@@ -1160,6 +1160,15 @@ void tcp_ao_connect_init(struct sock *sk)
- 	l3index = l3mdev_master_ifindex_by_index(sock_net(sk),
- 						 sk->sk_bound_dev_if);
- 
-+	hlist_for_each_entry(key, &ao_info->head, node) {
-+		if (tcp_ao_key_cmp(key, l3index, addr, key->prefixlen,
-+				   family, -1, -1)) {
-+			/* pairs with tcp_inbound_ao_hash() */
-+			synchronize_rcu();
-+			break;
-+		}
-+	}
-+
- 	hlist_for_each_entry_safe(key, next, &ao_info->head, node) {
- 		if (!tcp_ao_key_cmp(key, l3index, addr, key->prefixlen, family, -1, -1))
- 			continue;
--- 
-2.43.0
+> +	static const u8 zero3[3]    = { 0 };
 
+this one is redundant, because heap-allocated buffer is zero'ed on alloc
+
+this code needs a bit more thinking.
+
+> +	enum fw_upload_err ret = FW_UPLOAD_ERR_NONE;
+> +	struct ptp_ocp *bp = fwl->dd_handle;
+> +
+> +	/* Do not clear cpld_cancel here: fw_upload_start() queues the work
+> +	 * before this runs, so a cancel may already have arrived.  It is
+> +	 * cleared once the upload is over, on every exit below and in
+> +	 * cleanup().
+> +	 */
+> +	if (!size || size % CPLD_PAGE_SIZE) {
+> +		WRITE_ONCE(bp->cpld_cancel, false);
+> +		return FW_UPLOAD_ERR_INVALID_SIZE;
+> +	}
+> +
+> +	bp->cpld_in_config_mode = false;
+> +
+> +	mutex_lock(&bp->cpld_lock);
+> +
+> +	if (adva_x1_bus_claim(bp)) {
+> +		ret = FW_UPLOAD_ERR_TIMEOUT;
+> +		goto err_unlock;
+> +	}
+> +
+> +	if (adva_x1_mux_select(bp, ADVA_MUX_CHANNEL)) {
+> +		ret = FW_UPLOAD_ERR_HW_ERROR;
+> +		goto err_release;
+> +	}
+> +
+> +	/* Set before issuing EN_CFG_TP, not after it completes: the CPLD may
+> +	 * have entered configuration mode even if the write reports an error
+> +	 * or the wait below times out, and err_deselect only sends DIS_CFG
+> +	 * when this is set.  A DIS_CFG to a device that never entered the
+> +	 * mode is harmless; leaving it enabled is not.
+> +	 */
+> +	bp->cpld_in_config_mode = true;
+> +
+> +	if (adva_x1_cpld_write(bp, CPLD_CMD_EN_CFG_TP, en_args, 2) ||
+> +	    adva_x1_cpld_wait_ready(bp, 5000)) {
+> +		ret = adva_cpld_err(bp);
+> +		goto err_deselect;
+> +	}
+> +
+> +	if (READ_ONCE(bp->cpld_cancel)) {
+> +		ret = FW_UPLOAD_ERR_CANCELED;
+> +		goto err_deselect;
+> +	}
+> +
+> +	if (adva_x1_cpld_write(bp, CPLD_CMD_ERASE, era_args, 3) ||
+> +	    adva_x1_cpld_wait_ready(bp, 15000)) {
+> +		ret = adva_cpld_err(bp);
+> +		goto err_deselect;
+> +	}
+> +
+> +	if (READ_ONCE(bp->cpld_cancel)) {
+> +		ret = FW_UPLOAD_ERR_CANCELED;
+> +		goto err_deselect;
+> +	}
+> +
+> +	if (adva_x1_cpld_write(bp, CPLD_CMD_RESET_ADDR, zero3, 3)) {
+> +		ret = FW_UPLOAD_ERR_HW_ERROR;
+> +		goto err_deselect;
+> +	}
+> +
+> +	/* cleanup() unlocks everything.  fw_upload_main() only pairs it with
+> +	 * a prepare() that succeeded, so the error paths below unlock here
+> +	 * instead; hand the context to cleanup() for sparse's benefit.
+> +	 */
+> +	__release(&bp->cpld_lock);
+> +	return FW_UPLOAD_ERR_NONE;
+> +
+> +err_deselect:
+> +	if (bp->cpld_in_config_mode) {
+> +		adva_x1_cpld_write(bp, CPLD_CMD_DIS_CFG, dis_args, 2);
+> +		bp->cpld_in_config_mode = false;
+> +	}
+> +	adva_x1_mux_select(bp, -1);
+> +err_release:
+> +	adva_x1_bus_release(bp);
+> +err_unlock:
+> +	WRITE_ONCE(bp->cpld_cancel, false);
+> +	mutex_unlock(&bp->cpld_lock);
+> +	return ret;
+> +}
+> +
+> +static enum fw_upload_err
+> +adva_cpld_write(struct fw_upload *fwl, const u8 *data,
+> +		u32 offset, u32 size, u32 *written)
+> +{
+> +	struct ptp_ocp *bp = fwl->dd_handle;
+> +	u8 page_args[3 + CPLD_PAGE_SIZE];
+> +
+> +	lockdep_assert_held(&bp->cpld_lock);
+> +
+> +	if (READ_ONCE(bp->cpld_cancel))
+> +		return FW_UPLOAD_ERR_CANCELED;
+> +
+> +	if (size < CPLD_PAGE_SIZE)
+> +		return FW_UPLOAD_ERR_INVALID_SIZE;
+> +
+> +	page_args[0] = 0x00;
+> +	page_args[1] = 0x00;
+> +	page_args[2] = 0x01;
+> +	memcpy(&page_args[3], data + offset, CPLD_PAGE_SIZE);
+
+here again, stack allocated -> stack allocated -> heap allocated.
+quite a lot of allocations and copying for 16 bytes of actual data
+transfer.
+
+> +
+> +	if (adva_x1_cpld_write(bp, CPLD_CMD_WRITE_PAGE,
+> +			       page_args, 3 + CPLD_PAGE_SIZE) ||
+> +	    adva_x1_cpld_wait_ready(bp, 100))
+> +		return adva_cpld_err(bp);
+> +
+> +	*written = CPLD_PAGE_SIZE;
+> +	return FW_UPLOAD_ERR_NONE;
+> +}
