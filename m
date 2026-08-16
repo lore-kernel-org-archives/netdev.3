@@ -1,246 +1,490 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0F63BB4A;
-	Sun, 16 Aug 2026 10:06:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786874766; cv=fail; b=Tlj8WbFzAnN6yK+quR8UJDWbbgivhXsZc+D2aUDMqi7se9IvJBbcl3jFuubpHfaxP8PmmhWCDkYg0eGAv33QEeoEVM1BZlNBYXs/yZmyjoEZMxZSDEmlGnn1Wu8I83oA1ZB7pyFdH80JrY5O9guWsQUIHqQ3v31zM1N7YHwnlUg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786874766; c=relaxed/simple;
-	bh=+XJvdMq97LfCwEeOV0YCT4daztqwqyCagWmKkgSSPIU=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=szbCMuzUoccCIeG2t3OtSyFmhXkN0i6RwVbEJv7mxJy1IlvXYcfEFrIcDgsvKKfZN/+mbJe+n8xXUj2sF4eq8OGIM7oXca8J5MICNiAl1I9tA/xP45oTLAksUQybEzuekz8gXY+JnvKNZNIkYid5b9xX3m6eQhq6Vs8pW7Iljv8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j5BkAxZT; arc=fail smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0E93264DA
+	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 10:12:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786875158; cv=none; b=QwCbNUY+Y5NbEu/pFodCv869z8scxm8Ij8V9Ms/oZkhuoGIvck2BmxGtQBI5D2Nr8bcdkyOUXHCKkJm08df2mtm0XcBP3bKDF6hNMoxH73NW/ztCGvq95alEeyj6HrpTAMTQuKmbYMeu9DDmQx4+xFKF6JH/Dd8CLrChj2CTkWs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786875158; c=relaxed/simple;
+	bh=hYCfcwTKoIoK462b8zttXXMNwiJJt2/c6k4Pmz2D6hU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uUJjRi8dEd61HHQ3jy2hvg6r7+F35RsmSKvYFTYpLyEWjVuu++yfN2XHQ6pMW+7jeqRaaJSXKbbHYjrXSIjHluUMb0mo8e72z93GVdv6vb3DGZX9oAqlvQRVunwZzvMQCS14JPXWR8WAqEct9PlcLEiTfqeSNqCBNW3MwyZ6NYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LIlELqc5; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j5BkAxZT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786874763; x=1818410763;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=+XJvdMq97LfCwEeOV0YCT4daztqwqyCagWmKkgSSPIU=;
-  b=j5BkAxZTyBGH8x2raVV6Ws+w3oXtI8Cq4rNBO2wSyRMJ+jPjmQ79SrMn
-   XHTh0eEGjtjkijbsRpkCJFfyq+Bd2fnQSF4oklMEbMYvzc8MeZVF6CQgh
-   dJN/d4VX5RZRxcAYBGeJYboo175vQX8FHOg9Rb8pT7yoN646PbWDunn6u
-   cmUi/jmjh6EQVj/ZAnj3VRnnKiVRkRcb9ADIBLTQ5Cvl7h77KcRuXlZAy
-   vVO8/D9fHY3ieBR4kLvhpYLuOdXbAuNzkcAl/IuMe9IBJ4t8JpYvm78zB
-   fU5DsBUgeE3aGRdf4yrNrZyO1sQuNPOXZ7/5CmoQiw15WmUH+ZBMhv6Ev
-   g==;
-X-CSE-ConnectionGUID: xlguryC8QtytJrgTlkhRow==
-X-CSE-MsgGUID: uShU5xWzR+afeaAe9ah0Xw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11876"; a="89896311"
-X-IronPort-AV: E=Sophos;i="6.25,226,1779174000"; 
-   d="scan'208";a="89896311"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2026 03:06:02 -0700
-X-CSE-ConnectionGUID: m4aIDdl4SmK9JUIU0qkjkA==
-X-CSE-MsgGUID: uifcoQSJQAa7k95SRJKnQg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,226,1779174000"; 
-   d="scan'208";a="302877891"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2026 03:06:02 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Sun, 16 Aug 2026 03:06:01 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Sun, 16 Aug 2026 03:06:01 -0700
-Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.48) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Sun, 16 Aug 2026 03:06:01 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=I17/+kyHVc0+taW5/JglXrExsPzjt/63XT82w8aT7y+uQyh2ApAz5yy9GDrojJ1R6HerkEDc/Dt5auFhTgepMNAesIk6+SZ0ebC6XC0kXthBGfXWxJLJzTFKeWSOD76ad3u0JPgfycZZKQRyu9IjBXYHYXuZJXfj6l3bv6urGBEvIpgf/VgKN12CEiCTIwM4z2/8tKqBASmGAXb7ijIrLq/x/fUgoS/bCaCczXxzKWlhOYkpt4AD8D5LCoMTXozycmd3MarIX1Hau745ZBBAXs4ITDHXvgwdmoWy4X4XpEvhFVsNwsFjEBlbPWlbNTGmIVZbGokdAyAo8vlKYF/8sg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=s+oEiJd/hvEJNu5U3EQwdXIgMUNhjDK1tVJ9O20XbPU=;
- b=wQCE9BYW1TO0vOkgvBQpb4k0NC3RYAHvHgkedFjsh4ZNc52arrf1W+rpuHYz4HLDuPMKJHtpIF5BO6wvPelRAuE6L19rcEqvRM6+Jdv2CdRvGnUuWCWvk580mU0T+gYe6CdjxFRbpE01ap03+Nj9Wal1dW24TtE85u7XEyKattlzV80TxnZb6PkBFXEBBcV9a9XOuJquUqla1UU1GgL6RqmpQ1qRpU3P+IY5LkP2c3bP+JKAPLfXyZLQnNAzzuJVTzijpiBXz1nu8R6DMMQSw32HZhKNbr9WG7pGiFlIypxPD3Po3rahRAg/kPvFPRDrKl5xujmSd4frvvoqGjMaQg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SA1PR11MB8448.namprd11.prod.outlook.com (2603:10b6:806:3a3::17)
- by MW3PR11MB4537.namprd11.prod.outlook.com (2603:10b6:303:5d::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Sun, 16 Aug
- 2026 10:05:58 +0000
-Received: from SA1PR11MB8448.namprd11.prod.outlook.com
- ([fe80::38f:6a4:ce6b:d5b8]) by SA1PR11MB8448.namprd11.prod.outlook.com
- ([fe80::38f:6a4:ce6b:d5b8%4]) with mapi id 15.21.0315.016; Sun, 16 Aug 2026
- 10:05:57 +0000
-Message-ID: <71733617-814a-497d-a43e-421b688539da@intel.com>
-Date: Sun, 16 Aug 2026 13:05:48 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH] e1000e: fix incorrect modified flag
- check in e1000_read_nvm_spt()
-To: "Ruinskiy, Dima" <dima.ruinskiy@intel.com>, "Loktionov, Aleksandr"
-	<aleksandr.loktionov@intel.com>, Ivy Lopez <skunkolee@gmail.com>, "Nguyen,
- Anthony L" <anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>
-CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20260806172452.32139-1-skunkolee@gmail.com>
- <DS4PPF7551E6552AF076FA235232DAB1E95E5D12@DS4PPF7551E6552.namprd11.prod.outlook.com>
- <835dad4a-6873-4983-af3b-ea7b58f93a12@intel.com>
-Content-Language: en-US
-From: "Kadosh, MoriyaX" <moriyax.kadosh@intel.com>
-Organization: Intel Israel (74) Limited
-In-Reply-To: <835dad4a-6873-4983-af3b-ea7b58f93a12@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: TL2P290CA0012.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:2::16) To SA1PR11MB8448.namprd11.prod.outlook.com
- (2603:10b6:806:3a3::17)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LIlELqc5"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-84862b0d5f8so1839512b3a.3
+        for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 03:12:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786875156; x=1787479956; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8UPLvvjMJjXNWe0UttpOsCFOyd1owNBi81dZYuJGIRs=;
+        b=LIlELqc5VrHMH78yDErT1l5up5Xq2KVGilmLVuWiI7MqRaAfYIgzQF2bpjjsnk7vf1
+         C6YVReKjoX0CzlaEBioe5ygdUq7ADQxfFIUjs3G7QOWsxC06y5+iObmsoJ5bpdcW5kuF
+         LK8eT+jdDBGk/T2HuyOOG9iGxek2HCxxJjC7uKpZ/v63rcQERta3CO4OmXM5mRfIAlCv
+         tWJQLLYpgQJsGV5D5N8YguhfLjlG8l9AydZx8ILa/Xs7ojUhsiGY1cscne5IimZ2VqGC
+         mAUUat8/ZAlx0SB52ymqrIYpxUPYMhkivC5JAm3yE+dUGToCSFEpKZUbPYWEYnPhTDDF
+         Q3SA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786875156; x=1787479956;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8UPLvvjMJjXNWe0UttpOsCFOyd1owNBi81dZYuJGIRs=;
+        b=GOMX722eKu6ygW27HDwUG+YCK1w7YbiIAfa7Pum87pVAl6lamelR+uRptjIqFdUnSl
+         KaKqh4yrhcyzxvCm3l9UCXeR5WJHpAKl1+j+n3dfuH7nvYtYWoIbxQJMT9vM8urX21V7
+         lyvrUZP9UJrksTXe7y//c6kfHaMMnyGf3haoqmxvwXpRuy3Fmh9DgLrmnzw6qy3zsLyN
+         g4cVryhNfsi3mkAxM6RM9sgExb5QAt104r8FwadFmMJunsQzV5RhpkfBWzqiimS9l3v9
+         faK221/Brovawxmrr9EF5mxb1VFd8hDffCxfjakwmpMQ/7iSLfaK9P5Xyruqssw5+LMc
+         ljmw==
+X-Forwarded-Encrypted: i=1; AHgh+RqDa/JLB9iI27wa61BWyOZmzb8BlNDsRI6UJoTTLKkMs4kSl/V60IIYJ5SY/Xwbb46CLHjBHfg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzaylNMPmPaC8XHnN+lt5e0ueVT7QZDkKAzTXsIfvvxxhVYg8ZE
+	co78rs9ssCoec77JYeZNPCwiipZ5TUioumqEiAe11iAuKpxyQ4wn52gC
+X-Gm-Gg: AR+sD135J3eCVyZNPrlEmktu6lUqe5+O3CnshEEUeAwJAAN+7xi5gWV9jBiIkWVsZs7
+	ab/oyeAi4qM2xinMK31ySsL1uXX+dHgfWg+5iZLaXqWqo5JYAm2lC2eW+WSwUg5JUHAq82exPwJ
+	Pks0YaEHHXb4kFWnAQyn+lMfarCc/70JqcF3ElLxKSN85yAJoUiAhMOstvaFyE1rvu60xRFZ6nM
+	3s0vBHQZYcqxHqTVMeXuzJfFsfMQEwLWwY0KZyj9JEYhkF+JJTYqzFuKLGiWEaLRQvYQE3h9Zvx
+	EBGEcEBEiOmLhyrqZLARX0BMuwk+3xHs18hZ3Y4TtYG7HH3Gr2TZr2N8qVc4yOvTu0WrU2yeR/U
+	hweCm15gZQpF4WkVSMA/phDbRTB8eIPRYdwdW6lX+WPdNNfvEV21GvOyhJSZ/MuHIXjn5xZ4fBs
+	984txJswCVwMWeo6PAJ1TeegGJatWxbbw0UO2lUwIMb9ENoeLbLNsC9FowE7r715+zjdUIvFQel
+	cClvBzJi9bKNT9CvykOPmc=
+X-Received: by 2002:a05:6a21:a89:b0:3bf:9b61:f7ae with SMTP id adf61e73a8af0-3cc71acd3b3mr22587777637.14.1786875156430;
+        Sun, 16 Aug 2026 03:12:36 -0700 (PDT)
+Received: from Ellen ([114.5.110.144])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-320ea2f787fsm23902821eec.20.2026.08.16.03.12.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 Aug 2026 03:12:35 -0700 (PDT)
+From: Hilal Rahmatullah <hilalrahmatullah11@gmail.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	netdev@vger.kernel.org (open list:NETWORKING [GENERAL]),
+	linux-kernel@vger.kernel.org (open list)
+Cc: Hilal Rahmatullah <hilalrahmatullah11@gmail.com>
+Subject: [PATCH net v3] wifi: nl80211: document sta-info nested attribute
+Date: Sun, 16 Aug 2026 17:12:15 +0700
+Message-ID: <20260816101216.20947-1-hilalrahmatullah11@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR11MB8448:EE_|MW3PR11MB4537:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4ced2a43-57a1-4f5e-c6e5-08defb7df75a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|23010399003|366016|22082099003|18002099003|56012099006|10067099003|4143699003|11063799006;
-X-Microsoft-Antispam-Message-Info: E/+l8xKVEbVEx/mi1FRDA6kNXrEBeP6QIAPfw+fWkvnfG5mHMmz0KeFKMCw6Kg/1Pwm1LpLfs574zoJ3dF5OTEks4eTPrAiQeLO19rRENwGUXRmUKjQFuaBU3aeKUx+hK9K+Jwu15NucwrqO74m3gKrjBeZiIXIL6dY53ZFZnAV9K+NJLwKx2oRP3BD/f5sfnBp9SDHAScIvAgeB4O2ATW/CNGgeBluGtC6OHmk+aoo6Hfrc+7wsuB72hbBfl844pPWQ/UyAzy/K/A/m/QcppJ2Nrys2YTFKyb8tC9PiZ2SUnz//sV2B+p8beK1yfBmXDg2qc9VPVeSYEiwgjxg/Iy2dYtfB5pwYKd28MXogAc5CrdWOK342ZAZZfG4UgVCIfYieZxYq7LpPd0deZoqMhdfR2pSHStw0A7IRsFn8oQJUc4zi0mcyuMW1ooDkTwABAwmcQ8Lsb7Cx8DJEI6twB2uGU247wyGy0FVgK/QZOGkV28kbH7SBotspy3N8cqkIEqNVlnzQODDqZaz5Hj86hdDiagXjxQ77tHBWspPys8VhLAUSsOnqHyXlK6ox0rdyIycm23wH+MpM9sAT46HvoGfYEtOkBwXVQsZAfGTw4vbb8KcL9LEkMLyEvMPgIpiJMUGB1zqNSsIsRbivnDjjfH4IdRQLxyco+YGsVQWJ1qQ=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR11MB8448.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(366016)(22082099003)(18002099003)(56012099006)(10067099003)(4143699003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YVJJemdoL0NuYlR6bisvWDJZYld4UkszQWFBWVV1K2UvQUlWTzI3NjlFUWlo?=
- =?utf-8?B?WHkvQnNTcjA5U0JxdlpCbmFyajZyTmF2bWdlZkt5Y2ozREx0SXZhYktIZEg4?=
- =?utf-8?B?eTlMU0tZb3N6OHBTeUt4dVRBZ3Y3dkxHQnNBZEdNUGpWbDcrbkE3Q0V4U1FB?=
- =?utf-8?B?ZEdyd2psaFV6WlpNVTZyR2VQeEF2eFppdjZIbmg4WGlkczhOQks2NU05allK?=
- =?utf-8?B?cWJKSTNqT3JTQ2RKMHZTejFDMXRsQ0VxT1Bkc1ZrQ2ZnQWxRVnZGWTF2NTVw?=
- =?utf-8?B?dzg5UlAxU0Qzd1hkenc0MDQ5N0syaVlFVWRxdW1maUZyS1QvcG96MzBwVkdV?=
- =?utf-8?B?V2VaVjJDTnFzbTRDZFdPWHloL1B4OVNvM3F0M3YxWVlod2JDdm44bC9ZWUh3?=
- =?utf-8?B?VjMxcHExUjlRbU9xOGpqNHRXeVMxY3lFWmUwWFdPK1h6K1BmOW5SRmVBN0tu?=
- =?utf-8?B?MHBQT0h3SG9yTlVvejZnQnd5WUk4eklTWjhzaGV5RmpNZm5SdFFINmNrNUZG?=
- =?utf-8?B?US8waHNvcnJTc3I4NStyQnQ5QlVpNnlHS3FtdEsxL1Y2d1lRblU3Q0NXRTJi?=
- =?utf-8?B?MTk3WVUyYmVYTWpiQzdXMC9KcE9abDBOU3U3RUVrTmNHTXBibW9Wd2dIaHoy?=
- =?utf-8?B?SzkxTHdqVzZYbDdWYURidG4xVUM0L0IwMVEzRTZnSU9DVTJQeW16MllyVkdu?=
- =?utf-8?B?b1dlTUFUNFVlMlRhUU8xaDludTRVaVRZZG4yTUI0UDBOcTFNL2crMnBROElU?=
- =?utf-8?B?TnI3WXJkNlgzRGJXM3RGa1JnUHU4MlJGTVc5dEgzVkRHNnFsK0liTC9OQlJF?=
- =?utf-8?B?MDgzU2FGT3ZDTXRzeitCanhzMWV0ZFVlK1JMSk9sUHl1UmRUcDcxMDF5NnBI?=
- =?utf-8?B?aldUYmo1RjV1YXB5Rk40U3c5RmFQZEdxL1BxalVyYlNVWGdSd3BieUZHNG1t?=
- =?utf-8?B?Mk1PWXVhc1E1ZG9RajJKMlJzWXlYNm8zZmh4MklRYlFrZzFValdERFV2RUNs?=
- =?utf-8?B?YzE2em5HeWpoR2gvemMrZzE3cmloc0FGQURyT3REbWlZd1ZhSUV4cVRpemFT?=
- =?utf-8?B?NC9meG0xekhiY3NQSUlwOGtzWmpyQXJqU2x6a2M0MWgwZHRDaHJBOW1NSTRT?=
- =?utf-8?B?a2lzNXRtanlmd1pDL2xyamZEVW52eXhIS2kwbUViSHUyZ1gvMzNxMU96Rm82?=
- =?utf-8?B?cEpQbGQ3UmFnU1oyaWk5WlJ6TG55TzM4VkVJb3E0QjVOellvTEwvY2tqM2xK?=
- =?utf-8?B?VW5LdHJFa1ZwOUQ5Z0lNOSsrNmRBZ0htdW1mQ05CMHpHaS8zY1NIaTF2UUx4?=
- =?utf-8?B?cGxEU3dUU3laVlZ0TVR1UXhCMWd6a0NKeTJDWVIvRUhzaXNsVXA5VUtRb09L?=
- =?utf-8?B?TFMwWnRkdkZxY3pGeFJSTWJnUnl3N1I3RjEvcjlsMVR4VTVkVTdKcmdtSER2?=
- =?utf-8?B?Mis4ZC81dUlCcVZkTVVRS3F1amdBQXZtbHNoSmlRY0NWYXZyajdBWXQ1QXR6?=
- =?utf-8?B?QWdBK2cxSllSZVBGV2ZKNFBvRDRLbFpHQTA0NHJTeDRhRjl4L3F3cFdWMlJ4?=
- =?utf-8?B?ZENWb09YY0o2QlQyZGdCREhocWNqSWk0Z3cwZ1htNDhhdEhNa09pY1ptMHM0?=
- =?utf-8?B?emFoRUNLcENrb01NUjFkZ2xMK1hNd3YzMXREV0JWTFIrQ2FxVUh0TytBMXNt?=
- =?utf-8?B?UjhCbFR0ZWtEN3RQMXM5ZVdPbDNoMGNTSkhFWkFSZkJuSVM5N3k5dS9YMGNH?=
- =?utf-8?B?MmxrZGYxTlJ6dFRGcmZiOHY0Um9WUzd6N3JJV3dvMnlVeFhyTHJYaTFjMTZm?=
- =?utf-8?B?MDE0NjUvL0F6TVpOMFliZFprenJTelFmVzBTaXhWVlljYjN3Q21NSEhjY2tT?=
- =?utf-8?B?Vkc0RnJMcDA2dlZHcHVKcUc5dGdla2xHWUY1N0dmRUh1VGk0UytLSmNoUFRw?=
- =?utf-8?B?aTZWakFac05iWTBWNmgyOWVySXphaTVLcmRTejg3TVpRRU02Q2hiakRUZ1JR?=
- =?utf-8?B?eWFJS000aUpXZEhwN095a01kY0hJQzBPSGc0U00xOUtnMzRYV2ZHOHlSYW9V?=
- =?utf-8?B?cHJMUU0wZ0RONWEySWdTbjNQTmVQNnRjdDBMdTVKQ2tpaHNjU1Z0TkViWUx4?=
- =?utf-8?B?N2NPVlo0ZWNER2tMUm1GMGxDUDgzZkQ0QUpOU1ZMOWt3cDZPRGhVc1F3cVZa?=
- =?utf-8?B?eExkTXpBUGJHY2RtT1FoVlJiUko1TFdheGs2ZWgwZVUvOUlIM0JyQjJSeDBs?=
- =?utf-8?B?b2QzZnBCU0JLcmUxY3JjREJSVVRreVVuTEtpS2M3aFhvak5IMnJNMzV0Sllh?=
- =?utf-8?B?bGV3dkFRd2orcDZjWHRrTXpubGtJSEk5ZWVWNW5pcmN1b2g5V09sc3JLL0pE?=
- =?utf-8?Q?uppZpSxmc5dKjOTg=3D?=
-X-Exchange-RoutingPolicyChecked: B2tzqnVVs/fkyjRCTUOkQj+hISa5PfpqQbLJymPwMIP3G5RNR29WhKW8MB11Y4lxxnWULRwxW+0FQTuDq21cp28uOwoo3ivBCKcCHK0pjQscmzWqZSoOK45zVnx4PjkjZkIcHJM1L0NWcrjkdJURqaxTuo0pW9yMUW44E8I1xbXlrZtwJmcjIJGxKTVyWoEN7tRak+I6zmzQEgcMTb+r3Nb1T/XRSJmRdLPffh4ggv3CBbQNXWtVaW4jd2ScqF34mQSXUJ7aQXCGR2UywF+DrNQCOF3TFDIW0Dom+aaq6jg4y3MY6BAyAdeuMov+nyzwqjjJkB3VocLyTKYgdLVAvQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4ced2a43-57a1-4f5e-c6e5-08defb7df75a
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB8448.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Aug 2026 10:05:57.7489
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WH5e6OwSqokqUa16LLO1h9rkxrLHrdirPIxVDgODqhnOS1ECrQWD0UvLiAKRGYEXfx5zeXyJIZuN33qgGMz2Ndd+jsSkCOEUCh3VXybvtI8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4537
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 
+Add NL80211_ATTR_STA_INFO nested attributes definition, from
+the previous binary type.
 
+Signed-off-by: Hilal Rahmatullah <hilalrahmatullah11@gmail.com>
+---
+changes in v2:
+- Fix nested attribute name
+- Add double quote for numeric enum member
+changes in v3:
+- add missing he-gi attribute on rate-info-attrs
+- fix sta-info attributes order
 
-On 09/08/2026 12:21, Ruinskiy, Dima wrote:
-> On 07/08/2026 13:56, Loktionov, Aleksandr wrote:
->>
->>
->>> -----Original Message-----
->>> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
->>> Of Ivy Lopez
->>> Sent: Thursday, August 6, 2026 7:25 PM
->>> To: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Kitszel,
->>> Przemyslaw <przemyslaw.kitszel@intel.com>
->>> Cc: andrew+netdev@lunn.ch; davem@davemloft.net; edumazet@google.com;
->>> kuba@kernel.org; pabeni@redhat.com; intel-wired-lan@lists.osuosl.org;
->>> netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Ivy Lopez
->>> <skunkolee@gmail.com>
->>> Subject: [Intel-wired-lan] [PATCH] e1000e: fix incorrect modified flag
->>> check in e1000_read_nvm_spt()
->>>
->>> e1000_read_nvm_spt() reads two adjacent 16-bit NVM words as one 32-bit
->>> dword for efficiency. When deciding whether to use the shadow RAM
->>> value for the high word (data[i + 1]), it incorrectly checks the
->>> "modified" flag of the low word (shadow_ram[offset + i]) instead of
->>> the high word's own flag (shadow_ram[offset + i + 1]).
->>>
->>> This can cause silent NVM shadow RAM corruption:
->>>   - if only the high word is marked modified, its pending write is
->>>     lost and the stale flash value is returned instead
->>>   - if only the low word is marked modified, the high word is
->>>     incorrectly overwritten with the low word's shadow value
->>>
->>> This function is used on all PCH chips from SPT onward (SPT, CNP, TGP,
->>> ADP, MTP, etc). The bug has been present since the dword-read
->>> optimization was introduced for these chips.
->>>
->>> Note: this was found via code review while investigating a separate
->>> reproducible packet loss issue on I219-LM (SPT+ PCH). Testing showed
->>> this fix does not resolve that particular symptom, but the flag check
->>> is still a genuine logic bug that can corrupt shadow RAM contents and
->>> should be fixed regardless.
->>>
->>> Fixes: 79849ebc0e06 ("e1000e: initial support for i219")
->>> Signed-off-by: Ivy Lopez <skunkolee@gmail.com>
->>> ---
->>>   drivers/net/ethernet/intel/e1000e/ich8lan.c | 2 +-
->>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c
->>> b/drivers/net/ethernet/intel/e1000e/ich8lan.c
->>> index aa90e0ce8aca..87cd1cdc6f10 100644
->>> --- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
->>> +++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
->>> @@ -3473,7 +3473,7 @@ static s32 e1000_read_nvm_spt(struct e1000_hw
->>> *hw, u16 offset, u16 words,
->>>                       dev_spec->shadow_ram[offset + i].value;
->>>               else
->>>                   data[i] = (u16)(dword & 0xFFFF);
->>> -            if (dev_spec->shadow_ram[offset + i].modified)
->>> +            if (dev_spec->shadow_ram[offset + i +
->>> 1].modified)
->>>                   data[i + 1] =
->>>                       dev_spec->shadow_ram[offset + i +
->>> 1].value;
->>>               else
->>> -- 
->>> 2.55.0
->>
->> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
->>
-> Reviewed-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
-> 
-Tested-by: Moriya Kadosh <moriyax.kadosh@intel.com>
+---
+ Documentation/netlink/specs/nl80211.yaml | 351 ++++++++++++++++++++++-
+ 1 file changed, 350 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/netlink/specs/nl80211.yaml b/Documentation/netlink/specs/nl80211.yaml
+index 802097128bda..4ad391db4a76 100644
+--- a/Documentation/netlink/specs/nl80211.yaml
++++ b/Documentation/netlink/specs/nl80211.yaml
+@@ -211,6 +211,70 @@ definitions:
+       - ht20
+       - ht40minus
+       - ht40plus
++  -
++    name: eht-gi
++    type: enum
++    entries:
++      - 0-8
++      - 1-6
++      - 3-2
++  -
++    name: eht-ru-alloc
++    type: enum
++    entries:
++      - "26"
++      - "52"
++      - 52p26
++      - "106"
++      - 106p26
++      - "242"
++      - "484"
++      - 484p242
++      - "996"
++      - 996p484
++      - 996p484p242
++      - 2x996
++      - 2x996p484
++      - 3x996
++      - 3x996p484
++      - 4x996
++  -
++    name: he-gi
++    type: enum
++    entries:
++      - 0-8
++      - 1-6
++      - 3-2
++  -
++    name: he-ru-alloc
++    type: enum
++    entries:
++      - "26"
++      - "52"
++      - "106"
++      - "242"
++      - "484"
++      - "996"
++      - 2x996
++  -
++    name: mesh-power-mode
++    type: enum
++    entries:
++      - unknown
++      - active
++      - light-sleep
++      - deep-sleep
++  -
++    name: plink-state
++    type: enum
++    entries:
++      - listen
++      - opn-snt
++      - opn-rcvd
++      - cnf-rcvd
++      - estab
++      - holding
++      - blocked
+   -
+     name: sta-flag-update
+     type: struct
+@@ -297,7 +361,8 @@ attribute-sets:
+         type: u32
+       -
+         name: sta-info
+-        type: binary  # TODO: nest
++        type: nest
++        nested-attributes: sta-info-attrs
+       -
+         name: wiphy-bands
+         type: nest
+@@ -1601,6 +1666,102 @@ attribute-sets:
+         name: nan
+         type: nest
+         nested-attributes: frame-type-attrs
++  -
++    name: rate-info-attrs
++    enum-name: nl80211-rate-info
++    name-prefix: nl80211-rate-info-
++    attributes:
++      -
++        name: bitrate
++        type: u16
++      -
++        name: mcs
++        type: u8
++      -
++        name: 40-mhz-width
++        type: flag
++      -
++        name: short-gi
++        type: flag
++      -
++        name: bitrate32
++        type: u32
++      -
++        name: vht-mcs
++        type: u8
++      -
++        name: vht-nss
++        type: u8
++      -
++        name: 80-mhz-width
++        type: flag
++      -
++        name: 80p80-mhz-width
++        type: unused
++      -
++        name: 160-mhz-width
++        type: flag
++      -
++        name: 10-mhz-width
++        type: flag
++      -
++        name: 5-mhz-width
++        type: flag
++      -
++        name: he-mcs
++        type: u8
++      -
++        name: he-nss
++        type: u8
++      -
++        name: he-gi
++        type: u8
++        enum: he-gi
++      -
++        name: he-dcm
++        type: u8
++      -
++        name: he-ru-alloc
++        type: u8
++        enum: he-ru-alloc
++      -
++        name: 320-mhz-width
++        type: flag
++      -
++        name: eht-mcs
++        type: u8
++      -
++        name: eht-nss
++        type: u8
++      -
++        name: eht-gi
++        type: u8
++        enum: eht-gi
++      -
++        name: eht-ru-alloc
++        type: u8
++        enum: eht-ru-alloc
++      -
++        name: s1g-mcs
++        type: u8
++      -
++        name: s1g-nss
++        type: u8
++      -
++        name: 1-mhz-width
++        type: flag
++      -
++        name: 2-mhz-width
++        type: flag
++      -
++        name: 4-mhz-width
++        type: flag
++      -
++        name: 8-mhz-width
++        type: flag
++      -
++        name: 16-mhz-width
++        type: flag
+   -
+     name: sar-attributes
+     enum-name: nl80211-sar-attrs
+@@ -1631,6 +1792,170 @@ attribute-sets:
+       -
+         name: end-freq
+         type: u32
++  -
++    name: sta-bss-param-attrs
++    enum-name: nl80211-sta-bss-param
++    name-prefix: nl80211-sta-bss-param-
++    attributes:
++      -
++        name: cts-prot
++        type: flag
++      -
++        name: short-preamble
++        type: flag
++      -
++        name: short-slot-time
++        type: flag
++      -
++        name: dtim-period
++        type: u8
++      -
++        name: beacon-interval
++        type: u16
++  -
++    name: sta-info-attrs
++    enum-name: nl80211-sta-info
++    name-prefix: nl80211-sta-info-
++    attributes:
++      -
++        name: inactive-time
++        type: u32
++      -
++        name: rx-bytes
++        type: u32
++      -
++        name: tx-bytes
++        type: u32
++      -
++        name: llid
++        type: u16
++      -
++        name: plid
++        type: u16
++      -
++        name: plink-state
++        type: u8
++        enum: plink-state
++      -
++        name: signal
++        type: u8
++      -
++        name: tx-bitrate
++        type: nest
++        nested-attributes: rate-info-attrs
++      -
++        name: rx-packets
++        type: u32
++      -
++        name: tx-packets
++        type: u32
++      -
++        name: tx-retries
++        type: u32
++      -
++        name: tx-failed
++        type: u32
++      -
++        name: signal-avg
++        type: u8
++      -
++        name: rx-bitrate
++        type: nest
++        nested-attributes: rate-info-attrs
++      -
++        name: bss-param
++        type: nest
++        nested-attributes: sta-bss-param-attrs
++      -
++        name: connected-time
++        type: u32
++      -
++        name: sta-flags
++        type: binary
++        struct: sta-flag-update
++      -
++        name: beacon-loss
++        type: u32
++      -
++        name: t-offset
++        type: s64
++      -
++        name: local-pm
++        type: u32
++        enum: mesh-power-mode
++      -
++        name: peer-pm
++        type: u32
++        enum: mesh-power-mode
++      -
++        name: nonpeer-pm
++        type: u32
++        enum: mesh-power-mode
++      -
++        name: rx-bytes64
++        type: u64
++      -
++        name: tx-bytes64
++        type: u64
++      -
++        name: chain-signal
++        type: u8
++      -
++        name: chain-signal-avg
++        type: u8
++      -
++        name: expected-throughput
++        type: u32
++      -
++        name: rx-drop-misc
++        type: u64
++      -
++        name: beacon-rx
++        type: u64
++      -
++        name: beacon-signal-avg
++        type: u8
++      -
++        name: tid-stats
++        type: indexed-array
++        sub-type: nest
++        nested-attributes: tid-stats-attrs
++      -
++        name: rx-duration
++        type: u64
++      -
++        name: pad
++        type: binary
++      -
++        name: ack-signal
++        type: u8
++      -
++        name: ack-signal-avg
++        type: u8
++      -
++        name: rx-mpdus
++        type: u32
++      -
++        name: fcs-error-count
++        type: u32
++      -
++        name: connected-to-gate
++        type: u8
++      -
++        name: tx-duration
++        type: u64
++      -
++        name: airtime-weight
++        type: u16
++      -
++        name: airtime-link-metric
++        type: u32
++      -
++        name: assoc-at-boottime
++        type: u64
++      -
++        name: connected-to-as
++        type: u8
+   -
+     name: supported-iftypes
+     enum-name: nl80211-iftype
+@@ -1672,6 +1997,30 @@ attribute-sets:
+       -
+         name: nan
+         type: flag
++  -
++    name: tid-stats-attrs
++    enum-name: nl80211-tid-stats
++    name-prefix: nl80211-tid-stats-
++    attributes:
++      -
++        name: rx-msdu
++        type: u64
++      -
++        name: tx-msdu
++        type: u64
++      -
++        name: tx-msdu-retries
++        type: u64
++      -
++        name: tx-msdu-failed
++        type: u64
++      -
++        name: pad
++        type: binary
++      -
++        name: txq-stats
++        type: nest
++        nested-attributes: txq-stats-attrs
+   -
+     name: txq-stats-attrs
+     name-prefix: nl80211-txq-stats-
+-- 
+2.53.0
 
