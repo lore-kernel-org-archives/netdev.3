@@ -1,37 +1,37 @@
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14E331690E;
-	Sun, 16 Aug 2026 17:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F146131690E;
+	Sun, 16 Aug 2026 17:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786900439; cv=none; b=GzOskfJE3RD+MsknVDK0yM8pzAdkhJYZ8020iB+dUvWnPPwpx0JFXDWnznUn3zmOsZ/LffTbdBoPlPf+owR9Zq6XEqxG8jv6kLXvu5zdZSZcNr69jwmoVsf3VH+Ksiu06WUvZJlxWP6g1uE9DBkQFNRwaKspDHHhTLcuIo10BQU=
+	t=1786900479; cv=none; b=h+qMti9sBYmJ/XmhEhFoqOQDqqwdj4gzhQWUibel04PZxKBTkMBD+EfkuQ+1dhGSiK8X5nc1l8HyeV3c+/1lpmAu9hUY4R7S3+RXrSU7f7Sx9qRCEwk3664Ep2hCYG5H77zY0pUe7aHTndzzK2PHvujM3dFVtEDgi1Pu920UfSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786900439; c=relaxed/simple;
-	bh=VRreQ4/1At4Fq2REWn9VCHpMBL+8+MuW7gyf/Czsa7Y=;
+	s=arc-20240116; t=1786900479; c=relaxed/simple;
+	bh=m3CM26TJyklvQ6a+oZKZQoOkDdxUt3WwLBwgAyWG6TI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t/+Y/xK7IvsaiYJbZnVUbIREJXJACzLeVtfjSjeQUv8PdJP/lmU8BFj9AsomXmzwz59RU8RxZwZHOeI2IDr6OBlVFpCUXc444kyQy+w/0HxO6IC0H8gM10ffQAXvKPK6koGFy4JKonXkeIWAFEynAPWtxANT8bSuA1hSdCoB/nY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=k25GOjtP; arc=none smtp.client-ip=198.137.202.133
+	 In-Reply-To:Content-Type; b=Iduk5swzHVGlwLQWSOH/ArzX/fZwwWR4c1YC3QjA29xkFzCmMOpZLOUqkRZujqoydcriUu8sMxhfyCdW/Eyf6yRcZMqRVqczuRyVoxbczPQGXuXj494F9JzW9p1mJUdK1Eroqda9oPtHR4ruM8zA/+VLoFoSZpvEANYb7H76Oa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ad5oJ7cD; arc=none smtp.client-ip=198.137.202.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="k25GOjtP"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ad5oJ7cD"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=1djf4WsQkmVu30eP3Ssq7ZvHcwQP2tg5K/g2i4Xf/y0=; b=k25GOjtPvOwOOukorgwzBRan7E
-	O8h02Y5575sZGJTjvo10ZDNppbxCAgqR6nVQbgQtUPK+yQOd1VI93gl/iLMz9xib5UW3CO+EV36JW
-	xcEUsYE1yrIl/Mq5p3HtZN8ywHydM+bjU82JsNq3wgQH671p2oIRU5porwc4ErUFoA86nCnM1nx2H
-	/TTvOaS6rhEx1L7z9vU8z+qeNL5lRu2+YBpvy46ZA1ypanG9/ouZO4CB1zrXeCN7omnORQ8RGBKfq
-	UHAJKm7JaujBmRDb5jMNEXj+x838i0zpId0bB11UTGX96HSe9XkyDqFi9KnCP46YPRHhirEBmoH3K
-	LLE7GpYA==;
+	bh=1LRqaA/q1HOBFuAod1JTwgY3Hc/knxRoge9yUuMTWwA=; b=ad5oJ7cDMwPG+J6R9CSOaeYw2Y
+	kg3XZRqZKHIHuNW9bUxNAkUgncyK04YOHMQtkLLw0QaQlnNcwXglqTxDRJWIM5qw9WY3BebJ1K8Q8
+	bl7xOPE5uBIoGpXzrTtCR3MEFOlWEt42Ri3fNqQjp17i91rThk1Gtk+AR/IX6wYda6uBxgRAdXUbn
+	fpSnWbFCZdI6jSzxub2g7nlkYTvG+o0x0Al8mM1zXV+xr6JuvbRzsfBU5x6+rF/TafaaeZwSg78Jy
+	+HKd3lJQlvlJBcQoWlBJ+mP99zxN7QniKQ0qFoIoMrc6jnhi+87Dkdn1BoDzVIQDHWAPv3ZUjeH7n
+	jSl8tQPw==;
 Received: from [50.53.43.113] (helo=[192.168.254.34])
 	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wveQh-00000004uw7-3MTp;
-	Sun, 16 Aug 2026 17:13:51 +0000
-Message-ID: <3e782d86-6099-4c90-9e37-801bdf6d91f1@infradead.org>
-Date: Sun, 16 Aug 2026 10:13:51 -0700
+	id 1wveRN-00000004uyj-2X6V;
+	Sun, 16 Aug 2026 17:14:33 +0000
+Message-ID: <6b59ab1c-9d3a-4f2a-823a-2cf61c5ea608@infradead.org>
+Date: Sun, 16 Aug 2026 10:14:32 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -39,8 +39,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 1/2] net_shaper: fix kernel-doc list
- indentation
+Subject: Re: [PATCH net-next v2 2/2] docs: kerneldoc.py: preserve headings in
+ kernel-doc output
 To: Karl Mehltretter <kmehltretter@gmail.com>,
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
@@ -49,56 +49,63 @@ Cc: Shuah Khan <skhan@linuxfoundation.org>, Simon Horman <horms@kernel.org>,
  netdev@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <cover.1786751700.git.kmehltretter@gmail.com>
- <64f428350ec1450adcd0607f54f30d27a42f129c.1786751700.git.kmehltretter@gmail.com>
+ <335fec1cd5a3449687f8b1ee8cd46a0f3e455aa5.1786751700.git.kmehltretter@gmail.com>
 Content-Language: en-US
 From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <64f428350ec1450adcd0607f54f30d27a42f129c.1786751700.git.kmehltretter@gmail.com>
+In-Reply-To: <335fec1cd5a3449687f8b1ee8cd46a0f3e455aa5.1786751700.git.kmehltretter@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
 On 8/14/26 6:32 PM, Karl Mehltretter wrote:
-> Docutils 0.22.4 reports:
+> kerneldoc.py parses extracted ReST into a detached section node while
+> retaining the surrounding title hierarchy. Docutils 0.21.2 silently drops
+> affected sections; 0.22.4 reports:
 > 
 >   Documentation/networking/kapi:107:
->   ../include/net/net_shaper.h:82:
->   ERROR: Unexpected indentation.
+>   ../include/net/net_shaper.h:75:
+>   ERROR: A level 3 section cannot be used here.
 > 
-> Add the required blank line and correct the list indentation.
+> The same issue drops three Xe DRM RAS headings already in mainline.
 > 
+> Use nested_parse_with_titles() to give kernel-doc output an independent
+> title hierarchy.
+> 
+> Fixes: 2404dad1f67f ("doc: Cope with the deprecation of AutoReporter")
 > Assisted-by: Codex:gpt-5.6-sol
 > Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
 
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+LGTM. Thanks.
+
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
 Tested-by: Randy Dunlap <rdunlap@infradead.org>
 
-Thanks.
-
 > ---
->  include/net/net_shaper.h | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
+>  Documentation/sphinx/kerneldoc.py | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/include/net/net_shaper.h b/include/net/net_shaper.h
-> index 05cb625b0fe54..330517a1cb5c2 100644
-> --- a/include/net/net_shaper.h
-> +++ b/include/net/net_shaper.h
-> @@ -80,10 +80,11 @@ struct net_shaper {
->   * disallowed at the uAPI level will never be made at the driver level.
->   * The shaper core performs automatic reparenting and cleanup, generating
->   * additional calls. Notably:
-> - *  - @group calls in the driver facing API may have nodes as leaves (user is
-> - *    only allowed to construct groups with queues as leaves)
-> - *  - @group calls may update leaf's parent if the parent is about
-> - *    to be removed (re-parenting nodes explicitly is not supported in the uAPI)
-> + *
-> + * - @group calls in the driver facing API may have nodes as leaves (user is
-> + *   only allowed to construct groups with queues as leaves)
-> + * - @group calls may update leaf's parent if the parent is about
-> + *   to be removed (re-parenting nodes explicitly is not supported in the uAPI)
->   *
->   * Implicit creation
->   * -----------------
+> diff --git a/Documentation/sphinx/kerneldoc.py b/Documentation/sphinx/kerneldoc.py
+> index c1cadb4eb0997..9986df33e37ea 100644
+> --- a/Documentation/sphinx/kerneldoc.py
+> +++ b/Documentation/sphinx/kerneldoc.py
+> @@ -38,6 +38,7 @@ from docutils.statemachine import ViewList
+>  from docutils.parsers.rst import directives, Directive
+>  import sphinx
+>  from sphinx.util.docutils import switch_source_input
+> +from sphinx.util.nodes import nested_parse_with_titles
+>  from sphinx.util import logging
+>  from pprint import pformat
+>  
+> @@ -252,7 +253,7 @@ class KernelDocDirective(Directive):
+>  
+>      def do_parse(self, result, node):
+>          with switch_source_input(self.state, result):
+> -            self.state.nested_parse(result, 0, node, match_titles=1)
+> +            nested_parse_with_titles(self.state, result, node)
+>  
+>  def setup_kfiles(app):
+>      global kfiles
 
 -- 
 ~Randy
