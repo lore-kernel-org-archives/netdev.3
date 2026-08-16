@@ -1,128 +1,173 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013003.outbound.protection.outlook.com [40.93.201.3])
+Received: from smtp1-g21.free.fr (smtp1-g21.free.fr [212.27.42.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EAB413D891
-	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 11:02:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.3
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786878140; cv=fail; b=HM+fuKVXLWP7QzWzlGo9+xVRbN+oy5PUhIV15DZIIp/2E3aYbNwsVyjdKwZ3CxMjQJyedLEYFT4Ieof5ttLKH7AuyzPRV1elSnkO1CW1y5M8gTJWpgpLDAWkUdwH3o8I/IZLMR2yYbixNS1LHCr9F9W1ePe7z9+RL4oL0qTN1Ps=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786878140; c=relaxed/simple;
-	bh=uptUbX+u/WwnCstXItwYcXruy+6FSkB3RuETAVOaYog=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=sxUsd1+CAB9L7nSl7Qu0I+HaDoErwyowt/1DqkdXwIomxq2pHyWvl/UzXZplzSFXqab/R6aZR4A2jWUyiRbVtlU6Ub2iKhSxQVWLFzJqACcWCRZgtAKMScZzD5ZBuh3WZl10k6ELIverjz2bBM9b6IAYOKQAXKowffkae6EFp2M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=LbpE7+bv; arc=fail smtp.client-ip=40.93.201.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B54336883;
+	Sun, 16 Aug 2026 11:04:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.42.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786878262; cv=none; b=Nvi3xFcuTzCy3JWQAkygvqUAm3mrrEwVsPmZliXiW8bNmKLQ/XGmIMlcQ+mxhKJlan9k1egG3FdXZNf50+1LdqNk4HIXUlqHN6fcoKId/1KH0lerJ3AP5lzMsIYqZY1v9UachH7RkliVsGbgTKigNoxopSEiMbBUnMamtC9n0nY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786878262; c=relaxed/simple;
+	bh=WqeY2uljvl7E/0XHXqt3z/3e9iWfCPHg2Xs4N15MJnc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KcV777vMybVpQIdi+2ffmQ5ZsXQBXlSP7Yhf1PVcf3ZAwpBpjj7lCq9DGrf1IYSE09OejQURaenxfobJPWXUzRqHkFW7b+BFJuwoYgG0op/ZZ2JZ2rwR/tfatL6Wm0MFO5Cz/pB+rQe+q53gG3Dk3xi8rEDHI/nStfNosUyibMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr; spf=pass smtp.mailfrom=free.fr; dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b=rbqut+02; arc=none smtp.client-ip=212.27.42.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="LbpE7+bv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wEpT8dvXkyNy5LFhJPknbmWBNOZkhAH17MYDep8nUFT4YFxYnUeQt36UfYO/1bh7N/NjkJI/OzJtA7UekutXGlXmaj+YeuDsHJRyI405ubGJLZBi0nRJ5OaLJQKj4DM9JapQH3ufpbhono3VW9pc5bQvZzxQUblhMN173qxH7o4nptlBuctzkC4gvmvCBz1gPTRBrvje+j2N6MxSDCzjO8LwIRZN7bQTNYwxqEmJ9fQEshsczigqGEJoe7z/e9SJBVYV/8hjSIG3p41fZVUPqK5QY+77qjhfIUKCYBKzMG7iFMbcCV0KkwcoRMov7o8bhL6U15oI04Uj/gSAlLFSzQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5PSDWfh8NcFZBEqCz/4rR9OrgMWqmhsW0lA0y9GvXLo=;
- b=RjYpYC0LR6gy1huMKl6iCcjGKi7JB8hozKimtZ2TPa9Wtzo8wFbYtTR1I3+CNTMB75ZuxgEEVc5rPg0+1LWAEEv0kt30oBmTtR5Wg4PWN8yrwzjoKpTAN746AYVK2l6clc1ePgmQ3KYX2o1pCjuD8Nk0FlIzppFYwAu876QeE2k2GEstKq/Rx2CxMdGhzfj5cfW0EEq5jG7h0ssJsW9m6AssYsVX25Q86TT9Vp8Bxh/2PqBKRJPNw1Ksud2zWY9xoRvh9zwx9wnhcnHEWv8PBy3g1U8T6eEkfeoABsenzgRW3y41nZJWbqU8TfRMb+0O46aSxEHIj1tD2t6/3WU+wQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5PSDWfh8NcFZBEqCz/4rR9OrgMWqmhsW0lA0y9GvXLo=;
- b=LbpE7+bvWt2AiGX93kHxtz16pOufAeTluA1MWRMuwT98VfLXxnnLpKMq5bD7Ml740m6/OM0Sc52/vAyDYjQo8TTUE8BrsP8VmtURjB5rR59QSEgFrke25DeOp38cSg5Do6W11fGt5X4qAI82SwcVljNXd5gKnpw7C/iY7rBOLapIRIQ1/sv0SCb/GIcbBwNt8vc+OYF4+/QFfBBnGRVwCWK+VSjEedhs3KqkTuCIdbI0POWccbir0c8lbOxaSPET/eQdA+xBcV9mD8LUTq8RByqR7lmgqxIe32Rh9HP4YEhGq+5ehhXsoqvMsBxR1cRFN6yrxk+fz9VBTOR5w9GS2g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by PH7PR12MB7794.namprd12.prod.outlook.com (2603:10b6:510:276::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Sun, 16 Aug
- 2026 11:02:14 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0315.016; Sun, 16 Aug 2026
- 11:02:14 +0000
-Date: Sun, 16 Aug 2026 14:02:05 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	bridge@lists.linux.dev
-Subject: Re: [PATCH net] net: bridge: vlan: fix inverted default vlan
- notification
-Message-ID: <20260816110205.GA17866@shredder>
-References: <20260814141640.64958-1-razor@blackwall.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260814141640.64958-1-razor@blackwall.org>
-X-ClientProxiedBy: FR2P281CA0127.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:9e::15) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b="rbqut+02"
+Received: from L30177.local (unknown [78.240.72.98])
+	(Authenticated sender: vjardin@free.fr)
+	by smtp1-g21.free.fr (Postfix) with ESMTPSA id BCA44B00548;
+	Sun, 16 Aug 2026 13:04:02 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
+	s=smtp-20201208; t=1786878251;
+	bh=WqeY2uljvl7E/0XHXqt3z/3e9iWfCPHg2Xs4N15MJnc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rbqut+02sc4pYVvTFJHc0gGxzGS8IC5WyDfyTmCs/CqbGqQjwyWRmtzyK/MKnpIta
+	 6TTW/Or3jEllDzEo7dxa195ZHfoj4pnS/1D35S07J+ekVIzjSAPFoQLwH7cl8V5WH3
+	 hOow4UaXKmZqun3lOqJNeTrWb5WyIjPHNtT6bcGm9A9jod7kpBluJGfarRiPAIe2DI
+	 fwTiHJP2O22qTfEZuMR/2xWdQbfEoyBOcVNQhI4/SIhp/ON6iWFq2SI2jLQ1HmwgBk
+	 X07gLOLCc+wK8KomCIpaJ7fisw6uRl4SLSy74qB3HxmN12GRRKwfdAJPpO6DVqiZlb
+	 pF1/JO6ntW+jw==
+Date: Sun, 16 Aug 2026 13:04:01 +0200
+From: Vincent Jardin <vjardin@free.fr>
+To: Ivan Vecera <ivecera@redhat.com>
+Cc: netdev@vger.kernel.org, Min Li <min.li@microchip.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next] dpll: zl3073x: add chip-specific minimum input
+ reference frequency
+Message-ID: <aoGZIYuA7NHTX0x7@L30177.local>
+References: <20260814153253.900280-1-ivecera@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|PH7PR12MB7794:EE_
-X-MS-Office365-Filtering-Correlation-Id: c9461b69-5d1b-48bc-7ce7-08defb85d428
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|6133799003|10067099003|11063799006|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	j9hFdy/WG6gLdpw9OwU4GMdMiCo0I77Tq86XrFZGnsbVVxmUaLsIQC2/bygqzPoTAWzC1PGpF8quo2lg8kTGTIp5c9rUPlrtGyrVqFr8DCXPFIMghoQMEp7FTK1ZmWiSCJBRpWP30t/w/qv2bZ0bqhJLMlOrSYMSGGtW95vD427eFUjBlONI7qNmOjmJzFFZ4o+Wl+lSg+4fWfS1oDuOM7kZaoSG8avjDWgz5F0IdJs/CPeNTfSec68kOqud9nXtpETyi9zPWSY24VFgQOiW9tTPstOJi9rO/LLbnAH0W6HcoXYeISIpjJ0/7/e8Nf1snu50699T7orsIHLcSSkE9vTLMI3wu7c8fxKVLkpb6CwYTnO0vSFCGtJ+LUnrhtP/0y/bAPk+wlGXiOaLc3MXpXEq2EN1PN/IljtBy+O68fq1JiZqGftig2SZ9KaxjciXJfXndzkmUgS8VxaiKTgEIF3r1p5mHx8OYwFb7UTqCkCc2h/HBj3WxmOf+VLav6lSRqe2nZGALx+YQZvDKeS8pVqwcaiCU63BNyiDzrg1u/EoYtqjNOWHLMG8OifY2ulyw7tObJhYq5lh80mbUhLQl8nyUBI+1dBMx4lr8ADkjQkShCCyU8ut3JdK0Ud6kaBaFHuhxY6ZhzYAD7BWzdvH2rbKernoXmrzUJMwT2h9nF4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(6133799003)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?c+4iqDr/ILGWJcalFyfKObk5bt5wtiItwKBWF8csu8juOA3LP9bwyqYkjSL4?=
- =?us-ascii?Q?jSbodtefPknXBWLGFhqZlGkC4I/NXZ1fXgVGmhVbG7AZuPtPTnBJyCvZ/owr?=
- =?us-ascii?Q?FEFDGtNFKlKWS0kZQ/B3bp9lLC6znyhGeMD+DwdUgdBsIKqG3h72pjtOWW9T?=
- =?us-ascii?Q?wR7l2+Q5vrkyuyHvCaFDv2i1h9TdLWaO90GD30VB9XzJyAUz3jWGs/paE2Oy?=
- =?us-ascii?Q?ZCm/8kUa8EiKuEX5eFjJTOXEjO3bG5TO4ybYTFJq2GEcNGUiwC5vlAenXKGD?=
- =?us-ascii?Q?sQlIuJcjY0zvtE8nNDU56YC0fMu/8A9uLVq3LRuqjvfvUSOTYzv6VUNWSSlw?=
- =?us-ascii?Q?4rV8xfXD4QwbVS02Pr8OxY5ZHjG6fkWDQm/mKOpRHgomvoXnBKt+B1rATF0r?=
- =?us-ascii?Q?zJ9Imoa9gUojJmS81xjDOuU4I9uvAUG6SHzKwtbhAiJITADvIVy4spuj2L16?=
- =?us-ascii?Q?WnESwrCbypHidQmogqMOi8KZHQnQ6mlQdpLimYcuLkEd15fEGqS/ImonR4e6?=
- =?us-ascii?Q?OF/S0ZOwpaa38NRC54a4Q+ybE2MdR6JuEnW+d2Nxyt0VxF8rAA5d5m29x8xG?=
- =?us-ascii?Q?sd2OHx5AOy76syuOuNtEENi0JnjHs6z8Azk0R2mnY+rPaopusxDDTeWAX8UA?=
- =?us-ascii?Q?YBukxgHFeOzPYniwYXotG3gdLEby9J9FzUR4zTOEJ2BLERHJX51avm6em4+z?=
- =?us-ascii?Q?UmRbhK+meI3SSRkmDrmxmPhoHyVCwGGHlhExDB2V0LoB/IQkdmK+0x6rpDr4?=
- =?us-ascii?Q?vkSHnO6vbyyapRax1k7UkVC6b6EQ8CN7aLnmGQZylxTAPxHZWWNm5zSpul2m?=
- =?us-ascii?Q?C/XbqrNWBbarJqPFhc2kpIa82sZQeA6pu2If3JxJVO8kGyAdHqGmo3cx3zfF?=
- =?us-ascii?Q?EkxKX2TFwD/HXWs/iwyqrL2cisiHVVCinB29VXyyaYZhEQE5jJ1w03ZRK0io?=
- =?us-ascii?Q?Vtmkg1bjHWqvqbpiIGkab3nREC4r2VsO0wZPSmm0CkP77YCqPghJGryGctzy?=
- =?us-ascii?Q?bLq9uiYQUH9Tikc/6Ud4/Hrp7UrNv9OS4Rf2x7MJKmWUT8v92S9UC5EiaYqS?=
- =?us-ascii?Q?IyEIKetz3AlvWZT8Tx4l+1ceIlr8J+dBpshbUmpbxE/VUSUsVoPgZROewLQz?=
- =?us-ascii?Q?8jCw/an5xx4zfSkkuM9szy97/DL89+CezDkwvrURuuti7HunKQmmEyC7RoDw?=
- =?us-ascii?Q?7/+icEwraistc6yD2hJMShPimi3x/KFbWZmkiRGGUiljL5k0SFbCQsO1DCv8?=
- =?us-ascii?Q?J/Wu+dAvJnDJsz9KtmcWSjUksIK6tcQ+feVnSCj2mV/rsh9WiHdotuGn0yWX?=
- =?us-ascii?Q?LD1GZkj+jbUTJm7Z84Aq6lKgvdSu/MYoEbeg7yDDrF8VpaytDPOq90rvuNbo?=
- =?us-ascii?Q?E8Fr0vgdLzamcWyywptilR0YllBXkn09E/Q/47laOoipTPEyUlZyjBMyk6pb?=
- =?us-ascii?Q?YPiWa2QMAvuYjH1/toTMpQVsB5Fig+iUtd15MQDAmL2JBVFnz+BvhLh4xi6A?=
- =?us-ascii?Q?+WlC6TYb3qEaFO+J3DnQq4shPEqGdJa3dQIYEC2ANTrmHJ4Q8NOPXfTPNh6o?=
- =?us-ascii?Q?2ywyDAwzeCPKjRd4xEmgAUSpKXAlqTxVimdiPhKX1SBnE49rW5G3HXkMyeQS?=
- =?us-ascii?Q?nlYlFT55hN+pabwK/p0wpP5TFxEFhs1aLf1Ai6WqbKAqDRxlMyZ6f78QQFw3?=
- =?us-ascii?Q?mFrxCYZpEhwZQb7GVtnd9JaU2TCscGZcRYTCqzlqCbr4N4bH?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c9461b69-5d1b-48bc-7ce7-08defb85d428
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Aug 2026 11:02:14.3382
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QvsyJHOTzsofnpQmZcqTWG3IKLoKDzXtsocVt23v/S0MULwAEt2KlVep1vTN+6LG+Ei3xuvP2TMXFdI7w7RuUw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7794
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260814153253.900280-1-ivecera@redhat.com>
 
-On Fri, Aug 14, 2026 at 05:16:40PM +0300, Nikolay Aleksandrov wrote:
-> A notification should be emitted only when the vlan delete was successful
-> and not otherwise. The proper check is if br/nbp_vlan_delete returned 0.
+Hi Ivan,
+
+Thanks for leading it. Below some few minor comments.
+
+> diff --git a/drivers/dpll/zl3073x/core.c b/drivers/dpll/zl3073x/core.c
+> index 5b2d77f2c2288e..c0b3b0d579d524 100644
+> --- a/drivers/dpll/zl3073x/core.c
+> +++ b/drivers/dpll/zl3073x/core.c
+> @@ -20,29 +20,30 @@
+>  #include "dpll.h"
+>  #include "regs.h"
+>  
+> -#define ZL_CHIP_INFO(_id, _nchannels, _flags)				\
+> -	{ .id = (_id), .num_channels = (_nchannels), .flags = (_flags) }
+> +#define ZL_CHIP_INFO(_id, _nchannels, _flags, _min_freq)		\
+> +	{ .id = (_id), .num_channels = (_nchannels), .flags = (_flags),	\
+> +	  .min_ref_freq = (_min_freq) }
+
+Do we really need this C macro ? Everytime we'll add something, it leads to a
+wide numbder of line changes for zl3073x_chip_ids[]. What's about using directly the named
+fields below and leaving 0/nothing for default cases such as the min_ref_freq ( something like
+min_ref_freq ?: 1; ) ? 
+ ... return zldev->info->min_ref_freq ?: 1; ...
+
+If you prefer to keep the C macro, then let's use a variadic, something like:
+#define ZL_CHIP_INFO(_id, _nchannels, _flags, ...)			\
+	{ .id = (_id), .num_channels = (_nchannels), .flags = (_flags),\
+	  ##__VA_ARGS__ }
+
+then only the ZL30643 entry needs to be touched:
+	ZL_CHIP_INFO(0x0E3B, 3, ZL3073X_FLAG_REF_PHASE_COMP_32,
+		     .min_ref_freq = 1000),
+
+>  
+>  static const struct zl3073x_chip_info zl3073x_chip_ids[] = {
+> -	ZL_CHIP_INFO(0x0E30, 2, ZL3073X_FLAG_REF_PHASE_COMP_32),
+> -	ZL_CHIP_INFO(0x0E3B, 3, ZL3073X_FLAG_REF_PHASE_COMP_32),
+ ...
+> -	ZL_CHIP_INFO(0x2E97, 5, ZL3073X_FLAG_DIE_TEMP),
+> -	ZL_CHIP_INFO(0x3FC4, 2, ZL3073X_FLAG_DIE_TEMP),
+> +	ZL_CHIP_INFO(0x0E30, 2, ZL3073X_FLAG_REF_PHASE_COMP_32, 1),
+> +	ZL_CHIP_INFO(0x0E3B, 3, ZL3073X_FLAG_REF_PHASE_COMP_32, 1000),
+> +	ZL_CHIP_INFO(0x0E93, 1, ZL3073X_FLAG_REF_PHASE_COMP_32, 1),
+ ...
+> +	ZL_CHIP_INFO(0x2E97, 5, ZL3073X_FLAG_DIE_TEMP, 1),
+> +	ZL_CHIP_INFO(0x3FC4, 2, ZL3073X_FLAG_DIE_TEMP, 1),
+
+That's a wide set of changes just to add/update 1 line. Since an update is needed, I feel the macro
+should be avoided so only
+	ZL_CHIP_INFO(0x0E3B, 3, ZL3073X_FLAG_REF_PHASE_COMP_32, 1000),
+is needed.
+
+Then, the init code could set to 1 if the value of .min_ref_freq is 0.
+
+> --- a/drivers/dpll/zl3073x/dpll.c
+> +++ b/drivers/dpll/zl3073x/dpll.c
+> @@ -281,7 +281,8 @@ zl3073x_dpll_input_pin_ref_sync_set(const struct dpll_pin *dpll_pin,
+>  		sync_freq = zl3073x_ref_freq_get(sync_ref);
+>  
+>  		/* Sync signal must be 8 kHz or less and clock reference
+> -		 * must be 1 kHz or more and higher than the sync signal.
+> +		 * must meet the chip's minimum frequency requirement and be
+> +		 * higher than the sync signal.
+>  		 */
+>  		if (sync_freq > 8000) {
+>  			NL_SET_ERR_MSG(extack,
+> @@ -289,9 +290,10 @@ zl3073x_dpll_input_pin_ref_sync_set(const struct dpll_pin *dpll_pin,
+>  			rc = -EINVAL;
+>  			goto unlock;
+>  		}
+> -		if (ref_freq < 1000) {
+> -			NL_SET_ERR_MSG(extack,
+> -				       "clock frequency must be 1 kHz or more");
+> +		if (ref_freq < zldev->info->min_ref_freq) {
+> +			NL_SET_ERR_MSG_FMT(extack,
+> +					   "clock frequency must be %u Hz or more",
+> +					   zldev->info->min_ref_freq);
+>  			rc = -EINVAL;
+>  			goto unlock;
+>  		}
+
+TBC: to be considered if 0 means 1 (à la zldev->info->min_ref_freq ?: 1)
+
+> diff --git a/drivers/dpll/zl3073x/prop.c b/drivers/dpll/zl3073x/prop.c
+> index ac9d41d0f978ef..cdceddcf353e46 100644
+> --- a/drivers/dpll/zl3073x/prop.c
+> +++ b/drivers/dpll/zl3073x/prop.c
+> @@ -20,9 +20,9 @@
+>   * @freq: frequency to check
+>   *
+>   * The function checks the given frequency is valid for the device. For input
+> - * pins it checks that the frequency can be factorized using supported base
+> - * frequencies. For output pins it checks that the frequency divides connected
+> - * synth frequency without remainder.
+> + * pins it checks that the frequency is above the chip's minimum and can be
+> + * factorized using supported base frequencies. For output pins it checks that
+> + * the frequency divides connected synth frequency without remainder.
+>   *
+>   * Return: true if the frequency is valid, false if not.
+>   */
+> @@ -36,6 +36,10 @@ zl3073x_pin_check_freq(struct zl3073x_dev *zldev, enum dpll_pin_direction dir,
+>  	if (dir == DPLL_PIN_DIRECTION_INPUT) {
+>  		int rc;
+>  
+> +		/* Check minimum frequency */
+
+This comment is not needed, the code tells us.
+
+> +		if (freq < zldev->info->min_ref_freq)
+> +			goto err_inv_freq;
+> +
+>  		/* Check if the frequency can be factorized */
+>  		rc = zl3073x_ref_freq_factorize(freq, NULL, NULL);
+>  		if (rc)
 > 
-> Fixes: f545923b4a6b ("net: bridge: vlan: notify on vlan add/delete/change flags")
-> Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Best regards,
+  Vincent
