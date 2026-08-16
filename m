@@ -1,197 +1,164 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604A332E692;
-	Sun, 16 Aug 2026 03:57:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACB12DB798;
+	Sun, 16 Aug 2026 03:57:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786852632; cv=none; b=qRpNtybW8QX0nHS63ZXxqNu0kPO1GH1xL8CGPxC0Nbw9ZUIpoJnn4yMvaSzaE+5cyPX8toX5h2G6NST0tcmP0BU8GEIqRPN7fiHNvGTlLVr4XXTTWb2eikcU6U21Lop+QXnCWE5iSDUTccpT1hkunE+OeDCsuxjDekxpoxMAwy8=
+	t=1786852681; cv=none; b=dfePsv7+AeCxXx840f/HaIs2/C0a1mS1Xo2vg30DK3gE9fCB0LAkbZ0jKFQjVBUawaDY1WVXqYObmeKJ/rCSteKiDZil/Omxc7njRRd4kObD2SKUJOXjpXIvZFcyDnwb1TKlYyzsM5hJx01McMJz/uJ5M+dUkrbJpc4qZWlMgXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786852632; c=relaxed/simple;
-	bh=UQHRxft1KsS/aFZvHFWgo+Psihj9kavT5p7UuMJyZyY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I6IkTqVwysepmfW5ebAGC169lJ/kqImg1I0SXCvjbpQ9eTpUpFQiOSepd3NZzIXaUXyRF5x0MvGa0DYDy093/oPHR04tjmceE5RpSWbgvj+Y7FKy4cNtcjQEJMXk1P6147Q/dPMMcA8T9k1Qs4/TDW51c5jZg6NEVnmWJPjdI4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C22MmoWI; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786852681; c=relaxed/simple;
+	bh=gECAAk/4ExcxETs+rIfYIcGaME31GhWzE7ijuaUeZpg=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=iwgfymJh3lDnbGzFPzR5WBrL7w9XZO9bnuXFrzJrw1DSbeVJwDgCEVKpOc968dWl2svYkA2anTG1FGk6Ui511sXk5itGJa1sIl4tSegfdZ02LHjN7PR9wjo+k6wYjpi9EPOfiWHRMicp26o/9ZoEe+SYdk5Ctm21yJ43z5XrI/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZfFx4bQ1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C22MmoWI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786852629; x=1818388629;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=UQHRxft1KsS/aFZvHFWgo+Psihj9kavT5p7UuMJyZyY=;
-  b=C22MmoWI1piNQhbOcPLfE8WQ3baNprxZcVBO3qjEjfPNEknc7w2CMwCg
-   a+A87sSrOzQvicDO/JUlNBLSh2GyB+nOabaHoiJP8ggvv5AMacp/rByX7
-   anWtHlnCrhsBNnnG/Gvh36YFjIPbluxAXvw3PuY42neDRxWdW7bqfoPq3
-   iM5ttPNnbY67CySoyzEZC2zIIo3y37qaUYCgmIx+Zrt9EWt+6A2b4VinI
-   jozDobDs03mrl3dzRw1UZa5S49j42dtPs/QFgyMBlQII/iedG91k23cIT
-   YOBuP6QnsYbs8EC+6vOZsweEsCdd6mzhqtAe0dNRS80IfUiAetoRQH7ch
-   w==;
-X-CSE-ConnectionGUID: GMfilnW5RNuen5kQR6Kb2g==
-X-CSE-MsgGUID: 3te+rkcxSIuT29P8sVt0TQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11876"; a="112914617"
-X-IronPort-AV: E=Sophos;i="6.25,226,1779174000"; 
-   d="scan'208";a="112914617"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2026 20:57:08 -0700
-X-CSE-ConnectionGUID: 7Yz3BHHaQBuWeYFy04JM/g==
-X-CSE-MsgGUID: seXVRYuMS3OoIX1W8HK3MQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,226,1779174000"; 
-   d="scan'208";a="268441462"
-Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 15 Aug 2026 20:57:06 -0700
-Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wvRza-00000000cjG-2hxX;
-	Sun, 16 Aug 2026 03:57:02 +0000
-Date: Sun, 16 Aug 2026 11:56:35 +0800
-From: kernel test robot <lkp@intel.com>
-To: zhang.enpei@zte.com.cn, chessman@tux.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] ethernet: tlan: Convert to use jiffies macro
-Message-ID: <202608161140.4HTNVNNa-lkp@intel.com>
-References: <20250827155455583-PdvmDYA9SD3J37_XRza5@zte.com.cn>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZfFx4bQ1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED3B1F000E9;
+	Sun, 16 Aug 2026 03:57:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786852679;
+	bh=MTSysb65ADjtlvNFIs4wkzTc2eQHtgkj3pmYPJpa6YI=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=ZfFx4bQ1/rLRgacIfeaiHLgahxI7FbPQnye+g4au0ZWrMMsRZ442SZ4K0i/3sLg2k
+	 kfkQdRMZoGSsp8ndeuczeouSWKE9xPji5wrWANmwmk+41eoCYmC4lG/V8J57oVCYg+
+	 Ww0dewOSz2ul17pLmtfxAxApXC0ytvqvp8E3uy4lKwsbXflFyEThJKWmitBwDj5H06
+	 jRzwwO0WRPNkZnZg67ODvyVzcwV1Tu00TxwhM1pdTrLT1bebV+wi+YoQY+vsiqt1Nc
+	 mc3SXQmkN/8IRm/yQ/GVrQZCewGTiBV773IryqnJhxis+CIF8Hslde9YD88kmDazKN
+	 XZ22JM8WliQ3Q==
+Content-Type: multipart/mixed; boundary="===============2544190724305362226=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250827155455583-PdvmDYA9SD3J37_XRza5@zte.com.cn>
+Message-Id: <5aa97a9a0b8cd20feda29b304874967a8019d8b4b3dd4021dc5c0dac43c10d05@mail.kernel.org>
+In-Reply-To: <20260816031245.268898-1-jiayuan.chen@linux.dev>
+References: <20260816031245.268898-1-jiayuan.chen@linux.dev>
+Subject: Re: [PATCH bpf] bpf: free page_pool frags via the page_pool path in bpf_xdp_shrink_data
+From: bot+bpf-ci@kernel.org
+To: jiayuan.chen@linux.dev,bpf@vger.kernel.org,netdev@vger.kernel.org
+Cc: jiayuan.chen@linux.dev,syzbot+237bbeed8dfe0699b7f5@syzkaller.appspotmail.com,daniel@iogearbox.net,john.fastabend@gmail.com,sdf@fomichev.me,martin.lau@linux.dev,ast@kernel.org,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ihor.solodrai@linux.dev,davem@davemloft.net,edumazet@google.com,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,hawk@kernel.org,toke@redhat.com,lorenzo@kernel.org,linux-kernel@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Sun, 16 Aug 2026 03:57:58 +0000 (UTC)
 
-Hi,
+--===============2544190724305362226==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-kernel test robot noticed the following build warnings:
+> diff --git a/net/core/filter.c b/net/core/filter.c
+> index 16845987b244..3aab5556abe2 100644
+> --- a/net/core/filter.c
+> +++ b/net/core/filter.c
+> @@ -86,6 +86,7 @@
+>  #include <net/inet_dscp.h>
+>
+>  #include "dev.h"
+> +#include "netmem_priv.h"
+>
+>  /* Keep the struct bpf_fib_lookup small so that it fits into a cacheline */
+>  static_assert(sizeof(struct bpf_fib_lookup) == 64, "struct bpf_fib_lookup size check");
+> @@ -4288,6 +4289,14 @@ static bool bpf_xdp_shrink_data(struct xdp_buff *xdp, skb_frag_t *frag,
+>  	if (mem_type == MEM_TYPE_XSK_BUFF_POOL) {
+>  		netmem = 0;
+>  		zc_frag = bpf_xdp_shrink_data_zc(xdp, shrink, tail, release);
+> +	} else if (netmem_is_pp(netmem)) {
+> +		/* The rxq mem model does not always describe how a released
+> +		 * frag must be freed: the generic-XDP and veth paths run the
+> +		 * program on a shared rxq while the frag has been cow'd into
+> +		 * page_pool memory. Trust the page itself and return a
+> +		 * page_pool frag to its pool regardless of rxq->mem.type.
+> +		 */
+> +		mem_type = MEM_TYPE_PAGE_POOL;
+>  	}
+>
+>  	if (release) {
 
-[auto build test WARNING on net-next/main]
-[also build test WARNING on net/main linus/master v7.2-rc7 next-20260814]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+The comment says the fix handles rxq->mem.type "regardless" of its value,
+but the implementation still checks MEM_TYPE_XSK_BUFF_POOL first. When the
+shared rxq has been left with mem_type == MEM_TYPE_XSK_BUFF_POOL by
+veth_xdp_rcv_one() (which writes frame->mem_type into the shared rxq on
+XDP_TX/XDP_REDIRECT and never restores it), a page_pool frag skips the new
+netmem_is_pp() branch entirely and goes to bpf_xdp_shrink_data_zc() instead.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/zhang-enpei-zte-com-cn/ethernet-tlan-Convert-to-use-jiffies-macro/20260813-185229
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20250827155455583-PdvmDYA9SD3J37_XRza5%40zte.com.cn
-patch subject: [PATCH v3] ethernet: tlan: Convert to use jiffies macro
-config: x86_64-kexec (https://download.01.org/0day-ci/archive/20260816/202608161140.4HTNVNNa-lkp@intel.com/config)
-compiler: clang version 22.1.3 (https://github.com/llvm/llvm-project e9846648fd6183ee6d8cbdb4502213fcf902a211)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260816/202608161140.4HTNVNNa-lkp@intel.com/reproduce)
+Should the comment say "regardless of rxq->mem.type, unless the rxq claims
+XSK memory" or should the netmem_is_pp() test be unconditional so the stale
+MEM_TYPE_XSK_BUFF_POOL case is also handled?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608161140.4HTNVNNa-lkp@intel.com/
+The commit message states: "A single rxq->mem.type can be wrong in either
+direction." The code, however, only corrects one direction: it upgrades
+mem_type to MEM_TYPE_PAGE_POOL when the frag is a page_pool page, but it
+never downgrades when rxq->mem.type already says MEM_TYPE_PAGE_POOL and the
+frag is not a page_pool page.
 
-All warnings (new ones prefixed by >>):
+That second direction is reachable on the very path the commit message
+cites. veth_xdp_rcv_one() (drivers/net/veth.c:638) points the buff at the
+shared rxq and then, on XDP_TX/XDP_REDIRECT, writes the frame's type into
+it:
 
->> drivers/net/ethernet/ti/tlan.c:1833:8: warning: comparison of distinct pointer types ('unsigned long *' and 'typeof (priv->timer_set_at + (250 / 10)) *' (aka 'unsigned int *')) [-Wcompare-distinct-pointer-types]
-    1833 |                         if (time_is_before_eq_jiffies(priv->timer_set_at + TLAN_TIMER_ACT_DELAY)) {
-         |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/jiffies.h:288:38: note: expanded from macro 'time_is_before_eq_jiffies'
-     288 | #define time_is_before_eq_jiffies(a) time_after_eq(jiffies, a)
-         |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/jiffies.h:145:3: note: expanded from macro 'time_after_eq'
-     145 |          typecheck(unsigned long, b) && \
-         |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/typecheck.h:12:18: note: expanded from macro 'typecheck'
-      12 |         (void)(&__dummy == &__dummy2); \
-         |                ~~~~~~~~ ^  ~~~~~~~~~
-   drivers/net/ethernet/ti/tlan.c:2057:7: warning: variable 'def_tx' set but not used [-Wunused-but-set-variable]
-    2057 |         u32             def_tx, crc, code;
-         |                         ^
-   2 warnings generated.
+    xdp->rxq = &rq->xdp_rxq;
+    ...
+    case XDP_TX:
+            xdp->rxq->mem.type = frame->mem_type;
+    case XDP_REDIRECT:
+            xdp->rxq->mem.type = frame->mem_type;
+
+Once one redirected frame with mem_type == MEM_TYPE_PAGE_POOL is TX'd or
+redirected, rq->xdp_rxq.mem.type stays MEM_TYPE_PAGE_POOL for every
+subsequent packet on that queue.
+
+A later frame whose frags are plain pages then reaches:
+
+    } else if (netmem_is_pp(netmem)) {   /* false, mem_type left as PAGE_POOL */
+    ...
+    __xdp_return(netmem, mem_type, false, zc_frag);
+
+and __xdp_return()'s MEM_TYPE_PAGE_POOL arm (net/core/xdp.c:436-446) skips
+the check and dereferences a garbage pool pointer:
+
+    /* No need to check netmem_is_pp() as mem->type knows this a page_pool page */
+    page_pool_put_full_netmem(netmem_get_pp(netmem), netmem, napi_direct);
+
+netmem_get_pp() reads page->pp, which for a non-page_pool page holds
+whatever the allocator left there.
+
+This specific crash is pre-existing rather than introduced by the patch, but
+the patch is the change that claims to make the frag itself authoritative,
+and it had the netmem in hand. Could the decision be unconditional:
+
+    } else {
+            mem_type = netmem_is_pp(netmem) ? MEM_TYPE_PAGE_POOL : mem_type;
+
+plus a guard for the stale-MEM_TYPE_PAGE_POOL case, or should the "wrong in
+either direction" claim be dropped from the commit message so the remaining
+hole is not reported as fixed?
+
+This isn't a bug, but a subsystem pattern flags this as potentially
+concerning: the new multi-line block comment added at net/core/filter.c
+starts its text on the same line as the opening:
+
+    /* The rxq mem model does not always describe how a released
+     * frag must be freed: ...
+     */
+
+The BPF subsystem style required for net/core/filter.c puts the opening on
+a line of its own:
+
+    /*
+     * The rxq mem model does not always describe how a released
+     * frag must be freed: ...
+     */
+
+Most existing multi-line comments in net/core/filter.c use the old style, so
+the new comment matches its immediate neighbours and checkpatch will not
+complain. The guide says the rule applies even where surrounding code uses
+the old style, but the decision is yours.
 
 
-vim +1833 drivers/net/ethernet/ti/tlan.c
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-  1771	
-  1772	
-  1773	/***************************************************************
-  1774	 *	tlan_timer
-  1775	 *
-  1776	 *	Returns:
-  1777	 *		Nothing
-  1778	 *	Parms:
-  1779	 *		data	A value given to add timer when
-  1780	 *			add_timer was called.
-  1781	 *
-  1782	 *	This function handles timed functionality for the
-  1783	 *	TLAN driver.  The two current timer uses are for
-  1784	 *	delaying for autonegotionation and driving the ACT LED.
-  1785	 *	-	Autonegotiation requires being allowed about
-  1786	 *		2 1/2 seconds before attempting to transmit a
-  1787	 *		packet.  It would be a very bad thing to hang
-  1788	 *		the kernel this long, so the driver doesn't
-  1789	 *		allow transmission 'til after this time, for
-  1790	 *		certain PHYs.  It would be much nicer if all
-  1791	 *		PHYs were interrupt-capable like the internal
-  1792	 *		PHY.
-  1793	 *	-	The ACT LED, which shows adapter activity, is
-  1794	 *		driven by the driver, and so must be left on
-  1795	 *		for a short period to power up the LED so it
-  1796	 *		can be seen.  This delay can be changed by
-  1797	 *		changing the TLAN_TIMER_ACT_DELAY in tlan.h,
-  1798	 *		if desired.  100 ms  produces a slightly
-  1799	 *		sluggish response.
-  1800	 *
-  1801	 **************************************************************/
-  1802	
-  1803	static void tlan_timer(struct timer_list *t)
-  1804	{
-  1805		struct tlan_priv	*priv = timer_container_of(priv, t, timer);
-  1806		struct net_device	*dev = priv->dev;
-  1807		unsigned long	flags = 0;
-  1808	
-  1809		priv->timer.function = NULL;
-  1810	
-  1811		switch (priv->timer_type) {
-  1812		case TLAN_TIMER_PHY_PDOWN:
-  1813			tlan_phy_power_down(dev);
-  1814			break;
-  1815		case TLAN_TIMER_PHY_PUP:
-  1816			tlan_phy_power_up(dev);
-  1817			break;
-  1818		case TLAN_TIMER_PHY_RESET:
-  1819			tlan_phy_reset(dev);
-  1820			break;
-  1821		case TLAN_TIMER_PHY_START_LINK:
-  1822			tlan_phy_start_link(dev);
-  1823			break;
-  1824		case TLAN_TIMER_PHY_FINISH_AN:
-  1825			tlan_phy_finish_auto_neg(dev);
-  1826			break;
-  1827		case TLAN_TIMER_FINISH_RESET:
-  1828			tlan_finish_reset(dev);
-  1829			break;
-  1830		case TLAN_TIMER_ACTIVITY:
-  1831			spin_lock_irqsave(&priv->lock, flags);
-  1832			if (priv->timer.function == NULL) {
-> 1833				if (time_is_before_eq_jiffies(priv->timer_set_at + TLAN_TIMER_ACT_DELAY)) {
-  1834					tlan_dio_write8(dev->base_addr,
-  1835							TLAN_LED_REG, TLAN_LED_LINK);
-  1836				} else  {
-  1837					priv->timer.expires = priv->timer_set_at
-  1838						+ TLAN_TIMER_ACT_DELAY;
-  1839					spin_unlock_irqrestore(&priv->lock, flags);
-  1840					add_timer(&priv->timer);
-  1841					break;
-  1842				}
-  1843			}
-  1844			spin_unlock_irqrestore(&priv->lock, flags);
-  1845			break;
-  1846		default:
-  1847			break;
-  1848		}
-  1849	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/31924332756
+--===============2544190724305362226==--
