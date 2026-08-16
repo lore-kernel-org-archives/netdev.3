@@ -1,145 +1,246 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F1A222590
-	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 08:46:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786870019; cv=none; b=jr8De0N8ZvBI2gnCTDtlRf42mqZUGx9ETsG6Ha2kPCrRVwTuznClHVz0zi+PDhNvrVqPGaVs04B3rGpwPCxyIUFByeuaGqo1wQf+o7VXywJsLyZalAzNOoqu3W+2svA9s+m5NpBOt7cJ19Kpp+n42dbmcgzmsLHc6mx+cp1cQUI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786870019; c=relaxed/simple;
-	bh=yhFY03Jf7Jc3gG0Hk2Ox6qqS7YLRstsfZeOM8h5oVnc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ua9KB1bWWpPKN3/EYAd+r25IHfpi//jIcEVtFqDPrL/JLCN1TkDYGIA1OqTD5wgPapfX38fiQoVCzdlE9E/5n0k19kVfunWP7RO7hUzDk2jQJUjvDZIyWNyWWJF8qmDM8+7ziXTkFKYWvtF1jJeI86Ladeq7DC/vtplZbmlMsBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iVctS/5f; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0F63BB4A;
+	Sun, 16 Aug 2026 10:06:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786874766; cv=fail; b=Tlj8WbFzAnN6yK+quR8UJDWbbgivhXsZc+D2aUDMqi7se9IvJBbcl3jFuubpHfaxP8PmmhWCDkYg0eGAv33QEeoEVM1BZlNBYXs/yZmyjoEZMxZSDEmlGnn1Wu8I83oA1ZB7pyFdH80JrY5O9guWsQUIHqQ3v31zM1N7YHwnlUg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786874766; c=relaxed/simple;
+	bh=+XJvdMq97LfCwEeOV0YCT4daztqwqyCagWmKkgSSPIU=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=szbCMuzUoccCIeG2t3OtSyFmhXkN0i6RwVbEJv7mxJy1IlvXYcfEFrIcDgsvKKfZN/+mbJe+n8xXUj2sF4eq8OGIM7oXca8J5MICNiAl1I9tA/xP45oTLAksUQybEzuekz8gXY+JnvKNZNIkYid5b9xX3m6eQhq6Vs8pW7Iljv8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j5BkAxZT; arc=fail smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iVctS/5f"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38e69bdb0fcso1836773a91.1
-        for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 01:46:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786870017; x=1787474817; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=g3O4EGPdm9ux4itALfuPLExBGtY87K4Q/kGgwV3Dhs0=;
-        b=iVctS/5ffXTxZ7Jh6kBj53oFWr0+6FXA0z6UrUN583PttrNp/SEZYNXyKqEjj3nLxe
-         SYlkiSDBwklN+6RXUoNXll8gHcgNvq5fJIGp+RlN66T3wg8n74IZpDp/DWxeRpAJzQqF
-         hRLaHfBqGxNjaO0OBG2WLsHeGk4oDCjW/7eawe1LT/897AON79nkGdZqjLvEq+CFtvvx
-         PNKd4WJw9TdCQSdg4t7PplpgDzP6Ggf4HyNzIWdSxNrgq8QZIyv/oRNwDQ8kUA/25LpR
-         IMAlMdFYntDeQ7vG5M1vb8faz8A0PfXnRHuyFVzvmG0/fXIX8oXE9chxhCy0Go2+yYpb
-         mlpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786870017; x=1787474817;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=g3O4EGPdm9ux4itALfuPLExBGtY87K4Q/kGgwV3Dhs0=;
-        b=dpIXnqnWwrEzpWvL3TA/IMaNglN2yQiVjZ+s3LGRlQY9qApg58+e9b1bZEh2NTFHkR
-         XpEvIY+CJ5LBDi/ZqoINHgUF4K4uX7WOjUaZcdyTeKv5jhKaRBe30UBlTW0udKkd+PTO
-         8iRIzHut2UZyNA7GCIuNBlmPc0P4M0Hp7gN7X2cB9dKadrmgjnD5BsV8PX1t8vgP51nv
-         EwlVErv6Eph8Yt0sbBDD6ui5dNoFbapI5GYVvuVfUppUn05oxzaYADUfEA45rk6r1RfD
-         4mR824qxDNDJ/Kir2tBN12fJmUDk+KzpbFbelW4Vwf7VxrfQTH1dBaKOsqL2tU2h4HT9
-         skLw==
-X-Gm-Message-State: AOJu0YzjTRu2KT5FirBCzjP98AqFHqYrBJ5fWUEuOQBt6ve7Ei/WKE8s
-	1JGO//EfXqokb7JiaXUzJ65T0oPoRSpCqNRq41NZ3K9QA/prTkuK7Wwv
-X-Gm-Gg: AR+sD13GDaorI7IrE9EOwMtfjSONAlXjKmWo4KfYGIQSP0rNnuqYPf1JpEL8SHkBoLq
-	Bs8ilzEt7S8ndeS6I3QAVXTQWZrCdMbEt+nMo8qP1b/j4VfQcUDpdm6eEG5ZZYQiKY1eCwgoQj+
-	NQPf3c+5ph57UirGDZ9KYmK0usBTLPrN3F9mg5UdxRUnsNoSnglI/6njXhPGnE1hn1L2wtJL9tB
-	I083uDSwQ+NuPKr3j/qa9eiackwvXVa5BYp5Hg8ZG4bKnQimkLwOPLR2T6S7zNEuQnUgjPK3PMP
-	dmrTzZhweAMpu75ymcdJU3vvzxeVw2z4J2sUap2UMMtBnf4x/1z9EBNVMRThiz3EP1TGBaSj7nE
-	OESaSxoKphJdGE3dOgiHpzVPvixhpmJeki9tUlQrMG59ly5hWt8u47Rt6ARBFXXuh8SlEQ7A0W3
-	X3j6AdnCrKUky2HhSeBdsKvmUKn8SNoguzim3Ngo98CLsr6ZyQMGYdL/tKyvpdow2fML9R30la
-X-Received: by 2002:a17:90b:1651:b0:38c:a59b:5189 with SMTP id 98e67ed59e1d1-3933e633478mr17153157a91.15.1786870017044;
-        Sun, 16 Aug 2026 01:46:57 -0700 (PDT)
-Received: from MacBook-Pro ([163.125.147.19])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39531fbc08bsm968494a91.12.2026.08.16.01.46.54
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 16 Aug 2026 01:46:56 -0700 (PDT)
-From: Hu EnZe <paulinsider@gmail.com>
-To: steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au,
-	davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	corvus@tencent.com,
-	slamhu@tencent.com,
-	paulinsider@gmail.com
-Subject: [PATCH net v3] xfrm: hold state while flushing device GC list
-Date: Sun, 16 Aug 2026 16:46:34 +0800
-Message-ID: <20260816084642.76154-1-paulinsider@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j5BkAxZT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786874763; x=1818410763;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=+XJvdMq97LfCwEeOV0YCT4daztqwqyCagWmKkgSSPIU=;
+  b=j5BkAxZTyBGH8x2raVV6Ws+w3oXtI8Cq4rNBO2wSyRMJ+jPjmQ79SrMn
+   XHTh0eEGjtjkijbsRpkCJFfyq+Bd2fnQSF4oklMEbMYvzc8MeZVF6CQgh
+   dJN/d4VX5RZRxcAYBGeJYboo175vQX8FHOg9Rb8pT7yoN646PbWDunn6u
+   cmUi/jmjh6EQVj/ZAnj3VRnnKiVRkRcb9ADIBLTQ5Cvl7h77KcRuXlZAy
+   vVO8/D9fHY3ieBR4kLvhpYLuOdXbAuNzkcAl/IuMe9IBJ4t8JpYvm78zB
+   fU5DsBUgeE3aGRdf4yrNrZyO1sQuNPOXZ7/5CmoQiw15WmUH+ZBMhv6Ev
+   g==;
+X-CSE-ConnectionGUID: xlguryC8QtytJrgTlkhRow==
+X-CSE-MsgGUID: uShU5xWzR+afeaAe9ah0Xw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11876"; a="89896311"
+X-IronPort-AV: E=Sophos;i="6.25,226,1779174000"; 
+   d="scan'208";a="89896311"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2026 03:06:02 -0700
+X-CSE-ConnectionGUID: m4aIDdl4SmK9JUIU0qkjkA==
+X-CSE-MsgGUID: uifcoQSJQAa7k95SRJKnQg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,226,1779174000"; 
+   d="scan'208";a="302877891"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2026 03:06:02 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Sun, 16 Aug 2026 03:06:01 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Sun, 16 Aug 2026 03:06:01 -0700
+Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.48) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Sun, 16 Aug 2026 03:06:01 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=I17/+kyHVc0+taW5/JglXrExsPzjt/63XT82w8aT7y+uQyh2ApAz5yy9GDrojJ1R6HerkEDc/Dt5auFhTgepMNAesIk6+SZ0ebC6XC0kXthBGfXWxJLJzTFKeWSOD76ad3u0JPgfycZZKQRyu9IjBXYHYXuZJXfj6l3bv6urGBEvIpgf/VgKN12CEiCTIwM4z2/8tKqBASmGAXb7ijIrLq/x/fUgoS/bCaCczXxzKWlhOYkpt4AD8D5LCoMTXozycmd3MarIX1Hau745ZBBAXs4ITDHXvgwdmoWy4X4XpEvhFVsNwsFjEBlbPWlbNTGmIVZbGokdAyAo8vlKYF/8sg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=s+oEiJd/hvEJNu5U3EQwdXIgMUNhjDK1tVJ9O20XbPU=;
+ b=wQCE9BYW1TO0vOkgvBQpb4k0NC3RYAHvHgkedFjsh4ZNc52arrf1W+rpuHYz4HLDuPMKJHtpIF5BO6wvPelRAuE6L19rcEqvRM6+Jdv2CdRvGnUuWCWvk580mU0T+gYe6CdjxFRbpE01ap03+Nj9Wal1dW24TtE85u7XEyKattlzV80TxnZb6PkBFXEBBcV9a9XOuJquUqla1UU1GgL6RqmpQ1qRpU3P+IY5LkP2c3bP+JKAPLfXyZLQnNAzzuJVTzijpiBXz1nu8R6DMMQSw32HZhKNbr9WG7pGiFlIypxPD3Po3rahRAg/kPvFPRDrKl5xujmSd4frvvoqGjMaQg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SA1PR11MB8448.namprd11.prod.outlook.com (2603:10b6:806:3a3::17)
+ by MW3PR11MB4537.namprd11.prod.outlook.com (2603:10b6:303:5d::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Sun, 16 Aug
+ 2026 10:05:58 +0000
+Received: from SA1PR11MB8448.namprd11.prod.outlook.com
+ ([fe80::38f:6a4:ce6b:d5b8]) by SA1PR11MB8448.namprd11.prod.outlook.com
+ ([fe80::38f:6a4:ce6b:d5b8%4]) with mapi id 15.21.0315.016; Sun, 16 Aug 2026
+ 10:05:57 +0000
+Message-ID: <71733617-814a-497d-a43e-421b688539da@intel.com>
+Date: Sun, 16 Aug 2026 13:05:48 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH] e1000e: fix incorrect modified flag
+ check in e1000_read_nvm_spt()
+To: "Ruinskiy, Dima" <dima.ruinskiy@intel.com>, "Loktionov, Aleksandr"
+	<aleksandr.loktionov@intel.com>, Ivy Lopez <skunkolee@gmail.com>, "Nguyen,
+ Anthony L" <anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>
+CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20260806172452.32139-1-skunkolee@gmail.com>
+ <DS4PPF7551E6552AF076FA235232DAB1E95E5D12@DS4PPF7551E6552.namprd11.prod.outlook.com>
+ <835dad4a-6873-4983-af3b-ea7b58f93a12@intel.com>
+Content-Language: en-US
+From: "Kadosh, MoriyaX" <moriyax.kadosh@intel.com>
+Organization: Intel Israel (74) Limited
+In-Reply-To: <835dad4a-6873-4983-af3b-ea7b58f93a12@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: TL2P290CA0012.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:2::16) To SA1PR11MB8448.namprd11.prod.outlook.com
+ (2603:10b6:806:3a3::17)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR11MB8448:EE_|MW3PR11MB4537:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4ced2a43-57a1-4f5e-c6e5-08defb7df75a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|23010399003|366016|22082099003|18002099003|56012099006|10067099003|4143699003|11063799006;
+X-Microsoft-Antispam-Message-Info: E/+l8xKVEbVEx/mi1FRDA6kNXrEBeP6QIAPfw+fWkvnfG5mHMmz0KeFKMCw6Kg/1Pwm1LpLfs574zoJ3dF5OTEks4eTPrAiQeLO19rRENwGUXRmUKjQFuaBU3aeKUx+hK9K+Jwu15NucwrqO74m3gKrjBeZiIXIL6dY53ZFZnAV9K+NJLwKx2oRP3BD/f5sfnBp9SDHAScIvAgeB4O2ATW/CNGgeBluGtC6OHmk+aoo6Hfrc+7wsuB72hbBfl844pPWQ/UyAzy/K/A/m/QcppJ2Nrys2YTFKyb8tC9PiZ2SUnz//sV2B+p8beK1yfBmXDg2qc9VPVeSYEiwgjxg/Iy2dYtfB5pwYKd28MXogAc5CrdWOK342ZAZZfG4UgVCIfYieZxYq7LpPd0deZoqMhdfR2pSHStw0A7IRsFn8oQJUc4zi0mcyuMW1ooDkTwABAwmcQ8Lsb7Cx8DJEI6twB2uGU247wyGy0FVgK/QZOGkV28kbH7SBotspy3N8cqkIEqNVlnzQODDqZaz5Hj86hdDiagXjxQ77tHBWspPys8VhLAUSsOnqHyXlK6ox0rdyIycm23wH+MpM9sAT46HvoGfYEtOkBwXVQsZAfGTw4vbb8KcL9LEkMLyEvMPgIpiJMUGB1zqNSsIsRbivnDjjfH4IdRQLxyco+YGsVQWJ1qQ=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR11MB8448.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(366016)(22082099003)(18002099003)(56012099006)(10067099003)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YVJJemdoL0NuYlR6bisvWDJZYld4UkszQWFBWVV1K2UvQUlWTzI3NjlFUWlo?=
+ =?utf-8?B?WHkvQnNTcjA5U0JxdlpCbmFyajZyTmF2bWdlZkt5Y2ozREx0SXZhYktIZEg4?=
+ =?utf-8?B?eTlMU0tZb3N6OHBTeUt4dVRBZ3Y3dkxHQnNBZEdNUGpWbDcrbkE3Q0V4U1FB?=
+ =?utf-8?B?ZEdyd2psaFV6WlpNVTZyR2VQeEF2eFppdjZIbmg4WGlkczhOQks2NU05allK?=
+ =?utf-8?B?cWJKSTNqT3JTQ2RKMHZTejFDMXRsQ0VxT1Bkc1ZrQ2ZnQWxRVnZGWTF2NTVw?=
+ =?utf-8?B?dzg5UlAxU0Qzd1hkenc0MDQ5N0syaVlFVWRxdW1maUZyS1QvcG96MzBwVkdV?=
+ =?utf-8?B?V2VaVjJDTnFzbTRDZFdPWHloL1B4OVNvM3F0M3YxWVlod2JDdm44bC9ZWUh3?=
+ =?utf-8?B?VjMxcHExUjlRbU9xOGpqNHRXeVMxY3lFWmUwWFdPK1h6K1BmOW5SRmVBN0tu?=
+ =?utf-8?B?MHBQT0h3SG9yTlVvejZnQnd5WUk4eklTWjhzaGV5RmpNZm5SdFFINmNrNUZG?=
+ =?utf-8?B?US8waHNvcnJTc3I4NStyQnQ5QlVpNnlHS3FtdEsxL1Y2d1lRblU3Q0NXRTJi?=
+ =?utf-8?B?MTk3WVUyYmVYTWpiQzdXMC9KcE9abDBOU3U3RUVrTmNHTXBibW9Wd2dIaHoy?=
+ =?utf-8?B?SzkxTHdqVzZYbDdWYURidG4xVUM0L0IwMVEzRTZnSU9DVTJQeW16MllyVkdu?=
+ =?utf-8?B?b1dlTUFUNFVlMlRhUU8xaDludTRVaVRZZG4yTUI0UDBOcTFNL2crMnBROElU?=
+ =?utf-8?B?TnI3WXJkNlgzRGJXM3RGa1JnUHU4MlJGTVc5dEgzVkRHNnFsK0liTC9OQlJF?=
+ =?utf-8?B?MDgzU2FGT3ZDTXRzeitCanhzMWV0ZFVlK1JMSk9sUHl1UmRUcDcxMDF5NnBI?=
+ =?utf-8?B?aldUYmo1RjV1YXB5Rk40U3c5RmFQZEdxL1BxalVyYlNVWGdSd3BieUZHNG1t?=
+ =?utf-8?B?Mk1PWXVhc1E1ZG9RajJKMlJzWXlYNm8zZmh4MklRYlFrZzFValdERFV2RUNs?=
+ =?utf-8?B?YzE2em5HeWpoR2gvemMrZzE3cmloc0FGQURyT3REbWlZd1ZhSUV4cVRpemFT?=
+ =?utf-8?B?NC9meG0xekhiY3NQSUlwOGtzWmpyQXJqU2x6a2M0MWgwZHRDaHJBOW1NSTRT?=
+ =?utf-8?B?a2lzNXRtanlmd1pDL2xyamZEVW52eXhIS2kwbUViSHUyZ1gvMzNxMU96Rm82?=
+ =?utf-8?B?cEpQbGQ3UmFnU1oyaWk5WlJ6TG55TzM4VkVJb3E0QjVOellvTEwvY2tqM2xK?=
+ =?utf-8?B?VW5LdHJFa1ZwOUQ5Z0lNOSsrNmRBZ0htdW1mQ05CMHpHaS8zY1NIaTF2UUx4?=
+ =?utf-8?B?cGxEU3dUU3laVlZ0TVR1UXhCMWd6a0NKeTJDWVIvRUhzaXNsVXA5VUtRb09L?=
+ =?utf-8?B?TFMwWnRkdkZxY3pGeFJSTWJnUnl3N1I3RjEvcjlsMVR4VTVkVTdKcmdtSER2?=
+ =?utf-8?B?Mis4ZC81dUlCcVZkTVVRS3F1amdBQXZtbHNoSmlRY0NWYXZyajdBWXQ1QXR6?=
+ =?utf-8?B?QWdBK2cxSllSZVBGV2ZKNFBvRDRLbFpHQTA0NHJTeDRhRjl4L3F3cFdWMlJ4?=
+ =?utf-8?B?ZENWb09YY0o2QlQyZGdCREhocWNqSWk0Z3cwZ1htNDhhdEhNa09pY1ptMHM0?=
+ =?utf-8?B?emFoRUNLcENrb01NUjFkZ2xMK1hNd3YzMXREV0JWTFIrQ2FxVUh0TytBMXNt?=
+ =?utf-8?B?UjhCbFR0ZWtEN3RQMXM5ZVdPbDNoMGNTSkhFWkFSZkJuSVM5N3k5dS9YMGNH?=
+ =?utf-8?B?MmxrZGYxTlJ6dFRGcmZiOHY0Um9WUzd6N3JJV3dvMnlVeFhyTHJYaTFjMTZm?=
+ =?utf-8?B?MDE0NjUvL0F6TVpOMFliZFprenJTelFmVzBTaXhWVlljYjN3Q21NSEhjY2tT?=
+ =?utf-8?B?Vkc0RnJMcDA2dlZHcHVKcUc5dGdla2xHWUY1N0dmRUh1VGk0UytLSmNoUFRw?=
+ =?utf-8?B?aTZWakFac05iWTBWNmgyOWVySXphaTVLcmRTejg3TVpRRU02Q2hiakRUZ1JR?=
+ =?utf-8?B?eWFJS000aUpXZEhwN095a01kY0hJQzBPSGc0U00xOUtnMzRYV2ZHOHlSYW9V?=
+ =?utf-8?B?cHJMUU0wZ0RONWEySWdTbjNQTmVQNnRjdDBMdTVKQ2tpaHNjU1Z0TkViWUx4?=
+ =?utf-8?B?N2NPVlo0ZWNER2tMUm1GMGxDUDgzZkQ0QUpOU1ZMOWt3cDZPRGhVc1F3cVZa?=
+ =?utf-8?B?eExkTXpBUGJHY2RtT1FoVlJiUko1TFdheGs2ZWgwZVUvOUlIM0JyQjJSeDBs?=
+ =?utf-8?B?b2QzZnBCU0JLcmUxY3JjREJSVVRreVVuTEtpS2M3aFhvak5IMnJNMzV0Sllh?=
+ =?utf-8?B?bGV3dkFRd2orcDZjWHRrTXpubGtJSEk5ZWVWNW5pcmN1b2g5V09sc3JLL0pE?=
+ =?utf-8?Q?uppZpSxmc5dKjOTg=3D?=
+X-Exchange-RoutingPolicyChecked: B2tzqnVVs/fkyjRCTUOkQj+hISa5PfpqQbLJymPwMIP3G5RNR29WhKW8MB11Y4lxxnWULRwxW+0FQTuDq21cp28uOwoo3ivBCKcCHK0pjQscmzWqZSoOK45zVnx4PjkjZkIcHJM1L0NWcrjkdJURqaxTuo0pW9yMUW44E8I1xbXlrZtwJmcjIJGxKTVyWoEN7tRak+I6zmzQEgcMTb+r3Nb1T/XRSJmRdLPffh4ggv3CBbQNXWtVaW4jd2ScqF34mQSXUJ7aQXCGR2UywF+DrNQCOF3TFDIW0Dom+aaq6jg4y3MY6BAyAdeuMov+nyzwqjjJkB3VocLyTKYgdLVAvQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4ced2a43-57a1-4f5e-c6e5-08defb7df75a
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB8448.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Aug 2026 10:05:57.7489
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: WH5e6OwSqokqUa16LLO1h9rkxrLHrdirPIxVDgODqhnOS1ECrQWD0UvLiAKRGYEXfx5zeXyJIZuN33qgGMz2Ndd+jsSkCOEUCh3VXybvtI8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4537
+X-OriginatorOrg: intel.com
 
-From: Hu EnZe <slamhu@tencent.com>
 
-The device GC list does not hold a reference to the states it
-contains. During netdevice teardown, xfrm_dev_state_flush() drops
-xfrm_state_dev_gc_lock before calling xfrm_dev_state_free(), so the
-regular GC worker can concurrently destroy and free the entire
-xfrm_state. Subsequent access through the stale pointer can corrupt
-memory and cause a kernel panic.
 
-Pin live states with xfrm_state_hold_rcu() while holding the device GC
-lock, and skip states whose reference count has already reached zero.
-Drop the acquired reference after the device state cleanup completes.
-Also use hlist_del_init() when removing dev_gclist so the node is
-marked as unhashed after removal.
-
-Fixes: 07b87f9eea0c ("xfrm: Fix unregister netdevice hang on hardware offload.")
-Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-Assisted-by: Codex:GPT-5.6-Sol
-Signed-off-by: Hu EnZe <slamhu@tencent.com>
----
-v3:
-  - fix the outer email From name from "paulinsider" to "Hu EnZe"
-  - no code changes
-
-v2: https://lore.kernel.org/netdev/20260809081151.56774-1-paulinsider@gmail.com/
-  - rebase onto the latest ipsec tree
-  - use Hu EnZe <slamhu@tencent.com> for authorship and Signed-off-by
-  - add the Assisted-by trailer for Codex
-  - clarify the netdevice teardown trigger in the commit message
-  - no code changes
-
-v1: https://lore.kernel.org/netdev/20260801041340.92117-1-paulinsider@gmail.com/
-
- net/xfrm/xfrm_state.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 36a4f6793ede..01138d3d1067 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -785,7 +785,7 @@ void xfrm_dev_state_free(struct xfrm_state *x)
- 	if (dev && dev->xfrmdev_ops) {
- 		spin_lock_bh(&xfrm_state_dev_gc_lock);
- 		if (!hlist_unhashed(&x->dev_gclist))
--			hlist_del(&x->dev_gclist);
-+			hlist_del_init(&x->dev_gclist);
- 		spin_unlock_bh(&xfrm_state_dev_gc_lock);
- 
- 		if (dev->xfrmdev_ops->xdo_dev_state_free)
-@@ -1006,8 +1006,13 @@ int xfrm_dev_state_flush(struct net *net, struct net_device *dev, bool task_vali
- 		xso = &x->xso;
- 
- 		if (xso->dev == dev) {
-+			/* The device GC list does not hold a reference to x. */
-+			if (!xfrm_state_hold_rcu(x))
-+				continue;
-+
- 			spin_unlock_bh(&xfrm_state_dev_gc_lock);
- 			xfrm_dev_state_free(x);
-+			xfrm_state_put(x);
- 			spin_lock_bh(&xfrm_state_dev_gc_lock);
- 			goto restart_gc;
- 		}
-
-base-commit: c12cbf56320fb633484ee0ca1fb7d68d6b64b213
--- 
-2.55.0
+On 09/08/2026 12:21, Ruinskiy, Dima wrote:
+> On 07/08/2026 13:56, Loktionov, Aleksandr wrote:
+>>
+>>
+>>> -----Original Message-----
+>>> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
+>>> Of Ivy Lopez
+>>> Sent: Thursday, August 6, 2026 7:25 PM
+>>> To: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Kitszel,
+>>> Przemyslaw <przemyslaw.kitszel@intel.com>
+>>> Cc: andrew+netdev@lunn.ch; davem@davemloft.net; edumazet@google.com;
+>>> kuba@kernel.org; pabeni@redhat.com; intel-wired-lan@lists.osuosl.org;
+>>> netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Ivy Lopez
+>>> <skunkolee@gmail.com>
+>>> Subject: [Intel-wired-lan] [PATCH] e1000e: fix incorrect modified flag
+>>> check in e1000_read_nvm_spt()
+>>>
+>>> e1000_read_nvm_spt() reads two adjacent 16-bit NVM words as one 32-bit
+>>> dword for efficiency. When deciding whether to use the shadow RAM
+>>> value for the high word (data[i + 1]), it incorrectly checks the
+>>> "modified" flag of the low word (shadow_ram[offset + i]) instead of
+>>> the high word's own flag (shadow_ram[offset + i + 1]).
+>>>
+>>> This can cause silent NVM shadow RAM corruption:
+>>>   - if only the high word is marked modified, its pending write is
+>>>     lost and the stale flash value is returned instead
+>>>   - if only the low word is marked modified, the high word is
+>>>     incorrectly overwritten with the low word's shadow value
+>>>
+>>> This function is used on all PCH chips from SPT onward (SPT, CNP, TGP,
+>>> ADP, MTP, etc). The bug has been present since the dword-read
+>>> optimization was introduced for these chips.
+>>>
+>>> Note: this was found via code review while investigating a separate
+>>> reproducible packet loss issue on I219-LM (SPT+ PCH). Testing showed
+>>> this fix does not resolve that particular symptom, but the flag check
+>>> is still a genuine logic bug that can corrupt shadow RAM contents and
+>>> should be fixed regardless.
+>>>
+>>> Fixes: 79849ebc0e06 ("e1000e: initial support for i219")
+>>> Signed-off-by: Ivy Lopez <skunkolee@gmail.com>
+>>> ---
+>>>   drivers/net/ethernet/intel/e1000e/ich8lan.c | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c
+>>> b/drivers/net/ethernet/intel/e1000e/ich8lan.c
+>>> index aa90e0ce8aca..87cd1cdc6f10 100644
+>>> --- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
+>>> +++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
+>>> @@ -3473,7 +3473,7 @@ static s32 e1000_read_nvm_spt(struct e1000_hw
+>>> *hw, u16 offset, u16 words,
+>>>                       dev_spec->shadow_ram[offset + i].value;
+>>>               else
+>>>                   data[i] = (u16)(dword & 0xFFFF);
+>>> -            if (dev_spec->shadow_ram[offset + i].modified)
+>>> +            if (dev_spec->shadow_ram[offset + i +
+>>> 1].modified)
+>>>                   data[i + 1] =
+>>>                       dev_spec->shadow_ram[offset + i +
+>>> 1].value;
+>>>               else
+>>> -- 
+>>> 2.55.0
+>>
+>> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+>>
+> Reviewed-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
+> 
+Tested-by: Moriya Kadosh <moriyax.kadosh@intel.com>
 
