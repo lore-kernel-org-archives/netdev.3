@@ -1,83 +1,103 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4BAE442377;
-	Mon, 17 Aug 2026 16:41:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F198343F4BB
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 16:41:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786984887; cv=none; b=F3cyupJVrlq7TA5reM67NF4zqAHGXrNDIqWC6tdfBGacVHr1o+eYHktRuFlKuYjRZCBc+MhuYiFEqnV4Zof2rjFHjLknrVlQQ2QRtuC51hXEtfj0ANHAgfIxMEU/LaqkAwBRiQr26GOizt79bMETT2HaVqfWfw9/y6axGjxSqnA=
+	t=1786984904; cv=none; b=K2zxDdyEkIJDxlrDYoJELvlEGEeV7zqSmkaOo2e1qWWeObAlnpTAQEAzQqkn9Pf8D9N70sXHPxOpHjPQNMdMKsN2cT6AyyXEMfgyvV1Pdz2hZ4TehmPDKqhml6/R/W8sLeivVSSg1pfEjGly6kNKPJKLWM3pA/7TzQ3Pt9Qqn7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786984887; c=relaxed/simple;
-	bh=YefWs10omkpXFntnRM+AJiT+L3apLCmMwLdYEEVQ6G4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ndSSS20uYeW40lZhkGvBHgx69LHOU8PKIHvIFeXqMqkNPY8ccqDyIisuLmPIEEIUVW4u7ffsBahP2rYi/wtvifmav8qsL9TL2LgKjdTZFsmWpNvJndQCSYBW/qSBTL/PNFXibTUCSfA1/paNgIYIUHSoQKBnselXUyjSz1gRec8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=zikAsAJr; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1786984904; c=relaxed/simple;
+	bh=zWSYY5J1rQgdlPKHbRWupkHXdmRNtjsiW6xfY1kOFhA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HDwTCqUh49sfa6HeB9I8TfgKqDZA9HdLG9wkzwO4u2S04/GI8sphHWRRuzyf3YcvyNP/EwvMOWymjJzSG5imWHBUSR8+IfVf3KlqUgh8MIy/bNTpFpZ6kLHJVDTxRm4Ek6sQjPt4Io+nwtq9Kt3JHTzrZFRjs6MS1QMG7KZQEL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NI1tcbW8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="zikAsAJr"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=LaKbhxdXvX8tknig+YsLj2T2XA3CrangdxPpcV3Aans=; b=zikAsAJrvLBdpQn5FdD8udPg6D
-	TugwlwJu+3rcLRYouSVnhVLcaR6rUH+hRz8QNKe6UZcQL53TJW07XntDYagqjVVAOUwZNlq0ilogW
-	hLhQRSYMVs7VN2dRq+TXy+SwQiKjvftEDoBkkI5E6vnyX7MyDrALUd9Cwj0KTJ5cyw+4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1ww0OS-000LDX-Ce; Mon, 17 Aug 2026 18:41:00 +0200
-Date: Mon, 17 Aug 2026 18:41:00 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Markus Stockhausen <markus.stockhausen@gmx.de>
-Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	netdev@vger.kernel.org, chris.packham@alliedtelesis.co.nz,
-	daniel@makrotopia.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v14 04/13] net: phy: add phy_detach_internal()
- helper
-Message-ID: <5d3ecdd9-3721-4710-a1c8-e48a2a020799@lunn.ch>
-References: <20260817162632.1208891-1-markus.stockhausen@gmx.de>
- <20260817162632.1208891-5-markus.stockhausen@gmx.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NI1tcbW8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA621F000E9;
+	Mon, 17 Aug 2026 16:41:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786984901;
+	bh=scGHDOQsniGl9/8dMOFDd/VQBe6gjQ9BCaox4rixqOk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=NI1tcbW88D/JM4DsY4r+8J6LPn4hOSRzw8om06DAydAEI9MoXW1UagY8v3foAQvBD
+	 t9pNJtGBrJcLO4jPwhkmMVuQuWmqhM/pjr82G9XPEIA+lq9tAL/a0RdqFlVA6Xrxni
+	 LOG5/P/oDuyn8a8Xo/farbHJfm3Sr7WMfZmwEddTBaDdENaboTDf89/Se2N3PKT4YK
+	 WLqR6a0pSg5aHgaAv4nIB5n3yRrFUVgqtco9jCcSHdbysuPbS4LTRMFdZMaReyV5+G
+	 b1z9EVvPoBKAjs+IRqY+ntT8NbuzQ7/mlMGFZYzt8oXjBwsynFRtQjX6Y40qkRtKa1
+	 A0nwgjKJ175hg==
+Date: Mon, 17 Aug 2026 09:41:40 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Maxime
+ Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net-next v2] net: stmmac: improve TSO/GSO queue
+ selection
+Message-ID: <20260817094140.0e92f54c@kernel.org>
+In-Reply-To: <aoJwbQ-v--cTcysz@lore-qca>
+References: <20260808-stmmac_select_queue-tso-fix-v2-1-67175b29772e@oss.qualcomm.com>
+	<anybM_3Rdg8X8CMs@lore-qca>
+	<20260812161038.5602eac9@kernel.org>
+	<an4qzUrK62-rN7Q6@lore-qca>
+	<20260813172156.0243cb7a@kernel.org>
+	<aoJwbQ-v--cTcysz@lore-qca>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260817162632.1208891-5-markus.stockhausen@gmx.de>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 17, 2026 at 06:26:23PM +0200, Markus Stockhausen wrote:
-> For the upcoming MDIO bus notification enhancements the PHY detach path
-> needs to inform the bus about these actions. Until now phy_detach() is
-> called normally but also in the phy_direct_attch() cleanup parts. So in
-> the future there must be a clear indication if a notification is needed
-> (normal path) or not (cleanup path).
+On Mon, 17 Aug 2026 04:22:37 +0200 Lorenzo Bianconi wrote:
+> > > thx for the pointers. I reviewed Russell's commits and I guess we have two
+> > > options here:
+> > > 
+> > > - manages all the TSO/GSO checks in ndo_features_check() (stmmac_features_check())
+> > >   and disable TSO/GSO if the selected queue does not support checksum offload
+> > >   or it has TBS enabled. In this case I guess we can drop ndo_select_queue()
+> > >   callback completely (it does not make sense to me to always use queue 0 for
+> > >   TSO/GSO packets, e.g. it does not allow proper mqprio offload).
+> > >   Please note this approach would introduce some performance regressions with
+> > >   respect of the previous implementation.
+> > > - implements TSO/GSO checks in ndo_select_queue() callback
+> > >   (stmmac_select_queue()) in order to keep TSO/GSO enabled if the selected
+> > >   queue supports it and at the same time do not always use queue 0 for TSO/GSO
+> > >   packets (proper qdisc offload). Please note this is patch I am proposing.
+> > > 
+> > > What do you think?  
+> > 
+> > I don't know this driver, or how it's used.
+> > 
+> > From the commit message it sounds like "if the packet wants TSO and 
+> > the queue has a scheduler enabled - take the packet to another queue".
+> > Presumably you know why the TBS is enabled and whether the packet
+> > should or should not be going to that queue in the first place if
+> > you're sending the patch? What is the use case?  
 > 
-> Carve out the phy_detach() code into a new helper phy_detach_internal()
-> and make phy_detach() a short stub that calls the new helper.
-> 
-> Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
-> ---
->  drivers/net/phy/phy_device.c | 165 ++++++++++++++++++-----------------
->  1 file changed, 85 insertions(+), 80 deletions(-)
-> 
-> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-> index 94b2e85e00a3..835d71306b4d 100644
-> --- a/drivers/net/phy/phy_device.c
-> +++ b/drivers/net/phy/phy_device.c
-> @@ -1734,6 +1734,91 @@ static bool phy_drv_supports_irq(const struct phy_driver *phydrv)
->  	return phydrv->config_intr && phydrv->handle_interrupt;
->  }
+> Reviewing the driver codebase, TBS and TSO can't be enabled at the same time
+> for a specific queue (TBS is not enabled via DTS but it is hardcoded in the
+> driver). Moreover, for some devices (e.g. dwmac-intel, dwmac-mediatek, ecc.)
+> TBS is enabled at bootstrap for Q1, Q2 .. Qn, (Q0 is never a TBS queue) while
+> for others (e.g. dwmac-stm32, dwmac-sunxi, ecc.) TBS is not enabled at all.
+> The current codebase forces TSO/GSO packets to Q0 (since the current driver
+> guarantees Q0 is a TSO queue). However this approach does not work with qdisc
+> offload (e.g. mqprio).
+> I think it is clean to just move the TSO logic in ndo_features_check() and drop
+> ndo_select_queue() (previous option 1) but I guess this could introduce a
+> performance regression with respect to the current codebase (we could disable TSO).
+> If we move the TSO logic in ndo_select_queue() (previous option 2), we could avoid
+> forcing the TSO/GSO traffic to Q0 if the selected queue supports it and
+> at the same time avoid any performance regression with respect to the current
+> driver.
 
-It would be good to copy the kerneldoc as well, since what that
-describes is actually performed here.
-
-
-    Andrew
-
----
-pw-bot: cr
+Sounds like we don't have a clear understanding of the Intel / TBS use.
+I'd rather risk introducing a regression for them, and have someone who
+actually knows this system help with the fix than accumulate
+incompatible workarounds.
