@@ -1,118 +1,131 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7B744781F
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 15:25:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6163F88B9;
+	Mon, 17 Aug 2026 15:26:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786980316; cv=none; b=FHK45v4P7D8Vu66OmfySVRO8ldEv2Qx/hwhk8iF/UlsL6CCL1l7w4ZaKFaBxd6LABAKINXzKvvFiTVIl+DFOq9oyz9+xWu9Ek8BIjAJIiuIAP8rv49Hiqhq/hUdDyDMyKezQdbiZmDt3vA2jVKFSr65kLr548awj6Ku0yJk6rHc=
+	t=1786980401; cv=none; b=ed+lF01Qjc1AtmJ2LtbXA+gqSZ9uKk/IK7EhIKiW6CSAs8+gZVn//8+xF8Z21LATBs6UCoLBVJ0HzPFhLRb7YdXKuJceMs9sXz/O14ttFH8UX1S6N+Xs4OToehsbjFwhXJZlls8vUrl5c+oiObKWqCSdgdaJPIRwoPdrPrND0DU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786980316; c=relaxed/simple;
-	bh=Hj/x1Qel+xVYtqxVygQXyYvIQBZxWWsmvNpRCmhYuB0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ggMIo8FNVFGPZfbdjZ4JW0b5hjGaL3FSQIK8X1PGYGSkIqmJfXiH3gLGleFKQ7wUn7SOlyPLKucl1eSJFDIIBZcHY3DIYUASaiagOBpjKpxf+WabI9xr+INvY02OX+a6AhF8obgcebuO5MDSNcKIUe46FoQvIZiKVIWnYYZ3xGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=cKDwDMqa; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	s=arc-20240116; t=1786980401; c=relaxed/simple;
+	bh=PuBdjDaQtFHmwnAMV12FVO9YvRHGJfmJbq0uO7Ycav8=;
+	h=From:To:cc:Subject:In-reply-to:References:MIME-Version:
+	 Content-Type:Date:Message-ID; b=a7D+BZBzlIJkvw8bQDab7xZ55l6SCVR+QxooCzsecFyRi/rJyxCuoElfAbtpEl+hdHl4ZjY5tH/DVkIdIqNU5G6IW6xuS41FqwwPiWWw9MP0AKXFCvRzARzjkoT3LJR4LYFMyiMySh48rBbJybLTD06GEK8fgE+Pyv0tnpVD2JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net; spf=pass smtp.mailfrom=jvosburgh.net; dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b=Ds16NF3n; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=eFIhXFDI; arc=none smtp.client-ip=103.168.172.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jvosburgh.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="cKDwDMqa"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-47f703a9d05so2359628f8f.0
-        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 08:25:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1786980314; x=1787585114; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=S98fjURZckKHw3kQIeH1ci3sUDlJW1dlj7BkFC6FteM=;
-        b=cKDwDMqaYbFl69Kp5blTVknWGuJmeoyGo0XBHNERb6ENj9js0Fxlnvd3ph87LuQSox
-         IiBareOSL8QO6e6LagUQtPocs5Zko8F2ginvAV21amX3VusKcrD8U76eEHutW1Aze7Oq
-         sKSot1JXVa6Ey7VikKjG7HSYVHusUshWQq0T0wlB89AB4U8zVbIT6PshAQHZ/2Ny23Bg
-         WX2wHHhbAn+ynO22zDh233yy64UwezPf9g/qySIwwe1ZgWlRupV97qJeEj6d3sE85XTA
-         pQq+VcJvIAD8R93Ww17KTm9x9pXop9gAqi/F5H0lSqPMjqdNa1HeKdVHOhB8jcuyNJBP
-         5ooQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786980314; x=1787585114;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=S98fjURZckKHw3kQIeH1ci3sUDlJW1dlj7BkFC6FteM=;
-        b=Fp4I7T2GjrqaIGyujbhMibMYTJ4J+benxbeOJcI6xYixl4Rok9qe6Lor0+3wSlZOSp
-         sdW2B7ife6SnUTOM9rl1dyIrwgXo/9O94mz2rgF40nzbHCdMP5oqumh4EfJC6MCMMx7p
-         /AFgB6XWCE0MZ5Ju5dE8zIsS2LD3fE+I8hguvOvuvqExHw6x7iZN+2dVc7HFRqyNqC5o
-         +xqtxwLB4C6P8DlkqBgVQR2o6e9VnoG50uP2IafX5AknZt44JUWq0aVwbGDfnp7ppXBh
-         W6XjUtKneFOVVfFlGOHr5KVsxhn3hjjLOivXbeurHgjN9ihusEOGBF8ZTI2+/CZCUw/B
-         6qGw==
-X-Gm-Message-State: AOJu0YychcqnTNPZca/y9k+jGtdiC1689CN16Z++qDvwoy8aqFg6KSqL
-	Z3zaiyJETBIsCReZNQTeech3TQuDpHxDL7JGIefeWiKjs8j3Rv6ERG5kjddl10ny4VrVNu1n/vQ
-	sDl58
-X-Gm-Gg: AR+sD10BnmpwvhHv1+TFb6Lmm4X+z30XpPoQSunQSFQ6I3WiGaasV6D/i9lcVw1in2G
-	bBtSpT0+0wY1ufEHu6ydXX3IQXHQ/XZdJAPWU45QUy10B7DGKXBol1tU8ngOvn3vQqqvfI2tTTR
-	Le+vBPYqGpfUdy9TgMXo9rPYyoP6p+aqJVy622SZs03tmtxAUAd9g1FrDp+RLrQREqW9AN+qCp/
-	CN/4boJjMEGvUV7z3j/0lRolv2qcsA1SsybLqp8Os6HFQrGMl1yzkHXLBWypBS9Ia+O4hL7P1vL
-	s7zzq6AUieL6z/N4/ihC854kDWZI3e7nYI9lR18WszxqvIqPOj0CEJSMqxeWaKmE7CcjqkIbJDL
-	PkbGCT7GmLaxoRj6OBCK+PReTQyKC1Lukzov+TyWFSox2uZimpDyWshPej34nBMLHKHG1OxxAs/
-	Ep0+oZlTzg+G4SGUeQ/oaH1DClTnW1z2x+781297z2t9CRgjMi+hV0C56h1Z29vVmydTxoS+6pV
-	Bt1OG/XbQ0v2aibYqE=
-X-Received: by 2002:a5d:51d0:0:b0:47f:f4b9:88b7 with SMTP id ffacd0b85a97d-48160723e00mr34560526f8f.1.1786980313693;
-        Mon, 17 Aug 2026 08:25:13 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482a5b7cd38sm5306739f8f.32.2026.08.17.08.25.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Aug 2026 08:25:13 -0700 (PDT)
-Message-ID: <0543351c-2c7f-48db-891b-4d8a60776b3d@blackwall.org>
-Date: Mon, 17 Aug 2026 18:25:12 +0300
+	dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b="Ds16NF3n";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="eFIhXFDI"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.phl.internal (Postfix) with ESMTP id DDD28EC01B0;
+	Mon, 17 Aug 2026 11:26:38 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Mon, 17 Aug 2026 11:26:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jvosburgh.net;
+	 h=cc:cc:content-id:content-transfer-encoding:content-type
+	:content-type:date:date:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to; s=fm1; t=1786980398; x=1787066798; bh=0cGsMpqaLHnJjEiP45UxS
+	j/ScENAWPZc/0EI5jwdR+c=; b=Ds16NF3nBcwM2UIo9x6MYV0SnSSw0i7fQvCE8
+	v88HuZP1Mvwos7Kp0ZJWgOXIiHwK4FmmKJdEHCmp9cYq57oLKWa9hNsLhfCNUBdE
+	d0x9nFoVic/UkbOvGgJ97VCt0pbKMuJcUXEFie6REbId65LOoIZuXcgKpm+OZ5Ml
+	QaojYc0kxK3+iuiRtrF4Fcy/9z0Zo4r7Qawqe6lDJPX15OHQrH3r/Zt02nvyEFnf
+	3LCULWRoRNUTYqeujFPCiOYlbM7NSkqlVJMLD/rGu6AU7fTewjMMzAzmgxjj3KWx
+	DBLNTPsOj+0e1ymGUMiU5srZJmC/GoaGiuQnltG/C+/ZgbNng==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-id
+	:content-transfer-encoding:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1786980398; x=1787066798; bh=0cGsMpqaLHnJjEiP45UxSj/ScENAWPZc/0E
+	I5jwdR+c=; b=eFIhXFDI8x0rfAjZofnWzb//EkjOz6mNKjEq7HQgowwCet4mD27
+	OD85UVF6h1W9Noc/iyoJNNo12RTEFhQRNnxe/Q8rwS7xCy0SX7nIleR3HfRKYAaK
+	7jRTRqK/2kQwLDepRroB7T3n9LiBgzzhM6mRtStU+OS3aDmtlbOd5Ccp+bl7oOiy
+	w4dOL4m7ckrwAad1Im41dqbKoA5yheIzdOdwcwmHCLm5NjOUq6ygQIs6xfSuJDT4
+	FWtOK9FkS4mjLT6+k1O/c5yR/lF6iSvOKO5X10Up0x1Ttxb7G4YPGPJneWJM5IRN
+	s6YyGYQTNXNbI0XxrbP4M67f6IYiSuIoIYw==
+X-ME-Sender: <xms:LiiDag1D9zOCNMd8h_BpxSEDPJ3drkcjXzXUxzjrOKaOqt53CoSYPg>
+    <xme:LiiDapXA-b7BG90K2QP5l9bjHsbqUdc5aYstF6cyg85QD7gWAm7pN2m33ElAUDq9U
+    6zhcGOJKwe2EBL__c8pv_a97H7a1eH5zaHAPPoCKnMiXSyRypkoSdYF>
+X-ME-Received: <xmr:LiiDaiMhB2qY_bsB2H_v1QomgMR-AM2nV1rvy_XG4yqOJURM1rIliMzEsqEU6CNNe4ZhMw>
+X-ME-Proxy-Cause: dmFkZTFwc9Nhrs7V+AFNVW/mkhuDwOMzy6JSRPmnSsejMpA5Pw/6EWyIeCWq9PrdjKwiPq
+    oQp/aNX9VQTh4g1Vtz6CNUjPpfFu29MreIGX8xnWFQJjuHD5vRUtcuP1SxLu73gu2X+wDj
+    UlSnBsKDPqDYmG8mFBHYe28NvSwFV1dX6OIlR9VXnag5mH+IbHRHOFuxcQJledRtL+w1rq
+    QX/K7BoerIaGsHCZfWUkATV7fEG7qsVROECDB/jHgv25g3YaXM8wEnRzczFUlwiFnaP3/Q
+    zyFXASeTnQJmTJMiRqFf6YDH+T1UVR4uwaB//L2tdxnKxmN6iRpbF6VOYAZX/jTJ9yamH2
+    wRcakU8g2AJP4PNpPYrZmMtvwU9oNH/LGenNR/Sch8cCUeIsMrmnsmRIi4CS06LPbW5dql
+    bl6IKP8H1QlC7fYy7u3bH3f8QLtvJSS2myFdJMaJnoqRqCXlDalV2aLU5Qh57gcIMnTqao
+    /ZEtT/x+nfQnn36RYaDXHkW9X6QUI/OIX9hu5BJhTb8dW9r11wL207R5ZZxwEbY8Z4Do1U
+    ygBzfvrIU0qEjCKzCc0kXkxiHzQAS1vWVUaNOVsqV8cgh054iiRAg2lYA65el9nAFRSXw5
+    V/c8fP4y1HV/L+1t45mPJlKV9b0f2WY1JE2MxxuJqY8L+ec+vZsRpHe//Y6w
+X-ME-Proxy: <xmx:LiiDas1g92n7_tMc_rJcYQuiQV4Iu7lVeUiWhfbT2hXfiQJz1shxKw>
+    <xmx:LiiDamSAEzL6aeeme11dGvtQHRBV-VbzLQSAAcdwTohFVtZzG74h_Q>
+    <xmx:LiiDanntCKmvqh5RLN-gtrRBA57Ypoq5JMzR_CODV1Q1n23wbglwZQ>
+    <xmx:LiiDavMLBaDK-e1BGORlvFSha958ge8cwsl2xuwlL8zQprbSXWC9ig>
+    <xmx:LiiDaryYl8t1bFsEiUyrraQhcEqoJNYNzoVLJxAXIVci96RNtm_rv1QD>
+Feedback-ID: i53714940:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 17 Aug 2026 11:26:37 -0400 (EDT)
+Received: by famine.localdomain (Postfix, from userid 1000)
+	id 7226D9FC70; Mon, 17 Aug 2026 08:26:36 -0700 (PDT)
+Received: from famine (localhost [127.0.0.1])
+	by famine.localdomain (Postfix) with ESMTP id 6DFDC9FC46;
+	Mon, 17 Aug 2026 08:26:36 -0700 (PDT)
+From: Jay Vosburgh <jv@jvosburgh.net>
+To: Hangbin Liu <hangbin.liu@linux.dev>
+cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+    Hangbin Liu <liuhangbin@gmail.com>,
+    Hangbin Liu <liuhangbin@kylinos.cn>,
+    Andrew Lunn <andrew+netdev@lunn.ch>,
+    "David S. Miller" <davem@davemloft.net>,
+    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+    Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH net v2] bonding: fix u32 overflow in compute_gap()
+In-reply-to: <aoKwp6gTtSrnzR2n@fedora>
+References: <20260814-bond_overflow-v2-1-d3fe588ad167@kylinos.cn>
+ <aoKwp6gTtSrnzR2n@fedora>
+Comments: In-reply-to Hangbin Liu <hangbin.liu@linux.dev>
+   message dated "Mon, 17 Aug 2026 14:56:39 +0800."
+X-Mailer: MH-E 8.6+git; nmh 1.8+dev; Emacs 29.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 0/2] bridge/vxlan: fix reading neigh ha without
- synchronization
-Content-Language: en-US, bg
-To: netdev@vger.kernel.org
-Cc: idosch@nvidia.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, roopa@nvidia.com,
- bridge@lists.linux.dev, andrew+netdev@lunn.ch
-References: <20260817143613.685769-1-razor@blackwall.org>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20260817143613.685769-1-razor@blackwall.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <4137412.1786980396.1@famine>
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 17 Aug 2026 08:26:36 -0700
+Message-ID: <4137413.1786980396@famine>
 
-On 17/08/2026 17:36, Nikolay Aleksandrov wrote:
-> Hi,
-> Neigh ha address must be read using the seqlock to get a stable snapshot.
-> Both the bridge and vxlan read it directly and can see partial updates.
-> I reproduced both issues with running neigh updates and exercising these
-> paths in parallel and saw partial addresses, e.g. updating between
-> neigh A: 02:00:00:00:00:00 neigh B: fe:ff:ff:ff:ff:ff was able to observe
-> 02:00:ff:ff:ff:ff and fe:ff:00:00:00:00 in packets. Noticed this initially
-> in the bridge, then checked vxlan and its arp/neigh_reduce functions have
-> the same bug, route_shortcircuit is doing the right thing already.
-> 
-> Cheers,
->   Nik
-> 
-> Nikolay Aleksandrov (2):
->    net: bridge: arp/nd proxy: fix reading neigh ha
->    vxlan: fix reading neigh ha
-> 
->   drivers/net/vxlan/vxlan_core.c | 20 +++++++++++++-------
->   net/bridge/br_arp_nd_proxy.c   | 24 ++++++++++++++----------
->   2 files changed, 27 insertions(+), 17 deletions(-)
-> 
+Hangbin Liu <hangbin.liu@linux.dev> wrote:
 
-(-CC bouncing emails)
+>Hi Jay,
+>On Fri, Aug 14, 2026 at 01:39:23PM +0800, Hangbin Liu wrote:
+[...]
+>>  struct alb_bond_info {
+>>  	struct tlb_client_info	*tx_hashtbl; /* Dynamically allocated */
+>> -	u32			unbalanced_load;
+>> +	s64			unbalanced_load;
+>>  	atomic_t		tx_rebalance_counter;
+>>  	int			lp_counter;
+>>  	/* -------- rlb parameters -------- */
+>
+>Sashiko reported that on a 32-bit system, these s64 numbers' read/write
+>operations and division will tear. We need to use div_s64() for divisions
+>and may also need to convert the number to atomic64_t for read/write oper=
+ations.
+>
+>Do you know how bonding support works on a 32-bit system? Should we handl=
+e it?
 
-Hmm perhaps it's better to use ETH_ALEN instead of MAX_ADDR_LEN to explicitly
-show the expected len everywhere, it cannot be different anyway.
-I'll do it for v2 after 24h.
+	Bonding should function correctly on a 32 bit system for as long
+as the base kernel continues to support 32 bit builds.
 
-Cheers,
-  Nik
+	-J
 
-
-
+---
+	-Jay Vosburgh, jv@jvosburgh.net
