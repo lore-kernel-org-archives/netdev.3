@@ -1,59 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB8244C664;
-	Mon, 17 Aug 2026 16:29:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4BAE442377;
+	Mon, 17 Aug 2026 16:41:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786984152; cv=none; b=oBjTAGG/lQMqOFF9zDFCAFKt74AkHospFkQFfo4hY4scwsg2wnEmOpUcCv5SLa6OCHsDK51piN7MQlx9VLhM+WQGgrVJ6BplhGqGw7OBx4QBgXXY8emxgVQiVEWN/Axb/B0pVSV96XkAHr3+lmaFpPdP6FJ9gPR/s8mEAwuJVqM=
+	t=1786984887; cv=none; b=F3cyupJVrlq7TA5reM67NF4zqAHGXrNDIqWC6tdfBGacVHr1o+eYHktRuFlKuYjRZCBc+MhuYiFEqnV4Zof2rjFHjLknrVlQQ2QRtuC51hXEtfj0ANHAgfIxMEU/LaqkAwBRiQr26GOizt79bMETT2HaVqfWfw9/y6axGjxSqnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786984152; c=relaxed/simple;
-	bh=iiuVpwoJTqHCLXiXbmEr5DmPrgM2eROWaY9sEmB803Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ltuIrXzzbfpVlHHIv8fyGiwduW6SKa8nVDDnCK2KlzwzsPbri43hTiwESggsbblhw6DYbOpNgXdtoisptcxDsJU80NZgzNlMQei45Vm7ij27vWfCkQTOIhkxy9yELmCNp26A9iKxXXwNQzG/jsgGKshUCqEasfACKsfAgqfTD+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NbMElsw+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786984887; c=relaxed/simple;
+	bh=YefWs10omkpXFntnRM+AJiT+L3apLCmMwLdYEEVQ6G4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ndSSS20uYeW40lZhkGvBHgx69LHOU8PKIHvIFeXqMqkNPY8ccqDyIisuLmPIEEIUVW4u7ffsBahP2rYi/wtvifmav8qsL9TL2LgKjdTZFsmWpNvJndQCSYBW/qSBTL/PNFXibTUCSfA1/paNgIYIUHSoQKBnselXUyjSz1gRec8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=zikAsAJr; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NbMElsw+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9327F1F000E9;
-	Mon, 17 Aug 2026 16:29:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786984151;
-	bh=iiuVpwoJTqHCLXiXbmEr5DmPrgM2eROWaY9sEmB803Y=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=NbMElsw+9wKWZCy5MrMlJIDheVLPBtPMbTfq2SwVrp/EFyr8CaNM9M3/3W/+ecOzO
-	 JdLAV/BsSvZAHobIo1zXP0oDzhBiOsUjNAEYT0Zgz1q5iu0ISlYPz7uRkltf6fb50r
-	 thfc9GWGc05DrH6DskkF7gkGfLeiZ3eEIAPMYz+AH23ZJkM3Uc3OkZZ+0uSpDYW9dJ
-	 8QFQ09bo1Pwtrkkf8lO8n6HHKY5N1lE4PvCooHG4+QaMUkLGLgxhfTr9A0OHURK/7A
-	 5IdBDHxPaBaqjgcLA4TTxae5p2mNZBgAeJxPGnbFU6vTplePK0FkOeExN0sa6K7Zq1
-	 2flG10GCu3vRw==
-Date: Mon, 17 Aug 2026 09:29:10 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: David Lee <david.lee@trailofbits.com>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, jiri@resnulli.us, Kyle Zeng
- <kylebot@openai.com>, "Dominik 'Disconnect3d' Czarnota"
- <dominik.czarnota@trailofbits.com>, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net/sched: defer qdisc freeing after failed
- creation
-Message-ID: <20260817092910.6f941bd9@kernel.org>
-In-Reply-To: <CAC_etQFk=tGLvbHPmQwOyrYWgRtDru3dSw4T7sZ-9hvVMy_J-g@mail.gmail.com>
-References: <20260805102505.740806-1-david.lee@trailofbits.com>
-	<CAM0EoMkMcpE4JZdroYvVuPRzUC8Xwbwv3p4+qkABj=Qk55kWvg@mail.gmail.com>
-	<CAC_etQEByQLf5pMWzbyVfT3xtzereqEgu+XZYmwDjyvpRCzxjg@mail.gmail.com>
-	<20260812182246.3df00681@kernel.org>
-	<CAC_etQFk=tGLvbHPmQwOyrYWgRtDru3dSw4T7sZ-9hvVMy_J-g@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="zikAsAJr"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=LaKbhxdXvX8tknig+YsLj2T2XA3CrangdxPpcV3Aans=; b=zikAsAJrvLBdpQn5FdD8udPg6D
+	TugwlwJu+3rcLRYouSVnhVLcaR6rUH+hRz8QNKe6UZcQL53TJW07XntDYagqjVVAOUwZNlq0ilogW
+	hLhQRSYMVs7VN2dRq+TXy+SwQiKjvftEDoBkkI5E6vnyX7MyDrALUd9Cwj0KTJ5cyw+4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1ww0OS-000LDX-Ce; Mon, 17 Aug 2026 18:41:00 +0200
+Date: Mon, 17 Aug 2026 18:41:00 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Markus Stockhausen <markus.stockhausen@gmx.de>
+Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	netdev@vger.kernel.org, chris.packham@alliedtelesis.co.nz,
+	daniel@makrotopia.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH net-next v14 04/13] net: phy: add phy_detach_internal()
+ helper
+Message-ID: <5d3ecdd9-3721-4710-a1c8-e48a2a020799@lunn.ch>
+References: <20260817162632.1208891-1-markus.stockhausen@gmx.de>
+ <20260817162632.1208891-5-markus.stockhausen@gmx.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260817162632.1208891-5-markus.stockhausen@gmx.de>
 
-On Mon, 17 Aug 2026 05:06:01 -0400 David Lee wrote:
-> Apologies for the confusion. I've reattached the correct reproducer.
+On Mon, Aug 17, 2026 at 06:26:23PM +0200, Markus Stockhausen wrote:
+> For the upcoming MDIO bus notification enhancements the PHY detach path
+> needs to inform the bus about these actions. Until now phy_detach() is
+> called normally but also in the phy_direct_attch() cleanup parts. So in
+> the future there must be a clear indication if a notification is needed
+> (normal path) or not (cleanup path).
+> 
+> Carve out the phy_detach() code into a new helper phy_detach_internal()
+> and make phy_detach() a short stub that calls the new helper.
+> 
+> Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
+> ---
+>  drivers/net/phy/phy_device.c | 165 ++++++++++++++++++-----------------
+>  1 file changed, 85 insertions(+), 80 deletions(-)
+> 
+> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+> index 94b2e85e00a3..835d71306b4d 100644
+> --- a/drivers/net/phy/phy_device.c
+> +++ b/drivers/net/phy/phy_device.c
+> @@ -1734,6 +1734,91 @@ static bool phy_drv_supports_irq(const struct phy_driver *phydrv)
+>  	return phydrv->config_intr && phydrv->handle_interrupt;
+>  }
+
+It would be good to copy the kerneldoc as well, since what that
+describes is actually performed here.
 
 
-please see my feedback on the change itself (if you haven't)
+    Andrew
+
+---
+pw-bot: cr
