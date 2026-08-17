@@ -1,161 +1,117 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09934317164
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 04:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786940918; cv=pass; b=ofSQOZ3uMJycV+lsNgTmOS/y5ryx19lfh+9tWRqnBpzbn9U1goPFN0nQkORIsKzo0NvOeQOXXwL5dFaCaHd9satw5RXj0Dv057e9kjftHlOfpgpMdq4thxeaS/jWPiU20J+c42Un2GSWJBFF9pO/jwYbbKQeGmqUkjihEJOctDI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786940918; c=relaxed/simple;
-	bh=R5NlM7JX+7gX9vyxDMbzNKkRtNfi6TQHebfvN3YC7rM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Nu8CCXfM02mMGY389AcLpm8FVTIf49EzyKKpBC4IxUfEeiO7tIbIrQmeWT1+U4dUcA4nREitSM76ApAO4kjt1SkrTPkC1NstWbAK7WKWvQqOpejIoPnHzUHvZSHKyGoGXcf/kKYd7tpZ0ntdu9kYZtJxCzSNNZPhKrE2lTnr/3k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sw6k2iqU; arc=pass smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE7B275AFD
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 04:32:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786941139; cv=none; b=BRQq7OmUGJJ4SOScnxat9dD/Anz4PlfEVAwEWNKSu1+bZPfQciTD1J/0P43/SrK+to2JEgAxf3+IXvSf/fguuUyLUXJr1yvCZxFQJo4rP1rkprcrYrBwlUw0+hY/73TJhOI0K4irsxtGKfaMiaGomYoGJrLzKGqkb7eo/rdYvTQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786941139; c=relaxed/simple;
+	bh=sqsToIPQilvysXv8NKykHueDkEcBewEOF9CRoMnm8rc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pprx9OWMX0k94NlGu3BS5Y4XcYjID6FPqOx2xM1/S0ec5zSQUaRcoaljHRanG1RmMcUQzHODiJxjzU9gvy5V0qMPBO+jv6EDZk2Q8hq1mS6Ya7vMR6Td3NB8AvF0BGOEMcwlFW7/nbbeNjLi+Qz87BQAlOMITY46AFhbLGcvP9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z0qAs5f6; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sw6k2iqU"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-cc11a905ba5so1229483a12.2
-        for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 21:28:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786940916; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Yrdi4CUJmFeNDM0Mpmpnq/NffvzRPq2H5PpeR+C6AlqhH/S6OaqFN4etvp6UQ2iH3c
-         dEjuyuJRSm5TGq9+ADO5enWbOqyeFLVouJvn2jquz40SQGvBeQEVLJKpSrhwuhUd5x/o
-         8stL85v3mBPg5Fpr9qGVNjAtsMIJrGNi2XExVeQHsz4a8bmAOt/GkcItiHmdhvQSUI+p
-         xlm2mJESga5korHxA6Vcq/VwBP1VPZ/CrNcmpJDvTmDh4vExS4G6e09ufATB+hyitdSO
-         HeEflsQIZBNRiDWpmkUhqQ5KYk39Si1g9jkb1cHzq3j9QygrtHzA0l4UoWduxjOvBkaU
-         RNBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=np/a560KEDySTia9A46SmI+SWqeTHZFW9gThnLc5+gY=;
-        fh=8ZaU62Ou3J3XnQUfCxYWoPuQiWpS6gTuzCisYLpvKx8=;
-        b=m5ouq6Fzpw63fEm1nc8P27+tSt/H8bV/RznLYzuqD8ZVdFrjZNfs+jWI52pXevQnqD
-         45rg3y+24Tqcb+ue7wDCQRhZzjTLyPQeUKNuS4Chnf8GLLn+XoXLLeLPnncBt+Yzql8U
-         M7tB3EE089qcu5+AzpDaxDnCu+LfPKldPjW9+8H3K6s2SSHsUxYYNpluSvM4BJQGo9dF
-         gBnAij/27zEZh7LOT/W/qzJMNWanXSStj3Qlf52Y1dnCVnhcKvVYFg344jB7QuslKuS9
-         ZYJOPHOU9gtOFh3QiQ9ddaoT860rrRf39z6PX1n42r+6Doc+xOMgsKP7SQ2ugaRCOYVW
-         IeiQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z0qAs5f6"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-47ddf7b09e5so2969299f8f.1
+        for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 21:32:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786940916; x=1787545716; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=np/a560KEDySTia9A46SmI+SWqeTHZFW9gThnLc5+gY=;
-        b=sw6k2iqUTFaWxhYyTGtOFN0CrJ6HRGIrqjnLS2oX/F4RlWakAOwcvJNhDw9kLnHnSv
-         yx8p+vRKqEMXpR9LeveSm9Z84RYNJkVvimSAb33kBDp2EeBOZpBNnmwyU8Q6lnkWB0vM
-         3+uU70NMCyjTxKgvHR5lzvaxNm2G1f+O0n1hDwGGJa1oBRap1tK2qYK3uJU3HPwa+B6B
-         Fiwdq/wOnoUD2bynlZFy05eiEQ0NniJaOv7xhWGJvac4FeruMian1htxhLx9lOQFVAVk
-         g6bhf02cwFKywpoiOR/lLxb0E0vMvJ42fjlqB7vfnag4ZB7tokBjzUFX/WfmAk5ms4lD
-         qdmw==
+        d=gmail.com; s=20251104; t=1786941136; x=1787545936; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Uj3EudBSTWdM9VnNGeDbLYrQoc+1vLbVkReBzm+LJ5o=;
+        b=Z0qAs5f6u0SN6F6m1FH4aIulcVP9FJN/vc7Ar0lMxcUsT3SA2e9BEsDxZv7d8PnVHX
+         GBsY9bpBW9xVoaEyAGawYFcigzvqZqCqCGeKaKyaZLdFYEVV1B38a/d8ib4LvntO2bvg
+         eIA8s4w0xTbLGImNwi9vRN3jvUd8gvYB3SZEIKXfod5TsV6u2eu4TOS/weUqBVyrorwG
+         NmE6t9ZJYEXJxFpw2xMoILhBt0KwxWH0vRPCE7K0w7wtybvpd/4htjCTJ+FCrBMc4LCU
+         y6TBD2IPKtzPwAJ7jD50wxdKsh8PlHNRgv9+DkXVMuXa1l1RSEaTzLtfCjCtgIj2r0Sf
+         eOrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786940916; x=1787545716;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=np/a560KEDySTia9A46SmI+SWqeTHZFW9gThnLc5+gY=;
-        b=psgq2BTYga2VamIw0jimkOhSnnk/MYXZDi9tYAaJkNi1QfAxEdVI9Dw5D1dSc1uCch
-         tFzoTZ4MHs6Qoyq2KLU/wzJuCT9N2ioA7SbOTGV+7r/f/g1bb80aTxQd4OqzKL0nvEFw
-         j2KwMa/2Jq3lFuQbmWyH9aWtjuv6BL4rO9NxyxKKj9yJsdQJJOY+xBBldD6IKBVOiZqQ
-         h8BjANw96D5mlhLbkRIBA+h+EmQBuP5GS1r12WECRSmm+KMFv/ykglIQuwb5Zn+RPDmM
-         CtjCRdqt3nsdakEtnsDOqscTxCTDh8CfwAowI2itfR7uRMKfzo/i5oe/y9tVPghWN9Lz
-         zgoA==
-X-Forwarded-Encrypted: i=1; AHgh+Rrtx/nk0umTkBw5Rng+ChJuDGGKCBIozHe0h081G86OqeTM4u9b9EfDUufNZbCEVzbhJQbM654=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJGswy3f/pl9kHJ2MwuOFytC/M8dU9vU/Q1MJpw6DuvnmI/u+n
-	N9QwaG0BExFt63LOQaeXQedtqohzXHk7RQpVrbJ1RcJszZ8WAJUwHH4UAJG6lumUJwIkb1tnt0k
-	iE8hxRKVjvpC7JZsogznkhLC47CvZ8xqLorvbS0pf0mxpThIpyF67GXYYSa4=
-X-Gm-Gg: AR+sD12MERI/b+f/5Ile699/wYxhB7EbginHXcBOVKfuN3DMAlDhg+O9cfT23Vr/RfT
-	t2kDvGqaBVIyKj2o3g6BYDS6xgf10EW/2G1/t9UhSqSr51ZweMakM/WJkXh4OeZANyLLOWSejPv
-	rP8c6nKAgVVxrgcn7W+63X0Vj664cxnEE8t79wseZ3b+dVjhYiJY9HSK0ozS/GAk7TX6Tav1kXO
-	70LfFICfOgYWQ9Zi0UlLmsghJEtOjo8Qcmo3lNXGs+NHa4hOO7Mizie6NkvIifD3xBmxbg78SBl
-	5ZGt60HeWq0R/GbGo7x2iZxILBKJnE5hcOaYQBKPBX3NRtODmvJm7GAVE0HyBa8bMuukLrObx4N
-	R09DMj0rH9HvLqKOnolBriseDpmzdHT+HaLaFXXAAaDFb2P92NGXhefZr
-X-Received: by 2002:a05:6a21:4508:b0:3bf:7bf7:7913 with SMTP id
- adf61e73a8af0-3cc71a59053mr25169043637.14.1786940915801; Sun, 16 Aug 2026
- 21:28:35 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1786941136; x=1787545936;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Uj3EudBSTWdM9VnNGeDbLYrQoc+1vLbVkReBzm+LJ5o=;
+        b=UJR4VgJROyov58Larv2UBXB2zVj0kUstKsY9qYmeM326cA33PZeAVwY51mEkpZpj9z
+         Gu8RT02yYdrY52BFszlzuJCudHZB9RaaDhPzPuZi6tGMjkgyqWIqgMCgZYMyzvrp6QTx
+         zCK4gC7l9f0L7oJHXsQ44iOj1awFCSvvVoO+vDrL3iKXC1TMqWsveorszX1xaGuO81ta
+         3qp9VPxC34JujmXTHkR/r4JEzttqTOLoUwLck5lxKnsD2TqNzoOIX7DoeoKs/r6QL1p4
+         0Jc3vuFcovL1+G9CNxa2Es1f/v7Lnba5WfoqRHxLH1NVdfwD4+rQPZVfTuq0JIEMCgVk
+         WJ1A==
+X-Forwarded-Encrypted: i=1; AHgh+RqmqXUz6k9ExOb4wuyDJicVLmozw4DnbQH+Z7A5G3flKypCqwd8gKv+LZMSdXfoBVjpivr83Do=@vger.kernel.org
+X-Gm-Message-State: AOJu0YznTX9PeAys/MDOMHiY85/e34/RP2U3AdXtaRDhyud1sd/g7hna
+	xC224NyviXJMwXy6E6phtAEKw/AwKvugTVDUn3+qPBbFDHSU9jrWmoZZ
+X-Gm-Gg: AR+sD13ZM+VoW7vii1pAaJX0v76NsfLMS48N2KggShqvqsrjwy7Sba+rVIOUUjVeRsc
+	7fqpRWZ6AtnX6UOoC4ny44HpP/WHuLCpghkY7F4snX4WjfXj/R7tackVxnRAZmgidy5Uzhs/GMY
+	RXheC5HJOExtByK5ffEv104sgZ8wQXQHwFH46caVmoQgomXvJroUmQA9g7d9wBmisYvWqyDcaF6
+	ClcDVHYKjTQd1ah/bjjAKV+cdipuBtx0D5G/TQ5IuwQoeavV1b5/EMRBvm1wH2ZATYsC5GTb+qM
+	0S+OffPrWLzfj0Duov0hObQrSWGS7U3CRgPtxyuff1BfR22SPC3C6Y4VMmckXTezimhxCtPKcLF
+	wfNX773FATe0RUnE+NPO2FnCTmsyr/UMgIB6dSNkVEC1qR/zSj1dt8d8/hr4bVO5zW1mSklhmj8
+	piQyVrDZK1tcnFBMyGeHe/VQmhQsLynKZyK6/D6w+0Q0aN8s4nLBgzzXsHQ+kFc4/AbBUOfMh2e
+	xxa9B6hX0i/QO39fLurxnx+5OVrst853JNJtKUPoApBH8sDOiuD5Q/xuk0hjso80ztvv3YMnbH1
+	56zXuHYTfDKsuW54CZZ/JuMaxiIwleEULFCvMYE=
+X-Received: by 2002:a05:6000:41cf:b0:482:96bc:3717 with SMTP id ffacd0b85a97d-48296bc37ffmr21474458f8f.21.1786941135933;
+        Sun, 16 Aug 2026 21:32:15 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-095-114-219-094.95.114.pool.telefonica.de. [95.114.219.94])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482a5a315bfsm540465f8f.1.2026.08.16.21.32.14
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 16 Aug 2026 21:32:15 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] 8139cp: fix Rx and Tx not being disabled in cp_suspend
+Date: Mon, 17 Aug 2026 06:30:57 +0200
+Message-Id: <20260817043057.20099-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <34f44e8a-9fa4-4cb3-822e-5db54fb6df44@I-love.SAKURA.ne.jp>
-In-Reply-To: <34f44e8a-9fa4-4cb3-822e-5db54fb6df44@I-love.SAKURA.ne.jp>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Sun, 16 Aug 2026 21:28:24 -0700
-X-Gm-Features: AcwNN1WiVXg3WohbrXkvhb-iUuV_9c4NhqcblNLHlnNYeR7f5t42O-_x8Jr-_EA
-Message-ID: <CAAVpQUC672LJN_8KQ5BzadS26FnUrh4ayjyu-n5x=W7U69u7fA@mail.gmail.com>
-Subject: Re: [PATCH] net: make sure final 'struct net' free in
- net_complete_free() is always deferred
-To: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Network Development <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Aug 16, 2026 at 4:08=E2=80=AFAM Tetsuo Handa
-<penguin-kernel@i-love.sakura.ne.jp> wrote:
->
-> Since there is no serialization mechanism (e.g. the RTNL lock) between
-> llist_add() in net_complete_free() and llist_del_all() in
-> net_complete_free(), it is possible that net_complete_free() finds 'struc=
-t
-> net' as soon as net_complete_free() added it to the defer_free_list.
+On QEMU rtl8139 model, frames that arrive while the interface is
+suspended still end up in the stack after resume. With pm_test=devices,
+which keeps devices suspended for 5s, 200 frames sent to interface
+during that time and 50 frames after resume, eth0 reports 113
+received frames.
 
-Did you see a real issue or is this based on AI report ?
+cp_suspend() is supposed to stop receiver and the transmitter, but
+the mask is wrong: (~RxOn | ~TxOn) is ~0, nothing is cleared and Cmd
+still reads 0x0d when cp_suspend() returns.
 
-netns_wq is single thread workqueue.
+Use ~(RxOn | TxOn) so both bits are actually cleared.
 
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+---
+ drivers/net/ethernet/realtek/8139cp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
->
-> Fixes: 0f6ede9fbc74 ("net: defer final 'struct net' free in netns dismant=
-le")
-> Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-> ---
->  net/core/net_namespace.c | 11 +++++------
->  1 file changed, 5 insertions(+), 6 deletions(-)
->
-> diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
-> index d9dafe24f57e..6e9a0c29a9a0 100644
-> --- a/net/core/net_namespace.c
-> +++ b/net/core/net_namespace.c
-> @@ -514,14 +514,10 @@ static struct net *net_alloc(void)
->
->  static LLIST_HEAD(defer_free_list);
->
-> -static void net_complete_free(void)
-> +static void net_complete_free(struct llist_node *kill_list)
->  {
-> -       struct llist_node *kill_list;
->         struct net *net, *next;
->
-> -       /* Get the list of namespaces to free from last round. */
-> -       kill_list =3D llist_del_all(&defer_free_list);
-> -
->         llist_for_each_entry_safe(net, next, kill_list, defer_free_list)
->                 kmem_cache_free(net_cachep, net);
->
-> @@ -703,12 +699,15 @@ static void cleanup_net(struct work_struct *work)
->
->         up_read(&pernet_ops_rwsem);
->
-> +       /* Get the list of namespaces to free from last round. */
-> +       net_kill_list =3D llist_del_all(&defer_free_list);
-> +
->         /* Ensure there are no outstanding rcu callbacks using this
->          * network namespace.
->          */
->         rcu_barrier();
->
-> -       net_complete_free();
-> +       net_complete_free(net_kill_list);
->
->         /* Finally it is safe to free my network namespace structure */
->         list_for_each_entry_safe(net, tmp, &net_exit_list, exit_list) {
-> --
-> 2.55.0
->
+diff --git a/drivers/net/ethernet/realtek/8139cp.c b/drivers/net/ethernet/realtek/8139cp.c
+index 5652da8a178c0..9016527e229ac 100644
+--- a/drivers/net/ethernet/realtek/8139cp.c
++++ b/drivers/net/ethernet/realtek/8139cp.c
+@@ -2066,7 +2066,7 @@ static int __maybe_unused cp_suspend(struct device *device)
+ 
+ 	/* Disable Rx and Tx */
+ 	cpw16 (IntrMask, 0);
+-	cpw8  (Cmd, cpr8 (Cmd) & (~RxOn | ~TxOn));
++	cpw8  (Cmd, cpr8 (Cmd) & ~(RxOn | TxOn));
+ 
+ 	spin_unlock_irqrestore (&cp->lock, flags);
+ 
+
+base-commit: 3eb40771c00a8488fa6ed2cc1fe203477908bf38
+-- 
+2.53.0
+
