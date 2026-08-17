@@ -1,406 +1,208 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ixit.cz (ixit.cz [84.42.129.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7484562A2
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 17:44:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C17182D6;
+	Mon, 17 Aug 2026 17:45:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786988701; cv=none; b=iAh1eSt78q2WqjwHtLmMuePCpWEGNSOHZT0C5xto7WbJdhbcUeSHSfLft/mwq0NMI5zWqoHvsynwDyRWWDTtn6ScDhaAAAv2p0m05IOPGu4SDkyGaO/Ifx6nn/W9oKuLqPSR2T71AbB2gtRFvkjtSTB58/WKfB4J/dlyNCToZws=
+	t=1786988749; cv=none; b=NGIJuT99uRiPIAiDxsQbaQIqrPrv3464qbNkPc5Kml1Cm90nmpQF5wUnhjKZJD0O+mn+WG77YOfpF2V19Yu04lFMZAau9zDaoMgQqJQDNHDnjGV4Uvlt7+j3su+G3u1zhfLy9gTVQ2nD9Obp9MNC7g57OjpqPYTiACA0/Ilo0FU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786988701; c=relaxed/simple;
-	bh=A/BYLk7bw9Ejae64R/1icJiIkrzaDbooTjrEXUYratA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bZcKoz15+z+/hhmwNm+ZHnq7OYpHwFF9cHj5Fl15wa8XlN7l/WQGYQ/MJXzQ4NJ6jKpGHwrYRND1AIcR/Z7/hq9ur8i/W7A2RdCPXlZSr1D2XbGJh+aRP9JRyTBV2Y17Vfa0u69dgsEU344dOWbYZCUEkdo6pW/Nut0L/z24Hjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FMCu0xkE; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1786988749; c=relaxed/simple;
+	bh=cmiZCpyFbW7G6EV3Am3rZbgt804snACTQKJjB0jKlZs=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=k631zbIZvIei+L5SZ9SVva9clHPFYwCbb6DQ+96SBMnjjK51RIMA07BvMjlxF//EeXUJrScAIU12xFzQw0sFuZiHYxEHS5QyqSl0vHlgBcv7ZW9lwKVZwVUizwPggx3IdORYS/bBw/72nRGtrAb8d9Kel+3B29Z6w6orblc9fQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=BQchZlLp; arc=none smtp.client-ip=84.42.129.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FMCu0xkE"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4954a9e8490so851755e9.1
-        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 10:44:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1786988697; x=1787593497; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=i6O6VTakhY2h37xUYJTqMZ6cRR1Y8QjlwcHWujcmkns=;
-        b=FMCu0xkEPhq5SUhy1ow2d8CFomUhUHwavQ4f5P7LllaP/Gab4TzFc2pGj10bzYOS5/
-         fMqJZ9BfPPRqgJgLA3uutx62EEnRLlDUtdVNnscGsyZxsavovaQQ7swtWM/BrbF5xvrC
-         h7BGS1RoiAOXf+EhwpCzehi5s6jIo62WCf7Gow3eSwYz+n+Gn+f3HZ7nfAgFSpGVObST
-         uwkr2ykew/1NFsSL0mYeVASAIow845Eoz2DAShEG5RQYiF4gFNkSKLn2yXYDXOc9KxQC
-         BZQvaP3DdXvnIlH1/K7JvEidFrSfTNkC8IXAxqeQ3ID28DQL246UJ1RsVnwRKvhV+onK
-         1Gmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786988697; x=1787593497;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=i6O6VTakhY2h37xUYJTqMZ6cRR1Y8QjlwcHWujcmkns=;
-        b=Vqnjo87r3e2Ffxf/UU9faOWI8Ny76AIjXa6ahSjjMWtaAeYc91lpY+F6Dxe8JOZMp2
-         dh1Jr6fC8Sclq1eh9KNX1QVZKdF5OTjVUZ0vzL37r1i9yduEXI3AnygHqggOn/SFYc9i
-         VjTyjungAprxwbxR659C3MPjKV1IzS9NxVxeqPm/IAJhcDx2o6/rBNH9/9rj5Hwd9vAa
-         4fYkuvb4usBa+F+x7e0qDT0daOAgrMDQMHcDr789JGmAygFl2XTxMcfbrgvexkJET3Oh
-         804xq15OhLNx5B0dgef+oQy4J1Kzj1HDO8JcsXN83fkgnVHO6KzVa1+vCEEymndd1Og5
-         HVDw==
-X-Forwarded-Encrypted: i=1; AHgh+RrxANgxNVvFIpFpUSFsiARQ0HvolqG4p51zKiP0EvWyBN8Tsb8QWq4ojw++XDzBXRRzD/kDWRg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPjndgWpwCEKUo938oaoZJ9GETDr7F9EvIVnaY89w478ASTRO8
-	5WJ7iAKnfzOfKZuBk4VwokRngEe35CXg8yUztjG30F3HVNjvCXdOROQI3fpzQsp6DU0=
-X-Gm-Gg: AR+sD10Kk5Wxquj/vL5n5b5PaS2Qz3/wfy7QUscWhOYe4CBojDRQB6R/c8c1IsbrBl9
-	4OR8SCM3LHLEPeKvx/UERqvB9Ix/y7cO1K0XACE6R3uh/ICnq0I8Ew2eFqj7HQ2SrTw0BaRZ16k
-	uVEEEA4Zv1L2SP/KWI5HkTGjxfs3JeWI4QNVp71FN7lELCNTubDgO/5THK4tcPbMTR6iII63fTI
-	mV6PKoxlNT5bqefv8QZi32IbDNPIw1c645tROZDgsyHGAg8fn1LhjEpyOY39oPp7l/qgdEmgcY0
-	HX3txkXbtZBA1Z0UrFMvPGe3rM3NsvGcK5tzfTHlwQpoeamIDn5njrfbRG4chqzPsWbr04uFT21
-	+K6werNInx/scW1K2FJR3n/HFC+MGXP9wAvqusm03LpHyUvHBdECc13ASThTGC2rDf8gLON08XT
-	fu9yQ3MkckyZkmIb4VKV+aRqj6wkV9Tjmur5o3DsT4O318RITu54+LWaSKj6TIwuLcH26ywlaI
-X-Received: by 2002:a05:600c:34c7:b0:499:8afd:4a9f with SMTP id 5b1f17b1804b1-499a05ac869mr20348795e9.0.1786988697459;
-        Mon, 17 Aug 2026 10:44:57 -0700 (PDT)
-Received: from linaro.org ([2a02:2454:ff24:7210:7281:1989:ca4f:c9c9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482a5a7c568sm5614066f8f.18.2026.08.17.10.44.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2026 10:44:57 -0700 (PDT)
-Date: Mon, 17 Aug 2026 19:44:46 +0200
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
-To: Hongyan Xu <getshell@seu.edu.cn>
-Cc: Stephan Gerhold <stephan@gerhold.net>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v3] net: wwan: qcom_bam_dmux: fix TX DMA channel
- use-after-free
-Message-ID: <aoNIjgCblcfcxUVI@linaro.org>
-References: <20260815100454.695-1-getshell@seu.edu.cn>
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="BQchZlLp"
+Received: from [IPV6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e] (unknown [IPv6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 6B87F5340244;
+	Mon, 17 Aug 2026 19:45:45 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1786988745;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+	bh=DQm4wCwWKLowVLwxtHFSqbiNXV1TR5TiADhIErbWjsw=;
+	b=BQchZlLpLCiyZwgvkz0vVSDNGuprMKAQWq6I3PBLrxaGfmlV5kiWzkDivzg6dEbVJVQR8V
+	A/e8+tM2CwqLZW3+AXJsRMVYXgZWz4l5f0pxefWRqvZ+ZicuoUpodix8sYmZGzjuLtOh0j
+	zNj7znrJehzjWN2wnsz2tk5paXXW+Cs=
+Message-ID: <93a47987-885f-4e5f-8920-788fb281db67@ixit.cz>
+Date: Mon, 17 Aug 2026 19:45:45 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260815100454.695-1-getshell@seu.edu.cn>
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>
+Cc: netdev@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ oe-linux-nfc@lists.linux.dev
+From: David Heidelberg <david@ixit.cz>
+Subject: [pull-request] NFC updates for next-next 2026-08-17
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sat, Aug 15, 2026 at 06:04:53PM +0800, Hongyan Xu wrote:
-> The modem power-control interrupt can release dmux->tx while the command,
-> netdev transmit, or deferred wakeup paths are preparing and submitting
-> DMA descriptors. A runtime PM reference alone does not order those paths
-> against the modem-driven interrupt.
-> 
-> The pc and pc-ack IRQ actions do not encode the modem protocol order. A
-> pc=false edge raised before a new host power vote is acknowledged can
-> therefore be handled after runtime resume observes the acknowledgment and
-> starts using TX. On the other hand, acknowledging a new pc=false transition
-> while the acknowledged host vote remains active lets the modem power down
-> the DMA engine underneath the driver.
-> 
-> Serialize power-control state with a mutex and distinguish a requested host
-> vote from an acknowledged one. Publish each vote acknowledgment and its
-> completion under that lock. Before publishing the host-vote
-> acknowledgment, sample the actual pc line and process any delayed
-> transition. A valid pc=false transition is then handled before runtime
-> resume returns, when no path can submit through TX. The channels are
-> released before pc is acknowledged, and a queued BAM_DMUX_CMD_OPEN remains
-> queued for the new TX channel.
-> 
-> If pc goes low after the host vote was acknowledged, refuse the pc
-> acknowledgment and keep the DMA channels allocated. Remember the pending
-> transition so runtime suspend can first release the channels and only then
-> acknowledge pc=false. This preserves the protocol ordering without exposing
-> a released TX channel or cancelling an OPEN command that already succeeded.
-> 
-> Both IRQ handlers can now change the DMA channel state. Keep them
-> inactive until the initial probe state is committed, and disable both
-> before the final remove cleanup and before cleaning up a failed probe.
-> 
-> This issue was found by the author's in-house static analysis tool.
-> The patch was reviewed by the author.
-> 
-> Fixes: 21a0ffd9b38c ("net: wwan: Add Qualcomm BAM-DMUX WWAN network driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hongyan Xu <getshell@seu.edu.cn>
-> ---
-> Changes in v3:
-> - Sample the pc line before publishing a host-vote acknowledgment so a
->   delayed, valid pc=false transition is completed before runtime resume.
-> - Refuse to acknowledge pc=false after the active host vote was acknowledged.
-> - Complete a refused down transition during runtime suspend, releasing the
->   DMA channels before acknowledging it.
-> - Serialize the vote acknowledgment and completion with vote changes.
-> - Gate both state IRQ handlers until probe initialization is committed and
->   quiesce both before probe-error or remove cleanup.
+The following changes since commit 8d3ae59288f1e7d58d76558a6ee96d533bc5019f:
 
-Thanks for reworking the patch again!
+   Linux 7.2 (2026-08-16 14:32:26 -0700)
 
-I think this approach could be viable. I need to allocate more time to
-fully understand the changes you are making, but so far it seems
-reasonable given the constraints we have in this driver.
+are available in the Git repository at:
 
-A few initial comments below, perhaps this will help for my
-understanding.
+   https://codeberg.org/linux-nfc/linux.git tags/nfc-net-next-20260817
 
-> 
-> Changes in v2:
-> - Track the host power vote and serialize the power-control paths.
-> 
-> Link: https://lore.kernel.org/netdev/20260808083457.2023-1-getshell@seu.edu.cn/
-> Link: https://lore.kernel.org/netdev/20260806060642.1281-1-getshell@seu.edu.cn/
-> 
->  drivers/net/wwan/qcom_bam_dmux.c | 192 ++++++++++++++++++++++++++-----
->  1 file changed, 161 insertions(+), 31 deletions(-)
-> 
-> diff --git a/drivers/net/wwan/qcom_bam_dmux.c b/drivers/net/wwan/qcom_bam_dmux.c
-> index cc6ace8..41928ed 100644
-> --- a/drivers/net/wwan/qcom_bam_dmux.c
-> +++ b/drivers/net/wwan/qcom_bam_dmux.c
-> @@ -12,6 +12,7 @@
->  #include <linux/if_arp.h>
->  #include <linux/interrupt.h>
->  #include <linux/module.h>
-> +#include <linux/mutex.h>
->  #include <linux/netdevice.h>
->  #include <linux/platform_device.h>
->  #include <linux/pm_runtime.h>
-> @@ -67,12 +68,17 @@ struct bam_dmux_skb_dma {
->  struct bam_dmux {
->  	struct device *dev;
->  
-> -	int pc_irq;
-> +	int pc_irq, pc_ack_irq;
->  	bool pc_state, pc_ack_state;
->  	struct qcom_smem_state *pc, *pc_ack;
->  	u32 pc_mask, pc_ack_mask;
->  	wait_queue_head_t pc_wait;
->  	struct completion pc_ack_completion;
-> +	struct mutex power_lock; /* Protect power-control state */
-> +	bool pc_vote;
-> +	bool pc_vote_acked;
-> +	bool pc_down_pending;
+for you to fetch changes up to be47ff78de05e931ede1d0a407f8ef6f063054d3:
 
-It's a bit tricky for me to fully understand all combinations of this
-flag. Could we use an enum for these to describe only the states that we
-care about? E.g. something like
+   selftests: nci: Correct pthread_create return value check (2026-08-17 19:27:51
++0200)
 
-enum bam_dmux_pc_vote {
-	BAM_DMUX_PC_VOTE_INACTIVE,      /* pc_vote = false */
-	BAM_DMUX_PC_VOTE_PENDING,       /* pc_vote = true, waiting for ACK */
-	BAM_DMUX_PC_VOTE_ACKED,         /* pc_vote = true, ACK received */
-	BAM_DMUX_PC_VOTE_DOWN_PENDING,  /* pc=false received while host vote active */
-};
+----------------------------------------------------------------
+NFC updates for net-next 2026-08-17
 
-> +	bool ready;
->  
->  	struct dma_chan *rx, *tx;
->  	struct bam_dmux_skb_dma rx_skbs[BAM_DMUX_NUM_SKB];
-> [...]
-> @@ -670,25 +694,63 @@ static void bam_dmux_power_off(struct bam_dmux *dmux)
->  	bam_dmux_free_skbs(dmux->rx_skbs, DMA_FROM_DEVICE);
->  }
->  
-> -static irqreturn_t bam_dmux_pc_irq(int irq, void *data)
-> +static bool bam_dmux_handle_pc(struct bam_dmux *dmux, bool new_state)
->  {
-> -	struct bam_dmux *dmux = data;
-> -	bool new_state = !dmux->pc_state;
-> +	lockdep_assert_held(&dmux->power_lock);
-> +
-> +	if (new_state == dmux->pc_state) {
-> +		if (new_state)
-> +			dmux->pc_down_pending = false;
-> +		return false;
-> +	}
->  
->  	dev_dbg(dmux->dev, "pc: %u\n", new_state);
->  
->  	if (new_state) {
-> -		if (bam_dmux_power_on(dmux))
-> +		if (dmux->rx || bam_dmux_power_on(dmux))
+Improvements:
+   nxp-nci: Add remove on IRQ error
+   mrvl: spi: Unregister dev on allocation fail
 
-Do we need this new check, especially given that you added
-if (new_state == dmux->pc_state) above? I would think it should be
-impossible to arrive here with dmux->rx allocated.
+Cleanups:
+   Drop __maybe_unused from acpi_device_id tables
+   Drop unused assignment of acpi_device_id driver data
+   Initialize acpi_device_id arrays using member names
+   Unify style of acpi_device_id arrays
+   Initialize mei_cl_device_idarrays using member names
+   Drop __maybe_unused from of_device_id tables
+   Unify style of of_device_id arrays
+   Drop unused assignment of spi_device_id driver data
+   Initialize spi_device_idarrays using member names
+   Unify style of spi_device_id arrays
+   Unify style of usb_device_id arrays
+   pn544: Drop empty line between i2c_device_id array and MODULE_DEVICE_TABLE()
+   trf7970a: Use NULL when no response is expected
 
->  			bam_dmux_pc_ack(dmux);
->  		else
->  			bam_dmux_power_off(dmux);
-> +	} else if (dmux->pc_vote && dmux->pc_vote_acked) {
-> +		/* The modem must keep the DMA engine on until pc is acked. */
-> +		dmux->pc_down_pending = true;
-> +		dev_err_ratelimited(dmux->dev,
-> +				    "refusing pc down while host vote is active\n");
-> +		return false;
->  	} else {
->  		bam_dmux_power_off(dmux);
->  		bam_dmux_pc_ack(dmux);
->  	}
->  
-> -	dmux->pc_state = new_state;
-> -	wake_up_all(&dmux->pc_wait);
-> +	dmux->pc_down_pending = false;
-> +	WRITE_ONCE(dmux->pc_state, new_state);
-> +	return true;
-> +}
-> +
-> [...]
-> @@ -724,40 +820,55 @@ static int __maybe_unused bam_dmux_runtime_resume(struct device *dev)
->  					 BAM_DMUX_REMOTE_TIMEOUT))
->  		return -ETIMEDOUT;
->  
-> +	synchronize_irq(dmux->pc_irq);
-> +
->  	/* Vote for power state */
-> -	bam_dmux_pc_vote(dmux, true);
-> +	bam_dmux_pc_vote_protected(dmux, true);
->  
->  	/* Wait for ack */
->  	if (!wait_for_completion_timeout(&dmux->pc_ack_completion,
->  					 BAM_DMUX_REMOTE_TIMEOUT)) {
-> -		bam_dmux_pc_vote(dmux, false);
-> +		bam_dmux_runtime_suspend(dev);
->  		return -ETIMEDOUT;
->  	}
->  
-> +	synchronize_irq(dmux->pc_irq);
-> +
->  	/* Wait until we're up */
-> -	if (!wait_event_timeout(dmux->pc_wait, dmux->pc_state,
-> +	if (!wait_event_timeout(dmux->pc_wait, READ_ONCE(dmux->pc_state),
->  				BAM_DMUX_REMOTE_TIMEOUT)) {
-> -		bam_dmux_pc_vote(dmux, false);
-> +		bam_dmux_runtime_suspend(dev);
->  		return -ETIMEDOUT;
->  	}
->  
-> +	mutex_lock(&dmux->power_lock);
+Modernization:
+   st95hf: switch to using sleeping variants of gpiod API
 
-Personally, I think this function would benefit from using
+Others:
+   MAINTAINERS: Add Matrix channel to the NFC subsystem
+   pn533: fix memcpy overflow warning
 
-guard(mutex)(&dmux->power_lock);
+Signed-off-by: David Heidelberg <david@ixit.cz>
 
-to simplify all the error paths.
+----------------------------------------------------------------
+Aldo Ariel Panzardo (1):
+       nfc: llcp: Fix list corruption / refcount desync in nfc_llcp_recv_dm()
 
-> +
->  	/* Ensure that we actually initialized successfully */
->  	if (!dmux->rx) {
-> -		bam_dmux_pc_vote(dmux, false);
-> +		bam_dmux_pc_vote_locked(dmux, false);
-> +		if (!dmux->pc_state)
-> +			bam_dmux_power_off(dmux);
-> +		mutex_unlock(&dmux->power_lock);
->  		return -ENXIO;
->  	}
->  
->  	/* Request TX channel if necessary */
-> -	if (dmux->tx)
-> +	if (dmux->tx) {
-> +		mutex_unlock(&dmux->power_lock);
->  		return 0;
-> +	}
->  
->  	dmux->tx = dma_request_chan(dev, "tx");
->  	if (IS_ERR(dmux->tx)) {
->  		dev_err(dev, "Failed to request TX DMA channel: %pe\n", dmux->tx);
->  		dmux->tx = NULL;
-> -		bam_dmux_runtime_suspend(dev);
-> +		bam_dmux_pc_vote_locked(dmux, false);
-> +		if (!dmux->pc_state)
-> +			bam_dmux_power_off(dmux);
+Breno Leitao (2):
+       nfc: llcp: avoid userspace overflow on invalid optlen
+       nfc: llcp: read llcp_sock->local under the socket lock in getsockopt
 
-I understand that runtime_suspend() is now handling the pending pc
-transition, but why do we need power off handling in runtime_resume()?
+Bryam Vargas (2):
+       nfc: nci: add data_len bound checks to activation parameter extractors
+       nfc: fdp: bound the device-reported read length and fix an skb leak
 
-Previously, runtime PM was really fully focused around the TX channel
-management, so I'm a bit confused to see this here.
+Doruk Tan Ozturk (6):
+       nfc: digital: clamp SENSF_RES length to the destination buffer
+       nfc: llcp: bound SNL TLV parsing to the skb and add length checks
+       nfc: llcp: reject PDUs shorter than the LLCP header
+       nfc: llcp: bound the connect_sn TLV walk to the skb
+       nfc: st21nfca: validate ATR_REQ length against the received frame
+       nfc: port100: reject frames whose declared length exceeds the received data
 
-Sashiko is also complaining that the pending state isn't taken into
-account here (which might be correct, but I haven't understood yet why
-this is here at all).
-https://sashiko.dev/#/patchset/20260815100454.695-1-getshell%40seu.edu.cn
+Lei Zhu (1):
+       selftests: nci: Correct pthread_create return value check
 
-> +		mutex_unlock(&dmux->power_lock);
->  		return -ENXIO;
->  	}
-> +	mutex_unlock(&dmux->power_lock);
->  
->  	return 0;
->  }
-> @@ -766,8 +877,9 @@ static int bam_dmux_probe(struct platform_device *pdev)
->  {
->  	struct device *dev = &pdev->dev;
->  	struct bam_dmux *dmux;
-> -	int ret, pc_ack_irq, i;
-> +	int ret, i;
->  	unsigned int bit;
-> +	bool pc_state;
->  
->  	dmux = devm_kzalloc(dev, sizeof(*dmux), GFP_KERNEL);
->  	if (!dmux)
-> @@ -780,9 +892,9 @@ static int bam_dmux_probe(struct platform_device *pdev)
->  	if (dmux->pc_irq < 0)
->  		return dmux->pc_irq;
->  
-> -	pc_ack_irq = platform_get_irq_byname(pdev, "pc-ack");
-> -	if (pc_ack_irq < 0)
-> -		return pc_ack_irq;
-> +	dmux->pc_ack_irq = platform_get_irq_byname(pdev, "pc-ack");
-> +	if (dmux->pc_ack_irq < 0)
-> +		return dmux->pc_ack_irq;
->  
->  	dmux->pc = devm_qcom_smem_state_get(dev, "pc", &bit);
->  	if (IS_ERR(dmux->pc))
-> @@ -799,6 +911,7 @@ static int bam_dmux_probe(struct platform_device *pdev)
->  	init_waitqueue_head(&dmux->pc_wait);
->  	init_completion(&dmux->pc_ack_completion);
->  	complete_all(&dmux->pc_ack_completion);
-> +	mutex_init(&dmux->power_lock);
+Linmao Li (2):
+       nfc: digital: Do not dump a NULL response in command completion
+       nfc: nci: free destination parameters when closing a connection
 
-devm_mutex_init()
+Muhammad Bilal (1):
+       nfc: llcp: fix OOB read and u8 offset wrap in TLV parsers
 
->  
->  	spin_lock_init(&dmux->tx_lock);
->  	INIT_WORK(&dmux->tx_wakeup_work, bam_dmux_tx_wakeup_work);
-> @@ -817,31 +930,41 @@ static int bam_dmux_probe(struct platform_device *pdev)
->  	pm_runtime_use_autosuspend(dev);
->  	pm_runtime_enable(dev);
->  
-> -	ret = devm_request_threaded_irq(dev, pc_ack_irq, NULL, bam_dmux_pc_ack_irq,
-> -					IRQF_ONESHOT, NULL, dmux);
-> +	ret = devm_request_threaded_irq(dev, dmux->pc_ack_irq, NULL,
-> +					bam_dmux_pc_ack_irq, IRQF_ONESHOT,
-> +					NULL, dmux);
->  	if (ret)
->  		goto err_disable_pm;
->  
->  	ret = devm_request_threaded_irq(dev, dmux->pc_irq, NULL, bam_dmux_pc_irq,
->  					IRQF_ONESHOT, NULL, dmux);
->  	if (ret)
-> -		goto err_disable_pm;
-> +		goto err_disable_pc_ack_irq;
->  
-> +	mutex_lock(&dmux->power_lock);
->  	ret = irq_get_irqchip_state(dmux->pc_irq, IRQCHIP_STATE_LINE_LEVEL,
-> -				    &dmux->pc_state);
-> +				    &pc_state);
->  	if (ret)
-> -		goto err_disable_pm;
-> +		goto err_unlock_disable_irqs;
->  
->  	/* Check if remote finished initialization before us */
-> -	if (dmux->pc_state) {
-> -		if (bam_dmux_power_on(dmux))
-> -			bam_dmux_pc_ack(dmux);
-> -		else
-> -			bam_dmux_power_off(dmux);
-> -	}
-> +	bam_dmux_handle_pc(dmux, pc_state);
-> +	dmux->ready = true;
+Pengpeng Hou (3):
+       nfc: microread: validate target discovery payload lengths
+       nfc: nfcmrvl: validate helper command length before pull
+       nfc: st21nfca: validate received frame size
 
-Do we need the ready flag? Can we just leave the interrupts initially
-masked (IRQF_NO_AUTOEN) and then enable them here?
+Samuel Page (2):
+       nfc: nci: fix out-of-bounds write in nci_target_auto_activated()
+       nfc: nci: fix uninit-value in the RF discover/activated NTF handlers
 
-Thanks,
-Stephan
+Xu Rao (1):
+       nfc: pn533: purge fragmented skbs during cleanup
+
+Yinhao Hu (1):
+       nfc: pn533: hold a reference to the request skb during send_frame
+
+Yun Zhou (1):
+       nfc: nci: fix use of uninitialized memory in CORE_INIT_RSP parsing
+
+Zhenghang Xiao (1):
+       nfc: nci: fix double completion race in nci_data_exchange_complete
+
+  drivers/nfc/fdp/i2c.c                 | 27 +++++++++++++++++++++++++++
+  drivers/nfc/microread/microread.c     | 31 +++++++++++++++++++++++++++++--
+  drivers/nfc/nfcmrvl/fw_dnld.c         | 11 ++++++++---
+  drivers/nfc/pn533/pn533.c             | 22 ++++++++++++++++------
+  drivers/nfc/port100.c                 |  7 +++++++
+  drivers/nfc/st21nfca/dep.c            |  3 +++
+  drivers/nfc/st21nfca/i2c.c            | 29 +++++++++++++++++++----------
+  net/nfc/digital_core.c                |  2 +-
+  net/nfc/digital_technology.c          |  2 ++
+  net/nfc/llcp_commands.c               | 18 ++++++++++++++++--
+  net/nfc/llcp_core.c                   | 69 ++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++------------
+  net/nfc/llcp_sock.c                   | 14 +++++++++++---
+  net/nfc/nci/data.c                    | 10 +++++-----
+  net/nfc/nci/ntf.c                     | 36 ++++++++++++++++++++++++++++++------
+  net/nfc/nci/rsp.c                     | 42 ++++++++++++++++++++++++++++++++++++
++++---
+  tools/testing/selftests/nci/nci_dev.c | 12 +++++++-----
+  16 files changed, 277 insertions(+), 58 deletions(-)
