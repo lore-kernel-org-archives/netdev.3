@@ -1,185 +1,158 @@
-Received: from TY3P286CU002.outbound.protection.outlook.com (mail-japaneastazon11020096.outbound.protection.outlook.com [52.101.229.96])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2465638E5D7;
-	Mon, 17 Aug 2026 05:35:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.229.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EAEB38E5DA
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 05:36:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.174
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786944938; cv=fail; b=i1O3Kc0/YLVJuQMdAwWsQ4mMgSZYqIiIxOGh8iYHO/Oej+/nivfzl3w2/8wGrlotIM75JruWSSpXmBfOnJTOeb3JzBsn1f3Xhmw1RLbbDgoP4qF4Zyae7dG82ZqErkC+cYR9JDyHOJIjlza8A/uIEGVN8t6gf03vzZRJIVxNDX4=
+	t=1786945010; cv=pass; b=rF++mrcGtDwjwe2XG0u/xv7iMjeDo1L/moe8lErGwX5StjQ2xltQbg4oqhr5ChcKxSbzQLBmdICmTeKAa8+bHq5L5b6qEjQyvBRF/xD+8omvS8mfVnSaK3Q+PE+yVxYD4er60kTXwD9rFWZxs9OK8tOhmRYY+v+2nF34NhgAXAI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786944938; c=relaxed/simple;
-	bh=iZU49SiDtX895+vv9RWtc+rUZih8ryIuFP0zzYy7UQk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=p+WwaKHqEfvmNZ6nwjYqlykUmcPewCBgOTt+3doEYtbvxDxH6ud8ZcXFLluJ4tLMaxGsLfdc0E79jqvcX5QscYu+od7OZUm7F8kkyACzdAaBz5vHE6bhT9C9YHI///lPEim4WUzcUp3Bj0YHSPuJ2hbfbF5w2SJJDi06eeDgPno=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=ilYrMMjI; arc=fail smtp.client-ip=52.101.229.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
+	s=arc-20240116; t=1786945010; c=relaxed/simple;
+	bh=5ARhpaNgj1YgyqYtG3+vKqC8U27pj3Ms1FZigYJs9wM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=B/6IrMZzaFM3ZXl8Jcg6Y46uFVAQu8BAMzI+zQgtftxFI5YsqZ8/Ds1k60xgNJJgheCbdcn9VcKIWe4TWnP6VokOaKyfvJg1qgvc8EzjNWFehoOCPpAiSq4b4igpVvXvS2UTgtTBS5YTrgWUi21YCg1Ih/wK+hcad1LRU8LS8Ug=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IWELpIBM; arc=pass smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="ilYrMMjI"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=odHYn04PVX6YX8JiW5ZXiTahjKdwvKTbRgruQc3TkGyFjgzPNhf6RCRHZQMIk9xqUIJU+N2+kr2tLBPSfEcI+WDQ9sSpts/QebAqDuJd8yZZVCKWtWUttyrusMArzII3AgYPmDr1HZTlM1drrplQ1JnCOwz3TeSQZf0O/UXWVSxYuRnrbAAs1V1+o9Z6p15VhA12TE69LPBzLXd9VqIoAnP7qZNqtVVL80kNih436WJGU0aYTRXoY1Cu1mcBI63xQnPc1/jjCAYgZ2/pKxqwhBW+lhnsaZtGnd25Jx/Mz4AuRNHsBrb6hhrgBPJjjE9Qz3GZP7rIYbR+tDeZRMSTYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=g99kSsQLeAUP9kvxOgvvJjWQ75gkhz1A++wawEhvGOk=;
- b=BIrpaWGAgBs+3GYmmDcs9KGCr82wa8egOUr7bVF/d1S1cnmABjf2hYIOXC/l2/RsCSxFe6pwD1u6Wq60AVsPFgxivcM8bF4A2xfGapuU+6o+2nQClF3EEXjvnPyX6wfx6WrZh3TUjJ9214qe3nkEMbyaKtrxVb+jGjYW28pNuHJPGa5muVodLk1Nj67KZKkre4br/vFv8WAGPnrlhNFyL084zryqpwo7PhOEUB/D4vxXsPuAqEvvrA7DzldubzV0/p48BK7acHHOIX2CmrbencFujJ1kCLLBuTUXYQFyVVwM3F5xiPkZLFMs9C2UzaxO1Y0F6akEn8NF0TZiiCRBIA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
- header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=g99kSsQLeAUP9kvxOgvvJjWQ75gkhz1A++wawEhvGOk=;
- b=ilYrMMjIjc0vCRyk+ZhlYOOC7eMhYqgeKO9RYJyCISA99STN0bpXjtIVJMADrIfuAl9ut/zJknlbRG0MS4un5Q9IpjbKUD9nwz3doHfhznAtPK4nwqydZH5/FICvD8mumrkOZBCJfHM8UpRS60ewoXK2+3B9ckEsGIB5Z8xxa5s=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=valinux.co.jp;
-Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
- by TYYP286MB2996.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:30a::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Mon, 17 Aug
- 2026 05:35:25 +0000
-Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- ([fe80::2305:327c:28ec:9b32%3]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
- 05:35:25 +0000
-From: Koichiro Den <den@valinux.co.jp>
-To: Jon Mason <jdmason@kudzu.us>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Allen Hubbe <allenbh@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: ntb@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net 4/4] NTB: ntb_transport: Reject oversized TX buffers
-Date: Mon, 17 Aug 2026 14:35:19 +0900
-Message-ID: <20260817053519.4135287-5-den@valinux.co.jp>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260817053519.4135287-1-den@valinux.co.jp>
-References: <20260817053519.4135287-1-den@valinux.co.jp>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TYCPR01CA0208.jpnprd01.prod.outlook.com
- (2603:1096:405:7a::16) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:38f::10)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IWELpIBM"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-51c1372f84dso20836501cf.2
+        for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 22:36:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786945007; cv=none;
+        d=google.com; s=arc-20260327;
+        b=DwKZ94wAOoWqhFpWwISTG6qb+MtFYPY/1JtmygKdnU/mXVhZUBDriYC0wzz+43ql7a
+         mcB41nt7XrCjjQgDFOFSGh/RYQl3u9RQ2nFIBaDelFbTVXt7ikL8oi7QimfE4/2WwRGA
+         71i0pQ7s2lJOBvrhOw/wcDq5Zmg1dz5BKbYs7gIqca5TWydM1dqv9SHbzhXdbMUmQ9su
+         Et1pGCnr9vfz1aQdjUri4Piwu/vPqaThQyt5rbj5JgMIlVQEWSki6Y40Wq0bDKhspUfV
+         R2BtxcGq11LkZmKif8uiVxtf+BjjYFv2iY35sosaYD78uNMk6u8o18yXAyuVkAEu3mTI
+         nHFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=CeDevZ7cdK1O4Cwh/dUTCyuk4LDTBhPugIXaYpgRn+4=;
+        fh=ZMaRGZvi5/cR8bmSdaJz7Wc6JLd/BTsGw7edE7OPiEs=;
+        b=f2TMym/cS79KFgL9ROOrCW4SxP58tBG+W18E5LGmXGqPdy0coG1R5O74+IH69QEkzQ
+         qvTfyXJ0XS9V9Z4url699aQvLYM83kgQHIUoLcsmg72AHN6xmUsdztXlQ0FRSZtdqXix
+         ezJhmQbGj5aWIZM+HyfV+plPk5Y3jm3Rz6LAmTFwcAT4nD95WZLP9mgR5foPKNm3Ifzp
+         0BLuJYQyfXa/gvCwtw42wrRAdOv0Rsm+xqqfiTpd/n0uGAsYDAoHNUMqmqXJLnbCLg1o
+         C4eBLe6LPRGYZpSBh0Vjsd1MdOeXzmuazerU1C+/rbILyQgakbLrnB4O0pGvbZLp/QWo
+         ol7w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786945007; x=1787549807; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=CeDevZ7cdK1O4Cwh/dUTCyuk4LDTBhPugIXaYpgRn+4=;
+        b=IWELpIBMp02+UF3onyrBmmLJdyPXTUBcbCENOnxEW95ecICHn/SgLTzzNLveoKfrPJ
+         JDEWU3rdl0jDpdg0hqJOAVriG4MhixfyGXrgYfQWH42T+TS96cvRI3moMsEkvDBPdxYr
+         E9P26/Aj1qgLyDQHq9ygXdpm9dd2Mec+g74FxyYf17TlPOuXQpgHETSMyV0TcV5NGBKu
+         FmXfoljD9Cz1VvX3MJZkj4Fy6sDOWgQ2ELmuuXkkN3CX7GFiN66BklyT0soEwfv7ceai
+         rK8gNNaaBowgprV1oW45oqgLgxZz79J4MxJ9BsfXP5grMIs+4AhjkiNNNY72XJCyKJyx
+         6h6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786945007; x=1787549807;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CeDevZ7cdK1O4Cwh/dUTCyuk4LDTBhPugIXaYpgRn+4=;
+        b=VgpmkXDYA8Su3IdBGhcQYcldvc/+ZNXKhxMSdW6G1AfdAuanXPYzbLtdGcvf7WauSB
+         7oFmIYetL4i3QQYoHMCZGpSUvsBkB7QOSFl88KjhTCud63CSpfogyadD6cC4LAuhbVpP
+         6SeQ/r1RekiJIYrEzS4tL/B3j43qOrESjW/Ns3YbIf56WDsCieZ76o2akTPecfFzVv69
+         IeTDA+/Kl0gzkCv6+/G7QrlcTuY8RCrAGhiedKpyGK4PTjG2430H0Yj9vQ7bZuceJL9j
+         oa4E66kgGjpvnUQWr2r5mhg/TQLVRy0V3sE56qQLbUitopR2lPwjQeMn/XwcTn3lEw63
+         hSMw==
+X-Forwarded-Encrypted: i=1; AHgh+RptEjocU2ck0uO8isZmMo36DENv0qMUJ4hf+qdaZuDJ/5a/zZHChg1EhDzcuBMZYjPgsrWNKCI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5b5i7Dp4UL+FpwMkTccWqymWck2CR/xbGm2/XUtxkw7SRarHw
+	sPbfoRLWq1qRvTFWMyiN9DbukVYjf3yq5jXVOJqu9oL3xWCOFrFatcoPgUQN6Xly7jDTGVqGZcO
+	1T+aZ8CapFQOFRcfh0anATomXTaBq/8/T9Y7QiqUUl9yAybpZXaM8BtHRaY4=
+X-Gm-Gg: AR+sD12sbnjokYNcs2ebzsn2qQgN4QTjMeV+JvpB+Pm10xA1KBiBQifn9BwcSJ8229h
+	Fr2vw/lV5mEgEqosO8avEQzU9xTdaYTBhrvcsA1I2GxFiVljcRmLypx2nqhLrKCnjLtfY3jF3Ln
+	JF/ucv9yuW0bZdeJ2uj5mnAnvbhHNqJHMLe6rit4coW5W3knGk2zXV5oPOIinplvLF4uE1NTeVN
+	ACv9mgMegkFCQKBMhj9YGqVDclDoH2XH0QEprn1akT6YallZxQok0wv/a2ElMP4RG1xPrW9kdhH
+	axzUjViQ3Mvn2WNoP7sm2q3IrmloITG3PGYJettz7HAPw3pgDaZsm+OsaklBe6ctgzISmotJ6EZ
+	a0g3Wo3bPrL+16nrnarlGvHdNHU33j6qDCALzEx+ndHaXQ2F/d1XDwsBL0gA7XpLxijCR9OveuG
+	g/fwA+agqcntDiC1mwkQOqP6mz/Q==
+X-Received: by 2002:a05:622a:c9:b0:51c:bb79:a52d with SMTP id
+ d75a77b69052e-52d854221b7mr212476131cf.14.1786945006478; Sun, 16 Aug 2026
+ 22:36:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|TYYP286MB2996:EE_
-X-MS-Office365-Filtering-Correlation-Id: 230edbfc-22eb-45c6-1440-08defc2156e1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|10070799003|1800799024|366016|23010399003|18002099003|22082099003|56012099006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	gzNJYNTXSzaYTsxxY9vCkfKjxiZyuuH05MOF5+F5QbWT0reM8S3yUOGRDVYyTLWttij1zJFl9yfVhWltzYM2TmcDQ1Umnl0nj4eIuMVhBADXqEutvEA7wxA/f+WvIaRzXhi15dhZWLoXftqQVMuYiDwtcBF1gfu4kOexA7t2eG7x7rh4ZFH4T+DQ6thPHN2T/ZfK4aq3LIUCmAA2gpTDIuKqeHXSNHuCe5OzOQ/rQwfFCqCpuTuP2ligOtVrwbaCAYnYIWiHDNLRvbuDtmkIrxGjwykQTJtkjGB/XY4E6G3gucw5ZkdvhksrARUTUgv7gI/RYOPXItMi0P790DdSVJ2zyW80sunBDy4ohauBAn5id/rbU6Tc3V+JsTXEJj2RmYo24HubRgrYIeqqq4nZ2sxRaAYdwhkFQSba4svSCZ3lRuFUReppm8gtg+AX2N1/Y8aFMtDhzEh1llk69jV5pUXGCKKwHQx1xmYZB/3etm0AqdHI+eKlhEN2VL+fzzl2cRDlVf5+1cn/L0c/G7eYXCYac/kug1yq5L6eF4fUGXAuUdbnftZmVMbLKdQrVi44tsC4lXBBh2pY79rEVNtGToznvFl8kBhEfGRqVPwN3xkcgTjUfs3f2abZn+JYGJm2TkU/+00JGMMyVzv8dMDOerQGXvH/lNpTRApjguMtjHg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(1800799024)(366016)(23010399003)(18002099003)(22082099003)(56012099006)(10067099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?kb2KKXun0oMD8ebHIHyfOatp52ErymROz1deG6+KRaA1lM+RZhtlHMTV83BJ?=
- =?us-ascii?Q?5YVsHUq1+F1Zx7CYMZ32RL4tifuAh/5khNkEaWXNBhxxl1XFMzTdStjU9KNg?=
- =?us-ascii?Q?7MbYfC92jrXME5y1UF83/GLJMPgbpqw8kDcrEGNJ4J5Xc3Ld+U3Hl/jS7x42?=
- =?us-ascii?Q?Dd3SxOu2KsYVs/qOS2k/Ay3TdYkKUoh7omyVC8XjEcEfg5Nd4SDgQs3J9Nqw?=
- =?us-ascii?Q?iIwN5kGEhdhmAW4YbTTLekvQaH12YoIIylu/6LhLSQ75cVmFHe5b06K786gA?=
- =?us-ascii?Q?rhTWXM7ePBuU1jwxWQZZYzq6T/z0MsoLFWntDWH9bz0f17jEl4WQb11Opfuo?=
- =?us-ascii?Q?WonyRl4+kkNIY8OtWajeIMSVNxwFRdLxcSM3EoIoYnYICO5tQeBKgfJIUYXW?=
- =?us-ascii?Q?/fx0b0ZB2+8l12bLjmDA4ytKMgj2MwI15V114+SXR26PpLrBJ6HlhaGSMQ+7?=
- =?us-ascii?Q?Q1UjOqblrs7KSKYroq1N0eqP8POL9NHoW62Z84y3FiBnawjnT14JMRHa7kss?=
- =?us-ascii?Q?/xtervY/wuNAdyhd2ja7aIfelAq33tbxLfKlv3RtDMa/iu7jfXT5pjDfkVxc?=
- =?us-ascii?Q?DLkAy7OI8oEVd+wKw2zbW2MgBNr7nFGa8yIPtSLsdKrtQQ7CT0QCgO+tW+Mk?=
- =?us-ascii?Q?uzm6nm68yh2v5vCISYq400+DniusqczDS5U6y7j6OcJruMpy5zMbu4bftp/b?=
- =?us-ascii?Q?iaqR9iniEYikkH5w/jnWe7U0cv08jJp/6GC5xIzf+Ms1ZYE5/IwblzbI4r3l?=
- =?us-ascii?Q?gNKxg9EuglKWG+4ydkGB1FknJXyioU4ZoD1H/eWVUQcN0yO3ArvFJvkXUpzZ?=
- =?us-ascii?Q?LWpSY7yZjAkYjm2p55wNn/TD9ECKq5upD63GoVr0hQ/10wUeVNHq9idAkJge?=
- =?us-ascii?Q?KYaPBugrm1xdPTveNsYM/kOt+3hXRV4DTb8Bok9JqVL+jcmTSbORRXILybsd?=
- =?us-ascii?Q?SbsNPVIrj2Z4au1Y0IPmgpFDtxvB2nqBXn6N9mlTbFKsXDajxA2/ZWhtqwm6?=
- =?us-ascii?Q?el9MWse7GuVgc9nCmJI3qg11KrFdfdQJW//JWujosffDb5KNgzZkJHZlLiKb?=
- =?us-ascii?Q?rfRI5aW90e8gSpjUYxs4k4XWwrQtcLewCHn/Mq+QGa4VPfNA8C5UQuekWLzZ?=
- =?us-ascii?Q?twWT8ixH7shYlCDBZ/znJip53xVVg6eMIClmzDTTCf+RCWVVp445MO+88EiJ?=
- =?us-ascii?Q?pI7mh/QNLHXlWLPGIiYyNsGp7BcgqfyMbJ1ANH2f4vqhaGyHBql8dzhEVQTD?=
- =?us-ascii?Q?Eiz3m5SAQjomcl3FOcQglxUskxML6ulqaUaDOpOceVc15PvGVitT9WrYB0qS?=
- =?us-ascii?Q?2VXfdiwe8Gj3wP8GBe4Vw802li2/NyABayK08CcQbyHGi26E9I3bLcjGmilx?=
- =?us-ascii?Q?x61Ju5zrN8yWOG/+A93J+MvP/RkNQq+3IzKyCQbv9bLCF27gUeOQ1RSwCEMs?=
- =?us-ascii?Q?/8XElms9kGXtiNQEAMDoyb2GuYjdSCFtxKb8YfC6R0+IffNizD6taDiPMglj?=
- =?us-ascii?Q?1DNCulyJpEtNXV7c3uxop68Jpcqi7NeZSRWHkbrSYydyiqXCG1it1AYAYp8S?=
- =?us-ascii?Q?iGpmxGX0rO+geO120QUpBUL8TEzstM6MZdiNJdt7zh66+ZWtbmX9eUfa9Inq?=
- =?us-ascii?Q?XJ//1U+AqY8moHx2agVOI48SakIhvOrjriRF+7Dws3Eo8z72ifrvTZ8B4BsQ?=
- =?us-ascii?Q?mhonO0/pVQMeFi3Q87l60pOR6cC1DNPNlfC1ZQEeH1m3aAgczPRQN7FvtN8m?=
- =?us-ascii?Q?tm0ZpD85V+btqvfhznG4vcogPivu7N9UG/lP2FWARNvwfAyQXcbe?=
-X-OriginatorOrg: valinux.co.jp
-X-MS-Exchange-CrossTenant-Network-Message-Id: 230edbfc-22eb-45c6-1440-08defc2156e1
-X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 05:35:25.5601
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: udzQ4b8HB2yxD8COJdDtNj5995ORo6E+ns3XlJr/WLENBTkgVeu1BN0vI6e+dSYeTr1fWRulkaQ4fDi5lvVyuA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYYP286MB2996
+References: <af7dabf3-d0d7-46dc-a878-e1715b3c9ac6@I-love.SAKURA.ne.jp>
+In-Reply-To: <af7dabf3-d0d7-46dc-a878-e1715b3c9ac6@I-love.SAKURA.ne.jp>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 17 Aug 2026 07:36:34 +0200
+X-Gm-Features: AcwNN1V79Tx8968YxpaZBfBp4Ao_S6G5jM-sTJxrZ2GUli7UCFD1ASkCDTD8bqc
+Message-ID: <CANn89iJbT_e5CxtStQNcsCTt5OqaqsexUPgdDk5MY8R6jn2Tdg@mail.gmail.com>
+Subject: Re: [PATCH] net: add missing ref_tracker_dir_exit() to net_passive_dec()
+To: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Cc: Jakub Kicinski <kuba@kernel.org>, Network Development <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-ntb_process_tx() handles an oversized buffer by calling tx_handler()
-with a NULL data pointer and returning success. ntb_netdev therefore
-neither frees the skb in its completion callback nor takes its enqueue
-error path, leaking it.
+On Sun, Aug 16, 2026 at 2:26=E2=80=AFPM Tetsuo Handa
+<penguin-kernel@i-love.sakura.ne.jp> wrote:
+>
+> I found that trying to read /sys/kernel/debug/ref_tracker/* causes NULL
+> pointer dereference crash when alloc_netdev_mqs() via unshare() returned
+> NULL, for commit 9ba74e6c9e9d ("net: add networking namespace refcount
+> tracker") added ref_tracker_dir_exit(&net->refcnt_tracker) to only
+> __put_net() path.
+>
+> Since preinit_net() calls ref_tracker_dir_init(&net->refcnt_tracker) and
+> ref_tracker_dir_init(&net->notrefcnt_tracker), we need to make sure that
+> both ref_tracker_dir_exit(&net->refcnt_tracker) and
+> ref_tracker_dir_exit(&net->notrefcnt_tracker) are called before
+> net_passive_dec() schedules for kmem_cache_free() via net_complete_free()=
+.
+>
+> ref_tracker_dir_exit(&net->refcnt_tracker) is called via put_net() when
+> ns_ref_put() returned true. But put_net() is not called when copy_net_ns(=
+)
+> fails. Therefore, call ref_tracker_dir_exit() from net_passive_dec() if
+> put_net() is not yet called.
+>
+> Analyzed-by: sashiko.dev (no mail address)
+> Link: https://sashiko.dev/#/patchset/b06ce35d-e7bc-47a5-8e0a-e82be7e4dd08=
+%40I-love.SAKURA.ne.jp
+> Fixes: 9ba74e6c9e9d ("net: add networking namespace refcount tracker")
 
-Reject oversized buffers in ntb_transport_tx_enqueue() before acquiring
-a queue entry and return -EMSGSIZE. The caller retains ownership of the
-buffer, and the preceding netdev patch frees the skb when enqueue
-returns this permanent error.
+Note that the crash only became possible when debugfs support was
+added to ref_tracker (via Jeff Layton's
+patch series: "ref_tracker: add ability to register a debugfs file for
+a ref_tracker_dir").
 
-Fixes: fce8a7bb5b4b ("PCI-Express Non-Transparent Bridge Support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
----
-Previously posted at:
-https://lore.kernel.org/r/20260810165136.2292436-3-den@valinux.co.jp/
+Once ref_tracker_dir_init() started registering entries in debugfs,
+failing to call ref_tracker_dir_exit()
+left dangling debugfs nodes / state pointing to freed memory after
+kmem_cache_free().
 
-I moved the fix here because it addresses a pre-existing issue
-independently of that feature series. I also moved the size check before
-the tx_free_q lookup so -EBUSY cannot mask -EMSGSIZE.
----
- drivers/ntb/ntb_transport.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+Reviewed-by: Eric Dumazet <edumazet@google.com>
 
-diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
-index 4bdd81edcb87..f9caa1a653c5 100644
---- a/drivers/ntb/ntb_transport.c
-+++ b/drivers/ntb/ntb_transport.c
-@@ -1955,15 +1955,6 @@ static int ntb_process_tx(struct ntb_transport_qp *qp,
- 		return -EAGAIN;
- 	}
- 
--	if (entry->len > qp->tx_max_frame - sizeof(struct ntb_payload_header)) {
--		if (qp->tx_handler)
--			qp->tx_handler(qp, qp->cb_data, NULL, -EIO);
--
--		ntb_list_add(&qp->ntb_tx_free_q_lock, &entry->entry,
--			     &qp->tx_free_q);
--		return 0;
--	}
--
- 	ntb_async_tx(qp, entry);
- 
- 	qp->tx_pkts++;
-@@ -2356,6 +2347,9 @@ int ntb_transport_tx_enqueue(struct ntb_transport_qp *qp, void *cb, void *data,
- 	if (!qp->link_is_up)
- 		return -ENOLINK;
- 
-+	if (len > qp->tx_max_frame - sizeof(struct ntb_payload_header))
-+		return -EMSGSIZE;
-+
- 	entry = ntb_list_rm(&qp->ntb_tx_free_q_lock, &qp->tx_free_q);
- 	if (!entry) {
- 		qp->tx_err_no_buf++;
--- 
-2.51.0
-
+> Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+> ---
+>  net/core/net_namespace.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+> index 6e9a0c29a9a0..4915ea7b2374 100644
+> --- a/net/core/net_namespace.c
+> +++ b/net/core/net_namespace.c
+> @@ -530,6 +530,8 @@ void net_passive_dec(struct net *net)
+>
+>                 /* There should not be any trackers left there. */
+>                 ref_tracker_dir_exit(&net->notrefcnt_tracker);
+> +               if (!net->refcnt_tracker.dead)
+> +                       ref_tracker_dir_exit(&net->refcnt_tracker);
+>
+>                 /* Wait for an extra rcu_barrier() before final free. */
+>                 llist_add(&net->defer_free_list, &defer_free_list);
+> --
+> 2.55.0
+>
