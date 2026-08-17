@@ -1,97 +1,91 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E463285068;
-	Mon, 17 Aug 2026 09:11:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C4B3DB33C;
+	Mon, 17 Aug 2026 09:18:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786957867; cv=none; b=L8jow5AoHX6ROuC9q7GQNl3V9h8paU9eTJidxWmhNnYAc74gLGKHxkAFtz9cGtq4wHHCl3AzeA5CG17wakI48jITfDn4q9QulNfBlNQ6kxDA/9EYskN1PMtKPvF0h7noR57MIaPIN7JXg0SWLuHRFcMfZO0SY/lLVnb7SxGjAvE=
+	t=1786958285; cv=none; b=on5/1WyBg4ZrjZIC3aaxJ/I0g+WJ2LMxqOy+frlg9gjY1OZefxaYCJPPwXkxvedOqU7GfiDnF+6Xxl1HU7MzGEJOkpNh9GcGbbKAg912nMgJacOtUwDPQA03NTBz34yuOP6taz0JtwgVSJH4C8k7llg5qe1OS+c0BWGraIgetnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786957867; c=relaxed/simple;
-	bh=3PtwBHaoVE1AdiHnCIAi+yV7Nv0dKkEhmu/IEvrP1p0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mLegIckRa3DKSVm/jFRhzK6I6bkDeQl/T4Ao73W1a1F5ILoS47xPlToacEnxa6t43jddneRQmPF+mcVtMYfu3EH+oJMpYVHA1bFPQDOGvLL/VStOo67VHvQC7QKc/JvfbSvk3yox7EKtmJoRgQkDtxh4h+Xc55AiOB/As7zSJrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=cTkGPi/E; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1786958285; c=relaxed/simple;
+	bh=UHs6IDBjNkc0HenuR0X3Z46jN92fQ6pA8qmh0JQhhKc=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=aQob+QmELfdzEHq5oV+hMTxmzwWgkKB69ORxOKuamJqszQZvsSlmnci87gjPPsHkA3V6iSw/cK+57XoEfstApYR4cFP6b3gDchlNJNF7Mr1fpO2Lc5Po4I1WpkfbBEtvxFAY4J1A4H9gvWy41bxIQvV2D5bZ8lk050iauNgBIDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=UA2o3nlc; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="cTkGPi/E"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Hl
-	mDL3tBEO2C94aJxBhvVsgsjTiyefcae9H4rAJukqk=; b=cTkGPi/EhasUlNj3Uq
-	1y1mcqQE6CxU4JnpBWyGuBgCk1LnBtgeBV+AVFawLiUShFcEhED8Q9NrwGx/Z9zr
-	LuXDsgKsabuFmUvlF0I7XEkFWdafjTYas/UMypt6T18is14673OPJPA4M5oeBA0N
-	ysa68BAD+urf+2HYEwe6ZGOlE=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3nwL8z4JqwN1xQQ--.31345S2;
-	Mon, 17 Aug 2026 17:10:21 +0800 (CST)
-From: Qingshuang Fu <fffsqian@163.com>
-To: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	SeongJae Park <sjpark@amazon.de>
-Cc: netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Qingshuang Fu <fuqingshuang@kylinos.cn>,
-	Qingshuang Fu <fffsqian@163.com>
-Subject: [PATCH] selftests/net: fix kill() argument order in fin_ack_lat
-Date: Mon, 17 Aug 2026 17:10:17 +0800
-Message-Id: <20260817091017.281104-1-fffsqian@163.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="UA2o3nlc"
+Received: by dvalin.narfation.org (Postfix) id DFE4D1FE24;
+	Mon, 17 Aug 2026 09:17:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1786958270;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bcIx67Fbh9+8js56pY025rLngKW6LqFCTkIScQJflJI=;
+	b=UA2o3nlchwDgRh6ZFaKnSp4NqZzsAxuVAwA07ezaQR54iYdWxCF9+8KKYQhp8PX3myZrsE
+	Yybh3OdemXsU8hpFWfUk2zCe3czMZ4rvLsg3VU+lwHYLMh55oYUwSavAAyzaBbDk7IF41+
+	WCf8NrREd5DfZV9BmifyR+mJIkIfz7A=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3nwL8z4JqwN1xQQ--.31345S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7uw47Cr4UJry5try8uFyxGrg_yoW8WrWUpF
-	WfK39rCF1rGa12ya1jk3y8JFyxuF1kGw48Gr1j9r1UZ395JFykWrZIkF1jvwnIq39aq3W5
-	ZF1S9FWYka1UA3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piiID7UUUUU=
-X-CM-SenderInfo: 5iii21xldqqiywtou0bp/xtbC6h1uOWqCz-2x+gAA3x
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH net v3] batman-adv: reject unrepresentable multicast
+ TVLV offsets
+From: Sven Eckelmann <sven@narfation.org>
+To: David Lee <david.lee@trailofbits.com>
+Cc: marek.lindner@mailbox.org, sw@simonwunderlich.de, antonio@mandelbit.com, 
+ sven@narfation.org, Kyle Zeng <kylebot@openai.com>, davem@davemloft.net, 
+ linus.luessing@c0d3.blue, edumazet@google.com, kuba@kernel.org, 
+ pabeni@redhat.com, horms@kernel.org, 
+ Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>, 
+ netdev@vger.kernel.org, b.a.t.m.a.n@lists.open-mesh.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20260817084955.944189-1-david.lee@trailofbits.com>
+References: <20260817084955.944189-1-david.lee@trailofbits.com>
+Date: Mon, 17 Aug 2026 11:17:21 +0200
+Message-Id: <178695824178.1497243.16045312752677179315.b4-review@b4>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1122; i=sven@narfation.org;
+ h=from:subject:message-id; bh=UHs6IDBjNkc0HenuR0X3Z46jN92fQ6pA8qmh0JQhhKc=;
+ b=owGbwMvMwCXmy1+ufVnk62nG02pJDFlNF9c5cv1fF271K/Li1eOb51ybeypO8FJ2v+gC1x6zK
+ j6xeJmjHaUsDGJcDLJiiix7ruSf38z+Vv7ztI9HYeawMoEMYeDiFICJmEUw/GJacGRZ52vWQKGn
+ Nq2zulcZ6q1NMT9151nAWqc52XNqrrxkZDiyyjC0P4hlz9R1fFMbl1otjNwfkqzEbXP/S9zT+e6
+ iU1gA
+X-Developer-Key: i=sven@narfation.org; a=openpgp;
+ fpr=522D7163831C73A635D12FE5EC371482956781AF
 
-From: Qingshuang Fu <fuqingshuang@kylinos.cn>
+> The network and transport header fields in struct sk_buff are 16-bit
+> offsets from skb->head, and U16_MAX is reserved as the unset transport
+> header value. batadv_tvlv_call_handler() sets both fields from a received
+> multicast TVLV without checking whether the TVLV end is representable.
+> 
+> If the end offset exceeds the field's range, skb_set_transport_header()
+> truncates it so that the transport header precedes the network header.
+> The negative difference is then returned by skb_network_header_len() as
+> a large u32. batadv_mcast_forw_packet() consequently accepts an oversized
+> multicast tracker and accesses memory beyond the skb data.
 
-sig_handler() passes its arguments to kill() in the wrong order: it
-sends signal number child_pid to PID SIGTERM (15) instead of sending
-SIGTERM to the client process.  The call therefore always fails
-(a pid is virtually never a valid signal number) and the client is
-never notified: when only the server process receives SIGTERM, the
-client keeps running its infinite connect loop as an orphan process.
+[...] 
 
-Swap the arguments so that the server forwards SIGTERM to the client.
-Also guard the call with child_pid > 0: the client inherits the
-handler and sees child_pid == 0, and a plain argument swap would make
-it call kill(0, SIGTERM), signaling the whole process group (including
-the invoking shell) instead of exiting quietly.
+> ---
+> Changes in v3:
+> - Rename transport_offset to thoff so the comparisons fit on one line.
+> 
+> v2: https://lore.kernel.org/netdev/20260810145754.828936-1-david.lee@trailofbits.com/
 
-Fixes: af8c8a450bf4 ("selftests: net: Add FIN_ACK processing order related latency spike test")
-Signed-off-by: Qingshuang Fu <fuqingshuang@kylinos.cn>
----
- tools/testing/selftests/net/fin_ack_lat.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Looks to me like you've also dropped the
+Suggested-by: Sven Eckelmann <sven@narfation.org>
 
-diff --git a/tools/testing/selftests/net/fin_ack_lat.c b/tools/testing/selftests/net/fin_ack_lat.c
-index 70187494b57a..f985e01354b4 100644
---- a/tools/testing/selftests/net/fin_ack_lat.c
-+++ b/tools/testing/selftests/net/fin_ack_lat.c
-@@ -103,7 +103,8 @@ static void server(int sock, struct sockaddr_in address)
- 
- static void sig_handler(int signum)
- {
--	kill(SIGTERM, child_pid);
-+	if (child_pid > 0)
-+		kill(child_pid, SIGTERM);
- 	exit(0);
- }
- 
+b4 diff -v2  20260817084955.944189-1-david.lee@trailofbits.com
 
-base-commit: 8d3ae59288f1e7d58d76558a6ee96d533bc5019f
+Acked-by: Sven Eckelmann <sven@narfation.org>
+
 -- 
-2.25.1
-
+Sven Eckelmann <sven@narfation.org>
