@@ -1,332 +1,188 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-218.mta0.migadu.com [91.218.175.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BE93AFD16;
-	Mon, 17 Aug 2026 14:26:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605C1175A6B
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 14:30:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786976799; cv=none; b=BWsuq5Ox2wbTz1kiS6Ne3Y2/Ra0G+uOiRMu4l55N7w6IL/edopOFAz5JjP8qKpBFdF0WWxdUKecuBk8mESLMkjW68cbFLL9Z7fJk6HWpiFtjoYERxdXVOr3Wkyy6GKM8GlWp9+AojAgTsbMy8ZLUOp+thwmBrUgoYItIGrHS9Vk=
+	t=1786977027; cv=none; b=e3tsXxb2vVflnbOItpQXLZEgT3AcRlhGZSeVeJ00HXikxkoKMxHf63AniEZj4R8VVnUL46rsvnLfrzyu1RveHCFFEFkklGGHzrrbWsibm02UhY3D0EO8YYS8XIWBxNFrey/y+EukQQogUi5+1T3Ya2AYu3GoXtBgx2RzU/4u1ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786976799; c=relaxed/simple;
-	bh=odO48VtrD6cmttovTwNfzUBdNWesHHm5eV8rNrjxhB0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=KO3l7L3xP7pbKtjBA2iskbjU997sn+meQsXtEQ9NbQt6JMnDGRFCaGZqZpi9QMur1hK77KR6HaLEm2q5sYEvWRp6CoHwDEUalDsJbIGav6VXL9KejRbKs0rIg0YcRaapTCPy1ybRrzTNRLUSC5Sf2A/vWOgdhPgsLzyRzQ7EXDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nEZrpxn2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786977027; c=relaxed/simple;
+	bh=rwsfwe1KC9WcPPdY4abw6tIn22E87mujFPrmBhYTeAQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MT9Cb4vLNtub74dL//JA+I48YKi0Q0pgQS9VNiFwqeOnmN4/OesvyEHakGjUGeen2GPR2YNTIoN+7sPLmBuAnSKRErxPkOQTADRdxdQFg+/ugr8trj2YMzdY6OIO2TzqyCpiiLuaDhb5oP3XjSrzv32P1DNHBYubNuX7QMyKUPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qra4UERD; arc=none smtp.client-ip=91.218.175.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nEZrpxn2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FCD91F00A3D;
-	Mon, 17 Aug 2026 14:26:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786976797;
-	bh=ku13IIlN+P0gudOOvoiEjtYTqvazrd8x/nYHW6yxPKY=;
-	h=Date:From:To:Cc:Subject;
-	b=nEZrpxn2gxEA27+CQVWRTjEFGpc09W1n+d9F9SrcTjOuo9MZR+NhhFNoY3adGgIPM
-	 SM2JjIIcTkT5WQTeKRDKjc2jQjbabmc6pFHedUt3cwdgxsrSGbbuzbqxM0qdvs1qDq
-	 Eu55twPOLpP+x9TUsMfHugbV5HGF6xgJ8ie1nskANLPKS0gvl/ric2FufpKLTtoePk
-	 7+gCW/I723BazobJiEmAaBaalIDvF0HVFknzeW5CBVZIOw4cGwt3k4w4dc2xAmNupy
-	 OFqsh4vSssk/1/o6fOBMBKUzMdueGhndGhuSVSIvjKKAK7KjInXa9EFQ0XVZx7VCEn
-	 wpDQpoywTqowQ==
-Date: Mon, 17 Aug 2026 15:26:32 +0100
-From: Mark Brown <broonie@kernel.org>
-To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Networking <netdev@vger.kernel.org>
-Cc: Charlie-cy Wu <Charlie-cy.Wu@mediatek.com>,
-	Charlie-cy Wu <charlie-cy.wu@mediatek.corp-partner.google.com>,
-	Felix Fietkau <nbd@nbd.name>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Next Mailing List <linux-next@vger.kernel.org>
-Subject: linux-next: manual merge of the net-next tree with the origin tree
-Message-ID: <aoMaGJ1GcPZOoT_i@sirena.org.uk>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qra4UERD"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=rwsfwe1KC9WcPPdY4abw6tIn22E87mujFPrmBhYTeAQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786977023; v=1; x=1787581823;
+ b=qra4UERDP0xNfaaZrlb9BWRpNzwWUXNCoH4NvBHJXEmhcb1K0YsQIPgkJ4XF0EhocRCvGZ4N
+ G2pdhB1n+rqGFCe1aarh1HdfgI8pNcJ4PXqHcm30uP2J/0l5OwTgwTCaYpWmHgVAwAREuJsmAFH
+ SFHLClsYZ1wTFleQFkkRJOQk=
+X-Envelope-To: netdev@vger.kernel.org
+Received: from [10.54.26.211] (222.72.143.228)
+	by smtp.migadu.com with ESMTPS id 7d67e3c03a18b92d;
+	Mon, 17 Aug 2026 14:30:13 +0000
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <deeacbf2-8ae3-4f32-9787-c3625d686113@linux.dev>
+Date: Mon, 17 Aug 2026 22:29:58 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf] bpf: free page_pool frags via the page_pool path in
+ bpf_xdp_shrink_data
+To: Daniel Borkmann <daniel@iogearbox.net>, bot+bpf-ci@kernel.org,
+ bpf@vger.kernel.org, netdev@vger.kernel.org
+Cc: syzbot+237bbeed8dfe0699b7f5@syzkaller.appspotmail.com,
+ john.fastabend@gmail.com, sdf@fomichev.me, martin.lau@linux.dev,
+ ast@kernel.org, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com,
+ song@kernel.org, yonghong.song@linux.dev, jolsa@kernel.org,
+ emil@etsalapatis.com, ihor.solodrai@linux.dev, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ hawk@kernel.org, toke@redhat.com, lorenzo@kernel.org,
+ linux-kernel@vger.kernel.org, martin.lau@kernel.org, clm@meta.com
+References: <20260816031245.268898-1-jiayuan.chen@linux.dev>
+ <5aa97a9a0b8cd20feda29b304874967a8019d8b4b3dd4021dc5c0dac43c10d05@mail.kernel.org>
+ <2c2c7bb6-cce5-4dc3-965c-bbf1c50905d9@linux.dev>
+ <8a34148c-4704-4d8c-9c7f-cfadb523a745@iogearbox.net>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <8a34148c-4704-4d8c-9c7f-cfadb523a745@iogearbox.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi all,
 
-Today's linux-next merge of the net-next tree got a conflict in:
+On 8/17/26 10:15 PM, Daniel Borkmann wrote:
+> On 8/16/26 7:16 AM, Jiayuan Chen wrote:
+>> On 8/16/26 11:57 AM, bot+bpf-ci@kernel.org wrote:
+>>>> diff --git a/net/core/filter.c b/net/core/filter.c
+>>>> index 16845987b244..3aab5556abe2 100644
+>>>> --- a/net/core/filter.c
+>>>> +++ b/net/core/filter.c
+>>>> @@ -86,6 +86,7 @@
+>>>>   #include <net/inet_dscp.h>
+>>>>
+>>>>   #include "dev.h"
+>>>> +#include "netmem_priv.h"
+>>>>
+>>>>   /* Keep the struct bpf_fib_lookup small so that it fits into a 
+>>>> cacheline */
+>>>>   static_assert(sizeof(struct bpf_fib_lookup) == 64, "struct 
+>>>> bpf_fib_lookup size check");
+>>>> @@ -4288,6 +4289,14 @@ static bool bpf_xdp_shrink_data(struct 
+>>>> xdp_buff *xdp, skb_frag_t *frag,
+>>>>       if (mem_type == MEM_TYPE_XSK_BUFF_POOL) {
+>>>>           netmem = 0;
+>>>>           zc_frag = bpf_xdp_shrink_data_zc(xdp, shrink, tail, 
+>>>> release);
+>>>> +    } else if (netmem_is_pp(netmem)) {
+>>>> +        /* The rxq mem model does not always describe how a released
+>>>> +         * frag must be freed: the generic-XDP and veth paths run the
+>>>> +         * program on a shared rxq while the frag has been cow'd into
+>>>> +         * page_pool memory. Trust the page itself and return a
+>>>> +         * page_pool frag to its pool regardless of rxq->mem.type.
+>>>> +         */
+>>>> +        mem_type = MEM_TYPE_PAGE_POOL;
+>>>>       }
+>>>>
+>>>>       if (release) {
+>>> The comment says the fix handles rxq->mem.type "regardless" of its 
+>>> value,
+>>> but the implementation still checks MEM_TYPE_XSK_BUFF_POOL first. 
+>>> When the
+>>> shared rxq has been left with mem_type == MEM_TYPE_XSK_BUFF_POOL by
+>>> veth_xdp_rcv_one() (which writes frame->mem_type into the shared rxq on
+>>> XDP_TX/XDP_REDIRECT and never restores it), a page_pool frag skips 
+>>> the new
+>>> netmem_is_pp() branch entirely and goes to bpf_xdp_shrink_data_zc() 
+>>> instead.
+>>>
+>>> Should the comment say "regardless of rxq->mem.type, unless the rxq 
+>>> claims
+>>> XSK memory" or should the netmem_is_pp() test be unconditional so 
+>>> the stale
+>>> MEM_TYPE_XSK_BUFF_POOL case is also handled?
+>>>
+>>> The commit message states: "A single rxq->mem.type can be wrong in 
+>>> either
+>>> direction." The code, however, only corrects one direction: it upgrades
+>>> mem_type to MEM_TYPE_PAGE_POOL when the frag is a page_pool page, 
+>>> but it
+>>> never downgrades when rxq->mem.type already says MEM_TYPE_PAGE_POOL 
+>>> and the
+>>> frag is not a page_pool page.
+>>>
+>>> That second direction is reachable on the very path the commit message
+>>> cites. veth_xdp_rcv_one() (drivers/net/veth.c:638) points the buff 
+>>> at the
+>>> shared rxq and then, on XDP_TX/XDP_REDIRECT, writes the frame's type 
+>>> into
+>>> it:
+>>>
+>>>      xdp->rxq = &rq->xdp_rxq;
+>>>      ...
+>>>      case XDP_TX:
+>>>              xdp->rxq->mem.type = frame->mem_type;
+>>>      case XDP_REDIRECT:
+>>>              xdp->rxq->mem.type = frame->mem_type;
+>>>
+>>> Once one redirected frame with mem_type == MEM_TYPE_PAGE_POOL is 
+>>> TX'd or
+>>> redirected, rq->xdp_rxq.mem.type stays MEM_TYPE_PAGE_POOL for every
+>>> subsequent packet on that queue.
+>>>
+>>> A later frame whose frags are plain pages then reaches:
+>>>
+>>>      } else if (netmem_is_pp(netmem)) {   /* false, mem_type left as 
+>>> PAGE_POOL */
+>>>      ...
+>>>      __xdp_return(netmem, mem_type, false, zc_frag);
+>>>
+>>> and __xdp_return()'s MEM_TYPE_PAGE_POOL arm (net/core/xdp.c:436-446) 
+>>> skips
+>>> the check and dereferences a garbage pool pointer:
+>>>
+>>>      /* No need to check netmem_is_pp() as mem->type knows this a 
+>>> page_pool page */
+>>>      page_pool_put_full_netmem(netmem_get_pp(netmem), netmem, 
+>>> napi_direct);
+>>>
+>>> netmem_get_pp() reads page->pp, which for a non-page_pool page holds
+>>> whatever the allocator left there.
+>>>
+>>> This specific crash is pre-existing rather than introduced by the 
+>>> patch, but
+>>> the patch is the change that claims to make the frag itself 
+>>> authoritative,
+>>> and it had the netmem in hand. Could the decision be unconditional:
+>>>
+>>>      } else {
+>>>              mem_type = netmem_is_pp(netmem) ? MEM_TYPE_PAGE_POOL : 
+>>> mem_type;
+>>
+>> This is a non-pool page being mistreated as a pool page, and I think 
+>> it's a separate issue, xdp_return_buff and xdp_convert_buff_to_frame 
+>> hit it too, not just this path.
+> Could you look into this as well, and make this a small series along 
+> with a BPF selftest
+> which exercises/tests this bug?
+>
+> Thanks,
+> Daniel
 
-  drivers/net/wireless/mediatek/mt76/mt7921/regd.c
 
-between commit:
+Thanks Daniel. I'm still thinking of a unified fix( for example 
+__xdp_return() since that's the one place 
+bpf_xdp_shrink_data/xdp_return_buff/xdp_convert_buff_to_frame go
+through), deciding by the page itself there handles both directions at once.
 
-  d6e7d57ed967d ("wifi: mt76: mt7921: refactor regd update to fix recursive mutex deadlock")
+I'll work on it.
 
-from the origin tree and commits:
-
-  1f83a8378eb26 ("wifi: mt76: mt7921: refactor regd update to fix recursive mutex deadlock")
-  9b80bd9cab40c ("wifi: mt76: mt7921: add regulatory wiphy self manager support")
-
-from the net-next tree.
-
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
-
-diff --combined drivers/net/wireless/mediatek/mt76/mt7921/regd.c
-index 4722007abafd5,4a8ea4624fee5..0000000000000
---- a/drivers/net/wireless/mediatek/mt76/mt7921/regd.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/regd.c
-@@@ -10,6 -10,15 +10,15 @@@ static bool mt7921_disable_clc
-  module_param_named(disable_clc, mt7921_disable_clc, bool, 0644);
-  MODULE_PARM_DESC(disable_clc, "disable CLC support");
-  
-+ static struct ieee80211_regdomain mt7921_regd_ww = {
-+ 	.n_reg_rules = 1,
-+ 	.alpha2 =  "00",
-+ 	.reg_rules = {
-+ 		/* IEEE 802.11b/g, channels 1..11 */
-+ 		REG_RULE(2412 - 10, 2462 + 10, 40, 6, 20, 0),
-+ 	}
-+ };
-+ 
-  bool mt7921_regd_clc_supported(struct mt792x_dev *dev)
-  {
-  	if (mt7921_disable_clc ||
-@@@ -33,6 -42,9 +42,9 @@@ mt7921_regd_channel_update(struct wiph
-  	np = mt76_find_power_limits_node(mdev);
-  
-  	sband = wiphy->bands[NL80211_BAND_5GHZ];
-+ 	if (!sband)
-+ 		return;
-+ 
-  	band_np = np ? of_get_child_by_name(np, "txpower-5g") : NULL;
-  	for (i = 0; i < sband->n_channels; i++) {
-  		ch = &sband->channels[i];
-@@@ -71,14 -83,15 +83,16 @@@
-  	}
-  }
-  
- +/* Internal version that assumes mutex is already held by caller */
-  int __mt7921_mcu_regd_update(struct mt792x_dev *dev, u8 *alpha2,
-  			     enum environment_cap country_ie_env)
-  {
-  	struct mt76_dev *mdev = &dev->mt76;
-  	struct ieee80211_hw *hw = mdev->hw;
-  	struct wiphy *wiphy = hw->wiphy;
-- 	int ret = 0;
-+ 	int ret;
-+ 
-+ 	lockdep_assert_held(&dev->mt76.mutex);
-  
-  	if (!dev->regd_change)
-  		return 0;
-@@@ -101,7 -114,7 +115,7 @@@
-  int mt7921_mcu_regd_update(struct mt792x_dev *dev, u8 *alpha2,
-  			   enum environment_cap country_ie_env)
-  {
-- 	int ret = 0;
-+ 	int ret;
-  
-  	dev->regd_in_progress = true;
-  
-@@@ -150,10 -163,176 +164,176 @@@ void mt7921_regd_notifier(struct wiphy 
-  	if (pm->suspended)
-  		return;
-  
-+ 	if (MT7921_REGD_SUPPORTED(&dev->phy)) {
-+ 		mt7921_regd_update(&dev->phy, req->alpha2);
-+ 
-+ 		return;
-+ 	}
-+ 
-  	mt7921_mcu_regd_update(dev, req->alpha2,
-  			       req->country_ie_env);
-  }
-  
-+ static struct sk_buff *
-+ mt7921_regd_query_regdb(struct mt792x_phy *phy, char *alpha2)
-+ {
-+ 	struct wiphy *wiphy = phy->mt76->hw->wiphy;
-+ 	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
-+ 	struct mt792x_dev *dev = mt792x_hw_dev(hw);
-+ 	struct mt7921_clc *clc = phy->clc[MT792x_CLC_REGD];
-+ 	struct mt7921_regd_query_req *req;
-+ 	struct mt7921_regd_cc *regd_cc;
-+ 	struct sk_buff *ret_skb = NULL;
-+ 	u8 *pos, *last_pos;
-+ 	int ret = 0;
-+ 
-+ 	if (!clc)
-+ 		return NULL;
-+ 
-+ 	pos = clc->data;
-+ 	last_pos = pos + le32_to_cpu(clc->len) - sizeof(struct mt7921_clc);
-+ 	while (pos < last_pos) {
-+ 		u32 req_len = 0;
-+ 		u32 rules_len = 0;
-+ 		u32 sign_len = 4;
-+ 		u32 n_reg_rules;
-+ 
-+ 		if (pos + sizeof(*regd_cc) > last_pos)
-+ 			break;
-+ 
-+ 		regd_cc = (struct mt7921_regd_cc *)pos;
-+ 		n_reg_rules = le32_to_cpu(regd_cc->n_reg_rules);
-+ 		if (n_reg_rules > NL80211_MAX_SUPP_REG_RULES)
-+ 			break;
-+ 
-+ 		rules_len = sizeof(struct mt7921_regd_rule_header) +
-+ 			    sizeof(struct mt7921_regd_rule) * n_reg_rules;
-+ 
-+ 		if (pos + sizeof(*regd_cc) + rules_len + sign_len > last_pos)
-+ 			break;
-+ 
-+ 		pos += sizeof(*regd_cc) + rules_len + sign_len;
-+ 		if (memcmp(regd_cc->alpha2, alpha2, 2))
-+ 			continue;
-+ 
-+ 		req_len = sizeof(*req) + rules_len + sign_len;
-+ 		req = kzalloc(req_len, GFP_KERNEL);
-+ 
-+ 		if (!req)
-+ 			return NULL;
-+ 
-+ 		req->ver = regd_cc->ver;
-+ 		req->sign_type = regd_cc->sign_type;
-+ 		req->size = cpu_to_le32(rules_len + sign_len);
-+ 		req->n_reg_rules = regd_cc->n_reg_rules;
-+ 
-+ 		memcpy(req->alpha2, regd_cc->alpha2, 2);
-+ 		memcpy(req->data, regd_cc->data, rules_len + sign_len);
-+ 
-+ 		ret = mt76_mcu_send_and_get_msg(&dev->mt76,
-+ 						MCU_CE_CMD(SET_REGD_CH),
-+ 						req, req_len, true, &ret_skb);
-+ 
-+ 		kfree(req);
-+ 
-+ 		return ret < 0 ? NULL : ret_skb;
-+ 	}
-+ 
-+ 	return NULL;
-+ }
-+ 
-+ int mt7921_regd_update(struct mt792x_phy *phy, char *alpha2)
-+ {
-+ 	struct wiphy *wiphy = phy->mt76->hw->wiphy;
-+ 	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
-+ 	struct mt792x_dev *dev = mt792x_hw_dev(hw);
-+ 	struct mt7921_regd_rule *mt7921_rule;
-+ 	struct mt76_dev *mdev = &dev->mt76;
-+ 	struct ieee80211_regdomain *regd;
-+ 	struct ieee80211_reg_rule *rule;
-+ 	struct mt7921_regd_rule_ev *ev;
-+ 	int i, num_of_rules = 0;
-+ 	struct sk_buff *skb;
-+ 	int ret = 0;
-+ 
-+ 	if (dev->hw_full_reset)
-+ 		return 0;
-+ 
-+ 	if (!MT7921_REGD_SUPPORTED(phy))
-+ 		return -EOPNOTSUPP;
-+ 
-+ 	mt792x_mutex_acquire(dev);
-+ 	skb = mt7921_regd_query_regdb(phy, alpha2);
-+ 	mt792x_mutex_release(dev);
-+ 
-+ 	if (!skb) {
-+ 		ret = -EINVAL;
-+ 		goto err;
-+ 	}
-+ 
-+ 	if (skb->len < sizeof(*ev) + 4) {
-+ 		ret = -EINVAL;
-+ 		goto err;
-+ 	}
-+ 
-+ 	ev = (struct mt7921_regd_rule_ev *)(skb->data + 4);
-+ 	num_of_rules = le32_to_cpu(ev->n_reg_rules);
-+ 
-+ 	if (!num_of_rules ||
-+ 	    WARN_ON_ONCE(num_of_rules > NL80211_MAX_SUPP_REG_RULES)) {
-+ 		ret = -EINVAL;
-+ 		goto err;
-+ 	}
-+ 
-+ 	if (skb->len < struct_size(ev, reg_rule, num_of_rules) + 4) {
-+ 		ret = -EINVAL;
-+ 		goto err;
-+ 	}
-+ 
-+ 	regd = kzalloc(struct_size(regd, reg_rules, num_of_rules), GFP_KERNEL);
-+ 	if (!regd) {
-+ 		ret = -ENOMEM;
-+ 		goto err;
-+ 	}
-+ 
-+ 	for (i = 0; i < num_of_rules; i++) {
-+ 		mt7921_rule = &ev->reg_rule[i];
-+ 		rule = &regd->reg_rules[i];
-+ 
-+ 		rule->freq_range.start_freq_khz =
-+ 			MHZ_TO_KHZ(le32_to_cpu(mt7921_rule->start_freq));
-+ 		rule->freq_range.end_freq_khz =
-+ 			MHZ_TO_KHZ(le32_to_cpu(mt7921_rule->end_freq));
-+ 		rule->freq_range.max_bandwidth_khz =
-+ 			MHZ_TO_KHZ(le32_to_cpu(mt7921_rule->max_bw));
-+ 		/* not used by fw */
-+ 		rule->power_rule.max_antenna_gain = DBI_TO_MBI(6);
-+ 		rule->power_rule.max_eirp = DBM_TO_MBM(22);
-+ 		rule->flags = le32_to_cpu(mt7921_rule->flags);
-+ 	}
-+ 
-+ 	regd->n_reg_rules = num_of_rules;
-+ 	regd->dfs_region = ev->dfs_region;
-+ 
-+ 	memcpy(regd->alpha2, alpha2, 2);
-+ 	memcpy(mdev->alpha2, alpha2, 2);
-+ 
-+ 	dev->regd_change = true;
-+ 	mt7921_mcu_regd_update(dev, alpha2, ENVIRON_ANY);
-+ 
-+ 	ret = regulatory_set_wiphy_regd(wiphy, regd);
-+ 
-+ 	kfree(regd);
-+ err:
-+ 	dev_kfree_skb(skb);
-+ 
-+ 	if (ret < 0)
-+ 		return regulatory_set_wiphy_regd(wiphy, &mt7921_regd_ww);
-+ 
-+ 	return ret;
-+ }
-+ EXPORT_SYMBOL_GPL(mt7921_regd_update);
-+ 
-  static bool
-  mt7921_regd_is_valid_alpha2(const char *alpha2)
-  {
-@@@ -191,7 -370,9 +371,9 @@@ int mt7921_regd_change(struct mt792x_ph
-  	if (!memcmp(alpha2, mdev->alpha2, 2))
-  		return 0;
-  
-- 	if (phy->chip_cap & MT792x_CHIP_CAP_11D_EN)
-+ 	if (MT7921_REGD_SUPPORTED(phy))
-+ 		return mt7921_regd_update(phy, alpha2);
-+ 	else if (phy->chip_cap & MT792x_CHIP_CAP_11D_EN)
-  		return regulatory_hint(wiphy, alpha2);
-  	else
-  		return mt7921_mcu_set_clc(dev, alpha2, ENVIRON_INDOOR);
-@@@ -204,7 -385,11 +386,11 @@@ int mt7921_regd_init(struct mt792x_phy 
-  	struct mt792x_dev *dev = mt792x_hw_dev(hw);
-  	struct mt76_dev *mdev = &dev->mt76;
-  
-- 	if (phy->chip_cap & MT792x_CHIP_CAP_11D_EN)
-+ 	if (MT7921_REGD_SUPPORTED(phy)) {
-+ 		wiphy->regulatory_flags |= REGULATORY_WIPHY_SELF_MANAGED |
-+ 					   REGULATORY_DISABLE_BEACON_HINTS;
-+ 		return mt7921_regd_update(phy, "00");
-+ 	} else if (phy->chip_cap & MT792x_CHIP_CAP_11D_EN)
-  		wiphy->regulatory_flags |= REGULATORY_COUNTRY_IE_IGNORE |
-  					   REGULATORY_DISABLE_BEACON_HINTS;
-  	else
