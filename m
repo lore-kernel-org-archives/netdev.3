@@ -1,92 +1,62 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E41377558
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 18:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C26229E11A;
+	Mon, 17 Aug 2026 18:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786990920; cv=none; b=OwoJlctNd9SJCLE8V3htUrAkKct26CsmmMQTWc2lLuYvONaYi6WvVZxenJfHIabvGru7LV6ItRJHyMnW55kj2btlHPP9aIS80wTOI4E2Z9hGK7VpyZ+69dNTQACNkycs1jmp97g5ipXvidTsV2W1eKSqRunEB6draPLbOT49L5M=
+	t=1786991060; cv=none; b=b5VblA1nrRQDZjz3N0zN4POVpUwj+cu2TZjL+6jaivVlR7XNpby65RQz7gultQlpNK7yw2b+IOfIv1gg0Ev0xaKGrpPodgiev5qe7Bc5T5U4BOrHwGlsghxVXmXxFl+1MvnAcUIYmzGjwXLl1AxFmydWviwyD8PGfZdWt+JcjIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786990920; c=relaxed/simple;
-	bh=rRiMjKPrlvCtbE53HdHCzteFjE4x5ALF2uc3Rq58fu8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=lnU4yE6mFTL7PxnmTSYLe3sd6qn6yxezNPiR1webHWEovrFIg/vZXaiUW6izfQdxDBw3ehNr3GguA95EOs3zsPyWRhHBtgqueINk7YWUOVADKbhVslzGfed8Up5oGq040jTbqJycgIkRTyb6vh82LVqPINphOLwmFSIDSnxPUW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HQktAc+N; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786991060; c=relaxed/simple;
+	bh=vy5aeHD8d+Jx1qMGwwl5D/7Bi3rGEWzbwGp1Tk7bSPw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lRzOLwSarDjKQc/DD+iA3myrL0Hibx8XD3rJfCJYriCAA2WiAy6+WapgVwWoK+0iHpa5NnfSL8kej/LjttThORpZLmvKMLGgj06rvStO7iGLb7yVNzZf1YJzIaDt4RHxpgJD5hk7H/SJY8avHpUZjlayZdS2lePedT51G4+anew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j33J8SpB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HQktAc+N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A0A1F000E9;
-	Mon, 17 Aug 2026 18:21:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j33J8SpB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDC171F000E9;
+	Mon, 17 Aug 2026 18:24:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786990918;
-	bh=V0KDU2fp/xI+tOPmlO6jiYiw6my2qXuHaI0B51GLmKw=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=HQktAc+NPMUqyVmMl49bwIbw8xNJlQvl3Ro7aWEOfHl5Xmw5av2myhCtzZ3ZWx5qF
-	 XvZk36BCClrGb77pn5slooP6alXL1b7nkk69YQHCX8WltlYwRqsUesx6v1PzJqy686
-	 vx9INIKkDULrKEfOg/W2R1b2yTFS8hHH+N9vG8upk9qNIiuVocBqt0j49frImHZLKl
-	 nLOs5bDxDNaLb+NlVR1l9m46e6i43t0BDkjjtJH7iwizVUfXJtPiIsCmVSj6MsSDBl
-	 VIfQ0PZtGYfYUCOgtQ2Cu1/nH4p8lcisb+HA4F3+gBaQ4mR2HcgyrPZXQ8/x3y9N48
-	 lkIAcCWstRM7w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19826392625F;
-	Mon, 17 Aug 2026 18:21:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1786991057;
+	bh=vy5aeHD8d+Jx1qMGwwl5D/7Bi3rGEWzbwGp1Tk7bSPw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=j33J8SpBIEotOP8DhEHOuKEtjOPRTXcET4HUd1Twrbxoy70DMh3OJGmKV0UiW9o+c
+	 k7CokEMVkmuueB5Q0+qu5IK0i6uP5PvWwcDGHf50qkDYe1x9BltWLSZfdqdS4A8FfQ
+	 FaE8QNl6MpnFogd+K8VaKN1pMU28jwtT42Eax3ht91iyEAq9yfNtcu076eUyKWlxyP
+	 TFgopx0VgjUrNMJV4sCmFlXvkdnTGObyHxw6nRhW+O0fLTu1eVkvj+pc9ZTpq4S/Jm
+	 TCzuzEJA79IBPBGpwb/EHkytvYnEcscqDeVIysh4wOQpz0WFPV0EOpJ4Tk654icHpQ
+	 JBFFkHdQ8khhg==
+Date: Mon, 17 Aug 2026 11:24:14 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Vitaliy Sochnev <sochnev.v.74@gmail.com>
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ stable@vger.kernel.org, linux-arm-kernel@lists.infradead.org (moderated
+ list:AIROHA ETHERNET DRIVER), linux-mediatek@lists.infradead.org (moderated
+ list:AIROHA ETHERNET DRIVER), netdev@vger.kernel.org (open list:AIROHA
+ ETHERNET DRIVER), linux-kernel@vger.kernel.org (open list)
+Subject: Re: [PATCH net v2] net: airoha: npu: load the firmware without the
+ sysfs fallback
+Message-ID: <20260817112414.0e82a395@kernel.org>
+In-Reply-To: <20260811181717.19339-1-sochnev.v.74@gmail.com>
+References: <20260811181717.19339-1-sochnev.v.74@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 0/2] eth: bnxt: preserve IRQ affinity across IRQ
- reallocation
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178699087078.1673675.7656095963128444661.git-patchwork-notify@kernel.org>
-Date: Mon, 17 Aug 2026 18:21:10 +0000
-References: <20260813193248.2578626-1-kuba@kernel.org>
-In-Reply-To: <20260813193248.2578626-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, michael.chan@broadcom.com,
- pavan.chebbi@broadcom.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Tue, 11 Aug 2026 19:16:59 +0100 Vitaliy Sochnev wrote:
+> airoha_npu_load_firmware() maps a missing firmware file to -EPROBE_DEFER
+> so that the NPU can be brought up once the rootfs carrying /lib/firmware
+> has been mounted. That mapping holds only as long as request_firmware()
+> reports -ENOENT.
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Thu, 13 Aug 2026 12:32:46 -0700 you wrote:
-> bnxt currently discards the IRQ affinity when changing ring count:
-> 
->   # ethtool -l ens9np0
->   [...] Combined:	8 [...]
->   # ynl --family netdev --dump napi-get --json '{"ifindex": 2}'
->   [...]
->    {'defer-hard-irqs': 0,
->   'gro-flush-timeout': 0,
->   'id': 70,
->   'ifindex': 2,
->   'irq': 170,                << IRQ 170 is for NAPI 1 (second to last)
->   'irq-suspend-timeout': 0,
->   'threaded': 'disabled'},
->  {'defer-hard-irqs': 0,
->   'gro-flush-timeout': 0,
->   'id': 69,
->   'ifindex': 2,
->   'irq': 169,
->   'irq-suspend-timeout': 0,
->   'threaded': 'disabled'}]
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,1/2] eth: bnxt: decrease indent in bnxt_init_int_mode()
-    https://git.kernel.org/netdev/net-next/c/2b49709667de
-  - [net-next,2/2] eth: bnxt: preserve IRQ affinity across IRQ reallocation
-    https://git.kernel.org/netdev/net-next/c/fb0502649043
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Okay, but AFAIU this is a hack. AFAIU PROBE_DEFER is not meant to
+be used for FW loading. The driver module should live on the same
+'partition' as the firmware. Either have them both available in initrd,
+or have neither?
