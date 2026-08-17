@@ -1,138 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5EF3C10AD;
-	Mon, 17 Aug 2026 10:47:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59DFB3F329D
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 10:52:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786963659; cv=none; b=Ib2gS1ZOoveM3RrfXUkA/SIzWAPQKTf2oGBt8ZusGuSw+OAft+Nl//QVqp3BengO1z5aec6PwbG4m2VNxY1O2v9Wf6QYufwfVXxW46BF+q5z4jOL7/5KikNKR0snelr+Or9/JBdfEbYkQf1sY46u2XPA+C9afZ6yVp59tEpKt+g=
+	t=1786963980; cv=none; b=BHLiGrc1/wfzrN/dpUiQM1d9rvkCYWHvIayANvwHHZBxSoVHMfw5rwltfJlGmuAdT/xZnB5CTzAi125iCCa4gPDjpjiXlIu+y/vVuSYc5zIHu2yX3FzMpIYli7eMIbRjA1PG9FJG/sW81XRYOzc53GGsIjCsyyFsbEnIgUJYR8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786963659; c=relaxed/simple;
-	bh=ssL4bncxVbB9avtB5LrguL4+Pc3joQ9VEwpBIEAvM0M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=edWD6ZcqpdPwbxeqDN1ZsuCNAShQsgXMTpIFJtKtDl9gU89eLVUrGSfkZyZ9/m8pUVa3bEbggBblCKsX/oScHS8hlN3n1nLMK3NEtzsd74lG8X7RiKSQUJZIRuSsZoWq1jakTxJZSzjaTPoqzGzCLZbGKYrXlLGNfTuObNGjq8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZZWxjRTo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1786963980; c=relaxed/simple;
+	bh=8dWA7vOQUSxOmxFCj+tzmegCJx2kzud+kSIalgUVeo8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G7oTP0cvGY/5BozayEmhc9NmtjOFIUGvEAix8oFWsxdhhr8yg/xM8ACL2ASFHsbvApxnIrt9ISV8KtZvBJCiDaXN1qdGLmsw5r554khJ+lae0Vwflts4gPYlrhbc/ehhKqIXLhULfOn9rlntGoZqR97/Lq48OR9XpDdvbuhQ9bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JID+/vzb; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZZWxjRTo"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 65F2AC2BCB3;
-	Mon, 17 Aug 2026 10:47:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1786963658;
-	bh=ssL4bncxVbB9avtB5LrguL4+Pc3joQ9VEwpBIEAvM0M=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=ZZWxjRToM22toZ3r9sy7Ok/3AJyvZx6DqOI2OslIn6XFbkhbQo4rX3H2sOFSbc7eC
-	 +16p6NBxHGanZpvbQpxy7tIxuq3C/8pBDcBPAtnqobprpZRpQKHFWSAmqNFFXeVgjj
-	 D+3mRJ0Z8RNKWbao4heRMKM5MDz7BnpteLvOO8cN43CXONBeS72hAP6zQKDQoR0fh4
-	 q5J0NkxSxdd2QU+AyFl7ZqjWCcgIyLaTTR3wrcT/4JBvJFUpfpgrNCO+BPEgKTU2vF
-	 cPdMgdBufAFWIF17CXJrgzawRh7pVhvcSsQv8gVEzWkx15Hzsws87MNOjwUCzLndLY
-	 ZqY5MiXzos/ig==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E9A8C5B572;
-	Mon, 17 Aug 2026 10:47:38 +0000 (UTC)
-From: r-vdp via B4 Relay <devnull+ramses.well-founded.dev@kernel.org>
-Date: Mon, 17 Aug 2026 12:47:27 +0200
-Subject: [PATCH net] bonding: fix initial last_rx vs ARP-monitor slack
- window
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JID+/vzb"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-84e3007a2b7so2676594b3a.0
+        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 03:52:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786963975; x=1787568775; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=4gBThyHru0i4E+ZzvCsRvUjwLIOQSie4fEFNF+loR8Q=;
+        b=JID+/vzbwXu58vYgA1NKvl/Y8GXUXzAvxMiEWgqQWKUR6XpuhY0jdLoqIXt6b9ZXzI
+         upjLJKYUZPqSS8xJWIS06gma4yb4R0zv+4pmPAcKBdSNg2DrZVZKSq5OrzeDvmw168EM
+         XASPi2FwgGESewOa8UpLT8fgWIwx2YtUAAvyGsqzqyKJ9aqHbZN3xTYwV4PSdoUs+7Ij
+         yArhPiuWAkENXyIzJOOGAFwNJlsOXnOrM7YsTKrwHYSBGwaV+hOSGYoFwSG/kuSb4W+9
+         iPrqZ2TbnEkkM1z1XIBIaPu9ppPvf6X7SLJWhbi8xkG7nxqjPzina7quhokic6Epy0zF
+         c+0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786963975; x=1787568775;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4gBThyHru0i4E+ZzvCsRvUjwLIOQSie4fEFNF+loR8Q=;
+        b=euxqM6YqV37uo7fHVm3tzJL4dEOyxlHruOxjulO/0P9yzMcObyVHOGHdjVsp1LZgcd
+         OrtoTZO/6lVFkm9j9fXu5AbzyUZn4Khi1HCU08UMXAYfepmR+fi0wxZDS1bT+EYhGL+1
+         MuZoUFc1bqeP9SJdCEfJ4Z38wdC+zFKiEFhdISCzLPkpCXQaVlf3kJL6DIxwso2t1AT+
+         cr9ynn5b6bMqolaCSzzEajzHrbdG4WZFSIzu6Rkf+Lm81mNMQvbMfhUj8Y3umYYn0RzA
+         f9i+GI+pkKGZJZaF8nsENaFv9aZEgZPkTCg2Vm5Oc0a10I9TWQNDVTNXQrU4dxwGKPUA
+         A5rQ==
+X-Gm-Message-State: AOJu0YxOszFvlDG97RDfO1omBmYasV3GqEHxyOsCxYuNCAlWUI5IqRGe
+	Ov4Qr2++GanpT/GeJeIk7b/z2Njvp7dMYdaU4H5/hhA1g/IHCPZz+8//
+X-Gm-Gg: AR+sD13wNiCwlPs+e5V6qj706nEH8Elhek+wPnMICW9125vskKuGJdIpRhRGGBQM/SI
+	Rz6+QaOap5W7xMWrKXywq9t7dKO9jm7qecF/FkKR/REbKSAnrL6gTnDkhwiW4glOQMC1YD468Q7
+	suVsAygvLDVG2BS014m7lCPfB4v4dtpkwgyG6TIeGaU+bqGzDnJtDQUXtAR60Vp/RgCcjGknrTh
+	SoZaBqBBDHGR6IrJ2YCfG+/E7gkLU1hGmT7fSQXfCAdGI6QxU9gehObxbSfUJn3kUIEr/b0Yc1h
+	7uG3txlMaFu3OnltrL6OlD/muoU9EZIVQoS3DDWI5mwsUFbYqBBXNpB8dLXjuo5aOdBt1LYzuwJ
+	KhvZbAu59OGExbKCkHPvYYDSL63BGoB/j1rahHZS9/Mpwy28kIgV112be76tG8rr8MIWE+AQffp
+	AiKKqLkr0Zpum7gBHwzYU3mAYH30rooai24/3Uh38W1SoKAeyFdcyh+i+V8F0NoEhcslOCgT7yH
+	EpnPT3Ot+//E8WWpgcjBGU4UonYIr1LFk3RAyFrMMA/BQXbPjC5Efj50Dw/4FDXYd2CKemdW1V/
+	LarX
+X-Received: by 2002:a05:6a00:b91:b0:851:b03a:fcb with SMTP id d2e1a72fcca58-851b03a12ecmr2971688b3a.14.1786963975460;
+        Mon, 17 Aug 2026 03:52:55 -0700 (PDT)
+Received: from phuc-desktop.. ([183.91.15.56])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-851b401ec98sm354846b3a.6.2026.08.17.03.52.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Aug 2026 03:52:54 -0700 (PDT)
+From: phucduc.bui@gmail.com
+To: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	bui duc phuc <phucduc.bui@gmail.com>
+Subject: [PATCH v3 1/3] net: xilinx: axienet: Propagate errors from optional IRQ lookup
+Date: Mon, 17 Aug 2026 17:52:39 +0700
+Message-ID: <20260817105241.63345-1-phucduc.bui@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260817-bonding-last-rx-v1-1-9da6f7fdf812@well-founded.dev>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMywqDQAwAf0VybiA+UNtfKT2sblYjJZbNtgjiv
- 3dtjzMws4NxFDa4FTtE/ojJqhnKSwHj7HRiFJ8ZKqpa6ssOh1W96IRPZwnjhlRTHRw1fbh6yNU
- rcpDtd7yDcoLHX9p7WHhM5wuO4wuJB1H8eAAAAA==
-X-Change-ID: 20260817-bonding-last-rx-0303fa048f9d
-To: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Jiri Bohac <jbohac@suse.cz>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- r-vdp <ramses@well-founded.dev>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786963656; l=3004;
- i=ramses@well-founded.dev; s=20260817; h=from:subject:message-id;
- bh=YYy+ypt63v5I7wHvlfNPK/qM1ynNfjL53cV7Ib4dBmw=;
- b=cBGB/R1NCtGI6k5mJpJUEfBKPZoardmv+NkK578YfYTPVjl7QOogfNRwIkQZBnJQpg7MRNtUU
- c/hBbir+GCwA0VTeVTO2xneY1kv6PnSgox+V6RZV5Vt+yyPZh4kTvn9
-X-Developer-Key: i=ramses@well-founded.dev; a=ed25519;
- pk=1vBXHBVeJBMaC+2Zuonl0QQhEgGIQHERyF5RZNnrCmw=
-X-Endpoint-Received: by B4 Relay for ramses@well-founded.dev/20260817 with
- auth_id=957
-X-Original-From: r-vdp <ramses@well-founded.dev>
-Reply-To: ramses@well-founded.dev
+Content-Transfer-Encoding: 8bit
 
-From: r-vdp <ramses@well-founded.dev>
+From: bui duc phuc <phucduc.bui@gmail.com>
 
-Commit f31c7937c254 ("bonding: start slaves with link down for ARP
-monitor") initialises a freshly enslaved port's last_rx to
-jiffies - (arp_interval + 1) so that it does not "immediately cause
-fake detection of 'up' state". At the time, the comparison was a plain
-<= arp_interval and the value was just stale enough.
+platform_get_irq_optional() returns a positive IRQ number on success or
+a negative error code on failure. For an optional IRQ, -ENXIO indicates
+that no optional IRQ is available, while other errors should be propagated.
 
-Commit da210f559019 ("bonding: add some slack to arp monitoring time
-limits"), four months later, added a +arp_interval/2 slack term to
-every comparison (now bond_time_in_interval()) but did not widen the
-init to match. Since then, bond_time_in_interval(bond, last_rx, 1) is
-true for the first ~arp_interval/2 after enslavement even though no
-packet has been received: the upper bound is last_rx + 1.5*delta and
-last_rx was set to jiffies - delta - 1.
+Propagate all error codes returned by platform_get_irq_optional() other
+than -ENXIO.
 
-If the ARP monitor tick lands in that window, bond_ab_arp_inspect()
-proposes the slave UP. If the slave is the configured primary,
-bond_ab_arp_commit() sets do_failover and the still-armed
-force_primary in bond_choose_primary_or_current() makes it the active
-slave regardless of primary_reselect. ARP validation as the active
-slave then fails (the link has not actually received anything; on
-SFP+ ports the PHY is often still negotiating) and the bond falls back
-to the backup. With primary_reselect=failure, force_primary has now
-been spent and the bond stays on the backup until something else
-triggers a reselect.
+Another call to platform_get_irq_optional() in the same function already
+handles the return value this way. Apply the same error handling to this
+call site for consistency.
 
-Reproducer:
-
-  ip link add bond0 type bond mode active-backup arp_interval 1000 \
-      arp_validate all arp_ip_target 192.0.2.1 \
-      primary eth0 primary_reselect failure
-  # eth0: SFP+ (slow link-up), eth1: RJ45 (fast link-up)
-  ip link set eth0 master bond0
-  ip link set eth1 master bond0
-  ip link set bond0 up
-  # bond0 lands on eth0 via force_primary, ARP-fails it before the
-  # SFP+ has carrier, falls to eth1, and stays there.
-
-Initialise last_rx (and the per-target array, and last_tx) to two full
-intervals in the past so it is outside the slack window from the
-start.
-
-Fixes: da210f559019 ("bonding: add some slack to arp monitoring time limits")
-Signed-off-by: r-vdp <ramses@well-founded.dev>
+Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
 ---
- drivers/net/bonding/bond_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 522eab060f9ed..23e1544faf39f 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2123,7 +2123,7 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 		new_slave->link = BOND_LINK_DOWN;
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index fcf517069d16..f92951422b2e 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -2972,6 +2972,8 @@ static int axienet_probe(struct platform_device *pdev)
+ 			dev_err(&pdev->dev, "could not determine irqs\n");
+ 			return -ENOMEM;
+ 		}
++		if (lp->eth_irq < 0 && lp->eth_irq != -ENXIO)
++			return lp->eth_irq;
  
- 	new_slave->last_rx = jiffies -
--		(msecs_to_jiffies(bond->params.arp_interval) + 1);
-+		(2 * msecs_to_jiffies(bond->params.arp_interval) + 1);
- 	for (i = 0; i < BOND_MAX_ARP_TARGETS; i++)
- 		new_slave->target_last_arp_rx[i] = new_slave->last_rx;
- 
-
----
-base-commit: 24ef02f934eeb48830cff6b739abc3c62b1d107b
-change-id: 20260817-bonding-last-rx-0303fa048f9d
-
-Best regards,
---  
-r-vdp <ramses@well-founded.dev>
-
+ 		/* Reset core now that clocks are enabled, prior to accessing MDIO */
+ 		ret = __axienet_device_reset(lp);
+-- 
+2.43.0
 
