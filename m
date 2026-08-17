@@ -1,73 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55FFB39A807;
-	Mon, 17 Aug 2026 15:38:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2657E442391
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 15:38:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786981125; cv=none; b=TxkrVfgF8yCOdW0rBhZupIQ0CfI0SP7vaxXOT2QAfg52VKO/CZYZP6OfVKkD9EEHH8Utkk5MSZGnEmUzCx4o1akIY7706GXwnu5t3sg5q3HKWq1jPJuSBDTEmOGPGrHaBcs/165Ds7JNBlr56NEz3IsPPCIPOBAMWxh2jkJCm/g=
+	t=1786981134; cv=none; b=soPPWj1WRHYPo3gG3ehZG5RcRK1xibc7Evi/wX2IVGqjXZjIkvIpsKZg19B6rMJLL2BWHef9kKyARl943TDCzu6HrVAVPyA8rY4q9wWotoJit1MwVjf1e17csnaPi8OU97AqoMjFp0Eip8aXcGuJKbDHLRUlmYJEXmp6FS9qPzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786981125; c=relaxed/simple;
-	bh=yBMi91dBD+AvK7Q8kwcMYptVT5sh4MlwOiUU7JIszhA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qZcUA681XW9vrzwtHNXryE8JzZmRHr6lWU9vyakWqK711phkxjIQn/vhGO3+80uH4psB/XV0igh33c4HD32/DaugWhels0DDRGrHBMeqi8/zTVeK4AdfWbRApbBpUpvn9FNshIRc+Q/hP86VlOYlinCt9J+HGVXttFG9+kyi3Bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cs1GQ4lh; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786981134; c=relaxed/simple;
+	bh=oBrnpScWWBrQJQdo/rLjHvow2EdW7eY5TmIXqt2jKak=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=h83DZc5VQ0R7UpjlnYMlmS+E1R9lvwQ7G13craDM2x9nHxDIWV+D4FlrKOm60J3H/JbIDztdPWNWjffph/ziND8O3byiaroruJWUo0JYqnjHxC1pIFLolCPANAxG8DkpOft6DUPYfGB+55Is3kGFpn157cto6OuU8m2OxQDebtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NhZQaeRE; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cs1GQ4lh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC3131F000E9;
-	Mon, 17 Aug 2026 15:38:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786981124;
-	bh=4DmfPql4Th1/vGMYBr32DIZj6vWMe6ET+S2DBK064HU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Cs1GQ4lhenmtLERGetrlLm8k7B7iCtyZCHfMgAdMXMfkB3Os/bImTxpKNa10jBohw
-	 s/OTAwSFCcsRi/tha4PZGLrlAkZ3tx3nsAIGFxwZNMdakiXMk/zns7cPsnZOWgjk9R
-	 NMflDRPkx6t+B9zz479DHK60b+uA3jknk8Krl/73Cc1DWRqlrr66Ymo0YZ1ljBGDM/
-	 pHl/dOsm12cPJH2rqOLYvujCLys0nwVXYnapK6/c7w6BCB16yP+hBm70by4NsDTODU
-	 fppVzzPAosh6D/K0dgCQ2Hyk5IeakDk0LqHo6AuZrnO76N6HsKyXGTikvZiEockVuX
-	 a5Pi14xUCxUIQ==
-Date: Mon, 17 Aug 2026 08:38:43 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: muhammad.nazim.amirul.nazle.asmade@altera.com
-Cc: netdev@vger.kernel.org, dinguyen@kernel.org,
- maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 1/2] net: stmmac: dwmac-socfpga: Enable
- multi-IRQ when per-queue IRQs present
-Message-ID: <20260817083843.219a0f45@kernel.org>
-In-Reply-To: <20260817074221.27459-2-muhammad.nazim.amirul.nazle.asmade@altera.com>
-References: <20260817074221.27459-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
-	<20260817074221.27459-2-muhammad.nazim.amirul.nazle.asmade@altera.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NhZQaeRE"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2d03fcd26a6so5725495ad.2
+        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 08:38:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786981132; x=1787585932; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6ttFNIm5J59uLE19rktxqz0bELz7EGhv91DNjHXA4KA=;
+        b=NhZQaeREbChotUbiwxnXBRAKdqpmpACrZlXT/8JPyHSU+sew1AZzbLqVwtwDXHejUJ
+         41kgKQvpWQMlYc7kCg03LStHBAZWSCk3DfDqU0fTnxByCrMXenqxIHQEdZRUBBzdVf2r
+         ER8nYxKbdPO9jP8vhM4j55IE+jw3PLK3Iid46X7Dad2nEHDjI7wNx3gt4OfAA+8kwdIX
+         IJSKqfGszlI3Uk2xnf5rjzw0LXAUBjT6sALDsj2KEuKQ5ckkxu4KtOon4cqiDKhL2acv
+         FiVOOjk9KS67vuhBiMUlvbCxBR2s+5Pz63p32WoXZcXhe0vHWyYHoTVHRAVXjYZvrU1g
+         BaXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786981132; x=1787585932;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6ttFNIm5J59uLE19rktxqz0bELz7EGhv91DNjHXA4KA=;
+        b=TDCxpuJIa9cDRPRxmsno/GOp8QLIy08sb4JzlgNHGQi1K1dr5OgR5BQlxkpDj1AA+g
+         SxBFtXG601L6qxtrlAIWLEMMpxY00md2usA80WBxEKc7VZgAon3qGdQ/DCxo/NmqVXzZ
+         Q28aE+p8n+KiZhe7ixuw5mxl1rq32GzN1iOZmTGdH9t7FXqRCkWqdPOcFCCkMMgh9kQd
+         rVdWQdkRCV85SF4/Gk5ACFf5M45ph9rNB9zrIXfEAiBRiJ9DPCfqYZnUl0aAtD2rvegU
+         R38SzfUzEjgnCaTi9+2FNKgGGWAI1uIHv5MFADHVdP81dAE1bF8BySbTKAi5fjOwcTCp
+         CJOQ==
+X-Gm-Message-State: AOJu0YyZK9cS84+4S9iseur5n3jw/6q8TI8l4VewVOro3oIAIVfQ6u/t
+	Y2pl+xsayzAjhqsLhkoHK1Tcr8ssV3wlONiHnfGhiAVPmatWYumhxBJo
+X-Gm-Gg: AR+sD10P5JdZvskotLA00D2LZb0SPIHj84rsibYtjml5tVgN6/3dBvvHVDSdlUfirPh
+	w9DgtdDESdWWGN4j4H/YB9zHRCTq6nhGDsaSVpZxtN3c+W+6rC/Z0fZLyS8Bmf8MhysMcUlW+hv
+	FXDqrbS/C3yUYE/VbKSKuelE2nmf0pearnUCqxpaAvaopH0Tzj99YZM0H8pwBlzDjKFFn1JfCME
+	fIA81RmRuBuAI95ddjuNG3WbIava60f51aLlS56ljzCZ/OZLfyGXIp5dXt8f5kchlGb/XsaGtMR
+	sw59dBeTgippjF+4KYyefkvQtL1YETeLvU0shfi3ehge397NOb8eYLDXwl5KESKhJSih6B2PW61
+	Tuc/YiOkMsLaXCncW6Cm9j4iR7qely3JHlXSnV4oZF3bqPKwIEOw5OJIaMqX9+YSmkb9ev80WaK
+	i1MJMojlX2npyxh+9syEnxEmpV0t6I9zm4jYXga0rjQHBF/fFswPCfjx5ZEmVEV9aVqF8w4duL2
+	WM76ZeuFVtA
+X-Received: by 2002:a17:902:e54c:b0:2c9:ed4a:c3a4 with SMTP id d9443c01a7336-2d3b0503575mr184872235ad.0.1786981132291;
+        Mon, 17 Aug 2026 08:38:52 -0700 (PDT)
+Received: from ?IPV6:::? ([20.24.212.12])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d5c1e54330sm5304955ad.44.2026.08.17.08.38.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Aug 2026 08:38:51 -0700 (PDT)
+Message-ID: <6933d09a-4dc1-43f8-a1c5-bc3db2f6ffb7@gmail.com>
+Date: Mon, 17 Aug 2026 23:38:41 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] net: hsr: fix packet drops caused by GRO superpackets
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, horms@kernel.org, andrew+netdev@lunn.ch,
+ shuah@kernel.org, kees@kernel.org, petr.wozniak@gmail.com,
+ qingfang.deng@linux.dev, fmaurer@redhat.com, luka.gejak@linux.dev,
+ bigeasy@linutronix.de, xiaoliang.yang_1@nxp.com, skhawaja@google.com,
+ liuhangbin@gmail.com, stable@vger.kernel.org, sdf.kernel@gmail.com
+References: <20260809121455.1745-1-xiexinet@gmail.com>
+ <20260809121455.1745-2-xiexinet@gmail.com>
+ <20260813182111.088aee3d@kernel.org>
+Content-Language: en-GB
+From: Xin Xie <xiexinet@gmail.com>
+Autocrypt: addr=xiexinet@gmail.com; keydata=
+ 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
+ sNySbH3veZ/55EtlXA==
+In-Reply-To: <20260813182111.088aee3d@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Mon, 17 Aug 2026 00:42:20 -0700
-muhammad.nazim.amirul.nazle.asmade@altera.com wrote:
-> Subject: [PATCH net-next 1/2] net: stmmac: dwmac-socfpga: Enable multi-IRQ when per-queue IRQs present
+On 14/08/2026 09:21, Jakub Kicinski wrote:
+> 1) could you explain in more detail why GRO is breaking things?
+> GRO shouldn't merge packets with different L2/L2.5 and packets
+> with trailers?
+> 
+> 2) the code seems inspired by LRO but LRO also has
+> NETIF_F_UPPER_DISABLES. This change looks rather incomplete.
+> Calling it "best effort" seems like an excuse.
+> 
+> 3) Clashiko has a number of other comments:
+> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260809121455.1745-1-xiexinet@gmail.com
 
-## Form letter - net-next-closed
+I am currently on annual leave until the middle of September. I will continue this topic when I return.
 
-The merge window for v7.3 has started, and therefore net-next is closed
-for new drivers, features, code refactoring and optimizations.
-We will only consider applying net-next patches which were posted
-before the announcement:
-
-https://lore.kernel.org/20260816155953.072d73da@kernel.org
-
-Fixes are obviously welcome at any time. net-next patches may be sent
-for review and discussion only with an RFC tag.
-
-Please repost when net-next reopens.
-
-See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
 -- 
-pw-bot: defer
-pv-bot: closed
+Xin
