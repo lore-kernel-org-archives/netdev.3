@@ -1,95 +1,115 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8E839C62F;
-	Mon, 17 Aug 2026 06:12:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B8D23741;
+	Mon, 17 Aug 2026 06:29:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786947126; cv=none; b=Ms+YPT19Fgk3MwPjThrG2uBu8iyxp+pSPD9MlHGNOnCktPvBGRZqhjGvFbw7cCDdb+qHK2iwOFYYoT7gDbk3US+VK7RPLItbFYYID1MD7NvNh2LOzJPwWFyPUKddKyQvSfSg8H6hfzHx7fF/vrlOsMeiyINy9sohJfDknh8nwbs=
+	t=1786948157; cv=none; b=XCe4xQQyjhEmI5e9l7e6mW2QIWEYdgmoNVE/GJFs1Ke6qjYhEAm0zvKTc1PsaLgsQaNVytMizbaz6TLLUQ0AxqJCespnmpJlQS0J7A8EtKjmE5nQP2ZaimjzH8FicMvntjmyKcOTjH0rBME/u11ll1n19k2lf+SdQCHbOpHCkOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786947126; c=relaxed/simple;
-	bh=W1pIeZ6yJ3YawGBypxzJvcCnrAdwLJPxb4ID/ox0lWo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hxr7n23/+tXmbIxPAnvSeISUSCAdW1rLOxAQlgeUprf1RbN+FRDicig+SyzFBlIkqstGnULZYd6CeH506Hy3GssX4cQ/bsThtg84+AKGUfZhYwPopCgGchyFyOMfLg48/oeuJBmCGBVRX4r+fIkQ4/V3lTop9GazP351M3Lzexk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=fmNL1X4E; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1786948157; c=relaxed/simple;
+	bh=clA6b7CxVK7l7rzUdRiE/LMIJ5I5D3XfzVfbVR0kge8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TbBjeuGEDaew4mrV+tvfuLUwIGmcpsfsUb/Stwu4Z9rrh8P0QT+Srbbv8pWtUE+hwxsWuWwz4yU3ILMhRc2gb9AUz+65b2Jet3bnirEoyVfJnvMdAz8MX/ARqFzqWG1fa0F5I2d0BojJoAtbVWtjNdvstg8DdgQ1lrzn+invrAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NBaxSAM6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="fmNL1X4E"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=RF
-	td/m5mm6PTDwnu/HoiqLPdGul31jJA7KSTIIBGKd4=; b=fmNL1X4E2UZWBBgmXt
-	CA14bj/tuIIYCB0B9oeuCiOM/e1v4/2mfsf1fw8kVzfSEwW4bx3MhXCmcGAS3ST6
-	pLw9dNrnMFyGHNAkpd1jwYWMTA+iPogXqmbo/diMwPtTmYB9ijmrGZ9RepmAVNJj
-	ABPGL5on1+OQVhjGgohNAIkIk=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id PSgvCgDnH_cJpoJq4trELg--.19700S2;
-	Mon, 17 Aug 2026 14:11:21 +0800 (CST)
-From: Lei Zhu <zhulei_szu@163.com>
-To: netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Cc: kuniyu@google.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	shuah@kernel.org,
-	zhulei_szu@163.com
-Subject: [PATCH net] selftests: af_unix: verify SCM_PIDFD pidfd in cmsg_check_dead()
-Date: Mon, 17 Aug 2026 14:11:21 +0800
-Message-Id: <20260817061121.239648-1-zhulei_szu@163.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NBaxSAM6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D08B21F000E9;
+	Mon, 17 Aug 2026 06:29:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786948155;
+	bh=rGuj0TXK9Gf4jbd/TaHIlwxx+1Y0rd7UNGo7CFHlOds=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=NBaxSAM6+kK0DZi4AgsTCW4O+0vUgMKJLfr82V1GQevh/KKAQ3oNzLc4d0DXIDbga
+	 tkB+OhMMbdhVT0j/eB34tNPgkhIol+kppyLyW+drC/7n4tp3HO3lKk/yOD9bTelq22
+	 3jXsQP1lKfOVpVFJnqLgf7oBHt0FOctRPeNzplWCVYamcuBVjB8Mep70zAURHOmd/x
+	 xhJnU57pPsonxSYrMMI7P5790/8SxNfTrW9/AV0SCh6aPpxQ1Qa9+aEg1sNROgI0eg
+	 MZj3KXqPGHW48iWEE6BAkpP1sOcc9D9rMlFNrAMXMddVsrlpCAjvHGmEukd39j76Dm
+	 iuPVpOYhE0CMA==
+Message-ID: <c4d970dd-cb54-4530-9491-01b6d90e4a2b@kernel.org>
+Date: Mon, 17 Aug 2026 08:29:06 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc: remove dead 440SP code
+To: Julian Braha <julianbraha@gmail.com>, maddy@linux.ibm.com,
+ mpe@ellerman.id.au, npiggin@gmail.com, Frank.Li@kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com
+Cc: linusw@kernel.org, kees@kernel.org, colin.i.king@gmail.com,
+ rosenp@gmail.com, joao@joaoff.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
+ netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20260816125615.985387-1-julianbraha@gmail.com>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20260816125615.985387-1-julianbraha@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PSgvCgDnH_cJpoJq4trELg--.19700S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7CryrGr1DWF48GF1UZF13Arb_yoW8XF1xpa
-	4xJ3WfWF1FqFW2ka1Skr4kXF45ZFn3AFW0yr17GFyrArs5Gr93tr93Ka48AF1fGrZ0qws3
-	uFySgayavF1DZa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUUwIfUUUUU=
-X-CM-SenderInfo: x2kxzvxlbv63i6rwjhhfrp/xtbC7wnmNGqCpgmDcAAA3A
 
-From: Lei Zhu <zhulei@kylinos.cn>
 
-The cmsg_check_dead() function receives an expected_pid parameter but never
-actually verifies that the pidfd received via SCM_PIDFD corresponds to that
-PID. It only checks the child's exit code via PIDFD_GET_INFO.
 
-Add a PID verification step using get_pid_from_fdinfo_file() to confirm
-that the pidfd indeed points to the expected process, matching the
-behavior already present in cmsg_check().
+Le 16/08/2026 à 14:56, Julian Braha a écrit :
+> The 440SP config option can never be enabled, making all references to it
+> dead code.
+> 
+> Let's remove support for 440SP, since nobody can be using it anyway.
+> 
+> This dead code was found by kconfirm, a static analysis tool for Kconfig.
 
-Fixes: 861bdc6314a4 ("selftests: net: extend SCM_PIDFD test to cover stale pidfds")
-Signed-off-by: Lei Zhu <zhulei@kylinos.cn>
----
- tools/testing/selftests/net/af_unix/scm_pidfd.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+It would be good to include history in the commit description:
 
-diff --git a/tools/testing/selftests/net/af_unix/scm_pidfd.c b/tools/testing/selftests/net/af_unix/scm_pidfd.c
-index 2c18b92a2603..bfc99d0c5ac0 100644
---- a/tools/testing/selftests/net/af_unix/scm_pidfd.c
-+++ b/tools/testing/selftests/net/af_unix/scm_pidfd.c
-@@ -276,8 +276,15 @@ static int cmsg_check_dead(int fd, int expected_pid)
- 		return 1;
- 	}
- 
-+	/* pidfd from SCM_PIDFD should point to the client_pid */
-+	pid_t pid = get_pid_from_fdinfo_file(*res.pidfd, "Pid:", sizeof("Pid:") - 1);
-+	if (pid != expected_pid) {
-+		log_err("wrong SCM_PIDFD %d != %d", pid, expected_pid);
-+		close(*res.pidfd);
-+		return 1;
-+	}
-+
- 	/*
--	 * pidfd from SCM_PIDFD should point to the client_pid.
- 	 * Let's read exit information and check if it's what
- 	 * we expect to see.
- 	 */
--- 
-2.25.1
+As far as I can see, users of CONFIG_440SP were commented out by commit 
+f65573314e4e ("[POWERPC] Re-organize Kconfig code for 4xx in 
+arch/powerpc") and removed by commit ff5f483f3091 ("powerpc: 4xx: remove 
+commented out Kconfig entries")
 
+
+> 
+> Signed-off-by: Julian Braha <julianbraha@gmail.com>
+> ---
+>   arch/powerpc/boot/cuboot-katmai.c   |  2 +-
+>   arch/powerpc/include/asm/async_tx.h |  2 +-
+>   arch/powerpc/include/asm/dcr-regs.h | 10 +++++-----
+>   arch/powerpc/kernel/cpu_specs_44x.h | 12 ------------
+>   arch/powerpc/platforms/44x/Kconfig  |  3 ---
+>   drivers/dma/Kconfig                 |  2 +-
+>   drivers/dma/ppc4xx/adma.c           |  9 ---------
+>   drivers/dma/ppc4xx/adma.h           |  2 +-
+>   drivers/dma/ppc4xx/dma.h            |  9 ---------
+>   drivers/net/ethernet/ibm/emac/mal.h |  2 +-
+>   10 files changed, 10 insertions(+), 43 deletions(-)
+> 
+> diff --git a/arch/powerpc/boot/cuboot-katmai.c b/arch/powerpc/boot/cuboot-katmai.c
+> index 034a748fde24..fcd71e76309f 100644
+> --- a/arch/powerpc/boot/cuboot-katmai.c
+> +++ b/arch/powerpc/boot/cuboot-katmai.c
+> @@ -31,7 +31,7 @@ static void katmai_fixups(void)
+>   {
+>   	unsigned long sysclk = 33333000;
+>   
+> -	/* 440SP Clock logic is all but identical to 440GX
+> +	/* 440SPe Clock logic is all but identical to 440GX
+>   	 * so we just use that code for now at least
+>   	 */
+>   	ibm440spe_fixup_clocks(sysclk, 6 * 1843200, 0);
+> diff --git a/arch/powerpc/include/asm/async_tx.h b/arch/powerpc/include/asm/async_tx.h
+> index a14758426dd5..1ff5b2ca3ed1 100644
+> --- a/arch/powerpc/include/asm/async_tx.h
+> +++ b/arch/powerpc/include/asm/async_tx.h
+> @@ -7,7 +7,7 @@
+>   #ifndef _ASM_POWERPC_ASYNC_TX_H_
+>   #define _ASM_POWERPC_ASYNC_TX_H_
+>   
+> -#if defined(CONFIG_440SPe) || defined(CONFIG_440SP)
+> +#if defined(CONFIG_440SPe)
+
+Replace by #ifdef CONFIG_440SPe
+
+>   extern struct dma_chan *
+>   ppc440spe_async_tx_find_best_channel(enum dma_transaction_type cap,
+>   	struct page **dst_lst, int dst_cnt, struct page **src_lst,
