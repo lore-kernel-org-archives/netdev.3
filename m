@@ -1,120 +1,191 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from TY3P286CU002.outbound.protection.outlook.com (mail-japaneastazon11020096.outbound.protection.outlook.com [52.101.229.96])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17BF932B110
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 05:27:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8DF4379C4E;
+	Mon, 17 Aug 2026 05:35:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.229.96
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786944432; cv=pass; b=ZoUMFqjthjbM/7ZY2x0zTUeeFPB/rbqBrbGIsrkrkcBuV3nAx0cqS+GZteF7TSWlLfVQshGRKqEpJbatftenr7fNFPGphySPDj3VFON6X0RliMjqmOE4HtFN8zqvmrjBFxV6SmQaQbULMSee71URA/FnawqHrBZsoZqoQeS0e1Y=
+	t=1786944927; cv=fail; b=tiqphmxleeQL7xbFsVBi3ritBumc0Sv0PArmUe9b/vkWbSJnKqA55LiLs6zI1AW9+Km0bfIS7+WvZPf2SxMKfV3Hu41MEo1llQv5NQAbo3EciLc+PCTd+OTAdSDlIkcwEr5+yIFcYFfNoZwK5homKaaTNwV6h7t8mvK1rQfYiCA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786944432; c=relaxed/simple;
-	bh=MyhiEXjJfwR7Wgdbq7vvvvPhDSM8LUZqH0AOgl9YiuE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dEBaiXBz8oW3PrmlRWOAKg07kSFeKz/qQ67Vn4nDJNdWC4Ob54iwK7yItRRVUe3Hm9ZOaDTSP1CWQZrlolyRxr9onF9z9RbTvi99e+tYRQW7B0ATbty2rNJM15NtwmnZ4kS7EcTIPD0VH6xScnIEQEbSbqmbnUL4ufUYBYe+n14=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Roc8bDq2; arc=pass smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1786944927; c=relaxed/simple;
+	bh=X7vF/Lb4MCRwuDmAAG7QU6V1zs3TURlXvFEBfiaXO+8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=D3Giw4pHqfmrnRnZ6eqEesG4sTWbn02XPZ7Sg/gINgpPMFkiTr0eZQ66rXMLOleHGxTSFRBuUqm5yIDx7hqqXLYoDaC+cc1M0ZWWdAvflMf0TLC8QV3qYnWjDmEmWhscHhmLfLhG/AdHWLHgIHfwQcHRSx/DKRCG48oqqrukc7A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=qqFsruwX; arc=fail smtp.client-ip=52.101.229.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Roc8bDq2"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-52b4e988c77so18961191cf.3
-        for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 22:27:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786944430; cv=none;
-        d=google.com; s=arc-20260327;
-        b=YmezHWvubo9qSjfkRYiF7zeFWW2JHBYE1hLh+1TRrvgmZf2O3urpL+xqLVFOwREK1e
-         0yJMXecUq980cnVgl4tCMxDMO+Rma2ATfwyCNngDFGH0e8xxjYuKPItdDCol0NUp9Jg7
-         HqiJUMpbnA8baoEB/Rg/kuxItdltsF7Nm+THk0ulkrxXylhfMWJxaZsIgey0EAnrslbU
-         lSHSYdbDFNw/yIr43QWBfdkT1APWz7UYq1ilDARWeCSSTzVcoi+9S5Q3p5UsG6y55KLD
-         w1tipIPJmd8e+WEqZzEk87fA7gS2W+yn9ZMZ3Emy4WnxMXqqIpiMzGFX4zvXqHnZNCTi
-         g+XQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=MyhiEXjJfwR7Wgdbq7vvvvPhDSM8LUZqH0AOgl9YiuE=;
-        fh=MiJgL91gstineZyQqgu7vocIP1wwzzOlX1XSmAM2U4s=;
-        b=mPaSAn4Bhak6qw0S9iVM0yvxHCCq7zJFgC/HEZfaw8pp5TiboGmGHFuqJFhVXGA8sl
-         OyxQ/yvNN9Z58ivNBMIn3BzFHzbVKsHcjD4iHi2FmjP6ez8J2tWSSCzXLdQ5+28XUaXc
-         1UkVv2L46nbk4EVfLa4ypxlXq+T4qOrHpanu6qyIDGV995d60TwF6baXhTO3lKLH0r+f
-         yjk+J6dIlloIDDqarALC9iG0uo8GktL8mlU3PGCrySNOTCTF8obkaJY7PCVweAL6c/f8
-         2k3d969Xs3lOnVFWGW9DpCpk+Q3Ag9zCIE5Js/wqduwy3Pau9DzTzghVJ8aY6t15AkYT
-         L4gg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786944430; x=1787549230; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=MyhiEXjJfwR7Wgdbq7vvvvPhDSM8LUZqH0AOgl9YiuE=;
-        b=Roc8bDq2n3kevCBm2wVZ/r3tcNKMg/xlgVzBRHxyCv+4PyXN2Q32Rcg6onRd6sJXSe
-         Em0qu2M5CBUDCzQZUwQTceqbkk+5Dkj0Fxe/X9wJgv625ntljX0vb3BlRGZIyy701Q/G
-         opouTF7U2tWwo3eiPnw1e8jL/UTZaV70oM41yXP0r8ATkTzL3MZYLufmrXss0c8+xwfu
-         GPSkHi/1ChoJw1JfRMEwZM+28Emafdbx4drfssn39a2+QF3Izzpq/sT8MWT+0s2CN3fq
-         zEOjHsrxesKStv72aNvlr7SX08ToO2+oDkGTtZBU7dbMWKDGycJeWiztJ71ZwgfBCdpd
-         BNmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786944430; x=1787549230;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MyhiEXjJfwR7Wgdbq7vvvvPhDSM8LUZqH0AOgl9YiuE=;
-        b=kJ/2ACWl7SXGbbZDzQXtMFTEUj6eDv3DLKBdeoY4VfXBpHn4ld/7Klt7og5uuWgUPW
-         aaKLb6JLGrYqFXBXCwPRbI0W0nH4flo1Du7KdNCwuoUV/YzClfs5u5DNxRHgsb7EMwGL
-         DuTdG0MW/XF2xHZhJ0jYLCRV9OrTTgdGqBz/SyxAwgOVxs12guv+5woT2bAz0KPIJYa2
-         iHM0GfU2R8/AIAbaCaU95k6qkG2KSwsgiNGYHbuGDrNm/boGYFK8vrPyAb4DQLRUfuoQ
-         a9tH6C9vf8IENMxUHOsn/8zYqNPYZ/PVpZxjkejie30auM9fmGP6SJUiSI6wPkACRTgR
-         sbPA==
-X-Forwarded-Encrypted: i=1; AHgh+Rpkdjp/8c6Zb7PRD0JbDptQ2J8gXTzE35HspBMldd6uPiSD4sPrmeaA8fQ9kjPB7WvyukT2oZA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzc5fZFp4qxoWj6thPbFsF+XWBtPOWhdCvuAM9VCtw5H2iaTZu5
-	7VB8aNCgQJ5/p9Xj5rxfJZEe6croK3S6MbZtU+H1KXeUNNU6Pf/5njcyunfqw18o5i6LX/J0UuZ
-	zsdTcHmdlq1TYE6gpZ803BzVHSmd/gsg2l2kxad5W
-X-Gm-Gg: AR+sD13MoKs07JjJVQqbU0HJwKOlHbyDwc/IKCFu0jSl48ORUnsrU2H85SCGS8fC9th
-	TknhIUKe988d8ZhaTZiCjFrvoNmrXhp1913+VmRGYYiQebbJR+Wvl2fU2xq0U49golTqXXtEaKP
-	BnjHDcmwTR4qYXwNooai6AY/dYU8/QuB0M+UFUZc6nN5HOe6QO/R+orTw24/cIYMCDppeYPwSyo
-	9qcX9putBTIEsn0t75No4MxY1ErVtFvWwLmVqe+NcRupWlcuOvkddM1VhNK+zmy0dMxMlxHspug
-	iy5GeXCbr+XnkQ3l4IaxkX4IKCri6ePXS5acqRQwqlsRY+93WIvPmo9zWsHFm+sxWBtk9pYfI+W
-	FQoAKrFc2GVISG4hJZ9cK9nIx93wQrX88t8tNnyUcyUexhUizxCqvOnV+vQNl313Xj3T7PuQPBe
-	saJ6kPxvnItVUPFT8=
-X-Received: by 2002:a05:622a:50c:b0:51b:9873:e379 with SMTP id
- d75a77b69052e-52d8556f3c7mr222625371cf.36.1786944429262; Sun, 16 Aug 2026
- 22:27:09 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="qqFsruwX"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=J8NWaa6qOznV/PAlvONztELVDBjLLCIbpEf5/rh0uy51GoSyrnguuppEasb1ISrq2S7kjRlmyHqSvOG1uKbSZdEopeGq0fRMNzcY6pbTzQa18tu1+m4Xxg6f+FycSkNRVKqlVlDX3/26VNrRMdq/abEgy5yF/wWINNahvGdOxHGWyZIrGrGM3XIhzs89fnOiJlEHfQglwHX4v6otfwB9H7w9c8CBXmJZND7C5Ms1mHLBiPyZW2BJXxfniDAcwGePtN+U5AhTR0J4L2skJyiMGQcV0+Yx503ZYbo+0AQ/wjQXLWwe5ujtB2VTaSynqjB2+tPiEjOn+vLAGYf0pDJzbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5LcdOFu/gijHhEJTH4v+rSzl4XGgdNHxDQeuSBrzSMk=;
+ b=QtytKiM0NTXmHfYAgS4dTSfk03Dfw/eVmnQf/RYM5GiN+GuGWWYvNCY1qGNUOp6G80MPcYYzpWS7UpO1Vpaq+N/BhEHjhgxZLduYm7Jik6DhHO0Fu/82JvfKO3KdOPQooMoZgBpNalcIE+iYttTzC+Bebt+VqNUlzccWfPp2yNBomTx/xe+iNvtIcXfG4oBuXEGxsglyIUzkhdCw/+BBPtg0ipp3I3I6ADn15N1HJSehCq0YhsA/FUFK2XK2QxYOaR6HBdV53U5TJ5h/HTwYVqeJnFvEBtRsvQf/rzIw+WyjRn5U8zYw7EtOd1k8Lr/jWybKGCG+C9lhZ+3uVrR+YA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
+ header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5LcdOFu/gijHhEJTH4v+rSzl4XGgdNHxDQeuSBrzSMk=;
+ b=qqFsruwXkDJKB+9WEfxlL0T7wJAgQJR06adU/fPkr37kIR2JvivuN0yVroerhVR9WJTllSfAOZeOIFy7LG/YEz9wIvziBvT1exSNyiTYPpdPIz1zzcZno8bR2gG+pVHeDK+xAPLnHk/ubbH7XNIATGnMOrnTuvxDop1T8c87BYA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=valinux.co.jp;
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
+ by TYYP286MB2996.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:30a::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Mon, 17 Aug
+ 2026 05:35:22 +0000
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32%3]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
+ 05:35:22 +0000
+From: Koichiro Den <den@valinux.co.jp>
+To: Jon Mason <jdmason@kudzu.us>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Allen Hubbe <allenbh@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: ntb@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net 1/4] NTB: ntb_transport: Recycle TX entries before client callbacks
+Date: Mon, 17 Aug 2026 14:35:16 +0900
+Message-ID: <20260817053519.4135287-2-den@valinux.co.jp>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260817053519.4135287-1-den@valinux.co.jp>
+References: <20260817053519.4135287-1-den@valinux.co.jp>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TYCPR01CA0165.jpnprd01.prod.outlook.com
+ (2603:1096:400:2b1::18) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:38f::10)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <34f44e8a-9fa4-4cb3-822e-5db54fb6df44@I-love.SAKURA.ne.jp> <CAAVpQUC672LJN_8KQ5BzadS26FnUrh4ayjyu-n5x=W7U69u7fA@mail.gmail.com>
-In-Reply-To: <CAAVpQUC672LJN_8KQ5BzadS26FnUrh4ayjyu-n5x=W7U69u7fA@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 17 Aug 2026 07:26:57 +0200
-X-Gm-Features: AcwNN1Vk4v6gsiE4lwUzJUgJVrn95xWxU8Jn8HHarnXJyp36M6pllkW7z3KSVtQ
-Message-ID: <CANn89iJd-s+mocDFXgt2rtFQVBGNJ7xEy=tUMKa5Da+brptXzA@mail.gmail.com>
-Subject: Re: [PATCH] net: make sure final 'struct net' free in
- net_complete_free() is always deferred
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Network Development <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|TYYP286MB2996:EE_
+X-MS-Office365-Filtering-Correlation-Id: f0c12146-0645-4109-160c-08defc21553a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|10070799003|1800799024|366016|23010399003|18002099003|22082099003|56012099006|6133799003|5023799004|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	sNUBokaezjm4OIh2bW1/NapJpxpEboilEV6g4KoXEE+tXOT3vUU6ZA07zcfQnen8Xal4jZNYmo8HlhlfMW9sfNwRwUbYig1dI1OxnZ2Cih6dmKYNVmhgh+1V19gIXQLQ43ch10W8TSD0QHO+t++vm1Ah/hDTf/h3efpRZCrZ4ZCEoIeRDm82VzIVQa55Bw14fX9idEMKPmR9Vwa1g5GqM2dRvW5DCovxSoiEbplGOXEDHEJqANHvlhALdI0YUMc8ioq1eutckqQHPnl22BFTzGSvw98roOkKKQHk9wNO4CJyfj9WZQBwNReInpODt1pIdiZmOlZOorQy7MyM41hxtrxZnFU1KTr3vfs05DPc9V3bnx+N+P/4DkjnqKNlxl9gIPeK7YvHtipsQvDvVNCFRcHvBd6E8yHnQcrqGxgri5xfcGDX+fB0f3+7A6Dh8TfQ0c04wGLfqOsOxi0Jt4GJZU4XUZxJxrbTByfNN4Q2IHbXPWlL5T/m+Lc+aSgKCLkGmmqS0WBTEPqNRQuJKn4unaSwhFQQV1uXzlOJ1JhloNpcUjQx/BfkLKd55D9pQf27Yk21zJRA2EQOvT/NhNlE/VIh4Jxagctonzv3+r1Xa/XYFtrZOqEMxFWcpOKpCt9dsjDfvx7RAWGUSm+/rEayvtyztfGJtn7gklNn4EtMhak=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(1800799024)(366016)(23010399003)(18002099003)(22082099003)(56012099006)(6133799003)(5023799004)(10067099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?XPi+rzzg9Rvn4TgZVHtPPymGPwaV2OMYoGQQUZdAsf+lgXFugBOyu4cekIY1?=
+ =?us-ascii?Q?kyAR5OUcLO8mAsQ2KRlBNp4DR9rMkD5ZNUMW8cbcy6lp5vKe8hDGWzEIEXGh?=
+ =?us-ascii?Q?nOhRF9BmglpLbeFkPWzpSZRBO3gFWFDOOeIYXER/8/K8WxASnkmS46lRyfQa?=
+ =?us-ascii?Q?nXwgvWfCi5BhEYquWCp3F3LYrP6EHLN3j4O+JZgGigTgSv6Ce5f8VdlSeDg0?=
+ =?us-ascii?Q?p+TPZVBhaLo0/uWTViB/QWhfT/+KRdgJQMimFiZwVnfh/e2LDue/wOQGd2cP?=
+ =?us-ascii?Q?VRK18NJglWRCeLqbIXBMamub5HGOEnbnO5IOF6HTjJ4lWI+LnY0MEjKTsn93?=
+ =?us-ascii?Q?HZ3T70NYRw2GldCuaoev2aTmqM9UYYhGyMVlHGNVhnCB5ucjUotSEeIZn6YV?=
+ =?us-ascii?Q?4fF9KeWoLxZY+DKgKiHi1kuHIxIYSzkZJ/7sHV1q7BRZKtIiLI1XxFoam3zB?=
+ =?us-ascii?Q?/XLaubuU+jQL74gHcfnst/BRTg1N2sS3hm/ZUO4IxPpRonAdR9X4kqvEjUoF?=
+ =?us-ascii?Q?3qLkxa7tfp00LWUBvxKzcDtCxrs8UVY5WJXunx9CgWbwAmN1qk8pkl1WmmKg?=
+ =?us-ascii?Q?mfDNhmCIPVGBmWkLYe+/jCGTxK1Pv5qMSRFkTXEPJBx57hbp2G8OPQjWJoL1?=
+ =?us-ascii?Q?+7fhcNsjQphNrRlRIUVpphDFa0fZiFrFYZXaVSckmsd5so763efMWT4n3zJS?=
+ =?us-ascii?Q?q5hlk1jJHHe4Vl4mzZldgqdjqAnTGopndIHzFEhwDUsKjaadiENoLOgfZgVk?=
+ =?us-ascii?Q?M5AKNar+q/BaqOjnwoM+bp1VK/ZTBpZj2ucBtgLwDt/SfVrGey/9de5s8S0T?=
+ =?us-ascii?Q?ntpSprqZahkBJQPyf+ibfYp11IY5MhBaMWnoCxWjZA7d7kqyIZPn5kg3BarN?=
+ =?us-ascii?Q?UdCe8yENulFMEEqa8O6ovell3jXzwir+UAVqX36tCSl0J20soUtLE4vDeSCS?=
+ =?us-ascii?Q?S7D11UiW2Cj6Xg6uu7wPWzTTmhsZnU5eYjyHs9RotBS+j1McOpfaIMQLXRZF?=
+ =?us-ascii?Q?6cYMY7O477YgbhDSV4t8ILXq5VzgKv+Y86boHkgWv1K/blrhtuTOnIiL+rPG?=
+ =?us-ascii?Q?IVuhUeZJHhyhyA2AlwWlwCgP9ZcHu5RRTonmRu35JXvpff5QeReJsHQQ4/oU?=
+ =?us-ascii?Q?fgB+m6CSUp0+6rK9jNYyHYKjF6pNz6qzQG4si/0nJ2nSkUXBylmezfoJFZa4?=
+ =?us-ascii?Q?/yOnFFwPtH3sX7s5jlq/x9vviMZrM0L3UiAbCjLkHYpj6h2AwHIfDaaklHxE?=
+ =?us-ascii?Q?DzsuQ7mr1RTtJqwPumgq0Qq/de7TmfAmx8JxfLvD01YXwL8c1qWQ94B+ORah?=
+ =?us-ascii?Q?A7+cp7CuTqdCR38Ue8ruEz/6+3c1kMRHHWj+O/yTmTzpTkaVctdExIP/34Ca?=
+ =?us-ascii?Q?q2GlJ4JiOGhGzNLTZnYIuFc4tbPSlVIxxIzZxdq6TRrtsU6JqBPJfTkrowpl?=
+ =?us-ascii?Q?EYM8hlyYMgu/TklRKY6ZZPWPtrVOwnjx5+VhX04p/yb3LewyT4Oq2P0d4Ohg?=
+ =?us-ascii?Q?AuZnm5VR+ovI7MpYvf7YCPZSvqgiiRYQPreb5SlGGMR3TfCoCIC+Atzov36S?=
+ =?us-ascii?Q?wAXNP4l0MzyjzTk1jLEluh5zHEdNXRP/9HbycBaotEGHCSQV2s7bkwX3AahD?=
+ =?us-ascii?Q?/sOwnzNO7Y/shPeLvF+G6TngT8/BBUqMyEeWxcO2kMeZeFnpzR7nwRvQk/4N?=
+ =?us-ascii?Q?q+KSI2ONDBEL+BRcJi+xabGrqDZIMuKcYhnQhaZhXr7LDyvOWyZfQ7Wyz7bO?=
+ =?us-ascii?Q?JQh3lqyQ8GR2UERPZihCopWfYu9d8saEVNwhIiif/PsSolSl6SPW?=
+X-OriginatorOrg: valinux.co.jp
+X-MS-Exchange-CrossTenant-Network-Message-Id: f0c12146-0645-4109-160c-08defc21553a
+X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 05:35:22.8347
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: B3I8vvWnxxdzhAsvnpL3kY9i3zW1mHcr9wC11nAkN3RQ3TSo57yLLvaQo8F/FbvRHSYyvO4+xae0tmreXXGFyg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYYP286MB2996
 
-On Mon, Aug 17, 2026 at 6:28=E2=80=AFAM Kuniyuki Iwashima <kuniyu@google.co=
-m> wrote:
->
-> On Sun, Aug 16, 2026 at 4:08=E2=80=AFAM Tetsuo Handa
-> <penguin-kernel@i-love.sakura.ne.jp> wrote:
-> >
-> > Since there is no serialization mechanism (e.g. the RTNL lock) between
-> > llist_add() in net_complete_free() and llist_del_all() in
-> > net_complete_free(), it is possible that net_complete_free() finds 'str=
-uct
-> > net' as soon as net_complete_free() added it to the defer_free_list.
->
-> Did you see a real issue or is this based on AI report ?
->
-> netns_wq is single thread workqueue.
->
+ntb_tx_copy_callback() invokes the client callback before returning the
+entry to tx_free_q. The callback may wake a stopped client queue, only
+for the next enqueue to find no local entry and return -EBUSY. The window
+is narrow, but the retry is unnecessary.
 
-Indeed, this patch is not needed.
+Save the callback data and length, then return the entry to tx_free_q
+before invoking the client. A completion callback then means both the
+client buffer and transport entry are ready for reuse.
 
-pw-bot: reject
+Fixes: fce8a7bb5b4b ("PCI-Express Non-Transparent Bridge Support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
+---
+ drivers/ntb/ntb_transport.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
+index f59f926d4bfa..e92b96f4afad 100644
+--- a/drivers/ntb/ntb_transport.c
++++ b/drivers/ntb/ntb_transport.c
+@@ -1719,9 +1719,16 @@ static void ntb_transport_rxc_db(unsigned long data)
+ static void ntb_tx_copy_callback(void *data,
+ 				 const struct dmaengine_result *res)
+ {
++	struct ntb_payload_header __iomem *hdr;
+ 	struct ntb_queue_entry *entry = data;
+-	struct ntb_transport_qp *qp = entry->qp;
+-	struct ntb_payload_header __iomem *hdr = entry->tx_hdr;
++	struct ntb_transport_qp *qp;
++	unsigned int len;
++	void *cb_data;
++
++	qp = entry->qp;
++	hdr = entry->tx_hdr;
++	cb_data = entry->cb_data;
++	len = entry->len;
+ 
+ 	/* we need to check DMA results if we are using DMA */
+ 	if (res) {
+@@ -1768,15 +1775,13 @@ static void ntb_tx_copy_callback(void *data,
+ 	 * "link down" or similar.  Since no payload is being sent in these
+ 	 * cases, there is nothing to add to the completion queue.
+ 	 */
+-	if (entry->len > 0) {
+-		qp->tx_bytes += entry->len;
+-
+-		if (qp->tx_handler)
+-			qp->tx_handler(qp, qp->cb_data, entry->cb_data,
+-				       entry->len);
+-	}
++	if (len > 0)
++		qp->tx_bytes += len;
+ 
+ 	ntb_list_add(&qp->ntb_tx_free_q_lock, &entry->entry, &qp->tx_free_q);
++
++	if (len > 0 && qp->tx_handler)
++		qp->tx_handler(qp, qp->cb_data, cb_data, len);
+ }
+ 
+ static void ntb_memcpy_tx_on_stack(struct ntb_queue_entry *entry, void __iomem *offset)
+-- 
+2.51.0
+
