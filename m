@@ -1,101 +1,64 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214133F8253;
-	Mon, 17 Aug 2026 23:34:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC972C3245;
+	Mon, 17 Aug 2026 23:35:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787009678; cv=none; b=mspSqdOFNuAonFGh9s8xsBSFXrzOaDrWLbdK9TG0YsB14Ifb2BFhT99u/asxs4FuMdvUx/nTw5DtPAfMIrU/d2bOinXorp1/Lmg2hHgZ3Zp5x1Qlk/MV5g823PHhTyXfWB9W4mazMtJuxV94w86xvrq+Zn7vSsG5P3XBsW7X800=
+	t=1787009753; cv=none; b=j7a7CEnojypPGxo0cpH1MZDb1D8dsge5KeyMypovRBQDsljv2OYrKvwQK0f6cbzwgUdDRQfaukRO+dg6UKBI+gadFGYeu5/WSaMOEr62c4MFvFc/+8BcOVomO0plK6dzV4v7RBfelWljq0diQ/9RqIPrfhCP2ZSzzYSEF8x2MWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787009678; c=relaxed/simple;
-	bh=2OqnZYAypKhe4+1ak6uSXvLSfMqgTt234yq8l9W1ROU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OEajLTZp0Y88jlokhWf8hvvvHf4vJmmGhSMk1kwwuGO3vO+PtKDVGujH6H9wSDJAWksHDaW6KmqsUCHsTWmoqxSETurjsIf+j26/R4PBpCV863CELHIRNRvUOYRIVeqdbSsvm6MbC6xL5cZ7GZVI0Wn5AdgCBSEjoaY9qj8zgyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id E86BD202285;
-	Tue, 18 Aug 2026 01:34:22 +0200 (CEST)
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1ww6qU-00220u-2T;
-	Tue, 18 Aug 2026 01:34:22 +0200
-Received: from blackshift.org (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 736E9585159;
-	Mon, 17 Aug 2026 23:34:22 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Harini T <harini.t@amd.com>,
-	Appana Durga Kedareswara rao <appana.durga.kedareswara.rao@amd.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 06/11] MAINTAINERS: Replace maintainer for Xilinx CAN driver
-Date: Tue, 18 Aug 2026 01:24:33 +0200
-Message-ID: <20260817233420.2068204-7-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260817233420.2068204-1-mkl@pengutronix.de>
-References: <20260817233420.2068204-1-mkl@pengutronix.de>
+	s=arc-20240116; t=1787009753; c=relaxed/simple;
+	bh=2hjBe+6fg1kUWNMVSs9m6I8gC1xQ9hXKURnAJaLTGb8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bwMdCtlIl4moQvg8GIRVENej/+3IAB8jyQh+ulep2N3KA/zbtWrCjeQZ5viawI8B4Ft17YB2hp4TX/Nlw31wI0mejqklHvjatq+PXZlozlnn5BzhwfsgTro/HDoga/qXmXVXMz9Gw2dPkpPcbQdvLizUbIyCiGXLHOkp6IhWgo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WVgPouH8; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WVgPouH8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3361F1F000E9;
+	Mon, 17 Aug 2026 23:35:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787009752;
+	bh=deggn4EACIgb1Na3knJx1I9cD+CWY64Le9geMJuUaXs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=WVgPouH8fPfZnz//YzyNY7/EtFGEn25JHdxNJ9qDv3iS1dM6a1BgUo5vTDzXffBmF
+	 CnG5E8vjamUHgu83qTcyyuhxxychP9R/CTcXTTh4SiKWcKy1vvOo4OXiHHeilnil7V
+	 ifWzZo2YVmYxzRlSdtC88g0+X+jC/il7/G2tz1ll6+sJZVY9AwOycNPbXPMt/kjxwA
+	 6w3TAE6Vat6ynIAUH7i7D/RxiSNu/TZRYTU5ahtf1RczLnyjSK5hJLnWyiSkQvDWUE
+	 nnJovR/OXvz+deMeBQui6akxDehgfZ/UlF6xMXpbfCueXHHQQLCm579SMSkZ4xPBpE
+	 EPTJOWR/Jk9+w==
+Date: Mon, 17 Aug 2026 16:35:51 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Vikas Gupta <vikas.gupta@broadcom.com>
+Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bhargava.marreddy@broadcom.com,
+ rahul-rg.gupta@broadcom.com, vsrama-krishna.nemani@broadcom.com,
+ rajashekar.hudumula@broadcom.com, dharmender.garg@broadcom.com,
+ ajit.khaparde@broadcom.com
+Subject: Re: [PATCH net-next 08/11] bnge: add NTUPLE filter infrastructure
+Message-ID: <20260817163551.5eecb007@kernel.org>
+In-Reply-To: <20260814011435.194631-9-vikas.gupta@broadcom.com>
+References: <20260814011435.194631-1-vikas.gupta@broadcom.com>
+	<20260814011435.194631-9-vikas.gupta@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Harini T <harini.t@amd.com>
+On Fri, 14 Aug 2026 06:44:32 +0530 Vikas Gupta wrote:
+> Add the core NTUPLE filter data structures and firmware command
+> wrappers needed for flow rule management.
+> This helps further patches implement user-created NTUPLE rules
+> as well as rules via kernel flow steering.
 
-Replace Appana Durga Kedareswara rao with Harini T as the maintainer
-of the Xilinx CAN driver. Kedar is no longer maintaining it.
+transient warning:
 
-Signed-off-by: Harini T <harini.t@amd.com>
-Acked-by: Appana Durga Kedareswara rao <appana.durga.kedareswara.rao@amd.com>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260717021415.2234865-2-harini.t@amd.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- Documentation/devicetree/bindings/net/can/xilinx,can.yaml | 2 +-
- MAINTAINERS                                               | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/net/can/xilinx,can.yaml b/Documentation/devicetree/bindings/net/can/xilinx,can.yaml
-index 40835497050a..e705c719f7b5 100644
---- a/Documentation/devicetree/bindings/net/can/xilinx,can.yaml
-+++ b/Documentation/devicetree/bindings/net/can/xilinx,can.yaml
-@@ -8,7 +8,7 @@ title:
-   Xilinx CAN and CANFD controller
- 
- maintainers:
--  - Appana Durga Kedareswara rao <appana.durga.rao@xilinx.com>
-+  - Harini T <harini.t@amd.com>
- 
- properties:
-   compatible:
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 991460050da7..6b49a2c80cd5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -29573,7 +29573,7 @@ F:	Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml
- F:	drivers/net/ethernet/xilinx/xilinx_axienet*
- 
- XILINX CAN DRIVER
--M:	Appana Durga Kedareswara rao <appana.durga.rao@xilinx.com>
-+M:	Harini T <harini.t@amd.com>
- L:	linux-can@vger.kernel.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/net/can/xilinx,can.yaml
+drivers/net/ethernet/broadcom/bnge/bnge_resc.c:633:23: warning: variable 'hw_resc' set but not used [-Wunused-but-set-variable]
+  633 |         struct bnge_hw_resc *hw_resc;
+      |                              ^
 -- 
-2.53.0
-
+pw-bot: cr
