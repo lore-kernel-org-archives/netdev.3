@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC8C3F3286;
-	Mon, 17 Aug 2026 22:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD1E3F39ED;
+	Mon, 17 Aug 2026 22:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787006221; cv=none; b=DuOIbVrWtuBwYAA4hLxfBQ+hnQq1WBAPlp52LvWEqEAtU18DPSCaD6aepksIfhhK5OhsEEwaLPXKZ2FOs5YOgzYYpdYhqSxYyybzEKNaTyE/oPfE3wQYw59/t0cVXd5jM2LUGa1X9X9PTMFNQJUVk1jHcD3DixSVjkCD5BvgGY8=
+	t=1787006221; cv=none; b=inYXVEDkPO7LnDoQw0ipJHIpCNrXAfPdHc98M4oVAMfEXWZSngdGRtSp3YAlyfTRiIOyCjZXYnLqk+9PnfHRXihgVYpJmxB3WuaK+2Z4j76Cs71iDwY8UlQ1fw1uYtQIeP0/8+ak6bg3Rlc5F3SG5T+27iuR17BYxZfGiduPvf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1787006221; c=relaxed/simple;
-	bh=4pSoV0FedtNIWMbTNFj2vncEYQPb8RuB0wcWsn+xEgE=;
+	bh=opAic8rnCMa/G6UK1J9RFWIaZeODkfxOqka7xpuwkXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gIapIppE1F3XETeRTm0cUH9mg0dBwwfdaAJh1u/KTUheA4FnQ84r6TubmGHcDsLHuWyqHcyuoX+EAHFV4uQYvR++FR4VG2nmZAngUpLlNiP7968aUrh9fTPGbHqYbB4Dotdf/+U7HDZtkjO+sEPnMQqWwtcoAnIExOWX544ayZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MKO6Ug6u; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=oeZK3jeIsRI1dxPMHTV4/BU0DNMF0btaoCMtj8tkLhVBbIWtUm73nzNnHyAeGYKsgZU7a1exlOwUmTrQoQUQH+SLDN5Av4XpdrKGT8X62bpu2kjKyrWkaoCu8AUoPnivmFvs8h2BX9MtZZRSvr7QqCWcIT6MEy1ldWuffK0KboI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bDWHfW0q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MKO6Ug6u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2AE61F00A3A;
-	Mon, 17 Aug 2026 22:36:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bDWHfW0q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 613541F000E9;
+	Mon, 17 Aug 2026 22:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787006218;
-	bh=7FTumWu8AG1C1gGJhkiC0lozjxpP0IrL7ixWnRMOeHo=;
+	s=k20260515; t=1787006220;
+	bh=SJXQ9vM2KWNlkV29lLJi0nV/8Tka0tw/q9KKnDdas8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MKO6Ug6udUYkrMBhWjjfaAo4kIgCxf+IV+2YU2czl9YvkwXAagBwKbs9cId/fBLDp
-	 5TzV78BaRSit2M4XnFSgH2P0igb2YiEItSbcj8pvL3jAfsicQKq1hTrtFoyHEOjeix
-	 3uMhyMzBVgc/BYOCyNH5ZskSgJkVoFL2n1kxTUoqi/yOXBReyjudFPoJGrDW58jqk1
-	 iZgBDBSTVl0hOr0Vi1yuNwgDnBDwA4KfVuyNN7ZlzclKL44atRXlF+RxfyL+KOwECj
-	 mdZlhUNIx1OTY+38E0oFvxS5QG3Rw3G8sv3eO08VeLhMLsjv9yTDqoWCQNl/b5+tny
-	 UykBH77/prxqQ==
+	b=bDWHfW0q8MOMNW1CFmLos0TT6zU7EHHs+jODOMxxfTbCBc1TTlnB8KTub6ZtD5jX8
+	 u5i5bGxiQL45nA5nZ9NjSL8Vu2bcxtDQ1B4btl63DLSnAFXm/PV8ghzWY+RMIxWmQN
+	 qfX2CA2y/c0Aw48AIcG+jiUY34Ah6A900lpWj6zg9igB3/XyXJc1aNBZJvju3nLuBR
+	 7nwgUPV5iQEyCnlpoJ+HIxJCdldKHwWZDokz9/PCBPqe34etKCZIYROKDyESewnoxu
+	 exmzw/wL+tBo3UaodnKpvWGsErzQLLgQujHBrawoTAZXnkC7nSUTGa3N/7yas28Y0N
+	 /TPnSHu1Jmuzg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: jackbb_wu@compal.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -51,12 +51,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org,
 	linux-doc@vger.kernel.org
-Subject: Re: [PATCH v6 5/7] net: wwan: t9xx: Add FSM thread
-Date: Mon, 17 Aug 2026 15:36:57 -0700
-Message-ID: <20260817223657.3688752-1-kuba@kernel.org>
+Subject: Re: [PATCH v6 6/7] net: wwan: t9xx: Add AT & MBIM WWAN ports
+Date: Mon, 17 Aug 2026 15:36:58 -0700
+Message-ID: <20260817223658.3688816-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260811-t9xx_driver_v1-v6-5-2c969fad57c6@compal.com>
-References: <20260811-t9xx_driver_v1-v6-5-2c969fad57c6@compal.com>
+In-Reply-To: <20260811-t9xx_driver_v1-v6-6-2c969fad57c6@compal.com>
+References: <20260811-t9xx_driver_v1-v6-6-2c969fad57c6@compal.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,751 +68,309 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-net: wwan: t9xx: Add FSM thread
+net: wwan: t9xx: Add AT & MBIM WWAN ports
 
-This adds a finite-state-machine kthread that serializes asynchronous
-events from the device and the OS, plus a notifier mechanism so other
-modules can react before and after each state transition.  It also wires
-the FSM into the PCI probe/remove path and into the control plane and
-CLDMA transport.
+This adds AT and MBIM ports to the t9xx port infrastructure, creating them
+through the WWAN framework when the modem FSM reaches the ready state. The
+new wwan_port_ops implement start, stop, tx, tx_blocking and tx_poll, and
+new CLDMA queues plus port configs are added for both channels.
 
-No Link: tags are present in the commit header.
+A few questions on the new code below.
 
-> net: wwan: t9xx: Add FSM thread
->
-> The FSM (Finite-state Machine) thread is responsible for
-> synchronizing the actions of different modules. The
-> asynchronous events from the device or the OS will trigger
-> a state transition.
->
-> The FSM thread will append it to the event queue when an
-> event arrives. It handles the events sequentially. After
-> processing the event, the FSM thread notifies other modules
-> before and after the state transition.
->
-> Seven FSM states are defined. They can transition from one
-> state to another, self-transition in some states, and
-> transition in some sub-states.
-
-[Severity: Low]
-Does the code match this description?  enum mtk_fsm_state in the new
-mtk_fsm.h defines five states:
-
-	FSM_STATE_INVALID, FSM_STATE_OFF, FSM_STATE_ON,
-	FSM_STATE_BOOTUP, FSM_STATE_READY
-
-There is also no sub-state anywhere: struct mtk_md_fsm and
-struct mtk_fsm_param have no sub-state member, and mtk_fsm_switch_state()
-only ever assigns fsm->state.  Should the count and the sub-state
-sentence be updated?
-
-[Severity: Low]
-The changelog only mentions the FSM thread, but the patch carries several
-other functional changes.  Would it help reviewers to split them out or at
-least mention them?
-
- - the HS1/HS2/HS3 handshake and runtime-feature protocol
-   (mtk_fsm_send_hs1_msg(), mtk_fsm_parse_hs2_msg(),
-   mtk_fsm_send_hs3_msg() and the two ctrl-msg handlers)
-
- - the whole operational CLDMA bring-up and teardown path
-   (cldma_drv_info_tbl, mtk_cldma_get_drv_info(), mtk_cldma_isr(),
-   mtk_cldma_dev_init(), mtk_cldma_dev_exit(), including DMA pools,
-   a workqueue and MSI-X registration)
-
- - an skb leak fix in mtk_cldma_rxq_free(), adding
-   dev_kfree_skb_any(req->skb) in the rxq->nr_bds branch to code added
-   by the earlier CLDMA patch of this series, with no Fixes: tag
-
- - removal of all declared CLDMA4 support (CLDMA4 from enum mtk_hif_id,
-   which shrinks NR_CLDMA from 3 to 2, plus CLDMA4_HW_ID,
-   CLDMA4_BASE_ADDR, REG_CLDMA_INT_WF_MASK, the cldma4_base_addr and
-   reg_cldma4_int_mask fields, and the CLDMA4 branch of
-   mtk_cldma_drv_init_m9xx())
-
-> diff --git a/drivers/net/wwan/t9xx/mtk_ctrl_plane.c b/drivers/net/wwan/t9xx/mtk_ctrl_plane.c
-> index 6ed47d0745565..1d9dc53482405 100644
-> --- a/drivers/net/wwan/t9xx/mtk_ctrl_plane.c
-> +++ b/drivers/net/wwan/t9xx/mtk_ctrl_plane.c
-> @@ -5,10 +5,46 @@
-> +static void mtk_ctrl_trans_fsm_state_handler(struct mtk_fsm_param *param,
-> +					     struct mtk_ctrl_blk *ctrl_blk)
+> diff --git a/drivers/net/wwan/t9xx/mtk_port.c b/drivers/net/wwan/t9xx/mtk_port.c
+> index ee52b44ddf861..e67ac14c92861 100644
+> --- a/drivers/net/wwan/t9xx/mtk_port.c
+> +++ b/drivers/net/wwan/t9xx/mtk_port.c
+> @@ -819,6 +819,29 @@ int mtk_port_ch_disable(struct mtk_port *port)
+>  	return ret;
+>  }
+>  
+> +static int mtk_port_enable_by_type(struct mtk_port_mngr *port_mngr, int tbl_type)
 > +{
-> +	struct mtk_md_dev *mdev = ctrl_blk->mdev;
+> +	struct mtk_port **ports;
+> +	int ret, idx;
 > +
-> +	switch (param->to) {
-> +	case FSM_STATE_OFF:
-> +		ctrl_blk->ops->fsm_indication(mdev, param);
-> +		ctrl_blk->ops->exit(mdev);
-> +		break;
-> +	case FSM_STATE_ON:
-> +		ctrl_blk->ops->init(mdev);
-> +		fallthrough;
-
-[Severity: High]
-Can a failing ops->init() here lead to a NULL dereference on removal?
-
-ops->init is mtk_pcie_hif_init(), which has several failure exits (kmemdup
-ENOMEM, queue-info validation, radix_tree_insert(), mtk_cldma_init(),
-mtk_ctrl_trb_srv_init()).  In all of them trans->trb_srv[] is left
-all-NULL, but the return value is discarded here and the FSM commits
-FSM_STATE_ON anyway.
-
-On removal the FSM_STATE_OFF arm above calls ops->exit()
-unconditionally:
-
-mtk_pci_dev_exit() -> FSM_EVT_DEV_RM -> mtk_fsm_dev_rm_act()
-  -> mtk_fsm_enter_off_state() (guard passes, state == ON)
-  -> mtk_fsm_switch_state(FSM_STATE_OFF)
-  -> mtk_ctrl_trans_fsm_state_handler() case FSM_STATE_OFF
-  -> mtk_pcie_hif_exit() -> mtk_ctrl_trb_srv_exit()
-
-and mtk_ctrl_trb_srv_exit() does:
-
-	for (i = 0; i < trans->trb_srv_num; i++) {
-		srv = trans->trb_srv[i];
-		kthread_stop(srv->trb_thread);
-
-with no NULL check.  The same unchecked-return pattern repeats one level
-down, where the void mtk_cldma_fsm_state_listener() discards
-mtk_cldma_dev_init() errors.
-
-> +	default:
-> +		ctrl_blk->ops->fsm_indication(mdev, param);
-> +		break;
-> +	}
-> +}
+> +	if (tbl_type < 0 || tbl_type >= PORT_TBL_MAX)
+> +		return -EINVAL;
 > +
-> +static void mtk_ctrl_fsm_state_listener(struct mtk_fsm_param *param, void *data)
-> +{
-> +	struct mtk_ctrl_blk *ctrl_blk = data;
+> +	ports = kcalloc(port_mngr->port_cnt, sizeof(struct mtk_port *), GFP_KERNEL);
+> +	if (!ports)
+> +		return -ENOMEM;
 > +
-> +	mtk_port_mngr_fsm_state_handler(param, ctrl_blk->port_mngr);
-> +	mtk_ctrl_trans_fsm_state_handler(param, ctrl_blk);
-> +	mtk_port_mngr_fsm_state_handler_late(param, ctrl_blk->port_mngr);
-> +}
-
-[ ... ]
-
-> diff --git a/drivers/net/wwan/t9xx/mtk_fsm.c b/drivers/net/wwan/t9xx/mtk_fsm.c
-> new file mode 100644
-> index 0000000000000..8cf9b239caeaf
-> --- /dev/null
-> +++ b/drivers/net/wwan/t9xx/mtk_fsm.c
-
-[ ... ]
-
-> +static int mtk_fsm_parse_hs2_msg(struct fsm_hs_info *hs_info)
-> +{
-> +	struct mtk_md_fsm *fsm = container_of(hs_info, struct mtk_md_fsm, hs_info[hs_info->id]);
-> +	char *rt_data = ((struct sk_buff *)hs_info->rt_data)->data;
-> +	enum runtime_feature_support_type cur_ft_spt;
-> +	struct runtime_feature_entry *rtft_entry;
-> +	unsigned int ft_id, offset, data_len;
-> +	int ret = 0;
-> +
-> +	offset = sizeof(struct feature_query);
-> +	for (ft_id = 0; ft_id < FEATURE_CNT; ft_id++) {
-> +		if (offset + sizeof(*rtft_entry) > hs_info->rt_data_len)
-> +			break;
-> +
-> +		rtft_entry = (struct runtime_feature_entry *)(rt_data + offset);
-> +		ret = mtk_fsm_feature_set_match(&cur_ft_spt,
-> +						rtft_entry->support_info,
-> +						hs_info->query_ft_set[ft_id]);
-
-[Severity: Low]
-Should this loop key off rtft_entry->feature_id instead of the loop index?
-
-The wire structure carries an explicit id:
-
-	struct runtime_feature_entry {
-		u8 feature_id;
-		struct runtime_feature_info support_info;
-
-and the host's own emitter fills it in mtk_fsm_append_rtft_entries():
-
-	rtft_entry->feature_id = ft_id;
-
-Here the received entry's feature_id is never read, so the parser assumes
-the device returns exactly FEATURE_CNT entries in dense ascending order.
-If entries are omitted or reordered, one feature's payload is handed to
-another feature's handler, or mtk_fsm_feature_set_match() returns -EPROTO
-for a feature the device did answer.
-
-> +		if (ret < 0)
-> +			break;
-> +
-> +		data_len = le32_to_cpu(rtft_entry->data_len);
-> +		if (data_len > hs_info->rt_data_len - offset - sizeof(*rtft_entry))
-> +			break;
-> +
-> +		if (cur_ft_spt == RTFT_TYPE_MUST_SUPPORT)
-> +			if (query_rtft_action[ft_id])
-> +				ret = query_rtft_action[ft_id](fsm->mdev,
-> +							       rtft_entry->data,
-> +							       data_len);
-
-[Severity: Medium]
-Is a minimum length check missing here?  Only an upper bound on data_len
-is applied, so data_len == 0 is accepted and passed to
-mtk_port_status_update(), which dereferences the 12-byte
-struct mtk_port_enum_msg header before validating the length:
-
-drivers/net/wwan/t9xx/mtk_port.c:mtk_port_status_update() {
-	if (le16_to_cpu(msg->version) != MTK_PORT_ENUM_VER ||
-	    le32_to_cpu(msg->head_pattern) != MTK_PORT_ENUM_HEAD_PATTERN ||
-	    le32_to_cpu(msg->tail_pattern) != MTK_PORT_ENUM_TAIL_PATTERN)
-		return -EPROTO;
-
-	if (data_len < sizeof(*msg) + ...
-}
-
-With data_len == 0 for QUERY_RTFT_ID_MD_PORT_ENUM or
-QUERY_RTFT_ID_SAP_PORT_ENUM (both declared MUST-support by the host, so
-cur_ft_spt == RTFT_TYPE_MUST_SUPPORT is reachable), rtft_entry->data
-equals rt_data + rt_data_len and the read goes past the received message
-into skb tailroom / skb_shared_info.  Can the handler be given a
-guaranteed-minimum length instead?
-
-> +		if (ret < 0)
-> +			break;
-> +
-> +		offset += sizeof(*rtft_entry) + data_len;
-> +	}
-
-[ ... ]
-
-> +static int mtk_fsm_sap_ctrl_msg_handler(void *__fsm, struct sk_buff *skb)
-> +{
-
-[ ... ]
-
-> +	hs_info->rt_data = skb;
-> +	hs_info->rt_data_len = skb->len;
-> +	ret = mtk_fsm_evt_submit(fsm->mdev, FSM_EVT_STARTUP,
-> +				 hs_info->fsm_flag_hs2, hs_info, sizeof(*hs_info), 0);
-> +	if (ret == FSM_EVT_RET_FAIL) {
-> +		dev_kfree_skb(skb);
-> +		hs_info->rt_data = NULL;
+> +	ret = radix_tree_gang_lookup(&port_mngr->port_tbl[tbl_type],
+> +				     (void **)ports, 0, port_mngr->port_cnt);
+> +	for (idx = 0; idx < ret; idx++) {
+> +		if (ports[idx]->enable)
+> +			ports_ops[ports[idx]->info.type]->enable(ports[idx]);
 > +	}
 > +
+> +	kfree(ports);
 > +	return 0;
 > +}
 > +
-> +static int mtk_fsm_md_ctrl_msg_handler(void *__fsm, struct sk_buff *skb)
-> +{
-
-[ ... ]
-
-> +	switch (le32_to_cpu(ctrl_msg_h->id)) {
-> +	case CTRL_MSG_HS2:
-> +		skb_pull(skb, sizeof(*ctrl_msg_h));
-> +		hs_info->rt_data = skb;
-> +		hs_info->rt_data_len = skb->len;
-> +		ret = mtk_fsm_evt_submit(fsm->mdev, FSM_EVT_STARTUP,
-> +					 hs_info->fsm_flag_hs2, hs_info, sizeof(*hs_info), 0);
-> +		if (ret != FSM_EVT_RET_FAIL)
-> +			consumed_skb = true;
+>  static void mtk_port_disable(struct mtk_port_mngr *port_mngr)
+>  {
+>  	struct radix_tree_iter iter;
+> @@ -850,6 +873,9 @@ void mtk_port_mngr_fsm_state_handler(struct mtk_fsm_param *fsm_param, void *arg)
+>  	case FSM_STATE_OFF:
+>  		mtk_port_disable(port_mngr);
+>  		break;
+> +	case FSM_STATE_READY:
+> +		mtk_port_enable_by_type(port_mngr, PORT_TBL_MD);
 > +		break;
 
-[Severity: High]
-Can two HS2 messages race on the single hs_info->rt_data slot?
+[Severity: Low]
+Should the error from mtk_port_enable_by_type() be handled or at least
+logged here?
 
-The queued event carries only the hs_info pointer (event->data = hs_info),
-never the skb, so no event owns its buffer.  The writer here runs in the
-CLDMA rx_done work while the reader/freer runs in the FSM kthread, and
-neither takes a lock or checks whether a buffer is already pending.
+If the kcalloc() in mtk_port_enable_by_type() fails, it returns -ENOMEM
+before any port's enable() callback runs, so no AT or MBIM char device is
+ever created and there is nothing in the log to explain it.  The
+surrounding code (mtk_port_ch_enable() and mtk_port_ch_disable()) does
+emit a dev_err()/dev_warn() on failure.
 
-If the modem sends a second CTRL_MSG_HS2 while the FSM thread is still in
-mtk_fsm_startup_act() for the first one:
-
-rx work					FSM kthread
-hs_info->rt_data = skb2			mtk_fsm_parse_hs2_msg()  /* skb1 */
-submit event B
-					dev_kfree_skb(hs_info->rt_data);
-					hs_info->rt_data = NULL;
-
-skb1 is leaked, skb2 is freed early, and event B then reaches:
-
-	char *rt_data = ((struct sk_buff *)hs_info->rt_data)->data;
-
-on a NULL pointer.  In the failure branches above, dev_kfree_skb(skb) can
-also free a buffer the FSM thread is parsing right now, and a torn
-rt_data / rt_data_len pair makes the parser bound the wrong buffer.
-Should the skb be handed to the event itself rather than stored in the
-shared hs_info?
-
-> +	default:
-> +		dev_err(fsm->mdev->dev, "Invalid ctrl msg id\n");
-> +	}
+>  	default:
+>  		break;
+>  	}
+> diff --git a/drivers/net/wwan/t9xx/mtk_port_io.c b/drivers/net/wwan/t9xx/mtk_port_io.c
+> index a4e264cd5f630..c249b973bd097 100644
+> --- a/drivers/net/wwan/t9xx/mtk_port_io.c
+> +++ b/drivers/net/wwan/t9xx/mtk_port_io.c
+> @@ -41,6 +45,145 @@ static void mtk_port_struct_init(struct mtk_port *port)
 
 [ ... ]
 
-> +static void mtk_fsm_switch_state(struct mtk_md_fsm *fsm,
-> +				 enum mtk_fsm_state to_state, struct mtk_fsm_evt *event)
+> +static int mtk_port_common_write(struct mtk_port *port, union user_buf buf, unsigned int len,
+> +				 bool from_user_space)
 > +{
-
-[ ... ]
-
-> +	list_for_each_entry(nt, &fsm->pre_notifiers, entry)
-> +		nt->cb(&param, nt->data);
+> +	u32 packet_size, left_cnt = len, cur_pos;
+> +	struct sk_buff *skb;
+> +	int ret;
 > +
-> +	fsm->state = to_state;
-> +	fsm->fsm_flag |= event ? event->fsm_flag : FSM_F_DFLT;
+> +	if (len == 0)
+> +		return -EINVAL;
+> +
+> +start_write:
+> +	ret = mtk_port_status_check(port);
+> +	if (ret)
+> +		goto end_write;
 
 [ ... ]
 
-> +	list_for_each_entry(nt, &fsm->post_notifiers, entry)
-> +		nt->cb(&param, nt->data);
-> +}
-
-[Severity: High]
-What protects these two list walks against concurrent unregistration?
-
-The traversal runs in the FSM kthread with plain list_for_each_entry() and
-calls nt->cb(), while mtk_fsm_notifier_register() /
-mtk_fsm_notifier_unregister() do list_add()/list_add_tail()/list_del() and
-kfree() from other threads.  There is no mutex, no _rcu list variant, no
-synchronize_rcu() before the kfree, and no barrier.
-
-The removal path is ordered against the FSM thread only by the blocking
-FSM_EVT_DEV_RM event, whose result mtk_pci_dev_exit() ignores and which
-can also time out.  When that happens:
-
-mtk_trans_ctrl_exit() -> mtk_ctrl_exit()
-  -> mtk_fsm_notifier_unregister(mdev, MTK_USER_CTRL)   /* list_del + kfree */
-  -> mtk_port_mngr_exit(ctrl_blk)                       /* frees port_mngr */
-
-while the FSM thread may still be iterating post_notifiers and about to
-call nt->cb() on the freed notifier with the freed port_mngr as data.
-Since both register and unregister are exported, any future runtime
-register/unregister races with every state transition too.
-
-> +static int mtk_fsm_startup_act(struct mtk_md_fsm *fsm, struct mtk_fsm_evt *event)
-> +{
-
-[ ... ]
-
-> +	} else if (event->fsm_flag & FSM_HS2_DONE_MASK) {
-> +		ret = mtk_fsm_parse_hs2_msg(hs_info);
-> +		if (!ret) {
-> +			mtk_fsm_switch_state(fsm, to_state, event);
-> +			ret = mtk_fsm_send_hs3_msg(hs_info);
-> +		}
-> +		dev_kfree_skb(hs_info->rt_data);
-> +		hs_info->rt_data = NULL;
-> +		if (ret)
-> +			goto hs_err;
+> +	ret = mtk_port_send_data(port, skb);
+> +	if (ret < 0) {
+> +		if (ret == -EINTR)
+> +			left_cnt -= packet_size;
+> +		goto end_write;
 > +	}
 > +
-> +	if (((fsm->fsm_flag | event->fsm_flag) & fsm->hs_done_flag) == fsm->hs_done_flag) {
-> +		to_state = FSM_STATE_READY;
-> +		mtk_fsm_switch_state(fsm, to_state, NULL);
-> +	}
-
-[Severity: Medium]
-Can the FSM reach FSM_STATE_READY when HS3 was never delivered?
-
-mtk_fsm_switch_state() is called before mtk_fsm_send_hs3_msg(), and it
-permanently ORs the event flag in:
-
-	fsm->fsm_flag |= event ? event->fsm_flag : FSM_F_DFLT;
-
-If mtk_fsm_send_hs3_msg() then fails (-ENOMEM from
-__dev_alloc_skb(RTFT_DATA_SIZE), -EPROTO from
-mtk_fsm_append_rtft_entries(), or a failed mtk_port_internal_write()), the
-hs_err exit does not clear the already-committed FSM_F_*_HS2_DONE bit.
-In the dual-handshake configuration the other side can then complete, and
-the hs_done_flag test above sees every HS_START/HS2_DONE bit set and moves
-to FSM_STATE_READY.
-
-[ ... ]
-
-> +static int mtk_fsm_hs1_handler(u32 status, void *__hs_info)
-> +{
-> +	struct fsm_hs_info *hs_info = __hs_info;
-> +	struct mtk_md_dev *mdev;
-> +	struct mtk_md_fsm *fsm;
-> +
-> +	fsm = container_of(hs_info, struct mtk_md_fsm, hs_info[hs_info->id]);
-> +	mdev = fsm->mdev;
-> +	mtk_fsm_evt_submit(mdev, FSM_EVT_STARTUP,
-> +			   hs_info->fsm_flag_hs1, hs_info, sizeof(*hs_info), 0);
-> +	mtk_dev_mask_dev_evt(mdev, hs_info->mhccif_ch);
-> +	mtk_dev_clear_dev_evt(mdev, hs_info->mhccif_ch);
-> +
-> +	return 0;
-> +}
-
-[Severity: Medium]
-Is there a way back if the queued startup action later fails?
-
-The HS1 notification is masked and cleared here, before the asynchronous
-event result is known.  In mtk_fsm_startup_act():
-
-	ret = mtk_fsm_ctrl_ch_start(fsm, hs_info, O_NONBLOCK);
-	if (!ret)
-		ret = mtk_fsm_send_hs1_msg(hs_info);
-	if (ret)
-		goto hs_err;
-
-mtk_fsm_ctrl_ch_start() returns -ENODEV when the control port is not
-enabled (which is what happens when mtk_cldma_dev_init() failed, since
-mtk_cldma_fsm_state_listener() drops that error), and
-mtk_fsm_send_hs1_msg() can return -ENOMEM or a write error.  The hs_err
-path only logs; the channel stays masked and no retry is scheduled, so the
-FSM stays in FSM_STATE_BOOTUP.  The only mtk_dev_unmask_dev_evt() calls
-for hs_info->mhccif_ch are in mtk_fsm_idle_evt_handler(), which is not
-re-entered because the boot-flow-sync channel is masked as well.
-
-[ ... ]
-
-> +static void mtk_fsm_notifier_insert(struct mtk_fsm_notifier *notifier, struct list_head *head)
-> +{
-> +	struct mtk_fsm_notifier *nt;
-> +
-> +	list_for_each_entry(nt, head, entry) {
-> +		if (notifier->prio > nt->prio) {
-> +			list_add(&notifier->entry, nt->entry.prev);
-> +			return;
-> +		}
-> +	}
-> +	list_add_tail(&notifier->entry, head);
-> +}
-
-[ ... ]
-
-> +	spin_lock_irqsave(&fsm->evtq_lock, flags);
-> +	if (test_bit(EVT_TF_GATECLOSED, &fsm->t_flag)) {
-> +		spin_unlock_irqrestore(&fsm->evtq_lock, flags);
-> +		mtk_fsm_evt_put(event);
-> +		dev_err(mdev->dev, "Failed to add event, fsm dev has been removed!\n");
-> +		return FSM_EVT_RET_FAIL;
-> +	}
-> +
-> +	kref_get(&event->kref);
-> +	if (mode & EVT_MODE_TOHEAD)
-> +		list_add(&event->entry, &fsm->evtq);
+> +	left_cnt -= ret;
+> +	if (left_cnt)
+> +		goto start_write;
 > +	else
-> +		list_add_tail(&event->entry, &fsm->evtq);
-> +	wake_up_process(fsm->fsm_handler);
-> +	spin_unlock_irqrestore(&fsm->evtq_lock, flags);
-
-[Severity: High]
-Can fsm->fsm_handler be NULL at this wake_up_process()?
-
-mtk_fsm_exit() clears it under the same lock:
-
-	spin_lock_irqsave(&fsm->evtq_lock, flags);
-	handler = fsm->fsm_handler;
-	fsm->fsm_handler = NULL;
-	spin_unlock_irqrestore(&fsm->evtq_lock, flags);
-
-	if (handler)
-		kthread_stop(handler);
-
-and only unregisters mtk_fsm_early_bootup_handler() /
-mtk_fsm_hs1_handler() at the very end, after a kthread_stop() that can
-block while the FSM thread finishes an event.  The only thing stopping a
-submit in that window is EVT_TF_GATECLOSED, which is set exclusively in
-mtk_fsm_dev_rm_act(), i.e. only if a FSM_EVT_DEV_RM was queued and
-processed.  On the probe error path (mtk_pci_dev_init() -> goto free_fsm
--> mtk_fsm_exit()) no DEV_RM is ever submitted, so the gate is open, and
-on removal mtk_pci_dev_exit() ignores the DEV_RM result.
-
-Any device event arriving then (mtk_mhccif_isr_work() ->
-mtk_fsm_early_bootup_handler() -> mtk_fsm_idle_evt_handler() ->
-mtk_fsm_evt_submit(), or mtk_fsm_hs1_handler()) passes a NULL task_struct
-into try_to_wake_up().  mtk_fsm_start() already has the check this path is
-missing:
-
-	if (!fsm->fsm_handler)
-		return -EFAULT;
-
-mtk_fsm_exit() also never clears mdev->fsm, so the torn-down (devm-freed)
-fsm stays reachable from those callbacks.
-
-[ ... ]
-
-> +int mtk_fsm_init(struct mtk_md_dev *mdev)
-> +{
-
-[ ... ]
-
-> +	mtk_fsm_hs_info_init(fsm);
-> +	mtk_dev_register_dev_evt(mdev, DEV_EVT_D2H_BOOT_FLOW_SYNC,
-> +				 mtk_fsm_early_bootup_handler, fsm);
-> +	mdev->fsm = fsm;
-> +	return 0;
-> +exit:
-> +	return ret;
-> +}
-
-[Severity: Medium]
-Should these registrations be checked?  mtk_dev_register_dev_evt() reaches
-mtk_pci_register_ext_evt(), which returns -EINVAL for bad arguments,
--EFAULT when the channel bitmask intersects an existing registration, and
--ENOMEM from:
-
-	cb = kzalloc(sizeof(*cb), GFP_ATOMIC);
-	if (!cb) {
-		ret = -ENOMEM;
-		goto err_spin_unlock;
-	}
-
-Here the return value is dropped, and the two per-handshake-channel
-registrations inside the void mtk_fsm_hs_info_init() cannot report failure
-at all.  If the BOOT_FLOW_SYNC registration fails,
-mtk_fsm_early_bootup_handler() never runs, so
-mtk_fsm_idle_evt_handler() never sets fsm->hs_done_flag and never submits
-the STARTUP event: probe succeeds, the FSM never leaves FSM_STATE_ON, no
-CLDMA is initialized, no port is created, and nothing is logged.
-
-[ ... ]
-
-> diff --git a/drivers/net/wwan/t9xx/pcie/mtk_cldma.c b/drivers/net/wwan/t9xx/pcie/mtk_cldma.c
-> index 097b20d8fbd38..1431c2797eb5d 100644
-> --- a/drivers/net/wwan/t9xx/pcie/mtk_cldma.c
-> +++ b/drivers/net/wwan/t9xx/pcie/mtk_cldma.c
-> @@ -34,12 +34,172 @@
-
-[ ... ]
-
-> +static int mtk_cldma_isr(int irq_id, void *param)
-> +{
-> +	struct cldma_drv_info *drv_info = param;
-> +	struct mtk_md_dev *mdev;
-> +	u32 tx_done, rx_done;
-> +	u32 tx_sta, rx_sta;
-> +	struct txq *txq;
-> +	struct rxq *rxq;
-> +	int i;
+> +		goto end_write;
 > +
-> +	mdev = drv_info->mdev;
-> +	drv_info->drv_ops->cldma_get_intr_status(drv_info, &tx_sta, &rx_sta);
-> +	tx_done = (tx_sta >> QUEUE_XFER_DONE) & 0xFF;
-> +	rx_done = (rx_sta >> QUEUE_XFER_DONE) & 0xFF;
-
-[Severity: Medium]
-What happens to the QUEUE_ERROR bits that get masked but never handled?
-
-mtk_cldma_get_intr_status() masks every asserted bit but clears only the
-XFER_DONE byte:
-
-drivers/net/wwan/t9xx/pcie/mtk_cldma_drv.c:mtk_cldma_get_intr_status() {
-	if (*tx_sta) {
-		/* TX XFER_DONE and QUEUE_ERROR mask */
-		mtk_pci_write32(mdev, base + hw_regs->reg_cldma_l2timsr0, *tx_sta);
-		/* TX XFER_DONE clear */
-		mtk_pci_write32(mdev, base + hw_regs->reg_cldma_l2tisar0,
-				(*tx_sta) & (0xFF << QUEUE_XFER_DONE));
-	}
-}
-
-The two shifts above then drop QUEUE_ERROR and QUEUE_ACTIVE_START
-entirely.  QUEUE_ERROR is unmasked only once, in mtk_cldma_txq_alloc() /
-mtk_cldma_rxq_alloc(); the done workers re-unmask only QUEUE_XFER_DONE.
-So the first queue error permanently disarms error reporting, leaves the
-bit latched in L2TISAR0/L2RISAR0, and leaves the halted queue with no log,
-no queue reset and no GPD/HWO recovery.
-
-> +
-> +	if (tx_done) {
-> +		for (i = 0; i < HW_QUEUE_NUM; i++) {
-> +			txq = drv_info->txq[i];
-> +			if (!(tx_done & BIT(i)) || !txq)
-> +				continue;
-> +			queue_work(drv_info->wq, &txq->tx_done_work);
-> +		}
-> +	}
-
-[ ... ]
-
-> +	mtk_pci_clear_irq(mdev, drv_info->pci_ext_irq_id);
-> +	mtk_pci_unmask_irq(mdev, drv_info->pci_ext_irq_id);
-> +
-> +	return IRQ_HANDLED;
+> +err_free_skb:
+> +	dev_kfree_skb_any(skb);
+> +end_write:
+> +	return (len > left_cnt) ? (len - left_cnt) : ret;
 > +}
 
 [ ... ]
 
-> @@ -885,6 +1046,44 @@ static void mtk_cldma_rxq_free(struct cldma_drv_info *drv_info, u32 rxqno)
-> +static int mtk_cldma_dev_exit(struct cldma_dev *cd, int hif_id)
-> +{
+> @@ -233,6 +376,198 @@ static const struct port_ops port_internal_ops = {
 
 [ ... ]
 
-> +	virq_id = mtk_pci_get_virq_id(mdev, drv_info->pci_ext_irq_id);
-> +	mtk_pci_mask_irq(mdev, drv_info->pci_ext_irq_id);
-> +	synchronize_irq(virq_id);
-> +	for (i = 0; i < HW_QUEUE_NUM; i++) {
-> +		if (drv_info->txq[i])
-> +			mtk_cldma_txq_free(drv_info, drv_info->txq[i]->txqno);
-> +		if (drv_info->rxq[i])
-> +			mtk_cldma_rxq_free(drv_info, drv_info->rxq[i]->rxqno);
+> +static int mtk_port_wwan_write(struct wwan_port *w_port, struct sk_buff *skb)
+> +{
+> +	struct mtk_port *port = wwan_port_get_drvdata(w_port);
+> +	union user_buf user_buf;
+> +	int ret;
+> +
+> +	if (unlikely(!skb->len)) {
+> +		consume_skb(skb);
+> +		return 0;
 > +	}
 > +
-> +	flush_workqueue(drv_info->wq);
-> +	destroy_workqueue(drv_info->wq);
-> +	dma_pool_destroy(drv_info->bd_dma_pool);
-> +	dma_pool_destroy(drv_info->gpd_dma_pool);
-> +	mtk_pci_unregister_irq(mdev, drv_info->pci_ext_irq_id);
+> +	port->info.flags &= ~PORT_F_BLOCKING;
+> +	user_buf.kbuf = (void *)skb->data;
+> +	ret = mtk_port_common_write(port, user_buf, skb->len, false);
+> +	if (ret < 0)
+> +		return ret;
 > +
-> +	kfree(drv_info);
-> +	cd->cldma_drv_info[hif_id] = NULL;
-> +
+> +	consume_skb(skb);
 > +	return 0;
 > +}
 
-[Severity: High]
-Is the initial mask plus synchronize_irq() enough to keep the ISR away
-from the freed drv_info?
+[Severity: Medium]
+Can a short write be silently reported to userspace as a complete write
+here (and in mtk_port_wwan_write_blocking() below)?
 
-mtk_cldma_isr() re-arms its own vector on every exit:
+mtk_port_common_write() returns a positive partial count whenever some
+prefix of the request was sent before a failure:
 
-	mtk_pci_clear_irq(mdev, drv_info->pci_ext_irq_id);
-	mtk_pci_unmask_irq(mdev, drv_info->pci_ext_irq_id);
+end_write:
+	return (len > left_cnt) ? (len - left_cnt) : ret;
 
-so an ISR that was already running when the vector was masked unmasks it
-again before returning, and synchronize_irq() only waits for that ISR to
-finish.  QUEUE_ERROR stays armed in hardware, so a later interrupt can
-call mtk_cldma_isr() after the workqueue is destroyed (queue_work() on
-freed workqueue memory) or after kfree(drv_info)
-(drv_info->drv_ops->cldma_get_intr_status(), drv_info->txq[]).
+That happens when mtk_port_status_check() fails on a later loop iteration
+(port disabled or flushed by a modem reset while a multi-chunk write is in
+flight), and on the interrupted blocking path:
 
-mtk_pci_unregister_irq() only clears the callback pointer:
+	ret = mtk_port_send_data(port, skb);
+	if (ret < 0) {
+		if (ret == -EINTR)
+			left_cnt -= packet_size;
+		goto end_write;
+	}
 
-	priv->irq_cb_list[irq_id] = NULL;
-	priv->irq_cb_data[irq_id] = NULL;
+Both tx callbacks only test ret < 0, then consume the skb and return 0.
+The WWAN core treats zero as all-or-nothing in wwan_port_fops_write():
 
-and is not followed by a synchronize_irq(), while mtk_pci_irq_handler()
-invokes priv->irq_cb_list[irq_id] directly from hardirq with no lock or
-RCU.  Should the callback be unregistered and synchronized before the
-workqueue, pools and drv_info are released?
+	ret = wwan_port_op_tx(port, head, !!(filp->f_flags & O_NONBLOCK));
+	if (!ret)
+		return count;
 
-[ ... ]
+With tx_mtu of 3456 bytes, any larger MBIM control message is split by the
+goto start_write loop, so a truncated message would be reported as fully
+written with no error.  Should a positive return smaller than skb->len be
+propagated as an error instead?
 
-> @@ -1195,6 +1394,27 @@ int mtk_cldma_trb_process(void *dev, struct sk_buff *skb)
-> +void mtk_cldma_fsm_state_listener(struct mtk_fsm_param *param, struct mtk_ctrl_trans *trans)
+> +static int mtk_port_wwan_write_blocking(struct wwan_port *w_port, struct sk_buff *skb)
 > +{
-> +	struct cldma_dev *cd = trans->dev;
-> +	int i;
+> +	struct mtk_port *port = wwan_port_get_drvdata(w_port);
+> +	union user_buf user_buf;
+> +	int ret;
 > +
-> +	switch (param->to) {
-> +	case FSM_STATE_BOOTUP:
-> +		if (param->fsm_flag & FSM_F_SAP_HS_START)
-> +			mtk_cldma_dev_init(cd, CLDMA0);
-> +		else if (param->fsm_flag & FSM_F_MD_HS_START)
-> +			mtk_cldma_dev_init(cd, CLDMA1);
-> +		break;
-> +	case FSM_STATE_OFF:
-> +		for (i = 0; i < NR_CLDMA; i++)
-> +			mtk_cldma_dev_exit(cd, i);
-> +		break;
-
-[Severity: High]
-Are the TRB service threads guaranteed to be stopped before this runs?
-
-In mtk_ctrl_trans_fsm_state_handler(), the FSM_STATE_OFF arm calls
-fsm_indication() (which lands here and tears down every CLDMA hif)
-before ops->exit(), and it is ops->exit() -> mtk_pcie_hif_exit() that
-clears trans->available and stops the TRB kthreads.  Meanwhile
-mtk_cldma_submit_tx() reads the published pointers locklessly:
-
-	drv_info = cd->cldma_drv_info[que->hif_id];
-	if (unlikely(!drv_info))
-		return -EINVAL;
-
-	txq = drv_info->txq[que->txqno];
-
-and mtk_cldma_dev_exit() does kfree(drv_info) before clearing
-cd->cldma_drv_info[hif_id], so the pointer is dangling across the free.
-One way to have work still in flight: mtk_port_ch_disable()'s
-wait_event_timeout() can expire, leaving the DISABLE TRB queued for the
-service thread to pick up later.
-
-> +	default:
-> +		break;
+> +	if (unlikely(!skb->len)) {
+> +		consume_skb(skb);
+> +		return 0;
 > +	}
+> +
+> +	port->info.flags |= PORT_F_BLOCKING;
+> +	user_buf.kbuf = (void *)skb->data;
+> +	ret = mtk_port_common_write(port, user_buf, skb->len, false);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	consume_skb(skb);
+> +	return 0;
 > +}
 
 [ ... ]
 
-> diff --git a/drivers/net/wwan/t9xx/pcie/mtk_pci.c b/drivers/net/wwan/t9xx/pcie/mtk_pci.c
-> index dbc17da590bc0..bf4e110b485c8 100644
-> --- a/drivers/net/wwan/t9xx/pcie/mtk_pci.c
-> +++ b/drivers/net/wwan/t9xx/pcie/mtk_pci.c
-> @@ -883,22 +883,34 @@ static int mtk_pci_dev_init(struct mtk_md_dev *mdev)
-
-[ ... ]
-
->  static void mtk_pci_dev_exit(struct mtk_md_dev *mdev)
->  {
-> +	mtk_fsm_evt_submit(mdev, FSM_EVT_DEV_RM, 0, NULL, 0,
-> +			   EVT_MODE_BLOCKING | EVT_MODE_TOHEAD);
->  	mtk_trans_ctrl_exit(mdev);
-> +	mtk_fsm_exit(mdev);
->  }
-
-[Severity: High]
-What happens here when the blocking removal event does not complete?
-
-mtk_fsm_evt_submit() returns FSM_EVT_RET_FAIL if its kzalloc() fails, and
-the result is discarded.  In that case the FSM_STATE_OFF notifier chain
-never runs, so ctrl_blk->ops->exit() = mtk_pcie_hif_exit() is never
-called: the CLDMA IRQ callback stays registered, the CLDMA workqueue and
-DMA pools stay alive, the TRB service kthreads keep running and
-trans->available stays 1.  mtk_trans_ctrl_exit() does not compensate:
-
-drivers/net/wwan/t9xx/pcie/mtk_trans_ctrl.c:mtk_trans_ctrl_exit() {
-	mtk_ctrl_exit(mdev);
-
-	return 0;
-}
-
-and the devm-allocated trans/ctrl_blk/fsm are released once remove()
-finishes, leaving those kthreads and the IRQ callback pointing at freed
-memory.  The wait can also expire (BLOCKING_EVT_TIMEOUT is 60s) without
-dequeuing or cancelling the event:
-
-	ret = wait_event_timeout(fsm->evt_waitq,
-				 (event->status != 0), BLOCKING_EVT_TIMEOUT);
-
-so teardown then races with an FSM thread still using ctrl_blk/trans.
-
->  static int mtk_pci_dev_start(struct mtk_md_dev *mdev)
->  {
-> +	mtk_fsm_evt_submit(mdev, FSM_EVT_DEV_ADD, 0, NULL, 0, 0);
-> +	mtk_fsm_start(mdev);
->  	return 0;
->  }
+> +static void mtk_port_wwan_enable(struct mtk_port *port)
+> +{
+> +	struct mtk_port_mngr *port_mngr;
+> +	int ret;
+> +
+> +	port_mngr = port->port_mngr;
+> +
+> +	if (test_bit(PORT_S_ENABLE, &port->status))
+> +		return;
+> +
+> +	ret = mtk_port_ch_enable(port);
+> +	if (ret && ret != -EBUSY)
+> +		return;
 
 [Severity: Medium]
-Should these two return values be propagated?  mtk_pci_dev_start() is
-declared int and mtk_pci_probe() already has an if (ret) handler for it,
-but both calls are discarded and 0 is returned unconditionally.
+Does this early return need a compensating mtk_port_ch_disable(), the way
+the wwan_create_port() failure path below does?
 
-mtk_fsm_evt_submit() returns FSM_EVT_RET_FAIL when its
-kzalloc(sizeof(*event), ...) fails, so probe can succeed while the FSM
-never leaves FSM_STATE_INVALID.  Every later handshake event is then
-rejected by mtk_fsm_startup_act():
+The TRB_CMD_ENABLE is processed asynchronously by the trb kthread, and
+mtk_port_ch_enable() only waits with a timeout:
 
-	if (fsm->state != FSM_STATE_ON && fsm->state != FSM_STATE_BOOTUP) {
-		ret = -EPROTO;
-		goto free_rt_data;
+	ret = wait_event_timeout(port->trb_wq, trb->status <= 0,
+				 MTK_DFLT_TRB_TIMEOUT);
+	if (!ret)
+		ret = -ETIMEDOUT;
+
+By then mtk_ch_status_check() has already done:
+
+	trans->usr_cnt[que->hif_id][que->txqno]++;
+	if (trans->usr_cnt[que->hif_id][que->txqno] == 1)
+		break;
+
+and at usr_cnt == 1 the trb thread runs mtk_cldma_open(), which allocates
+the rings and starts CLDMA1 TXQ(5)/RXQ(5) for AT or TXQ(2)/RXQ(2) for
+MBIM.  On the -ETIMEDOUT path the queue stays started while the port stays
+disabled, so RX data is dropped by mtk_port_wwan_recv() with -ENXIO.
+
+usr_cnt is never reset, and mtk_port_wwan_disable() returns immediately
+because PORT_S_ENABLE was never set, so on the next FSM_STATE_READY the
+enable takes the usr_cnt != 1 branch, mtk_cldma_check_ch_cfg() finds the
+queue not allocated and returns -EINVAL.  Would that leave the AT/MBIM
+channel permanently unusable for the lifetime of the device?
+
+> +	port->w_priv.w_port = wwan_create_port(port_mngr->ctrl_blk->mdev->dev,
+> +					       port->w_priv.w_type,
+> +					       &wwan_ops, NULL, port);
+> +	if (IS_ERR(port->w_priv.w_port)) {
+> +		dev_warn(port_mngr->ctrl_blk->mdev->dev,
+> +			 "Failed to create wwan port for (%s)\n", port->info.name);
+> +		port->w_priv.w_port = NULL;
+> +		mtk_port_ch_disable(port);
+> +		return;
+> +	}
+
+[Severity: Medium]
+Can the RX path dereference the ERR_PTR that is stored into
+port->w_priv.w_port before it is validated?
+
+The store happens without w_lock and the error value is only replaced with
+NULL after the IS_ERR() test.  The consumer takes w_lock but only checks
+for NULL:
+
+	mutex_lock(&port->w_priv.w_lock);
+	if (!port->w_priv.w_port) {
+		mutex_unlock(&port->w_priv.w_lock);
+		return -ENXIO;
 	}
 
-leaving the device unusable with only a generic error log.
+	wwan_port_rx(port->w_priv.w_port, skb);
 
-> diff --git a/drivers/net/wwan/t9xx/pcie/mtk_trans_ctrl.h b/drivers/net/wwan/t9xx/pcie/mtk_trans_ctrl.h
-> index a3ff56ddf86fc..4b9c9db6ad715 100644
-> --- a/drivers/net/wwan/t9xx/pcie/mtk_trans_ctrl.h
-> +++ b/drivers/net/wwan/t9xx/pcie/mtk_trans_ctrl.h
-> @@ -29,7 +29,6 @@
->  enum mtk_hif_id {
->  	CLDMA0,
->  	CLDMA1,
-> -	CLDMA4,
->  	NR_CLDMA
->  };
+RX is already live at this point: the earlier mtk_port_ch_enable()
+installs trb_open_priv->rx_done = mtk_port_rx_dispatch and starts the
+CLDMA RX queue, and dispatch runs from the CLDMA workqueue
+mtk_cldma_rx_done_work() -> rxq->rx_done(), i.e. a different thread than
+the FSM thread running enable.  If wwan_create_port() fails, a packet
+arriving in that window would reach wwan_port_rx() with an error pointer.
+
+mtk_port_wwan_disable() takes w_lock for its store to the same field, so
+would using a local variable and only publishing the validated pointer
+under w_lock be more consistent here?
+
+[Severity: Low]
+This isn't a bug, but would passing a wwan_port_caps here be preferable to
+NULL?  With caps == NULL, wwan_create_port() sets:
+
+	port->frag_len = caps ? caps->frag_len : SIZE_MAX;
+	port->headroom_len = caps ? caps->headroom_len : 0;
+
+so wwan_port_fops_write() does one GFP_KERNEL allocation sized to the
+whole user-supplied write count:
+
+	frag_len = min(remain, port->frag_len);
+	skb = alloc_skb(frag_len + port->headroom_len, GFP_KERNEL);
+
+and the driver then copies the data again into tx_mtu-sized skbs.  Setting
+frag_len to the tx MTU and headroom_len to sizeof(struct mtk_ccci_header),
+as t7xx_port_wwan.c does, would bound that allocation and drop the extra
+copy.
+
+> +	set_bit(PORT_S_WR, &port->status);
+> +	set_bit(PORT_S_ENABLE, &port->status);
+> +}
+
+[Severity: Low]
+Should these bits be set before wwan_create_port() rather than after?
+
+wwan_create_port() -> wwan_port_register_wwan() -> device_add() publishes
+/dev/wwanXat0 or /dev/wwanXmbim0 and fires the udev event, so a listener
+such as ModemManager can open() the node before these set_bit() calls run.
+In that window mtk_port_wwan_open() -> mtk_port_common_open() fails with
+-ENODEV because PORT_S_ENABLE is not set yet, and a write landing between
+the two set_bit() calls would fail with -EBADF from
+mtk_port_status_check().
+
+[ ... ]
