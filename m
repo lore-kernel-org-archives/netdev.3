@@ -1,208 +1,163 @@
-Received: from ixit.cz (ixit.cz [84.42.129.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C17182D6;
-	Mon, 17 Aug 2026 17:45:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786988749; cv=none; b=NGIJuT99uRiPIAiDxsQbaQIqrPrv3464qbNkPc5Kml1Cm90nmpQF5wUnhjKZJD0O+mn+WG77YOfpF2V19Yu04lFMZAau9zDaoMgQqJQDNHDnjGV4Uvlt7+j3su+G3u1zhfLy9gTVQ2nD9Obp9MNC7g57OjpqPYTiACA0/Ilo0FU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786988749; c=relaxed/simple;
-	bh=cmiZCpyFbW7G6EV3Am3rZbgt804snACTQKJjB0jKlZs=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=k631zbIZvIei+L5SZ9SVva9clHPFYwCbb6DQ+96SBMnjjK51RIMA07BvMjlxF//EeXUJrScAIU12xFzQw0sFuZiHYxEHS5QyqSl0vHlgBcv7ZW9lwKVZwVUizwPggx3IdORYS/bBw/72nRGtrAb8d9Kel+3B29Z6w6orblc9fQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=BQchZlLp; arc=none smtp.client-ip=84.42.129.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9B53438BC
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 17:48:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786988917; cv=pass; b=OEhuqQhY6ExJCjUgw8FbpO16FE3hXL9990QXuOOwyAaU8RQOcjti61f2p4GlRmvZwkuEbXiPmtDxjv9Kwn8ZqvSFioRtbXI0+ucxWwz42K40RBKDXI3MbTKwVjSpXrcDCtxkCpVNn7RfRqMI/mpjgm9GXXccByuJRIBhkgKSsrg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786988917; c=relaxed/simple;
+	bh=5aR9u4NpdQGu0xWUG9HCJ0eDn30x8Ve8YDxloXGNYwg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QV5UZvMzQNt/3RRKFKYSaIzzBtxj3PDr0YVz0Eged9WJCAqsWNRGJ9Nbc+HqFFMyB7BAjpmYqw2dUhLOYFLJKcPuQTwSl+BWwfgidcz6d0jd40toN9HfTPwx7wPVd86FhKjAaTxluNhCt5IztC2xAHjPGmG4Pni5/aa6fy1WB8w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kWarzMed; arc=pass smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="BQchZlLp"
-Received: from [IPV6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e] (unknown [IPv6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 6B87F5340244;
-	Mon, 17 Aug 2026 19:45:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1786988745;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=DQm4wCwWKLowVLwxtHFSqbiNXV1TR5TiADhIErbWjsw=;
-	b=BQchZlLpLCiyZwgvkz0vVSDNGuprMKAQWq6I3PBLrxaGfmlV5kiWzkDivzg6dEbVJVQR8V
-	A/e8+tM2CwqLZW3+AXJsRMVYXgZWz4l5f0pxefWRqvZ+ZicuoUpodix8sYmZGzjuLtOh0j
-	zNj7znrJehzjWN2wnsz2tk5paXXW+Cs=
-Message-ID: <93a47987-885f-4e5f-8920-788fb281db67@ixit.cz>
-Date: Mon, 17 Aug 2026 19:45:45 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kWarzMed"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-84e0688b7e8so3001485b3a.1
+        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 10:48:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786988915; cv=none;
+        d=google.com; s=arc-20260327;
+        b=gUcDLOfJqpzU1qZutRITEvNd7ywjyV3YmEJwr9eUb5MAlKMdDFbVe2i/dwR/OGmMgf
+         VBTZNUn6P0EVYd3P0xm3MvKAkWnP8tmQpgU8AHbQNIhLkVwUi4pfil4OSHWskpTT8GVn
+         5DWf4bZlldhvuLJHUR5NkQeXp6Y5mOOnpKCxkWt0fGQRiNCwc3B8iZ3Ttd0AeEMv9iQD
+         KkKXs3nO/NjWb150omQRV2yvSEgk9+rjaMf9dwVYBzgNsMEYFV2DNLpPyn1t4UYdBr8i
+         +ZEOF1Zs/qBoDEpFp0ZKXSYIAOXXPHMqGsJLO3IeeXG+AjF+bBdf6t04OG0xwxR6/aTO
+         yHxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=G6J/QMjg2Wi1vnOtRdg6KjrduusjUApAU5kKJjsUEhU=;
+        fh=+rG5WxbDNyCFRD7O3tSX9HRG+/Jev7P9Ip9GL84oEkw=;
+        b=r4YKgqtEiivxcq/a7t3EGSuwxssX4oOqdJef6iijjwj3UqoPeTRdB6p/kwPeHT1yFk
+         lxWIVJt3KHGn8DSF6+ySe50m4FvyvGXV+cbkaMqUXbSR5rm9RIgk65BBwGsAsTDUMpNX
+         etRmI93dU6US61MYj0pCkZpGv2BznRXEJ9GZbpiR2eX3p+xHpaDvWl6mI2dyD8Q7rb2k
+         //Y8wt5BXSmAxpEAQu//7Sv9FrgxMe5aBUjXoykFfcNywhtBgJLEszojyU79PxwByNY1
+         z/au1nRxAVHj+D9IPb69A5lMx86+m7BpVYkp25v8e9tcPcUto9UqPRn6DGBPXmLyExEo
+         VX6A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786988915; x=1787593715; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=G6J/QMjg2Wi1vnOtRdg6KjrduusjUApAU5kKJjsUEhU=;
+        b=kWarzMedLIVn8vsx9jTEjdMZbjoO+i0w++PqY8oA22FQBILaSP0IyrxbBQQB3fOpUF
+         1yAD6c0+12P1rMGi0mINwD8DNhwaPbvSOz5+cqqBq9mOEUPhm3kQmMp9aSty9NxKlnls
+         AirCoEbcR3+fSyFtTm92fQDWrwT7YrtoMx6kkiU9NZatMyHoNUJuj4iRh8dR61SDsWyM
+         z2tLqkSRE7RPK3NDI6ODE3EOBGmHc7fzyjwWM6+oJFxv8kU5cdPJsfT3wnQ9bCOWz86c
+         rdVdIUzil6BVuSa5Kaun+Vj3nzLBk4NyGVxHNtpPvGk8hTlpICn0cxdbK8z1u0QPvQUj
+         /N1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786988915; x=1787593715;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=G6J/QMjg2Wi1vnOtRdg6KjrduusjUApAU5kKJjsUEhU=;
+        b=UFsjTHx2NiSm+ZnnZtfBjikpFG8KZf9mfbqkVcKEx2IEIFmyCMf9nhSTELX+Tn6Hqy
+         YEORjnTwruM2zEuy8BorxOOYXP/yTEyg4cGAulWJMUDmOcPu/fmd7OM6yKITGAdi07Xt
+         66jv5drxgAoL/l1B/EuixDEp+J8x+GU346UMs/8DXhIxLAbCk/pi6ZRBl7cQrSydqK10
+         JMRVXLvul6aG/PnvV+PQV6yBMXEN+089NcOjYfkI6nwBvMAdn143d3WuGhdJwMNmhaA6
+         RYR49wV7zmiwNqQdp/0IAz4cMpDNAdNmP1Zi/M58qzuvHXKkx3KxPcA2q1ZbYonJJA7P
+         gHhA==
+X-Forwarded-Encrypted: i=1; AHgh+RqXAbLxn5rDQluDpf4zP0MyL1GOorgEOx3kgBwz6OtGzaUd+DzsXYth38cOMDhw+s/yjk0aKh8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7NYrl9kbiOIc+pqd1h/cFXovrvssLTCgg8Ql2VhxjB0PfcAuT
+	8VyN289hn5e4t9a13vvdXOjoqYbo9QHCCrdKUfsYk36VRHWnnZ5AzFVWHxBPsCa/6MXe9bZG54k
+	dNeEyFrpcUROLyz2T/XZxmKwFTv3YIg0=
+X-Gm-Gg: AR+sD13lGI89eJtFj2TFISxgOwx6it85TeMoNINrVC84CdIplL76jEcGJDx4JrGOv1s
+	lRcPIf2iuSn4RBsrijOgK6IKydgJw5Jmp2UIx+9hggy62Xjb4oGarJ7sOAWogR6woAOoJL1/OfO
+	x/6G2Lc9Yz8vG5Vccr3tKb5upHkdbSFvNYfUp67DR19bsKEQFLw4DADPMZcQlkR1qioy1C8fMyE
+	Bw3uJp+0+jsbPSbeXUvdj2I6p8TSSrp4f/mxmC3GKR5/nU6kDvUFcjwbay3Tn1XbfS6ItwkBDge
+	q8XHym1sLqfuIoVZFy+MEljcapTFdDLgUqNrFWggTeBqjMg5qQERr/zigxxDlm8V5zqUwYq6N9Z
+	q7HCwqR/YThZSXbRSSjbCkkRnsHEtV90cXD2AhUparwk=
+X-Received: by 2002:a05:6a00:1902:b0:848:7552:3d86 with SMTP id
+ d2e1a72fcca58-84fde1fb61bmr25030858b3a.23.1786988914867; Mon, 17 Aug 2026
+ 10:48:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- "David S. Miller" <davem@davemloft.net>
-Cc: netdev@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- oe-linux-nfc@lists.linux.dev
-From: David Heidelberg <david@ixit.cz>
-Subject: [pull-request] NFC updates for next-next 2026-08-17
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <an-oGfEatacPTSX-@v4bel>
+In-Reply-To: <an-oGfEatacPTSX-@v4bel>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Mon, 17 Aug 2026 13:48:21 -0400
+X-Gm-Features: AcwNN1W1hhTcPLHyV54J5TmxN5XwZW3NxDe9Dae_EV1ntIwqxabf_64Uxcrz1YU
+Message-ID: <CADvbK_e60CFEVUVo25Tkcw_p4y16o8vZCf0N=hH+bUoEqpu6Qg@mail.gmail.com>
+Subject: Re: [PATCH net] sctp: drop a backlogged chunk if its transport was removed
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: marcelo.leitner@gmail.com, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	linux-sctp@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The following changes since commit 8d3ae59288f1e7d58d76558a6ee96d533bc5019f:
+On Fri, Aug 14, 2026 at 7:43=E2=80=AFPM Hyunwoo Kim <imv4bel@gmail.com> wro=
+te:
+>
+> sctp_rcv() resolves the transport once per packet and leaves it in
+> chunk->transport. If the socket is owned by userspace the packet goes to
+> the socket backlog, and sctp_add_backlog() takes a reference on that
+> transport.
+>
+> An authenticated ASCONF DEL-IP in an earlier backlogged packet can remove
+> it. sctp_assoc_rm_peer() takes the transport out of the association and
+> calls sctp_transport_free(), which tags it dead and drops the reference
+> the association held. The backlogged packet still holds a reference, so
+> the transport stays around.
+>
+> The DATA chunk in that packet puts the removed transport back into
+> asoc->peer.last_data_from. Once the packet is done that reference goes
+> away and the transport is freed by RCU, so the next delayed SACK carries
+> the pointer into the SACK chunk and sctp_outq_select_transport() reads th=
+e
+> freed transport's state.
+>
+> Drop the chunk in sctp_backlog_rcv(), next to the existing rcvr->dead
+> check. The peer retransmits it. Guarding the last_data_from assignment is
+> not enough, sctp_assoc_rm_peer() clears more than that one pointer and
+> letting the packet run fills them in again. sctp_wait_for_sndbuf() alread=
+y
+> uses the dead flag this way on the send side.
+>
+> Fixes: df132eff4638 ("sctp: clear the transport of some out_chunk_list ch=
+unks in sctp_assoc_rm_peer")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+> ---
+>  net/sctp/input.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/net/sctp/input.c b/net/sctp/input.c
+> index 864741fae4187e..83b8361d149251 100644
+> --- a/net/sctp/input.c
+> +++ b/net/sctp/input.c
+> @@ -285,9 +285,10 @@ int sctp_backlog_rcv(struct sock *sk, struct sk_buff=
+ *skb)
+>
+>         /* If the rcvr is dead then the association or endpoint
+>          * has been deleted and we can safely drop the chunk
+> -        * and refs that we are holding.
+> +        * and refs that we are holding.  Same if the transport
+> +        * we looked up has been removed in the meantime.
+>          */
+> -       if (rcvr->dead) {
+> +       if (rcvr->dead || (t && t->dead)) {
+>                 sctp_chunk_free(chunk);
+>                 goto done;
+>         }
+> --
+> 2.43.0
+>
+Can you try to move the check to sctp_inq_push() to also cover the
+case Sashik reported?
 
-   Linux 7.2 (2026-08-16 14:32:26 -0700)
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/an-oGfEatacPTSX-%40v4be=
+l
 
-are available in the Git repository at:
-
-   https://codeberg.org/linux-nfc/linux.git tags/nfc-net-next-20260817
-
-for you to fetch changes up to be47ff78de05e931ede1d0a407f8ef6f063054d3:
-
-   selftests: nci: Correct pthread_create return value check (2026-08-17 19:27:51
-+0200)
-
-----------------------------------------------------------------
-NFC updates for net-next 2026-08-17
-
-Improvements:
-   nxp-nci: Add remove on IRQ error
-   mrvl: spi: Unregister dev on allocation fail
-
-Cleanups:
-   Drop __maybe_unused from acpi_device_id tables
-   Drop unused assignment of acpi_device_id driver data
-   Initialize acpi_device_id arrays using member names
-   Unify style of acpi_device_id arrays
-   Initialize mei_cl_device_idarrays using member names
-   Drop __maybe_unused from of_device_id tables
-   Unify style of of_device_id arrays
-   Drop unused assignment of spi_device_id driver data
-   Initialize spi_device_idarrays using member names
-   Unify style of spi_device_id arrays
-   Unify style of usb_device_id arrays
-   pn544: Drop empty line between i2c_device_id array and MODULE_DEVICE_TABLE()
-   trf7970a: Use NULL when no response is expected
-
-Modernization:
-   st95hf: switch to using sleeping variants of gpiod API
-
-Others:
-   MAINTAINERS: Add Matrix channel to the NFC subsystem
-   pn533: fix memcpy overflow warning
-
-Signed-off-by: David Heidelberg <david@ixit.cz>
-
-----------------------------------------------------------------
-Aldo Ariel Panzardo (1):
-       nfc: llcp: Fix list corruption / refcount desync in nfc_llcp_recv_dm()
-
-Breno Leitao (2):
-       nfc: llcp: avoid userspace overflow on invalid optlen
-       nfc: llcp: read llcp_sock->local under the socket lock in getsockopt
-
-Bryam Vargas (2):
-       nfc: nci: add data_len bound checks to activation parameter extractors
-       nfc: fdp: bound the device-reported read length and fix an skb leak
-
-Doruk Tan Ozturk (6):
-       nfc: digital: clamp SENSF_RES length to the destination buffer
-       nfc: llcp: bound SNL TLV parsing to the skb and add length checks
-       nfc: llcp: reject PDUs shorter than the LLCP header
-       nfc: llcp: bound the connect_sn TLV walk to the skb
-       nfc: st21nfca: validate ATR_REQ length against the received frame
-       nfc: port100: reject frames whose declared length exceeds the received data
-
-Lei Zhu (1):
-       selftests: nci: Correct pthread_create return value check
-
-Linmao Li (2):
-       nfc: digital: Do not dump a NULL response in command completion
-       nfc: nci: free destination parameters when closing a connection
-
-Muhammad Bilal (1):
-       nfc: llcp: fix OOB read and u8 offset wrap in TLV parsers
-
-Pengpeng Hou (3):
-       nfc: microread: validate target discovery payload lengths
-       nfc: nfcmrvl: validate helper command length before pull
-       nfc: st21nfca: validate received frame size
-
-Samuel Page (2):
-       nfc: nci: fix out-of-bounds write in nci_target_auto_activated()
-       nfc: nci: fix uninit-value in the RF discover/activated NTF handlers
-
-Xu Rao (1):
-       nfc: pn533: purge fragmented skbs during cleanup
-
-Yinhao Hu (1):
-       nfc: pn533: hold a reference to the request skb during send_frame
-
-Yun Zhou (1):
-       nfc: nci: fix use of uninitialized memory in CORE_INIT_RSP parsing
-
-Zhenghang Xiao (1):
-       nfc: nci: fix double completion race in nci_data_exchange_complete
-
-  drivers/nfc/fdp/i2c.c                 | 27 +++++++++++++++++++++++++++
-  drivers/nfc/microread/microread.c     | 31 +++++++++++++++++++++++++++++--
-  drivers/nfc/nfcmrvl/fw_dnld.c         | 11 ++++++++---
-  drivers/nfc/pn533/pn533.c             | 22 ++++++++++++++++------
-  drivers/nfc/port100.c                 |  7 +++++++
-  drivers/nfc/st21nfca/dep.c            |  3 +++
-  drivers/nfc/st21nfca/i2c.c            | 29 +++++++++++++++++++----------
-  net/nfc/digital_core.c                |  2 +-
-  net/nfc/digital_technology.c          |  2 ++
-  net/nfc/llcp_commands.c               | 18 ++++++++++++++++--
-  net/nfc/llcp_core.c                   | 69 ++++++++++++++++++++++++++++++++++++
-+++++++++++++++++++++------------
-  net/nfc/llcp_sock.c                   | 14 +++++++++++---
-  net/nfc/nci/data.c                    | 10 +++++-----
-  net/nfc/nci/ntf.c                     | 36 ++++++++++++++++++++++++++++++------
-  net/nfc/nci/rsp.c                     | 42 ++++++++++++++++++++++++++++++++++++
-+++---
-  tools/testing/selftests/nci/nci_dev.c | 12 +++++++-----
-  16 files changed, 277 insertions(+), 58 deletions(-)
+Thanks.
