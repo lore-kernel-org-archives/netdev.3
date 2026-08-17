@@ -1,127 +1,84 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F283C3449;
-	Mon, 17 Aug 2026 08:30:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791DE3C1969;
+	Mon, 17 Aug 2026 08:30:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786955433; cv=none; b=h4M2r2/fVQEQoG4LlVnBotSxkJ7dhSQxqcoWgnF+sV0p5UcA/t8zD+yhfwSGDzJZyV3s83Kb5hxPSJzpFUod3eWpM4EvlIcz6P6yuqAY4DzM6jO99RbjVmJdKjUgWe5qr3u8QHPzCetidW8LUlBpCeFhUY9FF+KM6bWOankD7y4=
+	t=1786955456; cv=none; b=V2BL9aHVL7OWnZHVe5MIRXJbCeoFV2FbRXXxG186bNfNpPlGnl0/PJvuXrG4zfzKSAbNC8HfXzHKASDtcAYWxYWo9bvzGmpMhVQBAc8XEb1ZNoamzMS+saVZ98C7AR4Lcbs6dofH9ER+ivpjeMWpKFasxICbo6/dmyN75icz6No=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786955433; c=relaxed/simple;
-	bh=NfRHayOFN3Vuh/9a5GrxESJAGCqJB49o0DHuC2dQ9lw=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=plHo/ghNDRj+Zv6TKcGthQODaAeVWVbYQ+R3WWvV4msAsuNjpriHJR8eTtaEjznerovk4PqFLmd0N9oWs0Ba8xLueWUdKTC1bY6d5VtRmmaBpeMzkCtQv47frui8KWKChMgg37KiGyVFh1kaY1+sqpcz2yPZq4My4PU6DD6im50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=UvJA+LgK; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1786955456; c=relaxed/simple;
+	bh=pubBK28YGQPYP9leBOM8pTWtR2dTBOEfilcYD4fIJRg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=NsF9AgSDSisjd0bZoCEhgeNMGW2oxis4BV6SR2iO093Oa8Tdn1gx+FN1LkAOv4symAtVhim6VpIU4U5vE02hE28hWDXb4ADKqqepv/h7U/efY5CRNGYXV5ZlltSJD2Q7LAHF64qGvnBP6JBxde4Or+PEzeM3wnbcxrLSjgPxrEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j9luvSEa; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="UvJA+LgK"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id B8599207C6;
-	Mon, 17 Aug 2026 10:30:28 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id Vz63utZw1f8C; Mon, 17 Aug 2026 10:30:28 +0200 (CEST)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 22F40207B0;
-	Mon, 17 Aug 2026 10:30:28 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 22F40207B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1786955428;
-	bh=E2b1g+ZF2TubrokbYbJCsr5ihusL/h54HE05O2SRuCk=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=UvJA+LgKKUe8UNzWes2NTzFq3xi/1Sopkt8XwD5GL1/ZqzYElbevpggA4Kk8/w/Lt
-	 xZ8kf5G1rpzN7YrWFCTOOaN2K/IjSdOPX4pK9H4fYCcvI8I3uc7Po13eSnTYqdmc9N
-	 B2cnM74S03W5X5OQGNjrMekAz91zyzy7jUz3vRTHpap7gdpiy3wjU55/9q5/rnIsUx
-	 DPiSyMozohh+ciGWEoUvvvKhzf7cL6yWPXUdxIQvR6pNC/M1EB9RCyXj0h323mUQd7
-	 sL8g3PNhU3G5eWIHa17cNm5dzepoQX7drZ/EBNV8mcmivFKfsDn6yr9nLVtL90O/iW
-	 pb83ONfH0/+Og==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 17 Aug
- 2026 10:30:27 +0200
-Received: (nullmailer pid 2445479 invoked by uid 1000);
-	Mon, 17 Aug 2026 08:30:26 -0000
-Date: Mon, 17 Aug 2026 10:30:26 +0200
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Siwei Zhang <oss@fourdim.xyz>
-CC: <netdev@vger.kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, Siwei Zhang <fourdizhang@tencent.com>,
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH net v2 1/1] xfrm: use hlist_del_init_rcu for state_cache
- and state_cache_input
-Message-ID: <aoLGokLlBCkXd6uT@secunet.com>
-References: <20260730114028.1077499-1-oss@fourdim.xyz>
- <20260730114028.1077499-2-oss@fourdim.xyz>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j9luvSEa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A90F31F000E9;
+	Mon, 17 Aug 2026 08:30:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786955454;
+	bh=GX9hcnnkO7o5+JS87yeLaSc8Q5EbM/YDQW0+u5qquT0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=j9luvSEalTGEuUMPnf5RGCl6/O3NGQ5heW+6AHRmrNnFBPpShULgNhPAfLneldeCX
+	 tNtIfN4nrFxjeI8/pBJ670WKMrOXrMlNoFDMJ9JWx2OAJ+xe3VAlOwb+YCAQplTTlc
+	 BU55oUzHVfcdJwpFgVcyOMK1C05tjZrqSQ4DBcepeSYltkek/1LKAQ9Qx4hvf8vEti
+	 Lgbbsh0DMsIupJuYzrpidy5+cDwxZameMPcJwBO0aqMqZt5wHwI+cYcIjNGwXPsV5y
+	 1MiKmqqeS7QqiXMarTZWwlEjE8XHBuyN9qjj8KNgPzLA2q6fylj6sLJJloz2eqC1Ez
+	 edhSWtCy+aCTw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568A53924FFD;
+	Mon, 17 Aug 2026 08:30:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260730114028.1077499-2-oss@fourdim.xyz>
-X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
- (10.32.0.171)
+Subject: Re: [PATCH bpf-next 0/2] bpf: Cleanup & optimization
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178695540692.1014497.7617215673490859159.git-patchwork-notify@kernel.org>
+Date: Mon, 17 Aug 2026 08:30:06 +0000
+References: <20260813-sockmap-lookup-get-ref-v1-0-31f5d55f44ac@rbox.co>
+In-Reply-To: <20260813-sockmap-lookup-get-ref-v1-0-31f5d55f44ac@rbox.co>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+ eddyz87@gmail.com, memxor@gmail.com, martin.lau@linux.dev, song@kernel.org,
+ yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com,
+ ihor.solodrai@linux.dev, john.fastabend@gmail.com, sdf@fomichev.me,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, jakub@cloudflare.com, jiayuan.chen@linux.dev,
+ kuniyu@google.com, willemb@google.com, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On Thu, Jul 30, 2026 at 07:40:08PM +0800, Siwei Zhang wrote:
-> From: Siwei Zhang <fourdizhang@tencent.com>
-> 
-> Commit 14acf9652e56 ("xfrm: defensively unhash xfrm_state lists in
-> __xfrm_state_delete") converted bydst/bysrc/byseq/byspi from
-> hlist_del_rcu() to hlist_del_init_rcu() so that a second
-> __xfrm_state_delete() on the same object becomes a no-op rather than a
-> write through LIST_POISON pprev. It missed state_cache and
-> state_cache_input, which kept hlist_del_rcu():
-> 
-> - hlist_del_rcu() leaves pprev = LIST_POISON2 (non-NULL), so
->   hlist_unhashed() returns false.
-> - hlist_del_init_rcu() leaves pprev = NULL, so hlist_unhashed()
->   returns true.
-> 
-> A second __xfrm_state_delete() therefore enters __hlist_del() on the
-> already-deleted state_cache/state_cache_input nodes and does
-> WRITE_ONCE(*pprev, next) through LIST_POISON2 — a write use-after-free
-> once the slab is reused. The corruption can in turn cause a subsequent
-> hlist_for_each_entry_rcu traversal to follow a dangling next pointer,
-> producing the read use-after-free reported in xfrm_input_state_lookup().
-> 
-> Switch state_cache and state_cache_input to hlist_del_init_rcu() to
-> match the other four lists, closing the write use-after-free and, with
-> it, the read use-after-free it spawns.
-> 
-> Assisted-by: CodeBuddy:GLM-5.2
-> Fixes: 0045e3d80613 ("xfrm: Cache used outbound xfrm states at the policy.")
-> Fixes: 81a331a0e72d ("xfrm: Add an inbound percpu state cache.")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Siwei Zhang <fourdizhang@tencent.com>
-> ---
->  net/xfrm/xfrm_state.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-> index 36a4f6793ede..f494c1ac57a4 100644
-> --- a/net/xfrm/xfrm_state.c
-> +++ b/net/xfrm/xfrm_state.c
-> @@ -823,9 +823,9 @@ int __xfrm_state_delete(struct xfrm_state *x)
->  		if (!hlist_unhashed(&x->byseq))
->  			hlist_del_init_rcu(&x->byseq);
->  		if (!hlist_unhashed(&x->state_cache))
-> -			hlist_del_rcu(&x->state_cache);
-> +			hlist_del_init_rcu(&x->state_cache);
->  		if (!hlist_unhashed(&x->state_cache_input))
-> -			hlist_del_rcu(&x->state_cache_input);
-> +			hlist_del_init_rcu(&x->state_cache_input);
->  
->  		if (!hlist_unhashed(&x->byspi))
->  			hlist_del_init_rcu(&x->byspi);
+Hello:
 
-What is the difference between v1 and v2 of your patch?
-Both look identical to me.
+This series was applied to bpf/bpf-next.git (master)
+by Daniel Borkmann <daniel@iogearbox.net>:
+
+On Thu, 13 Aug 2026 14:41:58 +0200 you wrote:
+> Non-functional cleanup and a refcnt bumping simplification.
+> 
+> Series extracted from a fix attempt[1] currently under discussion.
+> 
+> [1]: https://lore.kernel.org/bpf/20260803-sockmap-lookup-tcp-leak-v2-0-306e025bfe66@rbox.co/
+> 
+> Signed-off-by: Michal Luczaj <mhal@rbox.co>
+> 
+> [...]
+
+Here is the summary with links:
+  - [bpf-next,1/2] bpf: Extract shared reqsk-to-listener upgrade
+    (no matching commit)
+  - [bpf-next,2/2] bpf, sockmap: Use sock_hold() instead of refcount_inc_not_zero() in lookup
+    https://git.kernel.org/bpf/bpf-next/c/34e0eb763bec
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
