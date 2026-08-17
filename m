@@ -1,70 +1,78 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-48.mta1.migadu.com [95.215.58.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7292732AABA;
-	Mon, 17 Aug 2026 08:33:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F04732AABA
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 08:33:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786955590; cv=none; b=kYtb/oLupqJa8oz101mduqinSnrMqWIb6gkiAlC9RoT6sPNVKQEOL3NJw/APPUDUia21lOhR8cgqFg5lAfIPZn415X0dsQhsX1XIqMxck5LH+UDG6l7mZE0egv7/hF33YCz+hof3/MFCdTFFSYhQ86Q6zHkgJgcZkGulAj0+MFc=
+	t=1786955599; cv=none; b=Dgl/sDUYScpdNsHTbbujPK7SOsnPaEa8Hi/gx9keyJsihCi2lXNKUTAdghnjhLMN4yD1LTW42WeqAS6ditBF8IKRm7z4tG5qOzyg4vBc8NUT64932Oyk7YYIyyWpzfDdu07TtI92lcVZ1BeKolh7f5GcFrNIg6IS3toDqmtCbUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786955590; c=relaxed/simple;
-	bh=I7FZf37jBGeHkHtIo8wliYrhutck0dZq9aTGX6Gtf0I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jr86K82mSTFU5C4OEGA2s2sJkGRUm0LNCr+730UGAy+2Pp14A4B+3GzH5TsEYgr/mE2CIPtrzSz1/7NExUqTsw6YfCSUZhA94N3KhOgVa+LPfEAzJ2kzeGcLwXubycNddcuV2/VmWZZzYqVV8+WymZHqWuM/gnVex3gep6Ivcjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=kITUFup/; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	s=arc-20240116; t=1786955599; c=relaxed/simple;
+	bh=52IBy1BJuzvTZDxziuf9dk+dFSrRNgB01jHdwF9uJm0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CL4wNMpffC55QkK80CY9ZunpMCXsJiJQNaunDjWqyAh0FNkcBdJJwvmb2cuKQbGPdNzNxTIhR2BgxqoqsFiIzlQUAfYWFsl1OCA5gsPaZeHxzbTT4SrNG9J+PHMregVx8cjqQnEnym0mShMn/5VlmfCwPD7VrgIzWWQ8qNTicJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=AAttWLSz; arc=none smtp.client-ip=95.215.58.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="kITUFup/"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=axpIj2NM5kg4OjjcgeHpteDzEE3Y9bWGjvH/o1purSw=; b=kITUFup/SbOt8H9AooW3c7orNt
-	hBWDnAjq91ClTdT0YZKxlME4gVdWnjMJ0Cj0UBsdl3BV9DJc2bNtprtcpHYiEwQVW+Re1z4DvF94X
-	OvZZx/4chvRmRxyBWfxGHNj0RUdEbrqi7bMg++rrR+OEJS1tQKmXAIf4e09rw2+noeX9DUDZVpoLD
-	d6qN4ug2my4L0rlY3IVp0HBi/NHqCbG2AAakxxFUf/WJtdQtLDe8v4jFncyqKCpQIWeiG0UXh2lmm
-	gj92eEOvg5MgXWFslWdy1W5EJOBAeSrC5/6G1Ub3aL5Np+Hwc/NM7K5V+ddQG+v9XvsvgZWcjDy05
-	lNzqrdpQ==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wvslz-00865N-2M;
-	Mon, 17 Aug 2026 08:32:47 +0000
-Date: Mon, 17 Aug 2026 01:32:42 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Gustavo Luiz Duarte <gustavold@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH net-next v3 7/7] docs: netconsole: document local_ip
- auto-selection
-Message-ID: <aoLHH6AMEWKFYHfh@gmail.com>
-References: <20260814-netcons_ipv6-v3-0-bc0915e8c75f@gmail.com>
- <20260814-netcons_ipv6-v3-7-bc0915e8c75f@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="AAttWLSz"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=52IBy1BJuzvTZDxziuf9dk+dFSrRNgB01jHdwF9uJm0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786955595; v=1; x=1787560395;
+ b=AAttWLSz9xAhqw5pyEfsT5DlqYGzBVs8keHCfAQJ1Qtqhcqzf2Y3bxLOguC3AreKzF7H8q/p
+ MH4HaAP6YWe8b3eNNaNk2s9bivq45K70hf3PM2DvEyjHWQFkymJEq8xWajieYiVDLDxUAtHgWWh
+ UgRPNskqvyAD9ee7450FOhHA=
+X-Envelope-To: netdev@vger.kernel.org
+Received: from [192.168.110.119] (216.236.36.150)
+	by smtp.migadu.com with ESMTPS id caaa19c7febc858b;
+	Mon, 17 Aug 2026 08:33:15 +0000
+X-Migadu-Flow: FLOW_OUT
+From: Hangbin Liu <hangbin.liu@linux.dev>
+Subject: [PATCH 0/2] bonding: 3ad: fix 2 RCU issues in ad_mux_machine()
+Date: Mon, 17 Aug 2026 16:32:35 +0800
+Message-Id: <20260817-bond_rcu-v1-0-acf067cf45fe@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260814-netcons_ipv6-v3-7-bc0915e8c75f@gmail.com>
-X-Debian-User: leitao
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDCwMz3aT8vJT4ouRSXdMUS8s0MxNTE/MkcyWg8oKi1LTMCrBR0bG1tQA
+ s5u+FWgAAAA==
+X-Change-ID: 20260806-bond_rcu-5d99f64547b7
+To: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Hangbin Liu <liuhangbin@gmail.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.3
 
-On Fri, Aug 14, 2026 at 08:28:58PM +0100, Gustavo Luiz Duarte wrote:
-> An unset local_ip is auto-populated from the egress interface at enable
-> time, but any value the user writes, including 0.0.0.0, is used as-is.
-> This deviates from the behavior prior to "netconsole: use the address
-> family instead of the ipv6 flag", which interpreted 0.0.0.0 as unset.
-> 
-> Document this so the distinction between "unset" and "set to 0.0.0.0" is
-> clear.
-> 
-> Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
+This series addresses a NULL pointer dereference in ad_mux_machine()
+when ad_port_selection_logic() detaches a port from its aggregator
+but does not assign a replacement.
 
-Reviewed-by: Breno Leitao <leitao@debian.org>
+Patch 1 adds an early null aggregator check in ad_mux_machine() to
+prevent the oops. Patch 2 is a minor RCU fix that uses RCU_INIT_POINTER()
+when initializing port->aggregator to NULL.
+
+Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+---
+Hangbin Liu (2):
+      bonding: 3ad: fix NULL pointer dereference in ad_mux_machine()
+      bonding: 3ad: use RCU_INIT_POINTER for rcu pointer initialization
+
+ drivers/net/bonding/bond_3ad.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+---
+base-commit: 44871eadd07a7f004aa00cb87399461eea08c630
+change-id: 20260806-bond_rcu-5d99f64547b7
+
+Best regards,
+-- 
+Hangbin Liu <liuhangbin@kylinos.cn>
+
