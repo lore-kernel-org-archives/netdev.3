@@ -1,163 +1,106 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865401CAA78
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 09:01:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786957279; cv=pass; b=JleNrYzedcDQdj1g58BSUafaRtTzlGk9yU2s8uXJFgr8jugrOszdLoxbfbOYPTgp/w6pxgPEzhBqANuf/tz/6VsmYSX0zPU1BL91LTiq06NTT8tRV8yXs0B3jIf+dM/FsZWb71wGexbc3H/Yf2Hyg3NZcJKb/G5kv9OBTyzrir0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786957279; c=relaxed/simple;
-	bh=fnnT9spj/ld3n/ZY4nBAciutXyMD1RIM5isnxfT60Bs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ufHmuqvbQP1eU7Smhu68FmK9kX18kP60cQZinc/iOzOfSPH2nWI4pAkL6za1yBHWdz5z5VUhAfLA5CxjDAK4LTEDW62JZ8H7HI8XRgoFZMvOmfvwaPV6ZHVcO2X2Hr0d5+k3Ei4vdWxqgG4sp3YhbvOkcyuir6/ZK3N+e3dTB7w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=YNHst+Yh; arc=pass smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2435F3A9851
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 09:03:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786957433; cv=none; b=lvzuv0rIbbGZYS62udy/TSq7znY6b/W000aNI9R9Mn2+8UFdGji0bsCgcu6KD9gEy83RDBhTp0yAcQ/+8ZbawbeutCBYcV/Lr1UOVvga1KEPwxAwASGVl7wvjxMr2Cz9srme6mbMklO5EtsnweLoLj7tyTpOV52eYU2u4Da0MwU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786957433; c=relaxed/simple;
+	bh=MLNPjPUHbKOlsJaVqCvV8r0JMmFBKgzKjDlfjpRlg0g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XTadShPzeoawbkrCaNwqKjyAzTjNsYOkYJud7oY2FVKXktwWtuhZ239lbNIbS/P0cVHCt4wCFuROCwJPTTJajNzhPYSg05j1o/A33u8UdPOCkCO6A7DTmhdRlNJUU/CSb19QzeOAimWcHQufMV5N8t41p92zggQ9T7x4Du4WBsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fPdw/rsK; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="YNHst+Yh"
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5b0117d49dcso2724370e87.3
-        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 02:01:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786957275; cv=none;
-        d=google.com; s=arc-20260327;
-        b=HGAzYS+MK82jPnFTZgiD0O5THU2XJviwUGSK71FxAv4SZ8IAq3qetXibvS1508vil3
-         TzoT2r83bkJstRGVLLGqWmyIZikh58EssQODCYCURhpGZ55wSFUrP6QEP3EKcu5QkyaQ
-         WojOwYbTTfXNjj2J4QDWyVi3ZnlMTENV5+ccNKiRCP6kuYHuoEzq6yA09Ru3fkBU6myr
-         G89EfrHXElAQHPgSMJ+Zd4gRg5ukafzY4cbc0xXMz7l1tAKGmQ7+E+K0xYRPbnbuQOVc
-         uCXxuUBxAaQ2yCG41X05+CIRtnNTrBxwPaEArO3iOdRfJk2vzetM+K9fs9Tk1KuQg4AO
-         JK+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=mhNdsAtpolFRbD+SVoIg1D1y5uYtut7bPtoWpOKh6Fc=;
-        fh=XvKU4in/WRyl/tfOLAU3n7Vedg9h+btEQ0AsShL5AWQ=;
-        b=aI9b73vfqMQnzmT9OxaXnuVp3Nu08P15Rs62yIJ7veLoh8Nc2bamNuGAAQZk2tBlxL
-         RnhKdW9V7HOph0lioj1HkIaOJ7HWD5EnAnJwPJFo+29Ds35hSPc+rZwYvWQb1wuwEFka
-         xRS1O0k/yze632GrbUUxCzx1WlNP5OMBOumPWvQFt7UJ5joaJXFc4jBFCsjGO5xTPfg2
-         FrLzR3Pmaqpdnaa9InpbPOL29eKnBJ+LUqNcCrfbQT5WYyuC9OyUNTup9lXGYpxCtM0n
-         W1QKwioScDK3apqpFhYzfd43tsf90lTwCkZyAAv2ug/4/gda6zeKttfyxVG93alYeEAb
-         FSGg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fPdw/rsK"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-84faf87d19dso3256506b3a.3
+        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 02:03:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1786957275; x=1787562075; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mhNdsAtpolFRbD+SVoIg1D1y5uYtut7bPtoWpOKh6Fc=;
-        b=YNHst+YhcMvq/i1dapzRrEvdHti6gSuoHuf2mrglIJK6/g/D93JnzL2JgipUEQfpwd
-         94qCNbqXjO+BJ37HfcKTlX1OSiIJ2sGk/R7A+rBGRUrjOCFAtyx0sRg8d1NkP3eLNKIM
-         GoEHo7QhW9kTBmAr1hzh0b98BiMZx4K2KdVZCABbwVEM7Rox+XBGqQeaG5Zh6elNsxQO
-         FvqhHsyUTkGw3dJzAlgy1gbLScyS7F1C3WxmPpRqhxf1aTpBzTiGsNx6B3IDLXKNrNZj
-         +1m53GtT2QB8nt+lQzmROeDpJ+3+lS7Xlo7X83AHfU3U56lcKTJ9BZuOS3vfg93XVNQ/
-         GPAA==
+        d=gmail.com; s=20251104; t=1786957431; x=1787562231; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=4+uxlm79Q6TJohMinCS43/loV24iAAfE2vW9FKZxxcA=;
+        b=fPdw/rsK8jn4g+0Xfeb7fC4asV8DmZc1oxUWUUyXMcpVEvB5JnRpkYjsP77DbPMi9j
+         qOQbcs7eW4juIAWMz96qwF5Kr8ShQ0DAit7sLnhEfJcLkYIDKcYXCebTT88tBgyU9pIx
+         xlmk24lEqKNsuSqwSXpPM3BEr7BH0fT6cZRGCfeQIFDNAS5/NUjd4sNxSd0w3J0Awl8/
+         c+Zj1UFKjnlcMy2O3G0Q/aYll5jDVRmbc/qjTt9EY14Bc1AVYRPNyRKOI+FXIc3cOSSI
+         C5HVM8t+lctGRp0X3W4RIopD3buiCK217pnbuFHQ2Xbw3S4WSndBMbgKbO8BdjjqGy7Q
+         0c5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786957275; x=1787562075;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mhNdsAtpolFRbD+SVoIg1D1y5uYtut7bPtoWpOKh6Fc=;
-        b=YAj2tvi3ryrU268coBOe3Wq7s6y/V3yYLfFzBAT2aMsk8hOsufFF59X8+vXEZ3DfMf
-         Y2dtRxNpE3RM9hWbycVZAr3Wcsbsq0k7FOfOUFFS85+8UpKOXixU3v7gPbnQ/vSE7aU6
-         FV5PoqNksVgpKMSKBZ9vnfn4Enu7A8A3wkLG8CIViOX58rNS5XRnBbfRJWnQ534g4o7G
-         qYTm+UZhK/VGreJhhmLUeUI8V4UMKdfy6dZe4DgwbBGuEukcXC1ZfZlyXpFklo0gjjCD
-         /6Of61YQ7JB1zhhdvoAT+iysx9EipjqPo1n6eIGGyLxvGTGvDGnPPZWoqVshVLV4QKSc
-         z7LQ==
-X-Gm-Message-State: AOJu0YxUe+bTZu18oFJBh49FDGzrzsNyxQDxaaX6WPcvDpFSjOn4xWUS
-	8aFFJgp3Vjlu6M5PcxO7D0b76jwLB0/gSx/5B+dbJSqCHzGLTOl9ZPUiY6V0hBCiLWI5xA/ljC3
-	9/BhzLzvm+cjJF/ESnXjN9k0cb+xhQlM9tL5wAbZAnCk=
-X-Gm-Gg: AR+sD1331Wed5c65KHg7iU16U8yRcyMiic0NeIwiYK9LvntishUZubZAqXYAfmQZ9IL
-	Ro+cXr4UnRhPmtHXf5/QGjjIVuntC8kvz/hE+D/4EZlrMFg8GWsBHb/K24MqdjYWtzHNYfdR0DW
-	wgr5JQzC2a2NJwPy7rpVns0fH+hCf62+qb9NZ2IEtniARIcYOpY8yab7xEQRFhRXiWb7xmxxfti
-	gXiJDyMMMTo97w0DSIKOpCFGDYoJjq9uSIN5HZBedYTP2IWbfdt40NXLMd0ZstbZXPht36Zg49M
-	LpwMwIoMbdhGlGqy20UySzJY/gnh15JvXwCxq5fIai8=
-X-Received: by 2002:a05:6512:224a:b0:5b4:59a3:c6c with SMTP id
- 2adb3069b0e04-5b459a30dd4mr3386311e87.29.1786957275225; Mon, 17 Aug 2026
- 02:01:15 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1786957431; x=1787562231;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4+uxlm79Q6TJohMinCS43/loV24iAAfE2vW9FKZxxcA=;
+        b=BddVZiXLeJGqv4PcdA+kcuO1+XOSC5DyZRhgDoNchJxEKIV55IAgFh0TdmM68mFtUT
+         pGPUvvA78QDFuwbzz910i8wPvippFK0mxumDfK1LJPsIpkXvcBJhVOX8eI4j6uN6OLR7
+         r48UPQxEhEaxbY2k+yeiocGPKjxcraSVhQ0+1gEobieoss9Z9MLinaKwT5dUAcQuiOpT
+         GZB8mGozQPlR/477e/9wadlxMySQHHk0ki0v47nbl2q60f98vvComDpGZYZyhIqzkqFv
+         H+k78rFv20FcL/vvD0RFwUgZnFhL2q/tmgsYI1qj+21DABBrgaXsdheRA6Q85NAeb1CJ
+         LwWQ==
+X-Gm-Message-State: AOJu0YwIF5eC9Z+eAsXvmo7JujTb8ELenk8usGkMDdmpvj9JjzE/IURH
+	ee/lIwa7jT+qK8ncsFlZLQ1Zj30t2s9QUBEITcZ+WXurtZszAx3CJePWaNEkCg==
+X-Gm-Gg: AR+sD11UqG8LyXFpx3vYwYQ6EPKp9lIYtn9dozxwvsCck8oR9cwPfBTLHwMvAWVto9K
+	DkbrVWh9+HAKCC/PdHf54YNIaza0WrtSz+jnQFk1ftILERTC6rPlQ+x9FRvyobLLcY/tkspOewV
+	VM/twHlPefgPBs/YuXGDY94fWPz+0KNnH7SuRwGxCefKqKGjnsFrFin/es5SCTbyu46KRPfGGgv
+	vu9BHV3rbBhr03ZRXawOTfsuFKxEmO/oi3w52n1GO+bTP2beK3rUAAsdJ7uA1cvAjHWA8g4l3Ih
+	Vbv/guY2CWiwM1en54mNKlHLjobH3nZbFaJFA3qLNi5+g+nMVQxnAEoB4uVTgIEb5g93T70GDJS
+	JTyf69o/F3ycNDApE2kYp0I/p2l1kCofiYWEhUqqB4Gv69cbjxYELbfNjaA3187myY0tI94cY4/
+	cPr3sbfU67/yot+9KDb+dnXqUTyqi3htbKH+GpSRCwSKF4vL6+Ce3mH7VRwd/gBFYo25xsIp9Ug
+	mNgM23Ujw4VqRmcS4Ih6Q==
+X-Received: by 2002:a05:6a00:4408:b0:84a:29a7:f650 with SMTP id d2e1a72fcca58-84fdde01af6mr23222908b3a.0.1786957431356;
+        Mon, 17 Aug 2026 02:03:51 -0700 (PDT)
+Received: from v4bel.. ([58.123.110.97])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8517d2476easm2342517b3a.42.2026.08.17.02.03.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Aug 2026 02:03:50 -0700 (PDT)
+From: Hyunwoo Kim <imv4bel@gmail.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	dsahern@kernel.org,
+	ncardwell@google.com,
+	kuniyu@google.com,
+	horms@kernel.org,
+	willemb@google.com,
+	andrew+netdev@lunn.ch
+Cc: netdev@vger.kernel.org,
+	imv4bel@gmail.com
+Subject: [PATCH net 0/3] net: fixes for requests completing on a socket that no longer listens
+Date: Mon, 17 Aug 2026 18:03:14 +0900
+Message-ID: <20260817090319.3897799-1-imv4bel@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1785861392.git.zihanx@nebusec.ai> <fa79c742acdfc25678e6807d4cad766edaaf1d59.1785861392.git.zihanx@nebusec.ai>
- <aoK9ILxoOLvOoTQ5@secunet.com>
-In-Reply-To: <aoK9ILxoOLvOoTQ5@secunet.com>
-From: zihan xi <zihanx@nebusec.ai>
-Date: Mon, 17 Aug 2026 17:01:00 +0800
-X-Gm-Features: AcwNN1VqLAS5co__LQZCUpwvcl9Qpwno_L-59Vc2cP43YmkNDH1CcEqthEdQ92Q
-Message-ID: <CAANe3eRgs64rfsUYZHqr9WdCmj+HVGnxzz+18-hPsfonyLSd1A@mail.gmail.com>
-Subject: Re: [PATCH net v2 1/1] xfrm: avoid lock inversion in nat keepalive work
-To: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: netdev@vger.kernel.org, herbert@gondor.apana.org.au, davem@davemloft.net, 
-	eyal.birger@gmail.com, vega@nebusec.ai
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 17, 2026 at 3:49=E2=80=AFPM Steffen Klassert
-<steffen.klassert@secunet.com> wrote:
->
-> On Wed, Aug 05, 2026 at 04:51:25AM +0000, Zihan Xi wrote:
-> > nat_keepalive_work() walks the state table while xfrm_state_walk()
-> > holds net->xfrm.xfrm_state_lock. Its callback then acquires x->lock,
-> > which conflicts with the delete path taking the same locks in reverse
-> > order via xfrm_state_delete() and __xfrm_state_delete(). This creates
-> > an AB-BA deadlock that is reported by lockdep when a NAT keepalive
-> > worker races with SA deletion.
-> >
-> > Fix this by splitting keepalive handling into two phases without
-> > reversing the lock ordering. Walk the state table only to collect a
-> > bounded batch of candidate states while holding xfrm_state_lock and
-> > taking references on them. Then, after the walk drops xfrm_state_lock,
-> > process each referenced state and take x->lock in phase two.
-> >
-> > Use a small fixed-size batch and the xfrm_state_walk() cursor to resume
-> > the scan when the batch fills up. This avoids per-state GFP_ATOMIC
-> > allocations, avoids aborting a full round on -ENOMEM, and keeps
-> > nat_keepalive_send() in BH-disabled context by wrapping the phase-two
-> > drain with local_bh_disable()/local_bh_enable().
-> >
-> > Fixes: f531d13bdfe3 ("xfrm: support sending NAT keepalives in ESP in UD=
-P states")
-> > Cc: stable@vger.kernel.org
-> > Cc: Eyal Birger <eyal.birger@gmail.com>
-> > Reported-by: Vega <vega@nebusec.ai>
-> > Assisted-by: Codex:gpt-5.4
-> > Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
-> > ---
-> > changes in v2:
-> >   - reroll on top of net cf6f8b29befb so the patch applies after the
-> >     nat_keepalive_send() default-case change
-> >   - replace the unbounded GFP_ATOMIC state list with a bounded batch
-> >   - keep phase-two processing in BH-disabled context with
-> >     local_bh_disable()/local_bh_enable()
-> >   - clarify the validation permission model and reproducer scope in
-> >     the cover letter
-> >   - refresh the cover letter with cf6f8b29 incremental build and PoC
-> >     validation results
-> >   - rerun decode_stacktrace.sh on an LF-normalized crash log and
-> >     document the decoder truncation in the cover letter
-> >   - add source locations for the key lockdep offsets from the same
-> >     unfixed vmlinux
-> >   - add Eyal Birger to Cc for the v2 reroll
-> >   - v1 Link: https://lore.kernel.org/all/cover.1784645321.git.xizh2024@=
-lzu.edu.cn/
-> >
-> >  net/xfrm/xfrm_nat_keepalive.c | 51 +++++++++++++++++++++++++++++------
-> >  1 file changed, 43 insertions(+), 8 deletions(-)
->
-> Can you please send this as fix for your original v1 patch
-> on top of the ipsec tree? That way I don't need to revert
-> your original v1 patch.
+connect(AF_UNSPEC) followed by connect() turns a listener into an active
+session, and IPV6_ADDRFORM on top of that turns it into an AF_INET socket.
+The requests that pointed at that listener are still in the ehash, and
+tcp_check_req() completes them without holding the listener lock.
 
-Hi Steffen,
+All three patches fix a consequence of the same thing, a request
+completing against a socket that is no longer a listener. The request is
+released twice, or the child is allocated with the wrong size, or the
+child inherits state the parent picked up in the meantime.
 
-Sure, thanks for the guidance.
+Hyunwoo Kim (3):
+  ipv6: fix request socket use-after-free after IPV6_ADDRFORM
+  net: fix out-of-bounds write in sk_clone() racing with IPV6_ADDRFORM
+  tcp: do not inherit out_of_order_queue from parent
 
-I will prepare a follow-up patch on top of the ipsec tree to fix the
-queued v1 implementation, instead of sending this as a full replacement
-against net.
+ net/core/sock.c          | 2 +-
+ net/ipv4/tcp_minisocks.c | 1 +
+ net/ipv6/ipv6_sockglue.c | 4 ++++
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
-Thanks,
-Zihan
+-- 
+2.43.0
+
