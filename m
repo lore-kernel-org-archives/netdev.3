@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8615735C188;
-	Mon, 17 Aug 2026 20:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44A2227EA7;
+	Mon, 17 Aug 2026 20:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786996865; cv=none; b=parm9sNnV9n64A94CeFdWffmJeQNwZULSJuoAIdU0bi1LgdjqkBEv4iOiYD3jYlrBl964L2XeENu9pfGcCVj7s7G/N6q3+fDISuZJvUm7arylRuxVEVgZHW5u5p1luU4NJbz6w4F0ebeRq/tiLEFAoVOd1RNQcUqGrhZeUanRS8=
+	t=1786996871; cv=none; b=bOTnqbuFdROQfQUsQScXTd/W40gNQgqwlpz+EWdlZU3wSa1XQn9FBJis6J3Isj1DEHLk1oEAQ+UAttkwUhGJgOLzyA4AVu8XgFbzGUUt/z2+1NBC5zodzMTRKSqmmpPuwWJNGuir9pxAyg2U2VT8lLNZp9zOQFJtKQHy+hQhxeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786996865; c=relaxed/simple;
-	bh=B7/K0cZaKP2A76iwO2WVx28fFXkEUtAhjsn0hYBZkgc=;
+	s=arc-20240116; t=1786996871; c=relaxed/simple;
+	bh=catEK8hKMXaMqIPslB8AV7aglY5Ac/Qiqb0Fqc/46rw=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=FvbGVkI/uTbqhn3481S6okOhweXDrVjxq3dcTNjziN45PUoJ9UE+3F/o6fxWgC7PSZ1s0NUQ8itL5pKXVAFlYEPs8ltJYZK3Zw2lssBizjCGPueSUzBxcytWeVOqwKE0YhvW8kSqxnigTIhfd5FZ5NAQ1e9kJCOd0Co3hPA5k4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D4ZEjHhk; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=a7QmAHbAZJ1h0AV4WjDIvHwu6QWZNUz2/eCe1klFaJSjVl3DH2NbHitmU6MeLhJ1vvlS4nPEGZgjo3T2xjw7TL5R23oixY6HftI2JVu7uEihbUOV9Ml2J3jOYno/cabVi6mNqTgGwGWdt4fgPX9GSudiF+dGJACuT0S9QvQq4WA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NRuOX9iy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D4ZEjHhk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34FF71F00A3A;
-	Mon, 17 Aug 2026 20:01:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NRuOX9iy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B171F000E9;
+	Mon, 17 Aug 2026 20:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786996864;
-	bh=mY9IMExLPSNZ7VWT+QeQ2woonBHgeryalP0Xg13zfxc=;
+	s=k20260515; t=1786996870;
+	bh=5wzcyD22o4ZKBFfqa9wCKA/sLpaRiaUWvaQGXEUELbM=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=D4ZEjHhkuBcM4ckTDy85/Zmqx07rT+f+OnlS6CmG+NV003l+IMNyY2k+lFtM2ofaP
-	 fIxmjCOaMCu+HHe/tQbXeODfFQGf8CxlMSfPGnxhLqt/ziDd152OYVzCQR0FZjSjXW
-	 T3Py876UkZDFgcNkcPsl3Ikkm1fSiJqU+zydh6mKjii5U6qdr2PpRFrm5G2IEtCBtx
-	 HptaqpwsCrVcBDuwLCJY/v9Vp12Fb+biG2AuLu0MvYvL/qWHTDkgEW/PkcJGnl3sQI
-	 hRMyp4UG6M1xnVhGOVT/pvzQG+h1PoQH1nbfT3XiU8Cty/V5Wqreij0bbY5X2+7ije
-	 wLLBig9ejPCww==
+	b=NRuOX9iy6EU8B3c8ayvJjAgAs7rU0ppWGjsh6TJ5NgVnIpzkJ6CTvzsxpC1MoyGr3
+	 t/erLM4CNR43XhRxQ2oxvA5QDtFmW3pHAvReIj/Njim/kyQ5+AzRJLbyfCaJnXXfwZ
+	 KApfBrDvoWzLZi29/d6KnQ/XhCY79TGNhgoKJ5/S7RjRAMDgyLL7FMHFMtRp5zoXqK
+	 6q+bG28ngYACEsdlXartWOa3MpHTfcOt17uNyfA5lVMOd/luzULlv8xPp3eFUwaXDf
+	 L0K6V+n/C5lXRwnDalYTDxVe+saFpHB0BUwkzbEV2Bzjb3azPV9G5HzsqsoKnCOKuU
+	 nNeVhC4uBHN8Q==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9390F3926263;
-	Mon, 17 Aug 2026 20:00:17 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D097F3926263;
+	Mon, 17 Aug 2026 20:00:23 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] ptp: netc: skip PEROUT disable if channel is not
- enabled
+Subject: Re: [PATCH net v2] net: pktgen: use a consistent flow count
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178699681614.1714062.8810905823945131454.git-patchwork-notify@kernel.org>
-Date: Mon, 17 Aug 2026 20:00:16 +0000
-References: <20260811083614.3589967-1-wei.fang@oss.nxp.com>
-In-Reply-To: <20260811083614.3589967-1-wei.fang@oss.nxp.com>
-To: Wei Fang (OSS) <wei.fang@oss.nxp.com>
-Cc: xiaoning.wang@nxp.com, richardcochran@gmail.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- Frank.Li@nxp.com, wei.fang@nxp.com, imx@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+ <178699682239.1714062.12069197278816778228.git-patchwork-notify@kernel.org>
+Date: Mon, 17 Aug 2026 20:00:22 +0000
+References: <20260812052130.32823-1-marsy12010123@gmail.com>
+In-Reply-To: <20260812052130.32823-1-marsy12010123@gmail.com>
+To: Qi Zhang <marsy12010123@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, nicoyip.dev@gmail.com
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 11 Aug 2026 16:36:14 +0800 you wrote:
-> From: Wei Fang <wei.fang@nxp.com>
+On Wed, 12 Aug 2026 13:21:30 +0800 you wrote:
+> pktgen_if_write() can update cflows while the packet generator thread is
+> inside mod_cur_headers(). The latter first tests cflows, but f_pick() then
+> reloads it when selecting a random flow.
 > 
-> When userspace calls ioctl(PTP_PEROUT_REQUEST) with period = 0 to disable
-> a PEROUT channel that is not enabled, the driver incorrectly enters the
-> disable path. Since the channel's struct netc_pp was previously zeroed,
-> pp->alarm_id evaluates to 0, causing priv->fs_alarm_bitmap &= ~BIT(0) to
-> silently revoke the alarm 0 allocation from whichever channel is actively
-> using it. This can cause two channels conflict over the same hardware
-> alarm configuration and corrupt their periodic output signals.
+> This allows the following interleaving:
+> 
+>   CPU 0 (kpktgend)                 CPU 1 (proc write)
+>   if (pkt_dev->cflows) // 10
+>                                    pkt_dev->cflows = 0
+>   get_random_u32_below(pkt_dev->cflows)
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] ptp: netc: skip PEROUT disable if channel is not enabled
-    https://git.kernel.org/netdev/net/c/273480bb836e
+  - [net,v2] net: pktgen: use a consistent flow count
+    https://git.kernel.org/netdev/net-next/c/f98ca137c2dd
 
 You are awesome, thank you!
 -- 
