@@ -1,323 +1,157 @@
-Received: from out198-6.us.a.mail.aliyun.com (out198-6.us.a.mail.aliyun.com [47.90.198.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3728D3D45CB;
-	Mon, 17 Aug 2026 10:41:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB3663D45CB
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 10:41:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786963266; cv=none; b=gaDimN29nHQcwq5QsQ7F/vhCD3PLGvA+4raOKv16M8FwwD0WZkByOFfTz6CqKIHECpUCKz/gtZ3dNvrU3DQhS90Txz2ZwCyBMyLv9eTpD+rCYVF2vPO/K02y6Drfskyt2ARLidwDEZZ3azRB3B09vDkjYJNeL/KuDbEvgmQoa38=
+	t=1786963300; cv=none; b=sMvqSumCFIa2ALt0xpS8jhdGbQaLXRNpWzvlzr/xWuj+HJxjAIKIzrfGrVTUshuHuW9zFMUQV3AsVnx6IiXlYp5LEyGGCjz2mZYMsU/uNveTh//+5G8vZPdB2w1+9iB45ZEzrxXNdkLsl6+NlRukqA7b0hXONPSSt/53+ZxyWPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786963266; c=relaxed/simple;
-	bh=Th8aEjG/v7spdjgmdFih8zoDm8bqeQ1ry8ns5FR3hBI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CjdhhVkWsMILTEM0tLlvWUtOtPKLcrtCLfr9YjCg/zsyy/ROulN++KUR5BSVkAvplVNA3AYfNBWi3ojOa3WuRNKKNhFH6P7ToSBVb95iBmvVlhBr3GsrY4kbWAd3PobFdHt0lTQRyxylJ/3BAuPxXq5LxBv0MV2sPmiBqP4jh0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=47.90.198.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436381|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.169506-0.00059428-0.8299;FP=15778095390952263184|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037032089;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=14;RT=14;SR=0;TI=SMTPD_---.ip67BDX_1786963208;
-Received: from 10.10.26.192(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.ip67BDX_1786963208 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Mon, 17 Aug 2026 18:40:41 +0800
-Message-ID: <f324481e-d49c-4d6d-b5fd-8a0296f82a15@motor-comm.com>
-Date: Mon, 17 Aug 2026 18:40:02 +0800
+	s=arc-20240116; t=1786963300; c=relaxed/simple;
+	bh=LSb0KhFUzLnQsU1r11r/6fkNT7w+2m2GOzx274QNTwA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gV4Xq5UrJ4CFzYD9trxna5avxaOrHa2bBiz54Tg7Myw8+O8gV80dwrLq/GppQni4Bp6F6s3ykSFqqWGrT7h6oauCRhRf5+LwYZvhDUperH9b+FXee9c0yJR/NHetSF9MvN+/q/sz22vzy9GnZDvhedu5fUwAnjqhesKjhxzgmLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CKI44xDM; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CKI44xDM"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-84e3007a2b7so2670820b3a.0
+        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 03:41:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786963298; x=1787568098; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dMxmArJymrzxglgoXBpsaklWgzCGHZMX0N8em1OSk78=;
+        b=CKI44xDMN0ApseP4SnsEg8tOLC735qT7Gq3pfKeTP/1fopfHeGca1sU+W3eQ3quBIy
+         1Yd20y7lRzIuZVJAsXbSJXRr5O8j6GukmN2KnSp4IdvbDTqu7RwBtqi7NivJ2YvWHDL1
+         yoSwUcPM5geExs6koRBQKLckGAi2m+bwrz0SU/gqJrzy4xW0Pk4HmHtk5RHa1U8IW5Qn
+         MUg++Z6yagCAu++qphMBk4E/V+bFAa+5LDbBfBlBLeaq65N3snKoYriT/EzFJoZMSLtt
+         BYmbdagWSQM799lFY0B3lE+RCMJX6KpW3nLLaCSyQKWOmrHFuYUVu/w9M0etYHQem5gG
+         B7qA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786963298; x=1787568098;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dMxmArJymrzxglgoXBpsaklWgzCGHZMX0N8em1OSk78=;
+        b=nwczUdW4lam6ba/hXKe4/luMWVzZxEzhdDq1nh29Hnn28JuCl8z4/+HKuK3QJ9SOB2
+         d+sPaafwJiUGdhQdZb3UAtjGRmc+Qq9angReTf3tQUb6aBE8ydgDiU+Xo5WcLtkDnrxx
+         toc0dqbu6iNgmVQJcEsxNoOdJ2nq2myqxgrH2E2nrCgRAS/OCHiYVo2oOJ+DtqQMqDYB
+         uiORN9wJIRWYR/P/fkttTQKWgf5ebHm8dPVMfixh9Mq3YNZJM9igQUxOBYq1k5MSSY1g
+         mfu+rxs7Y5p8gGoh9jmQZLls/8mBohYYXxAgn6LMOsXzfUVj6mpslrauYVMspKqdglrl
+         tWqw==
+X-Forwarded-Encrypted: i=1; AHgh+RqcxDNs5lCCS7iIP5Bq+SVWVvVa8iOP2RUionQfPtl+B/DwrOIf2e/h5hFgJGKkwjkb4Wv833Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWMMnQnNtqVuiquLqVSxVSB7Q8JUruXMkzIfdVayAoWf/Dno9l
+	vq4vdf8Uk55q0sR4nnmcSsKXbGYpukE/iIc2OfR7c31RA0drEzhiUYfn
+X-Gm-Gg: AR+sD11rwVJelm/FaemY74OvCmc9Pu4K/RCEGrtkLhp/pPfutNr0hpL0OYbzH+dL/lW
+	++/a82DDekmKMRD3cy1lwwd7nMqpaz4fR/NBTj4kNhPE6euTrqGp2Cc5f732/kajHnORtYQDi1k
+	hmHXpGwb4MaTlZx02krtobbQnp8XGBbGL16lQRrBQhWVCm0eic2J5lJQ2GJULsuOdv9jY9i0XWC
+	FwRaTc1bvhK02QQ7ifZBF1/RewWAajVFFD2Px+FcmgqLWV7luTRRvzBUeSmj3PseW353b5jwHNj
+	mXJOBvMObEqnoFPDvsDU0wF9bEVsHjwB3qJsBiDFFOowiXkP8viO33H3V47xjyAF8Ctc5OwNUti
+	X+p1LoWt+Puj1P4fBiomplFeakpHLI6zBoSm0QWLhh0gpyIcfZAkicNn9d3vEQiG41/pLd3t35Q
+	yILNb+Xg5Wa+Ka9GzJ5QP9SRihBEN/GhPzh8lLKEF4+0IFfbGngbx3PXYWTAxbYI8hw6N5cbQuZ
+	xZORMbqM/M9GtlARwBy7FdCCw==
+X-Received: by 2002:a05:6a00:3697:b0:845:dffa:3740 with SMTP id d2e1a72fcca58-84fde11d75cmr24478182b3a.4.1786963297851;
+        Mon, 17 Aug 2026 03:41:37 -0700 (PDT)
+Received: from JUNVYYANG-MC1.tencent.com ([43.132.141.25])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-851b6fcc0besm71682b3a.50.2026.08.17.03.41.35
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 17 Aug 2026 03:41:37 -0700 (PDT)
+From: Jun Yang <juny24602@gmail.com>
+To: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	David Lebrun <david.lebrun@uclouvain.be>,
+	netdev@vger.kernel.org,
+	Jun Yang <junvyyang@tencent.com>,
+	stable@kernel.org,
+	TencentOS Corvus AI <corvus@tencent.com>
+Subject: [PATCH net] ipv6: sr: restore network header before forwarding
+Date: Mon, 17 Aug 2026 18:40:52 +0800
+Message-ID: <20260817104128.22681-1-juny24602@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v1] net:dsa:yt922x: Add support for Motorcomm
- YT922x
-To: David Yang <mmyangfl@gmail.com>
-Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
- jianmin.wang@motor-comm.com
-References: <20260813104137.55550-1-kyle.switch@motor-comm.com>
- <CAAXyoMP=-YXbdgCWXRbPqmQXwPuRegHSDvDm9_+hhmf9ev2CAQ@mail.gmail.com>
-Content-Language: en-US
-From: Kyle Switch <kyle.switch@motor-comm.com>
-In-Reply-To: <CAAXyoMP=-YXbdgCWXRbPqmQXwPuRegHSDvDm9_+hhmf9ev2CAQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+From: Jun Yang <junvyyang@tencent.com>
 
-On 8/17/26 05:17, David Yang wrote:
-> On Fri, Aug 14, 2026 at 9:50 AM Kyle Switch <kyle.switch@motor-comm.com> wrote:
->
->> @@ -148,10 +148,15 @@ static const struct yt921x_info yt921x_infos[] = {
->>                  YT921X_PORT_MASK_INT0_n(8),
->>                  YT921X_PORT_MASK_EXT0 | YT921X_PORT_MASK_EXT1,
->>          },
->> +       {
->> +               "YT9224", YT9224_MAJOR, 0, 0,
->> +               0x1f1,
->> +               0x0,
->> +       },
-> Why plain magic numbers here, despite what the above entries shows?
-Ans: will fixed done in patch v2.
->
->>          {}
->>   };
->>
->> -#define YT921X_NAME    "yt921x"
->> +#define YT92XX_NAME    "yt92xx"
-> This changed the module name which may affect end users. While I have
-> no objection to this, subsystem maintainers may have different
-> opinions.
-Ans: This is used to indicate support for both YT921X and YT922X.
->
->> +static int
->> +yt922x_intif_ext_read(struct yt921x_priv *priv, int port, int reg, u16 *valp)
-> [...]
->
->> +static int
->> +yt921x_intif_ext_write(struct yt921x_priv *priv, int port, int reg, u16 val)
-> Place them with yt921x_*if_*().
-Ans: fix done in patch v2.
->
->> +static int yt922x_internal_phyaddr_get(int port,
->> +                                      enum yt922x_phy_reg_type reg_type,
->> +                                      enum yt922x_phy_reg_space reg_space)
-> [...]
->
-> This makes me headache and is prone to errors (an example below).
-> Reorder it with early returns and/or lookup tables so that it is
-> obviously correct.
-Ans: The interface will be optimized in v1 using early returns.
->
->> +               default:
->> +                       if (reg_space != YT922X_PHY_REG_SPACE_PHY)
->> +                               res = -EINVAL;
->> +                       break;
-> What would you expect here, when reg_space == YT922X_PHY_REG_SPACE_PHY?
-Ans: The expected return result is an error.
->
->> +static int yt922x_port_sds_init(struct yt921x_priv *priv, int port,
->> +                               phy_interface_t interface)
-> [...]
->
->> +       addr = yt922x_internal_phyaddr_get(port, YT922X_PHY_REG_TYPE_MII,
->> +                                          YT922X_PHY_REG_SPACE_SGMII);
->> +       if (addr < 0)
->> +               return res;
->> +       res = yt921x_intif_read(priv, addr, 0x2000, &data);
->> +       if (res)
->> +               return res;
->> +       data &= ~(1 << 15);
->> +       res = yt921x_intif_write(priv, addr, 0x2000, data);
->> +       if (res)
->> +               return res;
->> +       addr = yt922x_internal_phyaddr_get(port, YT922X_PHY_REG_TYPE_MII,
->> +                                          YT922X_PHY_REG_SPACE_USXGMII);
->> +       if (addr < 0)
->> +               return res;
->> +       res = yt921x_intif_read(priv, addr, 0x0, &data);
->> +       if (res)
->> +               return res;
->> +       data |= 1 << 15;
->> +       res = yt921x_intif_write(priv, addr, 0x0, data);
->> +       if (res)
->> +               return res;
-> Numerous magic numbers. On YT9215, same finetunes are not required for
-> a usable port. If you cannot name it, drop it if it is not mandatory.
+ipv6_srh_rcv() runs with skb->data at the Segment Routing Header while
+skb_network_header() points at the fixed IPv6 header. It restores the
+data position by pushing sizeof(struct ipv6hdr) before dst_input(),
+which assumes the SRH immediately follows the IPv6 header. If another
+extension header precedes the SRH, skb_network_offset() remains negative
+and neighbour output passes it to __skb_pull() as an unsigned length.
 
-Ans: Some patches are mandatory, while others are for performance 
-optimization.
+Keep skb->data at the current extension header while rerouting and
+restore it by the exact network offset before each dst_input() handoff.
+Remove the fixed pull from the loopback path. This matches
+ipv6_rthdr_rcv() and handles any valid preceding extension header.
 
-        These will be further refined/optimized in the future.
+The trace was captured with kernel release
+7.2.0-rc2-00023-g714b725feef4-dirty:
 
->
->> +static int yt922x_cpu_tag_mode_set(struct yt921x_priv *priv)
->> +{
->> +       struct device *dev = to_device(priv);
->> +       u16 eth_p_tag;
->> +       u32 val;
->> +       u32 val1;
->> +       int res;
->> +
->> +       /* cpu tag mode set */
->> +       res = yt921x_reg_read(priv, YT922X_CPU_TAG_RX_CTRL, &val);
->> +       if (res)
->> +               return res;
->> +       res = yt921x_reg_read(priv, YT922X_CPU_TAG_TX_CTRL, &val1);
->> +       if (res)
->> +               return res;
->> +       val &= ~YT922X_CPU_TAG_RX_MODE;
->> +       val1 &= ~YT922X_CPU_TAG_TX_MODE;
->> +       val1 &= ~YT922X_CPU_TAG_TX_TYPE;
->> +       res = yt921x_reg_write(priv, YT922X_CPU_TAG_RX_CTRL, val);
->> +       if (res)
->> +               return res;
->> +       res = yt921x_reg_write(priv, YT922X_CPU_TAG_TX_CTRL, val1);
->> +       if (res)
->> +               return res;
->> +
->> +       /* tpid check */
->> +       res = yt921x_reg_read(priv, YT921X_CPU_TAG_TPID, &val);
->> +       if (res)
->> +               return res;
->> +       eth_p_tag = FIELD_GET(YT921X_CPU_TAG_TPID_TPID_M, val);
->> +       if (eth_p_tag != ETH_P_YT921X) {
->> +               dev_err(dev, "Tag type 0x%x != 0x%x\n", eth_p_tag,
->> +                       ETH_P_YT921X);
->> +               return -EINVAL;
->> +       }
->> +
->> +       return 0;
->> +}
-> This looks similar to yt921x_chip_reset(), so you'd better merge it
-> into yt922x_chip_reset() above.
+  BUG: KASAN: use-after-free in eth_header (net/ethernet/eth.c:86)
+  Write of size 2 at addr ffff8881247b9a3e by task ipv6_srh_poc/9336
+  Call Trace:
+   eth_header (net/ethernet/eth.c:86)
+   neigh_resolve_output (net/core/neighbour.c:1611)
+   ip6_finish_output2 (net/ipv6/ip6_output.c:136)
+   ip6_forward (net/ipv6/ip6_output.c:690)
+   ipv6_rthdr_rcv (net/ipv6/exthdrs.c:832)
 
-Ans:Given that this interface is responsible for mode selection related 
-to CPU tags, the cpu tag
+Fixes: 1ababeba4a21 ("ipv6: implement dataplane support for rthdr type 4 (Segment Routing Header)")
+Cc: stable@kernel.org
+Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+Assisted-by: tencentos-corvus-ai:kimi-k3
+Signed-off-by: Jun Yang <junvyyang@tencent.com>
+---
+A KASAN reproducer for this issue is available if requested.
 
-        TPID check has been consolidated here as well.
+ net/ipv6/exthdrs.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
->
->> +static int yt922x_cpu_port_set(struct yt921x_priv *priv)
->> +{
->> +       struct dsa_switch *ds = &priv->ds;
->> +       u32 ctrl;
->> +       int res;
->> +
->> +       /* cpu tag mode */
->> +       res = yt922x_cpu_tag_mode_set(priv);
->> +       if (res)
->> +               return res;
->> +
->> +       /* Enable DSA */
->> +       priv->cpu_ports_mask = dsa_cpu_ports(ds);
->> +       ctrl = YT921X_EXT_CPU_PORT_TAG_EN | YT921X_EXT_CPU_PORT_PORT_EN |
->> +              YT921X_EXT_CPU_PORT_PORT(__ffs(priv->cpu_ports_mask));
->> +       res = yt921x_reg_write(priv, YT921X_EXT_CPU_PORT, ctrl);
->> +       if (res)
->> +               return res;
->> +
->> +       /* Setup software switch */
->> +       ctrl = YT922X_CPU_COPY_TO_EXT_CPU;
->> +       res = yt921x_reg_write(priv, YT922X_CPU_COPY, ctrl);
->> +       if (res)
->> +               return res;
->> +
->> +       return res;
->> +}
-> Also, snippets from yt921x_chip_setup_dsa() and unaligned function names.
->
->> -static void yt921x_mdio_remove(struct mdio_device *mdiodev)
->> +static void yt92xx_mdio_remove(struct mdio_device *mdiodev)
-> Unnecessary renaming.
->
->> +#define YT922X_PORT_SDS_MODE           0x400
->> +#define YT922X_PORT_SDS_MODE_M         GENMASK(6, 4)
->> +#define YT92XX_SERDES_MODE_SGMII                       0
->> +#define YT92XX_SERDES_MODE_REVSGMII                    1
->> +#define YT92XX_SERDES_MODE_1000BASEX                   2
->> +#define YT92XX_SERDES_MODE_100BASEX                    3
->> +#define YT92XX_SERDES_MODE_2500BASEX                   4
->> +#define YT92XX_SERDES_MODE_USXGMII                     6
-> Not an objection, but better to keep the formats with YT921X_SERDESn:
-Ans: fix done in patch v2.
->
-> #define YT922X_PORT_SERDES           0x400
-> #define  YT922X_PORT_SERDES_MODE_M           GENMASK(6, 4)
-> #define   YT922X_PORT_SERDES_MODE(x)
-> FIELD_PREP(YT922X_PORT_SERDES_MODE_M, (x))
-> #define   YT922X_PORT_SERDES_MODE_SGMII              YT922X_PORT_SERDES_MODE(0)
->
->> +#define YT922X_ACT_UNK_ACTn_M(port)            GENMASK(2 * (port) + 1, 2 * (port))
->> +#define YT922X_ACT_UNK_ACTn(port, x)           ((x) << (2 * (port)))
->> +#define YT922X_ACT_UNK_ACTn_FORWARD(port)      YT922X_ACT_UNK_ACTn(port, 0)  /* flood */
->> +#define YT922X_ACT_UNK_ACTn_TRAP(port)         YT922X_ACT_UNK_ACTn(port, 3)  /* steer to CPU */
->> +#define YT922X_ACT_UNK_ACTn_DROP(port)         YT922X_ACT_UNK_ACTn(port, 1)  /* discard */
->> +/* NEVER use this action; see comments in the tag driver */
->> +#define YT922X_ACT_UNK_ACTn_COPY(port)         YT922X_ACT_UNK_ACTn(port, 2)  /* flood and copy */
-> Sort them in numerical order.
-Ans: Fix done.
->
->> +
->> +/* CPU PORT */
->> +#define YT922X_CPU_COPY                        0x181100
->> +#define YT922X_CPU_COPY_TO_INT_CPU     BIT(1)
->> +#define YT922X_CPU_COPY_TO_EXT_CPU     BIT(0)
->> +#define YT922X_CPU_TAG_RX_CTRL         0x80504
->> +#define YT922X_CPU_TAG_RX_MODE         BIT(0)
->> +#define YT922X_CPU_TAG_TX_CTRL         0x100710
->> +#define YT922X_CPU_TAG_TX_TYPE         BIT(0)
->> +#define YT922X_CPU_TAG_TX_MODE         BIT(1)
->> +#define YT922X_CPU_TAG_TX_CTAG_OP      BIT(2)
->> +#define YT922X_CPU_TAG_TX_STAG_OP      BIT(3)
-> Not an objection, but better to keep the indentation formats of yt921x
-> register definitions above.
->
->> +struct yt92xx_chip_info {
->> +       enum yt92xx_mode mode;
->> +       const char *name;
->> +       unsigned int ports;
->> +       unsigned int lag_id;
-> lag_ids, or num_lag_ids (and num_ports) for consistency.
->
->>   struct yt921x_priv {
->>          struct dsa_switch ds;
->>
->> +       const struct yt92xx_chip_info *chip_info;
->>          const struct yt921x_info *info;
-> yt921x_priv :: info is chip info already. You may want `series_info`,
-> or more straightforward, `series` and `struct yt92xx_series`.
-Ans: Fix done.
->
->> diff --git a/net/dsa/tag_yt921x.c b/net/dsa/tag_yt921x.c
->> index 294784ab6694..a3012ec39868 100644
->> --- a/net/dsa/tag_yt921x.c
->> +++ b/net/dsa/tag_yt921x.c
-> [...]
->
->> +/* To define the from cpu tag format 8 bytes:
->> + *
->> + * 0 1 2 3 4 5 6 7 |0 1 2 3 4 5 6 7
->> + *|<------------TPID 0x9988------->|
->> + *|<--RESERVE-->|<-----DST POR---->|
->> + *|-|<---------RESERVE------------>|
->> + *|<------------------------------>|
->> + */
->> +#define YT922X_TAG_NAME                        "yt922x"
->> +#define YT922X_TAG_PORTMASK_0          BIT(15)
-> Sort them according to their corresponding word.
->
->> +#define YT922X_TAG_PORTMASK_M          GENMASK(8, 0)
->> +#define YT922X_TAG_PORTS(x)            FIELD_PREP(YT922X_TAG_PORTMASK_M, (x))
->> +#define YT922X_TAG_FORCE_DST           BIT(9)
->> +#define YT922X_TAG_PRIO_M              GENMASK(12, 10)
->> +#define YT922X_TAG_PRIO_EN             BIT(13)
->> +#define YT922X_TAG_PRIO(x)             (FIELD_PREP(YT922X_TAG_PRIO_M, (x)) | YT922X_TAG_PRIO_EN)
->> +#define YT922X_TAG_RX_PORT_M           GENMASK(5, 2)
->> +#define YT922X_TAG_RX_PRIO_M           GENMASK(15, 13)
-> This did not answer the question in the previous review: do tag_yt922x
-> and tag_yt921x share any common routines? If not, better to make
-> tag_yt922x a separate file.
-Ans: Fix done.
->
->> +static struct sk_buff *
->> +yt922x_tag_xmit(struct sk_buff *skb, struct net_device *netdev)
->> +{
->> +       struct dsa_port *dp = dsa_user_to_port(netdev);
->> +       __be16 *tag;
->> +       u16 ctrl;
->> +
->> +       skb_push(skb, YT921X_TAG_LEN);
->> +       dsa_alloc_etype_header(skb, YT921X_TAG_LEN);
->> +       tag = dsa_etype_header_pos_tx(skb);
->> +
->> +       tag[0] = htons(ETH_P_YT921X);
->> +       if (dp->index != 0) {
->> +               /* Port index is not equal 0 in tag[1] */
->> +               ctrl = YT922X_TAG_PRIO(skb->priority) | YT922X_TAG_FORCE_DST |
->> +                       YT922X_TAG_PORTS(dsa_xmit_port_mask(skb, netdev) - 1);
-> dsa_xmit_port_mask() returns a bit mask - you won't do arithmetic
-> operations to a bit mask normally.
->
-> The field name does suggest it is a port mask. Have you noticed
-> excessive packets on other ports?
-Ans: yes, There are some issues here that will be fixed in patch v2.
+diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
+index 9c677eb1d1a6..4c407520e9da 100644
+--- a/net/ipv6/exthdrs.c
++++ b/net/ipv6/exthdrs.c
+@@ -452,8 +452,6 @@ static int ipv6_srh_rcv(struct sk_buff *skb)
+ 	hdr->segments_left--;
+ 	addr = hdr->segments + hdr->segments_left;
+ 
+-	skb_push(skb, sizeof(struct ipv6hdr));
+-
+ 	if (skb->ip_summed == CHECKSUM_COMPLETE)
+ 		seg6_update_csum(skb);
+ 
+@@ -462,6 +460,7 @@ static int ipv6_srh_rcv(struct sk_buff *skb)
+ 	ip6_route_input(skb);
+ 
+ 	if (skb_dst(skb)->error) {
++		skb_push(skb, -skb_network_offset(skb));
+ 		dst_input(skb);
+ 		return -1;
+ 	}
+@@ -476,10 +475,10 @@ static int ipv6_srh_rcv(struct sk_buff *skb)
+ 		}
+ 		ipv6_hdr(skb)->hop_limit--;
+ 
+-		skb_pull(skb, sizeof(struct ipv6hdr));
+ 		goto looped_back;
+ 	}
+ 
++	skb_push(skb, -skb_network_offset(skb));
+ 	dst_input(skb);
+ 
+ 	return -1;
+-- 
+2.55.0
+
