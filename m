@@ -1,84 +1,121 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-41.mta1.migadu.com [95.215.58.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B455A3DBD4E
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 12:13:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB33B4B0497
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 12:14:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786968792; cv=none; b=bjTxB23F3NdGy6tvR5kCMFUcD1C2VOXSyOpQ1b3vVUurpHeN47SyHs0Fcq5x42kx7ZJA4HmNU76u0RTgkp5vgM1jOvsUx9qPjelgQzujqR+1pC+eAAYaX30yxLkkCbOakn/M5rTRhvJw8qApDuKG4DQVyi4oYEl/iCZ0qBgKhAQ=
+	t=1786968854; cv=none; b=eXLzbj1ZjV2NrDwbcPhtqhqDAs9M+46jvsZLxfFJBFitXjU0xUBHl+8VlfS1jJ4wSCay8GosQ/4uBd/jPJ+18gJ6Xq8DfYQog/hu/yQUq0pj+66o5Zwq7lAsyJwGkCqMQDGl1Eo9eTIVqTl7Ns29uL2rNgvBZFW/Jxf/k5MZa0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786968792; c=relaxed/simple;
-	bh=4neTvefs129BqKrkGxhtRbrAm1SI9RNhQXVgNGUlEhs=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WLAjBqb9WCxO+TlbuvZ17CjbRL4boEy4g9BRiaU5ZdnPGxIwjb5RpFst5/naA95iokdQ6YhMvemThnmCIt/65p9Pf3h37RuWm7BUr8RbNdBlg2oKH9gOsq4gtLwdIj8U5Kq/sF0RTRNmDR0e7kc257zoCPbp+bpm2A0XJTXNYCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=p4G04396; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1786968854; c=relaxed/simple;
+	bh=BZGD/kL6wdaidGWNG1WyLeQTkSGw7D7Oxub8aW7qdWQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rCf9MUeMmEawBWZ9QrOhUAD0+LZDVN1rsTK0P3Qd+O6RdzvjIf5H/6KzW0Zh8xTn3Zv9ZgnO5UPgCPWU7DeD3jkFr/UMPcw7BYCoyac8k1sTJGa1iftplMr2CtDDeQUrip8vCjUdY+ccYkLKuCUbk6ZeixQyRKS8lsjHpcqL6Lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=xmzgoR4Z; arc=none smtp.client-ip=95.215.58.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="p4G04396"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 30044201E5;
-	Mon, 17 Aug 2026 14:13:07 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id hJdHTB_e9ply; Mon, 17 Aug 2026 14:13:06 +0200 (CEST)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 4200F201A7;
-	Mon, 17 Aug 2026 14:13:06 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 4200F201A7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1786968786;
-	bh=ikXXEnr9nnpWqJaR754M9ViNer9+xJbdcD/NgLjauis=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=p4G0439614sgp9IspzePmSWi5BZ8ijdASNzaQ4L0r7ju2zhjhLjl4E312JsseSFI3
-	 itld5/Q45tHJmd4TI9DbdMPdnpEx6UtKV2ZwoSM45moJxp4FZbPmhNAC3b7q6PWWD/
-	 eptwAB972Yjcn/zFeM83xEGUy4572kTpLw7ORB4DgMUAe8E1ex3prZm8OPDwjmmlU7
-	 pnYYvOXWDgrkrTHn3GTTPe4C1ChYqheiHC9JC7idyMXwam0ZtSuD93ZNzX5VXRFZw3
-	 mJxTXN1z3ZV/BNavrf/I3OS+BdheCJzXsT51U1/nqMQRAec43QEevciLptE1hqrlKO
-	 E1FTM1fYwCn9Q==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 17 Aug
- 2026 14:13:05 +0200
-Received: (nullmailer pid 2597399 invoked by uid 1000);
-	Mon, 17 Aug 2026 12:13:05 -0000
-Date: Mon, 17 Aug 2026 14:13:05 +0200
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: maher azz <maherazz04@gmail.com>
-CC: Jakub Kicinski <kuba@kernel.org>, <davem@davemloft.net>,
-	<herbert@gondor.apana.org.au>, <netdev@vger.kernel.org>
-Subject: Re: [PATCH 2/8] esp: do not unref managed frag pages in
- esp_ssg_unref()
-Message-ID: <aoL60d6utaU0vkRQ@secunet.com>
-References: <20260729065035.1591985-3-steffen.klassert@secunet.com>
- <20260731021544.789075-1-kuba@kernel.org>
- <anDIQ9-8Sf_6StfZ@secunet.com>
- <aoK8Xl8uTm4MW2Mr@secunet.com>
- <CAFQ-Uc8abYE4ZuzEa0bZNmEw5Bx7DE7qv+gRxUJvUM26Ceyknw@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="xmzgoR4Z"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=BZGD/kL6wdaidGWNG1WyLeQTkSGw7D7Oxub8aW7qdWQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786968849; v=1; x=1787573649;
+ b=xmzgoR4ZIhGADnLD8KmFyxCh9vTQMaec+kv6nCtPrRoQrHqUVpSlExRGveykq0P4FU57pEMC
+ aVSNCqtICeEwqx5cbGtYKT2OZ+4OU3E3/V2YB1vE6LQFGiQ5JhH9dqDw3tJ3goFydFKApdmdAho
+ MKACFHcM0zwzw4fVM0Jb8yz8=
+X-Envelope-To: netdev@vger.kernel.org
+Received: from [10.54.25.56] (222.72.143.228)
+	by smtp.migadu.com with ESMTPS id 7968e220c24ef2f1;
+	Mon, 17 Aug 2026 12:14:09 +0000
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <0e872f9e-ee7a-41db-afbf-4bae49257bc0@linux.dev>
+Date: Mon, 17 Aug 2026 20:14:03 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <CAFQ-Uc8abYE4ZuzEa0bZNmEw5Bx7DE7qv+gRxUJvUM26Ceyknw@mail.gmail.com>
-X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
- (10.32.0.171)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/3] ipv6: fix request socket use-after-free after
+ IPV6_ADDRFORM
+To: Hyunwoo Kim <imv4bel@gmail.com>, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org,
+ ncardwell@google.com, kuniyu@google.com, horms@kernel.org,
+ willemb@google.com, andrew+netdev@lunn.ch
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org
+References: <20260817090319.3897799-1-imv4bel@gmail.com>
+ <20260817090319.3897799-2-imv4bel@gmail.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20260817090319.3897799-2-imv4bel@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 17, 2026 at 12:50:07PM +0100, maher azz wrote:
-> Hello,
-> 
-> what should be fixed?
 
-I forwarded the review to you again.
+On 8/17/26 5:03 PM, Hyunwoo Kim wrote:
+> IPV6_ADDRFORM turns an AF_INET6 TCP socket into an AF_INET one. It requires
+> the socket to be established, and a listener can get there with
+> connect(AF_UNSPEC) followed by connect(). Request sockets queued while it
+> was listening are still there: inet_csk_listen_stop() leaves them in the
+> ehash, and their timers only drop them while the socket is not listening,
+> so making it listen again keeps them alive.
+>
+> A request that arrived over IPv6 was hashed with inet6_ehashfn(). Its child
+> is cloned from the converted socket and hashed with inet_ehashfn(), so it
+> belongs in a different bucket.
+>
+> inet_ehash_insert() locks the child's bucket, warns about the mismatching
+> hashes, and replaces the request with the child in the request's own bucket
+> anyway. reqsk_queue_unlink() locks the bucket the request is really in, so
+> there is no synchronization between the two. Both can see the request still
+> hashed and both can drop the reference the ehash holds.
+>
+> The extra put takes the request's refcount to zero too early, so it is
+> freed while it is still on the listener's accept queue. The listener is
+> then closed, and inet_csk_listen_stop() reads the freed request and
+> writes to it in reqsk_put().
+>
+> Refuse the conversion if inet_csk_reqsk_queue_len() is not zero. Nothing
+> clears that counter when a socket stops listening or listens again, so it
+> still accounts for the requests left in the ehash. A socket that never
+> listened is not affected.
+>
+> Fixes: 079096f103fa ("tcp/dccp: install syn_recv requests into ehash table")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+> ---
+>   net/ipv6/ipv6_sockglue.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+>
+> diff --git a/net/ipv6/ipv6_sockglue.c b/net/ipv6/ipv6_sockglue.c
+> index b4c977434c2e0a..64fc6127e75332 100644
+> --- a/net/ipv6/ipv6_sockglue.c
+> +++ b/net/ipv6/ipv6_sockglue.c
+> @@ -572,6 +572,10 @@ int do_ipv6_setsockopt(struct sock *sk, int level, int optname,
+>   					retv = -EBUSY;
+>   					break;
+>   				}
+> +				if (inet_csk_reqsk_queue_len(sk)) {
+> +					retv = -EBUSY;
+> +					break;
+> +				}
+>   			} else {
+>   				break;
+>   			}
 
-> can someone submit a fix please just keep the
-> reported by Maher Azzouzi?
+Just thinking out loud.
 
-You did already most of the work, so it would help
-a lot if you can fix it yourself.
+Gating on inet_csk_reqsk_queue_len() reads a bit oddly, since we already 
+require TCP_ESTABLISHED right above.
+
+it's really just a proxy for "this socket used to listen and still has 
+leftover requests.
+
+The real issue is we should drain req when disconnect the listen socket, 
+at least we should avoid replaces the request with the child even when 
+sk->sk_hash != osk->sk_hash.
+
+But that's the hot path, so hardening it for such a rare corner case 
+isn't worth the cost.
+
