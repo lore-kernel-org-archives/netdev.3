@@ -1,51 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7D24457CF;
-	Mon, 17 Aug 2026 15:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5817043E079;
+	Mon, 17 Aug 2026 15:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786981374; cv=none; b=LD5XnVkobeOmBVY7LTMPa9Wt7g2hfScgtOjKFey0cc/7w+3p0tHnQCWKBcqrUl/dcB0s8dxf4tfEGT105kWPU6PaVePEINDGAzc/Va2K1JM8CCblhqgU3+7Lxc7nFLfIxXW855SCl+xGruqqO2shss9EhUDa3rR7Eic0DlNXXzI=
+	t=1786981470; cv=none; b=qzZZEdHSeZY05Iua863WJRZhM4uBg0o8vJsyQaqH8gzEHwb1treguMqnto14DEaJEUxh9ipOZwnIYiEd9gFHl/BIruBHoYWRN0IYs33eHkA+P182xOfB5yihIi4yQeteMRS1la6G4qvytLt9SmqFupW77tcu+MmdTj7clGhVc+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786981374; c=relaxed/simple;
-	bh=yHkfC5Uqagpc4eLkSCg9ElQyFlUqfQq/EPQAy3qFpCw=;
+	s=arc-20240116; t=1786981470; c=relaxed/simple;
+	bh=2nLQkUyEKRR18p+WnC9W2wgWKyl+84bDXBYzTf3PfzY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=huym3Jg2KtuEhQ5ywixjvJ6SImLRYgvsCrL8Th95WExG2AGC4JCs+uCgqfxkz96XQIddNe1JB3ctp80qT8ZADsyVEm/36lE2Dq/RNoZg/ruCPv5o0UyKB9jlbBkimFNHfQP4BDUsOSxYrogucmfzLfd4InFokYJ8viAFt4vkzuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CxuYgzvO; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=YiqAlIj+0GjDvB54/99sPRIF7sQcbKfqQM0I7nk12pbkAdUPhxgHZftZqKNTf1BDvURqJIGiUYETyjvx9Cp5tKiOthIZ4VW71SgiGN1qxES3kaE9NyhcFAOnYg14hTJODEN2N9FFcJcYZnKVMH4ERCMnx18R46FngyZkwztw4nM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bLjgiJvr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CxuYgzvO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77AE51F000E9;
-	Mon, 17 Aug 2026 15:42:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bLjgiJvr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 748051F000E9;
+	Mon, 17 Aug 2026 15:44:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786981372;
-	bh=SNyuqIkgZaQcQbrFq0LsxGNkbLIwVGNMCs4FkR/LPy4=;
+	s=k20260515; t=1786981469;
+	bh=ALW69sobqjQmXlkf4i60Ji/sF0wUVgqZ8KQ8cjh+01w=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=CxuYgzvOVq/K+IhaX4nFK84lkDgKAoN6em3GZjJngKdlQmYsfXftGjxWvELmsevCj
-	 dZSs3ApbLONsXpIVvTp4zc0b4C6LjPX8l+atGayjX+vhL9BQR6qLruDZauqUmMnVeg
-	 hrn6L4RPHZqE3iC4enzpbN9gz3Mr5L8NkkM4GZRYWUKq+MbxsCzz8TxwltuqtZYRXG
-	 O9lbmJWeNxLNm/aYJOkJVvDFiVlBTJd+OaJ0CpOhH9IQ7xjJ2EC1U4Js+qL6eajNJK
-	 hfMrRpk7l9p5Minky0yMfxPrVHQC3b/Jiku6YGZoGmyYx7KrcYjI7G1ixT+5Q2fxd2
-	 UdmEHCD6LabUQ==
-Date: Mon, 17 Aug 2026 08:42:50 -0700
+	b=bLjgiJvrF7JxqPLdAD+CnPP7txks2Xv27Qc+igBF76jTRlynkD3q20tik3RXSMTar
+	 xnj8PSqlxNjYUCL61X9AVaHp3WcuQcjgDPHUHULZff8iQfs5POpQamVMzTaCecb0AZ
+	 oZjBfIuW8RxxlX9ChxO6jSVlSjoPdEpMy6nym7Hr6HrQjaMdYTVinN/3/lrtnJjm+g
+	 s3RH3qve73pezBRAWo1gR5INxMgbtg7i2cSpb5QKaRARydyloLLWg9ZbgwlaYEeQj2
+	 W8QFuDaR3uCA7GgymZNgs2tpKxQtEhE496GET9ATzahtwDA9vco4ZkK1zo4eu0a0qJ
+	 8oALL4ZqJjAzQ==
+Date: Mon, 17 Aug 2026 08:44:27 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Fan Gong <gongfan1@huawei.com>
-Cc: Wu Di <wudi234@huawei.com>, Teng Peisen <tengpeisen@huawei.com>,
- <netdev@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, Ioana
- Ciornei <ioana.ciornei@nxp.com>, Mohsin Bashir <mohsin.bashr@gmail.com>,
- Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>, Harshitha Ramamurthy
- <hramamurthy@google.com>, Larysa Zaremba <larysa.zaremba@intel.com>,
- <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, Chen Anwen
- <chenanwen@huawei.com>, He Wei <august.hewei@huawei.com>, luosifu
- <luosifu@huawei.com>, Xin Guo <guoxin09@huawei.com>, Zhou Shuai
- <zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>, Shi Jing
- <shijing34@huawei.com>, Zheng Jiezhen <zhengjiezhen@h-partners.com>, Maxime
- Chevallier <maxime.chevallier@bootlin.com>
-Subject: Re: [PATCH net-next v13 0/3] net: hinic3: PF initialization
-Message-ID: <20260817084250.014d9c2f@kernel.org>
-In-Reply-To: <cover.1786774752.git.tengpeisen@huawei.com>
-References: <cover.1786774752.git.tengpeisen@huawei.com>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+ <skhan@linuxfoundation.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Andrew Lunn <andrew@lunn.ch>, Vladimir
+ Oltean <olteanv@gmail.com>, netdev@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ driver-core@lists.linux.dev
+Subject: Re: [PATCH net-next v12 0/6] net: dsa: mxl862xx: devlink flash and
+ rescue
+Message-ID: <20260817084427.54db3449@kernel.org>
+In-Reply-To: <cover.1786922210.git.daniel@makrotopia.org>
+References: <cover.1786922210.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,11 +52,8 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 17 Aug 2026 10:03:59 +0800 Fan Gong wrote:
-> Add 10 ethtool ops for information of coalesce and eth data.
-> Add MTU size validation
-> Config netdev watchdog timeout.
-> Remove unneed coalesce parameters.
+On Mon, 17 Aug 2026 00:23:06 +0100 Daniel Golle wrote:
+> Subject: [PATCH net-next v12 0/6] net: dsa: mxl862xx: devlink flash and rescue
 
 ## Form letter - net-next-closed
 
