@@ -1,171 +1,182 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012065.outbound.protection.outlook.com [52.101.53.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB1443B483;
-	Mon, 17 Aug 2026 13:58:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD093D8132
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 14:00:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786975106; cv=fail; b=dnc2OGtJRWd3Ba94RZYTuXTd94j/gYkmCSBifq9Qsz7RX6glhP2w+dt816lCJr6gtp2mCSy+Fe/BgtMo7U6MrBBxZWhyblW0ki5dVqEJ0anp1UvKA9K3qemyh1q73tc/BsNrhf3AM73w6vxrk2zpriaiqQCPVSLYdePqpxkc8Bs=
+	t=1786975250; cv=pass; b=eV6jiJELrOWvMSp75VCF5doSTLu1+g6vScq4tNB5OppKpBlF3MJZsm8/MdgULmvmHrlknpcd+j4+uR50lq5YiwUNmQCASQKNs99dww5VUiBJk6ttele7ywnK3W4CTfVzNLgrCrqKQAENgFlJCJDYsqfEE99G+7EyvY651ZYIPs0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786975106; c=relaxed/simple;
-	bh=qrRPQxgSqpEVR44sZlHI3xLgzW8y7KG+5EAxZaTqVmg=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=FGTfvTAfUYV3uRD3z8w2oVKhlprwjQfIYWkx1Ij0AJtDgN4jCLwTfEBmspnZTUzDz71LVt1TTiAzRX8wgFBrNtWzCoVWU09xoDbLuGLWWKlF+oxs+BmZwFYchNw/0lIZyeJJRyogynzQK0BEhUVcFZ03+bK5iraSE+vZL/sHz+g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=qAnvaoJi; arc=fail smtp.client-ip=52.101.53.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1786975250; c=relaxed/simple;
+	bh=uwFVZizsIwbTNzT0uWAjBSyym5rWZAfIboosknJx/6s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Dt6BkyEpYNOdLAcMehmRUhCRvlE9kEp+rjBFL+LzUqfqtuN6pHjVeSsNKoC2ly563oAsIOzmYVZfYuWT8/khoWbUKHGz+Y9UGIXsQZOtoZ9cyRi17Yg2dToXZwzYZu/MQ5wdR4MWeYVE1v7rGnsSTmnqYwvYBSK7V2MlDk+u/Yc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CQE4hu1u; arc=pass smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="qAnvaoJi"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Qm/OiiTfg4s4RLq2aSaY1he128g9QuwuIXItDqZI9rnqOKgUZJGLVJuyooYcwPYQmpjq+v2MqK9ZC8Xd+BK+KW9qEN/LORzf+47/wcSgzuX2+9aNQOTGv6R16uqhJEpqWz8GHX6AyUMe8LnNMfL6aLs9z0j5fmgWsHzI4ncUewOsegjP5viTfQ6Dp/AyG33k0o9a+DhGp2BUOQRUgJaEmj1BCUGhI12ZRegQWxvUGxfRkZ6s4SLnJ3l97GnED2z62OfjUIfzQxdyucHZBLd4wgc0dA0DjkXzNbwPZM8gZhSxkFI2UvbqNxsXSLtKZ2txkRx2IDcSMskoZMlUMgFEag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/zTjy6O6uybvfPxcgqH6QnK7U32G4vAnUh4izrwXhS0=;
- b=GcYdMNk7E1T2TmXs8tJuqNaQ4jNFp4r2U5ON6fh533/1ZVR18qxaky37dswt/6CYulQSkjaJG95ADA63hPjEWARmeUeLOMC/FCD2YmpcSJ6rZ+3L/QeWYx6IcO9tOm0GsL3/2+UzoM5kpn0FUMBxjcjGlPf9jg3BPc1VQHgEWAWUWA+8WYEEnd+JneNJfcgT/hlBkb1evvFD6ypltUudrOcHYhZa2G9J/L810dyZr1iPNXg+3ooBTCuxcRCX36L8FSysZSsyRGalht/hi5Nk+AXTClCnppa29uKaA8rwgRL/Jqe7XeXnblHIv3WF256puEi+dB3B6bWx5ppByBhovg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/zTjy6O6uybvfPxcgqH6QnK7U32G4vAnUh4izrwXhS0=;
- b=qAnvaoJiaZt3uFfwrp30cptEZTXIlBLmg5AgeR1uPJVkASBkRAx6k7SzF8yR4PCzMuY/vraTMLektBJLQR6DA0MaIX3qT6dZ0ZYi8OyZFgTpHvyJSZB/so9gEg1zGSrt+lLCbLRHjlwr3bj8+vsZ/aG8pMZhTTwqAEMrnyND+sI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CY1PR12MB9697.namprd12.prod.outlook.com (2603:10b6:930:107::6)
- by PH7PR12MB6786.namprd12.prod.outlook.com (2603:10b6:510:1ac::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.13; Mon, 17 Aug
- 2026 13:58:18 +0000
-Received: from CY1PR12MB9697.namprd12.prod.outlook.com
- ([fe80::3a41:55a0:8203:596d]) by CY1PR12MB9697.namprd12.prod.outlook.com
- ([fe80::3a41:55a0:8203:596d%6]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
- 13:58:18 +0000
-Message-ID: <0c2740dc-eefe-4ca4-8d6a-0b4a9fa8e139@amd.com>
-Date: Mon, 17 Aug 2026 19:28:10 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] net: xilinx: axienet: Propagate errors from
- optional IRQ lookup
-To: phucduc.bui@gmail.com, Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Michal Simek <michal.simek@amd.com>,
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20260817105241.63345-1-phucduc.bui@gmail.com>
-Content-Language: en-US
-From: "Pandey, Radhey Shyam" <radheys@amd.com>
-In-Reply-To: <20260817105241.63345-1-phucduc.bui@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5P287CA0076.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1d8::10) To CY1PR12MB9697.namprd12.prod.outlook.com
- (2603:10b6:930:107::6)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CQE4hu1u"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-52d5bfa4bafso33405161cf.3
+        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 07:00:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786975248; cv=none;
+        d=google.com; s=arc-20260327;
+        b=krKWiFFkPxf0opuXIR8tHHNE6jfnmsuYyG5H4fGgjFL6I2ryXhkzIie/JoZ0uROMOi
+         hnL7dAOouSWXGKZ423PTnw8rVV1CsndlGlKGYfMH3Gmjf4bfsZW07taT0coBm05pP5Mc
+         OOIC4erBbInVOzDojk4P32luqOMpoJvQRpXY9g4psLYOqpOY8oiEqfdJec56lUjgdco/
+         1GJ5BVfwGzNbFK/AL0HEbi8uRsMUrADG7L8Ddy/GlgRryF0HJ0AeJNwRjtIQdZnBX9yU
+         HONpDKeRGgjicpM1k9k+aoSKoJ7W1VA0Tg/8mfF7sWJTNPNfRC2wUDaXHfg+rIcbrseC
+         uPcg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ca9kcU3jldwd0A7QmeTrF6s2QDqxNO9NQYGZFDC/u0Y=;
+        fh=V368cwkRVktXNwSKKIjNsSBUF/hVnrnSIHxoqI7fbKQ=;
+        b=glqL1lrEZQn0OhJ4l/reXH0HeP8ADu8UXpMb9agIqago38t0rzrS6W8YxIFC9myCwm
+         7s5LFoGE4StmEKsEK193D+pfBSCPP2DRqZEQLNrJhxPKSW31pHfLksvsnVcySdLq2yIg
+         Sa1CZLgYInyVbWQw/bWbzK7WsLyAG9Uv384mm5gqevOkBU46c9k6zR/QN20wHX89lvTv
+         Ll/TEopBtQWc4u0Pm7hxUekPI08YgrchFYljiZTbxKf9eT1xSSefg2o6yzVUwAhNek4C
+         xJxKw8IJKlwERG3SjCTXfU2tAiAjQGtH6RF0YxS4HeKLpyLsIaZf4Kbm1clReE7V53un
+         elgg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786975248; x=1787580048; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ca9kcU3jldwd0A7QmeTrF6s2QDqxNO9NQYGZFDC/u0Y=;
+        b=CQE4hu1uQM4iW7Sr0005Rq81zWM7nOyj2IecToLGQl8fInmP8RgQOUqYnCJOTINDT0
+         yFQa19rCdDp8Z816RYXwhRtyT34BMeivte1l6PRreYiiJBs1XaT+Y/VFA9n4jqVfMOQa
+         ps5UCQ/vC/UUx7+p4yjw45FrYZ8YNABGRRHKccE9K2QULgYG7LKGUFzbTCbYpQNfL9I6
+         VDDK7EW5iKIIXLeaLuDPxU4uYtSElDfDaINY4KLIwifhhiT1Q3yjZtCya/YpMYFSkoVo
+         uQ15liTsTuAFVUYOmE1FE1LhtppWMqkfP9fasp5imFGylmlKfEm5YodM9KNlnaPyMLw4
+         ps2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786975248; x=1787580048;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ca9kcU3jldwd0A7QmeTrF6s2QDqxNO9NQYGZFDC/u0Y=;
+        b=svHL5kY1ByfRby+roiltysSXB7NeZGqA+WS8Llq9HoQAK9fH3bQEkJmbVSgHXU2ZOu
+         V0lAlBFttXGD5CmNebgxcpXrI6CF1Rn4TJ94kinmhoVzWQ3OL5f+DsGBun2ZPQavEjEA
+         72sQrP9iuaGI5zmNa/kjkDLHNqhOvkSzvZr7QaH3TM4EA+BGdRfi4KZLevKLTvKmsPpm
+         u/r+0iDnWeP9zSl7vbIuv73vvfmACmYguFJoQghCCF7d+a2m19YmELSK2y42ZOprkaW6
+         YjDF7Gfy/t3Xx/xuoXPpwZ0SpS5ZR438QTONTX8+R606Lox1YGkjPtXeqgowzJxIvaE0
+         iAug==
+X-Forwarded-Encrypted: i=1; AHgh+RpiP3NSMEe0xTIHlZOcKnLBNtO08aM0dEt+iM65RE07RpFC26d2bsHomeSl7F6u98Rdak82VFg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAStHDg04s2KhUzqGFv2H5BsRA1HngLzn+wKDkeCihCAvcm5KH
+	7R/hJuX8l9oWzsWfSeojL2TPv3GUYnlMptFvHDSVcGRi/KEJDpdb9PUwt3x8whAgSL9LhgHQTZu
+	/UjV+UBZ60QqZEzhz9ZDVRbGP3qYu5cYiO2VXWpuY
+X-Gm-Gg: AR+sD12PjR/12OOnXtL7/BykEjofUyL7fLFHjiBK8sTP7BjZlUTLGPSd0suqTnRcBYJ
+	meF79YQDqXaKPFW9y/6d572VOEMMoI/Uj5Gy08TsrcTUGJ/Zugp2U+FSgsDRJOmMfmnqZGd5eFf
+	XYOKB2La4ywFWPLeZkoWuGWz7kaGXy8j8ruieglVtKM8uR+BUnf0GFeL8nbU1NVpmMyNCzfN/pg
+	KCaeQdbC9jMjdSCneIph4Y5xza26mV3GS2EIxBVAY7e93i0L4xfz4cxzN84dMpHnltNE2tiQdUi
+	/pb/dSCXSMDM8OgNF/CK8mwQIc3Vwgd70ZKrcc9kk3WHqjeClu09zomy79gEo0lldjX31omzxnk
+	HCoYPe4kM/Sy0eY4qOUte9GY8SZyln45QKlZ8aZe8x8lOZaf89xy+FQfKdHU3uF3U+RfL8VzdYN
+	GvpBAoZdYpVq3biEg=
+X-Received: by 2002:a05:622a:58c5:b0:527:7027:cc1b with SMTP id
+ d75a77b69052e-52d854b2a48mr280877261cf.32.1786975246915; Mon, 17 Aug 2026
+ 07:00:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY1PR12MB9697:EE_|PH7PR12MB6786:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8aa4ea65-d661-4091-e673-08defc679738
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|376014|7416014|366016|22082099003|18002099003|56012099006|11063799006|10067099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	Y7ifhbnierVsRlDkZm+HqGjmPBGPOaRR1bo91mdofjSB6QONSjSN/zRYLozURJcdPAQ9OjZmtAe1k73jHcxCxTz+QmOnhYiR+pL32K3o0lAx8WYR/VD0EnpBUdFstvm7aSa2obpCxhfjEyJvjnZxQXd/GRC5tau5B7FqhKar/GJEvqOVrEsgMPSIBAnukl3DWBUIU/YOKCKqKElN10RIBDs5uSJKzr1yryoGlQdoGynkzKV39fyBLegftco3jfLV7NStusqfFpX7GouiEqVVd2c5F38fRnSutyw9x0cOw38vFhFVi0CwjZmlx0ivQtLmhhMYCUv97OqP6zts6b0rOXTc6lPI/459ELpHwwZYLZZIxrQfKMUZKW7MTlC3hpdC/JBigvce0r4VxlreZhSoedWJqdj1/dkMxWuT4aVK4wHI+Hm/0E4heRKnpD8h4ZntULBz+WHromaXgj6/lewz09ED8HzOwmNcE1N6y35j+zrUQHU7AGIYYzXeSXytYoQkCvHWL2fComSAD8Agf3ufXobrtOsuwc+cOihKEQZtaHMNbal8upTFNX0a2hB8VQ0wHdJG4DC09vwyqPbY0w78MAROpzg2QtJJ4AU+lKAS1zGnX3uW3fgs713R4doLuJ5fO1/7rwJOTQ0ydCzJdOGaxbEkpHZXACw58mTXRtX7Ym8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY1PR12MB9697.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(7416014)(366016)(22082099003)(18002099003)(56012099006)(11063799006)(10067099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SFlUUjQ3WSt0VzV5N0g1SExwTmEwbEE2RHpoUi93VUZxclNQalhKQ044L0o3?=
- =?utf-8?B?VHpmL2IvQXAwV1dRTHdpUXlQdTFBN3RqbnY4UHlqZE84MElYellVMmRBblhY?=
- =?utf-8?B?a0lPc00zaFVYK0pndk9KZmJJRzNuTDNWUHFrYnBEWVE2TVEyd0s2aUxveUVR?=
- =?utf-8?B?RW5MT21KNmxCQ3lUT3RMY1RFNDlnQXprSjkzbWlYSWFsNTZ4SE5ha2w1blpO?=
- =?utf-8?B?TElSRzM1MDZhNFRYRDVWeWU1YXpnREVyY1N1R1VNODJqNXdqVnRTWDNEdG5J?=
- =?utf-8?B?Nkl4NmJkZUR1N3RyaDR3TGRDWkU5Q2ZTeFg2NWlBUXlyZjZwMGErdG1kdUxJ?=
- =?utf-8?B?dGZBZzVucXNabWh5eVQxVjdUdFZENE9xSG1KcjJFS1B5WjkzVG1zWnZERitz?=
- =?utf-8?B?N0RyZjUwRjE4RkVkQXczUVkzT0ZsV0NRanpFQXVXUlJUa2ROcEVJL3kxT3pq?=
- =?utf-8?B?VXQ2cFRHKzZHclVmVDlxQzc1RzNMZWdlZVkzUEV5UTVhT2U0Y0VWVmIxODk4?=
- =?utf-8?B?K2NsWHp3OHo5QzdlcFZRQ202T2ZXQnZPb2lPakxNajJkUTliYjk1NzRQMmdK?=
- =?utf-8?B?N3BkUGZyN3o3L3RWdm5KVFZYZ05Jcm96KzRhMndoOTBnZmpPNERWdGtwT2xG?=
- =?utf-8?B?ZmpxdDhSVDlEbC9id3dpMGdodDZ3bkZNYWgvZDhsT2xtSGpOaXl3ME5ueWU1?=
- =?utf-8?B?TjdTcUMwdFpUaU54MTRJK2F0TklpK2x2dWt0N25LandYbTVKZXJLQVRqZWJx?=
- =?utf-8?B?OG9oNEZkU2FUaDR3SGZyUmZzTW5WempWZkx4VE1tZ1ROcDB1aDFmUDlPdC95?=
- =?utf-8?B?dmdlRFNJRUh2ZXUrWkVwNnY1Q2VoWis5UThkTkI1L3BWV1I5VnBHeHNDVzVQ?=
- =?utf-8?B?UGRtejBRbWM2dndNdWpneG1sOWhtd1dhWVpKQVVGREJJZ1YxTVdvRys0ZTRk?=
- =?utf-8?B?SEdlaE1ySi9qU3g3NVBaNXhEdks1NlZaMDZUTjd5aWQ1ZWRYVjhGZU1JSDlz?=
- =?utf-8?B?KzRqc292RTlJV0htcDNpM01KK1ArcmljTnNSeEszbG1VMjl6Tk5GWHVwY0NV?=
- =?utf-8?B?MTVBQmtqenQ0UGlqdWgxcDZsRDVrYzU2Z3JwSzBwOVBmVlNjUUdidGFxRjJ0?=
- =?utf-8?B?TnZ1QTlRWWFSQTdoeFN0bjV4MDU4dDg5ZURSTElQYVE5VitOMGJtWWNWb3Aw?=
- =?utf-8?B?OE1Oc0xiRUxhOXZOSENYbld4aVR1UEZ6WXJ5MFFTMDljYmluUGthVllYMHRi?=
- =?utf-8?B?am4yL1ltRm5nL2prWWNKWHNIZUdPMnBqTW0vaXpFTTNETm9ib1JDbGdtRlI0?=
- =?utf-8?B?M09vUXJ0eURIQVBMam1TRk1jMEdSa092UXB1bGNhUjF4VHVLanZRcEJiUE8z?=
- =?utf-8?B?MHh2elRyekR2ODI0aU1MMEQ2UDBXT05CNEVXVVVaSkh0OWliUTQyUUZDMDNF?=
- =?utf-8?B?eVhWRi9FU2NrdGx3ZytLakpFTXZXUFkydHRpR3ozdmFlVUVBQzBReUlCc204?=
- =?utf-8?B?MWRmKzVLU2g5SEx3R0NkazUzcWJIL2diRzcwTmtDWHVhcEIwM25Ja1E4S1p0?=
- =?utf-8?B?MHRML1FIREFweDcwM2YvaWZmUy84ODV5UmNnTlJ6UUpScUxaVG0rdHJaUXNa?=
- =?utf-8?B?Uy81TytCeDgrVUViUnYveng4bnhSZXVnU2J4WGJxT1gwcWtZbVVBL0daOC9J?=
- =?utf-8?B?OHR6OHJwc3hDNTU1SXBNSmhBbmhaOXlod2lrMzdmTVUxb3l2UlFKdzRaQUVk?=
- =?utf-8?B?ZTRYc2dpYmtkSGRTenFBQ1R5L0p6Tjk0OVpObjRkTENGcjN4RFB3ajdVZDMr?=
- =?utf-8?B?dWU1cm9vb0JjR2ZuUjZTRkV4c1hBKzJUZklVTkMzTGgrbzJTYWpKYmRyalhk?=
- =?utf-8?B?SjNaOUpJMURwK2ErcndOQXBWVTNJUmVwV3pubWJreFErMmxSck5TcEw1VElL?=
- =?utf-8?B?Yk0rS1hPZ1IrTHJWM2JJd0p4K1p5VHFxQ3RyV2dabWE4eE4rdnZQMzJaMDhu?=
- =?utf-8?B?S3BhQzR1ckxkME9RR3doWG5kbXFhOFdRRnQvQk96RlBjTG1pZk1CZ0NIZW5G?=
- =?utf-8?B?d3lhT0MxdzF0cldJNHUwdWZsOTNlUHFqeEJaNVlwcUd6YWJJc0FoUDR6YTZw?=
- =?utf-8?B?R08zSXU3REN6aDVRbk5TVTNkUjVXMlF5cTQ3NDQ0SGJpazBmWC9qTGdxK1VC?=
- =?utf-8?B?R2JObyt0VUpOMHE5WS84Y3d5bXNvTDJYQnFCbS9LcjROaGFTYVlubCtnR0sr?=
- =?utf-8?B?amZWZ0JSSkE3ZlFZSkdMalVtbk1RTDNzQ1JaZUVPNGd1Zkxwc0lxakp1cnp6?=
- =?utf-8?B?WXVtZFdtWldIVjdOTnpONjVWVUlWdlJmMzEwbm8xZ2l5RmdqUWJUUT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8aa4ea65-d661-4091-e673-08defc679738
-X-MS-Exchange-CrossTenant-AuthSource: CY1PR12MB9697.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 13:58:18.3628
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IG4m2ia0vQtFEYxvpdN/hKzrOrOJFThqVJvmTuVEoXqOdSQ7z593QdvCi1ZirVrI
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6786
+References: <34f44e8a-9fa4-4cb3-822e-5db54fb6df44@I-love.SAKURA.ne.jp>
+ <CAAVpQUC672LJN_8KQ5BzadS26FnUrh4ayjyu-n5x=W7U69u7fA@mail.gmail.com>
+ <CANn89iJd-s+mocDFXgt2rtFQVBGNJ7xEy=tUMKa5Da+brptXzA@mail.gmail.com> <7d6d4139-4389-4083-8569-ab2b7265ce3c@I-love.SAKURA.ne.jp>
+In-Reply-To: <7d6d4139-4389-4083-8569-ab2b7265ce3c@I-love.SAKURA.ne.jp>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 17 Aug 2026 16:00:34 +0200
+X-Gm-Features: AcwNN1Wiy-lwEjDzzPRbaOeSLw9IZckGj-lL-sc0Chi20Vq2LykaPRnQK3yCJqE
+Message-ID: <CANn89iKwWFwRxEDvw7eUPD-tKL_dvYrZeye_3be37q6qYzQ15w@mail.gmail.com>
+Subject: Re: [PATCH] net: make sure final 'struct net' free in
+ net_complete_free() is always deferred
+To: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Network Development <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/17/2026 4:22 PM, phucduc.bui@gmail.com wrote:
-> From: bui duc phuc <phucduc.bui@gmail.com>
-> 
-> platform_get_irq_optional() returns a positive IRQ number on success or
-> a negative error code on failure. For an optional IRQ, -ENXIO indicates
-> that no optional IRQ is available, while other errors should be propagated.
-> 
-> Propagate all error codes returned by platform_get_irq_optional() other
-> than -ENXIO.
-> 
-> Another call to platform_get_irq_optional() in the same function already
-> handles the return value this way. Apply the same error handling to this
-> call site for consistency.
-> 
-> Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
+On Mon, Aug 17, 2026 at 2:59=E2=80=AFPM Tetsuo Handa
+<penguin-kernel@i-love.sakura.ne.jp> wrote:
+>
+> On 2026/08/17 14:26, Eric Dumazet wrote:
+> > On Mon, Aug 17, 2026 at 6:28=E2=80=AFAM Kuniyuki Iwashima <kuniyu@googl=
+e.com> wrote:
+> >>
+> >> On Sun, Aug 16, 2026 at 4:08=E2=80=AFAM Tetsuo Handa
+> >> <penguin-kernel@i-love.sakura.ne.jp> wrote:
+> >>>
+> >>> Since there is no serialization mechanism (e.g. the RTNL lock) betwee=
+n
+> >>> llist_add() in net_complete_free() and llist_del_all() in
+> >>> net_complete_free(), it is possible that net_complete_free() finds 's=
+truct
+> >>> net' as soon as net_complete_free() added it to the defer_free_list.
+> >>
+> >> Did you see a real issue or is this based on AI report ?
+>
+> This is a theoretical issue which I noticed while writing
+> "[PATCH] net: add missing ref_tracker_dir_exit() to net_passive_dec()".
+>
+> >>
+> >> netns_wq is single thread workqueue.
+> >>
+>
+> There was a typo.
+>
+>   Since there is no serialization mechanism (e.g. the RTNL lock) between
+>   llist_add() in *net_passive_dec()* and llist_del_all() in
+>   net_complete_free(), it is possible that net_complete_free() finds 'str=
+uct
+>   net' as soon as *net_passive_dec()* added it to the defer_free_list.
+>
+> Old kernels called net_passive_dec() from only netns_wq context, but
+> new kernels call net_passive_dec() from not only netns_wq context
+> but also other contexts, don't they?
+>
+> >
+> > Indeed, this patch is not needed.
+> >
+> > pw-bot: reject
+>
+> Sashiko did a correct review (despite the typo above) and is reporting a =
+pre-existing issue at
+> https://sashiko.dev/#/patchset/34f44e8a-9fa4-4cb3-822e-5db54fb6df44%40I-l=
+ove.SAKURA.ne.jp .
 
-Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Thanks!
+Hi Tetsuo,
 
-> ---
->   drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> index fcf517069d16..f92951422b2e 100644
-> --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> @@ -2972,6 +2972,8 @@ static int axienet_probe(struct platform_device *pdev)
->   			dev_err(&pdev->dev, "could not determine irqs\n");
->   			return -ENOMEM;
->   		}
-> +		if (lp->eth_irq < 0 && lp->eth_irq != -ENXIO)
-> +			return lp->eth_irq;
->   
->   		/* Reset core now that clocks are enabled, prior to accessing MDIO */
->   		ret = __axienet_device_reset(lp);
+Thanks for the clarification.
 
+Regarding the ordering in cleanup_net():
+cleanup_net() runs strictly serialized on the single-threaded netns_wq.
+
+For normal namespaces going through dismantle, they are added to
+defer_free_list at the very end of cleanup_net(), after net_complete_free()
+has already run for that round. If an external context holds an extra
+passive reference and drops it later, all pernet exit ops and the
+rcu_barrier() have already completed in cleanup_net().
+
+For namespaces that fail early in copy_net_ns(), they were never published
+or active, so they never had network traffic or DST entries attached to the=
+m.
+Moving llist_del_all() before rcu_barrier() in cleanup_net() does not chang=
+e
+anything for these paths.
+
+However, the observation regarding the copy_net_ns() error path is valid:
+because failed namespaces never go through __put_net(), net_cleanup_work
+is not queued, so a failed net structure can stay on defer_free_list until
+another namespace is destroyed.
+
+The proper fix for that benign issue would be to directly free the
+struct net in the
+copy_net_ns() error path (since it was never active and does not need defer=
+red
+freeing), rather than modifying cleanup_net().
+
+Thanks,
