@@ -1,157 +1,132 @@
-Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674434B04AF
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 21:49:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787003376; cv=pass; b=YTHV/cS8Bht364CMQLO+m3B4nDlGudD9WV8nnLv19wcFn1T/4Le0fLSoe1omI9TswLGABDcwg054DNhM7/p37qUvityIc8BbvdSgkteE0apvn67iwo/uiHjWcICEoqNgVgaOQi4KLKQ1FNtd/fTT+2g64UkQ/RIWWrcFvvHU4fk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787003376; c=relaxed/simple;
-	bh=DfP4erJ4Gt50MgqNCYVMPB9HHONPhMeA8Y1ifl3dW3I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HrKRsC89GnmxQhk7/77+5ZeyZZ7rcEpJbmDHsa6o/GjWoEaPPabCIZmsJpQ+JNRPRsQqBQJSQsSAAvvDtWPYGFIynt+ru8kKTie7qOruEo160yWKGRSgbOMS/FrS3MwSZzwi1/oim/iT7oNnf/XgqyYv9z0hcNw/ycOyu6atYTg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HIxwefo2; arc=pass smtp.client-ip=209.85.160.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A383AC0DE;
+	Mon, 17 Aug 2026 21:54:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787003673; cv=none; b=a/JX+rP2WEv7KCI7z48964SJHThlCKSwABb/1VH9RCwezMX4o23+lE6yjpvCTSG1bZuJDc3oS2mrJ85v8EUWYY11V2qihctkWzXyC2HRZpqZddYf07iwGUtWAvt7LKsOcPHKQzZbx3o5eQi3nfu9ZEEchqSXQYYQ9L341Xl7wtE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787003673; c=relaxed/simple;
+	bh=kj5lyGq8SalOuIZcQCzfhrwevxGOGcGP5f7B1WbRjJo=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=pgjJ4hWIfDj1VQkP/SIV3MJBGA8itZA2YMcaBxVJLO5Iz/eWLybfRYMBB1pE12mfzaMGlCEvQuBth9bt6iqA/0ijY1e0Kpwndylp5baET8En+QhVpTusrqDOGrNxAd9sefD8P/ubEwJ3qmjQp2eSuGBm8c51MZA8qwa/V2gT+yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V6HxjbX+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HIxwefo2"
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-43bf9548df4so2791093fac.0
-        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 14:49:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787003374; cv=none;
-        d=google.com; s=arc-20260327;
-        b=YG/nbtCtjBJDOb+dKimceB1Rb//Pzlgtyj1RQr4xAYKP6+/xbIyYxx9nVCQEVg0zcM
-         Sxmb3rMhkAJ11QmYKbEYXnRGu3KFHLTj8aThWCmcGlyhbq3UZYzBNZ+1rSXyyXwJyd4T
-         PEqTby0xjBuvipC2xWThRrFdVHbIIUBtAyjL/IyuyaKrGR+zw91uteHywVFKNDLLeSJ5
-         +lEeebrT/z3xkFU1Hafvry8D9RWUFTw50TlXKqBEVTs+UELpDVJBg2CmE7yMVZAvLFGw
-         o30c5bvLRNAcajqbrRBVYUl4ZWNWycyIzBtlN/NsowuR0qKqbVlvqIP2zQ3V6PXilC2p
-         2UTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=wgnO3BG6d39EFcNHb0d7z7NPn7//fsqKfgiNT56p19I=;
-        fh=j7GzIpXprd3gszEUGwc39FjxUvHwhbVUoqmAeWEovyI=;
-        b=G5BkhA2B14HtHfCvIABMvamPQpX6lYusSWYeUzDpGFN1t6WW0PcoO4XeVYYI86WhyN
-         l1yNYreBASymvSGcBKvBTJdQPAKEWBWXcinZGScTo0nGoF+oyimN3KZrQEqf/BwJiMA5
-         qZUM0B/JHiJb5Qfg/rtzo08Pq6VC+hNSr3Me40BQCLgOFqngUwKBf+0Hv+alAwuV3w5T
-         ZzVSBiuEi5Ozh2QP+zH8PwvnNbVpMPUsJQyuZLbfQ9Vn7LY464DABSViESbjZ8XqjZ4G
-         +Dt1QNZkic8Dn7T0g4UCzxB2VH2yigsSKfnCuwUN5WmWiiDDVld3ZdM3LSqsz8l6Vg1G
-         ViqQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787003374; x=1787608174; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=wgnO3BG6d39EFcNHb0d7z7NPn7//fsqKfgiNT56p19I=;
-        b=HIxwefo2WXTgNkEPNuto8tb8aG+KakL80B0zCSGYKSVi6vjZEbjs3odWpp4b+MF5qu
-         3U2+Fgol10YePHOfH3FSSNOhcvIQxXn1MIJ42bDgiPJKm3J/8BOHJYmi8yRpLGZDKJsH
-         Yq4RLWHjT7WwwEkWJa1LWw1+Z3oANRMEyoGkJzMuyGKHO0IsU1a7ScI570KsccUsG0W4
-         co+A5J+SC/r0gaUhYJNvvJi2hEQAu4yiqZcEFN3H3vabKrJOOjx0mcXwquuhrE5u9d32
-         L+luzStW/KSsrhNOYtKqZakSjriuCraLH3VeDt6OzFhNJX5I0T/R/RraFMUIf7f+WuLg
-         igHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787003374; x=1787608174;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wgnO3BG6d39EFcNHb0d7z7NPn7//fsqKfgiNT56p19I=;
-        b=j5J29UBRjwVp1ZYec7mb6NNlQsJY0pxlUe4bv+x3qtLaD58dsP5ZioHnKdQpy2j/R2
-         Ii/RqpPGqPEuaZNUPgTM/IWvSxCRHrxeM3lF6GyBy2eZqO7Zcs2uAlg5/RLxwRslwwsc
-         S38X3wRQ5/JWuDWEULNDx77b3N3XtyiQGpNP27aWzGd4Wjp9kzxPlk3I9X/8UQWOgGBQ
-         BYxYx6LpgL09wKlzk+zH0AsBzOQKJvIkFMnJQySRJyeA29nwlYfqP4mojtqSDrMQOGlJ
-         OMOQIraG33F0WQZjtCjRASvA609UCu9fYd5sKjQOF0xULo+qE1Na+R3qxT1SsscJV5HG
-         jdoA==
-X-Forwarded-Encrypted: i=1; AHgh+RoYVFV1LO3kW+GCWwVOyTMIgwAoEKOFB97+lApdEzJPa39Vs4i1A1EqoJXcFkYnOiCnllZxxmk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxaFIsgH8mWMxMM0dHJ2mCPTPEWrNWeiTRXVpLzvvhTrsr7Prxi
-	d2e+glnaE9fEPCAS1wSBWhnlBJojzf+ZBIt7RzK4/m3x6YdUMgBCXbJVY5+THap4VMwbnVgGDe7
-	04dsHthna1auFrBqKSa31WSU38ONXKrs=
-X-Gm-Gg: AR+sD10vUjqGXeqFoSQfilnpQZ6SWG+3kbWOr4r2M5SlFHJHqkhr6v8mln3a7GQa9sO
-	rL09UsjbCp1TnwrbvEj327bjufWMOL7FMXnAPycNlqk7qsXlB98+SzAVPXMhnMGnShC5QCRKJKF
-	0wp0IwLl6MT8cCHNGvq2xwfPT6aZ3XdU2wp2n7Zn8BJaCKzMkHNL+jctvpygWxWSZyf3jMr5sSa
-	LtCrgV6aLpiViOWDZuA+d2r38+69/tb4D1SxQMuV43dQ/rq3okYH54V+xc7yM3EBeei/kAg5bY+
-	O4t95NPyq7vDR8NTFaKW99R/2+nvrSg6IeVRXe7tKQxB2yeIC+x1E5gcpHgOYvR497WvILuvIMV
-	p7Uw=
-X-Received: by 2002:a05:6808:1823:b0:4b1:bc4f:57cf with SMTP id
- 5614622812f47-4b297735c98mr4186781b6e.12.1787003374119; Mon, 17 Aug 2026
- 14:49:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V6HxjbX+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F40461F000E9;
+	Mon, 17 Aug 2026 21:54:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787003671;
+	bh=FEND4t2b2K4tvt4gLzsrRxja62eqP6PAUgA96KM4yV4=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=V6HxjbX+BQ+Pxo6tNju71E51SgzskEsqScnuYR9ywLkGbsgliXZTlb4OrUrXNEj0E
+	 1ZSgdw5tAUi6JhShMb8JojoqmJyVLngUg+Cnu3wLTA1MlncDZP6Vxc2n4RIcEPdf/I
+	 ylMBT2UMzTJioSmwxjOWSCAn1TTm563riiTHVgCvqxWkV/qmv7KHihXZXCVO+q9BBi
+	 vFBqhyyrEgeeUj63KukU3oy/W1Dr2TzP0VMQU82nALks4aECCM0BXJxP/0tbNm3u6P
+	 a39JO9miTxcQMWBGTQuhLJwWQHvtsiWphZzggaQMocZ1oEi2Fi8y9Bxdkwd/ljEzQh
+	 Ie4Zjj0NnaaLw==
+Content-Type: multipart/mixed; boundary="===============2606687245961102636=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260813104137.55550-1-kyle.switch@motor-comm.com>
- <CAAXyoMP=-YXbdgCWXRbPqmQXwPuRegHSDvDm9_+hhmf9ev2CAQ@mail.gmail.com> <f324481e-d49c-4d6d-b5fd-8a0296f82a15@motor-comm.com>
-In-Reply-To: <f324481e-d49c-4d6d-b5fd-8a0296f82a15@motor-comm.com>
-From: David Yang <mmyangfl@gmail.com>
-Date: Tue, 18 Aug 2026 05:48:00 +0800
-X-Gm-Features: AcwNN1Wtytv3dPZI2trMYndl4cVor4AdBrc8GZ1PVOHoCqSiyLPS9MC7NXsd_as
-Message-ID: <CAAXyoMO3iZb5=xB-L5YU_PBjBFL83aJsjWipymsJGNfNwm0Sow@mail.gmail.com>
-Subject: Re: [PATCH net-next v1] net:dsa:yt922x: Add support for Motorcomm YT922x
-To: Kyle Switch <kyle.switch@motor-comm.com>
-Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com, 
-	jianmin.wang@motor-comm.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-Id: <695639f2477a0070c2219414e4359e7f433423322b30d6e8d5759b3b1686ce24@mail.kernel.org>
+In-Reply-To: <20260813062754.360131-2-tushar.vyavahare@intel.com>
+References: <20260813062754.360131-2-tushar.vyavahare@intel.com>
+Subject: Re: [PATCH net-next v2 1/5] selftests/xsk: add UMEM users refcount and centralize socket teardown
+From: bot+bpf-ci@kernel.org
+To: tushar.vyavahare@intel.com,netdev@vger.kernel.org,magnus.karlsson@intel.com,maciej.fijalkowski@intel.com,stfomichev@gmail.com,kernelxing@tencent.com,davem@davemloft.net,kuba@kernel.org,pabeni@redhat.com,ast@kernel.org,daniel@iogearbox.net,tirthendu.sarkar@intel.com,tushar.vyavahare@intel.com,andrii@kernel.org
+Cc: bpf@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Mon, 17 Aug 2026 21:54:30 +0000 (UTC)
 
-On Mon, Aug 17, 2026 at 6:40=E2=80=AFPM Kyle Switch <kyle.switch@motor-comm=
-.com> wrote:
-> >> +static int yt922x_cpu_tag_mode_set(struct yt921x_priv *priv)
-> >> +{
-> >> +       struct device *dev =3D to_device(priv);
-> >> +       u16 eth_p_tag;
-> >> +       u32 val;
-> >> +       u32 val1;
-> >> +       int res;
-> >> +
-> >> +       /* cpu tag mode set */
-> >> +       res =3D yt921x_reg_read(priv, YT922X_CPU_TAG_RX_CTRL, &val);
-> >> +       if (res)
-> >> +               return res;
-> >> +       res =3D yt921x_reg_read(priv, YT922X_CPU_TAG_TX_CTRL, &val1);
-> >> +       if (res)
-> >> +               return res;
-> >> +       val &=3D ~YT922X_CPU_TAG_RX_MODE;
-> >> +       val1 &=3D ~YT922X_CPU_TAG_TX_MODE;
-> >> +       val1 &=3D ~YT922X_CPU_TAG_TX_TYPE;
-> >> +       res =3D yt921x_reg_write(priv, YT922X_CPU_TAG_RX_CTRL, val);
-> >> +       if (res)
-> >> +               return res;
-> >> +       res =3D yt921x_reg_write(priv, YT922X_CPU_TAG_TX_CTRL, val1);
-> >> +       if (res)
-> >> +               return res;
-> >> +
-> >> +       /* tpid check */
-> >> +       res =3D yt921x_reg_read(priv, YT921X_CPU_TAG_TPID, &val);
-> >> +       if (res)
-> >> +               return res;
-> >> +       eth_p_tag =3D FIELD_GET(YT921X_CPU_TAG_TPID_TPID_M, val);
-> >> +       if (eth_p_tag !=3D ETH_P_YT921X) {
-> >> +               dev_err(dev, "Tag type 0x%x !=3D 0x%x\n", eth_p_tag,
-> >> +                       ETH_P_YT921X);
-> >> +               return -EINVAL;
-> >> +       }
-> >> +
-> >> +       return 0;
-> >> +}
-> > This looks similar to yt921x_chip_reset(), so you'd better merge it
-> > into yt922x_chip_reset() above.
+--===============2606687245961102636==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+> diff --git a/tools/testing/selftests/bpf/prog_tests/test_xsk.c b/tools/testing/selftests/bpf/prog_tests/test_xsk.c
+> index 38ce6060b8fa..d0c2d0efb97f 100644
+> --- a/tools/testing/selftests/bpf/prog_tests/test_xsk.c
+> +++ b/tools/testing/selftests/bpf/prog_tests/test_xsk.c
+
+[ ... ]
+
+> @@ -1467,6 +1488,17 @@ static int validate_tx_invalid_descs(struct ifobject *ifobject)
+>  	return TEST_PASS;
+>  }
 >
-> Ans:Given that this interface is responsible for mode selection related
-> to CPU tags, the cpu tag
+> +static void xsk_delete_socket_batch(struct ifobject *ifobject, u32 count)
+> +{
+> +	u32 i;
+> +
+> +	if (!ifobject)
+> +		return;
+> +
+> +	for (i = count; i > 0; i--)
+> +		xsk_delete_socket(&ifobject->xsk_arr[i - 1]);
+> +}
+> +
+
+[ ... ]
+
+> @@ -1701,12 +1735,61 @@ void *worker_testapp_validate_rx(void *arg)
+>  	pthread_exit(NULL);
+>  }
 >
->         TPID check has been consolidated here as well.
+> -static void testapp_clean_xsk_umem(struct ifobject *ifobj)
+> +void xsk_delete_socket(struct xsk_socket_info *xsk)
+>  {
+> -	struct xsk_umem_info *umem = ifobj->xsk->umem;
+> +	struct xsk_umem_info *umem;
+> +
+> +	if (!xsk)
+> +		return;
+> +
+> +	umem = xsk->umem;
+> +	if (!umem)
+> +		return;
+> +
+> +	if (xsk->xsk)
+> +		xsk_socket__delete(xsk->xsk);
+> +	xsk->xsk = NULL;
+> +
+> +	/* Skip slots that never acquired a UMEM reference (pre-initialized but unconfigured). */
+> +	if (!xsk->umem_ref) {
+> +		xsk->umem = NULL;
+> +		return;
+> +	}
 
-TPID does not depend on the tag mode, so this is a one-time validation
-right after resetting in yt921x_chip_reset().
+[ ... ]
 
-Also the naming is confusing: why `mode_set` clears the `RX/TX_MODE`.
-It would be self-explanatory to rename it to `set_8b` and
-`RX/TX_TAG_4B`, and/or mention the existence of 4b mode in the comment
-for tag_yt922x as well.
+> +
+> +	xsk->umem_ref = false;
+> +	xsk->umem = NULL;
+> +}
+> +
+> +static void xsk_delete_all_ifobj_sockets(struct test_spec *test, struct ifobject *ifobj)
+> +{
+> +	if (!ifobj)
+> +		return;
+> +
+> +	xsk_delete_socket_batch(ifobj, test->nb_sockets);
+> +}
+
+This isn't a bug, but could the three functions be simplified?
+xsk_delete_all_ifobj_sockets() checks !ifobj, then immediately calls
+xsk_delete_socket_batch() which checks !ifobject again, and
+xsk_delete_socket_batch() calls xsk_delete_socket(&ifobject->xsk_arr[i - 1])
+which checks !xsk a third time even though the address can never be NULL.
+
+Also, xsk_delete_socket_batch() has exactly one caller and is only ever
+passed test->nb_sockets, so it doesn't provide any abstraction benefit.
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/32069138770
+--===============2606687245961102636==--
