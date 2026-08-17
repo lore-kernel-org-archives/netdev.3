@@ -1,106 +1,131 @@
-Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6883F3EC82D
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 14:08:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.181.97.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DAB33F3265;
+	Mon, 17 Aug 2026 14:09:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786975708; cv=none; b=Or+CKJETW5RQF89lm1fhdTDRswDXgN2M8l4lNelV+Sui+UDyE2WAg9XE3hpl74S65RnKv4IztT8b2NdRtq8eWGI8JpfyrbNT9soTepct5roHlzXAOPNyKAlat6rfy4aLCillgVpv/9lAaz9tNy8xRGAQOnp36CvjyxEZGubwJdc=
+	t=1786975799; cv=none; b=cPC/F6WNT7c5GCLs/etoAeq5vFseLzRDD5keZ4TlasYMG1LU5V9OvxOOEd/2bOaBxaTf/b8eUQavkp1iMXmaeSweTzw4gfbGWoUaws0+eRLrQVHrkFSQNm2H5noT/PNqUBAlSMRN6NxvOwsDVlsRXXrw+BdUKL+Zq4R2nsf6DXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786975708; c=relaxed/simple;
-	bh=lO2H7HtOsFo4vWdKsjhuJFaaKGMgGTgL+oMtC31fcIU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DbEKA1W9+EGygTYUYtTG3Dyi2u8G/rs3MwzWaDqL1UFd2C0cWMbznpDrXIvyOMlRJ58Trl7lEt+f1wz5nXQzlh1YTRaO1EMVRGG4RTltgBUjsadU17OIbjaRr6XETuIcBpdgMDZ2xP0c2Kqzv8W4ouNNPio8374BHjCW15U0Z5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=I-love.SAKURA.ne.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp
-Received: from www262.sakura.ne.jp (localhost [127.0.0.1])
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 67HE8Hg7070169;
-	Mon, 17 Aug 2026 23:08:17 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from [192.168.1.6] (M106072072000.v4.enabler.ne.jp [106.72.72.0])
-	(authenticated bits=0)
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 67HE8HQD070165
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-	Mon, 17 Aug 2026 23:08:17 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <64254d80-9248-466c-8108-95f43bd71117@I-love.SAKURA.ne.jp>
-Date: Mon, 17 Aug 2026 23:08:15 +0900
+	s=arc-20240116; t=1786975799; c=relaxed/simple;
+	bh=OYquvGJzVtBPWDzClVGI5qYTrrmHWqFP/6vQd9+ufwU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HA+hNqhBiDZ8VIlrM1LYncjVGil5vjWrlxaJf3zwI3LV02MiQXaNN9BHxprykGSFJCG6sUvg7UPmod1VLH8gQykM5IC7gcYmr7b6X1Tcss3e2QHPiy4G79qrGpL+JIl5n6LnvRI1TU/ybzbDePhOLN9VBQ+tUxLGBlzAO+gPt5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com; spf=pass smtp.mailfrom=fastmail.com; dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b=QF5NNs0t; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=kBDkLToo; arc=none smtp.client-ip=202.12.124.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b="QF5NNs0t";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="kBDkLToo"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 66A267A015E;
+	Mon, 17 Aug 2026 10:09:56 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Mon, 17 Aug 2026 10:09:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.com; h=
+	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1786975796; x=1787062196; bh=vzZNttFZ9M
+	PKmCoEpqflrK0pVGpNWTranp1FJupATn4=; b=QF5NNs0tGLBA0DAy6QCe1c2xA0
+	6tkOHrxGR8dFDpE8IdKePvPvlgDHYyle8XlFdOEMToUVSUfiVCVj2wRDRLFh3p7D
+	nHKVN9aAuUt9gGts5u3gZz5hXDifTkbsvWwUAKnlV9G2cxVnMNDARpYqccALJ39s
+	/wD6FwXv4Vs0/qolkGNyQaUyCHb8PIkXxWc9qdymuWPiyZfmhhvOADgrl3YkmkI9
+	N1FEN7WVg7XS6QMrg+f6rD9ntTNj60bibcoV4bACszwozBJ0YUifP8YWZCr8TkaX
+	XykBRRHBRfllFesE8a0I8LVFpBZwD5pkFYkr3b4izNzBvn0tEmaNtPa1iIiQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1786975796; x=1787062196; bh=vzZNttFZ9MPKmCoEpqflrK0pVGpNWTranp1
+	FJupATn4=; b=kBDkLTooB9JBioIKVaqXg/suLnhR7h58dEZlipbfp4cu70sa+0d
+	DtVRQKJAWpTppsiaxrV8K361obnNQRq5nEkfvNERKrkX6GgLBTeDHqJUP2iBNmmi
+	PolcPq7S2rXk+WfZzENSgDyHbkTuoFCwthkWv4Oy7BAmgIlAEucjR8TZkwHbXryT
+	QKGcqP6zeAtQRj3YBfgeAXqSeij+3EXQcnGhGwVEOvonkBMuCPCf5gHXAVxZfvr9
+	KIFbrMT7UT7TF6jS+D7Q/zmak8oZ/mawlGp7jFPLZVBbGC7otPRvz0dneLYMEmSv
+	dhCAQfEKtkEw2DMCYOBves+aUzwVgG1xF8A==
+X-ME-Sender: <xms:NBaDamnaWvYmLHbG_nFD88D4pgNm-Ijhns9ZgpoGDK1JMUtR7koSJw>
+    <xme:NBaDaqY7gWOAA5Fsfv4VgFBgc50tYOUJ-n6duhKoM0vKar9xtYlbYWFhX4U_8b1Px
+    sVeW8xGKMhHqX3n_rZNUBpPG6NEKkl1qZ14a7X9d8Idj_Ra17TrL08>
+X-ME-Received: <xmr:NBaDapHCS94yFlY2W9PlLbA5L_exMIJowFQeXZNRkDJjGVlowZlBAPUDkSgjfyp9w9udW_OcRhoB2RCQjm_M6YIjfza2rIo>
+X-ME-Proxy-Cause: dmFkZTE/cexVpZyXM078OQGgY8/s1GF5OZVfiKMaJzfhw/kFmWdRl+VhOlU3DhKQibHNb9
+    +JQttjj8ucNTgPIRFyJZ6c0El5RXx0Hqh3kP1OAkFWfaoihMSLdGDDvYveHwrKHvQlBk6d
+    XpGn6wsbZ+wD5VqmR+SAvFSxZXCPeNXJW/6orEaAoDNuh6DrzfHCQKwn45cB1fsMSr/9r0
+    PlrVc6Lt9w0MLF8YEcaZx76FcwM0ncb+XLwFsLFr/A5LNdKsn2XVoN/a0tCZ9Ez018ifwg
+    XlLnont+26Xgd9OcTGC5G4uPzpJRjYnoveiUfB8q5uHpfMLOSMjclDecIOs8yiVIT3t/f6
+    Uy9E5A4buCoK+kRKGWAHjFZpFZNIWrcVla0YBBZJkccDvOMRdSAXX3kXTy30vNCs6mL0w7
+    x+yCjdfDweivd8I0bzlDIc8/RbhS42uEyLeM/tr2lHAIhY6MrPbW6cWXUIKI3MuJimvjSj
+    Nv+Z+SRjDYHaREOahPIlZ9hwch4uv8uaXyLTAwG+Gk+wEucV7HQ+a4zA+GGzbhiAzlt8IR
+    P25W2yVNcHE6RPh0jBxBFIlHztsMbhIgHNbeUqPS7tuG79t7u5yfsXrGlPQYpOsqOh6pu4
+    DD8UPiE0eUhgLp92G4f7ydovh2jCVQjWjvi750DciNsAvFUVUjODmJ+WjqBg
+X-ME-Proxy: <xmx:NBaDahYfMQNKxREB4T1RpUwhuEZDoPmVW6yvAVaei3Olyd-WG6KMSw>
+    <xmx:NBaDalzYPZbaJ1vyLPC6dVTLtVPgBOXpZ8jJTqUCvHg6H3iUE69yig>
+    <xmx:NBaDarQ-ip6_GcvIQ5azY7795M1zH4fI4l68yfUJFTa94c5o6W-_Eg>
+    <xmx:NBaDaqLT4i5xpf6NwfJibjp_6oqNQaMAwbv6KXeZTIABkdcGI3zUVA>
+    <xmx:NBaDanfwDD2spKEyyETxQVKTm9vl0xmGH0gqZ4Ur-bO3NypVr3JL_Plu>
+Feedback-ID: i80b64ba7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 17 Aug 2026 10:09:55 -0400 (EDT)
+Date: Mon, 17 Aug 2026 09:09:54 -0500
+From: Juanlu Herrero <juanlu@fastmail.com>
+To: David Wei <dw@davidwei.uk>
+Cc: netdev@vger.kernel.org, io-uring@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, kuba@kernel.org, 
+	asml.silence@gmail.com, pabeni@redhat.com, shuah@kernel.org
+Subject: Re: [PATCH net-next v5 5/6] selftests: net: add multithread server
+ support to iou-zcrx
+Message-ID: <aoMWDiA1NnyqxoB7@jlhe0197-mac>
+References: <20260814012348.46958-1-juanlu@fastmail.com>
+ <20260814012348.46958-6-juanlu@fastmail.com>
+ <34915029-869a-4a5a-9bde-060a9a6eec20@davidwei.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH net v2] net: add missing ref_tracker_dir_exit() to
- net_passive_dec()
-To: Network Development <netdev@vger.kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>
-References: <af7dabf3-d0d7-46dc-a878-e1715b3c9ac6@I-love.SAKURA.ne.jp>
- <CANn89iJbT_e5CxtStQNcsCTt5OqaqsexUPgdDk5MY8R6jn2Tdg@mail.gmail.com>
-Content-Language: en-US
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-In-Reply-To: <CANn89iJbT_e5CxtStQNcsCTt5OqaqsexUPgdDk5MY8R6jn2Tdg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Virus-Status: clean
-X-Anti-Virus-Server: fsav302.rs.sakura.ne.jp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <34915029-869a-4a5a-9bde-060a9a6eec20@davidwei.uk>
 
-I found that trying to read /sys/kernel/debug/ref_tracker/* causes NULL
-pointer dereference crash when alloc_netdev_mqs() via unshare() returned
-NULL, for commit 9ba74e6c9e9d ("net: add networking namespace refcount
-tracker") added ref_tracker_dir_exit(&net->refcnt_tracker) to only
-__put_net() path whereas commit 65b584f53611 ("ref_tracker: automatically
-register a file in debugfs for a ref_tracker_dir") added
-ref_tracker_dir_debugfs() to ref_tracker_dir_init() path.
+On Fri, Aug 14, 2026 at 08:50:29AM -0600, David Wei wrote:
+> On 2026-08-13 18:23, Juanlu Herrero wrote:
+> > Run the iou-zcrx server as N worker threads, each owning one receive
+> > queue with its own io_uring and zero-copy receive (zcrx) ifq, so the
+> > test can exercise multi-queue zero-copy receive.
+> > 
+> > The main thread owns the listening socket, accepts connections, and
+> > dispatches each to the worker owning the queue it landed on by matching
+> > SO_INCOMING_NAPI_ID against per-queue NAPI IDs.
+> > 
+> > Assisted-by: Claude:claude-opus-4-8
+> > Signed-off-by: Juanlu Herrero <juanlu@fastmail.com>
+> > ---
+> >   .../testing/selftests/drivers/net/hw/Makefile |   5 +-
+> >   .../selftests/drivers/net/hw/iou-zcrx.c       | 262 +++++++++++++-----
+> >   2 files changed, 195 insertions(+), 72 deletions(-)
+> > 
+> [...]
+> > diff --git a/tools/testing/selftests/drivers/net/hw/iou-zcrx.c b/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
+> > index f793a6c04e412..008d3f4b76263 100644
+> > --- a/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
+> > +++ b/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
+> [...]
+> > @@ -289,12 +279,13 @@ static void process_recvzc(struct thread_ctx *ctx, struct io_uring_cqe *cqe)
+> >   		error(1, 0, "recvzc(): %d", cqe->res);
+> >   	if (cfg_oneshot) {
+> > -		if (cqe->res == 0 && cqe->flags == 0 && cfg_oneshot_recvs) {
+> > -			add_recvzc_oneshot(ctx, ctx->connfd, page_size);
+> > -			cfg_oneshot_recvs--;
+> > +		if (cqe->res == 0 && cqe->flags == 0 &&
+> > +		    ctx->oneshot_recvs[conn_idx]) {
+> > +			add_recvzc_oneshot(ctx, conn_idx, page_size);
+> > +			ctx->oneshot_recvs[conn_idx]--;
+> 
+> This needs an early return. Sorry the bug was pre-existing but I just
+> noticed it.
 
-Since preinit_net() calls ref_tracker_dir_init(&net->refcnt_tracker) and
-ref_tracker_dir_init(&net->notrefcnt_tracker), we need to make sure that
-both ref_tracker_dir_exit(&net->refcnt_tracker) and
-ref_tracker_dir_exit(&net->notrefcnt_tracker) are called before
-net_passive_dec() schedules for kmem_cache_free() via net_complete_free().
+ack, I will fix that in v6.
 
-ref_tracker_dir_exit(&net->refcnt_tracker) is called via put_net() when
-ns_ref_put() returned true. But put_net() is not called when copy_net_ns()
-fails. Therefore, call ref_tracker_dir_exit() from net_passive_dec() if
-put_net() is not yet called.
-
-Analyzed-by: sashiko.dev (no mail address)
-Link: https://sashiko.dev/#/patchset/b06ce35d-e7bc-47a5-8e0a-e82be7e4dd08%40I-love.SAKURA.ne.jp
-Fixes: 9ba74e6c9e9d ("net: add networking namespace refcount tracker")
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
----
-Changes in v2:
-- Refer to commit 65b584f53611.
-- Guard with "#ifdef CONFIG_REF_TRACKER", for sashiko mentioned that
-  "struct ref_tracker_dir".dead field depends on CONFIG_REF_TRACKER=y.
-- Added Reviewed-by: tag.
-
-Sashiko did a correct review and is reporting a pre-existing issue at
-https://sashiko.dev/#/patchset/af7dabf3-d0d7-46dc-a878-e1715b3c9ac6%40I-love.SAKURA.ne.jp .
-
- net/core/net_namespace.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
-index d9dafe24f57e..21fdda9c20c1 100644
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -532,8 +532,12 @@ void net_passive_dec(struct net *net)
- 	if (refcount_dec_and_test(&net->passive)) {
- 		kfree(rcu_access_pointer(net->gen));
- 
-+#ifdef CONFIG_REF_TRACKER
- 		/* There should not be any trackers left there. */
- 		ref_tracker_dir_exit(&net->notrefcnt_tracker);
-+		if (!net->refcnt_tracker.dead)
-+			ref_tracker_dir_exit(&net->refcnt_tracker);
-+#endif
- 
- 		/* Wait for an extra rcu_barrier() before final free. */
- 		llist_add(&net->defer_free_list, &defer_free_list);
--- 
-2.52.0
-
+Best,
+Juanlu
