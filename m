@@ -1,59 +1,42 @@
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7543557C9F;
-	Mon, 17 Aug 2026 02:04:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09239260565
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 02:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786932288; cv=none; b=sGNqCIez6TJ3vF6oOqpQkEqFmNrxdUOhVZbcS6kbZvjxKBO78q4Dl1h1hoL5UoGZU9V2fGnBQH4x8YLIdQvC3EkVbh0pUzTaN3ITNyoXTDy24q16JM6HY4Ol40ghToTSrSQfr7fFfdUEly5UKCpbBrdYa7bfEcB55CxN3TqeK3Y=
+	t=1786933305; cv=none; b=ITuj9TedPalN27kYDTxq7is9BhXiBLpK/M1v+lqpmfapR2bYOvnAcXbMLIWik+o4DlmkDou0boG+qcbmCmed+XSCPhdevgb+aAVhtQZjS/jE0vB1UQnLXsPV8VlIsecL9MOoHzPI4/Dz8EjTU6BBtnM7XmM9cT6DGPkjGnNgQU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786932288; c=relaxed/simple;
-	bh=N2ZXMLX30Z4mxn+wsdekdIKFOTr4tZhs8nbu6i5rm34=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Uf/1KIzmf2HmCQFFk5wak5yIeDwZVJD7OQZ78+BEtYJHQFbLdvSbEBz4F9Rmx7TQS94rdrrGsgq9OXjcaeU4P7uUKnPKaVSs9xODPkNi7lVg3faTjmpUp7GN01iEaE310MvvjC5GPqdbLjtuMb3lbjKhN3BCg9+EJqNEUR3faiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=1MqI3LEm; arc=none smtp.client-ip=113.46.200.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="1MqI3LEm"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=49tzuzhfAo2epbciTB/mccS2DapHrAmAXWk7pTYbPMA=;
-	b=1MqI3LEmv/p6/WKcEFDbb/kQwqvYMDxrElTU84JTymvSYEW9rqLDZgb5VNAN0GO6p/KT3ZhgS
-	IZT+u55VLI/lu4hTbc/7iMV8lrtienKowUCKfRjIi7anGjufCjMSI1g5q/PJkBqovwt7dUa8iVU
-	2HiYjYKQvWE187VAYCFclKc=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4hNbVm433Kz1T4JN;
-	Mon, 17 Aug 2026 09:54:40 +0800 (CST)
-Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9CBB54058C;
-	Mon, 17 Aug 2026 10:04:37 +0800 (CST)
-Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.124) by
- kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Mon, 17 Aug 2026 10:04:36 +0800
-From: Fan Gong <gongfan1@huawei.com>
-To: Fan Gong <gongfan1@huawei.com>, Wu Di <wudi234@huawei.com>, Teng Peisen
-	<tengpeisen@huawei.com>, <netdev@vger.kernel.org>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, Ioana Ciornei
-	<ioana.ciornei@nxp.com>, Mohsin Bashir <mohsin.bashr@gmail.com>, Dimitri
- Daskalakis <dimitri.daskalakis1@gmail.com>, Harshitha Ramamurthy
-	<hramamurthy@google.com>, Larysa Zaremba <larysa.zaremba@intel.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, Chen Anwen
-	<chenanwen@huawei.com>, He Wei <august.hewei@huawei.com>, luosifu
-	<luosifu@huawei.com>, Xin Guo <guoxin09@huawei.com>, Zhou Shuai
-	<zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>, Shi Jing
-	<shijing34@huawei.com>, Zheng Jiezhen <zhengjiezhen@h-partners.com>, Maxime
- Chevallier <maxime.chevallier@bootlin.com>
-Subject: [PATCH net-next v13 3/3] hinic3: Remove unneeded coalesce parameters
-Date: Mon, 17 Aug 2026 10:04:02 +0800
-Message-ID: <7aa7c46128cf62e9a95d88944983b4ec0d9a5060.1786774752.git.tengpeisen@huawei.com>
-X-Mailer: git-send-email 2.50.1.windows.1
-In-Reply-To: <cover.1786774752.git.tengpeisen@huawei.com>
-References: <cover.1786774752.git.tengpeisen@huawei.com>
+	s=arc-20240116; t=1786933305; c=relaxed/simple;
+	bh=AUQOObxO/dJ+1u8ylO+oWyaKnEhPVveEy4FPo5B3ufY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R5rsakiNHeSisPNu6jBW1oqKhAgwSjQJ94kilq1y6wFEINJjN4ThyDDKM3PKo1ZS81HJOsjF/UZv6GmW0RD1eMyHDMVG0QLCanif7amnDT8akPT95mMOuUm4JWLYMShcVA5k+NvgCx8agOhSLJFxg43/e+/+X4+7phvgIAdn4r0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=18.194.254.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: esmtpsz21t1786933040t5c5ccc92
+X-QQ-Originating-IP: SHQUqhcdXiSWRmXqcVyMeQpwC9+HKilrBNyD4DxpaZQ=
+Received: from w-MS-7E16.trustnetic.com ( [36.24.185.99])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 17 Aug 2026 10:17:13 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 2302367485050180584
+EX-QQ-RecipientCnt: 10
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org
+Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net] net: libwx: fix concurrent bitmap overwrite in PTP setup
+Date: Mon, 17 Aug 2026 10:17:08 +0800
+Message-ID: <F97867A3AA2696FD+20260817021708.37975-1-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,55 +44,117 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemf100013.china.huawei.com (7.202.181.12)
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: NjuDfT6zrIZcjgku/0F2FzD3Rn+gPe7NYzpQY+POr7rxm6qY1dVZWTI+
+	APLGp8fNDpQ+swLAHIXbK1vpFclO0xt8UB/xpF7Vyc7VyPkeS+en9OTBZtfwDyJmVziuP3q
+	lsWz3b0/hyUY+G4+cPKBk3pgLrim0+Wvuji6eZ2IX0AQCXwizrkv9Qg4cmiy3JK77Gbci22
+	yEn/g3JmuWGzASk7SAj5QXvDD2LSsINp51TknyjwzaQpnyyoBqrXndgWKg7GxIsfWiFojho
+	z00JzejyynnxGyvGNngkb60IH6rBStL6RBBZcU7Scz4Np0ZfWTY6OzvOfE5mzq0ToBVLhlw
+	4oe/Vcp41cKKC0jwCCcMEGMGCg6hKEGRn/Cz831lWYTPEi5mApcBs2uMYPvdHi4iFGDRCaX
+	CfZz5bV5QuSDeg6SA26vQHzbCd5tBgRA/3qowfKVepShI0DMjNojrz3GRlq92vij3aiuZ8V
+	xdRvrLS8VzpGYoLgpfzhJWgqwCmNS1b0hiF6n+MaI8vfcImU37SD6wppa1yS0GDCBSSzbZp
+	g6DLMSjbOc8pw6ajD6JPPTCkVJeo7iZOqU8R4rHDIPWwArMbLFQoYbv9u+bQGjgHbTTU54p
+	tmiO4v0SiP4gfnvaKDCe1ZqnWwbycn7q8H+wtreCnIMduU4FFCitq4TwLjXpt5V23GOvs+9
+	npUYj2eVYkQosRKYuvISwCn/BBYq21e++q3g8DC3wStrQBJtOrqVopPIxM+qMs+zcaEXUpG
+	RaEavAM1Qw3fUkWpLw7HnfiEmUXNVw5KT2A/hGRx+YXtPRTNAr0gAjpRMO8ApPI3gfViATR
+	DcXFVh9gCIDtCwwEe7DAwTOVF9Mi3APquGzIkBEzpfj6OKNBi7RRhgI/SDdtKTB5cjXIhmp
+	d/6ycmQnvhs+5MObLlziALmYIPUG4CXaZDAcOBgU5PEhxGbVaSjN1r8nVBOraX1la16Xnwu
+	fwapURSdSgcMAKnNmdjmwlmJL3sybW8VCY40HMr85b0PiRq7cj5e+jaUIUbTEBJanXnr/bM
+	vR1w+FCltsR97PMOAxEbmkK5sIrx98lqRQ3v8F4Ar9yjWyu0+ethK0/w5NihnWq1PLjsZQM
+	Q==
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
+X-QQ-RECHKSPAM: 0
 
-  Remove unneeded coalesce parameters in irq handling.
+In wx_ptp_set_timestamp_mode(), the driver copies the global `wx->flags`
+bitmap to a local variable, modifies the PTP-related bits, and then writes
+the entire bitmap back using memcpy().
 
-Co-developed-by: Wu Di <wudi234@huawei.com>
-Signed-off-by: Wu Di <wudi234@huawei.com>
-Co-developed-by: Teng Peisen <tengpeisen@huawei.com>
-Signed-off-by: Teng Peisen <tengpeisen@huawei.com>
-Signed-off-by: Fan Gong <gongfan1@huawei.com>
+This Read-Copy-Update pattern is unsafe and introduces a critical race
+condition. Other asynchronous contexts (such as Tx timeout routines or
+GPIO IRQ handlers) update individual bits in `wx->flags` concurrently
+using atomic bitops like set_bit() or clear_bit(). The memcpy() write-back
+can silently overwrite and drop these concurrent changes, potentially
+causing the driver to miss critical module reset or PCIe recovery requests.
+
+Fix this by removing the local bitmap copy. Instead, evaluate the intended
+PTP flag states locally and apply them directly to `wx->flags` using
+atomic set_bit() and clear_bit() operations only after the hardware is
+successfully configured.
+
+Fixes: 06e75161b9d4 ("net: wangxun: Add support for PTP clock")
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 ---
- drivers/net/ethernet/huawei/hinic3/hinic3_irq.c | 6 +-----
- drivers/net/ethernet/huawei/hinic3/hinic3_rx.h  | 3 ---
- 2 files changed, 1 insertion(+), 8 deletions(-)
+ drivers/net/ethernet/wangxun/libwx/wx_ptp.c | 22 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c b/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
-index b4e58d4c8ba8..f6645385c552 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
-@@ -148,13 +148,9 @@ static int hinic3_set_interrupt_moder(struct net_device *netdev, u16 q_id,
- 		nic_dev->intr_coalesce[q_id].resend_timer_cfg;
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
+index 44f3e6505246..7d4bd7b258b7 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
+@@ -555,13 +555,12 @@ static int wx_ptp_set_timestamp_mode(struct wx *wx,
+ {
+ 	u32 tsync_tx_ctl = WX_TSC_1588_CTL_ENABLED;
+ 	u32 tsync_rx_ctl = WX_PSR_1588_CTL_ENABLED;
+-	DECLARE_BITMAP(flags, WX_PF_FLAGS_NBITS);
+ 	u32 tsync_rx_mtrl = PTP_EV_PORT << 16;
++	bool rx_in_register = false;
++	bool rx_enabled = false;
+ 	bool is_l2 = false;
+ 	u32 regval;
  
- 	err = hinic3_set_interrupt_cfg(nic_dev->hwdev, info);
--	if (err) {
-+	if (err)
- 		netdev_err(netdev,
- 			   "Failed to modify moderation for Queue: %u\n", q_id);
--	} else {
--		nic_dev->rxqs[q_id].last_coalesc_timer_cfg = coalesc_timer_cfg;
--		nic_dev->rxqs[q_id].last_pending_limit = pending_limit;
--	}
- 
- 	return err;
- }
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_rx.h b/drivers/net/ethernet/huawei/hinic3/hinic3_rx.h
-index c11d080408a7..2ab691ed11a9 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_rx.h
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_rx.h
-@@ -111,9 +111,6 @@ struct hinic3_rxq {
- 	dma_addr_t             cqe_start_paddr;
- 
- 	struct dim             dim;
+-	memcpy(flags, wx->flags, sizeof(wx->flags));
 -
--	u8                     last_coalesc_timer_cfg;
--	u8                     last_pending_limit;
- } ____cacheline_aligned;
+ 	switch (config->tx_type) {
+ 	case HWTSTAMP_TX_OFF:
+ 		tsync_tx_ctl = 0;
+@@ -576,20 +575,18 @@ static int wx_ptp_set_timestamp_mode(struct wx *wx,
+ 	case HWTSTAMP_FILTER_NONE:
+ 		tsync_rx_ctl = 0;
+ 		tsync_rx_mtrl = 0;
+-		clear_bit(WX_FLAG_RX_HWTSTAMP_ENABLED, flags);
+-		clear_bit(WX_FLAG_RX_HWTSTAMP_IN_REGISTER, flags);
+ 		break;
+ 	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
+ 		tsync_rx_ctl |= WX_PSR_1588_CTL_TYPE_L4_V1;
+ 		tsync_rx_mtrl |= WX_PSR_1588_MSG_V1_SYNC;
+-		set_bit(WX_FLAG_RX_HWTSTAMP_ENABLED, flags);
+-		set_bit(WX_FLAG_RX_HWTSTAMP_IN_REGISTER, flags);
++		rx_enabled = true;
++		rx_in_register = true;
+ 		break;
+ 	case HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ:
+ 		tsync_rx_ctl |= WX_PSR_1588_CTL_TYPE_L4_V1;
+ 		tsync_rx_mtrl |= WX_PSR_1588_MSG_V1_DELAY_REQ;
+-		set_bit(WX_FLAG_RX_HWTSTAMP_ENABLED, flags);
+-		set_bit(WX_FLAG_RX_HWTSTAMP_IN_REGISTER, flags);
++		rx_enabled = true;
++		rx_in_register = true;
+ 		break;
+ 	case HWTSTAMP_FILTER_PTP_V2_EVENT:
+ 	case HWTSTAMP_FILTER_PTP_V2_L2_EVENT:
+@@ -602,9 +599,9 @@ static int wx_ptp_set_timestamp_mode(struct wx *wx,
+ 	case HWTSTAMP_FILTER_PTP_V2_L4_DELAY_REQ:
+ 		tsync_rx_ctl |= WX_PSR_1588_CTL_TYPE_EVENT_V2;
+ 		is_l2 = true;
++		rx_enabled = true;
++		rx_in_register = true;
+ 		config->rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT;
+-		set_bit(WX_FLAG_RX_HWTSTAMP_ENABLED, flags);
+-		set_bit(WX_FLAG_RX_HWTSTAMP_IN_REGISTER, flags);
+ 		break;
+ 	default:
+ 		/* register PSR_1588_MSG must be set in order to do V1 packets,
+@@ -643,7 +640,8 @@ static int wx_ptp_set_timestamp_mode(struct wx *wx,
+ 	WX_WRITE_FLUSH(wx);
  
- struct hinic3_dyna_rxq_res {
+ 	/* configure adapter flags only when HW is actually configured */
+-	memcpy(wx->flags, flags, sizeof(wx->flags));
++	assign_bit(WX_FLAG_RX_HWTSTAMP_ENABLED, wx->flags, rx_enabled);
++	assign_bit(WX_FLAG_RX_HWTSTAMP_IN_REGISTER, wx->flags, rx_in_register);
+ 
+ 	/* clear TX/RX timestamp state, just to be sure */
+ 	wx_ptp_clear_tx_timestamp(wx);
 -- 
-2.54.0
+2.51.0
 
