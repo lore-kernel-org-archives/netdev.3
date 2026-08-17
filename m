@@ -1,145 +1,179 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B57B841D205;
-	Mon, 17 Aug 2026 12:44:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F4A415F2E
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 12:54:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786970650; cv=none; b=r2oPCbCAGZigXaBvcblQcNmPm4/yr4ARSGbitBQAv0uISzMLzGbmFvRPZYZmuY9UZFYAuBhPe8EpbQLjAR9kcPdHyWazOltM8piPQpKShW2AOrx+5ZuyT1t6N4wWZVNG9kogjbtHy8fyMl6zTuROoyys2AWq73Tjk2xdvDWU5X8=
+	t=1786971279; cv=none; b=Y5eV7xprfc97oyObiyWipYJzyJ56r5rfWWBsel5LLjDHl/SdvAvLrwvrZXxEuteFbjpvCG1ZJe8EJg/U+Y99TRgP3YHaoJZ3MjH/j3WMkSfLaJBX9p/XXrvUvhrgO5LShvioX4er6tkdeOuI/ZJwJBk3tTm10S2nvDq00GoMozc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786970650; c=relaxed/simple;
-	bh=JHeIH2tKGzSiy94Kyeeliy+qi7UXXRpMGdxMafh0t+4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j3aaMKDyXKo6IldRshEItIvXUgiSnq8TzS4h35xRmH3KnyVJ8c/9O/FA5qi+MQUurJcqYmEBDiwL8IMX3rUT7h+U1SIFq/yMplNKp5ghpCohOOlHWXeZTIRikrCbTSOPDLf+ifkwg42bvXL5KBgAm+pG0BbGmlvcq2MbHt9jcxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rBkxQe0l; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1786971279; c=relaxed/simple;
+	bh=HaCHVxvVg5ldS6wjekpM9xVtktyIMz5xR7cAFIK7O4U=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To; b=MYi0PWh7wsPfZbABgZ7tu1xQ4+xND1TLmncqH8tBdb1d43nv4y5vYX6q4M0KoV3W9EeMmEVsJvUOEgvF/YGa1FEku/+0l8pRdquZhfNoeYxr7ujV9zFrlJCyeIHWICwK+KGEr6uhxyWKiMG3JnbII8DSXFegKGNACWZAMGi5NmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=A5vs18pv; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=P+uls9TZ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rBkxQe0l"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67HCWAGF1442523;
-	Mon, 17 Aug 2026 12:44:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=1A89XK
-	e493ycRWisJ1TywXDaBS10Yh1tyDERb7PZ+XU=; b=rBkxQe0lY0P1Nl8fKZ0J7J
-	xo1efCt69Ki0Yz2fOaPR7Db+NUCmlv6ZNnf15syavGwnKMd9h6wNIp2++oVpAUwd
-	lm1yOmRnZWdscZXfMyrXRXoiilEcTJppoF/XdiMsb5zErdT2LhoNykWZgIqPqKW+
-	nveQdKKQsSKoKK3E3IkDkCtX0mMRAQSQaKmyczIojDe0wqiErNoEHvtnbXHEgwi8
-	EK0a9G3+InSDjJLnhCi2id6gzpaYfntCdk09sZlhd+C3LtWZEXhb4CLJzFjTFY9m
-	2lHyt00SlRoBHW5dVa9bLPKgQPtwJ0YjNWuYMRJAruYmKnTsN0IZ1QUucc6pCqjQ
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g2frt1vwx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Aug 2026 12:43:59 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67HCfIi8013652;
-	Mon, 17 Aug 2026 12:43:59 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g33ejx1uk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Aug 2026 12:43:59 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67HChvXv6292116
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 17 Aug 2026 12:43:58 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CC67058063;
-	Mon, 17 Aug 2026 12:43:57 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B00A358057;
-	Mon, 17 Aug 2026 12:43:52 +0000 (GMT)
-Received: from [9.39.17.176] (unknown [9.39.17.176])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 17 Aug 2026 12:43:52 +0000 (GMT)
-Message-ID: <4954a75a-7dfe-437e-9a2d-17dcf81b4416@linux.ibm.com>
-Date: Mon, 17 Aug 2026 18:13:50 +0530
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="A5vs18pv";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="P+uls9TZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786971277;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=weWYxO6QSfDP4OHBAWREATIQfE1pgetkGo0ZedVXQfk=;
+	b=A5vs18pvR9lK1QWKpKa/OyLbRiDpjXbhFM/ho6xH2iVSnyqVdEeEo1px9DDpK9L2dsq4Oi
+	mQhWPFz6Y2mqwLquwC0cpWFd3nnVd0jYMmdg8EU90jEX9pfUM6vzffsPcWCGW8fDMGzRnQ
+	5Mh/eT8cdy+nWnzqd1nJrDlJrL3LzQU=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-643--apRLzNON4mXqi0K85q3Ow-1; Mon, 17 Aug 2026 08:54:36 -0400
+X-MC-Unique: -apRLzNON4mXqi0K85q3Ow-1
+X-Mimecast-MFC-AGG-ID: -apRLzNON4mXqi0K85q3Ow_1786971275
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49953abe51fso23002015e9.1
+        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 05:54:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1786971275; x=1787576075; darn=vger.kernel.org;
+        h=to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=weWYxO6QSfDP4OHBAWREATIQfE1pgetkGo0ZedVXQfk=;
+        b=P+uls9TZ7u29Rt3sLnmA/mhZi0BtJZKboOtsxoLQ/QDrBWutkKe+Wj+AqssReDHyQU
+         3aPUhVpicCxecJ6dQnUB2Tx2NA021gxljaTpd1AEJtG8AOE14a0YsyKkF66n1JnUTOoV
+         HwLn27MmnGBD/vpND+jviT7hlu/TWf1D7GQBuBBKXFjUZQhHXkTJG6CH8fX3RfrM8J7Q
+         K7azDEMIhWcYAV0q2JUVndqgOIWp1qcBEpIFUbk5SCMn6+W2oDNbjxpYvR3WIKZFLbtA
+         A3UQkiAumyHeUwmiNpIP4RumU1PqnSEmtKit7k6l4I8dpS+Mp+FpjqJF9XaSaKfsXTu8
+         qLeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786971275; x=1787576075;
+        h=to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=weWYxO6QSfDP4OHBAWREATIQfE1pgetkGo0ZedVXQfk=;
+        b=r95yEvSmeywfLr8YU5H7Kpz3JmvD2e67d9YyZVpFdIpHi4z7SosiU8a8WhGrg0QiXh
+         xQSPyfTeVovWgXQoAbOzI2rvlNELB+mDCgEGzHR8zeg4A+djH5LGYxgfIkkYnKq/bQts
+         A0rcOdqTkLfEblFU2JqKJ54v8hnhC+pcPNkNZlqADMNkpnPr3bDZgyZ/6mldvmQpknRO
+         8U5FFxptrBSwVBoGFCo8S7kEX8WDF0tXbbwBo+aEIwbnNbCIGtk7dO+ZVzo7G0uEpWVD
+         lscPb1yRnl+VzV12+RD5EJcWzI3CFHWkLABo1OTxXm4OqPli271W4qN6TRejPeVl8cL8
+         XxWA==
+X-Forwarded-Encrypted: i=1; AHgh+RpJERTPlOKRrL2pjG1DJicf1In7AbMMJSjupg+sman40U5Hjf4ObDxpOJyGFxR4kRG9SCmkHj4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9hStZThDS9up6AFXGihS37xLGjSh7cb7ZtcyCoIIjeCqgrHmI
+	IFaKaV5q3STVoG4yQjRdpFMciki35gIVXKy+TT+MFl5mYk08BCtsEOGEsqRDXavKgAEe/4q31Gv
+	edg2MMfaGpPPsVAaAnCDOttykPx1je/l300Pnads/EU8o41P1/7/IZzPNzw==
+X-Gm-Gg: AR+sD10VRsMakwr4bXgN4CayAlnAivd62YNoXaqEikgYDQYLGJiV+um9WyMPR0ruurr
+	riTw8Fh62U5JRdDQ70KnNKIk5hu2BfsShFCTvPIhP6d4iumTghIpXxpW7/jWlOCskJ9BmwFGCjs
+	9MAlghctNVqq/8sSORRCvC8S2lbiAUmoRc0LPD3IwDXziZzothMGvvUEdbsXfCPoAIDdogHX4Jt
+	xmS0WFtwQF2CHfv/p2h5fVmGhlgUgEFTiIE8C1NTA9m/JlHLodtaPpqg9MSOg2an/uSYAJGQ5v6
+	jwaX2ZGpkOPD6eQYdlqPgiX52SrzpSBMHrWtJ/K8sEv+oWU3TWx0smk18bhykOPJCnPyW3/Nc/u
+	MK78eR5yOtKtAIQZzntT1wIbNNByFch/xzuOyVfh1mVJLaMMuRscQ7Y9hqASqdkv0FqLaiE3yUS
+	4Kolugx/Tm5eSG+Ad62LyBV6Zkuz+NiYn32KlUtRfuJrJE
+X-Received: by 2002:a05:600c:4924:b0:495:503f:cf9a with SMTP id 5b1f17b1804b1-49987971a6amr238583355e9.9.1786971275148;
+        Mon, 17 Aug 2026 05:54:35 -0700 (PDT)
+X-Received: by 2002:a05:600c:4924:b0:495:503f:cf9a with SMTP id 5b1f17b1804b1-49987971a6amr238583025e9.9.1786971274808;
+        Mon, 17 Aug 2026 05:54:34 -0700 (PDT)
+Received: from lleonard-thinkpadx1carbongen13.rmtit.csb (host-95-247-118-130.retail.telecomitalia.it. [95.247.118.130])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499961767f5sm126998835e9.9.2026.08.17.05.54.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Aug 2026 05:54:34 -0700 (PDT)
+From: Luigi Leonardi <leonardi@redhat.com>
+Date: Mon, 17 Aug 2026 14:54:20 +0200
+Subject: [PATCH iproute2 v2 1/2] ss: move lport and rport in struct
+ sockstat from int to long
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3] net/smc: fix clcsock and lgr/lnk races in smc_diag
- dump path
-To: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
-        dust.li@linux.alibaba.com, sidraya@linux.ibm.com
-Cc: pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
-        guwen@linux.alibaba.com, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org
-References: <20260807081606.3200128-1-mjambigi@linux.ibm.com>
-Content-Language: en-US
-From: Mahanta Jambigi <mjambigi@linux.ibm.com>
-In-Reply-To: <20260807081606.3200128-1-mjambigi@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=OfaoyBTY c=1 sm=1 tr=0 ts=6a830210 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=3vzxbusPCOJ1yxKwbXUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODE3MDA5NSBTYWx0ZWRfX92692Zkmadp8
- PDSHI4gQLo5cJHwXepjsqW2zLwi79Uk07sSvMAlzmQo4Q34DIyWW0XmgfXbqw/aDe9cogyf3+3a
- b+kQzheBAE6/lZdwTTrfwoYSD2lCUIs=
-X-Proofpoint-GUID: dt7GUhKimeQgkHOJ1wVtAGvsidsYzJJa
-X-Proofpoint-ORIG-GUID: 31kTdEVb3Y7BBaA0_HKgCQK3IaXLRpAP
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE3MDA5NSBTYWx0ZWRfX+J6iarJuIRbh
- EbK0uyysICZZ2CZeaDdYT/hBStiQCfUDa49FL6awbxQZTvu+39LahlXwCeOWYzwUq8KmSDweVjc
- CiG5k8A9GJdV+wLJ7PMZAy7EmRTTuClA+RnXHte5HG9tjdwjJUxUa02BZ23WsJ0ikn01URu6XXH
- xLuEi1YFyiHJaJ3LLgBpZPGchmNPoVzuw7k7ctn+cgyHMcg8Bv8cUzZmy396OVfTEwbFZB6NhX9
- UXZq9t5mI6GeWW42IYy1Qls5ve9FTqB7cXBYOFKaGghLrUHw5yMawdzZzKdz188SAU5aRw/Z3Ww
- L/mIDqrfq74lPSBQod1o4YuyzEZWMtJo5TQd/V/YfGjDM4ALLL9dL5OyGQl299ZerVAAbr66E0K
- GwyoSFeuwgmHgmy03naz43/Qqz006O0zg6sWu8v/QB42/9wn64PIPUQX5osXO2GSuCSj2wewjej
- IS7x2Xm1D3Ef5NhkDRQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-17_01,2026-08-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 clxscore=1015 lowpriorityscore=0 impostorscore=0
- malwarescore=0 bulkscore=0 phishscore=0 priorityscore=1501 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608170095
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260817-fix_vsock-v2-1-47e544221eae@redhat.com>
+References: <20260817-fix_vsock-v2-0-47e544221eae@redhat.com>
+In-Reply-To: <20260817-fix_vsock-v2-0-47e544221eae@redhat.com>
+To: Stefano Garzarella <sgarzare@redhat.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>, netdev@vger.kernel.org, 
+ Luigi Leonardi <leonardi@redhat.com>
+X-Mailer: b4 0.14.3
 
+Commit 012cb515 ("ss: change aafilter port from int to long (inode
+support)") widened aafilter.port to long so that unix socket inode
+numbers larger than INT_MAX can be used as port filter values, but left
+sockstat.lport and sockstat.rport as int. This means large u32 values
+(e.g. vsock ports or unix inodes > INT_MAX) are truncated on the
+socket-stat side, making the comparison against aafilter.port always
+fail.
 
+Widen lport and rport to long and update the sscanf format specifiers
+in proc_parse_inet_addr() and unix_show() accordingly.
 
-On 07/08/26 1:46 pm, Mahanta Jambigi wrote:
-> Two races in the SMC diag dump path:
-> 
-> Race 1: smc_diag_msg_common_fill() reads smc->clcsock fields after a
-> NULL check, but smc_clcsock_release() can set clcsock = NULL under
-> clcsock_release_lock between the check and the reads.  Hold the same
-> mutex in the read path to make the check and reads atomic.
-> 
-> Race 2: __smc_diag_dump() dereferences conn->lgr and conn->lnk with no
-> protection against concurrent teardown.  smc_close_active_abort() calls
-> smc_conn_free() — which drops lgr and link refcounts — without first
-> unhashing the socket, leaving stale pointers visible to the dump.  The
-> teardown path holds lock_sock(sk) across smc_conn_free(); take the same
-> lock in __smc_diag_dump() to serialise fully.
-> 
-> Both fixes require sleeping locks, which are illegal under the
-> read_lock(&smc_hash->lock) held by smc_diag_dump_proto().  Pin each
-> socket with refcount_inc_not_zero() before dropping the hash lock, call
-> __smc_diag_dump() locklessly, then release the pin.  Restart sk_for_each()
-> from head after each unlock rather than resuming mid-walk:
-> smc_unhash_sk() nulls sk->sk_node.next via sk_del_node_init(), so
-> resuming an interrupted walk silently truncates the dump.
-> 
-> Fixes: f16a7dd5cf27 ("smc: netlink interface for SMC sockets")
-> Fixes: 9dbe086c69b8 ("net/smc: fix invalid link access in dumping SMC-R connections")
-> Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
-> Signed-off-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
-Hi D. Wythe and team,
+Fixes: 012cb515 ("ss: change aafilter port from int to long (inode support)")
+Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
+---
+ misc/ss.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-I have addressed the review comments from syzbot and Sashiko for this
-patch. Could you please review this when convenient?
+diff --git a/misc/ss.c b/misc/ss.c
+index 14e9f27a..ff1a88de 100644
+--- a/misc/ss.c
++++ b/misc/ss.c
+@@ -809,8 +809,8 @@ struct sockstat {
+ 	uint16_t	    raw_prot;
+ 	inet_prefix	    local;
+ 	inet_prefix	    remote;
+-	int		    lport;
+-	int		    rport;
++	long		    lport;
++	long		    rport;
+ 	int		    state;
+ 	int		    rq, wq;
+ 	unsigned int ino;
+@@ -2490,23 +2490,23 @@ static int proc_parse_inet_addr(char *loc, char *rem, int family, struct
+ {
+ 	s->local.family = s->remote.family = family;
+ 	if (family == AF_INET) {
+-		sscanf(loc, "%x:%x", s->local.data, (unsigned *)&s->lport);
+-		sscanf(rem, "%x:%x", s->remote.data, (unsigned *)&s->rport);
++		sscanf(loc, "%x:%lx", s->local.data, (unsigned long *)&s->lport);
++		sscanf(rem, "%x:%lx", s->remote.data, (unsigned long *)&s->rport);
+ 		s->local.bytelen = s->remote.bytelen = 4;
+ 		return 0;
+ 	} else {
+-		sscanf(loc, "%08x%08x%08x%08x:%x",
++		sscanf(loc, "%08x%08x%08x%08x:%lx",
+ 		       s->local.data,
+ 		       s->local.data + 1,
+ 		       s->local.data + 2,
+ 		       s->local.data + 3,
+-		       &s->lport);
+-		sscanf(rem, "%08x%08x%08x%08x:%x",
++		       (unsigned long *)&s->lport);
++		sscanf(rem, "%08x%08x%08x%08x:%lx",
+ 		       s->remote.data,
+ 		       s->remote.data + 1,
+ 		       s->remote.data + 2,
+ 		       s->remote.data + 3,
+-		       &s->rport);
++		       (unsigned long *)&s->rport);
+ 		s->local.bytelen = s->remote.bytelen = 16;
+ 		return 0;
+ 	}
+@@ -4638,8 +4638,8 @@ static int unix_show(struct filter *f)
+ 		if (!(u = calloc(1, sizeof(*u))))
+ 			break;
+ 
+-		if (sscanf(buf, "%x: %x %x %x %x %x %d %s",
+-			   &u->rport, &u->rq, &u->wq, &flags, &u->type,
++		if (sscanf(buf, "%lx: %x %x %x %x %x %d %s",
++			   (unsigned long *)&u->rport, &u->rq, &u->wq, &flags, &u->type,
+ 			   &u->state, &u->ino, name) < 8)
+ 			name[0] = 0;
+ 
 
-Also, the following patch is related to the current patch and may be
-reviewed together:
+-- 
+2.55.0
 
-https://lore.kernel.org/netdev/20260813074315.554926-1-mjambigi@linux.ibm.com/
