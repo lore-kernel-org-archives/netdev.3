@@ -1,138 +1,184 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-118.mta1.migadu.com [95.215.58.118])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F765331200
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 05:07:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3AC33CEA5
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 05:22:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786943274; cv=none; b=eaZsF12EnBWbTzZyIwVx1tp9FlniNMexOMR0uh81Udvii5Xu/xsVMtsypitIxwFivgJ1F2DsYB57mB/hJnnpUH6CwHLszedfclOT9aenIMsploKyUHhxUT6OboBJrb+ExG3j6yVsaThxoYLqhV202k7OYNoHFfvDeBNg+fvMB1s=
+	t=1786944178; cv=none; b=dKB2zNATv5FAPVFjEiY+GyTp+/812bPFIIRlGdZz4StAFMZUrYE31M9w9QuYUh+b+f229CYI4SuXOPWmZ44TuXdYCJVQoMBHCICo6mKy8O5FOz7YLmEwUd5RD8QIbBHsBBVVntiivpuBJL4ckSXjDnnxHNPUDa8h5G9BUJadiGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786943274; c=relaxed/simple;
-	bh=dPsF7Xioqbe5fhKxW0MfomQ1+z5/xpPeeyvux+IR1Mc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YhnZ6IoIWcbETOJjq6uknPYfoiquq3ZjoPmOR/BG5Up2jq5nIta5qIs9xa+W+4gwCbhXUusmTlls/UzUewkGhcGXrxgLKJHn7GaHzs2xuTd5W7jXDIABtJoMgAElOo2RGlJ0b6l3zCyH0jj4kzXtmQX9cXXIwRGYf3O1zif6heQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GT4zDEDz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786944178; c=relaxed/simple;
+	bh=f34qalG72+wQKC69HJWsF1lFV8zxvD0DD4VhCE1o7BI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EnBFkVGrJZLwTnhljm+FBNboP64Epoa2oY2mt4W+BbEEnWCZIl8+eBuJzvF5NU/RYaJVeXkcMP5VosRFgOmVvKuCE3E7nrRMsdiilML+rWabPMb76gRmfVdWH1asL6TtMXyGO92hY1tfnJL5vJdu7nwMhllpb/nR9ZWpz/cW+Hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fZY4VW2j; arc=none smtp.client-ip=95.215.58.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GT4zDEDz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E916B1F0155B
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 05:07:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786943271;
-	bh=CHRP4WWAlhnlIcngLxDf76+lEj0u2TNpiNX33keCcBU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=GT4zDEDzS49pxkVS++aYPzKQsT8Lw43dh7yC/vX/7yccfZORo52w4xxrDi7FcENIm
-	 N7HFli1Sky06U4n82gtJCI2ZkKWyskW163FlVluYkuuYpIu3q0IlkFnhNEVr2n863h
-	 XRsa1dR2Y4gY9NO9NTHGj+KXz6oQ0Wop02LXZI3x83qx+tQ5Lv3Ag6ENnTu1HPJf6e
-	 7pqvaIxmt0WQm0qAz6kE1hpzF3Zd43TzYATDPKQ4IROU5sfnyitWiNMOWH3EoRw7Qg
-	 nEoCbhCEXQeylCPfSHr6knxSn7Zg0/ZvCZN6mP3f6hvtiV9DGXTGxaE1Bwqn7RCjOl
-	 NVeLaPhc0u41A==
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-69fab5a852cso3934284a12.0
-        for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 22:07:51 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RoSeY0PPRVn9kUeYSEFeicTyGqINnTS32XQR6GKe/0TnZhu+9ScDrimrPBXA1/+tpRxpzmnSx4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzcn8U9OWmtHyHhOTPolzxkEsJpIwYsY4E9lXXXRCwzWz9APmDt
-	WCrmoP72hxQf3daKFd8rt6wL6ai7zYgOZ6RMMpcXrOSIsrHwIb/ASbPY+0Zja1rkP219BPn33fL
-	FXfMuYgFxQbjuEoUUXb3Au6SfFrT7hU8=
-X-Received: by 2002:a05:6402:4345:b0:6a1:29ca:681e with SMTP id
- 4fb4d7f45d1cf-6a38a927f6dmr9252296a12.7.1786943270802; Sun, 16 Aug 2026
- 22:07:50 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fZY4VW2j"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=f34qalG72+wQKC69HJWsF1lFV8zxvD0DD4VhCE1o7BI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786944172; v=1; x=1787548972;
+ b=fZY4VW2jrztFPGd+PEX1YF1WhoERneEPZuKHFuWjSZAMLuOtRatWin5hzJ8P5LwrIPgBwfe9
+ vFppRCmuI3jxIx1R6QJI2ttnTI0eFPdRNwjcziOsdJmmZ+df8Y+YPPlidcM2iEA6CSOZIBv7cbW
+ /TuESvNUP6TWySNVBDtXr66Y=
+X-Envelope-To: netdev@vger.kernel.org
+Received: from localhost (2408:84e1:426:d677:802:e2c9:7497:438a)
+	by smtp.migadu.com with ESMTPS id 0a635fc3c9960c07;
+	Mon, 17 Aug 2026 05:22:52 +0000
+X-Migadu-Flow: FLOW_OUT
+From: Junjie Cao <junjie.cao@linux.dev>
+To: syzbot+2642f347f7309b4880dc@syzkaller.appspotmail.com
+Cc: linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	hdanton@sina.com
+Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in exit_to_user_mode_loop
+Date: Mon, 17 Aug 2026 02:21:46 -0500
+Message-ID: <20260817072146.313493-1-junjie.cao@linux.dev>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <6887ebf4.a00a0220.b12ec.00ae.GAE@google.com>
+References: <6887ebf4.a00a0220.b12ec.00ae.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260816-submit-phy-package-fwdevlink-v1-v2-0-23e55dd59fad@gmail.com>
- <20260816-submit-phy-package-fwdevlink-v1-v2-3-23e55dd59fad@gmail.com>
-In-Reply-To: <20260816-submit-phy-package-fwdevlink-v1-v2-3-23e55dd59fad@gmail.com>
-From: Saravana Kannan <saravanak@kernel.org>
-Date: Sun, 16 Aug 2026 22:07:38 -0700
-X-Gmail-Original-Message-ID: <CACRMN=f2RYJbgTdBvb6R4EZ2vGzux6ALfoB_Td2HBp-0k4LEAw@mail.gmail.com>
-X-Gm-Features: AcwNN1UJ5Vyf0Luntl1LV1hQIf97qhuC4K-SYL3G9ab3BtcopvWi0iTczMQ4KaM
-Message-ID: <CACRMN=f2RYJbgTdBvb6R4EZ2vGzux6ALfoB_Td2HBp-0k4LEAw@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 3/4] of: property: link PHY package suppliers
- to member PHYs
-To: James Hilliard <james.hilliard1@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
-	Christian Marangi <ansuelsmth@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	driver-core@lists.linux.dev, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Aug 16, 2026 at 5:00=E2=80=AFPM James Hilliard
-<james.hilliard1@gmail.com> wrote:
->
-> Ethernet PHY package nodes describe shared resources for their member
-> PHYs, but are not populated as struct devices. fw_devlink consequently
-> represents the package dependencies with proxy links to the closest
-> ancestor device.
->
-> The MDIO bus is a class device without a driver, so such a proxy can
-> remain available indefinitely and prevent a supplier from receiving its
-> sync_state() callback even after every PHY has probed.
->
-> Treat every enabled member PHY as a consumer of the common package
-> suppliers. The links can then be converted to links for the real PHY
-> devices and retired through their normal driver lifecycle.
->
-> Fixes: 385ef48f4686 ("net: phy: add support for scanning PHY in PHY packa=
-ges nodes")
-> Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
-> ---
->  drivers/of/property.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
->
-> diff --git a/drivers/of/property.c b/drivers/of/property.c
-> index 38c0c7dc428a..d59bcb1f29de 100644
-> --- a/drivers/of/property.c
-> +++ b/drivers/of/property.c
-> @@ -1272,6 +1272,20 @@ static void of_link_to_phandle(struct device_node =
-*con_np,
->                 tmp_np =3D of_get_next_parent(tmp_np);
->         }
->
-> +       /*
-> +        * An Ethernet PHY package node describes resources shared by its=
- member
-> +        * PHYs, but is not populated as a struct device. Link every enab=
-led
-> +        * member PHY to those suppliers so fw_devlink can use the real c=
-onsumer
-> +        * devices instead of leaving a proxy link on the MDIO bus indefi=
-nitely.
-> +        */
-> +       if (of_node_name_eq(con_np, "ethernet-phy-package")) {
-> +               for_each_available_child_of_node_scoped(con_np, child)
-> +                       fwnode_link_add(of_fwnode_handle(child),
-> +                                       of_fwnode_handle(sup_np), flags);
-> +
-> +               return;
-> +       }
-> +
+#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git 24ef02f934eeb48830cff6b739abc3c62b1d107b
 
-The design philosophy behind fwnode links is that it's purely a
-parsing optimization. It doesn't care how this is later converted into
-device links. If one DT node points to another, then there'll be a
-fwnode link between those two. Whether the node gets converted to a
-struct device or not and how that should be handles should be outside
-of the fwnode links code. So, please solve this elsewhere.
-
-Without digging too deep into the code, this feels more like something
-that should be solved at the MDIO or phy layer.
-
-Thanks,
-Saravana
-
-
->         fwnode_link_add(of_fwnode_handle(con_np), of_fwnode_handle(sup_np=
-), flags);
->  }
->
->
-> --
-> 2.53.0
->
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index 299234a5f0fe..7519bc5c1aff 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -259,6 +259,26 @@ static int length_to_duration(struct taprio_sched *q, int len)
+ 	return div_u64(len * atomic64_read(&q->picos_per_byte), PSEC_PER_NSEC);
+ }
+ 
++/* Software schedules service one hrtimer expiry per entry; intervals
++ * shorter than the expiry service cost rearm the timer with an expiry
++ * already in the past and storm the CPU. 100us leaves margin above the
++ * measured cost on debug configurations.
++ */
++#define TAPRIO_MIN_SW_INTERVAL_NS	(100 * NSEC_PER_USEC)
++
++static s64 taprio_min_interval(struct taprio_sched *q)
++{
++	s64 min_interval = length_to_duration(q, ETH_ZLEN);
++
++	/* Only pure software schedules arm the per-entry hrtimer. */
++	if (!FULL_OFFLOAD_IS_ENABLED(q->flags) &&
++	    !TXTIME_ASSIST_IS_ENABLED(q->flags))
++		min_interval = max_t(s64, min_interval,
++				     TAPRIO_MIN_SW_INTERVAL_NS);
++
++	return min_interval;
++}
++
+ static int duration_to_length(struct taprio_sched *q, u64 duration)
+ {
+ 	return div_u64(duration * PSEC_PER_NSEC, atomic64_read(&q->picos_per_byte));
+@@ -915,6 +935,51 @@ static bool should_change_schedules(const struct sched_gate_list *admin,
+ 	return false;
+ }
+ 
++/* The operational schedule fell behind, e.g. because the timer was delayed
++ * or the reference clock stepped forward. Advancing one entry per timer
++ * expiry would replay the whole backlog from hrtimer context, so skip
++ * complete cycles arithmetically and walk the remaining entries to land on
++ * the entry covering the current time.
++ */
++static void taprio_catch_up(struct sched_gate_list *oper,
++			    struct sched_entry **next, ktime_t *next_start,
++			    ktime_t *end_time, ktime_t now)
++{
++	int budget = 2 * oper->num_entries + 1;
++	struct sched_entry *entry = *next;
++	ktime_t start = *next_start;
++	ktime_t end = *end_time;
++	s64 behind = ktime_sub(now, end);
++
++	if (oper->cycle_time > 0 && behind >= oper->cycle_time) {
++		s64 jump = div64_s64(behind, oper->cycle_time) * oper->cycle_time;
++
++		start = ktime_add_ns(start, jump);
++		end = ktime_add_ns(end, jump);
++		oper->cycle_end_time = ktime_add_ns(oper->cycle_end_time, jump);
++	}
++
++	while (ktime_before(end, now) && --budget) {
++		if (list_is_last(&entry->list, &oper->entries) ||
++		    ktime_compare(end, oper->cycle_end_time) == 0) {
++			entry = list_first_entry(&oper->entries,
++						 struct sched_entry, list);
++			oper->cycle_end_time = ktime_add_ns(oper->cycle_end_time,
++							    oper->cycle_time);
++		} else {
++			entry = list_next_entry(entry, list);
++		}
++
++		start = end;
++		end = ktime_add_ns(end, entry->interval);
++		end = min_t(ktime_t, end, oper->cycle_end_time);
++	}
++
++	*next = entry;
++	*next_start = start;
++	*end_time = end;
++}
++
+ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
+ {
+ 	struct taprio_sched *q = container_of(timer, struct taprio_sched,
+@@ -924,7 +989,7 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
+ 	int num_tc = netdev_get_num_tc(dev);
+ 	struct sched_entry *entry, *next;
+ 	struct Qdisc *sch = q->root;
+-	ktime_t end_time;
++	ktime_t end_time, next_start, now;
+ 	int tc;
+ 
+ 	spin_lock(&q->current_entry_lock);
+@@ -960,14 +1025,19 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
+ 		next = list_next_entry(entry, list);
+ 	}
+ 
+-	end_time = ktime_add_ns(entry->end_time, next->interval);
++	next_start = entry->end_time;
++	end_time = ktime_add_ns(next_start, next->interval);
+ 	end_time = min_t(ktime_t, end_time, oper->cycle_end_time);
+ 
++	now = taprio_get_time(q);
++	if (unlikely(ktime_before(end_time, now)))
++		taprio_catch_up(oper, &next, &next_start, &end_time, now);
++
+ 	for (tc = 0; tc < num_tc; tc++) {
+ 		if (next->gate_duration[tc] == oper->cycle_time)
+ 			next->gate_close_time[tc] = KTIME_MAX;
+ 		else
+-			next->gate_close_time[tc] = ktime_add_ns(entry->end_time,
++			next->gate_close_time[tc] = ktime_add_ns(next_start,
+ 								 next->gate_duration[tc]);
+ 	}
+ 
+@@ -1038,7 +1108,7 @@ static int fill_sched_entry(struct taprio_sched *q, struct nlattr **tb,
+ 			    struct sched_entry *entry,
+ 			    struct netlink_ext_ack *extack)
+ {
+-	int min_duration = length_to_duration(q, ETH_ZLEN);
++	s64 min_duration = taprio_min_interval(q);
+ 	u32 interval = 0;
+ 
+ 	if (tb[TCA_TAPRIO_SCHED_ENTRY_CMD])
+@@ -1166,7 +1236,7 @@ static int parse_taprio_schedule(struct taprio_sched *q, struct nlattr **tb,
+ 		new->cycle_time = cycle;
+ 	}
+ 
+-	if (new->cycle_time < new->num_entries * length_to_duration(q, ETH_ZLEN)) {
++	if (new->cycle_time < (s64)new->num_entries * taprio_min_interval(q)) {
+ 		NL_SET_ERR_MSG(extack, "'cycle_time' is too small");
+ 		return -EINVAL;
+ 	}
