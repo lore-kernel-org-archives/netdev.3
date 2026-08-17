@@ -1,119 +1,154 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B8E3B42C0
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 07:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1C73B47D3
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 07:51:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786953000; cv=none; b=nSSO8jp1yn4/FH7qQskRs1YQH+Go5a/fmPKmcczss1UDQQUY0b+DzURgSIp1m9PlBuet7OMvYrUL11Nil9eepMMWAue7gavli+YEUKF1jJxzLOuVAdXW5TJIj6HZPCgVfzF/rFhqy0+BAAY75J1KodGzdSPBc70UHih2XeURsfI=
+	t=1786953066; cv=none; b=c3uKSreE4h+0F+vsi/CQlz/nTrLP5yGy+VfRUc2DsLUAg8KXdsChzlaOMWXML93E0CmWpWTTZaDh7TTGgo9Q1ykcR0d/ZrExRFzpgXT1z9NyNHUBgjmbNo6Y+JZKbeaQ+pnREY4yYUe1liwj8FRTMr3naK8AtTFiUEoFUAAr1h0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786953000; c=relaxed/simple;
-	bh=gGC3lYKq2mWHPR/8RuzYVDwgm2Cu9q6LphuLySSOPzY=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c4L4yJFsNFvdxxvjv1KmxpJONgrK4oN8mOw8l3V7K1qz0iPQ37drbTMRmtza0EPcLQz8tIPuKcRgr2oBz+qu8D8O2L0CwE2yYDsA7SZD+EOY/o3HkEwVtE1o0Z60xL/GcGs9vqJgL8b8qgeXN04QCF6DgNV/cB/0G0uCc01UhOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=Z/qiFwuE; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1786953066; c=relaxed/simple;
+	bh=KqGtfRoq3jZT/Dml4qg+Mxz1uCIEFJzeVXIq0OKduLk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ClAn7X4punNgL9B2GZZd0UqVMobdtU2zheTDQmD5V4nShZt5bjzDtEwtgTC4r644KQH4W1hmPCrNrRSggikO5I7hLdV/6S3ls52s8FgC+F+/LPyUgQMR2zGhc0Og+xOwf6536ZAeW2AmXNBG6GmQ+7qs1w786h5KCH5PBYIzy4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LT3KZzX/; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="Z/qiFwuE"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id E75D720610;
-	Mon, 17 Aug 2026 09:49:54 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 6KNB2OuAWoep; Mon, 17 Aug 2026 09:49:54 +0200 (CEST)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 101BC20606;
-	Mon, 17 Aug 2026 09:49:54 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 101BC20606
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1786952994;
-	bh=rIgy2Iz2/YuwN30qwUEMAvctngbYOapkhdGM2M/egUI=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=Z/qiFwuEM2jYE18h+KI+cKRJr9zVWxvl+CBQjUyul4MfPjbH8PpLQEn2avPT7aoOn
-	 6m6cx8jPMlESYFqmTb21ciaE6X8nOCXcvZmyXtuEJtZkYFrB8dv9ZuC5SjCMsyrDBs
-	 pPZx3qEoq9ix881t7aA8nkTKrLQncQ8U8KCjHWZoEGQnkXn0cYBXhbdoyTV0m86yjd
-	 NDX3VZ5HxQdDqvaM/OVStqaTGaZiIM7DACv9XlbIzpelTOCVQku1/qRl8BC21BTji3
-	 IXo93gaPUL5mHl2gWqtgHSTil6vnakpxYz6OXM0GAYu7SMlSnIwIZQ9VKxYlyFvxup
-	 39RzdINaPTg4w==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 17 Aug
- 2026 09:49:53 +0200
-Received: (nullmailer pid 2417133 invoked by uid 1000);
-	Mon, 17 Aug 2026 07:49:52 -0000
-Date: Mon, 17 Aug 2026 09:49:52 +0200
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Zihan Xi <zihanx@nebusec.ai>
-CC: <netdev@vger.kernel.org>, <herbert@gondor.apana.org.au>,
-	<davem@davemloft.net>, <eyal.birger@gmail.com>, <vega@nebusec.ai>
-Subject: Re: [PATCH net v2 1/1] xfrm: avoid lock inversion in nat keepalive
- work
-Message-ID: <aoK9ILxoOLvOoTQ5@secunet.com>
-References: <cover.1785861392.git.zihanx@nebusec.ai>
- <fa79c742acdfc25678e6807d4cad766edaaf1d59.1785861392.git.zihanx@nebusec.ai>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LT3KZzX/"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4998e0916faso13914145e9.2
+        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 00:51:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786953063; x=1787557863; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DDeFtTnxMBvDDeM+UXcBJoOG/+TlVBVJ2Mo0e9wRHls=;
+        b=LT3KZzX/BjyCw8+wKR1qFBm+3/AuNUzbGuIiN7u/jmEolL5UWMzmf4XaLydaQoKV3l
+         5Z3huDM1a8YrbkmkPOYPDd59w63TfioL4QLiuwddqD6W2vHk1n+hsLbQVtNbVzaFE0jZ
+         cozX6D+oOoCuV6yhMW+KBFvhqlpr8RzsDBbGKLHesXWYgjxl0ltMMlvzZpev2N+tkdc7
+         VTHtCQ/U5yC/3pztHtLBlbBft73dcF6+kJxM7e6DUvDGFl6/C3n6YZKo4dzRKm4q2dv2
+         ydy67rbfies3oTvm6MnHV99ozwh6C58IhoscneP3xmYZedJY03H3r5bYZJDjRYPn5P0D
+         vQFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786953063; x=1787557863;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DDeFtTnxMBvDDeM+UXcBJoOG/+TlVBVJ2Mo0e9wRHls=;
+        b=qdKC3MGV25xM9WF2n3BB6ygGdhGP25upYTWC7F8BUhK8z2vGqhP3ZEZlfq7ama1JaR
+         WiwIQGvA9eWVTcdwf/m/JNZqio+QrkiLqCjs6sFsrdde92XTYgsrJtUmQ/jQ/CouRmWI
+         /y1FDD7OeqTeNV6qxzHj/Dgt7+mQIlOiAoZGvhC8HyX+fUgi2NiiaCG9uqnwurNo42v/
+         mCZQNsyTlas0SKMyRV300cyPzIgomh7k9ciQWh4vTaAJ2WMS7gm5IHXB3cPwjAMqcVyP
+         82UKYMV+RaUfvx1TBUnN8JmWoxdrUy7xSAhaoykSK+JE6uzA8jwoY7iKbzj6nlOBgxea
+         jt0w==
+X-Forwarded-Encrypted: i=1; AHgh+Rr9dxSjkgcstjPpUt9bGMYzQ05LcU9Kl5Ss1YZ5wbR94noxxfNPZG8gmR1HVXgETFdu6NQvYik=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzziNqfZNxlkfLxvIwOUVeFuXlx4R8duj6JOK7s0ItpXsP92m6Y
+	Z1CiI/ku9fhVl3n/p23zt8LVgv3QzjqeNcAywd3QUyUWTFtHZU0oHHaq
+X-Gm-Gg: AR+sD12EQllSv2FrHrfIUiorXFflzzANmaUawPwM7bBVsjZZ5bQE7WYoFpktPus4x6V
+	oH7tMr9/JWXOCNrLW7TSF1/gBsXFimox9AUwdeYJIwYvDzv6nMFbVa3OW4jtDfICSrZH6Qrq3oo
+	zk/8c2JdQxxP1O9jm1lBQhuAVyvkIR+DfxpPUm7ScFDLK7PKhjvErbAoEMqN2jOA08CIIKA6eWg
+	meGNubG7sKNAQLZcXvA9oyxYWjUQikXn3YcQvW/TNqkBAdDFHBc/g0swQPhipoaJ0KltWRxZK0M
+	wRz2KQjQNcHz0HF5+ON+XVnx8yvM0fCwhcW9t3GN0uWeEYP4kQUDFBkbwqMV5TSZhL0v0awbywv
+	tZqLy3IKaw91V9yaUyweXB7umRWAMVrXYUgrhVhSoKqKnZCE1Ve7WOO4ClhGFZZfUj32rln9e9D
+	YyiqDUvVpjQIQrnnyqDeuNSqc1b+7tOzuuUGhRcWkvKioxPjIt2EuQHhM1+Tn1OavFGHoezrptL
+	4Xldks/VV8Ts8i+RYz/15pD1MHP0AUEJ/130N79/Shb7nYUYanHkPi0
+X-Received: by 2002:a05:600c:3114:b0:495:63e4:7f78 with SMTP id 5b1f17b1804b1-49987971986mr331622695e9.10.1786953063033;
+        Mon, 17 Aug 2026 00:51:03 -0700 (PDT)
+Received: from Ansuel-XPS24.localdomain (host-79-40-190-175.business.telecomitalia.it. [79.40.190.175])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4999d11f073sm22486255e9.15.2026.08.17.00.51.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Aug 2026 00:51:02 -0700 (PDT)
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Lorenzo Bianconi <lorenzo@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: =?UTF-8?q?Leto=20Liu=20=28=E5=88=98=E6=B6=9B=29?= <Leto.Liu@airoha.com>,
+	Christian Marangi <ansuelsmth@gmail.com>
+Subject: [PATCH net v4] net: airoha: Add retry mechanism to airoha_qdma_set_trtcm_param()
+Date: Mon, 17 Aug 2026 09:50:39 +0200
+Message-ID: <20260817075044.17691-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <fa79c742acdfc25678e6807d4cad766edaaf1d59.1785861392.git.zihanx@nebusec.ai>
-X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
- (10.32.0.171)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Aug 05, 2026 at 04:51:25AM +0000, Zihan Xi wrote:
-> nat_keepalive_work() walks the state table while xfrm_state_walk()
-> holds net->xfrm.xfrm_state_lock. Its callback then acquires x->lock,
-> which conflicts with the delete path taking the same locks in reverse
-> order via xfrm_state_delete() and __xfrm_state_delete(). This creates
-> an AB-BA deadlock that is reported by lockdep when a NAT keepalive
-> worker races with SA deletion.
-> 
-> Fix this by splitting keepalive handling into two phases without
-> reversing the lock ordering. Walk the state table only to collect a
-> bounded batch of candidate states while holding xfrm_state_lock and
-> taking references on them. Then, after the walk drops xfrm_state_lock,
-> process each referenced state and take x->lock in phase two.
-> 
-> Use a small fixed-size batch and the xfrm_state_walk() cursor to resume
-> the scan when the batch fills up. This avoids per-state GFP_ATOMIC
-> allocations, avoids aborting a full round on -ENOMEM, and keeps
-> nat_keepalive_send() in BH-disabled context by wrapping the phase-two
-> drain with local_bh_disable()/local_bh_enable().
-> 
-> Fixes: f531d13bdfe3 ("xfrm: support sending NAT keepalives in ESP in UDP states")
-> Cc: stable@vger.kernel.org
-> Cc: Eyal Birger <eyal.birger@gmail.com>
-> Reported-by: Vega <vega@nebusec.ai>
-> Assisted-by: Codex:gpt-5.4
-> Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
-> ---
-> changes in v2:
->   - reroll on top of net cf6f8b29befb so the patch applies after the
->     nat_keepalive_send() default-case change
->   - replace the unbounded GFP_ATOMIC state list with a bounded batch
->   - keep phase-two processing in BH-disabled context with
->     local_bh_disable()/local_bh_enable()
->   - clarify the validation permission model and reproducer scope in
->     the cover letter
->   - refresh the cover letter with cf6f8b29 incremental build and PoC
->     validation results
->   - rerun decode_stacktrace.sh on an LF-normalized crash log and
->     document the decoder truncation in the cover letter
->   - add source locations for the key lockdep offsets from the same
->     unfixed vmlinux
->   - add Eyal Birger to Cc for the v2 reroll
->   - v1 Link: https://lore.kernel.org/all/cover.1784645321.git.xizh2024@lzu.edu.cn/
-> 
->  net/xfrm/xfrm_nat_keepalive.c | 51 +++++++++++++++++++++++++++++------
->  1 file changed, 43 insertions(+), 8 deletions(-)
+From: Leto Liu (刘涛) <Leto.Liu@airoha.com>
 
-Can you please send this as fix for your original v1 patch
-on top of the ipsec tree? That way I don't need to revert
-your original v1 patch.
+CPU accesses QDMA via the bus. When multiple modules are using the bus
+simultaneously, CPU access to QDMA may encounter bus timeouts and fails,
+resulting in QDMA configuration failures and potentially causing packet
+transmission issues. In order to mitigate the issue, introduce a retry
+mechanism to airoha_qdma_set_trtcm_param routine in order to ensure the
+configuration is correctly applied to the hardware.
+
+Fixes: ef1ca9271313b ("net: airoha: Add sched HTB offload support")
+Signed-off-by: Leto Liu (刘涛) <Leto.Liu@airoha.com>
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+---
+Changes v4:
+- Rebase on top of net
+Changes v3:
+- Init data
+- Use continue instead of negative error for poll
+- Add memory block after CFG_PARAM
+
+ drivers/net/ethernet/airoha/airoha_eth.c | 29 +++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 79418e682f71..302f8c432055 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -2712,14 +2712,31 @@ static int airoha_qdma_set_trtcm_param(struct airoha_qdma *qdma, int channel,
+ 		     FIELD_PREP(TRTCM_METER_GROUP_MASK, group) |
+ 		     FIELD_PREP(TRTCM_PARAM_INDEX_MASK, idx) |
+ 		     FIELD_PREP(TRTCM_PARAM_RATE_TYPE_MASK, mode);
++	int i;
+ 
+-	airoha_qdma_wr(qdma, REG_TRTCM_DATA_LOW(addr), val);
+-	airoha_qdma_wr(qdma, REG_TRTCM_CFG_PARAM(addr), config);
++	for (i = 0; i < 100; i++) {
++		u32 data = 0;
+ 
+-	return read_poll_timeout(airoha_qdma_rr, val,
+-				 val & TRTCM_PARAM_RW_DONE_MASK,
+-				 USEC_PER_MSEC, 10 * USEC_PER_MSEC, true,
+-				 qdma, REG_TRTCM_CFG_PARAM(addr));
++		airoha_qdma_wr(qdma, REG_TRTCM_DATA_LOW(addr), val);
++		wmb();
++		airoha_qdma_wr(qdma, REG_TRTCM_CFG_PARAM(addr), config);
++		wmb();
++
++		if (read_poll_timeout(airoha_qdma_rr, data,
++				      data & TRTCM_PARAM_RW_DONE_MASK,
++				      USEC_PER_MSEC, 10 * USEC_PER_MSEC,
++				      true, qdma, REG_TRTCM_CFG_PARAM(addr)))
++			continue;
++
++		if (airoha_qdma_get_trtcm_param(qdma, channel, addr, param,
++						mode, &data, NULL))
++			continue;
++
++		if (data == val)
++			return 0;
++	}
++
++	return -EBUSY;
+ }
+ 
+ static int airoha_qdma_set_trtcm_config(struct airoha_qdma *qdma, int channel,
+-- 
+2.53.0
+
