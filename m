@@ -1,109 +1,129 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEFB282F29;
-	Mon, 17 Aug 2026 15:08:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786979304; cv=none; b=Ipjb/bIKACBfuzKGEDxD/Q0Sw+i00TUqeqEXzx/KWqCB1c3e5dRVNbSsGO4iOoFyFNdAAvrW9PzMVdSZvGxytgLRNp2U0fyST1kkXEShWcGt9ybgpjz966Vk0B/g/AQIicA8Pg3iyQFfNMHtSegJxLTYAgNqb4KDYaT6XqSeozA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786979304; c=relaxed/simple;
-	bh=3Dbnf81DlTvOhBKc3YeNtE9LHJf2vgsv4s56g89ccI8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=H3xQGN1AzvJylKFxXssXxXLz6hrBKiVBxGoyfczMOG+fm0+/NxSUHtK4reY69d3catDZUwzS6TiU9gTwIo8HTZbKo5cXAoL2uBGXV+v2h1wn5yNC1f8IcSNDWxGCLHSprdCxNogT8Cqj97DYdH99+MD38oKXnz0Ss4N3oqtu74U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 75bf92309a4d11f19a56ed5b684f684d-20260817
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_MISS
-	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_DIGIT_LEN
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_UNTRUSTED, SRC_UNTRUSTED, IP_UNFAMILIAR, SRC_UNFAMILIAR
-	DN_TRUSTED, SRC_TRUSTED, SA_TRUSTED, SA_EXISTED, SN_TRUSTED
-	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD_SPF
-	CIE_UNKNOWN, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD
-	ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:ed513693-d1e6-433a-b655-ec47fe9fb2c4,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:10
-X-CID-INFO: VERSION:1.3.19,REQID:ed513693-d1e6-433a-b655-ec47fe9fb2c4,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:10
-X-CID-META: VersionHash:7db8b62,CLOUDID:cd91e54b751dffd8321282ed21a43d8c,BulkI
-	D:2608172308141DPS8EUO,BulkQuantity:0,SF:10|64|66|78|80|81|82|83|102|127|8
-	17|841|850|865|898,TC:nil,Content:-10|-8|-5|14|50,EDM:-3,IP:-2,URL:0,File:
-	nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR
-	:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 75bf92309a4d11f19a56ed5b684f684d-20260817
-X-User: yijiangshan@kylinos.cn
-Received: from localhost.localdomain [(120.227.38.248)] by mailgw.kylinos.cn
-	(envelope-from <yijiangshan@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 956572860; Mon, 17 Aug 2026 23:08:10 +0800
-From: Jiangshan Yi <yijiangshan@kylinos.cn>
-To: vadim.fedorenko@linux.dev
-Cc: 13667453960@163.com,
-	andrew+netdev@lunn.ch,
-	ariele@broadcom.com,
-	davem@davemloft.net,
-	dmitry@broadcom.com,
-	edumazet@google.com,
-	eilong@broadcom.com,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	manishc@marvell.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	sashiko-bot@kernel.org,
-	skalluru@marvell.com,
-	stable@vger.kernel.org,
-	yijiangshan@kylinos.cn,
-	yuvalmin@broadcom.com
-Subject: Re: Re: [PATCH] bnx2x: fix NULL pointer dereference in bnx2x_free_mem_bp()
-Date: Mon, 17 Aug 2026 23:08:04 +0800
-Message-Id: <20260817150804.759629-1-yijiangshan@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <a7360a7e-6c42-4891-a01c-a349d1cb803a@linux.dev>
-References: <a7360a7e-6c42-4891-a01c-a349d1cb803a@linux.dev>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959B93ACA77
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 15:10:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786979412; cv=pass; b=bzPJje+BQWBJ5MkonVa4yj97p84rOroUTk0diDF4sTXibGIvpUfLl/obJX64qlhYN4Ii0s4V6JYznkVo2SXush79OxpudpNR8N/K9SAHMK1ZMxuq+rtKmHh6Y4jXsKvF0fszNSqYa0yPWfzJ/OJE5lmEFRIliMvFNZY0eep+Wl8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786979412; c=relaxed/simple;
+	bh=Pc9B99PvwKk0JzGRy3gbO6+dD48zh0+7+vmuU5I0Cj8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pD/b0Oj8TISUzo7btg22X3b5BpUe5fFIaZMsMC64CUmcDmDT5ORADHlLnmTwAw9HYTxARGXMTDJLTb46KTH7ME5VZRjjqs9nzMu4K4+xZwLKYekudWM7DB6L/g66hXzGYcfgpyjRQ09+8gBvbjCgZ7kaPFkqgSVxP2ffO2yxeBA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bFnTCpgd; arc=pass smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bFnTCpgd"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-527e352a167so21811011cf.1
+        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 08:10:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786979408; cv=none;
+        d=google.com; s=arc-20260327;
+        b=cgvK2GH4v5htlrpZj3STKtCXkhPcr1qlDbtHqq8DInx3ZZjmenwyORcRGqAWYI+7o0
+         n9LTb0uUn+e/BTM3QlewDuFCjdrhtXIg3Fn+KmHPEwSgVuGV+4ziV0ZcZIbTVjSQgRlb
+         +PylKg38aw1XjWjzr9CSVP4xxSvi4EYzDjIY2gs+JTbPQtZ8jgPfz+NGRbKBp7ICc3uq
+         qRGO4F6WU1tkwYyx9xrDpARk2a4bADzw/r3chsCl+ys0kQycz6fiLiuohKn29H3PG7ze
+         0w0y38VDM/LM6UI7Xq4xGMxemZFw74oAamEn4AkPDN5RdIckOgyNSIHS2GhuRZdT34ZF
+         fiHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=P80KgaQ8/Me7lavJaEHcn5LQzifuFjvx8uVo80XbTXM=;
+        fh=FEIC5OOt+v3InB1eGAHIRW9dVC2zeYfUF7rdGmQycQw=;
+        b=Ks1rVHVvBiSfb/CN6JGvw31IvebWufLwrSbuj7+MsA3xOYYLyylFlcAgUZfF2YGjGk
+         bTmQmY0MiUUYcE/JK3YrK+LG78H0dTebTym0a+t5nFONCrNQ8jdmKctTs44ds49trVPL
+         iRRtf6EdlSMGs5L2WFdTo1z79LnRGB9+Dt963x29H14lISusq5ToUSmgc6skzaH43tud
+         pKUdZZMGiXE+EgiSlNwYYJMmdWvul6r2h4dOvfpdAjqbcO+070rFK2vwo10JbNr2hBRI
+         sypAUngvxK55p0iadN1TdOAqEj1JcpfVWuFVQGD+xesGEgnBeqUF8/qkns1LU1YVp0La
+         O9Jw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786979408; x=1787584208; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=P80KgaQ8/Me7lavJaEHcn5LQzifuFjvx8uVo80XbTXM=;
+        b=bFnTCpgdvDIm1fm5pIIaFZhIgq514H3K/umgN+CtB4SYhCbKz18Bke/EDOZjnISf/y
+         2fEM1hweqNart9VMygM8NzIO9ytJ7b1cM55PMfuDMP/VBuN9rA17AR0l3K54asdm1eTW
+         SkciLntGz4A5E4bsvv0P50PALTsjipiXT+iek0BveoLhONxU5B0vPX//o5wRBvB5E9ap
+         WFNF9hLMuOPTz25tWrhhkggm4cJB9q9ArpoZgPK1UApgJDgesVEKjwY1YZdgKgtEvupl
+         8hTMmQXpTAOyeHDzi9kvyQgFw0GWwehBPoZ4CWZESoqtg2E++dvkFJ+57x3hlOQf0saM
+         oJ2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786979408; x=1787584208;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=P80KgaQ8/Me7lavJaEHcn5LQzifuFjvx8uVo80XbTXM=;
+        b=TKPXz4zB86LnJl6p7P/Lf9p0ebjjBj9QEpU8437pdDawof+f+tlaoRyBa0CM+6IkFL
+         PQFQx/tvIqqVP1CkuiHj4pKGPQsaMxWuaEzXNl0BlqVZ5A9k5tPQGK6GkuwKFK1ZomBY
+         0b4+QIZ7ZCwt3vJV8xbEpS8gKDLH2JHIaecYjH7e07etp8GPDNHOKi2YL/p0h/zS/qfL
+         zqT+Xmj7B93UxXgZ8038scO2xfrkzDVKABWh62aTUOrjSwstQQQDChZx4l/V+0DrnlfS
+         PD42u/nFMwNo4+0pDt3kHoMEF/r+STmfoYNQa+PmXneiM16PkAw4UiLzJTTjyaE79I+y
+         aR5A==
+X-Forwarded-Encrypted: i=1; AHgh+RrPcYKzV4YuXmf2PgAATVcdQEakpsgIcYIW3VPGxc2BGb16ypciHIkrEWKjHsu8sIh/8SWRM2U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGQxjrHSxgyX4FvAj2EwNgAizMArYuGtZs/P10LvEBr2VUxh8q
+	GEYBhXwdWd0XdKT6sqRiti2jdatgx7FC/cOHzA/cxrvWTVILYaARVjPTVqx0YdPq0ThnsjnCxEr
+	qnoA3UoCAAeGqJzpgy7kqDVIDlpOl/0enTrWZmQqq
+X-Gm-Gg: AR+sD11r82WT3e3URL8tMvwH874HPqBileyr/xLTzFqUvgnq7Uxy9z5hFgu+ZnNmrlp
+	OkAV5XXulsPt7btSwtT1eAvejdHFVbIOTtunWczqe1yAgbOl1arIZhWFVlSnGKQvPpWlo6cXJlr
+	zjJOo5o9LGz8wRQ2HXo8jM0PrCmHyR2vgekDHvW3fR5DfmbZTcQUZU5Rwnmeq0a5e3vpQOwkW/k
+	z37QqSReq+32S+VwSgBrxgb1m1Q+0a4jBb83RADYu84gGuRl+k9z9vcZT0rdoaOQ7act/SWPnVD
+	kI/4SyZVoRW9U3Xq3SPqcZgfbmbaSNeHUiufJw6s9wW7hoBMxxDUHgnlrhTyjpUF4B5MLuYTuqM
+	dadmnbFQT8oY1MUcRmmcxU5e/JRykQm0Q6tjPwb6SxD6Mt6yi+Py7YWEx/ynPtCicxhTrku6V8y
+	DPoaSHMZtF1RF6JUs=
+X-Received: by 2002:a05:622a:4d9a:b0:52d:94c5:2212 with SMTP id
+ d75a77b69052e-52dbd5fe649mr15814841cf.3.1786979407638; Mon, 17 Aug 2026
+ 08:10:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260814060616.2164504-1-edumazet@google.com> <20260816124359.GA62850@shredder>
+In-Reply-To: <20260816124359.GA62850@shredder>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 17 Aug 2026 17:09:55 +0200
+X-Gm-Features: AcwNN1U-ltEO2KFt7Pe5WgINbsotoXM1Cacm3OUZrvpIHe1HBFhfM9jckMUS7D0
+Message-ID: <CANn89i+h_ThBFFDSqUDf=2NajwrnTRowjvveNTLWQU3OpgNTeA@mail.gmail.com>
+Subject: Re: [PATCH v2 net] inetpeer: randomize RB-tree node comparison using SipHash
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Michael Blunt <michaelbblunt@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> > +	if (bp->fp) {
-> there is no need to put this defensive code ...
-> > +		for (i = 0; i < bp->fp_array_size; i++)
-> > +			kfree(bp->fp[i].tpa_info);
-> > +	}
-> ......
-> > -	bp->fp_array_size = fp_array_size;
-> > -	BNX2X_DEV_INFO("fp_array_size %d\n", bp->fp_array_size);
-> > +	BNX2X_DEV_INFO("fp_array_size %d\n", fp_array_size);
-> >   
-> > -	fp = kzalloc_objs(*fp, bp->fp_array_size);
-> > +	fp = kzalloc_objs(*fp, fp_array_size);
-> >   	if (!fp)
-> >   		goto alloc_err;
-> >   	bp->fp = fp;
-> > +	bp->fp_array_size = fp_array_size;
-> ... when you have fixed the root cause of the issue
+My apologies, I missed that. I will send a V3 to fix this.
 
+pw-bot: cr
 
-Hi Vadim,
-
-Thanks for the review. You're right - once the bp->fp_array_size assignment is moved after bp->fp is set, the loop in bnx2x_free_mem_bp() naturally won't execute
-when bp->fp is NULL, since bp->fp_array_size remains zero. The if (bp->fp) guard is indeed redundant. I'll remove it and send a v2 with only the assignment-order
-fix.
-
-Best regards,
-Jiangshan Yi
+On Sun, Aug 16, 2026 at 2:44=E2=80=AFPM Ido Schimmel <idosch@nvidia.com> wr=
+ote:
+>
+> On Fri, Aug 14, 2026 at 06:06:16AM +0000, Eric Dumazet wrote:
+> > @@ -190,12 +221,13 @@ struct inet_peer *inet_getpeer(struct inet_peer_b=
+ase *base,
+> >       write_seqlock_bh(&base->lock);
+> >
+> >       gc_cnt =3D 0;
+> > -     p =3D lookup(daddr, base, seq, gc_stack, &gc_cnt, &parent, &pp);
+> > +     p =3D lookup(daddr, dhash, base, seq, gc_stack, &gc_cnt, &parent,=
+ &pp);
+> >       if (!p) {
+> >               if ((u64)base->total < 2ULL * READ_ONCE(inet_peer_thresho=
+ld))
+> >                       p =3D kmem_cache_alloc(peer_cachep, GFP_ATOMIC);
+>
+> Eric, this is a leftover from v1, so the patch doesn't apply :/
+>
+> >               if (p) {
+> >                       p->daddr =3D *daddr;
+> > +                     p->hash =3D dhash;
+> >                       p->dtime =3D (__u32)jiffies;
+> >                       refcount_set(&p->refcnt, 1);
+> >                       atomic_set(&p->rid, 0);
