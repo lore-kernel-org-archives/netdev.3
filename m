@@ -1,48 +1,48 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010026.outbound.protection.outlook.com [52.101.193.26])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011027.outbound.protection.outlook.com [40.93.194.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BCD523741
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 06:43:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29BF376BE0
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 06:43:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.27
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786948989; cv=fail; b=qjowCMt/CaCnkT9fYwuPPjojFt4/9aju2YKj7ATTAIvSDCjJL85se1Mthdj7UEv3lruq1k++Gp0XfwkxFUa92BUT/NyM2Gv4u8o8TwS6dpoDbKbsqon9d14pZRMmnDqqPZzS0r0SVJGC0CSowVxTgV/xEV6sgX+hklOJBBZGsm4=
+	t=1786949013; cv=fail; b=cjP9Ky+Tp6ja2WCaK55IsTB7g71VIgkGRlIPCfNsxYaRpuZw9XALk5QMA4Sx0/+1nkO7P+L6YgSi3r6kLCpbNdSQ60m6XrZEigz9LbN83zFblFn2+8d8KkpjAlWLmMovd7kDoPdXIVK0/eTdRfdAzfAuengG6T6ux97Lw3yD574=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786948989; c=relaxed/simple;
-	bh=dtVe3NbwVEYXHowKYFP3bgrYV61qH8+vjGPu0PLGo+0=;
+	s=arc-20240116; t=1786949013; c=relaxed/simple;
+	bh=DBeIh5Np1bfRs6TPwxC0QtSKObiTWU5qYag/HEP+hnI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=WW8bSq1skI0wTwbTTXhap3DclWeh3wcf4+ssqqKxv6T5wSbOPduvptYnI26ZHW+ayGmYCxqrtQRUumWOyH9lp/2+nyotrdB2isCm8v4BjZ0WDQ+G2o+ds2PfXz7fsxsdLv9atSreubVwvObqQrzJnwZSRnQ+iFkl3rVQ3/hkxYg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=NBWa8hrm; arc=fail smtp.client-ip=52.101.193.26
+	 Content-Disposition:In-Reply-To:MIME-Version; b=X7NS6yUGMNDl2ipK/A4XEZsUV+rQ9WlNRnNb0BJcv9cGDqJ1OTS1Wglq1drDeoZkuBjxjjkFWWk6Q1Cy3bMCAFE/Fp83T9fvFXlZpQDw+bFCsyHKPPoxiDxyyGV5I4o/l5m+kJ5VEfzsBBkV8sFKzPSdGhGktz6nvFQoRZP2CcY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=sprFqB40; arc=fail smtp.client-ip=40.93.194.27
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="NBWa8hrm"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="sprFqB40"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Q8LQVal4+u8ZaQY5VFm39UFvHitxRWHmhDQzzsHJ56PZMsHv8xqAckgOcHHhNcdD7Qe4t/8ejWL5tcVZ1etGatGoZkGW+qQyU3fUIdyB56qjx9aalOzlO/LQjin4opPenjhSi3UHdbApfNoDk9vCzcuK1RjCcCvD2EckOFE5GzFpYv1l5Vn93pWa/J1XEuYlb754w44C9EFuz3CFGu6ZuNugFshOKK489Tl0j2R8vS00sa77lCDZGjeemvt93PD1p9I7mCzKwZMKFHZiFiCRAnpGxRyrFrFNm1F1BeqDTwrfZPsbW8XuytnMDJUMq3sznQcfVncLOcX9v38A52rIcg==
+ b=qMPq44+NvptmQvqXeYGhqs0AQhIpKl2J12Dm6pbw5T6NpmJErTtGJVRmsg5aPjh51M4X8Js+U9ujcU+PDEnBFT9KupElrNc2QUt8/Q2or4mwE96GaATnkL+1rMqKwxMKVJDr/jVzecBGChrLWGoOl28KArmK8WiDRH5OWnLJVktLAJIcBtIHqdl8j0snR8uvHgedas6vU93OYLj98I4AIy75lNJdOwGIXE4oEcGavv5PJNyvZnmIzvAnkBM1OCZ9+PtNqEv7vSxiB0AuKHaByz8B3PbM+a789WCagjePWRqD4ouZCglt+3N+h0pIvHfYd6VtsL+IrEaJZtRUL+e5yw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=On094++C/yjw1gQXNDDxz3GTHYbcC3wRsvRqGpnXhj4=;
- b=YfAWs3EgFXYfKYGmfSUtVp0orFefCUea0YrP/RH+Ww/OHZGxTRR/PEJ/N7GwjoKHXEWqc8QKO4ttQ7d/OlsB3/G2FFGxIuRIBrhf3a6K4er7yVuSC+yYUeoKA6kZ31HJ5cOVSeFgGOvmlvgcn6P+iBE50BiXxtQcpXenixaprtPWnhLOxawiUwmAEZb3P1H5mq6QzkGqT8QS005m0MI9ZX3FTlpBLvXeP8GAq/p8Dz3/hEMmeYcbP47svjDEJ1Ta6VlsVj+v/iODRT37LGV446RldLFq+GUO4TtRkGPDKAdKQJdFIxVli8sP75uhGERP/u3KODm8q82NtSWOthkp9A==
+ bh=av3Z8uO/SLZpYgrBUHCoj+p+cPkQYXFU71mADo4gUTI=;
+ b=IoQrizM+E5S80e5dHG32Ru18NxZrBc+FhiAv6tYJSXretnTIpFviFUWryLhQNZ62L/rCEI5CLoAvimxRf7TLXQ69nXDfiMFRCV/+LUfuCXUYzd0iP7WNTFi/4p5ayrMCBGX8lk1FNt5YCdgvE68u0FrM946QUAoZkhiyyWR/54mO91cI2lVfBJTvQ/72lo1V+MeWFNW55uJ5C9h0qugAyJqorPwwhvjYQ2lQhKKQPqZkgXRqEl/L1v7JfESoIWFtTiz+ll6mLlfHSzOf60M20CH2uE6UfNqA3EUZeclUO0VjEfDYkiDacnNaEDNM4GO5zSuT2jMH9ocEhV4lIMyIgg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=On094++C/yjw1gQXNDDxz3GTHYbcC3wRsvRqGpnXhj4=;
- b=NBWa8hrmn+6aaq/3g8JKW4jcIityzsEsMC96K6S8tSoggGMB/A9l42ZpR3yGCd5eDNyASVyEk8XpwXmlZ1utxlvzBWD1TOY+BhKsWYHYrSty695xfJdQ6VnbJMLY9vQcnmsw7mJ/CDPOjyqiKTiLuKQqHJNActfO7qvv717hoZBFPmsXn0GmEiAXgU8OkY+hErwDeAH5Ocef7H/9vZ7ANGCqe1cE+NaVy+ozffwawqUhd6zQKeb0WrkxGb3l+9z8ALF/J27ehQs4iPhjHlPr5pGdeSXWSUoQeDYysolNXvOVfzQOwyNLpqhVt2X52sRg3vbyBc/B9aWNevwYE66nDw==
+ bh=av3Z8uO/SLZpYgrBUHCoj+p+cPkQYXFU71mADo4gUTI=;
+ b=sprFqB40lE/GceHZQ6skcfWkRVsaqbBlB2nr3GQB5Q+YnADFZ6cWSRHH9AvwhRGchm63zL+ntZhtGeoauVp90YAVmPesUQd3DpbwGTTgKgt89r0yd/NF1BWM69lS49N/Tr4o2g+7QWXbp4BGLVEjL9lJu1GgdeTrv6kj9owF1F6gpNd58gZ3aCNAIO/lEmKdEYSuLz4YhlC5fpw6AhsUrMTNFsvjw1Ws+POFahGDqytkk6OeNXJ+Qkf48KXXGSBWA+1Nz4xHgvUlE9aqpzifqSOaBAO8MtyqFrEjJ8SN03B6vXw6U0fkuP0dQOnBLw+2KZuqJQqrYEaFf6L7SzT/Sw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
  by CY5PR12MB6323.namprd12.prod.outlook.com (2603:10b6:930:20::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Mon, 17 Aug
- 2026 06:42:59 +0000
+ 2026 06:43:27 +0000
 Received: from SA3PR12MB7901.namprd12.prod.outlook.com
  ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
  ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
- 06:42:59 +0000
-Date: Mon, 17 Aug 2026 09:42:50 +0300
+ 06:43:27 +0000
+Date: Mon, 17 Aug 2026 09:43:19 +0300
 From: Ido Schimmel <idosch@nvidia.com>
 To: Zhiling Zou <zhilinz@nebusec.ai>
 Cc: netdev@vger.kernel.org, dsahern@kernel.org, davem@davemloft.net,
@@ -50,16 +50,15 @@ Cc: netdev@vger.kernel.org, dsahern@kernel.org, davem@davemloft.net,
 	horms@kernel.org, atenart@kernel.org, yuehaibing@huawei.com,
 	kuniyu@google.com, kees@kernel.org, kylebot@openai.com,
 	thorsten.blum@linux.dev, maoyixie.tju@gmail.com, vega@nebusec.ai
-Subject: Re: [PATCH net v4 1/2] ip6_gre: fix hardware header length for NBMA
- tunnels
-Message-ID: <20260817064250.GA196908@shredder>
+Subject: Re: [PATCH net v4 2/2] net: cap advertised IP tunnel headroom
+Message-ID: <20260817064319.GB196908@shredder>
 References: <cover.1786542637.git.zhilinz@nebusec.ai>
- <64b46542bbe1701f07702aaa50273e2a87903db5.1786542637.git.zhilinz@nebusec.ai>
+ <ba04a1fd6bfae2377607fad5d8f80f7eb80fd4c4.1786542637.git.zhilinz@nebusec.ai>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <64b46542bbe1701f07702aaa50273e2a87903db5.1786542637.git.zhilinz@nebusec.ai>
-X-ClientProxiedBy: FR0P281CA0146.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:96::20) To SA3PR12MB7901.namprd12.prod.outlook.com
+In-Reply-To: <ba04a1fd6bfae2377607fad5d8f80f7eb80fd4c4.1786542637.git.zhilinz@nebusec.ai>
+X-ClientProxiedBy: TLZP290CA0012.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:9::10) To SA3PR12MB7901.namprd12.prod.outlook.com
  (2603:10b6:806:306::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -69,212 +68,117 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|CY5PR12MB6323:EE_
-X-MS-Office365-Filtering-Correlation-Id: 254de064-448e-4ea9-ac28-08defc2ac732
+X-MS-Office365-Filtering-Correlation-Id: 2c0da018-5f88-4734-d1da-08defc2ad7d2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|1800799024|10067099003|56012099006|6133799003|18002099003|22082099003|4143699003|11063799006;
+	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|1800799024|10067099003|56012099006|3023799007|6133799003|18002099003|22082099003|4143699003|5023799004|11063799006;
 X-Microsoft-Antispam-Message-Info:
-	PyKSpwrToZv/mBtqdibBGycpE+paahwrmcS4lLmnQAwTpt1yfmdOTbJ2I+HMgx4uBUpWR+uc6qX9rxa9JFqC4oYvWM6/dniu28rqA28i5PZGK4hs3IXPnQExl1xV67hR6G6miGkJhtaC45sLn0H/jSXkKT0tCAGXjHjLLxA7kAsedDo28ltQ0DXXW73YGabG5NJY5nmZ0ucBCl4bpQiiD/SfkK1jBHypuA6WdikktW2DXKmNskz66yJoSxjSE4PQBMGK5L711d0Vc9ljin5HshzK+/MSHAbQhYSwxJzrTWc9UMdW89DQy52aqqFAci8wmppJHkLHsxYZ/qDxNU800/gPdW8GiNCK2AAJG9rDlDwz0ogiHnlVHYsK5xqhJ9GDwn7KzMOHxqnrxvhA+CJB8dEppAy7us9/sT8pWXLFs7PIP95ZzXl38tYwQewRiCPowwCnamS1RUGAPIV/zWryPtP4WqB9Hv7wsPf8fookbWqRmSoC2kWTtKTYn7wPkpBmodK9+G72RwduGWFB1OHLZGa7Qq1I+wy/VI74qQf1XAHNYo86KXtzklRyoHQVdZAJRyXTrCqaGXD7TWwPcS7BZFOhklKOLSvXF/a+HFsntOynWpJUMUyhExHKiionfFHkARcNRB9V7ZPECoO05waK/iMyfpSsw2NIKr+bukx25sU=
+	Ymiig0v+TMzW5yKqyFvIboHaiZFU4Y1zE0XrwwGErihVjYhGBOWk03Gp7xFXFBmAtqQaQ6Jt3v//x/48QxQ1I5nl3Ux+K0VT7EeCV6WK4ysNDVN3Rj/vdBFgBYUhU0m2xFObdXS6VffU6S6JJuoBXIfCyPCinzBdwRvPs3IUSd5qUIRr7G4jMVzaWOSRB2nTRwGzemKozr+dMqq6XXfeI3LtCmoQPoB1kwmhf2wSjavkhx79KQ2EVqi89MijiKTJwcS0yGz4QX1lU7JVifDcgBQYfRamOVROKO/F1rqIcqqspTjqqrVMhIFni75Iz/VhfskMsn7KQc7V95yCybtBJTMn8hPF/k6z3TFNxAMChkza7IHQwHuMO142lDmTg0HXl6zbT1XTk02+EBoZxMYVOZPwHfsVjKydRbLuvyAJvfHH6UQpx3ypItmswBFByRfj96UqdgUXZqabaW8YGw0+cRTYWw+ShqmxnRFa687tnPwTkJJCSqyQndjSs2m3eljPvAYUfhfQTkxlUpJqFfzF1QGEM00nO9bTFVP8NYhXNcyA9BQOo4cLZ9zj/sp2Zj3QJ0bOGUmbEARSlmJqja0LEDuvcKp188Xjz4DUQXHhBNX3Qp0lLcNFJ1JbsrcLfeG0yQVnY9J/leBHa7oGcX5F6uEJEk3XbtZ7MPeixc2qWjg=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(1800799024)(10067099003)(56012099006)(6133799003)(18002099003)(22082099003)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(1800799024)(10067099003)(56012099006)(3023799007)(6133799003)(18002099003)(22082099003)(4143699003)(5023799004)(11063799006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ONuyYGndSR6ziVkIIJBZCUWocA278F2HoNGgq4KMd8/++T04ApSMN0DMGoO6?=
- =?us-ascii?Q?V35FSwHjFZk0afuHmSETDCGq7DGLnDNG6M0nY76ift05q+3sidJRS2uM0zYp?=
- =?us-ascii?Q?QUPOwEDUzkxUf35lCVONaqKWCTlXIMM3fOFYjw/aTyiVh8z9AZ4UcGte788R?=
- =?us-ascii?Q?bVWlrLvvXiYvn54BB9FjQWDAYVi9h4RqK5g1L/7Wl83vMmocn4CmtcfurRNb?=
- =?us-ascii?Q?lwe9biy4TS1S2edlkxye8mu/U0jHfGy6b30PKXh8IgsAOQbv9wXPelYI1fBw?=
- =?us-ascii?Q?R7qcCKmv0IEjZtFc+1F1Ffxc+gHovOA3QmNDJ3C7grknSfIWGTFGRyhpjbfm?=
- =?us-ascii?Q?emdZkF4/4r9VWsy35zmY3nAgyfa17vYTrn8vkI1xG9w+xr6KK/Stw0kAxz68?=
- =?us-ascii?Q?PkfhU7mPNGe33Rr1NB3luZHS4VU3652yaZLfeqlrZ/5fJ7crTBXqeSyxl1cn?=
- =?us-ascii?Q?wNE5fw9QD4e/TJ8zIyT25rDcu6PMg4CXEWp9cHffFt/HRhvo+6SImbcVuFaw?=
- =?us-ascii?Q?x8E2uXllrXKdLfTHQWIhhYsioyAo+2RsMPUkipWPGmtVY1fKYoUqrWg7y+1c?=
- =?us-ascii?Q?QICJmMRzY3UUIqHIU/Xa421QC8VZnMNWNHEK4StIP4pTweJXOAiJkGdaHRy6?=
- =?us-ascii?Q?t5ZWEOC+SZc9HFj6knN6sg5L3Ho7Nf+PNNqczmGGZaebpfyPpntzFcRE+Be4?=
- =?us-ascii?Q?981zKi9W/kayM5KboyaHnseTV3TmVcK5LIWQyHHVkKu/nmxV51vpwpwS4uD1?=
- =?us-ascii?Q?w08yZ6ZnlhN8DYV0Xb7H4ZtBjswUAQz6yuzH0cu0oj9lXHDWb+aX8aVFw1T+?=
- =?us-ascii?Q?35sle3EhL2gTw36wTQ8oTQljwgO5+78eOAeUWpXAhlgfOLDkzDsJ0pnzE3fB?=
- =?us-ascii?Q?0epXkkH5bTRWIUALB+qcoKdY98J2LFfqq97o0OBmnxaRGadwNQFGIjz80iAQ?=
- =?us-ascii?Q?/1jl1EZTemRyaUsBZofV+cSb+O+SYes/G+cK9JCyRdOvAs7sF/Pa93fPo1eo?=
- =?us-ascii?Q?jFyB7kQjf3Un4+bIVXX4lASioM9i8O4w0YYEmFNngIyCpLfOLpVqjfPwhf5C?=
- =?us-ascii?Q?vop5aZbgIu9qQadNe6V/iKwYbbn2uCTwOrfZzBAwRHbX+Kwd6Jc3bAzC6OK6?=
- =?us-ascii?Q?Mmar77I3eGZ4KybZmc0XTYDZG5nioDweRqjju9A/L274I5BtgLWmjsvuPVbW?=
- =?us-ascii?Q?UBOGS55/5gMGqqG0VkKd/nwZPJyJbmoVbfwnsSkRjw920cnJkimhtaVnZ1Zj?=
- =?us-ascii?Q?gdZ28i7C4a/HfBJivoRavd9ZxwyYzlpC7J9xV7Nws5VYsnZhXkXEqxoM2eOM?=
- =?us-ascii?Q?qORa4x+TuE3ClNeUIAVA6xaKFTE/+v/qZ/y599ZTO00IpYgOT4qCtn45y+1o?=
- =?us-ascii?Q?+mnTwgnbaIGiZx5xZ158vYng0SaFyUvjErmRKCtHocHRdckRaRiMXZUbPnY5?=
- =?us-ascii?Q?d8xHgLZiI0lfwvp++MKniKIKQEF66g21Ermn1hMzLk4RystTLO3sY7akGmf5?=
- =?us-ascii?Q?kdY7Nnl8qBCJLiipXeKZ4YA25S/siWtvHyOHjLemPJ0hbiAlfKdUxKQSXzlg?=
- =?us-ascii?Q?l7k59Lld5AeqofLyjjojEbxGnulMJWw47atk8Qgeq6UYOyP7BWHJXB+7Ix7v?=
- =?us-ascii?Q?88buodZW4E/DDm/qiaXVPHiZn95lgLihTQ9rH1wRjXVzQWRmSAzkI666RAZ0?=
- =?us-ascii?Q?gH22RG6zlg6q9saVWdJ8BGi+w9KLDHREo6TAi1w1vCRAOhhw?=
+	=?us-ascii?Q?h5ZKPPOGou3ebf4l9atW6JJW7uF/aDW+y6NW2fAsQRORh+hNRFtl+x5eOYni?=
+ =?us-ascii?Q?pL78KyK+/N6RrPygeRDHhnDwZuWgOedZbem3SM9+Bs0bnszAvb5/9U9yYsSw?=
+ =?us-ascii?Q?XdO4Y8Msb0pGC9qXflKjz8T+0kYYou66uhKJHNSFjTNTu3Wp+bwnBL3W2Liz?=
+ =?us-ascii?Q?Rs3cuoGLod/85aA/ji64NdLNClSEWgVIQCQLdPWEnb48h5lGzlA7QiuJwtu8?=
+ =?us-ascii?Q?zgyi0TQOcw/DHQ66XB9JkdYkSSRlbXnpY5ntY1vLcpj+mwSJmK7CjuiXrre1?=
+ =?us-ascii?Q?/oOcFN80HH5GkomO3yjtI2ahlSyU+VWrtF+f0I0ZXBONlwTEwceIqFM3TGLm?=
+ =?us-ascii?Q?rc6DcXvR+vsqGiC8CF7U1HPKebutbjqq//tAlN0fNX1k7upUddmK0H4hHT47?=
+ =?us-ascii?Q?BTfARTeJUVJLcdFvUayb96SKXZ7uOOf0kLqKk3v8cTx7h0+2OUpiOLvGuTyr?=
+ =?us-ascii?Q?yU6vebln6leRHDN7c5sPW34/1755t9setwh40I+mjBV/tnlgkjgGq0lV4nvv?=
+ =?us-ascii?Q?zKUUZXY2NtFvaJ+PC2n8MYMoa2l9Fvgr5/oPG9huufN57hRAqAIptTLiA9fn?=
+ =?us-ascii?Q?9Iw6lvzw17YUGekZTRPr1IT/3WdpWfSGXm15CF/vBuN2GI0cQMK6pq5LgpFp?=
+ =?us-ascii?Q?UED7qOYlahU/GUwQVVhvEH2XlbMVsz9GXqercyOwhxnpz21Qa2L1csAf5d5A?=
+ =?us-ascii?Q?fJ4avWwrQYqBYQz9rhyLRvYdVJlUuZ72/q97L5mv6oiDvCMkf5OBTr+YCq0d?=
+ =?us-ascii?Q?d9Q4V8PRtNRebLKQrAXtj3LRtbiBTsfqhyZAiIujZ/nY9+UEHDIC4pM1VMnf?=
+ =?us-ascii?Q?cWAx/ODrXsBx4H+ZsnPlTME///0i4ly6fcAVkB2z8+3Q3wXmKCgb3hOBNzMd?=
+ =?us-ascii?Q?7ekNjrrU7x3uNyLcl9cfpb2jlL1mreR4Ypp6e12n8F5doIjO1xAu5rpxeRNt?=
+ =?us-ascii?Q?orT+sf7qb+8DStk5TGpSAHSNxN5WvTCX/luS92NadWFdZrjGlS/enS0CmU69?=
+ =?us-ascii?Q?TUNVOQJWpW6woORVBJie+idpjLEwGULXarVWwnVoF5mTQBZ1Tr30R+8lP/qO?=
+ =?us-ascii?Q?lnipSqY7yDgSigUhusAneKVY+z/43Ia/fo1zp0j3aijE/SF5b3l81WBNhOoM?=
+ =?us-ascii?Q?ZMuHK4SJjMidH83xJa43pQ5a7KLgWWABs4MELDzCBpmj+fDCLiAZUc3U7k69?=
+ =?us-ascii?Q?04pfOO0vLWR4yYQ1KSscwUzYJQvt4BaANYH3b7b0Dk62muWHxQOZ/DoUssGZ?=
+ =?us-ascii?Q?lG0YDqEbmF3lGGwvB4P662142C5LoMf9+0ETujAN8A12DWhryHRfEUjov3DU?=
+ =?us-ascii?Q?3MZPhlbLGlfDSbUHbzx4WVdAzHxkZIm9psmMGMlYElN+ewRiF8poV+FzKg0d?=
+ =?us-ascii?Q?b/poNSBeB1NB3eBpXC7Aqh6NoA+xVDZUrtABuNUqzIBBZXOyihRv2JaJSbc0?=
+ =?us-ascii?Q?EEJeGMP9d8hdANsDaWq9AvzoQl/IaazQbWC0sAEEqrB7IOb7xpqmcbpfRiGV?=
+ =?us-ascii?Q?j/YWzCW1G2zoJzs4S6oBF7/Gyz1XQsz6ossZqQx+963RszSKvMbwrjUQtX4k?=
+ =?us-ascii?Q?6J0YTRys7OYZymab72/gFknC8BJ74nm+uAj3DdGOw+WbmRJgNVcQUpxrnVlC?=
+ =?us-ascii?Q?uQhYvdkOP6fdpLvF4tkGSVlv8Vk468Ubsqfszvnh6UjylEeKG4v/pgX1r0iu?=
+ =?us-ascii?Q?0balYNjHNIqKCJMZApsQFPwXj/Ow9K/nm7NcKac7DVfjfHBI?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 254de064-448e-4ea9-ac28-08defc2ac732
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c0da018-5f88-4734-d1da-08defc2ad7d2
 X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 06:42:59.5991
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 06:43:27.4030
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: o+iAuLV8DLyK2VuFpcVrjgM9AJI8R2VP288dEWl+EChZi+K5V0w3fEiBWYh8VX51WzZTNOyfLn5khPhknnh78A==
+X-MS-Exchange-CrossTenant-UserPrincipalName: SqW5i+yv/JGAP6D13V5wh1eX4oeDSTQ8Be0J8IOIiL3EzLWHk1qRdA7SFjTK0z/T+MvBWRU3XoOxOsMtI/6T7w==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6323
 
-On Thu, Aug 13, 2026 at 12:22:34AM +0800, Zhiling Zou wrote:
-> ip6gre_tnl_link_config_route() accumulates the lower device's hardware
-> header length into dev->hard_header_len whenever header_ops is set. This
-> is incorrect for both users of header_ops.
+On Thu, Aug 13, 2026 at 12:22:35AM +0800, Zhiling Zou wrote:
+> IP tunnel devices derive their advertised needed_headroom from lower
+> output devices. A stack of user-created devices can make the derived
+> value larger than the 16-bit skb header offsets can represent. Once IP
+> output reserves it, skb head expansion can wrap those offsets.
 > 
-> ip6gretap and ip6erspan have a fixed Ethernet hardware header length.
-> For an NBMA ip6gre tunnel, ip6gre_header() creates only the GRE header,
-> the optional FOU or GUE header, and the outer IPv6 header. The lower
-> device header is headroom needed later, not part of the tunnel device's
-> hardware header.
+> The runtime transmit path already caps a growing needed_headroom at 512.
+> Apply the same cap when tunnel configuration publishes needed_headroom
+> derived from a lower output device.
 > 
-> Keep the lower device header in needed_headroom. Set hard_header_len to
-> the tunnel header length only for ARPHRD_IP6GRE devices with header_ops,
-> and leave the fixed Ethernet header length unchanged for tap and erspan
-> devices.
+> Capping the advertised value is safe: IP tunnel transmit still expands
+> the skb when a packet needs more headroom. A nonsensical stacked
+> configuration can therefore incur an extra reallocation, but it cannot
+> publish an unbounded reservation to upper layers.
 > 
-> Fixes: 832ba596494b ("net: ip6_gre: set dev->hard_header_len when using header_ops")
+> Fixes: 1a37e412a022 ("net: Use 16bits for *_headers fields of struct skbuff")
 > Cc: stable@vger.kernel.org
 > Reported-by: Vega <vega@nebusec.ai>
-
-It wasn't reported by Vega.
-
-> Suggested-by: Ido Schimmel <idosch@nvidia.com>
 > Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
 
 Reviewed-by: Ido Schimmel <idosch@nvidia.com>
 
-You are expected to reply to AI feedback.
+[...]
 
-"
-Patch authors are expected to proactively look into the AI-generated
-reviews and handle such feedback as any other kind of review: either
-debate it or address it. In both cases a reply on the mailing list is
-expected.
-"
-
-https://docs.kernel.org/next/process/maintainer-netdev.html#review-timelines
-
-> ---
->  net/ipv6/ip6_gre.c | 13 ++++---------
->  1 file changed, 4 insertions(+), 9 deletions(-)
-> 
 > diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-> index b843116e9b703..70c1710910203 100644
+> index 70c1710910203..200d0ba1a40e7 100644
 > --- a/net/ipv6/ip6_gre.c
 > +++ b/net/ipv6/ip6_gre.c
-> @@ -1137,13 +1137,8 @@ static void ip6gre_tnl_link_config_route(struct ip6_tnl *t, int set_mtu,
+> @@ -1137,8 +1137,11 @@ static void ip6gre_tnl_link_config_route(struct ip6_tnl *t, int set_mtu,
 >  			return;
 >  
 >  		if (rt->dst.dev) {
-> -			unsigned short dst_len = rt->dst.dev->hard_header_len +
-> -						 t_hlen;
-> -
-> -			if (t->dev->header_ops)
-> -				dev->hard_header_len = dst_len;
-> -			else
-> -				dev->needed_headroom = dst_len;
-> +			dev->needed_headroom = rt->dst.dev->hard_header_len +
-> +					       t_hlen;
+> -			dev->needed_headroom = rt->dst.dev->hard_header_len +
+> -					       t_hlen;
+> +			unsigned int headroom;
+> +
+> +			headroom = rt->dst.dev->hard_header_len + t_hlen;
+> +			headroom = ip_tunnel_limit_headroom(headroom);
+> +			dev->needed_headroom = headroom;
 
 "
-Since dev->hard_header_len was already set to t_hlen in ip6gre_calc_hlen()
-for NBMA tunnels, doesn't adding t_hlen here double-count the tunnel header
-length?
+Can this clamp in ip6gre_tnl_link_config_route() ever fire?
+
+[...]
+
+So rt->dst.dev->hard_header_len + t_hlen stays in the tens of bytes and
+never reaches 512, which would make the new call here dead code.
 "
 
-No. ip6gre_tnl_link_config_route() is a NOP for NBMA tunnels since they
-don't have IP6_TNL_F_CAP_XMIT set.
-
->  
->  			if (set_mtu) {
->  				int mtu = rt->dst.dev->mtu - t_hlen;
-> @@ -1171,8 +1166,8 @@ static int ip6gre_calc_hlen(struct ip6_tnl *tunnel)
->  
->  	t_hlen = tunnel->hlen + sizeof(struct ipv6hdr);
->  
-> -	if (tunnel->dev->header_ops)
-> -		tunnel->dev->hard_header_len = LL_MAX_HEADER + t_hlen;
-> +	if (tunnel->dev->header_ops && tunnel->dev->type == ARPHRD_IP6GRE)
-> +		tunnel->dev->hard_header_len = t_hlen;
->  	else
->  		tunnel->dev->needed_headroom = LL_MAX_HEADER + t_hlen;
+In patch #1 we fixed a bug where hard_header_len was summed across
+multiple devices. If this bug ever reappears, ip_tunnel_limit_headroom()
+will cap the headroom and it costs us nothing to include it here.
 
 "
-By removing the LL_MAX_HEADER fallback for NBMA ip6gre tunnels, what happens
-if rt6_lookup() fails in ip6gre_tnl_link_config_route() (which is expected
-for NBMA tunnels with an ANY remote address)?
+This isn't a bug introduced by this patch, the missing needed_headroom term
+in ip6gre_tnl_link_config_route() predates it, but the patch adds a clamp on
+top of it and makes the four sites look uniform while they compute different
+quantities. Would it be clearer to either leave the ip6gre site alone or
+mention in the changelog that ip6gre derives a different value?
 "
 
-ip6gre_tnl_link_config_route() is not executed for NBMA tunnels.
-
-"
-Without the fallback, dev->needed_headroom would remain 0, and the total
-allocated headroom would just be t_hlen. When transmitted, the packet will
-require t_hlen + physical_dev->hard_header_len bytes, which would miss the
-physical device's headroom and force a reallocation and copy via
-pskb_expand_head() on every transmitted packet.
-"
-
-dev->needed_headroom was 0 even before the patch, but it's irrelevant
-since NBMA tunnels seem to be completely broken. See below.
-
-"
-This isn't a bug introduced by this patch, but I noticed NBMA IPv6 GRE 
-tunnels might be double-encapsulating packets and corrupting headers.
-
-In net/ipv6/ip6_gre.c:__gre6_xmit(), the code relies on the dummy header
-pushed by ip6gre_header() to read the destination address:
-
-    if (dev->header_ops && dev->type == ARPHRD_IP6GRE)
-        fl6->daddr = ((struct ipv6hdr *)skb->data)->daddr;
-
-However, the dummy header is not pulled before pushing the real outer GRE
-and IPv6 headers. Doesn't this leave the dummy headers in the payload,
-causing double-encapsulation ([Real IPv6] [Real GRE] [Dummy IPv6]
-[Dummy GRE] [Payload])?
-"
-
-This does look buggy, but NBMA tunnels are completely broken.
-ip6gre_tunnel_xmit() is passing the wrong addresses to
-ip6_tnl_xmit_ctl(), so it is always returning 0 and ip6gre_tunnel_xmit()
-is dropping the packets. ip6gre_tunnel_xmit() is deriving the addresses
-from the tunnel configuration (ANY) instead of from the packet, as
-should be done with an NBMA tunnel.
-
-And:
-
-"
-This is also a pre-existing issue, but looking at 
-net/ipv6/ip6_gre.c:ip6gre_header():
-
-    ipv6h = skb_push(skb, needed);
-    ...
-    p = (__be16 *)(ipv6h + 1);
-    p[0] = ip_tunnel_flags_to_be16(t->parms.o_flags);
-    p[1] = htons(type);
-
-This function allocates the full header length via skb_push() and 
-initializes the IPv6 header and the first 4 bytes of the GRE header.
-
-Since the remaining bytes of t->hlen (up to 24 bytes for GRE keys, 
-checksums, and sequence) are not initialized, and __gre6_xmit() fails 
-to pull this dummy header, does this leak uninitialized kernel heap memory 
-to the network in every packet?
-"
-
-Again, these packets don't even reach __gre6_xmit(), so they don't end
-up on the wire.
-
-"
-This isn't a bug introduced by this patch, but now that hard_header_len is
-set to exactly t_hlen, does it make the disagreement with ip6gre_header()
-explicit?
-"
-
-Yes, it's returning the wrong value (needs to return 'needed'), but it's
-pre-existing and NBMA tunnels wouldn't work even if this is fixed.
+See above.
