@@ -1,71 +1,71 @@
-Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563C82F8E82
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 00:00:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54173EB0E6
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 00:00:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786924842; cv=none; b=kdMEo4RnWdDpepfc28K70IOAuvrWd6yZENuU/2tjTqmkyc9Jao9ocs247sNAyKzI44hZTvJZiqeoY/bDvpBIhURHU3N2cren0wmFrtXszmNx657UeGvkZ1woCxeUbFJw7XYfJhcCpgBzW5pqntLO8Gx6l+sbrbadgunc75pN9X4=
+	t=1786924843; cv=none; b=SWUwG8RwgVul6aGezbyaPuGRLc57/Mr3ZrAsSD8kp4iHYGLHi3a12Py5p3TSNPqg6U9pR4GPe4fE9GaJIady0EK4JouVslDE2x2KUJ/3u3uhcGWkvcGmLamduXeGlJy3C8+sVariprTexWwRQGrnu6M/+e3KYA9GdVhOD2ohtcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786924842; c=relaxed/simple;
-	bh=LS22LcmEJj8e3kqN7yGg2uzjNvP+oUDHt1HXDKQHKRw=;
+	s=arc-20240116; t=1786924843; c=relaxed/simple;
+	bh=1LnCRgjE5GrtVilnDq6Mw+CJnt8OEZLKDembPlnG1UE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mFDiQFAPLRBoXvu39Je4jA4/fIJ0o04EbIXPRqz4Bt5yfWBTo+S3j7phY7sSJajI9xI3CY+4SkxMp1RExwF2ANKWoBYCauVLalorhIpJY226DQmNnJkg2fDyhyo4krcVsp8KUGzLFNM2S8oPDhHzdrSiXhMrxkkGUjOaTqZRta4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nLkgRSgf; arc=none smtp.client-ip=209.85.160.45
+	 In-Reply-To:To:Cc; b=cjGoX2MgUu0HoWld1+oi5KwesnmwsxE333cben93/40hP84YofeVGl2Bu6KIdO6ODuuFlRtPfM/CzANRH/m1EGupUNq3k+57s0Qwga1QazXrKlWFQ1W4W7P5vRAsLGvu831j5+u4gnP5Qhnv6gKa9AWCb7vAiSllgMbfWtUAuE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HrS2rF5r; arc=none smtp.client-ip=209.85.210.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nLkgRSgf"
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-448b0ff4a57so2698494fac.2
-        for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 17:00:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HrS2rF5r"
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7e9eaf04bfaso1002953a34.1
+        for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 17:00:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786924839; x=1787529639; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786924841; x=1787529641; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=yhr9mz2HpwDudTQs8av6vCMLVNHxqCHiSdPs5GamCT4=;
-        b=nLkgRSgf5Bb6kUfn8dcHmpYI4d8N0GDLAeC7Dy0aWJrlA/NxYHFoqL6U7aGgIvPXDI
-         IrQ04lspld8VengPH58ajHI1FG/KoXUesSP/kKexZP+y+EXLnBDBL1gLcFxOxWDlPx2N
-         dF7JxF1qHOAik150kxEuirx3OI3fAy/kCt7SKNLLb04aR4frqJ5jCRU+goxl6kLygwns
-         s8yjr8XmGfQ+IhRfOYmdimrx5IuPUJytiVs6XrujpHEg4jk272JJwttyAxjiYrnviED5
-         b4Aebv9L6EsoMuA7Kdr0M24uLduvFZ6vKKpzT2j7P9/Rr/1ngNa1tc74BeoaLKhnLyaz
-         whJg==
+        bh=Kbg4qcFK/mBxoYXCkGvYYK5TXUGZpjr2DCvrJZaXNS8=;
+        b=HrS2rF5rGgGKj//WVctl2fbhNdq4klAxYjCwG6ILjiUP0GWlVkM0W2Kl7fyz5qtMWB
+         GLlHxSUm9OxuV6hiKcC2wheLO5fTxzPdRuBsR3HpJG6v+ietX4SCRGwMM5M+yPdBcRi0
+         wY/zwv1tMq+1Bo3W/gLXevD/sP6xf6EkPYJ3/SDtgdovfMA0z1iduwR6YVz2rfqKOLDq
+         SPG/J+W90mg6LhiRsCAK9+jmvAJX4xWkpnotqkeqPJMmTZ4J9N5BvrkLi/0ruAJZuQOV
+         EqG08ViGHPe1WfAPpeqWjp8VYx7ltp6IAJSJOR0BTy1FIbEs0GJZCtdrAFFc6uh1s9VG
+         jwkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786924839; x=1787529639;
+        d=1e100.net; s=20251104; t=1786924841; x=1787529641;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=yhr9mz2HpwDudTQs8av6vCMLVNHxqCHiSdPs5GamCT4=;
-        b=C/o5h1cXKTJ9mGxOcIIJz0ZJPkWvbAz+vFyc+x/tQ2HobOKywC0t6U2GbdL5EK15M+
-         4w7bo3TpNxK7Hio61rEKL250SZ7hmfP+GRFecdbfEZi6xCE0RaBMZZ5wdXwGFjmORzu6
-         Wm9fWT/7JutmNPslYheTWRKbFeRX7jcgVN1JScrJByTceWKwy/Zcr4mSvrtsfoRWiwhI
-         Q56i2yiaLcLGSKy2W1HdKlGqEVxj9tShvYdnvM7i7ZknpXLATbmn2ndPjwrIfSs7IQxM
-         8SNi2yq+mB4GmEisVCphzg4eYFD/fcFQaveHwrShDT3IbWpunxLBR6FFFrBzPkPTEzQ0
-         6Trw==
-X-Forwarded-Encrypted: i=1; AHgh+Rpz4hSidfwaD8lOpf5Et260hazpmSnREtpztZmdsPwr0vdjSREy1W8iUIiuxynRCH1XTxRagjA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZWE4a+4rjS+xZTRyBFSx0wOoX/eAs1lyEdf8dotbvhsbWOplS
-	g0xz4XVplmA06TPr0pBC5AnnUDRUegkcCDNZWYGDpsGeHXPbebcRh3t3
-X-Gm-Gg: AR+sD10Q7HRUt6bjhlDnIEOV1xpTQKRVdInt+Oy43GKE7RlBHunzYk8WWigl7ezm6Ab
-	tKfSiZOpIWpBsmlcUEXDAm1OgN9viF3R78lC1QPkhZEagouJ1SQ5Tw587Y0rNG7wwkc2eztpvCu
-	h1flroE/w+TOi7vhNkgKQtx5Xg59oRzm8ThS1kpRIad+if0HfhK5D5JCqRL6qAanv53+WbldMP8
-	cSJNA8uMz6O2ucMlIxFlj62zrA6BnOsRuV4IsR9KTz6e5ffvHERli7dX62MMuHJ9ctP5GxkMbyq
-	bFrobrMVTw0E429Wwt6xcSbPbhx7PBfPmUU/Z3jfyEqeKWKdhLvaLmdXGhYJ8YNKJquRJDWSO2f
-	G/TkpxtKedLNUfellPkFMzZ0cxa71CebYru8/+6fRKtyEWEaaL+MRTDcuqicplyayKLspJrkW1s
-	aWuo8PG8jXFoJxLOfE3g/8MsQb/h5ABRPa/R3XZ3Q4n161XU200o6ahFzhZC9IF3n3cvGtAG0zQ
-	XT5xlf6DFXEk02J5ZDmkYSZe75D8J6yAZsomYo3xEHEADorDRyDkqSTHpN9cDgqKj0nDo/0yahd
-	B1MiWsnAHo6dANcmD0x6haeGPTkbA5D1/TWFP1L95dy+RENU5l+JgpRh6oGMSlaTMQRodAL/SLA
-	XEjh2gZPghqr8ae2V
-X-Received: by 2002:a05:6808:1486:b0:48c:4c00:596a with SMTP id 5614622812f47-4b2414ef9ebmr23059139b6e.5.1786924839124;
-        Sun, 16 Aug 2026 17:00:39 -0700 (PDT)
+        bh=Kbg4qcFK/mBxoYXCkGvYYK5TXUGZpjr2DCvrJZaXNS8=;
+        b=IDZIK5R0ZUUWKFEzw85SBoJzNHUvWet0EF1uBi3L0JJfM0NDRlxaGIkEVJZ0sx8ayj
+         CKI2a/DRkEP1kpQsEnW2qBmxJU2DUsDADPivxH9pJ/Wi3hRSQo6nOEKF2G7onfOmmVpI
+         bZHpFxAPw2loAj8gMpWk9mq0ALkgs+9bPswwykPy9qAmlZsU0hhWW5Y5U3Fg3512CXg4
+         pRkSiV5dKAonAijeKGBoCNajy7EA5acLZKzwxYWqj1qoU0bQyvI9x3KNbMh5pfO+ss4U
+         FWKxQI380roBlktP5rpQTSg8wX2IhMoAmPHyzY+Zc6oyiEkP0NvrxlrtnUVUT91+ltWz
+         h2gg==
+X-Forwarded-Encrypted: i=1; AHgh+RqQXjXfRhHE76Fi46nxfYrkSAvjSbM+m0HdE6OBRUFplXNpkoyLwgfTtNjmf6k/86vVg5a+nUg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkpadA+YoB9S07eAhoccDQnAhd6v3e2Kk51+tx92/QKI7XWG8b
+	IjB5nbXaiD4GdVu6NGMS+qFj9DjU+WhblITPV1NEBxcFPpRbMeOy+DtN
+X-Gm-Gg: AR+sD13iXtJaq3UGLnopRojB6edIwos2IT6Fun0XFhys4iRAsJjB6N0rYV2+QKdt/SS
+	o4JGoPFLiTaKuksYCHSHiBlQK7mbiiqNMn+kOsTpsXYMwl+TjLK8sSlGQ+dQKhS4yjfAAm6fpdt
+	3X8TJ0uMl4ItoNgjnni/cVCwSJ9HW/zfQ3t3XAzIIJ0GEMUREFtOZoj6+jBRg2ux16OBPvvu327
+	ceukk6vWb3sI8DoAQl+M7W8vE6CFbK1r/Es5eC/ObbcYrodcxoyvodmBPIQrD69OMmcSXo6WrIz
+	chH3y4dxaDaP2KIBoSvwBv1pvu5U8EL9NJs73RV0LL0+CvyMXo19LOaAqzCaDEq6+7KgbVnvzVt
+	kL1jt+7mA1uUBXuYVaHLp7MSCtH1HHyV/X01HRxhVZHODwloucowhulHirYp7g8VwoJ4PEqrAYJ
+	GuXGftho+q/GiQyOWLZ7sd21xpKCVwy7Aj2PI3/7QbqRC/IY8PPURK5BmxlrgonzhH3LCcKH+br
+	Hex1+l5d+h3LpYFoBYYLGWmUOFvrJQGkWA4HhyJ2UeMi8p4xMapPUcwVSHYxLXbFqFmwbKkGuHI
+	j2liSIba2XLIpc2VXaF/ugiLrvsSKuOHEBkmFsI+FhmIY2N9P7LzqcXj4GXy2GfElsK+9BujIRJ
+	xm2601uyV3wP+C7TM
+X-Received: by 2002:a05:6808:1916:b0:48f:c907:7a40 with SMTP id 5614622812f47-4b241e1499cmr17948145b6e.11.1786924840611;
+        Sun, 16 Aug 2026 17:00:40 -0700 (PDT)
 Received: from [127.0.1.1] (184-96-154-59.hlrn.qwest.net. [184.96.154.59])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4b2714dc18asm2556802b6e.17.2026.08.16.17.00.37
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4b2714dc18asm2556802b6e.17.2026.08.16.17.00.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Aug 2026 17:00:38 -0700 (PDT)
+        Sun, 16 Aug 2026 17:00:39 -0700 (PDT)
 From: James Hilliard <james.hilliard1@gmail.com>
-Date: Sun, 16 Aug 2026 18:00:30 -0600
-Subject: [PATCH net-next v2 3/4] of: property: link PHY package suppliers
- to member PHYs
+Date: Sun, 16 Aug 2026 18:00:31 -0600
+Subject: [PATCH net-next v2 4/4] net: mdio: release fw_devlink proxies
+ after population
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,7 +74,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260816-submit-phy-package-fwdevlink-v1-v2-3-23e55dd59fad@gmail.com>
+Message-Id: <20260816-submit-phy-package-fwdevlink-v1-v2-4-23e55dd59fad@gmail.com>
 References: <20260816-submit-phy-package-fwdevlink-v1-v2-0-23e55dd59fad@gmail.com>
 In-Reply-To: <20260816-submit-phy-package-fwdevlink-v1-v2-0-23e55dd59fad@gmail.com>
 To: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
@@ -90,50 +90,48 @@ Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  James Hilliard <james.hilliard1@gmail.com>
 X-Mailer: b4 0.15.2
 
-Ethernet PHY package nodes describe shared resources for their member
-PHYs, but are not populated as struct devices. fw_devlink consequently
-represents the package dependencies with proxy links to the closest
-ancestor device.
+fw_devlink creates sync-state-only links from the closest existing
+ancestor device to suppliers of child devices which have not been added
+yet. It normally drops those proxy links when the ancestor driver
+finishes probing.
 
-The MDIO bus is a class device without a driver, so such a proxy can
-remain available indefinitely and prevent a supplier from receiving its
-sync_state() callback even after every PHY has probed.
+An MDIO bus is a driverless class device, so successful OF population
+never reaches that lifecycle point. Its proxy links can consequently
+remain forever and prevent suppliers from receiving sync_state() even
+after the real PHY devices have acquired and activated their own links.
 
-Treat every enabled member PHY as a consumer of the common package
-suppliers. The links can then be converted to links for the real PHY
-devices and retired through their normal driver lifecycle.
+Call the driver-core cleanup helper after successful OF MDIO population.
+Only sync-state-only links are removed; the real PHY links continue to
+enforce dependency and runtime-PM ordering.
 
-Fixes: 385ef48f4686 ("net: phy: add support for scanning PHY in PHY packages nodes")
 Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
 ---
- drivers/of/property.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/net/mdio/of_mdio.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/of/property.c b/drivers/of/property.c
-index 38c0c7dc428a..d59bcb1f29de 100644
---- a/drivers/of/property.c
-+++ b/drivers/of/property.c
-@@ -1272,6 +1272,20 @@ static void of_link_to_phandle(struct device_node *con_np,
- 		tmp_np = of_get_next_parent(tmp_np);
+diff --git a/drivers/net/mdio/of_mdio.c b/drivers/net/mdio/of_mdio.c
+index b8d298c04d3f..49f9b4062cf5 100644
+--- a/drivers/net/mdio/of_mdio.c
++++ b/drivers/net/mdio/of_mdio.c
+@@ -229,7 +229,7 @@ int __of_mdiobus_register(struct mii_bus *mdio, struct device_node *np,
+ 		goto unregister;
+ 
+ 	if (!scanphys)
+-		return 0;
++		goto done;
+ 
+ 	/* auto scan for PHYs with empty reg property */
+ 	for_each_available_child_of_node(np, child) {
+@@ -261,6 +261,9 @@ int __of_mdiobus_register(struct mii_bus *mdio, struct device_node *np,
+ 		}
  	}
  
-+	/*
-+	 * An Ethernet PHY package node describes resources shared by its member
-+	 * PHYs, but is not populated as a struct device. Link every enabled
-+	 * member PHY to those suppliers so fw_devlink can use the real consumer
-+	 * devices instead of leaving a proxy link on the MDIO bus indefinitely.
-+	 */
-+	if (of_node_name_eq(con_np, "ethernet-phy-package")) {
-+		for_each_available_child_of_node_scoped(con_np, child)
-+			fwnode_link_add(of_fwnode_handle(child),
-+					of_fwnode_handle(sup_np), flags);
++done:
++	device_links_drop_sync_state_only(&mdio->dev);
 +
-+		return;
-+	}
-+
- 	fwnode_link_add(of_fwnode_handle(con_np), of_fwnode_handle(sup_np), flags);
- }
+ 	return 0;
  
+ put_unregister:
 
 -- 
 2.53.0
