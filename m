@@ -1,51 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2712C3245;
-	Mon, 17 Aug 2026 22:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99543C0A10;
+	Mon, 17 Aug 2026 22:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787006402; cv=none; b=n9P5xN8rm+dOOGUSXAvtoEogzlCKEx/uYju6LvnqiqHuutngG3LJ2vqC8YKrYbHbFLYGM3+sCSucm6YVderg+AlyQo5dSWyPIV6khVlVde4yLMttWDXQ6jSspHxkRyOIYN0AzcyhgU+MrWFr9qOkqcyVIiSFcTK4euGMpHuOEJ0=
+	t=1787006746; cv=none; b=OsTeT96JAjcm3wCHFPw0D/yzPdTQhVkSjSnPpSkCrCAhIxh6MaNcQSzjf0AGShk6F/1jBfJIwVHCnQBq2iRZEKULQnPowQ6LR0J7ECgW3ITBiZ0Kd56U4sbp4i01W4Oi7cSsyBxXUFAfIHpiL6cf/nHO62A+mB8qm686BZcMfyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787006402; c=relaxed/simple;
-	bh=aGCSbjh7LNGpQK69ZJzYWk2DP5P1ztKGbqp3mV+u1uE=;
+	s=arc-20240116; t=1787006746; c=relaxed/simple;
+	bh=Ze6drWtCN2h5zBujmaR+ATp5UruBwVA6XFFtHprSFvQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ulsmdbae9VfXNnDwdr5DqJ3OFY11YZjxv4ZnxYZVegQcDxZ+FQZgeLye7P1UyaQlY2QwBRUc+TO98qiyp5vo2veMuAyTnGJCkVQFPskrNpgioTRIUvQ9JbvevTRm3s8Gdy87rWm1zeTgVsg+pgbt09gQ9SgaCQOGfvvzCUR/JHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VQHiLBMF; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=Owmw8Lej4Pa0bzkeYS+qTaoMy6pP8SoMIZusurp9YkxEPeqXeTeRhX1zOZn827AvaLWGu70hzpr0kF83YTZXe5rzVxROI4nHMqTzJqLp17IXwu+iEOVgG1wJTK2nYGAz/PE6L1UaQ27CKwQ+ehAl4FXIYnjWTSwfixAD228Cp74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BNMN1ho2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VQHiLBMF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9C41F000E9;
-	Mon, 17 Aug 2026 22:39:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BNMN1ho2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A911F000E9;
+	Mon, 17 Aug 2026 22:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787006400;
-	bh=udONfB0KqPlNsNyooEvhiKK+MK28bo75R+x50okB03I=;
+	s=k20260515; t=1787006745;
+	bh=cXBXrwsk7HfFqr/xHtftG3g65WJsorENQsG2Ioyxr7w=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=VQHiLBMFGQCgeoew6Cp4Ows756OkMTcKte3toNPglY/bGSasnVZuHKMz8eXnxbElh
-	 jsBGBwsL3xfxOTdgVVpOTDDU2C70vLO5VTYBveLAOTn8yG/FNoeanEwmfEDd0peSw8
-	 7CsCsSF0+XSukhQmxxssL1Sly8Ixga9t1wvzsXXwhuj3kGtIpCuHEdMypW4KOpaBaX
-	 XAu0FMlO4QQkI3hO6viDTnZPCS6YhpoVyK82jTwb1uLmVC8SwU5WWXN0ITiBkwvwJZ
-	 aKpy5RJNdPbI9ZbvayusP0l7sPqUN6YOJqvwCcAU6D8YF54bDafqh6+DiNPEfsiJJY
-	 Ip1r2Gyhdzlcw==
-Date: Mon, 17 Aug 2026 15:39:58 -0700
+	b=BNMN1ho2jY/pviuKkh/densKkPpFgfLAFSqnyYjwYz0+F6ehzh/2uegBwHPRTHBmy
+	 oAF1CUz52YczM/HHMk67v22gX2TIft2+A7Dp1AgnS4yzHpACi99qL+jViVe7HTZjOu
+	 Yypsd7g0WLR2hLaRQFh2dFY/gWFCRUPibMpIxYgWqB113bq8A3ec/3FEsMI0OCTu6l
+	 NodrDaTACfmFoh6qsgmWKvuF9MxxGoE3W31Q2Nl+W0H+ZIgxkJdib8SKsYmdAi82g3
+	 AnY71XAM8IZ9vU2+7kTdgl4uUmdbU9RQeea05stoRL7paDHJbzpn51n8n7RrQ0bq4U
+	 kAW/fgHij2jbw==
+Date: Mon, 17 Aug 2026 15:45:44 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Jack Wu via B4 Relay <devnull+jackbb_wu.compal.com@kernel.org>
-Cc: jackbb_wu@compal.com, Loic Poulain <loic.poulain@oss.qualcomm.com>,
- Sergey Ryazanov <ryazanov.s.a@gmail.com>, Johannes Berg
- <johannes@sipsolutions.net>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Wen-Zhi Huang <wen-zhi.huang@mediatek.com>,
- Shi-Wei Yeh <shi-wei.yeh@mediatek.com>, Minano Tseng
- <Minano.tseng@mediatek.com>, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Simon
- Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
- <skhan@linuxfoundation.org>, Robert Yu <robert_yu@compal.com>, Jeff Chang
- <Jeff_Chang@compal.com>, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v6 0/7] net: wwan: t9xx: Add MediaTek T9XX WWAN driver
-Message-ID: <20260817153958.4b120ce9@kernel.org>
-In-Reply-To: <20260811-t9xx_driver_v1-v6-0-2c969fad57c6@compal.com>
-References: <20260811-t9xx_driver_v1-v6-0-2c969fad57c6@compal.com>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Linus Walleij <linusw@kernel.org>, Luiz Angelo Daros de Luca
+ <luizluca@gmail.com>, Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean
+ <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, kernel@pengutronix.de, linux-kernel@vger.kernel.org,
+ Ahmad Fatoum <a.fatoum@pengutronix.de>, Alvin =?UTF-8?B?xaBpcHJhZ2E=?=
+ <alvin.sipraga@analog.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org
+Subject: Re: [PATCH net-next v2 1/2] dt-bindings: net: dsa: realtek: add
+ RTL8365MB power supplies
+Message-ID: <20260817154544.622c0fd0@kernel.org>
+In-Reply-To: <20260811113901.3114169-2-o.rempel@pengutronix.de>
+References: <20260811113901.3114169-1-o.rempel@pengutronix.de>
+	<20260811113901.3114169-2-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,15 +53,16 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 11 Aug 2026 15:14:22 +0800 Jack Wu via B4 Relay wrote:
-> * Core logic - Contains the core logic to keep the
->    device working. It includes:
+On Tue, 11 Aug 2026 13:39:00 +0200 Oleksij Rempel wrote:
+> Document the RTL8365MB power rails as optional supplies. They are optional
+> because the rails are often always-on; some designs break them out for
+> granular hwmon monitoring and regulator control.
 > 
->    * FSM (Finite State Machine) - Monitors the state
->      of the device, and notifies each module when the
->      state changes.
+> They are scoped to realtek,rtl8365mb: different Realtek switch families use
+> different power-rail naming schemes, so these rails do not apply to other
+> families such as realtek,rtl8366rb (VDDA/VDD_CORE/VDDIO/...).
 
-This FSM exists in the driver, even tho you call it "core logic".
-Please provide more details in the patch description of patch 5
-and consider whether any of this logic should live in the WWAN
-framework.
+Unfortunately patch 1 did not get an ack in time for 7.3
+Please repost after the merge window
+-- 
+pw-bot: defer
