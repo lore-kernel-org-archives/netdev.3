@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76BEC43F8C9;
-	Mon, 17 Aug 2026 15:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BC732E743;
+	Mon, 17 Aug 2026 15:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786981285; cv=none; b=Bsu7MjH6+SJu5jcafW5p7m3TN9tNLS/oRoP5ZZr0OzBDlc7uotFDlqZqSrL3tjBfAgnSvh0Aakxh+iooA5coOBIll2x9mvAQmjskKFGduQ+AsxYbx0yp90PhTOyF+MPhRSoAbkv6ob0O/PXGtKRtgjK8yLNU36LwFzksKv3lDFI=
+	t=1786981303; cv=none; b=XZ4poP0muZKVLH4W4lwebQGUuGpWMnZ0n14QdYs6SF1zc9/fA+aECPgWUCZtnvviRk0jQe3snT996W+RgFy8fzJZCfn6XpyXISZ38/i54u08TWk35L4QN53/bQAGBS9peZhaDsvzGBKHocwvRAw7VThPcKb5kv3J6iWY/f9EUrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786981285; c=relaxed/simple;
-	bh=3qYPThCtHH1kyCuyDgCTeYiyXbpv+pUU4fawM7RQa0c=;
+	s=arc-20240116; t=1786981303; c=relaxed/simple;
+	bh=BpdQUpY61+7oZIyggmUaZMgzYbz6UL49nwSeoq440/U=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t10tPq6Ac5M1PQ/e4RdSdkppb3u75xoyimPIaAUUSrB+1uD0NJaAeOcuttY9S5/8ESJoQUmZHsehas4LPlZUhcxNh+qNVcw9/f72uW6gGuGCyVGCrceva7V9cvfjvbM+uMBMeiATM6UGokUydu7H1gF87hzgBzxtovSPDgIMAbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XkAyF9dk; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=ObbXkwLF7cSbgtoznccqsohiTPAVHVQr9TuxXFFjd3upg/mtNs25WNhl6WnJnFtwzJ8K74Y8kTDhu6RRcbRJUpw8V7ZfuOe0jvDYWSdX5LlSBDiQMC+T24hkKvm7JppZ6t/3fV2WhirFqPFpTYe47ukZ4BfSQ3O6boclZMXYqzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DKcL8ET5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XkAyF9dk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1CEC1F000E9;
-	Mon, 17 Aug 2026 15:41:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DKcL8ET5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C3E1F000E9;
+	Mon, 17 Aug 2026 15:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786981284;
-	bh=1nm8z1ScEuwdhcGe4VXXFM6xKV7SZ9R/OpCKnbX93Fc=;
+	s=k20260515; t=1786981302;
+	bh=piQnTnSDd7G6GOCF86a0f4eoEPi20L02tobUP5pIUfk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=XkAyF9dkN+pYMtyDNZ14DnU0azwUlCB5MdhbG3J+mIb7SJbFwatiQYtq2h+WzKeLp
-	 n7MnHHO8XnMHXAARETR31kQ+FvzhwTK6epSYkenWqQVwDHL5qW+0Zl9ivyCH01QfD1
-	 KT5lun1I9HeF4o6oqvcq9gwjdWzJDfKz0qFFG6QLFCleC/3vy2zzem5fJxPALKtB5d
-	 uGMme1TgEpPWnGC0i9PnR/5s5etJ3oEig5Ue4BwuEepZUcI/QkvrTe0hEwaajpZlV9
-	 iLey6Ih7+TmGVL6TLknTdxNcrHqgOFNli4+p9eFLg/CW9rK2Qr1nXU1X3bwPcunc6d
-	 pbieyEDgX2ghw==
-Date: Mon, 17 Aug 2026 08:41:23 -0700
+	b=DKcL8ET58ROaGfsSrp7L3VnqW4tImV6lE8yXHpEZvfvfKlHkxaRq/Nk3pARDZw1/V
+	 64NeYia+34CwdjLq74nCs0ZgnvN0K3JCAw3i0QVh3VudfZic4CFHkKOsTq+fliHRSl
+	 UGidJV+ob6Zc4O5jHBA1H0/zYjUV2o8jD2cIDYx3Vw5JtVGt+K7fze9Ku3AvxPCQGO
+	 kUfDBTmYHDd7ZgeXjJVcgaXOi7Cyeqnv4IABhCmp5E3D9PBb+YcqBthKQ78/9KkY2o
+	 TYw33b9zQNY6RtV8KTNY0i3t74/WO7j7bAz1uqqtUv+tXapdO0TXYnaWqaQ1z14gzz
+	 DYEj37bJTY2TQ==
+Date: Mon, 17 Aug 2026 08:41:41 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Lei Zhu <zhulei_szu@163.com>
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- kuniyu@google.com, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, horms@kernel.org, shuah@kernel.org
-Subject: Re: [PATCH net] selftests: af_unix: verify SCM_PIDFD pidfd in
- cmsg_check_dead()
-Message-ID: <20260817084123.75fbbf97@kernel.org>
-In-Reply-To: <20260817061121.239648-1-zhulei_szu@163.com>
-References: <20260817061121.239648-1-zhulei_szu@163.com>
+To: Ratheesh Kannoth <rkannoth@marvell.com>
+Cc: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+ <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+ <pabeni@redhat.com>, <sgoutham@marvell.com>, Suman Ghosh
+ <sumang@marvell.com>, Geetha sowjanya <gakula@marvell.com>
+Subject: Re: [PATCH v3 net-next] octeontx2-af: add NPC TEID matching for
+ GTP-U and GTP-C flows
+Message-ID: <20260817084141.60f6029a@kernel.org>
+In-Reply-To: <20260817035127.1782901-1-rkannoth@marvell.com>
+References: <20260817035127.1782901-1-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,14 +47,25 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 17 Aug 2026 14:11:21 +0800 Lei Zhu wrote:
-> The cmsg_check_dead() function receives an expected_pid parameter but never
-> actually verifies that the pidfd received via SCM_PIDFD corresponds to that
-> PID. It only checks the child's exit code via PIDFD_GET_INFO.
+On Mon, 17 Aug 2026 09:21:27 +0530 Ratheesh Kannoth wrote:
+> Subject: [PATCH v3 net-next] octeontx2-af: add NPC TEID matching for GTP-U and GTP-C flows
 
-this breaks the test:
+## Form letter - net-next-closed
 
-  (scm_pidfd.c:282: errno: None) wrong SCM_PIDFD -1 != <PID>
+The merge window for v7.3 has started, and therefore net-next is closed
+for new drivers, features, code refactoring and optimizations.
+We will only consider applying net-next patches which were posted
+before the announcement:
 
-If you want to improve the test please repost this patch in 2 weeks
-after the merge window. This patch should not carry the Fixes tag.
+https://lore.kernel.org/20260816155953.072d73da@kernel.org
+
+Fixes are obviously welcome at any time. net-next patches may be sent
+for review and discussion only with an RFC tag.
+
+Please repost when net-next reopens.
+
+See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
+-- 
+pw-bot: defer
+pv-bot: closed
+
