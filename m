@@ -1,157 +1,138 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB3663D45CB
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 10:41:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5EF3C10AD;
+	Mon, 17 Aug 2026 10:47:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786963300; cv=none; b=sMvqSumCFIa2ALt0xpS8jhdGbQaLXRNpWzvlzr/xWuj+HJxjAIKIzrfGrVTUshuHuW9zFMUQV3AsVnx6IiXlYp5LEyGGCjz2mZYMsU/uNveTh//+5G8vZPdB2w1+9iB45ZEzrxXNdkLsl6+NlRukqA7b0hXONPSSt/53+ZxyWPM=
+	t=1786963659; cv=none; b=Ib2gS1ZOoveM3RrfXUkA/SIzWAPQKTf2oGBt8ZusGuSw+OAft+Nl//QVqp3BengO1z5aec6PwbG4m2VNxY1O2v9Wf6QYufwfVXxW46BF+q5z4jOL7/5KikNKR0snelr+Or9/JBdfEbYkQf1sY46u2XPA+C9afZ6yVp59tEpKt+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786963300; c=relaxed/simple;
-	bh=LSb0KhFUzLnQsU1r11r/6fkNT7w+2m2GOzx274QNTwA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gV4Xq5UrJ4CFzYD9trxna5avxaOrHa2bBiz54Tg7Myw8+O8gV80dwrLq/GppQni4Bp6F6s3ykSFqqWGrT7h6oauCRhRf5+LwYZvhDUperH9b+FXee9c0yJR/NHetSF9MvN+/q/sz22vzy9GnZDvhedu5fUwAnjqhesKjhxzgmLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CKI44xDM; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786963659; c=relaxed/simple;
+	bh=ssL4bncxVbB9avtB5LrguL4+Pc3joQ9VEwpBIEAvM0M=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=edWD6ZcqpdPwbxeqDN1ZsuCNAShQsgXMTpIFJtKtDl9gU89eLVUrGSfkZyZ9/m8pUVa3bEbggBblCKsX/oScHS8hlN3n1nLMK3NEtzsd74lG8X7RiKSQUJZIRuSsZoWq1jakTxJZSzjaTPoqzGzCLZbGKYrXlLGNfTuObNGjq8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZZWxjRTo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CKI44xDM"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-84e3007a2b7so2670820b3a.0
-        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 03:41:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786963298; x=1787568098; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dMxmArJymrzxglgoXBpsaklWgzCGHZMX0N8em1OSk78=;
-        b=CKI44xDMN0ApseP4SnsEg8tOLC735qT7Gq3pfKeTP/1fopfHeGca1sU+W3eQ3quBIy
-         1Yd20y7lRzIuZVJAsXbSJXRr5O8j6GukmN2KnSp4IdvbDTqu7RwBtqi7NivJ2YvWHDL1
-         yoSwUcPM5geExs6koRBQKLckGAi2m+bwrz0SU/gqJrzy4xW0Pk4HmHtk5RHa1U8IW5Qn
-         MUg++Z6yagCAu++qphMBk4E/V+bFAa+5LDbBfBlBLeaq65N3snKoYriT/EzFJoZMSLtt
-         BYmbdagWSQM799lFY0B3lE+RCMJX6KpW3nLLaCSyQKWOmrHFuYUVu/w9M0etYHQem5gG
-         B7qA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786963298; x=1787568098;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dMxmArJymrzxglgoXBpsaklWgzCGHZMX0N8em1OSk78=;
-        b=nwczUdW4lam6ba/hXKe4/luMWVzZxEzhdDq1nh29Hnn28JuCl8z4/+HKuK3QJ9SOB2
-         d+sPaafwJiUGdhQdZb3UAtjGRmc+Qq9angReTf3tQUb6aBE8ydgDiU+Xo5WcLtkDnrxx
-         toc0dqbu6iNgmVQJcEsxNoOdJ2nq2myqxgrH2E2nrCgRAS/OCHiYVo2oOJ+DtqQMqDYB
-         uiORN9wJIRWYR/P/fkttTQKWgf5ebHm8dPVMfixh9Mq3YNZJM9igQUxOBYq1k5MSSY1g
-         mfu+rxs7Y5p8gGoh9jmQZLls/8mBohYYXxAgn6LMOsXzfUVj6mpslrauYVMspKqdglrl
-         tWqw==
-X-Forwarded-Encrypted: i=1; AHgh+RqcxDNs5lCCS7iIP5Bq+SVWVvVa8iOP2RUionQfPtl+B/DwrOIf2e/h5hFgJGKkwjkb4Wv833Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWMMnQnNtqVuiquLqVSxVSB7Q8JUruXMkzIfdVayAoWf/Dno9l
-	vq4vdf8Uk55q0sR4nnmcSsKXbGYpukE/iIc2OfR7c31RA0drEzhiUYfn
-X-Gm-Gg: AR+sD11rwVJelm/FaemY74OvCmc9Pu4K/RCEGrtkLhp/pPfutNr0hpL0OYbzH+dL/lW
-	++/a82DDekmKMRD3cy1lwwd7nMqpaz4fR/NBTj4kNhPE6euTrqGp2Cc5f732/kajHnORtYQDi1k
-	hmHXpGwb4MaTlZx02krtobbQnp8XGBbGL16lQRrBQhWVCm0eic2J5lJQ2GJULsuOdv9jY9i0XWC
-	FwRaTc1bvhK02QQ7ifZBF1/RewWAajVFFD2Px+FcmgqLWV7luTRRvzBUeSmj3PseW353b5jwHNj
-	mXJOBvMObEqnoFPDvsDU0wF9bEVsHjwB3qJsBiDFFOowiXkP8viO33H3V47xjyAF8Ctc5OwNUti
-	X+p1LoWt+Puj1P4fBiomplFeakpHLI6zBoSm0QWLhh0gpyIcfZAkicNn9d3vEQiG41/pLd3t35Q
-	yILNb+Xg5Wa+Ka9GzJ5QP9SRihBEN/GhPzh8lLKEF4+0IFfbGngbx3PXYWTAxbYI8hw6N5cbQuZ
-	xZORMbqM/M9GtlARwBy7FdCCw==
-X-Received: by 2002:a05:6a00:3697:b0:845:dffa:3740 with SMTP id d2e1a72fcca58-84fde11d75cmr24478182b3a.4.1786963297851;
-        Mon, 17 Aug 2026 03:41:37 -0700 (PDT)
-Received: from JUNVYYANG-MC1.tencent.com ([43.132.141.25])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-851b6fcc0besm71682b3a.50.2026.08.17.03.41.35
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 17 Aug 2026 03:41:37 -0700 (PDT)
-From: Jun Yang <juny24602@gmail.com>
-To: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	David Lebrun <david.lebrun@uclouvain.be>,
-	netdev@vger.kernel.org,
-	Jun Yang <junvyyang@tencent.com>,
-	stable@kernel.org,
-	TencentOS Corvus AI <corvus@tencent.com>
-Subject: [PATCH net] ipv6: sr: restore network header before forwarding
-Date: Mon, 17 Aug 2026 18:40:52 +0800
-Message-ID: <20260817104128.22681-1-juny24602@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZZWxjRTo"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 65F2AC2BCB3;
+	Mon, 17 Aug 2026 10:47:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1786963658;
+	bh=ssL4bncxVbB9avtB5LrguL4+Pc3joQ9VEwpBIEAvM0M=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=ZZWxjRToM22toZ3r9sy7Ok/3AJyvZx6DqOI2OslIn6XFbkhbQo4rX3H2sOFSbc7eC
+	 +16p6NBxHGanZpvbQpxy7tIxuq3C/8pBDcBPAtnqobprpZRpQKHFWSAmqNFFXeVgjj
+	 D+3mRJ0Z8RNKWbao4heRMKM5MDz7BnpteLvOO8cN43CXONBeS72hAP6zQKDQoR0fh4
+	 q5J0NkxSxdd2QU+AyFl7ZqjWCcgIyLaTTR3wrcT/4JBvJFUpfpgrNCO+BPEgKTU2vF
+	 cPdMgdBufAFWIF17CXJrgzawRh7pVhvcSsQv8gVEzWkx15Hzsws87MNOjwUCzLndLY
+	 ZqY5MiXzos/ig==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E9A8C5B572;
+	Mon, 17 Aug 2026 10:47:38 +0000 (UTC)
+From: r-vdp via B4 Relay <devnull+ramses.well-founded.dev@kernel.org>
+Date: Mon, 17 Aug 2026 12:47:27 +0200
+Subject: [PATCH net] bonding: fix initial last_rx vs ARP-monitor slack
+ window
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260817-bonding-last-rx-v1-1-9da6f7fdf812@well-founded.dev>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMywqDQAwAf0VybiA+UNtfKT2sblYjJZbNtgjiv
+ 3dtjzMws4NxFDa4FTtE/ojJqhnKSwHj7HRiFJ8ZKqpa6ssOh1W96IRPZwnjhlRTHRw1fbh6yNU
+ rcpDtd7yDcoLHX9p7WHhM5wuO4wuJB1H8eAAAAA==
+X-Change-ID: 20260817-bonding-last-rx-0303fa048f9d
+To: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Jiri Bohac <jbohac@suse.cz>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ r-vdp <ramses@well-founded.dev>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786963656; l=3004;
+ i=ramses@well-founded.dev; s=20260817; h=from:subject:message-id;
+ bh=YYy+ypt63v5I7wHvlfNPK/qM1ynNfjL53cV7Ib4dBmw=;
+ b=cBGB/R1NCtGI6k5mJpJUEfBKPZoardmv+NkK578YfYTPVjl7QOogfNRwIkQZBnJQpg7MRNtUU
+ c/hBbir+GCwA0VTeVTO2xneY1kv6PnSgox+V6RZV5Vt+yyPZh4kTvn9
+X-Developer-Key: i=ramses@well-founded.dev; a=ed25519;
+ pk=1vBXHBVeJBMaC+2Zuonl0QQhEgGIQHERyF5RZNnrCmw=
+X-Endpoint-Received: by B4 Relay for ramses@well-founded.dev/20260817 with
+ auth_id=957
+X-Original-From: r-vdp <ramses@well-founded.dev>
+Reply-To: ramses@well-founded.dev
 
-From: Jun Yang <junvyyang@tencent.com>
+From: r-vdp <ramses@well-founded.dev>
 
-ipv6_srh_rcv() runs with skb->data at the Segment Routing Header while
-skb_network_header() points at the fixed IPv6 header. It restores the
-data position by pushing sizeof(struct ipv6hdr) before dst_input(),
-which assumes the SRH immediately follows the IPv6 header. If another
-extension header precedes the SRH, skb_network_offset() remains negative
-and neighbour output passes it to __skb_pull() as an unsigned length.
+Commit f31c7937c254 ("bonding: start slaves with link down for ARP
+monitor") initialises a freshly enslaved port's last_rx to
+jiffies - (arp_interval + 1) so that it does not "immediately cause
+fake detection of 'up' state". At the time, the comparison was a plain
+<= arp_interval and the value was just stale enough.
 
-Keep skb->data at the current extension header while rerouting and
-restore it by the exact network offset before each dst_input() handoff.
-Remove the fixed pull from the loopback path. This matches
-ipv6_rthdr_rcv() and handles any valid preceding extension header.
+Commit da210f559019 ("bonding: add some slack to arp monitoring time
+limits"), four months later, added a +arp_interval/2 slack term to
+every comparison (now bond_time_in_interval()) but did not widen the
+init to match. Since then, bond_time_in_interval(bond, last_rx, 1) is
+true for the first ~arp_interval/2 after enslavement even though no
+packet has been received: the upper bound is last_rx + 1.5*delta and
+last_rx was set to jiffies - delta - 1.
 
-The trace was captured with kernel release
-7.2.0-rc2-00023-g714b725feef4-dirty:
+If the ARP monitor tick lands in that window, bond_ab_arp_inspect()
+proposes the slave UP. If the slave is the configured primary,
+bond_ab_arp_commit() sets do_failover and the still-armed
+force_primary in bond_choose_primary_or_current() makes it the active
+slave regardless of primary_reselect. ARP validation as the active
+slave then fails (the link has not actually received anything; on
+SFP+ ports the PHY is often still negotiating) and the bond falls back
+to the backup. With primary_reselect=failure, force_primary has now
+been spent and the bond stays on the backup until something else
+triggers a reselect.
 
-  BUG: KASAN: use-after-free in eth_header (net/ethernet/eth.c:86)
-  Write of size 2 at addr ffff8881247b9a3e by task ipv6_srh_poc/9336
-  Call Trace:
-   eth_header (net/ethernet/eth.c:86)
-   neigh_resolve_output (net/core/neighbour.c:1611)
-   ip6_finish_output2 (net/ipv6/ip6_output.c:136)
-   ip6_forward (net/ipv6/ip6_output.c:690)
-   ipv6_rthdr_rcv (net/ipv6/exthdrs.c:832)
+Reproducer:
 
-Fixes: 1ababeba4a21 ("ipv6: implement dataplane support for rthdr type 4 (Segment Routing Header)")
-Cc: stable@kernel.org
-Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-Assisted-by: tencentos-corvus-ai:kimi-k3
-Signed-off-by: Jun Yang <junvyyang@tencent.com>
+  ip link add bond0 type bond mode active-backup arp_interval 1000 \
+      arp_validate all arp_ip_target 192.0.2.1 \
+      primary eth0 primary_reselect failure
+  # eth0: SFP+ (slow link-up), eth1: RJ45 (fast link-up)
+  ip link set eth0 master bond0
+  ip link set eth1 master bond0
+  ip link set bond0 up
+  # bond0 lands on eth0 via force_primary, ARP-fails it before the
+  # SFP+ has carrier, falls to eth1, and stays there.
+
+Initialise last_rx (and the per-target array, and last_tx) to two full
+intervals in the past so it is outside the slack window from the
+start.
+
+Fixes: da210f559019 ("bonding: add some slack to arp monitoring time limits")
+Signed-off-by: r-vdp <ramses@well-founded.dev>
 ---
-A KASAN reproducer for this issue is available if requested.
+ drivers/net/bonding/bond_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- net/ipv6/exthdrs.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 522eab060f9ed..23e1544faf39f 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -2123,7 +2123,7 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+ 		new_slave->link = BOND_LINK_DOWN;
+ 
+ 	new_slave->last_rx = jiffies -
+-		(msecs_to_jiffies(bond->params.arp_interval) + 1);
++		(2 * msecs_to_jiffies(bond->params.arp_interval) + 1);
+ 	for (i = 0; i < BOND_MAX_ARP_TARGETS; i++)
+ 		new_slave->target_last_arp_rx[i] = new_slave->last_rx;
+ 
 
-diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
-index 9c677eb1d1a6..4c407520e9da 100644
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -452,8 +452,6 @@ static int ipv6_srh_rcv(struct sk_buff *skb)
- 	hdr->segments_left--;
- 	addr = hdr->segments + hdr->segments_left;
- 
--	skb_push(skb, sizeof(struct ipv6hdr));
--
- 	if (skb->ip_summed == CHECKSUM_COMPLETE)
- 		seg6_update_csum(skb);
- 
-@@ -462,6 +460,7 @@ static int ipv6_srh_rcv(struct sk_buff *skb)
- 	ip6_route_input(skb);
- 
- 	if (skb_dst(skb)->error) {
-+		skb_push(skb, -skb_network_offset(skb));
- 		dst_input(skb);
- 		return -1;
- 	}
-@@ -476,10 +475,10 @@ static int ipv6_srh_rcv(struct sk_buff *skb)
- 		}
- 		ipv6_hdr(skb)->hop_limit--;
- 
--		skb_pull(skb, sizeof(struct ipv6hdr));
- 		goto looped_back;
- 	}
- 
-+	skb_push(skb, -skb_network_offset(skb));
- 	dst_input(skb);
- 
- 	return -1;
--- 
-2.55.0
+---
+base-commit: 24ef02f934eeb48830cff6b739abc3c62b1d107b
+change-id: 20260817-bonding-last-rx-0303fa048f9d
+
+Best regards,
+--  
+r-vdp <ramses@well-founded.dev>
+
 
