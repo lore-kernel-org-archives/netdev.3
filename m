@@ -1,167 +1,139 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1803BE168
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 20:54:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787000093; cv=pass; b=JqLNdf9REgacJYW5vn33zPLAZ2kb1kzai9ADogeLlPWW0Y3fxEWHOqXMAE171fdNM3b/A5/ZV2hYlIsGhy9HoisQcJV9wdoct5OwSG1LjjxmZKBK6XfR+ISh6+kQJWceuoS9XFO4u+Dw7VKqvTdK1opBRiWCdEddVrpUto48plY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787000093; c=relaxed/simple;
-	bh=4zt5jyZW6qLEmymqr6lbsWEB9Oh7ETJPK3ZySvB9Lfg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cRCq1cHd0vhAzMkgO/qxL7UDqegxIy/0aSZd3pyRitKHCLjtn3P31NDedy7TwQsj16rFmFysitx28sE4LOqQp9z7XLVp9D/qtxenpppepd+NHtM20bxOf9xyo3Av1AIe5HiBg84NouRmxM+eVAlSgbR+YZfFO/fMtiKgdMGREpU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dBsTaV63; arc=pass smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6DA3BE168
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 20:58:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787000292; cv=none; b=rqqCVMJW9SnuAoB8EglkyKWdWLhzQuKOv0hREGDSiIqhOQL2oR7PobqyDuH77V6Kbf5EMpdIbCaGWAlowV2ZLAm+qbTOPVx7XnYDa+o3c975igEciIIblT7ai/hjtUEu1z3YcLsnr0KqU+544pV8NzS9b6H/ZxuGlbs4j6OhioE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787000292; c=relaxed/simple;
+	bh=qU+cEMM38jaogS36VjHCVYi/AvodElvMLgFzWofPPvo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LKF41xovCwOa5b/64MZX+1pOjvqK2LbcYJCCPvQR8AlSzADtHyMdzD8+9NhKJWW6hcts20ei5TiesMas+i1o3IKBsUZrj7GJjq0vdc3rJbQihX5Z47dFdTGiLGm9N17ZhATe5CVdman4hpGWtvW3UDjUUSpjpiT/KqTjYyXh0uQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e9CJ0C00; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dBsTaV63"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8487214ad2bso5249035b3a.1
-        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 13:54:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787000091; cv=none;
-        d=google.com; s=arc-20260327;
-        b=UJMU+y2bmSfdDxc1TXB/tyjlGPBpMKdXtdIoyIRAmDJaE4MCzsQGWlDxKuNgWO9+b6
-         OtyE7n9p8wbxQwV+/R6hjzA9e+sARGISQdFR7H0L+FMCkaAUGEKc/8POMWM7W2Gz18hK
-         XdNeNsXFZM/XqIJIY4KBgXNn/e9sCgX0du8Z4jaUonltt+VZpVEYV/JqiwChlI2hjSeI
-         sBniVWB34L+UmTRYgGIkrwqovi3eNUIwxfwFMrxVlQyhVCWYqGGD1M4l4/lY/pFkN0ne
-         yEIT2xXLkJqJWvoNzLoZoR6RsiDt67fS/8x4Dx+2dhBvgaYPaC/T4EhUOx4q/ugvaEGA
-         /4AA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=TZzvkyfzcnxRFEfgSgwbrJFbE3ozE/bmeORKlNaSn9Q=;
-        fh=bk1vZdQTQK/NBwooGIN6vGuRDuXIPnNogefRvmjJmHU=;
-        b=QxukpSPik7rtXJKhCEtP0BLqkBBt/oUPTFpDns6drDR7dAgIrkA3yPpQlvJB2t4Bgp
-         jICXInDqYxoaWukKl29WS1T9fixDMn5Gkc9zivcbwSu3hh3htNfeZVW0eMsJHZ1NQyoq
-         ri7T+KLrkfBr8heGmrz7KKbC/76IKHaWlP2fLYhLQzyvjdGV/eNLDcM19jQXSFc1xVRh
-         zn3xPEc0a5nwZnv4f9RmkvxAUWdt7PdwgElgHfcttzrW6Dz2yhaAyPJ1p9Peu9JFV/vZ
-         +jI8CrEZz0qRQ0LO226NshmZoHHd/NbLv5a5wzzEV/lNdHE8uxU/ewqP58lwZFuOjT2J
-         AavQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787000091; x=1787604891; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=TZzvkyfzcnxRFEfgSgwbrJFbE3ozE/bmeORKlNaSn9Q=;
-        b=dBsTaV63zVdIFsaEf+kB3CdlhRwvunbkEst2jS/In+H8yKtj3FR6d6jOdO7rYlGquw
-         5fJdxNfYPfuk5Yg7Pbwyru9sWXao2bBuE8OSf1OB30jDsin6vpRGnpXQQ4NR/a6Xl2vO
-         /TrhnxHulvU8ChYV59JiH3gwns8GpqSD9ZkYzKvtDGeBasA0caOU10pAwn9QqV2tRKK+
-         wURWtJxSn2zgTx8yFgQBMHpvj27tlCXMSHdyEjfBjCUrIln+qAcmEnm0hBOcBWRUdqVP
-         60TUL99CmuhObb3Ss4GCeSE00LfqQSvhUaqQi7bBQhqJog0gs2zbKg6tf9JW9JTIH4ht
-         HrSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787000091; x=1787604891;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TZzvkyfzcnxRFEfgSgwbrJFbE3ozE/bmeORKlNaSn9Q=;
-        b=cXHzydPpWCdUyL6Kfz98OwZWhJWwv6YLQzOE9iGw7nIM4vtjqrIgggJDxSX9oL3vxu
-         R3RA8nnuOJzV30MEPiluGb+gYRNdYJGrEX6GcooLam/DWWpVUUjUjV05qq7eyJULLK9u
-         YLs6ixmeYOkqheVWBCXoWEpTTjOgbaluet0sD78PotvX40fPB87MERQQEcyOv6PLI5bo
-         JshYrCXDKTuPUNSGPv1DCizfijVMTyKTbsc+3sJSr8Yl5JvvndSey+hPIpdTSDFrwncO
-         M90HTpu/O/gWiglaBwXVgzGLdb8T49h6eENnE1ggUUvmpTjL5WiiNgNshXAUvqu2SvJJ
-         Qxwg==
-X-Forwarded-Encrypted: i=1; AHgh+RoWDF6uk9/aWbHKt4Hm5SwENwLHTg32PjKS/A6C3olfb6gHC1qUkKm24+VvbqadHbOdwes5RnA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxf5pdhN3XQZ3qVvwCeVY2+6ZqJwnh6qANkhq70rrzhbLLF1dz2
-	omRaA9pG0S05KqTenkoXVDIxqI3BOriGOcbZ/WPB82kc/mSzxWqv202uduYyOZWe1OyeUbTWTZI
-	D462nCBXNJEp8LzgZmPYIBcXPTxrCpyo=
-X-Gm-Gg: AR+sD136jPQLVkL7tpFkuD37Trh0ErJilEfKTVEGPlv/zyyxSxPZGURFSTbBkN+xcqy
-	ID17VHfBrJOkg+QtKUyXqEO4E5JbANgFz+59ynYaWdlgMHbBYx3znBOoZUD1UINAQlmvIBmmx30
-	BehhQeDnXunOAbNr/g4RXteqrzlc5OG3r/TX8w5TQuctTqMaz/Pq+nb3pbRvgAN9otzAhV6D6bM
-	rG8gk0eR7u+y75Vh+lIZOkV1q/fU+WDXwycXwcJxusdFNKq5gvNsOcvfI7rMyjsMKg6V6IMwxux
-	hDAVGn6GR6bCTFh5KEyXIPCMGqKDYNybLuYm/x/F+zYtQeT0G9ofMbw8bJVmaGdX0DhMAGWVHD8
-	hbxPh1lCuzobojgMMjj0gvl/YV5+owc6Vwig2z5Z3Ujg=
-X-Received: by 2002:a05:6a00:338f:b0:848:4424:2b8e with SMTP id
- d2e1a72fcca58-84fddf9258fmr28183545b3a.3.1787000091116; Mon, 17 Aug 2026
- 13:54:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e9CJ0C00"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969641F000E9;
+	Mon, 17 Aug 2026 20:58:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787000291;
+	bh=E1RI7UTVFb/Y540SUAsOOHpc9fK5PeqCmFEXXd0swhM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=e9CJ0C00FoSnpE1PRR5KhaSvawTXt4Jt42b4hK4OP1uJU9C7bXk3U8XfrnB5mtOTW
+	 HTkltyddq25SfhCoEwkGuD9sX9kMNL7yOg8Hp/v/cg5OvtijfmYyfBLJCh3kbnCovt
+	 XMj7cBA60L0R6MzeZE+f0YRrNvmyID9u31Qgcdaga8y9SgdUnTUmTNDO2TSYNpntEP
+	 5xdExX9lBRyOr0g9s5IR3iDL4rPsFtIhg2g9qnqEmwzakzSKjZRDXKcm/52Uzb4BF3
+	 rs1OZVjUYgi/jHKiJkpZGGCecu5Gr4d7gjlI49J3829XDQRtAu6IMYCjxbUwr/xgTF
+	 P1pTLeX5g0vyw==
+From: Jakub Kicinski <kuba@kernel.org>
+To: jiawenwu@trustnetic.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	mengyuanlou@net-swift.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	larysa.zaremba@intel.com
+Subject: Re: [PATCH net] net: txgbe: fix interrupt mask for MISC cause in non-MSI-X mode
+Date: Mon, 17 Aug 2026 13:58:09 -0700
+Message-ID: <20260817205809.3620094-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <59215DA27859BC49+20260813073305.360251-1-jiawenwu@trustnetic.com>
+References: <59215DA27859BC49+20260813073305.360251-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <an-YYtoqw1QpTXUL@v4bel>
-In-Reply-To: <an-YYtoqw1QpTXUL@v4bel>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Mon, 17 Aug 2026 16:54:39 -0400
-X-Gm-Features: AcwNN1Wa_-XbpcJpjQ1aDnUYAmjLOxacmUIvkiau5yGSOhYY4ESNLzUUiYe5h0I
-Message-ID: <CADvbK_egNorDqoGeHb_wOZ6wVxQ_f_1jFJ5uNvXu93-KAd3rXQ@mail.gmail.com>
-Subject: Re: [PATCH net] sctp: stop processing a packet once its association
- is deleted
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: marcelo.leitner@gmail.com, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	linux-sctp@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 14, 2026 at 6:36=E2=80=AFPM Hyunwoo Kim <imv4bel@gmail.com> wro=
-te:
->
-> sctp_endpoint_bh_rcv() looks the association up only when chunk->asoc is
-> NULL, and caches the result in chunk->asoc and chunk->transport without
-> taking a reference.
->
-> A packet that matches no association is handed to the endpoint, so a peer
-> can bundle COOKIE ECHO, SHUTDOWN and SHUTDOWN ACK in one packet. The
-> COOKIE ECHO creates the association, the SHUTDOWN chunk caches it, and
-> with the outqueue empty the SHUTDOWN ACK reaches sctp_sf_do_9_2_final(),
-> so the association and its transports are freed.
->
-> The endpoint loop has no counterpart to the asoc->base.dead check in
-> sctp_assoc_bh_rcv(). The next chunk writes to last_time_heard in the free=
-d
-> transport and is then passed to sctp_do_sm() with the freed association.
-> The transport is freed through RCU, so this needs the packet to come off
-> the socket backlog, where the loop runs in task context.
->
-> The endpoint loop cannot do the same check: it holds no reference on the
-> association, so reading asoc->base.dead would itself be a use-after-free.
-> Mark the packet for discard in the command interpreter, just before it
-> deletes the association. That is also before sctp_inq_free() releases the
-> chunk on the association receive path.
->
-> sctp_sf_do_5_2_4_dupcook() issues SCTP_CMD_DELETE_TCB for the temporary
-> association, while the one the packet belongs to stays alive. A restartin=
-g
-> peer can bundle DATA behind its COOKIE ECHO, so compare against
-> chunk->asoc and leave that case alone.
->
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-> ---
->  net/sctp/sm_sideeffect.c | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/net/sctp/sm_sideeffect.c b/net/sctp/sm_sideeffect.c
-> index 424f10a6fdba9b..94716406d602ce 100644
-> --- a/net/sctp/sm_sideeffect.c
-> +++ b/net/sctp/sm_sideeffect.c
-> @@ -1332,6 +1332,10 @@ static int sctp_cmd_interpreter(enum sctp_event_ty=
-pe event_type,
->                                 sctp_outq_uncork(&asoc->outqueue, gfp);
->                                 local_cork =3D 0;
->                         }
-> +                       /* No chunk left in this packet may use this asoc=
-. */
-> +                       if (event_type =3D=3D SCTP_EVENT_T_CHUNK &&
-> +                           chunk->asoc =3D=3D asoc)
-> +                               chunk->pdiscard =3D 1;
->                         /* Delete the current association.  */
->                         sctp_cmd_delete_tcb(commands, asoc);
->                         asoc =3D NULL;
-> --
-> 2.43.0
->
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+net: txgbe: fix interrupt mask for MISC cause in non-MSI-X mode
 
-Acked-by: Xin Long <lucien.xin@gmail.com>
+The patch changes the trailing unmask in txgbe_misc_irq_thread_fn() so that
+it uses BIT(0) instead of TXGBE_INTR_MISC(wx) when MSI-X is not enabled,
+because the hardware merges all interrupt causes into BIT(0) in MSI/INTx
+mode. This is meant to avoid delaying subsequent MISC interrupts until NAPI
+polling completes.
 
-Note: I don't think the pre-existing issue reported in sashiko-gemini [1]
-can be reproduced, as the SCTP GSO packet can never bundle a chunk after
-SHUTDOWN_ACK.
+> diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
+> index 8746318ad3bcb..05b318f4e6ed6 100644
+> --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
+> +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
 
-[1] https://sashiko.dev/#/patchset/an-YYtoqw1QpTXUL%40v4bel
+[ ... ]
+
+> @@ -183,7 +184,8 @@ static irqreturn_t txgbe_misc_irq_thread_fn(int irq, void *data)
+>  		nhandled++;
+>  	}
+>  
+> -	wx_intr_enable(wx, TXGBE_INTR_MISC(wx));
+> +	misc_mask = wx->pdev->msix_enabled ? TXGBE_INTR_MISC(wx) : BIT(0);
+> +	wx_intr_enable(wx, misc_mask);
+>  	return (nhandled > 0 ? IRQ_HANDLED : IRQ_NONE);
+>  }
+
+[Severity: Medium]
+Should this unmask be guarded by WX_STATE_DOWN now that it touches the live
+BIT(0) cause?
+
+In non-MSI-X mode this write becomes a real WX_PX_IMC(0) = BIT(0), which
+re-arms the single merged queue+MISC cause. Before the change the value was
+BIT(wx->num_q_vectors) = BIT(1) with num_q_vectors == 1 in this mode, i.e. a
+bit the hardware does not use here, so the write left no hardware residue.
+
+wx_irq_disable() in libwx/wx_hw.c masks everything before it waits for
+in-flight handlers:
+
+void wx_irq_disable(struct wx *wx)
+{
+	struct pci_dev *pdev = wx->pdev;
+
+	wr32(wx, WX_PX_MISC_IEN, 0);
+	wx_intr_disable(wx, WX_INTR_ALL);
+
+	if (pdev->msix_enabled) {
+		...
+	} else {
+		synchronize_irq(pdev->irq);
+	}
+}
+
+Can a misc thread that is already running execute its trailing
+wx_intr_enable(wx, BIT(0)) after those mask writes, so that synchronize_irq()
+returns with the only active cause unmasked while the driver considers
+interrupts off?
+
+The window in txgbe_disable_device() spans wx_irq_disable() through
+wx_napi_disable_all(), timer_delete_sync(), cancel_work_sync() and the TX ring
+shutdown, and the mask is only restored later via txgbe_reset() ->
+txgbe_reset_hw() -> wx_stop_adapter(). Since the TX rings and TX DMA engine
+are stopped after wx_irq_disable(), a TX completion cause could assert on the
+re-unmasked BIT(0) during that window; on a shared INTx line the hard handler
+then takes the eicr == 0 path, returns IRQ_NONE and does not write
+WX_PX_INTA.
+
+Every other unmask site in this driver family wraps the same operation in the
+down check, for example wx_poll() in libwx/wx_lib.c:
+
+	if (!test_bit(WX_STATE_DOWN, wx->state))
+		wx_intr_enable(wx, WX_INTR_Q(q_vector->v_idx));
+
+and ngbe_intr() in ngbe/ngbe_main.c:
+
+	if (!test_bit(WX_STATE_DOWN, wx->state))
+		ngbe_irq_enable(wx, false);
+
+txgbe_misc_irq_handle() itself uses the guard on its shared interrupt path.
+Would something like the following be more consistent?
+
+	misc_mask = wx->pdev->msix_enabled ? TXGBE_INTR_MISC(wx) : BIT(0);
+	if (!test_bit(WX_STATE_DOWN, wx->state))
+		wx_intr_enable(wx, misc_mask);
+-- 
+pw-bot: cr
