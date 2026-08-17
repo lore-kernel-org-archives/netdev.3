@@ -1,84 +1,70 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791DE3C1969;
-	Mon, 17 Aug 2026 08:30:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7292732AABA;
+	Mon, 17 Aug 2026 08:33:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786955456; cv=none; b=V2BL9aHVL7OWnZHVe5MIRXJbCeoFV2FbRXXxG186bNfNpPlGnl0/PJvuXrG4zfzKSAbNC8HfXzHKASDtcAYWxYWo9bvzGmpMhVQBAc8XEb1ZNoamzMS+saVZ98C7AR4Lcbs6dofH9ER+ivpjeMWpKFasxICbo6/dmyN75icz6No=
+	t=1786955590; cv=none; b=kYtb/oLupqJa8oz101mduqinSnrMqWIb6gkiAlC9RoT6sPNVKQEOL3NJw/APPUDUia21lOhR8cgqFg5lAfIPZn415X0dsQhsX1XIqMxck5LH+UDG6l7mZE0egv7/hF33YCz+hof3/MFCdTFFSYhQ86Q6zHkgJgcZkGulAj0+MFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786955456; c=relaxed/simple;
-	bh=pubBK28YGQPYP9leBOM8pTWtR2dTBOEfilcYD4fIJRg=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=NsF9AgSDSisjd0bZoCEhgeNMGW2oxis4BV6SR2iO093Oa8Tdn1gx+FN1LkAOv4symAtVhim6VpIU4U5vE02hE28hWDXb4ADKqqepv/h7U/efY5CRNGYXV5ZlltSJD2Q7LAHF64qGvnBP6JBxde4Or+PEzeM3wnbcxrLSjgPxrEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j9luvSEa; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786955590; c=relaxed/simple;
+	bh=I7FZf37jBGeHkHtIo8wliYrhutck0dZq9aTGX6Gtf0I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jr86K82mSTFU5C4OEGA2s2sJkGRUm0LNCr+730UGAy+2Pp14A4B+3GzH5TsEYgr/mE2CIPtrzSz1/7NExUqTsw6YfCSUZhA94N3KhOgVa+LPfEAzJ2kzeGcLwXubycNddcuV2/VmWZZzYqVV8+WymZHqWuM/gnVex3gep6Ivcjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=kITUFup/; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j9luvSEa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A90F31F000E9;
-	Mon, 17 Aug 2026 08:30:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786955454;
-	bh=GX9hcnnkO7o5+JS87yeLaSc8Q5EbM/YDQW0+u5qquT0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=j9luvSEalTGEuUMPnf5RGCl6/O3NGQ5heW+6AHRmrNnFBPpShULgNhPAfLneldeCX
-	 tNtIfN4nrFxjeI8/pBJ670WKMrOXrMlNoFDMJ9JWx2OAJ+xe3VAlOwb+YCAQplTTlc
-	 BU55oUzHVfcdJwpFgVcyOMK1C05tjZrqSQ4DBcepeSYltkek/1LKAQ9Qx4hvf8vEti
-	 Lgbbsh0DMsIupJuYzrpidy5+cDwxZameMPcJwBO0aqMqZt5wHwI+cYcIjNGwXPsV5y
-	 1MiKmqqeS7QqiXMarTZWwlEjE8XHBuyN9qjj8KNgPzLA2q6fylj6sLJJloz2eqC1Ez
-	 edhSWtCy+aCTw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568A53924FFD;
-	Mon, 17 Aug 2026 08:30:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="kITUFup/"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=axpIj2NM5kg4OjjcgeHpteDzEE3Y9bWGjvH/o1purSw=; b=kITUFup/SbOt8H9AooW3c7orNt
+	hBWDnAjq91ClTdT0YZKxlME4gVdWnjMJ0Cj0UBsdl3BV9DJc2bNtprtcpHYiEwQVW+Re1z4DvF94X
+	OvZZx/4chvRmRxyBWfxGHNj0RUdEbrqi7bMg++rrR+OEJS1tQKmXAIf4e09rw2+noeX9DUDZVpoLD
+	d6qN4ug2my4L0rlY3IVp0HBi/NHqCbG2AAakxxFUf/WJtdQtLDe8v4jFncyqKCpQIWeiG0UXh2lmm
+	gj92eEOvg5MgXWFslWdy1W5EJOBAeSrC5/6G1Ub3aL5Np+Hwc/NM7K5V+ddQG+v9XvsvgZWcjDy05
+	lNzqrdpQ==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wvslz-00865N-2M;
+	Mon, 17 Aug 2026 08:32:47 +0000
+Date: Mon, 17 Aug 2026 01:32:42 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Gustavo Luiz Duarte <gustavold@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH net-next v3 7/7] docs: netconsole: document local_ip
+ auto-selection
+Message-ID: <aoLHH6AMEWKFYHfh@gmail.com>
+References: <20260814-netcons_ipv6-v3-0-bc0915e8c75f@gmail.com>
+ <20260814-netcons_ipv6-v3-7-bc0915e8c75f@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH bpf-next 0/2] bpf: Cleanup & optimization
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178695540692.1014497.7617215673490859159.git-patchwork-notify@kernel.org>
-Date: Mon, 17 Aug 2026 08:30:06 +0000
-References: <20260813-sockmap-lookup-get-ref-v1-0-31f5d55f44ac@rbox.co>
-In-Reply-To: <20260813-sockmap-lookup-get-ref-v1-0-31f5d55f44ac@rbox.co>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
- eddyz87@gmail.com, memxor@gmail.com, martin.lau@linux.dev, song@kernel.org,
- yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com,
- ihor.solodrai@linux.dev, john.fastabend@gmail.com, sdf@fomichev.me,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, jakub@cloudflare.com, jiayuan.chen@linux.dev,
- kuniyu@google.com, willemb@google.com, bpf@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260814-netcons_ipv6-v3-7-bc0915e8c75f@gmail.com>
+X-Debian-User: leitao
 
-Hello:
-
-This series was applied to bpf/bpf-next.git (master)
-by Daniel Borkmann <daniel@iogearbox.net>:
-
-On Thu, 13 Aug 2026 14:41:58 +0200 you wrote:
-> Non-functional cleanup and a refcnt bumping simplification.
+On Fri, Aug 14, 2026 at 08:28:58PM +0100, Gustavo Luiz Duarte wrote:
+> An unset local_ip is auto-populated from the egress interface at enable
+> time, but any value the user writes, including 0.0.0.0, is used as-is.
+> This deviates from the behavior prior to "netconsole: use the address
+> family instead of the ipv6 flag", which interpreted 0.0.0.0 as unset.
 > 
-> Series extracted from a fix attempt[1] currently under discussion.
+> Document this so the distinction between "unset" and "set to 0.0.0.0" is
+> clear.
 > 
-> [1]: https://lore.kernel.org/bpf/20260803-sockmap-lookup-tcp-leak-v2-0-306e025bfe66@rbox.co/
-> 
-> Signed-off-by: Michal Luczaj <mhal@rbox.co>
-> 
-> [...]
+> Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
 
-Here is the summary with links:
-  - [bpf-next,1/2] bpf: Extract shared reqsk-to-listener upgrade
-    (no matching commit)
-  - [bpf-next,2/2] bpf, sockmap: Use sock_hold() instead of refcount_inc_not_zero() in lookup
-    https://git.kernel.org/bpf/bpf-next/c/34e0eb763bec
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Reviewed-by: Breno Leitao <leitao@debian.org>
