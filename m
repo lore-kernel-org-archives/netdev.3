@@ -1,118 +1,151 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323093F7895
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 10:58:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.181
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786964335; cv=pass; b=It/AMKB0iWR/VnjmO5wc0rkY/V1pHbkaxEdhOd2VFN+uM+Mava7/nPqyPzOIKJ8PxtTyYggLZlu8gfmNtFU0vUxE/kea43sgNHfhdJ+Yvrn9NT8i0q2+dVLSNaijDUL7JRrD3Ze2oInWD05QibA3qLS5E4L+ko3rNcWltY+YBBs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786964335; c=relaxed/simple;
-	bh=IMtbHlQWJKJmSSFhTgw7jWecL2Ir5wM0QgbUJG0kDxI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=j/stgSAhusvqDrnTUTE6jh2LUvnXCC7xABKA//9PQ6mQkxmk7mx++BTXdytgjLuEkqV1+g2NN9EIdMkFvTRE+dcqnAzeo1o+RJWXuIEky6Yr1i7Mah+Z54qXQ+J4DeJ3nAsWJ6C0W5ND+veLzOLzWKjNypY3UnhqLByU83OwZcM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e9yr17vI; arc=pass smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB753F44EC;
+	Mon, 17 Aug 2026 10:59:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786964395; cv=none; b=s3IeHEf/L8u/5UhrTSgJyGzWTfsL73N3wu6T7m4vDT3AZo4EPzMTWaV4uArBFFf5K6kd+D/rku58cv1NSzEASnD/YiXbD+vkv9DjsoaKi5qtrPhoUqHGI+kQCOra51CCPNiIGrBHPnPA610LHnQnk4vdSel0pbled73A/IEjVIM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786964395; c=relaxed/simple;
+	bh=ryUyJkF5r6sr22hj0YcG/kzjNE7UKL2QWF2EIScNOaE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Jb/PxrjZNUBaTIe69tcGV54hqCYXvzDarwqzH9g6Ved0q2D5giXWl3t96ex4AW68ipsBrsbZy1jk1pdc7Xa1bg2PAbu1tuy/FIWCUxUfq1G8aOLYn5QtEIwlha5dotTDnknKsG3Tlupv0PgDsVGGttVzqXABfhfEaSZ3/gftB7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=eu1CdQfZ; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e9yr17vI"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2d01663d816so28028925ad.1
-        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 03:58:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786964332; cv=none;
-        d=google.com; s=arc-20260327;
-        b=fQjeqidtYAZjd9hwRiUXD+7v/98nadi/zvwSS8Pbwufe3U4O0NAMVyJ3O9ynNQoydp
-         NqNuAoWSN3XWuwFGtTk0nKWfCyAsYSeccSgrFPyCr9Jhw6TrfE/U79Q3jBCd3agIQqtt
-         xM4rPQubzcJ0Cf6B4aArl/YiGIiUqa5ttZ40UxRO7of3+QURZ28mfJHfMv5n7qFm6P5M
-         QyWIef6HFdazvnMgw862yHjZO+XQsmDd3xZXZa/e7wDDo/3U+j6o5nek4oWN8zveqM6T
-         9dnNyQJciTUaRbxlLO5fEo1MVRi8P2xDX81n6+FyHPhkYAynBI1P/Y3llvMwNkpirPBz
-         6SbA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=M+b0jYgW03A+vd4O7ObKACxl7REgd1vcuWPPdy9fTX8=;
-        fh=+yN/7i6EooBJac+JdFMyu7PyewN/j2Tfwf8uLQHEOxk=;
-        b=WEV7EsXMcMq8QMCkqlJEHWO/1uqE4rPedfAuFSNDiyG8ZXSwwSsWl4Tue2t73tqj5z
-         MjfAYolNcYCJfqjRKJQLaT6IAen/F1SotKOkT7h4KsHYHws5HwDvlNtOj6tGmxWLGep2
-         AhmzpAw5MGIDuUL/Xb6+dEn5w9c+xTeT0ycSAZOLdLf6hwt0HdWKns2w9SWI1d298XeA
-         vV+2SV1Ac8/q1jXDOGD/eXZch4cvAhEhnHnKuZVuiOXnIEBnZmEt13Kry750/4VeRrrj
-         3j3oT8ETcKpV2k9bUWckg3cCwvKOZ4Xn1bfGyXuuwq69eBtG5QfL53YLRBWcifPxD1gI
-         B22A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786964332; x=1787569132; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=M+b0jYgW03A+vd4O7ObKACxl7REgd1vcuWPPdy9fTX8=;
-        b=e9yr17vI3M3HjjDCmY95nLusd9hC7IJRh3QyNiCH19V7zrLSbktDCJS7zWKT2BSkfN
-         AVQ5zCpBMRNKuHEt0eCOhdYrT/y1NrzsPgLcGLfjgCLnxBu8knJYVMKgZv9kxXS5iiHq
-         gVIKmjruALQlLWIYWVCoNvFCmLKRIDRImf/dtDT5IG7ar9lt1l+B10bR1e0bznRpi9ID
-         y47aKX3oLA37wGZvmGNVpE9UxdzryYks1y/cChiEg4fB42ZpassE8+qblGPZvS8744Zk
-         jYhzkjvOXU73Fev7umfAJePtEIToL8/OJgDw9Yb5RCvdJzll7plZq8sWFOKFx+27t09z
-         zoYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786964332; x=1787569132;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=M+b0jYgW03A+vd4O7ObKACxl7REgd1vcuWPPdy9fTX8=;
-        b=Z7EVXwnQuU5viDDA9reuj8Ow1Md5hv8V0wmV5BUBCtoZDEPjOxX+RV7yuQUjxFdih8
-         Gw7BB/OaLNizG+CYOoTRbukuvYsaRi33hyZGE7Vb6IRFdEDE2nfwAFO+HeXZzKpc44HY
-         2yp1kIk6P0YQT/Eg6Ur9rZhyMXfWP3PRs+IxYcsEyMZW0FpeKf0L08Vb4MDjsk/ZCOyI
-         1g61VerIfMS86jW1MXOmPQ3Ffc7fb9NnFGJ7mCNKYKEz3h1VjDt2HCzOim3s8bfs5Kyt
-         KhMYe1//gMMGn8JsGHQsFxN+DeOzmT0dwVT0tIBqEmqyv2zcjd+vUd/j/GJ+EKv7R7Tf
-         u8Mw==
-X-Forwarded-Encrypted: i=1; AHgh+RqRzf3qYSfOAWqTJo37UhdYvPQLkCEEQrcQ8uN0BIiiskWaDKWDfvuDLhLy8pyb0Sj5XFWD9Ek=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCBZB2LUHGwrvRsaKcL+URJ65q/eUlCx0CQT5B2pTo2I0J7fdD
-	4VZjwXKkaRokfCZ5xS96uzRx+DhOW1rp2/vPA4B8149RrmF5+aNConte2bMnBp5L0R/AnlRTds9
-	nORYnhdWJ2/L+yJNUUN7drZvLpxHylwc=
-X-Gm-Gg: AR+sD107C35YEu9LXAhwWB3ADcjB9Hq7dt5pVAZMtZZrxcetIBligdsyOygWZmIlYv8
-	cYwL6QQED7wTSE1hlMDI0ysPQ4rXxJHmvCwd3AQQb3gkSoNl2zHhVKF15CMVdE5OfZKI+cwohVP
-	JxAB6TuNsIBLnbRVjjmrhl2fgkk6pq2k18ZAMHDF19q7Vepb6uWsI2V0X1CGmJkaFSRYBaBPa+M
-	px0ycM1Nje44rcp7hG0aH/7XtRZONKBK2i8wVGogkzZq9A5LwOJMgntacF+13JF3npFJ+YpwLTi
-	iPWdIlowVlR+wk8GIgyMgXVNqVNvwuoZKPR221cl8IpCYWtZED4E30naFDkdjETW9dzi/2S01fI
-	rrH3paOmKnB1usyF+KiSbDWo8d748hMHEz6m8eWQXHcObpmVZhSOFEC8s
-X-Received: by 2002:a17:902:d4cf:b0:2ca:660:b1d with SMTP id
- d9443c01a7336-2d3b0d5eccfmr247797795ad.11.1786964331843; Mon, 17 Aug 2026
- 03:58:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="eu1CdQfZ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=0XLVkjAqQhZdBionA4sPMHUV8ZIJiuNjBIsLw1DYAh4=; b=eu1CdQfZgrbfIYjhCe1u1vfaHw
+	HTLsq/oTFFsKuz94TOeIg+aH/dYwLaaUvmfuYgy/s+X4EFmYHBWM3QMvyz1oCCvhvpmm/dy2S+Wtr
+	ePgCMOQQnc/rbQNGdfutPCentbQJUPZi21MT1RZ5sBAQ69d11pJAV2fp5lCUg8gJJRatlqAxFe/7j
+	SrVh7/ly3cCefvNn6fnQdC+ElT3edao6Py2rNo1ISBFxFsKtb9Jv3bqsVcn+hcmuyKkAAVHor80XC
+	wIGpvXX0M4NZrU0Uyz09Bqkgntm4Gp7JPrUly+e8pXwZucDHEDwSwUSMyLTns6GFEdfImh5Ndch1v
+	hBsAyi8Q==;
+Received: from sslproxy05.your-server.de ([78.46.172.2])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1wvv4C-000Crc-12;
+	Mon, 17 Aug 2026 12:59:44 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy05.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1wvv36-0004X2-0o;
+	Mon, 17 Aug 2026 12:59:43 +0200
+Message-ID: <6c7fdd8e-bc32-4c33-ad06-39b00af1ccda@iogearbox.net>
+Date: Mon, 17 Aug 2026 12:59:42 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260813042012.17631-1-phucduc.bui@gmail.com> <20260814170001.GQ265046@horms.kernel.org>
- <CAABR9nFxfzf8QP-wq5iaJRTL+HG+a+tNqqX2daj-=Cwp46hPJQ@mail.gmail.com> <20260817082119.GU265046@horms.kernel.org>
-In-Reply-To: <20260817082119.GU265046@horms.kernel.org>
-From: Bui Duc Phuc <phucduc.bui@gmail.com>
-Date: Mon, 17 Aug 2026 17:58:40 +0700
-X-Gm-Features: AcwNN1XKH4dVb_0RJE6LwSHqmPfYDPdjDqVmlca3ZOszbhsVaf-YGJmUq6V8L8g
-Message-ID: <CAABR9nEX8Sc3dSO+XfA5tQNjGeaRKikS3ijJ0Eaf0pAKq87LQQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] net: xilinx: axienet: Propagate errors from
- optional IRQ lookup
-To: Simon Horman <horms@kernel.org>
-Cc: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Michal Simek <michal.simek@amd.com>, linux-arm-msm@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 0/5] selftests/xsk: improve shared-UMEM coverage
+ and infrastructure
+To: Tushar Vyavahare <tushar.vyavahare@intel.com>, netdev@vger.kernel.org,
+ magnus.karlsson@intel.com, maciej.fijalkowski@intel.com,
+ stfomichev@gmail.com, kernelxing@tencent.com, davem@davemloft.net,
+ kuba@kernel.org, pabeni@redhat.com, ast@kernel.org,
+ tirthendu.sarkar@intel.com, andrii@kernel.org
+Cc: bpf@vger.kernel.org
+References: <20260807134209.3794735-1-tushar.vyavahare@intel.com>
+Content-Language: en-US
+From: Daniel Borkmann <daniel@iogearbox.net>
+Autocrypt: addr=daniel@iogearbox.net; keydata=
+ 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
+In-Reply-To: <20260807134209.3794735-1-tushar.vyavahare@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28095/Mon Aug 17 08:23:59 2026)
 
-Hi Simon,
+Hi Tushar,
 
-Thanks for the suggestion.
+On 8/7/26 3:42 PM, Tushar Vyavahare wrote:
+> AF_XDP shared-UMEM support in existing XSK selftests is limited to a
+> small set of scenarios and cleanup paths that become fragile as coverage
+> expands.
+> 
+> This series improves shared-UMEM testing and infrastructure in five
+> steps.
+> 
+> Patch 1 introduces explicit UMEM lifetime management with refcounting
+> and consolidates socket/UMEM teardown into common helpers, keeping
+> cleanup behavior consistent across normal completion and error paths.
+> 
+> Patch 2 adds rollback for partial socket setup in xsk_configure() when
+> xsk_socket__create() retries are exhausted or busy-poll setup fails.
+> 
+> Patch 3 adds a length-based XDP steering helper and updates XSKMAP/test
+> capacity constants for 4-socket scenarios. Steering is explicitly based
+> on total XDP-visible packet length (data_end - data) using
+> SHARED_UMEM_LEN_SPLIT.
+> 
+> Patch 4 adds the shared-UMEM callback runner together with the first
+> four test cases (4-socket, length-based steering, uneven distribution,
+> and unaligned chunk mode) in one commit so every SHA in the series
+> builds and bisects cleanly. The unaligned path snapshots/restores prior
+> alignment flags with NULL-safe UMEM guards.
+> 
+> Patch 5 makes pkt_stream_even_odd_sequence() rollback-safe by staging
+> replacement streams in temporary arrays and committing only after all
+> allocations succeed.
+> 
+> Together, these patches make shared-UMEM setup/cleanup more robust and
+> extend selftest coverage to common multi-socket and distribution
+> scenarios.
+> 
+> Signed-off-by: Magnus Karlsson <magnus.karlsson@intel.com>
+> Signed-off-by: Tushar Vyavahare <tushar.vyavahare@intel.com>
+Looks like this needs a v2 respin based on the LLM reviews.
 
->
-> For future reference, I would suggest including something
-> like this in the patch description.
->
->   Found by manual code inspection.
->
-> Others may differ, but I would find that helpful.
->
-
-I'll include this information in future patch descriptions.
-
-Best regards,
-Phuc
+Thanks,
+Daniel
