@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6E7275AFD
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 20:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2C03BE630;
+	Mon, 17 Aug 2026 20:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786999261; cv=none; b=dg//YJa/ur76pzRa1vqiejoAbQnRzaqJXfIVLTC4JALjuP/eNsEbe6C1KwixPh6mG3vywej1kEqiEY/zwIoBp7wbVJJQjzEd/mhyf9y5gxeg4qQtogKBiSOMmTOWXwUNKGvXSgXDciXbiSZk4jhbrqde5cTh6zJ7ZtlZ0BqjHoU=
+	t=1786999263; cv=none; b=gpMiEpU2mn2/8Wk2tprYcK6tGR8Yqdp55yTv2qgaWjyX/zNBhQ3vqcDZt59Hdm5y0GT3C02RG+PLaiQvUB7ocrrQgfCRrnmU/gtQ/Ei8AwkueZEvhpqwAcrYfZY9VJ0woI9Gzz/GPHHJPtzvKwFDg8luBFX5kHpggdhV89YA6cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786999261; c=relaxed/simple;
-	bh=RwglYbYO5OOTUMdS4KdCpbCvZUci6IDhIJh/Q9/MuaU=;
+	s=arc-20240116; t=1786999263; c=relaxed/simple;
+	bh=7aqa5TB9Es2ZS/kC5l+0bQaAG39f7AMw70CsLK75Gxw=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=BeGSKiTBjnrKksfvDgZM1VZVND04UHgoMRBDKA/Nez9AEzzhkO5ODckEd/5wVr59Id79pYH+ySnogrcQ5ySBc+zzNIPg6NwAOw9lfAMXGiKP4EpHT2Gvh0NerblX9uFnNzkbskvnT4Une0j/bB7h4Isj4OYUzNOaUpqCxOJ/AKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TmJ0kvP3; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=qVlfDNdc/E1EcrJgxubFOV+9FfnMNur90dKkcX2r0AhWIZhcdD9mSA7qDk3tGZ2pVO2hyStpZjHUrjF6e8baZ44P0J6h6O/nwZDNTzORbMFNphO/54wPtAvvVHC2gM7qlmVtqxmE/NLi1BaJFy53PCcc+ZC5OOvuj11DdSWt5uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U0QmN5sH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TmJ0kvP3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7894D1F000E9;
-	Mon, 17 Aug 2026 20:41:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U0QmN5sH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA851F000E9;
+	Mon, 17 Aug 2026 20:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786999260;
-	bh=uEijsVS5zci5DkD/BWFnivyalINaddYV8GX9zfbvkUU=;
+	s=k20260515; t=1786999262;
+	bh=0QULPgZVjejYdAEGFIgq9y6FZmyn1ifluOJlFIU/j8U=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=TmJ0kvP3UkisvOw+jO1kuIUPiSic1xpqU1JRgTuS7xXsSIdC9Huxmln2C06vjhhhm
-	 rugnsDah0UQPMUvh6FaiWoA5CuIgVndPEyBObznLNhpE4j9Kd13wwKVxG63C5Y/fYm
-	 GsochnHU9ISXRSSTFYwJfNmZ42LoQ3d17U4oBRlNN3QnNexDUXw95Yn9BIgxCppYTy
-	 Mx0NVFsWxLEqrk4iw4HCArRE2w9avJniPW4vzRSHUNxehQsGI+uTWX52/ELgX5bv0K
-	 S/iEwiAsVsp6FYnyIF3ZKibzq8Yk8pm9Ilq8yB51Sxs/Qh+VhWtDOvbV1Bk6VSY/Yt
-	 nyZgyhPRqbfcw==
+	b=U0QmN5sHqlmWOWN5HTseC3nzlh3dlEsUPBEYBKpHab62xylMC5ltAhyiqx429bG29
+	 Xw2Skzkf9npmLoPAVxR5JILlwm6Gs/V/XlUOlePtayJgX6HVc9xKqPSZBRq0LeLSw+
+	 cqECni1Zf0+uo5HvM4C2SLC7s5QlsmXW21iPRtr9CaFIUDI1iFuk4ghlNf4uUSKk2S
+	 6Uxr3ATIzmtLikZVAl5RdszBbhveEvcRny8vCj+CSdTklWQbpDAJ8JHxyOjrnbPfuM
+	 FlqqAbkReMe6OTOqhPEUqy1kUptIhYLoFibwcE6+Msu0hyYFRsgZIF4+vQ4EGdqRLe
+	 GQq7sebe7pT8w==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A2D3926265;
-	Mon, 17 Aug 2026 20:40:13 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56AEE3926265;
+	Mon, 17 Aug 2026 20:40:15 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,47 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/4][pull request] Intel Wired LAN Driver Updates
- 2026-08-11 (ice, idpf)
+Subject: Re: [PATCH net v2] dpll: fix NULL deref in dpll_device_ops() during
+ teardown race
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178699921239.1728655.6420820877236270138.git-patchwork-notify@kernel.org>
-Date: Mon, 17 Aug 2026 20:40:12 +0000
-References: <20260812000918.220714-1-anthony.l.nguyen@intel.com>
-In-Reply-To: <20260812000918.220714-1-anthony.l.nguyen@intel.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
- aleksander.lobakin@intel.com, konstantin.ilichev@intel.com,
- richardcochran@gmail.com, poros@redhat.com, przemyslaw.korba@intel.com,
- przemyslaw.kitszel@intel.com, robert.malz@canonical.com, willemb@google.com
+ <178699921389.1728655.16194826179389072857.git-patchwork-notify@kernel.org>
+Date: Mon, 17 Aug 2026 20:40:13 +0000
+References: <20260813140817.1051388-1-poros@redhat.com>
+In-Reply-To: <20260813140817.1051388-1-poros@redhat.com>
+To: Petr Oros <poros@redhat.com>
+Cc: netdev@vger.kernel.org, vadim.fedorenko@linux.dev,
+ arkadiusz.kubalewski@intel.com, jiri@resnulli.us, michal.michalik@intel.com,
+ milena.olech@intel.com, linux-kernel@vger.kernel.org, ivecera@redhat.com
 
 Hello:
 
-This series was applied to netdev/net.git (main)
-by Tony Nguyen <anthony.l.nguyen@intel.com>:
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 11 Aug 2026 17:09:13 -0700 you wrote:
-> For ice:
-> Przemyslaw Korba adds a fallback path to utilize sideband queue when the
-> low-latency PHY timer writes time out, likely, due to NVM updates or EMP
-> resets.
-> 
-> Petr Oros restores call to ice_clear_dflt_vsi() for the default VSI in
-> ice_vsi_release() to ensure no stale rules are left in the device which
-> can cause various issues.
+On Thu, 13 Aug 2026 16:08:17 +0200 you wrote:
+> When the last owner of a dpll device unregisters while a foreign driver
+> still holds a pin on it via dpll_pin_on_pin_register(), the dpll object
+> stays alive with an empty registration list. A pin notification queued
+> before the unregister (e.g. ice reacting to zl3073x_i2c removal) then
+> walks pin->dpll_refs into dpll_device_ops(), which trips the WARN_ON and
+> dereferences the missing registration. dpll_lock cannot help because the
+> notification work was queued before the unregistering driver took the
+> lock.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/4] ice: fall back to SBQ when LL PHY timer interface times out
-    https://git.kernel.org/netdev/net/c/6959fbdc940f
-  - [net,2/4] ice: clear the default forwarding VSI rule when releasing a VSI
-    https://git.kernel.org/netdev/net/c/d04287e27bf1
-  - [net,3/4] ice: acquire NVM lock around each flash read
-    https://git.kernel.org/netdev/net/c/df88d6f1ed65
-  - [net,4/4] idpf: add missing cpu_to_le32 in idpf_tx_splitq_build_flow_desc
-    https://git.kernel.org/netdev/net/c/b802a8c1ca16
+  - [net,v2] dpll: fix NULL deref in dpll_device_ops() during teardown race
+    https://git.kernel.org/netdev/net/c/33f016b23a21
 
 You are awesome, thank you!
 -- 
