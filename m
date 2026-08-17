@@ -1,63 +1,63 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68AC63A784A
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 09:03:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A973C10B3
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 09:04:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786957440; cv=none; b=Q7sjqU5QYimWNKWPtD9GgkQUnCHRDpV1F1XA7FbAbBCT558Or9fi9gfIaZhxkrC1Xqs/vIb43vjuyzVmYz7m4HGIuCFa+0yxr1l3c75TVpcCcDVEYFul8nU7dN5hiN3T7+Z/jas37LSHL9j7w0RUnVwE2eCztrQAyHw02JhpHsg=
+	t=1786957445; cv=none; b=C0ZOajtw30bW20/gLw0Y+T/firS37q7fy+rfQ8aIGiefKTjJtSVPEO5xMTvwe3Ez8gZ774tZaZ7/OWKlyGv8Qzrk9x3rcGM0t4YmA1jUSLZOGWB64FP1W9rwddBU2Mq83N6FLhM6fHLlemVPLnPq2KKqqUqeDeQ1EbQSqt3egtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786957440; c=relaxed/simple;
-	bh=jmcCgsbGNKvQsGopZdfhbfD93w4f5WcJJOrmkdyxHBo=;
+	s=arc-20240116; t=1786957445; c=relaxed/simple;
+	bh=W2PxdTIuJ5LHF/IMnebkVsvR7qjLz3RJEHJoN800q1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nrl/q/YEmgDa4Z1VATR+r6fQs6Hfpfir3yQZDgelu0mumUhDQbONIf/tt30nZt4gMiVG25EI0/MLkdRpqRGELRtUwJGdTyA92qsURSKoMIbTZUk7q81o2tKAU4JZn/bNQDxcJpzhr37+izmw224OVtAB6d1pBunHbAjPWd761jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ofGRpFb6; arc=none smtp.client-ip=209.85.210.170
+	 MIME-Version; b=W/YpUklWGWOeLlL5yOV4rfr7wIqbmqDaTJB6ncQhk5EOIEweijtorySg79DqGsXUG7xItWfuNLrOyPK1PhAtsD1Wi+1XCJ6l95jrIefWT4mAf5ZHox14Ip+7BqKwF7sqj/PwpbZ9rpRj42R8Hr6O6VVC3hxxslxao7ERVbMThBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rWA4Kfhx; arc=none smtp.client-ip=209.85.210.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ofGRpFb6"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-84862b0d5aeso2419799b3a.2
-        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 02:03:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rWA4Kfhx"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-84fa3b14ee1so2303354b3a.0
+        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 02:04:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786957439; x=1787562239; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786957442; x=1787562242; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=g951Y30fAYIITqf5Upt52gggx1O3bnI71YidBFSIjvY=;
-        b=ofGRpFb6GrgWajH1QI6mzY5/MnDc/WDM0j2JtyWu0RD63CSgYSfE5DwEGAXl2abj85
-         d47ZbsEJz7M8FCBNC1QIP+oi8EP8ynOxt2ddyhLv2QGUJgqUPa5oGZwytkrabdNZB/qG
-         Fwe5LoTPRilnTW0HVEaK1k8p1N8xSEezjCD8BbsPEhlGDn/HReFOWOsj8w1h8rUHsKML
-         +PuSidRixyZCh5snW7Dj/ABjv8fKaZ64aWkbf79vVBDomlm7H6QPsor1nlVpkrbRK1y6
-         X3KinlDYRZsl68+Ty5ocEB0Twr56vvVSs1mdudVSPy/fEibuApkNUd0TUtKMe3+d3lzE
-         9KbQ==
+        bh=S2uhz0qtH2rdwkxROqvYm518UOZqAraZAM2LKzgDTDA=;
+        b=rWA4KfhxcYLwociHWmNI+oXPgGb1Yx/O06GJVX3ZGrwrLFGES2xfm2JsPnPbKuMpDy
+         jo3vmsuXAJXKN7WGqV+x3IZc3TD1xx9+dmme1qVdYYuP7Kpqe4mrwDzUHLlkQyzUVjNc
+         YjwtRleMlicyUNDAK7Abm+tgSYOLgm/48tkjrlKlsRpy4oj0PGxFaHU/ST1fXzZivj0v
+         4eOrjEmGXf6lCMM/gNkuIw8+SErmpEo6CLLd37Th0ewuhnepzxpsjanYTVdHunC81rRz
+         PrL4TOhcHpuWwm3Ned2NIwqxusDZWFxgs/JdlXFEfculdzEgvMtc65yMSPlv7l02BPlJ
+         Iijg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786957439; x=1787562239;
+        d=1e100.net; s=20251104; t=1786957442; x=1787562242;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=g951Y30fAYIITqf5Upt52gggx1O3bnI71YidBFSIjvY=;
-        b=WSjHIZUXo6dD/oICX/i5wrQ4l+dAYNaidLvOmoDnnsiIaG2W/xkbkP0YFy/Kb0E6Kh
-         /R6FXYyWtB1E7yL42NGCDp6GB5LaeMDWEa410k2oEwISm36YCyRlT8U24su90vzdS261
-         EJod+ini8KTWeH6sY2PBHiRR9s01yntg9J4Z7tTOpIW16em88bNnNYElMPFiGYgifZC0
-         f/D15q9Kcty/QNbFYKULWqB4XTM2ZTNbkoVl5Ji+YmZQCPt+Mp5CoyOnSZvi0+rRXn9E
-         +yhw7nXk+01kWrcDY6FJDXBSPmL17FzSb2jcuUhfJFVITatOpDKm2VKIkkoHlwaGCknw
-         3Rkw==
-X-Gm-Message-State: AOJu0YyWAfUw/lgRNkOMD7okD+ikunMQADTrLr9yXF/IUJsDMhCHBBOe
-	WVZ9Nre8wLt85WfMSBgHjfrhciPgYXXYfsOZhtYLjqiqSXRpI7FeOp1F
-X-Gm-Gg: AR+sD12sM28/I4mAQtAaQr8YozPXJV64BkHJ1hnB7pkQNiH+X66Ueik0p5XZ+kALSct
-	ygxkm1Si1uBoIKCby2MXiBGs1Hy4RT/e2QPHN8+ureD3qm4lgjf3qt2AjgzeIKZz4i5NVQjIz/8
-	UGhLaqjo9iitl1Z70S09pjpRtVIuIYKbOFGHr933hiIMSbv8aFCLatMudW6ff/Vri+R11AGE3Dh
-	8yywlLT1jYiK66ANXpidFJbpyrTz8I4xyVzhSB26sD24KoZTcwBook0KHBxZI0yDviNY9x2oor4
-	IdCs3RgnP17EkAtC2Tcsqb7VBIUmuW6trnZpey424DP1lAJiFBr615OEDBMMiK6mOxR0uWin8p1
-	mNGhG9NayxfHecCJTb07FYaXbrCxxYinnkhyGO7sPVCzncW/vp594tnV9Hh+XSBLGB1ijK1lR1m
-	PfQiosDEYOCffteENN4TcNR5J68kZ0/IGKuh//URQCewSxWQT7WxrZjkHdjpoloFXdrwTzdWID6
-	Rf6bjk2/uI=
-X-Received: by 2002:a05:6a00:1895:b0:845:4928:8655 with SMTP id d2e1a72fcca58-84fde33319bmr22306634b3a.39.1786957438516;
-        Mon, 17 Aug 2026 02:03:58 -0700 (PDT)
+        bh=S2uhz0qtH2rdwkxROqvYm518UOZqAraZAM2LKzgDTDA=;
+        b=ifnTnh3admfE2I6cAl0+z8ZTxjG4Zf6oD6+u3UzkoKoUOSiAKiff8FsjYcsXGVX7o6
+         a9PaaaEoQ8I3E9Z/ojlySgn+8ibgLVhxLbEY1BuF+BsJ5VLdnJYBJO/hUoFMjqP5j5UO
+         fBV9/Nlpaqg81+/MaoPRaNCZeRQsGyg9+E9FdBSis9Uxt0ZaQv6C8ft/s7FthaYz0ZOR
+         n1JDMANr8cRPtonPUFq8jAcpiOFIJgg00kHWr9aNM6F6iStgg3Kqhhxho97QZd12G6JU
+         cq9nd2lw12UgbgpnDLYF2fSck1QAhO5oLPlobsjM3vhpTdj8/n1qdZtp4UkwSIGogonI
+         UsyA==
+X-Gm-Message-State: AOJu0YyiwJzNgJtWHWpun9FvnUlyOyj6/mVsAKPiphMUUtrowUwC7g1q
+	DE0mImk/JtZoePnpOwzSALCwHnjOIkZtORmleBzb3ClupeEzeeBhCRIM
+X-Gm-Gg: AR+sD109wc2gVnujvUAfXjWZGexNfESypevssJKi2OOA5VMKUGzXgN0uXPC3ZMCw5sE
+	luOJUR1moJaNkfv3g6MycuoPIkPhsZleeUiiXs/bxNTGr2il8sRLBcqvAaDMYJwmcATaCbGIBJJ
+	16q3/E8GEzQXROXkXD8I3fUdTtt2CsBvlW0y7HmKjMzr5mnFbusKnP6CxVBF1NpB/taUgaDOXgg
+	9Fh1hLRcLq5MKfuZjbcukv/pK3JvydV3KGDq1BOv/UbnBiYHbo6UJgYUdVWJqe6APAS+1Nj3BEo
+	HpYm3lrl+nXaHlWfr9FzcEnc/Bh2moKIO3O++a5dRufdxa1W9DkXpgD0PzsMNVqvbS5qAQCUKZ5
+	QkBN1cKUh4AHzjF/pqGOQT/AE0fT1sp0Z04eiig6D3T1/nh0bjlkh+HpBOTX/e8THW+T1q7QTym
+	kCELdDUvQM6I5hb+VY77Qe89HizTqDR1tJgwynfnIReqbc3EgZxNxCH2GOmUxaLgONCwm0uhQuk
+	xR2r9TLXX0+VfjYpWFVYEY=
+X-Received: by 2002:a05:6a00:b4f:b0:845:c7f1:29fa with SMTP id d2e1a72fcca58-84fde330ca8mr23049775b3a.30.1786957441665;
+        Mon, 17 Aug 2026 02:04:01 -0700 (PDT)
 Received: from v4bel.. ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8517d2476easm2342517b3a.42.2026.08.17.02.03.55
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8517d2476easm2342517b3a.42.2026.08.17.02.03.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2026 02:03:58 -0700 (PDT)
+        Mon, 17 Aug 2026 02:04:01 -0700 (PDT)
 From: Hyunwoo Kim <imv4bel@gmail.com>
 To: davem@davemloft.net,
 	edumazet@google.com,
@@ -72,9 +72,9 @@ To: davem@davemloft.net,
 Cc: netdev@vger.kernel.org,
 	imv4bel@gmail.com,
 	stable@vger.kernel.org
-Subject: [PATCH net 2/3] net: fix out-of-bounds write in sk_clone() racing with IPV6_ADDRFORM
-Date: Mon, 17 Aug 2026 18:03:16 +0900
-Message-ID: <20260817090319.3897799-3-imv4bel@gmail.com>
+Subject: [PATCH net 3/3] tcp: do not inherit out_of_order_queue from parent
+Date: Mon, 17 Aug 2026 18:03:17 +0900
+Message-ID: <20260817090319.3897799-4-imv4bel@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260817090319.3897799-1-imv4bel@gmail.com>
 References: <20260817090319.3897799-1-imv4bel@gmail.com>
@@ -86,54 +86,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-sk_clone() allocates the child from sk->sk_prot, and IPV6_ADDRFORM can
-change sk_prot under it. The conversion requires the socket to be
-established, and a listener gets there with connect(AF_UNSPEC) followed
-by connect().
+A child gets a copy of the parent's out_of_order_queue, which can be non
+empty when/if parent morphs from listener to active session. Parent and
+child then point at the same rbtree.
 
-tcp_check_req() completes a request without the listener lock, so it can
-run while the conversion is in progress. IPV6_ADDRFORM stores sk_prot
-before icsk_af_ops, so tcp_check_req() can still call
-tcp_v6_syn_recv_sock() once sk_prot is tcp_prot. The child then comes
-from tcp_prot's slab while the AF_INET6 code treats it as a tcp6_sock.
+The parent is no longer a listener, so inet_csk_reqsk_queue_add() forgets
+the child immediately, and tcp_disconnect() frees the skbs the parent
+still owns. The parent's own root and ooo_last_skb are left alone, so it
+keeps using those skbs. That is a use-after-free, and the parent frees
+them a second time when it closes.
 
-tcp_inet6_sk() is a fixed offset into tcp6_sock, and in a child sized by
-tcp_prot that offset is the end of the object. The ipv6_pinfo copy is
-therefore a slab out-of-bounds write of sizeof(struct ipv6_pinfo) bytes
-past the child.
+We need to make sure this can not happen, by initializing the queue after
+socket cloning.
 
-The out-of-bounds address is also stored in the child's pinet6, so
-everything that reaches the socket through inet6_sk() keeps writing
-there. A request that arrived over IPv4 takes the same copy in
-tcp_v6_mapped_child_init().
+Very similar to commit 8b485ce69876 ("tcp: do not inherit fastopen_req
+from parent")
 
-Checking sk_prot before the clone does not help. It can change between
-that check and the read inside sk_clone(). Use sk_prot_creator instead.
-It is set once in sk_alloc() and never changes, and the socket is
-already freed back through it. No caller that replaces sk_prot installs
-a proto with a larger obj_size than the creator, so the child gets the
-size the parent object actually has.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 9f5afeae5152 ("tcp: use an RB tree for ooo receive queue")
 Cc: stable@vger.kernel.org
 Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
 ---
- net/core/sock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/tcp_minisocks.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 1ad41904db25b4..098e58b40f304b 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2479,7 +2479,7 @@ static void sk_init_common(struct sock *sk)
- struct sock *sk_clone(const struct sock *sk, const gfp_t priority,
- 		      bool lock)
- {
--	struct proto *prot = READ_ONCE(sk->sk_prot);
-+	struct proto *prot = sk->sk_prot_creator;
- 	struct sk_filter *filter;
- 	bool is_charged = true;
- 	struct sock *newsk;
+diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
+index 6ab3e3a0b43173..d13813d50947dd 100644
+--- a/net/ipv4/tcp_minisocks.c
++++ b/net/ipv4/tcp_minisocks.c
+@@ -591,6 +591,7 @@ struct sock *tcp_create_openreq_child(const struct sock *sk,
+ 	newtp->total_retrans = req->num_retrans;
+ 
+ 	tcp_init_xmit_timers(newsk);
++	newtp->out_of_order_queue = RB_ROOT;
+ 	WRITE_ONCE(newtp->write_seq, newtp->pushed_seq = treq->snt_isn + 1);
+ 
+ 	if (sock_flag(newsk, SOCK_KEEPOPEN))
 -- 
 2.43.0
 
