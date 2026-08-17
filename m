@@ -1,140 +1,84 @@
-Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com [209.85.210.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3851B3F6C59
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 12:08:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B455A3DBD4E
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 12:13:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786968518; cv=none; b=NHG6inBZvG9CxcK8u/wdg+uAC6ADVfoj1dCKvQwqQRqXR1fo8oXaJ0/nedeZBdswpleWCJO2DRI94KsclDyBivP+8HyZ817rqljsvEwma/7pWAGrYkp2gPK11GTGAIGRK0/ZZIMXUnOqrVPyOOShEyQSBWrIJYYZiZ6yRKUY3+Y=
+	t=1786968792; cv=none; b=bjTxB23F3NdGy6tvR5kCMFUcD1C2VOXSyOpQ1b3vVUurpHeN47SyHs0Fcq5x42kx7ZJA4HmNU76u0RTgkp5vgM1jOvsUx9qPjelgQzujqR+1pC+eAAYaX30yxLkkCbOakn/M5rTRhvJw8qApDuKG4DQVyi4oYEl/iCZ0qBgKhAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786968518; c=relaxed/simple;
-	bh=o1UIUVHZobxp6X8wQbI8+nwQz3hZVNqykVNiae6Ad6o=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=Ixue8QLcXHlt1KVs2rYbvAHZ63JKD2rOd1y+ALHoalr8q1cC4u0JfiCMY4anYllafvsajPWEz4vhVnvP5u27IwZrzOimC/+tIas2q07mPYkWXScx/cpezZFh5lNXi+IjEMPoC7MqUvMPSOEiKcwiEb5jCTiIu17135vNauzGGUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-ot1-f71.google.com with SMTP id 46e09a7af769-7f3cc4f6604so4265613a34.0
-        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 05:08:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786968516; x=1787573316;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=COaXSU7GxSe0beF7WrWjU5uv4IL/tUmeZWHBpXqhfAQ=;
-        b=YggTQkFcsjA1TYX5Nf57YC3X25HhIhJMtcHYDN1fGnvRHHo0qxczEYtxMgSRDaaYhH
-         gRq8R1jNL75CMgsYv4vE3gJKoeiLiYZbfXoarq5HVoykzkG/9fzI+V2n1HO1bz5UwZS6
-         iVjuafA6PG4lqPnjBftI+6BXbafjRydiwnh2T+9JQI9f7gfs8GJE6BgjhJTwkjoqSP40
-         9dBwR5DO+KbfZTRG3xyywF5mM9zO2KddF59KLFqUSuqUcH0VR31WRnLE8UKHpL6IxbpP
-         /589a5EZm13jKrg9W5hwCVJCggvYSVRnrERscbidEVtgdDaTctVRq3UP2jKfe/US2lSL
-         BU9w==
-X-Forwarded-Encrypted: i=1; AHgh+RpSz6zmdsil+l5mQdzx21Gda8bpfO5dizZN4mVpbF7Idx+ByLnk9ZQIHon5kPFc6rH60nKCtfY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYiULSt2uDPrH8fonO2EA4Fg8QC0cUlzH+CiEJe2N6fDErQffm
-	DKobVmR071yTT0SIjz0Sjc5WG/TpvIF/Q1ueRyl2TOCj1yaRCs+28peu4pah3atkgk+Evy2KaRf
-	zjYrhewRem1uoAsuJ+lGXr9ByKbsS0Xtxutbtp608wRIMtm5+5CPbUrwj1GE=
+	s=arc-20240116; t=1786968792; c=relaxed/simple;
+	bh=4neTvefs129BqKrkGxhtRbrAm1SI9RNhQXVgNGUlEhs=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WLAjBqb9WCxO+TlbuvZ17CjbRL4boEy4g9BRiaU5ZdnPGxIwjb5RpFst5/naA95iokdQ6YhMvemThnmCIt/65p9Pf3h37RuWm7BUr8RbNdBlg2oKH9gOsq4gtLwdIj8U5Kq/sF0RTRNmDR0e7kc257zoCPbp+bpm2A0XJTXNYCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=p4G04396; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="p4G04396"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 30044201E5;
+	Mon, 17 Aug 2026 14:13:07 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id hJdHTB_e9ply; Mon, 17 Aug 2026 14:13:06 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 4200F201A7;
+	Mon, 17 Aug 2026 14:13:06 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 4200F201A7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1786968786;
+	bh=ikXXEnr9nnpWqJaR754M9ViNer9+xJbdcD/NgLjauis=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=p4G0439614sgp9IspzePmSWi5BZ8ijdASNzaQ4L0r7ju2zhjhLjl4E312JsseSFI3
+	 itld5/Q45tHJmd4TI9DbdMPdnpEx6UtKV2ZwoSM45moJxp4FZbPmhNAC3b7q6PWWD/
+	 eptwAB972Yjcn/zFeM83xEGUy4572kTpLw7ORB4DgMUAe8E1ex3prZm8OPDwjmmlU7
+	 pnYYvOXWDgrkrTHn3GTTPe4C1ChYqheiHC9JC7idyMXwam0ZtSuD93ZNzX5VXRFZw3
+	 mJxTXN1z3ZV/BNavrf/I3OS+BdheCJzXsT51U1/nqMQRAec43QEevciLptE1hqrlKO
+	 E1FTM1fYwCn9Q==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 17 Aug
+ 2026 14:13:05 +0200
+Received: (nullmailer pid 2597399 invoked by uid 1000);
+	Mon, 17 Aug 2026 12:13:05 -0000
+Date: Mon, 17 Aug 2026 14:13:05 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: maher azz <maherazz04@gmail.com>
+CC: Jakub Kicinski <kuba@kernel.org>, <davem@davemloft.net>,
+	<herbert@gondor.apana.org.au>, <netdev@vger.kernel.org>
+Subject: Re: [PATCH 2/8] esp: do not unref managed frag pages in
+ esp_ssg_unref()
+Message-ID: <aoL60d6utaU0vkRQ@secunet.com>
+References: <20260729065035.1591985-3-steffen.klassert@secunet.com>
+ <20260731021544.789075-1-kuba@kernel.org>
+ <anDIQ9-8Sf_6StfZ@secunet.com>
+ <aoK8Xl8uTm4MW2Mr@secunet.com>
+ <CAFQ-Uc8abYE4ZuzEa0bZNmEw5Bx7DE7qv+gRxUJvUM26Ceyknw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:8582:10b0:6aa:e573:9ce0 with SMTP id
- 006d021491bc7-6b0d61d0f52mr15648436eaf.16.1786968516153; Mon, 17 Aug 2026
- 05:08:36 -0700 (PDT)
-Date: Mon, 17 Aug 2026 05:08:36 -0700
-In-Reply-To: <6a63df97.a2ea2cc8.fbad6.000a.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a82f9c4.dbb3a75c.20434b.0056.GAE@google.com>
-Subject: Re: [syzbot] [wireless?] WARNING in nl80211_set_tx_bitrate_mask
-From: syzbot <syzbot+dcaca020ca8377e7ced0@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <CAFQ-Uc8abYE4ZuzEa0bZNmEw5Bx7DE7qv+gRxUJvUM26Ceyknw@mail.gmail.com>
+X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-syzbot has found a reproducer for the following issue on:
+On Mon, Aug 17, 2026 at 12:50:07PM +0100, maher azz wrote:
+> Hello,
+> 
+> what should be fixed?
 
-HEAD commit:    8d3ae59288f1 Linux 7.2
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=10dc0679580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=1d67342c314f228d
-dashboard link: https://syzkaller.appspot.com/bug?extid=dcaca020ca8377e7ced0
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11fdd949580000
+I forwarded the review to you again.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+dcaca020ca8377e7ced0@syzkaller.appspotmail.com
+> can someone submit a fix please just keep the
+> reported by Maher Azzouzi?
 
-------------[ cut here ]------------
-wlan2: Failed check-sdata-in-driver check, flags: 0x0
-WARNING: net/mac80211/driver-ops.h:884 at drv_set_bitrate_mask net/mac80211/driver-ops.h:884 [inline], CPU#2: syz-executor202/6039
-WARNING: net/mac80211/driver-ops.h:884 at ieee80211_set_bitrate_mask+0x888/0xe20 net/mac80211/cfg.c:4134, CPU#2: syz-executor202/6039
-Modules linked in:
-CPU: 2 UID: 0 PID: 6039 Comm: syz-executor202 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:drv_set_bitrate_mask net/mac80211/driver-ops.h:884 [inline]
-RIP: 0010:ieee80211_set_bitrate_mask+0x88f/0xe20 net/mac80211/cfg.c:4134
-Code: 02 00 00 e8 23 6b d6 f6 48 8b 34 24 48 81 c6 20 01 00 00 48 89 34 24 e8 0f 6b d6 f6 48 8d 3d c8 80 1f 06 48 8b 34 24 44 89 ea <67> 48 0f b9 3a e9 f7 fd ff ff e8 f2 6a d6 f6 48 8d bb 50 08 00 00
-RSP: 0018:ffffc90003c973f0 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffff88803e5f0740 RCX: ffffffff8b340832
-RDX: 0000000000000000 RSI: ffff88805720c120 RDI: ffffffff91538960
-RBP: ffff88805720d928 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: ffff88803e5f0740
-R13: 0000000000000000 R14: ffff88805720c000 R15: ffffc90003c97488
-FS:  000055556bc9e400(0000) GS:ffff8880d5dde000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fee5f7dfe9c CR3: 000000003e24f000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- rdev_set_bitrate_mask net/wireless/rdev-ops.h:683 [inline]
- nl80211_set_tx_bitrate_mask+0x320/0x570 net/wireless/nl80211.c:14541
- genl_family_rcv_msg_doit+0x214/0x300 net/netlink/genetlink.c:1114
- genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
- genl_rcv_msg+0x560/0x800 net/netlink/genetlink.c:1209
- netlink_rcv_skb+0x159/0x420 net/netlink/af_netlink.c:2556
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
- netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
- netlink_unicast+0x585/0x850 net/netlink/af_netlink.c:1345
- netlink_sendmsg+0x8b0/0xda0 net/netlink/af_netlink.c:1900
- sock_sendmsg_nosec net/socket.c:775 [inline]
- __sock_sendmsg net/socket.c:790 [inline]
- __sys_sendto+0x48b/0x4e0 net/socket.c:2252
- __do_sys_sendto net/socket.c:2259 [inline]
- __se_sys_sendto net/socket.c:2255 [inline]
- __x64_sys_sendto+0xe0/0x1c0 net/socket.c:2255
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f4b1b84a677
-Code: 48 89 fa 4c 89 df e8 98 1d 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
-RSP: 002b:00007ffe1ffacce0 EFLAGS: 00000202 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 000055556bc9e400 RCX: 00007f4b1b84a677
-RDX: 000000000000001c RSI: 00007ffe1ffacd40 RDI: 0000000000000003
-RBP: 00007ffe1ffacd40 R08: 00007ffe1ffacd34 R09: 000000000000000c
-R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000028
-R13: 0000000000000003 R14: 0000000000000026 R15: 00007f4b1b888ed3
- </TASK>
-----------------
-Code disassembly (best guess):
-   0:	02 00                	add    (%rax),%al
-   2:	00 e8                	add    %ch,%al
-   4:	23 6b d6             	and    -0x2a(%rbx),%ebp
-   7:	f6 48 8b 34          	testb  $0x34,-0x75(%rax)
-   b:	24 48                	and    $0x48,%al
-   d:	81 c6 20 01 00 00    	add    $0x120,%esi
-  13:	48 89 34 24          	mov    %rsi,(%rsp)
-  17:	e8 0f 6b d6 f6       	call   0xf6d66b2b
-  1c:	48 8d 3d c8 80 1f 06 	lea    0x61f80c8(%rip),%rdi        # 0x61f80eb
-  23:	48 8b 34 24          	mov    (%rsp),%rsi
-  27:	44 89 ea             	mov    %r13d,%edx
-* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
-  2f:	e9 f7 fd ff ff       	jmp    0xfffffe2b
-  34:	e8 f2 6a d6 f6       	call   0xf6d66b2b
-  39:	48 8d bb 50 08 00 00 	lea    0x850(%rbx),%rdi
-
-
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+You did already most of the work, so it would help
+a lot if you can fix it yourself.
