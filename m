@@ -1,191 +1,94 @@
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492773BCD15
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 08:49:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EAF3BA235;
+	Mon, 17 Aug 2026 08:50:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786956599; cv=none; b=YSuTU4ExELytjuSY4tfBP99SCI1PsCfV6JSgPHlpS0Qdja/Zh8g8r21XPXcWfvSkVwgOhhyTMfjC/S07UvgArJ06P7sHwidfMnsAO09XeuraftMmXjUEdsn25qaSdDnYhLUfAlmnc1Ij/rmDdW13aGN1I4turw8vju683aYZJ88=
+	t=1786956626; cv=none; b=oloyqy6JHIpZ1LPEaCVVrlPnK/TXAYG4U6SeS43QnAKl5FRhVYfa5JwnfKPTt366y8yDzLYJlBkoSdpk93dbuPUzq4RfQIvMe5D1u2QNv7lVGxgyZfw+s2M9bEkkmJvkV+bjoRJUL5I2BcfgHXPFSwLssti6NgQDhGlLWDl+iTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786956599; c=relaxed/simple;
-	bh=as2SDlcdmZszLVLpp6U0wTu9/8GUPviDLNz+v3rqc6U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QC7juJzb12G9R8DjcGP3pXpeIGa/04sda85i1DPMfWBPhllzG3oHw9HT77sivlyM8NSOTl1zAN3tNhyHTHSKVInQMNg7hhCZ0h2DHp6/PDlYspGgh8PzF+s6gyTaKlNswTfgjErwwX6DU7KsTyTyonCBN104KqErBkuttL3ebrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=BxIpjygb; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
+	s=arc-20240116; t=1786956626; c=relaxed/simple;
+	bh=wAVEjEINKBKb0G4qGhjFZHDGJsArrltDbB57M73vEe8=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UmfNdYCsYTUv/G3Vbp/BvgpCQOumQ+qQhXBIfqlRgH71EjgKNNfSQCZ2oNviFVmv1ZEccMcS9JpS5WWKfcjJCkPf2fnxjNi645aEc39ZrhUtrIkY0gGhytAr2IPZOCLMLNlaSgHoKPUXhRV3bF2Iph10A7OsGQcnUOqZ3Cum7nY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=rahXes6g; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="BxIpjygb"
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-5218927884fso30880041cf.3
-        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 01:49:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=trailofbits.com; s=google; t=1786956597; x=1787561397; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6lLhWIiCgpmicN480/UwG2uhnEik8ZpJA1z/kNF7n0I=;
-        b=BxIpjygbPBsERGuqYa65TdvDLAtwrPMxEugGngYmCrYOzDhdHE1Mcruipw1JP8Clb5
-         6liZ75ZtWhzFUW1mHjkiihQnNEb27cQNugUHVO8JoyXEWc6ss20S2LBvGui9TBABY5RB
-         jnUIaSOOswXGOACCJyhSl5I3S5J+xlYzG95UyU2f43Cmp4IAUZdv5dfkWqkL5hoNVQfq
-         XzkDowMZrDNSEczKjPTxgHY2ItLi1/dtrRs16a5hxoVHk2bOF+V9ZOSobX33rH+yIqDL
-         9RMvyHBHzqrHzNpdW/U0QjOddYLYk5So0WezB5jFW2ED/GMpzLuIDAlxoUQaVnxQx0QU
-         Xw1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786956597; x=1787561397;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6lLhWIiCgpmicN480/UwG2uhnEik8ZpJA1z/kNF7n0I=;
-        b=exUiIX5N7tJJt4a0KcGl37usJslhCmdsxfoGNSLfaW93WhiZtMajM8FNKD8QBwlrJn
-         83ZrNm2ZL13RnLzSXghHRsdRYWRvjCEBPKWJjKya1opWePVM7Wr5hG6jgxLjjgnuPUDk
-         biZHAMvpo4MY9gkNeb2M586Dn4hMCoa53JjhnOEq3jd6xxfaV+o2V8RS26ZBNb2/p7W4
-         ZmqgTeRXMG6Yorzvs8NesklVbs5NVcA74gLK5j+pnIRqi8dGDZOCnJFhm5XmDI3LVjn3
-         huaa8APVQJS8sDXlV7PNanCI+E6PhwKwqcE+oeqNi2EYcGdvY5EXgGskv8NGnlk/sSPr
-         rNLQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpoyEqFzA6nSEDZX3L8DR1/2dJKoL7efCvD3ok15bdzaQKZyu4/hevx07OaKtM8ECV0UYVt3cg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmELZ7fwhrIGzUfCNszuaxi2bpULXTKXLTaw3YN2Lavj7LYZmE
-	ScFq7zslHpBICMOn3D9WOmm427RTr87JxdLTPmZD0dUhb1XfcjkYqH8Y+ZFR102u0gw=
-X-Gm-Gg: AR+sD10gqy50bia7RgRTx2VWHOZrR0m56MQHy6Ue8WvgQpWmB2RMGBK8o1zUGPoS5hP
-	1jt9ZtjmRVencYshjOnIzMGyQ6UFqwuXWLCI2d3shH4HUyGsarW8HZcBTEdqAh10Cy4X+M4orVe
-	35DwShlAy22j5qg/kN5SMBCqdkITwC2tGenq2ZmzIu7gBUePBDvdwWUgONvsaHA7HahW43PNMrl
-	O1aDE5SwQ40nT6+80Mni/5Jfu4BNCW67LQGlew5aEBnXC7dTynTr1j2ibALMRe//0QNO1U2CSrs
-	xzGEr3dYTHnUCjFfCifGaRkKFAHU24nHDGbjh7kTj6oeqCm08lkw4mlM6NmyiJQ2tRoNnq8aiCp
-	289VfIA4q42e/mZO1lkr/xWspr8E6Vh2mdHpGqVsNpYzhrII4kFt4UA+bE9UwuOsZkP7A+naZez
-	/ByW94tJUskfrLRnSC4qtgRzW26LdKikq7hkP7gijTuxtpUEUK6i9Tx7x5+Unc7Y0/CPQ=
-X-Received: by 2002:a05:622a:3d4:b0:51b:fb82:67d1 with SMTP id d75a77b69052e-52d8542c8e8mr204942221cf.20.1786956597000;
-        Mon, 17 Aug 2026 01:49:57 -0700 (PDT)
-Received: from localhost ([146.190.222.192])
-        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-52db60eb85csm9405991cf.4.2026.08.17.01.49.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Aug 2026 01:49:56 -0700 (PDT)
-From: David Lee <david.lee@trailofbits.com>
-To: marek.lindner@mailbox.org,
-	sw@simonwunderlich.de,
-	antonio@mandelbit.com,
-	sven@narfation.org
-Cc: Kyle Zeng <kylebot@openai.com>,
-	davem@davemloft.net,
-	linus.luessing@c0d3.blue,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>,
-	netdev@vger.kernel.org,
-	b.a.t.m.a.n@lists.open-mesh.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	David Lee <david.lee@trailofbits.com>
-Subject: [PATCH net v3] batman-adv: reject unrepresentable multicast TVLV offsets
-Date: Mon, 17 Aug 2026 08:49:54 +0000
-Message-ID: <20260817084955.944189-1-david.lee@trailofbits.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="rahXes6g"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 6865120684;
+	Mon, 17 Aug 2026 10:50:21 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id iOzVyp-9Cz7y; Mon, 17 Aug 2026 10:50:20 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 92F4F20185;
+	Mon, 17 Aug 2026 10:50:20 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 92F4F20185
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1786956620;
+	bh=0PCW2hWoR4OS+gPfuutTRrIUtGagjdqgYSHA68PxZ1Y=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=rahXes6gKxrh7eN/Kca/wBQOodgSMNsGEJ9koqDJ7kjyvmnshv1eop8znqxh09Nvn
+	 SavdbA/RjHm4+sirnqXElrQq7tazXNxkmRfEJLPVzJpBa80eBClk1C52XYN8r/di9E
+	 SZOkkfimGtyu3OrEEBm0u8COkLPSuHzBTNhITk01chZ2ztycJCqTuBRB10JSxpS3Sg
+	 tU4X90d2H4J3SlVyoxEJAHzoVbwui12IazsBT3g7QKjdpEBXBfl73EirPAtny1a9+1
+	 IXIJjZHkNR7leD/NrunxQdmCxoiHWOUQ0E+1oBkx+LqPeYxvQejMi9+ovutVDXGTfE
+	 Da3CC0w5pib9g==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 17 Aug
+ 2026 10:50:19 +0200
+Received: (nullmailer pid 2459302 invoked by uid 1000);
+	Mon, 17 Aug 2026 08:50:18 -0000
+Date: Mon, 17 Aug 2026 10:50:18 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: =?iso-8859-1?Q?=D6mer?= Mete Kaya <omermetekaya0@gmail.com>
+CC: Herbert Xu <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<horms@kernel.org>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<syzbot+d3bc2f2eb498a0175940@syzkaller.appspotmail.com>
+Subject: Re: [PATCH] xfrm: fix suspicious RCU usage in xfrm_nlmsg_multicast
+Message-ID: <aoLLSiD7yjcaH_BI@secunet.com>
+References: <20260803170525.1767734-1-omermetekaya0@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260803170525.1767734-1-omermetekaya0@gmail.com>
+X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-From: Kyle Zeng <kylebot@openai.com>
+On Mon, Aug 03, 2026 at 08:05:25PM +0300, Ömer Mete Kaya wrote:
+> xfrm_nlmsg_multicast() dereferences net->xfrm.nlsk via
+> rcu_dereference() and is documented as requiring the RCU read
+> lock, but 11 of its 12 call sites in this file do not hold it.
+> 
+> Move the RCU read-side critical section inside
+> xfrm_nlmsg_multicast() itself instead of adding it to each call
+> site individually. This is safe: xfrm_get_translator() takes its
+> own nested RCU read lock internally, and nlmsg_multicast() is
+> called with GFP_ATOMIC, whose only conditional yield() in
+> netlink_broadcast_filtered() is gated on blocking being allowed,
+> which GFP_ATOMIC never permits.
+> 
+> The redundant rcu_read_lock()/rcu_read_unlock() pair in
+> xfrm_notify_userpolicy(), the one caller that already took the
+> lock, is removed accordingly.
+> 
+> Reported-by: syzbot+d3bc2f2eb498a0175940@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=d3bc2f2eb498a0175940
+> Signed-off-by: Ömer Mete Kaya <omermetekaya0@gmail.com>
 
-The network and transport header fields in struct sk_buff are 16-bit
-offsets from skb->head, and U16_MAX is reserved as the unset transport
-header value. batadv_tvlv_call_handler() sets both fields from a received
-multicast TVLV without checking whether the TVLV end is representable.
+Can you please add a 'Fixes:' tag to the commit message?
 
-If the end offset exceeds the field's range, skb_set_transport_header()
-truncates it so that the transport header precedes the network header.
-The negative difference is then returned by skb_network_header_len() as
-a large u32. batadv_mcast_forw_packet() consequently accepts an oversized
-multicast tracker and accesses memory beyond the skb data.
-
-Add skb_set_transport_header_careful(), an offset-aware counterpart to
-skb_reset_transport_header_careful(), which validates the final
-head-relative offset before assigning it. Use the new helper in
-batadv_tvlv_call_handler() and reject unrepresentable TVLVs before
-setting the network header.
-
-Fixes: 07afe1ba288c ("batman-adv: mcast: implement multicast packet reception and forwarding")
-Cc: stable@vger.kernel.org	
-Assisted-by: Codex:gpt-5.6-sol Codex:gpt-5.5-cyber
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
-Co-developed-by: David Lee <david.lee@trailofbits.com>
-Signed-off-by: David Lee <david.lee@trailofbits.com>
----
-Changes in v3:
-- Rename transport_offset to thoff so the comparisons fit on one line.
-
-v2: https://lore.kernel.org/netdev/20260810145754.828936-1-david.lee@trailofbits.com/
-
-Changes in v2:
-- Add an offset-aware careful transport-header setter and make batman-adv
-  handle its failure, as suggested by Sven Eckelmann.
-- Restore Kyle Zeng as the patch author and correct the sign-off chain.
-- Move the research credit below the commit-message separator.
-
-v1: https://lore.kernel.org/all/20260731135222.566367-1-david.lee@trailofbits.com/
-
-Bug found and triaged by OpenAI Security Research and
-validated by Trail of Bits.
-
-Trail of Bits has a reproducer for this bug that triggers a
-KASAN use-after-free and can share if needed.
-
- include/linux/skbuff.h | 24 ++++++++++++++++++++++++
- net/batman-adv/tvlv.c  |  5 ++++-
- 2 files changed, 28 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index 22eda1d54a0e..ed6a2bc23db5 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -3126,6 +3126,30 @@ static inline void skb_set_transport_header(struct sk_buff *skb,
- 	skb->transport_header += offset;
- }
- 
-+/**
-+ * skb_set_transport_header_careful - conditionally set transport header
-+ * @skb: buffer to alter
-+ * @offset: offset to add to skb->data
-+ *
-+ * Hardened version of skb_set_transport_header().
-+ *
-+ * Returns: true if the operation was a success.
-+ */
-+static inline bool __must_check
-+skb_set_transport_header_careful(struct sk_buff *skb, const int offset)
-+{
-+	long thoff = skb->data - skb->head + offset;
-+
-+	if (unlikely(thoff != (typeof(skb->transport_header))thoff))
-+		return false;
-+
-+	if (unlikely(thoff == (typeof(skb->transport_header))~0U))
-+		return false;
-+
-+	skb->transport_header = thoff;
-+	return true;
-+}
-+
- static inline unsigned char *skb_network_header(const struct sk_buff *skb)
- {
- 	return skb->head + skb->network_header;
-diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
-index 1c9fb21985f6..c384db16bcac 100644
---- a/net/batman-adv/tvlv.c
-+++ b/net/batman-adv/tvlv.c
-@@ -433,8 +433,11 @@ static int batadv_tvlv_call_handler(struct batadv_priv *bat_priv,
- 			return NET_RX_SUCCESS;
- 
- 		tvlv_offset = (unsigned char *)tvlv_value - skb->data;
-+		if (!skb_set_transport_header_careful(skb,
-+						      tvlv_offset + tvlv_value_len))
-+			return -EINVAL;
-+
- 		skb_set_network_header(skb, tvlv_offset);
--		skb_set_transport_header(skb, tvlv_offset + tvlv_value_len);
- 
- 		return tvlv_handler->mcast_handler(bat_priv, skb);
- 	}
--- 
-2.53.0
+Thanks!
