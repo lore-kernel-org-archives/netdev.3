@@ -1,209 +1,144 @@
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93DEA3C3429
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 08:58:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C4A3BCD15
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 08:59:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786957124; cv=none; b=ikPPK7NIqitm0Y4t6qwzuusBUAbjZteNrE0O6oUWVOUlyJlg9eFopxje+PBDzK5ZtBjx2lfoJj0LuKTkC9LYxHTScc5pkxJCEPJ7OCSBykJQ2YeQSW0635vSaAKxJUmB3KAWIoGZHziMRUodGMKUvd6HUCpIUAAvi56/9C4sVxY=
+	t=1786957177; cv=none; b=OqQl9/nMle7psP0aX+VmYxfPT8C+1hSaLCkGJ2Gw59oS/3tXwQ0t1EOvOnRXpKr/1aHF8jwwssOlF1HqVDA8BAZzVaH+MC4ZG9myhzBGFzoN2PqoBgb0vnxji5lvPvaZrKOyTOJ45FQcG9gblVaD62w8FGEkFelVRVEu6pTNwLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786957124; c=relaxed/simple;
-	bh=4BvH+ZY7UqiOZgkyYTVq0z8Avw0frj4tIodrDtIq+14=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DTs7tU0OlO41h6cCmS7Jq5lFc6VXzb0Gc94/alkuLy9CmODKcn8P9XS4Vzlh/Ez8IcAWmGFvnS3xmmL3RKNfqG0PemQJb2gpV9RzCGzXB4nAouqhPh0m1R/kTJXmpJer4NXr19RsQ76LBCfUVN2JwysaP7dx1Rahmm5MdMPs8ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=Gn7aVa82; arc=none smtp.client-ip=209.85.222.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
+	s=arc-20240116; t=1786957177; c=relaxed/simple;
+	bh=/+yiRtlM3lZbtcuOCIRNVIUTsYFLb2VJRRdqrByUACI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FChMO2iKDhrz650+gAWi4qLlV/+Qx2XWvxt9CExey5wGCSki9I+ACA1St4KbZQsSF/wVAyfy6Gp/I1QkVf9umJyTP8FiwMo9U/Gs3678PHNKyDlpMefQCQWspk3YiiAhTdJOw3fO0ARXG7AgZhXyEl2oMTcqBJKxCB796sKCFXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fS6rMxXv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="Gn7aVa82"
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-936e8bd9caaso118432485a.2
-        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 01:58:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=trailofbits.com; s=google; t=1786957120; x=1787561920; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nlSy70LSgeXYw8KldCBlLySiG6CNtFtCSMsajfCCqqI=;
-        b=Gn7aVa823MfmXuMqOogFX2ETiTUfmj9wvsJ4+/rSj9BQ/gIE5W4j+7xkYk+yuYon5+
-         49Z/f6CZl0ief1qjJqtduTePg98l6s7Dmbr91g5CuDKnzu7Ytrft4Uav6tBZMX+dgsGA
-         H4Lj7YAL2M6YvaiNMSaxLNcndGZeyRpQZig5USaKFhI2C5d/LCM3jPk4ckcwzv6gaHz8
-         fnl80ve7btnqVwBdCSPt7txqnUcJEjfr+ZIkOF6pRLsnj+SKK6IFwVPqPbxMv7gV9mM1
-         XZN+l0UR8gMBDtutbJcZ+G5YYgxg9k90MZo5tG3wO+P1xGSvjyoXP2C1LcPwFvp6sou8
-         Gh6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786957120; x=1787561920;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=nlSy70LSgeXYw8KldCBlLySiG6CNtFtCSMsajfCCqqI=;
-        b=sc+MKS0LzbIayTAa1upL+OOWOnFXS6LHkoU23vfPuLHQvlaBZWDWDgV7o4cX5T15LU
-         3bCtN0uIwYXhBSAXtr+2nX+X1uQDpEIDKJe/57oVECKAzJs+dEM/C6xhiz3vTWuuusQE
-         HvIVevhe4aHmVRXXcLgTqfU/blm5rxjLmwhuVUfMyQpp3ukc9svEa3k/XdL5ZnOFUIb+
-         9yuDEmjqUilIldbHdjsM96iKAEfeEBnd/Vb+Y6VB4oDSLTPvH8y2A3mCJDOar75KNYb7
-         1WnoIthxcaVnJMmZyKdzSN6hpawnDtLMD81RtmtzyyCgJxxbYZPz2So/ud3s6i9kPBJ6
-         L/+w==
-X-Forwarded-Encrypted: i=1; AHgh+RpnxCccwqk0DEbiahDBu2t33U41g0KdEzqLlI6PpHQmeAo+VHvbXvgDxmvkBon82IJmaHk/w5A=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzcv2C7OQivJT+i9Yirg7DSdJZb4IuCIrrrG9lL8zG/YEScWDSa
-	lZFneeEVDuODiyJXeYLpmEPof/kbVMActCOJjm5XvyS4aWyixxpXOmF72d9tqffdXfI=
-X-Gm-Gg: AR+sD10qBYdBQvov18Ifz/lO/3A318LbgB4wVoUoqfYwzrRUtu79mLL0Qo1PrMJpwFh
-	x4BsXQB3CtWpovFazGkIrJwhDTR1lmUbtf6W9uXXup3e8nPpzghFeh6FY684xDLSx1q4UyqO56n
-	pQXYQow8ioQhuCGeSvMyUt28IEOWldeJeM5oG4GLgaIRJBZLMYZFXC676fIDwuMFgLjgVedSts3
-	Dl2PfY6j1kN5mMh5kNbY1Pt2FLYJJV5J3nzgBGmbryGKIE2R1xCKmYwpIkXV88IhNkaXEB9nuYo
-	Y01NljWiiHR1FHXBjXcfqanyh7y4NVyzk1zI6P3Kt9Kz0Qk86zt9Hajx5e/amjD4k9Pwwy1BGeD
-	wYSFJVexiRad5jXye3f/N690TeHFJkBtQ2pFjw8Dhqnkd9bITwHL825lPdW+ryn8ovNCfAWzvI3
-	e8RCkNUQmVtg4rZrSj8art97aBTO1aMxinTRXiNd38cB0A4FNTulGQ6hfojhJYUbZNqQ==
-X-Received: by 2002:a05:620a:404a:b0:936:e18d:763d with SMTP id af79cd13be357-936e18d768amr1778024185a.8.1786957120406;
-        Mon, 17 Aug 2026 01:58:40 -0700 (PDT)
-Received: from localhost ([146.190.222.192])
-        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-936ce24564asm946812285a.40.2026.08.17.01.58.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Aug 2026 01:58:40 -0700 (PDT)
-From: David Lee <david.lee@trailofbits.com>
-To: andrea.mayer@uniroma2.it,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: Kyle Zeng <kylebot@openai.com>,
-	Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	horms@kernel.org,
-	stefano.salsano@uniroma2.it,
-	dsahern@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	David Lee <david.lee@trailofbits.com>
-Subject: [PATCH net v4] ipv6: seg6: clear IPv4 control block on IPIP decapsulation
-Date: Mon, 17 Aug 2026 08:58:38 +0000
-Message-ID: <20260817085839.946321-1-david.lee@trailofbits.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fS6rMxXv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B721E1F00A3A;
+	Mon, 17 Aug 2026 08:59:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786957176;
+	bh=PJrhB+O19NMcqefe4p6lxO8h5wPhDbnoHNMTc9x3sls=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fS6rMxXvuxpUrnhY1YQ3WrGhcBHNVFjti1gLUFLDGwerTa8wiY8LazAWB6K2kj7eF
+	 gYkQv1vivrC8kUHbdDGE0Vd8/NwGMaQ/yGKE6eO4HNy8+fcTiZyw/ImFk/ow09HZRL
+	 BJSlr2wiORlHtTFTedbuSz5coK3B0cJOL5caIW3p75Rz72FmxIJl7MqvakH3tkGXze
+	 EJZKqkj5aDDtiKVzNQpPnEey76zwoPR0H9REIWlhmFHF9NyOZubzelp6IMJv28hdKs
+	 GmMRB4AZ+PPT6JoW6yDU2Y2Ig/5IX1vBu0zGFHchJwN9r68SGpyY+dcHROBYrh7GIU
+	 ZmaNs/aCIxthA==
+Date: Mon, 17 Aug 2026 09:59:32 +0100
+From: Simon Horman <horms@kernel.org>
+To: Mengyuan Lou <mengyuanlou@net-swift.com>
+Cc: netdev@vger.kernel.org, jiawenwu@trustnetic.com,
+	duanqiangwen@net-swift.com, linglingzhang@net-swift.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com
+Subject: Re: [PATCH net-next] net: wangxun: protect ring accesses with READ-
+ and WRITE_ONCE
+Message-ID: <20260817085932.GV265046@horms.kernel.org>
+References: <20260813095141.88227-1-mengyuanlou@net-swift.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260813095141.88227-1-mengyuanlou@net-swift.com>
 
-From: Kyle Zeng <kylebot@openai.com>
+On Thu, Aug 13, 2026 at 05:51:41PM +0800, Mengyuan Lou wrote:
+> In wx_update_stats(), the ring pointers wx->rx_ring[i] and wx->tx_ring[i]
+> can become NULL during queue teardown or reconfiguration (e.g., via
+> wx_free_q_vector()).
+> 
+> READ_ONCE should be used when reading rings prior to accessing the
+> statistics pointer to ensure protected access. As well as the
+> corresponding WRITE_ONCE usage when allocating and freeing the rings.
 
-End.DX4 and End.DT4 decapsulate an IPv4 packet through
-decap_and_validate() and send it directly to IPv4 routing. The inner
-packet therefore bypasses ip_rcv_core(), which normally clears IPCB
-before IPv4 interprets skb->cb.
+Hi Mengyuan,
 
-The skb instead retains IP6CB data from the outer packet. IP6CB and
-IPCB use the same skb->cb storage, so IP6CB(skb)->lastopt overlaps
-IPCB(skb)->opt.optlen and srr, while IP6CB(skb)->nhoff overlaps rr and
-ts.
+As observed in an AI-generated review of this patch [1], this patch is
+doing a bit more than adding READ_ONCE/WRITE_ONCE.  It also adds an RCU
+read-side critical section (the most important part of the change, IMHO),
+and some NULL checks. It might be nice to extend this description somehow.
 
-The sender can make the stale optlen byte nonzero with a valid outer
-extension-header chain. The reproducers put an eight-byte Destination
-Options header immediately after the 40-byte IPv6 header and before the
-Segment Routing Header. ipv6_destopt_rcv() records the sender-controlled
-Destination Options offset in both lastopt and nhoff, setting them to
-40. On the reproduced little-endian x86-64 kernel, IPv4 therefore sees
-optlen = 40 and rr = 40.
+[1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260813095141.88227-1-mengyuanlou%40net-swift.com
 
-Both tcp_v4_save_options() and __ip_options_echo() skip option copying
-when optlen is zero. Here optlen is 40, so the TCP SYN path allocates
-room for 40 bytes of option data and calls __ip_options_echo(). The
-stale rr value makes that function read inner packet byte 41 as the
-Record Route option length. The reproducers set that sender-controlled
-byte to 255, so __ip_options_echo() copies 255 bytes into the 40-byte
-option-data area.
+> 
+> Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
+> ---
+>  drivers/net/ethernet/wangxun/libwx/wx_hw.c  | 20 ++++++++++++++++----
+>  drivers/net/ethernet/wangxun/libwx/wx_lib.c |  8 ++++----
+>  2 files changed, 20 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+> index 122c4952d203..096fe7f3d84f 100644
+> --- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+> +++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+> @@ -2893,10 +2893,13 @@ void wx_update_stats(struct wx *wx)
+>  
+>  	spin_lock(&wx->hw_stats_lock);
+>  
+> +	rcu_read_lock();
+>  	/* gather some stats to the wx struct that are per queue */
+>  	for (i = 0; i < wx->num_rx_queues; i++) {
+> -		struct wx_ring *rx_ring = wx->rx_ring[i];
+> +		struct wx_ring *rx_ring = READ_ONCE(wx->rx_ring[i]);
+>  
+> +		if (!rx_ring)
+> +			continue;
+>  		non_eop_descs += rx_ring->rx_stats.non_eop_descs;
+>  		alloc_rx_buff_failed += rx_ring->rx_stats.alloc_rx_buff_failed;
+>  		hw_csum_rx_good += rx_ring->rx_stats.csum_good_cnt;
+> @@ -2912,19 +2915,28 @@ void wx_update_stats(struct wx *wx)
+>  		u64 rsc_flush = 0;
+>  
+>  		for (i = 0; i < wx->num_rx_queues; i++) {
+> -			rsc_count += wx->rx_ring[i]->rx_stats.rsc_count;
+> -			rsc_flush += wx->rx_ring[i]->rx_stats.rsc_flush;
+> +			struct wx_ring *rx_ring = READ_ONCE(wx->rx_ring[i]);
+> +
+> +			if (!rx_ring)
+> +				continue;
+> +
+> +			rsc_count += rx_ring->rx_stats.rsc_count;
+> +			rsc_flush += rx_ring->rx_stats.rsc_flush;
+>  		}
+>  		wx->rsc_count = rsc_count;
+>  		wx->rsc_flush = rsc_flush;
+>  	}
+>  
+>  	for (i = 0; i < wx->num_tx_queues; i++) {
+> -		struct wx_ring *tx_ring = wx->tx_ring[i];
+> +		struct wx_ring *tx_ring = READ_ONCE(wx->tx_ring[i]);
+> +
+> +		if (!tx_ring)
+> +			continue;
+>  
+>  		restart_queue += tx_ring->tx_stats.restart_queue;
+>  		tx_busy += tx_ring->tx_stats.tx_busy;
+>  	}
+> +	rcu_read_unlock();
+>  	wx->restart_queue = restart_queue;
+>  	wx->tx_busy = tx_busy;
+>  
 
-Separate End.DX4 and End.DT4 reproducers on the unpatched v7.2-rc5
-kernel both produced:
+A littler further down in this function there is a call to
+wx_update_xoff_rx_lfc().
 
-  BUG: KASAN: slab-out-of-bounds in __ip_options_echo()
-  Write of size 255
+And since commit 22d95e93c05b ("net: wangxun: add Tx timeout process")
+that function includes the following loop:
 
-The relevant End.DX4 call path is:
 
-  __ip_options_echo
-  tcp_v4_route_req
-  tcp_conn_request
-  tcp_v4_conn_request
-  tcp_rcv_state_process
-  tcp_v4_do_rcv
-  tcp_v4_rcv
-  ip_protocol_deliver_rcu
-  ip_local_deliver_finish
-  ip_local_deliver
-  input_action_end_dx4_finish
-  input_action_end_dx4
+	for (i = 0; i < wx->num_tx_queues; i++)
+		clear_bit(WX_HANG_CHECK_ARMED, wx->tx_ring[i]->state);
 
-The relevant End.DT4 call path is:
+So I am wondering of this access to wx->tx_ring should be protected.
+E.g. by extending the RCU read-side critical section to also cover
+the call to wx_update_xoff_rx_lfc(), and by using READ_ONCE in
+the loop above.
 
-  __ip_options_echo
-  tcp_v4_route_req
-  tcp_conn_request
-  tcp_v4_conn_request
-  tcp_rcv_state_process
-  tcp_v4_do_rcv
-  tcp_v4_rcv
-  ip_protocol_deliver_rcu
-  ip_local_deliver_finish
-  ip_local_deliver
-  input_action_end_dt4
+Observed with some assistance from Goose:gemini-3.1-flash-lite
 
-tcp_v4_save_options() is inlined into the tcp_v4_route_req() path, so
-it does not appear as a separate frame.
-
-When decap_and_validate() handles IPPROTO_IPIP, save the ingress
-interface from IP6CB, clear IPCB, and restore the saved value. Doing
-this in the common decapsulation path covers End.DX4, End.DT4, and
-End.DT46's IPv4 arm.
-
-Use IP6CB(skb)->iif rather than skb->skb_iif. These actions run after
-l3mdev processing, which can replace skb_iif with the L3 master;
-IP6CB iif still records the receiving interface set at IPv6 ingress.
-
-Fixes: 891ef8dd2a8d ("ipv6: sr: implement additional seg6local actions")
-Cc: stable@vger.kernel.org
-Suggested-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-Assisted-by: Codex:gpt-5.6-sol Codex:gpt-5.5-cyber
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
-Co-developed-by: David Lee <david.lee@trailofbits.com>
-Signed-off-by: David Lee <david.lee@trailofbits.com>
----
-Changes in v4:
-- Explain how the stale occurs.
-- Include the observed End.DX4 and End.DT4 call paths.
-
-v3: https://lore.kernel.org/netdev/20260810154732.850472-1-david.lee@trailofbits.com/
-
-Changes in v3:
-- Clear IPCB in the common IPPROTO_IPIP decapsulation path so End.DX4,
-  End.DT4, and End.DT46's IPv4 arm are covered.
-- Preserve the ingress interface from IP6CB instead of skb->skb_iif,
-  which can identify the VRF master after l3mdev processing.
-- Update the Fixes tag to the commit that introduced End.DX4.
-- Include the End.DX4 and End.DT4 KASAN evidence.
-
-v2: https://lore.kernel.org/netdev/20260804094625.715305-1-david.lee@trailofbits.com/
-v1: https://lore.kernel.org/all/20260731140832.567669-1-david.lee@trailofbits.com/
-
- net/ipv6/seg6_local.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-index 2b41e4c0dddd..95ea0b62729a 100644
---- a/net/ipv6/seg6_local.c
-+++ b/net/ipv6/seg6_local.c
-@@ -256,6 +256,13 @@ static bool decap_and_validate(struct sk_buff *skb, int proto)
- 	if (iptunnel_pull_offloads(skb))
- 		return false;
- 
-+	if (proto == IPPROTO_IPIP) {
-+		int iif = IP6CB(skb)->iif;
-+
-+		memset(IPCB(skb), 0, sizeof(*IPCB(skb)));
-+		IPCB(skb)->iif = iif;
-+	}
-+
- 	return true;
- }
- 
--- 
-2.53.0
+...
