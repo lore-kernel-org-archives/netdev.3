@@ -1,36 +1,36 @@
-Received: from mta0.migadu.com (out-56.mta0.migadu.com [91.218.175.56])
+Received: from mta0.migadu.com (out-122.mta0.migadu.com [91.218.175.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BC9423768
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 13:07:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52F642CAFC
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 13:11:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786972040; cv=none; b=pcaxemXa4RT67ICzsIlga+aX2kE6goGOwi9r8geAtq0GvNzd9nW+qeCEbxES1y0Ol1rCU6u8C0P5NgrHR17q/Tl0JjeC+2hEKpSvZPzFzyNX2F9h+X4w76e4aITTISsGp0jgfbn7WG/V8M6rJQCidH2p2+/VdqHhb4TSp7N+bQ8=
+	t=1786972304; cv=none; b=fq2MbaCbpH2Uyw8ZbvWaa7TCR1kwA2UJ5cCCNXR9aXOF71OR9nBnxukQmYDdZS0jckYShD7dj6hleU2RxS1Ddh7JtbXgnyH6bvMez2EaBj4AGzryBcBl9HqL334za2CxXB6Kwf1lEknD7MbJ/kMw6XaTp58girfgQL9cnz8OrsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786972040; c=relaxed/simple;
-	bh=JwCIq8Q4Gi25NCdb0A2NOSdCL0T4wHUFF+d4UFdUTAc=;
+	s=arc-20240116; t=1786972304; c=relaxed/simple;
+	bh=iA5srvVkeBvjwt/oKVyedL29fZDrf4G88HAM0hvgjMw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f9K+Gauu7kdWSnmUT9lKmRXPkDmY9+N8Cwd9PdfCWw17w7VtzJ8+gyhNPb4vdQP5vkV4x6BrdrA0jIAKbNiH5TEfRxAiaFg1V1fYUc+WT50kPaFnZDt9YEqmtH0DmhyO5k2ZIXaO0Qv3C9zOXLC87k8VtSNCWlGeUwP8e/Heo8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=iUdka7H8; arc=none smtp.client-ip=91.218.175.56
+	 In-Reply-To:Content-Type; b=gS69XGIuTkBllE+rUDGSLIDm7k5iju7SOxII57n4nVrv9MEmHOCnYuQORjrbrh0cumI2iBgbb/ku+CkiDW+PVxY87NjiQUmGVbn+28c0Woz7YfOyGuJcnGhgJLPTENtmMTaAOPc5gHMZL9rlJPbXGyzxImQ9tZ6rVRPW8c/fg2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=hv2TihzJ; arc=none smtp.client-ip=91.218.175.122
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="iUdka7H8"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="hv2TihzJ"
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=JwCIq8Q4Gi25NCdb0A2NOSdCL0T4wHUFF+d4UFdUTAc=;
+DKIM-Signature: a=rsa-sha256; bh=iA5srvVkeBvjwt/oKVyedL29fZDrf4G88HAM0hvgjMw=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786972036; v=1; x=1787576836;
- b=iUdka7H8hvgItfpdf0TIj4r/Qq246UuHAggdKoCbCHPrPgiIYmw2vVBUFCXip03i1Bq4+R/i
- I/o2KpzrVCH8GzX1cnVQD9lYoHVu+1qAiX2ed7dQf5nfziSBrXwApFvFHdi/bW/QqHxykWzTrjM
- HUqoeCgHJ2pYa6yfUw86D6vE=
+ t=1786972298; v=1; x=1787577098;
+ b=hv2TihzJN6cUQz578KgznlGn2XO6jYiMV4Ck3FqMHjIGQlIKs2mTjdRDvBrqs47qha3eF6+R
+ WA0kwZ8q+AdOEPmY6fNk1ti29VgOaMNXafefqoNf3DnnUkBjp9U36/y8xWmi9vJFSQutDjZUaX6
+ IUu+vYOFcOZxTZUm8MCMBNmo=
 X-Envelope-To: netdev@vger.kernel.org
 Received: from [IPV6:2a03:83e0:111e:2:c6:2f62:38ca:59d8] (2620:10d:c092:500::6:5429)
-	by smtp.migadu.com with ESMTPS id 91c160a6a54b3783;
-	Mon, 17 Aug 2026 13:07:16 +0000
+	by smtp.migadu.com with ESMTPS id a0bb66c1330947f5;
+	Mon, 17 Aug 2026 13:11:38 +0000
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <31eca887-50d8-40b2-b206-eff0a50b4a8f@linux.dev>
-Date: Mon, 17 Aug 2026 14:07:15 +0100
+Message-ID: <a7360a7e-6c42-4891-a01c-a349d1cb803a@linux.dev>
+Date: Mon, 17 Aug 2026 14:11:36 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,112 +38,77 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: libwx: fix concurrent bitmap overwrite in PTP
- setup
-To: Jiawen Wu <jiawenwu@trustnetic.com>, netdev@vger.kernel.org
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Richard Cochran <richardcochran@gmail.com>
-References: <F97867A3AA2696FD+20260817021708.37975-1-jiawenwu@trustnetic.com>
+Subject: Re: [PATCH] bnx2x: fix NULL pointer dereference in
+ bnx2x_free_mem_bp()
+To: Jiangshan Yi <yijiangshan@kylinos.cn>, skalluru@marvell.com,
+ manishc@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+Cc: yuvalmin@broadcom.com, dmitry@broadcom.com, ariele@broadcom.com,
+ eilong@broadcom.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ 13667453960@163.com, Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
+References: <20260817033332.175665-1-yijiangshan@kylinos.cn>
 Content-Language: en-US
 From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <F97867A3AA2696FD+20260817021708.37975-1-jiawenwu@trustnetic.com>
+In-Reply-To: <20260817033332.175665-1-yijiangshan@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 17/08/2026 03:17, Jiawen Wu wrote:
-> In wx_ptp_set_timestamp_mode(), the driver copies the global `wx->flags`
-> bitmap to a local variable, modifies the PTP-related bits, and then writes
-> the entire bitmap back using memcpy().
+On 17/08/2026 04:33, Jiangshan Yi wrote:
+> bnx2x_alloc_mem_bp() sets bp->fp_array_size before allocating bp->fp.
+> If the fp allocation fails, the error path calls bnx2x_free_mem_bp(),
+> which dereferences bp->fp in a loop bounded by the non-zero
+> bp->fp_array_size, causing a NULL pointer dereference.
 > 
-> This Read-Copy-Update pattern is unsafe and introduces a critical race
-> condition. Other asynchronous contexts (such as Tx timeout routines or
-> GPIO IRQ handlers) update individual bits in `wx->flags` concurrently
-> using atomic bitops like set_bit() or clear_bit(). The memcpy() write-back
-> can silently overwrite and drop these concurrent changes, potentially
-> causing the driver to miss critical module reset or PCIe recovery requests.
+> Move the bp->fp_array_size assignment to after bp->fp is set, and
+> add a NULL guard in bnx2x_free_mem_bp().
 > 
-> Fix this by removing the local bitmap copy. Instead, evaluate the intended
-> PTP flag states locally and apply them directly to `wx->flags` using
-> atomic set_bit() and clear_bit() operations only after the hardware is
-> successfully configured.
-> 
-> Fixes: 06e75161b9d4 ("net: wangxun: Add support for PTP clock")
-> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+> Fixes: c3146eb676e7c ("bnx2x: Correct memory preparation and release")
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://sashiko.dev/#/patchset/20260815122149.951215-1-yijiangshan%40kylinos.cn
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jiangshan Yi <yijiangshan@kylinos.cn>
 > ---
->   drivers/net/ethernet/wangxun/libwx/wx_ptp.c | 22 ++++++++++-----------
->   1 file changed, 10 insertions(+), 12 deletions(-)
+>   drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c | 12 +++++++-----
+>   1 file changed, 7 insertions(+), 5 deletions(-)
 > 
-> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-> index 44f3e6505246..7d4bd7b258b7 100644
-> --- a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-> +++ b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-> @@ -555,13 +555,12 @@ static int wx_ptp_set_timestamp_mode(struct wx *wx,
+> diff --git a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c
+> index 5b2640bd31c3..d84d1845a096 100644
+> --- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c
+> +++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_cmn.c
+> @@ -4712,8 +4712,10 @@ void bnx2x_free_mem_bp(struct bnx2x *bp)
 >   {
->   	u32 tsync_tx_ctl = WX_TSC_1588_CTL_ENABLED;
->   	u32 tsync_rx_ctl = WX_PSR_1588_CTL_ENABLED;
-> -	DECLARE_BITMAP(flags, WX_PF_FLAGS_NBITS);
->   	u32 tsync_rx_mtrl = PTP_EV_PORT << 16;
-> +	bool rx_in_register = false;
-> +	bool rx_enabled = false;
+>   	int i;
+>   
+> -	for (i = 0; i < bp->fp_array_size; i++)
+> -		kfree(bp->fp[i].tpa_info);
+> +	if (bp->fp) {
 
-why do you need 2 variables if their values are equal in all cases?
+there is no need to put this defensive code ...
 
->   	bool is_l2 = false;
->   	u32 regval;
+> +		for (i = 0; i < bp->fp_array_size; i++)
+> +			kfree(bp->fp[i].tpa_info);
+> +	}
+>   	kfree(bp->fp);
+>   	kfree(bp->sp_objs);
+>   	kfree(bp->fp_stats);
+> @@ -4742,13 +4744,13 @@ int bnx2x_alloc_mem_bp(struct bnx2x *bp)
 >   
-> -	memcpy(flags, wx->flags, sizeof(wx->flags));
-> -
->   	switch (config->tx_type) {
->   	case HWTSTAMP_TX_OFF:
->   		tsync_tx_ctl = 0;
-> @@ -576,20 +575,18 @@ static int wx_ptp_set_timestamp_mode(struct wx *wx,
->   	case HWTSTAMP_FILTER_NONE:
->   		tsync_rx_ctl = 0;
->   		tsync_rx_mtrl = 0;
-> -		clear_bit(WX_FLAG_RX_HWTSTAMP_ENABLED, flags);
-> -		clear_bit(WX_FLAG_RX_HWTSTAMP_IN_REGISTER, flags);
->   		break;
->   	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
->   		tsync_rx_ctl |= WX_PSR_1588_CTL_TYPE_L4_V1;
->   		tsync_rx_mtrl |= WX_PSR_1588_MSG_V1_SYNC;
-> -		set_bit(WX_FLAG_RX_HWTSTAMP_ENABLED, flags);
-> -		set_bit(WX_FLAG_RX_HWTSTAMP_IN_REGISTER, flags);
-> +		rx_enabled = true;
-> +		rx_in_register = true;
->   		break;
->   	case HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ:
->   		tsync_rx_ctl |= WX_PSR_1588_CTL_TYPE_L4_V1;
->   		tsync_rx_mtrl |= WX_PSR_1588_MSG_V1_DELAY_REQ;
-> -		set_bit(WX_FLAG_RX_HWTSTAMP_ENABLED, flags);
-> -		set_bit(WX_FLAG_RX_HWTSTAMP_IN_REGISTER, flags);
-> +		rx_enabled = true;
-> +		rx_in_register = true;
->   		break;
->   	case HWTSTAMP_FILTER_PTP_V2_EVENT:
->   	case HWTSTAMP_FILTER_PTP_V2_L2_EVENT:
-> @@ -602,9 +599,9 @@ static int wx_ptp_set_timestamp_mode(struct wx *wx,
->   	case HWTSTAMP_FILTER_PTP_V2_L4_DELAY_REQ:
->   		tsync_rx_ctl |= WX_PSR_1588_CTL_TYPE_EVENT_V2;
->   		is_l2 = true;
-> +		rx_enabled = true;
-> +		rx_in_register = true;
->   		config->rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT;
-> -		set_bit(WX_FLAG_RX_HWTSTAMP_ENABLED, flags);
-> -		set_bit(WX_FLAG_RX_HWTSTAMP_IN_REGISTER, flags);
->   		break;
->   	default:
->   		/* register PSR_1588_MSG must be set in order to do V1 packets,
-> @@ -643,7 +640,8 @@ static int wx_ptp_set_timestamp_mode(struct wx *wx,
->   	WX_WRITE_FLUSH(wx);
+>   	/* fp array: RSS plus CNIC related L2 queues */
+>   	fp_array_size = BNX2X_MAX_RSS_COUNT(bp) + CNIC_SUPPORT(bp);
+> -	bp->fp_array_size = fp_array_size;
+> -	BNX2X_DEV_INFO("fp_array_size %d\n", bp->fp_array_size);
+> +	BNX2X_DEV_INFO("fp_array_size %d\n", fp_array_size);
 >   
->   	/* configure adapter flags only when HW is actually configured */
-> -	memcpy(wx->flags, flags, sizeof(wx->flags));
-> +	assign_bit(WX_FLAG_RX_HWTSTAMP_ENABLED, wx->flags, rx_enabled);
-> +	assign_bit(WX_FLAG_RX_HWTSTAMP_IN_REGISTER, wx->flags, rx_in_register);
->   
->   	/* clear TX/RX timestamp state, just to be sure */
->   	wx_ptp_clear_tx_timestamp(wx);
+> -	fp = kzalloc_objs(*fp, bp->fp_array_size);
+> +	fp = kzalloc_objs(*fp, fp_array_size);
+>   	if (!fp)
+>   		goto alloc_err;
+>   	bp->fp = fp;
+> +	bp->fp_array_size = fp_array_size;
+
+... when you have fixed the root cause of the issue
+
+>   	for (i = 0; i < bp->fp_array_size; i++) {
+>   		fp[i].tpa_info =
+>   			kzalloc_objs(struct bnx2x_agg_info,
 
