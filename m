@@ -1,100 +1,170 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mta1.migadu.com (out-205.mta1.migadu.com [95.215.58.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EAA523741
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 06:50:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8B43B0586
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 06:57:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786949457; cv=none; b=n4lmo2QkSOSvqhp6ucg/GI4FRNVDXKO15RJF/UyA2n3anlHCYixoueIp4BK1COwdiUCwuO/LoF5hL02K1rEHtPlnB94nAHLM9htf1pKigJ4omtSRf3jNuSj44Uvn4eZbp1Qs2EShKEEkVup2MGe9/o6AUQ1m27LUqpxMqDpfKpw=
+	t=1786949826; cv=none; b=rdejfB5wSHCLu5GDJkE6CtC0VTOs8x6lgE2Y3fs6Klyo3sGNdm2cNVY7CXCED0Nk3U37glJsdz+EKnQ3DHG5Yc+eXQzinWSqdxH2X6TfX8zrMw2u3ObrNNTWazfB2Ktx1RQjFZUgm4rFg47Nl3tQ1Db7Mx9cvWLRc5qhw32/D78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786949457; c=relaxed/simple;
-	bh=5aFcyaOqzui+kkMIepTV3BRgh8RG6wj+uX6aw4Rafn0=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=CovY9PKLp0ftOjiC5CPWeqLqlr+FjNry1qP65D5Hj8JNg6aGXab5jYq3cxU9uVySLUyj/MjQKtv8buLb8/xfIX98Mm12mxo1t5EKqfpgSrPMZaDR7AfBTfkOR+jXncIsYbGnL4JctVaJcoud8kostCTeVQO6n8AKe+KBs0bH/E0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=jLwHGhwx; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+	s=arc-20240116; t=1786949826; c=relaxed/simple;
+	bh=b8WHkNKtP8nsh142rlqWqm/iqonSquTlT6328QxAZhQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cKCrk/fpu1pg3Zlyq6qJ/lRQRS7OC/T1n4DDOrtxFa592lSyN8CrXkfduXqbK4Qr65H+1mQAJdRaY/3VsgZLEwcn7/IyctdmlVWORv9OCY0/CvfxJ2TeRqH2zEpKWmnexIg4MMTQ44XXQoJCGtqLewM/k8FgGw0Z1uCeYuPHToY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=o/awu14Z; arc=none smtp.client-ip=95.215.58.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="jLwHGhwx"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 67H6ooFW33730148, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1786949450; bh=5aFcyaOqzui+kkMIepTV3BRgh8RG6wj+uX6aw4Rafn0=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=jLwHGhwx9S/9Q313p8f9jlfdgix7AMri10c/D4O1RIsan2GYXb4poV62fnfdwEYqW
-	 xwBwywUmSIlTFw9kjUX9KzkccmkGJHp2ioOrU/Ql236w1KKEPMczrIma4csrSDZGta
-	 Ax1j4THE3okm3AvDAaAv14iwxR8wTLdWOISXyQXXnzv4/0IKln65ZicXL6nkcQkoB3
-	 ioC6K5pr1crFrafXhvkQwNU4VBKmsv6Ho443LGMKPIPMtNXoinH7P0nCxg+vg1Vdwh
-	 aaVQZBEPkfJn3tnOlTaQ54ZmzFRMxKl9HeJREnnR7ShPBLvUyUfZEdmmyiHzQdHlVL
-	 msuAl8FfETM6A==
-Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 67H6ooFW33730148
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 17 Aug 2026 14:50:50 +0800
-Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
- RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 17 Aug 2026 14:50:50 +0800
-Received: from RTKEXHMBS03.realtek.com.tw ([::1]) by
- RTKEXHMBS03.realtek.com.tw ([fe80::8d70:ec96:b42e:3c54%9]) with mapi id
- 15.02.2562.043; Mon, 17 Aug 2026 14:50:50 +0800
-From: Hayes Wang <hayeswang@realtek.com>
-To: =?utf-8?B?0JzQsNC60YHQuNC8?= <rizlirizlirizli@gmail.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, nic_swsd
-	<nic_swsd@realtek.com>
-Subject: RE: ATF support for r8152 driver
-Thread-Topic: ATF support for r8152 driver
-Thread-Index: AQHdK94f4ULwiTsV1EW0SJkUk82HuLahz+CQ
-Date: Mon, 17 Aug 2026 06:50:50 +0000
-Message-ID: <52ce36a7757141c0977d593b2c9c3088@realtek.com>
-References: <CA+0KmMsGysTkd0oUytRnkH7+Wjmxx4OzRV1v2NGWWuHr89GvjQ@mail.gmail.com>
-In-Reply-To: <CA+0KmMsGysTkd0oUytRnkH7+Wjmxx4OzRV1v2NGWWuHr89GvjQ@mail.gmail.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="o/awu14Z"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=b8WHkNKtP8nsh142rlqWqm/iqonSquTlT6328QxAZhQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786949822; v=1; x=1787554622;
+ b=o/awu14ZqrMAb+tnLRBti4wpG+kFfwANCB30qp3C75+4VFiPAAJCYojmMNYGlZ10Z4O8qp/u
+ YsC3sp3VapzNffLFondAR8wV18uqsK1b0pb5BRExVnRSAdB5z70dp/ysUKtKCQceZYwl2O+ZqFs
+ BkDJxVHPY8dB09RtSWQQU3MY=
+X-Envelope-To: netdev@vger.kernel.org
+Received: from fedora (216.236.36.150)
+	by smtp.migadu.com with ESMTPS id 0bb39fdd5650f227;
+	Mon, 17 Aug 2026 06:56:52 +0000
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 17 Aug 2026 14:56:39 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Jay Vosburgh <jv@jvosburgh.net>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Hangbin Liu <liuhangbin@kylinos.cn>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH net v2] bonding: fix u32 overflow in compute_gap()
+Message-ID: <aoKwp6gTtSrnzR2n@fedora>
+References: <20260814-bond_overflow-v2-1-d3fe588ad167@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260814-bond_overflow-v2-1-d3fe588ad167@kylinos.cn>
 
-0JzQsNC60YHQuNC8IDxyaXpsaXJpemxpcml6bGlAZ21haWwuY29tPiANClsuLi5dDQo+IEhlbGxv
-LA0KPiBJJ20gdXNpbmcgYSBVU0IgVHlwZS1DIHRvIFNGUCBhZGFwdGVyIGJhc2VkIG9uIHRoZSBS
-VEw4MTUzIGNoaXAgKGRyaXZlcjogcjgxNTIpIG9uIExpbnV4LiBUaGUgYWRhcHRlciBoYXMgYW4g
-U0ZQIGNhZ2UgYW5kIEknbSB0cnlpbmcgdG8gcmVhZCB0aGUgbW9kdWxlJ3MgRERNL0RPTSBkaWFn
-bm9zdGljcyAoVFgvUlggb3B0aWNhbCBwb3dlciwgYmlhcyBjdXJyZW50LCB0ZW1wZXJhdHVyZSwg
-dm9sdGFnZSkgdmlhIHRoZSBzdGFuZGFyZCBldGh0b29sIGludGVyZmFjZS4NCj4gRGV2aWNlIGlu
-Zm86DQo+IGxzdXNiOiBCdXMgMDAzIERldmljZSAwMDU6IElEIDBiZGE6ODE1MyBSZWFsdGVrIFNl
-bWljb25kdWN0b3IgQ29ycC4gUlRMODE1MyBHaWdhYml0IEV0aGVybmV0IEFkYXB0ZXINCj4gSW50
-ZXJmYWNlIG5hbWU6IGVucDBzMjBmMHUzDQo+IERyaXZlciB2ZXJzaW9uOiByODE1MiB2MS4xMi4x
-MyAodmVybWFnaWM6IDYuMTIuMTAxK2RlYjEzLWFtZDY0IFNNUCBwcmVlbXB0IG1vZF91bmxvYWQg
-bW9kdmVyc2lvbnMpDQo+IFdoYXQgSSBvYnNlcnZlOg0KPiBldGh0b29sIC1tIGVucDBzMjBmMHUz
-DQo+IE5ldGxpbmsgZXJyb3I6IE9wZXJhdGlvbiBub3Qgc3VwcG9ydGVkDQo+IENoZWNraW5nIGRt
-ZXNnIGltbWVkaWF0ZWx5IGFmdGVyIHRoZSBjYWxsIHNob3dzIG5vIGRyaXZlciBhY3Rpdml0eSBh
-dCBhbGwgcmVsYXRlZCB0byB0aGlzIHJlcXVlc3Qg4oCUIHRoZSBjYWxsIGFwcGVhcnMgdG8gYmUg
-cmVqZWN0ZWQgYmVmb3JlIGFueSBVU0IgdHJhbnNhY3Rpb24gaXMgYXR0ZW1wdGVkLCB3aGljaCBz
-dWdnZXN0cyBnZXRfbW9kdWxlX2VlcHJvbSwgZ2V0X21vZHVsZV9pbmZvIGlzIHNpbXBseSBub3Qg
-aW1wbGVtZW50ZWQgaW4gc3RydWN0IGV0aHRvb2xfb3BzIGZvciB0aGlzIGRyaXZlci4NCj4gSSBu
-b3RpY2VkIHRoYXQgZ2V0X21vZHVsZSBzdXBwb3J0IHdhcyByZWNlbnRseSBhZGRlZCBmb3IgUlRM
-ODEyNyAoYSBkaWZmZXJlbnQgY2hpcCwgcjgxNjkgZHJpdmVyKSDigJQgdGhlIHBhdGNoICJyODE2
-OTogaW1wbGVtZW50IGdldF9tb2R1bGUgZnVuY3Rpb25zIGZvciBydGw4MTI3YXRmIiAoRmFiaW8g
-QmFsdGllcmksIEFwcmlsIDIwMjYpLiBJJ20gd3JpdGluZyB0byBhc2s6DQo+IElzIHRoZXJlIGFu
-eSBwbGFuIHRvIGltcGxlbWVudCBnZXRfbW9kdWxlX2VlcHJvbSwgZ2V0X21vZHVsZV9pbmZvIChv
-ciB0aGUgbmV3ZXIgZ2V0X21vZHVsZV9lZXByb21fYnlfcGFnZSkgZm9yIFJUTDgxNTMgaW4gdGhl
-IHI4MTUyIGRyaXZlcj8NCj4gRG9lcyB0aGUgUlRMODE1MyBoYXJkd2FyZSBldmVuIGV4cG9zZSB0
-aGUgU0ZQIGNhZ2UncyBJMkMvVFdTSSBsaW5lcyB0byB0aGUgaG9zdCBpbiBhIHdheSB0aGF0IHdv
-dWxkIG1ha2UgdGhpcyBmZWFzaWJsZSwgb3IgYXJlIHRoZXkgb25seSB1c2VkIGludGVybmFsbHkg
-YnkgdGhlIGNoaXAgKGUuZy4sIHNoYXJlZCB3aXRoIHRoZSBjaGlwJ3Mgb3duIEVFUFJPTSBpbnRl
-cmZhY2UpPw0KPiBJcyB0aGVyZSBhbnkgZXhpc3RpbmcgaW50ZXJuYWwgUmVhbHRlayB0b29sIChl
-dmVuIHVub2ZmaWNpYWwvV2luZG93cy1vbmx5KSB1c2VkIGZvciBwcm9kdWN0aW9uIHRlc3Rpbmcg
-b2YgUlRMODE1My1iYXNlZCBTRlAgYWRhcHRlcnMgdGhhdCByZWFkcyBERE0gZGF0YSwgd2hpY2gg
-Y291bGQgaW5mb3JtIGFuIGltcGxlbWVudGF0aW9uPw0KPiBIYXBweSB0byB0ZXN0IGFueSBwYXRj
-aCBvciBwcm92aWRlIGZ1cnRoZXIgZGVidWdnaW5nIGluZm9ybWF0aW9uIChVU0IgY2FwdHVyZXMs
-IHJlZ2lzdGVyIGR1bXBzLCBldGMuKSBpZiB0aGF0IHdvdWxkIGhlbHAuDQoNClRvIG15IGtub3ds
-ZWRnZSwgdGhlIFJUTDgxNTIsIFJUTDgxNTMsIFJUTDgxNTYsIGFuZCBSVEw4MTU3IGRvIG5vdCBw
-cm92aWRlIGEgaG9zdC1hY2Nlc3NpYmxlIGludGVyZmFjZSBmb3IgYWNjZXNzaW5nIHRoZSBTRlAg
-bW9kdWxlJ3MgSTJDIGJ1cy4NClRoZXJlZm9yZSwgc3VwcG9ydCBmb3IgcmVhZGluZyB0aGUgU0ZQ
-IEVFUFJPTSBvciBERE0vRE9NIGRpYWdub3N0aWNzIGNhbm5vdCBiZSBhZGRlZCBieSBtb2RpZnlp
-bmcgdGhlIGRyaXZlciBhbG9uZS4NCg0KQmVzdCBSZWdhcmRzLA0KSGF5ZXMNCg0K
+Hi Jay,
+On Fri, Aug 14, 2026 at 01:39:23PM +0800, Hangbin Liu wrote:
+> From: Hangbin Liu <liuhangbin@kylinos.cn>
+> 
+> The TLB fields tx_bytes, load_history, load, and unbalanced_load are
+> all u32, which can overflow when sustained throughput exceeds ~3.2
+> Gbit/s over the 10-second rebalance interval. On modern high-speed
+> NICs under heavy load this is easily reached, causing the gap
+> calculation in compute_gap() to wrap and produce incorrect slave
+> selection.
+> 
+> Widen these fields to s64 so the load arithmetic stays correct.
+> This also lets compute_gap() naturally return negative values when a
+> slave is oversubscribed, which the existing max-gap selection already
+> handles.
+> 
+> Additionally, the NIC speed is left-shifted before being cast to s64.
+> For speeds >= 4 Gbit/s (slave->speed >= 4096), the u32 shift
+> (4096 << 20 = 0x100000000) overflows before the cast takes effect.
+> Cast slave->speed to s64 before shifting so the arithmetic is
+> performed in 64 bits throughout.
+> 
+> Also cast SPEED_UNKNOWN to 0; otherwise, it would be the largest speed
+> after the shift.
+> 
+> Detected by AI code review.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+> ---
+> Changes in v2:
+> - update comment description, including AI-detected info.
+> - fix tx_bytes/load type detected by sashiko
+> - cast SPEED_UNKNOWN to 0 before shift, detected by sashiko
+> - Link to v1: https://lore.kernel.org/r/20260810-bond_overflow-v1-1-c9ff29d76770@kylinos.cn
+> ---
+>  drivers/net/bonding/bond_alb.c | 12 ++++++++++--
+>  include/net/bond_alb.h         |  8 ++++----
+>  2 files changed, 14 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
+> index 839f7482dc18..052ab6beb661 100644
+> --- a/drivers/net/bonding/bond_alb.c
+> +++ b/drivers/net/bonding/bond_alb.c
+> @@ -6,6 +6,7 @@
+>  #include <linux/skbuff.h>
+>  #include <linux/netdevice.h>
+>  #include <linux/etherdevice.h>
+> +#include <linux/ethtool.h>
+>  #include <linux/pkt_sched.h>
+>  #include <linux/spinlock.h>
+>  #include <linux/slab.h>
+> @@ -160,8 +161,15 @@ static void tlb_deinitialize(struct bonding *bond)
+>  
+>  static long long compute_gap(struct slave *slave)
+>  {
+> -	return (s64) (slave->speed << 20) - /* Convert to Megabit per sec */
+> -	       (s64) (SLAVE_TLB_INFO(slave).load << 3); /* Bytes to bits */
+> +	s64 speed;
+> +
+> +	if (slave->speed == SPEED_UNKNOWN)
+> +		speed = 0;
+> +	else
+> +		speed = (s64)slave->speed;
+> +
+> +	return (speed << 20) - /* Mbit/s -> bit/s */
+> +	       (SLAVE_TLB_INFO(slave).load << 3); /* Byte/s -> bit/s */
+>  }
+>  
+>  static struct slave *tlb_get_least_loaded_slave(struct bonding *bond)
+> diff --git a/include/net/bond_alb.h b/include/net/bond_alb.h
+> index e5945427f38d..4933a855a438 100644
+> --- a/include/net/bond_alb.h
+> +++ b/include/net/bond_alb.h
+> @@ -57,12 +57,12 @@ struct tlb_client_info {
+>  				 * packets to a Client that the Hash function
+>  				 * gave this entry index.
+>  				 */
+> -	u32 tx_bytes;		/* Each Client accumulates the BytesTx that
+> +	s64 tx_bytes;		/* Each Client accumulates the BytesTx that
+>  				 * were transmitted to it, and after each
+>  				 * CallBack the LoadHistory is divided
+>  				 * by the balance interval
+>  				 */
+> -	u32 load_history;	/* This field contains the amount of Bytes
+> +	s64 load_history;	/* This field contains the amount of Bytes
+>  				 * that were transmitted to this client by
+>  				 * the server on the previous balance
+>  				 * interval in Bps.
+> @@ -118,14 +118,14 @@ struct tlb_slave_info {
+>  			 * are the entries that were assigned to use this
+>  			 * slave for transmit.
+>  			 */
+> -	u32 load;	/* Each slave sums the loadHistory of all clients
+> +	s64 load;	/* Each slave sums the loadHistory of all clients
+>  			 * assigned to it
+>  			 */
+>  };
+>  
+>  struct alb_bond_info {
+>  	struct tlb_client_info	*tx_hashtbl; /* Dynamically allocated */
+> -	u32			unbalanced_load;
+> +	s64			unbalanced_load;
+>  	atomic_t		tx_rebalance_counter;
+>  	int			lp_counter;
+>  	/* -------- rlb parameters -------- */
+
+Sashiko reported that on a 32-bit system, these s64 numbers' read/write
+operations and division will tear. We need to use div_s64() for divisions
+and may also need to convert the number to atomic64_t for read/write operations.
+
+Do you know how bonding support works on a 32-bit system? Should we handle it?
+
+Thanks
+Hangbin
