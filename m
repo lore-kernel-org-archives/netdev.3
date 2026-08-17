@@ -1,88 +1,64 @@
-Received: from mta0.migadu.com (out-224.mta0.migadu.com [91.218.175.224])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587FC3DB31B
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 09:23:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.224
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B26E3E0255;
+	Mon, 17 Aug 2026 09:35:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786958600; cv=none; b=p2JXu0faotGdEyXfxKyumEA9YoHiddKYsYvj4HkQK62aCGYwdu3ksBagFIGoXlRJj3jm5II4tcFDVOn9OViduccxdcbRGSlaXpsKBOdmoDfR+91Qm3o7qwtI0FIZgZd9IEioIH6tjawCJ79uHuRgPKD0fD+ho1vOoWA4KL58HGc=
+	t=1786959351; cv=none; b=GHzGTfNLM1xukQO/m3T9MPCi/qk8EdEYxOzAEgyt2xZSO+giFDf2v253lbP2bc6ne7Rs3Nb3j1AeLRCJaJnHq0Z/wdUeM/goYMdVaLecSZO9lVpxZRXF8O/r2W1l0jcF4ZMIJfGpa5vz/0hnChZVz99KKMY1YCA8G1hu8mKjFP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786958600; c=relaxed/simple;
-	bh=i0E1ibmDg1XOvfuk1jxSBGsN1ogPXb4dKpd91jgeXNQ=;
+	s=arc-20240116; t=1786959351; c=relaxed/simple;
+	bh=s6cZ5OlhmhSIHVxSGQJlmFwZCfc5QbGjS61PxpZFzrg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oZ9l4fBZQUks0398VYc17DA4f3u+lVIc8oOJSK2oD4g53pEDwnh4qNjf7pMrwi8GWo4s69iOoYECaYjzrjlN1SWVOkvhF0mbnD83MpZ0dkVXEUtIIQNyVDA1YnGRwd6AaxTu4Ni/GT6HcUG4EOo6OZCh8WSV8RA+tVJaSoUVCY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ABVvC7BI; arc=none smtp.client-ip=91.218.175.224
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	 Content-Type:Content-Disposition:In-Reply-To; b=qY9/eC8To3mC1n/fiULpzCAfjQl3qfdWDnOuYf5PxAGgZqXatFKZtExY3N/vzTIWIF0egT5/WUeDH+BrN9CRHjn1vm+5tJFY3uv3DeWS8t8JrqVzlPt4lGEpo7YI5HIADGTD4tmF8tjyvFNGVBgcZcOEGLxVoDYWe0OA0Up+87c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cBwNCm0r; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ABVvC7BI"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=i0E1ibmDg1XOvfuk1jxSBGsN1ogPXb4dKpd91jgeXNQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786958595; v=1; x=1787563395;
- b=ABVvC7BItTSLqe2zioqKjow/TlHM1tsnDFaqRLUYYnKN4BED/hIdfTKz8l6AWqqr+lpGiJne
- moJhmUA4D8CeuBgnu8q0xrEeqE4j0NWvTQ/Q3NkMd6Y8f17RigzhH1bjgURpUSkS2x1GmNN4R2g
- kmeoWBAma8sXRf26Yy0NXB+8=
-X-Envelope-To: netdev@vger.kernel.org
-Received: from fedora (216.236.36.150)
-	by smtp.migadu.com with ESMTPS id 0c8b4a16ad25c4a7;
-	Mon, 17 Aug 2026 09:23:15 +0000
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 17 Aug 2026 17:23:03 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Eric Dumazet <edumazet@google.com>
-Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Hangbin Liu <liuhangbin@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
-Subject: Re: [PATCH 2/2] bonding: 3ad: use RCU_INIT_POINTER for rcu pointer
- initialization
-Message-ID: <aoLS968kX0QQH0KT@fedora>
-References: <20260817-bond_rcu-v1-0-acf067cf45fe@kylinos.cn>
- <20260817-bond_rcu-v1-2-acf067cf45fe@kylinos.cn>
- <CANn89iLyiyRM4K4GnjuukdDhOWFiWWjuS5aVbP-u8iPqPxZtEg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cBwNCm0r"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622421F000E9;
+	Mon, 17 Aug 2026 09:35:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786959345;
+	bh=OZFIrUTfmcLA0aBdxifw/G1V2+al2FZYFpSPhR7o95I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=cBwNCm0rgj390FwBKO4V+GmYOUjunbKaTTWOOkAIXFn+3Kn1FxJ9MIuE/qIwOab1X
+	 sCG6e6csZ48C6W5gGug80rwjqy6WuWaSHgmw78GGHGVkXXPrrkf7VKyWsELzAvKZUd
+	 ReOForq4NOF5GriXeOIttIi9lcwudlJlrCTx27HjFJ86pnUvMtfiAcT7bRz5nxv48e
+	 VCmIUaQyvGbbAdlkyHCMushtKenpYCgJH6f0L5XFaQJ9fQKlt8rRn/181Jawhu/Fs5
+	 Nb8S0wjkoqcCipHYKU7dpGeDFE/pyYaRsrt0rDlhEBkEV/BTL8u1a+4bsM+QAn4HZ8
+	 wkN5axELmZOHg==
+Date: Mon, 17 Aug 2026 10:35:41 +0100
+From: Simon Horman <horms@kernel.org>
+To: Mark Sercombe <sercombe.joel.mark@gmail.com>
+Cc: cooldavid@cooldavid.org, kuba@kernel.org, pabeni@redhat.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: jme: fix typos in comments
+Message-ID: <20260817093541.GW265046@horms.kernel.org>
+References: <20260813173634.461011-1-sercombe.joel.mark@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANn89iLyiyRM4K4GnjuukdDhOWFiWWjuS5aVbP-u8iPqPxZtEg@mail.gmail.com>
+In-Reply-To: <20260813173634.461011-1-sercombe.joel.mark@gmail.com>
 
-On Mon, Aug 17, 2026 at 10:37:56AM +0200, Eric Dumazet wrote:
-> On Mon, Aug 17, 2026 at 10:33 AM Hangbin Liu <hangbin.liu@linux.dev> wrote:
-> >
-> > From: Hangbin Liu <liuhangbin@kylinos.cn>
-> >
-> > Use RCU_INIT_POINTER() for initializing port->aggregator to NULL.
-> >
-> > Fixes: c4f050ce06c5 ("bonding: 3ad: implement proper RCU rules for port->aggregator")
-> > Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
-> > ---
-> >  drivers/net/bonding/bond_3ad.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
-> > index 196830fca4a4..c4dfcafcff26 100644
-> > --- a/drivers/net/bonding/bond_3ad.c
-> > +++ b/drivers/net/bonding/bond_3ad.c
-> > @@ -2075,7 +2075,7 @@ static void ad_initialize_port(struct port *port, const struct bond_params *bond
-> >                 port->sm_mux_state = 0;
-> >                 port->sm_mux_timer_counter = 0;
-> >                 port->sm_tx_state = 0;
-> > -               port->aggregator = NULL;
-> > +               RCU_INIT_POINTER(port->aggregator, NULL);
-> >                 port->next_port_in_aggregator = NULL;
-> >                 port->transaction_id = 0;
-> >
+On Thu, Aug 13, 2026 at 07:36:34PM +0200, Mark Sercombe wrote:
+> Fix several spelling mistakes in code comments in the jme driver:
+> These are comment only changes with no functional impact.
 > 
-> This is a NOP really, the object is not visible yet.
+> Signed-off-by: Mark Sercombe <sercombe.joel.mark@gmail.com>
+> ---
+>  drivers/net/ethernet/jme.c | 4 ++--
+>  drivers/net/ethernet/jme.h | 4 ++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
 
-OH, I see. Sorry for bothering you.
+Thanks,
 
-Hangbin
+With these changes these files are now codespell-clean.
+
+Reviewed-by: Simon Horman <horms@kernel.org>
+
+...
