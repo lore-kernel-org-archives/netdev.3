@@ -1,79 +1,77 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2DB0282F29;
-	Mon, 17 Aug 2026 19:35:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF1D35DA42;
+	Mon, 17 Aug 2026 19:46:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786995334; cv=none; b=ls4Xw7XuIEKUwEZNRScyO0yaoemAsEahpAAHh5wC6JeKyp70oR1FrOi0dpgMdJ55q7DhgPe7hh+NVfw0LSHNJXAuOGghqKOF7pYewv/APMYB7oN2l1KDtjgU4e/Y2fIMU4ipmiY71bGxfB+5yeAT1DJHvPRNW1HVwfZdSb1IMCo=
+	t=1786995977; cv=none; b=tT43TvXiiaiaBNDJAFllzRRCaYF0lxRckcoLXK5GwxG4ZTRgkoSl3yH7LynzSlobgr2M33e64TeokZhJpRIQBRZi6hAJdTJS6eDKvQ/hJjtaAn9bTO0P5P3gKX4tTFXHD9fHoJ7OBhGvoPvaxRzbknMPXc/2xrA02E6U9CaDSKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786995334; c=relaxed/simple;
-	bh=x8EQe+VTaFjcq2kbztMMduWBWRrAjuSoWrsZJHjIYhM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=frFSdLhDAVgwWD9Q2M/8SdXiWyD71SguLUL7DwXxSBu3lqUya0rOm8iLCJZV/Luz16G1k/1Kt8+MG9r9jG7tGu/cFrU9+fLj7/ioyxwOSITvoX8nCNcNTlSTlaM3b2pGzCTdvM20WcyZ4katxAWuK3hfGiMG84D49dcAzaBOyPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=VRZw3bgz; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1786995977; c=relaxed/simple;
+	bh=7sFG7IKe0TjqOwhZhr+gHtjf2ZVa30iVJC5PcHnFdH8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=WEe0Gw+im2rpSbSF/kBHXQpb2zBop9PvmMcPDgK4GqzNPQFjo7x54mYyijncATjaRECBgBdzaro/jIQxNKZib8KxzA9jCc78pA5ux+sAAwhP7OOmv1yiwzhDbFttMzV2q9EVN7OnP1mUTuG50kmxYNyfIdi/fl0Sqm8CEnwxFW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YfqBC1zX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="VRZw3bgz"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=+hf5KBZ2hL7pA3yMzWnedAa+BWK+LSABJ+zP+GioG7M=; b=VRZw3bgza/mAM2V5N3ng54hALk
-	iioqaxHOIITygoTy2EYwyjIBXfWIWYR/OH1wo42Uoja03Yfs/MXrcbxhl6+Qj3DrJUpwHfGMjImEX
-	mt1GXSezSR0+5SBr7MQQXDNpEFkgGkZIYZSiC3O3PA2Hp6bIN4zEQAAxE4Q/Kf3AxmKo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1ww371-000MNP-2S; Mon, 17 Aug 2026 21:35:11 +0200
-Date: Mon, 17 Aug 2026 21:35:11 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Markus Stockhausen <markus.stockhausen@gmx.de>
-Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	netdev@vger.kernel.org, chris.packham@alliedtelesis.co.nz,
-	daniel@makrotopia.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v14 10/13] net: mdio: realtek-rtl9300: Open up
- C22 and C45 space in parallel
-Message-ID: <0a125ab4-2453-4d32-b158-8bdaaca16674@lunn.ch>
-References: <20260817162632.1208891-1-markus.stockhausen@gmx.de>
- <20260817162632.1208891-11-markus.stockhausen@gmx.de>
- <cf8bdf97-64f9-4120-bdeb-c5a91a274490@lunn.ch>
- <070901dd2e6d$f5b70c30$e1252490$@gmx.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YfqBC1zX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71B111F000E9;
+	Mon, 17 Aug 2026 19:46:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786995976;
+	bh=wqn44WbkbVRRvfq3n4GCmvsx8PC/4xHXMLWv/tMFrCo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=YfqBC1zXSF29dI5+LY6kciQXFXrTjJ4CHmsWpjx4UGuFZkbMm0+VyZmGsPqZmSBjP
+	 mv5TdAn/0siWJEECzDb4BWRlxX3+ogiHclvhKTihUvrFuKtYeWBixwXJQuStC/ruL1
+	 /CPcTrVmKEWhGyXN5qTiCquKK27x2kfhAqqBZ8h/+AMtay0PgfWFIjmzb7Xrb5F9v5
+	 4mjBJUHuUcpO39OZkDa+pl9xGoP3B7t4zrxeHfasWY7h3j8KH880YIYzLIXoe8xSqP
+	 ySuluUGt/M9oWh8D6AiG+Zg3GDrxskiUbwRl5fhyCwSWJ6fHdXVLfgYmxsW2Wf7r5u
+	 7V9ksgBPKEoRQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09D63926262;
+	Mon, 17 Aug 2026 19:45:29 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <070901dd2e6d$f5b70c30$e1252490$@gmx.de>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [pull-request] NFC fixes for net 7.1-rc8
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178699592843.1691257.18400258097143079777.git-patchwork-notify@kernel.org>
+Date: Mon, 17 Aug 2026 19:45:28 +0000
+References: <4bcd0efa-cd97-485b-a7ba-6db8e3c4d3dd@ixit.cz>
+In-Reply-To: <4bcd0efa-cd97-485b-a7ba-6db8e3c4d3dd@ixit.cz>
+To: David Heidelberg <david@ixit.cz>
+Cc: kuba@kernel.org, pabeni@redhat.com, davem@davemloft.net,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ oe-linux-nfc@lists.linux.dev
 
-On Mon, Aug 17, 2026 at 07:29:25PM +0200, Markus Stockhausen wrote:
-> Hi Andrew,
+Hello:
+
+This pull request was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue, 11 Aug 2026 18:27:50 +0200 you wrote:
+> The following changes since commit db2ddb87143519e20a95aa36c60b36107b736a58:
 > 
-> > Von: Andrew Lunn <andrew@lunn.ch> 
-> > Gesendet: Montag, 17. August 2026 19:04
-> > An: Markus Stockhausen <markus.stockhausen@gmx.de>
-> > Betreff: Re: [PATCH net-next v14 10/13] net: mdio: realtek-rtl9300: Open
-> up C22 and C45 space in parallel
-> > 
-> > ...
-> > 
-> > And I really think you need to block C45 over C22, since we know it
-> > will go horribly wrong.
+>    Linux 7.2-rc7 (2026-08-09 14:54:50 -0700)
 > 
-> as per your guidance I Included that as patch 3 of this v14 series
+> are available in the Git repository at:
 > 
-> https://lore.kernel.org/netdev/20260817162632.1208891-4-markus.stockhausen@g
-> mx.de/T/#u
+>    https://codeberg.org/linux-nfc/linux.git tags/nfc-7.1-rc8
+> 
+> [...]
 
-Ah, great.
+Here is the summary with links:
+  - [pull-request] NFC fixes for net 7.1-rc8
+    https://git.kernel.org/netdev/net/c/a22054d74333
 
-Have you seen these fire? I would expect EEE, on a PHY discovered via
-C22, to trigger these.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-    Andrew
+
