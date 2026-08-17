@@ -1,102 +1,71 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012034.outbound.protection.outlook.com [52.101.43.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0FD3E5ED6;
-	Mon, 17 Aug 2026 12:30:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9393BFE5D
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 12:32:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.34
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786969842; cv=fail; b=mbFRglFDnUDxL7iKVd1L6Ar5NjheggST9HimpZctemvo/L23NmD4Bs1H0SuUH+5V33UVZrl+tNOm9ePKIX/9nblmcLXYmYhKNAxLe17Oy+0p4mIUgj62K4nvGiR6fExUG/48CVLEK7LLqymOg6uSCEFF6jPMldRrN7p98dCRk3k=
+	t=1786969925; cv=fail; b=M+4qHvtO95pI8pMyXdu+7VBPOJZ6DYtfOJcTRy9ih7+3XmxO7lWwOX7w+B+8CDwbyq+CvF0/KXbVsYucITIMw+RoOoxhhJ/Sf2XsE/eHLugmzBk2FlkjGEOrBGhZNDMALomTViAoigHKtqBbqy94soBC7e/cR0pX27u0oCPB5oI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786969842; c=relaxed/simple;
-	bh=bvyvyIMiCwbRE+0SmcFuy4Xpmf4rmWUaqWKXJQwASdA=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=kdTjlZwKt34bntnPUGYilo4VbEoTHVYh9isgaQZBv62GgQumGdLiIwIxr3uYqjVTw+73ZdA5mAIRFl0fceX6n/VVzebmZflOL+SPPi0RvXIOnpZ6Spr0bkHvHSJ2qPdSnIKDCGea1E2CUAZxakyyCpABMqiDD8EHgTG2hXrQaKs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aLtFwNLo; arc=fail smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786969925; c=relaxed/simple;
+	bh=9FGOeovU4CnrOAFVMPA+SoNaQdcPxOQTZpMmPlx4aI0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=qfmzFZNvE7lO45fB8P6MAksbo/HjXqgSo5bg3oCgb34FH4ZsyPt6+BdL7R74SPoGt3JSeedt0/FEGE4Ci/qqVpO2YtOObNC0TW2aeuseFLQOry+1fC1O8OjS4xjsHUwfmoH+fqSj80lwRBYbXto/qbMAZPSoBEuqR3GQ4/0b+Do=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=YjoVE6vW; arc=fail smtp.client-ip=52.101.43.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aLtFwNLo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786969841; x=1818505841;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=bvyvyIMiCwbRE+0SmcFuy4Xpmf4rmWUaqWKXJQwASdA=;
-  b=aLtFwNLoyzMSZfRP4Jp8l2I4E31fx3rJy+nRVv//esvcrCLRS/8Oo123
-   23EoOTvcm3wpEMJU3Val++sJ8W6WhrE2nkbPEPcYI7mFc76B4j/xr1Gd3
-   kJvs7l8lNql0Z2tyC/Llizm6aptQnxQNwHiRlVL6xCkG4NX/kHeJxyyGe
-   NUIb0tj6A6qWB4p+rpFKpsc0Y34MTx5ja+gUbYf7wlhPjk3BZlOQirod+
-   niSyhcgH0/UbcUl/iHbr+h8AvYZsWpDrG6oIMAryM1kHVgNgpisiqRbCd
-   IYvRwlzB2Pb3k61y2RKVUsFsptTrIjnm99ZbsbSPNFCHloIt9g3aALPCj
-   w==;
-X-CSE-ConnectionGUID: wVTruxxsR4SbYVXxdUg5aw==
-X-CSE-MsgGUID: 0pwYV9JqRCOe+zwCyLao/Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11877"; a="91257581"
-X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; 
-   d="scan'208";a="91257581"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2026 05:30:38 -0700
-X-CSE-ConnectionGUID: VEm+m/ZYQPu5A+9ZtVaOJA==
-X-CSE-MsgGUID: CZGR4oL6SjGVhgZnpUpcyA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; 
-   d="scan'208";a="265517957"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2026 05:30:39 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 17 Aug 2026 05:30:38 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Mon, 17 Aug 2026 05:30:38 -0700
-Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.3) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 17 Aug 2026 05:30:37 -0700
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="YjoVE6vW"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Q1fe0N164gRWFYtCp1BmAsXrFC2H4PGL/N4/2yZ78eV+ouRDYJ/MZuuD7/SnHjQljboWzjdcJjcWckmC6YjXQKyTgJg3G/AM6DJL44mDMM+V6dbeJRlUxnnZBPmcQQImOJa06Ej4TjwBt/w4BsX9DeKQ4/lNdDFN6Dcv3rx/HIhKO9I2FFnf2WqIOAKYnL7iqlFTr9mgDHhB4pBnHCxWwRWioTq+bN6DS31c5X8io4qLAWe1Vf3Zt8d7UxC0PI6y01BpXJaa1xMtnM7Kl2NxcVVDcoVNq9kS4EGcPG/2lczVbzO/fIxbAwaR5G6z5xO0g03f8UUwBLf2LIVCXyNZdg==
+ b=QARfKOBCPEYUeBr8Wke3JdyLv2SHt+/CUNnAl5ux5cvkSWRrZ6E3sQe7JDPlDSsPITZX5iofE5rteiICza+i0AzocXv2F8sERnAbkrtd5RjWw+ZMPsuDoIsd35olA5IgleqAJQLkLpw1kUciiLdxYkgtEUq+7br8KwASUzgtjJjStC3OHuRmhcCcYtVgUOCTaHgR2Qt6ayzGoW3SH4uJavxkVioxqNz0Qaq26ujga9MoUkxO64MZa2bQ62RGxP8Iku2Hu//r2v+gHJ8Cqgxc5jEcMO42ve0Mj10gfZdeeiyzHdMw9B7WHUh2LYTNKo33j5N3qe/tj9COzOqxbDIiwA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Vi0sJ2GibtjWaTyZ2PhHIfnXTFEzwIKKAfWLnBmpoXY=;
- b=F42Fvfg4IBvzEi537VHnWNO+n2hkBrC1HgIIS0cN0peFVsprfF6nlQXjlMU/Eq+qnu9Wm6whVyE9YERkW+zEWq0iQDRaREUCXn84R8WVQQ2hAwBLBNKfnB7aiPjkMWB0VIQ5juXPmUvHYzRfH/ht3rn9etsryL5idwk3Q/HrrsRxLuO5Sp+n0bhmQCyxyndnnWxNwHZ7HxUu6ibeQzinx0PYXX1u4b4J20iVuDDBuNvWx6Vtz5EnNsEStIH/d7RtIU/UFcQovdiCeWRyOPcnEx0fy+5w8NBWrTlJXF8N2lu/jUTI6N5wgEmx7XHUOiLrmSPd7nAtqL78SPS7rgZ50A==
+ bh=6XiSdDwvsl72aQ4LHMEhIAP4Q7DyN8OcSXUR/vz2izY=;
+ b=SWPlEfbwugaa3jheG9i8RVQe4sWf2I4yRi8iUtdICV0RDvU320RQ5jmaOSWknz/c672tmvrrjHIVriakpHCrLr6qpHo4IvWfVhtP6LW9i2wjqj05CHTRzu23tDFysAupurUK1eRnoWKb9lAERQ+8OSnptA2n1W5jyNs6M76Fx9kqB78i+nRCfAjuXz9WFvxzAmZqIouJbk1fIbTCeXXpS+g8RDAfIofhB91CPa6IgFwQWk6ZEucZuTYjrLqqYjw2koV6Ll0EMWCNHaIRg4XSnL2uUXA5BZtbDqtoU0yyFjWF1QriVtUvE1UHzG+mrA7bSnVjV9AFrTEtIHgljBhkcQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6XiSdDwvsl72aQ4LHMEhIAP4Q7DyN8OcSXUR/vz2izY=;
+ b=YjoVE6vWDo44PW+fG4MtwUj37HAsLpCSX8Nl+m/Y7Vks50QgqRvAIADykZ5J7ABrGvXd4s+RsDLvE4Y3Dj388NsFjpcIkNakSxmAtmwlvE1BGrfCvXJitgrC8cUuIJPNw0ADeWhIXQYvN/CHn1BEuMxwr+ngokzdrXB+K4/zF9JPFS3KTNOHJ6XhQ6Z5MQk6++SvL4mo3xmnMFI+cYatRVvwJLcznjk8c0b9EbelNuYMGdyq7P2sQqk1ADbHNM9SAhpsiO3M7YEPBTRP8cjpaPZfol0Tra6MouNzBgJ9n+55e2hmx3+5XQ02jq8EtVKi9EjoFsIcFsXGyv6m4j1/lA==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from LV3PR11MB8508.namprd11.prod.outlook.com (2603:10b6:408:1b4::8)
- by IA6PR11MB690409.namprd11.prod.outlook.com (2603:10b6:208:5e4::16) with
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8728.namprd12.prod.outlook.com (2603:10b6:610:171::12)
+ by PH0PR12MB7907.namprd12.prod.outlook.com (2603:10b6:510:28d::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Mon, 17 Aug
- 2026 12:30:30 +0000
-Received: from LV3PR11MB8508.namprd11.prod.outlook.com
- ([fe80::a1e8:1786:e5d1:8e51]) by LV3PR11MB8508.namprd11.prod.outlook.com
- ([fe80::a1e8:1786:e5d1:8e51%5]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
- 12:30:30 +0000
-Message-ID: <139c01f4-01da-4211-83cb-29bfdd404730@intel.com>
-Date: Mon, 17 Aug 2026 14:30:22 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4 00/15] gve: AdminQ mode related refactors
-To: Harshitha Ramamurthy <hramamurthy@google.com>, <netdev@vger.kernel.org>
-CC: <joshwash@google.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<ast@kernel.org>, <daniel@iogearbox.net>, <hawk@kernel.org>,
-	<john.fastabend@gmail.com>, <sdf@fomichev.me>, <jordanrhee@google.com>,
-	<willemb@google.com>, <nktgrg@google.com>, <maolson@google.com>,
-	<thostet@google.com>, <jacob.e.keller@intel.com>, <debarghyak@google.com>,
-	<kees@kernel.org>, <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20260814021406.3044324-1-hramamurthy@google.com>
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+ 2026 12:31:59 +0000
+Received: from CH3PR12MB8728.namprd12.prod.outlook.com
+ ([fe80::2641:1046:bdf3:93d7]) by CH3PR12MB8728.namprd12.prod.outlook.com
+ ([fe80::2641:1046:bdf3:93d7%6]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
+ 12:31:59 +0000
+Message-ID: <1c767f25-fa23-44aa-b8d7-b1374627fc9a@nvidia.com>
+Date: Mon, 17 Aug 2026 14:31:55 +0200
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [TEST] CX7 timeouts on reconfig w/ page pool failure injection
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Nimrod Oren <noren@nvidia.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+References: <20260804094518.53b56d24@kernel.org>
+ <7caf12fd-f63b-46f0-a5bd-e9887cb25f9d@nvidia.com>
+ <20260811080433.26f404dd@kernel.org>
+ <8aa8c49b-736c-42b3-92d3-26bdfeb90a22@nvidia.com>
+ <20260811103832.28e5c8d4@kernel.org>
+ <2d2aab62-a4fe-48eb-94e6-c8a0ec910ee9@nvidia.com>
+ <20260812095947.3d0e6ca6@kernel.org>
+ <a0b4e051-546a-4950-8dba-03391bcded70@nvidia.com>
+ <20260812154101.72b64936@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20260814021406.3044324-1-hramamurthy@google.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+From: Dragos Tatulea <dtatulea@nvidia.com>
+In-Reply-To: <20260812154101.72b64936@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DUZPR01CA0196.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:4b6::23) To LV3PR11MB8508.namprd11.prod.outlook.com
- (2603:10b6:408:1b4::8)
+X-ClientProxiedBy: FR0P281CA0166.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:b4::18) To CH3PR12MB8728.namprd12.prod.outlook.com
+ (2603:10b6:610:171::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -104,142 +73,107 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR11MB8508:EE_|IA6PR11MB690409:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9bc8d101-ec08-4303-32ea-08defc5b535b
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8728:EE_|PH0PR12MB7907:EE_
+X-MS-Office365-Filtering-Correlation-Id: b9a61bed-d6b7-40f5-e744-08defc5b881b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|7416014|366016|1800799024|6133799003|10067099003|11063799006|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: eSrwLXxdRedWrRJDnL/lIQWRoDEFVlBD0yQdRLjLulSYx+BVGFVmSFg3zhIj1+aiyReR6ZX7n2MTF1K5fbVuVSGVTLyOxj/rkInt95rBFz+n+kbOXtVVwd7IT93vZf4Jt/PZOprd+G1fQKdTp+o6SvbAKxQmS2TxUj/22GN7U86P+AYO15MzIyMUqtHRLYnP0J2MYXx30b0tMJQWlEPJP+7FgSMRovVBCptc2yiW/kA5MU8hfsTsvXyO0sROuIab6iHqhJObCcOAmhUPLONy3TFIOFEcFIPSfYawLng8FaUdWq4rlEa0285rZg1J3GahsCigwHwILHssWRswi3FJ/7iYHnCOfnnlFu+FsnPUQ5RbsTCzwRnv/e3gYkg3YOkifeUhkCd80W3wvDLtNNiUgdHg81d/izN5xrYqjPy0tq2DC2pqqmROizGF8jPwnLIULORB+Xnq4/0rlkkxarxz4x4TLgHzPV1gFiWVaDWUqyi8OBIqYhiIC8p0h2Dmm8OD6WhJRjwT4PPV0V9LHUARsgNJdw1DZX4+xPBqESSI9uCXy4aOW3cDYLnW4QbOQ9nOxmQ8CVHCz2aV//2hibm6tYEJ0YiE+2uIQt1l2uI7TM4jAdEy8V4EHT0R1MMnVpF4AeqoPEQjlLcQS61PLVKUHHLfiJUmNrUfn018TKfMLLI=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8508.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(366016)(1800799024)(6133799003)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|1800799024|23010399003|6133799003|18002099003|22082099003|3023799007|56012099006|10067099003|4143699003|11063799006|5023799004;
+X-Microsoft-Antispam-Message-Info:
+	klIy8NTLUCVbLSKn/qbNJ3qF5KBnE/WtEOM6mAdtBvw3/hmEeFzTdgTODvrQ+p/QMF4uvRY/3//+UHWLKHloy+tkBeijnhJ6Y6Us33lZ8aejHgloai7zzqRkTPOUnhKWctp/KgjEFEcHADfoE/AMUQ/CgRUAAGC42SFG8MAujqKLQOmkruzjz+E3g3BzEwIDOYUOQK7o1Lz9GKPpakDenYJqIjZzb4bgcGBrOXR5opWewCRg6kaWo41bVr1mtHtbE5WZk3wM0BMfVLKFd7K+5yDZd3joQCYf89wkMUVnPqfkmbLpGL69tZd4bDYtcqCpS10eiAtCgCZay5K9ARCOgKwbJzt/YpvOJOe77Stpe/QCUsjgrMVrwNs+glG73Cs9IXo4myVdoW/M6/etD7L6ZatSt/IQbXyHpT9jmt1NAGpARlrp4F2KPj/YSd1groQ7ztPbnfUhQjlrqrtDpBkxDTgNFJWO+hAoQpdbdYiyV6iSobpZ/l1apr8eesOyP/kgR1qAqseQbewp7TmwHTrs4YwvjiZj3Y/TRmKOE5QLYh1mYbtxLbVj7nRT/mZTl3Xls5QPe57qGG1Y0MxkQnnlNhAqjfsem46XmZZ8vYATSq0aJ/wxWBXg6K0olGkzJ2Hu0l0KEvX8DYJON2XynIAfQyXZJ2QTMhP/LQ1YBbCkgB8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8728.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(23010399003)(6133799003)(18002099003)(22082099003)(3023799007)(56012099006)(10067099003)(4143699003)(11063799006)(5023799004);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cy8vcE5wNHJSTkJRN2NSd2tsbzhKRnJkM3BiSm54VlJmRU0vcWRUOC9yV1A3?=
- =?utf-8?B?OGk5cllpaGEvNndmR2pvM244Y3diWXJaYjRFaHJvZnhPRXBxUGVtWnd4Mzda?=
- =?utf-8?B?N0NxcWJrZUtCeUtIc0drYXFET2xmLzRyVWRMMmJJRXQvRzBmdnZsczltZW5o?=
- =?utf-8?B?QTEzUEZTOFB2UGxIWkE4bTRGNFpQeFhLdFNRVFB0SnJCMnBqNWs1MEhhdFJV?=
- =?utf-8?B?bXZJN21OOGRYdFNlSGxvVzZTeVRibCtVd0NvVHpyajhGbm0zMCsvSnQwbDR6?=
- =?utf-8?B?SDBiTW5CMnlOVGUxU3ZjaE9sWlJMbGVBZkJHakd0cGt6c052U0pnT2hLbE1S?=
- =?utf-8?B?RjdteWwxOU9ERm5zaTI1UTFBRnRBemZhMHE5am1CUnFtYUVnWnhGTnR2Njlr?=
- =?utf-8?B?TFhXR21NSXViUlk1TFA2TmFTQ0UzU2k1SERVdm9IOVhsYTB1OUlzTkZQTVlv?=
- =?utf-8?B?dmFXM0lrQzAwYTFuS2x3Y1JVVkVIcHA4MmplNE5ERUl5OWlxbnFxMGwzMGtE?=
- =?utf-8?B?ZlpYN3lXRWJHL21NTHVzRW9xM1d2Nm9ocjNPS2ppR2JKMmIvaVVYLzlseUxi?=
- =?utf-8?B?TEhSQlMxVG1HZHl0VUZpejQ0WTFULzFJNXJ0b3NmY0hJNzE1ZDczNUNVSndG?=
- =?utf-8?B?RXgzUXJXRDlNYm9DY3ltMTkyNGxjRWtJb0FyNkhweUpPbjlVWFdndUsrSmtW?=
- =?utf-8?B?UnNPeFo1REZ1aWVudm8xRk1zb2xydEJZYUEzWFk0K3BxenJ5bDV2QXdaaUda?=
- =?utf-8?B?dHhYN3dCc1E2OENoQ1B0Wm5lckNLUE5PMEZ2N0U0T1Z2RmM0UVNvTEhTM3g4?=
- =?utf-8?B?NGNURzVFYThzK3Q2N2tUckY0b1UzeHNEenhlZXBUNG5SQ1d1SGl1Y1hZdnVP?=
- =?utf-8?B?NjB0cEovbU52SDN2VW40NVo5bERxcHZNdXRManN4cm5yRkFhM2plejBnbkRG?=
- =?utf-8?B?WnpsZFM2ODQ1L1ZWZDYwM2RVc0JDRFk3eVRnQTRnbXkvODd0Q3VNczdkWjFL?=
- =?utf-8?B?Wm4zYmZPYWY4U3BtTXh1akt4d01admc5UUlEOHJuS3dJNmlKL2l4a25ETjJj?=
- =?utf-8?B?UUpGWTU1TnlUOHRuTEVzMUlvUHQyejNVdjBtbXpuL29qUGM4ZjlNNXhxRjBC?=
- =?utf-8?B?cjJLOS9sNCtiYlNzdDRQTmNFN0g2YlplRUQvQWI5Y3BjMHAwWW1KcC9YbFFi?=
- =?utf-8?B?Q3VoTFhJNnFwSFErYm5VNm1GSnpYaTBEdmZ2aUtjS0RKUUErRVhLUFRJV0lw?=
- =?utf-8?B?cUYwNENHRER2SWN6MG5TVk0wTjU2SUJYa3kvNDBIZnFzbXVCOGdzZnVKMDdQ?=
- =?utf-8?B?VXpIYmo5enN5Q0htSmJkbzJnd0FGaWR3Y0prNEVTUUtaZkpaWjFVWnEzU2pm?=
- =?utf-8?B?elNiQlgzNFlDVGRrY1dLTFF5ZVA5TUpHZCtzRkZCOVU0amJlWDVYYlVhdnI1?=
- =?utf-8?B?STROTDRuWkJ5dkxRQVVQMTdXbUdxcUErZWF2dDRYd2JLYzIyUWt2Z2RQbFpV?=
- =?utf-8?B?YW42NVZrZDZVS3U2NzFmU25KeGlmRWxBcGxvYlJacFZUY2NUbHJsQlk2UXVY?=
- =?utf-8?B?WGRSTFgrTG9TdFdXeFk0L3NnUThDcmQya3dRMERkTDFZY3JCRkxsd1RzbWVH?=
- =?utf-8?B?SkQzSW0yYmtoTkNRUVh4ZFQ5S3lYMDBsTHNqa1EyNFAvcTA2SEdtVjN2Wjls?=
- =?utf-8?B?TG82U0sxL0xRSzdhNU1SMGl6MnhFMWQrcHhHZGcrTWxmcHB3U0JobktFVHZV?=
- =?utf-8?B?cS9VSEJrWHBzbkhTY0hNKy80YlFTenVDNEQ0RjUxTE1TRE03MWNkQWdlYXRI?=
- =?utf-8?B?aWNvNHNLN3praG5ld1lhbm8rZ1k2NnpSMUhtODRmcmIxWG45WWRTdzlaem9l?=
- =?utf-8?B?OERyV0pqQW8rMmlNRjd2VFp2cnR6K0d6bTlDWFNOcHpVOGlIYkpXMk5yNVVP?=
- =?utf-8?B?TUgwTmFqL3MzbU9OZWc3cDM3VEVjaUtYY2pya2lWRmJZQVdNL3V0enVhdmZJ?=
- =?utf-8?B?L0ZQZ0laRmJaRzZNaTY4U3ZPVk9pSmdzOTAyeUplQlY1UitoYlR6eHNVSHo1?=
- =?utf-8?B?WTM5bmlSVGYwazRzSSswN0pqZExmSWhhVWpaY3YxQ3MreGxwZFF5T2lNMTJz?=
- =?utf-8?B?VWowUTFLVnVzQjBuLzFQNjBMeStMUEg3RHVVanJ3WjhiVU14NWR1d2c5d1Mr?=
- =?utf-8?B?Yy9FMEkwRFd5cktnSC9lZFRCZXdIT3V1NVNHWndlcCt2akIzLzFjdUpPSGRw?=
- =?utf-8?B?MHV1WmdXWWh4eUVrdURRWlVRMFV4VUtJOXVKME1YQTBva3Bxcm92ZTNqd3RB?=
- =?utf-8?B?Ym0zVi90Z3hMTy9FWFNpSCtjdW1oN0Zja0FGR3FyWndDZnd5emNpU3c0d2wr?=
- =?utf-8?Q?qktdFxtm0TxQ+1mw=3D?=
-X-Exchange-RoutingPolicyChecked: fIB0N4Z9OiFtpl4Fi3WcE4nT57vRYgAmkDE7roH+1kBtBgv/sDuRIvkdIiG/3fI8J/G26k9gtyggm31EUli7euYmbyEYo2cGBsr9zzUGs7qpmLn17qlzelYgR0UfDx0JVodB7O7L3VdKW8g6E+0PaQbNaL7YjiCtAnMfGLiab41ghHS/3bKZiVNYDJbL8VET68cuegDZp08SuUdeJfrgnJq4Tk9IRS37WECMwJJ+SGzhlRUHupoTfOIZS8fO2KL3iHJwPVbcYdSQk9q8aRjh/bCxlNRJhItGE08Zi4OdxtqUeApNRZiFiULXvEZ36z2cb+OrzoM6qf190x7i5uSJaQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9bc8d101-ec08-4303-32ea-08defc5b535b
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8508.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Y1J6TjBqTVF1TXdzNFJGQklmWi9DZkpzTC9XR2d2c25KZGd5WWZOQ0VVeFVR?=
+ =?utf-8?B?QmV0RXRiQXZLcWh0ZlFqS0ZMcGtkS2dvOHk3N3U0UjBaekY0V2xYSnd3SU9S?=
+ =?utf-8?B?VkpIV0J5UUpNenpKUzR0RFJpMDVPendYOFc3T2lweDNTYVY0eE16cDlvdlFm?=
+ =?utf-8?B?SzljZWgxU0tuWml3dDUwV2VJbEhyT3FkbUp6RVNKWVdJSEFwRzdRMTAra2w2?=
+ =?utf-8?B?dGtiR1BYcUdjdXNyRDN0dUZZbmlPZVpGMzlXZDdpemxuV0tZMmhSTnNhcFRX?=
+ =?utf-8?B?VTRuVVNEU2xvYU9TMnpvSXBwclQra0FtQVE0UTdrQVNqQzV1eU1MamZoKzZD?=
+ =?utf-8?B?cGxOUGVVMWN3Q2JwLzN6RTVYZnFpczFNVDVVWThWanVhcDVlWjhkV0w4Q1M3?=
+ =?utf-8?B?RDNCY0RkTjUwdk1DdFlHVFlUdnEzSE5UUURiS3hpMGJiWmFZdC9FYTc3eDMv?=
+ =?utf-8?B?S3BUYlZPY3B5WGFXNkpGOFB4T2pzTVE1dXN4S2xVejdlRldzdWprK1dYbGdR?=
+ =?utf-8?B?ZDNFeHlvampCWmV5SXF2eVVZNk9QcEh3V1NZQ0loM1JJSS95U2tKMHJJMmJP?=
+ =?utf-8?B?MzZUKzdLOGx3QUdNZ2JHUjFhbjJWNE13d0dmTGxidUlEOEo3RGt3WGgzZTNr?=
+ =?utf-8?B?NG1SamF6Z2hnNk5ZTzBhOTZtbit3WVZUSit5RXhnVTR3STFGVnBmMDNWYUtx?=
+ =?utf-8?B?NnlwYjM4RVBRVVBBQ2h6U0hZWnZJeWxKb3BzRENGQmJEY2pTOS96VDdoem91?=
+ =?utf-8?B?eXFYdTBlWWpzZjdTL0tKTzhJQjg1dnprVmlHU3BhMXlWUTEzUitua3hMbnN5?=
+ =?utf-8?B?VnJmTzRlMDQzK1NvUFNVdXR5RHBFeVozUmV2L04vZHFCSHFGU05tU2ZqVjlz?=
+ =?utf-8?B?UjBMMDJVeU1XSkFQQlp1R09ubUxDWEFwUXZJcy9UMVYvWE9QdmtjSUhmcHVS?=
+ =?utf-8?B?WElsd2NQcG1tcHJjdVhQNG4yVEZoTHF1NStzSDRyWWtoNmwxb2FDOWpRRHlr?=
+ =?utf-8?B?V1BxYlRpTlgyc2dyRFNIMTM1c2ZWK2FZV2ZSY0k2VGdSeXNON3VxWU1RNzBR?=
+ =?utf-8?B?N3ZKeXRvazlQeXFHZ0lnMk5FQ2hvRnZiOGZ4MWM5MDhDWlMrZ1RkeUpEcnNk?=
+ =?utf-8?B?V0xIK0YwYWc5L1pXQzhJRnlzc3BuSTl2N3V2VjJUQzJ0NEd3M214OGMrYnV0?=
+ =?utf-8?B?dmw3bFhPN3BKaS9FVzExd2N0RUlCVUJlQkRGeTNtMmV0STNCMkVZd0Z5Ulda?=
+ =?utf-8?B?L3J0a3pNS3hoMjhZMzVtaEs0SHdKTlNlS0Y1NkJnRjh1amhkdUhNbW9UbGVN?=
+ =?utf-8?B?a25xRzhxQjNxYkZsU0d6YnZpd3lKa2RQT2xyR0xhWWdTbDdIV1hUV0RvWnl2?=
+ =?utf-8?B?QXV6YlRVUXBXSXpLTkl3MVBBemdFTnNyUktLSDJqeFJJeGdSVFBCeWxjbGlW?=
+ =?utf-8?B?anNDR29YQnNrcVJCVTVXUXVVU3lQbTUzNVVuVC9iSnJxTUVJVzQzeDlZaUh5?=
+ =?utf-8?B?YUo1bzkrSE9GR3ZscmZ6ZGViQnNuMDBtQjlZdUNXbkd5TlppOEhtRm1Zb283?=
+ =?utf-8?B?OXdmNzg4STdiWXNJL205L1djaHg2TnlWc3FnWXJ3YnJtbzhhT0lkNE9iLzNj?=
+ =?utf-8?B?QjZYU2xHRThGSWw0TEI5V0tVaVl1eFlBcjRWVVczR0FxbllzWkpWWDZ5U0RT?=
+ =?utf-8?B?WVdVTnRtVXJ3ZEc0TFFTTUQyZmtUQTY4YmN1OUNaaGdZR3R1OG9JVXBBNEhV?=
+ =?utf-8?B?MVNVdDVwaEpjZnFxb3RDaWNzbnNJWGN5ZXZWNTFENEtPMGdXejFDeGlKTG1Q?=
+ =?utf-8?B?b2I1cm8zODN5a1lJYUQ4UGs4N2h2bW1zanhnVno1V0o2V2RRdENqNnFwVnVF?=
+ =?utf-8?B?QlZvN3RNQkR4bkpKU0M3N3AveStaRDJ1S1ludlQ2OWhNTUJFYU5DYzVGalFy?=
+ =?utf-8?B?dldyQ1lkMzdvVmxId2RkeTNFNFI5MkpkRjE0cWRGNCtKMjBiTVcyV3pqOHli?=
+ =?utf-8?B?emhPaHgwZGI0NzZ5WWZVV2kwdFJoSzQram1MbGVTeTJLMW9lbTV3V01veUZK?=
+ =?utf-8?B?WnhwS1lLRHh5YVNvNlB3d3Jka1lyY3BvclphaVVWS2l6OGZhOWxNN25mVFRR?=
+ =?utf-8?B?a3F2WUYrYzY4NW5ZTlRjcHdOaGlxTm1FaVdQa09IRXRuK1BkbWR4OFArcERR?=
+ =?utf-8?B?SGVuckNmbEZGeG8wZUF5Sno3WnU1eEduU2Y2czhIMVhTVTE1czhpSXlhSlZx?=
+ =?utf-8?B?alJsT2N3L3RhT09FTy9iYnVMSm40aE0xN0JZd1hkSUJ5WWswUEFTQXNIa3I3?=
+ =?utf-8?B?U01KY2VJenlJNnBlOFhHTHBjRHJ1dUorRFFkay83SUxoNFR4am1adz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b9a61bed-d6b7-40f5-e744-08defc5b881b
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8728.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 12:30:30.6667
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 12:31:59.1250
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JAERb6UeSKVhQlOR2UsAuKOWQokDFMoFZEtQPkDB4A6EJS0daIq5tUD5mMm1otxJu7qsOK/KX238iEe933tcN9IJj1LMEcGL0YN6BbCPhig=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA6PR11MB690409
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-UserPrincipalName: ybEDGxqNhI6XWxHc0Og5mOCAXqDTrgi+3U2jvNYBm+VmhNeJSjykR95Z1bbLR3b7Su8h1RklKWfozuzjvRZMow==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7907
 
-On 8/14/26 04:13, Harshitha Ramamurthy wrote:
-> This series is preparing the driver for the addition of a new control
-> plane mode(MailboxQ) by commonizing and reusing as much code as possible.
-> MailboxQ is a new control plane infrastructure which uses mailbox queues.
-> This is a new control plane to communicate with the device when the driver
-> is running on bare-metal instances as well as newer versions of the device.
-> 
-> This series contains 2 main changes to the gve driver's existing control
-> plane(AdminQ):
-> 1) refactor some initialization/teardown path methods to make it work for
->     both control planes.
-> 2) add gve_ctrl_ops structure to the driver for various control plane
->     operations
-> 
-> The refactors are mainly around the init, reset and recover paths so that
-> functionalities could be moved into the control ops like 'set_num_queues',
-> 'set_num_ntfy_blks' etc.
-> 
-> This patch series only sets the control ops for AdminQ mode. This is
-> intended as a preparation for adding MailboxQ mode in upcoming series
-> which will add the new control plane infrastructure and then introduce
-> the corresponding control ops for MailboxQ mode.
-> 
-> The entire list of future patches can be found here for reference:
-> https://github.com/hramamurthy12/linux/commits/gve-mailbox-queues/
-> 
-> Changes in v4:
-> - Reduce code churn by placing new functions directly in gve_adminq.c, introducing final tab spacing
->    and using local variable (Przemek Kitszel)
-> - Fix kdoc formatting and drop spurious management interrupt(patch 9)
-> - Propagate release_db_resources naming change (patch 12)
-> - Remove double logging in destroy queues path (patch 14)
-> - v3: https://lore.kernel.org/netdev/20260803184630.3813311-1-hramamurthy@google.com/
-> 
-> Changes in v3:
-> - Fix driver compatibility verification in the reset and recovery paths (patches 2, 8).
-> - Mark gve_adminq_get_device_properties() with __maybe_unused ahead of its usage (patch 7).
-> - Refine error handling and resource cleanup in reset, probe, and queue creation paths (patches 8, 9, 11, 14).
-> - Keep IRQ doorbell allocation/release in control plane resource helpers (patch 12).
-> - Minor fixes: fix TOCTOU issue for link speed, correct kdoc comments, and remove redundant teardown calls (patches 4, 11, 15).
-> - v2: https://lore.kernel.org/netdev/20260602235900.3050782-1-hramamurthy@google.com/
-> 
-> Changes in v2:
-> - Rebased against latest net-next to resolve apply failure for patch 5
-> - Fixed a few typos in commit messages of patch 9 and 14
-> - Fixed a kdoc warning in patch 9
-> - v1: https://lore.kernel.org/netdev/20260601175437.3767283-1-hramamurthy@google.com/
-> Harshitha Ramamurthy (9):
->    gve: don't pass in unused parameter to gve_adminq_free
->    gve: refactor initialization with helper functions
->    gve: add a few helper functions to set device properties
->    gve: add struct gve_device_info to hold device properties
->    gve: introduce control plane operations structure
->    gve: introduce ctrl ops to set vectors and Qs
->    gve: introduce gve_adminq_get_device_properties()
->    gve: refactor gve_init_priv for reset path
->    gve: add ctrl ops to for queue operations
-> 
-> Joshua Washington (6):
->    gve: simplify reset logic
->    gve: add gve_ctrl_ops for gve initialization/teardown sequences
->    gve: split up notify block allocation and setup paths
->    gve: introduce new methods to handle IRQ doorbells
->    gve: setup and teardown management interrupts
->    gve: add link status/speed ctrl ops
-> 
->   drivers/net/ethernet/google/gve/gve.h         |  89 +-
->   drivers/net/ethernet/google/gve/gve_adminq.c  | 437 ++++++--
->   drivers/net/ethernet/google/gve/gve_adminq.h  |  25 +-
->   drivers/net/ethernet/google/gve/gve_dqo.h     |   2 +-
->   drivers/net/ethernet/google/gve/gve_ethtool.c |   5 +-
->   .../net/ethernet/google/gve/gve_flow_rule.c   |  15 +-
->   drivers/net/ethernet/google/gve/gve_main.c    | 940 +++++++++---------
->   7 files changed, 957 insertions(+), 556 deletions(-)
-> 
+Hi,
 
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+On 13.08.26 00:41, Jakub Kicinski wrote:
+> On Wed, 12 Aug 2026 21:48:31 +0200 Dragos Tatulea wrote:
+>>> Ack, I'll send a patch to bump the timeout shortly.
+>>>
+>>> That said, the page pool warnings were probabilistic to begin with.
+>>> And they were hit in page_pool_unref_netmem(), I think _some_ bug
+>>> must still be there?
+>>>
+>>> IOW mlx5e_page_release_fragmented() is draining more references than
+>>> the pp page use counter, that's not normal whether some command timeout
+>>> out or not.  
+>> Yes, this shouldn't happen.
+>>
+>> You mentioned tag net-next-hw-2026-07-03--00-00 as the first where the
+>> crash occurred. Do you know if it ran before without crashing? I can't
+>> find older data in nipa. And there's nothing that seems relevant around
+>> that timeframe. I'm thinking that this issue could be older.
+> 
+> The data should be there but I think there may be limits on how much
+> the DB returns. Anyway, querying directly - looks like until ~june
+> there was something missing in the kconfig so the test was skipping.
+> But here is a June 1st run which passes:
+> 
+> https://netdev.bots.linux.dev/logview.html?f=/logs/hwksft/CX7-dbg/results/672642/test-outputs/35-pp-alloc-fail-py/stdout
+> 
+> so either it was running and not crashing for all of june...
+> or our crash tracking was broken in June :)
+There were 2 corner cases that were missed by the last fix in
+the area regarding handling of XDP buffer geometry changes
+(fragments get deleted):
+- napi_alloc_skb() error path. Probably this is the one one
+  that triggered the crash, it occurs when injecting an error
+  there.
+- XDP drop path. Doesn't make sense but it is possible.
 
+We have a fix in the pipeline for these.
+
+Thanks,
+Dragos
