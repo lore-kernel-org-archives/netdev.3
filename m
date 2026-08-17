@@ -1,151 +1,142 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A6A421220
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 18:17:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967CD46C83F;
+	Mon, 17 Aug 2026 18:17:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786990627; cv=none; b=AoIMOJ5yg/8MXLsoEiYcROdVsD2f40IVnlH8RvDEgBgEsPJ6H0V7Oi9fR38W/L9sxjY3UjrgPtp0yU14NANXhUYFlxzuEB8NIFNQEDi6iFCXxmsb4nm+pITXp6FhTmZcA6+/IWFg50uAyY34wFCfWauRh1V8y3/dkWLuTPCnOCQ=
+	t=1786990675; cv=none; b=U6u6U95F+YrezwgRg14esKoqvRNRln/Zx7zshwaVk2CwRsslvUodVNL+akL+wgHlNv+EhZnBuBKtrsypSGPjOomSAMRdYcnBxRmu2/JnxocQrAnchpcJtsEZRHHJGccqAYhqA3HA9tW6P0qdVBsAtRXbVyg+rfRYJFIyJIzVXbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786990627; c=relaxed/simple;
-	bh=e7YINFxiEWfrdRjB7YyK1q6FCtAp+fGYeGsyaMd4wTk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KMHIUOTkqPc9p8K/sNNrNRxfRzk8OK6o3HjCXSVbqlK9aGEYI6CwZAmVFs1l92LXfw1ZyR+qXFEejFFDvbFDZDGjmjpwns9qTVqwquVWEGCdF+YtrHqZEItrui9hgykikvv4EJZanrIWsdOchkFX7EOx46i+Q8NiwwhSMkp0B50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=au/EH669; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786990675; c=relaxed/simple;
+	bh=lEk6GCXBBkCqhFKLy29KY7FD8YO+BBuAySX7tzALNk0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BPCGLHHF8cV4u+zhVb6xK8F3GmspkNJe2Fdof46N7vm72Da9jHvFZLjsPLuqt0TyOzNxD1LXDe4L6mUbSRrqC8JL0VJbbkN2wbHggM9NxyFb1jLuDhYc3prciHkeOv+HZz0guUYp9smRYzp3xVS57b0gN0FH7Y2Qt4stpU6QQko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A87kljH6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="au/EH669"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4980dc26022so37893455e9.1
-        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 11:17:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786990624; x=1787595424; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xc1ui9x+ODrVCjZdh/8HAj5CPDG/jh1HP7ryoge6smE=;
-        b=au/EH669lT55TljCNFQQBMFGN/SkKr+LsMmQh20A9hUECGZLBUmDJ5Mu6lN7QHCGl7
-         Dl1RaUT1idkHfdykU5vOUU357PIvkcfkRRV/VPazGtelEzk3Jlbs8R8UXUA/j5CkcCpR
-         lkDRn3wtuBp6y+JH97LZOx7l9kmTfFjWXbXXV4tqCep1TEZNVkPhLApx9Ucupzofhg4K
-         +sKj6qv52BRLF+y0ujFSZNNQqZoENrSl0Dx0zoN7JCX4x5h4OYfGQpKfUFhOV5Yq43SC
-         4Vej5l8WamFF3eXAt/Z+ES4ezg5gKA6j/BwaMPmpgMiFMDa7pY5wiDwOxz/5jh+YqZHl
-         q7qA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786990624; x=1787595424;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xc1ui9x+ODrVCjZdh/8HAj5CPDG/jh1HP7ryoge6smE=;
-        b=ZEDFmXNxaRBIrEW5CvSQpvIyBVKRbb7pBBeaS6rdFIXOB9ftjEBH9FwX0Rnb2qyWZj
-         grJyQUT0ssUzeXWsBiYyb0+kfLOTIU10MmUd+nND+hW4QCffvmn51y878f+A8gZFF8vP
-         8A0nFDSNNZXSpzTmVeO0Y7pXddauDGgefAtsB7fFmiwfNCN77KEOyDTaCkz1HfLSG1gt
-         QI/BbotqNQX180oOJI8bC0G1Eq8qq86Q0pRGS5bQ2heOMZFsjXYBrEeNgwqOxr77oZM3
-         Dqgb//UjYtFe1pfU+VSV3AuTxQ2A5TCRCk1cP11v2Rd+duAA1LSv1cBcZo+/6Ly90tfK
-         1NzA==
-X-Forwarded-Encrypted: i=1; AHgh+RrwMGQYFdCsPNKVJUmWqyXnEDpBqA/bXtPEstT913fZOTJDEW33QXz/JlbLGU5esfZF1Ho7Ofk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyytC2LAhnRO/s9gUg+zmUn15XOgd9dFf7v8M9kbWw6CQcwB//j
-	X8Rp0WiQy58/R9a3QQOVJMh++GhEL2lRyTZAC2VVFih/P1fakiwppKPc
-X-Gm-Gg: AR+sD106jrhDIwD6A1EEpAaCDnzdhM4Hw0sNNTJTxEHLmJVhzlZ7/MYHpQhfeesdH1D
-	YAPTQX8EbD4iUb0zymfsQdhfwLtI3pNNAfOxPwK0QFcXkV2EHV5cJMyw7AD7xBdvTyd8JnKpi83
-	D8NM069lNUwMUkjVM0Gd6+8aYrIIX04wzCXqzVPNvjhikw4Y0tfSO7VwoDLNleS07c8MvjhABb+
-	ypEfT5HnM9EvWKRbOe2GcMcJd7GaDSioliaUFefLCLS/CozRuU+s+jfLExWJIuj6B+FAFxdf9OW
-	NpaGnJmF3ugYq10mSNFLyLUXwphtF3RGIoTjJ6T2ixWodXxi2bVq17CLDvWpUGJJrvbauO3CZAe
-	skrY8yjk+exJS5rajWjr+2dB+tP+tYlPCJnxTvgJV5pSg1EaGBx7rBOUmvx2uzUOqaGRSCh/Qd4
-	E0mb7+yG03GKnc+lzGVmXO2xLoNQyD1SW/EyGXOzeUEGnbN0KAl+QAcQMTwkO7Up+mBQGktq86l
-	qdTLA==
-X-Received: by 2002:a05:600c:564a:b0:498:ff3:71ed with SMTP id 5b1f17b1804b1-49987993affmr328999525e9.17.1786990623928;
-        Mon, 17 Aug 2026 11:17:03 -0700 (PDT)
-Received: from syslab05.cs.virginia.edu ([128.143.69.71])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49996176b95sm124434885e9.10.2026.08.17.11.17.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2026 11:17:03 -0700 (PDT)
-From: Tianyu Zuo <cosmosocket@gmail.com>
-To: Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Khalid Manaa <khalidm@nvidia.com>,
-	Ben Ben-Ishay <benishay@nvidia.com>
-Cc: Dragos Tatulea <dtatulea@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2] net/mlx5e: SHAMPO, Fix IP length overflow on large HW GRO sessions
-Date: Mon, 17 Aug 2026 14:16:18 -0400
-Message-Id: <20260817181618.2786456-1-cosmosocket@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A87kljH6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 170771F000E9;
+	Mon, 17 Aug 2026 18:17:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786990673;
+	bh=Lox5beP3DWjOeR55v0A2q5EwAzNvW2GMNuP3wFJiXQY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=A87kljH6QMe1mfh+7tKpGwq/QvZDIPvgAdindrhBg5loAuQSdi4lJBo/TJEm8/rCD
+	 Hq9TK538xQfBYmvp+U4qA+iLRQsNk3U8jCmAGKDw4668yAX1hddzQPiEyFv9dx/qOu
+	 Kx+9FHDm7gLxQ5BHJbme0EZKN3G9iT6obOWoVZ2axosUzXy5TVbznsLJ6Y7DL8QGcS
+	 2Ig1pfPDWN1ZQqLzOxaYT4aStDZIex2Vz2QaV/aStvDrUoh9tPfndeUQhRoAn9Um83
+	 RTnvJV6cxo/gRIHAfRibgz2V10L9BO0qCAOa5ZoL3oA+i0xVcaag0tFXzxNvNmKmEg
+	 tY3UV22I8wDCw==
+Message-ID: <85302865-4181-43d4-9c38-eb6ac57e3aa7@kernel.org>
+Date: Mon, 17 Aug 2026 20:17:37 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/9] lib/folio_pool: Direct-Map Large Folio Pool &
+ Scratchpad bump allocators
+To: jim.cromie@gmail.com, Andrew Morton <akpm@linux-foundation.org>,
+ Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
+ Phil Sutter <phil@nwl.cc>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ Eduard Zingerman <eddyz87@gmail.com>, Danilo Krummrich <dakr@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+ Emil Tsalapatis <emil@etsalapatis.com>,
+ John Fastabend <john.fastabend@gmail.com>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Boqun Feng <boqun@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Zi Yan <ziy@nvidia.com>
+Cc: netfilter-devel@vger.kernel.org, bpf@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, coreteam@netfilter.org, netdev@vger.kernel.org
+References: <20260817-folio-pool-v1-v1-0-0c1d230aa3af@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260817-folio-pool-v1-v1-0-0c1d230aa3af@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-mlx5e_hw_gro_skb_has_enough_space() bounds a HW GRO session by the
-payload held in the skb fragments only. The L3/L4 headers that
-header-data split placed in the linear area are not accounted for, and
-the limit is inclusive of GRO_LEGACY_MAX_SIZE.
+On 8/17/26 19:22, Jim Cromie via B4 Relay wrote:
+> Introduce two light-weight bump allocators backed directly by compound
+> folio pages from the buddy allocator (skipping SLUB metadata overhead):
 
-On a 4K page system a session can therefore grow to 16 full page
-fragments (65536 bytes) plus the 40 bytes of IPv4/TCP headers in the
-linear part, giving skb->len = 65576.
+We are running into a bit of a naming problem here: folios are really supposed
+to describe things that we will map to user space, whereby we have to track
+mapping/index/mapcount etc. That's really just anon + pagecache memory.
 
-mlx5e_shampo_update_hdr() writes the IP length itself:
+Right now that naming difference doesn't matter, because each compound page
+really is a folio.
 
-	__be16 newlen = htons(skb->len - nhoff);
-	csum_replace2(&ipv4->check, ipv4->tot_len, newlen);
-	ipv4->tot_len = newlen;
+But once we start decoupling folios from the rest (memdescs), we really only
+expect anon+pagecache to resemble "folios".
 
-The result wraps. ip_rcv_core() then trims the 64KB skb down to the
-wrapped tot_len, silently dropping the payload. The IPv6 path wraps
-identically in ipv6hdr->payload_len.
+There will be other compound page types (similar to slab pages), and things like
+page_folio() will fail for them (like slab pages). And we are actually working
+on making page_folio() fail earlier for anything that didn't go through
+page_rmappable_folio() as part of the (folio) allocation.
 
-Both branches of the check are inclusive of GRO_LEGACY_MAX_SIZE, so a
-session can reach skb->len == 65536 and wrap tot_len to zero. In the
-page_size >= GRO_LEGACY_MAX_SIZE branch skb->len already covers the
-linear area, so that off by one is the only problem there. The fragment
-based branch additionally omits the linear area entirely.
+So, does what you do here fit the definition of folios, or is it really just
+some kind of compound pages?
 
-Account for skb_headlen() in the fragment based branch and make both
-comparisons strictly less than GRO_LEGACY_MAX_SIZE, so that skb->len can
-never exceed 65535. The new bound is strictly tighter than the old one,
-so the implicit limit on the fragment count (at most 65536 / page_size,
-well below MAX_SKB_FRAGS) is preserved.
-
-Fixes: 92552d3abd32 ("net/mlx5e: HW_GRO cqe handler implementation")
-Signed-off-by: Tianyu Zuo <cosmosocket@gmail.com>
----
-v2: commit message only, per review from Dragos and Tariq.
-
-v1: https://lore.kernel.org/netdev/20260729204745.166584-1-cosmosocket@gmail.com/
-
- drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-index 6fbc0441c4b8..2e9676305439 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-@@ -2222,9 +2222,10 @@ static bool mlx5e_hw_gro_skb_has_enough_space(struct sk_buff *skb,
- 	int nr_frags = skb_shinfo(skb)->nr_frags;
- 
- 	if (page_size >= GRO_LEGACY_MAX_SIZE)
--		return skb->len + data_bcnt <= GRO_LEGACY_MAX_SIZE;
-+		return skb->len + data_bcnt < GRO_LEGACY_MAX_SIZE;
- 	else
--		return page_size * nr_frags + data_bcnt <= GRO_LEGACY_MAX_SIZE;
-+		return skb_headlen(skb) + page_size * nr_frags + data_bcnt <
-+			GRO_LEGACY_MAX_SIZE;
- }
- 
- static void mlx5e_handle_rx_cqe_mpwrq_shampo(struct mlx5e_rq *rq, struct mlx5_cqe64 *cqe)
-
-base-commit: 51b093a7ba27476e1f639455f005e8d2e75390e4
 -- 
-2.34.1
+Cheers,
 
+David
