@@ -1,64 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA323EDAC1;
-	Mon, 17 Aug 2026 23:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118973A6B8A
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 23:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787009209; cv=none; b=PPC7HzEeA6EEmbv2IzNVy36kty2rz9VFFmUPYj/RvBbcQT5OI4RJ632MXRAMs70A0GXD7RodJMvwGFoqUctCHHJpR2nGylIrxa5AM/QrRRvdq9sqLqzMivsM8ZwXHPUPorU2iGFM0JU1xAx7q0i04JK2tJ64XiJl61OjlNVREn4=
+	t=1787009385; cv=none; b=Hr2YMaUZsmgkkDJThe5SxALescz90v79xX5uy0KlyvOefze8gvQ67EcexkLUMPnkBipLOznW6A2wHOmddh8gAs9VHR3VFZZJq5udpfQXSxrAa4CC9gQRnnax15LUh7aUUrHdNVHWrLOZcRRVXG3FxnV7zJR0pv9YUwcTDnQtJ+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787009209; c=relaxed/simple;
-	bh=CJGyEzRnCHMiDixltde03aZUx6bqeNe+LxKN0VZwZSg=;
+	s=arc-20240116; t=1787009385; c=relaxed/simple;
+	bh=GWTIo9Avn+5Pi+6svs+/ekLOPV2RUTWVi+lvPzHXerg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e4PWBEM2hsDPx3ftWH2YLkRHwhQhXyMcNhki14msSbOMyfnhVhM0Jg4diSGLAe0w/IPYehazqR2q+/Vno4OpRdVc7e44x7K6R09ejMv/Iw1MVZCXtzFYhaCZQq7EOHOJ7yZ0jMJZZOOk1Y8o6Aw4J0Wlk1OLbm/jenOLyn6zR94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IRNl8+0p; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=YL4RzxJ9NBQH/0/7cDFwz1Z3IXJS9zkDTsEl5kJZhatfeUUrjJckSGdG9Wz0YiAu6U4u6Y9cgH0x6MI+OgH0zybc/FiC7fLWfYQYStRoCI9NWAJlmfV3Z3466xJ05DlRbD1bbP0jzPRK3HA8uvvj7+w1fUWl6nTWj28smatUJsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XJamuGhj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IRNl8+0p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F0891F000E9;
-	Mon, 17 Aug 2026 23:26:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XJamuGhj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6307E1F000E9;
+	Mon, 17 Aug 2026 23:29:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787009207;
-	bh=CJGyEzRnCHMiDixltde03aZUx6bqeNe+LxKN0VZwZSg=;
+	s=k20260515; t=1787009383;
+	bh=oubCngcQy4g59IruCiIeITyEiuscAJmzXuNj9LCTxSo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=IRNl8+0pxap9y5upU7E3z7d8LY9Q20mTzs8+NikNuo3COJILP2VJNcyXoBF5kdrnA
-	 WeY5OIu4urvG9S6jgkHZWpywnT7mTSS7JN61YHa9ES1DdKI/c/yBxvELbnFyJmn0IR
-	 xbg/cdD9TRwbn7jr2+7BNILoV8gyBhxhI4OPh6oVeuldNJLhC9QK0xA4ApJ4cd0LPu
-	 dF46Th+LtTdTgZHPsG8hNWqn0ORUOXmGE4COgchFlszU1huYeZ5Y2sAh1KKQO5KIO+
-	 84CYZF/3jLBZl0rR7TIscjNm0tb70MG2/Mb1f1y1ALjrS7Xxmgk5MASn8qnpJqCsJ7
-	 766Guf3/OtQMA==
-Date: Mon, 17 Aug 2026 16:26:46 -0700
+	b=XJamuGhj5cXklcaYEhyg1jpjwDCh2iO73Db6A5MTn2/77IWV/tdfgg8Zwqpy0AnxV
+	 Sl7DOVCoDi7QMJUc7ySoBCoua+KtBoEvQheckuKDGK5+uBb8JnuwoN5D6og5RM6kjy
+	 bupBzS65sRGNz5oSHnyEz8v9UPejTjV48TMuo482877mHyZDD1Vlriq8Q3tSQog4RZ
+	 4nA4Z/Pa9nKQGDWQMKgdzi7sq5ToKsmGatdFgSlHoabX8gECbdO6MSAQES1Kh06oik
+	 tAbrpWHEf+pk5u92hx2MnVfFNtZioonMJ1sK3x9dX4K7lOguAcCcy5ajpUpkA8SFbP
+	 A+50+eVr35tsA==
+Date: Mon, 17 Aug 2026 16:29:42 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, Florian Fainelli
- <florian.fainelli@broadcom.com>, Jonas Gorski <jonas.gorski@gmail.com>,
- Vladimir Oltean <olteanv@gmail.com>, netdev@vger.kernel.org, Hauke Mehrtens
- <hauke@hauke-m.de>, linux-arm-kernel@lists.infradead.org,
- devicetree@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
- =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, Semih Baskan
- <strst.gs@gmail.com>
-Subject: Re: [PATCH V3 1/4 net] net: dsa: b53: deal with Northstar devices
- using CPU port 5 or 7
-Message-ID: <20260817162646.6d6b9022@kernel.org>
-In-Reply-To: <20260812132755.32585-1-zajec5@gmail.com>
-References: <20260812132755.32585-1-zajec5@gmail.com>
+To: Mariano Baragiola <mbaragiola@linux.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, horms@kernel.org, willemb@google.com, kuniyu@google.com,
+ littlesmilingcloud@gmail.com
+Subject: Re: [PATCH] udp: resubmit encapsulation packets on all multicast
+ listeners
+Message-ID: <20260817162942.4d08f616@kernel.org>
+In-Reply-To: <20260815141128.1564949-1-mbaragiola@linux.com>
+References: <20260815141128.1564949-1-mbaragiola@linux.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 12 Aug 2026 15:27:52 +0200 Rafa=C5=82 Mi=C5=82ecki wrote:
-> From: Rafa=C5=82 Mi=C5=82ecki <rafal@milecki.pl>
->=20
-> Northstar devices have 3 CPU ports. Ports 5 and 7 may be used but have
-> their limitations. Warn user when CPU port 8 isn't used and add EAP
-> setup workaround to avoid non-functional standalone ports.
+On Sat, 15 Aug 2026 11:11:28 -0300 Mariano Baragiola wrote:
+> UDP encapsulation handlers (FOU/GUE and similar) return a positive
+> protocol number from udp_queue_rcv_skb()/udpv6_queue_rcv_skb() when the
+> UDP header has been consumed and the packet must be resubmitted to the
+> IP protocol handler. Unicast paths already propagate that return value.
+> 
+> Multicast delivery called consume_skb() on every positive return, so the
+> inner packet was dropped instead of being reinjected.
+> 
+> Commit 3cb8d4b9bfeb ("udp: fix encapsulation packet resubmit in multicast
+> deliver") fixed only the primary ("first") socket path on net-next and is
+> not yet in net. Secondary listeners still clone the skb and drop it on a
+> positive return, and net itself still drops the primary socket path too.
 
-FTR this needs to apply to the tree tagged in the first patch,
-according to the CI it did not apply to net so repost will be needed.
+Wait a week, rebase and repost against net.
+
+> Resubmit secondary clones inline via ip_protocol_deliver_rcu() /
+> ip6_protocol_deliver_rcu() (matching the GSO segment path in
+> udp_queue_rcv_skb()/udpv6_queue_rcv_skb()), and propagate the primary
+> socket return value with the same IPv4/IPv6 sign convention as the
+> unicast helpers.
+
+Please include in the commit description how the issue was found.
