@@ -1,127 +1,96 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5763FA5D2
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 10:53:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DA93F5BF0;
+	Mon, 17 Aug 2026 10:54:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786963992; cv=none; b=NjJG8w4sdbWrUyQMToQyDUa2KCWki+uCgeIDvdlFv5Q2JNui69nILwE5H8Fc2bHKixmMb4jpPzOfNlu3gGqPAvdxnChl3SPcSi60DzANUTUyi+qe7Lj6bCYQzdphzQimoeWK2IIWeqLp9AS89mtHVBDIrMPQcyqyj+grpVYKYx8=
+	t=1786964064; cv=none; b=I50aDmOAEIpKwvA7ehHb3AE+390H3rriqAm9ai9Lwb3zfy9seictUUtTp5curJnevubWJcIOBVmhtLYcHU5n3kEfaaYBPKcjRZvrEdbj62FZK8vfbCy3zBSdCBGklZgTQnY2NgsPWZlj6fCHGVkU1ehLcglPaYubvR0k4oRmmLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786963992; c=relaxed/simple;
-	bh=tZL4Nq3wp4mqHJBH/DZAv+D88w5KfVsWDvWVeUJUC5I=;
+	s=arc-20240116; t=1786964064; c=relaxed/simple;
+	bh=SzsrJXSXDcIL1uc9QD4gqOrgXHo+/QoIwZq3b1Ipnzo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZXXyUbT9Y2kAB1QU+rnXsp9Ql1AXFZIuBg3x951xbOf0lM3IQNlba0xOgkIeRtlImlrvJUs9Ohkkec+VABiGiZgbCHcu8ukem0rtKJaBoYuJQ0r32GuWq0omr5y7Ufh142pRsGMCIEF2V/Mo/9V0xX9B2My07jHc7omLtbAnBV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oN9m8an6; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 MIME-Version:Content-Type; b=uRmxIPmcStjNkx/zLQBH+5nEhPAZZVEqMY/L453mjq/DnF1R/vED6+ylCBR9GD8TghjU1esQT/RrgXFD8VfFnnaWJzGivj9ptZZDsBysOs2g8iK4vUOjX1kvCEocBFSLt4EN38Pn4s/r3iDuhm4wkEJz6IRiJnAzTeykf21CCJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=T7lqvcJE; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oN9m8an6"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-84e0688b7e8so2573027b3a.1
-        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 03:53:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786963986; x=1787568786; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xzF2gO3yryR4hhBOXhCUkhPNTB2+8HWWPpLokgJWGQA=;
-        b=oN9m8an6RlZjTokedxJ40ECnd4KI4dt/oAzwgABbPUU8rFfcE2N3YtF1r7SJ/m6aea
-         uo2DxajVtnB9P3x9bzDutqEF/jydaERnY9IX/1hukSjRp6QeV1y0sMvgEXza3z44MDFO
-         gRG1VoKvWcy8Cpjj0pze6Pf7ceF4HTyvBGT2bZ8h2KgLnEbpMnJHeAzdkyNtCS4ZN+eR
-         iAjyt77jwdOwn2qv41z+HyE/cHa7NTuW40Me2jAuscwTUzgbMGiUnZCQ7WXQZeWFioLM
-         gC3adeyBdVRzbm2e6NaufAQvIi84H+HL78awf9+/zDcnZt+vIKcrb+dq6ZKotNPe3KFK
-         Snwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786963986; x=1787568786;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xzF2gO3yryR4hhBOXhCUkhPNTB2+8HWWPpLokgJWGQA=;
-        b=IAbDymfkdpdqvl14SzI0PuG8XUjm0N3QmPs1/fSuh7QCFA8xGSHry1lOoB/SHvk8ms
-         R6iXa0Ax5afCn6oyGsaorll8LGXrbYRUdBX6S1C1DPUZNInShcLgyjuMD/GGaFiCYN2p
-         zLT7CNGezDnBPElfBz+mQkKd5S/uOy3I+BbiBRIMYtVSYm58O1qxODGVM/61BcbYtXPB
-         aej/3k8UAAEaIXpv0xwPfnQz1fZQGaCFME4RcylJFk0EILKvN3HBSEG9LcGplRjlQ6Kw
-         m9AY49Gm8cZWV0CFLgRg1wpmaKfgmVBCd4zWiDaI+9io1e7I44ScWnSs7Py0svrOBNXr
-         cSyg==
-X-Gm-Message-State: AOJu0YwrchY5xt3HUA+r9uPNthz1xqTmGjMr9L2KbwmOZ8KZ/ftGbAdS
-	SLoe2gRgRBoXV/BENHJA/AqDgoViswMXb/UCVXCZy5L09DThRvR2KgKM
-X-Gm-Gg: AR+sD11F6MBaYteG0EyFal2i/OVEEdjqpbxL12G7UuRAX7RJvK71jr102ZAsUebhVfs
-	dI0wT/b2L/4206sdEKfetAUXNOsKTTyqw8bXGOKTCTJyW/WuBb31dWUtLJ23NPE64YXiV6Ax7iH
-	8pPXPMqd5gEe903Tjfsgr3+3Z1N6nWNjBVsgTJDLTrY1gpKQ8TPBfDMgL6w3T0KsUE0qwd2k9vj
-	YtKjOalFSDXNHxGketISb1W4NcZmv23uPhz95wdXYJvW35j+GzLr3LAgVgboJgTBTNxqgx/BNB8
-	sUSr4g172GwjqigrJ+e0hyJ5u4AOVNhvTEq+//7w3zh0G5JHB+CIGS2pszqGAp3e7db+TLOYwga
-	9bUF/dyf1ch+zhm9M62zPTazpmP2ObvGwgR/TQuYtxiRiCkNQh3jf/87UIMOy8Xm5xrHnNhkRfm
-	j3VaqkFxRzBZmMUJYNLwOoEEfjgZWkAlfogy90wO/Oz/+NCYeCzqapKXQbMHbrP31jdiDI4tnst
-	T849npgLCshAoSSfaWQTsKYLbx9dkxdkZ435Brlq0mzMLyhAcl0I5Sj/qo4x4NIiv3wgxkqKixR
-	ArzsYtYEX8XjXDo7
-X-Received: by 2002:a05:6a00:10c7:b0:84e:2f2e:8c4b with SMTP id d2e1a72fcca58-84fde2a110fmr19733226b3a.32.1786963986480;
-        Mon, 17 Aug 2026 03:53:06 -0700 (PDT)
-Received: from phuc-desktop.. ([183.91.15.56])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-851b401ec98sm354846b3a.6.2026.08.17.03.53.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2026 03:53:06 -0700 (PDT)
-From: phucduc.bui@gmail.com
-To: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	bui duc phuc <phucduc.bui@gmail.com>
-Subject: [PATCH v3 3/3] net: xilinx: axienet: Propagate errors from platform_get_irq()
-Date: Mon, 17 Aug 2026 17:52:41 +0700
-Message-ID: <20260817105241.63345-3-phucduc.bui@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260817105241.63345-1-phucduc.bui@gmail.com>
-References: <20260817105241.63345-1-phucduc.bui@gmail.com>
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="T7lqvcJE"
+Received: by dvalin.narfation.org (Postfix) id A23A21FE13;
+	Mon, 17 Aug 2026 10:54:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1786964049;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FJ8WBa2jvYvoCXiVxlGZwnT/sE+UmDdw+JRzkjtj2l4=;
+	b=T7lqvcJESzVnxMZ7x6/tHFT/25848gHtGdfZAsjUSVprUxa64j47dTBvfyQZOkN8Rgz0yo
+	+QpbIJFY2q5RZHU8enCIm7VUw4kn+djYQDZ1MmX7Vd56LkVCrn5Ec4dEbcULkR6VHJiAfR
+	AiiBwKd+hBjeBwlpP7e9EgC/0U0tEbI=
+From: Sven Eckelmann <sven@narfation.org>
+To: David Lee <david.lee@trailofbits.com>
+Cc: marek.lindner@mailbox.org, sw@simonwunderlich.de, antonio@mandelbit.com,
+ Kyle Zeng <kylebot@openai.com>, davem@davemloft.net,
+ linus.luessing@c0d3.blue, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org,
+ Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>,
+ netdev@vger.kernel.org, b.a.t.m.a.n@lists.open-mesh.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject:
+ Re: [PATCH net v3] batman-adv: reject unrepresentable multicast TVLV offsets
+Date: Mon, 17 Aug 2026 12:54:02 +0200
+Message-ID: <6020830.DvuYhMxLoT@ripper>
+In-Reply-To:
+ <CAC_etQHifs5Qo-syD4pF+OPkKZFwHoNJFsLdjQsQcm3=_PyydQ@mail.gmail.com>
+References:
+ <20260817084955.944189-1-david.lee@trailofbits.com>
+ <178695824178.1497243.16045312752677179315.b4-review@b4>
+ <CAC_etQHifs5Qo-syD4pF+OPkKZFwHoNJFsLdjQsQcm3=_PyydQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="nextPart6296243.lOV4Wx5bFT";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
 
-From: bui duc phuc <phucduc.bui@gmail.com>
+--nextPart6296243.lOV4Wx5bFT
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+To: David Lee <david.lee@trailofbits.com>
+Date: Mon, 17 Aug 2026 12:54:02 +0200
+Message-ID: <6020830.DvuYhMxLoT@ripper>
+MIME-Version: 1.0
 
-platform_get_irq() returns a non-zero IRQ number on success and a
-negative error number on failure. Therefore, 0 should not be treated
-as an invalid IRQ number.
+On Monday, 17 August 2026 11:41:53 CEST David Lee wrote:
+> Hi Sven,
+> 
+> Looks to me like you've also dropped the
+> Suggested-by: Sven Eckelmann <sven@narfation.org>
+> 
+> This was by mistake, would you want v4 to be sent out
+> with the Suggested-by line?
 
-Propagate the original error code instead of overwriting it with
--ENOMEM.
+No, not needed. Just wanted to document what I found.
 
-Remove the redundant error message since platform_get_irq() already
-reports errors when the IRQ lookup fails.
+Regards,
+	Sven
+--nextPart6296243.lOV4Wx5bFT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
 
-Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
----
- drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 50f88a38b6f6..d982ab6f8a4a 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -2968,10 +2968,10 @@ static int axienet_probe(struct platform_device *pdev)
- 			dev_err(&pdev->dev, "could not map DMA regs\n");
- 			return PTR_ERR(lp->dma_regs);
- 		}
--		if (lp->rx_irq <= 0 || lp->tx_irq <= 0) {
--			dev_err(&pdev->dev, "could not determine irqs\n");
--			return -ENOMEM;
--		}
-+		if (lp->rx_irq < 0)
-+			return lp->rx_irq;
-+		if (lp->tx_irq < 0)
-+			return lp->tx_irq;
- 		if (lp->eth_irq < 0 && lp->eth_irq != -ENXIO)
- 			return lp->eth_irq;
- 
--- 
-2.43.0
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCaoLoSgAKCRBND3cr0xT1
+y7quAP9Ifbia1KyXmtLtw69lytNqlJYKiQ+IGptNxxp0dyE13QEAgdja4wi9SvFe
+cg9eeBbwvS6/4ygt8em9s3G2nMIh7wo=
+=QdLk
+-----END PGP SIGNATURE-----
+
+--nextPart6296243.lOV4Wx5bFT--
+
+
 
