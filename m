@@ -1,186 +1,72 @@
-Received: from mail-wr2-f0.google.com (mail-wr2-f0.google.com [74.125.225.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29593AB26C
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 18:49:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311DF3A9879;
+	Mon, 17 Aug 2026 18:53:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786992588; cv=none; b=tgRXN6ucTIfDII3vG6OdyCR9+WSU+5Xz1uR/avR6nZXkv01FElHjsc5yBqDCiu32HqJWSlIzoDzfDA72cnhu6NdutS99mFuwURxTqhnCkziBAyrYPxh3UyaGdTaRydNceXw1c0L4bPFQF+nmwpnAzq+ofyCryrRW0lPl800bNks=
+	t=1786992809; cv=none; b=NAVZ/QbkiGJeB9NQ8YQgaEdlIyY13iTlHgijLaosKVMW/kxlhYrxfMeNnGLddTD7Cwbqb9SFg+pMZ5YiebvTSI4xppDBYrojNGwdg8R2bOC4Zrsl40Hu3GYoySVCBeNiHNtDp2bc8XLzLsDnMul9j13sqpsX7jguTqQ9Iklvnfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786992588; c=relaxed/simple;
-	bh=rApM6GX98lsJOC5CYCvGiZv8S47Vhqm1pWqmqbaHGa8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EhjY7reA9slzh7TibRfiyc/uBvVZiHmrGUE9kLF8YXa/pNEZqLZQ0oIB8JTeF0pKxdgITR63ATttkXPzcKcYVVH1BsmMnZ5wwgiBpQ2n4bA9poXGGp/rT0YwLP6lNGcR6rt3YLuvbp5Ag3VhBVisbif9py4UHss0JQB0fj9BTuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr2-f0.google.com with SMTP id ffacd0b85a97d-481512c85ffso1511252f8f.1
-        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 11:49:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786992583; x=1787597383;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=S9H7C63C2s25VG5aW8sc9bKlnFa7ZjO/sL0My+WrHq4=;
-        b=KUcGJIKS0mAzFwBVPnft/6CSjhAoZVjRQ6zdgm6CRAnWPDwsBu/ekgmiaWjW2IWZUd
-         fIH9jC8W+R+pjD0bkpHHUV/9kk3eYIGI1sanwDdPie98LoBZznYUo7bBqMYmAXAYyUQb
-         bFxhrdPmuFmPhN51CXywRSpiaFaxsL7L/H1cb3YaL+zL8S15ZTDmGZb7b0B5w+O3sfQC
-         uomWwima5kagRj3Lqpa8KqdZi/t027vU6ZJok2owz4D8KGYlT75vse3XoayO6UuolYl/
-         rdsljMc8cidmhsuJrGPIJdAmoE4rwchbxwc3eA4GRjjRAO9W5kk8XYDq+LwEKsJSSeJJ
-         sWFA==
-X-Gm-Message-State: AOJu0YyRZJ0yyMiRiB0jaL95elwfb9SBcenHwfcKHHqrh/YtcO927LHU
-	gF7OuhBS6FEAd6z79ZgQ7Vdzry6Ob+wkibFRA6pqGH9Pp3PxXNkkrQ+p
-X-Gm-Gg: AR+sD10CJSvQQt/GoBW6I2eWiMAFnteUvuBRHg/Pj55Qer0AhcTSenFR6QmrQAXmnYx
-	RBmQR2iRyk7JMsEOMangTggcOfr/JJ1mFnItEP/GvDuL/SqHdLIlGGtQSxCDZ7lb9wfbdmgDIBU
-	II62WVkjJidtyLLI6vtkRqA+6q/4/vlYVmlsDDIxzet/GQAYB5AqzN8n68Z7FQlU6tzoETGYaAA
-	WGp7ZXXWCAmZz9T/87hu1Jrv/0uYRsHOp4HQUg0DqHMPRvq6PY5CHnUmkozffS0nrJ1Y2mo2W/o
-	u5ACWRmWzbmHN4Ecnufl+a5nwtUHL2nYZkBkXz7J6+P2zDDydIgK5ueq5E5ETCxUUC8fX6AMqSZ
-	IJAzrkSsGuuX4IXQOqMRgChbOBKOlupc1t33rbAS9bT4jHL8T2GcvpzVllOJ+3Se2G2Zq7tTwfO
-	/bwyvuO6wlRxP0z/DudINVQl8DyfsEvwwarZqreeThZryfD7KOWWQVqW3BNbkkUiCgNDd5AmJc1
-	eQLGmB63R07+qRu
-X-Received: by 2002:a5d:5e90:0:b0:47f:8183:e9b8 with SMTP id ffacd0b85a97d-481607656b7mr41963476f8f.22.1786992582645;
-        Mon, 17 Aug 2026 11:49:42 -0700 (PDT)
-Received: from [192.168.88.241] (89-24-57-65.nat.epc.tmcz.cz. [89.24.57.65])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482a5a7c5e7sm5803419f8f.24.2026.08.17.11.49.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Aug 2026 11:49:42 -0700 (PDT)
-Message-ID: <8823f2b3-3516-4fad-bc9c-c6dbad9653ed@ovn.org>
-Date: Mon, 17 Aug 2026 20:49:41 +0200
+	s=arc-20240116; t=1786992809; c=relaxed/simple;
+	bh=1qk5o6mqf10UOvNgrnTGj/YqzhCs2+kNG4ImE2A9omE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SrdFZWHfptNi8p335fDGPx3U0S2M+V22tQ1D3vRRwp+GJj9gIyt5IYs39OlT4mB3HMIru+lkWqP1fRh/rycrsa7vfLi5DaU1DqmYSUQKGrABoscFC7cDe8kh5ivodfn87j/0fIIxVI84mktnpIp+++7zX3CdpqHPK0em/pwif2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NODOT7Ev; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NODOT7Ev"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 992D41F000E9;
+	Mon, 17 Aug 2026 18:53:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786992807;
+	bh=QAEG0GQGVlUiDpCh1oFzyLFsr4ifZC4c4sD6vkSuKJ4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=NODOT7EvHZO5YWUKJJjRiZ0D5NAcNEkQRiMFNZqyB0euiH485+XNfIqw/j0pomMo2
+	 XNh5t7feqS7q9IMubyMc1G8djmUn0khvPNVspsBLalrZrSo0vBmDisG+/iHN/kMUT9
+	 5H4lEBovzNN3Uvl1PeI5WZSTVHH6g+ieCgQMFlCg/iPlRST1w//Ou4KIbXs7vmJEkw
+	 cWIZUlFzRElaiKwuNbeDKT3qfIfxv6Xn02jjQIOKpgNUKE6gSlq0bwqFmeAvZP61d+
+	 1IXTaCLdYi3TTuB38mAIVMNSQj3cjAQ8cGTyesoJy65m8ULO0cEeLG7VLi6xxuVzyd
+	 kB1tDpcNhbRzw==
+Date: Mon, 17 Aug 2026 11:53:25 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: David Heidelberg <david@ixit.cz>
+Cc: Paolo Abeni <pabeni@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, netdev@vger.kernel.org, LKML
+ <linux-kernel@vger.kernel.org>, oe-linux-nfc@lists.linux.dev
+Subject: Re: [pull-request] NFC updates for next-next 2026-08-17
+Message-ID: <20260817115325.4333587c@kernel.org>
+In-Reply-To: <93a47987-885f-4e5f-8920-788fb281db67@ixit.cz>
+References: <93a47987-885f-4e5f-8920-788fb281db67@ixit.cz>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] net: openvswitch: fix nf_connlabels leak in
- ovs_ct_init
-To: Ruoyu Wang <ruoyuw560@gmail.com>, Aaron Conole <aconole@redhat.com>,
- Eelco Chaudron <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Yi-Hung Wei <yihung.wei@gmail.com>
-Cc: netdev@vger.kernel.org, dev@openvswitch.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260815151729.3757984-1-ruoyuw560@gmail.com>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <20260815151729.3757984-1-ruoyuw560@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 8/15/26 5:17 PM, Ruoyu Wang wrote:
-> ovs_ct_init() acquires a connlabels reference before initializing the
-> conntrack limit state. If ovs_ct_limit_init() fails, its error is returned
-> directly. The pernet core does not invoke the exit callback for the
-> operation whose initialization failed, so ovs_ct_exit() cannot drop the
-> reference.
+On Mon, 17 Aug 2026 19:45:45 +0200 David Heidelberg wrote:
+> The following changes since commit 8d3ae59288f1e7d58d76558a6ee96d533bc5019f:
 > 
-> This leaves labels_used elevated when Open vSwitch pernet registration
-> fails for an existing network namespace. Subsequent conntrack entries in
-> that namespace may allocate label extensions even though Open vSwitch
-> failed to register.
+>    Linux 7.2 (2026-08-16 14:32:26 -0700)
 > 
-> Drop the connlabels reference before returning a conntrack limit
-> initialization error. ovs_ct_limit_init() already releases its partial
-> state, and the original error remains unchanged.
+> are available in the Git repository at:
 > 
-> This issue was found by a static analysis checker and confirmed by
-> manual source review.
-> 
-> Fixes: 11efd5cb04a1 ("openvswitch: Support conntrack zone limit")
-> Cc: stable@vger.kernel.org
-> Assisted-by: unnamed:gpt-5.5 typestate
-> Signed-off-by: Ruoyu Wang <ruoyuw560@gmail.com>
-> 
-> ---
-> Changes in v2:
-> - Initialize err unconditionally and use one return path.
-> - Add the stable Cc and Assisted-by tag.
-> 
-> v1: https://lore.kernel.org/r/20260814134040.1386967-1-ruoyuw560@gmail.com/
-> ---
->  net/openvswitch/conntrack.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
+>    https://codeberg.org/linux-nfc/linux.git tags/nfc-net-next-20260817
 
-Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
+Please don't rebase your trees. The base of your tree should be at
+whatever point net-next was after the previous PR to net-next.
+Because:
+ - we don't have the 7.2 tag in our trees yet, if I merge this it will
+   look like I pulled a week worth of Linus's tree, not a small PR from
+   you
+ - the commit hashes in linux-next do not match what you have in this PR
 
-Note:
-"contest" reports a conflict with the other fix, presumably:
-  https://lore.kernel.org/r/6cb36cfa28844b05919ca7c45c6c2bc812d3dc2e.1786936669.git.xuyuqiabc@gmail.com
-However, there is no real conflict, patches do not touch the same functions.
-'git am -3' applies them just fine.
+Did you rebase this tree recently? Perhaps you still have the previous
+version in git reflog that we could pull instead? Exceptionally, this
+time you may need to rebase to go back to an older base..
 
-> 
-> diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
-> index 95697d4e16e64e..38c6f34776c280 100644
-> --- a/net/openvswitch/conntrack.c
-> +++ b/net/openvswitch/conntrack.c
-> @@ -2001,6 +2001,7 @@ int ovs_ct_init(struct net *net)
->  {
->  	unsigned int n_bits = sizeof(struct ovs_key_ct_labels) * BITS_PER_BYTE;
->  	struct ovs_net *ovs_net = net_generic(net, ovs_net_id);
-> +	int err = 0;
->  
->  	if (nf_connlabels_get(net, n_bits - 1)) {
->  		ovs_net->xt_label = false;
-> @@ -2010,10 +2011,11 @@ int ovs_ct_init(struct net *net)
->  	}
->  
->  #if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
-> -	return ovs_ct_limit_init(net, ovs_net);
-> -#else
-> -	return 0;
-> +	err = ovs_ct_limit_init(net, ovs_net);
-> +	if (err && ovs_net->xt_label)
-> +		nf_connlabels_put(net);
->  #endif
-> +	return err;
->  }
->  
->  void ovs_ct_exit(struct net *net)
+BTW normally to get your own fixes into your own -next tree you should
+stagger the PRs - first send the fixes, after net -> net-next merge on
+Thu afternoon - send the -next PR.
 
