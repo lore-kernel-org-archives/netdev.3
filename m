@@ -1,35 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8BB282F1E;
-	Mon, 17 Aug 2026 23:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0323BFACE
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 23:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787010655; cv=none; b=ijydG+/lPJ2oYuSsrUxO9O2Xvjx8FR+Te6shVOnZME1u7CaoUq7mJUDqpEPdYqdPmbVFp3TrAbYxikyB4NFwXiaHvnQsQ3RsSMXAuMSoGfVTDVL9OczMA+ODHmqAYhLxf/N7emQhrswOIIeQGpM4LVHU1YDyGREyK8VxTfRfNkM=
+	t=1787010702; cv=none; b=duud7EgNCS+c+F2OJXD0OjjDFAX2rMMqt7HUAV29QaeCZ6HmIF+N3CW4p9DSgpgrSnhXDbhJiBaE28CpxnwMygX7DQbtyjq5zpmcUBHv0yJGh3s7jPucBpDtjcJ6ge0DDVoMdxuwIMDLYRwsaHq7ROWFNcQHeIZ4HB4znzhH+xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787010655; c=relaxed/simple;
-	bh=/fPIcL/yBVIow/bD1gbrNztPocrnWkY0xBbw3rTAWzc=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=cp+IMAammlZ+LhqEZvJt7uG3eNNPaAky9B2ISlpqUk2RySaCfv6O8QCg7CS+pX3ZqOAUi0FxII5o3lo2kb7iOHbXF8mY4AoSO+5RsH9BmYFNZZ8i/6sVCqeqBRmPg+6xXhODMhAs+oWlTEQW+oBKXvIZkzgfz53HbgYHxSyCyFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aqkNT8Kw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787010702; c=relaxed/simple;
+	bh=qZ6RCaMJK8csJZPbHhEovDRyqngCzPZqnQqSBGAW1rY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Py9jcy19o2wShDocCe3sBzUShn/RQNTjbNDvh0R4KG1ICoGSGPThN11a4gPsfy4H47/z9BvpY+yMR+yLQvwyYI7Rh3onaOVMXqAUeiDs0vznRmldX2X8CjdGyhNyOM66AJN83xRy12PY55AKx+FbbYuS9Kvp0rlFyhBkmiEJrEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J4TsBKtJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aqkNT8Kw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC35E1F000E9;
-	Mon, 17 Aug 2026 23:50:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J4TsBKtJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 341071F000E9;
+	Mon, 17 Aug 2026 23:51:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787010653;
-	bh=hrmMMS4tDRqVACoFhIORodq6WP/KVISUEN5h3n7rvGA=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=aqkNT8KwxbfIuSNkf79r8pGditXY3QvHSRY4LZ0XDqBuNALwOUOt/3gti25TnLg//
-	 E3LYHJG6brjKGoLM2er9GMWhujxJhTw7Nkn/jS7uLs0grQL0Efd6Hvj2g1/eW7Jk47
-	 BbQ0AS0+72CbLAn3SQUkprpCornsoa6K8LxauGPw4j6vfEGJhC72dF0qHL6sAVObbh
-	 W+hSHLmikbAA6ZYeK47n/7QtYrDBNhDfAH1paJgTfU5T4i0RYpza7FT0dvHoCuCDya
-	 3j5re8gx71YA5edwF9+MJsdB1uogoteKvC6KDfg03LHp2TJZh3UlRkwvQ4//qLQldR
-	 SFw0xbDz19QDA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19A7D3926276;
-	Mon, 17 Aug 2026 23:50:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1787010701;
+	bh=jIkD8MSTBB1CDAAW1Jzav/ewcCPal1U6dKELvV5/i88=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=J4TsBKtJpMLXDZ7tGt3paIie90dcD1qX2jqH0WsAscgvfc5H1/q2FlzVhOQczhdT2
+	 TFCp08/KqxGM87WawhiYMmkVmBuec+by8CsXhGm1RZP/4lUsu3Tv92OljIooELmwah
+	 4TX1oTj+ztQPdcJfTceq9SR37FlVgrKHAxuN4Bmj8N3UnGND92bj5bvxiaF4LPmMJh
+	 IVC44vM+9Rm1iRJacEev+CxLmtdRQhqOEo1LuNRF4nFrz76eCKxQpwv0XHPJWACQKc
+	 nMf2aCj4zwYUk9LI0/H2a2hPuHZtn3q2VbunYQ+9DibcFXUpMfi0mi4jZ36D4Sdg6Y
+	 f2e/I6CZ3v82w==
+From: Jakub Kicinski <kuba@kernel.org>
+To: dmantipov@yandex.ru
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	bharat@chelsio.com,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH] cxgb4: use kstrtou16_from_user() in tp_la_write()
+Date: Mon, 17 Aug 2026 16:51:40 -0700
+Message-ID: <20260817235140.3752193-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260814064127.1957130-1-dmantipov@yandex.ru>
+References: <20260814064127.1957130-1-dmantipov@yandex.ru>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,45 +44,83 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: dsa: mv88e6xxx: Fix PCS link check on CMODE read
- error
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178701060564.1794559.14041650086891150375.git-patchwork-notify@kernel.org>
-Date: Mon, 17 Aug 2026 23:50:05 +0000
-References: <20260813153131.3952970-1-ruoyuw560@gmail.com>
-In-Reply-To: <20260813153131.3952970-1-ruoyuw560@gmail.com>
-To: Ruoyu Wang <ruoyuw560@gmail.com>
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org
 
-Hello:
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+cxgb4: use kstrtou16_from_user() in tp_la_write()
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+This replaces the open-coded copy_from_user() plus kstrtoul() parsing in
+tp_la_write() with kstrtou16_from_user(), storing the parsed value in a u16
+and dropping the explicit val > 0xffff check.
 
-On Thu, 13 Aug 2026 23:31:31 +0800 you wrote:
-> mv88e6352_pcs_link_check() ignores errors returned by
-> port_get_cmode(). If the port status register read fails,
-> mv88e6352_port_get_cmode() returns without setting cmode. The link check
-> then compares an uninitialized value and may incorrectly treat the PCS
-> as active.
-> 
-> Save the return value and fail the link check after releasing the
-> register lock. marvell_c22_pcs_get_state() initializes the reported link
-> state to down before calling the check, so a read failure is handled
-> safely until a later poll succeeds.
-> 
-> [...]
+> diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_debugfs.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_debugfs.c
+> index f521737d12756..5c6c274188913 100644
+> --- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_debugfs.c
+> +++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_debugfs.c
+> @@ -664,20 +664,13 @@ static ssize_t tp_la_write(struct file *file, const char __user *buf,
+>  			   size_t count, loff_t *pos)
+>  {
+>  	int err;
+> -	char s[32];
+> -	unsigned long val;
+> -	size_t size = min(sizeof(s) - 1, count);
+> +	u16 val;
+>  	struct adapter *adap = file_inode(file)->i_private;
+>  
+> -	if (copy_from_user(s, buf, size))
+> -		return -EFAULT;
+> -	s[size] = '\0';
+> -	err = kstrtoul(s, 0, &val);
+> +	err = kstrtou16_from_user(buf, count, 0, &val);
+>  	if (err)
+>  		return err;
+> -	if (val > 0xffff)
+> -		return -EINVAL;
+> -	adap->params.tp.la_mask = val << 16;
+> +	adap->params.tp.la_mask = (unsigned int)val << 16;
 
-Here is the summary with links:
-  - [net] net: dsa: mv88e6xxx: Fix PCS link check on CMODE read error
-    https://git.kernel.org/netdev/net/c/7b196e27ad58
+[Severity: Low]
+Does this change the accepted input length and the returned errno for
+tp_la_write()?
 
-You are awesome, thank you!
+The helper instantiated for u16 in lib/kstrtox.c sizes its buffer from the
+target type:
+
+#define kstrto_from_user(f, g, type)					\
+int f(const char __user *s, size_t count, unsigned int base, type *res)	\
+{									\
+	/* sign, base 2 representation, newline, terminator */		\
+	char buf[1 + sizeof(type) * 8 + 1 + 1];				\
+									\
+	count = min(count, sizeof(buf) - 1);				\
+	if (copy_from_user(buf, s, count))				\
+		return -EFAULT;						\
+	buf[count] = '\0';						\
+	return g(buf, base, res);					\
+}									\
+...
+kstrto_from_user(kstrtou16_from_user,	kstrtou16,	u16);
+
+so buf is 19 bytes and the input is clamped to 18 bytes, where the previous
+code used char s[32] and accepted up to 31 characters.
+
+For a write longer than 18 bytes, such as a zero-padded
+"0x0000000000000000ffff", the clamp keeps only the 18-byte prefix, a
+different value is programmed into TP_DBG_LA_CONFIG_A by
+t4_set_reg_field(), and tp_la_write() still returns the full count, so the
+write looks successful.  Any invalid characters past byte 18 are also never
+seen by the parser.  Should the handler reject count larger than what the
+helper can consume instead?
+
+Separately, values above 0xffff now come back as -ERANGE from kstrtou16()
+rather than the -EINVAL that the removed check produced:
+
+-	if (val > 0xffff)
+-		return -EINVAL;
+
+Could the commit message mention the new 18-byte input limit and the errno
+change, since it currently describes the change only as a way to
+"simplify 'tp_la_write()'"?
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
