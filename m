@@ -1,44 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 069E13F483C;
-	Mon, 17 Aug 2026 15:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736583EA968;
+	Mon, 17 Aug 2026 15:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786981071; cv=none; b=l82AwZh9+98wnh0Jw6e3/AawGDf0m1UL7g3hOg9dSJ5czncs4e1UqS/0cR2wmYSF7XlDYvmT09hJTxW7gwG57liONy/KoRKtHgc3usBjQ9ETysxEyhUIn4Wjcn16kCCiGxv5ajcvp2uG5fpDesd5omwS0tMTonwgIhFLGnhGAnM=
+	t=1786981102; cv=none; b=NZ0+wjE0wCNJEHme0/gp+qH3vyzWpZZtwDbSsr/DVqn+xmzoF63uZ7z+C77uHGxbQl28/ewvjP2SQS5Gdh2kmIKKDKvicPwJ1BGxbiz27l37M6ejZR1FNGd6XrW9G6qAZbu1M6rva+5VJnws5OjYH8fsTUP/LIi7p8P11uSLPtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786981071; c=relaxed/simple;
-	bh=muM6PKgU7oCoGGq1jcacEhJfoWbim6H6quZtBPzveGY=;
+	s=arc-20240116; t=1786981102; c=relaxed/simple;
+	bh=eeHrPJk9gy+K8yMel6HsWsQYL+cP05fbS0ciXBYC7hw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q74fjVHOi9XBrurvoE9f5Y7pbNXtvlQle62ZY4GUnmiZNmIn9HzSSmFtUZGMYiHvGYYJ03dgFoOzYo+UQd+DRlKSmsotuFIsN97leDToQLygUGoX98ZR18lUCYxeu4/faEteAtj4Au2Cku9hCrm+cbwj3oJ5Vl5YqmRlVznfmhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ga1WH3P8; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=bjtyrF5pt48MGIoR7VJtqYjEVPmhkgj6WDFU8IbmPJpIGHsQBD+avge18O5/gb2ews8QZeeB2yU26zomOtUYADGJtkDKkmsftb3OnxgAQGPFiGiy3QWLmy5iA747UKe7a+ONGMO0kQ2+amjSKpCVz53zChKE1ylWc6YaZIPqIkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZvjcytQr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ga1WH3P8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350351F000E9;
-	Mon, 17 Aug 2026 15:37:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZvjcytQr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6664D1F000E9;
+	Mon, 17 Aug 2026 15:38:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786981069;
-	bh=FBUTW2FkWwtd7HDYBqhsq1wJ/D8BGWzfQGa78XpM//U=;
+	s=k20260515; t=1786981101;
+	bh=xKXOCD9CuZCCFOTORHsxB/Y4xy2wPXe8BRMSxN/bXRg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ga1WH3P8y4SJnw+QK08Z64nJKK1BJ/ys5SQer0PZ6QaxpaWvt9gFWJ37Loi/nhm3H
-	 2aCvn8vhkE3KJUbVpYIy3GVkKeChvAVO+Ip6//V00Dgn8S2hdUjKTC2z2I8e5qCVr1
-	 rlHviFoXqLq7azrsbyk299rDNBgKB7hGgRX8ozBkfp4EnWvp12oXaFsad+2O46bWvX
-	 HPt82s1tsXUL5VFxib0jySjH0d2U57D0jZqu5gft6uyrhcZfhdnjvLOLn3zOHXGNoJ
-	 eLtqJlf3Kou55JMt6a+3hzUMgnEl6iTDLh7Z/5/LnHAwA4DmVkqNHfrDEA9RZRmPMg
-	 N00VvwjEEP6pw==
-Date: Mon, 17 Aug 2026 08:37:48 -0700
+	b=ZvjcytQro4FcohRmb7N6AK14yxjEkep/XoDVLoNLnoPY0rTz3/ej/NX2dU5EaOQS9
+	 lWNnTpMnK7QCa12ivhA6fCXvPYeHe3hhr/ZwgtIK/JA5lhGCzu/GFzGVS7jPDHt41F
+	 rSldX9QCcyshIOMubkTFvvIilwVY+Yz7v4tQ5jl+GfqyKjDr49jMH/5QoWa+MMoUvL
+	 aYbYA0CtVghFN+b1UJh+he0Rk0JcUe8bgcJDX0nJ49Gpqys3jVSoI/nh4gBrzPrk41
+	 4sIv9wtxaZiYUxw9DY423vOymteEHbxaKwvX7blDnvRLtHkHKIRAz8EZ5BI1uYh4Fa
+	 25rgBGvslelWw==
+Date: Mon, 17 Aug 2026 08:38:19 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Kyle Switch <kyle.switch@motor-comm.com>
-Cc: Frank.Sae@motor-comm.com, andrew@lunn.ch, hkallweit1@gmail.com,
- linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
- jianmin.wang@motor-comm.com, jie.han@motor-comm.com
-Subject: Re: [PATCH net-next v11] net: phy: Add driver for Motorcomm Quad
- 2.5GbE phy
-Message-ID: <20260817083748.05f798ba@kernel.org>
-In-Reply-To: <20260817110626.510277-1-kyle.switch@motor-comm.com>
-References: <20260817110626.510277-1-kyle.switch@motor-comm.com>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Vladimir
+ Oltean <olteanv@gmail.com>, Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>, Daniel Golle
+ <daniel@makrotopia.org>, Heiner Kallweit <hkallweit1@gmail.com>, Russell
+ King <linux@armlinux.org.uk>, Simon Horman <horms@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ netdev@vger.kernel.org, mfd@lists.linux.dev, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v20 00/10] net: dsa: Add Airoha AN8855 support
+Message-ID: <20260817083819.67dff919@kernel.org>
+In-Reply-To: <20260817082034.20326-1-ansuelsmth@gmail.com>
+References: <20260817082034.20326-1-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,12 +54,8 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 17 Aug 2026 19:06:26 +0800 Kyle Switch wrote:
-> Add support for Motorcomm YT8824 quad-port 2.5G PHY to the existing
-> motorcomm driver, using the phy_package helpers for the shared top
-> extended register space.
-> It also adds a new exported phylib helper,genphy_c45_template_testmode(),
-> plus two new definitions in the MDIO uAPI header.
+On Mon, 17 Aug 2026 10:20:21 +0200 Christian Marangi wrote:
+> This series add the initial support for the Airoha AN8855 Switch.
 
 ## Form letter - net-next-closed
 
