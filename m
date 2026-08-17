@@ -1,225 +1,245 @@
-Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11011054.outbound.protection.outlook.com [52.101.125.54])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B51411FB9;
-	Mon, 17 Aug 2026 12:28:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0FD3E5ED6;
+	Mon, 17 Aug 2026 12:30:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786969730; cv=fail; b=DLrSUHF9kqDLmv0DMiQnKIkph/8tX9sOz2hMdZ92HykBYSsbokIaodTA5VCW4Gz/rWfg3EPDBdhdKDmrmatr0argECsqNXzcc/zRzkyNCGkv//Bbz9Zljg7iNwBh9ui8v/jPWVnuTt8oJ/H3SlfxoDUp2sM8tTLjzuiOffqe9og=
+	t=1786969842; cv=fail; b=mbFRglFDnUDxL7iKVd1L6Ar5NjheggST9HimpZctemvo/L23NmD4Bs1H0SuUH+5V33UVZrl+tNOm9ePKIX/9nblmcLXYmYhKNAxLe17Oy+0p4mIUgj62K4nvGiR6fExUG/48CVLEK7LLqymOg6uSCEFF6jPMldRrN7p98dCRk3k=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786969730; c=relaxed/simple;
-	bh=0SI8z4Mg/YXyagQEva8VsCPIak9JD/hFrOXD1KjRZCI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=gOwMEjPobQ6n05EQIPEk3r9qu45JsGvkQI59wXDHXdPh+lWZgLR0koDh6qjf5un9JMyHhsXl6AM1+KcsndL+DRua+yOaLmjxHWHJCtElwdo/5nfaHUVvMLICJPVqI890EDXDbZDpia1af52/gP4hfQNxFKtI4odclycnl3IiFoY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=bKbmSPNl; arc=fail smtp.client-ip=52.101.125.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+	s=arc-20240116; t=1786969842; c=relaxed/simple;
+	bh=bvyvyIMiCwbRE+0SmcFuy4Xpmf4rmWUaqWKXJQwASdA=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=kdTjlZwKt34bntnPUGYilo4VbEoTHVYh9isgaQZBv62GgQumGdLiIwIxr3uYqjVTw+73ZdA5mAIRFl0fceX6n/VVzebmZflOL+SPPi0RvXIOnpZ6Spr0bkHvHSJ2qPdSnIKDCGea1E2CUAZxakyyCpABMqiDD8EHgTG2hXrQaKs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aLtFwNLo; arc=fail smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="bKbmSPNl"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aLtFwNLo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786969841; x=1818505841;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=bvyvyIMiCwbRE+0SmcFuy4Xpmf4rmWUaqWKXJQwASdA=;
+  b=aLtFwNLoyzMSZfRP4Jp8l2I4E31fx3rJy+nRVv//esvcrCLRS/8Oo123
+   23EoOTvcm3wpEMJU3Val++sJ8W6WhrE2nkbPEPcYI7mFc76B4j/xr1Gd3
+   kJvs7l8lNql0Z2tyC/Llizm6aptQnxQNwHiRlVL6xCkG4NX/kHeJxyyGe
+   NUIb0tj6A6qWB4p+rpFKpsc0Y34MTx5ja+gUbYf7wlhPjk3BZlOQirod+
+   niSyhcgH0/UbcUl/iHbr+h8AvYZsWpDrG6oIMAryM1kHVgNgpisiqRbCd
+   IYvRwlzB2Pb3k61y2RKVUsFsptTrIjnm99ZbsbSPNFCHloIt9g3aALPCj
+   w==;
+X-CSE-ConnectionGUID: wVTruxxsR4SbYVXxdUg5aw==
+X-CSE-MsgGUID: 0pwYV9JqRCOe+zwCyLao/Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11877"; a="91257581"
+X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; 
+   d="scan'208";a="91257581"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2026 05:30:38 -0700
+X-CSE-ConnectionGUID: VEm+m/ZYQPu5A+9ZtVaOJA==
+X-CSE-MsgGUID: CZGR4oL6SjGVhgZnpUpcyA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; 
+   d="scan'208";a="265517957"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2026 05:30:39 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Mon, 17 Aug 2026 05:30:38 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Mon, 17 Aug 2026 05:30:38 -0700
+Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.3) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Mon, 17 Aug 2026 05:30:37 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hHqbZdhMp10s0n4my6m2t8Tx0wPtAd8udcsSCcKYM44QnRJFNMqr/XmxFvsva4+4vCXDBhKy1n48bBenT6qLT/PF3YuZDtVwnc+NlJ5pvrscvGVTONqbHIiWpai94BLwvWE1dDJzYms5X7swwmeFVe3Our1kHybzL/dXsiXIR0bEWXCffM6SZDTowjCnzgHbQSDEAWUUdyOwnAhyqxDgQqPz/K5GR28G/PXFzhXyO0lYC6URK1AwaJGJ106zosk7IrI1Mq55NkyUk6ezLGmTWpeAPhmgmAjrKdAJ4q6PyOHTcwFAH4E2HpDjnMmN7NbejDb5WNxJUiF8jce5LQvoTw==
+ b=Q1fe0N164gRWFYtCp1BmAsXrFC2H4PGL/N4/2yZ78eV+ouRDYJ/MZuuD7/SnHjQljboWzjdcJjcWckmC6YjXQKyTgJg3G/AM6DJL44mDMM+V6dbeJRlUxnnZBPmcQQImOJa06Ej4TjwBt/w4BsX9DeKQ4/lNdDFN6Dcv3rx/HIhKO9I2FFnf2WqIOAKYnL7iqlFTr9mgDHhB4pBnHCxWwRWioTq+bN6DS31c5X8io4qLAWe1Vf3Zt8d7UxC0PI6y01BpXJaa1xMtnM7Kl2NxcVVDcoVNq9kS4EGcPG/2lczVbzO/fIxbAwaR5G6z5xO0g03f8UUwBLf2LIVCXyNZdg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=K2oN6jqsWqUOji4TRFtiMHPOEgFZNB0VDvQGAgYpnV4=;
- b=o7CPPOgiWOHK7T1lrWGNOrH6g4s3EJOnCS7LjBawB0J1Ysvkpg4q/uGC+FhfoyrxnfIh2X9Q7dNHFEzfAMVD5bwRfq72BZh4OYxTDPblMBmK2GLuwEZcwdCaLZQ+0RhaEwp09Rs9t2WgCgp13anMm5kYkqF060p7t45Yyptgajk19WtR8Bx/XenKc84YWDbVemklbS2Tb4iXeBxGl4/IysU50Bi3tN8GWZX2IXNMAuFkZWNut4DmovLT6vGmnvI09flop9HS57+rz/l4i0+TDkkwC2F5Uk+czzn/O61qUZpfq9btacC6NjQ/xPt47ICPwJxs6oPiDN9tDkXC+at12Q==
+ bh=Vi0sJ2GibtjWaTyZ2PhHIfnXTFEzwIKKAfWLnBmpoXY=;
+ b=F42Fvfg4IBvzEi537VHnWNO+n2hkBrC1HgIIS0cN0peFVsprfF6nlQXjlMU/Eq+qnu9Wm6whVyE9YERkW+zEWq0iQDRaREUCXn84R8WVQQ2hAwBLBNKfnB7aiPjkMWB0VIQ5juXPmUvHYzRfH/ht3rn9etsryL5idwk3Q/HrrsRxLuO5Sp+n0bhmQCyxyndnnWxNwHZ7HxUu6ibeQzinx0PYXX1u4b4J20iVuDDBuNvWx6Vtz5EnNsEStIH/d7RtIU/UFcQovdiCeWRyOPcnEx0fy+5w8NBWrTlJXF8N2lu/jUTI6N5wgEmx7XHUOiLrmSPd7nAtqL78SPS7rgZ50A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=K2oN6jqsWqUOji4TRFtiMHPOEgFZNB0VDvQGAgYpnV4=;
- b=bKbmSPNlkMZUF+s3YCS952nNvaGGOTIwHO8f5FXpwcACl3iMTbfS1VEvYtCnhQCPyjwrGdt4T4hdNa03alYVhHGBPHDW26n+cmBbN2ygr5R/pQR1rnPpqpH/wdJveUNwZ6RCaQR1HZ/Tn1drVXU/cakTqdZpLGdGaserIAZgcJ8=
-Received: from TY4PR01MB14282.jpnprd01.prod.outlook.com (2603:1096:405:20d::9)
- by OS9PR01MB12183.jpnprd01.prod.outlook.com (2603:1096:604:2e7::6) with
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from LV3PR11MB8508.namprd11.prod.outlook.com (2603:10b6:408:1b4::8)
+ by IA6PR11MB690409.namprd11.prod.outlook.com (2603:10b6:208:5e4::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Mon, 17 Aug
- 2026 12:28:44 +0000
-Received: from TY4PR01MB14282.jpnprd01.prod.outlook.com
- ([fe80::655d:9c47:4499:eb3a]) by TY4PR01MB14282.jpnprd01.prod.outlook.com
- ([fe80::655d:9c47:4499:eb3a%5]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
- 12:28:33 +0000
-From: Michael Dege <michael.dege@renesas.com>
-To: manushprajwal <manushprajwal555@gmail.com>, Yoshihiro Shimoda
-	<yoshihiro.shimoda.uh@renesas.com>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-renesas-soc@vger.kernel.org"
-	<linux-renesas-soc@vger.kernel.org>
-Subject: RE: [PATCH v2] net: ethernet: renesas: rswitch: fix device_node
- refcount leak in rswitch_get_port_node()
-Thread-Topic: [PATCH v2] net: ethernet: renesas: rswitch: fix device_node
- refcount leak in rswitch_get_port_node()
-Thread-Index: AQHdLCAiwvsD/tMOfESV4bKJu79G6LaiLo2g
-Date: Mon, 17 Aug 2026 12:28:33 +0000
-Message-ID:
- <TY4PR01MB14282297556165468224837C682A72@TY4PR01MB14282.jpnprd01.prod.outlook.com>
-References: <20260814190423.933-1-manushprajwal555@gmail.com>
-In-Reply-To: <20260814190423.933-1-manushprajwal555@gmail.com>
-Accept-Language: en-US, en-GB
+ 2026 12:30:30 +0000
+Received: from LV3PR11MB8508.namprd11.prod.outlook.com
+ ([fe80::a1e8:1786:e5d1:8e51]) by LV3PR11MB8508.namprd11.prod.outlook.com
+ ([fe80::a1e8:1786:e5d1:8e51%5]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
+ 12:30:30 +0000
+Message-ID: <139c01f4-01da-4211-83cb-29bfdd404730@intel.com>
+Date: Mon, 17 Aug 2026 14:30:22 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 00/15] gve: AdminQ mode related refactors
+To: Harshitha Ramamurthy <hramamurthy@google.com>, <netdev@vger.kernel.org>
+CC: <joshwash@google.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<ast@kernel.org>, <daniel@iogearbox.net>, <hawk@kernel.org>,
+	<john.fastabend@gmail.com>, <sdf@fomichev.me>, <jordanrhee@google.com>,
+	<willemb@google.com>, <nktgrg@google.com>, <maolson@google.com>,
+	<thostet@google.com>, <jacob.e.keller@intel.com>, <debarghyak@google.com>,
+	<kees@kernel.org>, <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20260814021406.3044324-1-hramamurthy@google.com>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=renesas.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: TY4PR01MB14282:EE_|OS9PR01MB12183:EE_
-x-ms-office365-filtering-correlation-id: f49c8ef1-bce6-47bc-5009-08defc5b0dc1
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|38070700021|10067099003|11063799006|56012099006|22082099003|18002099003;
-x-microsoft-antispam-message-info:
- WOtXhNrPj4r7MneNm5BeKrQvo3obeRY8ntkMq+IUuGZwHMqjFMSS7Lrb/XJPTVp6MvTP6m51+bJm7sW17u2GNwiEuYDXmOpX69F3V5KTCvtRSXQ5R0TxM++YP6uq7Fx1nxND/CetvOO70vCuIHca4vIlFz84wjOMqB8bgQ8b2/W9LCaYa6NR2UmKJXSOOKprUoV0hdyyzOqo7GsjbHRPRsIgE8iryAUjY/eW29FbsczK2drdkkgDRlDJOpFO+mkAZX/2qb245uvlqcjkMa1TLWCWDXfMrHPoTCY2HzV7CNztTmw1EPDywvsNYfbQHvHVQhca2UZqzN7oVnZoSrb7cRuGUu11Lf/MTxDwwCLZmPh1PF/oTMo9tO28l8dAFFkeU4v+RXNdz4R+dX/g3ivQAMXJe+VDdEpSPKpapNe++woIzOti3cBq9X552/+d9aukgGreMU+vt1bdblVsmlkAD4R68VoonvHj9g16nUg/lz2vBe3NHHNeN6XDtKqQ75vQyjgz5MMQYCmW9/tpawN4Xij3ucVg2iFFln62Nf1qkGPJnxgMzX2yRF52yH0a39CWutvTgFW7hgU8PN0QvqurQST5oMvJ0wdiE8ZkMLSwa/uBPCUCeTEJM3OQnK8MD4tj6LTvvYZbMG2uSIqEzciaMkIWPDyq/rFS3WMT4DjYU357+C4fR1CRbaos0jUaY42Hnz+v50VVL6BEdBldYKfr0g==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY4PR01MB14282.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(38070700021)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?t4IG5PrstAs81iydHY9cNOuqo+28IZ2yGJOhta426YUjv+KR5zoKk7uod4Cn?=
- =?us-ascii?Q?eNIrTdLXNXnYTzp2ZL75y0xepnuc5ZZzE8oPFWocg+6dystGa50oWs9lrho1?=
- =?us-ascii?Q?JKtsTMgwRLAolHboCDv0ZiusKrzPxZmVXd5r8eulFMeUF2V0VApYYMbM0jqJ?=
- =?us-ascii?Q?GKBn/t6lQDBBnkyakFbuv8mcRJC3Zj5NlNPX2E8uwEa16ET99EPfNUyc6avC?=
- =?us-ascii?Q?qbiFoL68ENh5AegVOkP7ki9zZXbIoQVigmzUyyyTGky0aDm41GpWEKLsw8Pq?=
- =?us-ascii?Q?BYKR7TAvuWEcwWDb2hUrmz8F3cfDX/p7OVMvMVQ+MbDwIFE/hR2QWGpKpGQP?=
- =?us-ascii?Q?SSBF3suAM7pYzEQEXpqhHVyaevVTs+viqGDeuxw1jXCu6uDxTfwe6fLrCx5a?=
- =?us-ascii?Q?nFJtrGltX12FMvkQAwMyG2+WOjsA25H3XPiX6UKNucwqMXCRfj8kRCJ7ZIa4?=
- =?us-ascii?Q?4XbLl9aNWiGCdPa6oxF6zXdMLef4PQ6kQlTaBRyIZH5IQICLlAV0mVT3RCIf?=
- =?us-ascii?Q?AmXgkUgSr0RU3NE2h0zdMGiaCjqUIxa54IaiOQeOqggfTVmwCPbd350ElqDA?=
- =?us-ascii?Q?V5i3W36LAd2OF1kWMGSAdPgS7GZx4ptNk94+iqdGDUykjw61VLLAE/zwsn7W?=
- =?us-ascii?Q?2+QLqKFCdLJGCsWJrDzf6Tlysyu0SPkn1W3MzNbG4UIiZYP6bmAn/imNgveS?=
- =?us-ascii?Q?egYIKsdoAFT+Wk4S7UOLZl/xQxyGsjDPZz84GTTwxfKJuSEEhRPuv0v0q3tJ?=
- =?us-ascii?Q?cL4C73ro0PrlElWxonkatI85qoxl4yU3EEZRHeN36mgBtRDwPkTOdSw8s/oq?=
- =?us-ascii?Q?fKUKb/+rgxr1Jjb/Hqh/ilFWFr1PU9VtPbvS+12aFmP8ECxLPDnV9pl3YVYf?=
- =?us-ascii?Q?lThcMzyEh5mYkm4RUE71jKFzdWJGMtaMjUGTHTCZSCrxgRtYzpz7xloq9JSM?=
- =?us-ascii?Q?yzpNnV3iA6vgAXCU6BS2tfxCdoxOGepLU4MV467Ygj1CLrYTnl6bY0Y+Fj2f?=
- =?us-ascii?Q?7KgrLl6D8jc8jnIvyRRqI4jIpmScFb4cHIDDdll3km6d9x2C2NlqMNXZDTDN?=
- =?us-ascii?Q?8/fN/E7JlnpWiVLDHur2lxqotq2Z9vI4OT8GruNZA6bW9KrnGN1+rSemBjFp?=
- =?us-ascii?Q?IKGlYb2CGQAK4QmGXE5cN5WqBKPSVjodklT/EK/BAxX+x5es2ukN2AVj565y?=
- =?us-ascii?Q?4+HBEzzHJdbsr7P2T2S7JJFxB6hfpc1WyyOz8KbRg3dtLmIaaSbZaa3CA9DF?=
- =?us-ascii?Q?HhY1J3wTvBWB9B3fg6GX/JEurXTKWgZ98xyUpHAWDs6tASi3A9tN0Zlo17Uj?=
- =?us-ascii?Q?X+k6vasKIIw8KzrcuNlNDQBUhZ9eM3plU8O1shrasH8n1veLGcUlgathDMLI?=
- =?us-ascii?Q?/4W9b4F37b2+Vv5YrpmD682md/SqCwx1QUn15AvJ7ZBvVfnqQQeEE4vr2VLs?=
- =?us-ascii?Q?MWEExkqF96n3FgZ28LU17g1G0UgOI7u6Okoyfngh7PGa743wnXyLqpPrYjXx?=
- =?us-ascii?Q?jDmNnmCEYBJ7VTVYdcPq3+oALu89kmf6UZOiBE3z5rFZJl7mvXFaXuEePcgi?=
- =?us-ascii?Q?C6EtzbxbwT99tqISG3e6DfD21spy6wUSTDjb/h0nqn0E8pQn42OQV2YHSCze?=
- =?us-ascii?Q?PiwqwmQGXKnJV63cO+VZMEKaJUQ6aqYmj273+jKhJXmWm6czeEeKtFrAyKUS?=
- =?us-ascii?Q?hWycj+K9l9pt35wr8bs0RLqpSAo6YUgVt9AiwmA+Fao/2Cq77P43V2/8xT0f?=
- =?us-ascii?Q?NEJhXVBakQ=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260814021406.3044324-1-hramamurthy@google.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DUZPR01CA0196.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4b6::23) To LV3PR11MB8508.namprd11.prod.outlook.com
+ (2603:10b6:408:1b4::8)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: renesas.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR11MB8508:EE_|IA6PR11MB690409:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9bc8d101-ec08-4303-32ea-08defc5b535b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|7416014|366016|1800799024|6133799003|10067099003|11063799006|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: eSrwLXxdRedWrRJDnL/lIQWRoDEFVlBD0yQdRLjLulSYx+BVGFVmSFg3zhIj1+aiyReR6ZX7n2MTF1K5fbVuVSGVTLyOxj/rkInt95rBFz+n+kbOXtVVwd7IT93vZf4Jt/PZOprd+G1fQKdTp+o6SvbAKxQmS2TxUj/22GN7U86P+AYO15MzIyMUqtHRLYnP0J2MYXx30b0tMJQWlEPJP+7FgSMRovVBCptc2yiW/kA5MU8hfsTsvXyO0sROuIab6iHqhJObCcOAmhUPLONy3TFIOFEcFIPSfYawLng8FaUdWq4rlEa0285rZg1J3GahsCigwHwILHssWRswi3FJ/7iYHnCOfnnlFu+FsnPUQ5RbsTCzwRnv/e3gYkg3YOkifeUhkCd80W3wvDLtNNiUgdHg81d/izN5xrYqjPy0tq2DC2pqqmROizGF8jPwnLIULORB+Xnq4/0rlkkxarxz4x4TLgHzPV1gFiWVaDWUqyi8OBIqYhiIC8p0h2Dmm8OD6WhJRjwT4PPV0V9LHUARsgNJdw1DZX4+xPBqESSI9uCXy4aOW3cDYLnW4QbOQ9nOxmQ8CVHCz2aV//2hibm6tYEJ0YiE+2uIQt1l2uI7TM4jAdEy8V4EHT0R1MMnVpF4AeqoPEQjlLcQS61PLVKUHHLfiJUmNrUfn018TKfMLLI=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8508.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(366016)(1800799024)(6133799003)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cy8vcE5wNHJSTkJRN2NSd2tsbzhKRnJkM3BiSm54VlJmRU0vcWRUOC9yV1A3?=
+ =?utf-8?B?OGk5cllpaGEvNndmR2pvM244Y3diWXJaYjRFaHJvZnhPRXBxUGVtWnd4Mzda?=
+ =?utf-8?B?N0NxcWJrZUtCeUtIc0drYXFET2xmLzRyVWRMMmJJRXQvRzBmdnZsczltZW5o?=
+ =?utf-8?B?QTEzUEZTOFB2UGxIWkE4bTRGNFpQeFhLdFNRVFB0SnJCMnBqNWs1MEhhdFJV?=
+ =?utf-8?B?bXZJN21OOGRYdFNlSGxvVzZTeVRibCtVd0NvVHpyajhGbm0zMCsvSnQwbDR6?=
+ =?utf-8?B?SDBiTW5CMnlOVGUxU3ZjaE9sWlJMbGVBZkJHakd0cGt6c052U0pnT2hLbE1S?=
+ =?utf-8?B?RjdteWwxOU9ERm5zaTI1UTFBRnRBemZhMHE5am1CUnFtYUVnWnhGTnR2Njlr?=
+ =?utf-8?B?TFhXR21NSXViUlk1TFA2TmFTQ0UzU2k1SERVdm9IOVhsYTB1OUlzTkZQTVlv?=
+ =?utf-8?B?dmFXM0lrQzAwYTFuS2x3Y1JVVkVIcHA4MmplNE5ERUl5OWlxbnFxMGwzMGtE?=
+ =?utf-8?B?ZlpYN3lXRWJHL21NTHVzRW9xM1d2Nm9ocjNPS2ppR2JKMmIvaVVYLzlseUxi?=
+ =?utf-8?B?TEhSQlMxVG1HZHl0VUZpejQ0WTFULzFJNXJ0b3NmY0hJNzE1ZDczNUNVSndG?=
+ =?utf-8?B?RXgzUXJXRDlNYm9DY3ltMTkyNGxjRWtJb0FyNkhweUpPbjlVWFdndUsrSmtW?=
+ =?utf-8?B?UnNPeFo1REZ1aWVudm8xRk1zb2xydEJZYUEzWFk0K3BxenJ5bDV2QXdaaUda?=
+ =?utf-8?B?dHhYN3dCc1E2OENoQ1B0Wm5lckNLUE5PMEZ2N0U0T1Z2RmM0UVNvTEhTM3g4?=
+ =?utf-8?B?NGNURzVFYThzK3Q2N2tUckY0b1UzeHNEenhlZXBUNG5SQ1d1SGl1Y1hZdnVP?=
+ =?utf-8?B?NjB0cEovbU52SDN2VW40NVo5bERxcHZNdXRManN4cm5yRkFhM2plejBnbkRG?=
+ =?utf-8?B?WnpsZFM2ODQ1L1ZWZDYwM2RVc0JDRFk3eVRnQTRnbXkvODd0Q3VNczdkWjFL?=
+ =?utf-8?B?Wm4zYmZPYWY4U3BtTXh1akt4d01admc5UUlEOHJuS3dJNmlKL2l4a25ETjJj?=
+ =?utf-8?B?UUpGWTU1TnlUOHRuTEVzMUlvUHQyejNVdjBtbXpuL29qUGM4ZjlNNXhxRjBC?=
+ =?utf-8?B?cjJLOS9sNCtiYlNzdDRQTmNFN0g2YlplRUQvQWI5Y3BjMHAwWW1KcC9YbFFi?=
+ =?utf-8?B?Q3VoTFhJNnFwSFErYm5VNm1GSnpYaTBEdmZ2aUtjS0RKUUErRVhLUFRJV0lw?=
+ =?utf-8?B?cUYwNENHRER2SWN6MG5TVk0wTjU2SUJYa3kvNDBIZnFzbXVCOGdzZnVKMDdQ?=
+ =?utf-8?B?VXpIYmo5enN5Q0htSmJkbzJnd0FGaWR3Y0prNEVTUUtaZkpaWjFVWnEzU2pm?=
+ =?utf-8?B?elNiQlgzNFlDVGRrY1dLTFF5ZVA5TUpHZCtzRkZCOVU0amJlWDVYYlVhdnI1?=
+ =?utf-8?B?STROTDRuWkJ5dkxRQVVQMTdXbUdxcUErZWF2dDRYd2JLYzIyUWt2Z2RQbFpV?=
+ =?utf-8?B?YW42NVZrZDZVS3U2NzFmU25KeGlmRWxBcGxvYlJacFZUY2NUbHJsQlk2UXVY?=
+ =?utf-8?B?WGRSTFgrTG9TdFdXeFk0L3NnUThDcmQya3dRMERkTDFZY3JCRkxsd1RzbWVH?=
+ =?utf-8?B?SkQzSW0yYmtoTkNRUVh4ZFQ5S3lYMDBsTHNqa1EyNFAvcTA2SEdtVjN2Wjls?=
+ =?utf-8?B?TG82U0sxL0xRSzdhNU1SMGl6MnhFMWQrcHhHZGcrTWxmcHB3U0JobktFVHZV?=
+ =?utf-8?B?cS9VSEJrWHBzbkhTY0hNKy80YlFTenVDNEQ0RjUxTE1TRE03MWNkQWdlYXRI?=
+ =?utf-8?B?aWNvNHNLN3praG5ld1lhbm8rZ1k2NnpSMUhtODRmcmIxWG45WWRTdzlaem9l?=
+ =?utf-8?B?OERyV0pqQW8rMmlNRjd2VFp2cnR6K0d6bTlDWFNOcHpVOGlIYkpXMk5yNVVP?=
+ =?utf-8?B?TUgwTmFqL3MzbU9OZWc3cDM3VEVjaUtYY2pya2lWRmJZQVdNL3V0enVhdmZJ?=
+ =?utf-8?B?L0ZQZ0laRmJaRzZNaTY4U3ZPVk9pSmdzOTAyeUplQlY1UitoYlR6eHNVSHo1?=
+ =?utf-8?B?WTM5bmlSVGYwazRzSSswN0pqZExmSWhhVWpaY3YxQ3MreGxwZFF5T2lNMTJz?=
+ =?utf-8?B?VWowUTFLVnVzQjBuLzFQNjBMeStMUEg3RHVVanJ3WjhiVU14NWR1d2c5d1Mr?=
+ =?utf-8?B?Yy9FMEkwRFd5cktnSC9lZFRCZXdIT3V1NVNHWndlcCt2akIzLzFjdUpPSGRw?=
+ =?utf-8?B?MHV1WmdXWWh4eUVrdURRWlVRMFV4VUtJOXVKME1YQTBva3Bxcm92ZTNqd3RB?=
+ =?utf-8?B?Ym0zVi90Z3hMTy9FWFNpSCtjdW1oN0Zja0FGR3FyWndDZnd5emNpU3c0d2wr?=
+ =?utf-8?Q?qktdFxtm0TxQ+1mw=3D?=
+X-Exchange-RoutingPolicyChecked: fIB0N4Z9OiFtpl4Fi3WcE4nT57vRYgAmkDE7roH+1kBtBgv/sDuRIvkdIiG/3fI8J/G26k9gtyggm31EUli7euYmbyEYo2cGBsr9zzUGs7qpmLn17qlzelYgR0UfDx0JVodB7O7L3VdKW8g6E+0PaQbNaL7YjiCtAnMfGLiab41ghHS/3bKZiVNYDJbL8VET68cuegDZp08SuUdeJfrgnJq4Tk9IRS37WECMwJJ+SGzhlRUHupoTfOIZS8fO2KL3iHJwPVbcYdSQk9q8aRjh/bCxlNRJhItGE08Zi4OdxtqUeApNRZiFiULXvEZ36z2cb+OrzoM6qf190x7i5uSJaQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9bc8d101-ec08-4303-32ea-08defc5b535b
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8508.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TY4PR01MB14282.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f49c8ef1-bce6-47bc-5009-08defc5b0dc1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Aug 2026 12:28:33.6130
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 12:30:30.6667
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: CH9qGTXsGCVs5kWLxprxLR3srV6WYNSCUij8liHCwS9fCIQbACDN4ERN2aLNSHX8pNBt2iz9S2P/iHQ+1xxVT4J2HnIb64r/fHRboDxagnk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS9PR01MB12183
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JAERb6UeSKVhQlOR2UsAuKOWQokDFMoFZEtQPkDB4A6EJS0daIq5tUD5mMm1otxJu7qsOK/KX238iEe933tcN9IJj1LMEcGL0YN6BbCPhig=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA6PR11MB690409
+X-OriginatorOrg: intel.com
 
-Hello Manush,
+On 8/14/26 04:13, Harshitha Ramamurthy wrote:
+> This series is preparing the driver for the addition of a new control
+> plane mode(MailboxQ) by commonizing and reusing as much code as possible.
+> MailboxQ is a new control plane infrastructure which uses mailbox queues.
+> This is a new control plane to communicate with the device when the driver
+> is running on bare-metal instances as well as newer versions of the device.
+> 
+> This series contains 2 main changes to the gve driver's existing control
+> plane(AdminQ):
+> 1) refactor some initialization/teardown path methods to make it work for
+>     both control planes.
+> 2) add gve_ctrl_ops structure to the driver for various control plane
+>     operations
+> 
+> The refactors are mainly around the init, reset and recover paths so that
+> functionalities could be moved into the control ops like 'set_num_queues',
+> 'set_num_ntfy_blks' etc.
+> 
+> This patch series only sets the control ops for AdminQ mode. This is
+> intended as a preparation for adding MailboxQ mode in upcoming series
+> which will add the new control plane infrastructure and then introduce
+> the corresponding control ops for MailboxQ mode.
+> 
+> The entire list of future patches can be found here for reference:
+> https://github.com/hramamurthy12/linux/commits/gve-mailbox-queues/
+> 
+> Changes in v4:
+> - Reduce code churn by placing new functions directly in gve_adminq.c, introducing final tab spacing
+>    and using local variable (Przemek Kitszel)
+> - Fix kdoc formatting and drop spurious management interrupt(patch 9)
+> - Propagate release_db_resources naming change (patch 12)
+> - Remove double logging in destroy queues path (patch 14)
+> - v3: https://lore.kernel.org/netdev/20260803184630.3813311-1-hramamurthy@google.com/
+> 
+> Changes in v3:
+> - Fix driver compatibility verification in the reset and recovery paths (patches 2, 8).
+> - Mark gve_adminq_get_device_properties() with __maybe_unused ahead of its usage (patch 7).
+> - Refine error handling and resource cleanup in reset, probe, and queue creation paths (patches 8, 9, 11, 14).
+> - Keep IRQ doorbell allocation/release in control plane resource helpers (patch 12).
+> - Minor fixes: fix TOCTOU issue for link speed, correct kdoc comments, and remove redundant teardown calls (patches 4, 11, 15).
+> - v2: https://lore.kernel.org/netdev/20260602235900.3050782-1-hramamurthy@google.com/
+> 
+> Changes in v2:
+> - Rebased against latest net-next to resolve apply failure for patch 5
+> - Fixed a few typos in commit messages of patch 9 and 14
+> - Fixed a kdoc warning in patch 9
+> - v1: https://lore.kernel.org/netdev/20260601175437.3767283-1-hramamurthy@google.com/
+> Harshitha Ramamurthy (9):
+>    gve: don't pass in unused parameter to gve_adminq_free
+>    gve: refactor initialization with helper functions
+>    gve: add a few helper functions to set device properties
+>    gve: add struct gve_device_info to hold device properties
+>    gve: introduce control plane operations structure
+>    gve: introduce ctrl ops to set vectors and Qs
+>    gve: introduce gve_adminq_get_device_properties()
+>    gve: refactor gve_init_priv for reset path
+>    gve: add ctrl ops to for queue operations
+> 
+> Joshua Washington (6):
+>    gve: simplify reset logic
+>    gve: add gve_ctrl_ops for gve initialization/teardown sequences
+>    gve: split up notify block allocation and setup paths
+>    gve: introduce new methods to handle IRQ doorbells
+>    gve: setup and teardown management interrupts
+>    gve: add link status/speed ctrl ops
+> 
+>   drivers/net/ethernet/google/gve/gve.h         |  89 +-
+>   drivers/net/ethernet/google/gve/gve_adminq.c  | 437 ++++++--
+>   drivers/net/ethernet/google/gve/gve_adminq.h  |  25 +-
+>   drivers/net/ethernet/google/gve/gve_dqo.h     |   2 +-
+>   drivers/net/ethernet/google/gve/gve_ethtool.c |   5 +-
+>   .../net/ethernet/google/gve/gve_flow_rule.c   |  15 +-
+>   drivers/net/ethernet/google/gve/gve_main.c    | 940 +++++++++---------
+>   7 files changed, 957 insertions(+), 556 deletions(-)
+> 
 
-Were you able to test this on real HW?
-
-I am currently on a different code base and device (X5H). I have tested it =
-with your original=20
-patch and with v2 of the patch.=20
-
-Patch v1 works fine; patch v2 does not work.
-
-Best regards,
-
-Michael
-
-> -----Original Message-----
-> From: manushprajwal <manushprajwal555@gmail.com>
-> Sent: Friday, August 14, 2026 9:04 PM
-> To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-> Cc: Andrew Lunn <andrew+netdev@lunn.ch>; davem@davemloft.net; Eric Dumaze=
-t <edumazet@google.com>;
-> Jakub Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; netdev=
-@vger.kernel.org; linux-
-> renesas-soc@vger.kernel.org; Manush Prajwal <manushprajwal555@gmail.com>
-> Subject: [PATCH v2] net: ethernet: renesas: rswitch: fix device_node refc=
-ount leak in
-> rswitch_get_port_node()
->=20
-> From: Manush Prajwal <manushprajwal555@gmail.com>
->=20
-> On an of_property_read_u32() failure, rswitch_get_port_node() set port to=
- NULL and jumped to the out
-> label before releasing the reference the
-> for_each_available_child_of_node() iterator was holding on it. Once port =
-was overwritten with NULL,
-> that reference could never be released since out: only put "ports", the p=
-arent node.
->=20
-> Rework the function around for_each_available_child_of_node_scoped()
-> instead of adding a manual of_node_put(), so the iterator's reference is =
-dropped automatically on
-> every exit path. Since port is the function's return value, take an expli=
-cit reference with
-> of_node_get() on the match before breaking out of the loop.
->=20
-> Signed-off-by: Manush Prajwal <manushprajwal555@gmail.com>
-> ---
-> v2: Rework using for_each_available_child_of_node_scoped() instead of
->     a manual of_node_put(), per Andrew Lunn's review.
->=20
->  drivers/net/ethernet/renesas/rswitch_main.c | 20 +++++++++-----------
->  1 file changed, 9 insertions(+), 11 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/renesas/rswitch_main.c b/drivers/net/et=
-hernet/renesas/rswitch_main.c
-> index 6fe9648163..ffdc42f430 100644
-> --- a/drivers/net/ethernet/renesas/rswitch_main.c
-> +++ b/drivers/net/ethernet/renesas/rswitch_main.c
-> @@ -1303,8 +1303,8 @@
->  /* Call of_node_put(port) after done */  static struct device_node *rswi=
-tch_get_port_node(struct
-> rswitch_device *rdev)  {
-> -	struct device_node *ports, *port;
-> -	int err =3D 0;
-> +	struct device_node *ports;
-> +	struct device_node *port =3D NULL;
->  	u32 index;
->=20
->  	ports =3D of_get_child_by_name(rdev->ndev->dev.parent->of_node,
-> @@ -1312,17 +1312,15 @@ static struct device_node *rswitch_get_port_node(=
-struct rswitch_device *rdev)
->  	if (!ports)
->  		return NULL;
->=20
-> -	for_each_available_child_of_node(ports, port) {
-> -		err =3D of_property_read_u32(port, "reg", &index);
-> -		if (err < 0) {
-> -			port =3D NULL;
-> -			goto out;
-> -		}
-> -		if (index =3D=3D rdev->etha->index)
-> +	for_each_available_child_of_node_scoped(ports, child) {
-> +		if (of_property_read_u32(child, "reg", &index))
-> +			break;
-> +		if (index =3D=3D rdev->etha->index) {
-> +			port =3D of_node_get(child);
->  			break;
-> +		}
->  	}
->=20
-> -out:
->  	of_node_put(ports);
->=20
->  	return port;
-> --
-> 2.46.2.windows.1
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 
