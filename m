@@ -1,115 +1,102 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B8D23741;
-	Mon, 17 Aug 2026 06:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C7537649D;
+	Mon, 17 Aug 2026 06:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786948157; cv=none; b=XCe4xQQyjhEmI5e9l7e6mW2QIWEYdgmoNVE/GJFs1Ke6qjYhEAm0zvKTc1PsaLgsQaNVytMizbaz6TLLUQ0AxqJCespnmpJlQS0J7A8EtKjmE5nQP2ZaimjzH8FicMvntjmyKcOTjH0rBME/u11ll1n19k2lf+SdQCHbOpHCkOY=
+	t=1786948930; cv=none; b=RKnC1bhIbwBUP8B1lmguclykO351t32xy/rBVdlJV7zOtgPRMAbJWdvan0eMlpSzeU0/DF2IicbOFUmL70o7Aiz13lSK+777ty+OiPbt5b/lSUhgnhYu53Yzs8DV752uKTWk8ejQxFwDM8ee31XodQhL5IUw3s3JA5nrMIyKdWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786948157; c=relaxed/simple;
-	bh=clA6b7CxVK7l7rzUdRiE/LMIJ5I5D3XfzVfbVR0kge8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TbBjeuGEDaew4mrV+tvfuLUwIGmcpsfsUb/Stwu4Z9rrh8P0QT+Srbbv8pWtUE+hwxsWuWwz4yU3ILMhRc2gb9AUz+65b2Jet3bnirEoyVfJnvMdAz8MX/ARqFzqWG1fa0F5I2d0BojJoAtbVWtjNdvstg8DdgQ1lrzn+invrAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NBaxSAM6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786948930; c=relaxed/simple;
+	bh=lfM9pOhBetJPYYK4qYrHW9wRll5A1BHJeYt3jkfBYwU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qExWKssTgkC926jGq3A3EMwzFX22XKJedIxsuJTlml4C78F3w+hYVmGPtZMEkHTndyttGcaWZO+oqGW0QHr4FDnLUFkb7u0Swma0r1y8OmQ6xw9aRAQhdKB4WdkVMB/qO62JYQ121vFffett1WCCwxebKAPL9RfFVYKo06U5JA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H3jfklVL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NBaxSAM6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D08B21F000E9;
-	Mon, 17 Aug 2026 06:29:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H3jfklVL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0355C1F000E9;
+	Mon, 17 Aug 2026 06:41:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786948155;
-	bh=rGuj0TXK9Gf4jbd/TaHIlwxx+1Y0rd7UNGo7CFHlOds=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NBaxSAM6+kK0DZi4AgsTCW4O+0vUgMKJLfr82V1GQevh/KKAQ3oNzLc4d0DXIDbga
-	 tkB+OhMMbdhVT0j/eB34tNPgkhIol+kppyLyW+drC/7n4tp3HO3lKk/yOD9bTelq22
-	 3jXsQP1lKfOVpVFJnqLgf7oBHt0FOctRPeNzplWCVYamcuBVjB8Mep70zAURHOmd/x
-	 xhJnU57pPsonxSYrMMI7P5790/8SxNfTrW9/AV0SCh6aPpxQ1Qa9+aEg1sNROgI0eg
-	 MZj3KXqPGHW48iWEE6BAkpP1sOcc9D9rMlFNrAMXMddVsrlpCAjvHGmEukd39j76Dm
-	 iuPVpOYhE0CMA==
-Message-ID: <c4d970dd-cb54-4530-9491-01b6d90e4a2b@kernel.org>
-Date: Mon, 17 Aug 2026 08:29:06 +0200
+	s=k20260515; t=1786948928;
+	bh=oywaUON15WdihKMJCP++sVdkvh89c+odYunDFRYVzhQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=H3jfklVLwyT6/xF3w7S1fNnK/K8UZDmaIyMRW0RQhLfMiz+frpcg0qz1AtkL/h2KH
+	 6qu2ZopqnqHycrgKodisx3WxfXSq6Yx4EWjaDm8hJCpbjhXXC6g1cDesl0N95DMWxi
+	 G+tinzQQpSOQM2ddT85MkJhmAzpyD1iUzP0n0dOEazg+Dyey6vcRIQumpQchOjiAQT
+	 gVq+gEVar9Pa/Q6jHmIB9bMwxGJdE3p1p5lUFVNiVNKtfBDomhbBlISV2OjJ+5Mmo8
+	 1GQ1QNbVm/UoKDqvshTwzoeOQn7x2j5Tcudgb0VSCyjH1DZ4tVImGfb55MwtLRk6lc
+	 U0T7a5bsLzrJw==
+Date: Mon, 17 Aug 2026 08:41:56 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Ahmad Byagowi <ahmadexp@gmail.com>
+Cc: netdev@vger.kernel.org, Lee Jones <lee@kernel.org>, 
+	Pavel Machek <pavel@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Andi Shyti <andi.shyti@kernel.org>, Peter Rosin <peda@lysator.liu.se>, 
+	Nam Tran <trannamatk@gmail.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+	Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>, linux-leds@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH net-next v5 1/7] dt-bindings: leds: Add IS32FL3207
+ controller
+Message-ID: <20260817-invaluable-hog-of-current-b0d0bd@quoll>
+References: <cover.1786746757.git.ahmadexp@gmail.com>
+ <d5df0bb5c312478279f0d2fd5ec6305e41add5ae.1786747084.git.ahmadexp@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc: remove dead 440SP code
-To: Julian Braha <julianbraha@gmail.com>, maddy@linux.ibm.com,
- mpe@ellerman.id.au, npiggin@gmail.com, Frank.Li@kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com
-Cc: linusw@kernel.org, kees@kernel.org, colin.i.king@gmail.com,
- rosenp@gmail.com, joao@joaoff.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
- netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20260816125615.985387-1-julianbraha@gmail.com>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <20260816125615.985387-1-julianbraha@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <d5df0bb5c312478279f0d2fd5ec6305e41add5ae.1786747084.git.ahmadexp@gmail.com>
 
-
-
-Le 16/08/2026 à 14:56, Julian Braha a écrit :
-> The 440SP config option can never be enabled, making all references to it
-> dead code.
+On Fri, Aug 14, 2026 at 04:10:49PM -0700, Ahmad Byagowi wrote:
+> The IS32FL3207 is an 18-channel constant-current LED controller with
+> per-output PWM and current scaling.
 > 
-> Let's remove support for 440SP, since nobody can be using it anyway.
+> Describe I2C addressing, power and shutdown controls, RISET, and
+> individual or multicolor output groupings. Require board current limits
+> for each output and document their relationship to the RISET-derived full
+> scale.
 > 
-> This dead code was found by kconfirm, a static analysis tool for Kconfig.
-
-It would be good to include history in the commit description:
-
-As far as I can see, users of CONFIG_440SP were commented out by commit 
-f65573314e4e ("[POWERPC] Re-organize Kconfig code for 4xx in 
-arch/powerpc") and removed by commit ff5f483f3091 ("powerpc: 4xx: remove 
-commented out Kconfig entries")
-
-
+> Allow dash-suffixed multicolor group names when a group begins at channel
+> 16 or 17, which cannot be represented by the common schema unit-address
+> form.
 > 
-> Signed-off-by: Julian Braha <julianbraha@gmail.com>
+> Signed-off-by: Ahmad Byagowi <ahmadexp@gmail.com>
 > ---
->   arch/powerpc/boot/cuboot-katmai.c   |  2 +-
->   arch/powerpc/include/asm/async_tx.h |  2 +-
->   arch/powerpc/include/asm/dcr-regs.h | 10 +++++-----
->   arch/powerpc/kernel/cpu_specs_44x.h | 12 ------------
->   arch/powerpc/platforms/44x/Kconfig  |  3 ---
->   drivers/dma/Kconfig                 |  2 +-
->   drivers/dma/ppc4xx/adma.c           |  9 ---------
->   drivers/dma/ppc4xx/adma.h           |  2 +-
->   drivers/dma/ppc4xx/dma.h            |  9 ---------
->   drivers/net/ethernet/ibm/emac/mal.h |  2 +-
->   10 files changed, 10 insertions(+), 43 deletions(-)
-> 
-> diff --git a/arch/powerpc/boot/cuboot-katmai.c b/arch/powerpc/boot/cuboot-katmai.c
-> index 034a748fde24..fcd71e76309f 100644
-> --- a/arch/powerpc/boot/cuboot-katmai.c
-> +++ b/arch/powerpc/boot/cuboot-katmai.c
-> @@ -31,7 +31,7 @@ static void katmai_fixups(void)
->   {
->   	unsigned long sysclk = 33333000;
->   
-> -	/* 440SP Clock logic is all but identical to 440GX
-> +	/* 440SPe Clock logic is all but identical to 440GX
->   	 * so we just use that code for now at least
->   	 */
->   	ibm440spe_fixup_clocks(sysclk, 6 * 1843200, 0);
-> diff --git a/arch/powerpc/include/asm/async_tx.h b/arch/powerpc/include/asm/async_tx.h
-> index a14758426dd5..1ff5b2ca3ed1 100644
-> --- a/arch/powerpc/include/asm/async_tx.h
-> +++ b/arch/powerpc/include/asm/async_tx.h
-> @@ -7,7 +7,7 @@
->   #ifndef _ASM_POWERPC_ASYNC_TX_H_
->   #define _ASM_POWERPC_ASYNC_TX_H_
->   
-> -#if defined(CONFIG_440SPe) || defined(CONFIG_440SP)
-> +#if defined(CONFIG_440SPe)
+>  .../bindings/leds/issi,is32fl3207.yaml        | 281 ++++++++++++++++++
 
-Replace by #ifdef CONFIG_440SPe
+I do not see any explanation why you dropped review.
 
->   extern struct dma_chan *
->   ppc440spe_async_tx_find_best_channel(enum dma_transaction_type cap,
->   	struct page **dst_lst, int dst_cnt, struct page **src_lst,
+We have enough of other patches to review, so if you ask us to do the
+same work twice, it's only fair if we just skip your patches.
+
+<form letter>
+This is a friendly reminder during the review process.
+
+It looks like you received a tag and forgot to add it.
+
+If you do not know the process, here is a short explanation:
+Please add Acked-by/Reviewed-by/Tested-by tags when posting new
+versions of patchset, under or above your Signed-off-by tag, unless
+patch changed significantly (e.g. new properties added to the DT
+bindings). Tag is "received", when provided in a message replied to you
+on the mailing list. Tools like b4 can help here. However, there's no
+need to repost patches *only* to add the tags. The upstream maintainer
+will do that for tags received on the version they apply.
+
+Please read:
+https://elixir.bootlin.com/linux/v6.12-rc3/source/Documentation/process/submitting-patches.rst#L577
+
+If a tag was not added on purpose, please state in the patch changelog
+or cover letter why and what changed.
+</form letter>
+
+Best regards,
+Krzysztof
+
