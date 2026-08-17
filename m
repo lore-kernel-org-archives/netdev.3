@@ -1,121 +1,125 @@
-Received: from mta1.migadu.com (out-41.mta1.migadu.com [95.215.58.41])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB33B4B0497
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 12:14:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12E840DB58
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 12:14:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786968854; cv=none; b=eXLzbj1ZjV2NrDwbcPhtqhqDAs9M+46jvsZLxfFJBFitXjU0xUBHl+8VlfS1jJ4wSCay8GosQ/4uBd/jPJ+18gJ6Xq8DfYQog/hu/yQUq0pj+66o5Zwq7lAsyJwGkCqMQDGl1Eo9eTIVqTl7Ns29uL2rNgvBZFW/Jxf/k5MZa0E=
+	t=1786968895; cv=none; b=rChihPeGXXX0HVRdgEyLTxgltPOeKzso0VY/zAh64iJFSt3ggK2r6XzaDh/Ytm0LbemC4oCps6krPtDQ+GP2xWJkkHsoUG5HsVKUEtVPezQPCdOUsh/S86hXQz0K3xFSk/9KUnAJ2bUi+SzmMv+Ujwf2A7rL85mQGmGZ+REAuNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786968854; c=relaxed/simple;
-	bh=BZGD/kL6wdaidGWNG1WyLeQTkSGw7D7Oxub8aW7qdWQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rCf9MUeMmEawBWZ9QrOhUAD0+LZDVN1rsTK0P3Qd+O6RdzvjIf5H/6KzW0Zh8xTn3Zv9ZgnO5UPgCPWU7DeD3jkFr/UMPcw7BYCoyac8k1sTJGa1iftplMr2CtDDeQUrip8vCjUdY+ccYkLKuCUbk6ZeixQyRKS8lsjHpcqL6Lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=xmzgoR4Z; arc=none smtp.client-ip=95.215.58.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1786968895; c=relaxed/simple;
+	bh=Oxihi4tyCiRFwTTtT5PJ9Pla2kfNMBs2lDDv7Z3LJDc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=WSE8a4hSUfYO3Ce4vzWUuttmVVmG0hg4aiMYSVPrFPMq3QWIBcuG5RHEauUB3se/wuc8/ulB+N49Lui+odPmH6RdGucn9LhX0gdKkGBi7Y8EtPVY5ZK/BbJjJ/z48GWWUnuQeP1ZKnvMKJYYfmp5SeCFmBfGD9CYVuvwpwvAl7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G+mCxEg+; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="xmzgoR4Z"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=BZGD/kL6wdaidGWNG1WyLeQTkSGw7D7Oxub8aW7qdWQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786968849; v=1; x=1787573649;
- b=xmzgoR4ZIhGADnLD8KmFyxCh9vTQMaec+kv6nCtPrRoQrHqUVpSlExRGveykq0P4FU57pEMC
- aVSNCqtICeEwqx5cbGtYKT2OZ+4OU3E3/V2YB1vE6LQFGiQ5JhH9dqDw3tJ3goFydFKApdmdAho
- MKACFHcM0zwzw4fVM0Jb8yz8=
-X-Envelope-To: netdev@vger.kernel.org
-Received: from [10.54.25.56] (222.72.143.228)
-	by smtp.migadu.com with ESMTPS id 7968e220c24ef2f1;
-	Mon, 17 Aug 2026 12:14:09 +0000
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <0e872f9e-ee7a-41db-afbf-4bae49257bc0@linux.dev>
-Date: Mon, 17 Aug 2026 20:14:03 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G+mCxEg+"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2d027b7c8easo8396785ad.3
+        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 05:14:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786968893; x=1787573693; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XumJTl0I5Y8s5eBq+8CyvqpDHJfE5sls8hInlodZWic=;
+        b=G+mCxEg+Zj6MjF6JCASm3im5/iFH0kkfRvfOf4lw/PRvNGISlgbX1SmqA8n1YEmWT0
+         9WRdpnpTYOokxwLxSes971ZQDlu8KY9N8HbvZrCJkWRTU5rIiiqGq/oiQnQlWaTH1FAB
+         FIa9IEu+8y9RymQxSwAtYzBMY6+MWfQJluAcqEHYXYQf5AfRuZdL8/bHOmnVz3fIHIXk
+         bh9iEfJ1GDDUFyIY60h1RpxplWvZvO8eUiI6LM9n3wO7yv1mHnDzLHyOuHfCl4sJsfnY
+         b5MEBsGVH4UNi5VkLAuxKqZ6REGgNsKbpP6HSH6XaczpCDhqYS93q7nvZdUit1+AjrED
+         gzOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786968893; x=1787573693;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XumJTl0I5Y8s5eBq+8CyvqpDHJfE5sls8hInlodZWic=;
+        b=WhgF3HBu5tHL8b4ivcPNIlm1v5q1Mzsq0yLC6uMprngoLk83MTwDSAhmbSGAASYY7Z
+         FWhkOO2kGm6Gxd8Q5Y/DvKPUUr4MxLSxuzDm+i4RoXzRe68dxKFEH4VqlLy57Kb0tf8T
+         v9KrMAthDCiWxvBRIfcBHgRC281P28Xq6nqnPWt5QT4dpRapgrFSFLegvBJyRhNDlG6A
+         wWmMw9OXJz71U6XJBOMMJ67gyX3V5tHp0UmX77X3PetolugJYOZtJPBLegxpYckE7wfB
+         EwgoMg+K6eHbBbMKpmD+5+rnEUphJ5v3PIs0+OAHxVwsvAgKte1fjYhbASIH7YmWRF8m
+         dTNw==
+X-Forwarded-Encrypted: i=1; AHgh+RoOpvz7dFLw8G3EiUuiRUcouuGQUQx9zKYsw1vKU0FOu0ZqDZL8zU5tnj6EQeAMNAvmKA+xUnQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCKl4315DmGkNFnPHv5T044iVHI+YBF9PY+5uqEAy2JAWJy7DQ
+	RleD9NhBf5/mxYU2P8Mb5TtL8lFKiwH78egbuMD/kSKEgExrnKQr/MRH
+X-Gm-Gg: AR+sD12NUQYBOp/DIQp/VEAnRM4mkqiCsLKHyoyOUpZ0/2ibdIL4LCDE9rcwGa4rG8s
+	jU306Ymi51PixhUOULGbIakIAtGwnbv8dg+hyUnu3tHzrt6r45Qm+2sRM9O20J0pBeZVAvSsu0+
+	cI0k/2tNsjcP4K6UkolZ+2ym8Q2ozEExioxUHcB2aozhvwf5/UAnwlxj0NEEpQte4lbzgK6afy6
+	5pqFju7nfgA/sCcFRwH6O6SbNBxxF6HsNtrfkRphyhYHg84DrNnOiRxaaFdo/g3sjWcoFHnseN3
+	cjHYenmWZ0qH+j7IgT8Cs/SbiohvfpRIdUjhPIXsR3uAoARnlOVYwc3rDnfNg1TDATvRRrT70+W
+	Ipkp7zmkYOQ1Kw7pymHWhpTrNfTjaNg2+pOcAULzcjVrUCGEFZjWUsQNfheWy52FEWNWiB5A9PU
+	l+dOmwZlswFr/5nL0i0o4107S/CJn+JmDXeWisbyxiDAdfLHVLoxw2GPot/L5M3NoDtsPNDzr8O
+	4S3BZhOlRdZIOthFA69SzvY93wH9A==
+X-Received: by 2002:a17:902:ceca:b0:2cb:2b50:d9da with SMTP id d9443c01a7336-2d3b0dc5c4emr200745695ad.3.1786968892964;
+        Mon, 17 Aug 2026 05:14:52 -0700 (PDT)
+Received: from localhost.localdomain ([189.1.242.96])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d5c1e543besm1821135ad.41.2026.08.17.05.14.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Aug 2026 05:14:52 -0700 (PDT)
+From: Yiqi Sun <sunyiqixm@gmail.com>
+To: jk@codeconstruct.com.au
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	horms@kernel.org,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	matt@codeconstruct.com.au,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	qwe.aldo@gmail.com,
+	sunyiqixm@gmail.com
+Subject: Re: Re: [PATCH] net: mctp: hold a reference to the route device in mctp_route_lookup()
+Date: Mon, 17 Aug 2026 20:14:32 +0800
+Message-Id: <20260817121432.3586534-1-sunyiqixm@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <55cd94e61d68d95e9db16f21980a532f4edf70e1.camel@codeconstruct.com.au>
+References: <55cd94e61d68d95e9db16f21980a532f4edf70e1.camel@codeconstruct.com.au>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/3] ipv6: fix request socket use-after-free after
- IPV6_ADDRFORM
-To: Hyunwoo Kim <imv4bel@gmail.com>, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org,
- ncardwell@google.com, kuniyu@google.com, horms@kernel.org,
- willemb@google.com, andrew+netdev@lunn.ch
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org
-References: <20260817090319.3897799-1-imv4bel@gmail.com>
- <20260817090319.3897799-2-imv4bel@gmail.com>
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20260817090319.3897799-2-imv4bel@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+Hi Jeremy,
 
-On 8/17/26 5:03 PM, Hyunwoo Kim wrote:
-> IPV6_ADDRFORM turns an AF_INET6 TCP socket into an AF_INET one. It requires
-> the socket to be established, and a listener can get there with
-> connect(AF_UNSPEC) followed by connect(). Request sockets queued while it
-> was listening are still there: inet_csk_listen_stop() leaves them in the
-> ehash, and their timers only drop them while the socket is not listening,
-> so making it listen again keeps them alive.
+> Hi Aldo,
 >
-> A request that arrived over IPv6 was hashed with inet6_ehashfn(). Its child
-> is cloned from the converted socket and hashed with inet_ehashfn(), so it
-> belongs in a different bucket.
+> > mctp_route_lookup() uses rt->dev without holding a reference on it.
 >
-> inet_ehash_insert() locks the child's bucket, warns about the mismatching
-> hashes, and replaces the request with the child in the request's own bucket
-> anyway. reqsk_queue_unlink() locks the bucket the request is really in, so
-> there is no synchronization between the two. Both can see the request still
-> hashed and both can drop the reference the ehash holds.
+> [...]
 >
-> The extra put takes the request's refcount to zero too early, so it is
-> freed while it is still on the listener's accept queue. The listener is
-> then closed, and inet_csk_listen_stop() reads the freed request and
-> writes to it in reqsk_put().
+> > Take a reference with refcount_inc_not_zero() before touching rt->dev,
+> > skip a device that is already dead, and drop the reference once the
+> > destination has taken its own.
+> 
+> This looks the same as Yiqi Sun's analysis:
+> 
+>  https://lore.kernel.org/netdev/20260731022926.913865-1-sunyiqixm@gmail.co=
+> m/
 >
-> Refuse the conversion if inet_csk_reqsk_queue_len() is not zero. Nothing
-> clears that counter when a socket stops listening or listens again, so it
-> still accounts for the requests left in the ehash. A socket that never
-> listened is not affected.
+> I had requested some simplifications for the proposed fix, which would
+> likely result in something very close to your contribution here.
 >
-> Fixes: 079096f103fa ("tcp/dccp: install syn_recv requests into ehash table")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-> ---
->   net/ipv6/ipv6_sockglue.c | 4 ++++
->   1 file changed, 4 insertions(+)
+> Yiqi had not followed up from that review as yet, though; so if we don't
+> see any updated patch shortly, then your implementation looks reasonable.
 >
-> diff --git a/net/ipv6/ipv6_sockglue.c b/net/ipv6/ipv6_sockglue.c
-> index b4c977434c2e0a..64fc6127e75332 100644
-> --- a/net/ipv6/ipv6_sockglue.c
-> +++ b/net/ipv6/ipv6_sockglue.c
-> @@ -572,6 +572,10 @@ int do_ipv6_setsockopt(struct sock *sk, int level, int optname,
->   					retv = -EBUSY;
->   					break;
->   				}
-> +				if (inet_csk_reqsk_queue_len(sk)) {
-> +					retv = -EBUSY;
-> +					break;
-> +				}
->   			} else {
->   				break;
->   			}
+> Regards,
+> 
+>
+> Jeremy
 
-Just thinking out loud.
+Sorry for the delay. I haven't had a chance to send v2 yet.
 
-Gating on inet_csk_reqsk_queue_len() reads a bit oddly, since we already 
-require TCP_ESTABLISHED right above.
+I've reviewed Aldo's patch, and the approach looks good to me. It addresses
+the same issue I was trying to fix, so I'm happy for Aldo's patch to
+supersede mine.
 
-it's really just a proxy for "this socket used to listen and still has 
-leftover requests.
+Thanks for picking this up, Aldo, and thanks for the review, Jeremy.
 
-The real issue is we should drain req when disconnect the listen socket, 
-at least we should avoid replaces the request with the child even when 
-sk->sk_hash != osk->sk_hash.
-
-But that's the hot path, so hardening it for such a rare corner case 
-isn't worth the cost.
-
+Regards,
+Yiqi
