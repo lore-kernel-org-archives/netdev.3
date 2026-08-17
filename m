@@ -1,170 +1,130 @@
-Received: from mta1.migadu.com (out-205.mta1.migadu.com [95.215.58.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8B43B0586
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 06:57:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA053B42F0
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 07:00:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786949826; cv=none; b=rdejfB5wSHCLu5GDJkE6CtC0VTOs8x6lgE2Y3fs6Klyo3sGNdm2cNVY7CXCED0Nk3U37glJsdz+EKnQ3DHG5Yc+eXQzinWSqdxH2X6TfX8zrMw2u3ObrNNTWazfB2Ktx1RQjFZUgm4rFg47Nl3tQ1Db7Mx9cvWLRc5qhw32/D78=
+	t=1786950037; cv=none; b=VgS3ee581Hjxps5KBldqIvKtXkHG1Y47wGCFwdyiAX9neO80A0j79S2OGcDtOyghNcL12aJv31PUlZ4DptH7sCCRVV9/HqwfsvFmmAfVvS7c7fKAPimFpVxMTQszYnleMI6bR6An3vUbYND4RQmVD8s/SaDCsC6iT5AKsH8GNOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786949826; c=relaxed/simple;
-	bh=b8WHkNKtP8nsh142rlqWqm/iqonSquTlT6328QxAZhQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cKCrk/fpu1pg3Zlyq6qJ/lRQRS7OC/T1n4DDOrtxFa592lSyN8CrXkfduXqbK4Qr65H+1mQAJdRaY/3VsgZLEwcn7/IyctdmlVWORv9OCY0/CvfxJ2TeRqH2zEpKWmnexIg4MMTQ44XXQoJCGtqLewM/k8FgGw0Z1uCeYuPHToY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=o/awu14Z; arc=none smtp.client-ip=95.215.58.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="o/awu14Z"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=b8WHkNKtP8nsh142rlqWqm/iqonSquTlT6328QxAZhQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1786949822; v=1; x=1787554622;
- b=o/awu14ZqrMAb+tnLRBti4wpG+kFfwANCB30qp3C75+4VFiPAAJCYojmMNYGlZ10Z4O8qp/u
- YsC3sp3VapzNffLFondAR8wV18uqsK1b0pb5BRExVnRSAdB5z70dp/ysUKtKCQceZYwl2O+ZqFs
- BkDJxVHPY8dB09RtSWQQU3MY=
-X-Envelope-To: netdev@vger.kernel.org
-Received: from fedora (216.236.36.150)
-	by smtp.migadu.com with ESMTPS id 0bb39fdd5650f227;
-	Mon, 17 Aug 2026 06:56:52 +0000
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 17 Aug 2026 14:56:39 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Jay Vosburgh <jv@jvosburgh.net>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Hangbin Liu <liuhangbin@kylinos.cn>,
+	s=arc-20240116; t=1786950037; c=relaxed/simple;
+	bh=rIuaj59cyCLoiE94hFa4RphrFWpr5KCIRztMQzAgadQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n1bfD96Oiog7hgyRqdgCcizKfHTudqmWrpyf6rWauruGSMGg0FUJ6+RKsS9jRR8d4I7aBrLxBRqrHm4F74PIpIPmwjgFxex4ZiNWZaerfk+cckyERGl/u4YCsKyToWvg5X8/dDDboWEsReYvh+y/5wGH4hNu1fdQ7HJcIf95HCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.206.16.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: zesmtpsz9t1786949953t9fda6ecb
+X-QQ-Originating-IP: GcdfqqHouoPOjwmUfEp6nfj2fpi9RSHdF1v/n0su/9k=
+Received: from w-MS-7E16.trustnetic.com ( [36.24.185.99])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 17 Aug 2026 14:59:05 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 10523402446872668790
+EX-QQ-RecipientCnt: 12
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org
+Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Subject: Re: [PATCH net v2] bonding: fix u32 overflow in compute_gap()
-Message-ID: <aoKwp6gTtSrnzR2n@fedora>
-References: <20260814-bond_overflow-v2-1-d3fe588ad167@kylinos.cn>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Kees Cook <kees@kernel.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net-next] net: wangxun: refactor NCSI and WOL capability checks
+Date: Mon, 17 Aug 2026 14:59:02 +0800
+Message-ID: <DA17DB365C525F7A+20260817065903.7428-1-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260814-bond_overflow-v2-1-d3fe588ad167@kylinos.cn>
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: NIWx4IxYNqK7+H0pRqMhSVT2RTJDaBUPYhcpFUf7tRfQ3mEEPgGxbCaw
+	J4iyGwNJbj5K6vgZK3d7kZcAKpQmTjbvNG+QVSBSWFRZSlVvj6IKtkbXDhj69vqSo8MkxAE
+	dk4q/wa4UXXXKCyqw5XBQk5aoMMy4iKGyKhaabbugCReSaZtcLAJaIh3YJ6neNkyO0O67vF
+	Uw/3XVleApWsuglfWJN1fUXOSDO0j9xFDkJYzQ5Kof8JCKzXK+/xGBuRUTsrRyapCy545lD
+	E7cTJS7vEByY797lHdAIGijQpUs6rHByPkRigbrZBpsuSlBPqbatSHLScWVnXqsZFYObOdS
+	I42Wy3us6tlYyx4iUGpn5gx00+DnmXbcOJUcj9jq52uGcAL9QWaeALKhDFoBPo7c5WcamyS
+	hYmKfGjABZNqqGKctJpdQG+YJhMYDnXgAuGTDw+MhaCSRCXV6z7xRRTmmSuc7e7daI1cYXW
+	45T5VmFuFy9rPMnSvAVY9cqeFGeKvNdyh4fLtiDGkIvSfzp//mdfKqPimapWCY3SJ5m0aCB
+	S3nRF1/COtre8So1jvWM01yXLlQ+ffau/UOr6BOZ7W8d6ShS7mjeD6KL33LEC6OihUT+hwi
+	jWwFBn7rrbgPlrDArvbgTjNz2US/v/W3k66zyOUTIETCwqOcn23tSU76tLhqskfyDYB6DBc
+	Hb4oE3r7Qw0vR0TYhk5iWkvB1c4t/LydpJvAxuQwRUWPopfuutaqeoQPZB46l74DVnbliAu
+	lSyZbLti2GLF+ZuuuAjJ6xWmuxHtq71hkuEOr2Ha9AtnOB+r1R4X9OAAdiL9UvIsjBeCelq
+	Rg5WegUX2BXCZ1R+PPZddxZDs9IwSNW1Yqi7q5QBg/p0gmUnL0HRgG3pymP81VxjYQkFlmR
+	SixIS762TB0DPN74LE/fnHvG6LR1FvZjf/b3xSLXyoT5aXK2LDH0mq6WAvtOPqPP50eX5M+
+	llTRcN3iMEE8Dvw3jwqqUzxnGGcHCdWTmBWY63xigYEr7xLk0ft5w/vrLC1WBcxWGsNe2gS
+	By0Ng5kzxL5BHloFfM1eNLZGy0gD1cpTA7JOSwm39I5wbmXJJ8sij9NCotvnPi9IJGWXYxM
+	uweFKWjjlsG
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+X-QQ-RECHKSPAM: 0
 
-Hi Jay,
-On Fri, Aug 14, 2026 at 01:39:23PM +0800, Hangbin Liu wrote:
-> From: Hangbin Liu <liuhangbin@kylinos.cn>
-> 
-> The TLB fields tx_bytes, load_history, load, and unbalanced_load are
-> all u32, which can overflow when sustained throughput exceeds ~3.2
-> Gbit/s over the 10-second rebalance interval. On modern high-speed
-> NICs under heavy load this is easily reached, causing the gap
-> calculation in compute_gap() to wrap and produce incorrect slave
-> selection.
-> 
-> Widen these fields to s64 so the load arithmetic stays correct.
-> This also lets compute_gap() naturally return negative values when a
-> slave is oversubscribed, which the existing max-gap selection already
-> handles.
-> 
-> Additionally, the NIC speed is left-shifted before being cast to s64.
-> For speeds >= 4 Gbit/s (slave->speed >= 4096), the u32 shift
-> (4096 << 20 = 0x100000000) overflows before the cast takes effect.
-> Cast slave->speed to s64 before shifting so the arithmetic is
-> performed in 64 bits throughout.
-> 
-> Also cast SPEED_UNKNOWN to 0; otherwise, it would be the largest speed
-> after the shift.
-> 
-> Detected by AI code review.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
-> ---
-> Changes in v2:
-> - update comment description, including AI-detected info.
-> - fix tx_bytes/load type detected by sashiko
-> - cast SPEED_UNKNOWN to 0 before shift, detected by sashiko
-> - Link to v1: https://lore.kernel.org/r/20260810-bond_overflow-v1-1-c9ff29d76770@kylinos.cn
-> ---
->  drivers/net/bonding/bond_alb.c | 12 ++++++++++--
->  include/net/bond_alb.h         |  8 ++++----
->  2 files changed, 14 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
-> index 839f7482dc18..052ab6beb661 100644
-> --- a/drivers/net/bonding/bond_alb.c
-> +++ b/drivers/net/bonding/bond_alb.c
-> @@ -6,6 +6,7 @@
->  #include <linux/skbuff.h>
->  #include <linux/netdevice.h>
->  #include <linux/etherdevice.h>
-> +#include <linux/ethtool.h>
->  #include <linux/pkt_sched.h>
->  #include <linux/spinlock.h>
->  #include <linux/slab.h>
-> @@ -160,8 +161,15 @@ static void tlb_deinitialize(struct bonding *bond)
->  
->  static long long compute_gap(struct slave *slave)
->  {
-> -	return (s64) (slave->speed << 20) - /* Convert to Megabit per sec */
-> -	       (s64) (SLAVE_TLB_INFO(slave).load << 3); /* Bytes to bits */
-> +	s64 speed;
-> +
-> +	if (slave->speed == SPEED_UNKNOWN)
-> +		speed = 0;
-> +	else
-> +		speed = (s64)slave->speed;
-> +
-> +	return (speed << 20) - /* Mbit/s -> bit/s */
-> +	       (SLAVE_TLB_INFO(slave).load << 3); /* Byte/s -> bit/s */
->  }
->  
->  static struct slave *tlb_get_least_loaded_slave(struct bonding *bond)
-> diff --git a/include/net/bond_alb.h b/include/net/bond_alb.h
-> index e5945427f38d..4933a855a438 100644
-> --- a/include/net/bond_alb.h
-> +++ b/include/net/bond_alb.h
-> @@ -57,12 +57,12 @@ struct tlb_client_info {
->  				 * packets to a Client that the Hash function
->  				 * gave this entry index.
->  				 */
-> -	u32 tx_bytes;		/* Each Client accumulates the BytesTx that
-> +	s64 tx_bytes;		/* Each Client accumulates the BytesTx that
->  				 * were transmitted to it, and after each
->  				 * CallBack the LoadHistory is divided
->  				 * by the balance interval
->  				 */
-> -	u32 load_history;	/* This field contains the amount of Bytes
-> +	s64 load_history;	/* This field contains the amount of Bytes
->  				 * that were transmitted to this client by
->  				 * the server on the previous balance
->  				 * interval in Bps.
-> @@ -118,14 +118,14 @@ struct tlb_slave_info {
->  			 * are the entries that were assigned to use this
->  			 * slave for transmit.
->  			 */
-> -	u32 load;	/* Each slave sums the loadHistory of all clients
-> +	s64 load;	/* Each slave sums the loadHistory of all clients
->  			 * assigned to it
->  			 */
->  };
->  
->  struct alb_bond_info {
->  	struct tlb_client_info	*tx_hashtbl; /* Dynamically allocated */
-> -	u32			unbalanced_load;
-> +	s64			unbalanced_load;
->  	atomic_t		tx_rebalance_counter;
->  	int			lp_counter;
->  	/* -------- rlb parameters -------- */
+There is a clean refactoring that replaces inline bitwise checks with
+precomputed boolean fields. The hardware capability of NCSI and WOL is
+obtained from the sub-system ID and do not change.
 
-Sashiko reported that on a 32-bit system, these s64 numbers' read/write
-operations and division will tear. We need to use div_s64() for divisions
-and may also need to convert the number to atomic64_t for read/write operations.
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+---
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c      | 3 +--
+ drivers/net/ethernet/wangxun/txgbe/txgbe_main.c | 8 ++++++--
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-Do you know how bonding support works on a 32-bit system? Should we handle it?
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+index 122c4952d203..f0046dcb5496 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+@@ -1313,8 +1313,7 @@ void wx_disable_rx(struct wx *wx)
+ 		rxctrl &= ~WX_RDB_PB_CTL_RXEN;
+ 		wr32(wx, WX_RDB_PB_CTL, rxctrl);
+ 
+-		if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
+-		      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
++		if (!(wx->ncsi_enabled || wx->wol_hw_supported)) {
+ 			/* disable mac receiver */
+ 			wr32m(wx, WX_MAC_RX_CFG,
+ 			      WX_MAC_RX_CFG_RE, 0);
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+index eb91c4f28ecd..8c508aa3ce62 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+@@ -267,8 +267,7 @@ static void txgbe_disable_device(struct wx *wx)
+ 		wx_set_all_vfs(wx);
+ 	}
+ 
+-	if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
+-	      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
++	if (!(wx->ncsi_enabled || wx->wol_hw_supported)) {
+ 		/* disable mac transmiter */
+ 		wr32m(wx, WX_MAC_TX_CFG, WX_MAC_TX_CFG_TE, 0);
+ 	}
+@@ -336,6 +335,8 @@ static void txgbe_down_suspend(struct wx *wx)
+  **/
+ static void txgbe_init_type_code(struct wx *wx)
+ {
++	u16 ncsi_mask = wx->subsystem_device_id & WX_NCSI_MASK;
++	u16 wol_mask = wx->subsystem_device_id & WX_WOL_MASK;
+ 	u8 device_type = wx->subsystem_device_id & 0xF0;
+ 
+ 	switch (wx->device_id) {
+@@ -381,6 +382,9 @@ static void txgbe_init_type_code(struct wx *wx)
+ 		wx->media_type = wx_media_unknown;
+ 		break;
+ 	}
++
++	wx->wol_hw_supported = ((wol_mask) == WX_WOL_SUP);
++	wx->ncsi_enabled = ((ncsi_mask) == WX_NCSI_SUP);
+ }
+ 
+ /**
+-- 
+2.51.0
 
-Thanks
-Hangbin
