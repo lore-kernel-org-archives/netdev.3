@@ -1,113 +1,194 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71684331EBE;
-	Mon, 17 Aug 2026 17:04:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A773BADAA;
+	Mon, 17 Aug 2026 17:13:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786986247; cv=none; b=p8ex8jtly2J+8bPPT6kvMWkswVpobog2FhV2tgGerU5EKzSv4PtxDWYggbNSV5zP0kZ3tOL3abxsauleg5UK3WMj434QGdXcdL5ej6FJv1xGrMZpsb21I/OC0rc7l/xb3DQAALcGKXL0jafuazGRs0YeSIM8BYkrEvmrVPOTXUw=
+	t=1786986796; cv=none; b=aBSCH0BE2ukH5Vr1gyD3OCjoKgopiVBXXWehsNNHbzusSqj/6NaPUn3xul3hkqE88g5ZLuyUZryW1HLU4aYIEHOoDxcTujMXuCj0rw+MDRgC2CUHDlw4hrzDf4qOnBySSGD+AHcNRks783FhDDK9WEV4xpKalh6Q4ibBGCZ4NME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786986247; c=relaxed/simple;
-	bh=aB+NVtmBB9x2nIy9fz/oEmgDw8czmVQOoCMvHTkb2Hg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=imH/ng443ZM4MHC87Gxi3TwtMaXxPC06QjnalsyclP4Jm5ef0kLqanvr2T9OqzhoIHrzkCg4JZL8P4ZjAY8A2Dz9VSS12VddRiSWx24zL19egR50nMC/TOcVRayQX+TpJfVMs3InzCqciYKM+VXDBvajmjHnOFBsgvuMLgAv1Oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=BENu0ml7; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1786986796; c=relaxed/simple;
+	bh=ls9qQUR1hZVFCYLQG8ubjDr2E+9tf8y7M1uxasV+TgA=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=nUUYq2AOcsrJhj7430II0Bs1TwtgfTMFsXLw1fGsXArj1mEDcrY7oVAGddk6/q2WPW/5+oxwSLzmEKUM8ownAOdl46PkQ8iUhijr71cBmRYEZD5kGCY1b6bkDJQyyS5AlLHpOQRiXGex9SkklTLoR3UTAU1whGDofYjWhdxC5ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H/EhWD/5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="BENu0ml7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=xBXRf0YZgF6Oekv2P9V3yxYLpbvIQRtTVNvKVDawMLw=; b=BENu0ml70suycsFQa073KzAhLW
-	qgA0dlVo4Nc52yXdDPQofrm2Vvzu1aytWJUfujjfylsrE7snkESXt94Qg2wE6YU96KgokDX7fbeZT
-	28x+0XRfMn96Qbn29CS+3KjU8nlPlAvjrCpf43g8trRqZlXlQ0IaX33NJNqKqEDKvPQo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1ww0kY-000LMh-Kx; Mon, 17 Aug 2026 19:03:50 +0200
-Date: Mon, 17 Aug 2026 19:03:50 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Markus Stockhausen <markus.stockhausen@gmx.de>
-Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	netdev@vger.kernel.org, chris.packham@alliedtelesis.co.nz,
-	daniel@makrotopia.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v14 10/13] net: mdio: realtek-rtl9300: Open up
- C22 and C45 space in parallel
-Message-ID: <cf8bdf97-64f9-4120-bdeb-c5a91a274490@lunn.ch>
-References: <20260817162632.1208891-1-markus.stockhausen@gmx.de>
- <20260817162632.1208891-11-markus.stockhausen@gmx.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H/EhWD/5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DDF51F000E9;
+	Mon, 17 Aug 2026 17:13:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786986794;
+	bh=UF1+Qjd+tN08xa7oM68EPTTiZxwvLfr/wr7qKne9RYM=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=H/EhWD/5MKNElh4vEbnsJk0bx0Z8JUO69vd25fuL3NrMCSaYVqxxP6/HBjnjP7cxD
+	 NW7JhQ/QLtiehBPyoPECEVE+z9cYASP8aEuQaEyh3IO5mS9v3VYhXNKQXfwYJjks6M
+	 DH0TaH4Y3fgFUf6Nnh/aZxdcLjN1BzitPqegGXYoFsK/iiKPIH0Ii9QpZKoCyDT/hX
+	 Nr0P2WFiMCbFgiPBGvq9xZkAojtJ8b1wAomSe30HbdRpH9TfvcRb9c+Xxh93yFwVTC
+	 IqoAXA8WNuukwRmoqgc3LHJjDsCADQGSj0zZVJMkjB+kcC/8sZNbc6OqxCVgWFHI0G
+	 W7GU9Cpq4q3AA==
+Content-Type: multipart/mixed; boundary="===============6078595138110994450=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260817162632.1208891-11-markus.stockhausen@gmx.de>
+Message-Id: <254f3972f477e13f89ac620d447750799144c889188ddd6de1bb9bd9e2f34039@mail.kernel.org>
+In-Reply-To: <20260817155009.232670-2-zirajs7@gmail.com>
+References: <20260817155009.232670-2-zirajs7@gmail.com>
+Subject: Re: [PATCH bpf v3 1/2] bpf, sockmap: settle sk_forward_alloc for strparser SK_PASS
+From: bot+bpf-ci@kernel.org
+To: zirajs7@gmail.com,john.fastabend@gmail.com,jakub@cloudflare.com,jiayuan.chen@linux.dev
+Cc: davem@davemloft.net,edumazet@google.com,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,andrii@kernel.org,eddyz87@gmail.com,linux-kernel@vger.kernel.org,bpf@vger.kernel.org,netdev@vger.kernel.org,rhkrqnwk98@gmail.com,daniel@iogearbox.net,emil@etsalapatis.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Mon, 17 Aug 2026 17:13:13 +0000 (UTC)
 
-On Mon, Aug 17, 2026 at 06:26:29PM +0200, Markus Stockhausen wrote:
-> Until now the MDIO driver supports either access to the C22 or to
-> the C45 address space of the PHYs. This is due to the fact that
-> the polling configuration favours one of the address spaces and
-> limits access to the other space. E.g. when polling is set to
-> C22 most of the C45 space can not be accessed.
-> 
-> There are however some exceptions from that. EEE register access
-> is allowed independently from the polling mode [1]. As the
-> downstream driver already allows parallel C22/C45 access [2] do
-> this in upstream too.
+--===============6078595138110994450==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Is this enough to actually use C45?
+> diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+> index 2521b643fa05..347cb168f749 100644
+> --- a/net/core/skmsg.c
+> +++ b/net/core/skmsg.c
+> @@ -586,21 +586,24 @@ static int sk_psock_skb_ingress_enqueue(struct sk_buff *skb,
+>  }
+>
+>  static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb,
+> -				     u32 off, u32 len, bool take_ref);
+> +				     u32 off, u32 len, bool take_ref,
+> +				     bool settle_fwd_alloc);
+> +static int sk_psock_skb_ingress_self_backlog(struct sk_psock *psock,
+> +					     struct sk_buff *skb,
+> +					     u32 off, u32 len, bool take_ref,
+> +					     bool settle_fwd_alloc);
 
-int __phy_read_mmd(struct phy_device *phydev, int devad, u32 regnum)
-{
-	if (regnum > (u16)~0 || devad > 32)
-		return -EINVAL;
+The forward declaration of sk_psock_skb_ingress_self() at line 588 is
+now dead code. Before the commit, sk_psock_skb_ingress() (defined at
+line 596) called it for the skb->sk == psock->sk case, which required
+the forward declaration. This commit redirects that call site to
+sk_psock_skb_ingress_self_backlog() instead. The only remaining caller
+is sk_psock_verdict_apply(), which is well after the definition. Should
+this prototype be removed?
 
-	if (phydev->drv && phydev->drv->read_mmd)
-		return phydev->drv->read_mmd(phydev, devad, regnum);
+[ ... ]
 
-	return mmd_phy_read(phydev->mdio.bus, phydev->mdio.addr,
-			    phydev->is_c45, devad, regnum);
-}
-EXPORT_SYMBOL(__phy_read_mmd);
+> @@ -618,34 +621,100 @@ static int sk_psock_skb_ingress(struct sk_psock *psock, struct sk_buff *skb,
+>  	return err;
+>  }
+>
+> -/* Puts an skb on the ingress queue of the socket already assigned to the
+> - * skb. In this case we do not need to check memory limits or skb_set_owner_r
+> - * because the skb is already accounted for here.
+> +static int sk_psock_skb_ingress_self_assign(struct sock *sk,
+> +					    struct sk_buff *skb,
+> +					    bool settle_fwd_alloc)
+> +{
+> +	/* Leave skbs already receive-accounted to sk untouched. */
+> +	if (skb->sk == sk && skb->destructor == sock_rfree)
+> +		return 0;
+> +
+> +	if (settle_fwd_alloc) {
+> +		sock_owned_by_me(sk);
+> +
+> +		if (!sk_rmem_schedule(sk, skb, 0))
+> +			return -EAGAIN;
+> +	}
+> +
+> +	skb_set_owner_r(skb, sk);
+> +	return 0;
+> +}
+> +
+> +/* Puts an skb on the ingress queue for psock->sk.
+> + *
+> + * If the skb already has receive ownership for this socket, leave socket
+> + * memory accounting untouched. Otherwise, before assigning receive ownership
+> + * to an unowned strparser SK_PASS skb, settle any existing sk_forward_alloc
+> + * deficit from earlier clone charges.
+>   */
+>  static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb,
+> -				     u32 off, u32 len, bool take_ref)
+> +				     u32 off, u32 len, bool take_ref,
+> +				     bool settle_fwd_alloc)
+>  {
+> +	struct sock *sk = psock->sk;
+>  	struct sk_msg *msg = alloc_sk_msg(GFP_ATOMIC);
+> +	int err;
+> +
+> +	if (unlikely(!msg))
+> +		return -EAGAIN;
+> +
+> +	err = sk_psock_skb_ingress_self_assign(sk, skb, settle_fwd_alloc);
+> +	if (err)
+> +		goto free;
+> +
+> +	/* This is used in tcp_bpf_recvmsg_parser() to determine whether the
+> +	 * data originates from the socket's own protocol stack. No need to
+> +	 * refcount sk because msg's lifetime is bound to sk via the ingress_msg.
+> +	 */
+> +	msg->sk = sk;
+> +	err = sk_psock_skb_ingress_enqueue(skb, off, len, psock, sk, msg,
+> +					   take_ref);
+> +	if (err < 0)
+> +		goto free;
+> +
+> +	return err;
+> +free:
+> +	kfree(msg);
+> +	return err;
+> +}
+> +
+> +static int sk_psock_skb_ingress_self_backlog(struct sk_psock *psock,
+> +					     struct sk_buff *skb,
+> +					     u32 off, u32 len, bool take_ref,
+> +					     bool settle_fwd_alloc)
+> +{
+>  	struct sock *sk = psock->sk;
+> +	struct sk_msg *msg = alloc_sk_msg(GFP_ATOMIC);
+>  	int err;
+>
+>  	if (unlikely(!msg))
+>  		return -EAGAIN;
+> -	skb_set_owner_r(skb, sk);
+> +
+> +	lock_sock(sk);
+> +	err = sk_psock_skb_ingress_self_assign(sk, skb, settle_fwd_alloc);
+> +	release_sock(sk);
+> +	if (err)
+> +		goto free;
+>
+>  	/* This is used in tcp_bpf_recvmsg_parser() to determine whether the
+>  	 * data originates from the socket's own protocol stack. No need to
+>  	 * refcount sk because msg's lifetime is bound to sk via the ingress_msg.
+>  	 */
+>  	msg->sk = sk;
+> -	err = sk_psock_skb_ingress_enqueue(skb, off, len, psock, sk, msg, take_ref);
+> +	err = sk_psock_skb_ingress_enqueue(skb, off, len, psock, sk, msg,
+> +					   take_ref);
+>  	if (err < 0)
+> -		kfree(msg);
+> +		goto free;
+> +
+> +	return err;
+> +free:
+> +	kfree(msg);
+>  	return err;
+>  }
 
-int mmd_phy_read(struct mii_bus *bus, int phy_addr, bool is_c45,
-		 int devad, u32 regnum)
-{
-	if (is_c45)
-		return __mdiobus_c45_read(bus, phy_addr, devad, regnum);
+Is GFP_ATOMIC necessary in sk_psock_skb_ingress_self_backlog()? The
+function is only called from sk_psock_backlog(), which is the psock
+backlog worker running in plain process context - the lock_sock() call
+proves it can sleep. Before this commit, these same skbs were allocated
+by sk_psock_create_ingress_msg() with alloc_sk_msg(GFP_KERNEL). Would
+GFP_KERNEL be more appropriate here to avoid draining atomic reserves
+and reduce the chance of allocation failure under memory pressure?
 
-	mmd_phy_indirect(bus, phy_addr, devad, regnum);
-	/* Read the content of the MMD's selected register */
-	return __mdiobus_read(bus, phy_addr, MII_MMD_DATA);
-}
+[ ... ]
 
-Is phydev->is_c45 true?
 
-Some of the automotive PHYs have the same issue. Look at
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-commit aa63217916e1818a28b711384a9340d965ad073f
-Author: Ciprian Regus <ciprian.regus@analog.com>
-Date:   Wed Jul 8 01:33:38 2026 +0300
-
-    net: phy: add generic helpers for direct C45 MMD access
-    
-    Some PHYs support direct C45 register access but not C22 indirect MMD
-    access (registers 0xD and 0xE). When discovered via C22, phylib routes
-    MMD access through the indirect path, which won't work on these
-    devices.
-    
-    Add genphy_read_mmd_c45() and genphy_write_mmd_c45() as read_mmd/
-    write_mmd callbacks that bypass the C22 indirect path and use the bus
-    C45 accessors directly.
-
-And I really think you need to block C45 over C22, since we know it
-will go horribly wrong.
-
-   Andrew
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/32045036810
+--===============6078595138110994450==--
