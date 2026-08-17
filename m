@@ -1,35 +1,46 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A94E3C3458;
-	Mon, 17 Aug 2026 09:10:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E463285068;
+	Mon, 17 Aug 2026 09:11:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786957855; cv=none; b=maFFyCsX3kt3beZi2O/LYwfctZfbc5UhIoJcvMOd5EuiJ7AIA5p4PBdkzguwDWvRToCHgH8qJTnFYMa7yvQ7KYjmt5wxIw0WeTXrq0SS/GwNy7rJ9kF6XJZBnMTg3iHk80ffRL2pa04mtSHx0jAIJhTBS2h2ssqsdmbo4DaOqk0=
+	t=1786957867; cv=none; b=L8jow5AoHX6ROuC9q7GQNl3V9h8paU9eTJidxWmhNnYAc74gLGKHxkAFtz9cGtq4wHHCl3AzeA5CG17wakI48jITfDn4q9QulNfBlNQ6kxDA/9EYskN1PMtKPvF0h7noR57MIaPIN7JXg0SWLuHRFcMfZO0SY/lLVnb7SxGjAvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786957855; c=relaxed/simple;
-	bh=APpwken6/kn8nPUE5Dl3oYBovFkpIHIiEI6GMR3WFiE=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=p4IkEVPLlM/ctGgX51VAheOVDVUf4en9v/NEpR3+gOrNp3aN/Ph14evKOL5PCZj1l2HQCA4t6F7L3wPlms4ZJZnEuZnhoxA9KYj8ZwxhbEwrcdVvbZ/lADVRc+7UR9BisfU3wjfeMptjzAS1zC2+8Q8/+u2QGwlbNsG8416nRCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JP/FAlgR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786957867; c=relaxed/simple;
+	bh=3PtwBHaoVE1AdiHnCIAi+yV7Nv0dKkEhmu/IEvrP1p0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mLegIckRa3DKSVm/jFRhzK6I6bkDeQl/T4Ao73W1a1F5ILoS47xPlToacEnxa6t43jddneRQmPF+mcVtMYfu3EH+oJMpYVHA1bFPQDOGvLL/VStOo67VHvQC7QKc/JvfbSvk3yox7EKtmJoRgQkDtxh4h+Xc55AiOB/As7zSJrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=cTkGPi/E; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JP/FAlgR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB781F00A3F;
-	Mon, 17 Aug 2026 09:10:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786957853;
-	bh=gRQSUtkmmSk1F9ZN+pwA6ejx6E7c2c41ltEUjaJV+aY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=JP/FAlgRG/5+t91U8h0fpGWDBaQZ7vcl8+qJasbNGmxW0kZTQQh4VsaKtIHrtN490
-	 8koYxojyhxSavdXcvgLV7ICsp1nvhhLApmVuMQan/FOSUvHg3kS5CgTOHo2dwPby4u
-	 2nTSHviHZTEjf63gQK1hNhX9zEvAQNRH01+PuV0JRTSZRsVpd4VczDOmawqjesALSh
-	 ZZMopwI1jc5zQ0KC7YHNJzjUDE8zYeHR+FrG3qj1F2Xe/sMsScGKQUFH8LXghjl9ND
-	 PfPTL+AFmx/S/dcqYoeC+uF8C1axLv9/ut6kwPt7RmBE9/ectytCREIrJXbQuUfD5N
-	 oThvdv5eHDzfg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5680D3924FE9;
-	Mon, 17 Aug 2026 09:10:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="cTkGPi/E"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Hl
+	mDL3tBEO2C94aJxBhvVsgsjTiyefcae9H4rAJukqk=; b=cTkGPi/EhasUlNj3Uq
+	1y1mcqQE6CxU4JnpBWyGuBgCk1LnBtgeBV+AVFawLiUShFcEhED8Q9NrwGx/Z9zr
+	LuXDsgKsabuFmUvlF0I7XEkFWdafjTYas/UMypt6T18is14673OPJPA4M5oeBA0N
+	ysa68BAD+urf+2HYEwe6ZGOlE=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3nwL8z4JqwN1xQQ--.31345S2;
+	Mon, 17 Aug 2026 17:10:21 +0800 (CST)
+From: Qingshuang Fu <fffsqian@163.com>
+To: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	SeongJae Park <sjpark@amazon.de>
+Cc: netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Qingshuang Fu <fuqingshuang@kylinos.cn>,
+	Qingshuang Fu <fffsqian@163.com>
+Subject: [PATCH] selftests/net: fix kill() argument order in fin_ack_lat
+Date: Mon, 17 Aug 2026 17:10:17 +0800
+Message-Id: <20260817091017.281104-1-fffsqian@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,47 +48,50 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH bpf v2] lwt_bpf: restore reserved headroom after xmit
- program
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178695780590.1031338.13848902843812824537.git-patchwork-notify@kernel.org>
-Date: Mon, 17 Aug 2026 09:10:05 +0000
-References: <20260811044149.118235-1-zirajs7@gmail.com>
-In-Reply-To: <20260811044149.118235-1-zirajs7@gmail.com>
-To: Junseo Lim <zirajs7@gmail.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, idosch@nvidia.com,
- martin.lau@kernel.org, leon.hwang@linux.dev, ast@kernel.org,
- gnault@redhat.com, fmancera@suse.de, bpf@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, tgraf@suug.ch,
- rhkrqnwk98@gmail.com, emil@etsalapatis.com, daniel@iogearbox.net
+X-CM-TRANSID:_____wD3nwL8z4JqwN1xQQ--.31345S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7uw47Cr4UJry5try8uFyxGrg_yoW8WrWUpF
+	WfK39rCF1rGa12ya1jk3y8JFyxuF1kGw48Gr1j9r1UZ395JFykWrZIkF1jvwnIq39aq3W5
+	ZF1S9FWYka1UA3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piiID7UUUUU=
+X-CM-SenderInfo: 5iii21xldqqiywtou0bp/xtbC6h1uOWqCz-2x+gAA3x
 
-Hello:
+From: Qingshuang Fu <fuqingshuang@kylinos.cn>
 
-This patch was applied to bpf/bpf-next.git (master)
-by Daniel Borkmann <daniel@iogearbox.net>:
+sig_handler() passes its arguments to kill() in the wrong order: it
+sends signal number child_pid to PID SIGTERM (15) instead of sending
+SIGTERM to the client process.  The call therefore always fails
+(a pid is virtually never a valid signal number) and the client is
+never notified: when only the server process receives SIGTERM, the
+client keeps running its infinite connect loop as an orphan process.
 
-On Tue, 11 Aug 2026 13:41:49 +0900 you wrote:
-> ip_finish_output2() expands an skb to LL_RESERVED_SPACE(dev) before LWT
-> xmit. An LWT_XMIT BPF program can then modify the skb head and still
-> return BPF_OK, so bpf_xmit() rechecks the remaining headroom before the
-> skb continues to neighbour output.
-> 
-> That recheck uses dst->dev->hard_header_len. This is not enough for the
-> neighbour cached-header path: neigh_hh_output() copies the cached hardware
-> header using the aligned hh_cache size, HH_DATA_MOD for short headers or
-> HH_DATA_ALIGN(hh_len) otherwise.
-> 
-> [...]
+Swap the arguments so that the server forwards SIGTERM to the client.
+Also guard the call with child_pid > 0: the client inherits the
+handler and sees child_pid == 0, and a plain argument swap would make
+it call kill(0, SIGTERM), signaling the whole process group (including
+the invoking shell) instead of exiting quietly.
 
-Here is the summary with links:
-  - [bpf,v2] lwt_bpf: restore reserved headroom after xmit program
-    https://git.kernel.org/bpf/bpf-next/c/5fe7007aed9a
+Fixes: af8c8a450bf4 ("selftests: net: Add FIN_ACK processing order related latency spike test")
+Signed-off-by: Qingshuang Fu <fuqingshuang@kylinos.cn>
+---
+ tools/testing/selftests/net/fin_ack_lat.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-You are awesome, thank you!
+diff --git a/tools/testing/selftests/net/fin_ack_lat.c b/tools/testing/selftests/net/fin_ack_lat.c
+index 70187494b57a..f985e01354b4 100644
+--- a/tools/testing/selftests/net/fin_ack_lat.c
++++ b/tools/testing/selftests/net/fin_ack_lat.c
+@@ -103,7 +103,8 @@ static void server(int sock, struct sockaddr_in address)
+ 
+ static void sig_handler(int signum)
+ {
+-	kill(SIGTERM, child_pid);
++	if (child_pid > 0)
++		kill(child_pid, SIGTERM);
+ 	exit(0);
+ }
+ 
+
+base-commit: 8d3ae59288f1e7d58d76558a6ee96d533bc5019f
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.25.1
 
