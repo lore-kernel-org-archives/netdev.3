@@ -1,68 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99543C0A10;
-	Mon, 17 Aug 2026 22:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78841A6817;
+	Mon, 17 Aug 2026 22:50:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787006746; cv=none; b=OsTeT96JAjcm3wCHFPw0D/yzPdTQhVkSjSnPpSkCrCAhIxh6MaNcQSzjf0AGShk6F/1jBfJIwVHCnQBq2iRZEKULQnPowQ6LR0J7ECgW3ITBiZ0Kd56U4sbp4i01W4Oi7cSsyBxXUFAfIHpiL6cf/nHO62A+mB8qm686BZcMfyA=
+	t=1787007019; cv=none; b=oZInIuHFXubqLhqoywDdKXcHazC4yHVFuvJ/FAns2ha5LPIQ1RjZWromjYtpTp/JO3fGikPvNba9tQb3s2fcLIC+Ww6GbfOM3ym2dbDV+LiImOWFJYLtefYEciEYv/NjiD5wo/m0Vw6dExBDbNljU9LHW+x3XVpu5X22Lag93iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787006746; c=relaxed/simple;
-	bh=Ze6drWtCN2h5zBujmaR+ATp5UruBwVA6XFFtHprSFvQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Owmw8Lej4Pa0bzkeYS+qTaoMy6pP8SoMIZusurp9YkxEPeqXeTeRhX1zOZn827AvaLWGu70hzpr0kF83YTZXe5rzVxROI4nHMqTzJqLp17IXwu+iEOVgG1wJTK2nYGAz/PE6L1UaQ27CKwQ+ehAl4FXIYnjWTSwfixAD228Cp74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BNMN1ho2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787007019; c=relaxed/simple;
+	bh=t0pk0+fmJdzm9Wt+n02HLENNPBq8SIjl7PSpGjP6Ohw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h2gkEiVQGkj5dN9gVfUZz64YLCtHlz6qxBw1bd6ztpP8Tsa2KFOW2tW36QQHAVIvtLqWSRPbl+lAQQyXNI08lWvmYCOx/16/UPlxiyoMEzHo4obBj5Fa1bRqExEq4YBvsT0FhsnvHnuGfRAxpKXuD0jkGHJq+Adqw6QR7dEkO9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=KhWVi2NZ; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BNMN1ho2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A911F000E9;
-	Mon, 17 Aug 2026 22:45:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787006745;
-	bh=cXBXrwsk7HfFqr/xHtftG3g65WJsorENQsG2Ioyxr7w=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=BNMN1ho2jY/pviuKkh/densKkPpFgfLAFSqnyYjwYz0+F6ehzh/2uegBwHPRTHBmy
-	 oAF1CUz52YczM/HHMk67v22gX2TIft2+A7Dp1AgnS4yzHpACi99qL+jViVe7HTZjOu
-	 Yypsd7g0WLR2hLaRQFh2dFY/gWFCRUPibMpIxYgWqB113bq8A3ec/3FEsMI0OCTu6l
-	 NodrDaTACfmFoh6qsgmWKvuF9MxxGoE3W31Q2Nl+W0H+ZIgxkJdib8SKsYmdAi82g3
-	 AnY71XAM8IZ9vU2+7kTdgl4uUmdbU9RQeea05stoRL7paDHJbzpn51n8n7RrQ0bq4U
-	 kAW/fgHij2jbw==
-Date: Mon, 17 Aug 2026 15:45:44 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Linus Walleij <linusw@kernel.org>, Luiz Angelo Daros de Luca
- <luizluca@gmail.com>, Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean
- <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, kernel@pengutronix.de, linux-kernel@vger.kernel.org,
- Ahmad Fatoum <a.fatoum@pengutronix.de>, Alvin =?UTF-8?B?xaBpcHJhZ2E=?=
- <alvin.sipraga@analog.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v2 1/2] dt-bindings: net: dsa: realtek: add
- RTL8365MB power supplies
-Message-ID: <20260817154544.622c0fd0@kernel.org>
-In-Reply-To: <20260811113901.3114169-2-o.rempel@pengutronix.de>
-References: <20260811113901.3114169-1-o.rempel@pengutronix.de>
-	<20260811113901.3114169-2-o.rempel@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="KhWVi2NZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1787007009;
+	bh=O1VYgOdaO2FRsc7g0ZskhfvwJGf7V2fH33Rwk+qAu9A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KhWVi2NZxDoHXqBRCTsDDKSJ23Iv8ZNrbyrIwm5Y2KyEE1qym+VHIeJuRIT+8s69u
+	 YBbF25fzjT9AVeoBdo5hyK/GI4DFCxe3PQ2YYaWUagRPaNqSVyio29QYSlv6RgAmR3
+	 y5AVnKRsfR8O6qebZflxWOs2OR2BHsOUhgWH6tt7tH0xrm5MzBnjAYKrYDFW7QZxUf
+	 FwVmcu2EOdU4a5+UcGd4UT7XojtI61EzOeW836xnEYgruol7XZul6+l2Sb+5Y54HuP
+	 UnIODGyqdd8TlVXyd2KEknWE+giBwTwk7w96D1c8MV8sMs0At5gJNrAlvolyWtrcbp
+	 RpU+wOZAcSQrQ==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 4315860077;
+	Tue, 18 Aug 2026 00:50:09 +0200 (CEST)
+Date: Tue, 18 Aug 2026 00:50:06 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Sangho Lee <kudo3228@gmail.com>
+Cc: netfilter-devel@vger.kernel.org, Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>, netdev@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] netfilter: nf_conntrack_h323: fix get_bitmap()
+ overread
+Message-ID: <aoOQHtBE1GNDaPou@chamomile>
+References: <20260722125714.1389705-1-kudo3228@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260722125714.1389705-1-kudo3228@gmail.com>
 
-On Tue, 11 Aug 2026 13:39:00 +0200 Oleksij Rempel wrote:
-> Document the RTL8365MB power rails as optional supplies. They are optional
-> because the rails are often always-on; some designs break them out for
-> granular hwmon monitoring and regulator control.
+On Wed, Jul 22, 2026 at 09:57:14PM +0900, Sangho Lee wrote:
+> get_bitmap() first consumes the complete bytes covered by the current bit
+> offset and the requested bitmap length.  For totals below 32 bits, it then
+> unconditionally reads one more byte for the partial-byte remainder.
 > 
-> They are scoped to realtek,rtl8365mb: different Realtek switch families use
-> different power-rail naming schemes, so these rails do not apply to other
-> families such as realtek,rtl8366rb (VDDA/VDD_CORE/VDDIO/...).
+> When the total is already byte aligned, there is no remainder.  The
+> caller's boundary check correctly permits only the complete bytes, so the
+> extra load reads one byte past the supplied PER buffer.  A crafted Q.931
+> User-User IE reaches this with a 17-bit sequence extension bitmap starting
+> at bit offset 7.  An AddressSanitizer build of the decoder reports:
+> 
+>   heap-buffer-overflow in get_bitmap
+>   decode_seq
+>   decode_seq
+>   DecodeH323_UserInformation
+>   DecodeQ931
+> 
+> The same condition also excludes a total of exactly 32 bits from the
+> alignment shift, producing an incorrect bitmap for unaligned inputs.
+> 
+> Read a trailing byte only when there is a partial-byte remainder.  Include
+> the 32-bit total in the alignment branch.  This makes all start offsets
+> and bitmap lengths from 1 through 32 agree with a bit-by-bit reference
+> decoder.
+> 
+> The same input reaches q931_help(), DecodeQ931(), and decode_seq() through
+> an nftables Q.931 conntrack helper on current nf.git.  The helper's static
+> scratch buffer has tailroom, so in-kernel KASAN does not report this logical
+> packet-boundary overread.  A diagnostic check immediately before the load
+> does observe bs->cur == bs->end.  No crash, disclosure, or corruption has
+> been demonstrated.
+> 
+> Fixes: 5e35941d9901 ("[NETFILTER]: Add H.323 conntrack/NAT helper")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sangho Lee <kudo3228@gmail.com>
+> ---
+>  net/netfilter/nf_conntrack_h323_asn1.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/netfilter/nf_conntrack_h323_asn1.c b/net/netfilter/nf_conntrack_h323_asn1.c
+> index 6830c9da3..482860d2c 100644
+> --- a/net/netfilter/nf_conntrack_h323_asn1.c
+> +++ b/net/netfilter/nf_conntrack_h323_asn1.c
+> @@ -228,8 +228,9 @@ static unsigned int get_bitmap(struct bitstr *bs, unsigned int b)
+>  		     bytes--, shift -= 8)
+>  			v |= (unsigned int)(*bs->cur++) << shift;
+>  
+> -		if (l < 32) {
+> -			v |= (unsigned int)(*bs->cur) << shift;
+> +		if (l <= 32) {
+> +			if (l & 7)
+> +				v |= (unsigned int)(*bs->cur) << shift;
+>  			v <<= bs->bit;
+>  		} else if (l > 32) {
 
-Unfortunately patch 1 did not get an ack in time for 7.3
-Please repost after the merge window
--- 
-pw-bot: defer
+This branch is now dead code after your update.
+
+>  			v <<= bs->bit;
+> -- 
+> 2.43.0
