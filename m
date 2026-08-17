@@ -1,42 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E77F3E2740
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 23:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D153EEAC1;
+	Mon, 17 Aug 2026 23:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787008939; cv=none; b=RYP2hCfdcyFPB0XpLI8J+HrHuJVX89Pi43Dd7cdsLnipH3cpPQeypHs//OS7X6XsvstwF2/0hSh7rKeZao7nveSrlh+bofyFjVdWhZO6/o3C2qt/ca/6DRWykpJu11h/ZUH4UVUrQe4nYdCGVvJGj95ZsODyOzw8HBklERcrA4Q=
+	t=1787008959; cv=none; b=hwdnxcs+5umXu8zpHvsGuGgZs8ISVgykIzXkDCSU+44fCiuMenEEpGTL6lRmNUj3V9UJDJIAYexpWT+johywvfKVWcC6cmSq9o/W7aTgd3kIQcnNraG6+NqI1IRADpbWzuIgk5xsCmMp+Eagn0WYJ1Ryk3/OOPraeljMzvlajBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787008939; c=relaxed/simple;
-	bh=eQOAVK/n/gL1OXSALRDiw2VfeOAyYOEGm/ss5U2e06g=;
+	s=arc-20240116; t=1787008959; c=relaxed/simple;
+	bh=MNeoyMfln8dtva1+V2QY4UWbWjuqGzNKjvRAnwkkgro=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ARXZ4hPgn+MhySE6F8FS2AMP1UvQW4JgFXYLCTPtoJl/mf9VacP954XE4Gq5wvS5FcpGx20uphm5jI8OWUTYyi276Zk5T+40ccWt+tZX1K9j1q1CWMqdLSibLrRurae3WkoBnFfgop4cbXfnSiQTJUss124hHC+L3h09b6y72Ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hLg30VM8; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=jgqr56Crx5ub9OJ249pgTyYz/zHICTc5I3UbD3xRGpEcF9e4915G4VQpfpkwZhgG/6pTx97X8KsKNm+SngX/smMMbYdy3p+IXs2coDruEE0CsTgP3sXL7QzfJkiAkNO43s6XJcMyTMmssZxUJL+Ni4RrLDu8RBunaSVR5ly3u5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cs5FZ+Bq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hLg30VM8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B70001F000E9;
-	Mon, 17 Aug 2026 23:22:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cs5FZ+Bq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D0821F000E9;
+	Mon, 17 Aug 2026 23:22:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787008938;
-	bh=23KsDQGvL0xdayvXWAtvgwIBvLSkjxaB/bQsp+Kj87E=;
+	s=k20260515; t=1787008958;
+	bh=P8T0P09mLXibmVR6w5z3HjTl1Gn9OVrsCaX80P6nwq4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=hLg30VM8nxSl4z/R7c2wLG2JPcz0vzYTQmQ+MF1fryn+5aM1LDbS6BXiXcBllj+jj
-	 vc4paW0hZNVaDkg9YAt5DJICUPrjoQEs+qK/XU8tg2+bv+8NRiHX2NgFjPONzDdwFE
-	 06UDakOBP8Ip0hG+p8sQgX4Ke72JB8Sk+RebLS/INJjF38CuSdUfJjf77MTZeCDJ0f
-	 o92nkRZG+ihGO1TfPkCg36WRpqAQ7E4oEcuVx6yvm/n3PkJQhyuOgXGMGKMFBWNIJb
-	 NsEqPYc0RELeSVrK3ysbU0eVdyGXVWybG+QxBlC6Vyrr/YPzkx06TDuXWqBDa8o+7d
-	 d3ptMo5eD4zrQ==
-Date: Mon, 17 Aug 2026 16:22:16 -0700
+	b=cs5FZ+BqiiA1CWwTeWLPdK2R5X729Uke46k04RUVl370mt2DMp/D0K3W5o8ACA/5W
+	 PGUjR+u6yYwZgp2/Sq7tGuxH9bZ2rtXDnjAkvM4q9VRtMi41Aoz1wAFnadNmO9Bu/i
+	 sXJyUJmDkcH5KEk7c5u33JJUSp6iBk3OgWWB42/1B8Sz8f1JNFSHzfO/lcmFQCpET+
+	 9it/WwKqT3jv7jDv4mTXS7946woAiYTosVAndQjYrAe6AItpN9syYWDyVcYRwm9uKp
+	 QhjCAxDvql5+Q50bHXzQZx5Hm3cfAiQat30JgavGJTJUydqTBz987PGLK9T88U9Ddx
+	 kRo6a3UNf/4IQ==
+Date: Mon, 17 Aug 2026 16:22:36 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Michael Chan <michael.chan@broadcom.com>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, pavan.chebbi@broadcom.com, Andy
- Gospodarek <gospo@broadcom.com>
-Subject: Re: [PATCH net-next] bnxt_en: Add missing NETIF_F_TSO_ECN feature
- flag
-Message-ID: <20260817162216.41216bee@kernel.org>
-In-Reply-To: <20260814215655.2331655-1-michael.chan@broadcom.com>
-References: <20260814215655.2331655-1-michael.chan@broadcom.com>
+To: <nshettyj@marvell.com>
+Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Satheesh Paul
+ <psatheesh@marvell.com>, Sunil Goutham <sgoutham@marvell.com>, "Ratheesh
+ Kannoth" <rkannoth@marvell.com>, Geetha sowjanya <gakula@marvell.com>,
+ Subbaraya Sundeep <sbhatta@marvell.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next v2] octeontx2-af: Add mailbox to read default
+ MCAM entry
+Message-ID: <20260817162236.181d37dc@kernel.org>
+In-Reply-To: <20260812053523.3329305-1-nshettyj@marvell.com>
+References: <20260812053523.3329305-1-nshettyj@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,10 +49,12 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 14 Aug 2026 14:56:55 -0700 Michael Chan wrote:
-> All bnxt devices support TSO packets with RFC 3168 ECN flags set.  The
-> CWR flag is replicated only on the first segment.
+On Wed, 12 Aug 2026 11:05:22 +0530 nshettyj@marvell.com wrote:
+> From: Satheesh Paul <psatheesh@marvell.com>
+> 
+> Add support for reading the default unicast MCAM
+> rule associated with a NIX LF on non-CN20K silicon.
 
-Applied, thanks!
+Applied, thanks
 -- 
 pw-bot: accept
