@@ -1,40 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB843346A8
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 05:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B48B331EB0
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 05:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786943253; cv=none; b=K3nGF9xwbUj/hgInvkR/WHE9PeaBIWilMdO6RqEsgL5x1YW8eTrW6fIUCpvvumf7wIbyiX8jnIB22lk7rcP8j9lTNt+Wc+ZB6zj0jTb5kAU7FMsRZ0Ai/ZhjfbuSq1fvk8F8wgU59D5DupO5RQokrsAuFEE6KIevpcVvyS9m3a8=
+	t=1786943265; cv=none; b=liIYi3bFLFnIHBGi6zelj3NsFvPHcjtWqnhJEuZG8MG9+R6XcqSKewkfU4u+OGeN07Dn3ylXXwZ2Wlab770h9vdpgao2/zfx7Ut8vghlKEF5yseHS6MOmDq5kgimH5dJiGgjzF3gMjiI9i7bUwupHFnAlHLu5VrAtofIibAlYLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786943253; c=relaxed/simple;
-	bh=aZ/gxhxC7X9QL0sg/xeB3UipbqHzc4psBa48/iec1kc=;
+	s=arc-20240116; t=1786943265; c=relaxed/simple;
+	bh=dPdK35nQcum4LxmgZ8oOradsegL8DIEO3t2hgPi4aF4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZAlIfoZHrn8XKerMgjHGTIKwYwy37U103cWwdocrB2PvTOJCaQATxHgrvbTcozrX3pSh/pmIa+AL3G112VslTGzixNnQuSkdlXCj1TboybEagDiaRet3TJYvqjzVkDlUF3wk6kRpzZgE5t9nEziGfoQym/a8KMwXYCzCGhDdlys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hj3/b+dm; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=sjSgCh5+5hq0oYD6mvJEaPMbUsUpG412LDY+KxircrWCwuY4ob4IOJEYEAzAm9bO/N+YwE4VXJB0RimTp4My6wlSytRqvtNSDumHWxmiXtkOmy39EfKRD2VBYfNLOtapq3yczGiyC0XSMNCaetvmG12Oiiweu/EvCUnrGTtv9CE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wdz4POjp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hj3/b+dm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EEF71F000E9
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 05:07:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wdz4POjp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5771F00ADF
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 05:07:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786943252;
-	bh=c3qRbYENTbrNx1zwHF3ytg1UJB2xVulUjUF45wJgXEg=;
+	s=k20260515; t=1786943262;
+	bh=kV2dQJ1wdbf80yA17SwceIH5aqksXR1V0JnBd9JZWnU=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=hj3/b+dmRIf7suT0+eLQbyUduaA5Nf0l81T3tGQCP/2qUOVR1gA9DZhkKIFonTVGZ
-	 MBwanFbP1GYcWLxj8ywbUZEmK2HQigSEm6M7LFlgRv4qtq2E8NQN3RuppcdQ+v/57M
-	 4LJf1yHJbsvS8/9n5IYYWHUeKs0XPYEC+QXrJf5g94d28EB4dPX8zJ4JDYJpaSeiyr
-	 RDiwGaROuBgXhiIEeUYNDXCkN9aVeC5NjQHtJSIc7RLH8Oo8kXsNxYuglCBac4lFEU
-	 UZqFt+nB7KrWwnuQnnwQ7xFAFLMw681F6xQO+xd8VbTSiFMIaoWpCK9xm8rdBGMocO
-	 1ershXL8oWOug==
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6a15d54ac95so4216056a12.0
-        for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 22:07:32 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpJBrQGu5B1IG5Tg0JH/I21Wrm2LYg3z/2IgJmpskzGIHsAny8Y+990IeZvqXHYH8u9ICC14ns=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQslNJHP/axG0aaDc60cfqk2SJHRMPf5knssTGJ8Em2INc7HwE
-	z7KcCSY8Qc/ikMBjy6uUXsJyU6FwdemjVOWGFwMmcVmjIr0IZK09uC1rMMffpW41ouxSyI3utYl
-	FCzw/eZTRQjpmpwF/BDlXyN6kZzA1+Pg=
-X-Received: by 2002:a05:6402:4613:b0:6a3:691a:9d82 with SMTP id
- 4fb4d7f45d1cf-6a38a8dc189mr7610607a12.3.1786943251016; Sun, 16 Aug 2026
- 22:07:31 -0700 (PDT)
+	b=Wdz4POjphJSJRl9T95Y3n4qJvLYjn0MbN1PiJ+eOL7ux+2C/p3y7lXzTbCqkx97Et
+	 DzDSsSAQ8YA4WUy47y0Gllxh+MpTimRE12WVwoOmhK7X6KroaR8zop5VtXZeLwQZgm
+	 uBonCLgJbiPwrmm3IzYmqCMYev/FB9JEzojZYGRdVD3WuyoQtu2k5p2pT89Y0LlaIU
+	 5E6iaFoMsWiaioB49WSXFuMYeKLw4ECTaoro/IeempszirY1n9znXF5TUs/l6RH3S1
+	 LjYjGKsZLTXWMu5as3jbHR8bqKiD4BN/XXJcamWSpInkOL/iFx7MAolT3lk/Qam25O
+	 kgajiHXTau41Q==
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6a0c8283146so4128669a12.0
+        for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 22:07:42 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Ro7XfahxUv44OZYzX26D9or49yuKaujV8esK17l3UcPBUXelbHDpEXmDYVXu1jWyuBdB2jZrO0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzu+xmn6p48rFDCUiq6kDRLIawPKF48ggKguGycgtdA+XptgZpu
+	cYmr1Lr6ENuLXsNOA0bYo3vH8gQxhmUR+FxWXtCUhPSP79KLcOd7XbRXYo4wgjdqxvzJy++TmYf
+	n9vbPf98EknfmAqW4PCvQE26JBfmHsqg=
+X-Received: by 2002:a05:6402:434c:b0:6a0:927e:39e2 with SMTP id
+ 4fb4d7f45d1cf-6a38a8d621emr10831780a12.5.1786943261668; Sun, 16 Aug 2026
+ 22:07:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,15 +42,14 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20260816-submit-phy-package-fwdevlink-v1-v2-0-23e55dd59fad@gmail.com>
- <20260816-submit-phy-package-fwdevlink-v1-v2-1-23e55dd59fad@gmail.com>
-In-Reply-To: <20260816-submit-phy-package-fwdevlink-v1-v2-1-23e55dd59fad@gmail.com>
+ <20260816-submit-phy-package-fwdevlink-v1-v2-2-23e55dd59fad@gmail.com>
+In-Reply-To: <20260816-submit-phy-package-fwdevlink-v1-v2-2-23e55dd59fad@gmail.com>
 From: Saravana Kannan <saravanak@kernel.org>
-Date: Sun, 16 Aug 2026 22:07:19 -0700
-X-Gmail-Original-Message-ID: <CACRMN=eU_C=sSXxoR_WY-LMPwD6H-bi366TXsbbDt0tPBmPA=A@mail.gmail.com>
-X-Gm-Features: AcwNN1UCpzh4GwzuiKfa7KvTtq6D-0aVkeYlIT1yvk2UtQEaQ7eB0voMilubx0Q
-Message-ID: <CACRMN=eU_C=sSXxoR_WY-LMPwD6H-bi366TXsbbDt0tPBmPA=A@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 1/4] of: property: skip links without a
- consumer node
+Date: Sun, 16 Aug 2026 22:07:29 -0700
+X-Gmail-Original-Message-ID: <CACRMN=dWjKL48Ckee1nEVF02VG0ccDrE-GM7mqV+TqgraVveiw@mail.gmail.com>
+X-Gm-Features: AcwNN1XNWetLFsigq420z2tJ-9wlUPXUaxvFZBqntmxU7fNoGFy7GhGBob0Dpw0
+Message-ID: <CACRMN=dWjKL48Ckee1nEVF02VG0ccDrE-GM7mqV+TqgraVveiw@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 2/4] driver core: factor sync-state-only link cleanup
 To: James Hilliard <james.hilliard1@gmail.com>
 Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
@@ -66,61 +65,170 @@ Content-Transfer-Encoding: quoted-printable
 On Sun, Aug 16, 2026 at 5:00=E2=80=AFPM James Hilliard
 <james.hilliard1@gmail.com> wrote:
 >
-> Supplier bindings can map a property node to the device node which
-> consumes the referenced resource. The remote-endpoint binding uses
-> of_graph_get_port_parent(), which can return NULL for a malformed graph
-> node without its expected parents.
+> device_links_driver_bound() drops managed sync-state-only links after a
+> consumer successfully probes, then re-evaluates each affected supplier
+> for a sync_state() callback.
 >
-> of_link_property() currently passes that NULL node through to
-> fwnode_link_add(), which dereferences the consumer while adding the
-> link.
+> Frameworks which populate child devices below a driverless device need
+> to complete the same lifecycle step, but cannot rely on a successful
+> driver probe to trigger it.
 >
-> Only create the link when the binding resolved a consumer node. A
-> malformed graph property then creates no dependency instead of crashing
-> while fw_devlink parses the tree.
+> Factor the existing cleanup into a lock-held helper and reuse it from
+> device_links_driver_bound(). Add a public locking wrapper so frameworks
+> which populate children below driverless devices can retire temporary
+> fw_devlink proxy links without affecting real dependency or runtime-PM
+> links.
 
-Is this a real issue? If it's upstream, should  we fix the DT? If it's
-off-tree/down stream, should we care?
-
-If it was reported, can you please add a reported by and link to the report=
-?
-
->
-> Fixes: f7514a663016 ("of: property: fw_devlink: Add support for remote-en=
-dpoint")
-> Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
-> ---
->  drivers/of/property.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/of/property.c b/drivers/of/property.c
-> index 72cf12907de0..38c0c7dc428a 100644
-> --- a/drivers/of/property.c
-> +++ b/drivers/of/property.c
-> @@ -1620,7 +1620,9 @@ static int of_link_property(struct device_node *con=
-_np, const char *prop_name)
->
->                         matched =3D true;
->                         i++;
-> -                       of_link_to_phandle(con_dev_np, phandle, s->fwlink=
-_flags);
-> +                       if (con_dev_np)
-> +                               of_link_to_phandle(con_dev_np, phandle,
-> +                                                  s->fwlink_flags);
-
-This shouldn't be a normal case. Can you please add a WARN_ON() for this ca=
-se?
-
-Assuming we choose to fix this, I'd recommend sending this out as a
-separate patch so it's not slowed down by the more complicated patch
-series.
+See reply to cover letter. I don't think this patch is necessary.
 
 -Saravana
 
->                         of_node_put(phandle);
+>
+> Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+> ---
+>  drivers/base/core.c    | 74 ++++++++++++++++++++++++++++++++++++++------=
+------
+>  include/linux/device.h |  1 +
+>  2 files changed, 58 insertions(+), 17 deletions(-)
+>
+> diff --git a/drivers/base/core.c b/drivers/base/core.c
+> index 4d026682944f..627fcfa274f0 100644
+> --- a/drivers/base/core.c
+> +++ b/drivers/base/core.c
+> @@ -1305,6 +1305,57 @@ static void device_link_drop_managed(struct device=
+_link *link)
+>         kref_put(&link->kref, __device_link_del);
+>  }
+>
+> +/* Caller must hold the device links write lock. */
+> +static void __device_links_drop_sync_state_only(struct device *dev,
+> +                                               struct list_head *sync_li=
+st)
+> +{
+> +       struct device_link *link, *ln;
+> +
+> +       list_for_each_entry_safe(link, ln, &dev->links.suppliers, c_node)=
+ {
+> +               struct device *supplier;
+> +
+> +               if (!device_link_test(link, DL_FLAG_MANAGED) ||
+> +                   !device_link_test(link, DL_FLAG_SYNC_STATE_ONLY))
+> +                       continue;
+> +
+> +               /*
+> +                * DL_FLAG_SYNC_STATE_ONLY excludes all other managed lin=
+k flags,
+> +                * so it is safe to drop the managed link completely.
+> +                */
+> +               supplier =3D link->supplier;
+> +               device_link_drop_managed(link);
+> +
+> +               if (defer_sync_state_count)
+> +                       __device_links_supplier_defer_sync(supplier);
+> +               else
+> +                       __device_links_queue_sync_state(supplier, sync_li=
+st);
+> +       }
+> +}
+> +
+> +/**
+> + * device_links_drop_sync_state_only - Drop managed sync-state-only link=
+s
+> + * @dev: Consumer device whose proxy links should be dropped
+> + *
+> + * Frameworks which populate child devices below a driverless device can=
+ call
+> + * this after adding all of the children. The children will have acquire=
+d their
+> + * own links by then, so the temporary links which only prevent supplier=
+s from
+> + * receiving sync_state() callbacks are no longer needed.
+> + *
+> + * Re-evaluate each affected supplier for a sync_state() callback after =
+its
+> + * link is dropped.
+> + */
+> +void device_links_drop_sync_state_only(struct device *dev)
+> +{
+> +       LIST_HEAD(sync_list);
+> +
+> +       device_links_write_lock();
+> +       __device_links_drop_sync_state_only(dev, &sync_list);
+> +       device_links_write_unlock();
+> +
+> +       device_links_flush_sync_list(&sync_list, NULL);
+> +}
+> +EXPORT_SYMBOL_GPL(device_links_drop_sync_state_only);
+> +
+>  static ssize_t waiting_for_supplier_show(struct device *dev,
+>                                          const struct device_attribute *a=
+ttr,
+>                                          char *buf)
+> @@ -1418,6 +1469,8 @@ void device_links_driver_bound(struct device *dev)
+>         else
+>                 __device_links_queue_sync_state(dev, &sync_list);
+>
+> +       __device_links_drop_sync_state_only(dev, &sync_list);
+> +
+>         list_for_each_entry_safe(link, ln, &dev->links.suppliers, c_node)=
+ {
+>                 struct device *supplier;
+>
+> @@ -1425,17 +1478,10 @@ void device_links_driver_bound(struct device *dev=
+)
+>                         continue;
+>
+>                 supplier =3D link->supplier;
+> -               if (device_link_test(link, DL_FLAG_SYNC_STATE_ONLY)) {
+> -                       /*
+> -                        * When DL_FLAG_SYNC_STATE_ONLY is set, it means =
+no
+> -                        * other DL_MANAGED_LINK_FLAGS have been set. So,=
+ it's
+> -                        * save to drop the managed link completely.
+> -                        */
+> -                       device_link_drop_managed(link);
+> -               } else if (dev_is_best_effort(dev) &&
+> -                          device_link_test(link, DL_FLAG_INFERRED) &&
+> -                          link->status !=3D DL_STATE_CONSUMER_PROBE &&
+> -                          !dev_can_match(link->supplier)) {
+> +               if (dev_is_best_effort(dev) &&
+> +                   device_link_test(link, DL_FLAG_INFERRED) &&
+> +                   link->status !=3D DL_STATE_CONSUMER_PROBE &&
+> +                   !dev_can_match(link->supplier)) {
+>                         /*
+>                          * When dev_is_best_effort() is true, we ignore d=
+evice
+>                          * links to suppliers that don't have a driver.  =
+If the
+> @@ -1449,12 +1495,6 @@ void device_links_driver_bound(struct device *dev)
+>                         WRITE_ONCE(link->status, DL_STATE_ACTIVE);
 >                 }
->                 s++;
-
+>
+> -               /*
+> -                * This needs to be done even for the deleted
+> -                * DL_FLAG_SYNC_STATE_ONLY device link in case it was the=
+ last
+> -                * device link that was preventing the supplier from gett=
+ing a
+> -                * sync_state() call.
+> -                */
+>                 if (defer_sync_state_count)
+>                         __device_links_supplier_defer_sync(supplier);
+>                 else
+> diff --git a/include/linux/device.h b/include/linux/device.h
+> index aee79fd6b32b..8afb9f2b0d82 100644
+> --- a/include/linux/device.h
+> +++ b/include/linux/device.h
+> @@ -1381,6 +1381,7 @@ struct device_link *device_link_add(struct device *=
+consumer,
+>                                     struct device *supplier, u32 flags);
+>  void device_link_del(struct device_link *link);
+>  void device_link_remove(void *consumer, struct device *supplier);
+> +void device_links_drop_sync_state_only(struct device *dev);
+>  void device_links_supplier_sync_state_pause(void);
+>  void device_links_supplier_sync_state_resume(void);
+>  void device_link_wait_removal(void);
 >
 > --
 > 2.53.0
