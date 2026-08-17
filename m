@@ -1,328 +1,162 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E423C3E51DE
-	for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 23:56:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3613D305E3B
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 00:00:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786924621; cv=none; b=d1/xbczAPME8Woe/lhjLzfZxsa0wCF4/gGy8xiAJWMwZvZDClTpQLlg0uR69xK07d4FxFjbbVczaNlDKqEB/jOIwtmWCMYyNKub4bjpFmXyHggb4Tb2gwFlzTqJ5rTCBzqYkEc6WxJZI6b22RsgyOb4O23cPNIWxZ2kkUfsGSEU=
+	t=1786924838; cv=none; b=RkrL8jKHZItytBmvynUwCuo4Q210J5X/kA2KThxQIF/iX+wXblr5TR/gaUhZm9AACmseKyyrODd0c8hUpQqipAwBgOWK7TmoFI0fUIgylgu38yMwALGvR611XP2+C1rEZAGzvS0Fvz31EVCe1Ro1G/1XLwb/5YK53rDJyujn9pQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786924621; c=relaxed/simple;
-	bh=j8W9v+DMvCm7xwzvpnKfgU4W0xz2PG8pXiICjfmYCyQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UnhT5xUfCmUWBuOclYtzJofW4TeTzfhFJ5OImItpabn4DU524whbLKEJtKJcGpooFF4ZUbuBBC0khse5yInSsxMo8FrLIsAbaFph3+yZK1EWG/ilq99pRhED1NuyU6DaUhIjxtuJ6120cdQDdZLWWdJD3DApb4IdgDwMkxCJx00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=ebdLJMSV; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
+	s=arc-20240116; t=1786924838; c=relaxed/simple;
+	bh=6RTg5Hb6zZsRPnNpf0Q7IiOsATNXj9Nz9kJLXoBlFiQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=YWMdoWNvMXAvgYa88LXZvoZB2G6p2s9sn73g3flZ7OSktuUR0omyULMSerjde+tBKtg7kTEK8ea2MIxiEzX6hY6Ai1eAXqpVkPfNbUgRCtBa98kfAib5NdRF5jJdgxjcvdYvtk5FjAeAtuvrnoBVbORntbiNYsrQSu4jbrKwN/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f3p1YwAq; arc=none smtp.client-ip=209.85.167.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="ebdLJMSV"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-383cb94f742so3347846a91.3
-        for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 16:56:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f3p1YwAq"
+Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-4b21f09ea42so1724918b6e.2
+        for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 17:00:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1786924619; x=1787529419; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=R9zkz/bQqiUuqgiqt1pYBMReM2U8h0/2RImPaWmHL0g=;
-        b=ebdLJMSVbfAsUWDWm7Qxyt+Wv6MOGUHxUwU3YKuOo5rGzAHIaQv/Y2UXRQLjeVPkxy
-         rHh7M/ZsFiJJht/atvOMQnMVQWGbbQRRuLSdUO4tQkJrpM9NQYloUmOCky+TKvlpNXhk
-         m6MVwoMmpcVliQw/yof7DcgggN6x1AL+lkW/A=
+        d=gmail.com; s=20251104; t=1786924835; x=1787529635; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=fvYmmH+KfQ7O1sgqmpdyWXqFOmmC2PQNerX16oNlWsU=;
+        b=f3p1YwAqRPGZ9VqQpaklHUl/cBKDyYy6DrCSQ0Bcj15AyiIqc/rbB/OKqpsZri3fK/
+         T/YObWsRNXHjsgLcxZPPhtqUNUKvWmemvbt/rvU5VRNgtRZLfgleMbi9/Kkv/vwGfizy
+         xQ6o3NSThB8TC4CzoPBi4wRQXy+i8eHggY8DnleUJj/aVxNh2T+8NzVsrj8FgtHtCYFj
+         nkfUx5sy0GwZ9HmtIcGyiYOPAvy6NNwKnnm84oWz4EzRpxVVKi+ECuugU7aAmSogXVif
+         sgMprdty70OEFRGzpbKXNTPdtbAalxl4Izav7KADOsDIBw+p7PEYgENmvacqrZ5ogNlA
+         VFvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786924619; x=1787529419;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=R9zkz/bQqiUuqgiqt1pYBMReM2U8h0/2RImPaWmHL0g=;
-        b=rw/TTRSbfRthHPb0GYer/iElUEXmcT7QsyOYEmFZ2SIeJwSXM1/1WsakImL0jX32vc
-         nr0m4kMazte0q9wURTpcaSBd63ldiyPL0e6nvKm+rSxsF7j5Z7aom40rWuY/Q9e8KnHg
-         Pj2R8ZzJH2ftKB1GxbeQ+taHc19DBXtJrutkwTvYftj2VAQk198yxTpV3DTGfoD+Hx+A
-         Za+4ynq8A0nqkWipopso6bNB8H9aqSaN6LsmHVuew1MPCYTTQcYAoqathcKp+F14t20i
-         DWkqaKq129GE/gRyZHbLDu+DfXMMw2JsR8+LjRkKtmBeNOk8Jvk4Rv86C3VcRgRxy056
-         6cMw==
-X-Gm-Message-State: AOJu0YzsbEjKFrn+NgBks7M4ZCOA/1DpbW1ZgCOd7MIV5S6WsXL6+BXV
-	jpFyx5A0gElX9YUOqrnc4QUqAJaIh6GG52+oMUpSnF2YJbHkXTvQoE1bVv/A8I36z3M8zVUB/+4
-	yDV3m/gY=
-X-Gm-Gg: AR+sD10rkHkycDrOR48FnYrs2cbBEzU4JH5eg+UDaEOctoPsm5GqWRtPX7dwhR4TJ54
-	kNd3q6Ut7mKtwz0B35iggC0BYnyLN9VUkz0pzXjI9hN4gZXIpBA5I8NNBlOEj3liviK0go/jB4y
-	ffCcQQmJfycRtIHR2z9GvMfVdTYK+mrIZaSjjc0ZV5DEYpYytGVmPWxsTfgL7S9js0CQF5XmMIA
-	JvvajrvqaMZLNlAHQhroGUf/Nrf/tvaqWacvIo97nqcwa6golpJxm/+CUytMVj2+rZvBA2ATdWq
-	JoOErbE4SNl3lcrLoehIL9xz178+sixQ7AeJ2W1EQJYgXIs+usByQyiaQlRzzu6qbvrf+3GAlvk
-	1I7TCFcLaomWnkcBdr5D2T/7QGM7BjvI13UDJA8MqnMc5D7uc4evQpbClmH7SZSKLfTfm4kJGzW
-	X1qf32jIE50Mz2O3YottP0Cb0SuaUq9A9ChpsyQBTwzWzVlnM5qGCl6VS1rnR0SBQmPCe4K10oR
-	PoooGa78xWEb+v6K06c2qj0p4Yqjb5enGLMSSueh8/1MWK5YJNm6ZMOyL+KMUAMFnaoP7Q=
-X-Received: by 2002:a05:6a20:748a:b0:3c3:a9e1:a819 with SMTP id adf61e73a8af0-3cc71fb5781mr23180089637.24.1786924619000;
-        Sun, 16 Aug 2026 16:56:59 -0700 (PDT)
-Received: from com-75606.corp.openai.org ([104.241.0.233])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-320d5ff42b7sm34817537eec.7.2026.08.16.16.56.57
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 16 Aug 2026 16:56:58 -0700 (PDT)
-From: Kyle Zeng <kylebot@openai.com>
-To: netdev@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Muhammad_Hazley_SAMSUDIN_from.TP@tech.gov.sg,
-	Kyle Zeng <kylebot@openai.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] net/packet: defer vmalloc TX_RING free until skbs finish
-Date: Sun, 16 Aug 2026 16:56:46 -0700
-Message-ID: <20260816235646.76500-1-kylebot@openai.com>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20251104; t=1786924835; x=1787529635;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=fvYmmH+KfQ7O1sgqmpdyWXqFOmmC2PQNerX16oNlWsU=;
+        b=PuwRcuv6hneTrY4SzTzF9Af6ma5zaRgavq0Y+WGqzsX4pn1KPsoQu874R3IF72EVh8
+         KDADUyWntme4azkG1KD9KHAIceO4L8J8OHuHCE5FxXbbno1G6zKrYyw9+63l32WmLGKq
+         M2ERbv8u/V3nIueGaOTJKY8WzFYJXLMBVGZORgaH2unsZ0CYH4ImP5o27cEROyEOlVqq
+         9Y1U/Ruz5jkqRFVvo1DO/37qPnnSE9bAq3AZIC4viGwolQz/u0W3RMGNKOqxJMgbF0JR
+         2RekG2/gLUtZiepZGXvX6WNY64Mc1wSNQfd2C1X/gCAzbCadY4cAzIXD8PMXFP+xIO1F
+         RjyA==
+X-Forwarded-Encrypted: i=1; AHgh+RoFQnnHBnUnU9p6YIuc4m1p6NcsywcksMSzVHdrqO4z7rQ4NWZs/R1Wy8J3Q678PHJ7yHyA4Gk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXMBTIiKVlhawU7k2RSJUclu6ih10xgFFDr1Zve2stubADZSCv
+	30nWOEJzimvRwzSnHQpi5+ILJb1IPUclsb6o3Q+coDlWqaUajcsxHXb9
+X-Gm-Gg: AR+sD10OWGQJUpsuP0SkxMeHw8YDmcMRXjUNvfcBMwsOwNKp5TjGNzRruqjR00wlFGK
+	KA+w50R75QEVUVFaUZQV5BjGL/jY8NfyIoyD0sRQzgxJ374NMMbBep1ol0tDUrQ8Up+ZVu99Nns
+	aHYDk1gvvWsBc/URmv5+kxkiBKf+CQOTIZBYLcSeLNSxywrKLYNaDlqXfNfABxoco2n7romDmhr
+	no8PPQnrQBvGTB1ye+lHk/ogsJAkc8AG4CI8+A1ioIUpZ5lTrmoDLQZ8VH9WJt2c+6557jMsx62
+	WgeC8fBbwSiV1THtXemXTpAvSs3VSYwGy49HuPzfYX5RMWUb3Zseg5osntGXc5CMt0qsvfCkCXK
+	MI4YNR/e+PZ0rFZpumxOXNh2FSHnY63XdMH6x0nCLE6JkwBIyu3vXh8102m6sNdmrjQlIz57jjI
+	kw0nFIMurCORF33V27+scNSXM4oIT3xYy/77fXxJvBChArCWF0E/dTCffU/HgJZXoWSVVZN2Alz
+	2EuPo9jpOnTJZq4WCEaGN1yxfLJqGYqc1HFGD60HwvV1UE9cfURfjhd8S+LkSXO6MOgf8Ab6w+h
+	RhPBaJYTGH97iTJPogBH8iDBqdFCpBVvI+WWIeEdceuXUF4ma+nBLu9JlPm60MfvW/LtpN4HVHB
+	GT4XrOR9X5RknRLKV
+X-Received: by 2002:a05:6808:3082:b0:495:f85b:38c0 with SMTP id 5614622812f47-4b241b9d037mr21641094b6e.12.1786924834990;
+        Sun, 16 Aug 2026 17:00:34 -0700 (PDT)
+Received: from [127.0.1.1] (184-96-154-59.hlrn.qwest.net. [184.96.154.59])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4b2714dc18asm2556802b6e.17.2026.08.16.17.00.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 Aug 2026 17:00:34 -0700 (PDT)
+From: James Hilliard <james.hilliard1@gmail.com>
+Subject: [PATCH net-next v2 0/4] of: mdio: fix fw_devlink for Ethernet PHY
+ packages
+Date: Sun, 16 Aug 2026 18:00:27 -0600
+Message-Id: <20260816-submit-phy-package-fwdevlink-v1-v2-0-23e55dd59fad@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/42OzQ6CMBCEX4Xs2ZpS/j35HoZDLVtYgUJoRQjh3
+ S34AiZzmczsfLuBxYnQwi3YYMKZLA3GG3EJQDXS1Mio8h4EFynPw5jZ97Mnx8ZmZaNUrfQN/al
+ w7si0bA5ZlspcF6gxiQrwK+OEmpaT8ACDjhlcHJS/xI+9ULkDcHQbsm6Y1vOZOTwv/uZ6cSais
+ MjjWPMkk/e6l9Rd1dBDue/7F8mzNk3qAAAA
+X-Change-ID: 20260814-submit-phy-package-fwdevlink-v1-76a8f9efe539
+To: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+ Andrew Lunn <andrew@lunn.ch>, Christian Marangi <ansuelsmth@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ driver-core@lists.linux.dev, netdev@vger.kernel.org, 
+ James Hilliard <james.hilliard1@gmail.com>
+X-Mailer: b4 0.15.2
 
-AF_PACKET TX_RING skbs keep a raw pointer to their ring frame. The skb
-page references preserve page-backed ring blocks after pg_vec is freed,
-but they do not preserve a vmalloc mapping.
+Ethernet PHY package nodes describe resources shared by their member
+PHYs, but the package node is a container rather than a struct device.
+fw_devlink therefore represents those dependencies with temporary
+sync-state-only links from the closest existing ancestor device to each
+supplier.
 
-tpacket_destruct_skb() currently drops the pending reference before
-writing the timestamp and TP_STATUS_AVAILABLE to the frame. Move the
-decrement after those stores. The smp_wmb() in __packet_set_status()
-orders the frame stores before the decrement.
+For OF MDIO, that ancestor is the MDIO bus class device. The bus is
+driverless, so its proxy links never reach the usual driver-bound
+cleanup. They can remain after all member PHYs have probed and
+indefinitely prevent suppliers from receiving sync_state().
 
-Also recheck pending TX frames under pg_vec_lock before non-closing
-ring replacement, so a racing send cannot add a pending skb between
-the initial check and the ring swap.
+Before fixing the proxy-link lifecycle, skip supplier links when a binding
+cannot resolve its consumer node. This prevents malformed graph descriptions
+from passing a NULL consumer to the fwnode-link core.
 
-Ring allocation can produce a mixture of page-backed and vmalloc-backed
-blocks. Allocate deferred-work storage during TX ring setup when the
-first vmalloc-backed block is encountered, and keep its pointer in the
-pg_vec allocation header. If allocation fails, return -ENOMEM from ring
-setup. On socket close, a non-NULL pointer identifies a vmalloc-backed
-vector without a scan. If TX skbs remain, defer the whole vector to
-system_long_wq.
+Fix both parts of the lifecycle. First, factor the sync-state-only
+cleanup already performed by device_links_driver_bound() and expose it
+to frameworks which populate children below driverless devices. Next,
+treat each enabled member PHY as a consumer of suppliers referenced by
+its package node. Finally, call the cleanup helper after successful OF
+MDIO population. The real links from each member PHY retain dependency
+and runtime-PM ordering.
 
-After pg_vec is detached, a late destructor can skip the pending
-decrement. Use socket write-memory accounting as the deferred lifetime
-gate instead: an skb remains charged through its final sock_wfree(),
-after all ring-frame accesses. The delayed work retains a socket
-reference and reschedules itself until no TX skbs remain.
+This was found while validating an X-Powers AC300 package whose input
+clock is supplied by PWM. Before the fix, the PWM driver reported that
+sync_state() was pending due to stmmac-0 even after the PHY had probed.
 
-Move pending_refcnt release to packet_sock_destruct() so late skb
-destructors and deferred cleanup can safely use it after
-packet_release(). Page-backed teardown remains synchronous, and no lock
-is added to the TX completion hot path.
+The complete fix was tested on an Allwinner H616 board with an X-Powers
+AC300 PHY package. All five real supplier links targeted the member PHY,
+and no proxy link remained on the driverless MDIO bus. The PWM supplier
+reached state_synced while continuing to generate the PHY clock. The PHY
+negotiated a 100 Mbps full-duplex link, 8 MiB was transferred in each
+direction, and 100 consecutive pings completed without loss.
 
-Fixes: b013840810c2 ("packet: use percpu mmap tx frame pending refcount")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/netdev/20260721015824.45829-1-kylebot@openai.com/
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Validation completed with:
+
+  - arm64 defconfig object builds of driver core, OF property and OF MDIO
+    with W=1;
+  - strict per-patch checkpatch checks; and
+  - the H616/AC300 hardware test described above.
+
 Assisted-by: Codex:gpt-5.6-sol
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
 ---
 Changes in v2:
-- Allocate cleanup work during setup, only for vmalloc-backed TX rings.
-- Keep its pointer in the pg_vec allocation header; remove the teardown
-  detection scan, allocation, and synchronous fallback.
-- Use socket write-memory accounting for both the close-time decision
-  and the deferred worker.
-- Recheck pending TX frames under pg_vec_lock before non-closing swaps.
-- Rebase onto f5bbbfec59b4.
+- Add a preparatory guard for malformed graph consumers (reported by Sashiko)
+- Rebase on net-next/main
+- Link to v1: https://patch.msgid.link/20260814-submit-phy-package-fwdevlink-v1-v1-0-2319844f057a@gmail.com
 
- net/packet/af_packet.c | 96 ++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 87 insertions(+), 9 deletions(-)
+---
+James Hilliard (4):
+      of: property: skip links without a consumer node
+      driver core: factor sync-state-only link cleanup
+      of: property: link PHY package suppliers to member PHYs
+      net: mdio: release fw_devlink proxies after population
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 435756877aba..7bb5d8ca1593 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -88,6 +88,7 @@
- #include <linux/errqueue.h>
- #include <linux/net_tstamp.h>
- #include <linux/percpu.h>
-+#include <linux/workqueue.h>
- #ifdef CONFIG_INET
- #include <net/inet_common.h>
- #endif
-@@ -1341,6 +1342,8 @@ static void packet_sock_destruct(struct sock *sk)
- 	WARN_ON(atomic_read(&sk->sk_rmem_alloc));
- 	WARN_ON(refcount_read(&sk->sk_wmem_alloc));
- 
-+	packet_free_pending(pkt_sk(sk));
-+
- 	if (!sock_flag(sk, SOCK_DEAD)) {
- 		pr_err("Attempt to release alive packet socket: %p\n", sk);
- 		return;
-@@ -2534,11 +2537,11 @@ static void tpacket_destruct_skb(struct sk_buff *skb)
- 		__u32 ts;
- 
- 		ph = skb_zcopy_get_nouarg(skb);
--		packet_dec_pending(&po->tx_ring);
- 
- 		ts = __packet_set_timestamp(po, ph, skb);
- 		__packet_set_status(po, ph, TP_STATUS_AVAILABLE | ts);
- 
-+		packet_dec_pending(&po->tx_ring);
- 		complete(&po->skb_completion);
- 	}
- 
-@@ -3204,7 +3207,6 @@ static int packet_release(struct socket *sock)
- 	/* Purge queues */
- 
- 	skb_queue_purge(&sk->sk_receive_queue);
--	packet_free_pending(po);
- 
- 	sock_put(sk);
- 	return 0;
-@@ -4367,11 +4369,26 @@ static const struct vm_operations_struct packet_mmap_ops = {
- 	.close	=	packet_mm_close,
- };
- 
-+struct packet_pg_vec {
-+	struct packet_pg_vec_free *deferred;
-+	unsigned int order;
-+	unsigned int len;
-+	struct pgv pg_vec[] __counted_by(len);
-+};
-+
-+struct packet_pg_vec_free {
-+	struct delayed_work work;
-+	struct sock *sk;
-+	struct packet_pg_vec *vec;
-+};
-+
- static void free_pg_vec(struct pgv *pg_vec, unsigned int order,
- 			unsigned int len)
- {
-+	struct packet_pg_vec *vec;
- 	int i;
- 
-+	vec = container_of_const(pg_vec, struct packet_pg_vec, pg_vec[0]);
- 	for (i = 0; i < len; i++) {
- 		if (likely(pg_vec[i].buffer)) {
- 			if (is_vmalloc_addr(pg_vec[i].buffer))
-@@ -4382,7 +4399,46 @@ static void free_pg_vec(struct pgv *pg_vec, unsigned int order,
- 			pg_vec[i].buffer = NULL;
- 		}
- 	}
--	kfree(pg_vec);
-+	kfree(vec->deferred);
-+	kfree(vec);
-+}
-+
-+static void packet_free_pg_vec_work(struct work_struct *work)
-+{
-+	struct packet_pg_vec_free *deferred;
-+	struct packet_pg_vec *vec;
-+	struct sock *sk;
-+
-+	deferred = container_of_const(to_delayed_work(work),
-+				      struct packet_pg_vec_free, work);
-+	vec = deferred->vec;
-+	sk = deferred->sk;
-+	if (sk_wmem_alloc_get(sk)) {
-+		queue_delayed_work(system_long_wq, &deferred->work, 1);
-+		return;
-+	}
-+
-+	free_pg_vec(vec->pg_vec, vec->order, vec->len);
-+	sock_put(sk);
-+}
-+
-+static void packet_free_tx_ring(struct sock *sk, struct pgv *pg_vec,
-+				unsigned int order, unsigned int len)
-+{
-+	struct packet_pg_vec_free *deferred;
-+	struct packet_pg_vec *vec;
-+
-+	vec = container_of_const(pg_vec, struct packet_pg_vec, pg_vec[0]);
-+	deferred = vec->deferred;
-+	if (!deferred || !sk_wmem_alloc_get(sk)) {
-+		free_pg_vec(pg_vec, order, len);
-+		return;
-+	}
-+
-+	/* A detached ring's pending count can miss late skb destructors. */
-+	deferred->sk = sk;
-+	sock_hold(sk);
-+	queue_delayed_work(system_long_wq, &deferred->work, 0);
- }
- 
- static char *alloc_one_pg_vec_page(unsigned long order)
-@@ -4410,20 +4466,35 @@ static char *alloc_one_pg_vec_page(unsigned long order)
- 	return NULL;
- }
- 
--static struct pgv *alloc_pg_vec(struct tpacket_req *req, int order)
-+static struct pgv *alloc_pg_vec(struct tpacket_req *req, int order, bool tx_ring)
- {
- 	unsigned int block_nr = req->tp_block_nr;
-+	struct packet_pg_vec *vec;
- 	struct pgv *pg_vec;
- 	int i;
- 
--	pg_vec = kzalloc_objs(struct pgv, block_nr, GFP_KERNEL | __GFP_NOWARN);
--	if (unlikely(!pg_vec))
--		goto out;
-+	vec = kzalloc_flex(*vec, pg_vec, block_nr, GFP_KERNEL | __GFP_NOWARN);
-+	if (unlikely(!vec))
-+		return NULL;
-+	vec->order = order;
-+	vec->len = block_nr;
-+	pg_vec = vec->pg_vec;
- 
- 	for (i = 0; i < block_nr; i++) {
- 		pg_vec[i].buffer = alloc_one_pg_vec_page(order);
- 		if (unlikely(!pg_vec[i].buffer))
- 			goto out_free_pgvec;
-+
-+		if (tx_ring && !vec->deferred &&
-+		    is_vmalloc_addr(pg_vec[i].buffer)) {
-+			vec->deferred = kzalloc_obj(*vec->deferred,
-+						    GFP_KERNEL | __GFP_NOWARN);
-+			if (!vec->deferred)
-+				goto out_free_pgvec;
-+			vec->deferred->vec = vec;
-+			INIT_DELAYED_WORK(&vec->deferred->work,
-+					  packet_free_pg_vec_work);
-+		}
- 	}
- 
- out:
-@@ -4506,7 +4577,7 @@ static int packet_set_ring(struct sock *sk, union tpacket_req_u *req_u,
- 
- 		err = -ENOMEM;
- 		order = get_order(req->tp_block_size);
--		pg_vec = alloc_pg_vec(req, order);
-+		pg_vec = alloc_pg_vec(req, order, tx_ring);
- 		if (unlikely(!pg_vec))
- 			goto out;
- 		switch (po->tp_version) {
-@@ -4558,6 +4629,9 @@ static int packet_set_ring(struct sock *sk, union tpacket_req_u *req_u,
- 	err = -EBUSY;
- 	mutex_lock(&po->pg_vec_lock);
- 	if (closing || atomic_long_read(&po->mapped) == 0) {
-+		if (tx_ring && !closing && packet_read_pending(rb))
-+			goto out_unlock;
-+
- 		err = 0;
- 		spin_lock_bh(&rb_queue->lock);
- 		swap(rb->pg_vec, pg_vec);
-@@ -4579,6 +4653,7 @@ static int packet_set_ring(struct sock *sk, union tpacket_req_u *req_u,
- 			pr_err("packet_mmap: vma is busy: %ld\n",
- 			       atomic_long_read(&po->mapped));
- 	}
-+out_unlock:
- 	mutex_unlock(&po->pg_vec_lock);
- 
- 	spin_lock(&po->bind_lock);
-@@ -4600,7 +4675,10 @@ static int packet_set_ring(struct sock *sk, union tpacket_req_u *req_u,
- out_free_pg_vec:
- 	if (pg_vec) {
- 		bitmap_free(rx_owner_map);
--		free_pg_vec(pg_vec, order, req->tp_block_nr);
-+		if (tx_ring && closing)
-+			packet_free_tx_ring(sk, pg_vec, order, req->tp_block_nr);
-+		else
-+			free_pg_vec(pg_vec, order, req->tp_block_nr);
- 	}
- out:
- 	return err;
+ drivers/base/core.c        | 74 +++++++++++++++++++++++++++++++++++-----------
+ drivers/net/mdio/of_mdio.c |  5 +++-
+ drivers/of/property.c      | 18 ++++++++++-
+ include/linux/device.h     |  1 +
+ 4 files changed, 79 insertions(+), 19 deletions(-)
+---
+base-commit: e6a5d573d24cd375e09d24f136523cb3cc85c9d3
+change-id: 20260814-submit-phy-package-fwdevlink-v1-76a8f9efe539
 
-base-commit: f5bbbfec59b4e2fb7520a91de3df8a6174325d6a
--- 
-2.55.0.openai.347.g2b0ba75e4a61
+Best regards,
+--  
+James Hilliard <james.hilliard1@gmail.com>
+
