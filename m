@@ -1,72 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAB144239E;
-	Mon, 17 Aug 2026 15:39:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3856C2E738B
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 15:39:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786981169; cv=none; b=OXWOQhBBGALUPmzOr7mE+N32UMlIqL14BengXldISrrUJQkG+pFzDH3qvM9nSZrcbA72pektYixUwJj7WR3JUqCxLajwGDQMD6xtoc1VJcWvY4EaCvJ4CzIoGK7MiJtT1CNHoS8dv7VgPHKqHWP+flUs3rYky37D9geiNSGRjq0=
+	t=1786981195; cv=none; b=nTR0dLFahrPGANopRcpnzV0DguXh08H5CXebDvFl3pYcBXHhrRihmCm3sWas4JWPfKr9Rv2Sxqgjt8/EYwce+ndJttI5fyeoG5KAa2lRDlJk5Px9bUqvOm75PUXEKGmQi9rqqVFOi72MblPXG6CrfzTV1pNQpX9EEfPRyWgeGTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786981169; c=relaxed/simple;
-	bh=gLqafw0tl9nU9NvsdDHh9/VHiMafczT3GIkqu6LQ8u0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LWthGNhZaih3fw3UaqV6OlOYymAdzW8qEugniJ/AE/30N5MQuFbFupFQDpqbSpAzEkCow35LVnwODxMVuFd3cC5BAHQjFg8CLTmoYoqiDOxllkUmbMzquxGMrrFGOnK8XqoVVpSZhzMnAeJ8fPMe4Yd14+cMLCLWHS/HKLBMDuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PMzh435w; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786981195; c=relaxed/simple;
+	bh=H3nptbdADxSff+uLFke9+TPoMwCWTAyD2+uq/GPDw/A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QoPKxGUJz59+OfTxuGoSuoqv5Kv7NbGyaK+KudcQkAzVfoJ6oyYHYfjlmyg5ftTl30r7cGz8ZdnMuT/Goqv0eRkpOZeolC1a6xYaEeX+QwJbR9DWLNHGwdPWuTNXFtHCVsYGcyCWAPnZL1c8oEy52xRaNpxDOOXj36wrEIe21gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xm+QwB3e; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PMzh435w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7BA71F000E9;
-	Mon, 17 Aug 2026 15:39:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786981166;
-	bh=JrPy+D0C2SuyXPrDX+RudtY/w8/5axQQxhOy21MWkow=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=PMzh435wcB8A/5GSydimj+HGikTOzE6BE+BryHNs/NLdnY8btaTIMVsiKcE06oDNz
-	 5WvU1RLAWC8TrGt+TsZeDeik154MhpZb4b1wadNM0r6fFrIL8nnYFw9M8hQGvsTZdO
-	 BS03ksNY1agzzsmhHytrnAK0Rr0iVSgHClYdTK8hlx+pwy5bFLR0mx1GnD8VDQXhJH
-	 17P5sAg60B7KBFQ1ShzJrEYpqYHeO8gaJbKg3OQhk2SH6jEO9qmLdkHKwh6MwsRx29
-	 pDOMkwkmTDIdSt5wfa6AEpBkvp+sDnghTvTMMmW2wuJB7JFcA2/GtuWaXiLpuUTTDf
-	 +ueKCVnzUBeGw==
-Date: Mon, 17 Aug 2026 08:39:25 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Koichiro Den <den@valinux.co.jp>
-Cc: Jon Mason <jdmason@kudzu.us>, Dave Jiang <dave.jiang@intel.com>, Allen
- Hubbe <allenbh@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, ntb@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 0/4] net: ntb_netdev: Preserve checksum
- offload across NTB
-Message-ID: <20260817083925.045c7439@kernel.org>
-In-Reply-To: <20260817064916.13278-1-den@valinux.co.jp>
-References: <20260817064916.13278-1-den@valinux.co.jp>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xm+QwB3e"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-ca132e9c54aso231760a12.3
+        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 08:39:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786981193; x=1787585993; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SpEuEX+rM6EWcPcctt8ZdTluERNGSkeRbbqFIS9qfEU=;
+        b=Xm+QwB3eMCCaQI+IU+4G64qVgYDVj+0hzAE9/MbO9EDG1NBRR0jDC3uwT1Q4m9yePc
+         XZahDPE/G2Us+dtPlVtiTRmCFzF0Wz1AWLvBrxTwh2l4lQjwVskqcb/Ih702bz7bOCCj
+         G7dhftKGHaXnHwlsjBx+qglukpAHsNqXhN8Spa/WFN2as/Ds/CKOiLdap8yeUk9jo6wF
+         5UdrkCHHSZFMIoSJSdMFAQG+b7bDp9Cm5q3T9FfAVl6XeAs7kSlkLRUQJjHgN1mSKv7K
+         nGLgz2jRBR74ZGlYY2p0PMVQb0ELaA8Jv24I6/obfKV7MY9YwKaBuRGGaHuSUbvprxML
+         J2CA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786981194; x=1787585994;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=SpEuEX+rM6EWcPcctt8ZdTluERNGSkeRbbqFIS9qfEU=;
+        b=r/eh9WveXv3Wf3TiHp7ufhHd97t6naGGZ+ych+KbgKSS/YdjjhUS/Itb4a5R3XoGxW
+         pXsWKT1WWiro9FYC609efRca1TevVxlotePWOIk/NZ+wQBGT71KZmws/UQVAcbjxakh9
+         yH8NiiuuzyoV2I+wmVsoXpHkQQADivkXCRMFheaSKGIL4wkfbAgPReOJw1NafSyaNJOH
+         R5JLuP7A9mX/ea0GlrZMmCiyhLVrSMLl46AWfEkQc6d6AUIb2ZDoXIkH76csKS7qxyHt
+         JnnEytTMg4h/P9t9YCtdbIuA8iu1+Abaw9+Qirpsy+mwm9pou1PG8cj7JCkMbZ7denk/
+         /K2g==
+X-Forwarded-Encrypted: i=1; AHgh+RqWR9kVUta2+Zi4HcEZsFJE3qpMjeMs1+duCDy8nd/otXohKhxuN1dHPnir9y+RRGz9aN3KDVk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6pi5khC9lYZv3Guo4QnyO5X6DMUCS7lz+Pa2baRvCB/DP0MUX
+	5oZoKUgYNQd5cVnMq4sUaRsKJ+5FG67XmD9aQKklioVYBZBFr0yPvH7I
+X-Gm-Gg: AR+sD11kLjWB5SpBPeN7EoRfsyHhhr2xpMfsSouD0BIvxbYXn4K3wGU2Hn5NI4Ycljj
+	yrvuf10RxJ1NYAAOgihiuTfgXMZ85b632u54piCP/cQDFgQkgC5046VHIWYIT4ZnDh94nC5qEPC
+	NlPYDgVhPzhPJvWfWjjIHaPM5ppfW7rreruMKsKmEK5IMOkb2c+79mRgcyacDH45Fz0WePXawOX
+	aVcMexXsOZG+QxLuEqNldmRbbmGecItdn/dMPjHDvb49r12bJwkORHqG3b11GfD+Un0cXxzMrq4
+	BowApbNOw2zfJqui8cEjy2+Bo12+kUCYdmmotxS+ySfRnjwgCglmSpcO+7toLBzbc3ddc/hQSZ7
+	YhcpL7SAC8LsSX/9vaRSW4WWZ7hkytWJto+tX3Fqw3TX00wm1cnYp1Mw2ETTfzV+SHYY+Pnr1gu
+	e8xJunDLL7deNUtAoaFJLhueh+Ja6u7Nv5z2w4pfSAaQENWFsNt0jDZq/Otv/ez/Jm6xYPFJlkq
+	xFe3Mr2l/yO
+X-Received: by 2002:a17:90b:4c87:b0:38e:549:9e04 with SMTP id 98e67ed59e1d1-3933b7d1d85mr18726489a91.1.1786981193455;
+        Mon, 17 Aug 2026 08:39:53 -0700 (PDT)
+Received: from ?IPV6:::? ([20.24.212.12])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3954d2e64dbsm2672735a91.8.2026.08.17.08.39.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Aug 2026 08:39:53 -0700 (PDT)
+Message-ID: <1fde2f37-4048-4c7b-b29a-12273b2df503@gmail.com>
+Date: Mon, 17 Aug 2026 23:39:46 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 1/3] net: hsr: privatize interlink-bound skbs
+ before address mutation
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, pabeni@redhat.com, edumazet@google.com,
+ horms@kernel.org, shuah@kernel.org, lukma@denx.de, m-karicheri2@ti.com,
+ fmaurer@redhat.com, luka.gejak@linux.dev, bigeasy@linutronix.de,
+ ali@iusegentoo.com, qingfang.deng@linux.dev, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <20260808004525.1551-1-xiexinet@gmail.com>
+ <20260808004525.1551-2-xiexinet@gmail.com>
+ <20260813182744.4bd0002f@kernel.org>
+Content-Language: en-GB
+From: Xin Xie <xiexinet@gmail.com>
+Autocrypt: addr=xiexinet@gmail.com; keydata=
+ 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
+ sNySbH3veZ/55EtlXA==
+In-Reply-To: <20260813182744.4bd0002f@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Mon, 17 Aug 2026 15:49:12 +0900 Koichiro Den wrote:
-> Subject: [PATCH net-next v2 0/4] net: ntb_netdev: Preserve checksum offload across NTB
+On 14/08/2026 09:27, Jakub Kicinski wrote:
+> 
+> Would skb_cow_head() be sufficient? It's much cheaper, at least for TCP.
 
-## Form letter - net-next-closed
-
-The merge window for v7.3 has started, and therefore net-next is closed
-for new drivers, features, code refactoring and optimizations.
-We will only consider applying net-next patches which were posted
-before the announcement:
-
-https://lore.kernel.org/20260816155953.072d73da@kernel.org
-
-Fixes are obviously welcome at any time. net-next patches may be sent
-for review and discussion only with an RFC tag.
-
-Please repost when net-next reopens.
-
-See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
+I am currently on annual leave until the middle of September. I will continue this topic when I return.
 -- 
-pw-bot: defer
-pv-bot: closed
-
+Xin
