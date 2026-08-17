@@ -1,43 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0AC3ECBED;
-	Mon, 17 Aug 2026 23:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E072A3A4F2F;
+	Mon, 17 Aug 2026 23:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787009926; cv=none; b=cALkra9hLyVbFs4+ixv4ux3pEg0H2rH0+heDfIBMxCvTBXS4LZbfbEdVKAu7gFUsNci7+d54j1EYR4TjbWU2At5aP1ABulYBQOIY1nP/+MjEHb5hETvZqKdLfCwcgfTCFAeUyVU/NmxO87v9z9uE3vmltj5oybVI5yd31J+hRAY=
+	t=1787010070; cv=none; b=f+gxiNXy8014dX8Ef7GfPLBtwHfjbSN41vA6JpwAJ91aJhett+0ucwBpJVM0Veec2SM9Mmu17VXq9S8FcMrSDh/6ZOLRtAdZ0G2DLRjFv3bYE85mHFYWEThy6WxXMZAUKJo+qB68cpnwy3WOdOi5mHNZ/tMklnM8VtthJJwfCrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787009926; c=relaxed/simple;
-	bh=2tUxnHkEFBZ2JdUVdwF5gViS9XDKGt/Wthfs2ra2XMY=;
+	s=arc-20240116; t=1787010070; c=relaxed/simple;
+	bh=OIqFykbVmpRxnM8vPCamvdXZVYf4udsPnWW7tPJ2hZo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V4/MYPScj+O2aNZ4TIPSXHUH3Jiqto7Yz5feJmVgvQI3mV4N0HCfQ5PTTFrnDK6nhoUeqI5ZXKH68Y72Qrf1lwDGhcGol4rIwYpYvKk3LCXQdlmC75v9MYk8OKYh5lTj6efSMa0rhjnBw+AJyqbtAmrgUO3UqAPPn0hS64MPIQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ffS47bDc; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=YNCJyzAM+dxjGyaG1/ub2eQb2bLWwu7lKjbdlcMHpq1oIa1ypWdP0zBx+OJ+2UlhsPVPhVcVPb4j+AGDxMTp2mrWkWbogcZwFeWRldG0tDUwngyCg0oSSAmmlGDA2ol9MS9Y3ffUOhO4EQvlKy7tRquiYWMH4NHm8SdwnNKMB6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R4sDxJ5t; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ffS47bDc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21DAD1F000E9;
-	Mon, 17 Aug 2026 23:38:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R4sDxJ5t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D05091F000E9;
+	Mon, 17 Aug 2026 23:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787009925;
-	bh=yCoHqlcxoyWY+tmMWp+eVl8fHsUSjs1QiGrszrpMmrY=;
+	s=k20260515; t=1787010069;
+	bh=kltHfNBZKgyTDetzWkUs7bPufZVsoQeU5dOPU0m3tHc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ffS47bDcI/1RxXa6w1ILpNy7VjO++lfuxqjAXk9rwCz7Q197haPEtOVvZXXNVlXv1
-	 W5divaI2T1IuixyQMnR7r21nNAcKXM1YttJP9AInwGqWl29OO8gx5lri5N0flQXRr2
-	 CQ+NgmCc3uKZcQD0HRABun6BgZKi+oUCoOfJtudT2Rda3Z/LlvFlzvaxlnjjNf3Nx2
-	 4x6crIgN1+masxVjNUuLFoZcWiNF+4yYCUF/8FZdc6Gsb9FYK0dpjHj4Bw+Pil5s8U
-	 2WSWwfA56xjdWTjdTtDKiGeoKGKxEdiMhXiSC1u060B6/pGZnvOF2nR3o30ek6zh12
-	 xegj+R+rNHP0w==
-Date: Mon, 17 Aug 2026 16:38:44 -0700
+	b=R4sDxJ5tFEU6JIxfjYpoBeH+lQaX7XiLQOZziX+zWu1ZaYsTDuEr3o41QSPkem6im
+	 kQJKepKaQOlQYrGfEFkqh4tD1sKULPItbc61gkOFOutw+jmXsZ+koJP3uswZNlHDvU
+	 41Pr9XAQXFkRJmoE7Byqs5h0OeCVa4iinMCnuIR90Y6+Fj64cQfwGV0QFJEGnqGee1
+	 hFALI8j4sEDPzqW0KCM6hgvPLiFXQkW0vjCJ1FgXXaZ8VOe1GCFLApdrc8FkvZfzJ5
+	 +ddEIWQZVPKYkHtUTpu6PeY/AUUsgrMCnlUfgNZwZ7v/7F1+8kPNBSsgrRMWGWAHYD
+	 kJOp8FmpUF0Lg==
+Date: Mon, 17 Aug 2026 16:41:08 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: javen <javen_xu@realsil.com.cn>
-Cc: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
- <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
- <horms@kernel.org>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next v11 4/7] r8169: enable new interrupt mapping
-Message-ID: <20260817163844.631c08c2@kernel.org>
-In-Reply-To: <20260814015203.1328-5-javen_xu@realsil.com.cn>
-References: <20260814015203.1328-1-javen_xu@realsil.com.cn>
-	<20260814015203.1328-5-javen_xu@realsil.com.cn>
+To: Long Li <longli@microsoft.com>
+Cc: Konstantin Taranov <kotaranov@microsoft.com>, "David S . Miller"
+ <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet
+ <edumazet@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Jason Gunthorpe
+ <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Haiyang Zhang
+ <haiyangz@microsoft.com>, "K . Y . Srinivasan" <kys@microsoft.com>, Wei Liu
+ <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+ shradhagupta@linux.microsoft.com, Simon Horman <horms@kernel.org>,
+ ernis@linux.microsoft.com, stephen@networkplumber.org,
+ netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 01/13] net: mana: add queue-set allocation
+ and teardown helpers
+Message-ID: <20260817164108.4b047ec8@kernel.org>
+In-Reply-To: <20260813050418.2906468-2-longli@microsoft.com>
+References: <20260813050418.2906468-1-longli@microsoft.com>
+	<20260813050418.2906468-2-longli@microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,16 +54,18 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 14 Aug 2026 09:52:00 +0800 javen wrote:
-> This patch enables new interrupt mapping for RTL8127 and add error pkts
-> counter per ring.
+On Wed, 12 Aug 2026 22:04:06 -0700 Long Li wrote:
+> The ethtool reconfiguration paths (channel count, ring size, private
+> flags), mana_change_mtu() and mana_xdp_set() rebuild the queues with
+> mana_detach() then mana_attach(). That tears the vport down, so RDMA can
+> claim it while released, and a failed mana_attach() leaves the port down
+> with no way back but manual intervention.
 
-drivers/net/ethernet/realtek/r8169_main.c:4383:11: warning: variable 'i' is uninitialized when used here [-Wuninitialized]
- 4383 |         while (--i >= 0)
-      |                  ^
-drivers/net/ethernet/realtek/r8169_main.c:4365:7: note: initialize the variable 'i' to silence this warning
- 4365 |         int i, ret;
-      |              ^
-      |               = 0
+The kernel-doc script run with -Wall reports:
+
+Warning: drivers/net/ethernet/microsoft/mana/mana_en.c:3936 No description found for return value of 'mana_qset_scratch_alloc'
+Warning: drivers/net/ethernet/microsoft/mana/mana_en.c:3936 No description found for return value of 'mana_qset_scratch_alloc'
+
+Please note that net-next is *closed* until Aug 31st (merge window).
 -- 
 pw-bot: cr
