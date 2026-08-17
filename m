@@ -1,129 +1,188 @@
-Received: from ixit.cz (ixit.cz [84.42.129.46])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556504B04BE;
-	Mon, 17 Aug 2026 20:03:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A111441626;
+	Mon, 17 Aug 2026 20:05:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786997032; cv=none; b=JE/UwyJWN1IbK9RWz1OEsdSl4azIYXEwyyN2KQU7MtELkbPaWhm9jUZKM238dug4g8UzeGMGhUr7sz5Tv5roG2+fegOg2AB26t96H0zLWo36rYJdzZ0h0A5rPGOXFDQvQzCwoR/6SVdOhK8ghhuwRQtkWuh64t7G3yMfT99JrAg=
+	t=1786997125; cv=none; b=KehlmE+bUWhflzj6u9v5J9RTh0kN6lHdRwbCuWCY0hY6NyQMQrCpq26+sQEIbBlLDyBrgqSg0NEzLh364Za+LaQDa6RVIJrymTxU86fDbVRQ8bJtls78fOOi690Sd76auGZ1IYqczbkytOR7NPcH+I7emNIBPSE5lte1dcAEoCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786997032; c=relaxed/simple;
-	bh=UpZJ2Frife9XFXJMgfiy84YCxCgaaU2KK+7c0df+Vdc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=u/WFqwRlRbetnO4ezMX3+rcIuuXjYm4njNEEaN07ZUefdnwtRhlwJspeYKKAxSUhwVMye/6BLLIXUFmFxDQFBViqSSWz36oYfwwAQASejQfK7Plft5Z/prqGkQ2fSVpYHDndxgcSk6JKmo6+UpYlhd9C2juek8dpExaBWMkcOsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=Dg6axNGw; arc=none smtp.client-ip=84.42.129.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
+	s=arc-20240116; t=1786997125; c=relaxed/simple;
+	bh=DAtbEGRdZstxOapXS02ws98SEPjjOQ6uLuUqDWHlK8A=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ay1rX6o3TZ7rB4H5pocxMsg2eGVjG6ECgYXyZ/wrF9X6N7MdJFX4LatojUwEhDzH1SlXqClfQlJBcIzr6e0JfL9SedjKCVaB8K9P/53i049XlzHdKA8f1Yr1tjnFouAnnTy3X3bCT14VZ3Ow6dbaKGJ0p8TDlyUG3WUXbWaKAUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=I63cFKe1; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="Dg6axNGw"
-Received: from [IPV6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e] (unknown [IPv6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id 7048253405DB;
-	Mon, 17 Aug 2026 22:03:47 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1786997027;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=CJwbK4Hd5hG+cB08tP/aOrYbCBUNOyMxs/eMI0RzurE=;
-	b=Dg6axNGweWyKfPKQvZyWUAT/a/+L9dY8mip0Rnym46kyr3F5MxlV1IwCKlyUEw7ZTSXrMM
-	Ik1Ir3xQfy+cMEi9jSaOFeJyxPApph0BiqcWJ+h3KjUE5WXIO/HS/tRtigDcBY9J67SJQy
-	8zG9/+mNhUEkfeAxbu+hTZhJHmvtIjs=
-Message-ID: <da5d3eb0-0926-4f0d-bb46-1453930b2491@ixit.cz>
-Date: Mon, 17 Aug 2026 22:03:47 +0200
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="I63cFKe1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1786997116; x=1787601916;
+	i=markus.stockhausen@gmx.de;
+	bh=DAtbEGRdZstxOapXS02ws98SEPjjOQ6uLuUqDWHlK8A=;
+	h=X-UI-Sender-Class:From:To:Cc:References:In-Reply-To:Subject:Date:
+	 Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=I63cFKe1yHaa94wOHLwOqiGOKyVMBk8vkKLiBMjKvGlEEX4FLUIB4TEJFFz8C1l1
+	 AFIEcfe/EWQM/arZFOnu5DKone4Zw76KudPhbgUPN7Q0bvQE9KJnB3h/PsICc5VmB
+	 GTIOMdaMFgZEGs2Yn3I+o5I9auIDDLPhnunmKx//p1s5yXt2gjAqbyZvgLfPRnQf7
+	 31KAF6z9F52fDQXgKOsG4nz2tCIZk+DEFT8PyGJBctH+ueHOEabdtCe83T2+Oe6pj
+	 qJ0/qnSg3KxI/uFs+c85vhXM8rkpz4LDeel7ePEb1oybjRJsfCHBAqyR6BD8MEmcr
+	 FnbVF2m5BEf+BKXVqQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M4JmT-1wvmSz1b1t-00GWr4; Mon, 17
+ Aug 2026 22:05:16 +0200
+From: "Markus Stockhausen" <markus.stockhausen@gmx.de>
+To: "'Andrew Lunn'" <andrew@lunn.ch>
+Cc: <hkallweit1@gmail.com>,
+	<linux@armlinux.org.uk>,
+	<davem@davemloft.net>,
+	<edumazet@google.com>,
+	<kuba@kernel.org>,
+	<pabeni@redhat.com>,
+	<netdev@vger.kernel.org>,
+	<chris.packham@alliedtelesis.co.nz>,
+	<daniel@makrotopia.org>,
+	<robh@kernel.org>,
+	<krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>,
+	<devicetree@vger.kernel.org>
+References: <20260817162632.1208891-1-markus.stockhausen@gmx.de> <20260817162632.1208891-11-markus.stockhausen@gmx.de> <cf8bdf97-64f9-4120-bdeb-c5a91a274490@lunn.ch> <070901dd2e6d$f5b70c30$e1252490$@gmx.de> <0a125ab4-2453-4d32-b158-8bdaaca16674@lunn.ch>
+In-Reply-To: <0a125ab4-2453-4d32-b158-8bdaaca16674@lunn.ch>
+Subject: AW: [PATCH net-next v14 10/13] net: mdio: realtek-rtl9300: Open up C22 and C45 space in parallel
+Date: Mon, 17 Aug 2026 22:05:10 +0200
+Message-ID: <089001dd2e83$b8957920$29c06b60$@gmx.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [pull-request] NFC updates for next-next 2026-08-17
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>,
- netdev@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- oe-linux-nfc@lists.linux.dev
-References: <93a47987-885f-4e5f-8920-788fb281db67@ixit.cz>
- <20260817115325.4333587c@kernel.org>
-Content-Language: en-US, cs-CZ
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20260817115325.4333587c@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQKGRKDnP2yh8sOJ5M24BwCNtDMK1QH1jg89AffL5+ICqsGtjAEuNNjXtRJImYA=
+Content-Language: de
+X-Provags-ID: V03:K1:Iw/9nv8VYd/W8nj+l49bTjwi9HFzMp2ddB0LxKVdTSYaQ7OQ4HU
+ mL8Blctzgp/TAdhTnKdZLdP7NG5DUxSLUjaBZJ9nScNXgQ0edqbKx2HwgQv+4tKjZStUEQM
+ hnloE51BtCl/Lmn9ItEDKTY/NB7N3y20xAjA/qoAMmp81mzuUgDFVYrCFDTD5MdxuiiTxxn
+ FebSUxWK51bLXh+S0qs+w==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:F+4JvPQfvXs=;XCWYkgnwcvb8f0FeFD2PcX03YQx
+ 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
 
-On 17/08/2026 20:53, Jakub Kicinski wrote:
-> On Mon, 17 Aug 2026 19:45:45 +0200 David Heidelberg wrote:
->> The following changes since commit 8d3ae59288f1e7d58d76558a6ee96d533bc5019f:
->>
->>     Linux 7.2 (2026-08-16 14:32:26 -0700)
->>
->> are available in the Git repository at:
->>
->>     https://codeberg.org/linux-nfc/linux.git tags/nfc-net-next-20260817
-> 
-> Please don't rebase your trees. The base of your tree should be at
-> whatever point net-next was after the previous PR to net-next.
-> Because:
->   - we don't have the 7.2 tag in our trees yet, if I merge this it will
->     look like I pulled a week worth of Linus's tree, not a small PR from
->     you
->   - the commit hashes in linux-next do not match what you have in this PR
-> 
-> Did you rebase this tree recently? Perhaps you still have the previous
-> version in git reflog that we could pull instead? Exceptionally, this
-> time you may need to rebase to go back to an older base..
+> Von: Andrew Lunn <andrew@lunn.ch>=20
+> Gesendet: Montag, 17. August 2026 21:35
+> An: Markus Stockhausen <markus.stockhausen@gmx.de>
+> Betreff: Re: [PATCH net-next v14 10/13] net: mdio: realtek-rtl9300: Open
+up C22 and C45 space in parallel
+> ...
+>
+> > > And I really think you need to block C45 over C22, since we know it
+> > > will go horribly wrong.
+> >=20
+> > as per your guidance I Included that as patch 3 of this v14 series
+> >=20
+> >
+https://lore.kernel.org/netdev/20260817162632.1208891-4-markus.stockhausen=
+@g
+> > mx.de/T/#u
+>
+> Ah, great.
+>
+> Have you seen these fire? I would expect EEE, on a PHY discovered via
+> C22, to trigger these.
 
-Yes I have, let me tag the rc8 instead.
+All downstream 1G PHY drivers for that platform use dedicated=20
+read_mmd/write_mmd callbacks that run __mdiobus_c45_read/write().
+So no warnings during bootup.
 
-David>
-> BTW normally to get your own fixes into your own -next tree you should
-> stagger the PRs - first send the fixes, after net -> net-next merge on
-> Thu afternoon - send the -next PR.
-> 
+ Markus
 
