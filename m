@@ -1,82 +1,137 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD538190462;
-	Mon, 17 Aug 2026 20:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B7F3C1D4B
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 20:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786999650; cv=none; b=nnAfeXbq9AGYUI978bxZM9AdnBCMwjS0izEZosNXq+/y9GABorBBrCtDF1m5ahTjvwZu+f2shhHcDlnEmx5rSW++1vtTAdGfvSYqprYhtaG0MYUEPhyiz+xsnNAi1zkc5Pfq6FFA9L5p1JiP4y8eU7z+mlloXDEwzClMHLf7xHM=
+	t=1786999853; cv=none; b=rvOm0ke0ct5tErXcGavuJoqmannpuGrxodnCVE+Rnee9d6PD8Q5NJQYMnMDSbQwyubvl9iyAQXpc9eJ/Xawjn9jKAt58WatiQ7VCfjOkYtmY9l5CQAOjEOaCtBh2Zy9QpTCvwHm8UGXR3e3CfSIFXtFt42D5xUB/RdR/7tOdi/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786999650; c=relaxed/simple;
-	bh=wmSs3CCifD0QB0lPTo8IT3YQIqPTm8qL1DRJOY126R0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pZlKKVXF4vnHF/o8tNiLPHOblge6MhzYZJshdx8NXTN0YpPaCHS4mepbKB40k8u4tVMCwSgiwsoMFrlTNvH3BMbkoojgbKjqm3u8e+aiU467OiHbie8CRjA2QDlvq9ifNvhfn8pHvaRfr4j/8ADQvZ3hPRIXAh2RucVJRUoiuAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FL0z2pUn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786999853; c=relaxed/simple;
+	bh=l3uZSvinsKgCCJLylZ7ayzanFFvNBhkzZHGDZiWqO+8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MrSkAA5ElIrJ/HFER7g/bFy3k2QmXjpyO4106n8//3LfMtYB+hZwp0WBfIiAIztu26ZPn0VIofQqVJkvbXCnDsPuI0vJCXuOGCUIQJnhDiWn+pmhr9O9QuBVPwKsGeRkBhEtD4bv+0EdQmFVrx+7JCs9lFpyIegJdlibPKBgsFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pnvct3Pp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FL0z2pUn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 910901F000E9;
-	Mon, 17 Aug 2026 20:47:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pnvct3Pp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B59931F000E9;
+	Mon, 17 Aug 2026 20:50:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786999649;
-	bh=111cZwE+fIsihcrOn87KAVC+gmNsgNFaiu9bx9gzA6c=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=FL0z2pUnciX4/Rv9iwWhFcb2vERfUR1zoJ8VQv1oWRemL7hekh9TWUinYS67I7TqN
-	 RlQRH3t/1/0njxFN0sL0e0S56NAmnj6JwcipGbfE5sv9zWwxQyWA0SH/mEbb4fuqmh
-	 7Xz1AHU6cYORwQULXlq+2x8bMt0eo3YqTDPn7I19Ajg+DgwB19B0L8E3TbP3m2szIH
-	 1l7+129bQJNtPWJGJOUinh9MHY2jp0u6cX5f/wp2ubcd0jT63meYaz6iz/efakqDRU
-	 +/Dxc38W25cd6Jy2JNSTQGv3kZbaXagWuC2ThDnwjwBBo7eDIrgdhs6+AFkrcsfBuj
-	 7j7a6isGz0/0Q==
-Date: Mon, 17 Aug 2026 13:47:27 -0700
+	s=k20260515; t=1786999849;
+	bh=7tnNg7RnLQQHJOOsDmIUNL3BOwFvIu2KqN4IU1Ml3YM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Pnvct3PpkJPYwFSsTXFdBRkKhw3eOGeZ/Tc5/97CBLzkX1BDoxcvInGn7YLyEZN+N
+	 jtiuzw7s+oW+R1KLJ4tKIEglO6af27TBq6e4WU9NUzVg7Y8kwr/WHYf5utAWZjYwF+
+	 cA7jlfjSvmJbaM6LGqBmbFbEsXWoEa9umJrA8ClFnA1710VaCzLO/xGb94PAsD1Opg
+	 D6AVNTKb9DaKa50RdSDK4tRexGEEeDnCXYBNHSIsrFru0iyZMAlg9DIpLOx0RGrWe/
+	 dje8rSjEKy87IbHzcinyFHPE+F0LcFpwBUzKPXmfMqoQlv1vNp/iDoxkEG6CZB7QTc
+	 CDicC0FAes8MA==
 From: Jakub Kicinski <kuba@kernel.org>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Simon Horman <horms@kernel.org>, Jonathan Corbet
- <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Lorenzo Bianconi
- <lorenzo@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, Russell King
- <linux@armlinux.org.uk>, Philipp Zabel <p.zabel@pengutronix.de>, Nathan
- Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- llvm@lists.linux.dev
-Subject: Re: [PATCH v14 00/12] net: pcs: Introduce support for fwnode PCS
-Message-ID: <20260817134727.1f76d6dd@kernel.org>
-In-Reply-To: <20260813083536.970196-1-ansuelsmth@gmail.com>
-References: <20260813083536.970196-1-ansuelsmth@gmail.com>
+To: przemyslaw.kitszel@intel.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	rafal.romanowski@intel.com,
+	aleksandr.loktionov@intel.com,
+	andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	marcin.szycik@linux.intel.com,
+	anthony.l.nguyen@intel.com,
+	horms@kernel.org,
+	intel-wired-lan@lists.osuosl.org,
+	pabeni@redhat.com,
+	davem@davemloft.net
+Subject: Re: [Intel-wired-lan] [PATCH net v2 2/2] ice: fix stats array overflow via proper realloc
+Date: Mon, 17 Aug 2026 13:50:47 -0700
+Message-ID: <20260817205047.3612990-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260812204619.32253-3-przemyslaw.kitszel@intel.com>
+References: <20260812204619.32253-3-przemyslaw.kitszel@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 13 Aug 2026 10:35:05 +0200 Christian Marangi wrote:
-> This series introduce a most awaited feature that is correctly
-> provide PCS with fwnode without having to use specific export symbol
-> and additional handling of PCS in phylink.
-> 
-> At times there were 2 different implementation (this and the one
-> from Sean) but Sean agreed that this can be picked and used in favor
-> of his implementation as long as his case with race condition is
-> correctly handled.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+    ice: fix stats array overflow via proper realloc
 
-Coccicheck says:
+This patch removes ice_vsi_alloc_stat_arrays() and makes
+ice_vsi_realloc_stat_arrays() handle the initial (no vsi_stat) case, tracking
+the array sizes in the new tx_ring_stats_len / rx_ring_stats_len fields.  The
+single remaining call site is in ice_vsi_cfg_def(), and the call in
+ice_vsi_rebuild() is dropped.
 
-  drivers/net/phy/phylink.c:1039:31-34:
-    ERROR: invalid reference to the index variable of the iterator on line 1028
+Closes: https://redhat.atlassian.net/browse/RHEL-164321
 
-  drivers/net/phy/phylink.c:1364:26-29:
-    ERROR: invalid reference to the index variable of the iterator on line 1346
+> diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+> index e48ee5940f17..420e72df7f5e 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_lib.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_lib.c
 
-  drivers/net/phy/phylink.c:582:7-10:
-    ERROR: invalid reference to the index variable of the iterator on line 569
+[ ... ]
 
-I vaguely recall that you're supposed to make a copy of the pointer,
-not just add a "found" boolean. Dunno if it ever happened but Linus
-was trying to make the list iterators override the pointer on exit.
+> @@ -2379,7 +2353,7 @@ static int ice_vsi_cfg_def(struct ice_vsi *vsi)
+>  		return ret;
+>  
+>  	/* allocate memory for Tx/Rx ring stat pointers */
+> -	ret = ice_vsi_alloc_stat_arrays(vsi);
+> +	ret = ice_vsi_realloc_stat_arrays(vsi);
+>  	if (ret)
+>  		goto unroll_vsi_alloc;
+>  
+> @@ -3097,10 +3071,6 @@ int ice_vsi_rebuild(struct ice_vsi *vsi, u32 vsi_flags)
+>  
+>  	mutex_lock(&vsi->xdp_state_lock);
+>  
+> -	ret = ice_vsi_realloc_stat_arrays(vsi);
+> -	if (ret)
+> -		goto unlock;
+> -
+>  	ice_vsi_decfg(vsi);
+>  	ret = ice_vsi_cfg_def(vsi);
+>  	if (ret)
+
+[Severity: Low]
+Does moving the ice_vsi_realloc_stat_arrays() call change what happens when
+the stat array allocation fails during a rebuild?
+
+Before this patch, ice_vsi_rebuild() did the realloc before
+ice_vsi_decfg(), so a krealloc_array() failure returned -ENOMEM with the VSI
+still fully configured:
+
+	ret = ice_vsi_realloc_stat_arrays(vsi);
+	if (ret)
+		goto unlock;
+
+	ice_vsi_decfg(vsi);
+
+Now the only call site is inside ice_vsi_cfg_def(), which runs after
+ice_vsi_decfg(), so an -ENOMEM there unwinds via unroll_vsi_alloc and is
+propagated out of ice_vsi_rebuild() with the queues, vectors and rings
+already released.
+
+For the ethtool -L path that leaves ice_vsi_recfg_qs() in ice_main.c with
+only this recovery:
+
+	rebuild_err:
+		dev_err(ice_pf_to_dev(pf), "Error during VSI rebuild: %d. Unload and reload the driver.\n",
+			err);
+
+The same outcome was already reachable pre-patch through the other
+allocations in ice_vsi_cfg_def() (ice_vsi_alloc_def(),
+ice_vsi_alloc_q_vectors(), ice_vsi_alloc_rings(),
+ice_vsi_alloc_ring_stats()), so this adds one more allocation to an
+already-destructive region rather than a new failure mode.
+
+The commit message describes the move only as:
+
+    Also drop one callsite to avoid some duplication.
+
+Could it also mention that the previously non-destructive failure path for
+this allocation is gone?
+-- 
+pw-bot: cr
