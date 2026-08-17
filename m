@@ -1,103 +1,72 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB9123EA97
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 05:47:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972B435FF58
+	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 06:02:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786945677; cv=none; b=cBw+jgSBFzmq1Pimp/mNyT2y2legckj69mPC9WWGAZsyIFFui8fe+HoSiKESpRIarQgpA7olBGN6ljqLKpEzuPTZinD1GG/e/5dgken5cPndu6tAR+MmPza2HlrH1lr+ho8JxQpszjVUpIvmKl5mkCIo8MqopfW4DY4oGsT1FhU=
+	t=1786946524; cv=none; b=buA6ZYLeas96v4rCJEXDf8dcpfmu+h+0nmJ+BW6VSG2MzomCFWzR3Iv89OVPW/nEQlqDU9JsNjato914badzSnX8A0d/zKCrR9QqaJFl/uD5hxUT4zZ5Ytr66mXvQqcmCJcA1+Ux0lbUB8hzkQMMKrYjuATPW8Hggh6pvy2VH4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786945677; c=relaxed/simple;
-	bh=t5LkuqMqSBDUZFm7n4ylTFEfSwfBfetqZglPH04zBGo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M18M3QEHgu9FM++bqwpZKjsmznxHeKNlq0wUkYXffVy3+7bZBg4ZefUCmsL3q1zhaypUB/PFkBvEJn0D8HDffYcAyGQ9ILH6z4y72UpZyEMVaWGkm/za3O0HI7sM3uvXjx5Xc22mqAagF1ERkunzsxJcDZ2xdyvEhjzXIZMI4fI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FltPG2+q; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FltPG2+q"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3900e39d935so2733792a91.0
-        for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 22:47:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786945675; x=1787550475; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dOqn6TSsjS3exGWTr9VD38ncbtn4FsSPim4nM//Vhaw=;
-        b=FltPG2+qNuGHUqxYz/D3NwPv22P4IifrK2PmfPunM/AJCm2diLYx/r1Lrx68V5b3g1
-         U263t/0V/emMJN8sZZoZWqtcH7OmNaT1nVp1JzuOUmQEnnT5f0SLUBYGISGWLpRXQx8k
-         V3uNKvWp4tKeKB3HRfmDDJYu/UvPjqZ4JXkkFI6A+PViE2k+UrXawJUmwvKVkocEQDQP
-         P3SLqIKrW5rNSpcxBays97xvs+owQE1/nfr+szKFHEQcuJrkOJupZ8ktJsm96rsqaUPc
-         65PLhyJPR7f6WBf+iL3aKXw/jPhd7kdVC6WEktJoK/b/LUYc6DRjbMuCljqedhaLxFlR
-         QF5A==
+	s=arc-20240116; t=1786946524; c=relaxed/simple;
+	bh=qXmJafGkcN6mwo71Q4S+fqyqawYMUw1tEIBKeZhrCEQ=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=eiIV0RfB7Sr/fi/EjJ+zsU671R2MkDe/i9iAgDU2I4Wo2e1gF9C97fCu0yMf1g+bBMG7yk6fz5Q3Oz29g+xkbHao1VquhTw1nvPYK00dox9grV4C4wHvhF09AezZSZSsM5Kx9/OWnC+c+OOrTYrY90woXFNUKOYF8dgOjsKAqpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-6a17dafd042so252755eaf.2
+        for <netdev@vger.kernel.org>; Sun, 16 Aug 2026 23:02:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786945675; x=1787550475;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dOqn6TSsjS3exGWTr9VD38ncbtn4FsSPim4nM//Vhaw=;
-        b=jCIf7n0TCe1Co5GSruWZ1dPOuh6Pikp90dpfD3GNLxQq2BlrhHbH8/BE2t0a5xRUbt
-         NW3u7W1yoqBqxZFbZLTa1B/Z6zaEJ1RrvQsW79j+nvYKImbBNSRrQljVhgBsV7jEx8Fb
-         M6PtIz4tIoKq8kcwC87jCSeQgEX/LbZg2cuFUy/NqNNs/tCW8Ao7CuBSKQoE+RhBGpY7
-         J57z9X/wnRylQfDe9yj6eCkOQQ/BnRO0z3jjNOt8p2mguJAO9dkSCW6KGkhRwnC8CLZM
-         2rCjCIDhcrZKnwKYNejj4udIhdPsNITuPHnr8AnLvZvWOht7D8Bo/960ndamZWniUrHt
-         vC5g==
-X-Forwarded-Encrypted: i=1; AHgh+RpcON522+AERF5snHBpGLUFKgUYoBfxWKv7N38iHJ1vEPqenejbRLCRH3bS2ZbH7D32dMUNJsc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtfdaZmV8vxZJ1kkygTDThwkp9EdyERHQfsUBsG7SssXnLljc7
-	nvg8pOpnKA2spcjqJKGmid8UfYaauE/5Zjw9+QVGntbxny0WTKDwjebB
-X-Gm-Gg: AR+sD10GveOXxhdIF7XGCmKHEczOhjSQeaRN4tGHXYozz18FQTerUtiDiybbR7PGp7y
-	GD6Eokb7dKT7vsBTXRHJuEM0Gr8bwXaO/C91OlMuHQiWXHFYdsokqiOSJ1mVTFZIYSEtG5KhjTk
-	EiuXizZVPZZP4R+Nb9+/C+ftPmLkR4hcxyj0R4VVo9ixjsgtS73nohbaU0pnkaSydDxp38283b+
-	OdXNjbrfveLjRR9q/4lP1TJQC06v0XCB3qMj+BEWcH1S9A0phvVim0yBhyJsAfb9ad/D5WE+b3d
-	F+T/uPjzB7YjlYtOn5rD4GtdK3jBFnf7h5f4Mf5i8KE37CeCND42cwiUr+MSnP1nIdJriWgK9CL
-	45HUPfkCjgV+JR6oLj7zJrgv3lVEPjTS3FquELV2T0f07iLGTCvjIbTFIEFehTE6ol8lsK9i6tV
-	OY3Ygeb4n2xmwto5mIZEPi5ZSq6MHPSDubIousoRdtq5O/hMwqyRvA31qTIyFL3kJyIFEw
-X-Received: by 2002:a17:90b:5707:b0:38f:5801:dc0e with SMTP id 98e67ed59e1d1-3933e61bee2mr24461071a91.15.1786945675256;
-        Sun, 16 Aug 2026 22:47:55 -0700 (PDT)
-Received: from fedora ([216.236.36.150])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39531e31b8fsm3441703a91.3.2026.08.16.22.47.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Aug 2026 22:47:54 -0700 (PDT)
-Date: Mon, 17 Aug 2026 13:47:48 +0800
-From: Hangbin Liu <liuhangbin@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Matthieu Baerts <matttbe@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Jakub Raczynski <j.raczynski@samsung.com>, netdev@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH net-next 2/2] docs: netdev: clarify expected interactions
- with LLMs
-Message-ID: <aoKghLx9K6PvZkht@fedora>
-References: <cover.1784884817.git.pabeni@redhat.com>
- <83360de7addb13a3b5f4d5e722148f248fdb2ae0.1784884817.git.pabeni@redhat.com>
- <CGME20260724115642eucas1p29f9c8bdc59a889ad66cb7b2a52cdaef7@eucas1p2.samsung.com>
- <amNS9/owsgr44v7w@AMDC4622.eu.corp.samsungelectronics.net>
- <68b50e02-c238-48c6-b2aa-98eb21077329@kernel.org>
- <an8OY1XeDr1ajATf@fedora>
- <20260814120750.420d75d1@kernel.org>
+        d=1e100.net; s=20251104; t=1786946521; x=1787551321;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=NvBAJ1wc5C6xZlpPmDjItq5dHkzr0Wm85xmMFTDijQI=;
+        b=V1TKWgWm/VRiGttBEEof/Gb0fpgH0nRmOcjS5m2Ll4claZuq++Ikt3440oYPnYBKOX
+         is6lzRUX+5gXVSe6l+YozcT+bmNnSsa4N293qOVImKxOex/vBfXui4QRDoNRV+mRrOuw
+         zbhH/UMfTf6gmLrOGJCX846JAAgGRF4UlvOwQLsnyx1WEIFym6lRlVF3pRQBubtpudHp
+         8RA6KF5JyeSBzcy9Of215U9DSAvjyhl289InWqKDjeavVF0Cc0/2fGIMVfvFy+Qemw9x
+         yUhv0qTKvKQ6pWcpPEepQzxZyPYxd1FpDYn+nT07ocmN2QvfP9E6HUPBU5KhlT9vMF9l
+         w93w==
+X-Forwarded-Encrypted: i=1; AHgh+RqJywizygA5GRWWwBIAGO0HFA/vrvrEOumNUcpE5LzqpzsKhGNwvVaSTaJ/QrGbLLUSSnavYmg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRI8VVC6coB8sVAcD7tbJvlKIbLrZEEwHgDA7v+mYY0sofIau4
+	2bt5ohRYL7RANIFwFjaG43GEaHT8RRHt3RHF66e5sjlpal5rnCuiCAt5QRseZzJ15sdd8sAGt7b
+	G37Q0jnfwGGjJFxlNYVWzf0yzy/AH8ZO04aVObYA4iRWo9D/FONmLxfBrnQk=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260814120750.420d75d1@kernel.org>
+X-Received: by 2002:a05:6820:c98:b0:6b1:30e:75ea with SMTP id
+ 006d021491bc7-6b1030e8361mr8279011eaf.16.1786946521575; Sun, 16 Aug 2026
+ 23:02:01 -0700 (PDT)
+Date: Sun, 16 Aug 2026 23:02:01 -0700
+In-Reply-To: <20260817072146.313493-1-junjie.cao@linux.dev>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a82a3d9.f7a79266.2f965f.001f.GAE@google.com>
+Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in exit_to_user_mode_loop
+From: syzbot <syzbot+2642f347f7309b4880dc@syzkaller.appspotmail.com>
+To: hdanton@sina.com, junjie.cao@linux.dev, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Aug 14, 2026 at 12:07:50PM -0700, Jakub Kicinski wrote:
-> On Fri, 14 Aug 2026 20:47:31 +0800 Hangbin Liu wrote:
-> > I think the ideal way is for the result to be subscribed to. 
-> 
-> It'd be ideal if y'all run the LLMs locally before sending the patches..
-> I understand that it's not always possible, but let's be clear on what
-> the priorities are - as you say netdev@ is already too busy, we don't
-> want the buggy submissions in the first place, _ideally_.
+Hello,
 
-I would follow this rule, although my LLM provider is not smart enough...
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-Thanks
-Hangbin
+Reported-by: syzbot+2642f347f7309b4880dc@syzkaller.appspotmail.com
+Tested-by: syzbot+2642f347f7309b4880dc@syzkaller.appspotmail.com
+
+Tested on:
+
+commit:         24ef02f9 net: page_pool: fix UAF in __page_pool_releas..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=15742679580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=d07fbc6821d72a61
+dashboard link: https://syzkaller.appspot.com/bug?extid=2642f347f7309b4880dc
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=16b1ea25580000
+
+Note: testing is done by a robot and is best-effort only.
