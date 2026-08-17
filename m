@@ -1,37 +1,38 @@
 Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 414134B04A7;
-	Mon, 17 Aug 2026 02:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FEA22FE0E;
+	Mon, 17 Aug 2026 02:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786932285; cv=none; b=WRxlLkb9XUikxDuwoPuO1L7nKI1lqI8dt7EBvVfn2tISc+5nd2fY6zY3UZLO/d+L/69NpQi+YEkMlCM52f8MFw3nbIejLp+Rm33r6Tn6iAJwcBz+DyvZQvbQ0M5+jFOPdTxFY48QWGW7wiVejDwAeVOdKIdiXrV+OXL6TIbcGnI=
+	t=1786932286; cv=none; b=mxyAk9zg1G83h1p/pPogSZeD1/gDOwsqUbiZbQ3eRYLke/DlE9Ygzxn+dJuq7Z9NGr1pDo4c1rt8s3BFy5SkgLJjAhkho9kRDs3GrG5iIzy7IcAgkafcqsurY3hTbX1ZZ3J68ndvtjgDgkl4GeY6aiq8dfQO82pcmv0asE2Bx5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786932285; c=relaxed/simple;
-	bh=ezOOOBzYO00OYElOFroDP/t0n6fll9xOQYPumq+p3RA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CWSZzc3Km9ricUuNAjDHNtAkbLmjb0DZK1cb9n5knQrgUXWXNGKTHckK4DrSlxWdBJzjW2EXCbLQWkCUcmULWns+fQg9p2w/8XZBmzQ6UAa+Ix9utV1zxMzxIpJ6135KmRR0rur4di5272rwFU8c+R7jKMzXdgdTHhXcKphYamc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=X5x/wzLO; arc=none smtp.client-ip=113.46.200.216
+	s=arc-20240116; t=1786932286; c=relaxed/simple;
+	bh=yz/pLDWG/EG+2WfoocDdbpYmTAbJnteeQfdaxagrbYw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=U1v/Z3V4Y3xCr0LCZQLBAg5hXGvlpBSmLTnWryRH6qtA2wuHTJsIXTRmNwt3niBTUQKGVGLJv7EWxJnrE/UB8bXtk2shUsIlbHrFuXFnXvYKQrR5Fdoz+uFKl3oYWK82c1VpVe3luXarnmakHwKDBeYt1e6wK4G8ECBt3/NfCwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=CaJLZf3M; arc=none smtp.client-ip=113.46.200.216
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="X5x/wzLO"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="CaJLZf3M"
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=FtO3nsh+WxmuifXApYvHY/ycnfH2wqRvAL/Mq+n2y64=;
-	b=X5x/wzLOol5FSEQ6g4OTLbCaHJHQ4wO6QSyv6m+V8qkXtcUciij5O3JBqbu6ahxEAKwUiEeOD
-	f0rRfHCugsQdtMUIifLuouDVNRPau7gVYqJd66uo8ZjgsCBMbZvvFt0kZvXPCwg3PjrE5KUtJoK
-	BL0rMn/eWrGoosz7Ck8aIs8=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4hNbVd49nZz1T4gd;
-	Mon, 17 Aug 2026 09:54:33 +0800 (CST)
+	bh=FLg0KK7dEB2S7YJc3MaBypDUfcxGsaoQDHUJaZiePGI=;
+	b=CaJLZf3MZBWfeR+L4jmzOSOf9Tlp5P3W6/OA29LXndrdQUmUqKAnQj0jmdBkXVi3pDNe9/B6g
+	kEFIOTZatbGX9NfTPE68zILxZJFG1CEkeWQAmjW8JbnV1i82BybpUxNvsQXGvscudsJ9XfxBa/y
+	E6sBikq6Ln9hYliirirUlOE=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4hNbVk34dbz1T4fq;
+	Mon, 17 Aug 2026 09:54:38 +0800 (CST)
 Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9B8744056D;
-	Mon, 17 Aug 2026 10:04:30 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 75F6D4058C;
+	Mon, 17 Aug 2026 10:04:35 +0800 (CST)
 Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.124) by
  kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Mon, 17 Aug 2026 10:04:29 +0800
+ 15.2.1544.36; Mon, 17 Aug 2026 10:04:34 +0800
 From: Fan Gong <gongfan1@huawei.com>
 To: Fan Gong <gongfan1@huawei.com>, Wu Di <wudi234@huawei.com>, Teng Peisen
 	<tengpeisen@huawei.com>, <netdev@vger.kernel.org>, "David S. Miller"
@@ -47,10 +48,12 @@ CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, Chen Anwen
 	<zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>, Shi Jing
 	<shijing34@huawei.com>, Zheng Jiezhen <zhengjiezhen@h-partners.com>, Maxime
  Chevallier <maxime.chevallier@bootlin.com>
-Subject: [PATCH net-next v13 0/3] net: hinic3: PF initialization
-Date: Mon, 17 Aug 2026 10:03:59 +0800
-Message-ID: <cover.1786774752.git.tengpeisen@huawei.com>
+Subject: [PATCH net-next v13 2/3] hinic3: Add ethtool coalesce ops
+Date: Mon, 17 Aug 2026 10:04:01 +0800
+Message-ID: <84cdde27faa43486f39068db28dcf5c383ce9ed2.1786774752.git.tengpeisen@huawei.com>
 X-Mailer: git-send-email 2.50.1.windows.1
+In-Reply-To: <cover.1786774752.git.tengpeisen@huawei.com>
+References: <cover.1786774752.git.tengpeisen@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,233 +65,428 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
  kwepemf100013.china.huawei.com (7.202.181.12)
 
-Add 10 ethtool ops for information of coalesce and eth data.
-Add MTU size validation
-Config netdev watchdog timeout.
-Remove unneed coalesce parameters.
+  Implement following ethtool callback function:
+.get_coalesce
+.set_coalesce
 
-Changes:
+  These callbacks allow users to utilize ethtool for detailed
+RX coalesce configuration and monitoring.
 
-PATCH 03 V01: https://lore.kernel.org/netdev/cover.1773387649.git.zhuyikai1@h-partners.com/
-* Add rmon/pause/phy/mac/ctrl stats (Ioana Ciornei)
-
-PATCH 03 V02: https://lore.kernel.org/netdev/cover.1774684571.git.zhuyikai1@h-partners.com/
-* Modify "return -EINVAL" intension problem (AI review)
-* Use le16_to_cpu for rss_indir pair.out->buf (AI review)
-* Use u32 instead of int in coalesce_limits to avoid overflow (AI review)
-* Remove redundant u64_stats_update_begin/end when reading stats without
-  concurrent reader (AI review)
-* Modify nic_dev->stats.syncp logic (AI review)
-* Complete rxq/txq stats stats fileds in hinic3_rx/txq_get_stats (AI review)
-* Remove statistics values in rtnl_link_stats64 from ethtool statistics
-  values (AI review)
-* Add channel_cfg_lock & channel_res_lock to protect resources access (AI review)
-* Remove OutOfRangeLengthField, FrameToolong and InRangeLengthErrors (Ioana Ciornei)
-* Remove redundant mtu commit (Maxime Chevialler)
-
-PATCH 03 V03: https://lore.kernel.org/netdev/cover.1774940117.git.zhuyikai1@h-partners.com/
-* Change unnedd to unneeded (AI review)
-* Remove packets,bytes,errors and dropped in hinic3_rx/tx_queue_stats (AI review)
-* Remove duplicated entried in hinic3_port_stats[] (AI review)
-* change stats_info.head.status to ps->head.status (AI review)
-
-PATCH 03 V04: https://lore.kernel.org/netdev/cover.1775618797.git.zhuyikai1@h-partners.com/
-* Remove restore_drop_sge in hinic3_rx_queue_stats (AI review)
-* Remove hinic3_nic_stats (AI review)
-* Use old_q_param to store old config and use it in error handling (Mohsin Bashir)
-* Add netdev_info to inform the user that depth is trimmed (Mohsin Bashir)
-* Remove const in hinic3_get_qp_stats_strings parameters (Mohsin Bashir)
-* Change EOPNOTSUPP to ERANGE in is_coalesce_exceed_limit (Mohsin Bashir)
-* Update nic_dev->rss_type after hinic3_set_rss_type (Mohsin Bashir)
-* Modify MGMT_STATUS_CMD_UNSUPPORTED to EOPNOTSUPP for complying with the
-  error code specifications (Mohsin Bashir)
-
-PATCH 03 V05: https://lore.kernel.org/netdev/cover.1775711066.git.zhuyikai1@h-partners.com/
-* Clear HINIC3_CHANGE_RES_INVALID bit in error handling (AI review)
-* Use low >= high to avoid low=high in is_coalesce_legal (AI review)
-* As tx and rx share interrupts, we only use ETHTOOL_COALESCE_RX_USECS for
-user setting to avoid user misunderstanding. So we do not add
-ETHTOOL_COALESCE_TX_USECS. (Mohsin Bashir & AI review)
-
-PATCH 03 V06: https://lore.kernel.org/netdev/cover.1779867397.git.zhuyikai1@h-partners.com/
-* Remove redundant rx_jumbo_pending and rx_mini_pending judgement (Jakub Kicinski)
-* Remove redundant max tx_pending judgement when .get_ringparam already got the
-   max value (Jakub Kicinski)
-* Use extack instead of netdev_err/netdev_info/netdev_warning (Jakub Kicinski)
-* Remove HINIC3_CHANNEL_RES_VALID and only use HINIC3_CHANGE_RES_INVALID
-  bit (Jakub Kicinski)
-* Deference freed pointers in hinic3_change_channel_settings error
-  handling (Jakub Kicinski)
-* Modify hinic3_open_channel (Jakub Kicinski)
-
-PATCH 03 V07: https://lore.kernel.org/netdev/cover.1779940072.git.zhuyikai1@h-partners.com/
-* Remove the trailing '\n' in NL_SET_ERR_MSG* (Jakub Kicinski)
-
-PATCH 03 V08: https://lore.kernel.org/netdev/cover.1780907605.git.wudi234@huawei.com/
-* Update patch commit to be more accurate for change information (AI review)
-* Modify <net/devlink.h> to <linux/netlink.h> (AI review)
-* Use sq/rq_depth instead of rx/txqs[0].q_depth (AI review)
-* hinic3_change_channel_settings() runs under change_res_mutex
-  to protect dynamic channel updates (AI review)
-* hinic3_close() serializes close and channel reconfiguration paths (AI review)
-* Remove useless u64_stats_init in hinic3_get_drv_queue_stats() (AI review)
-* hinic3_get_drv_queue_stats() fills rxq stats at correct idx
-  when txq is null (AI review)
-* Remove unnecessary semicolons after the closing bracket of
-  static inline functions (AI review)
-* Disable preemption in hinic3_rx_fill_buffers() (AI review)
-* Add spinlock to protect per-queue coalesce parameters from
-  concurrent access (AI review)
-* Reject static coalesce config when adaptive RX coalesce is
-  enabled (AI review)
-* Validate interface state and queue ID before modifying coalesce
-  parameters (AI review)
-* Differentiate get_coalesce output for adaptive/static modes and
-  zero-fill the struct (AI review)
-* Return -ERANGE for invalid coalesce frame limits and simplify
-  error message (AI review)
-* Remove unused watchdog timeout definition and assignment (AI review)
-* Return -EOPNOTSUPP when RSS type query is unsupported by firmware (AI review)
-* Reject L4 hash bits for pure L3 flow types (AI review)
-* Split RSS type conversion to correctly handle L3-only flows (AI review)
-* Reprogram RSS indir table and HW parameters after channel count
-  changes (AI review)
-* Propagate exact error code from channel parameter validation (AI review)
-* Update SW RSS indir copy only after HW programming succeeds (AI review)
-* Program RSS hash type to HW before updating SW state to prevent
-  inconsistency (AI review)
-
-PATCH 03 V09: https://lore.kernel.org/netdev/cover.1781062575.git.wudi234@huawei.com/
-* Remove useless messages in hinic3_set_ringparam() (Jakub Kicinski)
-* Solve the big-endian and little-endian issue (Jakub Kicinski)
-
-PATCH 03 V10: https://lore.kernel.org/netdev/cover.1782718232.git.wudi234@huawei.com/
-* Unify 3 mutex in struct hinic3_nic_dev: port_state_mutex, change_res_mutex,
-  coal_lock.
-* Correct copy-paste error in hinic3_get_ringparam() (AI Review and
-  Harshitha Ramamurthy)
-* hinic3_set_interrupt_moder() now compare q_id and num_qps inside mutex lock
-  (AI Review)
-* Error branches in hinic3_link_status_change() goto unlock mutex before return
-  (AI Review)
-* In hinic3_change_channel_settings(), hinic3_config_num_qps() and
-  hinic3_alloc_channel_resources() now run inside mutex lock. (AI Review)
-* Call hinic3_free_qp_ctxts() in error paths of hinic3_open_channel(),
-  thus hinic3_change_channel_settings() don't call it in error path (AI Review)
-* Unset HINIC3_INTF_UP during close and reopen in hinic3_change_channel_settings
-* hinic3_change_channel_settings() restore previous resources before freeing
-  new_qp_params (AI Review)
-* Delete unused macro HINIC3_LRO_PKT_HDR_LEN (AI Review)
-* Drop packets when skb_checksum_help() return error (AI Review)
-* Use rxq->q_mask instead of rxq->q_depth - 1 in hinic3_configure_rxqs()
-  (Dimitri Daskalakis)
-* Clarify extack error message in hinic3_check_ringparam_valid()
-  (Harshitha Ramamurthy)
-* Use rounddown_pow_of_two() instead of 1U << ilog2() in hinic3_set_ringparam()
-  for readability. (Harshitha Ramamurthy)
-* Protect interrupt coalesce parameter reads with state_lock to prevent data
-  races(AI Review)
-* Restore previous coalesce parameters on HW configuration failure (AI Review)
-* Always report all coalesce parameters regardless of adaptive mode (AI Review)
-* Safely stop DIM work when disabling adaptive RX coalescing (AI Review)
-* Change coalesce disabled message from extack error to info log (AI Review)
-* Implement dedicated get_rx_ring_count ethtool operation (Dimitri Daskalakis)
-* Pass new RSS hash type to HW instead of the old one (AI Review)
-* Initialize default RSS indirection table before HW programming when not
-  user-configured(AI Review)
-* Revert queue count on RSS reprogramming failure (AI Review)
-* Use sizeof for RSS indirection table copy to prevent size mismatch (AI Review)
-
-PATCH 03 V11: https://lore.kernel.org/all/cover.1784538912.git.root@localhost.localdomain/
-* Remove state_lock in hinic3_set_interrupt_moder() and
-  hinic3_link_status_change() (Andrew Lunn and AI Review)
-* In hinic3_change_channel_settings(), cur_trxq_params is read after taking lock,
-  and get symmetrically restored when alloc resources failed. (AI Review)
-* Remove preempt_disable()/preempt_enable() pairs in hinic3_rx_fill_buffers().
-  (AI Review)
-* Add a comment about csum_err, and rewrite its judgement in hinic3_rx_csum().
-  (AI Review)
-* Rollback hash function type to previous state if setting RSS indirection
-  table or key fails (AI Review)
-* Allow users to disable L3 hashing for IPV4/IPV6 flows by properly handling
-  empty hash tuple in ethtool (AI Review)
-* Update software queue coalesce state only after successful hardware
-  configuration to avoid manual rollback (AI Review)
-* Use READ_ONCE and WRITE_ONCE for adaptive_rx_coal to ensure safe
-  concurrent memory access (AI Review)
-* Reset RX queue DIM state to DIM_START_MEASURE when canceling
-  adaptive RX coalescing work (AI Review)
-* Remove unnecessary state_lock mutexes when reading queue coalesce
-  parameters in IRQ and update paths (AI Review)
-* Rename is_coalesce_legal to hinic3_validate_coalesce for better code
-  readability and naming consistency (AI Review)
-
-PATCH 03 V12: https://lore.kernel.org/all/cover.1785120952.git.root@localhost.localdomain/
-* Remove get_val_of_ptr() which is unnecessary (Dimitri Daskalakis)
-* Split the monolithic patch into multiple patches (Mohsin Bashir)
-* Fix MSI-X leak and defer q_params publication and add error-path
-  rollback to prevent regressions (AI Review)
-* Rfactor hinic3_update_hash_func_type() (AI Review)
-* Guard irq_cfg traversal with INTF_UP check to prevent NULL dereference
-  and fully reinitialize DIM state on adaptive re-enable (AI Review)
-* Snapshot per-queue coalesce configs before applying and rollback via
-  backup array on partial failure to ensure atomic set_coalesce (AI Review)
-
-PATCH 03 V13:
-* Split previous version into 3 parts. The first 2 patches were sent to
-  net tree, patch #5, #6 and #8 stayes in this series, and others will be sent
-  in the future. (Larysa Zaremba and Jakub Kicinski)
-* Remove dead size field from struct hinic3_stats and add
-  HINIC3_STAT_SIZE_CHECK() with BUILD_BUG_ON_ZERO to enforce
-  per-entry compile-time verification that all stats members are u64. (AI Review)
-* Remove never-incremented frag_len_overflow and frag_size_err from
-  hinic3_txq_stats, hinic3_txq_clean_stats(), hinic3_txq_get_stats()
-  and the hinic3_tx_queue_stats ethtool table. (AI Review)
-* Add missing txq_stats.busy increment in hinic3_send_one_skb() when
-  returning NETDEV_TX_BUSY due to insufficient WQEBBs. (AI Review)
-* Add missing txq_stats.offload_cow_skb_err increment when offload
-  type is invalid in hinic3_send_one_skb(). (AI Review)
-* Remove mac_tx_good_oct_num and mac_rx_good_oct_num from the
-  hinic3_port_stats private table as they are already reported through
-  the get_eth_mac_stats standard interface. (AI Review)
-* Fix OctetsTransmittedOK/ReceivedOK mapping in
-  hinic3_get_eth_mac_stats() to use mac_tx/rx_good_oct_num instead
-  of mac_tx/rx_total_oct_num per RFC 2863 (error-free frames only). (AI Review)
-* Add HINIC3_IS_VF guard to hinic3_get_eth_phy_stats() to prevent
-  VF from reading physical port stats, consistent with the ethtool
-  -S path which already gates hinic3_port_stats on PF-only. (AI Review)
-* Use u64_stats_update_begin_irqsave/end_irqrestore in
-  hinic3_rx_fill_buffers() where the function can be called from
-  preemptible process context via hinic3_configure_rxqs(), avoiding
-  seqcount deadlock on 32-bit systems. (AI Review)
-* Expand state_lock protection scope in hinic3_get_coalesce() and
-  hinic3_set_coalesce() to cover intr_coalesce array accesses. (AI Review)
-* Use standard net_dim_work_cancel() in hinic3_set_coalesce() to cancel
-  DIM work instead of manually clearing struct fields, ensuring safe DIM
-  state reset and simplifying error rollback. (AI Review)
-
-Fan Gong (3):
-  hinic3: Add ethtool statistic ops
-  hinic3: Add ethtool coalesce ops
-  hinic3: Remove unneeded coalesce parameters
-
- .../ethernet/huawei/hinic3/hinic3_ethtool.c   | 786 +++++++++++++++++-
- .../ethernet/huawei/hinic3/hinic3_hw_intf.h   |  11 +
- .../net/ethernet/huawei/hinic3/hinic3_irq.c   |   8 +-
+Co-developed-by: Wu Di <wudi234@huawei.com>
+Signed-off-by: Wu Di <wudi234@huawei.com>
+Co-developed-by: Teng Peisen <tengpeisen@huawei.com>
+Signed-off-by: Teng Peisen <tengpeisen@huawei.com>
+Signed-off-by: Fan Gong <gongfan1@huawei.com>
+---
+ .../ethernet/huawei/hinic3/hinic3_ethtool.c   | 310 +++++++++++++++++-
+ .../net/ethernet/huawei/hinic3/hinic3_irq.c   |   2 +-
  .../net/ethernet/huawei/hinic3/hinic3_main.c  |   4 +-
- .../huawei/hinic3/hinic3_mgmt_interface.h     |  37 +
  .../huawei/hinic3/hinic3_netdev_ops.c         |   4 +-
- .../ethernet/huawei/hinic3/hinic3_nic_cfg.c   |  64 ++
- .../ethernet/huawei/hinic3/hinic3_nic_cfg.h   | 109 +++
- .../ethernet/huawei/hinic3/hinic3_nic_dev.h   |   6 +-
- .../net/ethernet/huawei/hinic3/hinic3_rx.c    |  73 +-
- .../net/ethernet/huawei/hinic3/hinic3_rx.h    |  18 +-
- .../net/ethernet/huawei/hinic3/hinic3_tx.c    |  68 +-
- .../net/ethernet/huawei/hinic3/hinic3_tx.h    |   4 +-
- 13 files changed, 1160 insertions(+), 32 deletions(-)
+ .../ethernet/huawei/hinic3/hinic3_nic_dev.h   |   4 +-
+ 5 files changed, 315 insertions(+), 9 deletions(-)
 
-
-base-commit: ce6b4d3216b63f902bb8e9695ee6c10c83415f65
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c b/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c
+index e1d1f1ff4b6c..89a7ba211173 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_ethtool.c
+@@ -17,6 +17,11 @@
+ #include "hinic3_nic_cfg.h"
+ 
+ #define HINIC3_MGMT_VERSION_MAX_LEN     32
++/* Coalesce time properties in microseconds */
++#define COALESCE_PENDING_LIMIT_UNIT     8
++#define COALESCE_TIMER_CFG_UNIT         5
++#define COALESCE_MAX_PENDING_LIMIT      (255 * COALESCE_PENDING_LIMIT_UNIT)
++#define COALESCE_MAX_TIMER_CFG          (255 * COALESCE_TIMER_CFG_UNIT)
+ 
+ static void hinic3_get_drvinfo(struct net_device *netdev,
+ 			       struct ethtool_drvinfo *info)
+@@ -877,9 +882,308 @@ static void hinic3_get_pause_stats(struct net_device *netdev,
+ 	kfree(ps);
+ }
+ 
++static int hinic3_set_queue_coalesce(struct net_device *netdev, u16 q_id,
++				     struct hinic3_intr_coal_info *coal,
++				     struct netlink_ext_ack *extack)
++{
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++	struct hinic3_intr_coal_info *intr_coal;
++	struct hinic3_interrupt_info info = {};
++	bool is_active;
++	int err;
++
++	mutex_lock(&nic_dev->state_lock);
++	is_active = test_bit(HINIC3_INTF_UP, &nic_dev->flags) &&
++		    (q_id < nic_dev->q_params.num_qps);
++
++	if (is_active) {
++		info.msix_index =
++			nic_dev->q_params.irq_cfg[q_id].msix_entry_idx;
++		info.resend_timer_cfg =
++			nic_dev->intr_coalesce[q_id].resend_timer_cfg;
++	}
++	mutex_unlock(&nic_dev->state_lock);
++
++	if (is_active) {
++		info.interrupt_coalesc_set = 1;
++		info.coalesc_timer_cfg = coal->coalesce_timer_cfg;
++		info.pending_limit = coal->pending_limit;
++
++		err = hinic3_set_interrupt_cfg(nic_dev->hwdev, info);
++		if (err) {
++			NL_SET_ERR_MSG_FMT_MOD(extack,
++					       "Failed to set queue%u coalesce",
++					       q_id);
++			return err;
++		}
++	}
++
++	mutex_lock(&nic_dev->state_lock);
++	intr_coal = &nic_dev->intr_coalesce[q_id];
++	intr_coal->coalesce_timer_cfg = coal->coalesce_timer_cfg;
++	intr_coal->pending_limit = coal->pending_limit;
++	intr_coal->rx_pending_limit_low = coal->rx_pending_limit_low;
++	intr_coal->rx_pending_limit_high = coal->rx_pending_limit_high;
++	mutex_unlock(&nic_dev->state_lock);
++
++	return 0;
++}
++
++static int is_coalesce_exceed_limit(const struct ethtool_coalesce *coal,
++				    struct netlink_ext_ack *extack)
++{
++	const struct {
++		const char *name;
++		u32 value;
++		u32 limit;
++	} coalesce_limits[] = {
++		{"rx_coalesce_usecs",
++		 coal->rx_coalesce_usecs,
++		 COALESCE_MAX_TIMER_CFG},
++		{"rx_max_coalesced_frames",
++		 coal->rx_max_coalesced_frames,
++		 COALESCE_MAX_PENDING_LIMIT},
++		{"rx_max_coalesced_frames_low",
++		 coal->rx_max_coalesced_frames_low,
++		 COALESCE_MAX_PENDING_LIMIT},
++		{"rx_max_coalesced_frames_high",
++		 coal->rx_max_coalesced_frames_high,
++		 COALESCE_MAX_PENDING_LIMIT},
++	};
++
++	for (int i = 0; i < ARRAY_SIZE(coalesce_limits); i++) {
++		if (coalesce_limits[i].value > coalesce_limits[i].limit) {
++			NL_SET_ERR_MSG_FMT_MOD(extack, "%s out of range %d-%d",
++					       coalesce_limits[i].name, 0,
++					       coalesce_limits[i].limit);
++			return -ERANGE;
++		}
++	}
++	return 0;
++}
++
++static int hinic3_validate_coalesce(const struct ethtool_coalesce *coal,
++				    struct netlink_ext_ack *extack)
++{
++	int err;
++
++	err = is_coalesce_exceed_limit(coal, extack);
++	if (err)
++		return err;
++
++	if (coal->rx_max_coalesced_frames_low >
++	    coal->rx_max_coalesced_frames_high) {
++		NL_SET_ERR_MSG_FMT_MOD(extack,
++				       "invalid coalesce frame high %u, low %u",
++				       coal->rx_max_coalesced_frames_high,
++				       coal->rx_max_coalesced_frames_low);
++		return -ERANGE;
++	}
++
++	return 0;
++}
++
++static void check_coalesce_align(struct net_device *netdev,
++				 u32 item, u32 unit, const char *str)
++{
++	if (item % unit)
++		netdev_warn(netdev, "%s in %u units, change to %u\n",
++			    str, unit, item - item % unit);
++}
++
++#define CHECK_COALESCE_ALIGN(member, unit) \
++	check_coalesce_align(netdev, member, unit, #member)
++
++static void check_coalesce_changed(struct net_device *netdev,
++				   u32 item, u32 unit, u32 ori_val,
++				   const char *obj_str, const char *str)
++{
++	if ((item / unit) != ori_val)
++		netdev_dbg(netdev, "Change %s from %u to %u %s\n",
++			   str, ori_val * unit, item - item % unit, obj_str);
++}
++
++#define CHECK_COALESCE_CHANGED(member, unit, ori_val, obj_str) \
++	check_coalesce_changed(netdev, member, unit, ori_val, obj_str, #member)
++
++static int hinic3_set_hw_coal_param(struct net_device *netdev,
++				    struct hinic3_intr_coal_info *intr_coal,
++				    struct netlink_ext_ack *extack)
++{
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++	struct hinic3_intr_coal_info *old_coal;
++	u16 i, j;
++	int err;
++
++	old_coal = kcalloc(nic_dev->max_qps, sizeof(*old_coal), GFP_KERNEL);
++	if (!old_coal)
++		return -ENOMEM;
++
++	mutex_lock(&nic_dev->state_lock);
++	for (i = 0; i < nic_dev->max_qps; i++)
++		old_coal[i] = nic_dev->intr_coalesce[i];
++	mutex_unlock(&nic_dev->state_lock);
++
++	for (i = 0; i < nic_dev->max_qps; i++) {
++		err = hinic3_set_queue_coalesce(netdev, i, intr_coal, extack);
++		if (err)
++			goto rollback;
++	}
++
++	kfree(old_coal);
++	return 0;
++
++rollback:
++	for (j = 0; j < i; j++)
++		hinic3_set_queue_coalesce(netdev, j, &old_coal[j], NULL);
++
++	kfree(old_coal);
++	return err;
++}
++
++static int hinic3_get_coalesce(struct net_device *netdev,
++			       struct ethtool_coalesce *coal,
++			       struct kernel_ethtool_coalesce *kernel_coal,
++			       struct netlink_ext_ack *extack)
++{
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++	struct hinic3_intr_coal_info *interrupt_info;
++
++	mutex_lock(&nic_dev->state_lock);
++
++	interrupt_info = &nic_dev->intr_coalesce[0];
++
++	coal->use_adaptive_rx_coalesce = READ_ONCE(nic_dev->adaptive_rx_coal);
++
++	coal->rx_max_coalesced_frames_low =
++		interrupt_info->rx_pending_limit_low *
++		COALESCE_PENDING_LIMIT_UNIT;
++
++	coal->rx_max_coalesced_frames_high =
++		interrupt_info->rx_pending_limit_high *
++		COALESCE_PENDING_LIMIT_UNIT;
++
++	/* TX/RX uses the same interrupt.
++	 * So we only declare RX ethtool_coalesce parameters.
++	 */
++	coal->rx_coalesce_usecs = interrupt_info->coalesce_timer_cfg *
++				  COALESCE_TIMER_CFG_UNIT;
++
++	coal->rx_max_coalesced_frames = interrupt_info->pending_limit *
++					COALESCE_PENDING_LIMIT_UNIT;
++
++	mutex_unlock(&nic_dev->state_lock);
++
++	return 0;
++}
++
++static int hinic3_set_coalesce(struct net_device *netdev,
++			       struct ethtool_coalesce *coal,
++			       struct kernel_ethtool_coalesce *kernel_coal,
++			       struct netlink_ext_ack *extack)
++{
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++	struct hinic3_intr_coal_info *ori_intr_coal;
++	struct hinic3_intr_coal_info intr_coal = {};
++	const char *obj_str = "for netdev";
++	bool old_adaptive, new_adaptive;
++	struct hinic3_rxq *rxq = NULL;
++	int err;
++	int i;
++
++	err = hinic3_validate_coalesce(coal, extack);
++	if (err)
++		return err;
++
++	CHECK_COALESCE_ALIGN(coal->rx_coalesce_usecs, COALESCE_TIMER_CFG_UNIT);
++	CHECK_COALESCE_ALIGN(coal->rx_max_coalesced_frames,
++			     COALESCE_PENDING_LIMIT_UNIT);
++	CHECK_COALESCE_ALIGN(coal->rx_max_coalesced_frames_high,
++			     COALESCE_PENDING_LIMIT_UNIT);
++	CHECK_COALESCE_ALIGN(coal->rx_max_coalesced_frames_low,
++			     COALESCE_PENDING_LIMIT_UNIT);
++
++	mutex_lock(&nic_dev->state_lock);
++	ori_intr_coal = &nic_dev->intr_coalesce[0];
++
++	CHECK_COALESCE_CHANGED(coal->rx_coalesce_usecs, COALESCE_TIMER_CFG_UNIT,
++			       ori_intr_coal->coalesce_timer_cfg, obj_str);
++	CHECK_COALESCE_CHANGED(coal->rx_max_coalesced_frames,
++			       COALESCE_PENDING_LIMIT_UNIT,
++			       ori_intr_coal->pending_limit, obj_str);
++	CHECK_COALESCE_CHANGED(coal->rx_max_coalesced_frames_high,
++			       COALESCE_PENDING_LIMIT_UNIT,
++			       ori_intr_coal->rx_pending_limit_high, obj_str);
++	CHECK_COALESCE_CHANGED(coal->rx_max_coalesced_frames_low,
++			       COALESCE_PENDING_LIMIT_UNIT,
++			       ori_intr_coal->rx_pending_limit_low, obj_str);
++	mutex_unlock(&nic_dev->state_lock);
++
++	old_adaptive = READ_ONCE(nic_dev->adaptive_rx_coal);
++	new_adaptive = !!coal->use_adaptive_rx_coalesce;
++
++	if (old_adaptive) {
++		bool is_up;
++
++		WRITE_ONCE(nic_dev->adaptive_rx_coal, false);
++
++		synchronize_net();
++
++		mutex_lock(&nic_dev->state_lock);
++		is_up = test_bit(HINIC3_INTF_UP, &nic_dev->flags);
++		mutex_unlock(&nic_dev->state_lock);
++
++		if (is_up) {
++			for (i = 0; i < nic_dev->q_params.num_qps; i++) {
++				rxq = nic_dev->q_params.irq_cfg[i].rxq;
++				if (!rxq)
++					continue;
++
++				net_dim_work_cancel(&rxq->dim);
++				rxq->dim.state = DIM_START_MEASURE;
++			}
++		}
++	}
++
++	intr_coal.coalesce_timer_cfg =
++		(u8)(coal->rx_coalesce_usecs / COALESCE_TIMER_CFG_UNIT);
++
++	intr_coal.pending_limit =
++		(u8)(coal->rx_max_coalesced_frames /
++		     COALESCE_PENDING_LIMIT_UNIT);
++
++	intr_coal.rx_pending_limit_high =
++		(u8)(coal->rx_max_coalesced_frames_high /
++		     COALESCE_PENDING_LIMIT_UNIT);
++
++	intr_coal.rx_pending_limit_low =
++		(u8)(coal->rx_max_coalesced_frames_low /
++		     COALESCE_PENDING_LIMIT_UNIT);
++
++	/* coalesce timer or pending set to zero will disable coalesce */
++	if (!new_adaptive &&
++	    (!intr_coal.coalesce_timer_cfg || !intr_coal.pending_limit))
++		netdev_info(netdev, "Coalesce will be disabled\n");
++
++	err = hinic3_set_hw_coal_param(netdev, &intr_coal, extack);
++	if (err) {
++		if (old_adaptive)
++			WRITE_ONCE(nic_dev->adaptive_rx_coal, old_adaptive);
++
++		return err;
++	}
++
++	WRITE_ONCE(nic_dev->adaptive_rx_coal, new_adaptive);
++
++	return 0;
++}
++
+ static const struct ethtool_ops hinic3_ethtool_ops = {
+-	.supported_coalesce_params      = ETHTOOL_COALESCE_USECS |
+-					  ETHTOOL_COALESCE_PKT_RATE_RX_USECS,
++	.supported_coalesce_params      = ETHTOOL_COALESCE_RX_USECS |
++					  ETHTOOL_COALESCE_RX_MAX_FRAMES |
++					  ETHTOOL_COALESCE_USE_ADAPTIVE_RX |
++					  ETHTOOL_COALESCE_RX_MAX_FRAMES_LOW |
++					  ETHTOOL_COALESCE_RX_MAX_FRAMES_HIGH,
+ 	.get_link_ksettings             = hinic3_get_link_ksettings,
+ 	.get_drvinfo                    = hinic3_get_drvinfo,
+ 	.get_msglevel                   = hinic3_get_msglevel,
+@@ -893,6 +1197,8 @@ static const struct ethtool_ops hinic3_ethtool_ops = {
+ 	.get_eth_ctrl_stats             = hinic3_get_eth_ctrl_stats,
+ 	.get_rmon_stats                 = hinic3_get_rmon_stats,
+ 	.get_pause_stats                = hinic3_get_pause_stats,
++	.get_coalesce                   = hinic3_get_coalesce,
++	.set_coalesce                   = hinic3_set_coalesce,
+ };
+ 
+ void hinic3_set_ethtool_ops(struct net_device *netdev)
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c b/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
+index e7d6c2033b45..b4e58d4c8ba8 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
+@@ -20,7 +20,7 @@ static void hinic3_net_dim(struct hinic3_nic_dev *nic_dev,
+ 	struct dim_sample sample = {};
+ 
+ 	if (!test_bit(HINIC3_INTF_UP, &nic_dev->flags) ||
+-	    !nic_dev->adaptive_rx_coal)
++	    !READ_ONCE(nic_dev->adaptive_rx_coal))
+ 		return;
+ 
+ 	dim_update_sample(irq_cfg->total_events, rxq->rxq_stats.packets,
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_main.c b/drivers/net/ethernet/huawei/hinic3/hinic3_main.c
+index 0a888fe4c975..8c7492e15409 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_main.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_main.c
+@@ -51,7 +51,7 @@ static void init_intr_coal_param(struct net_device *netdev)
+ 		info->rx_pending_limit_low = HINIC3_RX_PENDING_LIMIT_LOW;
+ 	}
+ 
+-	nic_dev->adaptive_rx_coal = 1;
++	WRITE_ONCE(nic_dev->adaptive_rx_coal, 1);
+ }
+ 
+ static int hinic3_init_intr_coalesce(struct net_device *netdev)
+@@ -178,7 +178,7 @@ static int hinic3_sw_init(struct net_device *netdev)
+ 	u8 mac_addr[ETH_ALEN];
+ 	int err;
+ 
+-	mutex_init(&nic_dev->port_state_mutex);
++	mutex_init(&nic_dev->state_lock);
+ 
+ 	nic_dev->q_params.sq_depth = HINIC3_SQ_DEPTH;
+ 	nic_dev->q_params.rq_depth = HINIC3_RQ_DEPTH;
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c b/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c
+index da73811641a9..ed4810fa9852 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c
+@@ -341,9 +341,9 @@ static int hinic3_maybe_set_port_state(struct net_device *netdev, bool enable)
+ 	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
+ 	int err;
+ 
+-	mutex_lock(&nic_dev->port_state_mutex);
++	mutex_lock(&nic_dev->state_lock);
+ 	err = hinic3_set_port_enable(nic_dev->hwdev, enable);
+-	mutex_unlock(&nic_dev->port_state_mutex);
++	mutex_unlock(&nic_dev->state_lock);
+ 
+ 	return err;
+ }
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h
+index 7ff699984cee..94a2bab52564 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h
+@@ -129,8 +129,8 @@ struct hinic3_nic_dev {
+ 	struct workqueue_struct         *workq;
+ 	struct delayed_work             periodic_work;
+ 	struct work_struct              rx_mode_work;
+-	/* lock for enable/disable port */
+-	struct mutex                    port_state_mutex;
++	/* Protects interface state */
++	struct mutex                    state_lock;
+ 
+ 	struct list_head                uc_filter_list;
+ 	struct list_head                mc_filter_list;
 -- 
 2.54.0
 
