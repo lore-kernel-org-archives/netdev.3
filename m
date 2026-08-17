@@ -1,64 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9F934A797
-	for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 23:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605A734A797;
+	Mon, 17 Aug 2026 23:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787008679; cv=none; b=DY5WMknu8HT8vWM6Zbg3zVqhf75KGoDCgbUxRy7ttm8N76d+FlTc9jjGojgmzalEaSLyvHWq+apjw1TrODJOn1AnOaCKuStNZo4a1wVIVqxljS+7HRmL7cpnJyTIjOgj4OLK3h4Gid9Z9Qb8z3bGDXHhdQXLcge2qpPFfHeOAx0=
+	t=1787008855; cv=none; b=sgHQLpbbN8lUy9CgHa27GgaORVFDIcknYM15Pl6UDXV4Bec2uksUZg7Eq72vKBnasOLdzSyLLjRZAsUngFrPg2aMa1tLqVHMBqwiWXRG9e5gToEy5jwIRrLgwAGZdexd7Ef1lwv/KpdRC9wXwlwKi6GS4yy9UrkDjtC+rAtuQfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787008679; c=relaxed/simple;
-	bh=66t1zrrtYpzpEh2clbpwp4w7Gx3hg5wTyeJMPL/cyT4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gzL/Mm5trrz3GMM9Wcgri5hV4ObtjzQluCHveU8x+0cxFzjsRD43N6Tki0+n2yTD+Ea9G7r5FJI5rWlNu5YX3A8TQgMcnsm8W5DjHHEbGOYgIM6Ur2I039+Tr3Rs5IlQl5OS0QxolYdNmyeA8nLbi28Ur6zKigzhSY4bmxSV36k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FkrxHe5n; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787008855; c=relaxed/simple;
+	bh=AmZWOyublIrW1rcSoxdFY1m7qFly9By7UFIBWohh6Ac=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=skHfkoYG4tyVz2X5wraUI7ErGGeVinKOHLaEj6JVXd7usScW3me4e46zcPutj0ouRrLnmqRqka9pAkH8Qg9ibZv85TCPgLXmSHyGQjJii1u6x8niNyQMfVgOcavjRTlNJesccO43NDMaHrF8v6wcSs1/+lugciKy2M87Kho4vo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JK3M6w58; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FkrxHe5n"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D03B61F000E9;
-	Mon, 17 Aug 2026 23:17:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JK3M6w58"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 136121F000E9;
+	Mon, 17 Aug 2026 23:20:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787008678;
-	bh=BeLurHl48k47YBXiRQrPwq6QLHKVeqckCwiB1xJKzUU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=FkrxHe5nI/WdOsL00EjFMtJLAdf6WxL4CFwmMqrlweIpfOwYZKQAmxSdcok838mj9
-	 kYmFVHgJc9hMAaNsuJI5Rb0rWzfrtF8q4Ya7b/8suiCyDThhqMeM1JqsmEb6863mYR
-	 j1aimzw9Dc93A4O12hqtbuDFFeylw+18hQNMPUmg6p1nG9SQpUTNlKj01hTFqVetne
-	 6UUgSGXzVgAAit4X0HhvD0EK61LXnZEcFMnX+P/WnXg+lfR/1RZXU6Jxlt724/EHW6
-	 ZbEvIyQ43ezP7BJEvOzOrRQrQZggS9Feb+7R4zMa9G42j98w7vpE/SeGumE3JfyKsP
-	 ZrsfrMPH8lGmw==
-Date: Mon, 17 Aug 2026 16:17:56 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Daniel Pawlik <pawlik.dan@gmail.com>
-Cc: netdev@vger.kernel.org, lorenzo@kernel.org, win847@gmail.com,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH v8] net: airoha: npu: use cacheline-sized buffers for
- mailbox DMA
-Message-ID: <20260817161756.5fd2185a@kernel.org>
-In-Reply-To: <20260817090601.1256389-1-pawlik.dan@gmail.com>
-References: <20260817090601.1256389-1-pawlik.dan@gmail.com>
+	s=k20260515; t=1787008854;
+	bh=5MPF511eWQQT2SD5xC2wsOY+rKSzf6TbN4VDVb1RJjU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=JK3M6w58/krqa+rubdeOYckxCZABYx0oOxvhPq+CIBmzT2RD+HdWrhVoOyANyp1KT
+	 mmVJxZ4mKh5H4UG7DO0ehTdV7+yh9g3rANo4qLqiOY/jMsEl19FQuMTUsXYiRMpG4f
+	 +QPLQrakIR1ExL8q/FCAM7yDCTs+EIu/hSYZyWL1+DhDMVVP/y6CccQfcNNnsptYRF
+	 6OnfLor3x6VCXCy4nTKzfo4kswddnlk5OU0OvJw5BGoN8DI1W9f48QcuH0Ui2v7wvh
+	 wmsRHc/cao/DPAAJM/ijW/ioSlJZ2hFbPYvgLsqwh+ENJUrEG+7tna/u8rZpW83HNB
+	 D6nARrf71zNxA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568B33926276;
+	Mon, 17 Aug 2026 23:20:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net RESEND] vxlan: vnifilter: enforce exact length of
+ GROUP/GROUP6 attributes
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178700880590.1786107.954670748778708008.git-patchwork-notify@kernel.org>
+Date: Mon, 17 Aug 2026 23:20:05 +0000
+References: <20260812215341.763123-1-xmei5@asu.edu>
+In-Reply-To: <20260812215341.763123-1-xmei5@asu.edu>
+To: Xiang Mei <xmei5@asu.edu>
+Cc: kuba@kernel.org, idosch@nvidia.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ roopa@nvidia.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ petrm@nvidia.com, aroulin@nvidia.com, mmyangfl@gmail.com, kees@kernel.org,
+ bestswngs@gmail.com
 
-On Mon, 17 Aug 2026 11:06:01 +0200 Daniel Pawlik wrote:
-> On EN7581 + MT7996 (Gemtek W1700K), mapping small caller buffers with
-> DMA_BIDIRECTIONAL regresses NPU version probe: the mailbox completes
-> successfully but WLAN_FUNC_GET_WAIT_NPU_VERSION reads as 0.0 instead of
-> 0.1111.
-> 
-> Allocate at least SMP_CACHE_BYTES for each mailbox payload and map
-> ALIGN(len, SMP_CACHE_BYTES) with DMA_BIDIRECTIONAL while programming
-> the original payload length into the mailbox length register.
-> 
-> Tested on Quantum Fiber / Gemtek W1700K (EN7581 + MT7996), kernel
-> 6.18.44, including two cold reboots and sustained WiFi use.
+Hello:
 
-To me the fact that this patch helps only proves that the swiotlb
-implementation on this platform is wonky, no?
-IOW AFAIU we are avoiding the bounce buffer so things work, but
-the bounce buffer is still broken?
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed, 12 Aug 2026 14:53:41 -0700 you wrote:
+> The VXLAN VNI filter entry policy declares the GROUP/GROUP6 address
+> attributes as NLA_BINARY with only a maximum length, so validate_nla()
+> accepts a payload shorter than the address. The GROUP consumer reads it
+> with nla_get_in_addr(), an unconditional 4-byte load, so a short
+> attribute over-reads up to 3 bytes of uninitialised slab data, which are
+> stored into remote_ip and echoed back via RTM_GETTUNNEL, disclosing
+> kernel memory.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,RESEND] vxlan: vnifilter: enforce exact length of GROUP/GROUP6 attributes
+    https://git.kernel.org/netdev/net/c/984f831dda31
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
