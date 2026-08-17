@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9462C3245;
-	Mon, 17 Aug 2026 22:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2712C3245;
+	Mon, 17 Aug 2026 22:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787006304; cv=none; b=eZB9D63p23qSNUC84Mlp0YgH+kEyP3K2hKOqmmv+Rm1ZYqlNHBsOZeaIXWJJcJN8E7VKe6BA7j3nfAHds1KH82UJtm8Bg9lsHRcBNW5OEBCl74pFqL/PLrWTdSZ5BDKrfgEuLJOng17AluykAtweLW0e/79y067XUkQdTg/m9yI=
+	t=1787006402; cv=none; b=n9P5xN8rm+dOOGUSXAvtoEogzlCKEx/uYju6LvnqiqHuutngG3LJ2vqC8YKrYbHbFLYGM3+sCSucm6YVderg+AlyQo5dSWyPIV6khVlVde4yLMttWDXQ6jSspHxkRyOIYN0AzcyhgU+MrWFr9qOkqcyVIiSFcTK4euGMpHuOEJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787006304; c=relaxed/simple;
-	bh=6MQDmmi489+J32O1Hp2TCiuVBnz9rSj/w+MrSjdNOg8=;
+	s=arc-20240116; t=1787006402; c=relaxed/simple;
+	bh=aGCSbjh7LNGpQK69ZJzYWk2DP5P1ztKGbqp3mV+u1uE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bAYgR2MDSmnV4fIkowvYfeKDS4iYCTTfRErf06pTQ6ymNp3ApMmbWRjGvqmBoGORXGV63lW34UVqJ8ybIRKKrg2DS5MSKpKDQfwF3aIgwEi53TVoyYB10vhpxFQuZ1NnzO+cH0Qf9mcnqokEPaqhDxA+9k17OhPIRNOn6277Kl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B4aAyeZO; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=Ulsmdbae9VfXNnDwdr5DqJ3OFY11YZjxv4ZnxYZVegQcDxZ+FQZgeLye7P1UyaQlY2QwBRUc+TO98qiyp5vo2veMuAyTnGJCkVQFPskrNpgioTRIUvQ9JbvevTRm3s8Gdy87rWm1zeTgVsg+pgbt09gQ9SgaCQOGfvvzCUR/JHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VQHiLBMF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B4aAyeZO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 330CA1F00A3A;
-	Mon, 17 Aug 2026 22:38:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VQHiLBMF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9C41F000E9;
+	Mon, 17 Aug 2026 22:39:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787006302;
-	bh=6MQDmmi489+J32O1Hp2TCiuVBnz9rSj/w+MrSjdNOg8=;
+	s=k20260515; t=1787006400;
+	bh=udONfB0KqPlNsNyooEvhiKK+MK28bo75R+x50okB03I=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=B4aAyeZOXY+TB1DjdqVF58uXzHkWLQC9Fp0dpoPDAc7Y56bIobyPeLrCk7q0O1xK1
-	 AYHbv6V1REHbq0WQQO66qeQJnhFcdx7nIuLiLEXMBdv9vdGoLIXYDmXTt/Pb//QPv3
-	 WMrM9pBF2EM15AJGLni2ZuyxzmRR/ABnxo+Iq+ESJgbphrzxrkUWocg/Vt7YxmI3sb
-	 AINxwZnrDuv34xO6dKWZdr8YHJ2nezXEwpuSIXrNa4fcQUYShxsE0gBBDA9aeLgstk
-	 +26DidBbp7m0dIG7MqfhbAynQu2tCDA33RlZV0yYiNHc7qG8O237OwhbesVGOZBHy5
-	 PNqm/OdjvVyrw==
-Date: Mon, 17 Aug 2026 15:38:21 -0700
+	b=VQHiLBMFGQCgeoew6Cp4Ows756OkMTcKte3toNPglY/bGSasnVZuHKMz8eXnxbElh
+	 jsBGBwsL3xfxOTdgVVpOTDDU2C70vLO5VTYBveLAOTn8yG/FNoeanEwmfEDd0peSw8
+	 7CsCsSF0+XSukhQmxxssL1Sly8Ixga9t1wvzsXXwhuj3kGtIpCuHEdMypW4KOpaBaX
+	 XAu0FMlO4QQkI3hO6viDTnZPCS6YhpoVyK82jTwb1uLmVC8SwU5WWXN0ITiBkwvwJZ
+	 aKpy5RJNdPbI9ZbvayusP0l7sPqUN6YOJqvwCcAU6D8YF54bDafqh6+DiNPEfsiJJY
+	 Ip1r2Gyhdzlcw==
+Date: Mon, 17 Aug 2026 15:39:58 -0700
 From: Jakub Kicinski <kuba@kernel.org>
 To: Jack Wu via B4 Relay <devnull+jackbb_wu.compal.com@kernel.org>
 Cc: jackbb_wu@compal.com, Loic Poulain <loic.poulain@oss.qualcomm.com>,
@@ -42,11 +42,10 @@ Cc: jackbb_wu@compal.com, Loic Poulain <loic.poulain@oss.qualcomm.com>,
  <Jeff_Chang@compal.com>, linux-kernel@vger.kernel.org,
  netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linux-mediatek@lists.infradead.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v6 7/7] net: wwan: t9xx: Add maintainers entry
-Message-ID: <20260817153821.6ee1b4a8@kernel.org>
-In-Reply-To: <20260811-t9xx_driver_v1-v6-7-2c969fad57c6@compal.com>
+Subject: Re: [PATCH v6 0/7] net: wwan: t9xx: Add MediaTek T9XX WWAN driver
+Message-ID: <20260817153958.4b120ce9@kernel.org>
+In-Reply-To: <20260811-t9xx_driver_v1-v6-0-2c969fad57c6@compal.com>
 References: <20260811-t9xx_driver_v1-v6-0-2c969fad57c6@compal.com>
-	<20260811-t9xx_driver_v1-v6-7-2c969fad57c6@compal.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,9 +55,15 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 11 Aug 2026 15:14:29 +0800 Jack Wu via B4 Relay wrote:
-> Add MAINTAINERS entry for the MediaTek T9XX 5G WWAN modem device
-> driver.
+On Tue, 11 Aug 2026 15:14:22 +0800 Jack Wu via B4 Relay wrote:
+> * Core logic - Contains the core logic to keep the
+>    device working. It includes:
+> 
+>    * FSM (Finite State Machine) - Monitors the state
+>      of the device, and notifies each module when the
+>      state changes.
 
-
-Please squash this into the first patch
+This FSM exists in the driver, even tho you call it "core logic".
+Please provide more details in the patch description of patch 5
+and consider whether any of this logic should live in the WWAN
+framework.
