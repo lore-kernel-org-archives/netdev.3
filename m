@@ -1,254 +1,167 @@
-Received: from TY3P286CU002.outbound.protection.outlook.com (mail-japaneastazon11010001.outbound.protection.outlook.com [52.101.229.1])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010064.outbound.protection.outlook.com [52.101.46.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A49305E1F;
-	Tue, 18 Aug 2026 06:38:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.229.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586D076026;
+	Tue, 18 Aug 2026 06:39:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.64
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787035140; cv=fail; b=GEULBVPBPRbWTd40PMFBbi+yiQWlKgDh031zs/XpzWQZ9GBqDidE7PQKTTGhCF5ZbgsnQiKTgKp41IqGi5LC5pzPdQYthoNyu7ao3Cmxruz99AFXc25USjOptrrntvRDsXphzmxog2qEVypBre4PD9HFD38Ua4QH7wwQF8bc7m0=
+	t=1787035195; cv=fail; b=JmtUnNUZRbGyo0d+1XWQA18Y5vTFxoP29N9PTqaKfl9cPlKjIUkRjbak5xXUQaWzpDQiKWLIxXdUq/WmLVhu5VTvSFFDxV0JADV9GhsU2P3T7IB4jMfCnLpwyybtEZQidhIYmTMcOEShlHfPTTRkOnLoZtXdKTnAO9DSdMRlMj4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787035140; c=relaxed/simple;
-	bh=4Q4xK6jXwRBkPWXEl3P7gmnRI4GGUC+qi81We6YaiN4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ol1anVreo7A1awNOOJJ4mgCXc05B2v3upVlR/gy0VwuwG5WxEhVrD1Ln+1LCDu/biqmQePmAMsTyFuig8T2094CiOP/mFPV+odbiBkmOqX5RPIQUhsiU3T3IUyVVY9OwgIyGMPH+JOJgb5GqDYjDC03l4RucJkgv018V4vZTTTo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=oFCdscQq; arc=fail smtp.client-ip=52.101.229.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+	s=arc-20240116; t=1787035195; c=relaxed/simple;
+	bh=cdRwpSTRhgzcbOZlm4XpGtimxZhKfBiYu+EhnFOUkzg=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=fymRBtvX8WbUeruJuT1nFsebj5DBYxBXJIEj2OJPDhXtfk94j1pDnKgw6mjPQKiCns4nBoJy2bn235iu8Emz3A3h523kStOmPi6pXUSTdSJxzqHuvEC3+9v3fvg6bfx0GgBrK75emMbzDiOmJH0rVqPCNrCD4eyzKOdx6N/+xZA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=SpWqfvfV; arc=fail smtp.client-ip=52.101.46.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="oFCdscQq"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="SpWqfvfV"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PIE/65oqKkNfWPskg/wLdE/1GVjUTrLBR6fU9u0p5KzKBMNMYAPdOEJZa4Tz06+YRX7s5iql/b4K8iNikODlVaNLy3hgsVDLakCSanXemrBW3Vi5w7ou6RT+Tym8pQbhCIWICHz7ZU2doWZZAMjR7i1B3CbISeitjYPSU0IFxydYWRQRAz/3mZ0AGmKq4hiIsnM6uADDAhd0Tm32BtRuE8r++7mGVktH48+d+ySz88IbuVJhaBuJt0pPwSZP6Py2bpS223qPcXmO2e0RIxGhcRZAyE4YXqXxtJ6O70/ZIasHQ7hEXmv3H1ozVd9wMrt2I9Gkh1p0RlWyOLsSdpiZlA==
+ b=rcdThPEpogsWbk+3TXWa0V99Z1Smnx4FhmQHQd7CCF4azqyUAOoukolkcfxAmo4kqYh9Zf52vwbFzYDRv4U0Ij5GFZJLyby2QIxKZrxJTJr/mUP1SGF+Fj/7kDFofiKx/oNf5ZeQ2LOK6JtIPsTdkgz4uw43VBUM7pSKz9FMGu0qNR+DqOZTG5pSGkAu8QR5YWNxs1OXvOyWCI9oDr9n1FvzusVGnwaN2xRoCaob22PEb1rmNqDSJbaURmT3A+Xcsu48+DL1y/MQ+NsWnuiU4r1GawyoubmCXDCSt9vC3i71g4HzX5vdRJtBWedai1icyfeEWmFDGhnvLrmzIoSe6g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BJAMXCSc5omj3Mu2OIiw4d/K0Buo5IIG25NyuiP0W7U=;
- b=yZQY1k9Bv/Kv8UdS3KrpEQcOgxum8rgTZAp2vyHVSAI0TohU1hdc9HeXHEK7BmGWYG7N+ZdX9BxehN0loYYqv5sAhcQbmwV6gWH223rUX2QfPTZRWG+dtJRpog9btsCY1goxc9YootaQYe/uNByYQrgIQbsZ3busQH3rcIC6ORz4JR1tyT2X/sXAAlSSIh+D4AUCErWmqLsjDc4Ra7v3uB1RprZG6/XzSzjPYiZaTnmfzdwhbZhE84uD0++qbzqPrhRudSOY9SALpqeHxLaylN5XGjMo8ylXOARj7JjBb8cYgybh75RceO+7M1ZHpMF+YdN+zMRBBAin0agN+uYfkw==
+ bh=HiBCM1LSfOLRdy2trqmOueKmSZurPWdkXewGwVBgFh8=;
+ b=zWSxLBVWxafYWyzx0vOt4DsOHdZCcEIJbgPVQqoj3Wx3lRETtCmJ+YF03zm7VXzDp7z7D6/uXeg+a4wamg8nfakkNmAfIaRU1u4Z6VX2B+gR0sZVoylBZZnT4y9iSV6dj62QtK7O4CmncTdh4S/njdYuvzgn6ImndaXrhv+gLOOvFTmKMF71bqfFIcJQiip9z4Y9g9YaSjicj3+n8uZLhIP9vZ43NlxHL4LudTo9pnmfBY3b+FXomMvO/yeuL9dckKlXGB0//0myJJH/xKmVW7tZpI5Cr6p2KYCOSSirV/EyFVllQBL9tdCtl1fmD129bObIy957LWnf8rqhLdz19A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
- s=selector1;
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BJAMXCSc5omj3Mu2OIiw4d/K0Buo5IIG25NyuiP0W7U=;
- b=oFCdscQqsNR6j3ga2B8bBBfve8dduOIdK9MoxKiSOL32G8A0UMgX91aHJQdjAWrO8JiBJzCTE7ye45eYY8QEOV/FxQAXgZKFiJn6RKTUcS3KJtAXIarN0UTF6jbkCVCBawpeNCwoP5v3/rRyVOinMpFvXTcSQWJZeeoc/zss4c0=
-Received: from TY4PR01MB14282.jpnprd01.prod.outlook.com (2603:1096:405:20d::9)
- by TYWPR01MB8622.jpnprd01.prod.outlook.com (2603:1096:400:13d::13) with
+ bh=HiBCM1LSfOLRdy2trqmOueKmSZurPWdkXewGwVBgFh8=;
+ b=SpWqfvfVC+d+3Octg2XLjWxpuabDk1yZlAiJT8i1l3EgARBji8hPztANoi7ztXG5cwD3Yvn79kRH39KcGltFTj5c8+nfrkCarOpldubE7IwYmoHNaOYfcSzudO5UtxedfLCdYWH0k4fYfwo6e0IK5IAoVcMZi+S8CldvfuFIIdI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH1PR12MB9717.namprd12.prod.outlook.com (2603:10b6:610:2b2::8)
+ by CH8PR12MB9767.namprd12.prod.outlook.com (2603:10b6:610:275::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.12; Tue, 18 Aug
- 2026 06:38:52 +0000
-Received: from TY4PR01MB14282.jpnprd01.prod.outlook.com
- ([fe80::655d:9c47:4499:eb3a]) by TY4PR01MB14282.jpnprd01.prod.outlook.com
- ([fe80::655d:9c47:4499:eb3a%5]) with mapi id 15.21.0315.016; Tue, 18 Aug 2026
- 06:38:52 +0000
-From: Michael Dege <michael.dege@renesas.com>
-To: Michael Dege <michael.dege@renesas.com>, manushprajwal
-	<manushprajwal555@gmail.com>, Yoshihiro Shimoda
-	<yoshihiro.shimoda.uh@renesas.com>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-renesas-soc@vger.kernel.org"
-	<linux-renesas-soc@vger.kernel.org>
-Subject: RE: [PATCH v2] net: ethernet: renesas: rswitch: fix device_node
- refcount leak in rswitch_get_port_node()
-Thread-Topic: [PATCH v2] net: ethernet: renesas: rswitch: fix device_node
- refcount leak in rswitch_get_port_node()
-Thread-Index: AQHdLCAiwvsD/tMOfESV4bKJu79G6LaiOb6wgAEmEeA=
-Date: Tue, 18 Aug 2026 06:38:52 +0000
-Message-ID:
- <TY4PR01MB14282E215D9974C38AEE2078B82A62@TY4PR01MB14282.jpnprd01.prod.outlook.com>
-References: <20260814190423.933-1-manushprajwal555@gmail.com>
- <TY4PR01MB14282E65E2588C32576740C5582A72@TY4PR01MB14282.jpnprd01.prod.outlook.com>
-In-Reply-To:
- <TY4PR01MB14282E65E2588C32576740C5582A72@TY4PR01MB14282.jpnprd01.prod.outlook.com>
-Accept-Language: en-US, en-GB
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Tue, 18 Aug
+ 2026 06:39:50 +0000
+Received: from CH1PR12MB9717.namprd12.prod.outlook.com
+ ([fe80::b26:bd7c:5076:9cd4]) by CH1PR12MB9717.namprd12.prod.outlook.com
+ ([fe80::b26:bd7c:5076:9cd4%6]) with mapi id 15.21.0339.007; Tue, 18 Aug 2026
+ 06:39:50 +0000
+Message-ID: <38099370-269b-4d3e-a686-5b29d806e6a3@amd.com>
+Date: Tue, 18 Aug 2026 12:09:36 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/3] net: xilinx: axienet: Handle optional IRQ return
+ value correctly
+To: phucduc.bui@gmail.com, Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Michal Simek <michal.simek@amd.com>,
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20260817105241.63345-1-phucduc.bui@gmail.com>
+ <20260817105241.63345-2-phucduc.bui@gmail.com>
 Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=renesas.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: TY4PR01MB14282:EE_|TYWPR01MB8622:EE_
-x-ms-office365-filtering-correlation-id: 0c5cd453-ed35-49d4-4bfd-08defcf35e60
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|38070700021|11063799006|56012099006|10067099003|4143699003|22082099003|18002099003;
-x-microsoft-antispam-message-info:
- HDNDr1TGikHdK4JssA4TO7EFWMp/3ebIyKWFa8Sagb6R0BJhUEXNuC2SocQAXOd/16ouK7u+CzOzAdZ87Qn3uJydRnZ38iseao0kseeJrA3sO+I/doHzE0Qi2F4RYN7JmfuuO4EG0VB+oseT9LCVeUYP4N25nvOaZQ+rFROKYLL7m7jt4oVieRbiYwDBudiwV3Av67E9fluAxlGkOqc3JMSPwyFspEjg8catCzpWoyYNrkJLPV+ceWtXSJgKaB/8nkncMYDSc4a29FTMyc9Or6UcP+vSU/P/XsawFl9U+fP7EpdcJLnKoPZoYIo9p6lH1NsISKvDVrOGPSDJco3QHh0cduLt2VqeX8/fzjbqTcMZ4R/3V4MuyPZFSTwmiz3pxMBViZiKlWFrrB1UwljrmBCfYn2zQARqUaMT1hcuNV0lrCIoTfM3BhEn+bI9jOuhDtFfFfVJEP3OuOgalJCeaOC7EXVD20BAfvFTkyPpMaaMJIopbnJjAqkr+uMzPqNtrHRLzjcGMLYN5CNWeEbPLggZj42dQ1L1NgEkKf0hJV9q+yqTR+54+VGwNn1uvo5g1OT4pAQ2GhsdhPximlU/rkreoKRTk0gt2sL3wKE7eKUZez3O9pPZUvqeoXANdUUsnmRzgclN+gAQ2CJROTxxQGX7sL8gXsiLS/EqN+mTNvdB4cf/0y9vlMTblf8lRmY/qwnD6azy2sfxhNJfBmZSNIRMVeGUKpM9YSiqspDI/6A=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY4PR01MB14282.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(38070700021)(11063799006)(56012099006)(10067099003)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?wWco99TPNHgZ9Im1YQVI6env1v5GpbeOQlA0vbjPqviB0+U/2GZtf7CP0hvc?=
- =?us-ascii?Q?Je1tneYVbvngsbBawUyBBd2COwe4H87+a5pTtX1nFDiyXhbT91a17hJ3Hd0v?=
- =?us-ascii?Q?kSmybnvJf4jXAmNTXMeO2R1P7LgDq9yQTdjbuxEeeIWzP8JpKVPpre0BVFju?=
- =?us-ascii?Q?vtnbxcaiO6OE+kQUj4+fLLjnPv+2kMQgERoUHECwEYFJgLkNv1RfEvuewdss?=
- =?us-ascii?Q?nfAduAOK5UGNVaNhA2fpC5uIqFsOqyU9KYYcb3CSRLmB30YEpXCJdlnidFNw?=
- =?us-ascii?Q?M2y/c4NN0gcU4xyZnkc3Y+r3I8fu8RSJN11zbJSVCzku7qEoMZQyeVJC2aa+?=
- =?us-ascii?Q?Hg8/Mw0SNixwmqJe1Ne4Agsz2KwzOUviYHyFHS13qhAvbmIQ2jf69rRrCTEb?=
- =?us-ascii?Q?d+rTjZjPBB7WtYrk2K+k9weeT3I44Ry4xtcmPWo5dURJgMGw6G4kL4pYfRP1?=
- =?us-ascii?Q?jUB8s84TeaGM9ALSFpfD8NZJesWsPO2VPt8UD0b/NdtOqYCTKVDjH2qGt1uS?=
- =?us-ascii?Q?0R50M8eQQQBZge+3YmaepFONcLzqbI18WZ1E3IKbABnl2h/wM09wSZDRnLwY?=
- =?us-ascii?Q?kIHCLPAau6ZwR7c8SMigsAjATdHrnBB0gY2RcnSoCZO+E9uqTiMbHQJLZkdG?=
- =?us-ascii?Q?zxtkJgHLlV7OFe8yS9Ql6ZqScDQqd14QAnnAf1ny4Yb9o8UwI2ZpiZvYVEy5?=
- =?us-ascii?Q?6dwo2kmsLw1zhq9+WqX+MUcxfEFP8y15CDp7acvFuZ0SVADKMSJ4T3d//rlM?=
- =?us-ascii?Q?8qNprTrWGN2vDM//1dk2S6m4MltzM+epA5s3LoTHK7ZaD8VBlcpzL66MwpY8?=
- =?us-ascii?Q?GxpYzAA0pSziI+wy9ZhN+RgTmgGbpR3sNPAEJbZGZNHd5d1MWkBDXbGwB95j?=
- =?us-ascii?Q?qRfaKPphTULJrx12uhpiIrHCPUZRhVXIOBPJQQp7HkohxeKlWagk22y4NNiZ?=
- =?us-ascii?Q?7YWTM0GoC0wwEtcNjFsLyjp5/vJCbJlTZpZaGVztAwtLnlv7vCQXXUfBOfuJ?=
- =?us-ascii?Q?BXx46nbMFHpB7sWXJ2ioBc/4GuCvCuKk2/ZKeBC4VOgMvWQ43P2oC6QCVoAs?=
- =?us-ascii?Q?Qhne2JEz+l0d8Idj6cGtJxHreBPAOKJYc4h1TGobW5Jw2cTW3AgkBJcpD+iV?=
- =?us-ascii?Q?q4KFWHuQJfDYXbxZoQPvoSRCrHPg2ywAy//5sFRW3gR4BG2UrWccdlQlwVhK?=
- =?us-ascii?Q?aO3/I1yScolYpIqIUe/e/v2Jz7H7ptnBIC0yD9UGvSFDDqYjaiI9w7gQbc1l?=
- =?us-ascii?Q?cd3Ccfy2cjj8rgNRbRcPg/OjDNLdcnk8oQucjzGX0cvFFlqLa/0o6IMQWiUy?=
- =?us-ascii?Q?FodFTUbrtTsrCzGhrfKgPNt1Nu3LLcEDiMaJzivSUjzY0ccujynPVYyXE06D?=
- =?us-ascii?Q?0SPP0ZzmoTnApuGBvZeqrblOspBgXHWr1uv9yjWi0l6nXJHLJri5pitmd4nN?=
- =?us-ascii?Q?7oO7VwFVihwL3EA2EUKMUm8X3IRXyDdl05RTWWJIrZMPT5WubIlU6QgIIPON?=
- =?us-ascii?Q?UAGMFpIyOOHkrKwPVqvzd96ildFyO2TIdQ57mTvZG455uI9OLRiZl71rEd/1?=
- =?us-ascii?Q?UyNZxPQjb4pQVY1PVUKJY7FnN+3kIV0m2hNCbtuHOH0aTwvBzbixHgWP3prc?=
- =?us-ascii?Q?3USpHTAG1P70iL1i5eRVUSTUI1SmcuByva8bP4q/nq33VAR+2FKxC1x3dEzt?=
- =?us-ascii?Q?Q5G3N/1QgjEMB1Kb9NsnVedJvFrsmI6IUtAsBMydn0n/wBw5VewlQVc+eWVx?=
- =?us-ascii?Q?yBmT3sY6ww=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+From: "Pandey, Radhey Shyam" <radheys@amd.com>
+In-Reply-To: <20260817105241.63345-2-phucduc.bui@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN3PR01CA0006.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:95::10) To CY1PR12MB9697.namprd12.prod.outlook.com
+ (2603:10b6:930:107::6)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: renesas.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH1PR12MB9717:EE_|CH8PR12MB9767:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5356c712-c3bb-400f-0b70-08defcf37df3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|23010399003|22082099003|18002099003|10067099003|11063799006|56012099006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	TG5B8AvnGdo4mLRe/CiOUOZlex3uszJoUNdAWAfE+WjNoRNLXOGv7kY/D5Ua3sSN7UFZj9v4jJCIPL5x0k/dg7R7ILbKoz16ChAEIRa4Fb0CuYjWYYJfAx17plLveWmggBUQ4NspvBwj+j2LENu9NPsgP/UjvMqnGzZhxcEcVKJF6U6F2QiRsCttTholdnDjoU6UeMiVZ4aNYIAoTZAWD+n7Zds9JAex8KwKy/UFqQngxOYL7kYJDKDN0tNRm82a2TLh3ilB3Tdcgb/0TF7GyNLfKvFHZ7+PwoD7wi3PkkjWAe9P/kX0a5VNHB/DgTew9u71Qy6Gc3FD+u9Xfy87SEc66glyDIaXlllvMqLEZ6ciCyrfv0zsN9iGuwL9RxErGYnTliHyMsZwWzYwZxum2xJfVGcxcIDUwk+SjRPFYHe8kaXC19vfJnWuDT4yK0yYDNpVSjIgN7YkG5k/mz4qcZNQJvLCNl4plvUrbg4dKYTCoDYubpLz9lNBbuHguU1Qab1nhzJhRMTaeM8HC/yDhDZjZXvnTNcEDep9XFwaV89Ej48CGg2fwr7CXW4juxjlLkZW1bG7BBV0TqkJjuOTOiAH8pHp1/AXeLMrctJ8iE5jwzDo2pfoMQX/Z8OP/TcttSoCXT4FhM7fxbblP2arYokPju4ao3LVlUgtGE8yGFk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH1PR12MB9717.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(23010399003)(22082099003)(18002099003)(10067099003)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?emVGOWRkV1RZRVhiZlQ3M0J6Wnp3SThBR081cGI1QmErTkRUN0Z2VFBoN05U?=
+ =?utf-8?B?V1JhbzViaytldTdoeW5mKy8xTFBBbmRob1JRak9NQ29CNG5mSzQzQk1SUWVK?=
+ =?utf-8?B?TGx3R1haQm5ucGtEQ1JxcmtKVy9KU0xOOUVZUXRtRHVLblVIY1NPRm1udTRQ?=
+ =?utf-8?B?d2NPUlRlUjBFd0QxekxlaWJudW42TlVDQnRFbXl2MHJlUzZUU210NEd6dTVy?=
+ =?utf-8?B?b0R6N0JWbVhvUC90dk5DY1MxeDJzU1NIL042SkJJMHl0ODhodVZYbjJUUStl?=
+ =?utf-8?B?Z3VLbEtUaENFV1pGZVhzWUd0cVJlb01IRzVIc3E3dWh1c1RLWUlEVzg5Q0Q2?=
+ =?utf-8?B?MkdaZkMvSzVTUFFyVzJvcUpRaVdDWjJYa1k2Y2VuK0tkU0RXSkhzTVZoN1B2?=
+ =?utf-8?B?U3EwN0JBL3ZXVjBDMHdrcDNtK2JLM3FTbUdkNGdwMTJFYjBFbXZncnZRSmlJ?=
+ =?utf-8?B?SWtkRXJ6SDliRFJEWFh2d0NMMDU3QXpickk5QW9xM1ZUZHNmUk9NUWZtanJR?=
+ =?utf-8?B?STVGUHp2aFJoc1F4VGJkRDFBUCtkRFVDQVNhd0FwUi9VVVcrWUVwY3dvMU1Y?=
+ =?utf-8?B?ZzN0T3Axb2Y3L1pDZCtRL3J2QWFLUWNsZzlvZ2pVSWpQUDVlODNDbnQ5bkd1?=
+ =?utf-8?B?UDEwVlFvaHdqUGdUWGI3SGl6V3lYc25JdE0xKy93SXBhdmdiZlpxamg5Z2lC?=
+ =?utf-8?B?K1RudVFReXIyWUxmVDZUUUJDVGl0STZ2R0ZyWlQ2RFh0cHptemJVNm05YktQ?=
+ =?utf-8?B?bW52QnVvK3JmMW0zS2JlMVp5V2p5eUsrdHFMdi9DV3RWbkg4cllJOTJGWGJy?=
+ =?utf-8?B?MFZIYnpYeVJONks3MDRpc0hQaHRUQllzWklVMlBPMFpRM0Ztb1VVYjUwN25n?=
+ =?utf-8?B?dGNYUlBtcGRZdUkxUDkwMmlvZW80R1hxZXRFeGtiUFJWaDZrVGhrc3hIUE5w?=
+ =?utf-8?B?MGdBWEJQZXl3dlRkTlRKRnRvcEhmNXNVaXR0S2g4ZlUvNzVoOUJkMThEbXdh?=
+ =?utf-8?B?TmFtaEk2MmU5N1p3Rld4cCs3b2wzM1pxbDFZNnlJOVErM3FYNnN1akhiUjQ0?=
+ =?utf-8?B?VHl2bHBXOXJFd0QvcWJWSWxFVksyMVgxNFY2L0pHaWpGREJ0eUQ3MjloN083?=
+ =?utf-8?B?M2t3MU11SkN1K280bk5HQUg4bXgvME9HVlhaZVZ2R1pYNEVreERacnhaU0pE?=
+ =?utf-8?B?MnZHQUFRdjNHdG8yZ2xtRGk0SXZIeXFrZnEzNS83ZnhkWWY0dFBlOEVwc2J2?=
+ =?utf-8?B?NlExMHhXLzBCREEvbXB3NjAzbEZnSW8xOXBHaHpZUTJ6eWhzNVdldVZkMENO?=
+ =?utf-8?B?b2d3OEhwNjlYZHdScXAzSytNSzNhbm43S3IvTllSRnl6SWNkUXdiaENqa1Fv?=
+ =?utf-8?B?djdET1E2cjYzRklCRFBIbUwzd056MHNSejIxdGdldkVGSjEvd3Z1UFNkZTdP?=
+ =?utf-8?B?eUxBd2Y0M3Nybm1lU0VkUFVRSGQzaDNjY1BTVEpiaHhVUHc2UTZmUjZUSmo1?=
+ =?utf-8?B?SURlU2pBbkE2YVg1cUFZaUJCTU5tR3Jkdm42bE1LOTZBOXQxdDFieWhVUVVx?=
+ =?utf-8?B?VUtkUjd6R3FOcThlcU9UVU8vcURaWjhTbWtpalVpaUpzZU9lQ0Z5WGxydGdI?=
+ =?utf-8?B?NXUvajVJYndndHV1ZlJjejBsWW5kbDFOcWRwNytNSi9VNTRLTVhCN2FrbXdr?=
+ =?utf-8?B?WTRNQjcxQVBleDNNK1pLbDdLYWt4TmVUenN5TlFncTY4WUNpczRGZW1mN2Vh?=
+ =?utf-8?B?L29OQXZUTWI2dW5VZ2ZPMzd0RjRadHNWRmY5VncrRlM1RzJ0RjNMRTlNY0h5?=
+ =?utf-8?B?Y1owejdSWDlTandDeW5HVzRlUmMxZy9JRndvQnJrOWlqNWJRSFZPY3AxeURQ?=
+ =?utf-8?B?cE84VWRMOTdDNFNmQVBja09nK2F6MGoxNUIrbG9OVnZvL0VYZVNVVFEzVzRa?=
+ =?utf-8?B?VXJlVVJPMUJubStSTnlYOUQwVHBaSzhKdkh6R1FQSEliRlhqN3hYUUNTT3c4?=
+ =?utf-8?B?RWJla0U1U2JFTkxMNzhzTTdqNzZwcWhoVWloOTR5WDVCNDA5Z1VoeXRUNjFp?=
+ =?utf-8?B?R2NRUFZORXhvYkpMc0lOTUUyTDh1M3Jlb0l6WU42V0t3clR4NU1BMldLVVVh?=
+ =?utf-8?B?Y1BwclAzc3hHT09tbW9mQVhMUWpSZGJQR0lQOUpmajVialkwbm5KRnVCT2E1?=
+ =?utf-8?B?U3l6aE43Z3l4SFkwdnp3czBESzZKamJueGpxVzVGb1UvVkZQSEhwZnc0dTJE?=
+ =?utf-8?B?TTdxb3prR0J2ZklJT3BOaEdMOURJakxpTkNud0ZXZGNpYllicnJnYzR6OE1F?=
+ =?utf-8?B?dm1VckxDQWI3dkVSY0ZucHM0bjFST3lVRWgrM2xtWkZGY2paV2pVdz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5356c712-c3bb-400f-0b70-08defcf37df3
+X-MS-Exchange-CrossTenant-AuthSource: CY1PR12MB9697.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TY4PR01MB14282.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0c5cd453-ed35-49d4-4bfd-08defcf35e60
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Aug 2026 06:38:52.3561
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2026 06:39:50.0034
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 7A0ImEAQWqDNVKNUBZhEFqn+TPgN9q7c/G0b5iD57Vg7t6D9hT+WX6JSPMO1VJNTg/q/qVA7xUe2cU79dr8YI+ul3ZJeTFLoU65mHlZMZZM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYWPR01MB8622
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ylzlRVrXYcAVwkL57ac7EPsCp2LH3OKZCDGQCzGX2hd6oyoK8sfIAYw/HYm/0E+R
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH8PR12MB9767
 
-Hello Manush,
+On 8/17/2026 4:22 PM, phucduc.bui@gmail.com wrote:
+> From: bui duc phuc <phucduc.bui@gmail.com>
+> 
+> lp->eth_irq is assigned from platform_get_irq_optional(), which returns
+> a non-zero interrupt number on success or a negative error number on
+> failure. Errors other than -ENXIO are handled before this check,
+> so -ENXIO is the only error value that can reach this point.
+> 
+> Check for a negative value instead of treating 0 as an undefined IRQ.
+> 
+> Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
 
-Here is an update on v2. I tested it on S4 hardware and it is working fine.
-
-Best regards,
-
-Michael
-
-> -----Original Message-----
-> From: Michael Dege <michael.dege@renesas.com>
-> Sent: Monday, August 17, 2026 3:12 PM
-> To: manushprajwal <manushprajwal555@gmail.com>; Yoshihiro Shimoda <yoshih=
-iro.shimoda.uh@renesas.com>
-> Cc: Andrew Lunn <andrew+netdev@lunn.ch>; davem@davemloft.net; Eric Dumaze=
-t <edumazet@google.com>;
-> Jakub Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; netdev=
-@vger.kernel.org; linux-
-> renesas-soc@vger.kernel.org
-> Subject: RE: [PATCH v2] net: ethernet: renesas: rswitch: fix device_node =
-refcount leak in
-> rswitch_get_port_node()
->=20
-> Hello Manush,
->=20
-> Besides the problem mentioned previously. The links on the interfaces do =
-not come up.
->=20
-> > -----Original Message-----
-> > From: manushprajwal <manushprajwal555@gmail.com>
-> > Sent: Friday, August 14, 2026 9:04 PM
-> > To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-> > Cc: Andrew Lunn <andrew+netdev@lunn.ch>; davem@davemloft.net; Eric
-> > Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo
-> > Abeni <pabeni@redhat.com>; netdev@vger.kernel.org; linux-
-> > renesas-soc@vger.kernel.org; Manush Prajwal
-> > <manushprajwal555@gmail.com>
-> > Subject: [PATCH v2] net: ethernet: renesas: rswitch: fix device_node
-> > refcount leak in
-> > rswitch_get_port_node()
-> >
-> > From: Manush Prajwal <manushprajwal555@gmail.com>
-> >
-> > On an of_property_read_u32() failure, rswitch_get_port_node() set port
-> > to NULL and jumped to the out label before releasing the reference the
-> > for_each_available_child_of_node() iterator was holding on it. Once
-> > port was overwritten with NULL, that reference could never be released =
-since out: only put "ports",
-> the parent node.
-> >
-> > Rework the function around for_each_available_child_of_node_scoped()
-> > instead of adding a manual of_node_put(), so the iterator's reference
-> > is dropped automatically on every exit path. Since port is the
-> > function's return value, take an explicit reference with
-> > of_node_get() on the match before breaking out of the loop.
-> >
-> > Signed-off-by: Manush Prajwal <manushprajwal555@gmail.com>
-> > ---
-> > v2: Rework using for_each_available_child_of_node_scoped() instead of
-> >     a manual of_node_put(), per Andrew Lunn's review.
-> >
-> >  drivers/net/ethernet/renesas/rswitch_main.c | 20 +++++++++-----------
-> >  1 file changed, 9 insertions(+), 11 deletions(-)
-> >
-> > diff --git a/drivers/net/ethernet/renesas/rswitch_main.c
-> > b/drivers/net/ethernet/renesas/rswitch_main.c
-> > index 6fe9648163..ffdc42f430 100644
-> > --- a/drivers/net/ethernet/renesas/rswitch_main.c
-> > +++ b/drivers/net/ethernet/renesas/rswitch_main.c
-> > @@ -1303,8 +1303,8 @@
-> >  /* Call of_node_put(port) after done */  static struct device_node
-> > *rswitch_get_port_node(struct rswitch_device *rdev)  {
-> > -	struct device_node *ports, *port;
-> > -	int err =3D 0;
-> > +	struct device_node *ports;
-> > +	struct device_node *port =3D NULL;
->=20
-> Here you declare "port"
-> >  	u32 index;
-> >
-> >  	ports =3D of_get_child_by_name(rdev->ndev->dev.parent->of_node,
-> > @@ -1312,17 +1312,15 @@ static struct device_node *rswitch_get_port_nod=
-e(struct rswitch_device
-> *rdev)
-> >  	if (!ports)
-> >  		return NULL;
-> >
-> > -	for_each_available_child_of_node(ports, port) {
-> > -		err =3D of_property_read_u32(port, "reg", &index);
-> > -		if (err < 0) {
-> > -			port =3D NULL;
-> > -			goto out;
-> > -		}
-> > -		if (index =3D=3D rdev->etha->index)
-> > +	for_each_available_child_of_node_scoped(ports, child) {
-> But here you  use child.
->=20
-> > +		if (of_property_read_u32(child, "reg", &index))
->=20
-> Same as above
->=20
-> > +			break;
-> > +		if (index =3D=3D rdev->etha->index) {
-> > +			port =3D of_node_get(child);
->=20
-> Here too.
->=20
-> Best regards,
->=20
-> Michael
->=20
-> >  			break;
-> > +		}
-> >  	}
-> >
-> > -out:
-> >  	of_node_put(ports);
-> >
-> >  	return port;
-> > --
-> > 2.46.2.windows.1
->=20
+Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Thanks!
+> ---
+>   drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> index f92951422b2e..50f88a38b6f6 100644
+> --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> @@ -3049,7 +3049,7 @@ static int axienet_probe(struct platform_device *pdev)
+>   		ndev->ethtool_ops = &axienet_ethtool_ops;
+>   	}
+>   	/* Check for Ethernet core IRQ (optional) */
+> -	if (lp->eth_irq <= 0)
+> +	if (lp->eth_irq < 0)
+>   		dev_info(&pdev->dev, "Ethernet core IRQ not defined\n");
+>   
+>   	/* Retrieve the MAC address */
 
