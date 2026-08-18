@@ -1,150 +1,110 @@
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2DA247CA99;
-	Tue, 18 Aug 2026 16:21:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB0F47D44A
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 16:21:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787070101; cv=none; b=uim/yCPRaacnn9/9WRqS2BcwSp5FH+T8vG4KUSB9MeQdhghmaqPny3OdzqeUMC3P3j2c63DHqpMBLL1WhVCNK79EEAhER27iQISPl+ph/IxTQRCbKaCE3wz2GKm/ywx95arIeJfvOQI3d7+CtQNQ7e6Ri3SDBAFdDyAO+gkTRgw=
+	t=1787070107; cv=none; b=OhumOMBHaApJ/k3VL1e9EV1uRq/UkyLx2HzTcWgC+rRIEH10Xuhn5yu/xA0DGnnoqb4lH6AnQRrgLGDIVr6CUquh5NAXbpGqo48QlMvwp86LyKvQaI2ogNVQuftQT9JJZmf+aEBS04oBBXCuWnGVi1dvbfdqrld5KfdAt/jhKEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787070101; c=relaxed/simple;
-	bh=+bdjKlJ20YmD1d23zXtV4qvvYiYRZDYQfhFFijPPmJg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D5uYjnbCk+fn5LZxZoON9oKoDW9UVf8OTsAUuD5LCOQc/ZMScHWctnWxMixBvLfscAlzI0U1KeQuZge16I6PxMMuGqdNwohC9DCuU0+9+vyNUzru4SpRUEDQAO/ggNxSYfpM9CN4da7kB9GfxX4rDNMrRJbvew378GL0qi/KdiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=s2kzsF+4; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=jj60/ihW; arc=none smtp.client-ip=80.241.56.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1787070107; c=relaxed/simple;
+	bh=GKNOuQa1Sm3JbGJeZo02m1rT3BkCPfOp2uMUvK69eIE=;
+	h=From:To:Cc:Subject:Content-Type:MIME-Version; b=r6gPwdE1ew6FclAeKMDhUnayDYQqRfF6Spefy0qFcrXSACeMw6ZhN/3dB7m8L+H/6d9aNKlNpaYj9qY2t3mNHH0EFwoonR9ulYyd5IPTgeo2JII8NLQ5FQByxkbfG5vcxVuq/cILf/ZBssvsWkibV2eIiriLUvQ5jJWCGq9BXC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=VDSfKllh; arc=none smtp.client-ip=115.124.30.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="s2kzsF+4";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="jj60/ihW"
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4hPZhT4DKczMlKX;
-	Tue, 18 Aug 2026 18:21:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1787070089;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=VrITOwwiLa7v+dQLyFD6kE9M7/ckSEBFVhkdoe0ZhVE=;
-	b=s2kzsF+4gtZ9ITfmBc4ieT+NBpbDejvpiRcQ7QOFLNF8kNHR9USyWRSw6dc3PikDUsHBIP
-	lzYuEissyI1IW7jr7jmK6mGpkPslFAolEzc+98wmKcPgFMVHeUxQ+JXo9XDzHqmp9pCvfS
-	yQuViBmtF1IiFYhyQMgLhuPVc79V53ZuN3RQuEzb7nR10wkO+SALgov3+HM4i8YxDHoviW
-	0LDqR6vsEbKou8cqzq4+V1gxXUU7NjXDQhiLzyfdywaKJy0fSbiXgUORiH13DkF10wwJ3D
-	kR8tmhtmCSJsbGekyrHQ9F33hTiLk/D3PFJjP35LZdO+D2bRafveZQqiyGgjfQ==
-From: Qing Ming <a0yami@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1787070088;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=VrITOwwiLa7v+dQLyFD6kE9M7/ckSEBFVhkdoe0ZhVE=;
-	b=jj60/ihWoOa7hdglq48P5JhBx5kJF0rt/2VC02bJQ0GPElncPtEoQqqRllLPnxHvb8TEGq
-	qqihbz5V+MqHj9jt1WaFqtUWtAzb1Njnrb15LM9wyXipuByh2+D79HIPL+gvPu45x0a3XR
-	njjvHwsYKiAnUXiI6sJBp1dgwMvDV085T0Z3S4JtSCZ9YyBZN3LjzV0RJxz/jvTRCPY2Eq
-	O59v65lE7w60wTu13lj547S2wnMo8lZaVK9gSfLKV64Nec6Q7sxYwTV3RBTLpfXQisG1VC
-	dHbVTSUhDIQUd83FXioMwKTtgT0Z8/hn6DRbzyzTOP5ZU6gOtYEogXICZiMYjg==
-To: Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Dmitry Safonov <0x7f454c46@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Qing Ming <a0yami@mailbox.org>,
-	stable@vger.kernel.org
-Subject: [PATCH net] tcp: fix AO info use-after-free in tcp_ao_connect_init()
-Date: Wed, 19 Aug 2026 00:21:08 +0800
-Message-ID: <20260818162108.11456-1-a0yami@mailbox.org>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="VDSfKllh"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1787070095; h=From:To:Subject:Content-Type:MIME-Version;
+	bh=CnCN3W5rh868ZM+grgxpAtSOczWZ72ICUKU84evBfv8=;
+	b=VDSfKllhtg6UZvy2NXnhSw27JwjE/i+qGHTrU/MUiZaYY+qPqZW5PR8sP0XNN1qh5GK7QQfNd+EBzZ2un618DVUeVAOiBOiGgDV0DHfkUC+rJFUS9YIc4k/ugB1mQY5APif0XtgAZ0wwtpJS/XHV4SAVuFRPyhireEbHMeJvwWU=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R351e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=chuyf26@linux.alibaba.com;NM=1;PH=DS;RN=2;SR=0;TI=SMTPD_---0X9E4oQI_1787070094;
+Received: from x31j07255.sqa.na131(mailfrom:Chuyf26@linux.alibaba.com fp:SMTPD_---0X9E4oQI_1787070094 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 19 Aug 2026 00:21:35 +0800
+From: Chuyf26 <Chuyf26@linux.alibaba.com>
+To: Dmitry Kozlov <xeb@mail.ru>
+Cc: netdev@vger.kernel.org
+Subject: [PATCH] pptp: reject payloads shorter than the PPP protocol field
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MBO-RS-ID: acd1c96c9237518072b
-X-MBO-RS-META: hotxfyexccp7scb5gi39bdfrq1s5di71
+Message-ID: <20260818162143.gn-j15t2twSq3EK4tluniorb9JMdD9cS6_NWtWioiRc@z>
 
-tcp_v4_connect() adds a SYN-SENT socket to the ehash before calling
-tcp_connect().  If TCP-AO is configured, tcp_connect() first verifies that
-a key matches the peer and the bound device's current L3 master.
-tcp_ao_connect_init() later resolves the L3 master again and removes keys
-which do not match it.
+pptp_rcv_core() dereferences the first payload bytes after pulling the
+GRE header: payload[0] and payload[1] when stripping the address/control
+field, and up to payload[4] when checking for an LCP echo request in
+the out-of-order case. Only headersize + payload_len bytes of the skb
+are pulled, so a PPTP packet with a payload_len smaller than these
+accesses makes the driver read past the end of the packet data.
 
-The socket lock does not stabilize the bound device's VRF membership.
-Detaching the device from its VRF between the initial validation and the
-L3-master calculation in tcp_ao_connect_init() can therefore make the
-validation succeed while initialization observes the default L3 domain and
-removes the only key.  The subsequent AO lookup then fails, so the no-key
-path clears tp->ao_info and frees it directly.
+The path is: a GRE packet for an established PPTP channel arrives
+through the IP protocol 47 handler pptp_rcv(), which validates the GRE
+flags, looks the channel up by call id and source address and queues
+the skb to the pppox socket, where pptp_rcv_core() runs for sockets in
+PPPOX_CONNECTED state. payload_len is taken from the GRE header without
+any lower bound, so an attacker who can inject packets carrying the
+channel's call id and peer address can make pskb_may_pull() pull as
+little as the GRE header itself; payload then points at the end of the
+pulled data and the dereferences above read up to five bytes past the
+packet. The sequence number is likewise attacker controlled, so both
+the out-of-order LCP echo check and the in-order address/control
+stripping are reachable.
 
-The receive path can find the socket in the ehash and load tp->ao_info
-under RCU before acquiring the socket lock.  A reader which loaded the old
-pointer can thus continue into tcp_inbound_ao_hash() after the direct free.
+The read lands inside the skb data allocation (tailroom of the same
+slab object), so KASAN does not report it and the access does not
+fault, but the bytes read are undefined and steer the accept/drop
+decision: garbage may let a short malformed frame through to
+ppp_input(), and the LCP echo check is meaningless for payloads
+shorter than a PPP protocol field.
 
-The issue was found during a static audit of TCP-AO object lifetime.  An
-unprivileged reproducer in self-created user and network namespaces raced
-connect() with detaching a veth from its VRF while sending TCP-AO segments.
-It triggered the same KASAN report on two fresh boots:
+A PPTP payload is a PPP frame and therefore always carries at least
+the two-byte PPP protocol field, and the LCP echo check needs five
+bytes to be meaningful. Drop packets shorter than two bytes and only
+perform the LCP echo check when at least five bytes are present.
+Valid packets are unaffected.
 
-  BUG: KASAN: slab-use-after-free in tcp_inbound_ao_hash+0x585/0x19f0
-  Write of size 8 at addr ffff88800bf88128 by task tcp_ao_vrf_race/232
-
-  Call Trace:
-   tcp_inbound_ao_hash+0x585/0x19f0
-   tcp_inbound_hash+0x677/0xa80
-   tcp_v4_rcv+0x1c3e/0x3ab0
-
-  Allocated by task 235:
-   tcp_ao_alloc_info+0x43/0xf0
-   tcp_ao_add_cmd+0xdf7/0x13b0
-   do_tcp_setsockopt+0x168c/0x2640
-
-  Freed by task 235:
-   kfree+0x1b8/0x550
-   tcp_connect+0x252/0x4f00
-   tcp_v4_connect+0x1114/0x1720
-
-The bad address is 40 bytes inside the freed 128-byte object, matching the
-tcp_ao_info counters.key_not_found field.  The two runs used 1000 attempts
-each, reached the no-key path 366 and 411 times, and produced one and two
-KASAN reports respectively.  With this change, the same reproducer reached
-the no-key path 366 times in 1000 attempts without a KASAN report or oops.
-
-Use tcp_ao_destroy_sock() for the no-key path.  It unpublishes the AO info,
-updates the socket memory and static-key accounting, and defers the free
-until after an RCU grace period.
-
-Fixes: 248411b8cb89 ("net/tcp: Wire up l3index to TCP-AO")
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-5
-Signed-off-by: Qing Ming <a0yami@mailbox.org>
+Fixes: 00959ade36ac ("PPTP: PPP over IPv4 (Point-to-Point Tunneling Protocol)=
+")
+Reported-by: Abaci <abaci@linux.alibaba.com>
+Assisted-by: abaci:qwen3.8-max
+Signed-off-by: Chuyf26 <Chuyf26@linux.alibaba.com>
 ---
- net/ipv4/tcp_ao.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ppp/pptp.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_ao.c b/net/ipv4/tcp_ao.c
-index e4ec60a33496..4dc5910da076 100644
---- a/net/ipv4/tcp_ao.c
-+++ b/net/ipv4/tcp_ao.c
-@@ -1191,8 +1191,7 @@ void tcp_ao_connect_init(struct sock *sk)
- 		 * at least one tcp-ao key that matches the remote peer.
- 		 */
- 		WARN_ON_ONCE(1);
--		rcu_assign_pointer(tp->ao_info, NULL);
--		kfree(ao_info);
-+		tcp_ao_destroy_sock(sk, false);
- 	}
- }
- 
-
-base-commit: a3dee9bb902ee4357fa02e49b415d7724ee0140a
--- 
-2.53.0
-
+diff --git a/drivers/net/ppp/pptp.c b/drivers/net/ppp/pptp.c
+index 3a10303eb756..ce1cd72baadf 100644
+--- a/drivers/net/ppp/pptp.c
++++ b/drivers/net/ppp/pptp.c
+@@ -317,10 +317,18 @@ static int pptp_rcv_core(struct sock *sk, struct sk_buf=
+f *skb)
+ 	if (!pskb_may_pull(skb, headersize + payload_len))
+ 		goto drop;
+=20
++	/* The payload is a PPP frame, so it always carries at least the
++	 * two-byte PPP protocol field. The payload bytes are dereferenced
++	 * below, reject packets too short to hold them.
++	 */
++	if (payload_len < 2)
++		goto drop;
++
+ 	payload =3D skb->data + headersize;
+ 	/* check for expected sequence number */
+ 	if (seq < opt->seq_recv + 1 || WRAPPED(opt->seq_recv, seq)) {
+-		if ((payload[0] =3D=3D PPP_ALLSTATIONS) && (payload[1] =3D=3D PPP_UI) &&
++		if (payload_len >=3D 5 &&
++				(payload[0] =3D=3D PPP_ALLSTATIONS) && (payload[1] =3D=3D PPP_UI) &&
+ 				(PPP_PROTOCOL(payload) =3D=3D PPP_LCP) &&
+ 				((payload[4] =3D=3D PPP_LCP_ECHOREQ) || (payload[4] =3D=3D PPP_LCP_ECHOR=
+EP)))
+ 			goto allow_packet;
+--=20
+2.43.5
