@@ -1,54 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D08F4B04AC
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 01:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93B3383C84;
+	Tue, 18 Aug 2026 01:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787017662; cv=none; b=BjorLalGfYmbkUtNm2oggrO96aGFBMPaoxaJmyKn6pQW3wbZZTQRyAOvv5uHtgdcjpSy9auKZI/pJRJa6NcBuYYAB3JGNs4HhSrhfiXu/uFWpkmhNXgzgLifpQga1g/lTS37ATcBjKvbaTCVfhOkTPRqBAUrMMELWKsLd++ZwVY=
+	t=1787017867; cv=none; b=HRHBEl+miLf9RxW5ZrjtycRTBWvX0N6mlU0p7cBaJ4tUaxEAbCl6msS4B7cti5VmcppLT4JQcDwy439iiBLxZWI+/mE29fYGL4KM5PqocVSHkkn2he/KNyuhV4WUKMecEWC178m4VPYhGpTBBAPN8ZvXkfwSyYG8ZybCxMIbF/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787017662; c=relaxed/simple;
-	bh=bKPnghNqEToh5xsSNWFqkVKk5eG8PNcRf0GZ7SlNpmk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u5lR85Udb4gWf+JUa2E020NlDic8JHnzFTFi0HIIF8BoxxoK83Pb4ljI314J2tM2KUKPoa+DqIWwGjFZNLU3kfKHC6a6L/MsdwSeqrbbNf6hoyNU1ZhWwUTBQq/eGI4XKK08SeDIvrgDorLjtgRCP7cfBrKABhTQgEmBSV4zGXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kuH+EH1D; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787017867; c=relaxed/simple;
+	bh=igRArZ2i4roiNmdwhvEFLwQmYqiwPYGoBOgIe3jV8gA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=qv3aPCN6s2Peg+tkFNF8UsueJ2y/XbKBV2wvYdi1Mx9/+i1K0QnSnef4RIF/RayG6Gh1atkOGqxaezx3ttc8oh1nQrRKieurCpzqYDgc0VQ80eWqUoxoz2o9D2Qow5T52a3V4/GolL2CwwZqNZMfjDmDA5tSH5GV+JQJXwvYo+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W6BX7rZr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kuH+EH1D"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9103B1F00A3A;
-	Tue, 18 Aug 2026 01:47:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W6BX7rZr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDBF51F000E9;
+	Tue, 18 Aug 2026 01:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787017661;
-	bh=1BP+STRPvsHbhGrH3Vs4tHREX99f10LlijrC3FkXFhc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kuH+EH1D0RNgZzAGMlaERKUl3NrGFja7yL3SStrgsb7hm4oPWGZtMMGO7TsKtvSQB
-	 BZ4VDwYTarwn+9RSN1kbjV6ANo7gFN7/4ev77OLnXjzS2lA4AbCkTSGaUjf0nOmLIL
-	 gRFCqmZzWuz3JzOc2ftgcR83I3WToIdXipqx2OyAdsGaYbWtTwYl3BnGa5R+maDxVn
-	 3AafiJJBMaZq36wc3jEvI3ZuKBLxhcFVRpq+nb3LBVyIpWmAR3OEAXe/hubT32Gex3
-	 aIx4mRm6CemWc3B7u1xaOJuWaoJGgBF/U7aRC+ZDnMFOH8dSHOK0nfh9dVqlVXYAl+
-	 VLAMe3vuW8GgQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: mmc@linux.ibm.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	nnac123@linux.ibm.com,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	linuxppc-dev@lists.ozlabs.org,
-	haren@linux.ibm.com,
-	ricklind@linux.ibm.com,
-	davemarq@linux.ibm.com,
-	bjking1@linux.ibm.com,
-	shaik.abdulla1@ibm.com
-Subject: Re: [PATCH net-next v5 15/15] ibmveth: Wire ethtool set_channels to MQ RX queue resize
-Date: Mon, 17 Aug 2026 18:47:39 -0700
-Message-ID: <20260818014739.3854502-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260814073642.24630-16-mmc@linux.ibm.com>
-References: <20260814073642.24630-16-mmc@linux.ibm.com>
+	s=k20260515; t=1787017857;
+	bh=Fvbrn1aXo30j9jxx4MuVF8QgK0PXNr0H+kIxjzXnfQU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=W6BX7rZrCB/HEEAkLCf3OSrXpBM56JEQx8YJtQX5pRF5XDXxHp1py0id//bgZro0T
+	 lK0hK0cnO/4blXGCIAlR8/5kkeObAiAr7ZZGaP2eKuOHHOLrnYvhhMYV95zTBCLTet
+	 HE90x4dRWj7C8/O6drItMluGc/heL3ZH0JtcqV9tg+iWRbDMUX32bbIEt4WT51v+OX
+	 foDJlley0neLpNx9k93voGRNKG0LI/PVdFvchAt8CaUKICQ/TIlAoOy8JMl17pDxe/
+	 wgc53UlUx2Qe6kPdAUpHd8fRrKWmM2MiQZgzQMCBMwHKgBwMGUefnyj2LXSMrnleZo
+	 Qzs435eGq0zWA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 197643926279;
+	Tue, 18 Aug 2026 01:50:11 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,322 +37,79 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v4 00/15] gve: AdminQ mode related refactors
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178701780989.1825555.7271508314306523307.git-patchwork-notify@kernel.org>
+Date: Tue, 18 Aug 2026 01:50:09 +0000
+References: <20260814021406.3044324-1-hramamurthy@google.com>
+In-Reply-To: <20260814021406.3044324-1-hramamurthy@google.com>
+To: Harshitha Ramamurthy <hramamurthy@google.com>
+Cc: netdev@vger.kernel.org, joshwash@google.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, jordanrhee@google.com,
+ willemb@google.com, nktgrg@google.com, maolson@google.com,
+ thostet@google.com, jacob.e.keller@intel.com, przemyslaw.kitszel@intel.com,
+ debarghyak@google.com, kees@kernel.org, bpf@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-ibmveth: Wire ethtool set_channels to MQ RX queue resize
+Hello:
 
-This completes the RX side of ibmveth_set_channels(): while the device is
-down the desired RX count is stashed, and while it is up RX is resized
-first and the TX LTB stop/alloc/set_real_num_tx/free/wake path runs
-afterwards.  It also adds up-front TX range validation and an RX rollback
-when TX cannot reach the requested count.
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-A few questions on the new paths below.
+On Fri, 14 Aug 2026 02:13:50 +0000 you wrote:
+> This series is preparing the driver for the addition of a new control
+> plane mode(MailboxQ) by commonizing and reusing as much code as possible.
+> MailboxQ is a new control plane infrastructure which uses mailbox queues.
+> This is a new control plane to communicate with the device when the driver
+> is running on bare-metal instances as well as newer versions of the device.
+> 
+> This series contains 2 main changes to the gve driver's existing control
+> plane(AdminQ):
+> 1) refactor some initialization/teardown path methods to make it work for
+>    both control planes.
+> 2) add gve_ctrl_ops structure to the driver for various control plane
+>    operations
+> 
+> [...]
 
-> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-> index 84f4a0deb0c55..35cbd2553e867 100644
-> --- a/drivers/net/ethernet/ibm/ibmveth.c
-> +++ b/drivers/net/ethernet/ibm/ibmveth.c
+Here is the summary with links:
+  - [net-next,v4,01/15] gve: don't pass in unused parameter to gve_adminq_free
+    https://git.kernel.org/netdev/net-next/c/063aeece6053
+  - [net-next,v4,02/15] gve: refactor initialization with helper functions
+    https://git.kernel.org/netdev/net-next/c/94afe5cebcd2
+  - [net-next,v4,03/15] gve: add a few helper functions to set device properties
+    https://git.kernel.org/netdev/net-next/c/69886e8085ab
+  - [net-next,v4,04/15] gve: add struct gve_device_info to hold device properties
+    (no matching commit)
+  - [net-next,v4,05/15] gve: introduce control plane operations structure
+    (no matching commit)
+  - [net-next,v4,06/15] gve: introduce ctrl ops to set vectors and Qs
+    (no matching commit)
+  - [net-next,v4,07/15] gve: introduce gve_adminq_get_device_properties()
+    (no matching commit)
+  - [net-next,v4,08/15] gve: refactor gve_init_priv for reset path
+    (no matching commit)
+  - [net-next,v4,09/15] gve: simplify reset logic
+    (no matching commit)
+  - [net-next,v4,10/15] gve: add gve_ctrl_ops for gve initialization/teardown sequences
+    (no matching commit)
+  - [net-next,v4,11/15] gve: split up notify block allocation and setup paths
+    (no matching commit)
+  - [net-next,v4,12/15] gve: introduce new methods to handle IRQ doorbells
+    (no matching commit)
+  - [net-next,v4,13/15] gve: setup and teardown management interrupts
+    (no matching commit)
+  - [net-next,v4,14/15] gve: add ctrl ops to for queue operations
+    (no matching commit)
+  - [net-next,v4,15/15] gve: add link status/speed ctrl ops
+    (no matching commit)
 
-[ ... ]
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-> @@ -3175,28 +3176,75 @@ static int ibmveth_set_channels(struct net_device *netdev,
->  				struct ethtool_channels *channels)
->  {
->  	struct ibmveth_adapter *adapter = netdev_priv(netdev);
-> -	unsigned int old = netdev->real_num_tx_queues,
-> -		     goal = channels->tx_count;
-> +	unsigned int old_rx = ibmveth_get_num_rx_queues(adapter);
-> +	unsigned int goal_rx = channels->rx_count;
-> +	unsigned int old_tx = netdev->real_num_tx_queues;
-> +	unsigned int goal_tx = channels->tx_count;
-> +	unsigned int want_tx = goal_tx;
-> +	int rxq_entries = adapter->rx_queue[0].num_slots;
-> +	bool rx_changed = false;
->  	int rc, i;
->  
-> -	/* Validate RX (and resize when opened) before the down-path early
-> -	 * return so MQ/range errors are not deferred to the wiring patch.
-> -	 * RX stash + CMO while down still lands with that patch.
-> -	 */
-> -	rc = ibmveth_resize_rx_channels(adapter, channels->rx_count);
-> +	if (goal_tx < 1 || goal_tx > ibmveth_real_max_tx_queues()) {
-> +		netdev_err(netdev,
-> +			   "Invalid TX queue count %u (must be 1-%u)\n",
-> +			   goal_tx, ibmveth_real_max_tx_queues());
-> +		return -EINVAL;
-> +	}
 
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the bound used here is
-CPU-count dependent while the reported current value is not, so the two can
-disagree.
-
-ibmveth_get_channels() fills the reply from two different sources:
-
-	channels->max_tx = ibmveth_real_max_tx_queues();
-	channels->tx_count = netdev->real_num_tx_queues;
-
-and ibmveth_real_max_tx_queues() is min(num_online_cpus(),
-IBMVETH_MAX_QUEUES).  After configuring N TX queues and then offlining CPUs
-so that num_online_cpus() < N, the reply advertises tx_count > max_tx.
-
-Both ethtool entry points reject a request whose tx_count exceeds the
-driver-advertised max_tx:
-
-net/ethtool/ioctl.c:ethtool_set_channels() {
-	...
-	if (channels.rx_count > curr.max_rx ||
-	    channels.tx_count > curr.max_tx || ...)
-		return -EINVAL;
-	...
-}
-
-so even an RX-only change (which resubmits the current tx_count) fails with
--EINVAL until the CPUs come back online.  Should max_tx be latched from the
-configured count instead, or should the new range check be against
-IBMVETH_MAX_QUEUES?
-
-> +
-> +	/* RX range / MQ checks live in ibmveth_resize_rx_channels(). */
-> +	rc = ibmveth_resize_rx_channels(adapter, goal_rx);
->  	if (rc)
->  		return rc;
->  
-> -	if (!adapter->opened)
-> -		return netif_set_real_num_tx_queues(netdev, goal);
-> +	/* If RX resources are not live (never opened, or close+open failed
-> +	 * while IFF_UP stayed set), only stash desired queue counts.
-> +	 */
-> +	if (!adapter->opened) {
-> +		/* Apply TX first so a failure leaves RX stash unchanged. */
-> +		rc = netif_set_real_num_tx_queues(netdev, goal_tx);
-> +		if (rc)
-> +			return rc;
-> +
-> +		/* Stash desired RX count; open() publishes it via
-> +		 * netif_set_real_num_rx_queues() after queue registration.
-> +		 * Refresh CMO now so open() can map the larger footprint;
-> +		 * open itself does not call vio_cmo_set_dev_desired.
-> +		 */
-
-[Severity: Low]
-Is this comment describing what the code does?  The block right below
-publishes immediately rather than deferring to open():
-ibmveth_publish_num_rx_queues() updates adapter->num_rx_queues and
-netif_set_real_num_rx_queues() updates netdev->real_num_rx_queues, which
-creates or removes the /sys/class/net/*/queues/rx-N entries while the
-interface is down.  ibmveth_open() only re-applies the same value later:
-
-	rc = netif_set_real_num_rx_queues(netdev,
-					  ibmveth_get_num_rx_queues(adapter));
-
-The commit message says the same thing:
-
-    - When down: set TX queues first, then stash the desired RX count
-      in adapter->num_rx_queues for the next open() (open publishes via
-      netif_set_real_num_rx_queues).
-
-Could the comment and the changelog mention that real_num_rx_queues, the
-rx-N sysfs entries and (below) the CMO entitlement all change immediately
-on a down interface?
-
-> +		if (goal_rx != ibmveth_get_num_rx_queues(adapter)) {
-> +			ibmveth_publish_num_rx_queues(adapter, goal_rx);
-
-[Severity: Medium]
-Can publishing a count with no allocated queues behind it let a lockless
-reader take an uninitialized spinlock?
-
-adapter->num_rx_queues is the only validity bound the RX readers use, and
-rx_queue[i].replenish_lock is only spin_lock_init()'ed for queues that are
-actually allocated (ibmveth_alloc_rx_queues() and
-ibmveth_alloc_single_rx_queue()).
-
-ibmveth_replenish_task() checks nothing else before locking:
-
-	if (queue_index >= ibmveth_get_num_rx_queues(adapter)) {
-		...
-		return;
-	}
-	...
-	spin_lock_irqsave(&rxq->replenish_lock, flags);
-
-and ibmveth_poll_controller() has no adapter->opened check:
-
-	unsigned int num = ibmveth_get_num_rx_queues(adapter);
-
-	for (i = 0; i < num; i++)
-		ibmveth_replenish_task(adapter, i);
-
-That is reachable in the state this branch targets: pool_store and
-change_mtu call ibmveth_close()+ibmveth_open() directly, so IFF_UP can stay
-set (netif_running() true, netpoll still attached) with adapter->opened
-false.  An "ethtool -L ethX rx N" with N above any previously allocated
-count then publishes N here, and the window stays open for as long as the
-device is down.
-
-ibmveth_publish_num_rx_queues() itself states the invariant:
-
-	/* Per-queue state must be visible before readers observe num. */
-	smp_wmb();
-	WRITE_ONCE(adapter->num_rx_queues, num);
-
-Does this call site break it, given the per-queue state does not exist yet?
-
-> +			rc = netif_set_real_num_rx_queues(netdev, goal_rx);
-> +			if (rc) {
-> +				ibmveth_publish_num_rx_queues(adapter, old_rx);
-> +				return rc;
-> +			}
-
-[Severity: Medium]
-On this failure path, netdev->real_num_tx_queues was already moved to
-goal_tx by the netif_set_real_num_tx_queues() call above, and only the RX
-publish is undone.
-
-netif_set_real_num_rx_queues() has a real failure path:
-
-net/core/dev.c:netif_set_real_num_rx_queues() {
-	...
-	rc = net_rx_queue_update_kobjects(dev, dev->real_num_rx_queues, rxq);
-	if (rc)
-		return rc;
-	...
-}
-
-so ethtool can report failure while the TX count has permanently changed.
-Should netif_set_real_num_tx_queues(netdev, old_tx) run here before
-returning rc, and does the current code match the commit message claim
-"Make TX/RX updates fail atomically"?
-
-> +			if (firmware_has_feature(FW_FEATURE_CMO)) {
-> +				unsigned long dma;
-> +
-> +				dma = ibmveth_get_desired_dma(adapter->vdev);
-> +				vio_cmo_set_dev_desired(adapter->vdev, dma);
-> +			}
-
-[Severity: Medium]
-Is the entitlement raised here ever lowered again if the stashed count is
-never realized?  The desired value is sized for goal_rx RX queues, but no
-buffer lists, queue DMA or pools are mapped while down.
-
-If the next open() fails for the larger count, or if it applies the MQ
-fallback and drops the count back to 1, neither ibmveth_open(),
-ibmveth_close() nor ibmveth_apply_mq_fallback() recomputes desired DMA, so
-the partition keeps CMO entitlement reserved for RX resources that do not
-exist until a later successful set_channels or change_mtu.
-
-> +		}
-> +		return 0;
-> +	}
-
-[Severity: Medium]
-Can a request that returns 0 from this branch be silently discarded on the
-next open()?
-
-If firmware rejected MQ during a previous ibmveth_register_rx_queues(),
-adapter->mq_fallback is latched while adapter->multi_queue is still
-non-zero, so "ethtool -L ethX rx 8" passes the MQ check in
-ibmveth_resize_rx_channels(), takes this !opened branch, publishes 8, sets
-real_num_rx_queues = 8, raises CMO desired and returns success.
-
-ibmveth_apply_mq_fallback() then runs first in ibmveth_open():
-
-	adapter->multi_queue = 0;
-	ibmveth_publish_num_rx_queues(adapter, 1);
-
-with no error back to the user and no entitlement recompute, and
-ibmveth_get_channels() afterwards reports:
-
-	channels->rx_count = ibmveth_get_num_rx_queues(adapter);
-
-which is 1, contradicting the request that returned 0.  Should the down
-path reject (or at least warn about) goal_rx > 1 when mq_fallback is
-latched?
-
-> +
-> +	if (goal_rx != old_rx)
-> +		rx_changed = true;
->  
->  	/* We have IBMVETH_MAX_QUEUES netdev_queue's allocated
->  	 * but we may need to alloc/free the ltb's.
->  	 */
-> +	if (goal_tx == old_tx)
-> +		return 0;
-> +
->  	netif_tx_stop_all_queues(netdev);
->  
-> -	/* Allocate any queue that we need */
-> -	for (i = old; i < goal; i++) {
-> +	/* Allocate any new TX LTBs. i starts at old_tx for the free walk
-> +	 * below when this loop body never runs (goal_tx == old_tx already
-> +	 * returned; goal_tx < old_tx is scale-down).
-> +	 */
-> +	i = old_tx;
-> +	for (; i < goal_tx; i++) {
-
-[Severity: Low]
-The commit message says:
-
-    Initialize the TX alloc loop bound so a scale-down path that never
-    allocates still has defined cleanup if set_real_num_tx_queues() fails.
-
-Was there anything undefined before?  The removed line is:
-
-	for (i = old; i < goal; i++) {
-
-whose initializer runs even when the body does not (old >= goal), so i was
-already defined for the later "for (i = old; i > goal; i--)" free walk.
-Could this be described as a readability change rather than a fix?
-
->  		if (adapter->tx_ltb_ptr[i])
->  			continue;
->  
-> @@ -3205,28 +3253,43 @@ static int ibmveth_set_channels(struct net_device *netdev,
-
-[ ... ]
-
->  	netif_tx_wake_all_queues(netdev);
->  
-> -	return rc;
-> +	if (netdev->real_num_tx_queues != want_tx) {
-> +		if (rx_changed) {
-> +			int rb;
-> +
-> +			rb = ibmveth_resize_rx_queues_incremental(adapter,
-> +								  old_rx,
-> +								  rxq_entries);
-> +			if (rb)
-> +				netdev_err(netdev,
-> +					   "Failed to roll back RX queues to %u after TX failure: %d\n",
-> +					   old_rx, rb);
-> +		}
-> +		return rc ? rc : -ENOMEM;
-> +	}
-
-[Severity: Medium]
-This rollback is best effort only, so the same "fail atomically" question
-applies to the up path.  For "ethtool -L ethX rx <smaller> tx <larger>",
-the RX scale-down has already destroyed queues; if
-ibmveth_allocate_tx_ltb() then fails, the rollback here is a scale-up whose
-own steps can fail too:
-
-	rc = ibmveth_alloc_single_rx_queue(adapter, i, rxq_entries);
-	if (rc) { ... goto cleanup_new_queues; }
-
-and the same for ibmveth_register_single_rx_queue(),
-ibmveth_setup_single_rx_interrupt(), ibmveth_enable_irq() and
-netif_set_real_num_rx_queues().  Its cleanup path leaves RX at the reduced
-count, and here that is only logged before returning an error.
-
-Is there a way to order this so the destructive RX change happens only
-after the TX LTB allocations have succeeded, so no partial state can be
-left behind when the call reports failure?
-
->  }
->  
->  static const struct ethtool_ops netdev_ethtool_ops = {
