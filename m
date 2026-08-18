@@ -1,167 +1,195 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7688147044F;
-	Tue, 18 Aug 2026 12:59:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787058000; cv=none; b=qBvY1Noam5dbJd1BAjDWbHCMjkKkplb8/hLcCp6hfLyhRkjAXZFrdwlDycCLTEfG93cQTT/0FBrwU7wzNNGD6fZzNg8/t3ls2mbWiMUMy8vhTR/a8333BhMy65r7Gx+2rDw/MgImSTVxBtGvV3YsOZaZzfnWKh34T5Rtrp+6Y24=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787058000; c=relaxed/simple;
-	bh=ainfky/nXWXMEKKkASpc7zggthDEO5PsEwUhhUOa4CU=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=IJslteIZHKuInca+E4b6bESOT7eYf2SwMPSgG/M04pH5K0Uosgqz1Fud+skN9JK0RQbIrwrtva5STyeAofr0rBgkGAAhA4UHmXcRV/2DG58iF8XcZjzaozB3ZRz6+VkV1WjrjKDOievfaBCjzEd2DBmv1RAj4UT584FFrmKO85I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bu9TI8TA; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC310470E89
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 13:00:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787058002; cv=pass; b=AsI+LzLIknY4ICLCqdb0wxdkyEXBI3uoh1vKfsbTu3gfy5GNdTWmdAHN83SiYjb/HGdHENxdbeP+DBaCHwkij9bpDPIvy2xvTt9BprJphtC5AniHgbxPxFt7Kmm5Zr2BpEBE4MbmNuVuadiRRQid0pdeSGv4S+w7CCZGQwBpNTk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787058002; c=relaxed/simple;
+	bh=CTlWdCdWn0sdpo/QtnGGY51FR9pVY4JrG0dJ4EyaUA0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=s2tukndDcxd0mIjFYI+AO2VD6ReJVwgj+cSHXv0V2o8Se8g1IWlMMQyFWBEX7hx/GWmhDzaH4yLWKwkKKkJcv95HTr+AGY4LEOocYXt8tWKZ6EW4yuhWo5VsfwXi40fsJDp/MzIDZVIvyaHKwzy6sTo9b4wX6CsRxCBwoiBS1sg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D3RcnGLe; arc=pass smtp.client-ip=209.85.222.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bu9TI8TA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3F61F000E9;
-	Tue, 18 Aug 2026 12:59:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787057999;
-	bh=gCuSerjHTeCuhpJaCUmSScfIw5P3L4pGuGNcnsfCf7E=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=Bu9TI8TARf6XwhdWg0BgSq50oJpvPbgGk8/opEDh1c10V5MAFnA0JskPxxah0RJAW
-	 ictF0AZjAI4t6CZYPnXIm0EiYPMC4EFou9JdK9Kz44R4aOSXd2WWUjQi2ibpOd5mfU
-	 TGR/oIBJnyYuTScE4LLVKczsAJS7DctdWgSTU/LUpcsJBUTjAyiVDrQ/Bto+G49d4s
-	 Ie4Y/ceLwAaw6LDw83w+ecBuwz0mgKMBXO7nmtHAe9ytb8FYh3bxauHS8FHnBzOC4P
-	 PGqkTQU/ByAQdHQlDvcCNmeDkIZMA2Vwza+T+J96gtsb/OJu40wg+r5JE6xf6sKch0
-	 kZMm/aP0MzUSg==
-Content-Type: multipart/mixed; boundary="===============1927340589354686263=="
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D3RcnGLe"
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-930f72317a6so235028185a.3
+        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 06:00:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787058000; cv=none;
+        d=google.com; s=arc-20260327;
+        b=suTgR69XmQ6eYrwzGq6riiTff1o2iCRAJvFJhzMiBKI0DyJxe3eBxoTC09qTyFMGd7
+         9lHawxil+dBpdl+4H5v/7heIkMPpsjhx0XdQKfjbGxwivG4Da+JHpx9PyfQGgB4yoCKT
+         WDSALHcLReo2Hpsyvo6w3/3prR7BwrOLHusosFFzmkwAUT7vspATM8PH2V5VKTI5htrH
+         r1heaqDQssECf/0Uzt/LwfDiKE/Orhvr2E0bGh93ODf9dmLb247aWJSJh8PFVdtydzsG
+         j5244Uq554idBDhD6cqwAtTTNwkWlIzlHSglBjSjHVOkHDjC4Y6Jp4jQBZ+534ggPzv9
+         E3Eg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=OMd+bnmydsOIHi3uaU9hdbvisNbeakjBwFW5PF7YVUc=;
+        fh=UsrKk07FccOpEtA/GUEbHfYk93l9IMcC52HeQuS9tL4=;
+        b=OcydU7deHhtIGv/GZuywszy2kyVN3JXMERJfC6/w4iVUwYJCQuxTeT99lQOsBvWHKu
+         FwRzio6Nr6br5HFgeHbZt8cY8n1YIhiQ7CXjy6AYrfT8ROOiyD1+j0lwW/3hLJBlzzy6
+         dBC+g1duei5sIz3DKVRJC+EKDn4Jo/jxbz5JW4YREchg6uVZUDcGlYAxX5H9GNrO7IUC
+         BaVvuwaSOPnrJshC8CiNUA6VOeRzFxjQ+ZuCxmO3+ED7/2JtT893fvsy+m73cKerpAMS
+         5dKOD54C+PYGRSuTQR9k9BVTVxgjTks9rSBNRqkAg3gGQ870hcBh7RycLcxQZCrV9axf
+         uv+g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787057999; x=1787662799; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=OMd+bnmydsOIHi3uaU9hdbvisNbeakjBwFW5PF7YVUc=;
+        b=D3RcnGLeaTt9Q3kSIjGpAGGtU8/Q6TkAiwsAQqK+8lxxITB4mfvgTrNuH2A0D/5Cxr
+         BctmRcqC9BWY17e8QoZxCFXAD0DWMruGiF43YN9dtzJUo6hewkDrSZzzHNOSAXnANali
+         NKNletHEcZowP8SRj4l52Zd+NN3XCvvXxOTWpXttJrAYL146Fg9P3An3vH2Y4IPbF0RX
+         rO78YqiPHQSdMSJR3zNPNS/z3vWvKWAOyG9ErVhaZNwX0C3N7aF2p4X6DEKiMYkZKZJC
+         2lrjJnuJ6M96SIW3mwGanbGS3UJEyL1+uDv6BA820pTnhctBjNMQgJBkwiTtz7aiQN/I
+         pWgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787057999; x=1787662799;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OMd+bnmydsOIHi3uaU9hdbvisNbeakjBwFW5PF7YVUc=;
+        b=rOgRMGqzF6tM79bC3bv2wm6W2UOMfz3SpC18tLgnwE44Evz45Wd0ki2pkGjWQzP/Fa
+         pFzwF/684jCISVCw1LhCKMNMvt0foruc39rmR22h6GF503JJODQMCPuWAbtCBHoeFWuA
+         0GsIvMjsN4xLx5KFSbQHZg1PreO7IvGwwLNtlbKmrUguOb6/aX1pDcLhs6A0IJMieAsu
+         iUiMl8wUdzr1HWaQM9MWxOKLKUfaIkmuzR2NqGpNU+odvcPi0eNZmHsXwZUmZwiNCHlP
+         j6C2r3CISIoGma6N4+tiX9EEUtH6cSjCBmP0G3sI89W9doMjNrxD8zW9sLh0X4bnQKT/
+         ojSw==
+X-Gm-Message-State: AOJu0YyoCUVjUGfsdIgzjGWxee4/vRraKUbxhtytoAjpMYUZtufUfHER
+	Mqw7/N2wIB9f5oecM1NgqiBNv1YimIQBhVYzMs3dF3E+83tlmS+n6vRDLVf+4vGFBEACeiRh45L
+	mgz5MZ1Z2qGxGytcyP5N/OIXS3SaGKWGBNu36wuGg
+X-Gm-Gg: AR+sD12eEmsY6L8rZ2m7U1zgPNg/ArwMmIL6ZRe0LnOPICYwlliRAjfv4f8FhuGmx3U
+	fiphnQelxNcDgHaI7v3/QN0nqosHfhyLdSEdRC9XptOF3bNmx+CUz11oHKhR+lnwUy2Fag8zIJk
+	y1ZptSD0RCpa7TiApT1G356x9ZIWdltzv7Fx0RY0TvZAjnkmcwJ1HrwL6JLoncozdydR0stD9oA
+	jHvrkUEUZ+bvS4Ld+Ear2DaDQ/ktUIP2hNl/jzcRWV9nqUOB/fgcFKKDpst2iA7JmU8BBtNfpLU
+	RTLUXay3CMEdu7l2y8u/kVvTFyDSqh1rJ+creLDsJe+TsDZg8dq4pYTykaTqPy2p5MGx7X/1HcA
+	cIDVksJKighPnHLXmC4LhJnLvWPAnjvwPfMSwqtg5fvYdXpmYuA9R6828E+bMoQ9uh1Iy492Kbt
+	fGhAkRSJXpTWR+7Jc=
+X-Received: by 2002:a05:620a:3186:b0:915:9fba:8794 with SMTP id
+ af79cd13be357-93704adcd2amr715177785a.6.1787057998665; Tue, 18 Aug 2026
+ 05:59:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <03cb49be5020c80050635edeccd5f6703fcaff08d3171e520de7014c9d6f1575@mail.kernel.org>
-In-Reply-To: <20260818120308.623905-1-nhudson@akamai.com>
-References: <20260818120308.623905-1-nhudson@akamai.com>
-Subject: Re: [PATCH] selftests/bpf: tc_tunnel - validate decap tunnel state without false-pass gaps
-From: bot+bpf-ci@kernel.org
-To: nhudson@akamai.com,bpf@vger.kernel.org,netdev@vger.kernel.org
-Cc: nhudson@akamai.com,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,shuah@kernel.org,linux-kselftest@vger.kernel.org,linux-kernel@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Tue, 18 Aug 2026 12:59:58 +0000 (UTC)
+References: <20260818101130.16203-1-jhs@mojatatu.com> <CANn89iKGuPE0qEp-ucnWfvr+Vo_Ynv7zxuTDaxtTWr3d_YiYLA@mail.gmail.com>
+In-Reply-To: <CANn89iKGuPE0qEp-ucnWfvr+Vo_Ynv7zxuTDaxtTWr3d_YiYLA@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 18 Aug 2026 14:59:47 +0200
+X-Gm-Features: AcwNN1VwsHCaP5nGD4dlBiEKOtnuzH8ayp4kATRtISfCWRsny2WTsEy-k6N2g3E
+Message-ID: <CANn89i+edjh3JMZKTwG-gVtvMv_ya-wVUfK-yuKahRcoUoYDdQ@mail.gmail.com>
+Subject: Re: [PATCH net] net: sched: fix quantum/backlog overflow in fq,
+ fq_codel, hhf, sfq
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org, vega@nebusec.ai, 
+	Victor Nogueira <victor@mojatatu.com>, "David S . Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
---===============1927340589354686263==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-> This follow-up tightens the selftest to guard against false passes in
-> GSO decap validation.
+On Tue, Aug 18, 2026 at 2:55=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
+wrote:
 >
-> It validates the expected post-decap state for both GSO and non-GSO
-> packets: expected tunnel gso_type bits must be cleared and
-> skb->encapsulation must match the remaining tunnel state.
-
-Does this paragraph accurately describe what the patch adds?
-
-The gso_type and skb->encapsulation validation it mentions already exists
-in the base revision. Comparing HEAD^ with HEAD for
-progs/test_tc_tunnel.c shows the added lines are only the four .bss
-globals and three counter increments. The checks described appear only
-as context lines:
-
-  if ((flags & BPF_F_ADJ_ROOM_DECAP_L4_UDP) &&
-      (shinfo->gso_type & SKB_GSO_UDP_TUNNEL_MASK))
-          return TC_ACT_SHOT;
-  ...
-  if (flags & (BPF_F_ADJ_ROOM_DECAP_L4_MASK |
-               BPF_F_ADJ_ROOM_DECAP_IPXIP_MASK)) {
-          if ((shinfo->gso_type & SKB_GSO_TUNNEL_MASK) &&
-              !kskb->encapsulation)
-                  return TC_ACT_SHOT;
-
-All of this validation is pre-existing. The series is a single commit
-(530113d..1dc5f339), so this code is already upstream before this patch.
-
-> It also adds explicit assertions that the decap validation path was
-> executed, including the large-send phase for GSO-marked subtests, and
-> asserts that the large-send marker is reset after the send.
-
-The large-send marker reset assertion mentioned here checks a variable
-that only userspace writes. decap_expect_large_send is read-only in the
-BPF program, and send_and_test_data() sets it to 0 on both the success
-path and the `end:` path before returning. Can that assertion ever fail?
-
-Also, the commit message doesn't mention the 'ethtool -K veth1 tso off'
-change in setup() even though it alters what traffic the test generates.
-
-> diff --git a/tools/testing/selftests/bpf/prog_tests/test_tc_tunnel.c b/tools/testing/selftests/bpf/prog_tests/test_tc_tunnel.c
-> index 67ba27d69347..08d7d90f7772 100644
-> --- a/tools/testing/selftests/bpf/prog_tests/test_tc_tunnel.c
-> +++ b/tools/testing/selftests/bpf/prog_tests/test_tc_tunnel.c
-
-[ ... ]
-
-> @@ -374,10 +378,15 @@ static int configure_ebpf_decapsulation(struct subtest_cfg *cfg)
->  	return ret;
->  }
+> On Tue, Aug 18, 2026 at 12:11=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.c=
+om> wrote:
+> >
+> > Several qdiscs derive their per-flow quantum or backlog from psched_mtu=
+()
+> > or accumulate qdisc_pkt_len() into a u32/int counter without an overflo=
+w
+> > or zero clamp, which can drive the dequeue/credit-refill loop into a so=
+ft
+> > lockup or a NULL deref.
+> > vega@nebusec.ai provided reports and PoCs which illustrated the followi=
+ng:
+> >
+> > - sch_fq: fq_dequeue() credit-refill loop with a small quantum spins ~1=
+B
+> >   iterations under the qdisc lock (soft lockup); fq_init() computes
+> >   quantum =3D 2 * psched_mtu() with no overflow check.
+> > - sch_fq_codel: fq_codel_enqueue() accumulates qdisc_pkt_len() into a u=
+32
+> >   per-flow backlog; a crafted TCA_STAB inflates pkt_len to 1 GiB so a f=
+ew
+> >   packets wrap the counter to 0, and fq_codel_drop() then picks an empt=
+y
+> >   flow and derefs NULL.
+> > - sch_hhf: hhf_init() sets quantum =3D psched_mtu() with no overflow ch=
+eck;
+> >   a huge MTU makes it 0x80000000, and hhf_dequeue()'s deficit +=3D weig=
+ht *
+> >   quantum loops forever.
+> > - sch_sfq: sfq_init() sets quantum =3D psched_mtu() (unsigned); a huge =
+MTU
+> >   makes allot =3D INT_MIN, and INT_MIN + INT_MIN is UB that toggles bet=
+ween
+> >   INT_MIN and 0 forever.
+> >
+> > Clamp the quantum to a sane minimum and promote the backlog/credit sums=
+ to
+> > avoid the wrap, so the dequeue loops terminate and the drop path never
+> > selects an empty flow.
+> >
+> > Reported-by: vega@nebusec.ai
+> > Tested-by: Victor Nogueira <victor@mojatatu.com>
+> > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> > ---
+> >  net/sched/sch_fq.c       |  9 ++++++---
+> >  net/sched/sch_fq_codel.c | 14 +++++++++++++-
+> >  net/sched/sch_hhf.c      | 12 +++++++++++
+> >  net/sched/sch_sfq.c      |  7 +++++++
+> >  4 files changed, 38 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
+> > index 7cae082a9847..66e9c6e530d8 100644
+> > --- a/net/sched/sch_fq.c
+> > +++ b/net/sched/sch_fq.c
+> > @@ -750,7 +750,10 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sc=
+h)
+> >         f =3D head->first;
+> >         retry =3D 0;
+> >         if (f->credit <=3D 0) {
+> > -               f->credit +=3D q->quantum;
+> > +               if (f->credit + (int)q->quantum > 0)
+> > +                       f->credit +=3D q->quantum;
+> > +               else
+> > +                       f->credit =3D q->quantum;
 >
-> -static void run_test(struct subtest_cfg *cfg)
-> +static void run_test(struct subtest_cfg *cfg, struct test_tc_tunnel *skel)
->  {
->  	struct nstoken *nstoken;
+> Lets not add cost in FQ fast path just because of a configuration issue?
 >
-> +	skel->bss->decap_validation_seen = 0;
-> +	skel->bss->decap_gso_validation_seen = 0;
-> +	skel->bss->decap_large_send_validation_seen = 0;
-> +	skel->bss->decap_expect_large_send = 0;
-> +
->  	if (!ASSERT_OK(run_server(cfg), "run server"))
->  		return;
+> >                 head->first =3D f->next;
+> >                 fq_flow_add_tail(q, f, OLD_FLOW);
+> >                 goto begin;
+> > @@ -1226,8 +1229,8 @@ static int fq_init(struct Qdisc *sch, struct nlat=
+tr *opt,
+> >
+> >         sch->limit              =3D 10000;
+> >         q->flow_plimit          =3D 100;
+> > -       q->quantum              =3D 2 * psched_mtu(qdisc_dev(sch));
+> > -       q->initial_quantum      =3D 10 * psched_mtu(qdisc_dev(sch));
+> > +       q->quantum              =3D max_t(u32, 2 * psched_mtu(qdisc_dev=
+(sch)), 256);
+> > +       q->initial_quantum      =3D max_t(u32, 10 * psched_mtu(qdisc_de=
+v(sch)), 256);
 >
-> @@ -406,7 +415,18 @@ static void run_test(struct subtest_cfg *cfg)
->  	/* Replace kernel decapsulation with BPF decapsulation, test must pass */
->  	if (!ASSERT_OK(configure_ebpf_decapsulation(cfg), "configure ebpf decapsulation"))
->  		goto fail;
-> -	ASSERT_OK(send_and_test_data(cfg), "connect with encap and decap progs");
-> +	if (!ASSERT_OK(send_and_test_data(cfg, skel), "connect with encap and decap progs"))
-> +		goto fail;
-> +	if (!ASSERT_NEQ(skel->bss->decap_validation_seen, 0,
-> +			"decap validation executed"))
-> +		goto fail;
-> +	if (!ASSERT_EQ(skel->bss->decap_expect_large_send, 0,
-> +		       "decap large-send marker reset"))
-> +		goto fail;
-> +	if (cfg->test_gso) {
-> +		ASSERT_NEQ(skel->bss->decap_large_send_validation_seen, 0,
-> +			   "decap validation executed for large send");
-> +	}
+> We instead can make sure quantum and initial_quantum are in an acceptable=
+ range.
+>
+> [256, 16M] would probably make sense.
 
-Is the decap_expect_large_send assertion meaningful here?
+Actually, we use 1M in TCA_FQ_QUANTUM in fq_change()
 
-decap_expect_large_send is written only by user space; the BPF program
-only reads it. send_and_test_data() clears it on every exit path:
-
-  skel->bss->decap_expect_large_send = 0;   /* line 236, success */
-
-  res = 0;
-  end:
-  skel->bss->decap_expect_large_send = 0;   /* line 240, all paths */
-
-Every return from send_and_test_data() passes through the `end:` label,
-so by the time run_test() reads the value it is unconditionally 0.
-
-A broken kernel, a broken BPF program and a correct one all produce the
-same result. Can this check ever fail?
-
-> diff --git a/tools/testing/selftests/bpf/progs/test_tc_tunnel.c b/tools/testing/selftests/bpf/progs/test_tc_tunnel.c
-> index 853bca962910..e9bd1c9781f7 100644
-> --- a/tools/testing/selftests/bpf/progs/test_tc_tunnel.c
-> +++ b/tools/testing/selftests/bpf/progs/test_tc_tunnel.c
-
-[ ... ]
-
-This looks like a bug fix for false-pass gaps in the selftest. Should
-this include:
-
-  Fixes: adb771973026 ("selftests/bpf: tc_tunnel - validate decap GSO and encapsulation state")
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/32136539422
---===============1927340589354686263==--
+We also need to change fq_change() because TCA_FQ_INITIAL_QUANTUM can be se=
+t up
+to INT_MAX.
