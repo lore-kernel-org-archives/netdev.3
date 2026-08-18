@@ -1,397 +1,293 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D860A40097A;
-	Tue, 18 Aug 2026 10:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B6F45FFAA;
+	Tue, 18 Aug 2026 11:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787050796; cv=none; b=moiYYFkdCcUbo0fEU3dXhotalgoj323T/24zwvdUKsnQf1NQJ8mzN3zkJWWqB3whUlJ0w3OfJLAxY8Z+OaoUGQx41JIUCFAQsyR+6CVMR0PFIglE6E5aGgsERyjvggo/eJEVbmi7zd9C4PC3CGDNJ8KSd5CfGqEdYr0AkMjcgRc=
+	t=1787051006; cv=none; b=rbZnrHuGQI4o7nh0PUJfseSthmeT1JsltU93YAgw8it5pqvcZ7WCEOYsvJzbTY5VwyPYfhX7fYANWLAffU7vLZQbTduffcDmtozbK2qLMnp8TQ+F1i7MghjE69NNukNk0sCgW4NUw7JhASkLHJfyOkx1tpHNTQ9JMEA6T1SeOCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787050796; c=relaxed/simple;
-	bh=nk3Q0/4CbUmM3VaZsL5pnknhegbIcgvxtPXbCdRpGK0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G0y96FcLX+R7OHdA5FiyDEX1ldPzsp3QjQMd9U9XM+mJDE27q4bgGrDkIlLkwbage5Yv1n0oiiPR2jjP4iCJlX4vojHBSpmlfm3fOOU44QxE/cmNZH6zAW2Dmf04qmFojh/Hjac3IpeSWZQMerFCINe43IvT45530CFqSd3KYVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eONzrHbv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787051006; c=relaxed/simple;
+	bh=zp5cqtNph3ZKxV3xYNynbx7Ksa3nGrIcKaDVVrdoyBA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cEaCT/F0ATjWguIsgxBsuab461B88/+n4Ook1ba9lISO4Ah+RTkWzT1oYjhz0JIicbHZHYULrk77pVpnswre/UsgX/taA6oxprOAve6PWAy4mCwAYiCqTP9biRBLWpuFV3tGEuaXdL7zWfQFlkmTWNCZrXUbH5r00XA6ybj3nwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZhBFHtQN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eONzrHbv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FA091F00A3A;
-	Tue, 18 Aug 2026 10:59:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZhBFHtQN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B2651F000E9;
+	Tue, 18 Aug 2026 11:03:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787050794;
-	bh=BxoYDzwJ5PszCzpQ80p1n1BhXuZ9PR6H+uazntD1ZQI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eONzrHbvBKMm1O+esgGgaxoHw4AtJnrw6WQohnxofeDpIOU/GwfbFAEPVhjxqxNRL
-	 SFzH+OvgB5/YHC0pDYvSIZtHnN7yGj0iDqNT93GrC5FkSPwJ2QFlZB82/9YhVSDhfe
-	 5tNECQoV10ExTo+aa+WORwlW6Qm5nygWIlONIp3Fcj6Ls0PSZnefwWNdYONryMsKJA
-	 w7lpawq8bxpvgPMdVpn4oHADRnFo5Q7RQqXKPj0kBWl6KWZGugUmkU3vQEm8QAvE+j
-	 83jT48e5xXGVraf8NFmOcym5dNeUjs7FoRDMaOCFH6tkpObKy4hW3tKi/XWZjZ/WMp
-	 qZrdV0TEgJ8PQ==
+	s=k20260515; t=1787051004;
+	bh=O3W1hpeJ0JdrtWlh44IeE2IIDrFbFVJTnjFnoAXU8Ig=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZhBFHtQNq84/Dr4o+e/LRXkFZ4eYHCcmLUl2rqRqQTnrbFfrbboVWF4Qn8PkeXz7o
+	 8OHkxazF0qhHgAH8MUlw4Pv1ES0iW/+AU05gifCJ1n/d+ZBDOsB2sb2VBFdPafjdPa
+	 v+kNDeQ8MlW3hITyNAczeZqhPmP+ytPKtLInkk/bgxzto7HkxfqwO9AlvhBV+UgNI2
+	 hT45S97nyuWQeI6nnKRdluZeX1L0VCVByyMyUnhQVtoGn8kvCRZOHlqoJng5kNd/Rl
+	 aq5bZZ9u64EErcKKgUjki3HdJBXesKe0VKil0MrjIWpRoZlY+7UcnbO50On4sJjPsR
+	 p/XIGt74ruCSw==
+Date: Tue, 18 Aug 2026 12:03:20 +0100
 From: Simon Horman <horms@kernel.org>
-To: dong100@mucse.com
-Cc: Simon Horman <horms@kernel.org>,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	vadim.fedorenko@linux.dev,
-	u.kleine-koenig@baylibre.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	yaojun@mucse.com
-Subject: Re: [PATCH net-next v9 1/4] net: rnpgbe: Add interrupt handling
-Date: Tue, 18 Aug 2026 11:59:43 +0100
-Message-ID: <20260818105943.596059-1-horms@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260814111317.1741087-2-dong100@mucse.com>
-References: <20260814111317.1741087-2-dong100@mucse.com>
+To: Dong Yibo <dong100@mucse.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, vadim.fedorenko@linux.dev,
+	u.kleine-koenig@baylibre.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, yaojun@mucse.com
+Subject: Re: [PATCH net-next v9 2/4] net: rnpgbe: Add basic TX packet
+ transmission support
+Message-ID: <20260818110320.GB265046@horms.kernel.org>
+References: <20260814111317.1741087-1-dong100@mucse.com>
+ <20260814111317.1741087-3-dong100@mucse.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260814111317.1741087-3-dong100@mucse.com>
 
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260814111317.1741087-2-dong100@mucse.com?part=1
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260814111317.1741087-2-dong100@mucse.com?part=2
 ---
---- Patch [1]: [PATCH net-next v9 1/4] net: rnpgbe: Add interrupt handling ---
-commit 77ae10f5dc17ffe22f37ef80f20221f43aaa66ab
+--- Patch [2]: [PATCH net-next v9 2/4] net: rnpgbe: Add basic TX packet transmission support ---
+commit 8bff6db2aa4a278636a66ac5e08b9b7d42fd23a7
 Author: Dong Yibo <dong100@mucse.com>
 
-net: rnpgbe: Add interrupt handling
+net: rnpgbe: Add basic TX packet transmission support
 
-This adds the MSI-X/MSI vector and NAPI setup and teardown for the rnpgbe
-driver, plus a vector 0 mailbox handler that defers work to a work item on
-system_percpu_wq.  rnpgbe_open()/rnpgbe_close() are wired up to request and
-release the per-queue interrupts and to bring the q-vectors up and down.
+This adds the TX path for rnpgbe: the TX descriptor layout and buffer
+management, rnpgbe_xmit_frame_ring(), TX ring setup/teardown, and TX
+completion handling in rnpgbe_clean_tx_irq(). It also requires the 56-bit
+DMA mask and enables NETIF_F_SG plus NETIF_F_HIGHDMA.
 
-A few questions below.
+A few questions about the TX stop/wake logic and the TX DMA quiesce
+handling below.
+
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h
+> index 0dce78e4a91ba..6dc29ebe6fa70 100644
+> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h
+> @@ -7,13 +7,20 @@
+> +#define RNPGBE_DMA_STATUS              0x0008
+> +#define TX_AXI_RW_EN                   0xc
+> +/* DMA_STATUS_REG[23:20]: tx_wr, tx_rd, rx_wr, rx_rd done status. */
+> +#define RNPGBE_DMA_TX_STATUS           GENMASK_U32(23, 22)
+>  #define RNPGBE_DMA_AXI_EN              0x0010
+> +#define RNPGBE_TX_MIN_PKT_LEN          33
+
+[ ... ]
 
 > diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
-> new file mode 100644
-> index 0000000000000..c661290d561bd
-> --- /dev/null
+> index c661290d561bd..8700c48669ecb 100644
+> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
 > +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
-> @@ -0,0 +1,660 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/* Copyright(c) 2020 - 2025 Mucse Corporation. */
-> +
-> +#include <linux/pci.h>
-> +#include <linux/netdevice.h>
-> +
-> +#include "rnpgbe_lib.h"
-> +#include "rnpgbe.h"
-> +#include "rnpgbe_mbx_fw.h"
-> +
-> +static void rnpgbe_mbx_work(struct work_struct *work)
+> @@ -89,6 +91,114 @@ static void rnpgbe_irq_enable_queues(struct mucse_q_vector *q_vector)
+> +static bool rnpgbe_clean_tx_irq(struct mucse_q_vector *q_vector,
+> +				struct mucse_ring *tx_ring,
+> +				int napi_budget)
 > +{
-> +	struct mucse *mucse = container_of(work, struct mucse, mbx_work);
+
+[ ... ]
+
+> +	i += tx_ring->count;
+> +	tx_ring->next_to_clean = i;
+> +	u64_stats_update_begin(&tx_ring->syncp);
+> +	tx_ring->stats.bytes += total_bytes;
+> +	tx_ring->stats.packets += total_packets;
+> +	u64_stats_update_end(&tx_ring->syncp);
 > +
-> +	mucse_fw_irq_handler(&mucse->hw);
+> +#define TX_WAKE_THRESHOLD (DESC_NEEDED * 2)
+> +	__netif_txq_completed_wake(txring_txq(tx_ring),
+> +				   total_packets, total_bytes,
+> +				   mucse_desc_unused(tx_ring),
+> +				   TX_WAKE_THRESHOLD,
+> +				   !netif_carrier_ok(tx_ring->netdev) ||
+> +				   test_bit(__MUCSE_DOWN, &mucse->state));
+
+[Severity: High]
+[Finding: main-1-1]
+[Sources: opus-5]
+Can the TX queue end up stopped forever here?
+
+rnpgbe_clean_tx_irq() is the only place in the driver that can clear
+__QUEUE_STATE_DRV_XOFF after rnpgbe_xmit_frame_ring() stops the queue,
+and the down_cond argument suppresses the wake whenever the carrier is
+reported down:
+
+	!netif_carrier_ok(tx_ring->netdev) ||
+	test_bit(__MUCSE_DOWN, &mucse->state)
+
+Since link state is polled by the service task, netif_carrier_off() can
+lag the real link event. If the hardware finishes the queued descriptors
+during that window, this call drains the ring but returns without waking,
+and with an empty ring there is no further TX interrupt to re-evaluate
+the condition.
+
+What re-enables the queue after that? netif_tx_start_all_queues() is
+called only from rnpgbe_up_complete() on ifup, and the runtime carrier-on
+handler added later in the series only calls netif_carrier_on() without
+touching the queues. dev_activate() does not clear DRV_XOFF either.
+
+rnpgbe_netdev_ops also registers no .ndo_tx_timeout, and
+netdev_watchdog_up() bails out early in that case:
+
+net/sched/sch_generic.c:netdev_watchdog_up() {
+	if (!dev->netdev_ops->ndo_tx_timeout)
+		return;
+}
+
+so dev_watchdog() never fires and a genuine hardware TX stall (DD never
+set, no TX interrupt) is equally invisible. Would it make sense to add
+.ndo_tx_timeout, and to wake the queues from the carrier-on path?
+
+> +
+> +	return !!budget;
+> +}
+
+[ ... ]
+
+> @@ -633,13 +758,144 @@ static void rnpgbe_napi_disable_all(struct mucse *mucse)
+> +static void rnpgbe_stop_tx_ring(struct mucse_ring *tx_ring)
+> +{
+> +	if (!tx_ring->tx_buffer_info)
+> +		return;
+> +
+> +	/* Stop hw. No new descriptors are fetched after TX_START=0.
+> +	 * DMA for descriptors fetched before the stop may still be in flight.
+> +	 */
+> +	mucse_ring_wr32(tx_ring, RNPGBE_TX_START, 0);
+> +	/* Flush posted write to ensure hardware sees TX_START=0 */
+> +	(void)mucse_ring_rd32(tx_ring, RNPGBE_TX_START);
 > +}
 > +
-> +/**
-> + * rnpgbe_msix_other - Other irq handler
-> + * @irq: interrupt number
-> + * @data: private data
-> + *
-> + * Return: IRQ_HANDLED
-> + **/
-> +static irqreturn_t rnpgbe_msix_other(int irq, void *data)
+> +static void rnpgbe_wait_tx_dma_idle(struct mucse *mucse)
 > +{
-> +	struct mucse *mucse = (struct mucse *)data;
+> +	struct mucse_hw *hw = &mucse->hw;
+> +	u32 dma_status;
+> +	int err;
 > +
-> +	queue_work(system_percpu_wq, &mucse->mbx_work);
-> +
-> +	return IRQ_HANDLED;
+> +	err = readl_poll_timeout(hw->hw_addr + RNPGBE_DMA_STATUS,
+> +				 dma_status,
+> +				 (dma_status & RNPGBE_DMA_TX_STATUS) ==
+> +				 RNPGBE_DMA_TX_STATUS,
+> +				 10, 100000);
+> +	if (err)
+> +		dev_warn(&mucse->pdev->dev,
+> +			 "Timed out waiting for TX DMA to quiesce, status %#x\n",
+> +			 dma_status);
 > +}
 
 [Severity: Medium]
-[Finding: gpt-5-6-sol-7-16]
+[Finding: gpt-5-6-sol-4-6]
 [Sources: gpt-5-6-sol, opus-5]
+Should the timeout here be propagated to the callers?
 
-Should this handler mask the fw->pf mailbox source, or otherwise retire the
-request, before returning IRQ_HANDLED?
+rnpgbe_wait_tx_dma_idle() returns void, so a timeout is only logged and
+both callers continue as if the engine had confirmed idle. On the ifdown
+side that means rnpgbe_clean_all_tx_rings() clears TX_AXI_RW_EN and then
+rnpgbe_clean_tx_ring() calls dma_unmap_single()/dma_unmap_page() on every
+in-flight TX buffer, and rnpgbe_close() -> rnpgbe_free_all_tx_resources()
+-> rnpgbe_free_tx_resources() then dma_free_coherent()s the descriptor
+ring.
 
-The request half of the mailbox mask is enabled once in mucse_mbx_reset():
+The comment in rnpgbe_stop_tx_ring() states that DMA for descriptors
+fetched before the stop may still be in flight, which is what this poll
+is guarding. If the poll times out, can the device still be reading the
+mapped buffers or writing back into the descriptor ring after they are
+released?
 
-	mbx_ctrl_wr32(mbx, MUCSE_MBX_FWPF_MASK(mbx), GENMASK_U32(31, 16));
-
-and nothing else in the driver masks it again.  The only code that clears
-the request condition is mucse_read_mbx_pf():
-
-	hw->mbx.fw_req = mucse_mbx_get_fwreq(mbx);
-	mucse_mbx_inc_pf_ack(hw);
-
-At this commit the deferred work reaches only the empty
-mucse_fw_irq_handler(), so fw_req != pf_ack when the hard IRQ returns and
-the source is still unmasked.
-
-If the fw->pf doorbell assertion is level-held until the ack, as is usual
-for a req/ack counter doorbell, does this vector keep being re-asserted
-until the core disables it as spurious?
-
-The ack side is added later in the series by "net: rnpgbe: Add link status
-handling support", where mucse_fw_irq_handler() drains events via
-mucse_check_and_read_mbx().  The un-acked window in the hard IRQ handler
-still covers the workqueue latency plus hw->mbx.lock contention plus
-mbx->timeout_us of mailbox polling after that patch.
+The same unchecked wait sits at the head of rnpgbe_configure_tx(), where
+RNPGBE_TX_BASE_ADDR_LO/HI, RNPGBE_TX_LEN and TAIL are reprogrammed and
+TX_START is set to 1 again. Is a device reset or an error return needed
+when the engine never reports idle?
 
 > +
-> +static void rnpgbe_irq_disable_queues(struct mucse_q_vector *q_vector)
+> +/**
+> + * rnpgbe_clean_tx_ring - Free Tx Buffers
+> + * @tx_ring: ring to be cleaned
+> + **/
+> +static void rnpgbe_clean_tx_ring(struct mucse_ring *tx_ring)
+> +{
 
 [ ... ]
 
-> +/**
-> + * rnpgbe_int_single - MSI-X single-vector/MSI interrupt handler
-> + * @irq: interrupt number
-> + * @data: private data
-> + *
-> + * Return: IRQ_HANDLED
-> + **/
-> +static irqreturn_t rnpgbe_int_single(int irq, void *data)
+> +static void rnpgbe_clean_all_tx_rings(struct mucse *mucse)
 > +{
-> +	struct mucse *mucse = (struct mucse *)data;
-> +	struct mucse_q_vector *q_vector;
+> +	struct mucse_hw *hw = &mucse->hw;
+> +	u32 dma_axi_ctl;
 > +
-> +	queue_work(system_percpu_wq, &mucse->mbx_work);
+> +	for (int i = 0; i < mucse->num_tx_queues; i++)
+> +		rnpgbe_stop_tx_ring(mucse->tx_ring[i]);
 > +
-> +	if (test_bit(__MUCSE_DOWN, &mucse->state))
-> +		return IRQ_HANDLED;
+> +	if (mucse->num_tx_queues)
+> +		rnpgbe_wait_tx_dma_idle(mucse);
 > +
-> +	q_vector = mucse->q_vector[0];
-> +	rnpgbe_irq_disable_queues(q_vector);
-> +	napi_schedule_irqoff(&q_vector->napi);
+> +	dma_axi_ctl = mucse_hw_rd32(hw, RNPGBE_DMA_AXI_EN);
+> +	dma_axi_ctl &= ~TX_AXI_RW_EN;
+> +	mucse_hw_wr32(hw, RNPGBE_DMA_AXI_EN, dma_axi_ctl);
+> +	/* Flush the posted write before releasing the DMA mappings. */
+> +	(void)mucse_hw_rd32(hw, RNPGBE_DMA_AXI_EN);
 > +
-> +	return IRQ_HANDLED;
+> +	for (int i = 0; i < mucse->num_tx_queues; i++)
+> +		rnpgbe_clean_tx_ring(mucse->tx_ring[i]);
 > +}
 
 [ ... ]
 
-> +/**
-> + * rnpgbe_poll - NAPI Rx polling callback
-> + * @napi: structure for representing this polling device
-> + * @budget: how many packets driver is allowed to clean
-> + *
-> + * This function is the NAPI poll callback for all interrupt modes.
-> + *
-> + * Return: work done in this call
-> + **/
-> +static int rnpgbe_poll(struct napi_struct *napi, int budget)
+> @@ -650,11 +906,420 @@ bool rnpgbe_down(struct mucse *mucse)
+> +static void rnpgbe_configure_tx_ring(struct mucse *mucse,
+> +				     struct mucse_ring *ring)
 > +{
-> +	struct mucse_q_vector *q_vector =
-> +		container_of(napi, struct mucse_q_vector, napi);
-> +	int work_done = 0;
+> +	struct mucse_hw *hw = &mucse->hw;
 > +
-> +	/* Exit if we are called by netpoll */
-> +	if (unlikely(!budget))
-> +		return 0;
-> +
-> +	if (likely(napi_complete_done(napi, work_done)))
-> +		rnpgbe_irq_enable_queues(q_vector);
-> +
-> +	return work_done;
-> +}
+> +	mucse_ring_wr32(ring, RNPGBE_TX_BASE_ADDR_LO, (u32)ring->dma);
+> +	mucse_ring_wr32(ring, RNPGBE_TX_BASE_ADDR_HI,
+> +			(u32)(((u64)ring->dma) >> 32) | (hw->pfvfnum << 24));
+
+Simon says: I think we can skip the issue below.
 
 [Severity: Low]
-[Finding: gpt-5-6-sol-2-8]
-[Sources: gpt-5-6-sol, opus-5]
-
-This isn't a bug, but the kernel-doc here describes @budget as "how many
-packets driver is allowed to clean" and "Return: work done in this call",
-while the body touches no ring and work_done is hard-coded to 0.
-
-The actual cleaning is added later in the series by the TX and RX patches,
-where rnpgbe_poll() calls rnpgbe_clean_tx_irq() and rnpgbe_clean_rx_irq().
-Could the kernel-doc match the code at this step?
-
-> +
-> +/**
-> + * rnpgbe_request_mbx_irq - Register mbx routine
-> + * @mucse: pointer to private structure
-> + *
-> + * In MSIX mode, register a dedicated handler for vector 0 (mailbox)
-> + * In MSI/MSI-X_SINGLE mode, mailbox is multiplexed through
-> + * data tx/rx handler.
-> + *
-> + * Return: 0 on success, negative on failure
-> + **/
-> +int rnpgbe_request_mbx_irq(struct mucse *mucse)
-> +{
-> +	struct pci_dev *pdev = mucse->pdev;
-> +	int err = 0;
-> +
-> +	snprintf(mucse->mbx_name, sizeof(mucse->mbx_name),
-> +		 "rnpgbe-mbx:%s", pci_name(pdev));
-> +	INIT_WORK(&mucse->mbx_work, rnpgbe_mbx_work);
-> +
-> +	if (mucse->flags & M_FLAG_MSIX_EN) {
-> +		err = request_irq(pci_irq_vector(pdev, 0),
-> +				  rnpgbe_msix_other, 0, mucse->mbx_name,
-> +				  mucse);
-> +	} else {
-> +		err = request_irq(pci_irq_vector(pdev, 0),
-> +				  rnpgbe_int_single, 0, mucse->mbx_name,
-> +				  mucse);
-> +	}
-> +
-> +	return err;
-> +}
-> +
-> +/**
-> + * rnpgbe_free_mbx_irq - Remove mbx routine
-> + * @mucse: pointer to private structure
-> + **/
-> +void rnpgbe_free_mbx_irq(struct mucse *mucse)
-> +{
-> +	struct pci_dev *pdev = mucse->pdev;
-> +
-> +	free_irq(pci_irq_vector(pdev, 0), mucse);
-> +	cancel_work_sync(&mucse->mbx_work);
-> +}
-
-[ ... ]
-
-> +static int rnpgbe_set_interrupt_capability(struct mucse *mucse)
-> +{
-
-[ ... ]
-
-> +	v_budget = pci_alloc_irq_vectors(mucse->pdev, 1, v_budget,
-> +					 PCI_IRQ_MSI | PCI_IRQ_MSIX);
-> +	if (v_budget < 0)
-> +		return v_budget;
-
-[ ... ]
-
-> +/**
-> + * rnpgbe_init_interrupt_scheme - Determine proper interrupt scheme
-> + * @mucse: pointer to private structure
-> + *
-> + * We determine which interrupt scheme to use based on...
-> + * - Hardware queue count
-> + * - cpu count
-> + * - interrupt mode (MSI and legacy modes use one vector)
-
-[Severity: Low]
-[Finding: main-2-6]
+[Finding: main-2-3]
 [Sources: opus-5]
+This isn't a bug, but hw->pfvfnum is a u8 here and the shift is done on
+the int-promoted value, while rnpgbe_tx_map() casts first for the same
+field:
 
-Is there a legacy INTx mode in this driver for this comment to refer to?
+	fun_id = (u64)tx_ring->pfvfnum << 56;
 
-rnpgbe_set_interrupt_capability() requests only PCI_IRQ_MSI | PCI_IRQ_MSIX,
-and both request_irq() calls in rnpgbe_request_mbx_irq() pass flags 0 rather
-than IRQF_SHARED, which would not work on a shared legacy line.  If neither
-MSI nor MSI-X is available, probe simply fails.
+With the kernel's -fno-strict-overflow the produced bit pattern is the
+one the register wants in either form, so this is only a consistency
+point; an explicit (u32) cast would match the other encoding site.
 
-This wording is still present at the end of the series.
+[ ... ]
 
-> + *
-> + * Return: 0 on success, negative on failure
-> + **/
+> +netdev_tx_t rnpgbe_xmit_frame_ring(struct sk_buff *skb,
+> +				   struct mucse_ring *tx_ring)
+> +{
+
+[ ... ]
+
+> +	if (!netif_txq_maybe_stop(txring_txq(tx_ring),
+> +				  mucse_desc_unused(tx_ring),
+> +				  count + RESV_DESC_NEEDED,
+> +				  count + RESV_DESC_NEEDED))
+> +		return NETDEV_TX_BUSY;
 
 [ ... ]
 
 > diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
-> index 70a2b0082ba86..c3296a3dde0bb 100644
+> index c3296a3dde0bb..24f4cf27a307b 100644
 > --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
 > +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+> @@ -83,25 +101,37 @@ static int rnpgbe_close(struct net_device *netdev)
+>  static const struct net_device_ops rnpgbe_netdev_ops = {
+>  	.ndo_open       = rnpgbe_open,
+>  	.ndo_stop       = rnpgbe_close,
+>  	.ndo_start_xmit = rnpgbe_xmit_frame,
+> +	.ndo_get_stats64 = rnpgbe_get_stats64,
+>  };
 
 [ ... ]
-
-> @@ -50,6 +68,13 @@ static int rnpgbe_open(struct net_device *netdev)
->   **/
->  static int rnpgbe_close(struct net_device *netdev)
->  {
-> +	struct mucse *mucse = netdev_priv(netdev);
-> +
-> +	if (!rnpgbe_down(mucse))
-> +		return 0;
-> +
-> +	rnpgbe_free_irq(mucse);
-> +
->  	return 0;
->  }
-
-[Severity: Medium]
-[Finding: main-4-10]
-[Sources: opus-5]
-
-rnpgbe_close() -> rnpgbe_down() + rnpgbe_free_irq() masks and frees only the
-per-queue MSI-X vectors, and the shutdown path relies on it:
-
-rnpgbe_shutdown()
-  rnpgbe_dev_shutdown()
-    netif_device_detach(netdev);
-    if (netif_running(netdev))
-        rnpgbe_close(netdev);
-    pci_disable_device(pdev);
-
-So the vector 0 handler registered by rnpgbe_request_mbx_irq()
-(rnpgbe_msix_other(), or rnpgbe_int_single() in MSI / MSI-X-single mode) is
-never freed and mucse->mbx_work is never cancel_work_sync()'d on shutdown -
-rnpgbe_free_mbx_irq() is reached only from rnpgbe_rm_adapter() and the probe
-error path.
-
-pci_disable_device() clears PCI_COMMAND_MASTER but does not disable MSI/MSI-X
-or MMIO decoding.  Can the device still raise the mailbox interrupt after
-.shutdown returns, with the handler queueing mbx_work that then performs
-mailbox MMIO on a device the driver has declared dead?  This is visible
-across kexec, where the machine keeps running until machine_kexec().
-
-Should rnpgbe_dev_shutdown() call rnpgbe_free_mbx_irq() and
-rnpgbe_clear_interrupt_scheme() so the shutdown path is symmetric with
-rnpgbe_rm_adapter()?  The same asymmetry is still present at the end of the
-series.
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
-> index 5ba74997beacf..754016f6b4f00 100644
-> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
-> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
-> @@ -197,3 +197,11 @@ int mucse_mbx_get_macaddr(struct mucse_hw *hw, int pfvfnum,
->  
->  	return 0;
->  }
-> +
-> +/**
-> + * mucse_fw_irq_handler - Try to handle a req from hw
-> + * @hw: pointer to the HW structure
-> + **/
-> +void mucse_fw_irq_handler(struct mucse_hw *hw)
-> +{
-> +}
-
-[Severity: Low]
-[Finding: gpt-5-6-sol-1-2]
-[Sources: gpt-5-6-sol, opus-5]
-
-The commit message says the patch "process[es] mailbox events from a
-workqueue" and this kernel-doc says the function will "Try to handle a req
-from hw", but the body is empty.
-
-The full path
-
-rnpgbe_msix_other()/rnpgbe_int_single()
-  queue_work(system_percpu_wq, &mucse->mbx_work)
-    rnpgbe_mbx_work()
-      mucse_fw_irq_handler()
-
-reads no mailbox register, decodes no event, and never performs the retire
-sequence that mucse_read_mbx_pf() defines:
-
-	hw->mbx.fw_req = mucse_mbx_get_fwreq(mbx);
-	mucse_mbx_inc_pf_ack(hw);
-
-At this commit a firmware request that arrives stays pending, so a later
-driver-initiated transaction (mucse_fw_send_cmd_wait_resp() ->
-mucse_poll_and_read_mbx()) can consume it as a bogus reply and spend one of
-its three retries on the opcode mismatch.
-
-Could the commit message and this kernel-doc say that this patch adds only
-the interrupt and workqueue plumbing?  The handler body is filled in later
-in the series by "net: rnpgbe: Add link status handling support".
