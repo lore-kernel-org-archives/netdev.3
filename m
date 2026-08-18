@@ -1,49 +1,74 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE24A38330C;
-	Tue, 18 Aug 2026 07:00:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C8B3033FB;
+	Tue, 18 Aug 2026 07:15:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787036427; cv=none; b=f9HrC7PKTOVsjW45ABjliG06Q9IjNAJmoW32oV5zKCHEfsmXoeEl+/BaPFgrUMkH4+XvAe+f6nAuYGvXAF4aQtAjFYF1pdFGcTUx5K7Smf89ZF+0kpWxNegguM0XkxVVS/YzsJs0GvqpfPAvzwHqW3dWOhkIizmAMQkiNdMX2Jo=
+	t=1787037318; cv=none; b=ipLJBgZzGffFMm/kh26sgCf+kk0DfJmkDDGe4TcaAJpQ6xPHbjjTFGbrErct/MW7X1C1Lcko8Iq8KdBx11xUHkmJMCSGA6n+i+1xGzFDLZOK6lAzsKqrgjYIyn6J0QG2hjXiDIcGtG3CrlN66owWqSDEo2CtEllxvAXMUyRpZjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787036427; c=relaxed/simple;
-	bh=PmuTN/s+h++ZoAzx5tvxii0VeJnfTuCHvUfgMoKlZGs=;
+	s=arc-20240116; t=1787037318; c=relaxed/simple;
+	bh=MGaCb2b5SaoM0qVdDeVL0y3QV9RpA+lwoSEDpssw9JA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G+ZK2VxGujJU4grHoneZmdxg9KYrZt1KYDpT50an4NR8ru72LsvyaJZVrI3wS5PCTINTzS1CAStKylXhO5e3M4jbsCPn4cKaMPMe2dKsO0uces9DttGBrgqnnMUWfG81DxbvhMwMic8LQPVk/zHnCo4JBDmyznnn1iY8qvZurd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OE4I8Vjx; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=i56o4vbvodhw/Ks00N/uglUOJkH9xf00SEa8HZUqJt3ReINDMpscCSUSOmyRD/e0H46EvUVatcI9HQAFXbfKYjQ8oToXCNH35PbrLkAVOwsjx3o4i5DfG+09yky7PwUoeyzFcim6fTg57rYkUlius4pCmrk/5BjJVjKN0I1HrHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TcliKUO4; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OE4I8Vjx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E0FB1F000E9;
-	Tue, 18 Aug 2026 07:00:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787036426;
-	bh=eLkCtMfElj3TBbhOnqAE7roUGQ5xLxxaMf/iSBaGdec=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OE4I8Vjx95n8znDxHW+u9FRfXy8EgQy3a3KN7JbsZ2DwzPrM2YozWbad13thW4cU2
-	 BMOgwcALvQQU7jmC/dcnWs3R/YgiONJji781fNCWIMjnQJD9C67DwIDetOVVeiV2IA
-	 bgnbB77DlSlkDpuqn1KBk1gb37XhKMb/1C3lsuGkBOeXCDpSTV4hAI3cE11F/vC/Ua
-	 o/y0NmcIo2JX8jLhixj+tl4Gxb5OUbA22RirFO28mWTzvZWamEg3mqvwihGjkjSUQ+
-	 AuWkIgg006Axbqy/5PskV9T30X6ileS9fKAFl78eTSVbm3OOz7/BAJd+pCZWEF81k8
-	 nRWr5HRJKQdfA==
-Date: Tue, 18 Aug 2026 08:00:04 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Daehyeon Ko <4ncienth@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Hagen Paul Pfeifer <hagen@jauu.net>, Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, netdev@vger.kernel.org, 
-	bpf@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/secretmem: properly account locked pages
-Message-ID: <aoQBQWH1zWgC5f3A@lucifer>
-References: <20260814-secretmem-accounting-v1-1-d2f8c677980b@kernel.org>
- <20260818052006.2387242-1-4ncienth@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TcliKUO4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787037315; x=1818573315;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MGaCb2b5SaoM0qVdDeVL0y3QV9RpA+lwoSEDpssw9JA=;
+  b=TcliKUO4TDSRQJA198fdNddLVZxci6UYc1RmRa8o/5UkoWQPMPSYaIWv
+   OvxxIDKYfaOzAFu7tStdmLXMBBpROvDEvKEVsm3alt20dH2Xm8Uzn5WmG
+   6HsOVnU/9Cp/5SSGaesQBAvIlLZBfCPGIetAKDiJS2r6FtoBHTfhmFyhf
+   WAsffl/+Jd4n1BZCvOTLb9TtR/DxbTVDqqIc9wjfoiOr4tZLIOybQXvtf
+   0Nh/ElLYK7WgZovKOgm5pW4RRLGAjIlYliPsu20HOqUPWRFow2ToLLbGK
+   CPR1atu5Bvp+ek8hxbWybCKXaLdEO3JJDuAIK39MywewGYQEQbAHGAdOL
+   A==;
+X-CSE-ConnectionGUID: xMCDLghgSMm64oXahP99uQ==
+X-CSE-MsgGUID: 9ADgX8VhReieCLtwPM4oqg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11878"; a="98675523"
+X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
+   d="scan'208";a="98675523"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 00:15:15 -0700
+X-CSE-ConnectionGUID: CsapwNuUSoiHldl7q94VWA==
+X-CSE-MsgGUID: eU3dG3LcTuuLOqChKKAh9w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
+   d="scan'208";a="262516853"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.209])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 00:15:09 -0700
+Date: Tue, 18 Aug 2026 10:15:06 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: James Hilliard <james.hilliard1@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Len Brown <lenb@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
+	linux-acpi@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v3 0/4] driver core, net: handle fw_devlink for
+ class devices and PHY packages
+Message-ID: <aoQGeg0VGcNZXqXX@ashevche-desk.local>
+References: <20260818-submit-phy-package-fwdevlink-v1-v3-0-40a905ea16b6@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,45 +77,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260818052006.2387242-1-4ncienth@gmail.com>
+In-Reply-To: <20260818-submit-phy-package-fwdevlink-v1-v3-0-40a905ea16b6@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue, Aug 18, 2026 at 02:20:06PM +0900, Daehyeon Ko wrote:
-> Thanks for the patch.
->
-> I tested this v1 on its stated base with an x86_64 KASAN kernel. The supplied
-> selftest passed 6/6 in three boots. Additional fork/unmap and inherited-VMA
-> mremap tests also passed.
->
-> One question: the inode stores the creator's user_struct, but the fault path
-> uses the current task's RLIMIT_MEMLOCK.
->
->   secretmem_init_inode_priv():
->     state->user = get_uid(current_user());
->   __secretmem_account_pages():
->     page_limit = rlimit(RLIMIT_MEMLOCK) >> PAGE_SHIFT;
->
-> With A limited to one page and B to four, A created the fd and passed it to B.
-> B faulted four pages, after which A got SIGBUS faulting one page on a new fd:
->
->   CROSS_PRINCIPAL receiver_pages=4 creator_fresh_page=0
->
-> This seems to charge A's locked_vm using B's limit. Is that intended?
+On Tue, Aug 18, 2026 at 12:58:56AM -0600, James Hilliard wrote:
+> Managed device links normally advance through probe and removal alongside
+> a device driver. Driverless class devices are added directly, so their
+> links do not currently receive equivalent transitions. A class supplier
+> can leave its consumers dormant, while sync-state-only links from a class
+> consumer can indefinitely prevent suppliers from receiving sync_state().
+> Removal also does not unbind consumers of a class supplier.
+> 
+> Ethernet PHY packages expose both sides of this problem. A package node
+> describes resources shared by member PHYs, but is a container rather than
+> a device. fw_devlink preserves that topology and temporarily represents
+> those dependencies through the closest device, which for OF MDIO is the
+> driverless MDIO bus class device. Its proxy links previously remained
+> after the real PHY had probed and kept the package suppliers from reaching
+> sync_state().
+> 
+> Handle the generic class-device lifecycle in the driver core. Put
+> driverless class devices into the probing state while device_add()
+> publishes them, complete their incoming and outgoing managed links after
+> class interfaces run, and apply the corresponding unbind and cleanup
+> transitions during device_del(). This supports class devices as either
+> suppliers or consumers and keeps descendant firmware links available for
+> devices created later. Keep inferred links to probing and registered class
+> suppliers out of no-driver fallback paths, and recognize class-backed
+> nodes when refreshing dependencies after firmware-tree overlays.
+> 
+> Keep generic firmware parsing faithful to the described topology. Add a
+> helper through which a subsystem can copy a container node's direct
+> supplier links onto the firmware node for a real child device, then use it
+> from PHY registration before device_add(). The ordinary fw_devlink path
+> consequently creates each managed PHY link at the normal
+> device-registration stage.
+> 
+> Finally, defer supplier sync-state callbacks across OF MDIO bus
+> registration and child population. This closes the interval between
+> completion of the bus class device and installation of the member PHY
+> links without adding an MDIO-specific device-link state transition.
+> 
+> This was found while validating an X-Powers AC300 package whose input
+> clock is supplied by PWM. Before the fix, the PWM driver reported that
+> sync_state() was pending due to stmmac-0 after the PHY had probed.
+> 
+> The complete series was tested on an Allwinner H616 board with an X-Powers
+> AC300 PHY package. All five package-derived supplier links targeted the
+> member PHY and no proxy link remained on the driverless MDIO bus. The PWM
+> supplier reached state_synced while continuing to generate the PHY clock.
+> These properties remained true after unbinding and rebinding the MAC, and
+> the PHY renegotiated a 100 Mbps full-duplex link. Both before and after
+> that lifecycle test, 8 MiB transfers in each direction compared correctly
+> and 100 consecutive pings completed without loss.
+> 
+> Validation also included:
+> 
+>   - a full arm64 defconfig Image and modules build with W=1;
+>   - KUnit tests for class supplier/consumer transitions, inferred-link
+>     preservation, and fwnode supplier copying and device-link conversion;
+>     and
+>   - strict per-patch checkpatch and whitespace checks.
+> 
+> Assisted-by: Codex:gpt-5.6-sol
 
-Yup, it's a per-process limit even if the accounting spans multiple
-processes.
+Seems the commit messages are also copy'n'pasted from AI. Please, make sure
+that it's clear, straight to the point and not a saga with unneeded details
+and obvious explanations.
 
-It'd be incredibly involved to track each resource individually and this is
-a trade-off.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-In practice people aren't typically varying the limits like this and in any
-case, the least surprising behaviour is to adhere to the current process's
-limit.
 
-And this is the same solution used everywhere else by io_uring, etc.
-
->
-> Thanks,
-> Daehyeon
-
---
-Cheers, Lorenzo
