@@ -1,160 +1,330 @@
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7BE3CB55B
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 10:17:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787048264; cv=none; b=OsmxJxrDoQJQr+/ss9ntltWXaEq7KyGXhaBZo/R5z578bItfwLbRZSBSwFnhex4l9vKry9MA3rgOFN4Hn6IrDM1Mmab3EluzcndaBrs+qlFKZ6EnO756pWWoPCwV8zE+z+IP36cOXaqNQdDfDNxlVWxTfsPylV6WeP/D4xy/CUs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787048264; c=relaxed/simple;
-	bh=/I3fqurkIVvuHLg56QKuZbaJJhBk7ENuiTDNDBMN0Tk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RhpYjlyrWkHGanhnSvj+DUc+8uH7nHVB6tHcyyS9o0xkbTeLlo2DkoUsIefd5HuNahoeAR1qH32qtylVrRThwMO1D4I82jUF9aB0Yj7b5rl3hhOSahzt18QJ8wjqjm1WDIYTULLjv8r7d3dxoo4EUGiaaYuzOpQ0jE061zpseIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=IqIDnPTY; arc=none smtp.client-ip=209.85.222.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F1E3DB331;
+	Tue, 18 Aug 2026 10:25:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787048704; cv=fail; b=lmNi2wJuGttruT8sOyjF52tjF5HYQbwEaWMfiWWabVmoX4rPeIH8SmahGaUiJzP1hCKxqbHW5/U3fzaO2p9aFCsip/2kLHlCvl6bvE7XrIZwQYoDQuLYpiSHbCKSZGQDcwK30F6wzudv11HWNs9+EkTre/1Dmtq4AVFvKxYejbo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787048704; c=relaxed/simple;
+	bh=ihuEEw7ltwxt3se37K7KTc+EydpOAS2wnUYh9QbIAN8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=OtgmuLr9dPUYFXsjywblJfNTXk7HKQImSGcShLQp4Pydx931vJdEDpB47G0QHODHl7D/z6z/rnFzMd/nUJHNZizGTdqUNjgiIeMml+TdJQrxNZEOiom60Esx0BLoe0jx8/RcncnOUiWfd6GxFkdA2/GwlbXZR0kRvJyEoAIjFSs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gETdVfvg; arc=fail smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="IqIDnPTY"
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-92e85499ffbso367930285a.0
-        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 03:17:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787048262; x=1787653062; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gxq5ZSvaEO4ApbVTxKVnsTovrfCAc4uzDIUjvK/vOu4=;
-        b=IqIDnPTYJbQiubqEUZk4klKwNvaDAl8UojdlM3oy2w6mcf5aJljMHnIM2cupcmmsx/
-         e35at+V7d6BpIbm2QU51LX+u4WjootA8hDBCiYedTliE2ovvDCy7FVmcNoRJoOLVlI2W
-         YZ9RqR9ROsZ+NQ+nQzGqwTVJt73M1G02/rhOM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787048262; x=1787653062;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gxq5ZSvaEO4ApbVTxKVnsTovrfCAc4uzDIUjvK/vOu4=;
-        b=nos9md642ADHZ+AjFKcYXHIF2dgFtE7Rb8VNjli97w3gzXT3D+Gq6EnCYzXF5LLiXq
-         3EEJjQjFGiQsN8YQioCc5isLtiUO6gK97t8VFoIjMCqc7XBxVbbA/TjJcOopuNU8UWSf
-         4hKbStyqMAxgLSKclz0pakTMWtTgVjEEkLtMrN2hrQ2yTG6zGTVuG8c8bRJh8QoWvF1d
-         d/FDtxd3BGgBZ+KkDzljmoO/jeeBo5YqiK0IKXV5Rr9IRKHKXYq9HqtvEh/dioQC/SIB
-         /UOaV9bqrCrWIkek5sijET/BcYr5XpsBCP3wS2UJUkLJzM0G3XMrw5frdDAr9JczU7It
-         JC1w==
-X-Gm-Message-State: AOJu0Yz+KZNx/eeLYGJL9xo0nBl6P55FtBao5eEUqtXccK+7xZKtYB2T
-	jH1vhGTVXYze8gUsRT/t0wZKlK3SqkqAp0crf8CKv/wQ8RJZZ3TCzwRnrP9nvXXxUFgFT8Sllb8
-	p07kRaQ==
-X-Gm-Gg: AR+sD130k+wKS4UnIi7JCgnUkaX4oyifNfCsjTHuKuYh5r+QuY0HJ/XmxuuPfn7aG9Y
-	hXnIB4HOS14/yWOj0u6fhNCE+EzownARf8H3egqXYOmkeWsY27J5B8j/mPeuxlkeMNdolw5zd5N
-	OapVKFx9APlRYsOzCLNT1CQgrIjujAlfIP5iJyTwlnfRSvdknL5MwG+2zY0V3NZ9xbBLaq7WD/S
-	CPGLKQ9U3vXRJLKRKGC13ZYcU56iDbtamPum271q/oWzo3JJ4xwjsG6pyWDn9MYDAusOsXmptMA
-	2S1aAeoIu1JWJ3BKpBk3Bi4yfA5tkj5EfRf4sAj0fRS8rso8ytGKPp0jv/eLm1gU9a1kSWoxKxB
-	LkW8q95Joyb2CWYxTc2AnMvBvFFMooBBUnXBlpc20wO/s0xDl0FGr+jlXsyYvOoVbt/RH8t4IlI
-	1H62elFIWf2ivGmYvcRJb7Sw6QgeMWgUGNpXKHf2faXN9qTA+HvjVvzvXVzSSpeQm4jlc0W6j8E
-	gQeYh3EoNEjsSskMIYOU+MiKDBJM0Umj+5Mu0x+Z7yxQQ==
-X-Received: by 2002:a05:620a:284f:b0:92e:8a8d:ec1f with SMTP id af79cd13be357-936d22ce70emr3509189485a.24.1787048262181;
-        Tue, 18 Aug 2026 03:17:42 -0700 (PDT)
-Received: from majuu.waya (bras-base-kntaon1621w-grc-04-184-144-29-222.dsl.bell.ca. [184.144.29.222])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-937010e7fc0sm299346985a.20.2026.08.18.03.17.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Aug 2026 03:17:41 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	stable@vger.kernel.org,
-	vega@nebusec.ai,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH net 2/2] selftests: tc-testing: add TCA_STAB overhead rejection tests for DRR and ETS
-Date: Tue, 18 Aug 2026 06:17:35 -0400
-Message-Id: <20260818101735.16655-2-jhs@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260818101735.16655-1-jhs@mojatatu.com>
-References: <20260818101735.16655-1-jhs@mojatatu.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gETdVfvg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787048701; x=1818584701;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=ihuEEw7ltwxt3se37K7KTc+EydpOAS2wnUYh9QbIAN8=;
+  b=gETdVfvg8a7eH4Hwb3G5sVBxhJOVUvfjnJe6knEcIQfKwzFiAMMzzmXD
+   i626/1LaH7in0Md15WkrC24xMAWZzQjFZ3OfI/19Zf9yD9qwmPJpRhkJ6
+   fqqqRggylZpW75QmkhH+VdI/lrYIiM/KqImsSb2w9D6XNLPrmG8r8TkaA
+   Ua++9lJDn8lRwqmbiKhMWNjxdAzaKsMSYFFbFhRdfbX8USiP8Mvtnu84W
+   X6vJIkbD5iyfMvcrKKiykHDbxwFWIH0FIsA2HW488CrJnjtSpZ1WoOeKC
+   5jHN6YjGP8ghGM1CSGAZx43Pf8ydsCGMMqIEvAJarYoiHnT5i992hAjO3
+   A==;
+X-CSE-ConnectionGUID: LvzCLP/KRi61u/YkdgtWuQ==
+X-CSE-MsgGUID: XRBYzyi4SOuLsvXTZl3qTg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11878"; a="110323169"
+X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
+   d="scan'208";a="110323169"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 03:25:00 -0700
+X-CSE-ConnectionGUID: 0xM0YUOlQbWA/G8wojxjiw==
+X-CSE-MsgGUID: oNEpyj6ARAapZEWZ6kD0IA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
+   d="scan'208";a="269494226"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 03:24:59 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Tue, 18 Aug 2026 03:24:58 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Tue, 18 Aug 2026 03:24:58 -0700
+Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.57) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Tue, 18 Aug 2026 03:24:58 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JBdtWkf/9Ib+KM5p3EoBchfLkLgr+Gh3pNkHwXhlVH/4Z9Q9D75s8r3NAWOAi4mPK/++h/jWc/WsmRxeNncRZMFC/wPFl1ZVvSWxtUIBXL6dJl4uIAcCe2l3ILnm6FCyvR2QwycMnfyFvgBNe+4PWUUBGvKdpnSVqN9nhGlji1VF6cmpAM+nSbDV97b4y9fq9nutQI2BpXRvYEud6CRBmDKiVtWP6jij4BDewFA/abTe0tSSrsmdoeoWH6wr95bJKZpUhEceBCNz6P1u5w4no0xHCJCeUSGC7fkWcjkOm5UDpSHUwGTUlswHr5paGxyXg2PxGdtGfM3mpD8AgBTzbg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nwaTXbZP9IgeWhQMcVwVDBnuMWLmnzRay7bmtSd1FEE=;
+ b=tyl81dx5ZTSkGqdxTlVW0adfghMgdLGtLJ3bw7PVG9IJ7onwPnuILW5VnWMoZ2bKd/icjcGS/7LM1L8R1KrBZu0k8oQCmcGlvGWDm22lZRhvQPD81Wopz4uGSTcI8nguAFHjoYUJJBWARqDVXCVTKlOKAdcz5MWKTggFtpvaWUPkcWDqXLS7TqBQ+6thvN3yR94WgzPwNpPHuKllzX6/xv4tQiPpaWec2Q6/vvhGa/fh8Gvz8nSHrZA1UzV+5avxTWP62/sA2nVg9fxzi9RXW0prxXCNPlMolBJo6c57FcsHqrzFGQegg0gpn/Imy1oZ4sG0YIH57ROKHnCLEt2nqA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
+ by SABPR11MB9938.namprd11.prod.outlook.com (2603:10b6:806:4ee::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Tue, 18 Aug
+ 2026 10:24:56 +0000
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c%6]) with mapi id 15.21.0315.016; Tue, 18 Aug 2026
+ 10:24:55 +0000
+From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
+To: Shivani Gupta <shivani07g@gmail.com>, "intel-wired-lan@lists.osuosl.org"
+	<intel-wired-lan@lists.osuosl.org>, "Nguyen, Anthony L"
+	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, Simon Horman
+	<horms@kernel.org>, Alessio Igor Bogani <alessio.bogani@elettra.eu>
+Subject: RE: [Intel-wired-lan] [PATCH iwl-net] igb: Reject hwtstamp requests
+ when PTP is unavailable
+Thread-Topic: [Intel-wired-lan] [PATCH iwl-net] igb: Reject hwtstamp requests
+ when PTP is unavailable
+Thread-Index: AQHdLlzx8olbICj1P0esppdeHK+iXbajmtXg
+Date: Tue, 18 Aug 2026 10:24:55 +0000
+Message-ID: <IA3PR11MB898650266A215A004F63927AE5A62@IA3PR11MB8986.namprd11.prod.outlook.com>
+References: <20260815010815.91898-1-shivani07g@gmail.com>
+In-Reply-To: <20260815010815.91898-1-shivani07g@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|SABPR11MB9938:EE_
+x-ms-office365-filtering-correlation-id: 6b47fbbf-3f5d-41a4-fe37-08defd12f2c8
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|1800799024|366016|7416014|376014|10067099003|56012099006|6133799003|22082099003|18002099003|11063799006|38070700021;
+x-microsoft-antispam-message-info: Lpk5E7hI7Dwm5xKpey2Rd4KxxrsjalDkMVdFPcpyArtOdFNR/Df6H/rJAB8z2kTQhGLG0gyx32gpdPx+s7OX3iJqWI7mA4FYQDaU1k2eZj1KLzyLJbu1ckXPQi+xF8tHcYWufcSrBIoHMxebse9buaWoH0DJZJqUFUSoFzjS+5hWJBRP2QVnB0vrwMQLt6B+gdIdAUdDX2rBVma/9C5eUjxW1sJ2/OF72/hfejr8Rj7I6kEndK5ZzCMo2c1/2DFmodkcB60y56SPZPGxNYgh7SLd2m1iBHdS0tAStqQKlvOAzXqb60hpfbUeg1K6iu70sWktFOEudqVk+b9PUkj9/+Zhbav4svIExkTpj3A6tND8MrTdR1nG8umac9ZIdC5SatgANK1gpm05aVNRnRZW72gpP3kWVTP3ngJWVS2GQKiOvk+LoqXpbPs/IRVpVuR+c9U5GJK5p2P7n+cCZS9uITzhVzTAgItW6N2QvMGZcYdsPiG+CuC7Edc6fTf2HKDagIGaYkOIAHUpDQEUhAkyhgov4f4rwrcXM4n24CSxvc6sDUx3YoPIvFz4a3u+zp8Vn7dSbhQ1aBjZ+bIShzzIgmHsYnseGJ+8APWlYt+LmtMvQDfS3a3H4a6ueZSstzJ6RsfbFIO3C9tSARsYan+EW3aOFOlonzVzMVch6fqgSbJYa77U0VoKtBzacvFsb95OJf1+nZ3lNQ7gUOPSOIBqRfki7mOglK8k6tf8G2ZfgUw=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(7416014)(376014)(10067099003)(56012099006)(6133799003)(22082099003)(18002099003)(11063799006)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?8yAR8/cjxl/tBoz6lUTANg7hq7HPkHyuUeJvAWzqTT7ud8ShT9qOjhEaV+gU?=
+ =?us-ascii?Q?ohsHsKfVZbC4zC/BxXlByfTgQtNOqzNT1JQpuPvOaat66/2bSrUHjPXVrUHq?=
+ =?us-ascii?Q?s98rIOiHFuTsfpUNV4Tz22091IbDAomZvCO5HLqZcm3RUaEdQYQPKagX952O?=
+ =?us-ascii?Q?S5h1NLCS5yDdvJqdD0GJGI+6dEmJHiRXfM8bbr/t6r/0+x53oX3kiuQ6Gsgs?=
+ =?us-ascii?Q?ciovtP320SVx5X+kuyK80kuL+F3xVUaiiVNE1D/fXnmH4o2i7TqGPR8CHgIn?=
+ =?us-ascii?Q?YteXh3VXzHJTy+mgge1JlLRFamiSEAdg7S3UbtG+0bw18OCXfXVhHCcsBAbd?=
+ =?us-ascii?Q?2F2Ioul/DhiKx/Bkg8ASMM6KHFkfwwLTSXrUzwXj/uIQr7lVcMH9Cy4iA9Tr?=
+ =?us-ascii?Q?Wx08v9d+r/YwlDzNGTxA4FQ6Vcgj2ZrRhh6c1t7Bhpmz7O8H0GTRCkJps5kT?=
+ =?us-ascii?Q?B2m1Ir0KjY/5ldi75aKeCvXA3VZcyXL/L7yQDJ9C406nn6wPIL2Shm14Gfn5?=
+ =?us-ascii?Q?lGKhsPfl07XFqr088HW4dRugaT0RO0HIMF/uy83o9dPFKUHrojIytHrPMARo?=
+ =?us-ascii?Q?IL53oHmj8eLpMxPy2206rMLa33UbrF7g+kDSgbKo/1ulSm1kFhZnAZOZKSUc?=
+ =?us-ascii?Q?jmvMv0qPGf1/lG59Ixkaoy4XHsL+Opx96goc8Z5vB2dee3WgUbcpPy5z8EiJ?=
+ =?us-ascii?Q?n5nM+Tsam2tva+Wo0fJu+2Lxg3rtNyyqwyIzdtRtiEDui968X0C+2+Z5Exel?=
+ =?us-ascii?Q?HF7NAUIWgghAJY7B2N+FoWdw81SV7Oz077ltq0xGdPZwniQWkr3wdfw4Pkk/?=
+ =?us-ascii?Q?zWHbXtFe/HkVgrTd+lzQGEee6EA7vP0RrqDzvv54NaGik8aM1VTDyMzYKGPq?=
+ =?us-ascii?Q?K0YubQcc2/E7q9mQkxioMRQlY4Nsb37yFWnbNc2GXCw0M/J9ap/C+taqNiSj?=
+ =?us-ascii?Q?3m97LKoYpLgLjXcxosIePNZ1tr+vBF7rzJwzrX2F6hvkRO0Xur76POuw2D6M?=
+ =?us-ascii?Q?lARtnI7k3GJe4UY0qGmNNKsqEdDw8miiqIl2WrXDwZuNbZqsJTNE+mHihxgU?=
+ =?us-ascii?Q?f7ioZqo3sI9tNkrmdzrTdhsdV4yCo3+BBLmUnUrSS8U9M8FFiXB+VKG9Pbfw?=
+ =?us-ascii?Q?a7NJnMHaCqXjqr4CHagepkkAbtA/sH2tYUSC9F3IB6u20RznLMJ4kxdP6s/T?=
+ =?us-ascii?Q?q7Xauu8tgCr9Uk2YAH90SNHmNDmSR7RfCyJrsagESKpFCSFZOXi12X3/xbbp?=
+ =?us-ascii?Q?oWm4fA7Nu0i02VzSy8wX6pcSqynoCgh2kc+xU3HglbQGFgqO/nJ8xmkxgHpD?=
+ =?us-ascii?Q?xS29w98xGs1Arf/x/D8OrBCbAi/6zjOFhVq5A4cL43ugFbZCNSqhEmjmctRS?=
+ =?us-ascii?Q?9q1zh4slE+rZ72IsAh7vcKXGyWoBsDNuCbn896hFpd5gurNRmtGnUHlnz8ls?=
+ =?us-ascii?Q?/ILurkXEGiywrsPEG07vxVafhX1IuClUaJPOlYzKj2+4+AR1AW+f+7m4uZGc?=
+ =?us-ascii?Q?ablTd/Tq5VnkgZOgoUG0WVCmAGRgjYHii+jkbayMnp5h4HLM1Nid5rLUxgul?=
+ =?us-ascii?Q?nGtaS393gkUZAYgxD5xvpoM+YSiQReQUPm+avtfqEQLT0YY1JqSW0NxeRCot?=
+ =?us-ascii?Q?43dgHPFW1S2OJfwVp+USCDgD3auGvhiZGaTpzcvrXKjVTd1ZOnyfPjj8VcCk?=
+ =?us-ascii?Q?ByXXSUKLq9/rNpVb01mJvWsESY8HQM2E09UFgArJod2hw8dS/Rzxf/VR1O7p?=
+ =?us-ascii?Q?2bOLPlwC6NWnvDIuOQFoLNvO5NC4mhM=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Exchange-RoutingPolicyChecked: cTvoYUlCCsLbs+Zh3M0lQpASJck49piSgIM8k9RI4SIAlevkV3j5xfc5sfjr3lJcW9LS9ZuGdm8dJG3G5GSruGS74nwuE0qVY6pFuH7nR6hVz3MyThnHV974Hbh+B53kcJs7uVWM7LSaU3ke/w0DlxCN0RTusuUkyltjka7NuiX0jmBF0DTjWUdGQJQ7q4bnp1QW4o6mmcUA763/i5BVSNTvhYIFJEg3l5khRNaXA37gE/BKzIAIkdyFARWqHFDKgTQYOsi7ZU91qc02Gg0DZVp9EugvLu8r1JmXL1w3cvOvnSqLl+PBxfab3/OOtmdG+SzGxaZuRVvXYk1INaj2Fw==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6b47fbbf-3f5d-41a4-fe37-08defd12f2c8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Aug 2026 10:24:55.7416
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: /jaT3PbDJE2mWVBRA585lFj2yVrB6cDJxhXQuo0+Qb/9w36Ga76zsJDpZu1MkxE3+8uNGGKSBH4jv/PIKbnC6pmt0gXKUq5bQ2l/PhV7/nY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SABPR11MB9938
+X-OriginatorOrg: intel.com
 
-Add tdc test cases that verify a qdisc with an oversized TCA_STAB
-overhead (2147483000) is rejected. Without the fix, the qdisc is
-accepted and a single packet drives the deficit loop into a soft
-lockup; with the fix, the add fails with -EINVAL.
 
-Reported-by: vega@nebusec.ai
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
- .../tc-testing/tc-tests/qdiscs/drr.json       | 20 +++++++++++++++++++
- .../tc-testing/tc-tests/qdiscs/ets.json       | 20 +++++++++++++++++++
- 2 files changed, 40 insertions(+)
 
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/drr.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/drr.json
-index 2b61d8d79bde..7713eb35aaeb 100644
---- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/drr.json
-+++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/drr.json
-@@ -86,5 +86,25 @@
-         "teardown": [
-             "$TC qdisc del dev $DUMMY root"
-         ]
-+    },
-+    {
-+        "id": "d1e2",
-+        "name": "Reject DRR qdisc with oversized TCA_STAB overhead",
-+        "category": [
-+            "qdisc",
-+            "drr"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+        ],
-+        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root stab overhead 2147483000 drr",
-+        "expExitCode": "2",
-+        "verifyCmd": "$TC qdisc show dev $DUMMY",
-+        "matchPattern": "qdisc drr",
-+        "matchCount": "0",
-+        "teardown": [
-+        ]
-     }
- ]
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/ets.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/ets.json
-index ee09e6d6fdf3..da7ae626f7e1 100644
---- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/ets.json
-+++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/ets.json
-@@ -1007,5 +1007,25 @@
-         "teardown": [
-             "echo \"1\" > /sys/bus/netdevsim/del_device"
-         ]
-+    },
-+    {
-+        "id": "f3a4",
-+        "name": "Reject ETS qdisc with oversized TCA_STAB overhead",
-+        "category": [
-+            "qdisc",
-+            "ets"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+        ],
-+        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root stab overhead 2147483000 ets bands 1 strict 0 quanta 1",
-+        "expExitCode": "2",
-+        "verifyCmd": "$TC qdisc show dev $DUMMY",
-+        "matchPattern": "qdisc ets",
-+        "matchCount": "0",
-+        "teardown": [
-+        ]
-     }
- ]
--- 
-2.43.0
+> -----Original Message-----
+> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
+> Of Shivani Gupta
+> Sent: Saturday, August 15, 2026 3:08 AM
+> To: intel-wired-lan@lists.osuosl.org; Nguyen, Anthony L
+> <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
+> <przemyslaw.kitszel@intel.com>
+> Cc: netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Andrew Lunn
+> <andrew+netdev@lunn.ch>; David S. Miller <davem@davemloft.net>; Eric
+> Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo
+> Abeni <pabeni@redhat.com>; Richard Cochran <richardcochran@gmail.com>;
+> Simon Horman <horms@kernel.org>; Alessio Igor Bogani
+> <alessio.bogani@elettra.eu>
+> Subject: [Intel-wired-lan] [PATCH iwl-net] igb: Reject hwtstamp
+> requests when PTP is unavailable
+>=20
+> IGB depends on PTP_1588_CLOCK_OPTIONAL, so ptp_clock_register() can
+> return NULL when PTP is compiled out and can fail at runtime.
+>=20
+> Commit b888c510f7b3 ("igb: Avoid starting unnecessary workqueues")
+> moved the PTP locks, work items, timestamp configuration, and clock
+> reset behind successful clock registration. The netdev is already
+> registered when igb_ptp_init() runs, however, and the hwtstamp entry
+> points were not gated on registration. On 82576 a TX timestamp request
+> can therefore schedule a never-initialized ptp_tx_work.
+>=20
+> Initialize the passive PTP state and hardware clock before registering
+> the PHC. INIT_WORK() and INIT_DELAYED_WORK() do not queue any work;
+> the overflow work is started only after registration succeeds. This
+> also ensures that PHC callbacks and the netdev timestamping paths
+> never observe partially initialized state.
+>=20
+> Reject hwtstamp get and set requests with -EOPNOTSUPP while no PTP
+> clock is registered, and advertise software timestamping only in that
+> state.
+> Successful registration retains the existing behavior on 82576, 82580,
+> i350, i354, i210, and i211. On 82575, an OFF request that was
+> previously accepted as a no-op now reports that hardware timestamping
+> is unsupported.
+>=20
+> Reproduced with CONFIG_IGB=3Dy and CONFIG_PTP_1588_CLOCK=3Dn on the QEMU
+> 82576 model: SIOCSHWTSTAMP(HWTSTAMP_TX_ON) followed by a hardware
+> timestamp request warned in __queue_work() before this change and
+> returns EOPNOTSUPP afterwards.
+>=20
+> Fixes: b888c510f7b3 ("igb: Avoid starting unnecessary workqueues")
+> Signed-off-by: Shivani Gupta <shivani07g@gmail.com>
+> ---
+>  drivers/net/ethernet/intel/igb/igb_ethtool.c |  9 +++++
+>  drivers/net/ethernet/intel/igb/igb_ptp.c     | 40 ++++++++++++++-----
+> -
+>  2 files changed, 38 insertions(+), 11 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c
+> b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+> index f7938c1da835..4ebd447117cc 100644
+> --- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
+> +++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+> @@ -2396,6 +2396,15 @@ static int igb_get_ts_info(struct net_device
+> *dev,
+>  	case e1000_i354:
+>  	case e1000_i210:
+>  	case e1000_i211:
+> +		/* No PTP clock, no hardware timestamping. Advertise
+> what
+> +		 * igb_ptp_hwtstamp_set() will actually accept.
+> +		 */
+> +		if (!(adapter->ptp_flags & IGB_PTP_ENABLED)) {
+> +			info->so_timestamping =3D
+> +				SOF_TIMESTAMPING_TX_SOFTWARE;
+> +			return 0;
+> +		}
+> +
+>  		info->so_timestamping =3D
+>  			SOF_TIMESTAMPING_TX_SOFTWARE |
+>  			SOF_TIMESTAMPING_TX_HARDWARE |
+> diff --git a/drivers/net/ethernet/intel/igb/igb_ptp.c
+> b/drivers/net/ethernet/intel/igb/igb_ptp.c
+> index 638d8242b66b..01992a73b37b 100644
+> --- a/drivers/net/ethernet/intel/igb/igb_ptp.c
+> +++ b/drivers/net/ethernet/intel/igb/igb_ptp.c
+> @@ -1104,6 +1104,9 @@ int igb_ptp_hwtstamp_get(struct net_device
+> *netdev,  {
+>  	struct igb_adapter *adapter =3D netdev_priv(netdev);
+>=20
+> +	if (!(adapter->ptp_flags & IGB_PTP_ENABLED))
+> +		return -EOPNOTSUPP;
+> +
+>  	*config =3D adapter->tstamp_config;
+>=20
+>  	return 0;
+> @@ -1285,6 +1288,9 @@ int igb_ptp_hwtstamp_set(struct net_device
+> *netdev,
+>  	struct igb_adapter *adapter =3D netdev_priv(netdev);
+>  	int err;
+>=20
+> +	if (!(adapter->ptp_flags & IGB_PTP_ENABLED))
+> +		return -EOPNOTSUPP;
+> +
+>  	err =3D igb_ptp_set_timestamp_mode(adapter, config);
+>  	if (err)
+>  		return err;
+> @@ -1378,6 +1384,25 @@ void igb_ptp_init(struct igb_adapter *adapter)
+>  		return;
+>  	}
+>=20
+> +	/* Initialize all state used by the PHC and timestamping paths
+> before
+> +	 * registering either interface. INIT_WORK() only initializes
+> the work
+> +	 * item; no work is queued until timestamping is enabled.
+> +	 */
+> +	spin_lock_init(&adapter->tmreg_lock);
+> +	INIT_WORK(&adapter->ptp_tx_work, igb_ptp_tx_work);
+> +
+> +	if (adapter->ptp_flags & IGB_PTP_OVERFLOW_CHECK)
+> +		INIT_DELAYED_WORK(&adapter->ptp_overflow_work,
+> +				  igb_ptp_overflow_check);
+> +
+> +	adapter->tstamp_config.rx_filter =3D HWTSTAMP_FILTER_NONE;
+> +	adapter->tstamp_config.tx_type =3D HWTSTAMP_TX_OFF;
+> +
+> +	/* Initialize the hardware clock before ptp_clock_register()
+> makes its
+> +	 * callbacks visible. The overflow work is started after
+> registration.
+> +	 */
+> +	igb_ptp_reset(adapter);
+> +
+>  	adapter->ptp_clock =3D ptp_clock_register(&adapter->ptp_caps,
+>  						&adapter->pdev->dev);
+>  	if (IS_ERR(adapter->ptp_clock)) {
+> @@ -1388,17 +1413,9 @@ void igb_ptp_init(struct igb_adapter *adapter)
+>  			 adapter->netdev->name);
+>  		adapter->ptp_flags |=3D IGB_PTP_ENABLED;
+>=20
+> -		spin_lock_init(&adapter->tmreg_lock);
+> -		INIT_WORK(&adapter->ptp_tx_work, igb_ptp_tx_work);
+> -
+>  		if (adapter->ptp_flags & IGB_PTP_OVERFLOW_CHECK)
+> -			INIT_DELAYED_WORK(&adapter->ptp_overflow_work,
+> -					  igb_ptp_overflow_check);
+> -
+> -		adapter->tstamp_config.rx_filter =3D HWTSTAMP_FILTER_NONE;
+> -		adapter->tstamp_config.tx_type =3D HWTSTAMP_TX_OFF;
+> -
+> -		igb_ptp_reset(adapter);
+> +			schedule_delayed_work(&adapter-
+> >ptp_overflow_work,
+> +					      IGB_SYSTIM_OVERFLOW_PERIOD);
+>  	}
+>  }
+>=20
+> @@ -1513,7 +1530,8 @@ void igb_ptp_reset(struct igb_adapter *adapter)
+>=20
+>  	wrfl();
+>=20
+> -	if (adapter->ptp_flags & IGB_PTP_OVERFLOW_CHECK)
+> +	if ((adapter->ptp_flags & IGB_PTP_ENABLED) &&
+> +	    (adapter->ptp_flags & IGB_PTP_OVERFLOW_CHECK))
+>  		schedule_delayed_work(&adapter->ptp_overflow_work,
+>  				      IGB_SYSTIM_OVERFLOW_PERIOD);
+>  }
 
+
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
