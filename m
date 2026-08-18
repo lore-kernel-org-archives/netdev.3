@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE054746D7
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 13:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B317745FFAC
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 13:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787061452; cv=none; b=DnyZ9U9bS0majExofjcDj2UeHDsC25FUwbCAyTjZiMbH6L42K/3ksShoNCg3R8XW63ZsGmRnT9i5I/r4PoR/udflhfH0wQsqwQl+1WuhWA/IqZPfPVLSP12oLnlUdZtzi2GTfTXUW3GOLpi1aAO3VpEYFcVt5XaaF7Ai7NOz83k=
+	t=1787061460; cv=none; b=N2dP/xiV2uMUZuJOR8HU7SZx3Fq4ONOt0gPgMFHMfcWMtZfYrEB5q+iGCkXjmNQQHrUyH01E/OFZiQ3nQZiQqRxbMF+HfZFBo7+OdEsPZMpSQJLqL8V+JRIWIhJZ19wadDyalhvxR20rskpfCMeLLuT1h6UJCP+DMp2pmngeOIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787061452; c=relaxed/simple;
-	bh=8G274l5m77akC/pSqJDtcoVOPIRr/BFgizEwyIgwsrw=;
+	s=arc-20240116; t=1787061460; c=relaxed/simple;
+	bh=1mYmRC0YO4VEeuzc8H3cP95ghdsLHF1Tfk2R3lM4qdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XbT7/1auN7nCWIEIdaikYJVoRpaATBjoW2CseLDMKA4pSi2Dgy3gqTP4jq+fa9bnbqKjsm2IgzcAGTQXWZuId/VpTHitQ001YDgtZV7aDkRaxnehlSLDPF/AegTtVA8xmcGdPeRnn6PYd5l9d2W7OKtko9rf/mUDXunwYrdTTWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BB9gkHxP; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=G0S6v9DJnUvSGsNw8mtyG5lbP/rLDpamQdGTIEBoR/9r/ZNukTzpEBvZEbAMeE/kRA7gf1NUKflEt/aBrFl5GNrEODmzsJDt5+5LfpP2LaSUEnuJH2Zocy5JxwrxyRuoAGd8HSoLdibdB3Sk+vIXMooRbt+WOPvzfyLSmDWkvkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aynD7ZoO; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BB9gkHxP"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aynD7ZoO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787061449;
+	s=mimecast20190719; t=1787061457;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=gbVIP7eV67dMkDjvxsr26XLRzB9oQ7sc2FLS85rR1us=;
-	b=BB9gkHxPDLNoaBz87Z9EV6qhpQqQLO8nUCXBnYUsLwS38UOEjuqiubdxoOj4UCRU5BT+G+
-	BA3LWLxfHWd1LrgND8vmWXIXLX1A8mW685P+zMshC5GKeQITx3eRtunULuDCOcCCjIiTge
-	W+wM8DcG63ZXVB/9gxNUdzLhKyRcEbs=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=Xlua/OaPb0XebRUXOGf2fxKnuqFEfd/jZ8x0ehhkoI4=;
+	b=aynD7ZoOZob1dRK9i9fBKZC/9aWIQNxpjgI/JyeCC4Kr5aLmw66Eu+YaQaQmxZYHcAUt1k
+	SxXZTYCZRmCilqxIEznjfrbqQQgzQ6inhJi5am+y8xRhDYmwKC4gErfo2XPN/+R+rBR6V+
+	zNugrwHzUF0oRyFmuRpuhGOP4vBSBbk=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-611-YmFEyuKyNDOcdfPjvUk-WA-1; Tue,
- 18 Aug 2026 09:57:21 -0400
-X-MC-Unique: YmFEyuKyNDOcdfPjvUk-WA-1
-X-Mimecast-MFC-AGG-ID: YmFEyuKyNDOcdfPjvUk-WA_1787061439
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-355-9qdM49W3P-Cp7HKhn_jpSA-1; Tue,
+ 18 Aug 2026 09:57:32 -0400
+X-MC-Unique: 9qdM49W3P-Cp7HKhn_jpSA-1
+X-Mimecast-MFC-AGG-ID: 9qdM49W3P-Cp7HKhn_jpSA_1787061450
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AE24F18007FB;
-	Tue, 18 Aug 2026 13:57:18 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B86A51955F1B;
+	Tue, 18 Aug 2026 13:57:29 +0000 (UTC)
 Received: from gerbillo.redhat.com (unknown [10.44.48.207])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 563B730002EA;
-	Tue, 18 Aug 2026 13:57:13 +0000 (UTC)
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 88DBB422;
+	Tue, 18 Aug 2026 13:57:24 +0000 (UTC)
 From: Paolo Abeni <pabeni@redhat.com>
 To: dev.taqnialabs@gmail.com
 Cc: andrew+netdev@lunn.ch,
@@ -58,11 +58,11 @@ Cc: andrew+netdev@lunn.ch,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v4 1/3] net: stmmac: enable MAC rx/tx after DMA start
-Date: Tue, 18 Aug 2026 15:57:04 +0200
-Message-ID: <20260818135704.212816-1-pabeni@redhat.com>
-In-Reply-To: <20260814-stmmac-rx-fifo-block-v4-1-1951fd3d33b7@gmail.com>
-References: <20260814-stmmac-rx-fifo-block-v4-1-1951fd3d33b7@gmail.com>
+Subject: Re: [PATCH net-next v4 2/3] net: stmmac: xgmac: tear the datapath down in the documented order
+Date: Tue, 18 Aug 2026 15:57:19 +0200
+Message-ID: <20260818135719.212831-1-pabeni@redhat.com>
+In-Reply-To: <20260814-stmmac-rx-fifo-block-v4-2-1951fd3d33b7@gmail.com>
+References: <20260814-stmmac-rx-fifo-block-v4-2-1951fd3d33b7@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,236 +70,350 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 Full review at: https://netdev-ai.bots.linux.dev/sashiko/
 ---
-net: stmmac: enable MAC rx/tx after DMA start
+net: stmmac: xgmac: tear the datapath down in the documented order
 
-This moves the stmmac_mac_set(priv, priv->ioaddr, true) call in
-stmmac_hw_setup() and stmmac_xdp_open() so that it runs after
-stmmac_start_all_dma() instead of before it. The stated goal is that the
-MAC only starts accepting frames once the DMA channels can drain the MTL
-FIFOs.
+This adds four optional stmmac_dma_ops callbacks (tx_dma_stopped,
+tx_mtl_drain, rx_mtl_drain, rx_dma_stopped), implements them for XGMAC, and
+drives them from a new stmmac_datapath_teardown() used by __stmmac_release(),
+stmmac_xdp_release() and the non-WoL branch of stmmac_suspend().  It also
+clears the latched TPS/RPS status bits in the Tx/Rx DMA start ops and moves
+phylink_stop() after the teardown in __stmmac_release().
 
 A few questions below.
 
-The commit body describes a concrete hardware failure ("the per-queue FIFO
-overflows within this window", "never retries delivery even if the DMA
-comes alive later on"), so this reads as a bug fix rather than a cleanup,
-but the only trailer present is:
-
-> Signed-off-by: Abid Ali <dev.taqnialabs@gmail.com>
+>     The driver stops all DMA channels at once and only some paths disable
+>     the MAC afterwards. The databook requires the reverse order with a wait
+>     at each stage, otherwise a frame can be left stranded in the MTL FIFOs
+>     and reappear as corruption on the next bring-up.
 
 [Severity: Low]
-Could a Fixes: tag be added for each of the two sequences being corrected,
-one for the ordering in stmmac_hw_setup() and one for the same ordering in
-stmmac_xdp_open() which arrived with the AF_XDP path?
+The changelog describes a user-visible failure ("reappear as corruption on
+the next bring-up") but the patch carries no Fixes: tag and no statement
+about stable backporting, while also adding new hwif callbacks and
+reordering phylink_stop().
 
-Without a Fixes: trailer, how do stable/backport tools determine the
-affected release range, and is this intended for net or net-next?
+Is this meant as a fix for stable trees, and if so which commit does it fix?
+If it is hardening for a hardware ordering requirement rather than a
+regression fix, could the changelog say so explicitly?
 
-Would it also help to mention the core/platform on which the stall was
-reproduced and how the fix was validated, plus any Reported-by:/Closes:
-reference if one exists?
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
+> index ff83858ebc1f3..df366b2e6bd72 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
+
+[ ... ]
+
+> @@ -592,6 +599,77 @@ static int dwxgmac2_enable_tbs(struct stmmac_priv *priv, void __iomem *ioaddr,
+>  	return 0;
+>  }
+>  
+> +static int dwxgmac2_tx_mtl_drain(struct stmmac_priv *priv,
+> +				 void __iomem *ioaddr, u32 queue)
+> +{
+> +	u32 value;
+> +	int ret;
+> +
+> +	/* Wait until the queue is empty and its read controller is no longer
+> +	 * pulling a frame out towards the MAC.
+> +	 */
+> +	ret = readl_poll_timeout(ioaddr + XGMAC_MTL_TXQ_DEBUG(queue), value,
+> +				 !(value & XGMAC_TXQSTS) &&
+> +				 FIELD_GET(XGMAC_TRCSTS, value) !=
+> +				 XGMAC_TRCSTS_READ,
+> +				 100, 10000);
+> +	if (ret)
+> +		netdev_warn(priv->dev, "MTL Tx queue %u drain timeout\n",
+> +			    queue);
+> +
+> +	return ret;
+> +}
+> +
+> +static int dwxgmac2_rx_mtl_drain(struct stmmac_priv *priv,
+> +				 void __iomem *ioaddr, u32 queue)
+> +{
+> +	u32 value;
+> +	int ret;
+> +
+> +	/* Wait until no packet is left in the queue and the queue reports
+> +	 * itself empty.
+> +	 */
+> +	ret = readl_poll_timeout(ioaddr + XGMAC_MTL_RXQ_DEBUG(queue), value,
+> +				 !FIELD_GET(XGMAC_PRXQ, value) &&
+> +				 !FIELD_GET(XGMAC_RXQSTS, value),
+> +				 100, 10000);
+> +	if (ret)
+> +		netdev_warn(priv->dev, "MTL Rx queue %u drain timeout\n",
+> +			    queue);
+> +
+> +	return ret;
+> +}
+
+[ ... ]
 
 > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index b2b7d0242dd3c..b9d5d4aabf423 100644
+> index b9d5d4aabf423..9c3a8f122b94f 100644
 > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
 > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -3685,9 +3685,6 @@ static int stmmac_hw_setup(struct net_device *dev)
->  		priv->hw->rx_csum = 0;
->  	}
+> @@ -2560,6 +2560,52 @@ static void stmmac_stop_all_dma(struct stmmac_priv *priv)
+>  		stmmac_deinit_chan(priv, priv->ioaddr, chan);
+>  }
 >  
-> -	/* Enable the MAC Rx/Tx */
-> -	stmmac_mac_set(priv, priv->ioaddr, true);
-> -
->  	/* Set the HW DMA mode and the COE */
->  	stmmac_dma_operation_mode(priv);
->  
-> @@ -3743,6 +3740,9 @@ static int stmmac_hw_setup(struct net_device *dev)
->  	/* Start the ball rolling... */
->  	stmmac_start_all_dma(priv);
->  
-> +	/* Enable the MAC Rx/Tx */
-> +	stmmac_mac_set(priv, priv->ioaddr, true);
+> +/**
+> + * stmmac_datapath_teardown - ordered datapath teardown as per IP specification
+> + * @priv: driver private structure
+> + * Description:
+> + * When teardown ops are available, follow the databook ordered teardown
+> + * sequence.
+> + * Follows the legacy stop + MAC disable for variants without the feature.
+> + */
+> +static void stmmac_datapath_teardown(struct stmmac_priv *priv)
+> +{
+> +	u32 rx_channels_count = priv->plat->rx_queues_to_use;
+> +	u32 tx_channels_count = priv->plat->tx_queues_to_use;
+> +	u32 chan;
 > +
-
-[Severity: Medium]
-Does this reordering actually close the window on the dwmac4/dwmac5
-(GMAC4+) cores?
-
-There the MAC receiver and transmitter enables are set from inside the
-per-channel DMA start callbacks:
-
-drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c:dwmac4_dma_start_rx() {
-	value |= DMA_CONTROL_SR;
-	writel(value, ioaddr + DMA_CHAN_RX_CONTROL(dwmac4_addrs, chan));
-
-	value = readl(ioaddr + GMAC_CONFIG);
-	value |= GMAC_CONFIG_RE;
-	writel(value, ioaddr + GMAC_CONFIG);
-}
-
-and dwmac4_dma_start_tx() does the same for GMAC_CONFIG_TE.
-
-stmmac_start_all_dma() starts the RX channels one at a time:
-
-	for (chan = 0; chan < rx_channels_count; chan++)
-		stmmac_start_rx_dma(priv, chan);
-
-so the global MAC receiver is already enabled by the first iteration while
-channels 1..n-1 still have SR == 0. On those cores, isn't the relocated
-stmmac_mac_set(priv, priv->ioaddr, true) redundant, and doesn't the
-"MAC classifies frames into an MTL queue whose DMA is not running"
-condition still exist whenever rx_queues_to_use > 1?
-
-The RE-in-DMA-op coupling itself isn't introduced by this patch, but should
-the commit message claim "The EMAC should only accept packets after the DMAs
-are enabled" be qualified, or should the dwmac4 coupling be decoupled too?
+> +	/* Stop all TX DMA channels */
+> +	for (chan = 0; chan < tx_channels_count; chan++)
+> +		stmmac_stop_tx_dma(priv, chan);
 
 [Severity: Low]
-This isn't a bug introduced by this patch, but the mirror-image teardown
-ordering used to be the reverse of what this patch establishes, i.e.
-stopping the DMA before disabling the MAC Rx in __stmmac_release(),
-stmmac_xdp_release() and stmmac_suspend(). The follow-on commit "net:
-stmmac: xgmac: tear the datapath down in the documented order" introduces
-stmmac_datapath_teardown() and converts those callers, so the MAC is
-disabled before stmmac_stop_rx_dma() runs:
+This isn't a bug in the final tree, but at this commit stage 1 dispatches to
+dwxgmac2_dma_stop_tx(), which still clears the global MAC transmit enable:
 
-	/* Disable the MAC TX and RX */
-	stmmac_mac_set(priv, priv->ioaddr, false);
+  dwxgmac2_dma_stop_tx()
+      value = readl(ioaddr + XGMAC_TX_CONFIG);
+      value &= ~XGMAC_CONFIG_TE;
+      writel(value, ioaddr + XGMAC_TX_CONFIG);
 
-	/* Wait for the MTL RX queues to drain into the RX DMA */
-	...
-	for (chan = 0; chan < rx_channels_count; chan++)
-		stmmac_stop_rx_dma(priv, chan);
+Stage 2 then waits for MTL_TXQ_DEBUG.TXQSTS to clear, which the new helper's
+own comment says depends on the read controller still pulling frames towards
+the MAC, and the changelog says "stages 2 and 4 cannot progress once the MAC
+is disabled".
 
-Noting it here only for completeness, since the remaining "MAC Rx on, DMA
-off" case is the WoL branch of stmmac_suspend(), which that commit
-documents as intentional.
+Does this commit on its own make every XGMAC close/suspend/XDP reconfigure
+burn the full 10 ms poll plus one "MTL Tx queue %u drain timeout" per Tx
+queue?  The later patch "net: stmmac: xgmac: decouple the MAC Rx/Tx enables
+from the DMA ops" removes the XGMAC_CONFIG_TE clear from
+dwxgmac2_dma_stop_tx(), so this is only a bisect hazard within the series -
+could the ordering of the two patches be swapped?
 
->  	phylink_rx_clk_stop_block(priv->phylink);
->  	stmmac_set_hw_vlan_mode(priv, priv->hw);
->  	phylink_rx_clk_stop_unblock(priv->phylink);
-> @@ -7184,12 +7184,12 @@ int stmmac_xdp_open(struct net_device *dev)
->  		hrtimer_setup(&tx_q->txtimer, stmmac_tx_timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
->  	}
->  
-> -	/* Enable the MAC Rx/Tx */
-> -	stmmac_mac_set(priv, priv->ioaddr, true);
-> -
->  	/* Start Rx & Tx DMA Channels */
->  	stmmac_start_all_dma(priv);
->  
-> +	/* Enable the MAC Rx/Tx */
-> +	stmmac_mac_set(priv, priv->ioaddr, true);
 > +
->  	ret = stmmac_request_irq(dev);
->  	if (ret)
->  		goto irq_error;
-
-[Severity: High]
-This isn't a bug introduced by this patch, since the DMA was already started
-here before the reorder, but the MAC enable now sits inside a region whose
-error path never unwinds either the DMA or the MAC.
-
-If stmmac_request_irq() fails, the unwind in stmmac_xdp_open() is:
-
-irq_error:
-	for (chan = 0; chan < priv->plat->tx_queues_to_use; chan++)
-		hrtimer_cancel(&priv->dma_conf.tx_queue[chan].txtimer);
-
-init_error:
-	free_dma_desc_resources(priv, &priv->dma_conf);
-
-There is no stmmac_stop_all_dma() and no stmmac_mac_set(priv, priv->ioaddr,
-false), while free_dma_desc_resources() reaches:
-
-__free_dma_rx_desc_resources() {
-	dma_free_coherent(priv->device, size, addr, rx_q->dma_rx_phy);
-	...
-	if (rx_q->page_pool)
-		page_pool_destroy(rx_q->page_pool);
-}
-
-Can the RX DMA then write received frames into the freed coherent
-descriptor ring and the freed page-pool pages? stmmac_xdp_set_prog() also
-discards the stmmac_xdp_open() return value:
-
-	if (if_running && need_update)
-		stmmac_xdp_open(dev);
-	...
-	return 0;
-
-so does the device stay in that state indefinitely rather than being
-reported and cleaned up?
-
-The same gap looks present on the ifup path: __stmmac_open()'s irq_error
-label only does phylink_stop(), the per-queue hrtimer_cancel() and
-stmmac_release_ptp(), and stmmac_open() then falls through to
-err_dma_resources: free_dma_desc_resources(priv, dma_conf), which frees the
-rings that were programmed into the live DMA engine.
-
-Should these error paths be made symmetric with the release path, which
-does:
-
-	/* Stop the MAC and the TX/RX DMA channels */
-	stmmac_datapath_teardown(priv);
-
-	/* Release and free the Rx/Tx resources */
-	free_dma_desc_resources(priv, &priv->dma_conf);
+> +	/* Wait for every TX DMA channel to report itself stopped */
+> +	if (priv->hw->dma->tx_dma_stopped)
+> +		for (chan = 0; chan < tx_channels_count; chan++)
+> +			stmmac_tx_dma_stopped(priv, priv->ioaddr, chan);
 
 [Severity: Medium]
-This is a pre-existing race rather than something the patch adds, but it
-bears on the invariant the patch is establishing: the ordering here is only
-statement order inside stmmac_xdp_open(), and nothing serializes it against
-phylink's resolve worker.
+This isn't a problem introduced by this patch - the old stmmac_stop_all_dma()
+path did not wait for the hardware at all - but now that the new ops do
+return a status, is it worth acting on it?
 
-phylink_resolve() runs from a work item holding only pl->phydev_mutex,
-phy->lock and pl->state_mutex, with no rtnl:
+All four calls here discard the return value, so a -ETIMEDOUT only produces
+a netdev_warn() and the sequence continues:
 
-drivers/net/phy/phylink.c:phylink_resolve() {
-	mutex_lock(&pl->phydev_mutex);
-	phy = pl->phydev;
-	if (phy)
-		mutex_lock(&phy->lock);
-	mutex_lock(&pl->state_mutex);
-	...
-		else
-			phylink_link_up(pl, link_state);
-}
+  - a Tx MTL drain timeout is followed by disabling the MAC
+  - an Rx MTL drain timeout is followed by stopping the Rx DMA, leaving the
+    frame the wait was supposed to drain
+  - an unconfirmed Tx/Rx DMA stop is followed by free_dma_desc_resources()
+    in __stmmac_release() and stmmac_xdp_release(), or by the SerDes and pin
+    power-down and a success return in stmmac_suspend()
 
-and that reaches stmmac_mac_link_up() -> stmmac_mac_set(priv, priv->ioaddr,
-true). The AF_XDP reconfiguration never quiesces phylink:
+If a channel really did not stop, can it still fetch descriptors or write
+packet data and completion status into memory that has already been unmapped
+or freed?  Should a timeout trigger a DMA software reset, or at least
+propagate out of the suspend path?
 
-drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c:stmmac_xdp_set_prog() {
-	if (if_running && need_update)
-		stmmac_xdp_release(dev);
-	...
-	if (if_running && need_update)
-		stmmac_xdp_open(dev);
-}
+> +
+> +	/* Wait for the MTL TX queues to finish pushing into the MAC */
+> +	if (priv->hw->dma->tx_mtl_drain)
+> +		for (chan = 0; chan < tx_channels_count; chan++)
+> +			stmmac_tx_mtl_drain(priv, priv->ioaddr, chan);
+> +
+> +	/* Disable the MAC TX and RX */
+> +	stmmac_mac_set(priv, priv->ioaddr, false);
 
-So can a link-up resolved on another CPU re-enable MAC Rx after
-stmmac_xdp_release() has stopped the DMA and before stmmac_xdp_open()
-reaches stmmac_start_all_dma(), which is the same "MAC accepting frames with
-no DMA to drain the MTL FIFO" condition described in the commit message?
+[Severity: Medium]
+Stage 2 needs MAC TE still set so the MTL Tx FIFO can push into the MAC, but
+the MAC transmitter is cleared on every carrier-down event, not only by the
+phylink_stop() call this patch reordered:
 
-Separately, stmmac_mac_link_up() and stmmac_mac_set() both do unlocked
-read-modify-write on MAC_CTRL_REG:
+  stmmac_mac_link_down()
+      stmmac_mac_set(priv, priv->ioaddr, false);
 
-	old_ctrl = readl(priv->ioaddr + MAC_CTRL_REG);
-	ctrl = old_ctrl & ~priv->hw->link.speed_mask;
-	...
-	if (ctrl != old_ctrl)
-		writel(ctrl, priv->ioaddr + MAC_CTRL_REG);
-	...
-	stmmac_mac_set(priv, priv->ioaddr, true);
+So on ifdown or suspend while the link is already down - cable unplugged,
+autoneg incomplete, link dropped while a frame was in flight, which is
+exactly when a frame is most likely to sit in the MTL Tx FIFO - TE is
+already clear.
 
-Can concurrent speed/duplex and RE/TE updates lose each other's bits?
+Does dwxgmac2_tx_mtl_drain() then poll for the full 10000 us per Tx queue,
+warn, and return -ETIMEDOUT while the stranded frame stays where it was?
+Would it make sense to check the carrier state or read back MAC_CONFIG
+TE/RE before entering stage 2, and to fall back to the MTL flush-Tx-queue
+path when the MAC transmitter is off?
+
+> +
+> +	/* Wait for the MTL RX queues to drain into the RX DMA */
+> +	if (priv->hw->dma->rx_mtl_drain)
+> +		for (chan = 0; chan < rx_channels_count; chan++)
+> +			stmmac_rx_mtl_drain(priv, priv->ioaddr, chan);
+
+[Severity: Medium]
+Stage 4 waits for the Rx DMA to move frames out of the MTL Rx FIFO, but all
+three callers have already stopped NAPI before reaching here:
+
+  __stmmac_release() / stmmac_xdp_release() / stmmac_suspend()
+      stmmac_disable_all_queues()
+          __stmmac_disable_all_queues()   /* napi_disable() */
+      ...
+      stmmac_datapath_teardown()
+
+With no NAPI to recycle descriptors and inbound traffic still arriving, can
+the Rx ring run out of free descriptors so that the Rx DMA suspends on
+descriptor unavailability and stops draining the FIFO?  In that case
+dwxgmac2_rx_mtl_drain() cannot see PRXQ == 0 && RXQSTS == 0 and spends the
+full 10000 us per Rx queue plus a warning, and the frame stays in the MTL Rx
+FIFO anyway.
+
+Stages 1 and 2 can already sleep tx_queues_to_use * 10 ms before this point,
+which widens the window for the ring to be exhausted.
+
+> +
+> +	/* Stop all RX DMA channels */
+> +	for (chan = 0; chan < rx_channels_count; chan++)
+> +		stmmac_stop_rx_dma(priv, chan);
+> +
+> +	/* Wait for every RX DMA channel to report itself stopped */
+> +	if (priv->hw->dma->rx_dma_stopped)
+> +		for (chan = 0; chan < rx_channels_count; chan++)
+> +			stmmac_rx_dma_stopped(priv, priv->ioaddr, chan);
+> +}
+
+[Severity: High]
+The new helper replaces stmmac_stop_all_dma() in __stmmac_release(),
+stmmac_xdp_release() and the non-WoL branch of stmmac_suspend(), but it does
+not end with the loop stmmac_stop_all_dma() finishes with:
+
+  stmmac_stop_all_dma()
+      ...
+      for (chan = 0; chan < dma_csr_ch; chan++)
+              stmmac_deinit_chan(priv, priv->ioaddr, chan);
+
+deinit_chan is implemented only by dwmac4_dma_ops and dwmac410_dma_ops
+(dwmac4_dma_deinit_channel() and dwmac410_dma_deinit_channel()), and its only
+job is to clear DMA_CHAN_INTR_DEFAULT_MASK in DMA_CHAN_INTR_ENA, i.e. it is
+the matching disable for the enables written by dwmac4_dma_init_channel().
+That loop was added by commit 59a57128ae5231 ("net: stmmac: dwmac4: mask
+interrupts when stopping DMA in suspend", Fixes: 1b9707e6f1a9) precisely
+because suspend otherwise produces an RPS interrupt storm.
+
+DWMAC4 and DWMAC4.10 provide none of the new ordered-teardown ops, so on
+those parts the new helper is plain stop plus MAC disable with the masking
+gone.  Nothing else covers it: dwmac4_disable_dma_irq() only touches RIE and
+TIE, and stmmac_disable_all_queues() only does napi_disable().
+
+Does routing the non-WoL suspend path through the new helper reintroduce the
+storm that 59a57128ae5231 fixed, with the IRQ handler still registered?  And
+since RPS/TPS clearing moved into the start ops, do those abnormal status
+bits now stay asserted for the whole time the interface is down or suspended
+while the corresponding enables remain set?
+
+> @@ -4240,9 +4286,6 @@ static void __stmmac_release(struct net_device *dev)
+>  	struct stmmac_priv *priv = netdev_priv(dev);
+>  	u8 chan;
+>  
+> -	/* Stop and disconnect the PHY */
+> -	phylink_stop(priv->phylink);
+> -
+>  	stmmac_disable_all_queues(priv);
+>  
+>  	for (chan = 0; chan < priv->plat->tx_queues_to_use; chan++)
+> @@ -4253,8 +4296,11 @@ static void __stmmac_release(struct net_device *dev)
+>  	/* Free the IRQ lines */
+>  	stmmac_free_irq(dev, REQ_IRQ_ERR_ALL, 0);
+>  
+> -	/* Stop TX/RX DMA and clear the descriptors */
+> -	stmmac_stop_all_dma(priv);
+> +	/* Has to run before mac_link_down() disables the MAC. */
+> +	stmmac_datapath_teardown(priv);
+> +
+> +	/* Stop and disconnect the PHY */
+> +	phylink_stop(priv->phylink);
+
+[Severity: Medium]
+phylink_stop() is the only fence against the phylink resolve worker - it
+calls phylink_run_resolve_and_disable(), which sets PHYLINK_DISABLE_STOPPED
+and flushes the work.  Moving it after the teardown means the whole ordered
+sequence now runs concurrently with that worker, which takes only
+pl->phydev_mutex, phy->lock and pl->state_mutex and never RTNL:
+
+  phylink_resolve()            /* system_power_efficient_wq, no RTNL */
+      phylink_link_up()
+          stmmac_mac_link_up()
+              stmmac_mac_set(priv, priv->ioaddr, true);
+  or
+      phylink_link_down()
+          stmmac_mac_link_down()
+              stmmac_mac_set(priv, priv->ioaddr, false);
+
+stmmac_datapath_teardown() holds neither priv->lock nor any lock shared with
+those callbacks, and both sides do an unsynchronized read-modify-write of
+MAC_CTRL_REG.
+
+Can a link event arriving during ifdown set TE|RE again after stage 3, so
+that the MAC keeps filling the MTL Rx FIFO after stage 4's drain wait and
+after stage 5 has stopped the Rx DMA?  Conversely, if the worker clears
+TE/RE just after stage 1, do stages 2 and 4 each burn the full 10 ms poll and
+warn per queue?
+
+> @@ -7104,15 +7150,12 @@ void stmmac_xdp_release(struct net_device *dev)
+>  	/* Free the IRQ lines */
+>  	stmmac_free_irq(dev, REQ_IRQ_ERR_ALL, 0);
+>  
+> -	/* Stop TX/RX DMA channels */
+> -	stmmac_stop_all_dma(priv);
+> +	/* Stop the MAC and the TX/RX DMA channels */
+> +	stmmac_datapath_teardown(priv);
+>  
+>  	/* Release and free the Rx/Tx resources */
+>  	free_dma_desc_resources(priv, &priv->dma_conf);
+>  
+> -	/* Disable the MAC Rx/Tx */
+> -	stmmac_mac_set(priv, priv->ioaddr, false);
+> -
+>  	/* set trans_start so we don't get spurious
+>  	 * watchdogs during reset
+>  	 */
+> @@ -8190,17 +8233,15 @@ int stmmac_suspend(struct device *dev)
+>  		timer_delete_sync(&priv->eee_ctrl_timer);
+>  	}
+>  
+> -	/* Stop TX/RX DMA */
+> -	stmmac_stop_all_dma(priv);
+> -
+> -	stmmac_legacy_serdes_power_down(priv);
+> -
+>  	/* Enable Power down mode by programming the PMT regs */
+>  	if (priv->wolopts) {
+> +		stmmac_stop_all_dma(priv);
+> +		stmmac_legacy_serdes_power_down(priv);
+>  		stmmac_pmt(priv, priv->hw, priv->wolopts);
+>  		priv->irq_wake = 1;
+>  	} else {
+> -		stmmac_mac_set(priv, priv->ioaddr, false);
+> +		stmmac_datapath_teardown(priv);
+> +		stmmac_legacy_serdes_power_down(priv);
+>  		pinctrl_pm_select_sleep_state(priv->device);
+>  	}
+
+Only the WoL branch keeps stmmac_stop_all_dma() and therefore the
+stmmac_deinit_chan() interrupt masking; the plain suspend case is the one
+that loses it, as noted above.
 -- 
 This is an AI-generated review.
 
