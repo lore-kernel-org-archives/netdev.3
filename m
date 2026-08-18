@@ -1,64 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3972630CDBC;
-	Tue, 18 Aug 2026 17:21:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F48D3403EB
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 17:27:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787073713; cv=none; b=boJzbioAHz+re0wYXsWeCQWXU8rd7DGxiq06AT7dnmyJqzUOH+KKJeSNwelkcYqWb2oKkdLtQyoMzdaUvyNA1hYIFVQMgNFN0nQSzc6HU7wIw2HDY5nP7WWUebZTFvxteZmKXv02QEaOrF6RENfWQGRwGd9evEGJOERajkO7nRc=
+	t=1787074079; cv=none; b=ZtEGnsQjngJA1pVeyrB5jym3UamWjC3KxbBjqTVyjaS1Eiod5b4J5gsZ62eXoMQwhIPKOAFSt6NEX07QtwvpZWv7FDSYX9DMH9Y0HDyhiYQxb3tzlJAg0sR7cCr90skA4Gk8zaENdpB/Xku2tARhvph217Bx1UCeCTiclZynQQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787073713; c=relaxed/simple;
-	bh=AMv6yCMj2ervvOHOLVWwSEDUrbz3jXzvaLhHrbqxzLA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=unDm3eKgE0LmxvEaZLpliWS3XpOHL5WVpyg2u1N45iUu8WpeXfaDAHjebrbaCnCuKpDyLGWI9fsPnafmCfmf00FUu9jT50m6pRKNOKMV/TFNj8TJNoCGF/NjDk6r3SbmUtTu41FfMCPPaIxUCld95wE+wLgU7fWZDfc624xaqSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AnGOAO25; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787074079; c=relaxed/simple;
+	bh=zSFiXdOdxNRFU+jEWpNPnwtE8w+rMGT+3jyDOGlY49Q=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=HbuCr+W4xmaBTHdKnU7ptWDhNizIG18OGYNQlGNZIGRLsgU+5b5R7NFvU3OObVptXG2IbzL0uNp6R4EjlC/7Kd8D9MZ9g0x2P1Wse+6andJmmaQfDovxTMDZMGSjf+ZrzApwLFRTPvIOm5yHNxbsWJQF3dLwPslkWNE0UujfESA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lslSdLs8; arc=none smtp.client-ip=209.85.160.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AnGOAO25"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 526E51F000E9;
-	Tue, 18 Aug 2026 17:21:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787073711;
-	bh=oWNjukkUyW2WYnB/Po+cgOxLX8j0rZ6dElF3qVSs6LE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=AnGOAO25Rplq/AiFV+geJu9Uu7ZOaPtQpc9TzADCa8CLMxPBIjOWbKG5YroSjUCkh
-	 1MIDKbJLedLLAJvAvozbRRoFRuJjouoGf8/shj16eW3w3dcXjNzcWbBL1BJMWMxmyg
-	 OD1B8kfqK5vwwG2eZekiC+215RCc7hknlDh9kPvb1gv/Q4tjTQ+wza+7glWucoR6be
-	 7KmCZLjckf0sZEg5SeFAwfR4CTg5OFPaVta3g9dPY5k+CjmsFIV9X27D25KcQTOiji
-	 mzIFyFz8xcmnEiSdbJP+iD8o3s9nM2S9opz2+VDAwtyn+nH/WJlpSiTf9yT/ZDk2iD
-	 w2t91Sp09G2Tg==
-Date: Tue, 18 Aug 2026 10:21:50 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Jason Winter <jjx@live.nl>
-Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, linux@rainbow-software.org, gregkh@linuxfoundation.org
-Subject: Re: [PATCH net-next v2] net: usb: cx82310_eth: bound partial-frame
- remainder by current skb length
-Message-ID: <20260818102150.5b4a1c60@kernel.org>
-In-Reply-To: <BESP194MB2832095AA142E77E4F39E33EB8A72@BESP194MB2832.EURP194.PROD.OUTLOOK.COM>
-References: <BESP194MB2832095AA142E77E4F39E33EB8A72@BESP194MB2832.EURP194.PROD.OUTLOOK.COM>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lslSdLs8"
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-51c1a9764f0so478671cf.1
+        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 10:27:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787074077; x=1787678877; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=aPJMKBRJs0alVlI4MxR/f1MY7c+B1Gw+ufiwV1NU81I=;
+        b=lslSdLs88yzyH0XeYIUypGtlQcKwRS/V8PdD5nMKd17JPZufLAhtff2hm27pIRneQE
+         pGygyksTiYJzcTCuufPkn3/BhW+ENZhEQLrJdrq8v9HTi/+XDnL99RaOGfIeqbi28Dvg
+         tNJdnaqlj49A5x/SmG2M1RCwnm24P9rQ6y2O5y78xyVwHlr0KVFwhyM7d9sMFr998a5e
+         2jxZraNMmu7QY3zPWcTgZBULo5mqfsGq5QViEOHe5JkCz4yq9qYCXK/e1yBGnhe3Jwu8
+         0UBq5hYrAnSxVxhDvud0IxwTZmPmngSDuL5GxRqS37/rlLVefCIAeIGvtAZ63ZSdgRwn
+         aiCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787074077; x=1787678877;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aPJMKBRJs0alVlI4MxR/f1MY7c+B1Gw+ufiwV1NU81I=;
+        b=a0I7c/1NRX858AL2usyv/Z3rVHIClsXe6KtXEAnzRZb+A1sQhtNlSHywLtRfZ4ZZwe
+         mlH+T9epun1IX3vmZa/2D2hZmPMDYXDPtsM0hyR2DiX35rijszfwJm5+5dg4SvinQd5J
+         K/zFEsnz/Adm2kfq0AtnDq2hWygEokWUd59RfzFCLUPt0JKtl2XHFHSBYITpp27FfyJK
+         W62UHnH4dtJBw03e6QgSTnSprccHltXHm1AQV8jJ/k/l5zxlBHTDGchbq0VWOig7p1oJ
+         HEB1UPtamrTVxU9XYhzoTI62GM06YoqSwMmsX9Kh4e5X+X0Es6BpJDXhAtowUIgkVsyh
+         5DZg==
+X-Forwarded-Encrypted: i=1; AHgh+RqzxIcGpXMfvwelScpUIBoMZKtSufbVCFhJOP5Qpk3aWU+pq37dvhYFZrztqKx6jp3bqNa007s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCOWlJMpQ04Sv9lXBL7MBmWGbi1uuOYFsBSbVRX3XomIa6iTOA
+	r0nrPfGJzx0XdvCRr9LdOOHFde+B5WEiM29niVmKnw4VQoxS6Dz1SWmu5e0HPuCSRbhOyqz6irb
+	7SlHYc1bJLmP1jw==
+X-Received: from qtww9-n2.prod.google.com ([2002:a05:622a:6849:20b0:51c:c33:1f98])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:622a:40f:b0:516:d812:c35e with SMTP id d75a77b69052e-52d855011efmr357621421cf.21.1787074076580;
+ Tue, 18 Aug 2026 10:27:56 -0700 (PDT)
+Date: Tue, 18 Aug 2026 17:27:55 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.737.g08866a6d13-goog
+Message-ID: <20260818172755.4083692-1-edumazet@google.com>
+Subject: [PATCH net] ip6mr: do not clone dst in ip6mr_cache_report()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, Zero Day Initiative <zdi-disclosures@trendmicro.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 17 Aug 2026 21:54:34 +0200 Jason Winter wrote:
-> @@ -251,6 +251,13 @@ static int cx82310_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
->  	 * end of that packet at the beginning.
->  	 */
->  	if (dev->partial_rem) {
-> +		if (dev->partial_rem > skb->len) {
-> +			netdev_err(dev->net,
-> +				   "RX partial frame: need %lu, got %u\n",
-> +				   dev->partial_rem, skb->len);
-> +			dev->partial_rem = 0;
-> +			return 0;
+IPv6 input attaches a non-refcounted (NOREF) dst to skbs under RCU.
+When an ingress multicast packet misses MFC lookup,
+ip6mr_cache_unresolved() places the skb onto the unresolved queue,
+escaping the receive-side RCU grace period.
 
-Always ratelimit datapath prints.
-You should probably increment rx_errors as well / instead.
+If the underlying route is deleted and freed, and the MFC queue is later
+resolved with a wrong parent interface, ip6_mr_forward() invokes
+ip6mr_cache_report(..., MRT6MSG_WRONGMIF), which executes
+dst_clone(skb_dst(pkt)) on the freed dst entry, triggering a slab
+use-after-free.
+
+Report packets queued to mroute6_sk (a raw socket) and netlink
+notifications do not require an attached dst entry.
+
+Fix this by:
+1. Removing dst_clone() in ip6mr_cache_report() and ensuring report skbs
+   do not hold a dst.
+2. Dropping skb_dst before queuing unresolved skbs in
+   ip6mr_cache_unresolved(), matching the fact that multicast
+   forwarding resolves outgoing routes anew via ip6_route_output().
+
+Fixes: 67f415dd2906 ("ipv6: convert rx data path to not take refcnt on dst")
+Reported-by: Zero Day Initiative <zdi-disclosures@trendmicro.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ net/ipv6/ip6mr.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
+index 604a58838901a74712d08505c6bbbdeafd28149c..3f2ed9b77deb51799f34e3826ae271d8d3e2a2dd 100644
+--- a/net/ipv6/ip6mr.c
++++ b/net/ipv6/ip6mr.c
+@@ -1162,10 +1162,10 @@ static int ip6mr_cache_report(const struct mr_table *mrt, struct sk_buff *pkt,
+ 	msg->im6_src = ipv6_hdr(pkt)->saddr;
+ 	msg->im6_dst = ipv6_hdr(pkt)->daddr;
+ 
+-	skb_dst_set(skb, dst_clone(skb_dst(pkt)));
+ 	skb->ip_summed = CHECKSUM_UNNECESSARY;
+ 	}
+ 
++	skb_dst_drop(skb);
+ 	mrt6msg_netlink_event(mrt, skb);
+ 
+ 	/* Deliver to user space multicast routing algorithms */
+@@ -1246,6 +1246,7 @@ static int ip6mr_cache_unresolved(struct mr_table *mrt, mifi_t mifi,
+ 		skb->skb_iif = dev->ifindex;
+ 	}
+ 
++	skb_dst_drop(skb);
+ 	skb_queue_tail(&c->_c.mfc_un.unres.unresolved, skb);
+ 
+ 	spin_unlock_bh(&mfc_unres_lock);
 -- 
-pw-bot: cr
+2.55.0.737.g08866a6d13-goog
+
