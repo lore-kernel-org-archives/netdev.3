@@ -1,100 +1,162 @@
-Received: from out203-205-221-210.mail.qq.com (out203-205-221-210.mail.qq.com [203.205.221.210])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7E2476055;
-	Tue, 18 Aug 2026 12:41:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0FD45C6E9
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 12:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787056905; cv=none; b=MtxVm5T71bQkbvFTJVg2cu/deX4qZJJWLIavfIzX29+vQwP5EjmnvS0gBjibGqOhJVDvtImlYPaZQyleoytDpyDnKJjQSuTgWofQQ0kVIx0WA1LAZRLF/4PnJiPypDrQbycM3UR4vTQR4ALT7s3gunsd4IC0iZRjOZURLuRnCnQ=
+	t=1787057141; cv=none; b=IWkAUBTjAywMWIxaF5M6q6liPD9SbaVKQBmheCT5eeMZgSPX70yaPS9tMRsvQM3u9F21l9SPvTjQPpl2963V+QWkkfFnhSZzQ5wjO9c4JnTloEP4F9HOsbISBo+k2EBCOAaAuB43IFi/lC8QeBBxhzoYq+lNuTj8Ais9Hd5EFuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787056905; c=relaxed/simple;
-	bh=EbrL2Y5vKDu6G/4izU+FnB/fDgKOnGUSm45oGNGj0js=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=ph/JBlJzMXBh/XREVRUixlx3zaZMMGejrq0zYp3Mgh7gkjaEA5GvuGP55NPjn4ZRANjT0alyRjOUmePCg+8ljk/qCFBYtRZ0kzbM25mbxeBhfG47bZ2UTa4TywPU+YEel8MO/vu8huvFVvXhBUiQSQzeWBoy5EC3TQcV+zGdCms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=NNRNxsv0; arc=none smtp.client-ip=203.205.221.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1787057141; c=relaxed/simple;
+	bh=MnSQYHO1irXevOg2ealXrfH39PWwPNOpIV3+zctjRto=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QkIFTGWlqtm2jFEDymwrpEjCC6SRdHUfxbFnT3E1Ircc6ZZhUcmmN99AcTZhQSiIkRJP6Gxm6JWzf5nwS2cgoaAxzIcQwkpO21asePkA6guUVlKMNhdukae2fz+iqXRtinI4g5xEjGglQu4e/sS+5/5SYqL6ZXCqhEFJhops/fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U7ljK1/W; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="NNRNxsv0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1787056899; bh=TT+HmnjhmWRn/wTjrVXy3m5zwdT8z/iTRPZLoKJ8C+c=;
-	h=From:To:Cc:Subject:Date;
-	b=NNRNxsv0ILaBYa7lrIeAs60NY6CSN/C2p86OKt2xs7xQq2rVr2IK+hARcJ2flaq2n
-	 HsGBkpv3FdvNhWSpRAbr6lNiD4Eqve3G5pdyhXpyVjjRzNfdXOWRl7rH9Vr7d1Cz1z
-	 Or7+pwaZU0J00OMXF5O3mHg0eh3qmoLsl0ujg3G4=
-Received: from ws006419.mbzu.ae ([5.195.0.150])
-	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
-	id A6383A87; Tue, 18 Aug 2026 20:41:35 +0800
-X-QQ-mid: xmsmtpt1787056895tabc86jo0
-Message-ID: <tencent_2EBD0396FF7A54CAD61F16E942D2E8FA3A0A@qq.com>
-X-QQ-XMAILINFO: MDbayGdXPuoeNTkQSZDA+JZ99L28yBMYjSNBElyAGWxn2liY8d6deo3tTC+oYf
-	 FNpiW/2iUIKHnWvCpYmedMWb2EX1DPRivnqNyXADMwZHwhJ+ZQLtYLbQ7YLR1kkMFW4RUKdB670c
-	 MJ9UNnpzNUKbAktTO5YFA3jrQeMTCo4qbrFmx33xR7oMf+BCurU/n5S2g+AjIGVZGAarpULHbBsR
-	 cv6dyztKQg+AufiD3CU2gB1J6V0TSm22EF2z6dolZ/NuV7eWbXMknsaeX2Tdw84PzQjgVlpOHa+W
-	 bCeBubko+FjmKXitezXMsdkL6SrQ/kHiiI7nmimO814yVuB4D1UFW82brL6CDQJSJZzlY70YIeJ1
-	 GMd+Gwlyl4+1IH0X4q+8XzTxqwtDuZofAezp8dRGMS4iZMmpgNg/KrnGSHMb/qJqi9RThi4pjFmw
-	 xY5JDGD3NUcyI7F0ReKyx5hB6+1ovRI2JuJPnw+o6kxpgTaRxoKrKLIEEqNvZepV8YYwftPiFzVx
-	 yv2b7ZgMPMAmRlW4QZpVBXeVkvT2wSsLd19kEFMeLbeFqIl9voZT87AhzrFmbnDU95gV4XT/4VRh
-	 W3bEpB0tag9/slctT4lhulMPhXsE4L33ZGRz//NVRrYDqItZR7koaZJwb386iD83fJN1tyMyR1wr
-	 1rYfECirGKCgqRmSMmgyt3XXQ4BEo/qpz4eVGq3ur2sLzV2xeXZ73zfNY3gpiaZnPUC2A/uO0q9F
-	 H1yyJDl8xKaQvOfbDDIloWcO6boT9o+nItGkfv4wAvi8LfXHVKKwbkdk4R1VMyqtOoU5WT/D0CFM
-	 fzZRH4jqXIxh3zhWFuznbD0k+rbHeq/tAMxXDtFxaJgKxK+5fNe1gR/ESJHZI23LzpNxJdyRmyuc
-	 T3vC1333iu9HeQavTZ0wzDsUekVcg4qEIiTKyq3mXBtnL+vT0LQz2zzERsEM/H/H2o8XaS8z5lh4
-	 QfmxO1jM+UOSQcYIoas/eCdiT64w1uHvJa+2UqMye9jqX7GWOoTTsMDyD+jj+BeM9otgi2bE70zW
-	 3QhXXPVMePTehYK0Sd5G1evc9yh3FJDtY0vm/uBU8uDSH64YezHD+YU9TXTf0gmP0aqV4FQ/wRHl
-	 RjJU5V
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
-From: Jiawen Liu <1298662399@qq.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U7ljK1/W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C297D1F000E9;
+	Tue, 18 Aug 2026 12:45:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787057139;
+	bh=phLclicfwRczR7oRh0Xzr9icaR29umodk9bXfcJ7Pls=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=U7ljK1/WSkEB+1irQqOX+RfUMpboN25OVdfV3nwZUdAP/wrKug9xFIfeMTTMGqZda
+	 nZQ8fjvB+Vrm3DRuoZrHClsP5AETeCWd3kPnbIuT4VBFDI4Ohue34e6+nGW5uRXrhE
+	 aaNZQJhfQ5yhJO3QBcahtN205Y19lbQFzqhoNL0CgQCmHNq9/TuyvbY5dq9iXFH5LY
+	 E2pShSZcJlRistD+6H6GIeJjhgOuVVkHJnq6Zw1Dxt0yO3z98xyg5MSI+wIfmyPGGy
+	 x8NqbUKiMjMpJdbj2niFE82AV6idzXWaR0DHVAZAaZsYb3KhF5PFAUFhaxysaMn4xs
+	 tFMAbdASOdC4w==
+Date: Tue, 18 Aug 2026 13:45:35 +0100
+From: Simon Horman <horms@kernel.org>
+To: Eric Joyner <eric.joyner@amd.com>
+Cc: netdev@vger.kernel.org, Brett Creeley <brett.creeley@amd.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	jiawen <1298662399@qq.com>
-Subject: [PATCH] net: renesas: rswitch-main: fix runtime PM cleanup
-Date: Tue, 18 Aug 2026 16:41:35 +0400
-X-OQ-MSGID: <20260818124135.247069-1-1298662399@qq.com>
-X-Mailer: git-send-email 2.34.1
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	"Nikhil P. Rao" <nikhil.rao@amd.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Subject: Re: [PATCH net-next v2] ionic: Add .get_fec_stats ethtool handler
+Message-ID: <20260818124535.GE265046@horms.kernel.org>
+References: <20260814-ionic-get-fec-stats-v2-1-13f0e7d2e702@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260814-ionic-get-fec-stats-v2-1-13f0e7d2e702@amd.com>
 
-From: jiawen <1298662399@qq.com>
+On Fri, Aug 14, 2026 at 05:33:12PM -0700, Eric Joyner wrote:
+> Reports FEC statistics totals and an 802.3ck FEC histogram. Per-lane
+> counts currently aren't supported. Every counter reported here comes
+> from the RS decoder, including fec_corrected_bits_total despite its
+> name, and the only histogram format firmware produces is the 16-bin one
+> from RS(544,514), so nothing is reported unless RS is the active FEC
+> mode.
+> 
+> These are physical port counters, so virtual functions are skipped the
+> same way ionic_get_link_ext_stats() skips them, rather than reporting the
+> port's counters as if they belonged to the VF.
+> 
+> The reporting of these statistics is gated by DEV_CAP_EXTRA_STATS and
+> checks for IONIC_STAT_INVALID, since only the newest devices support
+> reporting all of these stats. Older devices can only report some of the
+> statistics or not at all, and so the output will properly exclude those
+> unsupported statistics.
+> 
+> Assisted-by: Claude:claude-opus-5
+> Signed-off-by: Eric Joyner <eric.joyner@amd.com>
+> Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+> ---
+> Reposting since v1 was too old to apply. This also addresses the netdev
+> AI review comments left on v1:
+> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260731214021.15279-1-eric.joyner@amd.com
+> 
+> That review also flagged a NULL dereference in ionic_get_fecparam().
+> It predates this patch, so it is fixed separately in the net tree
+> rather than here:
+>   [PATCH net 0/3] ionic: fix port_info lifetime problems around device reset
+>   https://lore.kernel.org/netdev/20260814-ionic-port-info-lifetime-v1-0-f73b1a06c5f6@amd.com/T/#t
+> 
+> Vadim's Reviewed-by from v1 is retained. The only change to the code
+> since he reviewed it is the histogram bin latch listed below.
+> ---
+> Changes in v2:
+> - Latch each histogram bin into a local before testing it against
+>   IONIC_STAT_INVALID, so the sentinel check and the store cannot be
+>   folded into two separate reads of the firmware-updated DMA buffer.
+> - Explain in the commit message why the RS FEC check gates every
+>   reported counter rather than just the histogram: they all come from
+>   the RS decoder, including fec_corrected_bits_total despite its name.
+> - Rebased onto current net-next.
+> - Link to v1: https://lore.kernel.org/r/20260731214021.15279-1-eric.joyner@amd.com
+> ---
+>  .../net/ethernet/pensando/ionic/ionic_ethtool.c    | 86 ++++++++++++++++++++++
+>  1 file changed, 86 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+> index c4ab4b5caa0a..2f2b5076dcf4 100644
+> --- a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+> +++ b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
+> @@ -441,6 +441,91 @@ static int ionic_get_fecparam(struct net_device *netdev,
+>  	return 0;
+>  }
+>  
+> +#define IONIC_FEC_STAT(dst, src)			\
+> +	do {						\
+> +		__le64 __val = (src);			\
+> +							\
+> +		if (__val != IONIC_STAT_INVALID)	\
+> +			(dst) = le64_to_cpu(__val);	\
+> +	} while (0)
 
-Update renesas_eth_sw_probe() for the confirmed driver lifecycle defect.
+Hi Eric,
 
-Keep the change limited to the concrete operation shown in the final
-patch.
+There is an AI-generated review of this patch available at
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260814-ionic-get-fec-stats-v2-1-13f0e7d2e702%40amd.com
 
-Signed-off-by: jiawen <1298662399@qq.com>
----
-diff --git a/drivers/net/ethernet/renesas/rswitch_main.c b/drivers/net/ethernet/renesas/rswitch_main.c
---- a/drivers/net/ethernet/renesas/rswitch_main.c
-+++ b/drivers/net/ethernet/renesas/rswitch_main.c
-@@ -2123,6 +2123,8 @@
- 	{ /* Sentinel */ }
- };
- 
-+static void rswitch_deinit(struct rswitch_private *priv);
-+
- static int renesas_eth_sw_probe(struct platform_device *pdev)
- {
- 	const struct soc_device_attribute *attr;
-@@ -2194,6 +2196,9 @@
- 	ret = rswitch_register_notifiers();
- 	if (ret) {
- 		dev_err(&pdev->dev, "could not register notifiers\n");
-+		rswitch_deinit(priv);
-+		pm_runtime_put(&pdev->dev);
-+		pm_runtime_disable(&pdev->dev);
- 		return ret;
- 	}
- 
+In that review, the following stands out to me.
+I'd appreciate it if you could take a look over it in particular.
 
+  The v2 changelog says the per-bin local "latches" the value so "the
+  sentinel check and the store cannot be folded into two separate reads of
+  the firmware-updated DMA buffer".  Is that guaranteed by this code?
+
+  Both this macro and the loop body in ionic_fill_fec_hist() use plain,
+  non-volatile loads:
+
+	__le64 __val = (src);
+	if (__val != IONIC_STAT_INVALID)
+		(dst) = le64_to_cpu(__val);
+
+  and
+
+	__le64 val = port_extra_stats->fec_codeword_error_bin[i];
+	if (val == IONIC_STAT_INVALID)
+		return;
+	hist->values[i].sum = le64_to_cpu(val);
+
+  Nothing stops the compiler from discarding the local and re-loading the
+  word from the coherent buffer for the comparison and again for the store.
+
+  Would READ_ONCE() on each word, or a memcpy() of the block, be needed to
+  actually get the single-read property described in the changelog?
+
+  The same applies to the struct assignment in ionic_get_fec_stats():
+
+	port_extra_stats = port_info->extra_stats;
+
+  This is an ordinary aggregate copy out of memory the device writes
+  asynchronously, so members may be re-read at each later use rather than
+  coming from a stack snapshot.
+
+  If a word transitions while being read, can the 0xffffffffffffffff
+  sentinel that ionic_port_init() memsets into extra_stats be reported to
+  user space as a real counter, or a counter firmware did fill in be
+  dropped, and can the 16 histogram bins end up stitched together from
+  different firmware snapshots?
+
+...
