@@ -1,56 +1,60 @@
 Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA46C3C2B92;
-	Tue, 18 Aug 2026 09:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8783C1D41;
+	Tue, 18 Aug 2026 09:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787044300; cv=none; b=GoQUzv1N+nHfyCTbhXEX92mF3TfGg9aiwnLIrT/xMijFM+4/gBmaSLTVjQWhvbZ5ES9J33kBNEUaJ8vxun1avpni7CwZzni1SCuH6JIi7ALtTdNm14vhTGB+agcepbpTPa2iP4Iu4cX69BjCLsjqG2G4Fa53ZDYQv2kvQCAEeYo=
+	t=1787044303; cv=none; b=Lks2aYnS4CRFcyr7hl9EpxztNAVnxM7a8FKyHwGZx/yc7zOgwSiA806tee06AGJw7tUXpoJrAF8tR16YsZiGsK2lEkSXsyBe2wr3NeGpxG8KSOXtBaxSP2vxAAQhlocnVsnrs3IT6wKbHqzAKHWXmzZS7MycNjNUe0je8GwIjV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787044300; c=relaxed/simple;
-	bh=b9eB1Jgg/2k5o7orPR7U2jEAOKu16VQitQxcWs/ulM4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QNVxSXKjVgxX7iNLoBi1fMkMVwYGIJ6grjbU71YE0YuyeDfqF69ARVN/NFZPgihlz0W80PYjZL9ijnkF83kFapqQejNj6x/MHlrIjhYWWbonZeIstVAJSP245w4Wr1w/dzGmi1YKO5RLBQf8yLD+ASjqcPOELJXcn3TOj3Gin6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=TJvhRzmq; arc=none smtp.client-ip=67.231.156.173
+	s=arc-20240116; t=1787044303; c=relaxed/simple;
+	bh=P3R3d2TyagJr1LKTwbT+3fSq6kfhVRLZsLxtC5uffmw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tKPxgkHqtE76vJaAdihIzD8VvSEBSgue9PMaDWssr0hO4oGnq3yn8aP7vLk0VAKjBbqWCn0b8Yrl4IRVPd+SVKbB2muc92Y+1aDG4x5wi7gkB1GknaOL6LxIgyA+9+uQ3QDecTCUB0+4PPwOdmOu8psSEyq+Fu+JmdgW1dUtpSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=TAUqBk68; arc=none smtp.client-ip=67.231.156.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="TJvhRzmq"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67HLvu2l3764527;
-	Tue, 18 Aug 2026 02:11:30 -0700
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="TAUqBk68"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67HLwrr03314065;
+	Tue, 18 Aug 2026 02:11:34 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=8+sPdAJBBDmj9Bbt6rH0JAt
-	VQ9t7t0fZXUvgp4mIpxM=; b=TJvhRzmqJVDCFSkDDAJco4YtvUAEe5ni1O4MBrL
-	UVTpl+aQysXFrTI/6xZp+ROptQHCmjVxvJdw5TYX0Se+AWrwCFv0yFF/866Mbw6d
-	6Ka1+llgEkOYXx56aqWktyl6XyFmhMkEy/itBODERltgs2e/UF68y1Ti1HFGo3Fa
-	ci275mwLm5skZCs+v0xX6nTGBU401CMUrIoJbi8b4RHxSWlkwdBPlaBeJM63iKpT
-	4ItxUvytaklDOMof8ec2zfsXAJ+SXDjXj0D6nsThOHmkjACZYpwdS++udrZnfCxS
-	QcH2L7ypChL4dlW3hj63/gsKuEiKfEcRN/klOPA9kh3YwvQ==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4g4ap4heyh-1
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=y
+	DyclZYfQbyoMme82miagzFW7P5e+Dz8w1Lu8FZP7b8=; b=TAUqBk68VbeLeWXwN
+	VyRL/2oSLZ5EE3p8uUbPibcTAGHuZE4TlPQPmvsIMdFxz8C3jC3vDWzTiL5rJTx3
+	CsbkuOiSwlqznQ+DmlyBG2j5hJ5cgbHrV2qAPFfIlpTN8FrmZbuOrW4rqKWYiwgi
+	p0LpnO1QF4DcDvSQFO6MUH9820OtmpZ1HG3i+lIRDOQy94yuTi4S+rBKjmgvdZpa
+	/r4B3wZ+NUk+D8SV67CYhTOHezGl79nrKNFBCOddugCzj9OqPX5ROcPZIMvEJId4
+	67iYSpz0E3tsPVUM1huABq9yM56+vubzoOu9eDFfwpERuecybmOJL3w7UqAd8kmI
+	6Fypg==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4g36v3dp86-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Aug 2026 02:11:29 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+	Tue, 18 Aug 2026 02:11:33 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 18 Aug 2026 02:11:28 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Tue, 18 Aug 2026 02:11:28 -0700
+ 15.2.1544.25; Tue, 18 Aug 2026 02:11:33 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Tue, 18 Aug 2026 02:11:33 -0700
 Received: from numbat.caveonetworks.com (unknown [10.29.36.45])
-	by maili.marvell.com (Postfix) with ESMTP id 488193F707D;
-	Tue, 18 Aug 2026 02:11:25 -0700 (PDT)
+	by maili.marvell.com (Postfix) with ESMTP id 585973F7080;
+	Tue, 18 Aug 2026 02:11:29 -0700 (PDT)
 From: Subrat Pandey <subratp@marvell.com>
 To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
 CC: <pabeni@redhat.com>, <kuba@kernel.org>, <edumazet@google.com>,
         <davem@davemloft.net>, <andrew+netdev@lunn.ch>, <sbhatta@marvell.com>,
         <rkannoth@marvell.com>, <gakula@marvell.com>, <sgoutham@marvell.com>,
         <subratp@marvell.com>
-Subject: [PATCH net v4 0/2] octeontx2: Misc fixes for RVU drivers
-Date: Tue, 18 Aug 2026 14:41:21 +0530
-Message-ID: <20260818091124.1832237-1-subratp@marvell.com>
+Subject: [PATCH net v4 1/2] octeontx2-pf: Fix aura BPID assignment when CONFIG_DCB is enabled
+Date: Tue, 18 Aug 2026 14:41:22 +0530
+Message-ID: <20260818091124.1832237-2-subratp@marvell.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260818091124.1832237-1-subratp@marvell.com>
+References: <20260818091124.1832237-1-subratp@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,62 +63,151 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=Q7LiJY2a c=1 sm=1 tr=0 ts=6a8421c1 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE4MDA2NyBTYWx0ZWRfX4D/2HuAy3QlL
+ scaTs9YJb6vu/ftJYfGYpt0xWgmZYKwT+sZNuuByghRFETyXuAfWrpTSc5cekKP1j6KQuqVQKcD
+ K9E3fE9+4ikXRam5/kHrFLGsYmPMF34=
+X-Proofpoint-ORIG-GUID: 8x2la--9xocYq84G5oyEI3v6MLB9ErQ4
+X-Authority-Analysis: v=2.4 cv=MatcfZ/f c=1 sm=1 tr=0 ts=6a8421c5 cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
  a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=qit2iCtTFQkLgVSMPQTB:22 a=4I0ENqp42E1HAAk-qN4A:9
-X-Proofpoint-ORIG-GUID: 43qX55_83PEteeLBUtxc0HT3rDi5NT2C
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODE4MDA2NyBTYWx0ZWRfXzUSTZAAPlZFL
- 0MwRZIXKaEOhJtbOopJ4Qx4g21HKmBNye5X9fvXeNx/MQfqBWlyio6eqBd4kdvh6mzFeEozh1Nf
- 0GL9RPbMjCuHq+Ft71Q282ZmopkRc60=
-X-Proofpoint-GUID: 43qX55_83PEteeLBUtxc0HT3rDi5NT2C
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE4MDA2NyBTYWx0ZWRfX4B2c3q4PCIVT
- SKYZqPm5GB4Z69ITSjUtPPLdHxMvaaVjaadnclnGjPtfLM0cigLmD47z59zQsdMmf2J/vKJSYiq
- v69CpN1mCBVRF7it1/z4UaL+gu98uF2OukMzqyEjy3y91v5V3Xzq8N7fr8L/XlyJEsQY4vWJo/X
- aoRNbfv073jHXNlwuAHhAQxT9sbmN1eq8q+Y5WuA6xPH+H3yyJJMkhU6qTNGZhJ+C4R8PMA+wNZ
- 1vNIZSgUacLNEN+MTY3/VnViExBIq7gxbKd6mk4iIJiYQmpUVAlu0gpIPHyxG5oDQiu60srtPwL
- mi7TIyG+KnW8r5NNFrH9N4is49WBdKLXWKIYnattnOmG/2/bRKd+/A1NhO+iKM5Gc35iBYcNf9F
- zp1Tj8Z/Lgb7DWXZQs+a0/y+MTInGtc9u9WBMBUGo3IXR5zqzQnIq1z7vM+qw1mNmYXAM5cQxuS
- k0FTWiRzf9os3daqSWw==
+ a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8 a=JC75Ts7hcnNMBKXiZ1QA:9
+ a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-GUID: 8x2la--9xocYq84G5oyEI3v6MLB9ErQ4
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE4MDA2NyBTYWx0ZWRfX7zOapcBhy+wC
+ +52E64QUyBbO8TDq2MnFyutah/4oYltrOG3e5BKCK4xsysJxpuaAwrKFwii94OkbH5tc9g7kzV2
+ uCGlP3Yk2ycN+fbA41ZS/dMgmIUEBpkkv2FKNrx2LtUnLa/kAJp+XyLVjG3nrYP7jy6TZ2uL6Jh
+ q9t15PPGcopetKtFdcM23LAHImoJIHyvzWgJ/oJUyi5p9A5CRwiPeGRofxy+J22D6qWygrc1y9/
+ YihOGXbJ/gBSLVEK2hkUvAiorcKPM7P09xSWz+HWffcZdgr5j5wPHBHqtxYLDGUvrZrhnTDUdsT
+ vq9FyaC/ro7z5w2URDL5TBwjUOvV69z+xkQgONLbm/Xgctrbsa0rB86JYeh4WnM7XvZl+Xn0FwJ
+ xLt1sWCfzhQQNW078CTsY6Umi27bk4MZ8H3w+gduinlYQU9lkjRhuMNwK16FWSwEBXyNVkSIznc
+ oImOuVlh/7rBgU160gg==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-17_04,2026-08-12_01,2025-10-01_01
 
-A few independent fixes for the Marvell OcteonTX2 (RVU AF/PF) drivers:
+From: Geetha sowjanya <gakula@marvell.com>
 
- - Fix aura/CQ BPID assignment under CONFIG_DCB, which assumed
-   queue_to_pfc_map was always allocated (not true for SDP VFs).
- - Fix the SC resource cleanup loop that iterated over secy.max
-   instead of sc.max.
+Previously, BPID assignment under CONFIG_DCB assumed
+`queue_to_pfc_map` was always initialized. For SDP VFs this leads to
+invalid memory access as it was not initialized.
 
-Changes in v4:
- - patch 1: Add 'inline' qualifier to otx2_get_bpid_idx() helper
-   defined in the header.
- - patch 2: Correct commit subject in Fixes: tag to match the actual
-   upstream commit title.
+This patch adds a NULL check for `queue_to_pfc_map` before
+dereferencing it. Also, simplifies the logic by always assigning a
+default BPID first, then conditionally overriding it if CONFIG_DCB is
+enabled and the map exists.
 
-Changes in v3:
- - patch 1: Unify the BPID index logic into a shared otx2_get_bpid_idx()
-   helper, dropping the per-file #ifdef CONFIG_DCB.
- - patch 2: Extend the sc.max fix to the SC stats loop in
-   mcs_clear_all_stats(); add Fixes: tag.
+Fixes: 184fb40f731b ("octeontx2-pf: Avoid adding dcbnl_ops for LBK and SDP vf")
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Signed-off-by: Subrat Pandey <subratp@marvell.com>
+---
+v4:
+ - Fix otx2_get_bpid_idx() to be static inline.
+v3:
+ - Unify BPID index logic into a shared otx2_get_bpid_idx() helper,
+   dropping the per-file #ifdef CONFIG_DCB and cn20k_aura_bpid_idx().
+ - Drop trailing period from the Fixes: tag.
 
-Changes in v2:
- - Dropped "octeontx2-af: Fix mcs string buffer size", will
-   re-target it to net-next.
-
-Baha Mesleh (1):
-  octeontx2-af: mcs: Fix SC resource cleanup loop
-
-Geetha sowjanya (1):
-  octeontx2-pf: Fix aura BPID assignment when CONFIG_DCB is enabled
-
- drivers/net/ethernet/marvell/octeontx2/af/mcs.c  |  4 ++--
  .../net/ethernet/marvell/octeontx2/nic/cn20k.c   | 11 +----------
  .../ethernet/marvell/octeontx2/nic/otx2_common.c | 16 ++++++----------
  .../ethernet/marvell/octeontx2/nic/otx2_common.h |  8 ++++++++
- 4 files changed, 17 insertions(+), 22 deletions(-)
+ 3 files changed, 15 insertions(+), 20 deletions(-)
 
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn20k.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn20k.c
+index dbf173196608..65248bb0b61d 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/cn20k.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn20k.c
+@@ -242,15 +242,6 @@ int cn20k_register_pfvf_mbox_intr(struct otx2_nic *pf, int numvfs)
+ 
+ #define RQ_BP_LVL_AURA   (255 - ((85 * 256) / 100)) /* BP when 85% is full */
+ 
+-static u8 cn20k_aura_bpid_idx(struct otx2_nic *pfvf, int aura_id)
+-{
+-#ifdef CONFIG_DCB
+-	return pfvf->queue_to_pfc_map[aura_id];
+-#else
+-	return 0;
+-#endif
+-}
+-
+ static int cn20k_tc_get_entry_index(struct otx2_flow_config *flow_cfg,
+ 				    struct otx2_tc_flow *node)
+ {
+@@ -580,7 +571,7 @@ static int cn20k_aura_aq_init(struct otx2_nic *pfvf, int aura_id,
+ 		if (pfvf->nix_blkaddr == BLKADDR_NIX1)
+ 			aq->aura.bp_ena = 1;
+ 
+-		bpid_idx = cn20k_aura_bpid_idx(pfvf, aura_id);
++		bpid_idx = otx2_get_bpid_idx(pfvf, aura_id);
+ 		aq->aura.bpid = pfvf->bpid[bpid_idx];
+ 
+ 		/* Set backpressure level for RQ's Aura */
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+index 3d253132a17f..142e331cff9e 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+@@ -1055,6 +1055,7 @@ int otx2_cq_init(struct otx2_nic *pfvf, u16 qidx)
+ 	struct nix_aq_enq_req *aq;
+ 	struct otx2_cq_queue *cq;
+ 	struct otx2_pool *pool;
++	u8 bpid_idx;
+ 
+ 	cq = &qset->cq[qidx];
+ 	cq->cq_idx = qidx;
+@@ -1132,11 +1133,8 @@ int otx2_cq_init(struct otx2_nic *pfvf, u16 qidx)
+ 		if (!is_otx2_lbkvf(pfvf->pdev)) {
+ 			/* Enable receive CQ backpressure */
+ 			aq->cq.bp_ena = 1;
+-#ifdef CONFIG_DCB
+-			aq->cq.bpid = pfvf->bpid[pfvf->queue_to_pfc_map[qidx]];
+-#else
+-			aq->cq.bpid = pfvf->bpid[0];
+-#endif
++			bpid_idx = otx2_get_bpid_idx(pfvf, qidx);
++			aq->cq.bpid = pfvf->bpid[bpid_idx];
+ 
+ 			/* Set backpressure level is same as cq pass level */
+ 			aq->cq.bp = RQ_PASS_LVL_CQ(pfvf->hw.rq_skid, qset->rqe_cnt);
+@@ -1378,6 +1376,7 @@ int otx2_aura_aq_init(struct otx2_nic *pfvf, int aura_id,
+ {
+ 	struct npa_aq_enq_req *aq;
+ 	struct otx2_pool *pool;
++	u8 bpid_idx;
+ 	int err;
+ 
+ 	pool = &pfvf->qset.pool[pool_id];
+@@ -1433,11 +1432,8 @@ int otx2_aura_aq_init(struct otx2_nic *pfvf, int aura_id,
+ 		 */
+ 		if (pfvf->nix_blkaddr == BLKADDR_NIX1)
+ 			aq->aura.bp_ena = 1;
+-#ifdef CONFIG_DCB
+-		aq->aura.nix0_bpid = pfvf->bpid[pfvf->queue_to_pfc_map[aura_id]];
+-#else
+-		aq->aura.nix0_bpid = pfvf->bpid[0];
+-#endif
++		bpid_idx = otx2_get_bpid_idx(pfvf, aura_id);
++		aq->aura.nix0_bpid = pfvf->bpid[bpid_idx];
+ 
+ 		/* Set backpressure level for RQ's Aura */
+ 		aq->aura.bp = RQ_BP_LVL_AURA;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+index eecee612b7b2..f39b293cc837 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+@@ -1029,6 +1029,14 @@ static inline int otx2_tc_flower_rule_cnt(struct otx2_nic *pfvf)
+ 	return pfvf->flow_cfg->nr_flows;
+ }
+ 
++static inline u8 otx2_get_bpid_idx(struct otx2_nic *pfvf, int qidx)
++{
++	if (IS_ENABLED(CONFIG_DCB))
++		return pfvf->queue_to_pfc_map[qidx];
++
++	return 0;
++}
++
+ /* MSI-X APIs */
+ void otx2_free_cints(struct otx2_nic *pfvf, int n);
+ void otx2_set_cints_affinity(struct otx2_nic *pfvf);
 -- 
 2.43.0
 
