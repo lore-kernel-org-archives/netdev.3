@@ -1,88 +1,102 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86863A7F41;
-	Tue, 18 Aug 2026 19:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AAD3A7F41;
+	Tue, 18 Aug 2026 19:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787080277; cv=none; b=Wc9mWtLOLHQGjEh3t5Cxoxe7O1/RXDK7VDAUnFPPI6xClKhVGOOlZHxksw3Kqc+ayP5PdvYMxKB3GG5sUA/OeqM0xF4KrN3PwyG+LbVwjiov+YVgiLTQKy8P/KAZqV0M0UOy4/RtA9+vA8mqz2r+qGGffY9AGSL2nqWcUflStGw=
+	t=1787080405; cv=none; b=oud9QZa7r9qjSfQGhevl6M94J+ZsI4JEzOYIm1u0zcVOAcvcNcYyKGuLGiMD/irddJYrc66VsIecHEqDylpy73h4y687kiTyk+G+dNnjiz3ChawqaQhTItatS1kUQKP5SDBlHpobVJ3hX8/XaZ7RGEvVfj3hbKfjl/utOaFBL3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787080277; c=relaxed/simple;
-	bh=HoGkY5auIou4pLwyM5yTrJzBNyMHjxN87yrvYPyk2pk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n14EcBeLgR6CwtZu73OeXn6AtgsMQ/1tIogVcCr+LFAHZESpycdVwQul0L7/ydloXN/atuxHXq5BdrR3bw5RXhhTgtfvV7ompnh1miUFwOGLvDoHXovie5ujbBgn5U7Z/maoV831o5yBLpH9ceILlipNv2qu1YbV0DtsUNa9m8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bEYSULiH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787080405; c=relaxed/simple;
+	bh=eP6hRVJWkqC9etP0qkJGMC1lvCwtMzBJ6mFYUAnXYUA=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=bJaAaSQuXmo9Fmzt/m5k6IgBSV7vUmhZ+QUBgAJohBZScz71KTTWwjS6v8Ii97hn0IxfJAfDTY5Ql47Nq5G6H2zfA+e+aKCsqqDNP5dp2rrNprVnxt8hF2Erc7Chd6U2HKbfuG7hDjx3Ioj2l0z+KRS7PbytYs5O8a9sy5srXZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mpqLfuFc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bEYSULiH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A2D71F000E9;
-	Tue, 18 Aug 2026 19:11:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mpqLfuFc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F70B1F000E9;
+	Tue, 18 Aug 2026 19:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787080276;
-	bh=CmDb2knTC5ep3vyIeWqUF5fC8E/mg7myErS7a6E/tro=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bEYSULiHf53V5M8lq8g7q/X7gZF0Rh2tfPI0cMdJaehcgnl0VyPFKdp6XTVsB60/+
-	 UVcLxGcgduQEfoUvr4GivaGnKi9zyOm7YrrBbEbmHH7WXiJsB7v7l46sFnvUkgCQvn
-	 WchgPw1Oa2lcsmUh+dfloMDV5+3ZQZMzuxMVzQm1Lf65L9liNZ1eKLSbpRYbJVx3og
-	 LlvxCyB6qGz5+7p9xLhEQFeLADaFHsytYZ9XmZ6o9Hew5QPUJrpFNoFA+tzp+kdd9C
-	 HdPpfP0aOlux2fS1Ftrt/946ENJnwr3ShKCcs3UsfEcV+W7c4SCZG5rOXBzgQYsRCx
-	 4jybb0ElmZ3DA==
-Date: Tue, 18 Aug 2026 20:11:10 +0100
-From: Simon Horman <horms@kernel.org>
-To: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Cc: anthony.l.nguyen@intel.com,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Karol Kolacinski <karol.kolacinski@intel.com>,
-	Sergey Temerkhanov <sergey.temerkhanov@intel.com>,
-	Michal Michalik <michal.michalik@intel.com>,
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH iwl-net v3] ice: propagate ETH56G deskew poll failures
-Message-ID: <20260818191110.GK265046@horms.kernel.org>
-References: <20260815135700.54202-1-pengpeng@iscas.ac.cn>
+	s=k20260515; t=1787080403;
+	bh=cDLgtVmpaOuZdcJclkutA/Cgdtb0yCY1mrHTQhLafYI=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=mpqLfuFctnvz4mu/Mhs/ebkXa2L+M0dgiHlmlRIbQazLSzC3bQQiO1HHcWD0YzAtl
+	 ad3Cjwnj45jbcikMr0CuBt7SZZy1+zzCgEqGD9jREjVPXRk+cAGfWJtfvH5t6OJbkP
+	 EQnIsa2uTocGqEjfDiDEUzxiHWCYhRXI9vATf5q8D2Vjof3rnNk6OnE+2DAFQ7xHuS
+	 KiEjO6KVxGqpSUC5he8p2DkavCeNws7se8KRiUVQHTcJJnpHRAx1TrPKGf1emTGQxP
+	 92/ZoinIuxbQ13AdORmu+zE6ODCPCbCbSVTv4G3vDJD+8MMICHRUeIJCU3P8hZf9VF
+	 JKjJDN42/biBQ==
+Content-Type: multipart/mixed; boundary="===============2041633098559337984=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260815135700.54202-1-pengpeng@iscas.ac.cn>
+Message-Id: <4fc9c8150478b9b1f1b349068e6aac3817a8f9d80fe1e71cb31b72791bb3365d@mail.kernel.org>
+In-Reply-To: <20260818174253.492196-1-s.mahnur.a@gmail.com>
+References: <20260818174253.492196-1-s.mahnur.a@gmail.com>
+Subject: Re: [PATCH bpf] bpf: Fix NULL pointer dereference in bpf_sock_from_file
+From: bot+bpf-ci@kernel.org
+To: s.mahnur.a@gmail.com,bpf@vger.kernel.org,ast@kernel.org,daniel@iogearbox.net
+Cc: netdev@vger.kernel.org,andrii@kernel.org,s.mahnur.a@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Tue, 18 Aug 2026 19:13:23 +0000 (UTC)
 
-On Sat, Aug 15, 2026 at 09:57:00PM +0800, Pengpeng Hou wrote:
-> ice_ptp_calc_deskew_eth56g() ignores the return value of
-> read_poll_timeout(). If register reads succeed but the DESKEW valid bit
-> never appears, the timeout is treated as success. If a register read fails,
-> the poll condition can also inspect deskew_i before a successful read and
-> continue polling instead of stopping on the hard error. The function then
-> returns an int error through its u32 deskew return type.
-> 
-> Return the deskew value through an output parameter. Stop polling when
-> either the read fails or the valid bit appears, then propagate the register
-> error or the poll timeout separately before calculating and applying the
-> deskew value.
-> 
-> Fixes: 7cab44f1c35f ("ice: Introduce ETH56G PHY model for E825C products")
-> 
-> Assisted-by: Codex:gpt-5
-> Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-> ---
-> Changes since v2: https://lore.kernel.org/all/20260706144325.91320-1-pengpeng@iscas.ac.cn/
-> - capture and propagate the read_poll_timeout() result
-> - stop the poll immediately on a register read error
-> - initialize deskew_i before it is used by the poll condition
-> - do not carry the v2 Reviewed-by because the poll logic changed
+--===============2041633098559337984==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Thanks for the update.
+> commit b394c2b75945f69ef4a6312d0fa18f1cc000d0c2
+> Author: MahnurA <s.mahnur.a@gmail.com>
+> Date:   Tue Aug 18 19:42:53 2026 +0200
+>
+>     bpf: Fix NULL pointer dereference in bpf_sock_from_file
+>
+>     bpf_sock_from_file should not dereference a NULL file pointer.
+>     KASAN detects a null-ptr-deref when eBPF tracing
+>     fentry/fexit programs are attached to points such as
+>     __mmap_region and file_map_prot_check kernel functions. This can
+>     result in a NULL file pointer flowing from context to the helper.
+>
+>     A minimal check before dereferencing can fix this.
+>
+>     Fixes: b60da4955f53 ("bpf: Only provide bpf_sock_from_file with CONFIG_NET")
+>     Signed-off-by: MahnurA <s.mahnur.a@gmail.com>
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Does the Fixes: tag reference the right commit?
 
+Looking at b60da4955f53 ("bpf: Only provide bpf_sock_from_file with
+CONFIG_NET"), that commit was a pure relocation: it deleted the helper from
+kernel/trace/bpf_trace.c and re-added the identical body in net/core/filter.c,
+and moved the proto dispatch from bpf_tracing_func_proto() to
+tracing_prog_func_proto().
+
+The body it moved was already:
+
+    BPF_CALL_1(bpf_sock_from_file, struct file *, file)
+    {
+            return (unsigned long) sock_from_file(file);
+    }
+
+The unchecked dereference was introduced when the helper was first added, in
+4f19cab76136 ("bpf: Add a bpf_sock_from_file helper"), which created exactly
+that body. sock_from_file() in net/socket.c dereferences its argument
+unconditionally via 'if (likely(file->f_op == &socket_file_ops))', so the
+null-ptr-deref has existed since 4f19cab76136, not since b60da4955f53.
+
+Should the Fixes: tag be:
+
+  Fixes: 4f19cab76136 ("bpf: Add a bpf_sock_from_file helper")
+
+Practical backport impact is small because both commits landed in the v5.11
+merge window, but the tag is what stable/AUTOSEL tooling uses to pick a range,
+and it points at a commit that did not introduce the bug.
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/32172667075
+--===============2041633098559337984==--
