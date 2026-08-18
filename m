@@ -1,78 +1,61 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-b-201.mailbox.org (mout-b-201.mailbox.org [195.10.208.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C692E7398
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 21:15:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCC423D295;
+	Tue, 18 Aug 2026 21:19:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787087751; cv=none; b=I5Z/6n7S1xlrKmcLhOqsryX4V9BC1VVg+C1q50KLGNtkLN60gWHZiwnYecIewH+EoiUDzjx0pzORi+ZHlIX4cofXtwDyaGQA2WaRLRG4hpYNtbYDSIob8WZpO+EnFURTtfegFg51aLu60Y8ctoYmPYCXefl/mgNcDLX1iFlg7Zs=
+	t=1787087972; cv=none; b=hD1uUzpo9dS6n5dhsytV5zbzOYjg2YHZCbXuHgQyWtU6DZDIyQTMjz2hUp2bnlULpQ+nq3gJ0p8WmWpVzaIvvNLPKS/eKGC7o1qBugtoSoh431RmbeHhIRFDhq4PKL0mUkulr1RujSyAc/13B3gloLF/CfPI94cxNSXjZtsS0YI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787087751; c=relaxed/simple;
-	bh=zzohzy9JWobljyd6RsmmbQ2VwiVvckUNzXlvTlatJfM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uMctDuypnyM3ODlZT+3pr4/MmQjRj84B6QmQjTwdTRyeXKW80qAx69/n968JMI3PBQ0jelThqsdj7JBh/m/sAAzU686toM7fTem15oRLSlxefPMPZvaW6h+8pwbF0f9UJihdMhbkb+lzjAWwVeaj7NnHi1+GAncrx2UKIxyLUHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=mOGSbzKq; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	s=arc-20240116; t=1787087972; c=relaxed/simple;
+	bh=kQz66puCRVnLyKOloizJFDK26uF8TvoSa7iWtnW1XRM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S/l4l4jGLP2IA8iOLFGaITT2vwaEpiYgpGS12bpK0QlfHKXsKQooIsUinCkJoC9V9cmSNN51m5EEvNw0rVvILU3C/c6ZXgs8VT4wToht56V5zqTWT7ftikapel1BwY57GSCeYzTGdMJUWVmqijaYp06iBp2OmwUaXGWp7Lt4Kt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=aJIpaXrq; arc=none smtp.client-ip=195.10.208.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="mOGSbzKq"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2cc61541f8cso17345905ad.0
-        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 14:15:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1787087749; x=1787692549; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=shTsftA/wYts9OPD5P3iDM+SEC7l1+GSIH4cvo8toIA=;
-        b=mOGSbzKq3b1fKLfHAT7GR9mh1XP1b6xZiUDSa+TnccN6JHvy06Kgps9mnhVBTgMyDe
-         z/MpNkU/8X7N0OZOLM1tums5PG3/HqxUq8WfxjK0lj0gE2+ioz+5uStH/QotByXUxcU3
-         lihV2pRjPmJQGzHJsfyvs+QyWiPOB38KcZAY12hH+PR2BnVszdzjwd0Wh5n4NxeI2hLO
-         Red7pQN30tudoMYc7b6mavbydXDOjSz5MIPLR9cs+v0DDnWBbqsmAnrXnII5bM6kwG2v
-         Dj8bwzxwTavRIP1a0/8MC0R2imeNvBXiOC+njypk8l7K6meH3S998QV7w3maOorgIgMz
-         LlXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787087749; x=1787692549;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=shTsftA/wYts9OPD5P3iDM+SEC7l1+GSIH4cvo8toIA=;
-        b=TPovg4mafxJHU/sfOhpAPPWOtqXRoQ9A8B1Qo3dDt6kUcqncS4n5a7DLADzGLxpIQ6
-         3m1BKB5SEyKb05MTAOtIyBG4ihL4et0lEZWD2HcoKWJSiBVK3CdHQkAZJRZOD7d8sF9E
-         73JmA4KNaqPzD95mePcLUnP8V7DSpY46s9VMpX3kSyvvVCZ9EAJjddoLoWBMtCSKkMwc
-         8iX36TntxyaPaidDOhEA5YnvOxiUKPubFFJqFFE7RNyH4z55Z2ZDnCeQ2iDbmErL1E8T
-         8TAN4rFPgEeNK4/7R4pzEs+KsPsXDrwS68lv/kwFqQqFV5PLZFBOuCGHwZDG34ip3AxY
-         cbqQ==
-X-Gm-Message-State: AOJu0Yw/JORptU98VaHZkfY+TA1jJ1JGtSt5/9muaIbWHzppEYEuQM4R
-	oBbKTItBZY2r3nEt8dry2OOw2nzZHeTzEpKt0r5N13tZGZ0MJCxZG5SFkoLDCqkYFXhz3hkYZIq
-	tVm+Q
-X-Gm-Gg: AR+sD10rXOtrxy2BOrRX10nv8HdjSOAuwJ8QDHu0feZXnzjpK0gxhAabTGYyYvhp/oY
-	jLT3eb1SurGM1Q46Gv4oPJlc5gNuVdlJTUffzSm4FM1rf1WeAYbfw7y39HYjaWhNmw4doqcKKZJ
-	fszrF9pqWHqNQ5zDoUEGg14hhQPCioAecYVBWA04Eun9Cl1uAllSKx8RbUDd20PcWs2+FJ71g1A
-	118e6yRzKPIKiImZrLePXdGe3TkbBhBQmkRzqyJvkI2SlMtuXKE3PO7gaSnoIVdf6xb4oaVhPZL
-	3iiiy0q/cJudiDY/S6oRGWUZ9/8r16SIvR35gAfZJR0q/YUDOqS9DRGx1rxJ4oGj1uRXe01lZa3
-	8i4jOa3J/cQ9/eemIvGgaCl8p3QhEUWl5C3B5wjmU8aiDW13fvsGSeOlJVDGvBGUVGmoTpra/Yh
-	9IANFKDkYEgmb/UIf4Bwv2LFUF28+lTslheSPMgi/mMQ==
-X-Received: by 2002:a17:90b:5630:b0:38e:42f5:d096 with SMTP id 98e67ed59e1d1-3957f68f7bcmr272542a91.0.1787087749324;
-        Tue, 18 Aug 2026 14:15:49 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:59::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3957f96cb6bsm71220a91.2.2026.08.18.14.15.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Aug 2026 14:15:48 -0700 (PDT)
-From: Joe Damato <joe@dama.to>
-To: netdev@vger.kernel.org,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="aJIpaXrq"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-b-201.mailbox.org (Postfix) with ESMTPS id 4hPj5g54wSzLlp3;
+	Tue, 18 Aug 2026 23:10:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
+	s=MBO0001; t=1787087415;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=7Q3hDPXp0xk1P22OvHP1aQ20Ay86PDu6Al/V+H6iHXk=;
+	b=aJIpaXrqgRbgJvUEIOfqpyZ/s28Z8p13Zx8IaLm9q/eQByw1p5RWZGXrU8BviWTOuC0Laf
+	jjSya8Jp7TU+emxahfCFfQSLQur/5wn2iaJSqDAVG76NZ4kM3iiKo3icvjPreGnRysa2JW
+	uqrGKkC8kDs9AIrH8Mzngu/82a8OTWbPkDRSyeZFUsrn1Ex1ViJ3J+hVIlKoIMx9NGZudz
+	RIC5AT0zgiLjqgzBW+OJQKJj3InkMCkyOJFmYlJYMEZNPlVZaAttNHVhu5UGmEtd+odjTl
+	2FgGatBz3s10aK0GUM9R6y6MkFE353zM6fPlwQJnQuzNzSRL+/UxFzlVfdTP3Q==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=none;
+	spf=pass (outgoing_mbo_mout: domain of ralf@mandelbit.com designates 2001:67c:2050:b231:465::2 as permitted sender) smtp.mailfrom=ralf@mandelbit.com
+From: Ralf Lici <ralf@mandelbit.com>
+To: Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	netdev@vger.kernel.org
+Cc: Ralf Lici <ralf@mandelbit.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Boris Pismenny <borisp@nvidia.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Joe Damato <joe@dama.to>
-Cc: horms@kernel.org,
-	linux-kernel@vger.kernel.org,
+	Emeel Hakim <ehakim@nvidia.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Simon Horman <horms@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH net] net: bnxt: ring the doorbell when SW USO exits early
-Date: Tue, 18 Aug 2026 14:15:39 -0700
-Message-ID: <20260818211540.2991183-1-joe@dama.to>
-X-Mailer: git-send-email 2.53.0
+Subject: [PATCH net v2] net/mlx5e: advertise MACsec offload only when supported
+Date: Tue, 18 Aug 2026 23:09:38 +0200
+Message-ID: <1b7ebced14243c1b342923a25bcc44ec77c45907.1787086511.git.ralf@mandelbit.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,107 +63,65 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4hPj5g54wSzLlp3
 
-When a burst of packets is handed down to the driver, the driver defers
-the doorbell to the end by setting txr->kick_pending = 1. The normal TX
-path handles this, but the SW USO path can miss it if it returns
-early.
+Commit 339ccec8d43d ("net/mlx5: Enable MACsec offload feature for VLAN
+interface") added NETIF_F_HW_MACSEC unconditionally to vlan_features so
+that VLAN devices could inherit MACsec offload support.
 
-If bnxt_sw_udp_gso_xmit runs but returns early with NETDEV_TX_BUSY and
-txr->kick_pending was previously set to 1, then the TX queue can
-stall because the driver wrote some BDs but never wrote the doorbell.
-The device won't know to do the TX which would generate the completion
-that would wake the queue back up.
+mlx5e_build_nic_netdev subsequently copies vlan_features into
+hw_features and features. As a result, all mlx5e NIC netdevices
+advertise MACsec hardware offload, even when the firmware does not
+support it and the driver does not install macsec_ops.
 
-Fix the success case of bnxt_sw_udp_gso_xmit by clearing
-txr->kick_pending when writing the doorbell. When bnxt_sw_udp_gso_xmit
-returns, check txr->kick_pending and write the doorbell if
-bnxt_sw_udp_gso_xmit returned early and a doorbell is pending.
+Set the MACsec feature bits in mlx5e_macsec_build_netdev, after device
+capabilities have been validated. This preserves MACsec-over-VLAN
+support and the ethtool feature control on capable devices, without
+advertising either on unsupported hardware.
 
-This TX queue stall was observed on a production system with a netdev TX
-watchdog informing about the queue stall.
-
-Fixes: cc5d90667db8 ("net: bnxt: Implement software USO")
+Fixes: 339ccec8d43d ("net/mlx5: Enable MACsec offload feature for VLAN interface")
 Cc: stable@vger.kernel.org
-Signed-off-by: Joe Damato <joe@dama.to>
+Signed-off-by: Ralf Lici <ralf@mandelbit.com>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 17 +++++++++++++----
- drivers/net/ethernet/broadcom/bnxt/bnxt.h     |  2 ++
- drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c |  4 +---
- 3 files changed, 16 insertions(+), 7 deletions(-)
+The issue was reproduced on a ConnectX-4 Lx: ethtool -k reported
+"macsec-hw-offload: on", while creating a MACsec interface with "offload
+mac" failed with EOPNOTSUPP.
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index bc7b37cb74a7..b6cc755f7a04 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -459,8 +459,7 @@ u16 bnxt_xmit_get_cfa_action(struct sk_buff *skb)
- 	return md_dst->u.port_info.port_id;
+Changes since v1 https://lore.kernel.org/netdev/0a27c8b7308121fd00c528fc99fc3866782d3990.1786783174.git.ralf@mandelbit.com/
+- Set NETIF_F_HW_MACSEC in hw_features as well, preserving ethtool
+  configurability and restoration after an eswitch mode cycle (Sashiko).
+
+ drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c | 2 ++
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c         | 1 -
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
+index daff53ba7d09..38a3415acf7a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
+@@ -1724,6 +1724,8 @@ void mlx5e_macsec_build_netdev(struct mlx5e_priv *priv)
+ 	mlx5_core_dbg(priv->mdev, "mlx5e: MACsec acceleration enabled\n");
+ 	netdev->macsec_ops = &macsec_offload_ops;
+ 	netdev->features |= NETIF_F_HW_MACSEC;
++	netdev->hw_features |= NETIF_F_HW_MACSEC;
++	netdev->vlan_features |= NETIF_F_HW_MACSEC;
+ 	netif_keep_dst(netdev);
  }
  
--static void bnxt_txr_db_kick(struct bnxt *bp, struct bnxt_tx_ring_info *txr,
--			     u16 prod)
-+void bnxt_txr_db_kick(struct bnxt *bp, struct bnxt_tx_ring_info *txr, u16 prod)
- {
- 	/* Sync BD data before updating doorbell */
- 	wmb();
-@@ -485,6 +484,7 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	struct bnxt_sw_tx_bd *tx_buf;
- 	__le32 lflags = 0;
- 	skb_frag_t *frag;
-+	netdev_tx_t ret;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index f0407a850ea8..cb8ebca58ce8 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -5851,7 +5851,6 @@ static void mlx5e_build_nic_netdev(struct net_device *netdev)
  
- 	i = skb_get_queue_mapping(skb);
- 	if (unlikely(i >= bp->tx_nr_rings)) {
-@@ -510,8 +510,17 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
- #endif
- 	if (skb_is_gso(skb) &&
- 	    (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4) &&
--	    !(bp->flags & BNXT_FLAG_UDP_GSO_CAP))
--		return bnxt_sw_udp_gso_xmit(bp, txr, txq, skb);
-+	    !(bp->flags & BNXT_FLAG_UDP_GSO_CAP)) {
-+		/* if the USO code exits early (for example, it returns
-+		 * NETDEV_TX_BUSY) make sure we ring any outstanding doorbells
-+		 * for any BDs in the ring before returning.
-+		 */
-+		ret = bnxt_sw_udp_gso_xmit(bp, txr, txq, skb);
-+		if (txr->kick_pending)
-+			bnxt_txr_db_kick(bp, txr, txr->tx_prod);
-+
-+		return ret;
-+	}
- 
- 	free_size = bnxt_tx_avail(bp, txr);
- 	if (unlikely(free_size < skb_shinfo(skb)->nr_frags + 2)) {
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-index dc8ec5e5733e..60fbe3cabcf9 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-@@ -3009,6 +3009,8 @@ int bnxt_reserve_rings(struct bnxt *bp, bool irq_re_init);
- void bnxt_tx_disable(struct bnxt *bp);
- void bnxt_tx_enable(struct bnxt *bp);
- u16 bnxt_xmit_get_cfa_action(struct sk_buff *skb);
-+void bnxt_txr_db_kick(struct bnxt *bp, struct bnxt_tx_ring_info *txr,
-+		      u16 prod);
- void bnxt_sched_reset_txr(struct bnxt *bp, struct bnxt_tx_ring_info *txr,
- 			  u16 curr);
- void bnxt_report_link(struct bnxt *bp);
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
-index f317f60414e8..3c58b1d94ac9 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
-@@ -223,9 +223,7 @@ netdev_tx_t bnxt_sw_udp_gso_xmit(struct bnxt *bp,
- 	netdev_tx_sent_queue(txq, skb->len);
- 
- 	WRITE_ONCE(txr->tx_prod, prod);
--	/* Sync BDs before doorbell */
--	wmb();
--	bnxt_db_write(bp, &txr->tx_db, prod);
-+	bnxt_txr_db_kick(bp, txr, prod);
- 
- 	if (unlikely(bnxt_tx_avail(bp, txr) <= bp->tx_wake_thresh))
- 		netif_txq_try_stop(txq, bnxt_tx_avail(bp, txr),
+ 	netdev->vlan_features    |= NETIF_F_SG;
+ 	netdev->vlan_features    |= NETIF_F_HW_CSUM;
+-	netdev->vlan_features    |= NETIF_F_HW_MACSEC;
+ 	netdev->vlan_features    |= NETIF_F_GRO;
+ 	netdev->vlan_features    |= NETIF_F_TSO;
+ 	netdev->vlan_features    |= NETIF_F_TSO6;
 
 base-commit: e2466392a0b8496000e12181cb1ee1535eb0da25
 -- 
-2.53.0-Meta
+2.54.0
 
