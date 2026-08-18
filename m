@@ -1,43 +1,53 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44CF53EC2FF;
-	Tue, 18 Aug 2026 19:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86863A7F41;
+	Tue, 18 Aug 2026 19:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787079981; cv=none; b=Ev75Ow5x9WUNoBC+kfCEz5hqzFr8M3JS/OyG9/cVjLDoyNNwl+DUcFt5LSEcF4sIygl1zwhZ+ma0PAx5pV510nKlSOKYrYm04xuSL44mf3Ey0uQZihn53DxZxlj9LoEyj3j+Z/WCBeXw//Tq8yEmVMwGWBH/i99cgsB3V37ya4o=
+	t=1787080277; cv=none; b=Wc9mWtLOLHQGjEh3t5Cxoxe7O1/RXDK7VDAUnFPPI6xClKhVGOOlZHxksw3Kqc+ayP5PdvYMxKB3GG5sUA/OeqM0xF4KrN3PwyG+LbVwjiov+YVgiLTQKy8P/KAZqV0M0UOy4/RtA9+vA8mqz2r+qGGffY9AGSL2nqWcUflStGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787079981; c=relaxed/simple;
-	bh=3y7KlyBbyTwF2kNZlJEnsO+aeV4LkXrOERAaoNY+r0w=;
+	s=arc-20240116; t=1787080277; c=relaxed/simple;
+	bh=HoGkY5auIou4pLwyM5yTrJzBNyMHjxN87yrvYPyk2pk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FtdbTn9IjY2tlzgyF0DsMbjNcfZc3ciHuKiVoInBATeO5P8CiBGGrQB8ZwB9MBng4QkLqWgaaj8scKY332EDPfVlhGRk7QqOYomHSbiigzoJA5+GvHh7N1w6WkhzGenVqC8oITFN4ADkww7a4Q3Qo9pgsz/5RcLpm1PtFjdyQ14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R0asX7U6; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=n14EcBeLgR6CwtZu73OeXn6AtgsMQ/1tIogVcCr+LFAHZESpycdVwQul0L7/ydloXN/atuxHXq5BdrR3bw5RXhhTgtfvV7ompnh1miUFwOGLvDoHXovie5ujbBgn5U7Z/maoV831o5yBLpH9ceILlipNv2qu1YbV0DtsUNa9m8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bEYSULiH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R0asX7U6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6039B1F000E9;
-	Tue, 18 Aug 2026 19:06:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bEYSULiH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A2D71F000E9;
+	Tue, 18 Aug 2026 19:11:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787079980;
-	bh=uFd0SqHI7GrMRXheHXKaCorLnEBVe2vzTvlP36T9HRM=;
+	s=k20260515; t=1787080276;
+	bh=CmDb2knTC5ep3vyIeWqUF5fC8E/mg7myErS7a6E/tro=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=R0asX7U6pH0vejhmDYKTGRIyBPq0/z0jF0DFRytL5twBwdMy8VOqAzSeCuTUJBmCZ
-	 OmGhdEeIywech6egWQ8jpHL+WBDxAfldkiBn0xvTKSXUSNh1mm1yN3ypueUOAh2Doc
-	 LalK/nMwixKgorT75SNKp8wvkA1AsEYeLHkqANBlFe/0xPH04slU6kwqK4+v6l1aOv
-	 6ObpkcxwjReYVQpjG297jyyRzxJAaFjhgcd/1dxvfTuLBJQctBR+FPX+itVBTiObm1
-	 uxZSYNA1ansZ+Aq5BGbIfYYOywRWgFoj73WhASJeh+yG3op5bWkbWnL2rVKGsrQ1zt
-	 wpVM1s2BjMn7w==
-Date: Tue, 18 Aug 2026 20:06:15 +0100
+	b=bEYSULiHf53V5M8lq8g7q/X7gZF0Rh2tfPI0cMdJaehcgnl0VyPFKdp6XTVsB60/+
+	 UVcLxGcgduQEfoUvr4GivaGnKi9zyOm7YrrBbEbmHH7WXiJsB7v7l46sFnvUkgCQvn
+	 WchgPw1Oa2lcsmUh+dfloMDV5+3ZQZMzuxMVzQm1Lf65L9liNZ1eKLSbpRYbJVx3og
+	 LlvxCyB6qGz5+7p9xLhEQFeLADaFHsytYZ9XmZ6o9Hew5QPUJrpFNoFA+tzp+kdd9C
+	 HdPpfP0aOlux2fS1Ftrt/946ENJnwr3ShKCcs3UsfEcV+W7c4SCZG5rOXBzgQYsRCx
+	 4jybb0ElmZ3DA==
+Date: Tue, 18 Aug 2026 20:11:10 +0100
 From: Simon Horman <horms@kernel.org>
-To: Jiangshan Yi <yijiangshan@kylinos.cn>
-Cc: skalluru@marvell.com, manishc@marvell.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, vladz@broadcom.com, eilong@broadcom.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	13667453960@163.com, stable@vger.kernel.org
-Subject: Re: [PATCH] bnx2x: fix double free in bnx2x_init_firmware() error
- path
-Message-ID: <20260818190615.GJ265046@horms.kernel.org>
-References: <20260815122149.951215-1-yijiangshan@kylinos.cn>
+To: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Cc: anthony.l.nguyen@intel.com,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Karol Kolacinski <karol.kolacinski@intel.com>,
+	Sergey Temerkhanov <sergey.temerkhanov@intel.com>,
+	Michal Michalik <michal.michalik@intel.com>,
+	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH iwl-net v3] ice: propagate ETH56G deskew poll failures
+Message-ID: <20260818191110.GK265046@horms.kernel.org>
+References: <20260815135700.54202-1-pengpeng@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,22 +56,33 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260815122149.951215-1-yijiangshan@kylinos.cn>
+In-Reply-To: <20260815135700.54202-1-pengpeng@iscas.ac.cn>
 
-On Sat, Aug 15, 2026 at 08:21:49PM +0800, Jiangshan Yi wrote:
-> bnx2x_init_firmware() frees bp->init_ops, bp->init_data and
-> bp->init_ops_offsets in its error path without setting them to NULL.
-> The cleanup function bnx2x_release_firmware() frees the same three
-> pointers unconditionally, so if init_firmware fails and
-> release_firmware is later called (e.g. from __bnx2x_remove or through
-> the function state machine), all three are freed a second time.
+On Sat, Aug 15, 2026 at 09:57:00PM +0800, Pengpeng Hou wrote:
+> ice_ptp_calc_deskew_eth56g() ignores the return value of
+> read_poll_timeout(). If register reads succeed but the DESKEW valid bit
+> never appears, the timeout is treated as success. If a register read fails,
+> the poll condition can also inspect deskew_i before a successful read and
+> continue polling instead of stopping on the hard error. The function then
+> returns an int error through its u32 deskew return type.
 > 
-> Set each pointer to NULL after kfree() in the error path so that the
-> subsequent kfree(NULL) in bnx2x_release_firmware() is a safe no-op.
+> Return the deskew value through an output parameter. Stop polling when
+> either the read fails or the valid bit appears, then propagate the register
+> error or the poll timeout separately before calculating and applying the
+> deskew value.
 > 
-> Fixes: 94a78b79cb5f ("bnx2x: Separated FW from the source.")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jiangshan Yi <yijiangshan@kylinos.cn>
+> Fixes: 7cab44f1c35f ("ice: Introduce ETH56G PHY model for E825C products")
+> 
+> Assisted-by: Codex:gpt-5
+> Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+> ---
+> Changes since v2: https://lore.kernel.org/all/20260706144325.91320-1-pengpeng@iscas.ac.cn/
+> - capture and propagate the read_poll_timeout() result
+> - stop the poll immediately on a register read error
+> - initialize deskew_i before it is used by the poll condition
+> - do not carry the v2 Reviewed-by because the poll logic changed
+
+Thanks for the update.
 
 Reviewed-by: Simon Horman <horms@kernel.org>
 
