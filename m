@@ -1,87 +1,98 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8553AA4F8;
-	Tue, 18 Aug 2026 14:51:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6F42D061C
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 14:53:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787064669; cv=none; b=lBKZ2SDqlZyzhr2p1S5/UycPIMdLyEtIt8fHB0Fc9b9TldyWS+uwajbgL3eAOlv2aaUH56D3l2YuXn3c/HDxBu3fYVbbM0tqXW//e7fjD1H7auKpCxJvDSvBIygEf9FOBIa79BvsiyImU/lpg8Xhzlw9xBB8PeL6/brpiVGSEE8=
+	t=1787064818; cv=none; b=g9tDMU18IrBz6vJBR2D2+WfV4ye00x2Wjf5jaEa/ipjXnf7LuKeP/wqk6BzWfveNm6+S+c4iuGL9AE8XQ69rCWjYM77vi28luQBdMFghZXhZ+A3Orjz7s47GoeH8VZafVHO1JW4uaFuRRVs4S1ilZUWvfVSzxvASvVeWwmabctE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787064669; c=relaxed/simple;
-	bh=FOblcIZs76inEOf6cemT4oqwUhznzJ8u/Ux32Eo5qKc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CEAvh5Xe2dez9+rJLMOmR3n1yuBop/jIE8k4ReJyXhKmh1y7lpVs6zEFgCOixt58on8Y6WQ74qrytZNTSOcYS4uIFhqfhDMkEumBXQoRzFDzDOnQroxllQXeH9HMlvRHCkl51+90VQobV1lE+5UWuP+UXThIkNFpMd9dFNTu0mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=3Ze1aY/8; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1787064818; c=relaxed/simple;
+	bh=neK2JaH11CvGMxWIp1XEqkxU0+X+dCwL3hHK/4h4EX4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Jtfo0ay0keY8HcxgnvXX1Aw/Zu0QG4rwA478ZWTspndiT1lcYroVtMpaTK9XQE0RyYX5kXKGqio803G8tOely7XHjb+gB4s0UEFdu/rqI/OvAssk8eVGh6u74x2Mktx9gpQ52YkVnaH9Y0fQXfufCDs1UGdi0Osbu91KBtAOK+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GM6OC7ry; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="3Ze1aY/8"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=A5T+Ga75WOdMgw8u9Vqj7YY2NFiNCpLgUc0SP6B+C4Q=; b=3Ze1aY/8FewY2yRsE0/8Sk0WLf
-	QkgRK0rugTWCWxNIKM+AHf3E+suaS4EYyqlQ5i8eae8WPIPPMepxILtO7tDYLuTpvXYxJGwylR0os
-	VBHccL1AE/a3O3mdnGMdZRvokIrphDgOWmKBgHytL1hfz2oubvFy/NNKhVqxudHFtXzLvspx5FN3H
-	hyHZuKs9kvFB+MllMdtCZT2vozs8/OzBj07oagkc818mAxdqd6m/tuneWzhl5PbpvsRjfCZwtb76P
-	46vuRgX+Ggt8VYhi4VZZwwlc5pg87MWvbKvCFWJrm/AUqxkQcX6Z3wvgZ9d4xhCMKQWC4SPUchZtP
-	RnB3+F2g==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wwL9a-00000008CZO-3Lvm;
-	Tue, 18 Aug 2026 14:51:02 +0000
-Message-ID: <1aa6cc61-cc55-4186-91f7-e072af4e1975@infradead.org>
-Date: Tue, 18 Aug 2026 07:51:01 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GM6OC7ry"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8612B1F000E9;
+	Tue, 18 Aug 2026 14:53:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787064816;
+	bh=neK2JaH11CvGMxWIp1XEqkxU0+X+dCwL3hHK/4h4EX4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=GM6OC7ryr4qSDg6PuZ+CZYelvm0V99JVbkDZEjHp640t/vN2e60J7/B5nOyffBCWo
+	 ZdZWCqtnISKA+TfmxspOgNC+vq56kt0tAqbY4wQKdAHEMzD0MpS3bXb48gL7yEqnfW
+	 JL2CAHqJXTCiceK/Dze8H42gquBt7WcU1xhJUnsapa1i/19W/1BzH03GMHDX1TIWjg
+	 J9EE/jSrgZqMJjqMot+TPqeWW13wIGwdXlVJWu61ikb2MgDNqpgPbjkIJBnkHXbjb1
+	 K/o0WjLbbVidxa5Eqz1XLx8suOKb49kdIOdkkoyE5BBmjUzowwUG5FU+c4EeImzQ1H
+	 kOQOhqwQnTWCg==
+Date: Tue, 18 Aug 2026 07:53:35 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Kurt Kanzenbach <kurt@linutronix.de>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Maxime
+ Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, Lorenzo Bianconi <lorenzo@kernel.org>
+Subject: Re: [PATCH net-next] net: stmmac: stm32: Set TSO/TBS Tx queues
+ default settings
+Message-ID: <20260818075335.48936b08@kernel.org>
+In-Reply-To: <87mrujzzjv.fsf@jax.kurt.home>
+References: <20260812-stm32mp2_txtime-v1-1-f9e2462cc85d@linutronix.de>
+	<20260817103337.74c30adc@kernel.org>
+	<87mrujzzjv.fsf@jax.kurt.home>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs: oa-tc6-framework: Fix link to specification
-To: Stefan Wahren <wahrenst@gmx.net>,
- Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>
-Cc: netdev@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20260818135958.17311-1-wahrenst@gmx.net>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20260818135958.17311-1-wahrenst@gmx.net>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, 18 Aug 2026 08:57:08 +0200 Kurt Kanzenbach wrote:
+> On Mon Aug 17 2026, Jakub Kicinski wrote:
+> > On Wed, 12 Aug 2026 08:28:57 +0200 Kurt Kanzenbach wrote: =20
+> >> TSO and TBS cannot coexist. Use the first queue with TSO and the rest =
+for
+> >> TBS. Tx queues with TBS can support etf qdisc hw offload. This is done
+> >> similar to dwmac-imx and dwmac-intel. =20
+> >
+> > Can you explain your use case? =20
+>=20
+> I want to use ETF Qdisc with hardware offload, which is currently not
+> possible on the stm32mp2.
 
+Do you need multiple queues for ETF/normal traffic?
+Or one ETF and one "normal"?
 
-On 8/18/26 6:59 AM, Stefan Wahren wrote:
-> Current link for 10BASE-T1x MAC-PHY Serial Interface Specification
-> doesn't work - it returns 404. Update the link to the working one.
-> 
-> Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+How do you sort the traffic between the queues?
 
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Thanks.
+> > And how many queues the device has in total? =20
+>=20
+> The stm32mp2 has four Tx and two Rx queues.
+>=20
+> > You say "TSO and TBS cannot coexist" but can any queue on your
+> > platform be configured to support either feature? =20
+>=20
+> I think so. The data sheet says: "Do not enable time-based scheduling for
+> channels on which the TSO feature is enabled.". But, I didn't find any
+> limitations on what queue/channel can enable TBS.
 
-> ---
->  Documentation/networking/oa-tc6-framework.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/networking/oa-tc6-framework.rst b/Documentation/networking/oa-tc6-framework.rst
-> index 013824078cea..0feda2f9d840 100644
-> --- a/Documentation/networking/oa-tc6-framework.rst
-> +++ b/Documentation/networking/oa-tc6-framework.rst
-> @@ -77,7 +77,7 @@ Reference
->  
->  10BASE-T1x MAC-PHY Serial Interface Specification,
->  
-> -Link: https://opensig.org/download/document/OPEN_Alliance_10BASET1x_MAC-PHY_Serial_Interface_V1.1.pdf
-> +Link: https://opensig.org/wp-content/uploads/2023/12/OPEN_Alliance_10BASET1x_MAC-PHY_Serial_Interface_V1.1.pdf
->  
->  Hardware Architecture
->  ---------------------
+=F0=9F=91=8D=EF=B8=8F
 
--- 
-~Randy
+> > If yes why are we configuring this statically instead of making
+> > appropriate configuration based on qdisc or some other uAPI knob? =20
+>=20
+> It seems like a static configuration in the driver today. I basically
+> followed the same convention as dwmac-imx, dwmac-intel, dwmac-mediatek
+> and dwmac-qcom-ethqos. Only dwmac-socfpga does it differently.
+>=20
+> Tx Launch Time requires a different DMA descriptor layout. Currently
+> tc_setup_etf() just returns -EINVAL if the DMA configuration is not
+> setup appropriately. I guess a dynamic configuration requires to change
+> the DMA config and perform a full release/open cycle.
+
+release/open is not ideal but still better than hardcoding?
