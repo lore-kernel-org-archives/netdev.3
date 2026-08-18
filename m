@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FDB4B049B
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 01:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4715A4A23
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 01:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787017639; cv=none; b=aY7daJykARYLnS5FW0x7aP6FIuCaLfcXGl9VX++mik+CLU46ReVLi1BnrJXw5y8i0FsuNLTEFOCDQwWPy6NCK91Xx50Z6AundwpMIKTIMCX47/ukR2s3hc3satBpCWxIBaebtlEv35tbqnX8VqB6pPj0JmS+UXXzyDUlMqXhX8U=
+	t=1787017640; cv=none; b=OQR+mAPONOfXjp0jRKRtWP+jpT1ViwkTGb1z2tgBt9eoIrbnck5YYR4sqWXrb6yAvWVzAyCeXv3oV4jZOVI6V2ighycNWMFAB0VmoKKeHviEi3kw3IIeZIpPcYile/d4glTohGpVU1wFgKazhlCVX+Tnn7Erjk1P3FpdwnTHq/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787017639; c=relaxed/simple;
-	bh=ieDAxdeo8n+BshGWRhtjYx1zleyeZBJGIIjIz4F1D8U=;
+	s=arc-20240116; t=1787017640; c=relaxed/simple;
+	bh=og3fOjFk/2stJF+nKuCPVGaVKvJY1vE3XOz+83CVuco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hq/aF3NUA9bk1gs1juHwoVS1BMZbErFOEkIxQClSTLPEzKh7LtwCbJ3FiJ/zjyYOvbu6zGNWVArgkk3IylutZyX6g1RJG9h8EPkXAIKXQOOewK+TcmQ8PLeTGd/+2pVRei9X+HFKy0DiMYfRAJpFyPGr0hF2isqYgzSvd5GOucQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F1P/frJv; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=DZw7+M6xbbrLh4UCHC6JfBjRUgi3AY8RakV/RZv2jamfUazeW/qbsImDAPLtU5GaAQdsbwBNghGR0XiDhp1cxC04Vts9coePp0u6DuBqssXRFn848zaFoL8d8Ru87FsVBDsvi9YSqJa+PmKEY+cR5kqU+3iySbjXAwEM64y7PF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l6wPuGQP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F1P/frJv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E8351F000E9;
-	Tue, 18 Aug 2026 01:47:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l6wPuGQP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEDE11F00A3A;
+	Tue, 18 Aug 2026 01:47:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787017637;
-	bh=HmplJZQjfBhgX90BI6gxVRCJzgCHyHxoC55haeiIcnQ=;
+	s=k20260515; t=1787017639;
+	bh=vBl4BR2i70MzIRt+YA2cPqlMbq5OaTO/K6e/n4feFVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=F1P/frJvEfNFR/mtmSnQqLUhDO7YJr1J+D+co7hZKp/d1V0CUrwAF38BoEMF46q/3
-	 V82klElwrQcZ9DBytSxR6rN6WCgccXgiRIL4mf06GoNBgKXVDvlb4Dvv274RDwkGrA
-	 PEVxdCDlyAd/PrWf2P8mMZkqnzUGngsAncBfB0jiftB5tFgz4eKY4elHRdo2BWTrbj
-	 Cg3Dleej/7A/EG44eaam3FoON67akZ/pDQ37stTxK70dicV7mLaimIY/x2WGhqTx6m
-	 5bH6BNur+IVRvn28nFITAJJ01FCoJrWh2NltVE7khIpsw3IxkiRldpI4w2qzejVbb9
-	 9BBNwe8smmzIw==
+	b=l6wPuGQP+k49kEZgBoWnHIdY+lhRl6QgCMm6Xqv33rwviGrYkPN4OuI2ktpteZSbX
+	 U73f1xAqAlmBk/DdbtPh2TkzHuioO1gPgyv1HpjS9xC623sDhjr6J+t29RW/fEpWND
+	 go4JPdIsxeTPoG5ogDlYNcppfr//JP9+E1U2asIbThmXbExRMU1W3YMVqI0ibWlSYb
+	 gIN/tLZoIeJ7drD238AmK0nuGyuhcG77MCmy5496qrcD1b9KHgM7zyU7fHACv6Di9Q
+	 3B+miha5oFU/5i0RHYZzGh/kDlbfeKkSiQC1Q45GP5NRXP6cL5ekEI2Rc709mOl/CU
+	 bdN0ZIFzghZWg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: mmc@linux.ibm.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -43,12 +43,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	davemarq@linux.ibm.com,
 	bjking1@linux.ibm.com,
 	shaik.abdulla1@ibm.com
-Subject: Re: [PATCH net-next v5 01/15] ibmveth: Add MQ RX hypercall wrappers and call definitions
-Date: Mon, 17 Aug 2026 18:47:10 -0700
-Message-ID: <20260818014710.3853684-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v5 02/15] ibmveth: Prepare MQ RX adapter data structures
+Date: Mon, 17 Aug 2026 18:47:17 -0700
+Message-ID: <20260818014717.3853945-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260814073642.24630-2-mmc@linux.ibm.com>
-References: <20260814073642.24630-2-mmc@linux.ibm.com>
+In-Reply-To: <20260814073642.24630-3-mmc@linux.ibm.com>
+References: <20260814073642.24630-3-mmc@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,89 +60,138 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-ibmveth: Add MQ RX hypercall wrappers and call definitions
+ibmveth: Prepare MQ RX adapter data structures
 
-This adds the PHYP call IDs for H_REG_LOGICAL_LAN_QUEUE,
-H_ADD_LOGICAL_LAN_BUFFERS_QUEUE and H_FREE_LOGICAL_LAN_QUEUE, raising
-MAX_HCALL_OPCODE accordingly, and adds matching static inline wrappers in
-ibmveth.h.  It is plumbing only, with no runtime behaviour change until a
-later commit enables multi_queue.
+This converts the single-instance RX state in struct ibmveth_adapter (napi,
+buffer_list_addr/dma, rx_queue, rx_buff_pool) into queue-indexed arrays sized
+by a new IBMVETH_MAX_RX_QUEUES, and adds queue_handle[]/queue_irq[] plus
+multi_queue/num_rx_queues bookkeeping. All existing references are
+mechanically retargeted to index 0, and IBMVETH_MAX_RX_QUEUES is kept at 1 so
+behaviour is unchanged.
 
-> diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
-> index d87713668ed30..c0ef03cad9b9a 100644
-> --- a/drivers/net/ethernet/ibm/ibmveth.h
-> +++ b/drivers/net/ethernet/ibm/ibmveth.h
-> @@ -66,6 +66,142 @@ static inline long h_add_logical_lan_buffers(unsigned long unit_address,
+No Link: tags are present in the commit header.
+
+> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+> index 73e051d26b9d8..7cb828b476c1b 100644
+> --- a/drivers/net/ethernet/ibm/ibmveth.c
+> +++ b/drivers/net/ethernet/ibm/ibmveth.c
 
 [ ... ]
 
-> +/**
-> + * h_add_logical_lan_buffers_queue - Add buffers to subordinate queue
-> + * @unit_address: Device unit address
-> + * @queue_handle: Queue handle from h_register_logical_lan_queue()
+> @@ -482,24 +486,24 @@ static int ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
+>  
+>  	mb();
+>  
+> -	atomic_dec(&(adapter->rx_buff_pool[pool].available));
+> +	atomic_dec(&adapter->rx_buff_pool[0][pool].available);
+>  
+>  	return 0;
+>  }
 
 [Severity: Low]
-This isn't a bug, but do these two kernel-doc blocks in the same header
-contradict each other about which handles are valid here?
+This isn't a bug, but the v5 change notes below the --- separator say the
+"extra atomic_dec parentheses" nit from v4 was dropped, and that "this tip
+patch keeps only the mechanical [0] retargeting".
 
-h_add_logical_lan_buffers_queue() is documented as "Add buffers to
-subordinate queue" with "@queue_handle: Queue handle from
-h_register_logical_lan_queue()", while h_register_logical_lan_with_handle()
-below says its queue 0 handle:
+The atomic_dec() in ibmveth_remove_buffer_from_pool() still drops the
+redundant inner parentheses that the baseline had:
 
- * Registers the primary receive queue (queue 0) with the hypervisor and
- * returns the queue handle. This is needed in multi-queue mode to use
- * h_add_logical_lan_buffers_queue() for all queues including queue 0.
+	-	atomic_dec(&(adapter->rx_buff_pool[pool].available));
+	+	atomic_dec(&adapter->rx_buff_pool[0][pool].available);
 
-By the end of the series the second wording is the one that matches the
-code: ibmveth_add_logical_lan_buffers() in
-drivers/net/ethernet/ibm/ibmveth.c passes
-adapter->queue_handle[queue_index] for every index, queue_index == 0
-included, and that handle comes from h_register_logical_lan_with_handle().
-
-Would it be clearer to widen the add-buffers kdoc to say the handle may
-come from either h_register_logical_lan_queue() or
-h_register_logical_lan_with_handle(), so a future caller doesn't conclude
-queue 0 must use the legacy buffer hcalls?
-
-> + * @buffersznum: Buffer size (upper 32 bits) | count (lower 32 bits)
-> + * @ioba12: Buffer addresses 1 and 2 packed ((addr1 << 32) | addr2)
-> + * @ioba34: Buffer addresses 3 and 4 packed
-> + * @ioba56: Buffer addresses 5 and 6 packed
-> + * @ioba78: Buffer addresses 7 and 8 packed
-> + * @ioba910: Buffer addresses 9 and 10 packed
-> + * @ioba1112: Buffer addresses 11 and 12 packed
-> + *
-> + * Return:
-> + *   H_SUCCESS - All buffers added successfully
-> + *   H_PARAMETER - Invalid parameters
-> + *   H_HARDWARE - Hardware error
-> + */
-> +static inline long h_add_logical_lan_buffers_queue(unsigned long unit_address,
-> +						   unsigned long queue_handle,
+Should the changelog be adjusted, or the parentheses kept as-is so the hunk
+really is index-only?
 
 [ ... ]
 
-> +/**
-> + * h_register_logical_lan_with_handle - Register primary queue and get handle
-> + * @unit_address: Device unit address
-> + * @buffer_list: DMA address of buffer list
-> + * @rec_queue: Buffer descriptor of receive queue
-> + * @filter_list: DMA address of filter list
-> + * @mac_address: MAC address
-> + * @queue_handle: Output parameter for queue handle (may be NULL)
-> + *
-> + * Registers the primary receive queue (queue 0) with the hypervisor and
-> + * returns the queue handle. This is needed in multi-queue mode to use
-> + * h_add_logical_lan_buffers_queue() for all queues including queue 0.
-> + *
-> + * Return: H_SUCCESS (0) on success, error code otherwise
-> + */
+> @@ -1876,6 +1886,10 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
+>  		netdev->features |= NETIF_F_FRAGLIST;
+>  	}
+>  
+> +	/* Initialize queue count - always 1 for now */
+> +	adapter->multi_queue = 0;
+> +	adapter->num_rx_queues = IBMVETH_DEFAULT_RX_QUEUES;
+> +
+
+[Severity: Low]
+At this commit these two assignments in ibmveth_probe() are the only accesses
+to multi_queue and num_rx_queues, and queue_handle[]/queue_irq[] have neither
+a reader nor a writer anywhere in the driver.
+
+Combined with IBMVETH_MAX_RX_QUEUES being 1U, every array conversion in this
+patch is a pure layout change with no behavioural effect.
+
+Is it worth mentioning in the commit message which later patch first consumes
+each of these fields? Reading the rest of the series, queue_irq[] and
+queue_handle[] get their first users in ibmveth_toggle_irq() and
+ibmveth_register_logical_lan_queue(), num_rx_queues is read through
+ibmveth_get_num_rx_queues(), and IBMVETH_MAX_RX_QUEUES becomes 16U in
+"ibmveth: Enable multi-queue RX receive path", so nothing is broken here.
+
+>  	if (ret == H_SUCCESS &&
+>  	    (ret_attr & IBMVETH_ILLAN_RX_MULTI_BUFF_SUPPORT)) {
+>  		adapter->rx_buffers_per_hcall = IBMVETH_MAX_RX_PER_HCALL;
+> @@ -1898,10 +1912,10 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
+>  		memcpy(pool_count, pool_count_cmo, sizeof(pool_count));
+>  
+>  	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++) {
+> -		struct kobject *kobj = &adapter->rx_buff_pool[i].kobj;
+> +		struct kobject *kobj = &adapter->rx_buff_pool[0][i].kobj;
+>  		int error;
+>  
+> -		ibmveth_init_buffer_pool(&adapter->rx_buff_pool[i], i,
+> +		ibmveth_init_buffer_pool(&adapter->rx_buff_pool[0][i], i,
+>  					 pool_count[i], pool_size[i],
+>  					 pool_active[i]);
+>  		error = kobject_init_and_add(kobj, &ktype_veth_pool,
+
+[Severity: Low]
+This is a pre-existing issue and is not introduced by this patch, which only
+rewrites rx_buff_pool[i] to rx_buff_pool[0][i] on these lines.
+
+The kobjects registered here live inside netdev_priv() memory, and the probe
+failure paths after this loop call free_netdev() without a matching
+kobject_del()/kobject_put():
+
+	rc = register_netdev(netdev);
+	if (rc) {
+		free_netdev(netdev);
+		return rc;
+	}
+
+The only teardown loop is in ibmveth_remove():
+
+	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
+		kobject_put(&adapter->rx_buff_pool[0][i].kobj);
+
+which a failed probe never reaches, so a netif_set_real_num_tx_queues() or
+register_netdev() failure leaves live .../poolN sysfs directories backed by
+freed storage.
+
+Worth noting this is addressed later in the same series: "ibmveth: Enable
+multi-queue RX receive path" adds ibmveth_probe_cleanup(), which calls
+ibmveth_put_pool_kobjs() before free_netdev() on both probe failure paths.
 
 [ ... ]
 
-Cross-instance finding from sashiko-gemini (34d1289184ae332db8c101e251d3dec96e9969f2e8dee8d98c3efff05039c9d0):
-[Severity: High]
-Calling plpar_hcall9() with missing arguments causes an out-of-bounds stack read, leaking uninitialized kernel stack memory to the hypervisor.
--- 
-pw-bot: cr
+> diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
+> index c0ef03cad9b9a..fc6a01e810c6e 100644
+> --- a/drivers/net/ethernet/ibm/ibmveth.h
+> +++ b/drivers/net/ethernet/ibm/ibmveth.h
+> @@ -257,6 +257,8 @@ static inline long h_illan_attributes(unsigned long unit_address,
+>  #define IBMVETH_MAX_TX_BUF_SIZE (1024 * 64)
+>  #define IBMVETH_MAX_QUEUES 16U
+>  #define IBMVETH_DEFAULT_QUEUES 8U
+> +#define IBMVETH_MAX_RX_QUEUES 1U
+> +#define IBMVETH_DEFAULT_RX_QUEUES 1U
+>  #define IBMVETH_MAX_RX_PER_HCALL 8U
+
+[ ... ]
+
+> +	struct ibmveth_rx_q rx_queue[IBMVETH_MAX_RX_QUEUES];
+> +	u64 queue_handle[IBMVETH_MAX_RX_QUEUES];
+> +	unsigned int queue_irq[IBMVETH_MAX_RX_QUEUES];
+> +	int multi_queue;
+> +	unsigned int num_rx_queues;
+
+[ ... ]
