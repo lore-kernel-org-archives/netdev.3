@@ -1,58 +1,148 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1332514ABE;
-	Tue, 18 Aug 2026 01:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FDB4B049B
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 01:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787017147; cv=none; b=bVhQz4E/cKsIkURxGxTR2pJRGfFpHrrKilzj7EaJyaw49Mi33CydS6CKoAU2b+W7aJEVVLasPB5MWm6ZWhRi6NtcjKvLU79G1VHttR1ensXjSBhbsneW3HXofz+mksHRyx4LGb4GtLDGH31fjxeIUMBzWix3nn4gOUOlfkVSeEs=
+	t=1787017639; cv=none; b=aY7daJykARYLnS5FW0x7aP6FIuCaLfcXGl9VX++mik+CLU46ReVLi1BnrJXw5y8i0FsuNLTEFOCDQwWPy6NCK91Xx50Z6AundwpMIKTIMCX47/ukR2s3hc3satBpCWxIBaebtlEv35tbqnX8VqB6pPj0JmS+UXXzyDUlMqXhX8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787017147; c=relaxed/simple;
-	bh=vp2K5bzWEaPNLxRc148jCzldoAl7xwlvwFxk67Gypm8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aWZPmEATcMiAjhDfOSmp7M+svovUHilkHQbZXAwsvVth75Yz0d3/mzzmi6pZTu4FERqVQf4HUQNdL34bt9i2gm1LQjsmG31UH702DNSFFcKlnc1H1s6mE4pQ9Pnr/TBGCBeIanf2opVe7eFkyWH97ym0C44JHWqL6eqYLZZ+G5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TGKclVhL; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787017639; c=relaxed/simple;
+	bh=ieDAxdeo8n+BshGWRhtjYx1zleyeZBJGIIjIz4F1D8U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hq/aF3NUA9bk1gs1juHwoVS1BMZbErFOEkIxQClSTLPEzKh7LtwCbJ3FiJ/zjyYOvbu6zGNWVArgkk3IylutZyX6g1RJG9h8EPkXAIKXQOOewK+TcmQ8PLeTGd/+2pVRei9X+HFKy0DiMYfRAJpFyPGr0hF2isqYgzSvd5GOucQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F1P/frJv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TGKclVhL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 019401F000E9;
-	Tue, 18 Aug 2026 01:39:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F1P/frJv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E8351F000E9;
+	Tue, 18 Aug 2026 01:47:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787017145;
-	bh=vp2K5bzWEaPNLxRc148jCzldoAl7xwlvwFxk67Gypm8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=TGKclVhLRJBDFmocL6UF8aDNvxDrY0PNdHCwrZoTlqDszETaSAzy34Yuy0/LwsDsz
-	 PCERbSl2Q9x2/Nf0RiS7Dhqz+PBCVkNJaGx3xbTqpduUIG/GDD9bbUkIPUONIyTpbG
-	 a6Ka+CvYR7kfQDSiQNMu40/4XmQeeFp/ARDK5oculqQvxrG/2b2AOk9S6RXh9pEbNh
-	 8ZK4cEG0IxXJyDoL6Wqp2LM77oNYCcJ5eMh4jluqIAKIAWBPtxt/3WBoG7TiJ9lEbX
-	 EJG3Ha8TXYwp9Q0avIpnatFrn0HsZGZ8BwA6CXcz1hGfb3uS/x6ZBSFr3BTvHNouJc
-	 vappa8zrDjC1w==
-Date: Mon, 17 Aug 2026 18:39:04 -0700
+	s=k20260515; t=1787017637;
+	bh=HmplJZQjfBhgX90BI6gxVRCJzgCHyHxoC55haeiIcnQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=F1P/frJvEfNFR/mtmSnQqLUhDO7YJr1J+D+co7hZKp/d1V0CUrwAF38BoEMF46q/3
+	 V82klElwrQcZ9DBytSxR6rN6WCgccXgiRIL4mf06GoNBgKXVDvlb4Dvv274RDwkGrA
+	 PEVxdCDlyAd/PrWf2P8mMZkqnzUGngsAncBfB0jiftB5tFgz4eKY4elHRdo2BWTrbj
+	 Cg3Dleej/7A/EG44eaam3FoON67akZ/pDQ37stTxK70dicV7mLaimIY/x2WGhqTx6m
+	 5bH6BNur+IVRvn28nFITAJJ01FCoJrWh2NltVE7khIpsw3IxkiRldpI4w2qzejVbb9
+	 9BBNwe8smmzIw==
 From: Jakub Kicinski <kuba@kernel.org>
-To: Harshitha Ramamurthy <hramamurthy@google.com>
-Cc: netdev@vger.kernel.org, joshwash@google.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, jordanrhee@google.com,
- willemb@google.com, nktgrg@google.com, maolson@google.com,
- thostet@google.com, jacob.e.keller@intel.com, przemyslaw.kitszel@intel.com,
- debarghyak@google.com, kees@kernel.org, bpf@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v4 00/15] gve: AdminQ mode related refactors
-Message-ID: <20260817183904.6e0fd5a5@kernel.org>
-In-Reply-To: <CAEAWyHerP_n3ucJaEqrCZqVFQTPKzydYXOPYZkk8d0iKf8UWow@mail.gmail.com>
-References: <20260814021406.3044324-1-hramamurthy@google.com>
-	<CAEAWyHerP_n3ucJaEqrCZqVFQTPKzydYXOPYZkk8d0iKf8UWow@mail.gmail.com>
+To: mmc@linux.ibm.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	nnac123@linux.ibm.com,
+	maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	linuxppc-dev@lists.ozlabs.org,
+	haren@linux.ibm.com,
+	ricklind@linux.ibm.com,
+	davemarq@linux.ibm.com,
+	bjking1@linux.ibm.com,
+	shaik.abdulla1@ibm.com
+Subject: Re: [PATCH net-next v5 01/15] ibmveth: Add MQ RX hypercall wrappers and call definitions
+Date: Mon, 17 Aug 2026 18:47:10 -0700
+Message-ID: <20260818014710.3853684-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260814073642.24630-2-mmc@linux.ibm.com>
+References: <20260814073642.24630-2-mmc@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Mon, 17 Aug 2026 14:45:08 -0700 Harshitha Ramamurthy wrote:
-> Sashiko has spotted a few issues - will look through them and fix them in v5.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+ibmveth: Add MQ RX hypercall wrappers and call definitions
 
-net-next has closed. I'll take the first 3 from v4 and the rest has to
-wait until after the merge window.
+This adds the PHYP call IDs for H_REG_LOGICAL_LAN_QUEUE,
+H_ADD_LOGICAL_LAN_BUFFERS_QUEUE and H_FREE_LOGICAL_LAN_QUEUE, raising
+MAX_HCALL_OPCODE accordingly, and adds matching static inline wrappers in
+ibmveth.h.  It is plumbing only, with no runtime behaviour change until a
+later commit enables multi_queue.
+
+> diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
+> index d87713668ed30..c0ef03cad9b9a 100644
+> --- a/drivers/net/ethernet/ibm/ibmveth.h
+> +++ b/drivers/net/ethernet/ibm/ibmveth.h
+> @@ -66,6 +66,142 @@ static inline long h_add_logical_lan_buffers(unsigned long unit_address,
+
+[ ... ]
+
+> +/**
+> + * h_add_logical_lan_buffers_queue - Add buffers to subordinate queue
+> + * @unit_address: Device unit address
+> + * @queue_handle: Queue handle from h_register_logical_lan_queue()
+
+[Severity: Low]
+This isn't a bug, but do these two kernel-doc blocks in the same header
+contradict each other about which handles are valid here?
+
+h_add_logical_lan_buffers_queue() is documented as "Add buffers to
+subordinate queue" with "@queue_handle: Queue handle from
+h_register_logical_lan_queue()", while h_register_logical_lan_with_handle()
+below says its queue 0 handle:
+
+ * Registers the primary receive queue (queue 0) with the hypervisor and
+ * returns the queue handle. This is needed in multi-queue mode to use
+ * h_add_logical_lan_buffers_queue() for all queues including queue 0.
+
+By the end of the series the second wording is the one that matches the
+code: ibmveth_add_logical_lan_buffers() in
+drivers/net/ethernet/ibm/ibmveth.c passes
+adapter->queue_handle[queue_index] for every index, queue_index == 0
+included, and that handle comes from h_register_logical_lan_with_handle().
+
+Would it be clearer to widen the add-buffers kdoc to say the handle may
+come from either h_register_logical_lan_queue() or
+h_register_logical_lan_with_handle(), so a future caller doesn't conclude
+queue 0 must use the legacy buffer hcalls?
+
+> + * @buffersznum: Buffer size (upper 32 bits) | count (lower 32 bits)
+> + * @ioba12: Buffer addresses 1 and 2 packed ((addr1 << 32) | addr2)
+> + * @ioba34: Buffer addresses 3 and 4 packed
+> + * @ioba56: Buffer addresses 5 and 6 packed
+> + * @ioba78: Buffer addresses 7 and 8 packed
+> + * @ioba910: Buffer addresses 9 and 10 packed
+> + * @ioba1112: Buffer addresses 11 and 12 packed
+> + *
+> + * Return:
+> + *   H_SUCCESS - All buffers added successfully
+> + *   H_PARAMETER - Invalid parameters
+> + *   H_HARDWARE - Hardware error
+> + */
+> +static inline long h_add_logical_lan_buffers_queue(unsigned long unit_address,
+> +						   unsigned long queue_handle,
+
+[ ... ]
+
+> +/**
+> + * h_register_logical_lan_with_handle - Register primary queue and get handle
+> + * @unit_address: Device unit address
+> + * @buffer_list: DMA address of buffer list
+> + * @rec_queue: Buffer descriptor of receive queue
+> + * @filter_list: DMA address of filter list
+> + * @mac_address: MAC address
+> + * @queue_handle: Output parameter for queue handle (may be NULL)
+> + *
+> + * Registers the primary receive queue (queue 0) with the hypervisor and
+> + * returns the queue handle. This is needed in multi-queue mode to use
+> + * h_add_logical_lan_buffers_queue() for all queues including queue 0.
+> + *
+> + * Return: H_SUCCESS (0) on success, error code otherwise
+> + */
+
+[ ... ]
+
+Cross-instance finding from sashiko-gemini (34d1289184ae332db8c101e251d3dec96e9969f2e8dee8d98c3efff05039c9d0):
+[Severity: High]
+Calling plpar_hcall9() with missing arguments causes an out-of-bounds stack read, leaking uninitialized kernel stack memory to the hypervisor.
+-- 
+pw-bot: cr
