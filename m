@@ -1,66 +1,60 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214623B2FF6
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 09:42:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDBE3A7F68;
+	Tue, 18 Aug 2026 09:43:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787046137; cv=none; b=PKedCFIsCw1Yaxlts/GRgNdTXe8IPSi6QP0uGPanBc4zR+ByeiZob76y9V/K5WsebPt9fghvqpg+R/q1k8JlAyYqKHHIxfSY4R+7EeIqNPA9us7jZ4CfFJRG5z8lbF0yvR1GkPCEdCnRf7wGepcvhsTu+fjefERSfkGi0BoNao4=
+	t=1787046228; cv=none; b=dtPz3cssa0jdBUmQ5td1N2Zenh9dCY9OxSPEB806HeC7xuuvLeGHUEUbAlSIMDdwav56Oak2bNhWtKXxz3MPWYczRs5gCeQY1QUagYgbtBx2O2UktOpwxst2Uz9TvbxH6ptroMXLdhPIj5MA4rIj7efH/4QylUl3UciKB2F8emY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787046137; c=relaxed/simple;
-	bh=kkmFd5j2SrN9y5eoZVrCZOE5zgAjz5TProZMHrKJEaM=;
+	s=arc-20240116; t=1787046228; c=relaxed/simple;
+	bh=caNA1FOovdtBMEmSP47lpd4CEtS6dN3xJalFINYYI3o=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BpmDJCH9taYuKColHI1C8/LAOEiYh1mvAF3zz5blMU7aqgsaI88Sk0VWJxlmk3i8cSk2JiJolfvrCLu0Jzjk2NgZILjbYh8EmmDu++FscmflvgWibJmU51+GEaVDGBm22gTPz4laHV72touOiR3NwEyW50vyTjEfdiXgqcn7TtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=oOMmTKyF; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	 In-Reply-To:Content-Type; b=Q3LC8GwQu/S/BF8IODnczx/y7CdbqaubK+EPyF1GXxF531v5JB0f0s3OqdUU+k8fo4hN1lVq4Bcyvz9jpDHj0RAnXXfWGVqZU0955KLg7LFNPdbo7QY1jShoAhb8OxZfUEW5L0F9Nz2Wsra/8TMvQ3AlUsDOkk/ITZXOmtdbvKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=OEoJwjNu; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="oOMmTKyF"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-490cf322ed0so42329505e9.1
-        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 02:42:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1787046132; x=1787650932; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=A26iULHivlajh+3MA1uO0Cksntrf1DSGsgfSv8mZ+Uo=;
-        b=oOMmTKyFW6Mq2yaH6dRb8Bn4Hb6TA0fmqq/YLEhwPyXYDWMLmUHvVxwRQfEhl6YxWV
-         eI0rf2GPgRQIS0Tb12HHRUY43XPrJa51V530ZRtiOxxPoAid5y0AY8BmaOE7DZccl2Au
-         NXafgr6CLeL2zNE7PUcF3GTQRVpPStMDTPBZLBLZp9kno/o132qxNj/eq8k6fFP770Lo
-         mRWJpTOX2q8jLEnVvdWQrM45J15eN6gApgwM8cfKX0faqNs2x1KVD6CdQEAniwjturZR
-         e5yxhYHYSsxRiOe30PDjAae7hV3/9AA2In74h96h0Bp808wDcDBnxF5IehbwNIvBNSGQ
-         cLzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787046132; x=1787650932;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=A26iULHivlajh+3MA1uO0Cksntrf1DSGsgfSv8mZ+Uo=;
-        b=IwEmAp+ebbqcRC5JyVs1kueonsyWgRZKWz4NvLEHrUBhGMp/se6fjpMvh3lLS9pf/9
-         W+CyiFb2Fd8Nw14vnTMAmqNLZDR6vP6Gh03aX8ix2jjMnOCbW9dy8OjnZ5g/NhCqkcSc
-         ysFwGf9iVoAUqplMKd8r+KB8ysttEHFvMbSuFjoDhSsv2dKqvCUl4R6JY5H7Y7U3wTQv
-         4k5UfUYm0i/kVqwvG7QhSTmFuA6KiGX3hHvRs6DFJ+NKj+ewxhCT/C81e1LsA+D8brrs
-         DFmp7A28E3Uw0wi3iIMfNULH14VfdKKc0pgbhJtaiTV9sBqynYVBNFjplAqEHGDmOpT+
-         VLcw==
-X-Gm-Message-State: AOJu0YwPDmMMcQvDrJri3LCMiiXXhQhoGiZG6EKfoj4/tkqdAObM9eCD
-	V2QQNRHYlDkjG7xCnXbGA1UGc66HGsOeWcfUg7E9208wzfT7Nslo2TtsVWsoXJxvLbE=
-X-Gm-Gg: AR+sD13FVnMLscCW0stBQreBI8AO6kJiiaXYyvg3sbb52VRcYurUsC6HXAdI6zssZb/
-	m+DCenYtyxoXTxvsSB5CbHGRiklsdWIKPQzE7iYaQfepDb+/lhlerCcEriqOBn8DR6EwiBOhAI3
-	RmffLE8MKtjVMDELc0tw4pOdojZBXHjqH1/6uDEXXaB/9mOOGpCJHNWZEqsRfzopzWA2jcq7xsM
-	9ciHQtLtkJpLyeqsiqdhuLULM90obNjamD9LTzdSOmE2BKeYVMIGimeVv1BrpWww0pQir9qbkDO
-	XnLsQG62KDCF5lpZvb3AUll12xJDRMZHcQIuazMawGtskH/URaO3SKUkrOSoTz8SP5I/NWLhGt/
-	h7wqlGhY1aLqaBI0H0UZFylq7JHUH1pwfz2bXFVfi29RdaWXR3+gYv4d1+o8vX3DF3u8W6Pgr9n
-	iYjAosfTZzcQy0J59h0ddrAvA3F4dQTxOR4lMlLDfaCN1Latq6cxsEkrtaMks4XRrWOUMEMf1jA
-	NWWP5bET7qCB2f1vyo=
-X-Received: by 2002:a05:600c:3485:b0:499:726a:a017 with SMTP id 5b1f17b1804b1-49987938e19mr523413195e9.1.1787046132061;
-        Tue, 18 Aug 2026 02:42:12 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4999d10b7f6sm114382215e9.12.2026.08.18.02.42.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Aug 2026 02:42:11 -0700 (PDT)
-Message-ID: <fb48d9f3-f0f8-4532-aa4f-de8fa1a13f6a@blackwall.org>
-Date: Tue, 18 Aug 2026 12:42:10 +0300
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="OEoJwjNu"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67HM1lUh2625083;
+	Tue, 18 Aug 2026 09:43:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=C0kJYs
+	Y/VDcx6k/5tiLWBmUkqkCjleiQdPNfvMdCqm4=; b=OEoJwjNuUNGH+tESC0EihC
+	fNewYEG/PEItOTqASlUlc2xzXzo998NThbhs6bn1K1KwE1zwbg3MgF2++PFEYE62
+	T0Lv2VboX47IhDYpJZ5wPNMqLVBQlJpPzfS6ENYqoLv5yEt22sXakJIYwQKkWp9T
+	1dT6bDyqHOwvF5PDDrYi2AOwaJdP/DR71edzT42bbFZTJmZu57TDrJpKmcFWR7C9
+	L1v7TJvB4lFGtwZS8BJW43TVg+JYK8/Gs8qrBZEsHjW1f1DnZd50rzGbntNKDK6X
+	zIeKMiK9FLjgcad+Y/oJ3uK6V+5ZvRjjNi0L2M4VbmDarqkclOaQd6wjz7N6b25Q
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g2fu4qcda-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 18 Aug 2026 09:43:39 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67I9fLQf011428;
+	Tue, 18 Aug 2026 09:43:38 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g354ya8xk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 18 Aug 2026 09:43:38 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67I9hY2k45810074
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 18 Aug 2026 09:43:34 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 413FD20043;
+	Tue, 18 Aug 2026 09:43:34 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E716920040;
+	Tue, 18 Aug 2026 09:43:33 +0000 (GMT)
+Received: from [9.111.161.182] (unknown [9.111.161.182])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 18 Aug 2026 09:43:33 +0000 (GMT)
+Message-ID: <aa5dff74-97a7-4996-85d5-b065d7dd4329@linux.ibm.com>
+Date: Tue, 18 Aug 2026 11:43:33 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,152 +62,155 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 1/2] bonding: convert unbalanced_load to per-cpu
- state
-Content-Language: en-US, bg
-To: Hangbin Liu <hangbin.liu@linux.dev>, Jay Vosburgh <jv@jvosburgh.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Hangbin Liu <liuhangbin@kylinos.cn>
-References: <20260818-bond_overflow-v3-0-e05d4dbc2fd8@kylinos.cn>
- <20260818-bond_overflow-v3-1-e05d4dbc2fd8@kylinos.cn>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20260818-bond_overflow-v3-1-e05d4dbc2fd8@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH net] net/iucv: only deliver HiperSockets frames to
+ HiperSockets sockets
+To: Jakub Kicinski <kuba@kernel.org>, hexlabsecurity@proton.me
+Cc: davem@davemloft.net, pabeni@redhat.com, edumazet@google.com,
+        twinkler@linux.ibm.com, linux-s390@vger.kernel.org,
+        hidayath@linux.ibm.com, horms@kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20260813-b4-disp-60433a46-v1-1-509e1200533e@proton.me>
+ <20260817202536.3590565-1-kuba@kernel.org>
+Content-Language: en-US
+From: Alexandra Winter <wintera@linux.ibm.com>
+In-Reply-To: <20260817202536.3590565-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: EXj7gnnyb_74mheflaMpWhC8cm4d4CfE
+X-Authority-Analysis: v=2.4 cv=NLLlPU6g c=1 sm=1 tr=0 ts=6a84294b cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=5px8zkL6CzUBe5c8zRoA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE4MDA3MCBTYWx0ZWRfX8qhy1fbxJo3Z
+ 4YJ/XAlQBJu+d6HJ7Y/9zMj/6MOezKlldy/t/mXD87+5o9xISwpLPaUb5V7gRuBlXrp6HphkyCJ
+ hs5x3EFqBWIw4K+dg0S4M/TjSaNb8PM=
+X-Proofpoint-ORIG-GUID: -Xuhdd_YTPP6_tdaItA0Sw9tufHLU-kZ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE4MDA3MCBTYWx0ZWRfXxs2xTzc07Iz6
+ ek8m0508in+Qs1XrktrLh988Ym3hQgKvX8ni4/mnmNPgcTVVRWP81d055IaW4tTYXqpD++A0MbA
+ +Y+v+t1nIgXkRAE34LssBXRFk/286Bzhk7q6owqoj+Mfs7wXUTHAQaP4R6QNS78NLasWJmS8CIu
+ OLLnksMoBDr5X/MmJmcNyf5U0yuHvh/fPk+yfwWRyAIWCckHOLE7QghGXLggcduMBsD3Supfd4Z
+ 6l8y6rtlMZdKx8AsidNtItrQgkHH430wTqIEAile1W/zc46zcJwDXI9l2xlKsYiqrOc664iNdtN
+ u5mj7x9YnXID8u1d7ClDHgaTaMc6Xdq/2BwXsDb5zxOmrSojBt/QVop1K6QBJix1TozLyH1q4Rr
+ DQQ4bNM2breKuj0IeXYv9zow2299ar6G0sWDRk9s/j0dD47td4k76nTxy46n2q2byVpJE06bXfP
+ UWS37Y1csAOs/zLvZVw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-17_04,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 spamscore=0 lowpriorityscore=0 phishscore=0 impostorscore=0
+ malwarescore=0 suspectscore=0 clxscore=1015 adultscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608180070
 
-On 18/08/2026 11:47, Hangbin Liu wrote:
-> From: Hangbin Liu <liuhangbin@kylinos.cn>
-> 
-> A later patch widens the bonding TLB tx counters from u32 to u64. The
-> unbalanced_load counter sits in the transmit hot path, and cross-CPU
-> synchronization of a u64 would introduce measurable overhead. Convert
-> unbalanced_load to a per-cpu counter first so that the subsequent
-> widening only touches per-cpu data local to each CPU.
-> 
-> Introduce struct unbalanced_load_stats to hold the per-cpu counter,
-> and move the aggregation into a helper, reset_unbalanced_load(), which
-> sums and clears all per-cpu instances.
-> 
-> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+
+
+On 17.08.26 22:25, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email says "Looks like other places need a fix, too. Please fix them
+> in one patch, failing that in one series."
 > ---
->   drivers/net/bonding/bond_alb.c  | 25 ++++++++++++++++++-------
->   drivers/net/bonding/bond_main.c |  9 +++++++++
->   include/net/bond_alb.h          |  6 +++++-
->   3 files changed, 32 insertions(+), 8 deletions(-)
+> net/iucv: only deliver HiperSockets frames to HiperSockets sockets
 > 
-> diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
-> index 839f7482dc18..d54d834cf72b 100644
-> --- a/drivers/net/bonding/bond_alb.c
-> +++ b/drivers/net/bonding/bond_alb.c
-> @@ -1345,7 +1345,7 @@ static netdev_tx_t bond_do_alb_xmit(struct sk_buff *skb, struct bonding *bond,
->   		/* unbalanced or unassigned, send through primary */
->   		tx_slave = rcu_dereference(bond->curr_active_slave);
->   		if (bond->params.tlb_dynamic_lb)
-> -			bond_info->unbalanced_load += skb->len;
-> +			this_cpu_add(bond_info->unbalanced_load->tx_bytes, skb->len);
->   	}
->   
->   	if (tx_slave && bond_slave_can_tx(tx_slave)) {
-> @@ -1529,6 +1529,21 @@ netdev_tx_t bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
->   	return bond_do_alb_xmit(skb, bond, tx_slave);
->   }
->   
-> +static u32 reset_unbalanced_load(struct alb_bond_info *bond_info)
-> +{
-> +	struct unbalanced_load_stats *p;
-> +	u32 total_bytes = 0;
-> +	int i;
-> +
-> +	for_each_possible_cpu(i) {
-> +		p = per_cpu_ptr(bond_info->unbalanced_load, i);
-> +		total_bytes += READ_ONCE(p->tx_bytes);
-> +		WRITE_ONCE(p->tx_bytes, 0);
-> +	}
-> +
-> +	return total_bytes / BOND_TLB_REBALANCE_INTERVAL;
-> +}
-> +
->   void bond_alb_monitor(struct work_struct *work)
->   {
->   	struct bonding *bond = container_of(work, struct bonding,
-> @@ -1570,12 +1585,8 @@ void bond_alb_monitor(struct work_struct *work)
->   	if (atomic_read(&bond_info->tx_rebalance_counter) >= BOND_TLB_REBALANCE_TICKS) {
->   		bond_for_each_slave_rcu(bond, slave, iter) {
->   			tlb_clear_slave(bond, slave, 1);
-> -			if (slave == rcu_access_pointer(bond->curr_active_slave)) {
-> -				SLAVE_TLB_INFO(slave).load =
-> -					bond_info->unbalanced_load /
-> -						BOND_TLB_REBALANCE_INTERVAL;
-> -				bond_info->unbalanced_load = 0;
-> -			}
-> +			if (slave == rcu_access_pointer(bond->curr_active_slave))
-> +				SLAVE_TLB_INFO(slave).load = reset_unbalanced_load(bond_info);
->   		}
->   		atomic_set(&bond_info->tx_rebalance_counter, 0);
->   	}
-> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-> index 522eab060f9e..9fb44e0031c8 100644
-> --- a/drivers/net/bonding/bond_main.c
-> +++ b/drivers/net/bonding/bond_main.c
-> @@ -5995,6 +5995,7 @@ static void bond_destructor(struct net_device *bond_dev)
->   		destroy_workqueue(bond->wq);
->   
->   	free_percpu(bond->rr_tx_counter);
-> +	free_percpu(bond->alb_info.unbalanced_load);
->   }
->   
->   void bond_setup(struct net_device *bond_dev)
-> @@ -6494,6 +6495,10 @@ static int bond_init(struct net_device *bond_dev)
->   	if (!bond->wq)
->   		return -ENOMEM;
->   
-> +	bond->alb_info.unbalanced_load = alloc_percpu(struct unbalanced_load_stats);
-> +	if (!bond->alb_info.unbalanced_load)
-> +		goto wq_out;
-> +
-
-The bond doesn't generally depend on this struct and shouldn't fail to init
-if it fails to allocate and the user hasn't chosen alb mode. Also here is too
-early to tell, the netlink mode hasn't been applied yet.
-Maybe the allocation could be moved to bond_alb_initialize and the freeing to
-bond_alb_deinitialize?
-
->   	bond->notifier_ctx = false;
->   
->   	spin_lock_init(&bond->stats_lock);
-> @@ -6511,6 +6516,10 @@ static int bond_init(struct net_device *bond_dev)
->   		eth_hw_addr_random(bond_dev);
->   
->   	return 0;
-> +
-> +wq_out:
-> +	destroy_workqueue(bond->wq);
-> +	return -ENOMEM;
->   }
->   
->   unsigned int bond_get_num_tx_queues(void)
-> diff --git a/include/net/bond_alb.h b/include/net/bond_alb.h
-> index e5945427f38d..3fabf4714dec 100644
-> --- a/include/net/bond_alb.h
-> +++ b/include/net/bond_alb.h
-> @@ -123,9 +123,13 @@ struct tlb_slave_info {
->   			 */
->   };
->   
-> +struct unbalanced_load_stats {
-> +	u32			tx_bytes;
-> +};
-> +
->   struct alb_bond_info {
->   	struct tlb_client_info	*tx_hashtbl; /* Dynamically allocated */
-> -	u32			unbalanced_load;
-> +	struct unbalanced_load_stats __percpu	*unbalanced_load;
->   	atomic_t		tx_rebalance_counter;
->   	int			lp_counter;
->   	/* -------- rlb parameters -------- */
+> This adds a transport test to the socket lookup in afiucv_hs_rcv() so that
+> an inbound HiperSockets frame skips sockets bound to the classic z/VM IUCV
+> transport.  Selection previously used only the four 8-byte name fields from
+> the frame header.
 > 
+>> diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
+>> index ea047bab65e7c..5fb6793b9a64a 100644
+>> --- a/net/iucv/af_iucv.c
+>> +++ b/net/iucv/af_iucv.c
+>> @@ -2079,6 +2079,8 @@ static int afiucv_hs_rcv(struct sk_buff *skb, struct net_device *dev,
+>>  	sk = NULL;
+>>  	read_lock(&iucv_sk_list.lock);
+>>  	sk_for_each(sk, &iucv_sk_list.head) {
+>> +		if (iucv_sk(sk)->transport != AF_IUCV_TRANS_HIPER)
+>> +			continue;
+> 
+> [Severity: Medium]
+> 
+> This isn't a bug introduced by this patch, but should the other lookup over
+> iucv_sk_list get the same treatment?  iucv_callback_connreq(), which handles
+> inbound classic z/VM IUCV connect requests, still matches on name alone:
+> 
+> net/iucv/af_iucv.c:iucv_callback_connreq() {
+> 	sk_for_each(sk, &iucv_sk_list.head)
+> 		if (sk->sk_state == IUCV_LISTEN &&
+> 		    !memcmp(&iucv_sk(sk)->src_name, src_name, 8)) {
+> 			iucv = iucv_sk(sk);
+> 			break;
+> 		}
+> }
+> 
+> On the configuration the commit message describes (pr_iucv set and a
+> HiperSockets device present, so both transports coexist), can a socket bound
+> through the HIPER branch of iucv_sock_bind() be picked here?
+> 
+
+
+The finding makes sense.
+It is probably best to fix this for good by making the 2 environements mutually
+exclusive, like it was intended.
+
+Afaict the TRANS_IUCV can only be used in a z/VM environement.  "pr_iucv != NULL" guards that pretty well.
+(To be verified)
+
+So preventing TRANS_HIPER in a z/VM environement would be the fix.
+Setting hsuid only in LPARs is one part. But a HS L3 interface could still exist in a z/VM environement, and
+receive malformed data. So that needs to be taken care of as well.
+
+
+My hope would be that such a clear cut between the environements would reduce the number
+of scenarios and thus reduce the number of findings.
+
+Thoughts anybody?
+
+
+> If so, the child it builds looks inconsistent:
+> 
+> net/iucv/af_iucv.c:iucv_callback_connreq() {
+> 	niucv->transport = AF_IUCV_TRANS_IUCV;
+> 	...
+> 	memcpy(niucv->src_user_id, iucv->src_user_id, 8);
+> }
+> 
+> That is transport AF_IUCV_TRANS_IUCV with src_user_id copied from a HIPER
+> parent, i.e. the device hsuid, while the vm_bind path of iucv_sock_bind() and
+> iucv_sock_autobind() always set src_user_id to iucv_userid for classic
+> sockets.
+> 
+> After this change the two directions disagree about whether transport is part
+> of the demux key.  Was making only the HiperSockets side transport-aware
+> intentional?
+> 
+> [Severity: High]
+> 
+> This is a pre-existing issue, but since this hunk is the lookup in question:
+> should the ingress device and its namespace also be checked here?
+> 
+> afiucv_hs_rcv() never uses its dev or orig_dev arguments, and the handler is
+> registered globally:
+> 
+> net/iucv/af_iucv.c
+> 	static struct packet_type iucv_packet_type = {
+> 		.type = cpu_to_be16(ETH_P_AF_IUCV),
+> 		.func = afiucv_hs_rcv,
+> 	};
+> 	...
+> 	dev_add_pack(&iucv_packet_type);
+> 
+> With no .dev and no .af_packet_net, ptype_head() files this in the global
+> ptype_base[], and __netif_receive_skb_core() delivers ETH_P_AF_IUCV frames
+> from any net_device in any namespace:
+> 
+
+
+Correct. A check is required that only IQD devices in an LPAR with hsuid are
+valid receivers. Coordination with the qeth driver should be considered.
+[...]
+
+
 
