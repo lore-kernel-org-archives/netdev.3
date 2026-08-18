@@ -1,352 +1,177 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35719468C1D
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 13:58:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035B225A2A2;
+	Tue, 18 Aug 2026 14:00:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787061493; cv=none; b=pGDGityD5vCUUrf1PsjQCrIMGt6OePaeVEij97w/W8SbsXPiFl668Gb63rvscz4scQuL220zeQAUHg3jK4sgWJTfcbOAzln115YRJOc+e3kjPFbDXDI99yq69nzjL/esmnYQ6KXUUvzsJbZrYLbm0Fis3t56FyOP6wF5+EpUWaI=
+	t=1787061629; cv=none; b=cL7GPpVsGSgiG404fWlbKhE6IJr6jvXySIzK4ro4fpFx7Vi951hq7ZVu4YUDjxSjbsXxV11gA4/YhD35CXk8uZhofEM+miLkrH2Rj532ls/1vVqiHoLFTdvpbixwej8IlnS497ec/NdT00wxNSEdrJ0r471XRBXCAmBTlimFMEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787061493; c=relaxed/simple;
-	bh=evyJk1End9SX7ibV+5YefPMP2/WiagTqINlx2DjncMY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bQ+ksXq6d4rU16X3brAjxR32wzzisZYdB17K8iOkdAKzpl4N1HHJQGA7MCAJjPockloI0mHFg4vetX5E1iiLVsmgFN4KfskEJurR1l5ylY0576qL4f1OxU+660H3Yqgjc3qNdE3bgl6GUJMfmrzgjui/gQXSyYyjBGVoiaShepk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HvOn9zit; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787061629; c=relaxed/simple;
+	bh=5Eese8aMawmoJK+Jg+WZU3PtLP1Ptwez+8ZEIInXQQc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DYpJA5boBvRUcwzkrtvLmOi7EpoKjFD1xT6AnrsGtYvPKcc2o90hBjXFPUJGoN/cpcGFXqE/2NApNp2yBw8Tq5vLU8wk4Cnwg4oG+xqleLfPQ9Cc9shrFPxpEnOrgz3t9QBhrIG1Il7a+PxOTS7i8zXJD+oUTyNKF2PmayiM5X0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=imoTvYU3; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HvOn9zit"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 436931F00A3A;
-	Tue, 18 Aug 2026 13:58:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787061491;
-	bh=PEtaMo/MYWYR+IS2NHTvcmnyuL2tOMoZKqYi/BxaHhg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HvOn9zitruTVBBDjDFlCWnkSyoWzMTo2bIHjYmC6KOlsQv1bdHMoI7mamdLVUSLQ3
-	 hOKbvQ5lpHadZwep5SO6UBZymMxfc33jseNwxJhccleWSSU0iEl/MAb3UHuEiIPniQ
-	 PEAx9CMsKF1oDSBcEUFzZ07pBb9AAO+jKsCVWj/GIM6+VuGL8/gCa0wWnEoAm6gUqY
-	 McnCdGDje0lSMMSX4WZitMlHh8dgq6uOEOxLOcE0UlTANE/F4gvf/yx1Gu+ao/YCKj
-	 gYn4MDiH81kdo5WQVZ/MmfF4HpM3ae8Iy8GSkJLRd5QSqCNdH90n3MrdedZ3Ddxivd
-	 hL9SVYYzS4szQ==
-From: Simon Horman <horms@kernel.org>
-To: maciek@machnikowski.net
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	kuba@kernel.org,
-	richardcochran@gmail.com,
-	milena.olech@intel.com,
-	willemdebruijn.kernel@gmail.com,
-	andrew@lunn.ch,
-	vadim.fedorenko@linux.dev
-Subject: Re: [PATCH v10 net-next 2/3] netdevsim: Implement basic ptp support
-Date: Tue, 18 Aug 2026 14:58:00 +0100
-Message-ID: <20260818135800.629288-1-horms@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260815063148.2952-3-maciek@machnikowski.net>
-References: <20260815063148.2952-3-maciek@machnikowski.net>
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="imoTvYU3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1787061606; x=1787666406; i=wahrenst@gmx.net;
+	bh=5Eese8aMawmoJK+Jg+WZU3PtLP1Ptwez+8ZEIInXQQc=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
+	 MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=imoTvYU3KGgWEGFgBwF7vTPQnJQ+02E/w46OwQEteUXg2OLYigWGk4Fy14u+PPpr
+	 832q2/EXzLIXQt/GhcXPII5WgYRkTRRkhluemBq5kA+sQrmYuokjPVT5GJmk7NPyi
+	 c87WFlue8k31DbsuIdErCvxP/hyU0DAIEWGe+CZUEbCyC1kadZmpVRk93OC12qzBE
+	 fAavcT/EzllJfbyVCRKI9O1ipF+mL2R9k1GskjYRQJ1DDAvYEfOT4qb1+JnLh4EIO
+	 GAzEOlE9e7Wpu65Z7ox7b15lXm7eW0wfyRYIRf69s0bWCr8mFfVH6lSQFeu/dEZSf
+	 +JAWk61ZBiwFin0H8A==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M7K3Y-1x1qfq1TuW-0095Yt; Tue, 18
+ Aug 2026 16:00:06 +0200
+From: Stefan Wahren <wahrenst@gmx.net>
+To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>
+Cc: netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	Stefan Wahren <wahrenst@gmx.net>
+Subject: [PATCH] docs: oa-tc6-framework: Fix link to specification
+Date: Tue, 18 Aug 2026 15:59:58 +0200
+Message-ID: <20260818135958.17311-1-wahrenst@gmx.net>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Vw97Xg+rYRsRYpasYuyICLUUWwZnAyx2l7LaYHiFJC4k/TAGNDV
+ AAZIeaoegpUmBPx0hWXSPw1OsmRCmze2iyOa+/5G2FS00PtgShvls7/xFjR9s2bAV2Qyi7b
+ BSCDVR2xBudd6N/QDvGPq7IJGQuM6lCkVyH4pJreFacTOsN0hHkyGEjfxP+qYcdk8NG8Zas
+ 6V5tQ/jMp8d8F4/KnYAvg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:uv/OysOQTyw=;3tm78nVokZhNfQRugDC0obnDBIS
+ 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
+ xZEuu3KeJRBFd5DPyaYPobC1UfAc=
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260815063148.2952-1-maciek@machnikowski.net?part=2
----
---- Patch [2]: [PATCH v10 net-next 2/3] netdevsim: Implement basic ptp support ---
-commit ef2b7171af287d8c3a8f5064008830a7dd8f4db3
-Author: Maciek Machnikowski <maciek@machnikowski.net>
+Current link for 10BASE-T1x MAC-PHY Serial Interface Specification
+doesn't work - it returns 404. Update the link to the working one.
 
-netdevsim: Implement basic ptp support
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+=2D--
+ Documentation/networking/oa-tc6-framework.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Adds virtual hardware timestamping to netdevsim by reading the mock PHC
-attached to the transmitting netdevsim and to its peer, reporting a TX
-timestamp to the socket and stamping the forwarded skb for the RX side.
-Also wires up ndo_hwtstamp_get / ndo_hwtstamp_set and extends
-nsim_get_ts_info().
+diff --git a/Documentation/networking/oa-tc6-framework.rst b/Documentation=
+/networking/oa-tc6-framework.rst
+index 013824078cea..0feda2f9d840 100644
+=2D-- a/Documentation/networking/oa-tc6-framework.rst
++++ b/Documentation/networking/oa-tc6-framework.rst
+@@ -77,7 +77,7 @@ Reference
+=20
+ 10BASE-T1x MAC-PHY Serial Interface Specification,
+=20
+-Link: https://opensig.org/download/document/OPEN_Alliance_10BASET1x_MAC-P=
+HY_Serial_Interface_V1.1.pdf
++Link: https://opensig.org/wp-content/uploads/2023/12/OPEN_Alliance_10BASE=
+T1x_MAC-PHY_Serial_Interface_V1.1.pdf
+=20
+ Hardware Architecture
+ ---------------------
+=2D-=20
+2.43.0
 
-A few questions on the timestamping path below.
-
-> diff --git a/drivers/net/netdevsim/ethtool.c b/drivers/net/netdevsim/ethtool.c
-> index 025ea79879f3a..24e7d5592e799 100644
-> --- a/drivers/net/netdevsim/ethtool.c
-> +++ b/drivers/net/netdevsim/ethtool.c
-> @@ -200,7 +200,22 @@ static int nsim_get_ts_info(struct net_device *dev,
->  {
->  	struct netdevsim *ns = netdev_priv(dev);
->  
-> +	ethtool_op_get_ts_info(dev, info);
-> +	if (!ns->phc) {
-> +		info->phc_index = -1;
-> +		return 0;
-> +	}
-> +
-
-[Severity: High]
-[Finding: main-1-1]
-[Sources: opus-5]
-This isn't a bug introduced by this patch, but the new !ns->phc guard looks
-like it silently fixes a NULL pointer dereference that exists today, without
-a mention in the changelog or a Fixes: tag.
-
-Before this patch nsim_get_ts_info() did:
-
-	info->phc_index = mock_phc_index(ns->phc);
-
-and nsim_ethtool_init() installs the shared nsim_ethtool_ops (including
-.get_ts_info = nsim_get_ts_info) on every netdevsim netdev, while only
-nsim_init_netdevsim() calls mock_phc_create().  nsim_init_netdevsim_vf()
-just assigns nsim_vf_netdev_ops and registers the netdev, so ns->phc stays
-NULL for VF netdevs.
-
-With CONFIG_PTP_1588_CLOCK_MOCK=y, mock_phc_index() is the real function:
-
-drivers/ptp/ptp_mock.c:mock_phc_index() {
-	return ptp_clock_index(phc->clock);
-}
-
-so ethtool -T on a netdevsim VF netdev dereferences NULL.  Would it make
-sense to split this guard into its own patch with a Fixes: tag so that
-stable tooling can pick it up?
-
-Also, adding ethtool_op_get_ts_info() here changes ethtool -T output for all
-netdevsim devices by advertising SOF_TIMESTAMPING_TX_SOFTWARE,
-SOF_TIMESTAMPING_RX_SOFTWARE and SOF_TIMESTAMPING_SOFTWARE.  Could the
-changelog mention that behaviour change?
-
->  	info->phc_index = mock_phc_index(ns->phc);
-> +	if (info->phc_index < 0)
-> +		return 0;
-> +
-> +	info->so_timestamping |= SOF_TIMESTAMPING_TX_HARDWARE |
-> +				 SOF_TIMESTAMPING_RX_HARDWARE |
-> +				 SOF_TIMESTAMPING_RAW_HARDWARE;
-> +
-> +	info->tx_types = BIT(HWTSTAMP_TX_OFF) | BIT(HWTSTAMP_TX_ON);
-> +	info->rx_filters = BIT(HWTSTAMP_FILTER_NONE) | BIT(HWTSTAMP_FILTER_ALL);
->  
->  	return 0;
->  }
-> diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
-> index 4e9d7e10b527e..e586fd8f3bc37 100644
-> --- a/drivers/net/netdevsim/netdev.c
-> +++ b/drivers/net/netdevsim/netdev.c
-
-[ ... ]
-
-> @@ -164,6 +171,44 @@ static netdev_tx_t nsim_start_xmit(struct sk_buff *skb, struct net_device *dev)
->  		skb_linearize(skb);
->  
->  	skb_tx_timestamp(skb);
-> +
-> +	if (unlikely(READ_ONCE(peer_ns->tstamp_config.rx_filter) !=
-> +		     HWTSTAMP_FILTER_NONE))
-> +		ptp_info_rx = mock_phc_get_ptp_info(peer_ns->phc);
-> +
-> +	if (unlikely(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) &&
-> +	    READ_ONCE(ns->tstamp_config.tx_type) == HWTSTAMP_TX_ON)
-> +		ptp_info_tx = mock_phc_get_ptp_info(ns->phc);
-> +
-> +	if (unlikely(ptp_info_tx || ptp_info_rx)) {
-> +		/* Capture both timestamps closely */
-> +		if (ptp_info_tx)
-> +			ptp_info_tx->gettime64(ptp_info_tx, &tx_ts);
-> +		if (ptp_info_rx)
-> +			ptp_info_rx->gettime64(ptp_info_rx, &rx_ts);
-> +
-> +		/* If TX hardware timestamping is enabled report TX timestamp */
-> +		if (ptp_info_tx) {
-> +			shhwtstamps.hwtstamp = timespec64_to_ktime(tx_ts);
-> +			skb_tstamp_tx(skb_orig, &shhwtstamps);
-> +		}
-
-[Severity: Medium]
-[Finding: gpt-5-6-sol-3-10]
-[Sources: gpt-5-6-sol, opus-5]
-Can a socket receive two SCM_TSTAMP_SND reports for the same packet here?
-
-The hardware report is emitted after skb_tx_timestamp(), which already
-delivered the software one:
-
-include/linux/skbuff.h:skb_tx_timestamp() {
-	skb_clone_tx_timestamp(skb);
-	if (skb_shinfo(skb)->tx_flags & (SKBTX_SW_TSTAMP | SKBTX_BPF))
-		skb_tstamp_tx(skb, NULL);
-}
-
-The only suppression of the software report lives in __skb_tstamp_tx():
-
-net/core/skbuff.c:__skb_tstamp_tx() {
-	if (!hwtstamps && !(tsflags & SOF_TIMESTAMPING_OPT_TX_SWHW) &&
-	    skb_shinfo(orig_skb)->tx_flags & SKBTX_IN_PROGRESS)
-		return;
-
-netdevsim never sets SKBTX_IN_PROGRESS anywhere - the new code only tests
-SKBTX_HW_TSTAMP - so for a socket that enabled both
-SOF_TIMESTAMPING_TX_SOFTWARE and SOF_TIMESTAMPING_TX_HARDWARE without
-SOF_TIMESTAMPING_OPT_TX_SWHW both reports are delivered.
-
-Would following the usual driver sequence work here, i.e. test
-SKBTX_HW_TSTAMP and set SKBTX_IN_PROGRESS before calling
-skb_tx_timestamp()?
-
-> +
-> +		/* Unshare the skb, stamping it must not corrupt cloned copies
-> +		 * and prevents returning single tstamp for Tx and Rx
-> +		 */
-> +		skb = skb_unshare(skb_orig, GFP_ATOMIC);
-> +		if (unlikely(!skb)) {
-> +			if (psp_ext)
-> +				__skb_ext_put(psp_ext);
-> +			goto out_drop_cnt;
-> +		}
-
-[Severity: Low]
-[Finding: main-3-8]
-[Sources: opus-5]
-Should this skb_unshare() be gated on ptp_info_rx?
-
-The enclosing condition is ptp_info_tx || ptp_info_rx, but the only write
-into the skb below is guarded by if (ptp_info_rx).  On the TX-only path
-(peer rx_filter == HWTSTAMP_FILTER_NONE) every timestamped frame gets copied
-by skb_copy() for nothing, which also linearizes the buffer that the
-hds_config logic just above deliberately left non-linear, and does not carry
-queue_mapping.
-
-If the GFP_ATOMIC copy then fails, the frame is dropped via out_drop_cnt
-even though nothing needed to be written into it, and after the TX
-timestamp was already handed to the socket by skb_tstamp_tx(skb_orig, ...).
-
-[Severity: Low]
-[Finding: main-5-12]
-[Sources: opus-5]
-Does skb_unshare() cover the case this comment describes?
-
-include/linux/skbuff.h:skb_unshare() {
-	might_sleep_if(gfpflags_allow_blocking(pri));
-	if (skb_cloned(skb)) {
-	...
-}
-
-The copy is made only for clones, so an skb with skb->users > 1 and
-cloned == 0 is returned unchanged.  pktgen does
-refcount_add(burst, &pkt_dev->skb->users) and resubmits the same skb, so the
-skb_hwtstamps(skb) write below touches skb_shared_info that the other
-reference holder still owns, and that the peer's NAPI path may read
-concurrently after nsim_forward_skb() -> nsim_napi_rx() queues it on
-rq->skb_queue.  Should the driver check skb_shared() as well, or stamp a
-private copy?
-
-> +
-> +		/* If RX hardware timestamping is enabled report RX timestamp */
-> +		if (ptp_info_rx)
-> +			skb_hwtstamps(skb)->hwtstamp =
-> +				timespec64_to_ktime(rx_ts);
-> +	}
-> +
-
-[Severity: Critical]
-[Finding: main-6-13]
-[Sources: opus-5]
-Can this write corrupt kernel memory for AF_XDP TX skbs?
-
-skb_hwtstamps() returns a pointer into a union in skb_shared_info:
-
-include/linux/skbuff.h:struct skb_shared_info {
-	union {
-		struct skb_shared_hwtstamps hwtstamps;
-		struct xsk_tx_metadata_compl xsk_meta;
-	};
-
-struct xsk_tx_metadata_compl has a single member, u64 *tx_timestamp, and the
-AF_XDP destructor dereferences it with only a NULL check:
-
-net/xdp/xsk.c:xsk_destruct_skb() {
-	struct xsk_tx_metadata_compl *compl = &skb_shinfo(skb)->xsk_meta;
-
-	if (compl->tx_timestamp) {
-		/* sw completion timestamp, not a real one */
-		*compl->tx_timestamp = ktime_get_tai_fast_ns();
-	}
-
-Every generic-xmit AF_XDP skb carries that destructor
-(xsk_skb_init_misc() sets skb->destructor = xsk_destruct_skb), and it is
-freshly allocated and not cloned, so skb_unshare() above returns the same
-skb with the destructor and the overwritten shinfo intact.
-__dev_forward_skb() -> skb_scrub_packet() does not orphan the skb or reset
-skb_shinfo(), so the value survives to the destructor.
-
-The RX branch is gated only on the peer's setting:
-
-	if (unlikely(READ_ONCE(peer_ns->tstamp_config.rx_filter) !=
-		     HWTSTAMP_FILTER_NONE))
-		ptp_info_rx = mock_phc_get_ptp_info(peer_ns->phc);
-
-so any AF_XDP frame forwarded while the peer has RX timestamping enabled
-gets a non-NULL, PHC-derived value in xsk_meta.tx_timestamp, and the
-destructor performs an 8-byte write to that address.  The mock PHC value is
-settable from userspace through clock_settime() on /dev/ptpN via
-mock_phc_settime64().
-
-Real NICs avoid this because they only stamp skbs they allocated for RX.
-Since netdevsim reuses the TX skb as the RX skb, should it orphan the skb
-(clearing skb->destructor) or stamp a private copy before touching
-skb_shinfo()->hwtstamps?
-
->  	if (unlikely(nsim_forward_skb(dev, peer_dev,
->  				      skb, rq, psp_ext) == NET_RX_DROP))
->  		goto out_drop_cnt;
-> @@ -185,6 +230,63 @@ static netdev_tx_t nsim_start_xmit(struct sk_buff *skb, struct net_device *dev)
->  	return NETDEV_TX_OK;
->  }
->  
-> +static int nsim_set_ts_config(struct net_device *netdev,
-> +			      struct kernel_hwtstamp_config *config,
-> +			      struct netlink_ext_ack *extack)
-> +{
-> +	struct netdevsim *ns = netdev_priv(netdev);
-> +	int rx_filter;
-> +
-> +	if (!ns->phc)
-> +		return -EOPNOTSUPP;
-> +
-
-[ ... ]
-
-> +static int nsim_get_ts_config(struct net_device *netdev,
-> +			      struct kernel_hwtstamp_config *config)
-> +{
-> +	struct netdevsim *ns = netdev_priv(netdev);
-> +
-> +	*config = ns->tstamp_config;
-> +	return 0;
-> +}
-
-[Severity: Low]
-[Finding: gpt-5-6-sol-2-6]
-[Sources: gpt-5-6-sol, opus-5]
-Should nsim_get_ts_config() carry the same !ns->phc check as
-nsim_set_ts_config()?
-
-drivers/net/Kconfig allows netdevsim without the mock clock:
-
-	depends on PTP_1588_CLOCK_MOCK || PTP_1588_CLOCK_MOCK=n
-
-and with CONFIG_PTP_1588_CLOCK_MOCK=n the stub is used:
-
-include/linux/ptp_mock.h {
-static inline struct mock_phc *mock_phc_create(struct device *dev)
-{
-	return NULL;
-}
-
-nsim_init_netdevsim() only rejects IS_ERR(), so ns->phc stays NULL.  In that
-configuration SIOCGHWTSTAMP succeeds and reports tx_type =
-HWTSTAMP_TX_OFF / rx_filter = HWTSTAMP_FILTER_NONE, i.e. "hardware
-timestamping present but disabled", while nsim_get_ts_info() reports
-phc_index = -1 with no hardware so_timestamping and every set attempt is
-rejected with -EOPNOTSUPP.  Other converted drivers keep the get/set pair
-symmetric here.
-
-[ ... ]
