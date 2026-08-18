@@ -1,268 +1,625 @@
-Received: from mx0b-00190b01.pphosted.com (mx0b-00190b01.pphosted.com [67.231.157.127])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E590367F26;
-	Tue, 18 Aug 2026 12:03:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.157.127
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B32367F26;
+	Tue, 18 Aug 2026 12:04:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787054625; cv=none; b=Z+7/t5iKo6DSqasUFzazJoNH6S5wDhpftWmnbEU2qIQjGhYUQjoyDz999l13+0x9X9ZtcRdgAj67bS6vaJzM8Ff+l0PW/C9anjqucitFvqC4dyBE+Chh4xZwTfeYWjRW39gBfjanTtcsYUjfNT242qClNh8IVSbQg+BLIP42p2g=
+	t=1787054665; cv=none; b=VZILA++/CaJHaEYuS7B+EjdJ22RAzoFcI7QbPOrwue1ew+jmA4L0dMcxtPxR/GsOoyojIotX3YqdbNz+KdTr1UTcucwh1B2GjW5suIgxrGMwrxEQgDoKTqctaK485O8xUQkWdLJrDxsJejPEqrEb/yBTzyQLxty0a4xWfvkia7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787054625; c=relaxed/simple;
-	bh=PL5rhIilZ1W04nt6JPYSsY+hD2e70H+FDSFjBPa/XyI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rKvZyCCMSRrIx0xaGwdUqVKjoqDQZNsJ1C2gREBJPHHQ5Q0+oCBt0HR7MTNieiK5VPo+/hy39AymIRXivHpeXDOJ0fwzAMyuyEYT06WDqnLlS1Bm/gJnfQXCjslEBnRJc6KLZaJCsy27wwX4Jtm5sCOXx5+hszuB/hSq3uphd6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=akamai.com; spf=pass smtp.mailfrom=akamai.com; dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b=o9yyWvQg; arc=none smtp.client-ip=67.231.157.127
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=akamai.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=akamai.com
+	s=arc-20240116; t=1787054665; c=relaxed/simple;
+	bh=f6b531Of/L+2IcTzwRZe88vaJ0Vx8gh3ITc+GoUKe6s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M3Orcwz7hfVO83X3TFFSd9Zzp0w8xLOOfY3pc/6Bl9w0SC1KNtrroAeXOMf04vWosSgyYn1z7Wu2Ot773DyIcJdYN5OjuEOMYZWQyK8dIepDzCb3YMl55sqiS1ocUwUCkmDz8wG43ee16gxomaQgpSu7LzgOM4fQ07V7kzn8gA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XT5sxv23; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b="o9yyWvQg"
-Received: from pps.filterd (m0409411.ppops.net [127.0.0.1])
-	by m0409411.ppops.net-00190b01. (8.18.1.11/8.18.1.11) with ESMTP id 67IABefx1599894;
-	Tue, 18 Aug 2026 13:03:14 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=apr2026.eng; bh=MQAuEeSWo6Msi1419jdvftkRkARWgJiWi
-	bYwmZYWZHo=; b=o9yyWvQgWAwROx8h0s0/5otPqRJn5EhEM/YuVtscS80lE5U3w
-	MnwG1GuZ0q9t91m+U24BYO70xCQcjrmyK8NlIPKZva2t4luGkXOtPlgdrvQEn0LG
-	Ocewo3ykR9p/dHUDsdab1Bug9PBR4GBg1A+M9SA4igaqxNfRGtXOlIxKNyoaBALJ
-	hdgxfzda2oZCDp2EiMQ6YUR1F4Ptmr9P4s0VcRcQ87mdbSDb0chm34iEY+xm5GOv
-	q8padx/g8poJqRLP9NKE/EuBvuJOn/ZXqLyEJAOPI8/Fl8o2voMNlIA4qausB4V4
-	cXynRAyerQiEcOiPijS1UiFp51j+qxRklZ09A==
-Received: from prod-mail-ppoint5 (prod-mail-ppoint5.akamai.com [184.51.33.60])
-	by m0409411.ppops.net-00190b01. (PPS) with ESMTPS id 4g4d6t51sq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Aug 2026 13:03:13 +0100 (BST)
-Received: from pps.filterd (prod-mail-ppoint5.akamai.com [127.0.0.1])
-	by prod-mail-ppoint5.akamai.com (8.18.1.7/8.18.1.7) with ESMTP id 67IBwJb3031383;
-	Tue, 18 Aug 2026 05:03:13 -0700
-Received: from prod-mail-relay02.akamai.com ([172.27.118.35])
-	by prod-mail-ppoint5.akamai.com (PPS) with ESMTP id 4g2p37b4wn-1;
-	Tue, 18 Aug 2026 05:03:12 -0700 (PDT)
-Received: from muc-lhvdhd.munich.corp.akamai.com (muc-lhvdhd.munich.corp.akamai.com [172.29.0.147])
-	by prod-mail-relay02.akamai.com (Postfix) with ESMTP id 9DBAC8A;
-	Tue, 18 Aug 2026 12:03:11 +0000 (UTC)
-From: Nick Hudson <nhudson@akamai.com>
-To: bpf@vger.kernel.org, netdev@vger.kernel.org
-Cc: Nick Hudson <nhudson@akamai.com>, Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Eduard Zingerman <eddyz87@gmail.com>,
-        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-        Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] selftests/bpf: tc_tunnel - validate decap tunnel state without false-pass gaps
-Date: Tue, 18 Aug 2026 13:03:07 +0100
-Message-Id: <20260818120308.623905-1-nhudson@akamai.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XT5sxv23"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06AEA1F000E9;
+	Tue, 18 Aug 2026 12:04:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787054663;
+	bh=ejjkbWmIwyjmGlGIYzZMvoyfTm75p8e+BzzSBZDmiYA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=XT5sxv23JenFi1AOMHez0QONZZdlh3mGMudxTfYDp37I5oB/Z/xkilTSdcqLhaoh4
+	 J1dFX8IVtRpJAN+6acHiEZQKKPsMDlZmt/cB2qRzB/DAI6LLrjNSLZjf4WAOnO37F1
+	 PTTZax+lnAPTixeROo24UiI4uBhGD2InN2G5zt5DfZ/NPeK8/9oH+XNC6krd+f0juS
+	 Z8L+HF+cyBvYeUUU3lnxeEEpfRnKoJAM2SQ9RjTjXiNZ/W6+hDuKCbWGt3zrrORrs4
+	 pD7iOPo26mwBiU5I605cVVqKaZ9sQMOnzwIk4qoZhu4jMnJCk4/xvzSXp+wm1AAOII
+	 gZegg/XPgWlXg==
+Date: Tue, 18 Aug 2026 13:04:18 +0100
+From: Simon Horman <horms@kernel.org>
+To: Dong Yibo <dong100@mucse.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, vadim.fedorenko@linux.dev,
+	u.kleine-koenig@baylibre.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, yaojun@mucse.com
+Subject: Re: [PATCH net-next v9 4/4] net: rnpgbe: Add link status handling
+ support
+Message-ID: <20260818120418.GD265046@horms.kernel.org>
+References: <20260814111317.1741087-1-dong100@mucse.com>
+ <20260814111317.1741087-5-dong100@mucse.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-18_01,2026-08-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- adultscore=0 suspectscore=0 bulkscore=0 malwarescore=0 phishscore=0
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2606160000
- definitions=main-2608180087
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE4MDA4OCBTYWx0ZWRfX1pBN8pG13Mwh
- sp8C7xf6+uYQcslE1XFqUOt6y0WSdBDY4Hwpsb2S6coz6j7uIH7ETSV9aNvZcJ4jN74jJ09g1RC
- gNZfX1+f9gqKw5e6JV0oLzLu5502VbMbo3d426cfJEB43I6b2eVpbOSsTgnW7CzmwKj8IxeV15R
- dSL8/KevX4P8Eox1keuvMHnl22mLsxAGkEiWCNAKTcbgUhwM/JMbDAnarnmFgoFH1AxYhGYdf41
- w04xruMkyrJ7rx+69C//AqoGlyqTJubceFXhEGOtjs8OfK10YlPV0MPIwCwhU6z/liZ8fyUv2d4
- YmWInmwMHc5sjEnpY9DI8y/w/PTwK8ivw05goAdcgFWwa8zRzHPU1DnkhLaxegkYH0jHESiBJMS
- gcFpWIFPx3IJEjV7Ic59jQNoRR5bPTy61ek7G3QpN22K83lY5CLlqggPRyCJcS2R7NiRR5ii1t1
- 8Jym0R9Nz4z4e6iEzcg==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODE4MDA4OCBTYWx0ZWRfX+XAKkmPdVbY6
- 3lpdXYkcFOSRz5HTk2NOvEmK2MFCIprJIgYxAdOWzT63DabAqzjAqAa1c274QoRpkMEJEBsMs+v
- AoI38YACki5e7yqQAblrpNOeSnB2u+U=
-X-Proofpoint-GUID: TRm72OAjYsiaVsmsb1GaH1zKHbM5z8r7
-X-Proofpoint-ORIG-GUID: TRm72OAjYsiaVsmsb1GaH1zKHbM5z8r7
-X-Authority-Analysis: v=2.4 cv=a6IAM0SF c=1 sm=1 tr=0 ts=6a844a01 cx=c_pps
- a=NpDlK6FjLPvvy7XAFEyJFw==:117 a=NpDlK6FjLPvvy7XAFEyJFw==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=Ifg-1AOnLHOf1gn6spyb:22
- a=XKgOefoLEnF0tNwW78TB:22 a=X7Ea-ya5AAAA:8 a=hjiSBXTtVWtPCglo4hsA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-18_01,2026-08-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- priorityscore=1501 clxscore=1015 adultscore=0 lowpriorityscore=0 spamscore=0
- malwarescore=0 phishscore=0 bulkscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606160001 definitions=main-2608180088
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260814111317.1741087-5-dong100@mucse.com>
 
-This follow-up tightens the selftest to guard against false passes in
-GSO decap validation.
-
-It validates the expected post-decap state for both GSO and non-GSO
-packets: expected tunnel gso_type bits must be cleared and
-skb->encapsulation must match the remaining tunnel state.
-
-It also adds explicit assertions that the decap validation path was
-executed, including the large-send phase for GSO-marked subtests, and
-asserts that the large-send marker is reset after the send.
-
-This keeps the tc_tunnel decap checks meaningful and avoids false-pass
-regressions without over-constraining behavior across tunnel modes.
-
-Signed-off-by: Nick Hudson <nhudson@akamai.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260814111317.1741087-2-dong100@mucse.com?part=4
 ---
- .../selftests/bpf/prog_tests/test_tc_tunnel.c | 33 +++++++++++++++----
- .../selftests/bpf/progs/test_tc_tunnel.c      | 19 +++++++++++
- 2 files changed, 46 insertions(+), 6 deletions(-)
+--- Patch [4]: [PATCH net-next v9 4/4] net: rnpgbe: Add link status handling support ---
+commit b6af113d772d4dd7e20d76a3f509b4e2063a20db
+Author: Dong Yibo <dong100@mucse.com>
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/test_tc_tunnel.c b/tools/testing/selftests/bpf/prog_tests/test_tc_tunnel.c
-index 67ba27d69347..08d7d90f7772 100644
---- a/tools/testing/selftests/bpf/prog_tests/test_tc_tunnel.c
-+++ b/tools/testing/selftests/bpf/prog_tests/test_tc_tunnel.c
-@@ -206,7 +206,7 @@ static void disconnect_client_from_server(struct subtest_cfg *cfg,
- 	free(conn);
- }
- 
--static int send_and_test_data(struct subtest_cfg *cfg)
-+static int send_and_test_data(struct subtest_cfg *cfg, struct test_tc_tunnel *skel)
- {
- 	struct connection *conn;
- 	int err, res = -1;
-@@ -215,6 +215,7 @@ static int send_and_test_data(struct subtest_cfg *cfg)
- 	if (!ASSERT_OK_PTR(conn, "connect to server"))
- 		return -1;
- 
-+	skel->bss->decap_expect_large_send = 0;
- 	err = send(conn->client_fd, tx_buffer, DEFAULT_TEST_DATA_SIZE, 0);
- 	if (!ASSERT_EQ(err, DEFAULT_TEST_DATA_SIZE, "send data from client"))
- 		goto end;
-@@ -226,14 +227,17 @@ static int send_and_test_data(struct subtest_cfg *cfg)
- 		goto end;
- 	}
- 
-+	skel->bss->decap_expect_large_send = 1;
- 	err = send(conn->client_fd, tx_buffer, GSO_TEST_DATA_SIZE, 0);
- 	if (!ASSERT_EQ(err, GSO_TEST_DATA_SIZE, "send (large) data from client"))
- 		goto end;
- 	if (check_server_rx_data(cfg, conn, DEFAULT_TEST_DATA_SIZE))
- 		goto end;
-+	skel->bss->decap_expect_large_send = 0;
- 
- 	res = 0;
- end:
-+	skel->bss->decap_expect_large_send = 0;
- 	disconnect_client_from_server(cfg, conn);
- 	return res;
- }
-@@ -374,10 +378,15 @@ static int configure_ebpf_decapsulation(struct subtest_cfg *cfg)
- 	return ret;
- }
- 
--static void run_test(struct subtest_cfg *cfg)
-+static void run_test(struct subtest_cfg *cfg, struct test_tc_tunnel *skel)
- {
- 	struct nstoken *nstoken;
- 
-+	skel->bss->decap_validation_seen = 0;
-+	skel->bss->decap_gso_validation_seen = 0;
-+	skel->bss->decap_large_send_validation_seen = 0;
-+	skel->bss->decap_expect_large_send = 0;
-+
- 	if (!ASSERT_OK(run_server(cfg), "run server"))
- 		return;
- 
-@@ -386,7 +395,7 @@ static void run_test(struct subtest_cfg *cfg)
- 		goto fail;
- 
- 	/* Basic communication must work */
--	if (!ASSERT_OK(send_and_test_data(cfg), "connect without any encap"))
-+	if (!ASSERT_OK(send_and_test_data(cfg, skel), "connect without any encap"))
- 		goto fail;
- 
- 	/* Attach encapsulation program to client */
-@@ -398,7 +407,7 @@ static void run_test(struct subtest_cfg *cfg)
- 		if (!ASSERT_OK(configure_kernel_decapsulation(cfg),
- 					"configure kernel decapsulation"))
- 			goto fail;
--		if (!ASSERT_OK(send_and_test_data(cfg),
-+		if (!ASSERT_OK(send_and_test_data(cfg, skel),
- 			       "connect with encap prog and kern decap"))
- 			goto fail;
- 	}
-@@ -406,7 +415,18 @@ static void run_test(struct subtest_cfg *cfg)
- 	/* Replace kernel decapsulation with BPF decapsulation, test must pass */
- 	if (!ASSERT_OK(configure_ebpf_decapsulation(cfg), "configure ebpf decapsulation"))
- 		goto fail;
--	ASSERT_OK(send_and_test_data(cfg), "connect with encap and decap progs");
-+	if (!ASSERT_OK(send_and_test_data(cfg, skel), "connect with encap and decap progs"))
-+		goto fail;
-+	if (!ASSERT_NEQ(skel->bss->decap_validation_seen, 0,
-+			"decap validation executed"))
-+		goto fail;
-+	if (!ASSERT_EQ(skel->bss->decap_expect_large_send, 0,
-+		       "decap large-send marker reset"))
-+		goto fail;
-+	if (cfg->test_gso) {
-+		ASSERT_NEQ(skel->bss->decap_large_send_validation_seen, 0,
-+			   "decap validation executed for large send");
-+	}
- 
- fail:
- 	close_netns(nstoken);
-@@ -438,6 +458,7 @@ static int setup(void)
- 	SYS(fail_close_ns_client, "ip link add %s type veth peer name %s",
- 	    "veth1 mtu 1500 netns " CLIENT_NS " address " MAC_ADDR_VETH1,
- 	    "veth2 mtu 1500 netns " SERVER_NS " address " MAC_ADDR_VETH2);
-+	SYS(fail_close_ns_client, "ethtool -K veth1 tso off");
- 	SYS(fail_close_ns_client, "ip link set veth1 up");
- 	nstoken_server = open_netns(SERVER_NS);
- 	if (!ASSERT_OK_PTR(nstoken_server, "open server ns"))
-@@ -701,7 +722,7 @@ void test_tc_tunnel(void)
- 		if (ret < 0 || !test__start_subtest(cfg->name))
- 			continue;
- 		if (subtest_setup(skel, cfg) == 0)
--			run_test(cfg);
-+			run_test(cfg, skel);
- 		subtest_cleanup(cfg);
- 	}
- 	cleanup();
-diff --git a/tools/testing/selftests/bpf/progs/test_tc_tunnel.c b/tools/testing/selftests/bpf/progs/test_tc_tunnel.c
-index 853bca962910..e9bd1c9781f7 100644
---- a/tools/testing/selftests/bpf/progs/test_tc_tunnel.c
-+++ b/tools/testing/selftests/bpf/progs/test_tc_tunnel.c
-@@ -16,6 +16,11 @@ static const int cfg_port = 8000;
- 
- static const int cfg_udp_src = 20000;
- 
-+__u64 decap_validation_seen;
-+__u64 decap_gso_validation_seen;
-+__u64 decap_large_send_validation_seen;
-+__u32 decap_expect_large_send;
-+
- #define ETH_P_MPLS_UC	0x8847
- #define ETH_P_TEB	0x6558
- 
-@@ -690,7 +695,21 @@ static int decap_internal(struct __sk_buff *skb, int off, int len, char proto,
- 
- 	kskb = bpf_cast_to_kern_ctx(skb);
- 	shinfo = bpf_core_cast(kskb->head + kskb->end, struct skb_shared_info);
-+
-+	if (flags & (BPF_F_ADJ_ROOM_DECAP_L4_MASK |
-+		     BPF_F_ADJ_ROOM_DECAP_IPXIP_MASK))
-+		decap_validation_seen++;
-+
-+	if ((flags & (BPF_F_ADJ_ROOM_DECAP_L4_MASK |
-+		      BPF_F_ADJ_ROOM_DECAP_IPXIP_MASK)) &&
-+	    decap_expect_large_send)
-+		decap_large_send_validation_seen++;
-+
- 	if (shinfo->gso_size) {
-+		if (flags & (BPF_F_ADJ_ROOM_DECAP_L4_MASK |
-+			     BPF_F_ADJ_ROOM_DECAP_IPXIP_MASK))
-+			decap_gso_validation_seen++;
-+
- 		if ((flags & BPF_F_ADJ_ROOM_DECAP_L4_UDP) &&
- 		    (shinfo->gso_type & SKB_GSO_UDP_TUNNEL_MASK))
- 			return TC_ACT_SHOT;
--- 
-2.34.1
+net: rnpgbe: Add link status handling support
 
+This adds firmware-driven link status handling to the rnpgbe driver: link
+state fields in struct mucse_hw, LINK_CHANGE_EVT parsing over the mailbox,
+and a 500 ms delayed service task that flips the carrier.  It also notifies
+firmware of port up/down, makes rnpgbe_up_complete() return an error so
+ndo_open can fail, and enables the GMAC receiver in receive-all mode.
+
+A few questions below.
+
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
+> index 291e77d573fe6..55b4abed82bd7 100644
+> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
+
+[ ... ]
+
+> @@ -149,3 +155,32 @@ int rnpgbe_init_hw(struct mucse_hw *hw, int board_type)
+>  
+>  	return 0;
+>  }
+> +
+> +/**
+> + * rnpgbe_set_link - Set the hardware link state
+> + * @hw: hw information structure
+> + * @linkup: link on or not
+> + *
+> + * rnpgbe_set_link setup link status
+> + *
+> + **/
+> +void rnpgbe_set_link(struct mucse_hw *hw, bool linkup)
+> +{
+> +	u32 value = mucse_hw_rd32(hw, GMAC_CONTROL);
+> +
+> +	if (linkup)
+> +		value |= GMAC_CONTROL_RE;
+> +	else
+> +		value &= ~GMAC_CONTROL_RE;
+> +
+> +	mucse_hw_wr32(hw, GMAC_CONTROL, value);
+
+[Severity: Low]
+[Finding: main-7-40]
+[Sources: opus-5]
+The enable path sets GMAC_CONTROL_RE here and only programs
+GMAC_FRAME_FILTER afterwards, while the disable path does the two writes in
+the opposite order.
+
+Between these two writes the receiver is running with the frame filter
+value left behind by the previous link-down path:
+
+	mucse_hw_wr32(hw, GMAC_FRAME_FILTER, 0);
+
+which is exact-address matching, and no GMAC unicast address register is
+ever programmed by this driver.
+
+Are frames arriving in that window matched against reset address
+registers?  Would writing the filter before enabling the receiver be
+more consistent with the disable path?
+
+> +
+> +	/* Keep the GMAC in receive-all mode while the link is up. The
+> +	 * chip-level filter does the actual address filtering, but there
+> +	 * is no ndo_set_rx_mode yet to configure it.
+> +	 */
+> +	if (linkup)
+> +		mucse_hw_wr32(hw, GMAC_FRAME_FILTER, GMAC_RX_ALL);
+> +	else
+> +		mucse_hw_wr32(hw, GMAC_FRAME_FILTER, 0);
+> +}
+
+[Severity: Medium]
+[Finding: main-1-0]
+[Sources: opus-5, old-prompts, opus-4-7]
+GMAC_RX_ALL is defined as BIT(31) | BIT(0), which on this DesignWare-style
+GMAC is receive-all plus promiscuous.  Every link-up therefore leaves the
+MAC accepting every frame on the wire for the lifetime of the link, and
+dev->promiscuity / IFF_PROMISC are never updated, so userspace still sees a
+non-promiscuous interface.
+
+The comment and the commit message both say the filtering happens
+elsewhere:
+
+    Enable the GMAC receiver in receive-all mode because packet filtering
+    is done by the chip-level filter
+
+A grep over drivers/net/ethernet/mucse/ shows the GMAC_CONTROL and
+GMAC_FRAME_FILTER writes in rnpgbe_set_link() are the only MAC or filter
+register writes in the whole driver, and rnpgbe_netdev_ops has no
+ndo_set_rx_mode:
+
+static const struct net_device_ops rnpgbe_netdev_ops = {
+	.ndo_open       = rnpgbe_open,
+	.ndo_stop       = rnpgbe_close,
+	.ndo_start_xmit = rnpgbe_xmit_frame,
+	.ndo_get_stats64 = rnpgbe_get_stats64,
+};
+
+Which code programs that chip-level filter?  As it stands, foreign unicast
+and all multicast frames are DMA'd into the rx rings and discarded in
+software, and local taps observe other hosts' traffic while ip link
+reports the interface as non-promiscuous.
+
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h
+> index 1d87edfba3d75..9e640e8d67036 100644
+> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h
+> @@ -21,8 +21,27 @@
+>  #define RNPGBE_DMA_TX_STATUS           GENMASK_U32(23, 22)
+>  #define RNPGBE_DMA_RX_STATUS           GENMASK_U32(21, 20)
+>  #define RX_AXI_RW_EN                   0x03
+> +/* RNPGBE_LINK_ST is a driver-owned link-state snapshot consumed by firmware.
+> + * M_DEFAULT_ST replaces the complete snapshot, causing firmware
+> + * to report the current link state again when it differs from this default.
+> + */
+> +#define M_ST_MASK                      (GENMASK_U32(31, 24) | \
+> +					GENMASK_U32(11, 8) | BIT(6) | \
+> +					BIT(4) | BIT(0))
+> +/* Set the driver-state marker; all other driver status fields start clear. */
+> +#define M_DEFAULT_ST                   0xa0000000
+
+[Severity: Medium]
+[Finding: main-1-1]
+[Sources: opus-5, old-prompts]
+Who owns the bits of RNPGBE_LINK_ST outside M_ST_MASK, that is bits 23:12,
+7, 5 and 3:1?
+
+mucse_update_link_status_reg() treats them as state that must be preserved:
+
+	value = mucse_hw_rd32(hw, RNPGBE_LINK_ST);
+	value &= ~M_ST_MASK;
+	value |= M_DEFAULT_ST;
+
+while rnpgbe_up_complete() and the invalid-magic path in
+mucse_mbx_fw_req_handler() blind-write the whole word:
+
+	mucse_hw_wr32(hw, RNPGBE_LINK_ST, M_DEFAULT_ST);
+
+so exactly the bits the read-modify-write takes care to keep are zeroed.
+Note the register sits at 0x000c, between RNPGBE_DMA_STATUS and
+RNPGBE_DMA_AXI_EN.
+
+If the whole word is driver-owned, is the masked read-modify-write reading
+anything meaningful?  If it is not, do the two full-word writes destroy
+state the driver cannot restore?
+
+> +/* Driver-reported fields: 25:24 pause, 11:8 speed, 6 LLDP, 4 duplex,
+> + * and 0 link up/down. M_DEFAULT_ST resets these fields so firmware reports
+> + * the current hardware state again.
+> + */
+> +#define RNPGBE_LINK_ST                 0x000c
+>  #define RNPGBE_DMA_AXI_EN              0x0010
+>  #define RNPGBE_TX_MIN_PKT_LEN          33
+>  
+> +#define MUCSE_GMAC_OFF(_n)             (0x20000 + (_n))
+> +#define GMAC_CONTROL_RE                0x00000004
+> +#define GMAC_CONTROL                   MUCSE_GMAC_OFF(0)
+> +#define GMAC_RX_ALL                    (BIT(31) | BIT(0))
+> +#define GMAC_FRAME_FILTER              MUCSE_GMAC_OFF(0x4)
+>  #define RNPGBE_MAX_QUEUES 8
+>  #endif /* _RNPGBE_HW_H */
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
+> index 9199a48e75d42..fa5ea4dd7a1c6 100644
+> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
+
+[ ... ]
+
+> @@ -1414,11 +1447,50 @@ void rnpgbe_up_complete(struct mucse *mucse)
+>  		rnpgbe_configure_msi(mucse);
+>  
+>  	rnpgbe_napi_enable_all(mucse);
+> +	/* Clear stale link state and tell firmware the driver hasn't
+> +	 * seen any link yet. Firmware will re-assert LINK_CHANGE_EVT
+> +	 * when link_report_en is sent below since RNPGBE_LINK_ST
+> +	 * no longer matches the actual (possibly up) link state.
+> +	 */
+> +	spin_lock_irqsave(&mucse->link_lock, flags);
+> +	WRITE_ONCE(hw->link, false);
+> +	WRITE_ONCE(hw->speed, 0);
+> +	WRITE_ONCE(hw->duplex, 0);
+> +	atomic_set(&mucse->link_pending, 0);
+> +	/* echo fw driver now in default state */
+> +	mucse_hw_wr32(hw, RNPGBE_LINK_ST, M_DEFAULT_ST);
+
+[ ... ]
+
+> +	queue_delayed_work(system_percpu_wq, &mucse->serv_task,
+> +			   msecs_to_jiffies(500));
+> +
+> +	return 0;
+>  }
+
+[ ... ]
+
+> +/**
+> + * rnpgbe_service_task - Manages and runs subtasks
+> + * @work: pointer to work_struct containing our data
+> + **/
+> +void rnpgbe_service_task(struct work_struct *work)
+> +{
+> +	struct mucse *mucse = container_of(work, struct mucse, serv_task.work);
+> +
+> +	if (test_bit(__MUCSE_DOWN, &mucse->state))
+> +		return;
+> +
+> +	rnpgbe_process_link_subtask(mucse);
+> +
+> +	if (!test_bit(__MUCSE_DOWN, &mucse->state))
+> +		queue_delayed_work(system_percpu_wq, &mucse->serv_task,
+> +				   msecs_to_jiffies(500));
+> +}
+
+[Severity: Low]
+[Finding: main-1-4]
+[Sources: opus-5, old-prompts]
+Could the carrier update be done directly from the mailbox work item
+instead of being polled?
+
+The link event is already parsed in sleepable process context:
+
+rnpgbe_msix_other()
+  queue_work(system_percpu_wq, &mucse->mbx_work)
+    rnpgbe_mbx_work()
+      mucse_fw_irq_handler()
+        mucse_mbx_fw_req_handler()
+          atomic_set_release(&mucse->link_pending, 1);
+
+but the handler only sets link_pending, and this delayed work polls the
+flag every 500 ms.  That adds up to 500 ms of carrier-update latency per
+event, including the first link report since rnpgbe_up_complete() arms the
+task with msecs_to_jiffies(500), plus two workqueue wakeups per second for
+as long as the interface is up.
+
+Queueing serv_task with zero delay from mucse_mbx_fw_req_handler() would
+avoid both.
+
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
+> index 754016f6b4f00..441724f8603eb 100644
+> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
+> @@ -3,6 +3,7 @@
+>  
+>  #include <linux/if_ether.h>
+>  #include <linux/bitfield.h>
+> +#include <linux/ethtool.h>
+>  
+>  #include "rnpgbe.h"
+>  #include "rnpgbe_mbx.h"
+> @@ -27,10 +28,14 @@ static int mucse_fw_send_cmd_wait_resp(struct mucse_hw *hw,
+>  	int retry_cnt = 3;
+>  	int err;
+>  
+> +	BUILD_BUG_ON(sizeof(struct mbx_fw_cmd_reply) != 56);
+> +
+>  	mutex_lock(&hw->mbx.lock);
+> +
+>  	err = mucse_write_and_wait_ack_mbx(hw, req->dwords, len);
+>  	if (err)
+>  		goto out;
+> +
+
+[Severity: Low]
+[Finding: main-1-3]
+[Sources: opus-5, old-prompts]
+These changes are not described by the commit message and are unrelated to
+link handling: the BUILD_BUG_ON plus blank-line churn inside the
+pre-existing mucse_fw_send_cmd_wait_resp(), and a whitespace-only hunk in
+rnpgbe_add_adapter().
+
+The new #include <linux/ethtool.h> also has no user in this file: grep
+finds no ethtool symbol here, DUPLEX_BIT is driver-local, and the speeds
+are plain literals.
+
+The new FLAGS_REPLY and FLAGS_ERR macros and the reply arm of
+union mbx_fw_cmd_u have no consumer either; mucse_fw_handle_event()
+demultiplexes on the opcode field alone and never checks the
+reply/error discriminator.  Could these be dropped or moved to the patch
+that uses them?
+
+>  	do {
+>  		err = mucse_poll_and_read_mbx(hw, reply->dwords,
+>  					      sizeof(reply->r));
+
+[ ... ]
+
+> +static void mucse_update_link_status_reg(struct mucse_hw *hw,
+> +					 struct mbx_fw_cmd_req *req)
+> +{
+> +	u16 status = le16_to_cpu(req->link_stat.st.status);
+> +	u16 speed = le16_to_cpu(req->link_stat.st.speed);
+> +	u32 value;
+> +
+> +	value = mucse_hw_rd32(hw, RNPGBE_LINK_ST);
+> +	value &= ~M_ST_MASK;
+> +	value |= M_DEFAULT_ST;
+> +
+> +	if (le16_to_cpu(req->link_stat.port_status)) {
+> +		value |= BIT(0);
+> +		switch (speed) {
+> +		case 10:
+> +			value |= (mucse_speed_10 << 8);
+> +			break;
+> +		case 100:
+> +			value |= (mucse_speed_100 << 8);
+> +			break;
+> +		case 1000:
+> +			value |= (mucse_speed_1000 << 8);
+> +			break;
+> +		default:
+> +			break;
+> +		}
+
+[Severity: Medium]
+[Finding: gpt-5-6-sol-1-6]
+[Sources: gpt-5-6-sol, opus-5, old-prompts]
+What happens for a speed that is not 10, 100 or 1000?
+
+The default arm leaves bits 11:8 at 0, and mucse_speed_10 is also 0:
+
+enum mucse_speed {
+	mucse_speed_10 = 0,
+	mucse_speed_100 = 1,
+	mucse_speed_1000 = 2,
+};
+
+so an unsupported speed is encoded as 10 Mbps in the snapshot, while
+mucse_mbx_fw_req_handler() caches the raw value:
+
+	WRITE_ONCE(hw->speed, le16_to_cpu(req->link_stat.st.speed));
+
+and rnpgbe_link_is_up() prints it and enables carrier plus the GMAC
+receiver.
+
+The commit message says:
+
+    Validate firmware link events before updating the cached link state.
+
+but the only check applied is port_magic against ST_VALID_MAGIC; speed is
+not range checked.  Should an out-of-range speed be rejected instead, given
+that the snapshot then reports a state the hardware never has and firmware
+can keep re-asserting LINK_CHANGE_EVT?
+
+> +
+> +		value |= FIELD_PREP(BIT(4),
+> +				    !!(req->link_stat.st.flags & DUPLEX_BIT));
+> +		value |= FIELD_PREP(GENMASK_U32(25, 24),
+> +				    status & GENMASK(1, 0));
+> +	} else {
+> +		value &= ~BIT(0);
+> +	}
+> +
+> +	if (status & ST_STATUS_LLDP_STATUS_MASK)
+> +		value |= BIT(6);
+> +	else
+> +		value &= ~BIT(6);
+> +
+> +	mucse_hw_wr32(hw, RNPGBE_LINK_ST, value);
+> +}
+
+[ ... ]
+
+> +static void mucse_mbx_fw_req_handler(struct mucse_hw *hw,
+> +				     struct mbx_fw_cmd_req *req)
+> +{
+> +	struct mucse *mucse = container_of(hw, struct mucse, hw);
+> +	u32 magic = le32_to_cpu(req->link_stat.port_magic);
+> +	unsigned long flags;
+> +
+> +	if (le16_to_cpu(req->opcode) == LINK_CHANGE_EVT) {
+> +		spin_lock_irqsave(&mucse->link_lock, flags);
+> +		if (magic != ST_VALID_MAGIC) {
+> +			/* Do not let an invalid event change the cached link state.
+> +			 * Reset the driver snapshot so firmware reports it again.
+> +			 */
+> +			mucse_hw_wr32(hw, RNPGBE_LINK_ST, M_DEFAULT_ST);
+> +			spin_unlock_irqrestore(&mucse->link_lock, flags);
+> +			return;
+> +		}
+
+[Severity: Medium]
+[Finding: gpt-5-6-sol-3-22]
+[Sources: gpt-5-6-sol]
+Can this path leave the carrier reported as up after the link is gone?
+
+If an invalid-magic event arrives while the link is going down, the cached
+state is kept and the snapshot is reset to M_DEFAULT_ST.  But a legitimate
+link-down snapshot with LLDP clear resolves to exactly M_DEFAULT_ST too:
+mucse_update_link_status_reg() clears BIT(0), encodes no speed, duplex or
+pause, and clears bit 6.
+
+After the reset the snapshot already matches the real down state, so per
+the handshake documented in this patch firmware has no mismatch left to
+re-report from.  link_pending is never set, rnpgbe_process_link_subtask()
+never calls rnpgbe_link_is_down(), and the interface keeps carrier on with
+GMAC_CONTROL_RE set until it is cycled by hand.
+
+> +
+> +		if (test_bit(__MUCSE_DOWN, &mucse->state)) {
+> +			mucse_update_link_status_reg(hw, req);
+> +			spin_unlock_irqrestore(&mucse->link_lock, flags);
+> +			return;
+> +		}
+> +
+> +		if (le16_to_cpu(req->link_stat.port_status))
+> +			WRITE_ONCE(hw->link, true);
+> +		else
+> +			WRITE_ONCE(hw->link, false);
+
+[Severity: Medium]
+[Finding: main-7-37]
+[Sources: opus-5, old-prompts]
+Should port_status be tested with BIT(hw->port) rather than for plain
+non-zero?
+
+Every other port field in this mailbox protocol is a per-port bitmask.  The
+requests added by this patch encode:
+
+	.port_mask = cpu_to_le32(BIT(hw->port)),
+
+and the GET_MAC_ADDRESS reply is decoded in mucse_mbx_get_macaddr() as:
+
+	if (le32_to_cpu(reply.r.mac_addr.ports) & BIT(port))
+
+If port_status is likewise a bitmap of ports whose link is up, which its
+pairing with changed_lanes suggests, then on multi-port parts such as
+RNPGBE_DEVICE_ID_N500_QUAD_PORT a link-up on another port would make this
+port declare carrier up, set GMAC_CONTROL_RE plus receive-all filtering,
+and advertise link up in the firmware snapshot while its own PHY is down.
+The same unmasked test is used in mucse_update_link_status_reg().
+
+> +
+> +		WRITE_ONCE(hw->speed, le16_to_cpu(req->link_stat.st.speed));
+> +		WRITE_ONCE(hw->duplex, req->link_stat.st.flags & DUPLEX_BIT);
+> +		/* update regs to notify link info is received */
+> +		mucse_update_link_status_reg(hw, req);
+> +		atomic_set_release(&mucse->link_pending, 1);
+> +		spin_unlock_irqrestore(&mucse->link_lock, flags);
+> +	}
+> +}
+> +
+> +/**
+> + * mucse_fw_handle_event - Handle one pending firmware event
+> + * @hw: pointer to the hardware structure
+> + *
+> + * Return: true if an event was handled, false otherwise
+> + **/
+> +static bool mucse_fw_handle_event(struct mucse_hw *hw)
+> +{
+> +	union mbx_fw_cmd_u msg = {};
+> +	int err;
+> +
+> +	/* try to check and read fw req */
+> +	mutex_lock(&hw->mbx.lock);
+> +	err = mucse_check_and_read_mbx(hw, msg.dwords, sizeof(msg));
+> +	mutex_unlock(&hw->mbx.lock);
+> +	if (err)
+> +		return false;
+> +
+> +	mucse_mbx_fw_req_handler(hw, &msg.req);
+> +
+> +	return true;
+> +}
+> +
+> +/**
+> + * mucse_fw_irq_handler - Drain pending firmware mailbox events
+>   * @hw: pointer to the HW structure
+> + *
+> + * The only asynchronous event currently handled is LINK_CHANGE_EVT.
+> + * Firmware rate-limits link-change notifications to a minimum interval
+> + * of 500 ms.
+>   **/
+>  void mucse_fw_irq_handler(struct mucse_hw *hw)
+>  {
+> +	/* Drain events coalesced while the mailbox work item was pending. */
+> +	while (mucse_fw_handle_event(hw))
+> +		continue;
+>  }
+
+[Severity: Medium]
+[Finding: gpt-5-6-sol-6-34]
+[Sources: gpt-5-6-sol, opus-5, old-prompts]
+Is this loop bounded by anything other than firmware behaviour?
+
+The exit condition is entirely device controlled.  mucse_check_for_msg_pf()
+succeeds whenever the firmware-written counter differs from the cached
+copy:
+
+	if (fw_req == 0 || fw_req == hw->mbx.fw_req)
+		return -EIO;
+
+and mucse_read_mbx_pf() re-caches it from the same register, so as long as
+firmware keeps advancing the counter the work item never returns.
+mucse_fw_handle_event() also returns true for any successful read,
+including messages with an unrecognised opcode.
+
+That blocks the teardown path, which waits for this work:
+
+rnpgbe_free_mbx_irq()
+	free_irq(pci_irq_vector(pdev, 0), mucse);
+	cancel_work_sync(&mucse->mbx_work);
+
+so a device that keeps posting messages would hang rmmod or PCI remove and
+keep one workqueue worker spinning on the mailbox lock.  The reply path
+bounds itself with retry_cnt = 3; should this drain get a similar budget?
+The 500 ms firmware rate limit is only stated in the comment, not enforced
+by the driver.
+
+Simon says: I believe that the issue below is a false-positive as
+            the use of __MUCSE_DOWN ensures correct behaviour.
+
+[Severity: Low]
+[Finding: gpt-5-6-sol-5-30]
+[Sources: gpt-5-6-sol, opus-5]
+Now that mucse_fw_irq_handler() is no longer empty, can it run against an
+already disabled device on the shutdown path?
+
+rnpgbe_dev_shutdown() quiesces only the netdev and then disables the
+device:
+
+	rtnl_lock();
+	netif_device_detach(netdev);
+	if (netif_running(netdev))
+		rnpgbe_close(netdev);
+	rtnl_unlock();
+	pci_disable_device(pdev);
+
+The mailbox IRQ stays registered and mbx_work is never cancelled there;
+rnpgbe_down() only cancels serv_task.  A queued or running mbx_work would
+then do mailbox MMIO reads and the RNPGBE_LINK_ST write after
+pci_disable_device(), and feed whatever the reads return into
+mucse_mbx_fw_req_handler().  rnpgbe_free_mbx_irq() already has the
+free_irq() plus cancel_work_sync() ordering the shutdown path is missing.
+
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h
+> index a6bf5de55aa39..0e6972b7c3c02 100644
+> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h
+
+[ ... ]
+
+>  struct mbx_fw_cmd_reply {
+> +#define FLAGS_REPLY       BIT(0)
+> +#define FLAGS_ERR         BIT(2)
+>  	__le16 flags;
+>  	__le16 opcode;
+>  	__le16 error_code;
+> @@ -94,10 +127,27 @@ union mbx_fw_cmd_reply_u {
+>  	__le32 dwords[sizeof(struct mbx_fw_cmd_reply) / sizeof(__le32)];
+>  };
+>  
+> +union mbx_fw_cmd_u {
+> +	struct mbx_fw_cmd_req req;
+> +	struct mbx_fw_cmd_reply reply;
+> +	__le32 dwords[sizeof(struct mbx_fw_cmd_reply) / sizeof(__le32)];
+> +};
+> +
+> +/* Firmware encoding for RNPGBE_LINK_ST[11:8]. Valid link events report
+> + * only these three speeds.
+> + */
+> +enum mucse_speed {
+> +	mucse_speed_10 = 0,
+> +	mucse_speed_100 = 1,
+> +	mucse_speed_1000 = 2,
+> +};
+
+[ ... ]
