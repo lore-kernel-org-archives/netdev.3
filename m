@@ -1,156 +1,174 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37416378833;
-	Tue, 18 Aug 2026 07:31:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313312C11DE
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 07:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787038292; cv=none; b=E9LM1Vtg9Bu6dG54wSPKYJLs5m7r+8EuJYyCf34ovufwIfOqYzd/ERohmjV9ewgroZygSmBkA2E05L3YFTg6GeP0+rnXRTKO4XNp+hwx4qfuTK/kmU1Kw78L25YrvvYrj+S1hJOTsC4bM7xsORBj+Dg44krGJ9TGOwxiI44wGjk=
+	t=1787038396; cv=none; b=UlbZp52rRGJf9/0ZBMQNWHK7DKhrehOzc06vYAhwAUiY3soTRoGipkdXCMo3D8ITs/l3B64uf8FG1VukXSeAsKyqukl8O51M/daF1OJ3uv1zcB5hH4tJNqGqpo41B9ogqIzT7vCfdH6fXu9MRIKRH67UibdTycIwLXMwXW9MZV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787038292; c=relaxed/simple;
-	bh=QBpVO6DJy6JCTg4w5dKv6IgUyJKaHcEBz3YP7SbrAVA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GDF9abO2vC9Ztav622/BbqnGn0s3IlVOGG8SpWBBziFUD76QqjK++0BYIi10ouxypjegrhxA4FD9Up/grPmtjzsZRDECN9BF9P6NsvQhXlys5xJMK0QLgEMQrmfyarytwaKj8Z8o+I5r5PtAA5jD/SOSOHAnakm7Uz8KsiRc/dM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Q0ot++O+; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1787038396; c=relaxed/simple;
+	bh=yXgCy1ZNVXJy5+9cLGZeE5uyn6X/ULoiPOSTm8c6YUw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cEcNMxudnU17qVsCQNcYwpd+11Zq7OrpUaO7ZK8UA3PyPQSmWlWoRHEUTlf8eYwmUytQVwWkTScXrNDrTUm3qzNMVogS6UoXl7agYQMtqh14FiAlJbkxnzcnl1nyqFMUwmpBNUC93vxa1u5EZiDjqKx2MZdgtfr1wcBhABjDZ10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=omGXeGGH; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Q0ot++O+"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67HM1kAo2526488;
-	Tue, 18 Aug 2026 07:31:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=zxp4ukBNL6k4K6ViKYFlAQVx4Q1m3b7tOo8N72wJv
-	c4=; b=Q0ot++O+DW7VFDlQ8lQSnrYco99Wqy4nplRbilkvtb4u3LnP1rUrQbqm6
-	aPH08YRLF0kEeMW7phiG3IEpoEJTpOR1fJpq8ZQNs0+FdcdTtrRbjGtIq13a398x
-	5MxQkw5UhaNzanGA+xk+t/nvhsHywf7UwEfrJIA1KHntHIn1N+GUDrUN7EM0lrp6
-	cFR51ZitMJ/jyiktqo0BmZwQRbYOWXuLuItwOrJSSeRen1qoLf2FKyvRKEyhUSac
-	ryB68/iH9xiaxXnl2Hi1yDeC+eXSKg6kVWvbGKOXRyfEG20lLhkcTpTirjnwnr8C
-	vtFvqjlDXuRk/1JStdlxwn+XN3sbQ==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g2dhkxmf6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Aug 2026 07:31:17 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67I7QMH8025784;
-	Tue, 18 Aug 2026 07:31:17 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g33xh1xwh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Aug 2026 07:31:16 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67I7VCCi46924128
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 18 Aug 2026 07:31:13 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DC9CE2004B;
-	Tue, 18 Aug 2026 07:31:12 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AC92E20040;
-	Tue, 18 Aug 2026 07:31:12 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Tue, 18 Aug 2026 07:31:12 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 56341)
-	id 96FDF16113B; Tue, 18 Aug 2026 09:31:12 +0200 (CEST)
-From: Mahanta Jambigi <mjambigi@linux.ibm.com>
-To: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
-        dust.li@linux.alibaba.com, sidraya@linux.ibm.com
-Cc: pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
-        guwen@linux.alibaba.com, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org, Mahanta Jambigi <mjambigi@linux.ibm.com>,
-        Hidayath Khan <hidayath@linux.ibm.com>
-Subject: [PATCH net] net/smc: free stashed qentry before overwrite in REQ_ADD_LINK to ADD_LINK transition
-Date: Tue, 18 Aug 2026 09:31:07 +0200
-Message-ID: <20260818073107.466506-1-mjambigi@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="omGXeGGH"
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-cbedbaba5fdso2678669a12.0
+        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 00:33:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787038394; x=1787643194; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/uWawcNhMBUKk6HeN3hgFqps7RI+QPHqIhbrb/vDwOg=;
+        b=omGXeGGHNIVr4TSBnze/IEREK9nZDy6QmfMeBoJivBQcQ607dwapdT8HOq39RDtdeY
+         StbpV61/c+WRxZ9tztgegXoA8vFj2b1w6ccV1PAj1+oRhf4YpO3umDEGrtr2mGwdx547
+         OJEgP78J4XyNy+qBewNVdWEWSkSy1cBta+YywQcmElijr6Hi/D7Gbg5YgopRVo1cYpwP
+         vEwR2nl7szCUVtzymiao4UMBUe4TerhY6F0zG68t4gnuM9Wf6OgtopEM6qPrLQEisSyC
+         KpQhJorAvFmWh1anSsSrQ2U/gS472ixyN+R/FHgi3d4E6lHN1Sr4FVlRU/exLXcUkqoi
+         krNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787038394; x=1787643194;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/uWawcNhMBUKk6HeN3hgFqps7RI+QPHqIhbrb/vDwOg=;
+        b=bKUjYFJF2Iko/CD0/0xkbJTw60VIllxGpnYd4dcAeq5hf8/KGS4vdLAO3rkXaH3dHZ
+         Z91IPrrzpmrAOdKENm6h59AhL9NxQ78qgeUtvLdi8UYHWayojlmCBmYlvYZaGGbL8X6W
+         L1h/BHmtesG3oBzJSHaWpdxoxucm9FZaqbUFVBxYkv1vFFx1/ewQ23djHsIWPbOOM9MD
+         aTQIhuKWnsHJTm8am3FwkaO/mE6yk3QLYUvAVS7W728srh0c5P9nnF8eC+ct/v0hhnzR
+         PFI8dI+v4MnWNTNtW+voCwMJAKnN/Iwua0zmJ2JJPnoSS0gSXjQGXZVTCvQIjIgqaSVC
+         fF6g==
+X-Forwarded-Encrypted: i=1; AHgh+Rq6roeLHKtXqXuksKQSJGu426hUdJBWWDuFG+UOH+RuHed+HV8SAnFFo/aYXB1MPdqpd/u5xRw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPwLjFeGb8QkJNuiQAnhCIn+m2rLJWxfYfrLoAW1w+Cze5qx8n
+	Vd61VHHvulOzumpzssZJ9eoQ24kVGSW0fW9SH+jDYBHVi+ESE3/bQ7pa
+X-Gm-Gg: AR+sD11AEh0UjJf2PUEOb39wNQ0yG2wZ82vyJz3NG+E48PWu2Zwi4auF040FHnx0Qnk
+	w9ucIREtOlGu/jXsDxvhSiCxOH55bSxZL9pi7fufsODLk5bFtnB65/yS++m7X+8mho4qfUTjfQU
+	n+pbxDqneEHocIUfMIy9DPZRPKv23t2p66ay9W7rAxTw9XatHtfJgKukEQKdgy/9OF3qiheMQ9Q
+	gW+wDARcTB3fmntBp3OhYiKdOvSkeDGTn0C8G/+Web2mN5KQSrCysI5e9oq2e3knPf4zIf2Lz+r
+	+Nc3aDcFDHmp/EvE8tR32heQ+cDsPsL0FtBQqmHxgct1Ch4hWQj99u7xjKwXg7iN5hXghK0zkab
+	xvYv6D9cA/G4vG3jsVn38UBkHT5Ex1F+jorVPSjLVJsKn8t1o68MTUMQ05TDBBC/c6yWv+N3Ymj
+	U8MOeyp7qZcfRdpm5a7QLPPdJOMhCSqSyznrBhly124APEOMDn/q8GVueRQVEKPgMQGKE=
+X-Received: by 2002:a17:90b:3941:b0:38d:f5bb:e0f4 with SMTP id 98e67ed59e1d1-3955a3dadfcmr8356105a91.1.1787038394439;
+        Tue, 18 Aug 2026 00:33:14 -0700 (PDT)
+Received: from localhost ([2402:e280:3e0d:544:91b3:77c4:f31d:d706])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327af7934cbsm3654442eec.6.2026.08.18.00.33.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Aug 2026 00:33:13 -0700 (PDT)
+From: Vaibhav Nagare <nagarevaibhav@gmail.com>
+X-Google-Original-From: Vaibhav Nagare <vnagare@redhat.com>
+To: horms@kernel.org,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com
+Cc: andrew+netdev@lunn.ch,
+	matvey.kovalev@ispras.ru,
+	Pavel.Zhigulin@kaspersky.com,
+	aelior@marvell.com,
+	manishc@marvell.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Vaibhav Nagare <vnagare@redhat.com>
+Subject: [PATCH net v5] qede: Fix NULL pointer dereference in TPA fragment processing
+Date: Tue, 18 Aug 2026 13:03:09 +0530
+Message-ID: <20260818073309.2266072-1-vnagare@redhat.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE4MDA1NSBTYWx0ZWRfXxw/8oz0iif+v
- PZEKkdTEkvCnha/Bh/MP5rcZdiOD2qxYfVWoDOuXTV5tosrHpiyVCCUlhIxdN5YH9d8YRCk/Ljm
- qTtMOV5PCARUhUBu8z86rD5QJU/5QO0DhmKWd5rOiGqwK4PPr6FCp1CVomUz3xZamoNy/T7jz2a
- 8s3rmM7gWTcPJbbY+H/eMV3ZbM+DGdFGrwUkQMe6c1GMS7HlF2Y5ri2cD6sWTOdKgjWHl5+2bC6
- pjgvMFZsN/XCGpORh9vpnwc921HYj3oRFb2NAxVGrA81MrimrA7ZHOtd/E0TubvehuykJ+snPwg
- ohRCqCm9C+cQsaEsNXmWjqK1XkboHFRDoSb6OLdc9JvTJrKrUlwwcsgzNeHaIvceMOVijxU7w2t
- 211A8gvmKaPeg+fBgLi1cpYSkF/MTTAtKnCMr49/CLZ4Qg4+oN+TDYavkGLHbn6DfF3+Cl6BPDf
- WBiBVUZk6cZ6o6wZEZg==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODE4MDA1NSBTYWx0ZWRfXwuxbiG1qE2jP
- KIL9XzzhTPHfMucWcTcDnTFpnrrLm9At8DDAnLcJSe0Ro/Cigp3Owoda1y6LxMQN0HCr3vZIP3O
- +kQ4U1M7up1zMMdTc4wUtdVwwjLTPcs=
-X-Authority-Analysis: v=2.4 cv=JKkLdcKb c=1 sm=1 tr=0 ts=6a840a46 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=kEd-LeU3vPIERflgv4oA:9
-X-Proofpoint-ORIG-GUID: sIA8EbsEzanJp332aaCG5fuc0LoAfa8d
-X-Proofpoint-GUID: VajwhRUj8CwpOS3xwJDjXmwWiaxWJNkr
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-17_04,2026-08-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0 malwarescore=0 priorityscore=1501
- lowpriorityscore=0 clxscore=1015 adultscore=0 impostorscore=0 spamscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608180055
+Content-Transfer-Encoding: 8bit
 
-When smc_llc_event_handler() transitions the local LLC flow from
-SMC_LLC_FLOW_REQ_ADD_LINK to SMC_LLC_FLOW_ADD_LINK on arrival of an ADD_L=
-INK
-request, it calls smc_llc_flow_qentry_set() unconditionally:
+Under memory pressure, the qede driver encounters NULL pointer
+dereferences when processing TPA continuation fragments.
 
-	if (lgr->llc_flow_lcl.type =3D=3D SMC_LLC_FLOW_REQ_ADD_LINK) {
-		lgr->llc_flow_lcl.type =3D SMC_LLC_FLOW_ADD_LINK;
-		smc_llc_flow_qentry_set(&lgr->llc_flow_lcl, qentry);
-		...
-	}
+Commit 8a8633978b84 ("qede: Add build_skb() support.") accidentally
+dropped the assignment of tpa_info->buffer.data in qede_tpa_start().
 
-A CONFIRM_LINK or ADD_LINK_CONT arriving while flow->type is
-SMC_LLC_FLOW_REQ_ADD_LINK is stashed into flow->qentry via the
-SMC_LLC_CONFIRM_LINK / SMC_LLC_ADD_LINK_CONT handler (which stores into
-flow->qentry for any non-NONE flow type).  When the subsequent ADD_LINK
-arrives, the REQ_ADD_LINK branch overwrites flow->qentry with the new poi=
-nter
-without first freeing the stashed allocation, leaking one kmalloc object.
+When memory pressure causes an SKB allocation failure in qede_tpa_start(),
+the driver sets tpa_start_fail = true and attempts to recycle the physical
+page later in qede_tpa_end() via qede_reuse_page(). However, because
+buffer.data was left uninitialized (NULL), qede_reuse_page() pushes a
+"ghost" BD (valid DMA mapping but NULL data pointer) back into the
+active Rx ring.
 
-The stashed entry has no consumer: smc_llc_wait() is only called from
-llc_add_link_work, which is not yet scheduled while the flow type remains
-REQ_ADD_LINK.  No waiter is sleeping on llc_msg_waiter at this point.
-It is safe to unconditionally free any stashed qentry before
-the overwrite.
+The next time the hardware uses this ring slot, it passes a NULL page
+to qede_fill_frag_skb(), causing a kernel panic.
 
-Call smc_llc_flow_qentry_del() before smc_llc_flow_qentry_set() in the
-REQ_ADD_LINK branch.  smc_llc_flow_qentry_del() already checks flow->qent=
-ry
-before freeing, so the normal path where no entry is stashed is a no-op.
+Example crash from production system:
+ BUG: unable to handle kernel NULL pointer dereference at 0x8
+ RIP: qede_fill_frag_skb+0x96/0x430 [qede]
+ Call Trace:
+   qede_rx_int+0xb06/0x1de0
+   qede_poll+0x2f4/0x6c0
+   __napi_poll+0x2d/0x130
 
-Fixes: b4ba4652b3f8 ("net/smc: extend LLC layer for SMC-Rv2")
-Reviewed-by: Hidayath Khan <hidayath@linux.ibm.com>
-Signed-off-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+Fix the root cause by restoring the tpa_info->buffer.data assignment
+in qede_tpa_start(), ensuring valid pages are correctly tracked and
+recycled. Additionally, update the stale comment for
+struct qede_agg_info::buffer to reflect its current usage.
+
+Fixes: 8a8633978b84 ("qede: Add build_skb() support.")
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Vaibhav Nagare <vnagare@redhat.com>
 ---
- net/smc/smc_llc.c | 2 ++
- 1 file changed, 2 insertions(+)
+  v5: Addressed AI review feedback from Jakub Kicinski:
+    - Dropped redundant fast-path hardening code (NULL checks, early exits, 
+      and consume/recycle loop logic) as the root cause fix makes ghost BDs 
+      mathematically unreachable.
+    - Updated stale struct qede_agg_info::buffer comment in qede.h to 
+      reflect its current non-preallocated usage.
+    - Corrected commit title formatting in Fixes: tag.
+  v4: Fix err: label handling as identified by Jakub Kicinski:
+    - Restored tpa_info->buffer.data assignment in qede_tpa_start().
+    - Reverted err: label in qede_tpa_end() to use tpa_start_fail flag.
+  v3: Addressed AI review feedback:
+    - Fixed NULL pointer recycling and array bounds check order.
+  v2: Addressed AI review feedback from Simon Horman:
+    - Added net_ratelimit() and fixed NULL buffer recycling.
+  v1: https://lore.kernel.org/netdev/20260709044704.141507-1-vnagare@redhat.com/
 
-diff --git a/net/smc/smc_llc.c b/net/smc/smc_llc.c
-index 07e2d7fef7b2..9cc4b3e97699 100644
---- a/net/smc/smc_llc.c
-+++ b/net/smc/smc_llc.c
-@@ -1911,6 +1911,8 @@ static void smc_llc_event_handler(struct smc_llc_qe=
-ntry *qentry)
- 			if (lgr->llc_flow_lcl.type =3D=3D
- 					SMC_LLC_FLOW_REQ_ADD_LINK) {
- 				/* server started add_link processing */
-+				/* free any qentry stashed in REQ_ADD_LINK state */
-+				smc_llc_flow_qentry_del(&lgr->llc_flow_lcl);
- 				lgr->llc_flow_lcl.type =3D SMC_LLC_FLOW_ADD_LINK;
- 				smc_llc_flow_qentry_set(&lgr->llc_flow_lcl,
- 							qentry);
---=20
-2.50.1
+ drivers/net/ethernet/qlogic/qede/qede.h    | 8 ++++----
+ drivers/net/ethernet/qlogic/qede/qede_fp.c | 1 +
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/qlogic/qede/qede.h b/drivers/net/ethernet/qlogic/qede/qede.h
+index 042a75f34060..0e7a0c2c1765 100644
+--- a/drivers/net/ethernet/qlogic/qede/qede.h
++++ b/drivers/net/ethernet/qlogic/qede/qede.h
+@@ -303,10 +303,10 @@ enum qede_agg_state {
+ };
+ 
+ struct qede_agg_info {
+-	/* rx_buf is a data buffer that can be placed / consumed from rx bd
+-	 * chain. It has two purposes: We will preallocate the data buffer
+-	 * for each aggregation when we open the interface and will place this
+-	 * buffer on the rx-bd-ring when we receive TPA_START. We don't want
++	/* buffer is used to retain the Rx consumer descriptor when a TPA
++	 * session starts. If the SKB allocation fails during TPA_START,
++	 * we use this saved buffer to safely recycle the physical page
++	 * back into the rx-bd-ring via qede_reuse_page(). We don't want
+ 	 * to be in a state where allocation fails, as we can't reuse the
+ 	 * consumer buffer in the rx-chain since FW may still be writing to it
+ 	 * (since header needs to be modified for TPA).
+diff --git a/drivers/net/ethernet/qlogic/qede/qede_fp.c b/drivers/net/ethernet/qlogic/qede/qede_fp.c
+index 33e18bb69774..2d42e51ff992 100644
+--- a/drivers/net/ethernet/qlogic/qede/qede_fp.c
++++ b/drivers/net/ethernet/qlogic/qede/qede_fp.c
+@@ -845,6 +845,7 @@ static void qede_tpa_start(struct qede_dev *edev,
+ 					      pad, false);
+ 	tpa_info->buffer.page_offset = sw_rx_data_cons->page_offset;
+ 	tpa_info->buffer.mapping = sw_rx_data_cons->mapping;
++	tpa_info->buffer.data = sw_rx_data_cons->data;
+ 
+ 	if (unlikely(!tpa_info->skb)) {
+ 		DP_NOTICE(edev, "Failed to allocate SKB for gro\n");
+-- 
+2.54.0
+
