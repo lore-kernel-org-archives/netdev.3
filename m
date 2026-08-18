@@ -1,59 +1,61 @@
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036873B6BF4
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 10:17:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7BE3CB55B
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 10:17:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787048263; cv=none; b=JGzes62gNyclhWTD04R9ewCiAo63QiI+6n81OUhT5eZRpxUibLPxMmM/WRqadZSx1Ldww5mxmLGX+qYOW7p+Y8tr3sCeYC5smq0knPaKloGO71W08d55TxkzYD+THGNirNIbY9oF8gldb33Lr7pU0ku9MKeflLOdPKvT//RltEU=
+	t=1787048264; cv=none; b=OsmxJxrDoQJQr+/ss9ntltWXaEq7KyGXhaBZo/R5z578bItfwLbRZSBSwFnhex4l9vKry9MA3rgOFN4Hn6IrDM1Mmab3EluzcndaBrs+qlFKZ6EnO756pWWoPCwV8zE+z+IP36cOXaqNQdDfDNxlVWxTfsPylV6WeP/D4xy/CUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787048263; c=relaxed/simple;
-	bh=PsZSjY3nKTv0UBfsn+/xUSAeSFImVT8zFG7CaYg5bck=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=vDKnKHyBY7M74aFizQcMRN5U/JohKZjSvVf3/2yTFipO9fU/4+TwqaQDeG0Lda3ZiS/+iM4rcEpPOPHfbAOqFygxlf2iArfY2ARmW1EKa06mnVd6zNde/P2XIIM/xqrxFenM+SmNAab/xWPHwvYiHG1tjt/naZ6+tqCvEr3A/e4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=F1CI5ESz; arc=none smtp.client-ip=209.85.222.182
+	s=arc-20240116; t=1787048264; c=relaxed/simple;
+	bh=/I3fqurkIVvuHLg56QKuZbaJJhBk7ENuiTDNDBMN0Tk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=RhpYjlyrWkHGanhnSvj+DUc+8uH7nHVB6tHcyyS9o0xkbTeLlo2DkoUsIefd5HuNahoeAR1qH32qtylVrRThwMO1D4I82jUF9aB0Yj7b5rl3hhOSahzt18QJ8wjqjm1WDIYTULLjv8r7d3dxoo4EUGiaaYuzOpQ0jE061zpseIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=IqIDnPTY; arc=none smtp.client-ip=209.85.222.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="F1CI5ESz"
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-92e99ef0902so219738185a.2
-        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 03:17:41 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="IqIDnPTY"
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-92e85499ffbso367930285a.0
+        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 03:17:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787048261; x=1787653061; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uXLEFrJeiYa1zJxHzcs8UOhualbeMtxu7j0/N8xRs0M=;
-        b=F1CI5ESz1B4SHn9HtYPS94NayJi5tsy3u9DMbeR4KrvRJxLUe6Jjtk4tVC3vR7GALW
-         xKLzPmTWKRU+OLKGC+cO3E8j0HkzkRoKJIc2UFs3Tf4QMG8nsr5/fm1r10ncVH2SslPO
-         Ok6k0KBaxrYR6lmwk0zCa82jdYopY7lNq03RI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787048261; x=1787653061;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=mojatatu.com; s=google; t=1787048262; x=1787653062; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=uXLEFrJeiYa1zJxHzcs8UOhualbeMtxu7j0/N8xRs0M=;
-        b=k8k8OtugcbjXuNJKqGR8qA+kHetP7l0/JkpBHuNsRdjhUAkhLCRXk+IJxQx2AjG5aK
-         s4F0/jSg9y9u5s4ECXBEn5DFbkcVQYOHU8J9FH8c2qn0Kv9ItaYAD27gg+LwII4Dmw9r
-         1nqSfG0Uhpv5bOcl6MR2h5FhSGUMPnu239ZlQmoUuUYika8sItmhC9FNut7ETZdTCi4y
-         meUhPHUs6FD6qiX32mPZRsYSzFidJAIeJLVyD6/5F3LNhNN6CdFnzCwDFStSszk29Hrp
-         nD33sz6DKsT8NG6b4CKiPOScCPj+nYBFQmeyOqUplQdtokePJ/pJPhWVxigm1CXTA6hy
-         KSrg==
-X-Gm-Message-State: AOJu0Yzj2oDQgfYyWjJ2ZSiNIemKxg7txUTuePwiWsqfHQzbdh+nHmml
-	4eWS9pUZZJxhHxfVPjLMLjBmJmWwL2oA3jsqVqAuh/mqKD/kxHiVucE0S6+CUDwa6Phiga+foXm
-	4jEmaCA==
-X-Gm-Gg: AR+sD11avQQuofAwLWh/ifNIeLiKMYXksR2NLSXya3KwN50YhPBxIULJXlmhO0hxdxx
-	0UwbFyXvxdIwOMtqXxpHg7FF85LlkyQxO0FU4hmNCtkTfIpBdavJ9dovHfmcwdcMyExu1RrQ13F
-	kRD9/9/KF/g1GsNgYWYKR1rGFSDheuU1C47XVICaIFWDs7+2VL9QRQYpMi5bH+DCrpt+6KVE0nE
-	g7cVjVsqEVbMFsckzQ/MzAk2D9FRA1id4Tprnd+MBj5lXA2FUKWZsxyAbLA/85H04V+tm/Bmxom
-	fJg2ArTc0ekaleh4eH1j8rqYWnwhEMyJowFykNfMJZfFPclTuJ7WQFXCP4eAWdw/TxjGNxHJ/ZE
-	tc3v7MdAe5zJxy4npgcmDpRg7kYWdrgipEfj9KQpaalBL5P0bJz79WxqrgZ42/3/wdMszZy1Lq4
-	0CvOxuTjLAEoKhmVNhucR3RfGImMEC3KLsT3moKWEKyLiXPdySB1mNtJH1mPoHkICZpo63l5PIe
-	l5z7xlwkQD5dWhbMRICc+vAtSA6BukrUE9IkKl6TUIi2w==
-X-Received: by 2002:a05:620a:2a13:b0:936:86d9:e1c5 with SMTP id af79cd13be357-93704b0d83cmr671382385a.18.1787048260861;
-        Tue, 18 Aug 2026 03:17:40 -0700 (PDT)
+        bh=gxq5ZSvaEO4ApbVTxKVnsTovrfCAc4uzDIUjvK/vOu4=;
+        b=IqIDnPTYJbQiubqEUZk4klKwNvaDAl8UojdlM3oy2w6mcf5aJljMHnIM2cupcmmsx/
+         e35at+V7d6BpIbm2QU51LX+u4WjootA8hDBCiYedTliE2ovvDCy7FVmcNoRJoOLVlI2W
+         YZ9RqR9ROsZ+NQ+nQzGqwTVJt73M1G02/rhOM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787048262; x=1787653062;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gxq5ZSvaEO4ApbVTxKVnsTovrfCAc4uzDIUjvK/vOu4=;
+        b=nos9md642ADHZ+AjFKcYXHIF2dgFtE7Rb8VNjli97w3gzXT3D+Gq6EnCYzXF5LLiXq
+         3EEJjQjFGiQsN8YQioCc5isLtiUO6gK97t8VFoIjMCqc7XBxVbbA/TjJcOopuNU8UWSf
+         4hKbStyqMAxgLSKclz0pakTMWtTgVjEEkLtMrN2hrQ2yTG6zGTVuG8c8bRJh8QoWvF1d
+         d/FDtxd3BGgBZ+KkDzljmoO/jeeBo5YqiK0IKXV5Rr9IRKHKXYq9HqtvEh/dioQC/SIB
+         /UOaV9bqrCrWIkek5sijET/BcYr5XpsBCP3wS2UJUkLJzM0G3XMrw5frdDAr9JczU7It
+         JC1w==
+X-Gm-Message-State: AOJu0Yz+KZNx/eeLYGJL9xo0nBl6P55FtBao5eEUqtXccK+7xZKtYB2T
+	jH1vhGTVXYze8gUsRT/t0wZKlK3SqkqAp0crf8CKv/wQ8RJZZ3TCzwRnrP9nvXXxUFgFT8Sllb8
+	p07kRaQ==
+X-Gm-Gg: AR+sD130k+wKS4UnIi7JCgnUkaX4oyifNfCsjTHuKuYh5r+QuY0HJ/XmxuuPfn7aG9Y
+	hXnIB4HOS14/yWOj0u6fhNCE+EzownARf8H3egqXYOmkeWsY27J5B8j/mPeuxlkeMNdolw5zd5N
+	OapVKFx9APlRYsOzCLNT1CQgrIjujAlfIP5iJyTwlnfRSvdknL5MwG+2zY0V3NZ9xbBLaq7WD/S
+	CPGLKQ9U3vXRJLKRKGC13ZYcU56iDbtamPum271q/oWzo3JJ4xwjsG6pyWDn9MYDAusOsXmptMA
+	2S1aAeoIu1JWJ3BKpBk3Bi4yfA5tkj5EfRf4sAj0fRS8rso8ytGKPp0jv/eLm1gU9a1kSWoxKxB
+	LkW8q95Joyb2CWYxTc2AnMvBvFFMooBBUnXBlpc20wO/s0xDl0FGr+jlXsyYvOoVbt/RH8t4IlI
+	1H62elFIWf2ivGmYvcRJb7Sw6QgeMWgUGNpXKHf2faXN9qTA+HvjVvzvXVzSSpeQm4jlc0W6j8E
+	gQeYh3EoNEjsSskMIYOU+MiKDBJM0Umj+5Mu0x+Z7yxQQ==
+X-Received: by 2002:a05:620a:284f:b0:92e:8a8d:ec1f with SMTP id af79cd13be357-936d22ce70emr3509189485a.24.1787048262181;
+        Tue, 18 Aug 2026 03:17:42 -0700 (PDT)
 Received: from majuu.waya (bras-base-kntaon1621w-grc-04-184-144-29-222.dsl.bell.ca. [184.144.29.222])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-937010e7fc0sm299346985a.20.2026.08.18.03.17.39
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-937010e7fc0sm299346985a.20.2026.08.18.03.17.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Aug 2026 03:17:40 -0700 (PDT)
+        Tue, 18 Aug 2026 03:17:41 -0700 (PDT)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
@@ -61,15 +63,17 @@ Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
 	vega@nebusec.ai,
 	Victor Nogueira <victor@mojatatu.com>,
 	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>
-Subject: [PATCH net 1/2] net/sched: bound TCA_STAB overhead to prevent qdisc soft lockup
-Date: Tue, 18 Aug 2026 06:17:34 -0400
-Message-Id: <20260818101735.16655-1-jhs@mojatatu.com>
+Subject: [PATCH net 2/2] selftests: tc-testing: add TCA_STAB overhead rejection tests for DRR and ETS
+Date: Tue, 18 Aug 2026 06:17:35 -0400
+Message-Id: <20260818101735.16655-2-jhs@mojatatu.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260818101735.16655-1-jhs@mojatatu.com>
+References: <20260818101735.16655-1-jhs@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,79 +82,79 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-qdisc_get_stab() copies the TCA_STAB_BASE overhead from userspace
-without bounding it. A huge overhead (e.g. 2147483000) combined with
-a small DRR class quantum (1) makes qdisc_calculate_pkt_len() set a
-~2 GiB accounting length, so drr_dequeue() spins ~2 billion times
-adding quantum=1 to the deficit under the qdisc spinlock with BH
-disabled, producing a soft lockup / RCU stall.
+Add tdc test cases that verify a qdisc with an oversized TCA_STAB
+overhead (2147483000) is rejected. Without the fix, the qdisc is
+accepted and a single packet drives the deficit loop into a soft
+lockup; with the fix, the add fails with -EINVAL.
 
-The same unbounded stab overhead also lets qdisc_pkt_len() overflow
-the per-flow counters of other qdiscs (fq_codel, hhf, sfq), which
-were recently clamped per-qdisc; bounding the overhead at the source
-closes the root cause for all of them.
-
-Reject overhead > 65535 (matching QFQ_MAX_LMAX and the max single
-skb length) in qdisc_get_stab(); legitimate L1 overheads are a few
-dozen bytes at most.
-
-vega@nebusec.ai provided PoCs for both DRR and ETS demonstrating the
-soft lockup.
-
-Conditions to recreate the bug:
-- require CONFIG_SOFTLOCKUP_DETECTOR=y
-- Create a veth pair (or use lo) and attach a root qdisc with a
-  TCA_STAB overhead near INT_MAX, e.g.:
-    tc qdisc add dev veth0 root handle 1: \
-        stab mtu 2048 tsize 0 overhead 2147483000 drr
-  (or ... ets bands 1 strict 0 quanta 1 priomap 0 0 ... for ETS).
-- Add a class with a tiny quantum of 1:
-    tc class add dev veth0 parent 1: classid 1:1 drr quantum 1
-- Send one small packet (e.g. `ping` or a single UDP datagram) on the
-  device; the ~2 GiB accounting length makes the deficit loop spin
-  billions of times under the qdisc lock, tripping the softlockup
-  detector (panic with kernel.softlockup_panic=1).
-- Reachable as root, or from an unprivileged user in a fresh user+net
-  namespace (`unshare -Urn`) with namespace-local CAP_NET_ADMIN
-  (Level 2).
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Reported-by: vega@nebusec.ai
 Tested-by: Victor Nogueira <victor@mojatatu.com>
 Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 ---
- include/net/pkt_sched.h | 1 +
- net/sched/sch_api.c     | 5 +++++
- 2 files changed, 6 insertions(+)
+ .../tc-testing/tc-tests/qdiscs/drr.json       | 20 +++++++++++++++++++
+ .../tc-testing/tc-tests/qdiscs/ets.json       | 20 +++++++++++++++++++
+ 2 files changed, 40 insertions(+)
 
-diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
-index 18a419cd9d94..a4c1b7b0263d 100644
---- a/include/net/pkt_sched.h
-+++ b/include/net/pkt_sched.h
-@@ -12,6 +12,7 @@
-
- #define DEFAULT_TX_QUEUE_LEN	1000
- #define STAB_SIZE_LOG_MAX	30
-+#define STAB_OVERHEAD_MAX	65535
-
- struct qdisc_walker {
- 	int	stop;
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index 65b35528d125..cdcf861c85f5 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -544,6 +544,11 @@ static struct qdisc_size_table *qdisc_get_stab(struct nlattr *opt,
- 		return ERR_PTR(-EINVAL);
- 	}
-
-+	if (abs(s->overhead) > STAB_OVERHEAD_MAX) {
-+		NL_SET_ERR_MSG(extack, "Invalid size table overhead");
-+		return ERR_PTR(-EINVAL);
-+	}
-+
- 	stab = kmalloc_flex(*stab, data, tsize);
- 	if (!stab)
- 		return ERR_PTR(-ENOMEM);
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/drr.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/drr.json
+index 2b61d8d79bde..7713eb35aaeb 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/drr.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/drr.json
+@@ -86,5 +86,25 @@
+         "teardown": [
+             "$TC qdisc del dev $DUMMY root"
+         ]
++    },
++    {
++        "id": "d1e2",
++        "name": "Reject DRR qdisc with oversized TCA_STAB overhead",
++        "category": [
++            "qdisc",
++            "drr"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root stab overhead 2147483000 drr",
++        "expExitCode": "2",
++        "verifyCmd": "$TC qdisc show dev $DUMMY",
++        "matchPattern": "qdisc drr",
++        "matchCount": "0",
++        "teardown": [
++        ]
+     }
+ ]
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/ets.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/ets.json
+index ee09e6d6fdf3..da7ae626f7e1 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/ets.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/ets.json
+@@ -1007,5 +1007,25 @@
+         "teardown": [
+             "echo \"1\" > /sys/bus/netdevsim/del_device"
+         ]
++    },
++    {
++        "id": "f3a4",
++        "name": "Reject ETS qdisc with oversized TCA_STAB overhead",
++        "category": [
++            "qdisc",
++            "ets"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root stab overhead 2147483000 ets bands 1 strict 0 quanta 1",
++        "expExitCode": "2",
++        "verifyCmd": "$TC qdisc show dev $DUMMY",
++        "matchPattern": "qdisc ets",
++        "matchCount": "0",
++        "teardown": [
++        ]
+     }
+ ]
 -- 
 2.43.0
 
