@@ -1,178 +1,233 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013052.outbound.protection.outlook.com [40.107.162.52])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0731C246788;
-	Tue, 18 Aug 2026 03:29:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787023792; cv=fail; b=fAGJQoEfiuRHGLf0FrAQflzbTGrxRpq82BP8lRN9bxWQuu4HMO/KJH+vlXxS3DrhH2X0OHh2FDssR0lT1/VMfr/EJr9X+Gp/ln+wNHPvy1lCwCXJMGHAOzV4zwTY734rnkg4yx0/ZKe/R5pT5h7cuhEfFnvkB5nX9LgDHQJA6RI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787023792; c=relaxed/simple;
-	bh=0gK/t137q/OZW7PLjER+oQYAli3QTUCYRkgY3Hr1jDU=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=PiBUE/2bSMYxr/tFd5Cd4J4SzDHdjSd4hnVa6XtY7Bq9jMDPa/TK2ykLntfx51Ns3G+n7rE+k2iWxvu9J08loO1f0UFUjtrg2yODJQcLrN8cPnIKWyPCtPNc+ZCTvfXiX+DgQZiJXZRAuY/ISBzBDVFJUszmRj8uYSFnDjVRg7g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=qvIBrqKf; arc=fail smtp.client-ip=40.107.162.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7AD25C804;
+	Tue, 18 Aug 2026 03:37:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787024242; cv=none; b=MUVac9bM4Y88+WlZZoOQ8TcYp3v5qKvzME3+dOkxDzqEQ2qD/D+Zhyy99tqxgjz5p2Hgsii7FAYC8me5XYm+8qJXk5j5V0HWc+nw/IGtWJm3ky3M4hMCI7x75c8Kd+2EnLePMeXlPnYuwMR0abwE/BaKNJz1dSyoLJIvF6jT0pw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787024242; c=relaxed/simple;
+	bh=+AHc/WjunEJ44re9MRtwMMfI6ZLs5Xzml1MGvH3v/eE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lD9oH4N/IiUQoMlosT8+ZXFCsHfMeNLGF9/x79L8aFwjqJ/va1bZy454GGv7dGsG1ug1GAXZPMcaSHI5Ishjcs62F3P/9yLOfBBh7/kpOgFu69Cqol3qQap08gRz2QfVCI8rArre/HC+a08L71vXRlIzzLY63eQE6dmOcZ0Qx14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=Ii0lKc9s; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="qvIBrqKf"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=d9KBBw+lXqn9d7ssHsePeowsf/1AA38SWd70npy0/Egofr1Ckbnarq97EFteT0VnCZHyruyLVjNSTYnfpvj1b7Nl7jsuAIOm86qyvibqLViGoYt7AT+pB5ndXVQ2Nx5QuDvIhkHpBztXyxy9e34M+GZvuOToDViOfaFwGAfkvZtYXWFVX414QKY9979bGHgAMPfgruQZtZc85NVzzAD5wuYmnsbW4eSuXrofXChfehaucliLNzKecTdPoDpKlTkL20av8P6Icab6/5Py/AA+S/dIbsf0ZG2+3jrs2kYTdrC/OaoIlrwjIT4OgCTT3N0ahdQa/Rg22mc8NQ1/1DiI9A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oUsbgWdnw7er73OY7hM7t7wjg2vm/W6pTbI10Q9e1jw=;
- b=Kf0OnA1aO5rtcvhn+v8E4kN1DC+ML1IaRUV+Ql4JS0SpaT1y25oXx3mtHJBkDgUeXpMVH7L21T5Lf+0/l2QW0U2sxatQhMPP1YbvCcNo00/Ee0ljs2beMwol37UPsoXdPfOVugq3ANY6WcZGH4i685wW+Z63KZoZSEIhju2y0bksygv0bihFagq5HsBguwDe9PRlZ/24huzfQvq5k3l3bVZb4okQF9sdzk9v+yQwN5r9bnW8+u6tySSe7mBIo2ihhL7aTg4X+3o11uaRxOzO4nnma0f+3crbx3dqOQKSlknF7NFeF+0VYiGL2s7AVOQNeJ2JWqlOo3WV3szsbYvZ/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oUsbgWdnw7er73OY7hM7t7wjg2vm/W6pTbI10Q9e1jw=;
- b=qvIBrqKf33wndCPxvoa3V9qweWh8Zn+Aptd2ZieaHOMCFkVsLXpUp8oHun1DQvORbD5tPaLf3KFlggTXgr5rnV/Xup9wKBM7BjEneCxrW+cc/M6FxAl/j6+eRki5z72S49lYmejjkRTiSRdzkfJyRudl/OaUzureCdbwS4d607aZ/LnXwWK7dh/3MllXX9tdI7IXFIexNwnBiPuf5bI8KysqvAFbU/1SI1i4B3QqogvW1RevGEmLudtTl/ph8uZtgNjZkuvqKGbPn4G6y2EcuLnhSGaTIq+r4HnzOrNcxShlxQrfrEzhrnYin0dHJT27t3B0V4Trv629koi8GMo+Gg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
- by DU4PR04MB11925.eurprd04.prod.outlook.com (2603:10a6:10:61b::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Tue, 18 Aug
- 2026 03:29:46 +0000
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0315.016; Tue, 18 Aug 2026
- 03:29:46 +0000
-From: wei.fang@oss.nxp.com
-To: xiaoning.wang@nxp.com,
-	richardcochran@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	Frank.Li@nxp.com
-Cc: wei.fang@nxp.com,
-	imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] ptp: netc: fix period truncation and potential divide-by-zero in PEROUT
-Date: Tue, 18 Aug 2026 11:33:41 +0800
-Message-Id: <20260818033342.3154990-1-wei.fang@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI1PR02CA0031.apcprd02.prod.outlook.com
- (2603:1096:4:1f6::11) To VE1PR04MB7216.eurprd04.prod.outlook.com
- (2603:10a6:800:1b0::22)
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="Ii0lKc9s"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67HLwrNs3314065;
+	Mon, 17 Aug 2026 20:36:59 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=tZniMrT5wIeEASAw/cZiV2e
+	vtghYliWzW/1orxQXs7s=; b=Ii0lKc9sy40tIUsEshdTvXU/Zkc+PhzuWnSl7sF
+	8jJC/s/sEsb7GqZr4+hxU8+vMJyCUSSA9xZfbbH9Hv8hXjEaAC11Pxm8i/3Sty7p
+	UNuPne1M/1s3DHvpbSKvdq3K6z1bDOh7uAr5Lz/jUDAeZ23O7ysIt6N76mzzhNKQ
+	ANYlc3pE1vn5Nw7iNlhvRUUkqEDYmUzQq+NV2yX5T9w89tUNDM67Met4Zt4jnyp9
+	lPHvbrYx8kpL+SOjGwD7cDb7Skq9Tv7mstzMyxBKNvb1yAfGD0yh4PKrbhgF/ITN
+	4/nWLa2aAvSI0uwPbqrlIcW3KglJ+wjtYcIPSh3AuTclmog==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4g36v3cyn6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Aug 2026 20:36:58 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 17 Aug 2026 20:36:58 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Mon, 17 Aug 2026 20:36:58 -0700
+Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with ESMTP id 454563F704B;
+	Mon, 17 Aug 2026 20:36:54 -0700 (PDT)
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <cjacob@marvell.com>, <davem@davemloft.net>, <hkelam@marvell.com>,
+        <jbrandeb@kernel.org>, <linux-kernel@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <sgoutham@marvell.com>
+CC: <andrew+netdev@lunn.ch>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, Naveen Mamindlapalli <naveenm@marvell.com>,
+        "Ratheesh
+ Kannoth" <rkannoth@marvell.com>
+Subject: [PATCH net] octeontx2-af: poll for TX link credits before link mode change
+Date: Tue, 18 Aug 2026 09:06:52 +0530
+Message-ID: <20260818033652.2038116-1-rkannoth@marvell.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|DU4PR04MB11925:EE_
-X-MS-Office365-Filtering-Correlation-Id: 88637855-d0c1-4880-527a-08defcd8f355
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|376014|1800799024|366016|23010399003|3023799007|10067099003|56012099006|11063799006|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	TLkjqUoocqg5ZwfaCcSKdm/MDhEaAWCZUq/0WQSmMnlnRb+mhRZNpI7u4yy1sonMQi5IbcPDyoSckSkTRUUROqGmiiQKoVr1ifpQDQKZM7AfdFtofCz2UfvTZRiOnuyi3K+2/4AE/IzkKd3ztsXmjYFpxeVbrnS5Syc6vWXIL7QVVEFgIFa7O4VrR5bA3ame/6fQjREPhs3FtSWsxRetipcmpvkf7GL2StCNAwLUhydcVaGqWMBGEbfNi+gLep7KKOv6p84T9rvzChmOuvDHfpfIO/u72USJvbW/byPaO4CmI3BtrDO2qPvzUig43013h2+Vl25fYTuILmwl4pyfvFTrKDYbY3JL0vQg/YpuDfFUv2jwTE6xDYzPuwwTW2e49ZgJC3KebDqIpGlmzleUMkpsZKsgQ7uBh0F2gnkoxP9iu98Of9XQglmKFNAEjZ74DVXG81whLEcmfe8hksFWc94jAbB7u4a3mh5oxlYqLD9QzQgnv+KUUlAVuqRv6wb+VikAp/BozDqgl/ZQSd+9JK1YY2mgkTj9tGIu4g+AP1X2/f439LD14LsEyYVb4kLOzmvWrg29ZK0JLTIv4ZaQJBoMZx6J9BrrrWw3/EWTAM3Fndri1VnjPlO1+xPwdYNebLSyi+ahUMQdBTT2baLxyMZTYEO1J/obveVNIE4GNfE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(1800799024)(366016)(23010399003)(3023799007)(10067099003)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?SV9vRGN1Fz2pe4yyQVMqAkES7N+95S6H8kr6kt/O4i0rGuhkXS/32NSA2DAU?=
- =?us-ascii?Q?pN13RBjL8hSt/K73lTGqUeKXfLFP5dyV3KMHbw4juNYy6GWa891DB6w13J9z?=
- =?us-ascii?Q?JBo6uWCDCf+9rLpLRoP80RpbO7zsnHbfGOOP5gwfPNvnVedgffSYgN1a43lY?=
- =?us-ascii?Q?yxuSO6Spgx7yFFVwPyKgmheQMbZY5917tBXM39xlGbHZK4fBhP3xNjvt8sVH?=
- =?us-ascii?Q?nOQk0Vgv3F68r0M9g1E9+pmKx2vbmWNzT51R9ch77hley50H3AOMjNgNVhAq?=
- =?us-ascii?Q?ZTwvn72IjeKiSuMUvsrbk5a7IIDNNKzkWQzq0Fz8/lRADOKGQYjS21Dj65YI?=
- =?us-ascii?Q?VhHdSeyvauqyLrHzALqz238xU10MUIMC6bilQ9PmebmDrwIWNVtwzJ/KHFXG?=
- =?us-ascii?Q?2xVodkWnPJmXB2rz4BuZ9SCgUutho9xS6hDawCXuvmn8xsq84gQRF8ZQwkFP?=
- =?us-ascii?Q?zyHBSUWXUCd8PEtZBv/es+U/Th7ZEqApoP5VFB6u29/b3XwLSgPRxA76N2Ra?=
- =?us-ascii?Q?hdy3cPpiKHmrBIk3PvRj1CZWa2FJ9ZAADKpmnEN2khjHBMzosvNYRg4oVOUi?=
- =?us-ascii?Q?e6U6u4HADPd9I2npjDaaDpajd3kHytP/lulGq43DQCFoLU+1EV4lWuylNcsr?=
- =?us-ascii?Q?yfNawp82JR8rZVqcRR4Yck/NWy2wxBrgMOLHJpZDfFe1HYjCOFXKzLfjLxGn?=
- =?us-ascii?Q?E9KhT47NkRK2TqgujYeH9BopZueoXMqMEaDDShT1iKC61ilT48Xv8t3yxHvo?=
- =?us-ascii?Q?g4q1IOGk5qkMTVgYN3/Wo+PqmV5GBJj6qS3t8tBTr3Gwymo5Zt94x6QqP4FB?=
- =?us-ascii?Q?o3XOnid4Qm2VZNgvx3sxlUSaOVkXK4epow+14iMI+MYEZV+kFZDH5lO4WOYP?=
- =?us-ascii?Q?10ZEmtZkPihfphikLvY5kHFH+dtTEG9WKQ/EDj95Kb6Gtp/LiK/oaFj5CHLl?=
- =?us-ascii?Q?+4Cty9rxi380SGhzWl+99PKo8NoAzoayLyx5cGFw9Nuj7XAhOgw7L5dmQ3FU?=
- =?us-ascii?Q?r/nKVeVkwSWQW88ALg9A6Tckt/Se+jHl4qAfuKJfxDOSlylB94rPaW+FbZEE?=
- =?us-ascii?Q?15E5CzJ5bDWmiwAsVe5DDvmEYPDV3m8sDPmuDT5r2LFWMnYJw3MuebTQHVQX?=
- =?us-ascii?Q?qT7k35/xNElmnEK8CUg98T0eXovXe1KRZPzTF/QMm2KEoboOcs14J5rGHXJl?=
- =?us-ascii?Q?Czt71VnKgrtzO7CPa0QLWAgjT8nlPmrG5WkRavmTIZatN0qzmBWIR7s4qSY1?=
- =?us-ascii?Q?whMb0whiDRpo1Am/8xOVf+cXCepbmGj+zCKIwIL6hm4vGRRei2wCYSm3Hnu2?=
- =?us-ascii?Q?FLSfK6QkuCn4h9KyvFm6uDBnnWZqTpt00XIrsfZBLvZsHmqLsO7tBGyGeoSB?=
- =?us-ascii?Q?xT0Wnq0rC01htJJg+lw688k3qHMA/Az/Ybo5dR3oWIvV2Y5VLnuuY0xYA72d?=
- =?us-ascii?Q?wY7PjpASvl+LXR4v9LZGv4AHchkXMMCA5QXTKOd8i+yUW4m4w3Ze81zCwvb3?=
- =?us-ascii?Q?KJ1+ywYqEYBNWfv1OAM0RCWIVV3kRq6+hFJOFZP+tsnhk5xPssd1CeFm8E3i?=
- =?us-ascii?Q?yzp77HAuYqObciXLS5qkvbiLl/vM24Z/V/wGLUg1N8pHZYMMLPNx1Ju0n2eB?=
- =?us-ascii?Q?TOgJSYQVVEtVs1zxvn9WcEJ1INXRY4GNt4b8FGScTlbdhUrgIvtxj0LNKT2m?=
- =?us-ascii?Q?uBatqDqrJyawi8TH+MkqJiK500OPF7pv6aC46Hm8m8eRNIi4bzR4GUz+eSqo?=
- =?us-ascii?Q?J6FbGr9HrtT8KLv6fN/Dnhx2z4Wggo1KxcyWbEaNCgFmrAWjsw88?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 88637855-d0c1-4880-527a-08defcd8f355
-X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2026 03:29:46.5455
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xn983BcAPQLvuXWm5Xbv9T3Y0fCP/3axCa1dPTpjKVNY+VsKdp+Jh3+941MRCuPjvKSUNJUOUu1eFE/uM0YaxOI20ZFXHYGzIWLo4W/IUwa2UrmLtXJkboQhlfNemj1a
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB11925
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE4MDAyNCBTYWx0ZWRfX2mjcbg/MRqgj
+ bzacSnkT6bPbLZnfunIHfkRnwmmvY58QYw5uco7R0z+tJBBzXCQR3uaEEzys3lWI8W9PkGveOib
+ k8famwxGysn5mrJ0R/xnD+vT3J76U0s=
+X-Proofpoint-ORIG-GUID: LKqdyBnsQAyUN4BlstHgCaWORy4gVbHs
+X-Authority-Analysis: v=2.4 cv=MatcfZ/f c=1 sm=1 tr=0 ts=6a83d35b cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8 a=WtFRnXJ9NEaXzeBqDjoA:9
+ a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-GUID: LKqdyBnsQAyUN4BlstHgCaWORy4gVbHs
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE4MDAyNCBTYWx0ZWRfX47XPUlS5Scba
+ YpX6u/NcA8rPfh+/9wkkYqSKjbXiFRKlCc8xGKERzwjiCPBoVa5TAAYj4KABcfIuJ7F1WGXw9VH
+ s61BTqnde9AsykGI5MRZ3BFYYdobP1HQE+yhNzti+dD4yjDzNhkKHiMwF6Bcyyp9++PPXDRGEBP
+ Gfv81SYCGdGwb3xFI+TuYecwoOujfaK8X6v8DodPQYlOKUIbefBpmu01W/jwjlEoZoCkiKq59Yx
+ pHazOg7JamdoBrKfNHqYQ0zLQkjD2pXQA0x+w4f7JDroL3wggiVHpkkxWyWJmuapiOJNgcOMDQy
+ /3kdi/atmGMec3DPoiO0tEmoLTZNunYoUPX31btb/H54GQ/SvrI7z6hg/kkjvhn15Uf9kZkHAf+
+ ENNpx6nP/i3sfy/5HNONHvbl5aAwJCl0tFwYSpH6SZGl5wc46t5s0TANoX71uOGgZzLoXtWZtuO
+ ODNHnRsn+ouqKG5lT3A==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-17_04,2026-08-12_01,2025-10-01_01
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Naveen Mamindlapalli <naveenm@marvell.com>
 
-The max_period bound in net_timer_enable_perout() was computed as:
+When a CGX/RPM link mode change is performed while traffic is flowing,
+the link is temporarily disabled. NIX TX link credits can drop below
+zero during this window and are not restored when the link comes back,
+leading to a TX hang.
 
-  max_period = (u64)NETC_TMR_DEFAULT_FIPER + integral_period;
+Set TL1 SW_XOFF before initiating a link mode change and poll until TX
+link credits return to their original value. Clear TL1 SW_XOFF when the
+link comes back up.
 
-which exceeds U32_MAX when integral_period > 0 (e.g. 0x100000002 for
-the default 333333333 Hz clock). A period_ns that passes this check but
-exceeds U32_MAX is then silently truncated when stored into the u32
-struct netc_pp::period field.
-
-A truncated value of zero can reach netc_timer_set_perout_alarm(), where
-the local u32 period variable would also be 0, causing a divide-by-zero
-in roundup_u64(delta, period) whenever the stime < min_time branch is
-taken (which always happens for a start time of {0, 0}).
-
-Additionally, netc_timer_enable_periodic_pulse() and
-netc_timer_enable_fiper() both compute:
-
-  fiper = pp->period - integral_period;
-
-A zero pp->period results in an unsigned wraparound to 0xFFFFFFFD,
-mis-programming the FIPER hardware register.
-
-Fix all three issues by capping max_period at NETC_TMR_DEFAULT_FIPER
-(0xFFFFFFFF). This ensures that any period_ns passing the range check
-fits in a u32 without truncation, so the stored value is always valid
-and non-zero. The accepted range is reduced by integral_period ns
-(typically only a few nanoseconds), which is negligible in practice.
-
-Fixes: 671e266835b8 ("ptp: netc: add periodic pulse output support")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Fixes: 56b6d5398613 ("octeontx2-af: Physical link configuration support")
+Signed-off-by: Naveen Mamindlapalli <naveenm@marvell.com>
+Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 ---
- drivers/ptp/ptp_netc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/ethernet/marvell/octeontx2/af/rvu.h   |  2 +
+ .../ethernet/marvell/octeontx2/af/rvu_cgx.c   | 19 +++++++-
+ .../ethernet/marvell/octeontx2/af/rvu_nix.c   | 48 +++++++++++++++++++
+ 3 files changed, 68 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ptp/ptp_netc.c b/drivers/ptp/ptp_netc.c
-index 59db08e189e6..05d606e636b1 100644
---- a/drivers/ptp/ptp_netc.c
-+++ b/drivers/ptp/ptp_netc.c
-@@ -450,7 +450,7 @@ static int net_timer_enable_perout(struct netc_timer *priv,
- 		period_ns = timespec64_to_ns(&period);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+index 9d5b7b51bdfa..66e46528e3bd 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+@@ -1048,6 +1048,8 @@ int rvu_nix_mcast_get_mce_index(struct rvu *rvu, u16 pcifunc,
+ 				u32 mcast_grp_idx);
+ int rvu_nix_mcast_update_mcam_entry(struct rvu *rvu, u16 pcifunc,
+ 				    u32 mcast_grp_idx, u16 mcam_index);
++int rvu_nix_tl1_xoff_wait_for_link_credits(struct rvu *rvu, u16 pcifunc);
++int rvu_nix_tl1_xoff_clear(struct rvu *rvu, u16 pcifunc);
+ void rvu_nix_flr_free_bpids(struct rvu *rvu, u16 pcifunc);
+ int rvu_alloc_cint_qint_mem(struct rvu *rvu, struct rvu_pfvf *pfvf,
+ 			    int blkaddr, int nixlf);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
+index 87d21889dc49..85143684bb6f 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
+@@ -234,7 +234,7 @@ static void cgx_notify_pfs(struct cgx_link_event *event, struct rvu *rvu)
+ 	struct cgx_link_user_info *linfo;
+ 	struct cgx_link_info_msg *msg;
+ 	unsigned long pfmap;
+-	int pfid;
++	int pfid, err;
  
- 		integral_period = netc_timer_get_integral_period(priv);
--		max_period = (u64)NETC_TMR_DEFAULT_FIPER + integral_period;
-+		max_period = NETC_TMR_DEFAULT_FIPER;
- 		gclk_period = netc_timer_get_gclk_period(priv);
- 		min_period = gclk_period * 4 + integral_period;
- 		if (period_ns > max_period || period_ns < min_period) {
+ 	linfo = &event->link_uinfo;
+ 	pfmap = cgxlmac_to_pfmap(rvu, event->cgx_id, event->lmac_id);
+@@ -249,6 +249,15 @@ static void cgx_notify_pfs(struct cgx_link_event *event, struct rvu *rvu)
+ 				      rvu->cgx_cnt_max * rvu->hw->lmac_per_cgx);
+ 		clear_bit(pfid, &pfmap);
+ 
++		/* clear TL1 sw_xoff */
++		if (linfo->link_up) {
++			err = rvu_nix_tl1_xoff_clear(rvu, pfid << 10);
++			if (err)
++				dev_warn(rvu->dev,
++					 "tl1 sw_xoff clear unsuccessful, cgx=%d lmac=%d\n",
++					 event->cgx_id, event->lmac_id);
++		}
++
+ 		/* check if notification is enabled */
+ 		if (!test_bit(pfid, &rvu->pf_notify_bmap)) {
+ 			dev_info(rvu->dev, "cgx %d: lmac %d Link status %s\n",
+@@ -1221,6 +1230,7 @@ int rvu_mbox_handler_cgx_set_link_mode(struct rvu *rvu,
+ 	struct cgx_lmac_fwdata_s *linkmodes;
+ 	u8 cgx_idx, lmac;
+ 	void *cgxd;
++	int err;
+ 
+ 	if (!rvu->fwdata)
+ 		return LMAC_AF_ERR_FIRMWARE_DATA_NOT_MAPPED;
+@@ -1230,11 +1240,18 @@ int rvu_mbox_handler_cgx_set_link_mode(struct rvu *rvu,
+ 
+ 	rvu_get_cgx_lmac_id(rvu->pf2cgxlmac_map[pf], &cgx_idx, &lmac);
+ 	cgxd = rvu_cgx_pdata(cgx_idx, rvu);
++
+ 	if (rvu->hw->lmac_per_cgx == CGX_LMACS_USX)
+ 		linkmodes = &rvu->fwdata->cgx_fw_data_usx[cgx_idx][lmac];
+ 	else
+ 		linkmodes = &rvu->fwdata->cgx_fw_data[cgx_idx][lmac];
+ 
++	err = rvu_nix_tl1_xoff_wait_for_link_credits(rvu, req->hdr.pcifunc);
++	if (err)
++		dev_warn(rvu->dev,
++			 "tl1 sw_xoff/link_credit_poll unsuccessful, cgx=%d lmac=%d\n",
++			 cgx_idx, lmac);
++
+ 	rsp->status = cgx_set_link_mode(cgxd, req->args, linkmodes,
+ 					cgx_idx, lmac);
+ 	return 0;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+index 964bcaae098e..92d8f318783d 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+@@ -6704,3 +6704,51 @@ void rvu_block_bcast_xon(struct rvu *rvu, int blkaddr)
+ 	cfg = rvu_read64(rvu, blkaddr, NIX_AF_RX_CHANX_CFG(0));
+ 	rvu_write64(rvu, blkaddr, NIX_AF_RX_CHANX_CFG(0), cfg);
+ }
++
++int rvu_nix_tl1_xoff_wait_for_link_credits(struct rvu *rvu, u16 pcifunc)
++{
++	int link, blkaddr, count = 1000;
++	u64 tx_credits, regval;
++	struct nix_hw *nix_hw;
++
++	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NIX, pcifunc);
++	if (blkaddr < 0)
++		return NIX_AF_ERR_AF_LF_INVALID;
++
++	nix_hw =  get_nix_hw(rvu->hw, blkaddr);
++	if (!nix_hw)
++		return NIX_AF_ERR_INVALID_NIXBLK;
++
++	/* set TL1 sw_xoff */
++	link = nix_get_tx_link(rvu, pcifunc);
++	rvu_write64(rvu, blkaddr, NIX_AF_TL1X_SW_XOFF(link), 1);
++
++	/* wait for link credits to return */
++	tx_credits = nix_hw->tx_credits[link];
++	while (1) {
++		regval = rvu_read64(rvu, blkaddr, NIX_AF_TX_LINKX_NORM_CREDIT(link));
++		if (((regval >> 12) & 0xFFFFF) == tx_credits)
++			break;
++		count--;
++		if (!count) {
++			dev_err(rvu->dev, "TX link(%d) credit poll timeout\n", link);
++			return -ETIMEDOUT;
++		}
++		cpu_relax();
++		udelay(1);
++	}
++	return 0;
++}
++
++int rvu_nix_tl1_xoff_clear(struct rvu *rvu, u16 pcifunc)
++{
++	int blkaddr;
++
++	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NIX, pcifunc);
++	if (blkaddr < 0)
++		return NIX_AF_ERR_AF_LF_INVALID;
++
++	nix_clear_tx_xoff(rvu, blkaddr, NIX_TXSCH_LVL_TL1,
++			  nix_get_tx_link(rvu, pcifunc));
++	return 0;
++}
 -- 
-2.34.1
+2.43.0
 
