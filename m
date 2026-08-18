@@ -1,166 +1,229 @@
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A95E477283
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 14:02:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787061761; cv=pass; b=aaWrf8KyKuJLy4C7DxZbgFeAIg8HH5aUVUzJ8mjcFjQdJiXjuRilGu7TDJeGVNcqL/ktmyo9nucYphgUtrZsUagyy5hQ1i4p1eQZ8R7LKY6co7pCI6/YnzzqhEfsSzpu10eQqOULpHZZpsr97dmH00yLMbbv++G9U5EqZjnfvu8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787061761; c=relaxed/simple;
-	bh=UTv5iKcz7kfcY3WQo8grBxKS0khaeif0r4KiIQ2d1NQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OLrz7Hco1os9BPFXaUg5IufeFjasWji1ilYnu3ZtBasz0ilxko8Mp8142v2JwUuFa96I89Oz3xfPeGALXrjZr31RjP/nmRddSjt3bbU1od7JJyDl5g+AnS/Y+6MGXbfAknkB3d1i8NCbK/yz0Q4Q+6HleKOSKGX7THkvRIzCweo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WBnsNR53; arc=pass smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730E146D0B4
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 14:06:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787062018; cv=none; b=hqic574DdfRSS83rfb57QvJ5R5E2efDRN7GuYhcmFEQ4/0FmYVnkU3PZigdkQIGQb9JnIw3oOOwwE26SIUpnvovWD5YqU9TjVV0pDc3gvbzFp6CJ15uEEifWfoPN9C+010scR9sBsWaLynfeK5+QSM6fqIZ1wJpaCb5b+5lchOs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787062018; c=relaxed/simple;
+	bh=AAbgpFY5r/LU/xzhw0yGjYLVDj4UYudmnK/D6EbXBOk=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=oTmTWt2jrFAX1zCZTmhYwpH/DD2N4eLVwgabu6+9dwxsdzZJN3BOwX4sZoucltqve8T/+Yx33p9PAJ+65l/Vm3x3DHzrrTrIsikLGESoO0QRNWlfIKw10dYSBVBD19HYZpFEjXL0bXBJ8Q0tu1iUIdk0SOSAPb6x7y0/VaYGn1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cs0GK55k; arc=none smtp.client-ip=209.85.128.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WBnsNR53"
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5aec6360133so3879105e87.1
-        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 07:02:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787061758; cv=none;
-        d=google.com; s=arc-20260327;
-        b=c+JAxZQWWq+XN1hPAQvU7Dflm4Ya78rS+WzNp3c1mTGVMqQ7cd+gmwXy79N0HTX3vH
-         gp+JMnavyU9Gryleq7WVeRqgy6alFlRa+WtFtvUeSMv/O1wiombjt4JjgEHbZeT/KfgY
-         CS2KXNQaESVHwz1OT3FwZnVIANjiJF2St1vt40joRnMJmIDXI0Itqcqym6PqXF+Dhv0M
-         oDg3MzXBmzOap9QRtPPA7iv1XBaIqLJfSh1UGvl0ExIiG32aLaT/xqaDRqK4tjswcGeW
-         kiOi6209SN/jRHQQUFLOcUeuuEmWvCedlkWkgmn7cWWJCSJXo9lhk+75zsGLvkCba+R+
-         NYJQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=SyYLwZDkHAy+N7E1Yf97yW3d9A55gZNRqH5/hl/NyOE=;
-        fh=qBuN+IT523tNR/244csNLajsty3zxZxoT6U8MtM7CuI=;
-        b=q31hgXnGQjq/9v4Koy0aM30RKWpnY7VOsInTKemJHIzLOIKj/wA0x/7UvzBK+P52av
-         GWvRDRBCE+Tnhs0ZiP8qWPAIRc8bOfShWe9mdrX1Tudb2W/fVvegB7cXjQvsvYn8R9xP
-         L0F+73Iyh1rZADewEfIEpArZUvdpx9hYyT64XzMix7bD0d9G/pALgH2Ev4hDiV6niKFD
-         xuo76bpZtSOcs2wgWVh/o+sM6z8ggD+fjad4cbcFh5II4yrU6BLv579QscaNJN9MAf7F
-         cx9LbiQ+B+YuG+P3rbR+UbcftzGQ7gXHPbUOm+zg25neAXgit5DkhjOaI+gAVhq52Ryw
-         HbGw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cs0GK55k"
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-841f1dfc30fso10920717b3.1
+        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 07:06:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787061758; x=1787666558; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=SyYLwZDkHAy+N7E1Yf97yW3d9A55gZNRqH5/hl/NyOE=;
-        b=WBnsNR53SLLb1zdbMEZ0zS5c9TdF2lECNtXwUWI/BYt/JF+w+rcLHSfoPLuO2FLxXd
-         jg04/TIYEQ4ElNSve1aETYaXWAkgC0C0iJSK8df7FEvuv4SxFVlObacbz62WyQDSIeyR
-         4Ns4MXqwwgjA3qoL4LrVkRtsZwKROmIeLBGPvoJyR5JOV54yNuP4Ubhe3YxrSTy+wHOK
-         fREUZxE4iNJrIUl14sPWgmOXPfl4v2DDvDaO0YtfGghVNCw4G/Lbew8E123Xyfwrv8j+
-         QaQ9aNM179jb0Hv2KoShmQ8MtueJCkCb1oX/PQ5CBH7CkmwXivnUs57wR7rsFpMF/hGK
-         T4+Q==
+        d=gmail.com; s=20251104; t=1787062014; x=1787666814; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=2JBJpmYrJhiOXDvgTeethJ3HxlqBnurUVEqBxP7Z28U=;
+        b=Cs0GK55kVfI6I94sUCeuDha6CAoGQdvdYanJQP/N7SZ1ACOpM7VRANWOUSyhfDtDXI
+         oB1QfDjo/R3MnRVH9p6ZgeSWxk3uOEapvAP6DNvB6JaNFt/Ev89l4AEF/4QtE87sFd/D
+         HRcD5NiNNRISXyyNBooPBdaq2NKRTzni+zrMzuaXUPTb1rCgc3U0UikPfuW43VlSFRhv
+         ADVq5zSOED6QuGbsnNnYVAk5BnWawVHgEPFKLqwuF+ZlziY28YwjElmFmnIaWF1Z1uPr
+         u3H+5BzItQUsN4oaPidmyH7LTeG1E6vlHSr3wHhfQBI2pbU+Mz7a76d7c5Cg7dtIlQL9
+         QmQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787061758; x=1787666558;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1787062014; x=1787666814;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=SyYLwZDkHAy+N7E1Yf97yW3d9A55gZNRqH5/hl/NyOE=;
-        b=qUEETTiculgHo/M4MINuDr5Wp8iT2LBhT+87tpxRU9latd37a3zICDXDAhvbes3D5O
-         az0GHYia5au2THc6RxxQid2elozCsVWXzFD1M6MQetPsyxZTz8KUfpitqP6AR+ZofahD
-         DR/Q6oH5kyxrwM82ah0Ku2582DUQdywJ066rxbN0KgmFGfkjKVFIQQrt0D0PD3VYYm2y
-         fm++je6QQjbcUvYg9HBKxsYIqjw+ClceownuaXlnm2y0HUqp3dxUFvl648HGyi9YNtdH
-         8TVN+SbKiCW440nx+Tkk9OvcClG9qAxuBQfbDCyicIsHJhHE+s2CdFNElAdDwEzT83aq
-         2n9g==
-X-Gm-Message-State: AOJu0Yy/4oGyTFDVzDlCCXSxWB0ADUNUNH7uFYB3szdXVgjP8+9xcj1p
-	k7xSdkEhYBp/hMmitqss4iVaXW5LFK/z0X2/oDK/Ix62ynSSIPL1vTRxmIdk/C2KZFWyXN567Rb
-	vO6d4dwBJOI5L7n6eFlP434XqH/KdMzQ=
-X-Gm-Gg: AR+sD12JvWeBOZfn+0RS6+ybW8mOvDkmh/d3RJRtf6QVIa790NckZ62FpPmR7fzMyzv
-	aA0O+b8dWXCEXkGoVfveYmSyz74sUR0q4xpN7i4NcpYb3qafuYIbYOQZ0BiJfHbUymbyEcvnLug
-	Jr1Q3JLJir13wDM/dYdDudVg65xRPsDUQP2JmqTmpMtMh3Oja8rOT/n6iY1eJeSA2qp0d+tVLxs
-	uYq+4/JGyKeSeD11Ar+TakHriixmAbED375WB8gAFNciKf+gkIyoII/c30+VVO9RsUPNHINlm1w
-	jJr9QoBX9o4b1pU023eNYAy1CTUFuLSTegW9EmFvVSb639RaKR+xMvh60rI1q6jUbKkBfvjqrF3
-	g1xaqlmfoMb9zsrfsWSgY/hYll/CSg2BiJMDiLDoO2uRQ5JzslTt3REprZYQ=
-X-Received: by 2002:a05:6512:a34e:b0:5ae:b0aa:8f07 with SMTP id
- 2adb3069b0e04-5b470670602mr2119668e87.16.1787061757880; Tue, 18 Aug 2026
- 07:02:37 -0700 (PDT)
+        bh=2JBJpmYrJhiOXDvgTeethJ3HxlqBnurUVEqBxP7Z28U=;
+        b=Y8hIVbZLVqhqWDfczYGa4Sxad3TGCTsJVfIRL9Lns6N+2GmhhignkK4E0N/WFQNNkh
+         UWnNWKKUeZTAJ3LPfmG/kQJU7UP1Gqq78nSi6WwLPEUBJJUjYMxFm0b8NgsyhUKPYgNb
+         qSEcP6VJKvO7EIicRizasL8Nm508jTuJdlzK5XNqtDypR3Yjw9XJW0nVrxM+CiF8Wtmk
+         z257ic2CpuNgUaUH6QQt8Nv+yXrZ1tjBycEseit561uMaFLFts8ASWqd7nyFbKbBe+4d
+         iARpUqPgYWeeDeaMp7/hq90O0AeCJwG/MvpTCEgLTZTeBBman0EDoqWI+mTPQ4gNUdfl
+         D+7w==
+X-Forwarded-Encrypted: i=1; AHgh+RobqeROA3B+WmUhHXc1RshnM3MuTa/MZ2RLQ4baulB4+JFfas1nqkLg8zCBi2g84NoQLyNw74o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcVSxfOmkR4sI3SvmCcKxHmV0s/fg3lU+wvLIXcTSG3wX3ZbPT
+	KzItL5HAVbqZX7g6PA7nUGolXTsnNftMFldCugnkyvGsxIyYYigajSck
+X-Gm-Gg: AR+sD10gIHBp1RbJLpFaUynGnUInPmPFGag1Bns2vxtn+amZJrJU9x8QmOF68FxzDUm
+	MjMfQ5KqJ+FQtBg6YPeyKKvdIq1+vD8HeKsXEM3neSl+KATRWDRP5NbGzOnXI0JDCF08dQcKUhT
+	Q9MoiAwfgoenMx5Jgp9Aq101Pp3+LFf2Btpg+C9T0g7B5k4MbzI701wrxKzuZ1ofBXffIdTZvL1
+	VeD9TF/6mDjmQ+A+fpgVY33W+b8/Vyxr2ByNsBWUdifph6wjniM90RXacqhzoh1uUGm/GN9Ftpv
+	ljwHqsEqO72OIhRMvtgr+xLAsnomJpZYJVF7Z9DpRdJGled71PnicVqxD4zodPvRaSgEuRT9A99
+	W5hflNCz2MwwvZGkcJF5ZzK6onR3c0yfIu0/ESUdGQoF0aw5usAG97YTvtOPnJswqFoE9SvbV7C
+	0qC2cQJMIrWXyCOXHrNYJ46vj3lA0CXhljTM//2Ardalv8m5y4owQRZdbOevu2uIT8XeqoDwYFj
+	LywrbBcdkw+B8V/xSIIWe/pCgRgO0LVVK1z+0tu1w==
+X-Received: by 2002:a05:690c:e1da:10b0:81e:d001:e0ca with SMTP id 00721157ae682-841a35a3dadmr21536817b3.17.1787062014093;
+        Tue, 18 Aug 2026 07:06:54 -0700 (PDT)
+Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-84068077eb4sm21486147b3.10.2026.08.18.07.06.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Aug 2026 07:06:52 -0700 (PDT)
+Date: Tue, 18 Aug 2026 10:06:52 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Kyle Zeng <kylebot@openai.com>, 
+ netdev@vger.kernel.org
+Cc: Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ "David S . Miller" <davem@davemloft.net>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Muhammad_Hazley_SAMSUDIN_from.TP@tech.gov.sg, 
+ Kyle Zeng <kylebot@openai.com>, 
+ stable@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.30254a97eb38@gmail.com>
+In-Reply-To: <20260816235646.76500-1-kylebot@openai.com>
+References: <20260816235646.76500-1-kylebot@openai.com>
+Subject: Re: [PATCH net v2] net/packet: defer vmalloc TX_RING free until skbs
+ finish
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260817153957.3177627-1-poros@redhat.com>
-In-Reply-To: <20260817153957.3177627-1-poros@redhat.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Tue, 18 Aug 2026 22:02:00 +0800
-X-Gm-Features: AcwNN1UG_1pwdTjBdcWV7mH5yBQ6g2Q9r0pVO6574S7baK_7e2jyDoLFtMFtCU4
-Message-ID: <CAL+tcoBVxsjPXzfSHorXFMLMcsh_ibRmLFBwaQQYZQBjx8RBiw@mail.gmail.com>
-Subject: Re: [PATCH net] xsk: reset the mac header in the generic Tx path
-To: Petr Oros <poros@redhat.com>
-Cc: netdev@vger.kernel.org, Magnus Karlsson <magnus.karlsson@intel.com>, 
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
-	Willem de Bruijn <willemb@google.com>, Vladimir Oltean <olteanv@gmail.com>, Doruk Tan Ozturk <doruk@0sec.ai>, 
-	bpf@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 18, 2026 at 1:12=E2=80=AFAM Petr Oros <poros@redhat.com> wrote:
->
-> __dev_queue_xmit() resets skb->mac_header, __dev_direct_xmit() does not,
-> so a frame taking the qdisc bypass path reaches ndo_start_xmit() with
-> the sentinel left by __finalize_skb_around() and skb_mac_header() points
-> 65535 bytes past skb->head.
->
-> The packet socket reaches it through packet_direct_xmit(), and
-> packet_parse_headers() was taught to anchor the header by
-> commit c2707480cfbf ("net/packet: reset the MAC header on the
-> packet-socket transmit path"). AF_XDP reaches it through
-> __xsk_generic_xmit(), and net/xdp/xsk.c never sets the mac header.
->
-> ice reads eth->h_proto through skb_mac_header() on its ordinary Tx path.
-> On an E810 every one of 2817224 AF_XDP frames reached the driver with the
-> sentinel still in place, so the ethertype never came from the frame. With
-> this patch all 5757920 frames of the same test carried the correct 0x88b5=
-.
-> An AF_PACKET sender on the same port read 0x88b5 in both runs.
->
-> On a KFENCE kernel that read lands inside the pool and gets reported as a
-> use after free of an unrelated object, 387 times in a 180 s run:
->
->         BUG: KFENCE: use-after-free read in ice_xmit_frame_ring+0xddb/0x1=
-650 [ice]
->          ice_xmit_frame_ring+0xddb/0x1650 [ice]
->          __dev_direct_xmit+0x347/0x4d0
->          __xsk_generic_xmit+0xc13/0x1e70
->          __xsk_sendmsg.constprop.0.isra.0+0x519/0x640
->          xsk_sendmsg+0x6c/0x90
->
-> Rerunning the same reproducer on the same E810 with this patch applied
-> produced no reports and no bad reads.
->
-> Anchor the header in xsk_skb_init_misc(), which runs once per skb for
-> both build paths. With IFF_TX_SKB_NO_LINEAR the offset still is not a
-> real header, but it stays in bounds and no such driver reads it.
->
-> Fixes: 35fcde7f8deb ("xsk: support for Tx")
-> Signed-off-by: Petr Oros <poros@redhat.com>
+Kyle Zeng wrote:
+> AF_PACKET TX_RING skbs keep a raw pointer to their ring frame. The skb
+> page references preserve page-backed ring blocks after pg_vec is freed,
+> but they do not preserve a vmalloc mapping.
 
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Claude shows an interesting case where this page-backed statement does
+not hold: if the entire skb is linear. Not for this patch, but a
+similar case.
+ 
+> tpacket_destruct_skb() currently drops the pending reference before
+> writing the timestamp and TP_STATUS_AVAILABLE to the frame. Move the
+> decrement after those stores. The smp_wmb() in __packet_set_status()
+> orders the frame stores before the decrement.
+> 
+> Also recheck pending TX frames under pg_vec_lock before non-closing
+> ring replacement, so a racing send cannot add a pending skb between
+> the initial check and the ring swap.
+> 
+> Ring allocation can produce a mixture of page-backed and vmalloc-backed
+> blocks. Allocate deferred-work storage during TX ring setup when the
+> first vmalloc-backed block is encountered, and keep its pointer in the
+> pg_vec allocation header. If allocation fails, return -ENOMEM from ring
+> setup. On socket close, a non-NULL pointer identifies a vmalloc-backed
+> vector without a scan. If TX skbs remain, defer the whole vector to
+> system_long_wq.
+> 
+> After pg_vec is detached, a late destructor can skip the pending
+> decrement. Use socket write-memory accounting as the deferred lifetime
+> gate instead: an skb remains charged through its final sock_wfree(),
+> after all ring-frame accesses. The delayed work retains a socket
+> reference and reschedules itself until no TX skbs remain.
+> 
+> Move pending_refcnt release to packet_sock_destruct() so late skb
+> destructors and deferred cleanup can safely use it after
+> packet_release(). Page-backed teardown remains synchronous, and no lock
+> is added to the TX completion hot path.
 
-> ---
->  net/xdp/xsk.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-> index 7855ee09c4b640..885427392cb6b3 100644
-> --- a/net/xdp/xsk.c
-> +++ b/net/xdp/xsk.c
-> @@ -931,6 +931,7 @@ static int xsk_skb_init_misc(struct sk_buff *skb, str=
-uct xdp_sock *xs,
->         skb->priority =3D READ_ONCE(xs->sk.sk_priority);
->         skb->mark =3D READ_ONCE(xs->sk.sk_mark);
->         skb->destructor =3D xsk_destruct_skb;
-> +       skb_reset_mac_header(skb);
+This one patch combines multiple fixes. If and only if a respin is
+needed, it may be good to break it up to help understanding.
 
-That's a good place to do the reset process. I will cook a follow-up
-patch to reset the network header.
+> Fixes: b013840810c2 ("packet: use percpu mmap tx frame pending refcount")
+> Cc: stable@vger.kernel.org
+> Link: https://lore.kernel.org/netdev/20260721015824.45829-1-kylebot@openai.com/
+> Suggested-by: Eric Dumazet <edumazet@google.com>
+> Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+> Assisted-by: Codex:gpt-5.6-sol
 
-Thanks,
-Jason
+> +struct packet_pg_vec {
+> +	struct packet_pg_vec_free *deferred;
+> +	unsigned int order;
+> +	unsigned int len;
+> +	struct pgv pg_vec[] __counted_by(len);
+> +};
+> +
+> +struct packet_pg_vec_free {
+> +	struct delayed_work work;
+> +	struct sock *sk;
+> +	struct packet_pg_vec *vec;
+> +};
+
+> @@ -4382,7 +4399,46 @@ static void free_pg_vec(struct pgv *pg_vec, unsigned int order,
+> +static void packet_free_pg_vec_work(struct work_struct *work)
+> +{
+> +	struct packet_pg_vec_free *deferred;
+> +	struct packet_pg_vec *vec;
+> +	struct sock *sk;
+> +
+> +	deferred = container_of_const(to_delayed_work(work),
+> +				      struct packet_pg_vec_free, work);
+> +	vec = deferred->vec;
+> +	sk = deferred->sk;
+> +	if (sk_wmem_alloc_get(sk)) {
+> +		queue_delayed_work(system_long_wq, &deferred->work, 1);
+
+Can this keep requeueing itself? Claude suggests using pending ring
+count as gate.
+
+> +static void packet_free_tx_ring(struct sock *sk, struct pgv *pg_vec,
+> +				unsigned int order, unsigned int len)
+> +{
+> +	struct packet_pg_vec_free *deferred;
+> +	struct packet_pg_vec *vec;
+> +
+> +	vec = container_of_const(pg_vec, struct packet_pg_vec, pg_vec[0]);
+> +	deferred = vec->deferred;
+> +	if (!deferred || !sk_wmem_alloc_get(sk)) {
+> +		free_pg_vec(pg_vec, order, len);
+> +		return;
+> +	}
+> +
+> +	/* A detached ring's pending count can miss late skb destructors. */
+> +	deferred->sk = sk;
+> +	sock_hold(sk);
+> +	queue_delayed_work(system_long_wq, &deferred->work, 0);
+>  }
+>  
+>  static char *alloc_one_pg_vec_page(unsigned long order)
+> @@ -4410,20 +4466,35 @@ static char *alloc_one_pg_vec_page(unsigned long order)
+>  	return NULL;
+>  }
+>  
+> -static struct pgv *alloc_pg_vec(struct tpacket_req *req, int order)
+> +static struct pgv *alloc_pg_vec(struct tpacket_req *req, int order, bool tx_ring)
+>  {
+>  	unsigned int block_nr = req->tp_block_nr;
+> +	struct packet_pg_vec *vec;
+>  	struct pgv *pg_vec;
+>  	int i;
+>  
+> -	pg_vec = kzalloc_objs(struct pgv, block_nr, GFP_KERNEL | __GFP_NOWARN);
+> -	if (unlikely(!pg_vec))
+> -		goto out;
+> +	vec = kzalloc_flex(*vec, pg_vec, block_nr, GFP_KERNEL | __GFP_NOWARN);
+> +	if (unlikely(!vec))
+> +		return NULL;
+> +	vec->order = order;
+> +	vec->len = block_nr;
+> +	pg_vec = vec->pg_vec;
+>  
+>  	for (i = 0; i < block_nr; i++) {
+>  		pg_vec[i].buffer = alloc_one_pg_vec_page(order);
+>  		if (unlikely(!pg_vec[i].buffer))
+>  			goto out_free_pgvec;
+> +
+> +		if (tx_ring && !vec->deferred &&
+> +		    is_vmalloc_addr(pg_vec[i].buffer)) {
+> +			vec->deferred = kzalloc_obj(*vec->deferred,
+> +						    GFP_KERNEL | __GFP_NOWARN);
+> +			if (!vec->deferred)
+> +				goto out_free_pgvec;
+> +			vec->deferred->vec = vec;
+
+The nested structures are fairly complex.
+
+Would it make sense to avoid the separate packet_pg_vec_free, fold
+that into packet_pg_vec and use a different field to identify
+whether vmalloc backed pages are used. Maybe sk, or even a new
+boolean field has_vmalloc, for readability
+
+
+
