@@ -1,79 +1,161 @@
-Received: from out203-205-221-221.mail.qq.com (out203-205-221-221.mail.qq.com [203.205.221.221])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9740628850E;
-	Tue, 18 Aug 2026 13:13:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0628431327A
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 13:14:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787058817; cv=none; b=J6/iX8sf8cEltwYNKsRcCeUnnPRFwcsqrxUsU03kVbjigcDfq2l3zwJmc1Z9SnSwLQygnVsj582QYSQVixiUVWQLZRv2lT6XjB88dZER6fA4j5wzmeHxzkTVgpzZ05FcdkDaEfg4XXi5/4ksuLb0JjZ1Evt0T4JTz4owFNjezXo=
+	t=1787058880; cv=none; b=VZC2joqbAPMhIDwa62J/x0uFX/u8zN9Uk8wLDekTAPPoI88/CArDQtFGsajIhqbJa+KTR1W9KvmcgrurvXUY47j52R/5rv5QyqRFlLPnpOH+XSHBWMqwVbF1Rc5FXPg7thc/PBtJdvNLFIQzE0tsvH5aD5XQXW7CnBI78u8l2NM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787058817; c=relaxed/simple;
-	bh=6YOfbXCCKvhFjZDUV4p+Z1szIMsxveYWIlQMnnVPSP4=;
-	h=Message-ID:From:Subject:To:Date; b=s5gENWHoniUDzmAFG/tjp711REAagqTnTsGzMbo0+sLok1gR1wxPcC2e8dHELsi4Z4QjVAqB569pORC4zauTBbqeG4tjN0v08VdCrR+iNiwShWDHncsLHGsPqn0wHZOOv0+neRLMbt0ZQm7lLlZS9XdbqaO0FSoHg6Q9bxcM8iQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=HhD7Q0Rl; arc=none smtp.client-ip=203.205.221.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1787058880; c=relaxed/simple;
+	bh=8WJJ2/NT5y3r1SAk7C//O2YsvSemchrpEp9sC2MFYdI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=o3eBszwq6s++cQ7zOw1NHIThTr6YAK7RSIrWjDeA7ftN12hH3V/0r0m9R0b0KnqIgZThUBhLWAohiwkUfVQPWXlmpNYvtqiCnd8cfSCTnrCFRdHbDDblVaruQLg/K0FiC7ZvyUSkMUEVBFZDJf7321RoQ1fEa1KtRIhv669Sch4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hlYB7k43; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="HhD7Q0Rl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1787058812; bh=Hlw+UgMe3Vr4eLzfqP2J7mxHixFZ6sWQgXVYEq+qYFw=;
-	h=From:Subject:To:Date;
-	b=HhD7Q0Rl6WkBTdOztETwiYcadUMV5I3ZL0sjYJ/B7j+1M627xxIC5xFggYBW+DooP
-	 nf3GRmER9sLvFOe6Fcxe2wTwjP8Ofg7Bf/oe8633j+uqrbOmTB7IooBTjObrDO1TyM
-	 NMSLNjsyyEC7YOZ31Y4eENmzPt2TeTafvjvdgFdY=
-Received: from [127.0.1.1] ([5.195.0.150])
-	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
-	id 1721C6D8; Tue, 18 Aug 2026 21:05:50 +0800
-X-QQ-mid: xmsmtpt1787058719twlegke8g
-Message-ID: <tencent_1B2B4E438079BF5595B1F50C45FF9067BA08@qq.com>
-X-QQ-XMAILINFO: NAOky/E1C/NcEso1yPYc5BF/mLLAzTgmAFt0wV3S2WxA1w8x1X8HK+RV9MPLnz
-	 AH8gK4ABpoUpzgKdpDVHdj8oDYCcpx8Y6myB+4rlABLgyw31xeaB1ZbGd5Np6GSyAYAse4k8h7Vb
-	 AoMmVLLUO3T+kglqgQN1+UZ0TOQi+5X62Mr+ZoCgCJGH/73//gRP7P9aIR7kYK+QMIBqnabZNYxj
-	 deDUmI9/S6FC5AX95KTMozkbhrLDKNIU8yVTCqVjNtzHFXL289oPvdi1iSLTT2h/xFlueQ80r6hR
-	 k/Cvnz9wdavk41MGw+04lWk7M6j+A6/AAV/1jSw2tQodszF5QkxOwpSX514AxjT9pd+lR9RTPGHJ
-	 Y+CSvfQthmGgOyii1IpmThi0dEm6Z130rjEfZzS04ZEU/pU9DEcoAWEmqZJRVy49InmnJqlGdZIZ
-	 4SGs6D9umt7W0a/9gxP8V3M/v8GMF+ALIBpoQXFUGISwyZSTqsgxvwr45TcBqWluK2jwadjBKbCi
-	 jLlCpvOHmjmHkq+8tSlpCvNVRPbn9NbVtJ3b9/6Xlo01IaGQdqWGJOqs1z08LAoiOVgoh/VfdW6S
-	 6aCZ5OzsKdS0i6+38ay7hVMhhGh6Ks7Ei9BG2qM718oZ8l7LAhQbOfbwMThcnYFWzT0FoecKVKo8
-	 MzRYnfY/YwHDvKVWiCjhwJBLPYR/lBde4T5iqCp699o0K22VYloKtuSD9XBODlYLatURFHIToI1S
-	 /rYLx1hV14puq4lj+de+7V4u7Fma2ZlhgIG+Y3swsOESj6YtkXNM//TsTu+ysPli7B6Htc6yCZRE
-	 OG4Zd0QNEqXgOdLzJwjJjCYOgO7ASg56f6zlVt5Hhvrmop783DlRS0+w3S4lJhRbJjUrkCvVZyIO
-	 XR8npLKhesu+2cHESRrzBmXPw1K//9Bhy6hh5Qve9vFb6Xq1/fhEhbdhwA16weYhJjYJD+Cp98Fq
-	 2X+pOUuacQU7zbbYP7oS9FWW6A1obeYEYH9mRSYl2sm3aPSrlzo9aNKvlFFXnL6/v42RpPXDSU5m
-	 CKlzxUnrDmCJjKJjTpbutUXFvOW7g=
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
-From: Jiawen Liu <1298662399@qq.com>
-Subject: [PATCH] net: hisilicon: hisi-femac: fix NAPI teardown ordering
-To: Jian Shen <shenjian15@huawei.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 18 Aug 2026 17:13:29 +0400
-X-OQ-MSGID: <178705880941.291840.8524323292341451923@qq.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hlYB7k43"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787058877;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9lrRwtLNN82Z5FjIGBHsoP1GqKEzI7RTsTAciD+0vYk=;
+	b=hlYB7k43b9lSfmnwu+gSmtuG67ZuBwITWQbpXVt2uekresOglFXkQKjHAPAGMP9Em2UAeg
+	k2yb+IgB6t9XFiRH7+dF2pcXzulUUt3hB6Ups/rDWNJbzCC+mW2e8upmIVMgZ+0SOJ5Z9/
+	W2tE9Li3OoRVdvb6QgJ4phw9P/NK/r0=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-332-qQECQHvfP_eSUHcGQ7N6Jw-1; Tue,
+ 18 Aug 2026 09:14:34 -0400
+X-MC-Unique: qQECQHvfP_eSUHcGQ7N6Jw-1
+X-Mimecast-MFC-AGG-ID: qQECQHvfP_eSUHcGQ7N6Jw_1787058873
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F26E01801379;
+	Tue, 18 Aug 2026 13:14:31 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.44.48.207])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 958FC30002E9;
+	Tue, 18 Aug 2026 13:14:29 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: nwhitehorn@pa.msu.edu
+Cc: netdev@vger.kernel.org,
+	theo.lebrun@bootlin.com,
+	conor.dooley@microchip.com,
+	charles.perry@microchip.com,
+	andrew@lunn.ch,
+	kuba@kernel.org
+Subject: Re: [PATCH net-next v5 2/2] net: macb: add support for 1000BASE-X autonegotiation to PCS
+Date: Tue, 18 Aug 2026 15:14:26 +0200
+Message-ID: <20260818131426.191990-1-pabeni@redhat.com>
+In-Reply-To: <20260813153705.23407-3-nwhitehorn@pa.msu.edu>
+References: <20260813153705.23407-3-nwhitehorn@pa.msu.edu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Remove the redundant explicit NAPI deletion from the registered-device
-remove path.
-
-The confirmed lifecycle contract is that unregister_netdev() performs
-the NAPI teardown. Probe failure cleanup before registration remains
-unchanged.
-
-Signed-off-by: jiawen <1298662399@qq.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/
 ---
-diff --git a/drivers/net/ethernet/hisilicon/hisi_femac.c b/drivers/net/ethernet/hisilicon/hisi_femac.c
---- a/drivers/net/ethernet/hisilicon/hisi_femac.c
-+++ b/drivers/net/ethernet/hisilicon/hisi_femac.c
-@@ -898,7 +898,6 @@
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct hisi_femac_priv *priv = netdev_priv(ndev);
- 
--	netif_napi_del(&priv->napi);
- 	unregister_netdev(ndev);
- 
- 	phy_disconnect(ndev->phydev);
+net: macb: add support for 1000BASE-X autonegotiation to PCS
+
+This decouples PCS enablement from the SGMII mode selection, advertises
+PHY_INTERFACE_MODE_1000BASEX to phylink when the controller has a PCS, and
+adds an autonegotiation restart implementation plus a return of 1 from
+pcs_config() when the advertisement changed.
+
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+> index c15a9c7e69d37..9097ccb14c13b 100644
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+
+[ ... ]
+
+> @@ -1061,9 +1075,12 @@ static int macb_mii_probe(struct net_device *dev)
+>  			  bp->phylink_config.supported_interfaces);
+>  		phy_interface_set_rgmii(bp->phylink_config.supported_interfaces);
+>  
+> -		if (bp->caps & MACB_CAPS_PCS)
+> +		if (bp->caps & MACB_CAPS_PCS) {
+> +			__set_bit(PHY_INTERFACE_MODE_1000BASEX,
+> +				  bp->phylink_config.supported_interfaces);
+>  			__set_bit(PHY_INTERFACE_MODE_SGMII,
+>  				  bp->phylink_config.supported_interfaces);
+> +		}
+
+[Severity: Medium]
+
+Advertising PHY_INTERFACE_MODE_1000BASEX here makes a device tree with
+phy-mode = "1000base-x" acceptable on every PCS-capable GEM, including the
+zynqmp, versal, mpfs and pic64hpsc configs whose .init hook is
+init_reset_optional().  Should that hook also learn about 1000BASE-X?
+
+It still gates the whole SerDes and firmware bring-up on SGMII only:
+
+drivers/net/ethernet/cadence/macb_main.c:init_reset_optional() {
+	if (bp->phy_interface == PHY_INTERFACE_MODE_SGMII) {
+		/* Ensure PHY device used in SGMII mode is ready */
+		bp->phy = devm_phy_optional_get(&pdev->dev, NULL);
+		...
+		ret = phy_init(bp->phy);
+		...
+			ret = zynqmp_pm_set_gem_config(pm_info[1], GEM_CONFIG_FIXED, 0);
+			...
+			ret = zynqmp_pm_set_gem_config(pm_info[1], GEM_CONFIG_SGMII_MODE, 1);
+	}
+
+With phy-mode = "1000base-x" that branch is skipped, so bp->phy stays NULL,
+phy_init() is never called on the PS-GTR lane, and GEM_SGMII_MODE is never
+set in the ZynqMP GEM_CLK_CTRL register, which is what routes the MAC onto
+the serial/PCS clock path.
+
+Is the failure also silent?  macb_open() calls
+phy_set_mode_ext(bp->phy, PHY_MODE_ETHERNET, bp->phy_interface) and
+phy_power_on(bp->phy), and both return 0 immediately for a NULL phy in
+drivers/phy/phy-core.c, so probe and open succeed with no diagnostic while
+the link can never come up.
+
+> @@ -4932,7 +4949,9 @@ static int macb_init_dflt(struct platform_device *pdev)
+>  	/* Set MII management clock divider */
+>  	val = macb_mdc_clk_div(bp);
+>  	val |= macb_dbw(bp);
+> -	if (bp->phy_interface == PHY_INTERFACE_MODE_SGMII)
+> +	if (bp->phy_interface == PHY_INTERFACE_MODE_1000BASEX)
+> +		val |= GEM_BIT(PCSSEL);
+> +	else if (bp->phy_interface == PHY_INTERFACE_MODE_SGMII)
+>  		val |= GEM_BIT(SGMIIEN) | GEM_BIT(PCSSEL);
+>  	macb_writel(bp, NCFGR, val);
+
+[Severity: Medium]
+
+macb_init_dflt() is reached from init_reset_optional() a few statements after
+the SGMII-only branch above, and macb_mac_config() sets PCSSEL for
+1000BASE-X too.  Does that leave NCFGR.PCSSEL enabled while the SerDes lane
+and the firmware GEM clock mux were never programmed on those platforms?
+
+Also, the binding in Documentation/devicetree/bindings/net/cdns,macb.yaml
+documents phys with maxItems: 1 for the controller without tying it to
+phy-mode = "sgmii", so can a 1000BASE-X board legitimately expect the driver
+to initialize that SerDes?
+
+One related asymmetry: for a board declaring phy-mode = "sgmii" with an SFP
+attached, phylink may select 1000BASE-X for the PCS while macb_open() still
+programs the SerDes submode from the device tree value in bp->phy_interface.
+Should the submode follow the interface phylink actually selected?
+
+Note this does not regress a previously working setup, since 1000BASE-X was
+not in supported_interfaces before this patch.
+-- 
+This is an AI-generated review.
 
