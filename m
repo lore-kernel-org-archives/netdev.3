@@ -1,66 +1,60 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE338469835
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 11:51:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E262237CD53;
+	Tue, 18 Aug 2026 11:55:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787053897; cv=none; b=NwyKuYvSsMJeHTDLRxtro2pEY4byg30O7fXGD2vFFErG6rwYnSylfR75ca8fi+XToah7ND2Wp5C/p6XoYyJ9K7Ab3soQjo7YNfA2utcN1nTJNm02i3jOi86cV7RyAt9x3v6RbNDgdC7DsuRlgvTdi8Boe5JId0g5J0STsrODRyc=
+	t=1787054125; cv=none; b=eqL25WBd0fcqc/kGD3cPx9O6NBptAxBPJ5Zkupzvr8o+uXgKFJgEdILcLHqbMAEkW1acw/mQzt2VpGhJxjEfUB64fcoFkoEhTEQBNgKAtaSR9hz2UUseolK3JD+zCnaAZPc89t7F6W+TZYpg1oEBPoQzCkCoLJFDlFZXAuZq3BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787053897; c=relaxed/simple;
-	bh=IfjRD/tUp6RLt+0kvzKfRPcZc3cJN/lWoxiXBTM4HmQ=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=rWy3lXIHQMFVNh4GA3THv1w7/dgDeRhLmvxMOzUBbR/43V9f1IZ/v/GUXtrnksL+mL7qL9cH1m1KjRrhE1uAoWyIv1oE3DJ/maPQu1StHU3kawoyKeKbnOSw0ylnMfFe+mYozxwOfjE4V8dz9S7EmxPjZEfX6/n1jCVzLMSGRAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=B6c+vp1b; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	s=arc-20240116; t=1787054125; c=relaxed/simple;
+	bh=DAcZOgekyBYGUxWvSUAZsquyriuqTLGFM/xGjWhl7wU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lv9+yOYXQQ4rmP13UDwSbOty+YAorgfr2JuvI+awHpWoHKG7KtXmAu9meE1IJeclR2gkCUANrCE6ZfLhOHhUx7d7eFpTzfZ7LyscnlX8k4StGYo2FWcRLS1G6L2qjmbp2rYdSwuwoYUzXzlL6X+Fi27Nmn2bUiVOyCJWOmlBoDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=VWSmwCg0; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="B6c+vp1b"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4998590d392so47284955e9.0
-        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 04:51:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1787053894; x=1787658694; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:references:cc:to
-         :from:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=s4AoviJr9dFx04iLvEZrfTcwZjFQWMrx8GuYmmc2rq8=;
-        b=B6c+vp1bVOrZ8bRkxcuGTpAeGqsyTvpKLvd1kYQfuNZx1SbI0up2lurewN5ImWCpD8
-         wTt6zys2zcZzEHm5VY6Arg3kXRaaJHK9vH7JUkE7YJhlV8tusYMbIMyJYrsh8wDq+I6s
-         Rhy/1P9BGLx6l51pCo94+DzJ3mr6o9RDe0VbIVemKI9yoqR1QZ5FUtoZ0T20V4JJdLI8
-         /Kg6OBXWQ3jv+Ci2FiAwsA3cG0VOFP7VDCwTwoF5yi/vFpnAxR4s43YwN7eminiitABf
-         rbZLZ8KLm8JW0FwZiSUkSJp/Yl65+BBAmcVQzIti+Ebl3loTfVIJzRnhNmBJ6JW7iC/J
-         N6Fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787053894; x=1787658694;
-        h=content-transfer-encoding:content-type:in-reply-to:references:cc:to
-         :from:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=s4AoviJr9dFx04iLvEZrfTcwZjFQWMrx8GuYmmc2rq8=;
-        b=XaAvoYiJLKYkM9bjkSrzko4RCoX+8kAWfIaRyERWX2npNi/wJ8vucA5pXSplBHXEel
-         1ram4F8D7qkfdEQjPwJKB0RkpP4wFuczzE+Aq9ZJejw8RWGDPO9AWOW0hZvY+76znZ4X
-         jrCOrFjE4pCjUO9fZjGlzgzd0nQ0A2y1WZSxBS39NbzNO7vKWyxLWESx2S93AT+Je1Vd
-         PXRmxgt1rs1rKD8gMYoyGqej86l/kqanRD2iK1bLEhqrRIAoyfwsu9taoztpxmNh+PqH
-         festsF0cESefOJzubvantrixS+mvcU07/3Ja0WU8W9N9S1lCaVbf0DMJ5h8ZTsuAO6dC
-         JUXg==
-X-Gm-Message-State: AOJu0YzBKwRUZnCXLHia1HYWxPqW9w6H5os9FJwIFlD8wQJSpTGECAAt
-	ucA8mJlEya5PtrTf6p7PZpecAnACxNr3Y7nRmWFL3uJayMJnYTx72M1NWPJDPECNcgI=
-X-Gm-Gg: AR+sD13mcGnEhzatMWJ6Sgo7b35Wop0wcx1A10f5M+QhPsj0rsaTRnCkCdgUl3B0Dul
-	OJfGEtAMCdIhB6V1WDpsKcwgtLEZzoRCatlAEcbhFbaQKQR5jzOPDGt0L1WkZ5tjZ/3yZ7yFeiH
-	dDHcAROOT+0pU/Azqjvq9EFCgt7U5E9cIhBiZnxJVHOyDblaWlfge8F/eSRQ1ckHmA8Bo8beifT
-	pLiqe10hpqKQfnsdHWN6t54ZKmAIhBau4qsL9WsPRJGvcoIv61lcgjfapLXdF5955KYqGVEVlco
-	jSsDWdTEHZ0ZCTsLhJV/CthWxA+3dtpV84yKfYnjfOYopxQaQdK+5iLUqvl3X450Z2AEnbsn/r5
-	Ga08mor4vyKEfuS8J8zNDWd6+PqCVm1I2Y+sY+M4a8bOOdoeLImYCThYT6uCyhH9leVJAdIp1Cy
-	U98M8HMpQU2d/7KJYd+JgK+3/6t5oseEozklWupqso2WG7LGx2o+gJMc+31FNNTSp+JY6FUMxXk
-	roUmmQdAPYYTSh1zAs=
-X-Received: by 2002:a05:600c:34d1:b0:499:83f1:398 with SMTP id 5b1f17b1804b1-4999fb6d598mr137428085e9.9.1787053893608;
-        Tue, 18 Aug 2026 04:51:33 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482a5a3b2e9sm11954725f8f.9.2026.08.18.04.51.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Aug 2026 04:51:32 -0700 (PDT)
-Message-ID: <bf56ea5d-a0d2-40f9-b8d5-73d8c54ca32b@blackwall.org>
-Date: Tue, 18 Aug 2026 14:51:31 +0300
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="VWSmwCg0"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67IAVYVJ028643;
+	Tue, 18 Aug 2026 11:55:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=BBb1yW
+	HOQff7aU5CXi9LTJZf1nzEWWrC8SAD7ji0EUE=; b=VWSmwCg0EeFkJlMCFrTged
+	KvjBpzyV9e/Q4R+5bXlF/5az8m3PYy+d3O+m6y3Slj7KL1FZvVhEkqy3UKMCRyKK
+	LEGWumwOToY3eMV36R1iOg0pFD6dtt6JQzVDFR70W7eXPdl7KvpCdhEt7FvDETzH
+	ibrrwOTerA8IZCIgg1QNXKs60J6agPiqyHets1PvJjhzfkIKka9GW5dgob3xSAhS
+	zq/rdcDE2rLbooi86fZrgNm/eKmXq4S+kFSbQRaRqubjOnG3zfuK7uqnp/GWwhM6
+	kJHoh6WWKeb5yWPtVxuN6cR/szypedZMUFFXfFzlN5SKjidoVmmTMz6IVY/noLKQ
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g2fu4qy6a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 18 Aug 2026 11:55:08 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67IBfM5E024089;
+	Tue, 18 Aug 2026 11:55:07 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g33xh305k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 18 Aug 2026 11:55:06 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67IBt2eA17760592
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 18 Aug 2026 11:55:03 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C6F0F2004B;
+	Tue, 18 Aug 2026 11:55:02 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7795E20043;
+	Tue, 18 Aug 2026 11:55:02 +0000 (GMT)
+Received: from [9.111.161.182] (unknown [9.111.161.182])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 18 Aug 2026 11:55:02 +0000 (GMT)
+Message-ID: <5f368349-a417-42b9-9ee3-d9996a949bb2@linux.ibm.com>
+Date: Tue, 18 Aug 2026 13:55:02 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,220 +62,117 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 2/2] bonding: fix u32 overflow in compute_gap()
-Content-Language: en-US, bg
-From: Nikolay Aleksandrov <razor@blackwall.org>
-To: Hangbin Liu <hangbin.liu@linux.dev>, Jay Vosburgh <jv@jvosburgh.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH net 2/2] net/iucv: take a private, writable frame before
+ rewriting it in place
+To: hexlabsecurity@proton.me, Thorsten Winkler <twinkler@linux.ibm.com>,
+        Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Hangbin Liu <liuhangbin@kylinos.cn>
-References: <20260818-bond_overflow-v3-0-e05d4dbc2fd8@kylinos.cn>
- <20260818-bond_overflow-v3-2-e05d4dbc2fd8@kylinos.cn>
- <d75e0db1-e129-4a9f-a103-889827948de1@blackwall.org>
- <80d704a8-aca6-44f8-8933-eb0cf14ecf3b@blackwall.org>
-In-Reply-To: <80d704a8-aca6-44f8-8933-eb0cf14ecf3b@blackwall.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+        Ursula Braun <ursula.braun@de.ibm.com>,
+        Simon Horman <horms@kernel.org>,
+        Hidayath Khan <hidayath@linux.ibm.com>, linux-s390@vger.kernel.org
+References: <20260815-b4-disp-dc82fde4-v1-0-e83b10b22ce9@proton.me>
+ <20260815-b4-disp-dc82fde4-v1-2-e83b10b22ce9@proton.me>
+Content-Language: en-US
+From: Alexandra Winter <wintera@linux.ibm.com>
+In-Reply-To: <20260815-b4-disp-dc82fde4-v1-2-e83b10b22ce9@proton.me>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: fzNSHg4pHK4rJpOE2pEL6LU-CYQxiMin
+X-Authority-Analysis: v=2.4 cv=NLLlPU6g c=1 sm=1 tr=0 ts=6a84481c cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=c92rfblmAAAA:8
+ a=n0wzrGaTUaOUoIqzI10A:9 a=QEXdDO2ut3YA:10 a=GvGzcOZaWPEFPQC_NcjD:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE4MDA4NSBTYWx0ZWRfX9pYINKpS3LRb
+ lC2ml0YF0it6RKpeFI7i9HyDcZvndLfc0kGKjsm+wLWUTb1wtwKQnC9cXJ8P26LNc0LGjsB9Idr
+ gcQjXfMbWdaRIza5Gxg4icsx/CsjK1g=
+X-Proofpoint-ORIG-GUID: jJn9qDmstb6XYeILrrY4Awdkrhkgm1FK
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE4MDA4NSBTYWx0ZWRfX1aG9ibzWstYm
+ 8rtmuMZVCyDrUVkah5FMcRSL3AQyLong2miQCr24nwbhUJsZrVDyZUosWArUGA7ZvhmbCz5dcfr
+ pHFShO8/1G9bR+G/Gc9mhRi4ZIIZS9XC4Z+5dhojuJ1xe4pDWBA2g5xIATjPpj7bXMo18/hJBE8
+ LYO7tnVe+X7nDBP4qQn5BNWQtd9KKDoNjXnjhAjalYzEvVADmf5yE3EljZfrabpiqazWvlkvzW1
+ FmQ31yntPbD4/Qkzjq9R/c1L3hbzJfS7OkgCE14xFqW6WodTVplfrMXugFjRW/TtSDR8m6EvO4R
+ 6bNnIGM9CfkoRiqug1xfxZrMiXu1MXqI+BZKGvkqT70v6seS/CSN2qK842/OWvOUzJVIOgEQOrd
+ UZDjwxHJDqlraTlMebuLWXMJtyh7+k+xC4shsEIqCGSt5yHzrSRPFnA3Ykh51METCqPNyiG892L
+ oclZoOS0jHO90nn8tCg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-18_01,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 spamscore=0 lowpriorityscore=0 phishscore=0 impostorscore=0
+ malwarescore=0 suspectscore=0 clxscore=1015 adultscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608180085
 
-On 18/08/2026 14:06, Nikolay Aleksandrov wrote:
-> On 18/08/2026 12:44, Nikolay Aleksandrov wrote:
->> On 18/08/2026 11:47, Hangbin Liu wrote:
->>> From: Hangbin Liu <liuhangbin@kylinos.cn>
->>>
->>> The TLB load-tracking fields tx_bytes, load_history, load, and
->>> unbalanced_load are all u32. At sustained throughput above ~3.2 Gbit/s
->>> over the 10-second rebalance interval the byte counters wrap, causing
->>> compute_gap() to produce incorrect gap values and mis-select slaves.
->>> Such speeds are common on modern NICs under heavy traffic.
->>>
->>> Widen these fields to u64. Use u64_stats_sync to protect the per-cpu
->>> unbalanced_load_stats against tearing on 32-bit architectures, and
->>> div_u64() for the 64-bit divisions. The tx_bytes, load, and load_history
->>> are protected in spin_lock.
->>>
->>> Rework compute_gap() to use u64 arithmetic throughout. Return 0 when the
->>> speed is unknown or the slave is already overloaded.
->>>
->>> Detected by AI code review.
->>>
->>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
->>> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
->>> ---
->>>   drivers/net/bonding/bond_alb.c  | 56 ++++++++++++++++++++++++++++++-----------
->>>   drivers/net/bonding/bond_main.c |  2 +-
->>>   include/net/bond_alb.h          |  9 ++++---
->>>   3 files changed, 47 insertions(+), 20 deletions(-)
->>>
->>> diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
->>> index d54d834cf72b..659a77323444 100644
->>> --- a/drivers/net/bonding/bond_alb.c
->>> +++ b/drivers/net/bonding/bond_alb.c
->>> @@ -6,6 +6,7 @@
->>>   #include <linux/skbuff.h>
->>>   #include <linux/netdevice.h>
->>>   #include <linux/etherdevice.h>
->>> +#include <linux/ethtool.h>
->>>   #include <linux/pkt_sched.h>
->>>   #include <linux/spinlock.h>
->>>   #include <linux/slab.h>
->>> @@ -74,8 +75,8 @@ static inline u8 _simple_hash(const u8 *hash_start, int hash_size)
->>>   static inline void tlb_init_table_entry(struct tlb_client_info *entry, int save_load)
->>>   {
->>>       if (save_load) {
->>> -        entry->load_history = 1 + entry->tx_bytes /
->>> -                      BOND_TLB_REBALANCE_INTERVAL;
->>> +        entry->load_history = 1 + div_u64(entry->tx_bytes,
->>> +                      BOND_TLB_REBALANCE_INTERVAL);
->>>           entry->tx_bytes = 0;
->>>       }
->>> @@ -158,25 +159,35 @@ static void tlb_deinitialize(struct bonding *bond)
->>>       spin_unlock_bh(&bond->mode_lock);
->>>   }
->>> -static long long compute_gap(struct slave *slave)
->>> +static u64 compute_gap(struct slave *slave)
->>>   {
->>> -    return (s64) (slave->speed << 20) - /* Convert to Megabit per sec */
->>> -           (s64) (SLAVE_TLB_INFO(slave).load << 3); /* Bytes to bits */
->>> +    u32 raw_speed = READ_ONCE(slave->speed);
->>> +    u64 speed = (u64)raw_speed;
->>> +
->>> +    /* It's meaningless to compare gap on unknown speed NIC */
->>> +    if (raw_speed == (u32)SPEED_UNKNOWN)
->>> +        return 0;
->>> +
->>> +    /* skip slave which is over loaded */
->>> +    if ((speed << 20) <= (SLAVE_TLB_INFO(slave).load << 3))
->>> +        return 0;
->>> +
->>> +    return (speed << 20) - /* Convert to Megabit per sec */
->>> +           (SLAVE_TLB_INFO(slave).load << 3); /* Bytes to bits */
->>>   }
->>>   static struct slave *tlb_get_least_loaded_slave(struct bonding *bond)
->>>   {
->>>       struct slave *slave, *least_loaded;
->>>       struct list_head *iter;
->>> -    long long max_gap;
->>> +    u64 max_gap = 0;
->>>       least_loaded = NULL;
->>> -    max_gap = LLONG_MIN;
->>>       /* Find the slave with the largest gap */
->>>       bond_for_each_slave_rcu(bond, slave, iter) {
->>>           if (bond_slave_can_tx(slave)) {
->>> -            long long gap = compute_gap(slave);
->>> +            u64 gap = compute_gap(slave);
->>>               if (max_gap < gap) {
->>>                   least_loaded = slave;
->>> @@ -1344,8 +1355,14 @@ static netdev_tx_t bond_do_alb_xmit(struct sk_buff *skb, struct bonding *bond,
->>>       if (!tx_slave) {
->>>           /* unbalanced or unassigned, send through primary */
->>>           tx_slave = rcu_dereference(bond->curr_active_slave);
->>> -        if (bond->params.tlb_dynamic_lb)
->>> -            this_cpu_add(bond_info->unbalanced_load->tx_bytes, skb->len);
->>> +        if (bond->params.tlb_dynamic_lb) {
->>> +            struct unbalanced_load_stats *pcpu_load;
->>> +
->>> +            pcpu_load = this_cpu_ptr(bond_info->unbalanced_load);
->>> +            u64_stats_update_begin(&pcpu_load->syncp);
->>> +            u64_stats_add(&pcpu_load->tx_bytes, skb->len);
->>> +            u64_stats_update_end(&pcpu_load->syncp);
->>
->> this still races with...
->>
->>> +        }
->>>       }
->>>       if (tx_slave && bond_slave_can_tx(tx_slave)) {
->>> @@ -1529,19 +1546,28 @@ netdev_tx_t bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
->>>       return bond_do_alb_xmit(skb, bond, tx_slave);
->>>   }
->>> -static u32 reset_unbalanced_load(struct alb_bond_info *bond_info)
->>> +static u64 reset_unbalanced_load(struct alb_bond_info *bond_info)
->>>   {
->>>       struct unbalanced_load_stats *p;
->>> -    u32 total_bytes = 0;
->>> +    u64 tx_bytes, total_bytes = 0;
->>> +    unsigned int start;
->>>       int i;
->>>       for_each_possible_cpu(i) {
->>>           p = per_cpu_ptr(bond_info->unbalanced_load, i);
->>> -        total_bytes += READ_ONCE(p->tx_bytes);
->>> -        WRITE_ONCE(p->tx_bytes, 0);
->>> +        do {
->>> +            start = u64_stats_fetch_begin(&p->syncp);
->>> +            tx_bytes = u64_stats_read(&p->tx_bytes);
->>> +        } while (u64_stats_fetch_retry(&p->syncp, start));
->>> +
->>> +        u64_stats_update_begin(&p->syncp);
->>> +        u64_stats_set(&p->tx_bytes, 0);
->>> +        u64_stats_update_end(&p->syncp);
->>
->> ... this here, as u64_stats_update_begin doesn't provide exclusive access, so writers
->> must do that themselves, so you can't be sure what value will end up, the zeroing
->> might not work at all and can get overwritten
->>
+
+
+On 15.08.26 18:07, Bryam Vargas via B4 Relay wrote:
+> From: Bryam Vargas <hexlabsecurity@proton.me>
 > 
-> I meant - it doesn't improve on the current situation where it can also happen. :)
+> afiucv_hs_rcv() rewrites the frame in place -- EBCASC() converts four name
+> fields in the transport header, afiucv_swap_src_dest() swaps them and
+> pushes an Ethernet header back on -- without taking a private, writable
+> copy. It sits on the global ptype_base[], so a packet socket (tcpdump is
+> enough) has packet_rcv() clone every frame first, and net/core/dev.c has
+> warned since 1998 that such a handler "is not able to sense, that packet
+> is cloned and should be copied-on-write".
 > 
+> Unshare, then cow the head, in that order: skb_cow_head() can reach
+> pskb_expand_head(), which has BUG_ON(skb_shared()). Asking for ETH_HLEN
+> also covers the unchecked push in afiucv_swap_src_dest() --
+> eth_type_trans() has already pulled that much on the ordinary path, so the
+> call compares and returns.
+> 
+> Fixes: 3881ac441f64 ("af_iucv: add HiperSockets transport")
+> Closes: https://sashiko.dev/#/patchset/20260813-b4-disp-60433a46-v1-1-509e1200533e@proton.me?part=1
+> Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
+> ---
 
-Sorry for the multiple replies, but thinking about this - having multiple concurrent
-writers could cause write tearing for 32-bit architectures (the monitor is a writer
-and can write concurrently with tx) leading to invalid result.
+Thank you for this patch Bryam. Actually Hidayath proposed the same fix to me for the same Sashiko finding
+and I asked him to clarify in the description what the consequences of today's problem are.
 
->>> +
->>> +        total_bytes += tx_bytes;
->>>       }
->>> -    return total_bytes / BOND_TLB_REBALANCE_INTERVAL;
->>> +    return div_u64(total_bytes, BOND_TLB_REBALANCE_INTERVAL);
->>>   }
->>>   void bond_alb_monitor(struct work_struct *work)
->>> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
->>> index 9fb44e0031c8..4c4d9bf71e0c 100644
->>> --- a/drivers/net/bonding/bond_main.c
->>> +++ b/drivers/net/bonding/bond_main.c
->>> @@ -6495,7 +6495,7 @@ static int bond_init(struct net_device *bond_dev)
->>>       if (!bond->wq)
->>>           return -ENOMEM;
->>> -    bond->alb_info.unbalanced_load = alloc_percpu(struct unbalanced_load_stats);
->>> +    bond->alb_info.unbalanced_load = netdev_alloc_pcpu_stats(struct unbalanced_load_stats);
->>>       if (!bond->alb_info.unbalanced_load)
->>>           goto wq_out;
->>> diff --git a/include/net/bond_alb.h b/include/net/bond_alb.h
->>> index 3fabf4714dec..51c083c76115 100644
->>> --- a/include/net/bond_alb.h
->>> +++ b/include/net/bond_alb.h
->>> @@ -57,12 +57,12 @@ struct tlb_client_info {
->>>                    * packets to a Client that the Hash function
->>>                    * gave this entry index.
->>>                    */
->>> -    u32 tx_bytes;        /* Each Client accumulates the BytesTx that
->>> +    u64 tx_bytes;        /* Each Client accumulates the BytesTx that
->>>                    * were transmitted to it, and after each
->>>                    * CallBack the LoadHistory is divided
->>>                    * by the balance interval
->>>                    */
->>> -    u32 load_history;    /* This field contains the amount of Bytes
->>> +    u64 load_history;    /* This field contains the amount of Bytes
->>>                    * that were transmitted to this client by
->>>                    * the server on the previous balance
->>>                    * interval in Bps.
->>> @@ -118,13 +118,14 @@ struct tlb_slave_info {
->>>                * are the entries that were assigned to use this
->>>                * slave for transmit.
->>>                */
->>> -    u32 load;    /* Each slave sums the loadHistory of all clients
->>> +    u64 load;    /* Each slave sums the loadHistory of all clients
->>>                * assigned to it
->>>                */
->>>   };
->>>   struct unbalanced_load_stats {
->>> -    u32            tx_bytes;
->>> +    u64_stats_t        tx_bytes;
->>> +    struct u64_stats_sync    syncp;
->>>   };
->>>   struct alb_bond_info {
->>>
->>
+"My current understanding: You use an AF_PACKET ring reader to analyze the skbs received by HS L3 interface and
+complain, that the skb is changed afterwards when af_iucv processes it.
+Is that correct?
+What could be the bad consequences? (I cannot think of any)"
+
+Excuse my ignorance, if it is obvious to other readers, but is the worst thing that the output of tcpdump
+is not correct? Is this really a problem fix then? Or should it go to net-next?
+
+
+
+
+>  net/iucv/af_iucv.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
+> index e3ec965d96ca..10cfc5e82f04 100644
+> --- a/net/iucv/af_iucv.c
+> +++ b/net/iucv/af_iucv.c
+> @@ -2069,11 +2069,20 @@ static int afiucv_hs_rcv(struct sk_buff *skb, struct net_device *dev,
+>  		return NET_RX_SUCCESS;
+>  	}
+>  
+> +	skb = skb_share_check(skb, GFP_ATOMIC);
+> +	if (!skb)
+> +		return NET_RX_SUCCESS;
+> +
+>  	if (!pskb_may_pull(skb, sizeof(*trans_hdr))) {
+>  		kfree_skb(skb);
+>  		return NET_RX_SUCCESS;
+>  	}
+>  
+> +	if (skb_cow_head(skb, ETH_HLEN)) {
+> +		kfree_skb(skb);
+> +		return NET_RX_SUCCESS;
+> +	}
+> +
+>  	trans_hdr = iucv_trans_hdr(skb);
+>  	EBCASC(trans_hdr->destAppName, sizeof(trans_hdr->destAppName));
+>  	EBCASC(trans_hdr->destUserID, sizeof(trans_hdr->destUserID));
 > 
 
