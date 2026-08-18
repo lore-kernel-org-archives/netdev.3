@@ -1,98 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF2E40EBA6;
-	Tue, 18 Aug 2026 07:55:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9973B25C804
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 08:30:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787039733; cv=none; b=XBg6mH5cb7vBUrE6zyIHZBUFMoAj8pK5V/OxCUc6TvVa82Yssv9zIxJIA7qdGVdOF02d9pp1LucIpFW6MidqjqHwchBPtwhsGzHb4AGlU5RHq9lqRYviW8we4Ghg0bsOc91OnLaQ6/UEhGwK6/89bQE3t9GHs7SdcRxvR/LWfSM=
+	t=1787041857; cv=none; b=NLtilxghxW8Z1AwFYcQn7+/90cy6gH017S5kcXUVeF4fNBBWsThvNYnPFm5XGdYQnVtgG1ZTLjktLeJ6Uv1BKnmDYA/x43wvBlXMi7ma7kVVXHUV+ulj1nx8WXFewLWETfjJ2LdDtpgRtuDzDlpljKy9TVNMUwJA5LioRiZowTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787039733; c=relaxed/simple;
-	bh=eFzmdhqQ5BpanUeVM29on0nJk9Nw8ZpWAzZ/cXvHd6Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=afKKrQU3EEMhOrt4fAisxkgSG6cc7ydZuG30+s7/5ZAGOtPQpyqebxBv7U/XffviCq53AMEBlqgDvrNNGyabXzwece1P8qrSQsSlD1TVltauL7xpSLgr8LDAwEP82YEuKKVOj/ZedKML1taBeiuvdCaDGVupQuououXxYPNOePI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MRT/BkZC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787041857; c=relaxed/simple;
+	bh=xn/TxI2znnfibGUCIUwxQOB0lL1ox8xLpKtO2eOZroE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PiiAuklPumuncmvXLiKeCZsjhOM+sDOLs/eY9yHGZ3bISWcXJ3DSi2nFKFHz5BwDNXY29favIrlWorrRx0DnOuMgNz0QQshAJ5vPLX8fY0G7hNhrrVf/8YLntzlod7JWzt1D8RgUbxxeKzYkxsQ8bpmNUD/Cg0BK/kWK7gskG3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=XDiOre/y; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=0IZhV93O; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=EZngj0rY; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=owyGSqk2; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MRT/BkZC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2041B1F000E9;
-	Tue, 18 Aug 2026 07:55:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787039730;
-	bh=QZnporgsCvtWMtob1znBR7f2kEfoTXRZyh1wuITxSwA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MRT/BkZC5TF+OlMKxH4IYVL9qoTOTMlB2nxo6Y4AUHKnrKi2gRnq6eAsGbrQ8Ihg3
-	 Ejudxth0LEqR+RTcZvOXWxxIfAeAr+jTAqyr7izd5XRFtPo/Mn2etk0xJRDlDjmn/N
-	 /uGWdgHBcTIPNsVaFITcRtal/INbPQUAyfFws8W50dvHyOV3GtdoU8t3icOozL+1Ol
-	 tpoZCxzDIN8uBBrJO5qLdhZZIuZWpzmntUi3flXc2ttyW97oFN+ManIfNrfbY1fwkF
-	 ubzILSslg1FvJKAMxpnVbFFiRvwbXxHgDQCHPVT8aCy8zY7vxTWUbaYMbmPmlyXIRG
-	 IVWsLolEMLLQQ==
-Date: Tue, 18 Aug 2026 08:55:25 +0100
-From: Simon Horman <horms@kernel.org>
-To: Qing Ming <a0yami@mailbox.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	David Ahern <dsahern@kernel.org>,
-	Robert Shearman <rshearma@brocade.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] mpls: reload header after pskb_may_pull()
-Message-ID: <20260818075525.GA265046@horms.kernel.org>
-References: <20260814095404.7205-1-a0yami@mailbox.org>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="XDiOre/y";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="0IZhV93O";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="EZngj0rY";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="owyGSqk2"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 49F6D80B08;
+	Tue, 18 Aug 2026 08:30:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1787041849; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=24/2aQz5l5a41rQtk3SmZrJu4fVfSu26nqSjAFK1CXw=;
+	b=XDiOre/yuvVvUzpD+9bcFQAEWdOfqQWz5JBGJRjQPSDyCQpMp41GzQTWvHTFePOjV+TQ/w
+	3NXOiB+GYiKVWlnyinE97QUR3aduZ/CMhbQJL31l7IUKOF+AUMFuun56tRPVvuldhmy5aK
+	OVqTMS9Q3C06NhCIQMDtK3GtuqhKjsc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1787041849;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=24/2aQz5l5a41rQtk3SmZrJu4fVfSu26nqSjAFK1CXw=;
+	b=0IZhV93OSw/KB1euF0qJP6S3pwvKId1rg+aOhkCSBcm3nERKMcAJbOQ95OHzxIP9qDpBZj
+	duGQukY7mRsYToCw==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=EZngj0rY;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=owyGSqk2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1787041845; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=24/2aQz5l5a41rQtk3SmZrJu4fVfSu26nqSjAFK1CXw=;
+	b=EZngj0rY9A5YurfUzi10TiddoqsBJah2M0gYnDroLR2/6+hI5dKqq45ltg9dTTCwkwQYzl
+	TlcpL4edoTps4tyvA060TOtopjSunQCcqJedun6klGJXshLeZYjvjrpeOsxBpxRvB7HYcS
+	GLHQZJ55eR4e/HVV8+AQcJUSVoy3aY8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1787041845;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=24/2aQz5l5a41rQtk3SmZrJu4fVfSu26nqSjAFK1CXw=;
+	b=owyGSqk2G8OTb4dpg1q8IwMRbWj0MP8K7zcu4Kovz/6KHl47ZmpMlqSmugaJRRLLMRqQZy
+	ogk0phVx6CtmC5Cw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 234BF22BA;
+	Tue, 18 Aug 2026 08:30:45 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id u/kpCDUYhGq6GAAAD6G6ig
+	(envelope-from <hare@suse.de>); Tue, 18 Aug 2026 08:30:45 +0000
+Message-ID: <1469cd69-ab6f-4263-8c2f-fce17ecb0115@suse.de>
+Date: Tue, 18 Aug 2026 10:30:44 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260814095404.7205-1-a0yami@mailbox.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/4] nvmet-tcp: unify sockopt with do_sock_setsockopt
+To: Geliang Tang <geliang@kernel.org>, Keith Busch <kbusch@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+ Sagi Grimberg <sagi@grimberg.me>, Chaitanya Kulkarni <kch@nvidia.com>,
+ David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>
+Cc: Geliang Tang <tanggeliang@kylinos.cn>, linux-nvme@lists.infradead.org,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev
+References: <cover.1786947923.git.tanggeliang@kylinos.cn>
+ <010e6810cc4c10b30237c964b2bb9dfa7a3c740c.1786947923.git.tanggeliang@kylinos.cn>
+Content-Language: en-US
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <010e6810cc4c10b30237c964b2bb9dfa7a3c740c.1786947923.git.tanggeliang@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:email,suse.de:mid,suse.de:dkim];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Flag: NO
+X-Spam-Score: -4.51
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 49F6D80B08
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
 
-On Fri, Aug 14, 2026 at 05:54:04PM +0800, Qing Ming wrote:
-> mpls_select_multipath() calls mpls_multipath_hash() to choose a nexthop
-> when an MPLS route has multiple nexthops.  While walking the MPLS label
-> stack, the hash routine caches hdr for the current label.  After finding
-> the bottom-of-stack label, it calls pskb_may_pull() before reading the
-> inner IP header.
+On 8/18/26 8:03 AM, Geliang Tang wrote:
+> From: Geliang Tang <tanggeliang@kylinos.cn>
 > 
-> If an skb is constructed with the inner IP header in nonlinear data and
-> insufficient tailroom in the linear head, pskb_may_pull() calls
-> pskb_expand_head() to replace the skb head and free the old one.  This
-> leaves hdr pointing to freed memory.  The IPv6 path can invalidate hdr
-> again when it performs a second pull for the larger header.
+> This patch consolidates socket option settings in nvmet-tcp by utilizing
+> the generic do_sock_setsockopt() helper for options including SO_LINGER,
+> SO_PRIORITY, SO_REUSEADDR, TCP_NODELAY, and IP_TOS. This change eliminates
+> the need to export and use specialized helpers for each individual socket
+> option.
 > 
-> The issue was found through static analysis.  A reproducer sending a legal
-> Geneve packet through a bareudp/MPLS multipath setup triggered the same
-> KASAN report in 2 of 2 unpatched runs:
+> A key benefit of this refactoring is that it decouples the socket option
+> configuration from the underlying transport protocol. This makes it
+> easier to extend nvmet-tcp to support other protocols, such as MPTCP, in
+> the future, as do_sock_setsockopt() abstracts away protocol-specific
+> differences without requiring per-option protocol-specific wrappers.
 > 
->   BUG: KASAN: slab-use-after-free in mpls_select_multipath
->   Read of size 1 at addr ffff88800ecc6e20 by task ksoftirqd/1/23
+> Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+> ---
+>   drivers/nvme/target/tcp.c | 82 ++++++++++++++++++++++++++++++++++-----
+>   1 file changed, 72 insertions(+), 10 deletions(-)
 > 
->   Call Trace:
->    mpls_select_multipath
->    mpls_forward
->    __netif_receive_skb_list_core
->    netif_receive_skb_list_internal
->    napi_complete_done
->    gro_cell_poll
->    __napi_poll
->    net_rx_action
-> 
->   Freed by task 23:
->    kfree
->    pskb_expand_head
->    __pskb_pull_tail
->    mpls_select_multipath
-> 
-> Reload hdr from the current skb head after each successful pull before
-> deriving the inner IPv4 or IPv6 header pointer.
-> 
-> Fixes: 9f427a0e474a ("net: mpls: Fix multipath selection for LSR use case")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Qing Ming <a0yami@mailbox.org>
+Reviewed-by: Hannes Reinecke <hare@kernel.org>
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Cheers,
 
+Hannes
+-- 
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
