@@ -1,177 +1,126 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010040.outbound.protection.outlook.com [52.101.46.40])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5103912FF69;
-	Tue, 18 Aug 2026 06:41:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787035294; cv=fail; b=OFl8jl1wrRSZ1N6qUCLMVXh+pjCWAbs5710DPLFilTTgKm+sZVU+pyeERtbiXjQCnRS2zR7wRvl6dlS1IZ5da7bXizKkRQKnHNfWVXdKY4GD+AkXQQYWcNORYlGgVroxatopf87mTm6IbTOAWa/pHdqaJ5YIY4B+NWBF7fi74Qw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787035294; c=relaxed/simple;
-	bh=Zq6Ufun4OWl57guMHmK7tKbVOWNybhkvc30QvjxGZOw=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=pp0Wge0CmesqplfMVTlz9Vfc+ZFxxTRdz7RNu/OojFdvg6sNVhZu0UrmGSMVOJEJgqoF+olmKbCfsjtUAE4wRLbfmyeFSjWTOCGWOzw1lRHfeFarb9u38E10qNmedZ0KqNZsRY5MnsCPj4vzIkIMG16yWKD58E0SFTWZtV05bG4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=TO+sMdO2; arc=fail smtp.client-ip=52.101.46.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F03E3368B0
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 06:57:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787036234; cv=none; b=UKAR/w9esj+X5e9rNebXarb6XNFsAvX6A2S+tylLza5TOZYyvGw8ycMLs/m7gM0f6TNS6H/LD9PPbdSKTaHmAbgOdbD19JYQo+mhGXVeZVG8x5cE11f76USB0YaPw5HXZRcAaKWGcrDszApiRIPcFRjoKaoehyejtZQXwxtL1Ng=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787036234; c=relaxed/simple;
+	bh=k153DUjIMFjUgFA73Y8BqSLm951n83/LiLiTD2rmFjk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=RveJkX1ZWgqgThPY3SYQErjRX5DCfJdHt8MsRzitl+AboaTeG5dvrzmbSzGfmPD0z4Q3oygaFYLXPhC/hh4urts5q/OJXek0S+RwJyv5aOmsPSEML4eFS5ou1VGMIWPMA4ilbLgrvL3/iIo4NhK0Omxr1Th64uJHKqMTuqoTORg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=K55YAyXb; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uWWo2AQl; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="TO+sMdO2"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vQm7OKnWQs+n0SleG2gXOTNG/v1yr6JPzUEKs2SzKDbEvmmN9CfeA++lPh/1XbBG6pWwzbZDg+316JKv5BmP5ba9pI/3fiCycPq1EYhUc1uyrx/prPLWeskRMPDvTAmnSbHr4UAxExBoLbyiDiXaAbpjb/S3mwsXQeqYBZmIjPBaJnI0gpDO6BZ3rDHKX96wh5N7YUFvj/SUTcGlBMqe61LHRXjq21U+cfOchru4+XxbEdWzD6wbsAP55+bLg7E8CXsyRb+Ty8DvQe/PkxKYTpszZRbBoYkUEr/9xSkiJz8S+uP1avVoFmKlqTjXfHtsyymunLIrQ+8dScBvg4F+Sg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SjPhTqBoOyCBi5yKWo9xmK8sbR2T5iya/eYTYZafynQ=;
- b=rS9IgujlTLpZLdTYe7cvRuLAjY5hE8Tbqx44FvIo48NSfjK/ojJmimt0ZRld/+RJqCQubp87IlVL1CauOwPTn4sMMcR53JoX3iQb7QFjFcIYIfgHn/cV8Kjn2BI8Igdf7e481YTbCjhO5JSKcNI4L/oe79hpRHUBCukpjG95eI46zzMn8MhbRfjCmodh2pxkeVhG76Q7bGoKmd1rNoPqYJjQDME9EmN3Jx/wJYjNz7iwoKGSOoCNq9dSrAbF66yJyY9Tcew39GXEvSEfV3A09xNZpJsHWR64TszqMOYluy2O2pX03Bzv6ZmjH8KzCaieMsvPHzCCFDSyUjp852f3+A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SjPhTqBoOyCBi5yKWo9xmK8sbR2T5iya/eYTYZafynQ=;
- b=TO+sMdO2nvg4i06aA/ENGupenqxgjDGb0fN8ePg5mB/NV6jI93/6ExY2cLz54Oh4Te7SmQCDGEIPId0400nq1+zv+GpRoqk2xvM4a5SnUG3NXqDj4/vwYbl9OTJlWydD5Mypx5F8NqfXdfyqtWzpXggmtjoL5P3nnAiB795H5MU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CY1PR12MB9697.namprd12.prod.outlook.com (2603:10b6:930:107::6)
- by SA0PR12MB4383.namprd12.prod.outlook.com (2603:10b6:806:94::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Tue, 18 Aug
- 2026 06:41:30 +0000
-Received: from CY1PR12MB9697.namprd12.prod.outlook.com
- ([fe80::3a41:55a0:8203:596d]) by CY1PR12MB9697.namprd12.prod.outlook.com
- ([fe80::3a41:55a0:8203:596d%6]) with mapi id 15.21.0339.007; Tue, 18 Aug 2026
- 06:41:30 +0000
-Message-ID: <a371aac8-2723-45d1-a226-1f523cd3d881@amd.com>
-Date: Tue, 18 Aug 2026 12:11:18 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] net: xilinx: axienet: Propagate errors from
- platform_get_irq()
-To: phucduc.bui@gmail.com, Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Michal Simek <michal.simek@amd.com>,
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20260817105241.63345-1-phucduc.bui@gmail.com>
- <20260817105241.63345-3-phucduc.bui@gmail.com>
-Content-Language: en-US
-From: "Pandey, Radhey Shyam" <radheys@amd.com>
-In-Reply-To: <20260817105241.63345-3-phucduc.bui@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN3PR01CA0016.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:95::18) To CY1PR12MB9697.namprd12.prod.outlook.com
- (2603:10b6:930:107::6)
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="K55YAyXb";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uWWo2AQl"
+From: Kurt Kanzenbach <kurt@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1787036231;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=k153DUjIMFjUgFA73Y8BqSLm951n83/LiLiTD2rmFjk=;
+	b=K55YAyXbEmR7QI/wBoI+Ksm8NsDNnzECUAO1fcc9Nsa7XIq25Z0P/Z+Ixi7i3ebU0/uDgR
+	J8ujkPyJfgBk5DaB+S5Ovw2+spa144Vis/di84QJ6dZneS1mD/4BC9ZCNEvZxKoRyemK1e
+	pyiz5vs1QfL9RlsRcuT9s/VCN5Par1YZvg8TOBh0K0Xfq/1TV+s12CfdbWpJ24MWhCXYGY
+	67nQtMKndZ/JGqfsvm9mNNLUjyxHBNk/F946aqydKrvvGuF9QWhejkQxzX5SNpElkYLb44
+	oEd7QkJpnjiHnhoI8sOjf2BQFBEYDxI+3OpugRg42PGd+351DscHPuSl5Zb6sg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1787036231;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=k153DUjIMFjUgFA73Y8BqSLm951n83/LiLiTD2rmFjk=;
+	b=uWWo2AQlddJzsHPIgvU34g8IZJRdjK+w/9EgsMmZCTPhhvPAKRQCGXb3Zhv25RV1bhu/CU
+	Cmw8nvMEhXpBSECQ==
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Maxime
+ Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, Lorenzo Bianconi
+ <lorenzo@kernel.org>
+Subject: Re: [PATCH net-next] net: stmmac: stm32: Set TSO/TBS Tx queues
+ default settings
+In-Reply-To: <20260817103337.74c30adc@kernel.org>
+References: <20260812-stm32mp2_txtime-v1-1-f9e2462cc85d@linutronix.de>
+ <20260817103337.74c30adc@kernel.org>
+Date: Tue, 18 Aug 2026 08:57:08 +0200
+Message-ID: <87mrujzzjv.fsf@jax.kurt.home>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY1PR12MB9697:EE_|SA0PR12MB4383:EE_
-X-MS-Office365-Filtering-Correlation-Id: 779f87f1-fc33-4e22-ee0e-08defcf3ba88
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|23010399003|22082099003|18002099003|56012099006|11063799006|10067099003|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	KH2QDpnDY5T1mErdk1CQuul/18ltBVtSN+Ru2EUgfIaQHiDl7df5JFp/SeVOgO80DVeB39fyC678fIdQgl/GKkBWtkqThKXLf0NeM31UgNe59gzpDoGt/+Mvn/ymLFyFP0VtpQz5gacH+S4b+Zw4iFACAnrdsVcfcyUZeQ4/GcsViY3omKXSUv0hCWUG+Cg97B5Z3/+45urLTzT8IB++YZlt5mC7WeIsF3ZyyJP0ax7NwuG4SAXW1qYXcQbvtex4tTR1mJXiyJbt8//+qwTrh3s7DCYJhvnGRYmKv7awcLTd+uKG0qJ+0Ev4iqf3HujhodhG2e3x5YllZN+izJZpdUJWNsegwDjo3Ic+BNfW6IZM87Rp2lhgaeNAsdmbC81vgKk9tjhUQRAfXx2MYEpmvFEOuxhV9G6ZG8jqIcmjMOMo0m9ZQcCMf14r/WFERxdBjCeQK2w61ROSKN9GUxtJdc12psEbDnXkPhPzsksfuYruqTUMD55vcS9UGpRUQDgy52vfCnyMNLPFEgzuOc2DsjRqz13pqkBjjUhzRvoAC2j7lNkIPY2hDDVLS6XfcMiCc02qlViftWPxioV0ZIN9Ktj6VTNVpVif1Dth0a54SOF2835jR22EU370jInelhmHz0gWf9EnyXKrjtrE2ysH+GySlZJXzAl/dgjAddeI/7Y=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY1PR12MB9697.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(23010399003)(22082099003)(18002099003)(56012099006)(11063799006)(10067099003)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NDMwK2hxYjVBbmVZVHZIVnU5NFpyVXdFTElhNTBXVGhZUTRsQmQ0Y3VMaFVG?=
- =?utf-8?B?RXhMbTlsRTNYN0Rwd2ZWSHNwSnhVRCtLb0ZsVG1KcWRWcVBmR3o4VjROcEcw?=
- =?utf-8?B?cmRNbXZ1YVhuOXNtMTFtNW1OSEtrTjBZdkY4NXNQY2R6YmN3SkZUbitSaXRL?=
- =?utf-8?B?N1VhV0xPUWY3WWJFK0g4bytVWFJncFF3QldWWjN4OENRK2x3cFl5UDA0Q2NW?=
- =?utf-8?B?TzEzY2N2RnUwTEJRNmJGWmxtVzArd3I5ejg1TU9YbXMrQU8vOEpDaGl5N1Rm?=
- =?utf-8?B?K2tmeGFvY0UzblNQd0xYVDRKZHErQ1FwU1FvV1o2VUcxZlU4d25sR3V4RmVX?=
- =?utf-8?B?cE5HU0VYelZIbGhaUS9aMktBK0pVWWRmeVExRUU0Smp1bFljV0RLV2JLNXlx?=
- =?utf-8?B?V1BFZFBWbWJDSnZNRmdWSGdQV2I4Z2lKeDA1bityOGNZUDJvOWYwc3g2RjN4?=
- =?utf-8?B?bldrZU43WEczWDQrR1FhUlh0ZUpjd0J4RW9TYktPRmRzWnFBSUJjSElpRXVX?=
- =?utf-8?B?cUlsdzN1UEFKbjFSaFZ5MzdaS1N5WjViTytMV2ZPRTZPUy8xZ3VMUlRUeU0v?=
- =?utf-8?B?RUdGeG9vN0xld2Rjb053ak5hekFnZ1FqNlVobVBkZVM0Tmx4SnZLMnk3YmlH?=
- =?utf-8?B?eFZ3YjF5TTQ5VmFyN1d2dVpPazNPZDlxTlI5bW50NTZNdlNvb3FtVVpIZkdO?=
- =?utf-8?B?Z1pmVUtrMHBUOGRZZVFicTlCOUV2ZHp5ZFc1NWwydTh3cGZQU0dRQ3dmS1Vm?=
- =?utf-8?B?ZHpleThqaXhYdEllWnN4R1dsZVQyYXNzWlJZcXp1M1c0YllFMm11WGtzdHc4?=
- =?utf-8?B?S0d1QzYxcUd3bDBReDg3ZlRHUVFGeU9iVDhDWUNzVXV3QU9tZFVhVmV5enZD?=
- =?utf-8?B?U0hXL1VaVk41UitwbmY0MDdVd2drNUg0R1hEVFRwY2RHaUV1RnhkZkp1TW02?=
- =?utf-8?B?TG8vWFNzTi9Rd1gzaS9CM29KcnA0SWlYaHFNc043VkdTRXcxUjVzQUllTmtz?=
- =?utf-8?B?Q0tVN2lTbVo0Z1dpQ3RJb3Bualdjb1hGTGNsTU1tMWYzU3NFb3dMVDJtbEli?=
- =?utf-8?B?VnpubkNqa1pRUzUwdjlNdWFGMkZ6OW0wa29sSUczU3dEMExVUnVPT0E2RTUy?=
- =?utf-8?B?aDc0dXJKRm1hUGtoV2tLUm9EQnNPQU15eWwxOUhvSWZ0TElsdXNhMzUwejhE?=
- =?utf-8?B?WGF6VEppUzNITVhxSlI1dHQ2b1NOYXlIV1RZaWtnUy80WFZyVW5SbHhkdWpa?=
- =?utf-8?B?bUgwSnZvYVdEK1BzLzBGR0ZQWEhCOEtFSzlnbjJhR0lXZnhzTXd1VEVpczZP?=
- =?utf-8?B?OGlrZ3VEWDVHa3l0WjFLdU9yVm5nZkVoMmQvc3BxYTIvMWdVa1k0Z203bXoy?=
- =?utf-8?B?bXFXaEdEV0ZFQTRWOWdPQjM5V0g3Q0plK2FCcEY2SjJibk03ZXFUZDh1MTFN?=
- =?utf-8?B?Y1RKK0ZhOGZNU0JHVGU1cWxuYnNER3oxZkZDS2tmcHFLekt4VnpLeG1GQ1J2?=
- =?utf-8?B?a0Z2dzh0aCt2SkpwMmJaa0NqSXVCWjhoVG9vWDZtTjRGODVIZ20zUHptc2dL?=
- =?utf-8?B?VTltYTM3TGEyUlVWN0hEVWh5RzI2WlpVR3VoOGFLck9hOUZVOGNhbUJ2Ky9S?=
- =?utf-8?B?Zk4ycVZyTDluYlQ5Q2ZWOEx0UWcrZThHREtJVTY3NDBib2g5WjR0eFNBV2Uz?=
- =?utf-8?B?OFoweTZxc21IOEg4a25GZXA4azI0bS9VWFlZVmg4a0c3TlBIaTJ3aGc5TVA5?=
- =?utf-8?B?d1d4TFBFNXIwSmhpZVhzdnp3bzJqb2p2R3ZEc29vRTh4dTJxaTJ3NkdMU2w2?=
- =?utf-8?B?MEFBQWdKQ3ZYK05IZzhZNXM1cjlaR2JsSVlxM0gxRUcwaHNtekcwOWZKZmQ4?=
- =?utf-8?B?THpjRm9Da20wVFJLb2ZlUDY1akJlMDdVeWFnOTdGU3V3Wk1RTDA5bC9lV21a?=
- =?utf-8?B?Ykd4VUNlc1dyeVVWV0piQW84YjhXSnd5bGlUSkFjMWJibWxWcVJlNWdzczVW?=
- =?utf-8?B?VFZubVNvOXRXemRzRnIyYUt3ZzM0T2ZIVEljNTVLbjg5bk40dkVnZTZGaS9a?=
- =?utf-8?B?bjRvSUhrVUVnWDlDN3R0b1dXWTRGQ1doeUIrMUhyUGc0Nm1qWkp6d3NQckJC?=
- =?utf-8?B?Nnd5NjVkV1dydFA2SjlCRndZWWhUR1ZkVjBsN1FHdFgyYWNzakd3SXhZaWNy?=
- =?utf-8?B?d0VtQjhuSVVhcW8xa09adHY3b0lvQXN1QXU4Z2d4eUM4ak5hM3YrUDBwYWVu?=
- =?utf-8?B?YWZUU1NINzNYbmFSTmhPQk5aU0hXUDZ5eG9mTU00cllDeXI4RUROUi92eXFt?=
- =?utf-8?B?bm9xRW1WK1paZGxORDFXZ0Q1cFBidXIvVFdCc0JtQUJwbTcxNVFqQT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 779f87f1-fc33-4e22-ee0e-08defcf3ba88
-X-MS-Exchange-CrossTenant-AuthSource: CY1PR12MB9697.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2026 06:41:29.9208
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MX5shA6rzJRhiSXNP1a41Ods5Si0nCDeJ3SbQfdFYC8vajmIj1QzuaED69JIJ2Ww
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4383
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha512; protocol="application/pgp-signature"
 
-On 8/17/2026 4:22 PM, phucduc.bui@gmail.com wrote:
-> From: bui duc phuc <phucduc.bui@gmail.com>
-> 
-> platform_get_irq() returns a non-zero IRQ number on success and a
-> negative error number on failure. Therefore, 0 should not be treated
-> as an invalid IRQ number.
-> 
-> Propagate the original error code instead of overwriting it with
-> -ENOMEM.
-> 
-> Remove the redundant error message since platform_get_irq() already
-> reports errors when the IRQ lookup fails.
-> 
-> Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
-This is a bug fix. So please add a fixes tag and same for 1/3 patch.
+--=-=-=
+Content-Type: text/plain
 
-Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Thanks!
-> ---
->   drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> index 50f88a38b6f6..d982ab6f8a4a 100644
-> --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> @@ -2968,10 +2968,10 @@ static int axienet_probe(struct platform_device *pdev)
->   			dev_err(&pdev->dev, "could not map DMA regs\n");
->   			return PTR_ERR(lp->dma_regs);
->   		}
-> -		if (lp->rx_irq <= 0 || lp->tx_irq <= 0) {
-> -			dev_err(&pdev->dev, "could not determine irqs\n");
-> -			return -ENOMEM;
-> -		}
-> +		if (lp->rx_irq < 0)
-> +			return lp->rx_irq;
-> +		if (lp->tx_irq < 0)
-> +			return lp->tx_irq;
->   		if (lp->eth_irq < 0 && lp->eth_irq != -ENXIO)
->   			return lp->eth_irq;
->   
+On Mon Aug 17 2026, Jakub Kicinski wrote:
+> On Wed, 12 Aug 2026 08:28:57 +0200 Kurt Kanzenbach wrote:
+>> TSO and TBS cannot coexist. Use the first queue with TSO and the rest for
+>> TBS. Tx queues with TBS can support etf qdisc hw offload. This is done
+>> similar to dwmac-imx and dwmac-intel.
+>
+> Can you explain your use case?
 
+I want to use ETF Qdisc with hardware offload, which is currently not
+possible on the stm32mp2.
+
+> And how many queues the device has in total?
+
+The stm32mp2 has four Tx and two Rx queues.
+
+>
+> You say "TSO and TBS cannot coexist" but can any queue on your
+> platform be configured to support either feature?
+
+I think so. The data sheet says: "Do not enable time-based scheduling for
+channels on which the TSO feature is enabled.". But, I didn't find any
+limitations on what queue/channel can enable TBS.
+
+> If yes why are we configuring this statically instead of making
+> appropriate configuration based on qdisc or some other uAPI knob?
+
+It seems like a static configuration in the driver today. I basically
+followed the same convention as dwmac-imx, dwmac-intel, dwmac-mediatek
+and dwmac-qcom-ethqos. Only dwmac-socfpga does it differently.
+
+Tx Launch Time requires a different DMA descriptor layout. Currently
+tc_setup_etf() just returns -EINVAL if the DMA configuration is not
+setup appropriately. I guess a dynamic configuration requires to change
+the DMA config and perform a full release/open cycle.
+
+Thanks,
+Kurt
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJHBAEBCgAxFiEEvLm/ssjDfdPf21mSwZPR8qpGc4IFAmqEAkQTHGt1cnRAbGlu
+dXRyb25peC5kZQAKCRDBk9HyqkZzgl24D/oD5pIbsJKmttKF5pgORFPdAeBIldyk
+SJDlmLRbsKEvzsNC9upW0HDi48XGkXrQCaJjHwY8WLLbgvaBZhM7mDpfnI0GRXyc
+XAyGdrQeO/BKPZ13oKJGWzu3IgV09rHW/tb4hT9wQDsXCNV88756qGey1h5pmrdT
+rVqiP3muzIbHgXxZsomFPhe7eMOjttuYGAPRq2zFhXMCto8lqtn5GzdfxKXEnTxF
+RMGp6gKZ/1onXl55AB/+E1DeUKilOkUyuc9b7SFCu0Czvtre0DllIO3/MwfX+hd9
++MUB1PP8bZ3CaN93N2d3pLyEZdY/NeqWOTmqnZforsvA5AXq8cexXNTz/PK+h35K
+1N4gfK2szhFNyUmQS4joUj9j44PP6BunJIKHpvRZ2leVDb9JnJP0bprCy6b848H0
+ifNkmYMIWKGdV+peW0ckNIfdg492rz5KZjLpzVZBwhH2j3XkRKiPZv1hz6i9ztgg
+oncYVsNyXoCfUscIpCUfPOAy9DgIVvVyg7jW4Zj8wuG+atrIv0qybOLOD3xjLf6b
+85nbZ18cyhXNFWyYxD0jHE8NkKe6CJu5QbfPSiPLYJtf2GrZPmp7YsQFaBRLU3HG
+aUOXjDcgp7V1/SLyTjMpTDSsDIacT4E97SMnFLGHrGCxKpUC+PHB4tmi3u0W4WYY
+TY9LCZK5MwqJvg==
+=TQFM
+-----END PGP SIGNATURE-----
+--=-=-=--
