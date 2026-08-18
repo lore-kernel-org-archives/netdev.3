@@ -1,136 +1,160 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0423DDB02;
-	Tue, 18 Aug 2026 07:48:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDEE13FB077
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 07:48:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787039323; cv=none; b=pQzMVQz4W1QWjmdnw5BmSOGtYiI436y0mGTuEl3l4b0tB0uM7peEnsg0L5+SlzS2srgJxnkICV/vMNltHWciR+vDyp85BIWbYSqECei4enstcMEtkDYT9Ul2vkUSkbQ0l7dh1SWhWMMMLccqaTYnPjPAa55W/aAQNePpYV+WXMo=
+	t=1787039326; cv=none; b=tzsu97ZzOMOEsyakpqJTHe2SSBFxn4vG3qFDJui5GgD6OpJ+qyvxHQ+a1bfXYwO0bXhveTMtGTJ7OoyQk/FyBt3JCgSI3tRoi5mfMiFM3GeImo/gj/Y9g1OfFUIydIjrqOVPxKycDA+iUZUtoQIMCD4eKdgd91fhpS9GbqVJf6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787039323; c=relaxed/simple;
-	bh=lNpM1FUAkwHHr4KU4DnJgDoG+TryyRfmHE2fyV2mtLQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Up21nNDktEF7abYskJmE05+7XynOT8tN6cbr66k2N8qiU6qoAlWu+OiTtAG/qJfcuV3rsy7ddwygP7WC7H8L2zEcW3HtsBYbcryJodjE5lG2HTVn69yMBpWhjG17Y1YmEurBFjpFPjmZANkL51XVMwKKELKGJXQGZhfIR5e46+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PX4wEix9; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PX4wEix9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787039322; x=1818575322;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=lNpM1FUAkwHHr4KU4DnJgDoG+TryyRfmHE2fyV2mtLQ=;
-  b=PX4wEix9fVrkNRb3wpjPVSFEI8+MDP8X6OLlOQNACA+0iKfirQoKelgR
-   dhVWBqrGtGGEpXDStq3PQzmP5C1x2LYaAIVEh3RG2gIQL9D03oY9L8593
-   Q5+sVJ79F/VNk0J7sVkZIHsPnnw/nX4XAQcB0/C0tBgQqC1rqMhcOXbI4
-   CeJ8D81RaHVYM1tm2e/MAo8SjmnuUeKJ4HmJ7qkPALzwUmiNdOj4PjhzC
-   lL2fEKiaXB9Tb5JGR6XQfSzQBV5Swjw1f2LuA7j7thwDomw2zU6SUKtvV
-   HDNx0PERiAfeHrr6c/Y5DnYBbAEpByqGTVyzxQxxbLIdbrVpBEE7/kgpa
-   Q==;
-X-CSE-ConnectionGUID: 99UEIWdVTearBUym7Vx/bA==
-X-CSE-MsgGUID: mlIL3EEYQe+MevVUmHFCWg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11878"; a="98886822"
-X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
-   d="scan'208";a="98886822"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 00:48:40 -0700
-X-CSE-ConnectionGUID: U8HBBO6VSuOZkGT3bjOyHw==
-X-CSE-MsgGUID: /rpXRdVEROaxsr0e5kpsyw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
-   d="scan'208";a="265760633"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.209])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 00:48:33 -0700
-Date: Tue, 18 Aug 2026 10:48:31 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: James Hilliard <james.hilliard1@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Len Brown <lenb@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
+	s=arc-20240116; t=1787039326; c=relaxed/simple;
+	bh=bUl0/+RymVH2Mb/qN8rsTG6i2sG+1XRJf2WwB9us6mM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ltWnxlrqvXYyho/kNvA0IPgM8Cyh3u4D8eH7Gw/dBkXWKLAWlb+2mZCf3NH1AnRlCGXnPWeeU6ksUDqwidQwlYLxNJY4OkO54D6ZwZSIg9zZk2MgtyP2qZRbU5BtY1sq56+1UIS1GeNHIr8XeNu1va33A6mfki5tndhJuZsLCP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=52.59.177.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: esmtpgz11t1787039249t36a17d71
+X-QQ-Originating-IP: 401ahbk/OFCcd+Lr2GNKaMbM7Lcqrwt89kdRbhI2s+8=
+Received: from w-MS-7E16.trustnetic.com ( [36.24.185.99])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 18 Aug 2026 15:47:23 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 11655653517647161835
+EX-QQ-RecipientCnt: 10
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org
+Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
-	linux-acpi@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v3 4/4] driver core: handle managed links for
- class devices
-Message-ID: <aoQOT1B7AeBdmYnL@ashevche-desk.local>
-References: <20260818-submit-phy-package-fwdevlink-v1-v3-0-40a905ea16b6@gmail.com>
- <20260818-submit-phy-package-fwdevlink-v1-v3-4-40a905ea16b6@gmail.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net v2] net: libwx: fix concurrent bitmap overwrite in PTP setup
+Date: Tue, 18 Aug 2026 15:47:21 +0800
+Message-ID: <6C7EC12D69217315+20260818074721.45536-1-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260818-submit-phy-package-fwdevlink-v1-v3-4-40a905ea16b6@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: Ni59fRWiz7acQsipwc7BuhusHAkCx5rmvEfrO1sY3sUpglU2LmPCUGq7
+	CcHlM/l6CqxEqZpaYqNkfh2h2f2IcsS6dPci+HzKlxOdpE1WeAr9aN54NkrrdeRZU90B1c2
+	AGEo5QM0BD33h3ywnaZKReXTp5HRgXTG/pY76gHnGq0pjCHz57z+JLnxtcK2DDOE8CdyUtQ
+	9HrpouV5J904k9LRXV68ZdECuljxFNVqP1xZ6NOz3n+7bgrk9gTbj1G1A8dQ9phCF3ehbyE
+	eqPhqa/lQHYjVEqgidaq84RCwxOZ0YcoYGdKB93hAaYo51WgEWQXhgVjYTa7g9d9r1IjPi1
+	q7WvJVmJM0cLwJOx06E+MXFuxzXDL9UFd/3yfJABHT1wewHFCq+ZRTLn+bQ3kEGG8Pd2+Ky
+	sv5z6oSRpYoIbWEoUfoR7t5YZC6DH7Wqa1HGt8SI7tp1ckVD7u/4QOsr6wS/7B78HRwwtqs
+	SFWwGxwEOfuQpwwz0QsWpqvPpWxUmjkUrXQRTZ2YpZ7TsdCBvEG2oCvCsHi0ewFaybxPmIt
+	i557EEugVIMAHx2IaoKJHjO5X5EWBAvU42pI5m2uk0xVZpUdaGLRAFkHVBSl1JzhkXzPVHr
+	eaTyl2hFmLouNcEq6UJoV1sIKIcsSj6YuoaoMrSIMIhqIUn4cW4lp0tWXD1f5ysqgag3Vve
+	AALEi7HBI0RGIT/I8ovsr9HRlqq3Ztlw9TH8Bj3gjJAYW3slKebtaO5IeR2HvTtJnDfX4EU
+	NgVX8Obe/1viv1okjNjO+kKtRkbmzW90HeCgZ3gC28AGSJsLOtcrbmzZEQd1rIsDYD/ZQpR
+	xE6t94IGTgW+UEc3Y49hFZqJebLc8wJB9NE9Is6vdOipy6jpIecF4K/oWFVNlCThchd3fip
+	rZka6DzKcQF/WxqRXzpzvKwRLCBDjP7nWzpN9Nh9gnH/m/JH2A2N74B8gOYP6QczKbjgTVU
+	IDAOCTxs87FSzPLwLGmitO8O/Bl2kkeiQn5exJXo4Dp3M0mSSG87H+9K6LxFClsGGc/tMO4
+	m38/KFEX1pAYow8j/BXNYRHf/Y1YaOfFSefujxgk/egDeonLRmwTCxtzcpQQcQcIHMhBe+m
+	faun11DUp4LpQ7OQqie51AHEdR4llOH9A==
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+X-QQ-RECHKSPAM: 0
 
-On Tue, Aug 18, 2026 at 12:59:00AM -0600, James Hilliard wrote:
-> fw_devlink deliberately lets the nearest device pick up dependencies below
-> class-backed firmware nodes because driverless class devices do not
-> currently progress through managed device-link states. This can leave
-> consumers of class suppliers dormant, while sync-state-only links from
-> class consumers never reach the successful-probe cleanup.
-> 
-> Track class-only devices through equivalent registration and removal
-> transitions. Mark them probing before device_add() publishes them, complete
-> their incoming and outgoing links after class interfaces run, and enter the
-> unbind and no-driver states during device_del(). Preserve firmware links
-> below class-backed nodes so later-created descendants can acquire their own
-> links.
-> 
-> Include class registration in wait_for_device_probe() so supplier unbind
-> cannot race a class consumer that is still being published. Transition
-> managed links which existed before device_add(), remove stale
-> waiting_for_supplier attributes and do not revive a link whose supplier has
-> already started unbinding.
-> 
-> During supplier teardown, wait for class registration to finish, but move
-> an already registered class consumer directly to the unbinding link state
-> because it has no driver to release. Keep consumer-autoremove links valid
-> until class consumer removal without triggering driver-only cleanup
-> warnings.
-> 
-> Factor the supplier-bound, consumer-bound and cleanup transitions shared
-> with driver-backed devices. Activate late links involving an already
-> functional class endpoint instead of trying to reprobe it, and let
-> sync-state-only links retire without forcing consumer unbind. Ordinary
-> supplier links cannot defer class registration, so they must not be the
-> only mechanism on which a class consumer relies for functionality.
-> 
-> Class devices do not match drivers, so distinguish a genuinely unavailable
-> supplier from a probing or registered class endpoint before relaxing
-> inferred links. Preserve normal probe and runtime-PM ordering for those
-> links. Also recognize class-backed nodes when refreshing dependencies after
-> firmware-tree overlays.
-> 
-> Exclude the internal device-link class because device-link objects are
-> registered while the device-links lock is held. Document the class-device
-> state transitions and add KUnit coverage for supplier and consumer links,
-> pre-existing links, inferred-link preservation, registration waiters and a
-> concurrent supplier unbind.
+In wx_ptp_set_timestamp_mode(), the driver copies the global `wx->flags`
+bitmap to a local variable, modifies the PTP-related bits, and then writes
+the entire bitmap back using memcpy().
 
-This is enormous change, can it be split to several logically isolated patches?
+This Read-Copy-Update pattern is unsafe and introduces a critical race
+condition. Other asynchronous contexts (such as Tx timeout routines or
+GPIO IRQ handlers) update individual bits in `wx->flags` concurrently
+using atomic bitops like set_bit() or clear_bit(). The memcpy() write-back
+can silently overwrite and drop these concurrent changes, potentially
+causing the driver to miss critical module reset or PCIe recovery requests.
 
+Fix this by removing the local bitmap copy. Instead, evaluate the intended
+PTP flag states locally and apply them directly to `wx->flags` using
+atomic set_bit() and clear_bit() operations only after the hardware is
+successfully configured.
+
+Fixes: 06e75161b9d4 ("net: wangxun: Add support for PTP clock")
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+---
+Changes in v2:
+- Combine two variables that are always equal into one.
+- Link to v1: https://lore.kernel.org/all/F97867A3AA2696FD+20260817021708.37975-1-jiawenwu@trustnetic.com
+---
+ drivers/net/ethernet/wangxun/libwx/wx_ptp.c | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
+index 44f3e6505246..1165518d5522 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
+@@ -555,13 +555,11 @@ static int wx_ptp_set_timestamp_mode(struct wx *wx,
+ {
+ 	u32 tsync_tx_ctl = WX_TSC_1588_CTL_ENABLED;
+ 	u32 tsync_rx_ctl = WX_PSR_1588_CTL_ENABLED;
+-	DECLARE_BITMAP(flags, WX_PF_FLAGS_NBITS);
+ 	u32 tsync_rx_mtrl = PTP_EV_PORT << 16;
++	bool rx_tstamp = false;
+ 	bool is_l2 = false;
+ 	u32 regval;
+ 
+-	memcpy(flags, wx->flags, sizeof(wx->flags));
+-
+ 	switch (config->tx_type) {
+ 	case HWTSTAMP_TX_OFF:
+ 		tsync_tx_ctl = 0;
+@@ -576,20 +574,16 @@ static int wx_ptp_set_timestamp_mode(struct wx *wx,
+ 	case HWTSTAMP_FILTER_NONE:
+ 		tsync_rx_ctl = 0;
+ 		tsync_rx_mtrl = 0;
+-		clear_bit(WX_FLAG_RX_HWTSTAMP_ENABLED, flags);
+-		clear_bit(WX_FLAG_RX_HWTSTAMP_IN_REGISTER, flags);
+ 		break;
+ 	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
+ 		tsync_rx_ctl |= WX_PSR_1588_CTL_TYPE_L4_V1;
+ 		tsync_rx_mtrl |= WX_PSR_1588_MSG_V1_SYNC;
+-		set_bit(WX_FLAG_RX_HWTSTAMP_ENABLED, flags);
+-		set_bit(WX_FLAG_RX_HWTSTAMP_IN_REGISTER, flags);
++		rx_tstamp = true;
+ 		break;
+ 	case HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ:
+ 		tsync_rx_ctl |= WX_PSR_1588_CTL_TYPE_L4_V1;
+ 		tsync_rx_mtrl |= WX_PSR_1588_MSG_V1_DELAY_REQ;
+-		set_bit(WX_FLAG_RX_HWTSTAMP_ENABLED, flags);
+-		set_bit(WX_FLAG_RX_HWTSTAMP_IN_REGISTER, flags);
++		rx_tstamp = true;
+ 		break;
+ 	case HWTSTAMP_FILTER_PTP_V2_EVENT:
+ 	case HWTSTAMP_FILTER_PTP_V2_L2_EVENT:
+@@ -602,9 +596,8 @@ static int wx_ptp_set_timestamp_mode(struct wx *wx,
+ 	case HWTSTAMP_FILTER_PTP_V2_L4_DELAY_REQ:
+ 		tsync_rx_ctl |= WX_PSR_1588_CTL_TYPE_EVENT_V2;
+ 		is_l2 = true;
++		rx_tstamp = true;
+ 		config->rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT;
+-		set_bit(WX_FLAG_RX_HWTSTAMP_ENABLED, flags);
+-		set_bit(WX_FLAG_RX_HWTSTAMP_IN_REGISTER, flags);
+ 		break;
+ 	default:
+ 		/* register PSR_1588_MSG must be set in order to do V1 packets,
+@@ -643,7 +636,8 @@ static int wx_ptp_set_timestamp_mode(struct wx *wx,
+ 	WX_WRITE_FLUSH(wx);
+ 
+ 	/* configure adapter flags only when HW is actually configured */
+-	memcpy(wx->flags, flags, sizeof(wx->flags));
++	assign_bit(WX_FLAG_RX_HWTSTAMP_ENABLED, wx->flags, rx_tstamp);
++	assign_bit(WX_FLAG_RX_HWTSTAMP_IN_REGISTER, wx->flags, rx_tstamp);
+ 
+ 	/* clear TX/RX timestamp state, just to be sure */
+ 	wx_ptp_clear_tx_timestamp(wx);
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.51.0
 
