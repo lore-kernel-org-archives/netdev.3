@@ -1,190 +1,228 @@
-Received: from mail-wm2-f8.google.com (mail-wm2-f8.google.com [74.125.225.136])
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 041C03DB630
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 18:36:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.136
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787078204; cv=none; b=r9NY3XXthSBcywpAX0P2sPO7IEv+G0aSTLbA/TDkgV4s+1oXhoYWliVCxsajSMCK6o/256rX7/9hDHG9/pRSPf25gLmKr/KWesx5WAVkHSzAmCctBJ+43csw6oaEFtiBMdhA7UarWm78mpqNarjCxFJ+tdyING6aVPtUmHk8DF4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787078204; c=relaxed/simple;
-	bh=O9d8+1V2J0rucHBl+ZBzjvVZXoVXgmRn59mqXKv+72c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E5wH/QpMv1Qwhsxk/FVAf/MoZ+EMQibhc096MeTlWfYaZ5wRgDyQbyNQ13fHqicNedPIgtyBoKh1EP7DURMN1eQcc2E1eBtna9U5hW/sfmQv+DmBBstgC+aVROhsS8zPr22Pm547Gtcz1Am4MNH9wBJdZQ20SMjCV9glzSEK1Vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm2-f8.google.com with SMTP id 5b1f17b1804b1-49559189028so69035e9.0
-        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 11:36:42 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEC6D533D6
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 18:37:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787078275; cv=pass; b=YkhrT7YbbeqcmFQ5Wm0LbNyvpdnDtM3JuCoGF9IlOq5/nKYpyE2vO6qHZr2nquxX6f04kY0x+E0VAKJVUhQEgYHJ4dgGITwwFqTMbyCKJwoIsRtSB3bjMw5A/v2Y8mNfVJ+LmiU1JhNbiWSyUgLomlOCIS8UK61EqetgcmHZhRk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787078275; c=relaxed/simple;
+	bh=UCr/x2eax16jb2obVKwCMA0GIH6Lcp0ThryncgE29pA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lk0bZD37FpEzUUdbtfpAB90fqTwEiOUxvZwsSrGbB1SfigV9qrzzXJH0cK1xRX6sz/3zbsg6UayWifejKThI2Wo2CAcWNAi7ROlGzPPz8MWJyicVpRag9UfDxHd/bPUwuFjcCvceD9nrxUvqBXX/zgFUU+gFIngWN1cXOiz6HGU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WAtcVIPO; arc=pass smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WAtcVIPO"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-698b78c05b0so15006a12.1
+        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 11:37:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787078272; cv=none;
+        d=google.com; s=arc-20260327;
+        b=M+sbluAehR97Por35iO/rF9ogD3xY+yfsaEPmtZua5ZGmziuGpdOoaZi51kTTzdAb0
+         MqArcZ1KzP9rV8YY6dwMM1Z7U7XvItPyjMp942OPNojJ7+ZxIgdOgq8yjrJ025tJZJna
+         ITp9v3TUYSO1CabM8mRIjTDrMslGTQGP3Ojz8IaGnqTfSp6FHBUJP3QYGd+bEUCC3rk/
+         yXYV4lOA/CQddB72dEcMNKtCpqOOLbF8vJjTegcneTO992yEQIaAqYnC0w4ExRi/ps8s
+         Zryw4A5+LVZ03p7Xv4UTd7tEpTY/EkmsBK/ejMlBIs1izIyLCZ5bhKv0t2TQMa9E5t5Z
+         SxOQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=UBMeBtiD0MFrKlnV2YS+XWx/H6ihn3/+SHtLBuLc4NM=;
+        fh=P7L13DzG00hGsdNCkd+NeoH5Mi9+LngXPeceMQ9WofQ=;
+        b=m94doRL/Kf4wX5LH4FZ58KeD73xHFW9BEHTcONMITO6osTZQFcdc8wwuFDDtuAR8Z1
+         nz7zWMh1xQtJFDvDYIsdODFJLaW/tiepjB6K2N0kcS0eous0xjW/2qrshhMUjcDkp6y9
+         3sawrFcOnWJthlMZK6XP3bKNrIltbOra2fFqxcQvSsAuEnulWjblFFxxhnIjSbLLBLx4
+         1oqAIFH3/2wAgDL4pqWzXtHCZkxslNLjFKFQQ62f/QNMH3oSzo42mRt5nEiGmj/xLQH1
+         /7c6gLqqFdZHr8tOuWR+r6a98DPMGdyh9vks0PX0UKidtbkWKssV/zUpjOdIYnzWrnaC
+         qCnQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787078272; x=1787683072; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=UBMeBtiD0MFrKlnV2YS+XWx/H6ihn3/+SHtLBuLc4NM=;
+        b=WAtcVIPO/IGc/h2dOhFGwudaULWismeuC59Hvstp0QVUpOGw3dmSPsbf+JIhKD+Pl3
+         5S3xYU0l5yU8N7QR6ZrITCOp6X8B8KSIl4Uvc3o0VMjY4BwuDiFILecR8SxOCOSmITy7
+         xrIPSLV66c25B2v8rARAFK8GEnImy8oD5JXkWDYKm7V1lxrLKCfXyJtYF0i0rTEHgJb4
+         CS7XLeq/gfO+vATKNEgpo3zEpzab9cuDUYp8T8rWQV5UPslkKMFULs8PyDuGwfw5vXk8
+         FbFSD+7wxaIJRhWl8pfznfJKV5ZtGMTkGwuT+plfXrpcqn2XTF5PyBKLwNdjAvhMuZaf
+         r0/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787078201; x=1787683001;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Ni+tEXrnmoI9M588zIhviMQKNhq0X7FPWOJLdA2LGIg=;
-        b=XHWD+4WUjM8U54lK9QYl5cpxfoAbkWHscOL/f6y+c49X2NUg6+dHETTek6Adfe+4xT
-         cAkt+Dfn92u38fGIfnvV8DNwRWRsDJdWcQ3GLIyBULV49uswEx4ih1IZkrgsGZGoB1VE
-         iWBwKrMof1rOGtoZ4z1saTYBeRkoj9X9QGsa+4Gce8+sDa3mimbRdbLqLsaSmhml1bTV
-         svJHgFKuufPPqilK98GSRlMBZCJz7EN9LqMlcxdRpOOVinOLoq05nmWGKWVel9EOTzFF
-         Gj93F9/7WJtH3LkPzW8QNHLe35ntLU8b3ZDINhfOC4Gt7BbQGN5s6q6LoF731syEwx0Z
-         r/Fw==
-X-Forwarded-Encrypted: i=1; AHgh+Ro39pWWTANxtn9zgm3eREcPrE094FFtxO8R0W/I3fw14iVABPOMeuVphhE38lzZctxRNfC5tsk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYgHP2B2HShUduhPB2HcQM06NPL3S8Ejjl5OEgh74ejkGbBMcM
-	VJnYR8XzeAh8opUHaJmup6vMY8G9ZICUlPVyCSOJvIznkyH6rdSBDp5E
-X-Gm-Gg: AR+sD11bZ3QXORR2wWdmCexhA+0lROPcIzpWhopWZKey6SRR0/kTR3GNYskXEcr0iYn
-	SvVCx0hunzbpCBHK/stJe/HDhdydEQJ/hkLi8d8aCGeQ8YiAQmQMk2YmrdLZI6Ee/mW9tKcSLLe
-	+b2nTb0Fd46e8ywQZz7A7GmAg+xUMC1Lc5llqhXJcDacrYhYDb5r2w1u3V8/CB4PXRKjZpRg7zE
-	Un7XLF6vlvzKdmaXEQQUBJ21tHmXLOHyE8ea19BIaclxsLmavwB+GNH3jC+imrhEcO+lMi5tnD3
-	sQF+59Mmb6qXCk44gbAwTGy2Td8lRxX/F4r2g6oiMYPJ/PN/dPNtim78FYY881jGQ8DGr+aBtey
-	1cqs20bQF3JQP8gLt3OobGmKRMgAZt/7vgQlnRlDMfQEhyP/uAtiwvDWGf++o0iFzFXMD8U0vF/
-	L3p270jkbzhjZi7VoFmND2UGGBoSHn+Ydn0+eIDbYU6EjVgb0mhFlh/h3aZhFdCHI6uWJSCQ4p+
-	pzbckdkkmTlGfa1Qj4Tcx6syXA=
-X-Received: by 2002:a05:600c:354b:b0:499:8d9b:832c with SMTP id 5b1f17b1804b1-499a8c7db7emr4888745e9.4.1787078200909;
-        Tue, 18 Aug 2026 11:36:40 -0700 (PDT)
-Received: from [192.168.88.241] (89-24-57-65.nat.epc.tmcz.cz. [89.24.57.65])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4999610966dsm345549795e9.5.2026.08.18.11.36.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Aug 2026 11:36:38 -0700 (PDT)
-Message-ID: <c3495f8c-cdb2-494d-8f93-11f6bc323976@ovn.org>
-Date: Tue, 18 Aug 2026 20:36:35 +0200
+        d=1e100.net; s=20251104; t=1787078272; x=1787683072;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UBMeBtiD0MFrKlnV2YS+XWx/H6ihn3/+SHtLBuLc4NM=;
+        b=X2pYYZaK85ZhsIxy5S+oABUS3ae/pquffLWUffGcb9f5QglrkKtBUF/mzWnjqOurt6
+         b3pO/lT4GL5QWPUOoEaWXk7rdMyuHtC3uzN0q47YpEuvSiIL+cqTlegFxRRfRHN2oyu0
+         DuNtNl5ftxvZnX+BNIWv4EoaVtTNI616xI9SWMlwTgd7i2N/UIH2j5uavnB26o/sRcMH
+         g1Dim4BX4CA+vvwIqqPFekIb7KNa/9tLHKVNjMjwAdt1szu6En3sXAMAvtiXPYVSO1lA
+         EXmW6COmoemep6EqJkL+U+rPiHHbLBiBf6YOTBi+91rIoY5237avFDjIjNuBMWKvv2UK
+         +IFA==
+X-Forwarded-Encrypted: i=1; AHgh+Rqs7eDi1eM48KtuxWKgMr/AX2GIr55JcW6fFcg4F1YJZ0fm0gmPqT1o0D4XI8/GpY6wVj7+VX0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZb+GAjTvv1W3HSWGmey7l1VlrhZLllOrEDtwlZCr6pbU5Os2u
+	qtrX40nZEaHFUgUZte+MfJ5FkiB1gd3Zk5CTdCq1qRaYIbT4jutyrcvzAdALM+JANBlpRPKpmvX
+	lVeAbPJkbujSdAy6iIfwpCA+MP/Cpq8guZireISGO
+X-Gm-Gg: AR+sD127fWztpGkeitL7+2hwkRw7l0M3cA0AEWuizGb3nVO9j748GAY95smRwhmejCk
+	UQdlpeUjHeqCD2fzJjnvYhgCXEn4kKN/uRirGBGO21y8yRF93eeoLCOX2vXPxDsx0g67vUDu/jB
+	Mii+OfFLnyJl0oPioKQiV039UCwEHa3wdcj1oDL/7p0iardc5emf7pVoa6Z6614DjyqUW4GOmqm
+	gFAZhn4g9Q0KZZ0GMXrYCRHxyK4col3W8a0CQ8teUiUB774YTg63wjZ+ZdfKDzZ4hUS9rG30fwM
+	XToB6wsimHGM4ElijsK0AsvZSh5OsPnXh+Nv3K8qfmz18ZG1XMzaD8wakYpZmG+UJQ41mVH4Nkg
+	=
+X-Received: by 2002:aa7:d3c1:0:b0:6a3:ec9b:9dfe with SMTP id
+ 4fb4d7f45d1cf-6a3ec9ba0femr58042a12.8.1787078271246; Tue, 18 Aug 2026
+ 11:37:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v7 1/1] openvswitch: Fix CT limit teardown
- use-after-free
-To: Yuqi Xu <xuyuqiabc@gmail.com>, Aaron Conole <aconole@redhat.com>,
- Eelco Chaudron <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>,
- Jakub Kicinski <kuba@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Yi-Hung Wei <yihung.wei@gmail.com>,
- netdev@vger.kernel.org, dev@openvswitch.org, linux-kernel@vger.kernel.org,
- Vega <vega@nebusec.ai>, Nan Li <tonanli66@gmail.com>,
- Ren Wei <enjou1224z@gmail.com>
-References: <cover.1786936669.git.xuyuqiabc@gmail.com>
- <6cb36cfa28844b05919ca7c45c6c2bc812d3dc2e.1786936669.git.xuyuqiabc@gmail.com>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <6cb36cfa28844b05919ca7c45c6c2bc812d3dc2e.1786936669.git.xuyuqiabc@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260814191336.187243-2-almasrymina@google.com> <20260818102612.132228-1-pabeni@redhat.com>
+In-Reply-To: <20260818102612.132228-1-pabeni@redhat.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Tue, 18 Aug 2026 11:37:39 -0700
+X-Gm-Features: AcwNN1VQ1np3B6ExGliu6wwr8nyBbLSO4ixxxlJou3I2o32IB2RzBa2fp8b6eS8
+Message-ID: <CAHS8izPid1ZBEE1PqdUZGi10KK0vPZjza-nSOP65h5Munr9bHQ@mail.gmail.com>
+Subject: Re: [PATCH net v4 2/2] net: tcp: block mixing readable and unreadable frags
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: kuba@kernel.org, kaiyuanz@google.com, willemb@google.com, 
+	edumazet@google.com, sdf@fomichev.me, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dev@openvswitch.org, davem@davemloft.net, 
+	horms@kernel.org, ncardwell@google.com, kuniyu@google.com, aconole@redhat.com, 
+	echaudro@redhat.com, i.maximets@ovn.org, kerneljasonxing@gmail.com, 
+	asml.silence@gmail.com, bobbyeshleman@gmail.com, fw@strlen.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/17/26 5:32 AM, Yuqi Xu wrote:
-> Packet processing uses CT limit state under RCU, while netns teardown
-> frees that state under ovs_mutex. The CT limit pointer was neither removed
-> from readers nor protected by a grace period, allowing packet processing to
-> dereference the freed state.
-> 
-> An unprivileged user can trigger this bug from a user and network
-> namespace, causing a slab-use-after-free in ovs_ct_execute() when the
-> netns is torn down.
-> 
-> Publish the CT limit pointer through RCU, remove it before teardown, and
-> wait for readers before freeing its contents. Keep ovs_mutex around
-> individual CT limit updates, and use the RCU read-side lock while GET
-> traverses the RCU-protected limit lists.
-> 
-> Netns teardown detaches the RCU-protected CT limit state while holding
-> ovs_mutex, then completes the teardown - waiting for the RCU grace period
-> and freeing the state - after the mutex is released. This keeps the grace
-> period wait out of ovs_mutex so that it does not stall concurrent OVS
-> users.
-> 
-> The netlink command handlers do not need NULL checks because the userspace
-> netlink socket holds an active reference to its network namespace while a
-> request is processed. The per-netns exit path therefore cannot run
-> concurrently with SET, DEL, or GET for that socket's namespace.
-> 
-> Fixes: 11efd5cb04a1 ("openvswitch: Support conntrack zone limit")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Link: https://lore.kernel.org/all/cover.1784711445.git.xuyuqiabc@gmail.com
-> Assisted-by: Codex:GPT-5.4
-> Co-developed-by: Nan Li <tonanli66@gmail.com>
-> Signed-off-by: Nan Li <tonanli66@gmail.com>
-> Signed-off-by: Yuqi Xu <xuyuqiabc@gmail.com>
-> Reviewed-by: Ren Wei <enjou1224z@gmail.com>
+On Tue, Aug 18, 2026 at 3:26=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
+te:
+>
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at: https://netdev-ai.bots.linux.dev/sashiko/
 > ---
-> 
-> Changes in v7:
-> 
-> - Split CT limit teardown into a start/finish pair so that the RCU grace
->   period wait happens after ovs_mutex is released, keeping the lock from
->   blocking other ovs_mutex users during the wait.
-> - v6 Link: https://lore.kernel.org/all/cover.1786506548.git.xuyuqiabc@gmail.com/
+> net: tcp: block mixing readable and unreadable frags
+>
+> This adds a check in tcp_sendmsg_locked() so an existing tail SKB is not
+> collapsed into when its readability does not match the presence of a
+> devmem binding, forcing a new segment instead.
+>
+> > diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+> > index 455441f1b6949..b4237d0e994d6 100644
+> > --- a/net/ipv4/tcp.c
+> > +++ b/net/ipv4/tcp.c
+> > @@ -1240,7 +1240,8 @@ int tcp_sendmsg_locked(struct sock *sk, struct ms=
+ghdr *msg, size_t size)
+> >
+> >               trace_tcp_sendmsg_locked(sk, msg, skb, size_goal);
+> >
+> > -             if (copy <=3D 0 || !tcp_skb_can_collapse_to(skb)) {
+> > +             if (copy <=3D 0 || !tcp_skb_can_collapse_to(skb) ||
+> > +                 unlikely(skb_frags_readable(skb) !=3D !binding)) {
+> >                       bool first_skb;
+> >
+> >  new_segment:
+>
+> [Severity: Medium]
+> Is binding alone the right proxy here for "this send will append
+> unreadable frags"?
+>
+> What actually selects the devmem filler is the zc dispatch in the loop
+> plus __zerocopy_sg_from_iter():
+>
+> net/core/datagram.c:__zerocopy_sg_from_iter() {
+>         ...
+>         else if (binding)
+>                 ret =3D zerocopy_fill_skb_from_devmem(skb, from, length, =
+binding);
+>         else
+>                 ret =3D zerocopy_fill_skb_from_iter(skb, from, length);
+> }
+>
+> and that is only reached from the zc =3D=3D MSG_ZEROCOPY arm of
+> tcp_sendmsg_locked().
+>
+> Can binding !=3D NULL coexist with zc =3D=3D 0?  In tcp_sendmsg_locked() =
+the
+> binding is taken whenever the cmsg carries dmabuf_id:
+>
+>                 if (sk->sk_route_caps & NETIF_F_SG)
+>                         zc =3D MSG_ZEROCOPY;
+>                 else
+>                         uarg_to_msgzc(uarg)->zerocopy =3D 0;
+>
+>                 if (!sockc_err && sockc.dmabuf_id) {
+>                         binding =3D net_devmem_get_binding(sk, sockc.dmab=
+uf_id);
+>
+> while zc is only set under NETIF_F_SG.  The one dmabuf_id validation
+> does not look at SG at all:
+>
+>         if (!sockc_err && sockc.dmabuf_id &&
+>             (!(flags & MSG_ZEROCOPY) || !sock_flag(sk, SOCK_ZEROCOPY))) {
+>                 err =3D -EINVAL;
+>
+> And sk_setup_caps() in net/core/sock.c only force-adds NETIF_F_SG when
+> sk_can_gso() holds:
+>
+>         if (unlikely(sk->sk_gso_disabled))
+>                 sk->sk_route_caps &=3D ~NETIF_F_GSO_MASK;
+>         if (sk_can_gso(sk)) {
+>                 if (dst->header_len && !xfrm_dst_offload_ok(dst)) {
+>                         sk->sk_route_caps &=3D ~NETIF_F_GSO_MASK;
+>                 } else {
+>                         sk->sk_route_caps |=3D NETIF_F_SG | NETIF_F_HW_CS=
+UM;
+>
+> so a TCP-MD5/TCP-AO socket (sk_gso_disable()) or an IPsec dst on a device
+> with sg turned off ends up with binding !=3D NULL and zc =3D=3D 0.
+>
+> In that state, does the new predicate go wrong in both directions?
+>
+> If the tail is readable or newly allocated, skb_frags_readable(skb) !=3D
+> !binding evaluates to true !=3D false, so every iteration takes
+> goto new_segment and the write is split into one skb per iteration, even
+> though the zc =3D=3D 0 path only appends readable page frags via
+> skb_fill_page_desc().
+>
+> If the tail is already unreadable from an earlier devmem send, the test
+> is false !=3D false, collapsing is allowed, and skb_fill_page_desc() adds=
+ a
+> readable page frag to an skb that __skb_fill_netmem_desc() already marked
+> unreadable =3D 1 =E2=80=94 the mixing this patch aims to prevent.  Would
+> validate_xmit_unreadable_skb() catch that?  It only looks at the first
+> frag:
+>
+> net/core/dev.c:validate_xmit_unreadable_skb() {
+>         if (shinfo->nr_frags > 0) {
+>                 niov =3D netmem_to_net_iov(skb_frag_netmem(&shinfo->frags=
+[0]));
+>
+> Would keying the new clause on binding && zc =3D=3D MSG_ZEROCOPY, or
+> rejecting dmabuf_id when the route cannot do SG, line the predicate up
+> with the code that actually fills the frags?
+>
+> Note the mixing described in the second direction pre-dates this patch
+> (there was no check at all before); the incorrect predicate and the
+> forced re-segmentation are new.  Reaching this also needs a local
+> privileged setup (dmabuf TX binding plus MD5/AO or IPsec plus an ethtool
+> feature change), and in that configuration a devmem send through the copy
+> path would likely already fail in skb_copy_to_page_nocache() since the
+> iovec holds dmabuf offsets rather than user addresses, so this is stated
+> as an observation rather than a demonstrated corruption path.
 
-Need a rebase now that a few other changes in the adjacent code were
-accepted to net.
+Pre-existing issue I think. We indeed assume binding !=3D NULL means the
+send is devmem and zc is set. We missed that we may not set zc if
+NETIF_F_SG is not enabled. Probably the code setting binding to
+non-NULL should check if zc is set. I think this is best reserved for
+its own follow up fix, but let me know if not Paolo.
 
-And sashiko raised a few points again:
-
-1. A preexisting nf_connlabels leak - already fixed in net/main.
-
-2. A preexisting default_limit data race - not a big problem, should
-   not be fixed here.  A subject for a future cleanup on net-next.
-
-3. The per-netns synchronize_rcu() concern once more.
-
-   For this one actually it seems there is a better solution.  We could
-   split the ovs_ct_exit_start() into a .pre_exit hook.  And then run
-   the ovs_ct_exit_finish() in the .exit hook.  The pernet_operations
-   guarantee that there is RCU synchronization between pre_exit and the
-   exit, so we will not be adding any extra synchronization at all.
-
-   We'll need to add ct_exit_data into struct ovs_net though, as we
-   can't pass it between two hooks otherwise.  And the comment above
-   the ovs_ct_limit_exit_finish() should explain that synchronize_rcu()
-   must be executed between the start and the finish.
-
-   While at it, we may also replace kfree_rcu() with kfree() in the
-   finish function, if I'm not mistaken.
-
-Best regards, Ilya Maximets.
+--
+Thanks,
+Mina
