@@ -1,179 +1,158 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98685265621
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 02:38:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E33014ABE
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 02:44:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787020695; cv=none; b=j1sYqV2UnG0zbUA0ejNtbJOBnz26zhs2jXRojtF7IVOHxG7boA2GqpgriG8eKvgTdduOeAj8ViYYlIF8k4kECNS/Y4cwT1tSd5WUQOvLCHU/BaUEvL0Oj2/eCVdDNXB6VnW7iEC6WPj/TaoOFvBYgzPd8eZTHp/runnxiu3KzpM=
+	t=1787021073; cv=none; b=FB3RP8qaWQjs3zxWBRjFRovPZiyit+vBieookOJiNADC9kskGXebnNuFWppKuJYgdoklNecH5ai9Q5SHX0SkXmwmyibW4nQCaFHE9AnL3l+0SNHdvryvfQb8Hk+DgmYkPHsDKTGIDz+XDtZSLzHkoeJSWbUYuCzzOHACNqgk6/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787020695; c=relaxed/simple;
-	bh=8Z51YQi+6F0VPvvZGknYxTCmnxgYxvGViWrlYhQcoKI=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=fB1iUAATEsKuY7fscTubMbrRAIpLGllo/aZQL9/9O7PpyBheps7HacvVV5CV3QHZCM25LbQq6E5v6mdRKa5A2cMyFCzcBsYZ88hOUMvFTPukktw4SNtxlXE/wgu2yucuBY0Br/cz6TqUAjsc5V1ltflnWBAtOS1yoVZ4ysSYsc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=0nwdvc7r; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	s=arc-20240116; t=1787021073; c=relaxed/simple;
+	bh=pcopF7mH5rO3w8vdqsFe5xTCi1Qe7q3zoBcrZOqbB9w=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=D3IVGv/I/IiursnUnkp4jquRUXr5M/ZMswemJ8KZjuIBIont6Cd6KshGpA7bRTr01DdE/tGyN32rIt3HN68M3S9zWtmd4Wm4LfJ1WuOCHW+4DqbDRA9vynJ/j/iyyH1RueGdMSefRoDcBzaIx9pr2xW7qEAo1kRlV6jFLGQYZVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pMX81wuf; arc=none smtp.client-ip=209.85.128.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="0nwdvc7r"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c9aea40d799so2334795a12.0
-        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 19:38:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pMX81wuf"
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-836c718715fso49023377b3.0
+        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 19:44:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1787020693; x=1787625493; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id
-         :subject:to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=J42WFQkv6WOJdJiC78RPvg8/4vZCvCj4eHcRotpw5KQ=;
-        b=0nwdvc7rJBAkecgUXreYNYdOZEFEtoIMkf0e5gfFiwuISgZgIJAHRZHfEwtagSsK4i
-         qQla6kax2QTGPocdUn4vX0qBkif+VS/C/ueyA1NdN1x+L+3A6eA70zYTyTYS1rdjvwf+
-         rAYQlw6u/0Fma3/oNG+9hIO9473hBfY6/7X/zRDO2rWuknn6A2A/JjzvvROG49eJrkmo
-         0NTUjEpRXeChvTFGqIlgLyRSjlLbjvMW7L9HJLala2jBx4aTh6GXi9J6bQcBCubWsYnJ
-         i/9LgbDT8ISdybSxzlhnt5zb9JeRmHNZl2Fa9/X6tk6hS4JZbZ0FnUg7rXJiAnTiIQrs
-         AH8w==
+        d=gmail.com; s=20251104; t=1787021071; x=1787625871; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=uB2wZxBX8MEWyapT/Ph8B9oRqGfQi8DHtHP6Vf7bW8Q=;
+        b=pMX81wufR0Nm8qUhWC3RjojXII0UjYoIee3Cm9lLso2QmZ0FTb584IPOC+zRP/zzyG
+         mYOaryF567o7nuHDiW3vAmgkeQHWhVr4XKV33F4YMnBFok9TpFY1mzv6wFpkClwhjX/7
+         JQgOn0f8xezUqiWDaDZIJ/jDpNYx6wYo6kAS0ydDvK/PH4Tw4y85k6RGFvBdAW28Biwk
+         Akzh4jKL7ntA/VrA0EDPNGKQM3DsMCsehhCJ3LCsNaOHPLk+2E5Uj17mLalKpDXZwNzG
+         San0NOFAFb8Q7cW43c32ZA9+adIaFIIHKVXjE0mZ01g9KuAd6IW4JISD2jnRzdKzBrpz
+         mwqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787020693; x=1787625493;
-        h=content-transfer-encoding:content-type:mime-version:message-id
-         :subject:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=J42WFQkv6WOJdJiC78RPvg8/4vZCvCj4eHcRotpw5KQ=;
-        b=sjsy7WsIKACCS7P2ugUeE/DBPEOtjqlzQJ8bUiLEvcAPAHU8Lzdo5zRJHSELDur4kC
-         7oN5iB1BffqylaEmC0DC6lBldn4kJhgMuvdiMEDEiJJZqog4fE6Js0SBCNGsb2tJu1Vp
-         aqib7hOZ5ca0ZvqpNTW6ND9WxdEzrLO2gNoatvMp4+LduRbPV12WMu0zI/2SsBGgGQcT
-         ohvcJYGMwjW2TQoS1sUYW0hhLKY8UiCpnQ3bTUtBH6khgnfGW5T+kkIdath+9CQIf4n7
-         HV9dl8Xx1nLtVwk0u0fbS2lX+j46U/K0eG83c3Ls26JDuZjZbixcJyMojmOZGM5LAiUX
-         dwaA==
-X-Gm-Message-State: AOJu0YxWkjN2+dWtYvv5+0jtt6qPrOxLYfiBQJwCCo0KgUZjpBxZbD+m
-	GpIoypoyl7CHm/iSyzc7unLmWjyrA9z+RJSvUHqekzlovx1hJB/N2fT+WLh0c/NaJK2HGrDNqpk
-	cZ3Nv
-X-Gm-Gg: AR+sD10Hh3U0fhPZc2rb/AlaW5qQ52pgqmF7OFH0jB2Ty12DwmmbPgptvj+Eqb7FFTk
-	blJAuWwyGLRGn9/IboV47HMCG0Gp7hNWjIj33TUkYY/P45YvEBvIaAEetVjDceI8IuTPu6gPAOS
-	2m/+AVdrMNLeu0K1sOHPbE1TW5z0n4cLDNtGdj7wAfv+pT8oksQ8c1aUkRSr2P0jmKkYwADSzM5
-	O8iJ74IdmHLqhGh0kEVFQrxsiU8igr1BC1j7m2C3FiU2B0yFEO4YbG1uXUdTKJfzhAkQwFM+qEN
-	ZZIbyG9bC04eXgWRvsFNL96lnc5Dwewj4KHwYKGOF5A+BRPtATnBZdk3MruiibByhAGXY0GCDHa
-	hl8w35ZC1SdWwdhs4Yh5F+NKhr4O0cllBJeDg889J9KiGPwxDy+tSatPf1vC+r6cb1DHNjqgjme
-	oPj+2vtUN7a108KfdslIsfglL0TzZ34rJ5GElaMcXcAy+hXwRFf0IhQIY9C8K/NXlD+LoHJZoVS
-	cx9kj7XxtOvbKuwN9xTNd6vQEDKZw==
-X-Received: by 2002:a05:6a21:a512:b0:3be:b0b3:3962 with SMTP id adf61e73a8af0-3cc719f78admr30965567637.9.1787020692776;
-        Mon, 17 Aug 2026 19:38:12 -0700 (PDT)
-Received: from phoenix.local (204-195-96-226.wavecable.com. [204.195.96.226])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1415315a206sm10293403c88.10.2026.08.17.19.38.11
-        for <netdev@vger.kernel.org>
+        d=1e100.net; s=20251104; t=1787021071; x=1787625871;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uB2wZxBX8MEWyapT/Ph8B9oRqGfQi8DHtHP6Vf7bW8Q=;
+        b=Icdvja2Ugbi7HtXcpSkqoooHWA2/uIMTTQHeRfAYFYI9QXdjHS0n9ADTOffSpOu3B8
+         iT0daPRm5TYdnGjaCJEetJuF851BIiqoBQoLWd3v1PW8eHbuO7vrwC9COwhVb4CxjSlm
+         YJ3XvnAo8R1t/NJ32LJFyLAriCvJEeCrll+KjQ/h7+wDNT++QO+tN7QV8hFCl7KKz7pf
+         vDf5+5JAA05SA84M2Rw9Bj2It7/Q23XCXMIVosBwmke9haKXN6iMBWWvwqvyo4a833iT
+         JXYDTIVAbUVqZA9NFufDfi/QmMJM+e8Fq7yYhT8ZfUULqPFcgGMgnL2PiNUVXkbHiQN0
+         N65g==
+X-Gm-Message-State: AOJu0YzTssVDMjNPgl+wDjc6Xwg+z+tuE1DGtFbfTGHbxyB154baXViN
+	NvkFd4upYHl6OeiK4tuM3pZkutKrQdjGW3o0zSqCpT5TExjtAXr1deuA
+X-Gm-Gg: AR+sD13ICAk6NOsG7Pzi1rXJpO3EFRFM5Fze+TY/ZlfveAE02pQDnN9nX+rfwehWvQy
+	2zmYELjB+YsO7tifoJCKnsPxxnWvb3xjqfJMTQg18/xHeLfC7wgQpTmfElbTXqSDBfsmECycx5Y
+	pUZSYo0GlRKHAY+kVvHiNKYBIWjGFXlV8y4IuK9obhJYlYnK7eopOm+af6XgtW1/hIJvzB+RvS9
+	OnEGF1fs2HqitbTARae+W7jqbVnCEfjtXibH/Hi0R+uPe6O9vCITliAKwK6394ifURomjvRnr8V
+	S2mycPd+tj6X45sijSY2bFOEg3NgmfEc6bNOO2dXHR5JKldCfibMU57K+RcMAAt7Xs9ifpM9hdI
+	z6mzgyQIJE1NDosLQkTO98TX1xwgmsac7iAP4s0uqN1O7x+fvrU3bWka9pywnwzbTgZkXUinIVP
+	R7kxQ/pGRjnDslGRxCXqx1m77q0xN92z5uCtP/Wgv5WtvfXCPVr72YK8eyHR5W4lZxWwS1UvsXI
+	H19jCCBmqefDgDwIEHjZPxXkRuBi39cUv8OZkT+Aw==
+X-Received: by 2002:a53:b6cb:0:b0:667:c3c0:f2b7 with SMTP id 956f58d0204a3-66c72bb3e7bmr7139790d50.19.1787021071364;
+        Mon, 17 Aug 2026 19:44:31 -0700 (PDT)
+Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66cb47809d1sm1668235d50.13.2026.08.17.19.44.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2026 19:38:12 -0700 (PDT)
-Date: Mon, 17 Aug 2026 19:38:04 -0700
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: netdev@vger.kernel.org
-Subject: [ANNOUNCE] iproute2 7.2 release
-Message-ID: <20260817193804.46fb3c18@phoenix.local>
+        Mon, 17 Aug 2026 19:44:30 -0700 (PDT)
+Date: Mon, 17 Aug 2026 22:44:30 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, 
+ davem@davemloft.net, 
+ edumazet@google.com, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ andrew+netdev@lunn.ch, 
+ Willem de Bruijn <willemb@google.com>
+Message-ID: <willemdebruijn.kernel.8f910d53181c@gmail.com>
+In-Reply-To: <20260817161250.1ca33d86@kernel.org>
+References: <20260813020529.3506539-1-willemdebruijn.kernel@gmail.com>
+ <20260813020529.3506539-2-willemdebruijn.kernel@gmail.com>
+ <20260817161250.1ca33d86@kernel.org>
+Subject: Re: [PATCH net-next v6 1/6] net: rtnetlink: add
+ pacing_offload_horizon attribute to net_device
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-This is the regular release of iproute2 corresponding to the 7.2 kernel.
+Jakub Kicinski wrote:
+> On Wed, 12 Aug 2026 22:03:56 -0400 Willem de Bruijn wrote:
+> > The 'max_pacing_offload_horizon' field of 'struct net_device' represents
+> > the maximum pacing offload horizon supported by the device.
+> > 
+> > Add a new field 'pacing_offload_horizon' to store the active pacing
+> > offload horizon.
+> > 
+> > The new attribute is initialized to 0 (disabled) and can be set from
+> > userspace via RTM_SETLINK up to dev->max_pacing_offload_horizon. This
+> > new default off behavior does not cause regressions, as no driver yet
+> > advertises max_pacing_offload_horizon.
+> > 
+> > The attribute is omitted from the newlink request spec, because the
+> > value may need to be bound by a device maximum that first needs to be
+> > negotiated with firmware, as is the case for the idpf driver in this
+> > series.
+> > 
+> > Make both fields u32, to maintain net_device cacheline layout. This
+> > expresses up to 4s of pacing offload, which is sufficient.
+> > 
+> > Update the YNL specification ('rt-link.yaml') to add the
+> > 'pacing-offload-horizon' attribute and include it in link-all-attrs.
+> 
+> Forgive my slowness but I don't get how the new param squares against
+> TCA_FQ_OFFLOAD_HORIZON. IIRC in v5 review I asked something like "should 
+> this new option be a boolean" because the exact time horizon already
+> exists in the qdisc uAPI. As AI points out (among other things),
+> the two params are not synced in anyway. User can configure qdisc
+> offload higher than the device level one.
 
-Highlights this cycle:
- * netshaper gained bw-min and weight parameters and group command for
-   creating scheduling hierarchies
- * devlink resource show now supports dump, per-port resources and
-   scope filtering
- * dpll added frequency monitoring and more pin attributes
- * ip and tc are faster on systems with many interfaces thanks to
-   filtered link map dumps
- * network namespaces can be selected by pid
- * SECURITY file now documents the project threat model.
- * additional validate of time, rate an size parameters.
+They cannot. Or at least that sure is the intent.
 
-Download:
-    https://www.kernel.org/pub/linux/utils/net/iproute2/iproute2-7.2.0.tar.=
-gz
+After this patch fq tests against active limit
+dev->pacing_offload_horizon:
 
-Repository for current release:
-    https://github.com/shemminger/iproute2.git
-    git://git.kernel.org/pub/scm/network/iproute2/iproute2.git
+-               if (offload_horizon <= qdisc_dev(sch)->max_pacing_offload_horizon) {
++               if (offload_horizon <=
++                   READ_ONCE(qdisc_dev(sch)->pacing_offload_horizon)) {
+                        WRITE_ONCE(q->offload_horizon, offload_horizon);
 
-And future release (net-next):
-    git://git.kernel.org/pub/scm/network/iproute2/iproute2-next.git
+A manual test to replace the root qdisc with fq offload_horizon 50ms
+seems to verify this: the command fails unless a device limit of >= 50ms
+is configured.
 
-Andy Roulin (1):
-      iplink: bridge: add stp_mode support
+Perhaps I don't understand how dev->pacing_offload_horizon
+would function as a boolean.
 
-Asbj=C3=B8rn Sloth T=C3=B8nnesen (1):
-      man/ip-ntable: fix app_probes typo
+> In fact any non-zero value of
+> the device one acts the same - hence the bool question.
+>
+>
+> Why do we need both? How are you going to use this new knob?
+> The commit msg explains the what not the why.
+> 
+> My naive understanding is that the main missing piece is a handshake
+> between the driver and qdisc to tell the driver that the qdisc is
+> indeed offloading pacing on queue X. And therefore the driver should
+> pay attention to the timestamps. This does not require uAPI changes.
+> 
+> >  python3 tools/net/ynl/pyynl/cli.py \
+> 
+> uber-nit: python3 tools/net/ynl/pyynl/cli.py -> ynl
+> (the CLI is named ynl when packaged for end users)
 
-Danielle Ratson (3):
-      bash-completion: devlink: Fix dev completion trailing colon
-      iplink: bridge_slave: Add support for neigh_forward_grat
-      bridge: vlan: Add support for neigh_forward_grat
+Should this also then point to the (default) installed spec path:
 
-David Ahern (7):
-      Update kernel headers
-      namespace: Add fallback to netns by pid
-      iplink: Drop pid fallback code for netns
-      rdma: Allow netns to be specified by pid
-      devlink: Drop now duplicate pid fallback for netns
-      Update kernel headers
-      Update kernel headers
-
-Eric Dumazet (5):
-      ll_map: add RTEXT_FILTER_SKIP_STATS to ll_init_map()
-      tc: use ll_init_map() only when needed
-      tc: qdisc: provide tcm_handle and tcm_parent to kernel dump requests
-      tc/class: use rtnl_dump_request_n() in tc_class_list()
-      ll_map: add RTEXT_FILTER_NAME_ONLY to ll_link_get() and ll_init_map()
-
-Fernando Fernandez Mancera (3):
-      iplink: add support for setting IPv4 devconf parameters
-      man: iplink: fix indentation level after inet parameter
-      iplink: set NLA_F_NESTED for IPv4 devconf attributes
-
-Ido Schimmel (2):
-      devlink: Split dpipe tables output to a separate function
-      devlink: Move dpipe tables query to resources show callback
-
-Ivan Vecera (4):
-      dpll: add ps unit to phase-related pin attributes
-      dpll: add frequency monitoring support
-      dpll: add pin operstate attribute support
-      dpll: add fractional-frequency-offset to parent-device
-
-Kuniyuki Iwashima (1):
-      iplink_geneve: Support IFLA_GENEVE_LOCAL and IFLA_GENEVE_LOCAL6.
-
-Mohsin Bashir (7):
-      netshaper: Extract parse_scope() and parse_rate() helpers
-      netshaper: Add bw-min and weight parameter support
-      netshaper: Extend show output with parent, bw-min and weight
-      netshaper: Extract struct shaper_args and parse_shaper_arg() helper
-      netshaper: Add group command for creating scheduling hierarchies
-      netshaper: Update man page for new parameters and group command
-      netshaper: Fix man page accuracy and formatting issues
-
-Or Har-Toov (5):
-      devlink: fix memory leak in resource_ctx_fini
-      devlink: add dump support for resource show
-      devlink: show port resources in resource dump
-      devlink: add per-port resource show support
-      devlink: add scope filter to resource show
-
-Petr Oros (2):
-      dpll: man: restore Frequency monitor status in device show output
-      dpll: monitor: add -t/--timestamp and --tshort options
-
-Stephen Hemminger (12):
-      man: remove libnetlink man page
-      lib: add input validation for time, rate, and size parsing functions
-      tc/netem: display per-impairment xstats counters
-      uapi: update headers from 7.2-pre-rc1
-      .mailmap: remove trailing whitespace
-      CREDITS: remove trailing whitespace
-      bridge: whitespace cleanup
-      man: fix troff warnings and whitespace
-      add print_hexstring helper
-      ip: drop unnecessary fallback to ioctl for tx queue length
-      SECURITY: add threat model
-      v7.2.0
-
+       ynl --spec /usr/local/share/ynl/specs/rt-link.yaml 
+ 
