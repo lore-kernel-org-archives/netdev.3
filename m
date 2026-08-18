@@ -1,95 +1,87 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA2C31E852;
-	Tue, 18 Aug 2026 08:49:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC02933C18B;
+	Tue, 18 Aug 2026 08:59:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787042985; cv=none; b=PssmQh1PLhQg4yGjrRSFevfOUNonZ5LeYUqURHWJ2JsIcXkChioDaxLb7nBxFQZ76fHQnIz3vLd1lfyWpEUQe6o6+defriOO7PtWOsm5x5K0RayZNoNQuISjG6ZzuakKlTZ4C1s4mlCfIcI5wPZh5icz55zdB0wJZ1ges1FxXZw=
+	t=1787043583; cv=none; b=n8TuofxslVftXSNqX4Jbw3YXxUe4PVlNqlZ9CVA9MEDu5HcXdKkfzaKP33Im/20LM/bpNMGWeTei789VV0ImBS8AawxhdBgWBEXEHEYrQCetLv5R9ODneArYRSk+xPSlbLcNnJvbux3ejIOJGGRlrUhm0hKG/gr9HEIw7PsXQY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787042985; c=relaxed/simple;
-	bh=PZSbE6LnHGS9FyS5pXPmC1R05eO7J51O0XgZJRpTxlg=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZnCvB71H6UJZdpGO34+plXLGZ4ykvRwZ4RfeJpc5WJtOxbqO1VWYZqNwICIorCY3Si9suS4Sf6kTUiiiweBWwZYpZDqouLfjN4iNoWflDLG2LzrXAD5ckQSrM1vK2AI2MoN4WkO6XsP+nRDUcH8lOi6yMczKV6Z8A0qwekVA+cM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=nQeB71qB; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1787043583; c=relaxed/simple;
+	bh=MWpT/0P1Af7d09VLzwF2GmeaI7uTka5XJYtq5CvCkps=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LdzcjvTr0D9l9CzCOU5XUbJE7VKp9fOIRgVzx2chvJAbEHi11Xno8sSNHCgomUILwDWgqq1HpKjonfoI18PQLN0f1FsTvgsVqMnd4TRrADaUejBVaQheKRYe8nR63KQMdRBt/9i0uTzMyYjjqJ6VvsekikG0RcLbLuh6amlczpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=qBD9o/hI; arc=none smtp.client-ip=220.197.32.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="nQeB71qB"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id AEF23201C7;
-	Tue, 18 Aug 2026 10:49:33 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id WCTn9nWIDhQh; Tue, 18 Aug 2026 10:49:32 +0200 (CEST)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 6CAC0201AA;
-	Tue, 18 Aug 2026 10:49:32 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 6CAC0201AA
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1787042972;
-	bh=zqDcXO5pUdUgchoaam0ohQz3XH401hpRmwWhmc712rA=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=nQeB71qBGb+U3cHFgqyjbIz1Cd14ErFWcAAR3n1uweFf3cwBWp1O+mKHYPmPxOScB
-	 r/30ypvPtJWQ5Sbg8+tcJHBvKPI2juc9EffvHepyIPVOXoKFpo7IQSPhy9wgkzvKL7
-	 OIVg/Ge80nzBxhq77ZfJHl+0q6SNq+2BcMJhQqCTL9W56qNyZCoVc0M8MESr0ETAxw
-	 tVkV8mFUVgm++yTApOxNBuizOjEPtSMArkVC8S2MZykcgps+uru8nQeciy0yXSN+uJ
-	 qtDKqZAj0xI50J0gYo0Xg6bchfgYovIXFm9PDYOHwgFbpZjuQvAFKVg7RKi+jRUryP
-	 X7oi6d8uJKNpg==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 18 Aug
- 2026 10:49:29 +0200
-Received: (nullmailer pid 409395 invoked by uid 1000);
-	Tue, 18 Aug 2026 08:49:29 -0000
-Date: Tue, 18 Aug 2026 10:49:29 +0200
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Zihan Xi <zihanx@nebusec.ai>
-CC: <netdev@vger.kernel.org>, <herbert@gondor.apana.org.au>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>, Eyal Birger <eyal.birger@gmail.com>, Vega
-	<vega@nebusec.ai>
-Subject: Re: [PATCH ipsec v3 1/1] xfrm: bound nat keepalive state collection
-Message-ID: <aoQcmVtl0RLmtd3u@secunet.com>
-References: <cover.1786987905.git.zihanx@nebusec.ai>
- <4fadde7d28791a4e1196664cec692fdebce99bb5.1786987905.git.zihanx@nebusec.ai>
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="qBD9o/hI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=H3
+	1g108x3AGghVZiee+8fPu3Xnu7PnV0hFSaohOMJko=; b=qBD9o/hI5Xo//066i1
+	awO7UdMgEeFokZMExH5oE9Zv28CJAjkN6ZIDKXwqDPTBw7ZkjKc1SgPjyJKczmvh
+	bhrI0WIbACz4Mgj1TlLtr6/CUL5+ZTAb1lzswafCmzOn3EAKWiurBOTl9LbI+OjI
+	ZcCc216OqfjifMr6lgZGr5xPo=
+Received: from deepin (unknown [])
+	by gzsmtp1 (Coremail) with UTF8SMTPA id Mc8vCgD354ZFHYRqM8_VAA--.54052S2;
+	Tue, 18 Aug 2026 16:52:23 +0800 (CST)
+From: Ziran Zhang <zhangcoder@yeah.net>
+To: Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Ziran Zhang <zhangcoder@yeah.net>
+Subject: [PATCH net-next] tcp: fix mdev comment in tcp_rtt_estimator()
+Date: Tue, 18 Aug 2026 16:51:53 +0800
+Message-ID: <20260818085153.18509-1-zhangcoder@yeah.net>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <4fadde7d28791a4e1196664cec692fdebce99bb5.1786987905.git.zihanx@nebusec.ai>
-X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
- (10.32.0.171)
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:Mc8vCgD354ZFHYRqM8_VAA--.54052S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrurWDtF1DWFWDZFy7Cw4rKrg_yoWDGFcEka
+	4jkFWUGry8Xw42qw4DAF4YyFZ5CFs7A3WSgr1fGayqkw1UJF4fGan2yFy7X3W3CrsIkF93
+	Zwn0q34avr1fujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xR_UUUUUUUUU==
+X-CM-SenderInfo: x2kd0wpfrgv2o61htxgoqh3/1tbiIAcU1GqEHUcMWQAA3G
 
-On Mon, Aug 17, 2026 at 07:09:56PM +0000, Zihan Xi wrote:
-> The v1 nat keepalive fix allocates a GFP_ATOMIC object for every state
-> while collecting references for phase two. This makes the worker's
-> temporary memory use depend on the number of states and lets -ENOMEM abort
-> the scan.
-> 
-> Replace the allocated list with a fixed-size batch. When the batch is full,
-> return a private walk status so xfrm_state_walk() leaves a cursor; drain
-> the references after the walk releases xfrm_state_lock and resume from
-> the cursor. This bounds temporary memory use and avoids the allocation
-> failure path.
-> 
-> The v1 fix also moved nat_keepalive_send() out of the walk callback. Keep
-> the phase-two drain BH-disabled, as required by local_lock_nested_bh()
-> used by the keepalive sockets.
-> 
-> Fixes: 763fe700b7c5 ("xfrm: avoid lock inversion in nat keepalive work")
-> Cc: stable@vger.kernel.org
-> Cc: Eyal Birger <eyal.birger@gmail.com>
-> Reported-by: Vega <vega@nebusec.ai>
-> Assisted-by: Codex:gpt-5.4
-> Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+The old comment "mdev = 3/4 mdev + 1/4 new" only describes the
+common case. However, when RTT drops sharply, the code applies
+a finer gain of 1/32 instead of 1/4, resulting in:
+mdev = 31/32 mdev + 1/32 * new.
 
-Applied, thanks a lot!
+Express both cases with a unified formula using variable
+gain g.
+
+Signed-off-by: Ziran Zhang <zhangcoder@yeah.net>
+---
+ net/ipv4/tcp_input.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 0f60a1dbf..2c9feb181 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -1108,7 +1108,10 @@ static void tcp_rtt_estimator(struct sock *sk, long mrtt_us)
+ 		} else {
+ 			m -= (tp->mdev_us >> 2);   /* similar update on mdev */
+ 		}
+-		tp->mdev_us += m;		/* mdev = 3/4 mdev + 1/4 new */
++		tp->mdev_us += m;		/*
++						 * mdev = (1-g)*mdev + g*new, g=1/4 normally,
++						 * g=1/32 on sharp RTT drop
++						 */
+ 		if (tp->mdev_us > tp->mdev_max_us) {
+ 			tp->mdev_max_us = tp->mdev_us;
+ 			if (tp->mdev_max_us > tp->rttvar_us)
+-- 
+2.51.0
+
