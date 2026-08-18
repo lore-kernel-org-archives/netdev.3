@@ -1,145 +1,239 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BF243B6CF
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 08:47:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F4642253D
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 08:47:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787042876; cv=none; b=uuIHeA88TvOySJ2otAHZM8lkCCLPwtmmEIonRYzhJB/V4gIEDea1+mapsunbICfYgOZSqiYl7tF6Itrc30zLavbiGZLTa3c4zUp6TtmgGfjcFaSoW/9/+vs7QeMsEiZrPeJ2TwUe9qyhbEg51QgnkUZb3l6z1ngAOud+AQhL+1Q=
+	t=1787042887; cv=none; b=NHtHrdgYEXbiC3LDyx1Wm9LEerinInmgs8pcPrX98oTjBTCjscoGMOLsJN3BWqGTqouCloxJuE0qm+4tzwareYrw0q12dioQL1N5yvsL6gLsJKxPoGlYEb45ZLVUUS4Q8eL19ZQaW9yDAEIyKvTyuZvba2R6XfMGEIvcsO/FDFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787042876; c=relaxed/simple;
-	bh=jq44illgW0PY8H3areDJs61Qx3jgTr2nLguNWng4mwE=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=EF3/WhDWYvAq/ulHL8AoLU8iesqAm1cItZ06F8kqUWpWla0BdgGLDVH11PxbpfV61D4A6EKKder3l8S8YmlDgaFyQfqME0q9CTdSuk7i7NylIrdaj7sxcehWcRtsHot+6RTL3pkJ7iBuwkm7M6zM3nXcRKNbSPd2icUbh8E4mPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com; spf=pass smtp.mailfrom=doyensec.com; dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b=fK+K7cYI; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=doyensec.com
+	s=arc-20240116; t=1787042887; c=relaxed/simple;
+	bh=CLjaWTyMhFbnQTgfJnd+8JUc3lri4LvTU5LFo09SW40=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=n9MHVG3wAURVS0HoevvSkI4MPtzWwtpclFYKNozGn8/xed1AhyACA7oNxr83Mie/GeTIEJbY6hK29XiE+UZzn55U6ffLtNGJV0++nti3K2PP+5vyIwomLnlOJR1cpzSsMe1QD5Y4Uf7aQIhvLvTuwqG+3DJuMUYbnqwAfvBd1FE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PkNV8z6H; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b="fK+K7cYI"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-481412f1828so1445784f8f.1
-        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 01:47:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=doyensec.com; s=google; t=1787042870; x=1787647670; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:content-type:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=1F67UUCLxuWMVKHEvlzFMLbN/5jPWi3pvGWjATgGVJA=;
-        b=fK+K7cYIVx78gsFO1lWSOchujkMtohupSSGzDi3C2Sl/vFTBx4yC0j08NjV+si3guB
-         6XoudAnNxIc6AnfiIcWeLPq8EDbO7Ytr8jqrdV1yFb4flZBoZOJZH1PG9cQE6dgcTBHp
-         JkRHPlKZhbTiOrX7nVl/2iwJKWwxGaZhXQbTV/SHwKHEm2FlBWbyRcPSl6ZVsPJsRkj/
-         r5uc/JiXvOYyUjH6FRWPmZOcBov+zqFUlQbhgAEH1NH5WglZH31TgMqOwRa5ETiwDV85
-         YmCJB3Mlvx2/6HvRWnt5RtzWJ4ewXa6XC+K8iVhvoee1MGihiU//hrNBDV4oNvlUPHY8
-         PtWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787042870; x=1787647670;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1F67UUCLxuWMVKHEvlzFMLbN/5jPWi3pvGWjATgGVJA=;
-        b=YrY2mtQav8rXWaL4xZOGSRkQoMniaY0GuEAjeZvrGSVEGYIcr+jVMhogyAnolXvsF0
-         vUtKH3sSZITRul8l53C16P3Rp6pD12m3HEi9cZ3DnK3ccEMbwppFkGqog4ytoWs9jp4g
-         SCoeebmT83wFhrQ0QNrzue34Y0bcTbYfXmBOZV54enx2vmpm3v1xL9725D6y1Ii+M9Pa
-         LIRCzek4lz/bdyH2a4ctBGV++bWowq+4o4hPdcIsOmQvNTxs6i0Qrd5RrDIi3Cj8W6GB
-         md1mtNKDvb/Aw9OWOKfe2HiSt8wR5d7XRQ88QLwgGEsxBaPY7zbIL0doAQnjM6WLmfgt
-         ro8A==
-X-Gm-Message-State: AOJu0YxOXNw+nsv93IqFetJQ+jxXuZfzdCx7rriqP3kM520viezac20T
-	jFXoMqJ2JaQGVrOQm1WzSvA4csufnAAn+0froje6sKiETkzsnMG8koiS3R+OhCCnG047Qv3DWnX
-	y/0vVokxwHw==
-X-Gm-Gg: AR+sD121u7TnTytmrZPO/tThnQbFZY85i6k19lcqiiEPyzPnWZlufvzx6ENynV1qxrg
-	cwETzkmuUVvMy6DP5e3tz8SfSVjHU28LTocs6MOCH7jtMD3PXaZlKtmQaKqDI7Uc3AeZljS45Lx
-	Ix8vd6Y6VgZHqr8eVFJ7peNtI6RLKorSKKdQ3HU40y3799BDS1ME+4Knt0LreLjvbWotvkFih+J
-	7pfF/1dU67MEtZxuKHhYiBPWitdsv/oFkPrSaQCGd9M/ZhLgZC2Nla3+vhM5q7iDM6Y2m9RWIs4
-	T6xsN+NQ1Tkze3CszYaX7OtW3NFfTrAEO/jmgi8zQSxO6wKq2eE0Xu9RbuMCoT9cTPgReU+R3X5
-	O82EMIwDcPxTypyTsuG7ihJKtdYaJVIhzO9JPxRvQSu3qtQp+t14qAKOpnm8j4jSfnlG6j1fG3+
-	oKqzuUXIvevkTtEXYXHfLTvxYbIgx3DC6sDSdijwfj7zv3LtNdIh9teom3BKUQ6z7DZf8fISgTd
-	YBHTtRG/cBvUJf0mxDb9VZgcbuuEsO6GKTJ2JjwEYSMDNPOo2CcIOVONza6DM5GPWRVUxLyqml1
-	/lt5JS88I0Ha8l0SyZvJVQ==
-X-Received: by 2002:a05:600c:4e56:b0:499:a69d:e14b with SMTP id 5b1f17b1804b1-499a69de2fbmr11541395e9.4.1787042870069;
-        Tue, 18 Aug 2026 01:47:50 -0700 (PDT)
-Received: from smtpclient.apple (78-141-71-213.dynamic.orange.sk. [78.141.71.213])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4999d078517sm103942915e9.5.2026.08.18.01.47.48
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 18 Aug 2026 01:47:49 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PkNV8z6H"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787042876;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MpTZTYynGJsI6iuXZniQURDVoFbgSn6sHUGA74z8Dho=;
+	b=PkNV8z6H+TQp21VUdRjnQu4BPDNNTKWLcX1CoDaZdISfDx8VLLEt+5gBbVOo6MKYuxmQ+r
+	Eh6uVUu94swcIpf/H42I+IHlHlyD5EeLf2yArudCRriPLIRE59y20QPClY2/7cZfsjEg09
+	WExa89VMjpZKVddirEPN7atpyVBuj7k=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-58-gmIWz28oOKS4oulf0cXzeA-1; Tue,
+ 18 Aug 2026 04:47:52 -0400
+X-MC-Unique: gmIWz28oOKS4oulf0cXzeA-1
+X-Mimecast-MFC-AGG-ID: gmIWz28oOKS4oulf0cXzeA_1787042871
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A408718001DE;
+	Tue, 18 Aug 2026 08:47:50 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.44.48.207])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 82BB2422;
+	Tue, 18 Aug 2026 08:47:47 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: zhilinz@nebusec.ai
+Cc: netdev@vger.kernel.org,
+	dsahern@kernel.org,
+	idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	vega@nebusec.ai
+Subject: Re: [PATCH net v2 1/1] ipv6: flowlabel: cap duplicate leases per socket
+Date: Tue, 18 Aug 2026 10:47:41 +0200
+Message-ID: <20260818084741.44873-1-pabeni@redhat.com>
+In-Reply-To: <528bc30d301bcf32aca37cda1933b617d2d295f4.1786447968.git.zhilinz@nebusec.ai>
+References: <528bc30d301bcf32aca37cda1933b617d2d295f4.1786447968.git.zhilinz@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
-Subject: [PATCH net v3 3/3] net: skbuff: don't touch shared zerocopy state in
- skb_tx_error()
-From: Norbert Szetei <norbert@doyensec.com>
-In-Reply-To: <F3B9E5BA-0AC1-4AD1-A7D9-F38033304270@doyensec.com>
-Date: Tue, 18 Aug 2026 10:47:37 +0200
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- Aaron Conole <aconole@redhat.com>,
- Eelco Chaudron <echaudro@redhat.com>,
- Ilya Maximets <i.maximets@ovn.org>,
- Steffen Klassert <steffen.klassert@secunet.com>,
- Kuan-Ting Chen <h3xrabbit@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- linux-kernel@vger.kernel.org,
- dev@openvswitch.org,
- Jongmin Jang <payload.jang@gmail.com>
-Content-Transfer-Encoding: 7bit
-Message-Id: <45B00A1C-A331-4982-8317-592EEA59426A@doyensec.com>
-References: <F3B9E5BA-0AC1-4AD1-A7D9-F38033304270@doyensec.com>
-To: netdev@vger.kernel.org
-X-Mailer: Apple Mail (2.3826.700.81.1.4)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-skb_tx_error() completes the zerocopy uarg and clears
-SKBFL_ALL_ZEROCOPY, and skb_zcopy_downgrade_managed() clears
-SKBFL_MANAGED_FRAG_REFS. Both live in skb_shinfo(), which every clone
-shares, while the caller only owns the reference it is about to drop.
-Through a clone it tells the producer its pages are free and drops
-SKBFL_SHARED_FRAG for an skb that is still in flight.
-
-Open vSwitch reaches this with a non-last OVS_ACTION_ATTR_RECIRC:
-clone_execute() sends a skb_clone() into ovs_dp_process_packet() while
-do_execute_actions() keeps forwarding the original, and skb_clone()
-does not privatise the frags here -- skb_orphan_frags() returns early
-on SKBFL_DONT_ORPHAN. A flow miss on the clone then strips the marker
-from the packet still being forwarded, and a later local ESP delivery
-decrypts in place over frags it does not own privately.
-
-Skip it for a cloned skb. Nothing is lost: skb_release_data() clears
-the zerocopy state once the last reference to the shared data goes.
-
-Fixes: 25121173f7b1 ("skb: api to report errors for zero copy skbs")
-Cc: stable@vger.kernel.org
-Suggested-by: Ilya Maximets <i.maximets@ovn.org>
-Signed-off-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Jongmin Jang <payload.jang@gmail.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/
 ---
- net/core/skbuff.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ipv6: flowlabel: cap duplicate leases per socket
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index db62ed6e04b9..04776a112334 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -1417,10 +1417,13 @@ EXPORT_SYMBOL(skb_dump);
-  *
-  *	Report xmit error if a device callback is tracking this skb.
-  *	skb must be freed afterwards.
-+ *
-+ *	Does nothing for a cloned skb: the zerocopy state lives in
-+ *	skb_shinfo(), which the clones share.
-  */
- void skb_tx_error(struct sk_buff *skb)
- {
--	if (skb) {
-+	if (skb && !skb_cloned(skb)) {
- 		skb_zcopy_downgrade_managed(skb);
- 		skb_zcopy_clear(skb, true);
- 	}
+This adds a duplicate-lease counter to the socket-list walk in
+ipv6_flowlabel_get() and rejects a new unprivileged lease with -ENOBUFS
+once the count reaches FL_MAX_PER_SOCK, before linger and expires are
+refreshed.
+
+A few questions about the new counting and the capability query below.
+
+> diff --git a/net/ipv6/ip6_flowlabel.c b/net/ipv6/ip6_flowlabel.c
+> index 1ab5ad0dcf24..55cc5ec485c5 100644
+> --- a/net/ipv6/ip6_flowlabel.c
+> +++ b/net/ipv6/ip6_flowlabel.c
+> @@ -617,6 +617,8 @@ static int ipv6_flowlabel_get(struct sock *sk, struct in6_flowlabel_req *freq,
+>  	struct ipv6_fl_socklist *sfl, *sfl1 = NULL;
+>  	struct ip6_flowlabel *fl, *fl1 = NULL;
+>  	struct net *net = sock_net(sk);
+> +	bool cap_net_admin = false;
+> +	int dup_count = 0;
+>  	int err;
+>  
+>  	if (freq->flr_flags & IPV6_FL_F_REFLECT) {
+> @@ -652,10 +654,14 @@ static int ipv6_flowlabel_get(struct sock *sk, struct in6_flowlabel_req *freq,
+>  					rcu_read_unlock();
+>  					goto done;
+>  				}
+> -				fl1 = sfl->fl;
+> -				if (!atomic_inc_not_zero(&fl1->users))
+> -					fl1 = NULL;
+> -				break;
+> +				if (!fl1) {
+> +					fl1 = sfl->fl;
+> +					if (!atomic_inc_not_zero(&fl1->users))
+> +						fl1 = NULL;
+> +					cap_net_admin = capable(CAP_NET_ADMIN);
+
+[Severity: Medium]
+Is it intentional that capable(CAP_NET_ADMIN) now runs on the normal
+success path of every reuse GET?
+
+The only consumer is the later test:
+
+	err = -ENOBUFS;
+	if (dup_count >= FL_MAX_PER_SOCK && !cap_net_admin)
+		goto release;
+
+which is only reachable once dup_count has saturated at FL_MAX_PER_SOCK,
+so for a GET that succeeds with dup_count between 1 and 31 the result is
+never read.
+
+capable() is the auditing variant:
+
+kernel/capability.c:capable() -> ns_capable() ->
+	ns_capable_common(ns, cap, CAP_OPT_NONE) -> security_capable()
+
+and SELinux audits whenever CAP_OPT_NOAUDIT is not set:
+
+security/selinux/hooks.c:cred_has_capability() {
+	...
+	if (!(opts & CAP_OPT_NOAUDIT)) {
+		int rc2 = avc_audit(sid, sid, sclass, av, &avd, rc, &ad);
+	...
+}
+
+So does an unprivileged process looping
+setsockopt(IPV6_FLOWLABEL_MGR, IPV6_FL_A_GET) on a label it already holds
+now emit one "denied { net_admin }" record per syscall, on a path that
+previously performed no capability check at all?  capable() also sets
+PF_SUPERPRIV for privileged callers that never end up using the privilege.
+
+Since the "if (!fl1)" block is re-entered whenever atomic_inc_not_zero()
+failed, can this also run more than once per syscall?
+
+Would evaluating the capability at the rejection site, or using a
+*_noaudit variant for this speculative query, give the same policy without
+success-path side effects?  Note the "|| cap_net_admin" loop shortcut just
+below depends on the eager evaluation, so the ordering would need reworking
+rather than just moving the call.
+
+> +				}
+> +				if (++dup_count >= FL_MAX_PER_SOCK || cap_net_admin)
+> +					break;
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but a question about how much
+of the pre-existing growth path the new counter covers.
+
+dup_count is only incremented inside the "sfl->fl->label ==
+freq->flr_label" branch, so the new limit is per (socket, label).  The
+pre-existing use of the same constant in mem_check() bounds the total
+number of lease entries on the socket:
+
+	rcu_read_lock();
+	for_each_sk_fl_rcu(sk, sfl)
+		count++;
+	rcu_read_unlock();
+
+	if (room <= 0 ||
+	    ((count >= FL_MAX_PER_SOCK ||
+	...
+
+Is FL_MAX_PER_SOCK now expressing two different policies, and would a
+separate name for the per-label limit be clearer?
+
+Also, the reuse path reached through fl_lookup():
+
+		if (!fl1)
+			fl1 = fl_lookup(net, freq->flr_label);
+		if (fl1) {
+recheck:
+
+arrives at recheck with dup_count == 0 and never consults mem_check(), so
+the first lease of each distinct globally interned shareable label is still
+admitted with no accounting.  Can an unprivileged caller still grow one
+socket's lease list to roughly FL_MAX_PER_SOCK times the number of
+shareable labels reachable in the netns, each node pinning an
+ip6_flowlabel and lengthening the O(n) socket-list walks?
+
+The residual looks bounded in practice: mem_check() refuses new-label
+creation for an unprivileged socket once fl_size >= FL_MAX_PER_SOCK, and
+net->ipv6.flowlabel_count is capped at unpriv_user_limit (~3072) per netns,
+which works out to roughly 3 MB of ipv6_fl_socklist nodes per socket
+reached via ~10^5 setsockopt calls.  Before the patch a single label could
+be leased an unbounded number of times, so this is an improvement; would
+accounting the whole lease list the way mem_check() does close the rest?
+
+>  			}
+>  		}
+>  		rcu_read_unlock();
+> @@ -679,6 +685,10 @@ static int ipv6_flowlabel_get(struct sock *sk, struct in6_flowlabel_req *freq,
+>  			err = -ENOMEM;
+>  			if (!sfl1)
+>  				goto release;
+> +			/* sockopt_lock_sock() serializes the count and fl_link(). */
+> +			err = -ENOBUFS;
+> +			if (dup_count >= FL_MAX_PER_SOCK && !cap_net_admin)
+> +				goto release;
+
+[Severity: Low]
+Could a selftest be added for this new -ENOBUFS return?  The existing
+in-tree contract test cannot reach it.
+
+tools/testing/selftests/net/ipv6_flowlabel_mgr.c:run_tests() performs only
+three duplicate GETs of label 1 followed by three PUTs:
+
+	explain("can now put exactly three references");
+	expect_pass(flowlabel_put(fd, 1));
+
+which is well below FL_MAX_PER_SOCK, and the wrapper runs it as root:
+
+tools/testing/selftests/net/ipv6_flowlabel.sh:
+	./in_netns.sh ./ipv6_flowlabel_mgr
+
+so capable(CAP_NET_ADMIN) is true and the walk breaks after the first
+match with dup_count == 1.  As it stands, the test would still pass if the
+cap were removed, off by one, or rejected the first duplicate.  Exercising
+it would need more than 32 duplicate GETs after dropping CAP_NET_ADMIN,
+similar to what the existing IPV6_FL_S_USER case already does in a setuid
+child.
+
+>  			if (fl->linger > fl1->linger)
+>  				fl1->linger = fl->linger;
+>  			if ((long)(fl->expires - fl1->expires) > 0)
 -- 
-2.55.0
+This is an AI-generated review.
 
