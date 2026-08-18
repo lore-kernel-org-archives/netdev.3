@@ -1,150 +1,139 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B41135C197;
-	Tue, 18 Aug 2026 07:40:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5474838C2D0;
+	Tue, 18 Aug 2026 07:41:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787038810; cv=none; b=owyzZUlM2ZBCTYcrm7dPZWH63tuQiqZW7+w/tOf38xIMRVo5aedXeoMty8cOAP4mvRO8meRfwXq4vJwXHe3G1CfN0ygon9oW0BzHULsmHRdspWWN1k+PuxmLAx334U5UhaF3uA3CgtnIqBtcYV0+ZwTTIrYmxZ7s7U1lilVEiHo=
+	t=1787038908; cv=none; b=MJ61CYhiYVTJhhBfrZvBO4FfbgM7gxed+e2cPPuc7ncn441RxDYuFpRSEsnqSvLZ6Q5mqK6XltRMQJ9cUH4V4bKaXzShci5Bd/nQ3NT+DwpvdugzVa0dC2a4+aG/epyuBY+IY9/KzjX6J+dGZtx08OOqeFm8n9a16F17XxxGzLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787038810; c=relaxed/simple;
-	bh=kZmL5XFXWVsXLWyVPoB8FjsGgAnrpfuTdMMeGphnzTw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fvb1OX9zGxgaqtb/7mt21l1EMAjoyDbuZq5D0Klt96IB3fiZpMdAScbLTd/JW2ZQpRA/bZZSoWa+2Nac4UEuiqJJQN6b9OX+fktq+mGF2PNz6sF13h2AJPRdW1p6R0Z6joMf2QYLJoon8DhHj2esYhdhrSMkfE05T3JzaIn6KMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=lC3w/65K; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1787038908; c=relaxed/simple;
+	bh=WJLrsvW1KgVUoORHlEfWwIngWQzHXJzyHjRUcNkbe4s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UPKcIBXt14veOm3wevhjBskOxw0jeC5gnqQgjFNsUCYYAzllYGig3SdKZFAzBfqTNsaEA3aKEqQbMTmo9GwlRkHXdXuo+EqAqaLeN/TBvahLA0LRZDTeZlZaovMMjkdhdPdEHg8K5CypD7L+hmDNda8bJlCWCIpvXEzcrbgv1mU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QqqJk8XT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="lC3w/65K"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67HM1U3K758608;
-	Tue, 18 Aug 2026 07:39:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=Ep/A7CsX0iLhBlPjioxMOkaFb+NG6KD5degpWGJR9
-	y0=; b=lC3w/65KyU1V2J9TlKyX0MD7rOczgrkfkaIwv1+zOY5Lelcj9ell1kNG/
-	UKMUCvI1Miq6bovXbXKx31QiRVM5x8bdLG+T2dL1xCi/1uIso8W6w69hedvisfRb
-	+06XADw7HJ+zKBdEKxILDdzZhx61kXbuHCUvuBCtmy9qc1/fBz+2QFlr7KTbGfsM
-	QuoFzla6xIkRFiwHw2Jr1XjnY9f+y+UYO9wc5Lzz9LosxI3ww2AYO7giajCHUyCr
-	uhB3RbPZZtDgsP/LdLlXjsY2/JnSLfQ5Pr43HKlKALzNpmA2xMDQ2YrTFUc5Z1NY
-	nQ1OR9qgNbP7uXQDeEfEMxtS8dIjA==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g2fsqprtf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Aug 2026 07:39:56 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67I7QMIa030618;
-	Tue, 18 Aug 2026 07:39:55 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g34ng9t69-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Aug 2026 07:39:55 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67I7dpmm45613464
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 18 Aug 2026 07:39:51 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6863C2004D;
-	Tue, 18 Aug 2026 07:39:51 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 25C6A20043;
-	Tue, 18 Aug 2026 07:39:51 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Tue, 18 Aug 2026 07:39:51 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 56341)
-	id 0837416113B; Tue, 18 Aug 2026 09:39:51 +0200 (CEST)
-From: Mahanta Jambigi <mjambigi@linux.ibm.com>
-To: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
-        dust.li@linux.alibaba.com, sidraya@linux.ibm.com
-Cc: pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
-        guwen@linux.alibaba.com, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org, Mahanta Jambigi <mjambigi@linux.ibm.com>,
-        Hidayath Khan <hidayath@linux.ibm.com>
-Subject: [PATCH net] net/smc: free pending qentry in smc_llc_flow_stop() before memset
-Date: Tue, 18 Aug 2026 09:39:43 +0200
-Message-ID: <20260818073943.1108383-1-mjambigi@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QqqJk8XT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F7E81F000E9;
+	Tue, 18 Aug 2026 07:41:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787038907;
+	bh=ekUkHjTKM0gbzEISO/sz6tlY6bNtVcf9G+2Ep4ZlXcA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=QqqJk8XTMs/r9JUA8w+ttb8o7C8EeUSBl9heAbvqWAtyvt4d+nF4rEnjE9WR6EHhq
+	 S13Iu55lNBiolmz1aB+O20LCrpHGWTefsirl3A/JVfIjZ1VsaQR6GgGnonB3fNBUuR
+	 09a4uh+/Xa4qflhIocFS59lNlxOC6lHSMr65aKN7JTIHW/2VSb4BvnT/U46NQWe2Ms
+	 zyifoFDh/qM0QkYHk8ZNXShKzZheO+DQjlmWKyO8nmBXQJbGad+hGsCMBiRtJYpjmr
+	 b8PcXMVrejp5tuTmxfO+YYoevt449INrzXkCod118HUIr6e54SAv0Pnm4970VpJvXU
+	 3evp3KAdpVYYg==
+Message-ID: <33ade507-a389-4ace-8635-a4cd63904a16@kernel.org>
+Date: Tue, 18 Aug 2026 09:41:40 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE4MDA1NSBTYWx0ZWRfXy5AWnLEe7sU1
- lb/LWOMvqwUTZzt5pK1otmtomSCqBYRQjzN9eH++Iz2IULGD1rIe7i9ZlaiUL3obyPiDG+a9P06
- bJ5nvxJOnCcxV2zvuC5/j8d8jQXfriB92iAPyVAL06Zgh/XtEvehR9kZIRf0dDsnl6XGc1CrKzZ
- f+ECkDdHuXXssSKU7nFtlmNIFh1aQMtaurVDg+YzXw5skKIhI+FV83WMsXiL0f10SPq2DEmhTy0
- 42Q0VlHAUWl7E3eHZ1qzSJVF5tggUtyvuUWb7erU16Ks1jrUE05Ko2Amquodr5Np9F9TfV1jHEx
- 3FlkebgF3IaZmw8HHq9q4YlRQNllL3C1qAYIHMtN35YPTH3uNxDFqrChikd/sS2gdLfHwr57IMc
- 2tFoiWyjNVyvaY+vAI7JVU+ncKdXqiQ6CezRWy7bf6bCq3YkazT41KBBCh4Ioeh5dgguAinoBHq
- kZlAkEsWcz96JQXkbYQ==
-X-Proofpoint-ORIG-GUID: wByyKPmcAxNmeKZMAKVkESVzQx4vfR1l
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODE4MDA1NSBTYWx0ZWRfX04TwbjViSozD
- ioaRoGPbYFY9jZkfsnwdeBcfNJ03lGp4KWZA9JOZIa/LoHAfH5wxFT0EZXsOU83hkO06SiDpjuA
- i3EHIfqcUUggDBkYPB5riz87AO58oGw=
-X-Authority-Analysis: v=2.4 cv=DJe/JSNb c=1 sm=1 tr=0 ts=6a840c4c cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=jWMLYlMGGp7ONIserkcA:9
-X-Proofpoint-GUID: z7-EWK6eSRIvgfhhgVi-RhfylLYiq2CT
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-17_04,2026-08-12_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 spamscore=0 clxscore=1015 bulkscore=0
- suspectscore=0 malwarescore=0 phishscore=0 adultscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608180055
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net v2] dpll: fix NULL deref in dpll_device_ops() during
+ teardown race
+Content-Language: fr
+To: Petr Oros <poros@redhat.com>, netdev@vger.kernel.org
+Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Jiri Pirko <jiri@resnulli.us>, Michal Michalik <michal.michalik@intel.com>,
+ Milena Olech <milena.olech@intel.com>, linux-kernel@vger.kernel.org,
+ ivecera@redhat.com
+References: <20260813140817.1051388-1-poros@redhat.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20260813140817.1051388-1-poros@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-smc_llc_flow_stop() resets a flow struct with a blind memset:
+Hi Petr,
 
-	spin_lock_bh(&lgr->llc_flow_lock);
-	memset(flow, 0, sizeof(*flow));
-	flow->type =3D SMC_LLC_FLOW_NONE;
-	spin_unlock_bh(&lgr->llc_flow_lock);
+On 13/08/2026 16:08, Petr Oros wrote:
+> When the last owner of a dpll device unregisters while a foreign driver
+> still holds a pin on it via dpll_pin_on_pin_register(), the dpll object
+> stays alive with an empty registration list. A pin notification queued
+> before the unregister (e.g. ice reacting to zl3073x_i2c removal) then
+> walks pin->dpll_refs into dpll_device_ops(), which trips the WARN_ON and
+> dereferences the missing registration. dpll_lock cannot help because the
+> notification work was queued before the unregistering driver took the
+> lock.
+> 
+> Treat the empty registration list as a legitimate transient state. Make
+> dpll_priv() and dpll_device_ops() return NULL in that case and make
+> every pin netlink path that resolves a device from a pin skip such
+> dplls. dpll_cmd_pin_get_one() picks a ref with a live registration and
+> returns -ENODEV when there is none, the pin dumpit skips such a pin
+> instead of aborting the dump, dpll_msg_add_pin_dplls() and the
+> frequency, esync, reference sync and phase adjust set paths skip dead
+> refs, and dpll_pin_parent_device_set() validates the parent with
+> dpll_device_get_by_id(). dpll_pin_register() is the last caller that
+> dereferenced the device ops without a check, so move its frequency
+> monitor validation under dpll_lock and tolerate a missing registration
+> there as well.
+> 
+> The empty registration list is equivalent to a cleared DPLL_REGISTERED
+> mark, both transitions happen under dpll_lock in dpll_device_register()
+> and dpll_device_unregister(). A pin notification for a pin whose dplls
+> are all gone is now dropped with -ENODEV instead of crashing, all
+> callers in the core ignore that return value.
+Thank you for the patch. When merging net into net-next, it looks like
+it creates a lot of conflicts, mainly with commit 84e85c325e5e ("dpll:
+use pin owner's dpll ref for pin-level attribute setting").
 
-If flow->qentry is non-NULL at this point the pointer is overwritten with=
-out the
-allocation being freed, leaking one kmalloc object.
+Because the logic seems quite different now, do you mind providing
+instructions on how to resolve these conflicts, please? A 3-way patch
+and/or rerere artifacts could also help.
 
-A late-arriving duplicate CONFIRM_LINK or ADD_LINK_CONT message can set
-flow->qentry after the legitimate message has been consumed by the waiter=
- via
-smc_llc_flow_qentry_clr() (which NULLs the pointer but leaves flow->type
-non-zero) but before the flow completes and smc_llc_flow_stop() runs.  In=
- that
-window the duplicate is stashed into flow->qentry, and then lost when
-smc_llc_flow_stop() zeros the struct.
-
-Call smc_llc_flow_qentry_del() inside the lock before the memset.
-smc_llc_flow_qentry_del() already checks flow->qentry before freeing, so =
-the
-normal case where no entry is pending is a no-op.
-
-Fixes: 555da9af827d ("net/smc: add event-based llc_flow framework")
-Reviewed-by: Hidayath Khan <hidayath@linux.ibm.com>
-Signed-off-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
----
- net/smc/smc_llc.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/net/smc/smc_llc.c b/net/smc/smc_llc.c
-index 954b2ff1815c..fa1ff543638f 100644
---- a/net/smc/smc_llc.c
-+++ b/net/smc/smc_llc.c
-@@ -320,6 +320,7 @@ int smc_llc_flow_initiate(struct smc_link_group *lgr,
- void smc_llc_flow_stop(struct smc_link_group *lgr, struct smc_llc_flow *=
-flow)
- {
- 	spin_lock_bh(&lgr->llc_flow_lock);
-+	smc_llc_flow_qentry_del(flow);
- 	memset(flow, 0, sizeof(*flow));
- 	flow->type =3D SMC_LLC_FLOW_NONE;
- 	spin_unlock_bh(&lgr->llc_flow_lock);
---=20
-2.50.1 (Apple Git-155)
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
 
