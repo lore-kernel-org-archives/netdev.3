@@ -1,35 +1,44 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD1B33D6ED;
-	Tue, 18 Aug 2026 09:20:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7004314AC;
+	Tue, 18 Aug 2026 09:23:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787044855; cv=none; b=q3cbGBCQ51F7gtjVEFYdap7i85d3XXDcBaUVTkv16d/nXkpoip0QChhVYjhpl6yUAQTLNCCiltxIg/YMtbQcESs2HPNeDnkkHgUoPg8ovdEcOVQ40CYCIbKi1vE8d9ZeCO4aWs3MKZF6ib8MnBglK1/5xxmhsnJ6ktwzMzdGf7M=
+	t=1787045015; cv=none; b=evkD8Gu1xSun4+fnI5zXK2x5FiEUYKrcoPKqFoCkYq6JdjkbUN8nlSflFb5qxqANnCeG0aBJyj49R24WsF2ZWZfALsj2JIzpCRARUyCp5rr8k7R0Tm9iJl5V3hYT8gGFe47pHXM16Rl90Q4GZ/OwZp67udEavazWirsmytxqxgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787044855; c=relaxed/simple;
-	bh=ZylNTg6+HM5BLlTsVc5TmRKZMlfz8OtnC801+0Vk62s=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=E8r4629g/goNqkp0YH1r4cHRpVXBC0ISSlIJCvKUa+MIrAi5IXBz+dpdBKj1YQErCGdRQghdZkfKR66C3AJKyz9hE18iaD0fpeLuY4ZOsLYMl5OdUf84lBydxepTsD6Xr+Yq9UT4MeesXRm2EjRJ85bqcRBMitw/qqrln/uyFas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EXaEq6eg; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787045015; c=relaxed/simple;
+	bh=402fMMssiIdPF2JcHwkS6V1FYpx3oE2pEMqwEW75whI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=eM+daQMVv8Y7JxxUFbUjr2eG8bKgzAXSES+a0AAo5i37Hx13ucLWefdvf/4N1p3uFqNDIFsm6HuJyQfY0qqVX6sw9b+4Vo7yz5rnkg/FZW7YlEj1/envIhPVVsLYFCTsB5XFLQmf4orW8mFBbKrnexMd6vRJ5IDTHACWCg08HM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=fDSn4c/p; arc=none smtp.client-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EXaEq6eg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B90C1F00A3A;
-	Tue, 18 Aug 2026 09:20:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787044854;
-	bh=pHv2Hx+LQiI8XnBzJl3aTm8n04fW2yMOaY2HMM1OQ70=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=EXaEq6egOFVUYrR5HnjLcVq6MtaDT+uI0C++5o3sxx8ZVifTVFKqGgVaQ0nXmZU2o
-	 3AwenEu0dAV9WBkG5HQ6JO5noqXn8yJIAEv8DcJtJ699yMSwy8LY9tJ/mf2GHnB13X
-	 kOSLcMcoDhO9Mxcizp+VrcK6E1jqSNw4np8TRZW8jSgIP3JrkS/vopxVDxf58GpggV
-	 Y1qGyEUU28myG1KAIZavn2rves/CZErzYCSqFY+CHXGoyor/WCBS0IiATwW9V2+0hx
-	 4bZX8FwkWRWaIkzIP6jdxdfqlVPy6bQNGMjKNAfpJMRtpnQm/PsDvnU3vaM8ZiMHqk
-	 +XiOtrxLu2SVg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1987039263AF;
-	Tue, 18 Aug 2026 09:20:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="fDSn4c/p"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Zh
+	GA5Vh58hu3LJobhJ2/cESeBIPkyCAyVrsrvHtCACU=; b=fDSn4c/pLuSssRSvqY
+	lVBRTbHFQHCO7CvVrd3+FJpoFI0Gl0fEPNmjpes8P0cKF1FsSPyZBRH6hKdUD4ca
+	D66QNvdP/NDY5IbvAevlwaqpr3rl5gWeeDHRlQDYWVLCNVx1oGumX9Bo+1ofK/Z5
+	+TXyAwQKez+srafy9/3rJwlhA=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgAn9c9sJIRqz2OcMw--.21125S2;
+	Tue, 18 Aug 2026 17:22:54 +0800 (CST)
+From: luoqing <l1138897701@163.com>
+To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] sctp: fix possible out-of-bounds read in SCTP_PARAM_SUPPORTED_ADDRESS_TYPES
+Date: Tue, 18 Aug 2026 17:22:52 +0800
+Message-Id: <20260818092252.782855-1-l1138897701@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,46 +46,70 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] mpls: reload header after pskb_may_pull()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178704480565.1975811.9540207161896507600.git-patchwork-notify@kernel.org>
-Date: Tue, 18 Aug 2026 09:20:05 +0000
-References: <20260814095404.7205-1-a0yami@mailbox.org>
-In-Reply-To: <20260814095404.7205-1-a0yami@mailbox.org>
-To: Qing Ming <a0yami@mailbox.org>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, kuniyu@google.com, gnault@redhat.com,
- sd@queasysnail.net, dsahern@kernel.org, rshearma@brocade.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+X-CM-TRANSID:QCgvCgAn9c9sJIRqz2OcMw--.21125S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7WF18trWxuFWfGw47AF15XFb_yoW8tFWfpa
+	48AFZ5trW5GF1qkFyfCw4xJw45Gan5JF4xGFWUtw15Jrs8Xr1rKFyIkrWj9ay5Ka1rWayf
+	G3yjqa17CrsrZa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U6v3nUUUUU=
+X-CM-SenderInfo: jorrjmiyzxliqr6rljoofrz/xtbC3Q7fJGqEJG7zqgAA3V
 
-Hello:
+From: Qing Luo <luoqing@kylinos.cn>
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+While processing SCTP_PARAM_SUPPORTED_ADDRESS_TYPES in
+sctp_process_param(), the length field is subtracted from
+sizeof(struct sctp_paramhdr) and stored in a __u16 variable. If the
+length is less than sizeof(struct sctp_paramhdr) (4 bytes), the unsigned
+subtraction underflows, resulting in a value near 0xFFFF. The subsequent
+for() loop then iterates far beyond the parameter boundaries, causing an
+out-of-bounds read.
 
-On Fri, 14 Aug 2026 17:54:04 +0800 you wrote:
-> mpls_select_multipath() calls mpls_multipath_hash() to choose a nexthop
-> when an MPLS route has multiple nexthops.  While walking the MPLS label
-> stack, the hash routine caches hdr for the current label.  After finding
-> the bottom-of-stack label, it calls pskb_may_pull() before reading the
-> inner IP header.
-> 
-> If an skb is constructed with the inner IP header in nonlinear data and
-> insufficient tailroom in the linear head, pskb_may_pull() calls
-> pskb_expand_head() to replace the skb head and free the old one.  This
-> leaves hdr pointing to freed memory.  The IPv6 path can invalidate hdr
-> again when it performs a second pull for the larger header.
-> 
-> [...]
+sctp_verify_param() performs no length validation for this parameter
+type, so a malformed parameter with insufficient length can reach
+sctp_process_param() through the INIT/INIT-ACK/COOKIE-ECHO processing
+path.
 
-Here is the summary with links:
-  - [net] mpls: reload header after pskb_may_pull()
-    https://git.kernel.org/netdev/net/c/29e63b8d9fc1
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qing Luo <luoqing@kylinos.cn>
+---
+ net/sctp/sm_make_chunk.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-You are awesome, thank you!
+diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+index 236e25abc7a4..ebf791969454 100644
+--- a/net/sctp/sm_make_chunk.c
++++ b/net/sctp/sm_make_chunk.c
+@@ -2169,12 +2169,19 @@ static enum sctp_ierror sctp_verify_param(struct net *net,
+ 	case SCTP_PARAM_IPV4_ADDRESS:
+ 	case SCTP_PARAM_IPV6_ADDRESS:
+ 	case SCTP_PARAM_COOKIE_PRESERVATIVE:
+-	case SCTP_PARAM_SUPPORTED_ADDRESS_TYPES:
+ 	case SCTP_PARAM_STATE_COOKIE:
+ 	case SCTP_PARAM_HEARTBEAT_INFO:
+ 	case SCTP_PARAM_UNRECOGNIZED_PARAMETERS:
+ 	case SCTP_PARAM_ECN_CAPABLE:
+ 		break;
++
++	case SCTP_PARAM_SUPPORTED_ADDRESS_TYPES:
++		if (ntohs(param.p->length) < sizeof(struct sctp_paramhdr)) {
++			sctp_process_inv_paramlength(asoc, param.p,
++						     chunk, err_chunk);
++			retval = SCTP_IERROR_ABORT;
++		}
++		break;
+ 	case SCTP_PARAM_ADAPTATION_LAYER_IND:
+ 		if (ntohs(param.p->length) != sizeof(*param.aind)) {
+ 			sctp_process_inv_paramlength(asoc, param.p,
+@@ -2600,6 +2607,9 @@ static int sctp_process_param(struct sctp_association *asoc,
+ 			asoc->peer.ipv4_address = 1;
+ 
+ 		/* Cycle through address types; avoid divide by 0. */
++		if (ntohs(param.p->length) < sizeof(struct sctp_paramhdr))
++			break;
++
+ 		sat = ntohs(param.p->length) - sizeof(struct sctp_paramhdr);
+ 		if (sat)
+ 			sat /= sizeof(__u16);
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.25.1
 
