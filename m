@@ -1,87 +1,113 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC02933C18B;
-	Tue, 18 Aug 2026 08:59:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3939B4477FF
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 08:59:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787043583; cv=none; b=n8TuofxslVftXSNqX4Jbw3YXxUe4PVlNqlZ9CVA9MEDu5HcXdKkfzaKP33Im/20LM/bpNMGWeTei789VV0ImBS8AawxhdBgWBEXEHEYrQCetLv5R9ODneArYRSk+xPSlbLcNnJvbux3ejIOJGGRlrUhm0hKG/gr9HEIw7PsXQY4=
+	t=1787043588; cv=none; b=RL5gOwYm4r6dMD/RsMlPcznHbrsRL51+HUywERvwpkPmp8LrwvwAUkJSi2vysv/teCj8gZupbEhsO6pNeD5poj+91xCS8TrOkFtA6SZK2S3YoszhGfj0TLJVUgmFiTZMSzacp+8H1Y2k1lQcwhpktyyNglkrFQrR5kmdtptI7h8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787043583; c=relaxed/simple;
-	bh=MWpT/0P1Af7d09VLzwF2GmeaI7uTka5XJYtq5CvCkps=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LdzcjvTr0D9l9CzCOU5XUbJE7VKp9fOIRgVzx2chvJAbEHi11Xno8sSNHCgomUILwDWgqq1HpKjonfoI18PQLN0f1FsTvgsVqMnd4TRrADaUejBVaQheKRYe8nR63KQMdRBt/9i0uTzMyYjjqJ6VvsekikG0RcLbLuh6amlczpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=qBD9o/hI; arc=none smtp.client-ip=220.197.32.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1787043588; c=relaxed/simple;
+	bh=7OKeIQJtan/vPHab7JonrLUvfOsfGdkEdabx+T7S120=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lA8yu0ZVpZK96Lg09FCxyiiCn0eUEUkQZy/9VrT1wGwGW7bN5GBLu9Fbf1AoY23Wixn4vQCqtrSw42vhzErNWoU6LRXR75NWRvZ+9RKFRbMHf0SvnvUqeDfbMfnaV10kc1g70rmoJcv8lNSIMoeA05RCd3CP8YVn2g8hmi726H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BL/qXPpy; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="qBD9o/hI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=H3
-	1g108x3AGghVZiee+8fPu3Xnu7PnV0hFSaohOMJko=; b=qBD9o/hI5Xo//066i1
-	awO7UdMgEeFokZMExH5oE9Zv28CJAjkN6ZIDKXwqDPTBw7ZkjKc1SgPjyJKczmvh
-	bhrI0WIbACz4Mgj1TlLtr6/CUL5+ZTAb1lzswafCmzOn3EAKWiurBOTl9LbI+OjI
-	ZcCc216OqfjifMr6lgZGr5xPo=
-Received: from deepin (unknown [])
-	by gzsmtp1 (Coremail) with UTF8SMTPA id Mc8vCgD354ZFHYRqM8_VAA--.54052S2;
-	Tue, 18 Aug 2026 16:52:23 +0800 (CST)
-From: Ziran Zhang <zhangcoder@yeah.net>
-To: Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Ziran Zhang <zhangcoder@yeah.net>
-Subject: [PATCH net-next] tcp: fix mdev comment in tcp_rtt_estimator()
-Date: Tue, 18 Aug 2026 16:51:53 +0800
-Message-ID: <20260818085153.18509-1-zhangcoder@yeah.net>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BL/qXPpy"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4954df200ddso30992325e9.0
+        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 01:59:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787043585; x=1787648385; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=7OKeIQJtan/vPHab7JonrLUvfOsfGdkEdabx+T7S120=;
+        b=BL/qXPpy2bwtKWGtPN52ChTDhrBO7f6ZmvMDWLAAAqV+STTpTIwpv73/xpju+MMMMh
+         T0qCffLmjFyvYbLFjaXPCfRCOeWZ+rNiS82SrJLlBhbqdDjrYzkoYdBTBleF4fh9figj
+         j3HC0cykPyW4Y680IT5gaBOlQ69L99o37cZ21+oRPwoTm/QLGWew1plaOYg10N201wWz
+         8/RPXACnEpS6H+g+r4DKvEZffrMONCevG9qC0d2inwANdG3Q/mWxpKlV9s0lOz2aN8uD
+         Rvhchlcxhikv3B7lbQxfsFuvFJhjjSrtsnD/W84sNv5BfpbV3TP9oKUino66Q+ZWhs4S
+         bxxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787043585; x=1787648385;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7OKeIQJtan/vPHab7JonrLUvfOsfGdkEdabx+T7S120=;
+        b=QoD9MkqO4PiLcDaoGuUvrEGSp38CWNl8493TIl9/Ve8+bCAmKfU5g75CSGNGDMpabE
+         M0rpCUD6prf2UyrfYtUgqbO9dCFvXTcU/i8QOu3cYTIyqGXDRqTr5n58JVizkgvxtxuu
+         IaVr67KXNYtsmfefYZEmNxcdXTXppkNGavRM17wzmtt58LlkLM1HxK6fucUfIMWETHCi
+         ikP2crP8epN5kwttOLLF5DPtxP0+p0ETuYd1xbE57B20JoA2F4W52DDj7e9addCjQ6iD
+         MV2DT6FphID1+rDMUIiLJc9pQ4wOSP9zno+imaZwji6nuGJlfshdSnRLoRj18cxdXCkp
+         8TmQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoVwpM+Fhtr77WwUuRyjGPztLJFR+I84QcCds5aHUb4q6ZiIcF1xh5LWp2DMv4fKv8eLcp3cP0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1SIvTQ2aiUjQktc5+bMGfbzrUN6qVZuxhGjJbis5GReog0r08
+	ZTU4eTLWFTCpPZGJyb9x9Waexqpn/6GZbK1Tdnw+d6KmnTolnLS3iL75
+X-Gm-Gg: AR+sD12jjZcIakopy11/Fxn9Gi4apUMqRJGTBSgoOmevd2/wIohD4AZoCFO+xTdRDNN
+	ydphg58PegibcV24AsXHAJURVF5WS0HKKCoNQszjnKwEMiLTCDbff793P8t+5fyWcvAH20fZZb0
+	WPWeL+5Lvn/wOtFMqNHlOwDNvZVTeGSJb8rJ1DFFKNo9tOLYaoMBPBNf82TSBualcXtyLpzOr/o
+	7RuQLcS5smuSbZBR9ZY/gadzU9Aj2HiDEIJ4821Ejgp+CJtSVsBKluv1dkyGTiTBAR+nEys4RJn
+	WCgvHOnVclpAZ9GhVD4QCNklQRnLX4KvPHFL9TmqL2OA4T6TIQskv7uB+NE6AWq/mpVROASptpF
+	mpFdM56PN251srrmqYXmBxlFnnj+CRKhSB8BZZrnI0F5CEdgb1MgLCsD9j0Gua/cPQ5Lwzv8eT1
+	JWEuNKajPVzfDRusx6nbpGHtkGHZfSu5p9+8xdh/jfRuZkD0YXMm2MViG15PvW/I8b5G0ViDa6/
+	2ez22qIermoMXKxvD7wl+CZ2OMG+t9eWDIOp79I9MVUH70SNpXBBetew6UNijbkNygdeX8k
+X-Received: by 2002:a05:600c:4fca:b0:493:a623:d090 with SMTP id 5b1f17b1804b1-49987961c23mr482541885e9.10.1787043585262;
+        Tue, 18 Aug 2026 01:59:45 -0700 (PDT)
+Received: from cedric-laptop (2a02-1810-cd14-9200-a598-4f77-766a-92c1.ip6.access.telenet.be. [2a02:1810:cd14:9200:a598:4f77:766a:92c1])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4999d0876b8sm166122195e9.8.2026.08.18.01.59.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Aug 2026 01:59:44 -0700 (PDT)
+Date: Tue, 18 Aug 2026 10:59:35 +0200
+From: Cedric Jehasse <cedric.jehasse@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: 
+	Cedric Jehasse via B4 Relay <devnull+cedric.jehasse.luminex.be@kernel.org>, cedric.jehasse@luminex.be, Andrew Lunn <andrew@lunn.ch>, 
+	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Russell King <linux@armlinux.org.uk>, Jamal Hadi Salim <jhs@mojatatu.com>, 
+	Jiri Pirko <jiri@resnulli.us>, Vinicius Costa Gomes <vinicius.gomes@intel.com>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Luke Howard <lukeh@padl.com>, 
+	Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>
+Subject: Re: [PATCH net-next v8 2/3] net: dsa: mv88e6xxx: use the hw tx queues
+Message-ID: <hgrxt3hlj6i7rcg7jxgyxzrxw6knk2eqykpiq7lgpu3zshprqq@ranq77v7pxbv>
+References: <20260811-net-next-mv88e6xxx-cbs-v8-0-10d0baab2905@luminex.be>
+ <20260811-net-next-mv88e6xxx-cbs-v8-2-10d0baab2905@luminex.be>
+ <20260817105024.65be6d55@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Mc8vCgD354ZFHYRqM8_VAA--.54052S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrurWDtF1DWFWDZFy7Cw4rKrg_yoWDGFcEka
-	4jkFWUGry8Xw42qw4DAF4YyFZ5CFs7A3WSgr1fGayqkw1UJF4fGan2yFy7X3W3CrsIkF93
-	Zwn0q34avr1fujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xR_UUUUUUUUU==
-X-CM-SenderInfo: x2kd0wpfrgv2o61htxgoqh3/1tbiIAcU1GqEHUcMWQAA3G
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260817105024.65be6d55@kernel.org>
 
-The old comment "mdev = 3/4 mdev + 1/4 new" only describes the
-common case. However, when RTT drops sharply, the code applies
-a finer gain of 1/32 instead of 1/4, resulting in:
-mdev = 31/32 mdev + 1/32 * new.
+On Mon, Aug 17, 2026 at 10:50:24AM -0700, Jakub Kicinski wrote:
+> On Tue, 11 Aug 2026 13:45:48 +0200 Cedric Jehasse via B4 Relay wrote:
+> > When transmitting fill in the PRI field in the dsa tag to select the
+> > egress queue is sent to.
+> > From the datasheets i've looked at these switches have 4 or 8 transmit
+> > queues per port.
+> > Note: skbs with skb->offload_fwd_mark set use the DSA_CMD_FORWARD
+> > tag. These are processed as normal ingress frames, meaning the queue
+> > they end up in can still be altered by other switch config. eg. priority
+> > overrides, tcam policies.
+> > This isn't done for vlan tagged frames because this would overwrite the
+> > PCP value in the vlan tag (The PRI field in the dsa
+> > tag is used as the PCP value in the vlan tag).
+>
+> Pretending that a DSA device has multiple Tx queues _from the stack_
+> makes no sense. You should be offloading PRIO as the root qdisc,
+> like mlxsw does. Then the rate limiters should be attached as children
+> of PRIO.
 
-Express both cases with a unified formula using variable
-gain g.
-
-Signed-off-by: Ziran Zhang <zhangcoder@yeah.net>
----
- net/ipv4/tcp_input.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 0f60a1dbf..2c9feb181 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -1108,7 +1108,10 @@ static void tcp_rtt_estimator(struct sock *sk, long mrtt_us)
- 		} else {
- 			m -= (tp->mdev_us >> 2);   /* similar update on mdev */
- 		}
--		tp->mdev_us += m;		/* mdev = 3/4 mdev + 1/4 new */
-+		tp->mdev_us += m;		/*
-+						 * mdev = (1-g)*mdev + g*new, g=1/4 normally,
-+						 * g=1/32 on sharp RTT drop
-+						 */
- 		if (tp->mdev_us > tp->mdev_max_us) {
- 			tp->mdev_max_us = tp->mdev_us;
- 			if (tp->mdev_max_us > tp->rttvar_us)
--- 
-2.51.0
+This patch follows what the implementation i found in other dsa drivers.
+mlxsw seems to be the only driver handling TC_SETUP_QDISC_PRIO.
+Wouldn't that mean setting up cbs for a mv88e6xxx switch would use different
+tc commands than setting it up for another dsa switch (prio vs mqprio)?
+Is your comment specific to this driver, or for dsa drivers in general?
 
