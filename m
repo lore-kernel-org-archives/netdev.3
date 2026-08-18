@@ -1,70 +1,71 @@
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96D825F988
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 06:22:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393ED2E173D
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 06:22:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787034150; cv=none; b=mqWbxhVWttueI4L7lfqWUHgWgor983ww4mUHVt1cWM9VSlK8Ml6cMZ3JmbxS4D7MSnTO+lQ3KZm4NLFFkdZYi1/2bh3psTRiMipnwijq2/yOckoJf/WcYtiQb2zh285XDr/G9zZJEOGOfrKyRZWeY8Np4czO1+ZgEgo6TwLrk8g=
+	t=1787034151; cv=none; b=hszIIV9NMM13wph94izN/tSJ3CgD/62iGe41cDTuugU0FGnuni1C0Rn3BFoRKQM5d3t2BsK6IUvaFjltDP3EXzrjThGbpYQZMUKJA1XPpvoBPbxGo6KMqxOkWoBXyWdSRzeHDLmgMBUBmHctpM2z7soyNkNxm3fFyO/NNWgHWkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787034150; c=relaxed/simple;
-	bh=HMQRl1xO1pQgDaOrasr5p/JsAw5vG952dTH4Kygaz1o=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=eJKIQLvQ+8xUwx7W7zsix1no+tK7jNotHPRDmW6uR1rrItK8k1Zwa2dYKRebHInfC7YWUEgN6qY3H5tWtrrKCYibie+FimPg7XTWM1vgGyw2L7TIZwKbYbMGmh+R4ZcpKBSBlBeCqaGyEYMcjOg8NDCanuIYzkvzoYZSdT3xw90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G6s0s2Or; arc=none smtp.client-ip=209.85.210.54
+	s=arc-20240116; t=1787034151; c=relaxed/simple;
+	bh=cc+qS80i91e3iF+LZeQguwZtW8X1bfrYw7jNSRlkhpo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=tI7NOmHDDE6rkqsvE0LS4Sda+NUfvfnUX7JzmpgZTP1BxoyZsJreotgQmAOaPGlY/4H9JMmcFoKv3EDmhn7oCXvYstP7S5JQaqiZ4weMRR/Tys+5TKklEU2ni9MieGRSRFe3u9FNovDvw2rOSqgfvKX+iDrPsXGNa/OKcBYowj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KwhWwW2N; arc=none smtp.client-ip=209.85.210.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G6s0s2Or"
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7ee4399c423so2886203a34.0
-        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 23:22:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KwhWwW2N"
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7ec3b429a3aso2799365a34.1
+        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 23:22:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787034147; x=1787638947; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=cGK9IFeXLvf0lFLy1aRVHiXrOYJhbnpPNozOUWjwiiQ=;
-        b=G6s0s2OrCtJL2+TaHNz9NctOn1A4x0FOvnNX7K4AdmdQFdUz39YVXbfBMoFxQ2gmu6
-         onuPCK05ddUrcPPg53nmXFnf9ozUzIm1QZJZeWCYHr5UMP1OJIT6puBEN++0Wvj2E3eD
-         HpsuJDCtZOw6vHZ22tK7yHT11Lth/K/pNILw2AASc0fQezzTB9n7cxq79RIqADVqrBmi
-         EV2xUfAhnLYx8AnjHXm5RlZhrsWYL72rhsA1arjg14y46lIupHPvvPfqiMO1PG4Ys4m2
-         vc1kNj8VHD7og5TA60wkvfSCunOwQgXpTw2mXfs4vvqlCT0/pEe2wjcU6OffrtsKqFZ3
-         eK9g==
+        d=gmail.com; s=20251104; t=1787034149; x=1787638949; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=K28+i2/PlfR+JETeUlifhNXKb2RdSy48tKswPz635Jk=;
+        b=KwhWwW2N29ZVu2w1UYJFF8xztxnYSv8TBI2Ys5Q1tnvfg17yjUD56sJ2TLv/H0x9fZ
+         gvCLW7YpmSgL72ZU8xMl4iHOb5CA76fZ1EmmRX9HZig5bAHGQrQAWYNK6Tg07tRq7amV
+         mpUxWWZPKx4j/HGCnP92qjWWkKNs1GlIOjsdXBaPLvU5OBFE5vMG3k1oM237HE2Ro20s
+         xBVkE0fTbDrQMSc4TFGzWk0eny07xD2BhYE5s8aWOMTcaHQ4COvRB+fCwiN5jFvAjm0J
+         gpy4ksoeOlB/0OYM3BeKn9UHJXttSbC2qi2dwMIJQ1QldS299d76yeZ5dj9G7zmQykE+
+         9+Kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787034147; x=1787638947;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=cGK9IFeXLvf0lFLy1aRVHiXrOYJhbnpPNozOUWjwiiQ=;
-        b=KSZNjXW/WnBmkeiDuRj6kAV8Ki9WPdUOYegozzM36wmLMd1CmyQwCjc3ijLC4yvptQ
-         Ky2VPWjW3wAb6co4f2L50bph/tJ/tr+DSMsSIup/C1bnKLZBahLpL6RAX0MOCvDpKHWd
-         y8co5XKr9wUP5srar6GNdaYqyee/bw2Jy6iz/8hC5TG6n2qLwWNJSFbyIzfxMVSK7yq7
-         /y7YakJYt9zgo8vsxo1TusTVRcsgabJfQniPFbaQTdZAEH7WMIQUTUsnf6/rHvDqwRFk
-         fgqdlxAp5auBLFWseSCEdyx7t/j0OfskrsGotyN1iCdPy54f5mM1/2+FSqqfjofAoXh6
-         n6sg==
-X-Forwarded-Encrypted: i=1; AHgh+Ro9GWFxcQeC02PjMDeDmk5RfsFFG1NAOvGiElKK5vSNPPjAn4zc93ZB9xo7FwlfTAKjLnSfIP8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx1SZv0DMtF0TVpMVxcKKlB1YZ/KyrRSvtXevSJtcyBPLkjCDHf
-	ENqvUCXf2NuiwLaQPo2gVkW9vhKENnt9Omw9Rn2Ot5sF6I27K1/qplom
-X-Gm-Gg: AR+sD10ah2kWe3wd60xXHt+sgoT+P+zAFoIUXTpT1tkSQNS8e7sr7/cngPD2O6CxNc2
-	KPkAavnWmEwMI/o7TG1wZzuMWPXK4qwulrQdzNWYP1SynRu4ISVCk65Ti78DYwPdESp7xkUck6O
-	GZ7w4p2dCcZd8d/6/O7V1YAgrm16pEtl+9Jt4mmqyO5eBFMG6pXkTF2xXfEJq1btU6Bx8zCimwf
-	KZZlB+4+XlVLNFQ3vgqEWqz3B+DudK2XrB5QNmqzcG5ZjyKskqcvj8gkwXNGXDnBwJ4VfEYEpL8
-	NaqTe9EPb/jC9Tltuwpm1ANhKQhAJPZsfNJ/K6srufMNfYwEBCknMPkAWkyaFNmZ9CQnPILWdtt
-	oV9awyjMRYtCsb7ByUx25CGU5fKaM1lumHFdrAOiYSJQEqs+/ATU4PkMZUm4qTv5L4YETjhCM77
-	6jNy11UjSJqXhI+6PW/jPVsRdySciPc0iMRqfFMqyH003DYp9kBD25Hin9EUIVW8RzcbK5Xaj6R
-	7i9bAfARJbsPmidJdRWEdEDJZEzN7M080Rli5+NxVd3Xlljt+3XGYMxivz6K2l4tPFmGwVWgI4L
-	JRwo/tfYW5lLQJhmT57iGWjR7IsGI+K+VQz340CjzJDzXkOzYcSDLhihwKpxxrFHKMnn72VzBd7
-	K20iIcmHjrSO0Tm0Q
-X-Received: by 2002:a05:6830:668d:b0:7e9:e0f3:b914 with SMTP id 46e09a7af769-7f3de68909emr32734122a34.13.1787034147485;
-        Mon, 17 Aug 2026 23:22:27 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787034149; x=1787638949;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=K28+i2/PlfR+JETeUlifhNXKb2RdSy48tKswPz635Jk=;
+        b=k7nq16TmYLgrgowHts91hT+/P8B/DQAG0n9GV44W4L58dLW/2SdW7vEx5w2WSTFZRv
+         7CLoCMaWIDBsnzG5aH4GCqp0jXwQdPTw46OpKpEjPodfo5x7LXaEqQDkUeCb82v2UUzU
+         gdkYaWUXVsSF5YX7Pw2Ps5I02VSVwuTBf7h2yNvEqxbfsx7V0pk6p5O2qp/x9btwzFQA
+         HPlOYtFxGRMTLaznoCTcvjM357+pfsGnCIpxLTThfUi9ERywyWATyNxvUZF3VIk6iGlT
+         Y46JrWRO90iUHziAWHeaEcSm1XuFz5Wi037aRIikMSAPmRsmJ/I/Rz4Dh7+dVR6x2BER
+         EZ1A==
+X-Forwarded-Encrypted: i=1; AHgh+RqzYlA/Usjq5wZ/hK1Q7euULs5V+XEugcM6kFNn7+QYiLhbv0Qf8hyuJZA3s4DPYUcinbxvtu4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7gDQStzTmoKB7jaJ1hs5MQayp+wSXFUPTunw8d3msgMUyx5mt
+	m+yAe7A3M+4FlJuT9p4DCt9WWMQzVmEJeX8jG4Ntzja2nofSBhNgoD8d
+X-Gm-Gg: AR+sD11u4KOHe1AmbA+kLW/31UAZ0MVi+rBGMwtUWkse+u6vSCd5fCTRp1gctnKu03n
+	146oJlYt6vFW+IEOuPpaAVERRziTENTKGyZiHYgyd8L+7adw+KLZgMGWjDbvGm9t0YfKq7/mR5V
+	CxxjXrpOeSG9zvIdd2y8uSZSY2vQ7gZdyfmPrulEOUukAEhfvySF2j4Wi7/9EjkUkT2gCpXbgWx
+	ZQEPWXZPR7hzRNbwqp/vRtqap1ebeJYqRgUxpD/yt8L3eZTQ1KYDv2SNQRajuugKFn2uEjwj3ht
+	vtxIvAcS6mFNv8zgHXBHY5d0JxAuFMZvUtuL992ddlUtOJcYygv9NMYwD3n2kf+nVNDVzPCBJsB
+	s58m7FJKwACtBx/rDpoCDh5yKvdgbvVluWo/eklnU96miBln3IXmsydcikbA27MUDsAuRFLDQMU
+	HCNdozsibUwAW0ZRTgxRkiWawyfyEmK3PXJCu0kNJQcTUPKm/s9nduvou0KnL9baAkT7QnqRLbl
+	XeqyBMjQy5NsTM1QRdTSeLVhoJKIAbr4Yj6u3iFE2R/imCYAi5JDbcTgKEX7eNCPo0MfG2J5Fjl
+	hh4GZptq7//EaP14iAV/5zQuq6TFiIuwoJMF/NCTQu4RboH9oIpS/KQBG1MYaNqv2DAVjlqoL/O
+	WiDmdI8u7s90d4spR
+X-Received: by 2002:a05:6830:8284:b0:7e6:ef2e:28a5 with SMTP id 46e09a7af769-7f423f8edb8mr6119032a34.15.1787034148992;
+        Mon, 17 Aug 2026 23:22:28 -0700 (PDT)
 Received: from [127.0.1.1] (184-96-154-59.hlrn.qwest.net. [184.96.154.59])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f43189775fsm298085a34.16.2026.08.17.23.22.26
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f43189775fsm298085a34.16.2026.08.17.23.22.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Aug 2026 23:22:26 -0700 (PDT)
+        Mon, 17 Aug 2026 23:22:28 -0700 (PDT)
 From: James Hilliard <james.hilliard1@gmail.com>
-Subject: [PATCH net-next v9 0/2] net: phy: add X-Powers AC200/AC300 EPHY
- support
-Date: Tue, 18 Aug 2026 00:21:15 -0600
-Message-Id: <20260818-submit-acx00-of-dynamic-v1-v9-0-b8c8d9ad0d83@gmail.com>
+Date: Tue, 18 Aug 2026 00:21:16 -0600
+Subject: [PATCH net-next v9 1/2] dt-bindings: net: x-powers: add
+ AC200/AC300 EPHY packages
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,13 +74,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/43QzW6DMAwH8Fepcl6mxPnuae8x9ZCEuM00YAKGq
- CrevYHtgJiEdrRs//6WH6RPXU49OZ8epEtj7nPblMK9nEi8+eaaaK5KTYCBZpYB7b9DnQfq48Q
- YbZFW98bXOdKRUyc9qyJXCBZIAb66hHla8XfSpIE2aRrI5adTnI8Uh8VeZm+5H9ruvt4xinXjN
- 1IdRY6CMiogCuDMawT1dq19/nyNbb0GjXJL6UNKFsoFBDRSci1gT6kt5Q4pVaiAnqNV3Aawe0p
- vKM4PKV0oBuCCc14A6j1l/k+ZhRKoguPGqOrPr+yWEoeULVQFyKOCZE2QW2qe5ycSuXyaVwIAA
- A==
-X-Change-ID: 20260802-submit-acx00-of-dynamic-v1-94a0dc15f282
+Message-Id: <20260818-submit-acx00-of-dynamic-v1-v9-1-b8c8d9ad0d83@gmail.com>
+References: <20260818-submit-acx00-of-dynamic-v1-v9-0-b8c8d9ad0d83@gmail.com>
+In-Reply-To: <20260818-submit-acx00-of-dynamic-v1-v9-0-b8c8d9ad0d83@gmail.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -98,167 +95,212 @@ Cc: Arnd Bergmann <arnd@arndb.de>,
  Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 X-Mailer: b4 0.15.2
 
-This submission contains only the networking binding and PHY driver and
-is intended for net-next. The AC200 I2C register provider was submitted
-separately for the MFD tree:
-
-  https://patch.msgid.link/20260811-submit-ac200-mfd-v7-0-8b06f552a4d7@gmail.com
-
-The two series can build and be merged independently. AC300 needs only the
-networking series. The AC200 runtime path additionally needs the separately
-submitted MFD provider and binding. Their shared design point is the DT
-representation: the MDIO PHY-package node references the AC200 I2C node for
-access to package-control registers.
-
 The AC200 and AC300 contain compatible Fast Ethernet link PHYs which
 report the same Clause 22 identifier and use the same link-side register
-layout. The link endpoint is inaccessible until package-specific control
-registers have powered and configured it.
+layout. Their package control paths differ: AC200 control registers are
+accessed through the I2C register interface of the companion IC, while
+the AC300 control range is at a second Clause 22 address fixed at 16 plus
+the link address.
 
-Both variants are modeled as standard Ethernet PHY packages with one
-forced-ID link-PHY child. The package reg value is the link address.
-AC300's control range is a fixed package-relative offset of 16 and is
-accessed with the PHY package helpers. AC200 reaches its control registers
-through a phandle to the companion IC's I2C register interface.
+Describe both variants as Ethernet PHY packages. The package reg value is
+the link PHY base address and the child supplies the documented PHY ID,
+because the identification registers cannot be read until package setup
+has completed. The AC300 driver reaches its control range with the PHY
+package offset helpers. The AC200 package instead references the companion
+IC described by the separately submitted x-powers,ac200 MFD binding. Its
+I2C interface provides access to the package controls.
 
-For AC200, the driver resolves the referenced I2C device, establishes a
-managed device link, and takes the supplier device lock before checking
-that the provider is fully bound and retrieving the regmap attached to
-that device. It waits for transient lock holders instead of treating lock
-contention as a missing dependency. The link then keeps the provider bound
-until the PHY consumer has unbound. This uses the generic device and
-regmap interfaces and supports multiple AC200 instances without syscon or
-a private cross-subsystem API.
+Give fixed hardware variant-specific compatibles. Also provide an ACx00
+compatible for systems which can contain either package, with one packed
+NVMEM field containing calibration in bits 3 through 0, the AC300 selector
+in bit 8 and its low-calibration selector in bit 9. Such a description
+contains the potential resources for both backends; the driver consumes
+only those selected by the configuration field.
 
-Fixed hardware uses an AC200- or AC300-specific package compatible.
-Systems which can contain either package use the ACx00 package compatible
-and one packed SID configuration field. Bits 3 through 0 carry the analog
-calibration, bit 8 selects AC300, and bit 9 selects its low-calibration
-tuning. The driver chooses the backend before acquiring any
-backend-specific resource.
+Describe the package clock, supply and optional xMII receive-clock
+inversion needed by some integrations. A fixed AC200 package may omit the
+NVMEM field and use its internal calibration copy. Limit both the package
+and child link-PHY addresses in AC300-capable descriptions to 0 through 7
+so the control address remains in the documented range 16 through 23.
 
-One xpowers-acx00 module binds the link child, joins the parent package and
-runs the selected backend. It manages the package supply, MII or RMII mode,
-vendor analog initialization and package state across suspend and resume.
-The common link implementation preserves automatic MDI/MDI-X and standard
-MAC-managed EEE advertisement while disabling only the vendor
-PHY-autonomous Intelligent EEE mode. A private mutex serializes
-package state across phylib callback contexts, while suspend recovery
-also holds the phylib lock.
-
-The two patches add the AC200/AC300 PHY-package binding and combined PHY
-driver. Board Device Trees and optional PHY features remain outside this
-initial series.
-
-The AC200 portions build on earlier work by Jernej Skrabec and Andre
-Przywara:
-
-  https://github.com/jernejsk/linux-1/commits/ac200-v4
-
-Public AC200 and AC300 documentation is linked from:
-
-  https://linux-sunxi.org/AC200
-
-Validation completed for v9:
-
-  - dt_binding_check for the PHY-package schema;
-  - an x86_64 allmodconfig composite-object build with W=1;
-  - a built-in AC300-only configuration with I2C and MFD_SYSCON disabled,
-    built with W=1; and
-  - strict checkpatch checks with no errors and only the generic new-file
-    MAINTAINERS prompts.
-
-The AC200 v9 path was hardware-tested on an H616 board. The provider
-reported revision 0x101 in package 1, the PHY resolved its regmap after
-establishing the supplier device link, and RMII negotiated a 100 Mbps
-full-duplex link.
-Eight MiB passed in each direction with matching SHA-256 digests, and 100
-consecutive pings completed without loss both before and after the rebind
-stress tests.
-
-An administrative down/up cycle changed the package regulator consumer
-count from one to zero and back to one, then restored the same link mode.
-Five AC200 supplier unbind/rebind cycles each unbound the PHY consumer,
-recreated the device link and recovered the 100 Mbps full-duplex link and
-ping traffic.
-
-The separate 100-iteration supplier-lock stress result carries forward
-from v8. Each PHY bind started while the AC200 supplier was still inside
-its 40 ms probe delay and holding the supplier device lock. Every PHY
-bind waited for the supplier, recovered with the correct PHY ID and
-device-link relationships, and the final link came up at 100 Mbps full
-duplex without new warnings or probe errors.
-
-The AC300 results carry forward from v5. On the connected H616 board the
-driver selected AC300 without accessing the AC200 I2C path, negotiated a
-100 Mbps full-duplex RMII link, passed eight MiB in each direction and
-restored the regulator, package state and link across an administrative
-down/up cycle.
-
-Assisted-by: Codex:gpt-5.6-sol
 Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 ---
-Changes in v9:
-- serialize package state and multi-register power sequences across phylib
-  callback contexts
-- hold the phylib lock while recovering from suspend failures
-- unwind package power after reset, resume or configuration failures
-- restart autonegotiation when restoring EEE advertisement changes it
-- propagate page-selection errors instead of an uninitialized result
-- constrain AC300-capable child PHY addresses to the valid 0 through 7
-  range
-- clarify the AC200 runtime dependency and provider-owned, rate-locked
-  clock
-- document why the AC200 control sequence needs no AC300-style delay
-- rebase onto current net-next
-- Link to v8: https://patch.msgid.link/20260813-submit-acx00-of-dynamic-v1-v8-0-d2f1c52e87b4@gmail.com
+ .../bindings/net/x-powers,acx00-ephy-package.yaml  | 165 +++++++++++++++++++++
+ 1 file changed, 165 insertions(+)
 
-Changes in v8:
-- replace the AC200 supplier trylock/defer path with a blocking device lock
-- add Krzysztof's Reviewed-by tag to the PHY-package binding
-- rebase onto current net-next
-- Link to v7: https://patch.msgid.link/20260811-submit-acx00-of-dynamic-v1-v7-0-03f5b91775d5@gmail.com
+diff --git a/Documentation/devicetree/bindings/net/x-powers,acx00-ephy-package.yaml b/Documentation/devicetree/bindings/net/x-powers,acx00-ephy-package.yaml
+new file mode 100644
+index 000000000000..ee90c4ffecce
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/x-powers,acx00-ephy-package.yaml
+@@ -0,0 +1,165 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/x-powers,acx00-ephy-package.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: X-Powers AC200 and AC300 Ethernet PHY packages
++
++maintainers:
++  - James Hilliard <james.hilliard1@gmail.com>
++
++description:
++  The AC200 and AC300 contain compatible Fast Ethernet PHY blocks which report
++  the same Clause 22 PHY ID and use the same link-side register layout. The
++  package control paths differ. AC200 package control registers are accessed
++  through the companion IC's I2C register interface, while AC300 control
++  registers occupy a second Clause 22 address fixed at 16 plus the link PHY
++  address.
++
++  Systems with a known package use the corresponding AC200 or AC300 compatible.
++  Systems which can contain either package use the ACx00 compatible and a
++  packed NVMEM configuration field to select the backend at runtime.
++
++  The link PHY cannot report its ID until the package control sequence has
++  completed, so its child node supplies the documented PHY ID. The package and
++  child use the same base address. The AC200 driver programs that address into
++  the package, while the AC300 driver derives its control address from it.
++
++properties:
++  compatible:
++    enum:
++      - x-powers,ac200-ephy-package
++      - x-powers,ac300-ephy-package
++      - x-powers,acx00-ephy-package
++
++  reg:
++    maximum: 31
++
++  clocks:
++    maxItems: 1
++    description: AC300 input clock, running at 24, 25, or 27 MHz
++
++  vcc-supply:
++    description:
++      3.3 V package supply. This is connected to EPHY_VCC on AC200 and VCC1
++      on AC300.
++
++  nvmem-cells:
++    maxItems: 1
++    description:
++      Packed EPHY configuration field. Bits 3 through 0 contain the analog
++      calibration code, bits 7 through 4 are reserved, bit 8 selects AC300
++      when set and AC200 when clear, and bit 9 requests the AC300
++      low-calibration tuning sequence. A fixed AC200 package may provide only
++      the low calibration bits or omit the cell and use its internal eFuse
++      copy instead.
++
++  nvmem-cell-names:
++    const: configuration
++
++  x-powers,ac200:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description:
++      Phandle to the AC200 companion IC described by the x-powers,ac200 MFD
++      binding. Its I2C interface provides access to the package control
++      registers used to power and configure the Ethernet PHY.
++
++  x-powers,xmii-rx-clock-inverted:
++    type: boolean
++    description:
++      Invert the xMII receive clock inside the PHY. This is required by some
++      SoC integrations, including the Allwinner H6 AC200 connection.
++
++patternProperties:
++  ^ethernet-phy@[a-f0-9]+$:
++    $ref: ethernet-phy.yaml#
++    properties:
++      compatible:
++        const: ethernet-phy-id0044.1400
++    required:
++      - compatible
++    unevaluatedProperties: false
++
++required:
++  - compatible
++  - vcc-supply
++
++dependentRequired:
++  nvmem-cells: [ nvmem-cell-names ]
++
++allOf:
++  - $ref: ethernet-phy-package.yaml#
++  - if:
++      properties:
++        compatible:
++          const: x-powers,ac200-ephy-package
++    then:
++      properties:
++        clocks: false
++      required:
++        - x-powers,ac200
++  - if:
++      properties:
++        compatible:
++          const: x-powers,ac300-ephy-package
++    then:
++      properties:
++        x-powers,ac200: false
++      required:
++        - clocks
++        - nvmem-cells
++        - nvmem-cell-names
++  - if:
++      properties:
++        compatible:
++          const: x-powers,acx00-ephy-package
++    then:
++      required:
++        - clocks
++        - nvmem-cells
++        - nvmem-cell-names
++        - x-powers,ac200
++  - if:
++      properties:
++        compatible:
++          enum:
++            - x-powers,ac300-ephy-package
++            - x-powers,acx00-ephy-package
++    then:
++      properties:
++        reg:
++          maximum: 7
++      patternProperties:
++        ^ethernet-phy@[a-f0-9]+$:
++          properties:
++            reg:
++              maximum: 7
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    mdio {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        ethernet-phy-package@0 {
++            compatible = "x-powers,acx00-ephy-package";
++            reg = <0>;
++            #address-cells = <1>;
++            #size-cells = <0>;
++            clocks = <&pwm 5>;
++            vcc-supply = <&reg_3v3>;
++            nvmem-cells = <&ephy_configuration>;
++            nvmem-cell-names = "configuration";
++            x-powers,ac200 = <&ac200>;
++
++            ethernet-phy@0 {
++                compatible = "ethernet-phy-id0044.1400";
++                reg = <0>;
++            };
++        };
++    };
++
++...
 
-Changes in v7:
-- link to the separately submitted MFD v7 series:
-  https://patch.msgid.link/20260811-submit-ac200-mfd-v7-0-8b06f552a4d7@gmail.com
-- replace syscon publication and lookup with direct AC200 device/regmap
-  lookup
-- require the referenced AC200 provider to be fully bound under its device
-  lock
-- keep teardown ordered with the managed device link
-- rebase onto current net-next
-- Link to v6: https://patch.msgid.link/20260811-submit-acx00-of-dynamic-v1-v6-0-0229b99a32f6@gmail.com
-
-Changes in v6:
-- split the networking work from the independently mergeable MFD series
-- add the posting link for the separately submitted MFD series
-- remove the redundant explicit schema selector
-- describe the AC200 phandle in hardware terms and state its purpose
-- simplify the clock description and keep only the needed NVMEM dependency
-- reduce the binding examples to one
-- rebase onto current net-next
-- Link to v5: https://patch.msgid.link/20260809-submit-acx00-of-dynamic-v1-v5-0-bfa1f8518b28@gmail.com
-
----
-James Hilliard (2):
-      dt-bindings: net: x-powers: add AC200/AC300 EPHY packages
-      net: phy: add X-Powers AC200/AC300 EPHY driver
-
- .../bindings/net/x-powers,acx00-ephy-package.yaml  | 165 ++++++
- drivers/net/phy/Kconfig                            |  11 +
- drivers/net/phy/Makefile                           |   1 +
- drivers/net/phy/xpowers/Makefile                   |   3 +
- drivers/net/phy/xpowers/ac200.c                    | 314 +++++++++++
- drivers/net/phy/xpowers/ac300.c                    | 387 +++++++++++++
- drivers/net/phy/xpowers/acx00.c                    | 621 +++++++++++++++++++++
- drivers/net/phy/xpowers/acx00.h                    |  28 +
- 8 files changed, 1530 insertions(+)
----
-base-commit: 47226bbdef69fc0de815b8f5b81b39673f50bbee
-change-id: 20260802-submit-acx00-of-dynamic-v1-94a0dc15f282
-
-Best regards,
---  
-James Hilliard <james.hilliard1@gmail.com>
+-- 
+2.53.0
 
