@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEDA2E6CB8;
-	Tue, 18 Aug 2026 18:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3DC23E025C;
+	Tue, 18 Aug 2026 18:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787078283; cv=none; b=CvG5meo/VvLA6ZXP4CocuOKR3jIVVwkyLBOc/Fo2uP3x9rjr589z5aokr5BVcS+KYlUYuXuF9jYQUgAYDRNQSe0z1Q8K/p/fHKHUy6m9EDbStqYr2Jy49vs5aBz/fRIU7L9em90E8S3mkfNWP24KQ11AMDI381McwSN6lx2JLUo=
+	t=1787078286; cv=none; b=LRYuDWiUnIBnCG5hkJz/4wBXy5/p48Jx3mUua4in7R2sVLS1JsFy8FzWOBEf7Sny7cMgTRQv85uwIA3xnwX0saknPM8XMKwM+v2W03IV100yr2J6NHbUiB6HKyJDGodfusHG7zg214YpLxNoNveo91MduQ2DqroGiGOw1CnW0e8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787078283; c=relaxed/simple;
-	bh=t0tH5V6xyTwtZ5KYHf5n21g0lYj3M7UQIgaIDaeBEP0=;
+	s=arc-20240116; t=1787078286; c=relaxed/simple;
+	bh=hA0Yv+Nc+xtRxWxZEUetmdQsdo7a5FhBLBvOuZTdfYY=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=FRQ6eQ9G9nRGCEa2tOsIvLYv8jXs2edN8hK8fOeUohEfhdLNBVeLRl+OjdUd68iX8fYj4ppYh75TTP7UTnmxXjOZnjftre3OnbBO5SKZ5fAszlLz2RDswCGVtBQJMtUXvS3FWiDmbsVQOP1th+Rdf0R9sKU2/OkpTt4EzhZu5UM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GrU78zqT; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=k/3MTdTVDPTWSkH+s7C9JWb6VawASZ2ZD/ptouDUUZQjHW8i4dNpjpVjX8cMMPq32KgZs4R/9QNPFatGaU1Dvawwz6Nnvi/txTw2ELmVPmkl8S6sa1yK1JiCEMX7VljyiHWPo9XaBqVvRsYEXk0XYijPChQZpDI38EZueXNh6EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hFOe729t; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GrU78zqT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CACE81F000E9;
-	Tue, 18 Aug 2026 18:38:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hFOe729t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CCE91F000E9;
+	Tue, 18 Aug 2026 18:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787078281;
-	bh=X+tFDMCiIKvulMueyAE0+Uh+ICmd+Trypk9gjSTkOyc=;
+	s=k20260515; t=1787078284;
+	bh=h8b580K3YAodwbm9llDb9hE3QcsY5Ub14/2Dy6qDhQ8=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=GrU78zqTPCXSsqXQjkrt5zcrbxxMm5I1f8AvbNVNcIhn/eLJWr4WMXjUQ4BnlH8rZ
-	 5bYeFvI/Hs74ru4c5Qoq1+aTELCfKU8z6sbAHFX9GW9pp5Jo64ue9ZfI88hC2h9BsL
-	 XXccmJVYnpantKfimTGqplJdodvZG94oUXj80wpImDTegnOt9NVeq+4VNzeNP+GXTl
-	 ESWVungAD+sr6qeULRo+Af4OaO8dRe0WSsq+H144YiuzQxU8FCVyTP1D5PYlLIJ3Hf
-	 ZP7n3fZp5JvEHcJQWSsZWdQetTs2u/SJ1Fvp7606YZlVrVAPtQsRDoOQlu88simUmD
-	 Z8Yf0Z1ALTSgQ==
+	b=hFOe729tAlLaV1/ar+/hzaOVNgI3kDte8Ue1W0BTHIrOMwJQTIO1cmzsg5Kb6DFLY
+	 JaIS4meueZJfoIfcH6TGPSzkMOvbJda1tESsvupnnmJco9UDYckWOfRKS2OVm7hk7F
+	 OLnX7X59FoZZ8jbERBfqay/BI1fyenjBdP6RqAOmc/ZrS7e/9libOOUvHqled/5IZx
+	 qOrhM7EfLdCNj7e42yCJ4+4naCOD8OUFAG7Spmj1GNU8rsVSkhJZc5FxZDxZnVxQMl
+	 lNUGtDTCpBeYKyndc2abRjee8G6SrNsdxu6Zqw6/NrrvHQD+Grx2a/BTd7phBbtAKB
+	 rn7wDVVM40xWg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93905392704D;
-	Tue, 18 Aug 2026 18:37:14 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56882392704D;
+	Tue, 18 Aug 2026 18:37:17 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,56 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 01/11] can: tcan4x5x: put tcan into sleep when
- removing driver
+Subject: Re: [pull-request] NFC updates for next-next 2026-08-17 (fixed)
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178707823318.2194892.10223198524007434761.git-patchwork-notify@kernel.org>
-Date: Tue, 18 Aug 2026 18:37:13 +0000
-References: <20260817233420.2068204-2-mkl@pengutronix.de>
-In-Reply-To: <20260817233420.2068204-2-mkl@pengutronix.de>
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- linux-can@vger.kernel.org, kernel@pengutronix.de, sean@geanix.com
+ <178707823584.2194892.2999815923161079008.git-patchwork-notify@kernel.org>
+Date: Tue, 18 Aug 2026 18:37:15 +0000
+References: <7fc49075-884e-4284-b742-7057cbba4b17@ixit.cz>
+In-Reply-To: <7fc49075-884e-4284-b742-7057cbba4b17@ixit.cz>
+To: David Heidelberg <david@ixit.cz>
+Cc: kuba@kernel.org, pabeni@redhat.com, davem@davemloft.net,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ oe-linux-nfc@lists.linux.dev
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
-by Marc Kleine-Budde <mkl@pengutronix.de>:
+This pull request was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 18 Aug 2026 01:24:28 +0200 you wrote:
-> From: Sean Nyekjaer <sean@geanix.com>
+On Mon, 17 Aug 2026 22:13:52 +0200 you wrote:
+> The following changes since commit db2ddb87143519e20a95aa36c60b36107b736a58:
 > 
-> Put the tcan4x5x transceiver into sleep mode when the driver is
-> removed, instead of leaving it in its current operating mode.
-> This reduces power consumption(3mA@12V) once the driver is
-> no longer bound to the device.
+>    Linux 7.2-rc7 (2026-08-09 14:54:50 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    https://codeberg.org/linux-nfc/linux.git tags/nfc-net-next-20260817
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,01/11] can: tcan4x5x: put tcan into sleep when removing driver
-    https://git.kernel.org/netdev/net-next/c/c7d2577bf135
-  - [net-next,02/11] dt-bindings: can: rockchip: add rk3588 CAN-FD compatible
-    https://git.kernel.org/netdev/net-next/c/1802936fa034
-  - [net-next,03/11] can: rockchip: add RK3588 CAN support
-    (no matching commit)
-  - [net-next,04/11] docs: ctucanfd: fix swapped colors in legend for TX buffer FSM of CTU CAN FD
-    https://git.kernel.org/netdev/net-next/c/a0d62de8adce
-  - [net-next,05/11] can: vxcan: support per-netns device unregistration.
-    https://git.kernel.org/netdev/net-next/c/703b31d21e52
-  - [net-next,06/11] MAINTAINERS: Replace maintainer for Xilinx CAN driver
-    https://git.kernel.org/netdev/net-next/c/572e27108be5
-  - [net-next,07/11] dt-bindings: net: can: Convert TI HECC to DT schema
-    (no matching commit)
-  - [net-next,08/11] dt-bindings: can: xilinx_can: Document phys property
-    https://git.kernel.org/netdev/net-next/c/d17e20a2dcaf
-  - [net-next,09/11] can: m_can: Use of_property_present() for wakeup-source
-    https://git.kernel.org/netdev/net-next/c/966506838a4a
-  - [net-next,10/11] drivers: gs_usb: gs_usb_probe(): fix typo in error message
-    (no matching commit)
-  - [net-next,11/11] can: m_can: pci: Remove driver_data
-    https://git.kernel.org/netdev/net-next/c/f6a48a7b10be
+  - [pull-request] NFC updates for next-next 2026-08-17 (fixed)
+    https://git.kernel.org/netdev/net-next/c/b4a8e1fae517
 
 You are awesome, thank you!
 -- 
