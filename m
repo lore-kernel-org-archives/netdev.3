@@ -1,474 +1,192 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A0A47DD75;
-	Tue, 18 Aug 2026 16:37:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787071072; cv=none; b=B8mx/hlCxSwy6GSxg11KVUcfcFjXEBd90ib3raMq9/kyIRMvQg3MqZcPO2m44QSCoJ6ooo5+uu4CCCGl1p8KD7iZJj35aVhgP0KkC6O2Aoqxgt845jcI/qwrRsytjQea1YnaJ9kOpB2MfCFqqmkoKKZ8InygWdSo0Z29SERM8AY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787071072; c=relaxed/simple;
-	bh=cScN8e7SwLpJlTm/GZTE07E2bcqgcrjjKXUyKlU0dYk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=auih+hn1ijC8Ouf/cBj6SHnhBXgU7WbtvWuLXR47VJVJQix7tELRfBOF/1xP7k5mx9dkh3AlrD0fYcxVVRL8PV6YeazCuSynVDlUC2n0FsifyuAmw6jPRAnb3/OANRSQELQ5kDwQN+p6HF6AEXVqrX196xGrzrD05iG/gCsddsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JQaw18S+; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3BE437AA9C
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 16:38:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787071088; cv=pass; b=TscGXS/wxhr121C7ILtsVXIY9DOAFdqVQMksNy34S2dWnHslZjidjJLJHMa1/nrJThp1aqJVJKeZSylnY0TTKnrpBbFVbXsotO9pzHY7XKZZT1eYYU+coEkPBN6AXDUx9irH/Q7jw9VAvvEnOmKyFTQSnxRoCmBQxEzqwcaj8tQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787071088; c=relaxed/simple;
+	bh=Sh9h9dQ3B41wdeKBbZVy3TISpoHyLpEieCveSHS9njw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=o08qWnleG4hd6fwqssu54PxL7VfZs+pQpmWEAza0oWxXWmAd9vzzjbHZX7xdxHeIdHnLWRfsp6atlosJCg+i9WdVx97hGES3RAIC+crncn6SQVo+PfKqscvOq8Aq2g1jtowrb9DXfK+GMGEvfQHQBXE0Kax23gtYaoRYpohNhrE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sh8eLURO; arc=pass smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JQaw18S+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B442C1F00A3A;
-	Tue, 18 Aug 2026 16:37:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787071070;
-	bh=vtL6p9J5OfMYga2s5sLGwnQ1CRuk+Ch84q80ZYWCZKY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JQaw18S+LRtoV5fE8ZBurtaWrdTBfq5wCKY1s3YoZMQhlUxOa+BSPUA9qCtsFAI6d
-	 qrERgAq7TRjbJL4ivjboRDKnqgzwG1gTKU6rTNb5wFe1vtzhCqbW/jJrUw+hB1fN9L
-	 VADyCPYzorSfsPzvWMO6vYcWSRdhpZfLwdXYacCRktlPptzV38jY75XlQH2uj7hchT
-	 jdeb6dGp+pbFosJzGXM8DkwUu0fk8Fc4+127T9scaIdCXr8xbD5624AXGqOGaR+GTG
-	 uzVjchJiQhhEntvkILRoXMaYc7VqV1QIWrknrGDbqrTcrXSIjs66gy2JBC/Njlrg4+
-	 vFnyXgWI16gug==
-From: Jakub Kicinski <kuba@kernel.org>
-To: ivecera@redhat.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	poros@redhat.com,
-	vadim.fedorenko@linux.dev,
-	Chris.duQuesnay@microchip.com,
-	arkadiusz.kubalewski@intel.com,
-	jiri@resnulli.us,
-	min.li@microchip.com,
-	pabeni@redhat.com,
-	richardcochran@gmail.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v8 3/3] dpll: zl3073x: add PTP clock support
-Date: Tue, 18 Aug 2026 09:37:48 -0700
-Message-ID: <20260818163748.3988860-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260814082656.306534-4-ivecera@redhat.com>
-References: <20260814082656.306534-4-ivecera@redhat.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sh8eLURO"
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-51bfa429aa6so8039991cf.0
+        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 09:38:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787071086; cv=none;
+        d=google.com; s=arc-20260327;
+        b=V7750cl+m3q56gcZs/ixNbwcw1tYgxTQNRhnU8ReggoUWyD9X96ZA2NUZP8jHx4xrI
+         fO9V73orR2ARgxIAKXLEFGhdIYOZhWrAD32SNvcw08APdQvyJ1TmoM4kk8FfEBkvfnHs
+         TYMfm98PzZcuDAZ2r3xRBESa6rOYN1l7CEFP4pyLLyhDrvrFDyzd4oCUD4ZcZnisy1uw
+         vGdWYIsWad3AGh2m8/g71dx9OrLciY0Zd+qe+sM2sTgt5lB+7AMrpwj0UBHELsks9HVn
+         twRgQXE/EAehMBapMemmlUgH8qzWm29cyLtJQEaHTifE75Ccrg6xuvRkZ7tYPJlcJd9N
+         V2EQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=oY4KZv/LPpDCbj+BY5rZZjX9HD2PjF++yBgjpk94Zvk=;
+        fh=DmTsvJM5tx6LqSYCVh2B+LY7xZ1LJzTKgmKlz3+QQKc=;
+        b=ko8LriV9VPszYTnVCjCR+kXjFGkjFVsjAUiKkK5U4LDDPewbh2+bmvIFn1GqUJOCnT
+         q2VC470BcrybB10d1hof4uqHVKM/j7IGNcoNejVDMZYTYhjTCYRZzUEbHkWb8gCFQATZ
+         DsiXR43WnmLXAJk1I/f3LM6Uoo4Qv2MTejN0tM5cvPsuHiC+qpmzTSGLroPeRVuF9AGv
+         Sk+hqtpA42gYItpmpcVwg5upmqHpjg+uo0JlFkwUcuDM7CP7xmoxZn/mLgrthTyMR718
+         zRTT+5CK8FlTOIuIYw+aJyqC+XpBud1vHDERRlvtcoZYdhMvAcTUKA8r3sFwntNNfrLT
+         J41Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787071086; x=1787675886; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=oY4KZv/LPpDCbj+BY5rZZjX9HD2PjF++yBgjpk94Zvk=;
+        b=sh8eLUROXPafRfB8JanLBXOki00XdzUCGEyi/Zq2iV8Y3qafpjr+21obipDFV9ZbSW
+         Q9YmD2155Kk/eVGeMaj7NUPDWlcbt43a+iboTJQKTUWrlbr5rdKFFoeHchAtGFPJDzPe
+         Cfw68h9q03kWUC79r+HYQ3ciUKjM5TalI7N+xomvuRzJ646eRr4bX/JrkHXUWbre9fcD
+         xLxWnFztwpaykcCHE4XMlg8gyzzVKdv1sxqHHuW/YYb3QYz6cpvznOtPf1ug0hYfkXKv
+         jXe1DC3cpUDsYRgyUd1ZqalzLowJ4iebZm+ZFXee2ElAAo6S/zt4a+wEVS7HIUEApSK0
+         x8HA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787071086; x=1787675886;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oY4KZv/LPpDCbj+BY5rZZjX9HD2PjF++yBgjpk94Zvk=;
+        b=rAIeBWvDovnMhtB79sAaYXFn90vbRunUYTq8DXpGu/EufGnRtAGuVxLlPyZSSKtPOv
+         Qd0kcHHvwWFyy+PNJZ78iifrBGlEEFFj81QtsegZlhQevulA/0IgimUWAUzNK8suGmHK
+         UKuZeJv8gNf3DS/LidlAEDxBoE4XdL4/ZrChPcVbrTvCTUpH7VCxpHeQBC+nEam1shKn
+         lFKALp4Y4So96Lzy6PkSpGgqERv40oAWf0HBsGrwFx05GBnV4wWe247v8/BRnLc4MUti
+         5HjvehSgDc4eq7o5Aw1NSbwZGulm5JZQqJrGbOylfzBYF8UqLvl/7E1wAGqkiNskOCY+
+         5bZQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rq+vFT4kywQzER62d8P4x3P1T8RPvDnvpDZ5eSaOaiEdevZb2Ws/8RLFjsuhE/OE2Yjr92ooFA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywxmz4P+NisD5NjRUqmWKNy+4QBVyqFQstEJYi6cb8qy6QgeFta
+	wA4+6hxGBbTG56famsh0uRYJ6XMGgOfn0YXEeTM7FKW6sG0oM2103k2L2dV8/KsmeAJjapvMWQq
+	72WI+IpM9LTjGB84tugheNv8mm9Kb+iFeP030KWzY
+X-Gm-Gg: AR+sD12FRyebNPI3QshJQCw9fZpQvQFsIno6MYllcBoIrqPWNe4lWvY/YbxI8re6Y35
+	QzL4BS/Ho7e0Q71fYhU/pKJQjRBzZ62W4s2Ycul5AcmoCcdPl3zrdyT8edww16p9XNeFhqeUYM4
+	ndDCtMxKpADiArcw5dOroDiBUYy5USxlwuq0y+jR0vUzsJsDf5SC5vJI1gCLTiYfVWYCVrvTqsB
+	NwwLgUZPnRRbszutAXemLPJkEKq52IewfZ8mPWdOKFGpFZs/2TDzTATmNu4llcPLOIPLh+yONln
+	/c4hYftpcE+d7PIIdWDiJbW/TuosqSzfJdpwqShWSpXVHpa5zTuOOfPHX8/PdLdfIlzC6xU0RWe
+	0BBGBYyWS9KBuPtr5GiG+jFDSM99SNNOVSkKTACNHGffmJ7yntsP/uw08gROnQmaye8tBV8QMHu
+	2MLy7/nvv+RFnHJlY=
+X-Received: by 2002:a05:622a:2c1:b0:50f:c403:7ffb with SMTP id
+ d75a77b69052e-52dbee29221mr75074751cf.18.1787071084785; Tue, 18 Aug 2026
+ 09:38:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260818162108.11456-1-a0yami@mailbox.org>
+In-Reply-To: <20260818162108.11456-1-a0yami@mailbox.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 18 Aug 2026 18:37:53 +0200
+X-Gm-Features: AcwNN1U1om7v4QT9QgPTTnQjR7bEOsR3MTisCxiHdQ6oxIld1g0M2CmqzreeQEg
+Message-ID: <CANn89iLBDiwaLZ-1cp50HQahgrDD8ZDw8mix6C+Ukf3v-4xXxQ@mail.gmail.com>
+Subject: Re: [PATCH net] tcp: fix AO info use-after-free in tcp_ao_connect_init()
+To: Qing Ming <a0yami@mailbox.org>
+Cc: Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
+	Dmitry Safonov <0x7f454c46@gmail.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-dpll: zl3073x: add PTP clock support
+On Tue, Aug 18, 2026 at 6:21=E2=80=AFPM Qing Ming <a0yami@mailbox.org> wrot=
+e:
+>
+> tcp_v4_connect() adds a SYN-SENT socket to the ehash before calling
+> tcp_connect().  If TCP-AO is configured, tcp_connect() first verifies tha=
+t
+> a key matches the peer and the bound device's current L3 master.
+> tcp_ao_connect_init() later resolves the L3 master again and removes keys
+> which do not match it.
+>
+> The socket lock does not stabilize the bound device's VRF membership.
+> Detaching the device from its VRF between the initial validation and the
+> L3-master calculation in tcp_ao_connect_init() can therefore make the
+> validation succeed while initialization observes the default L3 domain an=
+d
+> removes the only key.  The subsequent AO lookup then fails, so the no-key
+> path clears tp->ao_info and frees it directly.
+>
+> The receive path can find the socket in the ehash and load tp->ao_info
+> under RCU before acquiring the socket lock.  A reader which loaded the ol=
+d
+> pointer can thus continue into tcp_inbound_ao_hash() after the direct fre=
+e.
+>
+> The issue was found during a static audit of TCP-AO object lifetime.  An
+> unprivileged reproducer in self-created user and network namespaces raced
+> connect() with detaching a veth from its VRF while sending TCP-AO segment=
+s.
+> It triggered the same KASAN report on two fresh boots:
+>
+>   BUG: KASAN: slab-use-after-free in tcp_inbound_ao_hash+0x585/0x19f0
+>   Write of size 8 at addr ffff88800bf88128 by task tcp_ao_vrf_race/232
+>
+>   Call Trace:
+>    tcp_inbound_ao_hash+0x585/0x19f0
+>    tcp_inbound_hash+0x677/0xa80
+>    tcp_v4_rcv+0x1c3e/0x3ab0
+>
+>   Allocated by task 235:
+>    tcp_ao_alloc_info+0x43/0xf0
+>    tcp_ao_add_cmd+0xdf7/0x13b0
+>    do_tcp_setsockopt+0x168c/0x2640
+>
+>   Freed by task 235:
+>    kfree+0x1b8/0x550
+>    tcp_connect+0x252/0x4f00
+>    tcp_v4_connect+0x1114/0x1720
+>
+> The bad address is 40 bytes inside the freed 128-byte object, matching th=
+e
+> tcp_ao_info counters.key_not_found field.  The two runs used 1000 attempt=
+s
+> each, reached the no-key path 366 and 411 times, and produced one and two
+> KASAN reports respectively.  With this change, the same reproducer reache=
+d
+> the no-key path 366 times in 1000 attempts without a KASAN report or oops=
+.
+>
+> Use tcp_ao_destroy_sock() for the no-key path.  It unpublishes the AO inf=
+o,
+> updates the socket memory and static-key accounting, and defers the free
+> until after an RCU grace period.
+>
+> Fixes: 248411b8cb89 ("net/tcp: Wire up l3index to TCP-AO")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Codex:gpt-5
+> Signed-off-by: Qing Ming <a0yami@mailbox.org>
+> ---
+>  net/ipv4/tcp_ao.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/net/ipv4/tcp_ao.c b/net/ipv4/tcp_ao.c
+> index e4ec60a33496..4dc5910da076 100644
+> --- a/net/ipv4/tcp_ao.c
+> +++ b/net/ipv4/tcp_ao.c
+> @@ -1191,8 +1191,7 @@ void tcp_ao_connect_init(struct sock *sk)
+>                  * at least one tcp-ao key that matches the remote peer.
+>                  */
+>                 WARN_ON_ONCE(1);
+> -               rcu_assign_pointer(tp->ao_info, NULL);
+> -               kfree(ao_info);
+> +               tcp_ao_destroy_sock(sk, false);
+>         }
 
-This registers a PTP clock device per DPLL channel and implements
-gettimex64, settime64, adjtime, adjfine, adjphase and getmaxphase on top
-of the existing ToD, TIE and output phase step helpers.  All callbacks are
-serialized by the per-DPLL zldpll->lock mutex, and PTP_1588_CLOCK becomes
-a hard dependency of the driver.
+Why keeping WARN_ON_ONCE(1) then?
+This will crash with panic_on_warn=3D1.
 
-A few questions below.
+pw-bot: cr
 
-> diff --git a/drivers/dpll/zl3073x/Kconfig b/drivers/dpll/zl3073x/Kconfig
-> index 5bbca14005813..da1731ace15f0 100644
-> --- a/drivers/dpll/zl3073x/Kconfig
-> +++ b/drivers/dpll/zl3073x/Kconfig
-> @@ -2,7 +2,7 @@
->  
->  config ZL3073X
->  	tristate "Microchip Azurite DPLL/PTP/SyncE devices" if COMPILE_TEST
-> -	depends on NET
-> +	depends on NET && PTP_1588_CLOCK
->  	select DPLL
->  	select NET_DEVLINK
->  	select REGMAP
-> @@ -16,7 +16,7 @@ config ZL3073X
->  
->  config ZL3073X_I2C
->  	tristate "I2C bus implementation for Microchip Azurite devices"
-> -	depends on I2C && NET
-> +	depends on I2C && NET && PTP_1588_CLOCK
->  	select REGMAP_I2C
->  	select ZL3073X
->  	help
-> @@ -28,7 +28,7 @@ config ZL3073X_I2C
->  
->  config ZL3073X_SPI
->  	tristate "SPI bus implementation for Microchip Azurite devices"
-> -	depends on NET && SPI
-> +	depends on NET && SPI && PTP_1588_CLOCK
->  	select REGMAP_SPI
->  	select ZL3073X
-
-[Severity: Low]
-Should PTP_1588_CLOCK be a hard dependency here?
-
-ZL3073X is only user-visible with COMPILE_TEST and is otherwise selected by
-ZL3073X_I2C/ZL3073X_SPI, so on a tree with CONFIG_PTP_1588_CLOCK=n the
-ZL3073X_I2C and ZL3073X_SPI prompts disappear on oldconfig and the whole
-driver is dropped, including the DPLL, devlink/flash and SyncE
-functionality that does not need PTP.
-
-The new code compiles against the !PTP stubs (only ptp_clock_register()
-returns NULL, which zl3073x_dpll_ptp_register() already treats as
-success), which is what PTP_1588_CLOCK_OPTIONAL in drivers/ptp/Kconfig is
-for:
-
-	config PTP_1588_CLOCK_OPTIONAL
-		tristate
-		default y if PTP_1588_CLOCK=n
-		default PTP_1588_CLOCK
-
-Would depends on PTP_1588_CLOCK_OPTIONAL work here instead?  If the hard
-dependency is intended, could the changelog mention that PTP becomes
-mandatory for existing users?
-
-> diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
-> index 83bd3027dbaa1..f2e137475b40f 100644
-> --- a/drivers/dpll/zl3073x/dpll.c
-> +++ b/drivers/dpll/zl3073x/dpll.c
-
-[ ... ]
-
-> @@ -2313,45 +2315,384 @@ zl3073x_dpll_init_fine_phase_adjust(struct zl3073x_dev *zldev)
-
-[ ... ]
-
-> +/**
-> + * zl3073x_dpll_ptp_settime64 - set ToD counters to given time
-> + * @info: PTP clock info
-> + * @ts: timespec with time to set
->   *
-> - * Return: pointer to DPLL device on success, error pointer on error
-> + * Return: 0 on success, <0 on error
->   */
-> -struct zl3073x_dpll *
-> -zl3073x_dpll_alloc(struct zl3073x_dev *zldev, u8 ch)
-> +static int zl3073x_dpll_ptp_settime64(struct ptp_clock_info *info,
-> +				      const struct timespec64 *ts)
->  {
-> -	struct zl3073x_dpll *zldpll;
-> +	struct zl3073x_dpll *zldpll = container_of(info, struct zl3073x_dpll,
-> +						   ptp_info);
->  
-> -	zldpll = kzalloc_obj(*zldpll);
-> -	if (!zldpll)
-> -		return ERR_PTR(-ENOMEM);
-> +	guard(mutex)(&zldpll->lock);
->  
-> -	zldpll->dev = zldev;
-> -	zldpll->id = ch;
-> -	mutex_init(&zldpll->lock);
-> -	INIT_LIST_HEAD(&zldpll->pins);
-> +	return zl3073x_chan_tod_write(zldpll->dev, zldpll->id, *ts);
-> +}
-
-[Severity: High]
-Does settime64() need to compensate for the deferred ToD load?
-
-zl3073x_chan_tod_write() only ever issues the next-1Hz-edge command:
-
-drivers/dpll/zl3073x/chan.c:zl3073x_chan_tod_write() {
-	...
-	return zl3073x_chan_tod_ctrl(zldev, ch,
-				     ZL_DPLL_TOD_CTRL_CMD_WR_NEXT_1HZ);
-}
-
-so the value written becomes the counter value at the coming 1 Hz edge,
-0..1 s after the register write.  zl3073x_chan_tod_ready_wait() budgets
-ZL_POLL_TOD_WR_TIMEOUT_US (1000 ms) for exactly that pending write.
-
-zl3073x_chan_tod_adjust() in the same driver compensates for this by
-basing the write on the next-1Hz read:
-
-drivers/dpll/zl3073x/chan.c:zl3073x_chan_tod_adjust() {
-	...
-	rc = zl3073x_chan_tod_read(zldev, ch, true, &ts_next, NULL);
-	...
-	/* Apply delta to the next-Hz ToD */
-	ts_next = timespec64_add(ts_next, delta);
-	...
-	return zl3073x_chan_tod_write(zldev, ch, ts_next);
-}
-
-Here the caller's timespec is written verbatim, so after the edge the
-counter reads ts while real time has advanced by the distance from the
-call to that edge.  Does this leave the clock up to a second behind the
-requested time on every clock_settime()?
-
-Also, ts.tv_nsec is written raw.  If a caller passes a non-zero tv_nsec,
-does the ToD second boundary end up displaced from the DPLL 1 Hz / output
-1PPS phase, i.e. the coherence that adjtime() takes care to preserve by
-routing sub-second deltas through phase step or TIE write?
-
-> +/**
-> + * zl3073x_dpll_ptp_adjtime_phase_step - adjust sub-second time via phase step
-> + * @zldpll: DPLL channel
-> + * @delta: time adjustment in nanoseconds (must be within (-NSEC_PER_SEC,
-> + *         NSEC_PER_SEC))
-> + *
-> + * Uses the output phase step mechanism with tod_step=1 to adjust both
-> + * the output clock phase and the ToD counter simultaneously. This keeps
-> + * outputs and ToD coherent. Only valid for NCO.
-> + *
-> + * Outputs are grouped by synthesizer since the phase step value is in
-> + * synthesizer clock cycles. The first synth group with enabled outputs
-> + * uses tod_step to adjust both outputs and the ToD counter. Remaining
-> + * groups step outputs only. If no synth has enabled outputs, the ToD
-> + * counter is stepped alone using an empty output mask (the FW uses
-> + * the first enabled synth's period for the conversion).
-
-[Severity: Low]
-This isn't a bug, but the kernel-doc of
-zl3073x_dpll_ptp_adjtime_phase_step() speaks of "enabled outputs" while
-the code filters on the device-global step-time mask instead:
-
-	if (!zl3073x_dev_out_is_stepped(zldev, out_id))
-		continue;
-
-drivers/dpll/zl3073x/core.h:zl3073x_dev_out_is_stepped() {
-	return !!(zldev->out_step_time_mask & BIT(index));
-}
-
-out_step_time_mask comes from ZL_REG_OUTPUT_STEP_TIME_MASK and says
-nothing about whether an output is enabled, so an enabled, DPLL-owned
-output that is absent from that mask is excluded from the phase step and
-can also trigger the !tod_stepped ToD-only fallback.  Could the wording be
-changed to refer to step-time-capable outputs?
-
-> +	/* Process each synth group */
-> +	for (i = 0; i < ZL3073X_NUM_SYNTHS; i++) {
-
-[ ... ]
-
-> +/**
-> + * zl3073x_dpll_ptp_adjtime - adjust PTP clock time
-
-[ ... ]
-
-> +static int zl3073x_dpll_ptp_adjtime(struct ptp_clock_info *info, s64 delta)
->  {
-> -	WARN(zldpll->dpll_dev, "DPLL device is still registered\n");
-> +	struct zl3073x_dpll *zldpll = container_of(info, struct zl3073x_dpll,
-> +						   ptp_info);
-> +	struct zl3073x_dev *zldev = zldpll->dev;
-> +	const struct zl3073x_chan *chan;
-> +	bool sec_adjusted = false;
-> +	struct timespec64 ts;
-> +	int rc;
->  
-> -	mutex_destroy(&zldpll->lock);
-> -	kfree(zldpll);
-> +	if (!delta)
-> +		return 0;
-> +
-> +	guard(mutex)(&zldpll->lock);
-
-[ ... ]
-
-> +	if (delta >= NSEC_PER_SEC || delta <= -NSEC_PER_SEC) {
-> +		s32 remainder;
-> +
-> +		ts.tv_sec = div_s64_rem(delta, NSEC_PER_SEC, &remainder);
-> +		ts.tv_nsec = 0;
-> +		delta = remainder;
-> +
-> +		rc = zl3073x_chan_tod_adjust(zldev, zldpll->id, ts);
-> +		if (rc)
-> +			return rc;
-> +
-> +		/* No sub-second remainder, done */
-> +		if (!delta)
-> +			return 0;
-> +
-> +		/* Wait for the ToD write to be applied at the 1 Hz edge
-> +		 * before issuing phase step or TIE write, so the pending
-> +		 * WR_NEXT_1HZ does not overwrite the sub-second adjustment.
-> +		 */
-> +		rc = zl3073x_chan_tod_ready_wait(zldev, zldpll->id);
-> +		if (rc)
-> +			return rc;
-> +
-> +		sec_adjusted = true;
-> +	}
-
-[Severity: Medium]
-Is this error return reachable after the seconds are already committed?
-
-zl3073x_chan_tod_adjust() ends in zl3073x_chan_tod_write(), which arms
-ZL_DPLL_TOD_CTRL_CMD_WR_NEXT_1HZ, so once it returns 0 the whole-second
-step will latch at the next 1 Hz edge and cannot be revoked.  The
-following zl3073x_chan_tod_ready_wait() can then fail:
-
-drivers/dpll/zl3073x/chan.c:zl3073x_chan_tod_ready_wait() {
-	...
-	case ZL_DPLL_TOD_CTRL_CMD_WR_NEXT_1HZ:
-		timeout = ZL_POLL_TOD_WR_TIMEOUT_US;
-	...
-	return rc == -ETIMEDOUT ? -EBUSY : rc;
-}
-
-with ZL_POLL_TOD_WR_TIMEOUT_US == 1000 ms while zl3073x_chan_tod_adjust()
-only guarantees a 20 ms margin before the edge, so the pending write can
-need nearly the full second to retire.  A plain regmap read error gives
-the same exit.
-
-That return happens before sec_adjusted = true, so this is the one error
-path that is not covered by the compensating logic further down:
-
-	if (rc && sec_adjusted) {
-		dev_warn(zldev->dev,
-			 "Sub-second adjustment failed after seconds applied\n");
-		return 0;
-	}
-
-Does the caller then get a failure for an adjustment whose seconds part is
-already applied, with the sub-second remainder dropped?  If the servo or a
-clock_adjtime(ADJ_SETOFFSET) user re-issues the same delta after the edge
-has passed, is the whole second applied twice?
-
-> +
-> +	/* Apply sub-second delta via phase step (NCO) or TIE write */
-> +	if (zl3073x_chan_mode_is_nco(chan)) {
-> +		rc = zl3073x_dpll_ptp_adjtime_phase_step(zldpll, delta);
-> +		if (!rc)
-> +			return 0;
-> +	} else {
-> +		rc = zl3073x_chan_tie_write(zldev, zldpll->id, delta);
-> +		if (!rc)
-> +			return 0;
-> +	}
-
-[Severity: Medium]
-Does the same pending WR_NEXT_1HZ hazard exist across callback
-invocations?
-
-The comment above acknowledges the hazard within one adjtime() call, but
-the drain only runs when the seconds branch was taken.  For |delta| < 1 s
-sec_adjusted stays false and zl3073x_chan_tod_ready_wait() is never
-called, and zl3073x_dpll_ptp_adjphase() does not drain either:
-
-	chan = zl3073x_chan_state_get(zldev, zldpll->id);
-
-	if (!zl3073x_chan_mode_supports_tie(chan))
-		return -EOPNOTSUPP;
-
-	return zl3073x_chan_tie_write(zldev, zldpll->id, delta);
-
-Meanwhile zl3073x_dpll_ptp_settime64(), and adjtime() on an exact
-whole-second delta ("No sub-second remainder, done"), both drop
-zldpll->lock while a WR_NEXT_1HZ is still armed, because
-zl3073x_chan_tod_write() only waits for a previous operation on entry:
-
-CPU0
-zl3073x_dpll_ptp_settime64()
-   zl3073x_chan_tod_write()
-      zl3073x_chan_tod_ctrl(..., ZL_DPLL_TOD_CTRL_CMD_WR_NEXT_1HZ)
-   /* mutex released, write still pending */
-
-CPU0 (or another task), same 1 Hz interval
-zl3073x_dpll_ptp_adjphase()          /* or sub-second adjtime() */
-   zl3073x_chan_tie_write()          /* no ToD semaphore poll */
-   /* 1 Hz edge: pending absolute ToD write lands, sub-second
-      adjustment discarded, outputs already stepped */
-
-The mutex serializes register accesses but not the retirement of the
-asynchronous device command, so does 0 get returned for an adjustment that
-was silently dropped, leaving ToD and outputs incoherent for the NCO phase
-step case?  Would calling zl3073x_chan_tod_ready_wait() unconditionally
-before the phase step / TIE write cover this?
-
-> +
-> +	/* Phase step or TIE write failed, fall back to ToD adjust */
-> +	rc = zl3073x_chan_tod_adjust(zldev, zldpll->id,
-> +				     ns_to_timespec64(delta));
-
-[ ... ]
-
-> +/**
-> + * zl3073x_dpll_ptp_adjfine - adjust PTP clock frequency
-> + * @info: PTP clock info
-> + * @scaled_ppm: frequency adjustment in scaled ppm (ppm * 2^16)
-> + *
-> + * Only supported for NCO. Writes the delta frequency offset register.
-> + *
-> + * Return:
-> + * * %0			- success or @scaled_ppm is zero (no-op)
-> + * * %-EOPNOTSUPP	- NCO pin is not connected and @scaled_ppm is non-zero
-> + * * negative		- other error
-> + */
-
-[Severity: Low]
-This isn't a bug, but does the documented "@scaled_ppm is zero (no-op)"
-match the code?
-
-> +	guard(mutex)(&zldpll->lock);
-> +
-> +	chan = zl3073x_chan_state_get(zldpll->dev, zldpll->id);
-> +	if (!zl3073x_chan_mode_is_nco(chan))
-> +		return scaled_ppm ? -EOPNOTSUPP : 0;
-> +	if (offset == chan->df_offset)
-> +		return 0;
-> +
-> +	return zl3073x_chan_df_offset_set(zldpll->dev, zldpll->id, offset);
-> +}
-
-With scaled_ppm == 0 on an NCO channel whose cached df_offset is non-zero,
-offset becomes 0 and zl3073x_chan_df_offset_set() performs a 48-bit write
-to ZL_REG_DPLL_DF_OFFSET, which changes the NCO frequency and can return a
-negative errno.  Could the Return section be reworded to describe the
-absolute setpoint semantics?
-
-> @@ -2436,6 +2777,47 @@ zl3073x_dpll_ref_sync_pairs_register(struct zl3073x_dpll *zldpll)
->  	return 0;
->  }
->  
-> +/**
-> + * zl3073x_dpll_alloc - allocate DPLL device
-> + * @zldev: pointer to zl3073x device
-> + * @ch: DPLL channel number
-> + *
-> + * Allocates DPLL device structure for given DPLL channel.
-> + *
-> + * Return: pointer to DPLL device on success, error pointer on error
-> + */
-> +struct zl3073x_dpll *
-> +zl3073x_dpll_alloc(struct zl3073x_dev *zldev, u8 ch)
-> +{
-> +	struct zl3073x_dpll *zldpll;
-> +
-> +	zldpll = kzalloc_obj(*zldpll);
-> +	if (!zldpll)
-> +		return ERR_PTR(-ENOMEM);
-> +
-> +	zldpll->dev = zldev;
-> +	zldpll->id = ch;
-> +	mutex_init(&zldpll->lock);
-> +	INIT_LIST_HEAD(&zldpll->pins);
-> +
-> +	return zldpll;
-> +}
-> +
-> +/**
-> + * zl3073x_dpll_free - free DPLL device
-> + * @zldpll: pointer to zl3073x_dpll structure
-> + *
-> + * Deallocates given DPLL device previously allocated by @zl3073x_dpll_alloc.
-> + */
-> +void
-> +zl3073x_dpll_free(struct zl3073x_dpll *zldpll)
-> +{
-> +	WARN(zldpll->dpll_dev, "DPLL device is still registered\n");
-> +
-> +	mutex_destroy(&zldpll->lock);
-> +	kfree(zldpll);
-> +}
-> +
-
-[Severity: Low]
-This isn't a bug, but zl3073x_dpll_alloc() and zl3073x_dpll_free() are
-moved verbatim from where the new PTP helpers were inserted to this spot,
-with no functional change and no mention in the changelog.  That accounts
-for roughly 35 of the 439 added lines and mixes code motion with new
-logic.  The new PTP helpers are all static and self-contained, so is the
-move needed?  Could it be dropped or split into a separate no-functional-change
-patch?
-
-[ ... ]
+Please wait ~24 hours before sending a new version.
