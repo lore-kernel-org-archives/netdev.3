@@ -1,96 +1,85 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484B7466B5E;
-	Tue, 18 Aug 2026 13:10:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74D546EF84;
+	Tue, 18 Aug 2026 13:11:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787058650; cv=none; b=NmGeKHfvFGBL5kKsxYFqKysidA3v51CVYd3TaSlrD9j7GwFXSsbei1+lU9ajRsQqFL1uCTeosY3L5w+dgAdIZKCSTVJGGvouVdUrwGzvkbXCCrD4Lqw1Lgu2jKe9fHKj4ZymUS0VfpDiexVQElGO5Y1YebkkFqgHlAr62C80WV4=
+	t=1787058664; cv=none; b=kp4k3QfJFvaDXhYP/8LT8UI+2s56LOl74rhYCX4BAP4wkBXFMxzRQ1o0oJ31vkzWgz7uGLw9QMv08560xfqLDegXsOkGh5+o7k6LbHFcYrLMoSwz+510eljlEzun5MlJnMOEir+/Qwh09tz1Lbsux+BPc9Hu03UJrqZjD6fBPvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787058650; c=relaxed/simple;
-	bh=07EAIixBzY/yCB52or2BvZMc+hEquo+XOX+dCMidaBE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z3iu1IW665OICYewZpaXZRucMGK9NTWW+y82GKB2fQD4EpCNkSgWp4T9s3JyjxhfY87dmFz0IAGLe0vkZTUApRKy3lOJjNCfUGiR/Q0CVdaUJHWIZI7rkiKOgqRNkUKI2BGF93aw20arlz6voDDuy3/KJ+eOsZUDse4S3dLCht8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=PTDB97bQ; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1787058664; c=relaxed/simple;
+	bh=uqQtUCupYGMVRJS9NKjgtFacb/uAfUJNkD7gR9gQ4hU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=syNoBVhj5H5T3K80CINo510et0EIAKTz+LSAoR5Wns7d2HgqfDV6TY5+bLOlXlfRiGZWBjOYwwacKNBfUaJP9sSGrKBuqxvgT6Pv3/hl7LhBj632IH875izNTqt/j/55h4pUCoxhIWargIee4+0fymUtjIi5K31F7atXN2/annE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EQFht4oK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="PTDB97bQ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=M4+64oG3F01w5MagjBhSI357B+hDykwWi44WkgxNBk8=; b=PTDB97bQnzCRe+70u8B/T/J/yv
-	Q+ZYgNhIyFbSBoWGED7Y2zWT+DrFC8hZwlzM/JD+4aqoPL8T39Wx0z63DCGNdVe9OhFqjXYUV4GFY
-	1ouCnHIX0ud6G6NcxQ8pw/C217/sUWOcIRzFq4mf9FpNCcpKBlB8v/BXR5TxFkVxw9mQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wwJaD-000TNb-PZ; Tue, 18 Aug 2026 15:10:25 +0200
-Date: Tue, 18 Aug 2026 15:10:25 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Linus Walleij <linusw@kernel.org>,
-	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Alvin =?utf-8?Q?=C5=A0ipraga?= <alvin.sipraga@analog.com>,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v1 2/2] net: dsa: realtek: rtl8365mb: add EEE
- support
-Message-ID: <71b40b25-1681-4df4-abe4-c4f7043875a7@lunn.ch>
-References: <20260817134758.4182833-1-o.rempel@pengutronix.de>
- <20260817134758.4182833-3-o.rempel@pengutronix.de>
- <8be5a31d-55af-47ba-bd7b-4e581c3950bd@lunn.ch>
- <aoROhXF2XJabMMM8@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EQFht4oK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5281F000E9;
+	Tue, 18 Aug 2026 13:11:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787058662;
+	bh=VSiYwIGotnwNwFpHjW7RPv8wk8MFI1vPhOw103KsZLU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=EQFht4oKHYeIxhCqid8jSb+98ueue4N+cz9aHSQrd3XOoOiL9PvJQ2P45OMA4/Vex
+	 jC2wUyNFEEmQcJKUegbQXQOITWHB3IFQX5O8sM4j/2FJKpgeRoHC7PJt1TJ8lI6L1c
+	 Pwuxv8FmTLZwYG/MoMGGws2dDz2UVOEK2tfhV2K2wL0fEXEDb+tcyBaszOwQa/NVMs
+	 YLF88QLhvbGKGiiKBjx/zj1s5e4HwwlRbaRmXD4og48/Kdf8QyteM0nuzsX2Whb+3h
+	 zgqLs7gjpyv5PKdj9BnEmL/lN5yZVKWgRe5IKeqYhgCXyfPFwPu+wWwSESTLeQfLpF
+	 jsDICTjALazQg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 938B53926661;
+	Tue, 18 Aug 2026 13:10:15 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aoROhXF2XJabMMM8@pengutronix.de>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v14 0/4] net: pse-pd: add Realtek PSE MCU support
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178705861416.2079194.11658601794072677702.git-patchwork-notify@kernel.org>
+Date: Tue, 18 Aug 2026 13:10:14 +0000
+References: <20260813222036.873930-1-jelonek.jonas@gmail.com>
+In-Reply-To: <20260813222036.873930-1-jelonek.jonas@gmail.com>
+To: Jonas Jelonek <jelonek.jonas@gmail.com>
+Cc: o.rempel@pengutronix.de, kory.maincent@bootlin.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, daniel@makrotopia.org, bjorn@mork.no,
+ sander@svanheule.net
 
-On Tue, Aug 18, 2026 at 02:22:29PM +0200, Oleksij Rempel wrote:
-> On Mon, Aug 17, 2026 at 04:53:52PM +0200, Andrew Lunn wrote:
-> > > +static int rtl8365mb_phylink_mac_enable_tx_lpi(struct phylink_config *config,
-> > > +					       u32 timer, bool tx_clock_stop)
-> > > +{
-> > > +	/* The hardware manages LPI itself; there is no MAC-level LPI control.
-> > > +	 * This callback only signals LPI awareness to phylink.
-> > > +	 */
-> > > +	return 0;
-> > > +}
-> > > +
-> > > +static void rtl8365mb_phylink_mac_disable_tx_lpi(struct phylink_config *config)
-> > > +{
-> > > +}
-> > > +
-> > 
-> > So what happens when i do:
-> > 
-> > ethtool --set-eee eth42 off
-> > 
-> > or
-> > 
-> > ethtool --set-eee eth42 tx-lpi on
+Hello:
+
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Thu, 13 Aug 2026 22:20:31 +0000 you wrote:
+> This series adds a PSE-PD driver for the microcontroller (MCU) that
+> fronts the PSE silicon on a range of managed switches, together with its
+> DT binding.
 > 
-> In current implementation, with "tx-lpi off", the driver will return
-> -EINVAL, "tx-lpi on" will be passed. It is aligned with KSZ driver.
-> rtl8365mb_set_mac_eee() is used as filter.
+> Hardware model
+> ==============
+> 
+> [...]
 
-Ah, good.
+Here is the summary with links:
+  - [net-next,v14,1/4] dt-bindings: net: pse-pd: add bindings for Realtek PSE MCU
+    https://git.kernel.org/netdev/net-next/c/368990e9f6c6
+  - [net-next,v14,2/4] net: pse-pd: add Realtek PSE MCU core
+    https://git.kernel.org/netdev/net-next/c/44566e614d84
+  - [net-next,v14,3/4] net: pse-pd: realtek-pse-mcu: add I2C transport
+    https://git.kernel.org/netdev/net-next/c/4c088d9eb32f
+  - [net-next,v14,4/4] net: pse-pd: realtek-pse-mcu: add UART transport
+    https://git.kernel.org/netdev/net-next/c/5cc93d989749
 
-> Currently it is -EINVAL as in KSZ driver. If we will go with -EOPNOTSUPP
-> then probably both drivers should follow it.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
--EOPNOTSUPP would be better.  It is not an invalid configuration. This
- hardware cannot support it.
 
-	Andrew
