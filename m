@@ -1,171 +1,270 @@
-Received: from usb-smtp-delivery-120.mimecast.com (usb-smtp-delivery-120.mimecast.com [170.10.151.120])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5656C3B776D
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 16:26:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.151.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652F13AA9E2;
+	Tue, 18 Aug 2026 16:26:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787070362; cv=none; b=R0JkX9RHAlT3OmYdbn4xSQUV/3RlvybHst0+GMptKkj72jPXJ/gxngnWuxo9766qx3GOAKLuXP+lRHRGurq+L+1dC91L7Geq9csw6JyryqzD+K4BL1YPZDF/RnFg4/hPl0KCBDIBzZ5G43rcKa5CTMTqFYeElyZDpUicRLlgMxo=
+	t=1787070369; cv=none; b=RE2T1RkqSxQJlGCRg8hDBHP71jKtHrusdoyKyvrwCcybfpHkfO5hL5+x2i4hpEzcCg+yOU+WT3mFXH0JPPuIMoRfa47AjY03GlW7V+otvIZcXOVXvA5Lxv/L0vSc9mVFRwxDMqip1NJkw7fHbXm8EP51CL9bta4C3hL3lB0AgFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787070362; c=relaxed/simple;
-	bh=hFAQfzghpWNU6LmtajzF+eg8+sNCuekIW+NUGMUSF70=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 MIME-Version:Content-Type; b=tHU6tpmw6bEq54wcPYqnDD5t6MJ1rYiErIFOqXeRWB7MpGsDBcRKuGaO6yd/hkDzl3Ag5DlMh4vDLbVnbpE9mye38vNAAWuP4t21QKv0q7gkHveTTHyyMqrxwt0h9CcXzKJP77pVHPYeCoI2dkaijljpR6aqaTRT1NxGH90ASZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com; spf=pass smtp.mailfrom=onsemi.com; dkim=pass (2048-bit key) header.d=onsemi.com header.i=@onsemi.com header.b=fUc4hYVP; arc=none smtp.client-ip=170.10.151.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onsemi.com
+	s=arc-20240116; t=1787070369; c=relaxed/simple;
+	bh=zXWV3/CaLpptbI7jPvsvFULCzH5RCbRhdJVv7HCrP50=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EfLUbQ6tjxa8WtlmiX860xKirBdBfN08zHHlsLhZUIa2bi1T/5PMdo8MqIRgw8y7Vbu9anyxPiJtKq8c79X6+W58S+OYX+mAtjI/S/Npb38PZUj9f0tCzQGS9ojFd7c4BljZhBTXoBKPTP0O0I9y637TvvdDgsRsynx/D4TFfTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mol+ptA8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onsemi.com header.i=@onsemi.com header.b="fUc4hYVP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onsemi.com;
-	s=mimecast20250127; t=1787070360;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hFAQfzghpWNU6LmtajzF+eg8+sNCuekIW+NUGMUSF70=;
-	b=fUc4hYVPVGZ/4NwEojZcaurHlEq4Pp75lN5DfVp9nc4Se6qKUkD9NDXbplEp3PzfEIAXU6
-	nBvv4OkdsAWJaiG+1dhT+QXA+fSGvbTPSsrvUwFKqI4A7y30Ja3txfj6ii38UyCpbuZDLf
-	pxmDNXvje/5cE5pHCStH5FHI0G340R5JTD/Ayoi3arjcRXP1Q07GXb751ZDWkc9SYXxPav
-	GaWbhxpb6Y2Qv2pqFjvSgXSXwGh5RkmQBYg/nvFKrN7z9yuUijY43n0wBF+/obFy/ta5IJ
-	vTuhEFWYq5ENAqEMb7q/UzOvwFKZm+OUIBKxoRZVvQTe++mvKV4MbcYM1JEL7g==
-Received: from SN4PR2101CU001.outbound.protection.outlook.com
- (mail-southcentralusazon11012036.outbound.protection.outlook.com
- [40.93.195.36]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- usb-mta-1-7RRMUgc2N1y0BxlS5lFQxg-1; Tue, 18 Aug 2026 09:24:02 -0700
-X-MC-Unique: 7RRMUgc2N1y0BxlS5lFQxg-1
-X-Mimecast-MFC-AGG-ID: 7RRMUgc2N1y0BxlS5lFQxg_1787070240
-Received: from DM5PR02MB3369.namprd02.prod.outlook.com (2603:10b6:4:68::27) by
- BL3PR02MB8148.namprd02.prod.outlook.com (2603:10b6:208:35f::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Tue, 18 Aug
- 2026 16:23:59 +0000
-Received: from DM5PR02MB3369.namprd02.prod.outlook.com
- ([fe80::a77f:334f:452d:2b3e]) by DM5PR02MB3369.namprd02.prod.outlook.com
- ([fe80::a77f:334f:452d:2b3e%6]) with mapi id 15.21.0339.007; Tue, 18 Aug 2026
- 16:23:58 +0000
-From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
-To: Jakub Kicinski <kuba@kernel.org>, Selvamani Rajagopal via B4 Relay
-	<devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
-CC: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, Piergiorgio Beruto <Pier.Beruto@onsemi.com>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Andrew Lunn
-	<andrew@lunn.ch>
-Subject: RE: [PATCH net v6 3/4] net: ethernet: oa_tc6: Disable tx queues on
- fatal error
-Thread-Topic: [PATCH net v6 3/4] net: ethernet: oa_tc6: Disable tx queues on
- fatal error
-Thread-Index: AQHdKs/q7VW66rKlKES7HGsioAxWYLakAY2AgAADN9A=
-Date: Tue, 18 Aug 2026 16:23:58 +0000
-Message-ID: <DM5PR02MB33692A7DA56968540A3F950383A62@DM5PR02MB3369.namprd02.prod.outlook.com>
-References: <20260812-fix-race-condition-and-crash-v6-0-6cf90f4a271a@onsemi.com>
-	<20260812-fix-race-condition-and-crash-v6-3-6cf90f4a271a@onsemi.com>
- <20260818090655.1e28cd61@kernel.org>
-In-Reply-To: <20260818090655.1e28cd61@kernel.org>
-Accept-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM5PR02MB3369:EE_|BL3PR02MB8148:EE_
-x-ms-office365-filtering-correlation-id: 1418c6bc-9a49-4878-c0da-08defd451b57
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7416014|23010399003|10067099003|56012099006|6133799003|11063799006|4143699003|22082099003|18002099003|38070700021
-x-microsoft-antispam-message-info: gzVXxJiNmuqM2JjrR4PC2A3FwIA242vMMJpbhj3vM2qPIzyofsqDh+LKAaFqNWck8G8tOD3A/NAcvbOOU2oQPYxD9ascXSedMOuas0kJdU1d//6n5QSqDu8Tdcs3DBTNChgMISJslt+DccAHVMwUtAMQExsApJ6ekcGyNLp+V5YL69q6jYncFXDHm4UYq54CH14Lzo0Pts1O0jV8kAyjUWYPqv9jHVN5Mmv+3Uz9DmevGf4zF5KNzdC/p/rBu2BsCjE9ZEgWZafcBalQh4GUrBADFyPD53WnE3+DZ6Vp1/Mb5T6BWxv9JjXpshF9uxVr0TNArMtCWwWzy1K67tvxEkr//WvQg6kSlgn51ciZgMgqJTUKcmmTeQZMg0lmckriiJ/4OcvSOThWBZcogu8bcu1ijKzRVVC7iYbmW2ro3naQiHRtZhXykM3mMeKDsAkOWW92qR1dz3M2/bU15l3TRhln75lRjq6kmlbJhAPMc/gw8e+/mAdWSP5a50Gi/FAleHA5wOWRhDWo7NLauChW1L6b6UZVngaiKIzpLetbHWk/Zg8tsceCOdVGrRkJVB8rvf6bkDNwlMnQs5Wu9uWZTqd+xo4RRUO3BpZBDbWCNyWSFaM+H4PGzkTmebsp7UnW+ZZjwvud8zcZ2LLbY3vShZQMwdCAiN0B4kKqY96tCn+O+K3uJGSha4PLulW+fMvt4mYz1fVYy5F01WaImSSclyK0jsFihHGxRh84PIHKh7g=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM5PR02MB3369.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014)(23010399003)(10067099003)(56012099006)(6133799003)(11063799006)(4143699003)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1101
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?R1Y0QmIzdnFPN2pDTTUrcWt0VlhFK21zS0VvTTJnZ2ovRGFMMWJYY1VsK3JD?=
- =?utf-8?B?NzRVOG9xV2JabW9hZlRDRXhFUnpyWjA1NnRGT25PdG0vOC9lTHFWRmFlTjJ4?=
- =?utf-8?B?RU5CdWpZZ2ZqVHJtUFBwNHM4VDJ1bExtY1lNajhCWEw2SHZ3ZkVEc1cvYVRM?=
- =?utf-8?B?bHdmOWJEdS9Hc0JpNWpIMDNRM1I4VmpBT2ovYm53Tm9WQnQzeUtMd0pVNklo?=
- =?utf-8?B?Q1JydVBqN3o3VnRMOGl0M3RsaGFRK01KTDF0L213dGN4dkN6YlNlK25DbXcw?=
- =?utf-8?B?MXMyOXZuakVYcGtiQ2J0SmxuVHIwLzJVWlhlZTFOZHRhKzA3dDJYWTFyS3gy?=
- =?utf-8?B?c2NmQllXd3FVbTE2NEJvRTFYK2tjaEFJdXhUcGViemZKR0Rlb2pOMERUSkRl?=
- =?utf-8?B?SHQ2N2drdU1obklTYThkYW9GczFnVVYwNWRnU0tDWFRSbi9oSWpGcHFYQUdx?=
- =?utf-8?B?VFhXMWRFb1NnOFVIWUhQRUVuWnZEMENpenNrZE1GREM0dXozRHRydElOVXZl?=
- =?utf-8?B?OHhodWh6MGpLaVZuWHFFUzgzbE92QjcrZ2kvOVRsOFRHdk5BUTNMOXRtcWV4?=
- =?utf-8?B?MzF3VzhwU3FWK3J3a3h5K3pHeDdib2hpM0hwdm96ZWpKeWhvQjRjUko4WE1E?=
- =?utf-8?B?Z0Y4WWs2cnJtMmJGZ1phdHNwVm5Zb2dodEtGSkY1SDJUaXI1STdZNVdPZWMx?=
- =?utf-8?B?UE1lYkVpcE1KWFVaVTlkM2kySU02UmxxVUlPZENWd05aeWQ4S0laTDJwa0pk?=
- =?utf-8?B?U3dtRE1YeFNmWGFxVUtTMlR4MUN5dkpPdHNvMzYvQTdQRnVUdkhlZGIxZWNZ?=
- =?utf-8?B?cjNIRmNNOGZWakdKWUVjUGhqK0k3S21FNTRvVyt3azRMdGxNRFV6cVBDZ1NG?=
- =?utf-8?B?ekk5MkQ1RDV4bVc5dEpkSC9qMncvV3ZwanRRRklzcW13MUVlbytKc0tmNjUw?=
- =?utf-8?B?ZmNMcGVaaXRIRGtHTU5XQlJ2V3FMVklMemtKM1h4OUZ0Q0U2c3F3ZDlmcDZM?=
- =?utf-8?B?UXlad2RQY0hmTmdYQmwyRm00WU1PK1RRSmNtZHl2NzN0MWM4Tm9zUXBoRU1P?=
- =?utf-8?B?VlBzeU83dEUwSkJQeWh4SnNEaEYzc01BNXJSVzhaYmxYRm1nNzExOHArRXh6?=
- =?utf-8?B?eVdLTFpoVkdIYWoxYUVuMjFTeG5WaG8wOU9NQmM1WWUxYWFQNU4wWUp6MzVH?=
- =?utf-8?B?YXpBMEVDT2pZd1B3bWw4T1hGeG5aYWVuclFvQ1NMQzZpYS94bVVUVkxidmMz?=
- =?utf-8?B?a2UwTTMxUHVnSXdLVXhMd0UxSC9qNG5Da0hTSkNGVjZvdE9CTEYwWUVqT05G?=
- =?utf-8?B?WlpDUkUzV3lLeUNPRFQvdS9JcHM4SzR1MWJWeWpFa1RsTFBEWlBDcWRLMDJ0?=
- =?utf-8?B?SHB5dVFwSHZkQXBLMENLZ21IV3ZpUFZKRmx6Q3V4QWxRSXpCcDd4K2lnaVpJ?=
- =?utf-8?B?MEFINSttMTRlYUVkTkFwNkRucUE4TnA4N3JqTHhEZXJ3Y004ayt3eTN5MmE5?=
- =?utf-8?B?V3p0R09LeXJkZVk5MUllM29hZnFWT1c0Mm1ZbkxnSDR6OE5YQXJkZHIxK2d3?=
- =?utf-8?B?ZUYzV0g4RGV0UGUwSENENnBYbHZKcS9zeE5Ia1loNDk0NC9IQkNwYlYzOHVR?=
- =?utf-8?B?Sk1aRmV1NkpFL1NQNU54ZmNoUk5hc3RTTjE1UEhwSk1SZHZXS0lIZythcVY3?=
- =?utf-8?B?c1p1MW5PNmlmRWkzdU9tNEpYdzRQNU0ycUttNExZQy8vUDlIV3hqcWtMdmVP?=
- =?utf-8?B?OUhqRVhic3JLN1psSVBuSkhDaGNLNFhUbjkvOUQrekp0dGtoc21BbnljR3pV?=
- =?utf-8?B?UXp0QnpuZmN1djJGd1p4VUJQdDB5RGlEa1hkOS9XZUJ2NVNDeTQrNlJMWUhq?=
- =?utf-8?B?OTZHUVlvbEhXOEp5cGxRKzlXYUE4bVE1UW1DVTYrbGhLQzJkMHg5a0c0VGZ5?=
- =?utf-8?B?eUpaOHA5NWFPczZLbTVSajBWaTF4bUdPR1lWeTlNMEp3SkpQaU1ZL3BjUk1R?=
- =?utf-8?B?cDhLT3JTdWxJQWhYdnZNak1Hc0h5d1dndllmOUNCaUp1VmsvVEVMaS8rWVMw?=
- =?utf-8?B?RFM0TkRaSlg2QmU0TTFlRDljNjJiM3lCUDRQM3RGNzFRT2dzZ1dUVlRIK0U2?=
- =?utf-8?B?UUZNaFJ4S1lobGFBYTF1Q3dlL0h2bERqYUptVjBCMHR4czdBOFVDNGhJQ3d4?=
- =?utf-8?B?eFFGYWRDb1BXbmY0WG5mS0lJdkg1UUpqTWpaU0FrbnNLYU9oUGtFUG16M2tv?=
- =?utf-8?B?YXpBczNoaktCcC9lb1Y1aTB5WjNKT3JydmxucEJiSVZBeHA1OXg4aElPbk1z?=
- =?utf-8?B?Tk84dkk3VHRVK2FjRkdCVFUxejhtL2pVUzFUQ1pRdlYxTkZBZkVCdz09?=
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mol+ptA8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 870161F000E9;
+	Tue, 18 Aug 2026 16:26:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787070368;
+	bh=FPCeKlYbwSQ45TtE8YpWgJHlXGVdV3UlGioFQSJk/Io=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=mol+ptA8gIZnFkntBzjGhytkdQVnDykbgeQ16l+PrqhaCsYBajoOw09Dw9yWBfjfa
+	 BpIkTCaKTRQcnMvfd0cGmT3lxLeoFnJKBuh4FRVjulSf3tPBLQvZAa5fdTk/dkDpo2
+	 5YzfVWw1sVcSpHyCBtZWqMNHd2sCfg3xUqcRenPQikemh7PzNfjAj9CPWOoSz9oD0f
+	 vhNHcOwLMetP76dLtBssYj8uGOXSNFcs+64KSIUJZvcGrQBkUj49LkPTOVwyOQBaAd
+	 qVvCi96WViRapbkXmamwOMMsKEfOF9aocJvEBUhM5SwlDLvxW4gJriS8qSKL9QnI0U
+	 vGMFi1INLTBXg==
+From: Jakub Kicinski <kuba@kernel.org>
+To: github@szelinsky.de
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	o.rempel@pengutronix.de,
+	kory.maincent@bootlin.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	jelonek.jonas@gmail.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v3 2/3] net: pse-pd: guard regulator ops against freed PI data during unregister
+Date: Tue, 18 Aug 2026 09:26:06 -0700
+Message-ID: <20260818162606.3981504-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260813200653.980170-3-github@szelinsky.de>
+References: <20260813200653.980170-3-github@szelinsky.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: pd3EnBpAs/on7H7esBU4EElUioEoJhEqo64GiTTFg1q6MxqC7vQi0WmtRV0PSoPTDXAj4ydWjD0HmIl+SF/sGopLZzXdfPk8FXaJYifkfD+aO0QqN46ctcc8chhzM2+Acp9Fp5i7paGvA8oeqzqsgHwqL85FitE/doofBMq6AQepHLuWOSxIGw+B//HLBB8u0odCnvAVSIIkf37dTKssMtUGQLLXBc9HggeNAjq/JW6W78CgkLiwUN3eaU5giTjSaiepC2IHg66JVzxP8IH0RQxYX+TX+nKsDQluXT2EJ96m5C90uypLwe63nDz+S8R3iSJ5A5AaQUkgc/5SOTFusA==
-X-OriginatorOrg: onsemi.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM5PR02MB3369.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1418c6bc-9a49-4878-c0da-08defd451b57
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Aug 2026 16:23:58.6134
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 04e1674b-7af5-4d13-a082-64fc6e42384c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: YRLgtC1zCRilnL2J1GLwfGgHerMwZKZo9XzFZ8LZ8XUbeQcaaAK80QKJ/5z5nsjkwbs33/K4XUx7Wun2zvVweVFnE0txnzyxekGGbIZYgiw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR02MB8148
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 7y_8TZlCumBqE3eELlTj7K58NySTVvfkq-TbWRVOCZc_1787070240
-X-Mimecast-Originator: onsemi.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEpha3ViIEtpY2luc2tpIDxr
-dWJhQGtlcm5lbC5vcmc+DQo+IFNlbnQ6IFR1ZXNkYXksIEF1Z3VzdCAxOCwgMjAyNiA5OjA3IEFN
-DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggbmV0IHY2IDMvNF0gbmV0OiBldGhlcm5ldDogb2FfdGM2
-OiBEaXNhYmxlIHR4IHF1ZXVlcyBvbiBmYXRhbCBlcnJvcg0KPiANCj4gT24gV2VkLCAxMiBBdWcg
-MjAyNiAyMDowMDoxMSAtMDcwMCBTZWx2YW1hbmkgUmFqYWdvcGFsIHZpYSBCNCBSZWxheQ0KPiB3
-cm90ZToNCj4gPiArIC8qIGRpc2FibGVfdHJhZmZpYywgd2hlbiBzZXQsIGlzIGEgcG9pbnQgb2Yg
-bm8gcmV0dXJuIHRvIHdvcmtpbmcNCj4gPiArICogc3RhdGUuIFRYIHF1ZXVlcyBhcmUgZGlzYWJs
-ZWQuIEluIHNvbWUgY2FzZXMsIHVwcGVyIGxheWVyIG9yDQo+ID4gKyAqIHZlbmRvciBjb2RlIG1h
-eSBpbmFkdmVydGVudGx5IGVuYWJsZSB0aGUgcXVldWUuIEludGVudGlvbiBvZg0KPiA+ICsgKiB0
-aGUgZGlzYWJsZV90cmFmZmljIGZsYWcgaXMgdG8gc3RvcCB0cmFmZmljIGZyb20gZmxvd2luZy4N
-Cj4gPiArICovDQo+IA0KPiBJIGRvbid0IGdldCB0aGlzIGNvbW1lbnQgYW5kIHdoeSB0aGlzIGlz
-bid0IHBhcnQgb2YgcGF0Y2ggMS4NCj4gUGF0Y2ggMSBpcyB0aGUgcGxhY2Ugd2hlcmUgdGhlIHN0
-b3AgaXMgcmVtb3ZlZDoNCg0KVGhhbmtzIGZvciB0aGUgcmV2aWV3LiBJIGNvdWxkIGhhdmUgbWFk
-ZSBwYXJ0IG9mIHBhdGNoIDEuIFNpbmNlIHRoaXMgY2hhbmdlcyB0aGUgYmVoYXZpb3Igb2YNCmFh
-X3RjNl9kaXNhYmxlX3RyYWZmaWMsIEkgdGhvdWdodCBJIHNob3VsZCBoYXZlIGl0IHNlcGFyYXRl
-bHkgc28gdGhhdCBpdCBpcyBjbGVhciBmb3IgdGhlIHJldmlld2VyLg0KDQoNCj4gDQo+IC0gaWYg
-KHRjNi0+ZGlzYWJsZV90cmFmZmljIHx8IHRjNi0+d2FpdGluZ190eF9za2IpIHsNCj4gLSBuZXRp
-Zl9zdG9wX3F1ZXVlKHRjNi0+bmV0ZGV2KTsNCj4gLSByZXR1cm4gTkVUREVWX1RYX0JVU1k7DQo+
-IC0gfQ0KPiANCj4gQWxzbyB0aGUgInZlbmRvciBjb2RlIG1heSBpbmFkdmVydGVudGx5IGVuYWJs
-ZSB0aGUgcXVldWUiDQo+IGlzIHNvbWUgdmFndWUgaW5kaWNhdGlvbiBvZiBhIHJhY2U/IEkgaGF2
-ZSBubyBpZGVhIHdoYXQgInZlbmRvciBjb2RlIg0KPiBtZWFucyBoZXJlLCB0aGlzICJsaWJyYXJ5
-IiBoYXMgb25lIHVzZXIuIElmIHRoZXJlIGlzIGEgcmFjZSBwbGVhc2UgZml4DQo+IGl0LiBJZiB0
-aGVyZSdzIG5vdCAtIHBsZWFzZSBkb24ndCBhZGQgY29uZnVzaW5nIGNvbW1lbnRzLg0KDQpJdCBp
-cyBub3QgYSByYWNlLiBJZiB2ZW5kb3IncyBjb2RlIChvciBldmVuIGZyb20gY29tbWFuZCBsaW5l
-KSBtYXJrcyB0aGUgaW50ZXJmYWNlICJkb3duIiBmb2xsb3dlZCBieSAidXAiLA0KcXVldWUgbWF5
-IGJlIHJlLWVuYWJsZWQuIFRoaXMgdXNlIGNhc2Ugd2FzIHJhaXNlZCBieSBBSSByZXZpZXcgZHVy
-aW5nIHRoZSBwcmV2aW91cyBzdWJtaXNzaW9uLCB3aGljaCBpcyBhIA0KdmFsaWQgcXVlc3Rpb24u
-IFNvIEkgdGhvdWdodCBJIHNob3VsZCBjYXB0dXJlIHRoaXMgaW4gdGhlIGNvbW1lbnQuDQo=
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+net: pse-pd: guard regulator ops against freed PI data during unregister
 
+This clears pcdev->pi after freeing it in pse_release_pis() and adds a
+NULL check to pse_pi_is_enabled(), pse_pi_enable() and pse_pi_disable(),
+with the kfree()/NULL store and the reads both done under pcdev->lock.
+The stated goal is to avoid a use-after-free when the regulator core
+calls into these ops after the controller has been unregistered.
+
+> diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
+> index 6045b6c399c26..21ccb51466160 100644
+> --- a/drivers/net/pse-pd/pse_core.c
+> +++ b/drivers/net/pse-pd/pse_core.c
+> @@ -144,7 +144,13 @@ static void pse_release_pis(struct pse_controller_dev *pcdev)
+>  		of_node_put(pcdev->pi[i].pairset[1].np);
+>  		of_node_put(pcdev->pi[i].np);
+>  	}
+> +	/* Free under the lock so the NULL store is authoritative against
+> +	 * the regulator ops that read pcdev->pi under pcdev->lock.
+> +	 */
+> +	mutex_lock(&pcdev->lock);
+>  	kfree(pcdev->pi);
+> +	pcdev->pi = NULL;
+> +	mutex_unlock(&pcdev->lock);
+>  }
+
+[Severity: High]
+Now that pcdev->pi can legitimately be NULL, do the other readers of
+pcdev->pi in this file need the same guard?  Only the three regulator ops
+were updated, but the consumer-facing paths still index the array
+unconditionally:
+
+drivers/net/pse-pd/pse_core.c:__pse_control_release() {
+	...
+	if (psec->pcdev->pi[psec->id].admin_state_enabled)
+		regulator_disable(psec->ps);
+	...
+}
+
+The same unguarded read appears in pse_get_sw_admin_state(),
+pse_ethtool_get_status(), pse_ethtool_set_config() (four times),
+pse_pi_update_pw_budget(), pse_ethtool_set_pw_limit() and
+pse_ethtool_set_prio().
+
+Can these run after pse_release_pis()?  pse_controller_unregister() does
+not drain pcdev->pse_control_head, and a pse_control only takes
+try_module_get(pcdev->owner) in pse_control_get_internal(), which blocks
+module unload but not driver unbind.  The handle lives in phydev->psec and
+is dropped only by phy_device_remove() -> pse_control_put().  So after
+unbinding the PSE controller driver, an ethtool PSE request on the still
+registered interface, or a later PHY removal, would reach these reads with
+pcdev->pi == NULL.
+
+Before this change those reads were a use-after-free of the freed array;
+with the NULL store they become a NULL + offset dereference, so the oops
+becomes deterministic rather than going away.
+
+Two of the lock-holding readers also sample the pointer before acquiring
+pcdev->lock, so the lock-mediated NULL store cannot be observed by them:
+
+drivers/net/pse-pd/pse_core.c:pse_ethtool_get_status() {
+	...
+	pi = &pcdev->pi[psec->id];
+	mutex_lock(&pcdev->lock);
+	if (pi->pw_d) {
+	...
+}
+
+pse_pi_update_pw_budget() does the same with
+struct pse_pi *pi = &pcdev->pi[id];
+
+Does the invariant described in the commit message ("read pcdev->pi under
+the same lock in the ops") hold for those two?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but the ordering in
+pse_controller_unregister() looks like it leaves part of the window the
+commit message claims to close still open:
+
+drivers/net/pse-pd/pse_core.c:pse_controller_unregister() {
+	...
+	cancel_work_sync(&pcdev->ntf_work);
+	pse_flush_pw_ds(pcdev);
+	pse_release_pis(pcdev);
+	...
+}
+
+pse_flush_pw_ds() drops the power-domain kref, and __pse_pw_d_release()
+calls regulator_put(pw_d->supply) plus xa_erase() without clearing the
+pcdev->pi[i].pw_d back-pointers and without taking pcdev->lock.
+
+In the interval between pse_flush_pw_ds() and the kfree()/NULL store,
+pcdev->pi is still non-NULL, so the new guards pass and the ops proceed to
+the released supply:
+
+pse_pi_disable() -> _pse_pi_disable() -> pse_pi_deallocate_pw_budget() {
+	regulator_free_power_budget(pi->pw_d->supply, pi->pw_allocated_mW);
+}
+
+and via pse_pw_d_retry_power_delivery() ->
+pse_pi_allocate_pw_budget_static_prio() ->
+regulator_request_power_budget(pi->pw_d->supply, ...).
+
+Both helpers write rdev->pw_requested_mW, so this would be a
+use-after-free write through a freed struct regulator.  Does the stated
+guarantee ("the op either sees the live array or returns without touching
+freed memory") cover the case where the array is live but the supply it
+points at is already released?
+
+[ ... ]
+
+> @@ -702,15 +718,20 @@ static int pse_pi_enable(struct regulator_dev *rdev)
+>  static int pse_pi_disable(struct regulator_dev *rdev)
+>  {
+>  	struct pse_controller_dev *pcdev = rdev_get_drvdata(rdev);
+> -	struct pse_pi *pi;
+>  	int id, ret;
+>  
+>  	id = rdev_get_id(rdev);
+> -	pi = &pcdev->pi[id];
+>  	mutex_lock(&pcdev->lock);
+> +	/* Reached via the regulator core's deferred-disable flush after
+> +	 * pcdev->pi is freed on unregister.
+> +	 */
+> +	if (!pcdev->pi) {
+> +		mutex_unlock(&pcdev->lock);
+> +		return 0;
+> +	}
+
+[Severity: Medium]
+Should this path return success without ever de-energizing the port?
+Taking the early exit means ops->pi_disable() is never called, so the PSE
+chip is not told to stop sourcing power, and pse_pi_deallocate_pw_budget()
+is skipped, so the mW reserved on the shared power-domain supply are not
+returned via regulator_free_power_budget().
+
+The reachable trigger looks like a race rather than the deferred-disable
+flush named in the comment: pse_ethtool_set_config() reads
+pcdev->pi[psec->id].admin_state_enabled while the array is live,
+pse_release_pis() then frees and NULLs it on the detaching CPU, and the
+consumer's regulator_disable() lands here and returns 0.  Before this
+change the same sequence still issued the ops->pi_disable() register write.
+
+pcdev->ops and the driver private state are released later in devres LIFO
+order, and id comes from rdev_get_id(rdev), so is there a reason the
+hardware disable cannot still be issued here?
+
+Also, pse_pi_enable() returns -ENODEV for the same condition while this one
+returns 0.  Is the asymmetry intended?
+
+>  	ret = _pse_pi_disable(pcdev, id);
+>  	if (!ret)
+> -		pi->admin_state_enabled = 0;
+> +		pcdev->pi[id].admin_state_enabled = 0;
+>  
+>  	mutex_unlock(&pcdev->lock);
+>  	return 0;
+
+[Severity: High]
+This isn't a bug introduced by this patch, but since these lines are being
+reworked anyway: should ret be returned here instead of 0?
+
+_pse_pi_disable() returns -EOPNOTSUPP when ops->pi_disable is absent, and
+otherwise propagates the driver error from the port-off register write
+(for example an I2C failure in tps23881_pi_disable() or
+pd692x0_pi_disable()).
+
+With 0 returned, _regulator_do_disable() treats the disable as successful,
+_regulator_disable() sets rdev->use_count = 0 and the consumer's
+enable_count is decremented, while the hardware is still sourcing power
+and pcdev->pi[id].admin_state_enabled stays at 1 because the assignment is
+skipped on exactly that error path.
+
+The ethtool "admin-state disabled" request then reports success with the
+port still energized, pse_ethtool_set_config() will not re-enable it since
+if (!admin_state_enabled) is false, and a further disable attempt calls
+regulator_disable() with use_count == 0, which the regulator core rejects
+with a WARN and -EIO.
+
+[Severity: High]
+One more pre-existing item, not introduced by this patch, in
+pse_controller_register() in the same file: there is no error unwinding
+after the early allocations.
+
+After kfifo_alloc(&pcdev->ntf_fifo, ...) succeeds, the mandatory callback
+check returns without kfifo_free():
+
+drivers/net/pse-pd/pse_core.c:pse_controller_register() {
+	...
+	if (!pcdev->ops->pi_get_admin_state ||
+	    !pcdev->ops->pi_get_pw_status) {
+		dev_err(...);
+		return -EINVAL;
+	}
+	...
+}
+
+Once of_load_pse_pis() has allocated pcdev->pi and taken OF node
+references, the later failures (ops->setup_pi_matrix(), the devm_kzalloc()
+of the regulator name, devm_pse_pi_regulator_register(),
+pse_register_pw_ds()) also return directly without pse_release_pis(), so
+the non-devm PI array and the of_node_get() references leak.
+
+Can a failure inside pse_register_pw_ds() leave a dangling global entry?
+An earlier iteration may already have inserted a devm_kzalloc()-backed
+pse_power_domain into pse_pw_d_map via devm_pse_alloc_pw_d() -> xa_alloc()
+and taken a regulator_get() reference.  devm_pse_controller_register() only
+does devres_free(pcdevp) on failure, so nothing erases that entry; devres
+then frees the pw_d while the xarray still points at it, and the next
+registration walks xa_for_each(&pse_pw_d_map, index, pw_d) and calls
+regulator_is_equal(pw_d->supply, ...) on freed memory.
+-- 
+pw-bot: cr
