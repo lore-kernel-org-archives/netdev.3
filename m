@@ -1,82 +1,87 @@
-Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
+Received: from mail-pg1-f196.google.com (mail-pg1-f196.google.com [209.85.215.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B2942E8FA
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 17:03:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC1A48124E
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 17:03:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787072636; cv=none; b=SvHH/tKoJG4dCYIplyGwkZztjCbcpjKMrOm5RYKIMAH7xmCTvUKhvJKtLRk7ngQ6uriRh12eEqByXPLb/H9rCCZ9GWyP83UrZ02tsoJvYEHtc+P9r9Nmnqw+XRMRfwn/z4HU23NgrQHLekqwENyWU30NJ+pqg48+E3qZOtddJBI=
+	t=1787072637; cv=none; b=hAmdgwTLDARE/j5n2dgMp7qqSG3gfnUvjROlZ8v8mETmxDOj4W8AWMes9324+iWNt4YxrJK1uGY5bM9NGgOoH4oAzSEevwH4gnLYH7Ms4t1L4wWWuPPA/AXJkG4FZlhepv1g5mNpjkgNeUM4v1ig0ysV5exeD5lwvpue+2FsmS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787072636; c=relaxed/simple;
-	bh=+NtjBczxEraDYPUktGMOfDvSdqIm87V/zl/KlbsnxXQ=;
+	s=arc-20240116; t=1787072637; c=relaxed/simple;
+	bh=08GCpWBt+z4DejZQ9YX8rfyawTv3wwnrM8KFHn2j+YY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C02mIT/xt0g/O4yz5UgkyxiI0eTmtQUwPqcL5iRKglBqinTE7nJoOGSr/jPGJeQjB1yJfKC/1A5PTeVCOzL0rF+EG+2AqMgOGIl2k4dt4K0nvYqWWvjq8VBao5Vi8Uum4Fs2LkhkEqvve7QUQTdu+skA/QUFTH4C35Lhp7kvJbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lYn8sxjX; arc=none smtp.client-ip=74.125.227.129
+	 Content-Type:Content-Disposition:In-Reply-To; b=VQrwvf9qE6/5UkYmlCr1KgLkJe4B8qKIA2fRUt8Va9WyNHZehRocuvNVSxCIlZxAIU4QFl2QfTCntctJVycPgCXN5WAJEA8Apwyc1jgMsaUyB56QDYz7AoSfQauH1K2cDQHAi1SLScOY9Ug1Dr54TUS/1HOdV6rEsl6homM8hPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CIB6du8I; arc=none smtp.client-ip=209.85.215.196
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lYn8sxjX"
-Received: by mail-pj2-f1.google.com with SMTP id d9443c01a7336-2cb3f5bb19aso240415ad.1
-        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 10:03:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CIB6du8I"
+Received: by mail-pg1-f196.google.com with SMTP id 41be03b00d2f7-cc147d86bebso817224a12.0
+        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 10:03:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787072634; x=1787677434; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1787072635; x=1787677435; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Q80BWnEZK8DYTRP4qPFCamRkQ8PTkFuflTPG4q2POi4=;
-        b=lYn8sxjX9036r6auB1CDBYvkLJI43+KtySxmbeyJXpZCY5JxsLpBPd1CsfuoiuZRUn
-         D0ZtV42OYnydKT0Tll1J3KLGobtdqGq8SOCoakEeUYrLhmF8BC9UmnPclmLU6NQzjDEo
-         muSiTR/cZWcRywtKs6wH1e7ar5aw+AwzYRYjlOrKoShCIfCtNdeJyUgwc5qLYeiMkz6E
-         7FeaPyi2UBgk1ls07wIKpa3PgCrgf/hVTtD/dQvJ8ix6gyrK1l20AxJsA3V54WN18kUU
-         xz4QFxZOtI1SM56O2y/ncLryDBOiaQbBmdnBwEZV7v5D11o1B7gzrIveU2iJw1BpOIG5
-         lOsg==
+        bh=LARP5bmG64wd0GpLVR0nEMY/+zhPU+0Nmo0aQ8UdxmY=;
+        b=CIB6du8ItoTnpe0+1vB0+nqdDaoSb6gIkX5fqUhNaWOomS+EF4RxaWPYEOOQCoDmfC
+         SiQhCeiKeb2lPJIzuL4aJOCAaXUEc6oRZtHI6+h6rG9wjAd1ZFapQoyLl5y+k2g4R+KN
+         t/dekYcEgK9A4QbX/dv1Q4kavkBUfDTcADjS8cAY/HY+aDIMHUQZI+ybx1fIeZMLjAIM
+         gIBsZG47uWiRZL0d9dgl0bXE2loF0/MH1YePeV21Dkn6sMGvOb2xyitaEu0kVUskf5S2
+         zCJzakCQogldTbNW/SIbyI/L3LG3S8VE20LVKnUQrbYB6Vetx6MjchF/orqDpJW9jH44
+         mmLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787072634; x=1787677434;
+        d=1e100.net; s=20251104; t=1787072635; x=1787677435;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Q80BWnEZK8DYTRP4qPFCamRkQ8PTkFuflTPG4q2POi4=;
-        b=bsQK5+5ESM3ZaM5X4xaRbvXkwB5kuIG+ysVo5CLSpqAanX/Al37yln/RQldIG5Ke+c
-         vqd20fOtVOsmdyPlFLltqeQzMAXjktg2EsaLM/uMcvKfZmDlArGwWvIELkJrrICl5WIf
-         5ek8S/1Ps6p6Ti3NpTQYsy77zxOWKeskyg/2vZXizYYd8UOIG0xRj1kYavIxHFErPa88
-         aFHL4MfjOBfkhQWRq2DIbaBV4ubVxNaWJ6RUw9nvk6KGyesHcRh2MVGoyj5LVlqUqiQr
-         zclVeLvGWzA0osQJBV+a9xIuoEw5RT9T++mEJ/nibDgZkvFKZD85wOJ9wPLLBNLYAcid
-         Hxtg==
-X-Gm-Message-State: AOJu0Yyc2iz2wReoubwa729A1eQAvAm5+N14rXlV6rKpS/NZKokPatsb
-	WUUPekheNlZFcyXtYTq3LU0MuT5VsQIK+uRs3rqTwD6cnKb3h9UecWaf
-X-Gm-Gg: AR+sD13Ntze7QvOY7R8Jhxt0uVeInBg1hLG4Sl2YK7gI1k9u2AydR3D25SB2BPAAaza
-	dus1bPbS+nfy2auoHeFu13Dx21PT5vdawuCVVJBTqDmBbQeLNrOxT7Cd07CRiK0ywJ3R8aZ8g/v
-	jDuoW6DQdGWiRR92Vs5Wh6iFeNsplFaFA8Z5cLIxd6kxuwcaKcYb7BHfkSbBO42U0fw77Rw3Ekz
-	mS79KkrjBRDh4Z8Z6IKUlfRm97LSUb8dM4JYyJrgwKuAo37d2uMf6RnnyGL9CSS1ACdEbgN0mY6
-	4i974VQ71IMfbDaTNzY/WwoHVO1S6tRHwhhjx653wzKUDD0++iiaaJmtjhbGgQb+qub4JK0NS4x
-	VBa0TEPsvtGfiWL5CZytltEV5YsWvW8Ih/6uIXnhPmV7+Msh+HgrF9K/qC6G1e9F+mLYxKFtV/W
-	h3w47nR0HHYu5maVzd0XBQzkcd12Bf8x49foz7iUO3Bm6GzzJBTJ+W
-X-Received: by 2002:a17:902:d4cf:b0:2ca:660:b1d with SMTP id d9443c01a7336-2d3b0d5eccfmr373846305ad.11.1787072634166;
-        Tue, 18 Aug 2026 10:03:54 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:7::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d5bb499d7bsm20728245ad.3.2026.08.18.10.03.53
+        bh=LARP5bmG64wd0GpLVR0nEMY/+zhPU+0Nmo0aQ8UdxmY=;
+        b=eDwicKGYlKAnW4EUA3FRkfCfvknEJt57Kr+SghMsFFzPiCBgGWe4NpBWiS5/hHCS5A
+         5WP+Hu0Q04vsveybtkbumtpl9048yfk43vXR9PFHZdJkWVzL/uGfA++2k+iozN5QD8/6
+         kdOv94vgycHNH48qQBYgh1qkTtBlGt3zkvFNAgZ1Hj6PTkN7Eh3yrZ7DCOjov3iMqKwv
+         QS+rXdhMLM4HtpnplOgV2jFhPAvH+SsOR+JAznfLaUoidmQXQX6QtPpUIuAvBDrlJNy5
+         6HSPmL0fdDpcGzLxYXBsTfYe+EIiksudFrhsX/cjj2Y4nyayjmOkcLfdj8A465DQI87q
+         CLuQ==
+X-Gm-Message-State: AOJu0YzSuWDVCsOenksewOx+oOrZymmcw9wOiVmmRePmXQbRULiy4+n7
+	/4p4w6zcUTH8tHLDrHOJtjOZ05aktbI7uDQZ98Bbdnb0qvFPhWXW0W01
+X-Gm-Gg: AR+sD13S+eJPitZM9zU5lAWt/VHzrkwVH4xSF00dAetHoDLJtpBSN2+iki2T9YY23Tf
+	UlLjeQ6r9tXicOm+iNd22P4FIMoTRaqFX/k2aWu1lxOsBsaL+DOUcU/sqK2VA/UX362TkDJXiXx
+	UPSY+2+epf/9rpJLbYuyxfFuEPuyySG/qtGGP37x6YVuEyd2xtG0RV52i/dVP9Dcl6LMT8j4kJR
+	vYj/jETYvP52KXT4U9p+vZ/jJzNj6ZUpcO7MPSQn/aJQ2+r2KNt88cIjUp/TNmLwWP2tETfFtX7
+	asfmjHg1oh6FYZb6k93dszwmcnME7TsoElUkJ4ZHqaLh/92x6/+/pbWk5nTgMZ7/k2+7c16FQb5
+	vkpJ+rudXyucvycan7Q5qxzUbhMRrJRo+iaZQOYFGVMLsrSfN0V+vzSMvEMkJNAAAJLa8WnQhWM
+	Cv/62byD1+ZMlFdL9+/1oG8GRSWV50bS1aUa6IZGVvnQubqmGJoYGNyfiwSYPWy3ky
+X-Received: by 2002:a05:6a20:2446:b0:39b:bc11:9ec5 with SMTP id adf61e73a8af0-3ccded40c3emr7581611637.13.1787072635279;
+        Tue, 18 Aug 2026 10:03:55 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:56::])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc13c0445c6sm2311742a12.32.2026.08.18.10.03.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Aug 2026 10:03:53 -0700 (PDT)
-Date: Tue, 18 Aug 2026 10:03:16 -0700
+        Tue, 18 Aug 2026 10:03:54 -0700 (PDT)
+Date: Tue, 18 Aug 2026 10:03:38 -0700
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
-	pabeni@redhat.com, anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com, 
-	andrew+netdev@lunn.ch, saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com, 
-	maxime.chevallier@bootlin.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, 
-	aleksander.lobakin@intel.com, horms@kernel.org, magnus.karlsson@intel.com, 
-	maciej.fijalkowski@intel.com, sdf@fomichev.me, ast@kernel.org, daniel@iogearbox.net, 
-	hawk@kernel.org, john.fastabend@gmail.com, witu@nvidia.com, martin.lau@kernel.org, 
-	yoong.siang.song@intel.com, rohan.g.thomas@intel.com, intel-wired-lan@lists.osuosl.org, 
-	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, 
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Netdev <netdev@vger.kernel.org>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Anthony L Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+	andrew+netdev@lunn.ch, Saeed Mahameed <saeedm@nvidia.com>, 
+	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, 
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Alexander Lobakin <aleksander.lobakin@intel.com>, 
+	Simon Horman <horms@kernel.org>, magnus.karlsson@intel.com, 
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, witu@nvidia.com, 
+	Martin KaFai Lau <martin.lau@kernel.org>, yoong.siang.song@intel.com, rohan.g.thomas@intel.com, 
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>, linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, 
 	linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org, 
-	leon@kernel.org
-Subject: Re: [Intel-wired-lan] [PATCH net v2 3/3] net: stmmac: skip
- queueMaxSDU check for AF_XDP
-Message-ID: <aoSOau3NuHTLLxnL@devvm7509.cco0.facebook.com>
-References: <20260813190800.222527-4-sdf@fomichev.me>
- <20260818162442.3980697-1-kuba@kernel.org>
+	Leon Romanovsky <leon@kernel.org>
+Subject: Re: [PATCH net v2 1/3] xsk: align TX metadata layout across ABIs
+Message-ID: <aoSQWPGrYEBfZUnP@devvm7509.cco0.facebook.com>
+References: <20260813190800.222527-1-sdf@fomichev.me>
+ <20260813190800.222527-2-sdf@fomichev.me>
+ <06f8153d-2156-4e7d-9d49-006db4b2cec4@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -85,92 +90,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260818162442.3980697-1-kuba@kernel.org>
+In-Reply-To: <06f8153d-2156-4e7d-9d49-006db4b2cec4@app.fastmail.com>
 
-On 08/18, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> net: stmmac: skip queueMaxSDU check for AF_XDP
+On 08/17, Arnd Bergmann wrote:
+> On Thu, Aug 13, 2026, at 21:07, Stanislav Fomichev wrote:
+> > Add explicit padding before launch_time so xsk_tx_metadata has the same
+> > layout on 32-bit and 64-bit systems.
+> >
+> > On i386 and m68k, the old native 32-bit layout put launch_time at offset 12
+> > and had a natural size of 20 bytes. Using sizeof(struct xsk_tx_metadata) as
+> > tx_metadata_len was already rejected because the length must be a multiple
+> > of eight, so the straightforward use of the interface was broken on those
+> > ABIs. Userspace could still register a padded length of 24 bytes, though;
+> > mixing the old and new layouts then silently reads launch_time from the
+> > wrong offset and misprograms packet launch times. This intentionally
+> > replaces that incompatible layout while the interface is still new.
+> >
+> > Fixes: ca4419f15abd ("xsk: Add launch time hardware offload support to 
+> > XDP Tx metadata")
+> > Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 > 
-> This drops the per-queue max SDU length check from the stmmac AF_XDP
-> zero-copy transmit path, on the grounds that xsk_tx_peek_desc() has
-> already reserved a completion ring entry and the old "continue" skipped
-> both queuing and completion. The change is tagged for stable via a Fixes:
-> tag on c5c3e1bfc9e0.
+> This is probably the right approach, given lack of alternatives.
+> In the changelog text, it may be worth noting a few more points:
 > 
-> > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > index 62de03e65a90c..4a82f4351303a 100644
-> > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > @@ -2710,13 +2710,6 @@ static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
-> >  		if (!xsk_tx_peek_desc(pool, &xdp_desc))
-> >  			break;
-> >  
-> > -		if (priv->est && priv->est->enable &&
-> > -		    priv->est->max_sdu[queue] &&
-> > -		    xdp_desc.len > priv->est->max_sdu[queue]) {
-> > -			priv->xstats.max_sdu_txq_drop[queue]++;
-> > -			continue;
-> > -		}
-> > -
-> 
-> [Severity: Medium]
-> The completion ring imbalance described in the commit message looks real:
-> xsk_tx_peek_desc() reserves the cq slot with xskq_prod_reserve_addr() and
-> only xsk_tx_completed() submits it, so the old "continue" left the cq
-> producer permanently offset.
-> 
-> Was completing the reserved descriptor considered instead of removing the
-> check, i.e. keeping the length test and doing:
-> 
-> 	if (priv->est && priv->est->enable &&
-> 	    priv->est->max_sdu[queue] &&
-> 	    xdp_desc.len > priv->est->max_sdu[queue]) {
-> 		priv->xstats.max_sdu_txq_drop[queue]++;
-> 		xsk_tx_completed(pool, 1);
-> 		continue;
-> 	}
-> 
-> That would fix the ring accounting without dropping the enforcement.
+> - A few additional architectures have the same issue: csky,
+>   nios2, openrisc and sh.
+> - the commit that introduced the mistake was part of linux-6.15,
+>   so the 6.18-lts release also needs an ABI change. I don't
+>   think the "while the interface is still new" wording
+>   makes sense here.
+> - what actually saves us here is that none of the affected
+>   architectures are likely to have notable use cases for
+>   xdp that would care about the ABI break.
+>   The one that is most likely to have affected users
+>   is x86-compat, and that is also the only one that is
+>   broken right now.
 
-Don't think this suggestion would work. xsk_tx_completed(1) will complete
-the first queued entry, no the current rejected one (completions are in order).
-
-If it's not convincing, I can repost only patches 1 and 2. Or if it sounds
-reasonable, can try to explain that part in the description.
-
-> On stmmac, queueMaxSDU has no hardware table. priv->est->max_sdu[] is
-> written only by tc_taprio_map_maxsdu_txq() in stmmac_tc.c:
-> 
-> 		for (j = offset; j < offset + count; j++)
-> 			priv->est->max_sdu[j] = qopt->max_sdu[i] + ETH_HLEN - ETH_TLEN;
-> 
-> and read only by the length checks in stmmac_main.c. With this hunk gone,
-> does an AF_XDP zero-copy socket now transmit frames above the configured
-> per-queue limit while tc_query_caps() still reports:
-> 
-> 		caps->gate_mask_per_txq = true;
-> 		caps->supports_queue_max_sdu = true;
-> 
-> That capability is what taprio uses to accept a queueMaxSDU configuration
-> in the first place, and sch_taprio comments in
-> taprio_skb_exceeds_queue_max_sdu() that "Devices with full offload are
-> expected to honor this in hardware".
-> 
-> The "bypasses the qdisc" rationale also applies to stmmac_xdp_xmit_xdpf(),
-> which serves XDP_TX and ndo_xdp_xmit and does not traverse the qdisc
-> either, yet still enforces the same limit:
-> 
-> 	if (priv->est && priv->est->enable &&
-> 	    priv->est->max_sdu[queue] &&
-> 	    xdpf->len > priv->est->max_sdu[queue]) {
-> 		priv->xstats.max_sdu_txq_drop[queue]++;
-> 		return STMMAC_XDP_CONSUMED;
-> 	}
-> 
-> Should that check be removed as well so the XDP paths agree? The cited igc
-> precedent checks only in igc_xmit_frame_ring() and in neither of its XDP
-> paths, so matching igc would mean touching stmmac_xdp_xmit_xdpf() too.
-
-xdp_tx does not expose xsk-like descriptor rings, so it doesn't apply.
+Will try to add that to the commit description, thanks!
