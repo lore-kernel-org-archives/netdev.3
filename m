@@ -1,126 +1,454 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F03E3368B0
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 06:57:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E3C377A92
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 06:59:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787036234; cv=none; b=UKAR/w9esj+X5e9rNebXarb6XNFsAvX6A2S+tylLza5TOZYyvGw8ycMLs/m7gM0f6TNS6H/LD9PPbdSKTaHmAbgOdbD19JYQo+mhGXVeZVG8x5cE11f76USB0YaPw5HXZRcAaKWGcrDszApiRIPcFRjoKaoehyejtZQXwxtL1Ng=
+	t=1787036353; cv=none; b=awCM8+6ZKc7YsLr2ug6enttN2AHCh2cu2oaQub+/6HDyU2HaJ6ob7EazGelSDL1jc6PvI3DJSHYdutT/iJscvXJGR8PlVHtlf01w7DdOt38A7A4rjnqDECxZab0QWqUxXSAwzpm+ADWsowoLK/diFVOuGkXQvFevMHAGJ8JdJA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787036234; c=relaxed/simple;
-	bh=k153DUjIMFjUgFA73Y8BqSLm951n83/LiLiTD2rmFjk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=RveJkX1ZWgqgThPY3SYQErjRX5DCfJdHt8MsRzitl+AboaTeG5dvrzmbSzGfmPD0z4Q3oygaFYLXPhC/hh4urts5q/OJXek0S+RwJyv5aOmsPSEML4eFS5ou1VGMIWPMA4ilbLgrvL3/iIo4NhK0Omxr1Th64uJHKqMTuqoTORg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=K55YAyXb; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uWWo2AQl; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1787036353; c=relaxed/simple;
+	bh=9Ej8oCWE/SEz2kwV+lumcbgilsrgrfEVoihV506X6K0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=uKpFFLbcksSkBXqJ48bJSWRbttrL5JBXil2jA3L9RO+8+03pJfOeOYh6KpUFW0rEN9bwrffwkP4GXZHqq3nnzo7Z/JuSfoYPd4JUevSDGG1T8pE5tLZ/Ppod6y4TuS5y5+DnyQUvi0VKzAoJKig9xkBFSTZuwQR6PUHXSvLMMwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P04wK8bm; arc=none smtp.client-ip=209.85.210.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="K55YAyXb";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uWWo2AQl"
-From: Kurt Kanzenbach <kurt@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1787036231;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=k153DUjIMFjUgFA73Y8BqSLm951n83/LiLiTD2rmFjk=;
-	b=K55YAyXbEmR7QI/wBoI+Ksm8NsDNnzECUAO1fcc9Nsa7XIq25Z0P/Z+Ixi7i3ebU0/uDgR
-	J8ujkPyJfgBk5DaB+S5Ovw2+spa144Vis/di84QJ6dZneS1mD/4BC9ZCNEvZxKoRyemK1e
-	pyiz5vs1QfL9RlsRcuT9s/VCN5Par1YZvg8TOBh0K0Xfq/1TV+s12CfdbWpJ24MWhCXYGY
-	67nQtMKndZ/JGqfsvm9mNNLUjyxHBNk/F946aqydKrvvGuF9QWhejkQxzX5SNpElkYLb44
-	oEd7QkJpnjiHnhoI8sOjf2BQFBEYDxI+3OpugRg42PGd+351DscHPuSl5Zb6sg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1787036231;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=k153DUjIMFjUgFA73Y8BqSLm951n83/LiLiTD2rmFjk=;
-	b=uWWo2AQlddJzsHPIgvU34g8IZJRdjK+w/9EgsMmZCTPhhvPAKRQCGXb3Zhv25RV1bhu/CU
-	Cmw8nvMEhXpBSECQ==
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Maxime
- Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, Lorenzo Bianconi
- <lorenzo@kernel.org>
-Subject: Re: [PATCH net-next] net: stmmac: stm32: Set TSO/TBS Tx queues
- default settings
-In-Reply-To: <20260817103337.74c30adc@kernel.org>
-References: <20260812-stm32mp2_txtime-v1-1-f9e2462cc85d@linutronix.de>
- <20260817103337.74c30adc@kernel.org>
-Date: Tue, 18 Aug 2026 08:57:08 +0200
-Message-ID: <87mrujzzjv.fsf@jax.kurt.home>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P04wK8bm"
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7ee4399c3abso2797764a34.2
+        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 23:59:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787036343; x=1787641143; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=AMMgthRopw07ZlQT3zAbed2zC3TzeWq8aCthIdCEwok=;
+        b=P04wK8bmKZsLcL/A2bImlg4Y9BpjRXeshGUx+xn0kdF538PSachILFeWsdZHkuaxR4
+         IWsiPtaIRlrGLXOMYh6LiQTrfC6FsDw5yI5kcuEnqDgsh9RwWEKkuN8m84rKE7QK7278
+         P8+ivvlkqoofHvQ6HxzSvNV9jATh8qzE9KswbkMbvZDA2wjvx86NoqNdnwFJlbWACfNV
+         tNjFTmhCIe8XrczKGtEogULMfqyMLhx/4cJXV015kuDuHtLrdTEpku/VqDGO52uAjkg9
+         yxS1aqvaQWi5/GnpDK8PJ11KptYKEphBNN4cx9rHcyaIrUtkODC4bOX6fYrsDrK+3fDI
+         RRAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787036343; x=1787641143;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AMMgthRopw07ZlQT3zAbed2zC3TzeWq8aCthIdCEwok=;
+        b=fiR50mpUL/e3GNSKRsVRH23TBLGzsexQqySQEl1xqp7Ewq3XKjcpVw1xFE/oitonp4
+         Xeur9VRzBCMzDoFrXq27o00yHmqswWzF1tCceN6Twl55RXOWRFkaRjsxlsKvMUbiAHUz
+         f8tqR2PSjB2F0F+4EZuUagsjR8jCoOQ1aF0AUUCzMz81X4UELlNZJcsJyA2y9DGmdwIL
+         kdvg6iYyVAiUfjs8fH6IZl0j4+G1idq3vOjRizsuz3kw9FEENZJ99OfxxbknEkm85g7h
+         r8WPgPUyopvzOiU2TMthx6ijVTKdLD/iT8Ijz2h00bFDIaBQ9sFjkE2iAXLrPxSMCEvj
+         u6DA==
+X-Forwarded-Encrypted: i=1; AHgh+Rq4D+j0DcIsHtu6LV/aPXqZ5/bKHLEn3wrUfTIqv5VTCaCK/xeAeIDflkKd9jXb2vOj95lGQHs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQNsUTikbyx7KaCReDAcxt9zMXjamNfS5wWLyUC9uA9AnujtU7
+	H8/gLTFK/BKt7aKon0wtJnIKvtCxR8j1ABBO0ew2qOFz+qrvl+IOI3i7
+X-Gm-Gg: AR+sD10C6Igll/x8izxg4eEC25dKxLtqoQ9zKy/bnyOTddiB5h6suZXdipU5xIBPvNI
+	P3RAsP5j1UvsEwkueKi2NMKZxFwFZnu99Vo3PXcTQnLESjxi2Wej8Qfh7WLKKj7pqW/PVrzcHtD
+	P/ReDytJR5M6aacy5KdMgSxJEQdQZflAyV4+ety46o5wSOak5He0wftpcndCcBzBntKhjyRrggS
+	uahQHIZcoczZfJen69zOnQ7xF1ADQA6Bwfl6hBzw/+FUR6cUVMtEsE+9bjRoPHndCENdCx9mL6y
+	meUUY9MpmKlCv3PFph1y2y/GXND6IyWHlL7/41wuuM4IP3hPSfC1Mm1vc5jt8vFv+Gya1NH3Wo2
+	77PNiPG2LWSWyOlEn2w0xTTcpMJLEnxU3sKCV5YXQbKKhu1Rg0acMQz2sJivsq1Z5QOTo4isoD/
+	PB9IAjPeWGR4r0ottV3ogAz9JpLUmIALs5LHar8OxoQhvYwpO+0ICu9etNb4JzB5jUF/E/fMsVT
+	hTSRO0WzqUokWuir2jnsnnIK3sDbR5N/VHnxxmHvLQSDNlSKTg6MLjwVx41y4BTvP24ESt1aFfY
+	0c7jnKgyAA/Uy6RdgcPjznEMIrBWEv/ssdFEFqLP772azzyWyJEph54eUZJOPz6PDdCXELr2n1c
+	f3ai5iiTwoD0RceCY
+X-Received: by 2002:a05:6830:6ab1:b0:7ec:6749:f38d with SMTP id 46e09a7af769-7f3ddfd0405mr29268449a34.0.1787036342856;
+        Mon, 17 Aug 2026 23:59:02 -0700 (PDT)
+Received: from [127.0.1.1] (184-96-154-59.hlrn.qwest.net. [184.96.154.59])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f41beef430sm3599463a34.5.2026.08.17.23.59.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Aug 2026 23:59:02 -0700 (PDT)
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Tue, 18 Aug 2026 00:58:57 -0600
+Subject: [PATCH net-next v3 1/4] driver core: add fw_devlink supplier-copy
+ helper
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-	micalg=pgp-sha512; protocol="application/pgp-signature"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260818-submit-phy-package-fwdevlink-v1-v3-1-40a905ea16b6@gmail.com>
+References: <20260818-submit-phy-package-fwdevlink-v1-v3-0-40a905ea16b6@gmail.com>
+In-Reply-To: <20260818-submit-phy-package-fwdevlink-v1-v3-0-40a905ea16b6@gmail.com>
+To: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Daniel Scally <djrscally@gmail.com>, 
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, 
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Christian Marangi <ansuelsmth@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, driver-core@lists.linux.dev, 
+ linux-acpi@vger.kernel.org, netdev@vger.kernel.org, 
+ James Hilliard <james.hilliard1@gmail.com>
+X-Mailer: b4 0.15.2
 
---=-=-=
-Content-Type: text/plain
+Some firmware nodes describe resources shared by devices instantiated for
+their children, but the container node itself is never converted to a
+struct device. The firmware parser should retain the topology as
+described, while the framework which creates the children can identify
+the actual consumers.
 
-On Mon Aug 17 2026, Jakub Kicinski wrote:
-> On Wed, 12 Aug 2026 08:28:57 +0200 Kurt Kanzenbach wrote:
->> TSO and TBS cannot coexist. Use the first queue with TSO and the rest for
->> TBS. Tx queues with TBS can support etf qdisc hw offload. This is done
->> similar to dwmac-imx and dwmac-intel.
->
-> Can you explain your use case?
+Add fw_devlink_copy_suppliers() so such a framework can copy the direct
+supplier links from a container to a real consumer firmware node before
+the consumer is registered. The normal device_add() path then converts
+the copied dependencies into device links at the correct point in device
+registration.
 
-I want to use ETF Qdisc with hardware offload, which is currently not
-possible on the stm32mp2.
+Leave the source links in place for other children, suppress duplicate
+links and roll back newly allocated links if a copy fails. Skip ignored
+links and clear cycle flags on newly copied links, since cycle
+classification must be recomputed for the new consumer topology. Reject
+calls after the target firmware node has been associated with a device.
+Check that association while holding the fwnode-link lock so a
+concurrent device_add() either observes the copied links or makes the
+helper reject the request.
 
-> And how many queues the device has in total?
+Add KUnit coverage for filtering, cycle-flag handling, idempotency, the
+pre-registration contract and conversion into an active device link.
 
-The stm32mp2 has four Tx and two Rx queues.
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
 
->
-> You say "TSO and TBS cannot coexist" but can any queue on your
-> platform be configured to support either feature?
+---
+Changes v2 -> v3:
+  - Keep generic firmware parsing faithful to the described topology and
+    add a helper for frameworks to project container suppliers onto real
+    child consumers, as suggested by Saravana Kannan
+  - Require copying before device_add() and let the normal fw_devlink path
+    create device links after consumer sysfs and PM initialization
+  - Serialize the target-association check with fwnode link copying
+  - Skip ignored links, recalculate cycle state for copied links and add
+    KUnit coverage
+---
+ drivers/base/core.c                  |  60 ++++++++++
+ drivers/base/test/Makefile           |   1 +
+ drivers/base/test/fwnode-link-test.c | 207 +++++++++++++++++++++++++++++++++++
+ include/linux/fwnode.h               |   2 +
+ 4 files changed, 270 insertions(+)
 
-I think so. The data sheet says: "Do not enable time-based scheduling for
-channels on which the TSO feature is enabled.". But, I didn't find any
-limitations on what queue/channel can enable TBS.
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 4d026682944f..cf3f4133391d 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -2394,6 +2394,66 @@ static void fw_devlink_link_device(struct device *dev)
+ 	__fw_devlink_link_to_suppliers(dev, fwnode);
+ }
+ 
++/**
++ * fw_devlink_copy_suppliers - Copy supplier links between firmware nodes
++ * @to: Firmware node which consumes the copied suppliers
++ * @from: Firmware node whose supplier links should be copied
++ *
++ * Frameworks can use this when a container firmware node describes resources
++ * shared by devices created for its children. The source links remain in
++ * place, while links are added for the real consumer firmware node. Call this
++ * before device_add() associates @to with a registered device, so the normal
++ * fw_devlink path can convert the copied dependencies into device links.
++ *
++ * Ignored source links are skipped. Cycle flags are topology-specific and are
++ * recalculated for the new consumer when its links are converted.
++ *
++ * Return: 0 on success, -EINVAL for invalid firmware nodes, -EBUSY if @to is
++ * already associated with a device, or -ENOMEM if a link could not be
++ * allocated.
++ */
++int fw_devlink_copy_suppliers(struct fwnode_handle *to,
++			      struct fwnode_handle *from)
++{
++	struct list_head *first;
++	struct fwnode_link *link;
++	int ret;
++
++	if (!to || !from)
++		return -EINVAL;
++	if (!fw_devlink_flags || to == from)
++		return 0;
++	fw_devlink_parse_fwnode(from);
++
++	guard(mutex)(&fwnode_link_lock);
++	if (READ_ONCE(to->dev))
++		return -EBUSY;
++
++	first = to->suppliers.next;
++	list_for_each_entry(link, &from->suppliers, c_hook) {
++		u8 flags = link->flags & ~FWLINK_FLAG_CYCLE;
++
++		if (flags & FWLINK_FLAG_IGNORE)
++			continue;
++
++		ret = __fwnode_link_add(to, link->supplier, flags);
++		if (ret)
++			goto rollback;
++	}
++
++	return 0;
++
++rollback:
++	while (to->suppliers.next != first) {
++		link = list_first_entry(&to->suppliers, struct fwnode_link,
++					c_hook);
++		__fwnode_link_del(link);
++	}
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(fw_devlink_copy_suppliers);
++
+ /* Device links support end. */
+ 
+ static struct kobject *dev_kobj;
+diff --git a/drivers/base/test/Makefile b/drivers/base/test/Makefile
+index e321dfc7e922..d871a71dbbaa 100644
+--- a/drivers/base/test/Makefile
++++ b/drivers/base/test/Makefile
+@@ -3,6 +3,7 @@ obj-$(CONFIG_TEST_ASYNC_DRIVER_PROBE)	+= test_async_driver_probe.o
+ 
+ obj-$(CONFIG_DM_KUNIT_TEST)	+= root-device-test.o
+ obj-$(CONFIG_DM_KUNIT_TEST)	+= platform-device-test.o
++obj-$(CONFIG_DM_KUNIT_TEST)	+= fwnode-link-test.o
+ 
+ obj-$(CONFIG_DRIVER_PE_KUNIT_TEST) += property-entry-test.o
+ CFLAGS_property-entry-test.o += $(DISABLE_STRUCTLEAK_PLUGIN)
+diff --git a/drivers/base/test/fwnode-link-test.c b/drivers/base/test/fwnode-link-test.c
+new file mode 100644
+index 000000000000..fee18613d230
+--- /dev/null
++++ b/drivers/base/test/fwnode-link-test.c
+@@ -0,0 +1,207 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <kunit/platform_device.h>
++#include <kunit/test.h>
++
++#include <linux/device.h>
++#include <linux/fwnode.h>
++#include <linux/platform_device.h>
++
++#define FWNODE_LINK_TEST_DRIVER_NAME	"fwnode-link-test"
++
++struct fwnode_link_test_context {
++	struct fwnode_handle consumer;
++	struct fwnode_handle container;
++	struct fwnode_handle supplier_a;
++	struct fwnode_handle supplier_b;
++};
++
++static int fwnode_link_test_probe(struct platform_device *pdev)
++{
++	return 0;
++}
++
++static struct platform_driver fwnode_link_test_driver = {
++	.probe = fwnode_link_test_probe,
++	.driver = {
++		.name = FWNODE_LINK_TEST_DRIVER_NAME,
++	},
++};
++
++static void fwnode_link_test_cleanup(void *data)
++{
++	struct fwnode_link_test_context *context = data;
++
++	fwnode_links_purge(&context->consumer);
++	fwnode_links_purge(&context->container);
++	fwnode_links_purge(&context->supplier_a);
++	fwnode_links_purge(&context->supplier_b);
++}
++
++static struct fwnode_link_test_context *
++fwnode_link_test_init(struct kunit *test)
++{
++	struct fwnode_link_test_context *context;
++	int ret;
++
++	context = kunit_kzalloc(test, sizeof(*context), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, context);
++
++	fwnode_init(&context->consumer, NULL);
++	fwnode_init(&context->container, NULL);
++	fwnode_init(&context->supplier_a, NULL);
++	fwnode_init(&context->supplier_b, NULL);
++	ret = kunit_add_action_or_reset(test, fwnode_link_test_cleanup,
++					context);
++	KUNIT_ASSERT_EQ(test, ret, 0);
++
++	return context;
++}
++
++static struct platform_device *
++fwnode_link_test_register_pdev(struct kunit *test,
++			       struct fwnode_handle *fwnode)
++{
++	struct platform_device *pdev;
++	int ret;
++
++	pdev = kunit_platform_device_alloc(test, FWNODE_LINK_TEST_DRIVER_NAME,
++					   PLATFORM_DEVID_AUTO);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pdev);
++
++	device_set_node(&pdev->dev, fwnode);
++	ret = kunit_platform_device_add(test, pdev);
++	if (ret) {
++		KUNIT_FAIL(test, "failed to register platform device: %d", ret);
++		return NULL;
++	}
++
++	return pdev;
++}
++
++static unsigned int fwnode_supplier_count(struct fwnode_handle *fwnode)
++{
++	struct fwnode_link *link;
++	unsigned int count = 0;
++
++	list_for_each_entry(link, &fwnode->suppliers, c_hook)
++		count++;
++
++	return count;
++}
++
++static struct fwnode_link *
++fwnode_find_supplier(struct fwnode_handle *consumer,
++		     struct fwnode_handle *supplier)
++{
++	struct fwnode_link *link;
++
++	list_for_each_entry(link, &consumer->suppliers, c_hook) {
++		if (link->supplier == supplier)
++			return link;
++	}
++
++	return NULL;
++}
++
++static void fwnode_link_copy_suppliers_test(struct kunit *test)
++{
++	struct fwnode_link_test_context *context;
++	struct fwnode_link *link;
++	int ret;
++
++	context = fwnode_link_test_init(test);
++	KUNIT_ASSERT_NOT_NULL(test, context);
++
++	ret = fwnode_link_add(&context->container, &context->supplier_a,
++			      FWLINK_FLAG_CYCLE);
++	KUNIT_ASSERT_EQ(test, ret, 0);
++	ret = fwnode_link_add(&context->container, &context->supplier_b,
++			      FWLINK_FLAG_IGNORE);
++	KUNIT_ASSERT_EQ(test, ret, 0);
++
++	ret = fw_devlink_copy_suppliers(&context->consumer,
++					&context->container);
++	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_EXPECT_EQ(test, fwnode_supplier_count(&context->container), 2U);
++	KUNIT_EXPECT_EQ(test, fwnode_supplier_count(&context->consumer), 1U);
++
++	link = fwnode_find_supplier(&context->consumer, &context->supplier_a);
++	KUNIT_ASSERT_NOT_NULL(test, link);
++	KUNIT_EXPECT_EQ(test, link->flags, (u8)0);
++	link = fwnode_find_supplier(&context->consumer, &context->supplier_b);
++	KUNIT_EXPECT_NULL(test, link);
++
++	ret = fw_devlink_copy_suppliers(&context->consumer,
++					&context->container);
++	KUNIT_ASSERT_EQ(test, ret, 0);
++	KUNIT_EXPECT_EQ(test, fwnode_supplier_count(&context->consumer), 1U);
++}
++
++static void fwnode_link_copy_before_device_add_test(struct kunit *test)
++{
++	struct fwnode_link_test_context *context;
++	struct platform_device *consumer;
++	struct platform_device *supplier;
++	struct device_link *link;
++	int ret;
++
++	context = fwnode_link_test_init(test);
++	KUNIT_ASSERT_NOT_NULL(test, context);
++
++	ret = fwnode_link_add(&context->container, &context->supplier_a, 0);
++	KUNIT_ASSERT_EQ(test, ret, 0);
++	supplier = fwnode_link_test_register_pdev(test, &context->supplier_a);
++	KUNIT_ASSERT_NOT_NULL(test, supplier);
++
++	ret = fw_devlink_copy_suppliers(&context->consumer,
++					&context->container);
++	KUNIT_ASSERT_EQ(test, ret, 0);
++	consumer = fwnode_link_test_register_pdev(test, &context->consumer);
++	KUNIT_ASSERT_NOT_NULL(test, consumer);
++
++	KUNIT_EXPECT_EQ(test, fwnode_supplier_count(&context->container), 1U);
++	KUNIT_EXPECT_EQ(test, fwnode_supplier_count(&context->consumer), 0U);
++
++	if (list_empty(&consumer->dev.links.suppliers)) {
++		KUNIT_FAIL(test, "consumer device link was not created");
++		return;
++	}
++	link = list_first_entry(&consumer->dev.links.suppliers,
++				struct device_link, c_node);
++	KUNIT_EXPECT_PTR_EQ(test, link->supplier, &supplier->dev);
++	KUNIT_EXPECT_EQ(test, READ_ONCE(link->status), DL_STATE_ACTIVE);
++
++	ret = fw_devlink_copy_suppliers(&context->consumer,
++					&context->container);
++	KUNIT_EXPECT_EQ(test, ret, -EBUSY);
++}
++
++static struct kunit_case fwnode_link_test_cases[] = {
++	KUNIT_CASE(fwnode_link_copy_suppliers_test),
++	KUNIT_CASE(fwnode_link_copy_before_device_add_test),
++	{}
++};
++
++static int fwnode_link_test_suite_init(struct kunit_suite *suite)
++{
++	return platform_driver_register(&fwnode_link_test_driver);
++}
++
++static void fwnode_link_test_suite_exit(struct kunit_suite *suite)
++{
++	platform_driver_unregister(&fwnode_link_test_driver);
++	device_link_wait_removal();
++}
++
++static struct kunit_suite fwnode_link_test_suite = {
++	.name = "fwnode-link",
++	.suite_init = fwnode_link_test_suite_init,
++	.suite_exit = fwnode_link_test_suite_exit,
++	.test_cases = fwnode_link_test_cases,
++};
++
++kunit_test_suite(fwnode_link_test_suite);
++
++MODULE_DESCRIPTION("KUnit tests for firmware-node links");
++MODULE_LICENSE("GPL");
+diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+index 4e86e6990d28..ad4250fc7afb 100644
+--- a/include/linux/fwnode.h
++++ b/include/linux/fwnode.h
+@@ -254,6 +254,8 @@ int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup,
+ void fwnode_links_purge(struct fwnode_handle *fwnode);
+ void fw_devlink_purge_absent_suppliers(struct fwnode_handle *fwnode);
+ void fw_devlink_refresh_fwnode(struct fwnode_handle *fwnode);
++int fw_devlink_copy_suppliers(struct fwnode_handle *to,
++			      struct fwnode_handle *from);
+ bool fw_devlink_is_strict(void);
+ 
+ #endif
 
-> If yes why are we configuring this statically instead of making
-> appropriate configuration based on qdisc or some other uAPI knob?
+-- 
+2.53.0
 
-It seems like a static configuration in the driver today. I basically
-followed the same convention as dwmac-imx, dwmac-intel, dwmac-mediatek
-and dwmac-qcom-ethqos. Only dwmac-socfpga does it differently.
-
-Tx Launch Time requires a different DMA descriptor layout. Currently
-tc_setup_etf() just returns -EINVAL if the DMA configuration is not
-setup appropriately. I guess a dynamic configuration requires to change
-the DMA config and perform a full release/open cycle.
-
-Thanks,
-Kurt
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQJHBAEBCgAxFiEEvLm/ssjDfdPf21mSwZPR8qpGc4IFAmqEAkQTHGt1cnRAbGlu
-dXRyb25peC5kZQAKCRDBk9HyqkZzgl24D/oD5pIbsJKmttKF5pgORFPdAeBIldyk
-SJDlmLRbsKEvzsNC9upW0HDi48XGkXrQCaJjHwY8WLLbgvaBZhM7mDpfnI0GRXyc
-XAyGdrQeO/BKPZ13oKJGWzu3IgV09rHW/tb4hT9wQDsXCNV88756qGey1h5pmrdT
-rVqiP3muzIbHgXxZsomFPhe7eMOjttuYGAPRq2zFhXMCto8lqtn5GzdfxKXEnTxF
-RMGp6gKZ/1onXl55AB/+E1DeUKilOkUyuc9b7SFCu0Czvtre0DllIO3/MwfX+hd9
-+MUB1PP8bZ3CaN93N2d3pLyEZdY/NeqWOTmqnZforsvA5AXq8cexXNTz/PK+h35K
-1N4gfK2szhFNyUmQS4joUj9j44PP6BunJIKHpvRZ2leVDb9JnJP0bprCy6b848H0
-ifNkmYMIWKGdV+peW0ckNIfdg492rz5KZjLpzVZBwhH2j3XkRKiPZv1hz6i9ztgg
-oncYVsNyXoCfUscIpCUfPOAy9DgIVvVyg7jW4Zj8wuG+atrIv0qybOLOD3xjLf6b
-85nbZ18cyhXNFWyYxD0jHE8NkKe6CJu5QbfPSiPLYJtf2GrZPmp7YsQFaBRLU3HG
-aUOXjDcgp7V1/SLyTjMpTDSsDIacT4E97SMnFLGHrGCxKpUC+PHB4tmi3u0W4WYY
-TY9LCZK5MwqJvg==
-=TQFM
------END PGP SIGNATURE-----
---=-=-=--
