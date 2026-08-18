@@ -1,68 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B317745FFAC
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 13:57:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35719468C1D
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 13:58:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787061460; cv=none; b=N2dP/xiV2uMUZuJOR8HU7SZx3Fq4ONOt0gPgMFHMfcWMtZfYrEB5q+iGCkXjmNQQHrUyH01E/OFZiQ3nQZiQqRxbMF+HfZFBo7+OdEsPZMpSQJLqL8V+JRIWIhJZ19wadDyalhvxR20rskpfCMeLLuT1h6UJCP+DMp2pmngeOIg=
+	t=1787061493; cv=none; b=pGDGityD5vCUUrf1PsjQCrIMGt6OePaeVEij97w/W8SbsXPiFl668Gb63rvscz4scQuL220zeQAUHg3jK4sgWJTfcbOAzln115YRJOc+e3kjPFbDXDI99yq69nzjL/esmnYQ6KXUUvzsJbZrYLbm0Fis3t56FyOP6wF5+EpUWaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787061460; c=relaxed/simple;
-	bh=1mYmRC0YO4VEeuzc8H3cP95ghdsLHF1Tfk2R3lM4qdg=;
+	s=arc-20240116; t=1787061493; c=relaxed/simple;
+	bh=evyJk1End9SX7ibV+5YefPMP2/WiagTqINlx2DjncMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G0S6v9DJnUvSGsNw8mtyG5lbP/rLDpamQdGTIEBoR/9r/ZNukTzpEBvZEbAMeE/kRA7gf1NUKflEt/aBrFl5GNrEODmzsJDt5+5LfpP2LaSUEnuJH2Zocy5JxwrxyRuoAGd8HSoLdibdB3Sk+vIXMooRbt+WOPvzfyLSmDWkvkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aynD7ZoO; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 MIME-Version; b=bQ+ksXq6d4rU16X3brAjxR32wzzisZYdB17K8iOkdAKzpl4N1HHJQGA7MCAJjPockloI0mHFg4vetX5E1iiLVsmgFN4KfskEJurR1l5ylY0576qL4f1OxU+660H3Yqgjc3qNdE3bgl6GUJMfmrzgjui/gQXSyYyjBGVoiaShepk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HvOn9zit; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aynD7ZoO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787061457;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Xlua/OaPb0XebRUXOGf2fxKnuqFEfd/jZ8x0ehhkoI4=;
-	b=aynD7ZoOZob1dRK9i9fBKZC/9aWIQNxpjgI/JyeCC4Kr5aLmw66Eu+YaQaQmxZYHcAUt1k
-	SxXZTYCZRmCilqxIEznjfrbqQQgzQ6inhJi5am+y8xRhDYmwKC4gErfo2XPN/+R+rBR6V+
-	zNugrwHzUF0oRyFmuRpuhGOP4vBSBbk=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-355-9qdM49W3P-Cp7HKhn_jpSA-1; Tue,
- 18 Aug 2026 09:57:32 -0400
-X-MC-Unique: 9qdM49W3P-Cp7HKhn_jpSA-1
-X-Mimecast-MFC-AGG-ID: 9qdM49W3P-Cp7HKhn_jpSA_1787061450
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B86A51955F1B;
-	Tue, 18 Aug 2026 13:57:29 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.48.207])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 88DBB422;
-	Tue, 18 Aug 2026 13:57:24 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: dev.taqnialabs@gmail.com
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	linux@armlinux.org.uk,
-	qingfang.deng@linux.dev,
-	maxime.chevallier@bootlin.com,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HvOn9zit"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 436931F00A3A;
+	Tue, 18 Aug 2026 13:58:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787061491;
+	bh=PEtaMo/MYWYR+IS2NHTvcmnyuL2tOMoZKqYi/BxaHhg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=HvOn9zitruTVBBDjDFlCWnkSyoWzMTo2bIHjYmC6KOlsQv1bdHMoI7mamdLVUSLQ3
+	 hOKbvQ5lpHadZwep5SO6UBZymMxfc33jseNwxJhccleWSSU0iEl/MAb3UHuEiIPniQ
+	 PEAx9CMsKF1oDSBcEUFzZ07pBb9AAO+jKsCVWj/GIM6+VuGL8/gCa0wWnEoAm6gUqY
+	 McnCdGDje0lSMMSX4WZitMlHh8dgq6uOEOxLOcE0UlTANE/F4gvf/yx1Gu+ao/YCKj
+	 gYn4MDiH81kdo5WQVZ/MmfF4HpM3ae8Iy8GSkJLRd5QSqCNdH90n3MrdedZ3Ddxivd
+	 hL9SVYYzS4szQ==
+From: Simon Horman <horms@kernel.org>
+To: maciek@machnikowski.net
+Cc: Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v4 2/3] net: stmmac: xgmac: tear the datapath down in the documented order
-Date: Tue, 18 Aug 2026 15:57:19 +0200
-Message-ID: <20260818135719.212831-1-pabeni@redhat.com>
-In-Reply-To: <20260814-stmmac-rx-fifo-block-v4-2-1951fd3d33b7@gmail.com>
-References: <20260814-stmmac-rx-fifo-block-v4-2-1951fd3d33b7@gmail.com>
+	kuba@kernel.org,
+	richardcochran@gmail.com,
+	milena.olech@intel.com,
+	willemdebruijn.kernel@gmail.com,
+	andrew@lunn.ch,
+	vadim.fedorenko@linux.dev
+Subject: Re: [PATCH v10 net-next 2/3] netdevsim: Implement basic ptp support
+Date: Tue, 18 Aug 2026 14:58:00 +0100
+Message-ID: <20260818135800.629288-1-horms@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260815063148.2952-3-maciek@machnikowski.net>
+References: <20260815063148.2952-3-maciek@machnikowski.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,350 +49,304 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260815063148.2952-1-maciek@machnikowski.net?part=2
 ---
-net: stmmac: xgmac: tear the datapath down in the documented order
+--- Patch [2]: [PATCH v10 net-next 2/3] netdevsim: Implement basic ptp support ---
+commit ef2b7171af287d8c3a8f5064008830a7dd8f4db3
+Author: Maciek Machnikowski <maciek@machnikowski.net>
 
-This adds four optional stmmac_dma_ops callbacks (tx_dma_stopped,
-tx_mtl_drain, rx_mtl_drain, rx_dma_stopped), implements them for XGMAC, and
-drives them from a new stmmac_datapath_teardown() used by __stmmac_release(),
-stmmac_xdp_release() and the non-WoL branch of stmmac_suspend().  It also
-clears the latched TPS/RPS status bits in the Tx/Rx DMA start ops and moves
-phylink_stop() after the teardown in __stmmac_release().
+netdevsim: Implement basic ptp support
 
-A few questions below.
+Adds virtual hardware timestamping to netdevsim by reading the mock PHC
+attached to the transmitting netdevsim and to its peer, reporting a TX
+timestamp to the socket and stamping the forwarded skb for the RX side.
+Also wires up ndo_hwtstamp_get / ndo_hwtstamp_set and extends
+nsim_get_ts_info().
 
->     The driver stops all DMA channels at once and only some paths disable
->     the MAC afterwards. The databook requires the reverse order with a wait
->     at each stage, otherwise a frame can be left stranded in the MTL FIFOs
->     and reappear as corruption on the next bring-up.
+A few questions on the timestamping path below.
 
-[Severity: Low]
-The changelog describes a user-visible failure ("reappear as corruption on
-the next bring-up") but the patch carries no Fixes: tag and no statement
-about stable backporting, while also adding new hwif callbacks and
-reordering phylink_stop().
-
-Is this meant as a fix for stable trees, and if so which commit does it fix?
-If it is hardening for a hardware ordering requirement rather than a
-regression fix, could the changelog say so explicitly?
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-> index ff83858ebc1f3..df366b2e6bd72 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-
-[ ... ]
-
-> @@ -592,6 +599,77 @@ static int dwxgmac2_enable_tbs(struct stmmac_priv *priv, void __iomem *ioaddr,
->  	return 0;
->  }
+> diff --git a/drivers/net/netdevsim/ethtool.c b/drivers/net/netdevsim/ethtool.c
+> index 025ea79879f3a..24e7d5592e799 100644
+> --- a/drivers/net/netdevsim/ethtool.c
+> +++ b/drivers/net/netdevsim/ethtool.c
+> @@ -200,7 +200,22 @@ static int nsim_get_ts_info(struct net_device *dev,
+>  {
+>  	struct netdevsim *ns = netdev_priv(dev);
 >  
-> +static int dwxgmac2_tx_mtl_drain(struct stmmac_priv *priv,
-> +				 void __iomem *ioaddr, u32 queue)
-> +{
-> +	u32 value;
-> +	int ret;
+> +	ethtool_op_get_ts_info(dev, info);
+> +	if (!ns->phc) {
+> +		info->phc_index = -1;
+> +		return 0;
+> +	}
 > +
-> +	/* Wait until the queue is empty and its read controller is no longer
-> +	 * pulling a frame out towards the MAC.
-> +	 */
-> +	ret = readl_poll_timeout(ioaddr + XGMAC_MTL_TXQ_DEBUG(queue), value,
-> +				 !(value & XGMAC_TXQSTS) &&
-> +				 FIELD_GET(XGMAC_TRCSTS, value) !=
-> +				 XGMAC_TRCSTS_READ,
-> +				 100, 10000);
-> +	if (ret)
-> +		netdev_warn(priv->dev, "MTL Tx queue %u drain timeout\n",
-> +			    queue);
-> +
-> +	return ret;
-> +}
-> +
-> +static int dwxgmac2_rx_mtl_drain(struct stmmac_priv *priv,
-> +				 void __iomem *ioaddr, u32 queue)
-> +{
-> +	u32 value;
-> +	int ret;
-> +
-> +	/* Wait until no packet is left in the queue and the queue reports
-> +	 * itself empty.
-> +	 */
-> +	ret = readl_poll_timeout(ioaddr + XGMAC_MTL_RXQ_DEBUG(queue), value,
-> +				 !FIELD_GET(XGMAC_PRXQ, value) &&
-> +				 !FIELD_GET(XGMAC_RXQSTS, value),
-> +				 100, 10000);
-> +	if (ret)
-> +		netdev_warn(priv->dev, "MTL Rx queue %u drain timeout\n",
-> +			    queue);
-> +
-> +	return ret;
-> +}
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index b9d5d4aabf423..9c3a8f122b94f 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -2560,6 +2560,52 @@ static void stmmac_stop_all_dma(struct stmmac_priv *priv)
->  		stmmac_deinit_chan(priv, priv->ioaddr, chan);
->  }
->  
-> +/**
-> + * stmmac_datapath_teardown - ordered datapath teardown as per IP specification
-> + * @priv: driver private structure
-> + * Description:
-> + * When teardown ops are available, follow the databook ordered teardown
-> + * sequence.
-> + * Follows the legacy stop + MAC disable for variants without the feature.
-> + */
-> +static void stmmac_datapath_teardown(struct stmmac_priv *priv)
-> +{
-> +	u32 rx_channels_count = priv->plat->rx_queues_to_use;
-> +	u32 tx_channels_count = priv->plat->tx_queues_to_use;
-> +	u32 chan;
-> +
-> +	/* Stop all TX DMA channels */
-> +	for (chan = 0; chan < tx_channels_count; chan++)
-> +		stmmac_stop_tx_dma(priv, chan);
-
-[Severity: Low]
-This isn't a bug in the final tree, but at this commit stage 1 dispatches to
-dwxgmac2_dma_stop_tx(), which still clears the global MAC transmit enable:
-
-  dwxgmac2_dma_stop_tx()
-      value = readl(ioaddr + XGMAC_TX_CONFIG);
-      value &= ~XGMAC_CONFIG_TE;
-      writel(value, ioaddr + XGMAC_TX_CONFIG);
-
-Stage 2 then waits for MTL_TXQ_DEBUG.TXQSTS to clear, which the new helper's
-own comment says depends on the read controller still pulling frames towards
-the MAC, and the changelog says "stages 2 and 4 cannot progress once the MAC
-is disabled".
-
-Does this commit on its own make every XGMAC close/suspend/XDP reconfigure
-burn the full 10 ms poll plus one "MTL Tx queue %u drain timeout" per Tx
-queue?  The later patch "net: stmmac: xgmac: decouple the MAC Rx/Tx enables
-from the DMA ops" removes the XGMAC_CONFIG_TE clear from
-dwxgmac2_dma_stop_tx(), so this is only a bisect hazard within the series -
-could the ordering of the two patches be swapped?
-
-> +
-> +	/* Wait for every TX DMA channel to report itself stopped */
-> +	if (priv->hw->dma->tx_dma_stopped)
-> +		for (chan = 0; chan < tx_channels_count; chan++)
-> +			stmmac_tx_dma_stopped(priv, priv->ioaddr, chan);
-
-[Severity: Medium]
-This isn't a problem introduced by this patch - the old stmmac_stop_all_dma()
-path did not wait for the hardware at all - but now that the new ops do
-return a status, is it worth acting on it?
-
-All four calls here discard the return value, so a -ETIMEDOUT only produces
-a netdev_warn() and the sequence continues:
-
-  - a Tx MTL drain timeout is followed by disabling the MAC
-  - an Rx MTL drain timeout is followed by stopping the Rx DMA, leaving the
-    frame the wait was supposed to drain
-  - an unconfirmed Tx/Rx DMA stop is followed by free_dma_desc_resources()
-    in __stmmac_release() and stmmac_xdp_release(), or by the SerDes and pin
-    power-down and a success return in stmmac_suspend()
-
-If a channel really did not stop, can it still fetch descriptors or write
-packet data and completion status into memory that has already been unmapped
-or freed?  Should a timeout trigger a DMA software reset, or at least
-propagate out of the suspend path?
-
-> +
-> +	/* Wait for the MTL TX queues to finish pushing into the MAC */
-> +	if (priv->hw->dma->tx_mtl_drain)
-> +		for (chan = 0; chan < tx_channels_count; chan++)
-> +			stmmac_tx_mtl_drain(priv, priv->ioaddr, chan);
-> +
-> +	/* Disable the MAC TX and RX */
-> +	stmmac_mac_set(priv, priv->ioaddr, false);
-
-[Severity: Medium]
-Stage 2 needs MAC TE still set so the MTL Tx FIFO can push into the MAC, but
-the MAC transmitter is cleared on every carrier-down event, not only by the
-phylink_stop() call this patch reordered:
-
-  stmmac_mac_link_down()
-      stmmac_mac_set(priv, priv->ioaddr, false);
-
-So on ifdown or suspend while the link is already down - cable unplugged,
-autoneg incomplete, link dropped while a frame was in flight, which is
-exactly when a frame is most likely to sit in the MTL Tx FIFO - TE is
-already clear.
-
-Does dwxgmac2_tx_mtl_drain() then poll for the full 10000 us per Tx queue,
-warn, and return -ETIMEDOUT while the stranded frame stays where it was?
-Would it make sense to check the carrier state or read back MAC_CONFIG
-TE/RE before entering stage 2, and to fall back to the MTL flush-Tx-queue
-path when the MAC transmitter is off?
-
-> +
-> +	/* Wait for the MTL RX queues to drain into the RX DMA */
-> +	if (priv->hw->dma->rx_mtl_drain)
-> +		for (chan = 0; chan < rx_channels_count; chan++)
-> +			stmmac_rx_mtl_drain(priv, priv->ioaddr, chan);
-
-[Severity: Medium]
-Stage 4 waits for the Rx DMA to move frames out of the MTL Rx FIFO, but all
-three callers have already stopped NAPI before reaching here:
-
-  __stmmac_release() / stmmac_xdp_release() / stmmac_suspend()
-      stmmac_disable_all_queues()
-          __stmmac_disable_all_queues()   /* napi_disable() */
-      ...
-      stmmac_datapath_teardown()
-
-With no NAPI to recycle descriptors and inbound traffic still arriving, can
-the Rx ring run out of free descriptors so that the Rx DMA suspends on
-descriptor unavailability and stops draining the FIFO?  In that case
-dwxgmac2_rx_mtl_drain() cannot see PRXQ == 0 && RXQSTS == 0 and spends the
-full 10000 us per Rx queue plus a warning, and the frame stays in the MTL Rx
-FIFO anyway.
-
-Stages 1 and 2 can already sleep tx_queues_to_use * 10 ms before this point,
-which widens the window for the ring to be exhausted.
-
-> +
-> +	/* Stop all RX DMA channels */
-> +	for (chan = 0; chan < rx_channels_count; chan++)
-> +		stmmac_stop_rx_dma(priv, chan);
-> +
-> +	/* Wait for every RX DMA channel to report itself stopped */
-> +	if (priv->hw->dma->rx_dma_stopped)
-> +		for (chan = 0; chan < rx_channels_count; chan++)
-> +			stmmac_rx_dma_stopped(priv, priv->ioaddr, chan);
-> +}
 
 [Severity: High]
-The new helper replaces stmmac_stop_all_dma() in __stmmac_release(),
-stmmac_xdp_release() and the non-WoL branch of stmmac_suspend(), but it does
-not end with the loop stmmac_stop_all_dma() finishes with:
+[Finding: main-1-1]
+[Sources: opus-5]
+This isn't a bug introduced by this patch, but the new !ns->phc guard looks
+like it silently fixes a NULL pointer dereference that exists today, without
+a mention in the changelog or a Fixes: tag.
 
-  stmmac_stop_all_dma()
-      ...
-      for (chan = 0; chan < dma_csr_ch; chan++)
-              stmmac_deinit_chan(priv, priv->ioaddr, chan);
+Before this patch nsim_get_ts_info() did:
 
-deinit_chan is implemented only by dwmac4_dma_ops and dwmac410_dma_ops
-(dwmac4_dma_deinit_channel() and dwmac410_dma_deinit_channel()), and its only
-job is to clear DMA_CHAN_INTR_DEFAULT_MASK in DMA_CHAN_INTR_ENA, i.e. it is
-the matching disable for the enables written by dwmac4_dma_init_channel().
-That loop was added by commit 59a57128ae5231 ("net: stmmac: dwmac4: mask
-interrupts when stopping DMA in suspend", Fixes: 1b9707e6f1a9) precisely
-because suspend otherwise produces an RPS interrupt storm.
+	info->phc_index = mock_phc_index(ns->phc);
 
-DWMAC4 and DWMAC4.10 provide none of the new ordered-teardown ops, so on
-those parts the new helper is plain stop plus MAC disable with the masking
-gone.  Nothing else covers it: dwmac4_disable_dma_irq() only touches RIE and
-TIE, and stmmac_disable_all_queues() only does napi_disable().
+and nsim_ethtool_init() installs the shared nsim_ethtool_ops (including
+.get_ts_info = nsim_get_ts_info) on every netdevsim netdev, while only
+nsim_init_netdevsim() calls mock_phc_create().  nsim_init_netdevsim_vf()
+just assigns nsim_vf_netdev_ops and registers the netdev, so ns->phc stays
+NULL for VF netdevs.
 
-Does routing the non-WoL suspend path through the new helper reintroduce the
-storm that 59a57128ae5231 fixed, with the IRQ handler still registered?  And
-since RPS/TPS clearing moved into the start ops, do those abnormal status
-bits now stay asserted for the whole time the interface is down or suspended
-while the corresponding enables remain set?
+With CONFIG_PTP_1588_CLOCK_MOCK=y, mock_phc_index() is the real function:
 
-> @@ -4240,9 +4286,6 @@ static void __stmmac_release(struct net_device *dev)
->  	struct stmmac_priv *priv = netdev_priv(dev);
->  	u8 chan;
->  
-> -	/* Stop and disconnect the PHY */
-> -	phylink_stop(priv->phylink);
-> -
->  	stmmac_disable_all_queues(priv);
->  
->  	for (chan = 0; chan < priv->plat->tx_queues_to_use; chan++)
-> @@ -4253,8 +4296,11 @@ static void __stmmac_release(struct net_device *dev)
->  	/* Free the IRQ lines */
->  	stmmac_free_irq(dev, REQ_IRQ_ERR_ALL, 0);
->  
-> -	/* Stop TX/RX DMA and clear the descriptors */
-> -	stmmac_stop_all_dma(priv);
-> +	/* Has to run before mac_link_down() disables the MAC. */
-> +	stmmac_datapath_teardown(priv);
+drivers/ptp/ptp_mock.c:mock_phc_index() {
+	return ptp_clock_index(phc->clock);
+}
+
+so ethtool -T on a netdevsim VF netdev dereferences NULL.  Would it make
+sense to split this guard into its own patch with a Fixes: tag so that
+stable tooling can pick it up?
+
+Also, adding ethtool_op_get_ts_info() here changes ethtool -T output for all
+netdevsim devices by advertising SOF_TIMESTAMPING_TX_SOFTWARE,
+SOF_TIMESTAMPING_RX_SOFTWARE and SOF_TIMESTAMPING_SOFTWARE.  Could the
+changelog mention that behaviour change?
+
+>  	info->phc_index = mock_phc_index(ns->phc);
+> +	if (info->phc_index < 0)
+> +		return 0;
 > +
-> +	/* Stop and disconnect the PHY */
-> +	phylink_stop(priv->phylink);
+> +	info->so_timestamping |= SOF_TIMESTAMPING_TX_HARDWARE |
+> +				 SOF_TIMESTAMPING_RX_HARDWARE |
+> +				 SOF_TIMESTAMPING_RAW_HARDWARE;
+> +
+> +	info->tx_types = BIT(HWTSTAMP_TX_OFF) | BIT(HWTSTAMP_TX_ON);
+> +	info->rx_filters = BIT(HWTSTAMP_FILTER_NONE) | BIT(HWTSTAMP_FILTER_ALL);
+>  
+>  	return 0;
+>  }
+> diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
+> index 4e9d7e10b527e..e586fd8f3bc37 100644
+> --- a/drivers/net/netdevsim/netdev.c
+> +++ b/drivers/net/netdevsim/netdev.c
+
+[ ... ]
+
+> @@ -164,6 +171,44 @@ static netdev_tx_t nsim_start_xmit(struct sk_buff *skb, struct net_device *dev)
+>  		skb_linearize(skb);
+>  
+>  	skb_tx_timestamp(skb);
+> +
+> +	if (unlikely(READ_ONCE(peer_ns->tstamp_config.rx_filter) !=
+> +		     HWTSTAMP_FILTER_NONE))
+> +		ptp_info_rx = mock_phc_get_ptp_info(peer_ns->phc);
+> +
+> +	if (unlikely(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) &&
+> +	    READ_ONCE(ns->tstamp_config.tx_type) == HWTSTAMP_TX_ON)
+> +		ptp_info_tx = mock_phc_get_ptp_info(ns->phc);
+> +
+> +	if (unlikely(ptp_info_tx || ptp_info_rx)) {
+> +		/* Capture both timestamps closely */
+> +		if (ptp_info_tx)
+> +			ptp_info_tx->gettime64(ptp_info_tx, &tx_ts);
+> +		if (ptp_info_rx)
+> +			ptp_info_rx->gettime64(ptp_info_rx, &rx_ts);
+> +
+> +		/* If TX hardware timestamping is enabled report TX timestamp */
+> +		if (ptp_info_tx) {
+> +			shhwtstamps.hwtstamp = timespec64_to_ktime(tx_ts);
+> +			skb_tstamp_tx(skb_orig, &shhwtstamps);
+> +		}
 
 [Severity: Medium]
-phylink_stop() is the only fence against the phylink resolve worker - it
-calls phylink_run_resolve_and_disable(), which sets PHYLINK_DISABLE_STOPPED
-and flushes the work.  Moving it after the teardown means the whole ordered
-sequence now runs concurrently with that worker, which takes only
-pl->phydev_mutex, phy->lock and pl->state_mutex and never RTNL:
+[Finding: gpt-5-6-sol-3-10]
+[Sources: gpt-5-6-sol, opus-5]
+Can a socket receive two SCM_TSTAMP_SND reports for the same packet here?
 
-  phylink_resolve()            /* system_power_efficient_wq, no RTNL */
-      phylink_link_up()
-          stmmac_mac_link_up()
-              stmmac_mac_set(priv, priv->ioaddr, true);
-  or
-      phylink_link_down()
-          stmmac_mac_link_down()
-              stmmac_mac_set(priv, priv->ioaddr, false);
+The hardware report is emitted after skb_tx_timestamp(), which already
+delivered the software one:
 
-stmmac_datapath_teardown() holds neither priv->lock nor any lock shared with
-those callbacks, and both sides do an unsynchronized read-modify-write of
-MAC_CTRL_REG.
+include/linux/skbuff.h:skb_tx_timestamp() {
+	skb_clone_tx_timestamp(skb);
+	if (skb_shinfo(skb)->tx_flags & (SKBTX_SW_TSTAMP | SKBTX_BPF))
+		skb_tstamp_tx(skb, NULL);
+}
 
-Can a link event arriving during ifdown set TE|RE again after stage 3, so
-that the MAC keeps filling the MTL Rx FIFO after stage 4's drain wait and
-after stage 5 has stopped the Rx DMA?  Conversely, if the worker clears
-TE/RE just after stage 1, do stages 2 and 4 each burn the full 10 ms poll and
-warn per queue?
+The only suppression of the software report lives in __skb_tstamp_tx():
 
-> @@ -7104,15 +7150,12 @@ void stmmac_xdp_release(struct net_device *dev)
->  	/* Free the IRQ lines */
->  	stmmac_free_irq(dev, REQ_IRQ_ERR_ALL, 0);
+net/core/skbuff.c:__skb_tstamp_tx() {
+	if (!hwtstamps && !(tsflags & SOF_TIMESTAMPING_OPT_TX_SWHW) &&
+	    skb_shinfo(orig_skb)->tx_flags & SKBTX_IN_PROGRESS)
+		return;
+
+netdevsim never sets SKBTX_IN_PROGRESS anywhere - the new code only tests
+SKBTX_HW_TSTAMP - so for a socket that enabled both
+SOF_TIMESTAMPING_TX_SOFTWARE and SOF_TIMESTAMPING_TX_HARDWARE without
+SOF_TIMESTAMPING_OPT_TX_SWHW both reports are delivered.
+
+Would following the usual driver sequence work here, i.e. test
+SKBTX_HW_TSTAMP and set SKBTX_IN_PROGRESS before calling
+skb_tx_timestamp()?
+
+> +
+> +		/* Unshare the skb, stamping it must not corrupt cloned copies
+> +		 * and prevents returning single tstamp for Tx and Rx
+> +		 */
+> +		skb = skb_unshare(skb_orig, GFP_ATOMIC);
+> +		if (unlikely(!skb)) {
+> +			if (psp_ext)
+> +				__skb_ext_put(psp_ext);
+> +			goto out_drop_cnt;
+> +		}
+
+[Severity: Low]
+[Finding: main-3-8]
+[Sources: opus-5]
+Should this skb_unshare() be gated on ptp_info_rx?
+
+The enclosing condition is ptp_info_tx || ptp_info_rx, but the only write
+into the skb below is guarded by if (ptp_info_rx).  On the TX-only path
+(peer rx_filter == HWTSTAMP_FILTER_NONE) every timestamped frame gets copied
+by skb_copy() for nothing, which also linearizes the buffer that the
+hds_config logic just above deliberately left non-linear, and does not carry
+queue_mapping.
+
+If the GFP_ATOMIC copy then fails, the frame is dropped via out_drop_cnt
+even though nothing needed to be written into it, and after the TX
+timestamp was already handed to the socket by skb_tstamp_tx(skb_orig, ...).
+
+[Severity: Low]
+[Finding: main-5-12]
+[Sources: opus-5]
+Does skb_unshare() cover the case this comment describes?
+
+include/linux/skbuff.h:skb_unshare() {
+	might_sleep_if(gfpflags_allow_blocking(pri));
+	if (skb_cloned(skb)) {
+	...
+}
+
+The copy is made only for clones, so an skb with skb->users > 1 and
+cloned == 0 is returned unchanged.  pktgen does
+refcount_add(burst, &pkt_dev->skb->users) and resubmits the same skb, so the
+skb_hwtstamps(skb) write below touches skb_shared_info that the other
+reference holder still owns, and that the peer's NAPI path may read
+concurrently after nsim_forward_skb() -> nsim_napi_rx() queues it on
+rq->skb_queue.  Should the driver check skb_shared() as well, or stamp a
+private copy?
+
+> +
+> +		/* If RX hardware timestamping is enabled report RX timestamp */
+> +		if (ptp_info_rx)
+> +			skb_hwtstamps(skb)->hwtstamp =
+> +				timespec64_to_ktime(rx_ts);
+> +	}
+> +
+
+[Severity: Critical]
+[Finding: main-6-13]
+[Sources: opus-5]
+Can this write corrupt kernel memory for AF_XDP TX skbs?
+
+skb_hwtstamps() returns a pointer into a union in skb_shared_info:
+
+include/linux/skbuff.h:struct skb_shared_info {
+	union {
+		struct skb_shared_hwtstamps hwtstamps;
+		struct xsk_tx_metadata_compl xsk_meta;
+	};
+
+struct xsk_tx_metadata_compl has a single member, u64 *tx_timestamp, and the
+AF_XDP destructor dereferences it with only a NULL check:
+
+net/xdp/xsk.c:xsk_destruct_skb() {
+	struct xsk_tx_metadata_compl *compl = &skb_shinfo(skb)->xsk_meta;
+
+	if (compl->tx_timestamp) {
+		/* sw completion timestamp, not a real one */
+		*compl->tx_timestamp = ktime_get_tai_fast_ns();
+	}
+
+Every generic-xmit AF_XDP skb carries that destructor
+(xsk_skb_init_misc() sets skb->destructor = xsk_destruct_skb), and it is
+freshly allocated and not cloned, so skb_unshare() above returns the same
+skb with the destructor and the overwritten shinfo intact.
+__dev_forward_skb() -> skb_scrub_packet() does not orphan the skb or reset
+skb_shinfo(), so the value survives to the destructor.
+
+The RX branch is gated only on the peer's setting:
+
+	if (unlikely(READ_ONCE(peer_ns->tstamp_config.rx_filter) !=
+		     HWTSTAMP_FILTER_NONE))
+		ptp_info_rx = mock_phc_get_ptp_info(peer_ns->phc);
+
+so any AF_XDP frame forwarded while the peer has RX timestamping enabled
+gets a non-NULL, PHC-derived value in xsk_meta.tx_timestamp, and the
+destructor performs an 8-byte write to that address.  The mock PHC value is
+settable from userspace through clock_settime() on /dev/ptpN via
+mock_phc_settime64().
+
+Real NICs avoid this because they only stamp skbs they allocated for RX.
+Since netdevsim reuses the TX skb as the RX skb, should it orphan the skb
+(clearing skb->destructor) or stamp a private copy before touching
+skb_shinfo()->hwtstamps?
+
+>  	if (unlikely(nsim_forward_skb(dev, peer_dev,
+>  				      skb, rq, psp_ext) == NET_RX_DROP))
+>  		goto out_drop_cnt;
+> @@ -185,6 +230,63 @@ static netdev_tx_t nsim_start_xmit(struct sk_buff *skb, struct net_device *dev)
+>  	return NETDEV_TX_OK;
+>  }
 >  
-> -	/* Stop TX/RX DMA channels */
-> -	stmmac_stop_all_dma(priv);
-> +	/* Stop the MAC and the TX/RX DMA channels */
-> +	stmmac_datapath_teardown(priv);
->  
->  	/* Release and free the Rx/Tx resources */
->  	free_dma_desc_resources(priv, &priv->dma_conf);
->  
-> -	/* Disable the MAC Rx/Tx */
-> -	stmmac_mac_set(priv, priv->ioaddr, false);
-> -
->  	/* set trans_start so we don't get spurious
->  	 * watchdogs during reset
->  	 */
-> @@ -8190,17 +8233,15 @@ int stmmac_suspend(struct device *dev)
->  		timer_delete_sync(&priv->eee_ctrl_timer);
->  	}
->  
-> -	/* Stop TX/RX DMA */
-> -	stmmac_stop_all_dma(priv);
-> -
-> -	stmmac_legacy_serdes_power_down(priv);
-> -
->  	/* Enable Power down mode by programming the PMT regs */
->  	if (priv->wolopts) {
-> +		stmmac_stop_all_dma(priv);
-> +		stmmac_legacy_serdes_power_down(priv);
->  		stmmac_pmt(priv, priv->hw, priv->wolopts);
->  		priv->irq_wake = 1;
->  	} else {
-> -		stmmac_mac_set(priv, priv->ioaddr, false);
-> +		stmmac_datapath_teardown(priv);
-> +		stmmac_legacy_serdes_power_down(priv);
->  		pinctrl_pm_select_sleep_state(priv->device);
->  	}
+> +static int nsim_set_ts_config(struct net_device *netdev,
+> +			      struct kernel_hwtstamp_config *config,
+> +			      struct netlink_ext_ack *extack)
+> +{
+> +	struct netdevsim *ns = netdev_priv(netdev);
+> +	int rx_filter;
+> +
+> +	if (!ns->phc)
+> +		return -EOPNOTSUPP;
+> +
 
-Only the WoL branch keeps stmmac_stop_all_dma() and therefore the
-stmmac_deinit_chan() interrupt masking; the plain suspend case is the one
-that loses it, as noted above.
--- 
-This is an AI-generated review.
+[ ... ]
 
+> +static int nsim_get_ts_config(struct net_device *netdev,
+> +			      struct kernel_hwtstamp_config *config)
+> +{
+> +	struct netdevsim *ns = netdev_priv(netdev);
+> +
+> +	*config = ns->tstamp_config;
+> +	return 0;
+> +}
+
+[Severity: Low]
+[Finding: gpt-5-6-sol-2-6]
+[Sources: gpt-5-6-sol, opus-5]
+Should nsim_get_ts_config() carry the same !ns->phc check as
+nsim_set_ts_config()?
+
+drivers/net/Kconfig allows netdevsim without the mock clock:
+
+	depends on PTP_1588_CLOCK_MOCK || PTP_1588_CLOCK_MOCK=n
+
+and with CONFIG_PTP_1588_CLOCK_MOCK=n the stub is used:
+
+include/linux/ptp_mock.h {
+static inline struct mock_phc *mock_phc_create(struct device *dev)
+{
+	return NULL;
+}
+
+nsim_init_netdevsim() only rejects IS_ERR(), so ns->phc stays NULL.  In that
+configuration SIOCGHWTSTAMP succeeds and reports tx_type =
+HWTSTAMP_TX_OFF / rx_filter = HWTSTAMP_FILTER_NONE, i.e. "hardware
+timestamping present but disabled", while nsim_get_ts_info() reports
+phc_index = -1 with no hardware so_timestamping and every set attempt is
+rejected with -EOPNOTSUPP.  Other converted drivers keep the get/set pair
+symmetric here.
+
+[ ... ]
