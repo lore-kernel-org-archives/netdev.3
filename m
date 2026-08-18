@@ -1,293 +1,156 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B767377EAF;
-	Tue, 18 Aug 2026 07:30:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37416378833;
+	Tue, 18 Aug 2026 07:31:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787038215; cv=none; b=aWTiIwxRy5YD3lnPwTcTD7N1Ca0qpbio2/MXn/BhF3zUJOJ4eV8oYCglHzI6viTPDGRTSSQHinTzo7aYM2SzK7QeHcP0G9ndbYV1dI9C02aT+1xH30TgjrS8JUBuI6wBQAoiboJvKeT+OEfiYf3XzTClTfNhTIL0L0HQzrSSnu0=
+	t=1787038292; cv=none; b=E9LM1Vtg9Bu6dG54wSPKYJLs5m7r+8EuJYyCf34ovufwIfOqYzd/ERohmjV9ewgroZygSmBkA2E05L3YFTg6GeP0+rnXRTKO4XNp+hwx4qfuTK/kmU1Kw78L25YrvvYrj+S1hJOTsC4bM7xsORBj+Dg44krGJ9TGOwxiI44wGjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787038215; c=relaxed/simple;
-	bh=adD4hrekVKJzjV5lsiD6Q6AEfAbU+gFc1zFewcN1zJ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ICTy5NlKIBiCwNZL3WDQYvLzCvuevRPZO/PIQjYI0Pj0oM3M3qE1Oj+qecbkEIiBwYLL9khgnEn3Ow/TjMb2Iz6PEIFtcetI5dpU2LSCw9tSID1x6Mwk/z+tzL9DgOaqv9hBOA4ycHhHjFtavyJEoqkeR1N01GOZR13UW2Jjf2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FA/YuLG1; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1787038292; c=relaxed/simple;
+	bh=QBpVO6DJy6JCTg4w5dKv6IgUyJKaHcEBz3YP7SbrAVA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GDF9abO2vC9Ztav622/BbqnGn0s3IlVOGG8SpWBBziFUD76QqjK++0BYIi10ouxypjegrhxA4FD9Up/grPmtjzsZRDECN9BF9P6NsvQhXlys5xJMK0QLgEMQrmfyarytwaKj8Z8o+I5r5PtAA5jD/SOSOHAnakm7Uz8KsiRc/dM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Q0ot++O+; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FA/YuLG1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787038213; x=1818574213;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=adD4hrekVKJzjV5lsiD6Q6AEfAbU+gFc1zFewcN1zJ4=;
-  b=FA/YuLG1zeM6HfaEQTMjIcTDUIHx1ly2WFMNqsUelyJhIRsKwk9kTbrW
-   Ux/E1Dz5qCrnEePfZzhXLVvgGUBCSnhhSrnOxb0Dr3Ya7UAiXbhoLFvan
-   /Ut16HUTB1aKWZbvlJ/7eCdGyupEQGJlxU8HjCwMDVm6vFG4GzbvXA09f
-   PWsjnE6teWMOCT7b4rSzOvwggaFOvwWniDf2Uh/ktd9klkqiXxNT0HRbW
-   FuP1oMe8VAz77xcPL/rvweBgsiFfP5Tq2ojR7/MyGjI++RzpkySuPV3WP
-   bhpwDsTL0UIpV48ufB/SAOZCUfzZNl1n86H3AS2Ea+Rqx6IAa+bWm4kAv
-   w==;
-X-CSE-ConnectionGUID: 1ZavWEkPTZmmkuiJ/Gtd3g==
-X-CSE-MsgGUID: 21TS8LtJT/eSx+6B0xzbhQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11878"; a="91335144"
-X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
-   d="scan'208";a="91335144"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 00:30:12 -0700
-X-CSE-ConnectionGUID: wr4E8eR1TXGpg7aXAM1Q/w==
-X-CSE-MsgGUID: atJtsneeQjKrAVs4KlySAQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; 
-   d="scan'208";a="269450324"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.209])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 00:30:06 -0700
-Date: Tue, 18 Aug 2026 10:30:04 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: James Hilliard <james.hilliard1@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Len Brown <lenb@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
-	linux-acpi@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v3 1/4] driver core: add fw_devlink
- supplier-copy helper
-Message-ID: <aoQJ_Ixg9NkTm1aH@ashevche-desk.local>
-References: <20260818-submit-phy-package-fwdevlink-v1-v3-0-40a905ea16b6@gmail.com>
- <20260818-submit-phy-package-fwdevlink-v1-v3-1-40a905ea16b6@gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Q0ot++O+"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67HM1kAo2526488;
+	Tue, 18 Aug 2026 07:31:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=zxp4ukBNL6k4K6ViKYFlAQVx4Q1m3b7tOo8N72wJv
+	c4=; b=Q0ot++O+DW7VFDlQ8lQSnrYco99Wqy4nplRbilkvtb4u3LnP1rUrQbqm6
+	aPH08YRLF0kEeMW7phiG3IEpoEJTpOR1fJpq8ZQNs0+FdcdTtrRbjGtIq13a398x
+	5MxQkw5UhaNzanGA+xk+t/nvhsHywf7UwEfrJIA1KHntHIn1N+GUDrUN7EM0lrp6
+	cFR51ZitMJ/jyiktqo0BmZwQRbYOWXuLuItwOrJSSeRen1qoLf2FKyvRKEyhUSac
+	ryB68/iH9xiaxXnl2Hi1yDeC+eXSKg6kVWvbGKOXRyfEG20lLhkcTpTirjnwnr8C
+	vtFvqjlDXuRk/1JStdlxwn+XN3sbQ==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g2dhkxmf6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 18 Aug 2026 07:31:17 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67I7QMH8025784;
+	Tue, 18 Aug 2026 07:31:17 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g33xh1xwh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 18 Aug 2026 07:31:16 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67I7VCCi46924128
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 18 Aug 2026 07:31:13 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DC9CE2004B;
+	Tue, 18 Aug 2026 07:31:12 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AC92E20040;
+	Tue, 18 Aug 2026 07:31:12 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Tue, 18 Aug 2026 07:31:12 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 56341)
+	id 96FDF16113B; Tue, 18 Aug 2026 09:31:12 +0200 (CEST)
+From: Mahanta Jambigi <mjambigi@linux.ibm.com>
+To: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
+        dust.li@linux.alibaba.com, sidraya@linux.ibm.com
+Cc: pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
+        guwen@linux.alibaba.com, netdev@vger.kernel.org,
+        linux-s390@vger.kernel.org, Mahanta Jambigi <mjambigi@linux.ibm.com>,
+        Hidayath Khan <hidayath@linux.ibm.com>
+Subject: [PATCH net] net/smc: free stashed qentry before overwrite in REQ_ADD_LINK to ADD_LINK transition
+Date: Tue, 18 Aug 2026 09:31:07 +0200
+Message-ID: <20260818073107.466506-1-mjambigi@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260818-submit-phy-package-fwdevlink-v1-v3-1-40a905ea16b6@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE4MDA1NSBTYWx0ZWRfXxw/8oz0iif+v
+ PZEKkdTEkvCnha/Bh/MP5rcZdiOD2qxYfVWoDOuXTV5tosrHpiyVCCUlhIxdN5YH9d8YRCk/Ljm
+ qTtMOV5PCARUhUBu8z86rD5QJU/5QO0DhmKWd5rOiGqwK4PPr6FCp1CVomUz3xZamoNy/T7jz2a
+ 8s3rmM7gWTcPJbbY+H/eMV3ZbM+DGdFGrwUkQMe6c1GMS7HlF2Y5ri2cD6sWTOdKgjWHl5+2bC6
+ pjgvMFZsN/XCGpORh9vpnwc921HYj3oRFb2NAxVGrA81MrimrA7ZHOtd/E0TubvehuykJ+snPwg
+ ohRCqCm9C+cQsaEsNXmWjqK1XkboHFRDoSb6OLdc9JvTJrKrUlwwcsgzNeHaIvceMOVijxU7w2t
+ 211A8gvmKaPeg+fBgLi1cpYSkF/MTTAtKnCMr49/CLZ4Qg4+oN+TDYavkGLHbn6DfF3+Cl6BPDf
+ WBiBVUZk6cZ6o6wZEZg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE4MDA1NSBTYWx0ZWRfXwuxbiG1qE2jP
+ KIL9XzzhTPHfMucWcTcDnTFpnrrLm9At8DDAnLcJSe0Ro/Cigp3Owoda1y6LxMQN0HCr3vZIP3O
+ +kQ4U1M7up1zMMdTc4wUtdVwwjLTPcs=
+X-Authority-Analysis: v=2.4 cv=JKkLdcKb c=1 sm=1 tr=0 ts=6a840a46 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=kEd-LeU3vPIERflgv4oA:9
+X-Proofpoint-ORIG-GUID: sIA8EbsEzanJp332aaCG5fuc0LoAfa8d
+X-Proofpoint-GUID: VajwhRUj8CwpOS3xwJDjXmwWiaxWJNkr
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-17_04,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0 malwarescore=0 priorityscore=1501
+ lowpriorityscore=0 clxscore=1015 adultscore=0 impostorscore=0 spamscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608180055
 
-On Tue, Aug 18, 2026 at 12:58:57AM -0600, James Hilliard wrote:
-> Some firmware nodes describe resources shared by devices instantiated for
-> their children, but the container node itself is never converted to a
-> struct device. The firmware parser should retain the topology as
-> described, while the framework which creates the children can identify
-> the actual consumers.
-> 
-> Add fw_devlink_copy_suppliers() so such a framework can copy the direct
-> supplier links from a container to a real consumer firmware node before
-> the consumer is registered. The normal device_add() path then converts
-> the copied dependencies into device links at the correct point in device
-> registration.
-> 
-> Leave the source links in place for other children, suppress duplicate
-> links and roll back newly allocated links if a copy fails. Skip ignored
-> links and clear cycle flags on newly copied links, since cycle
-> classification must be recomputed for the new consumer topology. Reject
-> calls after the target firmware node has been associated with a device.
-> Check that association while holding the fwnode-link lock so a
-> concurrent device_add() either observes the copied links or makes the
-> helper reject the request.
+When smc_llc_event_handler() transitions the local LLC flow from
+SMC_LLC_FLOW_REQ_ADD_LINK to SMC_LLC_FLOW_ADD_LINK on arrival of an ADD_L=
+INK
+request, it calls smc_llc_flow_qentry_set() unconditionally:
 
-What is this paragraph about? The workflow?
+	if (lgr->llc_flow_lcl.type =3D=3D SMC_LLC_FLOW_REQ_ADD_LINK) {
+		lgr->llc_flow_lcl.type =3D SMC_LLC_FLOW_ADD_LINK;
+		smc_llc_flow_qentry_set(&lgr->llc_flow_lcl, qentry);
+		...
+	}
 
-> Add KUnit coverage for filtering, cycle-flag handling, idempotency, the
-> pre-registration contract and conversion into an active device link.
+A CONFIRM_LINK or ADD_LINK_CONT arriving while flow->type is
+SMC_LLC_FLOW_REQ_ADD_LINK is stashed into flow->qentry via the
+SMC_LLC_CONFIRM_LINK / SMC_LLC_ADD_LINK_CONT handler (which stores into
+flow->qentry for any non-NONE flow type).  When the subsequent ADD_LINK
+arrives, the REQ_ADD_LINK branch overwrites flow->qentry with the new poi=
+nter
+without first freeing the stashed allocation, leaking one kmalloc object.
 
-...
+The stashed entry has no consumer: smc_llc_wait() is only called from
+llc_add_link_work, which is not yet scheduled while the flow type remains
+REQ_ADD_LINK.  No waiter is sleeping on llc_msg_waiter at this point.
+It is safe to unconditionally free any stashed qentry before
+the overwrite.
 
-> +int fw_devlink_copy_suppliers(struct fwnode_handle *to,
-> +			      struct fwnode_handle *from)
-> +{
-> +	struct list_head *first;
-> +	struct fwnode_link *link;
-> +	int ret;
-> +
-> +	if (!to || !from)
-> +		return -EINVAL;
-> +	if (!fw_devlink_flags || to == from)
-> +		return 0;
+Call smc_llc_flow_qentry_del() before smc_llc_flow_qentry_set() in the
+REQ_ADD_LINK branch.  smc_llc_flow_qentry_del() already checks flow->qent=
+ry
+before freeing, so the normal path where no entry is stashed is a no-op.
 
-I think if to == NULL and from == NULL, it's fine to return 0.
+Fixes: b4ba4652b3f8 ("net/smc: extend LLC layer for SMC-Rv2")
+Reviewed-by: Hidayath Khan <hidayath@linux.ibm.com>
+Signed-off-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+---
+ net/smc/smc_llc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-	if (to == from)
-		return 0;
-	if (!to || !from)
-		return -EINVAL;
-	if (!fw_devlink_flags)
-		return 0;
-
-> +	fw_devlink_parse_fwnode(from);
-> +
-> +	guard(mutex)(&fwnode_link_lock);
-
-+ blank line.
-
-> +	if (READ_ONCE(to->dev))
-> +		return -EBUSY;
-> +
-> +	first = to->suppliers.next;
-
-No, we have list.h and APIs for a reason.
-
-> +	list_for_each_entry(link, &from->suppliers, c_hook) {
-> +		u8 flags = link->flags & ~FWLINK_FLAG_CYCLE;
-> +
-> +		if (flags & FWLINK_FLAG_IGNORE)
-> +			continue;
-> +
-> +		ret = __fwnode_link_add(to, link->supplier, flags);
-> +		if (ret)
-> +			goto rollback;
-> +	}
-> +
-> +	return 0;
-> +
-> +rollback:
-> +	while (to->suppliers.next != first) {
-
-Same here. I think the above and this needs to be thought through as this looks
-like an AI shortcut without thinking of the existing APIs and possible different
-(better) implementation.
-
-> +		link = list_first_entry(&to->suppliers, struct fwnode_link,
-> +					c_hook);
-> +		__fwnode_link_del(link);
-> +	}
-> +
-> +	return ret;
-> +}
-
-...
-
-> +++ b/drivers/base/test/fwnode-link-test.c
-
-> +#include <kunit/platform_device.h>
-> +#include <kunit/test.h>
-> +
-> +#include <linux/device.h>
-> +#include <linux/fwnode.h>
-
-+ list.h
-
-> +#include <linux/platform_device.h>
-> +
-> +#define FWNODE_LINK_TEST_DRIVER_NAME	"fwnode-link-test"
-> +
-> +struct fwnode_link_test_context {
-> +	struct fwnode_handle consumer;
-> +	struct fwnode_handle container;
-> +	struct fwnode_handle supplier_a;
-> +	struct fwnode_handle supplier_b;
-> +};
-> +
-> +static int fwnode_link_test_probe(struct platform_device *pdev)
-> +{
-> +	return 0;
-> +}
-> +
-> +static struct platform_driver fwnode_link_test_driver = {
-> +	.probe = fwnode_link_test_probe,
-> +	.driver = {
-> +		.name = FWNODE_LINK_TEST_DRIVER_NAME,
-> +	},
-> +};
-> +
-> +static void fwnode_link_test_cleanup(void *data)
-> +{
-> +	struct fwnode_link_test_context *context = data;
-> +
-> +	fwnode_links_purge(&context->consumer);
-> +	fwnode_links_purge(&context->container);
-> +	fwnode_links_purge(&context->supplier_a);
-> +	fwnode_links_purge(&context->supplier_b);
-> +}
-> +
-> +static struct fwnode_link_test_context *
-> +fwnode_link_test_init(struct kunit *test)
-> +{
-> +	struct fwnode_link_test_context *context;
-> +	int ret;
-> +
-> +	context = kunit_kzalloc(test, sizeof(*context), GFP_KERNEL);
-> +	KUNIT_ASSERT_NOT_NULL(test, context);
-> +
-> +	fwnode_init(&context->consumer, NULL);
-> +	fwnode_init(&context->container, NULL);
-> +	fwnode_init(&context->supplier_a, NULL);
-> +	fwnode_init(&context->supplier_b, NULL);
-> +	ret = kunit_add_action_or_reset(test, fwnode_link_test_cleanup,
-> +					context);
-> +	KUNIT_ASSERT_EQ(test, ret, 0);
-> +
-> +	return context;
-> +}
-> +
-> +static struct platform_device *
-> +fwnode_link_test_register_pdev(struct kunit *test,
-> +			       struct fwnode_handle *fwnode)
-> +{
-> +	struct platform_device *pdev;
-> +	int ret;
-> +
-> +	pdev = kunit_platform_device_alloc(test, FWNODE_LINK_TEST_DRIVER_NAME,
-> +					   PLATFORM_DEVID_AUTO);
-> +	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pdev);
-> +
-> +	device_set_node(&pdev->dev, fwnode);
-> +	ret = kunit_platform_device_add(test, pdev);
-> +	if (ret) {
-> +		KUNIT_FAIL(test, "failed to register platform device: %d", ret);
-> +		return NULL;
-> +	}
-> +
-> +	return pdev;
-> +}
-> +
-> +static unsigned int fwnode_supplier_count(struct fwnode_handle *fwnode)
-> +{
-> +	struct fwnode_link *link;
-> +	unsigned int count = 0;
-> +
-> +	list_for_each_entry(link, &fwnode->suppliers, c_hook)
-> +		count++;
-
-We have an existing API for this. I recommend to stop using AI for a moment
-and just read the existing code thoroughly (list.h) and see what we have
-in the kernel.
-
-> +	return count;
-> +}
-
-...
-
-> --- a/include/linux/fwnode.h
-> +++ b/include/linux/fwnode.h
-
-> +int fw_devlink_copy_suppliers(struct fwnode_handle *to,
-> +			      struct fwnode_handle *from);
->  bool fw_devlink_is_strict(void);
-
-It might be better to split a test into a separate patch. But I don't care
-about this much.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+diff --git a/net/smc/smc_llc.c b/net/smc/smc_llc.c
+index 07e2d7fef7b2..9cc4b3e97699 100644
+--- a/net/smc/smc_llc.c
++++ b/net/smc/smc_llc.c
+@@ -1911,6 +1911,8 @@ static void smc_llc_event_handler(struct smc_llc_qe=
+ntry *qentry)
+ 			if (lgr->llc_flow_lcl.type =3D=3D
+ 					SMC_LLC_FLOW_REQ_ADD_LINK) {
+ 				/* server started add_link processing */
++				/* free any qentry stashed in REQ_ADD_LINK state */
++				smc_llc_flow_qentry_del(&lgr->llc_flow_lcl);
+ 				lgr->llc_flow_lcl.type =3D SMC_LLC_FLOW_ADD_LINK;
+ 				smc_llc_flow_qentry_set(&lgr->llc_flow_lcl,
+ 							qentry);
+--=20
+2.50.1
