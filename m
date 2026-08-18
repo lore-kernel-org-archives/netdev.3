@@ -1,78 +1,77 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51B7480953;
-	Tue, 18 Aug 2026 16:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649FC481245;
+	Tue, 18 Aug 2026 16:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787071863; cv=none; b=Vtg4A/4oZjekkkWg9JxcorylUb/pjHPjDu/1kIwkqEet4PXwZX0lT0TKzZfbUQ79Fkw5YtRsc6ta+WSmaqBU3+nTH7q7ifTnpDj0Hx7RQgYIlqVMXABbwhGRUQo5SlRqjnI0Yk9qO9AqzC+wa9tEzudbU3m0B0+u+tBvgtDh/zs=
+	t=1787071866; cv=none; b=qHe7vLM2Hwky4sM44TOQDCxx/b5CjP9VGBVnLG9v7ldZifhrJJa68Xl+djjWJgoUCdTk1oU+FaV71y0DG9NvJyINP3ElwqdCvkosckUUClbjIYwQiIMt1xyq4ZiGQLiSUc3FfScAdtvrEC99DOxW2hUsC2hWMvHqQ94M0Cd96qA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787071863; c=relaxed/simple;
-	bh=XkhC9fZ3rGmN2xJzbIpVb4G8uj+SsRGf0ts+qmSNKrQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=hD3L1R6ESgiWpE9ymIj/7erUEj+vi4sFKNX73mToyK2q4rR1mo1MtkM1/aWWOV0vXamxrw5TiNFVAZhfkVsfCrrPezjC8UsNdUkw7NBqKqXNEqrar3sVqkawdCiiVRXHCVbRpXrl+9M1uofuW7VxQoDAlpN1lv2nUKnQxEMpzlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W0R3Uz+5; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787071866; c=relaxed/simple;
+	bh=iGDED60fwjOEPCtvOXu1KY3P4lRrxQVlQBUDxhVqkW8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=F7uVD2IsI/N/GnMu4QJMdopw5PYa6nSL+Ks7R0VU+KhtQ2G2mbzS5J7PAxkp/qD0RBySQzsMFrINOToaYt81HsUw/YanX0bMgANFXEYca/20hFAhKQPxR8Io8gfYfLI1txIxsqCIuUFVnT1OfQTzlr0RUaU13O4HbAdE10PzR1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IaH3LPvM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W0R3Uz+5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842E81F00A3D;
-	Tue, 18 Aug 2026 16:51:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IaH3LPvM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 403AA1F000E9;
+	Tue, 18 Aug 2026 16:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787071861;
-	bh=wvofqOkwTaNyhQJu4ZPtaN9R8EsbejcXCXj1njecaWA=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=W0R3Uz+5/B3QxhCe+ju5Yr9HYpPKjVRgirQYCBYc7rbkbnRK28IvxOh4UKPtnK1aX
-	 hoAJbXgmYv42HDAJmguZBoesS3N0CKaUZhrbC1WvV+C6CFW75khUsmygV1+Fb4HJCi
-	 pTBTBnQBHC2PO4y6x1xco8JlAZFZLpXWJSmIGIW+Cqyrsr61W84r/S7iHm8P08ME1r
-	 MefgcmKewM9abgAwhY5Q5xXJEFr428qKrMFyifIo4AlAyFaWRACzwNTohfI0fZIhaZ
-	 pMpeRGwtlvWPTsHiNh+F9aqeu4Mco9VG6EXWE9jtQb7d4kQtkj5kUh8evriSkEWe2i
-	 RN1jJENjHFHIA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 567FA3927043;
-	Tue, 18 Aug 2026 16:50:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1787071864;
+	bh=ZJ3LkHC5+QZqddMK0I7szGAkSYiUs4RIPZdNAXFfVCU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=IaH3LPvM4eRLd6h4KP1EMwsm9BMwkrkH3QZp3ke/u6WZNPPBbui2rkNsfjjz0jIqV
+	 J0ruPUgRtRfV3syrp8m0YZ4kxR5QJKX5YrNJv3s1qwy/P5UznLSkzLO82yvZbH0L1b
+	 nVHtp9IgAmgY0nnHFM4umI6kRzC8MKoJqZVbOh4D0lEvh8q0ak+yk0KFWsuAH0iDRs
+	 ge7P3FarBBiSI67hv7pTitwev6MtV//prTQWkjUS6uJ3TjpTJbCXHBWAPj65VlcObU
+	 VpstoOFKKx5L+8d7PIBZ+IBophvzD3w2Yut8VR/TBctTLciVq6ZRaBGfcFzaDdL1nL
+	 rIaaByxZL7+4A==
+Date: Tue, 18 Aug 2026 09:51:03 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Gustavo Luiz Duarte <gustavold@gmail.com>
+Cc: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+ <skhan@linuxfoundation.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH net-next v3 0/7] netconsole: validate a target's IP
+ address configuration
+Message-ID: <20260818095103.7a7f4c51@kernel.org>
+In-Reply-To: <20260814-netcons_ipv6-v3-0-bc0915e8c75f@gmail.com>
+References: <20260814-netcons_ipv6-v3-0-bc0915e8c75f@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] bonding: initialize err for empty target lists
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178707181295.2177226.1948973853593102909.git-patchwork-notify@kernel.org>
-Date: Tue, 18 Aug 2026 16:50:12 +0000
-References: <20260813153126.3952893-1-ruoyuw560@gmail.com>
-In-Reply-To: <20260813153126.3952893-1-ruoyuw560@gmail.com>
-To: Ruoyu Wang <ruoyuw560@gmail.com>
-Cc: netdev@vger.kernel.org, jv@jvosburgh.net, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Thu, 13 Aug 2026 23:31:26 +0800 you wrote:
-> Empty NLA_NESTED attributes are valid, and bonding uses them to clear
-> the ARP and NS target lists. When either target attribute is empty,
-> nla_for_each_nested() does not execute, so err retains an uninitialized
-> value before it is tested. The request can consequently return an
-> unpredictable error after clearing the targets.
+On Fri, 14 Aug 2026 20:28:51 +0100 Gustavo Luiz Duarte wrote:
+> This series adds two validations to the target configuration when the
+> user tries to enable it: first whether remote_ip was set, and second
+> whether local_ip and remote_ip address families match. Refuse to enable
+> the target if any of those validations fail.
 > 
-> Initialize err to zero so an empty target list completes successfully.
-> Non-empty lists still propagate errors from __bond_opt_set() unchanged.
+> These validations are already done for the target passed on the
+> command-line, so this aligns dynamic targets with the command-line
+> behavior.
 > 
-> [...]
+> The first two patches replace the per-target 'ipv6' flag with a
+> per-address 'family' field, which makes it easier to detect these error
+> conditions. Patches 3 and 4 implement the actual validations.
+> 
+> Patches 5-7 are follow-ups from previous reviews: move inet_addr from
+> netpoll.h into netconsole.c, show an unset address as an empty string
+> rather than "0.0.0.0", document local_ip auto-selection.
 
-Here is the summary with links:
-  - [net] bonding: initialize err for empty target lists
-    https://git.kernel.org/netdev/net/c/8ccc9bf9afee
+LGTM, but feels to risky to merge during the merge window.
+Since we're changing semantics we should let this sit in linux-next
+for at least a week. Please repost in Sept.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+BTW please carefully review clashiko feedback:
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260814-netcons_ipv6-v3-7-bc0915e8c75f@gmail.com
+It marked as preexisting the problem of IP versions diverging but 
+I think it's relevant (patch 2)?
