@@ -1,74 +1,208 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4336C360ED0;
-	Tue, 18 Aug 2026 15:07:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C173A3AE1A3
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 15:08:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787065642; cv=none; b=rucji7LF+K+s9kixAayU1Iq3E9tt+IBJX+6YLc1geaOMxOcrmvSXGV53Cx3J84saW0OlZOZG7VRG22qohfqRcE6saIjk6ZVnDeGKzr5EP8Yu4Y44MnnpOHnClmAvKIKygon4ccG+0HN/DLqF7bzCfs16v+J8x4vwPpQn6mwZdf8=
+	t=1787065693; cv=none; b=AKAwOv6WixF9BG2iO34qcGCPCBF3jlouSFeU340aUh+SMnSUotR+UFLDmfRE5xAlUnU2SpmPe2b7LKKhk4/STrneWEspPk/ghWupRSmZZOZECRyfxLPRJpUe7ZER4NCHWxVzU+TwT0g9C+cQioS0a6OuqAegJ/IVMri1dQ8rGWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787065642; c=relaxed/simple;
-	bh=4C3TKIko3gSyohe+5IpZITUsFptF3QxLaQk/wLWlwD4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BdwKV5jr5d1sO5AaWBYmnU6irxFryLqG1gL0YaT06afK7yCjfxnI75q7/PC8+obMEc9RxWq15SEdLsQmPvTHZGVT4wQejcD4Z79YdIQgE6aVKQYBxeB2j6g7rjowMNyo/3tGFYEPuu2/WsJAx/4pdhnDWKiUNf/dCv9og+Mdt4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=HJDwoHnu; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1787065693; c=relaxed/simple;
+	bh=2+julbhixxofNca4aNVTNk/zs/niG81pBE7X/ZshghQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dKpsZrSqNcnHyqObpAl95DRgsSdwPNkQGBOX3gBOMPyr6ZzQwO7w7MJ4aLzioPiM4W6nYYqL8nh1zDNycHJUOBxGYZMtXfTvPoxeP7y6XZ+1cHo33QSeEpndSbunu2japyFEXxnJcvhHnORKNfnTzvyyWdXaroc8ZFH9SIWsKyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=oNTo82IJ; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="HJDwoHnu"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=pdPRxrEVxkRTnxbxy0G0Bkwkh+T7ymPVpHD7pAR7Pis=; b=HJDwoHnu3Lv5yPBl2QlpYWnyja
-	0lc9+AOiFMWkuC81qlWE4K869ndtt3h3JzViNs2AVgGp75Ielx8YIvI+ykbucFWEHSCTS0mrcSmxW
-	Lu3PN/KRU5qISeg6NbwJk72o3e3lqbPZFo948aIVDxZWWNu/GG+ySJlJnuzdoCeuBrOk=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wwLPC-000UDp-I8; Tue, 18 Aug 2026 17:07:10 +0200
-Date: Tue, 18 Aug 2026 17:07:10 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Zxyan Zhu <zxyan0222@gmail.com>
-Cc: maxime.chevallier@bootlin.com, mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com, andrew+netdev@lunn.ch,
-	richardcochran@gmail.com, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	muhammad.nazim.amirul.nazle.asmade@altera.com
-Subject: Re: [PATCH net-next v3 2/2] net: stmmac: dwmac-socfpga: mask
- XGMAC_TSIE during cross-timestamp
-Message-ID: <b53e9ebc-64c3-4291-a691-5b7ddd118cc5@lunn.ch>
-References: <20260818132722.1852876-1-zxyan0222@gmail.com>
- <20260818132722.1852876-3-zxyan0222@gmail.com>
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="oNTo82IJ"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-47f84023916so4506825f8f.3
+        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 08:08:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1787065690; x=1787670490; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=DhoaR4OOIJXqNDBU5cYw/oNUY2j8DBMQ31bUaBG3FrI=;
+        b=oNTo82IJq/abI6MPKvzq56gdRVyQAauvRWOFGT86hjSwM0yMPOCXDzpFdUbdYQY4zO
+         kWWGtq18ygq1EcLtTtqVGL992Zo58LiRmTYWm0bXpzQG7MbXnXNm9B0A2evTOK6H8t/7
+         s8eyF+LBvotRjla6rv0juZBLboTKH4CcKNWJ8Znsarkk9jMF93HAEGYSvaRxD1/L4ww8
+         sgyradiv+3BntZOeBmgSZGyCcabcXhgHF0shcDPbZ9lpCb9yJE7J08IAKfaI4izJE/7u
+         8T83qm71dbR8Hsjrln5ETw9oJ4Y8ehwvL3FaRbaNUQDC1OY20HFfG6iDrlJe5ET7x1Ch
+         1ZMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787065690; x=1787670490;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=DhoaR4OOIJXqNDBU5cYw/oNUY2j8DBMQ31bUaBG3FrI=;
+        b=Yz72E2biSh51DTEao5z7QsK/oAorY4HtjioBFONfMsr5j4tTZgDDg8x8gAsMcS9hF6
+         L+AuSZeY2E4wbDr3JE7LGnW6eL+usXftYIb0pKVOsPYwmYBbsgsvgW9nmEaDbRqXuan5
+         u7KmHzeMFVpfMasvKQKpMhPBs+uCPnq0cx9J2v+jPUr7+CFTRG2chUie0WqW7MwAQeWO
+         PSbSlK53S85jYA/wmltzc2IJyry2wZKHtqk/SdjBNA/ecKutFxU7/1RclOYyA9JhuRM3
+         77SefIzA5mK91ML3ppdmg1l2EavnVp+xhJDnDLh8HnhXw2m7mWnMkdQpxT0Db8ZCJPJc
+         y6LA==
+X-Gm-Message-State: AOJu0YyMGqFDSjvrIMzWdvd0i0H2OOmMAXrRlY/7qFjO8DcV64aX4DYd
+	GDkloGngAH1nRGoAUADrT3QMjNkQmOjG9zyS/XmDcOiwfnNYQuogMX7XD4IPfU9IEhK4WRB+o8l
+	pZENO
+X-Gm-Gg: AR+sD12KMVCL7DrjX+C0qAsoi0N2mLLyDtlBL/NLHvUmnYiAQ3fBSRg/xdI1YQ3FLFx
+	95LJ1rYhLY/rYqTVhB16GKJDYiSrdfLHN/Ek0ZccS5fcKx24V0ynumSgYK25xVBSaitHrLTAnDO
+	IT21URuc7W7W3pn2JJxIOMthzR+Zbz5oUeWo6XIyf2kv8phgTZfsNECqWDpC8PIyyQRcXEKQGBT
+	egfVfhgC54GYhe7OgGGkTV0RikSJRzcWxsYSrQvb0QtQOv30jWeGsn9xjnQefcoc5MLXRHjsu9a
+	uqPU9MC3pfVUrJPHD2uXIt5XE1dnlmANpAI4vanVMv6n3AyBYSs0xiSPCGvd6QCaiE7zyUuCnX+
+	hgIuPhINNZfaTQ3NvZXQkxxnxWLQytzStqSzPabH99MzF+4qHiYV1EYct4TfcwBQdMIi/2Sy77R
+	sR2/IARWZ2er1+L5pqzMFDMHfRXLhAYR6lPRCoANdQ2OFq72CpyilGq1VuEooLD+q9jGhDOIMkF
+	5OjfXBwtKA=
+X-Received: by 2002:a05:6000:47:b0:47f:eac2:6f55 with SMTP id ffacd0b85a97d-482a90cd11fmr11978229f8f.19.1787065689829;
+        Tue, 18 Aug 2026 08:08:09 -0700 (PDT)
+Received: from localhost (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-482a9f0dec2sm7924392f8f.10.2026.08.18.08.08.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Aug 2026 08:08:09 -0700 (PDT)
+From: Nikolay Aleksandrov <razor@blackwall.org>
+To: netdev@vger.kernel.org
+Cc: idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	roopa@nvidia.com,
+	bridge@lists.linux.dev,
+	andrew+netdev@lunn.ch,
+	dlstevens@us.ibm.com,
+	amwang@redhat.com,
+	Nikolay Aleksandrov <razor@blackwall.org>
+Subject: [PATCH net v2 1/2] net: bridge: arp/nd proxy: fix reading neigh ha
+Date: Tue, 18 Aug 2026 18:07:55 +0300
+Message-ID: <20260818150756.890025-2-razor@blackwall.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260818150756.890025-1-razor@blackwall.org>
+References: <20260818150756.890025-1-razor@blackwall.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260818132722.1852876-3-zxyan0222@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 18, 2026 at 09:27:22PM +0800, Zxyan Zhu wrote:
-> The Agilex5 smtg_crosststamp() handler arms an internal auxiliary
-> snapshot, toggles GPO0 and then polls XGMAC_INT_STATUS for TSIS in
-> process context to learn that the snapshot is ready.
-> 
-> Once XGMAC_TSIE is unmasked (done by a companion change that enables it
-> in XGMAC_INT_DEFAULT_EN), the DWXGMAC2 timestamp interrupt handler runs
-> from hardirq on every timestamp event and clears TSIS by reading
-> XGMAC_TIMESTAMP_STATUS.  That read can win the race against the poll
-> loop, which then times out and makes PTP_SYS_OFFSET_PRECISE fail with
-> "Wait for time sync operation timeout".
-> 
-> Mask XGMAC_TSIE around the snapshot trigger and FIFO read so the hardirq
-> handler cannot clear TSIS while smtg_crosststamp() owns it, and restore
-> it on every return path.
+Currently neigh ha address is read directly, but that can result in
+torn/partial reads if the neigh is being updated. Use neigh_ha_snapshot
+to take a stable snapshot of the address.
 
-Did you look at the other system which implement crosststamp?
-dwmac-intel.c? Does it need similar changes?
+Fixes: 057658cb33fb ("bridge: suppress arp pkts on BR_NEIGH_SUPPRESS ports")
+Fixes: ed842faeb2bd ("bridge: suppress nd pkts on BR_NEIGH_SUPPRESS ports")
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+---
+v2: - use ETH_ALEN instead of MAX_ADDR_LEN, the bridge devices all use
+      ETH_ALEN and vxlan allows arp/nd reduce only when not in raw/gpe
+      so it also always uses ETH_ALEN
+    - align ha to 2 bytes because ether_addr_copy() expects it (Sashiko)
 
-	Andrew
+ net/bridge/br_arp_nd_proxy.c | 24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
+
+diff --git a/net/bridge/br_arp_nd_proxy.c b/net/bridge/br_arp_nd_proxy.c
+index 23eb6931a2b4..fd65d6af4f35 100644
+--- a/net/bridge/br_arp_nd_proxy.c
++++ b/net/bridge/br_arp_nd_proxy.c
+@@ -195,13 +195,15 @@ void br_do_proxy_suppress_arp(struct sk_buff *skb, struct net_bridge *br,
+ 	n = neigh_lookup(&arp_tbl, &tip, vlandev);
+ 	if (n) {
+ 		struct net_bridge_fdb_entry *f;
++		u8 ha[ETH_ALEN] __aligned(2);
+ 
+ 		if (!(READ_ONCE(n->nud_state) & NUD_VALID)) {
+ 			neigh_release(n);
+ 			return;
+ 		}
+ 
+-		f = br_fdb_find_rcu(br, n->ha, vid);
++		neigh_ha_snapshot(ha, n, n->dev);
++		f = br_fdb_find_rcu(br, ha, vid);
+ 		if (f) {
+ 			const struct net_bridge_port *dst = READ_ONCE(f->dst);
+ 			bool replied = false;
+@@ -211,10 +213,10 @@ void br_do_proxy_suppress_arp(struct sk_buff *skb, struct net_bridge *br,
+ 			    br_is_neigh_suppress_enabled(dst, vid)) {
+ 				if (!vid)
+ 					br_arp_send(br, p, skb->dev, sip, tip,
+-						    sha, n->ha, sha, 0, 0);
++						    sha, ha, sha, 0, 0);
+ 				else
+ 					br_arp_send(br, p, skb->dev, sip, tip,
+-						    sha, n->ha, sha,
++						    sha, ha, sha,
+ 						    skb->vlan_proto,
+ 						    skb_vlan_tag_get(skb));
+ 				replied = true;
+@@ -252,7 +254,7 @@ struct nd_msg *br_is_nd_neigh_msg(const struct sk_buff *skb, struct nd_msg *msg)
+ }
+ 
+ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
+-		       struct sk_buff *request, struct neighbour *n,
++		       struct sk_buff *request, struct neighbour *n, u8 *ha,
+ 		       __be16 vlan_proto, u16 vlan_tci)
+ {
+ 	struct net_device *dev = request->dev;
+@@ -310,7 +312,7 @@ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
+ 		ipv6_eth_mc_map(&in6addr_linklocal_allnodes, eth_hdr(reply)->h_dest);
+ 	else
+ 		ether_addr_copy(eth_hdr(reply)->h_dest, daddr);
+-	ether_addr_copy(eth_hdr(reply)->h_source, n->ha);
++	ether_addr_copy(eth_hdr(reply)->h_source, ha);
+ 	eth_hdr(reply)->h_proto = htons(ETH_P_IPV6);
+ 	reply->protocol = htons(ETH_P_IPV6);
+ 
+@@ -340,7 +342,7 @@ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
+ 	na->icmph.icmp6_override = 1;
+ 	na->icmph.icmp6_solicited = dad ? 0 : 1;
+ 	na->target = ns->target;
+-	ether_addr_copy(&na->opt[2], n->ha);
++	ether_addr_copy(&na->opt[2], ha);
+ 	na->opt[0] = ND_OPT_TARGET_LL_ADDR;
+ 	na->opt[1] = na_olen >> 3;
+ 
+@@ -369,7 +371,7 @@ static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
+ 		__vlan_hwaccel_put_tag(reply, vlan_proto, vlan_tci);
+ 
+ 	netdev_dbg(dev, "nd send dev %s dst %pI6 dst_hw %pM src %pI6 src_hw %pM\n",
+-		   dev->name, &pip6->daddr, daddr, &pip6->saddr, n->ha);
++		   dev->name, &pip6->daddr, daddr, &pip6->saddr, ha);
+ 
+ 	if (p) {
+ 		dev_queue_xmit(reply);
+@@ -472,24 +474,26 @@ void br_do_suppress_nd(struct sk_buff *skb, struct net_bridge *br,
+ 	n = neigh_lookup(&nd_tbl, &msg->target, vlandev);
+ 	if (n) {
+ 		struct net_bridge_fdb_entry *f;
++		u8 ha[ETH_ALEN] __aligned(2);
+ 
+ 		if (!(READ_ONCE(n->nud_state) & NUD_VALID)) {
+ 			neigh_release(n);
+ 			return;
+ 		}
+ 
+-		f = br_fdb_find_rcu(br, n->ha, vid);
++		neigh_ha_snapshot(ha, n, n->dev);
++		f = br_fdb_find_rcu(br, ha, vid);
+ 		if (f) {
+ 			const struct net_bridge_port *dst = READ_ONCE(f->dst);
+ 			bool replied = false;
+ 
+ 			if (br_is_neigh_suppress_enabled(dst, vid)) {
+ 				if (vid != 0)
+-					br_nd_send(br, p, skb, n,
++					br_nd_send(br, p, skb, n, ha,
+ 						   skb->vlan_proto,
+ 						   skb_vlan_tag_get(skb));
+ 				else
+-					br_nd_send(br, p, skb, n, 0, 0);
++					br_nd_send(br, p, skb, n, ha, 0, 0);
+ 				replied = true;
+ 			}
+ 
+-- 
+2.47.3
+
