@@ -1,162 +1,178 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0FD45C6E9
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 12:45:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787057141; cv=none; b=IWkAUBTjAywMWIxaF5M6q6liPD9SbaVKQBmheCT5eeMZgSPX70yaPS9tMRsvQM3u9F21l9SPvTjQPpl2963V+QWkkfFnhSZzQ5wjO9c4JnTloEP4F9HOsbISBo+k2EBCOAaAuB43IFi/lC8QeBBxhzoYq+lNuTj8Ais9Hd5EFuI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787057141; c=relaxed/simple;
-	bh=MnSQYHO1irXevOg2ealXrfH39PWwPNOpIV3+zctjRto=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QkIFTGWlqtm2jFEDymwrpEjCC6SRdHUfxbFnT3E1Ircc6ZZhUcmmN99AcTZhQSiIkRJP6Gxm6JWzf5nwS2cgoaAxzIcQwkpO21asePkA6guUVlKMNhdukae2fz+iqXRtinI4g5xEjGglQu4e/sS+5/5SYqL6ZXCqhEFJhops/fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U7ljK1/W; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB41D4749C0
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 12:56:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787057765; cv=pass; b=ud7znkItPwXzbEU7lnzH3hq5HxKjJ2yay/C4ICYCMFByBPdbz8RLAcBsWuhCL1yz/GR3Ip2zjsDuQv2buWa3Eg6bAiJrP1DydAntfSysnDjl7G8/YfeO8sXfKgQqQuK3xAe71vA2w7GjOH7PdoKUtlomn6sL0BlqTyDqQe6xuLk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787057765; c=relaxed/simple;
+	bh=8WZmKtXfDYAxNty2zOXXko3KjoLk2aTZGmS07916+ng=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XOg866MM/MDcdWhmAWV7bwVbO3cHPXAX/UFD+1T60cVQ+XFYlYVXedfWKFnYWrTWxH2rYXI8YG+L9fshZrQgB8DwDBl9zb/WXt0+XBSE8lOPxPpHEBTXXw2I19CUn0jmpYQXIUPzP5ePrTnAHE/6jZYHRn0lwWzgxqsjYPejz4A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=N7LExdLw; arc=pass smtp.client-ip=209.85.222.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U7ljK1/W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C297D1F000E9;
-	Tue, 18 Aug 2026 12:45:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787057139;
-	bh=phLclicfwRczR7oRh0Xzr9icaR29umodk9bXfcJ7Pls=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=U7ljK1/WSkEB+1irQqOX+RfUMpboN25OVdfV3nwZUdAP/wrKug9xFIfeMTTMGqZda
-	 nZQ8fjvB+Vrm3DRuoZrHClsP5AETeCWd3kPnbIuT4VBFDI4Ohue34e6+nGW5uRXrhE
-	 aaNZQJhfQ5yhJO3QBcahtN205Y19lbQFzqhoNL0CgQCmHNq9/TuyvbY5dq9iXFH5LY
-	 E2pShSZcJlRistD+6H6GIeJjhgOuVVkHJnq6Zw1Dxt0yO3z98xyg5MSI+wIfmyPGGy
-	 x8NqbUKiMjMpJdbj2niFE82AV6idzXWaR0DHVAZAaZsYb3KhF5PFAUFhaxysaMn4xs
-	 tFMAbdASOdC4w==
-Date: Tue, 18 Aug 2026 13:45:35 +0100
-From: Simon Horman <horms@kernel.org>
-To: Eric Joyner <eric.joyner@amd.com>
-Cc: netdev@vger.kernel.org, Brett Creeley <brett.creeley@amd.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	"Nikhil P. Rao" <nikhil.rao@amd.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Subject: Re: [PATCH net-next v2] ionic: Add .get_fec_stats ethtool handler
-Message-ID: <20260818124535.GE265046@horms.kernel.org>
-References: <20260814-ionic-get-fec-stats-v2-1-13f0e7d2e702@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="N7LExdLw"
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-92e5b048375so235889385a.1
+        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 05:56:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787057761; cv=none;
+        d=google.com; s=arc-20260327;
+        b=QJmyj1OvuFsED2d4Z6smRaLp+j3CGd0jmdaZdOj6IXMV1rmxrSUNoeBlEx+JJ7M3PZ
+         CKTQcaEgN7jY6m/6+nen7l7C8kthWoS8Wc0Q0YnRp4cpajp9+STV8GG8u4qI4LlX/F1T
+         9fI3YtTuMm7TeTKAO+hlV2hCBY2DhtPKS+E2bQqhyo3Dhzs9iLiuOaX/QpylsGsU4lqQ
+         +GFRkF4Bl3Dx9AR2eshzycmztlGgFrqyMjJ62xBvVwzBSIeGuVOWsksOf/fENQ2zdP7n
+         wGbK324PU7XAhNUWSfVb62r56kLkFtAFXwPPwNwrQmCm8s7rgGz9C9TWwmvP0fr1APFn
+         jZww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=hrjz6ZyaESIh/O20y9BH3dNMEr0ZBUI+Z0dX8nupLgw=;
+        fh=UsrKk07FccOpEtA/GUEbHfYk93l9IMcC52HeQuS9tL4=;
+        b=JTilNfvdsfTSvJtu3y0nid8dqAew5BpuCRNSovQXofuffZkMHkeiAYEeNul5ETpHpc
+         0jjtAQtuIbPbLiwrjuJPip7Xo7auxA1cS6JMRPUWJMsGtoDISeD9LACM/anKAoeFb1NA
+         sAqRTWI65F415UPdr3hLSISHMgo0w29KId826VfhWr5AjoRp2pS5G+TE7MziT3YTBBaF
+         zwWXOJ8Wd54NrZRt4M35R+erE4/elwH17J3BJdsIQ6qgVJG7M/ImaVdHSqCtCZunjJjB
+         PyFlUGTCZWdmkp8ke103MHQ+HQInRkGr53T6OfJdoCvVijhu100cSmoOhvj36OrXDg1+
+         B8jA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787057761; x=1787662561; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hrjz6ZyaESIh/O20y9BH3dNMEr0ZBUI+Z0dX8nupLgw=;
+        b=N7LExdLwEtAL2n/lnUV3uWStJM0/eIePxM21vrERbsF3TSJhgd2YgruQ4N8gbJn2kE
+         qK6/IHqFCB+kzGwr74RUAy8nPkyAMZjXiw92lWcNFYC+eyIYO7S+JcklUYj3lvMJY1z7
+         0vKFfwpksTn+lvmLPKivqL94Qfk1Bf/h3xQ188po1L+iFpyUvbUmAjQQ/YMG/oFhRWzT
+         Ka9Om7u0Xv9YLSRU1w0s4/WLpIZxknllRQTqOCiJkf2M72c0+8VuSRfLPjCV+0YF8hxP
+         aAcwrUM3gF52AjY7rveXSCBhzXWYN/8+W0m0MT1Tzz7cmcHT35eEu+7s8AzTjX6v19Kj
+         xDNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787057761; x=1787662561;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hrjz6ZyaESIh/O20y9BH3dNMEr0ZBUI+Z0dX8nupLgw=;
+        b=qCziW0ojOsLFFiLOrjMo59BndqCNlV9Ktvre7ARWYJgblaVTPUYazKU8287s3JDpFb
+         DH0a3xuGElA67SaL3cTVljQQRHqgAvrnnBwL6WNDwfSeO50oPSL0qyTYWQyGULxf1nmz
+         e/JZAnvXVytI/YZBBeF1fgV4bFh7z/OZTtMUrZ9wCqC+MgH5fMQf08Ny1fsO3fprMbUE
+         DF3qZMyZIQqR4pkvRjI+pJAgfVuTSWM4Ek9EdXtG1Dti3Zur5/CS8IUVGnBQGxc6DdLz
+         mPKD9he0ncxIwSLaubQ5CpHIC6ZEFNkhdYjzp/2iFRWz6+rzBRj2cVhBD0Ve1I/3i9wL
+         I4yg==
+X-Gm-Message-State: AOJu0YwukwW55fXN2ZI8EeO1Og2FR2EaRP/JlDF0HUikG/o377JpaaVH
+	Az0rx53357KTHjchJyKX8v1HeFSIsW1YcKhrXbMVftBm7zQX+Tf2DeLrB8LMnUrLJnl8EtfwdCA
+	TnEDozf9lc/t4/4G0HupdUlJf+w9RU76zNHNAHfak
+X-Gm-Gg: AR+sD12gud+EeC7IistUJt650c7mrSOzPq5K37yfNU3KlnqFuLcOqL1zo1ppb/gJd4h
+	THRYiKnC39kyswuvtABBxotF+S4zCYXvtB95flYFgmremG3vEmLNG2Z4wMe0EDMCIYQHT2jukLQ
+	rv87ijPbTZIABVl/UIc9iGCiZpFufJeRXyhY7YylV97s+TD+eqhp98WA3OU0UFvzDpSHyvGc1uH
+	xi/x9m30B/P560cx2bvTUfQBgq7YjpoQom5FHn6tap8G+GKQAURh/hxgRop1nwXXUuQ8RCtr9GW
+	dregJMA4zdYWnSFbuZrJtahULzN61Ac0wI5PmzVwZl8xLAwzsCxTnF/iZCCh0tVwGdZsqLXPVAe
+	vELLBvH5B6rdH4ZIeqRReOK9j4hTfbPnUa+rB5XT4aj1QuD+kzZHLTbl/3HwdBsKMOmMPZP6bcF
+	FcbjD+sTgbyOKjmkA8u0a2PhysUA==
+X-Received: by 2002:a05:620a:2b98:b0:936:c04c:27b7 with SMTP id
+ af79cd13be357-93704b159cemr825658585a.19.1787057759870; Tue, 18 Aug 2026
+ 05:55:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260814-ionic-get-fec-stats-v2-1-13f0e7d2e702@amd.com>
+References: <20260818101130.16203-1-jhs@mojatatu.com>
+In-Reply-To: <20260818101130.16203-1-jhs@mojatatu.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 18 Aug 2026 14:55:47 +0200
+X-Gm-Features: AcwNN1XZLSx0-wKpDGGXkSHHqqvRkuUqUcFLUb_eZuGC9qhicoAFIq1yJEZzSEo
+Message-ID: <CANn89iKGuPE0qEp-ucnWfvr+Vo_Ynv7zxuTDaxtTWr3d_YiYLA@mail.gmail.com>
+Subject: Re: [PATCH net] net: sched: fix quantum/backlog overflow in fq,
+ fq_codel, hhf, sfq
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org, vega@nebusec.ai, 
+	Victor Nogueira <victor@mojatatu.com>, "David S . Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 14, 2026 at 05:33:12PM -0700, Eric Joyner wrote:
-> Reports FEC statistics totals and an 802.3ck FEC histogram. Per-lane
-> counts currently aren't supported. Every counter reported here comes
-> from the RS decoder, including fec_corrected_bits_total despite its
-> name, and the only histogram format firmware produces is the 16-bin one
-> from RS(544,514), so nothing is reported unless RS is the active FEC
-> mode.
-> 
-> These are physical port counters, so virtual functions are skipped the
-> same way ionic_get_link_ext_stats() skips them, rather than reporting the
-> port's counters as if they belonged to the VF.
-> 
-> The reporting of these statistics is gated by DEV_CAP_EXTRA_STATS and
-> checks for IONIC_STAT_INVALID, since only the newest devices support
-> reporting all of these stats. Older devices can only report some of the
-> statistics or not at all, and so the output will properly exclude those
-> unsupported statistics.
-> 
-> Assisted-by: Claude:claude-opus-5
-> Signed-off-by: Eric Joyner <eric.joyner@amd.com>
-> Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+On Tue, Aug 18, 2026 at 12:11=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.com=
+> wrote:
+>
+> Several qdiscs derive their per-flow quantum or backlog from psched_mtu()
+> or accumulate qdisc_pkt_len() into a u32/int counter without an overflow
+> or zero clamp, which can drive the dequeue/credit-refill loop into a soft
+> lockup or a NULL deref.
+> vega@nebusec.ai provided reports and PoCs which illustrated the following=
+:
+>
+> - sch_fq: fq_dequeue() credit-refill loop with a small quantum spins ~1B
+>   iterations under the qdisc lock (soft lockup); fq_init() computes
+>   quantum =3D 2 * psched_mtu() with no overflow check.
+> - sch_fq_codel: fq_codel_enqueue() accumulates qdisc_pkt_len() into a u32
+>   per-flow backlog; a crafted TCA_STAB inflates pkt_len to 1 GiB so a few
+>   packets wrap the counter to 0, and fq_codel_drop() then picks an empty
+>   flow and derefs NULL.
+> - sch_hhf: hhf_init() sets quantum =3D psched_mtu() with no overflow chec=
+k;
+>   a huge MTU makes it 0x80000000, and hhf_dequeue()'s deficit +=3D weight=
+ *
+>   quantum loops forever.
+> - sch_sfq: sfq_init() sets quantum =3D psched_mtu() (unsigned); a huge MT=
+U
+>   makes allot =3D INT_MIN, and INT_MIN + INT_MIN is UB that toggles betwe=
+en
+>   INT_MIN and 0 forever.
+>
+> Clamp the quantum to a sane minimum and promote the backlog/credit sums t=
+o
+> avoid the wrap, so the dequeue loops terminate and the drop path never
+> selects an empty flow.
+>
+> Reported-by: vega@nebusec.ai
+> Tested-by: Victor Nogueira <victor@mojatatu.com>
+> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 > ---
-> Reposting since v1 was too old to apply. This also addresses the netdev
-> AI review comments left on v1:
-> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260731214021.15279-1-eric.joyner@amd.com
-> 
-> That review also flagged a NULL dereference in ionic_get_fecparam().
-> It predates this patch, so it is fixed separately in the net tree
-> rather than here:
->   [PATCH net 0/3] ionic: fix port_info lifetime problems around device reset
->   https://lore.kernel.org/netdev/20260814-ionic-port-info-lifetime-v1-0-f73b1a06c5f6@amd.com/T/#t
-> 
-> Vadim's Reviewed-by from v1 is retained. The only change to the code
-> since he reviewed it is the histogram bin latch listed below.
-> ---
-> Changes in v2:
-> - Latch each histogram bin into a local before testing it against
->   IONIC_STAT_INVALID, so the sentinel check and the store cannot be
->   folded into two separate reads of the firmware-updated DMA buffer.
-> - Explain in the commit message why the RS FEC check gates every
->   reported counter rather than just the histogram: they all come from
->   the RS decoder, including fec_corrected_bits_total despite its name.
-> - Rebased onto current net-next.
-> - Link to v1: https://lore.kernel.org/r/20260731214021.15279-1-eric.joyner@amd.com
-> ---
->  .../net/ethernet/pensando/ionic/ionic_ethtool.c    | 86 ++++++++++++++++++++++
->  1 file changed, 86 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-> index c4ab4b5caa0a..2f2b5076dcf4 100644
-> --- a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-> +++ b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-> @@ -441,6 +441,91 @@ static int ionic_get_fecparam(struct net_device *netdev,
->  	return 0;
->  }
->  
-> +#define IONIC_FEC_STAT(dst, src)			\
-> +	do {						\
-> +		__le64 __val = (src);			\
-> +							\
-> +		if (__val != IONIC_STAT_INVALID)	\
-> +			(dst) = le64_to_cpu(__val);	\
-> +	} while (0)
+>  net/sched/sch_fq.c       |  9 ++++++---
+>  net/sched/sch_fq_codel.c | 14 +++++++++++++-
+>  net/sched/sch_hhf.c      | 12 +++++++++++
+>  net/sched/sch_sfq.c      |  7 +++++++
+>  4 files changed, 38 insertions(+), 4 deletions(-)
+>
+> diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
+> index 7cae082a9847..66e9c6e530d8 100644
+> --- a/net/sched/sch_fq.c
+> +++ b/net/sched/sch_fq.c
+> @@ -750,7 +750,10 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
+>         f =3D head->first;
+>         retry =3D 0;
+>         if (f->credit <=3D 0) {
+> -               f->credit +=3D q->quantum;
+> +               if (f->credit + (int)q->quantum > 0)
+> +                       f->credit +=3D q->quantum;
+> +               else
+> +                       f->credit =3D q->quantum;
 
-Hi Eric,
+Lets not add cost in FQ fast path just because of a configuration issue?
 
-There is an AI-generated review of this patch available at
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260814-ionic-get-fec-stats-v2-1-13f0e7d2e702%40amd.com
+>                 head->first =3D f->next;
+>                 fq_flow_add_tail(q, f, OLD_FLOW);
+>                 goto begin;
+> @@ -1226,8 +1229,8 @@ static int fq_init(struct Qdisc *sch, struct nlattr=
+ *opt,
+>
+>         sch->limit              =3D 10000;
+>         q->flow_plimit          =3D 100;
+> -       q->quantum              =3D 2 * psched_mtu(qdisc_dev(sch));
+> -       q->initial_quantum      =3D 10 * psched_mtu(qdisc_dev(sch));
+> +       q->quantum              =3D max_t(u32, 2 * psched_mtu(qdisc_dev(s=
+ch)), 256);
+> +       q->initial_quantum      =3D max_t(u32, 10 * psched_mtu(qdisc_dev(=
+sch)), 256);
 
-In that review, the following stands out to me.
-I'd appreciate it if you could take a look over it in particular.
+We instead can make sure quantum and initial_quantum are in an acceptable r=
+ange.
 
-  The v2 changelog says the per-bin local "latches" the value so "the
-  sentinel check and the store cannot be folded into two separate reads of
-  the firmware-updated DMA buffer".  Is that guaranteed by this code?
-
-  Both this macro and the loop body in ionic_fill_fec_hist() use plain,
-  non-volatile loads:
-
-	__le64 __val = (src);
-	if (__val != IONIC_STAT_INVALID)
-		(dst) = le64_to_cpu(__val);
-
-  and
-
-	__le64 val = port_extra_stats->fec_codeword_error_bin[i];
-	if (val == IONIC_STAT_INVALID)
-		return;
-	hist->values[i].sum = le64_to_cpu(val);
-
-  Nothing stops the compiler from discarding the local and re-loading the
-  word from the coherent buffer for the comparison and again for the store.
-
-  Would READ_ONCE() on each word, or a memcpy() of the block, be needed to
-  actually get the single-read property described in the changelog?
-
-  The same applies to the struct assignment in ionic_get_fec_stats():
-
-	port_extra_stats = port_info->extra_stats;
-
-  This is an ordinary aggregate copy out of memory the device writes
-  asynchronously, so members may be re-read at each later use rather than
-  coming from a stack snapshot.
-
-  If a word transitions while being read, can the 0xffffffffffffffff
-  sentinel that ionic_port_init() memsets into extra_stats be reported to
-  user space as a real counter, or a counter firmware did fill in be
-  dropped, and can the 16 histogram bins end up stitched together from
-  different firmware snapshots?
-
-...
+[256, 16M] would probably make sense.
