@@ -1,78 +1,64 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D18E331A48;
-	Tue, 18 Aug 2026 16:11:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472EC41A50B
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 16:12:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787069515; cv=none; b=RTTbFxnzzQbQT6Z69eHd0OxucXn/xklyd0euxIeKMPrwhOVaRaS00LOYwqD+r+7T8wmEpzKNgJ71xuc+9FD5yEDAmMCx/ri/DDlzYQ33gRN9sOgXIl410N4/abliYm4C6Q1lHnzimpeLqlyVfjOJwbrHRjXLps8ARsxJA/tlteM=
+	t=1787069526; cv=none; b=uJ03u6UceeL+nC6r0oy/U/wpQ2IohwGRwtvuaFM7z18bGFrrjK9ZyrnfzQqdbqigtZneloBrGoyd3WLeOpco60QQK8fT8nq+gfZjISz+XpQ3R6kDtVFKEEhVSE7rDxTV9f7TTNYrHbaxinDhzYjhoE2s0l1YWUhOOi+wg50I5w4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787069515; c=relaxed/simple;
-	bh=W1Em27AVhI3+oC4Pw2noIWML1funYsKpMOqvQkpbFMo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HHdVMaHeNRa3HKordAFBlgWKU6gDwogTiORXjbNh5lTG6gxgH26MU6EloxKeEk0N29nDT6Hj5dZnY4ss1B06Tw+MQ6sL8Mkoebe7YBsdfWrA89cpiYds19ygA6S5Cp4qmmDbijITOsCzFprLYzX/neQfdc0FsEz+mYRS83XjXOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=TvPUuGAK; arc=none smtp.client-ip=220.197.32.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1787069526; c=relaxed/simple;
+	bh=pdLCutZZr4OGkDhwP7FmnlO4gX1aJK0hhcVFptXopmE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=P1mZ1Xow5NRhQEu7CFRxdN8YQ44lcBumo+NPS8AlPv7HZASLWzDdbvZMrvoABFxXnWk+PhBij3PqfmqfH1HAtBqsVcYfrMv3YddzVFoxUTOGnnTdIOIHQcZEy8tyAeeP96BeONhHMw9VpUNElBONd/Vp2+ds8OOgknSuOt6wGfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BPmjn5Hj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="TvPUuGAK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=W1
-	Em27AVhI3+oC4Pw2noIWML1funYsKpMOqvQkpbFMo=; b=TvPUuGAKSS3ZFqRTMs
-	xS21+SZFQiCcuQjZJwANgLchJEXvzLYvW7ZYHRj0dbvSLEFPK9xfuxTDuTEhbH14
-	gdkRtlJmI0nu36yZFspisxTzdKUTzU6WSrCGeBomDWDklGivvW3GwxsR2kxMbcxA
-	QkVRXKSFzcjQOevw/j6jE8LLs=
-Received: from deepin (unknown [])
-	by gzsmtp2 (Coremail) with UTF8SMTPA id Ms8vCgD3N0KXgoRqMNE+BA--.56393S2;
-	Wed, 19 Aug 2026 00:04:39 +0800 (CST)
-From: Ziran Zhang <zhangcoder@yeah.net>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Ziran Zhang <zhangcoder@yeah.net>
-Subject: Re: [PATCH net-next] tcp: fix mdev comment in tcp_rtt_estimator()
-Date: Wed, 19 Aug 2026 00:03:23 +0800
-Message-ID: <20260818160323.6727-1-zhangcoder@yeah.net>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260818085354.34325d0f@kernel.org>
-References: 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BPmjn5Hj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD1E1F000E9;
+	Tue, 18 Aug 2026 16:12:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787069524;
+	bh=7LhMlAjcq277gOFISCnp4DVvyEx1G1dd4z9juE5tk6Y=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=BPmjn5HjKX2sYCZyL4wH83uatnGP5gIn0ZUyJmO2NOTBRvmPSktsgie1Frov889/b
+	 WjawvIIDq5FKgsnOmdForD/jfCpTzI+yV3qPwjntC5ETanOYmfqeX70VOVyj6rh/MK
+	 8YQblx8FTmYU5+kpniDv4y4dPow2c/TnuiE4lD8I4v1gdwkzBtj/OavBDOJRMALIaP
+	 rJe5REhPWa5ifT0M7GRScj2IT870YAejIJ5M/YlGQVlBDmxcr6K0/z43KmqwwZUsVW
+	 p4ZKAUGHSC4B4LSl3q8Oa2S9d9fqn2FGvdOBMnDPeuWlqNPfVCmZfbsigtZQMPQGqa
+	 oPv2pC3suTf9w==
+Date: Tue, 18 Aug 2026 09:12:03 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: Ren Wei <weir@nebusec.ai>, edumazet@google.com, ncardwell@google.com,
+ netdev@vger.kernel.org, dsahern@kernel.org, davem@davemloft.net,
+ pabeni@redhat.com, horms@kernel.org, vega@nebusec.ai, edragain@163.com
+Subject: Re: [PATCH net RESEND 1/1] ipv4: reject RTAX_ADVMSS values below
+ TCP_MIN_MSS
+Message-ID: <20260818091203.4a4e1ccf@kernel.org>
+In-Reply-To: <20260817095015.75fc2f44@kernel.org>
+References: <cover.1786610865.git.edragain@163.com>
+	<2c3901162c65a1d85cc1756a83a458db834d70c1.1786610865.git.edragain@163.com>
+	<20260817082803.GA242453@shredder>
+	<20260817095015.75fc2f44@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Ms8vCgD3N0KXgoRqMNE+BA--.56393S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrAr1DtryrZw1DCFWDXrWfAFb_yoWxXFb_GF
-	yDZFW7Jw18GF43J3Z3Kr45ur4Ygw4kC34UZrWfX3WxCryrXFZ3XrWkCrnruw1Igw4j9Fsx
-	Grs8XF4UCr1aqjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xR_UUUUUUUUU==
-X-CM-SenderInfo: x2kd0wpfrgv2o61htxgoqh3/1tbiIhiCQ2qEgpit1gAA30
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, 18 Aug 2026 08:53:54 -0700, Jakub Kicinski wrote:
-> TBH I'm not sure this patch is worth the review overhead in the first
-> place.
+On Mon, 17 Aug 2026 09:50:15 -0700 Jakub Kicinski wrote:
+> On Mon, 17 Aug 2026 11:28:03 +0300 Ido Schimmel wrote:
+> > Given the above and the "We assume here that mss >= 1. This MUST be
+> > enforced by all callers" comment above tcp_select_initial_window(), do
+> > you prefer to fix this in TCP by enforcing a minimum MSS value?
+> > Something like [3].  
+> 
+> Should we still take the patch as posted?
+> Maybe not as a fix but to let the user know the value is out of bounds?
 
-Hi Jakub,
-
-Thanks for your feedback.
-
-I understand the concern about review overhead. The reason I think this
-patch is worthwhile is that the current comment has been misleading for
-years. It only describes the common case but omits the sharp RTT drop
-case, which can confuse developers (especially newbies) trying to
-understand the RTO calculation logic.
-
-If you still think this fix is not worth a standalone patch, I'm happy
-to follow your suggestion on how to best get it in.
-
-Thanks,
-Ziran Zhang
-
+I'll assume not
+-- 
+pw-bot: reject
