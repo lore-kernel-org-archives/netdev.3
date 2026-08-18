@@ -1,229 +1,109 @@
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730E146D0B4
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 14:06:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E0B27466A
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 14:16:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787062018; cv=none; b=hqic574DdfRSS83rfb57QvJ5R5E2efDRN7GuYhcmFEQ4/0FmYVnkU3PZigdkQIGQb9JnIw3oOOwwE26SIUpnvovWD5YqU9TjVV0pDc3gvbzFp6CJ15uEEifWfoPN9C+010scR9sBsWaLynfeK5+QSM6fqIZ1wJpaCb5b+5lchOs=
+	t=1787062574; cv=none; b=Pv+yTxdkO1LX+fNfAtXZyfVSlJ6BP0ZQDGG1LvwRMwaeLxP+bqOsV6evBNJyt7cjcvoYEVupavZBGmiZtB34f9TpIRQTJqDcFqDCqUqCW2PGqbYdeH1zzXXoNp10WDS1gtfiInUaWfjORZT2Y2929RSC+kn2SW+j2pZdoCrzhiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787062018; c=relaxed/simple;
-	bh=AAbgpFY5r/LU/xzhw0yGjYLVDj4UYudmnK/D6EbXBOk=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=oTmTWt2jrFAX1zCZTmhYwpH/DD2N4eLVwgabu6+9dwxsdzZJN3BOwX4sZoucltqve8T/+Yx33p9PAJ+65l/Vm3x3DHzrrTrIsikLGESoO0QRNWlfIKw10dYSBVBD19HYZpFEjXL0bXBJ8Q0tu1iUIdk0SOSAPb6x7y0/VaYGn1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cs0GK55k; arc=none smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787062574; c=relaxed/simple;
+	bh=HSP+YjEppydjmNhY6cPAGyqYkYcuc0up9ay51BSTG7Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dE2eXL1ZA+d9Pb23b6gpaEn+221wy7GhLza9gOUTZhSAoppYGSmMQj+BxmQ8nGbMAG76phtECtyvaavhz9bu9hr5KtMqiACc6wTWjp6ZzCiv5MkHYSZbUSWa5MAw9jWxly5JBp0CfbOyuCVUPNjPm+hN/yqu+9fEHedMz6Lq/3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ky6m/nLw; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cs0GK55k"
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-841f1dfc30fso10920717b3.1
-        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 07:06:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787062014; x=1787666814; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=2JBJpmYrJhiOXDvgTeethJ3HxlqBnurUVEqBxP7Z28U=;
-        b=Cs0GK55kVfI6I94sUCeuDha6CAoGQdvdYanJQP/N7SZ1ACOpM7VRANWOUSyhfDtDXI
-         oB1QfDjo/R3MnRVH9p6ZgeSWxk3uOEapvAP6DNvB6JaNFt/Ev89l4AEF/4QtE87sFd/D
-         HRcD5NiNNRISXyyNBooPBdaq2NKRTzni+zrMzuaXUPTb1rCgc3U0UikPfuW43VlSFRhv
-         ADVq5zSOED6QuGbsnNnYVAk5BnWawVHgEPFKLqwuF+ZlziY28YwjElmFmnIaWF1Z1uPr
-         u3H+5BzItQUsN4oaPidmyH7LTeG1E6vlHSr3wHhfQBI2pbU+Mz7a76d7c5Cg7dtIlQL9
-         QmQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787062014; x=1787666814;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2JBJpmYrJhiOXDvgTeethJ3HxlqBnurUVEqBxP7Z28U=;
-        b=Y8hIVbZLVqhqWDfczYGa4Sxad3TGCTsJVfIRL9Lns6N+2GmhhignkK4E0N/WFQNNkh
-         UWnNWKKUeZTAJ3LPfmG/kQJU7UP1Gqq78nSi6WwLPEUBJJUjYMxFm0b8NgsyhUKPYgNb
-         qSEcP6VJKvO7EIicRizasL8Nm508jTuJdlzK5XNqtDypR3Yjw9XJW0nVrxM+CiF8Wtmk
-         z257ic2CpuNgUaUH6QQt8Nv+yXrZ1tjBycEseit561uMaFLFts8ASWqd7nyFbKbBe+4d
-         iARpUqPgYWeeDeaMp7/hq90O0AeCJwG/MvpTCEgLTZTeBBman0EDoqWI+mTPQ4gNUdfl
-         D+7w==
-X-Forwarded-Encrypted: i=1; AHgh+RobqeROA3B+WmUhHXc1RshnM3MuTa/MZ2RLQ4baulB4+JFfas1nqkLg8zCBi2g84NoQLyNw74o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcVSxfOmkR4sI3SvmCcKxHmV0s/fg3lU+wvLIXcTSG3wX3ZbPT
-	KzItL5HAVbqZX7g6PA7nUGolXTsnNftMFldCugnkyvGsxIyYYigajSck
-X-Gm-Gg: AR+sD10gIHBp1RbJLpFaUynGnUInPmPFGag1Bns2vxtn+amZJrJU9x8QmOF68FxzDUm
-	MjMfQ5KqJ+FQtBg6YPeyKKvdIq1+vD8HeKsXEM3neSl+KATRWDRP5NbGzOnXI0JDCF08dQcKUhT
-	Q9MoiAwfgoenMx5Jgp9Aq101Pp3+LFf2Btpg+C9T0g7B5k4MbzI701wrxKzuZ1ofBXffIdTZvL1
-	VeD9TF/6mDjmQ+A+fpgVY33W+b8/Vyxr2ByNsBWUdifph6wjniM90RXacqhzoh1uUGm/GN9Ftpv
-	ljwHqsEqO72OIhRMvtgr+xLAsnomJpZYJVF7Z9DpRdJGled71PnicVqxD4zodPvRaSgEuRT9A99
-	W5hflNCz2MwwvZGkcJF5ZzK6onR3c0yfIu0/ESUdGQoF0aw5usAG97YTvtOPnJswqFoE9SvbV7C
-	0qC2cQJMIrWXyCOXHrNYJ46vj3lA0CXhljTM//2Ardalv8m5y4owQRZdbOevu2uIT8XeqoDwYFj
-	LywrbBcdkw+B8V/xSIIWe/pCgRgO0LVVK1z+0tu1w==
-X-Received: by 2002:a05:690c:e1da:10b0:81e:d001:e0ca with SMTP id 00721157ae682-841a35a3dadmr21536817b3.17.1787062014093;
-        Tue, 18 Aug 2026 07:06:54 -0700 (PDT)
-Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-84068077eb4sm21486147b3.10.2026.08.18.07.06.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Aug 2026 07:06:52 -0700 (PDT)
-Date: Tue, 18 Aug 2026 10:06:52 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Kyle Zeng <kylebot@openai.com>, 
- netdev@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- "David S . Miller" <davem@davemloft.net>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Muhammad_Hazley_SAMSUDIN_from.TP@tech.gov.sg, 
- Kyle Zeng <kylebot@openai.com>, 
- stable@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.30254a97eb38@gmail.com>
-In-Reply-To: <20260816235646.76500-1-kylebot@openai.com>
-References: <20260816235646.76500-1-kylebot@openai.com>
-Subject: Re: [PATCH net v2] net/packet: defer vmalloc TX_RING free until skbs
- finish
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ky6m/nLw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787062571;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=/NoeZ52MrmR0uCwDVdns3GpeyxwEQYZZ5F0lC/2T2fs=;
+	b=Ky6m/nLwR7XybkFgQI9/fj54RVKwRZx3ZPm6dv8KEGhA+OEdmSuG6fQiEO5cBTDrXibOgd
+	TehMkEQ20+UWNXl+rKI5nVm0/oEOVGDK+kKKDPtwpfHV0hiR/B3tg1VC27Ia8qarxH4lZq
+	2DBxxLkoIhfTzDDTBuGAt2biozTMMoA=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-647-wDTZUXNgN8-Xpu1nSVTlXA-1; Tue,
+ 18 Aug 2026 10:16:08 -0400
+X-MC-Unique: wDTZUXNgN8-Xpu1nSVTlXA-1
+X-Mimecast-MFC-AGG-ID: wDTZUXNgN8-Xpu1nSVTlXA_1787062565
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6DD9C19540DC;
+	Tue, 18 Aug 2026 14:16:01 +0000 (UTC)
+Received: from tokka.redhat.corp (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 060F8180034C;
+	Tue, 18 Aug 2026 14:15:59 +0000 (UTC)
+From: Thomas Walsh <thwalsh@redhat.com>
+To: Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Thomas Walsh <thwalsh@redhat.com>,
+	Michal Schmidt <mschmidt@redhat.com>
+Subject: [PATCH net] bnxt_en: Gate TPH enablement behind BNXT_SUPPORTS_QUEUE_API check
+Date: Tue, 18 Aug 2026 10:15:56 -0400
+Message-ID: <20260818141556.64303-1-thwalsh@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Kyle Zeng wrote:
-> AF_PACKET TX_RING skbs keep a raw pointer to their ring frame. The skb
-> page references preserve page-backed ring blocks after pg_vec is freed,
-> but they do not preserve a vmalloc mapping.
+In bnxt_request_irq(), pcie_enable_tph() is called unconditionally to
+enable PCIe TPH when setting up interrupts.
 
-Claude shows an interesting case where this page-backed statement does
-not hold: if the entire skb is linear. Not for this patch, but a
-similar case.
+If the NIC hardware or firmware capabilities do not support queue ops,
+attempting to enable TPH during bnxt_request_irq() is unnecessary.
+
+As a result a flood of "RX queue restart failed: err=-95"  messages is
+seen upon boot.
+
+Gate the call to pcie_enable_tph() and setting of bp->tph_mode
+behind BNXT_SUPPORTS_QUEUE_API(bp) to ensure TPH is only initialized
+on devices capable of supporting queue ops. This prevents a guaranteed
+-EOPNOTSUPP error from occurring due to NULL operations.
+
+Fixes: 1410c7416dc3 ("eth: bnxt: always set the queue mgmt ops")
+Suggested-by: Michal Schmidt <mschmidt@redhat.com>
+Signed-off-by: Thomas Walsh <thwalsh@redhat.com>
+---
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 1e4944f3e606..9a2bbfa38f76 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -11920,9 +11920,11 @@ static int bnxt_request_irq(struct bnxt *bp)
+ #endif
  
-> tpacket_destruct_skb() currently drops the pending reference before
-> writing the timestamp and TP_STATUS_AVAILABLE to the frame. Move the
-> decrement after those stores. The smp_wmb() in __packet_set_status()
-> orders the frame stores before the decrement.
-> 
-> Also recheck pending TX frames under pg_vec_lock before non-closing
-> ring replacement, so a racing send cannot add a pending skb between
-> the initial check and the ring swap.
-> 
-> Ring allocation can produce a mixture of page-backed and vmalloc-backed
-> blocks. Allocate deferred-work storage during TX ring setup when the
-> first vmalloc-backed block is encountered, and keep its pointer in the
-> pg_vec allocation header. If allocation fails, return -ENOMEM from ring
-> setup. On socket close, a non-NULL pointer identifies a vmalloc-backed
-> vector without a scan. If TX skbs remain, defer the whole vector to
-> system_long_wq.
-> 
-> After pg_vec is detached, a late destructor can skip the pending
-> decrement. Use socket write-memory accounting as the deferred lifetime
-> gate instead: an skb remains charged through its final sock_wfree(),
-> after all ring-frame accesses. The delayed work retains a socket
-> reference and reschedules itself until no TX skbs remain.
-> 
-> Move pending_refcnt release to packet_sock_destruct() so late skb
-> destructors and deferred cleanup can safely use it after
-> packet_release(). Page-backed teardown remains synchronous, and no lock
-> is added to the TX completion hot path.
-
-This one patch combines multiple fixes. If and only if a respin is
-needed, it may be good to break it up to help understanding.
-
-> Fixes: b013840810c2 ("packet: use percpu mmap tx frame pending refcount")
-> Cc: stable@vger.kernel.org
-> Link: https://lore.kernel.org/netdev/20260721015824.45829-1-kylebot@openai.com/
-> Suggested-by: Eric Dumazet <edumazet@google.com>
-> Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-> Assisted-by: Codex:gpt-5.6-sol
-
-> +struct packet_pg_vec {
-> +	struct packet_pg_vec_free *deferred;
-> +	unsigned int order;
-> +	unsigned int len;
-> +	struct pgv pg_vec[] __counted_by(len);
-> +};
-> +
-> +struct packet_pg_vec_free {
-> +	struct delayed_work work;
-> +	struct sock *sk;
-> +	struct packet_pg_vec *vec;
-> +};
-
-> @@ -4382,7 +4399,46 @@ static void free_pg_vec(struct pgv *pg_vec, unsigned int order,
-> +static void packet_free_pg_vec_work(struct work_struct *work)
-> +{
-> +	struct packet_pg_vec_free *deferred;
-> +	struct packet_pg_vec *vec;
-> +	struct sock *sk;
-> +
-> +	deferred = container_of_const(to_delayed_work(work),
-> +				      struct packet_pg_vec_free, work);
-> +	vec = deferred->vec;
-> +	sk = deferred->sk;
-> +	if (sk_wmem_alloc_get(sk)) {
-> +		queue_delayed_work(system_long_wq, &deferred->work, 1);
-
-Can this keep requeueing itself? Claude suggests using pending ring
-count as gate.
-
-> +static void packet_free_tx_ring(struct sock *sk, struct pgv *pg_vec,
-> +				unsigned int order, unsigned int len)
-> +{
-> +	struct packet_pg_vec_free *deferred;
-> +	struct packet_pg_vec *vec;
-> +
-> +	vec = container_of_const(pg_vec, struct packet_pg_vec, pg_vec[0]);
-> +	deferred = vec->deferred;
-> +	if (!deferred || !sk_wmem_alloc_get(sk)) {
-> +		free_pg_vec(pg_vec, order, len);
-> +		return;
-> +	}
-> +
-> +	/* A detached ring's pending count can miss late skb destructors. */
-> +	deferred->sk = sk;
-> +	sock_hold(sk);
-> +	queue_delayed_work(system_long_wq, &deferred->work, 0);
->  }
->  
->  static char *alloc_one_pg_vec_page(unsigned long order)
-> @@ -4410,20 +4466,35 @@ static char *alloc_one_pg_vec_page(unsigned long order)
->  	return NULL;
->  }
->  
-> -static struct pgv *alloc_pg_vec(struct tpacket_req *req, int order)
-> +static struct pgv *alloc_pg_vec(struct tpacket_req *req, int order, bool tx_ring)
->  {
->  	unsigned int block_nr = req->tp_block_nr;
-> +	struct packet_pg_vec *vec;
->  	struct pgv *pg_vec;
->  	int i;
->  
-> -	pg_vec = kzalloc_objs(struct pgv, block_nr, GFP_KERNEL | __GFP_NOWARN);
-> -	if (unlikely(!pg_vec))
-> -		goto out;
-> +	vec = kzalloc_flex(*vec, pg_vec, block_nr, GFP_KERNEL | __GFP_NOWARN);
-> +	if (unlikely(!vec))
-> +		return NULL;
-> +	vec->order = order;
-> +	vec->len = block_nr;
-> +	pg_vec = vec->pg_vec;
->  
->  	for (i = 0; i < block_nr; i++) {
->  		pg_vec[i].buffer = alloc_one_pg_vec_page(order);
->  		if (unlikely(!pg_vec[i].buffer))
->  			goto out_free_pgvec;
-> +
-> +		if (tx_ring && !vec->deferred &&
-> +		    is_vmalloc_addr(pg_vec[i].buffer)) {
-> +			vec->deferred = kzalloc_obj(*vec->deferred,
-> +						    GFP_KERNEL | __GFP_NOWARN);
-> +			if (!vec->deferred)
-> +				goto out_free_pgvec;
-> +			vec->deferred->vec = vec;
-
-The nested structures are fairly complex.
-
-Would it make sense to avoid the separate packet_pg_vec_free, fold
-that into packet_pg_vec and use a different field to identify
-whether vmalloc backed pages are used. Maybe sk, or even a new
-boolean field has_vmalloc, for readability
-
-
+ 	/* Enable TPH support as part of IRQ request */
+-	rc = pcie_enable_tph(bp->pdev, PCI_TPH_ST_IV_MODE);
+-	if (!rc)
+-		bp->tph_mode = PCI_TPH_ST_IV_MODE;
++	if (BNXT_SUPPORTS_QUEUE_API(bp)) {
++		rc = pcie_enable_tph(bp->pdev, PCI_TPH_ST_IV_MODE);
++		if (!rc)
++			bp->tph_mode = PCI_TPH_ST_IV_MODE;
++	}
+ 
+ 	for (i = 0, j = 0; i < bp->cp_nr_rings; i++) {
+ 		int map_idx = bnxt_cp_num_to_irq_num(bp, i);
+-- 
+2.55.0
 
