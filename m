@@ -1,172 +1,272 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11021119.outbound.protection.outlook.com [40.93.194.119])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE5C48124E;
-	Tue, 18 Aug 2026 17:07:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.119
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787072867; cv=fail; b=q7bLCTeq27IgStNjzhpdDmqdpDx7wn0YwZlD3K6Gx40ukf+Qlu/L0vNoHsm3CA2IAwucxe9nELkGU5Rg0s0xeUNr3V4hcBHINx9dIyZQYcTU2Tr5bnmtebcEc+MfVaHdHeJtbRCMRe7j5ndwBex1txioMdFGtWjYlsP9d2SxIgM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787072867; c=relaxed/simple;
-	bh=CVzjVbQLL0kpFcfjhvuq+eRsbvVtMrDs37W4W7zA3vk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=uCEFw7UEH0JZ/7myhrANCzfin85oMigRjKAVQuoyfLvV33wPxR3QUsdHCWoKy1IJp5W6wig8W76/hNM2+qoowpruZPlPGlAYFDkrVN4iXZADxXhlMITm2MNVL7BSgxr0O9LfxdmxAV2A8E19U88ZN8pVYOq54HYmyA9lYdoi3T4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=OahKktjz; arc=fail smtp.client-ip=40.93.194.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E31D3B3C14;
+	Tue, 18 Aug 2026 17:09:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787072969; cv=none; b=VB45aq3yQxziztf2fAUITSrqf1/fhO6VnLGq8p0TeAeLuxmrN6EVZGv3k3/1R3gUBMs+8mlVvdKGJat6MnRJYy8m4bEBs+oEjmCy4IcJKupm6E7B3aFznMVL2jS4vkgQZwhXpzrX7GNQqMqZUeRBohkEcaG6A2GvcqjrDdEsoiE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787072969; c=relaxed/simple;
+	bh=0M4sfICO74xi4cIKm4eS/rGTtT8/HkaYeLryq+XdBXI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Q7bT7EuUacKn0R0aBaFxgjnMcjc3xw3Yd/MmBE621Osx19S7lE+jeKMfxGjEhendlYwKNUwi85NG33GYJotIOuYEcTM6GzpO675VkbhHGlkAnYESjriD9cUhSEz4MZ0TVYpDEetI2CiCAnzWMFKdBdcepKFziHj4292lgSKFOEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IWuG8WX3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="OahKktjz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rD1TfTBpCCQ0oUyiKnHpkauzcbZU3cLb0OakErHvEZQrdc80qsoEWRtdKeQKHE23UbwyAltQwOBBl7SgJAwSkNJ45QFEeZfvaUtQV/9B7MXEdKRLQyK8my33TmRrbxjZaFx/X0FdDihzPLW0/5QYrl2jt3H8LVRJdcJgzGgTI9iqiC0r08v/3j3VMW+mymLpiFlzL/SljcCzncVnRT6Vj5ySyI2Hq7TXsjFQe4nwvjXcRwnU2EC2Tidlp+nKm3h5tXAsjqwmKk0txS0NgGtBt4BPgmdDSv5toK/F+HDu/u8qzyu3qJqXU5P7CfyZxT0B3oFi+RpN4bnjJ3CSj09xNA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pZb7cMKYLY50/yQObpw+l7leMHFBKhLPej7yGyISNb8=;
- b=ChfP/U12R9Sy+kWVy42W2RcpaLm+44d+XS/6FzIf1ElIUpZoIbKQLygcrfEoHkt9LGtvaGO/uBYSEiXM/anWE/5mKUKlFj4USQRwNvq3c0VzCyakAkaAheGEYGcADO+g8penU+yZ07cPFu++Bo9mKau5T2TuD2GeFRCmZ7O+rtCtMDaLc6/4b13fo4hd7+1FV3UOBeVog00plGjZqOwhdwDlfqcfQ10JsZKL5twUJAmuHB24gRfk1lgm9FO3iuniQV6r7x8zw5N9eO7dhjcsHY2t3m+sUZi9S6rcggDE4jnjF5uF+L01LkASeIOU4LkkpB5ayrkUCw3+xm8evUJYCg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pZb7cMKYLY50/yQObpw+l7leMHFBKhLPej7yGyISNb8=;
- b=OahKktjzEri++MkUOAs/0xP07OK8nk6KxQ4nRBtZgntqf9P+Tlpx8ble5htQ87Wutnm3zMRe0HdG3OnuH+NEjXRGBBwhCO5AhgB6Wjw9VZoNxeOEf82dxu/rESFkPA4vZS8pdYRF1j/rP2qVX6dhTHu3gn/YbUZ8h/lx82p5xaw=
-Received: from SA1PR21MB6683.namprd21.prod.outlook.com (2603:10b6:806:4a4::6)
- by DS0PR21MB6338.namprd21.prod.outlook.com (2603:10b6:8:2f3::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.0; Tue, 18 Aug
- 2026 17:07:41 +0000
-Received: from SA1PR21MB6683.namprd21.prod.outlook.com
- ([fe80::8bad:6294:8a07:fe18]) by SA1PR21MB6683.namprd21.prod.outlook.com
- ([fe80::8bad:6294:8a07:fe18%6]) with mapi id 15.21.0315.008; Tue, 18 Aug 2026
- 17:07:41 +0000
-From: Long Li <longli@microsoft.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: Konstantin Taranov <kotaranov@microsoft.com>, "David S . Miller"
-	<davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet
-	<edumazet@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Jason Gunthorpe
-	<jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Haiyang Zhang
-	<haiyangz@microsoft.com>, KY Srinivasan <kys@microsoft.com>, Wei Liu
-	<wei.liu@kernel.org>, Dexuan Cui <DECUI@microsoft.com>,
-	"shradhagupta@linux.microsoft.com" <shradhagupta@linux.microsoft.com>, Simon
- Horman <horms@kernel.org>, "ernis@linux.microsoft.com"
-	<ernis@linux.microsoft.com>, "stephen@networkplumber.org"
-	<stephen@networkplumber.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-rdma@vger.kernel.org"
-	<linux-rdma@vger.kernel.org>, "linux-hyperv@vger.kernel.org"
-	<linux-hyperv@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [EXTERNAL] Re: [PATCH net v7 1/7] net: mana: reference-count CQs
- looked up from the EQ handler
-Thread-Topic: [EXTERNAL] Re: [PATCH net v7 1/7] net: mana: reference-count CQs
- looked up from the EQ handler
-Thread-Index: AQHdK0s6b8UCd55wMUCoJkcRBEYEpLakBESAgAAAPwCAAAz9QA==
-Date: Tue, 18 Aug 2026 17:07:41 +0000
-Message-ID:
- <SA1PR21MB66837771ABF2A8E34FA11B3FCEA62@SA1PR21MB6683.namprd21.prod.outlook.com>
-References: <20260813174243.3044348-1-longli@microsoft.com>
-	<20260813174243.3044348-2-longli@microsoft.com>
-	<20260818092005.25dfbc17@kernel.org> <20260818092058.5da26ce6@kernel.org>
-In-Reply-To: <20260818092058.5da26ce6@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=264cb2ce-bd03-4684-b0f9-b78072168117;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2026-08-18T17:07:26Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Tag=10,
- 3, 0, 1;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR21MB6683:EE_|DS0PR21MB6338:EE_
-x-ms-office365-filtering-correlation-id: c34df49d-c17d-4dbd-2d27-08defd4b36a5
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|376014|366016|1800799024|23010399003|56012099006|7146999003|10067099003|4133799003|6133799003|18002099003|22082099003|4143699003|11063799006|38070700021;
-x-microsoft-antispam-message-info:
- iJL68izpz098L9KDaFMWU8YRefEbgNHLc5bKy3ZcUnDBnuLn0loXHuADv0RfGE2c+tpTYT+4nDSIobaBWnUKY6fCZqlCml2AlnU8EFm1/4fClxYR/zCAMH0jzH2xxtAVx5B6wOPvKQilHO7YwlaIMAHiAQ5eBE7TH7lTAoMx0ACRYaDOCYTNmh+Bpfzz6a5f/vWGk6kk/zBkaSxJ00gqIwTPETLWvGPd1i4NbpPSIfxuD4Mv+pBEQ0862tzwlgVQaQlam0fbjmtQkzoBht2i/SmRhMfr3bUDGpHfDYVCpFjjZksb+1KQIiM7twY5dKGe/OMk5inwQJgexOhxNqRaBhXLpS67VL/GYlC3P+a7zHE/IMKRk8qtGjLPxACVQmGPuqt6QLX2vq+nvalKJFU9Gu9wyINRszXRlaJClvntQw7oZwT0kKqh8LRl1Dl5EYyL0GSBhQQaIjevBwu+XpieNNaHWbLc0WS2iYja/qpNN1qkY4HxclX+GtmUXmK0lenDUOiaqDw33VbsMgTI5+eB9o2G1wbMB3Csx6pGLY4vBOtfK1OelSOaoRvIF7XlbZ+CoR4rhU30Pangxo9eCO9YDSROunDNmcsIPTzlEBNezsPfmtXOeu4letfnsJTbuJKW/8mzot9biE+PXcNvpN+JDpy88lDaGy56TNCEez5VWVlQjb70vY75G5P86Enx3ejl9XAPGilQRPkDpQTjRnqzMYm9G0CYkDa5tPtFx25yzw8=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR21MB6683.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(23010399003)(56012099006)(7146999003)(10067099003)(4133799003)(6133799003)(18002099003)(22082099003)(4143699003)(11063799006)(38070700021);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?+N7RstzkWnPiCJfcWQdhkZZFSd7SWwo6V865PoceViMu4iZfooB359VjstJT?=
- =?us-ascii?Q?vjSNL4/Ow4DNbpoOW4iHqGsQhKknwrBT2n5aK6heW6KiKgklsuY/Whwi+G+C?=
- =?us-ascii?Q?0uOmvoqM18ShyaRFS7U4L/xyrMVP4LTLPdyno/8GnQOv9lTdCRCT66l6koHf?=
- =?us-ascii?Q?9xUC8g0Jh5hLlBhLXhOdnl7tsutHusvt0pc4ID7706yA3bVcTeiDYAHmhC6k?=
- =?us-ascii?Q?tQhFay9KO/IhsnRPJ2q6WhnlX9fqXMq8VmILG0HS1AYc4iWGsO3ZQcBkmj+/?=
- =?us-ascii?Q?IpBWd+Mz3Cvejdzz9wk8vIVZoCPqsjlHoEKWnguqHiTM3B4K3aad8b2dc6zF?=
- =?us-ascii?Q?POVeTDKe62SSwekOc81POGRHPOLciSNPtxldYAoY6P7FHsecDd3vQOsUqjE6?=
- =?us-ascii?Q?tfN6u5gnWWTbPv8d7GNynhQ9gJHEgPLSDqETxPMi9NTip5Z3NS/QTutkyoDK?=
- =?us-ascii?Q?6HCo3E6YMwgYq2Wq3v4PbxIGCRyBblvrmG99UR48kM2cXA55MdIb7T3XOTNB?=
- =?us-ascii?Q?qJ0alNZCwSN3WEUeWHVfAx/q1RcPEYQ/FFqqTQAZnCTKGrkeKFXnX2YNQY4K?=
- =?us-ascii?Q?LDY6BSv97SBNu3gUrPeCyobVxn5GMNDw3RqNnlttNrUBtaLBzh5x2BFR0YgV?=
- =?us-ascii?Q?guYMgZgPU4ILgzYASrIIK3BstvbsOHcJme1EDQ7eDEmHfa1oFj5DKgzdZ4S8?=
- =?us-ascii?Q?qFtWx7URIT3hfKoGUAafOGrUI/GYwhPM0SU1BS458ejhiT69pFpy6J8oMqQE?=
- =?us-ascii?Q?I/k3bGQGDC1JALgxE4bdchFUuH1aPi06DkFstbvGVe8N3oFL7JWBQ+kMTCYf?=
- =?us-ascii?Q?nb5WBxXuc7tIPA4Zd3GOY8z3YOItuJSt0qKG9B6WYCHNJ4cyFy8I2vp6dM+F?=
- =?us-ascii?Q?6A/DRFYSkx7QibQw8aXDQkSw1YRDBeI5leFi2Low16+CG8LaiSrutaNyUuux?=
- =?us-ascii?Q?oslkEsvj2ZWYO99pwfpNCzDuUyCE4Dkv6SNkfhLyzx8YiFW6gNBxbBU4OtcM?=
- =?us-ascii?Q?fPF/yy/DoDTx1yqIopzb7G1n28m9fSuuWdZneShE6DuKxMQBs4nkKkF99P/B?=
- =?us-ascii?Q?U4gVOZDhIEAuaQqNKk4M8fWNDYazdRTPKE1Gani/RTbVgG1XU7t6+dp1R1nH?=
- =?us-ascii?Q?g36tmazb8rYWDV/sdNpWnrxVHPEWHN8J/8Is5TNkwYfq3Eg9AoLIVzY30xmg?=
- =?us-ascii?Q?lGZsSh1UlNCzJJUBI8pImo93iI68JBGb0XySX72vZoGEjC5+Uw/3Vt4Gnjk+?=
- =?us-ascii?Q?iLSnfXX68ZjB9ZB2l7vOYnm4Y8lRVL5J1wMJeCi4CnbezN0bkAt2/M+S1DPh?=
- =?us-ascii?Q?hJSCXZ96ifHcSb/UlaEVhIw1BvbFKX1XJAKI5sYA6WwIZSCaiERiIFgCIuh5?=
- =?us-ascii?Q?p7jznWvCF04tnjoj5skVZkkm5Moq6H8L/2DZ9Owwcfu4smNLArw9gueiDMBv?=
- =?us-ascii?Q?SRmB2L7th2Aw30ZgHPkSYrJM8mbQB1sKjZuAhb6mncqFLnxilVS90SoOCtFz?=
- =?us-ascii?Q?4c3OLzcDdPYg4jckhnLpxGtfkUHwOw5Kc0Y4mJFPwqYKAfQ6W6dC5jNa4H64?=
- =?us-ascii?Q?jKgHcXotKtNDsOoM1kjhAfolhF12t7kJ+rwbk2I/+0MCfJT32dE+KocyLtrG?=
- =?us-ascii?Q?dnezcXNxqRUe+Hx4BdxzjUBme3WycJJxFZoWqSUCHvyleQHlRFnfctN3K+9x?=
- =?us-ascii?Q?NHESLLVs63mN+NXaIQZfT05+l9X/S0xXKJPilA+0BG+n/6fc?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IWuG8WX3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4D01F000E9;
+	Tue, 18 Aug 2026 17:09:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787072967;
+	bh=9byILTCgvGkX+4b/fusPq4En9ZqkB5ST8chwNivfZ1c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=IWuG8WX3bPbIPs5uBfTetEhOZjgCv9r1K45vn3LRAPGruNIJDYh7DNaL7FjaXoIiH
+	 WeJmaT4AHlBC4gToRUveJRJSr31EV8DvumTcUOgdJAxKD3TdWu6eG5AA3pKmc9palF
+	 +A5OM2f37t1zU2tKvmhe/15jySVR3Wa3DtmQjM1LFfqWqFpZFn+PLNlSuYFngpfT86
+	 NWMnTrw2QDl5fWpTMDp1fHlKTFmohoCjSKeUH9ZzDoXbSom4ZduGeiXjL0NMI89lS4
+	 W0X6f0R8ZZ52fTmW2hsSnRzTwdc9OW6+lUU8ayMkFYxGcwuIIZFD+Uw2ugnr/mXtP4
+	 3+miN7ZAVE4wQ==
+From: Jakub Kicinski <kuba@kernel.org>
+To: peter.hunt@opengear.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	loic.poulain@oss.qualcomm.com,
+	ryazanov.s.a@gmail.com,
+	mani@kernel.org,
+	johannes@sipsolutions.net,
+	netdev@vger.kernel.org,
+	mhi@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v4 1/3] net: wwan: core: propagate modem control signals to port drivers
+Date: Tue, 18 Aug 2026 10:09:26 -0700
+Message-ID: <20260818170926.4019431-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260816121705.858013-2-peter.hunt@opengear.com>
+References: <20260816121705.858013-2-peter.hunt@opengear.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR21MB6683.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c34df49d-c17d-4dbd-2d27-08defd4b36a5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Aug 2026 17:07:41.4033
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: HztWV9rkK1fhECUJWxGWZpqdwNsuaL11IJNlvChm9bTATRfn1OmMlOVM8MrS19rpDsYmTsirDXs71vGS8zyZTQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR21MB6338
+Content-Transfer-Encoding: 8bit
 
->=20
-> On Tue, 18 Aug 2026 09:20:05 -0700 Jakub Kicinski wrote:
-> > On Thu, 13 Aug 2026 10:42:33 -0700 Long Li wrote:
-> > >  }
-> > >
-> > > +static struct gdma_queue *mana_gd_get_cq(struct gdma_context *gc,
-> > > +u32 cq_id); static void mana_gd_put_cq(struct gdma_queue *cq);
-> >
-> > Forward declarations are considered a bad smell in the kernel.
-> > Please add these functions here, I don't see a reason for this they
-> > are purely calling kernel APIs.
-> >
-> > >  static void mana_gd_process_eqe(struct gdma_queue *eq)
->=20
-> Well, prolly not gonna have time to review the rest this week due to the
-> merge window, so pls TAL at the AI review as well before you respin:
-> https://nam06.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fnetde=
-v
-> -
-> ai.bots.linux.dev%2Fsashiko%2F%23%2Fpatchset%2F20260813174243.304434
-> 8-2-
-> longli%40microsoft.com&data=3D05%7C02%7Clongli%40microsoft.com%7Cbf02
-> ba497de64cc264b108defd44b162%7C72f988bf86f141af91ab2d7cd011db47%7
-> C1%7C0%7C639226668643687247%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0
-> eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCI
-> sIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3DJYiJcy2lD1rOwRKuxfrm3zm8JR2n
-> rwDggk0GC%2FgH8eE%3D&reserved=3D0
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+net: wwan: core: propagate modem control signals to port drivers
 
-Will do, thank you.
+Adds an optional ->dtr_rts(port, on) callback to struct wwan_port_ops so
+port drivers learn when the host asserts or drops DTR/RTS.  The wwan core
+keeps tracking the TIOCM bitmask in port->at_data.mdmbits and now calls the
+new op from the TIOCMSET/TIOCMBIC/TIOCMBIS ioctls as well as on first open
+and last close of an AT port.
 
-Long
+A few questions below.
+
+> diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
+> index ffbcf11e4e681..90ca85a63b5a3 100644
+> --- a/drivers/net/wwan/wwan_core.c
+> +++ b/drivers/net/wwan/wwan_core.c
+> @@ -759,8 +759,17 @@ static int wwan_port_op_start(struct wwan_port *port)
+>  	if (!port->start_count)
+>  		ret = port->ops->start(port);
+>  
+> -	if (!ret)
+> +	if (!ret) {
+>  		port->start_count++;
+> +		/* Mirror TTY semantics: raise DTR/RTS on first open of an AT port */
+> +		if (port->start_count == 1 && port->type == WWAN_PORT_AT &&
+> +		    port->ops->dtr_rts) {
+> +			mutex_lock(&port->data_lock);
+> +			port->at_data.mdmbits |= TIOCM_DTR | TIOCM_RTS;
+> +			mutex_unlock(&port->data_lock);
+> +			port->ops->dtr_rts(port, true);
+> +		}
+> +	}
+>  
+>  out_unlock:
+>  	mutex_unlock(&port->ops_lock);
+> @@ -773,6 +782,13 @@ static void wwan_port_op_stop(struct wwan_port *port)
+>  	mutex_lock(&port->ops_lock);
+>  	port->start_count--;
+>  	if (!port->start_count) {
+> +		/* Mirror TTY semantics: drop DTR/RTS on last close of an AT port */
+> +		if (port->ops && port->type == WWAN_PORT_AT && port->ops->dtr_rts) {
+> +			mutex_lock(&port->data_lock);
+> +			port->at_data.mdmbits &= ~(TIOCM_DTR | TIOCM_RTS);
+> +			mutex_unlock(&port->data_lock);
+> +			port->ops->dtr_rts(port, false);
+> +		}
+
+[Severity: Low]
+Can the dtr_rts(true) issued by wwan_port_op_start() go unmatched when the
+port is removed while an fd is still open?  wwan_remove_port() does not go
+through wwan_port_op_stop():
+
+drivers/net/wwan/wwan_core.c:wwan_remove_port() {
+	mutex_lock(&port->ops_lock);
+	if (port->start_count) {
+		port->ops->stop(port);
+		port->start_count = 0;
+	}
+	port->ops = NULL; /* Prevent any new port operations (e.g. from fops) */
+	mutex_unlock(&port->ops_lock);
+	...
+}
+
+So ->dtr_rts(port, false) is never called and at_data.mdmbits keeps
+TIOCM_DTR|TIOCM_RTS visible to TIOCMGET on the still-open fd.
+
+The later close() cannot repair it either, since the unconditional
+port->start_count-- in wwan_port_op_stop() underflows the already-zeroed
+unsigned counter to UINT_MAX and the new de-assert block sits inside
+if (!port->start_count).  The underflow itself isn't introduced by this
+patch, but the new assert/de-assert pair inherits it.
+
+Would it make sense to call ->dtr_rts(port, false) (and clear mdmbits) in
+the same branch of wwan_remove_port() that calls ->stop(), or to document
+that ->stop() implies de-assert?
+
+>  		if (port->ops)
+>  			port->ops->stop(port);
+>  		skb_queue_purge(&port->rxq);
+> @@ -980,6 +996,8 @@ static long wwan_port_fops_at_ioctl(struct wwan_port *port, unsigned int cmd,
+>  				    unsigned long arg)
+>  {
+>  	int ret = 0;
+> +	bool call_dtr_rts = false;
+> +	bool dtr_on = false;
+>  
+>  	mutex_lock(&port->data_lock);
+>  
+> @@ -1036,6 +1054,10 @@ static long wwan_port_fops_at_ioctl(struct wwan_port *port, unsigned int cmd,
+>  			port->at_data.mdmbits |= mdmbits;
+>  		else
+>  			port->at_data.mdmbits = mdmbits;
+> +		if (port->type == WWAN_PORT_AT) {
+> +			dtr_on = !!(port->at_data.mdmbits & TIOCM_DTR);
+> +			call_dtr_rts = true;
+> +		}
+
+[Severity: Medium]
+Does this drive RTS in the opposite direction of what userspace asked for?
+
+The kernel-doc added to struct wwan_port_ops says the boolean asserts or
+de-asserts "the DTR and RTS modem control lines", and the two call sites in
+wwan_port_op_start()/wwan_port_op_stop() do treat the pair together
+(TIOCM_DTR | TIOCM_RTS).  Here the boolean is derived from the DTR bit
+alone, and the TIOCM_RTS bit the caller just changed is dropped.
+
+The first in-tree implementer added later in this series expands the boolean
+back to both lines:
+
+drivers/net/wwan/mhi_wwan_ctrl.c:mhi_wwan_ctrl_dtr_rts() {
+	mhi_wwan_ctrl_send_dtr(wwan_port_get_drvdata(port),
+			       on ? TIOCM_DTR | TIOCM_RTS : 0);
+}
+
+so on an AT port:
+
+  TIOCMBIS(TIOCM_RTS) with DTR clear   -> mdmbits shows RTS set,
+                                          dtr_rts(false) clears RTS on the wire
+  TIOCMBIC(TIOCM_RTS) with DTR set     -> mdmbits clears RTS,
+                                          dtr_rts(true) re-asserts RTS
+  TIOCMBIC(TIOCM_DTR) with RTS set     -> both lines dropped while TIOCMGET
+                                          still reports TIOCM_RTS
+
+TIOCMGET then reports a state that contradicts what the driver was last told
+to drive, and nothing re-synchronises the two until some later ioctl happens
+to change DTR.  The commit message does say "The boolean passed reflects DTR
+only", but should the kernel-doc say the same thing, or should the op carry
+the bitmask so RTS can be driven independently?
+
+>  		break;
+>  	}
+>  
+> @@ -1061,6 +1083,13 @@ static long wwan_port_fops_at_ioctl(struct wwan_port *port, unsigned int cmd,
+>  
+>  	mutex_unlock(&port->data_lock);
+>  
+> +	if (call_dtr_rts) {
+> +		mutex_lock(&port->ops_lock);
+> +		if (port->ops && port->ops->dtr_rts)
+> +			port->ops->dtr_rts(port, dtr_on);
+> +		mutex_unlock(&port->ops_lock);
+> +	}
+> +
+
+[Severity: Medium]
+Can two concurrent TIOCM ioctls leave mdmbits and the line state
+permanently inconsistent here?
+
+port->at_data.mdmbits is updated and dtr_on is sampled under data_lock, but
+the callback is issued after data_lock is dropped and ops_lock is taken, so
+the two updates happen in disjoint critical sections under different
+mutexes.  The handler is registered as .unlocked_ioctl in wwan_port_fops, so
+two threads (or two fds) can be inside wwan_port_fops_at_ioctl() at once:
+
+CPU0: TIOCMBIC(TIOCM_DTR)
+	port->at_data.mdmbits &= ~TIOCM_DTR;
+	dtr_on = false;
+	mutex_unlock(&port->data_lock);
+	/* preempted before taking ops_lock */
+
+CPU1: TIOCMBIS(TIOCM_DTR)
+	port->at_data.mdmbits |= TIOCM_DTR;
+	dtr_on = true;
+	mutex_unlock(&port->data_lock);
+	port->ops->dtr_rts(port, true);
+
+CPU0 resumes:
+	port->ops->dtr_rts(port, false);
+
+Final state: TIOCMGET reports TIOCM_DTR asserted while the driver was last
+told to de-assert DTR, which is the exact condition the patch is meant to
+fix (modem withholds URCs while userspace believes DTR is raised).
+
+The commit message's justification, "the ->dtr_rts call is made after
+releasing data_lock and re-acquiring ops_lock so that it is serialised
+against port removal", covers port->ops becoming NULL but not the ordering
+of the bitmask and the line.  Would re-reading mdmbits under data_lock while
+holding ops_lock work, i.e. nesting data_lock inside ops_lock as
+wwan_port_op_start()/wwan_port_op_stop() already do in this same patch?
+
+>  	return ret;
+>  }
+>  
+> diff --git a/include/linux/wwan.h b/include/linux/wwan.h
+> index 1e0e2cb535799..a7684950d73b0 100644
+> --- a/include/linux/wwan.h
+> +++ b/include/linux/wwan.h
+> @@ -57,6 +57,8 @@ struct wwan_port;
+>   * @tx_blocking: Optional blocking routine that sends WWAN port protocol data
+>   *               to the device.
+>   * @tx_poll: Optional routine that sets additional TX poll flags.
+> + * @dtr_rts: Optional routine that asserts (on=true) or de-asserts (on=false)
+> + *           the DTR and RTS modem control lines.
+
+[Severity: Low]
+Should this note that the op is only ever invoked for WWAN_PORT_AT?
+
+All three new call sites in wwan_core.c are gated on
+port->type == WWAN_PORT_AT, but the TIOCM emulation they hook into is shared
+with QCDM ports:
+
+drivers/net/wwan/wwan_core.c:wwan_port_fops_ioctl() {
+	if (port->type == WWAN_PORT_AT || port->type == WWAN_PORT_QCDM) {
+		/* AT and QCDM port specific IOCTLs */
+		res = wwan_port_fops_at_ioctl(port, cmd, arg);
+	...
+}
+
+For a QCDM port the core still mutates port->at_data.mdmbits on
+TIOCMSET/TIOCMBIC/TIOCMBIS but never calls ->dtr_rts, so a QCDM driver that
+implements the documented callback gets a hook that never fires while the
+TIOCMGET-visible state drifts from the hardware.
+
+Cross-instance finding from sashiko-gemini (1f1883cdaae2b1f372b000af391d04e91947cf2c647012be2e4aa3916c3a8822):
+[Severity: Medium]
+TTY emulation behavior for `TIOCMGET` incorrectly depends on the hardware driver's implementation of `dtr_rts`
+-- 
+pw-bot: cr
