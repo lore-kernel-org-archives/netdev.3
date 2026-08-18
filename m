@@ -1,104 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE4C3F823F;
-	Tue, 18 Aug 2026 13:33:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787059992; cv=none; b=b0smzz+OaSHDUYgeftT1RLUQ+421fg7ldLQrYXt58uG6CHbtdOVpu4JAjA9JqktkOTa6LbMeygs+m232CkHfW0XpuiIvWGSI+FalKQ40T2e4cbJIN8ekT3cb9z5UzkVzNUYpK2Y+C3VKwnU3tgJ9BYBSXmQ7MSeCC0Vv+r7c1lU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787059992; c=relaxed/simple;
-	bh=Oi1cTzgTprUd4WU5jM52yUOTkZAFOXmhRaKwVUAGG1M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KEn5IRUv/A1f+Rj3FPKR29eYnbfS0BlDrjVmfm4+/+HwDrlLodLxTj44BkkMS7uIq2UEpZDN/Wq4rk9xEz35ftsR7mRFG0SLJ4r5pKtO/oChyuSnroOSyXNVcaj5sfmpyBNIc+zEK1U+OeMUMbEg9+WfKMo/g386SeQmqOEQOGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ql3uSSky; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402B247887A
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 13:37:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787060242; cv=pass; b=C2o+gkfwYmU0RfTL42TLxRgZl6w5H0SXykvsa1J2zXDHknYQ3yBNkpsn6QKDH94PQyO3l3QlFXIb2FyD+vJRRf0tn1wTt2ZZVH5yw78Y94vOLltRbEkWCLgrPfcAFSuuZdMruXBzrlO28TPQaHuLP1GGJDQWRSQI5eXl7Q9iwg4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787060242; c=relaxed/simple;
+	bh=DAA9B4W6+y7RSH+675skjYb+3ePFn6N3+NDo1A/GN1g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DQDrDQBDFxiGWkYK0rmYMdyyDk81bbv5704XmJRoJeSzDvY/VLF1XnVzKJbdsaGdjPJ9tDSafoEj6f1gifmp0EPDKXYbK5M2oxEUpodnx6aEjHBRQtg3UDwTTCac4SCngyswmeg7j30vuYmMNz7u28nLaJ1yDT7ju/jljPwMShk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aTefeFGU; arc=pass smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ql3uSSky"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C65C01F00A3A;
-	Tue, 18 Aug 2026 13:33:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787059990;
-	bh=CFD41dh/fwtM84XrgZgA3HsRy6U7C483I7C+CBFivAs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Ql3uSSkyHkZLszzG1X7krowpaIJRvcjqQkNAQdZnj3aaXo/3uBAi8vt3cpvSHQduP
-	 8mwdkFIEnypZvn9Tr3iT9YzF/uGGKUvrQvfocZ8GxAKvwZ1J0DrnjXQGvd0CM1WQHL
-	 b8o9PFK9DFiUCToqZzlEIXdSCK18CpG8xhxGgvRpdXXkc520yfYUjpAGvWWm14/oYX
-	 CaNFwxHTwQD0krkk6mAy0SeCLSKO/x8trEnwjkaJq5+A0VeKl0wugFRxold0fwKR8s
-	 Z7MlO/++68n/dJZdaRMGwkQMRzawKXA8xveagWEt5UabK5wQUKKjzyItJViKkQ3IRp
-	 sobTOBppx+XZw==
-Date: Tue, 18 Aug 2026 14:33:06 +0100
-From: Simon Horman <horms@kernel.org>
-To: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
-Cc: Alex Elder <elder@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Luca Weiss <luca.weiss@fairphone.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] net: ipa: fix stalled modem TX queue after runtime
- resume
-Message-ID: <20260818133306.GH265046@horms.kernel.org>
-References: <20260815040302.653650-1-jorijnvdgraaf@catcrafts.net>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aTefeFGU"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-52d56b08213so6057501cf.1
+        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 06:37:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787060239; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Yzl5Q3QtI0LWgqvRCky0yjxScGLAZ4fc7EcrOBHKlv4biKVE4h1hQkozfZswpq7nh8
+         I5SSurNowSwUJXebRxkovJ6dzUWanX5uML5SR5qr9w1rBcj+0GOKRTtzYFS8RwOcLJAG
+         AcK6H0Isyjg3geROon5SqKL1CPCrflNWZrEp5oLUlg21vBftHgr4/4nS7p3g33S5SNvq
+         u9+UWje0l0DPrFR5x2uWpIyPJkLKs2W/W9jmptvgey7phcPjHw0VDZMG4YUcPIp3Exd0
+         M9cp0ZhvtMeoypYfqXnSK5Jaaz/V2ZVrQ95dErAYQ7+18QutmWYGrS6E+cQ3Ih4XjU3e
+         S5nQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=DAA9B4W6+y7RSH+675skjYb+3ePFn6N3+NDo1A/GN1g=;
+        fh=Efmfmg2lgzTpn8MjDA2KY1HtUtgL1Ydq04FjH6Gkq9w=;
+        b=n1lPO8NyM7ysG6p1Qb+MvfgenFRWS1D/MHmE4JvhdN1yo8hXo3AW34mc7Rz3nTH0E4
+         mScmfMbZygUvUgWh1CcyWtOO27YbrZtYo3v7Xk90s5XfzbXoGWlHEwB6c20XpES6U3zq
+         nwHfZVU65GW/YZQQS8mJzp3KcDFyoEIZLsPwdB2Vg86ySWXO1OlEOaYVWpbh2QjjSryO
+         pnnRdTY9PtvVcrESEVGt3DSrmkQUEuaL7ZcRNXZslwfsVqxAKhn+YIItPeKq5/N1bRSh
+         l96ksyD/MKmLssMcpgn1DDn2rscjmDGAGIcr3jJDywEKw8QiJljKwB+MjeQ0fou1ftfN
+         BgBA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787060239; x=1787665039; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DAA9B4W6+y7RSH+675skjYb+3ePFn6N3+NDo1A/GN1g=;
+        b=aTefeFGUl8ExepLba7xBP3/Wn9+jNvmaUl6U6fx5dEcidQRUL3HHAyd6n5Sg6A4vrk
+         rsrLzmFeQmxjO7CJCWlk5B2+qhLgdtmKE+Q6DrFuhEbDYJXjIHJh6nsdRhiWPKxGP+Wh
+         ZHYkZY7/mlbLAbtpGJk94r+sJ/LfTUS7VMy+i01+aDpqElGaZcyyPppIZdveJ9oFy0xv
+         sycHEN57c9L3PQen2UcXsBDREfUEURkcyV2gLuBJyeilbhmTGfXbUvXeX1etra/GT2ls
+         ZCulenPg3SD8BnmB4PfqwuYfnnma9Dpj1pKZmePj7qU6H9kBFXHWO5xuROzBkpFkrK/C
+         47hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787060239; x=1787665039;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DAA9B4W6+y7RSH+675skjYb+3ePFn6N3+NDo1A/GN1g=;
+        b=T6wy4kno1Q0vyTUEtBHGhVxCuqicRW83AYF4uG4Cx0niuyopI0e1aKupjht+CRH9mK
+         OWEtK9JOeACQswN36MzLiv9ud4MU2A6hMBWDtYJOGQVHEkBoP5Ot7DXM8ZumNvlnVPIZ
+         7upHl9fYXdPmjQmWUKechklsFjE7WrBI0Peri2zEKX0tXuKPa7tBeSMd7hswM9gbavXP
+         RKQs3mg2VKP/x9eR+dRSoprzxm4tuxHtC9xxDIHiE5ZP79rQUtYpWpxhGwYvL8dNHd4G
+         2dBql4zdC/wAuRiMwcUz95EGwWeSRmID6kuSiddDNxWLz4m/cQMjkc8ad6nXOVe2/cJq
+         UVWw==
+X-Forwarded-Encrypted: i=1; AHgh+RrinVZrYE18m8QOGFKuAcrpr/DWUVA9WVqBhfZSNTv66y0btvddETmfrlXNuYVYZVeqc+98TsA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLGcW/NUfYTIOgO4T0GAeS7PPvHeGIP/L4nJOrKECHz1fZChqC
+	fnxOfFz12MNzPSkP8iwTGpn+Ok8o8TBgG73DUUxYaefxoolqXwVFFrF6pOqnDSvpNNNBnpXIWfg
+	B9N4Sk4j4V2mul8r+wpsWcY4mwYubvyvjEYLB+MLe
+X-Gm-Gg: AR+sD10g1mMaFpkxMRIGZbT3Zdg9jOl6yTzwnPt44wuORcW092yNRVbkXaetFhMUopk
+	CGF3kwNLmPYiH4MzRK7a88u7q/XmR/nolKMosN3FSwvocrhtIjffbyNioC+X079SxZMl0lI/2rA
+	6V2vsl61qLlALPf5UTn44KOEspR2blxNLzs3b3oXkHFFBcmEK7rgfpwUwsj+uEInBqB/scpfWKS
+	AO3Y1j2hw/mVVM5jZqeTKtgUEM9P1TCddQXkSzntcARgGsPsQZQur60OCOnZLh6h/YivwkcQvFm
+	uVb8BWHU2ZnjCSPAXbkJk4R6NIPhQoruku0hjnoPx7K7kKiU9V5i2FCHWFG2Kul80+oEV+V+8re
+	wHdVSdIc8Bp695/8OKm8xqKbqlmq/KH31BSlw51VHfyKXLb21GSasx+pftD//Fs9OD+AmxRdny9
+	0JOSiVXcAbKipk7Oo=
+X-Received: by 2002:ac8:5e06:0:b0:50b:29da:ec58 with SMTP id
+ d75a77b69052e-52dbed36026mr57945651cf.8.1787060238034; Tue, 18 Aug 2026
+ 06:37:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260815040302.653650-1-jorijnvdgraaf@catcrafts.net>
+References: <6a7f3555.dbb3a75c.20434b.0005.GAE@google.com> <CANn89iLye45x8mhXm5-rcttmCqjDKEEXR70o9jJeFy0kOp0zbQ@mail.gmail.com>
+ <an-hOd_nV-xUqpUq@krikkit>
+In-Reply-To: <an-hOd_nV-xUqpUq@krikkit>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 18 Aug 2026 15:37:06 +0200
+X-Gm-Features: AcwNN1UcrJ5IZAqOPvRttNrvl55Knq5orrs6ZcU2L_AyLlI_kSB63FEa_T834ts
+Message-ID: <CANn89i+iHTsnR=TCfkvtFPse6KCEuPwRfzmttTEyN+oKXEQZTg@mail.gmail.com>
+Subject: Re: [syzbot] [net?] WARNING in rtmsg_ifinfo_build_skb
+To: Sabrina Dubroca <sd@queasysnail.net>
+Cc: syzbot <syzbot+f2f6312ad1b5a0bfe316@syzkaller.appspotmail.com>, 
+	davem@davemloft.net, horms@kernel.org, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Aug 15, 2026 at 06:03:02AM +0200, Jorijn van der Graaf wrote:
-> ipa_start_xmit() unconditionally stops the TX queue before calling
-> pm_runtime_get(), relying on the wake scheduled by runtime resume
-> (ipa_modem_wake_queue_work()) to restart it once power is ACTIVE.
-> But that work is queued from within the runtime resume callback,
-> before the device's power state reaches RPM_ACTIVE, so it can run
-> while the device is still RPM_RESUMING.  The wake is then consumed
-> too early: the transmit it restarts stops the queue again,
-> pm_runtime_get() returns -EINPROGRESS without arranging any future
-> wake (deferred_resume exists only for RPM_SUSPENDING), and after the
-> resume completes nothing is left to wake the queue.  Transmit stalls
-> permanently: packets pile up in the qdisc behind the stopped queue,
-> the device runtime-suspends, and since the netdev registers no
-> ndo_tx_timeout the watchdog never fires.  Observed on SM7635
-> (Fairphone 6) as the cellular data path going permanently deaf
-> within hours, RX included, since nothing resumes the suspended
-> endpoints.
-> 
-> Close the window by making the wake work wait for the resume to
-> complete (pm_runtime_get_sync()) before waking the queue.  Every
-> queue stop is then guaranteed a later wake that happens while power
-> is ACTIVE; a transmit racing a new suspend/resume cycle re-schedules
-> the work.  If the device could not be resumed, wake the queue anyway
-> so pending packets are dropped by the transmit path rather than
-> stranded.
-> 
-> The STARTED power flag used to narrow this window: a wake running
-> before the transmit path's stop suppressed that stop, but only once,
-> as the flag was cleared by the first stop it absorbed.  Removing the
-> flag made a single transmit during an in-flight resume sufficient to
-> strand the queue, which is the form observed.
-> 
-> With an accelerated reproducer (autosuspend delay shortened to 5 ms,
-> ~20 packets/s of TX), an unpatched kernel stalled three times in
-> 230 s / 4380 packets; with this patch the same test ran 3601 s /
-> 70298 packets without a stall.
-> 
-> Fixes: 688de12f080f ("net: ipa: kill the STARTED IPA power flag")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-fable-5
-> Signed-off-by: Jorijn van der Graaf <jorijnvdgraaf@catcrafts.net>
-> ---
-> 
-> Runtime testing was done on a v7.1.2-based device kernel carrying
-> this same change, on a drivers/net/ipa/ipa_modem.c otherwise identical
-> to this tree's; the patch as posted was build-tested on net at the
-> base commit.
-> 
->  drivers/net/ipa/ipa_modem.c | 18 +++++++++++++++++-
->  1 file changed, 17 insertions(+), 1 deletion(-)
+On Sat, Aug 15, 2026 at 1:14=E2=80=AFAM Sabrina Dubroca <sd@queasysnail.net=
+> wrote:
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+> It's not possible to create a macsec device with a key length other
+> than those 2, but it's true that returning -EMSGSIZE in this case is
+> not correct (-EINVAL + DEBUG_NET_WARN_ON_ONCE I guess).
+>
+> The real problem is that we register the netdev before private data
+> has been fully initialized (macsec_newlink calls register_netdevice,
+> then macsec_add_dev), so we end up reaching fill_info before key_len
+> has been set.
 
+SGTM, I let you send a patch.
+
+>
+> So I think we should run macsec_add_dev before registering (and maybe
+> move those allocs to ndo_init), and possibly macsec_changelink_common
+> too. Setting the sci was intentionally done late, so this bit should
+> stay where it is.
+
+Thanks
