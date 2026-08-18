@@ -1,105 +1,224 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2AE41D227
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 15:09:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C95C37F8CC
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 15:12:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787065764; cv=none; b=GJPC+kzlmKKrTcyWw/V3Yg0pMVcGp/aKoa8LV/S97U9o45sDqRmLi/FdIdNiQpvJYStG8hWeUrLYBsWiTrdchxSnevrAw8ttIOLXAFIbM4F2FSakb65EjYy1MeUo4dwRJWcjANqTXOUBVX3j+8T9ZayB8ZeAWw3MzEPSb7O7JeE=
+	t=1787065938; cv=none; b=GKw04cl4O7uK78Z064i+BJGv1aPT0vOmSfdqsD5S1p4wq4G+1xuoq48a9bCmm5/WJ1OR8pOehAldN0/4ugDEIw9/yAor6qNVVeojA5+VsBINUi54+pgR8w4pJ/WCKSGjwzSg3ScmNFJWaKKACuS3X6ZjVYX3/GPGTNrnUHPOrEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787065764; c=relaxed/simple;
-	bh=XjGaOIjQ/+IIGGxhFw+k+Tln3i2AhkheoPEyCqqCrug=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N7vxAmYX7jlPxrsqjqt+oc5n9yZ3oejOstIohvYznV+w83SbAeQaBk+J8QdbPsSUnfO6DE9LdMVSnoSIXXdyQ/881O1ytZt/IEsqxj74i42HY/Ti+YdP0Y1956Gym2zZDiLyl/syzOBcVeCNiARxKnh7oiEdjumUqWv5c6F6Jj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gpcGQEWx; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787065938; c=relaxed/simple;
+	bh=zPchE/8kOJYR3RwzG0jQNACqR0GWSO+dUdVbdMzS0lU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=igpwkKoomKu5S6cMhSdm+0G261y8LKrnJAN7kaYSjeLQz+bi/9j8cLTRyHp9kySm2l88IINdfeiNthefCKhw6XLj4P134uyPpTyF9Q+L93uw9GAkzaXNJQ/SLsghttOEDcEFVXR9QDc8uMAablNHzn1BEn1201f6ombZqIBYiNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GL2kvT5N; arc=none smtp.client-ip=209.85.222.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gpcGQEWx"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6a0a4a17f91so7187161a12.1
-        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 08:09:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GL2kvT5N"
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-92e4f946461so508578885a.2
+        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 08:12:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787065760; x=1787670560; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Azjl3irT73V/koc25uPISYBKISfWZZT+yRNGdczt0Kk=;
-        b=gpcGQEWx0DIri5vx9fOyVxr/ZHf//ax/xWkqmxy0M3GU6AW5LJqAru35z+xRV6VbBD
-         V8MF0SIfRT1CvAJk7CzGGKg/wS2g2Wzhq2k30TVe2hAzKYXYRxjqd7XmVkQPuPOurC1r
-         OquVPqXohx7S2q8OJWhBhj9Lpt4rETlz5cAjvlBdBmJR1Bw9jEzkETYKDd5DRG6oK1Pf
-         7JEiRrpr4PsT10qu8wkNqUHILawhaTuO3Dn91j6TbpbRz11wqhwe8qfbf1comUOlAuB4
-         OK5YJYg4Jp00Po17u4hL/CGVU9vWWahAWPXzUgttrc+K8L6ENLtAqqDckZGXeOB5sKz1
-         MWMA==
+        d=google.com; s=20251104; t=1787065935; x=1787670735; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=uWurW2MMOGKUUjhfyILYCl5UIX1u/LhqJ443mXPj14E=;
+        b=GL2kvT5NH26mv6duOTYUk2n5q1O+yg7H4yG89au2KIHTJFHqkzq7IaqFK1Zcxi2NPV
+         s1TWoM4STEt/Tv4y/LIEt2CY8J+2a9bFVpMLh6g0inEZFjaxCcqLb5pZUG4Hkk3eUHK1
+         T9BgQxjYTj0xEhSBHuhvvaYn929yeDvWlAt2Tacb1EC2luDRn7vEqmZAjFC8bSOt5qiD
+         q2hxjpePKmNe1Eg9Dok78GSR5kPioIuFqUgUewMYlesX2Ct114sNVhK2xil+oiPquUfu
+         WScLW0H0c71iDC3G+oZdM7NAUlAh+WMpUBcoq5iWV+cQHIS175f+mC/LCoIdL/pr0eBw
+         iTYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787065760; x=1787670560;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Azjl3irT73V/koc25uPISYBKISfWZZT+yRNGdczt0Kk=;
-        b=ONSiEiGixOwO9BSSHqbmXjUiBQFgrI+Iy/wfbfxR/8hESJj/pEuNgQXD8d5AiPt+vc
-         nA01cLUGm8+H4t8QrrxEv+Prhq5LmKHhbZYHAaFDvYjuwP8alOZW4V3zwORxF27jKmWr
-         4dYqh1/WS41a6geA1wDhqm9zBQprc9cOpvqTJXyQQaDQ1ZU7+/NhA9NHRjpLWGY6Wxvp
-         V/tMF6w0mzi36ByekA1OPdCw8EXNndgxflmOlyYkSJfaFy/tUnaeAykrUnIjX4Cc/hkj
-         sK9kXrCtEwcAqITgB1dvw0mtLJ4N9G1ENKjgV+xks85mfvdj4y91H/NQDs+4vEQeoUeg
-         TBUw==
-X-Forwarded-Encrypted: i=1; AHgh+RqiAzEtA8CtL9J7fuzY/GWrXvjvArnGj+Nfu8DxVGt7y0+d/hyx1oqOOjh0lHsklVdndulOsrA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJlTKauadmLA1UZq2bxLubfghVIBXCpJV5DurUrjHgwYQHQYY+
-	knpkugQ3Tb9CnKwQi4sRcj1E62lYXFKGgCH0sAPMbEqdJDHMQP2B71XB
-X-Gm-Gg: AR+sD113E4XY0/9oADgmk8wptq2LpBUHsK/hyzRQLpgQvyXqGpuwMxzJNynNufDGPo1
-	IgpW4i7Gror+8GQrACCCT8nhCFC1mej01vxqYf1lDwYmxeNEAjVbkxNeq27/WtJo+4ls+XCe2kR
-	nmX9LFfzVCAmfJT+wa+kYisFpadCCb76FNomcu1ZmEgdeMaAOsb3jwZoyvDZouKDyjkPoKjZ8Pl
-	+ZNQDNTzUJjoR+U6hm4ehZCfJCfv4WvlzfLc/DppUMUazwCjWdI510hRPLlo5IQ8iT/wquDcN/x
-	A4rJOyzAqnfGx+osUQXMKo3/ebXXeKSgF0PcyV0NovWF1f0wP5WmKZsmmKKQwbDfBet0ML9fFXT
-	74C80FSUGzNbBVoxiqKmEG2i1yFRNJ7z3gIuvTZjQ4TrG1vr0s8MnnnRMbFIOfFjAPmNNqkIhyl
-	qcK/ILxyW1ii7qJY8NIPhBbcfG5jh8Ck6GfU2Ao8BxWrmNUrS+vr7KmzbGsDCugg1W10PChEo6k
-	AdiG0zsDCHQ6FFCKMPL9WMlIHpKUplblo3W5erGuw==
-X-Received: by 2002:a17:907:928c:b0:bf0:b39:dcc8 with SMTP id a640c23a62f3a-c212a1da2bamr1863469766b.26.1787065760375;
-        Tue, 18 Aug 2026 08:09:20 -0700 (PDT)
-Received: from [192.168.255.3] (249-9-142-46.pool.kielnet.net. [46.142.9.249])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c219e360887sm26417666b.61.2026.08.18.08.09.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Aug 2026 08:09:19 -0700 (PDT)
-Message-ID: <9a880656-db90-41ea-bb40-658a878af12f@gmail.com>
-Date: Tue, 18 Aug 2026 17:09:17 +0200
+        d=1e100.net; s=20251104; t=1787065935; x=1787670735;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uWurW2MMOGKUUjhfyILYCl5UIX1u/LhqJ443mXPj14E=;
+        b=PVDJaqzlZ+KoeUerfHRUgUNNdbl+tNg+EidajLUgIhPTSlF/UNW9V1nPoI/tFCyHAA
+         3UnW4vEsMxk7kkbXTeJy9lt8P3Lh1w/h+MrJSSAh03nvsnF7QdqdT1KCK4hPTY4EEKPe
+         iYy4KDJhhxB/JZmWRGC83WIoZ4OqCMjfsGqXZjEPZ7wEWBzwuO0smc/KDAIDNes4bqZO
+         zBe1Oz72msXhQtkViYQHoQKgGVSTNpKoNEmLohY1tAxvwKNpd0pwKl2AyUbivA0lEnxN
+         vSelsWrW5nmRMRUEw1lKZGiNxQhf1HKs91K77YKYwwcqHe2uRlRwnEgpdOyJp6sWqy6O
+         y1mw==
+X-Forwarded-Encrypted: i=1; AHgh+Rqgaj0AK0NNWKLLpXhhTUzYAntbU7Cw9lycZnhtYiiEeTJZZ1zn1+GZfxF2NNJdaJ3Ngunv8PE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7lu/z7MsVu1Dmx6sHDBX+n5I3E8g6Dbi7NuecFeyRy+5ss+5b
+	fO12k/lpe4Z9iVarSNBUWVJsTeTjxv7dUVJCwmPI30Qt9r+UJZmkBbO4VZViUBmXVYZp0svVNQZ
+	7gzDhYinHuXXmXA==
+X-Received: from qkbg7.prod.google.com ([2002:a05:620a:a347:b0:936:ea35:9634])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:4087:b0:936:a89f:29ba with SMTP id af79cd13be357-93704adccddmr897220185a.5.1787065934577;
+ Tue, 18 Aug 2026 08:12:14 -0700 (PDT)
+Date: Tue, 18 Aug 2026 15:12:13 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v14 0/4] net: pse-pd: add Realtek PSE MCU support
-Content-Language: en-US
-To: Jakub Kicinski <kuba@kernel.org>, pabeni@redhat.com
-Cc: o.rempel@pengutronix.de, kory.maincent@bootlin.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, daniel@makrotopia.org, bjorn@mork.no,
- sander@svanheule.net
-References: <20260813222036.873930-1-jelonek.jonas@gmail.com>
- <178705861416.2079194.11658601794072677702.git-patchwork-notify@kernel.org>
- <20260818075920.4580f583@kernel.org>
-From: Jonas Jelonek <jelonek.jonas@gmail.com>
-In-Reply-To: <20260818075920.4580f583@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.737.g08866a6d13-goog
+Message-ID: <20260818151213.3953963-1-edumazet@google.com>
+Subject: [PATCH v3 net] inetpeer: randomize RB-tree node comparison using SipHash
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>, 
+	Michael Blunt <michaelbblunt@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+The inetpeer rate limiting system stores peer entries in a Red-Black tree
+keyed deterministically on the remote IP address. Because tree lookups walk
+the RB-tree using standard lexicographical comparisons (inetpeer_addr_cmp),
+an off-path adversary can predict the exact topology of the tree and the
+sequence of nodes traversed during lookups (the gc_stack candidate list).
 
-On 18.08.26 16:59, Jakub Kicinski wrote:
-> On Tue, 18 Aug 2026 13:10:14 +0000 patchwork-bot+netdevbpf@kernel.org
-> wrote:
->>   - [net-next,v14,1/4] dt-bindings: net: pse-pd: add bindings for Realtek PSE MCU
->>     https://git.kernel.org/netdev/net-next/c/368990e9f6c6
-> Was this reviewed by device tree maintainers?
+By combining deterministic tree traversal with aggressive garbage collection
+(triggered when tree size exceeds inet_peer_threshold), an attacker can
+selectively force the eviction of targeted inet_peer nodes. When an evicted
+node is subsequently re-created upon receiving a new packet, its rate-limiting
+token bucket (rate_tokens, rate_last) is reset to full capacity. This creates
+a side-channel primitive allowing off-path attackers to bypass IP-keyed ICMP
+rate limits and infer open UDP ports (similar to SAD DNS style attacks).
 
-v8 was reviewed by Conor. Since I slightly changed the bindings after
-that (dropped a '-supply' property, added a '-gpios' property), I dropped
-his Reviewed-by again in v9. No major changes but still a change which
-usually requires the trailers to be dropped.
+Mitigate this by randomizing the RB-tree node comparison logic using SipHash
+with a secret key (inetpeer_hash_key) initialized via net_get_random_once().
+Nodes are ordered in the tree by SipHash(addr, key) rather than raw IP
+addresses. Because the secret key is unknown to external entities, the tree
+layout and lookup traversal paths are unpredictable to off-path adversaries,
+breaking the deterministic eviction gadget.
 
+Cache the computed 64-bit SipHash (hash) in struct inet_peer and compute the
+target hash (dhash) once at the beginning of inet_getpeer() to avoid recomputing
+SipHash at every step of the RB-tree walk.
 
-Best,
-Jonas
+Fixes: b145425f269a ("inetpeer: remove AVL implementation in favor of RB tree")
+Reported-by: Michael Blunt <michaelbblunt@gmail.com>
+Suggested-by: Michael Blunt <michaelbblunt@gmail.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+v3: Properly rebase v2 (Ido)
+
+ include/net/inetpeer.h |  4 ++++
+ net/ipv4/inetpeer.c    | 38 +++++++++++++++++++++++++++++++++++---
+ 2 files changed, 39 insertions(+), 3 deletions(-)
+
+diff --git a/include/net/inetpeer.h b/include/net/inetpeer.h
+index f475757daafba998a10c815d0178c98d2bf1ae43..414e9adf4c51145f14313993f04d1f47c0aaa07d 100644
+--- a/include/net/inetpeer.h
++++ b/include/net/inetpeer.h
+@@ -35,6 +35,7 @@ struct inetpeer_addr {
+ 
+ struct inet_peer {
+ 	struct rb_node		rb_node;
++	u64			hash;
+ 	struct inetpeer_addr	daddr;
+ 
+ 	u32			metrics[RTAX_MAX];
+@@ -125,6 +126,9 @@ static inline int inetpeer_addr_cmp(const struct inetpeer_addr *a,
+ {
+ 	int i, n;
+ 
++	if (a->family != b->family)
++		return a->family < b->family ? -1 : 1;
++
+ 	if (a->family == AF_INET)
+ 		n = sizeof(a->a4) / sizeof(u32);
+ 	else
+diff --git a/net/ipv4/inetpeer.c b/net/ipv4/inetpeer.c
+index 5b957a831e7c39f2e9b224469f0eba4703833475..adf6dc8a95b4f35ab89bb7c429b43ae102b1eb1b 100644
+--- a/net/ipv4/inetpeer.c
++++ b/net/ipv4/inetpeer.c
+@@ -21,6 +21,7 @@
+ #include <net/ip.h>
+ #include <net/inetpeer.h>
+ #include <net/secure_seq.h>
++#include <linux/siphash.h>
+ 
+ /*
+  *  Theory of operations.
+@@ -52,6 +53,34 @@
+  */
+ 
+ static struct kmem_cache *peer_cachep __ro_after_init;
++static siphash_aligned_key_t inetpeer_hash_key __read_mostly;
++
++static u64 inetpeer_addr_hash(const struct inetpeer_addr *a)
++{
++	net_get_random_once(&inetpeer_hash_key, sizeof(inetpeer_hash_key));
++
++	if (a->family == AF_INET)
++		return siphash_2u32((__force u32)a->a4.addr, a->a4.vif,
++				    &inetpeer_hash_key);
++
++	return siphash_4u32((__force u32)a->a6.s6_addr32[0],
++			    (__force u32)a->a6.s6_addr32[1],
++			    (__force u32)a->a6.s6_addr32[2],
++			    (__force u32)a->a6.s6_addr32[3],
++			    &inetpeer_hash_key);
++}
++
++static int inetpeer_entry_cmp(u64 dhash,
++			      const struct inetpeer_addr *daddr,
++			      const struct inet_peer *p)
++{
++	if (dhash < p->hash)
++		return -1;
++	if (dhash > p->hash)
++		return 1;
++
++	return inetpeer_addr_cmp(daddr, &p->daddr);
++}
+ 
+ void inet_peer_base_init(struct inet_peer_base *bp)
+ {
+@@ -84,6 +113,7 @@ void __init inet_initpeers(void)
+ 
+ /* Called with rcu_read_lock() or base->lock held */
+ static struct inet_peer *lookup(const struct inetpeer_addr *daddr,
++				u64 dhash,
+ 				struct inet_peer_base *base,
+ 				unsigned int seq,
+ 				struct inet_peer *gc_stack[],
+@@ -105,7 +135,7 @@ static struct inet_peer *lookup(const struct inetpeer_addr *daddr,
+ 			break;
+ 		parent = next;
+ 		p = rb_entry(parent, struct inet_peer, rb_node);
+-		cmp = inetpeer_addr_cmp(daddr, &p->daddr);
++		cmp = inetpeer_entry_cmp(dhash, daddr, p);
+ 		if (cmp == 0) {
+ 			now = jiffies;
+ 			if (READ_ONCE(p->dtime) != now)
+@@ -170,6 +200,7 @@ struct inet_peer *inet_getpeer(struct inet_peer_base *base,
+ 			       const struct inetpeer_addr *daddr)
+ {
+ 	struct inet_peer *p, *gc_stack[PEER_MAX_GC];
++	u64 dhash = inetpeer_addr_hash(daddr);
+ 	struct rb_node **pp, *parent;
+ 	unsigned int gc_cnt, seq;
+ 
+@@ -177,7 +208,7 @@ struct inet_peer *inet_getpeer(struct inet_peer_base *base,
+ 	 * Because of a concurrent writer, we might not find an existing entry.
+ 	 */
+ 	seq = read_seqbegin(&base->lock);
+-	p = lookup(daddr, base, seq, NULL, &gc_cnt, &parent, &pp);
++	p = lookup(daddr, dhash, base, seq, NULL, &gc_cnt, &parent, &pp);
+ 
+ 	/* Make sure tree was not modified during our lookup. */
+ 	if (p && !read_seqretry(&base->lock, seq))
+@@ -190,11 +221,12 @@ struct inet_peer *inet_getpeer(struct inet_peer_base *base,
+ 	write_seqlock_bh(&base->lock);
+ 
+ 	gc_cnt = 0;
+-	p = lookup(daddr, base, seq, gc_stack, &gc_cnt, &parent, &pp);
++	p = lookup(daddr, dhash, base, seq, gc_stack, &gc_cnt, &parent, &pp);
+ 	if (!p) {
+ 		p = kmem_cache_alloc(peer_cachep, GFP_ATOMIC);
+ 		if (p) {
+ 			p->daddr = *daddr;
++			p->hash = dhash;
+ 			p->dtime = (__u32)jiffies;
+ 			refcount_set(&p->refcnt, 1);
+ 			atomic_set(&p->rid, 0);
+-- 
+2.55.0.737.g08866a6d13-goog
+
