@@ -1,35 +1,71 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA7C47DD78
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 17:39:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47BB73A16B2
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 17:43:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787074790; cv=none; b=IgqzE5dniNL2QrDu9vH+J9kyKs15YkOxGZ1+tkXT80Wf6SvzsRhY21AAWsS+5ZNzgExUpPXbUIEKVeBcxTsDwy0RWnZusETcFrWuajkiPgU1K9zWu1cNVMFlrs3shfBYO9N+K8FKJ/m1wASPpm/a1VwDN5V2O7aKLYvJr3HvnQ0=
+	t=1787074986; cv=none; b=upMUe5DpY4r0gUJDb8fq/S5mWMb3NJjreiSuiwd4FzN4HIYqIBMJmR3ZP2MbXjQee+b20opZNzKFfxJ2t1hl1ai0grGg/8I6mwsxe2U+AIc64W0ZvHWIbA31cHSvpYIisXH4WZ5ExrsAgPITUlgkKtRo9zC5U731BZ1byOVgQjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787074790; c=relaxed/simple;
-	bh=5BOyvCM0OFih/JmAjyRJbSHPJjH2i/DEaeW61p0UElo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Ik3ssfefw7oRZlpfpPrcQobUEy0mWM7UoQz2yaIwrKZGpTMnniCB9B8qshHKgG054Yzqdd86NXC2KusrB2tzm9PkbwEjxUqnpVS2qFEaqsyS3Ico/xiqgoRxLTku6Nkd76jfiiCmkcPfeiMlXdDcecrPoWloiQ10BpZONqrRToQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IyEwLMA8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787074986; c=relaxed/simple;
+	bh=jdih85vIaDm1WR10xO6ndaR9LyFS/Bqn6efFH0k0+pQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RxEQgCxvddk55TYPAWlM2KfCu2X2Ghv8mn2xwzyrWXaKwh08BezwbfGoHuY6eBD/IyBHAFiro+4CYc8MiXzdUWEG+rhcbYwBBMAjkW4J3O3gwI1zRN3BcntwcgKveh3lMLXCbkRFhQLwxBTaxNSHEsWNMUE9301ktkMt4RWEm0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kCyrv1Ip; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IyEwLMA8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB461F000E9;
-	Tue, 18 Aug 2026 17:39:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787074789;
-	bh=lLDxULaxSINaqeC8QkNpAMrN8u0DtwBpFTQTXeoQ+ws=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=IyEwLMA8UqWxotK3chyxluGfzZmLNWHoQX6NYp/bkl4OGvmsGw21iRbKLsU7ghnpG
-	 DHUuuySeFyAY9gKbGTYhFxakwFa6mcRgDdCsMKkKEbgbgOT3JS+t9Igdmi3Xr8RA3U
-	 s+cqXdOit6s5BT7p10hwH5D4eCL3lsR+tDELgXutxAzu1RXu+Ykj2Bu2jsQcOXpHZX
-	 vLNqHutUkAO9HgT4xezRAzYf1FqzNqGxbZvLW/aGJRg53aPKKe0ewyKWyDv1PWxGrp
-	 wvKfqu8/a4YaqJ14mTNRFIgQBfomGdoSAxAe9IoSRKU721prxQzThNeedamR3J5fSs
-	 +HupLtYP84Rng==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0AB43927043;
-	Tue, 18 Aug 2026 17:39:01 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kCyrv1Ip"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4980dc26022so1121355e9.1
+        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 10:43:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787074982; x=1787679782; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3ImxPVs7wW436U1dwrS4Ni5rkXml8A2eZz8xdfOEDl4=;
+        b=kCyrv1Ipge+n7OsMekEan7o4iPohmZzad0yqmJ5VbJZXIWT+hYeC6j0dnSmQjfai6B
+         0+N9mZmNi0FQWuCBl5d6enNU0Qy41EmQEDNXD0xISwIYWZdQTZNr/Rdj3EupmiJyI2Sp
+         WmtFSeiqoF4xxKCYapMGJ/FBO8u1kPkILrXmA8pr56EOEdKoynLWmRhnbvAGFcCOitS4
+         vf1qAWa6Vv2lPpjs4w6bVcjjbcSOtXC5egWF/FTQACJDfTp/3oP4eRoYeiumA74kcdku
+         lWm+XYbdKrFTelu8CuWePsuJ5r7Y+zLW4/NmeTol/H/uf54v4SZ0ztFqQTFCi+0x+Jji
+         +LcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787074982; x=1787679782;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3ImxPVs7wW436U1dwrS4Ni5rkXml8A2eZz8xdfOEDl4=;
+        b=ZO4rkUm7wFph8UlAkBEEfUpcBkZ0HsdaWjeWiuzuhSJrJjuVAzarGyptvlI15kpO7b
+         ILljYpGmmaFQHx1WS04tVAmrHLTc6lgN7da7bB/HjE5NLSuNrsaM90IdPuZJNk4zCXSN
+         npxpVuJi2Uk9SS13PDKfCPyrTaEFpNBFq/XkQxtEYObZ48bNjDOJjZPJSx4tCTku8ufi
+         YCXUmrzSK9+jBZyXZtO3tZOGV3plriMQLlTAUt3hCid+NJx0AmTw5vUkEHR+f/hobpYp
+         QZ8+YIl6sXbrRzViDdkxpx2A7ElBVDjdMV3h+aRD33sfBTbSHj51qfJdVPBOV8khJikP
+         irQg==
+X-Gm-Message-State: AOJu0Yxqatc7iPITY6HmYSQZEADifesWtjpRAdeg2+CG7omiN0SrBT0O
+	rWYXBtKcP0GD+wU5P28vgYPRp8reZT/t3Pqk860uvEictotOslRNFPiE
+X-Gm-Gg: AR+sD10I+4ZM8vCsd35+6Gx8RHPhwAGomi8EEq/m2YymNbi/reaJeyRqD2Vh82o5LPa
+	Sea7w7kPlwv309Ni8sR1DxaJFF+2NIxyqmRia8bM4fkzR5DimCj++qJG3sQhiRoPNX/aASPSnrU
+	UF6H+YSDcN+7wDiAS46ECZLn+SP2G2xzCCKHaPLszz7VJ9I17M3VvQAHlUNMQ5thoQYEnT1LSAO
+	MsI2gjX1ISNsOHIRaWHIDDNfQTKY/Uibh3spj1YlITxMVYCjyMfvcKjugP2KUuewV6/SOcN9cun
+	KApegDBR5xDoRuWF7hKlpLYWZ1K1oK6mlRDyIbQvVnLZRgwTJ2mnBOzhptn5hBO1m/1nZ5CU23V
+	k/RYeI+4NvK0gyEARXqdoG1exqrcy5GLwF5wsZ74e/+5XfincweSYi82dKaunU39oExh0WBuoeL
+	DX08bV41f9ycUwoBYx5Azsr8z+yrN6sN1+hbOHO97vj9CK+7xhqXi/Mk/4PxVk
+X-Received: by 2002:a05:600c:3485:b0:499:8758:8cb4 with SMTP id 5b1f17b1804b1-49987935eecmr586444765e9.5.1787074982255;
+        Tue, 18 Aug 2026 10:43:02 -0700 (PDT)
+Received: from runham-think ([141.5.46.228])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499a5684e06sm41678945e9.1.2026.08.18.10.43.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Aug 2026 10:43:01 -0700 (PDT)
+From: MahnurA <s.mahnur.a@gmail.com>
+To: bpf@vger.kernel.org,
+	ast@kernel.org,
+	daniel@iogearbox.net
+Cc: netdev@vger.kernel.org,
+	andrii@kernel.org,
+	MahnurA <s.mahnur.a@gmail.com>
+Subject: [PATCH bpf] bpf: Fix NULL pointer dereference in bpf_sock_from_file
+Date: Tue, 18 Aug 2026 19:42:53 +0200
+Message-ID: <20260818174253.492196-1-s.mahnur.a@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,43 +73,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: add missing ref_tracker_dir_exit() to
- alloc_netdev_mqs()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178707474055.2194892.15611955237323709521.git-patchwork-notify@kernel.org>
-Date: Tue, 18 Aug 2026 17:39:00 +0000
-References: <b06ce35d-e7bc-47a5-8e0a-e82be7e4dd08@I-love.SAKURA.ne.jp>
-In-Reply-To: <b06ce35d-e7bc-47a5-8e0a-e82be7e4dd08@I-love.SAKURA.ne.jp>
-To: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Cc: edumazet@google.com, kuba@kernel.org, netdev@vger.kernel.org
 
-Hello:
+bpf_sock_from_file should not dereference a NULL file pointer.
+KASAN detects a null-ptr-deref when eBPF tracing
+fentry/fexit programs are attached to points such as
+__mmap_region and file_map_prot_check kernel functions. This can
+result in a NULL file pointer flowing from context to the helper.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+A minimal check before dereferencing can fix this.
 
-On Sat, 15 Aug 2026 15:50:13 +0900 you wrote:
-> sashiko is reporting that trying to read /sys/kernel/debug/ref_tracker/*
-> causes use-afer-free crash when either alloc_percpu() or dev_addr_init()
-> in alloc_netdev_mqs() failed, for commit 4d92b95ff2f9 ("net: add net device
-> refcount tracker infrastructure") added ref_tracker_dir_exit() to only
-> free_netdev() path.
-> 
-> Reported-by: sashiko.dev (no mail address)
-> Closes: https://sashiko.dev/#/patchset/56c707e7-1fb0-43ec-b8fb-cf6f451e513e%40I-love.SAKURA.ne.jp
-> Fixes: 4d92b95ff2f9 ("net: add net device refcount tracker infrastructure")
-> Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-> 
-> [...]
+Fixes: b60da4955f53 ("bpf: Only provide bpf_sock_from_file with CONFIG_NET")
+Signed-off-by: MahnurA <s.mahnur.a@gmail.com>
+---
+ net/core/filter.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Here is the summary with links:
-  - net: add missing ref_tracker_dir_exit() to alloc_netdev_mqs()
-    https://git.kernel.org/netdev/net/c/0b1c2af8a22c
-
-You are awesome, thank you!
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 16845987b244..7c3caae4bafc 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -12182,7 +12182,10 @@ const struct bpf_func_proto bpf_skc_to_mptcp_sock_proto = {
+ 
+ BPF_CALL_1(bpf_sock_from_file, struct file *, file)
+ {
+-	return (unsigned long)sock_from_file(file);
++	if (file)
++		return (unsigned long)sock_from_file(file);
++
++	return (unsigned long)NULL;
+ }
+ 
+ BTF_ID_LIST(bpf_sock_from_file_btf_ids)
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.53.0
 
