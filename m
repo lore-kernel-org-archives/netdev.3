@@ -1,288 +1,205 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012029.outbound.protection.outlook.com [52.101.48.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A314457A3
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 09:44:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787046256; cv=none; b=tw8BuG+yk4VS6hShWFd8mSzZHfE1dmhwYp8kXvJsWKczgkoPyHz1PSj89fkewd6NpVPYeIZzFRFA6SaujgCMuTPmfhqTTyL4uxnGdkGLOM/1pnxy9oqtmAfwVHAtfYMDV0AfFky3vcHRCPnJrHLsk7NNYHKvKKVaaeNCaw6YKjE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787046256; c=relaxed/simple;
-	bh=3cd45OFNfXfJkI0VZJd+o59+9U32aPuAuSRU1gtN/Cs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DKK6fGJKQM9DJotHeSBAqAOS3+IG+MnNLFck5wFRRrLstXHkCAKXH0tlpo6Xb4h6X5/TJwkEBzs2G1ba9dp8JVhUIe6o6kHyeutp714VdTlxIYI0wU3V2mJ6122bX42QGsPJZIMpFPXElPhKkzBw2pLzlnNev56jK6K5GnjLg6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=hA/lpNQS; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE30449EA6;
+	Tue, 18 Aug 2026 09:44:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.29
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787046262; cv=fail; b=pArU5aBdulA4CjnOGU/SgpYSMfPyLT5vilJ+6WUHnZ2Bxed7XWpyhuccr7Q0CCSXcLnCKABVlTXbbYDphQmbDgjvFaaFaKaSHM8Sw/DiegA4RB9fChUKL5JzFR6UYly6SxLHmz7xVI6IOKZzI3bLAD65KNK0c+Wxjh93u85G8uw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787046262; c=relaxed/simple;
+	bh=j+8UYfz9NoRk9y+whJUJ8mjJf6QioxZH10WUJr0uDmw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=loD79Kj+7MRoiqcU84YsBzZ6KSjGx8FZgowUUX0P6vPUgV9cRdLje03WFAffHCbjbtpA2FwtA0QrV7WU4nA4pixpEi/CJG7BxdPrf+2NPpkuw2q90zmx26luuIZYF/0mmLLYKyvsdeEb8qkSjR4V7h3pb+APuY0kpgO3QtYoJ+g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=WfgRQR8z; arc=fail smtp.client-ip=52.101.48.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="hA/lpNQS"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-49800c6a846so51631475e9.3
-        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 02:44:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1787046253; x=1787651053; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cf+NX4DOn3hFmTpqv5tZVPBkp5TK++qd0YXkdQ8iVHA=;
-        b=hA/lpNQSZ8sU/jkim9fIux9V/OfatvpNfRA3S8BcIzJRY3Sj/rBqlI3p2mz1ArENPJ
-         o4tR6r160b8Dy/pZclMcGwqLSmf4FmTk2GUR7f88QPn9d2hJvKRPIBa97QFsv3Ibbdku
-         98THGluz2xIpEcYjxFdf27s6hPetlwoIj9ZSUNReXzdVqC1Qd7dA8Irwy0LnI9KTjksI
-         nDsY0QZe6r08OFFiinDEeSMHShNdNCvkiyy+In6quj736UJL3/2ETboJcl0ciPjsTw6a
-         Bu1F7waP4em9KzPRbqDWY9DqwL+Vcsppi5JPLh663mm6c/L/DcNBtNmk53/xZbdSKzEF
-         4z7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787046253; x=1787651053;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cf+NX4DOn3hFmTpqv5tZVPBkp5TK++qd0YXkdQ8iVHA=;
-        b=bsVfaiIiy2d66HTWO7AOvBYVPhbWMGweaMPc3AmNzusXmPmOqhYpDHOv2d1bD5dWIc
-         UxebEiprzktgB2XY/4BSFS6WEuXlt2ZCE5D3i/vH9m5N3Mg+qDMyBYKnYKfG8WrY9C4C
-         sP5/vR/7IsOjHIqqygjwX40hndO+rzIWlnlP6m0CCHbtIOOEJx1iiL1OnqxSB1FZIEcH
-         IcPO7soguJPZekP4bq13VNzKcdqmOqhgGRe+I1vhjiaGbXSS1bgDBII4pE9hqkfjIiub
-         fFNnuxUSMlsRebsxH1NUHI9ijxER/+5Dy/EdSULWaaYTnUcKtTFBzNoSJtDZqk73cuaD
-         BrJg==
-X-Gm-Message-State: AOJu0YzzqmNKcMuWRA4eNm2G4PoKIN0LsMnUBuM52pZ/27Q1pxwylF6T
-	eIL7f24myJgkhhsOZWtXDAAbcuVam08imFzeGb7aTxcPZqRQ/zlQis0kWWsXihLRC9Y=
-X-Gm-Gg: AR+sD11Vop43gJ0ZrP1QxNl0jxwGNtp/nocsv+QuiBk6AUyaLnbLd/8tERP7nFujjMJ
-	w4cxva9Sk+Ib9+XqcscIeKHoPeCr/dPze01aM2bTBbu1wnN1AH9IkbBTX+57SbbxzXGdTFFjNlI
-	0QhlI1eGKWE9OJ6OgeEpoyiPgZ6HCUppI78WdTPdzU6avep+PLv3AoEgvXBIHFJWrep9rMnw69U
-	hyJnMlUCpHQus9GUccpAHUeMt6E/spOdDbSBgWNDGlPAWA1z2kIc/fDMc/JlFMtertdOv9AWH7i
-	bHomoSZGcJwD8yS7DWzDuXdzRbyg3zFtzICRB59I9RPiPsHtDkH6dUMM/fQgcZQCfPY+VYb6SMa
-	Gbwx5uOOt7nyS9ZcTH8baqRmZx2JcMr0hvNpUEt21hQ9UZS0B/jLtq6+O1naUiosDkRa0igZKuz
-	TyT4c5Fnih4LsdkaJJvnylBDifjnRXBeifVN1BsiNImW6a+/YKCnFM0djLIkF5IL647SJ7B4jth
-	A7ES+9E8nRm2HwCZfU=
-X-Received: by 2002:a05:600c:17d1:b0:495:7a04:b006 with SMTP id 5b1f17b1804b1-49987948adamr320919055e9.8.1787046252368;
-        Tue, 18 Aug 2026 02:44:12 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4999610ecf4sm184961095e9.7.2026.08.18.02.44.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Aug 2026 02:44:11 -0700 (PDT)
-Message-ID: <d75e0db1-e129-4a9f-a103-889827948de1@blackwall.org>
-Date: Tue, 18 Aug 2026 12:44:10 +0300
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="WfgRQR8z"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vqdp/5s+PzdY1quUmWWNc/T9reMO7DwoM/Q2i2qrlI/HXLNFIhd+dhLw9DHBgyWYZliHuflBcvQanxFwnwiuwzkThB9PPPzl+aBBfDpzhsGi+GcNOKUsgIuns62SkW3kJAsg75U0gxf0zJRCSMDJbAYPVAVXBd+JwB9i1UdSNZYeL0ZE32GUV3rh73sfX/5629IM1h0zVxQd+0WsHRbvNz7igis3/k/ZcPohUTBi1guIKoi1hwxDKjruEermBjn3YLnSPvcM7A8otOD0ajy+KDIhNkgyEA4AmkfH1pVT6mfF5twdA+F4ozAdylOfRZkiSnkRmtjchLUTgeqhFSo4tw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mM41Mca1iAaUHNOmoXqId/DtuuU/KBO3OcJPcaqXduI=;
+ b=K+sglX8vwo7BbvfxWPAm9GDrRILDQO1V3dG1c71CWuj5fnWP2a1nhqsPEy2bjHFKgHot2zdNwDlgY4dSfTpglHvGrvWoFwanj+xcMRfV1fwFfsQ/ZkXW4nnE7qytyIIRrPoe/6WdYnpombQHJs24SnsHI493kN+Z0+nFNymUy4v53TJHT8MNh/jBiGfT+20S/xRJdW/frpuzBA12D/IvmpjlSCb5zamO6dU0eRaHvC408XT5a3ivkshaIWwMXMCM7n+12xd2mQTS8fyBOJyy0qPgvGdkhMFXz5tUP/w9uYtu0lJlBJFPB4qli9TuWlecL4z39tGt8/vNG3EduVBejg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mM41Mca1iAaUHNOmoXqId/DtuuU/KBO3OcJPcaqXduI=;
+ b=WfgRQR8zKijGVzSflxqnuMzWX0UgBSyMS+NOyG4cmXMqiHrYl9actYcXWKw18LGz/ymaksSCEIjFvoBRe1w2E9+2ehkmBWIGd1MPdu0cPHBoygf7PAX7pA0OufZqMD7OxS0fICc1QETrpi8LP0p4uLsnwiIkakE9xzTlxJ4q6+xCnjjftZMUEd8bjj5S1+cQ9hdY8KciI/NnxTdtm1cQmimz5gm24UuOnaCtGwprwrplY5JYzoLnFt9k7HVSwHF+rtWJlSQS4GG1uNvi3Z194usGXQZ9mqrH0W4vwRpPx7Pj30GfsmgwP4xFKpB7PoGzXgLObEoA7QQFHnwTpqsm6Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8728.namprd12.prod.outlook.com (2603:10b6:610:171::12)
+ by LV8PR12MB9135.namprd12.prod.outlook.com (2603:10b6:408:18c::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Tue, 18 Aug
+ 2026 09:44:17 +0000
+Received: from CH3PR12MB8728.namprd12.prod.outlook.com
+ ([fe80::2641:1046:bdf3:93d7]) by CH3PR12MB8728.namprd12.prod.outlook.com
+ ([fe80::2641:1046:bdf3:93d7%6]) with mapi id 15.21.0339.007; Tue, 18 Aug 2026
+ 09:44:17 +0000
+Message-ID: <6dab0f98-70b8-4c29-8993-bc06fefba2fa@nvidia.com>
+Date: Tue, 18 Aug 2026 11:44:12 +0200
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net v2] net/mlx5e: SHAMPO, Fix IP length overflow on large
+ HW GRO sessions
+To: Tianyu Zuo <cosmosocket@gmail.com>, Saeed Mahameed <saeedm@nvidia.com>,
+ Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
+ Leon Romanovsky <leon@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Khalid Manaa <khalidm@nvidia.com>,
+ Ben Ben-Ishay <benishay@nvidia.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260817181618.2786456-1-cosmosocket@gmail.com>
+Content-Language: en-US
+From: Dragos Tatulea <dtatulea@nvidia.com>
+In-Reply-To: <20260817181618.2786456-1-cosmosocket@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR0P281CA0199.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ad::7) To CH3PR12MB8728.namprd12.prod.outlook.com
+ (2603:10b6:610:171::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 2/2] bonding: fix u32 overflow in compute_gap()
-Content-Language: en-US, bg
-To: Hangbin Liu <hangbin.liu@linux.dev>, Jay Vosburgh <jv@jvosburgh.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Hangbin Liu <liuhangbin@kylinos.cn>
-References: <20260818-bond_overflow-v3-0-e05d4dbc2fd8@kylinos.cn>
- <20260818-bond_overflow-v3-2-e05d4dbc2fd8@kylinos.cn>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20260818-bond_overflow-v3-2-e05d4dbc2fd8@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8728:EE_|LV8PR12MB9135:EE_
+X-MS-Office365-Filtering-Correlation-Id: dc83fcdc-694e-466e-8e5f-08defd0d455e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|23010399003|18002099003|22082099003|56012099006|11063799006|10067099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	ZUuPAiNgWQ1r7XnJPR5pLIIdBfbtSZZZduqkRVh5lFCOnPPq7vK9Lcprq80LbjgZPTPfIoFImg3F4meoFiY9AoXUTVOZfF1dUOU7jgk6XxCvSvoUYO0Cx2PQJ6SikB1AoDEIGSHZghLV85Fbh+/z6kwpy8ITANgpdS50YWDbdBoHCrhlPMU0/dPy4ztc1AKXvKqQXDflhKUS2u118CL74kcqAFjIXLzNtRDy4lw7IpHgP1OxcJz1h9nJHy4sgnJlhIJwPzbnMOtpkYGz7VfYMrSYCBCEZ1ZI62PGUQg92q2o1CaftvWO2LKjr+HVxvL8/XSUBBuqMQ617nl5oUamqmIFxqeliNxk0Phw2uTsCdzHomK5aATEH4vTzt1XeSnYQXrhVC2rQxIkUZm6mJ5iirz4dvGLReeXg0OIL6C32jysZe9AYTq7v+YQIoxdz17mOsx3cx0p18j6dqOIc5BORyjhYAaUXw+yZOFozo2Fv34ljl3sHOh6nAngYvHyEp7ZjG59pQZ0oU7eig1XwndukPNKOcvsUpJSA9i0fjbFsY/1Xd/BR/XLHkwL+KrD2Vj92Gfbk/ZPFxSFUciU09rtuRxJtwWKXeT/Dw1AObFv+6qIFTtfOLUqqTPzN0/3WbsRyCP8XBvz2dcIAlUHjaEvpwBCSRdzvodulLoHGIf6mz2rLxu4BHVePvDNwIUGNz593CLU7ND7IZbkjS7GMEkG3w==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8728.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(23010399003)(18002099003)(22082099003)(56012099006)(11063799006)(10067099003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aTNaaktMYUx6U3BNejVFajVxL0VSbWU0Z2ttNjN6amppRTRpclN3WWFDdm1T?=
+ =?utf-8?B?M0x1MFlva1VIK1hyKzV2UTlQcWcwT25mV0g1Z2pycDRwY1piUWw3d01CbFhy?=
+ =?utf-8?B?TjZQVS9EL2ZCai8vRGJZa0xRKzMyaVhEMXFlWmx3b1ljOUVTMitvNjl4WlZx?=
+ =?utf-8?B?azZRTUxGaFFVazVabHJ3MG9PdkFWWU5qclJ5bjNabktza041dHBtcWhvV3Q0?=
+ =?utf-8?B?SDlSd0tnNkcrVnoya2VTenFUMUtIRTBwWnpQbnFjZjJrSk8zeHZHa241bG9Y?=
+ =?utf-8?B?K2Q5eDdNQklwVGxpcHNjc3pqbHJJWFNkVzBac1NxVC8xaGFpU3BkakMxNFNv?=
+ =?utf-8?B?Y2lUVDRaKzZyc2ZmNFZSazhQbjdVM09rQUp1V0VMZldJSUZLNlM2Qk15MjFG?=
+ =?utf-8?B?emcvMUd3NGtUamN5am40akFwdTltNTd4K242dGd6YTFoajNOWUZNRVN2VjBR?=
+ =?utf-8?B?MUhQVXo5OUI5SnhSYmhITk5ZaGsvWWZIbDdnSDF0L0ZkU0RlQTlSb3piK2ZE?=
+ =?utf-8?B?ZjVhM3RkN29MK0dmbWxaZzd0SUM3YTdMa0Q4dFVDaEV6RThnVFRsK3dqRStS?=
+ =?utf-8?B?ZHVYQWpsWWMzbUNQeGs5NEE3SGNSN29haEFZbE1KN05kOFQ4UlpiVzE2cUla?=
+ =?utf-8?B?a0p0ZDhNT2ZlUHltVHdhRGd6ZjkvRllxcTAyR044UUJGSEFLa2tvOEQ3RTBS?=
+ =?utf-8?B?aU5sZ1hGZFB2dEVudjdTWUwzYXg0VmRNMnNUM3pmRjVDS0IzcldaY21aaFhI?=
+ =?utf-8?B?MU8yRGJKTS9hUVNma2c1TXBWcnRsS2x0WGgrc0tmRWl4aFRCYVJjZm1ibVZM?=
+ =?utf-8?B?Z04wcjRzck1vRkJkVm5kL2NuUVpDT3RoNDQ3eFN2RWc5ZXlIdVhEbWptV2Ra?=
+ =?utf-8?B?dW0vUnhBYUswYVBoSThQb050LzBaKzZxck5MQzhSd3paVFpGTG5HbXZ4MDVS?=
+ =?utf-8?B?QlNLWGJSM1Z5QkJGWDJGSHJyQWdFRmNuT1lCelpiR09XREplOTloWHNqNmNq?=
+ =?utf-8?B?NzVqOU90ZlZTRmdoZ3pZVmd3bk1tSWI3Nm1MOGJldENMdFFlelFGOFNRdURs?=
+ =?utf-8?B?dm5zN0hIa3o5RU80d3FuU0Y4blM0c0wvMDZQY1dkVmU4MTNYQjVLU3IrUERh?=
+ =?utf-8?B?QVhUYTZpcFA5YUEzZHQwMUpHb2UxUHd1c1FNWjFXRmd6VDBaNFNlNWtDTkRF?=
+ =?utf-8?B?RHFwN0tVcVJobTA4OVhSNDJYRW5LVk5rc1hkK3V2am5CaU5QUUR2MDJCenAz?=
+ =?utf-8?B?UGJqOWlERDJ0d3duZlZzc3IrR0VLWXVXY09mZENVS21COTNMTGZWdGxzc3Zh?=
+ =?utf-8?B?ZmI3bGh0SngzTXlrbUhobTJBbVZmcFd0QVZEejJsejdIQUV2UVEwL2tTOG1Z?=
+ =?utf-8?B?UXU1MmVNZjVPdjJaRkNuclgvSlFnVWoyWlNWelBGaG8rMVRmRUQ3bnR5ZHlP?=
+ =?utf-8?B?NGpjdzNBOFJuQWZwVUs2Mlh5bGh6M2ZuVmQrN1ZhS1dUTWlnWDIvckZoUWsw?=
+ =?utf-8?B?ejBqaGJjWVEwUkNEbmErc2VBNHM0YXBLMEd1dWpJWVFka25JWkREa3NxV0Nt?=
+ =?utf-8?B?a1pVS3dmQ2c4ZzV3OEc4eXlRVEE0aEc2WERPTTNkQkRlcVlheHNuaG56bC9x?=
+ =?utf-8?B?OGNiUmNXa0J2a2VuOVpRRmpHS0RWWGdCVFZsQTBrTFU3d3lFR21jbll2TENH?=
+ =?utf-8?B?NW9iMFN3RFZPSlJOWjBpMFVFTDQ5YUVuQlJ6ajFUYW5SeUhxaG5icFhES0tP?=
+ =?utf-8?B?a3RVQU1NTU9sTE1SUjNUNjJBUXVRRjE5ZW1OZGc2RWRxdFZmZk1RMGl2a2FI?=
+ =?utf-8?B?UDF6RmFIa0VQUkdVUlJxa3JBakxrZnpYT0o3Yk92V29wQWZab0kyanA3anhm?=
+ =?utf-8?B?Mk5oVzdOYzkyRWkrSzJIY0RqYkwwOEhxcGlzSytnQ0w3U0xOY2IwWE1oYlpk?=
+ =?utf-8?B?WFhMVjdraTB2TWdMYXlWTXVZSnNLUUtQNnhOemxUckpuSUg5TW1lNHM0ZzRy?=
+ =?utf-8?B?aS9LN1RudDhEaDVHQW1yZkNLcmRpT041RW5ZTzl1eVJ2L2hXSGpCSmhBUDF4?=
+ =?utf-8?B?Rkk4Mm04RVRHM2dzY09ETlJmNDJPMXl0bXcwZlZVSU9uSlNYeUQ4ZzBlU1Ew?=
+ =?utf-8?B?Y3BYdXc2RHVBMmszRzJna0Rld2dCMlhrU3pWam0wNlhpWjNTN3JKRGRKVjNC?=
+ =?utf-8?B?eGZ3NnMvVmNZek54UWd2VFRnSVJ1Z3dMc0VSZGY1QUhuUE9vOE8wNW5RQ3U3?=
+ =?utf-8?B?bXByNnhTV3Vnd2wwSmpxYVU4SGdGR0lmbjI4VXIwYk1mZk8vKzJjNmttaFpr?=
+ =?utf-8?B?S3g1RXNqUVVzeTI2aWtmWXNaV0g1YllmZnA3ZlAybTgyMEpPRFREUT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dc83fcdc-694e-466e-8e5f-08defd0d455e
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8728.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2026 09:44:17.6031
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: x2x/aGI2t1pMFOqRHY/m7P4hPTcZaO6kv7W54I5OiRyjTC4U1FAi5jAQEKH8pWMovt+8ZXEgYGpmAhBU0aAk2Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9135
 
-On 18/08/2026 11:47, Hangbin Liu wrote:
-> From: Hangbin Liu <liuhangbin@kylinos.cn>
+
+
+On 17.08.26 20:16, Tianyu Zuo wrote:
+> mlx5e_hw_gro_skb_has_enough_space() bounds a HW GRO session by the
+> payload held in the skb fragments only. The L3/L4 headers that
+> header-data split placed in the linear area are not accounted for, and
+> the limit is inclusive of GRO_LEGACY_MAX_SIZE.
 > 
-> The TLB load-tracking fields tx_bytes, load_history, load, and
-> unbalanced_load are all u32. At sustained throughput above ~3.2 Gbit/s
-> over the 10-second rebalance interval the byte counters wrap, causing
-> compute_gap() to produce incorrect gap values and mis-select slaves.
-> Such speeds are common on modern NICs under heavy traffic.
+> On a 4K page system a session can therefore grow to 16 full page
+> fragments (65536 bytes) plus the 40 bytes of IPv4/TCP headers in the
+> linear part, giving skb->len = 65576.
 > 
-> Widen these fields to u64. Use u64_stats_sync to protect the per-cpu
-> unbalanced_load_stats against tearing on 32-bit architectures, and
-> div_u64() for the 64-bit divisions. The tx_bytes, load, and load_history
-> are protected in spin_lock.
+> mlx5e_shampo_update_hdr() writes the IP length itself:
 > 
-> Rework compute_gap() to use u64 arithmetic throughout. Return 0 when the
-> speed is unknown or the slave is already overloaded.
+> 	__be16 newlen = htons(skb->len - nhoff);
+> 	csum_replace2(&ipv4->check, ipv4->tot_len, newlen);
+> 	ipv4->tot_len = newlen;
 > 
-> Detected by AI code review.
+> The result wraps. ip_rcv_core() then trims the 64KB skb down to the
+> wrapped tot_len, silently dropping the payload. The IPv6 path wraps
+> identically in ipv6hdr->payload_len.
 > 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+> Both branches of the check are inclusive of GRO_LEGACY_MAX_SIZE, so a
+> session can reach skb->len == 65536 and wrap tot_len to zero. In the
+> page_size >= GRO_LEGACY_MAX_SIZE branch skb->len already covers the
+> linear area, so that off by one is the only problem there. The fragment
+> based branch additionally omits the linear area entirely.
+> 
+> Account for skb_headlen() in the fragment based branch and make both
+> comparisons strictly less than GRO_LEGACY_MAX_SIZE, so that skb->len can
+> never exceed 65535. The new bound is strictly tighter than the old one,
+> so the implicit limit on the fragment count (at most 65536 / page_size,
+> well below MAX_SKB_FRAGS) is preserved.
+> 
+> Fixes: 92552d3abd32 ("net/mlx5e: HW_GRO cqe handler implementation")
+> Signed-off-by: Tianyu Zuo <cosmosocket@gmail.com>
 > ---
->   drivers/net/bonding/bond_alb.c  | 56 ++++++++++++++++++++++++++++++-----------
->   drivers/net/bonding/bond_main.c |  2 +-
->   include/net/bond_alb.h          |  9 ++++---
->   3 files changed, 47 insertions(+), 20 deletions(-)
+> v2: commit message only, per review from Dragos and Tariq.
 > 
-> diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
-> index d54d834cf72b..659a77323444 100644
-> --- a/drivers/net/bonding/bond_alb.c
-> +++ b/drivers/net/bonding/bond_alb.c
-> @@ -6,6 +6,7 @@
->   #include <linux/skbuff.h>
->   #include <linux/netdevice.h>
->   #include <linux/etherdevice.h>
-> +#include <linux/ethtool.h>
->   #include <linux/pkt_sched.h>
->   #include <linux/spinlock.h>
->   #include <linux/slab.h>
-> @@ -74,8 +75,8 @@ static inline u8 _simple_hash(const u8 *hash_start, int hash_size)
->   static inline void tlb_init_table_entry(struct tlb_client_info *entry, int save_load)
->   {
->   	if (save_load) {
-> -		entry->load_history = 1 + entry->tx_bytes /
-> -				      BOND_TLB_REBALANCE_INTERVAL;
-> +		entry->load_history = 1 + div_u64(entry->tx_bytes,
-> +				      BOND_TLB_REBALANCE_INTERVAL);
->   		entry->tx_bytes = 0;
->   	}
->   
-> @@ -158,25 +159,35 @@ static void tlb_deinitialize(struct bonding *bond)
->   	spin_unlock_bh(&bond->mode_lock);
->   }
->   
-> -static long long compute_gap(struct slave *slave)
-> +static u64 compute_gap(struct slave *slave)
->   {
-> -	return (s64) (slave->speed << 20) - /* Convert to Megabit per sec */
-> -	       (s64) (SLAVE_TLB_INFO(slave).load << 3); /* Bytes to bits */
-> +	u32 raw_speed = READ_ONCE(slave->speed);
-> +	u64 speed = (u64)raw_speed;
-> +
-> +	/* It's meaningless to compare gap on unknown speed NIC */
-> +	if (raw_speed == (u32)SPEED_UNKNOWN)
-> +		return 0;
-> +
-> +	/* skip slave which is over loaded */
-> +	if ((speed << 20) <= (SLAVE_TLB_INFO(slave).load << 3))
-> +		return 0;
-> +
-> +	return (speed << 20) - /* Convert to Megabit per sec */
-> +	       (SLAVE_TLB_INFO(slave).load << 3); /* Bytes to bits */
->   }
->   
->   static struct slave *tlb_get_least_loaded_slave(struct bonding *bond)
->   {
->   	struct slave *slave, *least_loaded;
->   	struct list_head *iter;
-> -	long long max_gap;
-> +	u64 max_gap = 0;
->   
->   	least_loaded = NULL;
-> -	max_gap = LLONG_MIN;
->   
->   	/* Find the slave with the largest gap */
->   	bond_for_each_slave_rcu(bond, slave, iter) {
->   		if (bond_slave_can_tx(slave)) {
-> -			long long gap = compute_gap(slave);
-> +			u64 gap = compute_gap(slave);
->   
->   			if (max_gap < gap) {
->   				least_loaded = slave;
-> @@ -1344,8 +1355,14 @@ static netdev_tx_t bond_do_alb_xmit(struct sk_buff *skb, struct bonding *bond,
->   	if (!tx_slave) {
->   		/* unbalanced or unassigned, send through primary */
->   		tx_slave = rcu_dereference(bond->curr_active_slave);
-> -		if (bond->params.tlb_dynamic_lb)
-> -			this_cpu_add(bond_info->unbalanced_load->tx_bytes, skb->len);
-> +		if (bond->params.tlb_dynamic_lb) {
-> +			struct unbalanced_load_stats *pcpu_load;
-> +
-> +			pcpu_load = this_cpu_ptr(bond_info->unbalanced_load);
-> +			u64_stats_update_begin(&pcpu_load->syncp);
-> +			u64_stats_add(&pcpu_load->tx_bytes, skb->len);
-> +			u64_stats_update_end(&pcpu_load->syncp);
-
-this still races with...
-
-> +		}
->   	}
->   
->   	if (tx_slave && bond_slave_can_tx(tx_slave)) {
-> @@ -1529,19 +1546,28 @@ netdev_tx_t bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
->   	return bond_do_alb_xmit(skb, bond, tx_slave);
->   }
->   
-> -static u32 reset_unbalanced_load(struct alb_bond_info *bond_info)
-> +static u64 reset_unbalanced_load(struct alb_bond_info *bond_info)
->   {
->   	struct unbalanced_load_stats *p;
-> -	u32 total_bytes = 0;
-> +	u64 tx_bytes, total_bytes = 0;
-> +	unsigned int start;
->   	int i;
->   
->   	for_each_possible_cpu(i) {
->   		p = per_cpu_ptr(bond_info->unbalanced_load, i);
-> -		total_bytes += READ_ONCE(p->tx_bytes);
-> -		WRITE_ONCE(p->tx_bytes, 0);
-> +		do {
-> +			start = u64_stats_fetch_begin(&p->syncp);
-> +			tx_bytes = u64_stats_read(&p->tx_bytes);
-> +		} while (u64_stats_fetch_retry(&p->syncp, start));
-> +
-> +		u64_stats_update_begin(&p->syncp);
-> +		u64_stats_set(&p->tx_bytes, 0);
-> +		u64_stats_update_end(&p->syncp);
-
-... this here, as u64_stats_update_begin doesn't provide exclusive access, so writers
-must do that themselves, so you can't be sure what value will end up, the zeroing
-might not work at all and can get overwritten
-
-> +
-> +		total_bytes += tx_bytes;
->   	}
->   
-> -	return total_bytes / BOND_TLB_REBALANCE_INTERVAL;
-> +	return div_u64(total_bytes, BOND_TLB_REBALANCE_INTERVAL);
->   }
->   
->   void bond_alb_monitor(struct work_struct *work)
-> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-> index 9fb44e0031c8..4c4d9bf71e0c 100644
-> --- a/drivers/net/bonding/bond_main.c
-> +++ b/drivers/net/bonding/bond_main.c
-> @@ -6495,7 +6495,7 @@ static int bond_init(struct net_device *bond_dev)
->   	if (!bond->wq)
->   		return -ENOMEM;
->   
-> -	bond->alb_info.unbalanced_load = alloc_percpu(struct unbalanced_load_stats);
-> +	bond->alb_info.unbalanced_load = netdev_alloc_pcpu_stats(struct unbalanced_load_stats);
->   	if (!bond->alb_info.unbalanced_load)
->   		goto wq_out;
->   
-> diff --git a/include/net/bond_alb.h b/include/net/bond_alb.h
-> index 3fabf4714dec..51c083c76115 100644
-> --- a/include/net/bond_alb.h
-> +++ b/include/net/bond_alb.h
-> @@ -57,12 +57,12 @@ struct tlb_client_info {
->   				 * packets to a Client that the Hash function
->   				 * gave this entry index.
->   				 */
-> -	u32 tx_bytes;		/* Each Client accumulates the BytesTx that
-> +	u64 tx_bytes;		/* Each Client accumulates the BytesTx that
->   				 * were transmitted to it, and after each
->   				 * CallBack the LoadHistory is divided
->   				 * by the balance interval
->   				 */
-> -	u32 load_history;	/* This field contains the amount of Bytes
-> +	u64 load_history;	/* This field contains the amount of Bytes
->   				 * that were transmitted to this client by
->   				 * the server on the previous balance
->   				 * interval in Bps.
-> @@ -118,13 +118,14 @@ struct tlb_slave_info {
->   			 * are the entries that were assigned to use this
->   			 * slave for transmit.
->   			 */
-> -	u32 load;	/* Each slave sums the loadHistory of all clients
-> +	u64 load;	/* Each slave sums the loadHistory of all clients
->   			 * assigned to it
->   			 */
->   };
->   
->   struct unbalanced_load_stats {
-> -	u32			tx_bytes;
-> +	u64_stats_t		tx_bytes;
-> +	struct u64_stats_sync	syncp;
->   };
->   
->   struct alb_bond_info {
+> v1: https://lore.kernel.org/netdev/20260729204745.166584-1-cosmosocket@gmail.com/
 > 
+>  drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+> index 6fbc0441c4b8..2e9676305439 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+> @@ -2222,9 +2222,10 @@ static bool mlx5e_hw_gro_skb_has_enough_space(struct sk_buff *skb,
+>  	int nr_frags = skb_shinfo(skb)->nr_frags;
+>  
+>  	if (page_size >= GRO_LEGACY_MAX_SIZE)
+> -		return skb->len + data_bcnt <= GRO_LEGACY_MAX_SIZE;
+> +		return skb->len + data_bcnt < GRO_LEGACY_MAX_SIZE;
+>  	else
+> -		return page_size * nr_frags + data_bcnt <= GRO_LEGACY_MAX_SIZE;
+> +		return skb_headlen(skb) + page_size * nr_frags + data_bcnt <
+> +			GRO_LEGACY_MAX_SIZE;
+>  }
+>  
+>  static void mlx5e_handle_rx_cqe_mpwrq_shampo(struct mlx5e_rq *rq, struct mlx5_cqe64 *cqe)
+> 
+> base-commit: 51b093a7ba27476e1f639455f005e8d2e75390e4
 
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+
+Thanks,
+Dragos
