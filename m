@@ -1,212 +1,234 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B1C2931D5
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 09:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787046702; cv=pass; b=TUa3fczQ7Gam0K6AV4/tJNW9qekg4IY/WGtXYCTYlmTsCsC7ca3k7Nkrd00bWCQZPW7KT1AvXZ+9M/+JbQVb9jDK91r+11YmuRHB89ayuAGbHqoWPCDlmV1r5vRVzKN5OlmYpUfpF3tv9yvb008S8QFWXbTfuLXNNPoY2uN4eo0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787046702; c=relaxed/simple;
-	bh=otMdvj1RsW7CEYo87GadfPUS3eEtIw8WCq6yZnzG3Rs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iw36eDrSWk50eoMnmYPM3XM7tvkLlvnoo8jkjBQivQfzQhgaMRqVVk9J+w6brIlmOwvGBlAO6iED4UsgrucYugX2umeZCgix7fFm0msVtK2wDyQZNZO+hWC7nueCxh43J7OFi/Bx1ceoaidPuuHoaUx9CBEI0brAweA9kMjOJqc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=H/G177O2; arc=pass smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18A83AF65B
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 09:51:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787046713; cv=none; b=okrEg6gbVm3aK1jhnFzLH73bmmk4rgkSNcl7/ckkGuD1aaDJVtTOEv71JVajX4XpzfovCOJcoDUFXm3CPYXsJrJ3AI3XOo9K+1wGbGtL0dmfoG8xBa0tMVNZHYwAoM1N3CZlKrIJ09dLICSa90wVSQ2sKlc+af7rcwE9uFKIbW0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787046713; c=relaxed/simple;
+	bh=ocYkrzscP5wYcdcfpvHBvpnFAaMdcJzEPDLOkuBC1nQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=aaT0f25O6TKZHRNfrbHlKxHCiM1ei2Pa0VVaydwao9a6gbLstCwB2y+0FMJAJ9U/Vt35NEcmBsJ44yWdmN/NSjJrJlNaj92u/uxMx9NtRLht8wfubbvOQYYPQscqdlGVoWLltmRq5Iaun4TauWkqwFKI67yI2s4hIEN3bJDpYkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dMB9yko0; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="H/G177O2"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-84e3007a2b7so3685641b3a.0
-        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 02:51:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787046699; cv=none;
-        d=google.com; s=arc-20260327;
-        b=hRyvOXfLZcRJRtT9bOi/nHFx8SLM1wZHWURVyfmDY+RCJgF3q6rJroXJCYYxjkzbBR
-         GKVqQTYQg8mEvWM+f33nt6nfmnB9+0f9NKv4SDFI2k2yJoVAkSJzYozrrluxf8oNwV9v
-         fAhjUnLGjZk8N/AXyRyaWUm9fYUObyE1+XQHS+NR+AVkvqkqAAD3hFeCyRSkRCuy/WHq
-         x71TMKLXyDqFFD6Jfb6wHWO7s4DFckaD1VwXTwwsHqxgJDzJR3l3uvfG6VsYKDuv1ID0
-         ERscnuQ/CYaYKnF/ThodseV1Mj0WQJxR9qhD8KN4U8aqYI/7wlv34wtq9/GQ9aOxIK9E
-         TaDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=8XmdlJPcuQ46kcIO9yPONW63W13Q2fzfcpNS7QphKiY=;
-        fh=1xzxxQYHyUPgdrqnq+VatmzWkkDwmHKFuCpp6UliZww=;
-        b=If+bstZ4h6W6QQnL/nHtmMh2Mt0e3zA80cOTCENvw1iV0VPrU5MKQIW09t8G19G1Nx
-         qcXZkZg/GsZPx7+M1TvzSAjDNjwPipLsBi05Knj6SLUS1A+swcVB2KLaPqlQ+44caNUw
-         KaCRoVlshOfUFdjlxeMFOQW8WO+Clbl6r9d/fjzwNtldfzchtznH240qPF1CVeJa6IZx
-         8FlRwz4eztzWYTy5BRsbBRY34Qe7uhcGZ+gAyqnLJlFE0WqDdk84WB48Ovf9LkYxWN16
-         px7KRnpW+Pohz0dKaMHMhos2IWp+eNmgT6sRIkS13bSVQA9HCTAgMgQF34F2/hvh10BV
-         pLEw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787046699; x=1787651499; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=8XmdlJPcuQ46kcIO9yPONW63W13Q2fzfcpNS7QphKiY=;
-        b=H/G177O2VeHq0Bmu19bCduKYsmB4InJ7zXxXyRy0flbAZ+YMm8wEzc7sh8T/5r9+qn
-         6+N0yr5KbRKzYLGr76QZgN0SOanKmu9xPXjPtokKwLzL0FUjIojDpA+jZAzJ5aqNId1N
-         nYh9F2x/k+XzVYJtmFcguWk0fLD62ICj9lggo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787046699; x=1787651499;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8XmdlJPcuQ46kcIO9yPONW63W13Q2fzfcpNS7QphKiY=;
-        b=E5oIwYky0KtNuDv4yfyjOZtmd2sRLv5uw7zbWzDcsOtadehYU42s6y5XFT3JdVMc7u
-         UcxSH2AGpMqj9yafkV6f1A71jjxzZq6BO7s8lg6XCyeaJn91EjT7Xlfa6b2zcWsu9tcB
-         fwhI4jJcIt6w75XdLUakJ+596ckz10FONO0JWmVc3axJ4xjAXY/Vfixfg95DFpvQOF0Q
-         WCaVHZQLRiUnDGak1a5fLYrGDx5Vt0XAU098RN0FdyuXV2l5NuqorvrzjnPdYmdXJIZ7
-         svcksXWQO7LuVKNoTVA+QiCUi32WbaNTLQA3i2le39MLBD/s9MHX8C6effKbzoDiuCjF
-         gfVw==
-X-Forwarded-Encrypted: i=1; AHgh+RqcnBgO7qtVYKKw+FH6hd9MKdFTlKAcj0n0pcKKWdieXCPeAnHz2sti97gdylY686/bm6ojVQM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJHb1wVnR9rbjqIfUr6J9gwpPiQE4UyaEMAlVDQeRnLQgboePF
-	yjd7ZX5/xFX+7GtNf2hFkt0JOtq23/ZgBpGxgV5ewEBFUcLu1dA3qMlTC+49b3EbhGwIYJBnCsz
-	HlprI9skLTY0SsaTCfTwshXdAtEk5R205C0xX/Nsg
-X-Gm-Gg: AR+sD10AHzeGoA7cwl3SGPKRGkTc2SpJt3Yx+X4VYssBWxg/f7RYOZatc7JY97NGHHB
-	MosMOlJinsEuR5+kPLfBP6852w4i+ATxNl8KiadplHL1L+7+GefH+APoTfRjbvaghp3yi+QdNW0
-	tVZBD/RLKAh1UJI7MZIn9cCs1T9ugNa4/ofeiqMeug/bOOAFwVsSqoBvjYVcaOsl68N8QOU4Lsy
-	jyY0arwLsE5FhQGOhf0GK0GABMagvG9mrXOOoWRuad7J0Y5ZCuBRMMT0bfEtPrkEkCpcJm/55+D
-	TQUnSagjHDcGKh9nqwWzEYFSRADjaY2+8+KWRGI7pOWOwQ==
-X-Received: by 2002:a05:6a00:3697:b0:845:dffa:3740 with SMTP id
- d2e1a72fcca58-84fde11d75cmr34034397b3a.4.1787046699504; Tue, 18 Aug 2026
- 02:51:39 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dMB9yko0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787046710;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d7kaX65vemzEaqdaxJ8qgE4Z8totafAQ1xtXw/YqCQU=;
+	b=dMB9yko0OEc94OdQjY+TSEq2wB/529defSHmRoncWN30YOr+0Q4/PRRl8inAjnc/zbryr7
+	WCKXdSuBHK7hRO55bvYHybGPVBxqBS4cuUmYvD4pXzK2DYHFnCq7ZD4Kec+2igCyRcuZpx
+	jmd6k/djPi0oqLHnQKwNOCD0KBDrAWw=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-616-NCTRcMjkObGScZ4FgKA5Qw-1; Tue,
+ 18 Aug 2026 05:51:41 -0400
+X-MC-Unique: NCTRcMjkObGScZ4FgKA5Qw-1
+X-Mimecast-MFC-AGG-ID: NCTRcMjkObGScZ4FgKA5Qw_1787046699
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B8B6B195608E;
+	Tue, 18 Aug 2026 09:51:38 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.44.48.207])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 17D903000239;
+	Tue, 18 Aug 2026 09:51:34 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: jedrzej.jagielski@intel.com
+Cc: netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com,
+	kuba@kernel.org,
+	jhs@mojatatu.com,
+	jiri@resnulli.us,
+	edumazet@google.com,
+	stable@vger.kernel.org,
+	sashiko-bot@kernel.org,
+	aleksandr.loktionov@intel.com
+Subject: Re: [PATCH net v2 1/3] net/sched: cls_u32: feed u32_replace_hw_knode() with correct set of flags
+Date: Tue, 18 Aug 2026 11:51:30 +0200
+Message-ID: <20260818095130.103933-1-pabeni@redhat.com>
+In-Reply-To: <20260813122242.1690024-2-jedrzej.jagielski@intel.com>
+References: <20260813122242.1690024-2-jedrzej.jagielski@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260813122242.1690024-1-jedrzej.jagielski@intel.com>
- <ccba8112-ff9a-47ea-8b91-a732e28b555d@intel.com> <PH0PR11MB5902885C0E23D5DEED9011C6F0A62@PH0PR11MB5902.namprd11.prod.outlook.com>
-In-Reply-To: <PH0PR11MB5902885C0E23D5DEED9011C6F0A62@PH0PR11MB5902.namprd11.prod.outlook.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Tue, 18 Aug 2026 05:51:28 -0400
-X-Gm-Features: AcwNN1Wz1CC1eLlWGa6z_CgIC6iXZGQ1QwUOoIIRqFkgovWlwyo83_Id4cDFOic
-Message-ID: <CAM0EoMm+XqVrSznS4pK_n2X6XGWO-kb001gSwQMDCM20keECKg@mail.gmail.com>
-Subject: Re: [PATCH net v2 0/3] net/sched: u32_change() fixes
-To: "Jagielski, Jedrzej" <jedrzej.jagielski@intel.com>
-Cc: "Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, 
-	"kuba@kernel.org" <kuba@kernel.org>, "jiri@resnulli.us" <jiri@resnulli.us>, 
-	"edumazet@google.com" <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On Tue, Aug 18, 2026 at 3:48=E2=80=AFAM Jagielski, Jedrzej
-<jedrzej.jagielski@intel.com> wrote:
->
-> >From: Kitszel, Przemyslaw <przemyslaw.kitszel@intel.com>
-> >Sent: Monday, August 17, 2026 2:43 PM
-> >
-> >On 8/13/26 14:22, Jedrzej Jagielski wrote:
-> >> sorry for spam, previous series get treated as incomplete so resending
-> >>
-> >> ALREADY ON NETDEV, SASHIKO RUN
-> >
-> >hehe
-> >ofc, the above does no harm here
->
-> :D
->
-> >
-> >for the series:
-> >Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-> >
-> >--
-> >
-> >Sashiko has found one more *preexisting* bug, perhaps it could be
-> >handled by one more fix in future series?:
-> >https://sashiko.dev/#/patchset/20260813122242.1690024-1-jedrzej.jagielsk=
-i%40intel.com
->
-> yeah, i saw that and i thought about extending the series
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+---
+net/sched: cls_u32: feed u32_replace_hw_knode() with correct set of flags
 
-If i am counting correctly there are now 3 more "preexisting" issues
-that require follow-up. Are you going to do this?
+The patch changes the two u32_replace_hw_knode() calls in u32_change() to
+pass userflags (the TCA_CLS_FLAGS_* set parsed from TCA_U32_FLAGS) instead
+of flags (the TCA_ACT_FLAGS_* set passed in as a function parameter), so
+that tc_skip_sw() inside the helper looks at the bits userspace actually
+set.
 
-Regarding the other legitimate issues Sashiko raised:
-1) Please double-check everything an AI claims, especially if you used
-one to generate these changes. It is very confident and _does_ make up
-shit. Example, based on what i have seen being posted it will make up
-fixes tags that look serious but dont exist;-> so you need to fix that
-id.
-Along the same lines: My assumption is you are actually testign this
-against something like ixgbe and additionaly  a device that cant
-offload? Adding a tested-by (if possible by someone else) would be a
-plus. And a tdc test  would be appreciated as well; the skip_sw reject
-path is only the user-visible half that seems possible to create a
-test before when things just returned success to now returning an
-error.
+Two questions below about what becomes reachable once those flags are
+correct.
 
-2) Can you please add the comment in the commit i asked before to
-explain the user visible changes. In case my or Sashiko message wasnt
-clear; before when you ran:
-"tc filter add dev eth0 ... u32 ... skip_sw" it used to succeed (exit
-0) and then the rule was installed in software with a skip_sw flag but
-was used by neither s/w nor h/w.
-After your changes the on a device/block that can't offload, that same
-command _now fails_ with -EOPNOTSUPP or -EINVAL.
+> diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
+> index c297d7dbcf916..1374da97836eb 100644
+> --- a/net/sched/cls_u32.c
+> +++ b/net/sched/cls_u32.c
+> @@ -935,7 +935,7 @@ static int u32_change(struct net *net, struct sk_buff *in_skb,
+>  
+>  		u32_bind_filter(tp, new, base, tb);
+>  
+> -		err = u32_replace_hw_knode(tp, new, flags, extack);
+> +		err = u32_replace_hw_knode(tp, new, userflags, extack);
+>  		if (err) {
+>  			u32_unbind_filter(tp, new, tb);
+>  
 
-Something along the lines of:
-Because skip_sw is now honored, "tc ... u32 ... skip_sw" add/replace
-commands that previously succeeded (and were silently skipped by the
-software path) will now return -EOPNOTSUPP/-EINVAL when the block or
-driver cannot offload the filter.
+[Severity: High]
 
-basically you need to resend with a v3. Add at least one tdc test.
+Does this make the error path of the replace branch reachable from
+userspace for the first time, and can it leave the old knode installed
+while its hardware rule is gone?
 
-cheers,
-jamal
-> >
-> > > @@ -938,14 +938,6 @@ static int u32_change(struct net *net, struct
-> >sk_buff *in_skb,
-> > >             err =3D u32_replace_hw_knode(tp, new, userflags, extack);
-> > >             if (err) {
-> > >                     u32_unbind_filter(tp, new, tb);
-> > > -
-> > > -                   if (tb[TCA_U32_LINK]) {
-> > > -                           struct tc_u_hnode *ht_old;
-> > > -
-> > > -                           ht_old =3D rtnl_dereference(n->ht_down);
-> > > -                           if (ht_old)
-> > > -                                   refcount_inc(&ht_old->refcnt);
-> > > -                   }
-> > >                     __u32_destroy_key(new);
-> > >                     return err;
-> > >             }
-> >This isn't a bug introduced by this patch, but looking at u32_change(),
-> >there
-> >appears to be a pre-existing issue with how manual hash table handles ar=
-e
-> >tracked in the IDR.
-> >When a user creates a u32 hash table with a manual handle (for example,
-> >0x80100000), u32_change() inserts the full handle directly into
-> >tp_c->handle_idr:
-> >net/sched/cls_u32.c:u32_change() {
-> >     ...
-> >               } else {
-> >                       err =3D idr_alloc_u32(&tp_c->handle_idr, ht, &han=
-dle,
-> >                                           handle, GFP_KERNEL);
-> >     ...
-> >}
-> >However, when destroying the node later, u32_destroy_hnode() removes the
-> >mapped ID rather than the full handle:
-> >net/sched/cls_u32.c:u32_destroy_hnode() {
-> >     ...
-> >               idr_remove(&tp_c->handle_idr, handle2id(ht->handle));
-> >     ...
-> >}
-> >For a handle like 0x80100000, handle2id() returns 1. Does this mean the =
-IDR
-> >entry at 0x80100000 is permanently leaked, while index 1 is erroneously
-> >freed?
-> >If index 1 is already in use by an active auto-generated hash table, cou=
-ld
-> >freeing it here allow gen_new_htid() to issue the same handle again to a=
- new
-> >hash table, causing collisions?
->
+Before the change, flags only carried TCA_ACT_FLAGS_* bits, so
+tc_skip_sw(flags) in u32_replace_hw_knode() was false, tc_setup_cb_add()
+ran with err_stop == false and could not return an error, and the
+skip_sw && !IN_HW -EINVAL check in the helper was dead code.
+
+With userflags, skip_sw is true for a skip_sw filter, tc_setup_cb_add()
+propagates the first driver error, and u32_replace_hw_knode() takes:
+
+net/sched/cls_u32.c:u32_replace_hw_knode() {
+	err = tc_setup_cb_add(block, tp, TC_SETUP_CLSU32, &cls_u32, skip_sw,
+			      &n->flags, &n->in_hw_count, true);
+	if (err) {
+		u32_remove_hw_knode(tp, n, NULL);
+		return err;
+	}
+}
+
+Here n is the replacement node, and u32_init_knode() copied the handle
+from the old one:
+
+	new->handle = n->handle;
+
+so the TC_CLSU32_DELETE_KNODE emitted by u32_remove_hw_knode() names the
+handle of the knode that is still linked in ht->ht[]. u32_change() then
+only unbinds and frees new and returns the error, so the old knode stays
+in the software list with TCA_CLS_FLAGS_SKIP_SW set, and u32_classify()
+skips SKIP_SW knodes. Would that filter then match neither in software
+nor in hardware, while userspace was told the command failed?
+
+There also looks like accounting fallout on the same path.
+u32_init_knode() copies the flags too:
+
+	new->flags = n->flags;
+
+so new->flags can carry TCA_CLS_FLAGS_IN_HW while new->in_hw_count is
+still 0. The teardown then reaches
+tc_setup_cb_destroy() -> tc_cls_offload_cnt_reset(), which decrements
+purely on the inherited bit:
+
+net/sched/cls_api.c:tc_cls_offload_cnt_reset() {
+	spin_lock(&tp->lock);
+	tcf_block_offload_dec(block, flags);
+	*cnt = 0;
+	spin_unlock(&tp->lock);
+}
+
+Can this decrement block->offloadcnt for a node that never incremented
+it, and then have the old knode (whose flags still carry IN_HW)
+decrement it a second time when it is eventually deleted, leaving
+tcf_block_offload_in_use() permanently true and later binds of
+non-offload-capable devices to the block failing with -EOPNOTSUPP?
+
+For comparison, cls_flower builds fnew->flags only from the netlink
+attributes rather than inheriting them from fold, so it does not have
+the accounting half of this.
+
+The later patches in this range only adjust ht_down refcounting, so this
+error path is unchanged by them.
+
+> @@ -1168,7 +1168,7 @@ static int u32_change(struct net *net, struct sk_buff *in_skb,
+>  		struct tc_u_knode __rcu **ins;
+>  		struct tc_u_knode *pins;
+>  
+> -		err = u32_replace_hw_knode(tp, n, flags, extack);
+> +		err = u32_replace_hw_knode(tp, n, userflags, extack);
+>  		if (err)
+>  			goto errunbind;
+>  
+
+[Severity: High]
+
+This isn't a bug introduced by this patch, but now that the real
+TCA_CLS_FLAGS_* set reaches these call sites, the TCA_CLS_FLAGS_SKIP_HW
+bit is visible here and still nothing acts on it. Should these calls be
+gated on tc_skip_hw()?
+
+Neither helper looks at it. u32_replace_hw_knode() and
+u32_replace_hw_hnode() only derive:
+
+	bool skip_sw = tc_skip_sw(flags);
+
+and the core does not filter on the classifier's behalf either.
+tc_setup_cb_add() only checks the block state before dispatching:
+
+net/sched/cls_api.c:tc_setup_cb_add() {
+	/* Make sure all netdevs sharing this block are offload-capable. */
+	if (block->nooffloaddevcnt && err_stop) {
+		ok_count = -EOPNOTSUPP;
+		goto err_unlock;
+	}
+
+	ok_count = __tc_setup_cb_call(block, type, type_data, err_stop);
+}
+
+The peer classifiers gate the call themselves, for example cls_flower:
+
+	if (!tc_skip_hw(fnew->flags))
+		err = fl_hw_replace_filter(tp, fnew, rtnl_held, extack);
+
+and cls_matchall:
+
+	if (!tc_skip_hw(new->flags))
+		err = mall_replace_hw_filter(tp, new, cookie, extack);
+
+Does a "tc filter add ... u32 skip_hw ..." command therefore still get
+pushed to TC_SETUP_CLSU32 drivers and pick up TCA_CLS_FLAGS_IN_HW plus
+in_hw_count / block->offloadcnt increments, contradicting the documented
+meaning of the flag in include/uapi/linux/pkt_cls.h?
+
+The two consumers of the same flags field also disagree. On block
+unbind, tcf_block_playback_offloads() -> u32_reoffload(add=false) does
+honour the bit:
+
+net/sched/cls_u32.c:u32_reoffload() {
+			if (tc_skip_hw(n->flags))
+				continue;
+}
+
+so a knode that was offloaded by the add path is skipped here, and its
+IN_HW bit, in_hw_count and block->offloadcnt contribution are never
+released. Can that leave tcf_block_offload_in_use() true forever and
+reject later binds of non-offload-capable devices to that shared block
+with -EOPNOTSUPP?
+
+The same missing guard applies to the u32_replace_hw_hnode() call in the
+TCA_U32_DIVISOR branch of u32_change(), which is likewise given
+userflags with no skip_hw check.
+-- 
+This is an AI-generated review.
+
