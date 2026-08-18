@@ -1,103 +1,115 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D2230E82D
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 13:07:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D178A476CDD;
+	Tue, 18 Aug 2026 13:07:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787058425; cv=none; b=SUqeu8eNOGoNuAE7E1vcfdGQHZiqjM8alm/MR5YKQuqc5sFU7OKxnOT9TN/qurKslvaMsBNYDc4kNSL4n9El3KV5lUM3kO9tTMaKKPz9YtUE9nZy0fXe55V9lQVR+k5BXMV9evr/TSK6XQtgpJGbmviXEB/bQLifgmvhNzHx80E=
+	t=1787058464; cv=none; b=Oo6z1J1/NzjFVoup+DdeHTAcSo2hOIUbkq8cTEAU443nZwVwceQJs/qgjnhfSGo+7YzlHDrYfT9kHehB3hDg6FnmIX+29y0xqfBlGxyQbyvcrGdRoijlISwXPNM980OguDEn/Gr08+TYOSzC7V0eh3m4cBFx196NdB/jzY3uJp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787058425; c=relaxed/simple;
-	bh=Lr2w9IXbYxpbFpQSuAKStGPPX8TW/VF+EciAbzTXQiE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PLMIM5w55xfqtQf5sceUgKiNSMV5VZ5d14nu5sSF2wrIc6kAx9sxfqa7yCUKln7ALUpWXNMdPw0m77dEMhME79waVgjd+7t+E1sbpKTjCrDFATN+UqSLuAQ1hVWR8AZQjOoCYd1yTs5DHZZ0oe/wuX+VThmJnx9Jh0kHqjCZjSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c2022323c37so579692066b.0
-        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 06:07:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787058421; x=1787663221;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=fBVB3ojX0XqGX6y8ulL4F2m4TqvrNnncf78A4xqUgHA=;
-        b=Ag/MHbBpA6I87L6p2dTBE6KsnhVaomFA7zSonvLLVOLBJ8xCqPjyuzJaeWxR0l+IDt
-         ItFgEXWqmlvQdrJIYJ8SkUcNhv3YyRJjBDU2M0naw2M3KHIGzy4HcDLUkucdcQ0iVCh5
-         +thRIjhpPnvt0z9DCVXi7LdkP3MBUZdcXhzsRR889x3UxZ9aTOZeYtB8VXyfoQZUy2OK
-         mIkRrWPJn8BmfdZy34QZrr8VYAJavPtRZz9x4Yf/eJYQ8qbkocWTypHEY+bp/1/hjISx
-         8v9C3nXXD8N6AJdw2OnUi7/COc7UOgjdVvtG91AAE9zJqL7QT4K077LYU6Tmct5yeax8
-         I9xQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpH5GE033D0+5/2A7DBnW6V8F8uSo/e1c4lmfp12gZ0MTm+4soPGBH6hTU7cUVMBnUrsZwaNvs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSdjGXDTQDw87IeraLmC86mihWQIgAsywjI8lZW5VcZfBQ5kDd
-	hiYIwQj7Iw1jQzZW/brqJ8LG/8d+T8PVuB8Kf1Q1eHd17SoPHcofSflmXcFaOFviGBc=
-X-Gm-Gg: AR+sD119WbJQUy3dcfVuTE1hQ6Bx6+i2R+DyTFkl07ARvgiSj2zhwPhctO05ZBRtMrO
-	lDRGr9c3WhVoHBVWpBBSSVKsB7uRMxzIKH3Xm+PuGKnySv0zTOm4+svFFluautxFI40urJu1+8+
-	i5CXotsNUlLZE3R1RZScEuZyADRJm+KqVAffwSWvOxHgYUICrBLzlzXVAVE7TVZ5oCVvkZ7iOmg
-	EyesNoYCNpTJwOuA1ErrBcuvWqQkHkSVAiYbnSp6FJPyF/WdwkMa2mqYDUGqpRlmipF8QEuEEAh
-	bpru6BxiYjkwLapdpMOTGoN6qBuNZWfHoNS6nqF/ZoZr28qZIcrpMLbOUYwkISedwylRwvmycGs
-	1lHfDAjeauQtGHYPI1o/kiaxRv2hnyhXddW7RVGlMzSfQCWkgynO5wSzjyXUMQpRy6kPppQhDzu
-	f6r1E+/EU2vqkHdOeFL6IyIS829iN8tWi7t+0hlZFKXtOMpgjh1yzv2B9ir0yNH1CP3JNWEFnia
-	HFLIOycJC1vEOZr/HJaVOJG3g==
-X-Received: by 2002:a17:907:c17:b0:c16:13e7:fd63 with SMTP id a640c23a62f3a-c21291fdcfcmr1624234366b.0.1787058421258;
-        Tue, 18 Aug 2026 06:07:01 -0700 (PDT)
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com. [209.85.208.44])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2185b99167sm143236866b.48.2026.08.18.06.07.00
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Aug 2026 06:07:00 -0700 (PDT)
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6a1a546a6bbso6927655a12.1
-        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 06:07:00 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RoO6yHSc55OqSK1xH6yuu/carS+f89BijOCjHehcnvAdYQsEMfFe3CBTDE9nGyOjxIdxhLUSqU=@vger.kernel.org
-X-Received: by 2002:a05:6402:249c:b0:6a3:8586:9b73 with SMTP id
- 4fb4d7f45d1cf-6a38a926287mr16210086a12.6.1787058420304; Tue, 18 Aug 2026
- 06:07:00 -0700 (PDT)
+	s=arc-20240116; t=1787058464; c=relaxed/simple;
+	bh=EssqeXd5U9J+poKs+NISyUuN95jZjbFGIOEyHO6cpO8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ox4hq+7pxE3TonTGTmRD1PaD5LSSME1MGKKXcz6md2pZtnWMo4nUp/GFbkg86Ys+3D5DXgrO+3RHFpGr+7O9/gP+7Embb9kckWgUso98ZbSDo8xSmzHz1aXLs/qOXCXsFc0XCBkuZThLDlQrgzRdB4KKCRrkZYK/slDKn04rFQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Itd6t3Zu; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Itd6t3Zu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C9721F000E9;
+	Tue, 18 Aug 2026 13:07:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787058463;
+	bh=ymjN3A5TV9tH2vf/q6v+bffQUMuHkQcoIeSyDrLpCK4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Itd6t3Zupk5SGVQhH+msEcITlwXzTA+d/1y8Gb5E0QU9qbDj3j/lyRJkL3/eLSWVz
+	 lQBMOJnzfXUPqKVOeekeDoAIJTFHkoOEmgo78vxeORQvgEqowibfTydnjFlAHkr7FN
+	 udS5VtCcyZDMFKXjbAel2fi1r5D1EePzLOrcMaYoCThrcdYiu5vUAdl9MkTsC2XDd2
+	 sLyANdbEHz8rv5qH/27ULU8TKZg+Gq/BBzKRAqj5CwvousDheLjlxiyf/N2wKZDxq/
+	 OgUyrnXRHJ06m9kSpcMr2o0mecx7WJBkX6Bor6Xivp+lV00+CIud2+m2S3pKNrDCga
+	 zum7IignQZBdQ==
+Date: Tue, 18 Aug 2026 14:07:38 +0100
+From: Simon Horman <horms@kernel.org>
+To: Shivani Gupta <shivani07g@gmail.com>
+Cc: intel-wired-lan@lists.osuosl.org,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Alessio Igor Bogani <alessio.bogani@elettra.eu>
+Subject: Re: [PATCH iwl-net] igb: Reject hwtstamp requests when PTP is
+ unavailable
+Message-ID: <20260818130738.GF265046@horms.kernel.org>
+References: <20260815010815.91898-1-shivani07g@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <tencent_2EBD0396FF7A54CAD61F16E942D2E8FA3A0A@qq.com>
-In-Reply-To: <tencent_2EBD0396FF7A54CAD61F16E942D2E8FA3A0A@qq.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 18 Aug 2026 15:06:45 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVKDLSKJcHaKdn3Vigi8YDLCLnNSwgwimDBymqWf2yjng@mail.gmail.com>
-X-Gm-Features: AcwNN1UxeX0gJVCFIuYBZOc1kAkUVD16y3L5ZDWVp7YzSofvA4LIsWhA_juMV68
-Message-ID: <CAMuHMdVKDLSKJcHaKdn3Vigi8YDLCLnNSwgwimDBymqWf2yjng@mail.gmail.com>
-Subject: Re: [PATCH] net: renesas: rswitch-main: fix runtime PM cleanup
-To: Jiawen Liu <1298662399@qq.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, 
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260815010815.91898-1-shivani07g@gmail.com>
 
-Hi Jiawen,
+On Sat, Aug 15, 2026 at 01:08:15AM +0000, Shivani Gupta wrote:
 
-Thanks for your patch!
+...
 
-On Tue, 18 Aug 2026 at 14:44, Jiawen Liu <1298662399@qq.com> wrote:
-> From: jiawen <1298662399@qq.com>
->
-> Update renesas_eth_sw_probe() for the confirmed driver lifecycle defect.
->
-> Keep the change limited to the concrete operation shown in the final
-> patch.
+> diff --git a/drivers/net/ethernet/intel/igb/igb_ptp.c b/drivers/net/ethernet/intel/igb/igb_ptp.c
 
-Please write a better patch description.
+...
 
->
-> Signed-off-by: jiawen <1298662399@qq.com>
+> @@ -1378,6 +1384,25 @@ void igb_ptp_init(struct igb_adapter *adapter)
+>  		return;
+>  	}
+>  
+> +	/* Initialize all state used by the PHC and timestamping paths before
+> +	 * registering either interface. INIT_WORK() only initializes the work
+> +	 * item; no work is queued until timestamping is enabled.
+> +	 */
+> +	spin_lock_init(&adapter->tmreg_lock);
+> +	INIT_WORK(&adapter->ptp_tx_work, igb_ptp_tx_work);
+> +
+> +	if (adapter->ptp_flags & IGB_PTP_OVERFLOW_CHECK)
+> +		INIT_DELAYED_WORK(&adapter->ptp_overflow_work,
+> +				  igb_ptp_overflow_check);
+> +
+> +	adapter->tstamp_config.rx_filter = HWTSTAMP_FILTER_NONE;
+> +	adapter->tstamp_config.tx_type = HWTSTAMP_TX_OFF;
+> +
+> +	/* Initialize the hardware clock before ptp_clock_register() makes its
+> +	 * callbacks visible. The overflow work is started after registration.
+> +	 */
+> +	igb_ptp_reset(adapter);
+> +
+>  	adapter->ptp_clock = ptp_clock_register(&adapter->ptp_caps,
+>  						&adapter->pdev->dev);
+>  	if (IS_ERR(adapter->ptp_clock)) {
 
-Gr{oetje,eeting}s,
+Hi Shivani,
 
-                        Geert
+There is an AI-generated review of this patch available at
+https://sashiko.dev/#/patchset/20260815010815.91898-1-shivani07g%40gmail.com
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Of that review the following item stands out to me.
+I would appreciate it if you could look over it in particular.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+  Does this code leave the hardware interrupt unmasked if ptp_clock_register()
+  fails?
+
+  The call to igb_ptp_reset() unconditionally unmasks the Time Sync hardware
+  interrupt. If ptp_clock_register() fails, adapter->ptp_clock is set to NULL,
+  but the hardware state is not reverted.
+
+  If a hardware interrupt occurs, igb_tsync_interrupt() is called:
+
+  igb_tsync_interrupt()
+      if (adapter->ptp_caps.pps)
+          ptp_clock_event(adapter->ptp_clock, &event);
+
+  Will this result in a NULL pointer dereference when adapter->ptp_clock is
+  passed to ptp_clock_event()?
+
+...
