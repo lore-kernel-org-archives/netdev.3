@@ -1,42 +1,78 @@
-Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E23F149C7B
-	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 02:31:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AAC3AAF70
+	for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 02:37:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787020315; cv=none; b=NJ0Z1wxIhxAybtznVy964KGMUxoUpddUrbUQDapdIwsK/OPLJfd3AZA+P7HqdkUy4pyijQ73dhAfVPKc0DrJRbI0/1sTQEZ6Tz7uhxPzPlFTx8B1gjD2roCRM/ggXB4tf74gB6lTlOVfOnPVRAIDmNVb9G2o5cKbHFToEkIeUyA=
+	t=1787020634; cv=none; b=D3YuNVSK/a98NyDRSzYTH5xntXn5wAS6yPo2K2zx+VWjDEbnj8K4RPjtgFkP0mt8JYceeUsm+4szwnwG68mKAHfD4I3/u/Vda2wPU6kHy5/F793iD7lK6nW4MB9AsesZEm17Rj8nhAezTvc93OIWAxC0WmA+PUPI4F+8fv70pxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787020315; c=relaxed/simple;
-	bh=cnwqki9VaKabIaDmylDoqbBQHsFrOgXi7lOXX3pikZk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O6Of2mz4XDJ2l1aC2BZPfj3ikHUUdKKBoAnt4kiCXG7vxen1eyxsLE7WVB467ktx8Wm/7JuuWgBp60QFkXYream3yUQud2tilfhi9h4qOK+79Bs0U9CGSxcZtvN4H+7ProDpJqpPDMminBZD2arM1DayuJnvnKdI2x/A7fpk8SI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.207.22.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: zesmtpgz1t1787020238te2f5f96c
-X-QQ-Originating-IP: B7fOztBtV78a4famvyg5jId7jOiVdEq2av0YdEamRGc=
-Received: from w-MS-7E16.trustnetic.com ( [36.24.185.99])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 18 Aug 2026 10:30:32 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 4349593291174078095
-EX-QQ-RecipientCnt: 10
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	s=arc-20240116; t=1787020634; c=relaxed/simple;
+	bh=xTzzxtotF9gl39HUnYyVqOqsYpyusgOxBTbv6wM4zeM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LUP5ShDflp52KmQi1oeANEePWNZARd4wOoNvBz0ea92OyL7TAKbMsMWSLh/YvbjWA3Hgef1zBXWWlOaMFHLGh8P3ZRBBv/QTtU0m7yTsfYMe/jTa+WSD9sZ4I9vF3j9g4upYKzq9F1tXr5m9vcM/dxI4sJopT6YFAhf718hepVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H1O33O+l; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H1O33O+l"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-383b4a3755fso4212896a91.3
+        for <netdev@vger.kernel.org>; Mon, 17 Aug 2026 19:37:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787020633; x=1787625433; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5t3WSBXQEgnmVFFBRODA6+TTnt+X/iUBw6IiaqKbt3E=;
+        b=H1O33O+lS3MXOuFduB/7EfqxpvuhA6ZC8xPrIEI6/ALUsmrRYG2zRvo8rbS5Ht2RHk
+         cqymisCQeh4c5ZM8Jxa+ihLj9tmyvaWfT7VGxs/P94EhHbKNqik+2cfz8a2EyGsIKotu
+         DiYZcCrsdIBoPEw2jcwpWfoyd6TtCOXZpiwJKL0tlYESmPVqyjmOQ/7ixzYQhrkGCBVp
+         e6zgwrTztwiks0CnWRPDjNUUIO3znrxCge/6WqHBKuHpIVPZ21S150nfNoH3ro0J7lEQ
+         tuFx8uqEW2zSrM/6xPSUrqPY9JzARKtCnux/tTC0qhB2KwTAwBk4BoIdryXo52QJwgJS
+         /iHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787020633; x=1787625433;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5t3WSBXQEgnmVFFBRODA6+TTnt+X/iUBw6IiaqKbt3E=;
+        b=gPj875RrtK+EfWZGGVgKrdAmbD+sfzzSQEChZSbXTmlUw89GQ/5/ytXmEb/6AzVZ25
+         aq6IkP79l2tL8D/cP3r1LPth7+svAfW+plfEHHeG6hNXbMb05P32UG6zRj2o3+UraOYl
+         p8e93KT64tWk+gYES/aN3gSkA2W6tDZCJfoBKB751L+wPAJJ6LID5zLnRVISS2HfREUb
+         6hu8umR9CE8DrB2bKXuhYdxBrdCkusjCBE8DzrdlfYz+22Dfapd3Eu8rheHenFyAyzHv
+         j7fW6qon3mJiZpvUQqOHpF/foLJ05CnrL60uK1mG0yv07aIj7i5H88SJd+brU8igObK5
+         Xilg==
+X-Forwarded-Encrypted: i=1; AHgh+RqRaHlIN6S0avLGEIQvHxZCXwMshzsH9v8GYwK2KjOnhKBC+2gIQS4n3wG46aWF0dQWKv7rPf0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLeCiZdurDjErsDOcPGbYnJIP/e+JCiFOExaVnH8KYqxDIPraR
+	knZRsInj1wXmRMyCd176FK8V0aI9BJycZvgayhpoZFMytkFHipZha1bm
+X-Gm-Gg: AR+sD12OKzL3LVmcAOKhdxEnhVTgyqX3CBAt7X+n0O/qGGVw3w2Q+iyfK9UuSaIWWmF
+	yGcjf0FStK6Yy28Px6WA/MEhpAtm6I9cCvq7nybkz/fgSas0a8xv4hEdBIZAA4nacTC0PZ3lwCv
+	y3aRWrclixSzaHsXjPxd4Gu1gGDmRk5pj6f7Rp9A58SASA/vmax5EYZ3dW+TBiq+TuFFisI7dbp
+	3MDUxP3XsOfZqnLDnyh1Vft8+1aZiGWAaIxVrSu9h/RS1XejpcKHgV/TXmKYK3hVfBwXIRlEQMe
+	sy7y76ZWcSiyMgP8cylP1bARznX/G9xmAM7jdHWtjI0NTH74Lk+fPuWlUVSDkegSESZ6VXtDa0a
+	nRRLAbsAJUvArGQog+kTw+/a3yvRsVJMOGr3YEAmWjuJ5NlpdRnD02IcG5lF/7oRl3rvzodR6PA
+	PbqLa4fV9sPignk6A8R/wqjztIdf7HzUSICEmug/4q1By8av2SbmP/N65yN1VHwLDnpppTZ5qeV
+	dZcoZxaLTF8
+X-Received: by 2002:a17:90b:1c0a:b0:38a:c3f:3b87 with SMTP id 98e67ed59e1d1-3933b8721acmr25288593a91.12.1787020632627;
+        Mon, 17 Aug 2026 19:37:12 -0700 (PDT)
+Received: from osman.mioffice.cn ([43.224.245.178])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39531e8418bsm7009248a91.7.2026.08.17.19.37.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Aug 2026 19:37:11 -0700 (PDT)
+From: Zhan Xusheng <zhanxusheng1024@gmail.com>
+X-Google-Original-From: Zhan Xusheng <zhanxusheng@xiaomi.com>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH net v2] net: txgbe: fix MISC interrupt unmasking in non-MSI-X mode and device shutdown
-Date: Tue, 18 Aug 2026 10:30:26 +0800
-Message-ID: <56A53978B83EEDE9+20260818023026.6631-1-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.51.0
+	Michal Kubecek <mkubecek@suse.cz>,
+	zhanxusheng@xiaomi.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Zhan Xusheng <zhanxusheng1024@gmail.com>
+Subject: [PATCH] ethtool: remove unused __ETHTOOL_LINK_MODE_MASK_NWORDS
+Date: Tue, 18 Aug 2026 10:37:04 +0800
+Message-ID: <20260818023704.125721-1-zhanxusheng@xiaomi.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,87 +80,34 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: NHHBtKpbeb7pjGOAzbgWJETY+qco1eYss6v3oJcW2ZztLn74P3siSofu
-	9FUlm/Ck5mcAHOZKmOUan65GNTULhBLCcou0AiuuN64nM0bOUJ4PVyFRwkat9rhAf0SpbWc
-	1ZPXTeeXnEcJz16aT7x65OHTS+iXpNI+lZ0RmaQPLxrsVtseIE61CKS6hfL98qbw+Dk5wZV
-	YvAwOc0dnXUr6mjyjf0FGx6I5ZshKuPsUh08C24SAG7WIrFekdMn8Aea6KbRiPAKV2NCc1R
-	Agm4WPW1a/wdrSOQE3r+tsjfJVb2ubmqWpb1SpYZt8TZHBz4HnE7efzHa7wo1Wdsq28zuPG
-	a6i1/F0WN4Swl+YXP0Dn50BMCizFTOXI0HF6YL6WUzJrlupeVTRNz6taPIde7Bn9AwE/sia
-	b16l1BCbRELemPoaQorDx8Y+Q+04JOKhog/hnCO2ypqavTaPHcgp8/KB54X8n88MTb/IxD0
-	KR6zpryZcoNh2HcVtOuDW7KrJi+FdGjSRqq3wDsL4aPsmMoUwDuHnrfYTtsywa+XOu6EeoO
-	eIIVMYcNCvLXTFbauQSMF7U089KR2tkotM/5nzakNYKZ9Rc9DFVDc4zzNHw8UKG6uf/8X0K
-	Tm3HWoRBn32m2YzqcN8X11vHyYoX7ATu+bqswsL8MbaPaIq7PRup4ZyiUHRiIhZ+l/cEq4s
-	fLri327/yZdeDyiQzg0kWSNxsuGjvYvtq6Wf+lI78qzaxf4Pytgq9AbC6XRRqJRDnqTpVTG
-	ifWZ2rDKC8O8k2BD8Cle3jrcX4cYdf3IszfDJERPReunByxXJV/a/CCEkV73PdnuPTolDeO
-	qtYWe/fdr4ngedfA+s+H/j8k++ej9lsBoiUpx5YR5+theqAr+b6Z41IqpfTqCPib6udnHoc
-	jeObjavBdzTjQU/afdw8o1ZoyM4tEewKQLHa3zqghhwjICiQfu3TW79hmdxEZUVSWbVWOEa
-	24Y85L06ZPICm+mfAdZR97G13F9GjiUqxRCaY3ISXR+arHLFDXuG+har0k/t6nG8oOnxm8w
-	W4hG/fbK4Gl328EjHbIudiz8wsXn0WEn6xji48Yked0UaUeC7QgpHkzxiWlKcvvofNzzpu1
-	ju4Z51HpSXblVkmc3t7PhQ=
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-X-QQ-RECHKSPAM: 0
 
-In txgbe_misc_irq_thread_fn(), the driver unmasks the miscellaneous
-interrupt at the end of the handler using TXGBE_INTR_MISC(wx) (which
-resolves to BIT(wx->num_q_vectors)). While this is correct for MSI-X
-mode, it is incorrect for legacy INTx or single MSI modes.
+From: Zhan Xusheng <zhanxusheng1024@gmail.com>
 
-Due to hardware behavior, the WX_PX_MISC_IVAR register is completely
-ignored by the hardware when MSI-X is disabled. In non-MSI-X mode, the
-hardware forcibly merges all interrupt causes (both Queue and MISC) into
-a single bit: BIT(0) of the interrupt register.
+From: Zhan Xusheng <zhanxusheng@xiaomi.com>
 
-Unconditionally unmasking TXGBE_INTR_MISC(wx) (e.g., BIT(1)) in non-MSI-X
-mode means the actual MISC interrupt bit (BIT(0)) is not unmasked
-promptly at the end of the MISC thread. Instead, it remains masked until
-NAPI completes its polling and unmasks the shared BIT(0). This delays the
-assertion of subsequent MISC interrupts, preventing timely handling of
-events like link state changes.
+Added by commit f625aa9be8c1 ("ethtool: provide link mode information with
+LINKMODES_GET request") and never used.  The same count is computed as
+__ETHTOOL_LINK_MODE_MASK_NU32 in net/ethtool/ioctl.c.
 
-Fix this by explicitly checking `pdev->msix_enabled` and falling back
-to BIT(0) as the interrupt mask for the MISC cause when MSI-X is disabled.
-
-Additionally, unconditionally unmasking the interrupt at the end of the
-thread introduces a race condition during device teardown. Guarding the
-wx_intr_enable() call with a check for the WX_STATE_DOWN bit, to prevent
-re-arming the interrupt during device shutdown.
-
-Fixes: e37546ad1f9b ("net: wangxun: revert the adjustment of the IRQ vector sequence")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Zhan Xusheng <zhanxusheng@xiaomi.com>
 ---
-Changes in v2:
-- Add the checking of WX_STATE_DOWN bit before unmasking the interrupt.
-- Link to v1: https://lore.kernel.org/all/59215DA27859BC49+20260813073305.360251-1-jiawenwu@trustnetic.com
----
- drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/linux/ethtool_netlink.h | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-index 8746318ad3bc..5ad1ff7c3ce9 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
-@@ -164,6 +164,7 @@ static irqreturn_t txgbe_misc_irq_thread_fn(int irq, void *data)
- 	struct wx *wx = txgbe->wx;
- 	unsigned int nhandled = 0;
- 	unsigned int sub_irq;
-+	u64 misc_mask;
- 	u32 eicr;
+diff --git a/include/linux/ethtool_netlink.h b/include/linux/ethtool_netlink.h
+index 39254b2726c0..15881f34ef66 100644
+--- a/include/linux/ethtool_netlink.h
++++ b/include/linux/ethtool_netlink.h
+@@ -7,9 +7,6 @@
+ #include <linux/ethtool.h>
+ #include <linux/netdevice.h>
  
- 	eicr = txgbe->eicr;
-@@ -183,7 +184,9 @@ static irqreturn_t txgbe_misc_irq_thread_fn(int irq, void *data)
- 		nhandled++;
- 	}
- 
--	wx_intr_enable(wx, TXGBE_INTR_MISC(wx));
-+	misc_mask = wx->pdev->msix_enabled ? TXGBE_INTR_MISC(wx) : BIT(0);
-+	if (!test_bit(WX_STATE_DOWN, wx->state))
-+		wx_intr_enable(wx, misc_mask);
- 	return (nhandled > 0 ? IRQ_HANDLED : IRQ_NONE);
- }
+-#define __ETHTOOL_LINK_MODE_MASK_NWORDS \
+-	DIV_ROUND_UP(__ETHTOOL_LINK_MODE_MASK_NBITS, 32)
+-
+ #define ETHTOOL_PAUSE_STAT_CNT	(__ETHTOOL_A_PAUSE_STAT_CNT -		\
+ 				 ETHTOOL_A_PAUSE_STAT_TX_FRAMES)
  
 -- 
-2.51.0
+2.43.0
 
