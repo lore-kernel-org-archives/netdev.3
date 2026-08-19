@@ -1,75 +1,50 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE2E331A66
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 08:35:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DAA364EAB;
+	Wed, 19 Aug 2026 08:36:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787128561; cv=none; b=X6ayIqXIweaXw3jR3IuAYtmJ7X/+4SrWPlqvo4CXgWanzR77SNF0/5zGzoqbQIxEapwlfPkaxzDB6/v23UlHOQspvz15dEJoBJh2KM8JXH5BrTcdVTXjVN6AfhQObJpVtFeW46VZFK6OaJdPtSG+KItA0sjULl//lz3XgCLbRdM=
+	t=1787128593; cv=none; b=EP+Y3UM8I0SEZ+R8JK2+jOL+SDLnv3KSlNV+LYev/1Cdc7y+XUCfsB/9h2e6zrHgN8yEvhemPP/lS9qsIwqQJSJ+4dtAnOv0JgynlohQKgc0rKRhlqnfcFzh7D3gu0ODSWwAzhttNBkNgLkn1/IX9cFHJpR+/gZd+dcnRcJb0rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787128561; c=relaxed/simple;
-	bh=dS383OCW1Aroludg0MR17FGf+auCs1CSSLtinSaFfCU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=okyfyV5m5uXJG5YVDMjq5K2zJYhY9F227aqSGALEwzd5hwNDuQkMaoUuF0RYmbBcQBLXKKEeIn3Gexc6muf0Pt81Rh8v7XHaQz9Y1xVS2K59Z08m7qvz/y6HfffF3jcsUInQk9vmh7DGZD4YUu77S+NrDkz0uYqdkFoY/zJTE5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rqZ914SA; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787128593; c=relaxed/simple;
+	bh=wec8R1rmA8Y7l60PLHflfGdO2AGKs3YEDhpo9bWwoHQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GIRPeJ2CVxv1vABQAwiNG/crfXB0k87yiKhXQ+tmPAO515x3FRND19v0WGuArjraDAOES7tzL2lG1kKvNv3ALrA+F+EoLFPRT3Ga4wVXclXQp0++mXZhKwiGt6wJznxEKYDMuBMhi02w43Y1CIuAaBsGUQfAPx4T4MfeWw1dJNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=uscxz3lh; arc=none smtp.client-ip=113.46.200.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rqZ914SA"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4996f1ee4a4so5724045e9.2
-        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 01:35:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787128558; x=1787733358; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Jmfu7b6PffpBgbX6nxuZgDbreM6nRsmbmyFL2AjCNig=;
-        b=rqZ914SA60UhE5UYk4VSgbpTJIeC1KjOKoey6q1pRHNefu8FMFemicIg6NT2q+bJ/k
-         XfwG0VqxgUbd/S12PAhERBfnmB6LW1b5meM6f8QEuHi7vaDYL27YJ/D0d0R4xCvEvayf
-         zvZvMvrOsDiaDgMjQJFYNXKR1lXVr8TJ5l2QK2C2Ly3p/c7WH0mwkHEhfvQ54CFMsjEo
-         aK18HParY8FG6r9+alFYOypSiS3kWV5Jp9dbtjXsx10J8KbeWDWda88liWPM6BgAuvSF
-         oKSDrn0UwOCtBKut8NhTevUXbVAGx1X0mPybc/fNkT03CJpNZQKlRabXXVgs9KIVL+8s
-         b8sQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787128558; x=1787733358;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Jmfu7b6PffpBgbX6nxuZgDbreM6nRsmbmyFL2AjCNig=;
-        b=MAWb0b7m13uysby3PNuJ63wan7CV6FadmcTZoPp/mJlhTwOj4azu6TzF3TzHQx26VI
-         lklbBnegm17rgeJYGUf4znvxcQaLgveVXmJsZaPH21CrLGDlj7sHpwRsZF0dwwYcR2Hp
-         Ht4C8h+GvUXSt0Aaf6sbzlFHcuRocXIEFo120T32o/x9I4neHm/Y/vK99QWZ1g0RgBtV
-         VPoFWr3KldeEjACCiEkMRAUyNNq6M8jdznPEu0rl5aWnO9gjTreh8lRIedCcNho792uV
-         TqL+Gz53+XPGI0ryiO70xQl0UcYuOk0NIAj7fQQ5jdlv4yShzGkchoGOQJ2mX1xh68Ki
-         gIoQ==
-X-Gm-Message-State: AOJu0YyNBjCoLnjfq2mqBY+Hzu5u/HTVK/B8VCclv+MMNalo4Lx1Lby9
-	oCmKzU7a2AjUaD1sKh+afl5dnPWWlKpGT5+f2Ou7NuvyFFt1G0Zprsrqp5ahNw==
-X-Gm-Gg: AR+sD12yYDqYkhlLIxgR3bzAMw9h8y8ljydS1g6/SbAGySiHwnQKG6AYyBtzCMxQhiN
-	6rZC4kQiPM2X0b1AldrwMBJKfSmTgZw7lUBNatSrruwLUjK419mlrbyAxUNki2mFsvHmqHFjkrK
-	S9/lkfDLibLrVy2KEzIEhh5zAhl5YdBNUXblqyhH8Dtckk5DQZwg/OTe52rE1IdRx8acEvDBfL2
-	vd+mwr41re2MWZ8iTKpg5sL6486bAfRUlQH0vTmRxLncH1aDKmEdvXFMxYofBXmc4JCIG1fqaqu
-	ec4oDnXMXRXlAdOBjKz1xQLlb4++mQwlTuXLAvNRFvP8svYJWOHy1h/Mu7ZRK/xv9PCky3yI8Fu
-	J+dBFEe5EF5VwA0nJ3hq08zm7mvgSCLN8741bT2OuZJybVdSHirFlwKu5rIa30Zn4d1xU6DdKl+
-	63kmj6Ylm4CmmmmAqVYPhtcUNg7wVlD/Tjfnr9Zz1UVMlYxmf/q2TOeTlnP8P/KNMHosVm
-X-Received: by 2002:a05:600c:3f12:b0:499:7a4f:d13d with SMTP id 5b1f17b1804b1-499aa199777mr50672285e9.4.1787128557716;
-        Wed, 19 Aug 2026 01:35:57 -0700 (PDT)
-Received: from SurHub.localdomain ([196.188.112.82])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499a9e09e87sm29215205e9.4.2026.08.19.01.35.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2026 01:35:56 -0700 (PDT)
-From: Abdifatah Suruur <suruurism@gmail.com>
-To: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	quic_subashab@quicinc.com,
-	quic_stranche@quicinc.com,
-	doruk@0sec.ai,
-	kuba@kernel.org
-Subject: [PATCH net v2] net: qualcomm: rmnet: require CAP_NET_ADMIN in the real device netns for changelink
-Date: Wed, 19 Aug 2026 11:35:53 +0300
-Message-ID: <20260819083553.1134-1-suruurism@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260813174727.14857-1-suruurism@gmail.com>
-References: <20260813174727.14857-1-suruurism@gmail.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="uscxz3lh"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=DXyU34t4JY/bH2qRKqQJeUpV6LNj1+g92OC+ZRS8aps=;
+	b=uscxz3lhCsitq5NLNYt/HklzZh3fnAAYHe+/hjSFJ4wMTmUoOiY4VaTb6dyYdVdohcsFKn4kA
+	iKk4xWQah4ECSWRugdRyfVwkO5porUSmNFQxxE5mrC4/UWFSs1o0xypLhtTI4cL0+PLqIxryHqK
+	R38XeqXk8HZvmHW8XhI/sH0=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4hQ04z1ksgzmVXs;
+	Wed, 19 Aug 2026 16:25:39 +0800 (CST)
+Received: from kwepemo200010.china.huawei.com (unknown [7.202.195.178])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9CD7B40586;
+	Wed, 19 Aug 2026 16:36:20 +0800 (CST)
+Received: from huawei.com (10.44.142.85) by kwepemo200010.china.huawei.com
+ (7.202.195.178) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 19 Aug
+ 2026 16:36:19 +0800
+From: Qi Xi <xiqi2@huawei.com>
+To: <akpm@linux-foundation.org>, <vbabka@kernel.org>
+CC: <longli@microsoft.com>, <kotaranov@microsoft.com>,
+	<jan.kiszka@siemens.com>, <kbingham@kernel.org>, <surenb@google.com>,
+	<mhocko@suse.com>, <brendan.jackman@linux.dev>, <hannes@cmpxchg.org>,
+	<ziy@nvidia.com>, <linux-hyperv@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, <netdev@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <sunnanyong@huawei.com>,
+	<wangkefeng.wang@huawei.com>, <xiqi2@huawei.com>
+Subject: [PATCH v2] mm: drop stale MAX_ORDER references
+Date: Wed, 19 Aug 2026 16:20:52 +0800
+Message-ID: <20260819082052.3338603-1-xiqi2@huawei.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,42 +52,90 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemo200010.china.huawei.com (7.202.195.178)
 
-A changelink() on an rmnet device mutates the rmnet port state attached
-to the real device (endpoint mux table, port->data_format and, via
-rmnet_vnd_update_dev_mtu(), the real device MTU).  The real device may
-live in a different netns than the rmnet device (rmnet_newlink()
-resolves it in link_net), but the rtnl path only checks CAP_NET_ADMIN
-against dev_net(dev).  A caller privileged only in the rmnet device's
-netns can therefore rewrite the shared cellular data-path state owned by
-another netns.
+The treewide rename in commit 5e0a760b4441 ("mm, treewide: rename
+MAX_ORDER to MAX_PAGE_ORDER") left a few spots still using the old
+name:
 
-Gate rmnet_changelink() with rtnl_dev_link_net_capable(), matching the
-"require CAP_NET_ADMIN in the device netns for changelink" series
-(vxlan/geneve, CVE-2026-68432).
+  - two comments in include/net/mana/mana.h and mm/page_alloc.c;
+  - the gdb helper scripts/gdb/linux/mm.py, where self.MAX_ORDER is
+    a local mirror of the kernel's MAX_ORDER define.
 
-Fixes: 2abb5792387e ("net: qualcomm: rmnet: Allow configuration updates to existing devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdifatah Suruur <suruurism@gmail.com>
+Rename the leftover instances to MAX_PAGE_ORDER so the tree is
+consistent.
 
+No functional changes.
+
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Qi Xi <xiqi2@huawei.com>
 ---
-v2:
-- drop Reported-by: (implied for the author), per Jakub Kicinski
+Changes in v2:
+  - Correct the mana.h comment formula to 2^MAX_PAGE_ORDER.
 
---- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
-+++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
-@@ -312,6 +312,14 @@
- 	if (!rmnet_is_real_dev_registered(real_dev))
- 		return -ENODEV;
+ include/net/mana/mana.h | 4 ++--
+ mm/page_alloc.c         | 2 +-
+ scripts/gdb/linux/mm.py | 8 ++++----
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
-+	/*
-+	 * The rtnl path only checks CAP_NET_ADMIN against dev_net(dev),
-+	 * but the port state mutated below is attached to real_dev, which
-+	 * may live in a different netns.
-+	 */
-+	if (!rtnl_dev_link_net_capable(dev, dev_net(real_dev)))
-+		return -EPERM;
-+
- 	port = rmnet_get_port_rtnl(real_dev);
+diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
+index 04acb6791dbd..bc331bf9b205 100644
+--- a/include/net/mana/mana.h
++++ b/include/net/mana/mana.h
+@@ -40,8 +40,8 @@ enum TRI_STATE {
+ #define COMP_ENTRY_SIZE 64
+ 
+ /* This Max value for RX buffers is derived from __alloc_page()'s max page
+- * allocation calculation. It allows maximum 2^(MAX_ORDER -1) pages. RX buffer
+- * size beyond this value gets rejected by __alloc_page() call.
++ * allocation calculation. It allows maximum 2^MAX_PAGE_ORDER pages. RX
++ * buffer size beyond this value gets rejected by __alloc_page() call.
+  */
+ #define MAX_RX_BUFFERS_PER_QUEUE 8192
+ #define DEF_RX_BUFFERS_PER_QUEUE 1024
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index ee902a468c2f..42b5b41432c5 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -7803,7 +7803,7 @@ static bool cond_accept_memory(struct zone *zone, unsigned int order,
+ 	/*
+ 	 * Watermarks have not been initialized yet.
+ 	 *
+-	 * Accepting one MAX_ORDER page to ensure progress.
++	 * Accepting one MAX_PAGE_ORDER page to ensure progress.
+ 	 */
+ 	if (!wmark)
+ 		return try_to_accept_memory_one(zone);
+diff --git a/scripts/gdb/linux/mm.py b/scripts/gdb/linux/mm.py
+index dffadccbb01d..28d33624c38b 100644
+--- a/scripts/gdb/linux/mm.py
++++ b/scripts/gdb/linux/mm.py
+@@ -56,7 +56,7 @@ class x86_page_ops():
+ 
+         self.MAX_PHYSMEM_BITS = 46
+         self.SECTION_SIZE_BITS = 27
+-        self.MAX_ORDER = 10
++        self.MAX_PAGE_ORDER = 10
+ 
+         self.SECTIONS_SHIFT = self.MAX_PHYSMEM_BITS - self.SECTION_SIZE_BITS
+         self.NR_MEM_SECTIONS = 1 << self.SECTIONS_SHIFT
+@@ -233,11 +233,11 @@ class aarch64_page_ops():
+         self.SECTIONS_SHIFT = self.MAX_PHYSMEM_BITS - self.SECTION_SIZE_BITS
+ 
+         if str(constants.LX_CONFIG_ARCH_FORCE_MAX_ORDER).isdigit():
+-            self.MAX_ORDER = constants.LX_CONFIG_ARCH_FORCE_MAX_ORDER
++            self.MAX_PAGE_ORDER = constants.LX_CONFIG_ARCH_FORCE_MAX_ORDER
+         else:
+-            self.MAX_ORDER = 10
++            self.MAX_PAGE_ORDER = 10
+ 
+-        self.MAX_ORDER_NR_PAGES = 1 << (self.MAX_ORDER)
++        self.MAX_ORDER_NR_PAGES = 1 << (self.MAX_PAGE_ORDER)
+         self.PFN_SECTION_SHIFT = self.SECTION_SIZE_BITS - self.PAGE_SHIFT
+         self.NR_MEM_SECTIONS = 1 << self.SECTIONS_SHIFT
+         self.PAGES_PER_SECTION = 1 << self.PFN_SECTION_SHIFT
+-- 
+2.33.0
 
- 	if (data[IFLA_RMNET_MUX_ID]) {
