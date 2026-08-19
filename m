@@ -1,112 +1,147 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.75.44.102])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D50163B9D96
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 14:21:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.75.44.102
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787149306; cv=none; b=IaChwGOD0nd/17FWOaPJSJ0oERZOGPRRYdM7S9mrQRKTWbSA+WzP7E7UWB0jJDLVU+sVIv72S8fWWEmE44KQTIU+0dkFX4HTITekk6mm4XMYaK5NGLPeUww84YlaMKSEhz3NLaV8u2FfNJrki4TCWjFj+pxm4ffMAh2lugNz9Bc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787149306; c=relaxed/simple;
-	bh=Pi9D8XWAwmUchOa+klJdwm/JK4QbNebd4r2WmvPV7ps=;
-	h=Date:From:To:Cc:Subject:Content-Type:MIME-Version:Message-ID; b=ihG5LKCIDM8E2J0E1FHQQosCqnUtP1dqw4Pu/mBX7aPSEXF0g50ay58DB6sxqlffD2y3e0h0N/nuXg6sMnU+Uz70peuuMxAVSeIjQDJHk3SodnT1Oaj5c/WmXM6tBgkHHDd2LIpmlPPMRlcAkXbYa80AnLWEwWFiAzl7wS7IdsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=13.75.44.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from zju.edu.cn (unknown [10.190.129.65])
-	by mtasvr (Coremail) with SMTP id _____wB3f3_qu4VqhTGpAA--.3243S3;
-	Wed, 19 Aug 2026 22:21:31 +0800 (CST)
-Received: from stitch$zju.edu.cn ( [10.190.129.65] ) by
- ajax-webmail-mail-app4 (Coremail) ; Wed, 19 Aug 2026 22:21:30 +0800
- (GMT+08:00)
-Date: Wed, 19 Aug 2026 22:21:30 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: "Jiacheng Xu" <stitch@zju.edu.cn>
-To: hangbin.liu@linux.dev
-Cc: kuba@kernel.org, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com
-Subject: [PATCH net v2] netdevsim: avoid NULL dereference after failed probe
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2025.3-cmXT6 build
- 20260617(6f868824) Copyright (c) 2002-2026 www.mailtech.cn zju.edu.cn
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F0347884A
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 14:26:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787149582; cv=pass; b=rqKm8V7JcW95Kx8HzOf3eG3depu8HuOdy56gfEAyc9ZgrCAVAPSx6U72gq0Puz5iRJit16Lt2VX7txdgmXmO5abQBDjBPCSYTw7Z0+/uQ6o0g5wVSlJnhQqYTMDgc4b91vsjmO4nlmECr6g7mlH4S+h58YVXr8XSTjOr5CYdEGk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787149582; c=relaxed/simple;
+	bh=mtLHmPpOiePeRFfAyGUsz76wlHeLqchwFt029X15pLE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PGDQ0jMOwUkpJSCyaoitC/MGjvCqadsDi1wNiIKmQITYkVnZ4hf5THP/rlxrwVP9csUMmAvW3uwWdpWk3aSnp+pwKYWxa1n/9gU+2WJaNA925R8HLBWs4LeBouxTO+5d6+YXemfOw0aBLvb6GXs25mwTxyjG8XrbCLCmAHfrGXw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gl2AX37l; arc=pass smtp.client-ip=209.85.210.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gl2AX37l"
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7ead34361b5so193078a34.3
+        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 07:26:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787149573; cv=none;
+        d=google.com; s=arc-20260327;
+        b=BJ2woErv4ecnt9c+8fsDH0frDShC5iSvcgC1lD7sJ0oYvjOqWMJ5qbWTNkLbKetKUN
+         kMIsqhRnLJcOXQXeM/hDka1q66Q4FXf1G+GmWQYX/QCL/ggNZeEWoOcGOmcBuqJoKkQz
+         9OH8lBoctwpxDTWUbyemNCW3pZdWJU3UWcdQ1xW30dL7GX6KHxTBNU0LdAEt3Isv7bUP
+         xyq03gyjb3fQ+w2oC+aJoiQ8EbcpUc/f7Akcxi5rKpsWcS1vF05z3qs0APfJcXId4HZi
+         cvuuQxZsng+yuw3tapSKnH4w9IHfHHIFwoGNMTJcgknXvJfyRBZbuQbzXhcBcOpiu7B5
+         3V1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=mtLHmPpOiePeRFfAyGUsz76wlHeLqchwFt029X15pLE=;
+        fh=BrUg+AYHh4ktgPs60C2/uzb5A9xBqRhJmg+Fia78mio=;
+        b=poURCOYJnVvffOQz9/gQUwcQNZrm6/9h93SeZU2ayUqWRs7pBoti5IrN96Hi6pWPVn
+         rZI+sxq62AnQI87EJnlwQbQW+tQtW/K28RkQFaYO7JMrZ++mzWnKyrKuo+Sz2AKZqpmS
+         NMrelwlzMnO52sMHnx7MZEgONhXVBj0rH446MALg6XCtQrGKPAxPorekHxKmFXmT4fER
+         It9FvwG18yNGZfMdymWkEDX/CU8Slrvz00KkQ0JmVgtsSzUN71DWSYsiorQIzVMdEwis
+         n4JTanf8GcOhvZm0JpsRcOejwrPJ3spjlHYBTotZzLjmpS6jOtuNiF4Qn6eGRzWsu6Ls
+         BYTQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787149573; x=1787754373; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=mtLHmPpOiePeRFfAyGUsz76wlHeLqchwFt029X15pLE=;
+        b=gl2AX37lK5/bpSpoABYA4jl9JrAnrb71JDrAxNLuqB7NC53x8BNZJ9yZpga/Kg/LPX
+         eSwi60UKCJk8JJg5cUYDLKr0gemVlQa5BMs7iNsJS/6sPMUmgvQzLLOusvDANcwi8WCq
+         lair9RIv2lwYsrsV5kzw3cITRFUlED+d7pClXb8EVf1WfeSTn6iMCs0svNsZ2repBF48
+         p5U87gBnbvT56gPXaZ3W7Eod4fODK4DvWmT8W9RgIqS0daFeSjQhET1f79VjttWG/w1Q
+         +4uH4UhQ0nj519TNPkNU7a4THLQo/bBDbYgHLook9paV7YQvYWH5Sr4i7dgqd3rsvqY9
+         TxDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787149573; x=1787754373;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mtLHmPpOiePeRFfAyGUsz76wlHeLqchwFt029X15pLE=;
+        b=jql0ZJO1DmUVSdBIeINEFKBQr3talwg7HbfNdljCOt50NffVa9OVqvRUt4+8qS2L04
+         miGMuhB2UpKR7lzm6+YmiULIjnKX4CtcDa9YZRIo15ET1U2qWqwe6D+bTVbASBzJjcph
+         PfSPf9V71f7MCc0nqz+w0Cc5GXDNNWgkoyjf+TAQuZHodHDiT6rSfcj7m8/iYC6DLJ/d
+         SE6AClYUcjzA+ar0g+FcQn2CgHZDI0GbloowQS/DBGutTJkGIrvFpC9SlxWx5zZqDMta
+         Mi214oiU3hqyT2PZ5RcudZnvqvQIh5pmrJTDAQYAX4R77Q7rDN+7esr1TgFlj9SydKmX
+         30Ew==
+X-Forwarded-Encrypted: i=1; AHgh+RpS6s+EgHyO87P85Yv1Hn1xDB1BscAoehbKpK8aqf1Ta/fxhlK6c0IJNri0b8mlpfIjxztNvE0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4fyTSicVnyVHTj2QYrUbnDuua8XznhgN6kDhXXV3ma2bLEs2m
+	B/3O2uDIIS6JV0CbMdeK4BPL5EOIRsY1by4sc7cHses9jxaPcOTBYG2ygQt/T13MuYCdCZU/ejO
+	fQcdGIr9R2xKV+YFwJSBZXeuJQj76M+s=
+X-Gm-Gg: AR+sD12MO9jUFf3y+2cRJ6E4YYzzUPhLK/flWJxYv5UIN5YhlwVvHZzIb3X18Xtlmcj
+	YeOLNMyzXp0IdpXW7f39A8ehRcTZKivNWIGMl1bUb0EcwjSo5CWLI02YT2C9VWDLDdohCnzeepj
+	RLnyM6xwFZIhnu81XDKul4FB/fOl76/KVo96tT2VjDmnZVehAhM3OsT3PvYCJSMZwuYfYcsP/5J
+	sk8hzQlE/C7uNiAJkVHBB+0qCE3VGpfFnMkqe3QU1wPXVp7CV5EG83NGlFDJdV6aSUHOIwnuhgo
+	5q1zGg5qsSD9zHpKIxCUIXZ5Zd5uwPhLCqatmB5AvC7YhYHEp5DVxip0Zgv/1NHbYQ==
+X-Received: by 2002:a05:6808:4fce:b0:4a3:f036:f3bf with SMTP id
+ 5614622812f47-4b2bc8c1bdcmr2756929b6e.1.1787149572686; Wed, 19 Aug 2026
+ 07:26:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <4fe1dcd1.16124.1a01a660a42.Coremail.stitch@zju.edu.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:zi_KCgBnbDbqu4VqTT9QAw--.35463W
-X-CM-SenderInfo: qtrxiiaqttimo62m3hxhgxhubq/1tbiAwUIC2qFDZYO0gABss
-X-CM-DELIVERINFO: =?B?m1R4sAXKKxbFmtjJiESix3B1w3tMoM3snk/k5SVzZVydjEqe1eefKHnLf95EnB4iem
-	egWypvKLiHpylsIz9FfMDOWXuuvwmd6LQQ5ytWvV+0v/fJbrbKaTfvOedFqvCidbKa9m7n
-	sM/7rFt9TweCOyZU7J6aUgX3LhJELH0xd1J4oUrJF5SqQdimjO+zxbMMfJ8qtw==
-X-Coremail-Antispam: 1Uk129KBj93XoWxWFWrArW7WF43tr4DGFy7XFc_yoW5Gryrpa
-	98KFy5trykWws7Wan8ZF40yFy5Ww18J3y3ur13A3sY9w12qryYqryagFyYy3W8t3yxJa45
-	Xr4DAFW8uFZ0yrcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUPCb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
-	xVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
-	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
-	wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0Y48IcxkI7V
-	AKI48G6xCjnVAKz4kxM4xvF2IEb7IF0Fy264kE64k0F24lFcxC0VAYjxAxZF0Ex2IqxwCF
-	04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r
-	18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vI
-	r41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr
-	1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvE
-	x4A2jsIEc7CjxVAFwI0_Gr0_Gr1UMVCEFcxC0VAYjxAxZFUvcSsGvfC2KfnxnUUI43ZEXa
-	7IU8rcTJUUUUU==
+References: <20260814-netcons_ipv6-v3-0-bc0915e8c75f@gmail.com> <20260818095103.7a7f4c51@kernel.org>
+In-Reply-To: <20260818095103.7a7f4c51@kernel.org>
+From: Gustavo Luiz Duarte <gustavold@gmail.com>
+Date: Wed, 19 Aug 2026 15:26:00 +0100
+X-Gm-Features: AcwNN1WvWAT473hyfFIV9m1jLgdW_32ZW6vRQrZ00niDYYx8NpT_8AvwknomriA
+Message-ID: <CAGSyskXAivuJ3=+3HgZeN_EUH1gw4A6+K=uLdr8Vc2q8swhW7A@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 0/7] netconsole: validate a target's IP
+ address configuration
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-ZGV2aWNlX3JlZ2lzdGVyKCkgcmVwb3J0cyB3aGV0aGVyIGRldmljZSByZWdpc3RyYXRpb24gc3Vj
-Y2VlZGVkLCBub3QKd2hldGhlciB0aGUgbWF0Y2hpbmcgZHJpdmVyJ3MgcHJvYmUgc3VjY2VlZGVk
-LiBJZiBuc2ltX2Rydl9wcm9iZSgpCmZhaWxzLCB0aGUgZHJpdmVyIGNvcmUgbGVhdmVzIHRoZSBu
-c2ltX2J1c19kZXYgcmVnaXN0ZXJlZCB3aGlsZSB0aGUgcHJvYmUKZXJyb3IgcGF0aCBjbGVhcnMg
-aXRzIGRyaXZlciBkYXRhLgoKbmV3X2RldmljZV9zdG9yZSgpIHN1YnNlcXVlbnRseSBtYXJrcyB0
-aGUgbnNpbV9idXNfZGV2IGluaXRpYWxpemVkLiBBCndyaXRlIHRvIGl0cyBuZXdfcG9ydCBvciBk
-ZWxfcG9ydCBhdHRyaWJ1dGUgdGhlcmVmb3JlIHBhc3NlcyB0aGUgaW5pdApjaGVjayBhbmQgY2Fs
-bHMgbnNpbV9kcnZfcG9ydF9hZGQoKSBvciBuc2ltX2Rydl9wb3J0X2RlbCgpIHdpdGggbm8gdmFs
-aWQKbnNpbV9kZXYuIEJvdGggaGVscGVycyBwYXNzIHRoZSBOVUxMIGRyaXZlciBkYXRhIHRvIHBy
-aXZfdG9fZGV2bGluaygpLApsZWFkaW5nIHRvIGEgTlVMTCBwb2ludGVyIGRlcmVmZXJlbmNlLgoK
-VGhpcyBjYW4gYmUgcmVwcm9kdWNlZCBieSBjcmVhdGluZyBhIG5ldGRldnNpbSBkZXZpY2UgZm9y
-IHdoaWNoCm5zaW1fZHJ2X3Byb2JlKCkgZmFpbHMgYW5kIHRoZW4gd3JpdGluZyB0byB0aGUgbmV3
-X3BvcnQgb3IgZGVsX3BvcnQKYXR0cmlidXRlIG9mIHRoZSByZWdpc3RlcmVkIGRldmljZS4KClNl
-cmlhbGl6ZSB0aGUgZHJpdmVyIGRhdGEgY2hlY2sgYW5kIHRoZSBwb3J0IG9wZXJhdGlvbiB3aXRo
-IHRoZSBkZXZpY2UKbG9jaywgYW5kIHJlamVjdCB0aGUgb3BlcmF0aW9uIHdpdGggLUVOT0RFViB3
-aGVuIG5vIGRyaXZlciBkYXRhIGlzCnByZXNlbnQuIFRoaXMgYWxzbyBwcmV2ZW50cyBkcml2ZXIg
-dW5iaW5kIGZyb20gZnJlZWluZyBuc2ltX2RldiBiZXR3ZWVuCnRoZSBjaGVjayBhbmQgaXRzIHVz
-ZSwgYW5kIGZvbGxvd3MgdGhlIGxvY2tpbmcgdXNlZCBieSBzcmlvdl9udW12ZnMuCgpGaXhlczog
-Nzk0YjJjMDVjYTFjICgibmV0ZGV2c2ltOiBleHRlbmQgZGV2aWNlIGF0dHJzIHRvIHN1cHBvcnQg
-cG9ydCBhZGRpdGlvbiBhbmQgZGVsZXRpb24iKQpDYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZwpT
-aWduZWQtb2ZmLWJ5OiBKaWFjaGVuZyBYdSA8c3RpdGNoQHpqdS5lZHUuY24+Ci0tLQpDaGFuZ2Vz
-IGluIHYyOgotIFRhcmdldCB0aGUgcGF0Y2ggdG8gdGhlIG5ldCB0cmVlLgotIFJlbW92ZSB0aGUg
-cmVwcm9kdWNlciBhdHRhY2htZW50IGFuZCBkZXNjcmliZSB0aGUgdHJpZ2dlciBpbiB0aGUKICBj
-b21taXQgbWVzc2FnZS4KCmRyaXZlcnMvbmV0L25ldGRldnNpbS9idXMuYyB8IDE3ICsrKysrKysr
-KysrKysrLS0tCjEgZmlsZSBjaGFuZ2VkLCAxNCBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygt
-KQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L25ldGRldnNpbS9idXMuYyBiL2RyaXZlcnMvbmV0
-L25ldGRldnNpbS9idXMuYwppbmRleCA0MTQ4M2UzNzFmMDUuLjBhYjUxMzA2YWQwYSAxMDA2NDQK
-LS0tIGEvZHJpdmVycy9uZXQvbmV0ZGV2c2ltL2J1cy5jCisrKyBiL2RyaXZlcnMvbmV0L25ldGRl
-dnNpbS9idXMuYwpAQCAtOTMsOCArOTMsMTMgQEAgbmV3X3BvcnRfc3RvcmUoc3RydWN0IGRldmlj
-ZSAqZGV2LCBzdHJ1Y3QgZGV2aWNlX2F0dHJpYnV0ZSAqYXR0ciwKICAgICAgICAgICAgICAgIHJl
-dHVybiAtRUlOVkFMOwogICAgICAgIH0KCi0gICAgICAgcmV0ID0gbnNpbV9kcnZfcG9ydF9hZGQo
-bnNpbV9idXNfZGV2LCBOU0lNX0RFVl9QT1JUX1RZUEVfUEYsIHBvcnRfaW5kZXgsCi0gICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgYWRkcl9zZXQgPyBldGhfYWRkciA6IE5VTEwpOworICAg
-ICAgIGRldmljZV9sb2NrKGRldik7CisgICAgICAgaWYgKCFkZXZfZ2V0X2RydmRhdGEoZGV2KSkK
-KyAgICAgICAgICAgICAgIHJldCA9IC1FTk9ERVY7CisgICAgICAgZWxzZQorICAgICAgICAgICAg
-ICAgcmV0ID0gbnNpbV9kcnZfcG9ydF9hZGQobnNpbV9idXNfZGV2LCBOU0lNX0RFVl9QT1JUX1RZ
-UEVfUEYsCisgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBwb3J0X2luZGV4
-LCBhZGRyX3NldCA/IGV0aF9hZGRyIDogTlVMTCk7CisgICAgICAgZGV2aWNlX3VubG9jayhkZXYp
-OwogICAgICAgIHJldHVybiByZXQgPyByZXQgOiBjb3VudDsKIH0KCkBAIC0xMTUsNyArMTIwLDEz
-IEBAIGRlbF9wb3J0X3N0b3JlKHN0cnVjdCBkZXZpY2UgKmRldiwgc3RydWN0IGRldmljZV9hdHRy
-aWJ1dGUgKmF0dHIsCiAgICAgICAgaWYgKHJldCkKICAgICAgICAgICAgICAgIHJldHVybiByZXQ7
-CgotICAgICAgIHJldCA9IG5zaW1fZHJ2X3BvcnRfZGVsKG5zaW1fYnVzX2RldiwgTlNJTV9ERVZf
-UE9SVF9UWVBFX1BGLCBwb3J0X2luZGV4KTsKKyAgICAgICBkZXZpY2VfbG9jayhkZXYpOworICAg
-ICAgIGlmICghZGV2X2dldF9kcnZkYXRhKGRldikpCisgICAgICAgICAgICAgICByZXQgPSAtRU5P
-REVWOworICAgICAgIGVsc2UKKyAgICAgICAgICAgICAgIHJldCA9IG5zaW1fZHJ2X3BvcnRfZGVs
-KG5zaW1fYnVzX2RldiwgTlNJTV9ERVZfUE9SVF9UWVBFX1BGLAorICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgcG9ydF9pbmRleCk7CisgICAgICAgZGV2aWNlX3VubG9jayhk
-ZXYpOwogICAgICAgIHJldHVybiByZXQgPyByZXQgOiBjb3VudDsKIH0KCi0tCjIuMjUuMQo=
+On Tue, Aug 18, 2026 at 5:51=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> On Fri, 14 Aug 2026 20:28:51 +0100 Gustavo Luiz Duarte wrote:
+> > This series adds two validations to the target configuration when the
+> > user tries to enable it: first whether remote_ip was set, and second
+> > whether local_ip and remote_ip address families match. Refuse to enable
+> > the target if any of those validations fail.
+> >
+> > These validations are already done for the target passed on the
+> > command-line, so this aligns dynamic targets with the command-line
+> > behavior.
+> >
+> > The first two patches replace the per-target 'ipv6' flag with a
+> > per-address 'family' field, which makes it easier to detect these error
+> > conditions. Patches 3 and 4 implement the actual validations.
+> >
+> > Patches 5-7 are follow-ups from previous reviews: move inet_addr from
+> > netpoll.h into netconsole.c, show an unset address as an empty string
+> > rather than "0.0.0.0", document local_ip auto-selection.
+>
+> LGTM, but feels to risky to merge during the merge window.
+> Since we're changing semantics we should let this sit in linux-next
+> for at least a week. Please repost in Sept.
 
+Sounds good.
+
+>
+> BTW please carefully review clashiko feedback:
+> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260814-netcons_ipv6=
+-v3-7-bc0915e8c75f@gmail.com
+> It marked as preexisting the problem of IP versions diverging but
+> I think it's relevant (patch 2)?
+
+The issue of IP versions diverging is indeed a preexisting bug and it
+is fixed by patch 4/7.
+I deliberately kept the fix separate from the refactoring for clarity.
+
+Another preexisting bug that sashiko called out (patch 5) is the lack
+of locking on local_ip_show / remote_ip_show, which can lead to
+printing a partially updated address.
+But worse than that is local_mac_show (sashiko missed this one), which
+can lead to UAF if the user reads local_mac concurrently with target
+teardown.
+I will send a separate patch set to fix these *_show callbacks with
+proper locking.
