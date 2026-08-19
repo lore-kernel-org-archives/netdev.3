@@ -1,44 +1,49 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B0D92E737E;
-	Wed, 19 Aug 2026 12:48:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18C634752F;
+	Wed, 19 Aug 2026 13:01:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787143710; cv=none; b=sVV69Dn3kh5EVRthMaJlaiDDfLoF4dL6xcqQgkv7/YgPr87xtTQqAht9qtB3ZrfneiAn66zIGc4GgF34KTGfqiuVmitbrKjQxUWlDQjLBjoJps8Oh8aZDIhhqRqHDng4IiiNbOpfQB3QM2seFru+1W1kvncKU56hmIGCWUAJ0OM=
+	t=1787144470; cv=none; b=mQFwc+yCxuhaE7wacQI0WUnHQIkdzT8AzbFUb/2zPMp+v/Lsvi469a+Ze4JLymazeBy69KzHX3zlUpWsLV6Htdq6ZHG2WnG15/J+pmzM9HCZ7CyVCMlgwqXX8dHFdPkTOWP1cRKKC1euWAUGNL8vBk+o6NPZ8SeJkJ0NBVaSwDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787143710; c=relaxed/simple;
-	bh=9EyqDgfZNpVtXQ5L2bgmD+fmumHQJOfol4BcEfkvL1Y=;
+	s=arc-20240116; t=1787144470; c=relaxed/simple;
+	bh=5bzMf5JWfgzCfh4o8eDdr6USS8kzG3yNrjQJmBgcoYc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sJN2xy8v5fY30pGBRBYapXKvx0DL+WdE7uR38OoHrJm0QxqUylgtj6HRSephVFvuad6YhFp2Rx4xo88Fvnc7Qq3YSululVTZS5ou8w2ey9pF6oWGiIezsYrU7F3g2x2naS6rKBJi8Rn3PCvAbtBjf4G6iLrR4XOb5R2TvBnZP8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K0jMG1lC; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=twHANRR52ntsjdIAbMpEyg1Kipuhwm+Bs3+t3bBP7Xt6TtKN2+zRhbqcngB10vYyg+9FsoPCCjJbx+thhNgdekl+NB9yI969Ri3U5YJqOXvxjMMkXqvL9VA5iQP76wuof3oub0VYmFGAqawPtPr+CEw7Im75nQN3iE+qHsh56UU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=vu3WOyQU; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K0jMG1lC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC6C31F000E9;
-	Wed, 19 Aug 2026 12:48:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787143705;
-	bh=kiI831g15HiSHlUT06TmmIKr4Nw0QxMvv7Rst5onLmU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=K0jMG1lCcJFhTnoRjVnkdYYgtr4AehcKz8Q8DO1FtXwNzI2DLpPHm15M5KdspgFh7
-	 PtPtppx1VOPKkRy9nYakUWLuDVMZSb6TYvDLP6/NrrMrKwp0xNBAUj0pRcDH7B9fqM
-	 PKN6NXdSRqo776UJc7bN2HWymYhlBMRn10nC68KoRdYchwzMbDPKcTDo+ew17OIEi6
-	 dcD8hdbNWPFt8tJ0VjI8413WhjtkIOnMhC9PuWAsiCF7zke/aO1alGPdJ7RY8Razwl
-	 s0Qadr9mOkIYj0SUMP02UsR1fnsyrPk3+wiE4X2GeUz72Y2d8ZRv8A/xVowZFc/JPI
-	 0tbQL+6HM0lVg==
-Date: Wed, 19 Aug 2026 13:48:20 +0100
-From: Simon Horman <horms@kernel.org>
-To: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-Cc: pablo@netfilter.org, laforge@gnumonks.org, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, osmocom-net-gprs@lists.osmocom.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	AutonomousCodeSecurity@microsoft.com, tgopinath@linux.microsoft.com,
-	kys@microsoft.com, "Xiang Mei (Microsoft)" <xmei5@asu.edu>
-Subject: Re: [PATCH net] gtp: fix NULL pointer dereference in
- gtp0_handle_echo_resp()
-Message-ID: <20260819124820.GR265046@horms.kernel.org>
-References: <20260816035205.57966-1-blbllhy@gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="vu3WOyQU"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=QEQ6PFGmDuvNbRNEG1Jwr41i80JcF+EHelcxz8o/Zb8=; b=vu3WOyQU7YUhsljdFnzei6HB5w
+	n7hV67n4vh5NX/UGabUFSAjaqJId3yk8ptmnpBrJL2BDH1nZTlN5TLt64tztiL+LHq6D9Ih1KV+Ij
+	WMXLUd579bZ6gUFDIv16pbuj7yQMraa9KC2gU8p+mmvmIb18kstP9LCu2rzBvpm7C4rY=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wwfu6-000bod-Rh; Wed, 19 Aug 2026 15:00:26 +0200
+Date: Wed, 19 Aug 2026 15:00:26 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Linkai Gong <gonglinkai@kylinos.cn>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Joao Pinto <Joao.Pinto@synopsys.com>, netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: stmmac: platform: fix of_node leak when breaking RX
+ queue loop
+Message-ID: <6ca6be2d-548d-4110-9964-567bb8788e62@lunn.ch>
+References: <20260819073258.467604-1-gonglinkai@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,53 +52,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260816035205.57966-1-blbllhy@gmail.com>
+In-Reply-To: <20260819073258.467604-1-gonglinkai@kylinos.cn>
 
-On Sat, Aug 15, 2026 at 11:52:05PM -0400, Cen Zhang (Microsoft) wrote:
-> In gtp_create_sockets(), gtp->sk_created is set to true before gtp->sk0
-> and gtp->sk1u are assigned. A concurrent GTP Echo Response packet on
-> another CPU observes sk_created == true and dereferences the still-NULL
-> gtp->sk0 in gtp0_handle_echo_resp(), causing a kernel panic.
+On Wed, Aug 19, 2026 at 03:32:58PM +0800, Linkai Gong wrote:
+> for_each_child_of_node() on the RX queues breaks once enough queues are
+> parsed, which leaves the current child referenced. The TX loop then
+> overwrites q_node, so that reference is never dropped.
 > 
->   KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
->   RIP: 0010:gtp_encap_recv  (drivers/net/gtp.c:542 gtp0_handle_echo_resp)
->   Call Trace:
->    <IRQ>
->    udp_queue_rcv_one_skb
->    ip_protocol_deliver_rcu
->    ip_local_deliver
->   Kernel panic - not syncing: Fatal exception in interrupt
+> of_node_put() the child before breaking. The TX loop already drops its
+> last reference via the of_node_put(q_node) at the out label.
 > 
-> Reorder the assignments so that gtp->sk0 and gtp->sk1u are fully visible
-> before gtp->sk_created is set to true. This ensures no concurrent packet
-> path can observe the flag without valid socket pointers.
-> 
-> Fixes: b20dc3c68458 ("gtp: Allow to create GTP device without FDs")
-> Reported-by: AutonomousCodeSecurity@microsoft.com
-> Reported-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
-> Reported-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
-> Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
+> Fixes: d976a525c371 ("net: stmmac: multiple queues dt configuration")
+> Signed-off-by: Linkai Gong <gonglinkai@kylinos.cn>
 > ---
->  drivers/net/gtp.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-> index 9a12cc53da00..2b5a8f6d24d0 100644
-> --- a/drivers/net/gtp.c
-> +++ b/drivers/net/gtp.c
-> @@ -1456,9 +1456,9 @@ static int gtp_create_sockets(struct gtp_dev *gtp, const struct nlattr *nla,
->  		return PTR_ERR(sk1u);
->  	}
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+> index dc5f951a311d..66a048ecadb0 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+> @@ -170,8 +170,11 @@ static int stmmac_mtl_setup(struct platform_device *pdev,
 >  
-> -	gtp->sk_created = true;
->  	gtp->sk0 = sk0;
->  	gtp->sk1u = sk1u;
-> +	gtp->sk_created = true;
+>  	/* Processing individual RX queue config */
+>  	for_each_child_of_node(rx_node, q_node) {
+> -		if (queue >= plat->rx_queues_to_use)
+> +		if (queue >= plat->rx_queues_to_use) {
+> +			of_node_put(q_node);
+> +			q_node = NULL;
+>  			break;
+> +		}
 
-I don't believe that this is sufficient to address the problem described as
-there is no synchronisation between the reader and writer of sk_created.
+Why not for_each_child_of_node_scoped()?
 
-I wonder if this might be addressed using smp_store_release/smp_load_acquire.
+Also, does this bother anybody? I think this should be for net-next.
 
--- 
-pw-bot: changes-requested
+And while we are looking at this, what about:
+
+https://elixir.bootlin.com/linux/v7.2/source/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c#L232
+
+    Andrew
+
+---
+pw-bot: cr
