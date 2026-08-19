@@ -1,43 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A313C1D42;
-	Wed, 19 Aug 2026 03:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7CBB208D0;
+	Wed, 19 Aug 2026 03:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787110368; cv=none; b=LyKX0HInQrodgEGHVYLq7/CrYwoARA4H6410CzIlJc8kXM3p30sprCMzhYZdza2M5d1fqXC1qR3Ip3m5dcB1dQS73V/xxIc99RjYAo9oJJ1/M5jnSJi0pgQXh3DiQs/brjre5U+UWKQ8eDpeM46zEpArb2augO+g7rlGVuJ7Ppc=
+	t=1787111455; cv=none; b=XIXqazw3ecaKWOYrS8e1s/DZy4/m3Ar8OVlGnPhqLoxYcAKi6DBCbfXdhtRuZfN6hhZZv25Q7p/UR7E0LErioz64fhQ3itNVwjS2Df7yIawjaEkManwOQ6fUQszCIKxiVC0unJqIrROBW+HECrSnVRCLagxevoW5qbTsU+OhNsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787110368; c=relaxed/simple;
-	bh=r1kiJWqSNxCtbj258NTVXEY09WGI1c+N+MH6Avj/Ovo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uue/liDoeKh8sI8N6beIq5q2TNVKbv8LeGJ2dH9BUKUM+VM0M968DVMYBtFBVLC8rX4AEb6DuY8K6OeSlxyEj0azM69Tiow81eqxC+l9suI1lJ2NPAjE+9aLu15g/H4QU4DYdcPVe0HroAgxPRBKoUdU0aqUEmWFtgUo6vtoiTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B86NO73+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787111455; c=relaxed/simple;
+	bh=Zqg2dHlJ6L7mU319ZdPlJwASeJDFJSQyMX8AQxKReHk=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=BhwjPaznhRt4Cm0w8j3UVteYWyGSM35ykB1INiI8OSreIdiwd/6laxmK3VlwAMIYdPLMl/sQh/7jHMkI6mmUQThxUvZNvOB+kxfPo18FCs4d2VadtA2efJ3SkntvyCNNVgZohhGwzRM8s1sInPeLmp8FntLswZOg4wnXNV6vLik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dW9vyOKq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B86NO73+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F5021F00A3D;
-	Wed, 19 Aug 2026 03:32:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dW9vyOKq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5497F1F000E9;
+	Wed, 19 Aug 2026 03:50:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787110367;
-	bh=qMZhJQ1b1KdtqXy3RBQjD6zbWLJZVodgX7F9Yn4Bpzw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=B86NO73+fUoDF3J6in9PHbkR/RkMrQt3iYHBTersOZ4DTfeL01+AXkSVTL2xSz2nn
-	 eLRSIbxGokE3ipXh9VxT639fUpZNS5XNUZ8lYH2prkdF1naKE737fI/0tnTgN4HqP6
-	 h8pa+ZdvemESku2gNluynV67hGdH4oYWQo8miUAKxbn36kbvMa87ZyGHdCpMOoc7rd
-	 oAG7QFyl4tS0zj56KnIF5P0br8Ae1dKk4G/lFBpb7tlF0/iMMBJYJROILNrkeSWMbA
-	 mfr/vQ7pJdwn4TlPujW8R6UDj3VpnR6sIanmVkV07eNm5We99Y5L4XeLSf1L5AccoT
-	 0OSrzK1gXmS6w==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>,
-	Tahera Fahimi <taherafahimi@linux.microsoft.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	netdev@vger.kernel.org
-Subject: Re: Backport xfrm race condition fix to stable kernel version 6.6.y
-Date: Tue, 18 Aug 2026 23:32:28 -0400
-Message-ID: <20260818220420.14@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260817221108.778584-2-taherafahimi@linux.microsoft.com>
-References: <20260817221108.778584-2-taherafahimi@linux.microsoft.com>
+	s=k20260515; t=1787111454;
+	bh=z4ref/RM/CtI7W0sRmJvptQS3ZnMsvKyWYsixYtBFAQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=dW9vyOKqio1HSE2hU9MKrOIsLqA7BQnfeszi8yv7ZMG2l+5zJFFT6NAZs31Bq31WH
+	 11Fed3YZg3bIKBmZCSq9X+2gwZitJfyz+Zk66k6qn72dxadG0ljp0HD205xXJYUy1j
+	 qr38BtrxFQ2RhEzTRuayTQrQQjEEQyugFs4ONI8n4UUe2KGijm4vYLYd0WCOjL7d/M
+	 Qf8S0J+8jlgB+NvpwRJA1xVMLPuBmvcghZo1IMT+ezKc3DVVmuVWa5Zdtg6mqsk84l
+	 D8t902dR5WI0k6lqTprOTtdQTBeYWnu2YgRsBDSj/2BYk0ASOOhWg1P39Po6CSZLda
+	 hUNVqa2Ufzp9Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09273927074;
+	Wed, 19 Aug 2026 03:50:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,28 +37,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: bridge: Reject descending VLAN tunnel ranges
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178711140564.2835526.4256752863993963902.git-patchwork-notify@kernel.org>
+Date: Wed, 19 Aug 2026 03:50:05 +0000
+References: <20260814134053.1387275-1-ruoyuw560@gmail.com>
+In-Reply-To: <20260814134053.1387275-1-ruoyuw560@gmail.com>
+To: Ruoyu Wang <ruoyuw560@gmail.com>
+Cc: razor@blackwall.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ bridge@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On Mon, Aug 17, 2026 at 03:10:09PM -0700, Tahera Fahimi wrote:
-> I am writing to request the backport of the following patch to stable kernel versions 6.6.y,
-> addressing CVE-2026-31516.
->
-> Patch to Apply:
->     Subject: xfrm: prevent policy_hthresh.work from racing with netns teardown
->     Commit ID: 29fe3a61bcdce398ee3955101c39f89c01a8a77e
+Hello:
 
-This one is already in 7.1.y, 6.18.y and 6.12.y, but it can't be taken
-as-is on 6.6 and older: the line it adds calls disable_work_sync(), which
-only exists from v6.10 onwards, 86898fa6b8cd ("workqueue: Implement
-disable/enable for (delayed) work items"). The cherry-pick applies
-cleanly and then fails to build.
+This patch was applied to netdev/net.git (main)
+by David S. Miller <davem@davemloft.net>:
 
-Substituting cancel_work_sync() compiles, but it drops the re-queue
-prevention the commit exists to add, and I'd rather not make that
-substitution silently on a CVE fix.
+On Fri, 14 Aug 2026 21:40:53 +0800 you wrote:
+> A pair of descending VLAN and tunnel IDs can pass the tunnel range span
+> check. The VLAN subtraction produces a negative int, which is converted
+> to unsigned when compared with the u32 tunnel ID subtraction. It can
+> therefore equal the wrapped tunnel ID delta.
+> 
+> The range loop then performs no iterations. Since the batched
+> notification handling added a post-loop error check, this leaves err
+> uninitialized and makes the request's return value unpredictable.
+> 
+> [...]
 
-Could you send a tested backport for the pre-6.10 trees (6.6, 6.1, 5.15,
-5.10)? Netdev folks Cc'd in case they'd rather do it.
+Here is the summary with links:
+  - [net] net: bridge: Reject descending VLAN tunnel ranges
+    https://git.kernel.org/netdev/net/c/40f04b51758e
 
+You are awesome, thank you!
 -- 
-Thanks,
-Sasha
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
