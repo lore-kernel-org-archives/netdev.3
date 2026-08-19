@@ -1,129 +1,81 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AAE23EC68E;
-	Wed, 19 Aug 2026 23:47:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F85379966;
+	Wed, 19 Aug 2026 23:55:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787183274; cv=none; b=Ik49/Q1YRR7TD7lUxCh9vp4DXd4H22vrTJbJ68aPWCPHVL9ZHM7NjyWGIUS8SCPOjV1f/jgfj4bBOjpns0rWjx41v5LG4MvMBh/3z5WJ1w8nnCs0hXW7jGQIaXzk5a1kbpgAnKqAXoZ8xt/beUVdK/z+2dTaHDQSX7uRupbpsHU=
+	t=1787183723; cv=none; b=Vpa0zvS2ZVlVxDOzKWbPMSajAYfs+oFSnLTj+N9pV2g4cR4GVAY1rB9SBnT/9EnknRY+ezOyupwZshPp6yJ6NiYhfsl6mfSNsrsGtKasReo/snSVzRfBravpaGVOnzYO/dAKh9ij+qocoJQx9TjJySgjZFXEcgJsJrFugTrFv/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787183274; c=relaxed/simple;
-	bh=4tMDkGPYNi52mkKDE1yfVghndM3yCKfKaln+ytFgDnk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dIr6H+HWV/gkg8ccQB5Krv+EhIuPfhFeRu3SoppH2LdKPLUcyHWjpWySze+n6B5z7jK8mKaPu/Ojdpoh11esP0GHBUjmJ5aucnaM5sb/XQZTEa1F6gzasz0v8OoDMwaG8pt/4xFi4dIshhr/CxFekBeSV/3MmuEJ7NK0VkUQhUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FaomZ+Aj; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1787183723; c=relaxed/simple;
+	bh=ZvSwY/ESJu6HHgufvmFOKtaGocbvd8GFS/0KK+n1HcY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=id/QF0kRgCNWvi13Y8M/QU+QuyRQJ+EgF2mMXiow426KBaeVM9Q3FnBWmjVplKaB5ilQXwKpr3yfR8XVl3Ghk69lWMrkB8btxDUgkZFfzSNyyPzwTOZCpk86kFGa6oT+GoPt655TZ/Z3F3x+NY8tznq7qFiDAzUjyY9CU4vPdTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=f4NPHUNe; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FaomZ+Aj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787183273; x=1818719273;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=4tMDkGPYNi52mkKDE1yfVghndM3yCKfKaln+ytFgDnk=;
-  b=FaomZ+AjfPWm1tuaZMDu/XEAxwQgcGq1ggO2YqJpICc31zsOzNxBcTze
-   SoOtEFtQWsxmND5TfJbJJ4HhByH3bdzkhg9oTNLRz92SGAKrVsnsWB/cR
-   8cw+8e/yjcgDojqJyBKUcYFrAMn64JrtJpM1RYZnYKK0HcUZjJLrVfeO/
-   PO2A2yO9k5Rxwys+CDrJ5XpfL1N6WXYOkAYsU28vR6hY5Xk4A930Yv8gn
-   D6e6N2MQ6xzyBG8WbtYHog0sUpMFx/WPRdecwAwK/QSlGtw9a5I2NfCDh
-   nYkxnrlQXcSxQq7XOBVgeXm2s/HnOaxTCMAm64iB/wCo0j97G32vlJDKM
-   g==;
-X-CSE-ConnectionGUID: oRFIUG6BRsyx45eJZUFe9g==
-X-CSE-MsgGUID: zksmpx2MQIOwenMarr1RDg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="105094482"
-X-IronPort-AV: E=Sophos;i="6.25,232,1779174000"; 
-   d="scan'208";a="105094482"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 16:47:52 -0700
-X-CSE-ConnectionGUID: zildpLGlR0C6V35H3pIq/g==
-X-CSE-MsgGUID: hmYD/LK/Qzm1k0uN88GUJQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,232,1779174000"; 
-   d="scan'208";a="262449133"
-Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.108.13]) ([10.125.108.13])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 16:47:50 -0700
-Message-ID: <274faae6-fe48-4310-8deb-4b57c5c01f7c@intel.com>
-Date: Wed, 19 Aug 2026 16:47:48 -0700
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="f4NPHUNe"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=EdhVXUR+0KpkhVK+tZRcWte10LXPPnzPcT5smFSUy14=; b=f4NPHUNeiQyY5Od+U8FLfr0RrN
+	ZkKrRm3Frs6Gv99IdtitR9asr1W75yPzvNICjHc1zGx/YVXHov92ps9ANnhIzTMV884k5O6GRdCSV
+	UPtDzorDHguWopZR5z5noTkQ6CkbucMzgrg7RhhD6ZYX/7we1wYpL931eLdB2MJiTKH8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wwq7O-000gXa-JL; Thu, 20 Aug 2026 01:54:50 +0200
+Date: Thu, 20 Aug 2026 01:54:50 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Florian Bezdeka <florian.bezdeka@siemens.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Jan Kiszka <jan.kiszka@siemens.com>, netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH RFC 0/3] genirq: Allow drivers to respect userspace IRQ
+ affinities
+Message-ID: <f9daddae-a1c3-4823-a4b0-733775e1ad15@lunn.ch>
+References: <20260819-flo-net-7-2-make-stmmac-default-affinity-aware-v1-0-3f79a99cadaf@siemens.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 4/4] NTB: ntb_transport: Reject oversized TX buffers
-To: Koichiro Den <den@valinux.co.jp>, Jon Mason <jdmason@kudzu.us>,
- Allen Hubbe <allenbh@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: ntb@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260817053519.4135287-1-den@valinux.co.jp>
- <20260817053519.4135287-5-den@valinux.co.jp>
-From: Dave Jiang <dave.jiang@intel.com>
-Content-Language: en-US
-In-Reply-To: <20260817053519.4135287-5-den@valinux.co.jp>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260819-flo-net-7-2-make-stmmac-default-affinity-aware-v1-0-3f79a99cadaf@siemens.com>
 
+> That raises the question why request_irq() is called on "link up" time,
+> while the low level vector allocation takes place during device probing.
 
+If the interface is admin down, the hardware should not be generating
+any interrupts. So there is no need to request them.
 
-On 8/16/26 10:35 PM, Koichiro Den wrote:
-> ntb_process_tx() handles an oversized buffer by calling tx_handler()
-> with a NULL data pointer and returning success. ntb_netdev therefore
-> neither frees the skb in its completion callback nor takes its enqueue
-> error path, leaking it.
-> 
-> Reject oversized buffers in ntb_transport_tx_enqueue() before acquiring
-> a queue entry and return -EMSGSIZE. The caller retains ownership of the
-> buffer, and the preceding netdev patch frees the skb when enqueue
-> returns this permanent error.
-> 
-> Fixes: fce8a7bb5b4b ("PCI-Express Non-Transparent Bridge Support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Koichiro Den <den@valinux.co.jp>
+> At least that seems to be the common pattern. Can someone tell me why
+> this is done this way? Shouldn't we call request_irq() at the same time?
 
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+If you want to change anything, move the low level vector allocation
+into open(). But you need to be careful of EPROBE_DEFER. If the
+interrupt controller has not loaded yet, i _guess_ the low level
+vector allocation will return EPROBE_DEFER, and the MAC driver will
+try to probe again later. If you get EPROBE_DEFER in open(), there is
+nothing you can do about it.
 
-> ---
-> Previously posted at:
-> https://lore.kernel.org/r/20260810165136.2292436-3-den@valinux.co.jp/
-> 
-> I moved the fix here because it addresses a pre-existing issue
-> independently of that feature series. I also moved the size check before
-> the tx_free_q lookup so -EBUSY cannot mask -EMSGSIZE.
-> ---
->  drivers/ntb/ntb_transport.c | 12 +++---------
->  1 file changed, 3 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
-> index 4bdd81edcb87..f9caa1a653c5 100644
-> --- a/drivers/ntb/ntb_transport.c
-> +++ b/drivers/ntb/ntb_transport.c
-> @@ -1955,15 +1955,6 @@ static int ntb_process_tx(struct ntb_transport_qp *qp,
->  		return -EAGAIN;
->  	}
->  
-> -	if (entry->len > qp->tx_max_frame - sizeof(struct ntb_payload_header)) {
-> -		if (qp->tx_handler)
-> -			qp->tx_handler(qp, qp->cb_data, NULL, -EIO);
-> -
-> -		ntb_list_add(&qp->ntb_tx_free_q_lock, &entry->entry,
-> -			     &qp->tx_free_q);
-> -		return 0;
-> -	}
-> -
->  	ntb_async_tx(qp, entry);
->  
->  	qp->tx_pkts++;
-> @@ -2356,6 +2347,9 @@ int ntb_transport_tx_enqueue(struct ntb_transport_qp *qp, void *cb, void *data,
->  	if (!qp->link_is_up)
->  		return -ENOLINK;
->  
-> +	if (len > qp->tx_max_frame - sizeof(struct ntb_payload_header))
-> +		return -EMSGSIZE;
-> +
->  	entry = ntb_list_rm(&qp->ntb_tx_free_q_lock, &qp->tx_free_q);
->  	if (!entry) {
->  		qp->tx_err_no_buf++;
-
+	Andrew
