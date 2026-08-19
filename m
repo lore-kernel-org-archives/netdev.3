@@ -1,401 +1,161 @@
-Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11021132.outbound.protection.outlook.com [40.107.74.132])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F97D2BDC28;
-	Wed, 19 Aug 2026 02:26:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.132
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787106380; cv=fail; b=d7Et28yqAUm/jkBYpGzksc5SncgQGJDzJNjknzMooUK9QifHjfhaTGWgoss7dPpMSLwmRl8R5cGbvu2CGLhGVYdo0CXiHKf2VVkDrHSpCIvsoOZHlcLjrMxpSkjys86oea0jr01FIu9armFMi+16VybEvEvI8jMDfzhW2uq9npM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787106380; c=relaxed/simple;
-	bh=gvTBdGzu/b5LHbDFIBIrFx6goyxtjjpnpdKTUnjMPBk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=qE3oUwm6+wNX5jNsfmqKsNdfSiUoUwJI6ViGht8esC9aerHZPBZ5TCrRh3zxgDMx7vALf66P32+zT8Yf28GQQmuwUHehB07Opc7dv0rPYVIESxlbJzluUp2GiTf12fQe2evC+trDvMZ6wpuzQgVVAtkYCdwi+Zm49SfqI9e8pKw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=dgRrvL6i; arc=fail smtp.client-ip=40.107.74.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BEE1350285;
+	Wed, 19 Aug 2026 02:29:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787106552; cv=none; b=rr6KSn/XVCLpGk9c18lEkjXzRUyIGr0XAQ4CzFa+W3xYcow9zbinH40WnSWUmYmmnOBrc/IcInV7LA0PaTo3LuHWuPRLxFIQOBbvSbhjflUAFZfKnAZA8OzbMM2lXrnh0V1un8vOA/YxITqC4W62FEdYlzrrmhqsOZr5nFn1ofE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787106552; c=relaxed/simple;
+	bh=hSDaHlp+AtiPrqNRHKQvKu/6PNks2N1dJWDbN7fuL1I=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=M3obCYh3yuV3cLmZLquVY2dZPjBiW1NRdl9M6VCITfSdhHphNAxMcyx29s7CRPvqKBa0ZTUGYG2V8bDMpa//O6zS2EZvmJ28jiYC0UrDzRQSj+Op6VXElFgsEyrrQO3ONauN7G9osrwf9s7ec77g9KF2tJn2nTYQsuSjs4GH4xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=n2z84/Bk; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="dgRrvL6i"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qQ2JLtWCRirz+Kq1DN+LBxOnZ9UW7xAFrKdsVjff20YwH7ON4/13CN5KbBaSwPi+HOnTiJKfOUIBPUTPQFlUOQQGlreTerVesSTgMFM1ZhCYm+NUAYTQTJqpO6q3MoJS9pZpKSwbJcbiy9iiE/pEhafFr/WCVaVHgfOTiqdT1rQAM7PGhFs846Dnuyp9wcc2IZMoJi0GaYPt0/3iuXoW+fN6aW9NQzxBjxx0Jp1to76boHK1NNKbvtbxlm5qsQIQhXX9OGEmFRYzPAvkZxybQp2aNNFybibBClSHfqkctcIIcdZCDtL5FxmRbIiikcRKSnRzt1+boCq6H0jdYUvdVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rMyFmVWNAwWxCYaKvcwF6yfrOuhmwyGFoMNpKZrKygk=;
- b=pHK49rpjpVkEs9Dbks10hFTxCpvks4SRJku+0TWovN4SvbYhYjJw4IlF3X+sKxtjYSS8+cXTh7ktM8H37mfIqCT3ZQF3Jso3gBHh4kKuo+S2i2gmg7LD7/gIISZ98zhBmTHAvrsaq4xOhoeVgdRNP6ZITuETIdY7Qkm7DXaWEs+wXqivIAFB+gWKiVWVw5QQVCtvsnn3CIbNnPLYam85bH7icpaJz4/H7hUCotWup/39Y3iCjPh7s6VW6iMQ4q9L4BcmpggOXoGT7RUabnnoZf61a5rqXhwkSfM0QyBbyIUtAc5L/N7nA3IrQ9GvTZkLXrowE6JaB5NavQ9EqG19+w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
- header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rMyFmVWNAwWxCYaKvcwF6yfrOuhmwyGFoMNpKZrKygk=;
- b=dgRrvL6iItoYwGZgotlY1qpRcVKd/qmfBEJP0W1BHyQBdnxuV/Sij5qrZxcKeaY3f8I8LUKh9wJNzHV6iLayZ3Pvo5fDSTLSR/D926suxVpry4mWmLM+hD/DEss5Qa5HMgpvsb5ARSfZ1nd7CJOYAHk6uzmw6dBPxUcngYKLM5s=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=valinux.co.jp;
-Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
- by TY4P286MB7284.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:34f::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
- 2026 02:26:13 +0000
-Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- ([fe80::2305:327c:28ec:9b32%3]) with mapi id 15.21.0315.016; Wed, 19 Aug 2026
- 02:26:13 +0000
-Date: Wed, 19 Aug 2026 11:26:11 +0900
-From: Koichiro Den <den@valinux.co.jp>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: jdmason@kudzu.us, dave.jiang@intel.com, allenbh@gmail.com, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, 
-	ntb@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 2/2] net: ntb_netdev: Preserve CHECKSUM_PARTIAL
- across NTB
-Message-ID: <kgboch4omu7tcft3welfszxtkdyhianwrg6pck42hscl5z2bxx@kmzpfdp2iiuo>
-References: <20260814032913.3558500-3-den@valinux.co.jp>
- <20260818162741.3982261-1-kuba@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260818162741.3982261-1-kuba@kernel.org>
-X-ClientProxiedBy: TYCP301CA0084.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:405:7b::8) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:38f::10)
+	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="n2z84/Bk"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Subject:Date:From:From:Reply-To;
+	bh=gXUB1QrnxsrjbOi4xhXBQHCEC2KmzTwW0NuAmy9Ikto=; b=n2z84/Bkg38wflHDu1N8jwEOo2
+	ZhL3oGXbc/uFEJNt0XoVhkQqsRre2N2fOyTCQuNQcmupM5U4xH/zfSaLtYI1aRIDo/YO0g1gqt4Ju
+	7p9NoN2QQbxE+l00ISPoz7HIP+7oCZcG92EJgUl3QzGaqJjQh9auxNr8bS4ZA9nATHJaFhzpDvRmO
+	UlKyIzG3ehc7I51bRyD7vFd+x0m4H27sXkgltjUagvY3qf8XeMChZzB0feZbvbrgL7xapazL7ucBq
+	NhoOXUbeOhAb812rK3zQurHa3LPJNqJjitOwEpKMCimzS3v+RLDXhGMeQuH+MLoIeR1UI6irvfMur
+	sXWvDxfA==;
+Received: from 186-249-144-28.shared.desktop.com.br ([186.249.144.28] helo=[127.0.1.1])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1wwW39-005tfG-1g; Wed, 19 Aug 2026 04:29:07 +0200
+From: Mauricio Faria de Oliveira <mfo@igalia.com>
+Date: Tue, 18 Aug 2026 23:28:00 -0300
+Subject: [PATCH RFC v2 01/13] keys, pidns, fs/verity, riscv/vector: reorder
+ '#include <linux/sysctl.h>'
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|TY4P286MB7284:EE_
-X-MS-Office365-Filtering-Correlation-Id: c3762f7c-ef95-4d4c-441e-08defd993d0b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|376014|10070799003|7416014|366016|6133799003|10067099003|5023799004|4143699003|56012099006|18002099003|22082099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	Il6bH6205BDgJgFrG7JZvyiy/eG+GVCBtS8jqtzvIw4v3uT7eCjGqDHIVSpL3WUg3s8ms5MYn3X/asRviqJsywxPvPl5kzImehLXoSWJD3X3515kAxCb+geU12GZgG2ydLK4EK+jJq8mPmzr+aiCeAgrzmeRuCmfD+1/WOZf5cZUg3uSnNOBIFjeMdoxOrSuRjdMo+ujvXd9MUDEHlyYuzh0Fz6UQlyNLb8nUK5cgbpQ4FAz2mMnxTD3kP02LRbcn2tSCPDGAvldzRHubVA+pdYE8wfcC5nUrUfTJbUMZySuL1leTQbQZGlUsLdH0u86xUerN8ekD0U5+yABZngjeVCEEILqC4FWu7GCHvLZDFTi8QB7K9EeGNncec3yjFSLlJQ41XVxbowB/iQ1O03onOrqzK8VaO0hfL5l8eqUOuYw3d/BMfJM5V5ThSSAZoe92JNwmPofCUajBKr9MwkPLujOQAcL+FZh+m5tC6H06t2+g/aL6DNgOallVLjhcbXob2yhLdkaf9b23MII9+q3mbhxZWOjY6uRpGzi1z5YNHjp2p02gSDu79/yV/VBTb+/lzdrKvbYEEhSwzf0UtNb7Q/av0MEi4URoDoOdlCZRJm9RkpVKp4p8dfes9Bs73Nk1pMwC4zD7PyhHhr0NLEa0cg85GAoPIaUar+BnFNAKcc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(10070799003)(7416014)(366016)(6133799003)(10067099003)(5023799004)(4143699003)(56012099006)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Ttkbgh/LBET3U9dRqWQNq4bYFSpXdEG/bRWFoFbfotHxsYBYvYuZwYGF6ZCN?=
- =?us-ascii?Q?eg6RJfXNhzSVinL8nFukcF336mhLOOdRkpiIAsnwKEFMZGASQyTVNVAb1MDT?=
- =?us-ascii?Q?j3qIwOzak8DSCTbH6TtK0pMG9c/U81+ZeGJNqZ6PWXtT93qhCxTvNjWLWTkM?=
- =?us-ascii?Q?3MkPVdcMcPYEzrOOziM8bHvRYNKGD9kUbz9ODNZIJvJPuT91hqrXJK3abOZc?=
- =?us-ascii?Q?IAhCs9+MKR4SRmocEVBZcE20c0h2ihsMXTFlVv9/JLDy3k4YFbJFbhY6O6ye?=
- =?us-ascii?Q?LX84K4orYPS7W9oh+mAcNLseSfJx2bAP+pkYZM80VPIiMEuOdVf9NxVKzeRi?=
- =?us-ascii?Q?muh08jz11H0I/9Ja9RMRqgWzk2Jf6XsV9QF6RVM45gLtjzghCfwQB1/co7SR?=
- =?us-ascii?Q?MgIIUZgRQihd3D4Wfn8wkCm2utqX46gQ+nlxA8LFgPofSAFP8BWTpBYLfIbw?=
- =?us-ascii?Q?jShP8xtVrJ8e5OA7uGiXulyCzH+qQ4hZoyTKcv+pDXGYAF0+OgZjxOGBI5lf?=
- =?us-ascii?Q?Oc9MpKlz0DHrbJ3nka4vdZumfGh6tbaCU+n0hTIftBus34U6yQnLVt44blJZ?=
- =?us-ascii?Q?5OgogaZuuxLEOPYzGrx480pCbT9mSdhwcbvjqvd5R682g10/3yJTkVKAeESu?=
- =?us-ascii?Q?WBePC2VUU+KQKPlwE+926Pqq9T9S/ml1D5fo9NbbcoOrXxUajnwftESP11/s?=
- =?us-ascii?Q?YjUIFxrL7NVdbzLtMRVh6D7DBrzwBmY7s+UsiVI2nQ2zGkQqLlU+rAr1eFON?=
- =?us-ascii?Q?fOghi4fk7uf4FTA66vcATXFLxvb4PSvR7Bz/7dSa+VgKkxyqJR1pLwc2DwwV?=
- =?us-ascii?Q?9wHKpHDAhlF5uZUIfmLWX/g5JTbXT7jIhBv2XsaSscoKYomJZXMK0/WFUZUj?=
- =?us-ascii?Q?DlmJ6QBeTAT/WnZXl2rLNP0d6rrN9OOVqcplN8JBRenPVmhSxok0JpC+CsKE?=
- =?us-ascii?Q?Cz5Qg8it/wST7MX4bnIrSSj/6boTmYzAmVjF3yhhfphxES0yWi8MdtiSqtP2?=
- =?us-ascii?Q?jGoaWHAm1qEoANdR643occ9NsxdV5D7j4l3LiEBdGb2TmgwdT+wtR0ep8Kru?=
- =?us-ascii?Q?B+XlPPjdsvEx46uWWSVZ4V9OQBVuPaGQ/cH2Z61KkPh0bJy++tQD+pdUNDAl?=
- =?us-ascii?Q?+sWkZtqxC478v2DaaLkjmAJpchGfDBKN5kKLcCgPPb3GB4t1duoR1qBFut1h?=
- =?us-ascii?Q?itaMiGbdlSWHTQgurdc7zNPx/nWApgR99wzcQJ5DVyNaAvSAsaQHdX3QUmrw?=
- =?us-ascii?Q?zXQr0j0xoMU3OTsv8Gctn/xHYHLeXw258lhx2a9bW4d9TsgKdpQ+6CXmVP+t?=
- =?us-ascii?Q?qbfrGxWhpxca4Jm4s4gMgQRqIsYGEdOISFwsBqW5zJBghuVyIOVv+XsRGG9V?=
- =?us-ascii?Q?KpwrBBSlJ7z13DXG8MPlGinDqrlYoXqWbvWkGnnlkEbmGF4Ydab/e0lAkIYl?=
- =?us-ascii?Q?TWMFUUpln+dOuZ7REdul2nLl6CuNuXkKLLMrxkOCm6kfQpMisnQ0fOlnhFvE?=
- =?us-ascii?Q?zCzgr3D80gteTjuNkK/NUHg+vd0MZp7uuRru4U5FvL2p6TqvR53ZYuIaOWR6?=
- =?us-ascii?Q?s+HSp0QSOmCSuHaPDl/sOChvOGzXOLRZY32TPRzMW53NK5dZTi7QmHejrNeL?=
- =?us-ascii?Q?25FUtPJ12fsQoOb660OJ2fDnla52HWDFxWydVw8y44dNl3yH/3sQxWu+iT6P?=
- =?us-ascii?Q?F/JXlHsLZs2fTpSK+BM3CleBMg2c6xth1kCaZwMKkNhiYWKnSnArwuG0f7B2?=
- =?us-ascii?Q?e0DOahH3axkvpprZRERkyI5UW16XEq3b+SbBA/4GG9bZEUHznu+M?=
-X-OriginatorOrg: valinux.co.jp
-X-MS-Exchange-CrossTenant-Network-Message-Id: c3762f7c-ef95-4d4c-441e-08defd993d0b
-X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 02:26:13.0041
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lskL4w6VbU2UBLBiKRvQ/n+nTbRVEcx5Z/QuD7L4yGgJkRqw6y5E3SpvuNZaCcbXZk6bCz7BxH+yg1gMN/WN/g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY4P286MB7284
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260818-sysctl-module-aliases-v2-1-d5a69dae5798@igalia.com>
+References: <20260818-sysctl-module-aliases-v2-0-d5a69dae5798@igalia.com>
+In-Reply-To: <20260818-sysctl-module-aliases-v2-0-d5a69dae5798@igalia.com>
+To: Kees Cook <kees@kernel.org>, Joel Granados <joel.granados@kernel.org>, 
+ Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: kernel-dev@igalia.com, linux-riscv@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, fsverity@lists.linux.dev, 
+ keyrings@vger.kernel.org, bpf@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-wpan@vger.kernel.org, 
+ lvs-devel@vger.kernel.org, netfilter-devel@vger.kernel.org, 
+ coreteam@netfilter.org, linux-sctp@vger.kernel.org, 
+ linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org, 
+ bridge@lists.linux.dev, mptcp@lists.linux.dev, rds-devel@oss.oracle.com, 
+ virtualization@lists.linux.dev, Mauricio Faria de Oliveira <mfo@igalia.com>
+X-Mailer: b4 0.14.2
 
-On Tue, Aug 18, 2026 at 09:27:41AM -0700, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> net: ntb_netdev: Preserve CHECKSUM_PARTIAL across NTB
-> 
-> This carries CHECKSUM_PARTIAL (csum_start and csum_offset) in the NTB
-> transport metadata word so that L4 checksums do not have to be computed
-> on either side of the link. A capability bit is advertised on every
-> transmitted frame, and both TX and RX checksum offload are left off by
-> default and exposed through hw_features so users can opt in.
-> 
-> > diff --git a/drivers/net/ntb_netdev.c b/drivers/net/ntb_netdev.c
-> > index 5c7fe6883cb93..b9a78ff695c87 100644
-> > --- a/drivers/net/ntb_netdev.c
-> > +++ b/drivers/net/ntb_netdev.c
-> 
-> [ ... ]
-> 
-> > @@ -29,6 +30,21 @@ static unsigned int tx_stop = 5;
-> >  #define NTB_NETDEV_MAX_QUEUES		64
-> >  #define NTB_NETDEV_DEFAULT_QUEUES	1
-> >  
-> > +/*
-> > + * Checksum metadata layout:
-> > + *   bit 23     capability, advertised on every packet
-> > + *   bit 22     per-packet CHECKSUM_PARTIAL flag
-> > + *   bit 21..6  skb_checksum_start_offset() (16 bits)
-> > + *   bit 5..0   skb->csum_offset (6 bits)
-> > + *
-> > + * Until the capability is observed, complete partial checksums in software.
-> > + * Six offset bits cover TCP/UDP. Larger offsets use software checksumming.
-> > + */
-> > +#define NTB_NETDEV_META_CAP_CSUM		BIT(23)
-> > +#define NTB_NETDEV_META_CSUM			BIT(22)
-> > +#define NTB_NETDEV_META_CSUM_START_SHIFT	6
-> > +#define NTB_NETDEV_META_CSUM_OFFSET_MASK	GENMASK(5, 0)
-> > +
-> >  struct ntb_netdev;
-> >  
-> >  struct ntb_netdev_queue {
-> > @@ -44,6 +60,7 @@ struct ntb_netdev {
-> >  	struct net_device *ndev;
-> >  	unsigned int num_queues;
-> >  	struct ntb_netdev_queue *queues;
-> > +	bool peer_csum;
-> >  };
-> >  
-> >  #define	NTB_TX_TIMEOUT_MS	1000
-> > @@ -108,6 +125,8 @@ static void ntb_netdev_event_handler(void *data, int link_is_up)
-> >  	struct net_device *ndev;
-> >  
-> >  	ndev = dev->ndev;
-> > +	if (!link_is_up)
-> > +		WRITE_ONCE(dev->peer_csum, false);
-> >  
-> >  	netdev_dbg(ndev, "Event %x, Link %x, qp %u\n", link_is_up,
-> >  		   ntb_transport_link_query(q->qp), q->qid);
-> > @@ -151,8 +170,21 @@ static void ntb_netdev_rx_handler(struct ntb_transport_qp *qp, void *qp_data,
-> >  	}
-> >  
-> >  	skb_put(skb, len);
-> > +	if (meta & NTB_NETDEV_META_CAP_CSUM)
-> > +		WRITE_ONCE(dev->peer_csum, true);
-> 
+Fix an include loop error in preparation for sysctl.h to include module.h:
 
-Thanks for the review. To summarize:
+    CC [M]  arch/x86/events/amd/uncore.o
+  In file included from .../include/linux/fs.h:44,         <<<
+                   from .../include/linux/compat.h:17,
+                   from .../arch/x86/include/asm/ia32.h:7,
+                   from .../arch/x86/include/asm/elf.h:10,
+                   from .../include/linux/elf.h:6,
+                   from .../include/linux/module.h:20,     <<<
+                   from .../include/linux/sysctl.h:245,    <<<
+                   from .../include/linux/key.h:17,        <<<
+                   from .../include/linux/cred.h:13,       <<<
+                   from .../include/linux/sched/signal.h:10,
+                   from .../include/linux/ptrace.h:7,
+                   from .../include/uapi/asm-generic/bpf_perf_event.h:4,
+                   from ./arch/x86/include/generated/uapi/asm/
+                        bpf_perf_event.h:1,
+                   from .../include/uapi/linux/bpf_perf_event.h:11,
+                   from .../include/linux/perf_event.h:18,
+                   from .../arch/x86/events/amd/uncore.c:8:
+  .../include/linux/mnt_idmapping.h: In function ‘mapped_fsuid’:
+  .../include/linux/mnt_idmapping.h:231:59: error: implicit declaration
+    of function ‘current_fsuid’ [-Wimplicit-function-declaration]
 
-  #1: Already addressed in v2.
-  #2: Thanks for catching it! I'll address it in v3.
-  #3: Already being handled in a separate series.
+Reason:
+ - cred.h includes key.h *before* defining current_fsuid();
+ - key.h includes sysctl.h;
+ - sysctl.h includes module.h;
+ - module.h includes fs.h via elf.h > asm/elf.h > asm/ia32.h > compat.h;
+ - fs.h includes mnt_idmapping.h, which uses *undefined* current_fsuid().
 
-> [Severity: Medium]
-> Can the clear of dev->peer_csum in ntb_netdev_event_handler() be lost
-> against this set in ntb_netdev_rx_handler()?
-> 
-> The two writes run from different contexts with no common lock, and
-> WRITE_ONCE() only prevents tearing:
-> 
-> CPU0 (workqueue, ntb_qp_link_cleanup() -> qp->event_handler())
-> 	ntb_netdev_event_handler(link_is_up = 0)
-> 	    WRITE_ONCE(dev->peer_csum, false);
-> 
-> CPU1 (rx tasklet, ntb_complete_rxc() -> qp->rx_handler(), called after
->       spin_unlock_irqrestore(&qp->ntb_rx_q_lock, irqflags))
-> 	ntb_netdev_rx_handler()
-> 	    WRITE_ONCE(dev->peer_csum, true);   /* stale frame */
-> 
-> ntb_qp_link_context_reset() only sets qp->active = false, which gates
-> future tasklet_schedule() calls; tasklet_kill(&qp->rxc_db_work) happens
-> only in ntb_transport_free_queue(). So an rx callback from the previous
-> link generation can still run after, or overlap with, the clear.
-> 
-> Since there is no matching re-initialisation on the link-up transition
-> (ntb_qp_link_work() just calls the event handler with link_is_up = 1),
-> does the stale true then persist? After reconnecting to a peer that
-> ignores the metadata word, ntb_netdev_start_xmit() would read true, set
-> NTB_NETDEV_META_CSUM and skip skb_checksum_help(), so frames leave with
-> only a pseudo-header checksum and the old peer's stack drops them without
-> incrementing any counter on either side. Would tying the flag to a link
-> generation, or clearing it unconditionally in the event handler
-> (including on link-up), close this?
+Note that fs.h does include cred.h (which defines current_fsuid()) right
+before mnt_idmapping.h (which uses it), but it is not parsed because the
+include guard of cred.h is defined earlier.
 
-This was address in v2 by resetting peer_csum on every link event:
-https://patchwork.kernel.org/project/netdevbpf/patch/20260817064916.13278-5-den@valinux.co.jp/
+Address this by removing sysctl.h from key.h, which does not need it,
+and adding it to files that actually need it.
 
-> 
-> > +
-> > +	if (meta & NTB_NETDEV_META_CSUM) {
-> > +		u16 csum_start = (meta >> NTB_NETDEV_META_CSUM_START_SHIFT) & U16_MAX;
-> > +		u16 csum_offset = meta & NTB_NETDEV_META_CSUM_OFFSET_MASK;
-> > +
-> > +		if (!skb_partial_csum_set(skb, csum_start, csum_offset))
-> > +			goto rx_drop;
-> 
-> [Severity: High]
-> Is csum_start validated enough here? It is a full 16-bit peer-supplied
-> value, and skb_partial_csum_set() only bounds it against the frame as
-> received:
-> 
-> net/core/skbuff.c:skb_partial_csum_set() {
-> 	u32 csum_end = (u32)start + (u32)off + sizeof(__sum16);
-> 	u32 csum_start = skb_headroom(skb) + (u32)start;
-> 
-> 	if (unlikely(csum_start >= U16_MAX || csum_end > skb_headlen(skb)))
-> 		...
-> 		return false;
-> 	skb->ip_summed = CHECKSUM_PARTIAL;
-> 	skb->csum_start = csum_start;
-> 	...
-> }
-> 
-> So csum_start = 0 with csum_offset = 16 is accepted. eth_type_trans()
-> then pulls ETH_HLEN, and skb_checksum_start_offset() becomes negative
-> (start - 14) while ip_summed stays CHECKSUM_PARTIAL when
-> NETIF_F_RXCSUM is enabled.
-> 
-> The other consumer of untrusted partial-checksum metadata rejects this
-> explicitly:
-> 
-> include/linux/virtio_net.h:__virtio_net_hdr_to_skb() {
-> 		if (!skb_partial_csum_set(skb, start, off))
-> 			return -EINVAL;
-> 		if (skb_transport_offset(skb) < nh_min_len)
-> 			return -EINVAL;
-> }
-> 
-> Downstream, a negative offset is not caught cleanly. skb_checksum_help()
-> compares the signed offset against unsigned skb_headlen() and fires
-> WARN_ONCE() plus skb_dump(), which a peer can trigger at will (fatal
-> with panic_on_warn). And skb_copy_and_csum_dev() does:
-> 
-> net/core/skbuff.c:skb_copy_and_csum_dev() {
-> 	long csstart;
-> 
-> 	if (skb->ip_summed == CHECKSUM_PARTIAL)
-> 		csstart = skb_checksum_start_offset(skb);
-> 	...
-> 	BUG_ON(csstart > skb_headlen(skb));
-> 
-> 	skb_copy_from_linear_data(skb, to, csstart);
-> }
-> 
-> The BUG_ON does not trigger for a negative csstart on 64-bit (the
-> unsigned int result is promoted to long), and the length parameter is
-> unsigned:
-> 
-> include/linux/skbuff.h:skb_copy_from_linear_data() {
-> 	memcpy(to, skb->data, len);   /* const unsigned int len */
-> }
-> 
-> Can that turn a negative csstart into a multi-gigabyte memcpy into a
-> fixed-size driver TX buffer? Drivers that advertise checksum offload and
-> call this helper unconditionally still exist (8139too sets
-> NETIF_F_HW_CSUM in rtl8139_init_one() and calls skb_copy_and_csum_dev()
-> from rtl8139_start_xmit(); sc92031 fakes NETIF_F_IP_CSUM the same way),
-> so skb_csum_hwoffload_help() will not sanitize the skb first. A negative
-> offset survives to egress whenever the ingress pull exceeds the egress
-> push, for example locally terminated IPIP/GRE
-> (__iptunnel_pull_header() advances skb->data via skb_pull_rcsum() and
-> iptunnel_pull_offloads() leaves ip_summed alone) followed by forwarding
-> the inner packet out such a NIC.
-> 
-> Would a check that skb_transport_offset(skb) leaves room for the
-> Ethernet and L3 headers, mirroring the virtio_net one, be appropriate
-> here?
+Signed-off-by: Mauricio Faria de Oliveira <mfo@igalia.com>
+---
+ arch/riscv/kernel/vector.c    | 1 +
+ fs/verity/init.c              | 1 +
+ include/linux/key.h           | 1 -
+ include/linux/pid_namespace.h | 1 +
+ 4 files changed, 3 insertions(+), 1 deletion(-)
 
-The csum_start issue is real. Thanks for catching this. The missing lower bound
-check needs to be added, but I don't think requiring room for an L3 header as
-virtio_net does is appropriate here. It would be too restrictive for
-ntb_netdev's protocol-agnostic NETIF_F_HW_CSUM contract.
+diff --git a/arch/riscv/kernel/vector.c b/arch/riscv/kernel/vector.c
+index b112166d51e9f584f84c52d0f84feb92ccd60df1..9eac47c99f114304521fdc539018f3f84507e75f 100644
+--- a/arch/riscv/kernel/vector.c
++++ b/arch/riscv/kernel/vector.c
+@@ -10,6 +10,7 @@
+ #include <linux/sched.h>
+ #include <linux/uaccess.h>
+ #include <linux/prctl.h>
++#include <linux/sysctl.h>
+ 
+ #include <asm/thread_info.h>
+ #include <asm/processor.h>
+diff --git a/fs/verity/init.c b/fs/verity/init.c
+index 3aa55dec88fc919792a2cb4be476f8481ef78a9e..d460eef74fcfe49f6cf69974a8194a65de486819 100644
+--- a/fs/verity/init.c
++++ b/fs/verity/init.c
+@@ -9,6 +9,7 @@
+ #include "fsverity_private.h"
+ 
+ #include <linux/ratelimit.h>
++#include <linux/sysctl.h>
+ 
+ #ifdef CONFIG_SYSCTL
+ static const struct ctl_table fsverity_sysctl_table[] = {
+diff --git a/include/linux/key.h b/include/linux/key.h
+index 81b8f05c68985c6f0a5c5bbe0f1fd6661912c618..a74f8f1b7936d6ede584c0a8cd520f858f6a9758 100644
+--- a/include/linux/key.h
++++ b/include/linux/key.h
+@@ -14,7 +14,6 @@
+ #include <linux/list.h>
+ #include <linux/rbtree.h>
+ #include <linux/rcupdate.h>
+-#include <linux/sysctl.h>
+ #include <linux/rwsem.h>
+ #include <linux/atomic.h>
+ #include <linux/assoc_array.h>
+diff --git a/include/linux/pid_namespace.h b/include/linux/pid_namespace.h
+index b20baaa7e62b755e7e561fcd8018e2b61213503e..94b23471c7dec135e24c4c0c1fdbf841cea2e5de 100644
+--- a/include/linux/pid_namespace.h
++++ b/include/linux/pid_namespace.h
+@@ -10,6 +10,7 @@
+ #include <linux/nsproxy.h>
+ #include <linux/ns_common.h>
+ #include <linux/idr.h>
++#include <linux/sysctl.h>
+ 
+ /* MAX_PID_NS_LEVEL is needed for limiting size of 'struct pid' */
+ #define MAX_PID_NS_LEVEL 32
 
-I'll make sure csum_start values below ETH_HLEN are rejected in v3.
+-- 
+2.47.3
 
-> 
-> > +
-> > +		if (!(ndev->features & NETIF_F_RXCSUM) &&
-> > +		    skb_checksum_help(skb))
-> > +			goto rx_drop;
-> > +	}
-> >  	skb->protocol = eth_type_trans(skb, ndev);
-> > -	skb->ip_summed = CHECKSUM_NONE;
-> >  	skb_record_rx_queue(skb, q->qid);
-> >  
-> >  	if (netif_rx(skb) == NET_RX_DROP) {
-> 
-> [ ... ]
-> 
-> > @@ -252,13 +292,24 @@ static netdev_tx_t ntb_netdev_start_xmit(struct sk_buff *skb,
-> >  	struct ntb_netdev *dev = netdev_priv(ndev);
-> >  	u16 qid = skb_get_queue_mapping(skb);
-> >  	struct ntb_netdev_queue *q;
-> > +	unsigned int meta = NTB_NETDEV_META_CAP_CSUM;
-> >  	int rc;
-> >  
-> >  	q = &dev->queues[qid];
-> >  
-> >  	ntb_netdev_maybe_stop_tx(ndev, q, tx_stop);
-> >  
-> > -	rc = ntb_transport_tx_enqueue(q->qp, skb, skb->data, skb->len, 0);
-> > +	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-> > +		if (READ_ONCE(dev->peer_csum))
-> > +			meta |= NTB_NETDEV_META_CSUM |
-> > +				(skb_checksum_start_offset(skb) <<
-> > +				 NTB_NETDEV_META_CSUM_START_SHIFT) |
-> > +				skb->csum_offset;
-> > +		else if (skb_checksum_help(skb))
-> > +			goto drop;
-> > +	}
-> > +
-> > +	rc = ntb_transport_tx_enqueue(q->qp, skb, skb->data, skb->len, meta);
-> >  	if (rc)
-> >  		goto err;
-> 
-> [Severity: High]
-> This isn't a bug introduced by this patch, since the baseline already
-> treated rc == 0 as a completed handoff with meta = 0, but does the
-> rc == 0 path here leak the skb when the QP link is going down?
-> 
-> drivers/ntb/ntb_transport.c:ntb_transport_tx_enqueue() {
-> 	/* If the qp link is down already, just ignore. */
-> 	if (!qp->link_is_up)
-> 		return 0;
-> 
-> 	entry = ntb_list_rm(&qp->ntb_tx_free_q_lock, &qp->tx_free_q);
-> 	...
-> 	entry->cb_data = cb;
-> }
-> 
-> The early return happens before entry->cb_data = cb, so the transport
-> never records the skb and ntb_netdev_tx_handler() -- the only place that
-> calls dev_kfree_skb_any() for a transmitted skb -- is never invoked for
-> it. start_xmit() then returns NETDEV_TX_OK without freeing.
-> 
-> The window looks reachable: qp->link_is_up is cleared in
-> ntb_qp_link_context_reset() before ntb_netdev_event_handler() stops the
-> subqueue, and both __ntb_netdev_maybe_stop_tx() and
-> ntb_netdev_tx_timer() re-open the queue based on a check-then-act
-> ntb_transport_link_query():
-> 
-> 		if (__netif_subqueue_stopped(ndev, q->qid) &&
-> 		    ntb_transport_link_query(q->qp))
-> 			netif_wake_subqueue(ndev, q->qid);
-> 
-> Would repeated peer link flaps then leak one sk_buff per racing packet?
-> With this patch each leaked skb can additionally carry a freshly
-> allocated linear buffer, because skb_checksum_help() may reallocate the
-> head via pskb_expand_head() just before the enqueue.
-
-The link-down skb leak is being handled by the separate net fix series:
-https://patchwork.kernel.org/project/netdevbpf/cover/20260817053519.4135287-1-den@valinux.co.jp/
-
-Best regards,
-Koichiro
-
-> 
-> [ ... ]
-> -- 
-> pw-bot: cr
