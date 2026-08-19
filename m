@@ -1,95 +1,368 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6653B637E;
-	Wed, 19 Aug 2026 14:36:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC393603DF
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 14:37:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787150179; cv=none; b=gq5BK5Ci4OlWdpRH7t97uz9hlg5ZkkKsVoLuEt9wLOLpNS48nV2dBVBviVeTAMXKnd9awJvQm//FF0UqP7r5rYGTNJQ7PvggfbRoR/O0wmMQEvFObInwoCleF7hqCB5Xl78tAfOUmW/DZZfNtuSm7OjSPLfBYQXAQCQewzBgLS0=
+	t=1787150267; cv=none; b=JuYcuJxupM56w477mEykBU9wi6oaYD9iG6wjJLl0Ax+Y6z4Vc9/uYm51/6s6vl08TpeEfMnm4nsqmQRpe2fRUCia0IR+UdFTYD3qReEGZfK+36h5WUE+pnPj4u6ZzYj4hdb7nhZRzYA+ZQMfQuNsqNpO7zkOAghMu4Zs8XwT/4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787150179; c=relaxed/simple;
-	bh=W5+RB1kh5G2NAioQhMSFs1Z9+Gv/BMq6ShELO+gpRkw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dxn87q8dGvhOBiV7tQ7QkmdtLCt0+zYgm5VDMPy6ZYfgsn75NHVIqyziklb4xBF8+dUqIOmqRD1nC6Hq3ahdpvDZqU2jv5hswrHm71UTEAMu7GSxgxxNzKo89fCG6TGnzecg1k00fGPhckKRQ+zaJlHtyKjU6nMzqh41cxuDiUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MJIlnmEb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787150267; c=relaxed/simple;
+	bh=0Lcc1mpd15mOJzVgTOdNh97/G/EV6hhRjtp4LKWcajc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HbHlO3n1G3Pz6UMbVIInPugUbEU1bRIQg0+PLkxMhygWYs+sI+N8OUGpyrgQpmRnJ2fh03K46ZUEf93E18DN0PJi9vmhdvTnhovApzPAqgJBhSZBL3V+W9htUQBjBVEpMqo3NBiq9nULURsjgB2cd/s6tVEaaRXWrIbrZ91rEt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=XK4aMWob; arc=none smtp.client-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MJIlnmEb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE9141F000E9;
-	Wed, 19 Aug 2026 14:36:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787150177;
-	bh=AqFgiGxP5ESF9RsoMfA8QXW9PcZaNheAxHHBKBnNefQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MJIlnmEbxHjVXs9vfjnaGugesm3h24CmO3NjCAvyvpjcLJHLZHWKl9VL4f0GcWVIb
-	 sYz8TgBmeIdwAHJUJpx9Vyy8893Fp+2cQ1dYmyKUzZvFHT+VBaBj/+UARx88Gu8Lta
-	 VPRGwR23+20m5C+BTmOrthDfqY25wbIJmSPMuysBfTcl0CAM6HOHzTY3uOsi6eOhec
-	 PmTbp88auI9NyybhsRAc8ORvVnKQJOIDOQDDSPvmqj2wLVtb64mUBnbEP9WhgZSw6g
-	 aScV2zTpU+pUeP+hhAXrv5YW9oNkVT9tI5VsVNWeJcXRf6j8h2+WPp1OgZSdIT2xt2
-	 tIgnDWvycs4cQ==
-Date: Wed, 19 Aug 2026 15:36:11 +0100
-From: Simon Horman <horms@kernel.org>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="XK4aMWob"
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-92ed19f4d60so65036385a.0
+        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 07:37:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1787150263; x=1787755063; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=sbGHVwpVNKD+rMkdZFZmgr6oi00BzJ3DOwQk+A4xS68=;
+        b=XK4aMWobagolZZIAoUYbQhwtlSCsuMvvJKmt5Xvy9WvrNX8fZAzklr2/5kida86ieC
+         dscW22R4j4GDE62nmUhi6yxe+D2RzavhenCjTUvVS44i4okCCVmd4/3oUGITG+KhLjun
+         AlmoiQKtNvt+aVc93o1A8zMeCoatiqVTkYXac=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787150263; x=1787755063;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=sbGHVwpVNKD+rMkdZFZmgr6oi00BzJ3DOwQk+A4xS68=;
+        b=PF1cgzxJ9BDHZLP6++ogOlXAoT3vs3M/W3BSAC1ng33DCJ9gCGKzOHfaJdoNAGuLyd
+         lIiXqAvZHvdhg7l9OQFn8xYjehPB2ASazHPfB9iEB2fvPFBz7tX3UoMyKkmwsJkXE+kR
+         cBWLvNg9IiRnsYN6HUYqt3+xnFECnkHXx/9t//sTqX9bcSkVuPzW4vHF3cwyTx58kKcJ
+         JO4R/cgJw8F7fC2nGPdKy2cpzZSLuwXIEZSALXxbxqrNkBjrp0W3Xq5S0yqAZ0fV2gY9
+         eePiUdQic1NNq3WxhKXke4wrbHpZFYsLszJfvGoFsZGAN3P6Zq7dcU5eHIf0uRV6sdsy
+         fHsg==
+X-Gm-Message-State: AOJu0YyN2Vpy76hnLhzezBVW7wWr4KQep70a/4r4OFUVuw7zM7aJS1qV
+	oWDwUbHa3SUK7WZOcw/aQxIE4jduUYapFjTWhsFtmZaKhr/84SrbtHnMDz8XG8ZG29LWF8yhySY
+	U/KTRRg==
+X-Gm-Gg: AR+sD10x+fMuDxwodhk2AusUxnVHgqRGC10JHSEwQW2snc6qv2aNXG4pkyuY16xM9xa
+	vZOWCARfWLbUyCjs7shwpiqKQ+7roLZ41S52AWVisTvia4JDQoMqD+zLMdCBtOS+yJRzaZc0/zT
+	vzZ1TX5WAhSThjeHRi1o9ATI3hRqixVVEkiHDbSsH+Arto7O1lB4rA5n2k4kyGLEc5UNpBg4aac
+	3wymsnoWuRlSeWO2GYzeJ5wxE3R+wEehVg40lV2DQtQvN/2YJQl/lN0bKTZ2HiOtIXJkqT7b997
+	W4af0GlZHapFim4ZILET1Cq9DsgkpCNMJjSkKWICQJiOb54iL+zpeDW9C+/yscUQse0zllE92C6
+	m0s72S3N4EVufcU/jfsaOPTuMA12ysK/cyMvJT5FzFvGJtZ9wBpRENp7uFDCBl/ELnvhr6j1UE3
+	/cMCmeG3D9qfQsWcBpmllYDCfbLTl9mJXXUCto8k5GW6ZXfvzCJ5lVdOIk0YZeoMaM8f0ZjSrgG
+	lfyy6VBZ0dgYtgOOq4sMP2OE4M/yZWl0FzSBVljtp325Q==
+X-Received: by 2002:a05:620a:2a09:b0:92e:57ea:8c8b with SMTP id af79cd13be357-9371e197337mr420529785a.0.1787150263014;
+        Wed, 19 Aug 2026 07:37:43 -0700 (PDT)
+Received: from majuu.waya (bras-base-kntaon1621w-grc-04-184-144-29-222.dsl.bell.ca. [184.144.29.222])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-937205998ddsm145894385a.44.2026.08.19.07.37.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Aug 2026 07:37:42 -0700 (PDT)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Edward Srouji <edwards@nvidia.com>, Gal Pressman <gal@nvidia.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Jiri Pirko <jiri@resnulli.us>,
-	Leon Romanovsky <leon@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org, Maher Sanalla <msanalla@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>, Moshe Shemesh <moshe@nvidia.com>,
-	Or Har-Toov <ohartoov@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>, Shay Drori <shayd@nvidia.com>
-Subject: Re: [PATCH net 0/3] net/mlx5: Preserve speed and state across vport
- modify commands
-Message-ID: <20260819143611.GT265046@horms.kernel.org>
-References: <20260816065015.3280733-1-tariqt@nvidia.com>
+	Simon Horman <horms@kernel.org>,
+	stable@vger.kernel.org,
+	vega@nebusec.ai,
+	Victor Nogueira <victor@mojatatu.com>,
+	Panagiotis Issaris <takis@issaris.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>
+Subject: [PATCH net] net/sched: account classifier filter allocations to memcg
+Date: Wed, 19 Aug 2026 10:37:33 -0400
+Message-Id: <20260819143733.57538-1-jhs@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260816065015.3280733-1-tariqt@nvidia.com>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Aug 16, 2026 at 09:50:12AM +0300, Tariq Toukan wrote:
-> Hi,
-> 
-> The firmware vport modify command bundles both admin state and max tx
-> speed in a single operation, which requires each side to preserve the
-> other field when it only intends to change one.
-> 
-> When modifying max tx speed, the driver already queries the current
-> admin state and passes it back to avoid overwriting it. However, this
-> query and the subsequent modify were not atomic, a state change
-> between the two could cause the modify to overwrite the new state with
-> a stale value. The fix holds esw->state_lock across the query-modify
-> sequence.
-> 
-> When support for setting max tx speed via the vport modify command was
-> introduced, the existing admin state modify path was not updated to
-> preserve the current speed. As a result, the firmware interprets the
-> zero speed field as an intentional reset. The fix adds a speed query
-> before the state modify and passes the result back in the command.
-> 
-> To support that, mlx5_query_vport_max_tx_speed() had to be fixed first:
-> it was returning zero whenever the vport was DOWN, which was correct
-> for the query_port_speed verb but would defeat the purpose of querying
-> before a state modify. The DOWN-to-zero logic is moved to the
-> verb-layer caller so the function returns the raw firmware value.
-> 
-> Patch #1  holds esw->state_lock across the state query and modify in
->           the speed modify path
-> Patch #2  moves the vport DOWN zero mapping to the verb-layer caller
->           so the query returns the raw firmware value
-> Patch #3  queries current max tx speed before modifying vport state to
->           preserve it
+Allocations in the tc classifier *_change() paths (filter objects,
+per-CPU counters, and per-filter aux data) use plain GFP_KERNEL without
+__GFP_ACCOUNT, allowing unprivileged users to pin kernel memory outside
+memcg charging. The shared tcf_exts_init_ex() action array allocation in
+cls_api.c was also uncharged; this patch closes it along with the
+per-classifier filter-object/percpu/aux allocations that remain
+unaccounted.
 
-For the series:
+Add GFP_KERNEL_ACCOUNT to:
+- the shared tcf_exts_init_ex() action array (cls_api.c), common to every
+  filter of every classifier (32 pointers, 256 bytes);
+- the filter-object, per-CPU-counter, and per-filter aux allocations in
+  cls_basic, cls_bpf, cls_cgroup, cls_flow, cls_flower, cls_fw,
+  cls_matchall, cls_route and cls_u32;
+- the u32_init_knode() replace-path knode allocation (cls_u32.c), which
+  allocates the same struct tc_u_knode + sel.keys on every replace of an
+  existing knode and was missed by the create-path-only conversion.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Also fix the cls_basic error path: basic_change() inserts fnew into the
+IDR before allocating the per-CPU counter. If alloc_percpu() fails the
+errout path kfree'd fnew without idr_remove, leaving a dangling pointer
+in the IDR. With GFP_KERNEL_ACCOUNT the percpu alloc becomes failable
+on demand (memcg at memory.max), making the dead path attacker-reachable
+and burning the handle permanently. Add the idr_remove on the percpu
+failure path, matching the basic_set_parms failure-path pattern.
+
+Note: vega@nebusec.ai provided a poc for basic_cls, but it was easy to
+extend to the other classifiers.
+
+Conditions to recreate the bug:
+- CONFIG_NET_SCHED, CONFIG_NET_CLS_* (the classifier being used),
+  CONFIG_NET_CLS_ACT, CONFIG_MEMCG, CONFIG_USER_NS, CONFIG_NET_NS.
+- Unprivileged user in a fresh user+network namespace (unshare -Urn),
+  or root with CAP_NET_ADMIN.
+- Create a large number of tc filters (e.g. tc filter add dev lo
+  ingress ... <classifier> ...) while watching a memcg-limited cgroup:
+  system slab grows far faster than memory.current, pinning kernel
+  memory outside memcg charging.
+
+Fixes: 0da974f4f303 ("[NET]: Conversions from kmalloc+memset to k(z|c)alloc.")
+Reported-by: vega@nebusec.ai
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+---
+ net/sched/cls_api.c      |  3 ++-
+ net/sched/cls_basic.c    |  6 ++++--
+ net/sched/cls_bpf.c      |  6 +++---
+ net/sched/cls_cgroup.c   |  2 +-
+ net/sched/cls_flow.c     |  2 +-
+ net/sched/cls_flower.c   |  4 ++--
+ net/sched/cls_fw.c       |  4 ++--
+ net/sched/cls_matchall.c |  4 ++--
+ net/sched/cls_route.c    |  4 ++--
+ net/sched/cls_u32.c      | 11 ++++++-----
+ 10 files changed, 25 insertions(+), 21 deletions(-)
+
+diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
+index 4e6a2812a4f3..be63b347640b 100644
+--- a/net/sched/cls_api.c
++++ b/net/sched/cls_api.c
+@@ -3364,7 +3364,8 @@ int tcf_exts_init_ex(struct tcf_exts *exts, struct net *net, int action,
+ 	 * This reference might be taken later from tcf_exts_get_net().
+ 	 */
+ 	exts->net = net;
+-	exts->actions = kzalloc_objs(struct tc_action *, TCA_ACT_MAX_PRIO);
++	exts->actions = kzalloc_objs(struct tc_action *, TCA_ACT_MAX_PRIO,
++				     GFP_KERNEL_ACCOUNT);
+ 	if (!exts->actions)
+ 		return -ENOMEM;
+ #endif
+diff --git a/net/sched/cls_basic.c b/net/sched/cls_basic.c
+index 492cd9ce8d46..e2a94ba9fba7 100644
+--- a/net/sched/cls_basic.c
++++ b/net/sched/cls_basic.c
+@@ -193,7 +193,7 @@ static int basic_change(struct net *net, struct sk_buff *in_skb,
+ 			return -EINVAL;
+ 	}
+ 
+-	fnew = kzalloc_obj(*fnew);
++	fnew = kzalloc_obj(*fnew, GFP_KERNEL_ACCOUNT);
+ 	if (!fnew)
+ 		return -ENOBUFS;
+ 
+@@ -212,9 +212,11 @@ static int basic_change(struct net *net, struct sk_buff *in_skb,
+ 	if (err)
+ 		goto errout;
+ 	fnew->handle = handle;
+-	fnew->pf = alloc_percpu(struct tc_basic_pcnt);
++	fnew->pf = alloc_percpu_gfp(struct tc_basic_pcnt, GFP_KERNEL_ACCOUNT);
+ 	if (!fnew->pf) {
+ 		err = -ENOMEM;
++		if (!fold)
++			idr_remove(&head->handle_idr, fnew->handle);
+ 		goto errout;
+ 	}
+ 
+diff --git a/net/sched/cls_bpf.c b/net/sched/cls_bpf.c
+index 6d19155becc8..188cf0f949dd 100644
+--- a/net/sched/cls_bpf.c
++++ b/net/sched/cls_bpf.c
+@@ -352,7 +352,7 @@ static int cls_bpf_prog_from_ops(struct nlattr **tb, struct cls_bpf_prog *prog)
+ 	if (bpf_size != nla_len(tb[TCA_BPF_OPS]))
+ 		return -EINVAL;
+ 
+-	bpf_ops = kmemdup(nla_data(tb[TCA_BPF_OPS]), bpf_size, GFP_KERNEL);
++	bpf_ops = kmemdup(nla_data(tb[TCA_BPF_OPS]), bpf_size, GFP_KERNEL_ACCOUNT);
+ 	if (bpf_ops == NULL)
+ 		return -ENOMEM;
+ 
+@@ -403,7 +403,7 @@ static int cls_bpf_prog_from_efd(struct nlattr **tb, struct cls_bpf_prog *prog,
+ 	}
+ 
+ 	if (tb[TCA_BPF_NAME]) {
+-		name = nla_memdup(tb[TCA_BPF_NAME], GFP_KERNEL);
++		name = nla_memdup(tb[TCA_BPF_NAME], GFP_KERNEL_ACCOUNT);
+ 		if (!name) {
+ 			bpf_prog_put(fp);
+ 			return -ENOMEM;
+@@ -443,7 +443,7 @@ static int cls_bpf_change(struct net *net, struct sk_buff *in_skb,
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	prog = kzalloc_obj(*prog);
++	prog = kzalloc_obj(*prog, GFP_KERNEL_ACCOUNT);
+ 	if (!prog)
+ 		return -ENOBUFS;
+ 
+diff --git a/net/sched/cls_cgroup.c b/net/sched/cls_cgroup.c
+index 680a5c308094..210fd9fd26d8 100644
+--- a/net/sched/cls_cgroup.c
++++ b/net/sched/cls_cgroup.c
+@@ -95,7 +95,7 @@ static int cls_cgroup_change(struct net *net, struct sk_buff *in_skb,
+ 	if (head && handle != head->handle)
+ 		return -ENOENT;
+ 
+-	new = kzalloc_obj(*head);
++	new = kzalloc_obj(*head, GFP_KERNEL_ACCOUNT);
+ 	if (!new)
+ 		return -ENOBUFS;
+ 
+diff --git a/net/sched/cls_flow.c b/net/sched/cls_flow.c
+index 356c68ebc389..a9ac3acf6eda 100644
+--- a/net/sched/cls_flow.c
++++ b/net/sched/cls_flow.c
+@@ -438,7 +438,7 @@ static int flow_change(struct net *net, struct sk_buff *in_skb,
+ 			return -EOPNOTSUPP;
+ 	}
+ 
+-	fnew = kzalloc_obj(*fnew);
++	fnew = kzalloc_obj(*fnew, GFP_KERNEL_ACCOUNT);
+ 	if (!fnew)
+ 		return -ENOBUFS;
+ 
+diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
+index 88f8a32fab2b..0e275b58151c 100644
+--- a/net/sched/cls_flower.c
++++ b/net/sched/cls_flower.c
+@@ -2233,7 +2233,7 @@ static struct fl_flow_mask *fl_create_new_mask(struct cls_fl_head *head,
+ 	struct fl_flow_mask *newmask;
+ 	int err;
+ 
+-	newmask = kzalloc_obj(*newmask);
++	newmask = kzalloc_obj(*newmask, GFP_KERNEL_ACCOUNT);
+ 	if (!newmask)
+ 		return ERR_PTR(-ENOMEM);
+ 
+@@ -2394,7 +2394,7 @@ static int fl_change(struct net *net, struct sk_buff *in_skb,
+ 		goto errout_tb;
+ 	}
+ 
+-	fnew = kzalloc_obj(*fnew);
++	fnew = kzalloc_obj(*fnew, GFP_KERNEL_ACCOUNT);
+ 	if (!fnew) {
+ 		err = -ENOBUFS;
+ 		goto errout_tb;
+diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
+index 646a730dca93..a462b262719c 100644
+--- a/net/sched/cls_fw.c
++++ b/net/sched/cls_fw.c
+@@ -276,7 +276,7 @@ static int fw_change(struct net *net, struct sk_buff *in_skb,
+ 		if (f->id != handle && handle)
+ 			return -EINVAL;
+ 
+-		fnew = kzalloc_obj(struct fw_filter);
++		fnew = kzalloc_obj(struct fw_filter, GFP_KERNEL_ACCOUNT);
+ 		if (!fnew)
+ 			return -ENOBUFS;
+ 
+@@ -330,7 +330,7 @@ static int fw_change(struct net *net, struct sk_buff *in_skb,
+ 		rcu_assign_pointer(tp->root, head);
+ 	}
+ 
+-	f = kzalloc_obj(struct fw_filter);
++	f = kzalloc_obj(struct fw_filter, GFP_KERNEL_ACCOUNT);
+ 	if (f == NULL)
+ 		return -ENOBUFS;
+ 
+diff --git a/net/sched/cls_matchall.c b/net/sched/cls_matchall.c
+index 6f126872c14a..c14899b935bf 100644
+--- a/net/sched/cls_matchall.c
++++ b/net/sched/cls_matchall.c
+@@ -189,7 +189,7 @@ static int mall_change(struct net *net, struct sk_buff *in_skb,
+ 			return -EINVAL;
+ 	}
+ 
+-	new = kzalloc_obj(*new);
++	new = kzalloc_obj(*new, GFP_KERNEL_ACCOUNT);
+ 	if (!new)
+ 		return -ENOBUFS;
+ 
+@@ -201,7 +201,7 @@ static int mall_change(struct net *net, struct sk_buff *in_skb,
+ 		handle = 1;
+ 	new->handle = handle;
+ 	new->flags = userflags;
+-	new->pf = alloc_percpu(struct tc_matchall_pcnt);
++	new->pf = alloc_percpu_gfp(struct tc_matchall_pcnt, GFP_KERNEL_ACCOUNT);
+ 	if (!new->pf) {
+ 		err = -ENOMEM;
+ 		goto err_alloc_percpu;
+diff --git a/net/sched/cls_route.c b/net/sched/cls_route.c
+index eded7aacd3f7..0d1324c90583 100644
+--- a/net/sched/cls_route.c
++++ b/net/sched/cls_route.c
+@@ -455,7 +455,7 @@ static int route4_set_parms(struct net *net, struct tcf_proto *tp,
+ 	h1 = to_hash(nhandle);
+ 	b = rtnl_dereference(head->table[h1]);
+ 	if (!b) {
+-		b = kzalloc_obj(struct route4_bucket);
++		b = kzalloc_obj(struct route4_bucket, GFP_KERNEL_ACCOUNT);
+ 		if (b == NULL)
+ 			return -ENOBUFS;
+ 
+@@ -524,7 +524,7 @@ static int route4_change(struct net *net, struct sk_buff *in_skb,
+ 			return -EINVAL;
+ 
+ 	err = -ENOBUFS;
+-	f = kzalloc_obj(struct route4_filter);
++	f = kzalloc_obj(struct route4_filter, GFP_KERNEL_ACCOUNT);
+ 	if (!f)
+ 		goto errout;
+ 
+diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
+index c297d7dbcf91..ac6d0fa5a40e 100644
+--- a/net/sched/cls_u32.c
++++ b/net/sched/cls_u32.c
+@@ -825,7 +825,7 @@ static struct tc_u_knode *u32_init_knode(struct net *net, struct tcf_proto *tp,
+ 	struct tc_u32_sel *s = &n->sel;
+ 	struct tc_u_knode *new;
+ 
+-	new = kzalloc_flex(*new, sel.keys, s->nkeys);
++	new = kzalloc_flex(*new, sel.keys, s->nkeys, GFP_KERNEL_ACCOUNT);
+ 	if (!new)
+ 		return NULL;
+ 
+@@ -1114,15 +1114,16 @@ static int u32_change(struct net *net, struct sk_buff *in_skb,
+ 		goto erridr;
+ 	}
+ 
+-	n = kzalloc_flex(*n, sel.keys, s->nkeys);
++	n = kzalloc_flex(*n, sel.keys, s->nkeys, GFP_KERNEL_ACCOUNT);
+ 	if (n == NULL) {
+ 		err = -ENOBUFS;
+ 		goto erridr;
+ 	}
+ 
+ #ifdef CONFIG_CLS_U32_PERF
+-	n->pf = __alloc_percpu(struct_size(n->pf, kcnts, s->nkeys),
+-			       __alignof__(struct tc_u32_pcnt));
++	n->pf = __alloc_percpu_gfp(struct_size(n->pf, kcnts, s->nkeys),
++				   __alignof__(struct tc_u32_pcnt),
++				   GFP_KERNEL_ACCOUNT);
+ 	if (!n->pf) {
+ 		err = -ENOBUFS;
+ 		goto errfree;
+@@ -1144,7 +1145,7 @@ static int u32_change(struct net *net, struct sk_buff *in_skb,
+ 		goto errout;
+ 
+ #ifdef CONFIG_CLS_U32_MARK
+-	n->pcpu_success = alloc_percpu(u32);
++	n->pcpu_success = alloc_percpu_gfp(u32, GFP_KERNEL_ACCOUNT);
+ 	if (!n->pcpu_success) {
+ 		err = -ENOMEM;
+ 		goto errout;
+-- 
+2.43.0
 
