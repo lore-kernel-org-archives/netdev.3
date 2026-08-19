@@ -1,88 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6432847ACF4
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 16:56:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E6048C41C
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 16:59:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787158606; cv=none; b=UCsjoIj0aF+ssZ8Zdtr2bWy0wNOj4hxQebp1o7HW15WIfrQS6ZSGcEUHEZncRRP2qnKK5oTU84wOXVJgCZjMXBxH8grp83JZptP2X12+Y/kqSkrDjF9cN1CqmpVbV6BhqlZL2EwFXnSSuYUjlWG+bQf6xSUTXS4cyAgAsMkI8Ts=
+	t=1787158775; cv=none; b=KISNCxQW4kJcq6ojFBF92fvyNUG7LaztxtvZjzeC6ZIPBRnmtAtU6EJ5wFuZ8wU+mH2Tg1tBXc9AhR7qy1NiOlWBFFyXTiOW95QehK3hqbMF4VNsEE1QiTlzonag3+Ycba0kkd6XIpNNNLjqTnqyIW38hsKCWlVszFviucL2lg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787158606; c=relaxed/simple;
-	bh=5x4wS/2WbqzdRgu0bqzQ/bOx8qfLhh2xg9K86s+jIkY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OJ46T4iK3W1atJK53nmc+yFDdUjq9nKCKAY20U4S2IbMJYi7cT1LeS0PW/X+nZ28Yfw+jg58d6UNyW3nG7SuJLJgCdIIVcyz1xCbl4AEktIdmjwpDGSXwl8f0x2sRFxJSdjKt8jmWm1ibo6yytv+Qg/Ci8W1qFGOvUhn3brnark=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ERV0CdLq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787158775; c=relaxed/simple;
+	bh=2XaBdkgJgruoXsAicUbM+D98FdFgxNckiG2SMl4ao5I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DmJ6nI1MUAmb9d/QcA2eRQXaejywj1Qu0Fux1x3W6BRfSFGVFMZ2e7YZNKON2KfFHvMqF/soxZEEDSXvYzlkNzYM+8Jg7PqUmDEC6spcah/opRaev5w1vHtN21ccmfyQMTV0WlXdCXFOKy1AcqAUcHzaTQeX5H4cnrEKuSJT8XA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=ZEhG+p1+; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ERV0CdLq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA3521F000E9;
-	Wed, 19 Aug 2026 16:56:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787158605;
-	bh=qHdFN2y41D7UXWts2KuvbWh6creh2s0UAlWzeqvwFNs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ERV0CdLqFcYcD/YS0U44XIx05541ssucOV6QClUPGPJHrjHMamfVoIU3J7mYv6smL
-	 m/wNLShdpj9DcOHpwR4tF61R8X7B0hVelQh3coQIThS07vGGe+Dk4iXVJCPsaw6oDf
-	 Tr6OGebhuVKDZBcx0YM7PQPnk3+pbb9L5WeoHD83rgoJlwY4KOjpPBltRnrxol59l4
-	 VlTtY0/jOYytV8IyvSnF191t37OqHMufhRK/363sCNzNdHCjLIJ1v/hmEasukCasGL
-	 4UKqromeXZuT4qyD+Im59+Gu0l6gzxkHWkOuR5On7D2f0Z+S5M0gt5GQ5qj8zmscH2
-	 byMLXk0ZPdmOw==
-Date: Wed, 19 Aug 2026 17:56:40 +0100
-From: Simon Horman <horms@kernel.org>
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: edumazet@google.com, ncardwell@google.com, kuniyu@google.com,
-	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-	dsahern@kernel.org, 0x7f454c46@gmail.com, fruggeri@arista.com,
-	noureddine@arista.com, netdev@vger.kernel.org
-Subject: Re: [PATCH net] net/tcp-ao: fix use-after-free of current_key on
- reconnect to another peer
-Message-ID: <20260819165640.GW265046@horms.kernel.org>
-References: <aoIriv3pHDgII2YR@v4bel>
+	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="ZEhG+p1+"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-84f3ab8750cso1042572b3a.0
+        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 09:59:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=trailofbits.com; s=google; t=1787158771; x=1787763571; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lroOjWUQuzkzfsFV8jZnR6n9nf3kSNRY1PDaEZgo3rY=;
+        b=ZEhG+p1+JhbCtDFNGxIAUWYD5ca0Am1hyiyjKbYarH7pP8hPyMVKTTPtuJ9Onu1/eF
+         PvT5WLh2M5j5c0ymfbXVlgoXIQ0jVb2NWHArvDvt1QqwVllR/dD5WNl11HYl6v4cgW1E
+         kJzP9C6owIloPbytN0Bq5RnMH7g2pJLHVd1XzUmeE1PsYfwrVovA3p0pGAfFZ6sxEiIQ
+         A5OqUR5GzpTxfMFadIQtWl2mZX10VqOduxPgUL9kwj6OciZcG1COCEZHd+8ISKz2b3yR
+         yBn5floZcmPhUc8QC+y7/e+VI6w6WGVn6rQxi7ffzCjinq5YHCpoK+EFaOATTtteOVfX
+         vi8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787158771; x=1787763571;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lroOjWUQuzkzfsFV8jZnR6n9nf3kSNRY1PDaEZgo3rY=;
+        b=TWbQgfMLjzkg5JWrdhNTbnzbRD2wjqA54ahY7XjpdWXozCgpmWCpYWHGw9J5B5u/23
+         FuoWHZpur7+adjko9gfkdBGT0CWNLDeM+mv1rZB8BJqdMxM/8OBHRojJT5WeSfiXYe7J
+         FICLBj6XrNsHmkabXwxjluX45IYoJxjOs6UzDqCih/LY+Fxm9827jwfOJqdrqIBe7+DU
+         Qk5Q/AYiWKfyA50EK1boyS/MczYBoXUjSzPZ9HLv18HoIamXjxtkYOgakMPuiA3q72Pb
+         YnseGEuLfq+h1+SSpt+/hu8zWr+evm8HMwnDd4Uu4DkT9L2/VAzdWTE0TLqyblgAetT8
+         ljTQ==
+X-Forwarded-Encrypted: i=1; AHgh+RragpsZMhHtl442qsK66eniMLGavykEgvFw/vt/MrL8OObw4qEowRCJwSIHWeXiwlxl1fFf8xc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJLDZIWt8WdehlxL9yWzPyMFnI7KxQauXLv9ci/+Kbc2LBhWSy
+	R3LepiGEoH4o24k0kF3HqSr//O/btEK/H048epcwek8YgnF8XH7AFNghP8kE5ZEWJZI=
+X-Gm-Gg: AR+sD10ig3XSMUlbRhps1im3LQZv6dfQ/2yvzZMt5bMIsXtCH3FR4cQY+ry6sQwXyeK
+	fheSipOnGy8J9k2fVkkdy4ebmQ4cpdw0jwqpjf42XnaTP3S1mF13ZPU3LJN6hYJpS+v8ac0I8gO
+	5NxS0+QAX4/YzNyh03crIzw4HQw8dEhe1DcifQm6fAUAAfxm/NZsac2Cg749RK4o/5dpVbYdkLs
+	gqV68krVOCyUZmpusl9Wo3z1nUjknR1oOXlwPNa1sp1qt4b2x9ZXmVqulDwABcrttXSWmXFpBjl
+	dFF0PEPA0IM3qctFfciED9P1Qb6OlxHWLXBg0XKrQ6HNO/bBowOA6rdybFHoER9+9Y4XogS473C
+	GyqpzKEMs1oazFVJQzUGXZel+j1/uT7ZRdzx5/RC/IpPFZJlFs82r3OqlYeLecGGc6GJgQ7yyM0
+	mN1+wYQbnA4MrrwocWxvkpt6v1iv8RfRX/Rvz7k4ofo95wQ3Sym6/ARD6rNSsahDnaimKJxusrv
+	TmeY97Pn9EbzeWeb8ICtv4n23YQoPipp1lEySY5Gt3MxEoHCi3MCsLSgfcfvQ==
+X-Received: by 2002:a05:6a20:c90c:b0:3c3:812a:2198 with SMTP id adf61e73a8af0-3cd00e039fcmr12251148637.4.1787158770503;
+        Wed, 19 Aug 2026 09:59:30 -0700 (PDT)
+Received: from localhost.localdomain ([2603:8001:5f01:8bab:8d7e:6716:d5db:2855])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327bec30f49sm7687491eec.0.2026.08.19.09.59.29
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 19 Aug 2026 09:59:29 -0700 (PDT)
+From: Artem Dinaburg <artem@trailofbits.com>
+To: stable@vger.kernel.org
+Cc: Xiang Mei <xmei5@asu.edu>,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Artem Dinaburg <artem@trailofbits.com>
+Subject: [PATCH 6.1.y] net: bonding: fix use-after-free in bond_xmit_broadcast()
+Date: Wed, 19 Aug 2026 12:59:22 -0400
+Message-ID: <20260819165924.1184-1-artem@trailofbits.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aoIriv3pHDgII2YR@v4bel>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 17, 2026 at 06:28:42AM +0900, Hyunwoo Kim wrote:
-> tcp_inbound_ao_hash() is called before bh_lock_sock_nested() is taken,
-> with only rcu_read_lock() held. On the fast path for established
-> sockets, if the rnext_keyid sent by the peer differs from
-> current_key->sndid, the key the peer asked for is looked up and stored
-> in current_key. The lookup is inside the RCU read side, but current_key
-> outlives it.
-> 
-> When the socket is disconnected and connect() is called again for
-> another peer, tcp_ao_connect_init() unlinks every key that does not
-> match the new peer and frees it with call_rcu(). If current_key points
-> at such a key, it is cleared to NULL.
-> 
-> The fast path reads sk_state only once on entry, so a softirq that got
-> into it while the socket was still established can update current_key
-> after that loop has already run. The update is inside the RCU read side,
-> so it comes before the call_rcu() callback, and once the callback frees
-> the key, current_key is left pointing at freed memory.
-> 
-> The next transmission picks that pointer up in tcp_get_current_key().
-> tcp_ao_transmit_skb() then reads the traffic key from the freed object,
-> which is the use-after-free.
-> 
-> Wait for one grace period before unlinking, and only if a key is going
-> to be removed. By the time tcp_connect() runs the socket is already in
-> TCP_SYN_SENT, and TCP_AO_ESTABLISHED does not contain TCPF_SYN_SENT, so
-> a softirq entering after the wait cannot reach the fast path, and the
-> ones already in it have finished. The existing NULL handling in the loop
-> is then enough.
-> 
-> Fixes: 0a3a809089eb ("net/tcp: Verify inbound TCP-AO signed segments")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+From: Xiang Mei <xmei5@asu.edu>
 
-I do have some concern about potential performance impact of using
-synchronize_rcu(). But on the balance I agree that this is a good
-bug-fix patch.
+Please queue the attached backport of upstream commit 2884bf72fb8f. It fixes
+CVE-2026-31419 in 6.1.y.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+An unprivileged user can create a broadcast bond and dummy slaves in a user
+and network namespace. Racing ordinary packet sends with slave release makes
+`bond_xmit_broadcast()` give the same skb to two transmitters. I reproduced a
+KASAN use-after-free in `skb_clone()` on v6.1.182.
+
+The attached one-line upstream fix applies cleanly to v6.1.182. The same
+workload completed over one million sends and 299 slave mutations with the
+patched module and no sanitizer, oops, lock, or BUG output.
+
+The fix is already released in 6.6.143, 6.12.95, 6.18.22, and 6.19.12, but no
+corresponding fix is present in 6.1.y.
+
+Signed-off-by: Artem Dinaburg <artem@trailofbits.com>
+---
+ drivers/net/bonding/bond_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 9898d85075d150..4370ba922b2cc2 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -5344,7 +5344,7 @@ static netdev_tx_t bond_xmit_broadcast(struct sk_buff *skb,
+ 		if (!(bond_slave_is_up(slave) && slave->link == BOND_LINK_UP))
+ 			continue;
+ 
+-		if (bond_is_last_slave(bond, slave)) {
++		if (i + 1 == slaves_count) {
+ 			skb2 = skb;
+ 			skb_used = true;
+ 		} else {
+-- 
+2.39.5
+
