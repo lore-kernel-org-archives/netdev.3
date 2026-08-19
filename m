@@ -1,168 +1,155 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432122C0F93
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 23:32:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4653A257E;
+	Wed, 19 Aug 2026 23:39:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787182344; cv=none; b=VkzcxWzF9r/LcmlOYAt4oGILJqa830i4zoYySK/3hvHf7KEJOsYJAH1hTwovGgEUzJ6hisc+PGTmur6c+n4Zix4clQsEmZplKd2x8lbbv0HfzUtWk5gVsDDwIRB3chEBm4c8RxpiK+jHn3uko9LV2aAVSl2gtelukh9tVshjBIw=
+	t=1787182763; cv=none; b=dYu95qFE9+FUV3cpsCBWESiw10o1Otjp3IHgmiFBXXDj5yKYECbsaSRKyv4QKACoY7VlORXjr2Aje9sf81gusT8HyO+puhilRvA935Wi+dMRgYXsP1AfFMTgX1qprrdEZsyb4boxVzpR1tvRQBCMFgLpRaL7+bCPCjPdqiZ5htA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787182344; c=relaxed/simple;
-	bh=0IKdMwWw8MeoLI4HAXFOswTW0yNbMN9YDdEes+7tPUw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kovaJwek353vdd4uyyYWcmnQZkSVUrTjyDZIDiUvQzpA3gebH3ErrB5Q6NOWTn7OO9Ygi2jVrhEKC918RAS/fpd2Hx1lnZ/btXLNS1/L3wUmcdLmK3TQcRP899DHR6SN8XpDbahIgUXDKMxh3m3nT1sXrOLdc3YofBk+q08PyCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=FlDFAKv1; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	s=arc-20240116; t=1787182763; c=relaxed/simple;
+	bh=UKycuMgV9hIAWudS/jnJ0dB2Rr0udPWNWD9eW2uN4nE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rOz6Hnuo+GRbrguI6WS+SF3dTzH3VbrdHDNZ8IhDwf/PAO8Ub0Gg8SG1XgybNdWQckTrbABNV1ELX+PgAE+nf36VKLOAIa3gSRxid4MgIE/tbo3jAFLk8WNbFYhYCQAaLCB/DSLilOq8G503v6K3kKjICQUGxc9zOwQv3IDetRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JbRISsyV; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="FlDFAKv1"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cc891373e0so19447715ad.2
-        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 16:32:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1787182341; x=1787787141; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=QkfK+n4pBa8IvbBuEdCKRmANPwZqjt2vhK+NoTYINkg=;
-        b=FlDFAKv15ooE3J6v61xuJsOC1B/oNdBj6waRKj6QpwuvnIedyEBAgAIB5W0J6xn8az
-         ltcP0rTzzWBzaXai/Nqvuf4nQyGgWtsfQSdGtHInJ3d/jY7pdWUE4EYZ9b2S5NUKdzFb
-         /HtUnAM61q03Zzg9bp60RtpX6fZ7DibxCEz7R5ZcBfbAtx3A77Mxld4o77t39FJlGwqi
-         eHv/stTiOnSOVeKwDNk+tCT/Lk+3pF2UT0fuymUZSQeEC5w5lGK2tDicIlGSL143cdqN
-         ao8W/ZuHIgdyEttZfyX1bckZ3l+uepa09taUUEZplHJA1V0RhRrfvOY9TjxaxfFpXjx3
-         j9Og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787182341; x=1787787141;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=QkfK+n4pBa8IvbBuEdCKRmANPwZqjt2vhK+NoTYINkg=;
-        b=NjKE87sgMQDdrJWo/+Kp56scQZYukMek3PrRkHMuGqtLVbugmUltQPFsDXgbIRZf55
-         iZ8q9ZIQMTWqePKsKm1pTyTPe6ROLfAuaR7oBb8NZjH+fRnlHuSoz2rlXuJe2zArJmal
-         uHjCyTCBcXa+4fkf68zWg/8SBpSu9n/ifhJGsHupW3qd8Ag3xzD9sE0+aVIi1HhqRGOo
-         rFbJ7CmthMi03cABrf1KLnJgxEvKhz59PKP9EGFlXv2CvPzFkq6onrPHH8ngk/db48Zh
-         w+aY6u7W6urz3saWrH6UBAn7t/C02G476grZMk7iGRFEtJhtoSD89bWB3+jE++uaohZX
-         QBBw==
-X-Gm-Message-State: AFuF++maPOxzDkxNUgE5sH5Bh2PdHV3haF3WlIAtmbGAebfMI38MjMBK
-	i5QVnrRMZbLFDyadRC15z9EMUdRZ3yKARG6BgiuY/DkFJXzWlH+SN1YK1niXQUArP4ockv1QNdP
-	Iq+Ae
-X-Gm-Gg: AR+sD10CSV9uYi9/thovLM6E6omTEunrmaCGrGBQuqKXTGVZR4ykXD9UuZiPlmCGQn/
-	ZJ2aIlMdXrC77dgZu348x8hq19pXTyBKDDhbPzYSmwDaIUY8Y+62Jl+XHOu2DG9+eHtxbp8kPKI
-	SZfKDlfPs2AeKqYil8aUMpauYrJ1XqwFECIOlHqmCUZrhj5EfCZBDLcOBdxzAG8EBDV6gFFlWEH
-	2MtvSLkZIhnaMc1t1JtdHV9mpYm9hJ2vgmWj+4FxKEqPVzXiRSUMjC++2Ifb6+dsjT46fKNQSEG
-	QCVmBimw3cyNxza40HJIwyob4PB5E2mtX8h9JRPewbXGCPbc9lcXUhmcYPva5zQQCKWxoHXT9LS
-	5JkkfEldyA6VxLnqHYi/raHtp+G4c/RqUL1E+KPnhJ3N/bOlcWgd1kJf1IGJA0ZAqFxp+yJ60yS
-	OvGTNsVik94JAGn+dBee5A0xgwRRdbSIDwV+xBt26jkSs=
-X-Received: by 2002:a17:90b:5484:b0:37d:f983:7b5 with SMTP id 98e67ed59e1d1-3958110cfc4mr15615141a91.9.1787182341460;
-        Wed, 19 Aug 2026 16:32:21 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:73::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-395ada67783sm39772a91.3.2026.08.19.16.32.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2026 16:32:20 -0700 (PDT)
-From: Joe Damato <joe@dama.to>
-To: netdev@vger.kernel.org,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Joe Damato <joe@dama.to>
-Cc: horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] net: bnxt: ring the doorbell when SW USO exits early
-Date: Wed, 19 Aug 2026 16:32:11 -0700
-Message-ID: <20260819233213.3673149-1-joe@dama.to>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JbRISsyV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787182760; x=1818718760;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=UKycuMgV9hIAWudS/jnJ0dB2Rr0udPWNWD9eW2uN4nE=;
+  b=JbRISsyV5eQA8N5J2VWflZ86+cD3x5JWnHwQPmjAtNLwjtYp07vOEsS+
+   aBY8gR9uMUSmqqqwW3PDbsyuqlJJkOlcj6wNbYCrnLOZT1zzclPlDuBDp
+   lTxrZnSlcM4xn+m8/Te9Dq61Wu/g5kw7K/fp3ZltbVr7IxdvlXPLZfsDC
+   IBzz76X69+h1xIsRM6k6l42L7eBQ6kjW316zhzhyKBpaJ28G6SYYnRrJO
+   9D38Uuhsd7R9Od6vXz9WAc2Cx8LPbW7VuHa9vFpmThlmLZAZqRCp43TeJ
+   GsE9HB+pxaKHPX3+CffcUGsCAavLT+jimkqOgmxYdo7fu0Y9etW2QJ9OI
+   Q==;
+X-CSE-ConnectionGUID: B+qDbA0wQ8erYWZt3VaqmA==
+X-CSE-MsgGUID: MMlxg3W8RxyRDAIXq0n1Fw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="113251710"
+X-IronPort-AV: E=Sophos;i="6.25,232,1779174000"; 
+   d="scan'208";a="113251710"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 16:39:19 -0700
+X-CSE-ConnectionGUID: 9hmj9M2wRNGT0XN01L+O3w==
+X-CSE-MsgGUID: U2gavyp0RWKehpR7ZG0QvA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,232,1779174000"; 
+   d="scan'208";a="266350708"
+Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.108.13]) ([10.125.108.13])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 16:39:17 -0700
+Message-ID: <cb4c7775-0307-4b0d-8963-cd5889261658@intel.com>
+Date: Wed, 19 Aug 2026 16:39:17 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 2/4] net: ntb_netdev: Fix TX busy and drop handling
+To: Koichiro Den <den@valinux.co.jp>, Jon Mason <jdmason@kudzu.us>,
+ Allen Hubbe <allenbh@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: ntb@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260817053519.4135287-1-den@valinux.co.jp>
+ <20260817053519.4135287-3-den@valinux.co.jp>
+From: Dave Jiang <dave.jiang@intel.com>
+Content-Language: en-US
+In-Reply-To: <20260817053519.4135287-3-den@valinux.co.jp>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-When a burst of packets is handed down to the driver, the driver defers
-the doorbell to the end by setting txr->kick_pending = 1. The normal TX
-path handles this, but the SW USO path can miss it if it returns
-early.
 
-If bnxt_sw_udp_gso_xmit runs but returns early with NETDEV_TX_BUSY and
-txr->kick_pending was previously set to 1, then the TX queue can
-stall because the driver wrote some BDs but never wrote the doorbell.
-The device won't know to do the TX which would generate the completion
-that would wake the queue back up.
 
-Simplify bnxt_sw_udp_gso_xmit to set txr->kick_pending in its success
-case and check the flag on return. The added check after
-bnxt_sw_udp_gso_xmit returns ensures that any pending doorbells are
-written handling both successful USO and any early returns, which
-prevents the TX queue stall mentioned above.
+On 8/16/26 10:35 PM, Koichiro Den wrote:
+> Currently, ntb_netdev returns NETDEV_TX_BUSY for every enqueue error. It
+> also increments the drop and error counters while leaving the skb owned
+> by the qdisc, and may return BUSY with the subqueue still awake.
+> Retrying a permanent error cannot succeed either.
+> 
+> The unconditional BUSY return and premature accounting date back to the
+> initial driver. The error-path queue stop was later removed without
+> changing that return value. The current flow-control code includes a
+> resource check, but ntb_netdev does not honor its result before enqueue.
+> 
+> Honor the resource check before enqueue. For -EAGAIN and -EBUSY, stop
+> the subqueue, arm the existing reaper timer, and return BUSY without
+> touching the skb. For other errors, free the skb, increment tx_dropped,
+> and return NETDEV_TX_OK.
+> 
+> Fixes: 548c237c0a99 ("net: Add support for NTB virtual ethernet device")
+> Fixes: d723485cb4ca ("ntb_netdev: remove tx timeout")
 
-This TX queue stall was observed on a production system with a netdev TX
-watchdog informing about the queue stall.
+This is probably the only Fixes tag we need.
 
-Fixes: cc5d90667db8 ("net: bnxt: Implement software USO")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joe Damato <joe@dama.to>
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
----
+> Fixes: e74bfeedad08 ("NTB: Add flow control to the ntb_netdev")
+> Cc: stable@vger.kernel.org> Signed-off-by: Koichiro Den <den@valinux.co.jp>
 
-v2:
-  - Simplfy the patch as Michael suggested, setting txr->kick_pending in the
-    USO code instead of exporting and calling bnxt_txr_db_kick.
-  - Update commit message and remove stale comment.
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 
-v1: https://lore.kernel.org/netdev/20260818211540.2991183-1-joe@dama.to/
-
- drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 10 ++++++++--
- drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c |  4 +---
- 2 files changed, 9 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 9377bf675981..d3cb25abb632 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -485,6 +485,7 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	struct bnxt_sw_tx_bd *tx_buf;
- 	__le32 lflags = 0;
- 	skb_frag_t *frag;
-+	netdev_tx_t ret;
- 
- 	i = skb_get_queue_mapping(skb);
- 	if (unlikely(i >= bp->tx_nr_rings)) {
-@@ -510,8 +511,13 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
- #endif
- 	if (skb_is_gso(skb) &&
- 	    (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4) &&
--	    !(bp->flags & BNXT_FLAG_UDP_GSO_CAP))
--		return bnxt_sw_udp_gso_xmit(bp, txr, txq, skb);
-+	    !(bp->flags & BNXT_FLAG_UDP_GSO_CAP)) {
-+		ret = bnxt_sw_udp_gso_xmit(bp, txr, txq, skb);
-+		if (txr->kick_pending)
-+			bnxt_txr_db_kick(bp, txr, txr->tx_prod);
-+
-+		return ret;
-+	}
- 
- 	free_size = bnxt_tx_avail(bp, txr);
- 	if (unlikely(free_size < skb_shinfo(skb)->nr_frags + 2)) {
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
-index f317f60414e8..f7e18bea0fb8 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
-@@ -223,9 +223,7 @@ netdev_tx_t bnxt_sw_udp_gso_xmit(struct bnxt *bp,
- 	netdev_tx_sent_queue(txq, skb->len);
- 
- 	WRITE_ONCE(txr->tx_prod, prod);
--	/* Sync BDs before doorbell */
--	wmb();
--	bnxt_db_write(bp, &txr->tx_db, prod);
-+	txr->kick_pending = 1;
- 
- 	if (unlikely(bnxt_tx_avail(bp, txr) <= bp->tx_wake_thresh))
- 		netif_txq_try_stop(txq, bnxt_tx_avail(bp, txr),
-
-base-commit: 61eb236c41c2a4717015dff18016a75a5eb90052
--- 
-2.53.0-Meta
+> ---
+>  drivers/net/ntb_netdev.c | 27 +++++++++++++++++++--------
+>  1 file changed, 19 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/net/ntb_netdev.c b/drivers/net/ntb_netdev.c
+> index 029a4a532a10..02b35cf53a62 100644
+> --- a/drivers/net/ntb_netdev.c
+> +++ b/drivers/net/ntb_netdev.c
+> @@ -199,8 +199,10 @@ static int __ntb_netdev_maybe_stop_tx(struct net_device *netdev,
+>  static int ntb_netdev_maybe_stop_tx(struct net_device *ndev,
+>  				    struct ntb_netdev_queue *q, int size)
+>  {
+> -	if (__netif_subqueue_stopped(ndev, q->qid) ||
+> -	    (ntb_transport_tx_free_entry(q->qp) >= size))
+> +	if (__netif_subqueue_stopped(ndev, q->qid))
+> +		return -EBUSY;
+> +
+> +	if (ntb_transport_tx_free_entry(q->qp) >= size)
+>  		return 0;
+>  
+>  	return __ntb_netdev_maybe_stop_tx(ndev, q, size);
+> @@ -256,21 +258,30 @@ static netdev_tx_t ntb_netdev_start_xmit(struct sk_buff *skb,
+>  
+>  	q = &dev->queues[qid];
+>  
+> -	ntb_netdev_maybe_stop_tx(ndev, q, tx_stop);
+> +	if (unlikely(ntb_netdev_maybe_stop_tx(ndev, q, tx_stop)))
+> +		return NETDEV_TX_BUSY;
+>  
+>  	rc = ntb_transport_tx_enqueue(q->qp, skb, skb->data, skb->len);
+> -	if (rc)
+> -		goto err;
+> +	if (rc) {
+> +		if (rc == -EAGAIN || rc == -EBUSY) {
+> +			netif_stop_subqueue(ndev, q->qid);
+> +			mod_timer(&q->tx_timer,
+> +				  jiffies + usecs_to_jiffies(tx_time));
+> +			return NETDEV_TX_BUSY;
+> +		}
+> +
+> +		goto drop;
+> +	}
+>  
+>  	/* check for next submit */
+>  	ntb_netdev_maybe_stop_tx(ndev, q, tx_stop);
+>  
+>  	return NETDEV_TX_OK;
+>  
+> -err:
+> +drop:
+> +	dev_kfree_skb_any(skb);
+>  	ndev->stats.tx_dropped++;
+> -	ndev->stats.tx_errors++;
+> -	return NETDEV_TX_BUSY;
+> +	return NETDEV_TX_OK;
+>  }
+>  
+>  static void ntb_netdev_tx_timer(struct timer_list *t)
 
