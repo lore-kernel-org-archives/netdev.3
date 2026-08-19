@@ -1,150 +1,95 @@
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4E73B995F
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 14:33:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6653B637E;
+	Wed, 19 Aug 2026 14:36:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787150028; cv=none; b=k1uwg4ERF5MLv9u0vplpO/t1dQve7DsldzEpntgWwIq1VEntvXqC0H1vDITiHpQHqBUjmgm9Gq6smvrA5MtepVczjaebyczVXUImsfzTaXhjmcnQi2arKvMcQ4h8pDXYL2A693XXT4MbX4I58kbHjMO6PDcD0g/s1dAh/qBsMC0=
+	t=1787150179; cv=none; b=gq5BK5Ci4OlWdpRH7t97uz9hlg5ZkkKsVoLuEt9wLOLpNS48nV2dBVBviVeTAMXKnd9awJvQm//FF0UqP7r5rYGTNJQ7PvggfbRoR/O0wmMQEvFObInwoCleF7hqCB5Xl78tAfOUmW/DZZfNtuSm7OjSPLfBYQXAQCQewzBgLS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787150028; c=relaxed/simple;
-	bh=vOX6ffyG/ieT0WE8b5wbPDo0xpG31cy3dM5nOQq2zn8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=ay/QUzgYL/yzi7qSmW4YDbwjUnrjdzgjTfeUWMVaJDZyEZSy2GVS8En2E9/ruVb5lFpM0A058JsLGY3kCqTr5mM0c9Q4KYB9oiEis+rXNELlFXLkbjnatkCR8Zx+c+VF5WcE/B48Mn4HaWpX/WGbwpDS7/RyMIaQfW823ZHC6iA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=DQKDRwzF; arc=none smtp.client-ip=209.85.160.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1787150179; c=relaxed/simple;
+	bh=W5+RB1kh5G2NAioQhMSFs1Z9+Gv/BMq6ShELO+gpRkw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dxn87q8dGvhOBiV7tQ7QkmdtLCt0+zYgm5VDMPy6ZYfgsn75NHVIqyziklb4xBF8+dUqIOmqRD1nC6Hq3ahdpvDZqU2jv5hswrHm71UTEAMu7GSxgxxNzKo89fCG6TGnzecg1k00fGPhckKRQ+zaJlHtyKjU6nMzqh41cxuDiUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MJIlnmEb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="DQKDRwzF"
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-51c0ecfaee7so6966601cf.0
-        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 07:33:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787150024; x=1787754824; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ejuOPt68qhDY4noBlNOcm7rYGgb1gdrrIu92QM8wUXg=;
-        b=DQKDRwzFvE514r1SSQSu57hX4Gvr+7mmyVFOZ9iVCcKAPbYaNd9TkkfYldQD8fTVGf
-         mJhZ+TFhTv101fwOKct1vblnP97euy+fr+OQAnl8vfrQ1h/qfY2KLrlNaNZIvzJx4eqb
-         dt5U3+HcZ7MMcNFoBKYg+Pxn9DfuBmhcNa8kg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787150024; x=1787754824;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ejuOPt68qhDY4noBlNOcm7rYGgb1gdrrIu92QM8wUXg=;
-        b=cXyQsn9/2Qx1aCV1piHpKi+E8yJ5WE6678bb+r7FpVGxJ6BRfpaSuRSq9dgXiZ0+AJ
-         nJkIj1n5Ubo/Gx5cJHUAUOJ16XwH+CtngtqiZp1jgTRLBaMQluiJDM5xNOhxw/DXK2XY
-         9B9GeSS0vXx92pO6Nmkrv1WUxJSIcs4hZB8D2hEHYN7kk8jGhX4kzxRcaK3r0KEyYgpi
-         L8uqC1xHMTIbQ4Rgo3fj246+5HYaSEg6PEW+Qa8fkMSHKdKIBCu73E3s+a8sDPsGOx+H
-         W6nqH48TJgyI7B+9CAcXNryKHItyq4lsHxhcIRT4cKLqPNh7gdbtxhHbjFqAG6y/2YQm
-         Xp+A==
-X-Gm-Message-State: AOJu0YwZmu+jqzMAsdxeq2GXzyAiPgweF1Ha3uEBgqPm6MgAzJ67+SJD
-	kl8eMlRMHPTr2pibpeMbBqVuKpaCmSuR23xtj1kLgsHZXzDurBnRBnrD9fAo7aj8TabYnvLy0kY
-	KzG63Jg==
-X-Gm-Gg: AR+sD111gBg9yqcr7hIhuzerfoC4t7hApfkLmtACR86ptaNPC1ogLSGj6ZdWNCmftE8
-	yd732AozS5Uiy6PBKbwB6Hz/I6KtmiiAI3DBcXk8v0bHVRiYUSB4tQkq0mzLWm04MYZ77zthjgu
-	CB1GJbKJWhkVnMXRiX8MX2TxMgyTxHqs3XzY/NWo+mnSerD2efRqNXYaXhxAmLdqnfQbcQGsLie
-	Xed644eC/eVihgJ33OONsMEW+gOoKv834iy6JI7Bgh5frvJVZ9VUQ6Xcz3ySI0sfMLhDq63wF0l
-	aDQnsY518XQId3HNdTVLvqJWcxW4ApIzbY8E6GDRp93rKupCZSJF8ykpv6NzUsLj1W7WZCvr0Xb
-	+P/9fCTIBBwVtWhFhpuk4lkIgoQduSx4994S5ONhr3Z5evO9PlFQLM7j2PgU+8ZZLBVJQv2RhGK
-	yJEzZHcXAR3JJ1TRpYYOPbGagFaeLnVQ5g4wFhqAFzRO/4jfp6iYG+
-X-Received: by 2002:ac8:7dd2:0:b0:52d:824c:4856 with SMTP id d75a77b69052e-52dd5c5358amr45530651cf.31.1787150023966;
-        Wed, 19 Aug 2026 07:33:43 -0700 (PDT)
-Received: from majuu.waya ([184.144.29.222])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52dd872f61esm11871901cf.23.2026.08.19.07.33.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2026 07:33:43 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MJIlnmEb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE9141F000E9;
+	Wed, 19 Aug 2026 14:36:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787150177;
+	bh=AqFgiGxP5ESF9RsoMfA8QXW9PcZaNheAxHHBKBnNefQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MJIlnmEbxHjVXs9vfjnaGugesm3h24CmO3NjCAvyvpjcLJHLZHWKl9VL4f0GcWVIb
+	 sYz8TgBmeIdwAHJUJpx9Vyy8893Fp+2cQ1dYmyKUzZvFHT+VBaBj/+UARx88Gu8Lta
+	 VPRGwR23+20m5C+BTmOrthDfqY25wbIJmSPMuysBfTcl0CAM6HOHzTY3uOsi6eOhec
+	 PmTbp88auI9NyybhsRAc8ORvVnKQJOIDOQDDSPvmqj2wLVtb64mUBnbEP9WhgZSw6g
+	 aScV2zTpU+pUeP+hhAXrv5YW9oNkVT9tI5VsVNWeJcXRf6j8h2+WPp1OgZSdIT2xt2
+	 tIgnDWvycs4cQ==
+Date: Wed, 19 Aug 2026 15:36:11 +0100
+From: Simon Horman <horms@kernel.org>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	stable@vger.kernel.org,
-	vega@nebusec.ai,
-	Victor Nogueira <victor@mojatatu.com>
-Subject: [PATCH net v2] net/sched: bound qdisc_pkt_len to prevent qdisc soft lockup
-Date: Wed, 19 Aug 2026 10:32:13 -0400
-Message-Id: <20260819143213.57401-1-jhs@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Edward Srouji <edwards@nvidia.com>, Gal Pressman <gal@nvidia.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Jiri Pirko <jiri@resnulli.us>,
+	Leon Romanovsky <leon@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org, Maher Sanalla <msanalla@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>, Moshe Shemesh <moshe@nvidia.com>,
+	Or Har-Toov <ohartoov@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>, Shay Drori <shayd@nvidia.com>
+Subject: Re: [PATCH net 0/3] net/mlx5: Preserve speed and state across vport
+ modify commands
+Message-ID: <20260819143611.GT265046@horms.kernel.org>
+References: <20260816065015.3280733-1-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260816065015.3280733-1-tariqt@nvidia.com>
 
-qdisc_get_stab() accepts a user-supplied size table, and
-__qdisc_calculate_pkt_len() amplifies qdisc_pkt_len() through the
-overhead, the size-table data (u16), and size_log (up to
-STAB_SIZE_LOG_MAX).  A crafted stab can therefore set qdisc_pkt_len()
-to ~1 GiB for an ordinary skb.  Per-flow deficit schedulers such as
-DRR and ETS replenish one quantum per loop iteration; with a tiny
-quantum (1) they spin billions of times under the qdisc lock,
-producing a soft lockup / RCU stall.
+On Sun, Aug 16, 2026 at 09:50:12AM +0300, Tariq Toukan wrote:
+> Hi,
+> 
+> The firmware vport modify command bundles both admin state and max tx
+> speed in a single operation, which requires each side to preserve the
+> other field when it only intends to change one.
+> 
+> When modifying max tx speed, the driver already queries the current
+> admin state and passes it back to avoid overwriting it. However, this
+> query and the subsequent modify were not atomic, a state change
+> between the two could cause the modify to overwrite the new state with
+> a stale value. The fix holds esw->state_lock across the query-modify
+> sequence.
+> 
+> When support for setting max tx speed via the vport modify command was
+> introduced, the existing admin state modify path was not updated to
+> preserve the current speed. As a result, the firmware interprets the
+> zero speed field as an intentional reset. The fix adds a speed query
+> before the state modify and passes the result back in the command.
+> 
+> To support that, mlx5_query_vport_max_tx_speed() had to be fixed first:
+> it was returning zero whenever the vport was DOWN, which was correct
+> for the query_port_speed verb but would defeat the purpose of querying
+> before a state modify. The DOWN-to-zero logic is moved to the
+> verb-layer caller so the function returns the raw firmware value.
+> 
+> Patch #1  holds esw->state_lock across the state query and modify in
+>           the speed modify path
+> Patch #2  moves the vport DOWN zero mapping to the verb-layer caller
+>           so the query returns the raw firmware value
+> Patch #3  queries current max tx speed before modifying vport state to
+>           preserve it
 
-Cap the final qdisc_pkt_len() to GSO_MAX_SIZE so the size-table
-amplification cannot drive deficit schedulers into an unbounded loop.
-A legitimate size table (e.g. qfq's overhead 999999999, which is
-handled by dropping) is still accepted.
+For the series:
 
-Conditions to recreate the bug:
-- CONFIG_NET_SCHED=y, CONFIG_NET_SCH_DRR=y (or CONFIG_NET_SCH_ETS=y).
-- Attach a DRR (or ETS) root qdisc with a crafted TCA_STAB that
-  amplifies qdisc_pkt_len to ~1 GiB (e.g. size_log=15, data=[32768]).
-- Add a class with a tiny quantum of 1 and send one small packet; the
-  deficit loop spins billions of times under the qdisc lock and trips
-  the softlockup detector (panic with kernel.softlockup_panic=1).
-- Reachable as root or from an unprivileged user in a fresh user+net
-  namespace (unshare -Urn) with namespace-local CAP_NET_ADMIN.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: vega@nebusec.ai
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
-v1 -> v2
-
-1. Sigh. The v1 overhead cap broke the existing qfq tdc test 5993, caught by
-   running the whole tdc.sh instead of affected qdiscs reported reported by
-   poc. That test legitimately uses stab overhead 999999999 qfq and expects
-   the qdisc to be accepted (exit 0) with packets dropped.
-
-2. Better Fix: cap the final qdisc_pkt_len() to GSO_MAX_SIZE(524280) in
-   __qdisc_calculate_pkt_len() per sashikos[1][2] suggestions
-
-3. Given existence of tdc 5993 we dont need the tdc test created earlier
-   since the essence of that test is covered in tdc 5993.
-
-[1] https://sashiko.dev/#/patchset/20260818101735.16655-1-jhs@mojatatu.com
-[2] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260818101735.16655-1-jhs@mojatatu.com
----
- net/sched/sch_api.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index 65b35528d125..ad4f117ff55a 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -610,8 +610,11 @@ void __qdisc_calculate_pkt_len(struct sk_buff *skb,
- 
- 	pkt_len <<= stab->szopts.size_log;
- out:
--	if (unlikely(pkt_len < 1))
--		pkt_len = 1;
-+	/* A size table can inflate qdisc_pkt_len() beyond any real packet
-+	 * (via overhead, the data table, or size_log); cap it so deficit
-+	 * schedulers such as DRR/ETS terminate their refill loops.
-+	 */
-+	pkt_len = clamp_t(int, pkt_len, 1, GSO_MAX_SIZE);
- 	qdisc_skb_cb(skb)->pkt_len = pkt_len;
- }
- 
--- 
-2.43.0
+Reviewed-by: Simon Horman <horms@kernel.org>
 
