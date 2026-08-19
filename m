@@ -1,61 +1,149 @@
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Received: from mta-65-225.siemens.flowmailer.net (mta-65-225.siemens.flowmailer.net [185.136.65.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4E347A865;
-	Wed, 19 Aug 2026 14:28:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465084766BF
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 14:30:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787149696; cv=none; b=cl+pf/w/lC5Sbviic3pGLBJhPXSlhrSE3PnEFXakI4pa162Zr2DaGCP89hisXAv12IdJgGssU+66idNWUaXa2r8S9opmkZltoWOwgyFvgIoHd4geTptEB+1JUwl6GEMPqvjlE93IhGj6wIBeHhMn+aPLAGMHPdjqBAsCmIpFSKU=
+	t=1787149853; cv=none; b=jJdS9sRiEZLBPxDylHhr71vSh/E1CcUDoh3e+OgeZ2D4mBJUkVPZ6y2gZ4qSWGxtIPxuUMEEmI5Mv8xW9Na3Q9vytFr37CLeEG5caqt2KyIAbZ/Kj4lPKIjNwlKZ4XcOSrGtFxQMVRceVHgHdw0n3aCkx61QacP0PdYAcWafqeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787149696; c=relaxed/simple;
-	bh=OtJ3Rk3ubtIY5JYbTiCBqJb0B5dq/qOLm5MDG9RF9e4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O8IrgK0Wf9vsseEuszknWUMZdL4xP2JkjdUNjwnZBYiBoLoN+fqC8oSGhbpJY0v6746b4tv/ol+ndeJHVXYUfwfNGS5eJYnJpAmSu4gWab1W/aUxQFoQGA3v2RWK+X6ruVN4U7uGAVIA4NMuAjWHMOVgzRB7dOGH1155YqL+3lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 75C0D68D07; Wed, 19 Aug 2026 16:27:58 +0200 (CEST)
-Date: Wed, 19 Aug 2026 16:27:58 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Breno Leitao <leitao@debian.org>
-Cc: Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Martin KaFai Lau <martin.lau@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH net] net/socket: remove unused
- do_sock_{set,get}sockopt() exports
-Message-ID: <20260819142758.GA922@lst.de>
-References: <20260819-hch_not_export-v1-1-af4b0de70e13@debian.org>
+	s=arc-20240116; t=1787149853; c=relaxed/simple;
+	bh=chBfGMfp844oBzIINw5wmS5LW9kGFWDQ7Hz8+j5O7rI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=hY3j6giRaZWZbAWejKf3zHZXzQHVU0eNs02axP9Iny/qP4xPGlnSy+jg7ovNe83/aJoJd+n68A5SSvYkdOCy/vadXvzz8tJ43Gw6HtSydNoIjp8CfFLKyP+WHu9YF0jwfzXQttosZgE/qM1CbmKMwYMJqj7ItqbegcNxFn8vgcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=florian.bezdeka@siemens.com header.b=bU551jOP; arc=none smtp.client-ip=185.136.65.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=florian.bezdeka@siemens.com header.b="bU551jOP"
+Received: by mta-65-225.siemens.flowmailer.net with ESMTPSA id 2026081914303357233b2802000207d0
+        for <netdev@vger.kernel.org>;
+        Wed, 19 Aug 2026 16:30:34 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
+ d=siemens.com; i=florian.bezdeka@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
+ bh=0N9FotERGZ2lP2bVikDRA8ACC8o9IjXehs1SgZCuBjA=;
+ b=bU551jOPa15ZRd5Mh4WqHDNawdcmCuNzOmevR9LSg4HtaKLsiC/ge2AHvfsT9g0oAVOgcb
+ mmspCU9JWhIFcORYKWAy1IbD0jP5VIi56LP+CUzJ4MDCAUV3w5ksOyPxN8t2bc6TfEAULMKw
+ BUMO+ZzMYNF7hRH+v/D9vpml07Woh4+/BJyoC5yPYrNCfKFnoh2zbfOBvhi8bFDSDhnDAFLz
+ kpGZ6D5kWqoe5TkaVi8jKYE8UvrOJo4scovH11cVqgxLVUkwQsSl9Oym0l7h2ksrgQ7SrIGi
+ T5kGgrgcVkj1tB5n1aDVDPu7jhNs7uZ9zAuTdYiTLvV4+UNR0gvPo79g==;
+From: Florian Bezdeka <florian.bezdeka@siemens.com>
+Date: Wed, 19 Aug 2026 16:30:32 +0200
+Subject: [PATCH RFC 3/3] net: stmmac: Migrate IRQ balancing to
+ cpumask_local_spread()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260819-hch_not_export-v1-1-af4b0de70e13@debian.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260819-flo-net-7-2-make-stmmac-default-affinity-aware-v1-3-3f79a99cadaf@siemens.com>
+References: <20260819-flo-net-7-2-make-stmmac-default-affinity-aware-v1-0-3f79a99cadaf@siemens.com>
+In-Reply-To: <20260819-flo-net-7-2-make-stmmac-default-affinity-aware-v1-0-3f79a99cadaf@siemens.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Yury Norov <yury.norov@gmail.com>, 
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
+ Thomas Gleixner <tglx@kernel.org>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>, netdev@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-rt-devel@lists.linux.dev, 
+ Florian Bezdeka <florian.bezdeka@siemens.com>
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-68982:519-21489:flowmailer
 
-On Wed, Aug 19, 2026 at 06:15:35AM -0700, Breno Leitao wrote:
-> do_sock_setsockopt() and do_sock_getsockopt() have been exported since
-> they were split out of the syscall handlers for io_uring to reuse.
-> 
-> io_uring is the only caller outside net/socket.c, and it is never
-> modular: cmd_net.o is built under obj-$(CONFIG_NET), and both CONFIG_NET
-> and CONFIG_IO_URING are bool. The declarations in <net/sock.h> are all
-> it needs, so no module has ever been able to use these exports.
-> 
-> Drop the symbol export.
+The previous balancing mechanism was based on num_online_cpus(), which
+is a problem for systems cpu-isolating workloads. IRQs were targeting
+CPUs that were isolated for those sensitive workloads.
 
-exports?
+With a migration to cpumask_local_spread() we
+    - get NUMA locality
+    - honor the default SMP affinity mask, which avoids targeting
+      isolated CPUs.
 
-Otherwise looks good:
+This also aligns with the pattern used by most network drivers dealing
+with IRQ affinities / affinity hints.
+
+Signed-off-by: Florian Bezdeka <florian.bezdeka@siemens.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index a71f0df263785dd8badc45292ca3067ab33bda05..949ced7e46d2814b57c6bd86b4886ac3bf33996c 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -3826,11 +3826,16 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 	struct stmmac_priv *priv = netdev_priv(dev);
+ 	struct stmmac_msi *msi = priv->msi;
+ 	enum request_irq_err irq_err;
++	cpumask_var_t affinity;
+ 	int irq_idx = 0;
+ 	char *int_name;
++	int node;
+ 	int ret;
+ 	int i;
+ 
++	if (!zalloc_cpumask_var(&affinity, GFP_KERNEL))
++		return -ENOMEM;
++
+ 	/* For common interrupt */
+ 	int_name = msi->int_name_mac;
+ 	sprintf(int_name, "%s:%s", dev->name, "mac");
+@@ -3916,6 +3921,7 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 	}
+ 
+ 	/* Request Rx MSI irq */
++	node = dev_to_node(&priv->dev->dev);
+ 	for (i = 0; i < priv->plat->rx_queues_to_use; i++) {
+ 		if (i >= MTL_MAX_RX_QUEUES)
+ 			break;
+@@ -3935,8 +3941,10 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 			irq_idx = i;
+ 			goto irq_error;
+ 		}
+-		irq_set_affinity_hint(msi->rx_irq[i],
+-				      cpumask_of(i % num_online_cpus()));
++
++		cpumask_clear(affinity);
++		cpumask_set_cpu(cpumask_local_spread(i, node), affinity);
++		irq_set_affinity_and_hint(msi->rx_irq[i], affinity);
+ 	}
+ 
+ 	/* Request Tx MSI irq */
+@@ -3959,13 +3967,18 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 			irq_idx = i;
+ 			goto irq_error;
+ 		}
+-		irq_set_affinity_hint(msi->tx_irq[i],
+-				      cpumask_of(i % num_online_cpus()));
++
++		cpumask_clear(affinity);
++		cpumask_set_cpu(cpumask_local_spread(i, node), affinity);
++		irq_set_affinity_and_hint(msi->tx_irq[i], affinity);
+ 	}
+ 
++	free_cpumask_var(affinity);
++
+ 	return 0;
+ 
+ irq_error:
++	free_cpumask_var(affinity);
+ 	stmmac_free_irq(dev, irq_err, irq_idx);
+ 	return ret;
+ }
+
+-- 
+2.55.0
 
