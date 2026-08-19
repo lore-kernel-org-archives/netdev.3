@@ -1,145 +1,176 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D937E3F2113
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 07:48:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787125713; cv=pass; b=rej8OQDZqYviKmylm1ZYavqLZtAr4KXfr3KYp5/n6Rs5lVk2iAE2g78OY9KyDVe80O8/lNwT7E2TdWfux4efKX+36T2NSxmJY3su8LFnQBnnGdezPnHeoL7Sm705GFHGHPUlHjXj3TAmS9kg66hilgdtOGODysJo5Pef9ljr2TM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787125713; c=relaxed/simple;
-	bh=2BAe7W6OpUvj4ptW1kz/B6OcD4IsQZBqUZaj8aMteWc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JtyvQEmuuFJKu9yvsoH8dCcXOvXoUGnUo4XwCwzXEdg2jIEaDy8KpwfZ8Iqdowv31Qnr6ou7QD7/fx/XcrKfx6QYeVII1JKSJoulFVW/TlpyN9ERNlQF+aVT1pnxGY2Lk0MAgjMLfxhMGxOwald9CErej5MoaooDHYYgpLBg0w4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G8kEILwF; arc=pass smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D1A388E43;
+	Wed, 19 Aug 2026 07:49:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787125797; cv=none; b=OzqW3rKA3A5QdiCXMerqbW6ICH/ZUbFu5AoTn17x+qtm8+PhTsTMMkO/G8Tx7LLTPyY+KFw6LHYhPR08f595nDGlDLlBfcElHSdHqkiljF1NHJ9RBaeYU0tfMTuUP+uAVp80yl3Sls5zk71yR5MMWlVPEX/9OyO/FyZYT1mgAB0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787125797; c=relaxed/simple;
+	bh=zRwX6uK2SacFm4nv91jT8PAoqsCsQbtVLhesweaKaxQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ubCC2yNeOu8Wj4TJWiwEPY7lmylz5yu9nJbPJRdd+EOqbi8ENJBVm2gPvvFw+hx6JPMPrZvkgG4uHVfPJIkUCvtxAePXYDkimDlYKcTdP85vdsXClGIUtvfTf2jORtOaf4PAxt84hCY+Vo7b16dLzV6S8TIjELWNLNNhyc5I+EY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=iryU31gZ; arc=none smtp.client-ip=113.46.200.224
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G8kEILwF"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-52cd38ddcdfso4341051cf.3
-        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 00:48:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787125711; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Wt9Clph4r6BmOHHkT+5g9N1TYqOTGrAVWP9xiFr00Lki7oCvvQBb9Ia0b6LeAzbi2Q
-         6/Uk7o+ygnHEIDk9ZNwN8cty5qEQCiDM9cll19WfDxYKSl4o74J7eEL1uVDXk2mZEiqR
-         MWW9spn5Uw0Psks6qDTAl49z7Gn+TDmtf0PSp6xl2L1LqDvDnMYqH/7kbjq6V/TJ2Dp2
-         fDWz7FEUAkr1yXnqie9SxpPIOvmP6nysYxemAYdJ23SEYOc3rIIwNEwsYh2K1LU7zDMI
-         XpfMaBV3EuUI9cWq3ShEHnrCP3eqt0oRXktV1s4OhJXbYdnsxXjLBfZAjF7bvuU8JNoW
-         LDoA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=X0AAFuTc80Uwaikl2Snr7zZKN7yn52mjvtgyxxbS9MI=;
-        fh=vrq8cyFJg3vmlaZI4RphmZqN+LkxzumKqddVmbn76Uc=;
-        b=XPaMjWjMV5MNnLlTJyE0AZlDjJRnTC2jDnYF7ZjCiIAK0CO4+YK76l+dqZgFdDBaIB
-         07lgRA3Z/F5U9BQNR5gFag/xCJOtlZtTS6YZWMQLJ716nXlbQw/G5OKVrv0QqtwwLSmV
-         Bb4X/rLdNPvw/vRdNNppkr+licsugkwqDuNzlY97bb8AELh+KzHcVSL8HZqhDM8fSYAN
-         8jBtCCyw/a0K7ovk2vTkI2C374kJmusDDXWsqXn/omm7hogWCA5o6ODtCOvP7dUqbaIb
-         Nbz+BZ46PsIXjfTmL6DhOScaRhthqZjib9QYORt6pBjgGD0HjpfIGLcGFBGotqq1comF
-         W9Ww==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787125711; x=1787730511; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=X0AAFuTc80Uwaikl2Snr7zZKN7yn52mjvtgyxxbS9MI=;
-        b=G8kEILwFCUHImG1O3u36u7FQXxTvIieEWqktQF6cfq7Ve2jpZrPGeDGV+4qfysdOBJ
-         saTWaOB++1PmghW6qJdAUUe4MW+bEUl2CSDVFeSDjhNWlKwZEiSwQDbo7cPJ6RrgV/8g
-         iqdwsf1CvEzeTXAXBx4CDCgb4GHI/mR20bbpt/gO0Ur8evVPUIyVciM044VnailIiuZW
-         8KstE/WPmlFKewecPqqaJhbkaXxZb48ubjK75SeQHp4f4RF/yHPlroly4/Pvp3xhXegJ
-         LIqIscJxdYTwCzXTaJu6S2tQMEjyRZ2OYZ4FR2NFGk6V9gJ3pTQN0zlo8O8uTamgI7kP
-         oPvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787125711; x=1787730511;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=X0AAFuTc80Uwaikl2Snr7zZKN7yn52mjvtgyxxbS9MI=;
-        b=Ax/5AqxZfxwzatbPsM25KbflkNRGtPEgUSeByXAzS4YcwLBIjeF4Gw2jmqSrS+U6Z6
-         sOtEeC51zuYOwB4/qPB/glSsG7kJCzhHc6uM35O/We4J50g2Z+FZLQNoD9jKmwTwTZOM
-         nHzRputKfmSBmgVmLpfANGQc8MtG+/YcSiLu43j3s2+FcCZLnvvjLsMId78mRM7EBLUy
-         9y424FCuTXMRHADhMP+nPq6OGJQk90G18nUfTW+LoQ2zMGHqZo0/dWn7gqcUy/obBRdW
-         pKfRsepao/UWwY75we6lHrgeKl3way5spqRep5XTUjPvkPx3wRpmTNDxucL0WSC60Uqk
-         ARGw==
-X-Forwarded-Encrypted: i=1; AHgh+Rra7DufF3HAeG4Nmac6oYl8AXIh/jWldJOijLPYhmZMcmlXFG2O23kqsWX6H+u4J+tKr+N7HRk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXNYKOD8kRWJNDeF+y4Vln+oLEGmw2sYHNvq8U+RE8aHXqQQwU
-	UVnT3r8PWdlAUc4RI8MYM4/4vBVKHxI0rcawWszLkRD77vbR2s0nZbnLdGEepc5wKQRcTYgZhV4
-	yFroOxmoIBRr0W3eIB7C+IvAvb4aKZC9+6PO2eOOHiCi+FBpNz7juGyI6uPc=
-X-Gm-Gg: AR+sD10Ks6fPp74f/U2HHHhSvHn14syft2SI0mKmdxlGfFQqb/sWSb5JsCp5qIB3JEQ
-	oCoE+0oaD+x/bah2BTt7Jgs6WwP6QJNsPm54RD4G9KIFt8lSJI8Ha9FDR/xl/LvVo+ihQdW5vmF
-	9pBvXkJ8hVavEBnVC9VE2m+UiXAih/FE+CWpe5fLWFeXhjaflPys09Dt10bTQX92siPTsNpjKxM
-	7BC/au3pdcIFDz577H5enZqeYdCk1lUksLztv3BFProtyl+xBRyJLogM9Cyzc/UUcoNqg7awcpm
-	J7/+1SEa9yxm8ZoGkcNuoPhNw5rhfvljJqprkFpC70tTKs/LhLUre5X7HVV9KU9w45BszRq9+mk
-	wkW8ksl5KPBU2i8grXpKJ4SftA6dny6t5yH8XnhwcAVurYAH3wAspGxl5nLXB+Jy4s3BV+PQqvB
-	JFt85HoUTQnKt4jds=
-X-Received: by 2002:a05:622a:481a:b0:528:162e:29d3 with SMTP id
- d75a77b69052e-52dd5cdd931mr22514351cf.32.1787125710173; Wed, 19 Aug 2026
- 00:48:30 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="iryU31gZ"
+dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=U5oTfw5gJcO/xDxQ6cN7x8if7qRyh5e7eVy9/bdqZDI=;
+	b=iryU31gZj+cGJwc5wWDV73T2ta0NdlQZQ7sJe/mNv2wztk84OdgoI8rYtYnSGEUQ/Qn4sJsLh
+	sHTBA6ucdazYFGiiyBhVaE6vliib3dG4JznxM6TLAppR1aBU7Bg0dT5Rnemf0Ek3AqwdOtYe0jw
+	oAr1bMgIjZlZmfy3/qYdoFA=
+Received: from mail.maildlp.com (unknown [172.19.163.15])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4hPz3B0402z1cyTS;
+	Wed, 19 Aug 2026 15:39:02 +0800 (CST)
+Received: from kwepemr100001.china.huawei.com (unknown [7.202.195.168])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8C7DA40578;
+	Wed, 19 Aug 2026 15:49:42 +0800 (CST)
+Received: from [10.136.112.147] (10.136.112.147) by
+ kwepemr100001.china.huawei.com (7.202.195.168) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Wed, 19 Aug 2026 15:49:41 +0800
+Message-ID: <492adef9-936e-490d-ba1e-3d026ff1223a@h-partners.com>
+Date: Wed, 19 Aug 2026 15:49:41 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260819050031.2725592-1-shuangpeng.kernel@gmail.com>
-In-Reply-To: <20260819050031.2725592-1-shuangpeng.kernel@gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 19 Aug 2026 09:48:19 +0200
-X-Gm-Features: AcwNN1Vpw90qqb3J8EoBm6ha5_Or8qEMqxARLr7SDwaxYI9pi-np6kKRz7lTCFg
-Message-ID: <CANn89iJbOs54esoGSukvMiYnXQkHadnC7NgQanbAXOeiHXOsjg@mail.gmail.com>
-Subject: Re: [BUG] NFC: slab-use-after-free in _raw_spin_lock_irqsave
-To: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
-Cc: David Heidelberg <david@ixit.cz>, davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 net] vlan: fix skb_under_panic and races when toggling
+ HW VLAN offload
+To: Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
+	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+CC: Simon Horman <horms@kernel.org>, <netdev@vger.kernel.org>,
+	<eric.dumazet@gmail.com>, <stable@vger.kernel.org>
+References: <20260811085246.2267779-1-edumazet@google.com>
+ <64a0b57c-040c-4703-95eb-886701bdf745@redhat.com>
+Content-Language: en-US
+From: xietangxin <xietangxin@h-partners.com>
+In-Reply-To: <64a0b57c-040c-4703-95eb-886701bdf745@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemr100001.china.huawei.com (7.202.195.168)
 
-On Wed, Aug 19, 2026 at 7:00=E2=80=AFAM Shuangpeng Bai
-<shuangpeng.kernel@gmail.com> wrote:
->
-> Hi Kernel Maintainers,
->
-> I hit the following report while testing current upstream kernel:
->
-> KASAN: slab-use-after-free in _raw_spin_lock_irqsave
->
-> on commit: 3aa1dcaa4f6f5ae08936491e08bd456f331f2d40 (2026-08-13)
->
-> To help trigger the bug more reliably, we applied a minimal diagnostic pa=
-tch
-> that only adds delays and print statements.
->
-> The reproducer and .config files are here.
-> https://gist.github.com/shuangpengbai/f7dab4725e2a2d57b1d302714c93c549
->
-> I'm happy to test debug patches or provide additional information.
 
-Thanks for the report, could you test adding one skb_set_owner_w()
-after the skb_copy() in nfc_llcp_tx_work() ?
 
-Something like this (untested, not compiled) patch.
+On 8/13/2026 4:49 PM, Paolo Abeni wrote:
+> On 8/11/26 10:52 AM, Eric Dumazet wrote:
+>> Toggling hardware VLAN TX offload (NETIF_F_HW_VLAN_CTAG_TX or
+>> NETIF_F_HW_VLAN_STAG_TX) on a lower device invokes vlan_transfer_features(),
+>> which dynamically changed vlandev->hard_header_len.
+>>
+>> This causes two issues:
+>> 1. Lockless TX paths (e.g. packet_snd in af_packet.c, ip6_finish_output2)
+>>    read dev->hard_header_len without holding RTNL lock. Mutating
+>>    hard_header_len dynamically under RTNL creates a data race where upper
+>>    layers reserve insufficient headroom based on a stale hard_header_len,
+>>    resulting in skb_under_panic when vlan_dev_hard_header() is called.
+>> 2. In addition, vlan_transfer_features() updated hard_header_len without
+>>    updating header_ops, causing a mismatch between allocated headroom
+>>    and header creation.
+>>
+>> Always setting dev->hard_header_len = real_dev->hard_header_len and
+>> dev->needed_headroom = real_dev->needed_headroom + VLAN_HLEN unconditionally
+>> ensures:
+>> - dev->hard_header_len remains 100% static and immutable at real_dev->hard_header_len,
+>>   eliminating all dynamic runtime updates and data races on hard_header_len.
+>> - Upper layers allocating skbs via LL_RESERVED_SPACE() will always reserve
+>>   sufficient headroom for software VLAN tag insertion (real_dev->hard_header_len +
+>>   real_dev->needed_headroom + VLAN_HLEN).
+>> - vlandev inherits real_dev->needed_tailroom so underlying trailer/padding/ICV
+>>   requirements are honored.
+>> - AF_PACKET SOCK_RAW network header offsets remain correctly aligned at
+>>   real_dev->hard_header_len.
+>> - vlan_header_ops is used unconditionally.
+>>
+>> Note to stable teams: Make sure to backport these commits:
+>>
+>> e16e960d55a4 ("ipvlan: inherit needed_headroom and needed_tailroom from phy_dev")
+>> cef51860becd ("macvlan: inherit needed_headroom and needed_tailroom from lowerdev")
+>>
+>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+>> Reported-by: Tangxin Xie <xietangxin@h-partners.com>
+>> Closes: https://lore.kernel.org/netdev/99d678ae-c7b2-4b44-b534-b8320679deb3@h-partners.com/
+>> Cc: <stable@vger.kernel.org> # 3.19: e16e960d55a4: ipvlan: inherit needed_headroom and needed_tailroom from phy_dev
+>> Cc: <stable@vger.kernel.org> # 3.19: cef51860becd: macvlan: inherit needed_headroom and needed_tailroom from lowerdev
+>> Cc: <stable@vger.kernel.org> # 3.19
+>> Signed-off-by: Eric Dumazet <edumazet@google.com>
+>> ---
+>> v3: propagate needed_tailroom, add stable tags.
+>> v2: https://lore.kernel.org/netdev/20260724035419.1473174-1-edumazet@google.com/
+>>
+>>  net/8021q/vlan_dev.c | 39 +++++++--------------------------------
+>>  1 file changed, 7 insertions(+), 32 deletions(-)
+>>
+>> diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
+>> index ec2569b3f8dac629027b4344bc89402decf026d1..2859cbac3f266b7c4e3f44f41280d33ab69c5270 100644
+>> --- a/net/8021q/vlan_dev.c
+>> +++ b/net/8021q/vlan_dev.c
+>> @@ -502,26 +502,6 @@ static const struct header_ops vlan_header_ops = {
+>>  	.parse_protocol = vlan_parse_protocol,
+>>  };
+>>  
+>> -static int vlan_passthru_hard_header(struct sk_buff *skb, struct net_device *dev,
+>> -				     unsigned short type,
+>> -				     const void *daddr, const void *saddr,
+>> -				     unsigned int len)
+>> -{
+>> -	struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
+>> -	struct net_device *real_dev = vlan->real_dev;
+>> -
+>> -	if (saddr == NULL)
+>> -		saddr = dev->dev_addr;
+>> -
+>> -	return dev_hard_header(skb, real_dev, type, daddr, saddr, len);
+>> -}
+>> -
+>> -static const struct header_ops vlan_passthru_header_ops = {
+>> -	.create	 = vlan_passthru_hard_header,
+>> -	.parse	 = eth_header_parse,
+>> -	.parse_protocol = vlan_parse_protocol,
+>> -};
+>> -
+>>  static const struct device_type vlan_type = {
+>>  	.name	= "vlan",
+>>  };
+>> @@ -580,14 +560,10 @@ static int vlan_dev_init(struct net_device *dev)
+>>  	dev->fcoe_ddp_xid = real_dev->fcoe_ddp_xid;
+>>  #endif
+>>  
+>> -	dev->needed_headroom = real_dev->needed_headroom;
+>> -	if (vlan_hw_offload_capable(real_dev->features, vlan->vlan_proto)) {
+>> -		dev->header_ops      = &vlan_passthru_header_ops;
+>> -		dev->hard_header_len = real_dev->hard_header_len;
+>> -	} else {
+>> -		dev->header_ops      = &vlan_header_ops;
+>> -		dev->hard_header_len = real_dev->hard_header_len + VLAN_HLEN;
+> 
+> Sashiko nipa points to a possible functional and performance regression
+> with unusual config (reorder_hdr off):
+> 
+> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260811085246.2267779-1-edumazet%40google.com
+> 
+> Arguably the current behavior is incorrect, but it's also the
+> established one. WDYT?
+> 
+> /P
+> 
+> 
+Hi Eric,
 
-diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-index cac1b5487064d0c5b4966bb6a75aa26e67131049..49cb632268c0c2841e3b44dde12=
-4c7966267b709
-100644
---- a/net/nfc/llcp_core.c
-+++ b/net/nfc/llcp_core.c
-@@ -786,8 +786,11 @@ static void nfc_llcp_tx_work(struct work_struct *work)
-                        print_hex_dump_debug("LLCP Tx: ", DUMP_PREFIX_OFFSE=
-T,
-                                             16, 1, skb->data, skb->len, tr=
-ue);
+Gently pinging on this thread.
 
--                       if (ptype =3D=3D LLCP_PDU_I)
-+                       if (ptype =3D=3D LLCP_PDU_I) {
-                                copy_skb =3D skb_copy(skb, GFP_ATOMIC);
-+                               if (copy_skb)
-+                                       skb_set_owner_w(copy_skb, sk);
-+                       }
+Just wanted to check if you have any thoughts on Paolo's comment
+regarding the potential regression with reorder_hdr=off?
 
-                        __net_timestamp(skb);
+-- 
+Best regards,
+Tangxin Xie
+
