@@ -1,179 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A6723D7DC;
-	Wed, 19 Aug 2026 01:14:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2943B637E
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 01:15:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787102051; cv=none; b=JVA+d62FEW8HlP6PL2h6KyvrDbEdynWo6pkUWT8ETEdooB6hMseI+DOTIKSY+eeTGFaIAOleW1RO2alqBO62UvsVhP4A9As85Z0ZEPEQXaHqcNkNZRSR8xBl0DoX1zsvcmT9gdu/z550Bxxy9nVvhVbo6tn2VNKZjT185JW5iGc=
+	t=1787102117; cv=none; b=LbU+xHTab1UeW3dYPK/vn+mJQ+bJfCNKIUoBbusnWmumgNDJLNq1qDN7dQZoVLyO/pLnqi52TC/Ox1R+PUcIzj/t5RLQ0wcG66q5frZjP24x5V4pwNkUxOavBdorioehDqcuu6Kjii+qL5LUkK5u+vrb10znOlanwTKDbn76q4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787102051; c=relaxed/simple;
-	bh=jp1TKt5HkSBQDBfj+AUOlzDnbBAHe1wv1ssp2C6mwo8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Z6lZzuRuU3M+3YXi1ay7yMBMQwbAws9yW3Fk0aPRvdc79YOmRmEfxOd01TyKM/AD4IX9Fre8most+jg+bQBDFlWtnv9goOpnSxS6qpeXF6Y1fhBhSid2rWDV1gj0vOkbY947df4T9T7HFbh59FDtKjqr2Jsn7tul9/Tzmva2BC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A+5s0sEj; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787102117; c=relaxed/simple;
+	bh=NUDv2JcJ7RwZhBTmVl0jXBgtN2f3GYCncPfUY+N2/Ec=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cEiaQB1HbaMcok8RkkNybpmPR9SdprH8k5xp7rplYB55rIVveIWScOIHLdrHkVKPPkSFrZ+Abe00SNxYt7NhGl5rWdYh2bb+O4KjDwzKm/C5jqN1HXhpPyQzjjjvA+neOk1IsabC8qwkHasRo+A0x1SRdi9YLHMNV6ADF/DxLkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XBYhNNng; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A+5s0sEj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 981331F000E9;
-	Wed, 19 Aug 2026 01:14:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787102049;
-	bh=WVbMLZtfRxlzEzbYXa6hXjH0mAgLFy4X1ymXlPLvNwo=;
-	h=From:Date:Subject:To:Cc;
-	b=A+5s0sEjqtCnQmvYVR98KWmDOFEYoj9oL1jcHW1l85jj0JZoQ7v6g77HRQRMaEqqr
-	 ZZ+8giYfIX9yIplVdS72C2D1PAzSpdhF3CGO5P9zGjZqlhcdAytj3T/M9+WWosx09+
-	 72a6f8/tmHOw1UnDW6Pz4CccvsTWaP4A2l76vQVYyH9oU3OolSuDCVBc2Uubo8f/yl
-	 U2kfvGypW0KKZfh5oAWvGLi5Gm3sGiZhaHgB2ry3ra0wCDzAZeHRK/g3O3E3GaCkE0
-	 VAqy5c7CctSkwaZWCJgrEhfxRL0YidS58PmWCyFOvRvf3WREBtolJ+uZU6zh2QU55A
-	 MuewhXLbiGhkg==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Tue, 18 Aug 2026 18:14:01 -0700
-Subject: [PATCH net] net: macb: Move macb_{alloc,free}_tieoff() out of
- CONFIG_OF block
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XBYhNNng"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cfbbdfa60bso3698295ad.3
+        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 18:15:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787102115; x=1787706915; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=NUDv2JcJ7RwZhBTmVl0jXBgtN2f3GYCncPfUY+N2/Ec=;
+        b=XBYhNNngXOVdKiqFqgl7JKD8RrYX5gphtnTTQu4kb4ARiOQ7N+KML7fj/tED9g0d82
+         lE8+LDaRmReINL0DKHYDfM8L9qiR9EgWnn4mKypOtuuFfgKbl+J13gDtbyUWWFQ3CT6n
+         IGAldr5YjFRyKc6PMNorGHjrzsDUAhbKXqA1KMYnX04Au6HNgc/e5kqsed8QIIzCvGhw
+         J/n7JIU8AJDbnfxCM8OrtmNlu1dZVOQJ1OoGZchnC41QjQCEhhkFzd4zMt9CjxDsd5fh
+         usyEII4rIbiyirwkOJ75stYpeSCtI0l8LlOHw5kyX32S4rly9VqSIWYUr099TrPnPw9B
+         A0lQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787102115; x=1787706915;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=NUDv2JcJ7RwZhBTmVl0jXBgtN2f3GYCncPfUY+N2/Ec=;
+        b=d5EOCbkR0+FD0WS2ZBBt36fO7E6LjMPVPHtb21Gvpq1hO8ctOkLWfDYeL/j0wsahvs
+         JiyyPJN/LORDZtJeB9RqK/AtpC6z4FLMq74lq1tMwDu6HTa0YXdql9cBGSyEvcyJQh2U
+         wPQCrIZwiLKDjDc9qWiCCuk2118hOBCfr5J7+8GxXXqJf2uFLiRqUs+jExJoB5He4rlN
+         z0UEV4foXuC5oKbn9SVlPjkxQJwfJsiw79pcXDPztSGJxxRVEOAgB6ki6XJxkS/v6YbM
+         8z0ebMc6kLe+eBDe1ThgXC53K95N68HG0AbNvzsK4qlWZW79864yYu6CoPf9l0VDEd03
+         mC6g==
+X-Forwarded-Encrypted: i=1; AHgh+Rp6cy3s1a3NFNB7ojtfQLq6vEPGLBZ1ycUeKJjS6Rv7JzM9kppVzKvLnxzwUQTMPJ9brUi+Yyo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4kwapTDwdEXfEJqpqQ/FTTfQ6UJA75eixpfwAfm/anVNBMuCx
+	9t8/D1YVyWF8YlCKoyvk5rbtCU5kdChEwwZXQrV9+IWOvlOPNeUnAfG+
+X-Gm-Gg: AR+sD10KHQmzcMingy9tm6sA+gqRyxTEndh/+hL5aPNyBRgt/AP4srmTcXYQ+WngIDY
+	Dd++oG1gSK12RIhCjIiQz4sLPu49IXRIQj17CYnPcnli7PaAVha8wXvWGzoNpQVyRxXQvP3c7Jn
+	62dtKIAmr7cs88JWgJpwgyXdROXl4+ZwZjgiMqQ0dkVTNfXrL+zyC6UePzxofDRfPa/ZL/mzXdH
+	Nn1W1tDRcgUAlv5sGeRLePAwOjSWlvgapTbTmR/9S5pWJU7PmCuUd9xAvCRCKzHmFygEGbiCaHO
+	7/rNe/Hg4QUj5zeRw4ffdO1PY6T5jycXLKyrKKzdusU/fyv7QLZ4ciN3DY4D2yoodNn8ZpmPE0X
+	w/oRrMQwZ2moTkK57ooLvVtqALUMFH46nZLPaxLe0/EO24fnJj64vkuZqz1QZZJqg/6NSPXkJI/
+	bgwcY8zDEFEu/kb7thnCM+loE7b4hOJxgQmehvSvBY6/Af2mlwZQDd4UG6QXDaJdw/70OwaFvct
+	Nh/JNAb
+X-Received: by 2002:a17:903:28c:b0:2cc:aa36:c04c with SMTP id d9443c01a7336-2d5fd5b087fmr18298765ad.1.1787102115407;
+        Tue, 18 Aug 2026 18:15:15 -0700 (PDT)
+Received: from v4bel ([58.123.110.97])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d5c1ecb2absm18986855ad.71.2026.08.18.18.15.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Aug 2026 18:15:13 -0700 (PDT)
+Date: Wed, 19 Aug 2026 10:15:10 +0900
+From: Hyunwoo Kim <imv4bel@gmail.com>
+To: Xin Long <lucien.xin@gmail.com>
+Cc: marcelo.leitner@gmail.com, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
+	imv4bel@gmail.com
+Subject: Re: [PATCH net] sctp: drop a backlogged chunk if its transport was
+ removed
+Message-ID: <aoUDnh13j4c2KCYY@v4bel>
+References: <an-oGfEatacPTSX-@v4bel>
+ <CADvbK_e60CFEVUVo25Tkcw_p4y16o8vZCf0N=hH+bUoEqpu6Qg@mail.gmail.com>
+ <CADvbK_c4V6cWiS=fTfCeS602bazwXy0mYCXnF6=eYH08PaRznQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260818-macb-fix-no-of-build-v1-1-f2a009616384@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQ6CMBBFr0Jm7SSlCyBcxbig018doq1pgZAQ7
- m7V5fv57x1UkBWFxuagjE2LplihvTQkjyneweorkzW2M0M78GsSx0F3jolTYLfq0zOA3kovwRp
- PVX1n1Msve6WIhW7/saxuhizfIJ3nB/dynad9AAAA
-X-Change-ID: 20260818-macb-fix-no-of-build-eee72c7cf20d
-To: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
- Conor Dooley <conor.dooley@microchip.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Nicolai Buchwitz <nb@tipi-net.de>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3647; i=nathan@kernel.org;
- h=from:subject:message-id; bh=jp1TKt5HkSBQDBfj+AUOlzDnbBAHe1wv1ssp2C6mwo8=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDFmtzDE/T6/Qbd5/dOsUFbcbG7uZflxgflT5oaDzVH1D6
- MvpM5bv7ihlYRDjYpAVU2Spfqx63NBwzlnGG6cmwcxhZQIZwsDFKQATcUtgZGjbVvnh8Jtt/oda
- NKrCrW7+OLu0sO9K+j/9pzkFi4+oTY9n+KcoFrl+1a1KfmXmmZLPS1LnNW5yqo6b5s6cdmeb4dF
- zF/kA
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CADvbK_c4V6cWiS=fTfCeS602bazwXy0mYCXnF6=eYH08PaRznQ@mail.gmail.com>
 
-Commit 5262eab9462a ("net: macb: allocate tieoff descriptor once across
-device lifetime") moved macb_alloc_tieoff() and macb_free_tieoff() into
-a CONFIG_OF block, breaking the build when it is disabled:
+On Mon, Aug 17, 2026 at 04:59:39PM -0400, Xin Long wrote:
+> On Mon, Aug 17, 2026 at 1:48 PM Xin Long <lucien.xin@gmail.com> wrote:
+> >
+> > On Fri, Aug 14, 2026 at 7:43 PM Hyunwoo Kim <imv4bel@gmail.com> wrote:
+> > >
+> > > sctp_rcv() resolves the transport once per packet and leaves it in
+> > > chunk->transport. If the socket is owned by userspace the packet goes to
+> > > the socket backlog, and sctp_add_backlog() takes a reference on that
+> > > transport.
+> > >
+> > > An authenticated ASCONF DEL-IP in an earlier backlogged packet can remove
+> > > it. sctp_assoc_rm_peer() takes the transport out of the association and
+> > > calls sctp_transport_free(), which tags it dead and drops the reference
+> > > the association held. The backlogged packet still holds a reference, so
+> > > the transport stays around.
+> > >
+> > > The DATA chunk in that packet puts the removed transport back into
+> > > asoc->peer.last_data_from. Once the packet is done that reference goes
+> > > away and the transport is freed by RCU, so the next delayed SACK carries
+> > > the pointer into the SACK chunk and sctp_outq_select_transport() reads the
+> > > freed transport's state.
+> > >
+> > > Drop the chunk in sctp_backlog_rcv(), next to the existing rcvr->dead
+> > > check. The peer retransmits it. Guarding the last_data_from assignment is
+> > > not enough, sctp_assoc_rm_peer() clears more than that one pointer and
+> > > letting the packet run fills them in again. sctp_wait_for_sndbuf() already
+> > > uses the dead flag this way on the send side.
+> > >
+> > > Fixes: df132eff4638 ("sctp: clear the transport of some out_chunk_list chunks in sctp_assoc_rm_peer")
+> Please also double check the 'Fixes' tag, commit df132eff4638 doesn't
+> seem to cause the issue.
 
-  drivers/net/ethernet/cadence/macb_main.c: In function 'macb_probe':
-  drivers/net/ethernet/cadence/macb_main.c:5951:15: error: implicit declaration of function 'macb_alloc_tieoff' [-Wimplicit-function-declaration]
-   5951 |         err = macb_alloc_tieoff(bp);
-        |               ^~~~~~~~~~~~~~~~~
-  drivers/net/ethernet/cadence/macb_main.c:5973:9: error: implicit declaration of function 'macb_free_tieoff' [-Wimplicit-function-declaration]
-   5973 |         macb_free_tieoff(bp);
-        |         ^~~~~~~~~~~~~~~~
+Understood. I'll run a few more tests and then submit v2.
 
-Moving macb_alloc_tieoff() from its original positive does not appear to
-be necessary, so move it and macb_free_tieoff() back out of the
-CONFIG_OF block to clear up the error.
-
-Fixes: 5262eab9462a ("net: macb: allocate tieoff descriptor once across device lifetime")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
-This does not apply to net currently but I assume net will be fast
-forwarded when net-next-7.3 is merged.
----
- drivers/net/ethernet/cadence/macb_main.c | 64 ++++++++++++++++----------------
- 1 file changed, 32 insertions(+), 32 deletions(-)
-
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 1476bce77f34..96a7e7777e62 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -2776,6 +2776,38 @@ static int macb_alloc(struct macb *bp)
- 	return -ENOMEM;
- }
- 
-+static int macb_alloc_tieoff(struct macb *bp)
-+{
-+	/* Tieoff is a workaround in case HW cannot disable queues, for PM. */
-+	if (bp->caps & MACB_CAPS_QUEUE_DISABLE)
-+		return 0;
-+
-+	bp->rx_ring_tieoff = dma_alloc_coherent(&bp->pdev->dev,
-+						macb_dma_desc_get_size(bp),
-+						&bp->rx_ring_tieoff_dma,
-+						GFP_KERNEL);
-+	if (!bp->rx_ring_tieoff)
-+		return -ENOMEM;
-+
-+	macb_set_addr(bp, bp->rx_ring_tieoff,
-+		      MACB_BIT(RX_WRAP) | MACB_BIT(RX_USED));
-+
-+	bp->rx_ring_tieoff->ctrl = 0;
-+
-+	return 0;
-+}
-+
-+static void macb_free_tieoff(struct macb *bp)
-+{
-+	if (!bp->rx_ring_tieoff)
-+		return;
-+
-+	dma_free_coherent(&bp->pdev->dev, macb_dma_desc_get_size(bp),
-+			  bp->rx_ring_tieoff,
-+			  bp->rx_ring_tieoff_dma);
-+	bp->rx_ring_tieoff = NULL;
-+}
-+
- static void gem_init_rx_ring(struct macb_queue *queue)
- {
- 	queue->rx_tail = 0;
-@@ -5507,38 +5539,6 @@ static int eyeq5_init(struct platform_device *pdev)
- 	return ret;
- }
- 
--static int macb_alloc_tieoff(struct macb *bp)
--{
--	/* Tieoff is a workaround in case HW cannot disable queues, for PM. */
--	if (bp->caps & MACB_CAPS_QUEUE_DISABLE)
--		return 0;
--
--	bp->rx_ring_tieoff = dma_alloc_coherent(&bp->pdev->dev,
--						macb_dma_desc_get_size(bp),
--						&bp->rx_ring_tieoff_dma,
--						GFP_KERNEL);
--	if (!bp->rx_ring_tieoff)
--		return -ENOMEM;
--
--	macb_set_addr(bp, bp->rx_ring_tieoff,
--		      MACB_BIT(RX_WRAP) | MACB_BIT(RX_USED));
--
--	bp->rx_ring_tieoff->ctrl = 0;
--
--	return 0;
--}
--
--static void macb_free_tieoff(struct macb *bp)
--{
--	if (!bp->rx_ring_tieoff)
--		return;
--
--	dma_free_coherent(&bp->pdev->dev, macb_dma_desc_get_size(bp),
--			  bp->rx_ring_tieoff,
--			  bp->rx_ring_tieoff_dma);
--	bp->rx_ring_tieoff = NULL;
--}
--
- static const struct macb_usrio_config mpfs_usrio = {
- 	.tsu_source = 0,
- };
-
----
-base-commit: 61eb236c41c2a4717015dff18016a75a5eb90052
-change-id: 20260818-macb-fix-no-of-build-eee72c7cf20d
 
 Best regards,
---  
-Cheers,
-Nathan
-
+Hyunwoo Kim
