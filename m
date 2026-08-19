@@ -1,368 +1,236 @@
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC393603DF
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 14:37:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787150267; cv=none; b=JuYcuJxupM56w477mEykBU9wi6oaYD9iG6wjJLl0Ax+Y6z4Vc9/uYm51/6s6vl08TpeEfMnm4nsqmQRpe2fRUCia0IR+UdFTYD3qReEGZfK+36h5WUE+pnPj4u6ZzYj4hdb7nhZRzYA+ZQMfQuNsqNpO7zkOAghMu4Zs8XwT/4E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787150267; c=relaxed/simple;
-	bh=0Lcc1mpd15mOJzVgTOdNh97/G/EV6hhRjtp4LKWcajc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HbHlO3n1G3Pz6UMbVIInPugUbEU1bRIQg0+PLkxMhygWYs+sI+N8OUGpyrgQpmRnJ2fh03K46ZUEf93E18DN0PJi9vmhdvTnhovApzPAqgJBhSZBL3V+W9htUQBjBVEpMqo3NBiq9nULURsjgB2cd/s6tVEaaRXWrIbrZ91rEt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=XK4aMWob; arc=none smtp.client-ip=209.85.222.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF183AF66E
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 14:43:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787150588; cv=pass; b=ZDMIHDzLxH2T85njY32HS8dSXvsrXq7Lp8YzXAeNfuXMoFp/Huq6hxSqyxXl6Xyt/hduvN+kM3VIDM8aqYSJmszCkB4pUqG1EU0p3azS+zulaVdXm2kvxdeVcGcynpIRr5MadvePxLcSXyufp/BMSDWpXn9e48dzuu4GIoF5lwc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787150588; c=relaxed/simple;
+	bh=MkqX0W8IbJPEwSSAUuHUDaPQT350a/qmK5/0HidHyVo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BXae7GZPGO3QCGUON/JpdrwfcB076zrXJeqBDyo/7Njkaw+DEJOV8jl10WcePOZFz2AHZNltFkHEg0Glg3mW+//GI5gIAZ8P8mXUcq4oAjRudXTkEVcqjLcPg072LiB7KD2kaURksrfo2vm9hoslRdhPK2rDee1lYyt9BBBq5rs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B7mKCOca; arc=pass smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="XK4aMWob"
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-92ed19f4d60so65036385a.0
-        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 07:37:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B7mKCOca"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-51c2a818fc4so7113371cf.2
+        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 07:43:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787150585; cv=none;
+        d=google.com; s=arc-20260327;
+        b=nmCs/Kvg+b4s14UBchGqGK4UNWp9lUuac+iTglCEFYsYXCaHpmk52Nw30MBQ+6UVAP
+         dT/sKSS6Q7NSshSMAfUPm8Jl3AUzqHLqlcpqC3lHF0Wn7yYECoJQsETGt+C/qp6tnx67
+         Q/X1V+lHJLvNjOrXMyELkx2+9OPY8k2kv92hsjCK5HwgIUmrsB4nBwtVhBUdzVoE/a+j
+         X2WfDxWZUzXufaCpNxHBVu/qt/xE4FLVoaELOdWFRSfaDcLR2bs7iz5RJesNE+dIKlKY
+         yK3OxXo4yoIttR6FkIWboSVvo56F361wAK/Pc6K7wsexD1w78xVJL/2L7TCsBFBZn6DB
+         ARZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=DBQbXhA0JVF+2Th06MfQYZbxuDaNHyaj/2CoNpK03dw=;
+        fh=X8BDq2/KK+aalG3nUimw3vzOLwCn/tnGxVtO1Bv9toQ=;
+        b=abHURphdFU4pbSec5ZizbPLvKJZrXwGryBqfe44xzAKMBINo/cAJ2Eent4R22cKjWy
+         RsXD9zY0X/noY0wRc6aM7FTVpGvyOSAwtPiszpQjqfATrHXA+7QajypJ4KFEWKXRScOD
+         8lWqlht1yiEszq7Uq3NBB5iunz9lvO1Z82b/rKn466OMVcDO4nz/Jl4mRiaVVtuusytp
+         h9j4Wju4bjBXK88nAtI2xKLhqENvNMF+oHDCJEFqk69tf378oK55S6AAHkMTZjQY3akT
+         EU4+uj/XpIXsVnr65RVuPbcO7rRZMLzl0OxzTuYBBo4mpWn5ZDGHnNy4K8q0hYaWibJm
+         cRig==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787150263; x=1787755063; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sbGHVwpVNKD+rMkdZFZmgr6oi00BzJ3DOwQk+A4xS68=;
-        b=XK4aMWobagolZZIAoUYbQhwtlSCsuMvvJKmt5Xvy9WvrNX8fZAzklr2/5kida86ieC
-         dscW22R4j4GDE62nmUhi6yxe+D2RzavhenCjTUvVS44i4okCCVmd4/3oUGITG+KhLjun
-         AlmoiQKtNvt+aVc93o1A8zMeCoatiqVTkYXac=
+        d=google.com; s=20251104; t=1787150585; x=1787755385; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DBQbXhA0JVF+2Th06MfQYZbxuDaNHyaj/2CoNpK03dw=;
+        b=B7mKCOcaL1tw4wU4Oecdr3AsO7InUl8BbU/DNW4ZG8Ywlj+IFySqq17K2gtSM0axo7
+         D9N3YeGB/byXpV+eGLsGygcRSQ/WIB3fF8RjfqpP0AyhaeFEYC21WDOI34E3NEAbPnnJ
+         97zJ0LR9S1r4VzjJ0qR22oBYyXiO5vv1adk+tetgWBNS2dfTWwoa1hMLeXtSN+CSwxnH
+         AYmOQOp/ZuKjHUQDOYE4KAgFTBbUerMuxobBkrlByBYmqUibx6SQWgPUYLLH8RKi/aTT
+         noDm1AFawWX9ff1Gn4EK4hspK+IqlYVAzvISaXCrRJbpmCvpPkdk+C920w6Ux60PyNuD
+         Dq0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787150263; x=1787755063;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=sbGHVwpVNKD+rMkdZFZmgr6oi00BzJ3DOwQk+A4xS68=;
-        b=PF1cgzxJ9BDHZLP6++ogOlXAoT3vs3M/W3BSAC1ng33DCJ9gCGKzOHfaJdoNAGuLyd
-         lIiXqAvZHvdhg7l9OQFn8xYjehPB2ASazHPfB9iEB2fvPFBz7tX3UoMyKkmwsJkXE+kR
-         cBWLvNg9IiRnsYN6HUYqt3+xnFECnkHXx/9t//sTqX9bcSkVuPzW4vHF3cwyTx58kKcJ
-         JO4R/cgJw8F7fC2nGPdKy2cpzZSLuwXIEZSALXxbxqrNkBjrp0W3Xq5S0yqAZ0fV2gY9
-         eePiUdQic1NNq3WxhKXke4wrbHpZFYsLszJfvGoFsZGAN3P6Zq7dcU5eHIf0uRV6sdsy
-         fHsg==
-X-Gm-Message-State: AOJu0YyN2Vpy76hnLhzezBVW7wWr4KQep70a/4r4OFUVuw7zM7aJS1qV
-	oWDwUbHa3SUK7WZOcw/aQxIE4jduUYapFjTWhsFtmZaKhr/84SrbtHnMDz8XG8ZG29LWF8yhySY
-	U/KTRRg==
-X-Gm-Gg: AR+sD10x+fMuDxwodhk2AusUxnVHgqRGC10JHSEwQW2snc6qv2aNXG4pkyuY16xM9xa
-	vZOWCARfWLbUyCjs7shwpiqKQ+7roLZ41S52AWVisTvia4JDQoMqD+zLMdCBtOS+yJRzaZc0/zT
-	vzZ1TX5WAhSThjeHRi1o9ATI3hRqixVVEkiHDbSsH+Arto7O1lB4rA5n2k4kyGLEc5UNpBg4aac
-	3wymsnoWuRlSeWO2GYzeJ5wxE3R+wEehVg40lV2DQtQvN/2YJQl/lN0bKTZ2HiOtIXJkqT7b997
-	W4af0GlZHapFim4ZILET1Cq9DsgkpCNMJjSkKWICQJiOb54iL+zpeDW9C+/yscUQse0zllE92C6
-	m0s72S3N4EVufcU/jfsaOPTuMA12ysK/cyMvJT5FzFvGJtZ9wBpRENp7uFDCBl/ELnvhr6j1UE3
-	/cMCmeG3D9qfQsWcBpmllYDCfbLTl9mJXXUCto8k5GW6ZXfvzCJ5lVdOIk0YZeoMaM8f0ZjSrgG
-	lfyy6VBZ0dgYtgOOq4sMP2OE4M/yZWl0FzSBVljtp325Q==
-X-Received: by 2002:a05:620a:2a09:b0:92e:57ea:8c8b with SMTP id af79cd13be357-9371e197337mr420529785a.0.1787150263014;
-        Wed, 19 Aug 2026 07:37:43 -0700 (PDT)
-Received: from majuu.waya (bras-base-kntaon1621w-grc-04-184-144-29-222.dsl.bell.ca. [184.144.29.222])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-937205998ddsm145894385a.44.2026.08.19.07.37.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2026 07:37:42 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	stable@vger.kernel.org,
-	vega@nebusec.ai,
-	Victor Nogueira <victor@mojatatu.com>,
-	Panagiotis Issaris <takis@issaris.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>
-Subject: [PATCH net] net/sched: account classifier filter allocations to memcg
-Date: Wed, 19 Aug 2026 10:37:33 -0400
-Message-Id: <20260819143733.57538-1-jhs@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20251104; t=1787150585; x=1787755385;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DBQbXhA0JVF+2Th06MfQYZbxuDaNHyaj/2CoNpK03dw=;
+        b=O0L2mgWtETLbjHbBS9naGJL0LhKk3OP7x40KlkubV1KTS4e3YmKpRNofeeaU9ZzG0q
+         ejYemzBRbBbBLoi3Y6UTGvEKlX2+8UMvCmpaE5fY7/zNh6OoQnOqojlvUKh57fVTcTPK
+         NitWhG2rxeTFjAMpRZxVSxhWxKUriEKzbN8+ZReajgk/6flEGdM5TUM2oM5q+MgDm0r4
+         jYEwcHoZiZ0Qhs1UcIXd9trXqIFW0rYOVMOSiODla5Wr74bva8E4pJbHj2ud1nDNk537
+         HSuUgb+KBU42jpxuCJwZDZqBfdbpnYHL3ISCuZ7cEB+dOE2s+sctKZdv/KSyQQ0S7wF2
+         QnFA==
+X-Gm-Message-State: AOJu0YyC/XEEwiAa9hqD/nQUMuRhgGJ6CsW9/+oSUjBUSN240+FEdcua
+	gVW4UMBL8DhzkQ3LmeZvzDYQLraJGWJvLKC7lYSoQpZtaviWQF2BKfBJk+dNXmRCEWMHzeE+uC6
+	wlSvXSiAftFvZ/w86S/6uOrdt4MRVR0ENx2cmh+em
+X-Gm-Gg: AR+sD13OZADrg56Dms+Yzs+x99JOBbtZxyJsPofUH7xRnlUO/9tL0eCVJQxt3xMKwc2
+	Hy2uHPQEfxNGKCZDsF2kH5EWibKZ1qtpgRrc7fy82lIVeg4srPh8gu1cC0LUGYNMjbKU9Pnzakt
+	O1hTwvrXD9Uya5GNQIVt/Re1ninB1D2oYDyCiVVItxyR2eZsDvHLSA+JxMPWdPQeuUT5ppor7AZ
+	ov7z9Z0cp9IKBflXoALXRFxFhNg3/+WS1qFiyYmFNxQFM+VWldDA3W4YwKDO0kjf7ChOyl49lq8
+	A+v8qw6JS8b2WigsLR7YeGbuJwMdN/j63l5xxxMQXZcZkIacrrbFL6li0WbOQT2Tvc56CRQTm5N
+	KHkgeF1n+Twvwhyud75qBHiSFhWyCOY25epefm8Fo/8jDXQY8d469K2TGVvnDDV/6SSks0jd/ul
+	gCoTGMnPv0zZ12KOY=
+X-Received: by 2002:ac8:5953:0:b0:51b:f40b:2fb5 with SMTP id
+ d75a77b69052e-52dd577f088mr42352351cf.17.1787150584067; Wed, 19 Aug 2026
+ 07:43:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260819143136.57350-1-jhs@mojatatu.com>
+In-Reply-To: <20260819143136.57350-1-jhs@mojatatu.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 19 Aug 2026 16:42:51 +0200
+X-Gm-Features: AcwNN1U9GKxgnOJkc2Jr561s0UMwJEgI4co2sC_RH90OJcR66PZEiypnkkQ35Js
+Message-ID: <CANn89iLRPjpKF6xrWz=pv5cWXT6FxCDmOprXKrkDRgQH4Jin-w@mail.gmail.com>
+Subject: Re: [PATCH net v2] net: sched: fix quantum/backlog overflow in fq,
+ fq_codel, fq_pie, hhf, sfq
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, stable@vger.kernel.org, vega@nebusec.ai, 
+	Victor Nogueira <victor@mojatatu.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Allocations in the tc classifier *_change() paths (filter objects,
-per-CPU counters, and per-filter aux data) use plain GFP_KERNEL without
-__GFP_ACCOUNT, allowing unprivileged users to pin kernel memory outside
-memcg charging. The shared tcf_exts_init_ex() action array allocation in
-cls_api.c was also uncharged; this patch closes it along with the
-per-classifier filter-object/percpu/aux allocations that remain
-unaccounted.
+On Wed, Aug 19, 2026 at 4:31=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.com>=
+ wrote:
+>
+> Several qdiscs derive their per-flow quantum or backlog from psched_mtu()
+> or accumulate qdisc_pkt_len() into a u32/int counter without an overflow
+> or zero clamp, which can drive the dequeue/credit-refill loop into a soft
+> lockup or a NULL deref.
+>
+> vega@nebusec.ai provided reports and PoCs which illustrated the following=
+:
+>
+> - sch_fq: fq_init() computes quantum =3D 2 * psched_mtu() with no overflo=
+w
+>   check; a huge MTU wraps it into the sign bit, and fq_dequeue()'s
+>   credit-refill loop spins forever. TCA_FQ_INITIAL_QUANTUM is also
+>   unbounded up to INT_MAX in fq_change().
+> - sch_fq_codel: fq_codel_enqueue() accumulates qdisc_pkt_len() into a u32
+>   per-flow backlog; a crafted TCA_STAB inflates pkt_len to 1 GiB so a few
+>   packets wrap the counter to 0, and fq_codel_drop() then picks an empty
+>   flow and derefs NULL. fq_codel_init() also sets quantum =3D
+>   psched_mtu() with no clamp, so a huge MTU makes the deficit loop spin.
+> - sch_fq_pie: fq_pie_init() sets quantum =3D psched_mtu() with no clamp a=
+nd
+>   fq_pie_change() accepts any u32 quantum; same deficit-loop spin as
+>   fq_codel on a huge-MTU dummy device.
+> - sch_hhf: hhf_init() sets quantum =3D psched_mtu() with no overflow chec=
+k;
+>   a huge MTU makes weight * quantum overflow the signed deficit, and
+>   hhf_dequeue() loops forever.
+> - sch_sfq: sfq_init() sets quantum =3D psched_mtu() (unsigned); a huge MT=
+U
+>   makes allot =3D INT_MIN, and INT_MIN + INT_MIN is UB that toggles betwe=
+en
+>   INT_MIN and 0 forever.
+>
+> Clamp the quantum to a sane range at init/change time so the dequeue loop=
+s
+> terminate and the drop path never selects an empty flow. The clamps live =
+in
+> the init/change paths, not the per-packet fast path, so no hot-path cost =
+is
+> added for a configuration issue.
+>
+> Conditions to recreate the bug: a device whose MTU (plus hard_header_len)
+> is large enough that 2 * psched_mtu() or psched_mtu() wraps into the sign
+> bit (e.g. a dummy device with max_mtu =3D=3D 0 accepting a huge MTU), or =
+a
+> crafted TCA_STAB that inflates qdisc_pkt_len to ~1 GiB. Requires
+> CAP_NET_ADMIN in a user namespace (Level 2) to configure the qdisc and MT=
+U.
+>
+> Fixes: afe4fd062416 ("pkt_sched: fq: Fair Queue packet scheduler")
+> Fixes: 4b549a2ef4be ("fq_codel: Fair Queue Codel AQM")
+> Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet scheduler")
+> Fixes: 10239edf86f1 ("net-qdisc-hhf: Heavy-Hitter Filter (HHF) qdisc")
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reported-by: vega@nebusec.ai
+> Tested-by: Victor Nogueira <victor@mojatatu.com>
+> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> ---
+> v1 to v2
+> Changes based on feedback from Eric and Sashikos[1][2] on V1.
+>
+> 1. Drop the fast-path changes in fq_dequeue() (Eric)
+>
+> 2. Clamp to a range, not just a lower bound (Eric). Uses
+>    clamp_t(u32, ..., 1, 1 << 20) (upper bound 1M; lower bound 1, not 256)=
+.
+>    Sashiko (gemini, nipa gpt-5-6-sol-1-5) pointed out the v1 max_t() left
+>    bit 31 set, so a 0x80000000 quantum survived and still spun.
+>    Upper bound is 1M, not Eric's suggested 16M. fq_change() already caps
+>    TCA_FQ_QUANTUM at 1M; using 16M in fq_init() would be inconsistent.
+>
+> 3. Clamp TCA_FQ_INITIAL_QUANTUM in fq_change() too (Eric). It was unbound=
+ed
+>    up to INT_MAX; v2 clamps it to > 0 && <=3D 1M, matching TCA_FQ_QUANTUM=
+.
+>
+> 4. Fold fq_codel_init() quantum clamp (Sashiko gemini + nipa gpt-5-6-sol-=
+1-6)
+>
+> 5. Fold fq_pie_init()/fq_pie_change() quantum clamp (Sashiko gemini):
+>
+> 6. Reword the hhf/sfq comments (Sashiko nipa gpt-5-6-sol-2-15, gpt-5-6-so=
+l-2-14)
+>
+> [1]https://sashiko.dev/#/patchset/20260818101130.16203-1-jhs@mojatatu.com
+> [2]https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260818101130.162=
+03-1-jhs@mojatatu.com
+> ---
+>  net/sched/sch_fq.c       | 17 ++++++++++++-----
+>  net/sched/sch_fq_codel.c | 16 ++++++++++++++--
+>  net/sched/sch_fq_pie.c   |  9 ++++++---
+>  net/sched/sch_hhf.c      | 12 ++++++++++++
+>  net/sched/sch_sfq.c      |  8 ++++++++
+>  5 files changed, 52 insertions(+), 10 deletions(-)
+>
+> diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
+> index 7cae082a9847..f7c92df085e7 100644
+> --- a/net/sched/sch_fq.c
+> +++ b/net/sched/sch_fq.c
+> @@ -1112,9 +1112,16 @@ static int fq_change(struct Qdisc *sch, struct nla=
+ttr *opt,
+>                 }
+>         }
+>
+> -       if (tb[TCA_FQ_INITIAL_QUANTUM])
+> -               WRITE_ONCE(q->initial_quantum,
+> -                          nla_get_u32(tb[TCA_FQ_INITIAL_QUANTUM]));
+> +       if (tb[TCA_FQ_INITIAL_QUANTUM]) {
+> +               u32 initial_quantum =3D nla_get_u32(tb[TCA_FQ_INITIAL_QUA=
+NTUM]);
+> +
+> +               if (initial_quantum > 0 && initial_quantum <=3D (1 << 20)=
+) {
+> +                       WRITE_ONCE(q->initial_quantum, initial_quantum);
+> +               } else {
+> +                       NL_SET_ERR_MSG_MOD(extack, "invalid initial quant=
+um");
+> +                       err =3D -EINVAL;
+> +               }
+> +       }
+>
+>         if (tb[TCA_FQ_FLOW_DEFAULT_RATE])
+>                 pr_warn_ratelimited("sch_fq: defrate %u ignored.\n",
+> @@ -1226,8 +1233,8 @@ static int fq_init(struct Qdisc *sch, struct nlattr=
+ *opt,
+>
 
-Add GFP_KERNEL_ACCOUNT to:
-- the shared tcf_exts_init_ex() action array (cls_api.c), common to every
-  filter of every classifier (32 pointers, 256 bytes);
-- the filter-object, per-CPU-counter, and per-filter aux allocations in
-  cls_basic, cls_bpf, cls_cgroup, cls_flow, cls_flower, cls_fw,
-  cls_matchall, cls_route and cls_u32;
-- the u32_init_knode() replace-path knode allocation (cls_u32.c), which
-  allocates the same struct tc_u_knode + sel.keys on every replace of an
-  existing knode and was missed by the create-path-only conversion.
+You should probably split these into separate patches to ease code review.
 
-Also fix the cls_basic error path: basic_change() inserts fnew into the
-IDR before allocating the per-CPU counter. If alloc_percpu() fails the
-errout path kfree'd fnew without idr_remove, leaving a dangling pointer
-in the IDR. With GFP_KERNEL_ACCOUNT the percpu alloc becomes failable
-on demand (memcg at memory.max), making the dead path attacker-reachable
-and burning the handle permanently. Add the idr_remove on the percpu
-failure path, matching the basic_set_parms failure-path pattern.
-
-Note: vega@nebusec.ai provided a poc for basic_cls, but it was easy to
-extend to the other classifiers.
-
-Conditions to recreate the bug:
-- CONFIG_NET_SCHED, CONFIG_NET_CLS_* (the classifier being used),
-  CONFIG_NET_CLS_ACT, CONFIG_MEMCG, CONFIG_USER_NS, CONFIG_NET_NS.
-- Unprivileged user in a fresh user+network namespace (unshare -Urn),
-  or root with CAP_NET_ADMIN.
-- Create a large number of tc filters (e.g. tc filter add dev lo
-  ingress ... <classifier> ...) while watching a memcg-limited cgroup:
-  system slab grows far faster than memory.current, pinning kernel
-  memory outside memcg charging.
-
-Fixes: 0da974f4f303 ("[NET]: Conversions from kmalloc+memset to k(z|c)alloc.")
-Reported-by: vega@nebusec.ai
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
- net/sched/cls_api.c      |  3 ++-
- net/sched/cls_basic.c    |  6 ++++--
- net/sched/cls_bpf.c      |  6 +++---
- net/sched/cls_cgroup.c   |  2 +-
- net/sched/cls_flow.c     |  2 +-
- net/sched/cls_flower.c   |  4 ++--
- net/sched/cls_fw.c       |  4 ++--
- net/sched/cls_matchall.c |  4 ++--
- net/sched/cls_route.c    |  4 ++--
- net/sched/cls_u32.c      | 11 ++++++-----
- 10 files changed, 25 insertions(+), 21 deletions(-)
-
-diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-index 4e6a2812a4f3..be63b347640b 100644
---- a/net/sched/cls_api.c
-+++ b/net/sched/cls_api.c
-@@ -3364,7 +3364,8 @@ int tcf_exts_init_ex(struct tcf_exts *exts, struct net *net, int action,
- 	 * This reference might be taken later from tcf_exts_get_net().
- 	 */
- 	exts->net = net;
--	exts->actions = kzalloc_objs(struct tc_action *, TCA_ACT_MAX_PRIO);
-+	exts->actions = kzalloc_objs(struct tc_action *, TCA_ACT_MAX_PRIO,
-+				     GFP_KERNEL_ACCOUNT);
- 	if (!exts->actions)
- 		return -ENOMEM;
- #endif
-diff --git a/net/sched/cls_basic.c b/net/sched/cls_basic.c
-index 492cd9ce8d46..e2a94ba9fba7 100644
---- a/net/sched/cls_basic.c
-+++ b/net/sched/cls_basic.c
-@@ -193,7 +193,7 @@ static int basic_change(struct net *net, struct sk_buff *in_skb,
- 			return -EINVAL;
- 	}
- 
--	fnew = kzalloc_obj(*fnew);
-+	fnew = kzalloc_obj(*fnew, GFP_KERNEL_ACCOUNT);
- 	if (!fnew)
- 		return -ENOBUFS;
- 
-@@ -212,9 +212,11 @@ static int basic_change(struct net *net, struct sk_buff *in_skb,
- 	if (err)
- 		goto errout;
- 	fnew->handle = handle;
--	fnew->pf = alloc_percpu(struct tc_basic_pcnt);
-+	fnew->pf = alloc_percpu_gfp(struct tc_basic_pcnt, GFP_KERNEL_ACCOUNT);
- 	if (!fnew->pf) {
- 		err = -ENOMEM;
-+		if (!fold)
-+			idr_remove(&head->handle_idr, fnew->handle);
- 		goto errout;
- 	}
- 
-diff --git a/net/sched/cls_bpf.c b/net/sched/cls_bpf.c
-index 6d19155becc8..188cf0f949dd 100644
---- a/net/sched/cls_bpf.c
-+++ b/net/sched/cls_bpf.c
-@@ -352,7 +352,7 @@ static int cls_bpf_prog_from_ops(struct nlattr **tb, struct cls_bpf_prog *prog)
- 	if (bpf_size != nla_len(tb[TCA_BPF_OPS]))
- 		return -EINVAL;
- 
--	bpf_ops = kmemdup(nla_data(tb[TCA_BPF_OPS]), bpf_size, GFP_KERNEL);
-+	bpf_ops = kmemdup(nla_data(tb[TCA_BPF_OPS]), bpf_size, GFP_KERNEL_ACCOUNT);
- 	if (bpf_ops == NULL)
- 		return -ENOMEM;
- 
-@@ -403,7 +403,7 @@ static int cls_bpf_prog_from_efd(struct nlattr **tb, struct cls_bpf_prog *prog,
- 	}
- 
- 	if (tb[TCA_BPF_NAME]) {
--		name = nla_memdup(tb[TCA_BPF_NAME], GFP_KERNEL);
-+		name = nla_memdup(tb[TCA_BPF_NAME], GFP_KERNEL_ACCOUNT);
- 		if (!name) {
- 			bpf_prog_put(fp);
- 			return -ENOMEM;
-@@ -443,7 +443,7 @@ static int cls_bpf_change(struct net *net, struct sk_buff *in_skb,
- 	if (ret < 0)
- 		return ret;
- 
--	prog = kzalloc_obj(*prog);
-+	prog = kzalloc_obj(*prog, GFP_KERNEL_ACCOUNT);
- 	if (!prog)
- 		return -ENOBUFS;
- 
-diff --git a/net/sched/cls_cgroup.c b/net/sched/cls_cgroup.c
-index 680a5c308094..210fd9fd26d8 100644
---- a/net/sched/cls_cgroup.c
-+++ b/net/sched/cls_cgroup.c
-@@ -95,7 +95,7 @@ static int cls_cgroup_change(struct net *net, struct sk_buff *in_skb,
- 	if (head && handle != head->handle)
- 		return -ENOENT;
- 
--	new = kzalloc_obj(*head);
-+	new = kzalloc_obj(*head, GFP_KERNEL_ACCOUNT);
- 	if (!new)
- 		return -ENOBUFS;
- 
-diff --git a/net/sched/cls_flow.c b/net/sched/cls_flow.c
-index 356c68ebc389..a9ac3acf6eda 100644
---- a/net/sched/cls_flow.c
-+++ b/net/sched/cls_flow.c
-@@ -438,7 +438,7 @@ static int flow_change(struct net *net, struct sk_buff *in_skb,
- 			return -EOPNOTSUPP;
- 	}
- 
--	fnew = kzalloc_obj(*fnew);
-+	fnew = kzalloc_obj(*fnew, GFP_KERNEL_ACCOUNT);
- 	if (!fnew)
- 		return -ENOBUFS;
- 
-diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
-index 88f8a32fab2b..0e275b58151c 100644
---- a/net/sched/cls_flower.c
-+++ b/net/sched/cls_flower.c
-@@ -2233,7 +2233,7 @@ static struct fl_flow_mask *fl_create_new_mask(struct cls_fl_head *head,
- 	struct fl_flow_mask *newmask;
- 	int err;
- 
--	newmask = kzalloc_obj(*newmask);
-+	newmask = kzalloc_obj(*newmask, GFP_KERNEL_ACCOUNT);
- 	if (!newmask)
- 		return ERR_PTR(-ENOMEM);
- 
-@@ -2394,7 +2394,7 @@ static int fl_change(struct net *net, struct sk_buff *in_skb,
- 		goto errout_tb;
- 	}
- 
--	fnew = kzalloc_obj(*fnew);
-+	fnew = kzalloc_obj(*fnew, GFP_KERNEL_ACCOUNT);
- 	if (!fnew) {
- 		err = -ENOBUFS;
- 		goto errout_tb;
-diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
-index 646a730dca93..a462b262719c 100644
---- a/net/sched/cls_fw.c
-+++ b/net/sched/cls_fw.c
-@@ -276,7 +276,7 @@ static int fw_change(struct net *net, struct sk_buff *in_skb,
- 		if (f->id != handle && handle)
- 			return -EINVAL;
- 
--		fnew = kzalloc_obj(struct fw_filter);
-+		fnew = kzalloc_obj(struct fw_filter, GFP_KERNEL_ACCOUNT);
- 		if (!fnew)
- 			return -ENOBUFS;
- 
-@@ -330,7 +330,7 @@ static int fw_change(struct net *net, struct sk_buff *in_skb,
- 		rcu_assign_pointer(tp->root, head);
- 	}
- 
--	f = kzalloc_obj(struct fw_filter);
-+	f = kzalloc_obj(struct fw_filter, GFP_KERNEL_ACCOUNT);
- 	if (f == NULL)
- 		return -ENOBUFS;
- 
-diff --git a/net/sched/cls_matchall.c b/net/sched/cls_matchall.c
-index 6f126872c14a..c14899b935bf 100644
---- a/net/sched/cls_matchall.c
-+++ b/net/sched/cls_matchall.c
-@@ -189,7 +189,7 @@ static int mall_change(struct net *net, struct sk_buff *in_skb,
- 			return -EINVAL;
- 	}
- 
--	new = kzalloc_obj(*new);
-+	new = kzalloc_obj(*new, GFP_KERNEL_ACCOUNT);
- 	if (!new)
- 		return -ENOBUFS;
- 
-@@ -201,7 +201,7 @@ static int mall_change(struct net *net, struct sk_buff *in_skb,
- 		handle = 1;
- 	new->handle = handle;
- 	new->flags = userflags;
--	new->pf = alloc_percpu(struct tc_matchall_pcnt);
-+	new->pf = alloc_percpu_gfp(struct tc_matchall_pcnt, GFP_KERNEL_ACCOUNT);
- 	if (!new->pf) {
- 		err = -ENOMEM;
- 		goto err_alloc_percpu;
-diff --git a/net/sched/cls_route.c b/net/sched/cls_route.c
-index eded7aacd3f7..0d1324c90583 100644
---- a/net/sched/cls_route.c
-+++ b/net/sched/cls_route.c
-@@ -455,7 +455,7 @@ static int route4_set_parms(struct net *net, struct tcf_proto *tp,
- 	h1 = to_hash(nhandle);
- 	b = rtnl_dereference(head->table[h1]);
- 	if (!b) {
--		b = kzalloc_obj(struct route4_bucket);
-+		b = kzalloc_obj(struct route4_bucket, GFP_KERNEL_ACCOUNT);
- 		if (b == NULL)
- 			return -ENOBUFS;
- 
-@@ -524,7 +524,7 @@ static int route4_change(struct net *net, struct sk_buff *in_skb,
- 			return -EINVAL;
- 
- 	err = -ENOBUFS;
--	f = kzalloc_obj(struct route4_filter);
-+	f = kzalloc_obj(struct route4_filter, GFP_KERNEL_ACCOUNT);
- 	if (!f)
- 		goto errout;
- 
-diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
-index c297d7dbcf91..ac6d0fa5a40e 100644
---- a/net/sched/cls_u32.c
-+++ b/net/sched/cls_u32.c
-@@ -825,7 +825,7 @@ static struct tc_u_knode *u32_init_knode(struct net *net, struct tcf_proto *tp,
- 	struct tc_u32_sel *s = &n->sel;
- 	struct tc_u_knode *new;
- 
--	new = kzalloc_flex(*new, sel.keys, s->nkeys);
-+	new = kzalloc_flex(*new, sel.keys, s->nkeys, GFP_KERNEL_ACCOUNT);
- 	if (!new)
- 		return NULL;
- 
-@@ -1114,15 +1114,16 @@ static int u32_change(struct net *net, struct sk_buff *in_skb,
- 		goto erridr;
- 	}
- 
--	n = kzalloc_flex(*n, sel.keys, s->nkeys);
-+	n = kzalloc_flex(*n, sel.keys, s->nkeys, GFP_KERNEL_ACCOUNT);
- 	if (n == NULL) {
- 		err = -ENOBUFS;
- 		goto erridr;
- 	}
- 
- #ifdef CONFIG_CLS_U32_PERF
--	n->pf = __alloc_percpu(struct_size(n->pf, kcnts, s->nkeys),
--			       __alignof__(struct tc_u32_pcnt));
-+	n->pf = __alloc_percpu_gfp(struct_size(n->pf, kcnts, s->nkeys),
-+				   __alignof__(struct tc_u32_pcnt),
-+				   GFP_KERNEL_ACCOUNT);
- 	if (!n->pf) {
- 		err = -ENOBUFS;
- 		goto errfree;
-@@ -1144,7 +1145,7 @@ static int u32_change(struct net *net, struct sk_buff *in_skb,
- 		goto errout;
- 
- #ifdef CONFIG_CLS_U32_MARK
--	n->pcpu_success = alloc_percpu(u32);
-+	n->pcpu_success = alloc_percpu_gfp(u32, GFP_KERNEL_ACCOUNT);
- 	if (!n->pcpu_success) {
- 		err = -ENOMEM;
- 		goto errout;
--- 
-2.43.0
-
+About TCA_FQ_INITIAL_QUANTUM in fq_change(), you could have changed iq_rang=
+e
+that was added in  commit 7041101ff6c3 ("net/sched: sch_fq: fix
+integer overflow of "credit"")
