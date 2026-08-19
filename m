@@ -1,264 +1,244 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DADD7477992
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 16:46:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A5248A2D9;
+	Wed, 19 Aug 2026 16:52:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787157979; cv=none; b=onembN99bh2TbyDXpLjXN96bzZY8sUFXTn91nxsrQO2HkeNMfdPYPn2jAYu7TVOQ/NVAfF/NpI8Vm1byht7RIPRYlZ9QAPJzbm34rLqQg8W/2zQkjgv21mNnjs+dVeAfxcHgg6Pf7LSBacgqiEIt52VHLuiTBcdwYz7BjmSocDw=
+	t=1787158363; cv=none; b=ncCdNi4Ev1HmFELjimLGuEPIlpvXJOPnThpCBTDBnc+imPZhgotVEg7rCjWmjZRKXBAMUNJYAISVze1hcHDhAvCWkhBGQfYw8BgzoFducW1zsS78p9ndTGxdLqO58KBP9JYnXu9HH4rpUiRlEqRKe6PyLltKPjJGsg1DU2w6gBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787157979; c=relaxed/simple;
-	bh=IdAftmlo+mRu7lXc9MDZJxVDs0JaB7Zc6ukdt6z39t0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=AmFKq9VF+TeoJn1mbJ5YDuhhrmzZkIuNRpnQf6rZHTD/MqbdEmFJoB8gxMLv5phCzwJqt6kB2OroC6QM7XVoTs6+Vk0Mb+PLuNL98F3Xy1AsCNoyj4tTyHcPBlkMqmFxk86opNlKZlo3jRDhAEhtRBIsGbMU9V+vFBtycI5xG80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bYls+sKp; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=sGi+kDMl; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1787158363; c=relaxed/simple;
+	bh=Cg0yzG3Q+Zzxxvlle6S+x35bJtJ5CU1APBSrbMNjjKQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=efNdXcdpWObH/iCa2u3P7BRSou6WP0cgQxE3SqQmm4KhfP4b0jYZJI17+SE2f50u7KRRN6sv/WhVv1/GgfWtf0YUzdm+RaMCi76I6FMLqHg9oJLVdM3c5VWuO7o+85uslehoETEcjVQTKqVM9Ag4Ib81C9i8hB+uTmo6NE3MQD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dj36w9yY; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bYls+sKp";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="sGi+kDMl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787157976;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=kKB6a7tb48I7KIcMKOrkf8BWQaXL7teAC4Q0HqgLOxc=;
-	b=bYls+sKp1CjXI823dBwJYI+SPUKcuP6r3ItYLw4SdY3h/RCyzJqcSQagbWkwJagfx64RX8
-	q/HZ9UAB8CnU7mN+MjEG316kIdwGgdz0/kaPdb1iv9DTzG3+ZH1pdjCM/c4OZWCezE064V
-	mczFJS+S9TU6T/HQfdEwXEm2PozUZm0=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-391-NxsjWBXrNLS6AfNT2K04pw-1; Wed, 19 Aug 2026 12:46:10 -0400
-X-MC-Unique: NxsjWBXrNLS6AfNT2K04pw-1
-X-Mimecast-MFC-AGG-ID: NxsjWBXrNLS6AfNT2K04pw_1787157969
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-481514be433so534824f8f.2
-        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 09:46:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1787157969; x=1787762769; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-disposition:content-type
-         :mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=kKB6a7tb48I7KIcMKOrkf8BWQaXL7teAC4Q0HqgLOxc=;
-        b=sGi+kDMlFQVRS/zHCX4A1RpSPfU4AgmiZZhvO8YH6jUH1Oe/J5o7vdZ6ACh10l8dIO
-         BUg6Dm7FxHv3SKMn9u+dMCS/ALMT73Sy30PCXuK9WTenzjeknhxJCuUfNmXgX100sLtj
-         znuAlb04tHh8oVwL4qn+wK16cTbTEJkGqJcLMYa0FNQWfpUzEbP84hukoKQoBr27ZuX9
-         MqIj1AOcVzhcx83FLGQTrBHEasCOWGub4IzWl/3ioHKF0bx2lnN2MTm4KQL862vGhUSA
-         qXKEK754HrgssHclc1qE/0qsKqPBX4oK8W7FoB9iYykgMRePt2oCpSl/mUw1EkU5fhUm
-         l5aA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787157969; x=1787762769;
-        h=content-transfer-encoding:content-disposition:content-type
-         :mime-version:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kKB6a7tb48I7KIcMKOrkf8BWQaXL7teAC4Q0HqgLOxc=;
-        b=ZM27lEocrOkAGp2X1AQ6rwv5rr8izk5KzEFyagZYI38scslZ7DhoJAunFplPLvAWDj
-         LcpS0CGVJGGTPB6tATpLBmmAC41cItjsan6KFp3lfTQ9QOlYliQYGy/b5c8YS18EdKx5
-         Dfw5qeMQvimfkXR1rCxM0oUOCSTipEEoweEvHi8TuP1RhVYvJYvjMgFWZeBVSpQbC46+
-         rjUCfYIB6SwUsuHXaBnjvWWqeRdnTNPgW/gsHyMo6LQ3vXcnA56o2YDIs1skLFqVUrp3
-         meqkqObdWuEUN5sRnaDaVQm7mWfoqCV3m0EpLScUi2XeecBmBg8QgRshaH0wb9ick33i
-         E0kA==
-X-Forwarded-Encrypted: i=1; AHgh+RowS4IfSv5aWUQNxKAJT9GkLti6MhDS9tmofpKcZlw4sp5F1n3C3zt8Vn3EhC7Gbp2fa0AW02g=@vger.kernel.org
-X-Gm-Message-State: AFuF++nd1XJiKsnzYa0H9g9u/NVEhioVrfpH4FtP3X8OxBZs37Rm23FY
-	jw5IiMEOI4M4QoRTJ7ELsPNo1p533eddLHOvPaMAwWvR0Ri2JWfrfCpUkKIiH/hXIfTiqiJ10Xk
-	1MRRELbhwrhooANu23AnRcAiUhYR4U4c23EEYeMvJN0VqdMpL1VpH7bDmMw==
-X-Gm-Gg: AR+sD13LOqoxqpXGH3QOxWrfadHL0eVhcZ9slVzlx8VYeYW1JCo1WwW0zuNXHSRb1vR
-	mzBKp2HWqRbzFizYx0vWWwpmBrrQRRtX7CgdHk8pvxEY1jmrTH9U/oU6eC33likTEI6GeYkzSEV
-	n7r1ojYiv7qhpHKvkTRholH6AxSuOiWIuL8kblraqVjsJWYmFTOZB+OqY1kOKK/2dq4mVb4tkeP
-	nl4KuCQIkyDYof/Zn2L84TJwQCHDEyxy6Cum7L5J6JEfycQlT18D4vMU5KOYW7TkaObPxZmvfFD
-	RccbN/u5notEgxzWyRGHIVyj8m+I72Ac2EIjFqiWS6uk4X8JnEnGdVWofZtJkT/h9z5/ZJLDgls
-	B3X3MZes5K4H0Ly0vo819zCBB
-X-Received: by 2002:a05:6000:1445:b0:47f:8b24:ef01 with SMTP id ffacd0b85a97d-482b1e837ddmr10403274f8f.1.1787157968664;
-        Wed, 19 Aug 2026 09:46:08 -0700 (PDT)
-X-Received: by 2002:a05:6000:1445:b0:47f:8b24:ef01 with SMTP id ffacd0b85a97d-482b1e837ddmr10403179f8f.1.1787157968144;
-        Wed, 19 Aug 2026 09:46:08 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-47-107.inter.net.il. [80.230.47.107])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482b14c45f1sm6670328f8f.31.2026.08.19.09.46.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2026 09:46:07 -0700 (PDT)
-Date: Wed, 19 Aug 2026 12:46:04 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	aesteve@redhat.com, ben.dooks@codethink.co.uk,
-	chenyichong@uniontech.com, david@kernel.org, den@openvz.org,
-	eperezma@redhat.com, gsomlo@gmail.com, hexlabsecurity@proton.me,
-	linfeng.sun.dev@gamil.com, lirongqing@baidu.com, me@linux.beauty,
-	mst@redhat.com, panchuang@vivo.com, pankaj.gupta.linux@gmail.com,
-	pengpeng@iscas.ac.cn, peter.hilber@oss.qualcomm.com,
-	sgarzare@redhat.com, stable@vger.kernel.org,
-	syzbot+28e5f3d207b14bae122a@syzkaller.appspotmail.com,
-	tavip@google.com, wangyufeng@kylinos.cn, xiongweimin@kylinos.cn,
-	xiongwm2026@163.com, yangjinqian1@huawei.com, zhaoguohan@kylinos.cn
-Subject: [GIT PULL] vhost,vdpa,virtio: fixes, features
-Message-ID: <20260819124604-mutt-send-email-mst@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dj36w9yY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787158361; x=1818694361;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Cg0yzG3Q+Zzxxvlle6S+x35bJtJ5CU1APBSrbMNjjKQ=;
+  b=dj36w9yYXuJGshegvWrlHv3qwADhDzbzaQ9uRIDgigyl9i8agHTo1gnz
+   B+mhdJs99F3BafsCpA4d4vcIDsTo3VnFbPFlVYUrzxWf+hWTcseOxU7Aw
+   F1KPuoxGI3a2nm900z8MEC1SxvfFEv0UtXIGmnrGKE35RQC/NVh7p4gs0
+   WUveNvRUFQMVLo/DUvhJNQc5DpAoHz3j/jyBB21gWAYGLWHmNcDo3XBL1
+   9U29bGSjiGccG1e100HRmOR0q0U9PyO7L3FjslZtzAv9skABmh41ah/PH
+   T9BOcP+r1iiAsMEYAIT4/OMpqjcKhwLKvmFXf56Ur8blxo404GK/Lzoce
+   g==;
+X-CSE-ConnectionGUID: xXnSWS28Q/2jeOBrUZ32LA==
+X-CSE-MsgGUID: ShMMtcXcTc6I7kCZXbnb6w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="87705549"
+X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
+   d="scan'208";a="87705549"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 09:52:40 -0700
+X-CSE-ConnectionGUID: S4sEUS/ITomOeSdkSU5tKw==
+X-CSE-MsgGUID: p+aaaeP0Tw+WPhR9Bdl4NA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
+   d="scan'208";a="303817977"
+Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.108.13]) ([10.125.108.13])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 09:52:38 -0700
+Message-ID: <822fd9da-fe62-4a99-a111-328f2c9e5f7b@intel.com>
+Date: Wed, 19 Aug 2026 09:52:38 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Mutt-Fcc: =sent
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 2/4] NTB: ntb_transport: Use little-endian
+ shared fields
+To: Koichiro Den <den@valinux.co.jp>, Jon Mason <jdmason@kudzu.us>,
+ Allen Hubbe <allenbh@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: ntb@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260817064916.13278-1-den@valinux.co.jp>
+ <20260817064916.13278-3-den@valinux.co.jp>
+From: Dave Jiang <dave.jiang@intel.com>
+Content-Language: en-US
+In-Reply-To: <20260817064916.13278-3-den@valinux.co.jp>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The following changes since commit 8d3ae59288f1e7d58d76558a6ee96d533bc5019f:
 
-  Linux 7.2 (2026-08-16 14:32:26 -0700)
 
-are available in the Git repository at:
+On 8/16/26 11:49 PM, Koichiro Den wrote:
+> ntb_transport writes payload headers and the RX ring tail with
+> iowrite32(), but reads peer-written copies from coherent memory as native
+> integers. The values are therefore byte-swapped when read on a big-endian
+> system.
+> 
+> Mark the shared fields as __le32 and convert coherent-memory accesses
+> accordingly.
+> 
+> Fixes: 74465645cdb4 ("NTB: Fix Sparse Warnings")
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Link: https://lore.kernel.org/r/20260815032932.151F11F000E9@smtp.kernel.org/
+> Signed-off-by: Koichiro Den <den@valinux.co.jp>
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 
-for you to fetch changes up to b282418bc366194677eafd1dad180d92254586ac:
-
-  vduse: Add suspend (2026-08-19 06:38:48 -0400)
-
-----------------------------------------------------------------
-vhost,vdpa,virtio: fixes, features
-
-- transport v3 support in virtio-mmio
-- suspend support in vduse
-- fixes, cleanups all over the place
-
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-
-----------------------------------------------------------------
-Albert Esteve (1):
-      virtio: Add ID for virtio media
-
-Ben Dooks (1):
-      crypto: virtio - fix missing le64_to_cpu() conversions
-
-Bryam Vargas (1):
-      crypto: virtio - bound the akcipher result length
-
-Denis V. Lunev (5):
-      virtio: add virtio_device_shutdown() helper
-      virtio_balloon: factor out virtballoon_quiesce()
-      virtio_balloon: quiesce balloon work before device shutdown
-      virtio_balloon: warn on failed buffer add in tell_host()
-      virtio_balloon: warn on failed buffer add in stats_handle_request()
-
-Eugenio Pérez (6):
-      vduse: store control device pointer
-      vduse: add VDUSE_GET_FEATURES ioctl
-      vduse: add VDUSE_SET_FEATURES ioctl
-      vduse: add F_QUEUE_READY feature
-      vduse: do not take rwsem at reset work flush
-      vduse: Add suspend
-
-Gabriel Somlo (1):
-      MAINTAINERS: remove Gabriel from LiteX and fw-cfg drivers
-
-GuoHan Zhao (3):
-      virtio: rtc: time out alarm requests
-      tools/virtio: Fix userspace typo in vringh test comment
-      tools/virtio: Fix control typo in trace agent comment
-
-Jinqian Yang (1):
-      virtio_ring: fix infinite loop in virtnet_poll_cleantx when device is broken
-
-Li Chen (12):
-      nvdimm: preserve flush callback -ENOMEM
-      nvdimm: pmem: keep PREFLUSH before data writes
-      nvdimm: pmem: guard data loop for dataless bios
-      nvdimm: virtio_pmem: stop allocating child flush bio
-      nvdimm: virtio_pmem: use GFP_NOIO for flush requests
-      nvdimm: virtio_pmem: always wake -ENOSPC waiters
-      nvdimm: virtio_pmem: use READ_ONCE()/WRITE_ONCE() for wait flags
-      nvdimm: virtio_pmem: refcount requests for token lifetime
-      nvdimm: virtio_pmem: publish done with release/acquire
-      nvdimm: virtio_pmem: isolate DMA request buffers
-      nvdimm: virtio_pmem: converge broken virtqueue to -EIO
-      nvdimm: virtio_pmem: drain requests in freeze
-
-Li RongQing (5):
-      virtio_dma_buf: fix typo in kdoc comment: get_uid -> get_uuid
-      virtio_mem: fix hardcoded 'vm' variable in bbm iteration macros
-      virtio_pci: fix wrong queue index for admin vq in intx path
-      vdpa/mlx5: fix wrong list iterated in add_direct_chain error path
-      vdpa/mlx5: fix wrong MLX5_ADDR_OF struct type in alloc_inout()
-
-Linfeng Sun  (1):
-      vdpa_sim: fix cleanup after worker creation failure
-
-Michael S. Tsirkin (1):
-      virtio_balloon: disable indirect descriptors
-
-Octavian Purdila (2):
-      iov_iter: export iov_iter_restore
-      vsock/virtio: restore msg_iter on transmission failure
-
-Pan Chuang (1):
-      vdpa: Remove redundant dev_err()
-
-Pengpeng Hou (2):
-      vdpa: alibaba: add missing MODULE_DEVICE_TABLE()
-      vdpa: octeon_ep: add missing MODULE_DEVICE_TABLE()
-
-Peter Hilber (1):
-      virtio-mmio: add support for transport version 3
-
-Weimin Xiong (1):
-      vdpa/mlx5: roll back MR update after VQ setup failure
-
-Xiong Weimin (2):
-      vdpa_sim: clear pending_kick on device reset
-      vdpa_sim: hold iommu_lock across dma_unmap passthrough transition
-
-Yichong Chen (1):
-      tools/virtio: Remove unsupported --batch option from vhost_net_test
-
-Yufeng Wang (1):
-      vhost/net: fix clear_user start address in VHOST_GET_FEATURES_ARRAY
-
-xiongweimin (5):
-      vhost: fix inaccurate kdoc in iotlb helpers
-      virtio: fix article before virtio in dma-buf comment
-      vdpa/solidrun: fix typos in snet_ctrl comments
-      virtio_mem: fix typo in comment
-      vhost: reject zero-size IOTLB INVALIDATE
-
- MAINTAINERS                                        |   2 -
- .../crypto/virtio/virtio_crypto_akcipher_algs.c    |   6 +-
- .../crypto/virtio/virtio_crypto_skcipher_algs.c    |   3 +-
- drivers/nvdimm/nd_virtio.c                         | 263 ++++++++++++++++----
- drivers/nvdimm/pmem.c                              |  53 +++--
- drivers/nvdimm/region_devs.c                       |   5 +-
- drivers/nvdimm/virtio_pmem.c                       |  65 ++++-
- drivers/nvdimm/virtio_pmem.h                       |  22 +-
- drivers/vdpa/alibaba/eni_vdpa.c                    |   1 +
- drivers/vdpa/mlx5/core/mr.c                        |   2 +-
- drivers/vdpa/mlx5/net/mlx5_vnet.c                  |  27 ++-
- drivers/vdpa/octeon_ep/octep_vdpa_main.c           |   5 +-
- drivers/vdpa/solidrun/snet_ctrl.c                  |   4 +-
- drivers/vdpa/vdpa_sim/vdpa_sim.c                   |  29 ++-
- drivers/vdpa/vdpa_user/vduse_dev.c                 | 265 ++++++++++++++++-----
- drivers/vdpa/virtio_pci/vp_vdpa.c                  |  12 +-
- drivers/vhost/iotlb.c                              |   6 +-
- drivers/vhost/net.c                                |   3 +-
- drivers/vhost/vhost.c                              |   4 +
- drivers/virtio/virtio.c                            |  41 ++--
- drivers/virtio/virtio_balloon.c                    |  51 +++-
- drivers/virtio/virtio_dma_buf.c                    |   2 +-
- drivers/virtio/virtio_mem.c                        |  10 +-
- drivers/virtio/virtio_mmio.c                       |  13 +-
- drivers/virtio/virtio_pci_common.c                 |   2 +-
- drivers/virtio/virtio_ring.c                       |   8 +
- drivers/virtio/virtio_rtc_driver.c                 |  14 +-
- include/linux/libnvdimm.h                          |   9 +
- include/linux/virtio.h                             |   1 +
- include/linux/virtio_dma_buf.h                     |   2 +-
- include/uapi/linux/vduse.h                         |  28 +++
- include/uapi/linux/virtio_ids.h                    |   1 +
- lib/iov_iter.c                                     |   1 +
- net/vmw_vsock/virtio_transport_common.c            |  13 +
- tools/virtio/vhost_net_test.c                      |   5 -
- tools/virtio/virtio-trace/trace-agent-ctl.c        |   2 +-
- tools/virtio/vringh_test.c                         |   2 +-
- 37 files changed, 760 insertions(+), 222 deletions(-)
+> ---
+> Changes in v2:
+>   - New patch. (Sashiko)
+> 
+>  drivers/ntb/ntb_transport.c | 47 +++++++++++++++++++++----------------
+>  1 file changed, 27 insertions(+), 20 deletions(-)
+> 
+> diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
+> index d458a8b1de11..967a5ad38164 100644
+> --- a/drivers/ntb/ntb_transport.c
+> +++ b/drivers/ntb/ntb_transport.c
+> @@ -132,7 +132,7 @@ struct ntb_queue_entry {
+>  };
+>  
+>  struct ntb_rx_info {
+> -	unsigned int entry;
+> +	__le32 entry;
+>  };
+>  
+>  struct ntb_transport_qp {
+> @@ -265,9 +265,9 @@ enum {
+>  };
+>  
+>  struct ntb_payload_header {
+> -	unsigned int ver;
+> -	unsigned int len;
+> -	unsigned int flags;
+> +	__le32 ver;
+> +	__le32 len;
+> +	__le32 flags;
+>  };
+>  
+>  enum {
+> @@ -514,7 +514,8 @@ static int ntb_qp_debugfs_stats_show(struct seq_file *s, void *v)
+>  	seq_printf(s, "tx_err_no_buf - %llu\n", qp->tx_err_no_buf);
+>  	seq_printf(s, "tx_mw - \t0x%p\n", qp->tx_mw);
+>  	seq_printf(s, "tx_index (H) - \t%u\n", qp->tx_index);
+> -	seq_printf(s, "RRI (T) - \t%u\n", qp->remote_rx_info->entry);
+> +	seq_printf(s, "RRI (T) - \t%u\n",
+> +		   le32_to_cpu(qp->remote_rx_info->entry));
+>  	seq_printf(s, "tx_max_entry - \t%u\n", qp->tx_max_entry);
+>  	seq_printf(s, "free tx - \t%u\n", ntb_transport_tx_free_entry(qp));
+>  	seq_putc(s, '\n');
+> @@ -633,7 +634,7 @@ static int ntb_transport_setup_qp_mw(struct ntb_transport_ctx *nt,
+>  		qp->rx_alloc_entry++;
+>  	}
+>  
+> -	qp->remote_rx_info->entry = qp->rx_max_entry - 1;
+> +	qp->remote_rx_info->entry = cpu_to_le32(qp->rx_max_entry - 1);
+>  
+>  	/* setup the hdr offsets with 0's */
+>  	for (i = 0; i < qp->rx_max_entry; i++) {
+> @@ -919,7 +920,7 @@ static void ntb_qp_link_down_reset(struct ntb_transport_qp *qp)
+>  {
+>  	ntb_qp_link_context_reset(qp);
+>  	if (qp->remote_rx_info)
+> -		qp->remote_rx_info->entry = qp->rx_max_entry - 1;
+> +		qp->remote_rx_info->entry = cpu_to_le32(qp->rx_max_entry - 1);
+>  }
+>  
+>  static void ntb_qp_link_cleanup(struct ntb_transport_qp *qp)
+> @@ -1445,7 +1446,7 @@ static void ntb_complete_rxc(struct ntb_transport_qp *qp)
+>  		if (!(entry->flags & DESC_DONE_FLAG))
+>  			break;
+>  
+> -		entry->rx_hdr->flags = 0;
+> +		entry->rx_hdr->flags = cpu_to_le32(0);
+>  		iowrite32(entry->rx_index, &qp->rx_info->entry);
+>  
+>  		cb_data = entry->cb_data;
+> @@ -1609,13 +1610,15 @@ static int ntb_process_rxc(struct ntb_transport_qp *qp)
+>  {
+>  	struct ntb_payload_header *hdr;
+>  	struct ntb_queue_entry *entry;
+> -	unsigned int flags;
+>  	void *offset;
+> +	u32 flags;
+> +	u32 len;
+> +	u32 ver;
+>  
+>  	offset = qp->rx_buff + qp->rx_max_frame * qp->rx_index;
+>  	hdr = offset + qp->rx_max_frame - sizeof(struct ntb_payload_header);
+>  
+> -	flags = READ_ONCE(hdr->flags);
+> +	flags = le32_to_cpu(READ_ONCE(hdr->flags));
+>  	if (!(flags & DESC_DONE_FLAG)) {
+>  		dev_dbg(&qp->ndev->pdev->dev, "done flag not set\n");
+>  		qp->rx_ring_empty++;
+> @@ -1623,21 +1626,23 @@ static int ntb_process_rxc(struct ntb_transport_qp *qp)
+>  	}
+>  
+>  	dma_rmb();
+> +	ver = le32_to_cpu(hdr->ver);
+> +	len = le32_to_cpu(hdr->len);
+>  
+>  	dev_dbg(&qp->ndev->pdev->dev, "qp %d: RX ver %u len %d flags %x\n",
+> -		qp->qp_num, hdr->ver, hdr->len, flags);
+> +		qp->qp_num, ver, len, flags);
+>  
+>  	if (flags & LINK_DOWN_FLAG) {
+>  		dev_dbg(&qp->ndev->pdev->dev, "link down flag set\n");
+>  		ntb_qp_link_down(qp);
+> -		hdr->flags = 0;
+> +		hdr->flags = cpu_to_le32(0);
+>  		return -EAGAIN;
+>  	}
+>  
+> -	if (hdr->ver != (u32)qp->rx_pkts) {
+> +	if (ver != (u32)qp->rx_pkts) {
+>  		dev_dbg(&qp->ndev->pdev->dev,
+>  			"version mismatch, expected %llu - got %u\n",
+> -			qp->rx_pkts, hdr->ver);
+> +			qp->rx_pkts, ver);
+>  		qp->rx_err_ver++;
+>  		return -EIO;
+>  	}
+> @@ -1652,10 +1657,10 @@ static int ntb_process_rxc(struct ntb_transport_qp *qp)
+>  	entry->rx_hdr = hdr;
+>  	entry->rx_index = qp->rx_index;
+>  
+> -	if (hdr->len > entry->len) {
+> +	if (len > entry->len) {
+>  		dev_dbg(&qp->ndev->pdev->dev,
+>  			"receive buffer overflow! Wanted %d got %d\n",
+> -			hdr->len, entry->len);
+> +			len, entry->len);
+>  		qp->rx_err_oflow++;
+>  
+>  		entry->len = -EIO;
+> @@ -1665,12 +1670,12 @@ static int ntb_process_rxc(struct ntb_transport_qp *qp)
+>  	} else {
+>  		dev_dbg(&qp->ndev->pdev->dev,
+>  			"RX OK index %u ver %u size %d into buf size %d\n",
+> -			qp->rx_index, hdr->ver, hdr->len, entry->len);
+> +			qp->rx_index, ver, len, entry->len);
+>  
+> -		qp->rx_bytes += hdr->len;
+> +		qp->rx_bytes += len;
+>  		qp->rx_pkts++;
+>  
+> -		entry->len = hdr->len;
+> +		entry->len = len;
+>  
+>  		ntb_async_rx(entry, offset);
+>  	}
+> @@ -2492,7 +2497,9 @@ EXPORT_SYMBOL_GPL(ntb_transport_max_size);
+>  unsigned int ntb_transport_tx_free_entry(struct ntb_transport_qp *qp)
+>  {
+>  	unsigned int head = qp->tx_index;
+> -	unsigned int tail = qp->remote_rx_info->entry;
+> +	unsigned int tail;
+> +
+> +	tail = le32_to_cpu(READ_ONCE(qp->remote_rx_info->entry));
+>  
+>  	return tail >= head ? tail - head : qp->tx_max_entry + tail - head;
+>  }
 
