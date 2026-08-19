@@ -1,137 +1,124 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011066.outbound.protection.outlook.com [40.93.194.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B77B3E2777
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 08:33:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787128404; cv=fail; b=dL4GahYQC7nbcykm9H8Pknj7LtrKB4tMXUdb/JLHHw+Pl8n1UI8TDHYKRUAaLEDcUC1FShB5uqcpNWHHeb1fiLCtXbNMDEQH2NYPlTG5KJH1b3VYKi0xqVG9JNNmZw11rmTXmAZG1oav3OnqZaPxNG2p0gY3uxWh2naXIJONEGE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787128404; c=relaxed/simple;
-	bh=a/PcnmCxgyfxR8M5LxISqtYbHWDHPcUIV+3K+uIu85s=;
-	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=g/CQy3+gVoCrLmdcQ7SIwWcHqGqZ5/e0zAtlVdtaYWBQ1Svhm+EF5YLgin/wm7kiIKd5MSLChIoexwiaPjweaCF8bPaZxsTm57zwg6l6T3rYkLMj2hyYIUhgLqZQ7+feZaP5cOuuVSk6IlYPctoOlJHTviRdCamej3TEW13w1o0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ZLvfSBH3; arc=fail smtp.client-ip=40.93.194.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE673DDDBC
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 08:35:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787128535; cv=none; b=VSx8YR93B5Lc4vvycmIoaHN+D9Zjj9HXRmhXOM/xF6OI48ZjGjCo3K6qApw1w2ELmEIUYxA941exWSUeYpVf7D0a7MKq+UutKoTd6FHodtPxXn8Rc71yGIuxn9N3VnHkPTOCuz25Uyu9c8keQ5VXI/qn9xNdJutqBzAe+81vSnw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787128535; c=relaxed/simple;
+	bh=lpQQmxTDsK3Yh1ylUB1lp+y7xpJ0X5iJF2Sw0jOAwPo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=X1wYaCH39/D1Anui3/U3anDMhzpCr6K/ixJmhmekZ+y+ksXRWBXlKav0dGKRnAthr79NurQjCi5p4SP5qm/Wtzyug2gAyTxqC2uBEfG1I95EcaGAfRtDMiPJ3IjU1T6QzkTE/4yAfOoZVX3ohbuMIdWUFcAe9KpuxLQccG/R67s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=VBnRgE9W; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ZLvfSBH3"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=O9vJIuI58xATJ8JKUnQFf7I9aQQmGP9kZ8pIdfZCbgL23F/haXzs0ZX4E3M4RaamIu/CZd6Nm/0tqmcDBKM1ZQI7tCQthmFbK+a4/V0hcgtI48+0L8Xa2B2jaBnzJsp04PcihEsXlmx9BzYWY2WnEfUF7PvFHxP7Hc1UiEFREkP27ViXoS/uuABe9N6zh/Q32I57Aub3d9PvnFMuA/F7t4lRe1g/EtPMZddSpnqvhjl0Q1tF+VAkRKXfET3nPK11BmmJu3q+pP0tbRbe/qZEfj9hd3RhArRmZGQmllk9cgs5PdAWpaWu/gjurd8xIN4IZpSrDG3Jt2Vm2w6fYiIe7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PlvernOmtZ0Z7eDrpugvveJamtk4VHEIzv1pRW2tCJw=;
- b=gguPKZNJNXJlCHPfwwrlei9VRNKg/tsdYvImagHByPR4AAc0KVrtTvq53aw6Ub4dt+ZlMzrrdxFmzkXlsiNCgxWUSI9m92AoNuXTcfwNxaB6O2zg2SRPFCwpBOfoxwHozyP2Z5p+4/XbjufWP60fW78AOsZA5kCRl7F+pyxwEK0caq/WUu+th9sl3lvzea/3xpxxrb8B32FbBVHvQWF+XYQQD6C0mNUCkyYF6BEpBRA6RTCrTYxpmHHDXHoR1TPRwf0k2HUJNrno8qJVqZqx0So5DR6T74iTFhXIrZNMbUCEFEc8dZPwfSSuJHON3dIdbpgnbmxVA/7b/WF0dbs+sw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PlvernOmtZ0Z7eDrpugvveJamtk4VHEIzv1pRW2tCJw=;
- b=ZLvfSBH33lqTYpzrsum/nLuBVk6ztW/pkdXo4FRpXJm6RJLogbdX2XExN0v2e9iUjsp8hLhXIgQ9Q4lqnKh336/hpO1I3+LcjRfU1ugsjEnlab5n8unlmCKHcwzLJnKz5KPcXu6MYUTW//7Gw7xJsGPxVrbjH9HRUhTbYwVzAfVDDpgaEd02lWrKAJoNKRUERL/dlR12eH73Spugdlreeor0pJ4Teyze+5maaNxM8lmAXBXaPsHww8M/cDWUwoFuCwT2jC53XD60vFZMv7sBU1zd58pTlsOKl1iV3MnZmQW1wPx6xpSVl9ah6GN1ugi6NK2ER/rf4baw3jhGvaXF8A==
-Received: from DS7P222CA0018.NAMP222.PROD.OUTLOOK.COM (2603:10b6:8:2e::33) by
- DM6PR12MB4338.namprd12.prod.outlook.com (2603:10b6:5:2a2::21) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.315.17; Wed, 19 Aug 2026 08:33:16 +0000
-Received: from CY4PEPF0000E9DB.namprd05.prod.outlook.com
- (2603:10b6:8:2e:cafe::3c) by DS7P222CA0018.outlook.office365.com
- (2603:10b6:8:2e::33) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.8 via Frontend Transport; Wed, 19
- Aug 2026 08:33:16 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CY4PEPF0000E9DB.mail.protection.outlook.com (10.167.241.74) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.339.3 via Frontend Transport; Wed, 19 Aug 2026 08:33:16 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Wed, 19 Aug
- 2026 01:33:03 -0700
-Received: from tuxedo (10.126.230.37) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 19 Aug
- 2026 01:32:58 -0700
-From: Petr Machata <petrm@nvidia.com>
-To: Nikolay Aleksandrov <razor@blackwall.org>
-CC: <netdev@vger.kernel.org>, <idosch@nvidia.com>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<horms@kernel.org>, <roopa@nvidia.com>, <bridge@lists.linux.dev>,
-	<andrew+netdev@lunn.ch>, <dlstevens@us.ibm.com>, <amwang@redhat.com>
-Subject: Re: [PATCH net v2 2/2] vxlan: fix reading neigh ha
-In-Reply-To: <20260818150756.890025-3-razor@blackwall.org> (Nikolay
-	Aleksandrov's message of "Tue, 18 Aug 2026 18:07:56 +0300")
-References: <20260818150756.890025-1-razor@blackwall.org>
-	<20260818150756.890025-3-razor@blackwall.org>
-User-Agent: mu4e 1.12.15; emacs 30.2
-Date: Wed, 19 Aug 2026 10:32:54 +0200
-Message-ID: <87o6ey7bnt.fsf@pmachata.org>
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="VBnRgE9W"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4953e04ef16so7718055e9.2
+        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 01:35:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1787128532; x=1787733332; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=UaQjGKx5D7JBs1VdBUikHnCA2EKV7k9U1yTmwx36B/s=;
+        b=VBnRgE9WUwwCS+zYFN2dTfu6cVRVD4voKoaXCzU9sM/9v29vTSJcTryyhIjTeVMqt0
+         0Uflt0J+28M8GJHhERgCiJqdr1PP7MHu0i+RmwbnDhOLsk20htYq9ipr4PowUmNeMlno
+         ymITCrRPs4DTCixLlNbQBYDrhNGRi+Uj3d8Z/bi+c2tS4Bhn67Yk3PPgDK5a+1EpBgWF
+         LNoCh1pkRK5TWdxS1/k11EQUSLpGiz+4wEhLVqJ6dEvOLV1AzO0pvAay+IvXuwqt5Utz
+         CeBPqXDxby8VLPjnu8erhC4N1VGSdja0Fe/RwfA1VRZUIprL16EU51COivxh5hqBS/Sz
+         yr6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787128532; x=1787733332;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=UaQjGKx5D7JBs1VdBUikHnCA2EKV7k9U1yTmwx36B/s=;
+        b=LKj56cqPkHq3NkCZyefb/7WszLjRp9WyuTF3ZOV6voXsHNi0Eh7md8RrxdqgLnspG9
+         tF8bBet0oXDmBQkplTJNzj0qMjjFLWexj6kP4GL+g56fKH7iumU84Nz22FyV1929xihf
+         DYWIN0fqy+jUDYVNn+m1nLs83WpBBAs1oAs+ENRZ8mQI9vW2XxFj9bZkOnSDpvajhwL5
+         SOKRtfbN/ls8H0crXKTkXmGOXwKq93doTOM9v4+2zcSVwmQjscme0AKwEEePob3Sg5WS
+         V9kmXwxEVFN5eztk5/GGNS4O/mwFkYtMN3UMLt6kM4FcK4B2p3j2CDtgzJM1qk2hnJ+H
+         9KDA==
+X-Forwarded-Encrypted: i=1; AHgh+Rrf8csbfz2ZFWsp1fSUdOwRBcF5L+oREw9CSytdPwZfRe9Q+JDJGg3uyNle40lo367wSw1axZs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjQMrRO3gTjkW0hRbJ04P6SOq3MSCqHA+DrW6hr2ry/6dlHrYQ
+	j0BL8jAWlQZJ8ma37Awt8zUjdE/lRSNPa/E5fvoyMJJliBURSukbeRe1Lkac/UOuZfA=
+X-Gm-Gg: AR+sD12dQP+RQZE2Ugh3z8vuyJKZDaKyEGYeMWuAknlzLy5z/wBYsUT8PU0KFd1eHiE
+	VxIjfukOHyhLI0NykjQWF32Xtd6eMg3WAdHcvuAJhFDpcgdQvusJQ3GM+4Fm57Op5MgrC2Pc6KX
+	Q1uJXSipVzLIsm7cFmpGLuzzVviLbfRlQH2wIpCXWCIgmcqG1X+Ygn9DOMKgGDiLRs4BFklof/W
+	1y9n0+K2VcLlg/XxF/UH6eG7cNxaEGBo8vUNLCteZrKYc4FjjYjBBlkKphKHFyOWAgQV9OUvfLm
+	v1xbEldrGFmfy+tw5xeYYJoTbxtMSesq9hp1SBmw2fW5orFFp+xSXxgPguGzLuufCsF13q/Tkp3
+	XRBONyslkoj9Bu+hGUB+uT22EpfJIXqyLx1L0uuBF9MJUZzc9/fipS7Ar59kSQRvHhzGRqQXpy0
+	v/iA2nvr2c1DY7+Dwqp/1vDwjxM70V/UAo0okXMsTaIcrpLeREq8as0NPUyqEfXUP70gIrVknrf
+	U4l6GprQf81x7N4ySc=
+X-Received: by 2002:a05:600c:6990:b0:499:900c:9c69 with SMTP id 5b1f17b1804b1-499aa1ba0acmr52580625e9.9.1787128532150;
+        Wed, 19 Aug 2026 01:35:32 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499aa0dd620sm40297395e9.13.2026.08.19.01.35.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Aug 2026 01:35:31 -0700 (PDT)
+Message-ID: <1ebd9c8a-5b7e-4ebb-9c7d-5b2b2fe4a675@blackwall.org>
+Date: Wed, 19 Aug 2026 11:35:29 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9DB:EE_|DM6PR12MB4338:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2e0e67c6-e834-4d66-8a90-08defdcc8437
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|376014|7416014|82310400026|36860700016|22082099003|18002099003|10067099003|4143699003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	SmA3M11EH+mO6gOd1glkK8p5XlX/Bjt70YjGIrhlk0ZF5Rc7uVclizBmkWRP1REW5Fn4eqrqpcMeuSW1oHzXdUb6e/dkHy/QzfNBiwvVzDe3kA971rhOhi1O3CpNlaVQjJ5cET3AdH8//hsTVGVMPLI603yod3yvtt9KKVDbxLa1wgiqFnknmaqZIr8QaxNESk/p2dg6y6OMMteslQiytN6ypyk3NnoovGi4yme2qc5KRVRqW0fQFY2d6yk2bQp8BpWpGuzPPk9EAnet+q4u8+J5yo+UNtnsVZII6pCfGtSMfv3+XVcp3RH9NAnYNOUCSD4/att3lDsV4dDv/pQyi1VVGAgaXuMQWFuYbfbgsjyQhXBiDYWysWnUdtSuWI+aQdR6CbIyI6/v/OTUbXsE5M/7YwSiXb+jJc+3wGSMYtO/uyne6ZvQqXmBQx8m5jepiO6+w9NTcqgyHyzCzhTA5tbkNWK8RxWl07CzyXkRBs4ikTxqvNZc5eDgyXNo7yWSm5JWscR5sTHDQPITX9MMUvsVDhxGaUlr9a9pJFHsLHGBneQa3iQZ9/VkU5twaq8svw+mpXWqSA7/6UAdC9+ErHjQ0B+KiUujmBOKjmDHh7vOnPhkSSO+nGMtJ5egJqpsnrZ89kd76UU4D6pFI+C3aa7iR05Yu2VVmVHRQYT6BCLmd+WLbCHeDLo/9LM0EYnt
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(7416014)(82310400026)(36860700016)(22082099003)(18002099003)(10067099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	t5FBPS/WFLb1KUdQoTOO2QaOAjOZK3ZpRG5eq8bY5G9ueQdRc8xJABaB2qtx0DXNgpHY7t2/QETp6C76+4BfyENemF2tA/NSF3pW9xq0Z7VsyqZieNeDso6q8dNAnoDTJ8JFPrh9olU644qaX/w5qCUL3RSasT+FATDzEJ6xkgTFRYN2J5hXCd4K6wO7mfvtcv0I5NMOLz2IJ+neKF/YyZGaTAgHkAjJkYFtIGqGPx5Eu1Sp0umE3sxwK0seymH691lt9DH3Ax+bc7N+OP3h30ljTzQA0RLKrk2Hd5NnID3d2XGHknRqa9mSBxhziJPUylSUcifCO1S3J4+8/sxX+JKBgHYgQKaetGWtIBlhN2RNrSOupbjzziH0MZACo2dCTIT65bHy8iOPTodR60MkuuHL8jf87AcGNc3btC/RX1ec2IELxgSpnKEeFQX728yn
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 08:33:16.5499
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2e0e67c6-e834-4d66-8a90-08defdcc8437
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000E9DB.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4338
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 2/2] bonding: fix u32 overflow in compute_gap()
+Content-Language: en-US, bg
+To: Hangbin Liu <hangbin.liu@linux.dev>
+Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
+References: <20260818-bond_overflow-v3-0-e05d4dbc2fd8@kylinos.cn>
+ <20260818-bond_overflow-v3-2-e05d4dbc2fd8@kylinos.cn>
+ <d75e0db1-e129-4a9f-a103-889827948de1@blackwall.org>
+ <80d704a8-aca6-44f8-8933-eb0cf14ecf3b@blackwall.org>
+ <bf56ea5d-a0d2-40f9-b8d5-73d8c54ca32b@blackwall.org>
+ <aoUP0sLeEhCPxukB@fedora> <aoUQdublxcfZzqzE@fedora>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <aoUQdublxcfZzqzE@fedora>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Nikolay Aleksandrov <razor@blackwall.org> writes:
+On 19/08/2026 05:09, Hangbin Liu wrote:
+> On Wed, Aug 19, 2026 at 10:07:22AM +0800, Hangbin Liu wrote:
+>>>>> ... this here, as u64_stats_update_begin doesn't provide exclusive access, so writers
+>>>>> must do that themselves, so you can't be sure what value will end up, the zeroing
+>>>>> might not work at all and can get overwritten
+>>>>>
+>>>>
+>>>> I meant - it doesn't improve on the current situation where it can also happen. :)
+>>
+>> Ah, yes. I forgot this. The reset_unbalanced_load() could be called on any
+>> CPU, which conflicts with other writers.
+>>
+>> I re-checked the code. unbalanced_load is only called in two situations:
+>> 1. To rebalance the load in bond_alb_monitor(), which only executes once
+>>     every 10 seconds.
+>> 2. !tx_slave in bond_do_alb_xmit(), which is only for multicast/broadcast
+>>     traffic. This traffic shouldn't be significant.
+>>
+>> So looks using spin_lock here is acceptable. What do you think?
+> 
+> I mean, drop the per-CPU design directly and use spin_lock to protect the data.
+> 
+> Hangbin
 
-> Currently arp/neigh_reduce read neigh ha directly which can lead to
-> partial reads while the neigh is being updated. Use neigh_ha_snapshot to
-> take a stable snapshot of the address similar to route_shortcircuit which
-> already does the right thing.
->
-> Fixes: e4f67addf158 ("add DOVE extensions for VXLAN")
-> Fixes: f564f45c4518 ("vxlan: add ipv6 proxy support")
-> Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+hmm why don't you change the way the reset is done? *untested* but in theory
+you could just record the values at a reset "moment" in reset unbalanced and
+just use the delta, so it becomes a reader and there is only 1 writer left (tx).
+Keep the counters only increasing (important), only record a snapshot at a reset
+moment, count current total bytes (sum all per-cpu data), decrement the previous
+total from it and use that as the "interval bytes" to div.
 
-Reviewed-by: Petr Machata <petrm@nvidia.com>
+Cheers,
+  Nik
 
-> @@ -1935,7 +1938,8 @@ static int arp_reduce(struct net_device *dev, struct sk_buff *skb, __be32 vni)
->  
->  #if IS_ENABLED(CONFIG_IPV6)
->  static struct sk_buff *vxlan_na_create(struct sk_buff *request,
-> -	struct neighbour *n, bool isrouter)
-> +				       struct neighbour *n, u8 *ha,
-
-(Likewise, I think this could be const u8 *ha.)
-
-> +				       bool isrouter)
->  {
->  	struct net_device *dev = request->dev;
->  	struct sk_buff *reply;
