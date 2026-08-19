@@ -1,127 +1,264 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F039A489872
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DADD7477992
 	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 16:46:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787157979; cv=none; b=vFLG3L6UnEsiVXTwTvPKI44MIU1OP7jRBR7oAYVX0mooXTLEyj3v6kGT89gvSx8v3Ic7B6Y469nl2JQCVAV117pLpLnMpzVMgAWSACaZRlkFhFCf/sxhjnO0jtByo6mpEwMQDp1S05iME5WccMMxOVbF64fEaFgGsjTpr6ZgHhE=
+	t=1787157979; cv=none; b=onembN99bh2TbyDXpLjXN96bzZY8sUFXTn91nxsrQO2HkeNMfdPYPn2jAYu7TVOQ/NVAfF/NpI8Vm1byht7RIPRYlZ9QAPJzbm34rLqQg8W/2zQkjgv21mNnjs+dVeAfxcHgg6Pf7LSBacgqiEIt52VHLuiTBcdwYz7BjmSocDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1787157979; c=relaxed/simple;
-	bh=kVm7qF3Egf7ZwOK5DxGrizYgvj2CLuXYPJof+rBpPXY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lA27RaiN5Ew/53PIXPpqGo9fWTCdSlWctF1sJuxCHvx1vqgFYr+uiXyv6Flnh3+BEG4j6AsG/ErTklf2rsXd3oTvZO1ylVohFhEEFJZNaDea8vIo4zZ/a7J+MEu8mkBMCWSWS5zhtSkgKYLcBFdoaNDXQWCfXUEyhwwtfV0zQAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fMgRbKPe; arc=none smtp.client-ip=100.103.45.18
+	bh=IdAftmlo+mRu7lXc9MDZJxVDs0JaB7Zc6ukdt6z39t0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=AmFKq9VF+TeoJn1mbJ5YDuhhrmzZkIuNRpnQf6rZHTD/MqbdEmFJoB8gxMLv5phCzwJqt6kB2OroC6QM7XVoTs6+Vk0Mb+PLuNL98F3Xy1AsCNoyj4tTyHcPBlkMqmFxk86opNlKZlo3jRDhAEhtRBIsGbMU9V+vFBtycI5xG80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bYls+sKp; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=sGi+kDMl; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fMgRbKPe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62E11F000E9;
-	Wed, 19 Aug 2026 16:46:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787157977;
-	bh=jurf5UncSNKJlvAHXmUIdjCmgyM2ngh4O35aqqoVlEc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fMgRbKPe9w7DGjfiLUNP1qMckOIHySAj/PqjgXXpTu/peivFfMQmMChDLO1srccnC
-	 6PvqC649KecYei3zbYpoXDoov0JqCDwrfnzkMqFqKA8g2vAK+6HB/YIEN0c+YFD9cp
-	 RkTAahhayFa8yLWR3C0rxTBjQM6AjjXzeTKaHNWYPwFAhe7DK3L+cGJRWG4V/I1Fkj
-	 8nLCVcIN/fUCZ4d3cyq9UHG4gdtQRJGQ3+v6H+x1pZEw6ArmHrLt1zFuU5QWhomZUB
-	 yxk+TJRYfdU9qbE8Jrw7Blwkk2hKj2MH2flJ4NVDJUDAaHmCkYn+YtbWhsa7lDtU5O
-	 45cxEGjmrdQcw==
-Message-ID: <fc98de42-02cb-4de9-8986-b77414793df5@kernel.org>
-Date: Wed, 19 Aug 2026 18:46:11 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bYls+sKp";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="sGi+kDMl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787157976;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=kKB6a7tb48I7KIcMKOrkf8BWQaXL7teAC4Q0HqgLOxc=;
+	b=bYls+sKp1CjXI823dBwJYI+SPUKcuP6r3ItYLw4SdY3h/RCyzJqcSQagbWkwJagfx64RX8
+	q/HZ9UAB8CnU7mN+MjEG316kIdwGgdz0/kaPdb1iv9DTzG3+ZH1pdjCM/c4OZWCezE064V
+	mczFJS+S9TU6T/HQfdEwXEm2PozUZm0=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-391-NxsjWBXrNLS6AfNT2K04pw-1; Wed, 19 Aug 2026 12:46:10 -0400
+X-MC-Unique: NxsjWBXrNLS6AfNT2K04pw-1
+X-Mimecast-MFC-AGG-ID: NxsjWBXrNLS6AfNT2K04pw_1787157969
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-481514be433so534824f8f.2
+        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 09:46:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1787157969; x=1787762769; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-disposition:content-type
+         :mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=kKB6a7tb48I7KIcMKOrkf8BWQaXL7teAC4Q0HqgLOxc=;
+        b=sGi+kDMlFQVRS/zHCX4A1RpSPfU4AgmiZZhvO8YH6jUH1Oe/J5o7vdZ6ACh10l8dIO
+         BUg6Dm7FxHv3SKMn9u+dMCS/ALMT73Sy30PCXuK9WTenzjeknhxJCuUfNmXgX100sLtj
+         znuAlb04tHh8oVwL4qn+wK16cTbTEJkGqJcLMYa0FNQWfpUzEbP84hukoKQoBr27ZuX9
+         MqIj1AOcVzhcx83FLGQTrBHEasCOWGub4IzWl/3ioHKF0bx2lnN2MTm4KQL862vGhUSA
+         qXKEK754HrgssHclc1qE/0qsKqPBX4oK8W7FoB9iYykgMRePt2oCpSl/mUw1EkU5fhUm
+         l5aA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787157969; x=1787762769;
+        h=content-transfer-encoding:content-disposition:content-type
+         :mime-version:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kKB6a7tb48I7KIcMKOrkf8BWQaXL7teAC4Q0HqgLOxc=;
+        b=ZM27lEocrOkAGp2X1AQ6rwv5rr8izk5KzEFyagZYI38scslZ7DhoJAunFplPLvAWDj
+         LcpS0CGVJGGTPB6tATpLBmmAC41cItjsan6KFp3lfTQ9QOlYliQYGy/b5c8YS18EdKx5
+         Dfw5qeMQvimfkXR1rCxM0oUOCSTipEEoweEvHi8TuP1RhVYvJYvjMgFWZeBVSpQbC46+
+         rjUCfYIB6SwUsuHXaBnjvWWqeRdnTNPgW/gsHyMo6LQ3vXcnA56o2YDIs1skLFqVUrp3
+         meqkqObdWuEUN5sRnaDaVQm7mWfoqCV3m0EpLScUi2XeecBmBg8QgRshaH0wb9ick33i
+         E0kA==
+X-Forwarded-Encrypted: i=1; AHgh+RowS4IfSv5aWUQNxKAJT9GkLti6MhDS9tmofpKcZlw4sp5F1n3C3zt8Vn3EhC7Gbp2fa0AW02g=@vger.kernel.org
+X-Gm-Message-State: AFuF++nd1XJiKsnzYa0H9g9u/NVEhioVrfpH4FtP3X8OxBZs37Rm23FY
+	jw5IiMEOI4M4QoRTJ7ELsPNo1p533eddLHOvPaMAwWvR0Ri2JWfrfCpUkKIiH/hXIfTiqiJ10Xk
+	1MRRELbhwrhooANu23AnRcAiUhYR4U4c23EEYeMvJN0VqdMpL1VpH7bDmMw==
+X-Gm-Gg: AR+sD13LOqoxqpXGH3QOxWrfadHL0eVhcZ9slVzlx8VYeYW1JCo1WwW0zuNXHSRb1vR
+	mzBKp2HWqRbzFizYx0vWWwpmBrrQRRtX7CgdHk8pvxEY1jmrTH9U/oU6eC33likTEI6GeYkzSEV
+	n7r1ojYiv7qhpHKvkTRholH6AxSuOiWIuL8kblraqVjsJWYmFTOZB+OqY1kOKK/2dq4mVb4tkeP
+	nl4KuCQIkyDYof/Zn2L84TJwQCHDEyxy6Cum7L5J6JEfycQlT18D4vMU5KOYW7TkaObPxZmvfFD
+	RccbN/u5notEgxzWyRGHIVyj8m+I72Ac2EIjFqiWS6uk4X8JnEnGdVWofZtJkT/h9z5/ZJLDgls
+	B3X3MZes5K4H0Ly0vo819zCBB
+X-Received: by 2002:a05:6000:1445:b0:47f:8b24:ef01 with SMTP id ffacd0b85a97d-482b1e837ddmr10403274f8f.1.1787157968664;
+        Wed, 19 Aug 2026 09:46:08 -0700 (PDT)
+X-Received: by 2002:a05:6000:1445:b0:47f:8b24:ef01 with SMTP id ffacd0b85a97d-482b1e837ddmr10403179f8f.1.1787157968144;
+        Wed, 19 Aug 2026 09:46:08 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-47-107.inter.net.il. [80.230.47.107])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482b14c45f1sm6670328f8f.31.2026.08.19.09.46.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Aug 2026 09:46:07 -0700 (PDT)
+Date: Wed, 19 Aug 2026 12:46:04 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	aesteve@redhat.com, ben.dooks@codethink.co.uk,
+	chenyichong@uniontech.com, david@kernel.org, den@openvz.org,
+	eperezma@redhat.com, gsomlo@gmail.com, hexlabsecurity@proton.me,
+	linfeng.sun.dev@gamil.com, lirongqing@baidu.com, me@linux.beauty,
+	mst@redhat.com, panchuang@vivo.com, pankaj.gupta.linux@gmail.com,
+	pengpeng@iscas.ac.cn, peter.hilber@oss.qualcomm.com,
+	sgarzare@redhat.com, stable@vger.kernel.org,
+	syzbot+28e5f3d207b14bae122a@syzkaller.appspotmail.com,
+	tavip@google.com, wangyufeng@kylinos.cn, xiongweimin@kylinos.cn,
+	xiongwm2026@163.com, yangjinqian1@huawei.com, zhaoguohan@kylinos.cn
+Subject: [GIT PULL] vhost,vdpa,virtio: fixes, features
+Message-ID: <20260819124604-mutt-send-email-mst@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH iproute2-next v5] ip/bond: add lacp_strict support
-Content-Language: fr
-To: David Ahern <dsahern@kernel.org>,
- Stephen Hemminger <stephen@networkplumber.org>
-Cc: andrew+netdev@lunn.ch, jv@jvosburgh.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, fbl@redhat.com, andy@greyhouse.net,
- shemminger@vyatta.com, maheshb@google.com, jonas.gorski@gmail.com,
- horms@kernel.org, Louis Scalbert <louis.scalbert@6wind.com>,
- netdev@vger.kernel.org
-References: <20260625114216.2507435-1-louis.scalbert@6wind.com>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20260625114216.2507435-1-louis.scalbert@6wind.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Mutt-Fcc: =sent
 
-Hi David, Stephen,
+The following changes since commit 8d3ae59288f1e7d58d76558a6ee96d533bc5019f:
 
-On 25/06/2026 13:42, Louis Scalbert wrote:
-> lacp_strict defines the behavior of a LACP bonding interface
-> when no slaves are in Collecting_Distributing state while at least
-> 'min_links' slaves have carrier.
-> 
-> In the default (off) mode, the bonding master remains up and a
-> single slave is selected for TX/RX, while traffic received on other
-> slaves is dropped. This preserves the existing behavior.
-> 
-> In lacp_strict mode, the bonding master reports carrier down in this
-> situation.
+  Linux 7.2 (2026-08-16 14:32:26 -0700)
 
-I'm sorry to ping you about this, but I'm wondering if this patch has
-not been archived on Patchwork by mistake:
+are available in the Git repository at:
 
-https://patchwork.kernel.org/project/netdevbpf/patch/20260625114216.2507435-1-louis.scalbert@6wind.com/
+  https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
 
-I didn't see any reviews on this v5, and there is no v6: is there
-something to fix?
+for you to fetch changes up to b282418bc366194677eafd1dad180d92254586ac:
 
-> Link: https://lore.kernel.org/netdev/20260603150331.1919611-1-louis.scalbert@6wind.com/
-I'm asking, because this patch is required to execute the
-drivers/net/bonding selftests target from 7.2 released this WE.
+  vduse: Add suspend (2026-08-19 06:38:48 -0400)
 
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
+----------------------------------------------------------------
+vhost,vdpa,virtio: fixes, features
+
+- transport v3 support in virtio-mmio
+- suspend support in vduse
+- fixes, cleanups all over the place
+
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+----------------------------------------------------------------
+Albert Esteve (1):
+      virtio: Add ID for virtio media
+
+Ben Dooks (1):
+      crypto: virtio - fix missing le64_to_cpu() conversions
+
+Bryam Vargas (1):
+      crypto: virtio - bound the akcipher result length
+
+Denis V. Lunev (5):
+      virtio: add virtio_device_shutdown() helper
+      virtio_balloon: factor out virtballoon_quiesce()
+      virtio_balloon: quiesce balloon work before device shutdown
+      virtio_balloon: warn on failed buffer add in tell_host()
+      virtio_balloon: warn on failed buffer add in stats_handle_request()
+
+Eugenio Pérez (6):
+      vduse: store control device pointer
+      vduse: add VDUSE_GET_FEATURES ioctl
+      vduse: add VDUSE_SET_FEATURES ioctl
+      vduse: add F_QUEUE_READY feature
+      vduse: do not take rwsem at reset work flush
+      vduse: Add suspend
+
+Gabriel Somlo (1):
+      MAINTAINERS: remove Gabriel from LiteX and fw-cfg drivers
+
+GuoHan Zhao (3):
+      virtio: rtc: time out alarm requests
+      tools/virtio: Fix userspace typo in vringh test comment
+      tools/virtio: Fix control typo in trace agent comment
+
+Jinqian Yang (1):
+      virtio_ring: fix infinite loop in virtnet_poll_cleantx when device is broken
+
+Li Chen (12):
+      nvdimm: preserve flush callback -ENOMEM
+      nvdimm: pmem: keep PREFLUSH before data writes
+      nvdimm: pmem: guard data loop for dataless bios
+      nvdimm: virtio_pmem: stop allocating child flush bio
+      nvdimm: virtio_pmem: use GFP_NOIO for flush requests
+      nvdimm: virtio_pmem: always wake -ENOSPC waiters
+      nvdimm: virtio_pmem: use READ_ONCE()/WRITE_ONCE() for wait flags
+      nvdimm: virtio_pmem: refcount requests for token lifetime
+      nvdimm: virtio_pmem: publish done with release/acquire
+      nvdimm: virtio_pmem: isolate DMA request buffers
+      nvdimm: virtio_pmem: converge broken virtqueue to -EIO
+      nvdimm: virtio_pmem: drain requests in freeze
+
+Li RongQing (5):
+      virtio_dma_buf: fix typo in kdoc comment: get_uid -> get_uuid
+      virtio_mem: fix hardcoded 'vm' variable in bbm iteration macros
+      virtio_pci: fix wrong queue index for admin vq in intx path
+      vdpa/mlx5: fix wrong list iterated in add_direct_chain error path
+      vdpa/mlx5: fix wrong MLX5_ADDR_OF struct type in alloc_inout()
+
+Linfeng Sun  (1):
+      vdpa_sim: fix cleanup after worker creation failure
+
+Michael S. Tsirkin (1):
+      virtio_balloon: disable indirect descriptors
+
+Octavian Purdila (2):
+      iov_iter: export iov_iter_restore
+      vsock/virtio: restore msg_iter on transmission failure
+
+Pan Chuang (1):
+      vdpa: Remove redundant dev_err()
+
+Pengpeng Hou (2):
+      vdpa: alibaba: add missing MODULE_DEVICE_TABLE()
+      vdpa: octeon_ep: add missing MODULE_DEVICE_TABLE()
+
+Peter Hilber (1):
+      virtio-mmio: add support for transport version 3
+
+Weimin Xiong (1):
+      vdpa/mlx5: roll back MR update after VQ setup failure
+
+Xiong Weimin (2):
+      vdpa_sim: clear pending_kick on device reset
+      vdpa_sim: hold iommu_lock across dma_unmap passthrough transition
+
+Yichong Chen (1):
+      tools/virtio: Remove unsupported --batch option from vhost_net_test
+
+Yufeng Wang (1):
+      vhost/net: fix clear_user start address in VHOST_GET_FEATURES_ARRAY
+
+xiongweimin (5):
+      vhost: fix inaccurate kdoc in iotlb helpers
+      virtio: fix article before virtio in dma-buf comment
+      vdpa/solidrun: fix typos in snet_ctrl comments
+      virtio_mem: fix typo in comment
+      vhost: reject zero-size IOTLB INVALIDATE
+
+ MAINTAINERS                                        |   2 -
+ .../crypto/virtio/virtio_crypto_akcipher_algs.c    |   6 +-
+ .../crypto/virtio/virtio_crypto_skcipher_algs.c    |   3 +-
+ drivers/nvdimm/nd_virtio.c                         | 263 ++++++++++++++++----
+ drivers/nvdimm/pmem.c                              |  53 +++--
+ drivers/nvdimm/region_devs.c                       |   5 +-
+ drivers/nvdimm/virtio_pmem.c                       |  65 ++++-
+ drivers/nvdimm/virtio_pmem.h                       |  22 +-
+ drivers/vdpa/alibaba/eni_vdpa.c                    |   1 +
+ drivers/vdpa/mlx5/core/mr.c                        |   2 +-
+ drivers/vdpa/mlx5/net/mlx5_vnet.c                  |  27 ++-
+ drivers/vdpa/octeon_ep/octep_vdpa_main.c           |   5 +-
+ drivers/vdpa/solidrun/snet_ctrl.c                  |   4 +-
+ drivers/vdpa/vdpa_sim/vdpa_sim.c                   |  29 ++-
+ drivers/vdpa/vdpa_user/vduse_dev.c                 | 265 ++++++++++++++++-----
+ drivers/vdpa/virtio_pci/vp_vdpa.c                  |  12 +-
+ drivers/vhost/iotlb.c                              |   6 +-
+ drivers/vhost/net.c                                |   3 +-
+ drivers/vhost/vhost.c                              |   4 +
+ drivers/virtio/virtio.c                            |  41 ++--
+ drivers/virtio/virtio_balloon.c                    |  51 +++-
+ drivers/virtio/virtio_dma_buf.c                    |   2 +-
+ drivers/virtio/virtio_mem.c                        |  10 +-
+ drivers/virtio/virtio_mmio.c                       |  13 +-
+ drivers/virtio/virtio_pci_common.c                 |   2 +-
+ drivers/virtio/virtio_ring.c                       |   8 +
+ drivers/virtio/virtio_rtc_driver.c                 |  14 +-
+ include/linux/libnvdimm.h                          |   9 +
+ include/linux/virtio.h                             |   1 +
+ include/linux/virtio_dma_buf.h                     |   2 +-
+ include/uapi/linux/vduse.h                         |  28 +++
+ include/uapi/linux/virtio_ids.h                    |   1 +
+ lib/iov_iter.c                                     |   1 +
+ net/vmw_vsock/virtio_transport_common.c            |  13 +
+ tools/virtio/vhost_net_test.c                      |   5 -
+ tools/virtio/virtio-trace/trace-agent-ctl.c        |   2 +-
+ tools/virtio/vringh_test.c                         |   2 +-
+ 37 files changed, 760 insertions(+), 222 deletions(-)
 
