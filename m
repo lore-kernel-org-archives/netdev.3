@@ -1,128 +1,153 @@
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11021143.outbound.protection.outlook.com [40.107.74.143])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B040C285060
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 01:49:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787104144; cv=none; b=OpGnOcl/fBF4uSrReoOKfGzKCFRIw2aolAb3gxqbFNlylHgiok87qJkjKA3gaM7cghWmSjkxpK6k/ec+IgZPh/Ykjtd89VHcJ/uHGA8I3DzU3BRYLm84wUf0AI/JM66Kn0DgPL/dRn4vHCZPg+swpzjkpJlEv0tSv5ECmMpeZXU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787104144; c=relaxed/simple;
-	bh=EfZl991DxxzWp4Vdk3Ifm5w4z88KDCHFkedFl7PFTwo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mwt/qffm4AUzKfC8qf4k2/XZzmcYvrbVZh5vnjtQRU+Dyb0njqAP+QXHXVQe3z9bvF74RhIh4Fk8ncT0FhfUdGiZ4NpGPAZAZWJ+Bx1+uZzK5VrFC5ifoAXv/OvB3RXzyUv4nBMuFkG9IPQbVQIGUB5Gly9xIQmFiSdvs3mgyvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Aj2MAtwT; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E1115350B;
+	Wed, 19 Aug 2026 02:00:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.143
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787104856; cv=fail; b=fcRKX+mVefFMy98UdP6jI63lIFGb55b+oTtYAYW55IEEv65eGub5kowQh1UgYxAXP/0DUKjpvMmLU+qCW8Bf97jmLWphRUYQDro2AopWuoZTN1/sFjU0sex6A/vstzP3Ulaih3M3xnSdqVHdgYb+/hxG3W30CeqN51H6dXI9u7o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787104856; c=relaxed/simple;
+	bh=eouFC8+O5f9WOltM3ivjHJPgXS16E12ntHtOAMcg4rM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=bVYJX0nWHpf4QePRsAThRTIrmvsDwOpuGblyVHFSeDRDRZm1d0vGeJ6k4BHtyzgfSI5+Acu1JuYStbA0l9LzMukcmZxV3aI4isUf8AsnV4b/1DN1KZcYKLOiDYp1mQUJNTFEvwZ/1VChtS+yu7lswM51TprdejnzJXNlO6bbloM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=lLJ+3Crc; arc=fail smtp.client-ip=40.107.74.143
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Aj2MAtwT"
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-836cbcd0a48so8492207b3.1
-        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 18:49:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787104141; x=1787708941; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YXD//4YNkkxyIkb6wqjP8t3iz79+20/kYGvfIfnI6Gc=;
-        b=Aj2MAtwTN8tMTKyWUupZGg9jEl+DuSJp85C7ZeZYBvWrv2/oqji05ihTfmrj2RwCyp
-         JMmB+UT7agrnapQfLuA9Mk+pu684nx5+rZ1tD7iCf8M1T/fissxsbDGkjIK6JJ3CSeFG
-         NWxoDHMk9FRw19CWnF++pqa6cY239ap0Gk4rEMXAxSl97CClcY3SORZJs7x7eDbWbqx6
-         XLGxcqrLnJ8ViRfdVmzm5wkjTt429RVJBFoi6jQhgtsm6iFye54dZzuZ/EnodJpOs81w
-         sT959huldoJGZJlBl6d9ELFkH43CbdrrlqFsrmLfujy9rfMdaExocSp3FrBb6fXYbiHH
-         fthA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787104141; x=1787708941;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=YXD//4YNkkxyIkb6wqjP8t3iz79+20/kYGvfIfnI6Gc=;
-        b=WtA44qnZaC+NfSjV4n3h8Y4mw6pSKAbfrMcLb25pkzx565kEy7eVd5VOVB5r1FDCVx
-         YDfyfs1hx9LKYUIHeRYIWuM6sP8rgDApoWbV2XenImO7lSvpudfd6kj+XddGXMhNnN7O
-         uPTClIHVbUQvpPT1vjqClrUXNDvSVVN7rne3Y3Nk+t/uCB46Jl4xhTtdUxMlp2MCYUwE
-         HE32ND/IRBBVDepOtFgpWE3FxMFdmPiKE7xk5MIzlunbKxrC5dCJ+no8M9Xm//6G+xuA
-         9cIHVPma5+ZQnFAhLFOYquBMEtgEaI4W4SLz4RGHttm/mVbq3wjhQreBw7RaqPGIJJFI
-         xO6g==
-X-Forwarded-Encrypted: i=1; AHgh+RqhzjZvN905PA2feya+n3X+jtCR24NSzlv+OBxMD6UkFf2r9q7zJ/12SZq9OewMk0Oi7hmGTkU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+HRlDiWyi5XvF42ojyuHWl86fFWGbcv0kNFVbGlGUozdRHUrz
-	bFKVLmSvEmX4dKvfST3gb25F/gmopoc4oSLwJ7ju0oBU6DBAk+0u7rZX
-X-Gm-Gg: AR+sD10NLXOdU2pF/E7h072nFh1ceXiECCy+nPbroyWWGTQfpf6fsF6CcQCGGV0AFlo
-	YytiviunoENYPeelA8XQs3H4pszMkdDBT0nW1bG64Swb83I99k49+afmK7k5EJ7t/cMABAy6dYb
-	E6s/5Oiaka5A9SXZ/rIYiEbZN77wtTvmZHXNIRgq/DKRYeSF59U0JJf/a0hF4is4rfDlZj2hzcc
-	1VW2ZYXiPmFYLYlQ/wZ7SaTLUMO8P6oU7cjY+0LJz72DNQH5sG36KLfJLfiwhWaQA2YUd0jPiyp
-	NFFHMtdGDTjTuCVjXkR9N2wvy/wC67suCv8lUXuOZFpln43pfKiU+6NYicDqIVlSuPwYphpBvDJ
-	oYgx3vEL2nggcVaqPHHXWl3nONRkVnXsul5+sKno7FnBrFYfDpSuJsI+v+Z/eNegA/rczt80ycY
-	pXPd4q8KcpA+UuwvTBOS9ISOOTZefIgP4G1ecRiTLA4GwJkulxiC090Cb758WVklM+Lq7s
-X-Received: by 2002:a05:690c:e20f:20b0:81e:98d3:cac7 with SMTP id 00721157ae682-844de3bc1ccmr6528037b3.12.1787104141356;
-        Tue, 18 Aug 2026 18:49:01 -0700 (PDT)
-Received: from mac.lan ([136.55.173.105])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8451275df9fsm1975047b3.14.2026.08.18.18.49.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Aug 2026 18:49:00 -0700 (PDT)
-From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-To: pablo@netfilter.org,
-	laforge@gnumonks.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: osmocom-net-gprs@lists.osmocom.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	AutonomousCodeSecurity@microsoft.com,
-	xmei5@asu.edu,
-	tgopinath@linux.microsoft.com,
-	kys@microsoft.com,
-	blbllhy@gmail.com
-Subject: [PATCH] gtp: add synchronize_net() in gtp_newlink() error path to prevent use-after-free
-Date: Tue, 18 Aug 2026 21:48:58 -0400
-Message-ID: <20260819014858.76707-1-blbllhy@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="lLJ+3Crc"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=V3wF6HI0P0BRmWl8RxCnQgr6GVP5Zcb/buJgeUDeZDRc3hLg0etxVlBImbC6HIwBMqQtn/xeqXlnyj3Yo7DV7aXzEdJeJcdgm7nl2FSHT6z2IoKVJHKWvfb3WtHgZ/6NDTEcgBTSORasnF9ku/0N/irQUQhN7UfSJCJBZpH0YlzL4ryfeDb9hcq1YnVfmtXbMxTmAZMj48bskuzZyOpAKD/V2Cz9Y8BKghRyXxMEfe6dvfnyj7ePv+nHAHHkvwjwU6z7AWdBJrYwBWFjXv8yZz+auUNpb/piPsXgmVLGm3d9TCxvfCXMzyQOmsFcjwcoiqjmNPA6Glxutsn97cWJow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=owxsTs8PscSPTz7ieYRlwLM7Z+cgHuIsWZ66NyZws84=;
+ b=y/tlT04RDFH9OXoKJE3cDlUG2Ffl2Es8g2Nn8h3ESTw+8wvSmvLygpsUv3xHTuj8o2HmBMbhNO6uwR1fGN9xHlkmyY6ojFh/2RyU5XuzGWTLbStE+pe/l6jQGxNrZ2s8JWnKDYct/S8ozF6LO7eI1g9bJQmlUya62qTQYdvp9QG6t0xxPdmwqU69pWfKjwrSIalHg7/m8I7QpqmvyBLrOi26eyghO1LA93gvV48IlYtxlr/o1bb99SH5v84+WD+bwy1n6nOxZKCL1IsGx81tRA4jn6ripzvhn56Di1piQokZ0BmmLElIbW+UyAzpv9HOxXEonvXdcDb/1D4wrc45Cw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
+ header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=owxsTs8PscSPTz7ieYRlwLM7Z+cgHuIsWZ66NyZws84=;
+ b=lLJ+3Crct0cY6DtUxJ73VeZQjZFbTXdLZv93g7ByXxRKDpQUuiQzZ7Q84o6eSpL/Efu1D/1jsFU88cXHDmuWQuPinzD1/ZWKuGDk1LL7w8CtaXTd2OsnWq9MR5PyMqLuYf4fB85XE9JvuzvHxXnqwQWrXpCUpynxBKQHjay/+Eg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=valinux.co.jp;
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
+ by TYCP286MB1900.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:101::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
+ 2026 02:00:50 +0000
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32%3]) with mapi id 15.21.0315.016; Wed, 19 Aug 2026
+ 02:00:50 +0000
+Date: Wed, 19 Aug 2026 11:00:48 +0900
+From: Koichiro Den <den@valinux.co.jp>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Jon Mason <jdmason@kudzu.us>, Dave Jiang <dave.jiang@intel.com>, 
+	Allen Hubbe <allenbh@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, ntb@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 0/4] net: ntb_netdev: Preserve checksum
+ offload across NTB
+Message-ID: <cndgdmowjiajkwafchxes56fifwtxfxd5bfn5crns73tfm53k3@d4iww3kd5osb>
+References: <20260817064916.13278-1-den@valinux.co.jp>
+ <20260817083925.045c7439@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260817083925.045c7439@kernel.org>
+X-ClientProxiedBy: TYCP286CA0140.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:31b::14) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:38f::10)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|TYCP286MB1900:EE_
+X-MS-Office365-Filtering-Correlation-Id: 76ae3211-be47-4b8f-6410-08defd95b1a1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|7416014|376014|23010399003|1800799024|366016|56012099006|10067099003|4143699003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	CD2uAW8pOzFGyoceaKaNtiDoazZh3ke0fBWehn8h4d1Z42gN0LCdFDLNuLUfKvixaR3MkgUAcYXLpwNylV7EMPrWDwIkthXhKfXV/GaSV8437mltW/n6osn6kLfiItJExBBrAUTYZ0+ZUw2yeyBa2dM5sPwzELE+EbDMP9XcErw+bd8h4PKJt+0hH88dRbxxDXUsteEck9PsEXf7jmTf7HTno3sYny5a9+vNfCNaKmX7Ll9/92m2stjIlKLCF24vJJ7/4ErWJOoLzP2sQP3bRDr4owc90GM+A99ieQWW7mhljwQFKhCixbrUV3XuTLkZhMdM3HMjXRcbr2szGKePtk8IP7xGSinvkbJxvkutuNJzVrXaC99RQgykYXhjSfvlpK03c7NBJq5eWqPjxCwfqr/ODvwmg2vxlukLfMH0YKJfyQO1ygrrH/lxrk3OjeHYyUzKsa/lMxYwdrzsIsMkp3fk8n7lQbUkO2e2dHd80B3/TPNRUlZfBx1Brzfv1T2m1eKysqklzPsfwLmSQ357Z8Ewr+sg71tC8RBAqsBMpwTadZWN8In7ZrG9gRK+1UJjwR1Dc1tL8lKGzuNovRU/t9rrL4zQ8LzGOYW+Z9+8Q0yqvFzZWUhBtQ9eDef2NTEK
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(376014)(23010399003)(1800799024)(366016)(56012099006)(10067099003)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?/sLrpRLJ8MdOTC5Eu+k+vcgGc3mS2Mo5orbcXuBvgwaqr2h5ogZDPBBWYFm2?=
+ =?us-ascii?Q?VPBdZuXh+K/eU8UdlZ8XW0TVeDhL8HcMAINRQHRblWoTp7PooaVrBbjwUZxF?=
+ =?us-ascii?Q?6leAjbfuCAhSa6sKgFCcCyTkFxl3NLLj6YXqEh9KMm3/iMMfmRf6E1Kcelt4?=
+ =?us-ascii?Q?MTdh4QbazmSBOnTYpoUF/luGVOqx2U/GCOY+Eg2BHzVBKLN3gsI9cl6cmiQy?=
+ =?us-ascii?Q?Tc8uu1ONHpEI8YB9a6ujgABMD3KKLRnZo0FSu3tRLqLycv4OyDFS4s91+G3B?=
+ =?us-ascii?Q?eAwKiSzkk4iZnASzaJvGnYbI87xa6H9UDVGkzMbgV3gi0dalOkI2rymqSEDd?=
+ =?us-ascii?Q?E7pTbHfB0756GzbYPTDz0fFJWR7jiJlQAJss8sj08zZDoUolGN05sZTWs5XE?=
+ =?us-ascii?Q?EVqdfVBvTOEfe7Vi1h9pA3k0QNDB5rwzYrxbKL1SDcuSPYRhWJA5jfwW6VZc?=
+ =?us-ascii?Q?qzfb3dQSiaEzQ4IMsoLSKZ3mDzXEFk7nzB+UUs/bNEIJBn8S/ddsFsZBipYu?=
+ =?us-ascii?Q?OQmBXvbMndxyMAMtz2P6bosvs4LelKXZrJ2YrdeR0FN8p+1jJD+DtXUh3lrl?=
+ =?us-ascii?Q?O5h+aecem+uFf/ubpL17WOEkVWEbMCTRSlwmmRT6vRaGxO0UlatdpcLxhZnj?=
+ =?us-ascii?Q?k0LbChOOPSo9A1rm8tleUpk45lusCJan15xtpDWcttKKLDg9/7j9Pk1hCdk9?=
+ =?us-ascii?Q?J2GrCjzZgLEyZA8dL89cReB0MbJ/SMelZIxJuLpzsQjuNdQSKjFdOQEXMDFE?=
+ =?us-ascii?Q?9ZwsGAcVtcVR48Xp+2cDH2RpvpK76yO2DbQJMITSaD8DtkRKzIcyWzot7zWl?=
+ =?us-ascii?Q?5c2XqrYCCRhy7LS9qIFvk0ZTgcQz0Da1/xin3m/sDFsdFL+96fDIQRtTf/20?=
+ =?us-ascii?Q?oLJTwCZkayqosui0AJ8coPEdckxvdroigdBJhyqtNnre5eAHv/wsw26QeNm+?=
+ =?us-ascii?Q?yw0z8B9n34L+ThU98N3NR0PEIboQZyBugUbAUWL4ACI4JCwRkKBt2xsYaCdL?=
+ =?us-ascii?Q?o4RlKUF194UOgPjttqsrebycIv4J/LwV1ezpD7EiCBfNxf87pBVT8ezmwtJn?=
+ =?us-ascii?Q?k1GCn1vV87upIMTEZGIFPMUZEAHyOEs+NgSAgSUJHhKlQDs7TXu9K4rOsU8W?=
+ =?us-ascii?Q?Gld5ZubpeDf/YpcI4E2pL2h4fI1cplf68SAjyGBJXPX/us/30EsgnpZwqei+?=
+ =?us-ascii?Q?3usRkzT2R8aV+2pZdUhZ0RF1REmdAjwaLAUnEusufuf4W1D/7PYAFNITXi78?=
+ =?us-ascii?Q?0BSG/o+J40/tnPArc5lpfBMY6YDA126TxxLTMiyAAnOhFGw7I3LwMzEuXDrh?=
+ =?us-ascii?Q?BJU+fCuV+QdgNLmzbfwIdXKjKe1nUFuKyPIl8GoJKU0QRm5lkJ+o/ccm9yLh?=
+ =?us-ascii?Q?1ttWa/I9LNFnzXb1osC1lURJoFQnmZqbiGegGgIuld5snz6GBEjxDRBfaYHY?=
+ =?us-ascii?Q?HxDbobsVsPdGdyHraP+fef2tZhGqO6HJgSH2Wn2HwoYNFFLU+Y6JiZfGoag8?=
+ =?us-ascii?Q?Kw83PE9BydM6tSvRvU8dOgJ9tWHPNFupwEs68HvL6Q0Um1i424E7Fzf4ZGZQ?=
+ =?us-ascii?Q?SvB/T0yUJuVGPCvDWyj61kASoQxaNlpr0CljzMNfWeSzJ38/4VD0+GtvU8Xa?=
+ =?us-ascii?Q?ofEmd9w5j6ZymATR5n0/rv38mZvKaD0AB5BnXqUxOjMfB7BQnIU+EbahnIWd?=
+ =?us-ascii?Q?YkTQAZXlEwbCsUksGe2Zkk1HvXO8y3Roc4BdWXhMbzSjZnzAK48pwOPiGRH0?=
+ =?us-ascii?Q?jP2h12gEDbT5ITaWBK/X7SpD1igEEEEyjDqr2eTffQ9kS4Fbqe9w?=
+X-OriginatorOrg: valinux.co.jp
+X-MS-Exchange-CrossTenant-Network-Message-Id: 76ae3211-be47-4b8f-6410-08defd95b1a1
+X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 02:00:50.6499
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fq8N417Hdc3aWb743d+7CizisdOe/CI/O+2EAM+IaOGBImhUdRYDAL995zROdoT72Gwu5JOrsYTT5NtmV+p22A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCP286MB1900
 
-gtp_newlink()'s error path frees tid_hash and addr_hash without
-waiting for an RCU grace period after clearing sk_user_data. A
-concurrent gtp_encap_recv() in softirq may still hold the gtp_dev
-pointer obtained via rcu_dereference_sk_user_data() and access the
-freed memory.
+On Mon, Aug 17, 2026 at 08:39:25AM -0700, Jakub Kicinski wrote:
+> On Mon, 17 Aug 2026 15:49:12 +0900 Koichiro Den wrote:
+> > Subject: [PATCH net-next v2 0/4] net: ntb_netdev: Preserve checksum offload across NTB
+> 
+> ## Form letter - net-next-closed
+> 
+> The merge window for v7.3 has started, and therefore net-next is closed
+> for new drivers, features, code refactoring and optimizations.
+> We will only consider applying net-next patches which were posted
+> before the announcement:
+> 
+> https://lore.kernel.org/20260816155953.072d73da@kernel.org
+> 
+> Fixes are obviously welcome at any time. net-next patches may be sent
+> for review and discussion only with an RFC tag.
+> 
+> Please repost when net-next reopens.
+> 
+> See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
 
-  BUG: KASAN: slab-use-after-free in gtp0_pdp_find+0x1f6/0x200 (gtp.c:152)
-  Call Trace:
-   <IRQ>
-   gtp0_pdp_find+0x1f6/0x200
-   gtp_encap_recv+0x527/0x24b0
-   udp_queue_rcv_one_skb+0x75f/0xc10
+Apologies for the noise. I'll be more careful next time.
 
-Add synchronize_net() before the kfree calls in out_hashtable, which
-covers all error paths from both gtp_encap_enable() and
-gtp_create_sockets().
+Best regards,
+Koichiro
 
-Fixes: 459aa660eb1d8ce6 ("gtp: add initial driver for datapath of GPRS Tunneling Protocol (GTP-U)")
-Reported-by: AutonomousCodeSecurity@microsoft.com
-Reported-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
-Reported-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
-Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
----
- drivers/net/gtp.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-index 9a12cc53da00..f11bcc0c0ac4 100644
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -1543,6 +1543,8 @@ static int gtp_newlink(struct net_device *dev,
- out_encap:
- 	gtp_encap_disable(gtp);
- out_hashtable:
-+	/* Wait for RCU readers that may still reference this gtp_dev. */
-+	synchronize_net();
- 	kfree(gtp->addr_hash);
- 	kfree(gtp->tid_hash);
- 	return err;
--- 
-2.52.0
-
+> -- 
+> pw-bot: defer
+> pv-bot: closed
+> 
