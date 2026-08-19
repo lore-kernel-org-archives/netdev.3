@@ -1,30 +1,30 @@
 Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5052DF12F
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 20:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2C536C9EC
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 20:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787172166; cv=none; b=pWTx863eC5afReBfnboGBBFJJByaUptLr4r/SdE1+TRK+rU1E6MnKk3SYfvw+VCZUSyei3hweeZyShyl6dc0gqITjDx8gJIQCXYmGvB24OflG9OwCBHoeQ9D4IbXU+/eNzW3kE9slESN63Ljh8SNKOOQODIlVSJ4JtoU52KBwkI=
+	t=1787172170; cv=none; b=OCFhCAnLffHilPO42Fupb1fzS5YJX3fCcxsKALGI9dk6rBGU0NHM5g2Snug2kVYlnbVCRhONIrSiiuTeROJ2hn0C/3f2wfhSi7JOfEr063q3geovdMJYfve0qFsV7NR2i0N2pFmK4Tmvg0+ZRXhT51y09oH8cHY7gRo2J+rRIKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787172166; c=relaxed/simple;
-	bh=847c3FhB0l8jTGcdvSxeyKniGUpxlU7Seo4UhuXPz9Y=;
+	s=arc-20240116; t=1787172170; c=relaxed/simple;
+	bh=1ptAzGN/z38ORkK1L8Dh043hMTW5e+UsXpdoMyKTpmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oZuamEVp/pIUwXY4KpsKWg/PQqKT5NO0/0hgdJTq5vCGgE26MRNSxg32PrpK4Z8aR9IDsXweRMEqpaiavwO247yoM+yBMLR5Tyd3rQDvq4ETBIDr7/R0b74Ba2Lqr6rfCS+QwXy2YQt7llyiXAE7wtbiQPk4rJjQKDEJ/gPhgm8=
+	 MIME-Version; b=jfxU7+C///NnqB4nerTHamHkt2VNm4PlYCKo4bEGC5uTaiGEVs58G/P9svRxotc19WTpBPjZuJbaNH/tXFHcSKJ9btfwuMQHQiYUoMN8+wybnAs4Ss9sKT9uNV4SccaL8KqvnjfslpPrNT/M1Yxq5BWFS3uepdTM8yvDri0v+Eg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=Chamillionaire.breakpoint.cc; arc=none smtp.client-ip=91.216.245.30
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=Chamillionaire.breakpoint.cc
 Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id 3C7E86035B; Wed, 19 Aug 2026 22:42:43 +0200 (CEST)
+	id 7F3136035B; Wed, 19 Aug 2026 22:42:47 +0200 (CEST)
 From: Florian Westphal <fw@strlen.de>
 To: <netdev@vger.kernel.org>
 Cc: jhs@mojatatu.com,
 	jiri@resnulli.us,
 	victor@mojatatu.com,
 	Florian Westphal <fw@strlen.de>
-Subject: [PATCH net 3/4] selftests: tc-testing: add act_ct test for ct reset handling
-Date: Wed, 19 Aug 2026 22:42:09 +0200
-Message-ID: <20260819204210.23722-4-fw@strlen.de>
+Subject: [PATCH net 4/4] net/sched: act_nat: discard any conntrack entry post modification
+Date: Wed, 19 Aug 2026 22:42:10 +0200
+Message-ID: <20260819204210.23722-5-fw@strlen.de>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260819204210.23722-1-fw@strlen.de>
 References: <20260819204210.23722-1-fw@strlen.de>
@@ -36,197 +36,33 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Check that skb->nfct is re-set when pedit munges network or transport
-header data, else we feed packets to stack where skb might carry
-different or invalid headers compared to what conntrack input has
-validated earlier.
+act_nat is stateless nat, so the expectation is that skb->_nfct isn't
+set in the first place.
 
-Also check MAC modifications keep the ct entry as-is.
+But if it is, then addresses stored in the conntrack entry no longer
+match what is in the packet payload, which isn't expected.
 
-Assisted-by: Claude:claude-sonnet-5
+As act_nat can't mangle arbitrary data, this shouldn't be an issue
+but better play it safe and don't retain such a conntrack entry.
+
+Fixes: b57dc7c13ea9 ("net/sched: Introduce action ct")
 Signed-off-by: Florian Westphal <fw@strlen.de>
 ---
- .../tc-testing/tc-tests/actions/ct.json       | 168 ++++++++++++++++++
- 1 file changed, 168 insertions(+)
+ net/sched/act_nat.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/actions/ct.json b/tools/testing/selftests/tc-testing/tc-tests/actions/ct.json
-index 8ab48def89b6..18a773748358 100644
---- a/tools/testing/selftests/tc-testing/tc-tests/actions/ct.json
-+++ b/tools/testing/selftests/tc-testing/tc-tests/actions/ct.json
-@@ -742,5 +742,173 @@
-         "teardown": [
-             "$TC qdisc del dev $DEV1 clsact"
-         ]
-+    },
-+    {
-+        "id": "c2a9",
-+        "name": "Verify conntrack reset after pedit modifies IP protocol",
-+        "category": [
-+            "actions",
-+            "ct",
-+            "pedit",
-+            "scapy"
-+        ],
-+        "plugins": {
-+            "requires": [
-+                "nsPlugin",
-+                "scapyPlugin"
-+            ]
-+        },
-+        "setup": [
-+            [
-+                "$TC qdisc del dev $DEV1 ingress",
-+                0,
-+                1,
-+                2,
-+                255
-+            ],
-+            "iptables -t raw -F",
-+            "iptables -t raw -A PREROUTING -i $DEV1 -p icmp -m conntrack --ctstate INVALID -j DROP",
-+            "$TC qdisc add dev $DEV1 ingress"
-+        ],
-+        "cmdUnderTest": "$TC filter add dev $DEV1 ingress protocol ip prio 1 flower action ct commit pipe action pedit ex munge ip protocol set 1 pipe action csum ip4h continue",
-+        "scapy": {
-+            "iface": "$DEV0",
-+            "count": 1,
-+            "packet": "Ether(type=0x800)/IP(src='10.0.0.10',dst='10.0.0.20',proto=6)/TCP(sport=1234,dport=80,flags='S')"
-+        },
-+        "expExitCode": "0",
-+        "verifyCmd": "iptables-save -c -t raw | grep 'ctstate INVALID'",
-+        "matchPattern": "^\\[1:40\\]",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$TC qdisc del dev $DEV1 ingress",
-+            "iptables -t raw -F"
-+        ]
-+    },
-+    {
-+        "id": "d3b8",
-+        "name": "Verify conntrack reset after TCP port modification",
-+        "category": [
-+            "actions",
-+            "ct",
-+            "pedit",
-+            "scapy"
-+        ],
-+        "plugins": {
-+            "requires": [
-+                "nsPlugin",
-+                "scapyPlugin"
-+            ]
-+        },
-+        "setup": [
-+            [
-+                "$TC qdisc del dev $DEV1 ingress",
-+                0,
-+                1,
-+                2,
-+                255
-+            ],
-+            "iptables -t raw -F",
-+            "iptables -t raw -A PREROUTING -i $DEV1 -p tcp -m conntrack --ctstate INVALID -j DROP",
-+            "$TC qdisc add dev $DEV1 ingress"
-+        ],
-+        "cmdUnderTest": "$TC filter add dev $DEV1 ingress protocol ip prio 1 flower ip_proto tcp action ct commit pipe action pedit ex munge tcp sport set 9999 pipe",
-+        "scapy": {
-+            "iface": "$DEV0",
-+            "count": 1,
-+            "packet": "Ether(type=0x800)/IP(src='10.0.0.10',dst='10.0.0.20')/TCP(sport=1234,dport=80,flags='S')"
-+        },
-+        "expExitCode": "0",
-+        "verifyCmd": "iptables-save -c -t raw | grep 'ctstate INVALID'",
-+        "matchCount": "1",
-+        "matchPattern": "^\\[1:40\\]",
-+        "teardown": [
-+            "$TC qdisc del dev $DEV1 ingress",
-+            "iptables -t raw -F"
-+        ]
-+    },
-+    {
-+        "id": "a1b2",
-+        "name": "Verify conntrack NOT reset when pedit modifies only MAC",
-+        "category": [
-+            "actions",
-+            "ct",
-+            "pedit",
-+            "scapy"
-+        ],
-+        "plugins": {
-+            "requires": [
-+                "nsPlugin",
-+                "scapyPlugin"
-+            ]
-+        },
-+        "setup": [
-+            [
-+                "$TC qdisc del dev $DEV1 ingress",
-+                0,
-+                1,
-+                2,
-+                255
-+            ],
-+            "iptables -t raw -F",
-+            "iptables -t raw -A PREROUTING -i $DEV1 -p icmp -m conntrack --ctstate NEW -j DROP",
-+            "$TC qdisc add dev $DEV1 ingress"
-+        ],
-+        "cmdUnderTest": "$TC filter add dev $DEV1 ingress protocol ip prio 1 flower action ct commit pipe action pedit ex munge eth src set 11:22:33:44:55:66 pipe",
-+        "scapy": {
-+            "iface": "$DEV0",
-+            "count": 1,
-+            "packet": "Ether(src='aa:bb:cc:dd:ee:ff',type=0x800)/IP(src='10.0.0.11',dst='10.0.0.21')/ICMP()"
-+        },
-+        "expExitCode": "0",
-+        "verifyCmd": "iptables-save -c -t raw | grep 'ctstate NEW'",
-+        "matchPattern": "^\\[1:28\\]",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$TC qdisc del dev $DEV1 ingress",
-+            "iptables -t raw -F"
-+        ]
-+    },
-+    {
-+        "id": "b7f4",
-+        "name": "Verify conntrack reset when ETH write extends into IP layer",
-+        "category": [
-+            "actions",
-+            "ct",
-+            "pedit",
-+            "scapy"
-+        ],
-+        "plugins": {
-+            "requires": [
-+                "nsPlugin",
-+                "scapyPlugin"
-+            ]
-+        },
-+        "setup": [
-+            [
-+                "$TC qdisc del dev $DEV1 ingress",
-+                0,
-+                1,
-+                2,
-+                255
-+            ],
-+            "iptables -t raw -F",
-+            "iptables -t raw -A PREROUTING -i $DEV1 -m conntrack --ctstate INVALID -j DROP",
-+            "$TC qdisc add dev $DEV1 ingress"
-+        ],
-+        "cmdUnderTest": "$TC filter add dev $DEV1 ingress protocol ip prio 1 flower action ct commit pipe action pedit ex munge offset 12 u32 set 0x08004500 pipe csum ip4h continue",
-+        "scapy": {
-+            "iface": "$DEV0",
-+            "count": 1,
-+            "packet": "Ether(type=0x800)/IP(src='10.0.0.13',dst='10.0.0.23')/ICMP()"
-+        },
-+        "expExitCode": "0",
-+        "verifyCmd": "iptables-save -t raw -c | grep 'ctstate INVALID'",
-+        "matchPattern": "^\\[1:28\\]",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$TC qdisc del dev $DEV1 ingress",
-+            "iptables -t raw -F"
-+        ]
-     }
- ]
+diff --git a/net/sched/act_nat.c b/net/sched/act_nat.c
+index abb332dee836..0c3d3b89d349 100644
+--- a/net/sched/act_nat.c
++++ b/net/sched/act_nat.c
+@@ -257,6 +257,7 @@ TC_INDIRECT_SCOPE int tcf_nat_act(struct sk_buff *skb,
+ 	}
+ 
+ out:
++	nf_reset_ct(skb);
+ 	return action;
+ 
+ drop:
 -- 
 2.54.0
 
