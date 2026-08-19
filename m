@@ -1,159 +1,188 @@
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+Received: from mail-oi1-f205.google.com (mail-oi1-f205.google.com [209.85.167.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E6426A1AC
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 05:00:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEAAA2264C0
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 05:22:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787115646; cv=none; b=YILEAKTLlTMzaK2mLTuExwBhBB1eUMsBuEXMycjZOM6Xz+8rD4Ao7AOHDQY4RImoLtNa3xhyW9s5rrtzx5trHzuHqhBgsN2ZlkiELRos/mKH2NLVakOrF3aRYSJ2MpDaEgbJE+JJhHoEqEvKcawJIiPpq3dySFk+decCBnJ9FLE=
+	t=1787116966; cv=none; b=Ehhd52NCRh/022SEQ6n2bnwM/VH0X0Cz3+UN0v3kIUVp3neEsWDcQ/z+0rkbYCHQIn3QNXdyG/ipmHMonbfPny8aL2LNg96Edz/2S4shN1ASkqXh6dxfKAN2rK/y1vSqXVWF7rRlXNqCVEJsXo7NKoqmlHlZYjyMY62KRIOKeX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787115646; c=relaxed/simple;
-	bh=oYXiS9FaK1OvuFYKVJThsj1YU55cH8Ln0SqDR+ONfFY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KqOFzRVhtHaeNqoKon7HGH8FfUPYa2BYAo9rFDK5K3MFBCOCyWZe/r88d2rALgJKnJEk6Dckdk6XW/vkbP9uOjYuG74P0RroSJkfpzt/TIHPL3dHj9ORz8hVon42ztukQbnLhcYDXQcC7exLIMLnihfYRU2q0Y81EQdBCEQ162k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q1c7msUQ; arc=none smtp.client-ip=209.85.219.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q1c7msUQ"
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-90a6b298889so5935546d6.3
-        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 22:00:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787115644; x=1787720444; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=SC0i4Lg6k/dnZmYD88qiv579EkxNdGPFnYXp1dk34PA=;
-        b=Q1c7msUQbek9Jg6W/bVTfsSK9EnpvknoZ4Ey6TNChEQxC0GuL+52zZ4dflzmkAP+x5
-         mkou69TnOmcBhkTs+HdHluvNmWWnMgsKVg2Wb6YrxLgIS7QCJGnn/N+LBb6BZXgL8Ksh
-         c3vVz8eZ64Tgv24Y59NXtcpLv/cZB/k9MFCFstf/P+tbRgsTadrvxK+swp9/GwlLUChH
-         9qdzidf9RGHluUCAsHB06Zf2XD1RVsR61HIBzqfLqZj3I5F4sumJKB1vpv4/x/m20+Dy
-         Ed4RPCMJzkIN5Ls9hHY9prhvY52lI1/MrjvcvDb+g0tveVkWpZAj6nL64PiYxEaZQAK5
-         MaRA==
+	s=arc-20240116; t=1787116966; c=relaxed/simple;
+	bh=zLGKfpFVpvTKysp73BiHdafFNbAOOjcW2hoYffmXx1Y=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=HFhPScToocN/etGD5F7HtYKFn9eeFkK1zRK4SAMFiHEYd2RgofOwPmudpA62hR6QpG3KIfX0sS2p2XdP31niZjGWXe0OnT8la3mawwx1f9ZJCrF+TwjDb+6u6/dW6rUQhUDhBR6qXY1CHGGRUUKbb/xIgHy+pMO2EXOq5bIW62I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f205.google.com with SMTP id 5614622812f47-4b28d9952a5so945586b6e.1
+        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 22:22:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787115644; x=1787720444;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=SC0i4Lg6k/dnZmYD88qiv579EkxNdGPFnYXp1dk34PA=;
-        b=ImcRlGRywQ3j5v71mshIsmNhF8ZVQAbpRfcVsxtG9Q1grYWp+77CyZiDzrDZJQie08
-         z723al2mjKUs+s8YUyMn+IGAzdZLe08121pNiierA1L1FpTsZu6bacG8kLrsZaLzvbPm
-         mVC0Eu2SNW4f74F2MjfeARPlStP1KvS2XB1eZe+8Dj1IQGYTN4d7snh4ouJrHnfrVYxU
-         3phsPyTxTmrThicxKNIzW7WZPIDW8wzux7TyHGp3sMwIi0Xq14znd9X6LC8hOc6v9vzG
-         q3+BEehu8LMO0Tbopr8su3uQW33tsRvg8Kr2gsxtohN+Vedjp4Jf3rID+cFOkISEIXky
-         +pZg==
-X-Forwarded-Encrypted: i=1; AHgh+Ro57m/hbmmlvNcNgKW0nkNNPQcFTIMH1flhXRCMkUVw2cFAPHBqY+n2rx/K+Y6MaozOiU3++8s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPoJdZdM3VlPZTRFfVRCx8Rnk75j/eEPd2kNJwRi2ZRYzT5wzP
-	zBwXFP9GbnNLqZjPiytM16k+txhpTpYjjSGapMwIbofYswch5M/fXuJH
-X-Gm-Gg: AR+sD11XQ/FEvM0nuCGfhZzwJhnoY6dtBj+o33FRI3tQ1TWI/HEQN+7NYQmvcGxQtfT
-	FEqdP6O+unTGI26Xkeue/j4gRZ5zXgjCwuxMAHHqEo1YbPljkQZWNT8E/pyIXzqBftfWTFDySwY
-	gvXOBNrkeqCJBE2Y6vLWerZlot2k+Zz5BQ/oGTRSIftw/rg3vAI3vCWxMrN93OijQhSWO3gThTk
-	kjpvBvZVhaVWOArx48cC3ibdyQeJKOfoQ/ZwzhXkvZZfILnW0C5RkZ7r2WGxM7WTwfOKG0paysq
-	2UbL93Y6ki6b7QGKJ54h1Pld2PhOY3jnex+Dub9qxGw7evHEMpZ7G9cc76NHiftyUTbZt/0At5u
-	+1RUDYn431v+SfxPNUce7I2/cm+rB6lh3HbdUefTvZZW32TvFQBGj6viK89Um1bjhdPESL7I58Y
-	ETLR6r1bJE9HOIwfV4KLWxBblt3OQtBGyQqidlsjhHf6b6oTq0zucrG1bzUg6zbIZc5OQY/+FBp
-	u55DoNVo9tXnlGknA==
-X-Received: by 2002:a05:6214:20e3:b0:907:5c68:54d1 with SMTP id 6a1803df08f44-90c5eb75e01mr17604316d6.18.1787115643593;
-        Tue, 18 Aug 2026 22:00:43 -0700 (PDT)
-Received: from i4-l-hqh5357-03.ad.psu.edu ([130.203.139.71])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90c5f2a386fsm6042596d6.33.2026.08.18.22.00.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Aug 2026 22:00:43 -0700 (PDT)
-From: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
-To: David Heidelberg <david@ixit.cz>
-Cc: Shuangpeng Bai <shuangpeng.kernel@gmail.com>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	oe-linux-nfc@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [BUG] NFC: slab-use-after-free in _raw_spin_lock_irqsave
-Date: Wed, 19 Aug 2026 01:00:29 -0400
-Message-ID: <20260819050031.2725592-1-shuangpeng.kernel@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20251104; t=1787116964; x=1787721764;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4jdYzixkR4xffbs5/m+OOw2qi2WWx8yCuZKRPQjX7oU=;
+        b=tQwb4QO9V9ulq96JzNKaHMnVcIlcsu59ihT5VH/xzvmThvJlmUneaZU18SAsP6uQam
+         sTK2Kwa+Dre3ea9TJXpETK7IqQ2o3CuVBorYkIkbB4x9nd5HW6JMvyOI0pYvYRnkiZ1e
+         o3eRQoxPtVVLKokLAGx9MExQy0j88fj6KWUCCmBDbMnra2e28me7Ccpwo+CHY99MJOFj
+         d/6GVXH7OHmt9cv3ONjP6h9AQSd0VI4YUiF0aQQ9dvzvCVwmFG15zEZA2qlwFJztqs7S
+         ncQLXlMAZ1v/yYhyEPnlJd6X9Qwn0yVSp9ZBLK8loHWrj6ek2+pmm0FOFTNLaYaJ2qZw
+         r/3g==
+X-Forwarded-Encrypted: i=1; AHgh+RrauX1G8hKLAxRwf3TYr/INONNCJz/U6VJnqnIsOGwXAX5IEJdN07R01n3ZDm5xYsyYSUC99Y4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyaH9xAavsMhpBu/izPGXUpBmPlBVcjY2S2NS8TD+Sf56VombpZ
+	toL0IIhbxHhlMqCBcoWaAjmyUTsCCs9oCgn8txCpg2v8Avg5EPOrSnT9uohVu9+WpcjXO/P1S/V
+	DkFgdvSslat/BH4FGy2eOuPyzuv10SxkDnkxGO3Afa0AHlVlru3j9KkzcoIM=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6808:1525:b0:4b2:8e51:aac2 with SMTP id
+ 5614622812f47-4b2bc93b5cbmr1792453b6e.8.1787116963849; Tue, 18 Aug 2026
+ 22:22:43 -0700 (PDT)
+Date: Tue, 18 Aug 2026 22:22:43 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a853da3.ae6ddae5.3da009.0006.GAE@google.com>
+Subject: [syzbot] [net?] [nfc?] KASAN: slab-out-of-bounds Read in __dynamic_pr_debug
+From: syzbot <syzbot+1e3df0852e82c21ca418@syzkaller.appspotmail.com>
+To: davem@davemloft.net, david@ixit.cz, edumazet@google.com, horms@kernel.org, 
+	krzk@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, oe-linux-nfc@lists.linux.dev, pabeni@redhat.com, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Kernel Maintainers,
+Hello,
 
-I hit the following report while testing current upstream kernel:
+syzbot found the following issue on:
 
-KASAN: slab-use-after-free in _raw_spin_lock_irqsave
+HEAD commit:    21d6ac051080 Merge branch 'for-next/core' into for-kernelci
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
+console output: https://syzkaller.appspot.com/x/log.txt?x=13653679580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=d1128bc53f2ef7f3
+dashboard link: https://syzkaller.appspot.com/bug?extid=1e3df0852e82c21ca418
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+userspace arch: arm64
 
-on commit: 3aa1dcaa4f6f5ae08936491e08bd456f331f2d40 (2026-08-13)
+Unfortunately, I don't have any reproducer for this issue yet.
 
-To help trigger the bug more reliably, we applied a minimal diagnostic patch
-that only adds delays and print statements.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/88380e2ddcb9/disk-21d6ac05.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/5dba5c2896b7/vmlinux-21d6ac05.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/52ac739e37e0/Image-21d6ac05.gz.xz
 
-The reproducer and .config files are here.
-https://gist.github.com/shuangpengbai/f7dab4725e2a2d57b1d302714c93c549
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+1e3df0852e82c21ca418@syzkaller.appspotmail.com
 
-I'm happy to test debug patches or provide additional information.
+dvmrp0: entered allmulticast mode
+==================================================================
+BUG: KASAN: slab-out-of-bounds in string_nocheck+0xd8/0x140 lib/vsprintf.c:648
+Read of size 1 at addr ffff0000c2554ae1 by task syz.2.798/8384
 
-Reported-by: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
+CPU: 1 UID: 0 PID: 8384 Comm: syz.2.798 Tainted: G             L      syzkaller #0 PREEMPT 
+Tainted: [L]=SOFTLOCKUP
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/07/2026
+Call trace:
+ show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:499 (C)
+ __dump_stack+0x30/0x40 lib/dump_stack.c:94
+ dump_stack_lvl+0xd8/0x12c lib/dump_stack.c:120
+ print_address_description+0xb0/0x238 mm/kasan/report.c:378
+ print_report+0x68/0x84 mm/kasan/report.c:482
+ kasan_report+0x8c/0xc4 mm/kasan/report.c:595
+ __asan_report_load1_noabort+0x20/0x2c mm/kasan/report_generic.c:378
+ string_nocheck+0xd8/0x140 lib/vsprintf.c:648
+ string+0x8c/0xc8 lib/vsprintf.c:730
+ vsnprintf+0x880/0xd10 lib/vsprintf.c:2945
+ va_format lib/vsprintf.c:1725 [inline]
+ pointer+0x5e8/0x6b4 lib/vsprintf.c:2573
+ vsnprintf+0x618/0xd10 lib/vsprintf.c:2949
+ vprintk_store+0x344/0xb94 kernel/printk/printk.c:2307
+ vprintk_emit+0x1bc/0x514 kernel/printk/printk.c:2455
+ vprintk_default+0x54/0x80 kernel/printk/printk.c:2494
+ vprintk+0x9c/0x114 kernel/printk/printk_safe.c:82
+ _printk+0xe0/0x130 kernel/printk/printk.c:2504
+ __dynamic_pr_debug+0x148/0x1e4 lib/dynamic_debug.c:879
+ nfc_llcp_wks_sap net/nfc/llcp_core.c:344 [inline]
+ nfc_llcp_get_sdp_ssap+0x350/0x3fc net/nfc/llcp_core.c:420
+ llcp_sock_bind+0x2e0/0x58c net/nfc/llcp_sock.c:114
+ __sys_bind_socket net/socket.c:1920 [inline]
+ __sys_bind+0x1c4/0x268 net/socket.c:1951
+ __do_sys_bind net/socket.c:1956 [inline]
+ __se_sys_bind net/socket.c:1954 [inline]
+ __arm64_sys_bind+0x84/0x9c net/socket.c:1954
+ __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+ invoke_syscall+0x98/0x244 arch/arm64/kernel/syscall.c:49
+ el0_svc_common+0xec/0x23c arch/arm64/kernel/syscall.c:121
+ do_el0_svc+0x4c/0x5c arch/arm64/kernel/syscall.c:140
+ el0_svc+0x64/0x260 arch/arm64/kernel/entry-common.c:758
+ el0t_64_sync_handler+0x44/0x104 arch/arm64/kernel/entry-common.c:777
+ el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:590
 
-[   46.711115][    T9] ==================================================================
-[   46.711848][    T9] BUG: KASAN: slab-use-after-free in _raw_spin_lock_irqsave (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:1300 ./include/asm-generic/qspinlock.h:111 ./include/linux/spinlock.h:187 ./include/linux/spinlock_api_smp.h:133 kernel/locking/spinlock.c:166)
-[   46.712620][    T9] Write of size 4 at addr ffff88811da9cb94 by task kworker/0:0/9
-[   46.713329][    T9]
-[   46.713560][    T9] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   46.713563][    T9] Workqueue: events nfc_llcp_tx_work
-[   46.713570][    T9] Call Trace:
-[   46.713573][    T9]  <TASK>
-[   46.713574][    T9]  dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)
-[   46.713580][    T9]  print_report (mm/kasan/report.c:378 mm/kasan/report.c:482)
-[   46.713598][    T9]  kasan_report (mm/kasan/report.c:595)
-[   46.713606][    T9]  kasan_check_range (mm/kasan/generic.c:? mm/kasan/generic.c:200)
-[   46.713609][    T9]  _raw_spin_lock_irqsave (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:1300 ./include/asm-generic/qspinlock.h:111 ./include/linux/spinlock.h:187 ./include/linux/spinlock_api_smp.h:133 kernel/locking/spinlock.c:166)
-[   46.713621][    T9]  skb_queue_tail (net/core/skbuff.c:4114)
-[   46.713627][    T9]  nfc_llcp_tx_work (net/nfc/llcp_core.c:848)
-[   46.713631][    T9]  process_scheduled_works (kernel/workqueue.c:3322 kernel/workqueue.c:3405)
-[   46.713637][    T9]  worker_thread (kernel/workqueue.c:3486)
-[   46.713642][    T9]  kthread (kernel/kthread.c:436)
-[   46.713654][    T9]  ret_from_fork (archkernel/process.c:158)
-[   46.713669][    T9]  ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
-[   46.713673][    T9]  </TASK>
-[   46.713675][    T9]
-[   46.728016][    T9] Allocated by task 8236 on cpu 0 at 46.562534s:
-[   46.728599][    T9]  kasan_save_track (mm/kasan/common.c:57 mm/kasan/common.c:78)
-[   46.729032][    T9]  __kasan_kmalloc (mm/kasan/common.c:398 mm/kasan/common.c:415)
-[   46.729460][    T9]  __kmalloc_noprof (./include/linux/kasan.h:263 mm/slub.c:5334 mm/slub.c:5359)
-[   46.729908][    T9]  sk_prot_alloc (./include/linux/slab.h:992 net/core/sock.c:2251)
-[   46.730337][    T9]  sk_alloc (net/core/sock.c:2307)
-[   46.730711][    T9]  llcp_sock_create (net/nfc/llcp_sock.c:1004 net/nfc/llcp_sock.c:1069)
-[   46.731154][    T9]  nfc_sock_create (net/nfc/af_nfc.c:31)
-[   46.731587][    T9]  __sock_create (net/socket.c:1651)
-[   46.732010][    T9]  __sys_socket (net/socket.c:1709 net/socket.c:1746 net/socket.c:1793)
-[   46.732424][    T9]  __x64_sys_socket (net/socket.c:1807 net/socket.c:1805 net/socket.c:1805)
-[   46.732853][    T9]  do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
-[   46.733274][    T9]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
-[   46.733815][    T9]
-[   46.734038][    T9] Freed by task 8236 on cpu 0 at 46.686415s:
-[   46.734594][    T9]  kasan_save_track (mm/kasan/common.c:57 mm/kasan/common.c:78)
-[   46.735024][    T9]  kasan_save_free_info (mm/kasan/generic.c:584)
-[   46.735493][    T9]  __kasan_slab_free (mm/kasan/common.c:253 mm/kasan/common.c:285)
-[   46.735945][    T9]  kfree (./include/linux/kasan.h:235 mm/slub.c:2677 mm/slub.c:6377 mm/slub.c:6692)
-[   46.736307][    T9]  __sk_destruct (net/core/sock.c:2290 net/core/sock.c:2390)
-[   46.736732][    T9]  llcp_sock_release (.net/sock.h:2020 net/nfc/llcp_sock.c:664)
-[   46.737189][    T9]  sock_close (net/socket.c:710 net/socket.c:1501)
-[   46.737580][    T9]  __fput (fs/file_table.c:512)
-[   46.737946][    T9]  fput_close_sync (fs/file_table.c:617)
-[   46.738388][    T9]  __x64_sys_close (fs/open.c:1511 fs/open.c:1496 fs/open.c:1496)
-[   46.738811][    T9]  do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
-[   46.739230][    T9]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
-[   46.739771][    T9]
-[   46.739991][    T9] The buggy address belongs to the object at ffff88811da9c800
-[   46.739991][    T9]  which belongs to the cache kmalloc-1k of size 1024
-[   46.741271][    T9] The buggy address is located 916 bytes inside of
-[   46.741271][    T9]  freed 1024-byte region [ffff88811da9c800, ffff88811da9cc00)
-[   46.742518][    T9]
-[   46.742742][    T9] The buggy address belongs to the physical page:
+Allocated by task 8384:
+ kasan_save_stack mm/kasan/common.c:57 [inline]
+ kasan_save_track+0x40/0x78 mm/kasan/common.c:78
+ kasan_save_alloc_info+0x40/0x50 mm/kasan/generic.c:570
+ poison_kmalloc_redzone mm/kasan/common.c:398 [inline]
+ __kasan_kmalloc+0x9c/0xb4 mm/kasan/common.c:415
+ kasan_kmalloc include/linux/kasan.h:263 [inline]
+ __do_kmalloc_node mm/slub.c:5334 [inline]
+ __kmalloc_node_track_caller_noprof+0x434/0x6d4 mm/slub.c:5471
+ kmemdup_noprof+0x44/0x8c mm/util.c:138
+ kmemdup_noprof include/linux/fortify-string.h:715 [inline]
+ llcp_sock_bind+0x2b0/0x58c net/nfc/llcp_sock.c:107
+ __sys_bind_socket net/socket.c:1920 [inline]
+ __sys_bind+0x1c4/0x268 net/socket.c:1951
+ __do_sys_bind net/socket.c:1956 [inline]
+ __se_sys_bind net/socket.c:1954 [inline]
+ __arm64_sys_bind+0x84/0x9c net/socket.c:1954
+ __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+ invoke_syscall+0x98/0x244 arch/arm64/kernel/syscall.c:49
+ el0_svc_common+0xec/0x23c arch/arm64/kernel/syscall.c:121
+ do_el0_svc+0x4c/0x5c arch/arm64/kernel/syscall.c:140
+ el0_svc+0x64/0x260 arch/arm64/kernel/entry-common.c:758
+ el0t_64_sync_handler+0x44/0x104 arch/arm64/kernel/entry-common.c:777
+ el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:590
 
-Best,
-Shuangpeng
+The buggy address belongs to the object at ffff0000c2554ae0
+ which belongs to the cache kmalloc-8 of size 8
+The buggy address is located 0 bytes to the right of
+ allocated 1-byte region [ffff0000c2554ae0, ffff0000c2554ae1)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff0000c2554a80 pfn:0x102554
+flags: 0x5ffc00000000200(workingset|node=0|zone=2|lastcpupid=0x7ff)
+page_type: f5(slab)
+raw: 05ffc00000000200 ffff0000c0001500 fffffdffc318aa10 fffffdffc30937d0
+raw: ffff0000c2554a80 0000000800800069 00000000f5000000 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffff0000c2554980: 00 fc fc fc 07 fc fc fc fa fc fc fc 07 fc fc fc
+ ffff0000c2554a00: fa fc fc fc fa fc fc fc fa fc fc fc 07 fc fc fc
+>ffff0000c2554a80: fa fc fc fc 05 fc fc fc 05 fc fc fc 01 fc fc fc
+                                                       ^
+ ffff0000c2554b00: fa fc fc fc 05 fc fc fc 00 fc fc fc 00 fc fc fc
+ ffff0000c2554b80: 00 fc fc fc 00 fc fc fc fa fc fc fc 00 fc fc fc
+==================================================================
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
