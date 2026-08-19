@@ -1,131 +1,89 @@
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41EBC275870;
-	Wed, 19 Aug 2026 02:51:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8175C22F767;
+	Wed, 19 Aug 2026 03:10:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787107911; cv=none; b=gMVMrTFyp0YPTurXZukz3rRp6l9N1MhQSdTELcwcv2Mzx/3i4q2E29D/B/nyuzAbOLUUrib3ilmIMVMO0Qojfiylgq2Zj231GQMXDRznH2jWxYwPJLyTFiejzY8kTVqNEwUyx/9tXoBhIQXwSxWBW7Wv4MwUfs/ya0FijYYRc0A=
+	t=1787109055; cv=none; b=i75HDtFN5z+/XZWrGvTQyTeUEL1tNmHWCnTPZ1/Y/y9QwKXgGo5hRJzzG8d/VcwLrEmSYvg2lN3S5ujJUcgQc+bIvtfPyz7MIhwxWEZgRljHnKJDbWJ7h6l9A3s64HF3h18JZsp2hGNPKUkztm/46PF4oLzsfI3WzqD5dA/5RGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787107911; c=relaxed/simple;
-	bh=/806s9Z6FPuQkp69sO+d1jlqaLHZbcjzztrS7iCpl9o=;
-	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=ZgYIoAN9xAaJXoXE8vw1WL3eSVDf6kqeRHfz10O8FNBqAsoDESfuzVGLxqtaF9UMao2tm04pDm1+y/E5nhevkN2Ix+wIdlmidOciseOvPkvd5VqGhPnfgkqGdznMnJg/VnD5DpAHWHb3wK/dsjQw8+LS+vHQekSKevSAe6ZD+2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=XHNqjnFw; arc=none smtp.client-ip=113.46.200.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1787109055; c=relaxed/simple;
+	bh=q+qNFr8WNRQhCEYcGxwhAoG6AxZI4yJV5uowv6vxHsk=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=WD7fEvELIBFo9LCwV4dZxNdo/1eMLOw0AmeTcfMvvaTbsCEmC2vqsMa9L+0bZY/h7mNC7qTNylzzmItqyTBc7PgUwkNpzbeRh6p2L/Q73RVo9JV/uZXyKT9aWoX6F4aqOtwP2/uI/UdAAVcrlpY6/kSkqVRBfq5aCZXVOz9Kfvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VqHq2qew; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="XHNqjnFw"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=xhtZRXjoCnMWn9mFXaTj7fZKbM8NqbXiis/kR/upGLo=;
-	b=XHNqjnFwQ8sme/7g89G8PlcjwNXIUE9tyH0qII8KGgLBvvQ7VkPstRJuLBOLan4VKem0teuBz
-	xa3eejrWZwF10E9W+MyaHv0o1xvI8uel43bsbfnuifTMSwXU0OPBADf7ys0t2Y8CNUnwFb8QQZH
-	rd0/aVbjTzJWr4vmM8HQHx0=
-Received: from mail.maildlp.com (unknown [172.19.162.223])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4hPrQv5CwkzpSvB;
-	Wed, 19 Aug 2026 10:40:39 +0800 (CST)
-Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id 35A5F40561;
-	Wed, 19 Aug 2026 10:51:35 +0800 (CST)
-Received: from [10.67.120.192] (10.67.120.192) by
- kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 19 Aug 2026 10:51:33 +0800
-Message-ID: <b1aa6136-3dc1-4190-beaa-32bee88b7091@huawei.com>
-Date: Wed, 19 Aug 2026 10:51:33 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VqHq2qew"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 673FE1F000E9;
+	Wed, 19 Aug 2026 03:10:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787109054;
+	bh=4+k18eV6rqaDHf7L8yYWvs1oCR2gyuTUmm6qOq1AYio=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=VqHq2qewrsiwkRmlwevHc34ca1hRkE0Gfq7qHbdtUfj26dl5AligpFexxzwEL1Thr
+	 CgxOF9kfZluTsY8BRXZz5+eHpyEZt/+DnWsBFkbYsTml90wqfggYrrD9E4b8RwTyaE
+	 dG3KZwb7CUGrewA8705D9/KSQS8a4O4XVQfejERpBnugwsFHC7NmZ2chkM1mLiqo03
+	 NX2+sVXnWerAjzeXq5X+o9xwh0w/Gg7XuIvjr0SiMIB67XMqMFtBVntHH3rclSdr89
+	 lU53bJ+3gCZ4LcgFkGuGOO2tZ1QIzZ8kOygjuXOBweOr83neJ2xA3TDktlXfin2qEF
+	 ouwNeO3c7Ae3Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id E55E63927072;
+	Wed, 19 Aug 2026 03:10:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-CC: <shaojijie@huawei.com>, "shenjian15@huawei.com" <shenjian15@huawei.com>,
-	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-	"eperezma@redhat.com" <eperezma@redhat.com>, "jasowang@redhat.com"
-	<jasowang@redhat.com>, "virtualization@lists.linux.dev"
-	<virtualization@lists.linux.dev>, "mst@redhat.com" <mst@redhat.com>,
-	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "edumazet@google.com"
-	<edumazet@google.com>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, "corbet@lwn.net" <corbet@lwn.net>,
-	"horms@kernel.org" <horms@kernel.org>, "dsahern@kernel.org"
-	<dsahern@kernel.org>, "kuniyu@google.com" <kuniyu@google.com>,
-	"bpf@vger.kernel.org" <bpf@vger.kernel.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "dave.taht@gmail.com" <dave.taht@gmail.com>,
-	"jhs@mojatatu.com" <jhs@mojatatu.com>, "stephen@networkplumber.org"
-	<stephen@networkplumber.org>, "xiyou.wangcong@gmail.com"
-	<xiyou.wangcong@gmail.com>, "jiri@resnulli.us" <jiri@resnulli.us>,
-	"davem@davemloft.net" <davem@davemloft.net>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "donald.hunter@gmail.com" <donald.hunter@gmail.com>,
-	"ast@fiberby.net" <ast@fiberby.net>, "liuhangbin@gmail.com"
-	<liuhangbin@gmail.com>, "shuah@kernel.org" <shuah@kernel.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-	"ij@kernel.org" <ij@kernel.org>, "ncardwell@google.com"
-	<ncardwell@google.com>, "Koen De Schepper (Nokia)"
-	<koen.de_schepper@nokia-bell-labs.com>, "g.white@cablelabs.com"
-	<g.white@cablelabs.com>, "ingemar.s.johansson@ericsson.com"
-	<ingemar.s.johansson@ericsson.com>, "mirja.kuehlewind@ericsson.com"
-	<mirja.kuehlewind@ericsson.com>, "cheshire@apple.com" <cheshire@apple.com>,
-	"rs.ietf@gmx.at" <rs.ietf@gmx.at>, "Jason_Livingood@comcast.com"
-	<Jason_Livingood@comcast.com>, "vidhi_goel@apple.com" <vidhi_goel@apple.com>
-Subject: Re: [PATCH v5 net-next 2/2] net: hns3: fix GSO_ECN flag setting in
- the RX path
-To: Jakub Kicinski <kuba@kernel.org>, "Chia-Yu Chang (Nokia)"
-	<chia-yu.chang@nokia-bell-labs.com>
-References: <20260804213510.673084-1-chia-yu.chang@nokia-bell-labs.com>
- <20260804213510.673084-3-chia-yu.chang@nokia-bell-labs.com>
- <61721708-0d77-4f59-aa08-02562af282bb@huawei.com>
- <PAXPR07MB79842CC27C2F5CF9BD40E007A3DC2@PAXPR07MB7984.eurprd07.prod.outlook.com>
- <20260812155927.57ee295b@kernel.org>
-From: Jijie Shao <shaojijie@huawei.com>
-In-Reply-To: <20260812155927.57ee295b@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemo500018.china.huawei.com (7.202.195.199)
+Subject: Re: [PATCH net v4] xsk: fix NULL pointer dereference in __xsk_rcv()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178710900561.2824559.3358618619338695557.git-patchwork-notify@kernel.org>
+Date: Wed, 19 Aug 2026 03:10:05 +0000
+References: <20260813215328.99311-1-blbllhy@gmail.com>
+In-Reply-To: <20260813215328.99311-1-blbllhy@gmail.com>
+To: Cen Zhang (Microsoft) <blbllhy@gmail.com>
+Cc: magnus.karlsson@intel.com, kerneljasonxing@gmail.com,
+ maciej.fijalkowski@intel.com, sdf@fomichev.me, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
+ AutonomousCodeSecurity@microsoft.com, tgopinath@linux.microsoft.com,
+ kys@microsoft.com
 
+Hello:
 
-on 2026/8/13 6:59, Jakub Kicinski wrote:
-> On Wed, 12 Aug 2026 10:35:25 +0000 Chia-Yu Chang (Nokia) wrote:
->>> Tested on hns3 HW (2x 100G, direct cable, openEuler 24.03, kernel 7.2.0-rc6).
->>>
->>> tcpdump confirms HW GRO zeroes IP ToS: aggregated (>MTU) packets carry tos 0x0, while non-aggregated packets keep their ToS/ECN marks — so the zeroing is done by HW GRO, not the sender. Before patch, CWR packets had SKB_GSO_TCP_ECN set (0x5 = SKB_GSO_TCPV4 | SKB_GSO_TCP_ECN). After patch, all GRO events gso_type=0x1 (SKB_GSO_TCPV4 only), no 0x5 observed.
->>>
->>> Tested-by: Jijie Shao <shaojijie@huawei.com>
->> Thanks Jijie for confirmation, I will submit to net in the next round.
-> Hold on.. Sounds like hns3 zeros ToS out (?!)
->
-> This would be invalid and illegal for HW-GRO. If hns3 nukes crucial IP
-> header fields it should probably be advertising LRO not HW-GRO in the
-> first place.
+This patch was applied to netdev/net.git (main)
+by David S. Miller <davem@davemloft.net>:
 
-Your assessment is correct — HW GRO on hns3 does NOT zero IP ToS.
+On Thu, 13 Aug 2026 17:53:28 -0400 you wrote:
+> In the __xsk_rcv() multi-buffer path, xsk_buff_alloc() is called in a
+> loop without checking its return value. xsk_buff_can_alloc() only
+> counts fill queue entries without validating their addresses, so it
+> can succeed while xsk_buff_alloc() rejects all remaining entries and
+> returns NULL.
+> 
+>   Oops: general protection fault, probably for non-canonical address
+>    0xdffffc0000000000
+>   KASAN: null-ptr-deref in range
+>    [0x0000000000000000-0x0000000000000007]
+>   RIP: 0010:__xsk_rcv+0x426/0xc20 (net/xdp/xsk.c:350)
+>   Call Trace:
+>    xsk_generic_rcv+0x26d/0x5f0
+>    xdp_do_generic_redirect+0x3c5/0xcf0
+>    do_xdp_generic+0x92f/0xe70
+>    __netif_receive_skb_core.constprop.0+0xf7e/0x2b30
+> 
+> [...]
 
-My earlier Tested-by claiming "HW GRO zeroes IP ToS" was wrong. The
-tos=0x0 I observed was caused by a test methodology error: I used
-iperf3 with --tos but did not set net.ipv4.tcp_ecn=1, so the sender's
-kernel TCP stack cleared the ECN bits before the packets hit the wire.
-I mistakenly attributed this TX-side clearing to HW GRO.
+Here is the summary with links:
+  - [net,v4] xsk: fix NULL pointer dereference in __xsk_rcv()
+    https://git.kernel.org/netdev/net/c/73cee2bd5c96
 
-I have retested with tesgine (direct packet construction, bypassing
-the kernel TCP stack) and confirmed:
-   - HW GRO preserves IP ToS — each aggregate group retains the head
-     packet's ToS value (verified with 0x00/0x02/0x03/0x10/0xB8)
-   - HW GRO segments flows by ToS boundaries — any ToS change (DSCP or
-     ECN bits) terminates the current aggregate group
-   - ECN signals are intact — CE packets (tos=0x03) are delivered
-     independently with the CE mark preserved
-     
-hns3 HW GRO is behaving correctly. Sorry for the confusion caused by
-my earlier report.
-
-Full test details in my correction reply to the patch 2/2 thread:
-https://lore.kernel.org/all/dd817755-eb4d-4ac2-b282-ac06f847270d@huawei.com/
-
-Regards,
-Jijie Shao
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
