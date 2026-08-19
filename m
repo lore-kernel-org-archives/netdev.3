@@ -1,422 +1,224 @@
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011068.outbound.protection.outlook.com [52.101.57.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5E73B47E0;
-	Wed, 19 Aug 2026 18:17:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787163445; cv=none; b=M49MnuhJYm13Bzg6Og+gz/LLBawU03/z507F6Y33Ka2DaIWLuQEQNIF3bWnr+r5TP0RAmpE8wqcYSym58yfGBrjEG8W5ZfkLoLJ/1xppoD5verCSfzwBwOpFr3Kzg44lbEY1cJ+VQyhQFcHxh64mAuem1T1URLSEt3lWhw9l0ss=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787163445; c=relaxed/simple;
-	bh=WQRS2RHH2akgWDVpelBmiZG1coEA2yQ3av12m9vmhk4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fOtTMMRm2ztIGrpW0OkSdiG/1cKylhDZH9DWVOiyXui7e/R8rAOUEQfbQTYj7L0pi84BFLUom7aRb+xu+N6PKM6bgIrY6rAMQgUE+34tbF9sxArt2S0aByqsXFQgQ8akK0M5Yc+RnpJ5f7nCgFYAQKEZQApgcROodMgGjWA79dQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=rIAa4iWO; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A253D44065A;
+	Wed, 19 Aug 2026 18:28:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787164126; cv=fail; b=nTR8+EWzQUFB+5bVz1lgASNgJHE94fRAm/rLw4QhpE1F897LTO/XgBH6XI5oa6gwYSKVAjMJtnlgMVUYG60o2GcgY5sMHYgrzk4KD3NQGUaAVK2mWVmXH5iWJnJR6mNGYga5f48H1jB1ANL4bQUmqLoh30/yEOYSDO0LBryJgsw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787164126; c=relaxed/simple;
+	bh=K1ZqBFuxmDexvViMU4/HldPaGmaRuHo1utdwGbc95S8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=j3mXicPFIGuvIl4dxA/aBXUe2BxtrPLamV4LE13NvFZacI/RSE3/+J59KTsIbu+qYCes+uLobtmTaCfmaIC95IgZqo2ILxH7YQdUDoBO/uu3zQszsiwV3DDtxg3VPPi3Ckmvd9hZB4ArvzFgkPfy9uK7ORTiSx6jVN0DSKN5KX4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=C0tH1kHb; arc=fail smtp.client-ip=52.101.57.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="rIAa4iWO"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Subject:Date:From:From:Reply-To;
-	bh=jKOtxlRf7QwQPlRJp8elszSh59Tvs6EEuFjMe2Gw8W0=; b=rIAa4iWOu300Mt0xJf/kHgsZxB
-	wwc8d4w2ZzpPAguxJYkf9Efsz9XPxW+CrpDnxK9np0s+2sFX667qE7+008RASjD9kCLI89C3oIugG
-	ap2k9horEn1ErTZvHVp2nrd07Rd82KEhzag3VltGdsJWKrfP05PE/Gp7aPk26ALy4oKAEzh8gB5DC
-	v4vzgUNX3jwzoT7r2ZJZfCFHZXC52qU6Bduieb8vVP6u/QyeStQ0KRg26BppZsbtRf1wLLg1uczJA
-	czhwMwL3kaRxR5H6o5NaxdnScHzifbt9bVHqKiupBXdW9Hcj3weQrrIHAquk/TbMzSRrYz94sB1KE
-	RP5a0xkQ==;
-Received: from 186-249-147-181.shared.desktop.com.br ([186.249.147.181] helo=[127.0.1.1])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1wwkqn-006ENH-88; Wed, 19 Aug 2026 20:17:21 +0200
-From: Mauricio Faria de Oliveira <mfo@igalia.com>
-Date: Wed, 19 Aug 2026 15:16:26 -0300
-Subject: [PATCH RFC v3 13/13] modpost: handle MODULE_SYSCTL_TABLE symbols
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="C0tH1kHb"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pxqrHUuwvxIgt/ggeeamoPtmbnM87xpCGjGhXB6uchnCnX06hQvWWK0nSYlYwofN8WlL44C6B9t9oKFs164dziVOmA49XBiUF0n8f+Huu1ZBGKbeKqim5o/vO+wwaxFnfZpXn6p5lxktI1W6W3cni4iO3dn4q0jyzh2NnyrbKU6tUqz9UjfwsuVkQ5zuKEi5WcsiDGtRtyqRA0k17sUcYezxI4Di9XIDz+0wqg8ETl0Q2mRHieRp4F5OhlqYzaFGeQbG+VpIq0SpGoX5MKQjgRH5NDLrCGoS6+zdQfHBB2/rbKptunRkcNJK9LsA2YzpfqOIC20e9TFzo8dq51sCtw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5YXIxdBnA3YgMEEVyRszEkQfRiNotik4xshcNBcccY8=;
+ b=oFzdh5m1sCBKiLhar8CDl9ngovOpw/DRGMn+dB/yXERdZc4JKZp7/1RHnKkd2IzlPFjNOJ5XXzwhAhE4uOmYKq1n+cHaPbIXAjncweJA+b/awawYZD90iHBsQcoGSdtM7qJDNxb3B3HzDluP7D+8oa0mRSWfy3yHH+MGViBHLyQpTsM5ID23UA4Lx0LfX+2VC5Zhl27Gbce5/47zg5vYa92psBoZwnJxsp3mpyuHkGRft67Pl5Qte4+H2FBZopsYop5DmMJQcGTghE8I1P6G8UFCpKvHEMJ7sLOE8WrL0OeP1k2fMZRcbhjYdfyFUVIGtwnDKQhXHUGPgnEDhDjqLQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5YXIxdBnA3YgMEEVyRszEkQfRiNotik4xshcNBcccY8=;
+ b=C0tH1kHbn9Gl9nJB4GQNB9dfD/VGpq9Kp03zAjIPDPD9ylnmcc2BdZ9C2pRXn5c3IVWApXQNTODTgvoiuvaa+gDdYLYvZfmkbI96mb3crtErSN1X9qWQDQIx2r08FeVxE/e13Qmtgbe9zWrZIVCqSq6x66URSIQNn2wQdxNfJpyeF4/Eh4j6duofRkF5JwhRjsQO2B2zX7Hi8e/+sFW61Yspeehyjx24aUmhNqrDofm/AvxjcS9XZ47fAZHGasc58R/8/UemfN4KR9wt4WRbQeWfTsBEYKpXCcpboYDM2YQ4V35u4nNE6n8bCFqQ8l57nmAaFpXWyhWH29T62sTKKA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV3PR12MB9356.namprd12.prod.outlook.com (2603:10b6:408:20c::21)
+ by CH3PR12MB9023.namprd12.prod.outlook.com (2603:10b6:610:17b::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
+ 2026 18:28:33 +0000
+Received: from LV3PR12MB9356.namprd12.prod.outlook.com
+ ([fe80::1c36:31b4:c420:6286]) by LV3PR12MB9356.namprd12.prod.outlook.com
+ ([fe80::1c36:31b4:c420:6286%5]) with mapi id 15.21.0339.007; Wed, 19 Aug 2026
+ 18:28:33 +0000
+Date: Wed, 19 Aug 2026 14:28:30 -0400
+From: Yury Norov <ynorov@nvidia.com>
+To: Florian Bezdeka <florian.bezdeka@siemens.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Jan Kiszka <jan.kiszka@siemens.com>, netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH RFC 0/3] genirq: Allow drivers to respect userspace IRQ
+ affinities
+Message-ID: <aoX1zplzjXJl6lOV@yury>
+References: <20260819-flo-net-7-2-make-stmmac-default-affinity-aware-v1-0-3f79a99cadaf@siemens.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260819-flo-net-7-2-make-stmmac-default-affinity-aware-v1-0-3f79a99cadaf@siemens.com>
+X-ClientProxiedBy: MN2PR16CA0056.namprd16.prod.outlook.com
+ (2603:10b6:208:234::25) To LV3PR12MB9356.namprd12.prod.outlook.com
+ (2603:10b6:408:20c::21)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260819-sysctl-module-aliases-v3-13-aab90569365d@igalia.com>
-References: <20260819-sysctl-module-aliases-v3-0-aab90569365d@igalia.com>
-In-Reply-To: <20260819-sysctl-module-aliases-v3-0-aab90569365d@igalia.com>
-To: Kees Cook <kees@kernel.org>, Joel Granados <joel.granados@kernel.org>, 
- Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: kernel-dev@igalia.com, linux-riscv@lists.infradead.org, 
- linux-kernel@vger.kernel.org, fsverity@lists.linux.dev, 
- keyrings@vger.kernel.org, bpf@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
- netdev@vger.kernel.org, linux-wpan@vger.kernel.org, 
- lvs-devel@vger.kernel.org, netfilter-devel@vger.kernel.org, 
- coreteam@netfilter.org, linux-sctp@vger.kernel.org, 
- linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org, 
- bridge@lists.linux.dev, mptcp@lists.linux.dev, rds-devel@oss.oracle.com, 
- virtualization@lists.linux.dev, Mauricio Faria de Oliveira <mfo@igalia.com>
-X-Mailer: b4 0.14.2
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR12MB9356:EE_|CH3PR12MB9023:EE_
+X-MS-Office365-Filtering-Correlation-Id: 620b488e-aeee-46d5-ff75-08defe1facd9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|23010399003|22082099003|18002099003|56012099006|11063799006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	AnKUi4oUOgiDm0JU52aoSxoGGxnbJmRJ9QEagl/xnGmCMSSph3flhF1jI0PPo0B3F7Gjkz9o6hyquyMvPSETV5AqhbSL7mVTcIjVFKpybduJ6Wdobs0U7TxUDRh9Ftzo5jFQZKGMScWPrRjcMRmUPE//EAaz7ASIR5DKMTh3ilU8prDZUO3pV75eDFtAHi7UYI352azN0wcp7mk56QL4srD/eb3XgILKyfwLtw6hXpozBWDgpOVjacVio6HFFbEXg6Z8WdhliqrXKxyRyYrtLe7WoRGPC1Dt5saOYOnDRwmGboGAKmrAiuxg1kMSvE07l3yrfuyVo2N5aB9lTSCCKbEPObIAriTwNs2witm4491htS+uc+UuAHri3hhshrs/d6vl9AYOSR/NIgopVJ9EZDUhM/2w1nc3rv5LOBhXdTQlrMua3DK2vjWHAYz+oQSdK6FdaUsYAN8Sz39ztFjEA7rXr8DtBoj6r1zRvYWc0cViaP43MvZo4hIgFLY0TbAH3fBGR6Mufy2O4tPL8pVmCH6ZFkNpJdiY5hXAKuBtS7e7z+iI7eAB9Mn18HWe5RZWbpEuhhlua3diWCA5+71uL1Y+HH2Cso99Hw+D3nllvq5/jDMwq30LOaU6XOZ21o/NS9s6MtITt8ZYLiALGYybIdgHZ61TJzAwLZRyFuyCqks=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9356.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(23010399003)(22082099003)(18002099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?4IiPB9dG6yXcSTZbCYosHZ5LdJB/Nj5jkZWX24M2QujksYevjs+HoLqsiLD1?=
+ =?us-ascii?Q?Yjs3Z9hrVAAYwW+toiTPJHSAPhSUVz/EpyuB9yuws9/xLE1W02DIGmoNVuLt?=
+ =?us-ascii?Q?oOOV9CaNKEesKavFtrSfRrJI/ZLdIFFE6TAnJGmNutvGECVaBdCINuUasYd7?=
+ =?us-ascii?Q?Rezv7v2LS7FKlQ2g1V0QIywdLd3XfHOHzIvjrjIfyrRk8NF3pg1As98HWyk6?=
+ =?us-ascii?Q?TEZ1eXyrezNA96FNQ98emX8cBqRkmnALJqFTgEa3RJBlSLfpKb7pb0OPrXQO?=
+ =?us-ascii?Q?rbpAA7bApPYK2SI9cEBPHlAkXYaGp/Q9aiLk21wVaYf/BnXGb324MAXhiIHN?=
+ =?us-ascii?Q?Bh3qG8zGLlVj85ljUfjKyA4EzIHtnWrlRLfGkEyVPoPXQq0e6CLeZbndHoIR?=
+ =?us-ascii?Q?lENw+Kkncwf6YZ6OrrvCx76b2IS3ubp3RU2dsD1Us+/EcNu8YIoRnZjnnTcZ?=
+ =?us-ascii?Q?pMbl0MU6w2LH7pBGlDTsuYhZ5mjEI9oe6tSuTuK6axfThi+URg9MzvQM1Zw+?=
+ =?us-ascii?Q?KTId71OEwmZoynXSrg6jzUFzuxRK1U1v343q6cGOk+IqonGmZ1vxkmrAFWOV?=
+ =?us-ascii?Q?ycDXKMcQdqXK0+54CKec3kt7REWmlRKXKsnUPpQlGbXEjSl92f9ecVatsdBp?=
+ =?us-ascii?Q?7pzMPx/V/VS6nP5vq0rlodHCxP0YZRbzZ/iAsv34QUKDtBf6TJAsxbQOAgy2?=
+ =?us-ascii?Q?g5/83XV/JNO8VGOSYhmGWyehSg2kreU/E5yRAkwtq2Vx7kPPxxzZcEnbEJvl?=
+ =?us-ascii?Q?a8yCOQA8Er62z5KUyKS2d0D1tZQkDiYjRW1XnzvWVpgmssxhcdy6yuanr+31?=
+ =?us-ascii?Q?LeQiI6c2xvRWiveC9jcHF9kZIQfGob5P2BZB3yMUyDim1JCuRTPFbmUReQs4?=
+ =?us-ascii?Q?P+pzFe7MjPXJfXZ4aK61BjyvbbYbuIFmVbXgyIEdGqP6bHUIHjT0A1WbuPNj?=
+ =?us-ascii?Q?DDgPoXDugQgKIZRhDB0sPCyG8Qia9ZjsPVwPSe2GMN0XNaAUPxrfErZ+m6rW?=
+ =?us-ascii?Q?JhkRnLsLWsGGGUrVGEVeLRC7qsChlO/2xBUfE3yuTTsebxgDWjMD4xc7ASBU?=
+ =?us-ascii?Q?9sZQNrF5gWvG7QB46v2ZtPAvdYJt1bp5NdRQ28J7Y3LtsX7zSOVCYpyTKpqk?=
+ =?us-ascii?Q?12O6rKq73rkU43OP/yeRCJqg9m7Dw6e3Aes5OluLIergS8ijteG8hR3WN0nW?=
+ =?us-ascii?Q?kb4B45f4ewbga+BbDdxEG0+E1OJmDW5Pl/1aNj4/vcGeSx1qcPAK0T4xmUX0?=
+ =?us-ascii?Q?GMXaUZpXPbhkwJeShUs0INMeysxdvQKR6bl19wtFBhaHnVhNiUohKcFAGtgT?=
+ =?us-ascii?Q?aMnzKaVBI5mrGZgBbg7r2Rh2Pwf8j+Rn6XUKwT310qna8GvhP+tIpTKla7p6?=
+ =?us-ascii?Q?7FXQqDYC/b0PIZUJrIM6yyrsPTc6DhG0PKpRdKZUYBiV6IfIX1RdReao/Auh?=
+ =?us-ascii?Q?cGKj/WFv20yKmDAcs50bmuOPAQb2dtgNHAXs4Hy5k8cxvf5yQ+/ZLbOtDccq?=
+ =?us-ascii?Q?3T809+4pOmaL9FtRu+asqflfpfgoBt4ITYzZyNDFRtt+2tRLrp75W7usMgWP?=
+ =?us-ascii?Q?cewhM57P1AT9f6MRoXi1oImh+yF206FjFpsau7yJiinbEFqPdt7Zh39Nuv1h?=
+ =?us-ascii?Q?cdtExZ/F8Q5fmvZ+XAaG35XPGDfCgg7XCbqU4eCweOTjSoXxmY9WY7lnAqyp?=
+ =?us-ascii?Q?C8zEViHwJQOZ/05DrJUWmaIjFEdnb3YANl0Kn7Au9J6xklWr?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 620b488e-aeee-46d5-ff75-08defe1facd9
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9356.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 18:28:33.3600
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 703H7OfmBA+04ew6XaLMRvIBo2xKQSNmmTC+LyqKthzWIaZ5seerzuD9QwOlN2L4zv+3BWEuhCJFS+lHuSoMCg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9023
 
-Update file2alias.c to handle 'mod_devicetable' symbols with type 'sysctl'.
+On Wed, Aug 19, 2026 at 04:30:29PM +0200, Florian Bezdeka wrote:
+> Hi all,
+> 
+> I'm trying to demonstrate a real problem for PREEMPT_RT here, using the
+> stmmac driver as example. There are more drivers "affected" but let's
+> ignore that for one moment. Let's discuss the underlying problem first.
+> 
+> To achieve the best throughput most network devices are based on
+> multiple queues. Each queue (pair) is equipped with one device IRQ. To
+> reach the maximum throughput, spreading / balancing them between all the
+> available CPUs makes sense.
+> 
+> While some IRQ chips - and with that some architectures - implement the
+> necessary spreading (or balancing) at IRQ chip level others don't do that.
+> If a device driver wants to make sure that balancing happens as intended
+> it has to implement that on his own (again).
+> 
+> The typical shortcoming of those implementations: They do not honor RT
+> relevant settings like the smp_default_affinity or isolated CPU cores.
+> Device IRQs are balanced over "all" or "all online CPUs".
+> 
+> That's not a problem for "normal" systems, but for RT systems - or
+> systems running cpu-isolating workloads - it is.
+> 
+> IRQ affinities can be controlled via /proc/irq/<n>/smp_affinity{_list}
+> for existing IRQs and via /proc/irq/default_smp_affinity for "new" or 
+> "not yet registered" IRQs. Those settings - as written by user space - 
+> must be honored. Always.
+> 
+> In our case the settings were bypassed by the following sequence:
+> 
+>     - system boot (all CPUs available, no isolation yet)
+>     - deployment of the first RT application
+>         - writing a new default smp affinity (remove RT isolated cores)
+>         - migrating away all that were targeting the now isolated cores
+>         - creating a cgroup with RT cores as the only usable cores
+>     - RT application running fine for some time
+>     - stmmac network interface went up for the first time
+>         - driver balances IRQs over all CPUs, ignoring the existing
+> 	  affinities
+>     - Too much IRQ traffic on RT cores
+> 
+> Even with series applied there is (at least) one problem remaining:
+> 
+> The /proc/irq/<n> interface is populated on the first request_irq() call. 
+> That means that we can not control affinities from userspace until the 
+> IRQ gets requested.
+> 
+> The problem for network interfaces: We have to bring up the interfaces
+> once, to be able to control such affinities.
+> 
+> That raises the question why request_irq() is called on "link up" time,
+> while the low level vector allocation takes place during device probing.
+> At least that seems to be the common pattern. Can someone tell me why
+> this is done this way? Shouldn't we call request_irq() at the same time?
+> 
+> So, let's hope that all of this was short enough that somebody reads it
 
-The key operation is to iterate over relocation entries, so add the helper
-for_each_reloc() with a function callback, and the functions to:
+I did!
 
-1) Find the sysctl path and table in the 'sysctl' module symbol.
+> and precise enough to make the problem clear. The idea behind this series
+> is not fixing or applying the series as is. I'm expecting a discussion
+> first. So, input welcome!
 
-2) Find the sysctl table's entries and their '.procname' field,
-   adding a module alias 'sysctl:*/<path>/<procname>' for each.
+Not sure I understand the full scope, but it's not because of your
+description. And I want to learn more about the RT business. I'll
+comment the cpumasks part, and please keep me in CC.
 
-Originally-by: Mauricio Faria de Oliveira <mfo@canonical.com>
-Signed-off-by: Mauricio Faria de Oliveira <mfo@igalia.com>
----
- scripts/mod/file2alias.c | 237 +++++++++++++++++++++++++++++++++++++++++++++++
- scripts/mod/modpost.c    |  11 ++-
- scripts/mod/modpost.h    |  23 +++++
- 3 files changed, 269 insertions(+), 2 deletions(-)
+Thanks,
+Yury
 
-diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
-index 8d36c74dec2d55840de60b3f8ec22b646d16ff8b..abf6ce69831e2ed80a72e38df1353e44d886562c 100644
---- a/scripts/mod/file2alias.c
-+++ b/scripts/mod/file2alias.c
-@@ -1531,6 +1531,238 @@ static const struct devtable devtable[] = {
- 	{"pnp_card", SIZE_pnp_card_device_id, do_pnp_card_entry},
- };
- 
-+// Looks like: sysctl:*/path/procname
-+static void do_sysctl_entry(const char *procname, const char *path,
-+			    struct module *mod)
-+{
-+	const char *src, *end_src = path + strlen(path);
-+	char *dst, buf[256], *end_dst = buf + sizeof(buf) - 1; /* -1 for NUL. */
-+
-+	/* Replace '%s' from path template with '*' for wildcard in modprobe. */
-+	for (src = path, dst = buf; src < end_src && *src && dst < end_dst; src++, dst++)
-+		*dst = (*src == '%') ? (src++, '*') : *src;
-+	*dst = '\0';
-+
-+	module_alias_printf(mod, false, "sysctl:*/%s/%s", buf, procname);
-+}
-+
-+/*
-+ * Execute a callback function for each relocation entry in relocation section.
-+ * The caller must ensure sechdr->sh_type is SHT_RELA or SHT_REL.
-+ */
-+static void for_each_reloc(struct elf_info *elf, unsigned int shndx,
-+			   bool (*fn)(struct elf_info *elf, Elf_Shdr *sechdr,
-+				      Elf_Sym *sym, Elf_Addr r_offset,
-+				      Elf_Addr r_addend, void *data),
-+			   void *data)
-+{
-+	Elf_Shdr *sechdr = &elf->sechdrs[shndx];
-+	const Elf_Rela *rela; /* used as Elf_Rel[a] on SHT_REL[A] */
-+	const Elf_Rela *start = (void *) elf->hdr + sechdr->sh_offset;
-+	const Elf_Rela *stop = (void *) start + sechdr->sh_size;
-+	size_t size = (sechdr->sh_type == SHT_RELA) ? sizeof(Elf_Rela)
-+						    : sizeof(Elf_Rel);
-+
-+	for (rela = start; rela < stop; rela = (Elf_Rela *)((void *) rela + size)) {
-+		Elf_Sym *sym;
-+		Elf_Addr r_offset, r_addend;
-+		unsigned int r_type, r_sym;
-+
-+		r_offset = TO_NATIVE(rela->r_offset);
-+		get_rel_type_and_sym(elf, rela->r_info, &r_type, &r_sym);
-+
-+		sym = elf->symtab_start + r_sym;
-+		r_addend = (sechdr->sh_type == SHT_RELA)
-+					? TO_NATIVE(rela->r_addend)
-+					: addend_rel(elf, sechdr->sh_info,
-+						     r_type, r_offset, sym);
-+
-+		if (fn(elf, sechdr, sym, r_offset, r_addend, data))
-+			break;
-+	}
-+}
-+
-+/*
-+ * Callback parameters and function to loop over the sysctl entries in struct
-+ * module_sysctl_table's .table symbol (found below) in its reloction section.
-+ */
-+struct sysctl_entries {
-+	Elf_Addr table_offset;
-+	ssize_t table_size;
-+	ssize_t entry_size;
-+	const char *path;
-+	const char *modsymname;
-+	struct module *mod;
-+};
-+
-+static bool do_sysctl_entries(struct elf_info *elf, Elf_Shdr *sechdr, Elf_Sym *sym,
-+			      Elf_Addr r_offset, Elf_Addr r_addend, void *data)
-+{
-+	struct sysctl_entries *sysctl_entries = (struct sysctl_entries *) data;
-+
-+	/* Skip until .table starts */
-+	if (r_offset < sysctl_entries->table_offset)
-+		return false;
-+
-+	/* Stop after .table ends */
-+	if (r_offset >= sysctl_entries->table_offset + sysctl_entries->table_size)
-+		return true;
-+
-+	/* Check for alignment with an array entry (.procname at offset zero) */
-+	if ((r_offset - sysctl_entries->table_offset) % sysctl_entries->entry_size == 0) {
-+
-+		/* The symbol for .procname points to a string */
-+		const char *procname = (const char *)
-+				       sym_get_data_addend(elf, sym, r_addend);
-+
-+		if (!procname) {
-+			warn("%s [%s] found entry with NULL .procname (skip)\n",
-+			     sysctl_entries->modsymname, sysctl_entries->mod->name);
-+			return false;
-+		}
-+
-+		do_sysctl_entry(procname, sysctl_entries->path, sysctl_entries->mod);
-+	}
-+
-+	/* Continue at next entry */
-+	return false;
-+}
-+
-+/*
-+ * Callback parameters and function to search for struct module_sysctl_table's
-+ * pointers (.path and .table) in relocation entries of a relocation section.
-+ */
-+struct sysctl_pointers {
-+	/* Input: offsets */
-+	Elf_Addr path_offset;
-+	Elf_Addr table_offset;
-+
-+	/* Output: symbols and relocation addends */
-+	Elf_Sym *path_sym;
-+	Elf_Sym *table_sym;
-+	Elf_Addr path_r_addend;
-+	Elf_Addr table_r_addend;
-+};
-+
-+static bool do_sysctl_pointers(struct elf_info *elf, Elf_Shdr *sechdr, Elf_Sym *sym,
-+			       Elf_Addr r_offset, Elf_Addr r_addend, void *data)
-+{
-+	struct sysctl_pointers *sysctl_pointers = (struct sysctl_pointers *) data;
-+
-+	/* Check for relocation entry's offset matching .path or .table */
-+	if (!sysctl_pointers->path_sym &&
-+	     sysctl_pointers->path_offset == r_offset) {
-+		sysctl_pointers->path_sym = sym;
-+		sysctl_pointers->path_r_addend = r_addend;
-+	} else if (!sysctl_pointers->table_sym &&
-+		    sysctl_pointers->table_offset == r_offset) {
-+		sysctl_pointers->table_sym = sym;
-+		sysctl_pointers->table_r_addend = r_addend;
-+	}
-+
-+	/* Stop once both .path and .table are found */
-+	return (sysctl_pointers->path_sym && sysctl_pointers->table_sym);
-+}
-+
-+static void do_sysctl_table(const char *modsymname, void *modsymval,
-+			    Elf_Sym *modsym, struct module *mod,
-+			    struct elf_info *info)
-+{
-+	/*
-+	 * The struct module_sysctl_table symbol contains 4 fields:
-+	 *  .path: pointer to string with the dirname in /proc/sys
-+	 *  .table: pointer to struct ctl_table array with filenames (.procname)
-+	 *  .table_size: size of struct ctl_table array
-+	 *  .entry_size: size of struct ctl_table entry in the array
-+	 */
-+
-+	/* The size values can be read directly. */
-+	DEF_FIELD(modsymval, module_sysctl_table, table_size);
-+	DEF_FIELD(modsymval, module_sysctl_table, entry_size);
-+
-+	struct sysctl_entries sysctl_entries = {
-+		.table_size = table_size,
-+		.entry_size = entry_size,
-+		.modsymname = modsymname,
-+		.mod = mod,
-+	};
-+
-+	/*
-+	 * Step 1:
-+	 *
-+	 * Each pointer has a relocation entry in a relocation section,
-+	 * that links the pointer with the symbol it points to.
-+	 *
-+	 * In order to access the symbols pointed to by .path and .table pointers:
-+	 * 1) find the relocation section of the struct module_sysctl_table symbol;
-+	 * 2) find the relocation entries for these pointers by their field offset;
-+	 * 3) then use the symbols found in these relocation entries.
-+	 */
-+
-+	struct sysctl_pointers sysctl_pointers = {
-+		.path_offset = modsym->st_value + OFF_module_sysctl_table_path,
-+		.path_sym = NULL,
-+		.table_offset = modsym->st_value + OFF_module_sysctl_table_table,
-+		.table_sym = NULL,
-+	};
-+
-+	unsigned int shndx;
-+
-+	/* Find the relocation section for struct module_sysctl_table symbol. */
-+	shndx = get_reloc_secindex(info, modsym);
-+	if (shndx == SHN_UNDEF) {
-+		error("%s [%s.ko] cannot find relocation section for symbol\n",
-+		      modsymname, mod->name);
-+		return;
-+	}
-+
-+	/* Find the relocation entries for the .path and .table pointers. */
-+	for_each_reloc(info, shndx, do_sysctl_pointers, &sysctl_pointers);
-+	if (!sysctl_pointers.path_sym || !sysctl_pointers.table_sym) {
-+		error("%s [%s.ko] cannot find relocation entry for path/table\n",
-+		      modsymname, mod->name);
-+		return;
-+	}
-+
-+	/*
-+	 * Step 2:
-+	 *
-+	 * The .table symbol is the struct ctl_table array where each entry has
-+	 * a .procname pointer with a relocation entry for the filename string.
-+	 *
-+	 * In order to access the strings pointed to by .procname pointers:
-+	 * 1) Find the relocation section of the struct ctl_table array symbol;
-+	 * 2) Find the relocation entries for these pointers by their field offset;
-+	 * 3) Then use the symbols found in these relocation entries.
-+	 */
-+
-+	/* Find the relocation section for the struct ctl_table array. */
-+	shndx = get_reloc_secindex(info, sysctl_pointers.table_sym);
-+	if (shndx == SHN_UNDEF) {
-+		/* Edge case: empty .table: no relocation section. */
-+		return;
-+	}
-+
-+	/* The .path symbol can be read directly. */
-+	sysctl_entries.path = (const char *)
-+			   sym_get_data_addend(info, sysctl_pointers.path_sym,
-+						sysctl_pointers.path_r_addend);
-+
-+	/* The .table symbol is the struct ctl_table array. */
-+	sysctl_entries.table_offset = sysctl_pointers.table_sym->st_value +
-+				   sysctl_pointers.table_r_addend;
-+
-+	/* The .entry_size value must not be zero. */
-+	if (sysctl_entries.entry_size == 0) {
-+		error("%s [%s.ko] invalid entry size (zero)\n",
-+		      modsymname, mod->name);
-+		return;
-+	}
-+
-+	/* Add module aliases for entries in the struct ctl_table array. */
-+	for_each_reloc(info, shndx, do_sysctl_entries, &sysctl_entries);
-+}
-+
- /* Create MODULE_ALIAS() statements.
-  * At this time, we cannot write the actual output C source yet,
-  * so we write into the mod->dev_table_buf buffer. */
-@@ -1542,6 +1774,7 @@ void handle_moddevtable(struct module *mod, struct elf_info *info,
- 	const char *type, *name, *modname;
- 	size_t typelen, modnamelen;
- 	static const char *prefix = "__mod_device_table__";
-+	bool sym_is_devtable = false;
- 
- 	/* We're looking for a section relative symbol */
- 	if (!sym->st_shndx || get_secindex(info, sym) >= info->num_sections)
-@@ -1586,10 +1819,14 @@ void handle_moddevtable(struct module *mod, struct elf_info *info,
- 		if (sym_is(type, typelen, p->device_id)) {
- 			do_table(name, symval, sym->st_size, p->id_size,
- 				 p->device_id, p->do_entry, mod);
-+			sym_is_devtable = true;
- 			break;
- 		}
- 	}
- 
-+	if (!sym_is_devtable && sym_is(type, typelen, "sysctl"))
-+		do_sysctl_table(name, symval, sym, mod, info);
-+
- 	if (mod->is_vmlinux) {
- 		struct module_alias *alias;
- 
-diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-index d18a87b882a67f06d5f75ee92f4c26dc713d83b8..10eb7273cdd817da788fa3bce87d695661dd1b93 100644
---- a/scripts/mod/modpost.c
-+++ b/scripts/mod/modpost.c
-@@ -340,6 +340,13 @@ void *sym_get_data(const struct elf_info *info, const Elf_Sym *sym)
- 				      sym->st_value);
- }
- 
-+void *sym_get_data_addend(const struct elf_info *info, const Elf_Sym *sym,
-+			  Elf_Addr r_addend)
-+{
-+	return sym_get_data_by_offset(info, get_secindex(info, sym),
-+				      sym->st_value + r_addend);
-+}
-+
- static const char *sech_name(const struct elf_info *info, Elf_Shdr *sechdr)
- {
- 	return sym_get_data_by_offset(info, info->secindex_strings,
-@@ -1338,8 +1345,8 @@ Elf_Addr addend_rel(struct elf_info *elf, unsigned int secndx,
- #define R_LARCH_ALIGN		102
- #endif
- 
--static void get_rel_type_and_sym(struct elf_info *elf, uint64_t r_info,
--				 unsigned int *r_type, unsigned int *r_sym)
-+void get_rel_type_and_sym(struct elf_info *elf, uint64_t r_info,
-+			  unsigned int *r_type, unsigned int *r_sym)
- {
- 	typedef struct {
- 		Elf64_Word    r_sym;	/* Symbol index */
-diff --git a/scripts/mod/modpost.h b/scripts/mod/modpost.h
-index a98811552bd2996c31cf73fd3619e6c58bac8a6d..409fdfc844c4bfcea30fd6ae758f4042384e3e56 100644
---- a/scripts/mod/modpost.h
-+++ b/scripts/mod/modpost.h
-@@ -186,6 +186,25 @@ static inline unsigned int get_secindex(const struct elf_info *info,
- 	return index;
- }
- 
-+/* Find the relocation section for the section of a symbol */
-+static inline unsigned int get_reloc_secindex(const struct elf_info *info,
-+					      const Elf_Sym *sym)
-+{
-+	unsigned int sym_secindex = get_secindex(info, sym);
-+	unsigned int secindex;
-+
-+	for (secindex = 0; secindex < info->num_sections; secindex++) {
-+		Elf_Shdr *shdr = &info->sechdrs[secindex];
-+
-+		if ((shdr->sh_type == SHT_RELA || shdr->sh_type == SHT_REL) &&
-+		    (shdr->sh_flags & SHF_INFO_LINK) &&
-+		    shdr->sh_info == sym_secindex)
-+			return secindex;
-+	}
-+
-+	return SHN_UNDEF;
-+}
-+
- /*
-  * If there's no name there, ignore it; likewise, ignore it if it's
-  * one of the magic symbols emitted used by current tools.
-@@ -222,8 +241,12 @@ const char *get_basename(const char *path);
- char *read_text_file(const char *filename);
- char *get_line(char **stringp);
- void *sym_get_data(const struct elf_info *info, const Elf_Sym *sym);
-+void *sym_get_data_addend(const struct elf_info *info, const Elf_Sym *sym,
-+			  Elf_Addr r_addend);
- Elf_Addr addend_rel(struct elf_info *elf, unsigned int secndx,
- 		    unsigned int r_type, Elf_Addr r_offset, Elf_Sym *tsym);
-+void get_rel_type_and_sym(struct elf_info *elf, uint64_t r_info,
-+			  unsigned int *r_type, unsigned int *r_sym);
- 
- void __attribute__((format(printf, 3, 4)))
- modpost_log(bool is_error, struct module *mod, const char *fmt, ...);
-
--- 
-2.47.3
-
+> Signed-off-by: Florian Bezdeka <florian.bezdeka@siemens.com>
+> ---
+> Florian Bezdeka (3):
+>       cpumask: Honor irq_default_affinity in cpumask_local_spread()
+>       genirq: Honor existing IRQ affinities when setting affinity hints
+>       net: stmmac: Migrate IRQ balancing to cpumask_local_spread()
+> 
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 21 +++++++++++++++++----
+>  kernel/irq/manage.c                               | 10 ++++++++++
+>  lib/cpumask.c                                     | 10 ++++++----
+>  3 files changed, 33 insertions(+), 8 deletions(-)
+> ---
+> base-commit: aa2e13ae8d3cbe2c15ef4f7e971b2de0832794aa
+> change-id: 20260810-flo-net-7-2-make-stmmac-default-affinity-aware-a145a4941d8f
+> 
+> Best regards,
+> -- 
+> Florian Bezdeka <florian.bezdeka@siemens.com>
