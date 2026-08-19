@@ -1,144 +1,100 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE353403E9
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 15:56:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787154966; cv=pass; b=awjnHiViHTkWJA+OTfYrCAkFtLSry7VO8wNEqAL9XfMY/Pv0iKsT554a+kVuM+UI8ffbtrX9eTOYdbuC3vCYwGkdSjOdpdN6SqC6mW8i3vbnJwPMVEfC3bQlc8CCflQyrCSC7KL3q68P6qiTzQX039+pM1diu1uTQKihVW+Y1p0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787154966; c=relaxed/simple;
-	bh=QCNVGM6JXF/7JnLS+3lu6Q1utffymbytyo9HJaN2nbo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m3pQkRCiNepEBxJSY9fYcU5tTSvB9cYPWQr5gVZjXHqyCxx/wH4SiGHFCkFd23tncc+MT4qmHOQFIiDaNRJbbvUo6mnPMdfECa6ioK3TRC58T1U54sH83mGz0K8aJBvdsRCg53kebKODtXo6/YeAQQ3jrCX/9fR05buDTUZX6ys=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lv+e8mad; arc=pass smtp.client-ip=209.85.219.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE903403E9;
+	Wed, 19 Aug 2026 15:57:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787155031; cv=none; b=T+ISAPcev2xfVY3oGRaub+BHbUDL0C9A6xCj6If5dXR/eJGYe/M6s1EAI+WrjYV8qbO+PU/ZK053CfZVEocjqF5h4y51EsIVEOVph5NKxvm+hjwtnfE92VsKjDG4gkdHHd+su0UoULxSp3OTtDdf5aJKl03M1xPIWo2mkx+PUCI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787155031; c=relaxed/simple;
+	bh=lcaZB2zZhWd8gxVKfPNX7hvCn4I5z575ddyIK/6EWNk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fs/p1VU5/RZWw1l7DuVhi677MgsAvvCCqxwLLtok8g4tDtn7a+WU2PSev7evLqveC1P+XWLYtbWnDCinxuneJyKSeGiWrf8Ykuf5v/0iIysJXlEAzLL/fiEIJ0HcoR/epm6PD2TVDnLthtbaQYezQSPotHKmJ3mJNxrkWbEDyR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KhVNfSGg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lv+e8mad"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-8f0e5e36912so8919206d6.2
-        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 08:56:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787154964; cv=none;
-        d=google.com; s=arc-20260327;
-        b=EciWZIAPxHb9YIjHJpLgCFoBRSHVX+ociuWMC5n59P6Zk8OFiKO5QoqtwT6cBbVrfJ
-         kDfg1Yy8VxjFP/0VaZRfN2q7sKw99WTo02V+els2KrbsmZxkQp77RpXhN0j8NsNE6KKE
-         mlwp5lLY8ZSVEQbSnnWK0Iq8G9PG9cuzCfmTZqYXa9uF1kqA6B1+A6m+FkQxeMWhNB1J
-         33N+0zK5+D7C/yMpCpFhVorZxDDwnR8DppFJ11IPfS4cr9GAp+hp+9PdgECFbpTDYXf8
-         dFkN44Xvmw2Vu/KduzpQkP/Byvpjpz5kAsuXU+x84WdBjBTfqQLDmMsx+JHtVywqGi8t
-         SBJw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=luqgKeY9BCSFP8cqU5Wk0SA2ZSLwx1JOWvC8sMgRww4=;
-        fh=atJ6I4s2rHOgkn7IaRuaJbjbk+2c8FiBR2m1ts2QPQk=;
-        b=egarnOK2iMgBkTWQFBYo3H30vFy+8eYb7CGXFyKoBi7O2hjcs0I/uM0Ft+ai2bW16d
-         mpmbo9Mcw/RplSoaEAJL5PTTrLc5edBwDS9NrRTL/UEFfznpi9Is1cmAjMpX5pq+z5TV
-         VKyrBd4ogGpBnlmZHMEDKNvBvQ05aLXvO7avHIBgTUMFVFVcNhTcF7cru1tOmKZH/t5p
-         QDsWUPOplnuhAL1J3zBWEuFT4sixmPTzVTWb6bz5qe4dI0wzs7TI83q0Xun8KX3aeszK
-         gFHqx7XsGQUph7tFJrxRUI9Fi1Qb2qq56b/3ZdG7OyuFBR+XySKfaurOHy9trspqh6u7
-         CmjQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787154964; x=1787759764; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=luqgKeY9BCSFP8cqU5Wk0SA2ZSLwx1JOWvC8sMgRww4=;
-        b=lv+e8mad5MWSEjrTzWsKk/HZAA0mbiEAqSjPU+5ufxbq928r8nclgbeRPNvB5AQb/W
-         QPuIGxRRFdgoHCDvdHJVUbzAyIliQ3OT6Wq5d8WG4ZvwLBMO0zgsf0Q3noZkKTr3jsZ1
-         VQeiC7TrZfZX5mrJiQ3OIdTnHWJ6RGHVXqwEWgtFANFda4myx1rt6HQDp4kpO1siXQch
-         rihnLum95OdgFLdbUilkPCNnhFD/UP6keOUbD89zpclHhUZruEbW7KFQHQ2EgCvnAtqx
-         IeM0mfAR+npWvA2XcyS8rVZhlgVkT298sbyYHMi6d1FmMSofSTjRDneupoCdVWRo+dQh
-         Tbzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787154964; x=1787759764;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=luqgKeY9BCSFP8cqU5Wk0SA2ZSLwx1JOWvC8sMgRww4=;
-        b=PFveN+/AC98MuRzyvWD1mTV1iFShCuqrL5tnHCI58jzYhyCP0XZaFm6WOLauXh7FmS
-         q/C7L9u9zRlOx/+YyOIwhZxHsoE6gpfGHsm2W6VeAxHoGgy0iIZQKcGlqB0cgm6st/XK
-         hY5auWKJQZrgbvBKOzLkGZlKQQUGdZl50oI2OhhaganLn5xGKzWAuYttLfEUeAdu3akQ
-         hrFsqmcsCAmIWvZAGT7SEQwN6yK4TgjcamqcdcOktAgo7hTUVnuemy9n8RD0c5LtYhN0
-         2IXS7eupskJordJzFF4meRH5N6fyCT32If27AWuJljWSkOUGIi9ko+I2qjH9sJgh+5NF
-         zmHw==
-X-Forwarded-Encrypted: i=1; AHgh+Ro8oTpk1LIKN/sJBkTtbjGAcZfVKOjeBnD74zxQqF/vx/xLVel/LRr7Tyw6oR1tmHf/C14wwcU=@vger.kernel.org
-X-Gm-Message-State: AFuF++mOpp/jo137HCli9gkLS/YvoQYumKaT0TWT/mOmhSB0ly5MsGFz
-	XclFH5fL8uHEFdH4XaVvd/6ooHrhlOp48qfi4wFV8h2IVxtyOWPGBiQmAQITOfTX5lb/eHa8SYD
-	HlVlzR5vdT/khMMa4aLl8enLe9ClGdmQ=
-X-Gm-Gg: AR+sD129kpNVba3sMSnh0RAcM0V0WD5RdoUCigsTHr0p3jn4IDXO//KNYojRAU6iDEp
-	1lub+SXytONgm+12dI4NWS2as5kyHN2uQtf8lSsT6qO+RMNah4WnvH9hE8VpMNvH1U4EQ30V37z
-	FS6yYO3tkc1Gd8P0zWRNT6kecouEAsGIoZbkglptC9HhM8PV53h7fFKj99jZW/JUzHz9BgtcTHo
-	XfrwDj9f9Woswzavi+Jj+nfKxDKMrssxI7oLs3H9eB0JHdCcyfcMvPB/2T0W8RjODhTzgk4dkFi
-	cpjtcNxXr/h399XAY68X5ze36MxYlYlBak6IfMPD2Q==
-X-Received: by 2002:a05:6214:dc5:b0:8e7:8d53:2417 with SMTP id
- 6a1803df08f44-90c5eac9942mr52592116d6.27.1787154963571; Wed, 19 Aug 2026
- 08:56:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KhVNfSGg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37C31F000E9;
+	Wed, 19 Aug 2026 15:57:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787155029;
+	bh=hsBZBMt20iy4q7D/b4V4nh6Zij4DqaFaa78JPWPYzaw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KhVNfSGgTXL7ZLYawnS7iDXjxrawmZ6GL8auCNxTaTQr3uN9aWWQ+GS8Wz7cvMOGQ
+	 /H8NRDJFZ3Kyrh1LyUhPqTUy3ugb8Bw2r2SUXlX9JSSPodrGgkwLzozbJzA7RrxUsS
+	 WHQPcN623W3ZSw5C5CYPkK9NXvvkzA+DFGE3cBUa5AZIIhxWEsYkZ8Cnr0HJ6ZA5yv
+	 /4bxsR5vJskQXYRdqryU2Mrsvqw2cYPgkXBlzVHNgwesOvEy1FXrdmk0l8dtbe8HaI
+	 ePCzg3YIjVzkkcGhJ0w3MYGISXlXhYAf999lkqalIVrQZELPhTtIhci0OEFSgpBvHd
+	 BcpBRdWgY6Yqw==
+Date: Wed, 19 Aug 2026 16:57:03 +0100
+From: Simon Horman <horms@kernel.org>
+To: Victor Nogueira <victor@mojatatu.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, jhs@mojatatu.com, jiri@resnulli.us,
+	daniel@iogearbox.net, john.fastabend@gmail.com, sdf@fomichev.me,
+	martin.lau@linux.dev, ast@kernel.org, andrii@kernel.org,
+	eddyz87@gmail.com, memxor@gmail.com, song@kernel.org,
+	jolsa@kernel.org, emil@etsalapatis.com, vega@nebusec.ai,
+	netdev@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [PATCH net v2] net/sched: add get_fill_size callbacks for
+ actions missing them
+Message-ID: <20260819155703.GV265046@horms.kernel.org>
+References: <20260816201327.2435335-1-victor@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260813083536.970196-1-ansuelsmth@gmail.com> <20260817134727.1f76d6dd@kernel.org>
- <6a8376ef.be1895d6.92f57.c9dd@mx.google.com>
-In-Reply-To: <6a8376ef.be1895d6.92f57.c9dd@mx.google.com>
-From: "Christian Marangi (Ansuel)" <ansuelsmth@gmail.com>
-Date: Wed, 19 Aug 2026 17:55:51 +0200
-X-Gm-Features: AcwNN1WR7Zj_IFCR5YdVpGhfxkJspgU8SJdxW5GIgyyCDjlcNc7jn8kiW6V-vUc
-Message-ID: <CA+_ehUyRKtuCtak5XD_1LUMEmLTn4JfeSDapsAEwo304uxyVqA@mail.gmail.com>
-Subject: Re: [PATCH v14 00/12] net: pcs: Introduce support for fwnode PCS
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
-	llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260816201327.2435335-1-victor@mojatatu.com>
 
-Il giorno lun 17 ago 2026 alle ore 23:02 Christian Marangi
-<ansuelsmth@gmail.com> ha scritto:
->
-> On Mon, Aug 17, 2026 at 01:47:27PM -0700, Jakub Kicinski wrote:
-> > On Thu, 13 Aug 2026 10:35:05 +0200 Christian Marangi wrote:
-> > > This series introduce a most awaited feature that is correctly
-> > > provide PCS with fwnode without having to use specific export symbol
-> > > and additional handling of PCS in phylink.
-> > >
-> > > At times there were 2 different implementation (this and the one
-> > > from Sean) but Sean agreed that this can be picked and used in favor
-> > > of his implementation as long as his case with race condition is
-> > > correctly handled.
-> >
-> > Coccicheck says:
-> >
-> >   drivers/net/phy/phylink.c:1039:31-34:
-> >     ERROR: invalid reference to the index variable of the iterator on line 1028
-> >
-> >   drivers/net/phy/phylink.c:1364:26-29:
-> >     ERROR: invalid reference to the index variable of the iterator on line 1346
-> >
-> >   drivers/net/phy/phylink.c:582:7-10:
-> >     ERROR: invalid reference to the index variable of the iterator on line 569
-> >
-> > I vaguely recall that you're supposed to make a copy of the pointer,
-> > not just add a "found" boolean. Dunno if it ever happened but Linus
-> > was trying to make the list iterators override the pointer on exit.
->
-> Oh! I wasn't aware of this intention... I have seen lots of pattern where
-> the last value of the iterator was directly used (if detected valid)
->
-> It's and easy fix... I can send a new revision right away if you want,
-> I'm already on it fixing this in the meantime.
->
+On Sun, Aug 16, 2026 at 05:13:27PM -0300, Victor Nogueira wrote:
+> Several tc actions - act_police, act_bpf, act_pedit, act_ife, act_sample,
+> act_ct, act_ctinfo and act_tunnel_key among them - provide no
+> get_fill_size() callback, so tcf_action_fill_size() falls back to
+> tcf_action_shared_attrs_size() which does not account for the
+> action-specific netlink attributes emitted inside TCA_ACT_OPTIONS by
+> their dump functions.
+> 
+> When an RTM_NEWACTION request with NLM_F_ECHO (or an RTNLGRP_TC
+> listener) creates several actions, tcf_add_notify_msg() allocates the
+> echo skb from this underestimated size. When this happens, the act_api
+> code fails to add all of the fields to the netlink message and, thus,
+> fails to send it. Issue is that, when that happens, this failure doesn't
+> stop the action instances from being added. So any user watching these
+> events will be under the false impression that no actions were created at
+> all.
+> 
+> For example, act_pedit overruns with 32 actions of four munge keys each,
+> act_police with 32 policers once the optional rate/peakrate/result/avrate
+> attributes are present.
+> 
+> To fix this, add the missing get_fill_size callbacks returning the
+> worst-case size of each action's dump attributes, following the pattern
+> used by act_gact/act_skbedit/act_vlan. Also widen the TCA_GACT_TM
+> accounting in tcf_action_shared_attrs_size() to nla_total_size_64bit(),
+> since actions dump their tcf_t with nla_put_64bit(), which may be
+> preceded by an NLA_PAD attribute.
+> 
+> Note: We only provided fixes for the actions we reproduced this bug with
+> as of today. We can send a separate hardening patch for the remaining
+> actions to net-next later. The other pre-existing issues, pointed out by
+> Clashiko [1], will be fixed in upcoming patches.
+> 
+> [1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260810164357.1653956-1-victor%40mojatatu.com
+> 
+> Fixes: 4e76e75d6aba ("net sched actions: calculate add/delete event message size")
+> Reported-by: Vega <vega@nebusec.ai>
+> Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+> ---
+> v1 -> v2:
+> - Use tcf_lock when accessing shared bpf action fields
+> - Improve commit message clarifying what the bug actually affects - Jakub
+> - Make it explicit that the list of actions missing get_fill_size() is
+>   not exhaustive
 
-Sooo should I post a v15 with the fix? It would be great to have this for 7.3.
+Reviewed-by: Simon Horman <horms@kernel.org>
+
