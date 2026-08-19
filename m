@@ -1,400 +1,142 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BF443C7DF
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 10:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF9EB29B776;
+	Wed, 19 Aug 2026 10:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787134632; cv=none; b=VVvWz7shqMonXvRdVh/WHR/rnJ6QW8VkF8o+2Uq5Q4zedd78SXRrE1bETlm5nPo49Tcx4QqUyv3kNH3ec6i/MgAQpSphZDswosue8ZxKCtpHHOg4B6IkFAIHqa8C7MF2q8bLmw3faiYDMTjRZEuduYuNk9LBg+Y7lDBHfU2/MVU=
+	t=1787134944; cv=none; b=N0ao5Je/vVFDembhkOEAwmllDq2U1tOaAQHOhNEYyqsZERAt1JUREWhR4K5TlISbnXJ0pgZxAn4OsEOLrSs+wegBda03PJLs7+FZiyGr+Q25JpRwC+FNaLg/QAo7VoS5i7wKcjKIWTshUp5G7zNis8OaLu8ba3SzLRJXQlKVYFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787134632; c=relaxed/simple;
-	bh=3effZKiDSJIye1lEvXY1P332jobTmMrteuB679fN1Xs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fiXzJT2vEAfI4MeIvFWLAQh2ZynlcuBnTRF31Oie35dwz9SEDPJ52i9EHM90CQI8WTqnc5WyLbwWm5EABfltQa79+fb/8SJtRAjQFs10MxxsMhhilRHg/K0M0hZfU+wA3gCA1Txdvfco8TQdMV78YN39e9OV5C5pYY1jWggDB8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N+f4sgh/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787134944; c=relaxed/simple;
+	bh=3SSlOy8BmzwUDYpYshZoqNIQUPjH5Sf5o7J9A2n3VOw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JxVUNdpY/n5zrSs5yekk+WZHyvhe/ncRNfdRYjr7RZrpG4mZw/OqQ+0mA+ua4TusKqWUPxdTl66CoZqlVIJMJjO2UwV6O1yHxwKSGl7PMUZSjusA5AkiZeGWZ8mvaA1o8Cpps0z+CUA17pnelxAL0w9pc6HGU92HBmnnLVsdEyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OKB0k6lL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N+f4sgh/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4CCD1F000E9;
-	Wed, 19 Aug 2026 10:17:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OKB0k6lL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C5171F000E9;
+	Wed, 19 Aug 2026 10:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787134630;
-	bh=2itk0bMMncgupsT/Ykv5J/VkOZtqbzkCYOdhHyOIlYI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=N+f4sgh/XqJvdz1a+kM4GyOYTtD8gUEvKqxdHRLNIVtDoK9FUD/i2D+XTsUM2ITSk
-	 5WYmsC30eyS7KjbaC30fpV7tNQtB8hx8BuD1yu/xdDJ9f+9BJPpLGHVHeGENC3FVDF
-	 gBEumhYtjD59UjYDpqc2FBGZ22Z/71inqGGEaakzKK85XYO9sQj3MYE/vizB62BwLU
-	 drvUQMeB7udF6tvnROpbfbrw+AwHk94kef/wSv6UYxUYONDLE6xPXHoG5XijdLahbE
-	 AMM26mMS+Uft22cR/8GB8EbSl2DU0f6bjDTVyHBqw77ePFki8vJ6YlKwgCCJpnNpmV
-	 rwDctCrWJ/0SQ==
-Date: Wed, 19 Aug 2026 11:17:06 +0100
-From: Simon Horman <horms@kernel.org>
-To: Maciek Machnikowski <maciek@machnikowski.net>
-Cc: netdev@vger.kernel.org, kuba@kernel.org, richardcochran@gmail.com,
-	milena.olech@intel.com, willemdebruijn.kernel@gmail.com,
-	andrew@lunn.ch, vadim.fedorenko@linux.dev
-Subject: Re: [PATCH v10 net-next 2/3] netdevsim: Implement basic ptp support
-Message-ID: <20260819101706.GP265046@horms.kernel.org>
-References: <20260815063148.2952-3-maciek@machnikowski.net>
- <20260818135800.629288-1-horms@kernel.org>
- <9b17f19d-9d6f-4301-b6a5-871cec042211@machnikowski.net>
+	s=k20260515; t=1787134942;
+	bh=xRAgWfvJ3FcOivqoE0OkBl00Ae4a9noe5/d6PPorNbE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=OKB0k6lLj8LHUXuRafEmN9Y6CM9/YkxO8QRuU1PuoupLUjmR0q9V7z7ke4n2OosLZ
+	 HiS7g1RiP2Lkf5fMgfRVOdvC3sNNagM2DrdiZVon3+PpkBMcPzU7WSDDNMz5VbI/Rh
+	 QH8QmKjQTpbvBxeWMk06gEccBdvj6TdEcnrrKBcIk/lpyvNPUAZJJ1aKpqM99GAT4G
+	 fOnb9wEyuVNhZPvcH+tOQlfSv38tWOaEdTi9dp5pNcCNZaiNuSQB4J8SBljQ69abuA
+	 3P+bg0bxBQeMb9XZ7VbFAdblpr48EEMAkIQbgoz/3vJSCp9V7dOBlIIKbDx+Gq2odZ
+	 1wrPzb3FGy3tg==
+Message-ID: <bf25121c-72cf-40a7-bbaf-5db85aee7f59@kernel.org>
+Date: Wed, 19 Aug 2026 12:22:18 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9b17f19d-9d6f-4301-b6a5-871cec042211@machnikowski.net>
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net] mptcp: fix use-after-free of the subflow context on
+ the delegated list
+Content-Language: fr
+To: Hyunwoo Kim <imv4bel@gmail.com>, martineau@kernel.org,
+ geliang@kernel.org, pabeni@redhat.com
+Cc: mptcp@lists.linux.dev, netdev@vger.kernel.org
+References: <aoWBrkNwebJe-koh@v4bel>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <aoWBrkNwebJe-koh@v4bel>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 19, 2026 at 12:03:33AM +0200, Maciek Machnikowski wrote:
+Hi Hyunwoo,
+
+On 19/08/2026 12:13, Hyunwoo Kim wrote:
+> mptcp_subflow_delegate() links the subflow context into a per-CPU napi
+> list and takes a reference on the subflow socket. The context is a
+> separate allocation, reached through icsk_ulp_data, and the list holds
+> no reference to it.
 > 
+> inet_csk_destroy_sock() runs sk_prot->destroy() regardless of the
+> outstanding references. That path ends in tcp_cleanup_ulp(), which calls
+> subflow_ulp_release(). subflow_ulp_release() frees the context with
+> kfree_rcu() but does not remove it from the list. Once the grace period
+> elapses and the context is actually freed, the next mptcp_napi_poll()
+> dequeues that entry and mptcp_subflow_delegated_next() writes to the
+> freed context with list_del_init(). That is the use-after-free.
 > 
-> On 18/08/2026 15:58, Simon Horman wrote:
-> > This is an AI-generated review of your patch. The human sending this
-> > email has considered the AI review valid, or at least plausible.
-> > Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260815063148.2952-1-maciek@machnikowski.net?part=2
-> > ---
-> > --- Patch [2]: [PATCH v10 net-next 2/3] netdevsim: Implement basic ptp support ---
-> > commit ef2b7171af287d8c3a8f5064008830a7dd8f4db3
-> > Author: Maciek Machnikowski <maciek@machnikowski.net>
-> > 
-> > netdevsim: Implement basic ptp support
-> > 
-> > Adds virtual hardware timestamping to netdevsim by reading the mock PHC
-> > attached to the transmitting netdevsim and to its peer, reporting a TX
-> > timestamp to the socket and stamping the forwarded skb for the RX side.
-> > Also wires up ndo_hwtstamp_get / ndo_hwtstamp_set and extends
-> > nsim_get_ts_info().
-> > 
-> > A few questions on the timestamping path below.
-> > 
-> >> diff --git a/drivers/net/netdevsim/ethtool.c b/drivers/net/netdevsim/ethtool.c
-> >> index 025ea79879f3a..24e7d5592e799 100644
-> >> --- a/drivers/net/netdevsim/ethtool.c
-> >> +++ b/drivers/net/netdevsim/ethtool.c
-> >> @@ -200,7 +200,22 @@ static int nsim_get_ts_info(struct net_device *dev,
-> >>  {
-> >>  	struct netdevsim *ns = netdev_priv(dev);
-> >>  
-> >> +	ethtool_op_get_ts_info(dev, info);
-> >> +	if (!ns->phc) {
-> >> +		info->phc_index = -1;
-> >> +		return 0;
-> >> +	}
-> >> +
-> > 
-> > [Severity: High]
-> > [Finding: main-1-1]
-> > [Sources: opus-5]
-> > This isn't a bug introduced by this patch, but the new !ns->phc guard looks
-> > like it silently fixes a NULL pointer dereference that exists today, without
-> > a mention in the changelog or a Fixes: tag.
-> > 
-> > Before this patch nsim_get_ts_info() did:
-> > 
-> > 	info->phc_index = mock_phc_index(ns->phc);
-> > 
-> > and nsim_ethtool_init() installs the shared nsim_ethtool_ops (including
-> > .get_ts_info = nsim_get_ts_info) on every netdevsim netdev, while only
-> > nsim_init_netdevsim() calls mock_phc_create().  nsim_init_netdevsim_vf()
-> > just assigns nsim_vf_netdev_ops and registers the netdev, so ns->phc stays
-> > NULL for VF netdevs.
-> > 
-> > With CONFIG_PTP_1588_CLOCK_MOCK=y, mock_phc_index() is the real function:
-> > 
-> > drivers/ptp/ptp_mock.c:mock_phc_index() {
-> > 	return ptp_clock_index(phc->clock);
-> > }
-> > 
-> > so ethtool -T on a netdevsim VF netdev dereferences NULL.  Would it make
-> > sense to split this guard into its own patch with a Fixes: tag so that
-> > stable tooling can pick it up?
-> > 
-> > Also, adding ethtool_op_get_ts_info() here changes ethtool -T output for all
-> > netdevsim devices by advertising SOF_TIMESTAMPING_TX_SOFTWARE,
-> > SOF_TIMESTAMPING_RX_SOFTWARE and SOF_TIMESTAMPING_SOFTWARE.  Could the
-> > changelog mention that behaviour change?
-> This patchset introduces this connection - not sure what would it fix?
-
-Thanks, I agree that seems to be a false positive.
-Sorry for not noticing that earlier.
-
-> >>  	info->phc_index = mock_phc_index(ns->phc);
-> >> +	if (info->phc_index < 0)
-> >> +		return 0;
-> >> +
-> >> +	info->so_timestamping |= SOF_TIMESTAMPING_TX_HARDWARE |
-> >> +				 SOF_TIMESTAMPING_RX_HARDWARE |
-> >> +				 SOF_TIMESTAMPING_RAW_HARDWARE;
-> >> +
-> >> +	info->tx_types = BIT(HWTSTAMP_TX_OFF) | BIT(HWTSTAMP_TX_ON);
-> >> +	info->rx_filters = BIT(HWTSTAMP_FILTER_NONE) | BIT(HWTSTAMP_FILTER_ALL);
-> >>  
-> >>  	return 0;
-> >>  }
-> >> diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
-> >> index 4e9d7e10b527e..e586fd8f3bc37 100644
-> >> --- a/drivers/net/netdevsim/netdev.c
-> >> +++ b/drivers/net/netdevsim/netdev.c
-> > 
-> > [ ... ]
-> > 
-> >> @@ -164,6 +171,44 @@ static netdev_tx_t nsim_start_xmit(struct sk_buff *skb, struct net_device *dev)
-> >>  		skb_linearize(skb);
-> >>  
-> >>  	skb_tx_timestamp(skb);
-> >> +
-> >> +	if (unlikely(READ_ONCE(peer_ns->tstamp_config.rx_filter) !=
-> >> +		     HWTSTAMP_FILTER_NONE))
-> >> +		ptp_info_rx = mock_phc_get_ptp_info(peer_ns->phc);
-> >> +
-> >> +	if (unlikely(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) &&
-> >> +	    READ_ONCE(ns->tstamp_config.tx_type) == HWTSTAMP_TX_ON)
-> >> +		ptp_info_tx = mock_phc_get_ptp_info(ns->phc);
-> >> +
-> >> +	if (unlikely(ptp_info_tx || ptp_info_rx)) {
-> >> +		/* Capture both timestamps closely */
-> >> +		if (ptp_info_tx)
-> >> +			ptp_info_tx->gettime64(ptp_info_tx, &tx_ts);
-> >> +		if (ptp_info_rx)
-> >> +			ptp_info_rx->gettime64(ptp_info_rx, &rx_ts);
-> >> +
-> >> +		/* If TX hardware timestamping is enabled report TX timestamp */
-> >> +		if (ptp_info_tx) {
-> >> +			shhwtstamps.hwtstamp = timespec64_to_ktime(tx_ts);
-> >> +			skb_tstamp_tx(skb_orig, &shhwtstamps);
-> >> +		}
-> > 
-> > [Severity: Medium]
-> > [Finding: gpt-5-6-sol-3-10]
-> > [Sources: gpt-5-6-sol, opus-5]
-> > Can a socket receive two SCM_TSTAMP_SND reports for the same packet here?
-> > 
-> > The hardware report is emitted after skb_tx_timestamp(), which already
-> > delivered the software one:
-> > 
-> > include/linux/skbuff.h:skb_tx_timestamp() {
-> > 	skb_clone_tx_timestamp(skb);
-> > 	if (skb_shinfo(skb)->tx_flags & (SKBTX_SW_TSTAMP | SKBTX_BPF))
-> > 		skb_tstamp_tx(skb, NULL);
-> > }
-> > 
-> > The only suppression of the software report lives in __skb_tstamp_tx():
-> > 
-> > net/core/skbuff.c:__skb_tstamp_tx() {
-> > 	if (!hwtstamps && !(tsflags & SOF_TIMESTAMPING_OPT_TX_SWHW) &&
-> > 	    skb_shinfo(orig_skb)->tx_flags & SKBTX_IN_PROGRESS)
-> > 		return;
-> > 
-> > netdevsim never sets SKBTX_IN_PROGRESS anywhere - the new code only tests
-> > SKBTX_HW_TSTAMP - so for a socket that enabled both
-> > SOF_TIMESTAMPING_TX_SOFTWARE and SOF_TIMESTAMPING_TX_HARDWARE without
-> > SOF_TIMESTAMPING_OPT_TX_SWHW both reports are delivered.
-> > 
-> > Would following the usual driver sequence work here, i.e. test
-> > SKBTX_HW_TSTAMP and set SKBTX_IN_PROGRESS before calling
-> > skb_tx_timestamp()?
-> > 
-> That protection is needed for the code that delays tstamp completion
-> into some "worker" that handles the timestamp returned by HW once the
-> packet was transmitted out. For a netdevsim we return the tx tstamp
-> immediately.
-
-Thanks, I think we cal let this one rest.
-
-> >> +
-> >> +		/* Unshare the skb, stamping it must not corrupt cloned copies
-> >> +		 * and prevents returning single tstamp for Tx and Rx
-> >> +		 */
-> >> +		skb = skb_unshare(skb_orig, GFP_ATOMIC);
-> >> +		if (unlikely(!skb)) {
-> >> +			if (psp_ext)
-> >> +				__skb_ext_put(psp_ext);
-> >> +			goto out_drop_cnt;
-> >> +		}
-> > 
-> > [Severity: Low]
-> > [Finding: main-3-8]
-> > [Sources: opus-5]
-> > Should this skb_unshare() be gated on ptp_info_rx?
-> > 
-> > The enclosing condition is ptp_info_tx || ptp_info_rx, but the only write
-> > into the skb below is guarded by if (ptp_info_rx).  On the TX-only path
-> > (peer rx_filter == HWTSTAMP_FILTER_NONE) every timestamped frame gets copied
-> > by skb_copy() for nothing, which also linearizes the buffer that the
-> > hds_config logic just above deliberately left non-linear, and does not carry
-> > queue_mapping.
-> > 
-> > If the GFP_ATOMIC copy then fails, the frame is dropped via out_drop_cnt
-> > even though nothing needed to be written into it, and after the TX
-> > timestamp was already handed to the socket by skb_tstamp_tx(skb_orig, ...).
-> > 
-> No - both paths requires skb_unshare. TX one needs it to unshare from
-> the stack for example - for TCP retransmittion and PSP
-
-Likewise, thanks. I see your point.
-
-> > [Severity: Low]
-> > [Finding: main-5-12]
-> > [Sources: opus-5]
-> > Does skb_unshare() cover the case this comment describes?
-> > 
-d
-> > 	might_sleep_if(gfpflags_allow_blocking(pri));
-> > 	if (skb_cloned(skb)) {
-> > 	...
-> > }
-> > 
-> > The copy is made only for clones, so an skb with skb->users > 1 and
-> > cloned == 0 is returned unchanged.  pktgen does
-> > refcount_add(burst, &pkt_dev->skb->users) and resubmits the same skb, so the
-> > skb_hwtstamps(skb) write below touches skb_shared_info that the other
-> > reference holder still owns, and that the peer's NAPI path may read
-> > concurrently after nsim_forward_skb() -> nsim_napi_rx() queues it on
-> > rq->skb_queue.  Should the driver check skb_shared() as well, or stamp a
-> > private copy?
-> > 
-> ??
-
-My understanding here is that it is possible for skbs to be shared without
-being clones. E.g. pktgen.
-
-And that as a software driver that simulates hardware timestamps
-(unique in the Kernel?) this needs to be taken into account by
-copying skbs that are either shared or cloned.
-
+> The freeing path cannot dequeue the entry itself: the list is per-CPU
+> and only the CPU that queued the subflow may touch it, as
+> tcp_release_cb_override() already notes.
 > 
-> >> +
-> >> +		/* If RX hardware timestamping is enabled report RX timestamp */
-> >> +		if (ptp_info_rx)
-> >> +			skb_hwtstamps(skb)->hwtstamp =
-> >> +				timespec64_to_ktime(rx_ts);
-> >> +	}
-> >> +
-> > 
-> > [Severity: Critical]
-> > [Finding: main-6-13]
-> > [Sources: opus-5]
-> > Can this write corrupt kernel memory for AF_XDP TX skbs?
-> > 
-> > skb_hwtstamps() returns a pointer into a union in skb_shared_info:
-> > 
-> > include/linux/skbuff.h:struct skb_shared_info {
-> > 	union {
-> > 		struct skb_shared_hwtstamps hwtstamps;
-> > 		struct xsk_tx_metadata_compl xsk_meta;
-> > 	};
-> > 
-> > struct xsk_tx_metadata_compl has a single member, u64 *tx_timestamp, and the
-> > AF_XDP destructor dereferences it with only a NULL check:
-> > 
-> > net/xdp/xsk.c:xsk_destruct_skb() {
-> > 	struct xsk_tx_metadata_compl *compl = &skb_shinfo(skb)->xsk_meta;
-> > 
-> > 	if (compl->tx_timestamp) {
-> > 		/* sw completion timestamp, not a real one */
-> > 		*compl->tx_timestamp = ktime_get_tai_fast_ns();
-> > 	}
-> > 
-> > Every generic-xmit AF_XDP skb carries that destructor
-> > (xsk_skb_init_misc() sets skb->destructor = xsk_destruct_skb), and it is
-> > freshly allocated and not cloned, so skb_unshare() above returns the same
-> > skb with the destructor and the overwritten shinfo intact.
-> > __dev_forward_skb() -> skb_scrub_packet() does not orphan the skb or reset
-> > skb_shinfo(), so the value survives to the destructor.
-> > 
-> > The RX branch is gated only on the peer's setting:
-> > 
-> > 	if (unlikely(READ_ONCE(peer_ns->tstamp_config.rx_filter) !=
-> > 		     HWTSTAMP_FILTER_NONE))
-> > 		ptp_info_rx = mock_phc_get_ptp_info(peer_ns->phc);
-> > 
-> > so any AF_XDP frame forwarded while the peer has RX timestamping enabled
-> > gets a non-NULL, PHC-derived value in xsk_meta.tx_timestamp, and the
-> > destructor performs an 8-byte write to that address.  The mock PHC value is
-> > settable from userspace through clock_settime() on /dev/ptpN via
-> > mock_phc_settime64().
-> > 
-> > Real NICs avoid this because they only stamp skbs they allocated for RX.
-> > Since netdevsim reuses the TX skb as the RX skb, should it orphan the skb
-> > (clearing skb->destructor) or stamp a private copy before touching
-> > skb_shinfo()->hwtstamps?
-> > 
-> Sounds like this should be addressed in the generic skb_scrub_packet in
-> the __dev_forward_skb path?
-
-My understanding is that would be outside the scope of skb_scrub_packet.
-And doing so would would break socket memory accounting and the AF_XDP
-completion signal.
-
-I think that this problem occurs because netdev sim both uses the same skbs
-for both RX and TX, and now modifies shared metadata. As this is an unusual
-(unique?) scenario, it seems reasonable to me for the driver to address the
-issue.
-
+> Delay the free instead. Add MPTCP_DELEGATE_DEAD.
+> mptcp_subflow_free_ctx() sets it and frees the context only if the
+> subflow is not scheduled, while mptcp_napi_poll() frees it if the dead
+> bit is set when it clears the scheduled bit. Either
+> mptcp_subflow_free_ctx() gets there first, sees the scheduled bit and
+> leaves the free to mptcp_napi_poll(), or mptcp_napi_poll() gets there
+> first, does not see the dead bit and mptcp_subflow_free_ctx() does the
+> free.
 > 
-> >>  	if (unlikely(nsim_forward_skb(dev, peer_dev,
-> >>  				      skb, rq, psp_ext) == NET_RX_DROP))
-> >>  		goto out_drop_cnt;
-> >> @@ -185,6 +230,63 @@ static netdev_tx_t nsim_start_xmit(struct sk_buff *skb, struct net_device *dev)
-> >>  	return NETDEV_TX_OK;
-> >>  }
-> >>  
-> >> +static int nsim_set_ts_config(struct net_device *netdev,
-> >> +			      struct kernel_hwtstamp_config *config,
-> >> +			      struct netlink_ext_ack *extack)
-> >> +{
-> >> +	struct netdevsim *ns = netdev_priv(netdev);
-> >> +	int rx_filter;
-> >> +
-> >> +	if (!ns->phc)
-> >> +		return -EOPNOTSUPP;
-> >> +
-> > 
-> > [ ... ]
-> > 
-> >> +static int nsim_get_ts_config(struct net_device *netdev,
-> >> +			      struct kernel_hwtstamp_config *config)
-> >> +{
-> >> +	struct netdevsim *ns = netdev_priv(netdev);
-> >> +
-> >> +	*config = ns->tstamp_config;
-> >> +	return 0;
-> >> +}
-> > 
-> > [Severity: Low]
-> > [Finding: gpt-5-6-sol-2-6]
-> > [Sources: gpt-5-6-sol, opus-5]
-> > Should nsim_get_ts_config() carry the same !ns->phc check as
-> > nsim_set_ts_config()?
-> > 
-> > drivers/net/Kconfig allows netdevsim without the mock clock:
-> > 
-> > 	depends on PTP_1588_CLOCK_MOCK || PTP_1588_CLOCK_MOCK=n
-> > 
-> > and with CONFIG_PTP_1588_CLOCK_MOCK=n the stub is used:
-> > 
-> > include/linux/ptp_mock.h {
-> > static inline struct mock_phc *mock_phc_create(struct device *dev)
-> > {
-> > 	return NULL;
-> > }
-> > 
-> > nsim_init_netdevsim() only rejects IS_ERR(), so ns->phc stays NULL.  In that
-> > configuration SIOCGHWTSTAMP succeeds and reports tx_type =
-> > HWTSTAMP_TX_OFF / rx_filter = HWTSTAMP_FILTER_NONE, i.e. "hardware
-> > timestamping present but disabled", while nsim_get_ts_info() reports
-> > phc_index = -1 with no hardware so_timestamping and every set attempt is
-> > rejected with -EOPNOTSUPP.  Other converted drivers keep the get/set pair
-> > symmetric here.
-> > 
-> > [ ... ]
-> We don't support setting, getting is always available - not sure what's
-> the hypothetical bug there
+> Also skip mptcp_subflow_process_delegated() once the dead bit is set.
+> subflow_ulp_release() has already dropped the msk reference by then, so
+> the pending actions must not run.
+> 
+> Finally, move delegated_status out of struct_group(reset).
+> mptcp_subflow_ctx_reset() clears that group on disconnect, and clearing
+> the scheduled bit while the entry is still queued would let
+> mptcp_subflow_free_ctx() free a context the napi list still points to.
+> delegated_node is already outside the group.
+Thank you for looking at this. Do you have more context about how the
+bug was discovered? Do you have a reproducer and/or a KASAN calltrace or
+similar?
 
-I don't think there is a bug here.
-Rather, I think it's a question about API symmetry.
+Having this would help the reviewers.
 
-It seems that drivers have some leeway on this one,
-so I think you can use your own best judgement.
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
+
