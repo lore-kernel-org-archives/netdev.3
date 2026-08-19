@@ -1,106 +1,150 @@
-Received: from us.padl.com (us.padl.com [216.154.215.154])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B376FB67E;
-	Wed, 19 Aug 2026 02:37:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26638391E73;
+	Wed, 19 Aug 2026 02:47:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787107027; cv=none; b=t50DVufOVmMzArYp+N+nzFB24Y9OZ3X/lQZ3pX7TaSnYI6Gr9pwl4xzlgh+2DEtS3aZE8vQ5pn1hDLn8Ed0HCWJtX3g2KoOTP4GUqzFhIh8TUOksKp7mxcVnUIGMN8jNXd7IsXRVjuNC0PzYw8nNKrnkvEJw9jz7vamUmoMNw9Q=
+	t=1787107641; cv=none; b=cL64lrR7QQmgXNostm7d3AEUy4aL4kPYdUr7d3/burSJxI1HYJkuTn50uPrnmCIRmBayE1FbVUR1aD5eO0J23i7MvrYadj8w5EFSLwa94JnXj3R07Gn7MTn9hIZ1/xfysMiYh8ptlw+kH7y7GUq/A+BfpZAC33al3o7/5KBZSa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787107027; c=relaxed/simple;
-	bh=ioSCGn1GCZxglUKDbJbOLvbfN0b5LKknO2fwCvzWSAQ=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=n20TTm3uuPCNe6ZWqXlHoSHWg0GxIyfANg1Ulh9uSHND6XHBxGr0xX0lhkCcUK7ZlWVPctQ6+BTwzDJRnLEbZKAuz7PgAqeYrSa0CxMcEJndNubepnajbSPTAfyOp+1UM3MyaZLCkM88f2I9Q/G4p+3+95m5VU60qpGUdCuKJWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=06EJIGyf; arc=none smtp.client-ip=216.154.215.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
+	s=arc-20240116; t=1787107641; c=relaxed/simple;
+	bh=2n0B2ShrboWrolM9pLGFUtF6UAwLxTuiwk/f4ckPX1g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fIlxfiGinZ7ZR7KcvoFC2CUa6exPttCCIhdpQ3p0ATJjljJmaSRlhmDcIwVSpVSP4SEF8vzgv+Fy/P6yY+Rxk1aYNmXDtjNXXu3aJEs4Du742T9+irOZ9d3ZwhIto5qAmPgzeQDqKI9eRxxfH75zxbh7Hl1SZflA1XlhFrgzFWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LhvQYh6O; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="06EJIGyf"
-Received: from smtpclient.apple (border.lukktone.com [139.130.100.52])
-	by us.padl.com (Postfix) with ESMTPSA id 948F360C21;
-	Tue, 18 Aug 2026 22:28:56 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
-	t=1787106540; bh=ioSCGn1GCZxglUKDbJbOLvbfN0b5LKknO2fwCvzWSAQ=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=06EJIGyfm2rECpSms+xu2NOEdBeOMuRiMbtzZbFlO7QAYzx2Pd+sLV2Z63vBkb2YG
-	 Mb+do4fIrtOlWLVj57ONCloxt/GceOlmvRfCWCOyyqT0ZWfNExbxPSBaGx3vjng+oe
-	 nwMpDA61QokYsNRqD2fIt58aEBGaw+I94dE8x6tALHFYRFO4L4OenSnYgEeGgCpKwV
-	 g7BnBn6RlRI3Fi5zip7Irr0w0TS+CqLYqSWYUwXMT3v3sApn8OujLwNcwSQt+pWQL+
-	 aktynMw9TAeW8EMyqywFp6XJjKbrIy576PIHjEYiISHSWfa/n/7QVjITsIuh8Xhp79
-	 aJ+MnLJEw9B4A==
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LhvQYh6O"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787107639; x=1818643639;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=2n0B2ShrboWrolM9pLGFUtF6UAwLxTuiwk/f4ckPX1g=;
+  b=LhvQYh6Od7QXbMeivOqG5YryklW0qrMvmmIHRVoobI73h7mxhW8nQ1NC
+   m2Q8GUbKTeBmAtP6rCfyAndNwdu1PrZAZ6be+h/pZutqmfhKNY7ijoifT
+   1TDN7v1yfCvXrh2KZn7ympmjqN0UBCUtRoAYSZLxAimFI543voCup0aei
+   xd7uWR9yySGHtYh2DqJwJ+LUXz6Y0+UX4qv+ct7l5XM5VLpOQM+nufCa7
+   /5lWJUB4EeZcgif390tJIl5MhgxjTGt9W+5cnyRILGKk5gcrqoXQayolQ
+   0oEZVZSTy6GT06a4lc4DHkwJkaiMQmdAeRiU+kzNnV3l0+r6aUFflXM6O
+   w==;
+X-CSE-ConnectionGUID: FbOs6HQ5TIuGz/+HK+1PcA==
+X-CSE-MsgGUID: pPyHs00FQgKZX4EN6efTgA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11879"; a="87465268"
+X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
+   d="scan'208";a="87465268"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 19:47:18 -0700
+X-CSE-ConnectionGUID: AsyAwLo6T/K4YDzWqmZszQ==
+X-CSE-MsgGUID: Zzmu/Hb7QUCXKS7WMmcujQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
+   d="scan'208";a="264974377"
+Received: from unknown (HELO brc05..) ([10.190.162.60])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 19:47:14 -0700
+From: Tushar Vyavahare <tushar.vyavahare@intel.com>
+To: netdev@vger.kernel.org,
+	magnus.karlsson@intel.com,
+	maciej.fijalkowski@intel.com,
+	stfomichev@gmail.com,
+	kernelxing@tencent.com,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	tirthendu.sarkar@intel.com,
+	tushar.vyavahare@intel.com,
+	andrii@kernel.org
+Cc: bpf@vger.kernel.org
+Subject: [PATCH net-next v3 0/4] selftests/xsk: improve shared-UMEM coverage
+Date: Wed, 19 Aug 2026 02:44:39 +0000
+Message-ID: <20260819024443.781764-1-tushar.vyavahare@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.8\))
-Subject: Re: [PATCH net-next v8 2/3] net: dsa: mv88e6xxx: use the hw tx queues
-From: Luke Howard <lukeh@padl.com>
-In-Reply-To: <20260818074508.26e626b4@kernel.org>
-Date: Wed, 19 Aug 2026 12:28:43 +1000
-Cc: Cedric Jehasse <cedric.jehasse@gmail.com>,
- Cedric Jehasse via B4 Relay <devnull+cedric.jehasse.luminex.be@kernel.org>,
- cedric.jehasse@luminex.be,
- Andrew Lunn <andrew@lunn.ch>,
- Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- Russell King <linux@armlinux.org.uk>,
- Jamal Hadi Salim <jhs@mojatatu.com>,
- Jiri Pirko <jiri@resnulli.us>,
- Vinicius Costa Gomes <vinicius.gomes@intel.com>,
- netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- =?utf-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <8649652E-63D7-476C-946B-D5A4E1D52A60@padl.com>
-References: <20260811-net-next-mv88e6xxx-cbs-v8-0-10d0baab2905@luminex.be>
- <20260811-net-next-mv88e6xxx-cbs-v8-2-10d0baab2905@luminex.be>
- <20260817105024.65be6d55@kernel.org>
- <hgrxt3hlj6i7rcg7jxgyxzrxw6knk2eqykpiq7lgpu3zshprqq@ranq77v7pxbv>
- <20260818074508.26e626b4@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-X-Mailer: Apple Mail (2.3826.700.81.1.8)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+AF_XDP shared-UMEM support in the existing XSK selftests is limited to
+a small set of scenarios, while the supporting setup and cleanup paths
+become fragile as coverage expands.
 
+This series improves shared-UMEM testing and infrastructure in four
+steps.
 
-> On 19 Aug 2026, at 12:45=E2=80=AFam, Jakub Kicinski <kuba@kernel.org> =
-wrote:
->=20
-> On Tue, 18 Aug 2026 10:59:35 +0200 Cedric Jehasse wrote:
->>> Pretending that a DSA device has multiple Tx queues _from the stack_
->>> makes no sense. You should be offloading PRIO as the root qdisc,
->>> like mlxsw does. Then the rate limiters should be attached as =
-children
->>> of PRIO. =20
->>=20
->> This patch follows what the implementation i found in other dsa =
-drivers.
->> mlxsw seems to be the only driver handling TC_SETUP_QDISC_PRIO.
->> Wouldn't that mean setting up cbs for a mv88e6xxx switch would use =
-different
->> tc commands than setting it up for another dsa switch (prio vs =
-mqprio)?
->> Is your comment specific to this driver, or for dsa drivers in =
-general?
->=20
-> Maybe Vladimir can comment why he picked mqprio. He probably explained
-> it to me and I forgot.
->=20
-> My mental model is that mqprio offload is for the host ("NIC", IOW =
-host
-> traffic egress). But if you're configuring a switch where most of the
-> traffic is internally forwarded within the ASIC. We should have a way
-> to report stats and offload status. There's no need to pretend we have
-> multiple host queues and waste memory.
+Patch 1 makes UMEM ownership explicit with refcounting and centralizes
+socket and UMEM teardown, keeping cleanup behavior consistent across
+normal completion and error paths. A UMEM that survives teardown now
+fails the test instead of leaking silently.
 
-MQPRIO can be implemented for mv88e6xxx, but it=E2=80=99s not a perfect =
-fit, which is why I withdrew the patch [1].
+Patch 2 prevents TX setup when RX socket configuration has already
+failed. This avoids shared-UMEM TX setup relying on incomplete RX-side
+socket and UMEM state.
 
-[1] =
-https://github.com/PADL/linux/commit/ecf7d2fe28d7a9459551dd28e96da06681446=
-604=
+Patch 3 expands XSKMAP and test capacity to four sockets and adds a
+length-based XDP steering program. The classifier uses total
+XDP-visible packet length (data_end - data) and SHARED_UMEM_LEN_SPLIT.
+
+Patch 4 adds the shared-UMEM callback runner and initial 4-socket,
+length-based steering, uneven-distribution, and unaligned-chunk test
+cases. The three packet-stream sequences share one transactional helper
+that stages replacement streams and publishes them into the socket
+arrays only after every allocation has succeeded.
+
+Together, these patches strengthen shared-UMEM setup and cleanup and
+extend selftest coverage to multi-socket and packet-distribution
+scenarios.
+
+v1 -> v2:
+- [1/4] Track per-slot UMEM ownership and centralize refcount-based
+  teardown. [sashiko]
+- [2/4] Publish RX failure before the setup barrier and skip TX setup
+  after a failed RX configuration. [BPF AI]
+- [3/4] Trim the length-classifier comment to match nearby BPF style.
+  [BPF AI]
+- [4/4] Clarify the partial stream replacement leak in the commit
+  message. [BPF AI]
+
+v2 -> v3:
+- [1/4] Keep one xsk_umem_info for shared-UMEM TX setup instead of
+  copying it; initialize only the non-owning TX buffer view. [sashiko]
+- [1/4] Propagate xsk_umem__delete() errors so the stack-allocated
+  zero-copy probe cannot lose deferred cleanup. [sashiko]
+- [1/4] Record UMEM deletion failures in test->fail; in-test teardown
+  cannot retry them. [sashiko]
+- [1/4] Collapse the redundant teardown helpers into a single loop.
+  [sashiko]
+- [4/4] Fold the previous 5/5 rollback-safe stream replacement into
+  this patch. [BPF AI]
+- [4/4] Factor the three stream sequences into pkt_stream_replace_seq(),
+  driven by a pkt_stream_dims_fn callback. [BPF AI]
+- [4/4] Drop the stream-readiness check and the uneven-distribution
+  hook; neither could fail. [sashiko]
+- [4/4] Drop the unreachable NULL-safe UMEM guards from the unaligned
+  test. [co-pilot]
+
+Co-developed-by: Magnus Karlsson <magnus.karlsson@intel.com>
+Signed-off-by: Magnus Karlsson <magnus.karlsson@intel.com>
+Signed-off-by: Tushar Vyavahare <tushar.vyavahare@intel.com>
+
+Tushar Vyavahare (4):
+  selftests/xsk: add UMEM users refcount and centralize socket teardown
+  selftests/xsk: skip TX setup after RX configuration failure
+  selftests/xsk: expand XSKMAP capacity and add length-based XDP program
+  selftests/xsk: add shared-UMEM callback framework and initial test
+    cases
+
+ .../selftests/bpf/prog_tests/test_xsk.c       | 340 +++++++++++++++---
+ .../selftests/bpf/prog_tests/test_xsk.h       |  27 +-
+ .../selftests/bpf/progs/xsk_xdp_progs.c       |  15 +-
+ tools/testing/selftests/bpf/xsk_xdp_common.h  |   3 +-
+ tools/testing/selftests/bpf/xskxceiver.c      |  40 +--
+ 5 files changed, 344 insertions(+), 81 deletions(-)
+
+-- 
+2.43.0
+
