@@ -1,35 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8175C22F767;
-	Wed, 19 Aug 2026 03:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A313C1D42;
+	Wed, 19 Aug 2026 03:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787109055; cv=none; b=i75HDtFN5z+/XZWrGvTQyTeUEL1tNmHWCnTPZ1/Y/y9QwKXgGo5hRJzzG8d/VcwLrEmSYvg2lN3S5ujJUcgQc+bIvtfPyz7MIhwxWEZgRljHnKJDbWJ7h6l9A3s64HF3h18JZsp2hGNPKUkztm/46PF4oLzsfI3WzqD5dA/5RGE=
+	t=1787110368; cv=none; b=LyKX0HInQrodgEGHVYLq7/CrYwoARA4H6410CzIlJc8kXM3p30sprCMzhYZdza2M5d1fqXC1qR3Ip3m5dcB1dQS73V/xxIc99RjYAo9oJJ1/M5jnSJi0pgQXh3DiQs/brjre5U+UWKQ8eDpeM46zEpArb2augO+g7rlGVuJ7Ppc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787109055; c=relaxed/simple;
-	bh=q+qNFr8WNRQhCEYcGxwhAoG6AxZI4yJV5uowv6vxHsk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=WD7fEvELIBFo9LCwV4dZxNdo/1eMLOw0AmeTcfMvvaTbsCEmC2vqsMa9L+0bZY/h7mNC7qTNylzzmItqyTBc7PgUwkNpzbeRh6p2L/Q73RVo9JV/uZXyKT9aWoX6F4aqOtwP2/uI/UdAAVcrlpY6/kSkqVRBfq5aCZXVOz9Kfvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VqHq2qew; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787110368; c=relaxed/simple;
+	bh=r1kiJWqSNxCtbj258NTVXEY09WGI1c+N+MH6Avj/Ovo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Uue/liDoeKh8sI8N6beIq5q2TNVKbv8LeGJ2dH9BUKUM+VM0M968DVMYBtFBVLC8rX4AEb6DuY8K6OeSlxyEj0azM69Tiow81eqxC+l9suI1lJ2NPAjE+9aLu15g/H4QU4DYdcPVe0HroAgxPRBKoUdU0aqUEmWFtgUo6vtoiTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B86NO73+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VqHq2qew"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 673FE1F000E9;
-	Wed, 19 Aug 2026 03:10:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B86NO73+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F5021F00A3D;
+	Wed, 19 Aug 2026 03:32:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787109054;
-	bh=4+k18eV6rqaDHf7L8yYWvs1oCR2gyuTUmm6qOq1AYio=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=VqHq2qewrsiwkRmlwevHc34ca1hRkE0Gfq7qHbdtUfj26dl5AligpFexxzwEL1Thr
-	 CgxOF9kfZluTsY8BRXZz5+eHpyEZt/+DnWsBFkbYsTml90wqfggYrrD9E4b8RwTyaE
-	 dG3KZwb7CUGrewA8705D9/KSQS8a4O4XVQfejERpBnugwsFHC7NmZ2chkM1mLiqo03
-	 NX2+sVXnWerAjzeXq5X+o9xwh0w/Gg7XuIvjr0SiMIB67XMqMFtBVntHH3rclSdr89
-	 lU53bJ+3gCZ4LcgFkGuGOO2tZ1QIzZ8kOygjuXOBweOr83neJ2xA3TDktlXfin2qEF
-	 ouwNeO3c7Ae3Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id E55E63927072;
-	Wed, 19 Aug 2026 03:10:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1787110367;
+	bh=qMZhJQ1b1KdtqXy3RBQjD6zbWLJZVodgX7F9Yn4Bpzw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=B86NO73+fUoDF3J6in9PHbkR/RkMrQt3iYHBTersOZ4DTfeL01+AXkSVTL2xSz2nn
+	 eLRSIbxGokE3ipXh9VxT639fUpZNS5XNUZ8lYH2prkdF1naKE737fI/0tnTgN4HqP6
+	 h8pa+ZdvemESku2gNluynV67hGdH4oYWQo8miUAKxbn36kbvMa87ZyGHdCpMOoc7rd
+	 oAG7QFyl4tS0zj56KnIF5P0br8Ae1dKk4G/lFBpb7tlF0/iMMBJYJROILNrkeSWMbA
+	 mfr/vQ7pJdwn4TlPujW8R6UDj3VpnR6sIanmVkV07eNm5We99Y5L4XeLSf1L5AccoT
+	 0OSrzK1gXmS6w==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	Tahera Fahimi <taherafahimi@linux.microsoft.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	netdev@vger.kernel.org
+Subject: Re: Backport xfrm race condition fix to stable kernel version 6.6.y
+Date: Tue, 18 Aug 2026 23:32:28 -0400
+Message-ID: <20260818220420.14@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260817221108.778584-2-taherafahimi@linux.microsoft.com>
+References: <20260817221108.778584-2-taherafahimi@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,53 +45,28 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v4] xsk: fix NULL pointer dereference in __xsk_rcv()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178710900561.2824559.3358618619338695557.git-patchwork-notify@kernel.org>
-Date: Wed, 19 Aug 2026 03:10:05 +0000
-References: <20260813215328.99311-1-blbllhy@gmail.com>
-In-Reply-To: <20260813215328.99311-1-blbllhy@gmail.com>
-To: Cen Zhang (Microsoft) <blbllhy@gmail.com>
-Cc: magnus.karlsson@intel.com, kerneljasonxing@gmail.com,
- maciej.fijalkowski@intel.com, sdf@fomichev.me, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
- AutonomousCodeSecurity@microsoft.com, tgopinath@linux.microsoft.com,
- kys@microsoft.com
 
-Hello:
+On Mon, Aug 17, 2026 at 03:10:09PM -0700, Tahera Fahimi wrote:
+> I am writing to request the backport of the following patch to stable kernel versions 6.6.y,
+> addressing CVE-2026-31516.
+>
+> Patch to Apply:
+>     Subject: xfrm: prevent policy_hthresh.work from racing with netns teardown
+>     Commit ID: 29fe3a61bcdce398ee3955101c39f89c01a8a77e
 
-This patch was applied to netdev/net.git (main)
-by David S. Miller <davem@davemloft.net>:
+This one is already in 7.1.y, 6.18.y and 6.12.y, but it can't be taken
+as-is on 6.6 and older: the line it adds calls disable_work_sync(), which
+only exists from v6.10 onwards, 86898fa6b8cd ("workqueue: Implement
+disable/enable for (delayed) work items"). The cherry-pick applies
+cleanly and then fails to build.
 
-On Thu, 13 Aug 2026 17:53:28 -0400 you wrote:
-> In the __xsk_rcv() multi-buffer path, xsk_buff_alloc() is called in a
-> loop without checking its return value. xsk_buff_can_alloc() only
-> counts fill queue entries without validating their addresses, so it
-> can succeed while xsk_buff_alloc() rejects all remaining entries and
-> returns NULL.
-> 
->   Oops: general protection fault, probably for non-canonical address
->    0xdffffc0000000000
->   KASAN: null-ptr-deref in range
->    [0x0000000000000000-0x0000000000000007]
->   RIP: 0010:__xsk_rcv+0x426/0xc20 (net/xdp/xsk.c:350)
->   Call Trace:
->    xsk_generic_rcv+0x26d/0x5f0
->    xdp_do_generic_redirect+0x3c5/0xcf0
->    do_xdp_generic+0x92f/0xe70
->    __netif_receive_skb_core.constprop.0+0xf7e/0x2b30
-> 
-> [...]
+Substituting cancel_work_sync() compiles, but it drops the re-queue
+prevention the commit exists to add, and I'd rather not make that
+substitution silently on a CVE fix.
 
-Here is the summary with links:
-  - [net,v4] xsk: fix NULL pointer dereference in __xsk_rcv()
-    https://git.kernel.org/netdev/net/c/73cee2bd5c96
+Could you send a tested backport for the pre-6.10 trees (6.6, 6.1, 5.15,
+5.10)? Netdev folks Cc'd in case they'd rather do it.
 
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Thanks,
+Sasha
