@@ -1,72 +1,72 @@
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5239B494819;
-	Wed, 19 Aug 2026 17:21:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5598C4908DF
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 17:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787160105; cv=none; b=TfbmTQkJTF76mvn288Ukq7xjlGQUFaLf7kSSbcQqixP0QR39SPfKaqx704Cew/6xiEBhtl8V11ELDRdGECOsTeVDn0jbo9BlmbKf5e8RUExrdd4ew+uMOsIjvew6etlWAIRk7+9CNy5+qA6fzlwD7RmFPOeOHZjFBap+cJV9mg4=
+	t=1787160112; cv=none; b=rX+7zzLzVxjJrKYncm/cu8K/oxbyl30oXcuTfjAxKuB9tCabjSuUs9b984QfcsWCjCEUJ6PyhUVhT2T/ta2oq/6srBztAFEfORF5NhYWwFiSSxVLIhdISyyJksfFeaROcz1L/eyGerrjJpjcSq0mVV3Fjn0qe8p4F9GKKSrBY24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787160105; c=relaxed/simple;
-	bh=SCr60vNLYRoscAoPPkstQELvgfOrFGNYS+uRrQZtJgE=;
+	s=arc-20240116; t=1787160112; c=relaxed/simple;
+	bh=bRO2wf8uxrlNerO74sU0UHAIUkBZsoNmIxzPuOgpmW8=;
 	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=OMYdJlZSzQI6+E2Bysv7f/iGSA2HctdIgucBVhH90iu2BS5/tZRGMQTWKZGs1nC+HUvqU6+92QaLLpJsTANuEV+SERtV2MLJZBflCMyh9h3FHGzKkDn/Kflu8DNb4DoK+MOVObWDp3ML6ELgADWpNxxk/fS814+3pzganMdxZ/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=i7Virrkj; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=B6cgfl4n; arc=none smtp.client-ip=103.168.172.148
+	 Subject:Content-Type; b=SZMz6aCnxLJ9nyOQeW0WKbWujnh4JOKxYjDXS3Tf1wJwKHIg0iS+i6eP0B3DwgxeKvcBAKvbYqciGWHM+KPMhhrUwzXLcAMa140WbvXd9j6l0LHu4eogY7OLTOWm6gFRsN2y3kxZB5+L9llJyJVAx2i9U3MTZC2ZU6hqskPcU3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=pOEHfqJf; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=AMV9jjc8; arc=none smtp.client-ip=103.168.172.156
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="i7Virrkj";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="B6cgfl4n"
+	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="pOEHfqJf";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="AMV9jjc8"
 Received: from ams-compute-01.internal (ams-compute-01.internal [10.64.2.61])
-	by mailfout.phl.internal (Postfix) with ESMTP id 02AB4EC01F5;
-	Wed, 19 Aug 2026 13:21:23 -0400 (EDT)
+	by mailfhigh.phl.internal (Postfix) with ESMTP id E3D051400023;
+	Wed, 19 Aug 2026 13:21:32 -0400 (EDT)
 Received: from ams-imap-19 ([10.64.2.39])
-  by ams-compute-01.internal (MEProxy); Wed, 19 Aug 2026 13:21:24 -0400
+  by ams-compute-01.internal (MEProxy); Wed, 19 Aug 2026 13:21:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1787160083;
-	 x=1787246483; bh=BphdidcoZ1arJQI+VYkSbMxVV2lMvAfgVQPxH+vma6g=; b=
-	i7VirrkjmhlpsDIzjwJVGSFcEZ+PvmJwBsCCknSQ0tHtT2vtohFg3k3n9tSw5a+Y
-	MJAL1RAC4hByU28AmVetu3OQIXSl1u8L25ycwQqfsZM0LW259H1gM6H4OQ+dJ++H
-	u66d3ptG34LaGHyiiCucpjqYhc2JhII2BENuyMOjMT4fgmA0lfus4iRey+Ysa2db
-	B4BZ+xgewnmNqmTc6UHiZj/df0a7birdBfwbQWxRUZzCPmkKiMjLb2RkkFTh/l5v
-	pcOPQwFyTH9DU273dEvoI+rvZKQa+lvhyqJMMskzLXfjvRX2eEI4ac/k+xbZNQbI
-	O/PU6oWMj/N5sk/maE93/Q==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1787160092;
+	 x=1787246492; bh=NWuWrL27Ujnb4PlaJ3Zg2i1p2RPqVQIf3bxkuMZPVEI=; b=
+	pOEHfqJfhdcXW7QC4t8/4aUgR9DSahqJyEgzSsEjZucbrZ7I6cVOQAOXRWF7Gh8o
+	W+/S2wQw71yFimU9yjo77Gnk3LGcNpYEusLeoDr6YMX7Yqh82nO/6P1qIksCkC4n
+	H3TxLHlo5Idetj6WPMIH+8DqP9yzexrcf4oi8qSdinGNK9HYkR6W0oyJl5ua+cqu
+	MUTcC7geyNoJFsgGmRF/mq6UNQ+YpiwYGZ5OyhdVKYZ+GSFpMLD/ywgIr6QJRFO1
+	Tdu5hx2F5pdrejOonroqErdqAHPkOYOJSEU/mXUML1AB3qGx14f3obGLJdOaJ8m3
+	fhXt7xjXLka8z3NL3+98Kg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787160083; x=
-	1787246483; bh=BphdidcoZ1arJQI+VYkSbMxVV2lMvAfgVQPxH+vma6g=; b=B
-	6cgfl4nGckDpEiq0FpOEvUi/OLZrUIYl6hga6Ut8B+H0Wqr88vcHmGtX7jygb7QL
-	XwzUI09BgspsOvESakF6TR19LTAyu7LSfwuIMCk/gN+QPTN0neN0InwFxDw4oUIn
-	HHo+9uQJtNoOG/DpS1DozaMkslw8dJ52FrOaR1ZhAfbQUM0a7kra7t0UAEnW6iFR
-	XIVva8HiaHxasNjz0A1X1BcitdSMNK3fl5jitPnWCGvmPMGbzFSIr5m4hWkpDb9z
-	/uOR5BZNVl1AfhNcgDdu1I/5HAeqsoQ7N122mh+btzCVsFsfBIayVtRxuBdGwU1v
-	dAu0X2F3nah1NZG6RR9jA==
-X-ME-Sender: <xms:EuaFapI1XBmG58Xh2WEp9woXfh5FJpihrj6Hi1nDVCf8MlY1NSEbiQ>
-    <xme:EuaFav_Oin4XJhHfNi9snuWwgI25g9gfP1TCg389sUEi7DN7B9ZOtczwc0brHlo-v
-    7afcl7lNdgXmo9aHtySmxxEkXlAFrIFlXwymaEeCJ0Enq4jxK9b3u9U>
-X-ME-Proxy-Cause: dmFkZTFHYCCjAx/fLI7ixT+SILyIdU4U/qq5bX/Mpi+jHfAcLWIeiFl+qrLGSYERvDGk0K
-    C2gkZzIydrECZoSxIfUhRyrs6lN+uWNBq3aLh2S8XjU4G+kMCn9mBzMdwfUEt5kKFjhPGo
-    TC/EooUrhSMY4fPF6+SX5jlVpvwbSung9ajMPL6CCvcuJx88dOxozYIEL4dRoNewbyvg3o
-    T5gRdgq0f2H5CqbEyv1PIB7RKFTz65h2Lzn9ijQJt+6kAMPc6fk3Pb9Kb+eTUVuTnOa55X
-    rPHh32Px4W7jtn1Ubhw1ipS9mtuQGl+yxGnH34RbK/krKmfCnYJiqQQajE1vadB6iQ4qPY
-    2tSOgryHugHkOFCJbTn9YHGT7kdC8jEuk0H8RWGzbcoh+k2Awo2zVCOSyfTpQJn0tmqkSM
-    J24vk5ox7UVMv18Y+KWn2Hs3z5QiGqjOSq+xHozG1lmW1O1bt5iYQ3pzzw1JnAZ1f90b1q
-    IGav6tILzhYeIV7fAB/P/mOv6pzk4iYRvvoZVrLYkSV/GEu5fWdaYr9o1I/QzTsBk9qL0M
-    8hHaEauJ82T2KatZ+MQZq4HDRZuHdXk4qJKuVaXBRF3OMN5CytF/Tz9/U4hGlND+lqMmwe
-    uHz5IotVNnvwyDSddnRslMNlcD5+GFqBAFZU96WbSHvU/bv9A36PwfDsGgdg
-X-ME-Proxy: <xmx:E-aFaj2WSakVEMD4Jm3hk1mLW2RCPpkMD2cL-CBJz66giDLmGfCaBQ>
-    <xmx:E-aFaoE9jnC7fZMSt3R6Ge2SkjF3BY2E2V4eVMzZYojcxlKpaGHwJw>
-    <xmx:E-aFaut-ftyEEdVwAwp7-BnN2L7lI-L3j8wtQT9rmDOskNlkfVh0uA>
-    <xmx:E-aFaro8-RSWPxscBixN_6phsRB60HDZ_B0f3BpnGgC9XQ63prShhQ>
-    <xmx:E-aFatA-KO7T_4sJuIW2dDEz68puRS1uRSkRY0NmsRfVDG7dsVOmwj6I>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787160092; x=
+	1787246492; bh=NWuWrL27Ujnb4PlaJ3Zg2i1p2RPqVQIf3bxkuMZPVEI=; b=A
+	MV9jjc8lKKRv2evCrguEF1mmq60JQBhndSw0hGXtkNLqNO5qR55ZvZTaq7uuP5Ei
+	navitHcEZsu1VWKEdkW5+teuaXYjrYJ7SwipGSlcjNC2MJ91RdkiYhtVEI/vAAQH
+	ljY2VwwY9jB4xJt2CFuVBv78mWkx26ryAbkXz57Jgn3g9w1OaA6JEkjnMCF0Ql4Y
+	kkzW1mPhRrz3SWEr7XTKuKcTwxta73cE37Vl+/55AkwVVftsbfvGa2ryIeVXFwFB
+	ho05sDhL5omsj4HqE3RGXG5dIwaB/mJq8A5zd3uy9+kQOsvsqInSh9d1wArbRtxZ
+	L3HvWmZn6Q8vQI61/90oA==
+X-ME-Sender: <xms:GeaFamsX6qGXHqSb365Us-T39cJUMqiKRYhQwehmDFaGwnntIdaFaA>
+    <xme:GeaFamTu6H3WUt48EHKCSKJkBK11CnXojgS2OqqNWORUBdVPi_CXByYMRO8WYjmqk
+    GjRUtzEEgto2odxMLCzK7cA58EAkAEHfrvUNS8X3T7tRR0FWjHfTKCr>
+X-ME-Proxy-Cause: dmFkZTEx4OOh6X74KAFSWA0bcX6tdJgX893NipoCnDN03Gho1i/V95rfPifnUr/ki9ObML
+    hM4bYwHEYR0DgUKidwJX+0tJ2eViKr5YbCqkUshBehlOlIXkbk8Z5F9NSI8/8vzMlwjUH+
+    m4kCvjsS8trLHL89Niu7OHFWXKrQUQUM7eo1hXv/T4Iqbe4JtgSiZa8e28dvjXEOiPCtdg
+    YL1mWN01t6+RxqTfrfwGZwlogNpG11IYEqWWj3EN8zcTSRTjABRMkEnRNrdAE4tcQlCI1a
+    qYEWnEn8B6fplLdrGLZ8VMQ8lqPK77REDO5z0MZnmcpRf2XGZxkbfuYlKHk6HXE22lD1Gc
+    wxT/0HOBhgiPNfLvkd62UbYdYdBAgNoBQgn3iY2KQiWMA25DVOY1HhS0ib1OmjAStn2rR0
+    uFrHAiAAvNatxv/knRQPa+qlTa3YHwcgC1H9+zcIqJxRUJGGuLKGu8FglWC5MOROlXEBvv
+    nsVOBSokk6vTtS7rQC+7+EafLGfWEEco4A9nFvwQZCZs8xUltfWQrLhGD3e9+FCGiQRWx9
+    paWzKQ798pKy/DxWV/H/o9lDwFZHvi04WxZ5AxyDRWTG0SLNLVIL6Pyai9rWtR8ZqgFwab
+    A66bxmquh6ZnOcjetHC7zOHv3s7ohvOqo1BUpQp2T1LHF4aIHks9wRj6AHxQ
+X-ME-Proxy: <xmx:GuaFaqomA8zgOJ5Wd3ulg5Av8es5ZbBHIH-JgnKax08_JMijDquiBQ>
+    <xmx:GuaFaoFWM94SfIES04QchDBCrVvwkoNTxP9hXxGWFHC_YbmsK0q9qA>
+    <xmx:GuaFagTAquzC9umI_PZoYhRIXvV3EKu630bG1WngIRXl-wPYzpt9uA>
+    <xmx:GuaFauPMkdyNXPbjLeO1djG3Cc-wMqyLKWYpc_X1BU8tnDyh90l-zw>
+    <xmx:HOaFakXMHP_Fc9xMMgUrbOvlFF5vl9ibyc5rQj35bVqddqR5OThYFwyS>
 Feedback-ID: i559e4809:Fastmail
 Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 7ACF82F81643; Wed, 19 Aug 2026 13:21:22 -0400 (EDT)
+	id 3C0B22F81644; Wed, 19 Aug 2026 13:21:29 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -74,51 +74,85 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: A1V9CAVVk0Ww
-Date: Wed, 19 Aug 2026 20:21:01 +0300
+X-ThreadId: A4bHHQqBWFxs
+Date: Wed, 19 Aug 2026 20:18:48 +0300
 From: "Alice Mikityanska" <alice.kernel@fastmail.im>
-To: "Matthieu Baerts" <matttbe@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
- "Jakub Kicinski" <kuba@kernel.org>
-Cc: "Eric Dumazet" <edumazet@google.com>,
- "David S. Miller" <davem@davemloft.net>, "Simon Horman" <horms@kernel.org>,
- "Shuah Khan" <shuah@kernel.org>, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, "Alice Mikityanska" <alice@isovalent.com>
-Message-Id: <de5dd3a9-9ebb-42fe-9007-499dde722d74@app.fastmail.com>
-In-Reply-To: <4a8f39cb-655d-42dd-b776-a272e5d34466@kernel.org>
-References: <20260814194124.3102581-1-alice.kernel@fastmail.im>
- <20260814194124.3102581-5-alice.kernel@fastmail.im>
- <4a8f39cb-655d-42dd-b776-a272e5d34466@kernel.org>
-Subject: Re: [PATCH net-next 4/4] selftests: net: Fix slow configurations in
- big_tcp_tunnels.sh
+To: "Paolo Abeni" <pabeni@redhat.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Eric Dumazet" <edumazet@google.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ "Jason Wang" <jasowangio@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ "Simon Horman" <horms@kernel.org>, "Xuan Zhuo" <xuanzhuo@linux.alibaba.com>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ "Jason Xing" <kerneljasonxing@gmail.com>,
+ "Kuniyuki Iwashima" <kuniyu@google.com>,
+ =?UTF-8?Q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@kernel.org>,
+ "Jiayuan Chen" <jiayuan.chen@linux.dev>, netdev@vger.kernel.org,
+ "Alice Mikityanska" <alice@isovalent.com>
+Message-Id: <d9005289-6997-4c0c-82e1-d13637645cf7@app.fastmail.com>
+In-Reply-To: <3419e66f-4c67-498b-b42b-30f2ad7bfe6a@redhat.com>
+References: <20260813174613.2920246-1-alice.kernel@fastmail.im>
+ <20260813174613.2920246-2-alice.kernel@fastmail.im>
+ <3419e66f-4c67-498b-b42b-30f2ad7bfe6a@redhat.com>
+Subject: Re: [PATCH net-next v2 1/2] net: Guard for gso_segs overflow in skb_segment
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 19, 2026, at 12:25, Matthieu Baerts wrote:
-> Hi Alice,
->
-> On 14/08/2026 21:41, Alice Mikityanska wrote:
+On Tue, Aug 18, 2026, at 16:38, Paolo Abeni wrote:
+> On 8/13/26 7:46 PM, Alice Mikityanska wrote:
 >> From: Alice Mikityanska <alice@isovalent.com>
 >> 
->> The combination of checksum offload disabled (that causes software GSO)
->> and CONFIG_DEBUG_NET=y is inherently slow. Depending on the CPU power
->> and load, RTT may increase, limiting sk_pacing_rate, so tcp_tso_autosize
->> caps SKBs at around 40 segments, and zero BIG TCP packets are produced.
+>> skb_segment calculates 32-bit partial_segs as len / gso_size, and then
+>> assigns it to the 16-bit gso_segs field. The division might overflow in
+>> some edge cases where the SKB is BIG TCP (65536 <= len <= 8*65535), and
+>> gso_size < TCP_MIN_GSO_SIZE = 8. While normally this can't happen due to
+>> TCP_MIN_GSO_SIZE, an AF_PACKET PACKET_VNET_HDR socket can generate such
+>> a malformed packet.
 >> 
->> Increase sysctl net.ipv4.tcp_min_tso_segs and set a bigger initial value
->> of CWND in these configurations to force BIG TCP.
-> Just an innocent question: would it affect the test somehow if the
-> sysctl and initial cwnd is always modified, not just for a specific config?
+>> Blocking malformed virtio_net packets is implemented in the next patch,
+>> but this patch clamps partial_segs in skb_segment itself for more
+>> generic robustness. Should len / gso_size happen to be bigger than
+>> 65535 in partial GSO, skb_segment will now just produce more than two
+>> output SKBs, all of which will be valid with gso_segs <= 65535.
+>
+> Minor nit: I think it would make sense to re-order the patches.
+>
+>> Signed-off-by: Alice Mikityanska <alice@isovalent.com>
+>> ---
+>>  net/core/skbuff.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>> 
+>> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+>> index c82a1472a5ea..439cbfeb02bd 100644
+>> --- a/net/core/skbuff.c
+>> +++ b/net/core/skbuff.c
+>> @@ -4860,7 +4860,7 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
+>>  		 * doesn't fit into an MSS sized block, so take care of that
+>>  		 * now.
+>>  		 */
+>> -		partial_segs = len / mss;
+>> +		partial_segs = min(len / mss, GSO_MAX_SEGS);
+>
+> Since on top of patch 2/2 the min() should always be a no-op,
 
-That would guarantee that BIG TCP kicks in, but IMO it reduces the
-coverage by not letting BIG TCP kick in naturally. I'd keep the defaults
-in fast tests.
+Not sure; it'll be a no-op in this specific virtio_net scenario, but
+what if there are more?
 
-> (Note that apart from looking at ${KSFT_MACHINE_SLOW} in patch 2, I
-> think the series looks good to me, and can probably be sent to net after
-> the merge with net-next.)
+> what about instead:
+>
+> 		if (WARN_ON_ONCE(len/mss > GSO_MAX_SEGS))
+> 			return ERR_PTR(-EINVAL);
 
-Thanks! I'll wait for the selftest to be merged to net and send the follow-
-ups there.
+Yeah, it looks like a good idea to add a WARN to let syzbot uncover more
+possible cases, but:
 
-> Cheers,
-> Matt
+1. I'd keep it non-failing rather than return an error: partial GSO can
+   deal with smaller segment size pretty well, no need to fail.
+
+2. I'd make it DEBUG_NET_WARN_ON_ONCE to avoid the penalty in
+   production.
+
+I can do that if it passes Eric's filter for too much code in fastpath.
+
+> ?
+>
+> /P
