@@ -1,124 +1,118 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE673DDDBC
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 08:35:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE2E331A66
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 08:35:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787128535; cv=none; b=VSx8YR93B5Lc4vvycmIoaHN+D9Zjj9HXRmhXOM/xF6OI48ZjGjCo3K6qApw1w2ELmEIUYxA941exWSUeYpVf7D0a7MKq+UutKoTd6FHodtPxXn8Rc71yGIuxn9N3VnHkPTOCuz25Uyu9c8keQ5VXI/qn9xNdJutqBzAe+81vSnw=
+	t=1787128561; cv=none; b=X6ayIqXIweaXw3jR3IuAYtmJ7X/+4SrWPlqvo4CXgWanzR77SNF0/5zGzoqbQIxEapwlfPkaxzDB6/v23UlHOQspvz15dEJoBJh2KM8JXH5BrTcdVTXjVN6AfhQObJpVtFeW46VZFK6OaJdPtSG+KItA0sjULl//lz3XgCLbRdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787128535; c=relaxed/simple;
-	bh=lpQQmxTDsK3Yh1ylUB1lp+y7xpJ0X5iJF2Sw0jOAwPo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X1wYaCH39/D1Anui3/U3anDMhzpCr6K/ixJmhmekZ+y+ksXRWBXlKav0dGKRnAthr79NurQjCi5p4SP5qm/Wtzyug2gAyTxqC2uBEfG1I95EcaGAfRtDMiPJ3IjU1T6QzkTE/4yAfOoZVX3ohbuMIdWUFcAe9KpuxLQccG/R67s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=VBnRgE9W; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	s=arc-20240116; t=1787128561; c=relaxed/simple;
+	bh=dS383OCW1Aroludg0MR17FGf+auCs1CSSLtinSaFfCU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=okyfyV5m5uXJG5YVDMjq5K2zJYhY9F227aqSGALEwzd5hwNDuQkMaoUuF0RYmbBcQBLXKKEeIn3Gexc6muf0Pt81Rh8v7XHaQz9Y1xVS2K59Z08m7qvz/y6HfffF3jcsUInQk9vmh7DGZD4YUu77S+NrDkz0uYqdkFoY/zJTE5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rqZ914SA; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="VBnRgE9W"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4953e04ef16so7718055e9.2
-        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 01:35:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rqZ914SA"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4996f1ee4a4so5724045e9.2
+        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 01:35:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1787128532; x=1787733332; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UaQjGKx5D7JBs1VdBUikHnCA2EKV7k9U1yTmwx36B/s=;
-        b=VBnRgE9WUwwCS+zYFN2dTfu6cVRVD4voKoaXCzU9sM/9v29vTSJcTryyhIjTeVMqt0
-         0Uflt0J+28M8GJHhERgCiJqdr1PP7MHu0i+RmwbnDhOLsk20htYq9ipr4PowUmNeMlno
-         ymITCrRPs4DTCixLlNbQBYDrhNGRi+Uj3d8Z/bi+c2tS4Bhn67Yk3PPgDK5a+1EpBgWF
-         LNoCh1pkRK5TWdxS1/k11EQUSLpGiz+4wEhLVqJ6dEvOLV1AzO0pvAay+IvXuwqt5Utz
-         CeBPqXDxby8VLPjnu8erhC4N1VGSdja0Fe/RwfA1VRZUIprL16EU51COivxh5hqBS/Sz
-         yr6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787128532; x=1787733332;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1787128558; x=1787733358; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=UaQjGKx5D7JBs1VdBUikHnCA2EKV7k9U1yTmwx36B/s=;
-        b=LKj56cqPkHq3NkCZyefb/7WszLjRp9WyuTF3ZOV6voXsHNi0Eh7md8RrxdqgLnspG9
-         tF8bBet0oXDmBQkplTJNzj0qMjjFLWexj6kP4GL+g56fKH7iumU84Nz22FyV1929xihf
-         DYWIN0fqy+jUDYVNn+m1nLs83WpBBAs1oAs+ENRZ8mQI9vW2XxFj9bZkOnSDpvajhwL5
-         SOKRtfbN/ls8H0crXKTkXmGOXwKq93doTOM9v4+2zcSVwmQjscme0AKwEEePob3Sg5WS
-         V9kmXwxEVFN5eztk5/GGNS4O/mwFkYtMN3UMLt6kM4FcK4B2p3j2CDtgzJM1qk2hnJ+H
-         9KDA==
-X-Forwarded-Encrypted: i=1; AHgh+Rrf8csbfz2ZFWsp1fSUdOwRBcF5L+oREw9CSytdPwZfRe9Q+JDJGg3uyNle40lo367wSw1axZs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjQMrRO3gTjkW0hRbJ04P6SOq3MSCqHA+DrW6hr2ry/6dlHrYQ
-	j0BL8jAWlQZJ8ma37Awt8zUjdE/lRSNPa/E5fvoyMJJliBURSukbeRe1Lkac/UOuZfA=
-X-Gm-Gg: AR+sD12dQP+RQZE2Ugh3z8vuyJKZDaKyEGYeMWuAknlzLy5z/wBYsUT8PU0KFd1eHiE
-	VxIjfukOHyhLI0NykjQWF32Xtd6eMg3WAdHcvuAJhFDpcgdQvusJQ3GM+4Fm57Op5MgrC2Pc6KX
-	Q1uJXSipVzLIsm7cFmpGLuzzVviLbfRlQH2wIpCXWCIgmcqG1X+Ygn9DOMKgGDiLRs4BFklof/W
-	1y9n0+K2VcLlg/XxF/UH6eG7cNxaEGBo8vUNLCteZrKYc4FjjYjBBlkKphKHFyOWAgQV9OUvfLm
-	v1xbEldrGFmfy+tw5xeYYJoTbxtMSesq9hp1SBmw2fW5orFFp+xSXxgPguGzLuufCsF13q/Tkp3
-	XRBONyslkoj9Bu+hGUB+uT22EpfJIXqyLx1L0uuBF9MJUZzc9/fipS7Ar59kSQRvHhzGRqQXpy0
-	v/iA2nvr2c1DY7+Dwqp/1vDwjxM70V/UAo0okXMsTaIcrpLeREq8as0NPUyqEfXUP70gIrVknrf
-	U4l6GprQf81x7N4ySc=
-X-Received: by 2002:a05:600c:6990:b0:499:900c:9c69 with SMTP id 5b1f17b1804b1-499aa1ba0acmr52580625e9.9.1787128532150;
-        Wed, 19 Aug 2026 01:35:32 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499aa0dd620sm40297395e9.13.2026.08.19.01.35.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Aug 2026 01:35:31 -0700 (PDT)
-Message-ID: <1ebd9c8a-5b7e-4ebb-9c7d-5b2b2fe4a675@blackwall.org>
-Date: Wed, 19 Aug 2026 11:35:29 +0300
+        bh=Jmfu7b6PffpBgbX6nxuZgDbreM6nRsmbmyFL2AjCNig=;
+        b=rqZ914SA60UhE5UYk4VSgbpTJIeC1KjOKoey6q1pRHNefu8FMFemicIg6NT2q+bJ/k
+         XfwG0VqxgUbd/S12PAhERBfnmB6LW1b5meM6f8QEuHi7vaDYL27YJ/D0d0R4xCvEvayf
+         zvZvMvrOsDiaDgMjQJFYNXKR1lXVr8TJ5l2QK2C2Ly3p/c7WH0mwkHEhfvQ54CFMsjEo
+         aK18HParY8FG6r9+alFYOypSiS3kWV5Jp9dbtjXsx10J8KbeWDWda88liWPM6BgAuvSF
+         oKSDrn0UwOCtBKut8NhTevUXbVAGx1X0mPybc/fNkT03CJpNZQKlRabXXVgs9KIVL+8s
+         b8sQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787128558; x=1787733358;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Jmfu7b6PffpBgbX6nxuZgDbreM6nRsmbmyFL2AjCNig=;
+        b=MAWb0b7m13uysby3PNuJ63wan7CV6FadmcTZoPp/mJlhTwOj4azu6TzF3TzHQx26VI
+         lklbBnegm17rgeJYGUf4znvxcQaLgveVXmJsZaPH21CrLGDlj7sHpwRsZF0dwwYcR2Hp
+         Ht4C8h+GvUXSt0Aaf6sbzlFHcuRocXIEFo120T32o/x9I4neHm/Y/vK99QWZ1g0RgBtV
+         VPoFWr3KldeEjACCiEkMRAUyNNq6M8jdznPEu0rl5aWnO9gjTreh8lRIedCcNho792uV
+         TqL+Gz53+XPGI0ryiO70xQl0UcYuOk0NIAj7fQQ5jdlv4yShzGkchoGOQJ2mX1xh68Ki
+         gIoQ==
+X-Gm-Message-State: AOJu0YyNBjCoLnjfq2mqBY+Hzu5u/HTVK/B8VCclv+MMNalo4Lx1Lby9
+	oCmKzU7a2AjUaD1sKh+afl5dnPWWlKpGT5+f2Ou7NuvyFFt1G0Zprsrqp5ahNw==
+X-Gm-Gg: AR+sD12yYDqYkhlLIxgR3bzAMw9h8y8ljydS1g6/SbAGySiHwnQKG6AYyBtzCMxQhiN
+	6rZC4kQiPM2X0b1AldrwMBJKfSmTgZw7lUBNatSrruwLUjK419mlrbyAxUNki2mFsvHmqHFjkrK
+	S9/lkfDLibLrVy2KEzIEhh5zAhl5YdBNUXblqyhH8Dtckk5DQZwg/OTe52rE1IdRx8acEvDBfL2
+	vd+mwr41re2MWZ8iTKpg5sL6486bAfRUlQH0vTmRxLncH1aDKmEdvXFMxYofBXmc4JCIG1fqaqu
+	ec4oDnXMXRXlAdOBjKz1xQLlb4++mQwlTuXLAvNRFvP8svYJWOHy1h/Mu7ZRK/xv9PCky3yI8Fu
+	J+dBFEe5EF5VwA0nJ3hq08zm7mvgSCLN8741bT2OuZJybVdSHirFlwKu5rIa30Zn4d1xU6DdKl+
+	63kmj6Ylm4CmmmmAqVYPhtcUNg7wVlD/Tjfnr9Zz1UVMlYxmf/q2TOeTlnP8P/KNMHosVm
+X-Received: by 2002:a05:600c:3f12:b0:499:7a4f:d13d with SMTP id 5b1f17b1804b1-499aa199777mr50672285e9.4.1787128557716;
+        Wed, 19 Aug 2026 01:35:57 -0700 (PDT)
+Received: from SurHub.localdomain ([196.188.112.82])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499a9e09e87sm29215205e9.4.2026.08.19.01.35.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Aug 2026 01:35:56 -0700 (PDT)
+From: Abdifatah Suruur <suruurism@gmail.com>
+To: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	quic_subashab@quicinc.com,
+	quic_stranche@quicinc.com,
+	doruk@0sec.ai,
+	kuba@kernel.org
+Subject: [PATCH net v2] net: qualcomm: rmnet: require CAP_NET_ADMIN in the real device netns for changelink
+Date: Wed, 19 Aug 2026 11:35:53 +0300
+Message-ID: <20260819083553.1134-1-suruurism@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260813174727.14857-1-suruurism@gmail.com>
+References: <20260813174727.14857-1-suruurism@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 2/2] bonding: fix u32 overflow in compute_gap()
-Content-Language: en-US, bg
-To: Hangbin Liu <hangbin.liu@linux.dev>
-Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
-References: <20260818-bond_overflow-v3-0-e05d4dbc2fd8@kylinos.cn>
- <20260818-bond_overflow-v3-2-e05d4dbc2fd8@kylinos.cn>
- <d75e0db1-e129-4a9f-a103-889827948de1@blackwall.org>
- <80d704a8-aca6-44f8-8933-eb0cf14ecf3b@blackwall.org>
- <bf56ea5d-a0d2-40f9-b8d5-73d8c54ca32b@blackwall.org>
- <aoUP0sLeEhCPxukB@fedora> <aoUQdublxcfZzqzE@fedora>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <aoUQdublxcfZzqzE@fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 19/08/2026 05:09, Hangbin Liu wrote:
-> On Wed, Aug 19, 2026 at 10:07:22AM +0800, Hangbin Liu wrote:
->>>>> ... this here, as u64_stats_update_begin doesn't provide exclusive access, so writers
->>>>> must do that themselves, so you can't be sure what value will end up, the zeroing
->>>>> might not work at all and can get overwritten
->>>>>
->>>>
->>>> I meant - it doesn't improve on the current situation where it can also happen. :)
->>
->> Ah, yes. I forgot this. The reset_unbalanced_load() could be called on any
->> CPU, which conflicts with other writers.
->>
->> I re-checked the code. unbalanced_load is only called in two situations:
->> 1. To rebalance the load in bond_alb_monitor(), which only executes once
->>     every 10 seconds.
->> 2. !tx_slave in bond_do_alb_xmit(), which is only for multicast/broadcast
->>     traffic. This traffic shouldn't be significant.
->>
->> So looks using spin_lock here is acceptable. What do you think?
-> 
-> I mean, drop the per-CPU design directly and use spin_lock to protect the data.
-> 
-> Hangbin
+A changelink() on an rmnet device mutates the rmnet port state attached
+to the real device (endpoint mux table, port->data_format and, via
+rmnet_vnd_update_dev_mtu(), the real device MTU).  The real device may
+live in a different netns than the rmnet device (rmnet_newlink()
+resolves it in link_net), but the rtnl path only checks CAP_NET_ADMIN
+against dev_net(dev).  A caller privileged only in the rmnet device's
+netns can therefore rewrite the shared cellular data-path state owned by
+another netns.
 
-hmm why don't you change the way the reset is done? *untested* but in theory
-you could just record the values at a reset "moment" in reset unbalanced and
-just use the delta, so it becomes a reader and there is only 1 writer left (tx).
-Keep the counters only increasing (important), only record a snapshot at a reset
-moment, count current total bytes (sum all per-cpu data), decrement the previous
-total from it and use that as the "interval bytes" to div.
+Gate rmnet_changelink() with rtnl_dev_link_net_capable(), matching the
+"require CAP_NET_ADMIN in the device netns for changelink" series
+(vxlan/geneve, CVE-2026-68432).
 
-Cheers,
-  Nik
+Fixes: 2abb5792387e ("net: qualcomm: rmnet: Allow configuration updates to existing devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdifatah Suruur <suruurism@gmail.com>
 
+---
+v2:
+- drop Reported-by: (implied for the author), per Jakub Kicinski
+
+--- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
++++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
+@@ -312,6 +312,14 @@
+ 	if (!rmnet_is_real_dev_registered(real_dev))
+ 		return -ENODEV;
+
++	/*
++	 * The rtnl path only checks CAP_NET_ADMIN against dev_net(dev),
++	 * but the port state mutated below is attached to real_dev, which
++	 * may live in a different netns.
++	 */
++	if (!rtnl_dev_link_net_capable(dev, dev_net(real_dev)))
++		return -EPERM;
++
+ 	port = rmnet_get_port_rtnl(real_dev);
+
+ 	if (data[IFLA_RMNET_MUX_ID]) {
