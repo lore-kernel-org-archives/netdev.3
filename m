@@ -1,105 +1,157 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-249.mta1.migadu.com [95.215.58.249])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B213CC315
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 07:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAEA73FCC
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 07:12:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787123456; cv=none; b=kqcdsDo+qNrCkuJ3RrMG74kYCJwGOxowr86UnoBO6/nEceM+K/LvikJGe+DSGZb19btuM8q3nM+JL47rfT2p0wVJ0y1mZ3Upu1lkAzlkLZC7+b3jgTDmnlkf2s4ftqr2MKTSPu+zt7CjhA5uWHoZRu+GMrQ0ugUPcr5USezLA0M=
+	t=1787123570; cv=none; b=FzaQpDfMcEAlmf3PtAEBzUIoRO/UKBo8w6hl0CU707qlTRhas/Apb1mfEWHN6KgjJiOLT+JgvRuifx9z6XD+f1EtOltg4yHrtVP3lmQPtKBb8aOHsAhJCl7Cc2pF6iE7gwHPjgX8ksa4YhRc4kSz/ZXoDi/VfeMW4kBnxknd024=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787123456; c=relaxed/simple;
-	bh=RxmIQU6g8Iu13P8fOdZWmxYGbHuU9kVWuL5SsXm0P8Y=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=Z/Oy5BH1aqvabxNIlv6MKw9tWbhwYI9mHEtfQNNKpyijBPOvqJqdOP5gmK+AjftBnD1oUV3VzK9kqngztl0BG1zw7GWIqFY8s9XqE9y1ZRH1k0LsMrbsmOgU+lxD65nDhb7rJxrjMS8+kTHTIRd7DSDzAf16nNEOO5gq+uME73U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=czM8p3dS; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1787123570; c=relaxed/simple;
+	bh=DMzbNbV8t3RU0pu2wPPItVvGom+rBFQGByx/Om+m5Gs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C8vtFWQyD8YPFBalF/Y6HlClqYpJHIlk3v9GVv27m0osUZ2h3fnVUgDwe4gef6tz+SmJBl6W22r+2i8wJ4kbdTl+XuiamScGXRh9ErSxAvKzqvec18XM9adR399/PQrYEqJ+/k6O62fneGlsWH3UNxF4V/9TQoY2dgE6AHWPcyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=gJYWOu/j; arc=none smtp.client-ip=95.215.58.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="czM8p3dS"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A376CA6A12;
-	Wed, 19 Aug 2026 09:10:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1787123443; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=FvlDuLp4El5NeP0h+eITHvZeljEjPUGSlpwZ/3k4/mI=;
-	b=czM8p3dST6xbQdAC8bfGwsVs5Tm5RjFYOTEz+KtlQIY7PA9O/ZqAffAjdO13ccqFXbZZ99
-	dqtW7wKgapFM4/82bpwE3OwELvbP6bebVQI4cyP7EdBB8f8ts59etoZWrSMn4/HxhJ7fAq
-	XjJTOwv3AlrG39XQhaMu4HLgb8Umo0QkUaqOGnhXgx1e+rRD628Q9jrMWmczHkc/OJhMu8
-	eC4OEK6DhXDM1bBukIHfec14LDlji8Wf4ns4mpUSalFCWire6tv/3HxSU3hTYvEyIXWGWP
-	B0AkHPwDQrKy0mKfFin2qs6EtPtdFtD3IDHHzdMRpaLnClanOAL/lDXPmelHmQ==
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="gJYWOu/j"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=DMzbNbV8t3RU0pu2wPPItVvGom+rBFQGByx/Om+m5Gs=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787123565; v=1; x=1787728365;
+ b=gJYWOu/jryoj0hE7BUHIC+0qsEdao+7pOMmaR7wWoo7NDLdbz9Qiu9X6MqhrOr8rrgyQknpW
+ kDsEzv3ZZQOBJ4Td9CEOeIkTNCFA/FMiH9lMX5QLSBiDEINkz3D4kvuh9UOXFzxN9m+9mS1ZayF
+ m8YnMtsABDMv0/29+clHq5gA=
+X-Envelope-To: netdev@vger.kernel.org
+Received: from fedora (203.175.12.241)
+	by smtp.migadu.com with ESMTPS id 867fa8b296f11ad7;
+	Wed, 19 Aug 2026 07:12:45 +0000
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 19 Aug 2026 15:12:32 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Jiacheng Xu <stitch@zju.edu.cn>
+Cc: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH] netdevsim: avoid NULL dereference after failed probe
+Message-ID: <aoVXYEDchDlsFG3i@fedora>
+References: <42315c2c.15f85.1a01853d723.Coremail.stitch@zju.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 19 Aug 2026 09:10:40 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Zhixing Chen <running910@gmail.com>
-Cc: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, Conor Dooley
- <conor.dooley@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S
- . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org
-Subject: Re: [PATCH net-next] net: macb: fix CONFIG_OF=n build
-In-Reply-To: <20260819040913.109367-1-running910@gmail.com>
-References: <20260819040913.109367-1-running910@gmail.com>
-Message-ID: <e84bc7b95374bbe76234bd56e819ba5b@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <42315c2c.15f85.1a01853d723.Coremail.stitch@zju.edu.cn>
 
-Hi Zhixing
+Hi Jiacheng,
 
-On 19.8.2026 06:09, Zhixing Chen wrote:
-> macb_alloc_tieoff() and macb_free_tieoff() are called from macb_probe()
-> and macb_remove(), which are built regardless of CONFIG_OF.
+On Wed, Aug 19, 2026 at 12:42:22PM +0800, Jiacheng Xu wrote:
+> device_register() reports whether device registration succeeded, not
+> whether the matching driver's probe succeeded. If nsim_drv_probe()
+> fails, the driver core leaves the nsim_bus_dev registered while the probe
+> error path clears its driver data.
 > 
-> The helpers were added inside the CONFIG_OF block, although the tieoff
-> descriptor handling does not depend on OF. This breaks CONFIG_OF=n 
-> builds
-> with implicit function declaration errors.
+> new_device_store() subsequently marks the nsim_bus_dev initialized. A
+> write to its new_port or del_port attribute therefore passes the init
+> check and calls nsim_drv_port_add() or nsim_drv_port_del() with no valid
+> nsim_dev. Both helpers pass the NULL driver data to priv_to_devlink(),
+> leading to a NULL pointer dereference. The triggering PoC is attached.
 > 
-> Move the helpers outside the CONFIG_OF block.
+> Serialize the driver data check and the port operation with the device
+> lock, and reject the operation with -ENODEV when no driver data is
+> present. This also prevents driver unbind from freeing nsim_dev between
+> the check and its use, and follows the locking used by sriov_numvfs.
 > 
-> Fixes: 5262eab9462a ("net: macb: allocate tieoff descriptor once across 
-> device lifetime")
-> Signed-off-by: Zhixing Chen <running910@gmail.com>
+> Fixes: 794b2c05ca1c ("netdevsim: extend device attrs to support port addition and deletion")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jiacheng Xu <stitch@zju.edu.cn>
 > ---
+> drivers/net/netdevsim/bus.c | 17 ++++++++++++++---
+> 1 file changed, 14 insertions(+), 3 deletions(-)
 > 
-> I hit this while building the latest net-next tree with my local 
-> config,
-> where CONFIG_MACB is enabled and CONFIG_OF is disabled.
+> diff --git a/drivers/net/netdevsim/bus.c b/drivers/net/netdevsim/bus.c
+> index 41483e371f05..0ab51306ad0a 100644
+> --- a/drivers/net/netdevsim/bus.c
+> +++ b/drivers/net/netdevsim/bus.c
+> @@ -93,8 +93,13 @@ new_port_store(struct device *dev, struct device_attribute *attr,
+>                 return -EINVAL;
+>         }
 > 
-> Since CONFIG_MACB does not depend on CONFIG_OF, macb_main.c still needs
-> to build in this configuration. However, macb_probe() and macb_remove()
-> are built while macb_alloc_tieoff() and macb_free_tieoff() are hidden
-> behind CONFIG_OF.
+> -       ret = nsim_drv_port_add(nsim_bus_dev, NSIM_DEV_PORT_TYPE_PF, port_index,
+> -                               addr_set ? eth_addr : NULL);
+> +       device_lock(dev);
+> +       if (!dev_get_drvdata(dev))
+> +               ret = -ENODEV;
+> +       else
+> +               ret = nsim_drv_port_add(nsim_bus_dev, NSIM_DEV_PORT_TYPE_PF,
+> +                                       port_index, addr_set ? eth_addr : NULL);
+> +       device_unlock(dev);
+>         return ret ? ret : count;
+>  }
 > 
-> Build error:
+> @@ -115,7 +120,13 @@ del_port_store(struct device *dev, struct device_attribute *attr,
+>         if (ret)
+>                 return ret;
 > 
-> drivers/net/ethernet/cadence/macb_main.c: In function 'macb_probe':
-> drivers/net/ethernet/cadence/macb_main.c:5951:15: error: implicit 
-> declaration of function 'macb_alloc_tieoff' 
-> [-Werror=implicit-function-declaration]
->  5951 |         err = macb_alloc_tieoff(bp);
-> drivers/net/ethernet/cadence/macb_main.c:5973:9: error: implicit 
-> declaration of function 'macb_free_tieoff' 
-> [-Werror=implicit-function-declaration]
->  5973 |         macb_free_tieoff(bp);
->   CC [M]  drivers/gpu/drm/i915/display/intel_qp_tables.o
+> -       ret = nsim_drv_port_del(nsim_bus_dev, NSIM_DEV_PORT_TYPE_PF, port_index);
+> +       device_lock(dev);
+> +       if (!dev_get_drvdata(dev))
+> +               ret = -ENODEV;
+> +       else
+> +               ret = nsim_drv_port_del(nsim_bus_dev, NSIM_DEV_PORT_TYPE_PF,
+> +                                       port_index);
+> +       device_unlock(dev);
+>         return ret ? ret : count;
+>  }
 > 
-> ---
+> --
+> 2.25.1
 
-Nathan sent the same patch a few hours earlier [1]. I will follow up 
-there.
+Thanks for your fixes.
 
-> [...]
+Please do not attache the reproducer as an attachment in patch file. You can
+describe it in commit description, cover letter, Or, add it as a selftest in
+tools/testing/selftests/drivers/net/netdevsim/.
 
-[1] 
-https://lore.kernel.org/netdev/20260818-macb-fix-no-of-build-v1-1-f2a009616384@kernel.org/
+BTW, please designate your patch to a tree, i.e. [PATCH net].
 
-Thanks,
-Nicolai
+Thanks
+Hangbin
+
+> #include <fcntl.h>
+> #include <stdio.h>
+> #include <stdlib.h>
+> #include <string.h>
+> #include <unistd.h>
+> 
+> static void write_attr(const char *path, const char *buf)
+> {
+>         int fd = open(path, O_WRONLY | O_CLOEXEC);
+>         ssize_t len;
+> 
+>         if (fd < 0) {
+>                 perror(path);
+>                 exit(EXIT_FAILURE);
+>         }
+>         len = write(fd, buf, strlen(buf));
+>         if (len < 0)
+>                 perror(path);
+>         close(fd);
+> }
+> 
+> int main(void)
+> {
+>         /* One port is enough; the excessive queue count makes probe fail. */
+>         write_attr("/sys/bus/netdevsim/new_device",
+>                    "1 1 2147483648");
+>         write_attr("/sys/bus/netdevsim/devices/netdevsim1/new_port",
+>                    "2");
+>         return 0;
+> }
+
