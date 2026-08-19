@@ -1,115 +1,242 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E6048C41C
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 16:59:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFF948D88E;
+	Wed, 19 Aug 2026 17:00:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787158775; cv=none; b=KISNCxQW4kJcq6ojFBF92fvyNUG7LaztxtvZjzeC6ZIPBRnmtAtU6EJ5wFuZ8wU+mH2Tg1tBXc9AhR7qy1NiOlWBFFyXTiOW95QehK3hqbMF4VNsEE1QiTlzonag3+Ycba0kkd6XIpNNNLjqTnqyIW38hsKCWlVszFviucL2lg0=
+	t=1787158804; cv=none; b=LxmOKu0zhTPRyTQOLqxNO96ns9dtfHzkJbEZJojBJ/yJOcM0iow4g8CBw47zSsdLKLxo1NakL2zT2jXxuNwYWreovpLmoB5ODdGAxjXpTbZMDqTh9pNtw0r2zbbYhg7GtoJnqV3k8msWVTtQ/GanbadgGVd1BokSwpjQvtzIExE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787158775; c=relaxed/simple;
-	bh=2XaBdkgJgruoXsAicUbM+D98FdFgxNckiG2SMl4ao5I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DmJ6nI1MUAmb9d/QcA2eRQXaejywj1Qu0Fux1x3W6BRfSFGVFMZ2e7YZNKON2KfFHvMqF/soxZEEDSXvYzlkNzYM+8Jg7PqUmDEC6spcah/opRaev5w1vHtN21ccmfyQMTV0WlXdCXFOKy1AcqAUcHzaTQeX5H4cnrEKuSJT8XA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=ZEhG+p1+; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
+	s=arc-20240116; t=1787158804; c=relaxed/simple;
+	bh=rRma67xnWdLThyCbVr5967PlO9v6CaBagls2mWkZ+Bo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lVcUtO3zwdFeVEbw4sy3UIWeHqRzid0ST0vXu8gF+M/5Gh575HGT/rqiIygJSkwWXsiL6WAPcT77j8ZnrENSzpsYRmauVvFyFLcdjjCzrsWhFF1Z1h62lcGz6tGCu5AZxH3YqBB7lWVZSPOx9IWry3FC0PuFwzt6guqIVqNg4Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hPrDS976; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="ZEhG+p1+"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-84f3ab8750cso1042572b3a.0
-        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 09:59:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=trailofbits.com; s=google; t=1787158771; x=1787763571; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lroOjWUQuzkzfsFV8jZnR6n9nf3kSNRY1PDaEZgo3rY=;
-        b=ZEhG+p1+JhbCtDFNGxIAUWYD5ca0Am1hyiyjKbYarH7pP8hPyMVKTTPtuJ9Onu1/eF
-         PvT5WLh2M5j5c0ymfbXVlgoXIQ0jVb2NWHArvDvt1QqwVllR/dD5WNl11HYl6v4cgW1E
-         kJzP9C6owIloPbytN0Bq5RnMH7g2pJLHVd1XzUmeE1PsYfwrVovA3p0pGAfFZ6sxEiIQ
-         A5OqUR5GzpTxfMFadIQtWl2mZX10VqOduxPgUL9kwj6OciZcG1COCEZHd+8ISKz2b3yR
-         yBn5floZcmPhUc8QC+y7/e+VI6w6WGVn6rQxi7ffzCjinq5YHCpoK+EFaOATTtteOVfX
-         vi8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787158771; x=1787763571;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lroOjWUQuzkzfsFV8jZnR6n9nf3kSNRY1PDaEZgo3rY=;
-        b=TWbQgfMLjzkg5JWrdhNTbnzbRD2wjqA54ahY7XjpdWXozCgpmWCpYWHGw9J5B5u/23
-         FuoWHZpur7+adjko9gfkdBGT0CWNLDeM+mv1rZB8BJqdMxM/8OBHRojJT5WeSfiXYe7J
-         FICLBj6XrNsHmkabXwxjluX45IYoJxjOs6UzDqCih/LY+Fxm9827jwfOJqdrqIBe7+DU
-         Qk5Q/AYiWKfyA50EK1boyS/MczYBoXUjSzPZ9HLv18HoIamXjxtkYOgakMPuiA3q72Pb
-         YnseGEuLfq+h1+SSpt+/hu8zWr+evm8HMwnDd4Uu4DkT9L2/VAzdWTE0TLqyblgAetT8
-         ljTQ==
-X-Forwarded-Encrypted: i=1; AHgh+RragpsZMhHtl442qsK66eniMLGavykEgvFw/vt/MrL8OObw4qEowRCJwSIHWeXiwlxl1fFf8xc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJLDZIWt8WdehlxL9yWzPyMFnI7KxQauXLv9ci/+Kbc2LBhWSy
-	R3LepiGEoH4o24k0kF3HqSr//O/btEK/H048epcwek8YgnF8XH7AFNghP8kE5ZEWJZI=
-X-Gm-Gg: AR+sD10ig3XSMUlbRhps1im3LQZv6dfQ/2yvzZMt5bMIsXtCH3FR4cQY+ry6sQwXyeK
-	fheSipOnGy8J9k2fVkkdy4ebmQ4cpdw0jwqpjf42XnaTP3S1mF13ZPU3LJN6hYJpS+v8ac0I8gO
-	5NxS0+QAX4/YzNyh03crIzw4HQw8dEhe1DcifQm6fAUAAfxm/NZsac2Cg749RK4o/5dpVbYdkLs
-	gqV68krVOCyUZmpusl9Wo3z1nUjknR1oOXlwPNa1sp1qt4b2x9ZXmVqulDwABcrttXSWmXFpBjl
-	dFF0PEPA0IM3qctFfciED9P1Qb6OlxHWLXBg0XKrQ6HNO/bBowOA6rdybFHoER9+9Y4XogS473C
-	GyqpzKEMs1oazFVJQzUGXZel+j1/uT7ZRdzx5/RC/IpPFZJlFs82r3OqlYeLecGGc6GJgQ7yyM0
-	mN1+wYQbnA4MrrwocWxvkpt6v1iv8RfRX/Rvz7k4ofo95wQ3Sym6/ARD6rNSsahDnaimKJxusrv
-	TmeY97Pn9EbzeWeb8ICtv4n23YQoPipp1lEySY5Gt3MxEoHCi3MCsLSgfcfvQ==
-X-Received: by 2002:a05:6a20:c90c:b0:3c3:812a:2198 with SMTP id adf61e73a8af0-3cd00e039fcmr12251148637.4.1787158770503;
-        Wed, 19 Aug 2026 09:59:30 -0700 (PDT)
-Received: from localhost.localdomain ([2603:8001:5f01:8bab:8d7e:6716:d5db:2855])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327bec30f49sm7687491eec.0.2026.08.19.09.59.29
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 19 Aug 2026 09:59:29 -0700 (PDT)
-From: Artem Dinaburg <artem@trailofbits.com>
-To: stable@vger.kernel.org
-Cc: Xiang Mei <xmei5@asu.edu>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Artem Dinaburg <artem@trailofbits.com>
-Subject: [PATCH 6.1.y] net: bonding: fix use-after-free in bond_xmit_broadcast()
-Date: Wed, 19 Aug 2026 12:59:22 -0400
-Message-ID: <20260819165924.1184-1-artem@trailofbits.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hPrDS976"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787158802; x=1818694802;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=rRma67xnWdLThyCbVr5967PlO9v6CaBagls2mWkZ+Bo=;
+  b=hPrDS976Se72J0zUAb6QRsqABnuYGuEDWVdmE2M3gwW/uNSDv/W2+AHx
+   KPcqBbWPVzwgcHtfRHqRas6zlTF31wkO1Meq4iKr4/1PFwXOHOEg/8EVy
+   UaUFaL1ZDJfZB1DqvfxYaXRM5BXdOOzPu5vicaTK0mvT/WuTulOPUPMAg
+   YmBxS8zZ/8FUHWf2+0XVVOFc3uNxIP0VSpLQUSDzI40m/9y6E7CVfasQ4
+   H5piDLzjoaaPV+DMgFLyDQ/wpChrJAabthnTAPJmLvCpv/rJNOlZ8doss
+   M5gFCwBoqFnxo4Nl2icNGdT64e1BkxjyDAt3LCNqAYRMnZkrQ+Fbzi77v
+   g==;
+X-CSE-ConnectionGUID: 03fZOGGQQb+CH14eSHIjSg==
+X-CSE-MsgGUID: ZIteJvNwRSS0FHUh4FozQA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="87706427"
+X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
+   d="scan'208";a="87706427"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 09:59:59 -0700
+X-CSE-ConnectionGUID: Ao6wb4t9Q6SJ2CQNVOkHLA==
+X-CSE-MsgGUID: pY6AMBrYSCm33GRy9uR3mA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
+   d="scan'208";a="303818942"
+Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.108.13]) ([10.125.108.13])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 09:59:58 -0700
+Message-ID: <fafc64b4-7fda-4a64-b3c1-480ae67a004a@intel.com>
+Date: Wed, 19 Aug 2026 09:59:56 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 3/4] NTB: ntb_transport: Add per-payload
+ client metadata
+To: Koichiro Den <den@valinux.co.jp>, Jon Mason <jdmason@kudzu.us>,
+ Allen Hubbe <allenbh@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: ntb@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260817064916.13278-1-den@valinux.co.jp>
+ <20260817064916.13278-4-den@valinux.co.jp>
+From: Dave Jiang <dave.jiang@intel.com>
+Content-Language: en-US
+In-Reply-To: <20260817064916.13278-4-den@valinux.co.jp>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Xiang Mei <xmei5@asu.edu>
 
-Please queue the attached backport of upstream commit 2884bf72fb8f. It fixes
-CVE-2026-31419 in 6.1.y.
 
-An unprivileged user can create a broadcast bond and dummy slaves in a user
-and network namespace. Racing ordinary packet sends with slave release makes
-`bond_xmit_broadcast()` give the same skb to two transmitters. I reproduced a
-KASAN use-after-free in `skb_clone()` on v6.1.182.
+On 8/16/26 11:49 PM, Koichiro Den wrote:
+> ntb_transport currently carries only payload bytes, with no way for clients
+> to associate metadata with an individual payload.
+> 
+> The payload header has a 32-bit flags field, with only BIT(0) and BIT(1) in
+> use. Carry opaque client metadata in the upper 24 bits. Expose it through
+> the transmit enqueue interface and receive callback. Reject values that do
+> not fit. Keep the low byte for transport flags so future flags can continue
+> from BIT(2).
+> 
+> No protocol version bump is needed. Existing Linux version 4 peers ignore
+> the upper bits on receive and always transmit them as zero.
+> 
+> Adapt ntb_netdev to the new interfaces without using metadata.
+> 
+> Signed-off-by: Koichiro Den <den@valinux.co.jp>
 
-The attached one-line upstream fix applies cleanly to v6.1.182. The same
-workload completed over one million sends and 299 slave mutations with the
-patched module and no sanitizer, oops, lock, or BUG output.
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 
-The fix is already released in 6.6.143, 6.12.95, 6.18.22, and 6.19.12, but no
-corresponding fix is present in 6.1.y.
 
-Signed-off-by: Artem Dinaburg <artem@trailofbits.com>
----
- drivers/net/bonding/bond_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 9898d85075d150..4370ba922b2cc2 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -5344,7 +5344,7 @@ static netdev_tx_t bond_xmit_broadcast(struct sk_buff *skb,
- 		if (!(bond_slave_is_up(slave) && slave->link == BOND_LINK_UP))
- 			continue;
- 
--		if (bond_is_last_slave(bond, slave)) {
-+		if (i + 1 == slaves_count) {
- 			skb2 = skb;
- 			skb_used = true;
- 		} else {
--- 
-2.39.5
+> ---
+> Changes in v2:
+>   - No changes.
+> 
+>  drivers/net/ntb_netdev.c      |  4 ++--
+>  drivers/ntb/ntb_transport.c   | 18 +++++++++++++-----
+>  include/linux/ntb_transport.h |  6 ++++--
+>  3 files changed, 19 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/net/ntb_netdev.c b/drivers/net/ntb_netdev.c
+> index 029a4a532a10..5c7fe6883cb9 100644
+> --- a/drivers/net/ntb_netdev.c
+> +++ b/drivers/net/ntb_netdev.c
+> @@ -123,7 +123,7 @@ static void ntb_netdev_event_handler(void *data, int link_is_up)
+>  }
+>  
+>  static void ntb_netdev_rx_handler(struct ntb_transport_qp *qp, void *qp_data,
+> -				  void *data, int len)
+> +				  void *data, int len, unsigned int meta)
+>  {
+>  	struct ntb_netdev_queue *q = qp_data;
+>  	struct ntb_netdev *dev = q->ntdev;
+> @@ -258,7 +258,7 @@ static netdev_tx_t ntb_netdev_start_xmit(struct sk_buff *skb,
+>  
+>  	ntb_netdev_maybe_stop_tx(ndev, q, tx_stop);
+>  
+> -	rc = ntb_transport_tx_enqueue(q->qp, skb, skb->data, skb->len);
+> +	rc = ntb_transport_tx_enqueue(q->qp, skb, skb->data, skb->len, 0);
+>  	if (rc)
+>  		goto err;
+>  
+> diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
+> index 967a5ad38164..70be06a42201 100644
+> --- a/drivers/ntb/ntb_transport.c
+> +++ b/drivers/ntb/ntb_transport.c
+> @@ -167,7 +167,7 @@ struct ntb_transport_qp {
+>  	unsigned int tx_max_frame;
+>  
+>  	void (*rx_handler)(struct ntb_transport_qp *qp, void *qp_data,
+> -			   void *data, int len);
+> +			   void *data, int len, unsigned int meta);
+>  	struct list_head rx_post_q;
+>  	struct list_head rx_pend_q;
+>  	struct list_head rx_free_q;
+> @@ -264,6 +264,10 @@ enum {
+>  	LINK_DOWN_FLAG = BIT(1),
+>  };
+>  
+> +/* Reserve the low byte for transport flags. */
+> +#define DESC_META_SHIFT		8
+> +#define DESC_META_MASK		(~0U << DESC_META_SHIFT)
+> +
+>  struct ntb_payload_header {
+>  	__le32 ver;
+>  	__le32 len;
+> @@ -1436,6 +1440,7 @@ static void ntb_complete_rxc(struct ntb_transport_qp *qp)
+>  	struct ntb_queue_entry *entry;
+>  	void *cb_data;
+>  	unsigned int len;
+> +	unsigned int meta;
+>  	unsigned long irqflags;
+>  
+>  	spin_lock_irqsave(&qp->ntb_rx_q_lock, irqflags);
+> @@ -1451,13 +1456,14 @@ static void ntb_complete_rxc(struct ntb_transport_qp *qp)
+>  
+>  		cb_data = entry->cb_data;
+>  		len = entry->len;
+> +		meta = entry->flags >> DESC_META_SHIFT;
+>  
+>  		list_move_tail(&entry->entry, &qp->rx_free_q);
+>  
+>  		spin_unlock_irqrestore(&qp->ntb_rx_q_lock, irqflags);
+>  
+>  		if (qp->rx_handler && qp->client_ready)
+> -			qp->rx_handler(qp, qp->cb_data, cb_data, len);
+> +			qp->rx_handler(qp, qp->cb_data, cb_data, len, meta);
+>  
+>  		spin_lock_irqsave(&qp->ntb_rx_q_lock, irqflags);
+>  	}
+> @@ -1656,6 +1662,7 @@ static int ntb_process_rxc(struct ntb_transport_qp *qp)
+>  
+>  	entry->rx_hdr = hdr;
+>  	entry->rx_index = qp->rx_index;
+> +	entry->flags = flags & DESC_META_MASK;
+>  
+>  	if (len > entry->len) {
+>  		dev_dbg(&qp->ndev->pdev->dev,
+> @@ -2341,6 +2348,7 @@ EXPORT_SYMBOL_GPL(ntb_transport_rx_enqueue);
+>   * @cb: per buffer pointer for callback function to use
+>   * @data: pointer to data buffer that will be sent
+>   * @len: length of the data buffer
+> + * @meta: client metadata to send with the buffer
+>   *
+>   * Enqueue a new transmit buffer onto the transport queue from which a NTB
+>   * payload will be transmitted.  This assumes that a lock is being held to
+> @@ -2349,12 +2357,12 @@ EXPORT_SYMBOL_GPL(ntb_transport_rx_enqueue);
+>   * RETURNS: An appropriate -ERRNO error value on error, or zero for success.
+>   */
+>  int ntb_transport_tx_enqueue(struct ntb_transport_qp *qp, void *cb, void *data,
+> -			     unsigned int len)
+> +			     unsigned int len, unsigned int meta)
+>  {
+>  	struct ntb_queue_entry *entry;
+>  	int rc;
+>  
+> -	if (!qp || !len)
+> +	if (!qp || !len || meta > NTB_TRANSPORT_MAX_META)
+>  		return -EINVAL;
+>  
+>  	/* If the qp link is down already, just ignore. */
+> @@ -2370,7 +2378,7 @@ int ntb_transport_tx_enqueue(struct ntb_transport_qp *qp, void *cb, void *data,
+>  	entry->cb_data = cb;
+>  	entry->buf = data;
+>  	entry->len = len;
+> -	entry->flags = 0;
+> +	entry->flags = meta << DESC_META_SHIFT;
+>  	entry->errors = 0;
+>  	entry->tx_index = 0;
+>  
+> diff --git a/include/linux/ntb_transport.h b/include/linux/ntb_transport.h
+> index 7243eb98a722..9e807542b6c4 100644
+> --- a/include/linux/ntb_transport.h
+> +++ b/include/linux/ntb_transport.h
+> @@ -50,6 +50,8 @@
+>  
+>  struct ntb_transport_qp;
+>  
+> +#define NTB_TRANSPORT_MAX_META	0x00ffffffU
+> +
+>  struct ntb_transport_client {
+>  	struct device_driver driver;
+>  	int (*probe)(struct device *client_dev);
+> @@ -63,7 +65,7 @@ void ntb_transport_unregister_client_dev(char *device_name);
+>  
+>  struct ntb_queue_handlers {
+>  	void (*rx_handler)(struct ntb_transport_qp *qp, void *qp_data,
+> -			   void *data, int len);
+> +			   void *data, int len, unsigned int meta);
+>  	void (*tx_handler)(struct ntb_transport_qp *qp, void *qp_data,
+>  			   void *data, int len);
+>  	void (*event_handler)(void *data, int status);
+> @@ -78,7 +80,7 @@ void ntb_transport_free_queue(struct ntb_transport_qp *qp);
+>  int ntb_transport_rx_enqueue(struct ntb_transport_qp *qp, void *cb, void *data,
+>  			     unsigned int len);
+>  int ntb_transport_tx_enqueue(struct ntb_transport_qp *qp, void *cb, void *data,
+> -			     unsigned int len);
+> +			     unsigned int len, unsigned int meta);
+>  void *ntb_transport_rx_remove(struct ntb_transport_qp *qp, unsigned int *len);
+>  void ntb_transport_link_up(struct ntb_transport_qp *qp);
+>  void ntb_transport_link_down(struct ntb_transport_qp *qp);
 
