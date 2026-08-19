@@ -1,37 +1,37 @@
-Received: from mta-64-226.siemens.flowmailer.net (mta-64-226.siemens.flowmailer.net [185.136.64.226])
+Received: from mta-64-225.siemens.flowmailer.net (mta-64-225.siemens.flowmailer.net [185.136.64.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C41393B9D8C
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 14:30:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B393F2113
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 14:30:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787149850; cv=none; b=bCgI8R5WMZ9qRJ+/lMden1N586Ppw63zbh45FbCBWci8ViCilWxUzKcXgc5Uq9Zmvd3tTRvLNEBsxU7nkq5ayuN8LLN+Hskhgm1Gd3W+5ULHNcEYwGTUOwkACwosDfe3hob55drdr/gXEu+iAwT0BmYnHAgtasB76OCc0EhyjjY=
+	t=1787149851; cv=none; b=oc80iMdrE1OI4e3rv62cB4OeNw7w+rrjg+cgl50uazIO1Hxboxmq1xz74Oj95kWK9ZrF1xTUdKR7RmHOTmqkt9DplR1dXdK6ozd+uvvBdKqZ1y62KUu+Xw+OKgozTQNpIfZG26SCgqpfTaJX68uCzyD+ReuEdmsoPhLo4orChHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787149850; c=relaxed/simple;
-	bh=4xhhR3bu1NVSWIwX5g40uWrKhyT+t13dMc6Cm+ZB6p0=;
+	s=arc-20240116; t=1787149851; c=relaxed/simple;
+	bh=myNiNudWlAOhHqf78CNgDEMC2LXtqJxhUWb4ja/JZyo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Hpzgld6ZzT+JT+TZswjjhJNz23g9F2cdFvFMRg2/KNDtgQyogET8yFuONybA9nT/TZ6S3/I0du2ccLGwImydkqi3aav5JNOX49sAx8qGHAy0oPTE2YWOXYtOSlS6Ug1iRlCBxMNYi3PZjJk83w5nxDqbEmo6B1mSjio1PEzcDlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=florian.bezdeka@siemens.com header.b=QVtxtt6M; arc=none smtp.client-ip=185.136.64.226
+	 In-Reply-To:To:Cc; b=jDbOie5QpZDddZ2Zu24QlMs3HKQxXcdcUqNSeqdYcdb+SV0nIZg51nOwZESuKK+fqgMuRMo7RPkQQt2xt0wuGAwMdKA4/vsidf0nJEX8Qtv14QJOLs71Y5mKGHyd4PXDFuBQf/sB4aYVfALVj66Zr2LccWEN0R3oPQHShJAfKGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=florian.bezdeka@siemens.com header.b=Krf5ghZ9; arc=none smtp.client-ip=185.136.64.225
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=florian.bezdeka@siemens.com header.b="QVtxtt6M"
-Received: by mta-64-226.siemens.flowmailer.net with ESMTPSA id 20260819143033b62de04c6f00020737
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=florian.bezdeka@siemens.com header.b="Krf5ghZ9"
+Received: by mta-64-225.siemens.flowmailer.net with ESMTPSA id 2026081914303363b6c3c99c0002076b
         for <netdev@vger.kernel.org>;
         Wed, 19 Aug 2026 16:30:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
  d=siemens.com; i=florian.bezdeka@siemens.com;
  h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=Vvv1sBUaBjcEUFUZGnIymSGGot8dFYipkz2vCCdspeg=;
- b=QVtxtt6MaUFxp1ZH6eI+kErHX2u5GQOB9t6Xmhg/I+9OPexC3uPKmQZg0ZDD2Dk4ISPW6j
- oOMnQx18jh8IyucabgFrayd4vxBC9nHrwe6ucjxiU010Ep/V9QuDxLVsPG5mpSJLLzQQ2qey
- +TerQIBTfK0X1gf5rbIgT0CuKkp2cagerI8MxgurCS64y8jZRCWAERtNwe2LuXpDJMU/clcu
- qBR/doqvchL5NmXqbV0w01cohq0NJAG5uexVi3cu5oWp9xOpVnHAvFmXhGwG9TuFuID2u/HZ
- jN+fkIof+zI4Wx/kDJ/OzYqXDQF3yQ0RPBhsLv+sVxarCq3nzgTlVBnw==;
+ bh=IoNmqk4kFe1ffi9HtpCtyUHKbQwKZ6Jed6SDch4oW9M=;
+ b=Krf5ghZ9dUUHTj7Dh50SkIbWovR1VpLHU5vQyUfG0H0aqDOFeJuPJpqsNWdfvGzz2tM2Yb
+ 62YwWfAmla6In6QMb96eWCeNtft/RpDt5ZAVgR42w0BTzqoZ+ixyK3yqwory5ETNCaldAYx2
+ iTLhrkdNalnGyE9Wnrivw+ZbDmeLWx31WRnizgD3okPjOsWKfdQC6ickBE/XPeNveHHip8SM
+ amtBqX/abZgRXsuhA9ecQqlohTyravo6wYZ8yIl1MlEoK6ijfJY7FuGSKSjx6mx8WRXmcpSY
+ U6GeoZZHyZaDDTa4bBxkfuLryIrdwLalGGVA6BgsuFUXLiZzwES/cOkQ==;
 From: Florian Bezdeka <florian.bezdeka@siemens.com>
-Date: Wed, 19 Aug 2026 16:30:30 +0200
-Subject: [PATCH RFC 1/3] cpumask: Honor irq_default_affinity in
- cpumask_local_spread()
+Date: Wed, 19 Aug 2026 16:30:31 +0200
+Subject: [PATCH RFC 2/3] genirq: Honor existing IRQ affinities when setting
+ affinity hints
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260819-flo-net-7-2-make-stmmac-default-affinity-aware-v1-1-3f79a99cadaf@siemens.com>
+Message-Id: <20260819-flo-net-7-2-make-stmmac-default-affinity-aware-v1-2-3f79a99cadaf@siemens.com>
 References: <20260819-flo-net-7-2-make-stmmac-default-affinity-aware-v1-0-3f79a99cadaf@siemens.com>
 In-Reply-To: <20260819-flo-net-7-2-make-stmmac-default-affinity-aware-v1-0-3f79a99cadaf@siemens.com>
 To: Maxime Chevallier <maxime.chevallier@bootlin.com>, 
@@ -63,60 +63,53 @@ Cc: Jan Kiszka <jan.kiszka@siemens.com>, netdev@vger.kernel.org,
 X-Flowmailer-Platform: Siemens
 Feedback-ID: 519:519-68982:519-21489:flowmailer
 
-Many drivers call cpumask_local_spread() to spread IRQs to several
-CPUs, mainly to get best performance and balance CPU load. For
-realtime (PREEMPT_RT) and other cpu-isolating workloads the old
-implementation was triggering an IRQ placement problem. IRQs were
-targeting CPUs that were isolated for those sensitive workloads.
+Some device drivers implement an IRQ balancing / spreading mechanism
+based on cpumask_local_spread() and irq_set_affinity_hint() (deprecated)
+or irq_set_affinity_and_hint().
 
-Userland will tell the kernel about the desired IRQ configuration
-for new interrupts by writing a proper cpumask to
-/proc/irq/default_smp_affinity. This cpu mask has to be honored to
-avoid IRQ noise on isolated cores.
+__irq_apply_affinity_hint() was overwriting already configured
+affinities and with that violating user defined affinities.
 
-The default for irq_default_affinity is "all CPUs". So all CPUs will
-be taken into account for spreading when userland did not configure
-something special.
+This was especially a problem on systems with isolated CPUs, a common
+pattern on PREEMPT_RT enabled systems. Device IRQs were balanced over
+CPUs that were isolated for RT workloads.
+
+Note that only the first call of irq_set_affinity_hint() and
+irq_set_affinity_and_hint() - for each IRQ - will have any effect.
+Afterward affinities might be controlled from userspace using the
+/proc/irq/<n>/smp_affinity{_list} interface.
+
+Signed-off-by: Florian Bezdeka <florian.bezdeka@siemens.com>
 ---
- lib/cpumask.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ kernel/irq/manage.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/lib/cpumask.c b/lib/cpumask.c
-index 5adb9874fbd0f5a42ea8cd9e6c3729a70599781f..73e7b60a9201174f83df6067effbe7d1889dcdb9 100644
---- a/lib/cpumask.c
-+++ b/lib/cpumask.c
-@@ -6,6 +6,7 @@
- #include <linux/export.h>
- #include <linux/memblock.h>
- #include <linux/numa.h>
-+#include <linux/interrupt.h>
+diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
+index 7eb07e3bdb4c2419e0a58a75c29d88b4b00b8287..3937ba24df6d63375dda88164cf92fd49e70a3eb 100644
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -503,11 +503,21 @@ EXPORT_SYMBOL_GPL(irq_force_affinity);
  
- /* These are not inline because of header tangles. */
- #ifdef CONFIG_CPUMASK_OFFSTACK
-@@ -81,8 +82,9 @@ void __init free_bootmem_cpumask_var(cpumask_var_t mask)
-  * @i: index number
-  * @node: local numa_node
-  *
-- * Return: online CPU according to a numa aware policy; local cpus are returned
-- * first, followed by non-local ones, then it wraps around.
-+ * Return: online CPU according to the default IRQ affinity and a numa aware
-+ * policy; local cpus are returned first, followed by non-local ones, then it
-+ * wraps around.
-  *
-  * For those who wants to enumerate all CPUs based on their NUMA distances,
-  * i.e. call this function in a loop, like:
-@@ -110,9 +112,9 @@ unsigned int cpumask_local_spread(unsigned int i, int node)
- 	unsigned int cpu;
+ int __irq_apply_affinity_hint(unsigned int irq, const struct cpumask *m, bool setaffinity)
+ {
++	struct irq_data *irq_data;
+ 	int ret = -EINVAL;
  
- 	/* Wrap: we always want a cpu. */
--	i %= num_online_cpus();
-+	i %= cpumask_weight(irq_default_affinity);
+ 	scoped_irqdesc_get_and_lock(irq, IRQ_GET_DESC_CHECK_GLOBAL) {
+ 		scoped_irqdesc->affinity_hint = m;
++		irq_data = irq_desc_get_irq_data(scoped_irqdesc);
+ 		ret = 0;
++
++		/*
++		 * Do not overwrite the affinity in case an affinity for this
++		 * IRQ has already been requested, e.g. by writing to
++		 * /proc/irq/<n>/smp_affinity
++		 */
++		if (irqd_affinity_was_set(irq_data))
++			setaffinity = false;
+ 	}
  
--	cpu = sched_numa_find_nth_cpu(cpu_online_mask, i, node);
-+	cpu = sched_numa_find_nth_cpu(irq_default_affinity, i, node);
- 
- 	WARN_ON(cpu >= nr_cpu_ids);
- 	return cpu;
+ 	if (!ret && m && setaffinity)
 
 -- 
 2.55.0
