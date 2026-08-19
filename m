@@ -1,111 +1,136 @@
-Received: from mail-43100.protonmail.ch (mail-43100.protonmail.ch [185.70.43.100])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FE9397E91;
-	Wed, 19 Aug 2026 21:09:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3AD248F4B;
+	Wed, 19 Aug 2026 21:16:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787173796; cv=none; b=DdIPjQPxnU8GcvLOA6FbU3yJSmbBPcI/9FmUWxBoVzXPCLS7lrbTvga0DIxqOxXhpvsCGxKLuJu1A+xAEAoOabCxDScXR4osIZwASJwtQGqPLtSSwtWcXzRWL09HoE639NhWJUQpgJhxJ8biOReQ25tde10H+PMjyizacQG2cLY=
+	t=1787174175; cv=none; b=b9IZ6JCytojbkiXrNMbHDD8ycMPRPtHJpPlVBNMONvIkrfrDD42UAV+erQkJLVfVESvz8BNhcoYoF1PVv4fd9qsvIAjvVDAj707DGNQY4Rp2aama281K/SbcyiqQYQv4bm8H7M+uG8lflYqxoFDewvLNan0dGq3C0U0E1eouCT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787173796; c=relaxed/simple;
-	bh=4T6w3Jq+fsVkSUa/RSMCvPR8LYYuUevIOuXZFa8+0Sg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kDzYvpqV/ypLkteDLv5hUw0BWEZo3YQxGNMczuWVbbmQ7ZNAiOUVWNG90UPF2SHmGJBC7oqBI1R0Pu/Gi5MdLcINyfc8vZt0gx00zb6my2ESPgp6Vn3b0dpYx8IYj7Vrd4YSf62+EUfQ7nxBClHbDhfgVBuOC1kDeLoX3n9/W/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=PC5yk7S9; arc=none smtp.client-ip=185.70.43.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1787174175; c=relaxed/simple;
+	bh=znKp6FFW6e4vloCf/TZGsoTX7/wCAKLPkbIxWejDXZI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tyza0xAt6IOlMiiFnvcVoaPDKcY7cOKcZxqcCKxd6FXTrj5+/XSFUujmWjXgkszbFtOXqJZ33bXXQc0Nn7BrrW5aCpExVVf2Tk/KlosfiBoF7nRluwPCbUuNKHg4GPTw7j0PoEzPHcjKH+7l74gtUxzpNz8yRRDLEJ4z/BMxpo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OJcAuzQV; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="PC5yk7S9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1787173785; x=1787432985;
-	bh=4T6w3Jq+fsVkSUa/RSMCvPR8LYYuUevIOuXZFa8+0Sg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=PC5yk7S9nSOaOwBePWwts3HMvfaKjpaunb44hLrAAsTccsHWD71Q6Jg8xDGELK+DO
-	 L8J2S/SN8Z0O5EeSHuLSPEbS0rlhlkQCFhpeSduhNnq7ybaBHJY1/oS7M5os87jo5V
-	 Lw3Vkp/42C+OXeNofTZufuDMqqWqkOdee2v9/eTkyf7DzV312B0UjSs1huyYH38dZc
-	 SZisS3g9U0xthZciBAjJCqv8UTak55WEgIe8jk6Y1AzHVqyrWRIq9PYkEe5Hn/M6Ge
-	 SPmSyhHWaaCP2pzZjO9yByxGw+SnHJEvRneOdmg30t2Fzvse87KoJxL4e2d0SNiJpd
-	 7LhN0Slou9CLw==
-Date: Wed, 19 Aug 2026 21:09:38 +0000
-To: oe-linux-nfc@lists.linux.dev
-From: Kristian Brox <isyourbrainfoss@proton.me>
-Cc: david@ixit.cz, krzk+dt@kernel.org, devicetree@vger.kernel.org, dmitry.baryshkov@oss.qualcomm.com, luca.weiss@fairphone.com, linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH v2 3/3] arm64: dts: qcom: qcm6490-fairphone-fp5: add ST21NFCD NFC
-Message-ID: <20260819210906.2500789-4-isyourbrainfoss@proton.me>
-In-Reply-To: <20260819210906.2500789-1-isyourbrainfoss@proton.me>
-References: <20260818205940.1973944-1-isyourbrainfoss@proton.me> <20260819210906.2500789-1-isyourbrainfoss@proton.me>
-Feedback-ID: 203906395:user:proton
-X-Pm-Message-ID: 78d32f01369695d17cf0d846295c987050d0d41d
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OJcAuzQV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787174174; x=1818710174;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=znKp6FFW6e4vloCf/TZGsoTX7/wCAKLPkbIxWejDXZI=;
+  b=OJcAuzQVCiid9WekaK6hBYfF1OCg2GB+rdWVQ+9gHsEewgCbsvB6B+Ie
+   1Pl5L9ZqvuOF//ZUnT+94QCOLpwpHhakrCOmISK5vmZCTAMVh38RReCoY
+   7VRatNx9r/y0IP4zjspNvxRpzgQR7DMeQmWaMc82c5v5Xurw/KmxdKT5A
+   zI+i0vYEzcHJrUasYrvwd19J2zQX7R+reM7D9BC5Z0GDtmlZnCSWetPyu
+   BiE73qr9MXOLEcpQ6AF26ZoreaULC9WnbPZH164+9g4DS7NvDAcVbB4vA
+   GxpeOV0fPbwIR6VrSl3UNVUaTLL3hZS8OaTH4d8Y20QvsFkq+7qjTMZ3e
+   w==;
+X-CSE-ConnectionGUID: UgQhkDjtTdi9ZuH/VOLQhA==
+X-CSE-MsgGUID: DwTgW0g8RF+vPzrh8rCg8w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="99060871"
+X-IronPort-AV: E=Sophos;i="6.25,232,1779174000"; 
+   d="scan'208";a="99060871"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 14:16:12 -0700
+X-CSE-ConnectionGUID: hfLa0FnjSjWDP00ZujihIw==
+X-CSE-MsgGUID: vWx5l7aUSFyYCRFDUq4TpA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,232,1779174000"; 
+   d="scan'208";a="269179100"
+Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.108.13]) ([10.125.108.13])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 14:16:11 -0700
+Message-ID: <5571c4ba-aa12-442a-aa2f-3b3e073e1305@intel.com>
+Date: Wed, 19 Aug 2026 14:16:09 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/4] NTB: ntb_transport: Recycle TX entries before
+ client callbacks
+To: Koichiro Den <den@valinux.co.jp>, Jon Mason <jdmason@kudzu.us>,
+ Allen Hubbe <allenbh@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: ntb@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260817053519.4135287-1-den@valinux.co.jp>
+ <20260817053519.4135287-2-den@valinux.co.jp>
+From: Dave Jiang <dave.jiang@intel.com>
+Content-Language: en-US
+In-Reply-To: <20260817053519.4135287-2-den@valinux.co.jp>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Enable the ST21NFCD on i2c9 (0x08), IRQ TLMM 41, reset TLMM 38
-active-high. Compatible is st,st21nfcd (raw NCI).
 
-SYS_CLK is LN_BB_CLK2. VPS_IO is L18B (vreg_l18b). ese-present and
-uicc-present follow the public schematic (NFC_SWP1/SWP2: SWP_SE to
-SIM1, SWP_UICC to SIM2). Reader path is tested; SE/HCE is not.
 
-Signed-off-by: Kristian Brox <isyourbrainfoss@proton.me>
----
-diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm6=
-4/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-index 29d6265..394237c 100644
---- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-+++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-@@ -1004,7 +1004,23 @@
- &i2c9 {
- =09status =3D "okay";
-=20
--=09/* ST21NFC NFC @ 28 */
-+=09nfc@8 {
-+=09=09compatible =3D "st,st21nfcd";
-+=09=09reg =3D <0x08>;
-+
-+=09=09interrupts-extended =3D <&tlmm 41 IRQ_TYPE_LEVEL_HIGH>;
-+=09=09reset-gpios =3D <&tlmm 38 GPIO_ACTIVE_HIGH>;
-+
-+=09=09pinctrl-0 =3D <&nfc_int_default>, <&nfc_reset_default>;
-+=09=09pinctrl-names =3D "default";
-+
-+=09=09clocks =3D <&rpmhcc RPMH_LN_BB_CLK2>;
-+=09=09vdd-io-supply =3D <&vreg_l18b>;
-+
-+=09=09ese-present;
-+=09=09uicc-present;
-+=09};
-+
- =09/* VL53L3 ToF @ 29 */
- };
-=20
-@@ -1649,6 +1665,21 @@
- =09=09drive-strength =3D <2>;
- =09=09bias-pull-up;
- =09};
-+
-+=09nfc_int_default: nfc-int-default-state {
-+=09=09pins =3D "gpio41";
-+=09=09function =3D "gpio";
-+=09=09drive-strength =3D <2>;
-+=09=09bias-disable;
-+=09};
-+
-+=09nfc_reset_default: nfc-reset-default-state {
-+=09=09pins =3D "gpio38";
-+=09=09function =3D "gpio";
-+=09=09drive-strength =3D <2>;
-+=09=09bias-disable;
-+=09=09output-high;
-+=09};
- };
-=20
- &uart5 {
+On 8/16/26 10:35 PM, Koichiro Den wrote:
+> ntb_tx_copy_callback() invokes the client callback before returning the
+> entry to tx_free_q. The callback may wake a stopped client queue, only
+> for the next enqueue to find no local entry and return -EBUSY. The window
+> is narrow, but the retry is unnecessary.
+> 
+> Save the callback data and length, then return the entry to tx_free_q
+> before invoking the client. A completion callback then means both the
+> client buffer and transport entry are ready for reuse.
+> 
+> Fixes: fce8a7bb5b4b ("PCI-Express Non-Transparent Bridge Support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Koichiro Den <den@valinux.co.jp>
+
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+
+> ---
+>  drivers/ntb/ntb_transport.c | 23 ++++++++++++++---------
+>  1 file changed, 14 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
+> index f59f926d4bfa..e92b96f4afad 100644
+> --- a/drivers/ntb/ntb_transport.c
+> +++ b/drivers/ntb/ntb_transport.c
+> @@ -1719,9 +1719,16 @@ static void ntb_transport_rxc_db(unsigned long data)
+>  static void ntb_tx_copy_callback(void *data,
+>  				 const struct dmaengine_result *res)
+>  {
+> +	struct ntb_payload_header __iomem *hdr;
+>  	struct ntb_queue_entry *entry = data;
+> -	struct ntb_transport_qp *qp = entry->qp;
+> -	struct ntb_payload_header __iomem *hdr = entry->tx_hdr;
+> +	struct ntb_transport_qp *qp;
+> +	unsigned int len;
+> +	void *cb_data;
+> +
+> +	qp = entry->qp;
+> +	hdr = entry->tx_hdr;
+> +	cb_data = entry->cb_data;
+> +	len = entry->len;
+>  
+>  	/* we need to check DMA results if we are using DMA */
+>  	if (res) {
+> @@ -1768,15 +1775,13 @@ static void ntb_tx_copy_callback(void *data,
+>  	 * "link down" or similar.  Since no payload is being sent in these
+>  	 * cases, there is nothing to add to the completion queue.
+>  	 */
+> -	if (entry->len > 0) {
+> -		qp->tx_bytes += entry->len;
+> -
+> -		if (qp->tx_handler)
+> -			qp->tx_handler(qp, qp->cb_data, entry->cb_data,
+> -				       entry->len);
+> -	}
+> +	if (len > 0)
+> +		qp->tx_bytes += len;
+>  
+>  	ntb_list_add(&qp->ntb_tx_free_q_lock, &entry->entry, &qp->tx_free_q);
+> +
+> +	if (len > 0 && qp->tx_handler)
+> +		qp->tx_handler(qp, qp->cb_data, cb_data, len);
+>  }
+>  
+>  static void ntb_memcpy_tx_on_stack(struct ntb_queue_entry *entry, void __iomem *offset)
 
