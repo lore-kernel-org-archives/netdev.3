@@ -1,140 +1,132 @@
-Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11021094.outbound.protection.outlook.com [52.101.125.94])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-243.mta0.migadu.com [91.218.175.243])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D94275870;
-	Wed, 19 Aug 2026 02:01:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.94
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787104897; cv=fail; b=I7xZd2h7Vl8598uh7mUSgoSN9e7z7oM99iScokcGCgxKrTzOy96iOqnx3t6W7F8rjPebWv2yiTNrEtti6YDW23b7C1rv5V4NI8a5DYMOEzGAIwYtihzyAaN8Cjc4mTxQmtthoa65GgAB6Gr5ylil+IWhX1eBkz/ehXSnQF0/EIY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787104897; c=relaxed/simple;
-	bh=+XDK/dkfxBdhhwgJ/3lJ94K0QCAYmAAvx0C3pONcm20=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=qC4tocq1MAkiBRsYyvwOtmC/W9pts9y1IQQbfuVuDdjOHIllgiooY+hXwGcu90KlgVictPGCLuy/ASAFpiT3+IgQzfPswwd9mWT8lnBhZEB5VPgueHKOCcy/jHiWGH29qjMM6X2WfVl/eJInczMw3RqKUNxVHyiRamnqIBVKfsI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=fd2fXkgv; arc=fail smtp.client-ip=52.101.125.94
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4596282F26
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 02:07:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.243
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787105247; cv=none; b=ODCAz/wYr/dtwhjGz5ULFMBrnK4aWt8OXZIRNwgfdJWqyS2gyO7z61XVY+AUmdFWf33JZ3CM5cXXFGawwvI6nqN5YIT2iDEeHLvyXfLECdv5QzSbWSowl9c/HliWP0ZXFZQrFh96PwsJQJsSNdaaZGpT4ZyUkFxDV+aUw5eqAuM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787105247; c=relaxed/simple;
+	bh=BW+3hsCCLau5i5wnXi/cTTMAsl/Q7NqkA3vzta9zCBY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A2kmvK1fZzD7BqrQ/xaG2ChQeVNmZACSKzax/LjCi4xTV5w/SwaQTwehPnVkr0jRJrZY8paIEt898FMUylnKghVPJmaz4yAm5QcrdL1D81Z+1GY7LXK00myHjIimWo84bdKn6X96aJ4Yuy3RSe09Oio67UUtND2Ax99T97+U/zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=J4f2RUWq; arc=none smtp.client-ip=91.218.175.243
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="fd2fXkgv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MArbJ4Tese6+6o6MCdM/GuzZGV5JP6+QzTRBiwG9L8KnBrzDq0nzPWVu9fep0sGF+9csVmG3ObntKCBgrCudW471OZnbYN1TCh61hKuqkQ88tW80Voh6W1r7BVn27w9mIcmtow7xL48i+bhOALtoCFQ4n/k6FF1FppTwi4vJOw/KU1Pp+OGJDLSkYQVsc0bhVrTihT3/NPwXxMpHENjI6y53W8DaGFMLJvi82ZE5rw9RfdzXikxK8g7kkF5eZk8BeE3YswvQ0j59pfd4wSuXRTpUUztd2a7/KvyXgRh5mq8hr7JlIh9kK9HqL+PdiEQRWGdx/IDLjBZgDSuV+NPEBQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WHyDByujyzCpUXZGk2s2SfpBR4RfJ/lewTRhirjBPEg=;
- b=KhjOWOV+N8IQdJlxNok6b0C98SbWzMgUPKJjTH13DMik+v1qndk6PNIOS3MfoDL9LBlE+pKkKuFsMmOqbdUjIWyETRfxUvxz+nFZlXfJsCwREP2tNZll0JXVzMYnabXNMOfKe2LOsNNx2Xn1C9j+COtk6xmLWNykpRnQiQP0l5oGyjeZliNmoqrWTk+kvJrPFXV3GY6VJB1N2zefQ3V9soJAYIjxEni1joCeGDDMbjzdRER46xE0oZJE3Cgq108gYJAPmcET+VO4gJ6efajojXktcw3Ce7+pjPfi2Wrh4CSkuYpWHqY/gHXC5IpjlrinpLIPLND0/8SiWc6Pyq9v7Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
- header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WHyDByujyzCpUXZGk2s2SfpBR4RfJ/lewTRhirjBPEg=;
- b=fd2fXkgvSU7Y/S8dmw95kn9PWg2yrHrHTi9FSWsZb90R7f9IGxv47QOSfqYOMr3bADp1ZgyXVLm8wn8jWu39uWxdAB0R0rrPOMViuE0clB28dA2O9iIXcVKd7TuzXXYNYRSEtz1AWZAVYxgVEWqYIevH8GJGf0nKwCJOzD9vOV0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=valinux.co.jp;
-Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
- by OS9P286MB5724.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:3d5::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
- 2026 02:01:32 +0000
-Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- ([fe80::2305:327c:28ec:9b32%3]) with mapi id 15.21.0315.016; Wed, 19 Aug 2026
- 02:01:32 +0000
-Date: Wed, 19 Aug 2026 11:01:31 +0900
-From: Koichiro Den <den@valinux.co.jp>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Jon Mason <jdmason@kudzu.us>, Dave Jiang <dave.jiang@intel.com>, 
-	Allen Hubbe <allenbh@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, ntb@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 2/2] net: ntb_netdev: Preserve CHECKSUM_PARTIAL
- across NTB
-Message-ID: <22flcbfyvllwize3usztpd6sm2n5xxdxvzylalhwm5pet7qinc@drrsy6kxjma4>
-References: <20260814032913.3558500-1-den@valinux.co.jp>
- <20260814032913.3558500-3-den@valinux.co.jp>
- <20260818092938.4121c220@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260818092938.4121c220@kernel.org>
-X-ClientProxiedBy: TY4PR01CA0116.jpnprd01.prod.outlook.com
- (2603:1096:405:379::16) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:38f::10)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="J4f2RUWq"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=BW+3hsCCLau5i5wnXi/cTTMAsl/Q7NqkA3vzta9zCBY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787105242; v=1; x=1787710042;
+ b=J4f2RUWqo09E66XvhOpUXlaFNEVASRYbQP100I+b/49hL7ZEK9J05JHaI63D/D8yNvKMSDmV
+ onJKBpR3SbRAyERWC2wsa3yFNnDMzeedm7QBbxWvCgFX4mYJrcxD77FR9ZGjY+PgJNZmFXqjDpV
+ RlOrFFMaVRx7SreyRFtVdRYo=
+X-Envelope-To: netdev@vger.kernel.org
+Received: from fedora (203.175.12.241)
+	by smtp.migadu.com with ESMTPS id f5bed5f7b8ab5953;
+	Wed, 19 Aug 2026 02:07:22 +0000
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 19 Aug 2026 10:07:14 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
+Subject: Re: [PATCH net v3 2/2] bonding: fix u32 overflow in compute_gap()
+Message-ID: <aoUP0sLeEhCPxukB@fedora>
+References: <20260818-bond_overflow-v3-0-e05d4dbc2fd8@kylinos.cn>
+ <20260818-bond_overflow-v3-2-e05d4dbc2fd8@kylinos.cn>
+ <d75e0db1-e129-4a9f-a103-889827948de1@blackwall.org>
+ <80d704a8-aca6-44f8-8933-eb0cf14ecf3b@blackwall.org>
+ <bf56ea5d-a0d2-40f9-b8d5-73d8c54ca32b@blackwall.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|OS9P286MB5724:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4caba010-126f-4fcb-0f32-08defd95cab5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|10070799003|7416014|376014|56012099006|10067099003|18002099003|22082099003|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	qLqIr42Vgh1SBlIbLDGHqn9Tej/KtjdBj1te7UgVXe5lQZdBzkGerqGpmg3o2KVnYB72uruzS3IEQtdIQaeC03mRci7PpLVx3fo645/0jFpcb8+KGmbDsxzJgFGEjOfacHENauWab8S5UB9Uxgl0r4AWQv7hYIM/U+CVZ1gTVZsQJoLiv+QOGXBDf1fYWfRaEHfOQw4BE7CNNS0EbPBIQf6DZXyZkB7JusxONDWvFBl+Ltt0vEaaayw61ggnFK1PAbd6hJrdKN5gA0kUqroux55/dRyyGlXs02nj/1tP4FjLMbGj3o5n5uwz1RN2VUeFvufNHZvkyXef5AOB+qYesFuTZJoBUv+lhnZTmNy9jjS/W3t+DLu2pCx9NZuWLFjoV56+nKOwQ01EIMDEKwkVzkU9ydaRSzTuopG9ZQ05sRgaSnjX5uRm6HxeXsgPK02dG0dl0vMWrEMwxttzIkuLJAFtp07cEpP5pUDVLYdKGj5zhTcOMiVDw/UCSwBTlYlMxzjtXwVcONFvUFnsb6xYTWqvmElXOwFuHj2CWV5Q98S+nbOh+AGRYBZovPub3Oxd5n9d5SYMxNTKn4ezquBHlD5UOv8lndjnHfU7jQFLAx19skkTazxOHgJQx17eJlygMkTe+8hZYwEkM3F1mnWG4GEUVTs3EHkYEGTakqH2mFE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(10070799003)(7416014)(376014)(56012099006)(10067099003)(18002099003)(22082099003)(4143699003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?81f4mVb1QUKjDDiMqCosZq2QEJ7MqO9pYYuhr3Ffa+ryXvGE8+a4G2bQGGYU?=
- =?us-ascii?Q?9Ic2U8WwLHhpI3HJ8teX4C7HzAFnf2GE7PzLeKVgTxu4dIOu93AzCHw/yvRU?=
- =?us-ascii?Q?pAv2z0SrqiL+ih9KdPoXWMKJjQyWJ/kKI+54Ayy1ztBsGI8g8w2pzlP/6B81?=
- =?us-ascii?Q?43LY5v+j+Epq4yrl/KLUCvqulRnOyHSJ8lxoZK7Qo5VekThwKvekBmrYhGjV?=
- =?us-ascii?Q?xMpbAzSBZQSW3hxrros8kiXCooNJtywuOWwT7trNwY4S9lZWwnZrdCdPQQht?=
- =?us-ascii?Q?EcXb/m/jIMRKgHjXfqUx+6VqXdxDI56ZJa4xTF1IRbdprFDY8P0iOsfysbJH?=
- =?us-ascii?Q?a9rm2vUfS5Yp8vftuvMtAfpoLkU4RA7gKTVl94MwYv7GHVfudx07yiJCLKpr?=
- =?us-ascii?Q?SHiwbuZTcuH72PfVzhMzDHu9Y/6r/CReX0SyqDU2GMBbHM3xlZIEcLE5HUVu?=
- =?us-ascii?Q?K9T8RzMctNtNqbuigfvbXb0fFTyS7/3mnZLiIqlS0lLfRBCFIAU+LnIln+jy?=
- =?us-ascii?Q?qZH3zmWyY2HjSSfTL1hZoKt+xpH8nMJZoGhtvHuCRv9yStjXEFCo1No3i9nX?=
- =?us-ascii?Q?e2nD8UQvdVvD9IiVAdxgWgPqQrklu07/lyXnUuQyBtl96oxGVtE35mP1rxiR?=
- =?us-ascii?Q?m3SxPw1pP5ih9NPagcenAfqUIQwfHRQMZ8E6u0tXN5B9wgag74nWC0Fxsakr?=
- =?us-ascii?Q?PpH1+zbjyIqyRmaUsI6XmCrwltWGhWIq+6/ecqDunT6Zja4xKwUwfKPKYNp9?=
- =?us-ascii?Q?RPUIUVrpjXId2Y59P7Zg4t6MgqkMbKFl/r3eXBHSZlyNAa8Pwxqti1vAJa4a?=
- =?us-ascii?Q?ID+E52SOZzvG1k7LkB2jRWRXDfxQYUWEwbn216kfjeSaftzY2eIGZkdXvXyy?=
- =?us-ascii?Q?uFZBrSqh10liGFvVwvKBtuhbYdHv/eoQAi2eLuoQ1Sf39X9p3biXu1FnRacm?=
- =?us-ascii?Q?ycACqlWyCWvO33E8geY5KKHeioBdHyHBV6z1cUh27VKjWkQkR1A82zWinZT3?=
- =?us-ascii?Q?mFWnkC3Nf61R+SeObNYz4/Hwe9nFSbVUfJzAAu2Uo1NYOLwAWrZGM7pWNKYT?=
- =?us-ascii?Q?04BcJ3Nb7lgVCaPB05wo6HAbAPdNKEtXPwXjGg6CCie10Yfr0IIDSWLFxvgk?=
- =?us-ascii?Q?bg96TRgkRprKjlsUsxPgFUCsLGPzAnPnMIjiW45S0hExvuTlTDBJKUXAnyED?=
- =?us-ascii?Q?bbKaLBpyh/R8aGt34/mwdOZRTSCxSrVwLyd5bx2Xkyo56UviCXIa+dnAOH/z?=
- =?us-ascii?Q?QVtSBlH9swzfsI3Q4lXasdJ7uxfXOCCOyDyGS3Lz3KYD8f45gg70peDwD4yd?=
- =?us-ascii?Q?Zs5t0z+uvWjd3O6GC+PaZVJr4+HGn17Db7/huONSaHM1VeiDOmGNI1PUrY0z?=
- =?us-ascii?Q?AG8NOh+mMpg4CNqDbY3fZlkUk/38apmgC/B8ZlkEL3zTlg63nocAClvKdmTX?=
- =?us-ascii?Q?lFvSk40eC0FEfNaAxlrR93QzUqTm6yQoa4GKIw6F+6pqdWnUYnaRZoQFyfkQ?=
- =?us-ascii?Q?c1Da3CnKZU5V1sWUEtjIKn+3TH2WYfr2xhkNv8lu8Bg+uT9/L1xi1nW1JbY0?=
- =?us-ascii?Q?oysMc/oi5MFBXrkyYRnx54F799+lbV55Nwdj/GZoQS7RlMgu4HaSw/NPSpOI?=
- =?us-ascii?Q?zuxqpSdG9ztZSm01ptFt89CzsAg+bDaOiuh8mziAbVATZ67I4jJmHZElyRH0?=
- =?us-ascii?Q?PTHXDzE4R4x4BFkU16oBkc2JMdCa4a1qpVXPViJsgSF2JVx/1aiu+hDr00F8?=
- =?us-ascii?Q?Wiuz+Y1uNiicR8T24vAH1A1vKTMUMIlj+Yj/cqiGnJ+5SGVXJtsB?=
-X-OriginatorOrg: valinux.co.jp
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4caba010-126f-4fcb-0f32-08defd95cab5
-X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 02:01:32.6901
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kluxqosxIO2+OshHhH8RRWy6i2DwE2BgZo5d3nsUL0Iz5oV4G4YNmrOPbFoq7TdbUGdXmhvTCJTv9kMTVV6siw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS9P286MB5724
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <bf56ea5d-a0d2-40f9-b8d5-73d8c54ca32b@blackwall.org>
 
-On Tue, Aug 18, 2026 at 09:29:38AM -0700, Jakub Kicinski wrote:
-> On Fri, 14 Aug 2026 12:29:13 +0900 Koichiro Den wrote:
-> > +rx_drop:
-> > +	ndev->stats.rx_errors++;
-> > +	ndev->stats.rx_dropped++;
+Hi Nikolay,
+On Tue, Aug 18, 2026 at 02:51:31PM +0300, Nikolay Aleksandrov wrote:
+> > > > @@ -1344,8 +1355,14 @@ static netdev_tx_t bond_do_alb_xmit(struct sk_buff *skb, struct bonding *bond,
+> > > >       if (!tx_slave) {
+> > > >           /* unbalanced or unassigned, send through primary */
+> > > >           tx_slave = rcu_dereference(bond->curr_active_slave);
+> > > > -        if (bond->params.tlb_dynamic_lb)
+> > > > -            this_cpu_add(bond_info->unbalanced_load->tx_bytes, skb->len);
+> > > > +        if (bond->params.tlb_dynamic_lb) {
+> > > > +            struct unbalanced_load_stats *pcpu_load;
+> > > > +
+> > > > +            pcpu_load = this_cpu_ptr(bond_info->unbalanced_load);
+> > > > +            u64_stats_update_begin(&pcpu_load->syncp);
+> > > > +            u64_stats_add(&pcpu_load->tx_bytes, skb->len);
+> > > > +            u64_stats_update_end(&pcpu_load->syncp);
+> > > 
+> > > this still races with...
+> > > 
+> > > > +        }
+> > > >       }
+> > > >       if (tx_slave && bond_slave_can_tx(tx_slave)) {
+> > > > @@ -1529,19 +1546,28 @@ netdev_tx_t bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
+> > > >       return bond_do_alb_xmit(skb, bond, tx_slave);
+> > > >   }
+> > > > -static u32 reset_unbalanced_load(struct alb_bond_info *bond_info)
+> > > > +static u64 reset_unbalanced_load(struct alb_bond_info *bond_info)
+> > > >   {
+> > > >       struct unbalanced_load_stats *p;
+> > > > -    u32 total_bytes = 0;
+> > > > +    u64 tx_bytes, total_bytes = 0;
+> > > > +    unsigned int start;
+> > > >       int i;
+> > > >       for_each_possible_cpu(i) {
+> > > >           p = per_cpu_ptr(bond_info->unbalanced_load, i);
+> > > > -        total_bytes += READ_ONCE(p->tx_bytes);
+> > > > -        WRITE_ONCE(p->tx_bytes, 0);
+> > > > +        do {
+> > > > +            start = u64_stats_fetch_begin(&p->syncp);
+> > > > +            tx_bytes = u64_stats_read(&p->tx_bytes);
+> > > > +        } while (u64_stats_fetch_retry(&p->syncp, start));
+> > > > +
+> > > > +        u64_stats_update_begin(&p->syncp);
+> > > > +        u64_stats_set(&p->tx_bytes, 0);
+> > > > +        u64_stats_update_end(&p->syncp);
+> > > 
+> > > ... this here, as u64_stats_update_begin doesn't provide exclusive access, so writers
+> > > must do that themselves, so you can't be sure what value will end up, the zeroing
+> > > might not work at all and can get overwritten
+> > > 
+> > 
+> > I meant - it doesn't improve on the current situation where it can also happen. :)
+
+Ah, yes. I forgot this. The reset_unbalanced_load() could be called on any
+CPU, which conflicts with other writers.
+
+I re-checked the code. unbalanced_load is only called in two situations:
+1. To rebalance the load in bond_alb_monitor(), which only executes once
+   every 10 seconds.
+2. !tx_slave in bond_do_alb_xmit(), which is only for multicast/broadcast
+   traffic. This traffic shouldn't be significant.
+
+So looks using spin_lock here is acceptable. What do you think?
+
+> > 
 > 
-> Error implies that the packet was dropped. Could you first
-> iron out the double counting this driver is doing?
-> Please see the kdoc on struct rtnl_link_stats64
+> Sorry for the multiple replies, but thinking about this - having multiple concurrent
+> writers could cause write tearing for 32-bit architectures (the monitor is a writer
+> and can write concurrently with tx) leading to invalid result.
 
-You're right. I'll send the accounting fix to net first.
-Also, apologies again for sending v2 while net-next was closed.
+Never mind. A detailed explanation is always welcome. I really appreciate
+your review and comments.
 
-Best regards,
-Koichiro
+Best Regards
+Hangbin
