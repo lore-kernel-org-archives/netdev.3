@@ -1,152 +1,151 @@
-Received: from mta1.migadu.com (out-120.mta1.migadu.com [95.215.58.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from aer-iport-1.cisco.com (aer-iport-1.cisco.com [173.38.203.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291F447F764
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 15:10:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 360C7470E83;
+	Wed, 19 Aug 2026 15:14:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.38.203.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787152251; cv=none; b=o3qmA+EA5Ekw1z8PrUgEIW0PLWWKAxg9xbAmDt2CYKD7vkHPp4jx3HnxZxLX0cKrcW+Ipf10Rr/nJsJlkKGUJwHVsg+xoAi7h26hmAC707UzlZLguUHhv5aBw1BVVMIU5iyryC6Xbd4JfyJI+OpK52UvQd/36oklFm7CpFwqI1Y=
+	t=1787152475; cv=none; b=SRlIslwVOYQxknrVG/eae3jE2LUlFZDaTWanCxr48sKBtOWzQOFz96K7HkiaJ7RgaXJfFKd6JqbwjKo9iaMn90NELNGnX2/lQ5x1QAqp1i/NrJ5MwtjmIPEWoJQbU+RnbYMTw9WSvbbsa8NE3iUJ1bzVB34xojsA+1S8lWjNL3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787152251; c=relaxed/simple;
-	bh=GspjZtFQhAFR7Oloo+MX2DOO8i0G/6TyDULbF0s6M8c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qc+gPwtHyHU68qSJvZy/geGWgHQBsT1GV9SIg2/0YpZTvttE2NLdXKltkSWxbJdigacmA8+MxYqCESsew0ebwahKBDfdCEHnxCtMZ+9oDQtfu7jRabtDNexRvV2HMU7zATj7sk3ihLiCjzQac8LK8lz0Na8kh0LEqifBy6U4M5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=WQjIiVgF; arc=none smtp.client-ip=95.215.58.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1787152475; c=relaxed/simple;
+	bh=zqSv/r76W9l/vCHZOtgIJA3OhfpLFkpe04JwLmL/zQU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BnsxSDRmmRP+dWRzO9JhxQlYBhwcWAx6+vpiImTlJr1AEI7XnxxIhFWIa7TUPTSirDE+DT/67z3joZ3Vzzy75p6kRHuexaeUlWDskPh5pku6YXfPcdN/7D0Yo/yvBKBpUPIZhhPBPoLrh/k2RglyfwgTMFeKPuSBHiyAvCaC/rE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=bnjdI5XT; arc=none smtp.client-ip=173.38.203.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="WQjIiVgF"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=GspjZtFQhAFR7Oloo+MX2DOO8i0G/6TyDULbF0s6M8c=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787152245; v=1; x=1787757045;
- b=WQjIiVgFE0wkALi54P42h+LwxIfq4cbubaqHx3RcEzt6zIoZjsuvaiXRe02JjY7Oe1W/7VoD
- KKpkkbcrjGKzlWYKmgCnKSz5/NGfTfaa6eLT6uNK9N05Sqf+Tvw3I/mPUGDgMwuTm/gCA6eLFU/
- 4K6i6AN8vq3TN7LuEpx4D7O8=
-X-Envelope-To: netdev@vger.kernel.org
-Received: from [IPV6:2601:647:6300:a030:c8df:e66c:f17b:da8f] (2601:647:6300:a030:c8df:e66c:f17b:da8f)
-	by smtp.migadu.com with ESMTPS id 4c90150a9e2a34a4;
-	Wed, 19 Aug 2026 15:10:44 +0000
-X-Mizu-Trace-ID: 4c90150a9e2a34a4
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <d2681a6a-0fa3-43ec-a083-1e8e55dddafb@linux.dev>
-Date: Wed, 19 Aug 2026 08:10:38 -0700
+	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="bnjdI5XT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=cisco.com; i=@cisco.com; l=2113; q=dns/txt;
+  s=iport01; t=1787152473; x=1788362073;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=BT/1geWvzbCsOdVjm5QCMwK7eKF2uxxLhDfc7l6NaUU=;
+  b=bnjdI5XTX0KNs9glkjFnXEbzdj23nQRGfSjVF1kkycZOPpzU/4zU2G6e
+   dRk4UFu9JPPSa8Ql/UIolrhHVkxOG25OlrrgNDef0se7W/4sAOiC+Nv0T
+   RsqTbsHSDCmOweQ+4GV8Lb73yn5dZfV5/Yyszt4Dztd8kap0ZCs85tniH
+   +umUJVavHhHd1ITiLCHgrPXYSAc5xvUB4c1vmOHuBmz1uxyM3a+8lKXOw
+   PEZAF7k0xZLse6FWXb3mol0+S0o5inadRhB4KzyN3nwiZPC3tdP2lXeQu
+   N+N0DdoYa7MvEmSbB8EghNVhdlD7yJgRkPVt/iepGtSgP6haOio1vHjPz
+   A==;
+X-CSE-ConnectionGUID: kn8oH9HrTOaQG2nd3YCRQw==
+X-CSE-MsgGUID: wgr1Kk05SxauYwF1FN7Yuw==
+X-IPAS-Result: =?us-ascii?q?A0BAAgDaxoVq/8pK/pBaglmCGD+BUkNJlCmCIYEWnQiBf?=
+ =?us-ascii?q?g8BAQEPUQQBAYUFjW0CJjQJDgECBAMCAwEBAQEBAQEBAQEBCwEBBQEBAQIBB?=
+ =?us-ascii?q?wWBDhOGXIZdKwsBRoFQgwKCdQPEJ4F5M4EB3keBZgELFAGBOI1hdoR8JxuBS?=
+ =?us-ascii?q?USBFYJzB2+FEIV4BIMuk0FIgR4DWSwBVRMNCgsHBYFmAzUSKhUyPDIdgSM+F?=
+ =?us-ascii?q?4ENGwYFgR1ZT4Q3Ixk2fIEJXoErKmEBEheBCYIKAoJwggYCAUlFDgkLCxgNS?=
+ =?us-ascii?q?BEsNxQZBD5uB45JIIJKATFdFIEyKVaTSgGDK7AihCihWxozl1+TDZkIo32FR?=
+ =?us-ascii?q?oFoPIFZMxoIGxWDIlMZD44tFoEUAQLOZEUyPQEBBwIHDgMLgWiRfgEB?=
+IronPort-Data: A9a23:L+Q1Ra34Ra0PEyQZqfbD5bpxkn2cJEfYwER7XKvMYLTBsI5bp2BVx
+ jAcCG/VM66PamegethybN6+pxsFvJ6BydQyTQJt3Hw8FHgiRegpqji6wuYcGwvIc6UvmWo+t
+ 512huHodZ5yFjmH4E/xbtANlFEkvYmQXL3wFeXYDS54QA5gWU8JhAlq8wIDqtYAbeORXUXX5
+ Lsen+WFYAX7g24tYzpNg06+gEoHUMra6WtwUmMWPZinjHeG/1EJAZQWI72GLneQauF8Au6gS
+ u/f+6qy92Xf8g1FIovNfmHTKxBirhb6ZGBiu1IOM0SQqkEqSh8ajs7XAMEhhXJ/0F1lqTzeJ
+ OJl7vRcQS9xVkHFdX90vxNwS0mSNoUekFPLzOTWXcG7lyX7n3XQL/pGD0dmOq1J2vxLJmh32
+ qYeJGs8RSq6mLfjqF67YrEEasULJcTxeYdasXZ6wHSBVLAtQIvIROPB4towMDUY35wSW6yDO
+ 4xGNXw1NE6ojx5nYj/7DLo8gOCsgnTjWzZZs1mS46Ew5gA/ySQsgeeyaIqKJbRmQ+1KkVzBh
+ WGeol/pCwwrK/LG5xzaw2+z07qncSTTHdh6+KeD3vJjnlCW7mAaFhATUVy1vb+/h1LWc99TN
+ kkd6Ccyhac180OvQ5/2WBjQiHKNuB8RX/JRFOI34RuHzbqS5QuFbkAHUzRIQN8rrsk7QXotz
+ FDht9rvCSZir/6TRG6R+6m8qS60P24eLQcqaTMNURYB7tDLpp8yghPGCN1kFcaditDyHyv36
+ zaUrSQ/jvMYistj/6Cx+VfMgxqquJnFTwdz7QLSNkq+5w50aIuNYZKp5VnSq/1HKe6xUlCbv
+ WEYs86A7ewPBNeGkynlaP0EFryv5t6fPTHciEIpFJ4knxyp+ni+bcVT7St4KUNBLMkJY3nqb
+ VXVtAcX44VcVFOubKlqc8erB8Ej5bbvGM6jVf3OaNdKJJ9re2ev+ixyaUOO937inVJqkqwlP
+ 5qfN8G2Ah4yErhuxj67b/kS3KVtxS0kw27XA5fhwHyaPaG2bXOPDLNAO1yUY6VhteWPoR7e9
+ JBUMM7iJwhjbdASqxL/qeY7RW3m51BibXwqg6S7rtK+Hzc=
+IronPort-HdrOrdr: A9a23:7Qp0Ba8bMhM7T6MbZm5uk+DsI+orL9Y04lQ7vn2ZhyY4TiX+rb
+ HNoB1173HJYVoqMk3I+urwW5VoI0m8yXcd2+B4VotKNzOIhILHFuxfBPPZowHIKmnZ6vNX07
+ tmfuxVDd39CkU/sOPBiTPIdurJBLK8gceVbSC09QYIcT1X
+X-Talos-CUID: 9a23:yWHOFG/w0URldbQAeV+Vv00SSscFI13H8FDZGmDiD2oyeZavcEDFrQ==
+X-Talos-MUID: 9a23:5agqAwUw1Viasxzq/CDjnmhBN5812LSnFXESv8wonZa1KDMlbg==
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.25,231,1779148800"; 
+   d="scan'208";a="59770877"
+Received: from aer-l-core-01.cisco.com ([144.254.74.202])
+  by aer-iport-1.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 19 Aug 2026 15:13:20 +0000
+Received: from localhost (unknown [10.190.15.25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by aer-l-core-01.cisco.com (Postfix) with ESMTPS id 01B34126625;
+	Wed, 19 Aug 2026 15:13:19 +0000 (GMT)
+From: Jerome Tollet <jtollet@cisco.com>
+To: netdev@vger.kernel.org
+Cc: Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net] net/mlx5e: Prevent stale XSK buffer release on refill retry
+Date: Wed, 19 Aug 2026 17:13:20 +0200
+Message-ID: <20260819151320.64178-1-jtollet@cisco.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 2/2] forcedeth: stop the tx_timeout register dump past
- the requested window
-To: Marek Czernohous <mczernohous@gmail.com>, netdev@vger.kernel.org,
- "yanjun.zhu@linux.dev" <yanjun.zhu@linux.dev>
-Cc: Rain River <rain.1986.08.12@gmail.com>, Zhu Yanjun
- <zyjzyj2000@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Tobias Diedrich <tobiasdiedrich@gmail.com>, linux-kernel@vger.kernel.org
-References: <178682367884.3748309.5288746298966501007@gmail.com>
- <178682367886.3748309.6978554332066826294@gmail.com>
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
-In-Reply-To: <178682367886.3748309.6978554332066826294@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Outbound-Client-TLS: ANONYMOUS;unknown [10.190.15.25];TLSv1.3;TLS_AES_256_GCM_SHA384;256
+X-Outbound-SMTP-Client: 10.190.15.25, [10.190.15.25]
+X-Outbound-Node: aer-l-core-01.cisco.com
 
+When an XDP redirect to an AF_XDP socket fails because the RX ring is
+full, the XSK core frees the buffer. mlx5e later visits the cyclic WQE
+and frees its XSK buffer before trying to refill the slot.
 
-在 2026/8/15 12:54, Marek Czernohous 写道:
-> From: Marek Czernohous <marek@czernohous.de>
->
-> nv_tx_timeout() dumps the register window in rows of eight dwords:
->
-> 	for (i = 0; i <= np->register_size; i += 32) {
-> 		netdev_info(dev, "%3x: %08x ... %08x\n", i,
-> 			    readl(base + i + 0), ..., readl(base + i + 28));
->
-> The loop bound only checks the row's starting offset, so the final row
-> reads a full 32 bytes from a position that is below the end of the window
-> but too close to it. base is mapped with exactly that length:
->
-> 	np->base = ioremap(addr, np->register_size);
->
-> so the tail of that row is read from beyond the length the driver asked
-> for. Per variant, the last iteration reads past register_size by:
->
-> 	NV_PCI_REGSZ_VER1 (0x270): row 0x260 reads to 0x27f, 16 bytes over
-> 	NV_PCI_REGSZ_VER2 (0x2d4): row 0x2c0 reads to 0x2df, 12 bytes over
-> 	NV_PCI_REGSZ_VER3 (0x604): row 0x600 reads to 0x61f, 28 bytes over
->
-> This happens on every supported device, not just one of them. Note that
-> it is not a consequence of the sizes being odd: with i <= register_size
-> the offending row is reached whatever the size, and a size that were a
-> multiple of 32 would overrun by a full row rather than by a remainder.
->
-> To be precise about the severity: the reads stay inside the BAR. Memory
-> BAR sizes are powers of two, the driver only accepts a region with
-> pci_resource_len() >= register_size (forcedeth.c:5757-5762), and the
-> next power of two at or above each register_size already covers the
-> offending row: 0x400 for 0x270 and 0x2d4, 0x800 for 0x604. ioremap()
-> also rounds the mapped length up to page granularity, so the reads land
-> inside the mapping the CPU has as well. What they leave is the window
-> the driver asked for, not the BAR and not the mapping. That is still a
-> driver reading registers it did not ask for, and it is trivial to
-> avoid, but nobody should expect a fault from it.
->
-> Changing <= to < is not enough: register_size is a length and every size
-> above is larger than its last row start, so i still reaches the offending
-> row. Check that the whole row fits instead.
->
-> The trade-off is that a partial trailing row is no longer dumped: 16 bytes
-> for VER1, 20 for VER2, 4 for VER3. That seemed preferable to reading
-> outside the requested window, and to open-coding a second, narrower dump
-> for the remainder in what is a debug-only path. Extending the dump to
-> cover the tail can be done on top if anyone misses those registers.
->
-> Only reachable with the debug_tx_timeout module parameter, which defaults
-> to false. It has not been observed at runtime: forcing a genuine TX
-> timeout on the reference machine is not something I can do safely, so this
-> rests on the arithmetic above and on a build test, not on a reproduction.
-> UBSAN does not catch it either, since these are MMIO reads rather than an
-> array access. It was found by reading the function while fixing the
-> saved_config_space off-by-one in nv_suspend() and nv_resume().
->
-> The dump was introduced with a fixed 0x400 bound while ioremap() mapped
-> only NV_PCI_REGSZ (0x270), so it read about 0x190 bytes too far from the
-> start. Commit 86a0f04387bf ("[PATCH] forcedeth: fix initialization")
-> later replaced 0x400 with np->register_size, which shrank the overrun to
-> the remainder but did not remove it.
->
-> Fixes: c2dba06dae7d ("[PATCH] forcedeth: rewritten tx irq handling")
-> Signed-off-by: Marek Czernohous <marek@czernohous.de>
+If a batched refill succeeds only partially, a missing WQE keeps its
+old buffer pointer. The buffer may meanwhile be allocated to another
+WQE, so a later refill retry can free a live buffer through the stale
+pointer and publish the same UMEM frame twice.
 
-Thanks a lot.
+Mark the WQE as released immediately after the driver-side free. The
+flag is already cleared when a replacement buffer is assigned, so
+refill retries no longer release stale pointers.
 
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+A standalone legacy cyclic-RQ zero-copy libxsk reproducer, using
+64-byte UDP traffic offered at 12 Mpps, stopped on stock after
+2,854,914 packets in 4.094 seconds, with 4,542 xdp_rx_ring_full events
+and 64 ownership/double-publication errors. With this change it
+processed 356,904,225 packets in 30 seconds despite 571,405
+xdp_rx_ring_full events, with no ownership or data errors.
 
-Zhu Yanjun
+Fixes: 3f93f82988bc ("net/mlx5e: RX, Defer page release in legacy rq for better recycling")
+Cc: stable@vger.kernel.org
+Suggested-by: Daniel Borkmann <daniel@iogearbox.net>
+Signed-off-by: Jerome Tollet <jtollet@cisco.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-> Assisted-by: Claude:claude-opus-5
-> ---
->   drivers/net/ethernet/nvidia/forcedeth.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/net/ethernet/nvidia/forcedeth.c b/drivers/net/ethernet/nvidia/forcedeth.c
-> index dc804e111564..f0218a0eab5c 100644
-> --- a/drivers/net/ethernet/nvidia/forcedeth.c
-> +++ b/drivers/net/ethernet/nvidia/forcedeth.c
-> @@ -2740,7 +2740,7 @@ static void nv_tx_timeout(struct net_device *dev, unsigned int txqueue)
->   
->   		netdev_info(dev, "Ring at %lx\n", (unsigned long)np->ring_addr);
->   		netdev_info(dev, "Dumping tx registers\n");
-> -		for (i = 0; i <= np->register_size; i += 32) {
-> +		for (i = 0; i + 32 <= np->register_size; i += 32) {
->   			netdev_info(dev,
->   				    "%3x: %08x %08x %08x %08x "
->   				    "%08x %08x %08x %08x\n",
-
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+index 6fc6605d2..7967a2737 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+@@ -410,8 +410,11 @@ static inline void mlx5e_free_rx_wqe(struct mlx5e_rq *rq,
+ 
+ static void mlx5e_xsk_free_rx_wqe(struct mlx5e_wqe_frag_info *wi)
+ {
+-	if (!(wi->flags & BIT(MLX5E_WQE_FRAG_SKIP_RELEASE)))
+-		xsk_buff_free(*wi->xskp);
++	if (wi->flags & BIT(MLX5E_WQE_FRAG_SKIP_RELEASE))
++		return;
++
++	xsk_buff_free(*wi->xskp);
++	wi->flags |= BIT(MLX5E_WQE_FRAG_SKIP_RELEASE);
+ }
+ 
+ static void mlx5e_dealloc_rx_wqe(struct mlx5e_rq *rq, u16 ix)
 -- 
-Best Regards,
-Yanjun.Zhu
+2.55.0
 
