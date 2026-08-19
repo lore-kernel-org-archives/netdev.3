@@ -1,158 +1,203 @@
-Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5598C4908DF
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 17:21:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
+Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A877492520;
+	Wed, 19 Aug 2026 17:21:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787160112; cv=none; b=rX+7zzLzVxjJrKYncm/cu8K/oxbyl30oXcuTfjAxKuB9tCabjSuUs9b984QfcsWCjCEUJ6PyhUVhT2T/ta2oq/6srBztAFEfORF5NhYWwFiSSxVLIhdISyyJksfFeaROcz1L/eyGerrjJpjcSq0mVV3Fjn0qe8p4F9GKKSrBY24=
+	t=1787160122; cv=none; b=pHFRW8T50uIGwdbLMgi+H3lw8NRhDUe7G1/N+j10VWQstzXcr1i74R0uCAuEtETxwzxzHP9oWrnAEwU3PFnWMkgXT0d54/ZrWzCli2IF2cY4B/RZFPgu1kZFxzFmL/rdJquP1CxVgFq2Ckcv74hQzgBJrkZpIcF52Vojirb5OyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787160112; c=relaxed/simple;
-	bh=bRO2wf8uxrlNerO74sU0UHAIUkBZsoNmIxzPuOgpmW8=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=SZMz6aCnxLJ9nyOQeW0WKbWujnh4JOKxYjDXS3Tf1wJwKHIg0iS+i6eP0B3DwgxeKvcBAKvbYqciGWHM+KPMhhrUwzXLcAMa140WbvXd9j6l0LHu4eogY7OLTOWm6gFRsN2y3kxZB5+L9llJyJVAx2i9U3MTZC2ZU6hqskPcU3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=pOEHfqJf; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=AMV9jjc8; arc=none smtp.client-ip=103.168.172.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
+	s=arc-20240116; t=1787160122; c=relaxed/simple;
+	bh=/yPDJFo3BI9AXPSq1MCLeFrwB4SAoJ27qJLVuvTqeic=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=TYCEeGpfzNJswWzhJTVIVBKgvGPtbxijcT4iC1J8AV49I8QNliIwoXgataBhFpeJuu7yIWrKw5QepZOS9yT/b2QgSQMPmsq0Z3lF+UL96TCgn7ujzu7gPK185CRNrQMUowC0CrpMnZP3fvD7mYAml3o2OpsvHiIa8d0dtEf1iMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=isX09NEP; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=lLVgo/FO; arc=none smtp.client-ip=160.80.4.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="pOEHfqJf";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="AMV9jjc8"
-Received: from ams-compute-01.internal (ams-compute-01.internal [10.64.2.61])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id E3D051400023;
-	Wed, 19 Aug 2026 13:21:32 -0400 (EDT)
-Received: from ams-imap-19 ([10.64.2.39])
-  by ams-compute-01.internal (MEProxy); Wed, 19 Aug 2026 13:21:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1787160092;
-	 x=1787246492; bh=NWuWrL27Ujnb4PlaJ3Zg2i1p2RPqVQIf3bxkuMZPVEI=; b=
-	pOEHfqJfhdcXW7QC4t8/4aUgR9DSahqJyEgzSsEjZucbrZ7I6cVOQAOXRWF7Gh8o
-	W+/S2wQw71yFimU9yjo77Gnk3LGcNpYEusLeoDr6YMX7Yqh82nO/6P1qIksCkC4n
-	H3TxLHlo5Idetj6WPMIH+8DqP9yzexrcf4oi8qSdinGNK9HYkR6W0oyJl5ua+cqu
-	MUTcC7geyNoJFsgGmRF/mq6UNQ+YpiwYGZ5OyhdVKYZ+GSFpMLD/ywgIr6QJRFO1
-	Tdu5hx2F5pdrejOonroqErdqAHPkOYOJSEU/mXUML1AB3qGx14f3obGLJdOaJ8m3
-	fhXt7xjXLka8z3NL3+98Kg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787160092; x=
-	1787246492; bh=NWuWrL27Ujnb4PlaJ3Zg2i1p2RPqVQIf3bxkuMZPVEI=; b=A
-	MV9jjc8lKKRv2evCrguEF1mmq60JQBhndSw0hGXtkNLqNO5qR55ZvZTaq7uuP5Ei
-	navitHcEZsu1VWKEdkW5+teuaXYjrYJ7SwipGSlcjNC2MJ91RdkiYhtVEI/vAAQH
-	ljY2VwwY9jB4xJt2CFuVBv78mWkx26ryAbkXz57Jgn3g9w1OaA6JEkjnMCF0Ql4Y
-	kkzW1mPhRrz3SWEr7XTKuKcTwxta73cE37Vl+/55AkwVVftsbfvGa2ryIeVXFwFB
-	ho05sDhL5omsj4HqE3RGXG5dIwaB/mJq8A5zd3uy9+kQOsvsqInSh9d1wArbRtxZ
-	L3HvWmZn6Q8vQI61/90oA==
-X-ME-Sender: <xms:GeaFamsX6qGXHqSb365Us-T39cJUMqiKRYhQwehmDFaGwnntIdaFaA>
-    <xme:GeaFamTu6H3WUt48EHKCSKJkBK11CnXojgS2OqqNWORUBdVPi_CXByYMRO8WYjmqk
-    GjRUtzEEgto2odxMLCzK7cA58EAkAEHfrvUNS8X3T7tRR0FWjHfTKCr>
-X-ME-Proxy-Cause: dmFkZTEx4OOh6X74KAFSWA0bcX6tdJgX893NipoCnDN03Gho1i/V95rfPifnUr/ki9ObML
-    hM4bYwHEYR0DgUKidwJX+0tJ2eViKr5YbCqkUshBehlOlIXkbk8Z5F9NSI8/8vzMlwjUH+
-    m4kCvjsS8trLHL89Niu7OHFWXKrQUQUM7eo1hXv/T4Iqbe4JtgSiZa8e28dvjXEOiPCtdg
-    YL1mWN01t6+RxqTfrfwGZwlogNpG11IYEqWWj3EN8zcTSRTjABRMkEnRNrdAE4tcQlCI1a
-    qYEWnEn8B6fplLdrGLZ8VMQ8lqPK77REDO5z0MZnmcpRf2XGZxkbfuYlKHk6HXE22lD1Gc
-    wxT/0HOBhgiPNfLvkd62UbYdYdBAgNoBQgn3iY2KQiWMA25DVOY1HhS0ib1OmjAStn2rR0
-    uFrHAiAAvNatxv/knRQPa+qlTa3YHwcgC1H9+zcIqJxRUJGGuLKGu8FglWC5MOROlXEBvv
-    nsVOBSokk6vTtS7rQC+7+EafLGfWEEco4A9nFvwQZCZs8xUltfWQrLhGD3e9+FCGiQRWx9
-    paWzKQ798pKy/DxWV/H/o9lDwFZHvi04WxZ5AxyDRWTG0SLNLVIL6Pyai9rWtR8ZqgFwab
-    A66bxmquh6ZnOcjetHC7zOHv3s7ohvOqo1BUpQp2T1LHF4aIHks9wRj6AHxQ
-X-ME-Proxy: <xmx:GuaFaqomA8zgOJ5Wd3ulg5Av8es5ZbBHIH-JgnKax08_JMijDquiBQ>
-    <xmx:GuaFaoFWM94SfIES04QchDBCrVvwkoNTxP9hXxGWFHC_YbmsK0q9qA>
-    <xmx:GuaFagTAquzC9umI_PZoYhRIXvV3EKu630bG1WngIRXl-wPYzpt9uA>
-    <xmx:GuaFauPMkdyNXPbjLeO1djG3Cc-wMqyLKWYpc_X1BU8tnDyh90l-zw>
-    <xmx:HOaFakXMHP_Fc9xMMgUrbOvlFF5vl9ibyc5rQj35bVqddqR5OThYFwyS>
-Feedback-ID: i559e4809:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 3C0B22F81644; Wed, 19 Aug 2026 13:21:29 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="isX09NEP";
+	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="lLVgo/FO"
+Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 67JHL2AD011095;
+	Wed, 19 Aug 2026 19:21:07 +0200
+Received: from lubuntu-18.04 (unknown [160.80.103.126])
+	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id C87631205C5;
+	Wed, 19 Aug 2026 19:20:57 +0200 (CEST)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
+	s=ed201904; t=1787160058; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IXp/w7vjpclMTyHwLmNKOVVg+V18u0MS/Dozdar0KWg=;
+	b=isX09NEPD67URT3mk0AVxGIoCJsClYb8BXXqtJcC1yC3hrgyjXVW3mZHxPv+SeHmrshWTc
+	pdGm/wfeJsyF2cCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
+	t=1787160058; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IXp/w7vjpclMTyHwLmNKOVVg+V18u0MS/Dozdar0KWg=;
+	b=lLVgo/FOT5rZguhJD93xges0z1xhD42itgxweYVGsG8WfDsg0xaeNIaQrOpp9PJdO1KRal
+	/snzofdOzZkG5qxsDGAkGKzjuCwu3SlzTXYNuNRbWGc5SpAXalAOm6xIuh9rTSG5IqBc8X
+	VkKBLtp5UQF9BRKyLDmv/g0NDvNTUIn+lCV2i0i3oten/tCg3z8Fj+fN8LIHmtxdgLmBf9
+	P78D/qaetVrxDUDAur7FyP3I+BRMhd50Etogasr9m4ODdys8vsRFuKlh7MfWb9fmaHiJ8Q
+	kEC9Hsrd2KxqlhXglsUW8gtXRip59ZaiJRKPhsLeTO5Ne5kUxpfLRDwsJshauw==
+Date: Wed, 19 Aug 2026 19:20:57 +0200
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
+To: David Lee <david.lee@trailofbits.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, Kyle Zeng <kylebot@openai.com>,
+        "Dominik 'Disconnect3d' Czarnota" <dominik.czarnota@trailofbits.com>,
+        Nicolas Dichtel <nicolas.dichtel@6wind.com>, horms@kernel.org,
+        stefano.salsano@uniroma2.it, dsahern@kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Andrea Mayer
+ <andrea.mayer@uniroma2.it>
+Subject: Re: [PATCH net v4] ipv6: seg6: clear IPv4 control block on IPIP
+ decapsulation
+Message-Id: <20260819192057.fd671c00ce2227bc001ac862@uniroma2.it>
+In-Reply-To: <20260817085839.946321-1-david.lee@trailofbits.com>
+References: <20260817085839.946321-1-david.lee@trailofbits.com>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-ThreadId: A4bHHQqBWFxs
-Date: Wed, 19 Aug 2026 20:18:48 +0300
-From: "Alice Mikityanska" <alice.kernel@fastmail.im>
-To: "Paolo Abeni" <pabeni@redhat.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Eric Dumazet" <edumazet@google.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- "Jason Wang" <jasowangio@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
- "Simon Horman" <horms@kernel.org>, "Xuan Zhuo" <xuanzhuo@linux.alibaba.com>,
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- "Jason Xing" <kerneljasonxing@gmail.com>,
- "Kuniyuki Iwashima" <kuniyu@google.com>,
- =?UTF-8?Q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@kernel.org>,
- "Jiayuan Chen" <jiayuan.chen@linux.dev>, netdev@vger.kernel.org,
- "Alice Mikityanska" <alice@isovalent.com>
-Message-Id: <d9005289-6997-4c0c-82e1-d13637645cf7@app.fastmail.com>
-In-Reply-To: <3419e66f-4c67-498b-b42b-30f2ad7bfe6a@redhat.com>
-References: <20260813174613.2920246-1-alice.kernel@fastmail.im>
- <20260813174613.2920246-2-alice.kernel@fastmail.im>
- <3419e66f-4c67-498b-b42b-30f2ad7bfe6a@redhat.com>
-Subject: Re: [PATCH net-next v2 1/2] net: Guard for gso_segs overflow in skb_segment
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
 
-On Tue, Aug 18, 2026, at 16:38, Paolo Abeni wrote:
-> On 8/13/26 7:46 PM, Alice Mikityanska wrote:
->> From: Alice Mikityanska <alice@isovalent.com>
->> 
->> skb_segment calculates 32-bit partial_segs as len / gso_size, and then
->> assigns it to the 16-bit gso_segs field. The division might overflow in
->> some edge cases where the SKB is BIG TCP (65536 <= len <= 8*65535), and
->> gso_size < TCP_MIN_GSO_SIZE = 8. While normally this can't happen due to
->> TCP_MIN_GSO_SIZE, an AF_PACKET PACKET_VNET_HDR socket can generate such
->> a malformed packet.
->> 
->> Blocking malformed virtio_net packets is implemented in the next patch,
->> but this patch clamps partial_segs in skb_segment itself for more
->> generic robustness. Should len / gso_size happen to be bigger than
->> 65535 in partial GSO, skb_segment will now just produce more than two
->> output SKBs, all of which will be valid with gso_segs <= 65535.
+On Mon, 17 Aug 2026 08:58:38 +0000
+David Lee <david.lee@trailofbits.com> wrote:
+
+Thanks for the v4.
+
+> From: Kyle Zeng <kylebot@openai.com>
 >
-> Minor nit: I think it would make sense to re-order the patches.
+> End.DX4 and End.DT4 decapsulate an IPv4 packet through
+> decap_and_validate() and send it directly to IPv4 routing. The inner
+> packet therefore bypasses ip_rcv_core(), which normally clears IPCB
+> before IPv4 interprets skb->cb.
 >
->> Signed-off-by: Alice Mikityanska <alice@isovalent.com>
->> ---
->>  net/core/skbuff.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->> 
->> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
->> index c82a1472a5ea..439cbfeb02bd 100644
->> --- a/net/core/skbuff.c
->> +++ b/net/core/skbuff.c
->> @@ -4860,7 +4860,7 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
->>  		 * doesn't fit into an MSS sized block, so take care of that
->>  		 * now.
->>  		 */
->> -		partial_segs = len / mss;
->> +		partial_segs = min(len / mss, GSO_MAX_SEGS);
+> The skb instead retains IP6CB data from the outer packet. IP6CB and
+> IPCB use the same skb->cb storage, so IP6CB(skb)->lastopt overlaps
+> IPCB(skb)->opt.optlen and srr, while IP6CB(skb)->nhoff overlaps rr and
+> ts.
 >
-> Since on top of patch 2/2 the min() should always be a no-op,
-
-Not sure; it'll be a no-op in this specific virtio_net scenario, but
-what if there are more?
-
-> what about instead:
+> The sender can make the stale optlen byte nonzero with a valid outer
+> extension-header chain. The reproducers put an eight-byte Destination
+> Options header immediately after the 40-byte IPv6 header and before the
+> Segment Routing Header. ipv6_destopt_rcv() records the sender-controlled
+> Destination Options offset in both lastopt and nhoff, setting them to
+> 40. On the reproduced little-endian x86-64 kernel, IPv4 therefore sees
+> optlen = 40 and rr = 40.
 >
-> 		if (WARN_ON_ONCE(len/mss > GSO_MAX_SEGS))
-> 			return ERR_PTR(-EINVAL);
-
-Yeah, it looks like a good idea to add a WARN to let syzbot uncover more
-possible cases, but:
-
-1. I'd keep it non-failing rather than return an error: partial GSO can
-   deal with smaller segment size pretty well, no need to fail.
-
-2. I'd make it DEBUG_NET_WARN_ON_ONCE to avoid the penalty in
-   production.
-
-I can do that if it passes Eric's filter for too much code in fastpath.
-
-> ?
+> Both tcp_v4_save_options() and __ip_options_echo() skip option copying
+> when optlen is zero. Here optlen is 40, so the TCP SYN path allocates
+> room for 40 bytes of option data and calls __ip_options_echo(). The
+> stale rr value makes that function read inner packet byte 41 as the
+> Record Route option length. The reproducers set that sender-controlled
+> byte to 255, so __ip_options_echo() copies 255 bytes into the 40-byte
+> option-data area.
 >
-> /P
+> Separate End.DX4 and End.DT4 reproducers on the unpatched v7.2-rc5
+> kernel both produced:
+>
+>   BUG: KASAN: slab-out-of-bounds in __ip_options_echo()
+>   Write of size 255
+>
+> The relevant End.DX4 call path is:
+>
+>   __ip_options_echo
+>   tcp_v4_route_req
+>   tcp_conn_request
+>   tcp_v4_conn_request
+>   tcp_rcv_state_process
+>   tcp_v4_do_rcv
+>   tcp_v4_rcv
+>   ip_protocol_deliver_rcu
+>   ip_local_deliver_finish
+>   ip_local_deliver
+>   input_action_end_dx4_finish
+>   input_action_end_dx4
+>
+> The relevant End.DT4 call path is:
+>
+>   __ip_options_echo
+>   tcp_v4_route_req
+>   tcp_conn_request
+>   tcp_v4_conn_request
+>   tcp_rcv_state_process
+>   tcp_v4_do_rcv
+>   tcp_v4_rcv
+>   ip_protocol_deliver_rcu
+>   ip_local_deliver_finish
+>   ip_local_deliver
+>   input_action_end_dt4
+>
+> tcp_v4_save_options() is inlined into the tcp_v4_route_req() path, so
+> it does not appear as a separate frame.
+>
+
+Nit, not worth a respin: the two call paths are the same from
+__ip_options_echo() to ip_local_deliver(), so one of them, plus the
+frames after ip_local_deliver() for the other, would do.
+
+> When decap_and_validate() handles IPPROTO_IPIP, save the ingress
+> interface from IP6CB, clear IPCB, and restore the saved value. Doing
+> this in the common decapsulation path covers End.DX4, End.DT4, and
+> End.DT46's IPv4 arm.
+>
+> Use IP6CB(skb)->iif rather than skb->skb_iif. These actions run after
+> l3mdev processing, which can replace skb_iif with the L3 master;
+> IP6CB iif still records the receiving interface set at IPv6 ingress.
+>
+> Fixes: 891ef8dd2a8d ("ipv6: sr: implement additional seg6local actions")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+> Assisted-by: Codex:gpt-5.6-sol Codex:gpt-5.5-cyber
+> Signed-off-by: Kyle Zeng <kylebot@openai.com>
+> Co-developed-by: David Lee <david.lee@trailofbits.com>
+> Signed-off-by: David Lee <david.lee@trailofbits.com>
+> ---
+> Changes in v4:
+> - Explain how the stale occurs.
+> - Include the observed End.DX4 and End.DT4 call paths.
+>
+> v3: https://lore.kernel.org/netdev/20260810154732.850472-1-david.lee@trailofbits.com/
+>
+> Changes in v3:
+> - Clear IPCB in the common IPPROTO_IPIP decapsulation path so End.DX4,
+>   End.DT4, and End.DT46's IPv4 arm are covered.
+> - Preserve the ingress interface from IP6CB instead of skb->skb_iif,
+>   which can identify the VRF master after l3mdev processing.
+> - Update the Fixes tag to the commit that introduced End.DX4.
+> - Include the End.DX4 and End.DT4 KASAN evidence.
+>
+> v2: https://lore.kernel.org/netdev/20260804094625.715305-1-david.lee@trailofbits.com/
+> v1: https://lore.kernel.org/all/20260731140832.567669-1-david.lee@trailofbits.com/
+>
+>  net/ipv6/seg6_local.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+
+Side note: before your patch IPSKB_L3SLAVE could read as set inside
+the IPCB() on this path by chance (even with no VRF involved),
+depending on how the outer IPv6 packet was fragmented:
+IPCB->flags overlaps the outer IP6CB->frag_max_size (with
+CONFIG_IPV6_MIP6).
+
+Your patch clears IPCB->flags, which loses nothing: that bit did not
+record an enslavement to a VRF; it was stale outer data.
+And on End.DX4 nothing records one in the inner packet's IPCB.
+That is a different bug from the out-of-bounds write you are fixing.
+
+In other words, on End.DX4 the IPSKB_L3SLAVE propagation was missing
+before this patch, and this patch sanitizes garbage that could have
+accidentally set that bit. IMHO, the propagation should go in its
+own patch. I will look at it.
+
+Reviewed-by: Andrea Mayer <andrea.mayer@uniroma2.it>
