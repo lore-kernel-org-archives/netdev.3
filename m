@@ -1,223 +1,306 @@
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out28-98.mail.aliyun.com (out28-98.mail.aliyun.com [115.124.28.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECAF286A4
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 00:09:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787098179; cv=pass; b=JFtmGGA9C5yH7S3cGG8xkhHMEZNtQhflNujN873urOagoOUDAxcbJJsRGW8fakR1793HEpAR0ECeRVt1Tv2bQPk8U5X0uW9v2qmME3h4KRq3uImaTkIedGj0+rP1JLKkO5NPjr8QqYcSQyQYiEuPqkDT0CzqLUq68XikzIom07w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787098179; c=relaxed/simple;
-	bh=r3zTW45nsyUnnxRg7xoJ7zODVVjB0nkyf2mk8yr4AGU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ojz1KJJRViwhKL2d7f3NyUBJACu5jCHdYwEjp2UxkX2y4NTFTm67ey5GbKrmb/LrRxp2rhvXPQt/5AmpW+N2IfdvGJv1ash4UDE/EZy1t1YQc+uCxc8Ftm37B2Zm4I9Ej4FgZ2kEsfFmyO5QZCmM8AdULmiFlbpSX5o1lskdpHA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UBgw9oaP; arc=pass smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UBgw9oaP"
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-39c8ee87f7eso4606681fa.3
-        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 17:09:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787098175; cv=none;
-        d=google.com; s=arc-20260327;
-        b=HY+bJLazulZ0SEDORF6jLib141+hQEdr9Y4DqI6Rg41+WcWzpPIzy+duprTWFQT8hb
-         W3YoD1tI2OK6lJciMSEMIhI3cZLCPeJ4iwbAsLgHitUDpFKiw3v/vN5b9dD2VDXc50Ca
-         enYBUk/4kKgOEi2s8CyDIUXTa8SvUR1VLC4WaTEN8i9PwKkiforKk7tvIf2tWhjIByV0
-         Q9UafnGmMN3llHcx4N5MGJpHA9LDKRvqwOoGAAZxyLPRMPzDaNH69MyM+5uk7y4KjaS4
-         NP251t3C95rJhGCDY9kvU4JtF9F8nhJ6x9BriZnE9/Vl4scfpJ2SiUgl0G1uQm4GeD5Z
-         e/yA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=beYAJ6rd8hONAU+/B3i9DJe4/3st3v+JHwH8VcyoAzM=;
-        fh=GqZbg16oNCAmBPHWv0Iz9CjF9vS7/FA7fuLAiaWwUlE=;
-        b=MSa3duZJ9RwPn8wtsYRSsbv4u52LnQtbMgJdJcFduFWMT91gUIBqn7BEoE2/zSyX8N
-         WogDbIz/EHKGUq1LzAAD7sIYMS0HWtlzxzK+SSgs63cNQDA+l2d9RyreQbO2LfwJgZSe
-         1FYYKEdHuggKoZY22/o+pqmC7/ndiP62+P4xxzg7UCopznimIcaZFigy8R9FX8mAVsXO
-         EpOmyubOcyxPudX3h7IGPBcFvQMzECESZ6/rHjEEj9XpPd3jJOFGMzQ3W4bchUpoEdgB
-         FV5bG4yfMI/oSAKbTcoGHHoEDzB3Np0bFpzbFHQCz6AR6m4Dt3TFHChOkFG4l5wMKSVD
-         S5yg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787098175; x=1787702975; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=beYAJ6rd8hONAU+/B3i9DJe4/3st3v+JHwH8VcyoAzM=;
-        b=UBgw9oaPdtT3oKAngrgfLc2GX8XoKzE1oz5pN+iZeFb8vDFx/fVfXXp8iqashYQHk1
-         AdoxI6E22/IrjA9hyIXEX+MFIruN1gEHUmT8Rt/WAaf7Sy4klNZNf2Cq8cXKgXBcjOcQ
-         4wACiXY8JndQdSKcgmC/SQcWbP8YMDXkN5O9hSxy+t6/zviY5hkOKH2mMG8TRUmwoKOV
-         gcD7eOZaaGFDZrf1vqHeCxLBLDgcpBkOv/FmnpiaI8iaVmK/+B9N88DsZ+EY3iFvdWOz
-         Jmt0ocE058R0bDI7LBfdEq4eGeCKYUJh+51DpubBCs8niZBZ0nIsF2EDSSbyY9YG45aI
-         JSEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787098175; x=1787702975;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=beYAJ6rd8hONAU+/B3i9DJe4/3st3v+JHwH8VcyoAzM=;
-        b=dY1FlrKv9SFV45Q/19EyqtjEnXc6b3x2xSSfd4wugG1cRGWE7RKQim/x0PRPHfFU15
-         jpytu27MzZXWz8wKruCRoSacrGmLXxKytDtNluWu4/hHKwb5l0+itWp9FebroAhtgsok
-         bZ/sXgyjOHFZg7dYh0DgrmO0idiLkhUl36G6fgm0PkCXTTDA9bmHFegh/T/ZmG4nzhe8
-         5Jz6OuoRYTcK/dmMOnvR+fXzwe1Zh16LyEm4buE0QocsXVBeBjuchshNXbk0aIXhjfod
-         0sr60h8gTw3W9PSS2Sim81mj6viEHCZrBsdrwDUsImfcFKZKRQsTZ0hS2cH5E1EbOisw
-         DI7g==
-X-Forwarded-Encrypted: i=1; AHgh+Ro2K9cRSX49UdomYj9lm/H22RHr2FkkIkg2cteib+wkYLCbuQRzT9E991e2fZU/7LZ5shhnxkU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHasj24XtJzjYmwPwPtKp7v0NyBMn43b9hUcSAyCrapVcPhxCt
-	8cvTywDvMrhOb2KmwIucAeRjIiqlm72d6ck2taaCKwPRDku4YCAGZmMPDnjcJWd0QA4vP/UNJ9P
-	n1hX+LGWZ7eyG0dTrjC0Rg7cRzy231bw=
-X-Gm-Gg: AR+sD12ldjiDm4mQvYDB9tdSbLHceuzYn7x428d2QskJcdxI7Z6cdbf9Nv77HxSu/V/
-	6aGs9XHYavLkY/kAF5OyibTjkcZB2ft5MP1jkSqhPu/99qYCGrmhuZD0g75cH8HhFQx0IczkWia
-	vZxaoV7U1bwALGcQlUQngFanG4+/XADcQtxFIpgtdUrp4FnncpaOivKkEatbwX728CUo63cypZe
-	ttdRgkdaay4G+KUCj4G2194PrsZtn/offy+UqzchL7JqN1Mn+Y8WqsmLYsKdJOjp/4cqdQz5JH0
-	JBZ1BfSTTiGo8cqfsbgsbrs54iIn+atZYpkXyCR8gTUVdeHntw5HZJNikwnIIK9SS2kdypU7Gu3
-	IW6LjkP9UAgbf1Y38I1WmO3fwbKsVzxTdcqEFGBp1AQBEUwkh1bXaL6Ftqik=
-X-Received: by 2002:a05:651c:222c:b0:39c:a346:8a36 with SMTP id
- 38308e7fff4ca-3a189974b61mr660931fa.8.1787098174857; Tue, 18 Aug 2026
- 17:09:34 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DD22D7BF;
+	Wed, 19 Aug 2026 00:12:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.98
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787098341; cv=none; b=oHewhVCZOywQpB0LD43etbmff0jF8Ng1w9w3YKwBxN0tN6VV+5L0g6jRIA69H+OqZ70cQLXYJi11AmjU9mF/dyZIpyIduCawXzPTZbJxHpK6pv2pIneP0um5P9fwdKQI3H4SBF3SbBkAOmY8wrmlSc2d1X5swbK1Jxv4f0gRuGY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787098341; c=relaxed/simple;
+	bh=m0v/jcgBu/8PQ++KzvRZewUKFxqJUgELDtxkexvexCc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sO/RUcxN/exgg31O2EdJrmvzx+DCJxK7iNr8fTcUpDEHkTyhEyG8iqxQ3f1CNNescwK1LjEGhuloz3DDj4RSc5dtoM+o3rCeAcntXFM3lFCdV7+QUgPZFRk7bOMeWwOnUIEV4iPqQsDc9+K/e2IObsKaCnw8riJ/3H1ZNC5doVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06844582|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.141809-0.0120438-0.846147;FP=2770204692289439250|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033032053168;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.iqi7nKr_1787098326;
+Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.iqi7nKr_1787098326 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Wed, 19 Aug 2026 08:12:07 +0800
+From: "illusion.wang" <illusion.wang@nebula-matrix.com>
+To: dimon.zhao@nebula-matrix.com,
+	illusion.wang@nebula-matrix.com,
+	alvin.wang@nebula-matrix.com,
+	sam.chen@nebula-matrix.com,
+	netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	corbet@lwn.net,
+	kuba@kernel.org,
+	horms@kernel.org,
+	linux-doc@vger.kernel.org,
+	pabeni@redhat.com,
+	vadim.fedorenko@linux.dev,
+	lukas.bulwahn@redhat.com,
+	edumazet@google.com,
+	enelsonmoore@gmail.com,
+	skhan@linuxfoundation.org,
+	hkallweit1@gmail.com,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v25 net-next 00/10] nbl driver for Nebulamatrix NICs
+Date: Wed, 19 Aug 2026 08:11:02 +0800
+Message-ID: <20260819001117.46785-1-illusion.wang@nebula-matrix.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260813215328.99311-1-blbllhy@gmail.com>
-In-Reply-To: <20260813215328.99311-1-blbllhy@gmail.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Wed, 19 Aug 2026 08:08:57 +0800
-X-Gm-Features: AcwNN1W1pQE8vAeWnxc8X4qegJxfs2j5BNbiyglHNl_l4Fi90vnFBfcdT9VQ4FE
-Message-ID: <CAL+tcoBCsSuN_+uypBoP5KdKUkto7X0T8A7qN2Vx6TqqGe-Ymw@mail.gmail.com>
-Subject: Re: [PATCH net v4] xsk: fix NULL pointer dereference in __xsk_rcv()
-To: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-Cc: magnus.karlsson@intel.com, maciej.fijalkowski@intel.com, sdf@fomichev.me, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, AutonomousCodeSecurity@microsoft.com, 
-	tgopinath@linux.microsoft.com, kys@microsoft.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 14, 2026 at 5:53=E2=80=AFAM Cen Zhang (Microsoft) <blbllhy@gmai=
-l.com> wrote:
->
-> In the __xsk_rcv() multi-buffer path, xsk_buff_alloc() is called in a
-> loop without checking its return value. xsk_buff_can_alloc() only
-> counts fill queue entries without validating their addresses, so it
-> can succeed while xsk_buff_alloc() rejects all remaining entries and
-> returns NULL.
->
->   Oops: general protection fault, probably for non-canonical address
->    0xdffffc0000000000
->   KASAN: null-ptr-deref in range
->    [0x0000000000000000-0x0000000000000007]
->   RIP: 0010:__xsk_rcv+0x426/0xc20 (net/xdp/xsk.c:350)
->   Call Trace:
->    xsk_generic_rcv+0x26d/0x5f0
->    xdp_do_generic_redirect+0x3c5/0xcf0
->    do_xdp_generic+0x92f/0xe70
->    __netif_receive_skb_core.constprop.0+0xf7e/0x2b30
->
-> Fix this with a two-stage transaction. First allocate and stage all
-> buffers required for the packet, recycling all staged buffers with
-> xsk_buff_free() if any allocation fails. Only after this stage
-> succeeds, copy the data, reserve the RX descriptors, and release the
-> buffers in an error-free loop.
->
-> Fixes: 804627751b42 ("xsk: add support for AF_XDP multi-buffer on Rx path=
-")
-> Reported-by: AutonomousCodeSecurity@microsoft.com
-> Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
+From: illusion wang <illusion.wang@nebula-matrix.com>
 
-Thanks for working on different approaches!
+This patch series represents the first phase. We plan to integrate it in
+two phases: the first phase covers mailbox and chip configuration,
+while the second phase involves net dev configuration.
+Together, they will provide basic PF-based Ethernet port transmission and
+reception capabilities.
 
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+After that, we will consider other features, such as ethtool support,
+flow management, adminq messaging, VF support, debugfs support, etc.
 
-> ---
+To ensure compatibility, our architecture is divided into the following
+layers:
 
-I think it'd be better to put the previous discussion links like [1]
-here and then explain a bit about what you've changed through
-iterations next time. It would be beneficial for network folks to
-effortlessly trace your patches.
+1. Dev Layer (Device Layer)
+The top-level business logic layer where all operations are
+device-centric. Every operation is performed relative to the device
+context. The intergration of base functions encompasses:
+management(ctrl only for leonis pf0), network(net_dev,this time not
+contained),common.
 
-[1]: https://lore.kernel.org/all/20260806204757.47817-1-blbllhy@gmail.com/
+2. Dispatch Layer
+The distribution from services to specific data operations is mainly
+divided into two types: direct pass-through and handling by the
+management PF. It shields the upper layer from the differences in
+specific underlying locations.
+It describes the processing locations and paths of the services.
 
-Thanks,
-Jason
+3. Resource Layer
+Handles tasks dispatched from Dispatch Layer. These tasks fall into two
+categories:
+3.1 Hardware control
+The Resource Layer further invokes the HW Layer when hardware access is
+needed, as only the HW Layer has OS-level privileges.
+3.2 Software resource management
+Operations like packet statistics collection that don't require hardware
+access.
 
->  net/xdp/xsk.c | 30 +++++++++++++++++++++++++++---
->  1 file changed, 27 insertions(+), 3 deletions(-)
->
-> diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-> index 7855ee09c4b6..33475b180ea6 100644
-> --- a/net/xdp/xsk.c
-> +++ b/net/xdp/xsk.c
-> @@ -298,9 +298,11 @@ static int __xsk_rcv(struct xdp_sock *xs, struct xdp=
-_buff *xdp, u32 len)
->         u32 frame_size =3D __xsk_pool_get_rx_frame_size(xs->pool);
->         void *copy_from =3D xsk_copy_xdp_start(xdp), *copy_to;
->         u32 from_len, meta_len, rem, num_desc;
-> -       struct xdp_buff_xsk *xskb;
-> +       struct xdp_buff_xsk *xskb, *tmp;
->         struct xdp_buff *xsk_xdp;
-> +       LIST_HEAD(xsk_buffs);
->         skb_frag_t *frag;
-> +       u32 i;
->
->         from_len =3D xdp->data_end - copy_from;
->         meta_len =3D xdp->data - copy_from;
-> @@ -343,23 +345,45 @@ static int __xsk_rcv(struct xdp_sock *xs, struct xd=
-p_buff *xdp, u32 len)
->                 frag =3D  &sinfo->frags[0];
->         }
->
-> +       for (i =3D 0; i < num_desc; i++) {
-> +               xsk_xdp =3D xsk_buff_alloc(xs->pool);
-> +               if (!xsk_xdp)
-> +                       goto err_alloc;
-> +
-> +               xskb =3D container_of(xsk_xdp, struct xdp_buff_xsk, xdp);
-> +               if (unlikely(!list_empty(&xskb->list_node)))
-> +                       goto err_alloc;
-> +
-> +               list_add_tail(&xskb->list_node, &xsk_buffs);
-> +       }
-> +
->         do {
->                 u32 to_len =3D frame_size + meta_len;
->                 u32 copied;
->
-> -               xsk_xdp =3D xsk_buff_alloc(xs->pool);
-> +               xskb =3D list_first_entry(&xsk_buffs, struct xdp_buff_xsk=
-,
-> +                                       list_node);
-> +               list_del_init(&xskb->list_node);
-> +               xsk_xdp =3D &xskb->xdp;
->                 copy_to =3D xsk_xdp->data - meta_len;
->
->                 copied =3D xsk_copy_xdp(copy_to, &copy_from, to_len, &fro=
-m_len, &frag, rem);
->                 rem -=3D copied;
->
-> -               xskb =3D container_of(xsk_xdp, struct xdp_buff_xsk, xdp);
->                 __xsk_rcv_zc_safe(xs, xskb, copied - meta_len,
->                                   rem ? XDP_PKT_CONTD : 0);
->                 meta_len =3D 0;
->         } while (rem);
->
->         return 0;
-> +
-> +err_alloc:
-> +       list_for_each_entry_safe(xskb, tmp, &xsk_buffs, list_node) {
-> +               list_del_init(&xskb->list_node);
-> +               xsk_buff_free(&xskb->xdp);
-> +       }
-> +       xs->rx_dropped++;
-> +       return -ENOMEM;
->  }
->
->  static bool xsk_tx_writeable(struct xdp_sock *xs)
-> --
-> 2.52.0
->
+4. HW Layer (Hardware Layer)
+Serves the Resource Layer by interacting with different hardware
+chipsets.Writes to hardware registers to drive the hardware based on
+Resource Layer directives.
+
+5. Channel Layer
+
+Handle communication between PF0(has ctrl func) and other PF,and provide
+basic interaction channels.
+
+6. Common Layer
+Provides fundamental services
+
+changes v24->v25
+Link to v24:https://lore.kernel.org/netdev/20260807044422.2356-1-illusion.wang@nebula-matrix.com/
+1.AI review issues
+
+2.Issues found by Jakub
+changes v23->v24
+Link to v23:https://lore.kernel.org/netdev/20260731094242.2655-1-illusion.wang@nebula-matrix.com/
+1.AI review issues
+2.Issues found by Jakub
+
+changes v22->v23
+Link to v22:https://lore.kernel.org/netdev/20260723040110.91410-1-illusion.wang@nebula-matrix.com/
+AI review issues
+
+chages v21->v22
+Link to v21:https://lore.kernel.org/netdev/20260708064742.35391-1-illusion.wang@nebula-matrix.com/
+AI review issues
+
+changes v20->v21
+Link to v20:https://lore.kernel.org/netdev/20260630010718.4346-1-illusion.wang@nebula-matrix.com/
+I have dropped the old Patch 2 titled "add our driver architecture"
+Add new Patch 2 "add core driver architecture and HW layer initialization".
+Split original patch8 into three separate patches as suggested
+
+changes v19->v20
+Link to v19:https://lore.kernel.org/netdev/20260617044702.2439-1-illusion.wang@nebula-matrix.com/
+Starting from V20, I have dropped the old Patch 3 titled "P4
+configuration invoked during chip initialization". This functionality
+will be reimplemented in next phase using the request_firmware() API
+with an external firmware blob.
+changes v18->v19
+Link to v18:https://lore.kernel.org/netdev/20260611044916.2383-1-illusion.wang@nebula-matrix.com/
+changes v17->v18
+Link to v17:https://lore.kernel.org/netdev/20260601093149.25905-1-illusion.wang@nebula-matrix.com/
+changes v16->v17
+Link to v16:https://lore.kernel.org/netdev/20260526035453.2359-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v15->v16
+Link to v15:https://lore.kernel.org/netdev/20260520032950.4874-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v14->v15
+Link to v14:https://lore.kernel.org/netdev/20260513011649.4404-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v13->v14
+Link to v13:https://lore.kernel.org/netdev/20260428114910.2616-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v12->v13
+Link to v12:https://lore.kernel.org/netdev/20260415033608.2438-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v11->v12
+Link to v11:https://lore.kernel.org/netdev/20260408093739.56001-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v10->v11
+Link to v10:https://lore.kernel.org/netdev/20260401022318.28550-1-illusion.wang@nebula-matrix.com/
+1.Issues found by Mohsin
+2.AI review issues
+changes v9->v10
+Link to v9:https://lore.kernel.org/netdev/20260325040048.2313-1-illusion.wang@nebula-matrix.com/
+1.Issues found by Jakub
+2.AI review issue
+changes v8->v9
+Link to v8:https://lore.kernel.org/netdev/20260317034533.5600-1-illusion.wang@nebula-matrix.com/
+1.Issues found by Jakub
+2.AI review issue
+Changes v7→v8
+Link to v7:https://lore.kernel.org/netdev/20260310120959.22015-1-illusion.wang@nebula-matrix.com/
+1.Issues found by Paolo
+Changes v6->v7
+Link to v6:https://lore.kernel.org/netdev/20260306033451.5196-1-illusion.wang@nebula-matrix.com/
+1.Issue found by Jakub
+2.AI review issue
+Changes v5->v6
+Link to V5:https://lore.kernel.org/netdev/20260226073840.3222-1-illusion.wang@nebula-matrix.com/
+1.put all standard linux includes files the .c file which needs it & others
+--Andrew
+2.AI review issue
+Changes v4->v5
+Link to V4:https://lore.kernel.org/netdev/20260206021608.85381-1-illusion.wang@nebula-matrix.com/
+1.change nbl_core to nbl & change ** pointers to *pointers & others
+--Andrew
+2.AI review issue
+Changes v3->v4
+Link to v3: https://lore.kernel.org/netdev/20260123011804.31263-1-illusion.wang@nebula-matrix.com
+1.cut down to part of a mini driver(mailbox and chip init)
+--Jakub Kicinski Simon Horman(some sort of staged approached)
+2.modify issues found by ai.
+3. Reverse Christmas tree/nbl_err/devm_kfree/remove some macros/
+void type to real type/others
+--Andrew Lunn
+4.change deprecated pci_enable_msix_range to pci_alloc_irq_vectors
+5.delete service layer
+6.the style of kconfig---Randy Dunlap
+7.add to Documentation/networking/device_drivers/ethernet/index.rst
+--Simon Horman
+Changes v2 →v3
+Link to v2: https://lore.kernel.org/netdev/20260109100146.63569-1-illusion.wang@nebula-matrix.com/
+1.cut down to a mini driver:
+    delete vf support
+    use promisc mode to cut down flow management
+    drop patch15 in v2
+    delete adminq msg
+    delete abnormal handling
+    delete some unimportant interfaces
+2.modify issues found by ai review
+Changes v1->v2
+Link to v1: https://lore.kernel.org/netdev/20251223035113.31122-1-illusion.wang@nebula-matrix.com/
+1.Format Issues and Compilation Issues
+- Paolo Abeni
+2.add sysfs patch and drop coexisting patch
+- Andrew Lunn
+3.delete some unimportant ndo operations
+4.add machine generated headers patch
+5.Modify the issues found in patch1-2 and apply the same fixes to other
+patches
+6.modify issues found by nipa
+
+illusion wang (10):
+  net/nebula-matrix: add minimum nbl build framework
+  net/nebula-matrix: add core driver architecture and HW layer
+    initialization
+  net/nebula-matrix: add channel layer
+  net/nebula-matrix: add common resource implementation
+  net/nebula-matrix: add intr resource implementation
+  net/nebula-matrix: add chip-wide hardware init/deinit implementation
+  net/nebula-matrix: dispatch: add control-level routing core
+    infrastructure
+  net/nebula-matrix: dispatch: implement channel RPC framework and
+    serialize hardware ops
+  net/nebula-matrix: add common/ctrl dev init/remove operation
+  net/nebula-matrix: add common dev start/stop operation
+
+ .../device_drivers/ethernet/index.rst         |    1 +
+ .../ethernet/nebula-matrix/nbl.rst            |   28 +
+ MAINTAINERS                                   |   10 +
+ drivers/net/ethernet/Kconfig                  |    1 +
+ drivers/net/ethernet/Makefile                 |    1 +
+ drivers/net/ethernet/nebula-matrix/Kconfig    |   31 +
+ drivers/net/ethernet/nebula-matrix/Makefile   |    6 +
+ .../net/ethernet/nebula-matrix/nbl/Makefile   |   15 +
+ .../nbl/nbl_channel/nbl_channel.c             | 1194 +++++++++++++++++
+ .../nbl/nbl_channel/nbl_channel.h             |  170 +++
+ .../nebula-matrix/nbl/nbl_common/nbl_common.c |  224 ++++
+ .../nebula-matrix/nbl/nbl_common/nbl_common.h |   32 +
+ .../net/ethernet/nebula-matrix/nbl/nbl_core.h |   45 +
+ .../nebula-matrix/nbl/nbl_core/nbl_dev.c      |  503 +++++++
+ .../nebula-matrix/nbl/nbl_core/nbl_dev.h      |   57 +
+ .../nebula-matrix/nbl/nbl_core/nbl_dispatch.c |  639 +++++++++
+ .../nebula-matrix/nbl/nbl_core/nbl_dispatch.h |   25 +
+ .../nebula-matrix/nbl/nbl_hw/nbl_chip.c       |   23 +
+ .../nebula-matrix/nbl/nbl_hw/nbl_chip.h       |   12 +
+ .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c  | 1084 +++++++++++++++
+ .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h  |  352 +++++
+ .../nbl_hw_leonis/nbl_resource_leonis.c       |  345 +++++
+ .../nbl_hw_leonis/nbl_resource_leonis.h       |   12 +
+ .../nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h     |   77 ++
+ .../nebula-matrix/nbl/nbl_hw/nbl_interrupt.c  |  402 ++++++
+ .../nebula-matrix/nbl/nbl_hw/nbl_interrupt.h  |   21 +
+ .../nebula-matrix/nbl/nbl_hw/nbl_resource.c   |  150 +++
+ .../nebula-matrix/nbl/nbl_hw/nbl_resource.h   |  109 ++
+ .../nbl/nbl_include/nbl_def_channel.h         |  182 +++
+ .../nbl/nbl_include/nbl_def_common.h          |   69 +
+ .../nbl/nbl_include/nbl_def_dev.h             |   16 +
+ .../nbl/nbl_include/nbl_def_dispatch.h        |   57 +
+ .../nbl/nbl_include/nbl_def_hw.h              |   68 +
+ .../nbl/nbl_include/nbl_def_resource.h        |   38 +
+ .../nbl/nbl_include/nbl_include.h             |   55 +
+ .../net/ethernet/nebula-matrix/nbl/nbl_main.c |  243 ++++
+ 36 files changed, 6297 insertions(+)
+ create mode 100644 Documentation/networking/device_drivers/ethernet/nebula-matrix/nbl.rst
+ create mode 100644 drivers/net/ethernet/nebula-matrix/Kconfig
+ create mode 100644 drivers/net/ethernet/nebula-matrix/Makefile
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/Makefile
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_chip.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_chip.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_resource.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
+
+-- 
+2.47.3
+
