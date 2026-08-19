@@ -1,202 +1,147 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47332D97BA
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 04:09:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7284C3B6C0C;
+	Wed, 19 Aug 2026 04:39:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787112579; cv=none; b=sdGFTIqGtQqImC+KCAWfqx2j3nlZxQB5Uc4YVxOGA3++XdcYrkagBQ+Lsxs3cIdnBgKyp9YNyzy9jlqcWfSPzlxybd83gNo0DdW6BNA6u1q9OsJ2+CHlW3mQCUozoZ/UaMZjRhwbxxZpZHKRhby6nqDudcDytPTFvysVt2mHtM4=
+	t=1787114359; cv=none; b=MWSernea1iEQcEVQsISDii3H1ByV6tVu95LCjaZFhQ1dN2IKuxBfy02DHwn9ASecSAIzK7Rrfy+M7Ux8wipN4zTN824tvMLoTapc3mUiHdHZB+ZSGOF07a7dsKK86Q/InOttGiR7YxjtzNYaHP8n0tX1YMMtDXIBz0tC/HCBpOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787112579; c=relaxed/simple;
-	bh=6Y9pvYAMVdWjnvCDxgEQOFKJ3MefUW7wF3C+fjgqrao=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RAGZl8gjtxGPamXsyqe7Au/RsXoeS6IeAzmafuhvZBbRMhOa5G3yaUPB8d0CE/xWmxLAN7hEFPOZf9vGicoZwJ1DTHkqRYhkdkmv/XyBasqvlRX9KLczg5pwzolPN6HBoMxR7Tv9t5btCh4mO8ewY00Ce+7Ab3/gzHDgWqpV+tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bN/L5yY+; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787114359; c=relaxed/simple;
+	bh=ImZo4E2AMGP1sngbCZMQ/6T4jS1FT2tuuTfTB6vJNeg=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XlG77rNICXAR2QyY8PWJEvVxHvVJtjahoNIk/8fpaHwMdLk/6/1GqZZJi3F3qN+bIH7o4uVUIiZL3MzYLZ9PB9B/GLMir6QM3ZcubXhH1Nnd6TeQxPZEzIyly3DE4OmOZVAQwK0w1AH5Q1l5ltY2lpYdmBJDwes+k0N8w8juwiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=bdBYh1SK; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bN/L5yY+"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-38125cebfdaso1021857a91.1
-        for <netdev@vger.kernel.org>; Tue, 18 Aug 2026 21:09:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787112577; x=1787717377; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RW6fl6IuFJo9pUwsC4YyObT1+Lda4WOCod4aNBdqDik=;
-        b=bN/L5yY+Nw2DV3IX/xhMYbYfRYZDEcU7v1OHkiq+CAxJnL6gqZ6rLZAjhBxD3dJEag
-         ysKrxpmw7rBksttcxVFMs3QA/VsXNOps4EKhKDgWgg6rUR2n7BC5nY9ovWVxDPLkILlu
-         13AVbA0KKDakkK1ulSCTChSRyAkyRJVj1tC3cQaELTXy+mdEjIfSPZKK1rVQfXn/Q/E9
-         H3MVoE9COEQGgv+q8oUswi7e7QJBdqNTqrbuU8hMzZG1JvD9olthPl+58FaYhS7rEeF1
-         4WsPsEoyONZ8qagV4/Ji6FgsPTsz+b9tim4TDl6mGfMf7KDJC3kgbBfAYCZRtvOCoB6B
-         meOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787112577; x=1787717377;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=RW6fl6IuFJo9pUwsC4YyObT1+Lda4WOCod4aNBdqDik=;
-        b=cuTewdxxjcdNUSWwNNYtEi5GvwCmWBpBTMAQbLsDlu7gnqWjMg4lyKEgSk7ZTDn5Rf
-         1LF+P69xHWNS01+c3LGUPeGrtXSIHUF98TF5xKNIHFxCw05fgkqjBKMI7FiQ1ECNfhhI
-         ulxC5BNXsIXa/B01HYeiGLir+oMciixMl+k8zckFG4/eqNvnaKpw+102Tyl2h7qgryCU
-         GtBZB/Q9QTRsBDcUCTZ62rCoWsBe5ttOD5Pk4eaYzb0tiftoDLIgbvm5rtPbjsxa3OJ9
-         etoiFKMArjG/pSaUQD5GA2fb5OWGOOFUip1vqxxtLJGkECpQZCwYx+MIIYMNBbFCJ4+P
-         xIhA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq1sMdMsRCooI3dM5NxevZrHtaOxH+3g1FbT9XKCy+rLJekZsVIgbKqJrr07WGWVj3pLfCbK5c=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyv2HLq9+JUiBJqkL6B7LBG+WFZW/fkg1NV1VVDVZ9OFfwW8CXn
-	83zWdX3obw3vYV64OE+Af0zi00U3QOEuLCZexLK5A6+WsV+SmNV8t4Wb
-X-Gm-Gg: AR+sD13OtByPs/Pqhs6rhKeK8JlONBPmgW1IQ21pR4juMAUTtjBmpuL8s/Dif1rnlxJ
-	rVhWUBzgiA7rBm3Iymf10ZTJLhWjcCGq5wsO5tX4VqE6zXFFTOzlDwtAgagL38y3aHcoKTj9/8t
-	cE3FCFjkvY8oFtweiuVOEGZjnNx2wiY8bfesSb/T5LFgA6BM42p/IOW3c7SHcpS/NsGyoWxyWAG
-	WwA7/TxWWAM5ABVlPPtCavUBSeRvCeKGt6+1HdnHYfKxDYYuJjBOg9ukaTiNXiK7OjcZe4cTGzt
-	F07jN+r61GSQXBXHbJdcNZVH7NYxC0/Bwk1Cpgrgugdi9FR3aLdLR6gWxU52GMy/2VZ5VsLXkvG
-	yZ87fcr3QnvpaNTNEoeFKoVXiGOm7Fq5MLMTzQzm8TYrPo4cnGrsAQa5t6XoeiaUVWknMBSt2gB
-	BvYS3GrFOcVnTlGswVVnPHhKwvowbfThm1w5TV+wC1kzz5E0CPaqPtu4m5u6M5hX7RNd27CQ==
-X-Received: by 2002:a17:90b:4fd0:b0:390:b41a:b92b with SMTP id 98e67ed59e1d1-39580a53469mr3502694a91.4.1787112576971;
-        Tue, 18 Aug 2026 21:09:36 -0700 (PDT)
-Received: from c79home.localdomain ([14.154.28.104])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3957fc00b22sm351907a91.3.2026.08.18.21.09.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Aug 2026 21:09:36 -0700 (PDT)
-From: Zhixing Chen <running910@gmail.com>
-To: =?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>
-Cc: Conor Dooley <conor.dooley@microchip.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	netdev@vger.kernel.org,
-	Zhixing Chen <running910@gmail.com>
-Subject: [PATCH net-next] net: macb: fix CONFIG_OF=n build
-Date: Wed, 19 Aug 2026 12:09:13 +0800
-Message-Id: <20260819040913.109367-1-running910@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="bdBYh1SK"
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67J2nngw2319836;
+	Tue, 18 Aug 2026 21:39:01 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=c5UEw0rLlRUu6csCqicHaCUZw
+	xYtcObTOODcNfNebnY=; b=bdBYh1SKYK8Eg/P4VrwS1S5HTeS3kgLa8NdLx0heJ
+	GGTgfXwHB3gLpy4qQS2XvNlBM/YZ4LuykO/tKy0b2pacyVP2V2k2FpU1AGioIyC5
+	8NpUewrAnABC7VBB19u+eLCA95vbvXY15CZIbcJ1zPEbNEWr7lzUj84TdhGqB9cm
+	x3tOgFsa6n//idy1sOTexL9m78EXwE4AExkPNHd4l5m/rjF0L6CE56tDBFmRqr1S
+	+tWvUVRUsKrPO7O0tQgI+aASnZRWLrh3qGRoYJfYKgg9gbhY1YPR+nfCvACgpzS+
+	dfkv/BbM7U5XcYnGN94YVy8oT20CycY8chWz1M8FkoRRg==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4g4yew98y0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 18 Aug 2026 21:39:01 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 18 Aug 2026 21:39:00 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Tue, 18 Aug 2026 21:39:00 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id 788133F7060;
+	Tue, 18 Aug 2026 21:38:56 -0700 (PDT)
+Date: Wed, 19 Aug 2026 10:08:55 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: "Jagielski, Jedrzej" <jedrzej.jagielski@intel.com>
+CC: "cjacob@marvell.com" <cjacob@marvell.com>,
+        "davem@davemloft.net"
+	<davem@davemloft.net>,
+        "hkelam@marvell.com" <hkelam@marvell.com>,
+        "jbrandeb@kernel.org" <jbrandeb@kernel.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>,
+        "sgoutham@marvell.com" <sgoutham@marvell.com>,
+        "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+        "edumazet@google.com"
+	<edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        Naveen Mamindlapalli
+	<naveenm@marvell.com>
+Subject: Re: [PATCH net] octeontx2-af: poll for TX link credits before link
+ mode change
+Message-ID: <aoUzX2qMMDmp2_fB@rkannoth-OptiPlex-7090>
+References: <20260818033652.2038116-1-rkannoth@marvell.com>
+ <PH0PR11MB5902CB2559DB564EA0F2488EF0A62@PH0PR11MB5902.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <PH0PR11MB5902CB2559DB564EA0F2488EF0A62@PH0PR11MB5902.namprd11.prod.outlook.com>
+X-Proofpoint-ORIG-GUID: TevRE_osi8zJhPpoC7GdP5wx3amaW49T
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE5MDAzMiBTYWx0ZWRfX2yCpWeTGgR5z
+ /MB5uQzYV4J5JG03/Rqre5nQ7QmVw4khkpDhdHG4Xihyi4ycziH8jNHXDEFyGnMaO0655bfhQpF
+ bENXD39YtR6uhWiqFvAkbRLI+tzCm+Q=
+X-Authority-Analysis: v=2.4 cv=Je6Ma0KV c=1 sm=1 tr=0 ts=6a853365 cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=EAYMVhzMl8SCOHhVQcBL:22 a=QyXUC8HyAAAA:8
+ a=M5GUcnROAAAA:8 a=cUxEQTzyCnlu3EwXTy8A:9 a=CjuIK1q_8ugA:10
+ a=OBjm3rFKGHvpk9ecZwUJ:22 a=ZFRsO2Wz9R1JO6LuwK9s:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE5MDAzMiBTYWx0ZWRfX5Eyxj2F6MwFI
+ MegUMB4eB15DGp+pnhLWeovzGp7cihm7H1zFHa8KWdcfS0IUIq3xeHqtiP6CXj1qpdC7g1lUDVH
+ bntygWelE9fDi0cRrL163Dl0xgy3niieKHaapp6icdowHv4EFf/odc8t+p5Ooq7r50L2gltmJh5
+ bYjRS7UKz4/bl4zxgV3JIewE55P/pCBS50MtNgfbUOd2UUmVEGeDGYQa3KK1VeK9oLGuXiVPdc+
+ AnRUP911vYfiKab2aD9nuRzt7PUuqdRKwa9n3BZswmh3+qRbIVKwwu6sV8aPoeE/Bv4kOvjAoEV
+ bFLjZZMlUmhy7Llkkw+yEQ0RRk394idxhVFWM3BP17Zvf/NavSStcuOq2prAmhWcYyBaBBT/V5t
+ dGUx0O2Crp/XB2ICo2OTm69cyPs4mcRX/x+Vr8lWrl/S97P9dXsvjgFZUFf4hjNSwtUz/567SHS
+ WqGzSe99H9yFTUSGy4A==
+X-Proofpoint-GUID: TevRE_osi8zJhPpoC7GdP5wx3amaW49T
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-19_01,2026-08-18_01,2025-10-01_01
 
-macb_alloc_tieoff() and macb_free_tieoff() are called from macb_probe()
-and macb_remove(), which are built regardless of CONFIG_OF.
+On 2026-08-18 at 13:08:48, Jagielski, Jedrzej (jedrzej.jagielski@intel.com) wrote:
+> From: Ratheesh Kannoth <rkannoth@marvell.com>
+> Sent: Tuesday, August 18, 2026 5:37 AM
+>
+> >+int rvu_nix_tl1_xoff_wait_for_link_credits(struct rvu *rvu, u16 pcifunc)
+> >+{
+> >+	int link, blkaddr, count = 1000;
+>
+> count can be declared inside the loop as it's not used outside
+> same for regval
+historically the Linux kernel required declaring all variables at the beginning of a function or block.
 
-The helpers were added inside the CONFIG_OF block, although the tieoff
-descriptor handling does not depend on OF. This breaks CONFIG_OF=n builds
-with implicit function declaration errors.
+>
+> moreover defs instead of magic is always better choice
+AFAIK, this is not a magic number but a counter.
+Could you show me the Kernel coding guidilines which mandates this ?
 
-Move the helpers outside the CONFIG_OF block.
+>
+> >+	u64 tx_credits, regval;
+> >+	struct nix_hw *nix_hw;
+> >+
+> >+	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NIX, pcifunc);
+> >+	if (blkaddr < 0)
+> >+		return NIX_AF_ERR_AF_LF_INVALID;
+> >+
+> >+	nix_hw =  get_nix_hw(rvu->hw, blkaddr);
+> >+	if (!nix_hw)
+> >+		return NIX_AF_ERR_INVALID_NIXBLK;
+> >+
+> >+	/* set TL1 sw_xoff */
+> >+	link = nix_get_tx_link(rvu, pcifunc);
+> >+	rvu_write64(rvu, blkaddr, NIX_AF_TL1X_SW_XOFF(link), 1);
+> >+
+> >+	/* wait for link credits to return */
+> >+	tx_credits = nix_hw->tx_credits[link];
+> >+	while (1) {
+>
+> cant we use just for loop if this is simple cnt decrementing?
+Do we see any advantage ?
 
-Fixes: 5262eab9462a ("net: macb: allocate tieoff descriptor once across device lifetime")
-Signed-off-by: Zhixing Chen <running910@gmail.com>
----
-
-I hit this while building the latest net-next tree with my local config,
-where CONFIG_MACB is enabled and CONFIG_OF is disabled.
-
-Since CONFIG_MACB does not depend on CONFIG_OF, macb_main.c still needs
-to build in this configuration. However, macb_probe() and macb_remove()
-are built while macb_alloc_tieoff() and macb_free_tieoff() are hidden
-behind CONFIG_OF.
-
-Build error:
-
-drivers/net/ethernet/cadence/macb_main.c: In function 'macb_probe':
-drivers/net/ethernet/cadence/macb_main.c:5951:15: error: implicit declaration of function 'macb_alloc_tieoff' [-Werror=implicit-function-declaration]
- 5951 |         err = macb_alloc_tieoff(bp);
-drivers/net/ethernet/cadence/macb_main.c:5973:9: error: implicit declaration of function 'macb_free_tieoff' [-Werror=implicit-function-declaration]
- 5973 |         macb_free_tieoff(bp);
-  CC [M]  drivers/gpu/drm/i915/display/intel_qp_tables.o
-
----
- drivers/net/ethernet/cadence/macb_main.c | 64 ++++++++++++------------
- 1 file changed, 32 insertions(+), 32 deletions(-)
-
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 1476bce77f34..c7e3b630b49e 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -5507,38 +5507,6 @@ static int eyeq5_init(struct platform_device *pdev)
- 	return ret;
- }
- 
--static int macb_alloc_tieoff(struct macb *bp)
--{
--	/* Tieoff is a workaround in case HW cannot disable queues, for PM. */
--	if (bp->caps & MACB_CAPS_QUEUE_DISABLE)
--		return 0;
--
--	bp->rx_ring_tieoff = dma_alloc_coherent(&bp->pdev->dev,
--						macb_dma_desc_get_size(bp),
--						&bp->rx_ring_tieoff_dma,
--						GFP_KERNEL);
--	if (!bp->rx_ring_tieoff)
--		return -ENOMEM;
--
--	macb_set_addr(bp, bp->rx_ring_tieoff,
--		      MACB_BIT(RX_WRAP) | MACB_BIT(RX_USED));
--
--	bp->rx_ring_tieoff->ctrl = 0;
--
--	return 0;
--}
--
--static void macb_free_tieoff(struct macb *bp)
--{
--	if (!bp->rx_ring_tieoff)
--		return;
--
--	dma_free_coherent(&bp->pdev->dev, macb_dma_desc_get_size(bp),
--			  bp->rx_ring_tieoff,
--			  bp->rx_ring_tieoff_dma);
--	bp->rx_ring_tieoff = NULL;
--}
--
- static const struct macb_usrio_config mpfs_usrio = {
- 	.tsu_source = 0,
- };
-@@ -5756,6 +5724,38 @@ static const struct of_device_id macb_dt_ids[] = {
- MODULE_DEVICE_TABLE(of, macb_dt_ids);
- #endif /* CONFIG_OF */
- 
-+static int macb_alloc_tieoff(struct macb *bp)
-+{
-+	/* Tieoff is a workaround in case HW cannot disable queues, for PM. */
-+	if (bp->caps & MACB_CAPS_QUEUE_DISABLE)
-+		return 0;
-+
-+	bp->rx_ring_tieoff = dma_alloc_coherent(&bp->pdev->dev,
-+						macb_dma_desc_get_size(bp),
-+						&bp->rx_ring_tieoff_dma,
-+						GFP_KERNEL);
-+	if (!bp->rx_ring_tieoff)
-+		return -ENOMEM;
-+
-+	macb_set_addr(bp, bp->rx_ring_tieoff,
-+		      MACB_BIT(RX_WRAP) | MACB_BIT(RX_USED));
-+
-+	bp->rx_ring_tieoff->ctrl = 0;
-+
-+	return 0;
-+}
-+
-+static void macb_free_tieoff(struct macb *bp)
-+{
-+	if (!bp->rx_ring_tieoff)
-+		return;
-+
-+	dma_free_coherent(&bp->pdev->dev, macb_dma_desc_get_size(bp),
-+			  bp->rx_ring_tieoff,
-+			  bp->rx_ring_tieoff_dma);
-+	bp->rx_ring_tieoff = NULL;
-+}
-+
- static const struct macb_config default_gem_config = {
- 	.caps = MACB_CAPS_GIGABIT_MODE_AVAILABLE |
- 		MACB_CAPS_JUMBO |
-
-base-commit: 61eb236c41c2a4717015dff18016a75a5eb90052
--- 
-2.34.1
-
+>
+> >+		regval = rvu_read64(rvu, blkaddr, NIX_AF_TX_LINKX_NORM_CREDIT(link));
+> >+		if (((regval >> 12) & 0xFFFFF) == tx_credits)
+>
+> FIELD_GET(GENMASK(31, 12), regval) ?
+ACK
