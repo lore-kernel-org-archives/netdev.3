@@ -1,118 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD8D43747E;
-	Wed, 19 Aug 2026 09:25:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14F443CE6B;
+	Wed, 19 Aug 2026 09:28:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787131526; cv=none; b=ak5iqWaRrgjt6Xlq/zSNs218vlWx6cT8h97nOIjgzXF0V67hsJEd77mR2D0a0Uwcv9QzjQQ1iBm4pBqRSZRj4DwJ41IDvADdn06k+VsHqqMN4GUKYSh4AikkgDGvhs1Xuew4SglmRdexhlq1vpWIe5feyLQfVCK+KkTSu9btcQk=
+	t=1787131691; cv=none; b=G43/0xEJBVA2mHAJGqzzBwPbT9Fh0307YkDiehh7nKdvxa7DBYbanVRCqCSCNvgNYYv8T6clnVl9+yId5k7bAIkC6AcL353+EWBbVz3DCCD5HHWdb6eQ8VPN5Zimv6zmVLsng0jRAaM3jz37jd2e2Vaajw3GncHM86MhjdcIbDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787131526; c=relaxed/simple;
-	bh=0zMM17tLpz/hbBDpBI4MIRT7onoiY3YP+bwVVBTbgFU=;
+	s=arc-20240116; t=1787131691; c=relaxed/simple;
+	bh=Kdiry360maskP1kDFZ2XR+YZxWWtUmc/HNSOHF5jRBs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OLGnGMqAvfMDwwpI9PFW1ag2Io011LboZlEIEv1wtinn7wk/W3vY1I9wIymucUJsZGZCepGLcqoSNxRojUFlDl+Sr9KqE8+YGk2CcjuTZwDhnJ2StHdHzlXwBOIXT4MN7JnH/shKe+a8o32Z/rc9OFnIxDpkSiD2DK41J6kfREU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oaba5QlK; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=VVOfUV66f0lALEUkWxJ7nAzZ7x/VqLLcCb80kMz+LDrsO31E1OFeeKGYS9UUC4pI3AmFYIlMcjQJ+nStlnv6SDXiHBviQxvCC9Iapz8bcEcq9DzYBIvNpxMB6JtHkH6NLCDareGLo5vdr4LP7Yd/NNntS596pxAG4TRrR6Q23Ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=B+qRn2Jr; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oaba5QlK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA6DB1F000E9;
-	Wed, 19 Aug 2026 09:25:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787131525;
-	bh=kWmGgu+O12FoVwGE7mBAZwTGmCDuOBOLlCdOX1Kp9EM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=oaba5QlKvg163wkF08XOcIeioQb1nPY1wMcJocBnGx2u/A6GUO8Wv/nNnO7dM8czQ
-	 gZ684NAgwFBmBh9SpeGwAkIVGJVWxRGLhTndt+Zr6KImd4Fh0vuTZo4aOqEUnd2drH
-	 R9Nb71GO24MThyVI0z8AelE/84i0kJokzuRSjjs1vPpDJhVSCmDWQOYGY3hpXkF4vt
-	 2jmDT2k4gqhc0zmu8t0WWTKM6I9JnYlcHBY8rBOkO32whHufPOqucomhSAWJIhN2nm
-	 xmRZL+xYEpJeSZTORgM3cwE1+xEczPWUVOZpzZgGu+lq8zqgK7uQjBzTwE27fvGLo7
-	 vd2VhTzUfFJAA==
-Message-ID: <4a8f39cb-655d-42dd-b776-a272e5d34466@kernel.org>
-Date: Wed, 19 Aug 2026 11:25:19 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="B+qRn2Jr"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id E0D441A1730;
+	Wed, 19 Aug 2026 09:28:02 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B24865FF42;
+	Wed, 19 Aug 2026 09:28:02 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 56EBD11C715B7;
+	Wed, 19 Aug 2026 11:27:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1787131677; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=W1qFZS1D3CTj+QPyVvNL/7z+Oy9Qe7Q4XLdaC857DYw=;
+	b=B+qRn2JrZpjrTdFwNpG53nY3lEv7CGtB+6xhHYOO5wMEVtm7ft7zqG6n5Z4Z4J2DtyKUwl
+	sVu6ceIwimQqDh7X4osA9oA5TCxNMiLlNrzbA9LQPxaqBkW/aQtiovN+1ipYXx1tzll7Rq
+	0KnuMOeHDR+lM4DmRzPihYgBXgOc+dy+TzqLiS49VE1Pn0K48lQS0IoXSVG+RoKcQm9udt
+	y8YpF4fsV8FmQKBWGgMap3HB/0pGzy9XH+ASb8qLJ03WoCvQkgsr/ac4YD99r2w0PWw3if
+	Hg7IItkVa60gkUFWE/s7nDBlZbst+YIOFTfPeRbs1aY1FzNSal9xfcDvYhIS9g==
+Message-ID: <9458a186-0f62-434d-9602-522500e9340c@bootlin.com>
+Date: Wed, 19 Aug 2026 11:27:50 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net-next 4/4] selftests: net: Fix slow configurations in
- big_tcp_tunnels.sh
-Content-Language: fr
-To: Alice Mikityanska <alice.kernel@fastmail.im>,
- Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>
-Cc: Eric Dumazet <edumazet@google.com>, "David S. Miller"
- <davem@davemloft.net>, Simon Horman <horms@kernel.org>,
- Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, Alice Mikityanska <alice@isovalent.com>
-References: <20260814194124.3102581-1-alice.kernel@fastmail.im>
- <20260814194124.3102581-5-alice.kernel@fastmail.im>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20260814194124.3102581-5-alice.kernel@fastmail.im>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 5/5] net: phy: propagate errors from default port
+ setup
+To: Xuanqiang Luo <xuanqiang.luo@linux.dev>, netdev@vger.kernel.org,
+ kuba@kernel.org, andrew@lunn.ch
+Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, chleroy@kernel.org,
+ linux-kernel@vger.kernel.org, Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+References: <20260819060236.24665-1-xuanqiang.luo@linux.dev>
+ <20260819060236.24665-6-xuanqiang.luo@linux.dev>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260819060236.24665-6-xuanqiang.luo@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Alice,
+Hi,
 
-On 14/08/2026 21:41, Alice Mikityanska wrote:
-> From: Alice Mikityanska <alice@isovalent.com>
+On 8/19/26 08:02, Xuanqiang Luo wrote:
+> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 > 
-> The combination of checksum offload disabled (that causes software GSO)
-> and CONFIG_DEBUG_NET=y is inherently slow. Depending on the CPU power
-> and load, RTT may increase, limiting sk_pacing_rate, so tcp_tso_autosize
-> caps SKBs at around 40 segments, and zero BIG TCP packets are produced.
+> phy_default_setup_single_port() ignores errors from phy_add_port() and
+> always reports success. If a PHY driver attach_mdi_port() callback fails,
+> the phy_port is leaked and PHY probing continues without the expected
+> default port.
 > 
-> Increase sysctl net.ipv4.tcp_min_tso_segs and set a bigger initial value
-> of CWND in these configurations to force BIG TCP.
-Just an innocent question: would it affect the test somehow if the
-sysctl and initial cwnd is always modified, not just for a specific config?
+> Destroy the port and return the error.
+> 
+> Fixes: 589e934d2735 ("net: phy: Introduce PHY ports representation")
+> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-(Note that apart from looking at ${KSFT_MACHINE_SLOW} in patch 2, I
-think the series looks good to me, and can probably be sent to net after
-the merge with net-next.)
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com
 
-Cheers,
-Matt
+Maxime
+
+> ---
+>  drivers/net/phy/phy_device.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+> index 77318659ff985..22a5af92c620a 100644
+> --- a/drivers/net/phy/phy_device.c
+> +++ b/drivers/net/phy/phy_device.c
+> @@ -3458,6 +3458,7 @@ static int phy_default_setup_single_port(struct phy_device *phydev)
+>  {
+>  	struct phy_port *port = phy_port_alloc();
+>  	unsigned long mode;
+> +	int ret;
+>  
+>  	if (!port)
+>  		return -ENOMEM;
+> @@ -3484,9 +3485,11 @@ static int phy_default_setup_single_port(struct phy_device *phydev)
+>  		port->pairs = max_t(int, port->pairs,
+>  				    ethtool_linkmode_n_pairs(mode));
+>  
+> -	phy_add_port(phydev, port);
+> +	ret = phy_add_port(phydev, port);
+> +	if (ret)
+> +		phy_port_destroy(port);
+>  
+> -	return 0;
+> +	return ret;
+>  }
+>  
+>  static int of_phy_ports(struct phy_device *phydev)
+
