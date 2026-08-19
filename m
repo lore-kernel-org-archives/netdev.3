@@ -1,283 +1,202 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ixit.cz (ixit.cz [84.42.129.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A512BFC7B
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 21:34:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF3F26F288;
+	Wed, 19 Aug 2026 21:47:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.42.129.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787175268; cv=none; b=QZqhC5G4BcN3/+dF8UXUWsC7M/lbttyiQqK3IVpPO+puygbx05yVXo2o7v1IBFZtQULZmyumXCdgIDcY537HVAKivvY4iJfK5R1b7nI4c4QKFutf/pYT9MBg+sQc6IoA/kA21T9yKYsU5R2Y9TaLmMi4wgyFwJQ0/qAVwtuXv9M=
+	t=1787176040; cv=none; b=bwSX7BCfvsHae7cgcSx3mIRJZ1OAMFBDpI99MHsnNGsyX+VbO35h3y/i6w1rkUlaOnSLB+zIlNad5t92EtAMSKMoiBRYMejmmXD7vrmSQsLjzDfQ4dW21L9gcPXHz80WnQyCZM/84Hy/khxyD3u4hSHRuXL5xqc0AhjN6CIDcj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787175268; c=relaxed/simple;
-	bh=Ouhl7hfuno05RUm4TmMlvCp4iFdazi1ClhurwRMipXM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=t43+h5DGOCO9BVhvn4ce+GidQYN9Yv1pNV+Rgtl+yjuIF/bFyuknd7wWrt6V1yLpGn4Ns0oKfHPLRUDlqBIDhKs5UNp+acFbl0I0Q1CRiIbnMV7vGymBDaqdAAI+aXCZCNTkRXt85FUxmttCLtNj4fj6/8DRj6t5VLTZUXQPRAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=woEaq9kr; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
+	s=arc-20240116; t=1787176040; c=relaxed/simple;
+	bh=A0SwSTtGZWqgKUg5fZ7Z7avuv5nMrNbjtK6QYDyjNAk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pBNsca4wmv/3+MZna9d4Re5FJFOG12OCVv0+7baEkXgMjdudreTtV6gCfPkBbBAAKjRnO09Tkdc+AIPueDaqvtaXvHWaCmyuyaW9ui7AGB0EPuSERhQC7QrE3Vw3noCVYpFxpTk7oEhEg5c+TpdKyZJ+wI6fqdszQ3paEEVFVTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=YdSPfwbV; arc=none smtp.client-ip=84.42.129.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="woEaq9kr"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2d560775ca2so11915175ad.1
-        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 14:34:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1787175264; x=1787780064; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ZvSzYmeFm5vAIe+RzmI/yulTjUip37BVmsT7quQF4BA=;
-        b=woEaq9kr+rAlU6etUyZSfIE3oEiM1iA5oeUAuR7lGVJKd7s+U42dPuC1eWzzqzkPa0
-         YE382dnpklcliwJQprnJRKta7twQzC9h9O0tYzgSv9heU7ScAdQiTeViWU6H06vq4AT4
-         E1n2+pUWM7LSSGG/aKYfc2DG757PfO9Dc3NIdVwVO3zPrEjfi+B4OS3B+iW6OTTJbqV1
-         HKs9Uc729yZ5GLZsEGVc0sCEAw/5QWPsVw+n2hqXHgaGjL1ACj6LaCGEKhJvzML663lF
-         2GlXTS0gBSbiqyz59KGjS+UJ2LZtwsghAQE/DnabI7aJ2GbBDcuMjUzhuVnD7j0P57nd
-         szLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787175264; x=1787780064;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZvSzYmeFm5vAIe+RzmI/yulTjUip37BVmsT7quQF4BA=;
-        b=RIwPhi0cSN56vKuGin2hPx53vOfpFkJWC+WSVji7ubHBuPQOlmL3HkrduBvCHIZwfN
-         LmLrwND+2ZtRcY7JS98dojtXaeTfPbR0NwWvOt9Go3K4kKvhExOv88d0yKGvbZZh2SDw
-         sWhH2sHeyPrfbIAqXsPxz10OPZOVmDlrgJEbbc/972yDj9ZHMPP8nHk1NipJAF+8jfzl
-         vp+y1UuOya7TrrxwqHOKkpVvA92ftO7xKpVJvGQzTHWJ7/gkm5/+6YoeHGOwx5pLPjXE
-         rF/6QkMxZVIHMAH1j1IyaYHDVQ+RdyoiReNEGZN8t3U2NwWrKvea5XC3NuHmW2HCZTdX
-         6AIA==
-X-Forwarded-Encrypted: i=1; AHgh+RpKNXrCwHOz7PsTwwzlS1VAdgNVT05GSo9LLBbiykQ0/X7bUsYwbfxwwgC+RRammDoFhSQpvZI=@vger.kernel.org
-X-Gm-Message-State: AFuF++nd5pKwv/ZzQz137pywkRRr65RETO+AnYzhm/e57R5NDDvyAEcJ
-	7NQfIFFGyBqrTrkqkALQ4jt1OhuNfZRstHHXcHdOlbJ3Zc01wewnmK/UnFJbFXuNPFw=
-X-Gm-Gg: AR+sD12RGTMSP7VxIbyyoHzkBvYvGPmCXrKzhdgHgDJMJP3eBF04T+zYlBL0qX3Ay9U
-	x93+Wo/Dmb2gwWNIBwqI+jh6bHE1992siAIKnubVUhKB++sXGwMzM9c6xv0ZxYxiVe0Qd7XGnuq
-	MawzG2JqgIAmKudzwcJ/Gsdm2oY9Qt9DbscfO/rmYkmJ1cK8b/2ZsS86SY4Cx2orpcduy+gnuOR
-	htrTV0TlE2erW5MONi0dM8SrbPR2lR1yaFCYYdhlNG4wNLzIxn5i9V5jJXSzGhS53RlLc+c1RKP
-	hbzpiSappSJoUV0WnBcV2Ybr/Z9nUgFkosmbrGcZD47MAdatjuxTGn9SgaJdO/SBCq58yILMGjv
-	376ja4lDi7pUgcYbQWn/dkZaCpqzgvfmzfhgo5/EyScNN0cn92twl8Un8ftBGlHonuyu8ZlwaS6
-	tP5jaVKZL/ajJSmgn8QdJAozjOaNg6yS6xZyPR5pY+xKN5bZRPY7oBSw1a2SLfYRyURptVL7Eip
-	b9zYDT4Kfvy9lM4Z+a9/zidgaZC
-X-Received: by 2002:a17:902:e94c:b0:2d5:d9c2:bbe0 with SMTP id d9443c01a7336-2d5fd621427mr140996965ad.4.1787175264264;
-        Wed, 19 Aug 2026 14:34:24 -0700 (PDT)
-Received: from localhost (107-190-31-17.cpe.teksavvy.com. [107.190.31.17])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d5bb519678sm31564335ad.31.2026.08.19.14.34.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Aug 2026 14:34:23 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="YdSPfwbV"
+Received: from [IPV6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e] (unknown [IPv6:2a02:830a:f787:8f00:d622:eaa3:3dd6:8f5e])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id 2280953401E3;
+	Wed, 19 Aug 2026 23:47:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1787176035;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Ci/dzom+Y7I8mrGm8hDBfv8OTssxZBW6Cswzv+7RVPU=;
+	b=YdSPfwbVp2Huuwz+QCOeDiSAVGObaSQ0odMk0zIf8bkXw4adutrCqpONJ7JcXiW1/f0C4K
+	MfSycL1fj+FaFdeoYMTpbwY61CACn+RWFMZwrG9dOFPZzSlqtdcWkM4vqaLpTc88c2/0Vy
+	WeDvCs14dpGGUQbzSjjZ1dY2iMExoLA=
+Message-ID: <40161970-ae7b-497d-a0ee-98721b0ce6d3@ixit.cz>
+Date: Wed, 19 Aug 2026 23:47:14 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 19 Aug 2026 17:34:22 -0400
-Message-Id: <DKT8R9H3SX3Z.2PW8ZOHVZ5QFN@etsalapatis.com>
-Cc: "Alexei Starovoitov" <ast@kernel.org>, "Daniel Borkmann"
- <daniel@iogearbox.net>, "Andrii Nakryiko" <andrii@kernel.org>, "Eduard
- Zingerman" <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi"
- <memxor@gmail.com>, "Shuah Khan" <shuah@kernel.org>,
- <linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] selftests/bpf: tc_tunnel - validate decap tunnel state
- without false-pass gaps
-From: "Emil Tsalapatis" <emil@etsalapatis.com>
-To: "Nick Hudson" <nhudson@akamai.com>, <bpf@vger.kernel.org>,
- <netdev@vger.kernel.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260818120308.623905-1-nhudson@akamai.com>
-In-Reply-To: <20260818120308.623905-1-nhudson@akamai.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] dt-bindings: net: nfc: add st,st21nfcd
+To: Kristian Brox <isyourbrainfoss@proton.me>, oe-linux-nfc@lists.linux.dev
+Cc: krzk+dt@kernel.org, devicetree@vger.kernel.org,
+ dmitry.baryshkov@oss.qualcomm.com, luca.weiss@fairphone.com,
+ linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org
+References: <20260818205940.1973944-1-isyourbrainfoss@proton.me>
+ <20260819210906.2500789-1-isyourbrainfoss@proton.me>
+ <20260819210906.2500789-2-isyourbrainfoss@proton.me>
+Content-Language: en-US, cs-CZ
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <20260819210906.2500789-2-isyourbrainfoss@proton.me>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue Aug 18, 2026 at 8:03 AM EDT, Nick Hudson wrote:
-> This follow-up tightens the selftest to guard against false passes in
-> GSO decap validation.
->
-> It validates the expected post-decap state for both GSO and non-GSO
-> packets: expected tunnel gso_type bits must be cleared and
-> skb->encapsulation must match the remaining tunnel state.
->
-> It also adds explicit assertions that the decap validation path was
-> executed, including the large-send phase for GSO-marked subtests, and
-> asserts that the large-send marker is reset after the send.
->
-> This keeps the tc_tunnel decap checks meaningful and avoids false-pass
-> regressions without over-constraining behavior across tunnel modes.
->
-> Signed-off-by: Nick Hudson <nhudson@akamai.com>
+On 19/08/2026 23:09, Kristian Brox wrote:
+> The ST21NFCD (e.g. Fairphone 5) speaks raw NCI on I2C. Existing
+> st,st21nfcb-* and st,st21nfcc-i2c compatibles stay NDLC. Add a
+> separate compatible so those boards are not switched to the wrong
+> framing.
+
+No, this is not reason why do you introduce new compatible. You do it because 
+it's different HW. The fact it shares the driver is irrelevant in the dt-binding
+
+> 
+> Also document the optional SYS_CLK (clocks) and VPS_IO (vdd-io-supply)
+> used on Fairphone 5, and add an I2C example.
+> 
+> Signed-off-by: Kristian Brox <isyourbrainfoss@proton.me>
 > ---
->  .../selftests/bpf/prog_tests/test_tc_tunnel.c | 33 +++++++++++++++----
->  .../selftests/bpf/progs/test_tc_tunnel.c      | 19 +++++++++++
->  2 files changed, 46 insertions(+), 6 deletions(-)
->
-> diff --git a/tools/testing/selftests/bpf/prog_tests/test_tc_tunnel.c b/to=
-ols/testing/selftests/bpf/prog_tests/test_tc_tunnel.c
-> index 67ba27d69347..08d7d90f7772 100644
-> --- a/tools/testing/selftests/bpf/prog_tests/test_tc_tunnel.c
-> +++ b/tools/testing/selftests/bpf/prog_tests/test_tc_tunnel.c
-> @@ -206,7 +206,7 @@ static void disconnect_client_from_server(struct subt=
-est_cfg *cfg,
->  	free(conn);
->  }
-> =20
-> -static int send_and_test_data(struct subtest_cfg *cfg)
-> +static int send_and_test_data(struct subtest_cfg *cfg, struct test_tc_tu=
-nnel *skel)
->  {
->  	struct connection *conn;
->  	int err, res =3D -1;
-> @@ -215,6 +215,7 @@ static int send_and_test_data(struct subtest_cfg *cfg=
-)
->  	if (!ASSERT_OK_PTR(conn, "connect to server"))
->  		return -1;
-> =20
-> +	skel->bss->decap_expect_large_send =3D 0;
->  	err =3D send(conn->client_fd, tx_buffer, DEFAULT_TEST_DATA_SIZE, 0);
->  	if (!ASSERT_EQ(err, DEFAULT_TEST_DATA_SIZE, "send data from client"))
->  		goto end;
-> @@ -226,14 +227,17 @@ static int send_and_test_data(struct subtest_cfg *c=
-fg)
->  		goto end;
->  	}
-> =20
-> +	skel->bss->decap_expect_large_send =3D 1;
->  	err =3D send(conn->client_fd, tx_buffer, GSO_TEST_DATA_SIZE, 0);
->  	if (!ASSERT_EQ(err, GSO_TEST_DATA_SIZE, "send (large) data from client"=
-))
->  		goto end;
->  	if (check_server_rx_data(cfg, conn, DEFAULT_TEST_DATA_SIZE))
->  		goto end;
-> +	skel->bss->decap_expect_large_send =3D 0;
-> =20
->  	res =3D 0;
->  end:
-> +	skel->bss->decap_expect_large_send =3D 0;
->  	disconnect_client_from_server(cfg, conn);
->  	return res;
->  }
-> @@ -374,10 +378,15 @@ static int configure_ebpf_decapsulation(struct subt=
-est_cfg *cfg)
->  	return ret;
->  }
-> =20
-> -static void run_test(struct subtest_cfg *cfg)
-> +static void run_test(struct subtest_cfg *cfg, struct test_tc_tunnel *ske=
-l)
->  {
->  	struct nstoken *nstoken;
-> =20
-> +	skel->bss->decap_validation_seen =3D 0;
-> +	skel->bss->decap_gso_validation_seen =3D 0;
+> diff --git a/Documentation/devicetree/bindings/net/nfc/st,st-nci.yaml b/Documentation/devicetree/bindings/net/nfc/st,st-nci.yaml
+> index 1dcbddb..4bdbb36 100644
+> --- a/Documentation/devicetree/bindings/net/nfc/st,st-nci.yaml
+> +++ b/Documentation/devicetree/bindings/net/nfc/st,st-nci.yaml
+> @@ -11,10 +11,14 @@ maintainers:
+>   
+>   properties:
+>     compatible:
+> +    description: |
+> +      st,st21nfcb-* and st,st21nfcc-i2c use NDLC on the wire.
+> +      st,st21nfcd is ST21NFCD with raw NCI (no NDLC PCB).
 
-Sashiko points out correctly that gso_validation_seen is never checked.
-Can we assert it with the others?
+I think you can omit this description completely here, but if someone had better 
+idea where to put it, I'm open to it.
 
-The CI bot's point on the other hand doesn't matter that much imo, the
-assert for the config variable is good in case we ever add any other
-subtests.
 
-pw-bot: cr
+>       enum:
+>         - st,st21nfcb-i2c
+>         - st,st21nfcb-spi
+>         - st,st21nfcc-i2c
+> +      - st,st21nfcd
+>   
+>     reset-gpios:
+>       description: Output GPIO pin used for resetting the controller
+> @@ -36,6 +40,15 @@ properties:
+>         Specifies that the uicc swp signal can be physically connected to the
+>         controller
+>   
+> +  clocks:
+> +    maxItems: 1
+> +    description:
+> +      External reference clock connected to SYS_CLK.
+> +
+> +  vdd-io-supply:
+> +    description:
+> +      Digital I/O supply (VPS_IO).
+> +
+>   required:
+>     - compatible
+>     - interrupts
+> @@ -49,6 +62,7 @@ if:
+>           enum:
+>             - st,st21nfcb-i2c
+>             - st,st21nfcc-i2c
+> +          - st,st21nfcd
+>   then:
+>     properties:
+>       spi-max-frequency: false
+> @@ -81,6 +95,27 @@ examples:
+>           };
+>       };
+>   
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        nfc@8 {
+> +            compatible = "st,st21nfcd";
+> +            reg = <0x08>;
+> +
+> +            interrupt-parent = <&gpio5>;
+> +            interrupts = <2 IRQ_TYPE_LEVEL_HIGH>;
 
-> +	skel->bss->decap_large_send_validation_seen =3D 0;
-> +	skel->bss->decap_expect_large_send =3D 0;
+use interrupts extended (interrupt-parent + interrupts in one line).
+
+As a last point (for the series), never send a new series with Reply-to (as a 
+followup to existing one). It looks messy, we have tools to track series :)
+see: https://patchwork.kernel.org/project/oe-linux-nfc/list/
+
+David
+
+> +            reset-gpios = <&gpio5 29 GPIO_ACTIVE_HIGH>;
 > +
->  	if (!ASSERT_OK(run_server(cfg), "run server"))
->  		return;
-> =20
-> @@ -386,7 +395,7 @@ static void run_test(struct subtest_cfg *cfg)
->  		goto fail;
-> =20
->  	/* Basic communication must work */
-> -	if (!ASSERT_OK(send_and_test_data(cfg), "connect without any encap"))
-> +	if (!ASSERT_OK(send_and_test_data(cfg, skel), "connect without any enca=
-p"))
->  		goto fail;
-> =20
->  	/* Attach encapsulation program to client */
-> @@ -398,7 +407,7 @@ static void run_test(struct subtest_cfg *cfg)
->  		if (!ASSERT_OK(configure_kernel_decapsulation(cfg),
->  					"configure kernel decapsulation"))
->  			goto fail;
-> -		if (!ASSERT_OK(send_and_test_data(cfg),
-> +		if (!ASSERT_OK(send_and_test_data(cfg, skel),
->  			       "connect with encap prog and kern decap"))
->  			goto fail;
->  	}
-> @@ -406,7 +415,18 @@ static void run_test(struct subtest_cfg *cfg)
->  	/* Replace kernel decapsulation with BPF decapsulation, test must pass =
-*/
->  	if (!ASSERT_OK(configure_ebpf_decapsulation(cfg), "configure ebpf decap=
-sulation"))
->  		goto fail;
-> -	ASSERT_OK(send_and_test_data(cfg), "connect with encap and decap progs"=
-);
-> +	if (!ASSERT_OK(send_and_test_data(cfg, skel), "connect with encap and d=
-ecap progs"))
-> +		goto fail;
-> +	if (!ASSERT_NEQ(skel->bss->decap_validation_seen, 0,
-> +			"decap validation executed"))
-> +		goto fail;
-> +	if (!ASSERT_EQ(skel->bss->decap_expect_large_send, 0,
-> +		       "decap large-send marker reset"))
-> +		goto fail;
-> +	if (cfg->test_gso) {
-> +		ASSERT_NEQ(skel->bss->decap_large_send_validation_seen, 0,
-> +			   "decap validation executed for large send");
-> +	}
-> =20
->  fail:
->  	close_netns(nstoken);
-> @@ -438,6 +458,7 @@ static int setup(void)
->  	SYS(fail_close_ns_client, "ip link add %s type veth peer name %s",
->  	    "veth1 mtu 1500 netns " CLIENT_NS " address " MAC_ADDR_VETH1,
->  	    "veth2 mtu 1500 netns " SERVER_NS " address " MAC_ADDR_VETH2);
-> +	SYS(fail_close_ns_client, "ethtool -K veth1 tso off");
->  	SYS(fail_close_ns_client, "ip link set veth1 up");
->  	nstoken_server =3D open_netns(SERVER_NS);
->  	if (!ASSERT_OK_PTR(nstoken_server, "open server ns"))
-> @@ -701,7 +722,7 @@ void test_tc_tunnel(void)
->  		if (ret < 0 || !test__start_subtest(cfg->name))
->  			continue;
->  		if (subtest_setup(skel, cfg) =3D=3D 0)
-> -			run_test(cfg);
-> +			run_test(cfg, skel);
->  		subtest_cleanup(cfg);
->  	}
->  	cleanup();
-> diff --git a/tools/testing/selftests/bpf/progs/test_tc_tunnel.c b/tools/t=
-esting/selftests/bpf/progs/test_tc_tunnel.c
-> index 853bca962910..e9bd1c9781f7 100644
-> --- a/tools/testing/selftests/bpf/progs/test_tc_tunnel.c
-> +++ b/tools/testing/selftests/bpf/progs/test_tc_tunnel.c
-> @@ -16,6 +16,11 @@ static const int cfg_port =3D 8000;
-> =20
->  static const int cfg_udp_src =3D 20000;
-> =20
-> +__u64 decap_validation_seen;
-> +__u64 decap_gso_validation_seen;
-> +__u64 decap_large_send_validation_seen;
-> +__u32 decap_expect_large_send;
+> +            clocks = <&clk>;
+> +            vdd-io-supply = <&vdd_io>;
+> +        };
+> +    };
 > +
->  #define ETH_P_MPLS_UC	0x8847
->  #define ETH_P_TEB	0x6558
-> =20
-> @@ -690,7 +695,21 @@ static int decap_internal(struct __sk_buff *skb, int=
- off, int len, char proto,
-> =20
->  	kskb =3D bpf_cast_to_kern_ctx(skb);
->  	shinfo =3D bpf_core_cast(kskb->head + kskb->end, struct skb_shared_info=
-);
-> +
-> +	if (flags & (BPF_F_ADJ_ROOM_DECAP_L4_MASK |
-> +		     BPF_F_ADJ_ROOM_DECAP_IPXIP_MASK))
-> +		decap_validation_seen++;
-> +
-> +	if ((flags & (BPF_F_ADJ_ROOM_DECAP_L4_MASK |
-> +		      BPF_F_ADJ_ROOM_DECAP_IPXIP_MASK)) &&
-> +	    decap_expect_large_send)
-> +		decap_large_send_validation_seen++;
-> +
->  	if (shinfo->gso_size) {
-> +		if (flags & (BPF_F_ADJ_ROOM_DECAP_L4_MASK |
-> +			     BPF_F_ADJ_ROOM_DECAP_IPXIP_MASK))
-> +			decap_gso_validation_seen++;
-> +
->  		if ((flags & BPF_F_ADJ_ROOM_DECAP_L4_UDP) &&
->  		    (shinfo->gso_type & SKB_GSO_UDP_TUNNEL_MASK))
->  			return TC_ACT_SHOT;
+>     - |
+>       #include <dt-bindings/gpio/gpio.h>
+>       #include <dt-bindings/interrupt-controller/irq.h>
+> 
 
