@@ -1,245 +1,340 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010042.outbound.protection.outlook.com [52.101.193.42])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F327D3C1F4B;
-	Wed, 19 Aug 2026 18:45:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787165140; cv=fail; b=NXjlVBzWUtWLG1kuX+n8QK7xJ/tO9EnKekYN4y7qzJts4NSnIT6E58+rnOOOTEyyKcg0OjZsgnRN1K46FG2w9BTuQ8chHHzv8YllDRqvxIqNThh8ZrLNe6uy4BRtF+l8ymMO33hH5X/lBpzPcY1/RPLyE7IRRS15px3fAp7J014=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787165140; c=relaxed/simple;
-	bh=5Bfs1NNmuyi42VlQvg+C8doV1U3M2j8vRMz5ATbezpg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=OSLO5Gv4HY2CpwO9LMjH+N7+s+8hIaFzaGg6JoVZIWN1StVnVK3pIWe1s05jYIXcqxOipVrpCw1LYYDc6U3Uv0V0JF9RokKAd7gW3/tM+nERwrJ5ZiEPxDTci4mBIR9EdHc0yQwiPze6Wx5YAB4s3BHaWDEWZ2R73rMfFjJfn/0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hBwusGeg; arc=fail smtp.client-ip=52.101.193.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5914078CE
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 18:47:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787165222; cv=none; b=PRGxpYzcKAMaNPk81qImc0CCKuuhcIHSdRSG/P07bdcV/MWLT8LExlIEaQiS08nvILzvLrALtjf74sl/XVuUsdcfE4kerVcfrJtbJh4Ia/u9f2wci0HAxDzNzI6kA3yvm+zU0L+NdbbUTXUdgVK9y4LNsxxX/LoStlTq3Jx9i5w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787165222; c=relaxed/simple;
+	bh=cHHk5r/yhaOPVOxKjHfX8L5GuIhvEJHcNcPECsOGNJw=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=opm9d7uNc00a1e7rKX6kYlXX1dLwIsN+nq45Y9ZCvAhm934uT254VjgP1PlVpOEY6zw5yc+xSY2DiXjDYKlfWZXeCMdBu3g35yQmFm9QG3QR8GHmIp+NFXsrsGmbo3rFvOyiiKOyESihRYxxctTVlFsk6RCgoL+lWNYrFTSkHPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eP1BdBEi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hBwusGeg"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=k1ecZQBXXmNr3Jp7HiURpsHMc+W3rTzfNvDEH83HMCa7i2roHG0hrJ8sfx87T8pQfP2o6CGw/bsBwIqKBthbzGd59cvhbMIf+guWJHGNQkIUSTOKT/I7Fea1DtnKuCtdTUFF7Gvk0o6KsQhPR1Q8T15hXzCze/nIlD4G2Y9Jvq1yx+AdVOh7f3osXos6YdqYWigWsg+FZadZPIDnYVJoLfn6t034N3a05m3YePwL6WEdM8QBAsbu4P2XE9lF3gYJqAvlvrta4o7AKNKUiLO+uyGdP7vvtXovvIPRFrqDqF5mD5FPT+E+uSdEeBDC21wn/O7dBrRJxG2mSWnF2rOw9Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NNAwsGTm7kQuUf+keSm8dMdgHBnRoxbRpBCcgD2gv5o=;
- b=f9Ws+YY8H6L54WUz36xy7fFnDaD6dxA6ZIFyNZi0arQ2DrFWV+skpiUHBIxY18bmiWk8eYX6O+GgocE+JElLimMTvT3aKB4wV+FKMYL9uz9sq99nXAcJ1F0ZdYhQtT2TxRFX21nuTZnQ7TIVGIhVlwFWxfiEaFNhczVfcuRNVSfgpJROIjwTKyk5JCYrQ79ZVG/UEAsVlb/IeudhxMuqqY+WxUUmzR/JhDqT/b3jhfJtxJ3RpZ2VaQtwJ46EJw/GDUtR/RqEJeeeiT0+ULfX3gQ2uz5y6rqk9h7+/CRCe1NJB4I5FMVcZUXximKAHHkqYjn9ExhMJe+ugZJCYjncEg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NNAwsGTm7kQuUf+keSm8dMdgHBnRoxbRpBCcgD2gv5o=;
- b=hBwusGegZXAvbmAZvJeF/iarls8lF51/jk8y84Ko9mTbXSavLuR0Ev/oaOzbTUkKBqwPEKCVaJrG2tWfeeHLVvP8ejFYHSRcOGoeFnaGeAb12sX3pV/1ZeBj5bW3xaBepF/a6kOLmQ5PfQaIsilayDqNhPTz3MlMIII2CcLpecf2g8GRj+lkwMyXagA3ND7flQtbppa2KeXhrQ9hnq4NQvAqxtdcITzhBcP9jtpWnDDCuR2gSuDWQtr18tzJjikDU8A/gxPSEZvPsGhyFGI/IR3MFNz673lJ+vQYl6IvmJTXaQ4sCAhgR3Ru3COI1N2nGNxLH5eqfnZ3Lx+49c7ldg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV3PR12MB9356.namprd12.prod.outlook.com (2603:10b6:408:20c::21)
- by DS7PR12MB6071.namprd12.prod.outlook.com (2603:10b6:8:9d::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
- 2026 18:45:26 +0000
-Received: from LV3PR12MB9356.namprd12.prod.outlook.com
- ([fe80::1c36:31b4:c420:6286]) by LV3PR12MB9356.namprd12.prod.outlook.com
- ([fe80::1c36:31b4:c420:6286%5]) with mapi id 15.21.0339.007; Wed, 19 Aug 2026
- 18:45:24 +0000
-Date: Wed, 19 Aug 2026 14:45:23 -0400
-From: Yury Norov <ynorov@nvidia.com>
-To: Florian Bezdeka <florian.bezdeka@siemens.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Jan Kiszka <jan.kiszka@siemens.com>, netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH RFC 3/3] net: stmmac: Migrate IRQ balancing to
- cpumask_local_spread()
-Message-ID: <aoX5wglLYYtLcE5J@yury>
-References: <20260819-flo-net-7-2-make-stmmac-default-affinity-aware-v1-0-3f79a99cadaf@siemens.com>
- <20260819-flo-net-7-2-make-stmmac-default-affinity-aware-v1-3-3f79a99cadaf@siemens.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260819-flo-net-7-2-make-stmmac-default-affinity-aware-v1-3-3f79a99cadaf@siemens.com>
-X-ClientProxiedBy: MN0PR02CA0024.namprd02.prod.outlook.com
- (2603:10b6:208:530::28) To LV3PR12MB9356.namprd12.prod.outlook.com
- (2603:10b6:408:20c::21)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eP1BdBEi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB4F1F00A3D
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 18:47:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787165220;
+	bh=3dyQV3tEJTaiMTq/pMT60dL0w+DK+PFG3DPCg+8P2F0=;
+	h=Date:From:To:Subject;
+	b=eP1BdBEiMVDxpGVzd7F954BoEqbGLtj7qxsLRnG0MAlRfMNyntbymG2mDmPcsa91J
+	 /YNYdaiod6oif7ACuVeRcOz0+adPAOHdxp3NJj98EMr1IlR/SjUaw4Sd/jm70P7+ac
+	 WsVHUEwYx4HDxuRHtpzrxEiIBQBmLVB8f2e0bapqplc64LVNj02TTk2onXKR4KdLsV
+	 pGVmSou8OfjqRLVtu1nHL+d+FdqRRn9H1epseeAnVSHwbDhhwM5Fn2brdYdq80FDxE
+	 SL/cj96godmg6PLjkUiG3flJLMqv+VUtGz2SP1Q5vbLI5l2q1gffqoe7Oz/69Cotiu
+	 9i/5TdrdG5trw==
+Date: Wed, 19 Aug 2026 11:46:59 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: netdev@vger.kernel.org
+Subject: [ANN] netdev development stats for 7.3
+Message-ID: <20260819114659.271292db@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR12MB9356:EE_|DS7PR12MB6071:EE_
-X-MS-Office365-Filtering-Correlation-Id: 10d9abbc-0ebc-412c-1851-08defe2207b3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|23010399003|366016|3023799007|56012099006|10067099003|4143699003|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	Rc9ZWa/NfWe54L2cRxa1wpIlZk/m+E6mV2bWnHtrKldkEOoNqYBrKgECTljKdJYBUK7Pkh8wMd+/PjPoFipFk2Dpt7u5jePZuoJXBYVw+OiUp+dP92gyfSGD4BOv5t2y9qWNXmtYD9S6/qRXbc9jX3nSFPiMWV0JrkUMuBSzDGyLz2q2d/LzKBM84vQ07GkEeSvc35RNtU+il5n3YQYZNbsqoFcLXjnED8QllsykLU+2vnmjPKYH4BYBVwIN4pK8tbJwQR0W09oxmUIJX7huxXcURASs19/kQjBPVjLVzlSwkQT01j80th1c96JTuw719neBONMB924rsjBOK6/4d7vf7tQK5C6FMSsq1LORg6BzIEJQXbDN/E+VkHr7LPIllaDn1vDsQ3KSWoSCVQEHEZiT1GpTNcuo/WadHj1PZwt1nwDjOQVnCRmSWDvpf1rzBF/VagKw0ODdxhdgSc+h81oHuKln0XT11UsUcTFKRO/SB65NP+Ehfb+qqFqXd0DxEakPFGVZEKDjKcY9f1vbZKI32dWO4q0rjdZg4pm0WH0yaddTAqB8NuEzsBl3LUp0CJTz8jgrcRI8Q4Nxr5d1Dt6QV4tuH5hFb3QUVufIXIXyVpSBc9XdnHs2ux8lWFapniawLa8Xo3YeqkFqRt6RzGj6u7si4T6M02RI0ha3+po=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9356.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(23010399003)(366016)(3023799007)(56012099006)(10067099003)(4143699003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Te4O5XO1M8qy6/l9+EvM7NlVRDXgdsfTLgtH9ik843+xiZ/tjKyKV1LXyI0h?=
- =?us-ascii?Q?0chTtv9P5XqRRm7xI9WgTX5UFcHPx7VvNM7ZKAmcnT7FgM3QFl5XMSLebm9J?=
- =?us-ascii?Q?lBiUDh1oZUcxe+YhX3CFpVqGUwtnKtAc293wi9C/b3Ua7+LCXJmaqaTyHvHy?=
- =?us-ascii?Q?BGtl5zD0Rk+xBvJm2fcXXVbunDqtASc5dobDMreKKkhtuoWCFlNLI6U+4TCC?=
- =?us-ascii?Q?NNIU5gId3/JYZfPH7K03EyVWNRxcnxqUlchHMyXwG4lN/EaiHH80+3SzEVKK?=
- =?us-ascii?Q?suDrc0s4gVMMmgq/+EzlM16jndxyNW1TLJd8kU9EmYDsYIR5YAD4/m6L+Q4v?=
- =?us-ascii?Q?Wxih0hevuA9wW398DX3COP+x5DR/zxWd0F8aI7MLsC451Rq+LY6IyXANHs/H?=
- =?us-ascii?Q?iTAYRD+5FWTLih/Y808mfb1Jz/uRQ2ffkrv9BKKTomujycucARb4CLMtaoop?=
- =?us-ascii?Q?5bTJoeHFaCMEhw1mW04GGhOxGO4vroZfAu2Y2yqWDtySDKEs7iCxeFQU0mZu?=
- =?us-ascii?Q?OYNHGOxnKz8uLC1hkjFjRPBlH5sWuGYkCAQwyaEQhoW4DZ9Qy/FU70eYGsko?=
- =?us-ascii?Q?fduModPBiditR5H+KT120roCbnKuB3wM2aqaNsF/597/WHXOQnKtzpcFsk3e?=
- =?us-ascii?Q?b2SjBMFJIYmJ9QJutC+HJl+u7nRcbIsWkuvNj5+LLLPtnBG02LhbNwWvbAQz?=
- =?us-ascii?Q?03D6RBVi387zQx8eJZ0SHurLABep6XKRwEBU+1AFjSGPH9uf1nT4pXMqaqnf?=
- =?us-ascii?Q?i7Q8sadXGJHlxAJ5uUMI3LwC+9aXQ5NSmCUiu0m54JuiaP6U4cOLYy4/v4/C?=
- =?us-ascii?Q?A70CAeIJvvaQ9hPjEhm4hnJ9KLWJtYj6Rl1ekD+SWlSed1U+2Aq4Wb/QMORT?=
- =?us-ascii?Q?+P2Aw2Jiosoa2TQ4MiN4E2B5wG52lO2ZYrErOJX53/6e6pzXvUai48CJn/QQ?=
- =?us-ascii?Q?v+uhkWg+NWtCeMerkGyvMzQXofJGULu/6tjN2XMeHfI0W+mDnmgFarSg+fSx?=
- =?us-ascii?Q?ayRFlQyDm1G4QoL/TCLn7pPhkBizVDBFeqEpLsQ29/Ec/DP0Vgo/nmBtkIDV?=
- =?us-ascii?Q?Mx7oNEwr5+wOHhcSd3Ovj0e1SVezzoVvMyEoWvrgQJtQUvyCAHS1CBK2YPnX?=
- =?us-ascii?Q?lEfkMC/AWlqRH4z4uDcpQua0FkNxvL/5gJ+Xb3xB9EvQqoEuwftVK6uMbPn7?=
- =?us-ascii?Q?bZXCVheY+kMhSadfIBhfx48ZfLw7mkk5peYsnfMSpkTCFTixNOz4mFdgZTyG?=
- =?us-ascii?Q?Ak+ll6kwXwER1uPLD5kYIJ8E2rtZ4Oc4iAniy8qnPQtmLc4okBm/drgaKHiu?=
- =?us-ascii?Q?YEshcxfy/Gda4IbDlQxlv/7656QGBJqa6o4a6Gj8dkv/3fl93f0rRvPvio5r?=
- =?us-ascii?Q?cf1PslH45SgbSzlci8gg9ykR6n0xyvHgwTW44nYEREtCRhha5x+UUtVA38Ey?=
- =?us-ascii?Q?HPUUmQndvNbGzQbrcABelMGY+kIplJ79eHYYfMYNrR3K0fzldzOWkmp6FWtA?=
- =?us-ascii?Q?XzZioKnR7wH1n4v0JxMyA4nqKPq8k3zUZY/njo/xzo/7VIQtGVS4I3/m+z6v?=
- =?us-ascii?Q?V58x4tSJO8pOoQAxbRmG35zUqcZPeIr7KSwpIkYfLrw7TTJZ7/F3aomtYbel?=
- =?us-ascii?Q?vAZKjEKa0HmZuCsQ1lNeATccAcKHfwz2RZlzPYCtD5i6FTrmdFo8KFGPqRWd?=
- =?us-ascii?Q?xt6hFeQRitW9wkcvLc6UpoFXCsbGF50RbLZXWeiz9jJuOnKl?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 10d9abbc-0ebc-412c-1851-08defe2207b3
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9356.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 18:45:24.6615
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BaKeZ3qt/Wy1s38wgGesPrrownXqaGxNvmVnXLZlqOGeyGOhGoh407YpuX7C+aRkj5wLgDeEAXPGQSRJSJrfFQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6071
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 19, 2026 at 04:30:32PM +0200, Florian Bezdeka wrote:
-> The previous balancing mechanism was based on num_online_cpus(), which
-> is a problem for systems cpu-isolating workloads. IRQs were targeting
-> CPUs that were isolated for those sensitive workloads.
-> 
-> With a migration to cpumask_local_spread() we
->     - get NUMA locality
->     - honor the default SMP affinity mask, which avoids targeting
->       isolated CPUs.
-> 
-> This also aligns with the pattern used by most network drivers dealing
-> with IRQ affinities / affinity hints.
-> 
-> Signed-off-by: Florian Bezdeka <florian.bezdeka@siemens.com>
-> ---
->  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 21 +++++++++++++++++----
->  1 file changed, 17 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index a71f0df263785dd8badc45292ca3067ab33bda05..949ced7e46d2814b57c6bd86b4886ac3bf33996c 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -3826,11 +3826,16 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
->  	struct stmmac_priv *priv = netdev_priv(dev);
->  	struct stmmac_msi *msi = priv->msi;
->  	enum request_irq_err irq_err;
-> +	cpumask_var_t affinity;
->  	int irq_idx = 0;
->  	char *int_name;
-> +	int node;
->  	int ret;
->  	int i;
->  
-> +	if (!zalloc_cpumask_var(&affinity, GFP_KERNEL))
-> +		return -ENOMEM;
-> +
->  	/* For common interrupt */
->  	int_name = msi->int_name_mac;
->  	sprintf(int_name, "%s:%s", dev->name, "mac");
-> @@ -3916,6 +3921,7 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
->  	}
->  
->  	/* Request Rx MSI irq */
-> +	node = dev_to_node(&priv->dev->dev);
->  	for (i = 0; i < priv->plat->rx_queues_to_use; i++) {
->  		if (i >= MTL_MAX_RX_QUEUES)
->  			break;
-> @@ -3935,8 +3941,10 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
->  			irq_idx = i;
->  			goto irq_error;
->  		}
-> -		irq_set_affinity_hint(msi->rx_irq[i],
-> -				      cpumask_of(i % num_online_cpus()));
-> +
-> +		cpumask_clear(affinity);
-> +		cpumask_set_cpu(cpumask_local_spread(i, node), affinity);
-> +		irq_set_affinity_and_hint(msi->rx_irq[i], affinity);
+Preface
+-------
 
-If you want to spread more than one IRQ, you'd better convert your
-loop into for_each_numa_hop_mask(). That way you don't need to
-introduce new function. See the comment on top of
-cpumask_local_spread():
+As is tradition here are the development statistics based on mailing
+list traffic on netdev@vger.
 
- * For those who wants to enumerate all CPUs based on their NUMA distances,
- * i.e. call this function in a loop, like:
- *
- * for (i = 0; i < num_online_cpus(); i++) {
- *      cpu = cpumask_local_spread(i, node);
- *      do_something(cpu);
- * }
- *
- * There's a better alternative based on for_each()-like iterators:
- *
- *      for_each_numa_hop_mask(mask, node) {
- *              for_each_cpu_andnot(cpu, mask, prev)
- *                      do_something(cpu);
- *              prev = mask;
- *      }
+These stats are somewhat like LWN stats: https://lwn.net/Articles/1088776/
+but more focused on mailing list participation. In particular "review
+score" tries to capture the balance between reviewing other people's
+code vs posting patches.
 
-Thanks,
-Yury
+Previous 3 reports:
+ - for 7.0:  https://lore.kernel.org/20260212124208.187e53ae@kernel.org
+ - for 7.1:  https://lore.kernel.org/20260414182653.40d84ccc@kernel.org
+ - for 7.2   https://lore.kernel.org/20260617115319.43a5942d@kernel.org
 
->  	}
->  
->  	/* Request Tx MSI irq */
-> @@ -3959,13 +3967,18 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
->  			irq_idx = i;
->  			goto irq_error;
->  		}
-> -		irq_set_affinity_hint(msi->tx_irq[i],
-> -				      cpumask_of(i % num_online_cpus()));
-> +
-> +		cpumask_clear(affinity);
-> +		cpumask_set_cpu(cpumask_local_spread(i, node), affinity);
-> +		irq_set_affinity_and_hint(msi->tx_irq[i], affinity);
->  	}
->  
-> +	free_cpumask_var(affinity);
-> +
->  	return 0;
->  
->  irq_error:
-> +	free_cpumask_var(affinity);
->  	stmmac_free_irq(dev, irq_err, irq_idx);
->  	return ret;
->  }
-> 
-> -- 
-> 2.55.0
+General stats
+-------------
+
+7.3 release cycle spanned summer vacation season and netdev.conf.
+The direct comparisons to the previous release are a little misleading.=20
+
+The number of commits by maintainers dropped by 24%. back to 22
+commits/day. Which used to be the usual rate before AI.
+Messages to the list dropped only by 7%, so less than the drop in
+commits. We were far less efficient at accepting code. Everyone has
+probably experienced the huge patch backlog so this is no surprise.
+
+Patch review has recovered to 64% in total and 54% across company
+(up 14% in both cases). Best result in a while. I think it's partially
+due to our use of the SUIE ranking (see the netdev.conf talk by Paolo).
+Since we now always have >300 patches awaiting review looking thru
+one's inbox or even patchwork is impractical. SUIE shows all patchwork
+data, sorted by a combination of "readiness" and "author's reviewer
+score". The readiness means CI signals + did anyone review the patch
+already. This means that maintainers apply reviewed patches first -
+potentially having a positive effect on overall review ratio.
+
+The only volume metric which did not go down in this release was growth
+in the number of individuals that emailed the list. We have seen 4.5%
+more people in this release cycle. Of course, these are mostly LLM-aided
+"pure authors" who never comment on other peoples posting.
+
+Posting efficiency
+------------------
+
+Given the overall drop in our efficiency in converting postings into
+commits I decided to dig a little deeper into that side of the data.
+First, I fixed how we count "revisions" in the scripts - they used to
+only count postings, so if versioning started before the release cycle
+we'd miss-count (e.g. if v22 was merged, but script only saw postings
+from v19 on - we'd count it as the fourth revision). With that fix, our
+"average revisions" numbers are at 1.7 for a single patch and a round
+3.0 for a patch series.
+
+Here is the ranking of people who need fewest and most patch postings
+for a commit to appear in the tree:
+
+Lowest postings/commit (min 5):      Highest postings/commit (min 2 commits=
+):   =20
+   1 [13@ 1.00] Ciprian Regus           1 [ 3@39.67] Christian Marangi (Ans=
+uel)
+ --2-[56@ 1.00]-Florian Westphal        2 [ 5@19.20] javen              =20
+   3 [ 7@ 1.00] Ido Schimmel            3 [ 8@14.38] Th=C3=A9o Lebrun      =
+  =20
+   4 [ 8@ 1.00] Krzysztof Kozlowski     4 [ 3@14.00] Chuck Lever        =20
+ --5-[39@ 1.00]-Marc Kleine-Budde       5 [ 2@12.00] Jakub Sitnicki     =20
+ --6-[24@ 1.04]-Steffen Klassert        6 [ 2@11.50] Pengpeng Hou       =20
+   7 [15@ 1.07] Ioana Ciornei           7 [ 4@11.25] Willem de Bruijn   =20
+   8 [13@ 1.08] Arnd Bergmann           8 [ 5@10.80] Xin Xie            =20
+   9 [12@ 1.08] Ilya Maximets           9 [ 4@10.25] Muhammad Nazim Amirul
+  10 [15@ 1.13] Mohsin Bashir          10 [ 6@ 9.00] Mahe Tardy         =20
+ -11-[20@ 1.20]-Antonio Quartulli      11 [12@ 8.83] Ratheesh Kannoth   =20
+  12 [ 5@ 1.20] Avi Weiss              12 [ 6@ 8.50] Michael Chan       =20
+  13 [ 5@ 1.20] Dawei Feng             13 [11@ 8.36] Daniel Golle       =20
+  14 [ 8@ 1.25] Joe Damato             14 [ 2@ 8.00] Yehyeong Lee       =20
+ -15-[55@ 1.27]-Simon Wunderlich       15 [ 2@ 8.00] Weimin Xiong       =20
+       ^     ^
+ number of   postings per
+  commits    1 commit
+
+I marked with "-" our co-maintainers, who send us already reviewed patches
+/ PRs. These are of course more likely to be accepted on the first attempt.
+And here is similar breakdown for companies (well, plus people who's
+employer we don't know):
+
+Lowest postings/commit (min 10):     Highest postings/commit (min 5):   =20
+   1 [ 14@ 1.00] Analog Devices         1 [ 5@19.20] Realsil            =20
+   2 [ 41@ 1.15] Pengutronix            2 [ 5@10.80] Xin Xie            =20
+   3 [ 20@ 1.20] (OpenVPN)              3 [11@ 8.36] Daniel Golle       =20
+   4 [ 55@ 1.27] (batman-adv)           4 [16@ 8.19] Microsoft          =20
+   5 [ 91@ 1.34] (netfilter)            5 [14@ 7.64] SUSE               =20
+   6 [ 38@ 1.39] (mptcp)                6 [13@ 7.00] Broadcom           =20
+   7 [ 24@ 1.46] (xfrm)                 7 [10@ 6.80] Alvin Sun          =20
+   8 [ 28@ 1.50] Linaro                 8 [24@ 5.83] Marvell            =20
+   9 [ 30@ 1.83] Arizona State          9 [ 8@ 5.62] Weiming Shi        =20
+  10 [ 26@ 2.04] Gary Guo              10 [40@ 5.25] Bootlin            =20
+  11 [ 12@ 2.33] Mojatatu              11 [28@ 5.18] IBM                =20
+  12 [155@ 2.38] Meta                  12 [10@ 5.10] Trustnetic         =20
+  13 [ 25@ 2.48] Tsinghua University   13 [16@ 5.00] Oracle             =20
+  14 [112@ 2.63] RedHat                14 [12@ 5.00] Code Construct     =20
+  15 [107@ 2.75] nVidia                15 [51@ 4.88] Qualcomm           =20
+
+I'm curious what sets the two sides of the comparison aside. I could
+venture two guesses.=20
+
+One - smaller patch sets are easier to merge. nVidia/Tariq is putting
+in the effort to break the submissions up which is probably part of
+the reason why they only need 2.75 revision vs (eg.) Broadcom's 7.
+With AI reviewers semi-randomly flagging issues the chances of a "clean"=20
+15 patch submission are pretty much zero.
+
+Two - I suspect companies like nVidia (2.75 avg rev) and Meta (2.38 revs)=20
+do much more in-house AI review of their code than Broadcom (7 revs),
+Marvell (5.83 revs), or Qualcomm (4.88 revs).
+
+So tl;dr - break up your patch sets, run AI reviews locally first.
+
+Here (for no good reason) is a list of people / companies who made
+the most posts without getting a _single one_ of them merged:
+
+Nothing merged, people (min 30):     Nothing merged, companies (min 30):=20
+   1 (***) [ 106] Louis-Alexis Eyraud   1 (***) [ 106] Collabora        =20
+   2 (***) [  86] Birger Koblitz        2 (***) [  86] Birger Koblitz   =20
+   3 (***) [  83] Mingming Cao          3 (***) [  68] Nebula Matrix    =20
+   4 (***) [  75] Long Li               4 (***) [  64] James Hilliard   =20
+   5 (***) [  68] Illusion Wang         5 (***) [  53] Luke Howard      =20
+   6 (***) [  64] James Hilliard        6 (***) [  48] Onsemi           =20
+   7 (***) [  53] Luke Howard           7 (***) [  44] Jonas Jelonek    =20
+   8 (***) [  48] Selvamani Rajagopal   8 (***) [  40] SK Hynix         =20
+   9 (***) [  44] Jonas Jelonek         9 (***) [  32] Akari Tsuyukusa  =20
+  10 (***) [  40] Byungchul Park       10 (***) [  32] Rong Zhang       =20
+  11 (***) [  32] Akari Tsuyukusa                                       =20
+  12 (***) [  32] Rong Zhang                                            =20
+  13 (***) [  30] Amery Hung                                            =20
+
+Testing and CI
+--------------
+
+Customary top ranking of selftest contributors:
+
+Contributions to selftests:
+   1 [ 15] Mohsin Bashir
+   2 [ 11] Jakub Kicinski
+   3 [ 10] Matthieu Baerts
+   4 [  8] Joe Damato
+   5 [  6] Marcelo Mendes Spessoto Junior
+   6 [  3] Minxi Hou
+   7 [  3] Breno Leitao
+   8 [  3] Willem de Bruijn
+   9 [  3] Bobby Eshleman
+  10 [  3] Maciej Fijalkowski
+  11 [  3] Nirmoy Das
+  12 [  3] Tushar Vyavahare
+
+The main infra side changes were around HW testing. The NICs we have in NIPA
+and the results reported by external runners are reaching stability.=20
+Hopefully we'll be soon reporting the HW test results to patchwork.
+
+Smaller changes:
+ - wireless tree is now using netdev foundation machines
+ - UI color highlight for TAP results
+ - lots of stability / error handling fixes all over the place
+   as all external services we talk to are periodically overloaded
+   by AI bots
+
+Developer rankings
+------------------
+
+Top reviewers (cs):                  Top reviewers (msg):               =20
+   1 (   ) [46] Jakub Kicinski          1 (   ) [90] Jakub Kicinski     =20
+   2 (   ) [28] Simon Horman            2 (   ) [59] Andrew Lunn        =20
+   3 (   ) [21] Andrew Lunn             3 (   ) [43] Simon Horman       =20
+   4 (   ) [17] Paolo Abeni             4 (   ) [27] Paolo Abeni        =20
+   5 ( +1) [ 8] Ido Schimmel            5 ( +1) [15] Ido Schimmel       =20
+   6 ( +7) [ 7] Maxime Chevallier       6 ( +7) [15] Maxime Chevallier  =20
+   7 ( +2) [ 6] Kuniyuki Iwashima       7 ( +3) [12] Kuniyuki Iwashima  =20
+   8 ( -3) [ 6] Eric Dumazet            8 ( +8) [10] Krzysztof Kozlowski=20
+   9 ( +1) [ 5] Aleksandr Loktionov     9 ( +3) [10] Willem de Bruijn   =20
+  10 (+12) [ 5] Vadim Fedorenko        10 (+30) [10] Vadim Fedorenko    =20
+  11 (+16) [ 5] Breno Leitao           11 ( -3) [ 8] Aleksandr Loktionov=20
+  12 ( +3) [ 4] Willem de Bruijn       12 ( -7) [ 8] Eric Dumazet       =20
+  13 ( -1) [ 4] Krzysztof Kozlowski    13 (+31) [ 8] Breno Leitao       =20
+  14 (***) [ 4] Xin Long               14 ( -3) [ 7] Stanislav Fomichev =20
+  15 ( +5) [ 3] Stanislav Fomichev     15 ( +4) [ 6] Michael S. Tsirkin =20
+  16 (***) [ 3] Tung Nguyen
+
+Ido has been handling a lot of AI-generated fixes, primarily to the IP
+layer but not only. Similarly Willem has been handling AI fixes for
+AF_PACKET, tap, UDP etc. Xin Long is quite busy reviewing
+all the SCTP fixes. Tung Nguyen handles all TIPC fixes.
+
+Maxime has stepped up further in phylink reviews and has taken on stmmac
+reviews, which is the busiest driver, and certainly one which has the
+most contributors.
+
+We would have completely fallen apart without these people so huge
+thanks!
+
+Top authors (cs):                    Top authors (msg):                 =20
+   1 (   ) [5] Eric Dumazet             1 (+23) [18] Tony Nguyen        =20
+   2 (***) [5] Xiang Mei (Microsoft)    2 (   ) [17] Tariq Toukan       =20
+   3 ( -1) [4] Jakub Kicinski           3 ( +2) [15] Pablo Neira Ayuso  =20
+   4 (***) [4] Ren Wei                  4 (***) [14] Christian Marangi (Ans=
+uel)
+   5 ( -2) [4] Tariq Toukan             5 ( +3) [14] Ratheesh Kannoth   =20
+   6 (***) [3] Lorenzo Bianconi         6 (***) [14] Th=C3=A9o Lebrun      =
+  =20
+   7 (***) [3] Xuanqiang Luo            7 (+12) [13] Markus Stockhausen =20
+   8 (***) [2] David Lee                8 ( -1) [13] Kuniyuki Iwashima  =20
+   9 (***) [2] Doruk Tan Ozturk         9 (***) [12] Louis-Alexis Eyraud=20
+  10 (***) [2] Pengpeng Hou            10 (   ) [12] javen              =20
+  11 (***) [2] Zhiling Zou             11 (+47) [12] David Howells      =20
+  12 ( +4) [2] Yizhou Zhao             12 (+14) [12] Daniel Golle       =20
+  13 (+49) [2] Ratheesh Kannoth        13 ( -9) [12] Wei Fang           =20
+  14 ( -8) [2] Weiming Shi             14 (***) [11] Lorenzo Bianconi   =20
+  15 (+23) [2] Runyu Xiao              15 (-14) [11] Eric Dumazet       =20
+
+Eyeballing the left - "top author (change sets)" side - 10 of the names
+belong to AI fixers. On the right side we have the vendor maintainers at
+the top, and a large number of embedded folks who like to keep re-submitting
+giant series.
+
+Top scores (positive):               Top scores (negative):             =20
+   1 (   ) [684] Jakub Kicinski         1 (+26) [62] Tony Nguyen        =20
+   2 (   ) [390] Simon Horman           2 (+47) [55] Christian Marangi (Ans=
+uel)
+   3 (   ) [380] Andrew Lunn            3 ( +8) [52] Markus Stockhausen =20
+   4 (   ) [239] Paolo Abeni            4 ( -3) [51] Tariq Toukan       =20
+   5 (   ) [126] Ido Schimmel           5 (***) [50] Louis-Alexis Eyraud=20
+   6 ( +7) [ 91] Maxime Chevallier      6 ( -2) [50] javen              =20
+   7 (+18) [ 80] Vadim Fedorenko        7 ( -4) [50] Ratheesh Kannoth   =20
+   8 (   ) [ 70] Aleksandr Loktionov    8 (***) [48] David Howells      =20
+   9 ( -2) [ 64] Krzysztof Kozlowski    9 (+17) [48] Daniel Golle       =20
+  10 (+21) [ 51] Tung Nguyen           10 ( -8) [44] Wei Fang           =20
+  11 ( -1) [ 47] Willem de Bruijn      11 (***) [43] Th=C3=A9o Lebrun      =
+  =20
+  12 (+45) [ 43] Kuniyuki Iwashima     12 (***) [42] Birger Koblitz     =20
+  13 ( +4) [ 43] Michael S. Tsirkin    13 (***) [40] Mingming Cao       =20
+  14 (***) [ 38] Xin Long              14 (***) [39] Ren Wei            =20
+  15 ( +4) [ 37] Sasha Levin           15 (+26) [36] Long Li               =
+ =20
+
+Company rankings
+----------------
+
+Top reviewers (cs):                  Top reviewers (msg):               =20
+   1 (   ) [58] Meta                    1 (   ) [125] Meta              =20
+   2 (   ) [57] RedHat                  2 (   ) [108] RedHat            =20
+   3 (   ) [21] Andrew Lunn             3 (   ) [ 59] Andrew Lunn       =20
+   4 (   ) [19] Intel                   4 (   ) [ 40] Intel             =20
+   5 (   ) [18] Google                  5 (   ) [ 39] Google            =20
+   6 (   ) [15] nVidia                  6 (   ) [ 31] nVidia            =20
+   7 ( +1) [ 9] Bootlin                 7 ( +3) [ 18] Bootlin           =20
+   8 ( +1) [ 6] Linaro                  8 ( +1) [ 16] Linaro            =20
+   9 (+14) [ 5] Qualcomm                9 (+12) [ 11] Qualcomm          =20
+
+Top authors (cs):                    Top authors (msg):                 =20
+   1 (   ) [12] Google                  1 ( +1) [52] Google             =20
+   2 (   ) [10] Meta                    2 ( -1) [46] Meta               =20
+   3 (***) [ 7] Nebula Sec              3 (   ) [43] Intel              =20
+   4 (+11) [ 7] Kylin Software          4 ( +1) [39] nVidia             =20
+   5 (   ) [ 7] nVidia                  5 ( -1) [37] RedHat             =20
+   6 ( -2) [ 6] Intel                   6 ( +2) [31] Qualcomm           =20
+   7 ( -4) [ 5] RedHat                  7 ( +8) [26] Bootlin            =20
+   8 (+33) [ 5] Arizona State           8 ( +6) [20] AMD                =20
+   9 (+16) [ 5] Tsinghua University     9 (   ) [19] Microsoft          =20
+
+Top scores (positive):               Top scores (negative):             =20
+   1 ( +1) [768] Meta                   1 (***) [72] Nebula Sec         =20
+   2 ( -1) [734] RedHat                 2 ( +5) [70] AMD                =20
+   3 (   ) [380] Andrew Lunn            3 ( -1) [59] Marvell            =20
+   4 ( +8) [124] Intel                  4 (+30) [55] Christian Marangi (Ans=
+uel)
+   5 (   ) [100] nVidia                 5 ( +8) [52] Markus Stockhausen =20
+   6 (+10) [ 88] Google                 6 ( -2) [50] Realsil            =20
+   7 (   ) [ 79] Linaro                 7 (***) [49] Collabora          =20
+   8 (***) [ 63] Stable team            8 (+13) [48] Daniel Golle       =20
+   9 ( +6) [ 51] Tung Nguyen            9 ( -1) [46] Microsoft          =20
+
+AI reviews
+----------
+
+Last time I was complaining that we lack access to frontier models.
+This has been fixed a couple of weeks ago. We have Opus 5 + GPT 5.6
+integrated into our instance of Sashiko. The switch from Opus 4.7 to Opus 5
+led to a major increase in accuracy and number of reported problems. It als=
+o,
+unfortunately, doubled the cost of the reviews. Luckily Meta is still willi=
+ng
+to foot the bill. Special shout out to Chris Mason for the help getting us
+the GPT access.
+
+With the cross reviews in place I'm really hoping we'll have enough confide=
+nce
+in the reviews to send them out to the list automatically.
+--=20
+Code: https://github.com/kuba-moo/ml-stat
+Raw output: https://netdev.bots.linux.dev/ml-stats/stats-7.3
