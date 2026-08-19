@@ -1,37 +1,37 @@
-Received: from mta-64-225.siemens.flowmailer.net (mta-64-225.siemens.flowmailer.net [185.136.64.225])
+Received: from mta-64-227.siemens.flowmailer.net (mta-64-227.siemens.flowmailer.net [185.136.64.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B393F2113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24943306B3D
 	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 14:30:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.225
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787149851; cv=none; b=oc80iMdrE1OI4e3rv62cB4OeNw7w+rrjg+cgl50uazIO1Hxboxmq1xz74Oj95kWK9ZrF1xTUdKR7RmHOTmqkt9DplR1dXdK6ozd+uvvBdKqZ1y62KUu+Xw+OKgozTQNpIfZG26SCgqpfTaJX68uCzyD+ReuEdmsoPhLo4orChHw=
+	t=1787149856; cv=none; b=XQ7q+HuvCMlVZHa3Mrk9obFCQuy3g8geORkRakjCqq2UtjXsJqUZo2QhM0ZPx8NpVYmPdqrukeMd4sy7J6sdBmReNJakxlbwzx9jyEmJfXDvsoiEh9B2zqIpuokOnjT9GqY/zFq2VdVC8NazYN3QFATcfeK8t1N7pdmYXP9ohKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787149851; c=relaxed/simple;
-	bh=myNiNudWlAOhHqf78CNgDEMC2LXtqJxhUWb4ja/JZyo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jDbOie5QpZDddZ2Zu24QlMs3HKQxXcdcUqNSeqdYcdb+SV0nIZg51nOwZESuKK+fqgMuRMo7RPkQQt2xt0wuGAwMdKA4/vsidf0nJEX8Qtv14QJOLs71Y5mKGHyd4PXDFuBQf/sB4aYVfALVj66Zr2LccWEN0R3oPQHShJAfKGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=florian.bezdeka@siemens.com header.b=Krf5ghZ9; arc=none smtp.client-ip=185.136.64.225
+	s=arc-20240116; t=1787149856; c=relaxed/simple;
+	bh=hJGlbD08V5bAnxEZzKNlsO5pVSOIsE1Mfo6bzTFTbLc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=WCa0buSHLruLfDb8BKyFKOdvbq78NNkFimdVQo6U2Mc+oXk4u2qvLLAxYZtl3W7+DKaBuNaQvzZJ5pp4ei8RHodkBNy/E7mCetuCvp5LyPfpB+lZvheYp8OeIPJ0q92uSFdjhWZpjUeWiJ+pJJQYyY2JISGwm1rKDCKTGwong90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=florian.bezdeka@siemens.com header.b=gWgRMMy+; arc=none smtp.client-ip=185.136.64.227
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=florian.bezdeka@siemens.com header.b="Krf5ghZ9"
-Received: by mta-64-225.siemens.flowmailer.net with ESMTPSA id 2026081914303363b6c3c99c0002076b
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=florian.bezdeka@siemens.com header.b="gWgRMMy+"
+Received: by mta-64-227.siemens.flowmailer.net with ESMTPSA id 20260819143033af89a28eba00020704
         for <netdev@vger.kernel.org>;
         Wed, 19 Aug 2026 16:30:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
  d=siemens.com; i=florian.bezdeka@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=IoNmqk4kFe1ffi9HtpCtyUHKbQwKZ6Jed6SDch4oW9M=;
- b=Krf5ghZ9dUUHTj7Dh50SkIbWovR1VpLHU5vQyUfG0H0aqDOFeJuPJpqsNWdfvGzz2tM2Yb
- 62YwWfAmla6In6QMb96eWCeNtft/RpDt5ZAVgR42w0BTzqoZ+ixyK3yqwory5ETNCaldAYx2
- iTLhrkdNalnGyE9Wnrivw+ZbDmeLWx31WRnizgD3okPjOsWKfdQC6ickBE/XPeNveHHip8SM
- amtBqX/abZgRXsuhA9ecQqlohTyravo6wYZ8yIl1MlEoK6ijfJY7FuGSKSjx6mx8WRXmcpSY
- U6GeoZZHyZaDDTa4bBxkfuLryIrdwLalGGVA6BgsuFUXLiZzwES/cOkQ==;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=T8WkfQM1tDVw2lkM35NPqGVyDI8QletmxFw9B3FKiUQ=;
+ b=gWgRMMy+C5iSzZsNMMtXSW4NJ+nq3LO8TPIBRLAx/JbrEhLC0J3Nnm7XBArhljqyzSW+u3
+ Tu9KMbU2xB6trqXGd+9EFFVta9Uj7P5Ks0Y1011Y9Z5iGtfG6yAIeX56ROZPZfGwdwIceV7R
+ 6csKI6RJc+CAKjtzXn8HnaZh5OlLFF2adcNhETAnG8e7VrRkRXxril5+F1qFVneaFu1bsDh7
+ knd19UbEnWRgzDHznVkTXUC7Cvdc9TVSKS1GN7BdFkLcBtELOWONJGHGiM82HNVFxOSXeRYA
+ 7vPAM7Fu/PlbH8yyx8NgP/kIeIPSXoeXJRRzAqWJ2A6SPpaCHkTCBBEQ==;
 From: Florian Bezdeka <florian.bezdeka@siemens.com>
-Date: Wed, 19 Aug 2026 16:30:31 +0200
-Subject: [PATCH RFC 2/3] genirq: Honor existing IRQ affinities when setting
- affinity hints
+Subject: [PATCH RFC 0/3] genirq: Allow drivers to respect userspace IRQ
+ affinities
+Date: Wed, 19 Aug 2026 16:30:29 +0200
+Message-Id: <20260819-flo-net-7-2-make-stmmac-default-affinity-aware-v1-0-3f79a99cadaf@siemens.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,9 +40,10 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260819-flo-net-7-2-make-stmmac-default-affinity-aware-v1-2-3f79a99cadaf@siemens.com>
-References: <20260819-flo-net-7-2-make-stmmac-default-affinity-aware-v1-0-3f79a99cadaf@siemens.com>
-In-Reply-To: <20260819-flo-net-7-2-make-stmmac-default-affinity-aware-v1-0-3f79a99cadaf@siemens.com>
+X-B4-Tracking: v=1; b=H4sIAAW+hWoC/x3NTQrCMBBA4auUWTuQhKjVreAB3IqLoZnRwSaVJ
+ P5ReneDy2/z3gyFs3KBfTdD5pcWnVKDXXUw3ChdGTU0gzNuY3prUMYJE1fcosNId8ZSY6QBAws
+ 9x4okoknrF+lNmZGsX5PfeRt6gRZ9ZBb9/IdnOB0PcFmWH8+Pv22FAAAA
+X-Change-ID: 20260810-flo-net-7-2-make-stmmac-default-affinity-aware-a145a4941d8f
 To: Maxime Chevallier <maxime.chevallier@bootlin.com>, 
  Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
@@ -63,54 +64,82 @@ Cc: Jan Kiszka <jan.kiszka@siemens.com>, netdev@vger.kernel.org,
 X-Flowmailer-Platform: Siemens
 Feedback-ID: 519:519-68982:519-21489:flowmailer
 
-Some device drivers implement an IRQ balancing / spreading mechanism
-based on cpumask_local_spread() and irq_set_affinity_hint() (deprecated)
-or irq_set_affinity_and_hint().
+Hi all,
 
-__irq_apply_affinity_hint() was overwriting already configured
-affinities and with that violating user defined affinities.
+I'm trying to demonstrate a real problem for PREEMPT_RT here, using the
+stmmac driver as example. There are more drivers "affected" but let's
+ignore that for one moment. Let's discuss the underlying problem first.
 
-This was especially a problem on systems with isolated CPUs, a common
-pattern on PREEMPT_RT enabled systems. Device IRQs were balanced over
-CPUs that were isolated for RT workloads.
+To achieve the best throughput most network devices are based on
+multiple queues. Each queue (pair) is equipped with one device IRQ. To
+reach the maximum throughput, spreading / balancing them between all the
+available CPUs makes sense.
 
-Note that only the first call of irq_set_affinity_hint() and
-irq_set_affinity_and_hint() - for each IRQ - will have any effect.
-Afterward affinities might be controlled from userspace using the
-/proc/irq/<n>/smp_affinity{_list} interface.
+While some IRQ chips - and with that some architectures - implement the
+necessary spreading (or balancing) at IRQ chip level others don't do that.
+If a device driver wants to make sure that balancing happens as intended
+it has to implement that on his own (again).
+
+The typical shortcoming of those implementations: They do not honor RT
+relevant settings like the smp_default_affinity or isolated CPU cores.
+Device IRQs are balanced over "all" or "all online CPUs".
+
+That's not a problem for "normal" systems, but for RT systems - or
+systems running cpu-isolating workloads - it is.
+
+IRQ affinities can be controlled via /proc/irq/<n>/smp_affinity{_list}
+for existing IRQs and via /proc/irq/default_smp_affinity for "new" or 
+"not yet registered" IRQs. Those settings - as written by user space - 
+must be honored. Always.
+
+In our case the settings were bypassed by the following sequence:
+
+    - system boot (all CPUs available, no isolation yet)
+    - deployment of the first RT application
+        - writing a new default smp affinity (remove RT isolated cores)
+        - migrating away all that were targeting the now isolated cores
+        - creating a cgroup with RT cores as the only usable cores
+    - RT application running fine for some time
+    - stmmac network interface went up for the first time
+        - driver balances IRQs over all CPUs, ignoring the existing
+	  affinities
+    - Too much IRQ traffic on RT cores
+
+Even with series applied there is (at least) one problem remaining:
+
+The /proc/irq/<n> interface is populated on the first request_irq() call. 
+That means that we can not control affinities from userspace until the 
+IRQ gets requested.
+
+The problem for network interfaces: We have to bring up the interfaces
+once, to be able to control such affinities.
+
+That raises the question why request_irq() is called on "link up" time,
+while the low level vector allocation takes place during device probing.
+At least that seems to be the common pattern. Can someone tell me why
+this is done this way? Shouldn't we call request_irq() at the same time?
+
+So, let's hope that all of this was short enough that somebody reads it
+and precise enough to make the problem clear. The idea behind this series
+is not fixing or applying the series as is. I'm expecting a discussion
+first. So, input welcome!
 
 Signed-off-by: Florian Bezdeka <florian.bezdeka@siemens.com>
 ---
- kernel/irq/manage.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Florian Bezdeka (3):
+      cpumask: Honor irq_default_affinity in cpumask_local_spread()
+      genirq: Honor existing IRQ affinities when setting affinity hints
+      net: stmmac: Migrate IRQ balancing to cpumask_local_spread()
 
-diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
-index 7eb07e3bdb4c2419e0a58a75c29d88b4b00b8287..3937ba24df6d63375dda88164cf92fd49e70a3eb 100644
---- a/kernel/irq/manage.c
-+++ b/kernel/irq/manage.c
-@@ -503,11 +503,21 @@ EXPORT_SYMBOL_GPL(irq_force_affinity);
- 
- int __irq_apply_affinity_hint(unsigned int irq, const struct cpumask *m, bool setaffinity)
- {
-+	struct irq_data *irq_data;
- 	int ret = -EINVAL;
- 
- 	scoped_irqdesc_get_and_lock(irq, IRQ_GET_DESC_CHECK_GLOBAL) {
- 		scoped_irqdesc->affinity_hint = m;
-+		irq_data = irq_desc_get_irq_data(scoped_irqdesc);
- 		ret = 0;
-+
-+		/*
-+		 * Do not overwrite the affinity in case an affinity for this
-+		 * IRQ has already been requested, e.g. by writing to
-+		 * /proc/irq/<n>/smp_affinity
-+		 */
-+		if (irqd_affinity_was_set(irq_data))
-+			setaffinity = false;
- 	}
- 
- 	if (!ret && m && setaffinity)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 21 +++++++++++++++++----
+ kernel/irq/manage.c                               | 10 ++++++++++
+ lib/cpumask.c                                     | 10 ++++++----
+ 3 files changed, 33 insertions(+), 8 deletions(-)
+---
+base-commit: aa2e13ae8d3cbe2c15ef4f7e971b2de0832794aa
+change-id: 20260810-flo-net-7-2-make-stmmac-default-affinity-aware-a145a4941d8f
 
+Best regards,
 -- 
-2.55.0
+Florian Bezdeka <florian.bezdeka@siemens.com>
 
