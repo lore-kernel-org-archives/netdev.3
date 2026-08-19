@@ -1,305 +1,277 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC133BFE42
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 15:31:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787153493; cv=none; b=UOgUipQpc+mGQQrZfigcMZCKzO1gl7JGED0CNbk287U5IDPE9P82UrWIQDVe6sntpsl9BWRZqDFV06nvBwIMzsINrrcHl+Z/s0RxrvUqANf3oYlmZNlBSUEsdxmEXb6tlKupUQ8WwAajunrZ0Lu1mH9N4I5GLnrWUeIGm7qgKuo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787153493; c=relaxed/simple;
-	bh=rYJMS4o6b5/cMnYPf22M8gMEK9H2Nko0D6IHlPtRChE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IaLRWTorJ+bqWRKzf6tu8HWVolw8P7l2Ve6VTbxrXLZYq8eAe3zBR/+Kz8EBMXzWKlEYf5bmf3xClhX1ynHttyN7Kjq5Y81uc6F1EwUNER3+l+pBwx4tYs4NUoF65KgPeX+tI27Yf9eFRIy3DgEwuWnVIjdBR8sqOaLSRll0+sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XZedUE8G; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837BB3C10A9
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 15:31:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787153507; cv=pass; b=odzcrEn0/U8dyBVqqjcK2WV/frbvniYIK9BidJ55sGyB049iOAQX5XdRiIU0eSrxK01wQoVHsc30DLeqlpGVXT9XSJq/NEE46d9B5l9k1Tlt1YFo8IcOQ/gSvAAXMd8daRhHlGQkdIWxLrpOi338N4cq4+895mPZIRmSTMCeiaM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787153507; c=relaxed/simple;
+	bh=7qTkxLZAaVYswa5fRWmyn/0TG6JBUySn4trfKwwFTEI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=P2gSaYCPdAz/6wfffdyIVhbwMLuLxTcZK7EVOIBkR3JBR+j3SzQKjwPwj2dGcRfGYV7yiW8d153v+ApEntURNGM79Xt9ePtjibaNUQkYKdvta47Q8jVJz2JbZdUV78LH0xkwOlYblhXdLJ3HaxNjR4rDc1Iu/ECRXuWgV6l2KwU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=fLNDhLOH; arc=pass smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XZedUE8G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CD421F000E9;
-	Wed, 19 Aug 2026 15:31:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787153491;
-	bh=q1YXb0DOdApJVq5eL8myBWPjrVzx+2F9Uw/eqwaUskM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XZedUE8Gq5VL3anjQVsWVXAQSJ9bZyJ5GuHSodFSb8QTulE62TOB8/cPIsjoqcl5y
-	 oU00SYLM+ymnyhhAqWR1o++rrKoDEUZlZWY2HxoKuSyH5NrkCgAlNqWwdQNmvOJl+g
-	 Fr3xJfDIh93l1vj0ltyAJmpWegGc2K1HqnXzYNgcj0d/XWOEg+GxZC0CEPblEDpYai
-	 pm7G5403DCBoqH79JB9FHt/L9C8BvfZ2W+2bEeXthjx3r1HqO8nQw52du0FnSWpwMe
-	 9XUU+aVtaRh0t+g+tHztLXuIpHsCv9taViGtdu6xFPsccedbD/8ouwc6bXS4oVq+Tq
-	 rye0FnNYC73+A==
-From: Simon Horman <horms@kernel.org>
-To: wongboonjhee52@gmail.com
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH net v2] net/ncsi: Fix Use-After-Free in NCSI channel and package removal
-Date: Wed, 19 Aug 2026 16:31:22 +0100
-Message-ID: <20260819153122.752138-1-horms@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260816084403.295808-1-wongboonjhee52@gmail.com>
-References: <20260816084403.295808-1-wongboonjhee52@gmail.com>
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="fLNDhLOH"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-84867f07d63so1269210b3a.2
+        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 08:31:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787153505; cv=none;
+        d=google.com; s=arc-20260327;
+        b=lc9VfOlHNY/FLOXJseQ3JMLzWQjd7BJxL6qYCmuVLoVOVUEcI2CLwGWarP8AbIeYt8
+         ZzPJVU2GET7IRLlbUdFB9fm7yN3LrD6YVd5CKzftn3DMKXFGhPmJRpfJBTsu53tfkX1Q
+         a4B8NqtwbhAJ4byCBwb8Lyv6Oj1k9HPuJZCxVLEx9ZDC85P/BUlPyq0XvygTcbZqtdg2
+         k/kuxoZfDo+iLz7X4xkRe/mz+G3eMuly0XFVbPbn8WRwdhKTRA3gUcD7/x6Q7Yr6pQUd
+         xFcC4M4C/2Ypfc8IIK3FM14CPbBn/0jVCIoxGU8w+D2nSjvxhfn/3jvOSUJnpDafJtaL
+         Smdw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=08wNOA68TAaoTV8eso++gFA6aDwbeSGwMVtZP2K86Zc=;
+        fh=M7oqS4dhWck/l2Fu3NRPAuwjyyua/Nnn2TtGiZ7CsYo=;
+        b=AOW4J5tSXZZyrkdcjB9fqbYi4BUUBKiJdOlIUg1mPF1ddylEdfw4o2pLOO7QIF+Flx
+         DFJ07aOpaDW9ZpKfJwx2OkPtXwG8xMHGtWFObpOI9aTLn6c00wVRPg09GHBuOjWw9ZCR
+         uXOGE7DIoWKHAhWzfXjcO9Wd1zHler3SJbSwKtZ2S7b1NTx78FhGL0T8/qM4YQ5j69r9
+         +hRcOzuauC7Mauox5OT+xFr0L5EwfoeDKs40DKcrfEXWuEwAImxlu/dtWwoTpviqltk9
+         GdgTK0P7FD3tKuYbwNslpLFArOb3LZiJFtXyMxdPWM9rWSMR1Xj00ajr6aQCcJNS/Gtv
+         Hxzg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1787153505; x=1787758305; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=08wNOA68TAaoTV8eso++gFA6aDwbeSGwMVtZP2K86Zc=;
+        b=fLNDhLOH1dPnwY141w34BTMT9GIEa7x/1UomsY96nI7ZHA6/DxotafHSGWFN/HzSkI
+         xui2dTqdFgS0pAoOe5GWUMnM5MidHMI4Zf2QUs5Kh53dlonBU27R4XsmouUAdWjXxRhU
+         PEmNlZRk64pRkMOpjZ0KJso8iXo2kQGul0zeA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787153505; x=1787758305;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=08wNOA68TAaoTV8eso++gFA6aDwbeSGwMVtZP2K86Zc=;
+        b=VBA3HEKXxCMP0Sz6WGJw6AtF1jTAzeaRxONYVBSUdpLNLojICwU3OPYmi4l/mJtC1w
+         Uq6X2ei5N2x9QtNaxHwEZfRq0SEIOSuejVRRvKmQn6guHnyUzU/RfWV4t1kgzeJOSfHS
+         27jD12bQnRM00Yg8q9dTHGMOclU9q3faKPJ9UEaq//g7q3/Xsyu3tmJEZamT6Hp4wo4g
+         EyGxI1x93ZUpzZO/ZOKkggyc5Sj9yA1mEaSsOlUBpKv991MBPUYwQGDJ1elu8AQpj7Xs
+         XVGPt5+gwqauYCY79xdjg4bFGXKDNhk2wU6ufcosjdG3muUBFWax6OerCjFa2LIlsAz2
+         CofQ==
+X-Gm-Message-State: AOJu0YyUyrQJC63gSAE0kouWM9mbdpLAftlvDwft+21MVzw7vErDnLd+
+	WCdOZ9pQ29ueBRK+n9W+r8xymSFCibiDT9iGeUnCXIq5foUPcZFbFEHql3RDh+6rylA+MHsGRty
+	WGYypmHQvaW6eWOSUIHd4JC59Env35yR5Ba3JN1H3
+X-Gm-Gg: AR+sD125Ohf5wW6+9y77qCRZbHbT3W7dyE8x/HbXVbFZJcMJ1c4l8Q38hBm1QRQmMQW
+	ohy+vbcBkVD0JAfu5t861yxOfoP4YEJcy7QE9qS+GoM3TmwTMvcuWRn2vkAtxdDs9meZxlZ+47p
+	iH8EnEQsb6cLyWJsGzbVWG8UUyE5XvO8T5k0wC1fVkqpvmin9PCsK2fjNuOP5Mw1lplZkgSvH8n
+	TK4TfUI68MxHnIMLUIm8Su2/DolTPk1IBvZhzK7dnoKuBjcbVWA/rMiHpiNnjd67yi/LS8Uh7lj
+	L/R8B6unhVaKsA1pGFtLZiGnHQVCtSkYpeunLK9dKN1waws=
+X-Received: by 2002:a05:6a00:a387:b0:84a:60a4:2651 with SMTP id
+ d2e1a72fcca58-851d38498eamr9154939b3a.6.1787153504431; Wed, 19 Aug 2026
+ 08:31:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260819143136.57350-1-jhs@mojatatu.com> <CANn89iLRPjpKF6xrWz=pv5cWXT6FxCDmOprXKrkDRgQH4Jin-w@mail.gmail.com>
+ <CAM0EoMmc=CNVO0h1miKSO63uYH9f6YkX6=z+itqALT9tAYtcog@mail.gmail.com> <CANn89iK+xzagk9faUSjHQj+9kTnWn0wg6tRez5XtkE14G+SCvQ@mail.gmail.com>
+In-Reply-To: <CANn89iK+xzagk9faUSjHQj+9kTnWn0wg6tRez5XtkE14G+SCvQ@mail.gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Wed, 19 Aug 2026 11:31:33 -0400
+X-Gm-Features: AcwNN1V1mKrKnZScjYVnpUf1wGwXObVJ511wEezy6L6Rk2jGCX5s0dCRWidiULQ
+Message-ID: <CAM0EoM=6C=yarfbjtegiobdK9jvLzLwJSSMxFBYDiG6XtZQ35w@mail.gmail.com>
+Subject: Re: [PATCH net v2] net: sched: fix quantum/backlog overflow in fq,
+ fq_codel, fq_pie, hhf, sfq
+To: Eric Dumazet <edumazet@google.com>
+Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, stable@vger.kernel.org, vega@nebusec.ai, 
+	Victor Nogueira <victor@mojatatu.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260816084403.295808-1-wongboonjhee52@gmail.com?part=1
----
---- Patch [1]: [PATCH net v2] net/ncsi: Fix Use-After-Free in NCSI channel and package removal ---
-commit 561a5dfe41dc86345568df7d58a77bbfbca0c53d
-Author: Wong Boon Jhee <wongboonjhee52@gmail.com>
+On Wed, Aug 19, 2026 at 11:19=E2=80=AFAM Eric Dumazet <edumazet@google.com>=
+ wrote:
+>
+> On Wed, Aug 19, 2026 at 5:03=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.co=
+m> wrote:
+> >
+> > On Wed, Aug 19, 2026 at 10:43=E2=80=AFAM Eric Dumazet <edumazet@google.=
+com> wrote:
+> > >
+> > > On Wed, Aug 19, 2026 at 4:31=E2=80=AFPM Jamal Hadi Salim <jhs@mojatat=
+u.com> wrote:
+> > > >
+> > > > Several qdiscs derive their per-flow quantum or backlog from psched=
+_mtu()
+> > > > or accumulate qdisc_pkt_len() into a u32/int counter without an ove=
+rflow
+> > > > or zero clamp, which can drive the dequeue/credit-refill loop into =
+a soft
+> > > > lockup or a NULL deref.
+> > > >
+> > > > vega@nebusec.ai provided reports and PoCs which illustrated the fol=
+lowing:
+> > > >
+> > > > - sch_fq: fq_init() computes quantum =3D 2 * psched_mtu() with no o=
+verflow
+> > > >   check; a huge MTU wraps it into the sign bit, and fq_dequeue()'s
+> > > >   credit-refill loop spins forever. TCA_FQ_INITIAL_QUANTUM is also
+> > > >   unbounded up to INT_MAX in fq_change().
+> > > > - sch_fq_codel: fq_codel_enqueue() accumulates qdisc_pkt_len() into=
+ a u32
+> > > >   per-flow backlog; a crafted TCA_STAB inflates pkt_len to 1 GiB so=
+ a few
+> > > >   packets wrap the counter to 0, and fq_codel_drop() then picks an =
+empty
+> > > >   flow and derefs NULL. fq_codel_init() also sets quantum =3D
+> > > >   psched_mtu() with no clamp, so a huge MTU makes the deficit loop =
+spin.
+> > > > - sch_fq_pie: fq_pie_init() sets quantum =3D psched_mtu() with no c=
+lamp and
+> > > >   fq_pie_change() accepts any u32 quantum; same deficit-loop spin a=
+s
+> > > >   fq_codel on a huge-MTU dummy device.
+> > > > - sch_hhf: hhf_init() sets quantum =3D psched_mtu() with no overflo=
+w check;
+> > > >   a huge MTU makes weight * quantum overflow the signed deficit, an=
+d
+> > > >   hhf_dequeue() loops forever.
+> > > > - sch_sfq: sfq_init() sets quantum =3D psched_mtu() (unsigned); a h=
+uge MTU
+> > > >   makes allot =3D INT_MIN, and INT_MIN + INT_MIN is UB that toggles=
+ between
+> > > >   INT_MIN and 0 forever.
+> > > >
+> > > > Clamp the quantum to a sane range at init/change time so the dequeu=
+e loops
+> > > > terminate and the drop path never selects an empty flow. The clamps=
+ live in
+> > > > the init/change paths, not the per-packet fast path, so no hot-path=
+ cost is
+> > > > added for a configuration issue.
+> > > >
+> > > > Conditions to recreate the bug: a device whose MTU (plus hard_heade=
+r_len)
+> > > > is large enough that 2 * psched_mtu() or psched_mtu() wraps into th=
+e sign
+> > > > bit (e.g. a dummy device with max_mtu =3D=3D 0 accepting a huge MTU=
+), or a
+> > > > crafted TCA_STAB that inflates qdisc_pkt_len to ~1 GiB. Requires
+> > > > CAP_NET_ADMIN in a user namespace (Level 2) to configure the qdisc =
+and MTU.
+> > > >
+> > > > Fixes: afe4fd062416 ("pkt_sched: fq: Fair Queue packet scheduler")
+> > > > Fixes: 4b549a2ef4be ("fq_codel: Fair Queue Codel AQM")
+> > > > Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet schedul=
+er")
+> > > > Fixes: 10239edf86f1 ("net-qdisc-hhf: Heavy-Hitter Filter (HHF) qdis=
+c")
+> > > > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> > > > Reported-by: vega@nebusec.ai
+> > > > Tested-by: Victor Nogueira <victor@mojatatu.com>
+> > > > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> > > > ---
+> > > > v1 to v2
+> > > > Changes based on feedback from Eric and Sashikos[1][2] on V1.
+> > > >
+> > > > 1. Drop the fast-path changes in fq_dequeue() (Eric)
+> > > >
+> > > > 2. Clamp to a range, not just a lower bound (Eric). Uses
+> > > >    clamp_t(u32, ..., 1, 1 << 20) (upper bound 1M; lower bound 1, no=
+t 256).
+> > > >    Sashiko (gemini, nipa gpt-5-6-sol-1-5) pointed out the v1 max_t(=
+) left
+> > > >    bit 31 set, so a 0x80000000 quantum survived and still spun.
+> > > >    Upper bound is 1M, not Eric's suggested 16M. fq_change() already=
+ caps
+> > > >    TCA_FQ_QUANTUM at 1M; using 16M in fq_init() would be inconsiste=
+nt.
+> > > >
+> > > > 3. Clamp TCA_FQ_INITIAL_QUANTUM in fq_change() too (Eric). It was u=
+nbounded
+> > > >    up to INT_MAX; v2 clamps it to > 0 && <=3D 1M, matching TCA_FQ_Q=
+UANTUM.
+> > > >
+> > > > 4. Fold fq_codel_init() quantum clamp (Sashiko gemini + nipa gpt-5-=
+6-sol-1-6)
+> > > >
+> > > > 5. Fold fq_pie_init()/fq_pie_change() quantum clamp (Sashiko gemini=
+):
+> > > >
+> > > > 6. Reword the hhf/sfq comments (Sashiko nipa gpt-5-6-sol-2-15, gpt-=
+5-6-sol-2-14)
+> > > >
+> > > > [1]https://sashiko.dev/#/patchset/20260818101130.16203-1-jhs@mojata=
+tu.com
+> > > > [2]https://netdev-ai.bots.linux.dev/sashiko/#/patchset/202608181011=
+30.16203-1-jhs@mojatatu.com
+> > > > ---
+> > > >  net/sched/sch_fq.c       | 17 ++++++++++++-----
+> > > >  net/sched/sch_fq_codel.c | 16 ++++++++++++++--
+> > > >  net/sched/sch_fq_pie.c   |  9 ++++++---
+> > > >  net/sched/sch_hhf.c      | 12 ++++++++++++
+> > > >  net/sched/sch_sfq.c      |  8 ++++++++
+> > > >  5 files changed, 52 insertions(+), 10 deletions(-)
+> > > >
+> > > > diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
+> > > > index 7cae082a9847..f7c92df085e7 100644
+> > > > --- a/net/sched/sch_fq.c
+> > > > +++ b/net/sched/sch_fq.c
+> > > > @@ -1112,9 +1112,16 @@ static int fq_change(struct Qdisc *sch, stru=
+ct nlattr *opt,
+> > > >                 }
+> > > >         }
+> > > >
+> > > > -       if (tb[TCA_FQ_INITIAL_QUANTUM])
+> > > > -               WRITE_ONCE(q->initial_quantum,
+> > > > -                          nla_get_u32(tb[TCA_FQ_INITIAL_QUANTUM]))=
+;
+> > > > +       if (tb[TCA_FQ_INITIAL_QUANTUM]) {
+> > > > +               u32 initial_quantum =3D nla_get_u32(tb[TCA_FQ_INITI=
+AL_QUANTUM]);
+> > > > +
+> > > > +               if (initial_quantum > 0 && initial_quantum <=3D (1 =
+<< 20)) {
+> > > > +                       WRITE_ONCE(q->initial_quantum, initial_quan=
+tum);
+> > > > +               } else {
+> > > > +                       NL_SET_ERR_MSG_MOD(extack, "invalid initial=
+ quantum");
+> > > > +                       err =3D -EINVAL;
+> > > > +               }
+> > > > +       }
+> > > >
+> > > >         if (tb[TCA_FQ_FLOW_DEFAULT_RATE])
+> > > >                 pr_warn_ratelimited("sch_fq: defrate %u ignored.\n"=
+,
+> > > > @@ -1226,8 +1233,8 @@ static int fq_init(struct Qdisc *sch, struct =
+nlattr *opt,
+> > > >
+> > >
+> > > You should probably split these into separate patches to ease code re=
+view.
+> > >
+> >
+> > I didnt follow - are you asking to split the sch_fq into two patches?
+>
+> No, you send a big patch:
+>
+>  net/sched/sch_fq.c       | 17 ++++++++++++-----
+>  net/sched/sch_fq_codel.c | 16 ++++++++++++++--
+>  net/sched/sch_fq_pie.c   |  9 ++++++---
+>  net/sched/sch_hhf.c      | 12 ++++++++++++
+>  net/sched/sch_sfq.c      |  8 ++++++++
+>  5 files changed, 52 insertions(+), 10 deletions(-)
+>
+> And today I had time to review the FQ part that we care about a lot ;)
 
-net/ncsi: Fix Use-After-Free in NCSI channel and package removal
+Ok. So one patch per file?
 
-The patch replaces kfree() with kfree_rcu() in ncsi_remove_channel() and
-ncsi_remove_package(), and adds a struct rcu_head to struct ncsi_channel
-and struct ncsi_package so the objects unlinked from the RCU-protected
-package and channel lists are only reclaimed after a grace period.
-
-A few questions on the change below.
-
-> diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
-> index adee6dcabdc3f..19785ca2392ae 100644
-> --- a/net/ncsi/internal.h
-> +++ b/net/ncsi/internal.h
-> @@ -239,6 +239,7 @@ struct ncsi_channel {
->  	} monitor;
->  	struct list_head            node;
->  	struct list_head            link;
-> +	struct rcu_head             rcu; /* RCU cleanup */ 
-                                                        ^
-
-[Severity: Low]
-[Finding: main-1-3]
-[Sources: opus-5]
-This isn't a bug, but both of the new struct members carry trailing
-whitespace after the comment terminator, in struct ncsi_channel and in
-struct ncsi_package below. scripts/checkpatch.pl reports "ERROR: trailing
-whitespace" for both lines. Could they be resent without the trailing
-space?
-
->  };
->  
->  struct ncsi_package {
-> @@ -253,6 +254,7 @@ struct ncsi_package {
->  	bool                 multi_channel; /* Enable multiple channels  */
->  	u32                  channel_whitelist; /* Channels to configure */
->  	struct ncsi_channel  *preferred_channel; /* Primary channel      */
-> +	struct rcu_head      rcu; /* RCU cleanup */ 
->  };
-
-[Severity: High]
-[Finding: gpt-5-6-sol-1-4]
-[Sources: gpt-5-6-sol, opus-5]
-The changelog says:
-
-  "To support this, a struct rcu_head has been added to struct
-   ncsi_channel, struct ncsi_package, and struct ncsi_dev_priv."
-
-but the diff only touches struct ncsi_channel and struct ncsi_package.
-struct ncsi_dev_priv has no rcu member after this patch. Should the
-changelog be corrected, or was a third hunk intended?
-
-Related to that, and not a bug introduced by this patch: ndp is freed with
-the exact pattern the changelog calls a use-after-free. In
-ncsi_unregister_dev():
-
-	spin_lock_irqsave(&ncsi_dev_lock, flags);
-	list_del_rcu(&ndp->node);
-	spin_unlock_irqrestore(&ncsi_dev_lock, flags);
-
-	disable_work_sync(&ndp->work);
-
-	kfree(ndp);
-
-ndp is published on ncsi_dev_list and traversed by ncsi_find_dev() through
-NCSI_FOR_EACH_DEV(), which expands to list_for_each_entry_rcu().
-ndp_from_ifindex() then drops the net_device reference with dev_put() and
-hands the raw ndp to the netlink handlers, which sleep in
-genlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL) while still holding it.
-
-Since ncsi_remove_package() and ncsi_remove_channel() are only reached from
-ncsi_unregister_dev(), isn't the window in which a channel or package is
-freed the same window in which ndp itself is freed? If so, does the claim
-that the fix "completely eliminates the crash" hold?
-
-There is also an asymmetry now: packages and channels survive a grace
-period while their owner ndp is freed synchronously, so np->ndp and
-nc->package->ndp are guaranteed dangling for anything that observes a child
-object during that grace period.
-
->  
->  struct ncsi_request {
-> diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
-> index 54d0df0a9efe6..368085627807b 100644
-> --- a/net/ncsi/ncsi-manage.c
-> +++ b/net/ncsi/ncsi-manage.c
-> @@ -263,7 +263,7 @@ static void ncsi_remove_channel(struct ncsi_channel *nc)
->  	np->channel_num--;
->  	spin_unlock_irqrestore(&np->lock, flags);
->  
-> -	kfree(nc);
-> +	kfree_rcu(nc, rcu);
-
-[Severity: High]
-[Finding: gpt-5-6-sol-5-23]
-[Sources: gpt-5-6-sol, opus-5]
-The changelog says the readers are "concurrent readers traversing these
-lists under rcu_read_lock() (such as Netlink dump handlers)". Do such
-readers exist in net/ncsi?
-
-git grep rcu_read_lock net/ncsi/ only matches the ndp->vlan_vids loop in
-ncsi_configure_channel(); there is no rcu_read_lock() anywhere in
-net/ncsi/ncsi-netlink.c. The iteration macros in net/ncsi/internal.h only
-expand to the list primitives:
-
-	#define NCSI_FOR_EACH_DEV(ndp) \
-		list_for_each_entry_rcu(ndp, &ncsi_dev_list, node)
-
-so ncsi_find_dev(), ncsi_write_package_info(), ncsi_write_channel_info(),
-ncsi_pkg_info_nl() and ncsi_pkg_info_all_nl() load np/nc/ndp outside any
-read-side critical section, and even sleep in genlmsg_new(..., GFP_KERNEL)
-while holding those pointers.
-
-If the reader is not in a read-side section, every one of those sleep or
-preemption points is a quiescent state, so a full grace period can elapse
-and the kfree_rcu() callback can run before the reader dereferences the
-pointer. Does this change actually close the race, or does it only widen
-the window? Would adding rcu_read_lock()/rcu_read_unlock() around those
-traversals (or another form of exclusion against the removal path) be the
-part that is missing here?
-
-[Severity: High]
-[Finding: gpt-5-6-sol-1-5]
-[Sources: gpt-5-6-sol, opus-5]
-This is a pre-existing issue, but the deferral makes the exposure longer.
-Earlier in ncsi_remove_channel(), before list_del_rcu(&nc->node) runs, the
-sub-allocations are released synchronously:
-
-	/* Release filters */
-	kfree(nc->mac_filter.addrs);
-	kfree(nc->vlan_filter.vids);
-
-Both pointers are left non-NULL, and vlan_filter.n_vids and
-vlan_filter.bitmap are left untouched. With the channel itself now retained
-for a grace period, an observer holding nc sees a live-looking object with
-dangling inner pointers.
-
-ncsi_write_channel_info() in net/ncsi/ncsi-netlink.c walks those members
-with no nc->lock:
-
-	ncf = &nc->vlan_filter;
-	i = -1;
-	while ((i = find_next_bit((void *)&ncf->bitmap, ncf->n_vids, i + 1))
-	       < ncf->n_vids) {
-		if (ncf->vids[i])
-			nla_put_u16(skb, NCSI_CHANNEL_ATTR_VLAN_ID, ncf->vids[i]);
-
-ncsi_rsp_handler_gc() sets ncf->bitmap = U64_MAX and ncf->n_vids =
-rsp->vlan_cnt, so the loop condition stays true after ncf->vids has been
-freed. Can this read the freed array and copy its contents into
-NCSI_CHANNEL_ATTR_VLAN_ID? NCSI_CMD_PKG_INFO has no GENL_ADMIN_PERM, so the
-reader side is unprivileged.
-
-Would freeing the filter arrays from the RCU callback together with the
-channel, or NULLing the pointers and clearing n_vids/bitmap under nc->lock
-after unlinking, be preferable?
-
-As a side note on the evidence in the changelog: "KASAN confirms the freed
-object belongs to the kmalloc-96 cache". struct ncsi_channel embeds caps[],
-modes[], stats and a timer and is much larger than 96 bytes, while
-mac_filter.addrs is kzalloc((uc_cnt + mc_cnt + mixed_cnt) * ETH_ALEN,
-GFP_ATOMIC) in ncsi_rsp_handler_gc(). Is the object being deferred here the
-same object as in the reported splat?
-
-[Severity: High]
-[Finding: main-2-7]
-[Sources: opus-5]
-This isn't a bug introduced by this patch, but the object handed to
-kfree_rcu() here is still linked into a second RCU-traversed list. Channels
-are queued with list_add_tail_rcu(&nc->link, &ndp->channel_queue) in
-ncsi-manage.c and ncsi-aen.c, and are dequeued only by
-list_del_init(&nc->link) in ncsi_process_next_channel() and
-ncsi_reset_dev(). ncsi_remove_channel() unlinks only &nc->node from
-np->channels and never dequeues &nc->link under ndp->lock.
-
-ncsi_process_next_channel() then pops and writes to that entry:
-
-	nc = list_first_or_null_rcu(&ndp->channel_queue,
-				    struct ncsi_channel, link);
-	...
-	list_del_init(&nc->link);
-	...
-	nc->state = NCSI_CHANNEL_INVISIBLE;
-	...
-	ndp->active_channel = nc;
-	ndp->active_package = nc->package;
-
-and ncsi_channel_is_tx()/ncsi_choose_active_channel() walk it with
-list_for_each_entry_rcu(channel, &ndp->channel_queue, link).
-
-Because ncsi_unregister_dev() calls disable_work_sync(&ndp->work) only
-after the removal loop, ncsi_dev_work() can still run here. Can
-ncsi_process_next_channel() do list_del_init() and the nc->state store on a
-channel that has already been reclaimed by the RCU callback, corrupting
-ndp->channel_queue?
-
-Also, ndp->hot_channel, ndp->active_channel, ndp->active_package and
-np->preferred_channel are plain back-pointers that are never cleared on
-removal, so the grace period does not cover them either.
-
->  }
->  
->  struct ncsi_package *ncsi_find_package(struct ncsi_dev_priv *ndp,
-> @@ -326,7 +326,7 @@ void ncsi_remove_package(struct ncsi_package *np)
->  	ndp->package_num--;
->  	spin_unlock_irqrestore(&ndp->lock, flags);
->  
-> -	kfree(np);
-> +	kfree_rcu(np, rcu);
-
-[Severity: High]
-[Finding: gpt-5-6-sol-4-17]
-[Sources: gpt-5-6-sol, opus-5]
-This is a pre-existing ordering issue rather than something this patch
-introduces, but it affects whether the deferral helps. ncsi_unregister_dev()
-tears state down before it stops its asynchronous users:
-
-	dev_remove_pack(&ndp->ptype);
-
-	list_for_each_entry_safe(np, tmp, &ndp->packages, node)
-		ncsi_remove_package(np);
-
-	spin_lock_irqsave(&ncsi_dev_lock, flags);
-	list_del_rcu(&ndp->node);
-	spin_unlock_irqrestore(&ncsi_dev_lock, flags);
-
-	disable_work_sync(&ndp->work);
-
-	kfree(ndp);
-
-Since disable_work_sync() runs after the removal loop, can a queued or
-running ncsi_dev_work() -> ncsi_probe_channel()/ncsi_suspend_channel()/
-ncsi_configure_channel() still operate on ndp->active_package,
-ndp->active_channel or ndp->hot_channel, which the removal path never
-clears? Should disable_work_sync() precede the removal loop?
-
-Separately, ndp->requests[] embeds 256 timers set up with
-ncsi_request_timeout() in ncsi_register_dev(), and ncsi_xmit_cmd() arms
-them:
-
-	nr->enabled = true;
-	mod_timer(&nr->timer, jiffies + 1 * HZ);
-
-ncsi_unregister_dev() never walks the request table to disarm those timers
-or release outstanding requests before kfree(ndp). If a command is in
-flight when the driver unregisters, can ncsi_request_timeout() fire on the
-freed ndp and dereference nr->ndp, ndp->lock and the already-freed
-package/channel lists via ncsi_find_package_and_channel()?
-
->  }
->  
->  void ncsi_find_package_and_channel(struct ncsi_dev_priv *ndp,
+cheers,
+jamal
