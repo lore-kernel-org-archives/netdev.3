@@ -1,176 +1,76 @@
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+Received: from mail3-165.sinamail.sina.com.cn (mail3-165.sinamail.sina.com.cn [202.108.3.165])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D1A388E43;
-	Wed, 19 Aug 2026 07:49:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF25136DA18
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 07:50:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.108.3.165
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787125797; cv=none; b=OzqW3rKA3A5QdiCXMerqbW6ICH/ZUbFu5AoTn17x+qtm8+PhTsTMMkO/G8Tx7LLTPyY+KFw6LHYhPR08f595nDGlDLlBfcElHSdHqkiljF1NHJ9RBaeYU0tfMTuUP+uAVp80yl3Sls5zk71yR5MMWlVPEX/9OyO/FyZYT1mgAB0=
+	t=1787125843; cv=none; b=Kp5qHmnExNIh1UeW6Uy5CSxBKsiUxs6qmDd3hihG6yhmsAT/h6VXyWP0TgHxys0sh25uaRQrBZ+e/b9N9hEr1Gtrh8ggbX1bI1pd5EU/3pp4EvI7GE7voqwtjzFccMBb60LSr5wgTT4I/wMwAGaw6ZQfAVXn0RlCY5B9EAuTPqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787125797; c=relaxed/simple;
-	bh=zRwX6uK2SacFm4nv91jT8PAoqsCsQbtVLhesweaKaxQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ubCC2yNeOu8Wj4TJWiwEPY7lmylz5yu9nJbPJRdd+EOqbi8ENJBVm2gPvvFw+hx6JPMPrZvkgG4uHVfPJIkUCvtxAePXYDkimDlYKcTdP85vdsXClGIUtvfTf2jORtOaf4PAxt84hCY+Vo7b16dLzV6S8TIjELWNLNNhyc5I+EY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=iryU31gZ; arc=none smtp.client-ip=113.46.200.224
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
+	s=arc-20240116; t=1787125843; c=relaxed/simple;
+	bh=Vj6bKvPVanImAvTzMWi9v8b7811Dvebo8JzMtRQ06ys=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=s+x3Hgndme29gU/FyZY8/wrzDGYC6P8p2qQegstblXPbwX7+4Beqx2aqSmTtOqdvzKk4ghy6iblCQKLkIa5PVaYmgnftcwfg6z4JOVE1y2Z0TX0UjMq3AEeHx7+S8JkV/q55WrEjPFlKgmGcXHhWoSVaSzWg/J31D8B6DomIaWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=lNBN05z6; arc=none smtp.client-ip=202.108.3.165
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="iryU31gZ"
-dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=U5oTfw5gJcO/xDxQ6cN7x8if7qRyh5e7eVy9/bdqZDI=;
-	b=iryU31gZj+cGJwc5wWDV73T2ta0NdlQZQ7sJe/mNv2wztk84OdgoI8rYtYnSGEUQ/Qn4sJsLh
-	sHTBA6ucdazYFGiiyBhVaE6vliib3dG4JznxM6TLAppR1aBU7Bg0dT5Rnemf0Ek3AqwdOtYe0jw
-	oAr1bMgIjZlZmfy3/qYdoFA=
-Received: from mail.maildlp.com (unknown [172.19.163.15])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4hPz3B0402z1cyTS;
-	Wed, 19 Aug 2026 15:39:02 +0800 (CST)
-Received: from kwepemr100001.china.huawei.com (unknown [7.202.195.168])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8C7DA40578;
-	Wed, 19 Aug 2026 15:49:42 +0800 (CST)
-Received: from [10.136.112.147] (10.136.112.147) by
- kwepemr100001.china.huawei.com (7.202.195.168) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Wed, 19 Aug 2026 15:49:41 +0800
-Message-ID: <492adef9-936e-490d-ba1e-3d026ff1223a@h-partners.com>
-Date: Wed, 19 Aug 2026 15:49:41 +0800
+	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="lNBN05z6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1787125838;
+	bh=/NoTKKuFF5StMAU2PMDAleDSrfl6HpFKVhQNEb/s+uU=;
+	h=From:Subject:Date:Message-ID;
+	b=lNBN05z6gPrAKNsmQHymqXjdjakyl1QlgeadmUGsmbS40L7MdwZobqIe/67uVzdAW
+	 R5gky3aPDeoKZW71hRc+wFVtHlgo3Oo5OPtFn9aMDL+qHOubOl9p7ASo1t+RDJZS/N
+	 h/r+v/Feamu/i/IKCwIL9+RCCYggywtxiqd919qU=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([221.216.154.155])
+	by sina.com (10.54.253.33) with ESMTP
+	id 6A85604000005E03; Wed, 19 Aug 2026 15:50:27 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+Authentication-Results: sina.com;
+	 spf=none smtp.mailfrom=hdanton@sina.com;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=hdanton@sina.com
+X-SMAIL-MID: 9678076685555
+X-SMAIL-UIID: F86035B62FA84ED8A37056820DE5ECB6-20260819-155027-1
+From: Hillf Danton <hdanton@sina.com>
+To: Junjie Cao <junjie.cao@intel.com>
+Cc: Eric Dumazet <edumazet@google.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Uladzislau Zhauniarovich <uladzislau.zhauniarovich@gmail.com>,
+	syzbot+19d01f6082ec61dd45b2@syzkaller.appspotmail.com,
+	syzbot+8785aaf121cfb2141e0d@syzkaller.appspotmail.com,
+	syzbot+2642f347f7309b4880dc@syzkaller.appspotmail.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net 1/3] net/sched: taprio: catch up in bounded time when the schedule falls behind
+Date: Wed, 19 Aug 2026 15:50:14 +0800
+Message-ID: <20260819075015.1259-1-hdanton@sina.com>
+In-Reply-To: <20260818071706.251035-2-junjie.cao@intel.com>
+References: 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 net] vlan: fix skb_under_panic and races when toggling
- HW VLAN offload
-To: Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
-CC: Simon Horman <horms@kernel.org>, <netdev@vger.kernel.org>,
-	<eric.dumazet@gmail.com>, <stable@vger.kernel.org>
-References: <20260811085246.2267779-1-edumazet@google.com>
- <64a0b57c-040c-4703-95eb-886701bdf745@redhat.com>
-Content-Language: en-US
-From: xietangxin <xietangxin@h-partners.com>
-In-Reply-To: <64a0b57c-040c-4703-95eb-886701bdf745@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemr100001.china.huawei.com (7.202.195.168)
+Content-Transfer-Encoding: 8bit
 
-
-
-On 8/13/2026 4:49 PM, Paolo Abeni wrote:
-> On 8/11/26 10:52 AM, Eric Dumazet wrote:
->> Toggling hardware VLAN TX offload (NETIF_F_HW_VLAN_CTAG_TX or
->> NETIF_F_HW_VLAN_STAG_TX) on a lower device invokes vlan_transfer_features(),
->> which dynamically changed vlandev->hard_header_len.
->>
->> This causes two issues:
->> 1. Lockless TX paths (e.g. packet_snd in af_packet.c, ip6_finish_output2)
->>    read dev->hard_header_len without holding RTNL lock. Mutating
->>    hard_header_len dynamically under RTNL creates a data race where upper
->>    layers reserve insufficient headroom based on a stale hard_header_len,
->>    resulting in skb_under_panic when vlan_dev_hard_header() is called.
->> 2. In addition, vlan_transfer_features() updated hard_header_len without
->>    updating header_ops, causing a mismatch between allocated headroom
->>    and header creation.
->>
->> Always setting dev->hard_header_len = real_dev->hard_header_len and
->> dev->needed_headroom = real_dev->needed_headroom + VLAN_HLEN unconditionally
->> ensures:
->> - dev->hard_header_len remains 100% static and immutable at real_dev->hard_header_len,
->>   eliminating all dynamic runtime updates and data races on hard_header_len.
->> - Upper layers allocating skbs via LL_RESERVED_SPACE() will always reserve
->>   sufficient headroom for software VLAN tag insertion (real_dev->hard_header_len +
->>   real_dev->needed_headroom + VLAN_HLEN).
->> - vlandev inherits real_dev->needed_tailroom so underlying trailer/padding/ICV
->>   requirements are honored.
->> - AF_PACKET SOCK_RAW network header offsets remain correctly aligned at
->>   real_dev->hard_header_len.
->> - vlan_header_ops is used unconditionally.
->>
->> Note to stable teams: Make sure to backport these commits:
->>
->> e16e960d55a4 ("ipvlan: inherit needed_headroom and needed_tailroom from phy_dev")
->> cef51860becd ("macvlan: inherit needed_headroom and needed_tailroom from lowerdev")
->>
->> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
->> Reported-by: Tangxin Xie <xietangxin@h-partners.com>
->> Closes: https://lore.kernel.org/netdev/99d678ae-c7b2-4b44-b534-b8320679deb3@h-partners.com/
->> Cc: <stable@vger.kernel.org> # 3.19: e16e960d55a4: ipvlan: inherit needed_headroom and needed_tailroom from phy_dev
->> Cc: <stable@vger.kernel.org> # 3.19: cef51860becd: macvlan: inherit needed_headroom and needed_tailroom from lowerdev
->> Cc: <stable@vger.kernel.org> # 3.19
->> Signed-off-by: Eric Dumazet <edumazet@google.com>
->> ---
->> v3: propagate needed_tailroom, add stable tags.
->> v2: https://lore.kernel.org/netdev/20260724035419.1473174-1-edumazet@google.com/
->>
->>  net/8021q/vlan_dev.c | 39 +++++++--------------------------------
->>  1 file changed, 7 insertions(+), 32 deletions(-)
->>
->> diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
->> index ec2569b3f8dac629027b4344bc89402decf026d1..2859cbac3f266b7c4e3f44f41280d33ab69c5270 100644
->> --- a/net/8021q/vlan_dev.c
->> +++ b/net/8021q/vlan_dev.c
->> @@ -502,26 +502,6 @@ static const struct header_ops vlan_header_ops = {
->>  	.parse_protocol = vlan_parse_protocol,
->>  };
->>  
->> -static int vlan_passthru_hard_header(struct sk_buff *skb, struct net_device *dev,
->> -				     unsigned short type,
->> -				     const void *daddr, const void *saddr,
->> -				     unsigned int len)
->> -{
->> -	struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
->> -	struct net_device *real_dev = vlan->real_dev;
->> -
->> -	if (saddr == NULL)
->> -		saddr = dev->dev_addr;
->> -
->> -	return dev_hard_header(skb, real_dev, type, daddr, saddr, len);
->> -}
->> -
->> -static const struct header_ops vlan_passthru_header_ops = {
->> -	.create	 = vlan_passthru_hard_header,
->> -	.parse	 = eth_header_parse,
->> -	.parse_protocol = vlan_parse_protocol,
->> -};
->> -
->>  static const struct device_type vlan_type = {
->>  	.name	= "vlan",
->>  };
->> @@ -580,14 +560,10 @@ static int vlan_dev_init(struct net_device *dev)
->>  	dev->fcoe_ddp_xid = real_dev->fcoe_ddp_xid;
->>  #endif
->>  
->> -	dev->needed_headroom = real_dev->needed_headroom;
->> -	if (vlan_hw_offload_capable(real_dev->features, vlan->vlan_proto)) {
->> -		dev->header_ops      = &vlan_passthru_header_ops;
->> -		dev->hard_header_len = real_dev->hard_header_len;
->> -	} else {
->> -		dev->header_ops      = &vlan_header_ops;
->> -		dev->hard_header_len = real_dev->hard_header_len + VLAN_HLEN;
-> 
-> Sashiko nipa points to a possible functional and performance regression
-> with unusual config (reorder_hdr off):
-> 
-> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260811085246.2267779-1-edumazet%40google.com
-> 
-> Arguably the current behavior is incorrect, but it's also the
-> established one. WDYT?
-> 
-> /P
-> 
-> 
-Hi Eric,
-
-Gently pinging on this thread.
-
-Just wanted to check if you have any thoughts on Paolo's comment
-regarding the potential regression with reorder_hdr=off?
-
--- 
-Best regards,
-Tangxin Xie
-
+On Tue, 18 Aug 2026 15:17:04 +0800 Junjie Cao wrote:
+> @@ -960,14 +1005,19 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
+>  		next = list_next_entry(entry, list);
+>  	}
+>  
+> -	end_time = ktime_add_ns(entry->end_time, next->interval);
+> +	next_start = entry->end_time;
+> +	end_time = ktime_add_ns(next_start, next->interval);
+>  	end_time = min_t(ktime_t, end_time, oper->cycle_end_time);
+>  
+> +	now = taprio_get_time(q);
+> +	if (unlikely(ktime_before(end_time, now)))
+> +		taprio_catch_up(oper, &next, &next_start, &end_time, now);
+> +
+If now is computed based on the timer instead, now = timer->base->get_time(),
+which one do you pick up lad/dude?
