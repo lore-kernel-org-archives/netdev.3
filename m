@@ -1,81 +1,235 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F85379966;
-	Wed, 19 Aug 2026 23:55:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787183723; cv=none; b=Vpa0zvS2ZVlVxDOzKWbPMSajAYfs+oFSnLTj+N9pV2g4cR4GVAY1rB9SBnT/9EnknRY+ezOyupwZshPp6yJ6NiYhfsl6mfSNsrsGtKasReo/snSVzRfBravpaGVOnzYO/dAKh9ij+qocoJQx9TjJySgjZFXEcgJsJrFugTrFv/c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787183723; c=relaxed/simple;
-	bh=ZvSwY/ESJu6HHgufvmFOKtaGocbvd8GFS/0KK+n1HcY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=id/QF0kRgCNWvi13Y8M/QU+QuyRQJ+EgF2mMXiow426KBaeVM9Q3FnBWmjVplKaB5ilQXwKpr3yfR8XVl3Ghk69lWMrkB8btxDUgkZFfzSNyyPzwTOZCpk86kFGa6oT+GoPt655TZ/Z3F3x+NY8tznq7qFiDAzUjyY9CU4vPdTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=f4NPHUNe; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 597EF3E5EFB;
+	Wed, 19 Aug 2026 23:58:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787183884; cv=fail; b=AoHzEQegZx4rCi2a6XxEwosYuO5DZrSsoC4fg05D6JXBas/G7AwXoGPkefdT9o2zZCzIV628rZcRhvVYwBSwU0ORTcbNmQGFLxtU+HdkQkPe5HacID9jDYpTVMxGphdZAkSgP9JVfLQM43nJXtF4evw37E9CDwE0MyRklp0UDwo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787183884; c=relaxed/simple;
+	bh=MgURTAa6bCuFXQv+GxnvsW2Bi/aKAy189XkxW3G6TxA=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=JL/IUnVvjylEF09Oca67zdj1RKwE8L9cQLnsLlSqFh6yfx5/PwQGpVtB0seVsd9ftZMHV0JbVvZYrwGfvA+17SFZmoz8FSW9Xp8uKoFfRspRWZMs1qwR7AXoqfU5glM3r0C2B5D9s12xYvQ6KPUUD7Zr5y/sNysWKgMNbeL1xlI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bS4oAd4G; arc=fail smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="f4NPHUNe"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=EdhVXUR+0KpkhVK+tZRcWte10LXPPnzPcT5smFSUy14=; b=f4NPHUNeiQyY5Od+U8FLfr0RrN
-	ZkKrRm3Frs6Gv99IdtitR9asr1W75yPzvNICjHc1zGx/YVXHov92ps9ANnhIzTMV884k5O6GRdCSV
-	UPtDzorDHguWopZR5z5noTkQ6CkbucMzgrg7RhhD6ZYX/7we1wYpL931eLdB2MJiTKH8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wwq7O-000gXa-JL; Thu, 20 Aug 2026 01:54:50 +0200
-Date: Thu, 20 Aug 2026 01:54:50 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Florian Bezdeka <florian.bezdeka@siemens.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Jan Kiszka <jan.kiszka@siemens.com>, netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH RFC 0/3] genirq: Allow drivers to respect userspace IRQ
- affinities
-Message-ID: <f9daddae-a1c3-4823-a4b0-733775e1ad15@lunn.ch>
-References: <20260819-flo-net-7-2-make-stmmac-default-affinity-aware-v1-0-3f79a99cadaf@siemens.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bS4oAd4G"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787183883; x=1818719883;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=MgURTAa6bCuFXQv+GxnvsW2Bi/aKAy189XkxW3G6TxA=;
+  b=bS4oAd4GVpph2rlwQI0F/oo0g908eT+2FvqnScUy8KqYk85WubsGnUKD
+   PzBs2EvgbwXWlgDlk8t97Be1jysQHtMfzgmx4sow7OPQhkVgF6HalBCs6
+   ScACGTSgf4MnXvds+DsGbw9MHIH36TJoep5kW4kWno7IxdB/zQiBNa/Hz
+   KMzN/gj2NNNXb98+10aou9HsrRLEeTsaRq/mhwRr0iorm8H69YomTX/8x
+   EnaEA7Wob+aufssXyPSvuOfYHmw8Y5fqJPbk5giRQcqSxI6yArLuDeP5X
+   Uela1NGzJgK/830xcSdMene57yzq+KrnqfmorRMiT9Mx74G9+QF8EPZGI
+   g==;
+X-CSE-ConnectionGUID: zXj2LduERnSiEc53ueFP2w==
+X-CSE-MsgGUID: T4jTAp/YTm+sVfyAfoGrMA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="113252908"
+X-IronPort-AV: E=Sophos;i="6.25,232,1779174000"; 
+   d="scan'208";a="113252908"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 16:57:58 -0700
+X-CSE-ConnectionGUID: x+RRPgpbSWafi7aTswiCcg==
+X-CSE-MsgGUID: W/tVuUVyTImn75R03e5XWQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,232,1779174000"; 
+   d="scan'208";a="289224170"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 16:57:57 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Wed, 19 Aug 2026 16:57:56 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Wed, 19 Aug 2026 16:57:56 -0700
+Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.39) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Wed, 19 Aug 2026 16:57:55 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nWcedmDMeaOjPe8jjvY984K9rxEnAAY5GWZLSc/oYYH1kH+C0CY/0MWucV5u5mLEcTCs13JFgzo/2bnyxQPfVKnQftHXs74FY1zppCrko10391KQ/v9VSZbNt9TjoSY8jDa4phl5gCO53Ra+oPrVMSAtFUEDQ19hJ1lhJt+dFDknnMYQiWYhrLP1l5RVPnKES84Brho4Cw1/KTMCljQ0Dyt8W/xiUdkqe3bOOvPAJNG4ojrRcmY8tmicD3jaczK5qLLnJa1A6khXZhHHYJxHnyfvXR9G7yqgCzpEUwYhJjvz1y2X03rc4wirJGdcOmlObJtjKB8Fo5T0i0P9JlDSXw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eX/L4fITRrdgRXcVNmjqlPFqeC9Nhz/tpW88R31XBWs=;
+ b=bFCOabMzR96NaGn+qMkpdngAhp0VtqDlBRNp5FvH4vpJQN/iWZYD1fvq2RxIefPRuxFjyzgRc3Ym2dKltSFZ4S+2Of8LuNsfalQnWRemDIuF+8A/S4NgRd2+dVjU/xmLbvqhSR1HMEHxLG5V9ZW7rXPW/MRhN9yc3yadZyRKqgr3Xpz7KwxxnqW6PPigKGWil19R5L6sxVG/nXm4oxDnW3pun6jPY84mW7YbL9IAVTwjyIX0p8st5t+Zc+Rq9t/amZxy0PmTCwlLs6dT6kf6JqxvljI/5Nl81dk6+QuoKh7qtCg3hqaxC2rB+qwTQBJTYmTmYOEtxexcv0Ddb1tZZA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB8230.namprd11.prod.outlook.com (2603:10b6:8:158::21)
+ by PH7PR11MB8598.namprd11.prod.outlook.com (2603:10b6:510:2fd::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
+ 2026 23:57:47 +0000
+Received: from DS0PR11MB8230.namprd11.prod.outlook.com
+ ([fe80::2592:f5a9:a751:be40]) by DS0PR11MB8230.namprd11.prod.outlook.com
+ ([fe80::2592:f5a9:a751:be40%5]) with mapi id 15.21.0339.007; Wed, 19 Aug 2026
+ 23:57:47 +0000
+Message-ID: <b7ca66c7-88a1-440a-af39-5c710577294a@intel.com>
+Date: Wed, 19 Aug 2026 16:57:44 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3] e100: prevent shift-out-of-bounds in EEPROM access
+To: <pavankumaryalagada@gmail.com>, <przemyslaw.kitszel@intel.com>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <intel-wired-lan@lists.osuosl.org>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<skhan@linuxfoundation.org>,
+	<syzbot+e0abb1d45ac291ebebeb@syzkaller.appspotmail.com>, <kohei@enjuk.jp>,
+	<aleksandr.loktionov@intel.com>
+References: <20260816113754.22900-1-pavankumaryalagada@gmail.com>
+Content-Language: en-US
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+In-Reply-To: <20260816113754.22900-1-pavankumaryalagada@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR04CA0182.namprd04.prod.outlook.com
+ (2603:10b6:303:86::7) To DS0PR11MB8230.namprd11.prod.outlook.com
+ (2603:10b6:8:158::21)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260819-flo-net-7-2-make-stmmac-default-affinity-aware-v1-0-3f79a99cadaf@siemens.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB8230:EE_|PH7PR11MB8598:EE_
+X-MS-Office365-Filtering-Correlation-Id: e3d8bddb-3bf8-48d0-fa5e-08defe4dab60
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|23010399003|7416014|376014|56012099006|10067099003|18002099003|22082099003|11063799006;
+X-Microsoft-Antispam-Message-Info: K/mZWc/ySX5OJinQgAebqFiF1S4l7vP8BWnNKLfSZYpzaa/zANnEe9KU07UxIV+H0luzPa6NnwYd2kRzkg+Xmqb4AsOoy3esab14eaW+xyFhZ/ec/rjN23NhGF9oN+QZWKgs1I9LneVXE7Gmd+h7C9a5FaBCYAGQUIaEv5f0BtagVhZ4BiVDElBzsS6s+fK3pAEdwO3bxQqEiU/Nb/SuWttPcxDorfIVWgSaMbFqdC9XaHyw1oOlShSzxKd8wscxVurKsq4Ez5AtyAZwRhT9K55G5BiP4VwNVOwnnGI2VUeSzTY/Hi0AZsBy5vwcNzoz6L0IhwlZ+6cSSaszWO6ryx+/osgGLHOLjoKVz00YcQVIZrXMOT4Hh98RPs0MmSig6CZBjN+r4/pXOXOLfCIV5Q6UoSZVFkKxembKJX1xLoSbN+hHg5QS235ntyL+e8ruErsYqqXjA2KkghQjzqS3h6Meq2Ds7+s9vaHZMcn4fg1RwXO2ixniQd23WLkfyxkmH3JkvcjXBLsPIpxHcQ5XWTKeS3MCqRgN9nIhSSnXziP18AN6GhE1nxpBRVfCHNcS+yi3Q9DnlsXBbcXB/hZverJdBrRcqUnWzJD7pLoOtpE=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8230.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(7416014)(376014)(56012099006)(10067099003)(18002099003)(22082099003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L1I3a2h1MTRJQ3c2KzB5SC8wN2RPd2RmV0dqTWlKU2o2bnRPb1NCaFczd0FJ?=
+ =?utf-8?B?S3ExWkJWR25PeTB3VFM3SDYrZjhRTG9nTGhnaEhEVDlyT0hvNVUvSnA1RlBl?=
+ =?utf-8?B?MVJhcUdLQ0Urc1hFV0lvSXAvVmdjVVRHdFFJR0E1amZHcnpNcU1pU0VMK2Q4?=
+ =?utf-8?B?R3RYeE9Md1VEWEdGcllRbHBORVluOVRyZk9wMUJ4Q0trL1M1ZzNjNkpvbllP?=
+ =?utf-8?B?M2FYNkdoOXQzYWtmNDYycC9HczdKWWhzcHRvTjBrekUxYU9JaHVSc0VxbEQr?=
+ =?utf-8?B?UG01b0JwcGl1ajZwMlQvQjhxWFlPVWYxdExYMkJTT2NJeGRxdHU1WXdUbDI0?=
+ =?utf-8?B?N1FSNldmTnNDOGhKbktLb2lSQ0FmRGs0Q0tCdE9nU0tSTkNGZythV3ZDemFD?=
+ =?utf-8?B?bmZzd3pjeTM4Y1BhMmNRb2NLVVZQbFd2QkMxaC9rZWFKdGtqUER6NlZWZWwv?=
+ =?utf-8?B?bjJKZVByMlhGZ1NiSDFHUmh0dU9zemt2bU1LUW1Uck1nQjdtcEdocGJsL1JE?=
+ =?utf-8?B?c2FKSTFON1hVUnRoRDBwR08rRS9BS01GSHEyQTVOa2pLSDVJTXJHME1mUFkx?=
+ =?utf-8?B?cUJndUlCcjVPdVFjRVEvM0JWMm9EMmpKeWlJR2w0UHg0NlNaVTQyZitkam5X?=
+ =?utf-8?B?c2RodE4zY0RtNW56Z2xqSHhMZmhXWTRiQndFQ2VGenBscWZ3RWRZOXhpS0g3?=
+ =?utf-8?B?ZkpLaXEvUGR2SDBkM3JjVWRZbjU3Qk5oNTZmUWllVDJ6N0s5RUYwTGYrR2Vy?=
+ =?utf-8?B?WnVzR0ZIdHQ2RitNTTJxaGFNWW1oYTlvRFJDVndWaktqLzZqdVRGYWxWYjd5?=
+ =?utf-8?B?alRqU0V1eFJ6bWJveHJaTnpZblFWWW5JSkprZzNhZkNYYUdLR29wa1liMlpa?=
+ =?utf-8?B?TTYwSDhlVWN5NUF2elBLQ3BYcUhVOWJLNmRXVGFIeXl3OHlnQm5hYll5RkVj?=
+ =?utf-8?B?WGhSMms2ek10bFJMVEg1elUxdW8xLzh6d0phWTZlMDZsNkRucWdMMk9sRVV1?=
+ =?utf-8?B?Z090cnk2cVpxYlhqeDdpWk5XWVJqeDFqZEgxcTNEeWVhRW9qc3kyeXAwKzU3?=
+ =?utf-8?B?c0tOWExldFpycmozK0MzajlnQkttdGFlclNMY3pHOENTWFNIMlpWOFQrejNS?=
+ =?utf-8?B?Sk4xbEkzSVlUaWVmTENzckpRWXk2b1Z4ZUJHeTkyTEdnM05UcXdLbk5VeUpD?=
+ =?utf-8?B?RkJXY3czZDZzbVZmc1dUNzVaM0VUZXIyZGcrYlVkanF2UytzSHEzbmg5RXVL?=
+ =?utf-8?B?cXRKNXJ1a3dvYjZqTE9Ec0hsUW1rNkJBQ25xTUFoZmdxaHFZTWxsV1VFVzhh?=
+ =?utf-8?B?UjJVWjVOZVNNd2lRQjJKVU1odkFvZ2I4WCt1ZDJlREo3dXBXMnRKVS9pdVhQ?=
+ =?utf-8?B?dVdremdwcGF5d2RNQlJlUlZKa083emF0QnhRYlg0N3FRWGNBNUN1RjRaQm9l?=
+ =?utf-8?B?ak5PR0VMUzUxUjYyWXV0SFlSS0dHRDFoeVpwZFhGOVVoY3FYSmFKZVNzcllC?=
+ =?utf-8?B?VVRZWkJ2QlAxU2ViQ2g0dG9FR2lzMzZpL3NMRks3eVp3WEtEVDlEenhOL3lm?=
+ =?utf-8?B?MTVQbkxUdi8wT09kUWM4WGg3djhkVHRtTmdEMVBlcFFtdkgxV1pEUXlyaDVl?=
+ =?utf-8?B?b0FuVGJ3N1NaU0ZaMzdkR3pOc1h2K0kwb25SZXJEY2d6aVJ6bFpiT3MyU3RJ?=
+ =?utf-8?B?UWV1RzV0Y3BmcjVEc3BIOENQQXVManRzL0J5aDhoc21hdkpYYXZXUnF0SGM0?=
+ =?utf-8?B?WHRueS9rSzcrNVM3TWpCOTkwVG02VUU0ZFdueTlkc3lib2RuaUpxRU9BRDlI?=
+ =?utf-8?B?Y3laemVSd0sydnRCZGw3UlE5M3l0d0dMZlQ3RVZNb3lGdnNXMVZCUnFlT2o2?=
+ =?utf-8?B?UXFjUVltWS9PTnVuOUFkcE53eXpSNUdZL012akp6UmxVRWgxYWVmT0k5b0JU?=
+ =?utf-8?B?K2RxL2ZQb0hpMktqQi91elNYVFhtZS8rVE1VOEIyNlJnZVNDdy9CdmVqbmI1?=
+ =?utf-8?B?eEU5WGdFWTUxcDNYVEVKM0R5N01ZbVpFUFJYdVpYRFFrTmNWSXg2VXRqcHdu?=
+ =?utf-8?B?YXAvTm9CenRzaUhMeXdOS2gwV09Ka250V2wxK0VveE1ka3k2TWllTTdSR094?=
+ =?utf-8?B?ejlOMlo2bjZGc1ZIamJXQjR5WlA3QW5BS21QTmZGUU92cVRZZ3MyRzBnL1ZO?=
+ =?utf-8?B?QnNEWkJmTTU2SHFZWFRwQzhHQkw5ckRXS1Nsb1lOZUUyaXJ6SkxlbHU2TFJ1?=
+ =?utf-8?B?UGlveFpWZ0s4OXhER1M3NEEySDRZTUhGN2ljS3hJVzI0cHUwK0RDZlVHMHps?=
+ =?utf-8?B?ZlJyNVVUcHFaZTdVMThybzI1cFNlVGVxOTJsQzRkNGYzTUlxRHh3QWVlNUx1?=
+ =?utf-8?Q?h6PhmHJ2TiJGohO0=3D?=
+X-Exchange-RoutingPolicyChecked: ifP3sXfjcD7IKP5wKToXIyZYnjZtMX9/+NxxN8AVAfnC+0/sNLQCnMS9t16UUt6Pbv386hGXGybq/O/FAk0G8Vpd8kbTg+deTzPjsvaZfTUXd90B3eRC0Jb9C5ygfq9Bv5RV9uQ0UatgTQMuCTVCcgXCChw0LYWexMchJIuDC5ngI2heJUgA+mFoT2a4lzBE7pjWK+zA61xSC86kpLN0FWG7PT0F4ci8oGexE5jrjxdu/zqSLEoFh6dWcJbWVg6F0laSE+QRC5Sr07+Yn9rL4YwcuO+nA+4KiDLX1IL1AXwySURsWMBtiVv1nyK0SE90q5GmlFoGUBzBxfi0TbZqXQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: e3d8bddb-3bf8-48d0-fa5e-08defe4dab60
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8230.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 23:57:47.6750
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uQv6UIw6Otx4PNza+LYsz8k56UQSK2uUHre8IyjjnB18OUmNkmhRNBiV9M8gNUfny6hbSa9YxzzsP7FQJBfpntPnesaDw7UARegcIIJ1Tvc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB8598
+X-OriginatorOrg: intel.com
 
-> That raises the question why request_irq() is called on "link up" time,
-> while the low level vector allocation takes place during device probing.
 
-If the interface is admin down, the hardware should not be generating
-any interrupts. So there is no need to request them.
 
-> At least that seems to be the common pattern. Can someone tell me why
-> this is done this way? Shouldn't we call request_irq() at the same time?
+On 8/16/2026 4:37 AM, pavankumaryalagada@gmail.com wrote:
+> From: Yalagada Pavan Kumar <pavankumaryalagada@gmail.com>
+> 
+> When reading the EEPROM address length, e100_eeprom_read() can return
+> an invalid length. This value is then used as a shift count when
+> calculating eeprom_wc, resulting in a shift-out-of-bounds UBSAN warning.
+> 
+> Stop EEPROM address probing if the detected address length exceeds
+> the initial address length to prevent addr_len from underflowing.
+> 
+> Validate addr_len after reading it from the EEPROM in both
+> e100_eeprom_load() and e100_eeprom_save(), and return -EIO
+> if the value is zero or greater than 8.
+> 
+> Reported-by: syzbot+e0abb1d45ac291ebebeb@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=e0abb1d45ac291ebebeb
+> Signed-off-by: Yalagada Pavan Kumar <pavankumaryalagada@gmail.com>
+> ---
+> v3:
+>   - Prevent addr_len underflow during EEPROM probing.
+>   - Use BIT() and explicitly cast the result to u16 when assigning eeprom_wc.
+>   - Update the commit message and subject to reflect the scope of the fix.
+>   - verify the UBSAN failure with syzkaller reproducer before the fix
+>     and its absence after the fix.
+> 
+> v2: https://lore.kernel.org/all/20260810083355.21631-1-pavankumaryalagada@gmail.com/
+>   - Return -EIO instead of -EINVAL for an invalid EEPROM address length.
+>   - Validate addr_len in e100_eeprom_save() as well.
+>   - Drop the unnecessary 1U change in the shift.
+>   - Update the commit message.
+> 
+> v1: https://lore.kernel.org/all/20260807145626.52692-1-pavankumaryalagada@gmail.com/
+> ---
+>   drivers/net/ethernet/intel/e100.c | 16 +++++++++-------
+>   1 file changed, 9 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/e100.c b/drivers/net/ethernet/intel/e100.c
+> index 464dc2d6cdb5..5165f1d3c98f 100644
+> --- a/drivers/net/ethernet/intel/e100.c
+> +++ b/drivers/net/ethernet/intel/e100.c
+> @@ -746,10 +746,12 @@ static __le16 e100_eeprom_read(struct nic *nic, u16 *addr_len, u16 addr)
+>   		if (!(ctrl & eedo) && i > 16) {
+>   			u16 len = i - 16;
+>   
+> -			if (len > *addr_len)
+> +			if (len > *addr_len) {
+>   				*addr_len = 0;
+> -			else
+> -				*addr_len -= len;
+> +				break;
+> +			}
+> +
+> +			*addr_len -= len;
+>   			i = 17;
 
-If you want to change anything, move the low level vector allocation
-into open(). But you need to be careful of EPROBE_DEFER. If the
-interrupt controller has not loaded yet, i _guess_ the low level
-vector allocation will return EPROBE_DEFER, and the MAC driver will
-try to probe again later. If you get EPROBE_DEFER in open(), there is
-nothing you can do about it.
+It seems each version you are sending is change on top of the previous 
+version. Please send all the changes in a single patch so that it can be 
+reviewed, and applied, standalone.
 
-	Andrew
+Also, Andrew had requested on the other patch that this go via *-next 
+since the issue is a theoretical one. Can you target this to iwl-next?
+
+Thanks,
+Tony
+
+>   		}
+>   
