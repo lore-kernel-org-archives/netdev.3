@@ -1,109 +1,136 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010026.outbound.protection.outlook.com [52.101.201.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097A93F1AB7
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 08:25:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787127918; cv=none; b=ZKZfA6VqNIf+Q2w6TXLRkrIq7b/oTLiU+gZOdXZCKpGVyqrUWxljDyZ7+drZ9ZRvdMJ+u/cVhiJgwFb05/+NB6fVW6x9uJ5rwLY+gZNzak/CDeHn8M01zuBa3aFT/q66DdEokwZPo/xJYibBme2rDF3brUbthkEfuQ34JGyirPo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787127918; c=relaxed/simple;
-	bh=FIZe799keX6/87R98ipbyzIzZSidsesizsZyAD+2BMs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jGQiavJrQMN7va2B0Qu9i88wCZLjk8HlqyWbqEycbckjX04bPuKuDOPO8ACKrGtnm0VdHPLxmbR4Scrilmx/9qM6SMKy6A0u/znC7XR+uCtJra6wr5nrGgj10BZ2s+gDjPIj7YkBr9552aAJo/5U94R5SoX0vIiB4yvyAJCFgTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U5jyNpBk; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB41370AC2
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 08:32:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.26
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787128344; cv=fail; b=c9JTFP+hJOEr/BO6PIAmDKMgSj3f6slD1mYhTt2F14MyvpnSAUjupSwBE80Yc/t7rqdPhCcUd6iRuQkSS96RysMAhaPM/TbPcSfleCB8eWlRYD1MwbbT2dkRbI6cHRRbwlg0Uo8jJckz29DcIrNj2E/nkE2Vv1rYgZoYvLhphTw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787128344; c=relaxed/simple;
+	bh=IENUpRVdrSjl1dGa/lBSKLJNTnfujThVe99CGJyuniI=;
+	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=kPSdZ4g/nwHpBuo75KI7/+faaYkIvCmABR7/PjjF0VLJSLvhVZZ+et35GAEH9wEEBZhWsKSi4rIlCo6OEhWNMxa63y2oxMByo1xzRl8rT2YBIUBijg4P2+tTSLwxYjWYx9i7mkL+1kgEl20dSDAaMY2JwwemDN9kTc7u3T85lZA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=fYFohJe1; arc=fail smtp.client-ip=52.101.201.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U5jyNpBk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787127915;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=4I655Z8usTsABgDzcg+e8tOh9qDi1DnobFMKfs+spl8=;
-	b=U5jyNpBkYaHQTaJKxYdhvjO24vw5x+cS5jgw8FbRtDtNx+zIYlyP9wkhNRsCm8TWEvnsQ9
-	d8VJ/Y0ZKJOtTPANaXOwkTq/aGaV3LsC+wvW3kH9Fs1Y9UovoNBkLYjfSXe+fYGnNry0cS
-	ZFYnzYuU16JGcB8dQc5KAhygKhFzkpc=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-151-lhC8i2QbM3-0QiVi97DAxQ-1; Wed,
- 19 Aug 2026 04:25:10 -0400
-X-MC-Unique: lhC8i2QbM3-0QiVi97DAxQ-1
-X-Mimecast-MFC-AGG-ID: lhC8i2QbM3-0QiVi97DAxQ_1787127908
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 58403195604C;
-	Wed, 19 Aug 2026 08:25:07 +0000 (UTC)
-Received: from ShadowPeak.redhat.com (unknown [10.22.88.187])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4B2741800348;
-	Wed, 19 Aug 2026 08:25:01 +0000 (UTC)
-From: Petr Oros <poros@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Petr Oros <poros@redhat.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Kees Cook <kees@kernel.org>,
-	Robert Malz <robert.malz@canonical.com>,
-	Ratheesh Kannoth <rkannoth@marvell.com>,
-	Daniel Zahka <daniel.zahka@gmail.com>,
-	intel-wired-lan@lists.osuosl.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH iwl-net] ice: allow reading the last byte of the NVM and Shadow RAM regions
-Date: Wed, 19 Aug 2026 10:24:58 +0200
-Message-ID: <20260819082458.665947-1-poros@redhat.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="fYFohJe1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=b++uNchp+0tgERo30wuoNYPthIalJGOATkBHO3AGGKvcD61CcdHI5WNjn4DCnAyh0yxggrWmgezFkJtphsij4/WWg5NIRUnRyVuOzURCuYLV3Wpu5KtJkCweQ1dIfGYnhcxnIcgoZ4QBnf7ZAntkkP8Brbuc0KczGRUbCxaZxp7DVJYUTtwCwVHMEo2GllY/+h5G0y0Bzx57hMrEgzxaXrnuANl8R0zkK1Qv/0slbm3a8sYJ8+jwBdLPJl6DnTJyI+d5srWXT9ZinK2E7NkSYT7ZH+Zb4sArCnkOEk3FuAKSZAhLOEeLjvrVkvyfCkPVEzU3kLKVcedpydXCqFH+tg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kWuTAXEFMyi7BeZANJpCBHBwX4ughq1DNdndo0zZWFY=;
+ b=Aarc76mREr01sIwC+X9nl79b5pL4yUsDllSPuet2yyNGUgEEYA0bo/G1n7PAlb8q5XAbzmrgEZzu12Xw1snKTtnLmLUSlIi3+0qfidrO7FecXxfydDUaHNxuaksU/9/NFqeCVvzWevFB34zpBdnWNcdHcQWwQT5jGTHfhOjlDo6moy15iYBoDhHTSUEAoIvkXBQqQYil1xCnwlYWVxoKoEptPLrnVif/bSmLeIHSbkbRFOQFAf8LXavBXhydJHvl2ygnh5HFpNNyNSa7b/6OqkiEpsaRdVyAyx6PO7r8L5jImaLKMtoZfuk78igx7whqu0DAzovND/IwHwH3oYcRGg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kWuTAXEFMyi7BeZANJpCBHBwX4ughq1DNdndo0zZWFY=;
+ b=fYFohJe16kM2Tm5KZ3lsCiUnbrdJ0E/Ti0OC8GCkt/xAuaLMLe1Gsu11cJAWz40X0yI3VDxR8TIBlk4rie0/GvqT55DbjvXtbJW9Nm0Saw0EJIK94/fn03yokz5gyDgJkq3Lt2L9WNTE/h9hg3TwPH6VFSh104byBi5hd8AlEPP8ynE5nJ3V9/EhKOX8gHY3k5VcirATLsiGZ69TLtAgH4AF8J/7J9RJ1T4e7dR27LTD1YtejoXrDCT8/ldVD0Mlz9479KwV4TacsD0vBcdbUSeaoQnSIvg0v6PVGe2SvhvE0IjHhe45iqHaWuEqSiJyNW72x5ttdrKQbxiPRvz1Mw==
+Received: from CH2PR16CA0011.namprd16.prod.outlook.com (2603:10b6:610:50::21)
+ by DS0PR12MB7948.namprd12.prod.outlook.com (2603:10b6:8:152::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
+ 2026 08:32:18 +0000
+Received: from CH2PEPF00000148.namprd02.prod.outlook.com
+ (2603:10b6:610:50:cafe::2b) by CH2PR16CA0011.outlook.office365.com
+ (2603:10b6:610:50::21) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.315.17 via Frontend Transport; Wed,
+ 19 Aug 2026 08:32:18 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CH2PEPF00000148.mail.protection.outlook.com (10.167.244.105) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.339.3 via Frontend Transport; Wed, 19 Aug 2026 08:32:18 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Wed, 19 Aug
+ 2026 01:32:02 -0700
+Received: from tuxedo (10.126.231.37) by rnnvmail201.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 19 Aug
+ 2026 01:31:57 -0700
+From: Petr Machata <petrm@nvidia.com>
+To: Nikolay Aleksandrov <razor@blackwall.org>
+CC: <netdev@vger.kernel.org>, <idosch@nvidia.com>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<horms@kernel.org>, <roopa@nvidia.com>, <bridge@lists.linux.dev>,
+	<andrew+netdev@lunn.ch>, <dlstevens@us.ibm.com>, <amwang@redhat.com>
+Subject: Re: [PATCH net v2 1/2] net: bridge: arp/nd proxy: fix reading neigh ha
+In-Reply-To: <20260818150756.890025-2-razor@blackwall.org> (Nikolay
+	Aleksandrov's message of "Tue, 18 Aug 2026 18:07:55 +0300")
+References: <20260818150756.890025-1-razor@blackwall.org>
+	<20260818150756.890025-2-razor@blackwall.org>
+User-Agent: mu4e 1.12.15; emacs 30.2
+Date: Wed, 19 Aug 2026 10:31:52 +0200
+Message-ID: <87tsoq7bpj.fsf@pmachata.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000148:EE_|DS0PR12MB7948:EE_
+X-MS-Office365-Filtering-Correlation-Id: 074b3d12-2962-4374-0e2c-08defdcc61ab
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|376014|1800799024|7416014|82310400026|23010399003|10067099003|56012099006|11063799006|4143699003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	rS7RG/4PV0CyHgBsXDkqqex1wLIClAFD5DOWExt+OGfa6u2tToh4j4Tds9512glZvB1OM1vdZ/3vMCPBJc2+VFFWvrDGwX9i2jKJDTI4QKz7E1+EVdLICFgj7VevHpcXzDnGFgcPLXzVDKFAUsl0q65wYEln6ErJJbLuy/ZKz2hE2gBrbqUEezBXMw0dLVd0//avROq2k3QyqJsQaVHIxe6VT5AXtZhsKEIDQrOgB9SFfkaqp0v0ZoXCCsmzZh1NA5aZ0Qv8PQSKDSKJHGb0xPvAlE+aEkOyMF+r6rFKs1UP9GUGOJz4vaq7JIHNd0VzrHL3Iru6Nt0cUiDEkAXs6fHt+ivBME7Fx7i0Z6z9AD24svRX9bkiamfNZf8rjMBCYX/yoxHy4j84ElUtHfqe26a1cbdTbO0RJus6QWpiE+o+CqfRpwhUF/+QkCz08Z1FuaM1UMhc0iRtRhmGRL1wE9bQr85e/QEEc2Vpd+Dxxh+ZgAmevFctORTfQQukUFJUNhLBfWB0vJbD1VhxvsacFchZQaPuRl9Z714vHHeO9TVFbAnzHrBvNc2co9v7e0qhQPkj8RI2LtsK045etY+XDO8XfvwJ3E9i+deaK+ld65kbusqlP0l6qhuineUo3U+yAPjggpm5c/lt/VodU6PhcUou/+NFvCPcsHSWnEYPNJ/57MaDMqc0XbanrglQeNVX54JaoDvxNZb7q2DlVWN43Q==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(376014)(1800799024)(7416014)(82310400026)(23010399003)(10067099003)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	DuPgqM0SCYRGme+0JoNRt0PFEDoEBRBnKmFff1yv6bANULOKOgtuWUp/BdyXHz6LfDJv7OdXN0s05Xa32Nx4Z5XoRGu+r5LcGJt1YmEIETgvhyA6zUcPrRGD0IX1Gn1JJF3ElJ7810Syn5gtDxAEvvbJaS/XA8hrCV+gbMGZP5XpaN9zKlwDSiMPq+l8B8AIR7cOClzN/24d0Rliq7wWDVeu5bVZl+pjjsMJiTd3yOYRabrU54QMNVO8lPFV5+UY95LOeLWevHQNs3deebKvmZaT8DB+wTOX44F3GhapTMJRQFDO8gDYR4AlgYDpCkzJrw9aGpH8jBNj7wg5S5B8/XbE/UYhrPfwcrbMsaPsioDsgvfWnFD3Ta/1v18Bjiv+U2y0aS4YwbdHMIKLwoOZcxr34drpb4RxDffW86VWi3cF0Uyb3ePSUN4/GR6I0NZy
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 08:32:18.5318
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 074b3d12-2962-4374-0e2c-08defdcc61ab
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF00000148.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7948
 
-ice_devlink_nvm_read() rejects a read whose end lands exactly on the
-region size, so feeding back the size devlink itself reports fails:
+Nikolay Aleksandrov <razor@blackwall.org> writes:
 
-  devlink region show pci/0000:04:00.0/nvm-flash
-  pci/0000:04:00.0/nvm-flash: size 10485760 snapshot [] max 1
+> Currently neigh ha address is read directly, but that can result in
+> torn/partial reads if the neigh is being updated. Use neigh_ha_snapshot
+> to take a stable snapshot of the address.
+>
+> Fixes: 057658cb33fb ("bridge: suppress arp pkts on BR_NEIGH_SUPPRESS ports")
+> Fixes: ed842faeb2bd ("bridge: suppress nd pkts on BR_NEIGH_SUPPRESS ports")
+> Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
 
-  devlink region read pci/0000:04:00.0/nvm-flash address 0 length 10485760
-  Error: ice: Cannot read beyond the region size.
+Reviewed-by: Petr Machata <petrm@nvidia.com>
 
-shadow-ram behaves the same. The regions are created with those sizes, so
-a read ending on the size is the whole region and has to be allowed.
-ice_read_flat_nvm() uses > for its own Shadow RAM check, and so does
-ixgbe, which grew its region support from this code.
+> @@ -252,7 +254,7 @@ struct nd_msg *br_is_nd_neigh_msg(const struct sk_buff *skb, struct nd_msg *msg)
+>  }
+>  
+>  static void br_nd_send(struct net_bridge *br, struct net_bridge_port *p,
+> -		       struct sk_buff *request, struct neighbour *n,
+> +		       struct sk_buff *request, struct neighbour *n, u8 *ha,
 
-Fixes: 3af4b40b0f2f ("ice: implement direct read for NVM and Shadow RAM regions")
-Signed-off-by: Petr Oros <poros@redhat.com>
----
- drivers/net/ethernet/intel/ice/devlink/devlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+(This looks like it could be const u8 *ha though.)
 
-diff --git a/drivers/net/ethernet/intel/ice/devlink/devlink.c b/drivers/net/ethernet/intel/ice/devlink/devlink.c
-index 8c2b63eef82bd5..a52b6044288975 100644
---- a/drivers/net/ethernet/intel/ice/devlink/devlink.c
-+++ b/drivers/net/ethernet/intel/ice/devlink/devlink.c
-@@ -1953,7 +1953,7 @@ static int ice_devlink_nvm_read(struct devlink *devlink,
- 		return -EOPNOTSUPP;
- 	}
- 
--	if (offset + size >= nvm_size) {
-+	if (offset + size > nvm_size) {
- 		NL_SET_ERR_MSG_MOD(extack, "Cannot read beyond the region size");
- 		return -ERANGE;
- 	}
--- 
-2.54.0
-
+>  		       __be16 vlan_proto, u16 vlan_tci)
+>  {
+>  	struct net_device *dev = request->dev;
