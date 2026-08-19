@@ -1,203 +1,162 @@
-Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A877492520;
-	Wed, 19 Aug 2026 17:21:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787160122; cv=none; b=pHFRW8T50uIGwdbLMgi+H3lw8NRhDUe7G1/N+j10VWQstzXcr1i74R0uCAuEtETxwzxzHP9oWrnAEwU3PFnWMkgXT0d54/ZrWzCli2IF2cY4B/RZFPgu1kZFxzFmL/rdJquP1CxVgFq2Ckcv74hQzgBJrkZpIcF52Vojirb5OyU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787160122; c=relaxed/simple;
-	bh=/yPDJFo3BI9AXPSq1MCLeFrwB4SAoJ27qJLVuvTqeic=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=TYCEeGpfzNJswWzhJTVIVBKgvGPtbxijcT4iC1J8AV49I8QNliIwoXgataBhFpeJuu7yIWrKw5QepZOS9yT/b2QgSQMPmsq0Z3lF+UL96TCgn7ujzu7gPK185CRNrQMUowC0CrpMnZP3fvD7mYAml3o2OpsvHiIa8d0dtEf1iMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=isX09NEP; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=lLVgo/FO; arc=none smtp.client-ip=160.80.4.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11021104.outbound.protection.outlook.com [52.101.125.104])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7820D48F83B;
+	Wed, 19 Aug 2026 17:25:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.104
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787160348; cv=fail; b=dmxsk5RPHIo6QxCIdd54iHMBZOs3347MqNrvEYISWSb0O+3Urxp/UMGwtHpShtwqd6mKOxGtGnyyEXe6mPKFyotwPK+P/Kp2/H6WmJT+Tj4nD4WPg0u0QMptUJz7uSVcTIiGibNsROHOnmcDrof4pY9kwOC7JcVyvyRF+Ol9jko=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787160348; c=relaxed/simple;
+	bh=8HH911MW3qEugNsZIOP9oaDgFrtyTZZriaqBuTxJ864=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=X8A39s9jQpdeqUpU4euEpCwsMvKc7pUEk+rfRVHEr+44SMv4bGlChyM3Vbk8DRxnY6fYF7/hwyubsVDpBpI0y2HCKdrXHwY69/5EDJh4oGDof3hbMccTodBrJra/JXtLqIyY22IdMS8hbMDutXvRALWJceWVLKn6/c8D4GPokIM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=hEvWrq5f; arc=fail smtp.client-ip=52.101.125.104
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="isX09NEP";
-	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="lLVgo/FO"
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 67JHL2AD011095;
-	Wed, 19 Aug 2026 19:21:07 +0200
-Received: from lubuntu-18.04 (unknown [160.80.103.126])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id C87631205C5;
-	Wed, 19 Aug 2026 19:20:57 +0200 (CEST)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1787160058; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IXp/w7vjpclMTyHwLmNKOVVg+V18u0MS/Dozdar0KWg=;
-	b=isX09NEPD67URT3mk0AVxGIoCJsClYb8BXXqtJcC1yC3hrgyjXVW3mZHxPv+SeHmrshWTc
-	pdGm/wfeJsyF2cCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1787160058; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IXp/w7vjpclMTyHwLmNKOVVg+V18u0MS/Dozdar0KWg=;
-	b=lLVgo/FOT5rZguhJD93xges0z1xhD42itgxweYVGsG8WfDsg0xaeNIaQrOpp9PJdO1KRal
-	/snzofdOzZkG5qxsDGAkGKzjuCwu3SlzTXYNuNRbWGc5SpAXalAOm6xIuh9rTSG5IqBc8X
-	VkKBLtp5UQF9BRKyLDmv/g0NDvNTUIn+lCV2i0i3oten/tCg3z8Fj+fN8LIHmtxdgLmBf9
-	P78D/qaetVrxDUDAur7FyP3I+BRMhd50Etogasr9m4ODdys8vsRFuKlh7MfWb9fmaHiJ8Q
-	kEC9Hsrd2KxqlhXglsUW8gtXRip59ZaiJRKPhsLeTO5Ne5kUxpfLRDwsJshauw==
-Date: Wed, 19 Aug 2026 19:20:57 +0200
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: David Lee <david.lee@trailofbits.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, Kyle Zeng <kylebot@openai.com>,
-        "Dominik 'Disconnect3d' Czarnota" <dominik.czarnota@trailofbits.com>,
-        Nicolas Dichtel <nicolas.dichtel@6wind.com>, horms@kernel.org,
-        stefano.salsano@uniroma2.it, dsahern@kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Andrea Mayer
- <andrea.mayer@uniroma2.it>
-Subject: Re: [PATCH net v4] ipv6: seg6: clear IPv4 control block on IPIP
- decapsulation
-Message-Id: <20260819192057.fd671c00ce2227bc001ac862@uniroma2.it>
-In-Reply-To: <20260817085839.946321-1-david.lee@trailofbits.com>
-References: <20260817085839.946321-1-david.lee@trailofbits.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="hEvWrq5f"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SaR43ej80RjETBZZTW/aahF3qc22o3uFNbbMBMsqnWgKp6YGcuPODoJY5YqVlElLaTtI2VO0iHHddzk333qd87gMOz1ZHYCZh/mbYXHK8cog3xJAF/sMLN1Zi7aNbRY8MVshvcaxYwmFdEFt6RdbD7J5pJ8aX5mfICmEFI+dJukAguhVxvAm0QEiYF319SN1kFrbM3a9e7mgzLePalekqGfI78lwKk6s8StAfMxXzT/Du8o0molLuejyUXaA9suvPvcxe3j1f7no9tsPhu+j/VF2gxgsJoEWQgjhO8nQ7VpE5/9MmOSsKdiFes/eKK2YUmPg4KkO6ghR/mxm2LwYkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qJv//T07Ov5ZdAN9YhiVSOpczm67MgJcZrGaLpD8y1U=;
+ b=HWFzbKK87F1Tv8s+0emxtZHKa3ypb2oSsDK9Bch/24QX0d2BgeexeFiL+D0sMrMgb8MN9g+tGe10yLIyTI4LKIBiwVEZcC7SL4hnPOWFF13pGtqwPD9I0g3z1SINKqEs2axjqL6JCG0zc/VZy2770LdSHKXsNliToebVKRqf/79sYKxqy+flMcBRrRFOowbRex4PUjZC4VSWl2LKDgJlQZ92BahpmYcG3z2maw4/KtqvBK0lw2L0kaNtBcfZu8e1P4kPZRycYYz/ZRiJBO1oot704dNC+1XzKKjNoetwx4wwlWtwc7hgDUVMDyzn+J9W5mw2ehdj7wf5cS2FT1rELw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
+ header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qJv//T07Ov5ZdAN9YhiVSOpczm67MgJcZrGaLpD8y1U=;
+ b=hEvWrq5fPa/QYBTujWUL4EVCirU8BjAmnR8tPom/XBhPETBRUg2IMAl3Zz4NGowuvrRkW9RCH5LkoxRDQWQFTCak/V8/A6a0XdkLtJuOdpBIJOKOORM9NwR+iOiN4QPVITjvUOsMu06iMOhrvdkp/pUEdVTtQf3zTozHJb86e9U=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=valinux.co.jp;
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
+ by TY7P286MB5333.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:1f0::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
+ 2026 17:25:41 +0000
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32%3]) with mapi id 15.21.0339.007; Wed, 19 Aug 2026
+ 17:25:41 +0000
+From: Koichiro Den <den@valinux.co.jp>
+To: Jakub Kicinski <kuba@kernel.org>,
+	Jon Mason <jdmason@kudzu.us>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Allen Hubbe <allenbh@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Nicholas Bellinger <nab@linux-iscsi.org>
+Cc: ntb@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net 0/2] net: ntb_netdev: Fix RX statistics accounting
+Date: Thu, 20 Aug 2026 02:25:37 +0900
+Message-ID: <20260819172539.1450821-1-den@valinux.co.jp>
+X-Mailer: git-send-email 2.51.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TY4P301CA0065.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:405:36a::14) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:38f::10)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|TY7P286MB5333:EE_
+X-MS-Office365-Filtering-Correlation-Id: df41a4be-19a3-4190-ccdd-08defe16e4dd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|10070799003|23010399003|10067099003|56012099006|6133799003|18002099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	gfYem/Bz0OJhBezCFtJM2tAmiICWI3xSu7bvB85IQQKBVN+a0rCqGIYXwtafmFv7gwsj63btGydn+D6XtaHWSMl0ZHFROols9KnD81Mp0l6SUwvSS2NN4XawQbm+k3rXHnEYLlERGBHEGKN7PJwtImQzSCEyRma44K8vwCXuAW3IPsiggmdthnfOvgt02pHnuHFQOu32qhCflhMHK7NS4Ok7cGkcDldnJiaE7dQzq/DTY21Gl8JVXsg4s56VWhWW4fr6R38r/28aA1KlLiwJgoydChjvIFTxCGNvTkiQBHDcgAXR/+EORWFGbHINemPRzl+VIGVblZcM7IeH2VBXtNHiw/mhoMI9YeyvhrvxPY7dkbSkSFfElUvCvc92UCQMFTNUjvGB7yc2FPDA2g3Vjc2ujPf982poDFwCUBTaVwbWCptIfPTgle3o/2CroBBmaIz2D16fRRda9bpCL9yMcJSVae+kHnNuJA0/hvpBkBE2cbxNYjz6a0whE93VPuZ/rS1rTYSxQzu5gL09CWOjbWydLneMZe5ZvXtbJIzUUwPN0gy4J5jIOopUGqts+eXqr+yC/m7mLTCansn8hOL+Q1GDvKoP6er6tPw/Di8btofEpxmV83GuwI3MDJtORrZayGMsDd0ABPkLh0BSTwzDgVHni3IgevfJms10JBD7lT3vehEswnSWtjojy7/e5XgQsa7NTJQ1jqgKfWW6+ZCSBA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(10070799003)(23010399003)(10067099003)(56012099006)(6133799003)(18002099003)(921020);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?IjDEk76+mdWTwGQ+/5oOV9ZNihUNZ4Fbk0AyX4EKLEHLMbgAYR9kKMNzzRhx?=
+ =?us-ascii?Q?15O9aONF1OCYNxufzN0A1rYdkeWEbB9ghd58J0N1i/ELvowsA0WF101s8bql?=
+ =?us-ascii?Q?BUYjjawXA7jCVIbyA0veaA5bmxh02pCT1cESTHTiLtHo1pNH5qp75riVAkCg?=
+ =?us-ascii?Q?lkR4Xix7sXLvKhiz4Cwl4EYU337yfl/fcPagsp9vC9D60lYLiliO4AoTt5eg?=
+ =?us-ascii?Q?PYPYqgYS/X2RB0KuwmsEIrtQG9bWC/zdrt3JJNk4XeaLru5EdByplqf69JTe?=
+ =?us-ascii?Q?W9w8jplATD3vDB3OOs9QOELP62cJW/c/Zrx5vvb0uvrqFzb47HcLi14vYcRE?=
+ =?us-ascii?Q?q/dyB+pKmwMwLXubMDkXE6p6i5frf0AZM3C4J7DyguvsAsQpuvPKwz8yPPEk?=
+ =?us-ascii?Q?f1Esuloezx4B9hplPhl1A106JQqeUoMiWM66orMKM5jsSbuk4vUIpR+9U+nT?=
+ =?us-ascii?Q?Bam5KCkwO2y3ZMPWxbUvNPU3FL0Kbldn1ZHHIbD4ahJsqjKho8kkcm7KqLq+?=
+ =?us-ascii?Q?8nN8+xH6dG+ryasQzTv7l6y+G7+8TsjXaIYbA++HqdVCEWckg6ki5EtsFPDL?=
+ =?us-ascii?Q?DrWyLhZjP5+hUbS/F2AAwciq2Op/r5AJe+u2LwPxdb3xtlUaBBSt/ZswMvug?=
+ =?us-ascii?Q?DlqepkDy8ok3KoWDULhxYDhoPceNBUJqjS48W50Y6sNQkr0ZVYkfC9r6HmAE?=
+ =?us-ascii?Q?cmhUZlSz/24e9lUT5ThMBYSK2x4hf/J+Jeve+ay8oJ4RyB+GsmJAY90UxFTn?=
+ =?us-ascii?Q?oK38bMMtcv4ACY5y6zadOBp8wLzn69PDWhy1pZItXGG6/wXhehtQSAYarPbi?=
+ =?us-ascii?Q?J1OeAILKYYExvinRPgekhMoaOQj/2mif6A+kzPapITu4M2Pf3HDCC+TxhhDa?=
+ =?us-ascii?Q?6JPZAh1bEvmOkUn9Dxm0iHXpm1raYkC6RfmdzNaTX8DFsB3uB2rqlBqLYXoO?=
+ =?us-ascii?Q?+Fy76sImPEqfe6FevCC6HLH8CSMeUIZNMLEQA1PIuKbzm4EiA007FTKKQmI7?=
+ =?us-ascii?Q?TsZ1IqseYwOiIqHkoJAYKCWuYgEf2hIadpWHoju1Sz5klcimjPwsuu5miJlR?=
+ =?us-ascii?Q?Tt3M1SnvwCH3tRss6o3EGal5RZAG1fs7xNcfvZkRLA0nK6V4Apic3heSztA4?=
+ =?us-ascii?Q?5LEfA3yyzVayMoxEp+PmD5/HV0IT4t3i/e8KcNVdoiBrGZwt5VbQ8XLqJpjJ?=
+ =?us-ascii?Q?+MH3qorVzU3AZ9DGm9VuCDju78z7Q7oIV7as1CdIs4LT0NTzNl0zj5T6QwKD?=
+ =?us-ascii?Q?rCtIqD8m+gz1UKE5H+ZLpGqHfxmBOz601lwHYUM0O5EvKvwiKqXmeoCHlrgg?=
+ =?us-ascii?Q?q223fZgZBHc+/rHQ3n9QVHRqkV1tLEc0pAZhJzNcBzDDYdbd6PxkbLovbX6k?=
+ =?us-ascii?Q?4M4TbGrmwBzjmUMwK2MkybysnVDMUEFFqiiDMqeO4USRbeWrSl5TtZaBWMJw?=
+ =?us-ascii?Q?I+xINVQng7b58xcUDucDZ4+o85wpN33tRIuAb4mobdRaC7LzZhi6wa3IxWN2?=
+ =?us-ascii?Q?F+SYRZLq36jWdhPOqcBwybE3e9FckMZkKN3rDQFeR/+lbYGBfVuxUL82uAfQ?=
+ =?us-ascii?Q?ddHiLzP3QLQk7nxcgBQ2QOicRUtH8eUzt+fuFNwhBVzpYUAs3PEhd1hiyhyL?=
+ =?us-ascii?Q?GctA3X8Q7P+1cqElo8UEYaMViR4ZK2d+QNb4LDY5EpKiPG5ZISqDADp6ZJS/?=
+ =?us-ascii?Q?ptHX8gO9mLPGUQny7hPxkh2/d5jO/ig6VFF2nJQPaovtqeNhuTAbRPNTuC50?=
+ =?us-ascii?Q?pAHzvYMXz2Mwd3nMT2ddI7f9f+vxgezyw71ZpG5ReBqU13bpaW/L?=
+X-OriginatorOrg: valinux.co.jp
+X-MS-Exchange-CrossTenant-Network-Message-Id: df41a4be-19a3-4190-ccdd-08defe16e4dd
+X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 17:25:41.6689
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HY0Otzc2utB4EzjEbMgnUcrNWbycw+IqegA3r4n3m1N3DTcTXGQYGfrPAoWkAjw8bVTlQqhYCMWJzYpMoZOmwA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY7P286MB5333
 
-On Mon, 17 Aug 2026 08:58:38 +0000
-David Lee <david.lee@trailofbits.com> wrote:
+Hi,
 
-Thanks for the v4.
+This series addresses Jakub's comment on ntb_netdev RX statistics
+accounting:
+https://lore.kernel.org/r/20260818092938.4121c220@kernel.org/
 
-> From: Kyle Zeng <kylebot@openai.com>
->
-> End.DX4 and End.DT4 decapsulate an IPv4 packet through
-> decap_and_validate() and send it directly to IPv4 routing. The inner
-> packet therefore bypasses ip_rcv_core(), which normally clears IPCB
-> before IPv4 interprets skb->cb.
->
-> The skb instead retains IP6CB data from the outer packet. IP6CB and
-> IPCB use the same skb->cb storage, so IP6CB(skb)->lastopt overlaps
-> IPCB(skb)->opt.optlen and srr, while IP6CB(skb)->nhoff overlaps rr and
-> ts.
->
-> The sender can make the stale optlen byte nonzero with a valid outer
-> extension-header chain. The reproducers put an eight-byte Destination
-> Options header immediately after the 40-byte IPv6 header and before the
-> Segment Routing Header. ipv6_destopt_rcv() records the sender-controlled
-> Destination Options offset in both lastopt and nhoff, setting them to
-> 40. On the reproduced little-endian x86-64 kernel, IPv4 therefore sees
-> optlen = 40 and rr = 40.
->
-> Both tcp_v4_save_options() and __ip_options_echo() skip option copying
-> when optlen is zero. Here optlen is 40, so the TCP SYN path allocates
-> room for 40 bytes of option data and calls __ip_options_echo(). The
-> stale rr value makes that function read inner packet byte 41 as the
-> Record Route option length. The reproducers set that sender-controlled
-> byte to 255, so __ip_options_echo() copies 255 bytes into the 40-byte
-> option-data area.
->
-> Separate End.DX4 and End.DT4 reproducers on the unpatched v7.2-rc5
-> kernel both produced:
->
->   BUG: KASAN: slab-out-of-bounds in __ip_options_echo()
->   Write of size 255
->
-> The relevant End.DX4 call path is:
->
->   __ip_options_echo
->   tcp_v4_route_req
->   tcp_conn_request
->   tcp_v4_conn_request
->   tcp_rcv_state_process
->   tcp_v4_do_rcv
->   tcp_v4_rcv
->   ip_protocol_deliver_rcu
->   ip_local_deliver_finish
->   ip_local_deliver
->   input_action_end_dx4_finish
->   input_action_end_dx4
->
-> The relevant End.DT4 call path is:
->
->   __ip_options_echo
->   tcp_v4_route_req
->   tcp_conn_request
->   tcp_v4_conn_request
->   tcp_rcv_state_process
->   tcp_v4_do_rcv
->   tcp_v4_rcv
->   ip_protocol_deliver_rcu
->   ip_local_deliver_finish
->   ip_local_deliver
->   input_action_end_dt4
->
-> tcp_v4_save_options() is inlined into the tcp_v4_route_req() path, so
-> it does not appear as a separate frame.
->
+It fixes the double counting and also the related packet/byte accounting
+on RX refill failure.
 
-Nit, not worth a respin: the two call paths are the same from
-__ip_options_echo() to ip_local_deliver(), so one of them, plus the
-frames after ip_local_deliver() for the other, would do.
+Notes:
+- No ordering dependency on the TX completion/error handling series,
+  which is currently awaiting review. Either series can go first.
+  https://patchwork.kernel.org/project/netdevbpf/cover/20260817053519.4135287-1-den@valinux.co.jp/
+- Once both series land, I plan to post one follow-up patch to net for
+  the multi-queue stats race introduced by commit 24d9e73c7e00 ("net:
+  ntb_netdev: Support ethtool channels for multi-queue"). My plan is to
+  move packet/byte/drop counters to core-managed per-CPU stats and use
+  DEV_STATS_INC() for the remaining slow-path counters. IMO this is
+  lower severity and better done after the TX/RX changes settle.
 
-> When decap_and_validate() handles IPPROTO_IPIP, save the ingress
-> interface from IP6CB, clear IPCB, and restore the saved value. Doing
-> this in the common decapsulation path covers End.DX4, End.DT4, and
-> End.DT46's IPv4 arm.
->
-> Use IP6CB(skb)->iif rather than skb->skb_iif. These actions run after
-> l3mdev processing, which can replace skb_iif with the L3 master;
-> IP6CB iif still records the receiving interface set at IPv6 ingress.
->
-> Fixes: 891ef8dd2a8d ("ipv6: sr: implement additional seg6local actions")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-> Assisted-by: Codex:gpt-5.6-sol Codex:gpt-5.5-cyber
-> Signed-off-by: Kyle Zeng <kylebot@openai.com>
-> Co-developed-by: David Lee <david.lee@trailofbits.com>
-> Signed-off-by: David Lee <david.lee@trailofbits.com>
-> ---
-> Changes in v4:
-> - Explain how the stale occurs.
-> - Include the observed End.DX4 and End.DT4 call paths.
->
-> v3: https://lore.kernel.org/netdev/20260810154732.850472-1-david.lee@trailofbits.com/
->
-> Changes in v3:
-> - Clear IPCB in the common IPPROTO_IPIP decapsulation path so End.DX4,
->   End.DT4, and End.DT46's IPv4 arm are covered.
-> - Preserve the ingress interface from IP6CB instead of skb->skb_iif,
->   which can identify the VRF master after l3mdev processing.
-> - Update the Fixes tag to the commit that introduced End.DX4.
-> - Include the End.DX4 and End.DT4 KASAN evidence.
->
-> v2: https://lore.kernel.org/netdev/20260804094625.715305-1-david.lee@trailofbits.com/
-> v1: https://lore.kernel.org/all/20260731140832.567669-1-david.lee@trailofbits.com/
->
->  net/ipv6/seg6_local.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->
+Best regards,
+Koichiro
 
-Side note: before your patch IPSKB_L3SLAVE could read as set inside
-the IPCB() on this path by chance (even with no VRF involved),
-depending on how the outer IPv6 packet was fragmented:
-IPCB->flags overlaps the outer IP6CB->frag_max_size (with
-CONFIG_IPV6_MIP6).
 
-Your patch clears IPCB->flags, which loses nothing: that bit did not
-record an enslavement to a VRF; it was stale outer data.
-And on End.DX4 nothing records one in the inner packet's IPCB.
-That is a different bug from the out-of-bounds write you are fixing.
+Koichiro Den (2):
+  net: ntb_netdev: Avoid double-accounting netif_rx() drops
+  net: ntb_netdev: Count packets dropped on RX refill failure
 
-In other words, on End.DX4 the IPSKB_L3SLAVE propagation was missing
-before this patch, and this patch sanitizes garbage that could have
-accidentally set that bit. IMHO, the propagation should go in its
-own patch. I will look at it.
+ drivers/net/ntb_netdev.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-Reviewed-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+base-commit: 564973a259ec76f2dad0853420e7034cc43994c4
+-- 
+2.51.0
+
