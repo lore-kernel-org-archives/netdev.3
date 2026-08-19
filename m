@@ -1,157 +1,92 @@
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBC663DDAFD
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 07:32:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787124758; cv=pass; b=u7RdxlfTzg8Pk43gtt74RAsdTSnsMW7Wehi5+3gUsjNvkO/esL6Bx8stYq3VWw8Wlc6aCLs+CZB44T/7iiNIU0nN/l40Iqu31lxYaBNJaV3YDqipjkYZracwd8chrZodWiVoQ4sSwPKGFlCCmMkVtJUdoWzrZnmtbJ5PTT2uiV0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787124758; c=relaxed/simple;
-	bh=1LhlVc0dwOktw7FcU5KUy4x5+ciiBEKs+bfj7ahAw6M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=julF92/eY4FH3Qzw7MdyCvZFM7cgD4wYqaGok9T44PLnSh6V5gi4ZSuoIUdyQop2ZOX1QYgN6Xis3jZfoCqW3aadURrlrY52R23XpGaldHt78eA0qWPjOf1bCQFuCXrCu1+FB/B4VN+ATnfwzUo3RwD1Q/5UtcwE3JyIBEurHBk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VsXOwvEA; arc=pass smtp.client-ip=209.85.222.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VsXOwvEA"
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-9309d4ea213so67211685a.1
-        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 00:32:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787124755; cv=none;
-        d=google.com; s=arc-20260327;
-        b=N2cuuJpZXa5RFjMPyO5H6265hInmuUf8bw1uWSJ4+IDACAkC2LZBsmkoSqdtQM6uP9
-         YOTUkbPJZhg39OWHiZrdYeflpL6F9FuiYWWdOOsSiss++mn2ls2oC9QOQvRgrQYtkVJ6
-         5KMjyKCS0W8fP8Ny8rZq1rDIMvxWCPr9qxZQwwrPhTn5uUCLI2bM2mVuGZGW0kUj0pnw
-         VuuMNjU+6iSXWTkG8EpBP7QHDcV13PENWJ7wJo4AFDiw88MKh2decgowL9s8v2blVurM
-         wSC0VVprEgrAh74rMAvx6G60JeeAkWfFSERrrqY+kLPsGB2kzi02/ShsyPrfNLpzoOit
-         Kipw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=6bo8ts2uxNx+gAjtIBYXiurmZxvzqaLcfg3nJ69Wa0c=;
-        fh=41oZSbWxywZaOx6xo0T3KXJZERkD8y7N7spZ0k/xt74=;
-        b=R88tRIPmNLsr5yZI7MrO/pY0x++zbC4609ONn60loQJOorKV2/fh1M5k5o5yjh6R9/
-         TLePdVWl/9RgS/NZjVpsanh0eOsZXhHLkpHQ+DIRSQZ66E7kA+NgmldZU3hUPr9RyKTl
-         1qhe7C745eCBi1u6pBCizDa75gH5mbUKj9yhcccqmU9bFdT21ThhMlL/7fEYjlTI0kx9
-         aVck7hFQq4n7TUdxfwblaoQk4JcWLMCTfF17+BotIosp2P4Ed9fVdCywGF/YrxtQocUy
-         N8uBMHJ2y0yf7iQ5PsF/qG0qJKLHNkNLRGxWsvz3r2qzHTWt00xUFaZLX1WEZc5Apmo5
-         UFUA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787124755; x=1787729555; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=6bo8ts2uxNx+gAjtIBYXiurmZxvzqaLcfg3nJ69Wa0c=;
-        b=VsXOwvEAVfuYwtSIFdWTb+WRAFYjV4Bmh6WN8iE13VA6Vxuppb+HFy9rXTSK7AszdH
-         dfxHiuMej6ZgQvtm7uajZclMtGXlsCTKb5x77YIwPmke7mppSaQ5znf5nql3VgsaOkcz
-         tw1TEd9f50O/y5+1uf3/Sh5rHQyjuEYizuY7PoT36X8VHY+lmW4utxgFixfVp6C2osKj
-         bcPOt2fIrS/3QcruxtzTZKM31O8X0tMpD456wCBe0unFlTjqBjilOBFd/QaZPd1G+q+P
-         cba1hoFSegmaL23x4K1neFOZpH0bnzqXQrUIKDhB+R8B8UpdOKp0cMyj+xf+tRNEBvML
-         EW8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787124755; x=1787729555;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6bo8ts2uxNx+gAjtIBYXiurmZxvzqaLcfg3nJ69Wa0c=;
-        b=G+93cGz9BPlUJh7NbUojmQgDxi+qtKx/4YB+JlYUKGy2lcbcolMGNEJ2WS+dcygrDG
-         cwHHeljgbt7SF9Zf5NLr8zzDbLyQHgY4fF1pdc8Yljq+ZaRaBn0rh4XwVhN3r6O3O3eF
-         Bkd2uGqAPPXusmswOh/zF6jhHtT1awEDmrtz9IZLFhMvGL1E7iXDWKwtrnSptVSLEu0y
-         IdUfT8vs/CB75YYKO7N+x0ByAJnlmH2ocri4jly9Gyb3NO4ntFHDJCUisCig1C/ItSBd
-         k8sdmMTHBY+q3Hi2n4nA81b22ZkOm58XXgnw+Uc01rkDhQ2sq3QGINkkZpZtel/e2rMk
-         fIpQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoGSVSbUUj4xu/9SO17Jhx4yVI+pVkx0aDmrqt2/pBd1zgk0O+hhxdA9sZxDW9j+7woPV6wYLk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQPpxIYHTnqskxOeQAtkH+PLFOMA2FiVxw/v3XUE2P5P0jc7/n
-	dXqCRDKBcZ51XKRi5x9fmHFKj3zc1h7Ium08B/JcTJtaarGH6QAnuuEyqLsspu/Cn0yRcF4XrN2
-	Z//TkhErGW+g7K51IlgbYKQPwcWbh//1TbbPBB5It
-X-Gm-Gg: AR+sD11C2Ej9DX1Wze5JGMu79N8L54urlu4sRcbxR1kbFx4savpQoI5Nx+XhHW781AI
-	9XqxwewNuDfhAoGvMng5i9K9BEvJ99JGBemUzpoE2TmTGrVuF8+xQJhtIvg3e3i95qvXS+Vr1WU
-	ka7GGyKJf2r9uojhH/lnhhhWd6KICRl/HTVieOQ73t5Cl5n6ahC0ieB8fUJZZPHbl39g0D4eIeb
-	EBfCkhZ3z/GLlKr1Ms+coBfbCcEgj4CFe3O0xpFzLRMQhgQ9IvGZLYu5kcR9T4jm/Dlw0VHhhSA
-	pu+Nm4A00P3oQMfvUQ1iipuNsVcW3e0j3FSEGSxgoKmPq9EYKTJfimsYmFF+32PvkRiXZUKx8A3
-	osV11O/gywj5+acfKRnRATcqZW+nwIumA66yPX6I/2Hc7tgVftOFLVhTZjxk6RXnDxJCecc1VAo
-	MWhKg3SV7Slagoc4U=
-X-Received: by 2002:a05:622a:1247:b0:51c:e6a:1b5a with SMTP id
- d75a77b69052e-52dd578f0d2mr23424921cf.12.1787124755006; Wed, 19 Aug 2026
- 00:32:35 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4FA93DDAF3;
+	Wed, 19 Aug 2026 07:33:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787124793; cv=none; b=nJ3aYn7qd5mjRSslq+EmF2L9hI0fvwKt0LSxepTAeO7o04SSfwAiktXrXt0Z0ZoX7poVvTNaR8wXrOk964gEqkA8T2rrs0LmWL1RwZpe5Kyp1Dr80VO5h9sHR2OypjE4IWHXiP/yyMcqnSNEcXT484HqGAIhVldAvXPJydONxP0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787124793; c=relaxed/simple;
+	bh=4tABpnjmWxs4syXiy+KlqWZpIDOkjthR4d8v/qJhITA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gNZrUFM+g1nFP1aS8N9A8NJCOJwZeZHb9aUa74nElE2+F15C3MuiOWPVTfcVb2mpa3XoFF1CIFTWfc3hwKkhU0MSc+HLHBe690pXUlo6hALzAeimA/BICteRwBoJuTRIObyJXeY55BGeqP26kSmLmoa+hcm1zx3rUpN0qrHBkI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 378973889ba011f19a56ed5b684f684d-20260819
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:0a6e9b6d-14cb-4732-99d6-28735b2b9678,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:20
+X-CID-META: VersionHash:7db8b62,CLOUDID:fec5f4ffb56ea27f3049a3cd8128a57b,BulkI
+	D:nil,BulkQuantity:0,SF:102|136|850|865|898,TC:nil,Content:0|15|50,EDM:5|-
+	100,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0
+	,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 378973889ba011f19a56ed5b684f684d-20260819
+X-User: gonglinkai@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <gonglinkai@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 429724535; Wed, 19 Aug 2026 15:33:05 +0800
+From: Linkai Gong <gonglinkai@kylinos.cn>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Joao Pinto <Joao.Pinto@synopsys.com>,
+	netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	gonglinkai@kylinos.cn
+Subject: [PATCH] net: stmmac: platform: fix of_node leak when breaking RX queue loop
+Date: Wed, 19 Aug 2026 15:32:58 +0800
+Message-Id: <20260819073258.467604-1-gonglinkai@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260819062224.3197349-1-shuangpeng.kernel@gmail.com>
-In-Reply-To: <20260819062224.3197349-1-shuangpeng.kernel@gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 19 Aug 2026 09:32:23 +0200
-X-Gm-Features: AcwNN1UgIaSp8yvbiP81Wa6WdXyRGospW79ercIDWGBnnoWkucb-lYgl8VMVu_s
-Message-ID: <CANn89iLioNZ6cVBCpRDYaoHYixXrxbVt=P6DbUNoZPOgxmK60A@mail.gmail.com>
-Subject: Re: [BUG] net: ipv6: KASAN: slab-use-after-free in ip6gre_tunnel_xmit
-To: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Aug 19, 2026 at 8:23=E2=80=AFAM Shuangpeng Bai
-<shuangpeng.kernel@gmail.com> wrote:
->
-> Hi Kernel Maintainers,
->
-> I hit the following report while testing current upstream kernel:
->
-> KASAN: slab-use-after-free in ip6gre_tunnel_xmit
->
-> on commit: bd5f485f3f026225b86573e559af0b7254ef4184 (2026-08-18)
->
-> The reproducer and .config files are here.
-> https://gist.github.com/shuangpengbai/63aa087b3e843c7a4e98a42c0f130aeb
->
-> I'm happy to test debug patches or provide additional information.
->
+for_each_child_of_node() on the RX queues breaks once enough queues are
+parsed, which leaves the current child referenced. The TX loop then
+overwrites q_node, so that reference is never dropped.
 
-Hi Shuandpeng
+of_node_put() the child before breaking. The TX loop already drops its
+last reference via the of_node_put(q_node) at the out label.
 
-Thanks for the report, could you test the following for me?
-
-diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-index 200d0ba1a40e71a4245f1b153dc30691e773f8c7..678678fcb5da395f8b1c8243562=
-efe8addbda2ee
-100644
---- a/net/ipv6/ip6_gre.c
-+++ b/net/ipv6/ip6_gre.c
-@@ -878,6 +878,7 @@ static int ip6gre_xmit_other(struct sk_buff *skb,
-struct net_device *dev)
- static netdev_tx_t ip6gre_tunnel_xmit(struct sk_buff *skb,
-        struct net_device *dev)
- {
-+       struct ip_tunnel_info *tun_info =3D NULL;
-        struct ip6_tnl *t =3D netdev_priv(dev);
-        __be16 payload_protocol;
-        int ret;
-@@ -888,6 +889,9 @@ static netdev_tx_t ip6gre_tunnel_xmit(struct sk_buff *s=
-kb,
-        if (!ip6_tnl_xmit_ctl(t, &t->parms.laddr, &t->parms.raddr))
-                goto tx_err;
-
-+       if (t->parms.collect_md)
-+               tun_info =3D skb_tunnel_info_txcheck(skb);
-+
-        payload_protocol =3D skb_protocol(skb, true);
-        switch (payload_protocol) {
-        case htons(ETH_P_IP):
-@@ -907,7 +911,7 @@ static netdev_tx_t ip6gre_tunnel_xmit(struct sk_buff *s=
-kb,
-        return NETDEV_TX_OK;
-
- tx_err:
--       if (!t->parms.collect_md || !IS_ERR(skb_tunnel_info_txcheck(skb)))
-+       if (!IS_ERR(tun_info))
-                DEV_STATS_INC(dev, tx_errors);
-        DEV_STATS_INC(dev, tx_dropped);
-        kfree_skb(skb);
+Fixes: d976a525c371 ("net: stmmac: multiple queues dt configuration")
+Signed-off-by: Linkai Gong <gonglinkai@kylinos.cn>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+index dc5f951a311d..66a048ecadb0 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -170,8 +170,11 @@ static int stmmac_mtl_setup(struct platform_device *pdev,
+ 
+ 	/* Processing individual RX queue config */
+ 	for_each_child_of_node(rx_node, q_node) {
+-		if (queue >= plat->rx_queues_to_use)
++		if (queue >= plat->rx_queues_to_use) {
++			of_node_put(q_node);
++			q_node = NULL;
+ 			break;
++		}
+ 
+ 		if (of_property_read_bool(q_node, "snps,dcb-algorithm"))
+ 			plat->rx_queues_cfg[queue].mode_to_use = MTL_QUEUE_DCB;
+-- 
+2.25.1
