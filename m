@@ -1,176 +1,200 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010025.outbound.protection.outlook.com [52.101.85.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4997047F76F;
-	Wed, 19 Aug 2026 15:15:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49EDA3FE352
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 15:15:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.174
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787152519; cv=fail; b=YTANUKtshGJqjLUzHFyfjeyYDUzl86GLi8k8cXUGUFxs1vE0GypKsBW/7Vj4wEXvZpO4EaO/Nc2qdUILsfAAd2qRbB3Hy/i5p+RV3hyoEH7vyfFiTpJIicyvwXBlMvdjSk6avHIum6u0R5BIiX12twF7TRTV0VwlBQCvFGddG64=
+	t=1787152551; cv=pass; b=TNMp2wfmjVaXgwW9RTc1wwjlqiIARdP2WnUm059c39RqC+Gi20jfjnMM28+RnqkR+qohpnE3lEV3Lf0zngmADIt5iwTAEP0ZXo63W9jyqq8p/BEHzXhZQi6R5NvqH6JCHagBK3PJ2/ThTK6djjsWMqlAMDbK3dlFo9UEaqgBrow=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787152519; c=relaxed/simple;
-	bh=Z8udBGmVpJj+GCq4QjpDDVn7TPGE6UndcL7OUDGTiUE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=MtgxDfzwUum71KQ+4RX40yoSaSuAjxerI05hnPY4Jn4mcmbiEQwkx0fCZJWqn3ump7/pcKzVOyERJpB4jLrawQ7BQLi+niHoTL8KPs/edzARlN7byRcNx+TwzO8rMQiFCVplj6GJ6gMPPbteEY/CgFLsZWlsQp6IbKNqZlPC/MQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gue93vLp; arc=fail smtp.client-ip=52.101.85.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1787152551; c=relaxed/simple;
+	bh=459KEqF2l7j0bEcBM0KmDs2lcrDu+oIduz2otY4oqsQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=P6VN029htimJfOUjPS32+dGWLqTuerJfypEqEFeD++IkogymRTFEE+pepUXjALm+bAXxgLTj8AsRDzCMXvzPrWJyjeZwW2EzOWDwpR4sB3LA9m2zwcKK013Km8yUoX95uag51u16w/saj0cvSOKO8fs/pMUmG6kpP9G3ikE865o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ClPmX9Mh; arc=pass smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gue93vLp"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=d4CkjnhKL4tlZvcuvS0R0RQYR+qbJ9DlCcGZR33pDRHmXLe7gZyLseKCthamOl/tHkbq0SG68ibAqIMIEeXq84OKIoeRIHs9blEMo9R141TOReR8erIoawnGR6KnAePiiAGV5KCrSDIG0e45c9jX7U2glQKh/IyLCk0wBEnrKxsmZYyeD7SIB2sTr7rVFrsJRPeFVeanl4tIEKfe6dp3kbJqomn9fCmz3LOWrZGUQDLmp+1Nhj6mm2OZQfIyokgsLhIIozqsbB+YbYvSGpMLSdCNIjEhP40Q+LHzawJiGloPkdSi1xZp2dDSV2fGYVbfo+uYpRmkftiR17tOgUvisg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=g/QcZDWXrGuOr42SwzG6OczVTWTR0KV0D5qz8XyDErE=;
- b=QbUJIQU+Ij4vBsgAwnCyhVk/Qn5boEEiLjkOKzB2IMExbsGGUeJX9mL0St4wCO/i+EJqsmkCKPUWyr9/U8G7kjtJTyHXDZJXrtkD8KocjhQMwAvAL25eSFSGkdx3EqAzzDpnEW9sKNWBBzL7DzwVDPl4xnzAoZSX2G4lEK0cFvc4OzJtOfTht4h8scUk78cUsH2M1UBcmQgmW32Ba5OmqNl9VHUwqmgzlaJYr8qQmHZx33NOjuLIalshXs65PBBjn3KW7MaXR+3FtpyhbZifIepoQvzlZP0T/KN6tsJi5PL+26ovFwOdlUFqAtYEtmRmEENWx9Qu9ZP62c8y9EKgHQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=g/QcZDWXrGuOr42SwzG6OczVTWTR0KV0D5qz8XyDErE=;
- b=gue93vLpRF88FyX9vbwS6twm+uvA4BDdU+rgOrS9UVAyBEMYihtpMPK8XNePVOLve9GYxtQ4pv1NiFJYl1tyrJ+YsDI/st7VWq5EhU9v3dKyLULhqZF3MTBXFXh8RnGM+qd5nRQM0ycXyVua07kjZYSrR7zPlFQ2eAbRP2omI5irLOQLPOmlO+SrsozqGfsef0jNMalx3I3E+3KEEG1ESGpqE3f4Mo9ZuYjRWhTbQCIfw11CVaB66F93jNd4wUQc/8V/2tt7o6QHN5uxT1ZbbzxFFk5UplL70CGL35IxrHxB3p00rrAfKb1MJVETMqxJSQVoafbxFCC17ip/zkWk6Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by SN7PR12MB7105.namprd12.prod.outlook.com (2603:10b6:806:2a0::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Wed, 19 Aug
- 2026 15:15:13 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0339.007; Wed, 19 Aug 2026
- 15:15:13 +0000
-Date: Wed, 19 Aug 2026 18:15:04 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-Cc: dsahern@kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	kuniyu@google.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, AutonomousCodeSecurity@microsoft.com,
-	xmei5@asu.edu, tgopinath@linux.microsoft.com, kys@microsoft.com
-Subject: Re: [PATCH net] ipv6: avoid divide by zero in rt6_multipath_rebalance
-Message-ID: <20260819151504.GA1248049@shredder>
-References: <20260817013237.2797-1-blbllhy@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260817013237.2797-1-blbllhy@gmail.com>
-X-ClientProxiedBy: FR4P281CA0108.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:bb::17) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ClPmX9Mh"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-51c0006ea8eso7994231cf.1
+        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 08:15:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787152546; cv=none;
+        d=google.com; s=arc-20260327;
+        b=geNEwAPWgTC4I4Y+tbrGhfQSo9nkMXU2NoichAa3Ivi2N8Xq3Dq7oANI9YEOOVIekI
+         4GeJ5miBuySqEi89ipk2dL/dWhdDpnm/O/t+QVgNBGpAFiyjpKMWIaCttPLX3Xnh//5h
+         fGLqhjRQMTwSCpMYKUpJatr/YpjzLPQi2AE47LJtAdqbabqD+xydPhygzvN+jPk/IIbo
+         fPJHlhirm685uYVRquVqpvCl7Is0osXvQvKYGTMQvYvlrKLCT/07zwSv0WHCUNU2AgBp
+         v0S9HcyTBrZB+CLqR0/RpFiqXfcwWmoe+uXGfePNMxizdzk/b2sOt+2KiUZrgz1kmUdW
+         MW6w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7N8CbCmVonj0Y0cToVjeMsRxbld7SNQmDP31faW8N18=;
+        fh=X8BDq2/KK+aalG3nUimw3vzOLwCn/tnGxVtO1Bv9toQ=;
+        b=doJjdC2ze5i0YO6r7vSHivjAQfKe0uywsVEeA4qNZF2RDem99CUeC9M70koOqN2yB7
+         qcy2y0ZsSMfgP30BJkRc/PN7aWlTycQQTsLjYHokEpyXdvEsP0uHQk2wQ8w2wMQeWGCS
+         IT+gbqHz21SsN1WWOH8YhpKDeCfppfKpyMUflBpOKdyFZrLO866rGSvc+6G5aRVEWi+k
+         HNBa0ctz9IpUi3xqtw96yoh+pnDhEnD6QjpDfeJeNw/MLKyRY0DA2YT1NWum54D7GyT/
+         RAfuZw3vJ7OUKcFmgRtmxxOZKfQFHlI10crcwoM8U4gwLT92ux+UVqnkhRzVKqYrR2fA
+         LDKg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787152546; x=1787757346; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=7N8CbCmVonj0Y0cToVjeMsRxbld7SNQmDP31faW8N18=;
+        b=ClPmX9Mhl6mC2Deq5XzVbImDrkfXA1cvYQY76FiM0ycIWp66zVzPQOIH1ZJg/5ybU5
+         Pz9lDUVjBmcpe7LFRiTsmJq28b0QGumqzFmIlBDoNdkgAAiqUzidqeWVGvL7a/toNeNE
+         vk1r7nZ4fgAMrqJduj2zMf2hwleYp8ugcpd9NYwWhvaKVQmFBfKrqH2beIcUGI38zVEo
+         4bpgU4OeLn9jX0lOpbEffh3Zl5l+Skjb1R9lk20R8FeGTn+bvIaSxmbXupeYqEU2iZRf
+         zvPqr1q0VGm7MHkm44WV9wXi3PbBnFUiw4Y+9hkR4cibJLFbxGyw3wcNdsCiiMB2BY+R
+         pVGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787152546; x=1787757346;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7N8CbCmVonj0Y0cToVjeMsRxbld7SNQmDP31faW8N18=;
+        b=kAzNo9A1ZuCy/kSMq5lObaAYi6fCz4JCkFv0zkOOF208dClyx/qiVXg0wlVHEFkRKF
+         wu4neoADU76Cz/SDLwDZR+Rz8aUOtIyWkSghHcFB7qGsvyGkHTmC4ddPqB7LPV+PS062
+         yO2SOEQFzaVNg9awYV2Kym8gZ2fgO7XiyM4dsjsXQ8Bb/Y/F6h/TysCy6tuGoJr2yl5V
+         AFmZuqREcW6O8MX4y+k6zX2gp58giytimeLsmo52LA0Pn82xoxOj8wacaU0Gh/0HfonP
+         +hOqc1BD3Z2poGzJ2FIcC87aQm4/Sm/XA1VGdSANhIkamBSeTiJ7zzaxZYkiZljesbSg
+         KjQA==
+X-Gm-Message-State: AOJu0Yx0XY0XvtiAjN5nEPXv3SZ/XHiXbuKxtMreYttYutGELjBnQRO/
+	3uyEgjJn3f02giXsqWQSJ5T38+Okw9pUXlrJkwkbEA6BvlRQRGgHlUQ3GsPkxBSf5iLnmde09+r
+	WuX1WtNSVr/yM2mFxF3MsriD2I9kk+FRTDGEjMQo+
+X-Gm-Gg: AR+sD13MzDa7aR/2QikzrXmnc39cXT1YpIjXSpcXO37yBXAV+YGWLv985UGhnariT0T
+	GFieJ7++js40t2P1OjmI5dOO84ppp6J50yiwQZSvwXuO3bMxwgxV1bpuXEaWa34myiY70+UD5ce
+	0/cMuEfDJdrgKYrFsIrIVBD1/dtSaRXn9riF+ufDfKYtN0Tic1tPG5+HtmnV0+tFyFHBYkSiQ/0
+	ylkfQI7l4TkH83gQEHODIR7nSpm37ZUsOID3bbuOicAehAi3CGZSEAZbdniby5kNGHx8WJuRmJM
+	M3OqRlw8Hf7rYLDnzpx96DLxMiLfV18J/uY5PzgE/S8GUhNE0G9W44ijYuPgANI20vj5qOWluBx
+	62lMQcf5KtgoUe3HI8EYeLgnDJhfsYCLdXCVzZH5HjW09L1HGb8bQFzZmco1wwsRDPfLcs+2qKd
+	1BYnUGrtUmB7FpFpivmNEFLQLGnHSmTV8=
+X-Received: by 2002:ac8:5a8f:0:b0:517:8d24:64d8 with SMTP id
+ d75a77b69052e-52dd57ac078mr45190801cf.13.1787152545797; Wed, 19 Aug 2026
+ 08:15:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|SN7PR12MB7105:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6a708814-6218-4eb6-7a96-08defe04aa9b
-X-LD-Processed: 43083d15-7273-40c1-b7db-39efd9ccc17a,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|1800799024|7416014|376014|56012099006|6133799003|10067099003|18002099003|22082099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	cc1ZPfHCL6JMpPU4bcm/32NkHYSYY2h19DC07zIajJeQgFjb/XyFjOBPKmnFWtFQT1RQXWDhHlkeWy/ksHQsVfsj6/7X81ghaAJI7IuODQhuUtVhhjt+hTMWaptaC3wR4NKZffEauR3UpcOZKD1P1ljiHwq9ncJW8LP81P9Nlmvad5Au04CR5esql+J6hB3xxbBy3Ts+oGBUcL0wJcGOQLbRJ0OErCBk9humTmRg809Rys+XS/Jgb5U/Kycf7y3hxZeKMU+svAjjG1R/ZPSQ1Zd03Y6wGrcJGzANrsblmzu9dMkXR3MRiH210zNxbkgPr1e0HYjUoSqZPz7mXGBQxDwkYQgEHiRyMq9b5OdrXi5RrhWXj1P2Mw/6Lb448AAQbJn5caZGbBqLvmq0hbX9+hh0EHrlpnhBZYPVrVt0/h9MuNPZ4yGKzVhi2g/XwU6Vb3WqiYIZgbUe304JrMNy2zRIYHUxDGokSBAkUReNG9KMkzmHxSDH5ivbwX0cdrLSbHt9K7UPFp6YOESkeMKZK857JDloWDVAxOQ7XDOn+4ZZIHZ/MmTDMUnf0jaeF4PKLRKTE8ZPMrHzH+Ar/kxKnjIY1aJuW92G9PUlbh+o0T2nBAq+1nIrK7blBvscr1+JsZ6S8XxpVfVXtaQ77gNRC0qaggfi27nvkWDo0kDW4h0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(7416014)(376014)(56012099006)(6133799003)(10067099003)(18002099003)(22082099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?n+w/ptqS6ZvHZsRT8mHgMEbpSPsmKWCohVLkOI/togzozsuKpi3v5EAVm8Jw?=
- =?us-ascii?Q?NEwCMEf3dEoHQTv/znmXFjVnd31n8kGawHZKNEMpwv6GB2aI1qZw67vfpj9p?=
- =?us-ascii?Q?BvYAV61wB2qwYp5ubHcEpxNi2Fm/XtGOzMQjRBNBkpxMIU8vjvRdXVkCYtwQ?=
- =?us-ascii?Q?xzgRQRTut0jyMysTQmZPaUk++axeZCZMtDK85A44I9IvCObTBu3iob32CmCp?=
- =?us-ascii?Q?DLiy9zInDlkVs99a+VwZXMDkECbegvBJkYCkqybO2rdvzhsvED0Db7UCz70C?=
- =?us-ascii?Q?b61/VNRVyDcutC3m7EOyB9PfaNCcOWBbkk1cL3tzQMgG6qIdUP9D7XEvaqIX?=
- =?us-ascii?Q?9/Enbv6zhRsiKGWHRDEtjpQYXsvP5kmMjwQ+N2GPZIQElqOoA0Ap02b+H71z?=
- =?us-ascii?Q?zY2mMYxd9APBlJ7r7nGudTX5UAV4NTF4T40eNt+3qpnRl6nXZQCD54mTZro4?=
- =?us-ascii?Q?b8gpuG+9l6JfxgrVLq6u7s9EGzJ9LpBbGe/kbyFvarA78TsiOjRzT8ayxkjs?=
- =?us-ascii?Q?9LeN9OUJzKBf/S2yhxL7srfvwlo71yJLwi72wRr22dq7y3fySC28608exHqQ?=
- =?us-ascii?Q?m8mTqomrdxZGBzVimJ8qd3nxvJewSpZfmWp8li4mPdphgIrraN1EKpBTlk/q?=
- =?us-ascii?Q?GuPk0OnyRREClUq/DjzvKI5ngfX85r2oC+5B0ZJ1FUTYqW9C5auBIgbtxg9l?=
- =?us-ascii?Q?4kJl8lTrx9nHaOuKzSckPotIiIKxw+goSW8Tnr5iaSYkgM9iKM8f1XjyilOo?=
- =?us-ascii?Q?h4VVasgmNUO0b4OQMJV83qRoKDyBTiaU4UKdihRN6D/BLodGvqpwJT95AgAr?=
- =?us-ascii?Q?RL55nKx4Pnbxo5qJgbEvBL+0B9WBADNNI+3s04273wNsEOUtsimevK3utj1b?=
- =?us-ascii?Q?EiwZ+59gUg8egkYEuM7HMlc5cFLKlSx+1pWr5OfWBamydoXB+kNGDSkgjbMj?=
- =?us-ascii?Q?3G9nAm4hPNYcpWzkxXXxxuBNPTpI5+d362JWXSM5N9ivzBEEgfXXex4YT+wN?=
- =?us-ascii?Q?CAgAn6yzUNDgWTm//9ouNqcyO4iA7a3Osp82PrkNXJD7BQqxD5geUKJ8U21n?=
- =?us-ascii?Q?tiGR043L6yXlChx4MJBY3EifuaJEo87Alldf7ZUvnBfuPrdZW1RL9suvpMBf?=
- =?us-ascii?Q?e9zt2DzSAxx0YzZ89NWegxZ/B/NBWK/esgbp+z45avDbntf2tf4EJ7VKkuRS?=
- =?us-ascii?Q?9ZwNYG0QK66SI8ESrZiTvDoRoTRHwr2vePgeNu+9sDgw/k8QdBKp4p+VjfIA?=
- =?us-ascii?Q?NjGsiWduFT6JyZJSFgVxMX7vhHBJ9c9XaIIgKC5NWLEzSgMha49bnBfu19AN?=
- =?us-ascii?Q?GPEu9bHcczTHXSdzMctZzK2zlFKsPIXcUMXvDo1kSxe2TRWPcIYDF5pdjdkz?=
- =?us-ascii?Q?MXFttz6BpIjdUqN2aBQbnZQ/Jo5k6aUCXjA8ah8+dNhZVg8HboXX+VEMUBug?=
- =?us-ascii?Q?OuDvqHyufutfVf4Q5IwuMqLoFm21LBVpejZAcy6cHfLmK2GzYAXXUvWHJ/jN?=
- =?us-ascii?Q?ExeeDc6C2rlhAHWPxCHYu3OZMsDVQKeAt5cdduQtK+pNtCGLp3eVTFkXcfEZ?=
- =?us-ascii?Q?gPc8O0oT9vo9ZQ0CKHlxwYQAFGfZuOnZvQTG3dXALofFhiaL8tRSy8s87XIF?=
- =?us-ascii?Q?9nNuVSuXI7a24hThwnxQOaMIwRS4wtXoigtI9UW36NR+SAk12LjmRZiyKx4g?=
- =?us-ascii?Q?1EjDMqp0Y5GosN46zn5Giu93U+O0dW/lWTgqVML4LXTuk8H+?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6a708814-6218-4eb6-7a96-08defe04aa9b
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 15:15:13.1390
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Tx2iv5FnchPJU+skWya3ZA5gxwtlTxYbfW23s9Du7CEkCgfkBM9JYqhqzt+EpeKB8c5A/SPWAsq6fQgqntDHwg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7105
+References: <20260819143213.57401-1-jhs@mojatatu.com> <CANn89iLM1JT7xeANTFYOxaOKuz1qSmM4yugRDg4y=uFwP7bdEw@mail.gmail.com>
+ <CAM0EoMkUXGW0WNV4Y3rLUyJUDxFcmd7knYoF3ynHQWjUXHRTQQ@mail.gmail.com>
+In-Reply-To: <CAM0EoMkUXGW0WNV4Y3rLUyJUDxFcmd7knYoF3ynHQWjUXHRTQQ@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 19 Aug 2026 17:15:33 +0200
+X-Gm-Features: AcwNN1XA1mkL2GBkrHiZcLtt-FVG_mEYcasRRO-QpOxG4ex4lu5i4fvUlZsq8wc
+Message-ID: <CANn89iJSR0kaRWtg+tkC2dfaOnCsG0TEcS=wS6oPOFuY5f0hjA@mail.gmail.com>
+Subject: Re: [PATCH net v2] net/sched: bound qdisc_pkt_len to prevent qdisc
+ soft lockup
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, stable@vger.kernel.org, vega@nebusec.ai, 
+	Victor Nogueira <victor@mojatatu.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Aug 16, 2026 at 09:32:37PM -0400, Cen Zhang (Microsoft) wrote:
-> rt6_multipath_rebalance() calculates the total eligible nexthop weight
-> in one pass and programs upper bounds in a second pass. Since
-> RTM_NEWROUTE is RTNL-free, a concurrent
-> ignore_routes_with_linkdown update can make the first pass return zero
-> while the second sees an eligible nexthop, causing
-> rt6_upper_bound_set() to divide by zero.
-> 
-> UBSAN: division-overflow in net/ipv6/route.c:4845:17
-> Oops: divide error: 0000 [#1] SMP KASAN NOPTI
->   rt6_upper_bound_set() net/ipv6/route.c:4845
->   rt6_multipath_rebalance()
->   fib6_add_rt2node()
->   ip6_route_multipath_add()
->   inet6_rtm_newroute()
-> 
-> Skip upper-bound calculation when the first pass reports a zero total.
-> This respects the lock-free performance considerations here and solves
-> insecure scenarios.
-> 
-> Fixes: bd11ff421d36 ("ipv6: Get rid of RTNL for SIOCDELRT and RTM_DELROUTE.")
-> Reported-by: AutonomousCodeSecurity@microsoft.com
-> Reported-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
-> Reported-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
-> Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
+On Wed, Aug 19, 2026 at 4:58=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.com>=
+ wrote:
+>
+> On Wed, Aug 19, 2026 at 10:52=E2=80=AFAM Eric Dumazet <edumazet@google.co=
+m> wrote:
+> >
+> > On Wed, Aug 19, 2026 at 4:33=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.=
+com> wrote:
+> > >
+> > > qdisc_get_stab() accepts a user-supplied size table, and
+> > > __qdisc_calculate_pkt_len() amplifies qdisc_pkt_len() through the
+> > > overhead, the size-table data (u16), and size_log (up to
+> > > STAB_SIZE_LOG_MAX).  A crafted stab can therefore set qdisc_pkt_len()
+> > > to ~1 GiB for an ordinary skb.  Per-flow deficit schedulers such as
+> > > DRR and ETS replenish one quantum per loop iteration; with a tiny
+> > > quantum (1) they spin billions of times under the qdisc lock,
+> > > producing a soft lockup / RCU stall.
+> > >
+> > > Cap the final qdisc_pkt_len() to GSO_MAX_SIZE so the size-table
+> > > amplification cannot drive deficit schedulers into an unbounded loop.
+> > > A legitimate size table (e.g. qfq's overhead 999999999, which is
+> > > handled by dropping) is still accepted.
+> > >
+> > > Conditions to recreate the bug:
+> > > - CONFIG_NET_SCHED=3Dy, CONFIG_NET_SCH_DRR=3Dy (or CONFIG_NET_SCH_ETS=
+=3Dy).
+> > > - Attach a DRR (or ETS) root qdisc with a crafted TCA_STAB that
+> > >   amplifies qdisc_pkt_len to ~1 GiB (e.g. size_log=3D15, data=3D[3276=
+8]).
+> > > - Add a class with a tiny quantum of 1 and send one small packet; the
+> > >   deficit loop spins billions of times under the qdisc lock and trips
+> > >   the softlockup detector (panic with kernel.softlockup_panic=3D1).
+> > > - Reachable as root or from an unprivileged user in a fresh user+net
+> > >   namespace (unshare -Urn) with namespace-local CAP_NET_ADMIN.
+> > >
+> > > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> > > Reported-by: vega@nebusec.ai
+> > > Tested-by: Victor Nogueira <victor@mojatatu.com>
+> > > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> > > ---
+> > > v1 -> v2
+> > >
+> > > 1. Sigh. The v1 overhead cap broke the existing qfq tdc test 5993, ca=
+ught by
+> > >    running the whole tdc.sh instead of affected qdiscs reported repor=
+ted by
+> > >    poc. That test legitimately uses stab overhead 999999999 qfq and e=
+xpects
+> > >    the qdisc to be accepted (exit 0) with packets dropped.
+> > >
+> > > 2. Better Fix: cap the final qdisc_pkt_len() to GSO_MAX_SIZE(524280) =
+in
+> > >    __qdisc_calculate_pkt_len() per sashikos[1][2] suggestions
+> > >
+> > > 3. Given existence of tdc 5993 we dont need the tdc test created earl=
+ier
+> > >    since the essence of that test is covered in tdc 5993.
+> > >
+> > > [1] https://sashiko.dev/#/patchset/20260818101735.16655-1-jhs@mojatat=
+u.com
+> > > [2] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/2026081810173=
+5.16655-1-jhs@mojatatu.com
+> > > ---
+> > >  net/sched/sch_api.c | 7 +++++--
+> > >  1 file changed, 5 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+> > > index 65b35528d125..ad4f117ff55a 100644
+> > > --- a/net/sched/sch_api.c
+> > > +++ b/net/sched/sch_api.c
+> > > @@ -610,8 +610,11 @@ void __qdisc_calculate_pkt_len(struct sk_buff *s=
+kb,
+> > >
+> > >         pkt_len <<=3D stab->szopts.size_log;
+> > >  out:
+> > > -       if (unlikely(pkt_len < 1))
+> > > -               pkt_len =3D 1;
+> > > +       /* A size table can inflate qdisc_pkt_len() beyond any real p=
+acket
+> > > +        * (via overhead, the data table, or size_log); cap it so def=
+icit
+> > > +        * schedulers such as DRR/ETS terminate their refill loops.
+> > > +        */
+> > > +       pkt_len =3D clamp_t(int, pkt_len, 1, GSO_MAX_SIZE);
+> >
+> > Yeah, although it is a bit strange to mention GSO_MAX_SIZE in a functio=
+n which
+> > does not take care of GSO packets.
+>
+> well... there are many many references to gso under net/sched. What
+> dont you like about this specific things?
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+I just mentioned that __qdisc_calculate_pkt_len() never was updated to
+deal with GSO packets.
 
-FYI:
+It assumes packets with a single set of headers.
 
-"Patch authors are expected to proactively look into the AI-generated
-reviews and handle such feedback as any other kind of review: either
-debate it or address it. In both cases a reply on the mailing list is
-expected."
-
-https://docs.kernel.org/next/process/maintainer-netdev.html#review-timelines
-
-I went over the feedback from Sashiko [1]. Most of it is correct, but
-irrelevant.
-
-Changing the value of "ignore_routes_with_linkdown" on the fly never
-worked correctly and it is not interesting: It is expected that the user
-configures it during initialization, not after configuring routes.
-
-When this sysctl is changed, the kernel does not iterate over all the
-nexthop groups and rebalances them. For example, if we have two nexthops
-in a group, one is down and now we set "ignore_routes_with_linkdown" to
-1, the kernel can still pick the down nexthop until some event causes
-the group to be rebalanced.
-
-Also note that this only affects legacy nexthop groups. Nexthop objects
-do not make use of "ignore_routes_with_linkdown".
-
-[1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260817013237.2797-1-blbllhy%40gmail.com
+This is fine, I am sure nobody uses this stuff anymore.
