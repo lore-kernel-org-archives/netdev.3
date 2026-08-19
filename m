@@ -1,260 +1,134 @@
-Received: from mail-pl1-f226.google.com (mail-pl1-f226.google.com [209.85.214.226])
+Received: from mta1.migadu.com (out-61.mta1.migadu.com [95.215.58.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA8342F700
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 09:49:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD6837A839
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 09:51:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787132945; cv=none; b=FlU3INJnzpkOfwV4sTsTZj+qCA1lmW+c4PqCbz26IdHyoQgSioQYIiKRHiE+yOmle43tn4dRu7YRxpP02/JcI7bZhMPA1NlvRcY8tANgc/xAe6dFmqnPGzfHU7d5fpZC1dACohh64mf8MA5ysWh6vPvrvX/jWLTsp8P15JJoZSk=
+	t=1787133073; cv=none; b=OxLlAPYxd/5yLz7+E1OX1r8KA4ahxphJ4yS0Icr4BhM2xr7a1nii8MPl70efmV0Np1PovnupNS5q/qklDENf3rbKMyO9u+HpPJoFlLSYa7EYCV/oKCezu6XspLlohlEV9ENHsEV6Fs3GPBI8ipkGiyptrtGngiv07MrkuIQVYkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787132945; c=relaxed/simple;
-	bh=zSTPR64leNNmJvzEEWGqjGmBPuOzsbIriyaonrxDzrA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NdPPDdRCPc9PRiCKk1X/jsqxO1bPP7i+L8gDMaD1XVZzE2kVsCKyfqBflw4wiqMfnWClEQsfKYfNnoURT7oI1QaZM7BWRrQdCRWzr23GZ49KgHAWNKD4DD+iQiWV5KzBg20tVt3pw5y3XCpF2GckxDPHNw1G4rptGxA4Go1vrXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ElrNO/Is; arc=none smtp.client-ip=209.85.214.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1787133073; c=relaxed/simple;
+	bh=9qZzTEEAYNgTZaYyGLaq+9MynJ8VKyO3a4wiXxircrM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HI1ibo3LmrsLcEBWnu2t37nNqzhwLwFmnIr3yto67Q4GX5GH9EEygq2I7sbyN50LZJjm2bOQiTDrYTHR8XmV9aTajtRDQcVBnurIqnrp0hxeWprbUxHIh7DzYb+ywH6ENeGHhBl+qlWWZsbqBfidTV9SI5tebzWL6pxVTIM4rnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=pgjyAci0; arc=none smtp.client-ip=95.215.58.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ElrNO/Is"
-Received: by mail-pl1-f226.google.com with SMTP id d9443c01a7336-2cf6d65d8a7so9645195ad.0
-        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 02:49:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787132944; x=1787737744;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=i2Zmi6qnzPzQzMA+Mf4Axp84ze33jrgqSRs8+pYN/vw=;
-        b=OB26XrqkWEJq+MFwxB5Znp5eUM6W+mSSY4SriZUWmNmaxPlO/D1YosUSnFWiMkAXoc
-         v1i7WiKxip2uuQpjteh57e5utkdaBVL7IDe47yvsXqfUW6SdBfgzX/85JPm49M2A1kHF
-         H7719PF7+bdZ4KdxhyRs3rMZqxfQ3prPUvMjCT6x4Wu0vSDxC6XNxK1JueuG8bXLvikc
-         Sgi42oT9NGA1mEEkDx9kSEpcGPe+fGwrDpe5j5QwQuILB7dDnOqxnfs2tFeGbSaMwEAq
-         WwvUszYtPuLfroXwtuo0iPD6myA2LUqjpL0Qa5ygnseR0zaFxyaoQPiVuIMcC/TpMxUg
-         /1Yw==
-X-Forwarded-Encrypted: i=1; AHgh+RqiY1w9JiNEpkVn77tT7QfeMxqFn9ytA25cqDA5LVziEOO8u+UWyp9KOj5Q4LsvXcNF+CXJkRk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcHIngU+vjnN91IHNRJv3yW4vXtsOF3+NkIePhot2DG58KW1VF
-	UrDO33UcP2aTFYuxbdXlsfmo4/aE65iCvCW6kY15LGBt42QkvsL5XWxziqSdjliW8uAbImdmfZz
-	ZNQd112o+ZvoPbjNnAGZ0aHwhSYDCUECj7BXWKx7Q3LDvY7Xmm933v2tGLvR0PYtN0OkW+CeNEK
-	sCEutEiN5w/qZL+vApg1chfLM2cPHTNg6odp23/bLVn7aJ5sw3Z4k6Wkhnqy+0K5zwODcXRdq4R
-	IwcJ19NWSvGQg==
-X-Gm-Gg: AR+sD116xKeHpHOsv5ag+qDNXlgZpKCeVuE1k2QWO87Pdf0iQSScdoPCJ5liRl34ubu
-	13wbwjKyCRk/UJdQoMpqI8bLapqgWegIm37t6qW/xKSuH5jjzb1hs2VrLs87wCdZzORUoJm+I3H
-	VX8438IhLOIQ3pSwjUF+0UnQlka1e4Dh9EM2HXiaV6BS1do+vvEXbSunP4NqvbU6KY/mluUmC4M
-	CAJ0tarJMcG4Ux1eBud6X6AiMQ7B4CnjbEaVxXr6u27s2+z9dFKPLRPBmJPqH2UFxrb6Sq9fY9x
-	zwkjEAot8Q9MOLNQEODznsGw8cRoKI8SEtPtwRlanOWIBpZIvVOVNYCB0U8vdq4auZph/oFs254
-	HA7HNwGFVy52i1KSy/YMJT3CClkeyv4s+4GBKQkUqBUGIIJUc1BKGo9OfLOP+4+dXgJ6XDCwzWO
-	WqhED1RSzFL/t3oqga8Lr5AVkct5CWQcx+UEQ=
-X-Received: by 2002:a05:6a21:6d87:b0:3c3:bbe6:95c7 with SMTP id adf61e73a8af0-3cd01253cf7mr6542461637.17.1787132943678;
-        Wed, 19 Aug 2026 02:49:03 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-19.dlp.protect.broadcom.com. [144.49.247.19])
-        by smtp-relay.gmail.com with ESMTPS id 41be03b00d2f7-cc157d34bbesm145903a12.9.2026.08.19.02.49.03
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 19 Aug 2026 02:49:03 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-84e3d575d6eso1473037b3a.3
-        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 02:49:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1787132942; x=1787737742; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=i2Zmi6qnzPzQzMA+Mf4Axp84ze33jrgqSRs8+pYN/vw=;
-        b=ElrNO/IsPCA678r1n31M2JvpAbladmdxXNdlF1Ez/nd8/4/bJcAKWtgJKazr4Bz7hG
-         /Jpn11eyevZ8peASpnFJf5f85F34M8ynZ3K8vHia1pKzVqzuHeXuSvjBgO3sJI1ymaC4
-         vJ//21b+eVJ3INOObqWl9ecDvwcmBEHh490wE=
-X-Forwarded-Encrypted: i=1; AHgh+RpzxTfjoDw8nO9bRkYzSNmrv+kW7rJdO9LXrVkh2ss1ML4HYjXm7AYKNVqwANhZprExweb+lBw=@vger.kernel.org
-X-Received: by 2002:a05:6a00:9514:b0:848:6f5c:a327 with SMTP id d2e1a72fcca58-851d395a3b5mr5299295b3a.15.1787132941783;
-        Wed, 19 Aug 2026 02:49:01 -0700 (PDT)
-X-Received: by 2002:a05:6a00:9514:b0:848:6f5c:a327 with SMTP id
- d2e1a72fcca58-851d395a3b5mr5299221b3a.15.1787132941377; Wed, 19 Aug 2026
- 02:49:01 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="pgjyAci0"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=9qZzTEEAYNgTZaYyGLaq+9MynJ8VKyO3a4wiXxircrM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787133069; v=1; x=1787737869;
+ b=pgjyAci0jatN18UN3KzJ5QuZYkdu4J1gGNW3ZFJBq14RVsUajsSg2FFLhQrjCJHoinlKjBHK
+ wVrbbHxDSZeMoX/kNVGudMplRsGPXt+dcfTcdTCGBQpe9BvMKjXUauVmCxcV+QgnHJdzbsIgvD1
+ 3srWlwhamT/6cyOy289O+ctI=
+X-Envelope-To: netdev@vger.kernel.org
+Received: from fedora (203.175.12.242)
+	by smtp.migadu.com with ESMTPS id c2ee0f981de47df9;
+	Wed, 19 Aug 2026 09:51:09 +0000
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 19 Aug 2026 17:51:02 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
+Subject: Re: [PATCH net v3 2/2] bonding: fix u32 overflow in compute_gap()
+Message-ID: <aoV8hvRlyRrFQobA@fedora>
+References: <20260818-bond_overflow-v3-0-e05d4dbc2fd8@kylinos.cn>
+ <20260818-bond_overflow-v3-2-e05d4dbc2fd8@kylinos.cn>
+ <d75e0db1-e129-4a9f-a103-889827948de1@blackwall.org>
+ <80d704a8-aca6-44f8-8933-eb0cf14ecf3b@blackwall.org>
+ <bf56ea5d-a0d2-40f9-b8d5-73d8c54ca32b@blackwall.org>
+ <aoUP0sLeEhCPxukB@fedora>
+ <aoUQdublxcfZzqzE@fedora>
+ <1ebd9c8a-5b7e-4ebb-9c7d-5b2b2fe4a675@blackwall.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260818141556.64303-1-thwalsh@redhat.com>
-In-Reply-To: <20260818141556.64303-1-thwalsh@redhat.com>
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Date: Wed, 19 Aug 2026 15:18:49 +0530
-X-Gm-Features: AcwNN1Wvx7Tc_hzn9DH0cCeoWWpR2e3aQntPe3Wh1HJerToIUNF-RCiYdnRmnr8
-Message-ID: <CALs4sv1zb7OemFcKRceoO49F8yPSOdZWSkomvU=mGmReR74=BA@mail.gmail.com>
-Subject: Re: [PATCH net] bnxt_en: Gate TPH enablement behind
- BNXT_SUPPORTS_QUEUE_API check
-To: Thomas Walsh <thwalsh@redhat.com>
-Cc: Michael Chan <michael.chan@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Michal Schmidt <mschmidt@redhat.com>
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000002f45c206596350a6"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1ebd9c8a-5b7e-4ebb-9c7d-5b2b2fe4a675@blackwall.org>
 
---0000000000002f45c206596350a6
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Wed, Aug 19, 2026 at 11:35:29AM +0300, Nikolay Aleksandrov wrote:
+> hmm why don't you change the way the reset is done? *untested* but in theory
+> you could just record the values at a reset "moment" in reset unbalanced and
+> just use the delta, so it becomes a reader and there is only 1 writer left (tx).
+> Keep the counters only increasing (important), only record a snapshot at a reset
+> moment, count current total bytes (sum all per-cpu data), decrement the previous
+> total from it and use that as the "interval bytes" to div.
 
-On Tue, Aug 18, 2026 at 7:46=E2=80=AFPM Thomas Walsh <thwalsh@redhat.com> w=
-rote:
->
-> In bnxt_request_irq(), pcie_enable_tph() is called unconditionally to
-> enable PCIe TPH when setting up interrupts.
->
-> If the NIC hardware or firmware capabilities do not support queue ops,
-> attempting to enable TPH during bnxt_request_irq() is unnecessary.
->
-> As a result a flood of "RX queue restart failed: err=3D-95"  messages is
-> seen upon boot.
->
-> Gate the call to pcie_enable_tph() and setting of bp->tph_mode
-> behind BNXT_SUPPORTS_QUEUE_API(bp) to ensure TPH is only initialized
-> on devices capable of supporting queue ops. This prevents a guaranteed
-> -EOPNOTSUPP error from occurring due to NULL operations.
->
-> Fixes: 1410c7416dc3 ("eth: bnxt: always set the queue mgmt ops")
-> Suggested-by: Michal Schmidt <mschmidt@redhat.com>
-> Signed-off-by: Thomas Walsh <thwalsh@redhat.com>
-> ---
->  drivers/net/ethernet/broadcom/bnxt/bnxt.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethe=
-rnet/broadcom/bnxt/bnxt.c
-> index 1e4944f3e606..9a2bbfa38f76 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> @@ -11920,9 +11920,11 @@ static int bnxt_request_irq(struct bnxt *bp)
->  #endif
->
->         /* Enable TPH support as part of IRQ request */
-> -       rc =3D pcie_enable_tph(bp->pdev, PCI_TPH_ST_IV_MODE);
-> -       if (!rc)
-> -               bp->tph_mode =3D PCI_TPH_ST_IV_MODE;
-> +       if (BNXT_SUPPORTS_QUEUE_API(bp)) {
+Oh, you mean add another variable to track the total unbalanced load? e.g.
 
-IMO we should not gate pcie_enable_tph() on BNXT_SUPPORTS_QUEUE_API,
-since TPH's initial steering-tag placement is valid on its own and
-re-steering may never be needed in some cases?
-So in these cases it simply disables the feature.
+diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
+index 659a77323444..a65be54049d3 100644
+--- a/drivers/net/bonding/bond_alb.c
++++ b/drivers/net/bonding/bond_alb.c
+@@ -1546,10 +1546,10 @@ netdev_tx_t bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
+ 	return bond_do_alb_xmit(skb, bond, tx_slave);
+ }
+ 
+-static u64 reset_unbalanced_load(struct alb_bond_info *bond_info)
++static u64 reset_unbalanced_load(struct bonding *bond, struct alb_bond_info *bond_info)
+ {
+ 	struct unbalanced_load_stats *p;
+-	u64 tx_bytes, total_bytes = 0;
++	u64 delta, tx_bytes, total_bytes = 0;
+ 	unsigned int start;
+ 	int i;
+ 
+@@ -1560,14 +1560,15 @@ static u64 reset_unbalanced_load(struct alb_bond_info *bond_info)
+ 			tx_bytes = u64_stats_read(&p->tx_bytes);
+ 		} while (u64_stats_fetch_retry(&p->syncp, start));
+ 
+-		u64_stats_update_begin(&p->syncp);
+-		u64_stats_set(&p->tx_bytes, 0);
+-		u64_stats_update_end(&p->syncp);
+-
+ 		total_bytes += tx_bytes;
+ 	}
+ 
+-	return div_u64(total_bytes, BOND_TLB_REBALANCE_INTERVAL);
++	spin_lock_bh(&bond->mode_lock);
++	delta = total_bytes - bond_info->total_unbalanced;
++	bond_info->total_unbalanced = total_bytes;
++	spin_unlock_bh(&bond->mode_lock);
++
++	return div_u64(delta, BOND_TLB_REBALANCE_INTERVAL);
+ }
+ 
+ void bond_alb_monitor(struct work_struct *work)
+@@ -1612,7 +1613,7 @@ void bond_alb_monitor(struct work_struct *work)
+ 		bond_for_each_slave_rcu(bond, slave, iter) {
+ 			tlb_clear_slave(bond, slave, 1);
+ 			if (slave == rcu_access_pointer(bond->curr_active_slave))
+-				SLAVE_TLB_INFO(slave).load = reset_unbalanced_load(bond_info);
++				SLAVE_TLB_INFO(slave).load = reset_unbalanced_load(bond, bond_info);
+ 		}
+ 		atomic_set(&bond_info->tx_rebalance_counter, 0);
+ 	}
+diff --git a/include/net/bond_alb.h b/include/net/bond_alb.h
+index 51c083c76115..9d3877644286 100644
+--- a/include/net/bond_alb.h
++++ b/include/net/bond_alb.h
+@@ -131,6 +131,7 @@ struct unbalanced_load_stats {
+ struct alb_bond_info {
+ 	struct tlb_client_info	*tx_hashtbl; /* Dynamically allocated */
+ 	struct unbalanced_load_stats __percpu	*unbalanced_load;
++	u64			total_unbalanced;
+ 	atomic_t		tx_rebalance_counter;
+ 	int			lp_counter;
+ 	/* -------- rlb parameters -------- */
 
-The TPH code has changed recently. You will need to rebase so see if
-you can bail out from the newly introduced bnxt_tph_update() function
-if queue management is not supported.
-I feel that may be a better solution..
+This looks like an easy update :) Hope I didn't miss anything.
 
-> +               rc =3D pcie_enable_tph(bp->pdev, PCI_TPH_ST_IV_MODE);
-> +               if (!rc)
-> +                       bp->tph_mode =3D PCI_TPH_ST_IV_MODE;
-> +       }
->
->         for (i =3D 0, j =3D 0; i < bp->cp_nr_rings; i++) {
->                 int map_idx =3D bnxt_cp_num_to_irq_num(bp, i);
-> --
-> 2.55.0
->
-
---0000000000002f45c206596350a6
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-/HTPxpDrr4vzZL0yoc9XefyCbdiwfyFl99oBekp+1ZxXc5bZsVhRPVyEWFtCys66nqu5cU2GPT3a
-ySQEHOtIKyGGgzMVvitOzO2suQkoMvu/swsftfgCY/PObdlBZhv0BD97+WwR6CQJh/YEuDDEHYCy
-NDeiVtF3/jwT04bHB7lR9n+AiCSLr9wlgBHGdBFIOmT/XMX3K8fuMMGLq9PpGQEMvYa9QTkE9+zc
-MddiNNh1xtCTG0+kC7KIttdXTnffisXKsX44B8ECAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
-oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
-Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
-BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
-IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
-FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
-hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
-BB0wG4EZcGF2YW4uY2hlYmJpQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
-HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUxJ6fps/yOGneJRYDWUKPuLPk
-miYwDQYJKoZIhvcNAQELBQADggIBAI2j2qBMKYV8SLK1ysjOOS54Lpm3geezjBYrWor/BAKGP7kT
-QN61VWg3QlZqiX21KLNeBWzJH7r+zWiS8ykHApTnBlTjfNGF8ihZz7GkpBTa3xDW5rT/oLfyVQ5k
-Wr2OZ268FfZPyAgHYnrfhmojupPS4c7bT9fQyep3P0sAm6TQxmhLDh/HcsloIn7w1QywGRyesbRw
-CFkRbTnhhTS9Tz3pYs5kHbphHY5oF3HNdKgFPrfpF9ei6dL4LlwvQgNlRB6PhdUBL80CJ0UlY2Oz
-jIAKPusiSluFH+NvwqsI8VuId34ug+B5VOM2dWXR/jY0as0Va5Fpjpn1G+jG2pzr1FQu2OHR5GAh
-6Uw50Yh3H77mYK67fCzQVcHrl0qdOLSZVsz/T3qjRGjAZlIDyFRjewxLNunJl/TGtu1jk1ij7Uzh
-PtF4nfZaVnWJowp/gE+Hr21BXA1nj+wBINHA0eufDHd/Y0/MLK+++i3gPTermGBIfadXUj8NGCGe
-eIj4fd2b29HwMCvfX78QR4JQM9dkDoD1ZFClV17bxRPtxhwEU8DzzcGlLfKJhj8IxkLoww9hqNul
-Md+LwA5kUTLPBBl9irP7Rn3jfftdK1MgrNyomyZUZSI1pisbv0Zn/ru3KD3QZLE17esvHAqCfXAZ
-a2vE+o+ZbomB5XkihtQpb/DYrfjAMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
-ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
-MjAyMwIMClwVCDIzIfrgd31IMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCB77zeu
-JEViKixNmsXMK4hp6pNHMQHbuwyCzlZ52rH7gjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
-CSqGSIb3DQEJBTEPFw0yNjA4MTkwOTQ5MDJaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
-MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
-SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQC/LvtkKv54ux8eGRaf8p2VC+YnBo9fn9046wyITvZB
-xQxRwPFLzCrv8LhgwkLkLeSVsrho6KkJSfEfMfjy7uCkGF3wVWyXHUvVp+RSdl0h0S+61kV21RBr
-1pNzBh9YJMPRAIqcxslKV20RLwPEBNJ4qs8A574eNG1PN/m9y1fi2WLf50ZeWUkhjxX6TO65relP
-Jr2jInvYFn0O5Kdd5I3HOVe7jNUxdR+3YYYHimeuUiVvT/3UPI3QkZ5YXoEFKrNdSTmXA9StyUyk
-WGCWfWPMOpJH++AUTHhU2uGkU+7gX2dBm22Kt3tmBHOeuCKoPgb4KdD8Xlm6evZXV7tqEgSq
---0000000000002f45c206596350a6--
+Thanks
+Hangbin
