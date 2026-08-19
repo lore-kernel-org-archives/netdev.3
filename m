@@ -1,239 +1,180 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA8E3D646E
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 10:13:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C4D42B327
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 10:14:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787134390; cv=none; b=FK0Jvko7Ud5Xrab7307hZtkrZ8saFg/d8CTH+A9CihudIIk+R8i8N/KMmYi0/ME9nFcRy4socErAksVUYCk/MpGEZrqgv5jN/qL6QfoK8jnJ5VJezuDtqn/JrEcQLhmBYrBzCrJAZy7iA4icHVeFl8HPclwdUSMewDfeQ71pANE=
+	t=1787134453; cv=none; b=jjmeui7pRxWOM6OB4INpGXebSwZHpaY5IG9dbVLxxPomqcn3sUkh8SxYjt1sesOT/SCr2qRrH6fe+1857KgpUbvCQeJIVrbujUivEFLONolA5GL8ukNNdYsqCRnbEb+IAXFBlz1t5FAYaVB/RnbPOWSXnz+Vx/eZUW9Jj6BDCiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787134390; c=relaxed/simple;
-	bh=xi4wma0sGCDs5YiP6qtrDom+w38RdUquNyiDTlBxcto=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=REuabk2vMWSXWVM6dzdoA8xrzAimWLRQjpFWT0huEMMo5arY6Qkn7xvJlaBA9Fbf+1R+wVGIbOLubGgCbwabmP3KoEOffuWd33M3ZmvR6I4sTWJAYpzo9TWqS/ODARYDY2SXBuMhsDWpyYplyftr1H8hOjwNQmifcVfMnRmxetk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cioXR9cR; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787134453; c=relaxed/simple;
+	bh=mJ4TkWkCmsmvOVV58OS1T7y6PlXzGj1rJS8dfNbodo8=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=RW3tkrrAexD4hNCLaEB1cvi4xeqaePYOcODKExm/pQs/7tbAwV5uS0Ws6aMYs4njGKUlNTlb/9Z38FUMPRZjTLBp61AtwRrQDCTFbhGv4zCWTZJEVP5DjeAapIIfV8ag9p3c/a+mFtPyTriKiKJATPfQNIxMh17f187CiF6bTVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=dNkxR8E2; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cioXR9cR"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-38759bcd877so1156897a91.2
-        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 03:13:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="dNkxR8E2"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4953e04ef16so8732065e9.2
+        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 03:14:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787134388; x=1787739188; darn=vger.kernel.org;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xBSz3F9j/Epa660zRM520n+/TfZd4tjQ2wZhRda+wSY=;
-        b=cioXR9cRFkfN51QahILBw8PdcLJD+Il75udBdSZ80alzU9kX8ypKQ+YAJqWy6VIobU
-         hkpEL8FaEjUfpuB84S5bg/AGr+OGdMNJ/IWXC38WIL1tyvFKhUZXYeY+h+lDFzzDlbxj
-         WAUkCx1RHniup5+8JkE6jxijzObkgWUdLypZJldIFVsphPoVvTFfoQPUFcFXVJJr3bCM
-         HZg0F6BSUggy0X7RKVfT+JoWCd8PyhazGm/I+dpIATOsj4aB+ct0+j8W7hacWClaeoAO
-         5nA1MJEfkYO8uheI8RsXTaiW7hzuGslINOqEf6hMsppJBDCQWmuD2xyIudxg7gLSRfIn
-         qLsQ==
+        d=blackwall.org; s=google; t=1787134450; x=1787739250; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:references:cc:to
+         :from:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=UAK1rtPDpHr45I7pYyTZ7WdNt1ScKed4iT4J+fZ9Gyg=;
+        b=dNkxR8E2lCV+ovzSTiP0UNBiOmov909t9fmmh9m6M9pBMiQpi8T73vWQittlmGxwWv
+         ts8XlYRMI8MucqDv5FUPL1Lghx14DvDYkkcARap7mC1e7MkHDydJLrGtS4NJDBBzaZCg
+         ETWuNjdwdD1zV7nEk6FynCmymgJUV12Ck1/uUSvjWkDTyNJ7+5C9xi1gVtw8SoqYmAVu
+         ZpIli+bXuNDzGCZNXcqCtb6zN6dcyiYAkK7CyNn7GUtodVr2tKiXxv5gmnCYzqJ0L0IG
+         RA6feuCWjchY7c2eEXppAZRKFVs/iIY+/EgmepEAF/IFPgms77X7mEA/29djkdEHMZna
+         FV2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787134388; x=1787739188;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1787134450; x=1787739250;
+        h=content-transfer-encoding:content-type:in-reply-to:references:cc:to
+         :from:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=xBSz3F9j/Epa660zRM520n+/TfZd4tjQ2wZhRda+wSY=;
-        b=bCTgy1ORuD0NqemrtjurUv4UUEr2JwL4KH8hSHRl/TOd0cGwOKCeSJ1ftHXtY99FdG
-         a91GYK7H119rW/4zKXM5dt6LCpclnPRy0XbtumqyhJj5qH3IMIuKggeYlJFJCthhIjBC
-         2en4DQyON6NSnM2mgaAn2Cr6qQHwObsxe4w8mW7mzSIs9glZ4d3cOEfrmUrnk4ZuVPfI
-         1gNtfaZ7HyvwAnIq+JJ7FfEZpBV70WojFklTy0a0PdfMBXSXaN3YsFVNI1ET4p6OC/Qs
-         yrgJbkZCEupeS2fO6C9i5xwmAhhfFPGIgbTmEd7mpm6dodXB7OORW5QJzskxVZam+JY5
-         yR5g==
-X-Forwarded-Encrypted: i=1; AHgh+RoD7t2PCwXdxkz9bnZPkCWJsmrGpfwu5pQA3JjjYXUPXCE6UMxS5mrQpC0Wg5ziyKqXwGg3N+I=@vger.kernel.org
-X-Gm-Message-State: AFuF++mR0Ls6dldOhHcQWYMIT2FkEY2tSkoj/j0h7hmJI1k4DQMud4ch
-	ap5ABaQULXLTukCUVQxjB3QwBYu2ZE0aRwn/epT8BdbOzL4HtRTsQ3TPjwRqfw==
-X-Gm-Gg: AR+sD11xdGhUDuXfT27lAOGIYQkEd2sItW/ybCgM58ghR/WGhupO8nixcGoAADn2QHD
-	hEbSNwWpOi2haE/EbbkxcgLzuVycux1pTHZnpDGgBwaMwjI0c6BA8sWLdwJMOVy6iQtntxVffDc
-	/JEwmiShtyUSf8TYQ5xiI/QeKIIQT7pv7HldlvDjHUFWRvAvSO2OS+0htWKS5q02IjXB1Uox4/X
-	bwO7DU/4Kcg6wJhFLM0iXwz1585UAniF2F+4DjC4x5J67kEOXPepyEe8FQ+sYz0oLQSGUZ7X84U
-	/ru0qWWdpo3102xlYp18xbwU+Y/VLLzWowzL+7EgtlqKEH8cXVxgTjJbhGtFloLfsa2Nbir9+pv
-	CEq9ZBBRr5tvNGXdmLWzqIfXL2kcvf2ev6HhYpIytTdiKVhAM7UMwEa0PdIzjVYHsoaHUuXvNeB
-	XX9581L8hfcC8fWDWulncKmIVKw5o4LgGycldoqTMvoeI1bmTg3TP0GImBRVoelVbm7p76FvvbV
-	/+LoHOI
-X-Received: by 2002:a17:90b:2b8e:b0:38e:75f3:ad4d with SMTP id 98e67ed59e1d1-39580f03c97mr6855304a91.7.1787134387862;
-        Wed, 19 Aug 2026 03:13:07 -0700 (PDT)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3957fb7cc17sm2480629a91.9.2026.08.19.03.13.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2026 03:13:06 -0700 (PDT)
-Date: Wed, 19 Aug 2026 19:13:02 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: matttbe@kernel.org, martineau@kernel.org, geliang@kernel.org,
-	pabeni@redhat.com
-Cc: mptcp@lists.linux.dev, netdev@vger.kernel.org, imv4bel@gmail.com
-Subject: [PATCH net] mptcp: fix use-after-free of the subflow context on the
- delegated list
-Message-ID: <aoWBrkNwebJe-koh@v4bel>
+        bh=UAK1rtPDpHr45I7pYyTZ7WdNt1ScKed4iT4J+fZ9Gyg=;
+        b=KHwHTv3msym36M/7HnB5QSR4jqL2EV1ZBcpmqWrXbMY2nerG/4KrowFtfUFTR3wL7T
+         9bnbvaFIDJ+wgxFoXQ1YDjet1MCpwyck3NwdnujTVa6zxqMJ//AwWZ2yZyAadDgryylE
+         vsM1uZigFMKqM4d6WENgjfrV8tINUf3wb1c08rTJupr6tRF5lkuRx0patQ1it1MaTsU5
+         lv3TN4tVgx+TNjz/TzEkQYBm77Qin+Zkp2J0eaVfSLrOSoqqJ8zs6xz8PNm+gadaaVli
+         A+CLMhv0DpbGz/VNt5CW2QAbXR6Yr82KwnVQ+Espwdc2qOvOb1lgt6AL6kVd29joglqJ
+         6yxw==
+X-Forwarded-Encrypted: i=1; AHgh+Ro/AQz9KRJdluX7EwyQAdNlOnxclpOKctt+oZU5c5RsFKvJOUeMNwoW2w8EC1rv1aORN6nUJVI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXHcgHL15CwAXEGWAjA7qqH+/X4DrYwcNb1Pv902B9AytT4lLa
+	TFsjgNdSXitzVBJjC5RC6PC9N9HYn2q7d6n8GahdP78m9OOcLM0rLtDq1t4DXBP7CJQ=
+X-Gm-Gg: AR+sD13JQUgtQwhnRDiAYOrsYLU8qT9htcd14h1ytp0lyoltR57cGt3hgTeNvVg/8j/
+	nXiYgOeC0WUBSpwlnu2otyspitSjo69WundZTkyUti+2XLoQdNjGAle7zBoA302T4bM9ijYzSr5
+	YDEYleZoVTg+FV6EdgIZmFn1mh55b/YNjzlYxdrez4hSjNz5Iq0l/zBu5kB2llgPwQ7d+eI4ZPq
+	l8Q/5Nfgud/jTMfrfGV4UYthxXE4h75DzPxL6TOFZtWyV32ABUD7UAQdyS0FNipHNLHo86ucLu/
+	16/Zf9vvz+5/470mBdCwYBhDvFqXiPotE2kw4DlljwXErzQ4JTwyrFsWC+M7HFGn+eV7UYzBJJB
+	MA2j39UFB0mtWUMALE+/OS19lwaIXp71XQTP++EH7lsIsh/tOIBb1ZY+mwxXlwkazeU3e4K0EaR
+	TyXi6ysWfrIvdS4wqCZTVooHONjqDxXGScobiWWMdEJMVpPjLt+XRp1Nk8g+nAnsJ75eATBB7xv
+	pE/Ojxwcyyd9omudTc=
+X-Received: by 2002:a05:600c:34ca:b0:499:858e:de42 with SMTP id 5b1f17b1804b1-499aa172300mr70859005e9.6.1787134450214;
+        Wed, 19 Aug 2026 03:14:10 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499aa0dd620sm46012225e9.13.2026.08.19.03.14.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Aug 2026 03:14:09 -0700 (PDT)
+Message-ID: <cce1b5dc-5f2d-4065-b171-e35e083d169d@blackwall.org>
+Date: Wed, 19 Aug 2026 13:14:08 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 2/2] bonding: fix u32 overflow in compute_gap()
+Content-Language: en-US, bg
+From: Nikolay Aleksandrov <razor@blackwall.org>
+To: Hangbin Liu <hangbin.liu@linux.dev>
+Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
+References: <20260818-bond_overflow-v3-0-e05d4dbc2fd8@kylinos.cn>
+ <20260818-bond_overflow-v3-2-e05d4dbc2fd8@kylinos.cn>
+ <d75e0db1-e129-4a9f-a103-889827948de1@blackwall.org>
+ <80d704a8-aca6-44f8-8933-eb0cf14ecf3b@blackwall.org>
+ <bf56ea5d-a0d2-40f9-b8d5-73d8c54ca32b@blackwall.org>
+ <aoUP0sLeEhCPxukB@fedora> <aoUQdublxcfZzqzE@fedora>
+ <1ebd9c8a-5b7e-4ebb-9c7d-5b2b2fe4a675@blackwall.org>
+ <aoV8hvRlyRrFQobA@fedora>
+ <c89c5035-8c53-4104-9ca6-cbeff864c01a@blackwall.org>
+In-Reply-To: <c89c5035-8c53-4104-9ca6-cbeff864c01a@blackwall.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-mptcp_subflow_delegate() links the subflow context into a per-CPU napi
-list and takes a reference on the subflow socket. The context is a
-separate allocation, reached through icsk_ulp_data, and the list holds
-no reference to it.
+On 19/08/2026 13:02, Nikolay Aleksandrov wrote:
+> On 19/08/2026 12:51, Hangbin Liu wrote:
+>> On Wed, Aug 19, 2026 at 11:35:29AM +0300, Nikolay Aleksandrov wrote:
+>>> hmm why don't you change the way the reset is done? *untested* but in theory
+>>> you could just record the values at a reset "moment" in reset unbalanced and
+>>> just use the delta, so it becomes a reader and there is only 1 writer left (tx).
+>>> Keep the counters only increasing (important), only record a snapshot at a reset
+>>> moment, count current total bytes (sum all per-cpu data), decrement the previous
+>>> total from it and use that as the "interval bytes" to div.
+>>
+>> Oh, you mean add another variable to track the total unbalanced load? e.g.
+>>
+> 
+> right, but without any locking because...
+> 
 
-inet_csk_destroy_sock() runs sk_prot->destroy() regardless of the
-outstanding references. That path ends in tcp_cleanup_ulp(), which calls
-subflow_ulp_release(). subflow_ulp_release() frees the context with
-kfree_rcu() but does not remove it from the list. Once the grace period
-elapses and the context is actually freed, the next mptcp_napi_poll()
-dequeues that entry and mptcp_subflow_delegated_next() writes to the
-freed context with list_del_init(). That is the use-after-free.
+one more minor nit below
 
-The freeing path cannot dequeue the entry itself: the list is per-CPU
-and only the CPU that queued the subflow may touch it, as
-tcp_release_cb_override() already notes.
+>> diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
+>> index 659a77323444..a65be54049d3 100644
+>> --- a/drivers/net/bonding/bond_alb.c
+>> +++ b/drivers/net/bonding/bond_alb.c
+>> @@ -1546,10 +1546,10 @@ netdev_tx_t bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
+>>       return bond_do_alb_xmit(skb, bond, tx_slave);
+>>   }
+>> -static u64 reset_unbalanced_load(struct alb_bond_info *bond_info)
+>> +static u64 reset_unbalanced_load(struct bonding *bond, struct alb_bond_info *bond_info)
+>>   {
+>>       struct unbalanced_load_stats *p;
+>> -    u64 tx_bytes, total_bytes = 0;
+>> +    u64 delta, tx_bytes, total_bytes = 0;
+>>       unsigned int start;
+>>       int i;
+>> @@ -1560,14 +1560,15 @@ static u64 reset_unbalanced_load(struct alb_bond_info *bond_info)
+>>               tx_bytes = u64_stats_read(&p->tx_bytes);
+>>           } while (u64_stats_fetch_retry(&p->syncp, start));
+>> -        u64_stats_update_begin(&p->syncp);
+>> -        u64_stats_set(&p->tx_bytes, 0);
+>> -        u64_stats_update_end(&p->syncp);
+>> -
+>>           total_bytes += tx_bytes;
+>>       }
+>> -    return div_u64(total_bytes, BOND_TLB_REBALANCE_INTERVAL);
+>> +    spin_lock_bh(&bond->mode_lock);
+>> +    delta = total_bytes - bond_info->total_unbalanced;
+>> +    bond_info->total_unbalanced = total_bytes;
+>> +    spin_unlock_bh(&bond->mode_lock);
+>> +
+> 
+> ... there should be only 1 alb monitor running, no need to lock to keep it up-to-date
+>      also this is its only user, so remove the spinlock
+> 
+>> +    return div_u64(delta, BOND_TLB_REBALANCE_INTERVAL);
+>>   }
+>>   void bond_alb_monitor(struct work_struct *work)
+>> @@ -1612,7 +1613,7 @@ void bond_alb_monitor(struct work_struct *work)
+>>           bond_for_each_slave_rcu(bond, slave, iter) {
+>>               tlb_clear_slave(bond, slave, 1);
+>>               if (slave == rcu_access_pointer(bond->curr_active_slave))
+>> -                SLAVE_TLB_INFO(slave).load = reset_unbalanced_load(bond_info);
+>> +                SLAVE_TLB_INFO(slave).load = reset_unbalanced_load(bond, bond_info);
+>>           }
+>>           atomic_set(&bond_info->tx_rebalance_counter, 0);
+>>       }
+>> diff --git a/include/net/bond_alb.h b/include/net/bond_alb.h
+>> index 51c083c76115..9d3877644286 100644
+>> --- a/include/net/bond_alb.h
+>> +++ b/include/net/bond_alb.h
+>> @@ -131,6 +131,7 @@ struct unbalanced_load_stats {
+>>   struct alb_bond_info {
+>>       struct tlb_client_info    *tx_hashtbl; /* Dynamically allocated */
+>>       struct unbalanced_load_stats __percpu    *unbalanced_load;
+>> +    u64            total_unbalanced;
 
-Delay the free instead. Add MPTCP_DELEGATE_DEAD.
-mptcp_subflow_free_ctx() sets it and frees the context only if the
-subflow is not scheduled, while mptcp_napi_poll() frees it if the dead
-bit is set when it clears the scheduled bit. Either
-mptcp_subflow_free_ctx() gets there first, sees the scheduled bit and
-leaves the free to mptcp_napi_poll(), or mptcp_napi_poll() gets there
-first, does not see the dead bit and mptcp_subflow_free_ctx() does the
-free.
+I'd name this prev_total_unbalanced or something similar since it is
+the previous recorded value
 
-Also skip mptcp_subflow_process_delegated() once the dead bit is set.
-subflow_ulp_release() has already dropped the msk reference by then, so
-the pending actions must not run.
-
-Finally, move delegated_status out of struct_group(reset).
-mptcp_subflow_ctx_reset() clears that group on disconnect, and clearing
-the scheduled bit while the entry is still queued would let
-mptcp_subflow_free_ctx() free a context the napi list still points to.
-delegated_node is already outside the group.
-
-Fixes: b19bc2945b40 ("mptcp: implement delegated actions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
----
- net/mptcp/protocol.c | 13 ++++++++++---
- net/mptcp/protocol.h | 16 ++++++++++++++--
- net/mptcp/subflow.c  |  4 ++--
- 3 files changed, 26 insertions(+), 7 deletions(-)
-
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 7c8180d8d5eff6..8aa276dfe88639 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2641,7 +2641,7 @@ static void __mptcp_close_ssk(struct sock *sk, struct sock *ssk,
- 	 */
- 	if (!inet_csk(ssk)->icsk_ulp_ops) {
- 		WARN_ON_ONCE(!sock_flag(ssk, SOCK_DEAD));
--		kfree_rcu(subflow, rcu);
-+		mptcp_subflow_free_ctx(subflow);
- 	} else {
- 		/* otherwise tcp will dispose of the ssk and subflow ctx */
- 		__tcp_close(ssk, 0);
-@@ -4617,10 +4617,13 @@ static int mptcp_napi_poll(struct napi_struct *napi, int budget)
- 	delegated = container_of(napi, struct mptcp_delegated_action, napi);
- 	while ((subflow = mptcp_subflow_delegated_next(delegated)) != NULL) {
- 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
-+		long status;
- 
- 		bh_lock_sock_nested(ssk);
- 		if (!sock_owned_by_user(ssk)) {
--			mptcp_subflow_process_delegated(ssk, xchg(&subflow->delegated_status, 0));
-+			status = xchg(&subflow->delegated_status, 0);
-+			if (!(status & BIT(MPTCP_DELEGATE_DEAD)))
-+				mptcp_subflow_process_delegated(ssk, status);
- 		} else {
- 			/* tcp_release_cb_override already processed
- 			 * the action or will do at next release_sock().
-@@ -4628,11 +4631,15 @@ static int mptcp_napi_poll(struct napi_struct *napi, int budget)
- 			 * CPU that scheduled it.
- 			 */
- 			smp_wmb();
--			clear_bit(MPTCP_DELEGATE_SCHEDULED, &subflow->delegated_status);
-+			status = set_mask_bits(&subflow->delegated_status,
-+					       BIT(MPTCP_DELEGATE_SCHEDULED), 0);
- 		}
- 		bh_unlock_sock(ssk);
- 		sock_put(ssk);
- 
-+		if (status & BIT(MPTCP_DELEGATE_DEAD))
-+			kfree_rcu(subflow, rcu);
-+
- 		if (++work_done == budget)
- 			return budget;
- 	}
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index 1b80f2d6ec5a23..df9d0bf127febd 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -538,8 +538,10 @@ DECLARE_PER_CPU(struct mptcp_delegated_action, mptcp_delegated_actions);
- #define MPTCP_DELEGATE_SEND		1
- #define MPTCP_DELEGATE_ACK		2
- #define MPTCP_DELEGATE_SNDBUF		3
-+#define MPTCP_DELEGATE_DEAD		4
- 
--#define MPTCP_DELEGATE_ACTIONS_MASK	(~BIT(MPTCP_DELEGATE_SCHEDULED))
-+#define MPTCP_DELEGATE_ACTIONS_MASK	(~(BIT(MPTCP_DELEGATE_SCHEDULED) | \
-+					   BIT(MPTCP_DELEGATE_DEAD)))
- /* MPTCP subflow context */
- struct mptcp_subflow_context {
- 	struct	list_head node;/* conn_list of subflows */
-@@ -608,11 +610,11 @@ struct mptcp_subflow_context {
- 
- 	u32	subflow_id;
- 
--	long	delegated_status;
- 	unsigned long	fail_tout;
- 
- 	);
- 
-+	long	delegated_status;
- 	struct	list_head delegated_node;   /* link into delegated_action, protected by local BH */
- 
- 	u32	setsockopt_seq;
-@@ -788,6 +790,16 @@ mptcp_subflow_delegated_next(struct mptcp_delegated_action *delegated)
- 	return ret;
- }
- 
-+static inline void mptcp_subflow_free_ctx(struct mptcp_subflow_context *subflow)
-+{
-+	long old = set_mask_bits(&subflow->delegated_status, 0,
-+				 BIT(MPTCP_DELEGATE_DEAD));
-+
-+	/* a scheduled subflow is owned by mptcp_napi_poll(), which will free it */
-+	if (!(old & BIT(MPTCP_DELEGATE_SCHEDULED)))
-+		kfree_rcu(subflow, rcu);
-+}
-+
- void __mptcp_inherit_memcg(struct sock *sk, struct sock *ssk, gfp_t gfp);
- void __mptcp_inherit_cgrp_data(struct sock *sk, struct sock *ssk);
- 
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index e1f20ff8fdb424..b118594ab1b9a8 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -786,7 +786,7 @@ void mptcp_subflow_drop_ctx(struct sock *ssk)
- 			sock_put(ctx->conn);
- 	}
- 
--	kfree_rcu(ctx, rcu);
-+	mptcp_subflow_free_ctx(ctx);
- }
- 
- void __mptcp_subflow_fully_established(struct mptcp_sock *msk,
-@@ -2024,7 +2024,7 @@ static void subflow_ulp_release(struct sock *ssk)
- 
- 	mptcp_subflow_ops_undo_override(ssk);
- 	if (release)
--		kfree_rcu(ctx, rcu);
-+		mptcp_subflow_free_ctx(ctx);
- }
- 
- static void subflow_ulp_clone(const struct request_sock *req,
--- 
-2.43.0
+>>       atomic_t        tx_rebalance_counter;
+>>       int            lp_counter;
+>>       /* -------- rlb parameters -------- */
+>>
+>> This looks like an easy update :) Hope I didn't miss anything.
+>>
+>> Thanks
+>> Hangbin
+> 
 
