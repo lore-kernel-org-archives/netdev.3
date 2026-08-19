@@ -1,147 +1,134 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7284C3B6C0C;
-	Wed, 19 Aug 2026 04:39:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.75.44.102])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2761E492D
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 04:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.75.44.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787114359; cv=none; b=MWSernea1iEQcEVQsISDii3H1ByV6tVu95LCjaZFhQ1dN2IKuxBfy02DHwn9ASecSAIzK7Rrfy+M7Ux8wipN4zTN824tvMLoTapc3mUiHdHZB+ZSGOF07a7dsKK86Q/InOttGiR7YxjtzNYaHP8n0tX1YMMtDXIBz0tC/HCBpOQ=
+	t=1787114560; cv=none; b=RT9XJaFKUxwumytK9UTZ1ScI+fTSiRZgHbOJyZL4r2bz4bMLQ0fBlmrSAod6w5JtVGkU2eL3MCKz10FRGFv4WeLEO/XWcZdLyZ4F+6+nFX3VvB3TRVv6E40jFJr28ft5dZQRdEiFW8HuBKTXJoikPdnLohWHQOFQs1g5SF9lq98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787114359; c=relaxed/simple;
-	bh=ImZo4E2AMGP1sngbCZMQ/6T4jS1FT2tuuTfTB6vJNeg=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XlG77rNICXAR2QyY8PWJEvVxHvVJtjahoNIk/8fpaHwMdLk/6/1GqZZJi3F3qN+bIH7o4uVUIiZL3MzYLZ9PB9B/GLMir6QM3ZcubXhH1Nnd6TeQxPZEzIyly3DE4OmOZVAQwK0w1AH5Q1l5ltY2lpYdmBJDwes+k0N8w8juwiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=bdBYh1SK; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="bdBYh1SK"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67J2nngw2319836;
-	Tue, 18 Aug 2026 21:39:01 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=c5UEw0rLlRUu6csCqicHaCUZw
-	xYtcObTOODcNfNebnY=; b=bdBYh1SKYK8Eg/P4VrwS1S5HTeS3kgLa8NdLx0heJ
-	GGTgfXwHB3gLpy4qQS2XvNlBM/YZ4LuykO/tKy0b2pacyVP2V2k2FpU1AGioIyC5
-	8NpUewrAnABC7VBB19u+eLCA95vbvXY15CZIbcJ1zPEbNEWr7lzUj84TdhGqB9cm
-	x3tOgFsa6n//idy1sOTexL9m78EXwE4AExkPNHd4l5m/rjF0L6CE56tDBFmRqr1S
-	+tWvUVRUsKrPO7O0tQgI+aASnZRWLrh3qGRoYJfYKgg9gbhY1YPR+nfCvACgpzS+
-	dfkv/BbM7U5XcYnGN94YVy8oT20CycY8chWz1M8FkoRRg==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4g4yew98y0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Aug 2026 21:39:01 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 18 Aug 2026 21:39:00 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Tue, 18 Aug 2026 21:39:00 -0700
-Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with SMTP id 788133F7060;
-	Tue, 18 Aug 2026 21:38:56 -0700 (PDT)
-Date: Wed, 19 Aug 2026 10:08:55 +0530
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: "Jagielski, Jedrzej" <jedrzej.jagielski@intel.com>
-CC: "cjacob@marvell.com" <cjacob@marvell.com>,
-        "davem@davemloft.net"
-	<davem@davemloft.net>,
-        "hkelam@marvell.com" <hkelam@marvell.com>,
-        "jbrandeb@kernel.org" <jbrandeb@kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>,
-        "sgoutham@marvell.com" <sgoutham@marvell.com>,
-        "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-        "edumazet@google.com"
-	<edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        Naveen Mamindlapalli
-	<naveenm@marvell.com>
-Subject: Re: [PATCH net] octeontx2-af: poll for TX link credits before link
- mode change
-Message-ID: <aoUzX2qMMDmp2_fB@rkannoth-OptiPlex-7090>
-References: <20260818033652.2038116-1-rkannoth@marvell.com>
- <PH0PR11MB5902CB2559DB564EA0F2488EF0A62@PH0PR11MB5902.namprd11.prod.outlook.com>
+	s=arc-20240116; t=1787114560; c=relaxed/simple;
+	bh=YbqcUqYATTbmeYiGmE86WGRbsyInY3a+bgsNeJWENjs=;
+	h=Date:From:To:Cc:Subject:Content-Type:MIME-Version:Message-ID; b=bj1OKsosVajvuprL4JyfYKvENfYinvn1ZFnwe799brpFYc72lg1u0VU13UO0I7cdrVox+EGn2O9pIC7rxHvP+UQ9KreZ0JvLB7COIywfIIoIhZC2olp1WAX/GA7caW0kJlz9xcurdtkMxW84X2dBNaZ0vuIYg3vwoJzk+s7vJi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=13.75.44.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
+Received: from zju.edu.cn (unknown [10.190.161.59])
+	by mtasvr (Coremail) with SMTP id _____wC3EzwuNIVqcCinAA--.32801S3;
+	Wed, 19 Aug 2026 12:42:23 +0800 (CST)
+Received: from stitch$zju.edu.cn ( [10.190.161.59] ) by
+ ajax-webmail-mail-app1 (Coremail) ; Wed, 19 Aug 2026 12:42:22 +0800
+ (GMT+08:00)
+Date: Wed, 19 Aug 2026 12:42:22 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: "Jiacheng Xu" <stitch@zju.edu.cn>
+To: "Jakub Kicinski" <kuba@kernel.org>
+Cc: "Andrew Lunn" <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Eric Dumazet" <edumazet@google.com>,
+	"Paolo Abeni" <pabeni@redhat.com>, netdev@vger.kernel.org
+Subject: [PATCH] netdevsim: avoid NULL dereference after failed probe
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2025.3-cmXT6 build
+ 20260617(6f868824) Copyright (c) 2002-2026 www.mailtech.cn zju.edu.cn
+Content-Type: multipart/mixed; 
+	boundary="----=_Part_522932_239021203.1787114542883"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <PH0PR11MB5902CB2559DB564EA0F2488EF0A62@PH0PR11MB5902.namprd11.prod.outlook.com>
-X-Proofpoint-ORIG-GUID: TevRE_osi8zJhPpoC7GdP5wx3amaW49T
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODE5MDAzMiBTYWx0ZWRfX2yCpWeTGgR5z
- /MB5uQzYV4J5JG03/Rqre5nQ7QmVw4khkpDhdHG4Xihyi4ycziH8jNHXDEFyGnMaO0655bfhQpF
- bENXD39YtR6uhWiqFvAkbRLI+tzCm+Q=
-X-Authority-Analysis: v=2.4 cv=Je6Ma0KV c=1 sm=1 tr=0 ts=6a853365 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=EAYMVhzMl8SCOHhVQcBL:22 a=QyXUC8HyAAAA:8
- a=M5GUcnROAAAA:8 a=cUxEQTzyCnlu3EwXTy8A:9 a=CjuIK1q_8ugA:10
- a=OBjm3rFKGHvpk9ecZwUJ:22 a=ZFRsO2Wz9R1JO6LuwK9s:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE5MDAzMiBTYWx0ZWRfX5Eyxj2F6MwFI
- MegUMB4eB15DGp+pnhLWeovzGp7cihm7H1zFHa8KWdcfS0IUIq3xeHqtiP6CXj1qpdC7g1lUDVH
- bntygWelE9fDi0cRrL163Dl0xgy3niieKHaapp6icdowHv4EFf/odc8t+p5Ooq7r50L2gltmJh5
- bYjRS7UKz4/bl4zxgV3JIewE55P/pCBS50MtNgfbUOd2UUmVEGeDGYQa3KK1VeK9oLGuXiVPdc+
- AnRUP911vYfiKab2aD9nuRzt7PUuqdRKwa9n3BZswmh3+qRbIVKwwu6sV8aPoeE/Bv4kOvjAoEV
- bFLjZZMlUmhy7Llkkw+yEQ0RRk394idxhVFWM3BP17Zvf/NavSStcuOq2prAmhWcYyBaBBT/V5t
- dGUx0O2Crp/XB2ICo2OTm69cyPs4mcRX/x+Vr8lWrl/S97P9dXsvjgFZUFf4hjNSwtUz/567SHS
- WqGzSe99H9yFTUSGy4A==
-X-Proofpoint-GUID: TevRE_osi8zJhPpoC7GdP5wx3amaW49T
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-19_01,2026-08-18_01,2025-10-01_01
+Message-ID: <42315c2c.15f85.1a01853d723.Coremail.stitch@zju.edu.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:yy_KCgCXLKcuNIVqtDP8Aw--.50146W
+X-CM-SenderInfo: qtrxiiaqttimo62m3hxhgxhubq/1tbiAwcIC2qFDZYD2gACso
+X-CM-DELIVERINFO: =?B?WvLBfQXKKxbFmtjJiESix3B1w3tMoM3snk/k5SVzZVydjEqe1eefKHnLf95EnB4iem
+	egWxhuoIeBX7Cr40g+TT0DEyuyBbZJS8ZejEs+txjdMuRCr0wRovB2SnSBr21RZA3+KTfg
+	qdXSEvcVUCHU8HvOzbbYjNfyxSSso1ATu0uQL9IpleVxnDrSxVW0z94uZnQddg==
+X-Coremail-Antispam: 1Uk129KBj93XoW7Kw15XFWUuryxurW3Cw47KFX_yoW8tw4Dpa
+	98KFy5trykWw4xW3Z8ZF40yFyrWw18Jw47ury3A3s3urn2qryqqryYgFZIy3W0y3yxJFy3
+	Xr4DAFWkuFZ0yrcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUPCb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
+	xVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487M2AExVA0xI801c8C04v7Mc804VCY07
+	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+	JVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7V
+	AKI48JM4x0Y48IcxkI7VAKI48G6xCjnVAKz4kxM4xvF2IEb7IF0Fy264kE64k0F24lFcxC
+	0VAYjxAxZF0Ex2IqxwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s
+	026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_
+	JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20x
+	vEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE
+	14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa
+	7IU8rcTJUUUUU==
 
-On 2026-08-18 at 13:08:48, Jagielski, Jedrzej (jedrzej.jagielski@intel.com) wrote:
-> From: Ratheesh Kannoth <rkannoth@marvell.com>
-> Sent: Tuesday, August 18, 2026 5:37 AM
->
-> >+int rvu_nix_tl1_xoff_wait_for_link_credits(struct rvu *rvu, u16 pcifunc)
-> >+{
-> >+	int link, blkaddr, count = 1000;
->
-> count can be declared inside the loop as it's not used outside
-> same for regval
-historically the Linux kernel required declaring all variables at the beginning of a function or block.
+------=_Part_522932_239021203.1787114542883
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 
->
-> moreover defs instead of magic is always better choice
-AFAIK, this is not a magic number but a counter.
-Could you show me the Kernel coding guidilines which mandates this ?
+ZGV2aWNlX3JlZ2lzdGVyKCkgcmVwb3J0cyB3aGV0aGVyIGRldmljZSByZWdpc3RyYXRpb24gc3Vj
+Y2VlZGVkLCBub3QKd2hldGhlciB0aGUgbWF0Y2hpbmcgZHJpdmVyJ3MgcHJvYmUgc3VjY2VlZGVk
+LiBJZiBuc2ltX2Rydl9wcm9iZSgpCmZhaWxzLCB0aGUgZHJpdmVyIGNvcmUgbGVhdmVzIHRoZSBu
+c2ltX2J1c19kZXYgcmVnaXN0ZXJlZCB3aGlsZSB0aGUgcHJvYmUKZXJyb3IgcGF0aCBjbGVhcnMg
+aXRzIGRyaXZlciBkYXRhLgoKbmV3X2RldmljZV9zdG9yZSgpIHN1YnNlcXVlbnRseSBtYXJrcyB0
+aGUgbnNpbV9idXNfZGV2IGluaXRpYWxpemVkLiBBCndyaXRlIHRvIGl0cyBuZXdfcG9ydCBvciBk
+ZWxfcG9ydCBhdHRyaWJ1dGUgdGhlcmVmb3JlIHBhc3NlcyB0aGUgaW5pdApjaGVjayBhbmQgY2Fs
+bHMgbnNpbV9kcnZfcG9ydF9hZGQoKSBvciBuc2ltX2Rydl9wb3J0X2RlbCgpIHdpdGggbm8gdmFs
+aWQKbnNpbV9kZXYuIEJvdGggaGVscGVycyBwYXNzIHRoZSBOVUxMIGRyaXZlciBkYXRhIHRvIHBy
+aXZfdG9fZGV2bGluaygpLApsZWFkaW5nIHRvIGEgTlVMTCBwb2ludGVyIGRlcmVmZXJlbmNlLiBU
+aGUgdHJpZ2dlcmluZyBQb0MgaXMgYXR0YWNoZWQuCgpTZXJpYWxpemUgdGhlIGRyaXZlciBkYXRh
+IGNoZWNrIGFuZCB0aGUgcG9ydCBvcGVyYXRpb24gd2l0aCB0aGUgZGV2aWNlCmxvY2ssIGFuZCBy
+ZWplY3QgdGhlIG9wZXJhdGlvbiB3aXRoIC1FTk9ERVYgd2hlbiBubyBkcml2ZXIgZGF0YSBpcwpw
+cmVzZW50LiBUaGlzIGFsc28gcHJldmVudHMgZHJpdmVyIHVuYmluZCBmcm9tIGZyZWVpbmcgbnNp
+bV9kZXYgYmV0d2Vlbgp0aGUgY2hlY2sgYW5kIGl0cyB1c2UsIGFuZCBmb2xsb3dzIHRoZSBsb2Nr
+aW5nIHVzZWQgYnkgc3Jpb3ZfbnVtdmZzLgoKRml4ZXM6IDc5NGIyYzA1Y2ExYyAoIm5ldGRldnNp
+bTogZXh0ZW5kIGRldmljZSBhdHRycyB0byBzdXBwb3J0IHBvcnQgYWRkaXRpb24gYW5kIGRlbGV0
+aW9uIikKQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcKU2lnbmVkLW9mZi1ieTogSmlhY2hlbmcg
+WHUgPHN0aXRjaEB6anUuZWR1LmNuPgotLS0KZHJpdmVycy9uZXQvbmV0ZGV2c2ltL2J1cy5jIHwg
+MTcgKysrKysrKysrKysrKystLS0KMSBmaWxlIGNoYW5nZWQsIDE0IGluc2VydGlvbnMoKyksIDMg
+ZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvbmV0ZGV2c2ltL2J1cy5jIGIv
+ZHJpdmVycy9uZXQvbmV0ZGV2c2ltL2J1cy5jCmluZGV4IDQxNDgzZTM3MWYwNS4uMGFiNTEzMDZh
+ZDBhIDEwMDY0NAotLS0gYS9kcml2ZXJzL25ldC9uZXRkZXZzaW0vYnVzLmMKKysrIGIvZHJpdmVy
+cy9uZXQvbmV0ZGV2c2ltL2J1cy5jCkBAIC05Myw4ICs5MywxMyBAQCBuZXdfcG9ydF9zdG9yZShz
+dHJ1Y3QgZGV2aWNlICpkZXYsIHN0cnVjdCBkZXZpY2VfYXR0cmlidXRlICphdHRyLAogICAgICAg
+ICAgICAgICAgcmV0dXJuIC1FSU5WQUw7CiAgICAgICAgfQoKLSAgICAgICByZXQgPSBuc2ltX2Ry
+dl9wb3J0X2FkZChuc2ltX2J1c19kZXYsIE5TSU1fREVWX1BPUlRfVFlQRV9QRiwgcG9ydF9pbmRl
+eCwKLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBhZGRyX3NldCA/IGV0aF9hZGRyIDog
+TlVMTCk7CisgICAgICAgZGV2aWNlX2xvY2soZGV2KTsKKyAgICAgICBpZiAoIWRldl9nZXRfZHJ2
+ZGF0YShkZXYpKQorICAgICAgICAgICAgICAgcmV0ID0gLUVOT0RFVjsKKyAgICAgICBlbHNlCisg
+ICAgICAgICAgICAgICByZXQgPSBuc2ltX2Rydl9wb3J0X2FkZChuc2ltX2J1c19kZXYsIE5TSU1f
+REVWX1BPUlRfVFlQRV9QRiwKKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IHBvcnRfaW5kZXgsIGFkZHJfc2V0ID8gZXRoX2FkZHIgOiBOVUxMKTsKKyAgICAgICBkZXZpY2Vf
+dW5sb2NrKGRldik7CiAgICAgICAgcmV0dXJuIHJldCA/IHJldCA6IGNvdW50OwogfQoKQEAgLTEx
+NSw3ICsxMjAsMTMgQEAgZGVsX3BvcnRfc3RvcmUoc3RydWN0IGRldmljZSAqZGV2LCBzdHJ1Y3Qg
+ZGV2aWNlX2F0dHJpYnV0ZSAqYXR0ciwKICAgICAgICBpZiAocmV0KQogICAgICAgICAgICAgICAg
+cmV0dXJuIHJldDsKCi0gICAgICAgcmV0ID0gbnNpbV9kcnZfcG9ydF9kZWwobnNpbV9idXNfZGV2
+LCBOU0lNX0RFVl9QT1JUX1RZUEVfUEYsIHBvcnRfaW5kZXgpOworICAgICAgIGRldmljZV9sb2Nr
+KGRldik7CisgICAgICAgaWYgKCFkZXZfZ2V0X2RydmRhdGEoZGV2KSkKKyAgICAgICAgICAgICAg
+IHJldCA9IC1FTk9ERVY7CisgICAgICAgZWxzZQorICAgICAgICAgICAgICAgcmV0ID0gbnNpbV9k
+cnZfcG9ydF9kZWwobnNpbV9idXNfZGV2LCBOU0lNX0RFVl9QT1JUX1RZUEVfUEYsCisgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBwb3J0X2luZGV4KTsKKyAgICAgICBkZXZp
+Y2VfdW5sb2NrKGRldik7CiAgICAgICAgcmV0dXJuIHJldCA/IHJldCA6IGNvdW50OwogfQoKLS0K
+Mi4yNS4xCg==
+------=_Part_522932_239021203.1787114542883
+Content-Type: text/plain; name=repro.c
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="repro.c"
 
->
-> >+	u64 tx_credits, regval;
-> >+	struct nix_hw *nix_hw;
-> >+
-> >+	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NIX, pcifunc);
-> >+	if (blkaddr < 0)
-> >+		return NIX_AF_ERR_AF_LF_INVALID;
-> >+
-> >+	nix_hw =  get_nix_hw(rvu->hw, blkaddr);
-> >+	if (!nix_hw)
-> >+		return NIX_AF_ERR_INVALID_NIXBLK;
-> >+
-> >+	/* set TL1 sw_xoff */
-> >+	link = nix_get_tx_link(rvu, pcifunc);
-> >+	rvu_write64(rvu, blkaddr, NIX_AF_TL1X_SW_XOFF(link), 1);
-> >+
-> >+	/* wait for link credits to return */
-> >+	tx_credits = nix_hw->tx_credits[link];
-> >+	while (1) {
->
-> cant we use just for loop if this is simple cnt decrementing?
-Do we see any advantage ?
+I2luY2x1ZGUgPGZjbnRsLmg+CiNpbmNsdWRlIDxzdGRpby5oPgojaW5jbHVkZSA8c3RkbGliLmg+
+CiNpbmNsdWRlIDxzdHJpbmcuaD4KI2luY2x1ZGUgPHVuaXN0ZC5oPgoKc3RhdGljIHZvaWQgd3Jp
+dGVfYXR0cihjb25zdCBjaGFyICpwYXRoLCBjb25zdCBjaGFyICpidWYpCnsKICAgICAgICBpbnQg
+ZmQgPSBvcGVuKHBhdGgsIE9fV1JPTkxZIHwgT19DTE9FWEVDKTsKICAgICAgICBzc2l6ZV90IGxl
+bjsKCiAgICAgICAgaWYgKGZkIDwgMCkgewogICAgICAgICAgICAgICAgcGVycm9yKHBhdGgpOwog
+ICAgICAgICAgICAgICAgZXhpdChFWElUX0ZBSUxVUkUpOwogICAgICAgIH0KICAgICAgICBsZW4g
+PSB3cml0ZShmZCwgYnVmLCBzdHJsZW4oYnVmKSk7CiAgICAgICAgaWYgKGxlbiA8IDApCiAgICAg
+ICAgICAgICAgICBwZXJyb3IocGF0aCk7CiAgICAgICAgY2xvc2UoZmQpOwp9CgppbnQgbWFpbih2
+b2lkKQp7CiAgICAgICAgLyogT25lIHBvcnQgaXMgZW5vdWdoOyB0aGUgZXhjZXNzaXZlIHF1ZXVl
+IGNvdW50IG1ha2VzIHByb2JlIGZhaWwuICovCiAgICAgICAgd3JpdGVfYXR0cigiL3N5cy9idXMv
+bmV0ZGV2c2ltL25ld19kZXZpY2UiLAogICAgICAgICAgICAgICAgICAgIjEgMSAyMTQ3NDgzNjQ4
+Iik7CiAgICAgICAgd3JpdGVfYXR0cigiL3N5cy9idXMvbmV0ZGV2c2ltL2RldmljZXMvbmV0ZGV2
+c2ltMS9uZXdfcG9ydCIsCiAgICAgICAgICAgICAgICAgICAiMiIpOwogICAgICAgIHJldHVybiAw
+Owp9
+------=_Part_522932_239021203.1787114542883--
 
->
-> >+		regval = rvu_read64(rvu, blkaddr, NIX_AF_TX_LINKX_NORM_CREDIT(link));
-> >+		if (((regval >> 12) & 0xFFFFF) == tx_credits)
->
-> FIELD_GET(GENMASK(31, 12), regval) ?
-ACK
