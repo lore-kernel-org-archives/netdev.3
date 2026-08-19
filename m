@@ -1,410 +1,182 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1340E3B2AA;
-	Wed, 19 Aug 2026 02:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4463BBFBB;
+	Wed, 19 Aug 2026 02:48:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787107654; cv=none; b=onSERN7rDmJbHPySoTIYcbC0cz/5Tt4EA3q94vy7t9Mb7OmnYAji/Cj2f4vpSau9p3vtcSD0SR/+AvOu+1quRvhLlL2tDosk+SWwDHlZNV/1IaKXYgIyDvbPYs1efdQB+XnrMoPqkExlZjamAa8U8kc3hvShol00IXg7+Kvlums=
+	t=1787107715; cv=none; b=YUMRAowvEJMLujBpCB/FJCQAWndsJrOxGwgtfQN5fdTRc2H1B61NUBfi+V2vK9zN0icNTzPKfHC9IIDtHMFQM7u4AU6oiM5S2EyVoON1kzoU3mpNDstKGvMAJut5lTKPnihGcAvGQcWxCU2+irlmAHwJ+YJZOJ3Fi5tzXnuyud0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787107654; c=relaxed/simple;
-	bh=8kecuwMXa9MM3QsGlrEMss7jPKQK3xqIEl1HySkpef0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=daQkHzCH0Bu0iqfEzXi4XEZG7C3FZomDu/WU6GarREsqdTOU3PnNQXHqiArCHAl/zDWvI3pigmDjgylMf0JCQupR+CzpljvDn2wIEyl2CCkqDFcNauRR/92eCQoGYmGu35y46Tn9xRGVEjmKfNK25ewt+/quLzU2AxsLk4PYrAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J9qPTdaf; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1787107715; c=relaxed/simple;
+	bh=Gkqf6+TdDU4kKCwXQoTGyMTq/gF29FXKnIKAEHhTxx8=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=htWBaC6F1/XaGsG2+2F8Be3AiKBQU9cbI3/Lahe6msrNJaQMTv+h/2c+uDhnlGMhZYjjBj8wx/s/ibdS4+n9nAzBizN5MKlJWRRQu7eA1WsuHAH5BOYM8XG1z0byS1yTZoY82YlCh179F5ZzzbP84qxi2b5gyVhPUU74b0qWRow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=eZj0SN4j; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J9qPTdaf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787107652; x=1818643652;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=8kecuwMXa9MM3QsGlrEMss7jPKQK3xqIEl1HySkpef0=;
-  b=J9qPTdafUVNbfGLQtjx2pOaqO1Pp+2qgEAhfufiECc0FwBHGk82Kirm2
-   9jILVj2YwHjQMFNmmEHCKDere1PvzG5lblg2oabsGc/wTCdBdGtWcrrIH
-   yVi5Y4zAzt4/S+L3AN2cP/eh8QCktMtscdFF0ggpX4rXW6JiMSyHJAbIU
-   y4CFQDgHignKGCDrF/Yz2TXI8kM3zmShTgmoWyHAUxKPqCKa1bhvRfYq3
-   t8VvI1ED7drrFKF0v6OO+HbSygcd/smoLaNjO85eQPhH148CEHJfKuKPb
-   vNgdwxbR0KTBRWDSImAAlrbkv/tni/vR769zbZUJ83FfDZGQjZXDFr8aM
-   A==;
-X-CSE-ConnectionGUID: 39rQ/7rbRFeGU84NQmGlVw==
-X-CSE-MsgGUID: ySZo836RRK22gYESa92lUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11879"; a="87465302"
-X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
-   d="scan'208";a="87465302"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 19:47:32 -0700
-X-CSE-ConnectionGUID: qZ1AaX5rRjiL4axO0Mgy9Q==
-X-CSE-MsgGUID: WJir7BPdTtelSFVAEUeXrg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
-   d="scan'208";a="264974422"
-Received: from unknown (HELO brc05..) ([10.190.162.60])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2026 19:47:28 -0700
-From: Tushar Vyavahare <tushar.vyavahare@intel.com>
-To: netdev@vger.kernel.org,
-	magnus.karlsson@intel.com,
-	maciej.fijalkowski@intel.com,
-	stfomichev@gmail.com,
-	kernelxing@tencent.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	tirthendu.sarkar@intel.com,
-	tushar.vyavahare@intel.com,
-	andrii@kernel.org
-Cc: bpf@vger.kernel.org
-Subject: [PATCH net-next v3 4/4] selftests/xsk: add shared-UMEM callback framework and initial test cases
-Date: Wed, 19 Aug 2026 02:44:43 +0000
-Message-ID: <20260819024443.781764-5-tushar.vyavahare@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260819024443.781764-1-tushar.vyavahare@intel.com>
-References: <20260819024443.781764-1-tushar.vyavahare@intel.com>
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="eZj0SN4j"
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67INlvv51986725;
+	Tue, 18 Aug 2026 19:47:59 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=i
+	aIlQc49jlt3qkVvVgQJzuJ3WbZpTPn7ZJnIHzmU4Rg=; b=eZj0SN4juX6l28Lu9
+	/jlParonlm19+BcsfNjrik3QrVCbXgVrmCqCg+1NqVisbXNMEmVT84r2ljvzVjVG
+	SI/1YaM7jpp8BN5SNSjP2xzDh52I7GqmCpJnG4zeVoXJIocMVBNz34I/9pE5cqPN
+	/DAgNgQbIXr4Wz8ZtDbei8iYgCorlyMQIviqX2UQAoVbX30lJ6Ur8c7f825yHU84
+	yzTBlCwnekP30vMgPuFeODN+FLXG8acLf7/b6sw3twUBoMlw07uOWjb7hm+2Vax4
+	SJ25LNXo9DBo51k5WCaa9KlZmsnShbiKgSF9PW6HazCvDiZZEJIf2AyV/teu3vWU
+	+iQIQ==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4g4yew90d0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 18 Aug 2026 19:47:59 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 18 Aug 2026 19:47:58 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Tue, 18 Aug 2026 19:47:58 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with ESMTP id 8C4A73F707E;
+	Tue, 18 Aug 2026 19:47:54 -0700 (PDT)
+Date: Wed, 19 Aug 2026 08:17:53 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <andrew+netdev@lunn.ch>, <ast@kernel.org>,
+        <daniel@iogearbox.net>, <davem@davemloft.net>, <edumazet@google.com>,
+        <hawk@kernel.org>, <john.fastabend@gmail.com>, <pabeni@redhat.com>,
+        <sdf@fomichev.me>, <sgoutham@marvell.com>
+Subject: Re: [PATCH v9 net-next] octeontx2-pf: add mqprio bandwidth offload
+ for NIX TX schedulers
+Message-ID: <aoUZWdZ2fy8rJUkM@rkannoth-OptiPlex-7090>
+References: <20260817032747.1765883-1-rkannoth@marvell.com>
+ <20260817084212.5d46a501@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260817084212.5d46a501@kernel.org>
+X-Proofpoint-ORIG-GUID: 9yteiy8kdWiTkYmUbgy3Lt9LnjLWtCsy
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE5MDAxOCBTYWx0ZWRfX6von7AQ4WVMD
+ P6ugMIZpQ6H6jclrZgw5KGV7UChQaeVi5BQXa5Rn/Z1SkSzZs7trN6bFFzLq36VEsYqGKYLu/Uf
+ aZItra7959UA0ThJFN9dzoVR+1sIVLU=
+X-Authority-Analysis: v=2.4 cv=Je6Ma0KV c=1 sm=1 tr=0 ts=6a85195f cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=EAYMVhzMl8SCOHhVQcBL:22 a=VwQbUJbxAAAA:8
+ a=Cp4kMkC2EwGtsqKAzdoA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE5MDAxOCBTYWx0ZWRfX531VK0Bv/4Ag
+ Ybii+zUw6g0K0uBICPE9mYx7G23SeyDc+8cr8qJTZqdC7Yf/VTKGpNTiX4mqQyCPZjkzX4J1jOQ
+ Uk8RE2xlAEkN+AXEe5XQgdh3SdIR4V0z8UFA14tqanFFzl37D32qMu1SH1hsP+iRHiOpV4bnEQx
+ l3DI8pfStuSJtVmekXlmtnbmDbf6Kx8eEUlibFChAqI4Q2cQlDQBPz1qGh3/XIu/b3omustLaXB
+ zp4IuE88Q2df0jbwWmfc9bZRI2OAVH5ikr/mSGJXr8pVaHLhpLjb6JTq9dFQL8Dtx6Ud2q87jte
+ kZtJ8K14Z3YnQ31byy+uK5qlDAqg9+qwXXPSmdvmEKw1g2LYk/BLQHV2fL2IT1z4terVLZ9yMEy
+ Fp/Qbu9vIrkb62Y1iSD91b/T5G6ake/zKUNRcxbQ949fxuxzCFKHyi0cePx79IPOKEjNqt90Kyz
+ h5c9G7FQHAtllA+xqTQ==
+X-Proofpoint-GUID: 9yteiy8kdWiTkYmUbgy3Lt9LnjLWtCsy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-18_05,2026-08-18_01,2025-10-01_01
 
-Add runner callback infrastructure together with the first four
-shared-UMEM test cases so each commit in the series builds clean.
+On 2026-08-17 at 21:12:12, Jakub Kicinski (kuba@kernel.org) wrote:
+> On Mon, 17 Aug 2026 08:57:47 +0530 Ratheesh Kannoth wrote:
+> > Subject: [PATCH v9 net-next] octeontx2-pf: add mqprio bandwidth offload for NIX TX schedulers
+>
+> ## Form letter - net-next-closed
+>
+> The merge window for v7.3 has started, and therefore net-next is closed
+> for new drivers, features, code refactoring and optimizations.
+> We will only consider applying net-next patches which were posted
+> before the announcement:
+>
+> https://lore.kernel.org/20260816155953.072d73da@kernel.org
+>
+> Fixes are obviously welcome at any time. net-next patches may be sent
+> for review and discussion only with an RFC tag.
+>
+> Please repost when net-next reopens.
+>
+> See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
 
-In __test_spec_init(), shared_default derives shared_umem from TX/RX
-ifindex equality so resets follow the same baseline behavior used by
-xskxceiver startup. Add run_shared_umem_test() as the common runner that
-sets programs/maps, runs the sequence callback, and executes traffic.
-Declare shared_umem_seq_fn, pkt_stream_dims_fn, shared_umem_len_ctx and
-shared_umem_uneven_dist_ctx in test_xsk.h, alongside the existing test
-typedefs and packet stream definitions.
+Jakub,
 
-Add pkt_stream_replace_seq() to regenerate every per-socket stream from
-a pkt_stream_dims_fn callback that supplies the packet count and length
-for a slot. The generated streams are staged in temporary arrays and
-published into xsk_arr[] only after every allocation has succeeded, so a
-mid-loop failure frees the new streams and leaves the socket arrays
-untouched. The streams being replaced are the defaults owned by test_spec
-and aliased by every slot, so they are not freed on publication. The three
-sequences differ only in their dims callback: even/odd halving,
-alternating short/long packet sizes, and a 1:3 packet-volume split across
-two sockets.
+Will do. Thanks.
 
-Add SHARED_UMEM_4_SOCKETS for a 4-socket even/odd split,
-SHARED_UMEM_LENGTH_BASED for short-vs-long packet steering,
-SHARED_UMEM_UNEVEN_DIST for the 1:3 packet-volume distribution, and
-SHARED_UMEM_UNALIGNED for even/odd sequencing in unaligned mode. The
-distribution is asserted by the generic per-socket packet accounting in
-receive_pkts(), which requires nb_rx_pkts to match nb_valid_entries for
-every socket.
+Resolving these pre-existing and error-handling issues from sashiko (see below table)
+will require additional time and refactoring. I've added temporary TODO
+comments and debug messages to track them.
 
-Co-developed-by: Magnus Karlsson <magnus.karlsson@intel.com>
-Signed-off-by: Magnus Karlsson <magnus.karlsson@intel.com>
-Signed-off-by: Tushar Vyavahare <tushar.vyavahare@intel.com>
----
- .../selftests/bpf/prog_tests/test_xsk.c       | 199 ++++++++++++++++--
- .../selftests/bpf/prog_tests/test_xsk.h       |  22 ++
- 2 files changed, 206 insertions(+), 15 deletions(-)
+If acceptable, we would prefer to re-submit v9 and a follow up patchset to address
+these fully post-merge of this patch. Please let me know if this approach acceptable you.
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/test_xsk.c b/tools/testing/selftests/bpf/prog_tests/test_xsk.c
-index 814b8325493f..5d4eb47cbfee 100644
---- a/tools/testing/selftests/bpf/prog_tests/test_xsk.c
-+++ b/tools/testing/selftests/bpf/prog_tests/test_xsk.c
-@@ -224,6 +224,12 @@ int hw_ring_size_reset(struct ifobject *ifobj)
- static void __test_spec_init(struct test_spec *test, struct ifobject *ifobj_tx,
- 			     struct ifobject *ifobj_rx)
- {
-+	/*
-+	 * Keep the same default as xskxceiver startup: when TX and RX share the same netdev,
-+	 * shared UMEM is the baseline mode for this test harness. Individual tests can still
-+	 * override this as needed.
-+	 */
-+	bool shared_default = ifobj_tx->ifindex == ifobj_rx->ifindex;
- 	u32 i, j;
- 
- 	for (i = 0; i < MAX_INTERFACES; i++) {
-@@ -235,6 +241,7 @@ static void __test_spec_init(struct test_spec *test, struct ifobject *ifobj_tx,
- 		ifobj->use_fill_ring = true;
- 		ifobj->release_rx = true;
- 		ifobj->validation_func = NULL;
-+		ifobj->shared_umem = shared_default;
- 		ifobj->use_metadata = false;
- 
- 		if (i == 0) {
-@@ -593,28 +600,95 @@ static int pkt_stream_receive_half(struct test_spec *test)
- 	return 0;
- }
- 
--static int pkt_stream_even_odd_sequence(struct test_spec *test)
-+/*
-+ * Regenerate every per-socket stream, publishing into xsk_arr[]
-+ * only once all allocations have succeeded. @dims supplies the
-+ * per-socket packet count and length, derived from the stream
-+ * currently installed in the slot.
-+ *
-+ * The replaced streams are the defaults owned by test_spec, which
-+ * every slot aliases, so they must not be freed here.
-+ */
-+static int pkt_stream_replace_seq(struct test_spec *test, pkt_stream_dims_fn dims,
-+				  const void *ctx)
- {
--	struct pkt_stream *pkt_stream;
--	u32 i;
-+	struct pkt_stream *tx_streams[MAX_SOCKETS] = {};
-+	struct pkt_stream *rx_streams[MAX_SOCKETS] = {};
-+	u32 i, nb_pkts, pkt_len;
- 
- 	for (i = 0; i < test->nb_sockets; i++) {
--		pkt_stream = test->ifobj_tx->xsk_arr[i].pkt_stream;
--		pkt_stream = __pkt_stream_generate(pkt_stream->nb_pkts / 2,
--						   pkt_stream->pkts[0].len, i, 2);
--		if (!pkt_stream)
--			return -ENOMEM;
--		test->ifobj_tx->xsk_arr[i].pkt_stream = pkt_stream;
-+		dims(test->ifobj_tx->xsk_arr[i].pkt_stream, i, ctx, &nb_pkts, &pkt_len);
-+		tx_streams[i] = __pkt_stream_generate(nb_pkts, pkt_len, i, 2);
-+		if (!tx_streams[i])
-+			goto err;
- 
--		pkt_stream = test->ifobj_rx->xsk_arr[i].pkt_stream;
--		pkt_stream = __pkt_stream_generate(pkt_stream->nb_pkts / 2,
--						   pkt_stream->pkts[0].len, i, 2);
--		if (!pkt_stream)
--			return -ENOMEM;
--		test->ifobj_rx->xsk_arr[i].pkt_stream = pkt_stream;
-+		dims(test->ifobj_rx->xsk_arr[i].pkt_stream, i, ctx, &nb_pkts, &pkt_len);
-+		rx_streams[i] = __pkt_stream_generate(nb_pkts, pkt_len, i, 2);
-+		if (!rx_streams[i])
-+			goto err;
-+	}
-+
-+	for (i = 0; i < test->nb_sockets; i++) {
-+		test->ifobj_tx->xsk_arr[i].pkt_stream = tx_streams[i];
-+		test->ifobj_rx->xsk_arr[i].pkt_stream = rx_streams[i];
- 	}
- 
- 	return 0;
-+
-+err:
-+	for (i = 0; i < test->nb_sockets; i++) {
-+		if (tx_streams[i])
-+			pkt_stream_delete(tx_streams[i]);
-+		if (rx_streams[i])
-+			pkt_stream_delete(rx_streams[i]);
-+	}
-+
-+	return -ENOMEM;
-+}
-+
-+static void even_odd_dims(struct pkt_stream *orig, u32 sock_id, const void *ctx,
-+			  u32 *nb_pkts, u32 *pkt_len)
-+{
-+	*nb_pkts = orig->nb_pkts / 2;
-+	*pkt_len = orig->pkts[0].len;
-+}
-+
-+static void len_dims(struct pkt_stream *orig, u32 sock_id, const void *ctx,
-+		     u32 *nb_pkts, u32 *pkt_len)
-+{
-+	const struct shared_umem_len_ctx *cfg = ctx;
-+
-+	*nb_pkts = orig->nb_pkts / 2;
-+	*pkt_len = sock_id ? cfg->long_len : cfg->short_len;
-+}
-+
-+static void uneven_dist_dims(struct pkt_stream *orig, u32 sock_id, const void *ctx,
-+			     u32 *nb_pkts, u32 *pkt_len)
-+{
-+	const struct shared_umem_uneven_dist_ctx *cfg = ctx;
-+	u32 pkts_sock0 = cfg->total_pkts / 4;
-+
-+	*nb_pkts = sock_id ? cfg->total_pkts - pkts_sock0 : pkts_sock0;
-+	*pkt_len = cfg->pkt_len;
-+}
-+
-+static int pkt_stream_even_odd_sequence(struct test_spec *test)
-+{
-+	return pkt_stream_replace_seq(test, even_odd_dims, NULL);
-+}
-+
-+static int pkt_stream_len_seq(struct test_spec *test, const struct shared_umem_len_ctx *cfg)
-+{
-+	return pkt_stream_replace_seq(test, len_dims, cfg);
-+}
-+
-+static int pkt_stream_uneven_dist_seq(struct test_spec *test,
-+				      const struct shared_umem_uneven_dist_ctx *cfg)
-+{
-+	if (test->nb_sockets < 2 || cfg->total_pkts < 4)
-+		return -EINVAL;
-+
-+	return pkt_stream_replace_seq(test, uneven_dist_dims, cfg);
- }
- 
- static void release_even_odd_sequence(struct test_spec *test)
-@@ -2288,6 +2362,101 @@ int testapp_xdp_shared_umem(struct test_spec *test)
- 	return ret;
- }
- 
-+static int shared_umem_seq_even_odd(struct test_spec *test, const void *ctx)
-+{
-+	return pkt_stream_even_odd_sequence(test) ? TEST_FAILURE : TEST_PASS;
-+}
-+
-+static int shared_umem_seq_len(struct test_spec *test, const void *ctx)
-+{
-+	return pkt_stream_len_seq(test, ctx) ? TEST_FAILURE : TEST_PASS;
-+}
-+
-+static int shared_umem_seq_uneven_dist(struct test_spec *test, const void *ctx)
-+{
-+	return pkt_stream_uneven_dist_seq(test, ctx) ? TEST_FAILURE : TEST_PASS;
-+}
-+
-+static int run_shared_umem_test(struct test_spec *test, struct bpf_program *xdp_prog_rx,
-+				struct bpf_program *xdp_prog_tx, struct bpf_map *xskmap_rx,
-+				struct bpf_map *xskmap_tx, u32 nb_sockets,
-+				shared_umem_seq_fn seq_fn, const void *ctx)
-+{
-+	int ret;
-+
-+	if (nb_sockets > MAX_SOCKETS) {
-+		ksft_print_msg("ERROR: [%s] invalid socket count %u\n", __func__, nb_sockets);
-+		return TEST_FAILURE;
-+	}
-+
-+	test->total_steps = 1;
-+	test->nb_sockets = nb_sockets;
-+
-+	test_spec_set_xdp_prog(test, xdp_prog_rx, xdp_prog_tx, xskmap_rx, xskmap_tx);
-+
-+	ret = seq_fn(test, ctx);
-+	if (ret)
-+		return ret;
-+
-+	ret = testapp_validate_traffic(test);
-+
-+	release_even_odd_sequence(test);
-+
-+	return ret;
-+}
-+
-+int testapp_shared_umem_4_sockets(struct test_spec *test)
-+{
-+	struct xsk_xdp_progs *skel_rx = test->ifobj_rx->xdp_progs;
-+	struct xsk_xdp_progs *skel_tx = test->ifobj_tx->xdp_progs;
-+
-+	return run_shared_umem_test(test, skel_rx->progs.xsk_xdp_shared_umem,
-+				    skel_tx->progs.xsk_xdp_shared_umem, skel_rx->maps.xsk,
-+				    skel_tx->maps.xsk, 4, shared_umem_seq_even_odd, NULL);
-+}
-+
-+int testapp_shared_umem_length_based(struct test_spec *test)
-+{
-+	struct xsk_xdp_progs *skel_rx = test->ifobj_rx->xdp_progs;
-+	struct xsk_xdp_progs *skel_tx = test->ifobj_tx->xdp_progs;
-+	const struct shared_umem_len_ctx len_ctx = {
-+		.short_len = MIN_PKT_SIZE,
-+		.long_len = MIN_PKT_SIZE * 2,
-+	};
-+
-+	return run_shared_umem_test(test, skel_rx->progs.xsk_xdp_shared_umem_length_based,
-+				    skel_tx->progs.xsk_xdp_shared_umem_length_based,
-+				    skel_rx->maps.xsk, skel_tx->maps.xsk, 2, shared_umem_seq_len,
-+				    &len_ctx);
-+}
-+
-+int testapp_shared_umem_uneven_dist(struct test_spec *test)
-+{
-+	struct xsk_xdp_progs *skel_rx = test->ifobj_rx->xdp_progs;
-+	struct xsk_xdp_progs *skel_tx = test->ifobj_tx->xdp_progs;
-+	const struct shared_umem_uneven_dist_ctx uneven_dist_ctx = {
-+		.total_pkts = DEFAULT_PKT_CNT * 4,
-+		.pkt_len = MIN_PKT_SIZE,
-+	};
-+
-+	return run_shared_umem_test(test, skel_rx->progs.xsk_xdp_shared_umem,
-+				    skel_tx->progs.xsk_xdp_shared_umem, skel_rx->maps.xsk,
-+				    skel_tx->maps.xsk, 2, shared_umem_seq_uneven_dist,
-+				    &uneven_dist_ctx);
-+}
-+
-+int testapp_shared_umem_unaligned(struct test_spec *test)
-+{
-+	struct xsk_xdp_progs *skel_rx = test->ifobj_rx->xdp_progs;
-+	struct xsk_xdp_progs *skel_tx = test->ifobj_tx->xdp_progs;
-+
-+	test_spec_set_unaligned(test);
-+
-+	return run_shared_umem_test(test, skel_rx->progs.xsk_xdp_shared_umem,
-+				    skel_tx->progs.xsk_xdp_shared_umem, skel_rx->maps.xsk,
-+				    skel_tx->maps.xsk, 2, shared_umem_seq_even_odd, NULL);
-+}
-+
- int testapp_poll_txq_tmout(struct test_spec *test)
- {
- 	bool shared_umem = test->ifobj_tx->shared_umem;
-diff --git a/tools/testing/selftests/bpf/prog_tests/test_xsk.h b/tools/testing/selftests/bpf/prog_tests/test_xsk.h
-index 15d6fe2b9568..94c77574f4a8 100644
---- a/tools/testing/selftests/bpf/prog_tests/test_xsk.h
-+++ b/tools/testing/selftests/bpf/prog_tests/test_xsk.h
-@@ -77,9 +77,13 @@ enum test_mode {
- 
- struct ifobject;
- struct test_spec;
-+struct pkt_stream;
- typedef int (*validation_func_t)(struct ifobject *ifobj);
- typedef void *(*thread_func_t)(void *arg);
- typedef int (*test_func_t)(struct test_spec *test);
-+typedef int (*shared_umem_seq_fn)(struct test_spec *test, const void *ctx);
-+typedef void (*pkt_stream_dims_fn)(struct pkt_stream *orig, u32 sock_id, const void *ctx,
-+				   u32 *nb_pkts, u32 *pkt_len);
- 
- struct xsk_socket_info {
- 	struct xsk_ring_cons rx;
-@@ -182,6 +186,16 @@ struct pkt_stream {
- 	bool verbatim;
- };
- 
-+struct shared_umem_len_ctx {
-+	u32 short_len;
-+	u32 long_len;
-+};
-+
-+struct shared_umem_uneven_dist_ctx {
-+	u32 total_pkts;
-+	u32 pkt_len;
-+};
-+
- static inline bool pkt_continues(u32 options)
- {
- 	return options & XDP_PKT_CONTD;
-@@ -271,6 +285,10 @@ int testapp_xdp_metadata(struct test_spec *test);
- int testapp_xdp_metadata_mb(struct test_spec *test);
- int testapp_xdp_prog_cleanup(struct test_spec *test);
- int testapp_xdp_shared_umem(struct test_spec *test);
-+int testapp_shared_umem_4_sockets(struct test_spec *test);
-+int testapp_shared_umem_length_based(struct test_spec *test);
-+int testapp_shared_umem_uneven_dist(struct test_spec *test);
-+int testapp_shared_umem_unaligned(struct test_spec *test);
- 
- void *worker_testapp_validate_rx(void *arg);
- void *worker_testapp_validate_tx(void *arg);
-@@ -294,6 +312,10 @@ static const struct test_spec tests[] = {
- 	{.name = "XDP_PROG_CLEANUP", .test_func = testapp_xdp_prog_cleanup},
- 	{.name = "XDP_DROP_HALF", .test_func = testapp_xdp_drop},
- 	{.name = "XDP_SHARED_UMEM", .test_func = testapp_xdp_shared_umem},
-+	{.name = "SHARED_UMEM_4_SOCKETS", .test_func = testapp_shared_umem_4_sockets},
-+	{.name = "SHARED_UMEM_LENGTH_BASED", .test_func = testapp_shared_umem_length_based},
-+	{.name = "SHARED_UMEM_UNEVEN_DIST", .test_func = testapp_shared_umem_uneven_dist},
-+	{.name = "SHARED_UMEM_UNALIGNED", .test_func = testapp_shared_umem_unaligned},
- 	{.name = "XDP_METADATA_COPY", .test_func = testapp_xdp_metadata},
- 	{.name = "XDP_METADATA_COPY_MULTI_BUFF", .test_func = testapp_xdp_metadata_mb},
- 	{.name = "ALIGNED_INV_DESC_MULTI_BUFF", .test_func = testapp_aligned_inv_desc_mb},
--- 
-2.43.0
-
++-----+------------------+-----------------------+------------------------+------------------------+
+| #   | Location         | Issue                 | Impact                 | TODO / user warn/debug |
++-----+------------------+-----------------------+------------------------+------------------------+
+| 1   | otx2_common.c —  | Stale                 | MQPRIO transmit queues | TODO: yes (lines       |
+|     | otx2_txschq_conf | NIX_AF_TL4X_TOPOLOGY  | may be unexpectedly    | 790–797). User         |
+|     | ig()             | from HTB teardown is  | starved until topology | message: no — no       |
+|     |                  | not reset; MQPRIO     | is reprogrammed or HTB | netdev_warn/err/debug  |
+|     |                  | parents all MDQs      | teardown restores      | when stale TL4         |
+|     |                  | under TL4[0], which   | defaults.              | topology may starve    |
+|     |                  | may retain HTB        |                        | queues.                |
+|     |                  | RR_PRIO/PRIO_ANCHOR   |                        | {pre-existing issue)   |
+|     |                  | settings.             |                        |                        |
++-----+------------------+-----------------------+------------------------+------------------------+
+| 2   | otx2_pf.c —      | If otx2_mqprio_up()   | Subsequent ip link set | TODO: yes (lines       |
+|     | otx2_open() /    | fails during          | up or driver reset     | 1983–1987). User       |
+|     | otx2_mqprio_up() | ndo_open(), the       | retries                | message: partial —     |
+|     |                  | driver aborts open    | otx2_mqprio_up()       | otx2_mqprio_up() logs  |
+|     |                  | and tears down HW but | blindly; interface     | netdev_err per failed  |
+|     |                  | does not clear        | stays administratively | txq shaper restore; no |
+|     |                  | mqprio.rate_limit or  | down until the qdisc   | message that           |
+|     |                  | the rate caches.      | is removed and         | rate_limit/cache       |
+|     |                  |                       | reapplied.             | remain set or that the |
+|     |                  |                       |                        | interface may stay     |
+|     |                  |                       |                        | stuck down.            |
++-----+------------------+-----------------------+------------------------+------------------------+
+| 3   | otx2_tc.c — otx2 | otx2_mqprio_clear_sw( | Software reports       | TODO: yes (lines       |
+|     | _mqprio_down()   | ) runs                | offload inactive while | 1684–1688). User       |
+|     |                  | unconditionally even  | some queues retain     | message: yes —         |
+|     |                  | when otx2_nix_tm_clea | programmed CIR/PIR —   | netdev_err when        |
+|     |                  | r_queue_shaper()      | silent, persistent     | clear_queue_shaper     |
+|     |                  | fails partway through | rate limiting; later   | fails, noting some TX  |
+|     |                  | the MDQ batch.        | mqprio_up() may shape  | queues may retain      |
+|     |                  |                       | with wrong effective   | bandwidth limits.      |
+|     |                  |                       | rates.                 |                        |
++-----+------------------+-----------------------+------------------------+------------------------+
+| 4   | otx2_tc.c — otx2 | After ndo_open()      | Driver sends mailbox   | TODO: no (for this     |
+|     | _mqprio_restart_ | fails, otx2_free_hw_r | messages to clear      | path; separate TODO at |
+|     | netdev() error   | esources() frees TX   | shapers on freed       | line 1749 covers live  |
+|     | path             | schedulers but        | queues; AF rejects     | reprogramming only).   |
+|     |                  | otx2_mqprio_down()    | them, causing spurious | User message: partial  |
+|     |                  | still runs because    | firmware errors.       | — netdev_err on        |
+|     |                  | netif_running()       |                        | restart failure and on |
+|     |                  | remains true          |                        | otx2_mqprio_down()     |
+|     |                  | (dev_close skipped).  |                        | failure after restart; |
+|     |                  |                       |                        | no message about       |
+|     |                  |                       |                        | clearing shapers on    |
+|     |                  |                       |                        | already-freed          |
+|     |                  |                       |                        | scheduler queues.      |
++-----+------------------+-----------------------+------------------------+------------------------+
+| 5   | otx2_tc.c — otx2 | On failed tc qdisc    | Kernel keeps old qdisc | TODO: yes (lines       |
+|     | _setup_tc_mqprio | replace, otx2_mqprio_ | but driver uses new or | 1626–1629, 1900–1903,  |
+|     | () cleanup / otx | alloc_cache() already | zeroed config — state  | 2088–2095). User       |
+|     | 2_teardown_tc_mq | freed the old rate    | desynchronization and  | message: yes — otx2_mq |
+|     | prio()           | cache; cleanup sets   | incorrect bandwidth    | prio_replace_failed_ms |
+|     |                  | qopt->hw = 0 and      | shaping.               | g() netdev_err +       |
+|     |                  | skips HW/cache        |                        | NL_SET_ERR_MSG_MOD; ot |
+|     |                  | rollback. Similar     |                        | x2_mqprio_pre_graft_re |
+|     |                  | bypass when mqprio_re |                        | ject_msg() netdev_err  |
+|     |                  | place_pending is true |                        | on related reject      |
+|     |                  | in teardown.          |                        | path.                  |
++-----+------------------+-----------------------+------------------------+------------------------+
