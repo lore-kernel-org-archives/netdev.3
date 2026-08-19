@@ -1,33 +1,33 @@
-Received: from mta1.migadu.com (out-157.mta1.migadu.com [95.215.58.157])
+Received: from mta0.migadu.com (out-153.mta0.migadu.com [91.218.175.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 970EF3CB8F4
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 06:03:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D1D3C0626
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 06:03:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787119400; cv=none; b=frXPVf0UpJmyr6TYHojyIhNxQhBHUVD19iBtyqeq4IhOg/gHKeN5+XE6I1IEperaBvWVVaJen6W9IvFlTtTeoVU9YIYjv5oosPYRrLejU/q92XrKksaTscD3hw3rkjKKEstw9ohcI7MdLsXDftvLRYdzAqxKtCqKR1g/a10PGyY=
+	t=1787119408; cv=none; b=FOkhiMoq2zmfI/ztVY91XqpugAZwuEt7qhbW37dh5bc8QG/GgzFUdPsszwczvdQZE8tXVX49AMon/az+ROAFFRGdj/gHI7nhVHKiMvfKDaYYzKv2Z5GTjlYanFvZJYT02j5sSbxWwB/jzwjg2Nck6fc+gcP/u+e2jv07s24/s7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787119400; c=relaxed/simple;
-	bh=8U0HypTh2AmuAZYNlvE7/CoEHCSH4bhE6LIbKUpdVg8=;
+	s=arc-20240116; t=1787119408; c=relaxed/simple;
+	bh=EmhKUTWRS2gxMw60Au+ba04qxs4iAzdtgW66bOcnh+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f7x/xh4H9xH1uVtjO38WwhQXTzdoMrdzaMRcxTKHdRsl6WXx7q8IvmXfH+on35606ILQFNfS2U5FgadXfvfcOrDNOUwo4NRycQMRJTynSkLKhAJd9Uz0n7Tjr90w9M3RKlUmysPh3VREBctFyS+xuZs1jVEJGEejrHjpPJJJEkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Nxl9E3Lc; arc=none smtp.client-ip=95.215.58.157
+	 MIME-Version; b=DDs/iOVSLyTYi+k/6cOQg9mlhbCKc2aui5AWhhlJvGOTTzZEwC2vM1c766xEa4GjUsYRs+/EVT97xp4BUtwjQX9zHOmLBITRTenxoQo/HgXIfKRGhNulnQUgBWG7xWfxV9DMri4qRidOoaSvZQhp8dHVJbw9ymLUPhQWopkZ4r8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=wLO6x7Vc; arc=none smtp.client-ip=91.218.175.153
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Nxl9E3Lc"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="wLO6x7Vc"
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=8U0HypTh2AmuAZYNlvE7/CoEHCSH4bhE6LIbKUpdVg8=;
+DKIM-Signature: a=rsa-sha256; bh=EmhKUTWRS2gxMw60Au+ba04qxs4iAzdtgW66bOcnh+w=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787119396; v=1; x=1787724196;
- b=Nxl9E3LcB83clKNHSslcYZvvRoOFACAOLnQxp2mcysM6La/03qo2z4mMt0rK7/pGS+kVkDMM
- nBpxWzx9HJng2tPydWqCnP38KY++CHAU3wMHkMh872d7yOQFlkZ7CcHtw87JbbwRTgvNluGbObN
- qPNdLeNlW7s6cVanJPNt52TU=
+ t=1787119405; v=1; x=1787724205;
+ b=wLO6x7Vcf/O9jrCnEos0tuFWv+JQlMOwc9BmDvJf91HGpgGZo4H6S07UjaG6BRcqbpEAoI+u
+ UPY+2manfzwUEi0tZGvW6CiPbG5OrTTvHw8hiXFx092IkR1l5q1kyhcDnWthdUIPXIu0a2GdJgA
+ m32s+pKoUaGGL366py48x8G0=
 X-Envelope-To: netdev@vger.kernel.org
 Received: from localhost.localdomain (116.128.244.171)
-	by smtp.migadu.com with ESMTPS id 46c0bf875309408c;
-	Wed, 19 Aug 2026 06:03:16 +0000
+	by smtp.migadu.com with ESMTPS id 71db182c2f37b3bf;
+	Wed, 19 Aug 2026 06:03:25 +0000
 X-Migadu-Flow: FLOW_OUT
 From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
 To: netdev@vger.kernel.org,
@@ -42,9 +42,9 @@ Cc: hkallweit1@gmail.com,
 	chleroy@kernel.org,
 	linux-kernel@vger.kernel.org,
 	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-Subject: [PATCH net v3 4/5] net: phy: call driver remove when core initialization fails
-Date: Wed, 19 Aug 2026 14:02:35 +0800
-Message-ID: <20260819060236.24665-5-xuanqiang.luo@linux.dev>
+Subject: [PATCH net v3 5/5] net: phy: propagate errors from default port setup
+Date: Wed, 19 Aug 2026 14:02:36 +0800
+Message-ID: <20260819060236.24665-6-xuanqiang.luo@linux.dev>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260819060236.24665-1-xuanqiang.luo@linux.dev>
 References: <20260819060236.24665-1-xuanqiang.luo@linux.dev>
@@ -58,53 +58,45 @@ Content-Transfer-Encoding: 8bit
 
 From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-phy_probe() may fail while querying features or completing other core
-initialization after the PHY driver probe callback has succeeded. The
-driver core does not run the remove path after a probe error, so
-resources that the PHY driver releases in its remove callback are
-leaked.
+phy_default_setup_single_port() ignores errors from phy_add_port() and
+always reports success. If a PHY driver attach_mdi_port() callback fails,
+the phy_port is leaked and PHY probing continues without the expected
+default port.
 
-Call the PHY driver remove callback on these failures.
+Destroy the port and return the error.
 
-Fixes: efbdfdc29bdd ("net: phy: Add support for asking the PHY its abilities")
+Fixes: 589e934d2735 ("net: phy: Introduce PHY ports representation")
 Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 ---
- drivers/net/phy/phy_device.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/phy/phy_device.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 8fd6fbf378f0a..77318659ff985 100644
+index 77318659ff985..22a5af92c620a 100644
 --- a/drivers/net/phy/phy_device.c
 +++ b/drivers/net/phy/phy_device.c
-@@ -3733,7 +3733,7 @@ static int phy_probe(struct device *dev)
- 		err = genphy_read_abilities(phydev);
+@@ -3458,6 +3458,7 @@ static int phy_default_setup_single_port(struct phy_device *phydev)
+ {
+ 	struct phy_port *port = phy_port_alloc();
+ 	unsigned long mode;
++	int ret;
  
- 	if (err)
--		goto out_reset;
-+		goto out_remove;
+ 	if (!port)
+ 		return -ENOMEM;
+@@ -3484,9 +3485,11 @@ static int phy_default_setup_single_port(struct phy_device *phydev)
+ 		port->pairs = max_t(int, port->pairs,
+ 				    ethtool_linkmode_n_pairs(mode));
  
- 	if (!linkmode_test_bit(ETHTOOL_LINK_MODE_Autoneg_BIT,
- 			       phydev->supported))
-@@ -3750,7 +3750,7 @@ static int phy_probe(struct device *dev)
+-	phy_add_port(phydev, port);
++	ret = phy_add_port(phydev, port);
++	if (ret)
++		phy_port_destroy(port);
  
- 	err = phy_setup_ports(phydev);
- 	if (err)
--		goto out_reset;
-+		goto out_remove;
+-	return 0;
++	return ret;
+ }
  
- 	phy_advertise_supported(phydev);
- 
-@@ -3825,6 +3825,10 @@ static int phy_probe(struct device *dev)
- 	phy_sfp_release(phydev);
- 	phy_cleanup_ports(phydev);
- 
-+out_remove:
-+	if (phydev->drv->remove)
-+		phydev->drv->remove(phydev);
-+
- out_reset:
- 	/* Re-assert the reset signal on error */
- 	phy_device_reset(phydev, 1);
+ static int of_phy_ports(struct phy_device *phydev)
 -- 
 2.43.0
 
