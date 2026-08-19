@@ -1,277 +1,171 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837BB3C10A9
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 15:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103203B813F
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 15:48:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.182
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787153507; cv=pass; b=odzcrEn0/U8dyBVqqjcK2WV/frbvniYIK9BidJ55sGyB049iOAQX5XdRiIU0eSrxK01wQoVHsc30DLeqlpGVXT9XSJq/NEE46d9B5l9k1Tlt1YFo8IcOQ/gSvAAXMd8daRhHlGQkdIWxLrpOi338N4cq4+895mPZIRmSTMCeiaM=
+	t=1787154538; cv=pass; b=hZynkA+YQaYo9UYkM0NuWMBnA7EQln3a4rdND3+3TiTYCNF+sBChaxNxfdDStkne1CUhIns7VQcWhwW2R8H7Zy7R2vQJBQHJK7t737ma1LTVRUAq2WgNuhply3bBjEYvwvWhxAGUATupBebmbAHCtHDez4p1gfYypXYf4ZtKIzQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787153507; c=relaxed/simple;
-	bh=7qTkxLZAaVYswa5fRWmyn/0TG6JBUySn4trfKwwFTEI=;
+	s=arc-20240116; t=1787154538; c=relaxed/simple;
+	bh=C1LDy4d6ND+Sroxg1OCZ9KkCmvKKRkawoRU3rs+6chw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P2gSaYCPdAz/6wfffdyIVhbwMLuLxTcZK7EVOIBkR3JBR+j3SzQKjwPwj2dGcRfGYV7yiW8d153v+ApEntURNGM79Xt9ePtjibaNUQkYKdvta47Q8jVJz2JbZdUV78LH0xkwOlYblhXdLJ3HaxNjR4rDc1Iu/ECRXuWgV6l2KwU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=fLNDhLOH; arc=pass smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	 To:Cc:Content-Type; b=HasImDAL6wjM7KHrD0tVANSDP9p65hobhcTtc9PWYswWxqofN/06O66g8KrW8s/ibmJDFQKB3ct6o9Db8EUa+SjH9SzpUZn34yt6uXoQbkoDyRfC2CsZNd9Qy8i47bPE+Sg9z7xfnlwkY/jOQMzo0r9nAlFgc9+au2GIYPn8qmU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=MmbLshU8; arc=pass smtp.client-ip=209.85.208.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="fLNDhLOH"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-84867f07d63so1269210b3a.2
-        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 08:31:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787153505; cv=none;
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="MmbLshU8"
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-39faf9e2c62so8390211fa.3
+        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 08:48:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787154535; cv=none;
         d=google.com; s=arc-20260327;
-        b=lc9VfOlHNY/FLOXJseQ3JMLzWQjd7BJxL6qYCmuVLoVOVUEcI2CLwGWarP8AbIeYt8
-         ZzPJVU2GET7IRLlbUdFB9fm7yN3LrD6YVd5CKzftn3DMKXFGhPmJRpfJBTsu53tfkX1Q
-         a4B8NqtwbhAJ4byCBwb8Lyv6Oj1k9HPuJZCxVLEx9ZDC85P/BUlPyq0XvygTcbZqtdg2
-         k/kuxoZfDo+iLz7X4xkRe/mz+G3eMuly0XFVbPbn8WRwdhKTRA3gUcD7/x6Q7Yr6pQUd
-         xFcC4M4C/2Ypfc8IIK3FM14CPbBn/0jVCIoxGU8w+D2nSjvxhfn/3jvOSUJnpDafJtaL
-         Smdw==
+        b=EpieK1U40NWkT0w5nYZtIpdhxyR8iV1tNZ4wLltreOSJA1PmnIZHBxmkWKSjV3YCCY
+         fJt660E/jxkVV+p9kMjnBSFOfy8WHKHE18gmFkHkPXttfBnq5rIrsNVo44R8itYOiMxt
+         4eV+1o7bDEujTsYrm6s2Q48pP+vKs08UPDX4UGkcpA6mPYfE0JR70Bgw8aSTeWyf8r++
+         efcnELdgM8ZZdCRzZRDKRgZJ7/vfIacUvdAXUSSMNs/ckkl2UixmaQuB11et/paBpFsw
+         9q6fzWyihprsPa/N2binOSlMaCqT9XyEGQiu0Z1nY9dpVmfv1SURPseTkJQZBBm4cCfB
+         z9HA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=08wNOA68TAaoTV8eso++gFA6aDwbeSGwMVtZP2K86Zc=;
-        fh=M7oqS4dhWck/l2Fu3NRPAuwjyyua/Nnn2TtGiZ7CsYo=;
-        b=AOW4J5tSXZZyrkdcjB9fqbYi4BUUBKiJdOlIUg1mPF1ddylEdfw4o2pLOO7QIF+Flx
-         DFJ07aOpaDW9ZpKfJwx2OkPtXwG8xMHGtWFObpOI9aTLn6c00wVRPg09GHBuOjWw9ZCR
-         uXOGE7DIoWKHAhWzfXjcO9Wd1zHler3SJbSwKtZ2S7b1NTx78FhGL0T8/qM4YQ5j69r9
-         +hRcOzuauC7Mauox5OT+xFr0L5EwfoeDKs40DKcrfEXWuEwAImxlu/dtWwoTpviqltk9
-         GdgTK0P7FD3tKuYbwNslpLFArOb3LZiJFtXyMxdPWM9rWSMR1Xj00ajr6aQCcJNS/Gtv
-         Hxzg==;
+        bh=+A5sw0Gkcd80rFyIPgG7wRWGaGNkrO9aHrdYGv5WlFk=;
+        fh=+kU0Xjsv0RX1wfml95ox8mWoDYaoVtUC0paEQDnhhO8=;
+        b=RAdR3tJY0TPfm1KeR7/VLQT01L8610o+wrriF/5X1BGNrEw+3LIqPKFZdFHpwUcnFK
+         gYDuVaNTYKnxXeX9v5izeIVFCn7TzE1wkWE7WVz03VCq/siE5Yb9wh5Vz1e4KUuQAKPf
+         LmsCHzxxHm6y9n5yQn2gtVk7ArcNbHquJGKVt2vKBeDFE8WIHwjku0uSWnDggLBhXUSo
+         xBj2UP3X48g/L60M9EYRjmazXIbtW2suKFKzOmM3zDQ8gW0DiUEksE8RrUt+zGHYeHdm
+         brborPk7ddPW3AfU/H2FxFVLFn6Qgz3p0adl6wUoJylHQB/Us5+JolmMUus1lwMbQDW9
+         JvqA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787153505; x=1787758305; darn=vger.kernel.org;
+        d=nebusec.ai; s=google; t=1787154535; x=1787759335; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=08wNOA68TAaoTV8eso++gFA6aDwbeSGwMVtZP2K86Zc=;
-        b=fLNDhLOH1dPnwY141w34BTMT9GIEa7x/1UomsY96nI7ZHA6/DxotafHSGWFN/HzSkI
-         xui2dTqdFgS0pAoOe5GWUMnM5MidHMI4Zf2QUs5Kh53dlonBU27R4XsmouUAdWjXxRhU
-         PEmNlZRk64pRkMOpjZ0KJso8iXo2kQGul0zeA=
+        bh=+A5sw0Gkcd80rFyIPgG7wRWGaGNkrO9aHrdYGv5WlFk=;
+        b=MmbLshU8zc0/2LOHh6GoAiG3HVnbCNZS/80wUmF6MoJjcR7xqImOYiAp1IxQwJw/Z+
+         6SRDQkEk7NuyWOwkU6+PurhCJELnINHdfCKmlXpFK3ZL8OPOC7KXtkIfqkpvrj4n0F2+
+         Jshi8gctDorx2h/UqhNw8/dYUh4dicZpT1Ntrl8fK/KZVq5QzmknX+kks98qY0I3cLCi
+         9IAp0JW/lj9hL8NHPstiMkqh0dJrBAEpxN9BG32cj8q/CP5mirWQqCXqco9tqh/p61O4
+         ddJylV3l9DSUw1XOCV4D4NIhD0zbNG049lVgM+qkVDaObzlUQtglZkCcUqAKpd4PXu6+
+         zEtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787153505; x=1787758305;
+        d=1e100.net; s=20251104; t=1787154535; x=1787759335;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=08wNOA68TAaoTV8eso++gFA6aDwbeSGwMVtZP2K86Zc=;
-        b=VBA3HEKXxCMP0Sz6WGJw6AtF1jTAzeaRxONYVBSUdpLNLojICwU3OPYmi4l/mJtC1w
-         Uq6X2ei5N2x9QtNaxHwEZfRq0SEIOSuejVRRvKmQn6guHnyUzU/RfWV4t1kgzeJOSfHS
-         27jD12bQnRM00Yg8q9dTHGMOclU9q3faKPJ9UEaq//g7q3/Xsyu3tmJEZamT6Hp4wo4g
-         EyGxI1x93ZUpzZO/ZOKkggyc5Sj9yA1mEaSsOlUBpKv991MBPUYwQGDJ1elu8AQpj7Xs
-         XVGPt5+gwqauYCY79xdjg4bFGXKDNhk2wU6ufcosjdG3muUBFWax6OerCjFa2LIlsAz2
-         CofQ==
-X-Gm-Message-State: AOJu0YyUyrQJC63gSAE0kouWM9mbdpLAftlvDwft+21MVzw7vErDnLd+
-	WCdOZ9pQ29ueBRK+n9W+r8xymSFCibiDT9iGeUnCXIq5foUPcZFbFEHql3RDh+6rylA+MHsGRty
-	WGYypmHQvaW6eWOSUIHd4JC59Env35yR5Ba3JN1H3
-X-Gm-Gg: AR+sD125Ohf5wW6+9y77qCRZbHbT3W7dyE8x/HbXVbFZJcMJ1c4l8Q38hBm1QRQmMQW
-	ohy+vbcBkVD0JAfu5t861yxOfoP4YEJcy7QE9qS+GoM3TmwTMvcuWRn2vkAtxdDs9meZxlZ+47p
-	iH8EnEQsb6cLyWJsGzbVWG8UUyE5XvO8T5k0wC1fVkqpvmin9PCsK2fjNuOP5Mw1lplZkgSvH8n
-	TK4TfUI68MxHnIMLUIm8Su2/DolTPk1IBvZhzK7dnoKuBjcbVWA/rMiHpiNnjd67yi/LS8Uh7lj
-	L/R8B6unhVaKsA1pGFtLZiGnHQVCtSkYpeunLK9dKN1waws=
-X-Received: by 2002:a05:6a00:a387:b0:84a:60a4:2651 with SMTP id
- d2e1a72fcca58-851d38498eamr9154939b3a.6.1787153504431; Wed, 19 Aug 2026
- 08:31:44 -0700 (PDT)
+        bh=+A5sw0Gkcd80rFyIPgG7wRWGaGNkrO9aHrdYGv5WlFk=;
+        b=bdjG7FhvQoFQktSziOaIKYRxYGB1rTQpxxYiMoIp9rvxX82uwIAJqvGRASPODhAvbV
+         vhYaHm+RvFUFMmsnOeQE3TMvuCsEett0S08v14pqVvWhfsdNp70i2bBgvIINJ+1zWCcQ
+         chn0fVGo43/CTCBQowd98Xpan83Dbqhz3+2peoDP3fl3g3BoMHnqnVzHUCHY1EGlavkE
+         6sKycg48lQwM5o4el1JYMO/rQeP17LSHfvsbN6W2rt8soJxGljQTITLfxV9H23hz8PBQ
+         3F+rw88e0i1e9lmu0k+43cGawUnXolJ7cFiY4PTLLHGiZ287yYjkFzmtUqcDGD9v/wgE
+         sbNg==
+X-Gm-Message-State: AOJu0Yxk6roVAmL9EipPjtyZNL1+jt1enoIq9KTOaPFpZjbV/oXThw1p
+	CP1oX3LzlSqh/JEA6J5+6Reg0SJXShA9zzpfyfd94lqbeWhcvqdAG0Wd6P3Tj5ItusIY/V1QcJP
+	gyCucHtuy3/El7DJTL2794rodlpEbfiQdBgaFXPQlgZ4=
+X-Gm-Gg: AR+sD13e0Jps/bWXu1fHMPYrjJRjWt7q0b3ReIy4pD1+rnw2ORmIy4OgjBm9bkYgkfF
+	2iMv6b2UE+3gy6IQjCqoWMMNTLR2mo+6kNknPse+eaPH2q29gxvvb4ZtIGfHQ/n/gCq8W9NJFPc
+	MohcoHkZJNb+Cqj2ahznE1sY3NvjwJ/92MN4PJbwC3cdJkK8ziHhwjvyxY7eCwBie86KwGlt2/J
+	RzoufBgrgDeCw6Iq2c24TgRi7JpV0J5YGTsJlPu83oCPwMVyhOGJwK3YoopD8GRsPp42mVSSnqL
+	g95Xn89P3fxJH7BhX8BhK9jZwux+6zbxMK59iOjOhzMny/vFA6nZ06AhjNUXInvZQLHxZK3yZNQ
+	=
+X-Received: by 2002:a05:651c:2109:b0:39f:27a4:8036 with SMTP id
+ 38308e7fff4ca-3a1899f1d41mr11387071fa.9.1787154534767; Wed, 19 Aug 2026
+ 08:48:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260819143136.57350-1-jhs@mojatatu.com> <CANn89iLRPjpKF6xrWz=pv5cWXT6FxCDmOprXKrkDRgQH4Jin-w@mail.gmail.com>
- <CAM0EoMmc=CNVO0h1miKSO63uYH9f6YkX6=z+itqALT9tAYtcog@mail.gmail.com> <CANn89iK+xzagk9faUSjHQj+9kTnWn0wg6tRez5XtkE14G+SCvQ@mail.gmail.com>
-In-Reply-To: <CANn89iK+xzagk9faUSjHQj+9kTnWn0wg6tRez5XtkE14G+SCvQ@mail.gmail.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Wed, 19 Aug 2026 11:31:33 -0400
-X-Gm-Features: AcwNN1V1mKrKnZScjYVnpUf1wGwXObVJ511wEezy6L6Rk2jGCX5s0dCRWidiULQ
-Message-ID: <CAM0EoM=6C=yarfbjtegiobdK9jvLzLwJSSMxFBYDiG6XtZQ35w@mail.gmail.com>
-Subject: Re: [PATCH net v2] net: sched: fix quantum/backlog overflow in fq,
- fq_codel, fq_pie, hhf, sfq
-To: Eric Dumazet <edumazet@google.com>
-Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, stable@vger.kernel.org, vega@nebusec.ai, 
-	Victor Nogueira <victor@mojatatu.com>
+References: <cover.1786812660.git.zihanx@nebusec.ai> <2080e22819c552b0d186563eda255a44c68404f7.1786812660.git.zihanx@nebusec.ai>
+ <20260819153109.GB1248049@shredder>
+In-Reply-To: <20260819153109.GB1248049@shredder>
+From: zihan xi <zihanx@nebusec.ai>
+Date: Wed, 19 Aug 2026 23:48:21 +0800
+X-Gm-Features: AcwNN1X0-V-C_EkZavQn1ho1Bq-wtRQeRLmvDZUt25d4tg5QIRX-85A22Cwk_mU
+Message-ID: <CAANe3eQJTp5esgxQqGcRO47Nv9epoW5tYqNY5D-39WaUaDSsqQ@mail.gmail.com>
+Subject: Re: [PATCH net 1/1] ipv4: Fix fib_rebalance() divide-by-zero race
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: netdev@vger.kernel.org, horms@kernel.org, davem@davemloft.net, 
+	pch@ordbogen.com, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Vega <vega@nebusec.ai>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 19, 2026 at 11:19=E2=80=AFAM Eric Dumazet <edumazet@google.com>=
- wrote:
+On Wed, Aug 19, 2026 at 11:31=E2=80=AFPM Ido Schimmel <idosch@nvidia.com> w=
+rote:
 >
-> On Wed, Aug 19, 2026 at 5:03=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.co=
-m> wrote:
+> On Mon, Aug 17, 2026 at 01:12:10PM +0000, Zihan Xi wrote:
+> > fib_rebalance() reads ignore_routes_with_linkdown while summing active
+> > nexthop weights and then reads it again while calculating each upper
+> > bound. Sysctl writes are not serialized by RTNL. If all nexthops are
+> > link-down, a concurrent 1-to-0 change can leave total at zero and make
+> > the second pass divide by zero.
 > >
-> > On Wed, Aug 19, 2026 at 10:43=E2=80=AFAM Eric Dumazet <edumazet@google.=
-com> wrote:
-> > >
-> > > On Wed, Aug 19, 2026 at 4:31=E2=80=AFPM Jamal Hadi Salim <jhs@mojatat=
-u.com> wrote:
-> > > >
-> > > > Several qdiscs derive their per-flow quantum or backlog from psched=
-_mtu()
-> > > > or accumulate qdisc_pkt_len() into a u32/int counter without an ove=
-rflow
-> > > > or zero clamp, which can drive the dequeue/credit-refill loop into =
-a soft
-> > > > lockup or a NULL deref.
-> > > >
-> > > > vega@nebusec.ai provided reports and PoCs which illustrated the fol=
-lowing:
-> > > >
-> > > > - sch_fq: fq_init() computes quantum =3D 2 * psched_mtu() with no o=
-verflow
-> > > >   check; a huge MTU wraps it into the sign bit, and fq_dequeue()'s
-> > > >   credit-refill loop spins forever. TCA_FQ_INITIAL_QUANTUM is also
-> > > >   unbounded up to INT_MAX in fq_change().
-> > > > - sch_fq_codel: fq_codel_enqueue() accumulates qdisc_pkt_len() into=
- a u32
-> > > >   per-flow backlog; a crafted TCA_STAB inflates pkt_len to 1 GiB so=
- a few
-> > > >   packets wrap the counter to 0, and fq_codel_drop() then picks an =
-empty
-> > > >   flow and derefs NULL. fq_codel_init() also sets quantum =3D
-> > > >   psched_mtu() with no clamp, so a huge MTU makes the deficit loop =
-spin.
-> > > > - sch_fq_pie: fq_pie_init() sets quantum =3D psched_mtu() with no c=
-lamp and
-> > > >   fq_pie_change() accepts any u32 quantum; same deficit-loop spin a=
+> > Route insertion and link-state updates call fib_rebalance() under RTNL,
+> > and netlink devconf changes are already protected by RTNL. Make the
+> > sysctl handler take the per-net RTNL lock before changing
+> > ignore_routes_with_linkdown. This gives both passes a stable policy vie=
+w
+> > without adding work to route lookup or rebalance paths.
+> >
+> > Fixes: 0e884c78ee19 ("ipv4: L3 hash-based multipath")
+> > Cc: stable@vger.kernel.org
+> > Reported-by: Vega <vega@nebusec.ai>
+> > Assisted-by: Codex:gpt-5.4
+> > Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+>
+> I think that this is a better direction:
+>
+> https://lore.kernel.org/netdev/20260817013237.2797-1-blbllhy@gmail.com/
+>
+> Instead of taking RTNL, make it consistent with IPv6 and mark all the
+> nexthops as dead (upper_bound =3D -1) when total=3D=3D0, as the first pas=
 s
-> > > >   fq_codel on a huge-MTU dummy device.
-> > > > - sch_hhf: hhf_init() sets quantum =3D psched_mtu() with no overflo=
-w check;
-> > > >   a huge MTU makes weight * quantum overflow the signed deficit, an=
-d
-> > > >   hhf_dequeue() loops forever.
-> > > > - sch_sfq: sfq_init() sets quantum =3D psched_mtu() (unsigned); a h=
-uge MTU
-> > > >   makes allot =3D INT_MIN, and INT_MIN + INT_MIN is UB that toggles=
- between
-> > > >   INT_MIN and 0 forever.
-> > > >
-> > > > Clamp the quantum to a sane range at init/change time so the dequeu=
-e loops
-> > > > terminate and the drop path never selects an empty flow. The clamps=
- live in
-> > > > the init/change paths, not the per-packet fast path, so no hot-path=
- cost is
-> > > > added for a configuration issue.
-> > > >
-> > > > Conditions to recreate the bug: a device whose MTU (plus hard_heade=
-r_len)
-> > > > is large enough that 2 * psched_mtu() or psched_mtu() wraps into th=
-e sign
-> > > > bit (e.g. a dummy device with max_mtu =3D=3D 0 accepting a huge MTU=
-), or a
-> > > > crafted TCA_STAB that inflates qdisc_pkt_len to ~1 GiB. Requires
-> > > > CAP_NET_ADMIN in a user namespace (Level 2) to configure the qdisc =
-and MTU.
-> > > >
-> > > > Fixes: afe4fd062416 ("pkt_sched: fq: Fair Queue packet scheduler")
-> > > > Fixes: 4b549a2ef4be ("fq_codel: Fair Queue Codel AQM")
-> > > > Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet schedul=
-er")
-> > > > Fixes: 10239edf86f1 ("net-qdisc-hhf: Heavy-Hitter Filter (HHF) qdis=
-c")
-> > > > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> > > > Reported-by: vega@nebusec.ai
-> > > > Tested-by: Victor Nogueira <victor@mojatatu.com>
-> > > > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> > > > ---
-> > > > v1 to v2
-> > > > Changes based on feedback from Eric and Sashikos[1][2] on V1.
-> > > >
-> > > > 1. Drop the fast-path changes in fq_dequeue() (Eric)
-> > > >
-> > > > 2. Clamp to a range, not just a lower bound (Eric). Uses
-> > > >    clamp_t(u32, ..., 1, 1 << 20) (upper bound 1M; lower bound 1, no=
-t 256).
-> > > >    Sashiko (gemini, nipa gpt-5-6-sol-1-5) pointed out the v1 max_t(=
-) left
-> > > >    bit 31 set, so a 0x80000000 quantum survived and still spun.
-> > > >    Upper bound is 1M, not Eric's suggested 16M. fq_change() already=
- caps
-> > > >    TCA_FQ_QUANTUM at 1M; using 16M in fq_init() would be inconsiste=
-nt.
-> > > >
-> > > > 3. Clamp TCA_FQ_INITIAL_QUANTUM in fq_change() too (Eric). It was u=
-nbounded
-> > > >    up to INT_MAX; v2 clamps it to > 0 && <=3D 1M, matching TCA_FQ_Q=
-UANTUM.
-> > > >
-> > > > 4. Fold fq_codel_init() quantum clamp (Sashiko gemini + nipa gpt-5-=
-6-sol-1-6)
-> > > >
-> > > > 5. Fold fq_pie_init()/fq_pie_change() quantum clamp (Sashiko gemini=
-):
-> > > >
-> > > > 6. Reword the hhf/sfq comments (Sashiko nipa gpt-5-6-sol-2-15, gpt-=
-5-6-sol-2-14)
-> > > >
-> > > > [1]https://sashiko.dev/#/patchset/20260818101130.16203-1-jhs@mojata=
-tu.com
-> > > > [2]https://netdev-ai.bots.linux.dev/sashiko/#/patchset/202608181011=
-30.16203-1-jhs@mojatatu.com
-> > > > ---
-> > > >  net/sched/sch_fq.c       | 17 ++++++++++++-----
-> > > >  net/sched/sch_fq_codel.c | 16 ++++++++++++++--
-> > > >  net/sched/sch_fq_pie.c   |  9 ++++++---
-> > > >  net/sched/sch_hhf.c      | 12 ++++++++++++
-> > > >  net/sched/sch_sfq.c      |  8 ++++++++
-> > > >  5 files changed, 52 insertions(+), 10 deletions(-)
-> > > >
-> > > > diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
-> > > > index 7cae082a9847..f7c92df085e7 100644
-> > > > --- a/net/sched/sch_fq.c
-> > > > +++ b/net/sched/sch_fq.c
-> > > > @@ -1112,9 +1112,16 @@ static int fq_change(struct Qdisc *sch, stru=
-ct nlattr *opt,
-> > > >                 }
-> > > >         }
-> > > >
-> > > > -       if (tb[TCA_FQ_INITIAL_QUANTUM])
-> > > > -               WRITE_ONCE(q->initial_quantum,
-> > > > -                          nla_get_u32(tb[TCA_FQ_INITIAL_QUANTUM]))=
-;
-> > > > +       if (tb[TCA_FQ_INITIAL_QUANTUM]) {
-> > > > +               u32 initial_quantum =3D nla_get_u32(tb[TCA_FQ_INITI=
-AL_QUANTUM]);
-> > > > +
-> > > > +               if (initial_quantum > 0 && initial_quantum <=3D (1 =
-<< 20)) {
-> > > > +                       WRITE_ONCE(q->initial_quantum, initial_quan=
-tum);
-> > > > +               } else {
-> > > > +                       NL_SET_ERR_MSG_MOD(extack, "invalid initial=
- quantum");
-> > > > +                       err =3D -EINVAL;
-> > > > +               }
-> > > > +       }
-> > > >
-> > > >         if (tb[TCA_FQ_FLOW_DEFAULT_RATE])
-> > > >                 pr_warn_ratelimited("sch_fq: defrate %u ignored.\n"=
-,
-> > > > @@ -1226,8 +1233,8 @@ static int fq_init(struct Qdisc *sch, struct =
-nlattr *opt,
-> > > >
-> > >
-> > > You should probably split these into separate patches to ease code re=
-view.
-> > >
-> >
-> > I didnt follow - are you asking to split the sch_fq into two patches?
+> indicated. Something like [1].
 >
-> No, you send a big patch:
+> It's true that it can lead to incorrect upper bounds if a concurrent
+> 1-to-0 change didn't result in total=3D=3D0: during the second pass we wi=
+ll
+> account for nexthops that we skipped in the first pass.
 >
->  net/sched/sch_fq.c       | 17 ++++++++++++-----
->  net/sched/sch_fq_codel.c | 16 ++++++++++++++--
->  net/sched/sch_fq_pie.c   |  9 ++++++---
->  net/sched/sch_hhf.c      | 12 ++++++++++++
->  net/sched/sch_sfq.c      |  8 ++++++++
->  5 files changed, 52 insertions(+), 10 deletions(-)
+> It's not very interesting. This sysctl was never meant to be configured
+> on the fly and the kernel doesn't rebalance nexthop groups when it is
+> toggled.
 >
-> And today I had time to review the FQ part that we care about a lot ;)
+> Let's wait for the IPv6 patch to be applied so that you could reference
+> it in the commit message.
+>
+> [1]
+> diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
+> index 0483519b7fb0..7a362f2e2c2b 100644
+> --- a/net/ipv4/fib_semantics.c
+> +++ b/net/ipv4/fib_semantics.c
+> @@ -874,7 +874,7 @@ static void fib_rebalance(struct fib_info *fi)
+>         change_nexthops(fi) {
+>                 int upper_bound;
+>
+> -               if (nexthop_nh->fib_nh_flags & RTNH_F_DEAD) {
+> +               if (!total || nexthop_nh->fib_nh_flags & RTNH_F_DEAD) {
+>                         upper_bound =3D -1;
+>                 } else if (ip_ignore_linkdown(nexthop_nh->fib_nh_dev) &&
+>                            nexthop_nh->fib_nh_flags & RTNH_F_LINKDOWN) {
 
-Ok. So one patch per file?
+Hi Ido,
 
-cheers,
-jamal
+Thanks for the guidance.
+
+Agreed. Taking RTNL is unnecessary here. I will revise the IPv4 fix to
+skip the upper-bound calculation and set upper_bound to -1 when the
+first pass reports a zero total, consistent with the IPv6 fix.
+
+I will wait for the IPv6 patch to be applied and reference it in the v2
+commit message.
+
+Thanks,
+Zihan
