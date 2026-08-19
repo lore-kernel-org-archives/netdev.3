@@ -1,221 +1,230 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D4E378D71;
-	Wed, 19 Aug 2026 18:01:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787162464; cv=fail; b=uZKFjSG/0ejUP9O0ud2OXtZieD9l1w6DnzmfvPS5egqcT63KyRlrbR0aelN3zJTYxqbZGa7zcclEPZaNeaUrpOmhxiuJ3ikVi3uTcvlpah7qa4H/2pm8U7S8B0uCZIQPnZQkZOsrLeh480zCM0k+t7l4aoop9tTkOYbfdN83oG4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787162464; c=relaxed/simple;
-	bh=lYKPyHY7b+SvpXjO5kEfFxVXn9Bc1x3TyKl3sEyrj0k=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=MDKLhIXZbsuqgO9EB9eUciuB/+pJi/sbiMD5LZjEyuq8ag3gX2lW/tN7A0DFJeIi48LJD32W7gPlQesaj7ubae9/kofSQAYMfofJmBKD/CPDqxqUTe3UafDNJVke/2F4hDE3Z14R3XltBRQE+IWu1Cil8Un8TcRbGaE1p2DyxF0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i1FrQVie; arc=fail smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3DFF4921B1;
+	Wed, 19 Aug 2026 18:07:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787162828; cv=none; b=JSS9JKTAIg7PjyOTLLRv9b8nLFbVApneyXD6VD9eXdWv37fGX4eUw8t2fyESbMeRJcNPCVTYtaCtKOSYSirv5ZFky26kGv4tMuo70NVzJgrMMABjmbTRVeja/xRIvtDfzNKk9GfIfTQ9HfZ1uSaRGme0vvg7nvZV8HWq0JypCSM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787162828; c=relaxed/simple;
+	bh=wuA+/M1D4tVUocac/6KwaSqlkHwO90FUw0MnjVv/TuU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=FgxngYMaig6DdIsZkaiHmHOytG0vXP8wfVkv2VrV8/bzzLFUNUZZPA0NpujuY5KfNFF/o7hU27kwBNT7neH3kyNffRy9L6lKzLdIH4DxcPAfXgcK99qv+ajKcs+62/JLV1XI2akRlZ8BotYfuN5mIUCMGgcYKR4+UE0mBL+3qMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Xs1lIoqT; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i1FrQVie"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787162463; x=1818698463;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=lYKPyHY7b+SvpXjO5kEfFxVXn9Bc1x3TyKl3sEyrj0k=;
-  b=i1FrQViewh/QWP5qFPPmLJ4ItRw+x8fz8OxbINUJSXD1Et+B61QEvBae
-   nPTDqGUeXMOjYKsM5/cvi7QFY/yv5oSdcGrgg6DwnrYMpXVSzUvD6/jdb
-   asVBD8kMRKlHVH8R/Jtpj4Ct9o2qCHi2MkTj/W8mVTYGrEeguxrXUY2hi
-   9S9EUnSE5esT6iqVCNqSKUs1uTR6yXcZM9FopXtztLzIo/PGjo8b7rtYO
-   SGtAEsTFWxj6mIg4MNSVzv4SCSd2r4X6tVggTHzdvo3CcxrfRI6yZfdCG
-   zwxIpLHhrGq/jYS/Gn61qYSUk7lal1q/Bvfie0c7BynHDSee8U63SYn9N
-   g==;
-X-CSE-ConnectionGUID: Pgoh7+ShS22NKShXtN72Cg==
-X-CSE-MsgGUID: QHHsWGafSlaLuwqrJx71iA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="87707966"
-X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
-   d="scan'208";a="87707966"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 11:01:02 -0700
-X-CSE-ConnectionGUID: YdRAW3MGQjyGSuInELMw3w==
-X-CSE-MsgGUID: JSowq45NQjyCZds+E4N/8g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
-   d="scan'208";a="265167126"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 11:01:01 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 19 Aug 2026 11:01:00 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Wed, 19 Aug 2026 11:01:00 -0700
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.20) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 19 Aug 2026 11:01:00 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LyA9LCUGIF2ZO58GXJTJbE2X8TGHMyND0UDc2HV3BEqnjxGMaue3U/0Za1DFQxIvaTFbYoSbS+L1UBz8FD+vNkcKLnjTBtpqNDCR5VsN1HYSRvfkqjaOXGdaNvmRfT8k6hhs9llOyWBZnsoejWHwr+fIqUaaujP1W2WAIgJYr2EZS2VzlapSWBuUxdMb3NPmrYHqKkNhPQIbJufYa8aCKFlDRe8Rscm+POgeS6JmoDBRIwpnKdD8/wcLaiB0BwgNyDwizxvcmuxnj4vIWiMIzQtHEomhigKH8/ip55r0VK4zqIf12MqpwaaLmIZnOx1GoXaasje3l1+Najm0CMPb0g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+W1VSMfPEgufAMTIQqHa+swaZ1EU9GVIpXYOLDMJTlk=;
- b=UKpm3nEV76dN4GwO+4jQ4EGbop7Ug85bFW2dq/ALvskQXYokSZ0mj/FytfpCGm0iUg5MU54xAoFrzSXcLjGjvzH2rAaY3Vyb6yTT5XC/+MczNaI77Rdq2879ClVpDjPtuWZjWeYaA/1un8E9+Tk4XXxaiw/iQeyN9PK70WWdQdLI4+Bcof2IPDX7BsmLW1H+UmpY8atQjhfs9YeUUCb9Zjcpe2erMPOqqtyiTtpGBS6pOc+Cd+HEwDDZ5K3+bnT9LRR2TiKoO0ADxX+HOjOwfqhQoo5cNR6tS7R+sDfsoTxgs/MkOKmSmSEYHT6EauV4kBLDjpKxjxVQsAhYnUH9KQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
- by MN0PR11MB5986.namprd11.prod.outlook.com (2603:10b6:208:371::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
- 2026 18:00:56 +0000
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58%6]) with mapi id 15.21.0339.007; Wed, 19 Aug 2026
- 18:00:56 +0000
-Message-ID: <de19e575-9ede-43bd-bd4e-00b8f4dd7afe@intel.com>
-Date: Wed, 19 Aug 2026 11:00:53 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-net] ice: allow reading the last byte of the NVM and
- Shadow RAM regions
-To: Przemek Kitszel <przemyslaw.kitszel@intel.com>, Petr Oros
-	<poros@redhat.com>, <netdev@vger.kernel.org>
-CC: Tony Nguyen <anthony.l.nguyen@intel.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>, Kees Cook <kees@kernel.org>, Robert Malz
-	<robert.malz@canonical.com>, Ratheesh Kannoth <rkannoth@marvell.com>, "Daniel
- Zahka" <daniel.zahka@gmail.com>, <intel-wired-lan@lists.osuosl.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20260819082458.665947-1-poros@redhat.com>
- <98034c58-cb45-4367-a074-bc654af1ce77@intel.com>
-From: Jacob Keller <jacob.e.keller@intel.com>
-Content-Language: en-US
-In-Reply-To: <98034c58-cb45-4367-a074-bc654af1ce77@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MW4PR03CA0119.namprd03.prod.outlook.com
- (2603:10b6:303:b7::34) To DS0PR11MB7381.namprd11.prod.outlook.com
- (2603:10b6:8:134::14)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Xs1lIoqT"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 058284E412D3;
+	Wed, 19 Aug 2026 18:06:59 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id BA9A15FF42;
+	Wed, 19 Aug 2026 18:06:58 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1483B11C75A25;
+	Wed, 19 Aug 2026 20:06:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1787162814; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=UtKKwJWTWrF6YD1/aLXj9fOOKMtR2RBTpgcfToLoVvs=;
+	b=Xs1lIoqTsJE2DuM9HIDg6Kc3CEgAmHyWA2kSeRttzNTMUYvV4dfoT4ZUmFBV4f46uMG37b
+	8yEHAu+hWmvp1aCcJXksC2J9ziGRBocfuR7MIV2dQL5UbOtXEDoPV+02ppIjdcc4zKzb0T
+	fPBuCLDhDdNLyVuhFwr+r69KYF5018g5ikpwXuQbneD3BWivZm4nlu8CZDUOCM4LT5dffL
+	xz31gglFdzKvzqAciJYGS2v391o8WLIMEwUZdilyCQcIGmZMfADhcO4zKhq8AmP2Fp0MH8
+	CZD48V/i+MLa4ukjfcF9bVdhbFs9ZeopB8AJYcrFVP4XNARbM4rpZp5s02FuRQ==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|MN0PR11MB5986:EE_
-X-MS-Office365-Filtering-Correlation-Id: 71286229-bdb4-4678-2edc-08defe1bd114
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|23010399003|7416014|376014|56012099006|10067099003|18002099003|22082099003|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info: KhJzDSWIJ92qa4NjVB+EBbEw1CSr2F4zDMiZMwbr0a11DsQHe2o/aKGCO66p21M+Vp8TP4I/YFCDkPFkF++AFKAa6ziy2vxwULNjMJGAtR5uY50HO8gVfHMtX6KzAzZR1TJntVUP4kj90Kx6UQY035sRpluMbWTvUeJNTp9LmhsUNUa05FucYb71nN58XkQ+Mq1AWUYlRHbHHuoLlyRIO0sW0ydXdAfdgBEfKtMwH4EFef3DJ7saqAB5s67U2Z9qmGTuKC3ie2AiLaLaPWkmG8gbJmJXEbl5S6ZGRiDttrLJmwdAUrX2XE6/9+6MdfrnjQ+YkF+H6avSGQbFZOGPXJJSsk8XH0YzcEAMc9FIPhmg2GM2ArLAPIIKPvZHmCCO8t44/dUCDfEyliQxQkX4RCN/FE2TVeS3i3PIx32sjfxTXUVy5Hl9r1ZXw4GKuKFZhq3CmjfgVvCZhQexBnviMbjeUC94MTSFGzAgwwmGTvna8CBY3wSu2+pBwPNBVot+5Z3rUQtXdkkTiPKYnOAkbheF/vWyTXBpxtrBxpYG44nlpnLZEWWc9Gs/bCvi5xw+m8sgSWGzvHsMY38bpmzXlZ+/7i+euDZ9QYwTtEZdAePzhtmp1ujh76t1zf1RDWSE2BWB5BGe1qsBbtgWOF5kJsKrpfqaO5Q9rStlC9IgZgA=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(7416014)(376014)(56012099006)(10067099003)(18002099003)(22082099003)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MlRzVkptcDEwejBlTUtWajRxd2VrZ3NqRTVhY3JaNXdUa2xQWWVqWEhrSm9p?=
- =?utf-8?B?NkF3S3BybWt6WXp0ZGU3TGJXcUVYUVlaTDJhZWdZVVM2b2pmd3FObFpZUXcr?=
- =?utf-8?B?dmVJODk1bnFNZTM5YVI2aTgxS2RkVkFzTEl6c2NSL1hhWjdUMFdTVUJFNnQ2?=
- =?utf-8?B?SlRUZDgvT1paNmZYSFBuL3ZEcElYRktLN0RxODFZek50NmxselB3SE82a1hy?=
- =?utf-8?B?NTN0RHU1VjJMSDg3OGpNUVdrSUZkNnloaDEyTHU0WXFwR0NxdExtZ2pZUlND?=
- =?utf-8?B?UjdJRlpJMUp3cnJXa2hQT01MNnhNOXBCUHZub1BPNlR3WGNjK3Y3THBDYmwz?=
- =?utf-8?B?Q0dlZXErK21ZQ1lRdUV4K3ZiTmI1NU5EM2puOGFTWEVuMFVYeTFqaHNtc2xK?=
- =?utf-8?B?U2ViVGp2dE1kRldHZStUT0hvaVhHV2t4YjljZjhjRi9iek5zbjZOVXNJUitV?=
- =?utf-8?B?TVJTVmM4LzIrZDRCdlBwdnhVVjZXc1BmNEZrbG9Wd1F1L3dBVVFrazlZNlRi?=
- =?utf-8?B?a0h1WlNsRnhHb0xza01tRDFORFJvdjNuL0lZM1FoNVJjeW5kSXpMZHdJOG51?=
- =?utf-8?B?MU5ZSGJ0a1J2MkF2cndCZGhNTGlUWk9UT2J0aW4wTEplVytTaUw4S3ptb2ZM?=
- =?utf-8?B?anpZMGI5RncvWFNqWmZDOHBqZkZsdzVEamxaZmprNmZPOHZkYmJZOEVyMXpn?=
- =?utf-8?B?OEhJaWxIUlVWa1VETGR6TTdqNVlUVHJpZjdwdDhuWXh4NmJkOG5LT0lzNmI5?=
- =?utf-8?B?c2FEemhxdkViVkczYlN3VUt4K2pHTnZCa1BQbUdFUmVYc2FpVU9VWGloM3Vj?=
- =?utf-8?B?eWJPUTVXOXdrVGxoRXE1cE5lSDR3ZDZzU0cvNU1OOHlJTUlkak9EMWtHQWpm?=
- =?utf-8?B?dEdyT3ZvMG9tUjNDMjljQVI2Ky9jNUxnendIeHFmbWQzcDYzRHNQRExwZGV5?=
- =?utf-8?B?QVU3MWgxdUhnaFBMc0JDV2dyeUJzS3oxc0RnSDFXbTdMQ2p3TnBEandDdk9X?=
- =?utf-8?B?NVFFSndxOHZCUWJxd2tsUVEzNklEZmw1VGZ0ZFJvZ2wzTGV3SklUbHZaM2xW?=
- =?utf-8?B?dDAxVzRRWmh0OTAzZU93NGZyY00xQ2hPald6TmdMR0UvK1haMm1SUGFYMU0v?=
- =?utf-8?B?QXpvMkRybWFVWE1udTBSbFF1NWRjQjJxU2FlYVJ2aHZtYVB2a2Zvem1jWC9k?=
- =?utf-8?B?V3ZNY3c3dzNLc1daSFoxRnRpQ2xlRDBzQW56c2M4aU5YQUFYeUd0NlRjMGFw?=
- =?utf-8?B?eXptZkFDYVpUQW4rUENwVG9GMXpLcEFzS0srK081Vmgramgxd0dVWUhtOUhz?=
- =?utf-8?B?eC9ZcWhoRkZ5UlF6RGlMTHVvM2JxQVB3ak1jR0Jua3RudkoxbGhjcXd0eno0?=
- =?utf-8?B?SDl0MzdBSDI5aHRzTkp0N3VRL0NiS2tVd1pONm5sR2FSSU5jTVJDckk3dHlE?=
- =?utf-8?B?bTBUUVRpaTJZbW1qTzUrS1lZVXNIT3BXVFIwRWNETWtlU1cwR2lLSGRwRExN?=
- =?utf-8?B?UDdxUWNxT3F2ektzaTZaWFgrMmJrMGNBbU0xVGxydklKT0JVc1FtaXNwcmYw?=
- =?utf-8?B?L2FUa2ZaNzhHUGlVKzk0Um4vbXNBNU9WbnkxTUcyZWRIdWFydm96Wk9wR0Ja?=
- =?utf-8?B?Q3k3WEFVN2VHc1Q5Z2Nadkl3OWRGUTQxekM2ZU1nb1NwMDdKczlzeTNBWFhL?=
- =?utf-8?B?QVRTd25QQ28zdGhFT1FBcDNyaHBjSmtWNmhQQmpKSGFsclZKdGVrS1NTZWN1?=
- =?utf-8?B?d2VTa2JZR29aWXlzTE45eU1HTUtBWU5KSmNHb3FzTHEvMmZsaDV6QnhocDI0?=
- =?utf-8?B?M205K2NpSlhaejR0K29qRklXSE5FcEtmbmdhQkxrOGk0QnBKWTZIRDlSTE1l?=
- =?utf-8?B?c2tCQVVZUVJVeFBMU2FxbVovVlJKNHJTY2ROUzBiNlpGb1FINW9FMnRBcXVx?=
- =?utf-8?B?NXZ1akN1akl3N3gzK1FXUlNwVHNUcGJ4SFVDMm40OGRJRW1DcGxxaVhreXRn?=
- =?utf-8?B?TGsxOUxlMWhRTGpBYmgvTUFMRzlhMGNlVnZYVk81Und3bkVjd0VZc3kyV2Nm?=
- =?utf-8?B?ak5WMTdUOWR2NXAwemlDNUdrRmc5bGFtV3FoSmNYVHo3dGRNWnFVb29GMXRM?=
- =?utf-8?B?TUZNbEZtV1RmYnV1YTdzcXlwclFLT2VPbG81UzBYVHd0NDBtVU5LN0dYU0xS?=
- =?utf-8?B?bWNUMnZSNlJTbUFxZUV1ZzkwR1QxL094alBDN1V3cllGblNGekx5eklCL2FL?=
- =?utf-8?B?UUhONUJOeFFzcmJBTGRhREloR1VUZUkzazZYRHhuOUN6R0YrbXZHZWpwR0p1?=
- =?utf-8?B?NEFIcWVjTDZzbnZ6TWViV2lPZUFHLzVzRDhnNHJqQVphS0dtbG1DQUxjc1JJ?=
- =?utf-8?Q?Eww3nOg57QzFLDxg=3D?=
-X-Exchange-RoutingPolicyChecked: sghKtisfjE82Ruz4ElsEL0EK/SgRquVdR+tUoSuz68Xjc+BfHXCNSIcLX2ispLS/Nxh9IF0XyIvYLM7ywlqKZQen5tYmguaQ50Dlqp4x7IocAZTp1j/A4q3q4efIby6PIVsqcqsrzqDYiSCaoE6NrbEj1CZyCmsZeJD6fId5bu050EfdXUTb8ytKGpCHYyq6HKBB8ZHGH9NkDnLI+zfIrwIJCVVi3AcO491TIgH/TiYsrrMRzNsTPTtJrnXmYwj/oyXCOZA54DmBzIUW2EfJbjB7DFQBBmZTNUatGaoSp6X9uL+UtHnTxNQb8SKC/C2dnU8s0i0cHQ5yIw0r5X0u+A==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 71286229-bdb4-4678-2edc-08defe1bd114
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 18:00:56.0890
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1frk+ioSWDclLrdjfGe8hOPEiglQk9ykzTkyHsnIu6SVEp31dki4ZW1z0pViYhpKbKFOl+j0Ua2W5oSpILZPtGcLamLu9SgBq1p/XSFg9Cw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR11MB5986
-X-OriginatorOrg: intel.com
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 19 Aug 2026 20:06:48 +0200
+Message-Id: <DKT4CBU8YB5G.2W0766H2NU6Y8@bootlin.com>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: Re: [PATCH net] net: macb: Move macb_{alloc,free}_tieoff() out of
+ CONFIG_OF block
+Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: "Nathan Chancellor" <nathan@kernel.org>, "Conor Dooley"
+ <conor.dooley@microchip.com>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
+ "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
+ "Nicolai Buchwitz" <nb@tipi-net.de>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260818-macb-fix-no-of-build-v1-1-f2a009616384@kernel.org>
+In-Reply-To: <20260818-macb-fix-no-of-build-v1-1-f2a009616384@kernel.org>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 8/19/2026 3:54 AM, Przemek Kitszel wrote:
-> On 8/19/26 10:24, Petr Oros wrote:
->> ice_devlink_nvm_read() rejects a read whose end lands exactly on the
->> region size, so feeding back the size devlink itself reports fails:
->>
->>    devlink region show pci/0000:04:00.0/nvm-flash
->>    pci/0000:04:00.0/nvm-flash: size 10485760 snapshot [] max 1
->>
->>    devlink region read pci/0000:04:00.0/nvm-flash address 0 length
->> 10485760
->>    Error: ice: Cannot read beyond the region size.
->>
->> shadow-ram behaves the same. The regions are created with those sizes, so
->> a read ending on the size is the whole region and has to be allowed.
->> ice_read_flat_nvm() uses > for its own Shadow RAM check, and so does
->> ixgbe, which grew its region support from this code.
->>
->> Fixes: 3af4b40b0f2f ("ice: implement direct read for NVM and Shadow
->> RAM regions")
->> Signed-off-by: Petr Oros <poros@redhat.com>
->> ---
->>   drivers/net/ethernet/intel/ice/devlink/devlink.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/ethernet/intel/ice/devlink/devlink.c b/
->> drivers/net/ethernet/intel/ice/devlink/devlink.c
->> index 8c2b63eef82bd5..a52b6044288975 100644
->> --- a/drivers/net/ethernet/intel/ice/devlink/devlink.c
->> +++ b/drivers/net/ethernet/intel/ice/devlink/devlink.c
->> @@ -1953,7 +1953,7 @@ static int ice_devlink_nvm_read(struct devlink
->> *devlink,
->>           return -EOPNOTSUPP;
->>       }
->>   -    if (offset + size >= nvm_size) {
->> +    if (offset + size > nvm_size) {
->>           NL_SET_ERR_MSG_MOD(extack, "Cannot read beyond the region
->> size");
->>           return -ERANGE;
->>       }
-> 
-> Thank you,
-> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Hello Nathan,
 
-Oops! Thanks for fixing my off-by-one error.
+On Wed Aug 19, 2026 at 3:14 AM CEST, Nathan Chancellor wrote:
+> Commit 5262eab9462a ("net: macb: allocate tieoff descriptor once across
+> device lifetime") moved macb_alloc_tieoff() and macb_free_tieoff() into
+> a CONFIG_OF block, breaking the build when it is disabled:
 
-Acked-by: Jacob Keller <jacob.e.keller@intel.com>
+That commit message is somewhat off: the commit created the two
+functions, it didn't move them around. But indeed I was wrong in the
+location where I created them (argh I hate #if/ifdef blocks, especially
+long ones).
+
+Can reproduce using my host toolchain easily:
+
+   =E2=9F=A9 unset ARCH CROSS_COMPILE
+   =E2=9F=A9 make mrproper
+   =E2=9F=A9 make defconfig
+   =E2=9F=A9 ./scripts/config -e COMMON_CLK -e MACB
+   =E2=9F=A9 make olddefconfig
+   =E2=9F=A9 make drivers/net/ethernet/cadence/
+   =E2=9F=A9 echo $?
+   2
+
+Here is an alternative fix proposal: let's drop the #ifdef. It will
+avoid any future error. Almost all drivers have no #ifdef as such:
+
+=E2=9F=A9 git grep -l MODULE_DEVICE_TABLE drivers/ | wc -l
+7458
+=E2=9F=A9 git grep -l MODULE_DEVICE_TABLE drivers/ | xargs git grep -l CONF=
+IG_OF | wc -l
+391
+
+Yes, I know this means the match table land in the module in !OF case.
+Almost everyone on the ML I've seen seem to consider that it's trivial.
+Apparently it's even useful because some ACPI can match on compatible,
+somehow.
+
+Opinions?
+
+>   drivers/net/ethernet/cadence/macb_main.c: In function 'macb_probe':
+>   drivers/net/ethernet/cadence/macb_main.c:5951:15: error: implicit decla=
+ration of function 'macb_alloc_tieoff' [-Wimplicit-function-declaration]
+>    5951 |         err =3D macb_alloc_tieoff(bp);
+>         |               ^~~~~~~~~~~~~~~~~
+>   drivers/net/ethernet/cadence/macb_main.c:5973:9: error: implicit declar=
+ation of function 'macb_free_tieoff' [-Wimplicit-function-declaration]
+>    5973 |         macb_free_tieoff(bp);
+>         |         ^~~~~~~~~~~~~~~~
+>
+> Moving macb_alloc_tieoff() from its original positive does not appear to
+> be necessary, so move it and macb_free_tieoff() back out of the
+> CONFIG_OF block to clear up the error.
+
+Apart from the typo already reported, I'm guessing the original position
+is the one from previous macb_init_tieoff() functions. Yes I don't see
+a reason for the move.
+
+> Fixes: 5262eab9462a ("net: macb: allocate tieoff descriptor once across d=
+evice lifetime")
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+> This does not apply to net currently but I assume net will be fast
+> forwarded when net-next-7.3 is merged.
+> ---
+>  drivers/net/ethernet/cadence/macb_main.c | 64 ++++++++++++++++----------=
+------
+>  1 file changed, 32 insertions(+), 32 deletions(-)
+>
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ether=
+net/cadence/macb_main.c
+> index 1476bce77f34..96a7e7777e62 100644
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+> @@ -2776,6 +2776,38 @@ static int macb_alloc(struct macb *bp)
+>  	return -ENOMEM;
+>  }
+> =20
+> +static int macb_alloc_tieoff(struct macb *bp)
+> +{
+> +	/* Tieoff is a workaround in case HW cannot disable queues, for PM. */
+> +	if (bp->caps & MACB_CAPS_QUEUE_DISABLE)
+> +		return 0;
+> +
+> +	bp->rx_ring_tieoff =3D dma_alloc_coherent(&bp->pdev->dev,
+> +						macb_dma_desc_get_size(bp),
+> +						&bp->rx_ring_tieoff_dma,
+> +						GFP_KERNEL);
+> +	if (!bp->rx_ring_tieoff)
+> +		return -ENOMEM;
+> +
+> +	macb_set_addr(bp, bp->rx_ring_tieoff,
+> +		      MACB_BIT(RX_WRAP) | MACB_BIT(RX_USED));
+> +
+> +	bp->rx_ring_tieoff->ctrl =3D 0;
+> +
+> +	return 0;
+> +}
+> +
+> +static void macb_free_tieoff(struct macb *bp)
+> +{
+> +	if (!bp->rx_ring_tieoff)
+> +		return;
+> +
+> +	dma_free_coherent(&bp->pdev->dev, macb_dma_desc_get_size(bp),
+> +			  bp->rx_ring_tieoff,
+> +			  bp->rx_ring_tieoff_dma);
+> +	bp->rx_ring_tieoff =3D NULL;
+> +}
+> +
+>  static void gem_init_rx_ring(struct macb_queue *queue)
+>  {
+>  	queue->rx_tail =3D 0;
+> @@ -5507,38 +5539,6 @@ static int eyeq5_init(struct platform_device *pdev=
+)
+>  	return ret;
+>  }
+> =20
+> -static int macb_alloc_tieoff(struct macb *bp)
+> -{
+> -	/* Tieoff is a workaround in case HW cannot disable queues, for PM. */
+> -	if (bp->caps & MACB_CAPS_QUEUE_DISABLE)
+> -		return 0;
+> -
+> -	bp->rx_ring_tieoff =3D dma_alloc_coherent(&bp->pdev->dev,
+> -						macb_dma_desc_get_size(bp),
+> -						&bp->rx_ring_tieoff_dma,
+> -						GFP_KERNEL);
+> -	if (!bp->rx_ring_tieoff)
+> -		return -ENOMEM;
+> -
+> -	macb_set_addr(bp, bp->rx_ring_tieoff,
+> -		      MACB_BIT(RX_WRAP) | MACB_BIT(RX_USED));
+> -
+> -	bp->rx_ring_tieoff->ctrl =3D 0;
+> -
+> -	return 0;
+> -}
+> -
+> -static void macb_free_tieoff(struct macb *bp)
+> -{
+> -	if (!bp->rx_ring_tieoff)
+> -		return;
+> -
+> -	dma_free_coherent(&bp->pdev->dev, macb_dma_desc_get_size(bp),
+> -			  bp->rx_ring_tieoff,
+> -			  bp->rx_ring_tieoff_dma);
+> -	bp->rx_ring_tieoff =3D NULL;
+> -}
+> -
+>  static const struct macb_usrio_config mpfs_usrio =3D {
+>  	.tsu_source =3D 0,
+>  };
+>
+> ---
+> base-commit: 61eb236c41c2a4717015dff18016a75a5eb90052
+> change-id: 20260818-macb-fix-no-of-build-eee72c7cf20d
+>
+> Best regards,
+> -- =20
+> Cheers,
+> Nathan
+
+
 
 Thanks,
-Jake
+
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
