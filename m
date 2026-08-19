@@ -1,66 +1,103 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11022125.outbound.protection.outlook.com [52.101.66.125])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04E4442B06;
-	Wed, 19 Aug 2026 10:47:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.125
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2AA424D64
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 10:50:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787136450; cv=fail; b=fpOSsycOtLge+ToubbFVQiCcSCerVHTXlY+NaXsFEc6xIZ9msiSZfTaLuogrECi2uRhwDNasmWVQjqiFa+siPFSVtBpSfDI8TgTonrr+143gNbyaRa3NiDH/MQf2a3Y03EOhaypiuHI8uy1EBbtNJH6cDP85EY+3+28OnSkf0n4=
+	t=1787136635; cv=fail; b=IyW3MyDY4RImHkj5qjRCO+Fo5Mtf9RJ25frrXWYrbZ5dQIQroJ+vMKc34jTAAg4eEYvekeAF+FkYLB5+vYW0RIarOF/uQRGH2EqI13QCTsymiV6VgjsObb50jAlvm36IshuASnbZQfIqMlH1ezDEJUF4o2/l7U1EHxSSOxFlmTw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787136450; c=relaxed/simple;
-	bh=UNmIimH+XIT4c83LbKJ5WCnWQXzRFtEQW/YO+e4yYRs=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=o1UlajvuSoWQacNbfAG5GiZv3OKgqRlZqxgWS5gMhCt9wIbmB0IWfoXxX1GouDaaTbUNryH/74xedO4e438HOJCdYUL7i2N2dZ4mDtZzKe+55bS9NKadv7RCEleChPxJDz5ly/2U/NMAgDNpapPWeCmPZYpJbtDu9VSVpEVP8oQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=tCyLcjf/; arc=fail smtp.client-ip=52.101.66.125
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	s=arc-20240116; t=1787136635; c=relaxed/simple;
+	bh=O99AhAEpy9jSuUbjToK7EaEm/FD2lgbipjjA4xczexE=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Vib+9RgmaI/MRWHcUNs6HJRRXy80br1DAyfXS3E5l2g5siGLVGR10DWkxJxY1uGw3UNEeTLq6WcUW+2e43MCerZRB6LGNrMpS9dftI57pmrM7T49wMtT/l8VQkJduy9l6AL/ldOfz/ceuy57P570THO83NGjy9/l+nwspB4UXAc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LteOdd2m; arc=fail smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="tCyLcjf/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LteOdd2m"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787136633; x=1818672633;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=O99AhAEpy9jSuUbjToK7EaEm/FD2lgbipjjA4xczexE=;
+  b=LteOdd2mvKNC1qJBHmvOxJPLLg9CSjmBju+iZEJzd6LLyX3WmkLP+KkB
+   fz4KFzWZ6Yr+ERQU1pClJClt5J6OnA7qlMHPg5qaiSqopg8gi7wbMkpL+
+   uQWxQ1vF5+mJXG01d0GoxSlfF8RIadIPEWDmdfJPtMQhnW1Y7GnpaR5Nk
+   tnCXWe5t4yJQffLClIhep0TyiXSB+Q2+u07p0NaXrCE9by6w8iEoCsmFW
+   vSFB8/apv/7nHKroMvJFFx34LB0P4Sf9CrFf4ZgxREDrSF0ZgB/TA8GIC
+   WGy9IKUDK+yS9h4A6YoTIrGxc5V9uVVfdvm3mBOiP5wUYGb28wqJncVoJ
+   Q==;
+X-CSE-ConnectionGUID: 3F2jzGQSR76SdX9nCp2oDQ==
+X-CSE-MsgGUID: 5zEVTqeGRG+CCzmbQdeEdA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11879"; a="105030678"
+X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
+   d="scan'208";a="105030678"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 03:50:32 -0700
+X-CSE-ConnectionGUID: 5HyZzF8WQFmORmwLNznkSw==
+X-CSE-MsgGUID: Tt2X7Z0FSk2l4Vt4GUbwyg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
+   d="scan'208";a="270731050"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 03:50:31 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Wed, 19 Aug 2026 03:50:30 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Wed, 19 Aug 2026 03:50:30 -0700
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.57)
+ by edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Wed, 19 Aug 2026 03:50:30 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L6YrwUDdeldoH+9EXrtRYrcR999GUo7uQY6StJD7x++Bg3mHS0G0sVo7aSGQZmn5Y7ZaN5bKh8MlwrLUtFtK56RPowm+NwrYP51RXHLQYhENBXDdfNHf2OGYJ70RBNuYXlYtN9spFSTWEUc0MjlIyoWP3Mk/ZYQXWrCCfTIFHPtgp+CwA7+4jovm0No4M8A5fPT+lUDP2qa/rRtytNomMvKLlZn/JJHveC7XkmMHS6tqiT9W9yKQqoEytc/gxX+89zbvpl4uepfjAK3CzaVI8nc0F+WtTbPMFVr2mYlNC+g8NANZWrifxaB0zRmJIfC/dDLPbo525S7raUHn8fP0SA==
+ b=x0Y/Msuci4F1xIifxINsHilsxnqyG3Zzlr6pBOskodhqVC6nGOJ9GdTdSmZ36bpuahVqdU+PwcKclPd6YdM9Fg2lHmNKgbxOJdnk5e1vbFRyWhGDzG+DLCa+HBbDds3UAHja/us+VRwi2yG3NmpNVTQPn+p6wwRBkaQLZdvGZTzrXO9In4zOZpQphMJDT5UR3VufPxkjR5N4XyJbthSHs7HhF08PgIQlP3Gyu53I1MxcRoycwz0NCp9b8vBq2/XuNXy5PEqmqA9jjTQApbVT/RJ8nm4t4rZwUZn+AoUD7ynl8S0TBPYLf7E9FNA/miWfxjjpm5zT4XHSDPvsMwu9jQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=espZVcROnoHlq4WzXXqlOdpYL/fHnK+kt59SMgO52DQ=;
- b=BQjl2WboioFOPkdeXVfGQ/bS8zQVGQg25ZuPL/Zs9tP2upUulQqVXlq61qO/KL33Q8PXqcoBxAZ/2fjO9cTK5SwjF5ojgWhidi/uhIJUUpInfAXGkME7LrYRPSRwkvlPKJSAPNOv2eDvEiarJaCeSrqRf6j4d1iZYThRwKiOj1uSh8Wc1f93HcOzuOfHfR+N/NpzFio3Arc6pVVEEmQ1Pr0djHu9Jzb+yM6fWHXbOv3oHvyDfXodwx6Cql1FkgWpp/nXNhuJVXuhhn81gcyoLbaf9pE8YjIq9FtwWzXv6SgTbA7UisyesCr66qpivERPUqltn72PnhNBU3McTpo6aQ==
+ bh=0qV55bF3P3Fr8BsJj9KhuhnlvYHJS193dqX9AwCgx10=;
+ b=k3rtZersNI/U4s9WBo3oW4K1msAQF5IIhsCSX/PUph0UQCYDNCO0kEZBHsDS7xstThPIxydUzXQMn/8NOo3Xk4TqiXZzL4ezhiwFOae9ghF66xnM9rElcXMuXw8Vwh/g4LZkkTR3tdT3s/T3aPtFwf/2/esSIpUeknp/Q/FG1sBtH2G/uCGqmZiDZnj6pKSlNZAdY+K1kao9Z/gQPNyEklnuEoYSdQpZTbhjX00ej0H4cncEwRkRCe9L0a1HLdrS8DllzAGZ8tt0kakpXl1HvyTTUbzyPAiLuaRZAdEiqmLnA9chk92gALntNlAysI/ke2HCPRGe5pdgH3yDAxX6Kg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=espZVcROnoHlq4WzXXqlOdpYL/fHnK+kt59SMgO52DQ=;
- b=tCyLcjf/uk3COBPMinu5CXepFF1TgYajtq+WcF9jJdHjmXFl4n6QqA0jbOrB9mnZDyMmb5UGUOF0VUMU0x5FOyZ66zDCTuzqdd7D+BY0gcLjdYM1zjYDzev9hHKzxcxSojvuSWC0aat/1I069nbaSi98xGtdoHV+G+X+uDeUPdYvQYtD+FGoik5j1YkKZnjr5mYePJT2++1h8otkQZsuLaQ/xOpQsfdGb6gHo2c58EJWC5EHtyj35FYcRTMlWJf/b7xEg9rkYh9BY8/LYtmF8M8tznOi+iecWBLh9L12MPjrBs+SdkGcRCisMvdFLqtLdAaPjnkfizhksWzGcv8I6Q==
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from DBBPR08MB10650.eurprd08.prod.outlook.com (2603:10a6:10:52d::7)
- by MI9PR08MB999879.eurprd08.prod.outlook.com (2603:10a6:290:ce::18) with
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from LV3PR11MB8508.namprd11.prod.outlook.com (2603:10b6:408:1b4::8)
+ by MW5PR11MB5788.namprd11.prod.outlook.com (2603:10b6:303:198::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
- 2026 10:47:25 +0000
-Received: from DBBPR08MB10650.eurprd08.prod.outlook.com
- ([fe80::1b2a:832c:d136:a37c]) by DBBPR08MB10650.eurprd08.prod.outlook.com
- ([fe80::1b2a:832c:d136:a37c%5]) with mapi id 15.21.0339.007; Wed, 19 Aug 2026
- 10:47:25 +0000
-Message-ID: <4266010b-9581-4e0d-abb5-97084c31e546@virtuozzo.com>
-Date: Wed, 19 Aug 2026 13:47:23 +0300
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Wed, 19 Aug
+ 2026 10:50:27 +0000
+Received: from LV3PR11MB8508.namprd11.prod.outlook.com
+ ([fe80::a1e8:1786:e5d1:8e51]) by LV3PR11MB8508.namprd11.prod.outlook.com
+ ([fe80::a1e8:1786:e5d1:8e51%5]) with mapi id 15.21.0339.007; Wed, 19 Aug 2026
+ 10:50:26 +0000
+Message-ID: <53c50cd8-edfa-4fe3-aec7-a6d66194e635@intel.com>
+Date: Wed, 19 Aug 2026 12:52:39 +0200
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vhost: clear vq->worker under vq->mutex when freeing
- workers
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com,
- stefanha@redhat.com, jasowangio@gmail.com, eperezma@redhat.com
-References: <20260723153310.745855-1-andrey.drobyshev@virtuozzo.com>
- <anSMBpQJ8x-vXYy2@sgarzare-redhat>
+Subject: Re: [Intel-wired-lan] [PATCH net v2 2/2] ice: fix stats array
+ overflow via proper realloc
+To: Jakub Kicinski <kuba@kernel.org>
+CC: <netdev@vger.kernel.org>, <rafal.romanowski@intel.com>,
+	<aleksandr.loktionov@intel.com>, <andrew+netdev@lunn.ch>,
+	<edumazet@google.com>, <marcin.szycik@linux.intel.com>,
+	<anthony.l.nguyen@intel.com>, <horms@kernel.org>,
+	<intel-wired-lan@lists.osuosl.org>, <pabeni@redhat.com>,
+	<davem@davemloft.net>
+References: <20260812204619.32253-3-przemyslaw.kitszel@intel.com>
+ <20260817205047.3612990-1-kuba@kernel.org>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Content-Language: en-US
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-In-Reply-To: <anSMBpQJ8x-vXYy2@sgarzare-redhat>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20260817205047.3612990-1-kuba@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR0P281CA0147.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:96::11) To DBBPR08MB10650.eurprd08.prod.outlook.com
- (2603:10a6:10:52d::7)
+X-ClientProxiedBy: LO3P123CA0011.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:ba::16) To LV3PR11MB8508.namprd11.prod.outlook.com
+ (2603:10b6:408:1b4::8)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,165 +105,115 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DBBPR08MB10650:EE_|MI9PR08MB999879:EE_
-X-MS-Office365-Filtering-Correlation-Id: 49806322-614b-4b58-66f1-08defddf4169
+X-MS-TrafficTypeDiagnostic: LV3PR11MB8508:EE_|MW5PR11MB5788:EE_
+X-MS-Office365-Filtering-Correlation-Id: d61d794a-ac8f-4f97-e8b8-08defddfad53
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|6133799003|10067099003|4143699003|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	Ua4JlU9Zb3aOZGWl/skUOpQP/7pW2+X3WB16TlKyXkm6SmcC3ZSbEha3ODL7YFAC+Rb6fBGBQgA07gM8otyr4z81H2Mc5cg04WG6zggRiqjchaTzDsgDsEApAcTkGE/iR6fWjP1R0xZb7hedSYzLVNAkVRto/FWc11Wtu+y3EBxsjEQF5W2WGBF1//3VQYrXZGXA0UUewaBtJyBWARj0BLuMipAw6cZRUhav1yrI5un8B5GqsRecKeYbdkkx5ggfb6O83Q79HedGWpY/BLubZ0qZDIrz2x90NsSdw4p569x32TCKRsnHJzq2Dmuvi9yKKRFo77WWaoNBuqCcGEh0qphQqNWPu1xkg8D4RRmMxjrGhRjwXwYeBimw2uEUceJQWha8KOhciXmFHQfGUD5BTHBtjQQIBbtf8l2NV6ecuJqO7Y8gJgCKalZOkc6Blr3Lb9JTPlQURexQRIUsFQXIj2nvateF6+sCWKP6qAsRiareHUIdjB+5g9GIy5FOcOxSuBEb5IhZmWInjsiWZj/4be0giclAbnRouLBhCb6aA/kDvHmkUYL2IAr0P5sJ1kXa7SqcaSgYSmAUzE8OBeODHRbrv8mLB91cA4/H9dSSYkGCTDvcmvA26QgCvoHAdh1w7n3c/uGi9GkZB5XTVFLu1D5kk7YC99KsVAoNzknALNQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR08MB10650.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(6133799003)(10067099003)(4143699003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|23010399003|376014|1800799024|56012099006|11063799006|4143699003|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: cxFjwEigmXL/Lo/BEM9fQ9mP5jnOLeCfHAiWuINM8wrAhIxlcpCZunzBaLo/TsPL4NUv/+H2mWhjs0I+/mussbxpUuU3j3pqlp4C5ZUynRs/t2daYvakNuSL6rPNevf1Q4E8v2e6koEUY5DrcrHc7VY0fK/54oRTcu5jlKZDCx8N5IS/Aj+oMpHVbUf+gWyumZX/+nrN6K5kJ5lx91AUMCdfE1XrHJ2YdKd+BFR2szN8JqemzwJA97ufZn8pYrOYq4RrURwCnUKIBrjEn9wBpeQvhpwl1gIuHZf+nfZ2NQaEFmq3SsNJWI3x7mywAeMR3b4fQqsYQkInkyu/SI3yOpXqwgMfaaJR/8W3J9KLsxrAtcn2tS4BF+9uMlCcgQ3E7b07fslZzvtuOUZ21r7icWqBjATV390drZR9K8mwvaC5hLzGaG+6JSGGEj0jWQE7o7a0gZVP1Tn1NsW6XYQGEOlI8D+oolunJbDZrsNuRPxe6FzmIMT6bh0z8YGNrJjotoRSJiSZrJjw92Zw2ou0OHb504S4KcimRINo9YAwF7U0PmGKRQMSMWmD6PKcQxxfbf/TYd0dW7ADUpEGrKdM24C1rucaYoZkE6FHBg8TGdd7I3t9OzQTUuOa/4nsKaMqakAfeHleqaEQegUAhIbRWxXfMZGF8wy3dHQJS7rLxtI=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8508.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(1800799024)(56012099006)(11063799006)(4143699003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QUNyeWlkeW8xNVI3VjlaVEhHKy9rQzBkRmowUExoL1JyMHVsbnBMcEVCN0NL?=
- =?utf-8?B?NW1kQ1ZHam55cTA3OHVSNjVpK1JCMDg3U1p3OXpMeEdUZlVyT1hKRHNIVm5M?=
- =?utf-8?B?dEI1bXFpakhSQTlpdHFabTBtbWtqbHUrYVFmQS9jR1hNbFVwd1AvRFlkVk9S?=
- =?utf-8?B?Rmp2RWViOWFYb3Q3aDl5Uk5TWk5GOVZrM1ViekJPMlU3a3pvQWpJV2l4b3Ni?=
- =?utf-8?B?cGFCSlo4Q1N4UUVJN1BuSWxiM3Vnb2htQkoxZkNhT0Vyd013R1pYZXA1YUdL?=
- =?utf-8?B?QnVna0NwRDgwWG1jVy9yWVZnOWtzUDVkTTJOeXd2WXBjVHlFVFpxSElheC9O?=
- =?utf-8?B?RjJjeDFISkdDZkJPbjZqRy9qSzY3ZnJRMEMzS1lLcHVBN2ROaitNcjViU0VN?=
- =?utf-8?B?ekVZUkZUL0VTZ2pZM0RFVHZvZFZ0YWx0RzR0MEtxaVRlRTZBbW8xZWVCVENW?=
- =?utf-8?B?TGVtWk4vUlA3NmxIU2VOTWZVUTF4UHVyTXNwZ2dmZFVEcmtGMzhHL3d5QmhO?=
- =?utf-8?B?MWlIVUNhQWhiVHlrZjdjdUNkakcvMzdLMVd3QVhkdHBzTVA0M3hHa3dYbzFH?=
- =?utf-8?B?ejVWd2lHQnpFTkYyTlg5aXJxWVhxVXk3dTdwanhTeUZXK25UU2FlRlk2UFFP?=
- =?utf-8?B?azhlZklzWTJzRlBBM3AxTEdqT01HdVF2d09kOWxWWThBRzA5cHNTZXFJeEY5?=
- =?utf-8?B?Vlhaa2d1TFlZYy8ySE1RUWpBMFVySjVSVGQ3TGFoekRSRkx4ZklKWGRRdm9Z?=
- =?utf-8?B?MVhmbWxJa1RNb1NpY0UvOWVlRXlpMGVrYjZTaHh4djdXWUc2aUpXVjF2Ym5x?=
- =?utf-8?B?MTZvNDdrSVZTSmRqVkV2YUs4cGUvMGVUdURzYm15c3d6Z3RrYXVNNEEwcTRO?=
- =?utf-8?B?QS80YmpYK2FLTnE2Si93d3lwZjVrZXg1YUF3YThmTTQ3QWNrdFNkODlvUzRt?=
- =?utf-8?B?MW54ZzNIVktFYnNOYWZvdTcvR2FteU5MK3p3czEyQk1OTnRyNlpWeVAxdm1t?=
- =?utf-8?B?YmhEMkVkV29ucFNWSWlkMk1mZFJ6ek1SVDlTUnFRbndvWG0vM1VhRSsyaHRt?=
- =?utf-8?B?L2xVOTM1SkV5YysxM2NWUUxqSjhncEpxME5USnhWbkFkWjNtNmFGUnJncjZ4?=
- =?utf-8?B?Qlo5Uk1jeTdmOXc4aHp1Q2k3NE1UekZSd25VVG9UT0Q1OEUzanhwSC8ybk43?=
- =?utf-8?B?Nkdtb1U0aEJHcE1mazQwdG9VVENBS0M1bVpWc1AvZlMwTEVDYzBaOWxseDZ0?=
- =?utf-8?B?Z0NrS1dZd1ZoN3lyWWQvWmh0cW5Hbzh3YW12UlJsN3piMnZqUmJJOUpKdzgx?=
- =?utf-8?B?Zm02YkdQZy9mWEZYcnlOcm9TOFRZUTBSV01YN1hvMWVEd1V5NEZTbVg0M2Yr?=
- =?utf-8?B?VENuNEw4aGZrc3l6a0wrWm4zcVVROU5rRUp5dkhKam9EUE9lK3ZDSmYyYkZk?=
- =?utf-8?B?UXRxaU5pZEVuSXRGYTVJR3htcUhmR0wyOTc0dXZuTC9yYWhGWHhhK3paMGxH?=
- =?utf-8?B?eFZVTHpXdlhvdzhENzZHZDhuTzBiVzlXZXJLWnNmTjY4RFlQUzBjVFdGKy9n?=
- =?utf-8?B?VUR2MWdZZmp4Y25yTlVrSEwyeityWGRmU09QSXo1MHg5bUJUS3NoUGRFRjB6?=
- =?utf-8?B?VTA4bVZsTVBwQmZVbVFkdWt1V0IwQWhNR2RFRitVSXdDRGJMRldEdkVwWGUy?=
- =?utf-8?B?NXg4R0tPUm9qR2NlWTVDdkFmOU9qQzRUcGZsLzVMYmdPVGJMemtPTEdwTGls?=
- =?utf-8?B?QnNPdDFFcTZBMjBSWGZIMmxHQUI5bXF5Y3NKbFRwYzdFeGdTUmZHaERmc2lH?=
- =?utf-8?B?N1FsanlNa0lPcHgrUThiZE1QSHhuL0lEVnJBQ3JBL1hrcTRkSmFWV1ZlWGk2?=
- =?utf-8?B?LzlqbkpUVUpHQ25HZmFjVUZ0c3VLaXdCS3VYamMvdDBFNmgwU1pEYWNKNkt6?=
- =?utf-8?B?eEVpNnlaenBTWW54Ylc4U01IKzRyemx4L2VKeGY1UkNISCsrNC9HUjl0bUE2?=
- =?utf-8?B?MndWZG5PV2dXdWRVT0NYQkZ5NkhKZnJ3VEtzdFlaTTJuR29xUUFiaVlheVRW?=
- =?utf-8?B?Q2dwU3NGZUJDZlVSYTQ4WjFWanJTQ2J1aytJL2tOcG5LaTZqR1NtdkNnZU8v?=
- =?utf-8?B?WWVNRVZRY0N3OHFKbU1YVk4wK1doTytBVmpoNkUvc1BkSEVmQkhGY2UxN3dB?=
- =?utf-8?B?TnJCcHllcWZhR1JleGFaSUtBRFFvcFVEbEVNWHFsc1Y1UmJrZ1lhaXdFYnNs?=
- =?utf-8?B?VFVtNTVNelhKSU45SkFicnNzczRlR3VaQVRPVlI2VjV2NzdJN0gybkxlbmRh?=
- =?utf-8?B?NUpURnhNWnk5cmV5eDB0alVrekRlejM3Y0J4NG1yZHg0c2h0cTlSNFFTTXg4?=
- =?utf-8?Q?ZGjwp1Tw+cq1p0kM=3D?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 49806322-614b-4b58-66f1-08defddf4169
-X-MS-Exchange-CrossTenant-AuthSource: DBBPR08MB10650.eurprd08.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aU5xU0RHc2tpbjRWRnF4NVZ6ZHVXOGV1RVZmVmZtMy9rWDZRUnZFOFBOSzFM?=
+ =?utf-8?B?NHJmLy83dXl2aWgrLzlWa2lyZUcvVHU1ckJXUVlhYXV5NTJrSGhvRVNmYVBY?=
+ =?utf-8?B?K2VXN1Zhd3RtdnIzamk1bXAyK0VNL1pBRHlLWG84NDVXaDd1YlVPamQxY3FZ?=
+ =?utf-8?B?VlZtd09Gd3ZaUldFNEFxZmNCVVROMXNONTNyWXQvU24ydnRROUZSSmdIeEJI?=
+ =?utf-8?B?c0xtSm9FMmtBV0dRWUFybktIN1doSGdPQ2gwZXBHdkNBY0dTSHhONzlrWVJJ?=
+ =?utf-8?B?YTgvZllaY2d1UEN5ZFZyZGVPUWRjMWxQQzhvVXBhQ1k1UmpGaEw1dk9PZDg3?=
+ =?utf-8?B?d2licVdoYUdYT2RmQUF5NE5OOXlRTFFIamFMTHBCcWRTMG9LbzRuWFhzWUt2?=
+ =?utf-8?B?QlZFTUlPalo2aEg0TGdWL2VSOVdpTkdmOXYwWkEzdHA5T0NHRlBtczRwZUZ4?=
+ =?utf-8?B?cmhoQ1hPK3ZZV1BRVzFHd3hYTTJLZ1dsVDA5WmNEeGhIMm9XWWxtRnhPMk1q?=
+ =?utf-8?B?eWpBNXFteUFJOVNLUG5OMlZ5ZnpWMkVIM0lmRmM4a0QvK3d6SHJ6djY2WEpZ?=
+ =?utf-8?B?MXFWclEvWGJ1OFhLN2VNS1FBYXVWRnRtaDlKcXkxejdaYUtKRUxLRTRYcGtp?=
+ =?utf-8?B?T0MxaXFoLzNRSDBXNnU4M2ZGZzV4em0wQ00rS2svYXVXUmxWTHVVOFlrM0J3?=
+ =?utf-8?B?ZmlIZkRITHR0aXpabzhuanZ4UEpFdG5zQW5UK2dZRTVsTkx5Mm9XSjd6akt4?=
+ =?utf-8?B?YnFpaU44cUVNYmNGVmltR1dJNGE4WHFGczN2a0FhMGtsM0dGNWtLMzc3ZUw5?=
+ =?utf-8?B?V0lVZU10YmtZOGRZRmlmNHUzZXo1OEprS3lwODNQUU0yZEZXS0gvY1NXYWt0?=
+ =?utf-8?B?RHdrbzZuaVNjTnFibmZHNWRpYWxjM2RRSUlES1JZY1NZK0ptYzk3TWt3bU56?=
+ =?utf-8?B?czB3RzFUNnZhRGt6ZjhZS1FndTFENUlod1F0S1FIc1ppcngyV3ZDK0F3S1Vj?=
+ =?utf-8?B?ZEg0MlNoaC9sWm5KYUxneHdGdW50c3IwazlZUUFRV2UraTlwZHJHRk5GWWZE?=
+ =?utf-8?B?ckRIWlpwRkE1SlBGdWJUR0k5REthVGlMSklmWWV3UDN0MGEwSmVWZno5eXpW?=
+ =?utf-8?B?d2FJK3h2MS9hYzlZNStlMjMyVkltTitWNmwvcm5LREFROUo3aGhrTGVWUENr?=
+ =?utf-8?B?Y1pEczFzdnA2QzNSQzlCS3ZYMHRKSWxlRVV4SmpadVZtenJNb2tCZmxNdDRO?=
+ =?utf-8?B?SUdMdi9tZ0djM3NyMzZTdzRzSnJLU2k0UjREaFBMelRrWURsSHNmM3RNbm5Y?=
+ =?utf-8?B?UkJtTFdPSzA2ZmYzK1BNMWpVOWU4aU5KOXpqaVBGaSsvV2RuY3oxdGNaL3R4?=
+ =?utf-8?B?aW13enZ0Z2JvZUJ3bzVQbjRZcFdBZjRnNStKK1FTZXlQSVFZYzF2a2s4UUxE?=
+ =?utf-8?B?YVByR1UzVndUUnkzNC9xcDN5Mk96eWtNSkpSUFNQdTFwTzdtVVVWcVNKcWlS?=
+ =?utf-8?B?VWRVemo1VndjRjZVZUlaVlBTSU9UU3BqbjUwV1hrdllqcnpkUGxrRzMrcDhT?=
+ =?utf-8?B?WTUwSzFuQXUyMWdaNytMeDVBdEVYZnl2VTFRWWxKWmpVekhBc2pEV0dJVytM?=
+ =?utf-8?B?c0Z3akp5YjhRZ2x1Z3VsZ2p3NWRZYmRaSDlpL0lnRWl5ZitPczYyTzN1SCta?=
+ =?utf-8?B?eVBaVzFpNnZMdzVISnZidDV0Y215TXp1VmNTTTF0NlpZUHFBNEJ5cDBHVVJE?=
+ =?utf-8?B?TUtBMXpQcTJuYXFtZDNOT2M4UC9tTlB5V05HVTRjTHBJdTBJS2duZE9uaGo3?=
+ =?utf-8?B?MVQxYW00OXlDdmZzOXhTTERUSVl5bnZCbW9qeU5LaGw1NU5rTys0eGRMOElC?=
+ =?utf-8?B?OXhZM1N3TEpXQzJrY0pCd1FsQjdnbVl4Y1MvTE9Va3VFMVdWTVcxY0ZNQ3hE?=
+ =?utf-8?B?Wm0vNDdERXQrZTkxclpmcHAyOWJ1OGc5QVpvbEpCNkQrMi9QbEJRNnNiMU1h?=
+ =?utf-8?B?YTl1VFNDWjBRQ2hqQkRqSExrd2VIYk51Qm13SFN2S1JuRTVKRlBTRUV2dVBw?=
+ =?utf-8?B?cU90aTVDVjdYb2hmcVVJQXdTM1FqUFN3eU1sMWFVMmZQSTk5dGc5Nnd0OUgy?=
+ =?utf-8?B?ekZxb3lVSzR1djRnL3U0WTJLTnVJZVo1RE45NXp6TnpVcnpQV0h5dmp6L09k?=
+ =?utf-8?B?WHF4eDY5Mjl1dmpieExTQ0dNdllpcmZqQmdlNzFGV1Fkb29BNVhJM2NXMjRn?=
+ =?utf-8?B?L3RIcjFXelhlaXMwTkRqTXYzVWh3Ryt5eXFjMjBkOGl5TThmYlo0alF6UWs3?=
+ =?utf-8?B?M1d5cmJSNUNMclVDMVlwTGVJeHJLNGZ5dTNXaHc4MnIwOEZMbEtMdjg0ekFK?=
+ =?utf-8?Q?SJIA0pdDQIweykyU=3D?=
+X-Exchange-RoutingPolicyChecked: QWZP0vawfBt+pgpWOad0Lx6mSSKXpfNVWe90CTkQ7aAxD9v59Laumm6UQPbID3rgPlCBRgN6xrN69itwbIz5bsqdFya59mR8JaDwzu9IwXYrMKW/TBEum5xatbGiKd0X49yywSCh/yXMa8u1/MkuS2athF0UygCCFIyIghwxZKusco8PZjBhjlcoUwtIhWhIyvcmpRSzhdrGvCOZoCoiYM0puAr9+O8hGREqJD2t3HKssN080WqRs0ROzkMrx+FYL77IcbiIqinA5tvX4Xs+ZjDXyNv68+BB39+fUMRuawSYceb+ZFkRQRaZX/PY+/Zejp76AzemxI1+jQ/4dS6a9g==
+X-MS-Exchange-CrossTenant-Network-Message-Id: d61d794a-ac8f-4f97-e8b8-08defddfad53
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8508.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 10:47:25.1160
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 10:50:26.3114
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lrN956n3mglPTHa/8Nao0HtidJAYWfNGfog7ZaiF0OrDFnCHm5k01gkYFDU8JVDaZagp4bqW0OHbQpnqD7UNcJ5+OaJKh1MbEHaqEqZqkkU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MI9PR08MB999879
+X-MS-Exchange-CrossTenant-UserPrincipalName: N5mOuP2ipyppEspkrdGvDahKQUTBSiKLwRaSupSt4dpMnDTB8VxDBTo3fuFQBzueb+J4qwVOgAXFoFvbNKXP2/34H7a5VHvaHnGPRxFpSS8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR11MB5788
+X-OriginatorOrg: intel.com
 
-Hello Stefano!
 
-Sorry for the delay on this one.
-
-On 8/6/26 4:35 PM, Stefano Garzarella wrote:
-> On Thu, Jul 23, 2026 at 06:33:10PM +0300, Andrey Drobyshev wrote:
->> Every other update of vq->worker is done under vq->mutex - the worker
->> attach/swap ioctls and vhost_worker_killed().  vhost_workers_free() is
->> the sole exception: it clears vq->worker without holding the lock.
+> [Severity: Low]
+> Does moving the ice_vsi_realloc_stat_arrays() call change what happens when
+> the stat array allocation fails during a rebuild?
 > 
-> mmm, vhost_dev_cleanup() updates vq->worker without the mutex too IIUC.
+> Before this patch, ice_vsi_rebuild() did the realloc before
+> ice_vsi_decfg(), so a krealloc_array() failure returned -ENOMEM with the VSI
+> still fully configured:
 > 
->>
->> The effect is harmless in practice, as this only happens while the
->> owning process (and thus the whole device) is dying, but the lockless
->> write is inconsistent with the rest of the code.  Clear vq->worker under
->> vq->mutex, like everyone else, so that all writers of vq->worker follow
->> the same locking rule.
->>
->> This issue was found by Sashiko AI review.
+> 	ret = ice_vsi_realloc_stat_arrays(vsi);
+> 	if (ret)
+> 		goto unlock;
 > 
-> Can you share a link to the review?
+> 	ice_vsi_decfg(vsi);
 > 
-> I don't know if it's common or not, but having the link in the commit or 
-> after --- will help the reviewers.
->
-
-Sure, will add the link.
->>
->> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
->> ---
->> drivers/vhost/vhost.c | 10 ++++++++--
->> 1 file changed, 8 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
->> index 4c525b3e16ea..dbb6cb5eccea 100644
->> --- a/drivers/vhost/vhost.c
->> +++ b/drivers/vhost/vhost.c
->> @@ -722,13 +722,19 @@ static void vhost_worker_destroy(struct vhost_dev *dev,
->> static void vhost_workers_free(struct vhost_dev *dev)
->> {
->> 	struct vhost_worker *worker;
->> +	struct vhost_virtqueue *vq;
->> 	unsigned long i;
->>
->> 	if (!dev->use_worker)
->> 		return;
->>
->> -	for (i = 0; i < dev->nvqs; i++)
->> -		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
->> +	for (i = 0; i < dev->nvqs; i++) {
->> +		vq = dev->vqs[i];
->> +
->> +		mutex_lock(&vq->mutex);
->> +		rcu_assign_pointer(vq->worker, NULL);
->> +		mutex_unlock(&vq->mutex);
->> +	}
+> Now the only call site is inside ice_vsi_cfg_def(), which runs after
+> ice_vsi_decfg(), so an -ENOMEM there unwinds via unroll_vsi_alloc and is
+> propagated out of ice_vsi_rebuild() with the queues, vectors and rings
+> already released.
 > 
-> Pre-existing, but IIUC vhost_workers_free() is called only by 
-> vhost_dev_cleanup() at the bottom, after a loop calls vhost_vq_reset() 
-> on each virtqueue (without the mutex) where we already set `vq->worker` 
-> to NULL, so IMO at this point it's already NULL, no?
->
-
-You and Sashiko are right, thanks for pointing out.  Previous workers'
-update in vhost_vq_reset() makes both our update and our locking
-redundant.  I think we should just leave only one of those functions
-updating workers.
-
-I suggest we leave vhost_workers_free() as-is (this patch), while
-dropping rcu_assign_pointer() from vhost_vq_reset().  Two issues with that:
-
-1. vhost_vq_reset() is also called from vhost_dev_init(), as an
-initializer.  But we can simply add workers' initialization to
-vhost_dev_init().
-2. In vhost_dev_cleanup(), we'd have had workers already nullified
-between vhost_vq_reset() and vhost_workers_free() calls.  After
-suggested fix - not anymore.  So that's a behaviour change.  But I don't
-see anybody else touching workers before vhost_workers_free() on cleanup
-path, so AFAICT it looks safe.
-
-Another note: I initially based this patch on master branch, which is
-wrong as it doesn't cleanly apply on top of our previously merged vsock
-patches.  I'll on Michael's mst/linux-next tree and send v2.
-
-Thanks,
-Andrey
-> Thanks,
-> Stefano
+> For the ethtool -L path that leaves ice_vsi_recfg_qs() in ice_main.c with
+> only this recovery:
 > 
->> 	/*
->> 	 * Free the default worker we created and cleanup workers userspace
->> 	 * created but couldn't clean up (it forgot or crashed).
->> -- 
->> 2.47.1
->>
+> 	rebuild_err:
+> 		dev_err(ice_pf_to_dev(pf), "Error during VSI rebuild: %d. Unload and reload the driver.\n",
+> 			err);
 > 
+> The same outcome was already reachable pre-patch through the other
+> allocations in ice_vsi_cfg_def() (ice_vsi_alloc_def(),
+> ice_vsi_alloc_q_vectors(), ice_vsi_alloc_rings(),
+> ice_vsi_alloc_ring_stats()), so this adds one more allocation to an
+> already-destructive region rather than a new failure mode.
+> 
+> The commit message describes the move only as:
+> 
+>      Also drop one callsite to avoid some duplication.
+> 
+> Could it also mention that the previously non-destructive failure path for
+> this allocation is gone?
 
+I see no point documenting such minor details in commit message.
+
+As a whole, this patch trades a real bug - memory overwrite -  for
+a slightly different order of operations and slightly different
+failure point when there is no memory
+
+ > --
+ > pw-bot: cr
+
+I would still like to apply as-is, it would be better to spent
+"refactor time" on different things in this driver.
