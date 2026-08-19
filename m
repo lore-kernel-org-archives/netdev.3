@@ -1,180 +1,221 @@
-Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazolkn19011037.outbound.protection.outlook.com [52.103.43.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04E92F1FFC;
-	Wed, 19 Aug 2026 13:07:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.43.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4FF31B114
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 13:11:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.181
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787144860; cv=fail; b=QMFRxeS8HN2DJGjiXdx1ev0n76n2ZGEQBIfANeF0ZlaocmbmCiU9IWjzwtVmWueSZRPoJFv8Us9NIGhdNQ5SFbkUdUwJLy/gCFxZi/JMj1uXxbIX51aShvXhRDdGb4twEo/sqPKteM+43QPf2QpXW7EFCerG/FU0GsqZRbIHaDs=
+	t=1787145087; cv=pass; b=JvnYuujoF9gdEvDRq/6Hi5QwB0Bnl+pSiyvPIpd8+zVOJUYLjMYCWudDCzMYujhPONdBMzVH0IPWq/7y8RO1F9I3L2He6oXS7QuxbYkN5mHjwvwBzFfoe6bb+m7gaPKOszxXGyNLyd2P1rfLOL429my+toAiMEW3N36lY+IpGu4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787144860; c=relaxed/simple;
-	bh=UmEdyFKT7F0ysB9iQ7WkA9sCrUpN12EdREGRv+t50qw=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=MbSVmmZCDZx7TaLwa/ok7lpydKSY4/+jaoirgX5dZD999/Ku5GW1t2ZU+ICFFaaBs32EXRuzA9OyZ4L70TuIzHxMCJW5HWLhZyOHNeyTHrm1rM7V/2m9uB7y5i+wY5IogoxFEDKEHv1UGe65/K0V8ijlHeDnMW1YnkhWAdpyh9Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=TvuYglUa; arc=fail smtp.client-ip=52.103.43.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+	s=arc-20240116; t=1787145087; c=relaxed/simple;
+	bh=jZA7PfmaHwVlgmpuxRi0/nvXo5xy/5VleZLudxxD3uQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CzMEqb7DPMI/k70v+sDYsLic4gYWokFAj7FnwXZKnePO4XHawDmc/vNvs3u9suJAV0+8sEODeM4H0TmpVVWZbgRcV1wQ1X1TXrl1XRjEmyWKSNM/3RwWQzcw9GsQmAznRAAszykbDjCFC+VLyLGfHszB0B+XrC31k1kroG85OJI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BSPSEJ0z; arc=pass smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="TvuYglUa"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dk2xVhQ8nbQN3WLqfqnxjS5ocOdJNIJAKolBo4pzn7oLU299p/1/Y0pkGyYCkeGUvoJOdNk2GqU2L6nWO6THVGelecvcYnzUToOJvXN8SH/tOvKXKXT6ZjJIn3JJ2VCiggyRDjC/AtF8V9FtaZi8s43oQfJMpL4R9UDf+iCxI7mdHW1FRsbakWst0ibMfGifCBDue1YvUTAknQOgvosM8uvXdRL8z6m7ipifVAZlAsUAFT3AL0/FBkK7FmTVKDXBKwfAbWGd6ajxKRJPajxUm4TvUBMP3zE1vJxSirZDNP6aQhnVGb5vB9cLV9Zw8zdKqahorszyZwwvAnjNHjCelg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7IC+rm5B4Z35mmDobDih63+36XzG2WyaObbskCPThrI=;
- b=G11RX1OfP1kwFZZZS+Kz5oyBz0BKfBMmnJa/WZ0XzATIU4cF/RS4ccXgDc0m7nZxHmyM4Gh2G7oO22DodmSNZxXef/V4RZkIS1+puwduD4sskBPP2gJmk2X09CJpQiu0Al8vLJfT75iTQBGjcQKLC1tylUIu65wY4E7qRxlc1njw+VORioboRHxRrprriHVwtYlTh53DJuDNFPasm4oG0fQIYhmaqAGUGGKK2QVEQdvS49Voa2/ErHl3+jHtDjhxzKR3zslrzl/iTYbfkx0RjoXesFO9YSS4PIh462+TgbfZbC7hNkZKQh9UZbGm2vKf2OD190Aap0rZPn7WiwW8dA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7IC+rm5B4Z35mmDobDih63+36XzG2WyaObbskCPThrI=;
- b=TvuYglUadnxc9lnWrTMplLUx9u0tP6Y+9zA2K9MPqysnfFXXfM1NQzYvF0eTbGrzVZUETz/mR1wcnO/pyq4IXoO/TWKCNVPwL4yB+TK+mOb8bBSpHwKrz89ygr3oXOk5iDOTqw8OVc7svftXb4CAZSTliPFvfbdl8MSTBl47c+gJ9A8CZ+0AClnhlcBVQVJDeq1QvBkafVUp9xG7i8RolAgbR0T7apLNRH7QePJ0p6f/l4qe547LXLZefvB8qi2Ovp8hfXfeUSe1Kg1qJh5Q3HJQYjdocaAQQZMWB095/P6SuG26afw2ti2pOZvnZ9AMZuqnGQQxrEWa1O7/cymcfA==
-Received: from OSZPR01MB7795.jpnprd01.prod.outlook.com (2603:1096:604:1b4::8)
- by TY4PR01MB15904.jpnprd01.prod.outlook.com (2603:1096:405:2c7::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
- 2026 13:07:30 +0000
-Received: from OSZPR01MB7795.jpnprd01.prod.outlook.com
- ([fe80::7a31:a23c:129f:8288]) by OSZPR01MB7795.jpnprd01.prod.outlook.com
- ([fe80::7a31:a23c:129f:8288%4]) with mapi id 15.21.0339.007; Wed, 19 Aug 2026
- 13:07:30 +0000
-From: Shiji Yang <yangshiji66@outlook.com>
-To: netdev@vger.kernel.org
-Cc: Rex Lu <rex.lu@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Shiji Yang <yangshiji66@outlook.com>
-Subject: [PATCH] net: ethernet: mtk_wed: increase WED v2 WDMA RESV_BUFF to 0x80
-Date: Wed, 19 Aug 2026 21:07:07 +0800
-Message-ID:
- <OSZPR01MB779537889255E2F606E47EABBCA52@OSZPR01MB7795.jpnprd01.prod.outlook.com>
-X-Mailer: git-send-email 2.53.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR01CA0004.apcprd01.prod.exchangelabs.com
- (2603:1096:4:191::22) To OSZPR01MB7795.jpnprd01.prod.outlook.com
- (2603:1096:604:1b4::8)
-X-Microsoft-Original-Message-ID:
- <20260819130707.15144-1-yangshiji66@outlook.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BSPSEJ0z"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-527e352a167so5977821cf.1
+        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 06:11:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787145085; cv=none;
+        d=google.com; s=arc-20260327;
+        b=QSIPgCiu7EB5s4gZZduzlGqLscix2ZLCFF/aSDPl9kHswH8VMa13ByT0Bw3P+e9Qih
+         WOfHVW1Onby05nSrwrrfpUcKxDrbq3aXq3HW1GGDK44jowm8GDMEWYsWW0BBPciwvRUv
+         F8cCWVXb2tSqYEeQKKz9LylGpgGOdeS7BrPS1r6x8NW+EpWoj0GxxPfcswqhuU/tg22A
+         nn301HEFqGGRnGgFRsYIM2RRjk56mhah3ZahkqVyDSvoTHfKOZS3/Tgw3Fo56aC7lFn7
+         NoWYFv3idzbx0VCtHVXGZ/A1GW0sZAdEzDWL7jMMnHPWQaS72w0DSwnFi6kSocfI6iSR
+         3bcA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fXOVCIGJalaSc2ZC+AY298+lQiGMbwLhDsw79HHVzFA=;
+        fh=NLF5nafIvqM/zmpqWkw5X4Yp+OoanLewg96ou0+7umE=;
+        b=VFyQb2YWjUyp3FZIIEixq1tI5qq1dSyox2z2UevuVVHMrFbRTuv4dawxcK/jXrNbIb
+         7xZCPDXrH2iwqxEa4CqWZcJC8QaJ3YrS13KDbgcQ7mhM33w3+Z5VVWAJJXRDpGlRBY/6
+         uJEhBZuLQILqDUSrkzp5uu/b0BR98x4yUNHxZn20N5Nde9c3Meqj/z+Atzmu2zwQzfAs
+         drDlyC4hIzSH0Tbb+wP32+Aoiw4p+5t0tWLIiAMp/hxSCg/BOiJDvpND8DSIiyVR0eP9
+         3HUru45Tb0VhjafumLZkgRD7BqbGTZL361EPthMD6kckndmbcMcYtF+RKNXhVPY6u9H+
+         wm1A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787145085; x=1787749885; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fXOVCIGJalaSc2ZC+AY298+lQiGMbwLhDsw79HHVzFA=;
+        b=BSPSEJ0zBFfi5ilSoHahB2OHXXEXkEeLQ7nz0T72KkNHa5coyDw0oKJCGC9We9MzY5
+         t/dbU9/6zTwMP5gdjRwIljJMm75UYZ7uynwpDueNEbOZmbzycjXz4YWLhM2otPGu6NAg
+         xAzuvwGpAwsjGNx/i2QXK93QcADkvoPYi1PZsdt+e+vX6m0JCnEzVTEEULHEJlMTKfOG
+         KZDCuRjl96pkII8bmD0IcQJyyUKiYyyyZsk9gWAsG9R+yx5DekytN3ChhRiZErgdDiFB
+         CzQnh44z1WvpV9j4+U3MjXfG5G/IIqYI/q0nSGo2mEqEX8bHd93sCSjC2Iessp183akK
+         ZvnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787145085; x=1787749885;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fXOVCIGJalaSc2ZC+AY298+lQiGMbwLhDsw79HHVzFA=;
+        b=ocgJc/rSbeCSNb3AjoHiq7NFzaBOBZMtdPIBZGNGE0EEkXnURBaG/88BbX1uKkfoYX
+         6cTfsmm4USkZ58xS+llCFZg13r7TaQT48MUugEPIZcCO5/MXdkVr+S8D+L24/BcbhZuv
+         iRE3Rnvi7CKxB7KlWkACaJdNJ68bixfKz0dy+HKTPmQ4k8Qoqa/cCGsHFlBj3lE3e9CW
+         C007PjlojmgZDlxwRQRG8WtohIks1C9Sh2dHNXHr6CIHYfKL6El8f9sjI3pt6Pmdpfxe
+         lWRSs2vOxyU9R7f8BNhPrQBnctIJ4rVjnMQXTmc0Tb2KyJ9DdmZ5Oe49L/u4Ps7IYL2s
+         S3ww==
+X-Forwarded-Encrypted: i=1; AHgh+Rr/0uAU9WMkhC5lFUQLKG4zGQNL6sg+Ghmr8nPerG5l+9QMWA2v7rB1nFsF2SrlM49FFuBgYmQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNOSWtT2ybmcYyxbYUMvCAcK8oiP6axPl+C3x4VvWv19dXwJTo
+	SJPItpXGBUZX/2TojX8Z2lOlm40gSvOfbKc+GOvm4BW7eWtuTTLVXjL9gfIuoMsmYqpVud+Ng70
+	SH0+jFNBRHY/NrnDA6L+W4mM8wWFenoxrQPW2d0i7
+X-Gm-Gg: AR+sD135sDx5Htdf90md4Faqer1i3Xho6xGdWGxbfd/DgbFxHdgEjuu/iINd/A5m6lU
+	tKA6XBb37qpdN9USmlK/K0TWXLHxRrCcQSlODagl8mLy2GCt8Hx+qZUrhUNLz8X5JtUILw41FGe
+	IRKEDgZo0REGNbjDQJgMRsvuLM+AohZWDtgKLjIUwCKq/6tFILnjmf7Bz+fo/dFrioaEZxZqTFz
+	d1QUgJR0i3kCEfYcmLcfmpoN9v/05wzY8mguKT9sTGd8hf/uoDAVIo25TpPNTQA5hmh2oh04sT4
+	lXrSM2d3iJ0GWh0duhonixjEy4DLyx6MkkXLOlTZ/e3t85iS6cbq/cb+CcdmHUFN/YxkuYVOd13
+	NLdcKgTJleBhktmJtejh3L7aJkMAzAtNiZ/H7J3WzpXKTDeZezcK2ztrmCnPxkTxXQ8ZAxK4xU/
+	hAYKOEYCWRvDOB/4o=
+X-Received: by 2002:a05:622a:230b:b0:517:580c:bcd3 with SMTP id
+ d75a77b69052e-52dd57ae120mr44284371cf.19.1787145084309; Wed, 19 Aug 2026
+ 06:11:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: OSZPR01MB7795:EE_|TY4PR01MB15904:EE_
-X-MS-Office365-Filtering-Correlation-Id: b7f6b1a1-2f16-43da-37dd-08defdf2d318
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|8060799015|19110799012|22091999003|24121999003|5062599005|15080799012|24021099003|25010399006|5072599009|23021999003|4140399003|40105399003|53005399003|1602099012|10035399007|2607281247196008|440099028|3412199025|4302099013|1710799026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?TeCwjrgJx3aBAvekqOJEbckA8GbG3ny+JxQ4oBFUTbvpGer5R3x7+qWeQY9y?=
- =?us-ascii?Q?gdXElzW13Be+00Wmcs2GrDD40TlqLHa3lt5+4yTu0BZv199WBQFnRBm0InjA?=
- =?us-ascii?Q?ZB0aCwh2KlA6kpFRa5WBL2hhm8YDjVGAxRws02Y+3YFqNKIcO9gLKGx0XFXc?=
- =?us-ascii?Q?lFqJfddY/4JajvwVGvUflboJSEaI/+6GX47/mZuVJ2bEpIvWDJ7/WvEl+abO?=
- =?us-ascii?Q?k4GEFj3073Gpw8LgCPnYiah+aN9P6v2rZiCL02iukUCjbVpCloR2WdxvPLBg?=
- =?us-ascii?Q?1jkGGfhc6J8UVblLzwKAUMj6B/KDgdyl1DsMcqOji1zhi10qIHFJjNEZQoPi?=
- =?us-ascii?Q?HhxhiucGk6hb7mLp/Qlx4VGfPIPnuZJhSkSL97sttc2c2HhiDXb9m3U0My4r?=
- =?us-ascii?Q?EddRTO+c7ePikr6pEDCtsnTu4Ttt/0WTh7+m0hYXBcLrfB+d7Ve+MjrPMUws?=
- =?us-ascii?Q?QnDkzquDF+gDl5w+svSPoZXg2bNkKLlM1vRz1g1EXQK3Wh/2F3ACNrm6WuvH?=
- =?us-ascii?Q?huXo7RzDLncpdVWg6rOPYt6kcndipCYAHZMLrbCO4c/7zfRr+8Zd4NXMQ41b?=
- =?us-ascii?Q?Ws57qhUGLBfruFWaqijsvU/9n2j6x2v1aljqlcsUEBYDeqYUfB6w+jnik4jB?=
- =?us-ascii?Q?gOzwFk9cvKI2G+5aZdVgoZH4b4AfDfLybsYCjbkshMJQrEZbRbgGgSmMHeir?=
- =?us-ascii?Q?dQ8YsG1mJkRUa/T0Cldl6cDkehMdEz+mTDXsvrKJCCdynPF0hzdyKLoIAZvk?=
- =?us-ascii?Q?LJPp3Sol/U1g15ZsdF1QAJxe30CyUAHy2adg9+lR6WnpzXcEBT88ePTg+WR9?=
- =?us-ascii?Q?5u2LJOTYSralUwEXENVhildIfr6juDneFuJTqRxoWv7IlkbiBbxxKWb3LHvA?=
- =?us-ascii?Q?/9bTeRUciJtRXrsh7+nxIvVOFR6/e1fC/Sa6gPC7X8kRf2JUClV/l11rQJZ2?=
- =?us-ascii?Q?Fy3aXCidTHoe4bxJwDt7zZdJfPuLT2U6O4UkVwZHdN4wCKL9jOBqdnGbnRB9?=
- =?us-ascii?Q?RswlGi+V+UstplpjK2QuRqukdWDJv2tFN/rBKCWSi+BFPHjz6pHU+jeKKFQy?=
- =?us-ascii?Q?+xqBR9ajMCp7diR2jU15PA6rC7tfYysAqjvHRqBNGndr0/ehbtU=3D?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?wcSRY6/1RXB5oGMjCW5sWDBXejxGgJdW4SL1yi7tClfcPv5smGemaqq3/wSx?=
- =?us-ascii?Q?pckabGMLgPq0rl/fchFwVn5UPpWRoR0AtAsZDJ9574kTCkdr2CFrdN5HtOcF?=
- =?us-ascii?Q?JFn775mwTIudw85kvSh4eT97aMPIikhI/ytuaEHj+w1BJhwbJwj/XNIxbSTH?=
- =?us-ascii?Q?4SyE3jlu/vQJ13lVd7ascpqxpLZXYv98NwlOCWNc0mppjw6ewLhD/Sf/QwAy?=
- =?us-ascii?Q?he5AV31DWhYBX6CpmH6AOOIH+z8PLTj/hAElFsOD+iLJgXwnCxSmX6vhwEkM?=
- =?us-ascii?Q?9X9KAxBGhjqbzoybWERN0gGGARDPG/w3ST0yGBeRNCJg1XfYQ7bIywdYkXSS?=
- =?us-ascii?Q?4LtqyBkzBIZFl2Q84YUB09D+39dS+keh5kDlFLV6jxje10VrFILFeBGvluBt?=
- =?us-ascii?Q?3F5dEe7wiXZduBZtias5+ahkaF4ed+6pTIXNAtp0di/e+pT58n4+U5gekx5F?=
- =?us-ascii?Q?Kr+LIHvlXP6wjOLnfHIEhkxbT1Arv7s8K3kd22EHZyW1rFwalZBPmdTwRSW1?=
- =?us-ascii?Q?N5IH4P96B4FF79NEHMoGAPekn66QkA+UScajkkOkXMBq5hnWbQRbfpXpFLUX?=
- =?us-ascii?Q?GlUHFmGerdC98CCl58Xr4fHUHJTyqOOgPlskEo05kShMD+2GMm23PqK25IFo?=
- =?us-ascii?Q?FAgY6g/yXqcgZK5coSrOgjCmJhC1RGePcF4O622pBcv8B05V++u2OY7XM8JR?=
- =?us-ascii?Q?IEa4tyvBoHzfb1re6uEHw91mf8qKMQpU96OXH2Tqt9tw2U4SKvobAlUw3lTw?=
- =?us-ascii?Q?NILkqP0KNeT5nriL4T3fRx7JIbbSP6x6KXUeQ3AOfErLTRzdhTuax/SFe5Q/?=
- =?us-ascii?Q?HqUIBAZa1xakhKz9hi4eg1dKIF0yIXDgwLjvxI1YdRDTkZIQC+W1xu+d4uDm?=
- =?us-ascii?Q?uvkKcD+yGw9wmz6Kp4mTrROXwWArRAWOm1chbMabOSoWvii/kaIAlpbzvnwF?=
- =?us-ascii?Q?KzC0274Th8fR5/NFeSkPPp5RWRJs5+X+zphNBJoxZn+2/jqbLohIBCjnllVB?=
- =?us-ascii?Q?6vziZ1QiKftqN6QMCbTUHOkeBr3VJ6bsokkVnK2yP3IT47pf2/V6xm0QZYz3?=
- =?us-ascii?Q?P3+2hDx864YriI4b08pirVvCFS7iMCXeteVMNyTWDs9EsPcpR8K618y73zBZ?=
- =?us-ascii?Q?FNuTOPJ6i3FVsBLebh7IemqtuZXPs44bRiF/51LVCYIUkBIA+KFqTqmhrJTq?=
- =?us-ascii?Q?nh+oosq6EIS95HYRr8TayIpQFy1PhhyoDy8ryhLChD7zN8JXCnwWQfDrHGQg?=
- =?us-ascii?Q?s2koE6pFTwU2LMuwQdjcINGoYatyXcPqXkxihXDKdA61QXZmXVldG53gK6GK?=
- =?us-ascii?Q?ifHJXjJkbKtFIoWRxmZY/OS5MzapXF5jXmFXI3BH7/KhlDmC7iZoBLIOmTGD?=
- =?us-ascii?Q?xubQBpD9OpZxKl8C1N3XGjhkjKouCTIGnYhBXIlgabq1x+3BRg=3D=3D?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b7f6b1a1-2f16-43da-37dd-08defdf2d318
-X-MS-Exchange-CrossTenant-AuthSource: OSZPR01MB7795.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 13:07:30.1211
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY4PR01MB15904
+References: <20260813033855.3372172-1-dongchenchen2@huawei.com> <CANn89iLCrzmOfUVwa0yeROpkZxWmVsAkbH7=SBA3XuVxkmTfKA@mail.gmail.com>
+In-Reply-To: <CANn89iLCrzmOfUVwa0yeROpkZxWmVsAkbH7=SBA3XuVxkmTfKA@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 19 Aug 2026 15:11:12 +0200
+X-Gm-Features: AcwNN1UZfggmIhDQCQMpDuHpbB3kvC1RaYxq75aWZVqUNkzfAptYBk4Al2GV0Vo
+Message-ID: <CANn89i+nK6aM7PQ9VBp8jfxhiJNsibx3pCoQhHvFNtUHfQomjQ@mail.gmail.com>
+Subject: Re: [PATCH net] net: iptunnel: fix stale transport header during
+ tunnel decapsulation
+To: Dong Chenchen <dongchenchen2@huawei.com>
+Cc: davem@davemloft.net, pabeni@redhat.com, kuba@kernel.org, horms@kernel.org, 
+	herbert@gondor.apana.org.au, kuniyu@google.com, idosch@nvidia.com, 
+	andrew+netdev@lunn.ch, ap420073@gmail.com, steffen.klassert@secunet.com, 
+	laforge@gnumonks.org, jiayuan.chen@linux.dev, jhs@mojatatu.com, 
+	zhangchangzhong@huawei.com, netdev@vger.kernel.org, 
+	syzbot+83181a31faf9455499c5@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Change WDMA RESV_BUFF from 0x40 to 0x80 to avoid CDM TX FIFO overflow.
-Without this patch mt7986 and mt7981 may have WDMA TX hang issue. This
-patch was pulled from mtk-openwrt-feeds GPL open source project.
+On Thu, Aug 13, 2026 at 6:39=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
+wrote:
+>
+> On Thu, Aug 13, 2026 at 5:30=E2=80=AFAM Dong Chenchen <dongchenchen2@huaw=
+ei.com> wrote:
+> >
+> > Syzbot reported a crash in qdisc_pkt_len_segs_init() caused by a stale
+> > transport_header offset after tunnel decapsulation.
+> >
+> > BUG: unable to handle page fault for address: ffffed102091a42e
+> > Oops: Oops: 0000 [#1] SMP KASAN NOPTI
+> > CPU: 0 UID: 0 PID: 340 Comm: qdisc_uaf_repro Not tainted 7.2.0-rc4-0006=
+1-g248951ddc14d #256 PREEMPT(full)
+> > Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-=
+1.16.3-2 04/01/2014
+> > RIP: 0010:__asan_load2
+> > <IRQ>
+> > qdisc_pkt_len_segs_init (net/core/dev.c:4145)
+> > __dev_queue_xmit (net/core/dev.c:4787)
+> > br_dev_queue_push_xmit (net/bridge/br_forward.c:53)
+> > br_handle_frame_finish (net/bridge/br_input.c:229)
+> > br_handle_frame (net/bridge/br_input.c:315)
+> > __netif_receive_skb_core.constprop.0 (net/core/dev.c:6099)
+> > __netif_receive_skb_list_core (net/core/dev.c:6287)
+> > netif_receive_skb_list_internal (net/core/dev.c:6445)
+> > napi_complete_done (net/core/dev.c:6813)
+> > gro_cell_poll (net/core/gro_cells.c:74)
+> > __napi_poll (net/core/dev.c:7735)
+> > net_rx_action (net/core/dev.c:7798 net/core/dev.c:7955)
+> > handle_softirqs (kernel/softirq.c:622)
+> > do_softirq (kernel/softirq.c:523  kernel/softirq.c:510 )
+> > __local_bh_enable_ip (kernel/softirq.c:450)
+> > tun_get_user (drivers/net/tun.c:1986 (discriminator 1))
+> > tun_chr_write_iter (drivers/net/tun.c:2032)
+> >
+> > The crash requires four conditions to line up:
+> >
+> > 1. The incoming packet is encapsulated and carries GSO metadata.  The o=
+uter
+> >    transport header offset is stored in skb->transport_header while the
+> >    packet is still in the outer tunnel context.
+> > 2. The tunnel receiver strips the outer headers.  skb->data is advanced=
+ to
+> >    the inner frame, but skb->transport_header is left pointing to the
+> >    now-removed outer L4 header, so it becomes a negative offset relativ=
+e to
+> >    the new data.
+> > 3. The inner frame is not delivered to the local IP stack.  Instead, it
+> >    is forwarded at L2 by a bridge or HSR, so ip_rcv_core() never runs a=
+nd
+> >    the transport header is not reset to the inner L4 offset.
+> > 4. The forwarding path calls __dev_queue_xmit(), which enters
+> >    qdisc_pkt_len_segs_init().  That function computes the GSO header le=
+ngth
+> >    from skb_transport_offset(skb).  Because the offset is negative, the
+> >    unsigned cast overflows and pskb_may_pull(skb, hdr_len +
+> >    sizeof(struct tcphdr)) reads past the end of the skb, triggering a
+> >    KASAN fault or page fault.
+> >
+> > Fix this by clearing skb->transport_header to the ~0U sentinel at the
+> > tunnel decapsulation boundary, after each tunnel receive function has
+> > finished all processing that needs the outer L4 header and before the s=
+kb
+> > is handed to GRO or the stack. The IP/GRO receive paths then set the
+> > transport header correctly when they parse the inner packet.
+> >
+> > Fixes: 7fb4c1967011 ("net: pull headers in qdisc_pkt_len_segs_init()")
+>
+> This Fixes: tag seems pretty random to me. Issue was present long
+> before that commit.
+> Next time, please be precise with the `Fixes:` tag; it's not decoration.
+>
+> Also, calling skb_unset_transport_header(skb) directly from
+> gro_cells_receive() would make more sense and
+> your patch would be less intrusive.
 
-Link: https://github.com/mediatek/mtk-openwrt-feeds/commit/07c87502e854b68b48544d101b6fe17ec059b97b
-Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
----
- drivers/net/ethernet/mediatek/mtk_wed.c      | 5 +++++
- drivers/net/ethernet/mediatek/mtk_wed_regs.h | 1 +
- 2 files changed, 6 insertions(+)
+Do you plan sending a V2 ?
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_wed.c b/drivers/net/ethernet/mediatek/mtk_wed.c
-index 10d9beaae..53d3b7e00 100644
---- a/drivers/net/ethernet/mediatek/mtk_wed.c
-+++ b/drivers/net/ethernet/mediatek/mtk_wed.c
-@@ -2071,6 +2071,11 @@ mtk_wed_dma_enable(struct mtk_wed_device *dev)
- 		wdma_set(dev, MTK_WDMA_GLO_CFG, MTK_WDMA_GLO_CFG_TX_DMA_EN);
- 	}
- 
-+	if (mtk_wed_is_v2(dev->hw))
-+		wdma_m32(dev, MTK_WDMA_GLO_CFG,
-+			 MTK_WDMA_GLO_CFG_RESV_BUFF,
-+			 FIELD_PREP(MTK_WDMA_GLO_CFG_RESV_BUFF, 0x80));
+This would merely be a one-liner.
+
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 22eda1d54a0e8490c3b64a733cc93a30aaa84a54..626bbb9bae1ad4ea6657f5e0f58=
+1cca0f49f16ed
+100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -3082,6 +3082,11 @@ static inline bool
+skb_transport_header_was_set(const struct sk_buff *skb)
+        return skb->transport_header !=3D (typeof(skb->transport_header))~0=
+U;
+ }
+
++static inline void skb_unset_transport_header(struct sk_buff *skb)
++{
++       skb->transport_header =3D (typeof(skb->transport_header))~0U;
++}
 +
- 	wed_set(dev, MTK_WED_GLO_CFG,
- 		MTK_WED_GLO_CFG_TX_DMA_EN |
- 		MTK_WED_GLO_CFG_RX_DMA_EN);
-diff --git a/drivers/net/ethernet/mediatek/mtk_wed_regs.h b/drivers/net/ethernet/mediatek/mtk_wed_regs.h
-index c71190924..e5f83100d 100644
---- a/drivers/net/ethernet/mediatek/mtk_wed_regs.h
-+++ b/drivers/net/ethernet/mediatek/mtk_wed_regs.h
-@@ -433,6 +433,7 @@ struct mtk_wdma_desc {
- #define MTK_WDMA_GLO_CFG_TX_DMA_BUSY			BIT(1)
- #define MTK_WDMA_GLO_CFG_RX_DMA_EN			BIT(2)
- #define MTK_WDMA_GLO_CFG_RX_DMA_BUSY			BIT(3)
-+#define MTK_WDMA_GLO_CFG_RESV_BUFF			GENMASK(23, 16)
- #define MTK_WDMA_GLO_CFG_RX_INFO3_PRERES		BIT(26)
- #define MTK_WDMA_GLO_CFG_RX_INFO2_PRERES		BIT(27)
- #define MTK_WDMA_GLO_CFG_RX_INFO1_PRERES		BIT(28)
--- 
-2.53.0
+ static inline unsigned char *skb_transport_header(const struct sk_buff *sk=
+b)
+ {
+        DEBUG_NET_WARN_ON_ONCE(!skb_transport_header_was_set(skb));
+diff --git a/net/core/gro_cells.c b/net/core/gro_cells.c
+index 1b84385c04bd9c4539cbcc6140867dd98e229f61..d8c0a2867120199cec152503477=
+3650f1ff24542
+100644
+--- a/net/core/gro_cells.c
++++ b/net/core/gro_cells.c
+@@ -22,6 +22,8 @@ int gro_cells_receive(struct gro_cells *gcells,
+struct sk_buff *skb)
+        if (unlikely(!(dev->flags & IFF_UP)))
+                goto drop;
 
++       skb_unset_transport_header(skb);
++
+        if (!gcells->cells || skb_cloned(skb) || netif_elide_gro(dev)) {
+                res =3D netif_rx(skb);
+                goto unlock;
