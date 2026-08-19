@@ -1,41 +1,39 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F345424D64
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 09:01:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD3E392C48
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 09:04:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787130120; cv=none; b=Cf3rNX15byC5BfcmFBSg+jMGPjeJOZxa6WuT1daIC//F949vT5WpYHyOLAdtzOBgD3aeKoJ2LVF0uOarKVQX6pS7swbsT1tpxcHYpFcnqgzEqRgVyXTodVsdth36ELWSKEYgB89YF5cWDZQSS7UUY0ex13FpCBSEqK/t0gB2JHs=
+	t=1787130286; cv=none; b=iu0SN61ITM2g1i2Nsjr5hKWiArE7wYRCoo1lzNq+21Qb5vtRtV70hZ3Dei0dB9xpuz+5+BGWoCr2TZ37F84d0MvzPpkqQhyQB4M3uSA754yQbeTgorJpnpXVqTJZ3ttZlr+upBbzm1cjlDsNcdxwQVSmFhUXRsq96gFokh1ACUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787130120; c=relaxed/simple;
-	bh=qbLrM6PLrNeKxQQOTH7JHbQXbbIE+zf85AT7ZT/+4y4=;
+	s=arc-20240116; t=1787130286; c=relaxed/simple;
+	bh=xMzR3tYNEN9Of3JXbeo8CUKYCIHFPiV3nvz1r7Hr+LY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZiPGCVywBrAjU8N3/4VvOUotPKu++c0qZGVtvQqkAPHGxRquNicuw/ZF7R8w4NinTRQSwoSrNUnfQZf05KD5BVRglwCuESRBSDsbgWcNA/39D4m9KUJORb/UqBmHDSoEcVoshH3JFQkrKEhCPn9mAUov/B+7HEyOH5af39BHqQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MRbtrHwA; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MRbtrHwA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425AA1F000E9;
-	Wed, 19 Aug 2026 09:01:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787130115;
-	bh=SXNsoD/tX2+QDTeO9Gg1jZS1H1/EqNBb9GNa2MJc4z0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MRbtrHwAjMoImaVsUiz8rasiCCVw1QUjbg2CXwW2LFb80Gu5XAoVi6V3gwZ7lQhTl
-	 uazTzFj+phyGoK/je//qAszcPqUvbI+oymUKnU1EKsyVfCtCpG2na/74Lg8JIALjym
-	 Sk2gyxZgNQkj/FbWRbijHRvl7+yknlyNvF7c90AHjQj0Cv4gMXjfD2deeXyC6talKA
-	 wUhrg5FCwu7Mpkr6SD3AQsS5Z4ULSb5y/i2mikjxs9JeutWKoPYyVWrrlcH3YHpgG3
-	 K79DxzrMEmjnfFd53Up1PnlIKNWEoiDo0aaUQth74RyQuBDOkg/LcpGaaHyO/owpFO
-	 rPf2t3cMIDydQ==
-Date: Wed, 19 Aug 2026 10:01:51 +0100
-From: Simon Horman <horms@kernel.org>
-To: James <aslan.jnn@gmail.com>
-Cc: Raju Rangoju <Raju.Rangoju@amd.com>,
-	Prashanth Kumar K R <PrashanthKumar.K.R@amd.com>,
-	netdev@vger.kernel.org, Thomas.Lendacky@amd.com
-Subject: Re: [PATCH net] net: amd-xgbe: support receiving packets with bad FCS
-Message-ID: <20260819090151.GO265046@horms.kernel.org>
-References: <20260814100916.GL265046@horms.kernel.org>
- <20260819023602.10387-1-aslan.jnn@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=WE20iqp+7xSiFer62+wn/R4yRFnJNlfjH73wCixrHFBr+toLhKVc+cfkb0WPvDRBw8NCZSAdft6CbK6lo/YxjRJwpnVEPnQ8AW61ZA8cjoPQP37l7XV5OwoGBg09HJOuGJ2fHEQtqR5MiWz+hdvBuSuQy6BzDiONbwN2nVuH9kU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id AC4A468C7B; Wed, 19 Aug 2026 11:04:39 +0200 (CEST)
+Date: Wed, 19 Aug 2026 11:04:39 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Geliang Tang <geliang@kernel.org>
+Cc: Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Hannes Reinecke <hare@suse.de>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	linux-nvme@lists.infradead.org, netdev@vger.kernel.org,
+	mptcp@lists.linux.dev, Breno Leitao <leitao@debian.org>
+Subject: Re: [PATCH v4 1/4] nvmet-tcp: unify sockopt with do_sock_setsockopt
+Message-ID: <20260819090439.GB9267@lst.de>
+References: <cover.1786947923.git.tanggeliang@kylinos.cn> <010e6810cc4c10b30237c964b2bb9dfa7a3c740c.1786947923.git.tanggeliang@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,28 +42,28 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260819023602.10387-1-aslan.jnn@gmail.com>
+In-Reply-To: <010e6810cc4c10b30237c964b2bb9dfa7a3c740c.1786947923.git.tanggeliang@kylinos.cn>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 
-On Wed, Aug 19, 2026 at 12:36:01PM +1000, James wrote:
-> On Fri, Aug 14, 2026 at 11:09:16AM +0100, Simon Horman <horms@kernel.org> wrote:
-> > FWIW, I lean towards this being an enhancement for net-next without
-> > a Fixes tag. Rather than a fix.
+On Tue, Aug 18, 2026 at 02:03:00PM +0800, Geliang Tang wrote:
+> From: Geliang Tang <tanggeliang@kylinos.cn>
 > 
-> Hi Simon, thank you for the review! Apologise for the late reply as I was
-> unwell last week.
-> 
-> My rationale for targeting `net` was that the driver currently accepts bad
-> FCS frames by default, which I believe should be an incorrect existing behavior.
-> The `NETIF_F_RXALL` I added is intended to preserve access to that behavior
-> only when a user explicitly requests it.
-> 
-> With that said, I understand that exposing the `rx-all` control may make
-> this better suited for `net-next`. Do you prefer that I respin this as a
-> `net-next` patch (when it opens later this month), or do you think the
-> default-behavior correction justifies keeping it in `net`?
+> This patch consolidates socket option settings in nvmet-tcp by utilizing
+> the generic do_sock_setsockopt() helper for options including SO_LINGER,
+> SO_PRIORITY, SO_REUSEADDR, TCP_NODELAY, and IP_TOS. This change eliminates
+> the need to export and use specialized helpers for each individual socket
+> option.
 
-I do lean towards this being for net-next. But if you feel strongly
-that it is for net, I won't push the matter any further.
+Hmm.  I see that do_sock_setsockopt is exported, but it really should
+not be.  It's really just an internal helper exposed for io_uring
+and no modular code should be using it (never mind the non-GPL export).
 
-BTW, net-next is currently closed. So if you do post it for net-next you
-will need to wait for it to reopen around 31st August.
+> A key benefit of this refactoring is that it decouples the socket option
+> configuration from the underlying transport protocol. This makes it
+> easier to extend nvmet-tcp to support other protocols, such as MPTCP, in
+> the future, as do_sock_setsockopt() abstracts away protocol-specific
+> differences without requiring per-option protocol-specific wrappers.
+
+We really should have generic helpers in the networking code for this
+and not duplicate them in driver using socket options.
+
