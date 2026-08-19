@@ -1,171 +1,132 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010013.outbound.protection.outlook.com [52.101.85.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103203B813F
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 15:48:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38742261B70
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 15:49:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787154538; cv=pass; b=hZynkA+YQaYo9UYkM0NuWMBnA7EQln3a4rdND3+3TiTYCNF+sBChaxNxfdDStkne1CUhIns7VQcWhwW2R8H7Zy7R2vQJBQHJK7t737ma1LTVRUAq2WgNuhply3bBjEYvwvWhxAGUATupBebmbAHCtHDez4p1gfYypXYf4ZtKIzQ=
+	t=1787154573; cv=fail; b=UdCfXnyMaEZwelkeGDs9OZBT7Re62lJEi+kTJbVJC60Z0f0MUxt5jwZSlI55oibATFtRTTZ+bFb5Y4GtFuYQ5CZ6rAe2XuNtN3DLl5hIizowaloiDS5ZdsPqCZ2er6TFwlBcALTpsj3HGu8335H+ZQWL753/SPr96vYIJSefwDg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787154538; c=relaxed/simple;
-	bh=C1LDy4d6ND+Sroxg1OCZ9KkCmvKKRkawoRU3rs+6chw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HasImDAL6wjM7KHrD0tVANSDP9p65hobhcTtc9PWYswWxqofN/06O66g8KrW8s/ibmJDFQKB3ct6o9Db8EUa+SjH9SzpUZn34yt6uXoQbkoDyRfC2CsZNd9Qy8i47bPE+Sg9z7xfnlwkY/jOQMzo0r9nAlFgc9+au2GIYPn8qmU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=MmbLshU8; arc=pass smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1787154573; c=relaxed/simple;
+	bh=Hggy+/6ZPOxnJj1J3v0gOAe56EhndcDycCL3bm2cobw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Ebkn5fdteJjh2C7awRUcBa7VHJMSYnoEzy8VePa17mKFXDVakPObepAWLpLLmUD2ZJQOlxu0qdwr+YE2VEzQFNXTUxpuPI2kM2tDRf5YmSMzVGjjPBGXjxBJX9gBVFoAwMyIPdGA47QgvaSE6TjcMPPJMaVFFUeDW5jQUeBjWbk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=RxyPxPoZ; arc=fail smtp.client-ip=52.101.85.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="MmbLshU8"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-39faf9e2c62so8390211fa.3
-        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 08:48:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787154535; cv=none;
-        d=google.com; s=arc-20260327;
-        b=EpieK1U40NWkT0w5nYZtIpdhxyR8iV1tNZ4wLltreOSJA1PmnIZHBxmkWKSjV3YCCY
-         fJt660E/jxkVV+p9kMjnBSFOfy8WHKHE18gmFkHkPXttfBnq5rIrsNVo44R8itYOiMxt
-         4eV+1o7bDEujTsYrm6s2Q48pP+vKs08UPDX4UGkcpA6mPYfE0JR70Bgw8aSTeWyf8r++
-         efcnELdgM8ZZdCRzZRDKRgZJ7/vfIacUvdAXUSSMNs/ckkl2UixmaQuB11et/paBpFsw
-         9q6fzWyihprsPa/N2binOSlMaCqT9XyEGQiu0Z1nY9dpVmfv1SURPseTkJQZBBm4cCfB
-         z9HA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+A5sw0Gkcd80rFyIPgG7wRWGaGNkrO9aHrdYGv5WlFk=;
-        fh=+kU0Xjsv0RX1wfml95ox8mWoDYaoVtUC0paEQDnhhO8=;
-        b=RAdR3tJY0TPfm1KeR7/VLQT01L8610o+wrriF/5X1BGNrEw+3LIqPKFZdFHpwUcnFK
-         gYDuVaNTYKnxXeX9v5izeIVFCn7TzE1wkWE7WVz03VCq/siE5Yb9wh5Vz1e4KUuQAKPf
-         LmsCHzxxHm6y9n5yQn2gtVk7ArcNbHquJGKVt2vKBeDFE8WIHwjku0uSWnDggLBhXUSo
-         xBj2UP3X48g/L60M9EYRjmazXIbtW2suKFKzOmM3zDQ8gW0DiUEksE8RrUt+zGHYeHdm
-         brborPk7ddPW3AfU/H2FxFVLFn6Qgz3p0adl6wUoJylHQB/Us5+JolmMUus1lwMbQDW9
-         JvqA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1787154535; x=1787759335; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+A5sw0Gkcd80rFyIPgG7wRWGaGNkrO9aHrdYGv5WlFk=;
-        b=MmbLshU8zc0/2LOHh6GoAiG3HVnbCNZS/80wUmF6MoJjcR7xqImOYiAp1IxQwJw/Z+
-         6SRDQkEk7NuyWOwkU6+PurhCJELnINHdfCKmlXpFK3ZL8OPOC7KXtkIfqkpvrj4n0F2+
-         Jshi8gctDorx2h/UqhNw8/dYUh4dicZpT1Ntrl8fK/KZVq5QzmknX+kks98qY0I3cLCi
-         9IAp0JW/lj9hL8NHPstiMkqh0dJrBAEpxN9BG32cj8q/CP5mirWQqCXqco9tqh/p61O4
-         ddJylV3l9DSUw1XOCV4D4NIhD0zbNG049lVgM+qkVDaObzlUQtglZkCcUqAKpd4PXu6+
-         zEtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787154535; x=1787759335;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+A5sw0Gkcd80rFyIPgG7wRWGaGNkrO9aHrdYGv5WlFk=;
-        b=bdjG7FhvQoFQktSziOaIKYRxYGB1rTQpxxYiMoIp9rvxX82uwIAJqvGRASPODhAvbV
-         vhYaHm+RvFUFMmsnOeQE3TMvuCsEett0S08v14pqVvWhfsdNp70i2bBgvIINJ+1zWCcQ
-         chn0fVGo43/CTCBQowd98Xpan83Dbqhz3+2peoDP3fl3g3BoMHnqnVzHUCHY1EGlavkE
-         6sKycg48lQwM5o4el1JYMO/rQeP17LSHfvsbN6W2rt8soJxGljQTITLfxV9H23hz8PBQ
-         3F+rw88e0i1e9lmu0k+43cGawUnXolJ7cFiY4PTLLHGiZ287yYjkFzmtUqcDGD9v/wgE
-         sbNg==
-X-Gm-Message-State: AOJu0Yxk6roVAmL9EipPjtyZNL1+jt1enoIq9KTOaPFpZjbV/oXThw1p
-	CP1oX3LzlSqh/JEA6J5+6Reg0SJXShA9zzpfyfd94lqbeWhcvqdAG0Wd6P3Tj5ItusIY/V1QcJP
-	gyCucHtuy3/El7DJTL2794rodlpEbfiQdBgaFXPQlgZ4=
-X-Gm-Gg: AR+sD13e0Jps/bWXu1fHMPYrjJRjWt7q0b3ReIy4pD1+rnw2ORmIy4OgjBm9bkYgkfF
-	2iMv6b2UE+3gy6IQjCqoWMMNTLR2mo+6kNknPse+eaPH2q29gxvvb4ZtIGfHQ/n/gCq8W9NJFPc
-	MohcoHkZJNb+Cqj2ahznE1sY3NvjwJ/92MN4PJbwC3cdJkK8ziHhwjvyxY7eCwBie86KwGlt2/J
-	RzoufBgrgDeCw6Iq2c24TgRi7JpV0J5YGTsJlPu83oCPwMVyhOGJwK3YoopD8GRsPp42mVSSnqL
-	g95Xn89P3fxJH7BhX8BhK9jZwux+6zbxMK59iOjOhzMny/vFA6nZ06AhjNUXInvZQLHxZK3yZNQ
-	=
-X-Received: by 2002:a05:651c:2109:b0:39f:27a4:8036 with SMTP id
- 38308e7fff4ca-3a1899f1d41mr11387071fa.9.1787154534767; Wed, 19 Aug 2026
- 08:48:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="RxyPxPoZ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=evCgOLz4MPz2sJaX8xF0N+kSLZQj9+0LK8Bmw51qZEg0l1+GUF4zPGVTe4YNf19rMKZ+Wn2bmo62nnwYvtCtueNhkaa8YmrQZ6buuofHNf3AwifTpnKRFPA3sva7XDjDZGJ5RKZGsSXCcSyytZhP5XrQPgmlLxGk+RoOO/+6hocIyFSnb+iS9Z+Ix/kgStpExVxoIUVM71Xq5YEga2GmLacxnrLAdclOVfWuBD8O99eQOGlOwpkbxl0i4EA6g5Y2MEdP6k4uZNnYZ2VowzYRKUViQl8IpWbUa59a1AZiMuDUasWn5RtTgy4fMYoxYCxJCbnjmzW07oAihAIPWwtsjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=C6rBP59WJAceWlsOjbbHNYY/RyUDsLcpogphM2vfsX8=;
+ b=YwkZfj9/FRv3CTwFeWEfEoc+6Spuk7wFSANtEjnYw5Q7lehLEAbiChE26NhfnVwVdS7Q7JM1jli2VKnQaPIEHq1BeqXNi+Soe1bwVxc4GfeHMCKlELCiF0vLzvW1q7Ob05D2tg8OD2E835QZIf0VEDYjvEsilxaRqry0+erOlk0PARwmedVq0M96VSK3JtFtEuWziWcp/R5LZpiZLu/7CnlTOw+Cm0tug7R/zhh1F4Y5lvD1Sd8Ik/ZKm6BlByu3edQPFz4+z/Ry654cWQrv4/3vp0CjGMRHXLMGHP3v4Q1PI9LVFwUIy4wW6dzEC63igU8kVUhmpvXFLDyqA67kLQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=C6rBP59WJAceWlsOjbbHNYY/RyUDsLcpogphM2vfsX8=;
+ b=RxyPxPoZMW18vg+O21WQIflHr35/4Gmf50D7tTWfPD9hKd9xEdNy6JcIEl8NqeieQ3fgSF0uwJ1Smf9+JXwlHwR5sIkxC/fhHNR1/xXLx6wUsAlU+TjYXG8dXf7F10T8sn1zXfrMz8fHaMAzWTTWJJWSMGV8vdvV4qT5J8uSNs2hencT98W/TnKeqx2S586sko2jJR30IwZH4mSzu5ZlpEfJs3ej1GDh4wgaoWlBoHtb2NpTec1CEK7WqegrGQx61ns2fPCDNsOjGER3WGelVTTd8ORFDb31Pr3lhQCJ5KSAHn5iYpLeV+vmh3C7TO/DY8ZOeyIeDghgBzRnjeUR8w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
+ by CY5PR12MB6036.namprd12.prod.outlook.com (2603:10b6:930:2c::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
+ 2026 15:49:24 +0000
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0339.007; Wed, 19 Aug 2026
+ 15:49:23 +0000
+Date: Wed, 19 Aug 2026 18:49:14 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	roopa@nvidia.com, bridge@lists.linux.dev, andrew+netdev@lunn.ch,
+	dlstevens@us.ibm.com, amwang@redhat.com
+Subject: Re: [PATCH net v2 1/2] net: bridge: arp/nd proxy: fix reading neigh
+ ha
+Message-ID: <20260819154914.GA1280224@shredder>
+References: <20260818150756.890025-1-razor@blackwall.org>
+ <20260818150756.890025-2-razor@blackwall.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260818150756.890025-2-razor@blackwall.org>
+X-ClientProxiedBy: TLZP290CA0008.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:9::20) To SA3PR12MB7901.namprd12.prod.outlook.com
+ (2603:10b6:806:306::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1786812660.git.zihanx@nebusec.ai> <2080e22819c552b0d186563eda255a44c68404f7.1786812660.git.zihanx@nebusec.ai>
- <20260819153109.GB1248049@shredder>
-In-Reply-To: <20260819153109.GB1248049@shredder>
-From: zihan xi <zihanx@nebusec.ai>
-Date: Wed, 19 Aug 2026 23:48:21 +0800
-X-Gm-Features: AcwNN1X0-V-C_EkZavQn1ho1Bq-wtRQeRLmvDZUt25d4tg5QIRX-85A22Cwk_mU
-Message-ID: <CAANe3eQJTp5esgxQqGcRO47Nv9epoW5tYqNY5D-39WaUaDSsqQ@mail.gmail.com>
-Subject: Re: [PATCH net 1/1] ipv4: Fix fib_rebalance() divide-by-zero race
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: netdev@vger.kernel.org, horms@kernel.org, davem@davemloft.net, 
-	pch@ordbogen.com, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Vega <vega@nebusec.ai>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|CY5PR12MB6036:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4d2f1d46-207f-4b4c-c2b9-08defe0970f8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|23010399003|56012099006|10067099003|4143699003|11063799006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	R2D3BDYziqlVBVGlWKvw42y2OeK+5yz9i+GOXuUWNsgFAsTNxMkU8s4mmG8MnXQzs4UnF3th2T3H71jXMchqybaVuEMn9v0/h0TLHcqXGcx3rRPC49Uwv4sFSEZoc1F8K0tH6g0ZpBO4WZvfF6yF/nfbgKasB0GfU9+9i+GZtJxJHvZ6TIwLb4D/rJ1JOBlIVFjuz1f4ZOGupsTBAAb4AIEkX2LN00YwopywzhP11Vul+lwMm5iEICxWJHGjo7xfogzVF9zQgR3d37ZQ16N2Y22SVM74I1BH1gal16SNOphyb9XV9XfkfNJVE4twCgz45AFWpwMDa2qLfa9Pjeondn+TM+KfKM7XDV2Cbecr+rly5tpgnPdB/JkUW7rGA+uOgEoGNf+zXbMnkR7NQl9P44l846PWRa8kxCL5zf+ip+MbIBYI2vDTdoO/MnkBcLGalbBfx4tKYgSFEqoOKlAs6bkL8w39LQxo5N8WvcrRV75roziXeMCqz5IRYl/JD9y227OkwdXVEMShmY2hh+4a0n0Qdy2K37rKsr5OzVEIPoZm2x+ML3RlzcBxN303pBpIwZWqNTlyG6eKdLg6oCOq0YLewvhh8yJCl2VvV6L4lvZ4MdaJebAMHYMzA9GBQAmfUQEaWbyyfEWcORpaGoXdWJvl+Hv/6HVOEp+kPsgdzSo=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(23010399003)(56012099006)(10067099003)(4143699003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?2Nwi5v4CJo1Rt7IWwfNeYnHt69DU7HplYyUZPzgzP7v5gkz0aMmRbQ6iun7p?=
+ =?us-ascii?Q?c/I44IYpNmb0Q2x7I1a8+dZZW+FNWWxGzXdVUccMAS93UEkU6WJ0NwMQiE0C?=
+ =?us-ascii?Q?8hlOFgn4ugB97zl9LhKkikYkdmjSlB0wTjqQAnGW5GqI8gcPCltUNuTGknk4?=
+ =?us-ascii?Q?2K7kZlZXmqVkaEMeINPSUJSph4seuFp9tQCMTGDGqHBlbuojowNik2MtHnix?=
+ =?us-ascii?Q?kW9iawPFyqtcT2D7JTkOulmQZA9E3/uzW5F98hYtQLMOt8TpkKTGSu/edF31?=
+ =?us-ascii?Q?mrWxdm1l6kTovqqHg5cWABLBhrtez0KwyQ3QOZqSPqY8Dydr4L+7Wp5Kxn1+?=
+ =?us-ascii?Q?wd27S0VaJlrtMH1sa4ipIKMW60rBh9NRoTwCKIqgFri92a73+A4Mgb6LbQY0?=
+ =?us-ascii?Q?AHjN6aNUi0c0ue1l3/fnhXOMJ9pi3ECB8/tG1YsnvLDJivO1/Y95+rxl+dIt?=
+ =?us-ascii?Q?dJC0bbanCx8V5xIudSKV2c17U7+BEqlER2CQHXI87BptQOEmrqoCGMKDGGzk?=
+ =?us-ascii?Q?NwLYMCrCKU9mP9yOiKKFff9JMIk9e9bE1V+znXPoc2nZlOJqMRLQFQRgeoTZ?=
+ =?us-ascii?Q?2DH1lfI2Yl26OgpuGKr471Icr9TGYkISl07Yx4OhtqoWcEqQzzr/qHNwGf2e?=
+ =?us-ascii?Q?FxhG+sTEssU5QX1oy390jNI2/gedJeXPO0h1IQDMy2HtQAC8UobcPqdDQKvj?=
+ =?us-ascii?Q?ldI6WhplzwHLsaSgaYYjli13ntsk8I4/dgkuvdWiCVbkGGPXs7dP5dLsDmxk?=
+ =?us-ascii?Q?njrRKRv52M7qIvAjZrtpEak4xjtXlMkmMbCFMEKExc1uhh9wLRW3dvXvieS1?=
+ =?us-ascii?Q?DGJ18deelLZw5fXvLNuCKXi5KNP1EeMNGr48dHTVk0WDm0dr/hDr+XwfjtWI?=
+ =?us-ascii?Q?hjk3Ag0x4AjxQ+A/Ja66ylbW57IkUyDuTFUVfyCTyjCgracU5zWoMT2ue2Z6?=
+ =?us-ascii?Q?E9zMq6z7K22wbtFQXm8jbsYb3rGStUSQgDMlx/SghVVp+CKdB7w8vJHCToFN?=
+ =?us-ascii?Q?LROjLzGKz0ofDiuFFghLAV6SGFvFJcCzjY3LteChQHlepe59uLyLO0gq8DQj?=
+ =?us-ascii?Q?qigcKx9eeMIAKShAYH4+3j53n/l88w9wg9dGv4GI7lKYYU9hUO+7f+QkZ+wE?=
+ =?us-ascii?Q?hBU6ymkagSGQz9iS04gLlxkK5msTnb5uog5rLDLv6txk9aQSDllPsYYlBfDL?=
+ =?us-ascii?Q?FObyMf6a34JszGkMwmDNriLhSOrqslaZPO/+wdHbRBJ04WrJuQ22Klcq4G5B?=
+ =?us-ascii?Q?Lyhf26cEmVd1Is3MTcGbaQQ1SjlQWKJ2t+jUhSyKqgfUTqXG1ot30gMW7mM9?=
+ =?us-ascii?Q?bHfk0y23Qy4iSQl/HhDV20HxGbUFZDaP1je8QGrv+V8DSIq/xN+9jsKwx6hS?=
+ =?us-ascii?Q?ajkltyQpDwXg3DGRdXjSQCZUFTdPLc25ceTnki54H9pptfMfnVFDRQnGIzA2?=
+ =?us-ascii?Q?X4vxq7Q0mPL3AA91fNRjp3/cLzDNStpktV/HEOxbmBD+BwdzoRsB3FjCFna4?=
+ =?us-ascii?Q?Bq2oKe5U3LLvBf06ngs0BBBPHMR6NuGkhMdgacLp+laCZG7lisOj+Nrtg/oL?=
+ =?us-ascii?Q?nkK4EnSGDCv3VDMjEbXK41G27v448Yn8GDV7B2uToB7TJnt5i67lpn3VF9hk?=
+ =?us-ascii?Q?MfI7PxnGGFme0qG9Gq6xX8XOekkNcSC8eIDGovi8IYGPzC4qm+cppKtOF2TN?=
+ =?us-ascii?Q?SLQvN/vrWOJM3nrR44ZwK2idTzt7kc330CAcUnyfmcmK/meo?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4d2f1d46-207f-4b4c-c2b9-08defe0970f8
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 15:49:23.8086
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: E6LYNMzj8AnvCutkb3VLH5zrgD7VkbzJTjmvUlDumU1aZOzLNOOnNjXB5G4e7ZsQzgy/2jSdng6Stirky4vVHA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6036
 
-On Wed, Aug 19, 2026 at 11:31=E2=80=AFPM Ido Schimmel <idosch@nvidia.com> w=
-rote:
->
-> On Mon, Aug 17, 2026 at 01:12:10PM +0000, Zihan Xi wrote:
-> > fib_rebalance() reads ignore_routes_with_linkdown while summing active
-> > nexthop weights and then reads it again while calculating each upper
-> > bound. Sysctl writes are not serialized by RTNL. If all nexthops are
-> > link-down, a concurrent 1-to-0 change can leave total at zero and make
-> > the second pass divide by zero.
-> >
-> > Route insertion and link-state updates call fib_rebalance() under RTNL,
-> > and netlink devconf changes are already protected by RTNL. Make the
-> > sysctl handler take the per-net RTNL lock before changing
-> > ignore_routes_with_linkdown. This gives both passes a stable policy vie=
-w
-> > without adding work to route lookup or rebalance paths.
-> >
-> > Fixes: 0e884c78ee19 ("ipv4: L3 hash-based multipath")
-> > Cc: stable@vger.kernel.org
-> > Reported-by: Vega <vega@nebusec.ai>
-> > Assisted-by: Codex:gpt-5.4
-> > Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
->
-> I think that this is a better direction:
->
-> https://lore.kernel.org/netdev/20260817013237.2797-1-blbllhy@gmail.com/
->
-> Instead of taking RTNL, make it consistent with IPv6 and mark all the
-> nexthops as dead (upper_bound =3D -1) when total=3D=3D0, as the first pas=
-s
-> indicated. Something like [1].
->
-> It's true that it can lead to incorrect upper bounds if a concurrent
-> 1-to-0 change didn't result in total=3D=3D0: during the second pass we wi=
-ll
-> account for nexthops that we skipped in the first pass.
->
-> It's not very interesting. This sysctl was never meant to be configured
-> on the fly and the kernel doesn't rebalance nexthop groups when it is
-> toggled.
->
-> Let's wait for the IPv6 patch to be applied so that you could reference
-> it in the commit message.
->
-> [1]
-> diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
-> index 0483519b7fb0..7a362f2e2c2b 100644
-> --- a/net/ipv4/fib_semantics.c
-> +++ b/net/ipv4/fib_semantics.c
-> @@ -874,7 +874,7 @@ static void fib_rebalance(struct fib_info *fi)
->         change_nexthops(fi) {
->                 int upper_bound;
->
-> -               if (nexthop_nh->fib_nh_flags & RTNH_F_DEAD) {
-> +               if (!total || nexthop_nh->fib_nh_flags & RTNH_F_DEAD) {
->                         upper_bound =3D -1;
->                 } else if (ip_ignore_linkdown(nexthop_nh->fib_nh_dev) &&
->                            nexthop_nh->fib_nh_flags & RTNH_F_LINKDOWN) {
+On Tue, Aug 18, 2026 at 06:07:55PM +0300, Nikolay Aleksandrov wrote:
+> Currently neigh ha address is read directly, but that can result in
+> torn/partial reads if the neigh is being updated. Use neigh_ha_snapshot
+> to take a stable snapshot of the address.
+> 
+> Fixes: 057658cb33fb ("bridge: suppress arp pkts on BR_NEIGH_SUPPRESS ports")
+> Fixes: ed842faeb2bd ("bridge: suppress nd pkts on BR_NEIGH_SUPPRESS ports")
+> Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
 
-Hi Ido,
-
-Thanks for the guidance.
-
-Agreed. Taking RTNL is unnecessary here. I will revise the IPv4 fix to
-skip the upper-bound calculation and set upper_bound to -1 when the
-first pass reports a zero total, consistent with the IPv6 fix.
-
-I will wait for the IPv6 patch to be applied and reference it in the v2
-commit message.
-
-Thanks,
-Zihan
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
