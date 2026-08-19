@@ -1,221 +1,239 @@
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4FF31B114
-	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 13:11:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.181
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787145087; cv=pass; b=JvnYuujoF9gdEvDRq/6Hi5QwB0Bnl+pSiyvPIpd8+zVOJUYLjMYCWudDCzMYujhPONdBMzVH0IPWq/7y8RO1F9I3L2He6oXS7QuxbYkN5mHjwvwBzFfoe6bb+m7gaPKOszxXGyNLyd2P1rfLOL429my+toAiMEW3N36lY+IpGu4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787145087; c=relaxed/simple;
-	bh=jZA7PfmaHwVlgmpuxRi0/nvXo5xy/5VleZLudxxD3uQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CzMEqb7DPMI/k70v+sDYsLic4gYWokFAj7FnwXZKnePO4XHawDmc/vNvs3u9suJAV0+8sEODeM4H0TmpVVWZbgRcV1wQ1X1TXrl1XRjEmyWKSNM/3RwWQzcw9GsQmAznRAAszykbDjCFC+VLyLGfHszB0B+XrC31k1kroG85OJI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BSPSEJ0z; arc=pass smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C28C355048;
+	Wed, 19 Aug 2026 13:16:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787145399; cv=none; b=Nfi+t55w72Gtu9HjAN209NcSAMlxkTf9HrMh8V82846zEIymUDhsVU4WiWGU9WoUlvDW0wlIThlduZERLZLujWCyEaLvunr75mkagj7lld6Q8h7fPeca9GefBGWqmGM5yXrHqroFiCB6dnF2iaPqUDxM55J/5ibDla9m0JNRb3Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787145399; c=relaxed/simple;
+	bh=kBHPWo97uYwRSQBVWhpYZYcHcJ9umwbJ/0Ds0eO7wXE=;
+	h=Message-ID:Subject:From:To:CC:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=LJV7kMDocSi38QZRL3gtlBEzQmicO76c0ep5EWkxf0igmwbraqQyGaD6gNPrE/uTkIFcU5hdv/dV79tipyWlWvHAARJPAbwci4YwqHj6fjmg2q1WNf+ejmUddRKnq8tWrVF61X8Vlj/lHvLwZKmKAAr1O0e14bwxvYbq3dQOq0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=JCqSjDt3; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BSPSEJ0z"
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-527e352a167so5977821cf.1
-        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 06:11:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787145085; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QSIPgCiu7EB5s4gZZduzlGqLscix2ZLCFF/aSDPl9kHswH8VMa13ByT0Bw3P+e9Qih
-         WOfHVW1Onby05nSrwrrfpUcKxDrbq3aXq3HW1GGDK44jowm8GDMEWYsWW0BBPciwvRUv
-         F8cCWVXb2tSqYEeQKKz9LylGpgGOdeS7BrPS1r6x8NW+EpWoj0GxxPfcswqhuU/tg22A
-         nn301HEFqGGRnGgFRsYIM2RRjk56mhah3ZahkqVyDSvoTHfKOZS3/Tgw3Fo56aC7lFn7
-         NoWYFv3idzbx0VCtHVXGZ/A1GW0sZAdEzDWL7jMMnHPWQaS72w0DSwnFi6kSocfI6iSR
-         3bcA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=fXOVCIGJalaSc2ZC+AY298+lQiGMbwLhDsw79HHVzFA=;
-        fh=NLF5nafIvqM/zmpqWkw5X4Yp+OoanLewg96ou0+7umE=;
-        b=VFyQb2YWjUyp3FZIIEixq1tI5qq1dSyox2z2UevuVVHMrFbRTuv4dawxcK/jXrNbIb
-         7xZCPDXrH2iwqxEa4CqWZcJC8QaJ3YrS13KDbgcQ7mhM33w3+Z5VVWAJJXRDpGlRBY/6
-         uJEhBZuLQILqDUSrkzp5uu/b0BR98x4yUNHxZn20N5Nde9c3Meqj/z+Atzmu2zwQzfAs
-         drDlyC4hIzSH0Tbb+wP32+Aoiw4p+5t0tWLIiAMp/hxSCg/BOiJDvpND8DSIiyVR0eP9
-         3HUru45Tb0VhjafumLZkgRD7BqbGTZL361EPthMD6kckndmbcMcYtF+RKNXhVPY6u9H+
-         wm1A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787145085; x=1787749885; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=fXOVCIGJalaSc2ZC+AY298+lQiGMbwLhDsw79HHVzFA=;
-        b=BSPSEJ0zBFfi5ilSoHahB2OHXXEXkEeLQ7nz0T72KkNHa5coyDw0oKJCGC9We9MzY5
-         t/dbU9/6zTwMP5gdjRwIljJMm75UYZ7uynwpDueNEbOZmbzycjXz4YWLhM2otPGu6NAg
-         xAzuvwGpAwsjGNx/i2QXK93QcADkvoPYi1PZsdt+e+vX6m0JCnEzVTEEULHEJlMTKfOG
-         KZDCuRjl96pkII8bmD0IcQJyyUKiYyyyZsk9gWAsG9R+yx5DekytN3ChhRiZErgdDiFB
-         CzQnh44z1WvpV9j4+U3MjXfG5G/IIqYI/q0nSGo2mEqEX8bHd93sCSjC2Iessp183akK
-         ZvnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787145085; x=1787749885;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fXOVCIGJalaSc2ZC+AY298+lQiGMbwLhDsw79HHVzFA=;
-        b=ocgJc/rSbeCSNb3AjoHiq7NFzaBOBZMtdPIBZGNGE0EEkXnURBaG/88BbX1uKkfoYX
-         6cTfsmm4USkZ58xS+llCFZg13r7TaQT48MUugEPIZcCO5/MXdkVr+S8D+L24/BcbhZuv
-         iRE3Rnvi7CKxB7KlWkACaJdNJ68bixfKz0dy+HKTPmQ4k8Qoqa/cCGsHFlBj3lE3e9CW
-         C007PjlojmgZDlxwRQRG8WtohIks1C9Sh2dHNXHr6CIHYfKL6El8f9sjI3pt6Pmdpfxe
-         lWRSs2vOxyU9R7f8BNhPrQBnctIJ4rVjnMQXTmc0Tb2KyJ9DdmZ5Oe49L/u4Ps7IYL2s
-         S3ww==
-X-Forwarded-Encrypted: i=1; AHgh+Rr/0uAU9WMkhC5lFUQLKG4zGQNL6sg+Ghmr8nPerG5l+9QMWA2v7rB1nFsF2SrlM49FFuBgYmQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNOSWtT2ybmcYyxbYUMvCAcK8oiP6axPl+C3x4VvWv19dXwJTo
-	SJPItpXGBUZX/2TojX8Z2lOlm40gSvOfbKc+GOvm4BW7eWtuTTLVXjL9gfIuoMsmYqpVud+Ng70
-	SH0+jFNBRHY/NrnDA6L+W4mM8wWFenoxrQPW2d0i7
-X-Gm-Gg: AR+sD135sDx5Htdf90md4Faqer1i3Xho6xGdWGxbfd/DgbFxHdgEjuu/iINd/A5m6lU
-	tKA6XBb37qpdN9USmlK/K0TWXLHxRrCcQSlODagl8mLy2GCt8Hx+qZUrhUNLz8X5JtUILw41FGe
-	IRKEDgZo0REGNbjDQJgMRsvuLM+AohZWDtgKLjIUwCKq/6tFILnjmf7Bz+fo/dFrioaEZxZqTFz
-	d1QUgJR0i3kCEfYcmLcfmpoN9v/05wzY8mguKT9sTGd8hf/uoDAVIo25TpPNTQA5hmh2oh04sT4
-	lXrSM2d3iJ0GWh0duhonixjEy4DLyx6MkkXLOlTZ/e3t85iS6cbq/cb+CcdmHUFN/YxkuYVOd13
-	NLdcKgTJleBhktmJtejh3L7aJkMAzAtNiZ/H7J3WzpXKTDeZezcK2ztrmCnPxkTxXQ8ZAxK4xU/
-	hAYKOEYCWRvDOB/4o=
-X-Received: by 2002:a05:622a:230b:b0:517:580c:bcd3 with SMTP id
- d75a77b69052e-52dd57ae120mr44284371cf.19.1787145084309; Wed, 19 Aug 2026
- 06:11:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="JCqSjDt3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1787145395; x=1818681395;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=kBHPWo97uYwRSQBVWhpYZYcHcJ9umwbJ/0Ds0eO7wXE=;
+  b=JCqSjDt3P7n79EUcArkUdjZWsNZh73VYuug21yWIwBX0AU5RsjB7YUPW
+   75G+eAjgqXsiNxrO3KPHb5JGDt0ipkHF+8c56cqcjPhQlU92tWCiBgWmf
+   LnnUb9EpxVhutz4qp78f6Hv9XNlhfUWTf8WO9/RbrLiDDpA6ODD603Pmi
+   H4eII2nfjwX/FPqW8foamQwwQHbWL/dj0mU1inAxnVJdTgA3vO+YJdaWi
+   0ZL4Wey8WcZmc/lvWhxiGbTkFk4XYN3GTcF3qOCJKZKkwAX88CQgHbBac
+   /IVSkWTwF6vsDnXXpOFdXk9v+/rM4I0xhCD3z/1LGNJn34mTltapciFxh
+   A==;
+X-CSE-ConnectionGUID: nrrKC829SfW3iRargQSIyg==
+X-CSE-MsgGUID: ljfRS7kdTaiT5/L3DCnGRQ==
+X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; 
+   d="scan'208";a="62677125"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 06:16:34 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
+ chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.45; Wed, 19 Aug 2026 06:16:33 -0700
+Received: from DEN-DL-M77643.microsemi.net (10.10.85.11) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Wed, 19 Aug 2026 06:16:30 -0700
+Message-ID: <18fb098e343a49ceb90bcb385f06b14a7c58b736.camel@microchip.com>
+Subject: Re: [PATCH net-next v11 7/9] net: dsa: lan9645x: add mac table
+ integration
+From: Jens Emil Schulz Ostergaard <jensemil.schulzostergaard@microchip.com>
+To: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew@lunn.ch>, "Vladimir
+ Oltean" <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Woojung Huh <woojung.huh@microchip.com>, "Russell
+ King" <linux@armlinux.org.uk>, Steen Hegelund <Steen.Hegelund@microchip.com>,
+	Daniel Machon <daniel.machon@microchip.com>
+CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<devicetree@vger.kernel.org>
+Date: Wed, 19 Aug 2026 15:16:29 +0200
+In-Reply-To: <20260805-dsa_lan9645x_switch_driver_base-v11-7-007ebc983a0a@microchip.com>
+References: <20260805-dsa_lan9645x_switch_driver_base-v11-0-007ebc983a0a@microchip.com>
+	 <20260805-dsa_lan9645x_switch_driver_base-v11-7-007ebc983a0a@microchip.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2.1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260813033855.3372172-1-dongchenchen2@huawei.com> <CANn89iLCrzmOfUVwa0yeROpkZxWmVsAkbH7=SBA3XuVxkmTfKA@mail.gmail.com>
-In-Reply-To: <CANn89iLCrzmOfUVwa0yeROpkZxWmVsAkbH7=SBA3XuVxkmTfKA@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 19 Aug 2026 15:11:12 +0200
-X-Gm-Features: AcwNN1UZfggmIhDQCQMpDuHpbB3kvC1RaYxq75aWZVqUNkzfAptYBk4Al2GV0Vo
-Message-ID: <CANn89i+nK6aM7PQ9VBp8jfxhiJNsibx3pCoQhHvFNtUHfQomjQ@mail.gmail.com>
-Subject: Re: [PATCH net] net: iptunnel: fix stale transport header during
- tunnel decapsulation
-To: Dong Chenchen <dongchenchen2@huawei.com>
-Cc: davem@davemloft.net, pabeni@redhat.com, kuba@kernel.org, horms@kernel.org, 
-	herbert@gondor.apana.org.au, kuniyu@google.com, idosch@nvidia.com, 
-	andrew+netdev@lunn.ch, ap420073@gmail.com, steffen.klassert@secunet.com, 
-	laforge@gnumonks.org, jiayuan.chen@linux.dev, jhs@mojatatu.com, 
-	zhangchangzhong@huawei.com, netdev@vger.kernel.org, 
-	syzbot+83181a31faf9455499c5@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 13, 2026 at 6:39=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
-wrote:
+This is a reply to:
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260805-dsa_lan9645x_s=
+witch_driver_base-v11-0-007ebc983a0a%40microchip.com?part=3D7
+
+> --- Patch [7]: [PATCH net-next v11 7/9] net: dsa: lan9645x: add mac table=
+ integration ---
+> commit c7af50889a34728dc6c99946b25b62bfb26fc31e
+> Author: Jens Emil Schulz =C3=98stergaard <jensemil.schulzostergaard@micro=
+chip.com>
 >
-> On Thu, Aug 13, 2026 at 5:30=E2=80=AFAM Dong Chenchen <dongchenchen2@huaw=
-ei.com> wrote:
-> >
-> > Syzbot reported a crash in qdisc_pkt_len_segs_init() caused by a stale
-> > transport_header offset after tunnel decapsulation.
-> >
-> > BUG: unable to handle page fault for address: ffffed102091a42e
-> > Oops: Oops: 0000 [#1] SMP KASAN NOPTI
-> > CPU: 0 UID: 0 PID: 340 Comm: qdisc_uaf_repro Not tainted 7.2.0-rc4-0006=
-1-g248951ddc14d #256 PREEMPT(full)
-> > Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-=
-1.16.3-2 04/01/2014
-> > RIP: 0010:__asan_load2
-> > <IRQ>
-> > qdisc_pkt_len_segs_init (net/core/dev.c:4145)
-> > __dev_queue_xmit (net/core/dev.c:4787)
-> > br_dev_queue_push_xmit (net/bridge/br_forward.c:53)
-> > br_handle_frame_finish (net/bridge/br_input.c:229)
-> > br_handle_frame (net/bridge/br_input.c:315)
-> > __netif_receive_skb_core.constprop.0 (net/core/dev.c:6099)
-> > __netif_receive_skb_list_core (net/core/dev.c:6287)
-> > netif_receive_skb_list_internal (net/core/dev.c:6445)
-> > napi_complete_done (net/core/dev.c:6813)
-> > gro_cell_poll (net/core/gro_cells.c:74)
-> > __napi_poll (net/core/dev.c:7735)
-> > net_rx_action (net/core/dev.c:7798 net/core/dev.c:7955)
-> > handle_softirqs (kernel/softirq.c:622)
-> > do_softirq (kernel/softirq.c:523  kernel/softirq.c:510 )
-> > __local_bh_enable_ip (kernel/softirq.c:450)
-> > tun_get_user (drivers/net/tun.c:1986 (discriminator 1))
-> > tun_chr_write_iter (drivers/net/tun.c:2032)
-> >
-> > The crash requires four conditions to line up:
-> >
-> > 1. The incoming packet is encapsulated and carries GSO metadata.  The o=
-uter
-> >    transport header offset is stored in skb->transport_header while the
-> >    packet is still in the outer tunnel context.
-> > 2. The tunnel receiver strips the outer headers.  skb->data is advanced=
- to
-> >    the inner frame, but skb->transport_header is left pointing to the
-> >    now-removed outer L4 header, so it becomes a negative offset relativ=
-e to
-> >    the new data.
-> > 3. The inner frame is not delivered to the local IP stack.  Instead, it
-> >    is forwarded at L2 by a bridge or HSR, so ip_rcv_core() never runs a=
-nd
-> >    the transport header is not reset to the inner L4 offset.
-> > 4. The forwarding path calls __dev_queue_xmit(), which enters
-> >    qdisc_pkt_len_segs_init().  That function computes the GSO header le=
-ngth
-> >    from skb_transport_offset(skb).  Because the offset is negative, the
-> >    unsigned cast overflows and pskb_may_pull(skb, hdr_len +
-> >    sizeof(struct tcphdr)) reads past the end of the skb, triggering a
-> >    KASAN fault or page fault.
-> >
-> > Fix this by clearing skb->transport_header to the ~0U sentinel at the
-> > tunnel decapsulation boundary, after each tunnel receive function has
-> > finished all processing that needs the outer L4 header and before the s=
-kb
-> > is handed to GRO or the stack. The IP/GRO receive paths then set the
-> > transport header correctly when they parse the inner packet.
-> >
-> > Fixes: 7fb4c1967011 ("net: pull headers in qdisc_pkt_len_segs_init()")
+> net: dsa: lan9645x: add mac table integration
 >
-> This Fixes: tag seems pretty random to me. Issue was present long
-> before that commit.
-> Next time, please be precise with the `Fixes:` tag; it's not decoration.
+> This adds a new lan9645x_mac.c unit that drives the ANA MAC table through
+> the ANA_MACACCESS/ANA_MACHDATA/ANA_MACLDATA registers, and wires it up to
+> the DSA .port_fdb_add, .port_fdb_del, .port_fdb_dump and .port_fast_age
+> callbacks. A new mact_lock mutex serializes all MAC table register access=
+,
+> including the aging period updates.
 >
-> Also, calling skb_unset_transport_header(skb) directly from
-> gro_cells_receive() would make more sense and
-> your patch would be less intrusive.
+> > diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_mac.c
+b/drivers/net/dsa/microchip/lan9645x/lan9645x_mac.c
+> > new file mode 100644
+> > index 0000000000000..9d5282754b7a0
+> > --- /dev/null
+> > +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_mac.c
+> > @@ -0,0 +1,293 @@
+>
+> [ ... ]
+>
+> > +int lan9645x_mact_flush(struct lan9645x *lan9645x, int port)
+> > +{
+> > +	int err;
+> > +
+> > +	mutex_lock(&lan9645x->mact_lock);
+> > +	/* MAC table entries with dst index matching port are aged on scan. *=
+/
+> > +	lan_wr(ANA_ANAGEFIL_PID_EN_SET(1) |
+> > +	       ANA_ANAGEFIL_PID_VAL_SET(port),
+> > +	       lan9645x, ANA_ANAGEFIL);
+> > +
+> > +	/* Flushing requires two scans. First sets AGE_FLAG=3D1, second remov=
+es
+> > +	 * entries with AGE_FLAG=3D1.
+> > +	 */
+> > +	lan_wr(ANA_MACACCESS_MAC_TABLE_CMD_SET(CMD_AGE),
+> > +	       lan9645x,
+> > +	       ANA_MACACCESS);
+> > +
+> > +	err =3D lan9645x_mac_wait_for_completion(lan9645x, NULL);
+> > +	if (err)
+> > +		goto mact_unlock;
+> > +
+> > +	lan_wr(ANA_MACACCESS_MAC_TABLE_CMD_SET(CMD_AGE),
+> > +	       lan9645x,
+> > +	       ANA_MACACCESS);
+> > +
+> > +	err =3D lan9645x_mac_wait_for_completion(lan9645x, NULL);
+> > +
+> > +mact_unlock:
+> > +	lan_wr(0, lan9645x, ANA_ANAGEFIL);
+> > +	mutex_unlock(&lan9645x->mact_lock);
+> > +	return err;
+> > +}
+>
+> [ ... ]
+>
+> > +		/* Only dynamic entries are surfaced through the user port dump.
+> > +		 * ENTRYTYPE_LOCKED entries are already reported by the bridge
+> > +		 * master's ndo_fdb_dump as NTF_MASTER, so we avoid duplicating
+> > +		 * them as NTF_SELF.
+> > +		 * Entries toward the host (NTF_SELF) have DEST_IDX =3D=3D the CPU
+> > +		 * port module and are filtered out by the DEST_IDX check.
+> > +		 */
+> > +		if (ANA_MACACCESS_DEST_IDX_GET(maca) =3D=3D port &&
+> > +		    type =3D=3D ENTRYTYPE_NORMAL) {
+>
+> Discovered by: opus-5 =C2=B7 Missed by: sashiko-gemini
+> Is the comment in lan9645x_mact_dsa_dump() accurate about what DEST_IDX
+> holds for host entries?
+>
+> lan9645x_fdb_add() programs the destination as PGID_CPU:
+>
+> 	dest =3D dsa_port_is_cpu(dp) ? PGID_CPU : port;
+>
+> 	return lan9645x_mact_learn(lan9645x, dest, addr, vid, ENTRYTYPE_LOCKED);
+>
+> and lan9645x_main.h defines PGID_CPU as (PGID_AGGR - 6), i.e. 58. The CPU
+> port module itself is denoted by lan9645x->num_phys_ports elsewhere in th=
+e
+> driver, for instance ANA_VLAN_CFG(num_phys_ports) in lan9645x_vlan_init()
+> and BIT(num_phys_ports) in the PGID_BC/PGID_CPU masks written by
+> lan9645x_port_cpu_init():
+>
+> 	lan_wr(BIT(lan9645x->num_phys_ports), lan9645x, ANA_PGID(PGID_CPU));
+>
+> So the value stored in DEST_IDX for host entries is the reserved PGID ind=
+ex
+> 58, not the CPU port module index. Nothing misbehaves today, since both 5=
+8
+> and num_phys_ports fail the comparison against a user port index, but wou=
+ld
+> it be clearer to say the entries carry DEST_IDX =3D=3D PGID_CPU? A later =
+change
+> that adds an explicit host-entry test against num_phys_ports based on thi=
+s
+> comment would not match any entry.
 
-Do you plan sending a V2 ?
+Yes, I will update this comment.
 
-This would merely be a one-liner.
+>
+> > diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
+b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
+> > index 3281726284dc2..af158d4461aee 100644
+> > --- a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
+> > +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
+>
+> [ ... ]
+>
+> > @@ -626,6 +636,75 @@ static int lan9645x_port_vlan_del(struct dsa_switc=
+h *ds, int port,
+> >  	return lan9645x_vlan_port_del_vlan(p, vlan->vid);
+> >  }
+> > =20
+> > +static void lan9645x_port_fast_age(struct dsa_switch *ds, int port)
+> > +{
+> > +	lan9645x_mact_flush(ds->priv, port);
+> > +}
+>
+> Discovered by: opus-5 =C2=B7 Missed by: sashiko-gemini
+> Should lan9645x_port_fast_age() log the dropped error here?
+>
+> lan9645x_mact_flush() returns the result of both
+> lan9645x_mac_wait_for_completion() calls, which yield -ETIMEDOUT when
+> ANA_MACACCESS.MAC_TABLE_CMD does not return to CMD_IDLE within the poll
+> timeout. Since the DSA .port_fast_age op returns void, this callback is t=
+he
+> only place the failure can be observed, and the value is discarded.
+>
+> On a failed flush the ANA_ANAGEFIL filter is cleared and CMD_AGE is not
+> retried, so the port's dynamic entries stay in the MAC table after an STP
+> topology change or bridge leave, with no kernel message. If aging was
+> disabled with a zero ageing time in lan9645x_set_ageing_time()
+> (ANA_AUTOAGE_AGE_PERIOD =3D=3D 0), the stale entries are not aged out lat=
+er
+> either.
+>
+> felix_port_fast_age() handles the same situation for the related IP by
+> reporting it:
+>
+> 	err =3D ocelot_mact_flush(ocelot, port);
+> 	if (err)
+> 		dev_err(ds->dev, "Flushing MAC table on port %d returned %pe\n",
+> 			port, ERR_PTR(err));
+>
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index 22eda1d54a0e8490c3b64a733cc93a30aaa84a54..626bbb9bae1ad4ea6657f5e0f58=
-1cca0f49f16ed
-100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -3082,6 +3082,11 @@ static inline bool
-skb_transport_header_was_set(const struct sk_buff *skb)
-        return skb->transport_header !=3D (typeof(skb->transport_header))~0=
-U;
- }
+Sure, I will add an error log here.
 
-+static inline void skb_unset_transport_header(struct sk_buff *skb)
-+{
-+       skb->transport_header =3D (typeof(skb->transport_header))~0U;
-+}
-+
- static inline unsigned char *skb_transport_header(const struct sk_buff *sk=
-b)
- {
-        DEBUG_NET_WARN_ON_ONCE(!skb_transport_header_was_set(skb));
-diff --git a/net/core/gro_cells.c b/net/core/gro_cells.c
-index 1b84385c04bd9c4539cbcc6140867dd98e229f61..d8c0a2867120199cec152503477=
-3650f1ff24542
-100644
---- a/net/core/gro_cells.c
-+++ b/net/core/gro_cells.c
-@@ -22,6 +22,8 @@ int gro_cells_receive(struct gro_cells *gcells,
-struct sk_buff *skb)
-        if (unlikely(!(dev->flags & IFF_UP)))
-                goto drop;
+> > +
+> > +static int lan9645x_fdb_dump(struct dsa_switch *ds, int port,
+> > +			     dsa_fdb_dump_cb_t *cb, void *data)
+> > +{
+> > +	return lan9645x_mact_dsa_dump(ds->priv, port, cb, data);
+> > +}
+>
+> [ ... ]
 
-+       skb_unset_transport_header(skb);
-+
-        if (!gcells->cells || skb_cloned(skb) || netif_elide_gro(dev)) {
-                res =3D netif_rx(skb);
-                goto unlock;
