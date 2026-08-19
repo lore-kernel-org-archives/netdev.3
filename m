@@ -1,98 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49BF0385D97;
-	Wed, 19 Aug 2026 14:18:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.75.44.102])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D50163B9D96
+	for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 14:21:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.75.44.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787149095; cv=none; b=Y+2Ka6tMMhXGkL7lTE+vq07GqCcMuBGfYTRf3t3WIXqrqvmh4oMoNmxWa/mKEIY+4VQvS5Ki5FJcl0EAB3qv5kP6bXr5cswS5e+sglsLmolY57E+Hs135wSIhF1ffBd9eD5TMGs1e71CC6mikjmL0MPyOcf2Vk8GXGXqSe5JSYE=
+	t=1787149306; cv=none; b=IaChwGOD0nd/17FWOaPJSJ0oERZOGPRRYdM7S9mrQRKTWbSA+WzP7E7UWB0jJDLVU+sVIv72S8fWWEmE44KQTIU+0dkFX4HTITekk6mm4XMYaK5NGLPeUww84YlaMKSEhz3NLaV8u2FfNJrki4TCWjFj+pxm4ffMAh2lugNz9Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787149095; c=relaxed/simple;
-	bh=KiX2RF+RZV4yShK0hXAxoYAUCeSX5eJu1olOk0e6qn0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Lbtq6uLMAK+Gn5+pT8grktjx3z86J3XVETgJLMI84m6pCompD2aVo62MMmzQYLXvWySbO4BGPD0PgvyGjtTE7k3IaaA+5GUniZmg5gVydajsAd2kv+FJRmTUgaeWtCi3BvhIEG9G6nQuW1lqPEMmo3TPlckRJWY2gqjlcNIXgEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wv3OryoK; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wv3OryoK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE7E51F000E9;
-	Wed, 19 Aug 2026 14:18:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787149093;
-	bh=LvbuGOrC0Hg0D64eNdP9PSDGg/aMc3jAbpv4AU4oxRg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Wv3OryoKzfv4FxmIn5+lVl6aDC4NgN6l5qkL7Rc0RTw8BXqKJsL9WzSvvcWkMe0wt
-	 hH5TB99oog3V2R70QwWBFJf48rsBRkrL2ZRWG+IDW/OvTsCQZtQsoS6ckwz5QiQASD
-	 8YpBP4oMR7oSEGRMRfXSM94941OLILYrFgd76Wd2OUujZZPUC7vQq6OcSlN7TaoYjy
-	 zaE20Aa0SU3rGsfiK1ccET4rE4aj8gRwzeSXzZRkqtt7Q9I8xSW3q2v7gO31aAD11Y
-	 BN8xtyoQH1GSohfiHQ6XV7cnnnZGXOwQY36c0z6QmmWGWgCxe1lGSYDzGDannRf26K
-	 MEO6pHdTB2X5g==
-Date: Wed, 19 Aug 2026 15:18:09 +0100
-From: Simon Horman <horms@kernel.org>
-To: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Cc: Shahed Shaikh <shshaikh@marvell.com>,
-	Manish Chopra <manishc@marvell.com>, GR-Linux-NIC-Dev@marvell.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] net: qlcnic: validate unified ROM sections before
- loading
-Message-ID: <20260819141809.GS265046@horms.kernel.org>
-References: <20260816052109.4607-1-pengpeng@iscas.ac.cn>
+	s=arc-20240116; t=1787149306; c=relaxed/simple;
+	bh=Pi9D8XWAwmUchOa+klJdwm/JK4QbNebd4r2WmvPV7ps=;
+	h=Date:From:To:Cc:Subject:Content-Type:MIME-Version:Message-ID; b=ihG5LKCIDM8E2J0E1FHQQosCqnUtP1dqw4Pu/mBX7aPSEXF0g50ay58DB6sxqlffD2y3e0h0N/nuXg6sMnU+Uz70peuuMxAVSeIjQDJHk3SodnT1Oaj5c/WmXM6tBgkHHDd2LIpmlPPMRlcAkXbYa80AnLWEwWFiAzl7wS7IdsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=13.75.44.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
+Received: from zju.edu.cn (unknown [10.190.129.65])
+	by mtasvr (Coremail) with SMTP id _____wB3f3_qu4VqhTGpAA--.3243S3;
+	Wed, 19 Aug 2026 22:21:31 +0800 (CST)
+Received: from stitch$zju.edu.cn ( [10.190.129.65] ) by
+ ajax-webmail-mail-app4 (Coremail) ; Wed, 19 Aug 2026 22:21:30 +0800
+ (GMT+08:00)
+Date: Wed, 19 Aug 2026 22:21:30 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: "Jiacheng Xu" <stitch@zju.edu.cn>
+To: hangbin.liu@linux.dev
+Cc: kuba@kernel.org, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com
+Subject: [PATCH net v2] netdevsim: avoid NULL dereference after failed probe
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2025.3-cmXT6 build
+ 20260617(6f868824) Copyright (c) 2002-2026 www.mailtech.cn zju.edu.cn
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260816052109.4607-1-pengpeng@iscas.ac.cn>
+Message-ID: <4fe1dcd1.16124.1a01a660a42.Coremail.stitch@zju.edu.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:zi_KCgBnbDbqu4VqTT9QAw--.35463W
+X-CM-SenderInfo: qtrxiiaqttimo62m3hxhgxhubq/1tbiAwUIC2qFDZYO0gABss
+X-CM-DELIVERINFO: =?B?m1R4sAXKKxbFmtjJiESix3B1w3tMoM3snk/k5SVzZVydjEqe1eefKHnLf95EnB4iem
+	egWypvKLiHpylsIz9FfMDOWXuuvwmd6LQQ5ytWvV+0v/fJbrbKaTfvOedFqvCidbKa9m7n
+	sM/7rFt9TweCOyZU7J6aUgX3LhJELH0xd1J4oUrJF5SqQdimjO+zxbMMfJ8qtw==
+X-Coremail-Antispam: 1Uk129KBj93XoWxWFWrArW7WF43tr4DGFy7XFc_yoW5Gryrpa
+	98KFy5trykWws7Wan8ZF40yFy5Ww18J3y3ur13A3sY9w12qryYqryagFyYy3W8t3yxJa45
+	Xr4DAFW8uFZ0yrcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUPCb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
+	xVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
+	wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0Y48IcxkI7V
+	AKI48G6xCjnVAKz4kxM4xvF2IEb7IF0Fy264kE64k0F24lFcxC0VAYjxAxZF0Ex2IqxwCF
+	04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r
+	18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vI
+	r41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr
+	1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvE
+	x4A2jsIEc7CjxVAFwI0_Gr0_Gr1UMVCEFcxC0VAYjxAxZFUvcSsGvfC2KfnxnUUI43ZEXa
+	7IU8rcTJUUUUU==
 
-On Sun, Aug 16, 2026 at 01:21:09PM +0800, Pengpeng Hou wrote:
-> The unified ROM parser reads directory, product, and data-descriptor fields
-> from the firmware file.  Existing validation forms table and data ends with
-> unchecked additions and multiplications.  Malformed values can wrap before
-> they are compared with the firmware size.  The parser also dereferences
-> typed pointers at firmware-controlled offsets.
-> 
-> Valid descriptor extents alone are insufficient for the consumers.  The
-> loader reads a fixed-size bootloader regardless of its declared size, the
-> version parser assumes a 17-byte tail, and a partial final firmware word is
-> read as a full u64.  A truncated image can therefore make the driver read
-> beyond the firmware allocation during validation or loading.
-> 
-> Replace the pointer-returning parser with bounded range helpers.  Validate
-> table entry sizes, descriptor indices, section ranges, the fixed
-> bootloader load length, and the version tail before exposing any section.
-> Read all file fields with unaligned little-endian accessors and assemble a
-> partial final word from only the bytes that remain.  Apply the same range
-> checks to the legacy image before reading its fixed fields.
-> 
-> Fixes: af19b49152bd ("qlcnic: Qlogic ethernet driver for CNA devices")
-> Assisted-by: Codex:gpt-5
-> Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-> ---
-> Changes since v1:
-> - follow reverse-xmas-tree declaration order and drop unrelated whitespace
-> - replace firmware structure casts with bounded unaligned reads
-> - validate directory and data-table entry sizes and descriptor indices
-> - require the bootloader section to cover the fixed load length
-> - require the firmware section to contain the 17-byte version tail
-> - avoid a full-u64 read for a partial final firmware word
-> - validate fixed legacy-image fields before reading them
-> 
-> v1: https://lore.kernel.org/all/20260706093601.81535-1-pengpeng@iscas.ac.cn/
-> 
-> Validation:
-> - scripts/checkpatch.pl --no-tree --strict: clean
-> - git diff --check: clean
-> - manual source-level audit of directory, product, descriptor, version, and
->   loader consumers
-
-Thanks for the updates.
-And for including information on your validation steps.
-
-Reviewed-by: Simon Horman <horms@kernel.org>
+ZGV2aWNlX3JlZ2lzdGVyKCkgcmVwb3J0cyB3aGV0aGVyIGRldmljZSByZWdpc3RyYXRpb24gc3Vj
+Y2VlZGVkLCBub3QKd2hldGhlciB0aGUgbWF0Y2hpbmcgZHJpdmVyJ3MgcHJvYmUgc3VjY2VlZGVk
+LiBJZiBuc2ltX2Rydl9wcm9iZSgpCmZhaWxzLCB0aGUgZHJpdmVyIGNvcmUgbGVhdmVzIHRoZSBu
+c2ltX2J1c19kZXYgcmVnaXN0ZXJlZCB3aGlsZSB0aGUgcHJvYmUKZXJyb3IgcGF0aCBjbGVhcnMg
+aXRzIGRyaXZlciBkYXRhLgoKbmV3X2RldmljZV9zdG9yZSgpIHN1YnNlcXVlbnRseSBtYXJrcyB0
+aGUgbnNpbV9idXNfZGV2IGluaXRpYWxpemVkLiBBCndyaXRlIHRvIGl0cyBuZXdfcG9ydCBvciBk
+ZWxfcG9ydCBhdHRyaWJ1dGUgdGhlcmVmb3JlIHBhc3NlcyB0aGUgaW5pdApjaGVjayBhbmQgY2Fs
+bHMgbnNpbV9kcnZfcG9ydF9hZGQoKSBvciBuc2ltX2Rydl9wb3J0X2RlbCgpIHdpdGggbm8gdmFs
+aWQKbnNpbV9kZXYuIEJvdGggaGVscGVycyBwYXNzIHRoZSBOVUxMIGRyaXZlciBkYXRhIHRvIHBy
+aXZfdG9fZGV2bGluaygpLApsZWFkaW5nIHRvIGEgTlVMTCBwb2ludGVyIGRlcmVmZXJlbmNlLgoK
+VGhpcyBjYW4gYmUgcmVwcm9kdWNlZCBieSBjcmVhdGluZyBhIG5ldGRldnNpbSBkZXZpY2UgZm9y
+IHdoaWNoCm5zaW1fZHJ2X3Byb2JlKCkgZmFpbHMgYW5kIHRoZW4gd3JpdGluZyB0byB0aGUgbmV3
+X3BvcnQgb3IgZGVsX3BvcnQKYXR0cmlidXRlIG9mIHRoZSByZWdpc3RlcmVkIGRldmljZS4KClNl
+cmlhbGl6ZSB0aGUgZHJpdmVyIGRhdGEgY2hlY2sgYW5kIHRoZSBwb3J0IG9wZXJhdGlvbiB3aXRo
+IHRoZSBkZXZpY2UKbG9jaywgYW5kIHJlamVjdCB0aGUgb3BlcmF0aW9uIHdpdGggLUVOT0RFViB3
+aGVuIG5vIGRyaXZlciBkYXRhIGlzCnByZXNlbnQuIFRoaXMgYWxzbyBwcmV2ZW50cyBkcml2ZXIg
+dW5iaW5kIGZyb20gZnJlZWluZyBuc2ltX2RldiBiZXR3ZWVuCnRoZSBjaGVjayBhbmQgaXRzIHVz
+ZSwgYW5kIGZvbGxvd3MgdGhlIGxvY2tpbmcgdXNlZCBieSBzcmlvdl9udW12ZnMuCgpGaXhlczog
+Nzk0YjJjMDVjYTFjICgibmV0ZGV2c2ltOiBleHRlbmQgZGV2aWNlIGF0dHJzIHRvIHN1cHBvcnQg
+cG9ydCBhZGRpdGlvbiBhbmQgZGVsZXRpb24iKQpDYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZwpT
+aWduZWQtb2ZmLWJ5OiBKaWFjaGVuZyBYdSA8c3RpdGNoQHpqdS5lZHUuY24+Ci0tLQpDaGFuZ2Vz
+IGluIHYyOgotIFRhcmdldCB0aGUgcGF0Y2ggdG8gdGhlIG5ldCB0cmVlLgotIFJlbW92ZSB0aGUg
+cmVwcm9kdWNlciBhdHRhY2htZW50IGFuZCBkZXNjcmliZSB0aGUgdHJpZ2dlciBpbiB0aGUKICBj
+b21taXQgbWVzc2FnZS4KCmRyaXZlcnMvbmV0L25ldGRldnNpbS9idXMuYyB8IDE3ICsrKysrKysr
+KysrKysrLS0tCjEgZmlsZSBjaGFuZ2VkLCAxNCBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygt
+KQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L25ldGRldnNpbS9idXMuYyBiL2RyaXZlcnMvbmV0
+L25ldGRldnNpbS9idXMuYwppbmRleCA0MTQ4M2UzNzFmMDUuLjBhYjUxMzA2YWQwYSAxMDA2NDQK
+LS0tIGEvZHJpdmVycy9uZXQvbmV0ZGV2c2ltL2J1cy5jCisrKyBiL2RyaXZlcnMvbmV0L25ldGRl
+dnNpbS9idXMuYwpAQCAtOTMsOCArOTMsMTMgQEAgbmV3X3BvcnRfc3RvcmUoc3RydWN0IGRldmlj
+ZSAqZGV2LCBzdHJ1Y3QgZGV2aWNlX2F0dHJpYnV0ZSAqYXR0ciwKICAgICAgICAgICAgICAgIHJl
+dHVybiAtRUlOVkFMOwogICAgICAgIH0KCi0gICAgICAgcmV0ID0gbnNpbV9kcnZfcG9ydF9hZGQo
+bnNpbV9idXNfZGV2LCBOU0lNX0RFVl9QT1JUX1RZUEVfUEYsIHBvcnRfaW5kZXgsCi0gICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgYWRkcl9zZXQgPyBldGhfYWRkciA6IE5VTEwpOworICAg
+ICAgIGRldmljZV9sb2NrKGRldik7CisgICAgICAgaWYgKCFkZXZfZ2V0X2RydmRhdGEoZGV2KSkK
+KyAgICAgICAgICAgICAgIHJldCA9IC1FTk9ERVY7CisgICAgICAgZWxzZQorICAgICAgICAgICAg
+ICAgcmV0ID0gbnNpbV9kcnZfcG9ydF9hZGQobnNpbV9idXNfZGV2LCBOU0lNX0RFVl9QT1JUX1RZ
+UEVfUEYsCisgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBwb3J0X2luZGV4
+LCBhZGRyX3NldCA/IGV0aF9hZGRyIDogTlVMTCk7CisgICAgICAgZGV2aWNlX3VubG9jayhkZXYp
+OwogICAgICAgIHJldHVybiByZXQgPyByZXQgOiBjb3VudDsKIH0KCkBAIC0xMTUsNyArMTIwLDEz
+IEBAIGRlbF9wb3J0X3N0b3JlKHN0cnVjdCBkZXZpY2UgKmRldiwgc3RydWN0IGRldmljZV9hdHRy
+aWJ1dGUgKmF0dHIsCiAgICAgICAgaWYgKHJldCkKICAgICAgICAgICAgICAgIHJldHVybiByZXQ7
+CgotICAgICAgIHJldCA9IG5zaW1fZHJ2X3BvcnRfZGVsKG5zaW1fYnVzX2RldiwgTlNJTV9ERVZf
+UE9SVF9UWVBFX1BGLCBwb3J0X2luZGV4KTsKKyAgICAgICBkZXZpY2VfbG9jayhkZXYpOworICAg
+ICAgIGlmICghZGV2X2dldF9kcnZkYXRhKGRldikpCisgICAgICAgICAgICAgICByZXQgPSAtRU5P
+REVWOworICAgICAgIGVsc2UKKyAgICAgICAgICAgICAgIHJldCA9IG5zaW1fZHJ2X3BvcnRfZGVs
+KG5zaW1fYnVzX2RldiwgTlNJTV9ERVZfUE9SVF9UWVBFX1BGLAorICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgcG9ydF9pbmRleCk7CisgICAgICAgZGV2aWNlX3VubG9jayhk
+ZXYpOwogICAgICAgIHJldHVybiByZXQgPyByZXQgOiBjb3VudDsKIH0KCi0tCjIuMjUuMQo=
 
