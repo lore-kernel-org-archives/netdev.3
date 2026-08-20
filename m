@@ -1,123 +1,170 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E49426D0B
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 11:19:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 766FD364028
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 11:32:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.179
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787224796; cv=pass; b=u0bgwnFNDPRhBSI9WQGuMMWivDJi67HziWv+yk5oKdiNlIiBzykspTk8mOvGJrI5njdxUH3B8gPnG1LQ/mkJL+/Z3Hf88ov+pbjxe2mzSRU3lPER6XxbsPoU/hNUrsNvP/lLXOS4fgyoGOlKx2fTGiK8oRHeWPd+RBLuZW1VOuo=
+	t=1787225557; cv=pass; b=IDsGALJNayuDGmoJNrtMZsAh2oSroF+/DqK/UggzIeWM6NHgMrToODH2kGkkOjQjHK3j+WlsIZP6/6n51ZvML3UDcIwffKPmfRs4me8vFwMXJkj+Gq6/c9mzImt5UPx+mHlD3lxTjKkTsLCEGvYCIp78sBX91kPdU8KsHVq2pJU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787224796; c=relaxed/simple;
-	bh=ZURaZADyFYuCh4n+xDVLpaYHqRawfBxPTS6bs5K8cu0=;
+	s=arc-20240116; t=1787225557; c=relaxed/simple;
+	bh=dRq13dIqCuSaM4iNQ0cRPp1DLqd59r8XSwr/72LefU4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UOciOSHz2e3OK7ER2gdoQoHMBlEAVMby3dvM0iLcMPtyRhVGiEXmUxCKLPsrLdCIBPCmRoRmHZiFy4mUW4ogKZ1nLy2wTODGpvLPnqbGhk5SiVwlpic0IkkMU/9hUZvKcjGEbVa2iZqNOBUGKUHWbamfxpxrV38gamVb2ecQwWI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C8h2hI/w; arc=pass smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=j2v8RkkP/y0cQQescocvX4bBpkuRDPHLfcjw+1k7vicILv5EpTV552ASqAmyFXyva2OX7GE+wP52bhHklVPF9pKq6huegn9FLWpG/z1HLyaUA37CpAZ14jVxQ29Hp5Y/JVgSc1kenDVS02piSLAupTPkrKTpESVaFlhQzfkKb8c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=jP0Jy0ma; arc=pass smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C8h2hI/w"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38a0c7e841fso2870524a91.2
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 04:19:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787224790; cv=none;
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="jP0Jy0ma"
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-cb5b8572b70so2130815a12.2
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 04:32:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787225555; cv=none;
         d=google.com; s=arc-20260327;
-        b=P8bQZZ9N7vkVR5oQ5QW+mwaPDf08kN7pFcjjbOY4R+ksPkc9mRWSqegwEqesfWSEb3
-         9ip5J0QqNr4f9Wm6ILfmPFref4EXfl5amkmmoCtRCHajqe4XpmGYPVlG+cfTbdHT/c6Z
-         8cbs3r8sZ2F3cWGopU+51apcAdslkIWi96Ykb9PkkgI17kGX5ib7paXa8ONqXRYfdtHU
-         WsPbwnh1q7gfdpSPbEVACdx5qI1/gVJTdxczWNDC4g49ahwWnncJFtqLiHAZ7XgKZ7Dg
-         c5RYcMsM73SmbdPS2hYQragj5zduqO4dv6FFXvfr0FsJL84/osqF4QhBN+bvLaNV8npH
-         xE6A==
+        b=WkChQAEFm9DMn4P2v0K5vijwx9OOoWT6QrXnz0SZfdPfY+SFLhful1mYoO0xmlL+Xd
+         5+FfBs37ovPP2+R8u21MyTv/t1BQW9jMl+ELF00RVgSceEYssKa8NEgT1eCqMUYe/FB0
+         O+dkcXqCWyy3YOUiYn1dG+n8eeNrKe80ZaZo1lmEVxFnN2GDZESBUNu6MlckLmcuKy8U
+         eY/t6pJeXC8w4CoWOdsDGmnpXyDjiGsfQC/BfyKMdE0+RF7uuYogai7U7D2XsarxfysJ
+         EOWWFlozIIEigp1akntVDvvYAiFpW76XfzB+fSblrntbEXjGXonX46b3d3J0P/I7VPrT
+         9OUA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=ZURaZADyFYuCh4n+xDVLpaYHqRawfBxPTS6bs5K8cu0=;
-        fh=nDtlfMt6k0PJ4YrgWUDBz2V/1RdmL+c37nuNXiKjiKY=;
-        b=VHNJVVuDyUx4j36Cf+HTjj07YpNTSIEXd7RvO4sPHyuc+5ycdBEqGqDTr3aj72GT/l
-         seHPqR12j8OVdSyJEZMZ2DFvWmwSqAz7GbK50SS/2T3KEuTZO2g7ifJ8eOpKS7Oij8Fu
-         K9xni+3LDy0MxZkV+hjHtan2OIn8yszIrZAjk8ed/yMA5ix86YIk4QALX8laY7mm9Vlk
-         2JahueVG6FhFppx2Lj0NtWZzMHj7pS30lLleEyMCfU2+/2C5bsN3WwWPwWmIYPX58+n7
-         pltvmDtFMXQZCiQj8Y+GdH0PKHpTfqadp+PCFBvazK25J1TZlO2Gh2LTnpZVUxRHFW1n
-         14yw==;
+        bh=seOEiJSDW+vAuTWTVWJYpz2fC9mswqQWGaXYVjMOQ2U=;
+        fh=Mo4jABy+Qqpu3ugugQfCi9Eaac8e5YZFLy7xCFbdG2c=;
+        b=W3CHxn2a7SyLYxjM8hvvc/lDzehy4niguNgIFmXSHOyRDg0uxxB6at25+dXxHaDrHZ
+         NFgKHHRzqZ9/2uilKgplwBoywphWGvw+2vYtGBmv/pfimcGpT6vpOhoIAWM7nnBtry0+
+         sbb2EaQyPvBU/0HpD4DLcAtRIKUOEMFGeyVK8P4wmlI7kjTHj20myh8VHQwv6qq2uzDw
+         VS2ST3xKduWjCjR1v/bX/bnKg1xJU3v4MAkOtWqqKvIwAtf4mbhvios+HKa/0ju2Bq/5
+         bKiS8EOpVJVtw2D7nE6BtJsLdiKXgHe9YGWPLHNIurCPZaF9mElVw/7KdxSRsoIvf4S3
+         6C5Q==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787224790; x=1787829590; darn=vger.kernel.org;
+        d=mojatatu.com; s=google; t=1787225555; x=1787830355; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ZURaZADyFYuCh4n+xDVLpaYHqRawfBxPTS6bs5K8cu0=;
-        b=C8h2hI/wF2pGJjXjJSrx2H7Qkx+hCP1vcJsokrLfCDSffpT2RBAO9iWQrKjPGkTmzv
-         ypDAIYgu1b/L1MkVL+OYn8j5ftOJpTpScgco4rBBjx7m45zgvFXq3vqNu3SDlgEMN1hU
-         H9zbWX2yZmPf0ELPlg+kytlpw3iwyzYq45z2o8bc+8ILCiVb4J8Is5FfRbOH2J3lcR6l
-         iR6rWDaq0vI3FKeJoL1J5jb1YHzqQfRr59S+bhn6osQwY4SWFkxg2wstqV3UVh0G2p8X
-         caD5fz3S3xRkEryVK5VrUxHxvMMQB/dTjYWeb+x6j52RgxhIxe78taagtPVYDwS4k8J2
-         KuaA==
+        bh=seOEiJSDW+vAuTWTVWJYpz2fC9mswqQWGaXYVjMOQ2U=;
+        b=jP0Jy0majf0okDi1rCkGZ0saSaWFBdy4ZXzEpGT9uK3sKlz25lxEUWQE4L1gcfYanf
+         Y7QEGGQiuvBH7wjhoeFAz7tTi5cmVpZ3KbafT8SFpaIGjFjuAlinaFoLGuqcs+ncgPu8
+         kW+6xvpJ9GVuLpqIKjq9dSm6iESdiYE1JQpGM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787224790; x=1787829590;
+        d=1e100.net; s=20251104; t=1787225555; x=1787830355;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ZURaZADyFYuCh4n+xDVLpaYHqRawfBxPTS6bs5K8cu0=;
-        b=hLoxjVIlXJHqkba2AT7/+wIaFfq7J68f7e0pELNU7DERW49N6uVzKu050NhSfm/iC9
-         xQj3htJ52zqZ1ZzXLhhcC9kna3cBd14pnCWG/VDTPUdjaCvVBgLpxdCzTsnOpWbM0+zC
-         /9fU9lF0JIu3mpf+gfIXb2QTSBWcjygZwjYtSgj7FO+W2WUy2r2tN20qkL//vFgQx4IJ
-         fmPfsXtMFihMjTYf1iEUa7k5IIzcGeIYVuWI9ksBvIPz0MKo+J+QCpf/XgvLtJDwXCw3
-         VogtoWxSlfRWAVJFIXlN/BwR7Pxtlu5vYOOceLfk7Mga5dNY/luzC+Qxpui6UDtzXTDA
-         /3Xw==
-X-Forwarded-Encrypted: i=1; AHgh+Ro0WkGgq7Bumq0V5xUY2MXsmy2AoObE4uq1teFdW/gJjihym/qljnZnn0Vm1PhWAA+d2JatzHg=@vger.kernel.org
-X-Gm-Message-State: AFuF++n6UuP8aHHipu1TIcAJkm+KdAHZn1NDuJ5FG4L/r3Tg8gEq0zf5
-	LV5W45+pMgfwUrEYfBVzQT26cL2jeRARnJkEecdrA65sGwjxFl/4lHdhgYYN5m/PIuOuGQYmo+5
-	LV1PMuLWKw2crXv2B/+YJzIHlxmd5Ves=
-X-Gm-Gg: AR+sD101usz8UQCOLVNsiAre9ehI3/EJ2kUaKAzQzXn5M+Bwk2CxIppLm1XV0MyZpt3
-	L3FG/fC1bsNduS7xxQPzJM0MpUA3UbPZbxC22yO5bGtlp7KrcGsuZs1TVRW7Mc2ofSjPc0n5vZa
-	EeK71DM501dzdVdBpB2DYT22gQ99OvMJC4QWJ/wSYFF7OpEBnb2NINtWK+0CP2pSq2kRUB7bxNX
-	Uvy85yGrd/QtK+F7rA/cgDF4C0NOazNT7Kq8/C2tjKD+cvcn0WuEYzb/cp2AZzt8SowJSoqYJEw
-	kQNAoCn4qmI2KWqbLuAfPgBoII50rLaVGKzx7T4a1AMCo9daCZyd4OLOWr8XJ3jXNjnCGQ7WhY6
-	Gl2HtIUeNGUXQochchaSS5AtHl65M859CjrruDdduntEXCiiw39BXkoS1
-X-Received: by 2002:a17:90b:2e42:b0:380:fead:448d with SMTP id
- 98e67ed59e1d1-3958109a525mr23605663a91.13.1787224789626; Thu, 20 Aug 2026
- 04:19:49 -0700 (PDT)
+        bh=seOEiJSDW+vAuTWTVWJYpz2fC9mswqQWGaXYVjMOQ2U=;
+        b=K/Mfh9U6qc1ALjzR4Z1fABs435d2enQc7PldwD6hqVXS71hHyjhLMP57fKz/xeKoxO
+         bT6A02tVpBUYA2omA+TYX3XRvk7xxAKY1e+Xlat00tOx23UrOS+Eu7/UIgsX+RuwTv/I
+         tipwJCYqjeicp+IzH2OciMPHPHaQ7/X35P8cGsYYy2fbSaTBtMKm+ggsT1MHtcgaMIHK
+         XTt2w53irVMosULcLTJ/XjNWnbfiKNMmP8AqTGzRVTdRv4fFRr+Wh6V/4ZsJtKAHlkQm
+         dXJmnQp7SMsvlI6TA6lcPGo/zEg3Upi6kO7TRuyyeLVtGDIFSnmyF/Vd49+vTM+UaaTl
+         QRyQ==
+X-Gm-Message-State: AOJu0YyW/kdmHPSP/Fgfy0UQEkkAt9NbQOUGtA9gQgiqMdphWGOTShVG
+	cNNDp99eMPnV+QOBjyJw2igB9RHJKY+s/nWUgngc9P6Hdjm+XQP2sOpFLxTWccrmN/HGvy+KI8v
+	QGyVCdfQOqB3LxHT58K3mDt924iHYESMOcwUngWDH
+X-Gm-Gg: AR+sD13uDVz8AOBVD7wqzUH9+TLPYMR0I1SIFvKfhWpzzAj5chDVu+JeotlY+wjQVUR
+	8K2QmqlclQwKnxRP4rcAGZazXVqCinc83N65ysz11ZbdPhyEyrcozvVtPun2p+IO1U5tFYp6d/0
+	ruV4HwLAm04V4rP8OE36u4PbX4BeKXQe6nwg2dcSmp+M+YyQchx7mYUf2yGZA8OG8jUWTbOZ3tR
+	RvpiWmWJW5JTMyO2MyEcwblQSxxE2OOMOkwEyoeN/UtZd03mXc1KHKdqbNvBPEoissTHNzU+2/K
+	90kCjdh4p59TSfjz0fe+5PGCGtefmdL7hv3rnL+x15iCTA==
+X-Received: by 2002:a05:6a00:3a23:b0:847:8449:2ba6 with SMTP id
+ d2e1a72fcca58-851d386377amr18669802b3a.8.1787225554720; Thu, 20 Aug 2026
+ 04:32:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260817105241.63345-1-phucduc.bui@gmail.com> <20260817105241.63345-2-phucduc.bui@gmail.com>
- <38099370-269b-4d3e-a686-5b29d806e6a3@amd.com> <d6770227-a034-48e8-ae36-ff49ef3f83ec@redhat.com>
-In-Reply-To: <d6770227-a034-48e8-ae36-ff49ef3f83ec@redhat.com>
-From: Bui Duc Phuc <phucduc.bui@gmail.com>
-Date: Thu, 20 Aug 2026 18:19:38 +0700
-X-Gm-Features: AcwNN1WzHI4syJa-mKxrmkNkTCREoFGUFmrgxJZIoDJhUBI6FkiWfnEalSGXbBs
-Message-ID: <CAABR9nEkjBkvhfqED8O+nMWALf9ssjkPHyFbaFFVxnPfidG6=A@mail.gmail.com>
-Subject: Re: [PATCH v3 2/3] net: xilinx: axienet: Handle optional IRQ return
- value correctly
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: "Pandey, Radhey Shyam" <radheys@amd.com>, Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Michal Simek <michal.simek@amd.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260819204210.23722-1-fw@strlen.de> <CAM0EoMmT7xFtxrVwCm1ohpfVAPBuVBFHB8q_eTQ5taSquKo9og@mail.gmail.com>
+In-Reply-To: <CAM0EoMmT7xFtxrVwCm1ohpfVAPBuVBFHB8q_eTQ5taSquKo9og@mail.gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Thu, 20 Aug 2026 07:32:23 -0400
+X-Gm-Features: AcwNN1XLrJdPEHnzO7V4-rA3ehiOFgxI3nMvblxZLSOwP1UP8NxJpLMKRdpArgE
+Message-ID: <CAM0EoMmaXyX+SMMLzE=6pka3p8a1EFatDX+L171XE6qGfTP+kQ@mail.gmail.com>
+Subject: Re: [PATCH net 0/4] net/sched: reset conntrack after packet munging
+To: Florian Westphal <fw@strlen.de>
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, victor@mojatatu.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Paolo,
-
-Thanks for the guidance.
-
-> IMHO even this one is 'net' material deserving a fixes tag.
+On Thu, Aug 20, 2026 at 7:09=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.com>=
+ wrote:
 >
-> @bui: please re-submit the whole series targeting the proper tree and
-> including the needed tags. Be sure to read and understand the relevant
-> documentation including:
+> Hi Florian,
 >
-> Documentation/process/maintainer-netdev.rst
+> On Wed, Aug 19, 2026 at 4:42=E2=80=AFPM Florian Westphal <fw@strlen.de> w=
+rote:
+> >
+> > This series removes skb <-> conntrack mapping after pedit
+> > altered l3 and/or l4 headers.  See patch 2 for all the details.
+> >
+> > First patch makes tdc.py work for me, second patch is the actual
+> > fix, third patch has test cases. Last patch also removes the mapping
+> > in act_nat.
+> >
 >
-> before submitting the next revision.
+> I apologize for the delayed response in the private exchange, but let
+> me repeat my thoughts here...
+> As you said, the munging can be done by an ebpf program (at different
+> attachment points, not just cls/act using multiple helpers).
+> In your commit you say:
+> "Packet rewrites are still possible with BPF. However, unlike pedit,
+> that needs privileges in the initial namespace."
+> That's only true in the default setup, but with BPF "token delegation"
+> it no longer holds (will be reachable via unshare -Urn).
 >
+> I have not tried to verify what i am claiming since we "last talked" -
+> but could try it out when i get time (weekend looks promising).
+> If what i am saying is true then you will have many places in ebpf to
+> fix, which is not ideal.
+> But even if not true, you can still do it with CAP_BPF - which leads
+> to the same outcome. Unless we are saying as a general rule we should
+> prioritize where/how we fix things based on whether they are
+> reproducible via 1)namespace -urn  vs 2) require root permission
+> (assume this includes CAP_BPF)
+>
+> With that thought in mind, the question is: is there a single hook
+> entry point where this could be done?
+> Example: nf_conntrack_in() or nf_confirm() as the choke point which
 
-I=E2=80=99ll update the series accordingly in the
-next revision.
+sorry, my brain wouldnt let it go: nf_confirm() looks very promising.
+I was tempted to create a patch and test it but i dont have time right now.=
+.
 
-Best regards,
-Phuc
+cheers,
+jamal
+
+> catches all? i.e check the protocol consistency there and if there is
+> a mismatch you call nf_reset
+> I understand the dilemma: fixing this in both pedit and eBPF will
+> penalize only those hot paths as opposed to this approach which will
+> penalize all of contrack users with no interest in pedit/ebpf - but
+> otoh, I feel like this will be a good defensive mechanism for
+> netfilter for whichever new creative change in the kernel which could
+> be used to make similar changes.
+>
+> I could experiment with the single choke point approach on the weekend
+> - let me know.
+>
+> cheers,
+> jamal
+>
+> > Florian Westphal (4):
+> >   selftests/tc-testing: pass mp_pm via initialiser
+> >   net/sched: act_pedit: drop conntrack on network/transport header chan=
+ges
+> >   selftests: tc-testing: add act_ct test for ct reset handling
+> >   net/sched: act_nat: discard any conntrack entry post modification
+> >
+> >  net/sched/act_nat.c                           |   1 +
+> >  net/sched/act_pedit.c                         |  21 ++-
+> >  .../tc-testing/tc-tests/actions/ct.json       | 168 ++++++++++++++++++
+> >  tools/testing/selftests/tc-testing/tdc.py     |  27 ++-
+> >  4 files changed, 208 insertions(+), 9 deletions(-)
+> >
+> > --
+> > 2.54.0
+> >
