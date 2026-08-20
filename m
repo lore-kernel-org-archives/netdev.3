@@ -1,164 +1,147 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF913B19C2;
-	Thu, 20 Aug 2026 07:46:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787212018; cv=none; b=prAzPpaZUXTxW7DWwmeCC1u4K2rBjqw2/fbstvjHGhS2fgWfLuKMHKfO2BcPt31Ok0Cb/A/1ntijIXOXxMPOm1o1htDnAvu5u8KjvEe8+WIn4G8hm1biGkPVtTwREfV+a1m9mj6PoS9hVkR0QVHY4Vdw42qLSXA3slQMacPhGHM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787212018; c=relaxed/simple;
-	bh=tUEtLWrgm5czhfJOBvdd6mAP43FiO5n0Chg925WlD4o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eJR8nB+1H0Pr4cuoyq/lJZU3c6vAhxrJ/T7bwEfZRJ8qoGoDjNqOuvmZvYNvDEeU0msRVOHT9RjpIhDMfPLE9MUJZeAjn6fZ9DCdkbaJrKOkn5Ju8ctvLl1J2eYTvVln30HqLi8LfZ9t9Jgzw4hpF7SOFqxRD7gf9n4lbF21bNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=jhI8A1W+; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8132E0B5C
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 07:58:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787212711; cv=pass; b=nxUg7lJFNX0fAKFb3geaMnofWNj7ErtB8sfzw+CuCV21oLPAPIX4sKq3X4+A3dXyhw6FZdKuou44xNj9AIBFVTPPeYSBSmkUXdzVyyW8YxoqDyyWha+ek7Dx376YmRYuh4XkFPOtakIfYaOewA4Kktg6FejlywRmbfoNoJJgudY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787212711; c=relaxed/simple;
+	bh=ld9tX3tNqRAYZkztoXc81bDrAANuLRFFkOUuCv57/8Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ompnGbtr/PBa6O7bEyaFrKS63VNOyBZLDCNPoci87Fe9kYHwCgE7aQMOdxWVtnEZAglQju91lvCODNLawh22oKRoFTp4TSS99SUWRcLDgOwlQRkjbW6i3usV0iS0ai6rqrLy8Vi/N8kotBQiE/Jd+2wH651dMXW0sUu/K2fI5E0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=cl2dz5uq; arc=pass smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="jhI8A1W+"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67JLVprK2795124;
-	Thu, 20 Aug 2026 07:46:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=wFBL3yHr1RJlTGz4c
-	ga9dYCwiuApnerM2ADAcePpgBo=; b=jhI8A1W+KeR63d8xTnj6A2S5zgrghQofP
-	gyONWsgLJ/E25+r8RZn0008zg6S6UwLjsd+5sX7KPEaS6XS+BjLDVNSnkvaJuzxn
-	dmBnuxrwxYsltrhbfqUA/6EJ+C32atjpyBYBtQNA+3sPtuUOnYBBfEgfhSQ9x+9s
-	vy17vjqKnMm7rsPbJcg+UEmUrpEPE9xMOhtm2IlJ6z7uwN+HlZojzRP9fxJNASFX
-	tvX8NrMr1JvnU4aRPHp/jk1spwuwFdyVOlvsiU3bQ1PQcv1EUC1oX4CtlWH1Rqr0
-	T19TLZV5EPvF/TjwTie70kj0Khl3Iw/uAHI9RA0IyIjbxnUP0ScfQ==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g4yu08t5a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 20 Aug 2026 07:46:48 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67K7fJOh005153;
-	Thu, 20 Aug 2026 07:46:47 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g32twdbpb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 20 Aug 2026 07:46:47 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67K7khLH16974180
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 20 Aug 2026 07:46:43 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B029E20040;
-	Thu, 20 Aug 2026 07:46:43 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7DA5D2004D;
-	Thu, 20 Aug 2026 07:46:43 +0000 (GMT)
-Received: from t83lp68.lnxne.boe (unknown [9.87.84.240])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 20 Aug 2026 07:46:43 +0000 (GMT)
-From: Hidayath Khan <hidayath@linux.ibm.com>
-To: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com,
-        sidraya@linux.ibm.com, mjambigi@linux.ibm.com, andrew+netdev@lunn.ch
-Cc: tonylu@linux.alibaba.com, guwen@linux.alibaba.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        horms@kernel.org, pasic@linux.ibm.com, hidayath@linux.ibm.com,
-        linux-s390@vger.kernel.org, netdev@vger.kernel.org,
-        linux-rdma@vger.kernel.org
-Subject: [PATCH net v2 2/2] net/smc: fix use-after-free in smc_rx_pipe_buf_release()
-Date: Thu, 20 Aug 2026 09:46:42 +0200
-Message-ID: <20260820074642.966856-3-hidayath@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260820074642.966856-1-hidayath@linux.ibm.com>
-References: <20260820074642.966856-1-hidayath@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="cl2dz5uq"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c15d47266baso204538066b.3
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 00:58:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787212707; cv=none;
+        d=google.com; s=arc-20260327;
+        b=W0GxKXOXT1qEvdbHCrmlKgwGRebrzZcH3BaEShaMKaiJ9PdLFjtG3BA+pCiuaio21F
+         2K9KwcNL/S0Sr5sGJuzZdnAM3MNOKEn0x98jSSdNQaN9H0Pzj2xOHsWtA/9jd7KrGsyD
+         k2q1DV3XSni0CarLKbpzhpQxPROHOTCKkC25fGIbkFuQZIXz8QrsPq+ylP8HjtCCK/gL
+         AvnQiW4vjXban63tu1P3AISGVInXyPOlmO9NT9JPTwiSfJNKb/XZDTQF9P8AOX8IxXUz
+         Bt4HxWeYHCZrKXtQlO68V+7O1hIYAKSOD+Ip0oBm073ULd6CoA0/aayShsakctnTTp5O
+         izrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ld9tX3tNqRAYZkztoXc81bDrAANuLRFFkOUuCv57/8Y=;
+        fh=pK6sp88Bpa+RD/7aylOxxAl/xIAnFih5RsUyal9/Ks8=;
+        b=eYSuwWprm7Ii/W/jnIw6N1KHSNgva7ivAilZvWgy22hv0w0MyvjZKluZF53eU8bJ5I
+         BdPQ3eJA0mZX+UeXARdJ+Mt0p8LMpUNGA77zBMMrJTpnWxcoss+UOe8fIN5CzUCbZ/QZ
+         HarX0nkeYrAnmKAEV9X3CiLcp6Un6ZTEyFIGrH8LHLpYX00Ili94gZroYFNFyM31kAJm
+         apOhYClROIPpNkz1R3oMPslo1EMXnpIGYV01nCBIQmQIX4YiwjXmJH8136mdV+Aa/8Mp
+         Rql6DlIoQ4rzSmR/7ij22gNZPZSl1IIBNqYZpX1m35hr8awjDVWy/q+YZlq7xOmtny+I
+         sdog==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=6wind.com; s=google; t=1787212707; x=1787817507; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ld9tX3tNqRAYZkztoXc81bDrAANuLRFFkOUuCv57/8Y=;
+        b=cl2dz5uqdczMIf1RYj02u9eZhpUWvHot+RwvYiprJYj2Ow9n/mOW9DnAl4Xl2QObZw
+         HjumdrYnmSn7dkvJDbUmHhBdjBG303xALjDDM+zypqxh+fDcyV2HIfiD4JEs0s0zRCp+
+         UrVEaGptaxx1yI0FG9fFMDo4MzenNax3+sxR2sZRezNl4s0kj46qBzI0EsR8bGjPqx4p
+         NN28O2vsGP1yRgp1i8WH0h2ZD1QbX5ndNErcV3AOJIGrhB4FqYVFjW5Tq9WcLLcx6Gg8
+         DZ+6SjFsxImq6aPV/m0eZnwRjMElqw7ETw43HQ1d4lSy8GNvA8A5XktM6rGj7jS3oF1Q
+         NDKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787212707; x=1787817507;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ld9tX3tNqRAYZkztoXc81bDrAANuLRFFkOUuCv57/8Y=;
+        b=lUib63+ar1yhFVQPIvsYvocggb52Q9xeRO9Nsb2/EO2abSJ7VKoJBmGgf9YYc0m+Hu
+         ulUMYotUWBhLYXSKoW2sgcz4O0gHw5nKBZGoE5zbVYqUTD8fMfsudXuUh/qZm9vkXJxC
+         AZdsDUdeyxwokqXhXo9YOoPZeEe1aNPkPHffuaCHVecd0Cd9iNHZ4fTc8pyRS+sn+EdM
+         OuQOXAigWmYO83P2DAaANv8A5dzrb1dD4J6yusdEdJsKPsV4eo0R9rZC9rJA3qs2Dcoj
+         454DHSe/OOM7l6W6+iRjYz390zPrZRDhMjs7r7EU7RU3I1864GxIFwzNVO/6JFtpg/bY
+         tTtA==
+X-Forwarded-Encrypted: i=1; AHgh+RrjDkVwNCbjOeKxLUic32ZGhX5BBPYDf/XCpSlgXqrwBwMulVVWrxLCPKTo1LpaKcK8YxA05UQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6CEEhJWWMd7aAWRNLPpGM9STSxnFiHkDXe5Gy0kTYvtpf1r7i
+	F2N7oGoOOhG2JivFZwgikP87CFgmmTVBDw6+gQs7sSLJsXYLAQtm2zftnhw2rvjYeWs38YY4yT/
+	AeUzSySqqQHWQIIQ4/KxJWjbevx+cnk0zNb7hYWcLxQ==
+X-Gm-Gg: AR+sD13t1lJNH8/U6TlbrMDNmH0g2kZC0vWynx3k8TiTV6WE/tr1GnB4Mx+4VIGvbfh
+	Wl2w9w/6a1YHPZKzadbzAWiD5mfEcwIp2vo9rDfuYwLT+1y+LCFSoho2JD1SdaGqTt2uBTYNOh4
+	qA06d+n4UBd+ATRrF4+NLoXDf6Ex7JTvMv/NVj6ycZWVGYiNJDsN2gt5i4wk2M4zER06W15HTVX
+	Zg3T8AoCqOJypEHSTRZ2D+hIem5I3ZdLqbvtvduIUPTVaxODGCr3UuABA6ntPuukXWq7JcD54lu
+	vyfXbZ/gTS5039LAHJ8F4dNOG6fs+aLLeq5tNjVsHZWKQBZP1JavsPpP8V4dHeYyPGRvklpetfQ
+	=
+X-Received: by 2002:a17:907:1ca7:b0:c16:6a42:c7d6 with SMTP id
+ a640c23a62f3a-c242a6a48fdmr650154166b.9.1787212707445; Thu, 20 Aug 2026
+ 00:58:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: HBnp-sr74NynY0YxFt1E8Ku6zgnfQisP
-X-Proofpoint-GUID: yeavFs_bpZNIZAkfGdFTJC_qxB6g1KOm
-X-Authority-Analysis: v=2.4 cv=RoX16imK c=1 sm=1 tr=0 ts=6a86b0e9 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=olxAUb-_ScPgihUlld0A:9
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODIwMDA1MyBTYWx0ZWRfX+AW6E4jpsYr9
- wHm/vckRM+WDetY0ZjEiqOirsoAVoceOBf4iJ7v5JFPChZ/ibM/u0M1i9HLcl913FXN9vFDz7vH
- 4Z+XUUxsROmFa9hN4xfkX0lWbb/UDWM=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODIwMDA1MyBTYWx0ZWRfXw9rJ3adGTABg
- 95umqd2snIIu8cio0dcm9Gshp5JHYhxTlAOIuTKsOOI2ZgZVENupzoxQs9X0aXs4T8aGnBdjS5w
- RQQfzeGXhSeoqR2l+W0OBtD9t/7FJj5ZnZEa+diW/wrvs0fTInrbqxk3ZbzKSLdZHOlWRreNYrH
- BpznzNHUHpYSSHWQWX3/SiWmZ5Hd7UFN0Bw+oes1BOQB+yxhKdntLZCrqRtjKl1xHMvQqrcKX35
- 5vXBKvpybIIKq0Z1B/4QF4X5N226EOOkVPPghM4Jl+O36l8OGlqXu5dZ6iV7rbDu+ryTXyli5qK
- hT746WW1XXkUh7jHragVX/DG5HLspJGPA9oA0jg8DDm4nvoLA7ZZPYuHEwihJpSomXSsm7GIRvl
- ChJjn56xQ3+Zi/cl07QlLqKoJyPXFVgFKXmhX9md5ise4a07/oc8sgnEisIq1IkjNPRM1HLzLQF
- l7wv1ltcmxjpqB7hUbQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-19_06,2026-08-19_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 suspectscore=0 malwarescore=0 adultscore=0
- clxscore=1015 phishscore=0 spamscore=0 bulkscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608200053
+References: <20260625114216.2507435-1-louis.scalbert@6wind.com> <fc98de42-02cb-4de9-8986-b77414793df5@kernel.org>
+In-Reply-To: <fc98de42-02cb-4de9-8986-b77414793df5@kernel.org>
+From: Louis Scalbert <louis.scalbert@6wind.com>
+Date: Thu, 20 Aug 2026 09:58:16 +0200
+X-Gm-Features: AcwNN1UKxrXTkwbNlKylbgQIYr5s0mfcS9Y7aWl5a9E0h2lGjgRRNbxcs4-1fwQ
+Message-ID: <CAJ5u_Od76V6cxcEUT4h4EQQ4opJk9tLYHYWum7tWp0t1CWjGZw@mail.gmail.com>
+Subject: Re: [PATCH iproute2-next v5] ip/bond: add lacp_strict support
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: David Ahern <dsahern@kernel.org>, Stephen Hemminger <stephen@networkplumber.org>, 
+	andrew+netdev@lunn.ch, jv@jvosburgh.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, fbl@redhat.com, andy@greyhouse.net, shemminger@vyatta.com, 
+	maheshb@google.com, jonas.gorski@gmail.com, horms@kernel.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-smc_rx_splice() hands RMB pages to a pipe and takes a socket reference
-per entry so the smc_sock stays alive until the reader finishes. The
-connection does not: a concurrent close runs smc_conn_free(), which
-releases the receive buffer back to the link group pool.
+Hello Matthieu,
 
-smc_rx_pipe_buf_release() tests sk_state before taking the socket lock.
-The state can change between the test and the lock, and
-smc_rx_update_cons() then dereferences conn->rmb_desc and walks
-conn->lgr, which smc_conn_free() has already released. On the
-is_reg_err path smcr_buf_unuse() frees the descriptor outright, so
-this is a use-after-free.
+thank you for pinging.
 
-Take the socket lock first and test conn->freed instead.
-smc_conn_free() sets that flag before releasing anything, and every
-caller holds the socket lock. The two paths exclude each other: either
-the pipe release runs first with everything valid, or it sees the flag
-and skips the update.
+There is no version 6, and there are no comments regarding version 5.
 
-Fixes: 9014db202cb7 ("smc: add support for splice()")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
-Signed-off-by: Hidayath Khan <hidayath@linux.ibm.com>
----
-v2: Replace conn->rmb_desc = NULL with a conn->freed check under the
-    socket lock. The NULL store exposed two paths without a NULL check:
-    smc_cdc_msg_recv_action() in softirq and the sock_diag dump without
-    the socket lock.
+best regards
 
- net/smc/smc_rx.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/net/smc/smc_rx.c b/net/smc/smc_rx.c
-index 5c9e4d8b57de..197fddc6271f 100644
---- a/net/smc/smc_rx.c
-+++ b/net/smc/smc_rx.c
-@@ -115,16 +115,15 @@ static void smc_rx_pipe_buf_release(struct pipe_inode_info *pipe,
- 				    struct pipe_buffer *buf)
- {
- 	struct smc_spd_priv *priv = (struct smc_spd_priv *)buf->private;
-+	struct smc_connection *conn = &priv->smc->conn;
- 	struct smc_sock *smc = priv->smc;
--	struct smc_connection *conn;
- 	struct sock *sk = &smc->sk;
- 
--	if (sk->sk_state == SMC_CLOSED ||
--	    sk->sk_state == SMC_PEERFINCLOSEWAIT ||
--	    sk->sk_state == SMC_APPFINCLOSEWAIT)
--		goto out;
--	conn = &smc->conn;
- 	lock_sock(sk);
-+	if (conn->freed) {
-+		release_sock(sk);
-+		goto out;
-+	}
- 	smc_rx_update_cons(smc, priv->len);
- 	release_sock(sk);
- 	if (atomic_sub_and_test(priv->len, &conn->splice_pending))
--- 
-2.52.0
 
+Le mer. 19 ao=C3=BBt 2026 =C3=A0 18:46, Matthieu Baerts <matttbe@kernel.org=
+> a =C3=A9crit :
+>
+> Hi David, Stephen,
+>
+> On 25/06/2026 13:42, Louis Scalbert wrote:
+> > lacp_strict defines the behavior of a LACP bonding interface
+> > when no slaves are in Collecting_Distributing state while at least
+> > 'min_links' slaves have carrier.
+> >
+> > In the default (off) mode, the bonding master remains up and a
+> > single slave is selected for TX/RX, while traffic received on other
+> > slaves is dropped. This preserves the existing behavior.
+> >
+> > In lacp_strict mode, the bonding master reports carrier down in this
+> > situation.
+>
+> I'm sorry to ping you about this, but I'm wondering if this patch has
+> not been archived on Patchwork by mistake:
+>
+> https://patchwork.kernel.org/project/netdevbpf/patch/20260625114216.25074=
+35-1-louis.scalbert@6wind.com/
+>
+> I didn't see any reviews on this v5, and there is no v6: is there
+> something to fix?
+>
+> > Link: https://lore.kernel.org/netdev/20260603150331.1919611-1-louis.sca=
+lbert@6wind.com/
+> I'm asking, because this patch is required to execute the
+> drivers/net/bonding selftests target from 7.2 released this WE.
+>
+> Cheers,
+> Matt
+> --
+> Sponsored by the NGI0 Core fund.
+>
