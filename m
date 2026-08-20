@@ -1,268 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E973425892;
-	Thu, 20 Aug 2026 11:18:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B31A4229B0
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 11:19:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787224694; cv=none; b=FaV9x2PP+OnbWccqGh/8IW3X3CU0WbHlnIK3g9KFEor3KtofkXNG4pw6Cv+3qPXDhzMsjY4uyNxKKiDx3O51cojadFwHB6z1hcSJAODNSaYpXcsw4TUlXE2Nvo7WG25dK404jdbUWxz6VTDhjoGOi2DlEAB1RJeUPrDnJisRDAU=
+	t=1787224783; cv=none; b=BSPMePo02IrCxeCLHHwSQUF9gFagXMRbhS7qw2bhy6BT42AWUHjBTNqJ17/R64pQDFTxHA1gMQQbWpzOE/dCzeJK/O8vqgi1VeK3q/8Z3E0ezOWB1lprzMazEwtn0FDwbSnrdFt/+0JUIam/ltYNlIFmzDearIx8fd7FhLUaC/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787224694; c=relaxed/simple;
-	bh=sLTaeZfP0SG2jq+VzwAPPjwq/xPY7NET5HHO3jIHyZ4=;
+	s=arc-20240116; t=1787224783; c=relaxed/simple;
+	bh=jcvUQicqdqzUgKeSjbTl0UKM8JYz8pmqQYKIy7zgv4Y=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KYVuDW3bwe7C/BgYak4IsTPxN0WM1+G75jVcOFeKp8TCJ0r/WHbXHfS1lDTNxbH2uctu6pHWMKdKpqzbvfTZjSH3QCpXoAvyYiDrYeXJd295JG8ExjRHfraDerMUaPpugYGYnmWSIEYnrdrXJZTXnd36iMM8aBQW6mQ20aZnug4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WMGQLara; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=ooA8PmyLBgVMOePjoFP06+ryO8S9vpdFBk1oz4/zZGy8/9mjGgtmjcC5ZUNkBRWH7UG/joD1M7NwjvvnfiZ7BrG7BO22m9KP1y6hXuxIaErYvNhKTyjW1SZrXuYzHxzLCBcOrMexCzqLAZgNkWaH4ih7GSWpav0XV/NIzI3GpRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LLVR3Vrm; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=emenpTkl; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WMGQLara"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 723001F00A3A;
-	Thu, 20 Aug 2026 11:18:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787224690;
-	bh=bCrsoBXRJVNNKyFZtLbvL/RvGlM5V+pKLgvQiK3QdJ0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WMGQLaraXwhvQ6ctmEWK4O6l2q7qX+JWZDFGCUZdSwjzm46WHuRlDdoh9mj6LAELI
-	 iDBi2E9kHBCCQRNtZAOVELk4i1dockWYMTvndCDuZ2Frz97FtnXEmvoNFEaaeSnAIF
-	 tZSROEAmyTRyPzw45WMbYoWQDPl8GQ6v/oGb3pq8YrVagDIhpzFOlvCcg815YqcJBd
-	 2d9ttK5bPcw8hlIqpLU2k5d8cH3Myda6rQLn8TstKzquz1rATMGd+0pun4rCSzhZKT
-	 zYayIVZqqRrr0s8NyA/TzUkhdPCG4rjGA6XToXFiEhd06CM5S2J0jBhcnm5Sfwl4CH
-	 42EqEd+DTDoZA==
-Message-ID: <21819722-39c1-4a69-abc7-98ec0f06fafd@kernel.org>
-Date: Thu, 20 Aug 2026 13:18:07 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LLVR3Vrm";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="emenpTkl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787224776;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8o8NFi3s7zb6B3mmWlGxRD/OiqVaDC6PWfUryprr8lE=;
+	b=LLVR3VrmcT3LgkCbB4VbZnoZtnFn1kE96HDaFqeT7Bttr7esKz0x0hPVidqUWNQoqpAdqK
+	DA3D23hHY8987JqZYuN3+3aisX7e7pYbBa/CWbz7N5ClkFweqHO9tjlNunc3lh/CGzp3FP
+	azMT8yrAUMx3jgE6OOV6EA7mMmPw8yM=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-660-0pteSn4_P4-BkK5E2F_Knw-1; Thu, 20 Aug 2026 07:19:23 -0400
+X-MC-Unique: 0pteSn4_P4-BkK5E2F_Knw-1
+X-Mimecast-MFC-AGG-ID: 0pteSn4_P4-BkK5E2F_Knw_1787224762
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4954c2d4081so19844025e9.2
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 04:19:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1787224762; x=1787829562; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8o8NFi3s7zb6B3mmWlGxRD/OiqVaDC6PWfUryprr8lE=;
+        b=emenpTkl7yYMOn1ebUMg9Y3eyLkCMFAfzI7PtBjjskIY0qrKycV0CmPdUORM6nt/A5
+         QssnETeQ4mTLMs+svsUjgMO46wc3+t+u7fmbgOFAQCyf5/xcOu41wcmAdtozV3XzfHBB
+         /Sb8Aw8qyvaFd0vjVka/Sep/SlHwU87a2xlIg6PClFeG0ryoUlCz3deSrc8JqWFbFAYn
+         3+KbHr2IaI2y5VHF7hIeoHmVpKGiSNMbV+o2Rs7At43le8Iw0wPLKmZUwRK2/de09pTD
+         ocv8q7Svw6POjLMZ1VsBqDRmfzQLnfouYIVF0YP9uQ61GVKOh1hlgjjSwtoytxyXFGqC
+         s+qw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787224762; x=1787829562;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8o8NFi3s7zb6B3mmWlGxRD/OiqVaDC6PWfUryprr8lE=;
+        b=kfAnBVmiICO6PveVOZEbjCOKOpi2Qgf4w1rgcC/w79dWeSGEPEYaLp9oNxVFcEQ8Je
+         watgrgXm26u+2EbHbPgGMgXFBIPUOC3rn0xertImxpkMUom9uDsIuTNhsjGQ3VAdGOAT
+         e7J+A4twZhff+BrndmgZpTtUnLVQZnhk5JRH3r4xYxY1C8n/ks9y1HkjyzBM+BPTp/DH
+         WULXoqqXjNFHos9Ag/ZR+fn00oHg0DRUtUccbTP8KDYUxgiKa4HsLXPKoekfym7bJOFR
+         J6tCRsWRbsi6PlmAVgxkUHIw3/eu+kcYblvT9Gk+7+fNKtmsWPaVWB6O/u7Kg4n9RM8z
+         QJIw==
+X-Forwarded-Encrypted: i=1; AHgh+Rrm8iDJJyKuUDVh+XtjdOG5bUbpSxrGLZBbgv4OpXyMZC1HbDA0s9Ly738JbWdosG8rGC5pQNA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzsps2T3M5tfNgkOLBuDFkpOu45lMZ8JiiyanW4v9BkbE+m9+Xd
+	b83PlSGB/j0If623CaTN4qMZp6wxhTVdxQs0cQvOPB4LZ2BVzsKc/+u3Cogpgwucu+d993m/RUw
+	sAvcSf0OanOdnyO06PAjnU2jtmwjVuHAmh5laV3hrutxGG+OOtAtTxk4KsQ==
+X-Gm-Gg: AR+sD12oKsxM1b+GeblIgaslJOnm5Q33ji9OT121/KZaWMYAekeHFMtjjv+iqbM3L2B
+	H+JTJy4u/bVElCq0PPUXqaPjDvEiNTR+m+S8t6pXkgU+vH4GVqkhjp79sQYxA3HpBRE4vR8C09/
+	YrXDtlyysBI2kxcIddRsfKEC9FDOgRxGvIjAiwwbVs31ks/PZ5nGj9jw0SQoXQpRgPXTyHxgZMz
+	kUnDWqakoDjPZmtpPuIV35EhssKvvj50wWYDY7+cfif+Slijgqn3m79X5EukeoJgkwm/DrYZwpG
+	ZGEIhuqqIiSHxtOgH/dVujodX3xmwmNZR6s5L7kbRIdGJneHCDz7iUMGuodLnB4FxWnf0Uu9D9P
+	0VqhsSr3o7GS/VI0lE5a+lxwlZRW1BQfX797Tta+BdzsVha9qd1P9YacEq2t4m4WiWlwwUKEwRy
+	E=
+X-Received: by 2002:a05:600c:a012:b0:499:52dd:c1f0 with SMTP id 5b1f17b1804b1-499aa180132mr233779875e9.1.1787224761780;
+        Thu, 20 Aug 2026 04:19:21 -0700 (PDT)
+X-Received: by 2002:a05:600c:a012:b0:499:52dd:c1f0 with SMTP id 5b1f17b1804b1-499aa180132mr233778895e9.1.1787224761352;
+        Thu, 20 Aug 2026 04:19:21 -0700 (PDT)
+Received: from [192.168.188.103] (ip239-44-231-195.pool-bba.aruba.it. [195.231.44.239])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499aa11f832sm132733055e9.7.2026.08.20.04.19.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Aug 2026 04:19:20 -0700 (PDT)
+Message-ID: <7c5a9d55-a15b-4235-a308-cc6f65ce2de9@redhat.com>
+Date: Thu, 20 Aug 2026 13:19:19 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net v4 1/2] mptcp: hold MP_JOIN msk ref when cloning reqsk
-Content-Language: fr
-To: Wei Ren <weir@nebusec.ai>, sashiko-reviews@lists.linux.dev
-Cc: mptcp@lists.linux.dev, netdev@vger.kernel.org
-References: <cover.1786497414.git.yuantan098@gmail.com>
- <e3aeafa4dc2afb7ea36143eae163635eee23395c.1786497414.git.yuantan098@gmail.com>
- <20260813065630.908AC1F000E9@smtp.kernel.org>
- <CADfOeh6F-PngQB-F4dYds2CpqBCTfJHpBYLD+0ZhcWNiBtPOeA@mail.gmail.com>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
- YBNdx5Xl74NLSgx6y/1NiMQGuKeu+2BmtnkiGxBNanfXcnl4L4Lzz+iXBvvbtCbynnnqDDqU
- c7SPFMpMesgpcu1xFt0F6bcxE+0ojRtSCZ5HDElKlHJNYtD1uwY4UYVGWUGCF/+cY1YLmtfb
- WdNb/SFo+Mp0HItfBC12qtDIXYvbfNUGVnA5jXeWMEyYhSNktLnpDL2gBUCsdbkov5VjiOX7
- CRTkX0UgNWRjyFZwThaZADEvAOo12M5uSBk7h07yJ97gqvBtcx45IsJwfUJE4hy8qZqsA62A
- nTRflBvp647IXAiCcwWsEgE5AXKwA3aL6dcpVR17JXJ6nwHHnslVi8WesiqzUI9sbO/hXeXw
- TDSB+YhErbNOxvHqCzZEnGAAFf6ges26fRVyuU119AzO40sjdLV0l6LE7GshddyazWZf0iac
- nEhX9NKxGnuhMu5SXmo2poIQttJuYAvTVUNwQVEx/0yY5xmiuyqvXa+XT7NKJkOZSiAPlNt6
- VffjgOP62S7M9wDShUghN3F7CPOrrRsOHWO/l6I/qJdUMW+MHSFYPfYiFXoLUZyPvNVCYSgs
- 3oQaFhHapq1f345XBtfG3fOYp1K2wTXd4ThFraTLl8PHxCn4ywARAQABzSRNYXR0aGlldSBC
- YWVydHMgPG1hdHR0YmVAa2VybmVsLm9yZz7CwZEEEwEIADsCGwMFCwkIBwIGFQoJCAsCBBYC
- AwECHgECF4AWIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZUDpDAIZAQAKCRD2t4JPQmmgcz33
- EACjROM3nj9FGclR5AlyPUbAq/txEX7E0EFQCDtdLPrjBcLAoaYJIQUV8IDCcPjZMJy2ADp7
- /zSwYba2rE2C9vRgjXZJNt21mySvKnnkPbNQGkNRl3TZAinO1Ddq3fp2c/GmYaW1NWFSfOmw
- MvB5CJaN0UK5l0/drnaA6Hxsu62V5UnpvxWgexqDuo0wfpEeP1PEqMNzyiVPvJ8bJxgM8qoC
- cpXLp1Rq/jq7pbUycY8GeYw2j+FVZJHlhL0w0Zm9CFHThHxRAm1tsIPc+oTorx7haXP+nN0J
- iqBXVAxLK2KxrHtMygim50xk2QpUotWYfZpRRv8dMygEPIB3f1Vi5JMwP4M47NZNdpqVkHrm
- jvcNuLfDgf/vqUvuXs2eA2/BkIHcOuAAbsvreX1WX1rTHmx5ud3OhsWQQRVL2rt+0p1DpROI
- 3Ob8F78W5rKr4HYvjX2Inpy3WahAm7FzUY184OyfPO/2zadKCqg8n01mWA9PXxs84bFEV2mP
- VzC5j6K8U3RNA6cb9bpE5bzXut6T2gxj6j+7TsgMQFhbyH/tZgpDjWvAiPZHb3sV29t8XaOF
- BwzqiI2AEkiWMySiHwCCMsIH9WUH7r7vpwROko89Tk+InpEbiphPjd7qAkyJ+tNIEWd1+MlX
- ZPtOaFLVHhLQ3PLFLkrU3+Yi3tXqpvLE3gO3LM7BTQRV4/npARAA5+u/Sx1n9anIqcgHpA7l
- 5SUCP1e/qF7n5DK8LiM10gYglgY0XHOBi0S7vHppH8hrtpizx+7t5DBdPJgVtR6SilyK0/mp
- 9nWHDhc9rwU3KmHYgFFsnX58eEmZxz2qsIY8juFor5r7kpcM5dRR9aB+HjlOOJJgyDxcJTwM
- 1ey4L/79P72wuXRhMibN14SX6TZzf+/XIOrM6TsULVJEIv1+NdczQbs6pBTpEK/G2apME7vf
- mjTsZU26Ezn+LDMX16lHTmIJi7Hlh7eifCGGM+g/AlDV6aWKFS+sBbwy+YoS0Zc3Yz8zrdbi
- Kzn3kbKd+99//mysSVsHaekQYyVvO0KD2KPKBs1S/ImrBb6XecqxGy/y/3HWHdngGEY2v2IP
- Qox7mAPznyKyXEfG+0rrVseZSEssKmY01IsgwwbmN9ZcqUKYNhjv67WMX7tNwiVbSrGLZoqf
- Xlgw4aAdnIMQyTW8nE6hH/Iwqay4S2str4HZtWwyWLitk7N+e+vxuK5qto4AxtB7VdimvKUs
- x6kQO5F3YWcC3vCXCgPwyV8133+fIR2L81R1L1q3swaEuh95vWj6iskxeNWSTyFAVKYYVskG
- V+OTtB71P1XCnb6AJCW9cKpC25+zxQqD2Zy0dK3u2RuKErajKBa/YWzuSaKAOkneFxG3LJIv
- Hl7iqPF+JDCjB5sAEQEAAcLBXwQYAQIACQUCVeP56QIbDAAKCRD2t4JPQmmgc5VnD/9YgbCr
- HR1FbMbm7td54UrYvZV/i7m3dIQNXK2e+Cbv5PXf19ce3XluaE+wA8D+vnIW5mbAAiojt3Mb
- 6p0WJS3QzbObzHNgAp3zy/L4lXwc6WW5vnpWAzqXFHP8D9PTpqvBALbXqL06smP47JqbyQxj
- Xf7D2rrPeIqbYmVY9da1KzMOVf3gReazYa89zZSdVkMojfWsbq05zwYU+SCWS3NiyF6QghbW
- voxbFwX1i/0xRwJiX9NNbRj1huVKQuS4W7rbWA87TrVQPXUAdkyd7FRYICNW+0gddysIwPoa
- KrLfx3Ba6Rpx0JznbrVOtXlihjl4KV8mtOPjYDY9u+8x412xXnlGl6AC4HLu2F3ECkamY4G6
- UxejX+E6vW6Xe4n7H+rEX5UFgPRdYkS1TA/X3nMen9bouxNsvIJv7C6adZmMHqu/2azX7S7I
- vrxxySzOw9GxjoVTuzWMKWpDGP8n71IFeOot8JuPZtJ8omz+DZel+WCNZMVdVNLPOd5frqOv
- mpz0VhFAlNTjU1Vy0CnuxX3AM51J8dpdNyG0S8rADh6C8AKCDOfUstpq28/6oTaQv7QZdge0
- JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <CADfOeh6F-PngQB-F4dYds2CpqBCTfJHpBYLD+0ZhcWNiBtPOeA@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/10] pull request (net): ipsec 2026-08-18
+To: Steffen Klassert <steffen.klassert@secunet.com>,
+ David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>, netdev@vger.kernel.org
+References: <20260818092920.653034-1-steffen.klassert@secunet.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260818092920.653034-1-steffen.klassert@secunet.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Hi Ruide,
+Hi Steffen!
 
-(+cc netdev ML)
-
-Thank you for having replied to Sashiko's review.
-
-On 20/08/2026 12:58, Wei Ren wrote:
-> On Thu, Aug 13, 2026 at 06:56:30AM +0000, sashiko-bot@kernel.org wrote:
->> This is a pre-existing issue, but does this clone helper also need to
->> handle the migration of token_node for MP_CAPABLE requests?
+On 8/18/26 11:28 AM, Steffen Klassert wrote:
+> 1) xfrm6: fix out-of-bounds write in xfrm6_input_addr() when secpath is full
+>    Tighten the secpath-depth check so a full chain can't write
+>    past xvec[].
 > 
-> That is what patch 2/2 of this series does:
-Indeed, Sashiko Gemini didn't look at the next patch. Maybe adding a
-note in the commit message to say that a similar issue is visible with
-MP_CAPABLE and addressed in the next patch? Still, that doesn't feel
-natural to add that...
+> 2) Add and revert "esp: do not unref managed frag pages in esp_ssg_unref()"
+>    The patch does not fully fully resolve the issue, a corrected version
+>    will follow.
+> 
+> 3) xfrm: espintcp: fix UAF during close
+>    Synchronize espintcp close with the xfrm_trans_reinject work
+>    queue so the freed socket message isn't dereferenced again.
+> 
+> 4) xfrm: drop ESP-in-TCP packets with no ingress device
+>    Drop queued ESP-in-TCP records whose saved ingress device has
+>    gone away, avoiding a NULL device deref in the XFRM input path.
+> 
+> 5) xfrm: avoid lock inversion in nat keepalive work
+>    Split the NAT keepalive walk into a reference-collection phase
+>    and a per-state lock phase to break the AB-BA with state removal.
+>    This patch has some issues that are fixed with a followup patch.
+> 
+> 6) xfrm: Fix skb double-free in xfrm_dev_direct_output()
+>    Stop freeing the skb unconditionally in xfrm_dev_direct_output(),
+>    letting local_out()'s result indicate when ownership has moved on.
+> 
+> 7) xfrm: ah6: validate routing header segments_left
+>    Validate the segments_left/hdrlen invariant before rearranging
+>    the routing-header addresses, avoiding an OOB memmove on
+>    malformed HDRINCL packets.
+> 
+> 8) xfrm: fix xfrm_state_construct() auth-trunc leak
+>    Detect an already-attached auth-trunc allocation by the pointer
+>    rather than inferring it from the algorithm id, so a prior
+>    attach isn't overwritten and lost.
+> 
+> 9) xfrm: bound nat keepalive state collection
+>    Replace the per-state allocation in the NAT keepalive walk
+>    with a fixed-size batch that drains under BH-disabled locking
+>    and resumes from the cursor, bounding the worker's memory.
+> 
+> Please pull or let me know if there are problems.
+Sashiko has a few comments:
 
-Do you mind also looking at Clashiko's review, please? The suggestion of
-replacing sock_hold() by refcount_inc_not_zero() might be valid (to be
-double checked):
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260818092920.653034-1-steffen.klassert%40secunet.com
 
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1786497414.git.yuantan098%40gmail.com
+do you think they deserve a v2 or could be handled as follow-ups?
 
------------------------------- 8< ---------------------------------
-> diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-> index 6257459bcee2..896f472dcba2 100644
-> --- a/net/ipv4/inet_connection_sock.c
-> +++ b/net/ipv4/inet_connection_sock.c
+Also the fixes tag in patch 10/10 looks invalid. Possibly a rebase
+would be needed?
 
-[ ... ]
+Thanks,
 
-> @@ -961,6 +962,9 @@ static struct request_sock *inet_reqsk_clone(struct request_sock *req,
->  		rcu_assign_pointer(tcp_sk(nreq->sk)->fastopen_rsk, nreq);
->  	}
->  
-> +	if (rsk_is_mptcp(req))
-> +		mptcp_subflow_reqsk_clone(req, nreq);
-> +
->  	return nreq;
->  }
->  
-> diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-> index e1f20ff8fdb4..8f8e1229766d 100644
-> --- a/net/mptcp/subflow.c
-> +++ b/net/mptcp/subflow.c
-> @@ -47,6 +47,17 @@ static void subflow_req_destructor(struct request_sock *req)
->  	mptcp_token_destroy_request(req);
->  }
->  
-> +void mptcp_subflow_reqsk_clone(struct request_sock *req,
-> +			       struct request_sock *new_req)
-> +{
-> +	struct mptcp_subflow_request_sock *subflow_req;
-> +
-> +	subflow_req = mptcp_subflow_rsk(new_req);
-> +
-> +	if (subflow_req->msk)
-> +		sock_hold((struct sock *)subflow_req->msk);
-> +}
-
-Discovered by: gpt-5-6-sol, opus-5 · Missed by: opus-4-7, sashiko-gemini
-
-Can the sock_hold() here run on an msk whose last reference has already
-been dropped?
-
-The pointer being held was snapshotted by the plain (unsafe_)memcpy() in
-inet_reqsk_clone(), and the cloning CPU owns no reference to that msk at
-this point.  The clone happens optimistically in reqsk_timer_handler()
-before any ownership arbitration:
-
-net/ipv4/inet_connection_sock.c:reqsk_timer_handler() {
-	...
-	nreq = inet_reqsk_clone(req, nsk);
-	if (!nreq)
-		goto drop;
-	...
-	/* Even if we can clone the req, we may need not retransmit any more
-	 * SYN+ACKs (nreq->num_timeout > max_syn_ack_retries, etc), or another
-	 * CPU may win the "own_req" race so that inet_ehash_insert() fails.
-	 */
-}
-
-So the third-ACK path can be running on the same request concurrently.
-There, the request's msk reference is handed to the child and can then be
-released synchronously:
-
-net/mptcp/subflow.c:subflow_syn_recv_sock() {
-	...
-		/* move the msk reference ownership to the subflow */
-		subflow_req->msk = NULL;
-		ctx->conn = (struct sock *)owner;
-
-		if (subflow_use_different_sport(owner, sk)) {
-			...
-			if (!mptcp_pm_announced_has_ssk(owner, sk)) {
-				...
-				goto dispose_child;
-			}
-		}
-
-		if (!mptcp_finish_join(child)) {
-			...
-			goto dispose_child;
-		}
-}
-
-and dispose_child reaches mptcp_subflow_drop_ctx():
-
-	if (ctx->conn)
-		sock_put(ctx->conn);
-
-If that put (or a later teardown of the joined subflow) is the last
-reference, for example because userspace closed the MPTCP connection
-concurrently, then the refcount_inc() in sock_hold() lands on freed memory
-and on a zero refcount, which is the refcount_warn_saturate() "addition on
-0; use-after-free" case.
-
-The window between the memcpy() snapshot and this sock_hold() is not
-bounded either: in the TFO branch of inet_reqsk_clone() it even contains
-spin_lock_bh(&fastopenq->lock).
-
-Would refcount_inc_not_zero() be more appropriate here, with
-new_req->msk cleared when it fails so subflow_req_destructor() does not put
-a reference that was never taken?  Alternatively, could the hold be taken
-under the same exclusion that performs the ownership transfer in
-subflow_syn_recv_sock()?
-
-Also, the helper takes req but never uses it, so the original request is
-not re-validated at all.  Is the req argument intended to be used?
-
-
-Discovered by: opus-5 · Missed by: opus-4-7, gpt-5-6-sol, sashiko-gemini · Confirmed by: gpt-5-6-sol
-
-This is a pre-existing issue and is not introduced by this patch, but as
-long as this hook is the designated fixup point for cloned subflow
-requests: inet_reqsk_clone() also byte-copies subflow_req->token_node, the
-hlist_nulls node that mptcp_token_new_request() linked into the MPTCP token
-bucket for MP_CAPABLE requests, and this version of the helper repairs only
-->msk.
-
-The generic detach helper does not cover it either:
-
-net/ipv4/inet_connection_sock.c:reqsk_migrate_reset() {
-	req->saved_syn = NULL;
-	...
-}
-
-With only this patch applied, the clone's token_node looks hashed while it
-is not reachable from the bucket chain, so after a successful migration the
-surviving clone trips the pedantic check in mptcp_token_accept():
-
-net/mptcp/token.c:mptcp_token_accept() {
-	...
-	/* pedantic lookup check for the moved token */
-	pos = __token_lookup_req(bucket, req->token);
-	if (!WARN_ON_ONCE(pos != req))
-		hlist_nulls_del_init_rcu(&req->token_node);
-}
-
-and the token ends up no longer reserved.
-
-This is resolved later in the same series: the following patch, "mptcp: fix
-MP_CAPABLE token migration when cloning reqsk", adds
-mptcp_token_move_request() and calls it from mptcp_subflow_reqsk_clone(),
-so the state does not exist at the end of the series.  Would it be worth
-noting the ordering dependency between the two patches in the changelog,
-given the Cc: stable tag on this one?
------------------------------- 8< ------------------------------
-
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
+Paolo
 
