@@ -1,106 +1,111 @@
-Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0212E282B;
-	Thu, 20 Aug 2026 03:38:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F4A38644F
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 03:43:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787197107; cv=none; b=aHyrqSjBy95WDwuJn9jMl7DJidaR4Na0sbbEslruEBDtZwrHSGLudcqwzwGNrUTKZCdn05sbJGmW+/RgbsCIukWlAuDjYe9PkN/asXc4/kCNNqUOVQYUyeDbQljPuqxHQPh7OO950hnzycp0Ksv/OuHS/Ynb0yeOaqOo46yzJgI=
+	t=1787197408; cv=none; b=OiYCgXUvCEXU/GAvjpubCva5j33Gxt7iY5vCGVX0blSh55pBliPP7BHBtSSmtcl9s2Q9HbFdwfnEnx7Mc3mUS7XWUcdyAyyGDma+N5vEzSjigeYHbxG0e9V5ZFHGJaJfDD23tejX2N+NiV2BKuSSi4YKA/49mnKreXXQs4EucNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787197107; c=relaxed/simple;
-	bh=QNr2dL0L0FcuEHkO16XqkuFxX2OKCLY1w7SHSmFJcmw=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MbWCSgcb2MOdLyoF9xPX1d9n+LUJdQ8a41HwXo+ysv03wv9fq3VN7MPnWxJczjTUuTz15IOBp7bU2DmZNhlJ1gpDEoflu0BPeGfCqiZaQ7A829DtFmkJhkx2gY2BmGSiGPPEX9w0MgmgxNCKwbFzHIyYtdFo/58gGg1+AgyVUUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=dVSUyKbf; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1787197408; c=relaxed/simple;
+	bh=SUQUzfU153V9eAP2f4m6jjHNOdZgZOb4ZUg9by6Fk1I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hEPO7+fl/j0YC/imKNr7FLR/5Vk7AfbE1JEb52wCqCp9NfdHKs20D0+dwQ0YTdsdgN1Z7iQzS0eKubQNlY9l7p+7SpBFJLsTe+nECxwW7XtzBPaYiyB7gy1iZ5bAV1i9K98VhGYmMfgnBMkwji1KyU/MyidiGxPtX2oZXFaUdrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KdddVRaB; arc=none smtp.client-ip=209.85.128.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="dVSUyKbf"
-Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67JM8K6p429483;
-	Wed, 19 Aug 2026 20:38:17 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=QNr2dL0L0FcuEHkO16XqkuFxX
-	2OKCLY1w7SHSmFJcmw=; b=dVSUyKbfvUS/resJu5ohXwrWUVdF0AeJdqM0ccXPT
-	rd7JwDqiFhRvvBbkqVbcOQTW9jVqQmgL49vKhLC5gu62YcJmqp9r6pIf/D/oPVrN
-	iKIjWxOthIymAf7ScpwVPzb2rEgxSuUq493mSkNDTQC020Rap0iIKbqfRTScvw6q
-	D56FM8KTcJSZVrbY/owTJQAT/ho7d6UET/nHgFP4kgLeFHwggTbKleIK+hDth1P2
-	iIFQHg+Ie2pLRZ44B0iY8DS+h86cShXuvGB7ImzQWHj7JWDfIuQIA2jVEtEXaYRK
-	/8utftACYSS7yvz3WSqViMzTCGQHL2iQvfcQwTJJt72LQ==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4g4yeue3xp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Aug 2026 20:38:17 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 19 Aug 2026 20:38:16 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Wed, 19 Aug 2026 20:38:16 -0700
-Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with SMTP id B5C0F3F707E;
-	Wed, 19 Aug 2026 20:38:12 -0700 (PDT)
-Date: Thu, 20 Aug 2026 09:08:11 +0530
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <cjacob@marvell.com>, <davem@davemloft.net>, <hkelam@marvell.com>,
-        <jbrandeb@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <sgoutham@marvell.com>
-CC: <andrew+netdev@lunn.ch>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, Naveen Mamindlapalli <naveenm@marvell.com>
-Subject: Re: [PATCH net] octeontx2-af: poll for TX link credits before link
- mode change
-Message-ID: <aoZ2o2JeHruIRqCH@rkannoth-OptiPlex-7090>
-References: <20260818033652.2038116-1-rkannoth@marvell.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KdddVRaB"
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-836cda225c1so25496277b3.2
+        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 20:43:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787197406; x=1787802206; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=SUQUzfU153V9eAP2f4m6jjHNOdZgZOb4ZUg9by6Fk1I=;
+        b=KdddVRaBHkdbDzv1+fCe2TxwckQxpPZkLNre5pUV9eVFReDiz3KBvlu3VUWYPGU2tf
+         kGA36X1YMMutyJiLw9eI4bUcZyIqsD5dhn7+hbvVU2dpTi/Ixf3hCa9ysjLOTBWkweTz
+         3SauJS1bQuqq0TcBKoDfEUsAL5FfwDLViwiYlGo61WzTUtvZP1o84EEqAtFDS/vCdK4C
+         mXM6IErSz+55VBc5zA8Dx35W+20oB4iqyNgiWmuvSwNyA2iWyK+rJ6ivEfh7JPMfTomO
+         L9nGtHkbKrmDjKa+JrSvIO8pzeiEzmZ9I6iIyS03u8rO6sgGKbQvo2uFBMn4hBPjGc4h
+         mE5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787197406; x=1787802206;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=SUQUzfU153V9eAP2f4m6jjHNOdZgZOb4ZUg9by6Fk1I=;
+        b=hdM3xHH3V/kBWoY65AwNtBdmCeBbxvsl3JPqOR/qvZ9Kl52JwlBc9t74JRgIdsS7Zx
+         hovuHjL6hr8wL+nyX/7mwpYkQf58sU2Zke7+fma/kUOBf+30f4TxckqPODOpTcSIobs3
+         oH6UT3k9LrMh2NjwNJGDf2EHncFSrORR1AELR0piewMJzL7weofDanOQZbbiAMWLJ8c9
+         37LdEEwDMEczLVEgUxD+rUOjv/NF3vs4+czJzzN8QEMu5yWgNnY6nfFdbBSl2PNcMkZA
+         uVT86cePiy5YlJP6gCR8dv3BoDDvdq2NOXukRdP4ygyxJCrjZIzM9X4giFpuVa9J6bMp
+         NEJw==
+X-Forwarded-Encrypted: i=1; AHgh+RphqjPioAWDABNtdsesutUebPSpu1IyrWFFpGa8gVykif1rdGBjQbKHSRG164KIVJx76dh3xiM=@vger.kernel.org
+X-Gm-Message-State: AFuF++klRkgpMrJ4q2Mcb5FKSAKBLGtnIn9ZF750+VYR7ckrx+/cF6BW
+	9CJYR0r8eNbH+Xx5kMO9cPJFXC6B4/EsJ42YHSKinSn5iKB5GG4tXm72
+X-Gm-Gg: AR+sD13qL6JjCVul3s77gnJSLF3LfJs0V5CtYesoSkYSfRIZHhFaNYs7rtvyqYWa/3g
+	iqGIdeP1VQWMskt3T6staqVIUZ8uM8E3/eFCHbtknUDNkK7KSBsPDKw1bV5/5NdjlpvJwvqVPYB
+	kaz990VZumHMmJJTO+3ZRFZ78y/YycD1Y16A3jN+jPbpSiPxBUxc6zWJIlgRjle6GbSomA7jHal
+	iWuc2cg9ItbGYOiQSjcmXZ4HaqYk3p+7W8f8OF91jVX0cmheMJWpYKbNVFmblXpqK545jDr6gu9
+	cEUjqqIA5VLIWMEHrPvqeGA0yPoj76TzRU0z1PDJE3L7mJHr2vYTfkyC6O6+lWaQKwLKUpvBnEm
+	V3v6gNNIRKQ37j9recsMN6o6ILjgOKKMxJ1DSKtWYVzsrepHY+PH24iG/OCaPidMGgen6Zzh0OY
+	RVOfHhwi/aR+F0/ItrKuCmkNvMmHDe1gW7e8oGZqc3dVAC5oPkpqqh0CXFFSL9mawQ/WU=
+X-Received: by 2002:a05:690c:3387:b0:81e:89b2:91ae with SMTP id 00721157ae682-844e378f1a5mr42081877b3.21.1787197405974;
+        Wed, 19 Aug 2026 20:43:25 -0700 (PDT)
+Received: from mac.lan ([136.55.173.105])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66ccafd03basm2037809d50.1.2026.08.19.20.43.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Aug 2026 20:43:25 -0700 (PDT)
+From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
+To: xuanqiang.luo@linux.dev
+Cc: AutonomousCodeSecurity@microsoft.com,
+	blbllhy@gmail.com,
+	coreteam@netfilter.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	enrico.pozzobon@dissecto.com,
+	fw@strlen.de,
+	horms@kernel.org,
+	kadlec@netfilter.org,
+	kees@kernel.org,
+	kuba@kernel.org,
+	kys@microsoft.com,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	netfilter-devel@vger.kernel.org,
+	pabeni@redhat.com,
+	pablo@netfilter.org,
+	phil@nwl.cc,
+	sbrivio@redhat.com,
+	tgopinath@linux.microsoft.com,
+	xmei5@asu.edu
+Subject: Re: [PATCH net] netfilter: ipset: list:set: defer ip_set_put_byindex to RCU callback
+Date: Wed, 19 Aug 2026 23:43:17 -0400
+Message-ID: <20260820034317.79295-1-blbllhy@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <f3093e85-fd58-420b-b435-c39263c46e3c@linux.dev>
+References: <f3093e85-fd58-420b-b435-c39263c46e3c@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260818033652.2038116-1-rkannoth@marvell.com>
-X-Proofpoint-GUID: KGF0ETKmXDVLoAyOAbz1a-rPbC6MYHIQ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODIwMDAyMyBTYWx0ZWRfX/jCd2ESwAvWK
- ulaFD3EpKejTdrQpwPZRfphXRh0bru2C0mHuiuSB8llpUZ39QD5VahDlLVoGCHvfrXZqoEYPl6+
- B7QFRmitlmn0hjDTszWUlgTdqMEYgE3e8AbAVRg+rqF0ESnRLUJtyf1hCu+kkODKX0t9+ULaeOi
- Emq03OB1CMUUCm9kzIsGQzSwRy+b3OYzqQypjxBcwfM+pxzAmqVepnXDAhWqcGNDDk3HZM9EZ34
- rAPGFClkYQ9m6blO9KkZLLRFGTE9tpbmJtnJ2Fbjze8lY37qxGbh2badNEJXdmzGkpavDi8yXI3
- YsfOl7e06mBsPxv7N+/SKS9oa/Gh+ASDOPN0kLz8xLsAAmV+QHwnliFPwlEyjUXsNkCt0VypdE5
- c5X2S85BCZ2YVkKs0ipOHLtoRM5hWSJl+wNJeuPGwtBnz82ycsVCb8BU6dY9R4Y2RNa89q2uMCH
- TjvtI5l0f3O1D7/0OUQ==
-X-Authority-Analysis: v=2.4 cv=ed8NubEH c=1 sm=1 tr=0 ts=6a8676a9 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=TtqV-g6YmW1Jfm2GSLaY:22 a=M5GUcnROAAAA:8
- a=vrmAYhDT-tgqGnncLU0A:9 a=CjuIK1q_8ugA:10 a=ZXulRonScM0A:10
- a=OBjm3rFKGHvpk9ecZwUJ:22 a=Oh551-UHZqmTy8JkqTUo:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODIwMDAyMyBTYWx0ZWRfXzjKzdToC1AcM
- YUtg2po72BYuSWPJQCQNDnYNzwZzbk0tJ8WkwkzQ/Hk1Qs608GT/l3vbClyD2Krv0X264UnJyXd
- 9l03dwPXTlKl4j96dF+3G3wnQzUscIY=
-X-Proofpoint-ORIG-GUID: KGF0ETKmXDVLoAyOAbz1a-rPbC6MYHIQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-19_06,2026-08-19_02,2025-10-01_01
+Content-Transfer-Encoding: 8bit
 
-On 2026-08-18 at 09:06:52, Ratheesh Kannoth (rkannoth@marvell.com) wrote:
-> From: Naveen Mamindlapalli <naveenm@marvell.com>
->
-> When a CGX/RPM link mode change is performed while traffic is flowing,
-> the link is temporarily disabled. NIX TX link credits can drop below
-> zero during this window and are not restored when the link comes back,
-> leading to a TX hang.
->
-> Set TL1 SW_XOFF before initiating a link mode change and poll until TX
-> link credits return to their original value. Clear TL1 SW_XOFF when the
-> link comes back up.
->
-> Fixes: 56b6d5398613 ("octeontx2-af: Physical link configuration support")
-> Signed-off-by: Naveen Mamindlapalli <naveenm@marvell.com>
-> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+Hi Xuanqiang,
 
-Will sashiko address comments in v2
+Thanks for the review. You're right that this effectively restores the
+stale-refcount window fixed by 439cd39ea136. I was aware of that
+trade-off, but focused first on preventing the kernel BUG that can be
+triggered by an unprivileged user. I agree that the final fix should
+address both issues.
 
-pw-bot: changes-requested
+I'll rework the fix and send a v2.
+
+Suggestions on the preferred approach are welcome.
+
+Thanks,
+Cen
