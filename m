@@ -1,42 +1,42 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from mail-43102.protonmail.ch (mail-43102.protonmail.ch [185.70.43.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C797F3DB316;
-	Thu, 20 Aug 2026 20:56:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398F83DAADC;
+	Thu, 20 Aug 2026 20:56:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787259394; cv=none; b=NyC1BQGEJHyP6LP4GL4nwfTPpJlCClGzo0chk46TqRL2bXbJ4kY2UVpyA/ad37DrePip8L0GBP9HKASM9J+QqRrF4028ZL8z3s1bW3vFaCPAuq7rJYLysAmRR+2ERfYytmTrWgebrZd4VgygZ65ASk99QE6btS/V7oczuKAZtwc=
+	t=1787259387; cv=none; b=EnaTVt41m7fjGxN9v7adpkY5j0huqZFFDiUfOM02Ov/B1tf59OUf/apiPJWusxOXw73IBklHG4pJqRskaQFmeaqvmKs/BPchcNzxnK8Um2iYaO+PAFzqwu4YivaXCuzOILERT9cZPX6j1yiZuLR1TOFwghEsCJaZETiQrk3pmfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787259394; c=relaxed/simple;
-	bh=34ATMc5SO5wEemub2fOeue1jnn3V16FMxOOozfaDcik=;
+	s=arc-20240116; t=1787259387; c=relaxed/simple;
+	bh=lwm38KTfsw/pjCNVhsVFi9nbwsq7EF/sB8P8Jcau1kY=;
 	h=Date:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EUfi/1EEFwyYfQUfa/v/FxAfcLpdmcFvrnRVUsPYuiEuR+5L7IoyPWXA0m3ZUZy7QNFiB9KRSPi0w6peBSakIXIvYbKnbLBfKRvR0AEhEd3j4+AtQn4JI+tzwzvcwx1V2tHNrUQqNdRBWGW4tqYXyYxTijrJWY/s2Eo0Yaq2RkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=DUrEJ5cc; arc=none smtp.client-ip=185.70.43.22
+	 MIME-Version:Content-Type; b=lSp0W36nTgqE+4VOI0ogBnN6Gq4nYu32fb3S7VBCQVM/UPCETl2e0wUXA2F5gk4Nts0K4Ar9fDHTEH/t8v+7LoC6nA0C7ppL69fEpVCf94iAesWjcQbqsUkgK+fkk2KtsUAc28qdUv/CMMPP+H5DTxhwCkXtFus0vI/OKAEFlgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=VvOEp+qJ; arc=none smtp.client-ip=185.70.43.102
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="DUrEJ5cc"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="VvOEp+qJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=agiaicdxbbgeflewealzt7h3iq.protonmail; t=1787259376; x=1787518576;
-	bh=34ATMc5SO5wEemub2fOeue1jnn3V16FMxOOozfaDcik=;
+	s=protonmail; t=1787259371; x=1787518571;
+	bh=PpDu5cq7SquYTzyZGwtLqNub3RattoKBrrxs4oLHiuo=;
 	h=Date:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=DUrEJ5ccMgB3YtMB8uBjrYCvuFHKbBQ0zeJdWql7vR5s8PZv7aHrri1UkOy711hes
-	 2ChTsNNb0LE2IdAkPYArI+gJhSkeFhxkIkziTwgTlFK2lEdy76WcOK65VzmPtVmmo5
-	 DyCposYVaeQWSp0uXEIqVtFb5TUerQQwe1AAEPPNbfpGlDf9Zc3pBAvnQg7epzb5BU
-	 cQwL0Y8T24svRcBFpiRNS6LcYt3E9WGmb7J6Wgur1NgOXEAHfwPICa/DndtzwIwl/P
-	 yQjvykFITdxFDw1XfnAQ1ORWoFH+A2GE/2nl3600i6GDqQH42T4iiWN3IDyJsuEPW+
-	 AgPnUo3bSKmQg==
-Date: Thu, 20 Aug 2026 20:56:13 +0000
+	b=VvOEp+qJFI8HZ0WgMzo4flfUv+TDwhXFMZ7Qhx0t5C3qTBe8GC3W3XcrSO2N9onsR
+	 qBvscWvV/M/+qGbN9jQ7Se2QkWZ5jEdY4l9gXGKhbilzmSnKQWqTRy1H5ebi2VkwEB
+	 peEmOdRXXBPmfdSOX2te15+OrL8AMq+uX3CTA3SK/ux9qQQAl47Px/NlovWBAnN81S
+	 hKAJj4f6hyDx3sS+DiuvPa4ijW6Lgd9ekfABzleoB5Fis5cuaxpKmO5jJbZGmwvDKf
+	 jycHT6awNcgMRfBZQCJu2hp5mfetkwL/uqfuthydSMdpe1cvn7VVj6Mp/dbYIDv4Qx
+	 MZIYW/SB4UgCA==
+Date: Thu, 20 Aug 2026 20:56:07 +0000
 From: Kristian Brox <isyourbrainfoss@proton.me>
 Cc: Krzysztof Kozlowski <krzk@kernel.org>, Luca Weiss <luca.weiss@fairphone.com>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, Kristian Brox <isyourbrainfoss@proton.me>
-Subject: [PATCH v3 3/3] arm64: dts: qcom: qcm6490-fairphone-fp5: add ST21NFCD NFC
-Message-ID: <20260820-fp5-st21nfcd-v3-v3-3-5ee0a7f44d04@proton.me>
+Subject: [PATCH v3 1/3] dt-bindings: net: nfc: add st,st21nfcd
+Message-ID: <20260820-fp5-st21nfcd-v3-v3-1-5ee0a7f44d04@proton.me>
 In-Reply-To: <20260820-fp5-st21nfcd-v3-v3-0-5ee0a7f44d04@proton.me>
 References: <20260820-fp5-st21nfcd-v3-v3-0-5ee0a7f44d04@proton.me>
 Feedback-ID: 203906395:user:proton
-X-Pm-Message-ID: fb78e9548ad2b497de4729976250c9c27cfb8536
+X-Pm-Message-ID: 2deb959f14ac7fb6dd1b1b816acef53ea3764a0f
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,72 +46,81 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Enable the ST21NFCD on i2c9 (0x08), IRQ TLMM 41, reset TLMM 38
-active-high. Compatible is st,st21nfcd (raw NCI).
-
-SYS_CLK is LN_BB_CLK2. VPS_IO is L18B (vreg_l18b). ese-present and
-uicc-present follow the public schematic (NFC_SWP1/SWP2: SWP_SE to
-SIM1, SWP_UICC to SIM2). Reader path is tested; SE/HCE is not.
+Add a compatible for the ST ST21NFCD NFC controller. Document optional
+SYS_CLK (clocks) and VPS_IO (vdd-io-supply), and add an I2C example
+that uses interrupts-extended.
 
 Signed-off-by: Kristian Brox <isyourbrainfoss@proton.me>
 ---
- arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 34 ++++++++++++++++++=
-+++-
- 1 file changed, 33 insertions(+), 1 deletion(-)
+ .../devicetree/bindings/net/nfc/st,st-nci.yaml     | 31 ++++++++++++++++++=
+++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm6=
-4/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-index 04cb9230d..ef66079a0 100644
---- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-+++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-@@ -908,7 +908,23 @@ redriver_ss_in: endpoint {
- &i2c9 {
- =09status =3D "okay";
+diff --git a/Documentation/devicetree/bindings/net/nfc/st,st-nci.yaml b/Doc=
+umentation/devicetree/bindings/net/nfc/st,st-nci.yaml
+index 1dcbddbc5..c859797f4 100644
+--- a/Documentation/devicetree/bindings/net/nfc/st,st-nci.yaml
++++ b/Documentation/devicetree/bindings/net/nfc/st,st-nci.yaml
+@@ -15,6 +15,7 @@ properties:
+       - st,st21nfcb-i2c
+       - st,st21nfcb-spi
+       - st,st21nfcc-i2c
++      - st,st21nfcd
 =20
--=09/* ST21NFC NFC @ 28 */
-+=09nfc@8 {
-+=09=09compatible =3D "st,st21nfcd";
-+=09=09reg =3D <0x08>;
-+
-+=09=09interrupts-extended =3D <&tlmm 41 IRQ_TYPE_LEVEL_HIGH>;
-+=09=09reset-gpios =3D <&tlmm 38 GPIO_ACTIVE_HIGH>;
-+
-+=09=09pinctrl-0 =3D <&nfc_default>;
-+=09=09pinctrl-names =3D "default";
-+
-+=09=09clocks =3D <&rpmhcc RPMH_LN_BB_CLK2>;
-+=09=09vdd-io-supply =3D <&vreg_l18b>;
-+
-+=09=09ese-present;
-+=09=09uicc-present;
-+=09};
-+
- =09/* VL53L3 ToF @ 29 */
- };
+   reset-gpios:
+     description: Output GPIO pin used for resetting the controller
+@@ -36,6 +37,15 @@ properties:
+       Specifies that the uicc swp signal can be physically connected to th=
+e
+       controller
 =20
-@@ -1410,6 +1426,22 @@ hall_sensor_default: hall-sensor-default-state {
- =09=09drive-strength =3D <2>;
- =09=09bias-pull-up;
- =09};
++  clocks:
++    maxItems: 1
++    description:
++      External reference clock connected to SYS_CLK.
 +
-+=09nfc_default: nfc-default-state {
-+=09=09reset-pins {
-+=09=09=09pins =3D "gpio38";
-+=09=09=09function =3D "gpio";
-+=09=09=09drive-strength =3D <2>;
-+=09=09=09bias-disable;
-+=09=09};
++  vdd-io-supply:
++    description:
++      Digital I/O supply (VPS_IO).
 +
-+=09=09int-pins {
-+=09=09=09pins =3D "gpio41";
-+=09=09=09function =3D "gpio";
-+=09=09=09drive-strength =3D <2>;
-+=09=09=09bias-disable;
-+=09=09};
-+=09};
- };
+ required:
+   - compatible
+   - interrupts
+@@ -49,6 +59,7 @@ if:
+         enum:
+           - st,st21nfcb-i2c
+           - st,st21nfcc-i2c
++          - st,st21nfcd
+ then:
+   properties:
+     spi-max-frequency: false
+@@ -81,6 +92,26 @@ examples:
+         };
+     };
 =20
- &uart5 {
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    i2c {
++        #address-cells =3D <1>;
++        #size-cells =3D <0>;
++
++        nfc@8 {
++            compatible =3D "st,st21nfcd";
++            reg =3D <0x08>;
++
++            interrupts-extended =3D <&gpio5 2 IRQ_TYPE_LEVEL_HIGH>;
++            reset-gpios =3D <&gpio5 29 GPIO_ACTIVE_HIGH>;
++
++            clocks =3D <&clk>;
++            vdd-io-supply =3D <&vdd_io>;
++        };
++    };
++
+   - |
+     #include <dt-bindings/gpio/gpio.h>
+     #include <dt-bindings/interrupt-controller/irq.h>
 
 --=20
 2.55.0
