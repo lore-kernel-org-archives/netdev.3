@@ -1,131 +1,162 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A07A42C4E6
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 11:49:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787226582; cv=none; b=P7YTC7f2Pm6buGHs/DARYmG+EMBmIEaC8dIn5pF/vGPKeMuVGqJLOG9U2DB1Q190SW0wtHgciKRmTo525rKx1Q3iPR2UQTlBRM/gIXKfSL045IO0qepj0jS/ldNADyAFqMz5RNfMKefSt5kdxle7e/7d9y046NOV1vCfWd0B3PE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787226582; c=relaxed/simple;
-	bh=bl0WggYJHQcRBL/Oj0BryfftEHgfrnVqyO54aAETY/E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NT1vJ5QONN6pseSkQJAUoB0uKffqUAK5U48MG1JWg2Qcva1cXUasHLGWycEzqPZ7Kz4BJXlDEqMKxIVe79GqcsSNAPLSG4mdRyxEP2m4nTv5cBgjHUA2hQUhiHWpo92dgNgJDZXpOwz4HsIw2QtkZTs1VEVMR51CqcYWwY/VSDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=coiSP3Gd; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=cBoQFDjs; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45127415B68
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 11:58:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787227140; cv=pass; b=IbFjmgUUf/Rh4COzXvF+r0idC0sXvlSJuUiwKWPBujemEmx756NQS9kcxqhEgLN18NP92AXarQzKbbGcmGoFRmLRFKtZnytwbUFdY5hiXFNpGQMfy7/4UIb8bMChZ9J6r9BZsFMPJqfPcgL5Ug6N/x7GTNY8ufGdfI5DcSmd1xA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787227140; c=relaxed/simple;
+	bh=ImOCecJImRFG7dcjt4Zjn2EN4G5XEEg3aaA9PXxBLHU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QbcvhjAa37qSMDE63YEDvTHMSYyXkawVAhfhFodKrAUKNf9P3Eu4bwDZa4ItHWn6ux0QZMrX/Xky3KczYvcA+Ffj5LBPIjaYHzPPHRhUhtnByCkg//fvlyjtv04KC+sdqkjq73EW3cgYakcR5LslPhuNIOAzCeRfUghg9AVilhg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=EgKbEpaB; arc=pass smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="coiSP3Gd";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="cBoQFDjs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787226580;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4InsbEuz38UlO6o4la7QKLe0Bq1AWg3NL4Zc06nTVR0=;
-	b=coiSP3GdQP25vBykqrWdr7xSBrQkpJjP8DCj5+LFezCovzu1e49jgqSsf/jDWuQzYa3+OS
-	TXqaNSv9hD+kYyEMZEwD53+whUF0JUopYtt41uwEF2cfJXPvs5Wn4fC8tlXNltbC9mjLiR
-	K3kR3bWji84afs7Su8y6VxIrAt3/gZQ=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-433-TEQom28TOoixLpH1X3yrGA-1; Thu, 20 Aug 2026 07:49:39 -0400
-X-MC-Unique: TEQom28TOoixLpH1X3yrGA-1
-X-Mimecast-MFC-AGG-ID: TEQom28TOoixLpH1X3yrGA_1787226578
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c16740eb587so167781966b.1
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 04:49:38 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="EgKbEpaB"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-84e0688b859so270821b3a.0
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 04:58:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787227137; cv=none;
+        d=google.com; s=arc-20260327;
+        b=pFM3FpS/6U7NUqDLLZasWdbQ6Mo6GA0UYWBuq8HRFV5fU4V8tDCazgCFzOFIZGi19X
+         sQRrupcWqyeQ45inkrBQTMRrS3dAjAyzEK8SOZMSMbzk8DbVv34LVfDcmV7glkcedotr
+         8Fdxjwq4bJ8ePvEFnQGZW5NS3Z8E8S4hNxbRlHowyjtRrThBu4de3Pad1w5b6lUCeHp2
+         66e3NxEqX+t4i+WsuHaVlLKQ6dL7Gm/yp5n1NUMj6L5nyeAv7DJEb3xrAsfx0EUpavHI
+         5g2/WLGR6nskqXt5jZaYZ3EMProj2V/+cCWzLRzxDxF3vmNwuo2Dk4fKMlYoLvbNor+7
+         L12A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bf3YKh+ptY6dsEL/5t3RcfoK5c8dQ++Ak7cpFCxnHC0=;
+        fh=Mo4jABy+Qqpu3ugugQfCi9Eaac8e5YZFLy7xCFbdG2c=;
+        b=Twf6KacF01I4cjC9v41i+8aaxnYmtwv+UuTjkgQ6KNkOvWHm0f87zjEQHqSMK+7fAW
+         2DxrjfrtBFRxhe9aUGAt7SkDoeQ0Tu3zpZwINxVI5AVjSxNZDb2Mehui1llJY3EkKBVx
+         yhceIXDSFm4/9rGHpK0veEPmL3EMRjDEzJL6HnE8vQDqY05wAtXbC5TJIcrnpDGjFtqJ
+         tvtPEID9Br+wNEKxg33eI0TH1moOxgwCk6gE9+ErX7meD4nuj9p0zCIjlyA+onrBiAGF
+         9qtSxuhqBcMeDnKtBmrd3zlyDLXNpru0ybQBnhVKpvLrVhQWhT/SqoQKMqT6KE0/DqoO
+         lbeg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1787226578; x=1787831378; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4InsbEuz38UlO6o4la7QKLe0Bq1AWg3NL4Zc06nTVR0=;
-        b=cBoQFDjsdaMqzKFPuoHD/b4MpnHvyHlhgYBwvyhV70WHAiyT0D2TIAw1VUDHU1oLxY
-         UInHHK3uKx+9ZlMoWH0vR/KngsrM8i5t60xSmGHALrDZr6uf5TsjQJIdKFVxMjypIY1K
-         L5mHqwLYXEYXFnl7gA1C34ScD5Ii6Ar9AAZcfbnQZWHEPvSyBRWbUKK+oK1ijcv5oKFA
-         ZxrziD4PGL7JSbhQgqbAqxXd1X4YkwyAS4VXLyKClBUv/+TRFtLdQXEciPpDJQVKcD6r
-         zh3gAmca4e+lqKtXeSX+Yrh3BHjShsdscD6FTF/DTpcowNkX0JqShQSMdMwrjDPh6lFY
-         u6Ow==
+        d=mojatatu.com; s=google; t=1787227137; x=1787831937; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=bf3YKh+ptY6dsEL/5t3RcfoK5c8dQ++Ak7cpFCxnHC0=;
+        b=EgKbEpaBeYu+hTsBjoxf3bAYcU8rIN5an6cNEbomoqZUJdpFvFHLH57jtXVs1xO2pW
+         dHzeU9LvGvWpctXngrjxymVcYsIV5+52q2HByT8ZAQ2fzRCqtU3Qsj8sjSrevqrkJzax
+         0u8gCEM4fjKu4MO8QXjQtMyw0P//0P0pGUxIg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787226578; x=1787831378;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4InsbEuz38UlO6o4la7QKLe0Bq1AWg3NL4Zc06nTVR0=;
-        b=OMFyGVRkkN0X5gJwsiCM4/bToR1aI4DNAGX+bJAzNsRYVT2LwIBKdPgUG/c2wzbwWG
-         VnfoJsJdnoIi/da7Bl52aBx42oxVOg8iwHNaEfpre/9Zk+XR6s1X3/Vf5DR5QOQXiPTY
-         eI4Ww3nxqTwXF0HmE0gkrtvAMYcnVlWFXc8r4DKt6/GFqt/XDWPJCYK87jtAoR0AgUeK
-         Q6i4hqFbfe1WlgqHTfDhebO9LyGPivIzXq+nsCrjEKwtLBFp8iGG2H+7EhAGamjzv13d
-         8adnkSxGLqbJBNd2bbZGo2EruJplWt48xFDCSelhG/IGCsNzUNbCi0YoSVmjYtOsj5ir
-         4snA==
-X-Gm-Message-State: AOJu0YwnmYEfkJlf4IKBzNu1C9bC0TjXOMlHQNXent+ozFgm1DBqhlYb
-	nY3EalcHPizZ2kkqb9C/ao/j1TOKS1cIvd70AyX4wpHTXB7BP5lD9uIaVh+rF1XmDRoT1Qydit4
-	SrvvFRvIoHjh3plZdTWM5C6qQuGWXi3mr31LVvZFhqDHgEX8LFh+xCEE8vg==
-X-Gm-Gg: AR+sD13y2gKmMl1lCiuH5vJtdYQcYD2MZR7oItZ47+PU6uGIq8S1+zJBONpwMK7YKSw
-	4Kfainf45f2s0ALCi2cPFufrRhm2mRMin9ifonGZj3+aYaXxultIr9EVRn2pyVM5xBssCXGCpRl
-	hiIZZVg5jfkd23H9somaA3kXPsFY0bxhrIDD9ngBfXOLKO9llW7vkcL2wYoEZ6f3fOFdwEsCXeo
-	lGSiiFrfscRWEKKBcKF1m46r3lIS7zspZfwzTfVkmfRBBvak3/WovlC4T+1jmnjNbTNBPxKlFam
-	JkEJecKtayVYUVd9o+XhV5PjwZnVGiKEPm9VgJ0EGDAxrQ5pOUPaANDd/3fsG5ymfkxEoJgeV7c
-	m6OUsj3mkPw2DItoz/1diXduaFnTb1Nkqifd2OLiCpf2aKXZBhjJtwHzCUm0pt2nSlMjPsqievp
-	s=
-X-Received: by 2002:a17:907:d48c:b0:c20:83b1:396c with SMTP id a640c23a62f3a-c242e1d0eacmr931170566b.17.1787226577840;
-        Thu, 20 Aug 2026 04:49:37 -0700 (PDT)
-X-Received: by 2002:a17:907:d48c:b0:c20:83b1:396c with SMTP id a640c23a62f3a-c242e1d0eacmr931166166b.17.1787226577395;
-        Thu, 20 Aug 2026 04:49:37 -0700 (PDT)
-Received: from [192.168.188.103] (ip239-44-231-195.pool-bba.aruba.it. [195.231.44.239])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c24591df739sm57323266b.49.2026.08.20.04.49.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Aug 2026 04:49:36 -0700 (PDT)
-Message-ID: <5ae54784-8076-4b3a-a2fe-14fe64485571@redhat.com>
-Date: Thu, 20 Aug 2026 13:49:35 +0200
+        d=1e100.net; s=20251104; t=1787227137; x=1787831937;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bf3YKh+ptY6dsEL/5t3RcfoK5c8dQ++Ak7cpFCxnHC0=;
+        b=W6PljTQTDPCqlX3ZVrhJ4bpqwf+hBBtRabHg71BzehLptE9Y2g5Mi20WJ5/Q/5uxG9
+         vF1tmlgub8pSKIKayTRv46RlSmUyXk9aQ3Hyol/MQNo/uSEMmZ3z5NCplKdVj8g0lgWb
+         6IP966nLxLNSWuw+TOpeKLlO8gF8O0F3cywsWE5aGyeBgG8ZC0buokJppjm+yByjeX1D
+         KTDwhWpMuDQmD/CiUrKCX063TY/QV3GN1wr29fbcCIGViNfVq+QE3E5C+uFF01bY8Lxh
+         gShxNhlyeGy1R3yZ04a4hoGYEjCGbHnNaOVfuZB708UhjF0ziliFH4pYg9+TRfvKGxFZ
+         4Muw==
+X-Gm-Message-State: AOJu0YyhP+XGFzihMtp7tJNtSlyVIQjLf2xMee3GOJi5qazALIlOSfje
+	/HCwpVGre5uJUD1sbWkPP45pXeoIhmaCAVF2FFyUmmQq5KK+jmOgil0aqIAIcYllwVh4Pymafwt
+	mgWumkvFuS5Uyv0s/k+EWRxtM7mOOEFMpIkSkF8n4XmO3q7SpGRJYfw==
+X-Gm-Gg: AR+sD10T429lgefm6ncr1S/vfXxdzKgmheEpi4jy3axy5nvejACLDlJ+hzpUJNt5SiP
+	3yraakInOtfUr7ZiaHF8Mjgh0MbbW0P+dp10lgXtQpmw+ttMoIVIjcCPHvqvcuLWT5W6P4umcRw
+	ZSGA5wxMV0B6KXcF3Tt9zmK5so7gV76JvMv8LSwCGi0PJIZ+4TTXDqTBpJWGJ1yWy4SgBf5Xcap
+	YyJa7uCWU9FFLnQv1NSnaatxERM/h6fZQhSKOOPh7QaGz9xsf/QLpS2cZ60G+bwaTK5sKkbDsvp
+	9vccKbUhBNzlWIRY+doqds3DGj8vkgvkoGhFxUJhvsd9hQ==
+X-Received: by 2002:a05:6a00:800b:b0:842:5b66:3c7f with SMTP id
+ d2e1a72fcca58-851d34833efmr20446596b3a.0.1787227137441; Thu, 20 Aug 2026
+ 04:58:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2] net: dsa: mv88e6xxx: Avoid uninitialized
- value on MDIO read error
-To: Ruoyu Wang <ruoyuw560@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
- Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260815151713.3757248-1-ruoyuw560@gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260815151713.3757248-1-ruoyuw560@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260819204210.23722-1-fw@strlen.de> <CAM0EoMmT7xFtxrVwCm1ohpfVAPBuVBFHB8q_eTQ5taSquKo9og@mail.gmail.com>
+ <aoboL020DIcOn2lx@strlen.de>
+In-Reply-To: <aoboL020DIcOn2lx@strlen.de>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Thu, 20 Aug 2026 07:58:46 -0400
+X-Gm-Features: AcwNN1VsL2hPP_mlfyADtSkV1o0USlQEHIpMQQT7ICK15fq30ePHoI_IpXXUkpQ
+Message-ID: <CAM0EoMnvz6A_v65s=jcdw5nxL6N2+yd7ZBvp78mtt7edkPe-sw@mail.gmail.com>
+Subject: Re: [PATCH net 0/4] net/sched: reset conntrack after packet munging
+To: Florian Westphal <fw@strlen.de>
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, victor@mojatatu.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/15/26 5:17 PM, Ruoyu Wang wrote:
-> mv88e6xxx_mdio_read() applies the internal PHY model-number workaround
-> before returning a Clause 22 read error. Since the PHY read may leave
-> val untouched on failure, the workaround can consume an uninitialized
-> value.
-> 
-> Return the PHY read error immediately after dropping the register lock.
-> Successful reads continue through the workaround and return val as
-> before.
-> 
-> This issue was found by a static analysis checker and confirmed by
-> manual source review.
-> 
-> Assisted-by: unnamed:deepseek-v4-pro typestate
-> Signed-off-by: Ruoyu Wang <ruoyuw560@gmail.com>
-## Form letter - net-next-closed
+On Thu, Aug 20, 2026 at 7:42=E2=80=AFAM Florian Westphal <fw@strlen.de> wro=
+te:
+>
+> Jamal Hadi Salim <jhs@mojatatu.com> wrote:
+> > I apologize for the delayed response in the private exchange, but let
+> > me repeat my thoughts here...
+> > As you said, the munging can be done by an ebpf program (at different
+> > attachment points, not just cls/act using multiple helpers).
+>
+> Yes, and that is ALSO buggy.  For BPF its even worse because if you
+> permit arbitrary writes at any point in the stack you will also
+> invalidate e.g. addresses/offsets stored in skb->cb[].
+>
 
-We have already submitted our pull request with net-next material for v7.3,
-and therefore net-next is closed for new drivers, features, code refactoring
-and optimizations. We are currently accepting bug fixes only.
+There are a lot of helpers that could cause a mess.
 
-Please repost when net-next reopens after Aug 31st.
+> > "Packet rewrites are still possible with BPF. However, unlike pedit,
+> > that needs privileges in the initial namespace."
+> > That's only true in the default setup, but with BPF "token delegation"
+> > it no longer holds (will be reachable via unshare -Urn).
+> >
+> > I have not tried to verify what i am claiming since we "last talked" -
+> > but could try it out when i get time (weekend looks promising).
+> > If what i am saying is true then you will have many places in ebpf to
+> > fix, which is not ideal.
+>
+> *shrug*
+>
+> > But even if not true, you can still do it with CAP_BPF - which leads
+> > to the same outcome. Unless we are saying as a general rule we should
+> > prioritize where/how we fix things based on whether they are
+> > reproducible via 1)namespace -urn  vs 2) require root permission
+> > (assume this includes CAP_BPF)
+>
+> I think 2) is very different from 1).
+>
 
-RFC patches sent for review only are obviously welcome at any time.
+I agree. In fact, on the tc side we prioritize fixing bugs
+reproducible using unshare -urn over those that require root.
+The question is: Should that influence how and where we fix bugs? It
+is something i am struggling with.
+Example: If the ebpf one could be reproduced with unshare -urn would
+it have been fine to make the fix sit in netfilter?
 
-See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
+> > With that thought in mind, the question is: is there a single hook
+> > entry point where this could be done?
+>
+> No.
+>
+> > Example: nf_conntrack_in() or nf_confirm() as the choke point which
+> > catches all?
+>
+> Those are too late.  You would need a new, unconditional sanitizer hook
+> at INT_MIN, in all of IPV4/IPV6/Bridge, plus additional code in core.c
+> to refuse installation of custom hooks before the sanitizer hook.
+>
 
+Yeah, that is a bit much.
+
+> And that doesn't solve BPF (can sit anywhere) or OVS (no idea here if
+> its affected or not).
+
+OVS is very likely affected.
+I saw your other email and you are the expert, but I am itchy to try
+the nf_confirm() approach.
+At minimal it should fix the PoC imo.
+
+cheers,
+jamal
