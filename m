@@ -1,163 +1,174 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D32C37C923
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 15:01:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D23361640
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 15:04:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.170
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787238099; cv=pass; b=g2M7jTBVxy1hS7wGJ/Qz18GhsMHjCURmGhSgt2rRxPrC7vAUiruhLUY79VGgBopHK6GhAzEoVNlGzYZ2TDftMKiH/fR1Tp47DjRBf13CgxzS9wcPXL2Bp2BhCOAn/PcGktFwpgTc0C4SA4vBR5BK9iPRextJ3df7b07X3OzZ0e4=
+	t=1787238266; cv=pass; b=sxwRol0dXwNzE2w35kBwbPj1ZEVWYVtkdIpUdS5sBv06wVo3whgTIhzv1giwE1CQ4OEbuAEks1uCvO1SlelVNBEgzAE/9JEgypYds3ylS8nElxwKBwHYC+cfEFSLirYqYPLan+qTR/6O3binG/5yBQ6XVv2YKtkj1k4qEEHorHA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787238099; c=relaxed/simple;
-	bh=D2RYwrgKpm1Dr/0cRan7fmW2KfUcHQ42FPGSFv7Bbso=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=K1xWmT4ZqasOFm5VIcHEsoX5x/LzWh7Io8tS9Cd4j3JjbUEQH2Bm/vaycyCMcjFh/jHgipw82ApcaRsUgVtVTkwpRSschsbdH0H/hNYGErsDyBOQaKH651EBf2bWot7oAmzntg+mtEyprZG4mqOL6TP/Ul510OvqFev5FIyhJaU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WhDBX2g5; arc=pass smtp.client-ip=209.85.167.43
+	s=arc-20240116; t=1787238266; c=relaxed/simple;
+	bh=1VOtg2a+mCLGrBHtCxL2dQjoQpaFwsB9mKlcltTUeBs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ixjL9sLBeSztpX7J+ZzTiyOT4hurJd2NicvnZZl+d5cx/6JixisiD6TLMCNURlQQHaukwbkqsovs/SWs4rrg8nZZEWT29s5gk8m831NbPIqGEQbxuQvLB3Yj3IVDRhd6eaQxfyRVuTXTP9sz2KLPOY8935RDzkKMWpyaf0pPGds=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KdpAOTUp; arc=pass smtp.client-ip=209.85.210.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WhDBX2g5"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5b15dcaca31so2535750e87.0
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 08:01:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787238095; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KdpAOTUp"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-84e0688b7e8so1773154b3a.1
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 08:04:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787238265; cv=none;
         d=google.com; s=arc-20260327;
-        b=ceVHfLKIiYIemRL4YitslpjbsGkxC+SWFBlqdgngh+USpiWeNFp2RMxZzEmkJreW/1
-         lNrk7j/gNw4Sj5ZOG6N5fqLL8U2Boiweq5PAkc57lkY8QylgnV6RHcuThsh4t1hTo4Da
-         ihoi74HnV6E9mFTOsIzOb4zXfhm6BrhkFbD09HZkY5qnc4tFRpqmzRe6WDL0noSwkUyp
-         rvQs9gJUAjc0kP7xjDiHyZIJgy4DbIChFlORNCzvp2JONq6DXmji1m+g8PBP3YL4HJ7U
-         GSZbhdegBglWZ0jeX3xEEfInhGF9fXaZZ5Bz6/C9DUQ1kxjiKbPFxj2d6/RNXHrvCXOE
-         D6EA==
+        b=bLzfzAwSkRJ7n2oVTzwO/PtSm60jpNcq5PS70OVJ480LngbHa3Gzv9XkZKa6TRY4Fg
+         yExhgC40Khj3wytxiNlvTNgTICGd4kZa3sNFw7w9jg8GDmDmejrFmJ4FvAAL/P2m54fp
+         Hfu+Cn/CjlBd0Ac4F2h0RJEC2EyeGxWSq1VTZPLOS83GY9KNB+lMvpwus9O1WC7ve69g
+         MvrHk3L0ORMsNAvTbOR173P5DOtVw0Rray4fhuHDJXRLFbdO9yg/FVH6sQCU53eEEc/e
+         1BT05kvTxrTOq+Hz8Ap6iH3iV0LLBfkywqJ2aJa/r9IccroJ1SCyGrCdFbwbDT351spK
+         MAMg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=OSZwf29aWQYmqvx2RohxX/kujaj1xOnXQAP4WizdVvA=;
-        fh=yaTypwqVjjXAB91v8X7WXvNnfxO4YfwGsjJrhQBzCu8=;
-        b=RMtQANDAHDpK0B98wAZ3Ukl4FQzsR33NyyUA1xEpJTgTf6df9fuGDnouBv4PSoBrju
-         GbvE0xg6+BcDu8T4VgT0qYHca2IecxcihpKd7d2oWl9Lmv85xr+4UQTq5WRsfm0vnieS
-         bsmHHzjnDx8pm8FAQfC0T55+IL+gL9ATKDlNHX6ylbrPKAFj1laafSRwCFrcGSob/k9m
-         qJcBcwYJaBAzz4GTCCflXqXighEC5r1j1mnU78aiIPimSiFVvrq8OEReBeaP98ado6GY
-         eE2C3+gI0Vblg7H6e1JCtzAd+/5jP4BhqVzZOZM6w/kvyjIOqL66+bI8e5xCzkQXbXy2
-         YKeg==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=b2LmqCXxT7oGJVHwzHbpyF/RrL4Qmn8B2JsL8FziJJo=;
+        fh=tIUa9X8J/BsCI4zh1mYqzmeHjLgIz7GUiwMWPbu91t4=;
+        b=U3Ad+9mNbWIRecu0/ryDf4Ma8Fk96csWNkY1OQnNFM78sB7lEZ3Qd+oJcubczMitmx
+         PweZBfwQ4lefOq5IzEJl3KTWQHj6BoEgAgeTLkSg5fDGjk80jOU2FRHFj6RR5BFAfel4
+         JSg4FCg4gIu3T7uQX+mrrUaM3dDInejI7Xp42kg4mgTk6jQTJh0kLfd29NSGNyI6VDkC
+         kamUmyUjAlsqsWH0gb3DrttA/s5FZ78bjs8cusrEYYfwIs6DfZOH4CBiFUorT8W7KPXN
+         z/4jonOJ1GPuuUzZOtlP6xNwVRewS3bxoKg2J3s+Ykk3oLB9x4v/gbJLR2hx90hCs/Si
+         eubQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787238095; x=1787842895; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=OSZwf29aWQYmqvx2RohxX/kujaj1xOnXQAP4WizdVvA=;
-        b=WhDBX2g5UkkTpNBG9Nu9/W90AiB98dxzXaYf4PteOmubZCELWbVeTTZz3lytfLccQ1
-         EI71dZFYfU7W6RznPfRWtSCEIQv71ljXIRJOd/JCYfZnyoWvDUN/D87h3aeCF8BEyGqe
-         yQdJVWA0RF7RAEmiv88If/n6xlQelAghaE1CI8SdQZvqQnHb5pkmbs+WysxJrvjGtoaK
-         QNwPgk+yn9PbeFGcSHGfota+3MclgNd9eRBXmgIiqZ2pPox/WG3JGZe35YZqei0pZMt8
-         YLbZMiAuRqfOmbJZoE3Itc7qAsQOFe0USpewcrQbuZN/odrjkYPlZGO0+5T8SHP8uvCw
-         bPZg==
+        d=gmail.com; s=20251104; t=1787238265; x=1787843065; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=b2LmqCXxT7oGJVHwzHbpyF/RrL4Qmn8B2JsL8FziJJo=;
+        b=KdpAOTUp55jXdRUpUrhbN1IayzL3AGVI/8/pSteT2FXn4SR1eKuaeH89b572ogaiiH
+         8JA++kuoNDXkqF8OESTUYkj6TJQGb/9eerIINm+c+TQg70FGcB/Kb/gbaP11nG3AatJy
+         +EdFLr6LNSfwNIJegAFiqxxSFVsJguY6BDTDWTyzKMdSstXUvG8FIA6WAioBzK79oB2n
+         ph3MgjjQtro6UvIcNvtAGUvxVzfzlNGEC9ZKyDWQd9Evkh5u5+2yDzVgQAGWYboYw7nm
+         qjddpd60KR/Afq4DJrVqPHDbcrmq5k8PzlQJovxKkCWtbcIuezAMs5KMMf3SIetPPKbD
+         Am3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787238095; x=1787842895;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=OSZwf29aWQYmqvx2RohxX/kujaj1xOnXQAP4WizdVvA=;
-        b=W/uyEXqkH/0hcCS0/yZwKknnRN1+PPT9njHe2qhSzXsukh0FDjkcfWhgOJvpINpNw+
-         W8uE/u7Lp4CO+NRJ7F3tAW75O/LCmPQLAf4DFVFofddJSq9X1estqF1pfXc2uPnrI6bO
-         AqLX2CdQXm8BUp4M5HmhlDH3IX6h8huoavecWjri89PtezcXB8M97FGWhk/JHsdJ4Wvh
-         obzyhqC2ZG9RakTgnBe+7z9ov8hBUXEsIF/Tbq8ZUIiQFVw73nIHBxbONBvb8prWlfkl
-         KhTRE9qw2zHuu2FEaQ0rn6wzDuWPsihct3Pb1lYFolUuOM4mf45r5spgbr2uetcvjk2x
-         DF7A==
-X-Gm-Message-State: AOJu0YzsuCu9CK8Yi0CpA0POgN+LoWP8cbvkQX/6MZy8fw1eDLHBOqx4
-	G+P0dX+yIL3RfMZhxiF6J0toFvbijeObELXP01ovuhHJcJUctz5TB/xBH4eLrYMG9uJpHqMmfmE
-	lQVDVzhwGAfbx4Ep2RJz4nyxy0LbXnLizP95T
-X-Gm-Gg: AR+sD13wkvf0HeJQxHv6lIvexIpyGS5tP9WS65M72PTWqaYnuJuzP0U4YcB/XulYjn4
-	e/oIk4m6MYhrb1GtGZDwiy4JyehU2TldXyAYzwzmXjBV+pT42CHfrOWvLAXTKiYJcsRckZ8Lam0
-	66OGsmjWK3qfGEP8oEvzWx8CfgDs+LhzuRmx2/AeM7tUdee1RHeLxSYPh5WBrT5+Yua/6qrfGnT
-	2/aGQcYEmONnoqEnV0utpfGL6SusAjQWEmx21I/dkDuhTHl6/WM6AC6Yhtk3wyyAwD/GIERXQim
-	8NUV+uPVk+hXHaXkNaF5UPnKQmIF5xZTploJRaGLysk=
-X-Received: by 2002:a05:6512:b97:b0:5b0:6ae9:c4de with SMTP id
- 2adb3069b0e04-5b478bc61fdmr4854266e87.5.1787238094765; Thu, 20 Aug 2026
- 08:01:34 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787238265; x=1787843065;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=b2LmqCXxT7oGJVHwzHbpyF/RrL4Qmn8B2JsL8FziJJo=;
+        b=M3ufRS9vq3XrDlXKwk0gFmsprIwwwyDu6IVNaRV84d37Bk6RrXQNBA//VvCEAhUyFP
+         jumQj+FNJW5/BatIAn9AeycdAawFUF41c4ErkJx68bhbDP5v/tv1fmuvRTVw/gtOonER
+         0k1HpZwAmF3p6dCvrFSuYbMLiLm7YsF8J7zK7OYqfxh+ydW3HJd9HfMHr4aUJszVxRky
+         0bkb5Wh8v/LqAbWWx4ftxkILVDbS9jt5b0ulUTF1EcplUoi8h065cZ7c61clcMeeRBc4
+         E7t9WwDkBli3DXvYJqcxSceuBRurZglHkd7Xi6eJTkfXtvt2vevtKCayyDyA6EVvawVs
+         lfkg==
+X-Forwarded-Encrypted: i=1; AHgh+RqDwNaoYw6obb2tP3qNNpGZawgzMuuP7O7iq3GjK2yg/zthFsi5WE2jypuXfgh1PPGK3AGVr6M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxT90V0MZtQYeoTI7GQRab6JBG39EVsG5JAce2Z5D7jxag8qvK
+	urIepYtrgLQJSttjxe94QrpygCJHBUpb9k1LoZ9zD56m4ZvDU9Y1kumaYTBNcZ9I7RCqfW4GZCI
+	4lACIXQ5vJBo0cGRoc/Fg2Q5iNQWVBvI=
+X-Gm-Gg: AR+sD12VUTEaJJauTIyiPL2zixWjE//W8vtgLOlYlUtxHlod4by5ccLv6KV+qTX/q+J
+	RIWbSUXMcm2skNvH+JzIwWAZRGyo2QV4gduY/Sx6vVD/s1lPaxaX2zYURzk+41ebxHOxq2eEJvi
+	4pEq1xGX7Bp7yQWIK7KSCtvUpGLMJE+mQ+JlBOPh9ePujQDKuvPvW+YSGoAIaNr8dnTcO8dSUu9
+	9i0CajkkRpP2aHxcm0OXNfrCuDalHC+4yEpXE9pOzC0BQoaOcWC3fyybVtR84EMBpkhrmmHxUKl
+	SoydCEk9sCkDuAWMRNl7jty0aYKAY/a65b6Posf+/9337mH1eeE7QsOma0miFs1JUuulCCuHTvE
+	+ONENUw0oz2RIywcZrCOsm/i3unsnYwJraWqz+qcVBKPM9rfI1Drai8b7lpv3/IBhGq0FE87t+C
+	nnlfeBmw5tqtk=
+X-Received: by 2002:a05:6a00:a211:b0:845:e8b9:347 with SMTP id
+ d2e1a72fcca58-851d3942b62mr21772245b3a.13.1787238264580; Thu, 20 Aug 2026
+ 08:04:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Sagi Maimon <maimon.sagi@gmail.com>
-Date: Thu, 20 Aug 2026 18:01:08 +0300
-X-Gm-Features: AcwNN1VzRv-ECUsEcu1CHy39ydYIXDbKBCbYQCKYfM7Am5QSe-gSNbU_ds8Mwf0
-Message-ID: <CAMuE1bHr84n5LKcj02HmMR5XefPtvQ-UEJAx7+UKfYvRgS0eDg@mail.gmail.com>
-Subject: [RFC] ptp: ocp: exposing the TimeCard X2 AXI Ethernet port - which approach?
-To: Netdev <netdev@vger.kernel.org>
-Cc: Jonathan Lemon <jonathan.lemon@gmail.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>, linux-kernel@vger.kernel.org
+References: <aoUJHQmxL0LFIMCw@v4bel>
+In-Reply-To: <aoUJHQmxL0LFIMCw@v4bel>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Thu, 20 Aug 2026 11:04:12 -0400
+X-Gm-Features: AcwNN1UQX2CmBEKT0N9riqZ158JDKHJxfGAvwlOJo89EtxNcXMCDtSApxsbWigw
+Message-ID: <CADvbK_cG6yTabSSEXCmEJ0MrqFG3ESHAtctupGUdRQwmeUYihQ@mail.gmail.com>
+Subject: Re: [PATCH net v2] sctp: drop a chunk if its transport was removed
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: marcelo.leitner@gmail.com, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	linux-sctp@vger.kernel.org, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Tue, Aug 18, 2026 at 9:38=E2=80=AFPM Hyunwoo Kim <imv4bel@gmail.com> wro=
+te:
+>
+> sctp_rcv() resolves the transport once per packet and leaves it in
+> chunk->transport. The lookup reference, or the one sctp_add_backlog() tak=
+es
+> if the socket is owned by userspace, keeps it around until the chunk has
+> been processed.
+>
+> An authenticated ASCONF DEL-IP can remove it in the meantime.
+> sctp_assoc_rm_peer() takes the transport out of the association and calls
+> sctp_transport_free(), which tags it dead and drops the reference the
+> association held. There is a window on both paths: the packet can sit on
+> the socket backlog, and on the direct path the lookup completes before
+> bh_lock_sock().
+>
+> The DATA chunk in that packet puts the removed transport back into
+> asoc->peer.last_data_from. Once the packet is done that reference goes
+> away and the transport is freed by RCU, so the next delayed SACK carries
+> the pointer into the SACK chunk and sctp_outq_select_transport() reads th=
+e
+> freed transport's state.
+>
+> Drop the chunk in sctp_inq_push(), next to the existing rcvr->dead check.
+> Both paths reach it with the association's socket lock held. The peer
+> retransmits it.
+>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+> ---
+> Changes in v2:
+> - Move the check from sctp_backlog_rcv() into sctp_inq_push(), so that th=
+e
+> direct softirq path and the socket migration branch are covered as well.
+> - Correct the Fixes tag.
+> - v1: https://lore.kernel.org/all/an-oGfEatacPTSX-@v4bel/
+> ---
+>  net/sctp/inqueue.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+>
+> diff --git a/net/sctp/inqueue.c b/net/sctp/inqueue.c
+> index a024c08432471d..5f988b3a8814ff 100644
+> --- a/net/sctp/inqueue.c
+> +++ b/net/sctp/inqueue.c
+> @@ -71,8 +71,11 @@ void sctp_inq_free(struct sctp_inq *queue)
+>   */
+>  void sctp_inq_push(struct sctp_inq *q, struct sctp_chunk *chunk)
+>  {
+> -       /* Directly call the packet handling routine. */
+> -       if (chunk->rcvr->dead) {
+> +       /* Directly call the packet handling routine.  Drop the chunk if =
+the
+> +        * receiver or the transport it was looked up on is gone.
+> +        */
+> +       if (chunk->rcvr->dead ||
+> +           (chunk->transport && chunk->transport->dead)) {
+>                 sctp_chunk_free(chunk);
+>                 return;
+>         }
+> --
+> 2.43.0
+>
 
-Before posting patches I would like to check which of two approaches you would
-prefer, since they differ a lot in how much code lands and where.
+Acked-by: Xin Long <lucien.xin@gmail.com>
 
-The ADVA TimeCard X2 is a PCIe card whose FPGA image contains a Xilinx AXI
-Ethernet MAC and an AXI DMA engine alongside the timing blocks ptp_ocp already
-supports. We want to expose that Ethernet port as a netdevice.
+Note, this patch fixes the case when the transport is freed before the
+chunks get processed. But the pre-existing issue reported in Sashiko-claude
+[1] is the case when the transport is freed while the chunks are being
+processed, which is very rare, the fix would be to set chunk->transport to
+NULL instead. We need to confirm and address it separately.
 
-Approach A - let xilinx_axienet drive it.
-
-ptp_ocp creates a platform device describing the two register windows and the
-three MSI-X vectors, and xilinx_axienet binds to it. This is what ptp_ocp
-already does for the Xilinx SPI and I2C cores on the same card, see
-ptp_ocp_i2c_bus() and ptp_ocp_register_spi().
-
-There is no device tree, so a software node stands in for one: "phy-mode"
-replaces a phy-handle, since the MAC is wired to the fabric internally with no
-MDIO and no PHY, and a "fixed-link" child node pins the link at 1 Gbit/s full
-duplex.
-
-This needs two things from xilinx_axienet:
-
-  1. Read its configuration through the generic device property API instead of
-     the OF-specific one, so it can be described by a software node. On a
-     device-tree system dev_fwnode() resolves to the OF fwnode and the reads
-     land in the same OF code as today, so this is a no-op for existing users.
-     It is also in line with the wider move from of_* to
-     device_property_*/fwnode_*.
-
-  2. A dma_dev in struct axienet_local. Descriptors and buffers must be mapped
-     against the device that masters the bus, which for a platform device
-     created by a PCIe parent is that parent - a platform device does not
-     inherit its parent's DMA ops or IOMMU domain. For every existing user
-     dma_dev would equal dev, so no behavioural change.
-
-That comes to about 50 changed lines in xilinx_axienet and about 180 new lines
-in ptp_ocp.
-
-Approach B - a separate driver under drivers/ptp.
-
-Reimplement the descriptor rings, NAPI and ethtool support against the same IP,
-roughly 2500 lines, and share xilinx_axienet's register definitions out of
-drivers/net/ethernet/xilinx/.
-
-We have both working. Approach A is tested on 7.0.0-rc1 with the card:
-
-  xilinx_axienet xilinx_axienet.512 eth0: configuring for
-fixed/internal link mode
-  xilinx_axienet xilinx_axienet.512 eth0: Link is Up - 1Gbps/Full -
-flow control off
-
-ping at 0% loss, a 90 s bulk TCP transfer moving ~9000 packets each way with
-zero errors and no TX timeouts, ethtool -S/-g/-c/-a all working, and clean
-module unload and reload.
-
-We would much rather do A than maintain a duplicate of an existing driver, so
-the questions are:
-
-  1. Is instantiating xilinx_axienet from a PCIe parent as a platform device
-     acceptable, or would you prefer the driver split so the device can be
-     created on the auxiliary bus? The platform device route keeps the change
-     to xilinx_axienet small and matches what ptp_ocp already does for the SPI
-     and I2C cores, but auxiliary bus is the more usual choice for sub-devices
-     of a PCIe function and would make the DMA parent explicit.
-
-  2. For the dma_dev, we currently infer it by testing whether the parent is a
-     PCI device. That is concise but implicit; we are happy to pass it in
-     explicitly if you would prefer it were not inferred.
-
-I can post the series straight away if you would rather look at the code.
-
-Thanks,
-Sagi Maimon
+[1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/aoUJHQmxL0LFIMCw%40=
+v4bel
