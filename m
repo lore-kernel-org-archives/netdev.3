@@ -1,65 +1,65 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6472741B8F7
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 11:15:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD8041CB2E
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 11:15:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787224525; cv=none; b=lWJaooE/EU4NKiLNb/V9UYUWnyRhVI3PTiwn/HQZ8lERxgIL7AWmk6Q1wJevy2096MVWSR64Wl8H9HVQenN5s97wTWNsZkjE/snYQXlR9zIe60qHH+3GMUKn3FA0FVB3aWwO6SKKZi2hq7cTcIuBvuSpzvJV3EsngBky6/e8mrU=
+	t=1787224528; cv=none; b=RoOhXhXQET2hsGekW75W8B1PCK7R+iees6S/dYEFzbatCidii9AEyh1lzblaVcBhmO7v3ZJbOQCkcZQUDcUqIPkJn7OtyU3eM+iogEKEF95M7wF1pVYgR0TTjMKi/7mI+lXVRzqZJFcChRa8RP4VS6V611j7KQwtsyba16nczTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787224525; c=relaxed/simple;
-	bh=3uDE4EBPIrEu/wlRDQMGu8LdJv+K8TTLdEoIbXB62jY=;
+	s=arc-20240116; t=1787224528; c=relaxed/simple;
+	bh=bnOez2D7W1xADEeYSlrlChjQSRZM4eKefXSq81oer5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cV+0Cifoyqtc0v4l+EjVNAaECIeaFKYYjXB7gcB//hD67SAYmYVVHVlpPN9dAtca0kWB8Hq6pu/dS2s32r3Ygkim2yi6ggSB5+ehNC4tdT0P4fayGgZC8OBFnFgHJndr+fO06an+Fr7KrYztPhS3GOI9pq1/beDhOo9Y183tfYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qedqFoz3; arc=none smtp.client-ip=209.85.215.169
+	 MIME-Version; b=EYfGC0s7FSoBbf66csxA5SjnqkJi8uL39P5AQ86hIcQqRQ3vb8gpaGErbiC6j+XJ0z8EZgcC3AZA/cq9ltBZIFO+Sl1vxTGFsdNWih0XFjy5xQvbfVMUlbSe7hEOZg5GdsKRnuz+/UAt+d7xm58nIuuDj0P8vYN7OWbDRZCzo4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aJKFpWqA; arc=none smtp.client-ip=209.85.215.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qedqFoz3"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-ca88130e09aso1060556a12.3
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 04:15:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aJKFpWqA"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c9d1fff21edso1373121a12.1
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 04:15:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787224523; x=1787829323; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1787224527; x=1787829327; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=BpV7OrLLJSmZ27VksgMp3lb1FLdxWSw9DXcxUIDAfzY=;
-        b=qedqFoz3rN62rk457GrvMTkSFB4v2rMlmJQ7igPidq5l9IL5b4woOq5+/e7zSjW91c
-         GYWkHAe3+XmPZ1xEmJhLhRnDy1dZNCyvdw4qiCuVdrj1+OsYF1kzfoQC3hx4D7j3UwJc
-         t8Kmkh1XEiF5grSS5TQU4AnHvSEMayWJN29WaPH23ksr4b9RxZGLLApbRKYShNquf+zG
-         89uEX4A0txhntiPhjbBxOa8HoE3zj5CMbFiP6o6sKiOmiE4q3TAqjZGJECOHqVFKiCtF
-         su3Qnml0Ce2EoQYcwNFJDqwH0p7xwS+wvJIBnrmbD10FaEbZ2obzDOHYGNPZBzAUNyc8
-         X3wQ==
+        bh=0EV4ghgeCZRM5rzTYzzjwsX6ZmAWQhJnMm9mekXvTWM=;
+        b=aJKFpWqAKakPkQJC+b4Qf47S8gAU0AqtM4dwYAwgz0caF5GLBtx+M8b8hqNe739do8
+         MFuwJ563FGAoeDd4DfKPKJMH+miUgHFm4WY9fDBZkxvQO/hCVs3JAoPQfSCQemtHsSrG
+         GBnR/YIj+1s7kZi8x5kBOfRGnpSw+OnhwinyQICY/uftwqj/1OOLd2/O+T0nymyyqDqw
+         rr6f71ZM1SR58xReT9vGPeNazF14aqE828Rt0CgaH1qgIsqfhRLjRLq2zC93STsmnFXj
+         61tIiF6dT83TH4kRJWg33XTPhXPhzAypfTbt5FW3omP4zaq/8Ap7wErapfCGBa1JYhOl
+         hpIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787224523; x=1787829323;
+        d=1e100.net; s=20251104; t=1787224527; x=1787829327;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BpV7OrLLJSmZ27VksgMp3lb1FLdxWSw9DXcxUIDAfzY=;
-        b=pOwNDmGYMqxiA5U2CYwQD9Tdgr2sPRZZ9tBtDjTlH5ZLuuUia2/440+GFxSzhIBt4r
-         OLSwF6qhMyMX+NGEs2LxVDjuL8LCCfnWlUALhnpH/3S1yzt+AuWA2euzEoLnkx7MykNo
-         rmydKNnxM4zhyEjoZfCV/dekW43008jK4BNfvJ5qbi2N2+Ct1CCrSlrmTKkFRc/D9w6h
-         tai9B5podsQcMTeL+h07X9JslieuoufwblUB5PzTio3wYsmMNvRKU0G2rrqobXGTPFtM
-         6iLhxh9TYMoZyVNkpltoGMuly5MOXXoF9i/xKVt5bsTSRiHxULGPkT4kGUJhc+oRkNo7
-         OAmQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqU77IUXtXpB0pze2s3EteXIdE9PDSep9oQ2U7AFNQdn3410LUchAbI1OkKuH5+h7fLafEBrpI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxL2Cdv91N2Wp2suiYi4CEJ/2wlvCNlk1T2KmJt1K56sDX1pcoV
-	I9rOWccCUAE1TyDIe7U6AOMjCsuhmLIpC9N5gLFExP6jBSL8AIvqS/Ww
-X-Gm-Gg: AR+sD11w4sDU0fWHbRQs17gNF+KLzEYob9QSWhR6HPiR+TSplUGhCyY+cAd6TD2FcyP
-	cPtfa495GMi7ganGZprkTqFFlhZO+F8ufdgcerlOChwkekwbY/nfC0mUo8+PO3vp1jRno0sdN+u
-	skj19FN1GgvrXi4+0Pt0SwHUZThVYRYy2UZCTYsXCoSr4Zw3uiVusNmpBaiGHfM4LDeLaWgMxgq
-	Q/fnZYVvcTlv2w1VRhsSWjqg6hHt4ZlDTIXIi8IK2D4BtlH0EiALVODG3rzeRVl1CqzTURmXcXU
-	AWtnyyWrIph9OqV+cwtjp9r2WY8kMFXU7hMfiO39eOzzUVgnI3PSMQIMRzWoAFvY6jIFXoFeD8S
-	McEWfBi0Q93VeBwyKMZpmI4/bcjoIQhupS4wrj+WFPLXNKs0HnC6IuwSRnh5yxenyBdQZPbWyIS
-	MYKmBJjz5ErPKSX9V455JeqWSs5CvGKCUUf/C/TjUoaTAk/9o88IVtcINUJwLQdoBMcHiJMDWtc
-	JLMAQfibY1gdG9PIS2B52H/2mGMOgxdXYKMCizeZ9dcVp29duENJ8E2hEiOEgw8b/LIT79Li8gY
-	Aij3EXg2yA==
-X-Received: by 2002:a05:6a20:2446:b0:3c3:b57b:6459 with SMTP id adf61e73a8af0-3cd0107f1eamr23055896637.7.1787224522634;
-        Thu, 20 Aug 2026 04:15:22 -0700 (PDT)
+        bh=0EV4ghgeCZRM5rzTYzzjwsX6ZmAWQhJnMm9mekXvTWM=;
+        b=W7/+Rb6XPpP8ZW8V691CGf/UK8gihjqGHpfPhqLWk64J9P+68Cr+ZGICJQEGmMKVYr
+         6p2PcrLNFTSv44a5sTkCPY3PGntIM79l3JjY/lHbLU+sHr74Bv2zV/zHLJhuI8fbHZ2d
+         DH8WwwU/y8MsevIiyZojtd8BmzrAQFBkcUnpWsOsDUpX4egjcp3Q8U3K1+OTNyh5D7Hr
+         SqDW7/EIxE/N4XBxlUAGnn/QBmBJ+6OJ7HeuqMAZqqPPoaHmWo7k0cDzgxUYNIVR8HDn
+         Cv/oT0pwQl2aPFl0Uve1XS0Qaxjb0KB25jOlNDOjOx8joujeCGZ81xEX7iR+plwjrrGt
+         hS4A==
+X-Forwarded-Encrypted: i=1; AHgh+Rp2XVW+qzAKYKPP1/lq2ZMW6H3J50u1927kU54cItbwCZOvfrBBMngnHtOSebBoXAIbyr93TgU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyiCNsW7PIlW5d+VA+VTV2L+GbVDI7Z0Prp5GPbrXe5/oKLbUYO
+	zviI62HHO50A67HfMyswhwFBI9OAiCOd9/iT2H9rMKuc7vBlxDbrR7Az
+X-Gm-Gg: AR+sD13KZSKaE1smAU2BRV6Y8GfLDASKLUgP1xUEY8XlzlmFMrd69GPjIx+E+1MHmtz
+	ajmhx8q8LAYP9jh4Biv5IqvdXV7We3noOUiizSZFYSo3goen5LycE13cqgro7jC9a3uv5KL8o3s
+	8f9DYXxs1nabuRB5UU/4LuhMSZIs5ZoXG0VRow3pBogfBXqghfvc68+u91F5UM4Is1dJEqtmZ0d
+	EsaSBvb5nJi7ymkZmRr9C+KZrvDsa2DqVdMb9YlLLNwZ3TBdCePpvJ3BvGQLom04oUaxEP1Nad1
+	c/B+S0lyj4UDmIJC80ujj8PwYZtqgfvbJkeL5oZU/bTMQqx7gOhRdK7vNeDUqu4/KXGHckieugd
+	csqc+kjeUQsBgmhmosJucDbEv3cila6zNes3gBFPQIIZ4uPwCJvEg2ISkdfeUrvDDtE9DIJ6xwz
+	ych/pToInIgzNGrIo3/pv5vEfGJRRFc6ngQe+72CulS2QHGXDCIjQ5HWG7W7n8hDLFmf2R1c6t4
+	NA66XWwBv/YFfI+gbVzWlitpo0S8ewG3GMkC+N9+HOFOCgBms7Me190Zd+oGrAKErEEx+XJBxxU
+	h6k5
+X-Received: by 2002:a05:6a20:2443:b0:3a0:bc61:62e6 with SMTP id adf61e73a8af0-3cd010d6404mr21262791637.8.1787224526694;
+        Thu, 20 Aug 2026 04:15:26 -0700 (PDT)
 Received: from phuc-desktop.. ([183.91.15.56])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc15568c722sm1676503a12.24.2026.08.20.04.15.19
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc15568c722sm1676503a12.24.2026.08.20.04.15.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Aug 2026 04:15:22 -0700 (PDT)
+        Thu, 20 Aug 2026 04:15:26 -0700 (PDT)
 From: phucduc.bui@gmail.com
 To: Justin Chen <justin.chen@broadcom.com>,
 	Florian Fainelli <florian.fainelli@broadcom.com>,
@@ -73,9 +73,9 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	bui duc phuc <phucduc.bui@gmail.com>
-Subject: [PATCH 1/4] net: bcmasp: Use platform_get_irq() for IRQ lookup
-Date: Thu, 20 Aug 2026 18:14:53 +0700
-Message-ID: <20260820111456.97947-2-phucduc.bui@gmail.com>
+Subject: [PATCH 2/4] net: bcmasp: Propagate WoL IRQ errors from probe
+Date: Thu, 20 Aug 2026 18:14:54 +0700
+Message-ID: <20260820111456.97947-3-phucduc.bui@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260820111456.97947-1-phucduc.bui@gmail.com>
 References: <20260820111456.97947-1-phucduc.bui@gmail.com>
@@ -89,33 +89,62 @@ Content-Transfer-Encoding: 8bit
 
 From: bui duc phuc <phucduc.bui@gmail.com>
 
-The platform_get_irq_optional() function currently returns all negative
-error values without distinguishing between the case where no IRQ is
-available and actual errors occurring during the IRQ lookup.
+bcmasp_init_wol() currently ignores errors returned by
+bcmasp_get_and_request_irq() and allows the probe to continue.
 
-Use platform_get_irq() instead, as it matches the existing error handling
-by propagating any error encountered during the IRQ lookup.
+Return the error from bcmasp_init_wol() and propagate it to the probe
+function instead of silently ignoring the failure to initialize the
+WoL IRQ.
 
 Found by manual code inspection.
 
 Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
 ---
- drivers/net/ethernet/broadcom/asp2/bcmasp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/asp2/bcmasp.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp.c b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-index 972474893a6b..d66a8bbd6e38 100644
+index d66a8bbd6e38..02e88adf4939 100644
 --- a/drivers/net/ethernet/broadcom/asp2/bcmasp.c
 +++ b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-@@ -1094,7 +1094,7 @@ static int bcmasp_get_and_request_irq(struct bcmasp_priv *priv, int i)
+@@ -1106,21 +1106,20 @@ static int bcmasp_get_and_request_irq(struct bcmasp_priv *priv, int i)
+ 	return irq;
+ }
+ 
+-static void bcmasp_init_wol(struct bcmasp_priv *priv)
++static int bcmasp_init_wol(struct bcmasp_priv *priv)
+ {
  	struct platform_device *pdev = priv->pdev;
- 	int irq, ret;
+-	struct device *dev = &pdev->dev;
+ 	int irq;
  
--	irq = platform_get_irq_optional(pdev, i);
-+	irq = platform_get_irq(pdev, i);
- 	if (irq < 0)
- 		return irq;
+ 	irq = bcmasp_get_and_request_irq(priv, 1);
+-	if (irq < 0) {
+-		dev_warn(dev, "Failed to init WoL irq: %d\n", irq);
+-		return;
+-	}
++	if (irq < 0)
++		return irq;
  
+ 	priv->wol_irq = irq;
+ 	priv->wol_irq_enabled_mask = 0;
+ 	device_set_wakeup_capable(&pdev->dev, 1);
++
++	return 0;
+ }
+ 
+ void bcmasp_enable_wol(struct bcmasp_intf *intf, bool en)
+@@ -1321,7 +1320,9 @@ static int bcmasp_probe(struct platform_device *pdev)
+ 
+ 	bcmasp_core_init_filters(priv);
+ 
+-	bcmasp_init_wol(priv);
++	ret = bcmasp_init_wol(priv);
++	if (ret)
++		goto err_clock_disable;
+ 
+ 	ports_node = of_find_node_by_name(dev->of_node, "ethernet-ports");
+ 	if (!ports_node) {
 -- 
 2.43.0
 
