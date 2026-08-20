@@ -1,190 +1,167 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF813A3E76;
-	Thu, 20 Aug 2026 07:09:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F433BB10D
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 07:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787209754; cv=none; b=OdTUrOT4p1qQNkQseW6ae0XrN1voIywI3aPdwaHFCiW/v6THZ/h6020fY4TJC/rV9MZDgRtDmXsvsgooYw/0CTVRpJ6JS5FZgE5xJ1AseqwapgLnNlZPxnZ2a/g0s5pITFZH6xFpBobaVKsSrGmxvFUti9asKHdtrZB/QIaMv1Y=
+	t=1787210500; cv=none; b=NQJfVglRjiQu0jtdFf0uci5hjWR8CJuWs4nuyh+zWhA3TQXP7RQChy1vPT1WKcrxaKDkS6UU5hkMiuOsD9g7hmdvYiI72/JgVUUo62I/I8fFarRuPeN7lyAMENe7SM1MneYLreKqIe96wwVwg0aTk2aAGYkvDIvgWdk976InOVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787209754; c=relaxed/simple;
-	bh=u/Pyu8UDh375x9Gx9vsa7LFDG9oygb8M4+DhO9QL7hE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QS9qEBN86LUJ8/paA3SNgRLQXFJHkthgO2NEN0sh5Nw6bJHhD9nbaGECslUVRSQ2sx8YChmntDSCPTsBWcISfU/S68HoOIjKveh3ls9iaZOOdDujIxSmRBkDwlhTFpK52xSl8onqh1EFW8he+ZjQD8xzzjro92/47bfx1t/1pVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=c+FNRM3j; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="c+FNRM3j"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=AQFta+WzVPta6DHNYoZVe4Ouq16ur7ggOW2mIZD2zqY=; b=c+FNRM3jZKZaa84JzJUgbrMJmi
-	9FxTRdTX5N1bVx6FouHKO8/VvEPFKPrcxtoA9K4A0lpyJtwV2KweQ4iUfuvObdLNwahAO8V0Bf8dN
-	sfSkXnvRd1BD4wFxadrJRVqJ4PrmmJ7jWUAL8lHgawP8H7Yh4nUx5hq6K9VY/crU+b7nOvHu706CI
-	Lcy0MWL4PeKy1KPk0/pGNbXgbotplN+g/owqVf3jaCi18d0JulqGch2nuxpvhb4QqeccJ6zCfloQT
-	zKfkUpfhu3BHumsXO2ORJn8KSpzvn/VlpSqpOIkiRd++xZJjf10/o/gAbbRr6pYnObiaETTwdIMMf
-	Lz11C0xQ==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wwwtd-0000000B0Pd-1zvl;
-	Thu, 20 Aug 2026 07:09:05 +0000
-Date: Thu, 20 Aug 2026 00:09:05 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Luigi Rizzo <lrizzo@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Marc Zyngier <maz@kernel.org>,
-	Luigi Rizzo <rizzo.unipi@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-	netdev@vger.kernel.org, linux-nvme@lists.infradead.org,
-	Fengnan Chang <changfengnan@bytedance.com>
-Subject: Re: [PATCH v5 0/7] Global Software Interrupt Moderation (GSIM)
-Message-ID: <aoaoERD5m1MNvMWd@infradead.org>
-References: <20260819124341.4185621-1-lrizzo@google.com>
+	s=arc-20240116; t=1787210500; c=relaxed/simple;
+	bh=juk7NKWhqxbwa5Zf1tlzlywHXKO+POUFeZdpnFXLFSc=;
+	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-Reply-To:
+	 References; b=u55ftUS0X+mTsGBgMxF36OFVPTzMIYZb9hPQPP/y03mNDGF5wXDJ7fTNd8JjI++zIecJDyNUipjFkT3XNtf2HWba6sv5T0V5C/H4m0nX3FTKUc3VYKGArQ97WKk6H+gW982Qx5f8580GhIBxlzyrzEV6LPqu0EvLYvSSJcT7Jkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: c50e93ce9c6711f19a56ed5b684f684d-20260820
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:1cfe84bf-2340-4724-b2b1-59a5f83a6123,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:7db8b62,CLOUDID:ccb03b951ca06169c0856d255c6ae5db,BulkI
+	D:nil,BulkQuantity:0,SF:81|82|83|102|136|865|898,TC:nil,Content:0|15|50,ED
+	M:-3|-100,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0
+	,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: c50e93ce9c6711f19a56ed5b684f684d-20260820
+X-User: xiongweimin@kylinos.cn
+Received: from [127.0.1.1] [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <xiongweimin@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 96173365; Thu, 20 Aug 2026 15:21:32 +0800
+Content-Type: multipart/mixed; boundary="===============6882989959422741545=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260819124341.4185621-1-lrizzo@google.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+From: Xiong Weimin <xiongweimin@kylinos.cn>
+To: netdev@vger.kernel.org
+Cc: mst@redhat.com, jasowangio@gmail.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com, netdev@vger.kernel.org
+Subject: =?utf-8?q?Re=3A_=5BPATCH=5D_virtio=5Fnet=3A_roll_back_RSS_state_on_control_failure?=
+In-Reply-To: <20260811022055.3465420-1-xiongweimin@kylinos.cn>
+References: <20260811022055.3465420-1-xiongweimin@kylinos.cn>
+Message-ID: <20260820072136.S2qW7vNqBNqB6Lzq26sxq5wFXh7-TpSqbD0UrSJNwFs@z>
 
-On Wed, Aug 19, 2026 at 12:43:34PM +0000, Luigi Rizzo wrote:
-> Configuration is easy and robust. System administrators specify the
-> maximum targets (moderation delay; interrupt rate; percentage of time
-> spent in hardirq), and which interrupt sources should be moderated.
-> Independent per-CPU control loops adjust actual delays to try and keep
-> metrics within the targets.
+--===============6882989959422741545==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
 
-Can we find a way to autodetect and autoenable this?  A magic go faster
-mode that needs very specific tuning is annoying compare to sensible
-defaults.
+SGksCgpUaGFua3MgZm9yIHJldmlld2luZyBteSBwYXRjaC4gSGVyZSBpcyB2MyBhZGRyZXNzaW5n
+IGFsbCB0aGUgY29tbWVudHM6Cgp2MiAtPiB2MzoKICAtIFVzZSBrdm1lbWR1cCgpIGluc3RlYWQg
+b2Yga21lbWR1cCgpIGZvciBzYXZlZCBSU1MgaGVhZGVyLCBzaW5jZQogICAgdGhlIGluZGlyZWN0
+aW9uIHRhYmxlIGNhbiBwdXNoIHRoZSBoZWFkZXIgc2l6ZSB1cCB0byB+MTI4SwogIC0gVXNlIGt2
+ZnJlZSgpIGluc3RlYWQgb2Yga2ZyZWUoKSBzaW5jZSBrdm1lbWR1cCgpIG1heSByZXR1cm4KICAg
+IHZtYWxsb2MgbWVtb3J5CiAgLSBNb3ZlIGhhc2hfdHlwZXMgd3JpdGUgaW5zaWRlIE5FVElGX0Zf
+UlhIQVNIIGNoZWNrIGluCiAgICB2aXJ0bmV0X3NldF9oYXNoZmxvdygpCiAgLSBSb2xsIGJhY2sg
+Z3Vlc3Rfb2ZmbG9hZHMgaW4gdmlydG5ldF9zZXRfZmVhdHVyZXMoKSB3aGVuIFJTUwogICAgY29t
+bWFuZCBmYWlscwoKRml4ZXM6IGM3MTE0YjEyNDlmYSAoImRyaXZlcnMvbmV0L3ZpcnRpb19uZXQ6
+IEFkZGVkIGJhc2ljIFJTUyBzdXBwb3J0LiIpCkZpeGVzOiBjMTE3MDgyMDlkZjIgKCJkcml2ZXJz
+L25ldC92aXJ0aW9fbmV0OiBBZGRlZCBSU1MgaGFzaCByZXBvcnQgY29udHJvbC4iKQpDYzogc3Rh
+YmxlQHZnZXIua2VybmVsLm9yZwpSZXZpZXdlZC1ieTogSmFrdWIgS2ljaW5za2kgPGt1YmFAa2Vy
+bmVsLm9yZz4KU2lnbmVkLW9mZi1ieTogWGlvbmcgV2VpbWluIDx4aW9uZ3dlaW1pbkBreWxpbm9z
+LmNuPgoKLS0tODwtLS0K
 
-Also how does this interact with adaptive polling code inside drivers
-like NAPI or the upcoming nvme variant?
+--===============6882989959422741545==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="0001-virtio_net-roll-back-RSS-state-on-control-failure.patch"
 
-> 
-> The system is adaptive. Moderation affects only latency and only in
-> high load scenarios.  Throughput and CPU efficiencly generally benefits
-> significantly.  Targets don't need to match precisely the platform
-> limits, and one can make conservative and robust choices. Values like
-> delay_us=100, target_intr_rate=1000000, hardirq_percent=70 are a very
-> good starting point.
-> 
-> GSIM does not rely on any special hardware feature.
-> 
-> Global parameters can be modified at runtime with
-> 
->     echo ${VALUE} | sudo tee /proc/irq/sw_moderation/${NAME}
-> 
-> /proc/irq/sw_moderation/stats exports statistics when enabled.
-> 
-> and moderation on individual interrupts can be turned on/off at runtime with
-> 
->     echo 1 | sudo tee /proc/irq/NN/allow_moderation  # use 0 to disable
-> 
-> EXAMPLE:
->     # global configuration: 50us, target max 1M intr/s, and 70% in intr
->     echo 50 | sudo tee /proc/irq/sw_moderation/delay_us
->     echo 1000000 | sudo tee /proc/irq/sw_moderation/target_intr_rate
->     echo 70 | sudo tee /proc/irq/sw_moderation/hardirq_percent
-> 
->     # allow moderation on all interrupts that support it
->     # remember to periodically check and set the flag for dynamically
->     # created interrupts since the default is 0
->     echo 1 | sudo tee /proc/irq/*/allow_moderation
->     
->     #  check the status
->     grep -r . /proc/irq/*/*/../allow_moderation
-> 
->     # look at statistics
->     less /proc/irq/sw_moderation/stats
-> 
-> PERFORMANCE BENEFITS:
-> Below are some experimental results under high load comparing conventional
-> moderation with GSIM:
-> 
-> - 100Gbps NIC, 32 queues: rx goes from 50 Gbps to 92.8 Gbps (line rate).
-> - 200Gbps NIC, 10 VMs (total 160 queues): rx goes from 30 Gbps to 190 Gbps (line rate).
-> - 12 SSD, 96 queues: 4K random read goes from 6M to 20.5M IOPS (device max).
-> 
-> In all cases, with adaptive moderatrion, latency up to p95 is unaffected
-> at low/moderate load, even if compared with no moderation at all.
-> 
-> Changes in v5:
-> - refactored the commits based on previous feedback
-> - various cleanups
-> - conditionally reverted parent IRQ mask/unmask, which would completely
->   defeat the mechanism GSIM is based on.
-> 
-> Changes in v4:
-> - added irqdesc and irqdata flags as suggested by maintainer
-> - parameters are only configured via independent procfs entries.
->   No module parameters anymore.
-> - merged control and interrupt functions back into a single header/C files
-> - applied various annotations (lockdep, data_race())
-> - formatting and various renaming as suggested by maintainer.
-> - added performance measurements with adaptive moderation.
-> - removed the mechanism to conditionally enable moderation at interrupt
->   creation. This can be done in userspace and suitable udev extensions
->   will be handled separately.
-> 
-> Changes in v3:
-> - clearly documented architecture in kernel/irq/irq_moderation.c
->   including how to handle enable/disable/mask, interrupt migration,
->   hotplug and suspend.
-> - split implementation in 4 files irq_moderation.[ch] and
->   irq_moderation_hook.[ch] for better separation of control plane and
->   "dataplane" (functions ran on each interrupt)
-> - limited scope to handle_edge_irq() and handle_fasteoi_irq() which
->   have been tested on actual hardware.
-> - tested on Intel (also with intremap=posted_msi), AMD, ARM, with NIC,
->   nvme, vfio
-> 
-> Changes in v2:
-> - many style fixes (mostly on comments) based on reviewers' comments on v1
-> - removed background from Documentation/core-api/irq/irq-moderation.rst
-> - split procfs handlers
-> - moved internal details to kernel/irq/irq_moderation.h
-> - use cpu hotplug for per-CPU setup, removed unnecessary arch-specific changes
-> - select suitable irqs based on !irqd_is_level_type(irqd) && irqd_is_single_target(irqd)
-> - use a static_key to enable/disable the feature
-> 
-> 
-> 
-> Luigi Rizzo (7):
->   genirq: Add flags for software interrupt moderation.
->   genirq: Add GSIM infrastructure
->   genirq: Implement core GSIM moderation logic
->   genirq: Integrate GSIM into interrupt flow
->   genirq: Add GSIM user space configuration (procfs)
->   genirq: Adaptive Global Software Interrupt Moderation (GSIM).
->   PCI/MSI: re-enable conditional parent mask/unmask with sw moderation
-> 
->  drivers/irqchip/irq-msi-lib.c |   8 +
->  drivers/pci/msi/irqdomain.c   |  20 +
->  include/linux/irq.h           |  11 +-
->  include/linux/irqdesc.h       |  12 +
->  kernel/irq/Kconfig            |  11 +
->  kernel/irq/Makefile           |   1 +
->  kernel/irq/chip.c             |  14 +
->  kernel/irq/debugfs.c          |   3 +
->  kernel/irq/internals.h        |  20 +
->  kernel/irq/irq_moderation.c   | 959 ++++++++++++++++++++++++++++++++++
->  kernel/irq/irq_moderation.h   | 156 ++++++
->  kernel/irq/irqdesc.c          |   1 +
->  kernel/irq/manage.c           |  10 +
->  kernel/irq/proc.c             |   2 +
->  kernel/irq/settings.h         |  17 +
->  15 files changed, 1244 insertions(+), 1 deletion(-)
->  create mode 100644 kernel/irq/irq_moderation.c
->  create mode 100644 kernel/irq/irq_moderation.h
-> 
-> -- 
-> 2.55.0.737.g08866a6d13-goog
-> 
-> 
----end quoted text---
+RnJvbTogWGlvbmcgV2VpbWluIDx4aW9uZ3dlaW1pbkBreWxpbm9zLmNuPgpTdWJqZWN0OiBbUEFU
+Q0hdIHZpcnRpb19uZXQ6IHJvbGwgYmFjayBSU1Mgc3RhdGUgb24gY29udHJvbCBmYWlsdXJlCgpQ
+cmVzZXJ2ZSB0aGUgcHJldmlvdXMgbG9jYWwgc3RhdGUgYXJvdW5kIFJTUy9oYXNoIGNvbnRyb2wg
+Y29tbWFuZHMgYW5kCnJlc3RvcmUgaXQgd2hlbiB0aGUgZGV2aWNlIHVwZGF0ZSBmYWlscywgd2hp
+bGUgcHJvcGFnYXRpbmcgdGhlIGVycm9yIHRvCnRoZSBjYWxsZXIuCgp2MiAtPiB2MzoKICAtIFVz
+ZSBrdm1lbWR1cCgpIGluc3RlYWQgb2Yga21lbWR1cCgpIGZvciBzYXZlZCBSU1MgaGVhZGVyLCBz
+aW5jZQogICAgdGhlIGluZGlyZWN0aW9uIHRhYmxlIGNhbiBwdXNoIHRoZSBoZWFkZXIgc2l6ZSB1
+cCB0byB+MTI4SwogIC0gVXNlIGt2ZnJlZSgpIGluc3RlYWQgb2Yga2ZyZWUoKSBzaW5jZSBrdm1l
+bWR1cCgpIG1heSByZXR1cm4KICAgIHZtYWxsb2MgbWVtb3J5CiAgLSBNb3ZlIGhhc2hfdHlwZXMg
+d3JpdGUgaW5zaWRlIE5FVElGX0ZfUlhIQVNIIGNoZWNrIGluCiAgICB2aXJ0bmV0X3NldF9oYXNo
+ZmxvdygpCiAgLSBSb2xsIGJhY2sgZ3Vlc3Rfb2ZmbG9hZHMgaW4gdmlydG5ldF9zZXRfZmVhdHVy
+ZXMoKSB3aGVuIFJTUwogICAgY29tbWFuZCBmYWlscwoKRml4ZXM6IGM3MTE0YjEyNDlmYSAoImRy
+aXZlcnMvbmV0L3ZpcnRpb19uZXQ6IEFkZGVkIGJhc2ljIFJTUyBzdXBwb3J0LiIpCkZpeGVzOiBj
+MTE3MDgyMDlkZjIgKCJkcml2ZXJzL25ldC92aXJ0aW9fbmV0OiBBZGRlZCBSU1MgaGFzaCByZXBv
+cnQgY29udHJvbC4iKQpDYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZwpSZXZpZXdlZC1ieTogSmFr
+dWIgS2ljaW5za2kgPGt1YmFAa2VybmVsLm9yZz4KU2lnbmVkLW9mZi1ieTogWGlvbmcgV2VpbWlu
+IDx4aW9uZ3dlaW1pbkBreWxpbm9zLmNuPgotLS0KIGRyaXZlcnMvbmV0L3ZpcnRpb19uZXQuYyB8
+IDcwICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tCiAxIGZpbGUgY2hh
+bmdlZCwgNTQgaW5zZXJ0aW9ucygrKSwgMTYgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJp
+dmVycy9uZXQvdmlydGlvX25ldC5jIGIvZHJpdmVycy9uZXQvdmlydGlvX25ldC5jCmluZGV4IDNl
+MmE1ODc2Yy4uNmVlZTdjMGQyIDEwMDY0NAotLS0gYS9kcml2ZXJzL25ldC92aXJ0aW9fbmV0LmMK
+KysrIGIvZHJpdmVycy9uZXQvdmlydGlvX25ldC5jCkBAIC00Mjk1LDYgKzQyOTUsNyBAQCBzdGF0
+aWMgaW50IHZpcnRuZXRfc2V0X2hhc2hmbG93KHN0cnVjdCBuZXRfZGV2aWNlICpkZXYsCiAJCQkJ
+c3RydWN0IG5ldGxpbmtfZXh0X2FjayAqZXh0YWNrKQogewogCXN0cnVjdCB2aXJ0bmV0X2luZm8g
+KnZpID0gbmV0ZGV2X3ByaXYoZGV2KTsKKwl1MzIgb2xkX2hhc2h0eXBlcyA9IHZpLT5yc3NfaGFz
+aF90eXBlc19zYXZlZDsKIAl1MzIgbmV3X2hhc2h0eXBlcyA9IHZpLT5yc3NfaGFzaF90eXBlc19z
+YXZlZDsKIAlib29sIGlzX2Rpc2FibGUgPSBpbmZvLT5kYXRhICYgUlhIX0RJU0NBUkQ7CiAJYm9v
+bCBpc19sNCA9IGluZm8tPmRhdGEgPT0gKFJYSF9JUF9TUkMgfCBSWEhfSVBfRFNUIHwgUlhIX0w0
+X0JfMF8xIHwgUlhIX0w0X0JfMl8zKTsKQEAgLTQzNDksMTAgKzQzNTAsMTQgQEAgc3RhdGljIGlu
+dCB2aXJ0bmV0X3NldF9oYXNoZmxvdyhzdHJ1Y3QgbmV0X2RldmljZSAqZGV2LAoKIAlpZiAobmV3
+X2hhc2h0eXBlcyAhPSB2aS0+cnNzX2hhc2hfdHlwZXNfc2F2ZWQpIHsKLQkJdmktPnJzc19oYXNo
+X3R5cGVzX3NhdmVkID0gbmV3X2hhc2h0eXBlczsKLQkJdmktPnJzc19oZHItPmhhc2hfdHlwZXMg
+PSBjcHVfdG9fbGUzMih2aS0+cnNzX2hhc2hfdHlwZXNfc2F2ZWQpOwotCQlpZiAodmktPmRldi0+
+ZmVhdHVyZXMgJiBORVRJRl9GX1JYSEFTSCkKLQkJCWlmICghdmlydG5ldF9jb21taXRfcnNzX2Nv
+bW1hbmQodmkpKQorCQlpZiAodmktPmRldi0+ZmVhdHVyZXMgJiBORVRJRl9GX1JYSEFTSCkgewor
+CQkJdmktPnJzc19oYXNoX3R5cGVzX3NhdmVkID0gbmV3X2hhc2h0eXBlczsKKwkJCXZpLT5yc3Nf
+aGRyLT5oYXNoX3R5cGVzID0gY3B1X3RvX2xlMzIodmktPnJzc19oYXNoX3R5cGVzX3NhdmVkKTsK
+KwkJCWlmICghdmlydG5ldF9jb21taXRfcnNzX2NvbW1hbmQodmkpKSB7CisJCQkJdmktPnJzc19o
+YXNoX3R5cGVzX3NhdmVkID0gb2xkX2hhc2h0eXBlczsKKwkJCQl2aS0+cnNzX2hkci0+aGFzaF90
+eXBlcyA9IGNwdV90b19sZTMyKG9sZF9oYXNodHlwZXMpOwogCQkJCXJldHVybiAtRUlOVkFMOwor
+CQkJfQorCQl9IGVsc2UgeworCQkJdmktPnJzc19oYXNoX3R5cGVzX3NhdmVkID0gbmV3X2hhc2h0
+eXBlczsKKwkJfQogCX0KCiAJcmV0dXJuIDA7CkBAIC01NTQ2LDYgKzU1NTEsOCBAQCBzdGF0aWMg
+aW50IHZpcnRuZXRfc2V0X3J4Zmgoc3RydWN0IG5ldF9kZXZpY2UgKmRldiwKIAkJCSAgICBzdHJ1
+Y3QgbmV0bGlua19leHRfYWNrICpleHRhY2spCiB7CiAJc3RydWN0IHZpcnRuZXRfaW5mbyAqdmkg
+PSBuZXRkZXZfcHJpdihkZXYpOworCXN0cnVjdCB2aXJ0aW9fbmV0X3Jzc19jb25maWdfaGRyICpv
+bGRfcnNzX2hkciA9IE5VTEw7CisJdTggb2xkX3Jzc19rZXlbTkVUREVWX1JTU19LRVlfTEVOXTsK
+IAlib29sIHVwZGF0ZSA9IGZhbHNlOwogCWludCBpOwoKQEAgLTU1NTMsMTQgKzU1NjAsOCBAQCBz
+dGF0aWMgaW50IHZpcnRuZXRfc2V0X3J4Zmgoc3RydWN0IG5ldF9kZXZpY2UgKmRldiwKIAkgICAg
+cnhmaC0+aGZ1bmMgIT0gRVRIX1JTU19IQVNIX1RPUCkKIAkJcmV0dXJuIC1FT1BOT1RTVVBQOwoK
+LQlpZiAocnhmaC0+aW5kaXIpIHsKLQkJaWYgKCF2aS0+aGFzX3JzcykKLQkJCXJldHVybiAtRU9Q
+Tk9UU1VQUDsKLQotCQlmb3IgKGkgPSAwOyBpIDwgdmktPnJzc19pbmRpcl90YWJsZV9zaXplOyAr
+K2kpCi0JCQl2aS0+cnNzX2hkci0+aW5kaXJlY3Rpb25fdGFibGVbaV0gPSBjcHVfdG9fbGUxNihy
+eGZoLT5pbmRpcltpXSk7Ci0JCXVwZGF0ZSA9IHRydWU7Ci0JfQorCWlmIChyeGZoLT5pbmRpciAm
+JiAhdmktPmhhc19yc3MpCisJCXJldHVybiAtRU9QTk9UU1VQUDsKCiAJaWYgKHJ4ZmgtPmtleSkg
+ewogCQkvKiBJZiBlaXRoZXIgX0ZfSEFTSF9SRVBPUlQgb3IgX0ZfUlNTIGFyZSBuZWdvdGlhdGVk
+LCB0aGUKQEAgLTU1NjksMTMgKzU1NzAsMzYgQEAgc3RhdGljIGludCB2aXJ0bmV0X3NldF9yeGZo
+KHN0cnVjdCBuZXRfZGV2aWNlICpkZXYsCiAJCSAqLwogCQlpZiAoIXZpLT5oYXNfcnNzICYmICF2
+aS0+aGFzX3Jzc19oYXNoX3JlcG9ydCkKIAkJCXJldHVybiAtRU9QTk9UU1VQUDsKKwl9CisKKwlp
+ZiAocnhmaC0+aW5kaXIpIHsKKwkJb2xkX3Jzc19oZHIgPSBrdm1lbWR1cCh2aS0+cnNzX2hkciwg
+dmlydG5ldF9yc3NfaGRyX3NpemUodmkpLAorCQkJCSAgICAgICBHRlBfS0VSTkVMKTsKKwkJaWYg
+KCFvbGRfcnNzX2hkcikKKwkJCXJldHVybiAtRU5PTUVNOworCisJCWZvciAoaSA9IDA7IGkgPCB2
+aS0+cnNzX2luZGlyX3RhYmxlX3NpemU7ICsraSkKKwkJCXZpLT5yc3NfaGRyLT5pbmRpcmVjdGlv
+bl90YWJsZVtpXSA9CisJCQkJY3B1X3RvX2xlMTYocnhmaC0+aW5kaXJbaV0pOworCQl1cGRhdGUg
+PSB0cnVlOworCX0KKworCWlmIChyeGZoLT5rZXkpIHsKKwkJbWVtY3B5KG9sZF9yc3Nfa2V5LCB2
+aS0+cnNzX2hhc2hfa2V5X2RhdGEsIHZpLT5yc3Nfa2V5X3NpemUpOwogCQltZW1jcHkodmktPnJz
+c19oYXNoX2tleV9kYXRhLCByeGZoLT5rZXksIHZpLT5yc3Nfa2V5X3NpemUpOwogCQl1cGRhdGUg
+PSB0cnVlOwogCX0KCi0JaWYgKHVwZGF0ZSkKLQkJdmlydG5ldF9jb21taXRfcnNzX2NvbW1hbmQo
+dmkpOworCWlmICh1cGRhdGUgJiYgIXZpcnRuZXRfY29tbWl0X3Jzc19jb21tYW5kKHZpKSkgewor
+CQlpZiAob2xkX3Jzc19oZHIpCisJCQltZW1jcHkodmktPnJzc19oZHIsIG9sZF9yc3NfaGRyLCB2
+aXJ0bmV0X3Jzc19oZHJfc2l6ZSh2aSkpOworCQlpZiAocnhmaC0+a2V5KQorCQkJbWVtY3B5KHZp
+LT5yc3NfaGFzaF9rZXlfZGF0YSwgb2xkX3Jzc19rZXksIHZpLT5yc3Nfa2V5X3NpemUpOworCQlr
+dmZyZWUob2xkX3Jzc19oZHIpOworCQlyZXR1cm4gLUVJTlZBTDsKKwl9CisKKwlrdmZyZWUob2xk
+X3Jzc19oZHIpOwoKIAlyZXR1cm4gMDsKIH0KQEAgLTYxNzEsMTMgKzYxOTUsMjcgQEAgc3RhdGlj
+IGludCB2aXJ0bmV0X3NldF9mZWF0dXJlcyhzdHJ1Y3QgbmV0X2RldmljZSAqZGV2LAogCX0KCiAJ
+aWYgKChkZXYtPmZlYXR1cmVzIF4gZmVhdHVyZXMpICYgTkVUSUZfRl9SWEhBU0gpIHsKKwkJX19s
+ZTMyIGhhc2hfdHlwZXMgPSB2aS0+cnNzX2hkci0+aGFzaF90eXBlczsKKwkJdTY0IGd1ZXN0X29m
+ZmxvYWRzID0gdmktPmd1ZXN0X29mZmxvYWRzOworCiAJCWlmIChmZWF0dXJlcyAmIE5FVElGX0Zf
+UlhIQVNIKQogCQkJdmktPnJzc19oZHItPmhhc2hfdHlwZXMgPSBjcHVfdG9fbGUzMih2aS0+cnNz
+X2hhc2hfdHlwZXNfc2F2ZWQpOwogCQllbHNlCiAJCQl2aS0+cnNzX2hkci0+aGFzaF90eXBlcyA9
+IGNwdV90b19sZTMyKFZJUlRJT19ORVRfSEFTSF9SRVBPUlRfTk9ORSk7CgotCQlpZiAoIXZpcnRu
+ZXRfY29tbWl0X3Jzc19jb21tYW5kKHZpKSkKKwkJaWYgKCF2aXJ0bmV0X2NvbW1pdF9yc3NfY29t
+bWFuZCh2aSkpIHsKKwkJCXZpLT5yc3NfaGRyLT5oYXNoX3R5cGVzID0gaGFzaF90eXBlczsKKwkJ
+CS8qIEdST19IVyBvZmZsb2FkIHdhcyBjb21taXR0ZWQgdG8gZGV2aWNlIGVhcmxpZXIgaW4KKwkJ
+CSAqIHRoaXMgY2FsbCwgcm9sbCBpdCBiYWNrIHRvIG1hdGNoIGRldi0+ZmVhdHVyZXMKKwkJCSAq
+LworCQkJaWYgKChkZXYtPmZlYXR1cmVzIF4gZmVhdHVyZXMpICYgTkVUSUZfRl9HUk9fSFcpIHsK
+KwkJCQllcnIgPSB2aXJ0bmV0X3NldF9ndWVzdF9vZmZsb2Fkcyh2aSwgZ3Vlc3Rfb2ZmbG9hZHMp
+OworCQkJCWlmIChlcnIpCisJCQkJCXJldHVybiBlcnI7CisJCQkJdmktPmd1ZXN0X29mZmxvYWRz
+ID0gZ3Vlc3Rfb2ZmbG9hZHM7CisJCQl9CiAJCQlyZXR1cm4gLUVJTlZBTDsKKwkJfQogCX0KCiAJ
+cmV0dXJuIDA7Ci0tIAoyLjM0LjEK
+
+--===============6882989959422741545==--
