@@ -1,185 +1,203 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD1473DD874
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 10:03:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FB640B0ED
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 10:04:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787220185; cv=none; b=dl8GK0cJ4Yl1fF8T7V6fCGpFSolubXtaGETKg2bdJsRRB8pOHPUL0OPzNj7TxK8vLJHcPDwcqxmS1qNvXbIsxfrigHcyXALpy0S7m4A1Q+IhHJKRjv3D6FBcTKi4Ch7bal2khXON2yCDxZjmrHQZKAsT0Nc7fajsEJABEE8ZZkU=
+	t=1787220297; cv=none; b=UGPABUtWPeuHAx9AjMxKUrGkTNA7TKYw1BqAJii4+ivQMhV07rzFM0ONqq2OuepsxSJ0cdQ1MOxvXhH2ZsNB4XeQ8Y0Z7i4Lp8iA2WzrkkwBHoRPmwUugv+ly94z65ZjZDX1fRn/czTeli2yCCotMucKC5qjs0iU4t9fG9dM1zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787220185; c=relaxed/simple;
-	bh=yjRzldArbYODxSvNEvZ7dRry3VO1egD2am5/cK5Vqt8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=elmMjGt0U9MbyzFqRuYJPVnwyd4yz5HKQxTKhEjjzAOFqFfZ/VTkXr2NhQCr+UceiJcZOBdBTTr4Fn0HrfSeRHO1lds7JX/Dwdpc8Spfsj4EXi8KjDDS2A72x5LA+C6bzW1FwZJOdrJ4gsiz4irpWA/Sde6UyaN2ICwQBW/Tomo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mL0uwQLc; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1787220297; c=relaxed/simple;
+	bh=TXoqjQcJHjWxjeR2hRkig1J4Fjt9nnj13K7SCM9ShiA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=gqJyI7btiUoohcxeS/ifs1WWFVGgXvejMxpp6vq2+jxCvbSUYkW2HH0b8c9OxY+2dZVo3VY2mDOqBCl84uQV+TH3Sya/UzpW5bOgckKDqOYKlNOZDF9CGTplvCyELBeTTxsuWw7K2q/B71DbNxWTXkKl5NLXcodz+j7EyCIrjF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=3F3mWKhl; arc=none smtp.client-ip=113.46.200.224
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mL0uwQLc"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id C4D584E412F5;
-	Thu, 20 Aug 2026 10:02:54 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9114D602B8;
-	Thu, 20 Aug 2026 10:02:54 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0D61711C760F1;
-	Thu, 20 Aug 2026 12:02:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787220169; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=J9IkcMn3tZqQRLkfuwau8kV3b82A8qd50t+xwVLTmcs=;
-	b=mL0uwQLcWjES7km3xswrfFIgO3kPR+28koBeAY093sSHY69/2uCC36acHPlX0QHae4QzdI
-	Nqy8HXu2SuKY6A8kgETxqJRRwkFAmti7afRrYrE+SDzWUmy2RyIxWXf6n9cJucsDJ84z0f
-	a0QHXnAsMauSFXkh9PG5dSC+bdo4oAjK/5ko8l7E24c3yGm0b7atzi9gBuOPoDtNWBJz11
-	PAjNBiP/lNRHC+i6ssOdJ7Myz3egTse1iH07x7d/RrLCaq8n2S5EzLq8cRwR6jFHOcqNBi
-	SPGSkgtUbgu43uZHD+lGbqK8xaoAqNpvkmrzXSy00rgSGIJFWv2f2gxhKcgKoQ==
-From: Miguel Gazquez <miguel.gazquez@bootlin.com>
-Date: Thu, 20 Aug 2026 12:02:10 +0200
-Subject: [PATCH 6.12.y] ipv4: start using dst_dev_rcu()
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="3F3mWKhl"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=MtNLEajdnFZk77rmosl4teGaz+2YGNzPlWlT6lzjbLc=;
+	b=3F3mWKhlNPlEXNHKzkpGXpNDOyaw8rdgx+JrAhhxrNBq5OqaEBShTmGLif6Hdc7yZGO46zqFr
+	vbziZwooOHOkwaN90irMTDF51DCsh7VHeexh8gVGj7fcKEmmDQxcyp95P9Jej290j84K2RHG9Ka
+	3FVfbWRiwZ9Z/d7dHIDUbTs=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4hQf0T5kL1z1cyQ2;
+	Thu, 20 Aug 2026 17:54:01 +0800 (CST)
+Received: from whupemk200012.china.huawei.com (unknown [7.152.185.169])
+	by mail.maildlp.com (Postfix) with ESMTPS id 05C214055B;
+	Thu, 20 Aug 2026 18:04:43 +0800 (CST)
+Received: from [10.174.177.223] (10.174.177.223) by
+ whupemk200012.china.huawei.com (7.152.185.169) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Thu, 20 Aug 2026 18:04:41 +0800
+Message-ID: <9a80f88e-c8a6-44fb-a7b2-7cdbaa3bba24@huawei.com>
+Date: Thu, 20 Aug 2026 18:04:40 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260820-cve-2025-40074-v1-1-f045d5f74950@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQ6CMBCE4Vchc3bJdilIfBXjgdZV1wOaFomE8
- O5WPX6TzL8iazLNOFQrks6W7TEWuF2FeBvGq5KdiyEsHffCFGelgpY8895TkNBHbhsvg0M5PZN
- e7P0LHtHVTuoFp/+eX+GucfrWsG0flmFy3noAAAA=
-X-Change-ID: 20260820-cve-2025-40074-b2b8c05342a1
-To: stable@vger.kernel.org, Eric Dumazet <edumazet@google.com>, 
- "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Martin KaFai Lau <kafai@fb.com>, 
- Wei Wang <weiwan@google.com>
-Cc: thomas.petazzoni@bootlin.com, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Miguel Gazquez <miguel.gazquez@bootlin.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787220165; l=3915;
- i=miguel.gazquez@bootlin.com; s=20250708; h=from:subject:message-id;
- bh=tyMQo+nHOrlj15/tqkrNb1JIaPH5z08HC5uc4TA6Tk8=;
- b=dedXycg5ejqcSSYocRIam//aOLzLxuxfN576X/Cn/Jm2461iKnd6u9G4/1IhaYk+xtkkpH62g
- eu2PCB8S7sxBN0d3+687/gB+GPwYJAoC7tsfwYngO2FlDCkaFuvXfzF
-X-Developer-Key: i=miguel.gazquez@bootlin.com; a=ed25519;
- pk=k/2KI9jkmayaF0ghZ8QYUH9Wm/kFHDhl8QoZ0RHbr4w=
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: iptunnel: fix stale transport header during
+ tunnel decapsulation
+To: Eric Dumazet <edumazet@google.com>
+CC: <davem@davemloft.net>, <pabeni@redhat.com>, <kuba@kernel.org>,
+	<horms@kernel.org>, <herbert@gondor.apana.org.au>, <kuniyu@google.com>,
+	<idosch@nvidia.com>, <andrew+netdev@lunn.ch>, <ap420073@gmail.com>,
+	<steffen.klassert@secunet.com>, <laforge@gnumonks.org>,
+	<jiayuan.chen@linux.dev>, <jhs@mojatatu.com>, <zhangchangzhong@huawei.com>,
+	<netdev@vger.kernel.org>,
+	<syzbot+83181a31faf9455499c5@syzkaller.appspotmail.com>
+References: <20260813033855.3372172-1-dongchenchen2@huawei.com>
+ <CANn89iLCrzmOfUVwa0yeROpkZxWmVsAkbH7=SBA3XuVxkmTfKA@mail.gmail.com>
+ <53e86f6f-43b9-4e06-b185-1344f69cd650@huawei.com>
+ <CANn89iJWTwiQJbjWz5jY6DE_TSA0EEMyJtQFbDSzMJfjV=MHQQ@mail.gmail.com>
+From: "dongchenchen (A)" <dongchenchen2@huawei.com>
+In-Reply-To: <CANn89iJWTwiQJbjWz5jY6DE_TSA0EEMyJtQFbDSzMJfjV=MHQQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ whupemk200012.china.huawei.com (7.152.185.169)
 
-From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 6ad8de3cefdb6ffa6708b21c567df0dbf82c43a8 ]
 
-Change icmpv4_xrlim_allow(), ip_defrag() to prevent possible UAF.
+在 2026/8/20 17:16, Eric Dumazet 写道:
+> On Thu, Aug 20, 2026 at 10:58 AM dongchenchen (A)
+> <dongchenchen2@huawei.com> wrote:
+>>
+>>
+>>> On Thu, Aug 13, 2026 at 5:30 AM Dong Chenchen <dongchenchen2@huawei.com> wrote:
+>>>>
+>>>> Syzbot reported a crash in qdisc_pkt_len_segs_init() caused by a stale
+>>>> transport_header offset after tunnel decapsulation.
+>>>>
+>>>> BUG: unable to handle page fault for address: ffffed102091a42e
+>>>> Oops: Oops: 0000 [#1] SMP KASAN NOPTI
+>>>> CPU: 0 UID: 0 PID: 340 Comm: qdisc_uaf_repro Not tainted 7.2.0-rc4-00061-g248951ddc14d #256 PREEMPT(full)
+>>>> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+>>>> RIP: 0010:__asan_load2
+>>>> <IRQ>
+>>>> qdisc_pkt_len_segs_init (net/core/dev.c:4145)
+>>>> __dev_queue_xmit (net/core/dev.c:4787)
+>>>> br_dev_queue_push_xmit (net/bridge/br_forward.c:53)
+>>>> br_handle_frame_finish (net/bridge/br_input.c:229)
+>>>> br_handle_frame (net/bridge/br_input.c:315)
+>>>> __netif_receive_skb_core.constprop.0 (net/core/dev.c:6099)
+>>>> __netif_receive_skb_list_core (net/core/dev.c:6287)
+>>>> netif_receive_skb_list_internal (net/core/dev.c:6445)
+>>>> napi_complete_done (net/core/dev.c:6813)
+>>>> gro_cell_poll (net/core/gro_cells.c:74)
+>>>> __napi_poll (net/core/dev.c:7735)
+>>>> net_rx_action (net/core/dev.c:7798 net/core/dev.c:7955)
+>>>> handle_softirqs (kernel/softirq.c:622)
+>>>> do_softirq (kernel/softirq.c:523  kernel/softirq.c:510 )
+>>>> __local_bh_enable_ip (kernel/softirq.c:450)
+>>>> tun_get_user (drivers/net/tun.c:1986 (discriminator 1))
+>>>> tun_chr_write_iter (drivers/net/tun.c:2032)
+>>>>
+>>>> The crash requires four conditions to line up:
+>>>>
+>>>> 1. The incoming packet is encapsulated and carries GSO metadata.  The outer
+>>>>      transport header offset is stored in skb->transport_header while the
+>>>>      packet is still in the outer tunnel context.
+>>>> 2. The tunnel receiver strips the outer headers.  skb->data is advanced to
+>>>>      the inner frame, but skb->transport_header is left pointing to the
+>>>>      now-removed outer L4 header, so it becomes a negative offset relative to
+>>>>      the new data.
+>>>> 3. The inner frame is not delivered to the local IP stack.  Instead, it
+>>>>      is forwarded at L2 by a bridge or HSR, so ip_rcv_core() never runs and
+>>>>      the transport header is not reset to the inner L4 offset.
+>>>> 4. The forwarding path calls __dev_queue_xmit(), which enters
+>>>>      qdisc_pkt_len_segs_init().  That function computes the GSO header length
+>>>>      from skb_transport_offset(skb).  Because the offset is negative, the
+>>>>      unsigned cast overflows and pskb_may_pull(skb, hdr_len +
+>>>>      sizeof(struct tcphdr)) reads past the end of the skb, triggering a
+>>>>      KASAN fault or page fault.
+>>>>
+>>>> Fix this by clearing skb->transport_header to the ~0U sentinel at the
+>>>> tunnel decapsulation boundary, after each tunnel receive function has
+>>>> finished all processing that needs the outer L4 header and before the skb
+>>>> is handed to GRO or the stack. The IP/GRO receive paths then set the
+>>>> transport header correctly when they parse the inner packet.
+>>>>
+>>>> Fixes: 7fb4c1967011 ("net: pull headers in qdisc_pkt_len_segs_init()")
+>>>
+>>> This Fixes: tag seems pretty random to me. Issue was present long
+>>> before that commit.
+>>> Next time, please be precise with the `Fixes:` tag; it's not decoration.
+>>>
+>> Thanks for your review. Sorry for the late reply.
+>> The stale transport header has been present since 1da177e4c3f4
+>> ("Linux-2.6.12-rc2"), which is completely latent until
+>> 7fb4c1967011 ("net: pull headers in qdisc_pkt_len_segs_init()"
+>> was merged.
+>>
+>>   From the perspective of the root cause introduced by the issue,
+>> we can use 1da177e4c3f4 ("Linux-2.6.12-rc2") as fixtag.
+>>
+>>> Also, calling skb_unset_transport_header(skb) directly from
+>>> gro_cells_receive() would make more sense and
+>>> your patch would be less intrusive.
+>>>
+>>
+>> gtp，sit use netif_rx to receive pkt. so modifying only gro_cells_receive
+>> cannot solve all the problems. netif_rx is widely
+>> used and is not only invoked by the tunnel driver, and serval path
+>> (such as genve encap) will reset transport header before netif_rx.
+>> Therefore, should we retain unset in the GTP/SIT tunnel?
+> 
+> Hi Dong,
+> 
+> 1) Regarding SIT:
+> 
+> SIT decapsulates IPv6 over IPv4 (IPPROTO_IPV6). There is no outer L4 transport
+> header (no UDP/TCP), so skb->transport_header is not pointing to an
+> outer L4 header.
+> 
+> 2) Regarding GTP:
+> 
+> GTP is an L3-only point-to-point device (ARPHRD_NONE). It cannot be
+> enslaved by a bridge
+> or forwarded at L2; its packets always go through ip_rcv()/ip6_rcv()
+> where the headers
+> are properly parsed/reset,
+> 
+Hi, Eric. Thanks for the review!
 
-Change ipmr_prepare_xmit(), ipmr_queue_fwd_xmit(), ip_mr_output(),
-ipv4_neigh_lookup() to use lockdep enabled dst_dev_rcu().
+I missed the rcv path in the commit message.
+With an ingress qdisc attached to gtp, the stale transport header
+will been consumed in sch_handle_ingress() and its not covered by
+gro_cells_receive() either. So maybe gtp is not safe by
+construction.
 
-Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250828195823.3958522-9-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ minor modifications to fix conflict ]
-Signed-off-by: Miguel Gazquez <miguel.gazquez@bootlin.com>
----
- net/ipv4/icmp.c        | 6 +++---
- net/ipv4/ip_fragment.c | 6 ++++--
- net/ipv4/ipmr.c        | 4 ++--
- net/ipv4/route.c       | 4 ++--
- 4 files changed, 11 insertions(+), 9 deletions(-)
+gtp_encap_rcv
+   gtp_rx //stale transport header
+     __netif_rx
+       __netif_receive_skb_core
+         sch_handle_ingress
+           qdisc_pkt_len_segs_init
+					
+Best Regards
+Dong Chenchen
 
-diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
-index c7af8b914e13..1fc967a60bb9 100644
---- a/net/ipv4/icmp.c
-+++ b/net/ipv4/icmp.c
-@@ -320,17 +320,17 @@ static bool icmpv4_xrlim_allow(struct net *net, struct rtable *rt,
- 		return true;
- 
- 	/* No rate limit on loopback */
--	dev = dst_dev(dst);
-+	rcu_read_lock();
-+	dev = dst_dev_rcu(dst);
- 	if (dev && (dev->flags & IFF_LOOPBACK))
- 		goto out;
- 
--	rcu_read_lock();
- 	peer = inet_getpeer_v4(net->ipv4.peers, fl4->daddr,
- 			       l3mdev_master_ifindex_rcu(dev));
- 	rc = inet_peer_xrlim_allow(peer,
- 				   READ_ONCE(net->ipv4.sysctl_icmp_ratelimit));
--	rcu_read_unlock();
- out:
-+	rcu_read_unlock();
- 	if (!rc)
- 		__ICMP_INC_STATS(net, ICMP_MIB_RATELIMITHOST);
- 	else
-diff --git a/net/ipv4/ip_fragment.c b/net/ipv4/ip_fragment.c
-index d3abc84a6c02..790df2c5f747 100644
---- a/net/ipv4/ip_fragment.c
-+++ b/net/ipv4/ip_fragment.c
-@@ -483,13 +483,15 @@ static int ip_frag_reasm(struct ipq *qp, struct sk_buff *skb,
- /* Process an incoming IP datagram fragment. */
- int ip_defrag(struct net *net, struct sk_buff *skb, u32 user)
- {
--	struct net_device *dev = skb->dev ? : skb_dst_dev(skb);
--	int vif = l3mdev_master_ifindex_rcu(dev);
-+	struct net_device *dev;
- 	struct ipq *qp;
-+	int vif;
- 
- 	__IP_INC_STATS(net, IPSTATS_MIB_REASMREQDS);
- 
- 	/* Lookup (or create) queue header */
-+	dev = skb->dev ? : skb_dst_dev_rcu(skb);
-+	vif = l3mdev_master_ifindex_rcu(dev);
- 	qp = ip_find(net, ip_hdr(skb), user, vif);
- 	if (qp) {
- 		int ret;
-diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
-index de0d9cc7806a..ad0b922ebc73 100644
---- a/net/ipv4/ipmr.c
-+++ b/net/ipv4/ipmr.c
-@@ -1906,7 +1906,7 @@ static void ipmr_queue_xmit(struct net *net, struct mr_table *mrt,
- 		goto out_free;
- 	}
- 
--	encap += LL_RESERVED_SPACE(dev) + rt->dst.header_len;
-+	encap += LL_RESERVED_SPACE(dst_dev_rcu(&rt->dst)) + rt->dst.header_len;
- 
- 	if (skb_cow(skb, encap)) {
- 		ip_rt_put(rt);
-@@ -1943,7 +1943,7 @@ static void ipmr_queue_xmit(struct net *net, struct mr_table *mrt,
- 	 * result in receiving multiple packets.
- 	 */
- 	NF_HOOK(NFPROTO_IPV4, NF_INET_FORWARD,
--		net, NULL, skb, skb->dev, dev,
-+		net, NULL, skb, skb->dev, dst_dev_rcu(&rt->dst),
- 		ipmr_forward_finish);
- 	return;
- 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 4dce0de6ab89..0f31ae4da3d9 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -413,11 +413,11 @@ static struct neighbour *ipv4_neigh_lookup(const struct dst_entry *dst,
- 					   const void *daddr)
- {
- 	const struct rtable *rt = container_of(dst, struct rtable, dst);
--	struct net_device *dev = dst_dev(dst);
-+	struct net_device *dev;
- 	struct neighbour *n;
- 
- 	rcu_read_lock();
--
-+	dev = dst_dev_rcu(dst);
- 	if (likely(rt->rt_gw_family == AF_INET)) {
- 		n = ip_neigh_gw4(dev, rt->rt_gw4);
- 	} else if (rt->rt_gw_family == AF_INET6) {
-
----
-base-commit: 7155f3c7a69b8480e785f2a4252d31df95daa8d1
-change-id: 20260820-cve-2025-40074-b2b8c05342a1
-
-Best regards,
---  
-Miguel Gazquez <miguel.gazquez@bootlin.com>
+> 3) Regarding Geneve:
+> 
+> When skb->encapsulation is set, inner headers are already parsed and
+> qdisc_pkt_len_segs_init()
+> uses skb_inner_transport_offset(skb), not skb_transport_offset(skb).
+> 
+> When skb->encapsulation is 0, it calls gro_cells_receive().
+> 
+> All L2 tunnel drivers that can be bridged/forwarded at L2 (vxlan,
+> geneve, bareudp, amt, etc.)
+> use gro_cells_receive().
+> 
+> IMO calling skb_unset_transport_header() directly in gro_cells_receive()
+> is clean and fixes all of them in one place.
+> 
+> Thanks.
 
