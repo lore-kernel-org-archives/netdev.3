@@ -1,86 +1,87 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E55046C4B3
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 13:30:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9104F46D0BC
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 13:32:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787232668; cv=none; b=bJOkeLWlnc4gryr8X5Adgva4ry3LNsA7GENqCJG7Tg8w22BhHsysBQLIv8bZqcKkTql3E1WKwpJtJMRlyq7T4MI6rB/BxmyEj+c/JE6fqAXI+1lrRS4e5cK5EeR6/BDcOmopMnwHIy3BwL7RSpls82WUuVJfiGXtl6ni9vDNL3Q=
+	t=1787232732; cv=none; b=Zaq0Mqjb7Tf+i7cwSSRHAh/h7B1Zy2v8nQKJnEsMIhDfU/MUZqIm6+Ic9EDJ8PLdFuqjL2Ju9jmue5yYSB+1Elu6gyKKe2ssc+Df8Nty3P2tm1mj6vfdk8gxYrGysSAvhMCguJwjnJtNKuNltK/r1ty6C3yt/x41ete2GA66e7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787232668; c=relaxed/simple;
-	bh=zVtdxFqEqywL6PGEnJ2HGiXdl3cEoTFkok7FvBGy/g0=;
+	s=arc-20240116; t=1787232732; c=relaxed/simple;
+	bh=MHlt4Bp4lT/1oanoxOubTRkFrbNXcbqmukwFj+RYUGk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QMhffmWZhTRExnEtNVdrhDeyl5M5pshJMYPkrIkV7M54ZiKSAvTF+as4GNqUqtTkn9GRrBvdbF9Vr97OEv4TiYFNZvEBaC7LXB16qCQjyPAeWKnUZ433cq8ug9JPbpX4QbgGOwmY6LIth09soXQEprJQa3cgOjd7oyqBssiRkh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XVzKqQ/2; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q2/9MIfl; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=ADVw+VfzOQWMk2jv2oyeTm8t8GrdR1pEjsVJVCSYvEkljjEaRVJBw2gcw2ZjNmg7rvQVssngrlUBoEs9o/hhrwA2/OGL4b6pNgelYlKKgkYg/XofX1V0qzIuJlZsqj2MPoX1/mtEtlnxUuY6hBeYa2d75V8Bod5ieoDydvGzbUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NRjMQo/s; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Qbv/QnDI; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XVzKqQ/2";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q2/9MIfl"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NRjMQo/s";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Qbv/QnDI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787232649;
+	s=mimecast20190719; t=1787232726;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Ort91N+bL/imQIUmvLc3Y5JcytXJcx31vDBpNWzpIC8=;
-	b=XVzKqQ/2H5Xcd9YKkWvsZWp45kcVSMxRfVSDr5KPMu9taaYZZLnuVzFavni3dAgMuY+3qN
-	J8GfyzX1RifrpYVH4rocNcoAWYdh3gLlMgvqYt/WlhecllCBxin2y7/BJgSPJDc4LnlDMc
-	vDPd3v5ubycZt19QzZPgdeLEJqlbSrk=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=xpVTEUGVCHQRJ0rJl1+PNpG232N7cltDp8fFwuNrPoM=;
+	b=NRjMQo/sV83grhulxSAg+R93+oMv9ssf0utnHHya6Z//zY+r09h02hgnF+W/5RzNQeCWIH
+	bktBB3R8Q4uzANz1WcujutH0hAcQrYSBwGW3ekxlWtVQ9z+0fYnmBBPtYdU5cdG/cI4zKO
+	DiTLzvsEccZXRq21vYpsDuFxO5aS2j4=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-5-SSOBXxEXOkih-5EvQFXsfw-1; Thu, 20 Aug 2026 09:30:47 -0400
-X-MC-Unique: SSOBXxEXOkih-5EvQFXsfw-1
-X-Mimecast-MFC-AGG-ID: SSOBXxEXOkih-5EvQFXsfw_1787232645
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-490a767c7dcso18859345e9.2
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 06:30:46 -0700 (PDT)
+ us-mta-138-wyiPgquTPdSH_6pN0muqYw-1; Thu, 20 Aug 2026 09:32:05 -0400
+X-MC-Unique: wyiPgquTPdSH_6pN0muqYw-1
+X-Mimecast-MFC-AGG-ID: wyiPgquTPdSH_6pN0muqYw_1787232724
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47f835ac1aeso1418364f8f.3
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 06:32:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1787232645; x=1787837445; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Ort91N+bL/imQIUmvLc3Y5JcytXJcx31vDBpNWzpIC8=;
-        b=Q2/9MIfllafph2A+QSUSBYuFYZZ62hCOi2GH8dvHrw05MnVeO4IaASytArlR3xohnj
-         tyJobNbq0DXzm44e+M6OOyjfUU+2t5t3V8gOBb/eCtF5utlDPzmBMsIgQPQ4yiwhY/qA
-         thwM83yxAs4zXodIVtfZTrZA/4d/gs5sM1uTOrS6g6g2oBb/zABejirQ3V3Ehh8DtIgA
-         aR/b22WIDXhebZL9/i0wKDHiODH2tI4CMtih0PRW5O4uWR79By4eYEDXW6ELwA7NdXPh
-         SFwlO9hgD+QNzRy7JBxyY8CDDPfMpS0xUfY60rHtGwEBR+PS6lBZtKQfLAVmWmoPin8S
-         8p3w==
+        d=redhat.com; s=google; t=1787232724; x=1787837524; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xpVTEUGVCHQRJ0rJl1+PNpG232N7cltDp8fFwuNrPoM=;
+        b=Qbv/QnDIxOnFJlNE6+6yPQgmGAtFGr52Xe3wSf/LhTn42Kji2xCugIdA+6kyV/yrCd
+         MiurN8hBBsxyOnF9bH8XOg+WbpNc0rs6Oercdmn4PuUpfOSWfSa+eNz0X/ZI8rCN3PPV
+         zVrXUbONKSI/DJcta3vb7n7Hje4oaGhexi/kFuPM9g2YXcDsCkBkA6U52Rb0tzjP469M
+         na28JcKdt5GanDdcdb5Txtyzdfu8R93jMe+vO0VRNH4go3/x5hWzw+tqR6fIewOCTz8l
+         VWzUko6YEgYkCKMY+Y74Dykykam49jlIIn8ZNse+KbMmgtYJVhDvsZHhWx90AeeZO4Fm
+         Hv8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787232645; x=1787837445;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1787232724; x=1787837524;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Ort91N+bL/imQIUmvLc3Y5JcytXJcx31vDBpNWzpIC8=;
-        b=GLgEF6Cpm22KWwzoBPznLyhXnreeF3NEBly5wdkH2igED3i4Pt3vYpMgjDsErJlIqQ
-         BPxxZPK9QbEL4JRKMJLmbIkbwW5QdX1hEbWF/KluqEIl9NJ3yh+K4OZ2ZcodEMEt4KEw
-         upkUp9UkfIxuqW31smF7Fc0pcXujT6V1Ntyc1t6/dcuIDcMCPuiaKclScCY6w0N9QSMm
-         1kdhu/823qJ3IHC2VxvHzYEmObqg4xaiVVOuZkwoiiACNyYQ+LKTAdpR+OtiWy1QV2Da
-         o08AnNSjZID9I32aGzQfh+axTeNi7TP2FLamIxTNICP52FSOdDLIluW7eoDeV1kAeMSv
-         kQWg==
-X-Forwarded-Encrypted: i=1; AHgh+RokclSWrEDXRNsyVMHLvB13PqV52YRgPn5RjK+FCi9YRzT5hvkiNii02gu/CZgIUqWoW/d9emo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxx+tFGTUmCrip7X5nUEBUQF8R4+tT2Zadq+DtKnZJfGM7Htb5Y
-	wceCJaGrynELj8ssdEXvGi4ZjM1prfR6As2IjjvR5OGbR2EvmyPnsTUS5kiF5eCE8/WXO0Y44YX
-	XeLWNSIuLY+1wqBtvfVTva/ly0/pFSIPSfQ7ioZIGvWgVizqMgXKt74z4ow==
-X-Gm-Gg: AR+sD12y2j/qBS9Qcp3v5ldsj3l8+7/0PlVIbwX/Cs+Nv8pnxYjlGA/NzgCMj4a0u1s
-	vv0xZ2FKWzqSw5mUu81ry/MJOBtHE4XHfA0HUIx2M/H37nT0DcQvB/7CO/YBqbNpO5LLN6d3JKS
-	b89Il7qb9JxdYXtpME36y9adxoJ5pjk/gkJgk8EghWToLvumhDM+bhU+y+lt85bvdCMMqeZGZkC
-	XcEWfcQM79X8ahrebku3tvAEGrT7lnvca/tMWcXFnB9Sowh5kXP0kXtfhY+wAqlUV3T3bpWOaaW
-	ahQnPsU77Ag6PwNFfJqwWhnPOYjsTjytqv6Olirbp70aL9STKHEj4Wc5BHJdjASeIjQo9pSlPf2
-	7K9xc0L3tEDFCv48fWXGucnl52WojZQy3UE3Y0mJBPz/Nfocs7X4cQDSfpplb0CJGbPtbEzUE6Y
-	0=
-X-Received: by 2002:a05:600c:34d1:b0:499:49f3:77b1 with SMTP id 5b1f17b1804b1-499aa14a6a6mr221961405e9.3.1787232645484;
-        Thu, 20 Aug 2026 06:30:45 -0700 (PDT)
-X-Received: by 2002:a05:600c:34d1:b0:499:49f3:77b1 with SMTP id 5b1f17b1804b1-499aa14a6a6mr221960525e9.3.1787232645097;
-        Thu, 20 Aug 2026 06:30:45 -0700 (PDT)
+        bh=xpVTEUGVCHQRJ0rJl1+PNpG232N7cltDp8fFwuNrPoM=;
+        b=ieWobGTODldLYLH+q914ngtRjZCYUaX0hE41L6weKFS4m0tHTjLeitFySrjTnWUt1j
+         OrsnLCgnfTuOWjHpErRX1FSANnV4DTX0Nrfln9gBNCd+PqTrSTVcRxBWheFAGUWH9LgV
+         jAluFsL1zEiutOqJCwRnaUPb/fsS+rsuKosbmGey7k8kn1McLbQaK2AOHqqiWGa+yd/5
+         JA3Bd4DkJUwvK2Dvif/jpDB1Xxu6TefButDZiw6bD21kBuIpweapBfvn4Jueur8UvPvj
+         e8gUef+JNsUT1/AFBTouj816tYn6llTzGml1Pb4HsCNfCJAvn41xPbvlM8dgGNqgkNd9
+         QTDw==
+X-Forwarded-Encrypted: i=1; AHgh+Rp6IHnAHsA/wSY/EM5QlqF5nxr5y004G1JW6rAkBLCrT1klsmpi/jZEpY2N9lHvVT+zY/bGZIo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4cxqdG3Axo7j22VKhYFazoc/G0Dx2waW4D4TI9Y4nasAKMRmV
+	/i9sFwItYZqVboRtRYQkNxN4GGHOKoYvMtNSf2QiJryuz/bfoDG7omVWcaedvc6e4RvhD0UxylB
+	u7IyQqh6cboH8BMoJ2WkBqeqTaohmbhqffzIdIexFsP6id2aqpCwxQS+Eig==
+X-Gm-Gg: AR+sD11nlUdGbD+vXrDzlY4S3mbm6rC+hYY47AG0XEf+EQ2KZRIoipxNi0P7ZoSoEBH
+	NH/fqpw5vOH3MCX6g74jpt7W5X5EdD06/JcGHi4ZNngByEXlpFVrrRL1ondc9586jTDWoybawTl
+	8aRD2oJFdkeLn9hDtq4adVxDYPsU1lfPPXLNsRo3665T+n56YHO7ctRE78wdelS3g6+CUdSSB1k
+	SPQ0K5DZMNjUOu7aQa96v8AGuT6Tu2FNsoZVh8YhZWbqH3eIaBzvCnb7X18QaG6eM7GJWLKo0yF
+	BeBh4BobNWpg05qGNLQJydi9d+yHJWk++IzvyXIEWBIDgkRm8jazJRXgkvEGIxnbScJnt1vfCTd
+	tfROAQRAnWTzyo+NTVYVmBGqcBErSHYPOQBNZAfGwhG0DxArGbJD4lS5QnU6H0lHhyb8wVZIL0r
+	Y=
+X-Received: by 2002:a05:600c:37c6:b0:499:858f:2653 with SMTP id 5b1f17b1804b1-499aa14b457mr236098235e9.2.1787232724211;
+        Thu, 20 Aug 2026 06:32:04 -0700 (PDT)
+X-Received: by 2002:a05:600c:37c6:b0:499:858f:2653 with SMTP id 5b1f17b1804b1-499aa14b457mr236097115e9.2.1787232723711;
+        Thu, 20 Aug 2026 06:32:03 -0700 (PDT)
 Received: from [192.168.188.103] (ip239-44-231-195.pool-bba.aruba.it. [195.231.44.239])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499b2b96537sm41185975e9.1.2026.08.20.06.30.43
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499b3c556a3sm31194145e9.3.2026.08.20.06.32.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Aug 2026 06:30:44 -0700 (PDT)
-Message-ID: <a618bdba-c370-4f16-ac09-0f7ceb742d42@redhat.com>
-Date: Thu, 20 Aug 2026 15:30:43 +0200
+        Thu, 20 Aug 2026 06:32:02 -0700 (PDT)
+Message-ID: <ba6df9dc-d629-448b-ade2-f716391b5bb6@redhat.com>
+Date: Thu, 20 Aug 2026 15:32:01 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,33 +89,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] net: broadcom: Improve IRQ error handling
-To: phucduc.bui@gmail.com, Justin Chen <justin.chen@broadcom.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Doug Berger <opendmb@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, linux-kernel@vger.kernel.org,
+Subject: Re: [PATCH] net: marvell: mvmdio: Handle errors from optional IRQ
+ lookup
+To: phucduc.bui@gmail.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+ davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>
+Cc: Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+ Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ u.kleine-koenig@baylibre.com, linux-kernel@vger.kernel.org,
  netdev@vger.kernel.org
-References: <20260820111456.97947-1-phucduc.bui@gmail.com>
-From: Paolo Abeni <pabeni@redhat.com>
+References: <20260820111612.98011-1-phucduc.bui@gmail.com>
 Content-Language: en-US
-In-Reply-To: <20260820111456.97947-1-phucduc.bui@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260820111612.98011-1-phucduc.bui@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 8/20/26 1:14 PM, phucduc.bui@gmail.com wrote:
+On 8/20/26 1:16 PM, phucduc.bui@gmail.com wrote:
 > From: bui duc phuc <phucduc.bui@gmail.com>
 > 
-> Hi all,
+> platform_get_irq_optional() returns a positive IRQ number on success or
+> a negative error code on failure. For an optional IRQ, -ENXIO indicates
+> that no optional IRQ is available. Other errors should be propagated so
+> that the caller can handle them appropriately.
 > 
-> This series improves IRQ error handling in several Broadcom Ethernet
-> drivers by propagating IRQ lookup and request errors instead of
-> silently ignoring them.
+> The existing code propagates -EPROBE_DEFER, but ignores other negative
+> errors. Propagate negative errors other than -ENXIO.
 > 
-> The changes were found by manual code inspection and compile-tested
-> only.
+> Found by manual code inspection.
+> 
+> Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
 ## Form letter - net-next-closed
 
 We have already submitted our pull request with net-next material for v7.3,
