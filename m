@@ -1,58 +1,86 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598433559CA;
-	Thu, 20 Aug 2026 04:45:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381EE339375
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 04:53:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787201110; cv=none; b=bhGAUcMxyyq70K5LtP26uUsDrnJxQFMOFCiXHrWQzJWiN+w6Hej4Beby9py42jUNIIi22aw02olZuoIs7P9MqOSXYeyJitp74hTJKpB6lL/AQkQksDikDLk8Esmz1uVU37NUSIEGTu2QHXrI6EfmZfAVixK6ERPo4e+Ct0Js6cs=
+	t=1787201637; cv=none; b=hbG0MIvYpp+KFx9/CWRUqdd9FyoGlzPf77GS9i2tLFrGWtuwlRSFbb07O+BWJXowX/a29Esw3gORh7fGy1IxPDykO2wk8qsli5tKTZ60HsjAMgxIeJsTvPG8b4jwOZP84S//GtoB08GOE6xE7h22ka4c9EfZFhfM8c3VjNIM1D0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787201110; c=relaxed/simple;
-	bh=8aLre1UVzq9XUwO+L/FOI9aSU2pqDRGlrgZAJ47Hjhw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IV2X2sfUwuIQTV72zxDuGafC2dckv0Bsgv9W0vN6ZlbnBrC67jGLkReuaHy501kFzP381TIakQXTKOfm1GozEuIHbN0DwR97jEucayvvX7yZUc5ksNILdNIm1qCu/6LEchCvfgUTc2VrDTlDiwN6gq5dcUjR6hfsQxtusSYixTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=PowRmT+G; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1787201637; c=relaxed/simple;
+	bh=RW6UJSknFVTFHLbOlDQG2tvPv+mfck1nWVRCBWU19Uk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GjaV+5arDSAoiNZE4jEGl3CbHzD/51/bbx68WeVRrZFkJ2+WoukAKm+w60yFf0iY38lMNhqMMJcDwdhBYNwybb4C2rJBCayUhBfD3H0umh+MQiVp4OUooWfEfEhb6Ch3uxNlOo83C1IGg9FSZDQ+hNUfGjNx4qQ9kmAhkhd3/jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QQ6Ugup+; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="PowRmT+G"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67JM8H6U527674;
-	Wed, 19 Aug 2026 21:44:59 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=ie0AvGa0+A36SB2v+YQ9h2V
-	zb7WUl1Y1+qAhLKHGZ0k=; b=PowRmT+GR7juIMmum66NbsYBidEOiu8I+TtnkYS
-	FIHSzlB5QceDbg9DM7tu/FBln0AaGbmY6VYodjMVS8ykZDcZU5biMWp0YpyiesxV
-	ejT2HVEXWHyL3Vaxe+x6zkexWK5cLOIbyVPPUdNTMn4iU48N+ZMi+TWE4M8n29kg
-	bXZUBF6lZnDQ2FGjjObeIrlwgAWsmX1t27mnCX/c4vDtNq5VL1fjXZv8i4vhONJV
-	xKPXwKRbMxtDLJ7crd8iVPlljqbs703kWzawmkhXvU+zq6fXz6DHHv/QYufZf6dP
-	rbpg+JO0+UCFTlhvSk3n/9Xubue7PZuEvMDtWPiEL++ufaQ==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4g4yeve7pc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Aug 2026 21:44:59 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 19 Aug 2026 21:44:58 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Wed, 19 Aug 2026 21:44:57 -0700
-Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id 54C7E3F7051;
-	Wed, 19 Aug 2026 21:44:53 -0700 (PDT)
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <davem@davemloft.net>, <kuba@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <sbhatta@marvell.com>,
-        <sgoutham@marvell.com>, <zyta@marvell.com>
-CC: <andrew+netdev@lunn.ch>, <edumazet@google.com>, <pabeni@redhat.com>,
-        <richardcochran@gmail.com>, Sai Krishna <saikrishnag@marvell.com>,
-        "Ratheesh
- Kannoth" <rkannoth@marvell.com>
-Subject: [PATCH v2 net] octeontx2: fix PTP RX enable notification on VF
-Date: Thu, 20 Aug 2026 10:14:39 +0530
-Message-ID: <20260820044439.2592441-1-rkannoth@marvell.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QQ6Ugup+"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4995b0343c1so16921735e9.3
+        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 21:53:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787201633; x=1787806433; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=A4xcLOCx3S0JrW7h9n5Y0wUiYz/r3Bt5hqhyZUGbtns=;
+        b=QQ6Ugup+lKg8QfRO6LDxMRWHcelR4mhk9P4TndvNs5rrCSQEsjal3xyoWWT/OCLl7W
+         nU5QCR1dRJ1qdei4M2SLOG0rS4nIpMjGlf/FAT7hMeZSSFcCWBeK231iRnR1QeJOeX6O
+         aQS1g+n3EdKCSNMECH0WcCL5X/VrzKhQbxKeKueQiwiVYLjYkixSO82cr29gNv4vA7pY
+         1MI+AhVuARX1pJT2jzfRhdcrWwOhY5M2rYC6us/RtNSqcYE+MSA1xQtZ2gfmjuDhYDqF
+         4CgkMmD9kI2SA9otBRlMMunFfzrYGO9dFN1ZC1nLBdAr22yueTy7ihPLXh5iD5R/BO6M
+         hL9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787201633; x=1787806433;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=A4xcLOCx3S0JrW7h9n5Y0wUiYz/r3Bt5hqhyZUGbtns=;
+        b=gho2MrTWZycBXG33u/15Na2ztU+IRs0SxCeMVHbr+q7XwdDct35SSQwl57rKRqMyWs
+         +U3B/YVYSS1xjDJq770+CNBP5vQ8CJI043y34CHgizL5wALMZSgsrQHWnfJPfTmoruJE
+         Mzf/Zfcv7vG5da8axleh3cODQanLC1tohCYXHl+cwd0iiviz5X7xnAbZMNNSTQ2oRcl9
+         tMWvcBAAoLb+lO8q+HIt8Oo/koLVSRacojExtcC3omTHtwI5p6KfUnNRM80d1wOsyo4b
+         cBTP1gvRyLzGze3ogv55sDqZjR4JRwHY4SYmUkm3c1kY5dp4V2WKAsnnC3eORUUGT643
+         qpvQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrovjT6O5cksc4Cn+wluKsC8g1qYnL6m2/XM1G0bjrlrTqjhiJBzX62Tx9C/IUpEHTKaKcrTnc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFZKQnpBLFMdF9DTlyZrTzEukAQn/D4qV3WVyleJv/+IwXRMH2
+	G2cxv/ssXN+yaztW+oGaejXx4jLKx3oHFWvari3f7pP1mBftMDCBmMUA
+X-Gm-Gg: AR+sD13WSOn1Aw9s8WGE1V4AnMJE/eq7IZyfNFGnaMT25ccfVsMcUXUINSfrOA9Iz0B
+	HDEJ86IsjF+Y8K26s7xKYOcNeG+0cZdZl5slMfldeKlvNcGC2onhO5SLY/fC6EpgkO+1rudo3NO
+	YTtBOS1SNqsfSskFS4Lc4XPFzMglfgkkwAqswRim9I0A4v/NSmOzz/balRgKFBvJlM5OTozERNt
+	ij254vDW5o6WXQG4gvdnXoHIcdJNvR/94W8Q+5/LSh56psdaPpgKTFp5bKQgQVYSIIHLnStV2s6
+	pJW5oArG7Tu6i+UfE2sJAr/BHGL4LQaj7XDmSGe4qXWE9ESt9C+n0Li8T3nCvBVp0sNKLhYMNXH
+	w7RwmQSe5JuktHpfbiuyS93p5ro/DapJ1qW70SjRw+hHjm77unUNBRki7/w2C0O75cwGiElsCVX
+	BuUDKqh+kjtBDkAkSufTPefpwxCix3AvEmxStHABLyDQ2EXK2Ps+rnLdRhvjEspkmR+krkd0eGN
+	5IkhZzETYpS/asQXuPvNPtbjziEXA8JGLEwNIpR
+X-Received: by 2002:a05:600c:540e:b0:495:4689:1e98 with SMTP id 5b1f17b1804b1-499aa1d0b23mr182276385e9.10.1787201633070;
+        Wed, 19 Aug 2026 21:53:53 -0700 (PDT)
+Received: from INBSWN167928.ad.harman.com (bba-86-96-6-50.alshamil.net.ae. [86.96.6.50])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499a9e784b3sm97616565e9.3.2026.08.19.21.53.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Aug 2026 21:53:52 -0700 (PDT)
+From: Abid Ali <dev.taqnialabs@gmail.com>
+To: pabeni@redhat.com
+Cc: alexandre.torgue@foss.st.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	dev.taqnialabs@gmail.com,
+	edumazet@google.com,
+	kuba@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux@armlinux.org.uk,
+	maxime.chevallier@bootlin.com,
+	mcoquelin.stm32@gmail.com,
+	netdev@vger.kernel.org,
+	qingfang.deng@linux.dev
+Subject: Re: [PATCH net-next v4 1/3] net: stmmac: enable MAC rx/tx after DMA start
+Date: Thu, 20 Aug 2026 04:53:29 +0000
+Message-ID: <20260820045330.618-1-dev.taqnialabs@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260818135704.212816-1-pabeni@redhat.com>
+References: <20260818135704.212816-1-pabeni@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,274 +88,247 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODIwMDAzMSBTYWx0ZWRfX9LKdniqCBs8c
- Ka5lnV/SVbNYoYDDNOZiKtB3z42tYZ0HqFdnxgSSaDvxv94H+8deJa6kc/IfUwwdLuxsbOaYuTu
- +3fDXtfA9MhYO5kqNtdneWn/PgfLVRU=
-X-Proofpoint-GUID: uzIqgd96YhOeZEO2Fjl3qD_nIdV2Puw0
-X-Proofpoint-ORIG-GUID: uzIqgd96YhOeZEO2Fjl3qD_nIdV2Puw0
-X-Authority-Analysis: v=2.4 cv=Wq8b99fv c=1 sm=1 tr=0 ts=6a86864b cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=qit2iCtTFQkLgVSMPQTB:22 a=c92rfblmAAAA:8 a=M5GUcnROAAAA:8
- a=nSSq00Y0FkuvHKgJGNwA:9 a=GvGzcOZaWPEFPQC_NcjD:22 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODIwMDAzMSBTYWx0ZWRfX/GCpT2IL79Xk
- GmuU08nyz79K/4v31qFSsEvDO7Z4eCd8nN7R5JsuyMeQhawmAjyjkctXiJbVDN65BxwzclIVVpA
- 0PwBtv1K58At4PW0KnCLy4SSgBd8BsTnYp2YmYhlR0n7Mz67KerRS/T0vZ+6YlzrYrAAC1/YL3j
- BSiv6u1QPVW0EncpgHz38QCig/evQcaww3F2GdJMPbUhaYZ/VdFtPDytQlNefKXli7Pi+zWhLlj
- 9MlE0IEGi5uZQaPIYk/QJbHoUveMLZK3PpoDsf0nzMr7drSPMEMSu7qf7SK1tt2Sjsfu7TswWkF
- QzK8y+JdeQzC3jiQbb+tmbSypfPqLrXaTVnT+AFAVdzvJiEVzkjGZ7yWDUQ/3d3fX0TqyVKlwfy
- NcoSpa3sN4V6kMsodik2VIImlt9eByd85u6dk2rAWeT4YqWmIrR3s7NHR7Fhe4TkRmyXoSpV/g1
- wpOpKs8LX+rxBwh8DaA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-19_06,2026-08-19_02,2025-10-01_01
 
-From: Sai Krishna <saikrishnag@marvell.com>
+On Tue, 2026-08-18 at 15:57 +0200, Paolo Abeni wrote:
+> [Severity: Low]
+> Could a Fixes: tag be added for each of the two sequences being corrected,
+> one for the ordering in stmmac_hw_setup() and one for the same ordering in
+> stmmac_xdp_open() which arrived with the AF_XDP path?
+>
+> Without a Fixes: trailer, how do stable/backport tools determine the
+> affected release range, and is this intended for net or net-next?
 
-When a VF enables PTP RX timestamping, CGX prepends an 8-byte timestamp
-header to each packet. The parent PF and its VFs must adjust their RX
-data offset before that happens, but enabling PTP RX only configured CGX
-and never notified the PF or VFs.
+Yes, I missed the trailers. These are supposed to be fixes.
 
-Add a CGX_PTP_RX_INFO mailbox upcall from AF to PF when RX timestamping
-is enabled or disabled. On receipt, the PF records the state and forwards
-it to active VFs. Handle the upcall on the VF mailbox path so the
-notification completes correctly.
+Fixes: 47dd7a540b8a ("net: add support for STMicroelectronics Ethernet controllers.")
+Fixes: ac746c8520d9 ("net: stmmac: enhance XDP ZC driver level switching performance")
 
-Use the asynchronous upcall pattern (wait for zero, then send) on both
-AF-to-PF and PF-to-VF paths, and serialize PF-to-VF delivery with the
-mailbox lock, consistent with link-event notification.
+The interface stall can happen on any platform if inflow happens between
+stmmac_mac_set() and stmmac_start_all_dma(). I added an intentional delay
+between these two events to test it, and that made the interface hang
+100% reproducible.
 
-Fixes: 421572175ba5 ("octeontx2-af: Support to enable/disable HW timestamping")
-Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+I will resend as [PATCH net] with both trailers in the next version.
 
----
-v1 -> v2:  Addressed sashiko comments
-	https://sashiko.dev/#/patchset/20260818034728.2047614-1-rkannoth%40marvell.com
----
- .../net/ethernet/marvell/octeontx2/af/mbox.h  |  8 ++-
- .../ethernet/marvell/octeontx2/af/rvu_cgx.c   | 20 ++++++
- .../marvell/octeontx2/nic/otx2_common.h       |  2 +
- .../ethernet/marvell/octeontx2/nic/otx2_pf.c  | 66 +++++++++++++++++++
- .../ethernet/marvell/octeontx2/nic/otx2_vf.c  | 14 ++++
- 5 files changed, 109 insertions(+), 1 deletion(-)
+> [Severity: Medium]
+> Does this reordering actually close the window on the dwmac4/dwmac5
+> (GMAC4+) cores?
+>
+> There the MAC receiver and transmitter enables are set from inside the
+> per-channel DMA start callbacks:
+>
+> drivers/net/ethernet/stmicro/stmmac/dwmac4_lib.c:dwmac4_dma_start_rx() {
+> 	value |= DMA_CONTROL_SR;
+> 	writel(value, ioaddr + DMA_CHAN_RX_CONTROL(dwmac4_addrs, chan));
+>
+> 	value = readl(ioaddr + GMAC_CONFIG);
+> 	value |= GMAC_CONFIG_RE;
+> 	writel(value, ioaddr + GMAC_CONFIG);
+> }
+>
+> and dwmac4_dma_start_tx() does the same for GMAC_CONFIG_TE.
+>
+> stmmac_start_all_dma() starts the RX channels one at a time:
+>
+> 	for (chan = 0; chan < rx_channels_count; chan++)
+> 		stmmac_start_rx_dma(priv, chan);
+>
+> so the global MAC receiver is already enabled by the first iteration while
+> channels 1..n-1 still have SR == 0. On those cores, isn't the relocated
+> stmmac_mac_set(priv, priv->ioaddr, true) redundant, and doesn't the
+> "MAC classifies frames into an MTL queue whose DMA is not running"
+> condition still exist whenever rx_queues_to_use > 1?
+>
+> The RE-in-DMA-op coupling itself isn't introduced by this patch, but should
+> the commit message claim "The EMAC should only accept packets after the DMAs
+> are enabled" be qualified, or should the dwmac4 coupling be decoupled too?
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-index 714e47f68d93..96e1b93f8122 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-@@ -427,7 +427,8 @@ M(MCS_CUSTOM_TAG_CFG_GET, 0xa021, mcs_custom_tag_cfg_get,			\
- 
- /* Messages initiated by AF (range 0xC00 - 0xEFF) */
- #define MBOX_UP_CGX_MESSAGES						\
--M(CGX_LINK_EVENT,	0xC00, cgx_link_event, cgx_link_info_msg, msg_rsp)
-+M(CGX_LINK_EVENT,	0xC00, cgx_link_event, cgx_link_info_msg, msg_rsp) \
-+M(CGX_PTP_RX_INFO,	0xC01, cgx_ptp_rx_info,	cgx_ptp_rx_info_msg, msg_rsp)
- 
- #define MBOX_UP_CPT_MESSAGES						\
- M(CPT_INST_LMTST,	0xD00, cpt_inst_lmtst, cpt_inst_lmtst_req, msg_rsp)
-@@ -647,6 +648,11 @@ struct cgx_link_info_msg {
- 	struct cgx_link_user_info link_info;
- };
- 
-+struct cgx_ptp_rx_info_msg {
-+	struct mbox_msghdr hdr;
-+	u8 ptp_en;
-+};
-+
- struct cgx_pause_frm_cfg {
- 	struct mbox_msghdr hdr;
- 	u8 set;
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-index 87d21889dc49..cb95f3fb60ae 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-@@ -820,6 +820,24 @@ int rvu_mbox_handler_cgx_promisc_disable(struct rvu *rvu, struct msg_req *req,
- 	return 0;
- }
- 
-+static void cgx_notify_up_ptp_info(struct rvu *rvu, int pf, bool enable)
-+{
-+	struct cgx_ptp_rx_info_msg *msg;
-+
-+	/* Send mbox message to PF */
-+	msg = otx2_mbox_alloc_msg_cgx_ptp_rx_info(rvu, pf);
-+	if (!msg) {
-+		dev_err(rvu->dev, "failed to alloc message\n");
-+		return;
-+	}
-+
-+	msg->ptp_en = enable;
-+
-+	otx2_mbox_wait_for_zero(&rvu->afpf_wq_info.mbox_up, pf);
-+
-+	otx2_mbox_msg_send_up(&rvu->afpf_wq_info.mbox_up, pf);
-+}
-+
- static int rvu_cgx_ptp_rx_cfg(struct rvu *rvu, u16 pcifunc, bool enable)
- {
- 	struct rvu_pfvf *pfvf = rvu_get_pfvf(rvu, pcifunc);
-@@ -837,6 +855,8 @@ static int rvu_cgx_ptp_rx_cfg(struct rvu *rvu, u16 pcifunc, bool enable)
- 	if (!is_pf_cgxmapped(rvu, pf))
- 		return -EPERM;
- 
-+	cgx_notify_up_ptp_info(rvu, pf, enable);
-+
- 	rvu_get_cgx_lmac_id(rvu->pf2cgxlmac_map[pf], &cgx_id, &lmac_id);
- 	cgxd = rvu_cgx_pdata(cgx_id, rvu);
- 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-index eecee612b7b2..13b54287facf 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-@@ -286,6 +286,7 @@ enum vfperm {
- struct otx2_vf_config {
- 	struct otx2_nic *pf;
- 	struct delayed_work link_event_work;
-+	struct delayed_work ptp_info_work;
- 	bool intf_down; /* interface was either configured or not */
- 	u8 mac[ETH_ALEN];
- 	u16 vlan;
-@@ -324,6 +325,7 @@ struct otx2_ptp {
- 	u64 thresh;
- 
- 	struct ptp_pin_desc extts_config;
-+	bool ptp_en;
- 	u64 (*convert_rx_ptp_tstmp)(u64 timestamp);
- 	u64 (*convert_tx_ptp_tstmp)(u64 timestamp);
- 	u64 (*ptp_tstamp2nsec)(const struct timecounter *time_counter, u64 timestamp);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index c995f2900859..9e596fbd421c 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -44,6 +44,7 @@ MODULE_LICENSE("GPL v2");
- MODULE_DEVICE_TABLE(pci, otx2_pf_id_table);
- 
- static void otx2_vf_link_event_task(struct work_struct *work);
-+static void otx2_vf_ptp_info_task(struct work_struct *work);
- 
- enum {
- 	TYPE_PFAF,
-@@ -960,6 +961,30 @@ int otx2_mbox_up_handler_cgx_link_event(struct otx2_nic *pf,
- 	return 0;
- }
- 
-+int otx2_mbox_up_handler_cgx_ptp_rx_info(struct otx2_nic *pf,
-+					 struct cgx_ptp_rx_info_msg *msg,
-+					 struct msg_rsp *rsp)
-+{
-+	int i;
-+
-+	if (!pf->ptp)
-+		return 0;
-+
-+	pf->ptp->ptp_en = msg->ptp_en;
-+
-+	/* notify VFs about ptp event */
-+	for (i = 0; i < pci_num_vf(pf->pdev); i++) {
-+		struct otx2_vf_config *config = &pf->vf_configs[i];
-+		struct delayed_work *dwork = &config->ptp_info_work;
-+
-+		if (config->intf_down)
-+			continue;
-+
-+		schedule_delayed_work(dwork, msecs_to_jiffies(100));
-+	}
-+	return 0;
-+}
-+
- static int otx2_process_mbox_msg_up(struct otx2_nic *pf,
- 				    struct mbox_msghdr *req)
- {
-@@ -3041,6 +3066,8 @@ static int otx2_sriov_vfcfg_init(struct otx2_nic *pf)
- 		pf->vf_configs[i].trusted = false;
- 		INIT_DELAYED_WORK(&pf->vf_configs[i].link_event_work,
- 				  otx2_vf_link_event_task);
-+		INIT_DELAYED_WORK(&pf->vf_configs[i].ptp_info_work,
-+				  otx2_vf_ptp_info_task);
- 	}
- 
- 	return 0;
-@@ -3055,6 +3082,7 @@ static void otx2_sriov_vfcfg_cleanup(struct otx2_nic *pf)
- 
- 	for (i = 0; i < pf->total_vfs; i++) {
- 		cancel_delayed_work_sync(&pf->vf_configs[i].link_event_work);
-+		cancel_delayed_work_sync(&pf->vf_configs[i].ptp_info_work);
- 		otx2_set_vf_permissions(pf, i, OTX2_RESET_VF_PERM);
- 	}
- }
-@@ -3417,6 +3445,44 @@ static void otx2_vf_link_event_task(struct work_struct *work)
- 	mutex_unlock(&pf->mbox.lock);
- }
- 
-+static void otx2_vf_ptp_info_task(struct work_struct *work)
-+{
-+	struct cgx_ptp_rx_info_msg *req;
-+	struct otx2_vf_config *config;
-+	struct mbox_msghdr *msghdr;
-+	struct otx2_nic *pf;
-+	int vf_idx;
-+
-+	config = container_of(work, struct otx2_vf_config,
-+			      ptp_info_work.work);
-+	vf_idx = config - config->pf->vf_configs;
-+	pf = config->pf;
-+
-+	if (config->intf_down || !pf->ptp)
-+		return;
-+
-+	mutex_lock(&pf->mbox.lock);
-+
-+	msghdr = otx2_mbox_alloc_msg_rsp(&pf->mbox_pfvf[0].mbox_up, vf_idx,
-+					 sizeof(*req), sizeof(struct msg_rsp));
-+	if (!msghdr) {
-+		dev_err(pf->dev, "Failed to create VF%d ptp info event\n", vf_idx);
-+		mutex_unlock(&pf->mbox.lock);
-+		return;
-+	}
-+
-+	req = (struct cgx_ptp_rx_info_msg *)msghdr;
-+	req->hdr.id = MBOX_MSG_CGX_PTP_RX_INFO;
-+	req->hdr.sig = OTX2_MBOX_REQ_SIG;
-+	req->ptp_en = pf->ptp->ptp_en;
-+
-+	otx2_mbox_wait_for_zero(&pf->mbox_pfvf[0].mbox_up, vf_idx);
-+
-+	otx2_sync_mbox_up_msg(&pf->mbox_pfvf[0], vf_idx);
-+
-+	mutex_unlock(&pf->mbox.lock);
-+}
-+
- static int otx2_sriov_enable(struct pci_dev *pdev, int numvfs)
- {
- 	struct net_device *netdev = pci_get_drvdata(pdev);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
-index b022f52c6845..60f81062007b 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
-@@ -141,6 +141,20 @@ static int otx2vf_process_mbox_msg_up(struct otx2_nic *vf,
- 		err = otx2_mbox_up_handler_cgx_link_event(
- 				vf, (struct cgx_link_info_msg *)req, rsp);
- 		return err;
-+	case MBOX_MSG_CGX_PTP_RX_INFO:
-+		rsp = (struct msg_rsp *)otx2_mbox_alloc_msg(&vf->mbox.mbox_up,
-+						0, sizeof(struct msg_rsp));
-+		if (!rsp)
-+			return -ENOMEM;
-+
-+		rsp->hdr.id = MBOX_MSG_CGX_PTP_RX_INFO;
-+		rsp->hdr.sig = OTX2_MBOX_RSP_SIG;
-+		rsp->hdr.pcifunc = req->pcifunc;
-+		rsp->hdr.rc = 0;
-+		err = otx2_mbox_up_handler_cgx_ptp_rx_info(vf,
-+							   (struct cgx_ptp_rx_info_msg *)req,
-+							   rsp);
-+		return err;
- 	default:
- 		otx2_reply_invalid_msg(&vf->mbox.mbox_up, 0, 0, req->id);
- 		return -ENODEV;
--- 
-2.43.0
+Not completely on dwmac4/dwmac5.
+dwmac4_dma_start_rx() raises the global GMAC_CONFIG.RE itself, so RE is
+up after the chan 0 iteration of stmmac_start_all_dma() while the rest of
+the channels still have SR (the start bit) clear. That is still a timing
+gap where the MTL queue can fill up.
+
+Mainly, RE is no longer set before stmmac_start_all_dma() is entered at
+all. That was the long window, where stmmac_dma_operation_mode(),
+stmmac_mmc_setup(), stmmac_set_rings_length() and the rest of the setup
+all ran with the receiver already live.
+
+On XGMAC even that is gone once 3/3 ("net: stmmac: xgmac: decouple the
+MAC Rx/Tx enables from the DMA ops") is added, since it takes the RE/TE
+writes out of dwxgmac2_dma_start_rx()/dwxgmac2_dma_start_tx() entirely.
+
+Ideally the same should be done for dwmac4/dwmac5, but I left that out
+as that was not the hardware with me. Seems like should follow the same
+and will do that in the next version.
+
+> [Severity: Low]
+> This isn't a bug introduced by this patch, but the mirror-image teardown
+> ordering used to be the reverse of what this patch establishes, i.e.
+> stopping the DMA before disabling the MAC Rx in __stmmac_release(),
+> stmmac_xdp_release() and stmmac_suspend(). The follow-on commit "net:
+> stmmac: xgmac: tear the datapath down in the documented order" introduces
+> stmmac_datapath_teardown() and converts those callers, so the MAC is
+> disabled before stmmac_stop_rx_dma() runs:
+>
+> 	/* Disable the MAC TX and RX */
+> 	stmmac_mac_set(priv, priv->ioaddr, false);
+>
+> 	/* Wait for the MTL RX queues to drain into the RX DMA */
+> 	...
+> 	for (chan = 0; chan < rx_channels_count; chan++)
+> 		stmmac_stop_rx_dma(priv, chan);
+>
+> Noting it here only for completeness, since the remaining "MAC Rx on, DMA
+> off" case is the WoL branch of stmmac_suspend(), which that commit
+> documents as intentional.
+
+Right, that is 2/3 ("net: stmmac: xgmac: tear the datapath down in the
+documented order") of this series. The teardown is not the exact inverse
+of the bring-up; the databook gives its own order for it.
+
+Also, the WoL branch in stmmac_suspend() is left on stmmac_stop_all_dma()
+on purpose. That path only stops the DMA channels and never calls
+stmmac_mac_set(priv, priv->ioaddr, false), because the receiver has to
+stay enabled for the wake frame to be seen. 
+
+> [Severity: High]
+> This isn't a bug introduced by this patch, since the DMA was already started
+> here before the reorder, but the MAC enable now sits inside a region whose
+> error path never unwinds either the DMA or the MAC.
+>
+> If stmmac_request_irq() fails, the unwind in stmmac_xdp_open() is:
+>
+> irq_error:
+> 	for (chan = 0; chan < priv->plat->tx_queues_to_use; chan++)
+> 		hrtimer_cancel(&priv->dma_conf.tx_queue[chan].txtimer);
+>
+> init_error:
+> 	free_dma_desc_resources(priv, &priv->dma_conf);
+>
+> There is no stmmac_stop_all_dma() and no stmmac_mac_set(priv, priv->ioaddr,
+> false), while free_dma_desc_resources() reaches:
+>
+> __free_dma_rx_desc_resources() {
+> 	dma_free_coherent(priv->device, size, addr, rx_q->dma_rx_phy);
+> 	...
+> 	if (rx_q->page_pool)
+> 		page_pool_destroy(rx_q->page_pool);
+> }
+>
+> Can the RX DMA then write received frames into the freed coherent
+> descriptor ring and the freed page-pool pages? stmmac_xdp_set_prog() also
+> discards the stmmac_xdp_open() return value:
+>
+> 	if (if_running && need_update)
+> 		stmmac_xdp_open(dev);
+> 	...
+> 	return 0;
+>
+> so does the device stay in that state indefinitely rather than being
+> reported and cleaned up?
+>
+> The same gap looks present on the ifup path: __stmmac_open()'s irq_error
+> label only does phylink_stop(), the per-queue hrtimer_cancel() and
+> stmmac_release_ptp(), and stmmac_open() then falls through to
+> err_dma_resources: free_dma_desc_resources(priv, dma_conf), which frees the
+> rings that were programmed into the live DMA engine.
+>
+> Should these error paths be made symmetric with the release path, which
+> does:
+>
+> 	/* Stop the MAC and the TX/RX DMA channels */
+> 	stmmac_datapath_teardown(priv);
+>
+> 	/* Release and free the Rx/Tx resources */
+> 	free_dma_desc_resources(priv, &priv->dma_conf);
+
+Yes, it can. The rings are freed while the Rx DMA is still running, SR is
+set and nothing on that path stops it, so the engine can write into freed
+memory. stmmac_xdp_set_prog() then drops the return value, so the device
+is left that way. The similar gap exists in the ifup path too.
+
+It is a real issue, but it existed before the reorder too. Both the MAC
+and the DMA were already live at irq_error:, so this could happen even
+before the reordering. I do understand the concern, but the AI review
+does seem to flag everything it finds wrong in the surrounding code even
+when the patch did not introduce it.
+
+I could look into a fix for this, but cleaning up all the surrounding
+code flagged by sashiko seems like an endless loop.
+
+> [Severity: Medium]
+> This is a pre-existing race rather than something the patch adds, but it
+> bears on the invariant the patch is establishing: the ordering here is only
+> statement order inside stmmac_xdp_open(), and nothing serializes it against
+> phylink's resolve worker.
+>
+> phylink_resolve() runs from a work item holding only pl->phydev_mutex,
+> phy->lock and pl->state_mutex, with no rtnl:
+>
+> drivers/net/phy/phylink.c:phylink_resolve() {
+> 	mutex_lock(&pl->phydev_mutex);
+> 	phy = pl->phydev;
+> 	if (phy)
+> 		mutex_lock(&phy->lock);
+> 	mutex_lock(&pl->state_mutex);
+> 	...
+> 		else
+> 			phylink_link_up(pl, link_state);
+> }
+>
+> and that reaches stmmac_mac_link_up() -> stmmac_mac_set(priv, priv->ioaddr,
+> true). The AF_XDP reconfiguration never quiesces phylink:
+>
+> drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c:stmmac_xdp_set_prog() {
+> 	if (if_running && need_update)
+> 		stmmac_xdp_release(dev);
+> 	...
+> 	if (if_running && need_update)
+> 		stmmac_xdp_open(dev);
+> }
+>
+> So can a link-up resolved on another CPU re-enable MAC Rx after
+> stmmac_xdp_release() has stopped the DMA and before stmmac_xdp_open()
+> reaches stmmac_start_all_dma(), which is the same "MAC accepting frames with
+> no DMA to drain the MTL FIFO" condition described in the commit message?
+>
+> Separately, stmmac_mac_link_up() and stmmac_mac_set() both do unlocked
+> read-modify-write on MAC_CTRL_REG:
+>
+> 	old_ctrl = readl(priv->ioaddr + MAC_CTRL_REG);
+> 	ctrl = old_ctrl & ~priv->hw->link.speed_mask;
+> 	...
+> 	if (ctrl != old_ctrl)
+> 		writel(ctrl, priv->ioaddr + MAC_CTRL_REG);
+> 	...
+> 	stmmac_mac_set(priv, priv->ioaddr, true);
+>
+> Can concurrent speed/duplex and RE/TE updates lose each other's bits?
+
+They also look valid, but they are not related to or introduced by this change.
+Again, I am not able to see how either of these follows from the reorder proposed here.
+
+In this 3-patch series, the primary fix I intended was for the interface
+hang, and based on the initial reviews it made sense to fix the teardown
+path too even though teardown was left untouched.
+
+I also took a look at the comments on 2/3 ("net: stmmac: xgmac: tear the
+datapath down in the documented order"), and some of them seem valid, but
+addressing those corner cases does not look straightforward and will 
+definitely need some time.
+
+Would it make sense to send 1/3 ("net: stmmac: enable MAC rx/tx after DMA
+start") and 3/3 ("net: stmmac: xgmac: decouple the MAC Rx/Tx enables from
+the DMA ops") as the [PATCH net] fixes for the bootup interface hang, once the
+review comments on them are addressed, and leave out 2/3 ("net: stmmac:
+xgmac: tear the datapath down in the documented order") for now, since
+the teardown path was never intended to be the fixed here?
+
+Would like your feedback on how to proceed.
+
+
+Best Regards,
+
+Abid
 
