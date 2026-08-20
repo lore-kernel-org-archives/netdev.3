@@ -1,88 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D97D47F779;
-	Thu, 20 Aug 2026 17:25:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787246701; cv=none; b=mdmp83zoK0vhuzPnh5xJ+lDmNxmKw7HyfOC8+UiR+bh/vtDREk0xnerBTFPyDjL9z0ntUUYEUaqcDwM0+/F0S49M27Uam+hQTmE1yDSREzC950oQGT+rOF05iF3AmNiVbWiYpGncw6SZOPjYTixLurWMba48YQhEyU3iJ6TPuwY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787246701; c=relaxed/simple;
-	bh=TYoZJnylonKUl64989RBp4942of/+/SC1658Xdgn7Tk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kYglHt0fXiFYY7w9y0jO16Mw2l/jPE5i93cYluwvTEu/XT49aC2Ib6cXlXpH1yjLMUBEIx2y68IjYyiRseJ4nmZClrODfAAUyImYP4/Vh99wmkeK34HeZPArR26y+L9jQ32sslfjePRFVEeFnT88q/+U4MBnf0tXT12+aQgm0LA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KqfKnoc/; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A3437E5E5;
+	Thu, 20 Aug 2026 17:25:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787246714; cv=pass; b=TOq0nnyxbKKmnKgvMoinBdNSr4vZmEurYZI95BISFghBkSqvqI1cK3p0Taj+TIa+HJ5wjHk9mKKqIJ7Tj1QNzsW/28BhM8DSBcFEKrZkNIWwU4aJVAzRzlSslzTPPApapReR6ZbE0yZyvqBycoHoSTEthy4jO5n+VS7Mifw7RbU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787246714; c=relaxed/simple;
+	bh=MOBbx0QiVkZdAvkTF9XF4s4TjMxZz8H3vKkbvMRTa8c=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=sIaqdeZ6tihqLjMxfYpQXImXg/KXN9rBCv/2vBho2JDjX3rAHj4LKstlLj7C0B26tnoo4FZkLg1Yt0lVpaRWCNbAuQ5tW4MoRaDmAmZ158dAMSLJu58/mB8JWUjU+giBfYfTlZuMV2UzKY2B69BdwcKWUZM+RLlAQ/ENokDdjuY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rong.moe; spf=pass smtp.mailfrom=rong.moe; dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b=kyuL0jj/; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rong.moe
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rong.moe
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KqfKnoc/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925801F000E9;
-	Thu, 20 Aug 2026 17:24:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787246700;
-	bh=4R26jjf5EAdEgjitYVP1gkrdr/QO/CbWlMwBRvsHNzY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=KqfKnoc/4JD+ts6rcoWaGua/u2Ecod6+E/lNf+5dRB24C2XAPmofNzTqglhPdYTOw
-	 P5BNjVl1d+LmUO9S3VjN9gajR9Ei11OkDRuvlpi9Yu2fhiWblTtZUnLKkMuoHrbNqx
-	 kq9ClkIraQ9bF4Sb5p0bxN7WLC6AsaOu7Xu/bYrsGfNAXafTr4Y2ru5a4kKHcLPOiv
-	 8Q0MAVQNnumI4rkRd43TGuyT62e05W64dmov0N3S3rS9eyTJg9xJDuc5HnpjzZmhFq
-	 p1x93yr4wgAoD64muEd2Q0kXaLeEbyh+X/KAy3cui1dTXTTyIHabv81O8pRZlA6KXd
-	 gYjzW9EHoj1Dg==
-Date: Thu, 20 Aug 2026 10:24:58 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Daniel Machon <daniel.machon@microchip.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Steen
- Hegelund <Steen.Hegelund@microchip.com>, UNGLinuxDriver@microchip.com,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt
- <rostedt@goodmis.org>, Bjarni Jonasson <bjarni.jonasson@microchip.com>,
- Lars Povlsen <lars.povlsen@microchip.com>, Philipp Zabel
- <p.zabel@pengutronix.de>, kees@kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH net v3 2/2] net: sparx5: fix sleep in atomic context in
- MAC table access
-Message-ID: <20260820102458.308b78ba@kernel.org>
-In-Reply-To: <20260820143443.RTYj4Q3u@linutronix.de>
-References: <20260817-misc-fixes-sparx5-lan969x-v3-0-c7c7fef723a8@microchip.com>
-	<20260817-misc-fixes-sparx5-lan969x-v3-2-c7c7fef723a8@microchip.com>
-	<20260820143443.RTYj4Q3u@linutronix.de>
+	dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b="kyuL0jj/"
+ARC-Seal: i=1; a=rsa-sha256; t=1787246627; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=ZzJxIakGojCv03s2bPLV60KF6KPYGR/R1ITcWew3tvZjSv2/HuwY7Hg7vdHDnlkkQ/VUiyUH1iWYCiFGvapOYbVh7jar149HpheCeoMEDhnQT7/AVPlWSOs9ZE4EQYWE6kKCFHhI/ZQzh99VHH1EenZ50bHM6wmS8rPrtTnyi8U=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1787246627; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=iEbNVyFeMEJBMzrjWZRDpC7u3EmfHE2+/wAuXPJgNyU=; 
+	b=b9vqKDTODI7p146OUrOH24dRIL/IWCH4SSEu06M8SNhiX/QDeYjyE8XRbC+aHED407G3A0TPqdHGQW6LE4JyWCFU+DyrnJbF22yoK4NOKjlZJB9zCQLpDjpXodTbwbVw120wPQYseKQKRn04y4ooHL/BrkTcRn9CjTWClijzpVM=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=rong.moe;
+	spf=pass  smtp.mailfrom=i@rong.moe;
+	dmarc=pass header.from=<i@rong.moe>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1787246627;
+	s=zmail2048; d=rong.moe; i=i@rong.moe;
+	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:In-Reply-To:To:To:Cc:Cc:Reply-To;
+	bh=iEbNVyFeMEJBMzrjWZRDpC7u3EmfHE2+/wAuXPJgNyU=;
+	b=kyuL0jj/hT8XAK8wQwBSMtGKn93SrnZniq26vP7ZyBaw8cViS/KqfBnHMushKDb9
+	szHpUgs3k/bXMwUsVoPYyvcFdetdKDQWV8lPeyjINVHhrUZi1w6P9P17RfPBEV/CMi5
+	MTwOeonfLr52uz/IjjU6jWlhy05MyQLtcWi0Z8h6gJS8tbbKGugOl9lodIR+8pEg/hQ
+	hYJ9D+ctMCWurfX8nUBL9L1lVSa78NILItlSFGYaTHN8iJSilJGelAtOuv/X33zEekR
+	z3CO7mSBr/8ohu9vK1AA0m+kveNhNNPz5CXLi2GZ5LNLRUNs6ZziMRMht5CRm6t2//G
+	lReEKljKQQ==
+Received: by mx.zohomail.com with SMTPS id 1787246624361647.0299940264075;
+	Thu, 20 Aug 2026 10:23:44 -0700 (PDT)
+From: Rong Zhang <i@rong.moe>
+Date: Fri, 21 Aug 2026 01:22:01 +0800
+Subject: [PATCH v5 06/12] leds: trigger: netdev: Implement offloaded()
+ callback
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260821-leds-trigger-hw-changed-v5-6-3e00d6c4a936@rong.moe>
+References: <20260821-leds-trigger-hw-changed-v5-0-3e00d6c4a936@rong.moe>
+In-Reply-To: <20260821-leds-trigger-hw-changed-v5-0-3e00d6c4a936@rong.moe>
+To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
+ Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
+ =?utf-8?q?Marek_Beh=C3=BAn?= <kabel@kernel.org>, 
+ Mark Pearson <mpearson-lenovo@squebb.ca>, 
+ "Derek J. Clark" <derekjohn.clark@gmail.com>, 
+ Hans de Goede <hansg@kernel.org>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Ike Panhc <ikepanhc@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>, 
+ Vishnu Sankar <vishnuocv@gmail.com>, Vishnu Sankar <vsankar@lenovo.com>, 
+ linux-leds@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ chrome-platform@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+ Rong Zhang <i@rong.moe>
+X-Mailer: b4 0.17-dev-1f2f7
+X-ZohoMailClient: External
 
-On Thu, 20 Aug 2026 16:34:43 +0200 Sebastian Andrzej Siewior wrote:
-> On 2026-08-17 17:41:59 [+0200], Daniel Machon wrote:
-> =E2=80=A6
-> > Fixes: d6fce5141929 ("net: sparx5: add switching support")
-> > Signed-off-by: Daniel Machon <daniel.machon@microchip.com> =20
-> =E2=80=A6
-> > diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_netdev.c b/dr=
-ivers/net/ethernet/microchip/sparx5/sparx5_netdev.c
-> > index 1d34af78166a..4dedf5d92641 100644
-> > --- a/drivers/net/ethernet/microchip/sparx5/sparx5_netdev.c
-> > +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_netdev.c
-> > @@ -249,7 +254,7 @@ static const struct net_device_ops sparx5_port_netd=
-ev_ops =3D {
-> >  	.ndo_open               =3D sparx5_port_open,
-> >  	.ndo_stop               =3D sparx5_port_stop,
-> >  	.ndo_start_xmit         =3D sparx5_port_xmit_impl,
-> > -	.ndo_set_rx_mode        =3D sparx5_set_rx_mode,
-> > +	.ndo_set_rx_mode_async  =3D sparx5_set_rx_mode,
-> >  	.ndo_get_phys_port_name =3D sparx5_port_get_phys_port_name,
-> >  	.ndo_set_mac_address    =3D sparx5_set_mac_address,
-> >  	.ndo_validate_addr      =3D eth_validate_addr, =20
->=20
-> d6fce5141929 is v5.14-rc1
-> ndo_set_rx_mode_async has been introduced in v7.1-rc1.
-> Youngest LTS kernel is v6.18.
->=20
-> What would be the "fix" for the kernels v5.15 =E2=80=A6 v6.18?
+"netdev" can run in hardware control according to hardware capabilities
+and trigger options.
 
-stable should backport .ndo_set_rx_mode_async
-there's been a number of similar fixes, and the whole point of=20
-the new ndo was to help drivers avoid the sleeping in atomic bugs
+Implement offloaded() callback to provide its hardware control state to
+the LED core, and document the relation between the custom "offloaded"
+attribute and the generic "trigger_may_offload" attribute.
+
+Acked-by: Ike Panhc <ikepanhc@gmail.com>
+Signed-off-by: Rong Zhang <i@rong.moe>
+---
+Changes in v3:
+- Do not deprecate netdev's "offloaded" attribute (thanks Thomas
+  Weißschuh)
+- Document the relation between the custom "offloaded" attribute and the
+  generic "trigger_may_offload" attribute (ditto)
+---
+ Documentation/ABI/testing/sysfs-class-led                | 3 +++
+ Documentation/ABI/testing/sysfs-class-led-trigger-netdev | 3 +++
+ drivers/leds/trigger/ledtrig-netdev.c                    | 8 ++++++++
+ 3 files changed, 14 insertions(+)
+
+diff --git a/Documentation/ABI/testing/sysfs-class-led b/Documentation/ABI/testing/sysfs-class-led
+index 5afb307c935a..2a13c77aee22 100644
+--- a/Documentation/ABI/testing/sysfs-class-led
++++ b/Documentation/ABI/testing/sysfs-class-led
+@@ -100,6 +100,9 @@ Description:
+ 		- `[foo_trigger]`: the trigger is selected and offloaded to
+ 		  hardware.
+ 
++		The "netdev" trigger also provides a custom attribute to
++		indicate its state, see `/sys/class/leds/<led>/offloaded`.
++
+ What:		/sys/class/leds/<led>/inverted
+ Date:		January 2011
+ KernelVersion:	2.6.38
+diff --git a/Documentation/ABI/testing/sysfs-class-led-trigger-netdev b/Documentation/ABI/testing/sysfs-class-led-trigger-netdev
+index ed46b37ab8a2..a5146ea1e3e6 100644
+--- a/Documentation/ABI/testing/sysfs-class-led-trigger-netdev
++++ b/Documentation/ABI/testing/sysfs-class-led-trigger-netdev
+@@ -75,6 +75,9 @@ Description:
+ 		If 1, the LED blinking in requested mode is offloaded to
+ 		hardware.
+ 
++		LED trigger core also provides a generic attribute for this
++		purpose, see `/sys/class/leds/<led>/trigger_may_offload`.
++
+ What:		/sys/class/leds/<led>/link_10
+ Date:		Jun 2023
+ KernelVersion:	6.5
+diff --git a/drivers/leds/trigger/ledtrig-netdev.c b/drivers/leds/trigger/ledtrig-netdev.c
+index 64c078e997f2..a26109ca4b1c 100644
+--- a/drivers/leds/trigger/ledtrig-netdev.c
++++ b/drivers/leds/trigger/ledtrig-netdev.c
+@@ -754,10 +754,18 @@ static void netdev_trig_deactivate(struct led_classdev *led_cdev)
+ 	kfree(trigger_data);
+ }
+ 
++static bool netdev_trig_offloaded(struct led_classdev *led_cdev)
++{
++	struct led_netdev_data *trigger_data = led_get_trigger_data(led_cdev);
++
++	return trigger_data->hw_control;
++}
++
+ static struct led_trigger netdev_led_trigger = {
+ 	.name = "netdev",
+ 	.activate = netdev_trig_activate,
+ 	.deactivate = netdev_trig_deactivate,
++	.offloaded = netdev_trig_offloaded,
+ 	.groups = netdev_trig_groups,
+ };
+ 
+
+-- 
+2.55.0
+
