@@ -1,136 +1,86 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFDFD3DD87B;
-	Thu, 20 Aug 2026 21:14:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055D045198D;
+	Thu, 20 Aug 2026 21:14:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787260481; cv=none; b=KUXgc59HKOZRZkKpsEREroDJNqTipqyvAz0H/uxJROopWbkJMpJzlxpKp5ylgBaEA1F6xwSSjcD0vFOCIdeIPKf8sEFw0+pXOlK2jglUl+T/47JkelGWV4QIHaufLgYUNNhhXuxMSGTRV8M8HMU5KDEW2edpQ0LbCytGHUEOy64=
+	t=1787260496; cv=none; b=KNHsAYazG6DoSYUZ1vh2YmGgDAVm+imguUMlPZRCT2xgE3/TTT7Q1Kb65tUfy9FDdOLzBJ5EOjxmY4+dCfb0F1BaIllCYMW5OxszCZnQzf/X3Fl/p7I/X+xqYq6XTD2SUS4fZp7X5B08QruQxRthIj+S6uLNgc3NupMau/wHlmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787260481; c=relaxed/simple;
-	bh=stkbopTI1vtZm3RSXs41CcEU4yW8JbdiXRQG0a2vfMo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pyjcfGhHq+pDPh/kMTPW4IsCkMNG5QUvrjZVULoWBG3cyvs96rc8d9Dap2EZPc5fXykWqM0l309Sv2Rvy6moIlx7c7JNuq4wnSML/JKjWkYEvFUJK7yxY+v5r23b5+WeZDHPbgnN7SMrU6x+XL5bTIZ0AMXRtLZSFuPBDJoZglo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=hx+ZQsw2; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1787260496; c=relaxed/simple;
+	bh=/rvFs4SfiX+kVrj9HRno0oEU5uswJ2+aXCx42//Qx/4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=E84oaFBBgZZH42/9arvg5n5rBeQ6rfCeM+nM+rxqsUATrNXp8WLr6ziTUs40JymJ4hVjCefyTYjJgYeqdY7VDzm8PofHIVSkZi//PnvqMFYjWvZKKH02cCiZ2ZZjorA6cjB5vzVOcH8qw+7bOXdpAtJfBRl3wZn8jLZYZVRfL8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O3dG1WVd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="hx+ZQsw2"
-Received: from vm-dev.d0aziqou4eyuzblxqhi51nu2sc.xx.internal.cloudapp.net (unknown [4.246.87.102])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 72B9C20B7128;
-	Thu, 20 Aug 2026 14:13:58 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 72B9C20B7128
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1787260438;
-	bh=JtR5TctMcS/Ts6F1E1F0hudbmG1QYLKTHTLiSiZGywI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=hx+ZQsw27LQPmT/Dkvggt87AYxEvv/YuAqHP74xH4WRNPSHOw6fsjGvlol+cAp4fV
-	 MzqnaGun4KlzFkGQ4+X/vsKMkuGahBrtOtM7EjxOFjSe4qC6M54Tph/V944GkTU8E/
-	 eC2R4duOnm6OqaxJCzKgzSeWcVxN/3tRMF/s6wGw=
-From: Tahera Fahimi <taherafahimi@linux.microsoft.com>
-To: stable@vger.kernel.org
-Cc: steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au,
-	raminwo0202@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	apais@linux.microsoft.com
-Subject: [PATCH V1] xfrm: prevent policy_hthresh.work from racing with netns teardown
-Date: Thu, 20 Aug 2026 14:14:18 -0700
-Message-ID: <20260820211418.1409602-1-taherafahimi@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O3dG1WVd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 935211F000E9;
+	Thu, 20 Aug 2026 21:14:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787260492;
+	bh=hVVXoNrYa4PYRVXGveIWJ21amnb24aro3iRIkgFpVE8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=O3dG1WVdoHi+R7FGmSi8S+TvANFNiYH6BcVEXKWaDGeUeVxHt0QhFUlHb9KPK69un
+	 FPyRxS51EwlczAUuqyCIi+x3De0mzMvZtPmGEoW/QtaT89Ns8jLDgmbBGUTdatahpN
+	 0fPvuWFVgtlo+GtCsSurLZW+X3XulS+YnZXthEHetBm7EIt6jE5V1N1PpBSHDaRZPi
+	 bwS1I3msOo4vQS3skbEylSw4QGSNH+n1CTJQHh458KORUdIk4iq6b5JmlBjnzJ+cSs
+	 nnHedcRTxUXwL0ixzABbwXtbvACMkmWtgKluPiLWCHxqNZfJSj/6jO+fzawdyD3C9o
+	 RS7gcU2lKyzmg==
+Date: Thu, 20 Aug 2026 14:14:52 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Michael Chan <michael.chan@broadcom.com>, Thomas Walsh
+ <thwalsh@redhat.com>
+Cc: Pavan Chebbi <pavan.chebbi@broadcom.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Michal Schmidt
+ <mschmidt@redhat.com>
+Subject: Re: [PATCH net] bnxt_en: Gate TPH enablement behind
+ BNXT_SUPPORTS_QUEUE_API check
+Message-ID: <20260820141452.2ed9ac1b@kernel.org>
+In-Reply-To: <CACKFLi=6Pcynd2MR7apH8tTN3UVnzCcR0YuP7B5tgGRgtO_ttQ@mail.gmail.com>
+References: <20260818141556.64303-1-thwalsh@redhat.com>
+	<CALs4sv1zb7OemFcKRceoO49F8yPSOdZWSkomvU=mGmReR74=BA@mail.gmail.com>
+	<20260820103950.5dfa2969@kernel.org>
+	<CAD+aA83e_HP=Z0pXpcxW5j+TUXdgP3Dx8_LGxrMjdVwtERRCtg@mail.gmail.com>
+	<20260820111557.49f658a4@kernel.org>
+	<CAD+aA82ONaO+oNuX448ruJdLJ+ySvsnNwyCLYGGyDZfOA6U6cQ@mail.gmail.com>
+	<CACKFLi=WPCW=G8nyFbZnRf2yFxrc6Qao4HnsQf3J10JG8rwQnw@mail.gmail.com>
+	<CACKFLi=6Pcynd2MR7apH8tTN3UVnzCcR0YuP7B5tgGRgtO_ttQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-[ Upstream commit 29fe3a61bcdce398ee3955101c39f89c01a8a77e ]
+On Thu, 20 Aug 2026 12:16:07 -0700 Michael Chan wrote:
+> On Thu, Aug 20, 2026 at 11:59=E2=80=AFAM Michael Chan <michael.chan@broad=
+com.com> wrote:
+> >
+> > On Thu, Aug 20, 2026 at 11:30=E2=80=AFAM Thomas Walsh <thwalsh@redhat.c=
+om> wrote: =20
+> > > NIC is BCM57414 NetXtreme-E 10Gb/25Gb RDMA Ethernet Controller
+> > > [14e4:16d7]
+> > > FW version shared with us was 238.1.138.6 upgraded from 236.1.167.0 =
+=20
+> >
+> > This NIC does not support queue management.  I think it also doesn't
+> > support TPH, but I need to check and confirm. =20
+>=20
+> Confirmed.  Only Thor and newer (P5_PLUS) supports TPH.
+>=20
+> So the patch looks fine to me.  TPH requires queue management to
+> restart the queue.  And NICs that support queue management (with
+> updated FW) all support TPH.  Thanks.
+>=20
+> Reviewed-by: Michael Chan <michael.chan@broadcom.com>
 
-An XFRM_MSG_NEWSPDINFO request can queue the per-net work item
-policy_hthresh.work onto the system workqueue. xfrm_hash_rebuild()
-retrieves the enclosing struct net from the work item, so the callback
-can dereference freed memory if it runs after net namespace teardown.
+Thanks!=20
 
-Upstream prevents this race with disable_work_sync(), which blocks new
-queueing attempts and synchronizes pending or running work. Linux 6.6
-does not provide that workqueue API, and cancel_work_sync() alone is not
-sufficient because another request could queue the work after it returns.
-
-Provide the same guarantee with an XFRM-local work_disabled flag. Protect
-the flag and schedule_work() with the existing policy_hthresh seqlock so
-teardown can atomically stop new queueing attempts. Then use
-cancel_work_sync() to synchronize work that was queued before the flag was
-set. This ensures policy_hthresh.work cannot outlive its struct net.
-
-Fixes: 880a6fab8f6b ("xfrm: configure policy hash table thresholds by netlink")
-Assisted-by: GitHub-Copilot:GPT-5.6 Sol
-Signed-off-by: Tahera Fahimi <taherafahimi@linux.microsoft.com>
-Reviewed-by: Allen Pais <apais@linux.microsoft.com>
----
- include/net/netns/xfrm.h |  1 +
- net/xfrm/xfrm_policy.c   | 19 ++++++++++++++++++-
- 2 files changed, 19 insertions(+), 1 deletion(-)
-
-diff --git a/include/net/netns/xfrm.h b/include/net/netns/xfrm.h
-index 423b52eca908d..99eb5c2ff888b 100644
---- a/include/net/netns/xfrm.h
-+++ b/include/net/netns/xfrm.h
-@@ -23,6 +23,7 @@ struct xfrm_policy_hash {
- struct xfrm_policy_hthresh {
- 	struct work_struct	work;
- 	seqlock_t		lock;
-+	bool			work_disabled;
- 	u8			lbits4;
- 	u8			rbits4;
- 	u8			lbits6;
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index 00d9693c13ae7..cc8f4d4b70875 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -1384,7 +1384,10 @@ static void xfrm_hash_rebuild(struct work_struct *work)
- 
- void xfrm_policy_hash_rebuild(struct net *net)
- {
--	schedule_work(&net->xfrm.policy_hthresh.work);
-+	write_seqlock(&net->xfrm.policy_hthresh.lock);
-+	if (!net->xfrm.policy_hthresh.work_disabled)
-+		schedule_work(&net->xfrm.policy_hthresh.work);
-+	write_sequnlock(&net->xfrm.policy_hthresh.lock);
- }
- EXPORT_SYMBOL(xfrm_policy_hash_rebuild);
- 
-@@ -4181,6 +4184,7 @@ static int __net_init xfrm_policy_init(struct net *net)
- 	net->xfrm.policy_hthresh.rbits6 = 128;
- 
- 	seqlock_init(&net->xfrm.policy_hthresh.lock);
-+	net->xfrm.policy_hthresh.work_disabled = false;
- 
- 	INIT_LIST_HEAD(&net->xfrm.policy_all);
- 	INIT_LIST_HEAD(&net->xfrm.inexact_bins);
-@@ -4206,6 +4210,19 @@ static void xfrm_policy_fini(struct net *net)
- 	unsigned int sz;
- 	int dir;
- 
-+	/* Prevent new policy hash rebuilds before draining the work item.
-+	 *
-+	 * The upstream fix uses disable_work_sync(), which is unavailable
-+	 * in v6.6. Protecting work_disabled and schedule_work() with the
-+	 * same seqlock closes the check-to-queue race, while the subsequent
-+	 * cancel_work_sync() drains work that was queued or running before
-+	 * teardown disabled it.
-+	 */
-+	write_seqlock(&net->xfrm.policy_hthresh.lock);
-+	net->xfrm.policy_hthresh.work_disabled = true;
-+	write_sequnlock(&net->xfrm.policy_hthresh.lock);
-+	cancel_work_sync(&net->xfrm.policy_hthresh.work);
-+
- 	flush_work(&net->xfrm.policy_hash_work);
- #ifdef CONFIG_XFRM_SUB_POLICY
- 	xfrm_policy_flush(net, XFRM_POLICY_TYPE_SUB, false);
--- 
-2.43.0
-
+Thomas, please update commit msg with the info from Michael, rebase on
+up-to-date net/main and repost.
+--=20
+pw-bot: cr
