@@ -1,162 +1,169 @@
-Received: from mail-pj1-f97.google.com (mail-pj1-f97.google.com [209.85.216.97])
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4054647A89D
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 16:45:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.97
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787244340; cv=none; b=FuEuRiyCsrEbWDVnRJ7ol/3BE7s/o/T9YzmSdoOBmWwnptUv9hXkJ+Ju8iLSyKOJ3LP0S3Rwx31qMv+FV6YPP+8rMdrOATUcDols22d+bDDSuaVI+StYjPOTfHg+IAr0x9Rzpa6xvOa/OntgQyDxTY01nDic1lMVZMabu80ejYI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787244340; c=relaxed/simple;
-	bh=tMTeQnPU4AHC6P8juFuQipmONxaeDx/+5W8F0d5GdHk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ie/Y6NYV8XgFcbHPWtz4XJd0MOTBxVTpGzd4eJ/eo8JA66CPbxfslPIlElPJPgPQXRNC5oT644aEHeEc3YzldKYzVXihGrmidfetkB4vuE4IG9SAId0en4WMJd9b66RjhJkT7+a3+BEVnsEeEtQWCkg+lzaHjjFgs3BPBG5h21o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=YDkvd6jD; arc=none smtp.client-ip=209.85.216.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171CC47D93E
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 16:53:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787244819; cv=pass; b=vAdauSijz7R7IveUvc9IzJtLxi8IosEddq0QNpzK5WASvaJpENDWdS6UpsLUvwBnEfZPIg4uyDIXT05pvyZzhYIjxtaLCFmT0rMn93g0FHc7MkUHrNVLihaElI7nSoBIRMJ/6oROjNTzZLqjZ17AxWxwUF1F2llpQjZ7QWWhcd8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787244819; c=relaxed/simple;
+	bh=opv+LcA4ZOcz1hOTwwMwu8TEujjGyrr+wXGQrHmuxS4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=M/jYbd4mrtAZcpzU516Nr6HZL/wmeTmVHD7sQ7PHFfycfGZv9+W7SRVa+2dXtTvpVKusbo+MOYNoev4Ydz56MI9aFCW2J45PsRWpCa+TDrAuxGP4rYdp+lNf8dg+aj7ZZ3UO78igFkXHtegTL7NPtyBDnuJxAyLBg+4LpDNWB+4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c3VaW6cH; arc=pass smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="YDkvd6jD"
-Received: by mail-pj1-f97.google.com with SMTP id 98e67ed59e1d1-39266382df6so1868493a91.3
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 09:45:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787244338; x=1787849138;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=DFMRQQoRiG9HhTWXFbW2ThkhjhbmIH6Y0qXnbefRKoM=;
-        b=g76v4aImvjCOCbC/jpScYlTG47CYaHhjMBKHbVOk4VA3PFmsJAcCERPv4P18eNlcXi
-         cEOJ09p7hB9JhJKvwukwAkSfcEB/5J5CdufcRcJQsaE2KDsJzjp9MIw3xCfjZ2x+9vdo
-         04ZyQbh83cvSDWhD2/2sQQaeR6lQjls3GuMOEzUzuNkBG8TbrIblkHHNXo9ziWmnrdcl
-         I8aNPCkXtZJcWsFB6Rwb8UQaib5CoMvJR/pkO1BM1GtkpuKrXy9/QUpFjNznBowJaDTU
-         qV1tPxNYHXzq+pGIbhWeQukbDdhfEJgRm4TCicH1csmi0fPlQyYJ6JMyBE9Q6z5lOVgd
-         jgWQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoqzMaTv8wG7W5kN1AtMUzsQqXi+e4mYKwLKKGBSpPmWvV4VZBIlzNA+mW3WlDsEYrH7lHHQtc=@vger.kernel.org
-X-Gm-Message-State: AFuF++kSMEvTtCkpQE+oVvw9MyRvX1vUXQzUsZMBVHGijvS6AeBM8BJK
-	ySO5/HBdBWma/xk6dCIl1zThBTZm0FFrcjG76PUuT3KgeuQJ4SMDHuzwKYhZUnlnuLgqjyi4aQf
-	LT1K8XshG/aGqxovGRi7YrLRk1Q0Ay6IEamHJ67ZoW02Ff7zqzMoILlytK9NixKokw5M36oa6x8
-	zPQJuFIQOZBJ3aNQvEF5X9u42nAoGEsLzWvjrrkqs21DsCQjXAVxQQRxT7a+A88vcV/Aq2UfrTh
-	lDZP0CwAZTqBUQo
-X-Gm-Gg: AR+sD12TgajtOIst3z6o4CqYOxvfOab+UVTA07zu9IY9ar8BbYhpRdw6k1jTX9ZXEXE
-	bWVpZuhbm2Yi9ooLkdMQ++4IFw8UyrS8ipZP30OvKE5SD/KALRDDtWqMoyz7oHL6Xl73aqZlau3
-	/xpahlvuoZeWjt83QjiMSOKbda9SYao0NSIlKSaW+YsLN0WUuO+L/5gvb023kOx/+anMYML94HS
-	ZRUE2ZAtjL7XdV7Kbo2RlHaUg1ZC8spn+AaC7vOifc+tzCbKsSTQTShiIDH7GD7XYTfOQbtClQb
-	QXTi+zqKmu8jxIYFP9I1GsTsUCWjQ+foPG60e7popXE2pFpc/oYe0kYlhrcBTUjeec2JPC7L8vt
-	DEKnEFG+coB4RrbpUBExc7ljKfNsCS+p8v7nidue4hLi4kF6FVjsskjN6JqAuLiDY7jJQC2ImRR
-	UKiU0PMP//8vX2PeMsa1G/wuAl0udaN8wWo33uFI6G
-X-Received: by 2002:a17:90b:3145:b0:395:4de5:1054 with SMTP id 98e67ed59e1d1-395810af13bmr22715275a91.16.1787244338251;
-        Thu, 20 Aug 2026 09:45:38 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-26.dlp.protect.broadcom.com. [144.49.247.26])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3957f65a9c1sm2583125a91.3.2026.08.20.09.45.37
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 20 Aug 2026 09:45:38 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cec4226c70so891345ad.1
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 09:45:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c3VaW6cH"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-52d5bfa4bafso24431911cf.3
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 09:53:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787244816; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ItKRVH/iokV2BUuIUx1DjMZUPivgYJiax/kTzPScseRbqwMyDoVccd1INadEskpg1B
+         v0QpMrjEsVu51uTT3TWglhiXSqgqf7CQn3K+lFWzNyX7Wsqc1m7RilyNMGuzCVoqhbYr
+         GGZOo9SOQt1VfBpIaVCzzOEedu0o9LiZUlfgiVzcueO2p9pkjeFlEhQOzHQR0FsbKX2h
+         Qb0ToYWVo/ZVMyhvUjc/2ILT8qzxkEghaYYr4tOCs0O2++XBWJ3LJnENvp3Ek5VVTFee
+         1Pim4TMHqrtZ5UdsRaWq5VEeBbkv+SU5MH6Zdtx1GjQPgclDMDtad0p+MoXg/BpByJUx
+         wMpg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=NGH/yJHkK3M0IjwHdyO54yj9vy1LgGP/hn2OsWlWuBY=;
+        fh=C/VvdyHOFvcX5OvlLOTOlhimWzC7lIXdi1Ro7XvgWw8=;
+        b=PqJPR8H7wioTVoYj+AJCHFy9NjY2vCXqBEZe40093QUEA74SIsiEa1RMTEVjHB1/3q
+         K4bLGnC6yvRfwUwnvqYz6JqKUdvpHozlCfayNFjlMwMt+Lh96U22camQvsFtLjm0EbY/
+         tCvRrIdh5cyyg96xK5+i4lsg+HBlqzTeyF0xCjMypRnCTE7BY9cbwKz95k9nr3KYIQzK
+         lPmtzaIj5kEXgOLavGXRaeCuDoX2K6GYb4+4OAVs26JatWZsaYE4TdaOI0g1/OM56HET
+         Au2iWcEmknwTaB1KaA7J8kLWQdgi82tBCraDjGQJLYXsbdpJhEVHBFQHiR6krBNZh5ks
+         uYlg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1787244336; x=1787849136; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1787244816; x=1787849616; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=NGH/yJHkK3M0IjwHdyO54yj9vy1LgGP/hn2OsWlWuBY=;
+        b=c3VaW6cH/RmcBLe5Q7owLG4Phz5yK5JoA/uuZzRoBbPVsOCV6ixO1lDMjRI0/f5yQQ
+         g0KSm69gsaK8kFhSgXFn1II6Tp5+wgnHszxwwC7SVUUw6MMgR60+lglwQm2RUAaL7ZO5
+         GrD8QJWMh9KJi0iIec3t+S8hFLxvqDdyNlGiT7msdLi81XtmOV7hXHX/ZFHw6GrnBY7F
+         ShTzrRg8Qrmn+STSiPh0Ra0KFmHTx28f0FN3GkhfkC1Hx73xNXssnza+Mq84pRNk/B7W
+         +YYWHKjRwaFY6M7HC61LgBWJROVVJNBEt4sl+uP/r8jIF2TwitzFak0l58VIpHJRhMUc
+         s5dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787244816; x=1787849616;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=DFMRQQoRiG9HhTWXFbW2ThkhjhbmIH6Y0qXnbefRKoM=;
-        b=YDkvd6jDdfSB27Sw2G1BxtmG2W9ldQ2B98mXWKkha0ExBbvm/j9s5BU2IbtZaqcSsK
-         ax1lLUVKnjsi68h2wWUABLqjFSEsQcMhoj5hLfLXL8ZsQd8T0vL9H8J029mPi4fmFcC5
-         D5VefLTkosnU5XAC+eg2mdbeO7/OH7kwR2HWg=
-X-Forwarded-Encrypted: i=1; AHgh+RqjR8qd31rS5KoOrE+BML/Z1Oo2+jP4OveRRspwGFEU0AL4M86AiQhNRHnckDLJhxA5e6Uv578=@vger.kernel.org
-X-Received: by 2002:a17:902:ebcd:b0:2d0:401c:2ebb with SMTP id d9443c01a7336-2d5fd73444amr281636285ad.4.1787244336484;
-        Thu, 20 Aug 2026 09:45:36 -0700 (PDT)
-X-Received: by 2002:a17:902:ebcd:b0:2d0:401c:2ebb with SMTP id d9443c01a7336-2d5fd73444amr281634745ad.4.1787244335995;
-        Thu, 20 Aug 2026 09:45:35 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d62d555b5csm9613845ad.6.2026.08.20.09.45.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Aug 2026 09:45:35 -0700 (PDT)
-Message-ID: <cc18ef57-4f5b-4459-b110-b29bf2c8b8eb@broadcom.com>
-Date: Thu, 20 Aug 2026 09:45:33 -0700
+        bh=NGH/yJHkK3M0IjwHdyO54yj9vy1LgGP/hn2OsWlWuBY=;
+        b=nDNPrnZlTTZWVXa8iUuElgkU8UXqyHFmEW6kv5yXEtZWN9j2Zb1HX3EoTk/RBAUIUM
+         zHSrWV4op0UNnnbFHMiu4uqdcpfwfpQh4JAAdocyo99wyU5YMHNFdiogzaJoKiXwNqu/
+         mskq6EFxHtwzyYnyXxGhBc2ddZnN19vM8DQU+DJWTlVXzpOWPObh99b6PW96Sa3koswR
+         kapyeuZGeeF/3Ac8/jszhS/d6zOts6FTo0ZOo5gNlutg/qUsdMI4nSmadCHEsR1p+93G
+         UkEIZZ0IPvLXdvpCZyqqRPKdxAte49Vosock01tccUb2eH6TZfQrieFyizOGFrkcmom7
+         putQ==
+X-Gm-Message-State: AOJu0Ywjqc2bFCHqaan7ytX+4dRsa7hI5McJqr+SI8Kl94NGFRd4lveb
+	ofBR/zN0v5emg+R5B1TSknK8hpYxD+2P4a0ofKfHGbBBeOFpSU57Gq4dh7CAbhpBXIAjuhOmZyX
+	fPFj/iDR036zBA6WVCHFZMlJSUZqh/1zbDGI205O0
+X-Gm-Gg: AR+sD11YRT1g8Q+6dD+jCSsOYcT4Su1YNqa3jkaqtn5l/xUL1ceA+hwlshkGmVFwVM0
+	Fo1jR4DwPjxjMIhSQiA/l9kWX61viV80F5MgS23BCr39MMe02umsfBhxHBIlEcqcKGrExdqHXt7
+	ktd/PtB+4Lnj4US83o9iiotU4zc3WNph4EfdajGslhnyzpuKPVuVPJFg+2DN0P9f/NwhxUx5cC2
+	+oW/HRwyD694JtGpwIC2kNKzIm7s7KSPX0ZMclthnNUJ9nH2AI1GEIlqepl1/jVdW9++ai6RPp0
+	TzRpmEYNHFQ0pKGQLHc8GGtRPJim6KyxaLhSwmVd39XOOTswoktssVTTNzLDcsRlmSzqttAGAFd
+	5oCYIvxxNb9Xsi6NNizujELxkNfQJP4bGd5IdMmCZ1BiLj4Bc7inb7QGeXw==
+X-Received: by 2002:ac8:5f0b:0:b0:52d:2ddd:27c with SMTP id
+ d75a77b69052e-52dd5cb09c7mr113827831cf.31.1787244815224; Thu, 20 Aug 2026
+ 09:53:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] net: broadcom: Improve IRQ error handling
-To: Paolo Abeni <pabeni@redhat.com>, phucduc.bui@gmail.com,
- Justin Chen <justin.chen@broadcom.com>, Doug Berger <opendmb@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20260820111456.97947-1-phucduc.bui@gmail.com>
- <a618bdba-c370-4f16-ac09-0f7ceb742d42@redhat.com>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
- xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
- M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
- JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
- PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
- KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
- AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
- IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
- ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
- bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
- Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
- tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
- TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
- zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
- WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
- IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
- U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
- 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
- pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
- MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
- IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
- gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
- obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
- N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
- CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
- C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
- wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
- EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
- fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
- MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
- 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
- 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <a618bdba-c370-4f16-ac09-0f7ceb742d42@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+References: <20260817153957.3177627-1-poros@redhat.com>
+In-Reply-To: <20260817153957.3177627-1-poros@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 20 Aug 2026 18:53:23 +0200
+X-Gm-Features: AcwNN1Xb91DpV9WY_Q-Z2-aLqA5VqqqNBYRmDzZhkVHQO2OraLaV1QOhEcvG8-s
+Message-ID: <CANn89iKZe5reKy5uNxF7_G2=zytnPjWCUn+bX7-iGdJuTjBgMw@mail.gmail.com>
+Subject: Re: [PATCH net] xsk: reset the mac header in the generic Tx path
+To: Petr Oros <poros@redhat.com>
+Cc: netdev@vger.kernel.org, Magnus Karlsson <magnus.karlsson@intel.com>, 
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, Willem de Bruijn <willemb@google.com>, 
+	Vladimir Oltean <olteanv@gmail.com>, Doruk Tan Ozturk <doruk@0sec.ai>, bpf@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/20/26 06:30, Paolo Abeni wrote:
-> On 8/20/26 1:14 PM, phucduc.bui@gmail.com wrote:
->> From: bui duc phuc <phucduc.bui@gmail.com>
->>
->> Hi all,
->>
->> This series improves IRQ error handling in several Broadcom Ethernet
->> drivers by propagating IRQ lookup and request errors instead of
->> silently ignoring them.
->>
->> The changes were found by manual code inspection and compile-tested
->> only.
-> ## Form letter - net-next-closed
-> 
-> We have already submitted our pull request with net-next material for v7.3,
-> and therefore net-next is closed for new drivers, features, code refactoring
-> and optimizations. We are currently accepting bug fixes only.
-> 
-> Please repost when net-next reopens after Aug 31st.
-> 
-> RFC patches sent for review only are obviously welcome at any time.
-> 
-> See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
-> 
+On Mon, Aug 17, 2026 at 5:40=E2=80=AFPM Petr Oros <poros@redhat.com> wrote:
+>
+> __dev_queue_xmit() resets skb->mac_header, __dev_direct_xmit() does not,
+> so a frame taking the qdisc bypass path reaches ndo_start_xmit() with
+> the sentinel left by __finalize_skb_around() and skb_mac_header() points
+> 65535 bytes past skb->head.
+>
+> The packet socket reaches it through packet_direct_xmit(), and
+> packet_parse_headers() was taught to anchor the header by
+> commit c2707480cfbf ("net/packet: reset the MAC header on the
+> packet-socket transmit path"). AF_XDP reaches it through
+> __xsk_generic_xmit(), and net/xdp/xsk.c never sets the mac header.
+>
+> ice reads eth->h_proto through skb_mac_header() on its ordinary Tx path.
+> On an E810 every one of 2817224 AF_XDP frames reached the driver with the
+> sentinel still in place, so the ethertype never came from the frame. With
+> this patch all 5757920 frames of the same test carried the correct 0x88b5=
+.
+> An AF_PACKET sender on the same port read 0x88b5 in both runs.
+>
+> On a KFENCE kernel that read lands inside the pool and gets reported as a
+> use after free of an unrelated object, 387 times in a 180 s run:
+>
+>         BUG: KFENCE: use-after-free read in ice_xmit_frame_ring+0xddb/0x1=
+650 [ice]
+>          ice_xmit_frame_ring+0xddb/0x1650 [ice]
+>          __dev_direct_xmit+0x347/0x4d0
+>          __xsk_generic_xmit+0xc13/0x1e70
+>          __xsk_sendmsg.constprop.0.isra.0+0x519/0x640
+>          xsk_sendmsg+0x6c/0x90
+>
+> Rerunning the same reproducer on the same E810 with this patch applied
+> produced no reports and no bad reads.
+>
+> Anchor the header in xsk_skb_init_misc(), which runs once per skb for
+> both build paths. With IFF_TX_SKB_NO_LINEAR the offset still is not a
+> real header, but it stays in bounds and no such driver reads it.
+>
+> Fixes: 35fcde7f8deb ("xsk: support for Tx")
+> Signed-off-by: Petr Oros <poros@redhat.com>
+> ---
+>  net/xdp/xsk.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+> index 7855ee09c4b640..885427392cb6b3 100644
+> --- a/net/xdp/xsk.c
+> +++ b/net/xdp/xsk.c
+> @@ -931,6 +931,7 @@ static int xsk_skb_init_misc(struct sk_buff *skb, str=
+uct xdp_sock *xs,
+>         skb->priority =3D READ_ONCE(xs->sk.sk_priority);
+>         skb->mark =3D READ_ONCE(xs->sk.sk_mark);
+>         skb->destructor =3D xsk_destruct_skb;
+> +       skb_reset_mac_header(skb);
 
-Not seeing much value in these patches, to be honest.
--- 
-Florian
+I don't know, I had at some point the goal of removing our dependency
+on mac header in ndo_start_xmit(),
+as this must be skb->data.
+
+ice could use skb_eth_hdr() instead of eth_hdr() or skb_mac_header()
+and save few cycles.
+
+Some drivers call skb_reset_mac_header(skb), this is really a mess.
+
+With AI these days, it should not be too hard to completely remove our
+dependency on mac_header.
