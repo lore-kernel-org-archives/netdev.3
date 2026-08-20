@@ -1,61 +1,70 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E733D9535;
-	Thu, 20 Aug 2026 21:02:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096BE3DCD80;
+	Thu, 20 Aug 2026 21:10:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787259766; cv=none; b=Fc099q9ZkZvp14fOU3RxPwFpyd578a/7chHPgfOK++qacnNeuyniiiGzYysu/viRPrdp/8sY14ZcWU0JD0ZuczinU2UGQLLDM0xzVyEiRME8pj/4rp9KK8IaAx/AE3b7ikgh2NtNHXRYaAcYWVvn7zhWn64ucnKbg59h+4W+TEk=
+	t=1787260261; cv=none; b=sUxXGa2jDRPplpa/YlKfDN88aBoULJAKY3kH2EYOFk9i1vd8/1wNHx4N89jA3ZeQPJlboPJhVr/HQmZb7+m1Br5yNHJwKe2Ua2yXpKkfgfhjJ/bw2cQ+FdXWhwYLqti1peldiQZZisQweFHDBZliAYFqVZ2b+IGDopq/gdnSKYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787259766; c=relaxed/simple;
-	bh=hAEOokNojh3lhJqgZ65G/2OyKzGruLJoWhh1Lmm4550=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UvCnTArzz9faPrCItieV+W1+iiGZ6DZ1WGJ/1fmEsmtVdJIWSTFf1ckNNpwVz8+mahRhRXUHhG+wAcoM+vcC1qNlSaZYhlA4vRQfI5b5dnbe4gyhlSbAvQanwG2CFGaYRPxd+As/q8ENEdIa238oUf/14CD/n18jshrJDc/a7As=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=es6UCJRL; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1787260261; c=relaxed/simple;
+	bh=haz3cX+jgtRxUtYhx1PNu2kmlr1O+I/z9J1THqvKWns=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JWJBE3nm5nIW6P0MJbZwY48Q3i2djY174ttmsTifA/yKiCQILpKClmp3SPVzuqzQLCbMCfKKXL7Ce7KePvJtRi3gbxu8J1AbEO/kwlR8D2hQ4vx0xItlnaoTppiZqLWlm4X0q32XkNdHWh/OuIZMHJizbTfgBpdwhGzwcLlwoow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sw3ZLQhM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="es6UCJRL"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=EvwSXRxb9J8E1d/2epUBUSc8FSlEoFftTDkK/JBgJcc=; b=es6UCJRLDTAY1chKmX9GHIaQQo
-	+DLoTvMoIHeGBQQoGDG55Mo7ki1zuRY/fI69Ctk24CD8qC1w2EsVwDOciwfoc+D2GX4NjilPrUoBj
-	SlnuHQ9aud8/JsyAgyPiRHudxs5FVylkKV8VokYyo+Kp94yxsOI9bdvOi5QJksJc/ySU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wx9uA-000qSi-1m; Thu, 20 Aug 2026 23:02:30 +0200
-Date: Thu, 20 Aug 2026 23:02:30 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Vladislav Karmanov <vladislav.karmanov.dev@gmail.com>
-Cc: netdev@vger.kernel.org, chester.a.unal@arinc9.com,
-	daniel@makrotopia.org, dqfext@gmail.com, sean.wang@mediatek.com,
-	olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, yangshiji66@outlook.com
-Subject: Re: [PATCH net v2] net: dsa: mt7530: do not advertise EEE on
- MT7621/MT7530 switch
-Message-ID: <108396dc-0067-4b1c-b270-9d42e2b9a96e@lunn.ch>
-References: <20260820202844.1821687-1-vladislav.karmanov.dev@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sw3ZLQhM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 096761F000E9;
+	Thu, 20 Aug 2026 21:10:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787260259;
+	bh=H85X30IWrJ95sAQc0ZuX4pj9XKiyPTX6Mj+tx29AriQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Sw3ZLQhM1zRkynV4fddikXPADtXcUSUBtUa7Nhlz1u4/UDqIG8uXkHTimHJf2+Wwi
+	 t4BxfvCjxs7hr2cdrB0ZANUP0qNZvFCPNk4H6cj3daLIJ/3es6ZjAP8ByL82DyxqIN
+	 Uxq+21T/0KhUA4oiZLd7ZjvLIZac8Njlo/EK5KpeMftgFaCmiVXj5dtHvtU0c5EjsW
+	 wBcl69VDVp+qE2wYRstlcH1Mp6UrFSKIm3+hp4O+uGW4amniZGkbGVY/lUbcdvvUgM
+	 HqZ2la4ptIrHmSvoeeXcHSALvQBXS+xQxmlXkQ5qtf5bvnXOEmJH6SgY2NAdLRAv/6
+	 M+2T/tGUoA/Ag==
+Date: Thu, 20 Aug 2026 14:10:58 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Bhargav Joshi <j.bhargav.u@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Tony Lindgren
+ <tony@atomide.com>, netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, goledhruva@gmail.com, m-chawdhry@ti.com,
+ daniel.baluta@gmail.com, simona.toaca@nxp.com
+Subject: Re: [PATCH v2] dt-bindings: net: ti,davinci-emac: Convert to DT
+ schema
+Message-ID: <20260820141058.69ad2edf@kernel.org>
+In-Reply-To: <20260818-ti-davinci-emac-v2-1-805736d99e65@gmail.com>
+References: <20260818-ti-davinci-emac-v2-1-805736d99e65@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260820202844.1821687-1-vladislav.karmanov.dev@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-> The MT7530 internal GE PHY advertises EEE by hardware default. The
-> eee-broken-100tx / eee-broken-1000t device-tree properties
+On Tue, 18 Aug 2026 05:00:59 +0530 Bhargav Joshi wrote:
+> Convert Texas Instruments DaVinci EMAC binding from text to DT schema.
 
-These properties are not needed. We know the PHY is broken, there is
-no need to describe it is brokenin DT. The PHY driver should just
-disable EEE. End of story.
+## Form letter - net-next-closed
 
-     Andrew
+We have already submitted our pull request with net-next material for v7.3,
+and therefore net-next is closed for new drivers, features, code refactoring
+and optimizations. We are currently accepting bug fixes only.
+
+Please repost when net-next reopens after Aug 31st.
+
+RFC patches sent for review only are obviously welcome at any time.
+
+See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
+-- 
+pw-bot: defer
+pv-bot: closed
+
