@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548B92F6920;
-	Thu, 20 Aug 2026 20:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142133BCD0A;
+	Thu, 20 Aug 2026 20:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787256058; cv=none; b=MeARlbq4foEflbG6fgbOtTu7Jj0+TcmeFGC0wR5KUnfuN7KMye/SY/RIyy9JmZzvkuAJLAJjb1JtFlzGJKmbiC8TfrlFnWLYxjwvzGEvUcZ1QHaJPzNrWH80TXNLRVEQsiMZu4VeDt/WGyfBTTg1HAMsjROE9ok/AG0TEusnCTM=
+	t=1787256060; cv=none; b=cpn3QqdBSDUCJeTZuMPYuxkEyGlE5/TeB1orEAhpudaQYdi3y5ErTXF7LHI/jKzXUmLr+3n9//0lUkzBZ9+kvGHIQUjoHmsqty3Q7gHppNlv5FKv49BBrF0RXM2oqjc8wHyFZN82jdVeJGEW2W6As6AGGpYoCxfy5zVIyw/rKPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787256058; c=relaxed/simple;
-	bh=EX2mpDdWPX2/qs7tR77bZW2LsOpHrBMQd56JyEU7ig8=;
+	s=arc-20240116; t=1787256060; c=relaxed/simple;
+	bh=8g61RoNHQqAzOOfdY1lbZi9krehjtB0P5RqvcnbLdGI=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Wf/Y4j03DaUPQv1bcDATVQqUVFOMo49sbprKqMIOfV2ObjC7oDNCIl4D7Zp5f7irH7fhLSMju+dhEpLVjBkHBbuAofNEDXycKdMlWhNgKrAomI+4hC8rDwZ/3rNsOewaiDHeHx2ZfAJozDhT+2pOrQ+SyurDeeMbIog7AhMGYuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y+gCCbJR; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=kq7KX7ADjsJzGwwgBQfCODqmjCBPDKcYBsrs3PkvmD12j39x5ljTNfY6U8qYkXT+peGGtRzVGUJtFgOQCkV36VadaRy4xqeuVxaL/YrzhWTCaXSi6+c0Kto6tKnAiJNtq7Cd0ZoWpasey8EG/TaHNitUJ0/FZRpXJVVzQ5XqzI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kUVmUW9H; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y+gCCbJR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B7D81F000E9;
-	Thu, 20 Aug 2026 20:00:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kUVmUW9H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A530C1F000E9;
+	Thu, 20 Aug 2026 20:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787256057;
-	bh=CWz9mtnaDzz3+elH02ZcSWO5X2uQ+rae2nRpQPczEaM=;
+	s=k20260515; t=1787256058;
+	bh=DOs0n9SEm4ByeHFXj/fa0wKmj1XGR2iTgtrSlS1at0c=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Y+gCCbJRiH1lyLH28B8zn3I8eqlk4TLIuiuFPHKAOudwWtgZHjAiJIWDoeiWOcyCM
-	 4+Z3JSRfbzHTzyf6OiLvF+g+t8889oHsYWKnCDzI/QRPtcBMENTaZ7DUO12riLZHnN
-	 Iofva4FVsUmt0BoOYQjLAYTWQLEEf1PUh5ipxXw5KwND6zVDpXOL4LZAj+44VieXdK
-	 wzK/RE38qEMCHZiu0Flut9XOCevT+HAPXdXO0gvo03tP07hms7zZWKaPb3YmPma+NP
-	 TgtHfcHfvO/xM/DMAwLXCoDPRp4CHJ2k06wVCAW2WfVujbgB5s9yAGa/EMvmCwVKiA
-	 EPic4OzakRl0w==
+	b=kUVmUW9HxZlcNTGBcG68Ja3Zh5v6gjGZOOcBQUposCjRnsGtd+XyACBg0lysMSk24
+	 NJRyU3gUb8Hg2itv4O5ffHfiK8VQ+7/hqLnYcMwzZb5+GP0RqGxieYeW3whECmpj4o
+	 yWcLVZquIleYgfc3G0yMG/+o7GbT1C46vuSJbWCMWyFXUTHDXItvk+fY0SAzHevYFb
+	 uEAnOoCeRhk3YHXQuvAys9rlMUzTtpIuIYLGXfCmcY+ELzNaUSclVLUVbWRfEtPOxk
+	 6mj1WwKU2h+j3sozwkVO9ZVB7wAIWhBStI2N/CzwmZiklvsgjlZyZv0NMF2BRvm8ld
+	 kll2HQmzDZ+pA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A39392445B;
-	Thu, 20 Aug 2026 20:00:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19918392445B;
+	Thu, 20 Aug 2026 20:00:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,43 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: qlcnic: validate unified ROM sections before
- loading
+Subject: Re: [PATCH net] mptcp: fix uninitialized local_id in syncookie
+ MP_JOIN
+ reconstruction
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178725600713.460874.16217299636512038781.git-patchwork-notify@kernel.org>
-Date: Thu, 20 Aug 2026 20:00:07 +0000
-References: <20260816052109.4607-1-pengpeng@iscas.ac.cn>
-In-Reply-To: <20260816052109.4607-1-pengpeng@iscas.ac.cn>
-To: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Cc: shshaikh@marvell.com, horms@kernel.org, manishc@marvell.com,
- GR-Linux-NIC-Dev@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+ <178725600863.460874.9689834140806639279.git-patchwork-notify@kernel.org>
+Date: Thu, 20 Aug 2026 20:00:08 +0000
+References: <20260815115205.197151-1-harshitvaru666@gmail.com>
+In-Reply-To: <20260815115205.197151-1-harshitvaru666@gmail.com>
+To: Harshit Varu <harshitvaru666@gmail.com>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, matttbe@kernel.org,
+ martineau@kernel.org, geliang@kernel.org, stable@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sun, 16 Aug 2026 13:21:09 +0800 you wrote:
-> The unified ROM parser reads directory, product, and data-descriptor fields
-> from the firmware file.  Existing validation forms table and data ends with
-> unchecked additions and multiplications.  Malformed values can wrap before
-> they are compared with the firmware size.  The parser also dereferences
-> typed pointers at firmware-controlled offsets.
-> 
-> Valid descriptor extents alone are insufficient for the consumers.  The
-> loader reads a fixed-size bootloader regardless of its declared size, the
-> version parser assumes a 17-byte tail, and a partial final firmware word is
-> read as a full u64.  A truncated image can therefore make the driver read
-> beyond the firmware allocation during validation or loading.
+On Sat, 15 Aug 2026 17:22:05 +0530 you wrote:
+> mptcp_token_join_cookie_init_state() restores remote_nonce, local_nonce,
+> backup, join_id, token and msk from the saved cookie entry when rebuilding
+> the request socket for a MP_JOIN 4th-ACK handled under SYN cookies, but it
+> does not restore local_id, even though the SYN path saved it.
+> subflow_ulp_clone() then reads that uninitialized field and stores it as
+> the joined subflow's address-ID. Because the request-sock slab is
+> SLAB_TYPESAFE_BY_RCU and not zeroed on allocation, the value is the stale
+> byte of a previously freed request socket, which an off-path peer can
+> influence by sending concurrent MP_JOIN SYNs. This corrupts the path
+> manager's id-based subflow bookkeeping for the connection.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] net: qlcnic: validate unified ROM sections before loading
-    https://git.kernel.org/netdev/net/c/5e8076e4e412
+  - [net] mptcp: fix uninitialized local_id in syncookie MP_JOIN reconstruction
+    https://git.kernel.org/netdev/net/c/b878dfdd12d7
 
 You are awesome, thank you!
 -- 
