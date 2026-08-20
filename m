@@ -1,82 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA67C3C1984;
-	Thu, 20 Aug 2026 20:08:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9AB389453
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 20:14:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787256500; cv=none; b=ZkIFlT2iar3phaiQN6cpAvHiy+aCbc9dAkFe7OVjj7qRP0C0DzhcJz04nWIRUX4EAT/5Vrb+NzDE4X45CINInw7isVqCJqW0c4tgJwx877EZzGFwl04W9bySA4fY1al3vsZi54jFHVw28eFc89JTWRLsY56mo/WBJDcyHF0eCXo=
+	t=1787256845; cv=none; b=Qtd9GnCqIMBvLih0T8nUbUb+XQWCQIGNpUiD6S+dcq0s+b2nX9tTZk4Ri+Ty/UTlZTAOdueBUzWibVvmAoSWzp2NYhvniQ7QTG6WHqEF3AnLGFpx9A9Y2r9EBA7eui3QEwUVr9dcrQGyxYveZtJq7DT6I3WZXnbkzB+fvqjaDH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787256500; c=relaxed/simple;
-	bh=LASZoqjW3hFIgVCWSDQhrrobFOL516RWzCqLt9qLnfA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kqaRNGE6PwTdbrQ1/d9fANpyEurCVPbu32WHHdLWTi/uwGezjfvRZFUf8dmUa8UbCgdhQVIbrH56KkKqwuMU7QXkWiGvFGDsx3zTaj1jtN5KOvkS8J+hGk4Bnei9YbV8rOkkEn7TUR2nIcWsMkkZgbnh3lXSQAwqiLGtMlGyOxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KCCQlewA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787256845; c=relaxed/simple;
+	bh=Ng/H3V2O4u1IyHpay8/lHPwCwoDVnQaObwgJaKdP1Xc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rY/w5q8+rATXnPU5U3GAfluSkfw5mddxooe3dRju6DOK0QWo7sNFE44JQupe8g/Xj1Rff4/zlCck+82w/yAIAlCULHW5wBl0b/TrPasCpicRv46Z/+I+58cJR3wWD2ZWLGESzN0VvToF/aSSgMHhDp4KHLPeuQC+D0mpblAfx9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hqb/tR8t; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KCCQlewA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602041F000E9;
-	Thu, 20 Aug 2026 20:08:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787256498;
-	bh=qYu84t3fABADnPYtP9MVaPEECHRcbhACsJ87Z91nlZo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=KCCQlewAVugu6i/lYy11Xbf976TbBsNlbivTrwKFo8uiw8MARS9p4gYdU9rEc4XLO
-	 AACqMCb6CtSpRcnBoBtS1f15ACokNtOVGPQoXQwXsomHJsBcOGSQwl2BuppNbSaP9v
-	 0FVFC+89xsfzQjekcBi5FJBoUEa4+v+Ur1DcdI/QdLFtfmJmRoAx+i19XJYzVhIdjB
-	 etZMhO8SllYkcwJVX7ynoJQbZbVoT/2GG9OmiI2Jfk4zDdS0bqQh+YtpEyHQT8zOV9
-	 OEsxJLbJT1JFHQXMuI7HlbH9sjCHOubHFH1Ltk7zi6UNDnuXDixqDgV28PkX1cuWIK
-	 4isK79PdAPEOA==
-Date: Thu, 20 Aug 2026 13:08:17 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Abhijit Gangurde <abhijit.gangurde@amd.com>
-Cc: jgg@ziepe.ca, leon@kernel.org, brett.creeley@amd.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, allen.hubbe@amd.com, nikhil.agarwal@amd.com,
- linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [for-next v6 0/2] Add Reorder Completion Queue (RCQ) support
-Message-ID: <20260820130817.43317368@kernel.org>
-In-Reply-To: <c565fa0c-08e7-60b9-90e9-07daa4777a48@amd.com>
-References: <20260813104954.319065-1-abhijit.gangurde@amd.com>
-	<20260814102413.5a26bf8b@kernel.org>
-	<c565fa0c-08e7-60b9-90e9-07daa4777a48@amd.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hqb/tR8t"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6a082b3671fso530835a12.3
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 13:14:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787256842; x=1787861642; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/pZcBVmHZcpyFoM1c9HOEpMfbGDPio4XjY70+PPmciw=;
+        b=Hqb/tR8tv4RO5OFxjhxEiOSNo6SggxiYF4vlcIy6a36eJWbpdP26RNcHuhjnlbX9RP
+         KYua8wzHeW7yAOYHOipZdL9RZUfRT1I3WBW++FoIC+4MDMwHrM4xdVli7F5Hp/puGTK5
+         BwuOqbKn2PgXynTtPSs+DiH9H+YsT1GavIyqMmg2JbkeL/nwlNte7fYITUJW6tuGbq8x
+         SDFL+eAE6nqTx6v3nYCy8/smLD8uu7lWipgo+C4LAKzi1hwYEfrekZUSClN1UE8MKfCY
+         faRjh9rWDnrkdZgNpJeSGKkqw4671MI02qWQSRF4ta3iwajp5YgXaIIeTFDE1IaovTLb
+         fUPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787256842; x=1787861642;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/pZcBVmHZcpyFoM1c9HOEpMfbGDPio4XjY70+PPmciw=;
+        b=pOlaEWkvVkTeoyFsX+6ABO4vfWTh4bjU6ZmMwFDwHarA5r4oJ1znsXJAs3gtYwQQ60
+         tlTx6GdBRZ2WHUnexxIOctB3SDFarp+CqiBEeiHUu4Ib6nKZJpcWEwjuhpCBBU48/ENB
+         nVta3MkLdlSg2ZyQnObpw+gKbxKOHpctjik6Ua8XeSDdOAg1YDAN5kkbKcUdlkIe9Vzh
+         NYT6mp0xfjrQ33M/6Ktl3NZTauD1juZxk3XEmyHAMg+cpedjEf5Jdf5bGpdMSNaemRRB
+         08fUJb5jUBnppfVaNg/+mfZpKh+WlyLmCC29yXOPsDSQxSWBDb4EaQj12xRIv5vNoNKz
+         Z7kA==
+X-Forwarded-Encrypted: i=1; AHgh+RoWoepddWpn0IzdCp55nd/t1mDiTp1h7mqFTRkHLq8co/BuQDICkY086l84Y5gk2gG/yZwkn68=@vger.kernel.org
+X-Gm-Message-State: AFuF++mfciIEzs1Cwf/rpHpYHa78kndCHbrNuRijdwzX09+/RLWwQFIp
+	x16T4Vind+M+feUjUeSSryqbRINthY2UX2UOpJQKiaS4t2Z+gA4PXW0g
+X-Gm-Gg: AR+sD13LMBYIWs1nmNl/7n6fQBfAds/hGHobWhsL4/xCuh/Jmj4a43MLVfmf11hL/2v
+	4rsNjQptFKwGpv8jZ5tnx2jOTAxX81SNYzLEDeLKtWjI/elBCy7fgnx1tyKA6b/yZEJIavEi+Qy
+	1iqb6h35XQ6LMVXnKg/090mzKTIX5QX/Ieiy3jz7YtY5HtOaxyT4JJv90H29qQ8T7GeuDKFJ7JN
+	wNJ5tr0NBAWdvVRM4e04IMmvjTE/A3auE1J3OvuYYtrSO1z+wzzQQv3WTeY0GuH0ZICThcjxaZX
+	ujqrUaEAs2WtzFsFgtI4wTwh5VVRCGq+pTUTj9CGba+WRZEJIGHw3FoKcTPkYBDJLbx5IdpigAX
+	pxyv3E1XRmohdfglO49bO21tiu4IIxX4/M5yoB/7us5ohYnIQDePdrGIVA74UklobTtfPqTBd+3
+	NZHHl+Ncyr7Bix86UcAADRRxt/wVSdV9ExsdjvqVK3yFDDu+gSl2DdvIx8
+X-Received: by 2002:a05:6402:5d2:b0:69a:b38d:403c with SMTP id 4fb4d7f45d1cf-6a42f18f10amr1234734a12.7.1787256842300;
+        Thu, 20 Aug 2026 13:14:02 -0700 (PDT)
+Received: from beelink.. ([186.247.160.121])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a3ff1565fesm3016822a12.17.2026.08.20.13.13.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Aug 2026 13:14:01 -0700 (PDT)
+From: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
+To: Yiqi Sun <sunyiqixm@gmail.com>,
+	Jeremy Kerr <jk@codeconstruct.com.au>
+Cc: Aldo Ariel Panzardo <qwe.aldo@gmail.com>,
+	Matt Johnston <matt@codeconstruct.com.au>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: mctp: hold a reference to the route device in mctp_route_lookup()
+Date: Thu, 20 Aug 2026 17:13:00 -0300
+Message-ID: <20260820201309.3634132-1-qwe.aldo@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260817121432.3586534-1-sunyiqixm@gmail.com>
+References: <20260813022102.2792032-1-qwe.aldo@gmail.com> <55cd94e61d68d95e9db16f21980a532f4edf70e1.camel@codeconstruct.com.au> <20260817121432.3586534-1-sunyiqixm@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, 17 Aug 2026 12:35:52 +0530 Abhijit Gangurde wrote:
-> On 8/14/26 22:54, Jakub Kicinski wrote:
-> > On Thu, 13 Aug 2026 16:19:52 +0530 Abhijit Gangurde wrote: =20
-> >> Patch 1 extends the net/ionic firmware identity structure to expose the
-> >> rcq_sign_bit field from the RDMA LIF identity. =20
-> > I asked for a PR, based on a tag from Linus's tree with that patch.
-> > Did you send that?
-> >
-> > I only see a PR for rdma-core here =20
->=20
-> Hi Jakub,
->=20
-> I have the PR ready on Linus's v7.2 tag.
->=20
-> The following changes since commit 8d3ae59288f1e7d58d76558a6ee96d533bc501=
-9f:
->=20
->  =C2=A0 Linux 7.2 (2026-08-16 14:32:26 -0700)
->=20
-> are available in the Git repository at:
->=20
->  =C2=A0 https://github.com/abhijitG-xlnx/linux.git ionic_rcq_shared
->=20
-> for you to fetch changes up to bb23acfd05f0399f33dae000df2ef4a88787b7d0:
->=20
->  =C2=A0 net: ionic: Fetch RCQ sign bit from firmware (2026-08-17 10:58:31=
- +0530)
+> I've reviewed Aldo's patch, and the approach looks good to me. It
+> addresses the same issue I was trying to fix, so I'm happy for Aldo's
+> patch to supersede mine.
 
-Thanks! Pulled
+Thanks a lot, Yiqi -- and for the original analysis, which flagged this
+first . I appreciate you being generous.
 
+Thanks for the review, Jeremy.
 
+For the record, this was applied to net today:
+  https://git.kernel.org/netdev/net/c/408da1df1811
+
+[1] https://lore.kernel.org/netdev/20260731022926.913865-1-sunyiqixm@gmail.com/
+
+Regards,
+Aldo
