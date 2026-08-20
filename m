@@ -1,78 +1,75 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42DF3C13F5;
-	Thu, 20 Aug 2026 21:21:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 037D639B959
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 21:22:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787260864; cv=none; b=Hc4xWpi2Y0WGl1oGvx60ya+t/QwI20GRBM/r18DcesivJoj1v8wZ3vJrsLO2G0lse5iZIsUx6yYH7Okw9qVd220G32lMDi3dpv9LW/p7rHbylXxuQ8eABL+lv1wBqTvpezAECaFbNstXNT5W1GMUqx3HtEo5at/U+cMhc3PzDhA=
+	t=1787260931; cv=none; b=nTyh9qjIIvn6Nhy1mga77kCj0qxs4uZSJRBcIloLbZzSqYj0dVUUzx7/B0iIdhGbbVMENl5ezgZthEPq1KVw2wz67Mc+zB3St8eGwxmbcqsyOsOt0VBK5pdk5q83tM4Wo4QKQin5W4FxI7a09gxBESrLL5Z+9yULTGOWAIa2oik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787260864; c=relaxed/simple;
-	bh=DNcgQTkBQf2hIYzPb7ktk7cjetRYxnCKlQ68rhPpbdM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=F83f/YGkIsN1ARE8pNtTlcswKhpT+Q9qPvt5B+8fupshs2QyoGZgs+5iUsHwlayCFuoRH8KtEGcrZFMhDwgc4qVdUNraqi0zrtBgz/kqa16PKMxkuGOJ5wnFDWKZ9SbRy6kC6wlIg1Ig/rnArlq5dnVPDtDUHiwIFjOcBEEpewE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hdDZ13lj; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787260931; c=relaxed/simple;
+	bh=nbWeyZ2IzlTGLPxR+/+qB4M4eSAWMjkX27Vw6utmM/4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qGnzn/EkzXzEbdz63iSNvWHMTYToHmHrB5k9QVWNuro2jYZRw0+3XLmDS0IZH/H6qs5Sv5Q8/YMT0FyB8HNbgzm5gg+NgEs1X3pDN0ohaU2D7BO+BJUNZXOPLsLfKV4cWqgsPQkHVSRLlOC4jljHve+I4VVC/lEtAvJOBBUC/vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ExeDnlFL; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hdDZ13lj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 747231F000E9;
-	Thu, 20 Aug 2026 21:21:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787260862;
-	bh=/MsSEeUrcW/6FkkcmaBIPSVkJ82YiN7xLenniToTdDw=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=hdDZ13ljdGisw+qb4tXoiJXBynhWxnMiUocwI4YT0u6a21mpLOZ/XSuOUrfVsMd9y
-	 g/0s14JRc1+i4rJZq09uC39q/Q/2VNXhKfbEY9UPbXg45AZXPDfzLi5BB6TI55J7JO
-	 0AAXTcCHn8zYjx3JdNiLeVLyWy2m6nVwk9KVGdtEpszgw7F/AWLm/vAF5t/yU603QC
-	 uq7ql1ZD0DW+tBQ2jv/PBwZVoWy4UKuFKuJsu2iZYAEBGLKVzSpj6ED0EkO0w/wjF3
-	 AXlF1cd+d/sh7YMxSMh2ZANz4Tzi1hSVOLi09x10wAfLTAiZv6Li54I8IVCPIrxmz3
-	 LaBgqQj1QluqQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09BC3924468;
-	Thu, 20 Aug 2026 21:20:13 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ExeDnlFL"
+Received: from LAPTOP-F8U7OQUB.localdomain (unknown [167.220.24.32])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 0B54E20B7128;
+	Thu, 20 Aug 2026 14:21:39 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 0B54E20B7128
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1787260900;
+	bh=0N1jL7SZbZ6OJ6R63ohP6IKu7MTGTQW20CvpYo7lNuA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ExeDnlFLBRUWlDnxXyBZ4C0DlXun0JtO3U55naobHGL/xv5kE+ZOK3PcNv+gp6cqW
+	 IpAAVkP9oP+X7Q2RMVpAhP2TdL+6Lb7MyMwsXsOX3dXgcejzb5oEc0o6oPXy/VpAAD
+	 YSYafy/mnMyalV7Ei7aMKLlL9gO1W4mYe/o8XQ7M=
+Date: Thu, 20 Aug 2026 14:21:41 -0700
+From: Tahera Fahimi <taherafahimi@linux.microsoft.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: netdev@vger.kernel.org, sashal@kernel.org, steffen.klassert@secunet.com
+Subject: Re: Backport xfrm race condition fix to stable kernel version 6.6.y
+Message-ID: <aodv5ebOtrsRQhSH@LAPTOP-F8U7OQUB.localdomain>
+References: <20260817221108.778584-2-taherafahimi@linux.microsoft.com>
+ <20260818220420.14@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: phylink: correctly validate returned PCS in
- phylink_inband_caps
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178726081238.489531.4616366200802806687.git-patchwork-notify@kernel.org>
-Date: Thu, 20 Aug 2026 21:20:12 +0000
-References: <20260817213009.13924-1-ansuelsmth@gmail.com>
-In-Reply-To: <20260817213009.13924-1-ansuelsmth@gmail.com>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: linux@armlinux.org.uk, andrew@lunn.ch, hkallweit1@gmail.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- rmk+kernel@armlinux.org.uk, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260818220420.14@kernel.org>
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 17 Aug 2026 23:30:03 +0200 you wrote:
-> In phylink_inband_caps(), the PCS returned by mac_select_pcs is only
-> checked if NULL but mac_select_pcs can also return an error pointer.
+On Tue, Aug 18, 2026 at 11:32:28PM -0400, Sasha Levin wrote:
+> On Mon, Aug 17, 2026 at 03:10:09PM -0700, Tahera Fahimi wrote:
+> > I am writing to request the backport of the following patch to stable kernel versions 6.6.y,
+> > addressing CVE-2026-31516.
+> >
+> > Patch to Apply:
+> >     Subject: xfrm: prevent policy_hthresh.work from racing with netns teardown
+> >     Commit ID: 29fe3a61bcdce398ee3955101c39f89c01a8a77e
+Hi Sasha,
+Thanks for your reply.
+You are totally right. I noticed the issue after I sent the email. I sent this fix patch for review.
+https://lore.kernel.org/all/20260820211418.1409602-1-taherafahimi@linux.microsoft.com/
+Thanks,
+Tahera
+> This one is already in 7.1.y, 6.18.y and 6.12.y, but it can't be taken
+> as-is on 6.6 and older: the line it adds calls disable_work_sync(), which
+> only exists from v6.10 onwards, 86898fa6b8cd ("workqueue: Implement
+> disable/enable for (delayed) work items"). The cherry-pick applies
+> cleanly and then fails to build.
 > 
-> This can cause a kernel panic as phylink_pcs_inband_caps() only checks
-> if passed PCS is not NULL and directly dereference ops from the phylink_pcs
-> struct.
+> Substituting cancel_work_sync() compiles, but it drops the re-queue
+> prevention the commit exists to add, and I'd rather not make that
+> substitution silently on a CVE fix.
 > 
-> [...]
-
-Here is the summary with links:
-  - [net] net: phylink: correctly validate returned PCS in phylink_inband_caps
-    https://git.kernel.org/netdev/net/c/f2849b1fd059
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+> Could you send a tested backport for the pre-6.10 trees (6.6, 6.1, 5.15,
+> 5.10)? Netdev folks Cc'd in case they'd rather do it.
+> 
+> -- 
+> Thanks,
+> Sasha
