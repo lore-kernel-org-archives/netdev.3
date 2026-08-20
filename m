@@ -1,213 +1,206 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010014.outbound.protection.outlook.com [52.101.61.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBD63D75DE;
-	Thu, 20 Aug 2026 16:12:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787242378; cv=fail; b=GtbH1apW0zsi9GlH41jBH4S86/SBMxlzVcv7J6XO5F13ZdQzNp6Ybi7dMM7/IGHYJemwGWctyD8CXDWZn8FL4+tUYjzVd8FBDbr+xCURGNAYTrCGGdbZ2ps7F737dQwUQY3wjrUfWB4zCOOeQUWIBIi4x981xwqfz2Go8wYRAiQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787242378; c=relaxed/simple;
-	bh=GQwNxZNRb7QfVL5uH97DO+3qCLdKNGVBBEl7WltKtn8=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=EqslJ6hOiO7p67sTjSus20JBlCy3VBYW9qzunPgwzYvSoSCgiavD+ODrhk0Ws92JQvVPPeWUbaPNmTFhcRyiUKVxqgpmvJEtKWF7Yyjo+dfWKMGNOMsBvPV9Z9PQwC39ACIe0nwyP2skVfwQlzfzyThX/nYuN/7U873opCStiLY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=m+vO74j6; arc=fail smtp.client-ip=52.101.61.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5D147CA9D
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 16:23:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787243009; cv=none; b=O6bI2iAwx+6ajxVDPoLUmYzP4jSWVADQY+3tOKF72nGapC+ZwjZY0Pkv0Czi3fBxn7fOdzxYPZXE/HmA4ok5HQra3pwIvuRVeyNpT5bjJbwLyw7opkDFIVx4RsMhu/pTDoCM9tdeCkPttu/kHDfIe4tqBzlcG2E0C7aqYDUnNKs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787243009; c=relaxed/simple;
+	bh=wOpPq8J9xFk6jgQSnvisusIVhRRpuSYK+LEmi6Tqw/4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WBoHtRXf86KsG1WsxS+lhhPISjZMLHrqALnoGZzWo0sXfZ8zZDEOQpU8UfN6/Vdomu7SP8AeAvYrLd+wWig8y777vP67lrMw0mwv9/iKfpwV1s7yM1RuxVs+y/gFQxxoQtptBFrM1Ih5NjCNcfF4wBPjJivQV77P63h666y8ekY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=strqcKdA; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="m+vO74j6"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=f3Uc5FdNgXa/DWjk8UUj7JgJQBpAvUIhou3ndjHFD6ixU1lLrWEAFXE5BcI4LDZ+6tWa95B1/6tLHftEl1NzXSk9cjNJCGlJF4pY794+/SX8bpY07HoRMRyRIQxQFOEyVxMf4unobpLhOAsQ41JXw03eP8ULqwxEKkMSE9BwFaLA76zZeh4LLmlMfUOZHDCxtiTOu0r3/I7mTRjlBXPLifBjQ2vjIuXUTETq/nhyFCcKpO3LGEcp94DuWKyaWeBxbFfGG/+soKyxKhhwAL9CdFaZrZQdDjY6flcdE4u/xx7Nbqs1UcTthKY6LeCLiiREMS4nEBfim/LzkBpHKLYDtg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dXQACOlMqYttdwf87+MdT+hgACB1lVKrO6r8CW4/KWU=;
- b=oi4foruBDTxzCm5vPGH2kNphFqYT/GM0953Ftl5dLyNgyB8lwXy3fTTb6rAmvKAPUG7ye8KQuQYENzFHWjRHLabgvpZz2P6nywUG6zsVJTCHNYGkbDD+0KCyjpysZbaqwhuSkP5PiFSIFzRSy7eIOaYnMSqlX37WH0DXeJhsjcHDmoWr9l63Du+gZKywMt4CWYn+6VgOTRY6NER7dD8XUzbQML8e16SdaCQYS/YKE6d4VkiykrNiMXs8e6PrUmzn6mBMaO3uF++vxqwNHs5rRVZ+xWkqYXWSNI8tcZ7GwdZ+5X5hE80IfXz2JsFNgoCXBBOwyRZfSt23WCfQN0RAng==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dXQACOlMqYttdwf87+MdT+hgACB1lVKrO6r8CW4/KWU=;
- b=m+vO74j6BdUSjBj9JJqSTFitMc3/WKuIUYplZHoaHToDpuLZAFuspnhpDliJtg+krMFHpARp5V+JADFacIFFcMWnB4s39hT8QJ5NYiqptIukyWWdJ+YXBWuQijL9ZOQRbhJG0Xja/L9Jno5AavzKs2ylZqUpnSEc2RzZEGSPsThuf41eorCZugY0lTo0U0/56Ak5LwK86IcBxon3Uu7Hdq+bfDIK0a/PbkLc9lMgmV5nh+aK8lUUex0am0ui9fniHxo2ePBZQZjwbV4m/pmCKTA/y90pmuFnCKIrbGznsLrA997W1MfkaHpdsKHVTTRo0lZ/YUUCwuHNFyv5v4rcrQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SJ1PR12MB6051.namprd12.prod.outlook.com (2603:10b6:a03:48a::18)
- by DS7PR12MB5936.namprd12.prod.outlook.com (2603:10b6:8:7f::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.339.10; Thu, 20 Aug 2026 16:12:45 +0000
-Received: from SJ1PR12MB6051.namprd12.prod.outlook.com
- ([fe80::96e1:b300:7b78:d3a9]) by SJ1PR12MB6051.namprd12.prod.outlook.com
- ([fe80::96e1:b300:7b78:d3a9%6]) with mapi id 15.21.0339.007; Thu, 20 Aug 2026
- 16:12:45 +0000
-Message-ID: <c8a8ed26-973a-4fb3-a72a-f595cccaf1bb@nvidia.com>
-Date: Thu, 20 Aug 2026 17:12:30 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [patch 06/38] calibrate: Rework delay timer calibration
-To: Thomas Gleixner <tglx@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, x86@kernel.org,
- Lu Baolu <baolu.lu@linux.intel.com>, iommu@lists.linux.dev,
- Michael Grzeschik <m.grzeschik@pengutronix.de>, netdev@vger.kernel.org,
- linux-wireless@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
- linux-crypto@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>,
- linux-mm@kvack.org, David Woodhouse <dwmw2@infradead.org>,
- Bernie Thompson <bernie@plugable.com>, linux-fbdev@vger.kernel.org,
- Theodore Tso <tytso@mit.edu>, linux-ext4@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Thomas Sailer <t.sailer@alumni.ethz.ch>, linux-hams@vger.kernel.org,
- "Jason A. Donenfeld" <Jason@zx2c4.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- linux-alpha@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
- linux-arm-kernel@lists.infradead.org,
- Catalin Marinas <catalin.marinas@arm.com>,
- Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
- Geert Uytterhoeven <geert@linux-m68k.org>, linux-m68k@lists.linux-m68k.org,
- Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>,
- linux-openrisc@vger.kernel.org, Helge Deller <deller@gmx.de>,
- linux-parisc@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
- linuxppc-dev@lists.ozlabs.org, Paul Walmsley <pjw@kernel.org>,
- linux-riscv@lists.infradead.org, Heiko Carstens <hca@linux.ibm.com>,
- linux-s390@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
- sparclinux@vger.kernel.org,
- "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
-References: <20260410120044.031381086@kernel.org>
- <20260410120317.978403520@kernel.org>
-Content-Language: en-US
-From: Jon Hunter <jonathanh@nvidia.com>
-In-Reply-To: <20260410120317.978403520@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR0P281CA0205.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:ad::19) To SJ1PR12MB6051.namprd12.prod.outlook.com
- (2603:10b6:a03:48a::18)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="strqcKdA"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-38759bcd877so2994011a91.2
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 09:23:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787243007; x=1787847807; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=z9hOE/x1CqgPd8sqR178LEmzWO/estVscP715cq7wwU=;
+        b=strqcKdAVFhxaFF0NmV2/2rfCtdVRlnHuSZw+HlcrPJzuYLnp3F04dMIicOJ5qcmxM
+         7ZtrKFXK57F3Ec+9HaICicRU9iHYR7Pr9czqKwtoYkn6A3b6GkTeuVxO7SoOYRMJc+CM
+         IMXZvXix1+6wbJtXWvaf2Y7zbg2CL78DMQuDjt5pV4QqNnS1DH8pNpM3S2e8uockbnyk
+         pBtkkeojqK0n8mygncst+0yFiht00lUtS1moxjElizdeCzians+tO5nzsWkkCnKVNa5z
+         cKHxvW3XOfz2irMu9vLAb/FnKAjkJ43NXEhaSxfHHtOg0ep3+v7J//Lq+id9RhzmD5Lw
+         mT2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787243007; x=1787847807;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=z9hOE/x1CqgPd8sqR178LEmzWO/estVscP715cq7wwU=;
+        b=PEUyiTgERRLEU2h/I71r2NbkHp1f3H1y6rr3/QVY+kBMFCYQ68aKaulfR3vqqfvyxC
+         YpYEOT6WARflPqtIBbVFTDTxV97nNgCbq+UHbjZl+Uu+O7uCjy9zuLYf8g45QVoRQGZ+
+         6ZupkU2kE0YTkfg61xrakouMsr9ruAiZ3NMmPpVAu5zal1iHFFNuD2qjGB6Ieu6Eea0w
+         KncR16bbmM35MsRMKcUe+FlFunu3CrHirGXHO4P+7JBFmIvGHxiqdzjPzBIQAcPOVTPV
+         UzbKmWOBmgNiAmsn7GELZP/I7snRwFuM41fnCFX2SYgm1q30o/YSVBz2iBErlCz91RU3
+         Xsiw==
+X-Forwarded-Encrypted: i=1; AHgh+Rol9+B7vZu74zxRECk/9GnIxY0DzvJ9HG4w2JQJPa34CVGA/WYwKAQhnc/8k2i7g7N9ZEUYWqc=@vger.kernel.org
+X-Gm-Message-State: AFuF++m+h/J60+cDiSLpYWECvUEeRqEMExtEPI2iRMlVrEucFkP9NRuU
+	p4HrzdTKRVOyFHhPkaWadlgYLOSdLn7PS/IIZhC329J5mtVoRyh7PgEl
+X-Gm-Gg: AR+sD13at81iCj0YreSMPNkD9orMNYj7+XO/pYbZVHwsRXF1AcIIbo4yj7r3ob5epDE
+	CKxgKTaRjA5QgBs4QlZjUVO6IpSeTpbZlkNPtU0mHgrD1yjnOATku0fHYxWbBXPKzOX0aFo0aHZ
+	ipvnAgvRBaxld9TjEoOPGxvICb8pGmikVcfx3rD/FsVeCe8p5IS25CMizLBAdq7YGaj4pqEv7de
+	6LiUGz0+BBSrxa72xa3IeXEU5Fn7x//NStclpal/7yGQ5SADv7qAA4H8Q+5P3YicgL2ExT2Qn/j
+	v2HxDu5+SaxCjPHIDaw6CQpANGqr/Pw8bg135PyYH17vlUAsNvfNfxw4BwVuQFgYw9IvW9r26gd
+	XB7CfYb2Y+UTSDltEi+/k/9rBInYnhpxNvmOrcixp9an9PJFk1pPrPoRlFslYZ+J22GNvaJBSpA
+	dmTl0AFvvyGpk3MGrhRPGHBheNqwcIQpOURc3Em3lWR+Xc+sB/0mcrFCQZGrlTL1fQuE7P14lXX
+	PKQr7oF+d/8QamFUYt+
+X-Received: by 2002:a17:90b:164c:b0:393:19a3:4e5 with SMTP id 98e67ed59e1d1-395812c6e07mr22875749a91.16.1787243006832;
+        Thu, 20 Aug 2026 09:23:26 -0700 (PDT)
+Received: from localhost ([82.40.34.252])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3957fb3069csm8652740a91.15.2026.08.20.09.23.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Aug 2026 09:23:25 -0700 (PDT)
+Sender: Weiming Shi <thebestswings@gmail.com>
+From: bestswngs@gmail.com
+To: marcelo.leitner@gmail.com,
+	lucien.xin@gmail.com,
+	linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: horms@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	xmei5@asu.edu,
+	Weiming Shi <bestswngs@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] sctp: fix NULL deref on untransmitted RECONF completion
+Date: Fri, 21 Aug 2026 00:22:36 +0800
+Message-ID: <20260820162235.2668698-2-bestswngs@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PR12MB6051:EE_|DS7PR12MB5936:EE_
-X-MS-Office365-Filtering-Correlation-Id: 403b744e-fd37-478d-d403-08defed5dea4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|23010399003|366016|10067099003|11063799006|4143699003|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	Hku/AQpoDLljpIsWMTOh6NT0b3M4gjVgbDMQtZDjU7lXVe14SpA6/bMJ/hEkj9LRXMDZc7FgK5B7dIFn/CHKklGKQjQcJ5HpNDzmN4TKY20Ud1Ntw/F/UJRIbfErCGYCpzKCbnsGv5Rsmspv/qDZZMPDLYteMPrfcm9qcqIou386zjVU0KOD6ACvP7kcbIDxFnr2GqtbdqL8bY8sUXWqGUlv4c6fhxY2xVpptb0nBK3djNHVjf/NAv2yl+67I7weZjtdPKG04+hEBivIYgrgCFoogdONpMrqUAfSOafaB3UDz20/5WomVhqmSpYtrB1RHBs95+qY0mcngiyx02QJ89MoeuMuCg8spER2kwX5y8JR5TLeEBUjo/dxShi7fZFNO8nZluTUWeJ5s+dPpfjqhCBfsgwXWTYeRxsOmvw7HoZh1XUWJawnikpP1z7aso0Uw4+C+NnaK7ooXLl41q4ivktSsWadUaPhPbbaflbgUFM6l7fVWJ0oNy0Ml4vnpgTHsf3EhEUAF4byfE3GlG8sVSkbqqV6/ALcKCAsibKQVvo8XE5OQzN+lSLP6tVIEqcx90W3eZbmKOd+fvU/1uqsXkhdsQ9hHhmqrP9vzYi/pz9OQgvoKKo7+mZyPERQMtInUTYJd1znCNef1XIVfITbXvd8OCnivO5+I4a/LRJsI7s=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ1PR12MB6051.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(23010399003)(366016)(10067099003)(11063799006)(4143699003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?d2pNYVJsZ09NOVNLY0hqVlNKYTB6cmFCSHZ1dUdIcHRKVS9ldzlPZ1c1TjFk?=
- =?utf-8?B?b3RHYzZKSDk3Tm45d3Z3UGl6RENmYVpOcDhibUorY0dDa2s3NG4rRWZ1S0du?=
- =?utf-8?B?Mk4wNVBGb1Z5ajRsZFQyZmJGSGFCZnVhaUplOGwvNWxFVUVkdTNDNSt4Y0Vz?=
- =?utf-8?B?SE0zWGptVlBBTUlRdUIvTWdHeVVNelpmVjlKWHA1ZG0xdEpaOVd6dWdoTWEw?=
- =?utf-8?B?b0tOR0NFVlVoNllLMitzLzNhSk1UU2NoNWJ3NFhKSklRMXBKYlhqY2pDdE45?=
- =?utf-8?B?QzlJTnBXRzZQdFZIV3hKaENqTEs4Nkx1UzB5NmlBZUJUekY5dDAxQ0lJVllH?=
- =?utf-8?B?K1VaajRPUHlwUm0zbUdLSnVhU0RJUFJSL2JwdW9XNTBYVzJYRGNsNG8vSHgy?=
- =?utf-8?B?STc2TnE1TzBWRmIxMEpHNW1PbVZtWUxnQ0owa0FsbUhORnBlNjh6L1J5MnJF?=
- =?utf-8?B?OTBtOGsvMitsSVFoVHU2b1R3TEpBNW1TUXdGZXdqcmc0TzBobkJ0UFpibU1F?=
- =?utf-8?B?WUdFaFpzV1lvRVg4ZmRZRXRWdEY0bXV6c1Y0c1MyWktqSWNUVHNtditXaFdN?=
- =?utf-8?B?b0UvUEUzTUlndEhPSDhjSXVydkN4MktGcGZaUHlwbHRvQ3AwbWt0ZCtvQ3JT?=
- =?utf-8?B?b0R0WkYzT1ROZ1FBYU1rRkhpejJlcjRBekRRejBkK29pRUd2UXlqb2oybndV?=
- =?utf-8?B?WWV4Q1U3KzFobitJaW0vMHBDdk9hV3JHUVVBdWRzS3lURXFNNzdHN1B4eEYy?=
- =?utf-8?B?c3k0M1RNK0VUK1lLYi80YUhsQmhTMzVWeHkyZTQ4QVh5U1ZhRmJVcFZUa3ky?=
- =?utf-8?B?aDRmeHlSckRnUHFOZmZFRkJoNDl6eThaTkM3Ry83S1hnckhycU9JSzBQL2Mw?=
- =?utf-8?B?VjZvYW5ndGEya0Q0THhlQlZwNkNmOWdtZDEyVUoybDc5SSt4b0VPcnV3Ri93?=
- =?utf-8?B?bkc5Si82UW5vaWp6NDk1cy9KenQ4QWliRkQ3SHJRNkhVc1g4MmMyZjJXRHVz?=
- =?utf-8?B?RFJ4QXI0Vmx0SkRQTnVWZk5TelgxQmF4dHdMaFlvKzQvdXo2Nm5IcjNvby9O?=
- =?utf-8?B?NThMVVlIMHptZE9jK3dIeVhrLzJ4VFhWS0Y0cGpaZlMzb0JQT2JrdzN3eVI3?=
- =?utf-8?B?dDRnaW9ZNDFwVWlmKzYwL1hLekpYNEZET0RETGRDMlVqQ2ZlVXBTd2NOQWlx?=
- =?utf-8?B?MDdiZytFeSthWjh2V0FQSzV1aWUzNUtURDNyZTVKVWlUSkxjNTFiYWkxc05T?=
- =?utf-8?B?bUk3cnBjZXkzSEdPTDRCY0JkOXoyTGtxeXR5Mm9UOEFFMzhUSkg2QXBKSW84?=
- =?utf-8?B?aHdvR3pHcDNsRXppdEo4YU5tWDc3ZGxPY2tpeVhPS0ttNS9aeDkyUWppR0dG?=
- =?utf-8?B?VkxwWExqUlRRNWNMZ21IdXBCR3BSY0cxTjM0Z1J1eHoxcGdINFRvS1BhWjRx?=
- =?utf-8?B?aXJIK2pRUHJFNU1LUUpiTldwYWdFd2dDK1R5Z296R2w5N09IdTJNZXQ4N05t?=
- =?utf-8?B?SHJDS0JEMVZKMjdmNDY2Vzh0emtGRExTNVJkQlB2OEJoR3FXMVBGa0w3WE9C?=
- =?utf-8?B?cHdLYnZIbFFSc1JqVE1vNHkyakVMV3VMajVqaEcvSkdtYjdhUWErVlBoMW9W?=
- =?utf-8?B?TGNpR1YxSkdUc0s5bTFUejlESmVleXVwSnhNM0RLZEhueUFQckhLUW9oejJU?=
- =?utf-8?B?bUljV3M3eVJ0eVpjN3ZKWE9hWkduVk5FMndZU3BLdHRldUdPcHZtSmtRd296?=
- =?utf-8?B?KzloVzROdDQ3V08rR0pnU0kzTVFVcmJBeFRtM0pSL0dxcldkWmhvRUFHYThy?=
- =?utf-8?B?Um9DTlF6dE1JenhNUDZZcHRBelB1K1VrNHdTYXpwS3N1OXZVRnU1bHRGb1ZV?=
- =?utf-8?B?TW0venp3eHM2R2xpMDVadFRNOU43ZWhTbEIxVlFkV2pxNGQwdXd5MlJjcXVE?=
- =?utf-8?B?N3BHQUMzVHo4cUJGSnFBUzkrYWIzTEI5b1prUmtUZTJ5d0tjRmRwRS9oREhN?=
- =?utf-8?B?NkVlOWJoNjJUdTNOWmNNYXRzelZDc0s1cTVvalVQaW5pVEpCMm9tYjI2eDh5?=
- =?utf-8?B?SDl2Nzdibk9sNVR0LzVNUXFZSENKa0J0Q0l0Ym1UQXhWd2RYdFE3NU5aS0Ew?=
- =?utf-8?B?Ri9Ha0dvb0x4RlNBSExObEEwQjl5MXNKVEJpdGZtSkxGR2NzbFpqNGlWVlNZ?=
- =?utf-8?B?bitWS1NzRVFlbW51YUVRS0RWWDc1aTdleTdZQWxub2tIVDJ4b0w2eGJ3OXc3?=
- =?utf-8?B?R1ZCZmJrbWlYOGF5aUFvTVN5VDJ3SVRXQXRNQVFFVXFvTFNSOG5IdGRlZDE5?=
- =?utf-8?B?Z0xUOGxEOGRkVVJMVHgzUUNoTHJOQ0YySDNWbVJhcE5RNDVBWHBkUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 403b744e-fd37-478d-d403-08defed5dea4
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PR12MB6051.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2026 16:12:45.1194
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ye8rvQlQdxke1Cm1o4X47OnoHKOhjeOLZqyz+t1/mQTrGPAo/TLtIte6ObxvJ5yITO80ujas5jc+bmfZJt3IoA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5936
+Content-Transfer-Encoding: 8bit
 
-Hi Thomas,
+From: Weiming Shi <bestswngs@gmail.com>
 
-On 10/04/2026 13:18, Thomas Gleixner wrote:
-> The header define in asm/timex,h and the naming of the function to read the
-> delay timer are confusing at best.
-> 
-> Convert it to a config switch selected by the archictures, which provide
-> the functionality, and rename the function to delay_read_timer(), which
-> makes the purpose clear. Move the declaration to linux/delay.h where it
-> belongs.
-> 
-> Remove the resulting empty asm/timex.h files as well.
-> 
-> No functional change.
-> 
-> Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
+sctp_process_strreset_outreq(), sctp_process_strreset_addstrm_out() and
+sctp_process_strreset_resp() finish a pending stream reconfiguration
+request by stopping the reconf timer on the transport the request was
+sent on:
 
-...
+	t = asoc->strreset_chunk->transport;
+	if (timer_delete(&t->reconf_timer))
+		sctp_transport_put(t);
 
-> --- a/arch/arm/include/asm/timex.h
-> +++ b/arch/arm/include/asm/timex.h
-> @@ -10,7 +10,10 @@
->   #define _ASMARM_TIMEX_H
->   
->   typedef unsigned long cycles_t;
-> -#define get_cycles()	({ cycles_t c; read_current_timer(&c) ? 0 : c; })
-> +// Temporary workaround
-> +bool delay_read_timer(unsigned long *t);
-> +
-> +#define get_cycles()	({ cycles_t c; delay_read_timer(&c) ? 0 : c; })
->   #define random_get_entropy() (((unsigned long)get_cycles()) ?: random_get_entropy_fallback())
+On the transmit path chunk->transport is assigned by
+__sctp_packet_append_chunk(), that is, when the chunk is actually
+appended to an outbound packet. A RECONF chunk that was queued but never
+transmitted keeps transport == NULL, and its reconf timer is never armed
+either, since that too only happens once the chunk has been appended.
 
+sctp_outq_flush_ctrl() skips every non-ASCONF control chunk while
+asoc->src_out_of_asoc_ok is set and leaves it on control_chunk_list, so
+in that state a RECONF is never put on the wire. The sender side has
+already published the chunk in asoc->strreset_chunk and armed
+asoc->strreset_outstanding, so an incoming RECONF that drives
+strreset_outstanding down to 0 dereferences the NULL transport.
 
-I have noticed a boot regression on some of our 32-bit Tegra platforms. 
-Bisect is pointing to this commit. Making the following change does fix 
-it, as delay_read_timer() now returns a valid value when true ...
+sctp_send_asconf_del_ip() reaches that state without any peer
+interaction: when the address being removed is the association's last
+one it stashes the address in asoc->asconf_addr_del_pending, sets
+src_out_of_asoc_ok and skips chunk creation and transmission
+("stored = 1; goto skip_mkasconf"). As only sctp_process_asconf_ack()
+clears the flag, it stays set until a later bindx() ADD picks the pending
+delete up. An unprivileged process that removes the last address of an
+ASCONF-enabled association and then asks for a stream reset panics the
+kernel from softirq:
 
-diff --git a/arch/arm/include/asm/timex.h b/arch/arm/include/asm/timex.h
-index 94e40c19cfc5..4d31eab9dba2 100644
---- a/arch/arm/include/asm/timex.h
-+++ b/arch/arm/include/asm/timex.h
-@@ -13,7 +13,7 @@ typedef unsigned long cycles_t;
-  // Temporary workaround until timex.h is cleaned up
-  bool delay_read_timer(unsigned long *t);
+  Oops: general protection fault, probably for non-canonical address
+  0xdffffc000000003d: 0000 [#1] SMP KASAN NOPTI
+  KASAN: null-ptr-deref in range [0x00000000000001e8-0x00000000000001ef]
+  RIP: 0010:timer_delete+0x67/0x110
+  Call Trace:
+   <IRQ>
+   sctp_process_strreset_addstrm_out (net/sctp/stream.c:832)
+   sctp_sf_do_reconf (net/sctp/sm_statefuns.c:4212)
+   sctp_do_sm (net/sctp/sm_sideeffect.c:1172)
+   sctp_assoc_bh_rcv (net/sctp/associola.c:1044)
+   sctp_rcv (net/sctp/input.c:243)
+   ip_protocol_deliver_rcu (net/ipv4/ip_input.c:207)
+   ip_local_deliver (net/ipv4/ip_input.c:262)
+   ip_rcv (net/ipv4/ip_input.c:612)
+   process_backlog (net/core/dev.c:6680)
+   net_rx_action (net/core/dev.c:7959)
+   handle_softirqs (kernel/softirq.c:622)
+   </IRQ>
+  Kernel panic - not syncing: Fatal exception in interrupt
 
--#define get_cycles()   ({ cycles_t c; delay_read_timer(&c) ? 0 : c; })
-+#define get_cycles()   ({ cycles_t c; delay_read_timer(&c) ? c : 0; })
-  #define random_get_entropy() (((unsigned long)get_cycles()) ?: 
-random_get_entropy_fallback())
+Skip the timer deletion when the RECONF chunk never reached a packet:
+there is no armed reconf timer and no transport reference to drop.
 
-Cheers
-Jon
+Fixes: 810544764536 ("sctp: implement receiver-side procedures for the Outgoing SSN Reset Request Parameter")
+Cc: stable@vger.kernel.org
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Assisted-by: Claude:claude-opus-5
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+---
+Note to reviewers: this only stops the crash, and I want to be upfront that it
+does not remove the state that produces it.
 
+That state has exactly one producer. sctp_send_asconf_del_ip() latches
+src_out_of_asoc_ok on the branch that stashes the association's last address
+without building or sending an ASCONF, and sctp_process_asconf_ack() is the
+only place that clears it -- so the flag survives until the application issues
+the follow-up bindx() ADD that sctp_make_asconf_update_ip()'s del_pickup needs.
+8a07eb0a50ae ("sctp: Add ASCONF operation on the single-homed host") describes
+this as a transient state ("the other chunks cannot be transmitted in this
+state"), but nothing bounds how long it lasts: an application that never adds a
+replacement address leaves the association unable to send any DATA or
+non-ASCONF control chunk for the rest of its life, with the RECONF sitting on
+control_chunk_list and strreset_outstanding armed.
+
+I kept this patch to the dereference because it is what the rest of net/sctp
+already does -- every other chunk->transport dereference is NULL-checked -- and
+because it backports cleanly. But would you prefer the latch itself to be
+addressed, or the reconf request to be abandoned here rather than completed
+against a chunk that never went out? Happy to follow up with either for
+net-next. net/sctp/stream.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/net/sctp/stream.c b/net/sctp/stream.c
+index 34ffe6c945a4..1cb30def2eb9 100644
+--- a/net/sctp/stream.c
++++ b/net/sctp/stream.c
+@@ -577,7 +577,7 @@ struct sctp_chunk *sctp_process_strreset_outreq(
+ 			struct sctp_transport *t;
+ 
+ 			t = asoc->strreset_chunk->transport;
+-			if (timer_delete(&t->reconf_timer))
++			if (t && timer_delete(&t->reconf_timer))
+ 				sctp_transport_put(t);
+ 
+ 			sctp_chunk_put(asoc->strreset_chunk);
+@@ -829,7 +829,7 @@ struct sctp_chunk *sctp_process_strreset_addstrm_out(
+ 			struct sctp_transport *t;
+ 
+ 			t = asoc->strreset_chunk->transport;
+-			if (timer_delete(&t->reconf_timer))
++			if (t && timer_delete(&t->reconf_timer))
+ 				sctp_transport_put(t);
+ 
+ 			sctp_chunk_put(asoc->strreset_chunk);
+@@ -1084,7 +1084,7 @@ struct sctp_chunk *sctp_process_strreset_resp(
+ 	/* remove everything for this reconf request */
+ 	if (!asoc->strreset_outstanding) {
+ 		t = asoc->strreset_chunk->transport;
+-		if (timer_delete(&t->reconf_timer))
++		if (t && timer_delete(&t->reconf_timer))
+ 			sctp_transport_put(t);
+ 
+ 		sctp_chunk_put(asoc->strreset_chunk);
 -- 
-nvpublic
+2.55.0
 
