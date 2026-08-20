@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9663D7D6C
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 20:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFC93C1986;
+	Thu, 20 Aug 2026 20:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787258462; cv=none; b=TGpIrg6f7/b9ZVIDlAb+/0cXZS1zvJqxy3GNKn4Qg9DO5tkJCEJY50lPF9GTBH/pK0HNZ69aDH8eprYtJXBztDIa8D5Na+V+fCdTLSRz8g94+dt8AtN8mUGpa1zEi+Xj0IKGDV7kUN7L4xbGuFryTk50iFOqva4Nnyr4iNq/WXg=
+	t=1787258463; cv=none; b=PpREFYzDekZoRudmO93IWznXETTLZPrRgQ5RGuwlOhhFqwWKkxx3s7s6lIo4c4Anlm/4hZKz/kgOvHFsFgNiclCfDyAseGY6iquAwoe8eg6uTk4NX58Q6rzF5YTBAMEd7nZuBahPPJODEuUCF85T8JpcMB90wcdPGRP9ZBz9b30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787258462; c=relaxed/simple;
-	bh=IHlm58VqhE5QmHSQYMx1aadGuyBOpHvxNMTjtUR0ieM=;
+	s=arc-20240116; t=1787258463; c=relaxed/simple;
+	bh=KMp3omua7junaeYsVb4GV5ipdQ4dC6UamU5R//CzASs=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=D93ZxjtkOIwkT6enyfpmVE9V3LUQtu/KqDvr6MhUzMCJ2z/xvHoik9g10fRsDf9XyihoO2jkPbfWSsHre0p6s+LwFewziGSfcGsccMxwdNXOhMjCiIeA1GQL6aNKQ8dlcWeNVzkXGGgqubj/mPBQ8ChKsc5dgHYwmgT10+kbqSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nLG3+hhb; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=sCsqXFfQJtkn9DrXL+dH+20HO1WPZkBwOG9oK/eWjPAW2PETxl1RDBBjgZ480Q+1S7Du522/1oUCOtfXLqTC2D+aTikZ53VYTTtKYzIGVeOlAclSbHNnE47B8T7we7N+QVBuaV67jawTQkUCnKjcHLfhXJrfastAfbvlbqJ0OKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o1BTX4Uy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nLG3+hhb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA2CF1F00A3A;
-	Thu, 20 Aug 2026 20:41:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o1BTX4Uy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C341F000E9;
+	Thu, 20 Aug 2026 20:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787258460;
-	bh=wyHon6Q7u6StMTgFX0aSphumWQ8CWBTEa1n89mOTzlw=;
+	s=k20260515; t=1787258462;
+	bh=ClKmVoNo++xFj1/WJ06cFSbF2icYtPV7q3avznw4Xwo=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=nLG3+hhbrIG6AejKbfpJfJ4QD0LDsVc8zB2uozM50bNjHbPjfmI4asY0EpuQ0DVIV
-	 nfQrPBhUFtOHro3sxDLtykjromSBN2+kVSnFswy+hN9Ka5hDihgxyO1DJlpg28myfJ
-	 9U9jW7IAd8J3iDA1UbIHC6lpfWxF/QB4RydykU0bq1++VIiz8KF2gJyjA6z+w8p4qV
-	 czKsmfyCTtEsJ3hu0z11NyllNBriknQSKbZlROzUIe502u1tyFhQBJxZXxrcIC85aD
-	 Ssq+LqMSJYG64gfUy13iG1z5n7NPHQnvhkrqMCYb3YQHIWZxSQXrQNWIkcEdlVtqb7
-	 VvdbYgtpblY6Q==
+	b=o1BTX4UyzGgkK42qxYseoDsaQDqGC1rL42zdZ2XLjkOJ/xBcG3pv9jF5Ht3J88lIT
+	 QLxOMJE0NXBoVnMBZYiDWxCJnCOxeaBTJYflk7KD0K8jCHf4DEQ3RbHFnjBrwcnzZJ
+	 9hZf2xFnu3i/isOYQDP+j7RjA3zb/i29LcMQjn/XVOWiBnYJLQHON75ISfvh9mNsSC
+	 wh4N7WO23jhfQ3nfYlqlJf0lu5CK5UyS6PIoxMwgP2GTvM3PilhUfE7Zos3ZVatkCe
+	 kdOfuUdRtPJcg0tclo1moL+aJa+LLpkqWFYiyi3qXu762hKTC9vQ0ytbjOz2g152RS
+	 yz09qa0eTjpZA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1978D392445E;
-	Thu, 20 Aug 2026 20:40:12 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93968392445E;
+	Thu, 20 Aug 2026 20:40:13 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,34 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] tools: ynl: handle calloc failure in ynl_ntf_parse
+Subject: Re: [PATCH net v2] sctp: drop a chunk if its transport was removed
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178725841072.473641.13594656173121682302.git-patchwork-notify@kernel.org>
-Date: Thu, 20 Aug 2026 20:40:10 +0000
-References: <20260818132739.469624-1-triet.hoang.dev@gmail.com>
-In-Reply-To: <20260818132739.469624-1-triet.hoang.dev@gmail.com>
-To: Triet Hoang <triet.hoang.dev@gmail.com>
-Cc: netdev@vger.kernel.org, donald.hunter@gmail.com, kuba@kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, horms@kernel.org
+ <178725841213.473641.18430300045813272256.git-patchwork-notify@kernel.org>
+Date: Thu, 20 Aug 2026 20:40:12 +0000
+References: <aoUJHQmxL0LFIMCw@v4bel>
+In-Reply-To: <aoUJHQmxL0LFIMCw@v4bel>
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: marcelo.leitner@gmail.com, lucien.xin@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux-sctp@vger.kernel.org, netdev@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 18 Aug 2026 13:27:39 +0000 you wrote:
-> Check the return value of calloc() before dereferencing the allocated
-> response structure in ynl_ntf_parse().
+On Wed, 19 Aug 2026 10:38:37 +0900 you wrote:
+> sctp_rcv() resolves the transport once per packet and leaves it in
+> chunk->transport. The lookup reference, or the one sctp_add_backlog() takes
+> if the socket is owned by userspace, keeps it around until the chunk has
+> been processed.
 > 
-> Signed-off-by: Triet Hoang <triet.hoang.dev@gmail.com>
-> ---
->  tools/net/ynl/lib/ynl.c | 3 +++
->  1 file changed, 3 insertions(+)
+> An authenticated ASCONF DEL-IP can remove it in the meantime.
+> sctp_assoc_rm_peer() takes the transport out of the association and calls
+> sctp_transport_free(), which tags it dead and drops the reference the
+> association held. There is a window on both paths: the packet can sit on
+> the socket backlog, and on the direct path the lookup completes before
+> bh_lock_sock().
+> 
+> [...]
 
 Here is the summary with links:
-  - tools: ynl: handle calloc failure in ynl_ntf_parse
-    https://git.kernel.org/netdev/net/c/25b863cd6d12
+  - [net,v2] sctp: drop a chunk if its transport was removed
+    https://git.kernel.org/netdev/net/c/03a9d10ecf71
 
 You are awesome, thank you!
 -- 
