@@ -1,84 +1,76 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BDBC421246
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 11:15:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D490417355
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 11:16:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787224537; cv=none; b=D9IVpZEERoJYBxGbtX6d8ws6JiFUzAFzdGocC640A7g6MzTGGVq1Yy8LqhC5R7ZlPqzkYawqPqyZ1qLJdvuUTJluCPD33+LPKcuD3tXEaIuEZF+EdDICm9BXcesclih5iWkBmAt5jBtcXOu60HEntZaJ5m7dWoQT/uVNJ7WXEr8=
+	t=1787224561; cv=none; b=TfdR+RFKdfXB3XN63d8u977TWcStZ48YWGerNIc7LagNoJMs6xbi3SPHFqG9/vmTwO/OmWRfIN0o231a2AcH2UbLPWmu1VbPvK1bfkkOrWmg3BYCj43KqVvBfAdmM2iry3xJ7kUAW12hpVLOnxwNDEItoKk5Fd+TglG4yPFfDHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787224537; c=relaxed/simple;
-	bh=1x2GjawIorbw/4908l+ScmK5Fw9DJ/ZcMIgpbcs16xM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WnIy/tL5lN7igv/rBLei06i67hheSD18K+I6qMrOo8vip5T7Ai1PN+ay5NpwX7xZDDcDZ+wVAewFwq3/BoKtXb5OtvKBQk0SZxiPq1QcW8Pvwx6ibmNX/PEfn5/lbOUZhlv0H88tooPYfi4F5I9t/HXeympc56dJXmMJdNuto5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b4qavLid; arc=none smtp.client-ip=209.85.215.181
+	s=arc-20240116; t=1787224561; c=relaxed/simple;
+	bh=25xWmE1Aw5OhhpAVuAXQnuyzKV0mIHMiuoUcNa77BFQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FkP8K27bTw3CuTcY2qtMKE9+gFpe6kVbcPQAiYs6RGznGhVvtfWCZbAkmVyTP77/25CGwtL11rEPJ8h8Fwdf9pnG1eUNe/hR/xJc2+0eYEjM46cCZzU64JdbC96Z5kQxzK1oUyzzT68YAsTxwTT0Iew7/ssbk9B2nKhTpXvpPno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KRtQwhn7; arc=none smtp.client-ip=209.85.216.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b4qavLid"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-cc1469c1b83so2080659a12.1
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 04:15:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KRtQwhn7"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-38101f85591so617698a91.1
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 04:16:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787224535; x=1787829335; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3splNz+eKCLGRh8XFY3AA6oSixILCEDeXRfbtthshOI=;
-        b=b4qavLidcS7rsxUKMhUFKAXMMRSMP3XCCZc99ChEsGt6Xc2PGmpFNj+mEPxVZs6DVg
-         zCxsbOlr2EJSJWSxvRP2o9Bsl9NPeiNPeRh0T10wg5u1fwNffEmmn8LqLBvA5u5M/svG
-         ow6yC8Spw03t/+5qq2t9rgNXYvmbJayRheO+eAUZzDeALp2K/jIBjIOb69PTV92Hp1oE
-         Nfs0R0lbQXVI0Jw0OYx5E7KOQNri51vYz/F3ERN/0AcSBV2Q7h9ymIeGQP8VeM8fBcpn
-         XNDD8+C4TqjWBHH0lCKB+G291sFBBuHu7Q+uOhEgGWopEWMXmO1fCpRDs/fkem4M9zTE
-         TTPg==
+        d=gmail.com; s=20251104; t=1787224559; x=1787829359; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=K3bUlSyExGxMXTwtT3kv6u/5DTQGMhNhhhuxzC6RV5U=;
+        b=KRtQwhn7qtQrkp5Cl6A/5jCgXtOwRPpfTJpfHBsVcRDdUcX1D2UR8/8Sh9UkRTzsEq
+         1ZsNPfNhcZFe81QM8PPbtMA4n5dl4+etuGee2wG7bBETbBbPIW2gcfeVaIsc6Jg41Mbq
+         2ZRVnqRQLifRVSqFNMGm+MqUqNCWscsOkJS8nA1lGd12yq2j8ujo8C+zcFzY45j1kY7p
+         KSfGvHHBHDdpKhP75La/EayTIDB/8pucN5PBMw9kvw7FJDfzQXi/BYe1hA8Lfd81f43X
+         y0LUzWX9mYOQO2TlUc+OQPOMD3rkm4QIV6sUcckQnENAoAFujaZh80IMxxrtLXHRH9w+
+         1EGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787224535; x=1787829335;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3splNz+eKCLGRh8XFY3AA6oSixILCEDeXRfbtthshOI=;
-        b=aS1URQDjq2FTzm9IYoaa24LDQVl+IELGElNFSwCY/9Dpp8Arn5s2T7zGOvSdjo8xRL
-         qQP4hFbheDswrAhSrGRKEbGlKgzloGOOmDCfmQnq+V5wPPRhRhTWIAOPufqUcIBWBNto
-         ciuxTQ06YFAsaB8IsGilMJ6H+25wHwgJPxESR0/6611fUd3CWh9v1G7u+uMgPSRYadCU
-         ylqdJJcf+a6bpgVIAbmWSFAGTosDFrf43KY8ghzJwmQvvHjgQz02i+qOFWHLF9fdUtc/
-         5BHjSr6PaWUsYh8GNDLikeVf3bS/oaZ91MfJ1ORuhfYh09iF27GLepX4F9cQrbhRovaq
-         a72Q==
-X-Forwarded-Encrypted: i=1; AHgh+RrVolkBQNc6QdiUOT1+3WcEOi7ddUGy/Bw/5180cWWt2wGEBXC58RZ2k+K8NWqQ6Oqd9wK+BFM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxsz6jjvfDMH/xWAdgDCsGQPKE8jNpa68QmwxP1XRE+W7MXdRsF
-	WZV/mjORvaot7oFXS+aLksmfYZ25NQJXgh0QJx/uKienWYPXsbU9CobW
-X-Gm-Gg: AR+sD135UZuII1EYMaGtw6SdM+BuYBHMLzf/vH6jgVUAH4KyrRVe1WbNtZo2nVhUZaK
-	Fcg7+Pgz1OBvdZ/hyx024wjPSqokRy17Fez0sOLS/nXddAZMGN40gmMgNAu24N2gkLVNnzYKIie
-	GZEqhS5MExypHt2iQMttDfn/bXE4l1N7o2GSHeFDC4732LZRbjWolM6aJLKOI/I4AtY6zvU2qtH
-	51qOYikUAFVeEtz2mM6/DkQgrbsu6oWCbmZyGq0XV/+nM6ViqBzxX2EY8YHUQasRYQqkgXuJ3me
-	G6uwcVgKMDtJcZ1JTegTTSYk+462VC6PXRiyHQRO6uni0i7vddTHnnbATanzTQOiYn2YAsRnLrn
-	Kl6GkEE6QEXWWKGm3QyDcuDByRBP07Kdvn2qM/U77NkIeBo4OXAg3EqZXWVfqDJ72DGoQKV81CP
-	ymKl7UjewD1b8L0+HnmL5Eoky1Ym9tLLPI0RKQslsqZbHHlXfE0afymJoztiw3ctCjQuESZnByN
-	F6B3xX47dTpK+l54GIIrdguTnwiWkxc7YAQS4jDsfD3hKqpsKPgoy3MNjjJSx/WZ+/q9djWJtQK
-	WmSi
-X-Received: by 2002:aa7:9319:0:b0:846:bc60:5bf7 with SMTP id d2e1a72fcca58-851d3862b53mr23055166b3a.6.1787224534715;
-        Thu, 20 Aug 2026 04:15:34 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787224559; x=1787829359;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=K3bUlSyExGxMXTwtT3kv6u/5DTQGMhNhhhuxzC6RV5U=;
+        b=WinwNLIeufSouO8d/u10Aop2lI/Sb+P7Cjj4vbyWMa9zLgHUzuTG4JcloLnQ91+Dxf
+         wooD3iRbI814chgsUG1a3rXmP+X60NwczOIZnekpo1RCsaECFJt7t2xCM8uYwiZvRd1M
+         W3axNrje6PSxc9pkqLghO4x2+2e/uL6Nygu1mFFwR32L5kvr9wj4BoZZhcYtqxJcEWzM
+         OliT2Q/BCxyaGO2Rw6d36IhsyqOIgtuhHdGk6B541bHZ/qpUT0HGtXwCIZ9HOTMISLr8
+         cssinxDoZKHKIdYLO1boopKvGiT9C2RvTTdsPKZW38U6WhmRAOMton5mlc/pQ93mn10D
+         p+8Q==
+X-Forwarded-Encrypted: i=1; AHgh+RoP5+md6msOkcu6ssfC/g32WF2WgQB0qs5RqFeL6vrup2ZmLpbcFjtiU13GRJaDhXcMiP4iLjw=@vger.kernel.org
+X-Gm-Message-State: AFuF++kJWkYQdkY3Jz9j5UnZivmB1JvSiR41q2Qabg4NY6YYbfAXk5OW
+	1a7/ujfk143IQ6jw29wEq6twBT0ecyWzZUVDUIDf7n+PSCncf9hJj+7t
+X-Gm-Gg: AR+sD12ZOlIsYt+uoz9xjXjKgoiNBMEp7PkTCcBXxb/wauH2IiGA67nNeFORyfkA8J2
+	rMIxeTuy0omA0ONx+Ax0hbIO7gnlRv5aHn5vGgRKb9n9LzEuvu9zeXUrzHcGMvYZSQUNACA8jgG
+	J4xdgdS6+sdKRsJdzoYbBiEWX9CCxQxn2aI+99B49ikaJQqDOPq3JrDvyYYp9yYmu7qWhTtmkgA
+	uVNXJMJ8Qtbt9zYNzNJGFGm2wyCa4qYR5E4Qj8iU6W1PCC4CI4Ww0mtsDv84Jdf+AypfkWwnbOR
+	y37uF01LLeyurAFvoVrK0002iw4niEZillr1DunT/L6GMwAOc/y0FgAEdUDNNIsob7f4NX/H/yr
+	wHA3oxsXUdo1YkX8D1b0NOaZsIFZ6LtMc2ZKmZvfp9mB2ajHymuKut1W50niNF13sE15c+qqBQM
+	nX7g/wGE7Kc11IjiQuz/XWY1KppTW5WhwxG6iW4N8d0IYwbmR/GEBlqZ6Cb4nwJBsV2iTbVwSgE
+	rn2nwubPyp8AgZJqln+P2+0a6CqodRH1EC0Le6SXcBSa1ybPtYyXe6Hln/ea4bclGh6SVBv94iN
+	75eE
+X-Received: by 2002:a17:90b:2584:b0:38f:de94:bf34 with SMTP id 98e67ed59e1d1-395a074aab8mr6160121a91.10.1787224559411;
+        Thu, 20 Aug 2026 04:15:59 -0700 (PDT)
 Received: from phuc-desktop.. ([183.91.15.56])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc15568c722sm1676503a12.24.2026.08.20.04.15.31
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3957fb51271sm6803505a91.7.2026.08.20.04.15.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Aug 2026 04:15:34 -0700 (PDT)
+        Thu, 20 Aug 2026 04:15:58 -0700 (PDT)
 From: phucduc.bui@gmail.com
-To: Justin Chen <justin.chen@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Doug Berger <opendmb@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	davem@davemloft.net,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	linux-kernel@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	bui duc phuc <phucduc.bui@gmail.com>
-Subject: [PATCH 4/4] net: bcmgenet: Propagate WoL IRQ errors
-Date: Thu, 20 Aug 2026 18:14:56 +0700
-Message-ID: <20260820111456.97947-5-phucduc.bui@gmail.com>
+Subject: [PATCH] net: davicom: Propagate wakeup IRQ errors
+Date: Thu, 20 Aug 2026 18:15:47 +0700
+Message-ID: <20260820111548.97990-1-phucduc.bui@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260820111456.97947-1-phucduc.bui@gmail.com>
-References: <20260820111456.97947-1-phucduc.bui@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -89,46 +81,52 @@ Content-Transfer-Encoding: 8bit
 
 From: bui duc phuc <phucduc.bui@gmail.com>
 
-Propagate errors from platform_get_irq_optional() instead of only
-handling -EPROBE_DEFER. Allow -ENXIO to indicate that the optional
-WoL IRQ is not available.
+The wakeup IRQ is optional, but errors from platform_get_irq_optional()
+are currently ignored. Propagate errors from the IRQ lookup, except
+-ENXIO which indicates that the optional IRQ is not available.
 
-Also propagate errors from devm_request_irq() instead of continuing
-the probe when the WoL IRQ cannot be requested.
+Also propagate errors from request_irq() and irq_set_irq_wake() instead
+of continuing the probe after the wakeup IRQ setup fails.
 
 Found by manual code inspection.
 
 Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/davicom/dm9000.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index a2305e6428d1..c1c66a52efd0 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -3993,7 +3993,7 @@ static int bcmgenet_probe(struct platform_device *pdev)
- 		goto err;
- 	}
- 	priv->wol_irq = platform_get_irq_optional(pdev, 2);
--	if (priv->wol_irq == -EPROBE_DEFER) {
-+	if (priv->wol_irq < 0 && priv->wol_irq != -ENXIO) {
- 		err = priv->wol_irq;
- 		goto err;
- 	}
-@@ -4033,8 +4033,10 @@ static int bcmgenet_probe(struct platform_device *pdev)
- 	if (priv->wol_irq > 0) {
- 		err = devm_request_irq(&pdev->dev, priv->wol_irq,
- 				       bcmgenet_wol_isr, 0, dev->name, priv);
--		if (!err)
--			device_set_wakeup_capable(&pdev->dev, 1);
-+		if (err)
-+			goto err;
-+
-+		device_set_wakeup_capable(&pdev->dev, 1);
+diff --git a/drivers/net/ethernet/davicom/dm9000.c b/drivers/net/ethernet/davicom/dm9000.c
+index b87eaf0c250c..904b859f0a63 100644
+--- a/drivers/net/ethernet/davicom/dm9000.c
++++ b/drivers/net/ethernet/davicom/dm9000.c
+@@ -1511,13 +1511,18 @@ dm9000_probe(struct platform_device *pdev)
  	}
  
- 	/* Set the needed headroom to account for any possible
+ 	db->irq_wake = platform_get_irq_optional(pdev, 1);
+-	if (db->irq_wake >= 0) {
++	if (db->irq_wake < 0 && db->irq_wake != -ENXIO) {
++		ret = db->irq_wake;
++		goto out;
++	}
++	if (db->irq_wake > 0) {
+ 		dev_dbg(db->dev, "wakeup irq %d\n", db->irq_wake);
+ 
+ 		ret = request_irq(db->irq_wake, dm9000_wol_interrupt,
+ 				  IRQF_SHARED, dev_name(db->dev), ndev);
+ 		if (ret) {
+ 			dev_err(db->dev, "cannot get wakeup irq (%d)\n", ret);
++			goto out;
+ 		} else {
+ 
+ 			/* test to see if irq is really wakeup capable */
+@@ -1525,6 +1530,7 @@ dm9000_probe(struct platform_device *pdev)
+ 			if (ret) {
+ 				dev_err(db->dev, "irq %d cannot set wakeup (%d)\n",
+ 					db->irq_wake, ret);
++				goto out;
+ 			} else {
+ 				irq_set_irq_wake(db->irq_wake, 0);
+ 				db->wake_supported = 1;
 -- 
 2.43.0
 
