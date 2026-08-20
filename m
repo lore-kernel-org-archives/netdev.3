@@ -1,131 +1,207 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0261D5CFB;
-	Thu, 20 Aug 2026 06:05:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60EF3ACA5D
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 06:10:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787205947; cv=none; b=HdxyIPaS7Pc6P/HPE2Ci7k2Nau9YNN6ofo0KjFM+WKPbJDuLGV9f0DRHBdoHMsLl2u4nRghJjrQ3MqeJ1eeYgYD+T3h0Ab28EssSqYe/48XSBQCclETfcrZnGkONQYvsi+73V5HG0Jr2DvTA7gmsD/CpA9x5oPnNwYLN71Wi/3g=
+	t=1787206227; cv=none; b=oV+P+5dcfghRrR0z6JsvJbGDUHEMacKZcmaTJ31a4aEpDXshAI5TjWfTX7x3paDIEf3up7fu6BkyMXHIRQRG1B5+tTa8GPeuPb86KxIWSmjeiTdlfdDgnCPhmXH0a3sVq+8xKTsmB+PY/QSM0TBmpvCDJXWLUtIkphZ/R76gXnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787205947; c=relaxed/simple;
-	bh=PqkjF3jBLK6/DuoceMwkDJ5uMuQtgPXfKyWHfLwuRbs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MOtQgBsVmcgEWQIQE35HhPYPuMDlJg6F4cDfXt81yHcFVE0WJpnZQ9f32V4C7F4OMtU8A+8W/WT5n0hB3CJgfDw4z+qAvDrvgb6eVp9KUpr5AG9Kw+gtdkphVRMRmKSKyqHfwvUKAEkVOJTEkrRl88azKkf6W7E6lDQtcYkO36s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EEj33zDe; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787206227; c=relaxed/simple;
+	bh=D8JsoveCFfmkq6V6WHhJNi0sSgdxqlQmSZgaa7HuHhU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WHRiPD791nlX3c2Y7VixDl5Fq6eUfo0AVlPp1NLKtFe/1yoIpaR2rhAWBqRLBox+rcWwTXuqsqSffLvBlKpRr7TbejnUzlWusJF2MuC1fNQEzVyQ37YznWrQZgPopiPNEFdrlsu4bNVUR2hXsAui9OX8nt29mTaFhuy4Ya62Sac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=C62NVFla; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EEj33zDe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BFF71F000E9;
-	Thu, 20 Aug 2026 06:05:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787205946;
-	bh=dgkzOqfnNn3oIpBNkeMAEPPh8onIVrDTGwHG0nb7Jeo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=EEj33zDebSYNIeXaqnR1bZKsO+2fK2mB4t0u2uoMKo8nRMMmVv16wyeFta3CePO48
-	 276Vu5UyryUkPnRgHnOraWDBz0kJ8N5c52e/CDLPep1LvUismKPRf0zTerE9fu8+XT
-	 fTlqNilSTJxkwPouf1Ho4A3OooeIT2USayHwDQizgO1X0aXWsxz9q5puRWpvGfkWml
-	 Vu+O7sLL/f4Y17+VxZb1ub8AKhYDeFYPf4+VAyEkXyT7HzHEyAYzziD2VTj7178h4w
-	 vBOwvs8kfzWYlczcakibPQrRFfW+FjsZtXIvXmb3QQdCyYcVJ9ilbd9h79fkIvhffK
-	 zLtrcgKK3/vCA==
-Message-ID: <a0269455-5423-489c-9a12-90d8df83040e@kernel.org>
-Date: Thu, 20 Aug 2026 08:05:39 +0200
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="C62NVFla"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Jr
+	KnqmADX2MjYmF62UtCRDfcnhlu2NLZiiiAU3Z5Xho=; b=C62NVFlaK62pGD//Aq
+	Y7gStfie4z2KvixR1lES9AF5uaJdvrCp5FF61cVRr9sdsaTThm1qA3nHhGwyW6sN
+	OQW+ngfekCKNrCg2Z1qL/OZk95mQorPt7O7K3cwvgvAMfDjt1UIMY6LP7N8o226K
+	CvBp9/FCfxXp6EKfUGvlNPoYM=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgDHCxwamoZq66_pNA--.10850S2;
+	Thu, 20 Aug 2026 14:09:31 +0800 (CST)
+From: Longjun Tang <lange_tang@163.com>
+To: mst@redhat.com,
+	kuba@kernel.org,
+	jasowangio@gmail.com
+Cc: xuanzhuo@linux.alibaba.com,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	tanglongjun@kylinos.cn,
+	lange_tang@163.com
+Subject: [PATCH v2] virtio_net: add rx-alloc-fail counter
+Date: Thu, 20 Aug 2026 14:09:29 +0800
+Message-Id: <20260820060929.69576-1-lange_tang@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] dt-bindings: net: nfc: add st,st21nfcd
-To: Kristian Brox <isyourbrainfoss@proton.me>, oe-linux-nfc@lists.linux.dev
-Cc: david@ixit.cz, krzk+dt@kernel.org, devicetree@vger.kernel.org,
- dmitry.baryshkov@oss.qualcomm.com, luca.weiss@fairphone.com,
- linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org
-References: <20260818205940.1973944-1-isyourbrainfoss@proton.me>
- <20260819210906.2500789-1-isyourbrainfoss@proton.me>
- <20260819210906.2500789-2-isyourbrainfoss@proton.me>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <20260819210906.2500789-2-isyourbrainfoss@proton.me>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:QCgvCgDHCxwamoZq66_pNA--.10850S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXw4DKr1kWFyDXr4xuF4kWFg_yoW7Gr4kpr
+	43Cas0yFWDXwn7JrWfKrWUZr1Yywnayay3GFyag34I93Z8Gr1FyF10gFWFkF43AFZ5A3WU
+	Xw4vy39xK3yj9F7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRvfOOUUUUU=
+X-CM-SenderInfo: 5odqwvxbwd0wi6rwjhhfrp/xtbC-RvoF2qGmhsDFAAA3j
 
-On 19/08/2026 23:09, Kristian Brox wrote:
-> The ST21NFCD (e.g. Fairphone 5) speaks raw NCI on I2C. Existing
-> st,st21nfcb-* and st,st21nfcc-i2c compatibles stay NDLC. Add a
-> separate compatible so those boards are not switched to the wrong
-> framing.
-> 
-> Also document the optional SYS_CLK (clocks) and VPS_IO (vdd-io-supply)
-> used on Fairphone 5, and add an I2C example.
-> 
-> Signed-off-by: Kristian Brox <isyourbrainfoss@proton.me>
+From: Longjun Tang <tanglongjun@kylinos.cn>
 
-You already received below comment, so me needing to repeat is not the
-right way because it means you just ignore me. So I assume you will
-ignore rest of my comments as well.
+Count the cases where the driver fails to allocate a buffer or an skb,
+such as when try_fill_recv() fails with ENOMEM, and report them via the
+rx-alloc-fail qstat.
 
-Additionally, you need to develop on mainline, not postmarketos kernel.
+Plumb alloc-fail into virtnet_get_base_stats() to keep this new stat
+reported consistently at both queue and device scope, matching how
+packets, bytes, stop and wake are handled.
 
-Please use scripts/get_maintainers.pl to get a list of necessary people
-and lists to CC. It might happen, that command when run on an older
-kernel, gives you outdated entries. Therefore please be sure you base
-your patches on recent Linux kernel.
+$ ./tools/net/ynl/ynltool/ynltool qstats show --json scope queue
+[{"ifname":"ens3",
+"ifindex":2,
+"queue-type":"rx",
+"queue-id":0,
+"rx":{"packets":3722,"bytes":374806,"alloc-fail":0}},
+{"ifname":"ens3",
+"ifindex":2,
+"queue-type":"tx",
+"queue-id":0,
+"tx":{"packets":622,"bytes":77495,"stop":0,"wake":0}}]
 
-Tools like b4 or scripts/get_maintainer.pl provide you proper list of
-people, so fix your workflow. Tools might also fail if you work on some
-ancient tree (don't, instead use mainline) or work on fork of kernel
-(don't, instead use mainline). Just use b4 and everything should be
-fine, although remember about `b4 prep --auto-to-cc` if you added new
-patches to the patchset.
+Signed-off-by: Longjun Tang <tanglongjun@kylinos.cn>
+---
+ drivers/net/virtio_net.c | 33 +++++++++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 8 deletions(-)
 
-You missed at least devicetree list (maybe more), so this won't be
-tested by automated tooling. Performing review on untested code might be
-a waste of time.
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 3e2a5876c6c8..2eeff9c46309 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -125,6 +125,7 @@ struct virtnet_rq_stats {
+ 	u64_stats_t packets;
+ 	u64_stats_t bytes;
+ 	u64_stats_t drops;
++	u64_stats_t alloc_fail;
+ 	u64_stats_t xdp_packets;
+ 	u64_stats_t xdp_tx;
+ 	u64_stats_t xdp_redirects;
+@@ -173,8 +174,9 @@ static const struct virtnet_stat_desc virtnet_sq_stats_desc_qstat[] = {
+ };
+ 
+ static const struct virtnet_stat_desc virtnet_rq_stats_desc_qstat[] = {
+-	VIRTNET_RQ_STAT_QSTAT("packets", packets),
+-	VIRTNET_RQ_STAT_QSTAT("bytes",   bytes),
++	VIRTNET_RQ_STAT_QSTAT("packets",    packets),
++	VIRTNET_RQ_STAT_QSTAT("bytes",      bytes),
++	VIRTNET_RQ_STAT_QSTAT("alloc_fail", alloc_fail),
+ };
+ 
+ #define VIRTNET_STATS_DESC_CQ(name) \
+@@ -1917,8 +1919,10 @@ static struct sk_buff *receive_small_xdp(struct net_device *dev,
+ 	}
+ 
+ 	skb = virtnet_build_skb(buf, buflen, xdp.data - buf, len);
+-	if (unlikely(!skb))
++	if (unlikely(!skb)) {
++		u64_stats_inc(&stats->alloc_fail);
+ 		goto err;
++	}
+ 
+ 	if (metasize)
+ 		skb_metadata_set(skb, metasize);
+@@ -1985,6 +1989,7 @@ static struct sk_buff *receive_small(struct net_device *dev,
+ 		return skb;
+ 	}
+ 
++	u64_stats_inc(&stats->alloc_fail);
+ err:
+ 	u64_stats_inc(&stats->drops);
+ 	page_pool_put_page(rq->page_pool, page, -1, true);
+@@ -2016,8 +2021,10 @@ static struct sk_buff *receive_big(struct net_device *dev,
+ 
+ 	skb = page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
+ 	u64_stats_add(&stats->bytes, len - vi->hdr_len);
+-	if (unlikely(!skb))
++	if (unlikely(!skb)) {
++		u64_stats_inc(&stats->alloc_fail);
+ 		goto err;
++	}
+ 
+ 	return skb;
+ 
+@@ -2298,8 +2305,10 @@ static struct sk_buff *receive_mergeable_xdp(struct net_device *dev,
+ 	switch (act) {
+ 	case XDP_PASS:
+ 		head_skb = build_skb_from_xdp_buff(dev, vi, &xdp, xdp_frags_truesz);
+-		if (unlikely(!head_skb))
++		if (unlikely(!head_skb)) {
++			u64_stats_inc(&stats->alloc_fail);
+ 			break;
++		}
+ 
+ 		skb_mark_for_recycle(head_skb);
+ 		return head_skb;
+@@ -2414,8 +2423,10 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
+ 	head_skb = page_to_skb(vi, rq, page, offset, len, truesize, headroom);
+ 	curr_skb = head_skb;
+ 
+-	if (unlikely(!curr_skb))
++	if (unlikely(!curr_skb)) {
++		u64_stats_inc(&stats->alloc_fail);
+ 		goto err_skb;
++	}
+ 
+ 	skb_mark_for_recycle(head_skb);
+ 	while (--num_buf) {
+@@ -2444,8 +2455,10 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
+ 		truesize = mergeable_ctx_to_truesize(ctx);
+ 		curr_skb  = virtnet_skb_append_frag(rq, head_skb, curr_skb, page,
+ 						    buf, len, truesize);
+-		if (!curr_skb)
++		if (!curr_skb) {
++			u64_stats_inc(&stats->alloc_fail);
+ 			goto err_skb;
++		}
+ 	}
+ 
+ 	ewma_pkt_len_add(&rq->mrg_avg_pkt_len, head_skb->len);
+@@ -2928,12 +2941,14 @@ static int virtnet_receive(struct receive_queue *rq, int budget,
+ 
+ 	u64_stats_set(&stats.packets, packets);
+ 	if (rq->vq->num_free > min((unsigned int)budget, virtqueue_get_vring_size(rq->vq)) / 2) {
+-		if (!try_fill_recv(vi, rq, GFP_ATOMIC))
++		if (!try_fill_recv(vi, rq, GFP_ATOMIC)) {
+ 			/* We need to retry refilling in the next NAPI poll so
+ 			 * we must return budget to make sure the NAPI is
+ 			 * repolled.
+ 			 */
+ 			packets = budget;
++			u64_stats_inc(&stats.alloc_fail);
++		}
+ 	}
+ 
+ 	u64_stats_update_begin(&rq->stats.syncp);
+@@ -2948,6 +2963,7 @@ static int virtnet_receive(struct receive_queue *rq, int budget,
+ 
+ 	u64_stats_add(&rq->stats.packets, u64_stats_read(&stats.packets));
+ 	u64_stats_add(&rq->stats.bytes, u64_stats_read(&stats.bytes));
++	u64_stats_add(&rq->stats.alloc_fail, u64_stats_read(&stats.alloc_fail));
+ 
+ 	u64_stats_update_end(&rq->stats.syncp);
+ 
+@@ -5652,6 +5668,7 @@ static void virtnet_get_base_stats(struct net_device *dev,
+ 	 */
+ 	rx->bytes = 0;
+ 	rx->packets = 0;
++	rx->alloc_fail = 0;
+ 
+ 	if (vi->device_stats_cap & VIRTIO_NET_STATS_TYPE_RX_BASIC) {
+ 		rx->hw_drops = 0;
+-- 
+2.43.0
 
-Please kindly resend and include all necessary To/Cc entries.
-
-Best regards,
-Krzysztof
