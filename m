@@ -1,270 +1,201 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011006.outbound.protection.outlook.com [40.107.208.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F3D2459E1
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 08:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9206013D886;
+	Thu, 20 Aug 2026 08:22:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.6
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787214024; cv=pass; b=obhIEHP+My6c326KIH7ijymn967RN7rg8YrcRHUBEW4uMPkCMtg9/g3cYubcfN5soIuUfweML6PWW3vSMpE39x1xbB1/g1o7Cdb3CFA2KhSxy4r4JqyuugiHWzVgEL0SYEkRBiNm4/MDeuRBkT9o32E5zVpvPSmETFb7cb1a5xU=
+	t=1787214145; cv=fail; b=HZqb4dQS2vHX2OfbPAfgs4xcd3oj2Wci8A7pVux9205j+/REkcYYsH0B/J701AirKLl/Ttoi6dviboBo8Qg2Y6s34LlBvsDw8qKIN9NiaqbFg3W/n4/s3mQu0VenLFjIBvHR6Zo76Pk8HmIqI0KRsYfTCnVVgciSdsHbYyfEDPg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787214024; c=relaxed/simple;
-	bh=hhTzucVDroCcD7bmbulLMk7B6vxZMAce2WXgBbNlfU0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Dgryl33dJ0jJN7LATFaQkO0EtlZtrEzI0w6N8Tx4Hza71tjDh0goOvg4CejmlYjT5U37beO88oT1749Mmly+2f64xV3WDK/7uvyI4p7NVWHQXii9AMMGWdgrNCDdjwpIkM2QjMLXzi8Jq5AP4ZK/AOt4dQ8gZT81CQFzy3Rhm3I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UuAIr/4q; arc=pass smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787214145; c=relaxed/simple;
+	bh=t/g/uIATab4ejV1rlYABsKz+t3b5q58+GspNO1Rp+IE=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=KJi4rb1gqY1zNmClrkaFR5+/SKwMLQKgA4BPX+H9py1pWQXu+nvRJaBlItXoXX2CMDj5gvBmmcUR2hcHiUqPqWRUYA3NNkq1wfW7xdCGLdhqmCth7n3c3dzvCLT2aW5K3ax/n8n8fOesoBQW8IDrZHsiYsufsYuoJyaeu9x5X8g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=QQPtDVT7; arc=fail smtp.client-ip=40.107.208.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UuAIr/4q"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6a17cb94b26so3272322a12.3
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 01:20:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787214021; cv=none;
-        d=google.com; s=arc-20260327;
-        b=gigEfi8deYZ6fxLyBx987noSquunP+HXr60Zz48RJ5w7ewJ36dEKohmpizIrwqGcHv
-         cXqfcYBSTs5r31H2e/xw4B+8xn91rm3ynWk9z3aev/sA1bzEiO2w9wpWnD78SN2idkpq
-         HwxvxEitv0Zua838eIOm4FqhzXW4CvFqr043UZbeYNBS8fnTnZQi/YLDAU+FQ8Xc6nkN
-         TR2SzmMIodAQ2SGX2nqnITRXWqchP36sGwv1zsz6/2Tq2Re9u5alhMiGPEMQJBCkJLOj
-         ROJbr2jcB+nsukhKdX6Lga4ftvRAWV20/TXsXzbKfRR82VNqRvvZzdYlEFuPXSSnqYBa
-         4IZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=MGbsiYWGWZERk5A0Z+rH6uIB88SmPGF9IbaUDZNWXi4=;
-        fh=d5bOL0GeHyVtepyY3nki5+7UVBHkCqjo+KZlUeQCTHA=;
-        b=Kqo0UQobY6ECQtfnqXDPecuOfASUTSq/ARlrSUCoJZtJBidnvCBsJuMtZbHngh2Fvl
-         mgNU3cimj5D2d5r3GS7FfoRmYivzM9WYU1vEKcS2OxE91K2dWwUDGMy2DbmWEVRr69ra
-         AQvn7/odu7kYK+mE2m6X2NbvgVANkhHwRp/HdEsSz/OQh2VLxXOpPvcN6VI59VPZ1lU4
-         hruTCycUWk6H6kyp8F9b03KVOtDwLSUHSNf4JZbyfYZ3U71vcOtN9RWptOrpxfk8vDjI
-         ME+rBolDQ6USxIWZ2VuJKntbd8uoIaamn/IBpbD0iXQ3VZ46+oLnACvfLAd7wmnmU/lD
-         enlg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787214021; x=1787818821; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=MGbsiYWGWZERk5A0Z+rH6uIB88SmPGF9IbaUDZNWXi4=;
-        b=UuAIr/4qj/aoU+W57D5zR9yAd3be89AmSmP+6KbngI2djhb97pbJ7N8239r9K9O9yE
-         cZZtoS72eBNf+KLGPrGzPuq5RG05svZIGF4SqgF7a/xsFrWmbNIz03/o82bn8pnQaMNZ
-         qSxZnZHZcWICuMfeSXaRJSA2BvFpgd2OSVhZDObtrOigBgWksoetwzXTw8OycPNiZefz
-         QdjJtxTkusuuXR7UjusNP9I8tt3lawKKypwOMVg21EC04yftdYM6sfQOErTgyY2bKyO/
-         ObKKeqcBQFTeXlaRSIrHB2j7bkinUOVHUCYiU4rqhRCPRkkGx+/8D+kIjGNRnQ5TyNFO
-         B9kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787214021; x=1787818821;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MGbsiYWGWZERk5A0Z+rH6uIB88SmPGF9IbaUDZNWXi4=;
-        b=Fj2qSu/z2AlTkwF7edzeBrquhQrfGcYBzUQesQgx+JzzpdaxkFXTEwaCtJhbxakDFL
-         TZihsPCIploI4MYQQJcDAAc8rFNt/7H6DSZW/KfGA4IyjTgEaF4J7IZaVE8KQUPdDWI3
-         0zzaXLm5i4xAh9hlhu32cUfDmtLbuxZCAyg5DsnR2MsrzZvskgvZR5ZgypV5dlwgdAAx
-         ZIRaH1PJ9ECOQyPlCdTCrHmzpfzG17N+l/Wy1JVX0+15GpH1pE0QWPG3XrRVAArRi0Cp
-         WDxzR+ZnjCfCSbtH8bUNUNabeD5n/gQwW0UqbPpqjcW9KBtQJLldM/yaBIy3tb4ADMu/
-         ccbw==
-X-Gm-Message-State: AFuF++mFLEiC1P9yxOT+lI/6sxuaH3df21BS51R/xynzMNgQ7KjOSRzC
-	M6fgfBNKz73BSSbpCZ+GqiTS33Ycguu81QBi40yi6QPY82nlN9IEHDrCn4mGwhyYJPQi1QGdJdd
-	hAH3ePvYN8TG/dBkZBYM5MewGn5A9hZ4=
-X-Gm-Gg: AR+sD11YbDOiByea8t+4mj5ZZvIIf5P22WAsKoApSThFh5CHDcgFOejye+Tnkf+r/Zp
-	gXY1rs+ox/lVH9pB9DHMhTBs6L9bv4Qa+wsV1t8qnPAZjpJ2x6PDeSnjhxKLG7cy1Uu8whtdDV5
-	DE60EdwNvoi82N1ujYke7gif9ne2ks2Bdm5NBeyd0iHzOKVg+x3leVIX3ahoNDpZauWrNK7M56T
-	yTfT9HU+UT7coJJohyMTQyl7Yl3A9H7uHZU8/GGxgP54bpPPYB+OsOxa0JfJbYcZseN2nOONnpd
-	sU4hjuVHozLyqWgYwHeqpcowmAasqdVDTPh8j4hJ4WvnY9RFinGSIsBRf0GeU5vO8UMhgyTQSW8
-	olj1SgoOJe6WFGLrjujvBCIGraEpqIA==
-X-Received: by 2002:a05:6402:5020:b0:6a3:6c99:a5b6 with SMTP id
- 4fb4d7f45d1cf-6a40330f52dmr3829731a12.14.1787214020549; Thu, 20 Aug 2026
- 01:20:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="QQPtDVT7"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JYY+zfXGMJHYPQYKS/4NLQ+4NR7J9Er6cuoKKn6E8xL/Ya06Ukcsq3mS9KaLn9stM0r8JPIaUWrcbnWiocHQDHzqbj5qIysunUgHYxzR6FfiRYJEg2tKoHS/NLu+ZubuK4HsUwuV3dZGypI7IUHWbE5vpeKLHtKOolxZBfY1RBS4sbY3ip+j/l06BMrNBwN6rXk3fSfxDNzl/xBLuhQO3H4DvBvBRr9bHGZkNmbIlwIMQ3wRpHdPJY+nPx/R5kXbIXqQkgx74MglOgjnZXiHv/2tAgRf+LGbkJp25ctcXGpxLdVLjolUhueexJ6AaflNoSQADXHQuyTq74upMXvlPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tvZUJ/mpqV3H9DOm9Nw8I+oknll/F0dkpLl2K3XZM1g=;
+ b=aOKtkMhwYNv7EJQ6Cw99pSkZ01knlO3525zSjMhQ7r3YsLSLRVOjxWAHHNzaAOVWmk89xx9JnnFA0EQTnG5tvS4GJPWGj39+u92PU9D4Bj+1t09Rhy4tGwxnrcY68PzVgv0900DlE4zvZ8CviLyi3hGBlxmfe+Y4ImqFrWytdH35M5LR5HNy9n3aMkvKexGMcj63MKSA5vuLtSCtjzMWals8atboHaiclh/vOXoYUJKNvr/MI4OUCAtyLkmTh4Dy5OT+dRTJFCf8rkuiCOMHpQaAOnjdX7X2k2XEBRzOpWlA4Jb9kVn2n3++wlLQpAK+KJS/lqYx32S4UAjqZcBMGw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tvZUJ/mpqV3H9DOm9Nw8I+oknll/F0dkpLl2K3XZM1g=;
+ b=QQPtDVT7pTay7SqmAA0mFqKBEXPgThBSHn1cEXKPJXyz+28Ev7ZygRgnZ8pp1wwDW+VAtAcZIeHwk3VOsT5I/6fcMX0ZNLhE7f/hqT//9X9QBQrHdyJekDv9mOD01xOO/h8F0Ts8iZjQOHt3FQYR1ANVK6C1P8kWP67T0tNdzQm+mZaDIfq8qPEuQq5w1C2e1Ns55+8ER6/tlhiw29VinagkiZ4SEnGv2MT5Mi5AtDiN4ZUDYoMrhp29jyQS8g3wGDvWRzNjFLSKJECa5VVz9foseCeIC7mgECWmU+/rKtSIhFvPBR23yQxWu4XzncFGcbs/iCeKbE5Cy37t5b5RMg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8728.namprd12.prod.outlook.com (2603:10b6:610:171::12)
+ by MN0PR12MB6223.namprd12.prod.outlook.com (2603:10b6:208:3c1::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.10; Thu, 20 Aug
+ 2026 08:22:19 +0000
+Received: from CH3PR12MB8728.namprd12.prod.outlook.com
+ ([fe80::2641:1046:bdf3:93d7]) by CH3PR12MB8728.namprd12.prod.outlook.com
+ ([fe80::2641:1046:bdf3:93d7%6]) with mapi id 15.21.0339.008; Thu, 20 Aug 2026
+ 08:22:18 +0000
+Message-ID: <4ee87a51-871e-4155-a279-d20fe5421dff@nvidia.com>
+Date: Thu, 20 Aug 2026 10:22:13 +0200
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net] net/mlx5e: Prevent stale XSK buffer release on refill
+ retry
+To: Jerome Tollet <jtollet@cisco.com>, netdev@vger.kernel.org
+Cc: Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
+ Mark Bloch <mbloch@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, linux-rdma@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260819151320.64178-1-jtollet@cisco.com>
+Content-Language: en-US
+From: Dragos Tatulea <dtatulea@nvidia.com>
+In-Reply-To: <20260819151320.64178-1-jtollet@cisco.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0155.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ba::9) To CH3PR12MB8728.namprd12.prod.outlook.com
+ (2603:10b6:610:171::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260817090601.1256389-1-pawlik.dan@gmail.com>
- <20260817161756.5fd2185a@kernel.org> <CALC2Apj7rQv=6uUqaqBjfJ9yO+VCddQqHB=yDhXH7+QUCh2JyA@mail.gmail.com>
- <20260818082933.28b5c9d1@kernel.org> <CALC2Apj-KLB5CVbSvoZWvA4Oan7dmAerK=VP7W86jmErWW8OdQ@mail.gmail.com>
-In-Reply-To: <CALC2Apj-KLB5CVbSvoZWvA4Oan7dmAerK=VP7W86jmErWW8OdQ@mail.gmail.com>
-From: Daniel Pawlik <pawlik.dan@gmail.com>
-Date: Thu, 20 Aug 2026 10:20:08 +0200
-X-Gm-Features: AcwNN1UAbW5mRoslcDJeKuGMNRJBvfUzgrdSLmsEfPXWjGmdPxSxk5a_KsgHoA8
-Message-ID: <CALC2ApiCSY8DkVpd7puTssbJZMWBHGVtFCnG66fiK0PX7-u3Hw@mail.gmail.com>
-Subject: Re: [PATCH v8] net: airoha: npu: use cacheline-sized buffers for
- mailbox DMA
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, lorenzo@kernel.org, win847@gmail.com, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8728:EE_|MN0PR12MB6223:EE_
+X-MS-Office365-Filtering-Correlation-Id: 748fa1fa-2000-498e-e42b-08defe94265a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|376014|366016|1800799024|18002099003|22082099003|11063799006|56012099006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	ukEm4EJGp/Y7LHePgfUN8/nnH/ao5KOVEmPAwsWfp4p7bbZkeUO5Jh08TKsxTbt32p0Rl7egkR++yvMbSJy8e58NjqU6H1VPMA7B381w167kagv/PQODEMiQG58WEV67w0hThW06TOuObyre95iUWAhmbgNfzW0ixyTE8SE8ECC4UBME6NEfkOHpbFUDKIbn9Jdf8Sfe4fEI5FWiRzDc1+6P1QUOW2ueuZf/a++Bs2x5w2gtOps+ori9IGEOortiz1OwZEOS7UeEOyNcSubuWoZjI11bmS/hpkh2gEmDq0Bfj/I6dA890OI5lzfLWtNp2iEwFc6SrKaaNbX9UWYWjbG0r04b7iXf9zLxlj/mNVbqe1xJ7/BgPJJ8lv1/HgIeNPnucb9cWcfgrYCZKezZy0TfTMbVc48Vq5lIXulrs5iBtHtQNyRKcwc4EU6CN88GuNcGbDzXp5i6PmjCywB8IvB+kzI6Xx9XzBgQYGrtBv3a0BZopr/c+LgzSl5h7Cij7vodWO/qBbLYnlaS1Bn+K8u417KDyr0+W8HUFW7TLD5QUzfNSqJ+it2zHzGfmD7Ht8IX0c01rdcby6rid6aoGyOyS+U5zRFnKnOhnYbP15K94//LvcM/3p5KRi121vsdEOiQWWVHKvr0hexL2KFsY6VZ8cdUs7OJbbk+Pr7XvfI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8728.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(1800799024)(18002099003)(22082099003)(11063799006)(56012099006)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?b3hGWWR5cGt5bHFkQ01qTjg4aXpJN01rcXp3dFFjVWR5S3J3QlJQSnR3dlMv?=
+ =?utf-8?B?d080V0MvRnk5TXBSbXFLOC85OVFGMmNnM0tpTTd4RzFvYXhYRU50MlhvR1lz?=
+ =?utf-8?B?eEtKZXFCaDNtOEMzaXluZm1Nb1VMNWd6V1NPaWFxTHhEVDBsWW9aSG10ZWhW?=
+ =?utf-8?B?OXFPQmFQUllVRkxBNDJjSXBId3ZpT1IzK3BQM3VPYXhrazlaWlgrZWV2clIr?=
+ =?utf-8?B?ZXlUWENWVWpOdnhhQUNDbjk4MlJLNkNXdUsrODhHWFdJVXJaUm93WEk0dFlK?=
+ =?utf-8?B?UmpKV0RzblpMRWRKZ3lXS1RDTGpHblVNZndobFRqa0s3QU9USUZHR1B2Tmw0?=
+ =?utf-8?B?K001bWhxbVZsYng0V3ZubExUbTRZUGJGR2ZpVS9mUU5HOG5EenlOWUlra3VJ?=
+ =?utf-8?B?M2p6NlhlNzdPQ1lvbDZHU2xwNlZwSXlQcGNTZkMrbGZxbzBSOUpZdWJRcW13?=
+ =?utf-8?B?VUdSVjlWS0hxZnVDUlY3c1lvcS9WaVBzcHNtRWRJbDk3TTdOcnVJeTlhaHMw?=
+ =?utf-8?B?akxVSUY5KzYrNGcrVUVieUh0UnRSc2xjYzY2WWgvS2lnZW0xVmd0QXFGdTZZ?=
+ =?utf-8?B?dC9hYUwrK1owK1ViMnZsLzU3bjB3YTlVRDJET1ZBanBjOGRjUlZNalBtSHM2?=
+ =?utf-8?B?Qkk4U3VBRDQwSVZWVVZLM2phYjNaaDZ5SjJLY0o1U2IrWVdaaFgwYityWVpG?=
+ =?utf-8?B?NUtqdmlmTk1qd2FYY3hyZGIyVVlocnlqYnhpOVlpaUFUa1JGdWdxT3hQUU0r?=
+ =?utf-8?B?aGY5c2JGNGpBMnJMa1Q5SEJzTWZ2UUZyMVB0ZHVTYnV4U1IvelVWQS9sRXFt?=
+ =?utf-8?B?a0V3MENjTGp6bXdxdTAvdWJrQ0JOSlloOGh3SXd4ZTg5WGNkRzAxTFRqZnhz?=
+ =?utf-8?B?V01OYUswUTd4eFFUMEQ3YlRMY0h1Z1dPMHFzTE1oaHcxTTRwelhNLzRqY2Ez?=
+ =?utf-8?B?N0lUTVNSVjEwd2VHN3JYSjdqMzgxN1BJelBkNVU3cEdieVN1ZUVDVVlZV3FJ?=
+ =?utf-8?B?ODFBbE13RVFFQWhELzFPWFVxV3M0VkE0eHBpZm5pVm5peHZmVko1OU9jWTV1?=
+ =?utf-8?B?OUVYMGI5V0dSMy9mWXpLTElqMU9YMTFGby85TDFSRDJCSnk5ZDJkbXZPMXFC?=
+ =?utf-8?B?WmY0V2VZcFB4TnZERVd2OGRWR2RaM0lLOXRPUWt5Ynd1TmtTSGtYNytzeGFy?=
+ =?utf-8?B?K1pNTCtSTTN2ZHg1WkN5Wm54M0RxMSt0aEJrRVB1dXN1QlNJTWlUeTZDZmlh?=
+ =?utf-8?B?RnBtLzhlN2QzNVY2NG9WY3NFYWplMTZ4RVRabG5LbEFMZEZMaDE4c1N4NVkr?=
+ =?utf-8?B?Tlg1NzJsaXN3a3Z2RmpIM2hsZGZEalcwamVDcDZRMkNKMFlBdVpmTDZJVlY0?=
+ =?utf-8?B?YnZZNkovV24yNS9zelk3UmdJcitaN2lBVjAzaGtpazNYaU0yS0JvT1MyRUJn?=
+ =?utf-8?B?TEVaNHRYdjFkaE1FZXZCMkFpZ3VpWVBNT1phNXpaNzAvQkE5VmloVnRod0NS?=
+ =?utf-8?B?QVdYQ2JJdGMxbTZMb1ZVNGhZallDTTRQcnJrNTJvT0U4SDZzOEpIUk03cTda?=
+ =?utf-8?B?ZUQ0QytWUnBNUDZSNjlmYzhrbHp1KzNENi9PTCsreUwvNlEvSzRoQjhxcTFJ?=
+ =?utf-8?B?MmIxRTFnbDdhN0gzdzZKc3Z5SklDNCtVR0p4ZWdJRWRjY1JwbVE1UGY1ZFJx?=
+ =?utf-8?B?a1R5ZW8rMW1rRVhrSzJlMUMzSnpkcWIxNHRRUWNWTTJ2K1hkL092WGE0amJm?=
+ =?utf-8?B?aUllZ0VxUFRyendTbWVJOFFGK3hLd294bXhWUXFTTEtxb2lWK1Q2dzMrMEdP?=
+ =?utf-8?B?QXpleWhTbHlvVzROUjltWE1pbzNDWVl4QUEvWFpXQ0Q1d2wvZlE0TXRIdjls?=
+ =?utf-8?B?NG9PYWc2MCtUdUJaa3I4aDg4OE1qS1kvZUZkalNjUU50QWgxV2Rqd3RhRGpN?=
+ =?utf-8?B?YnhpdSttQVZnVmNXcTlITFZYNk1sWnQ1UmNQdmxIZ0NOaU43c1Q4dG1QRDR5?=
+ =?utf-8?B?OXNjSmtESnpBMzNTS1pnbWdnNXRmM2xDVndzYW5NYldHcjVWRjhhU3hvNVVU?=
+ =?utf-8?B?U01Hb0IzSElVSVJBYjU4MjJHcitpN0NHN2VrSDMwODN1MXR4SnhvcFREYTdB?=
+ =?utf-8?B?MDREeklGOEc5QzcrYy8vNlJEdmdaeWJrMk1SQVd5YSs3b2hibU1oNmpsczVX?=
+ =?utf-8?B?bktiaVphK1UxQzBoMnZFTGdQZXpBVkN0SzhIbE1KSlNKcVpFR2d3aVUrUVNV?=
+ =?utf-8?B?aHhxcmR1UXRpSTF2NXF6cGZyQnp5ajFkdEZsV2E0MUVhWkRXNGJYVzViZWFa?=
+ =?utf-8?B?N1YvK29zQ29Pd3l3ZWhXV2hmVk1wSnRKbjExWVFBSzEzZm9qbDhydz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 748fa1fa-2000-498e-e42b-08defe94265a
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8728.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2026 08:22:18.8323
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LhOTlCtYNoQ7gZJUYQJ85Z5yiOyp7zzHMC6nnRqZw7+tU23T8wPQNGOcv4eMQLYNCnhEp4ae62m0ChLvuHl91w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6223
 
 Hi,
 
-TL;DR: The kernel forces swiotlb bounce for sub-cacheline-sized DMA on
-non-coherent ARM64. The EN7581 NPU cannot write to the swiotlb bounce
-buffer region. Cache-line-aligned buffers bypass swiotlb entirely and
-streaming DMA works =E2=80=94 NPU version reads 0.1111, WiFi fully function=
-al.
+Thanks for fixing this! Just some commit message nits.
 
-Test progression (EN7581 / Gemtek W1700K, kernel 6.18, cache_align=3D64):
+On 19.08.26 17:13, Jerome Tollet wrote:
+> When an XDP redirect to an AF_XDP socket fails because the RX ring is
+> full, the XSK core frees the buffer. mlx5e later visits the cyclic WQE
+> and frees its XSK buffer before trying to refill the slot.
+> 
+Is this necessary? You explain very well the circumstances in the last
+paragraph.
 
-Boot 1 - stock (dma_set_coherent_mask only):
-  91/91 swiotlb bounce, NPU hangs after ~41 calls, version 0.0
-
-Boot 2 - + dma_set_mask_and_coherent(DMA_BIT_MASK(32)):
-  Still 91/91 swiotlb. Hang gone (all 116 succeed), version still 0.0.
-  Bounce-direct read via phys_to_virt matches pre-map =E2=80=94 NPU never w=
-rote.
-
-Boot 3 - + dcache_inval_poc before bounce read:
-  Bounce buffer still matches pre-map after cache invalidation.
-  Rules out CPU cache =E2=80=94 NPU genuinely never writes to bounce region=
-.
-
-Boot 4 - + phys/mask logging:
-  dma_mask=3D0xffffffff, phys fits. size=3D24 fails IS_ALIGNED(size, 64)
-  in dma_direct_map_page() =E2=80=94 this is why swiotlb is forced.
-
-Boot 5 - kmalloc(ALIGN(size, 64), GFP_KERNEL):
-  is_swiotlb=3D0 on all 169 mappings. Version 0.1111. 0 timeouts.
-  mt7996e firmware loaded, WiFi works.
-
-  Version query (size=3D12):
-    pre-map:    30 00 00 00 0a 00 00 00 00 00 00 00
-    post-unmap: 30 00 00 00 0a 00 00 00 57 04 00 00
-    Bytes 8-11 now contain response data (always zeros in boots 1-4).
-
-Root cause:
-
-dma_direct_map_page() forces swiotlb when:
-
-  !dev_is_dma_coherent(dev) &&
-  !IS_ALIGNED(phys | size, dma_get_cache_alignment())
-
-size=3D24 < cache_line=3D64 fails this regardless of address alignment.
-The swiotlb sync code itself is fine, but the NPU cannot DMA-write to
-the bounce buffer address range (it reads commands fine, never writes
-responses back). This is probably an EN7581 platform limitation.
-
-Testing a fix:
-
-Align the mailbox DMA buffer to cache line size:
-
-  aligned_size =3D ALIGN(size, dma_get_cache_alignment());
-  dma_buf =3D kmalloc(aligned_size, GFP_KERNEL);
-  dma_map_single(dev, dma_buf, aligned_size, DMA_BIDIRECTIONAL);
-
-This keeps streaming DMA, eliminates swiotlb, and works. The separate
-dma_set_mask_and_coherent() fix is still needed (fixes hang after ~41
-calls) but alone does not prevent bounce =E2=80=94 the sub-cacheline size
-triggers it regardless of mask.
-
-Debug commit:
-https://github.com/openwrt/openwrt/commit/c9363b2597528eb3badef3bb04608c0d2=
-1c81b6f
-
-Boot 5 dmesg available if needed.
-
-Regards,
-Dan
-
-=C5=9Br., 19 sie 2026 o 14:27 Daniel Pawlik <pawlik.dan@gmail.com> napisa=
-=C5=82(a):
+> If a batched refill succeeds only partially, a missing WQE keeps its
+> old buffer pointer. The buffer may meanwhile be allocated to another
+> WQE, so a later refill retry can free a live buffer through the stale
+> pointer and publish the same UMEM frame twice.
 >
-> Hi,
->
-> I instrumented airoha_npu_send_msg() on EN7581 (Gemtek W1700K) with
-> DMA_BIDIRECTIONAL and the original unaligned 24-byte payload. Here is
-> what I found.
->
-> 1) Every dma_map_single() call lands in swiotlb bounce buffers.
->    The driver only calls dma_set_coherent_mask(DMA_BIT_MASK(32)) at
->    probe but never calls dma_set_mask(). On this non-coherent ARM64
->    platform that appears to force all streaming DMA through swiotlb.
->
-> 2) The NPU permanently hangs after ~41 mailbox calls.
->    The first 41 PPE SRAM-init calls succeed (mbox_status=3D0x7, ~10ms
->    each). Starting at the 42nd, the NPU never sets the DONE bit =E2=80=94
->    every subsequent call times out at 100ms (ret=3D-110,
->    mbox_status=3D0x1), including the WLAN version query that triggers
->    the "failed getting NPU fw version" probe failure.
->
-> 3) Response data is never synced back through the bounce buffer.
->    post-sync and post-unmap hex dumps are byte-identical to pre-map
->    for both successful and timed-out calls.
->
-> 4) Buffer pointer is 64-byte aligned (p_aligned=3D1), size is 24
->    (sub-cacheline, cache_align=3D64). The swiotlb slot size is 2048,
->    so the bounce buffer itself is always page-aligned.
->
-> 5) dma_alloc_coherent mappings (shown by DMA-API debug dump) map
->    P=3D=3DD at addresses around 0x91xxxxxx, bypassing swiotlb entirely.
->    The mailbox works reliably through that path.
->
-> Representative trace (last success / first failure):
->
->   [19.541] func_id=3D0 p=3D...dfc0 size=3D24 cache_align=3D64 p_aligned=
-=3D1
->   [19.545] mapped: dma=3D0xff765000 dma_aligned=3D1 is_swiotlb=3D1
->   [19.541] mbox done: ret=3D0 mbox_status=3D0x7      <-- last success
->
->   [19.588] func_id=3D0 p=3D...dfc0 size=3D24 cache_align=3D64 p_aligned=
-=3D1
->   [19.618] mapped: dma=3D0xff765800 dma_aligned=3D1 is_swiotlb=3D1
->   [19.728] mbox done: ret=3D-110 mbox_status=3D0x1    <-- first timeout
->   (all subsequent calls also timeout, NPU never recovers)
->
-> My working theory is that the missing dma_set_mask() is the root cause.
-> Without it the kernel bounces every streaming mapping through swiotlb,
-> and either the bounce-buffer sync path on this non-coherent platform
-> has a bug with sub-cacheline transfers, or the NPU firmware cannot
-> handle the latency/address-range change that bouncing introduces.
->
-> I plan to test next with dma_set_mask_and_coherent(DMA_BIT_MASK(32))
-> to see whether that eliminates the swiotlb bounce and restores the
-> mailbox. If it does, that narrows the bug to either the swiotlb sync
-> implementation or the platform DMA ops for non-coherent devices.
->
-> Debug instrumentation patch (applied on top of OpenWrt's 6.18.44):
-> https://github.com/openwrt/openwrt/commit/13ea79d9a411dc497882e820e4c8814=
-43457bd97
->
-> Full dmesg from the instrumented boot:
-> https://gist.github.com/danpawlik/b351e8a06218a3aaf68a2cb31a32ea8f
->
-> Thanks for help,
-> Dan
->
->
-> wt., 18 sie 2026 o 17:29 Jakub Kicinski <kuba@kernel.org> napisa=C5=82(a)=
-:
-> >
-> > On Tue, 18 Aug 2026 08:23:33 +0200 Daniel Pawlik wrote:
-> > > v8 does not switch to coherent DMA; it only rounds up mailbox payload
-> > > allocations (dma_get_cache_alignment() in v9) and maps the same round=
-ed
-> > > length with DMA_BIDIRECTIONAL, while the mailbox length register stil=
-l
-> > > uses the original payload size. On this board, mapping only the paylo=
-ad
-> > > size regresses probe back to 0.0 even with the larger allocation, so =
-the
-> > > rounded map length seems required here.
-> >
-> > Please trace into the dma API implementation on this platform where the
-> > alignment makes a difference. The "unaligned length" path must be buggy=
-.
-> > We should fix it there, not in all the drivers (my concern being that
-> > this is not the only driver that hits the issue).
->
->
->
-> --
-> Z powa=C5=BCaniem,
-> Daniel Pawlik
+This should be the first paragraph. With a bit of extra context added
+(XDP redirect with AF_XDP).
 
+> Mark the WQE as released immediately after the driver-side free. The
+> flag is already cleared when a replacement buffer is assigned, so
+> refill retries no longer release stale pointers.
+> 
+> A standalone legacy cyclic-RQ zero-copy libxsk reproducer, using
+> 64-byte UDP traffic offered at 12 Mpps, stopped on stock after
+> 2,854,914 packets in 4.094 seconds, with 4,542 xdp_rx_ring_full events
+> and 64 ownership/double-publication errors. With this change it
+> processed 356,904,225 packets in 30 seconds despite 571,405
+> xdp_rx_ring_full events, with no ownership or data errors.
+>
+There's no splat, right?
 
+> Fixes: 3f93f82988bc ("net/mlx5e: RX, Defer page release in legacy rq for better recycling")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Daniel Borkmann <daniel@iogearbox.net>
+> Signed-off-by: Jerome Tollet <jtollet@cisco.com>
+> ---
+>  drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+> index 6fc6605d2..7967a2737 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+> @@ -410,8 +410,11 @@ static inline void mlx5e_free_rx_wqe(struct mlx5e_rq *rq,
+>  
+>  static void mlx5e_xsk_free_rx_wqe(struct mlx5e_wqe_frag_info *wi)
+>  {
+> -	if (!(wi->flags & BIT(MLX5E_WQE_FRAG_SKIP_RELEASE)))
+> -		xsk_buff_free(*wi->xskp);
+> +	if (wi->flags & BIT(MLX5E_WQE_FRAG_SKIP_RELEASE))
+> +		return;
+> +
+> +	xsk_buff_free(*wi->xskp);
+> +	wi->flags |= BIT(MLX5E_WQE_FRAG_SKIP_RELEASE);
+>  }
+>
 
---=20
-Z powa=C5=BCaniem,
-Daniel Pawlik
+When you send the v2, feel free to add:
+
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+
+Thanks,
+Dragos
