@@ -1,134 +1,246 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9D135836E
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 09:20:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787217603; cv=pass; b=KleIUJ111A+FTK3NuxqQZThc/JkUbWTB25lshQDoVrnBzuPbWHrjRbddLcXvAzb2IGCSzO5aSGN4Nja5ksNduU9pNOVBtWcwi/hFseMr46MPVneaOKOlfkXY8fWv09Mwi5QvA2KTUiQk/TcYdqiOmLNdf61ic8Q8TCoO5XM/Fcw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787217603; c=relaxed/simple;
-	bh=PfGX1/wpefIpzWNzuSRhv7ZZZrMl46KjkAc42CrnpUY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PzIPK9gHTp1g2gPlOP6LqDPfdogGmlyVZWrLqKFODd+EuRmDlPs99/JkTNgZEGeub0pl9AG5MCn03kyKakvcwyg1kxRlpmtPBIIPMs8+K3iYYI4aHe1ZzkaNxap1ZNPuojiCBsVvdtjcZJxs6OBEhUqiv0oF0IypG/BcnJ0Aiak=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fw/QVnlv; arc=pass smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B6E3D3306
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 09:21:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787217706; cv=none; b=gwSXMLJ6/QMWjQPy69oHhC0hFQ3kH83pQOL2hEbNu/kjcwdUS4D2lvy4CPx/3L54FXmJbM5QGaqMboaXksTDF1KC14xnLrW2Hz/KmI0FoyuYAIIFe6ksVk1paybYEhD0+VEmL+/vFXV+x0MG+6Ts8p1lhhFCEI2MeTHhAKArfDA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787217706; c=relaxed/simple;
+	bh=LvJ/qUaizwJhlogkbvoqvddNzWe9GDc7q575tH3s8Vo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JH3mny5/scKLWsWcVvbCb9WbA8GynsILXFmao0eFCsgyl73u1qrYoXhrxd70LzFzyD8DSIAFgru1GN/tnNMzFfAfuWxG0KBYbP271eiVi6oSlsHVkizVN39LgOsO4sA5ps2tcwHQ24sL4qmbgSycYxiwLT5ympbpzPDfdi18l0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZAI0QvUV; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fw/QVnlv"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-92e50a650a0so113382885a.1
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 02:20:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787217599; cv=none;
-        d=google.com; s=arc-20260327;
-        b=jcLBSd6yYRjVkt5o97IlkSpR4JcVg766VMcO0+5gD8ue4KzPxIabWIKkmchYrZ7r/+
-         nRRGvPcsEOjpjuBVpmow738LIE886WWpfI+GbimhtDJ71bAdzY6yiE/pbgJAcvmXGKC7
-         dCJDM6ZcA39lF9ytv5UsAaz1YFWihBydLS0oQQCopRlI+Tw7Fuf9eKEX+csKvmjFKNL3
-         /at/ZVBh4S5Dz+VZuDHwUMtGydGyc7PnRQjhtG+/fy3ffCXTTZzt5+tYwQWrgQMHmpJ4
-         WE6LZSfaNLYAXO1g9SaXr9RjLMEmK4r3bNrveDo80pDD1P90pLAIo2fIdngtQt+gEeSq
-         PR4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=aJfvNW4O1AiSSOmbGxVJcg0QkmSuk+rovKT2HmcAFeA=;
-        fh=/bMG/RkjfICgR43axEVrBCe0WLnEFICbffgBReS/zKQ=;
-        b=DyNkOqTqIW236Z4A3K2drAQ+mTIC9T0DfP32Si+6Dmdn4RNoPQ15mQZs94s0JxcmWn
-         dH9CgH5TYBzZxmWb2P7ysbodQ14grBUw1u+/irXbw53hoCTDd+XryOyRNmgZhS5J4P1K
-         cGlcLUvEBFtdygVV2JFjBx5wCRWtEpwH9DKdg+hXDCTLC2ulifoOAfANsBIE8h1VwcO2
-         6iSTbRXqG6+bOl3FWLw6qbHFUwWk8d34yHiaZ/ERnOqFqlc6TEtCY/cx0ga3DBnUyeFN
-         dXFMab9wCUvjGkqN3NMjHbiq6R1eSyZj6Lx9+ZR2oXhHvOkh0rKSqss23aEEGppAKHGc
-         cSPQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787217599; x=1787822399; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=aJfvNW4O1AiSSOmbGxVJcg0QkmSuk+rovKT2HmcAFeA=;
-        b=fw/QVnlvG+W8IppGSXTGFTT4p3/vPmcL0XY36F0n2rHJuiV9FntWuMT7UPqqQQ7JvN
-         F/FndSmZMG30ULIGRA5+azM+n9KBb0UmmILAeECz+CmWUbQM/A0qX8OJRiNwBlOtsxt6
-         zTBWbV214thf0OGPYus7NT1VEoAkCpKZhADdk3yBnmtO8WEZPP4AYzCbmAy/IhmkvK2P
-         68SXGygTvuSkKySLl+CYpkCKGrwdOXufDT4eTuPZPTWPR1dAFL16AdsqfdQRwoIt2ga5
-         G7pK0jzuMclKQi62axy97g50qSupb6yh7acwH1Mz5BNP4xkRuvvmtEupv5L8Vetu1pgV
-         kQSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787217599; x=1787822399;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aJfvNW4O1AiSSOmbGxVJcg0QkmSuk+rovKT2HmcAFeA=;
-        b=WN5fqVpgv02oyKE9IVrGrEl9VX2hbvhwpvDmGb+svidh8/v3yo+dxNPxQpEIllS7NB
-         BbNHb3a5Sns+iDdLl0n4MSw9/rWANC47cM74S0UBtG//ZIrDEYgHcze36hoICQZjrCGh
-         uxV/TdDZLtdOjN9FNcihwmom+BneXFJV+HeGfKkv837gIopGKEs4LZsqwOlhLu9ugI32
-         HrvwKGHqCSM09Ieq1qc3Rvq8JMn65SnwqFFkYHq3HbOwa8bV9teOntr5OFBZFROLmS1N
-         biXi5NEue+ioPhZtovCkHiuAE599J5N5wJloMegRE5RJLixWa23WNdH/mT+s6HVAUIIe
-         6mCw==
-X-Forwarded-Encrypted: i=1; AHgh+Roa02asEgwrTbC7bcJFYhX4aEzUqHQucs4lEFb/tshOnVAbUow7jxkR4oiRkjYNlcRIdCVKxK8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTlxkE6d+Uq28VSXy86BVv+YAT6Zsu7yNQhO2iG0Y8PvYTEDwg
-	0hIJjEZLr/tGToYkUUv+EMdDSiaX6HD4pd07IlSK4S43co3DEVtRiOA/d3NoLBQx1LwS6F+ayY+
-	BFYEb0Q0fAaIiNh5yFFEUj6Lgs+a5YopVuRLFkTkz
-X-Gm-Gg: AR+sD106Syc2SOVhRiZY8R2pLA29as8QxYTcwB1GNSAGw3cwSd7O1QVeCqLN0nIXkxU
-	LMu7n43G+SCy47s9HL586cDIpNhITbTdoP091apDMU4ROh8DGyR1gheTFcN6/Jbf5d+MXoCyP/g
-	yQ4qIovwldlRyY8sDOlBvBe2Sa3MtOw+wXWMiJvYttKpkA3AgKsMf3pP9olvTRTd8vHslmwuqOU
-	Hf7H4sk0lLcjVLsWa2sKqIrNfNQepyNmlPICRRBccoYRv/yr9SmapycU9MVsTq8qmROcsjlLPKG
-	iPQDxty9Vgdb7hBKFXZB0o27eIPKur9A14iwhteEDIF1oe3quKKq/62+uBlFcQrnfvlYWXiOhFj
-	5bMw52SI/wPy+0fjWByMUq8ffjwXyQBzku1JBwoa3POS4RJxpA5bbTGnebw==
-X-Received: by 2002:a05:620a:46a7:b0:915:e670:4021 with SMTP id
- af79cd13be357-9371e67b222mr866252585a.45.1787217598107; Thu, 20 Aug 2026
- 02:19:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZAI0QvUV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787217703; x=1818753703;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=LvJ/qUaizwJhlogkbvoqvddNzWe9GDc7q575tH3s8Vo=;
+  b=ZAI0QvUV8D7tB8YTVNKMSvr69GQE20axW7yTpsfiGqtYHEw0rMN82ZlK
+   JjLJVbHZ3OlFBTHWV440mBdJJcya34eqrtJyzQFAcIcIUeLwU7ZPTFEPd
+   9jv+8qI1eLUQoR0HFmBPT+LrHvYjboxLbkhSccWoMiQWIoGhUhAKDKvKB
+   8K5kk8qq9U2vtiK0hh4x3HrjXYSEjKWMq7JJonGaKUHAinZJxE9Z3tCVb
+   eadckmpRYfIrxpDSxfr6K16GftwkE5aYq9Ipr1z+74oNYTzCvWSQZfqVv
+   fa60eriy1ViZnGa+WIdrJ0QWxVxig17gCeUeh7bQXqIAGFoD3OwT/7KxR
+   A==;
+X-CSE-ConnectionGUID: YNNhCc58RFiSw1QyiVsvaA==
+X-CSE-MsgGUID: t1RVd517TqeJcFxTCruvSg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="87604721"
+X-IronPort-AV: E=Sophos;i="6.25,232,1779174000"; 
+   d="scan'208";a="87604721"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 02:21:42 -0700
+X-CSE-ConnectionGUID: nAZrSOCiSpee3o7FnGPtwA==
+X-CSE-MsgGUID: lMQG3RnERZuUfZiT+H3/8A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,232,1779174000"; 
+   d="scan'208";a="264165394"
+Received: from ccdlinuxdev11.iil.intel.com ([143.185.162.70])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 02:21:40 -0700
+From: Dima Ruinskiy <dima.ruinskiy@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	dima.ruinskiy@intel.com,
+	anthony.l.nguyen@intel.com,
+	allen.lan@intel.com,
+	acelan.kao@canonical.com,
+	kuba@kernel.org
+Subject: [PATCH iwl-next v2] igc: Support ACPI-based MAC passthrough
+Date: Thu, 20 Aug 2026 12:21:37 +0300
+Message-Id: <20260820092137.1835887-1-dima.ruinskiy@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260810141125.1176545-1-edumazet@google.com> <202608201604.4Zj72hcA-lkp@intel.com>
-In-Reply-To: <202608201604.4Zj72hcA-lkp@intel.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 20 Aug 2026 11:19:46 +0200
-X-Gm-Features: AcwNN1UNhmPI6Cu9T5MRbf4miQkt8_m-Qm1afUz4ESsXXfusjBk37G412Rz7Jzs
-Message-ID: <CANn89i+BZ8HgXw5KYGxMRAoFMsfvk1GF289E73=PCN+x5n15dQ@mail.gmail.com>
-Subject: Re: [PATCH v2 net] l2tp: fix tunnel and session refcount leak on
- seq_file release
-To: kernel test robot <lkp@intel.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, oe-kbuild-all@lists.linux.dev, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	syzbot+d6fa74e3f19d6ee01e3a@syzkaller.appspotmail.com, 
-	James Chapman <jchapman@katalix.com>, Guillaume Nault <gnault@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 20, 2026 at 10:13=E2=80=AFAM kernel test robot <lkp@intel.com> =
-wrote:
->
-> Hi Eric,
->
-> kernel test robot noticed the following build errors:
->
-> [auto build test ERROR on horms-ipvs/master]
-> [cannot apply to net/main net-next/main linus/master v7.2 next-20260819]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch#_base_tree_information]
->
-> url:    https://github.com/intel-lab-lkp/linux/commits/Eric-Dumazet/l2tp-=
-fix-tunnel-and-session-refcount-leak-on-seq_file-release/20260810-141125
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/horms/ipvs.git ma=
-ster
-> patch link:    https://lore.kernel.org/r/20260810141125.1176545-1-edumaze=
-t%40google.com
-> patch subject: [PATCH v2 net] l2tp: fix tunnel and session refcount leak =
-on seq_file release
-> config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/202=
-60820/202608201604.4Zj72hcA-lkp@intel.com/config)
-> compiler: powerpc64-linux-gcc (GCC) 16.1.0
-> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
-ve/20260820/202608201604.4Zj72hcA-lkp@intel.com/reproduce)
+Some systems implement a system MAC address object in the ACPI table,
+using either \\_SB.AMAC or \\MACA object names. This system MAC address,
+when enabled, is intended to override the permanent MAC address of a
+network controller in a docking station connected to the system.
 
-10 days to test a patch is unacceptable.
+Implement lookup of the relevant ACPI object names and use them to
+initialize the MAC address. Limit the scope to I225/I226 device IDs used
+in docking stations, to avoid interfering with onboard I225/I226 NICs.
 
-Please ensure reports are not sent 10 days late to avoid spamming litsts?
+On systems where the feature is disabled or unsupported, the ACPI objects
+do not exist or do not contain a valid Ethernet MAC, causing a fallback
+to the existing MAC address initialization path.
 
-Thank you.
+Assisted-by: GitHub-Copilot:claude-opus-4.7
+Signed-off-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
+---
+v2: limit scope to dock device ids
+v1: initial version
+---
+ drivers/net/ethernet/intel/igc/igc.h      |  1 +
+ drivers/net/ethernet/intel/igc/igc_base.c |  8 +++
+ drivers/net/ethernet/intel/igc/igc_hw.h   |  2 +
+ drivers/net/ethernet/intel/igc/igc_main.c | 69 +++++++++++++++++++++--
+ 4 files changed, 76 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/igc/igc.h b/drivers/net/ethernet/intel/igc/igc.h
+index 88291f775c22..05affaa04aa4 100644
+--- a/drivers/net/ethernet/intel/igc/igc.h
++++ b/drivers/net/ethernet/intel/igc/igc.h
+@@ -567,6 +567,7 @@ enum igc_tx_flags {
+ 
+ enum igc_boards {
+ 	board_base,
++	board_dock,
+ };
+ 
+ /* The largest size we can write to the descriptor is 65535.  In order to
+diff --git a/drivers/net/ethernet/intel/igc/igc_base.c b/drivers/net/ethernet/intel/igc/igc_base.c
+index ab9120a3127f..c9067cc79b69 100644
+--- a/drivers/net/ethernet/intel/igc/igc_base.c
++++ b/drivers/net/ethernet/intel/igc/igc_base.c
+@@ -474,4 +474,12 @@ const struct igc_info igc_base_info = {
+ 	.get_invariants		= igc_get_invariants_base,
+ 	.mac_ops		= &igc_mac_ops_base,
+ 	.phy_ops		= &igc_phy_ops_base,
++	.is_dock		= false,
++};
++
++const struct igc_info igc_dock_info = {
++	.get_invariants		= igc_get_invariants_base,
++	.mac_ops		= &igc_mac_ops_base,
++	.phy_ops		= &igc_phy_ops_base,
++	.is_dock		= true,
+ };
+diff --git a/drivers/net/ethernet/intel/igc/igc_hw.h b/drivers/net/ethernet/intel/igc/igc_hw.h
+index 62aaee55668a..d14b7666b5d7 100644
+--- a/drivers/net/ethernet/intel/igc/igc_hw.h
++++ b/drivers/net/ethernet/intel/igc/igc_hw.h
+@@ -69,9 +69,11 @@ struct igc_info {
+ 	struct igc_mac_operations *mac_ops;
+ 	const struct igc_phy_operations *phy_ops;
+ 	struct igc_nvm_operations *nvm_ops;
++	bool is_dock;
+ };
+ 
+ extern const struct igc_info igc_base_info;
++extern const struct igc_info igc_dock_info;
+ 
+ enum igc_forced_speed_duplex {
+ 	IGC_FORCED_10H,
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 82800a4a6d6c..15d0815a2110 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -11,6 +11,8 @@
+ #include <net/pkt_sched.h>
+ #include <linux/bpf_trace.h>
+ #include <net/xdp_sock_drv.h>
++#include <linux/acpi.h>
++#include <linux/hex.h>
+ #include <linux/pci.h>
+ #include <linux/mdio.h>
+ 
+@@ -44,6 +46,7 @@ static const char igc_copyright[] =
+ 
+ static const struct igc_info *igc_info_tbl[] = {
+ 	[board_base] = &igc_base_info,
++	[board_dock] = &igc_dock_info,
+ };
+ 
+ static const struct pci_device_id igc_pci_tbl[] = {
+@@ -54,8 +57,8 @@ static const struct pci_device_id igc_pci_tbl[] = {
+ 	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I225_K), .driver_data = board_base },
+ 	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I225_K2), .driver_data = board_base },
+ 	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I226_K), .driver_data = board_base },
+-	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I225_LMVP), .driver_data = board_base },
+-	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I226_LMVP), .driver_data = board_base },
++	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I225_LMVP), .driver_data = board_dock },
++	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I226_LMVP), .driver_data = board_dock },
+ 	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I225_IT), .driver_data = board_base },
+ 	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I226_LM), .driver_data = board_base },
+ 	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I226_V), .driver_data = board_base },
+@@ -7116,6 +7119,57 @@ static enum hrtimer_restart igc_qbv_scheduling_timer(struct hrtimer *timer)
+ 	return HRTIMER_NORESTART;
+ }
+ 
++static bool igc_get_acpi_mac_passthru(u8 *mac)
++{
++	static const struct {
++		const char *name;
++		acpi_object_type type;
++		u32 length;
++	} sources[] = {
++		{ "\\_SB.AMAC", ACPI_TYPE_BUFFER, 23 },
++		{ "\\MACA",     ACPI_TYPE_STRING, 22 },
++	};
++	struct acpi_buffer buffer;
++	union acpi_object *obj;
++	bool mac_found = false;
++	acpi_status status;
++	u8 buf[ETH_ALEN];
++	int i;
++
++	if (!IS_ENABLED(CONFIG_ACPI))
++		return false;
++
++	for (i = 0; i < ARRAY_SIZE(sources) && !mac_found; i++) {
++		buffer.length = ACPI_ALLOCATE_BUFFER;
++		buffer.pointer = NULL;
++
++		status = acpi_evaluate_object(NULL, (char *)sources[i].name,
++					      NULL, &buffer);
++		if (ACPI_FAILURE(status))
++			continue;
++
++		obj = buffer.pointer;
++		if (!obj || obj->type != sources[i].type ||
++		    obj->string.length != sources[i].length)
++			goto free_obj;
++
++		if (!strncmp(obj->string.pointer, "_AUXMAC_#", 9) ||
++		    obj->string.pointer[21] != '#')
++			goto free_obj;
++
++		if (hex2bin(buf, obj->string.pointer + 9, ETH_ALEN) ||
++		    !is_valid_ether_addr(buf))
++			goto free_obj;
++
++		ether_addr_copy(mac, buf);
++		mac_found = true;
++free_obj:
++		kfree(obj);
++	}
++
++	return mac_found;
++}
++
+ /**
+  * igc_probe - Device Initialization Routine
+  * @pdev: PCI device information struct
+@@ -7279,9 +7333,16 @@ static int igc_probe(struct pci_dev *pdev,
+ 	}
+ 
+ 	if (eth_platform_get_mac_address(&pdev->dev, hw->mac.addr)) {
+-		/* copy the MAC address out of the NVM */
+-		if (hw->mac.ops.read_mac_addr(hw))
++		/* Look for a system-provided MAC in the ACPI table before
++		 * falling back to reading the address from the NVM.
++		 */
++		if (ei->is_dock && igc_get_acpi_mac_passthru(hw->mac.addr)) {
++			netdev->addr_assign_type = NET_ADDR_STOLEN;
++			dev_info(&pdev->dev, "Using ACPI pass-thru MAC addr %pM\n",
++				 hw->mac.addr);
++		} else if (hw->mac.ops.read_mac_addr(hw)) {
+ 			dev_err(&pdev->dev, "NVM Read Error\n");
++		}
+ 	}
+ 
+ 	eth_hw_addr_set(netdev, hw->mac.addr);
+-- 
+2.43.7
+
