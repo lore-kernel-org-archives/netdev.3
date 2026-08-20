@@ -1,169 +1,114 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171CC47D93E
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 16:53:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6BC3793CE
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 16:54:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.177
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787244819; cv=pass; b=vAdauSijz7R7IveUvc9IzJtLxi8IosEddq0QNpzK5WASvaJpENDWdS6UpsLUvwBnEfZPIg4uyDIXT05pvyZzhYIjxtaLCFmT0rMn93g0FHc7MkUHrNVLihaElI7nSoBIRMJ/6oROjNTzZLqjZ17AxWxwUF1F2llpQjZ7QWWhcd8=
+	t=1787244897; cv=pass; b=XuwUOL3yqDlhotxCsE0lduErc9wJfoTNQVO/fZ8rVWms7Kv283W6fzhYjCp+RG2ZQekH310gTQs6WpifBoFaOp/msAMJ0Wge39GqmtXYfeMphF/7IG1dcYsQwduBqegeSd0DBKEiFwXkjBiT50nJpIazkb+6HMHuXa6Dm9DS4k4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787244819; c=relaxed/simple;
-	bh=opv+LcA4ZOcz1hOTwwMwu8TEujjGyrr+wXGQrHmuxS4=;
+	s=arc-20240116; t=1787244897; c=relaxed/simple;
+	bh=u1at3T2eHzRuPbZA8sBy6ro2golFnm4OSLJh4yYZXUs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=M/jYbd4mrtAZcpzU516Nr6HZL/wmeTmVHD7sQ7PHFfycfGZv9+W7SRVa+2dXtTvpVKusbo+MOYNoev4Ydz56MI9aFCW2J45PsRWpCa+TDrAuxGP4rYdp+lNf8dg+aj7ZZ3UO78igFkXHtegTL7NPtyBDnuJxAyLBg+4LpDNWB+4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c3VaW6cH; arc=pass smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=l3EgcKMhVCDvGSz5Zls0ahH6d102HeX8mNByHPpimyP54N842yUdcd8wCZ9Y8gOrWBJfzfWkxYEtGIa4y9IWl8/wEAIJkEi8FY28F4Gw8WcYEuHg4QQbQbQQ+Y9OmNCkacDvkxgKCJJ1b4Gv3oA0nPb7hv1u0u1G8tuympUCOe4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=kAjDD8+f; arc=pass smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c3VaW6cH"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-52d5bfa4bafso24431911cf.3
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 09:53:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787244816; cv=none;
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="kAjDD8+f"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8486672f03cso40186b3a.0
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 09:54:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787244895; cv=none;
         d=google.com; s=arc-20260327;
-        b=ItKRVH/iokV2BUuIUx1DjMZUPivgYJiax/kTzPScseRbqwMyDoVccd1INadEskpg1B
-         v0QpMrjEsVu51uTT3TWglhiXSqgqf7CQn3K+lFWzNyX7Wsqc1m7RilyNMGuzCVoqhbYr
-         GGZOo9SOQt1VfBpIaVCzzOEedu0o9LiZUlfgiVzcueO2p9pkjeFlEhQOzHQR0FsbKX2h
-         Qb0ToYWVo/ZVMyhvUjc/2ILT8qzxkEghaYYr4tOCs0O2++XBWJ3LJnENvp3Ek5VVTFee
-         1Pim4TMHqrtZ5UdsRaWq5VEeBbkv+SU5MH6Zdtx1GjQPgclDMDtad0p+MoXg/BpByJUx
-         wMpg==
+        b=hwphQ36XTRRH2hSSdu+LeEzADfpF2gdHzu7zSzopTN5WaOeTTDcVfieUuJqgEsVu0/
+         1ShEoWpwkqvI+S5reFTQ+Gw70cp1x03isRQsGH0ijcj9qaV9quTUE7nijkueUBkMTeIm
+         9t0MuUdAmHdmW9Gz5fxvxdf0F56A9NhJGsn++UaO7qlPLbyZy7HiubrrfeKkx/UoDH8C
+         PLGWJRPGXxQ2N/AmvtLKhzhOnYpfuVGennYHJUnTAHADb3Yg1gjy6I/QEHVBs2aasbLO
+         64iHjBR6V+oyAoq3+YEHP81g3zPw+L5pb9t6d7BD0FDRXvk5hf1sU906noqNY/sk4Ucy
+         LSuA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=NGH/yJHkK3M0IjwHdyO54yj9vy1LgGP/hn2OsWlWuBY=;
-        fh=C/VvdyHOFvcX5OvlLOTOlhimWzC7lIXdi1Ro7XvgWw8=;
-        b=PqJPR8H7wioTVoYj+AJCHFy9NjY2vCXqBEZe40093QUEA74SIsiEa1RMTEVjHB1/3q
-         K4bLGnC6yvRfwUwnvqYz6JqKUdvpHozlCfayNFjlMwMt+Lh96U22camQvsFtLjm0EbY/
-         tCvRrIdh5cyyg96xK5+i4lsg+HBlqzTeyF0xCjMypRnCTE7BY9cbwKz95k9nr3KYIQzK
-         lPmtzaIj5kEXgOLavGXRaeCuDoX2K6GYb4+4OAVs26JatWZsaYE4TdaOI0g1/OM56HET
-         Au2iWcEmknwTaB1KaA7J8kLWQdgi82tBCraDjGQJLYXsbdpJhEVHBFQHiR6krBNZh5ks
-         uYlg==;
+        bh=0pwYkzCa91/YloUKrvUo3IjLL3WBBRqjBWwpIrQkVV8=;
+        fh=Mo4jABy+Qqpu3ugugQfCi9Eaac8e5YZFLy7xCFbdG2c=;
+        b=EQqfrf7FuHPKl834+wdokicm0/zokVs/pMgcj2QxdavPR3kd/fwwxWPTTz8965SwJY
+         aidK+NGi42JHo/atPqk2frrROfaiNVG+NvzVNAEPqB4bziJhPa2KF30nFjmVWPedAQas
+         MZhLT1RfjORDm24lEq68seqGYcTsDWYf3/gbBrjUtVml7kdwDANITT/ZQYaPPbprvcq3
+         XOvLBFVES7mxHbretH0261SznJn7Fc1RiEsv7me3AOyX4aTulQjZGmdoy/b8MaFO9pTH
+         scxjMOSrFLQLMg3Aebs2I7KzW1mBle/8YHZkTiTXJU80KXd6Cj3iLqZhamvOtUf5GTo5
+         soeg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787244816; x=1787849616; darn=vger.kernel.org;
+        d=mojatatu.com; s=google; t=1787244895; x=1787849695; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=NGH/yJHkK3M0IjwHdyO54yj9vy1LgGP/hn2OsWlWuBY=;
-        b=c3VaW6cH/RmcBLe5Q7owLG4Phz5yK5JoA/uuZzRoBbPVsOCV6ixO1lDMjRI0/f5yQQ
-         g0KSm69gsaK8kFhSgXFn1II6Tp5+wgnHszxwwC7SVUUw6MMgR60+lglwQm2RUAaL7ZO5
-         GrD8QJWMh9KJi0iIec3t+S8hFLxvqDdyNlGiT7msdLi81XtmOV7hXHX/ZFHw6GrnBY7F
-         ShTzrRg8Qrmn+STSiPh0Ra0KFmHTx28f0FN3GkhfkC1Hx73xNXssnza+Mq84pRNk/B7W
-         +YYWHKjRwaFY6M7HC61LgBWJROVVJNBEt4sl+uP/r8jIF2TwitzFak0l58VIpHJRhMUc
-         s5dw==
+        bh=0pwYkzCa91/YloUKrvUo3IjLL3WBBRqjBWwpIrQkVV8=;
+        b=kAjDD8+fK8+5RgeU/RSTBY3vfWmkVA7xIMzMAszT7JbaE8H3m3KDmXCM4V5HrbG4N5
+         qfmrPQcXJ0vTsob+wLJiVwrCxw7geh5Nk0xsoVTwZBKOWLuKN/eqkjTATxuCouBOe+ih
+         VZDxOLnuvkd2hpCmWBpMuojf7BgZzVHHRJD3U=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787244816; x=1787849616;
+        d=1e100.net; s=20251104; t=1787244895; x=1787849695;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=NGH/yJHkK3M0IjwHdyO54yj9vy1LgGP/hn2OsWlWuBY=;
-        b=nDNPrnZlTTZWVXa8iUuElgkU8UXqyHFmEW6kv5yXEtZWN9j2Zb1HX3EoTk/RBAUIUM
-         zHSrWV4op0UNnnbFHMiu4uqdcpfwfpQh4JAAdocyo99wyU5YMHNFdiogzaJoKiXwNqu/
-         mskq6EFxHtwzyYnyXxGhBc2ddZnN19vM8DQU+DJWTlVXzpOWPObh99b6PW96Sa3koswR
-         kapyeuZGeeF/3Ac8/jszhS/d6zOts6FTo0ZOo5gNlutg/qUsdMI4nSmadCHEsR1p+93G
-         UkEIZZ0IPvLXdvpCZyqqRPKdxAte49Vosock01tccUb2eH6TZfQrieFyizOGFrkcmom7
-         putQ==
-X-Gm-Message-State: AOJu0Ywjqc2bFCHqaan7ytX+4dRsa7hI5McJqr+SI8Kl94NGFRd4lveb
-	ofBR/zN0v5emg+R5B1TSknK8hpYxD+2P4a0ofKfHGbBBeOFpSU57Gq4dh7CAbhpBXIAjuhOmZyX
-	fPFj/iDR036zBA6WVCHFZMlJSUZqh/1zbDGI205O0
-X-Gm-Gg: AR+sD11YRT1g8Q+6dD+jCSsOYcT4Su1YNqa3jkaqtn5l/xUL1ceA+hwlshkGmVFwVM0
-	Fo1jR4DwPjxjMIhSQiA/l9kWX61viV80F5MgS23BCr39MMe02umsfBhxHBIlEcqcKGrExdqHXt7
-	ktd/PtB+4Lnj4US83o9iiotU4zc3WNph4EfdajGslhnyzpuKPVuVPJFg+2DN0P9f/NwhxUx5cC2
-	+oW/HRwyD694JtGpwIC2kNKzIm7s7KSPX0ZMclthnNUJ9nH2AI1GEIlqepl1/jVdW9++ai6RPp0
-	TzRpmEYNHFQ0pKGQLHc8GGtRPJim6KyxaLhSwmVd39XOOTswoktssVTTNzLDcsRlmSzqttAGAFd
-	5oCYIvxxNb9Xsi6NNizujELxkNfQJP4bGd5IdMmCZ1BiLj4Bc7inb7QGeXw==
-X-Received: by 2002:ac8:5f0b:0:b0:52d:2ddd:27c with SMTP id
- d75a77b69052e-52dd5cb09c7mr113827831cf.31.1787244815224; Thu, 20 Aug 2026
- 09:53:35 -0700 (PDT)
+        bh=0pwYkzCa91/YloUKrvUo3IjLL3WBBRqjBWwpIrQkVV8=;
+        b=h7zqP6Po+kxigsnP5FAUkTFzpmNsLRexY77EkcgOJ4hsnpSYg+nDjJ7ahYaini9MsH
+         BA6wrLY5DNuMmphSS4LK//Yh0lgE5cpjx1n8epD4sJI0dmOr7uNHAv/pA0tigB7fkt1d
+         Ik2UF1e1p4RT50xf9/lXlFHAbIFbZ6SD/E+SXx72TX2+Ns2+zuQpQk9CRVT5Hpn7v+VZ
+         yDBiX+65kGvwjCWCzAkaU5yfLHUSzrgqLydPL3C2EC4Ug1ZnlKSi63bSTulqIIdivqpM
+         Dmgn9Jik6eLUJcU4w6RdByOJbFPlfpsIIwPgs5a8CTAAHIfDcRXjHsYoLZsxmhG2u44a
+         kcOw==
+X-Gm-Message-State: AOJu0YxqPSRSGXp0vRQxx3nlrYJ/n8GSPet83szAx36M9zqzJtKuie51
+	2s6nFZJ4fCiGOxfae7/pgJLmH/N+xvTdige4yirtcn/2aRf3uwW1Q4lvJS5bfOqLrsWM+PVAlvu
+	x4xr4JKKzt+gF1yQZQ5PHBn9VHohZOuXjjC8XNqMj
+X-Gm-Gg: AR+sD109t7CW8RfpZoQGRzfhfIdBqaCwE3fCX40RoXz3kJqMFMKAc9ve2SAuiCI7RRh
+	rj6ojRONalE+xyYJ0oLWrmDz1CNZvxwYytzgFvo6l/qhiSUDoLkSAu9UzOpNagYWHT7t6m/HC3w
+	6P5MsFwtdxy/w7CCHxE517VQI8gWPiMjYw3EuCJHrqrKGf++bQJeRdVAEbs16GG6ZDr+cOLCdCy
+	azh1Kq0ppw2f49Oz+mOcU6ru4lgOU1yqfvSjI2aFyOCGctkgUq1rt0cIZg6VWpNHtUPdzUE3u0B
+	GsrsXVhp8u3UloYU6YT+NOTDM+W3ickK+Oastm0nvw==
+X-Received: by 2002:a05:6a00:1895:b0:83e:b443:965e with SMTP id
+ d2e1a72fcca58-851d3808e7amr22045526b3a.3.1787244894734; Thu, 20 Aug 2026
+ 09:54:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260817153957.3177627-1-poros@redhat.com>
-In-Reply-To: <20260817153957.3177627-1-poros@redhat.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 20 Aug 2026 18:53:23 +0200
-X-Gm-Features: AcwNN1Xb91DpV9WY_Q-Z2-aLqA5VqqqNBYRmDzZhkVHQO2OraLaV1QOhEcvG8-s
-Message-ID: <CANn89iKZe5reKy5uNxF7_G2=zytnPjWCUn+bX7-iGdJuTjBgMw@mail.gmail.com>
-Subject: Re: [PATCH net] xsk: reset the mac header in the generic Tx path
-To: Petr Oros <poros@redhat.com>
-Cc: netdev@vger.kernel.org, Magnus Karlsson <magnus.karlsson@intel.com>, 
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Willem de Bruijn <willemb@google.com>, 
-	Vladimir Oltean <olteanv@gmail.com>, Doruk Tan Ozturk <doruk@0sec.ai>, bpf@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20260819204210.23722-1-fw@strlen.de> <CAM0EoMmT7xFtxrVwCm1ohpfVAPBuVBFHB8q_eTQ5taSquKo9og@mail.gmail.com>
+ <aoboL020DIcOn2lx@strlen.de> <CAM0EoMnvz6A_v65s=jcdw5nxL6N2+yd7ZBvp78mtt7edkPe-sw@mail.gmail.com>
+ <aobuk1osK-Lq-aMk@strlen.de> <CAM0EoMm8G9FaZZfctYKsm4Rkd3RVmVxkWMp6zJ1Gbxge5hdp0A@mail.gmail.com>
+ <aob8wQn2EuI2N-BO@strlen.de>
+In-Reply-To: <aob8wQn2EuI2N-BO@strlen.de>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Thu, 20 Aug 2026 12:54:43 -0400
+X-Gm-Features: AcwNN1UIGe7Is2XcCfEfxdBC11VB-x0SIEimk3MgyyveHG6taAJXwUn-j5H8yJ8
+Message-ID: <CAM0EoMnLj_5HQrxSWPhJcks1bedi_OMEr6-_=q2+c_cWDn=8Cg@mail.gmail.com>
+Subject: Re: [PATCH net 0/4] net/sched: reset conntrack after packet munging
+To: Florian Westphal <fw@strlen.de>
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, victor@mojatatu.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 17, 2026 at 5:40=E2=80=AFPM Petr Oros <poros@redhat.com> wrote:
+On Thu, Aug 20, 2026 at 9:10=E2=80=AFAM Florian Westphal <fw@strlen.de> wro=
+te:
 >
-> __dev_queue_xmit() resets skb->mac_header, __dev_direct_xmit() does not,
-> so a frame taking the qdisc bypass path reaches ndo_start_xmit() with
-> the sentinel left by __finalize_skb_around() and skb_mac_header() points
-> 65535 bytes past skb->head.
+> Jamal Hadi Salim <jhs@mojatatu.com> wrote:
+> > Sigh - couldnt help myself. Attached  fixes the poc from kyle - i know
+> > you are hinting there are other scenarios where it wont work.
 >
-> The packet socket reaches it through packet_direct_xmit(), and
-> packet_parse_headers() was taught to anchor the header by
-> commit c2707480cfbf ("net/packet: reset the MAC header on the
-> packet-socket transmit path"). AF_XDP reaches it through
-> __xsk_generic_xmit(), and net/xdp/xsk.c never sets the mac header.
->
-> ice reads eth->h_proto through skb_mac_header() on its ordinary Tx path.
-> On an E810 every one of 2817224 AF_XDP frames reached the driver with the
-> sentinel still in place, so the ethertype never came from the frame. With
-> this patch all 5757920 frames of the same test carried the correct 0x88b5=
-.
-> An AF_PACKET sender on the same port read 0x88b5 in both runs.
->
-> On a KFENCE kernel that read lands inside the pool and gets reported as a
-> use after free of an unrelated object, 387 times in a 180 s run:
->
->         BUG: KFENCE: use-after-free read in ice_xmit_frame_ring+0xddb/0x1=
-650 [ice]
->          ice_xmit_frame_ring+0xddb/0x1650 [ice]
->          __dev_direct_xmit+0x347/0x4d0
->          __xsk_generic_xmit+0xc13/0x1e70
->          __xsk_sendmsg.constprop.0.isra.0+0x519/0x640
->          xsk_sendmsg+0x6c/0x90
->
-> Rerunning the same reproducer on the same E810 with this patch applied
-> produced no reports and no bad reads.
->
-> Anchor the header in xsk_skb_init_misc(), which runs once per skb for
-> both build paths. With IFF_TX_SKB_NO_LINEAR the offset still is not a
-> real header, but it stays in bounds and no such driver reads it.
->
-> Fixes: 35fcde7f8deb ("xsk: support for Tx")
-> Signed-off-by: Petr Oros <poros@redhat.com>
-> ---
->  net/xdp/xsk.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-> index 7855ee09c4b640..885427392cb6b3 100644
-> --- a/net/xdp/xsk.c
-> +++ b/net/xdp/xsk.c
-> @@ -931,6 +931,7 @@ static int xsk_skb_init_misc(struct sk_buff *skb, str=
-uct xdp_sock *xs,
->         skb->priority =3D READ_ONCE(xs->sk.sk_priority);
->         skb->mark =3D READ_ONCE(xs->sk.sk_mark);
->         skb->destructor =3D xsk_destruct_skb;
-> +       skb_reset_mac_header(skb);
+> Yes, e.g. what if pedit inflated th->doff?
+> nf_conntrack_in() checked that this was fine, but now the pipeline
+> can re-neg on that.
 
-I don't know, I had at some point the goal of removing our dependency
-on mac header in ndo_start_xmit(),
-as this must be skb->data.
+True.
+So my question to you then is: what about BPF, OVS, future thingy? Are
+you going to fix each individually?
+Or is the answer there "these are different" because they require
+root/CAP_BPF they are not worth fixing?
 
-ice could use skb_eth_hdr() instead of eth_hdr() or skb_mac_header()
-and save few cycles.
-
-Some drivers call skb_reset_mac_header(skb), this is really a mess.
-
-With AI these days, it should not be too hard to completely remove our
-dependency on mac_header.
+cheers,
+jamal
