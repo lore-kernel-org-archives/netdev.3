@@ -1,149 +1,186 @@
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DBAA3DE429
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 08:58:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747EE3E1222
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 08:59:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787216334; cv=none; b=rrg6HSmxNNnEMCsSBgGEq8Tga1324MwrMIZv7W7qs63fKs4bt9uEgjWomH55ktTQxmkVGr8fgWAJ/Vq2qbVM+GKKTUbixDq3/FcTn9G9I5PcYDLDjiQWoq4LdT3EfJs/ZJCW2IycrEjJh4EOMYahkP4Che+ssjWFX/EJ4vDczmc=
+	t=1787216365; cv=none; b=aRv9gSkP084VvvYLhaWYOYwBlCQq9ARcv17N5OH6VTL6dtjHXOkOKu+apoZwJoWJTqxBiTR+Sc/8ajLOKQvN+I8xEaiREl58FnG4jumv6hIY9dR1XL8f/RTa405S2zXPefiQo+f3zNkL7iQOppEK353CB6E+EAiU58OStrnaGic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787216334; c=relaxed/simple;
-	bh=PSEE1ZHrpIrOGqhtKVFTLlJfsbxfnJmnD7XLbDtuRVM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Gaf5KHKRRtvqOWzSIAikxFLzCdIrcyUeWqQ40F+mdKrVAyqssw4+Z0pIPYrwXBVv1dHdvxb1PjzdAe6y4M2bOs/TWx9w3FvP9DilyZ4IHU4+f6hUPkEgFtPwag+SFlO+RT0WTabYU4wFuzMUVCGKhAC/bN4tqbkapsJZLkmwS0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=FukmzVEd; arc=none smtp.client-ip=113.46.200.222
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1787216365; c=relaxed/simple;
+	bh=A+zUCLXifVgTuHB4fPwTYTmQVtckKJL/x1J77vP12OQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oWelxz8E4A0iDtjvcZ3d/irzQvY0dwFb7vP8lrW8gDwuZ/9H8LLyf2BuV3lhHptqxI8yVIhFkGUDNdgopUxSCx3IvXY3fhjO1/CBoR1J8q9frw5xaQgrqX+9b6hrG+Pjbv9PlFafJ6mou7O5M3IYp1dmadxaC946FbQg8aAZ0FY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DnvSgCcU; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=dCjdRYzk; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="FukmzVEd"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=HjlpB81NplEGM8TmYOQ3yWrAodWhSKbszGQgPWMnYx8=;
-	b=FukmzVEdGFs1NiSxH2WplLUQZedeebD5vtAS/y3UrHsLbOPdmvKvJrLDWfiZEI702R8buha4G
-	seytvtgbA8lgvvhbtLFUlDJIkaRQfiY4JDRHtAZ7aSMgWXhCCqUKntZ7q71VDwoH6UdDIA8bX6e
-	gFbsLWn8Eq64VnucH46I+q8=
-Received: from mail.maildlp.com (unknown [172.19.163.15])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4hQcXH0tB1zLlTg;
-	Thu, 20 Aug 2026 16:47:59 +0800 (CST)
-Received: from whupemk200012.china.huawei.com (unknown [7.152.185.169])
-	by mail.maildlp.com (Postfix) with ESMTPS id EDD5140578;
-	Thu, 20 Aug 2026 16:58:40 +0800 (CST)
-Received: from [10.174.177.223] (10.174.177.223) by
- whupemk200012.china.huawei.com (7.152.185.169) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 20 Aug 2026 16:58:39 +0800
-Message-ID: <53e86f6f-43b9-4e06-b185-1344f69cd650@huawei.com>
-Date: Thu, 20 Aug 2026 16:58:38 +0800
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DnvSgCcU";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="dCjdRYzk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787216362;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DTl22GoWoyN6aViItfu2yJEcGK2iytdtHBsWnD7u58U=;
+	b=DnvSgCcU3U6O6jWd6inFHOzD2W+28rTrSbAFdLqeUYDcKt4ACYMeO6IA1Xqibzd4wHQ6x/
+	ZqizsO7qPCvKflRwWoQlcVwyH1na4vvaa0GqPelg3whVAbMfl2uuiQI7qX247DaB6JFuI6
+	Cdf0SCsC5aw37f6MYBNzU2ylljtEeK8=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-680-W0YKCbScOQufZBAysOQHYg-1; Thu, 20 Aug 2026 04:59:21 -0400
+X-MC-Unique: W0YKCbScOQufZBAysOQHYg-1
+X-Mimecast-MFC-AGG-ID: W0YKCbScOQufZBAysOQHYg_1787216360
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-495529a93f9so16773405e9.3
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 01:59:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1787216360; x=1787821160; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DTl22GoWoyN6aViItfu2yJEcGK2iytdtHBsWnD7u58U=;
+        b=dCjdRYzknoSPA1GUALnN/oLKs5uka8sk4BAYk+tobMmfIo3QTfko7dFt1wX7WJ4atM
+         2KVh+tblDIxXoxL6O8K97Rzya2VU9OLeqlXLpFxOEQacvyzddtqWggRuwKo+xws1+YDA
+         a/E+zFpBHk+pe6IO6YUOcnmOEABM5F7Dgxcg+BWAkiMMyFX6a66cTdU8dGV9vOjTVJ4q
+         /4/mOehBg4GwZe93xA2dBYhryIFkQz0+7Cf1hwhTDEnTzzMMskrSTfafl4YSkJ1CLIkP
+         ha3xGzOUjGfCZ1svghEIjoIxyaxFUKVsn0CrYLDfe0GpVmpVBEqnbwI6MY4+6Z4VzPpK
+         C4eA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787216360; x=1787821160;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DTl22GoWoyN6aViItfu2yJEcGK2iytdtHBsWnD7u58U=;
+        b=tO6tv+i90c5C1r965y3JHkPR2QFBOp6BKFmP8gtVR6ptpsFPAgw0Zod6LFmRnkvcct
+         ySeggSvNrQtI9GURvJ70u1FFoPWbvPOtEmmTd7YHWAzIHAGFv7qMSCSSjArmdK1GWAvD
+         Us41//fk3LMG7QgsHABlga8iNe67IX9XneqPAs+EmDyTkB+R5VAeyBub4ysbSWf8wenv
+         zbGRZYMcCo5rEz8gGH68t+TKg0bmen21CrYJpolLwdA2uCEjDaiWJIa6wDGb0hiiFX3F
+         1YtLBCv9FT6qkRQOtobpC6xkLnN2wsRah/ObyEVqXNNnGGNVAY8Op9uJT3W/RyGsHerB
+         EzAg==
+X-Forwarded-Encrypted: i=1; AHgh+RpfHRHjg0spFymOrrp5xsBIKrwT7p/IdlZDyNk7G9mrWM4RBcuE0IYf5cbpxDIXbU0Fd7d+8PM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywq9HfoKFts3PhTh5Rbo1/zXPJFcRNdYKhPhRHnoCDnAeQgTjJ+
+	1t9AAXSG/t/nPYBR86tVdGdN6Qn9F2IVqcO0jEHdq9RYJmTwbmYnjgvUIqYfPDt2l4qevAqKbkE
+	IFh+JzliIUlTbF/Cv1ISDI4xcgGk2I00UMLTw1z1JXVKIKKu+kcYmSSriXNuf5BnUkQ==
+X-Gm-Gg: AR+sD106qnzABEJsCIDx+ObS9MyZ//UgqhhFyT54CdLGu382SPY73b9sYwuAx5/UXHf
+	YXvANSK1KFdcKwOqMlXG2pW6k6RJ61z0eWatchlLPWo742d6nmO6ZG2mGOA+PTDzPRCnzX1MZXL
+	+ivUPWM59Qrgis8a3UUJK1TF3aXDVjIaomILF2dfdD3EyNw0n7AeOAzqut16ZUoXNI+Z6CUAI0T
+	OYojd042G7NsLMFdWkKCy+MhJ+1L1LQbnYHweLlHp2xS5OqEJ/swiJHVSvEA5ap+trPcC2+OX1h
+	zHRj3/iZU7knAA0hHErC27sqSCNYNu/fcDCbYO2Bls2F2lfKxd8qzi1WBJwWbXI6x12d7GWfc3v
+	41k7k+0pAJt6nmf9lrmexgERcdU4SvnJgmzXSwwCSaBIqlxbGbrGn
+X-Received: by 2002:a05:600c:5253:b0:499:79b9:e226 with SMTP id 5b1f17b1804b1-499aa109edbmr172010385e9.0.1787216359745;
+        Thu, 20 Aug 2026 01:59:19 -0700 (PDT)
+X-Received: by 2002:a05:600c:5253:b0:499:79b9:e226 with SMTP id 5b1f17b1804b1-499aa109edbmr172009765e9.0.1787216359289;
+        Thu, 20 Aug 2026 01:59:19 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-135-154.retail.telecomitalia.it. [82.53.135.154])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499b3c556a3sm17318315e9.3.2026.08.20.01.59.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Aug 2026 01:59:18 -0700 (PDT)
+Date: Thu, 20 Aug 2026 10:59:13 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
+	jasowangio@gmail.com, eperezma@redhat.com
+Subject: Re: [PATCH v2] vhost: clear vq->worker under vq->mutex when freeing
+ workers
+Message-ID: <aobAlM7l67fpDaPO@sgarzare-redhat>
+References: <20260819114328.426131-1-andrey.drobyshev@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: iptunnel: fix stale transport header during
- tunnel decapsulation
-To: Eric Dumazet <edumazet@google.com>
-CC: <davem@davemloft.net>, <pabeni@redhat.com>, <kuba@kernel.org>,
-	<horms@kernel.org>, <herbert@gondor.apana.org.au>, <kuniyu@google.com>,
-	<idosch@nvidia.com>, <andrew+netdev@lunn.ch>, <ap420073@gmail.com>,
-	<steffen.klassert@secunet.com>, <laforge@gnumonks.org>,
-	<jiayuan.chen@linux.dev>, <jhs@mojatatu.com>, <zhangchangzhong@huawei.com>,
-	<netdev@vger.kernel.org>,
-	<syzbot+83181a31faf9455499c5@syzkaller.appspotmail.com>
-References: <20260813033855.3372172-1-dongchenchen2@huawei.com>
- <CANn89iLCrzmOfUVwa0yeROpkZxWmVsAkbH7=SBA3XuVxkmTfKA@mail.gmail.com>
-From: "dongchenchen (A)" <dongchenchen2@huawei.com>
-In-Reply-To: <CANn89iLCrzmOfUVwa0yeROpkZxWmVsAkbH7=SBA3XuVxkmTfKA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- whupemk200012.china.huawei.com (7.152.185.169)
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260819114328.426131-1-andrey.drobyshev@virtuozzo.com>
 
+On Wed, Aug 19, 2026 at 02:43:28PM +0300, Andrey Drobyshev wrote:
+>Every other update of vq->worker is done under vq->mutex - the worker
+>attach/swap ioctls and vhost_worker_killed().  vhost_workers_free() is
+>the sole exception: it clears vq->worker without holding the lock.
+>
+>The effect is harmless in practice, as this only happens while the
+>owning process (and thus the whole device) is dying, but the lockless
+>write is inconsistent with the rest of the code.  Clear vq->worker under
+>vq->mutex, like everyone else, so that all writers of vq->worker follow
+>the same locking rule.
+>
+>vhost_vq_reset() also used to clear vq->worker locklessly, earlier on
+>the same teardown path, making the write in vhost_workers_free()
+>redundant.  Drop the clear from vhost_vq_reset() and initialize the
+>pointer in vhost_dev_init() instead, so that vhost_workers_free() is the
+>only place clearing vq->worker on teardown.  Any work queued while
+>vq->worker is still set is drained by the synchronize_rcu() +
+>vhost_dev_flush() in vhost_workers_free() before the workers are freed.
+>
+>Reported-by: Sashiko Bot <sashiko-bot@kernel.org>
+>Closes: https://lore.kernel.org/kvm/20260721102325.1BD6C1F00A3A@smtp.kernel.org
+>Link: https://lore.kernel.org/kvm/20260724153334.1BCBF1F000E9@smtp.kernel.org
+>Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+>---
+>
+>v1 -> v2:
+>
+>  * Drop the lockless vq->worker clear from vhost_vq_reset(), initialize
+>    vq->worker in vhost_dev_init() instead;
+>  * Rebase onto Michael's mst/linux-next tree (with my previously merged
+>    vsock patches);
+>  * Add links to Sashiko reports and adjust commit message.
+>
+>v1: https://lore.kernel.org/kvm/20260723153310.745855-1-andrey.drobyshev@virtuozzo.com
+>
+> drivers/vhost/vhost.c | 12 +++++++++---
+> 1 file changed, 9 insertions(+), 3 deletions(-)
+>
+>diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+>index a0c1d54019aa..5764a54ddc92 100644
+>--- a/drivers/vhost/vhost.c
+>+++ b/drivers/vhost/vhost.c
+>@@ -392,7 +392,6 @@ static void vhost_vq_reset(struct vhost_dev *dev,
+> 	vq->busyloop_timeout = 0;
+> 	vq->umem = NULL;
+> 	vq->iotlb = NULL;
+>-	rcu_assign_pointer(vq->worker, NULL);
+> 	vhost_vring_call_reset(&vq->call_ctx);
+> 	__vhost_vq_meta_reset(vq);
+> }
+>@@ -613,6 +612,7 @@ void vhost_dev_init(struct vhost_dev *dev,
+> 		vq->heads = NULL;
+> 		vq->nheads = NULL;
+> 		vq->dev = dev;
+>+		RCU_INIT_POINTER(vq->worker, NULL);
+> 		mutex_init(&vq->mutex);
+> 		vhost_vq_reset(dev, vq);
+> 		if (vq->handle_kick)
+>@@ -722,13 +722,19 @@ static void vhost_worker_destroy(struct vhost_dev *dev,
+> static void vhost_workers_free(struct vhost_dev *dev)
+> {
+> 	struct vhost_worker *worker;
+>+	struct vhost_virtqueue *vq;
 
-> On Thu, Aug 13, 2026 at 5:30 AM Dong Chenchen <dongchenchen2@huawei.com> wrote:
->>
->> Syzbot reported a crash in qdisc_pkt_len_segs_init() caused by a stale
->> transport_header offset after tunnel decapsulation.
->>
->> BUG: unable to handle page fault for address: ffffed102091a42e
->> Oops: Oops: 0000 [#1] SMP KASAN NOPTI
->> CPU: 0 UID: 0 PID: 340 Comm: qdisc_uaf_repro Not tainted 7.2.0-rc4-00061-g248951ddc14d #256 PREEMPT(full)
->> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
->> RIP: 0010:__asan_load2
->> <IRQ>
->> qdisc_pkt_len_segs_init (net/core/dev.c:4145)
->> __dev_queue_xmit (net/core/dev.c:4787)
->> br_dev_queue_push_xmit (net/bridge/br_forward.c:53)
->> br_handle_frame_finish (net/bridge/br_input.c:229)
->> br_handle_frame (net/bridge/br_input.c:315)
->> __netif_receive_skb_core.constprop.0 (net/core/dev.c:6099)
->> __netif_receive_skb_list_core (net/core/dev.c:6287)
->> netif_receive_skb_list_internal (net/core/dev.c:6445)
->> napi_complete_done (net/core/dev.c:6813)
->> gro_cell_poll (net/core/gro_cells.c:74)
->> __napi_poll (net/core/dev.c:7735)
->> net_rx_action (net/core/dev.c:7798 net/core/dev.c:7955)
->> handle_softirqs (kernel/softirq.c:622)
->> do_softirq (kernel/softirq.c:523  kernel/softirq.c:510 )
->> __local_bh_enable_ip (kernel/softirq.c:450)
->> tun_get_user (drivers/net/tun.c:1986 (discriminator 1))
->> tun_chr_write_iter (drivers/net/tun.c:2032)
->>
->> The crash requires four conditions to line up:
->>
->> 1. The incoming packet is encapsulated and carries GSO metadata.  The outer
->>     transport header offset is stored in skb->transport_header while the
->>     packet is still in the outer tunnel context.
->> 2. The tunnel receiver strips the outer headers.  skb->data is advanced to
->>     the inner frame, but skb->transport_header is left pointing to the
->>     now-removed outer L4 header, so it becomes a negative offset relative to
->>     the new data.
->> 3. The inner frame is not delivered to the local IP stack.  Instead, it
->>     is forwarded at L2 by a bridge or HSR, so ip_rcv_core() never runs and
->>     the transport header is not reset to the inner L4 offset.
->> 4. The forwarding path calls __dev_queue_xmit(), which enters
->>     qdisc_pkt_len_segs_init().  That function computes the GSO header length
->>     from skb_transport_offset(skb).  Because the offset is negative, the
->>     unsigned cast overflows and pskb_may_pull(skb, hdr_len +
->>     sizeof(struct tcphdr)) reads past the end of the skb, triggering a
->>     KASAN fault or page fault.
->>
->> Fix this by clearing skb->transport_header to the ~0U sentinel at the
->> tunnel decapsulation boundary, after each tunnel receive function has
->> finished all processing that needs the outer L4 header and before the skb
->> is handed to GRO or the stack. The IP/GRO receive paths then set the
->> transport header correctly when they parse the inner packet.
->>
->> Fixes: 7fb4c1967011 ("net: pull headers in qdisc_pkt_len_segs_init()")
-> 
-> This Fixes: tag seems pretty random to me. Issue was present long
-> before that commit.
-> Next time, please be precise with the `Fixes:` tag; it's not decoration.
-> 
-Thanks for your review. Sorry for the late reply.
-The stale transport header has been present since 1da177e4c3f4 
-("Linux-2.6.12-rc2"), which is completely latent until
-7fb4c1967011 ("net: pull headers in qdisc_pkt_len_segs_init()"
-was merged.
+nit: `vq` is used only in the for loop, so you can move this declaration 
+inside the loop. (I'm not asking to respin for just this)
 
- From the perspective of the root cause introduced by the issue,
-we can use 1da177e4c3f4 ("Linux-2.6.12-rc2") as fixtag.
+> 	unsigned long i;
+>
+> 	if (!dev->use_worker)
+> 		return;)
+>
+>-	for (i = 0; i < dev->nvqs; i++)
+>-		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
+>+	for (i = 0; i < dev->nvqs; i++) {
+>+		vq = dev->vqs[i];
+>+
+>+		mutex_lock(&vq->mutex);
+>+		rcu_assign_pointer(vq->worker, NULL);
+>+		mutex_unlock(&vq->mutex);
+>+	}
+>
 
-> Also, calling skb_unset_transport_header(skb) directly from
-> gro_cells_receive() would make more sense and
-> your patch would be less intrusive.
-> 
+LGTM!
 
-gtp，sit use netif_rx to receive pkt. so modifying only gro_cells_receive 
-cannot solve all the problems. netif_rx is widely
-used and is not only invoked by the tunnel driver, and serval path
-(such as genve encap) will reset transport header before netif_rx.
-Therefore, should we retain unset in the GTP/SIT tunnel?
-
-Best Regards
-Dong Chenchen
-
-> pw-bot: cr
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
