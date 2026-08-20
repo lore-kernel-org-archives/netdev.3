@@ -1,131 +1,239 @@
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC443A1684
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 09:52:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998A2BA3D
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 09:56:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787219571; cv=none; b=Nje/GP5f3gy5hXCsJknr39x2oS7lFdVqjuO1yu7uR/3f/U4HxonMjFfKFi8VPYjzY0bRdfJDOUmHmGbDQE+buO1/R19yb7uRNbaC7n+hD5+aATVXp0DAEVJFxRH0N5GHXhfop7D+2yingkipGPT4DrHJ7kXIpCLcVmdchEbNktY=
+	t=1787219810; cv=none; b=n6UPr+vqr04hFaqVJEPAKJqpVuyvpkyP5DQaHnZbnAE/jVT0b5d1pR+ZcgRHInOC5g6NW2ZJjCvcF4wm6ufT4ZqpkCwiau+9UznjDVmysP6NEpslHcuP/NVgBqCcMi+H/49P/ax6cE7q0xhYlc/2+Ycl0l7NeX+RgEk+/9WAcsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787219571; c=relaxed/simple;
-	bh=pO9xKGT1TX4gkcjXNXA04rB1EhLzc1LoY04P9xUuGmo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=umjklJ2nFDJfnNeggAHDixKO+g9TcveKxlhgzXZTnJOFOv+fgDC1Qu8TMdMVDIqD35IU5Do3teNHIfAhss/dSzD9LHOlVi5m8T7QCgmh4/m4gQjS3+7jH8OlyN3oxyiztOBW+z2sL63TwHjvHvbRmAj3y/4G2oe8e4gPEbxLsQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=bHfEc/JM; arc=none smtp.client-ip=209.85.210.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="bHfEc/JM"
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7ee4f241f42so590076a34.1
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 02:52:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787219566; x=1787824366; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=DGQ4lHm/pwFE2eJnKjB8iU5lTL8Lwpsi6psSrL49/Ks=;
-        b=bHfEc/JMrDhpeMeTSoFCQbz3s64f8b+u112t5ufl5MxDFwMUpzLXu+tSgQLZQJGNfF
-         UwlT3fMH48bw3xE299c578eaEAtGwyL6h31NcjLUCQoxuvSvLsv+vGpP4fumSCqNFOKR
-         YVXzlb9ze/hu7EEWnfFTlcQOSmObiyePMY6vE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787219566; x=1787824366;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=DGQ4lHm/pwFE2eJnKjB8iU5lTL8Lwpsi6psSrL49/Ks=;
-        b=UEiaRA5gR9KAgB8lQlUqR8/PoAu6qbiXcs/dy1uz5+KXH/BzQrj/M55gFiLvr7OZYX
-         gt1vsWorjGPcB5Mi5/53n8HBdPC5j+hEAANuitDl8KsidAY6URO59azv6Yl3EJV6TCP4
-         Fu8cWSQuUQPKuFCKSU2pmXBBEzH3p2nKrvERJzX4H0Np47JvuckWhaOzEoIDRaLGmDwU
-         Z/ZAXaUecA4SmtxheNgslcx7fKa/erJ3l+Dw6ttSfhQcBw05kJas/e77hdEB2ET+Gm8O
-         vpoyp9j2pLY6AWGhxV/bzPjG4tI7liCWupGwKGTeqUr9BqJVpLg27EDftvTFVmM+/Ytf
-         RE6A==
-X-Gm-Message-State: AOJu0Yy1FYWF6kmOfSIWOJJC8rIF5K1oDy1MlEfCw/wyBTHEZzsNN/zD
-	ISXHcrwmYxQx29igsBHrUy44l85tHBwoO3rYaUQAAqNI+KB81FggLtsVODeNXnaxnPtZ+aOOXPP
-	QpZ4Cow==
-X-Gm-Gg: AR+sD11AGfJVgMN36aJ4nC/+Q8fPm4P8MT1ozNHP9ic6EQ7Dl584AjPEcTM+25JLzML
-	2sjMQiNEMVycY7rfRK65D7c/d8VBtCoi1yxE+3uF9XpsqMy8gWsyWEoqzmc/J/3ULfhprcs3SHg
-	8FcMaurMP9BFw2bdEPQHXMVp1cRBwMW+LKzjHy6f5i2ByxuXNNpEy6tPqSTIuUY/j7SXpVeKmNM
-	Yic8lo9NhFry9TdXr50sHm5Rn8M3VJ2/kFBZ3VdrqHyAMOkVWFsraI1LyOHnc+f5BLch3TUiho0
-	pEc00IC5nO9ke3/qrspbWmUAX8+CUXgsfYZJLI2F3mXkscmqoAnUbwy+zqDrvJw/jHK8W1KrsOQ
-	nwNkwUtot+RsCYkxJU1J0Wpy9NV5gqqGDiRGmgPOnZnkWYG8icn7uZUeydaocSfpXxn37MGut+9
-	wkDCTBBgkW7AJE0nYoBWYN+pIJY91VNmyC0csAc4hdv4pnmXjkGc/jsU6aK7EmE9R8JtC614iKB
-	cl/tY7vcszrGmigl3DwTqIwBUAaM/vuiLmS1DjzVo9mNQ==
-X-Received: by 2002:a05:6808:b3a:b0:4b2:8dbe:fff3 with SMTP id 5614622812f47-4b2cd80bee2mr4070622b6e.0.1787219566045;
-        Thu, 20 Aug 2026 02:52:46 -0700 (PDT)
-Received: from majuu.waya (bras-base-kntaon1621w-grc-04-184-144-29-222.dsl.bell.ca. [184.144.29.222])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4b2d6d34c8esm1286981b6e.13.2026.08.20.02.52.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Aug 2026 02:52:45 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	stable@vger.kernel.org,
-	vega@nebusec.ai,
-	"Victor Nogueira" <victor@mojatatu.com>
-Subject: [PATCH net 2/2] selftests: tc-testing: add u32 node ID pool exhaustion test
-Date: Thu, 20 Aug 2026 05:52:36 -0400
-Message-Id: <20260820095236.68390-2-jhs@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260820095236.68390-1-jhs@mojatatu.com>
-References: <20260820095236.68390-1-jhs@mojatatu.com>
+	s=arc-20240116; t=1787219810; c=relaxed/simple;
+	bh=wPjr1TyTXUzxg/BH6ejJTsDv1VPKc6NIqnv/swa6440=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ve0+/LUjGNsxRqXV5zfvfXQbbbCoVjIEEhoKc83XOZOmUdvc1d3QqNYHGJFPz2ez+G+XlxRFPkJzd4vG3mPP6Q3UGq5e++MrCakOnN/CG/vhFXE4iKspgKWMiTM3aN15M0Fh+pTCfEfY2Jy3xP0bvZ497HNaOn1gUfK0RmlyePA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [141.14.13.172] (g427.RadioFreeInternet.molgen.mpg.de [141.14.13.172])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 210A74C1A2DF84;
+	Thu, 20 Aug 2026 11:56:15 +0200 (CEST)
+Message-ID: <11560b0b-515b-4f43-8f8d-1c84ecb57696@molgen.mpg.de>
+Date: Thu, 20 Aug 2026 11:56:13 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwl-next v2] igc: Support ACPI-based MAC passthrough
+To: Dima Ruinskiy <dima.ruinskiy@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ anthony.l.nguyen@intel.com, allen.lan@intel.com, acelan.kao@canonical.com,
+ kuba@kernel.org
+References: <20260820092137.1835887-1-dima.ruinskiy@intel.com>
+Content-Language: en-US
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <20260820092137.1835887-1-dima.ruinskiy@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Add a tdc test case (7ec8) that fills the u32 node ID space with 4095
-auto-generated handles, then attempts to add a 4096th. On the fixed
-kernel the 4096th filter is rejected with ENOSPC (exit 2). On the
-unfixed kernel it silently succeeds with a duplicate handle.
+Dear Dima,
 
-Fixes: e7614370d6f04 ("net_sched: use idr to allocate u32 filter handles")
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
- .../tc-testing/tc-tests/filters/u32.json      | 23 +++++++++++++++++++
- 1 file changed, 23 insertions(+)
 
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/filters/u32.json b/tools/testing/selftests/tc-testing/tc-tests/filters/u32.json
-index b2ca9d4e991b..b9019b14d05c 100644
---- a/tools/testing/selftests/tc-testing/tc-tests/filters/u32.json
-+++ b/tools/testing/selftests/tc-testing/tc-tests/filters/u32.json
-@@ -353,5 +353,28 @@
-         "teardown": [
-             "$TC qdisc del dev $DEV1 parent root drr"
-         ]
-+    },
-+    {
-+        "id": "7ec8",
-+        "name": "Add u32 filter when node ID pool is exhausted (4096th filter rejected)",
-+        "category": [
-+            "filter",
-+            "u32"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+            "$TC qdisc add dev $DUMMY clsact",
-+            "yes 'filter add dev $DUMMY ingress prio 1 protocol ip u32 match u8 0 0 at 0' | head -n 4095 | $TC -b -"
-+        ],
-+        "cmdUnderTest": "$TC filter add dev $DUMMY ingress prio 1 protocol ip u32 match u8 0 0 at 0",
-+        "expExitCode": "2",
-+        "verifyCmd": "$TC filter show dev $DUMMY ingress",
-+        "matchPattern": "pref 1 u32",
-+        "matchCount": "4095",
-+        "teardown": [
-+            "$TC qdisc del dev $DUMMY clsact"
-+        ]
-     }
- ]
--- 
-2.43.0
+Thank you for the patch.
 
+Am 20.08.26 um 11:21 schrieb Dima Ruinskiy:
+> Some systems implement a system MAC address object in the ACPI table,
+> using either \\_SB.AMAC or \\MACA object names. This system MAC address,
+> when enabled, is intended to override the permanent MAC address of a
+> network controller in a docking station connected to the system.
+> 
+> Implement lookup of the relevant ACPI object names and use them to
+> initialize the MAC address. Limit the scope to I225/I226 device IDs used
+> in docking stations, to avoid interfering with onboard I225/I226 NICs.
+
+Please document a system where this can be tested on. Please also paste 
+the new log line.
+
+> On systems where the feature is disabled or unsupported, the ACPI objects
+> do not exist or do not contain a valid Ethernet MAC, causing a fallback
+> to the existing MAC address initialization path.
+> 
+> Assisted-by: GitHub-Copilot:claude-opus-4.7
+> Signed-off-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
+> ---
+> v2: limit scope to dock device ids
+> v1: initial version
+> ---
+>   drivers/net/ethernet/intel/igc/igc.h      |  1 +
+>   drivers/net/ethernet/intel/igc/igc_base.c |  8 +++
+>   drivers/net/ethernet/intel/igc/igc_hw.h   |  2 +
+>   drivers/net/ethernet/intel/igc/igc_main.c | 69 +++++++++++++++++++++--
+>   4 files changed, 76 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/igc/igc.h b/drivers/net/ethernet/intel/igc/igc.h
+> index 88291f775c22..05affaa04aa4 100644
+> --- a/drivers/net/ethernet/intel/igc/igc.h
+> +++ b/drivers/net/ethernet/intel/igc/igc.h
+> @@ -567,6 +567,7 @@ enum igc_tx_flags {
+>   
+>   enum igc_boards {
+>   	board_base,
+> +	board_dock,
+>   };
+>   
+>   /* The largest size we can write to the descriptor is 65535.  In order to
+> diff --git a/drivers/net/ethernet/intel/igc/igc_base.c b/drivers/net/ethernet/intel/igc/igc_base.c
+> index ab9120a3127f..c9067cc79b69 100644
+> --- a/drivers/net/ethernet/intel/igc/igc_base.c
+> +++ b/drivers/net/ethernet/intel/igc/igc_base.c
+> @@ -474,4 +474,12 @@ const struct igc_info igc_base_info = {
+>   	.get_invariants		= igc_get_invariants_base,
+>   	.mac_ops		= &igc_mac_ops_base,
+>   	.phy_ops		= &igc_phy_ops_base,
+> +	.is_dock		= false,
+> +};
+> +
+> +const struct igc_info igc_dock_info = {
+> +	.get_invariants		= igc_get_invariants_base,
+> +	.mac_ops		= &igc_mac_ops_base,
+> +	.phy_ops		= &igc_phy_ops_base,
+> +	.is_dock		= true,
+>   };
+> diff --git a/drivers/net/ethernet/intel/igc/igc_hw.h b/drivers/net/ethernet/intel/igc/igc_hw.h
+> index 62aaee55668a..d14b7666b5d7 100644
+> --- a/drivers/net/ethernet/intel/igc/igc_hw.h
+> +++ b/drivers/net/ethernet/intel/igc/igc_hw.h
+> @@ -69,9 +69,11 @@ struct igc_info {
+>   	struct igc_mac_operations *mac_ops;
+>   	const struct igc_phy_operations *phy_ops;
+>   	struct igc_nvm_operations *nvm_ops;
+> +	bool is_dock;
+>   };
+>   
+>   extern const struct igc_info igc_base_info;
+> +extern const struct igc_info igc_dock_info;
+>   
+>   enum igc_forced_speed_duplex {
+>   	IGC_FORCED_10H,
+> diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+> index 82800a4a6d6c..15d0815a2110 100644
+> --- a/drivers/net/ethernet/intel/igc/igc_main.c
+> +++ b/drivers/net/ethernet/intel/igc/igc_main.c
+> @@ -11,6 +11,8 @@
+>   #include <net/pkt_sched.h>
+>   #include <linux/bpf_trace.h>
+>   #include <net/xdp_sock_drv.h>
+> +#include <linux/acpi.h>
+> +#include <linux/hex.h>
+>   #include <linux/pci.h>
+>   #include <linux/mdio.h>
+>   
+> @@ -44,6 +46,7 @@ static const char igc_copyright[] =
+>   
+>   static const struct igc_info *igc_info_tbl[] = {
+>   	[board_base] = &igc_base_info,
+> +	[board_dock] = &igc_dock_info,
+>   };
+>   
+>   static const struct pci_device_id igc_pci_tbl[] = {
+> @@ -54,8 +57,8 @@ static const struct pci_device_id igc_pci_tbl[] = {
+>   	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I225_K), .driver_data = board_base },
+>   	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I225_K2), .driver_data = board_base },
+>   	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I226_K), .driver_data = board_base },
+> -	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I225_LMVP), .driver_data = board_base },
+> -	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I226_LMVP), .driver_data = board_base },
+> +	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I225_LMVP), .driver_data = board_dock },
+> +	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I226_LMVP), .driver_data = board_dock },
+>   	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I225_IT), .driver_data = board_base },
+>   	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I226_LM), .driver_data = board_base },
+>   	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I226_V), .driver_data = board_base },
+> @@ -7116,6 +7119,57 @@ static enum hrtimer_restart igc_qbv_scheduling_timer(struct hrtimer *timer)
+>   	return HRTIMER_NORESTART;
+>   }
+>   
+> +static bool igc_get_acpi_mac_passthru(u8 *mac)
+> +{
+> +	static const struct {
+> +		const char *name;
+> +		acpi_object_type type;
+> +		u32 length;
+> +	} sources[] = {
+> +		{ "\\_SB.AMAC", ACPI_TYPE_BUFFER, 23 },
+> +		{ "\\MACA",     ACPI_TYPE_STRING, 22 },
+> +	};
+> +	struct acpi_buffer buffer;
+> +	union acpi_object *obj;
+> +	bool mac_found = false;
+> +	acpi_status status;
+> +	u8 buf[ETH_ALEN];
+> +	int i;
+> +
+> +	if (!IS_ENABLED(CONFIG_ACPI))
+> +		return false;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(sources) && !mac_found; i++) {
+> +		buffer.length = ACPI_ALLOCATE_BUFFER;
+> +		buffer.pointer = NULL;
+> +
+> +		status = acpi_evaluate_object(NULL, (char *)sources[i].name,
+> +					      NULL, &buffer);
+> +		if (ACPI_FAILURE(status))
+> +			continue;
+> +
+> +		obj = buffer.pointer;
+> +		if (!obj || obj->type != sources[i].type ||
+> +		    obj->string.length != sources[i].length)
+> +			goto free_obj;
+> +
+> +		if (!strncmp(obj->string.pointer, "_AUXMAC_#", 9) ||
+> +		    obj->string.pointer[21] != '#')
+> +			goto free_obj;
+> +
+> +		if (hex2bin(buf, obj->string.pointer + 9, ETH_ALEN) ||
+> +		    !is_valid_ether_addr(buf))
+> +			goto free_obj;
+> +
+> +		ether_addr_copy(mac, buf);
+> +		mac_found = true;
+> +free_obj:
+> +		kfree(obj);
+> +	}
+> +
+> +	return mac_found;
+> +}
+> +
+>   /**
+>    * igc_probe - Device Initialization Routine
+>    * @pdev: PCI device information struct
+> @@ -7279,9 +7333,16 @@ static int igc_probe(struct pci_dev *pdev,
+>   	}
+>   
+>   	if (eth_platform_get_mac_address(&pdev->dev, hw->mac.addr)) {
+> -		/* copy the MAC address out of the NVM */
+> -		if (hw->mac.ops.read_mac_addr(hw))
+> +		/* Look for a system-provided MAC in the ACPI table before
+> +		 * falling back to reading the address from the NVM.
+> +		 */
+> +		if (ei->is_dock && igc_get_acpi_mac_passthru(hw->mac.addr)) {
+> +			netdev->addr_assign_type = NET_ADDR_STOLEN;
+> +			dev_info(&pdev->dev, "Using ACPI pass-thru MAC addr %pM\n",
+> +				 hw->mac.addr);
+> +		} else if (hw->mac.ops.read_mac_addr(hw)) {
+>   			dev_err(&pdev->dev, "NVM Read Error\n");
+> +		}
+>   	}
+>   
+>   	eth_hw_addr_set(netdev, hw->mac.addr);
+
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+
+
+Kind regards,
+
+Paul
