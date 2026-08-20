@@ -1,153 +1,124 @@
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C4A377A89;
-	Thu, 20 Aug 2026 17:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CD826ED40;
+	Thu, 20 Aug 2026 17:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787245718; cv=none; b=FYk0rnQDi3BbheSAmgmFKbo3sQ8qzydcCQ/y/Io02e5gwIT0MiT3DJ36JY/in2hToy6ztw4j8RasDZ3kltJFXCni3g0VbM/HKKgKry2ZcWNO7BkOVP9NzZiN0lwDS6wTi+dLWx+bl9Inzq0m4jeQRNaqc3+6Sdvsc9aXs1PTldE=
+	t=1787245930; cv=none; b=YmjtW5KgEhjIhEwZgbuGaAAfirwVlGIWPuQnDMdfO/nRoz0dqsYmuCZ1hSMFvolF6ZOvZY71BpKgS8Gq/ZEWRK6GJlbmWtkkWkBDvP+epI6SR2rlnIR4NY6JPgbuNOYBtb58Z7GDmMWzrC3TRbJkytdqgC3HoeraWZH/QA1j60Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787245718; c=relaxed/simple;
-	bh=/6XecN2DmS4xKr1UJZlfI9jzGJkLFaSUG3AtT8HN3Rw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qUDdU/4l4ogZV7tcc++W5BRppt46gdynkV6SiKslkOmCfrq/IF92SmvF2W/WPxajAm2ozGlOYxKhRNHyQ7t7GHomg68BA4GeVsSARegU/CtZDaIs8uVz2e3GwqwKJHNMYU0ujdXc3elzhknrKULLRhxKQzcotJIAAHz85gwbIlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ifGDEo59; arc=none smtp.client-ip=185.246.85.4
+	s=arc-20240116; t=1787245930; c=relaxed/simple;
+	bh=LkZZNqKPnYARoGVFVcNqRhq3Tp7eGeR90UOoNntC8sE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=MFu8rd5omF3gAJ19M4H09xi/fN1CssN7a5ihTb/oL9hrYEm+QRJxx0feZGJg/rmTnTRPryvVm947zKlsN2hMzOomC7dRhib26ktiuUFBgF/UnoOCG73uoBkcGS67lsUs9HpOLu75oOUpe1le8VQB57uoayiI778JPX27zhDIul8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=W6fvLtZt; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ifGDEo59"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="W6fvLtZt"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 7C4A04E41303;
-	Thu, 20 Aug 2026 17:08:32 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 246864E41303;
+	Thu, 20 Aug 2026 17:12:06 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 47DEB5FF59;
-	Thu, 20 Aug 2026 17:08:32 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E5C8511C7657E;
-	Thu, 20 Aug 2026 19:08:27 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E4B5C5FF59;
+	Thu, 20 Aug 2026 17:12:05 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4A83211C76580;
+	Thu, 20 Aug 2026 19:12:03 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787245711; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=Zl7XpgL7IsU1rsJqdSdz+OpQ++RgZb3yWrsLPojaMt8=;
-	b=ifGDEo59aYXoUSy8/fQH2++dQ4p2eaQprcDVKAGn7XPBEzmgtsZt+Nav7IMPxoA0mHgXpw
-	VeD5PX+V+QH0XD6e1ZxqX3MwAG56gdTQmSyT+Iw95bdL6pDQIqbec3RzKOqokbcphDmlgS
-	EdX4nOTVVzCL1o3ho33+enItIyXic9OrICLpLYmdDoUy9cVtBC8q56TBjCYHoL020GuzVp
-	NutfTDSSCJrsPMl5UOvp0kRTjUeA9e8dZF74gxHvLNuTzsXlRxwCs31k3bGLN11DmtrdWf
-	qja8N59OeUFcrnZ3IohaKhD+giIxqc2zcCroxZCK3igqTptC+myM2KA21hcO9A==
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Date: Thu, 20 Aug 2026 19:08:20 +0200
-Subject: [PATCH net] net: macb: drop CONFIG_OF #if block
+	t=1787245925; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=ozXl83cbmDNf9OqSLisvtpdql9QbhkyjaRTlwJtmaHg=;
+	b=W6fvLtZt71Tosi+utMV4s79KOcDO8x33uYMd+yGZ8CUtH3GPYHSyOQ87140K3AZaWdnwjp
+	ktLzFgqPButobwClf1lniijo3zcjhQ5RwRSTZX3mgAnw6f89MsKOYuexq6sp2WWtzbOuey
+	sdhvSosEH18V3uZRbrRw1vOIWv7i2Qf1ryidZXqP+rNAN+gwzooYe2tKEdzIr/GA7YL25U
+	IQO7N/3ENVYtrBdh1dKKm6jTqne9AKvjuSVxQvC04BuEepZPPYya9BKVqSmujgexynfBx3
+	81jVyShDlyoV8tvbh3JKRiJdSKiEjFYtHL4rL+cv658HXFys+aXpvWi3jKbAqA==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260820-macb-fix-x86-v1-1-b2e7c902104e@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWM0QqDMBAEf0X22YOYQhr8leJDcj3bK5iWRIsg/
- ntjfZxdZjYUySoFfbMhy1eLvlOFrm3Az5AeQnqvDGusM94amgJHGnWl1TuSePWhG5ndRVCVT5Z
- 6/XM3JJkxnGNZ4kt4PkLY9x8CwmP8dQAAAA==
-X-Change-ID: 20260820-macb-fix-x86-eb78a1fcc63e
-To: Conor Dooley <conor.dooley@microchip.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Nicolai Buchwitz <nb@tipi-net.de>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Paolo Valerio <pvalerio@redhat.com>, Nicolai Buchwitz <nb@tipi-net.de>, 
- Gregory CLEMENT <gregory.clement@bootlin.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-X-Mailer: b4 0.15.2
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 20 Aug 2026 19:12:02 +0200
+Message-Id: <DKTXSY8PDCPK.2GPXEF18NPNAB@bootlin.com>
+Subject: Re: [PATCH net] net: macb: Move macb_{alloc,free}_tieoff() out of
+ CONFIG_OF block
+Cc: "Conor Dooley" <conor.dooley@microchip.com>, "Andrew Lunn"
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, "Nicolai Buchwitz" <nb@tipi-net.de>,
+ <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: "Nathan Chancellor" <nathan@kernel.org>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260818-macb-fix-no-of-build-v1-1-f2a009616384@kernel.org>
+ <DKT4CBU8YB5G.2W0766H2NU6Y8@bootlin.com> <20260819185446.GA12505@ax162>
+In-Reply-To: <20260819185446.GA12505@ax162>
 X-Last-TLS-Session-Version: TLSv1.3
 
-Fix -Wimplicit-function-declaration error on CONFIG_OF=n builds:
+On Wed Aug 19, 2026 at 8:54 PM CEST, Nathan Chancellor wrote:
+> On Wed, Aug 19, 2026 at 08:06:48PM +0200, Th=C3=A9o Lebrun wrote:
+>> On Wed Aug 19, 2026 at 3:14 AM CEST, Nathan Chancellor wrote:
+>> > Commit 5262eab9462a ("net: macb: allocate tieoff descriptor once acros=
+s
+>> > device lifetime") moved macb_alloc_tieoff() and macb_free_tieoff() int=
+o
+>> > a CONFIG_OF block, breaking the build when it is disabled:
+>>=20
+>> That commit message is somewhat off: the commit created the two
+>> functions, it didn't move them around. But indeed I was wrong in the
+>
+> Oh correct, I misread macb_init_tieoff() as macb_alloc_tieoff() so
+> considered it a "move" but "placed" would definitely be more accurate.
+>
+>> location where I created them (argh I hate #if/ifdef blocks, especially
+>> long ones).
+>
+> Yeah, I had to grep for the pairs because this one was so big.
+>
+>> Can reproduce using my host toolchain easily:
+>>=20
+>>    =E2=9F=A9 unset ARCH CROSS_COMPILE
+>>    =E2=9F=A9 make mrproper
+>>    =E2=9F=A9 make defconfig
+>>    =E2=9F=A9 ./scripts/config -e COMMON_CLK -e MACB
+>>    =E2=9F=A9 make olddefconfig
+>>    =E2=9F=A9 make drivers/net/ethernet/cadence/
+>>    =E2=9F=A9 echo $?
+>>    2
+>
+> Yup, same exact reproducer I used.
+>
+>> Here is an alternative fix proposal: let's drop the #ifdef. It will
+>> avoid any future error. Almost all drivers have no #ifdef as such:
+>>=20
+>> =E2=9F=A9 git grep -l MODULE_DEVICE_TABLE drivers/ | wc -l
+>> 7458
+>> =E2=9F=A9 git grep -l MODULE_DEVICE_TABLE drivers/ | xargs git grep -l C=
+ONFIG_OF | wc -l
+>> 391
+>>=20
+>> Yes, I know this means the match table land in the module in !OF case.
+>> Almost everyone on the ML I've seen seem to consider that it's trivial.
+>> Apparently it's even useful because some ACPI can match on compatible,
+>> somehow.
+>>=20
+>> Opinions?
+>
+> I am always in favor of dropping #ifdefs to make it easier to avoid
+> compile issues like this. If that is the route we want to go, please
+> feel free to send a patch for it (or I can if you prefer).
 
-   drivers/net/ethernet/cadence/macb_main.c: In function ‘macb_probe’:
-   drivers/net/ethernet/cadence/macb_main.c:5951:15: error: implicit
-   declaration of function ‘macb_alloc_tieoff’ [...]
-    5951 |         err = macb_alloc_tieoff(bp);
-         |               ^~~~~~~~~~~~~~~~~
-   drivers/net/ethernet/cadence/macb_main.c:5973:9: error: implicit
-   declaration of function ‘macb_free_tieoff’ [...]
-    5973 |         macb_free_tieoff(bp);
-         |         ^~~~~~~~~~~~~~~~
+Done. Just sent now and noticed I forgot CCing you, sorry!
+https://lore.kernel.org/netdev/20260820-macb-fix-x86-v1-1-b2e7c902104e@boot=
+lin.com/
 
-Error got introduced because functions are mistakenly declared in a
-`#if defined(CONFIG_OF)` block. Instead of moving functions around,
-avoid any future mistake and drop the block entirely.
+Thanks,
 
-Change the module content slightly on CONFIG_OF=n. Previously match
-tables were ignored. Now they appear in the resulting build. This is
-considered trivial in size by most and is the common case:
-
-   ⟩ 18 out of 254 OF net drivers reference CONFIG_OF
-   ⟩ rg -lF 'MODULE_DEVICE_TABLE(of,' drivers/net/ | tee /tmp/a | wc -l
-   254
-   ⟩ xargs -a /tmp/a rg -l CONFIG_OF | wc -l
-   18
-
-Tangent: no, of_match_ptr() does not imply that the compiler can
-optimize out match tables, because MODULE_DEVICE_TABLE(of, ...)
-unconditionally puts the match tables in the binary. It is only meant
-to avoid undefined declaration issues when match tables are hidden
-behind a #ifdef, as was done before. We therefore drop the macro call.
-
-Fixes: 5262eab9462a ("net: macb: allocate tieoff descriptor once across device lifetime")
-Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
----
-This is a fix to a build issue present on net/main (91ec20351349) and
-linux-next/master(7079a12d7506). The problematic just landed in
-net/main.
-
-Two fixes [0][1] were sent previously (both the same solution):
-[PATCH net] net: macb: Move macb_{alloc,free}_tieoff() out of CONFIG_OF block
-[PATCH net-next] net: macb: fix CONFIG_OF=n build
-
-Instead I'm suggesting [2] we drop the error-prone preprocessor blocks
-and do as everyone else.
-
-[0]: https://lore.kernel.org/netdev/20260818-macb-fix-no-of-build-v1-1-f2a009616384@kernel.org/
-[1]: https://lore.kernel.org/netdev/20260819040913.109367-1-running910@gmail.com/
-[2]: https://lore.kernel.org/netdev/DKT4CBU8YB5G.2W0766H2NU6Y8@bootlin.com/
----
- drivers/net/ethernet/cadence/macb_main.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 1476bce77f34..76ee4f506033 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -4926,7 +4926,6 @@ static const struct macb_usrio_config at91_default_usrio = {
- 	.clken = MACB_BIT(CLKEN),
- };
- 
--#if defined(CONFIG_OF)
- /* 1518 rounded up */
- #define AT91ETHER_MAX_RBUFF_SZ	0x600
- /* max number of receive buffers */
-@@ -5754,7 +5753,6 @@ static const struct of_device_id macb_dt_ids[] = {
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, macb_dt_ids);
--#endif /* CONFIG_OF */
- 
- static const struct macb_config default_gem_config = {
- 	.caps = MACB_CAPS_GIGABIT_MODE_AVAILABLE |
-@@ -6267,7 +6265,7 @@ static struct platform_driver macb_driver = {
- 	.remove		= macb_remove,
- 	.driver		= {
- 		.name		= "macb",
--		.of_match_table	= of_match_ptr(macb_dt_ids),
-+		.of_match_table	= macb_dt_ids,
- 		.pm	= &macb_pm_ops,
- 	},
- 	.shutdown	= macb_shutdown,
-
----
-base-commit: 91ec2035134982b98fab0609a9fd8480e8217dc1
-change-id: 20260820-macb-fix-x86-eb78a1fcc63e
-
-Best regards,
---  
-Théo Lebrun <theo.lebrun@bootlin.com>
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
