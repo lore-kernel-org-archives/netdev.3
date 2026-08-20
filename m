@@ -1,129 +1,165 @@
-Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88AF147ECD8;
-	Thu, 20 Aug 2026 17:23:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787246616; cv=none; b=VEdGM9jbYlplrZpbMIdPlwQf06ybi42wGgp1fIMXSncDdci6zGEX7/JgNHFrf0qaSGtwPLwW8drNLOCKFEdWeel4hCwT0U45kx4cyax7UJjMqq9Ee2jmeu4l/khjgR3X5v75zylc7hePF4RkYE+jMZiugffUm+yMCpKbMltKkLU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787246616; c=relaxed/simple;
-	bh=cwsKtQ+m0+cW4baO1y8ONp6n/xPdyTmjJPD5j+hOm2U=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tk8am/GzHzq7VgdJjiBYRyNztQOboUDW5fVIdw5fE4YlEhWVzK2KHUHdAfXp4W/k2U+mHS0tWfNh+NQvLzBScY3X8R+fKFhvRM6dYzBhgEkN97nFTRMzsD3Tz7+0riiMwhDPfQ5O4+loX3bFcJmq93+X5PdPzTkjiglHJAHgc4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=RsFX6MKO; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 872EC47ECD8;
+	Thu, 20 Aug 2026 17:23:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787246623; cv=pass; b=mkc4fdepYkDZve/bK8qmDegcWOsbKkjSj8TbYc4T0SlXCY/7DgZF85L1NOJ5PlvRtwL8XjldCBKrwhz7f42/mgRmCF8TfxgoQggjfSug2Blj88iDvgGgwsdr5wQQsFHp4lSPYDQ/TpGNxEBvRkU8PMp2ARzXul6ZrbGWsZXKfGc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787246623; c=relaxed/simple;
+	bh=u9BiiEo4etf2TjYhfTm03yFwRu3s+3++fdf3hqalN7I=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=IbNOmSGER6na31mw7iRdV6JDtscTyk/Qblmom0E5BbBpgY2uARgRzWM6TNrKWIEFJgy2KDdrWRCua4nJsbHW3aP8bPDtQJPaiJTtiStoBk3O5Tzt1mLiTXTroDNV+znuUmZ4NP1CTWyUGkrGo5W+l0n0/lvW8fuhvLuqhJ6F+t4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rong.moe; spf=pass smtp.mailfrom=rong.moe; dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b=R5DgCnnh; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rong.moe
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rong.moe
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="RsFX6MKO"
-Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67KGGZnN2415133;
-	Thu, 20 Aug 2026 10:23:14 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=kkaPLeW92IeNZVnLVcg0Bq9
-	6k1olQCefj032Su0i+NU=; b=RsFX6MKOFhFJEboOeDqmsEGFKcnHhTZLpno+bDM
-	ZO8PkqyRof5FnDzMaDmNkZSc7Xvwk/+KostbDEpth/kCH5SMfB1Q0uT0Dmih0LLD
-	TdALIDWWWdVmeqZFisPX8wEFDMw+GfTqtOOa7R/IY1G/3sYDHSyfhbYA0xEtsZFL
-	MdwqrK61G2UUgdydI1M+wzuNiSghbefdLyhrS5eXwBnOibh9dB23/g+Y6lKnQf2j
-	MK8HK7CgnD9ZGx+OEsGhKaPHXrjK88LT9Tw7K8hVeZqu7pTl4qS0ZNw27MrOO84B
-	E8FVd3kEKLjAUcLkLdy0tZWYIiEfsAe5fSdp2IIHsYHJmIA==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4g602esybx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 20 Aug 2026 10:23:13 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 20 Aug 2026 10:23:12 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Thu, 20 Aug 2026 10:23:12 -0700
-Received: from kernel-ep2.caveonetworks.com (unknown [10.29.36.53])
-	by maili.marvell.com (Postfix) with ESMTP id 18AC43F7053;
-	Thu, 20 Aug 2026 10:23:07 -0700 (PDT)
-From: <nshettyj@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Roy Franz <rfranz@marvell.com>, Nitin Shetty J <nshettyj@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Ratheesh Kannoth <rkannoth@marvell.com>,
-        Subbaraya Sundeep
-	<sbhatta@marvell.com>,
-        Bharat Bhushan <bbhushan2@marvell.com>,
-        Andrew Lunn
-	<andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Eric
- Dumazet" <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Simon Horman
-	<horms@kernel.org>
-Subject: [PATCH net] octeontx2-pf: Fix ethtool timestamping capabilities for SDP representors
-Date: Thu, 20 Aug 2026 22:52:53 +0530
-Message-ID: <20260820172253.2010182-1-nshettyj@marvell.com>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b="R5DgCnnh"
+ARC-Seal: i=1; a=rsa-sha256; t=1787246571; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=aG6O6Ju2D6J/LOrGyjmh4cW2ULVL2aR/QQt2b3D8NE/jKmX85dBAYdrrJ2pJh5ltMh1Sv2XW7UM+GxNuAG4kydv7s9FPdaKQRfyvkGedJt+Nk+bBkWf7SOdvx+Msnf2q17HlI5dm+0DVqcgXsS5PlEUDEb+C4LnTB3AJRvB2bNU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1787246571; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=8Sz+0k/4rEJ1lsWUJEhIjLO59E6AeWaOEfbTG55j9YQ=; 
+	b=RU/SNz5Pm0N4Lj7/j87B/WxoOomvRG1x9p4KR2R6XpHybMr70Y/9+R1tRb03Yyy5Zhc1X/S9cCjiV4FcYwU8owFwgXvKE5pFjHPIrRHjLNBhjbD3dHGYUEWEAV0dC/AYL8IdbjH3tKRxQLFlQhL6/aHCyoKTXiwjDoyW+LFQcq4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=rong.moe;
+	spf=pass  smtp.mailfrom=i@rong.moe;
+	dmarc=pass header.from=<i@rong.moe>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1787246571;
+	s=zmail2048; d=rong.moe; i=i@rong.moe;
+	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:In-Reply-To:To:To:Cc:Cc:Reply-To;
+	bh=8Sz+0k/4rEJ1lsWUJEhIjLO59E6AeWaOEfbTG55j9YQ=;
+	b=R5DgCnnh9Srk75/FQkld2/y+zIcF0w4IgcgvkU5uRwr3WA/7MWdKmIfJ1um/ca0e
+	9NAwASNTyijuQPPAfTDH3u963Zlybq8TPoROLs85Sx8X+gMXqhoUYLrdDy6AQ7bVxpO
+	F+n3UEqGaYCXICWxK1/c7kGqETAlwvDZv3k3v2VZV4kpOw5eNn7BsEzovkk/roJCaIZ
+	rkt6GNtkSf6FWBn9H1jM6KYqPso9x0hJNlyv7ZiTIWgnDiQ7VQcPHR041dAfDjXRHgm
+	mxr6nkKcChwHud0nQJevkuujeuUF7ZrzKt/NxKtYc6X70PXh75OMsNTdDsF5B7TzOwU
+	dpFOiF/YwQ==
+Received: by mx.zohomail.com with SMTPS id 17872465692661002.2821247187621;
+	Thu, 20 Aug 2026 10:22:49 -0700 (PDT)
+From: Rong Zhang <i@rong.moe>
+Date: Fri, 21 Aug 2026 01:21:57 +0800
+Subject: [PATCH v5 02/12] leds: class: Remove hardware control trigger when
+ writing brightness
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: Swuvqr5m3sGbM3INjcvD1KeC6qZW4fNM
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODIwMDEzMSBTYWx0ZWRfXwir+aEb06Ruv
- CCUQSWos02fgDRSNP+sSWmQRgCthCkTtNyHrJ2ioG4ClAoKOPtqo7DIqYZyXGGUvelrBkw2gUvp
- SlJ/DCK/6KrWtpnE4u5iAFZjAQtga/meZQZrtuNStc3zPKM3IgCeLnZtyihUqDd+7A9CrpyLCWK
- F47izjmsI44pWA0y15g4opWEM5DNg9TQ2vh3Qltfpl4UTV59eiIdIaNUo+wuJibW80+pZ0KDabl
- zQqsLrRGZgnz2nm+gOMcLNhqyWLV6WjvaI8QnZMSq9PfDEo1OYRUYjENHf75wYTezNPG0mHVZMP
- sJf4LgphM3nZRW32hjZVA0tvWRlrNUJg+7F+L5IgMunCDwpuPdWu7QWT5tOtpfvU5OsOYPEYxPe
- RCvgMzzKH6tDS9uSxXgy1fNxC72HH7Da2LsJcKNlKDMA9nBMaZMGldczCw42hHYtbqHEDg84z7+
- ZIEjAfZZFkH5ckpxxOw==
-X-Authority-Analysis: v=2.4 cv=NNvlPU6g c=1 sm=1 tr=0 ts=6a873801 cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=TtqV-g6YmW1Jfm2GSLaY:22 a=M5GUcnROAAAA:8 a=uyw0fmahrVPj6f5YuYcA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODIwMDEzMSBTYWx0ZWRfX6+qtvOJAJgWr
- 9ZXfm2vLYW+EhkODax1aN1/2m0detp+EDNhYpH59Y/EIEZAA6CMcxNxlLGBWsWul1EZW5gfAQpV
- VMk5akDWvqiWgb9PAEcTwgY/iULRLRs=
-X-Proofpoint-GUID: Swuvqr5m3sGbM3INjcvD1KeC6qZW4fNM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-20_01,2026-08-20_01,2025-10-01_01
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260821-leds-trigger-hw-changed-v5-2-3e00d6c4a936@rong.moe>
+References: <20260821-leds-trigger-hw-changed-v5-0-3e00d6c4a936@rong.moe>
+In-Reply-To: <20260821-leds-trigger-hw-changed-v5-0-3e00d6c4a936@rong.moe>
+To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
+ Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
+ =?utf-8?q?Marek_Beh=C3=BAn?= <kabel@kernel.org>, 
+ Mark Pearson <mpearson-lenovo@squebb.ca>, 
+ "Derek J. Clark" <derekjohn.clark@gmail.com>, 
+ Hans de Goede <hansg@kernel.org>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Ike Panhc <ikepanhc@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>, 
+ Vishnu Sankar <vishnuocv@gmail.com>, Vishnu Sankar <vsankar@lenovo.com>, 
+ linux-leds@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ chrome-platform@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+ Rong Zhang <i@rong.moe>
+X-Mailer: b4 0.17-dev-1f2f7
+X-ZohoMailClient: External
 
-From: Roy Franz <rfranz@marvell.com>
+Since commit b819dc7d8fb2 ("leds: core: Report ENODATA for brightness of
+hardware controlled LED"), the brightness attribute becomes write-only
+when the LED is controlled fully by the hardware. A write-only attribute
+is very confusing.
 
-SDP representors do not support hardware timestamping. The current
-implementation of otx2_get_ts_info incorrectly advertises hardware
-timestamping capabilities and a PHC index to userspace for these
-interfaces.
+Moreover, most LED drivers set hardware brightness innocently with the
+side effect of disabling hardware control, but the hardware control
+trigger remains active, resulting in the software and hardware being out
+of sync.
 
-Fix this by checking if the device is an SDP representor and returning
-the default software timestamping capabilities instead.
+Fix it by removing the hardware control trigger when writing the
+brightness attribute.
 
-Fixes: 2f7f33a09516 ("octeontx2-pf: Add representors for sdp MAC")
-Signed-off-by: Nitin Shetty J <nshettyj@marvell.com>
-Signed-off-by: Roy Franz <rfranz@marvell.com>
+This should also match the semantics of hardware control:
+
+    When the LED is in hw control, no software blink is possible and
+    doing so will effectively disable hw control.
+
+Fixes: b819dc7d8fb2 ("leds: core: Report ENODATA for brightness of hardware controlled LED")
+Acked-by: Ike Panhc <ikepanhc@gmail.com>
+Signed-off-by: Rong Zhang <i@rong.moe>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v3:
+- New patch in the series, integrated from https://lore.kernel.org/all/20260712-leds-hw-control-brightness-set-v1-1-1de593b09d26@rong.moe/
+  - The following patches will improve __led_trigger_is_hw_controlled()
+    to include offloaded generic triggers and take the advantage of it
+---
+ drivers/leds/led-class.c    | 3 +++
+ drivers/leds/led-triggers.c | 9 +++++++++
+ include/linux/leds.h        | 2 ++
+ 3 files changed, 14 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-index a0340f3422bf..f7a2202c4a3e 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-@@ -978,7 +978,7 @@ static int otx2_get_ts_info(struct net_device *netdev,
+diff --git a/drivers/leds/led-class.c b/drivers/leds/led-class.c
+index 1b8b688aaaaf..ab61e41a00a3 100644
+--- a/drivers/leds/led-class.c
++++ b/drivers/leds/led-class.c
+@@ -64,6 +64,9 @@ static ssize_t brightness_store(struct device *dev,
+ 
+ 	if (state == LED_OFF)
+ 		led_trigger_remove(led_cdev);
++	else
++		led_trigger_remove_hw_control(led_cdev);
++
+ 	led_set_brightness(led_cdev, state);
+ 
+ 	ret = size;
+diff --git a/drivers/leds/led-triggers.c b/drivers/leds/led-triggers.c
+index bf2543538ed0..804a04b326c4 100644
+--- a/drivers/leds/led-triggers.c
++++ b/drivers/leds/led-triggers.c
+@@ -287,6 +287,15 @@ void led_trigger_remove(struct led_classdev *led_cdev)
+ }
+ EXPORT_SYMBOL_GPL(led_trigger_remove);
+ 
++void led_trigger_remove_hw_control(struct led_classdev *led_cdev)
++{
++	guard(rwsem_write)(&led_cdev->trigger_lock);
++
++	if (__led_trigger_is_hw_controlled(led_cdev))
++		led_trigger_set(led_cdev, NULL);
++}
++EXPORT_SYMBOL_GPL(led_trigger_remove_hw_control);
++
+ static bool led_match_default_trigger(struct led_classdev *led_cdev,
+ 				      struct led_trigger *trig)
  {
- 	struct otx2_nic *pfvf = netdev_priv(netdev);
+diff --git a/include/linux/leds.h b/include/linux/leds.h
+index a630f5a79f6b..d7d3dd905432 100644
+--- a/include/linux/leds.h
++++ b/include/linux/leds.h
+@@ -533,6 +533,7 @@ void led_trigger_blink_oneshot(struct led_trigger *trigger,
+ void led_trigger_set_default(struct led_classdev *led_cdev);
+ int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trigger);
+ void led_trigger_remove(struct led_classdev *led_cdev);
++void led_trigger_remove_hw_control(struct led_classdev *led_cdev);
  
--	if (!pfvf->ptp)
-+	if (!pfvf->ptp || is_otx2_sdp_rep(pfvf->pdev))
- 		return ethtool_op_get_ts_info(netdev, info);
+ bool led_trigger_is_hw_controlled(struct led_classdev *led_cdev);
  
- 	info->so_timestamping = SOF_TIMESTAMPING_TX_SOFTWARE |
+@@ -586,6 +587,7 @@ static inline int led_trigger_set(struct led_classdev *led_cdev,
+ }
+ 
+ static inline void led_trigger_remove(struct led_classdev *led_cdev) {}
++static inline void led_trigger_remove_hw_control(struct led_classdev *led_cdev) {}
+ 
+ static inline bool led_trigger_is_hw_controlled(struct led_classdev *led_cdev)
+ {
+
 -- 
-2.48.1
+2.55.0
 
