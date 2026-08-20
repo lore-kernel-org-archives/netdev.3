@@ -1,133 +1,152 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA903C9EF4
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 07:44:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787211862; cv=pass; b=h8R8L22q0+DaHnPxecBpCYpwujpSHcja7Qd8vqMF9ZTUm34WyIO9ZpdGDtcMmka+Tmc+OIO0UlnL9qTLvf/tAGH2zq8LMFwuHJfClhJABcoqTtWMpnr2uYz51QAlwkU1qUh26xFcsDOJMosPq2UdLvA3KzhD/CsTn8n7BRDvJ8A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787211862; c=relaxed/simple;
-	bh=qblL5K7hDoy6z2OQB7G1qpmMIHaxIOhwHYlwWzA2++w=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=JJq7HRTcWf5hoy5zr4LVcpzVnfO1AOnJ4XnwG7Gn7eqWuHC6EUArsq1h3zNzIrlxmHAeuWG/lBzG6ByJGqoNDlmVINNTppV8jjYBZg/8UWO1VzJSVXeWpkFA1BRrm5lda4F964xoig8B0SWlnRNX6nsP7CeVIkVaK3wNQ0qiNZM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=O32Bwevh; arc=pass smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE98388E61;
+	Thu, 20 Aug 2026 07:46:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787212017; cv=none; b=SgRoN11JiHn+AY2Ce2GeXH3HVRzfrCcAxo0xUmHgPZgxSxPNiB2gIeEV+KuGI+WZzuV+L7AZzYJuyu5rHWbL8jNtQTBFvsWjotpvQstlfxbZrhCxJJA49MVdyYqYU8TzZLvvbB3e62oA5lTpzh6yIxs4ALgKK3z7jiVb0ZdkZXU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787212017; c=relaxed/simple;
+	bh=ZDs8qeOzQQQP63I+x2vxVjc5XEeEGjTpOeZbCbXWzAI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ByFCFg10GHdtBOQiX1kNvDQhAN1I3L6vVJ3+vmXgBvSXbGuxTcqe61E8HhMWhZuXUGhcCa9zXnzB2GyU09mmWTXg8JNCgcoqpIn6Qen+sW6Q5+bmAA9QXXOk6yeHWHyHdW5eUcRwovvHO8Ct0WgIk+Ce/wD4WtrZ1h1Qf6Uj7Js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JuCF3fJi; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="O32Bwevh"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c197e7e4e94so325528066b.2
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 00:44:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787211858; cv=none;
-        d=google.com; s=arc-20260327;
-        b=dLKGz8b6+1IWIewtwJ2du9IY9DQn69h7qpE21IK3FARCiTaYgUvkbY0UnpEhNcMXqg
-         O4l+yUXMKO2tTkeioeCR7O9fJAmtx26aZPLoQW5Iwp6AcnLusNlm++NKAkdKB8APLq0M
-         gBMF3+o3ctpJ6eyBv2DtKQgJXBTp/AIxgGOjNOt/ClfWLlHgyl3tPACfAXdW7rNzj9eW
-         hZ5AC2Y6wcoagBQJbFFpgN5yFHan36QWsMPnzwZ7QrgmzOG2TnCdD6E0JH3fZu12mgui
-         UogVDEO0HMSjbWIHqAQlhwW3B+4NtLOq6OI1TJaNpZAkT6BO5rOq9v8OHtYzyMladqgC
-         qjtQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:dkim-signature;
-        bh=qblL5K7hDoy6z2OQB7G1qpmMIHaxIOhwHYlwWzA2++w=;
-        fh=VYON2AchzTHgQKems9QnmXEk3H82yWNgNrU21PukfDA=;
-        b=J9DU2jXU6FSgGFlaXUZNpamPb4i3DO+Qdq/oGC1mVmVztNE1m2D2LTRWEhbR7ilOvk
-         SuApE/S4ijRiKV7fGVDDuGSzV6FuswOf2cWPC/l3UX8aga643sbkr408mZXxwEG7WgA7
-         Hz6vaWY67khzsbxRWfl4LmxeM5fHH3H3Mb75NckTDfOJYcCYGq1p2raKAkcALZNdbJau
-         LmMrr6CyDZXLe8QHKtYEFOVhF4LxRSbmhFpN8INCI6oZTX5FGZIMVFqyRmV1B2CeGvfh
-         Ff4Gi2/5WfXDz/DUwfCixYOhUJbF4aJ8hXaXZczTrvOYVR9aHUqmZWpiGiV6CrdynoBP
-         Npww==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1787211858; x=1787816658; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qblL5K7hDoy6z2OQB7G1qpmMIHaxIOhwHYlwWzA2++w=;
-        b=O32Bwevhzq1YbZr6suoVujv9j1kUgBusVkzqD51HXyGJ5SiFfNovf+Dneo42uRfN+a
-         u+z8QzG2loXfNA8t4L6w/ApOiUGXwiFY4MmXjpI5d01z7hksreQx1EF6lUT6MgPDPkb4
-         GtJfiLFSDyKMXaukevE3hIZbu99DbU6c88HrR/Oh5b0oA4UGgyuXRwEa3pO8aQ4vIOab
-         5Lgdc6OQGyktqyDg8+uiNPCdF4GKWbdv+rZfK0Nv1W7jq18ZLvCVaj3Nq2P+NgBWIOWX
-         sAoNgsWQKR2xcI5ldtImdKc9gLE161z31jyE33lcQ+mdPP/GFECL+Wwt7haM14Vp3cc3
-         iyzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787211858; x=1787816658;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=qblL5K7hDoy6z2OQB7G1qpmMIHaxIOhwHYlwWzA2++w=;
-        b=oxk5SECLbcGtwdiivegBn/AkXnNr5D9ImIlClvx4BZBXaJyFSyOIsm7Xk7bhvhr81T
-         cRXlKfwhNsBTaXKKefPpFF/YPgrmK3Vz+QxcGbhhXtjx9ZaT6oZ0DVORrF7EUkJifRpm
-         rVEyDGlyBn4W4LXAe79VzkAmiks7XwxGKuA9wVzOiN4ws9ABVwbmWOttrQAFCpxzzYIH
-         IbVC+rngEUoGt5ZCesOzL/+/CetvzuTTK7rcvt7Ab5FJRoNfR9XftXgkrbxPzA2HlFz4
-         r7vRyQlrSalgvNueX0ZKiFOobAJ0bvj0bixR3alrsq2YqYk5cq9oJqTNF41Af4dFcFFZ
-         JDgQ==
-X-Gm-Message-State: AOJu0YzBtKAyz18JFUqgS2Lvu5fUiQfjDFeNe/xkkFrAq+itbzT7T+wv
-	JLuvJQOlGPgAVRJDz3AJV5YPkFZ5d1uzzVnojgInvZa4r0l8jHLZPfaYbT4ATC11R/NnyOKwgCE
-	9DC3l4jaBaRQpux0ymBRBapk7tDNU5n1/XvX3TNKILyZ2iUaBdVQTKY8=
-X-Gm-Gg: AR+sD12LlS1l0rXVu3jYhnJ8x/p9QhmiW7tOoVkGQyBNsJcHnnRZ67wJ2rBCU7Li8Jt
-	xK55nrXrq2ZpDgpM5MzMaoAPiKdBMPBYT1vwfsi55jZaBI5zRlLGHYLXksuyu8CwzlLmn4VYa1D
-	P+0F3iAbXzse8lLGIJ/Vcnd8F6Fy04M2cg/1t+LA1APMCaFsxXrLLhysAA+zIH/ZYvw1vbAx2PP
-	3NTOIXNw2TShVnmRtVkvx3zMGf7zvWPXrSXV4xdQFfhCB6JZrvBQVvfmdrG4D4c1IjCp5HlnKUB
-	6Id4AwFXxhD5C8FvsBx+WyuMXBbkvCKYJ/4uMGw92BzI1czj9S1xRzP651oaIP3UQdmUovD3og=
-	=
-X-Received: by 2002:a17:907:9307:b0:c21:450d:cd88 with SMTP id
- a640c23a62f3a-c23f936e874mr646819666b.6.1787211857891; Thu, 20 Aug 2026
- 00:44:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JuCF3fJi"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67JLW4Df424851;
+	Thu, 20 Aug 2026 07:46:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=BN1K/n6JpoBV1479W
+	VRv4ajiQogMB2MfE959YKhtyqo=; b=JuCF3fJihcrvQdGlfyHdp9BKTq8T4oPWN
+	+cUC2KmNJE6C/6Ga965Ssplg7oiJ6miYG8GfPAT/AG9W1/O35ieASpcGbgZUGpEz
+	g8Vw94H8RNFt+NdidBOeWNe/fihaspVI8fgPIADXOPlA6K/Zu7P4DdE2KZNzrEAy
+	sqOu3gX6LKOTdked3k5vTGNGhuipLN0uZ+pYfl1ygEhh/8xrR5W+4C6/jqztRK0z
+	7LwtN8BNTmOIJw8LP+xVNFTHTR+Tuw9rbMC7NL3ilKrMgNQmIZMcSn4LtfTVYx6I
+	vdY8EvdHgTuwDrdMWJew/WF1X1R7WLKLr2qRqjrFsgrxSY8trpCzw==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g4yu1gs8s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 20 Aug 2026 07:46:48 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67K7fHfS026485;
+	Thu, 20 Aug 2026 07:46:47 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g32eqddvt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 20 Aug 2026 07:46:47 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67K7khhs28770918
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 20 Aug 2026 07:46:43 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 79F8120040;
+	Thu, 20 Aug 2026 07:46:43 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 46A8C2004B;
+	Thu, 20 Aug 2026 07:46:43 +0000 (GMT)
+Received: from t83lp68.lnxne.boe (unknown [9.87.84.240])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 20 Aug 2026 07:46:43 +0000 (GMT)
+From: Hidayath Khan <hidayath@linux.ibm.com>
+To: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com,
+        sidraya@linux.ibm.com, mjambigi@linux.ibm.com, andrew+netdev@lunn.ch
+Cc: tonylu@linux.alibaba.com, guwen@linux.alibaba.com, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        horms@kernel.org, pasic@linux.ibm.com, hidayath@linux.ibm.com,
+        linux-s390@vger.kernel.org, netdev@vger.kernel.org,
+        linux-rdma@vger.kernel.org
+Subject: [PATCH net v2 1/2] net/smc: stop killed, freed and out_of_sync sharing a byte
+Date: Thu, 20 Aug 2026 09:46:41 +0200
+Message-ID: <20260820074642.966856-2-hidayath@linux.ibm.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260820074642.966856-1-hidayath@linux.ibm.com>
+References: <20260820074642.966856-1-hidayath@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Max Kellermann <max.kellermann@ionos.com>
-Date: Thu, 20 Aug 2026 09:44:06 +0200
-X-Gm-Features: AcwNN1WYliKAFAcz8NUi8mIS6Z7tSILNli4M3PRUKj5FVlc4VYbogqNmwFk7o6s
-Message-ID: <CAKPOu+-x_QPgp7gvApKNxd=aAONgNUmQQMbiLKwQghWd6u7Y=A@mail.gmail.com>
-Subject: 6.18.45 regression with bnxt_en due to uninitialized RX page size
-To: stable@vger.kernel.org, kuba@kernel.org
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=LsCiDHdc c=1 sm=1 tr=0 ts=6a86b0e8 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=GTcdQ6rE3tqjsuqwFHkA:9
+X-Proofpoint-GUID: quY30RAjYBlCH_ZsBMwCZ4dAvys-Rg0k
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODIwMDA1MyBTYWx0ZWRfX4J/F8q2kXSQJ
+ OIEUa671A30GHlWG2ucXxqqXWm6Drrbg5mZSvH0XT6GNv6XdXJKfHdtGCKJ3D4u3D9EV5XjqjFs
+ 0bH0AGPxlGvHX1uCDX/noG59sCGdRCA=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODIwMDA1MyBTYWx0ZWRfX7pHneQ6YxfCb
+ VS0YcyD7OanFh4udk26F2oL25s95kcSk5sR5DGSR3zI0e8VjFmA8oR/maHpRo9q2GAjOcERQgYX
+ w+QUrUaDSQ1PtpGPvUe3v4Ei6A5YmzZ7kxPVDFsp7LCxwsMoMLgAdFu2KG9sVGOYitmMldso4Xu
+ yiMh6U9yEhMxGs0J12yJhgpAfTAhqFWdJ8AZ7XwOfRk4+UUSWTpJYUP3KE8166La3mjc4DEZiKi
+ 1qKIaKsmXANxFLAWgaUbgm4E/onblND6CY9gVEdEH7R3wA7kk4Yo4sZnJBG71o5WktQqK33oupO
+ bgxHRylntBm1CymXHu3+DdlC+0tJ8/DfWf4HWoFTQ+tKrdjQrY3LDfx2BBaCRJmsDHnH3Fxejt2
+ dBPJDJXBts+usOqkuPZZQJOVm3lYJDze6DjfPc1fUKdfPIIj7/ReZRW1u60eYPi2rcW0wyStvhI
+ ouQT4Bl5IBD4W19hBEQ==
+X-Proofpoint-ORIG-GUID: 5Tka3A-1cbhhcx2D3DsjtfBgDFC0MwpV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-19_06,2026-08-19_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0 priorityscore=1501 lowpriorityscore=0 bulkscore=0
+ adultscore=0 suspectscore=0 impostorscore=0 clxscore=1015 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608200053
 
-Hi,
+The three connection state flags are single-bit bitfields, so they occupy
+one byte of struct smc_connection and every store to one is a
+read-modify-write of the other two:
 
-after updating our servers to 6.18.45, the bnxt_en NICs would fail to
-initialize:
+    u8  killed : 1;
+    u8  freed : 1;
+    u8  out_of_sync : 1;
 
- page_pool_create_percpu() gave up with errno -22
- bnxt_en 0000:c4:00.0 eno12399np0: bnxt_alloc_mem err: ffffffea
+They are not written under a common lock. smc_cdc_msg_validate() sets
+out_of_sync from the receive tasklet, while smc_conn_kill() sets killed
+from process context under lock_sock(), and the receive path does not defer
+to the backlog when the socket is owned -- smc_cdc_msg_recv() takes only
+bh_lock_sock().
 
-The regression appears to have been introduced by the backport of
-ad9ffc61fafeb ("eth: bnxt: support qcfg provided rx page size"). It
-obtains rx_page_size from the per-queue configuration:
+Give each flag its own byte so a store no longer touches its neighbours.
+All readers test them as booleans and are unchanged. struct smc_connection
+grows by two bytes.
 
- rxr->rx_page_size =3D rxq->qcfg.rx_page_size;
+Fixes: b286a0651e44 ("net/smc: handle incoming CDC validation message")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+Signed-off-by: Hidayath Khan <hidayath@linux.ibm.com>
+---
+New in v2.
 
-The bnxt_en driver installs queue_mgmt_ops only when
-BNXT_SUPPORTS_QUEUE_API() is true. On some NICs (like ours),
-ndo_default_qcfg is never called and rxq->qcfg.rx_page_size remains
-zero, leading to bnxt_alloc_rx_page_pool() failure with -EINVAL.
+ net/smc/smc.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-This was fixed in master by:
+diff --git a/net/smc/smc.h b/net/smc/smc.h
+index 52145df83f6e..427b6d63b993 100644
+--- a/net/smc/smc.h
++++ b/net/smc/smc.h
+@@ -277,9 +277,9 @@ struct smc_connection {
+ 						 * 0 for SMC-R, 32 for SMC-D
+ 						 */
+ 	u64			peer_token;	/* SMC-D token of peer */
+-	u8			killed : 1;	/* abnormal termination */
+-	u8			freed : 1;	/* normal termination */
+-	u8			out_of_sync : 1; /* out of sync with peer */
++	u8			killed;		/* abnormal termination */
++	u8			freed;		/* normal termination */
++	u8			out_of_sync;	/* out of sync with peer */
+ };
+ 
+ struct smc_sock {				/* smc sock container */
+-- 
+2.52.0
 
- 1410c7416dc3 ("eth: bnxt: always set the queue mgmt ops")
- 3cf48c04966e ("eth: bnxt: make sure we populate the qcfg defaults on
-old FW/HW")
-
-After cherry-picking these two commits on top of 6.18.45, the error
-disappeared. I suggest backporting them.
-
---=20
-
-Max Kellermann
-
-Principal Software Engineer
-Hosting Technology
-
-cm4all GmbH | Im Mediapark 6a | 50670 K=C3=B6ln | Germany
-E-Mail: max.kellermann@ionos.com | Web: www.cm4all.com
-
-General information about the company can be found here.
-
-A member of the IONOS Group
