@@ -1,113 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3FC463B74
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 21:45:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9605B253340;
+	Thu, 20 Aug 2026 22:03:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787262330; cv=none; b=jrVmJBUqnWag8D84Zuk5P9QQAO6OfcGJW+Ek7JSBfapBOd59yvO025osU3kb0k6eduCIeGDLoJHRKa3p72T7cm8Jb2vlTWuhotnrBTTco67WAAUfH2LHJUuLlYl7qdiu3OSRNRDu8hLl2HqvtvM2x9sFUD+b5GO72SkMnh01mk8=
+	t=1787263388; cv=none; b=blhJqXox2oN8A5nvAA8H4A8SvFbHMMkv3wN4bgQN7bXYVvQxxEbXEhrV6aWY8spgZClOSRsx2aIUMW5uc+My6zxt7Gb3y9uadonpeLE/64ufYOPMQNAKEVldxxNnmYQBgwdPqwHfiae90+ZopVLjhf/cODgtHgGgrCRY8fQeNP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787262330; c=relaxed/simple;
-	bh=/f/BIBzUVAqxgggnbQPUPpyfJISD/3XWOfGX2blkEtg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WCUaQTU54TyRfFMi4O4gP0Hf0OrFtiOMm93MCHULhxCRDkA/cyeslYr3TsZLQF3UkiW3YrEbM24xFgwQJAoliV3T5fBpYOEMjFMX2Fw/aTau6yDyAkyVt54nlMUaMRL+V3oNN/dqkbQNZm3w4wVwCcS7Ii6+f2Jtws9Lx+9Mmxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PfPjX6h3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787263388; c=relaxed/simple;
+	bh=Z+qG1MVfTdCueXPAF+cS20lMMjifLDyXO3y2iby3Fc0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kDCAEemIdtn8ccdGoL2FUmh7zrVgOYfSidByJYCyQenZXRcyIX3gMgRxIUqCLvg8TtMkNZlhLDZr1SQkJAyUv5I9W2PrDM6ePTUeVdzrlK3b/bVK85xfkQs4ncPOjfBYq+i625mE1MIQE71lV3xqrp1wQXC0sNCag64vf9lM2S4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=qO3bJY7W; arc=none smtp.client-ip=51.159.188.251
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PfPjX6h3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B2E31F000E9;
-	Thu, 20 Aug 2026 21:45:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787262329;
-	bh=4eAkh+9MDHG9RqYKYJgFw2VrMIEyWF85IrttsVxYYoM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=PfPjX6h3ZieTA0J/Nb9kfqZSr17Gezj08YfSg1S5PcaqPIB6KU/GaG4isyu8tX0Me
-	 fkmYE/sV8fVlvutWgMgUEGIl97m0RAvq43SVvWz8wPX3BhjEJ2C394sfwr3256zkgs
-	 dxcm383xc+QmJaCOBj5SeljaQZXTUj50HMJBaVRmYGB1TrXZEJNqnlQKgwNyCcbU4b
-	 8qMqapQFSZ7ulaEu3KpfJHdGRkxCIDGT7qv0oEZEuWNgGRex2jvmvIL3sSrpZRqMFZ
-	 SaAKmLVQXoWjehV1sImf5pLil1H7pd1QLC5YTzNX18FJEWx75BcsOL2REzCc38vwhM
-	 KLyyI31DPDqKA==
-Date: Thu, 20 Aug 2026 14:45:28 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Kurt Kanzenbach <kurt@linutronix.de>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Maxime
- Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, Lorenzo Bianconi <lorenzo@kernel.org>
-Subject: Re: [PATCH net-next] net: stmmac: stm32: Set TSO/TBS Tx queues
- default settings
-Message-ID: <20260820144528.7107ba90@kernel.org>
-In-Reply-To: <87h5kq1s1f.fsf@jax.kurt.home>
-References: <20260812-stm32mp2_txtime-v1-1-f9e2462cc85d@linutronix.de>
-	<20260817103337.74c30adc@kernel.org>
-	<87mrujzzjv.fsf@jax.kurt.home>
-	<20260818075335.48936b08@kernel.org>
-	<87h5kq1s1f.fsf@jax.kurt.home>
+	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="qO3bJY7W"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=EUFDvQueKTA0Kg8VM5wig7vU2XqvnDG0jtKGl3w49sU=; b=qO3bJY7WGiLEn2SC8qZVrAuggx
+	WC+FVisbhWy8ypbZjPAEWjUo1fuU73UumCHVsgGYRUOgkX9C0Qyvivny1F8XcKkvSVPIzxpuqfbi2
+	vHouHl0NW5RLngbGl/hbW0AOp7M8Rj5oW/yXbKwXttATpKE4X269y0mne7CamXdqf3aNWN/ZH0hlt
+	zunkX9Dq/hYpU7Wlu2hXQgGXgcQOqwLNpuenkH/vxRfUN9MlUNeJGo0jZ1hWhpZIA2Qceg+zDgAO/
+	iOR6z9iqQAnBqLRM7cKszpwoNnQTAR5FfkQ3M6xmaxDYu1TqxedIZUgKkI9mCSincQkKpuWoy6MPo
+	sZFQERfA==;
+Received: from [151.115.150.205] (port=51212 helo=gepetto..)
+	by pf-012.whm.fr-par.scw.cloud with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <Jeremy.Jean@oss.cyber.gouv.fr>)
+	id 1wxAqm-0000000AJER-0jCk;
+	Fri, 21 Aug 2026 00:03:04 +0200
+From: =?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
+Subject: [PATCH] net: gue: reject invalid REMCSUM offsets
+Date: Thu, 20 Aug 2026 22:02:10 +0000
+Message-ID: <20260820220210.3122690-2-Jeremy.Jean@oss.cyber.gouv.fr>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
+X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
+X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Wed, 19 Aug 2026 09:35:40 +0200 Kurt Kanzenbach wrote:
-> >> I want to use ETF Qdisc with hardware offload, which is currently not
-> >> possible on the stm32mp2.  
-> >
-> > Do you need multiple queues for ETF/normal traffic?
-> > Or one ETF and one "normal"?
-> >
-> > How do you sort the traffic between the queues?  
-> 
-> So the stm32mp2 has two CPU cores. I've isolated CPU1 for Profinet. That
-> one uses Tx/Rx queue 1 with ETF to reduce the Tx jitter. Everything else
-> is routed to Tx/Rx queue 0.
-> 
-> Config looks like this:
-> 
-> #
-> # Tx Assignment with SP.
-> #
-> # Tx Q 0 - Everything else
-> # Tx Q 1 - RTC
-> #
-> tc qdisc replace dev ${INTERFACE} handle 100 parent root mqprio num_tc 2 \
->   map 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 \
->   queues 1@0 1@1 \
->   hw 1
-> 
-> #
-> # Enable Tx launch time support for TC 1.
-> #
-> tc qdisc replace dev ${INTERFACE} parent 100:2 etf \
->   clockid CLOCK_TAI \
->   delta 500000 \
->   offload
-> 
-> On Rx incoming frames are steered via PCP field (vlan tagged).
+The REMCSUM option carries an absolute checksum start and checksum field
+offset. gue_remcsum() passes them to skb_remcsum_process(), whose
+partial path stores offset - start in the u16 skb->csum_offset. If
+offset is less than start, this underflows (for example, 1/0 becomes
+0xffff).
 
-Thanks for explaining!
+A forwarded packet can retain CHECKSUM_PARTIAL and reach a
+NETIF_F_HW_CSUM driver which trusts the metadata, leading
+skb_copy_and_csum_dev() to write two bytes about 64 KiB beyond the
+destination buffer.
 
-> >> It seems like a static configuration in the driver today. I basically
-> >> followed the same convention as dwmac-imx, dwmac-intel, dwmac-mediatek
-> >> and dwmac-qcom-ethqos. Only dwmac-socfpga does it differently.
-> >> 
-> >> Tx Launch Time requires a different DMA descriptor layout. Currently
-> >> tc_setup_etf() just returns -EINVAL if the DMA configuration is not
-> >> setup appropriately. I guess a dynamic configuration requires to change
-> >> the DMA config and perform a full release/open cycle.  
-> >
-> > release/open is not ideal but still better than hardcoding?  
-> 
-> For sure it's better than hardcoding :). But, again the driver does it
-> statically. Maybe there's a good reason for it. Maybe not. I'm not that
-> familiar with the stmmac driver. I'll prototype something to see whether
-> we can enable TBS at run time using the ETF Qdisc callback. It may take
-> some time though.
+Reject reversed tuples in both normal and GRO receive paths.
 
-I think the m in stmmac stand for 'mistake'. 
-We need to start cleaning it up.
+Fixes: fe881ef11cf0 ("gue: Use checksum partial with remote checksum offload")
+Assisted-by: Codex:gpt-5
+Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+---
+ net/ipv4/fou_core.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/net/ipv4/fou_core.c b/net/ipv4/fou_core.c
+index ab09dfcdecbd..c4b8b7293994 100644
+--- a/net/ipv4/fou_core.c
++++ b/net/ipv4/fou_core.c
+@@ -97,6 +97,9 @@ static struct guehdr *gue_remcsum(struct sk_buff *skb, struct guehdr *guehdr,
+ 	size_t plen = sizeof(struct udphdr) + hdrlen +
+ 	    max_t(size_t, offset + sizeof(u16), start);
+ 
++	if (unlikely(offset < start))
++		return NULL;
++
+ 	if (skb->remcsum_offload)
+ 		return guehdr;
+ 
+@@ -308,6 +311,9 @@ static struct guehdr *gue_gro_remcsum(struct sk_buff *skb, unsigned int off,
+ 	size_t start = ntohs(pd[0]);
+ 	size_t offset = ntohs(pd[1]);
+ 
++	if (unlikely(offset < start))
++		return NULL;
++
+ 	if (skb->remcsum_offload)
+ 		return guehdr;
+ 
+-- 
+2.47.3
+
