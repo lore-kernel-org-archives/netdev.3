@@ -1,77 +1,88 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-yx1-f46.google.com (mail-yx1-f46.google.com [74.125.224.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62C21D89EF
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 00:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9BD1FF1DA
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 01:06:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787186377; cv=none; b=cAu9ldklISyFHsw379mLOaKwEHCyIcYCsJ+h51P4h/K8jLguQEFcEl1GOjsjiUxJtIpZF8jSZiag+a8eTnpkVtqxNkhefK20mWyrspsp4WYt/JlonUG6AaK2XY+7QEuQ5gvScoHnHyQJIcFQohsNe1Batq2l4pbdCqhkLCduUfc=
+	t=1787187982; cv=none; b=G9XxwurZQOUzfiYS5tF99msR4X/nPFsE65J78muqJhcfp/1Nj1l/VcyZaOGkDj4x0JBanFK/KN9JuG5cHMTw7ILrdkThci2Dbmb+UkTeaLWQhrWFZs2Tj17cxrJ8McRzRD+u71QzVBbA2WZJBzRwUlyvZYKjOYPpld2SaJsAiBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787186377; c=relaxed/simple;
-	bh=H5Ia8YwPPiXAVXSD1CGGYaOGUaWGy8snBHtg1hqufAU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=q8n+R13hrSKd2FzJ1wf2xSplnb9vjUku1OVItvZ1qcmvwls6ZiBC/UDaLRNlfVdVEBEfMyZMxFBnfRx9IgvDz2dOkqubuDrZd8THqgWdMSgvvD3j2rmilWSqUhJkI/YfPVdx675W9biVyCPilM3M63KaVsfwC78+gDkol8u1gYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=icoza+En; arc=none smtp.client-ip=209.85.214.175
+	s=arc-20240116; t=1787187982; c=relaxed/simple;
+	bh=6n/uZQR5aUanqHSqO5R7Kh+SBqhfqON4fmhIll6OHqo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gSGIRzyegnS3nIudI5/Ygta8L7J+N4CurdzNTo6I++OVBLxf2f6Ifm4JFFllI1N+5h0Xtve3JLy7Wdtdi8qhffcGa4zWU3AnJqsh9OLFgoXGtG+N6YBJkCF5syn2beedk/NQ3yblWZE4eUi2CTlevu984hLjy3U6DvnPXJqXBZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MjuF76uJ; arc=none smtp.client-ip=74.125.224.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="icoza+En"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cc61541f8cso4860105ad.0
-        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 17:39:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MjuF76uJ"
+Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-66ca3fc625bso2788888d50.1
+        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 18:06:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787186373; x=1787791173; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4ED8wIBXH7n68xgDf6ufHcXNAkg2WsBWchuI3Xh0PEg=;
-        b=icoza+Enn+GTU/txk4PnBOIH7kjurbtfwbbYgsJr5aV8rLWoZXeXgf/kaXXHpcVbra
-         V+tGCqBcr0RBvBmUidQbH7b9hyOmW9MC0AxfohMIEA7UKDkg/W75m51NIZcFfc5U9pdG
-         JuDQh6tgY1g3FoTDiIdB1UeM6sDuX9BJKWeoh7I6Ws8LucHH08Wzt1ROPI4Y71Zgrmi7
-         dN2BzmRKQoggIzSsgIkLvzGH8lKxf4NfvflWCsgeppwq9wdVIsHAZ+EQtBP02lilybbf
-         1Nj1RO/Ozo+mdgKT7fVALE+2JsVpo1a9/FtgkdGWO1NQ+T8eAyFUgbpxfLh8Zb+5yrkM
-         2GhA==
+        d=gmail.com; s=20251104; t=1787187979; x=1787792779; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=o36bXNM2ARffm3iLy4WlKgnd3gxGay/ODxd6X4i877s=;
+        b=MjuF76uJ7Z3vgt68EHJBnR1BO4TG9iFtvFYMhzjue2x2q78vNlOExgdCUIJ9BTtOu+
+         IAbaGVTV9Q3N/A9zTgPLQvqbwMpslJUp2YOKSNGQtD01Id8wvV9iFJH6ybjiRH+py6dy
+         YPuyTn+VgFxx1Seei8tuDwDtfGMW98Dl8rFqfqpvnlmTR7MRabQJPkHGhgf5oQVf1lk7
+         QNTRynpSVfhTkfNafI6kte2jvVjz4NGB7KHqJeSkc907yxPZmMK2MaORngKemO0l+X/y
+         AptXQ1kxpYcGd6bqJC3hScubhBJbAI0miuWbAX24VeRNFf0aJSfiEi9cdBG0rQ9j6pSk
+         gtuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787186373; x=1787791173;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4ED8wIBXH7n68xgDf6ufHcXNAkg2WsBWchuI3Xh0PEg=;
-        b=Mv57aLeddPtJjz4MNpESSq+M7AismlP6qZSJ6m1kYNdo3pOEa5kGFzErEnloUEdGa3
-         Igyqcb2NE2uG8bFR20GSA7K7j+3vE2v5ZMN+wmEwlH4hBsN791pkzCZIbNNQF7BrEmDE
-         B2C7spmeeS1VXjL0BY6cUjPY1b/2vFTQ/4CWvfTowF3Zx94lkB3NE/JUKdBbjO9pT2pz
-         9uALxw9uJu9Vc8mZ0LE1a2NJDy66r/oqTajUrxu3ZaVYXruT6xxPUNJNqVhyMYeMsQii
-         WJgF2eXlcIRytPqJWcS2r6cbpeV8jiL3wLCI9OBLspcWw3+iZTszBjcN1D3lAQlWX22p
-         rJpQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqtQOLOMWTv3/X+AHt9jXeKfsYX1CNrdcZ2czVPKMEy6YOj9f2kaK1tCT9RyHnBoNyNAPdQipM=@vger.kernel.org
-X-Gm-Message-State: AFuF++kz8AvM4ho5+yQuqY4bnTQxzGF5DCTsrsBxW+WDfHlaUJqTyTgo
-	E3LGypc1dXcUJUGrqq2sovNnzRwqYo7y0kZRDcBSHQgFl979s3AZSdYB
-X-Gm-Gg: AR+sD130FaFabJUzgGrgJoCiiCA27aBzv4CDhxdDheTY7VRN5T4J4bXNngK8x+g/NAy
-	3PZsLWu4MkLktHDcAJ7h3+kuWAHntDTsEJURNeegHXyLtAOfIaSelY2i9gEb/wWXieFEmzt7hcg
-	2s+NDqNKlo9r6fPtZfhK3bO1dDfyWmHk89OaORCSkR6Hhcpy4rbVWlH1ICzTAm1bFrJCAbypnw4
-	QXKDx4SLqJVD44amGuOYos+AsT0G0A0bxssZA8wt14mjAzYxJ/rkzcvw2teuXIKuuLChmghXdQj
-	omgTjsEdVoeLqUXcsLHqVjo4wcC0vss0sMQFOkPf1ZNGh2k4VocsT36liNkBWuQ7U32gsWB4oqP
-	xJXrwxDFI5MWOSv7cpOu4o6CDs/c9X2B8wpqd6ZAddbitjP3ONbjTykzOnGYa2+nf16IrYFrDzx
-	+Cpx+1G1b5X6ZWMD0bWarZx8tTsNTHFxjljqjyylS6FGPgSYy1x0h3+mEwqzbTaPlY3rRkUk6iQ
-	N+C+rGG5O99+VLUm24RJn4nsmWc8XXi2E1uGA//9ABBXR4TytN9DNlhyXaKHeOu/z4IEwKWAQCD
-	VVZC3h0bu3ns7cvpdG2zrZNCPUoMebyj5wM+Sgj8tv86CQ==
-X-Received: by 2002:a17:90b:1d51:b0:38f:cfe2:fd3a with SMTP id 98e67ed59e1d1-395a06b9c5emr3604606a91.15.1787186372956;
-        Wed, 19 Aug 2026 17:39:32 -0700 (PDT)
-Received: from localhost.localdomain (2403-4800-2450-5401--b311.sta.dodo.net.au. [2403:4800:2450:5401::b311])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327bef3cde4sm12191776eec.4.2026.08.19.17.39.30
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 19 Aug 2026 17:39:32 -0700 (PDT)
-From: James <aslan.jnn@gmail.com>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Raju Rangoju <Raju.Rangoju@amd.com>,
-	Prashanth Kumar K R <PrashanthKumar.K.R@amd.com>,
+        d=1e100.net; s=20251104; t=1787187979; x=1787792779;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=o36bXNM2ARffm3iLy4WlKgnd3gxGay/ODxd6X4i877s=;
+        b=KeYodcCZAvGZlnxlHeqg4xp+5gOztQtToBiaS01AqjbZBXzPHPiE2uywPxai98IwFC
+         GTwsejczoP/OmBMQU6P7uqwr7yFxRIskCDqgF1bpoxS1aSzuUhjDkpbJuDQx3VFQJicu
+         GUr6whKe9+NOwN2A8mEXHc7wB6DOcwrcXbpU0ZWrWgu3AZMxfr4x6oIaeicvFrOR3aAY
+         dSXIzkb2MGL0CLH/RcZi3a+xYubv3fR7H0ooVaK521nZLH8G5DTng5SIvNtU3MtsjZ71
+         xLe430ghn0diK8K67gUVA86+6+dVscj2Ma4N36It+CjVa+wrRd5QOzqMGfaG8aheIUXJ
+         lbtQ==
+X-Forwarded-Encrypted: i=1; AHgh+Ro28X0nOHVj4QCFR7s2cgLSGgV/uv7U+ubGxIgGiOCwtw63Kmg8EZO0OF97Wx/OLdRRJ/5+8gU=@vger.kernel.org
+X-Gm-Message-State: AFuF++nW9DkcLCyCqPo/XShLRBTmTVvEMACXzAu86pcQ5SU5YF9mMC/r
+	sGkY3QJt8/LVc7m1MOULDaWRRIxsSL2btGv2S5R1N57i9FXlqzP0XSb0
+X-Gm-Gg: AR+sD12LdYVTF7oyvwnqpWus/uiAL4yEcRCP+bRqJJxnPRY5ZBuhg1/448zQAHo19ft
+	sDFIcqOajNUzPqejspBHJXSd83Bhg9ND/PZ4oW7WkeuPKulIFN5OupfNF3u7z/tbP5b2yNe1B9s
+	SUdlzZ79L3KYMMEr/HDOTkZm/JIYpNGH507nEGkF/OkktCk9HjAF9DX8oSkgwhFR5btXOigqTX0
+	a0837xGwR63bC10xJbtkNNgMqR6bclFy7u70FabBRPGhiVgVe2xd4KOq6wbwGD/f1SZ6rhcu4O8
+	kx04+lk/EgERYBTAqMdsmtbxFeNrH7s9n1RxtUxdpTjUeFU6nx7DSj4pGddzScIPkYW58zZIqqv
+	224uHzxXjMyuaMAP2TrZSDyznZFAeehue5TYJ4kXSDsLWjUrmil6USFPadrMBW80kvqRIOUwu9L
+	v7hM56R1D2BvR/CSeW+EKIhW1zRBCVSIxxfIc7N7D8LVifDMHFjUsoPcpOYzuE72vRLEydD2BpY
+	1wqVg==
+X-Received: by 2002:a05:690e:450a:10b0:668:9fa5:b9cc with SMTP id 956f58d0204a3-66ccb4070bcmr2684977d50.0.1787187979411;
+        Wed, 19 Aug 2026 18:06:19 -0700 (PDT)
+Received: from mac.lan ([136.55.173.105])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-84511abb205sm17428687b3.6.2026.08.19.18.06.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Aug 2026 18:06:18 -0700 (PDT)
+From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
+To: pablo@netfilter.org,
+	fw@strlen.de,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: phil@nwl.cc,
+	horms@kernel.org,
+	kadlec@netfilter.org,
+	kees@kernel.org,
+	enrico.pozzobon@dissecto.com,
+	sbrivio@redhat.com,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
 	netdev@vger.kernel.org,
-	Thomas.Lendacky@amd.com
-Subject: Re: [PATCH net] net: amd-xgbe: support receiving packets with bad FCS
-Date: Thu, 20 Aug 2026 10:38:53 +1000
-Message-Id: <20260820003853.39357-1-aslan.jnn@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20260819124307.7a9ec5e6@pumpkin>
-References: <20260819124307.7a9ec5e6@pumpkin>
+	linux-kernel@vger.kernel.org,
+	AutonomousCodeSecurity@microsoft.com,
+	xmei5@asu.edu,
+	tgopinath@linux.microsoft.com,
+	kys@microsoft.com,
+	blbllhy@gmail.com
+Subject: [PATCH net] netfilter: ipset: list:set: defer ip_set_put_byindex to RCU callback
+Date: Wed, 19 Aug 2026 21:06:17 -0400
+Message-ID: <20260820010617.46851-1-blbllhy@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,38 +91,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi David, thank you for your feedback!
+list_set_del() and list_set_replace() call ip_set_put_byindex() before
+call_rcu(), dropping the child set refcount to zero. Meanwhile,
+list_set_ktest() on another CPU may have already read e->id under
+rcu_read_lock(). A concurrent ip_set_destroy() sees refcount zero,
+NULLs ip_set_list[index], and frees the child set. list_set_ktest()
+then passes the now-dangling index to ip_set_test(), ip_set_rcu_get()
+returns NULL, and BUG_ON(!set) fires at ip_set_core.c:746.
 
-So on my test hardware (AMD Snowy Owl SoC), it is the former: FCS
-validation is actually disabled, and packets with bad FCS are processed as
-valid packets.
+ kernel BUG at net/netfilter/ipset/ip_set_core.c:746!
+   ip_set_test+0x329/0x590
+   list_set_kadt+0x2a6/0x810
+   ip_set_test+0x24f/0x590
+   set_match_v1+0x1a9/0x280
+   ipt_do_table+0x83d/0x1360
+   nf_hook_slow+0xac/0x1e0
 
-Concretely, with DCRCC=1 (the current behavior):
+Move ip_set_put_byindex() from list_set_del()/list_set_replace() into
+the __list_set_del_rcu() callback so the refcount is not decremented
+until all RCU readers have finished.
 
-  - `xgbe_dev_read()` treats the packet as valid: the skb is passed up the
-    stack normally (e.g. `tcpdump -Q in` will see the packets with
-    bad FCS).
-  - The RX CRC error counter is not incremented, so `ethtool -S` shows no
-    error.
-  - Since CST=1 (CRC stripping) is also set, the FCS bytes are stripped
-    and are not visible in the captured frame from user-space, thus
-    user space can't tell if the packet got bad FCS or not).
+Fixes: 439cd39ea136 ("netfilter: ipset: list:set: Decrease refcount synchronously on deletion and replace")
+Reported-by: AutonomousCodeSecurity@microsoft.com
+Reported-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
+Reported-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
+Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
+---
+ net/netfilter/ipset/ip_set_list_set.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-I verified this empirically: if the link partner sends two identical
-packets, one with a valid FCS and one with a completely inverted FCS, both
-arrive identically in `tcpdump -Q in` with no way to distinguish them, and
-`ethtool -S` shows zero CRC errors.
+diff --git a/net/netfilter/ipset/ip_set_list_set.c b/net/netfilter/ipset/ip_set_list_set.c
+index f070088742d6..aeee0c6c314d 100644
+--- a/net/netfilter/ipset/ip_set_list_set.c
++++ b/net/netfilter/ipset/ip_set_list_set.c
+@@ -144,7 +144,9 @@ __list_set_del_rcu(struct rcu_head * rcu)
+ {
+ 	struct set_elem *e = container_of(rcu, struct set_elem, rcu);
+ 	struct ip_set *set = e->set;
++	struct list_set *map = set->data;
+ 
++	ip_set_put_byindex(map->net, e->id);
+ 	ip_set_ext_destroy(set, e);
+ 	kfree(e);
+ }
+@@ -152,21 +154,15 @@ __list_set_del_rcu(struct rcu_head * rcu)
+ static void
+ list_set_del(struct ip_set *set, struct set_elem *e)
+ {
+-	struct list_set *map = set->data;
+-
+ 	set->elements--;
+ 	list_del_rcu(&e->list);
+-	ip_set_put_byindex(map->net, e->id);
+ 	call_rcu(&e->rcu, __list_set_del_rcu);
+ }
+ 
+ static void
+ list_set_replace(struct ip_set *set, struct set_elem *e, struct set_elem *old)
+ {
+-	struct list_set *map = set->data;
+-
+ 	list_replace_rcu(&old->list, &e->list);
+-	ip_set_put_byindex(map->net, old->id);
+ 	call_rcu(&old->rcu, __list_set_del_rcu);
+ }
+ 
+-- 
+2.52.0
 
-With the patch applied (e.g. setting DCRCC=0), the bad-FCS packet is
-dropped and RX CRC counter will get incremented.
-
-Regards,
-James
-
-On Wed, Aug 19, 2026 at 12:43:07PM +0100, David Laight <david.laight.linux@gmail.com> wrote:
-> What actually happens to packets with bad FCS?
-> If FCS validation is actually disabled they'd get processed as valid packets.
-> That would be a serious bug.
-> OTOH the rx status could contain an 'fcs error' bit that causes the packet
-> be discarded and the software counts an error.
-> That would match the historic behaviour of many ethernet chips.
