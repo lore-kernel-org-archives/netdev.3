@@ -1,159 +1,265 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866B5417355
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 11:10:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787224203; cv=pass; b=HQmUBm51TwOCfvV//9qGcovb3rGIppDA79sH1C5IhIEaX8iVFBqooGep4j4nVT9ODliXy7DVLDcXJfNq+AFBbqpqTJVGyRiwHGGWkfMxoOyAqtv9FKsd5sOLAJhk+9o3AxYfcMClsVI57mBqVEosS8bEiwaaFjiBBTKSTR3DFWs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787224203; c=relaxed/simple;
-	bh=UnzFxx8UR4V+EBKZrdkJLhup323hFVXO6RK4fVNl9KA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K8PiUq8IaQWDa1XiUb9q1Vr21WWrc55xdof3sZisnRN8vDMATQ5v+31Gn4+4ICH8IjyJLtygOFycC/OoqVEoe/NpFwrPEEaotDL6JWWMBjVWQqyihPVk3ysc9GEFEKCa/tHlXzp7jUQSUeQKI1HBRjrSwQsL+P/UXOFi/MD5BIE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=dfwzJOR9; arc=pass smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3476414A04
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 11:12:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787224368; cv=none; b=lCgsp+h288to7oVivNp6zz8CSH9dv8rtgHJ8bpikaFrPDCFJ2WXHhI6zf9jRugj09y2ZTui7DxVgOp1Ut1TgtfzqcEqpHcUL8KikqMQUnVwkjDpUeVO7JOM2JGR5GU+fOf8dhYmD4L3n0jMP4a5OzMCZWl3MFLAOGVfJBIf4jaY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787224368; c=relaxed/simple;
+	bh=O5ebyv/3F/19CN5xFhTY1DMmQZS+uNrKoNJiW7nmlpE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lI+/MTPMl2bU1PpkBc4em9ivIwsql2OiRNYjilBggs0vISZ7efrVVwGmbHb8+fSAcPEFEZYf7L23kZBONxUUGMdzE1dygiXJ7UZJkHrsGT8AFEFoNmyUxaPhhLQq+e4HmIlgZAqD49Q/vikLyfPQSzYyD/SrE4V40pMqJf/b39s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NU6jIRdD; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="dfwzJOR9"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-84e84a6c4bfso647040b3a.1
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 04:10:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787224199; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QlB+QJeKT7PKEEWvCA2miYqznaihJU5U9n+abIOQAQ27hc8U9JkG7j8j6WUu5ZrazY
-         lkSv7YJryz56aAIqS3+vB8X6/83Qc7roxKJ1tcnRfrecpu6nLgZK6hW36iNk6Lxk4bUe
-         +PzYMbB/33cIjQnwwNofKM27HP7lvCspdUV+nYzk8mPoir+oY0h4uNNMhhg5UosT+AgV
-         qDwbylTs0dzRyaJVh/LvKOwuAxyUSJPuc5QBPiVUpgwQ8o+iSp/u9TPR34iP4RpUVZFW
-         V3rFDRwRjj6HeGnsKPWqzmsSRvo2bBeLrmYpgmaEZ6Ifd4YwY7uAFis99hZ5v+3HYjVq
-         u1Ow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=y+JX0uo36qcJTRTsK8UijWY1BkclUdQkQ8zvGF+Ak4k=;
-        fh=Mo4jABy+Qqpu3ugugQfCi9Eaac8e5YZFLy7xCFbdG2c=;
-        b=V4gAwsGocjLAtw7RFNatlRrO053YcJQdvHgkVX9OdFVsfieiog/nySS+id5Hd8n6tj
-         nvqmNc/C9lCRMYQPJNaGNCnfKavSR0E2D2Yp4P7mJhLAvpLD8+2KCsaKceTHJCYRy8v7
-         I840sXV3KvWzNwIiQvOKLUVm8pqg1dyjX51QeP90LEHfwO5YSaxLw3J6PYTuuT9sw+nT
-         wIdgFhgqrapa8nB2ARsK+UsDMYO2zZz8NI1L2nVK86pbr3b+YjLMb+3Yawy77/kwiI9T
-         p5aFUM+uwHpGQveG6Qs6iE5XAN8/w7KBPxbz7GDvIZ43GLGAHm6ZyuHUvp/gpPQBNVuT
-         WoHQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787224199; x=1787828999; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=y+JX0uo36qcJTRTsK8UijWY1BkclUdQkQ8zvGF+Ak4k=;
-        b=dfwzJOR9eU4xwnxazKvuOLovyzRB75Y/QE7GfkoujwwVO3m2FinAiC9IXVb8xjBiK/
-         nXWwW+MccGMWbeG07GO/Q/WxDlUMQnJltyECSl93sR/k5MSd3z65yUzxeIGNNkwxR4uT
-         Gk/7pZmYjXgxVfinQED11zN14at6rA2iX0WaI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787224199; x=1787828999;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=y+JX0uo36qcJTRTsK8UijWY1BkclUdQkQ8zvGF+Ak4k=;
-        b=YlS8SuonjVO7op9Zfb4oyA54FALnO4UZD64Bg+7lUcKjBgHpLbb1d9rKVB0Dg0nhbT
-         uUBMCmceVvDakCj/0vKMNjTJh0EhoRKK572LOx2jqyS9ZwCGpTWckIy1Td007XpeVnjS
-         uPRZJ3+MxMMk5Nwnc6TFkooSkYEI/MSoElql5nKudYyyQfE9sH0NEaZyA9UFyFR1hUSe
-         hGQAnjMSYsPotM/3jAu+2B8XICqHeGJsT98Wn24MjNDgdc+lrJdCigJv8rVuP9ZZ8acG
-         /q5w/bRFBK/SRLAGttEXqaDQB3qz7llZ9H7uBsECgLZo37NGp8PgdwX0HS+hi1h41hFf
-         C+6w==
-X-Gm-Message-State: AOJu0YyawYarAnoS6Sq3Z05le3Pb5LjqAbMK2qm84tPwROtGFqgYWhrT
-	6z4ANoUolUNLI6WPYavy9MrbLTCuxdrsIEwCnZKaNDe300+3S4+wYxvxC1rQVvxKQq3cLvfaHFF
-	B4FhSErOVCBK62dAdlm7Fw3N5/+7VekkV1K5j33rpDrf1l/AMIOrV2DX6
-X-Gm-Gg: AR+sD11rVKB7mowMyQOSn+Aq458RQx9rI5cnZceKG3E2PMrQlX9FhWbrggl4Y2uuCgV
-	TVgRBssq27f5zkquHYglpDDsAUOn4K6moI+KuHpk5PCdXDzMx3WZ7aSmaex0OTVvpXtvBHSpSOF
-	lLismNz4smVWNB2Ul+pxte+0Lp11ain83QJEv9qohRzSHorILyvQw0r1qz0Ll1I4NRLM9jDf16o
-	ksSDsnjtaySFZqbavmHhknVfrSL00grXqk7ynL331bOpUu9m6AQOfVrIrxw5DBP06iCTuhv6iNW
-	AD5Kk1S76Q4Xs9RrgKLYKAAAXWUqoJI7yEpgbtZYnPpl6w==
-X-Received: by 2002:a05:6a00:4603:b0:84e:cd14:aeba with SMTP id
- d2e1a72fcca58-851df99b345mr5940444b3a.6.1787224198860; Thu, 20 Aug 2026
- 04:09:58 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NU6jIRdD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787224365;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4riTGmMvWyWZUwFvb7s+tbSTnCFV+PyunZGmJf0aeDU=;
+	b=NU6jIRdD4N011abXwc2OlcpYYun8SV3kZCT6tmcizaovp676Sd2WgMx2wQcYYfzmlPfq4o
+	rnsf9AEvpKKXjdvdar/Izp2LpQPSCgB8lyS9l2LLgVin5b4RMffnQ3ZcSkAJg2X8cGY6bZ
+	JzWSH/cZd64t0f/EQVf026ye0T7tejc=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-675-p_o5ZDABO9yyq30PZGmlWA-1; Thu,
+ 20 Aug 2026 07:12:42 -0400
+X-MC-Unique: p_o5ZDABO9yyq30PZGmlWA-1
+X-Mimecast-MFC-AGG-ID: p_o5ZDABO9yyq30PZGmlWA_1787224360
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 27D11180075E;
+	Thu, 20 Aug 2026 11:12:40 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.44.48.81])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6B3171800348;
+	Thu, 20 Aug 2026 11:12:36 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: Chuyf26@linux.alibaba.com
+Cc: alibuda@linux.alibaba.com,
+	dust.li@linux.alibaba.com,
+	sidraya@linux.ibm.com,
+	mjambigi@linux.ibm.com,
+	tonylu@linux.alibaba.com,
+	guwen@linux.alibaba.com,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org
+Subject: Re: [PATCH v2] net/smc: release the internal TCP sock on IPPROTO_SMC socket creation failure
+Date: Thu, 20 Aug 2026 13:12:29 +0200
+Message-ID: <20260820111229.153086-1-pabeni@redhat.com>
+In-Reply-To: <20260813060456.b48HqF9m6NTfFXvq_PL9w_Ih493OogqAqxfAHAfU74A@z>
+References: <20260813060456.b48HqF9m6NTfFXvq_PL9w_Ih493OogqAqxfAHAfU74A@z>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260819204210.23722-1-fw@strlen.de>
-In-Reply-To: <20260819204210.23722-1-fw@strlen.de>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Thu, 20 Aug 2026 07:09:47 -0400
-X-Gm-Features: AcwNN1VW1bC6b63hGiY5qRNh7X0r1oy3VYDhfJ2imA7bCu4LicwS2qmysWjlTC4
-Message-ID: <CAM0EoMmT7xFtxrVwCm1ohpfVAPBuVBFHB8q_eTQ5taSquKo9og@mail.gmail.com>
-Subject: Re: [PATCH net 0/4] net/sched: reset conntrack after packet munging
-To: Florian Westphal <fw@strlen.de>
-Cc: netdev@vger.kernel.org, jiri@resnulli.us, victor@mojatatu.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Hi Florian,
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+---
+net/smc: release the internal TCP sock on IPPROTO_SMC socket creation failure
 
-On Wed, Aug 19, 2026 at 4:42=E2=80=AFPM Florian Westphal <fw@strlen.de> wro=
-te:
->
-> This series removes skb <-> conntrack mapping after pedit
-> altered l3 and/or l4 headers.  See patch 2 for all the details.
->
-> First patch makes tdc.py work for me, second patch is the actual
-> fix, third patch has test cases. Last patch also removes the mapping
-> in act_nat.
->
+This adds a .destroy hook to smc_inet_prot and smc_inet6_prot that calls
+smc_clcsock_release(), so the internal TCP sock created by
+smc_inet_init_sock() is freed when socket creation fails after proto->init
+has run.  It also stores NULL into smc->clcsock at the top of
+smc_inet_init_sock().
 
-I apologize for the delayed response in the private exchange, but let
-me repeat my thoughts here...
-As you said, the munging can be done by an ebpf program (at different
-attachment points, not just cls/act using multiple helpers).
-In your commit you say:
-"Packet rewrites are still possible with BPF. However, unlike pedit,
-that needs privileges in the initial namespace."
-That's only true in the default setup, but with BPF "token delegation"
-it no longer holds (will be reachable via unshare -Urn).
+A couple of questions below.
 
-I have not tried to verify what i am claiming since we "last talked" -
-but could try it out when i get time (weekend looks promising).
-If what i am saying is true then you will have many places in ebpf to
-fix, which is not ideal.
-But even if not true, you can still do it with CAP_BPF - which leads
-to the same outcome. Unless we are saying as a general rule we should
-prioritize where/how we fix things based on whether they are
-reproducible via 1)namespace -urn  vs 2) require root permission
-(assume this includes CAP_BPF)
+> diff --git a/net/smc/smc_inet.c b/net/smc/smc_inet.c
+> index a94084b4a498..b94a19499986 100644
+> --- a/net/smc/smc_inet.c
+> +++ b/net/smc/smc_inet.c
+> @@ -15,13 +15,16 @@
+>  
+>  #include "smc_inet.h"
+>  #include "smc.h"
+> +#include "smc_close.h"
+>  
+>  static int smc_inet_init_sock(struct sock *sk);
+> +static void smc_inet_destroy_sock(struct sock *sk);
+>  
+>  static struct proto smc_inet_prot = {
+>  	.name		= "INET_SMC",
+>  	.owner		= THIS_MODULE,
+>  	.init		= smc_inet_init_sock,
+> +	.destroy	= smc_inet_destroy_sock,
+>  	.hash		= smc_hash_sk,
+>  	.unhash		= smc_unhash_sk,
+>  	.release_cb	= smc_release_cb,
 
-With that thought in mind, the question is: is there a single hook
-entry point where this could be done?
-Example: nf_conntrack_in() or nf_confirm() as the choke point which
-catches all? i.e check the protocol consistency there and if there is
-a mismatch you call nf_reset
-I understand the dilemma: fixing this in both pedit and eBPF will
-penalize only those hot paths as opposed to this approach which will
-penalize all of contrack users with no interest in pedit/ebpf - but
-otoh, I feel like this will be a good defensive mechanism for
-netfilter for whichever new creative change in the kernel which could
-be used to make similar changes.
+[ ... ]
 
-I could experiment with the single choke point approach on the weekend
-- let me know.
+> @@ -109,6 +113,14 @@ static struct inet_protosw smc_inet6_protosw = {
+>  static int smc_inet_init_sock(struct sock *sk)
+>  {
+>  	struct net *net = sock_net(sk);
+> +	struct smc_sock *smc = smc_sk(sk);
+> +
+> +	/*
+> +	 * The smc_sock slab is SLAB_TYPESAFE_BY_RCU and recycled objects
+> +	 * are not zeroed. .destroy may run even if .init never completed,
+> +	 * so make sure smc_clcsock_release() sees a valid clcsock.
+> +	 */
+> +	smc->clcsock = NULL;
 
-cheers,
-jamal
+[Severity: Low]
+Is the premise of this comment (and of the matching changelog paragraph,
+"Also initialize clcsock to NULL when setting the sock up: the smc_sock
+slab is SLAB_TYPESAFE_BY_RCU, so recycled objects are not zeroed") correct?
 
-> Florian Westphal (4):
->   selftests/tc-testing: pass mp_pm via initialiser
->   net/sched: act_pedit: drop conntrack on network/transport header change=
-s
->   selftests: tc-testing: add act_ct test for ct reset handling
->   net/sched: act_nat: discard any conntrack entry post modification
->
->  net/sched/act_nat.c                           |   1 +
->  net/sched/act_pedit.c                         |  21 ++-
->  .../tc-testing/tc-tests/actions/ct.json       | 168 ++++++++++++++++++
->  tools/testing/selftests/tc-testing/tdc.py     |  27 ++-
->  4 files changed, 208 insertions(+), 9 deletions(-)
->
-> --
-> 2.54.0
->
+sk_alloc() always adds __GFP_ZERO, and sk_prot_alloc() then clears the
+whole protocol object:
+
+net/core/sock.c:sk_alloc() {
+	sk = sk_prot_alloc(prot, priority | __GFP_ZERO, family);
+	...
+}
+
+net/core/sock.c:sk_prot_alloc() {
+	sk = kmem_cache_alloc(slab, priority & ~__GFP_ZERO);
+	if (!sk)
+		return sk;
+	if (want_init_on_alloc(priority))
+		sk_prot_clear_nulls(sk, prot->obj_size);
+	...
+}
+
+sk_prot_clear_nulls() memsets everything except sk_node.next, and
+smc_sock.clcsock sits well past sk_node, so isn't clcsock already NULL on
+entry to .init even for a recycled SLAB_TYPESAFE_BY_RCU object, making this
+store dead code?
+
+The second sentence of the comment also seems hard to satisfy: the mutex
+that smc_clcsock_release() takes is only initialized later, inside
+smc_sk_init():
+
+net/smc/af_smc.c:smc_sk_init() {
+	...
+	mutex_init(&smc->clcsock_release_lock);
+	...
+}
+
+So if .destroy really could run before .init completed, wouldn't
+smc_clcsock_release() lock an uninitialized mutex regardless of this NULL
+store?  Could the comment and changelog paragraph be dropped or reworded to
+match what the code actually guarantees?
+
+>  
+>  	/* init common smc sock */
+>  	smc_sk_init(net, sk, IPPROTO_SMC);
+> @@ -116,6 +128,17 @@ static int smc_inet_init_sock(struct sock *sk)
+>  	return smc_create_clcsk(net, sk, sk->sk_family);
+>  }
+>  
+> +static void smc_inet_destroy_sock(struct sock *sk)
+> +{
+> +	/*
+> +	 * If inet_create()/inet6_create() fail after .init has created the
+> +	 * internal TCP sock (e.g. rejected by a cgroup BPF program),
+> +	 * sk_common_release() ends up here. Release the TCP sock, otherwise
+> +	 * it leaks on every failed IPPROTO_SMC socket() call.
+> +	 */
+> +	smc_clcsock_release(smc_sk(sk));
+> +}
+
+[Severity: High]
+Can this free the internal TCP socket while the SMC sock is still on the
+SMC diag hash list?
+
+sk_common_release() runs .destroy before .unhash:
+
+net/core/sock.c:sk_common_release() {
+	if (sk->sk_prot->destroy)
+		sk->sk_prot->destroy(sk);
+	...
+	sk->sk_prot->unhash(sk);
+	...
+}
+
+and the sk was already inserted into smc_v4_hashinfo/smc_v6_hashinfo by
+smc_sk_init() -> sk->sk_prot->hash(sk) == smc_hash_sk() before
+smc_create_clcsk() ran, so when smc_inet_destroy_sock() calls
+smc_clcsock_release() the sock is still visible to the diag dumper.
+
+The reader side walks that same hashinfo holding only the hashinfo rwlock,
+and does an unlocked check-then-dereference of smc->clcsock:
+
+net/smc/smc_diag.c:smc_diag_dump_proto() {
+	read_lock(&prot->h.smc_hash->lock);
+	head = &prot->h.smc_hash->ht;
+	...
+	sk_for_each(sk, head) {
+	...
+}
+
+net/smc/smc_diag.c:smc_diag_msg_common_fill() {
+	...
+	if (!smc->clcsock)
+		return;
+	r->id.idiag_sport = htons(smc->clcsock->sk->sk_num);
+	r->id.idiag_dport = smc->clcsock->sk->sk_dport;
+	...
+}
+
+while the writer holds only clcsock_release_lock:
+
+net/smc/smc_close.c:smc_clcsock_release() {
+	mutex_lock(&smc->clcsock_release_lock);
+	if (smc->clcsock) {
+		tcp = smc->clcsock;
+		smc->clcsock = NULL;
+		sock_release(tcp);
+	}
+	...
+}
+
+With an empty lockset intersection, can a concurrent AF_SMC diag dump (for
+example "ss --smc", which has no capability check in
+smc_diag_handler_dump()) re-read smc->clcsock as NULL after the NULL check
+and oops, or dereference the just-released struct socket / tcp_sock and copy
+freed memory into the netlink reply?
+
+The existing teardown path unhashes first and only then drops the clcsock:
+
+net/smc/af_smc.c:__smc_release() {
+	sk->sk_prot->unhash(sk);
+
+	if (sk->sk_state == SMC_CLOSED) {
+		if (smc->clcsock) {
+			release_sock(sk);
+			smc_clcsock_release(smc);
+	...
+}
+
+Would it be better to keep that ordering here, for instance by unhashing
+before releasing the clcsock in the destroy path, or by taking
+clcsock_release_lock in the diag reader?
+
+The lockless clcsock read in smc_diag is itself older than this patch (see
+also smc_close_active_abort() and smc_close_passive_work()), but on the
+socket-creation-failure path nothing was freed while the sk was hashed
+before this change, since the clcsock was simply leaked.
+
+>  
+>  int __init smc_inet_init(void)
+>  {
+>  	int rc;
+-- 
+This is an AI-generated review.
+
