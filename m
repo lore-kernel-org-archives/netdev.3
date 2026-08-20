@@ -1,127 +1,166 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazolkn19010018.outbound.protection.outlook.com [52.103.33.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46BF646EF8F
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 13:35:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787232928; cv=none; b=kmrPBd7xKBvpmNGnQTxccSaYezYMOPiUU/6IRG3YKlnaDCEiXB1HEU677pAI+FYc9b1+5Oubaq0yj8EwbiPjajtmzecxIDyo5TnfoVyy6Cvg6edoLe8Y/6fK+J0GcZQ3CEbBdwwhtXtDahqutIe9FDhsaKMMjU4mezsD/9zKzU0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787232928; c=relaxed/simple;
-	bh=kv56IyJSLXDZDI5uGxyXhKo01hT3IEvuWYBzTOT1q4o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m6hpVTi4ZLQ8bvxUK7mIaAYSaF+w/phtftabcENB/AUNkn1Bi4km2Ga5zlvIL/5fo0hfDmVCG4vGGxDsfYQAvSGN+kQyUON701zpYXoaqDnozfjor+5NHGeL2dYqJ/Dj9/+I/aBBMmFaU58l6MLp2rIxTOD9ltp4cBpEcxEgJm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TdyCpycO; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=JLijHh+F; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA3715A86D
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 13:46:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.33.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787233573; cv=fail; b=mGIPexV6ErYXRUC0uy9XenPSBiVvP8HUu+sPm2ZRObMPel2tRhYjKpF9VeRafGfsEVCRFBtWoL5981DEx7t8mtyIXDA/eI45juhPfdqtkHAR80IYCWLtlOrL0/qGLTpRGw0r64+dJkdxwlhIGsHwxyeN6k6zW2Xc5lGCZr048ik=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787233573; c=relaxed/simple;
+	bh=huoabaYwuycoLSW08iyQqtmkzxs+uGG1G47BiLSF0Ik=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=bxBWpGoClWwv+r5HcSznD9ZBw5ZaHaDfMWv/bdpzEl3EnbSwB3E50iQy0buwiz7VmDz2sqf4BUF4C0euYPJfb/QxJJFYN1Vf2zmCwpLBcCILsYtP7OfBj3af+CUL5nfzMaszIDUiNgjOiG8MIfX1Mwci+k2+wjFukN1zxY89Av0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=lVzaHEPZ; arc=fail smtp.client-ip=52.103.33.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TdyCpycO";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="JLijHh+F"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787232923;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DENzyJCbPVumPD2NaNVtKm7SHktzDEBfRWzZ0RiuIUs=;
-	b=TdyCpycOWQfzycshiKt6hyTNTupufXDQpI8TlwxFm/u6YVuFlNZWr4h6o6b4kcX288ns10
-	tfpjmFzgsshKzS1cSGeKEQIsIshhhfZjZpM/37i6xoOfHNcOZInlV+TmWiwV2EFNjb3ty9
-	RNKAJuZX1ddkxuel2TXBTPHjN1tPzv0=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-693-NbR3idiOPwSpj0-epFaTWA-1; Thu, 20 Aug 2026 09:35:20 -0400
-X-MC-Unique: NbR3idiOPwSpj0-epFaTWA-1
-X-Mimecast-MFC-AGG-ID: NbR3idiOPwSpj0-epFaTWA_1787232919
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4994aebe932so27399135e9.3
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 06:35:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1787232919; x=1787837719; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=DENzyJCbPVumPD2NaNVtKm7SHktzDEBfRWzZ0RiuIUs=;
-        b=JLijHh+FlXLtvnIxZNehugDb60h42lJaKhup95CPxYqPoGwkqeZGtlCO1QJADi6Aj7
-         Q8J4xwiIiQbH2nuk1ZtlsXDAPyIGjTvTcKtTVin/6rzp7+XIdHNS+TNy8DzC5gtUDz0/
-         fnfetDrHaek1pGIefZsO5kaPoYAOulLsH0XbemHnxwukakIxEKHnSoQPyAWD454taA2W
-         8Lsmk7UT5VjFNpQnSW3VcxnRvz26LCausMjdDy4CJ/niIgOj7QUfe/1VjXQd6AfWC7o/
-         obQo1mAz3A0uGkpnTvbrF8mW8Z2dVv1ziwL4dtopRb11R30nsoqTVV7R/eSPoNSKVSiJ
-         i5kA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787232919; x=1787837719;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=DENzyJCbPVumPD2NaNVtKm7SHktzDEBfRWzZ0RiuIUs=;
-        b=CPCm++xAxeAT1+lPuxKvo2shF2mMhoXdbP4DKlh+4bz/FrdXE/YaSbF5kJDDC8IVOG
-         0snyN/JV5twAAxF5cfiWdIt6zWLLaGtot4yOnv+Fto01PD7qFsnCXQBZb9qiI8eHnXNr
-         5fVjDtxxbE2CmYkA1gQ6dYdt3n8v6CM6OOGJqy90LezK/bX3vsHUM2i8Vv+/N+WWYuyT
-         bpGD1ZiMODVrbHNeiDzWH+WxzqHSqPSwAYqfxR/3DiP1LUSRVOaAwafv7q62uLTAaqt5
-         Q/3PLdBK1LZA3nTREYPLpuQUWZLk0gvrlwGpNFOtEIfCK2UN1ivWWobELqKJAaG5y2A4
-         u58w==
-X-Forwarded-Encrypted: i=1; AHgh+Rq1IirttAkJqpmxFUtpozzyQG091VNqYIbBrQA+JFrjITPViEpKTswzIacD0qe+oE/cp0cnI5M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZPzi28HRLdnroVSlX87EpjPhloiKUO/xjimy+OMWR6eRMBmyN
-	RIFSnXigvA66BrKxKNGRBNu6WW7s1uOcSp0FzGOqMCrw3GM3t1A8fZ+Zbh+zzszFEc87uw0C9ES
-	4l98PAN+cROxpTGbY4TNAIwrKTKc44ZR3tvusUab7vbxNC+QMTz5afk895Q==
-X-Gm-Gg: AR+sD11UVAiJD7oLntDYFaa2GZJmeW/XH/5XuHsvDvWsbIpAWLSURgYlWOgpVODUPNw
-	eAKfGYXHA22oDDYAnHw6NqUV4dcx5ZgAA+6S0qF2r7OBM83dsHSNyRswxe3p4BE+PRIkMdPdADg
-	SO87MZ/q4jVPU9JHlXYP5629L+UY+RzBxjw8+PoVu6vwDOcY2JjTIRex6sLD/BCD6oP61NtM/n/
-	X3TohWc08TFs0X2UQgTrmrXGbYVaGx5JmTtNfqJljhS7MmJkuKwHTb6q2LMpCSuTHqLxAq1iddZ
-	GvcKt0Dcgri3x2x5TEJgFA5IhWoghlZKq8e26+Siko5D7FnxAkBFnjgZ01o/NOC49x9TxGo9riT
-	8PUQvl4Ls0EOvRMsICAf9pjhUHkLT5ZaDaqTnkRg+yaw5VDs91T81f7y/AwGm07RbDxiAQSTBbR
-	Q=
-X-Received: by 2002:a05:600c:8b32:b0:496:c06b:9fb4 with SMTP id 5b1f17b1804b1-499aa200efcmr243535725e9.14.1787232918946;
-        Thu, 20 Aug 2026 06:35:18 -0700 (PDT)
-X-Received: by 2002:a05:600c:8b32:b0:496:c06b:9fb4 with SMTP id 5b1f17b1804b1-499aa200efcmr243534265e9.14.1787232918443;
-        Thu, 20 Aug 2026 06:35:18 -0700 (PDT)
-Received: from [192.168.188.103] (ip239-44-231-195.pool-bba.aruba.it. [195.231.44.239])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482b14d0360sm12432273f8f.33.2026.08.20.06.35.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Aug 2026 06:35:17 -0700 (PDT)
-Message-ID: <b258cb1e-57f6-45b3-8d3a-91d3e2727eed@redhat.com>
-Date: Thu, 20 Aug 2026 15:35:16 +0200
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="lVzaHEPZ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gIb8QXOr8qHHBH7ZmqGrtJXjuNdMWyxb4WAKGbO6NK1UOdI/5ux4AwVhU7nwG1HolrjL+hqc4irE6hCgbvMeL5mmOaWuRzbE0vDAedgxW8SeywfQqiP7mn58YvvamzH9BZbQymfMp5WZvf3OdsMRBKH76SAImjzE5pmIn97k8Ho1iDh3jC5E5Y0ydJSViukxxPQY3O13iCjB+0/IgbdeZ6FDmNlcZqBuvwi6MpzbC83BhmMKAzimljC1HZGzQkz6tlpkOr1gPS412MdxSr8Hdy5+kV0wK25OMuLVl6pRwEufKN1eY7rzK25at+hHuuCSfArptfIoRiD1Kf8OYg1vQA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SYi8lHT6c+l4Y5z/Vk+pew16pdAGBLLF0TMDMeaCneI=;
+ b=CsbHZEsFtuGuugb2NbYVg8lnu+LTP/c4OkUP7a4/2/xCUWnsyquXsxxL5mYXM2fPcbvsnTJM3xNRrxEatkYaFmnTyIocdVZwfU5PcxAgGN7SbHV3Mfxg4NMMzg/ARo+zZ1tGIQpVJlUGh8pW/obgTI6iS7cDZFdhqQ9WBwbThY/gqVB2V6LENidg/oXk6wyYn+Af656gizn1WAHgha94ComICwcCHfCavISG6zuz3fibY4vhhyOSrZw4x2rcuUaY4fi5GzAqi7Eyl0tt8r07qlDYU6Teg75Ct4hR3fQWLZjHqcHgi+pMb42XHOfIhah6RK8OD0T/rEeLt7GXuXiuQg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SYi8lHT6c+l4Y5z/Vk+pew16pdAGBLLF0TMDMeaCneI=;
+ b=lVzaHEPZ7O9SHzKWC0tlp24SfIxLdPHXqUOEJCagIaA1prEJ7f0YTNq5R/wljv+1ArNf0oYExNP6sEyqA8r9cDHkxo21Y3k9oyA7oZfMMoELOaf8MAJBlTHRfVUkG9W6RJFE9/ZuGpCr8VnuTkCx5DnZO3a2wffgFPJuUcGhkQXAha5FSpLZcY5gQhEh6AjHzkQCLhocVSHcxgOahyG/0lJECyEp0ctPq704Q6iLFmWXyFemlBN9QOvZwm3exP2dv/64ZhEubUYWTDAhj6i/SRjOSJ3svjMoKVDRRh5w6A1AwKgAzZG8JyVZIkZkKXOQR6YhE3SEiPeqnDbcxS9Iww==
+Received: from DU0P251MB0699.EURP251.PROD.OUTLOOK.COM (2603:10a6:10:32b::21)
+ by PA1P251MB1066.EURP251.PROD.OUTLOOK.COM (2603:10a6:102:45b::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Thu, 20 Aug
+ 2026 13:46:09 +0000
+Received: from DU0P251MB0699.EURP251.PROD.OUTLOOK.COM
+ ([fe80::5d06:7ef9:757a:2816]) by DU0P251MB0699.EURP251.PROD.OUTLOOK.COM
+ ([fe80::5d06:7ef9:757a:2816%6]) with mapi id 15.21.0339.007; Thu, 20 Aug 2026
+ 13:46:09 +0000
+From: Edoardo Pinci <epinci@outlook.com>
+To: netdev@vger.kernel.org
+Cc: Daniel Golle <daniel@makrotopia.org>,
+	Edoardo Pinci <epinci@outlook.com>
+Subject: [PATCH] net: dsa: mxl862xx: enable assisted learning on CPU port
+Date: Thu, 20 Aug 2026 15:45:54 +0200
+Message-ID:
+ <DU0P251MB0699AAFE65D7D30FE7D4C474C4A42@DU0P251MB0699.EURP251.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.47.3
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MI1PEPF000008CE.ITAP293.PROD.OUTLOOK.COM
+ (2603:10a6:298:1::42a) To DU0P251MB0699.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:10:32b::21)
+X-Microsoft-Original-Message-ID: <20260820134555.1085195-1-epinci@outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: davicom: Propagate wakeup IRQ errors
-To: phucduc.bui@gmail.com, Andrew Lunn <andrew+netdev@lunn.ch>,
- davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-References: <20260820111548.97990-1-phucduc.bui@gmail.com>
-From: Paolo Abeni <pabeni@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20260820111548.97990-1-phucduc.bui@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0P251MB0699:EE_|PA1P251MB1066:EE_
+X-MS-Office365-Filtering-Correlation-Id: d57bdd18-0d36-4ca6-2814-08defec163d2
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|37011999003|41001999006|5072599009|25010399006|4140399003|5062599005|15080799012|24021099003|23021999003|19110799012|8060799015|16041099003|12091999003|19061999003|3412199025|440099028|56899033|40105399003|53005399003|2607281247196008|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?qZFB+XzQ5927h50zSjOj8UhExy+/HVhskMNt5gz8Wb7919q6vVkFXVbZCEdV?=
+ =?us-ascii?Q?hTs62XesXE8unnOKcdKpSylmVEdFLPoHgREXh6JozC8C16yJVQO1QhxzeEge?=
+ =?us-ascii?Q?PvCfngTAr1iAJuq3VTcez7PBFRI+TVA4m/OJy44R35v49BflRtt351Wg2MRI?=
+ =?us-ascii?Q?AcTSzdWEEMNmzavyUocKmgvzUmQU64vQq6N1hzxkqoWaSnF/cg7S5dmC1DI4?=
+ =?us-ascii?Q?zXfHM8ueP4QhfXhFaP78XyEk6UnGyf7/SvFjeqtS3zZNICDGg27Y/WNlhgPK?=
+ =?us-ascii?Q?xKNkUyjgpX7bu49BDihCJIKMVG2y2YAZeWQg6KraKf4Bo+dhrrDpHAMQnYD1?=
+ =?us-ascii?Q?zE8iHRAFjH9Jixz+4nxu9vHoekS0mdvQLB8UqF8f3o3LUTQW/1/blbV0zFYw?=
+ =?us-ascii?Q?XG3dJkiPHhU22bG00/PumAxXv7v7I1Kblbz1mOOwzOixlYJgYrDkDJiYkLah?=
+ =?us-ascii?Q?4Zfsi083azm7rwQr158sN2mp8t9/MbQCI9KwiGyBgNt97Za/zzlxK25nbF7w?=
+ =?us-ascii?Q?sR3Q558oQsZg+4hKdhdJXuJ0SqTdwfgrk7x2TLtlfzX2gfD0D8O18FT8qlre?=
+ =?us-ascii?Q?7nHDDYO50opYetEl+ZL0/d3gjIrAyv8RiFrFDqS6NJZpAeTdYL2FS6TZf9JV?=
+ =?us-ascii?Q?uwGTwuZYLuCBjUSQfRLZLQWqDaojUoo6Cc766hkqQSX+9aJaxrI7oL2xaZZM?=
+ =?us-ascii?Q?OjS9STuUgJj9pmLRXAE8TiEMDeFng5ijNjBpfOAKngnnuJZuaeEh0OEuyBZU?=
+ =?us-ascii?Q?xgBNbhrEfMjR4i86DTABBlXOgdvqf+7v9T7+LbK4PxostIuCV+HKvNtvjXrO?=
+ =?us-ascii?Q?UNqEa5o3Z0B/2/MqBXyMxyHbzx+1Kkdt2h/vM9MyvewiNUcAj6iDhT8Xhy+J?=
+ =?us-ascii?Q?ZL0/WVn8hCuP6KGYhVuOyv+WY9suaJlUXsvKJugbzCRsir9DO6iRtwRQz1B8?=
+ =?us-ascii?Q?cDa8NfVBRiHJIwZn1LF6/MyvGAF12Iq1NggbbfR4T6adFQWeJcFxHfixPjPY?=
+ =?us-ascii?Q?VYixKpvnmVj3SA5WRTVoGRRorJl9sy13H6elD2VzoOsFUStkHd244BCu1x34?=
+ =?us-ascii?Q?H20oBKY/DYB7ek6xdCp9BKkfBhPNUDQ0NFiU2L+8xVu14r62KXmneIbNXvOD?=
+ =?us-ascii?Q?m+4R7F5Bjnk3P7GxY7Uka+1i4z62H3+8hA=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?bkge/xI6k3fHPWffw8HYAvcqQ6EGZ+qfszdJ87IwR7/kC1U32yWbUS7BV9El?=
+ =?us-ascii?Q?7fC0wOEawryR4KhUiGWzC2YXBL5mxYf21aXN0eDR7v5UlQSMdj2SbsYCm/rc?=
+ =?us-ascii?Q?sst2VQpZhJgFmcJEXh6+fXfA2nVnWzuAu0h100p+4QcbZC2rdEg1R7syfmu0?=
+ =?us-ascii?Q?/xJ+BkyQwnGQzPX/Bj8ZluM4+LKnxL/7N3hGn/Sn0gwMHoMX5kq7Y6hSvzmp?=
+ =?us-ascii?Q?j54YlU7Bz/256qDchYxOH63Yo7X6YAWCiBOcnrJZqCyWRWPUjjKaGQVqQbpx?=
+ =?us-ascii?Q?7lfHwaxY0rnSGvdJErwEoFeoTouTWh8jhKPC5GyDe3BQGQ1/ktDg6fkqXQlH?=
+ =?us-ascii?Q?cgI1WyMnCVDxccy/wFF1v9uP5P0vuqvrHLwho0oqZ7yr21B8sby+lUgZkqSG?=
+ =?us-ascii?Q?jmRfJ7C8Ny9xqxC0dHIfOcVkdrZ0dGzcJYSP5d9xQ+NSEKyQOQdPxgMfEGT5?=
+ =?us-ascii?Q?fdh+VsiMhx4gQ7/oemnAUHj8xGyIZfa9vxTqeLxquGpsSjWC/eCN2OHkFORF?=
+ =?us-ascii?Q?wvi225++8/teZMKKE40l+uzgzGU5IfAKRJ0lMja5YNan5xUduONohqP+qHx4?=
+ =?us-ascii?Q?8kvNzBaTU14OMEjnOJLwowCw940B37xy6od6p50P39qR47O7XSpTNFr7TwA2?=
+ =?us-ascii?Q?7RAwEuY2gBnFnhVIh4/e6Ug5R+v9Fa21yNfw4sZ515ZzSVas4zAf0rNPE757?=
+ =?us-ascii?Q?oKzjUY3TfnSVCCpQGK1RiPRy+a2llMEClBk7O20mh7HccdEjvVodV05oaDYY?=
+ =?us-ascii?Q?oenIdjqIByVMoWZuB0XUrtU6mhXF74n8Ky76D6+5odMzrfOAzpMYLHj9bGOT?=
+ =?us-ascii?Q?YPnvLOlel8/I8dNQJxdr+0kdihN9sXqQN47iPM+6wMjkDJxipGvgSfK4zvLz?=
+ =?us-ascii?Q?jDUFdvd2SKqPKNTfNjoYWqTzZ9ezB11Hcx7rIIwQpng0sBDNxbLaixngbasE?=
+ =?us-ascii?Q?SgX12e7DOWw3YNxxgI7gZkSgm7fia0ENGCGNSokN6zFr4+dlcgs+Y145xkBw?=
+ =?us-ascii?Q?w+GmjjSO1fBNy1OEhT13VkgS5Av0yn4ARCHmuI+iyROhzHr5RCHKkDsj6jAT?=
+ =?us-ascii?Q?DZB3/d33D2Xj70Ut07SUJW+K2Bbh3dwwoc66CG1AGvMNYcgQ/Tl7inatxaYd?=
+ =?us-ascii?Q?yuEyoex6Tq8UBaVd6PlANGX4haCSVi1FNETBWTI2dLk83XwIrDUgc4j/z58T?=
+ =?us-ascii?Q?9dgrgUfZSsiL5gRLWtDAq52X6HtpcF2irG96JPuEC7viNxqloTcHWoSEcmEE?=
+ =?us-ascii?Q?+gRkCsGodYMtQg0ARSW4KuPxizvx+F12I/dRscx8K7vJs8ahSZsmsoHX+a4i?=
+ =?us-ascii?Q?9ikhWX4f4rHT34nrS+c2jGADMc6M7twQy4RupHMvJtDZ5ZfVadQvE19syjqt?=
+ =?us-ascii?Q?j5IGewkHAO9lgGc9xw5I5EmgQZta?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d57bdd18-0d36-4ca6-2814-08defec163d2
+X-MS-Exchange-CrossTenant-AuthSource: DU0P251MB0699.EURP251.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2026 13:46:09.4371
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1P251MB1066
 
-On 8/20/26 1:15 PM, phucduc.bui@gmail.com wrote:
-> From: bui duc phuc <phucduc.bui@gmail.com>
-> 
-> The wakeup IRQ is optional, but errors from platform_get_irq_optional()
-> are currently ignored. Propagate errors from the IRQ lookup, except
-> -ENXIO which indicates that the optional IRQ is not available.
-> 
-> Also propagate errors from request_irq() and irq_set_irq_wake() instead
-> of continuing the probe after the wakeup IRQ setup fails.
-> 
-> Found by manual code inspection.
-> 
-> Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
-## Form letter - net-next-closed
+The MxL862xx driver enables FDB isolation but does not enable assisted
+learning on the CPU port. Consequently, MAC addresses learned through a
+physical switch port are not updated in hardware when the corresponding
+station moves to a foreign bridge port, such as a Wi-Fi interface.
 
-We have already submitted our pull request with net-next material for v7.3,
-and therefore net-next is closed for new drivers, features, code refactoring
-and optimizations. We are currently accepting bug fixes only.
+The stale hardware FDB entry continues directing return traffic toward
+the original physical port. Traffic entering that same port is then
+filtered instead of being forwarded to the CPU and software bridge. This
+causes downstream unicast traffic, including DHCP OFFER and ACK packets,
+to disappear after a client roams to a local wireless interface. The
+client eventually considers the connection unusable and disconnects.
 
-Please repost when net-next reopens after Aug 31st.
+Enable assisted CPU-port learning so DSA installs foreign bridge FDB
+entries on the CPU port. This keeps the hardware FDB synchronized with
+the software bridge and allows return traffic to reach locally attached
+Wi-Fi clients after roaming.
 
-RFC patches sent for review only are obviously welcome at any time.
+Tested on a BPI R4 PRO with a MxL862xx switch and a BE14000 WiFi interface.
+- Without patch, wired uplink on lan6 port (mxl path)
+  Wifi clients connect but roam away not getting DHCP offers
+- Without patch, wired uplink on wan port (no mxl path)
+  Wifi clients connect and roam successfully
+- With this patch, uplink on lan6 (mxl path)
+  Wifi clients connect and roam successfully
 
-See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
+Fixes: 340bdf984613c4a9241d678915e513824f5a9b19 ("net: dsa: mxl862xx: implement bridge offloading")
+Signed-off-by: Edoardo Pinci <epinci@outlook.com>
 
+--- a/drivers/net/dsa/mxl862xx/mxl862xx.c
++++ b/drivers/net/dsa/mxl862xx/mxl862xx.c
+@@ -4571,6 +4571,7 @@ static int mxl862xx_probe(struct mdio_de
+ 	ds->ops = &mxl862xx_switch_ops;
+ 	ds->phylink_mac_ops = &mxl862xx_phylink_mac_ops;
+ 	ds->num_ports = MXL862XX_MAX_PORTS;
++	ds->assisted_learning_on_cpu_port = true;
+ 	ds->fdb_isolation = true;
+ 	ds->max_num_bridges = MXL862XX_MAX_BRIDGES;
+ 	ds->num_lag_ids = MXL862XX_MAX_LAG_IDS;
+--
+2.46.0
