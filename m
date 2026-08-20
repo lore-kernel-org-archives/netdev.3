@@ -1,138 +1,124 @@
-Received: from mail-oi1-f206.google.com (mail-oi1-f206.google.com [209.85.167.206])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out28-100.mail.aliyun.com (out28-100.mail.aliyun.com [115.124.28.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 041F7280CC1
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 01:33:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701042D77F5;
+	Thu, 20 Aug 2026 01:33:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787189618; cv=none; b=fLu5ei3p7URc32QXGOuxo3zn7XpQeKftvRJwNhtBimMahmz1Fff+uvsSDgVklw7rm8PD4y8XvxhkBF1H0Vuiq6Sc2AOA+rKNYHpXd7IlHThepSatD8CJ0HMGsKizibJmqSNfyC7g1g+VcoTxKvLLPHJxFfQfwSnNmA+sTLqHFaE=
+	t=1787189645; cv=none; b=lsuWhO0pRY9DqPIYGNh1n+cjf9eO3sC1PYG93aU2wCokG+gvduGc6t7gPiylwR6FunpfsR6WqXer5THNhtXpGJtRYXNRn7qDnTZYPCvWj3+3yE01UnbV7mcSoK2wubF7EdbckfcYOoTtq2wJ6Mx+Vm+auYDqId1dTMxMtcoOjCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787189618; c=relaxed/simple;
-	bh=HecCHWRTRIpMgpE3/xm4LT5FKbed6+kdrrbMAArklok=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=C4Uo3ZHe1oIE1jd5atyBGlumRfqfIf+WgB6PDrlKvProfKbrnSFyBWYh5Fa9ow1cQnPXOvV3mEnFh8AGw0BCcYF1vydQopMbVt8mDJ5CRUSWatcYh21NdyrUU+5ouveuxmm15fOBKhfxOFQVpO4g//luJmAjX9iVJbzcKiaeU84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f206.google.com with SMTP id 5614622812f47-4a45b3f0bdfso2012053b6e.1
-        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 18:33:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787189610; x=1787794410;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+kxloYZBBdq+m0W3SA/Re27+lBVZgsgMvtrM7lv9M/Q=;
-        b=Ird5oNNcNze1k5l2gc3nVZvLfw4zmeBOh4j3IKtjw+NuzlxLz3z8shJXKSut8cBXCy
-         obq6XuctfnFrXJOoScoePlUKaALMUwCDG/Ie8O8OezaUAiNkipRRCabcz0NrGINxkCU7
-         Dm0piWdou1UTFcvBIN1oexj+I+WvCsMW5KPYJC39bQ4yt3ruKVD2pGxJwiFZ7O3p1Jqn
-         AyVkUCjmD9gbULakXdJ2vHrCohEcGOfz43mt1gIvQX84XZeiM8z/rFwK4C251NbigcFh
-         rHQywkfQrlATvXCTOaxW7lRSZehAQyTreoPoK4juFDkOnBycjONAMsszGQlUJj2BAjR/
-         orcg==
-X-Forwarded-Encrypted: i=1; AHgh+RqFTJY5Ajdc8Is4TFQpw82a+sX2A6vIZDmdvXAq2nw74q1hLYlZ9LID/vkkHnges70rdNANJ3c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUe0lARss1Dhqp351Jn5WqmaU4BZUz8g2PLQ60jR+T4AjsR9IQ
-	gEDKXR+fjCpjdQ8OH1diGIPt07xduyR8m7NwqlYIqm/b+/J4VSHfxHusyBgfrm+/aBQ0eluE4pp
-	0a3+DQDRHIuS5I8SqhFZbtimMcv41/i8FRsWjsqNwqOp9Mnq1vPGzR01hzec=
+	s=arc-20240116; t=1787189645; c=relaxed/simple;
+	bh=tdEE7CVTAhzB13nC+gkc70b10U2AegvaozZf0DBRzWs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dhaaiqigPYnOja7VLEP4dFevqLwunyFUVPLQDQsTgYariTqaNpE7HzMNs8SrgaHr2bFIXOvmZwV3QP++17eC8Rd1vEYRICv300Ysa9ukDFcLjETp35ROCjQMQMgw7VmaN7RM2QNUkJFPOLCR1QZ1u86Q31dvrtANn/A+NBU0aTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.08150841|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.514139-0.00817239-0.477689;FP=16967221402307563280|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037006180;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=14;RT=14;SR=0;TI=SMTPD_---.irl.nAE_1787189623;
+Received: from 10.10.26.192(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.irl.nAE_1787189623 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Thu, 20 Aug 2026 09:33:45 +0800
+Message-ID: <9baf7703-3e31-413d-b95f-5175ab79c1c8@motor-comm.com>
+Date: Thu, 20 Aug 2026 09:33:42 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:c183:b0:496:11f1:f2b3 with SMTP id
- 5614622812f47-4b2bcb6de00mr9172659b6e.20.1787189610464; Wed, 19 Aug 2026
- 18:33:30 -0700 (PDT)
-Date: Wed, 19 Aug 2026 18:33:30 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a86596a.ae6ddae5.3da009.0015.GAE@google.com>
-Subject: [syzbot] [bpf?] UBSAN: array-index-out-of-bounds in print_bpf_insn (2)
-From: syzbot <syzbot+3544d9b2a9206be8ba37@syzkaller.appspotmail.com>
-To: andrii@kernel.org, ast@kernel.org, bpf@vger.kernel.org, 
-	daniel@iogearbox.net, eddyz87@gmail.com, emil@etsalapatis.com, 
-	ihor.solodrai@linux.dev, jolsa@kernel.org, linux-kernel@vger.kernel.org, 
-	martin.lau@linux.dev, memxor@gmail.com, netdev@vger.kernel.org, 
-	qmo@kernel.org, song@kernel.org, syzkaller-bugs@googlegroups.com, 
-	yonghong.song@linux.dev
-Content-Type: text/plain; charset="UTF-8"
-
-Hello,
-
-syzbot found the following issue on:
-
-HEAD commit:    c93cbdb13f99 selftests/bpf: Add ksock test for async callb..
-git tree:       bpf-next
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=104b9279580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=2ca5f2f2c4197664
-dashboard link: https://syzkaller.appspot.com/bug?extid=3544d9b2a9206be8ba37
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12a1aa25580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15019a79580000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/1714feee6e8f/disk-c93cbdb1.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/74187e85e93c/vmlinux-c93cbdb1.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/b18812cc3696/bzImage-c93cbdb1.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+3544d9b2a9206be8ba37@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-UBSAN: array-index-out-of-bounds in kernel/bpf/disasm.c:306:6
-index 3 is out of range for type 'const char *const[3]'
-CPU: 0 UID: 0 PID: 5622 Comm: syz-executor350 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- ubsan_epilogue+0xa/0x30 lib/ubsan.c:233
- __ubsan_handle_out_of_bounds+0xe8/0xf0 lib/ubsan.c:455
- print_bpf_insn+0x21f1/0x2910 kernel/bpf/disasm.c:306
- format_disasm_line kernel/bpf/diagnostics.c:633 [inline]
- diag_print_insn_context+0x433/0xd00 kernel/bpf/diagnostics.c:783
- bpf_diag_source+0x66a/0x1950 kernel/bpf/diagnostics.c:-1
- bpf_diag_program_structure+0x31c/0x430 kernel/bpf/diagnostics.c:1211
- check_subprogs+0x66b/0x740 kernel/bpf/verifier.c:3049
- bpf_check+0x17ba/0x2e10 kernel/bpf/verifier.c:21099
- bpf_prog_load+0x14d6/0x1c20 kernel/bpf/syscall.c:3133
- __sys_bpf+0xd0d/0xd90 kernel/bpf/syscall.c:6367
- __do_sys_bpf kernel/bpf/syscall.c:6486 [inline]
- __se_sys_bpf kernel/bpf/syscall.c:6483 [inline]
- __x64_sys_bpf+0xba/0xd0 kernel/bpf/syscall.c:6483
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fe861ccec79
-Code: c0 79 93 eb d5 48 8d 7c 1d 00 eb 99 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 d8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffe8118b7b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000141
-RAX: ffffffffffffffda RBX: 00007ffe8118b8f8 RCX: 00007fe861ccec79
-RDX: 0000000000000094 RSI: 0000200000000180 RDI: 0000000000000005
-RBP: 0000000000000001 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffe8118b8e8
-R13: 0000000000000002 R14: 00007fe861d5fca0 R15: 0000000000000002
- </TASK>
----[ end trace ]---
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v1] net:dsa:yt922x: Add support for Motorcomm
+ YT922x
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: David Yang <mmyangfl@gmail.com>, olteanv@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
+ jianmin.wang@motor-comm.com
+References: <20260813104137.55550-1-kyle.switch@motor-comm.com>
+ <CAAXyoMP=-YXbdgCWXRbPqmQXwPuRegHSDvDm9_+hhmf9ev2CAQ@mail.gmail.com>
+ <f324481e-d49c-4d6d-b5fd-8a0296f82a15@motor-comm.com>
+ <944f80c0-5b0b-46ce-8e22-304b683dda60@lunn.ch>
+Content-Language: en-US
+From: Kyle Switch <kyle.switch@motor-comm.com>
+In-Reply-To: <944f80c0-5b0b-46ce-8e22-304b683dda60@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+On 8/17/26 21:12, Andrew Lunn wrote:
+> On Mon, Aug 17, 2026 at 06:40:02PM +0800, Kyle Switch wrote:
+>> On 8/17/26 05:17, David Yang wrote:
+>>> On Fri, Aug 14, 2026 at 9:50 AM Kyle Switch <kyle.switch@motor-comm.com> wrote:
+>>>
+>>>> @@ -148,10 +148,15 @@ static const struct yt921x_info yt921x_infos[] = {
+>>>>                   YT921X_PORT_MASK_INT0_n(8),
+>>>>                   YT921X_PORT_MASK_EXT0 | YT921X_PORT_MASK_EXT1,
+>>>>           },
+>>>> +       {
+>>>> +               "YT9224", YT9224_MAJOR, 0, 0,
+>>>> +               0x1f1,
+>>>> +               0x0,
+>>>> +       },
+>>> Why plain magic numbers here, despite what the above entries shows?
+>> Ans: will fixed done in patch v2.
+>>>>           {}
+>>>>    };
+>>>>
+>>>> -#define YT921X_NAME    "yt921x"
+>>>> +#define YT92XX_NAME    "yt92xx"
+>>> This changed the module name which may affect end users. While I have
+>>> no objection to this, subsystem maintainers may have different
+>>> opinions.
+>> Ans: This is used to indicate support for both YT921X and YT922X.
+> It is pretty common for newer generations of devices to be mostly
+> backwards compatible, with older generations. The driver does not
+> change name in Linux it causes too much pointless churn. Please just
+> get the names correct in the struct phy_driver.
+Ans: The modifications in the next version V2 will retain the previous 
+naming.
+>>>> +       res = yt921x_intif_read(priv, addr, 0x0, &data);
+>>>> +       if (res)
+>>>> +               return res;
+>>>> +       data |= 1 << 15;
+>>>> +       res = yt921x_intif_write(priv, addr, 0x0, data);
+>>>> +       if (res)
+>>>> +               return res;
+>>> Numerous magic numbers. On YT9215, same finetunes are not required for
+>>> a usable port. If you cannot name it, drop it if it is not mandatory.
+>> Ans: Some patches are mandatory
+> If they are mandatory, why are they needed at all? Why are they not in
+> the firmware. Seems like a poor hardware/firmware design to me.
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+Ans: In this application scenario, there is no firmware, and the eFuse
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+         may not be able to support so many registers.
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+>
+>> while others are for performance optimization.
+> For these, it would be good to fully document them, because board
+> designers might want to optimze them in other ways.
+>
+>>>> -static void yt921x_mdio_remove(struct mdio_device *mdiodev)
+>>>> +static void yt92xx_mdio_remove(struct mdio_device *mdiodev)
+>>> Unnecessary renaming.
+> And taking this to its logical conclusion...
+>
+> In a few years time you want to rename to yt9xxx.  And a few years
+> after that, rename to ytxxxx.
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+Ans: Considering that the Motorcomm switch series currently all
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+         start with '92', and there will be driver work for other series 
+in the future,
 
-If you want to undo deduplication, reply with:
-#syz undup
+         the name was modified to 'yt92xx'. However, since it is 
+uncertain whether
+
+        there will be 'yt9xxx' in the future, the name has been reverted 
+to the
+
+        existing one for now.
+
+>
+>      Andrew
