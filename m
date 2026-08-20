@@ -1,121 +1,181 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-237.mta0.migadu.com [91.218.175.237])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FA5376BE8;
-	Thu, 20 Aug 2026 05:55:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62AFA3876B8
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 05:56:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.237
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787205313; cv=none; b=B7mhoK8Ngr5N7wkAbGQkR6/KdAo3OBpxNJMks4Mb8lRDj69VsW89atpFcj8amFjL2LzL+9YiJkBjdIttDUXqNwyTgqm4rRgLAV++dtsexqkw8G1DPsO6RBZVVXQeNTWiLNf38APau7ACTji0QsESibFbadh2sQ+yzypTh2ltens=
+	t=1787205375; cv=none; b=Nkt8nRO7XnZm1p/FVgSI/24+Up5TnRICNhmmlTJmxgEavxdMxmpiihKsnSAhU9+ZuDmb142G8q/cjAcGEimynE/j+w/EEoIsWmasM1dPFMEm0itNaYjNVMaJpR5PmRcKVBSxKfrGz2TYdDDSjOQvpTR01COID6MubQOR6umR1xU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787205313; c=relaxed/simple;
-	bh=vRN1mWNs862eFWVETx5Ntlk1DhnDdkA4sgTdyf4PyXA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rPgHlLcR2+VAEAtPx/zc0iYokD4faUyJrrjYEAF+pO1ip61ey8VRN9dKbZsjyYd/c+Vc46WMQ1/VLc6udryS2q6NGdLVVPmGOSgiW+7RiMejiPy2HGb7kuV3wnkbPcQ++RJkmJdpV2UNABNfp8XC51yfbQvoVOGVoaKqBdBVh2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=h6TgCv97; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1787205375; c=relaxed/simple;
+	bh=Yyt0kO2zJ1JirMOwK56pHnm/TWr/UmxyxweM7ZJg9/s=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=OjnKbvKrUk/C/zB7MK68ZxXnYLgiXJLoxnejoQoagniwqnhwYubrCInmvUv7Ni2+Slz3RywBwqiLavb+4tJ0iKcfuaqXDhqjZwkErcxjUMCqzZM+Dxt5fQRCPwXH3NrIGao3rua2Wtb8LkhHhXJ6NFXvSNJmq77YTaQAgVovx5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=E6hHe2YM; arc=none smtp.client-ip=91.218.175.237
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="h6TgCv97"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67JM8JWr527698;
-	Wed, 19 Aug 2026 22:55:00 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=uRERParzvEebLQCQgcdtd0x
-	2NB4JCGOBlcjEPLdAlS0=; b=h6TgCv9703iilc+nojd7KrpsIrLGTFJdh14kdW5
-	s5FtaWQWzQAPsMCcsh50ioWucGalfggc3bj0zdFJLRAlBIgQXHzHC7MVl+hFhjrP
-	xwP16FBUAdEi6fkjdxe+RQk3tcNjpPL8PsC/vWyjnD2kW+vBAuVdg8zJXVJgmEB4
-	NZHr3mlzNP2GAVanX/eGrT5xQHfEA0z8XV2kbGqYJG0jWIAbb/CaMRLsWoBnPhSc
-	wqIAe/YKehWxaAq6aeYi+cmgAFRpsodX1cfb8qLuI+jybfvRSTrxYQ6UmY2lpuQ3
-	OGzBCdsdUGSPtW091mO/2KMl0lJv+mfjooc8DK1p1HLfURg==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4g4yevegtq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Aug 2026 22:55:00 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 19 Aug 2026 22:54:59 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Wed, 19 Aug 2026 22:54:59 -0700
-Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id 0372D3F703F;
-	Wed, 19 Aug 2026 22:54:55 -0700 (PDT)
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <kuba@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <rkannoth@marvell.com>, <sumang@marvell.com>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <pabeni@redhat.com>, <sgoutham@marvell.com>,
-        Anshumali Gaur
-	<agaur@marvell.com>
-Subject: [PATCH net] octeontx2-af: fix out-of-bounds read setting MSI-X irq affinity
-Date: Thu, 20 Aug 2026 11:24:51 +0530
-Message-ID: <20260820055451.2642358-1-rkannoth@marvell.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="E6hHe2YM"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=Yyt0kO2zJ1JirMOwK56pHnm/TWr/UmxyxweM7ZJg9/s=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787205369; v=1; x=1787810169;
+ b=E6hHe2YMyWsjEZfishaYRt9b7JN5w5KY7G/y06JzFmeZcQPUgeIq/o8U5zsnmeWYNkfriftU
+ ZKddQ5TXEdct2GtRlNzkcs0jiDaOue7rD9MPybkitRSelaJtFs3xcjzgcJ8P1UwqfrHi75AZoJk
+ FdCx4/MHKhw1ZrZcQhB/Fqz8=
+X-Envelope-To: netdev@vger.kernel.org
+Received: from [192.168.110.119] (216.236.36.152)
+	by smtp.migadu.com with ESMTPS id 1234f702a62e50bb;
+	Thu, 20 Aug 2026 05:56:09 +0000
+X-Mizu-Trace-ID: 1234f702a62e50bb
+X-Migadu-Flow: FLOW_OUT
+From: Hangbin Liu <hangbin.liu@linux.dev>
+Date: Thu, 20 Aug 2026 13:55:52 +0800
+Subject: [PATCH net v4 1/2] bonding: convert unbalanced_load to per-cpu
+ state
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODIwMDA0MCBTYWx0ZWRfX7aq3gBKfuviU
- xwTxfZM7RllVWyBhZZTDSA/fSSjw5zR9aOBCOby0E4U9ev4vdNlKfESYeQpf9XRb2vStY2wHpjU
- VEiKLZikF4aGT0Mq3z1iPVBqHm+wolA=
-X-Proofpoint-GUID: Cho2blPSPsqdCIRu1QAumwkh7FrG-a18
-X-Proofpoint-ORIG-GUID: Cho2blPSPsqdCIRu1QAumwkh7FrG-a18
-X-Authority-Analysis: v=2.4 cv=Wq8b99fv c=1 sm=1 tr=0 ts=6a8696b4 cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=qit2iCtTFQkLgVSMPQTB:22 a=M5GUcnROAAAA:8 a=ev-rcN9vpzT4Mh_83k0A:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODIwMDA0MCBTYWx0ZWRfX++ipGUG2NN+6
- u798KEylPRD8QcVOJixB5D8BasfqAumBVi33NqrCzLgxfKL9mohM6DLIBnafXn7U3FiiUrC5Vh8
- jnsX0oPPIiOQCNUwMBFABD9S0dcooYBo/6TI8BDCMYygoA1ma9/E14R8DtppXxxxssBdwd2tmqB
- O0IemkO60meDS4F2EJ3d4lgPowsAAJaowoyBt4faJigCk/qtFX1Tpy8NTFBRaohF+1knPdtef+l
- XXujkL4XtkUdSV6nf/Q/iBq/ff50+KkuzucGweydk0Xugra91SG3LG3OxfayzoavVdu5xaLlxk/
- SnoJy69mTmrOjLQo2mnqdsDWZe0t3DHvYAz0clNu9kOIMpdckiNmMZXr39CYUPQdwO2XPiZKJjz
- EvQsxVQOhJf8ltScDUAHqHhIugTHXbpB3bCFJKlfFJMAuEMJOf9oueWcb5NB7axDwhlZXTE0WEA
- Y98FRkV/yDF64q/Y12A==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-19_06,2026-08-19_02,2025-10-01_01
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260820-bond_overflow-v4-1-805ba0d3efb6@kylinos.cn>
+References: <20260820-bond_overflow-v4-0-805ba0d3efb6@kylinos.cn>
+In-Reply-To: <20260820-bond_overflow-v4-0-805ba0d3efb6@kylinos.cn>
+To: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
+X-Mailer: b4 0.14.3
 
-From: Anshumali Gaur <agaur@marvell.com>
+From: Hangbin Liu <liuhangbin@kylinos.cn>
 
-rvu_register_interrupts() walks every MSI-X vector and uses strstr()
-to match "Mbox" or "FLR" in irq_name before pinning those interrupts
-to CPU 0. irq_name is a per-vector NAME_SIZE buffer, but not every
-slot is populated before this loop runs. strstr() keeps scanning until
-it finds a NUL terminator, so an uninitialized slot can trigger a KASAN
-slab-out-of-bounds read at boot when debug options are enabled.
+A later patch widens the bonding TLB tx counters from u32 to u64. The
+unbalanced_load counter sits in the transmit hot path, and cross-CPU
+synchronization of a u64 would introduce measurable overhead. Convert
+unbalanced_load to a per-cpu counter first so that the subsequent
+widening only touches per-cpu data local to each CPU.
 
-Use strnstr() with NAME_SIZE to bound the search within each vector's
-name buffer.
+Introduce struct unbalanced_load_stats to hold the per-cpu counter,
+and move the aggregation into a helper, reset_unbalanced_load(), which
+sums all per-cpu instances. Use the delta of current total load vs
+variable prev_total_unbalanced to calculate the loading.
 
-Fixes: 4e527f1e5c15 ("octeontx2-af: npc: cn20k: Add new mailboxes for CN20K silicon")
-Signed-off-by: Anshumali Gaur <agaur@marvell.com>
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/bonding/bond_alb.c | 37 ++++++++++++++++++++++++++++++-------
+ include/net/bond_alb.h         |  7 ++++++-
+ 2 files changed, 36 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-index ffba56ee8a60..43062390aa4c 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-@@ -3331,8 +3331,8 @@ static int rvu_register_interrupts(struct rvu *rvu)
- 		goto fail;
+diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
+index 839f7482dc18..0afed2c39231 100644
+--- a/drivers/net/bonding/bond_alb.c
++++ b/drivers/net/bonding/bond_alb.c
+@@ -133,6 +133,10 @@ static int tlb_initialize(struct bonding *bond)
+ 	if (!new_hashtbl)
+ 		return -ENOMEM;
  
- 	for (i = 0; i < rvu->num_vec; i++) {
--		if (strstr(&rvu->irq_name[i * NAME_SIZE], "Mbox") ||
--		    strstr(&rvu->irq_name[i * NAME_SIZE], "FLR"))
-+		if (strnstr(&rvu->irq_name[i * NAME_SIZE], "Mbox", NAME_SIZE) ||
-+		    strnstr(&rvu->irq_name[i * NAME_SIZE], "FLR", NAME_SIZE))
- 			irq_set_affinity(pci_irq_vector(rvu->pdev, i),
- 					 cpumask_of(0));
++	bond_info->unbalanced_load = alloc_percpu(struct unbalanced_load_stats);
++	if (!bond_info->unbalanced_load)
++		goto out;
++
+ 	spin_lock_bh(&bond->mode_lock);
+ 
+ 	bond_info->tx_hashtbl = new_hashtbl;
+@@ -143,6 +147,10 @@ static int tlb_initialize(struct bonding *bond)
+ 	spin_unlock_bh(&bond->mode_lock);
+ 
+ 	return 0;
++
++out:
++	kfree(new_hashtbl);
++	return -ENOMEM;
+ }
+ 
+ /* Must be called only after all slaves have been released */
+@@ -154,6 +162,8 @@ static void tlb_deinitialize(struct bonding *bond)
+ 
+ 	kfree(bond_info->tx_hashtbl);
+ 	bond_info->tx_hashtbl = NULL;
++	free_percpu(bond_info->unbalanced_load);
++	bond_info->prev_total_unbalanced = 0;
+ 
+ 	spin_unlock_bh(&bond->mode_lock);
+ }
+@@ -1345,7 +1355,7 @@ static netdev_tx_t bond_do_alb_xmit(struct sk_buff *skb, struct bonding *bond,
+ 		/* unbalanced or unassigned, send through primary */
+ 		tx_slave = rcu_dereference(bond->curr_active_slave);
+ 		if (bond->params.tlb_dynamic_lb)
+-			bond_info->unbalanced_load += skb->len;
++			this_cpu_add(bond_info->unbalanced_load->tx_bytes, skb->len);
  	}
+ 
+ 	if (tx_slave && bond_slave_can_tx(tx_slave)) {
+@@ -1529,6 +1539,23 @@ netdev_tx_t bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
+ 	return bond_do_alb_xmit(skb, bond, tx_slave);
+ }
+ 
++static u32 reset_unbalanced_load(struct alb_bond_info *bond_info)
++{
++	struct unbalanced_load_stats *p;
++	u32 delta, total_bytes = 0;
++	int i;
++
++	for_each_possible_cpu(i) {
++		p = per_cpu_ptr(bond_info->unbalanced_load, i);
++		total_bytes += READ_ONCE(p->tx_bytes);
++	}
++
++	delta = total_bytes - bond_info->prev_total_unbalanced;
++	bond_info->prev_total_unbalanced = total_bytes;
++
++	return delta / BOND_TLB_REBALANCE_INTERVAL;
++}
++
+ void bond_alb_monitor(struct work_struct *work)
+ {
+ 	struct bonding *bond = container_of(work, struct bonding,
+@@ -1570,12 +1597,8 @@ void bond_alb_monitor(struct work_struct *work)
+ 	if (atomic_read(&bond_info->tx_rebalance_counter) >= BOND_TLB_REBALANCE_TICKS) {
+ 		bond_for_each_slave_rcu(bond, slave, iter) {
+ 			tlb_clear_slave(bond, slave, 1);
+-			if (slave == rcu_access_pointer(bond->curr_active_slave)) {
+-				SLAVE_TLB_INFO(slave).load =
+-					bond_info->unbalanced_load /
+-						BOND_TLB_REBALANCE_INTERVAL;
+-				bond_info->unbalanced_load = 0;
+-			}
++			if (slave == rcu_access_pointer(bond->curr_active_slave))
++				SLAVE_TLB_INFO(slave).load = reset_unbalanced_load(bond_info);
+ 		}
+ 		atomic_set(&bond_info->tx_rebalance_counter, 0);
+ 	}
+diff --git a/include/net/bond_alb.h b/include/net/bond_alb.h
+index e5945427f38d..6fb09b4fc7e2 100644
+--- a/include/net/bond_alb.h
++++ b/include/net/bond_alb.h
+@@ -123,9 +123,14 @@ struct tlb_slave_info {
+ 			 */
+ };
+ 
++struct unbalanced_load_stats {
++	u32			tx_bytes;
++};
++
+ struct alb_bond_info {
+ 	struct tlb_client_info	*tx_hashtbl; /* Dynamically allocated */
+-	u32			unbalanced_load;
++	struct unbalanced_load_stats __percpu	*unbalanced_load;
++	u32			prev_total_unbalanced;
+ 	atomic_t		tx_rebalance_counter;
+ 	int			lp_counter;
+ 	/* -------- rlb parameters -------- */
+
 -- 
-2.43.0
+2.55.0
 
