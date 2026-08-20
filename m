@@ -1,59 +1,76 @@
-Received: from bg-bec.cloudflare-smtp.org (bg-bec.cloudflare-smtp.org [104.30.16.142])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDD33101A5
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 08:03:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=104.30.16.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4773C457F
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 08:04:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787213004; cv=none; b=h60dcrB6TYyg6c+j9Q0dIICDJKOJoxG0psD7WXkJLC7XxsisYU+udiIy0VQTWR/cDwNMhuY6JWwzTlA9KdL0uGuRwByyNKris+H2i/dYFCWCR/bYXzYWKTGqhLyZV/ivGbkRkdb9g3IbOnYpuLftEzS0CKHx5yvCxEl/VDSisG0=
+	t=1787213065; cv=none; b=mP7t82bOSMRt77q8/DPfwYXi9DeGoTk3uf4Ab5Qb1oqgUWAuUp3LW65cJt2H5dMhak/4MCubGUk+YE6IUBPIAwt/L0QC9TweuvbIvU5R1POZl4HlR/V36yluSR9KyRi/a8oct8fmVgNxQWMKK/MdCekj8RujDjbDSXCY+PZaZHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787213004; c=relaxed/simple;
-	bh=7KEUql1pcIdIO6/hnwxclBYxB4sona0fkWlZ3KLZmIY=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=uBqtEBaH5Pc6uo8wVd+20Kkxyk48MreG2YShsjQCh/yQJBtmB7Ffszub3TLWA7us8z81LIgaZRvMep5HwdHkw3TrX5pcMa6H+8+O3YPA6hQhOwa+n+ZrJrb7x/pl5CShe4ajlI/Q/a3GnruV3d+P/urIS+4+NAgbFatmCMlENBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bugs.sh; spf=pass smtp.mailfrom=cf-bounce.bugs.sh; dkim=pass (2048-bit key) header.d=cloudflare-smtp.org header.i=@cloudflare-smtp.org header.b=aHwOP4F+; dkim=pass (2048-bit key) header.d=bugs.sh header.i=@bugs.sh header.b=axX0CIsT; arc=none smtp.client-ip=104.30.16.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bugs.sh
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cf-bounce.bugs.sh
+	s=arc-20240116; t=1787213065; c=relaxed/simple;
+	bh=ru4qweuJqGlhKUthy5/6S5+Rr1FUsZoR9Bxo6pxBe84=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=P97ohq2yPfjfNlK49zCKwhHHFsUqAjP83XLymJG/xs8dffZWWrDbrxNuCa+aXH3PgGsowDDIha5hY60vhm2XdB9kVMYk9LQ9hnTyUrbbWbZbE3dsxBv5F6pz+CU9DbPNObpUyfksAOh9d0oOqkpm55gy6JBP/XHzkm3oPCZ54ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dWGuLFLL; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare-smtp.org header.i=@cloudflare-smtp.org header.b="aHwOP4F+";
-	dkim=pass (2048-bit key) header.d=bugs.sh header.i=@bugs.sh header.b="axX0CIsT"
-DKIM-Signature: v=1; a=rsa-sha256; s=cf2024-1; d=cloudflare-smtp.org; c=relaxed/relaxed;
-	h=Date:Subject:Cc:To:From:Feedback-ID:from:reply-to:resent-date
-	:resent-from:resent-to:resent-cc:in-reply-to:references:list-id:list-help
-	:list-unsubscribe:list-unsubscribe-post:list-subscribe:list-post
-	:list-owner:list-archive; t=1787213003; x=1787817803; bh=PFC61e8Czd7ToOUasW
-	MkDiVQsWyqU1ojrO02DWrqu8o=; b=aHwOP4F+XdmzXCycYEkvwFfUtB3EWvO6i9/FucndxguSR
-	pMxyqEuGUcUYB7ZAjmv3nSfjytdKKdk9tU4c7z+ZdWM5dt3s98CEgQ0v8XTrB2BjrZRck+aTuJ5
-	xxZTx/tKCf8w4ydnpRhhzU+DuOJCS1VyGqBiTfElvXN7vG5yZrUoRpK1IH4o4QtCOfjz/eepgB0
-	cU17Mr7lgjTuIwwdtyylim08+LFEJZ4r66pOpBNF7buraX9+SvF/rQpcI96T6SJdafb28ORhp1M
-	AWce6O5hoqx3qk4bNF95uVQgdmOoGNAapaot3ld1ba0dw48SVE4HoNIDWFpgpY1Y0Q64wMWA==;
-DKIM-Signature: v=1; a=rsa-sha256; s=cf-bounce; d=bugs.sh; c=relaxed/relaxed;
-	h=Date:Subject:Cc:To:From:Feedback-ID:from:reply-to:resent-date
-	:resent-from:resent-to:resent-cc:in-reply-to:references:list-id:list-help
-	:list-unsubscribe:list-unsubscribe-post:list-subscribe:list-post
-	:list-owner:list-archive; t=1787213003; x=1787817803; bh=PFC61e8Czd7ToOUasW
-	MkDiVQsWyqU1ojrO02DWrqu8o=; b=axX0CIsTxa8ZcBO/iMoVTGSGwP6FOSE3gIAVonjOQTk+O
-	lRAdLApHNZYnLIRIEIgpCYl9kcG7qS9l9rZeie/st7i+Nmt9rTg2r/CYJTqBMsipoyQXPrkQx9M
-	VTyVFT9zzHotOpu6aoRyVE8CvVAUACjNEIDANxx0wbEBQAbIGAKkBAFAdB4yDjD1jQSGQnNjD40
-	SFmBHi8mKF8zDmYSC0obs3OaxMMBTkvt9pznZZjZWH+aLHJmMzpz8HkiEVUyCLw+y6TdeUY6PDd
-	+m2dEK/i0qkk+XGW3L9cYcWnbP7p61VqOVvufvFzKXdnsE/Xdv8deTE848gN5tB8sm/K+KDg==;
-Feedback-ID: bugs.sh:5:6:Cloudflare
-Message-ID: <ijg79FFMfIvKJbivdJEKvTO90Q9dTvyBkJck@bugs.sh>
-Received: from authenticated-submission.invalid
-        by mx.cloudflare.net (Cloudflare Email Submission) with ESMTPSA id lfuTgtUuxjQK; Thu, 20 Aug 2026 08:03:01 +0000
-From: co <co+4638111fe2a12980@bugs.sh>
-To: netdev@vger.kernel.org,
-	Subash Abhinov Kasiviswanathan <subash.a.kasiviswanathan@oss.qualcomm.com>,
-	Sean Tranchetti <sean.tranchetti@oss.qualcomm.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: linux-kernel@vger.kernel.org,
-	co <co+4638111fe2a12980@bugs.sh>
-Subject: [BUG] drivers/net: NULL pointer dereference in rmnet_map_send_ack()
-Date: Thu, 20 Aug 2026 01:02:59 -0700
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dWGuLFLL"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ceb096e675so22463095ad.0
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 01:04:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787213063; x=1787817863; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=x78ErVeCRHN6nIR5BE2bLaNonVUmCkwh6pqCr+oiUKE=;
+        b=dWGuLFLLZEHINFCmRVl/uuhojokA6rfZWuDUqiyBBNXrK/SzTAQ+59pPbGpdNCCWu9
+         WbQPszq+BbQxq0yUfJGmIKh3VJqlk9DzJkVGWc+cY6xfD0lzQFMM31zkKZW74qEMLmq7
+         mFV+lvRJwUdwZQnStAOgr7j+K5QP6iEnPJpDfcoHu6h/ZKdMAn7bOcrlw2LwLKtHkb4J
+         r+6F+Hqih4v6ZXpImURcasZlGZhbeuHlevRLAY4wwiRfvzt/FSYckTv/C5L8B1cTPrvw
+         oQaZ0dJUheX9x2F3PpQqCYSxT4o4jm3OnTLbU74VFPkvb9XYHOFK+4u/lCRv1OO3G0/v
+         N3/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787213063; x=1787817863;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=x78ErVeCRHN6nIR5BE2bLaNonVUmCkwh6pqCr+oiUKE=;
+        b=QmrFBd+K7M6oJ+ZA3Sjj6Sq1+SFoNOMvZYE1tTmbW28ocOM1FbwgN2KeiB99blg9So
+         V5ARkIPDsQt9rBEP8/kiUgbjrqmJGEWF77amg/A9QqGKKH0LfyNcC0IBwk6eU62TR4MD
+         CDZ9JS/EamoHBMY+R5w32F+bKyyBM0uYrsveizm8/AHFTvAyK9ivsOY/7BrgDEHES9OH
+         vHct38OMIcSi9LkhDMOU0YCyS+aqz7K/WTTqu0QUH//Q0XKUF0Ys9iVDQHlauI+jKISJ
+         6fOKWA1TFRam4jnBxx5H0GPa/0wD5Y3nwZhOtsbAIPV0KNopsHNiaImrHZDuSOVEsedw
+         Zu+g==
+X-Forwarded-Encrypted: i=1; AHgh+RrDcLcz4HOx5s2fGjkSHFHVXmOuHDPejVlE+chaaT0BtuxRbi6nn/MBuKZwxBV0dwpo+1bdlKk=@vger.kernel.org
+X-Gm-Message-State: AFuF++n43h7Ip6CJDmtxKBQiOAxgy0eSjzUDgbaHQPom2yXde3dyaZC7
+	pHVdjvQ5kwoWVjT/47iYn4qVH4VYbp/uXBeTVzBLu4t0qMazwIjcpmsV
+X-Gm-Gg: AR+sD110azlzwAhMA0h2GZG+9FM/vHE2GNkKS8opqZvz1PYQrTYREUHMoqYVMw8LWYJ
+	r+FDMuN70lPPQGmGK2ktsfO/rsUTf6fHkr9FynR3cuoaeQl33oHRfnno6UJRd/LE4PB9lyjhkya
+	H322UFgsLMy9eNQgyi4U/b65B1HoaJCXt9re20Jz5PUdoP75pkUA9TwNS/lxKbrbgY/0RrctvKd
+	YgO6HqRq5wPK5hAahw7PIjHRZAz8Uj1k7tTZJ5jOSsrYe0GYWLplnCbmrgf8GtCKXMV1hrTqXfL
+	vbf8cZg1HhrmGQ302fGIH+EgGBr5oqCxyTmwvKiFc+aNwvqcJpESf5pUUMsRU9CriaFJy/iZUed
+	8EiWThVXMYYHJ5zG9S/1jaS9YF2vJano2MYrm901fTwKUqfLHW2KeWA6rwSRKcddejbIZqEwWNy
+	xJaE/IKNaGro6hTvFBjfukfTAKGLzQrBNaVsefyeSSjPn2JHN3W4L3mOYPmgfA6nQdemdVSQ==
+X-Received: by 2002:a17:903:3887:b0:2d1:1a18:4d0a with SMTP id d9443c01a7336-2d5fd740167mr200442945ad.9.1787213062229;
+        Thu, 20 Aug 2026 01:04:22 -0700 (PDT)
+Received: from [127.0.1.1] ([188.253.126.51])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d62e36e175sm3556075ad.50.2026.08.20.01.04.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Aug 2026 01:04:21 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: stefanha@redhat.com,
+	sgarzare@redhat.com,
+	mst@redhat.com,
+	jasowangio@gmail.com
+Cc: eperezma@redhat.com,
+	weiyj.lk@gmail.com,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v7 0/3] vhost: fix device IOTLB feature lifecycle
+Date: Thu, 20 Aug 2026 16:03:29 +0800
+Message-Id: <20260820080332.313933-1-physicalmtea@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,91 +79,47 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-We found a bug reachable in:
+Both vhost-vsock and vhost-net can leave the device IOTLB attached when
+userspace clears VIRTIO_F_ACCESS_PLATFORM. They can also replace an
+existing IOTLB with a new empty table when a later feature update keeps
+ACCESS_PLATFORM enabled, for example when updating logging.
 
-    path    drivers/net/ethernet/qualcomm/rmnet
-    crash   NULL pointer dereference in rmnet_map_send_ack()
-    commit  b027ca66ec02
+When the IOTLB mode changes, the vring addresses previously supplied by
+userspace no longer have the same address-space meaning. Leaving those
+addresses installed would allow an old IOVA to be used as a direct
+userspace address after the IOTLB is detached.
 
-Config, environment, the sanitizer report and a C reproducer follow.
+This series invalidates the vring access state during IOTLB transitions,
+makes IOTLB initialization idempotent, and uses a common teardown helper
+for vhost-vsock and vhost-net. IOTLB mode changes are applied even while a
+virtqueue backend is attached. The device-wide IOTLB is dropped first,
+each virtqueue then clears its IOTLB pointer and cached ring access under
+its own mutex, and the old table is freed only after every virtqueue has
+completed the handoff.
 
-== Notes ===============================================================
-    If you patch the bug based on our artifacts, a tag would be
-    appreciated:
+A successful live mode change leaves the backend attached but invalidates
+the cached vring addresses. Userspace must configure the vring addresses
+for the new address mode before data processing can resume. When
+ACCESS_PLATFORM is enabled, the usual IOTLB miss/update protocol
+repopulates the new table.
 
-Reported-by: co+4638111fe2a12980@bugs.sh
+Changes since v6:
+- rebase on the current vhost tree;
+- remove blank lines between commit trailers;
+- drop unrelated error propagation changes from the backend patches.
 
-    Everything in this mail is validated by the reproducer below.
+Jia Jia (3):
+  vhost: invalidate vring access on IOTLB transitions
+  vhost/vsock: discard IOTLB when ACCESS_PLATFORM is cleared
+  vhost/net: discard IOTLB when ACCESS_PLATFORM is cleared
 
-    We also hold an LLM-generated root-cause analysis and a candidate
-    patch. The patch passes an A/B test: the same reproducer panics the
-    unpatched kernel and runs clean on the patched one. Neither has had
-    human review, so both still require validation before you send or
-    apply them. Available on:
-
-        patch.diff  https://bugs.sh/b/4638111fe2a12980/patch.diff
-        report.md   https://bugs.sh/b/4638111fe2a12980/report.md
-
-    This is an open science project. The code and the full set of PoCs
-    are not public at this moment, as we intend to disclose our findings
-    in an ethical way.
-
-    Happy to test patches. Complaints and suggestions about our work
-    are welcome at:
-
-        cedalion@bugs.sh
-
-== Environment =========================================================
-    Reproduced on  b027ca66ec02
-    VM setup       https://bugs.sh/b/4638111fe2a12980/run.sh
-    config         https://bugs.sh/b/4638111fe2a12980/config.gz
-    poc            https://bugs.sh/b/4638111fe2a12980/repro.c
-
-== Sanitizer Report ====================================================
-Oops: general protection fault, probably for non-canonical address 0xdffffc00000000b2: 0000 [#1] SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000590-0x0000000000000597]
-CPU: 0 UID: 0 PID: 5011 Comm: exploit Not tainted 7.2.0-rc7-00095-g24ef02f934ee #33 PREEMPT(full)
-RIP: 0010:kasan_byte_accessible+0x15/0x30
-Call Trace:
-__kasan_check_byte+0x13/0x50
-lock_acquire+0x136/0x360
-_raw_spin_lock+0x2e/0x40
-netif_tx_lock+0x19/0x30
-rmnet_map_command+0x213/0x320
-__rmnet_map_ingress_handler+0x57a/0x900
-rmnet_rx_handler+0x350/0x4d0
-__netif_receive_skb_core.constprop.0+0x6bf/0x3610
-__netif_receive_skb_one_core+0xb0/0x1e0
-__netif_receive_skb+0x1f/0x120
-netif_receive_skb+0x13e/0x7d0
-tun_rx_batched.isra.0+0x3ee/0x740
-tun_get_user+0x2874/0x3aa0
-tun_chr_write_iter+0xdc/0x210
-vfs_write+0x6ac/0x1050
-ksys_write+0x12a/0x250
-do_syscall_64+0x116/0x7d0
-entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x4240c4
-RIP: 0010:kasan_byte_accessible+0x15/0x30
-Kernel panic - not syncing: Fatal exception in interrupt
-Kernel Offset: disabled
-Kernel panic - not syncing: Fatal exception in interrupt
+ drivers/vhost/net.c   |  2 ++
+ drivers/vhost/vhost.c | 53 ++++++++++++++++++++++++++++++++++++++++++-
+ drivers/vhost/vhost.h |  1 +
+ drivers/vhost/vsock.c |  4 +++-
+ 4 files changed, 58 insertions(+), 2 deletions(-)
 
 
----
-The report format is based on syzbot bug report.
-
-This report is generated by a bot. It may contain errors.
-See https://github.com/n132/cedalion for more information.
-
-For any issue with this report, reach out to cedalion@bugs.sh
-
-If the report is already addressed, let us know by replying with:
-#co fix: <commit hash>
-
-If the report is a duplicate of another one, reply with:
-#co dup: <lore link>
-
-If you want to undo deduplication, reply with:
-#co undup
-
+base-commit: b282418bc366194677eafd1dad180d92254586ac
+-- 
+2.34.1
