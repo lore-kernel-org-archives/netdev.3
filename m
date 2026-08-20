@@ -1,168 +1,129 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763DC37E5E5;
-	Thu, 20 Aug 2026 17:26:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3257337E5E5
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 17:27:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787246824; cv=none; b=QHeB5ISAuu5K4dCOfh7IBL62rE5v/+efZZa0WE4bGWF7yLin3KdEEL/g01bHA04jbJAj/hksm0PvYlCti+cV+ArpKB3xfkDLCBrFE5bE1SX0Rdq0JrOFsK08eGfUEvsjY16C8wXq85h7dShJE0OajY/fUujO3xy56kd63JBrJ5o=
+	t=1787246841; cv=none; b=tBVeS3p4wmj/5EjOy7Lc6eYTUTlVfOfeVSMiptpRNiJWCBpamg9nlIq48HidSw/gCYu3Wx3ilX+RLkfI/jXiFlCTdnbAixFKoZgIKQ5x5JhridWSQE+ozAIGP5Fcv1f+IWNW/ebBsXjG01bOzl5kR72EZi+tITisRdXBRwTKpVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787246824; c=relaxed/simple;
-	bh=UaL33jsG18Eq1oHTvdTKaW0xWUwrmF30Fr8kSl0f1zg=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=ktQFWykR2MjIr8UkHkJUlDY4f41/ZXrjkXGLnMTj/t2p2jg30vMQpaAM61RjD0RPn2MOWDl40OEGgRR/3gmwP0CZDDbuki/r+H1WNJJzF7+soU4G8MRfhYQ721rVZ1w/FNKBnt4w7yvQh4OGt5i/yIArqKI/tIggXFT6ZXfu0g0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=Lavws9HA; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1787246841; c=relaxed/simple;
+	bh=VZ2bOH5Dv+3lyGu2jCfaSAuj8JiwF7+JV0rLaq+BXwE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IA8NQ0u188Oc69RNQKch5DHKXMzTGKzvbl9lzLVfh9kPPdxHnvaUmr058M3nQoLCeZPQzLukKZS6TaiKKWaV2HslcBYnLIPZ4rAdBy+Ol1xWijGsCpT0BHuJbC5ztVYvRmWy8frc8dORuLKC0CqbwIv+UhRX3qYlZyZornRd1Vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IrJWoDpk; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="Lavws9HA"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8A79BA3A00;
-	Thu, 20 Aug 2026 19:26:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1787246809; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=2bzD2T1rRqWwcCfOgD3KVLK2SEoO/rbc73sc4LvgTXA=;
-	b=Lavws9HAwwL7H4OzosGY23pIaezFudsTo7I8waYwEWUtY8eWjEvHIV9JKQVKvNINygFrAf
-	dR9eFClnJmkNA+5Tw5KtqHwmai4+aphRJF/5gyQlMar2E6G6i5/cvg5n0GHb2X91zFllw4
-	nYUCln4tgWHAn6Pd8I2Hy148bYcqVjinvmve7awiXyShIIB9M5ZGEgPxoil988bjq+ZVk5
-	NJX84GxeZil0YvRqRLU11QS8yOri99YkOX0RB0RCCAZ3FGH+QanO2oXs2y8sTy3Rz40wvy
-	IiAJV1Ob6Ahq1FG0FSH4BEGFtSxeEaLCTc9Nfx0DY1gXfJmy9OED2GpbOp/TuA==
-Date: Thu, 20 Aug 2026 19:26:45 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: =?ISO-8859-1?Q?Th=E9o_Lebrun?= <theo.lebrun@bootlin.com>,
- Conor Dooley <conor.dooley@microchip.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-CC: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Paolo Valerio <pvalerio@redhat.com>,
- Gregory CLEMENT <gregory.clement@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH net] net: macb: drop CONFIG_OF #if block
-User-Agent: Thunderbird for Android
-In-Reply-To: <20260820-macb-fix-x86-v1-1-b2e7c902104e@bootlin.com>
-References: <20260820-macb-fix-x86-v1-1-b2e7c902104e@bootlin.com>
-Message-ID: <5E44F678-A2A8-4868-9069-D1A7E14F3BFC@tipi-net.de>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IrJWoDpk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787246839;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FskKM0lJCxuwH9SienBmFCa7mQjVO4ObAVEUw9VnP/Q=;
+	b=IrJWoDpkG6Q6hWRhK/DUvC3fqE5GJ/VwusVFFxZI8rSjT85j2+wUlRFGcfnsCJGj6lif4x
+	J+FqeMbLTGQS1hJgjvtzXLJ2GlQTAlBSUsTpv89SqQGVtXOH0n7Mw6sIGVlXfkSG6SXd1n
+	fTm/vBLEV3zTQ46v+anwAIDvBCKoHDg=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-499-cgmTqLjwPSWk4iZkh0_TJA-1; Thu,
+ 20 Aug 2026 13:27:12 -0400
+X-MC-Unique: cgmTqLjwPSWk4iZkh0_TJA-1
+X-Mimecast-MFC-AGG-ID: cgmTqLjwPSWk4iZkh0_TJA_1787246830
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 28E5518001EF;
+	Thu, 20 Aug 2026 17:27:10 +0000 (UTC)
+Received: from [100.90.87.156] (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C10AE18005BB;
+	Thu, 20 Aug 2026 17:27:06 +0000 (UTC)
+Message-ID: <dcbd4d98-8d22-405f-9ed0-b6e97369098c@redhat.com>
+Date: Thu, 20 Aug 2026 19:27:05 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v7 3/3] dpll: add SiTime SiT9531x DPLL clock
+ driver
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>, Ali Rouhi
+ <arouhi@sitime.com>, "jiri@resnulli.us" <jiri@resnulli.us>
+Cc: "arkadiusz.kubalewski@intel.com" <arkadiusz.kubalewski@intel.com>,
+ "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+ <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
+ "cjubran@nvidia.com" <cjubran@nvidia.com>,
+ "Oleg.Zadorozhnyi@devoxsoftware.com" <Oleg.Zadorozhnyi@devoxsoftware.com>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20260815221919.64226-1-arouhi@sitime.com>
+ <20260815221919.64226-4-arouhi@sitime.com>
+ <6a529684-bd6a-4187-9ed9-bb40f4b98065@linux.dev>
+Content-Language: en-US
+From: Ivan Vecera <ivecera@redhat.com>
+In-Reply-To: <6a529684-bd6a-4187-9ed9-bb40f4b98065@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Hi Th=C3=A9o
+On 8/19/26 11:16 PM, Vadim Fedorenko wrote:
+> On 15/08/2026 23:19, Ali Rouhi wrote:
+>> Add a DPLL subsystem driver for the SiTime SiT95316 and SiT95317
+>> clock generators. These devices provide low-jitter clock outputs
+>> commonly used in telecom, networking, and data center timing
+>> applications.
+>>
+>> The driver exposes all inputs and outputs through the Linux DPLL
+>> subsystem, supporting:
+>>   - Lock status monitoring via register polling or optional INTRB IRQ
+>>   - Input priority management for automatic reference switchover
+>>   - Per-output frequency readback from hardware state
+>>   - Phase offset measurement via TDC (time-to-digital converter)
+>>   - Phase adjustment for fine output alignment
+>>   - Embedded sync (esync) pulse control on outputs
+>>   - Fractional frequency offset of the selected reference
+>>   - Optional reset-gpios for hardware reset
+>>
+>> The driver reads all configuration from the device's on-chip NVM
+>> at probe time -- no firmware loading is required.
+>>
+>> Co-developed-by: Oleg Zadorozhnyi <Oleg.Zadorozhnyi@devoxsoftware.com>
+>> Signed-off-by: Oleg Zadorozhnyi <Oleg.Zadorozhnyi@devoxsoftware.com>
+>> Assisted-by: Claude:claude-4-opus [chat]
+>> Signed-off-by: Ali Rouhi <arouhi@sitime.com>
+>> ---
+>>   MAINTAINERS                    |    7 +
+>>   drivers/dpll/Kconfig           |    1 +
+>>   drivers/dpll/Makefile          |    1 +
+>>   drivers/dpll/sit9531x/Kconfig  |   17 +
+>>   drivers/dpll/sit9531x/Makefile |    4 +
+>>   drivers/dpll/sit9531x/core.c   | 3111 ++++++++++++++++++++++++++++++++
+>>   drivers/dpll/sit9531x/core.h   |  372 ++++
+>>   drivers/dpll/sit9531x/dpll.c   | 1232 +++++++++++++
+>>   drivers/dpll/sit9531x/dpll.h   |   69 +
+>>   drivers/dpll/sit9531x/prop.c   |  397 ++++
+>>   drivers/dpll/sit9531x/prop.h   |   39 +
+>>   drivers/dpll/sit9531x/regs.h   |  371 ++++
+>>   12 files changed, 5621 insertions(+)
+> 
+> as the new version is need, could you please think of how it can be
+> split. reviewing if 5.6k lines of code in one go is quite tough
++1 ... Reviewing single patch with the whole driver is really annoying.
+Next time, please split the driver into logical parts (e.g. low-level
+ops, core ops, features one-by one)...
 
-On August 20, 2026 7:08:20 PM GMT+02:00, "Th=C3=A9o Lebrun" <theo=2Elebrun=
-@bootlin=2Ecom> wrote:
->Fix -Wimplicit-function-declaration error on CONFIG_OF=3Dn builds:
->
->   drivers/net/ethernet/cadence/macb_main=2Ec: In function =E2=80=98macb_=
-probe=E2=80=99:
->   drivers/net/ethernet/cadence/macb_main=2Ec:5951:15: error: implicit
->   declaration of function =E2=80=98macb_alloc_tieoff=E2=80=99 [=2E=2E=2E=
-]
->    5951 |         err =3D macb_alloc_tieoff(bp);
->         |               ^~~~~~~~~~~~~~~~~
->   drivers/net/ethernet/cadence/macb_main=2Ec:5973:9: error: implicit
->   declaration of function =E2=80=98macb_free_tieoff=E2=80=99 [=2E=2E=2E]
->    5973 |         macb_free_tieoff(bp);
->         |         ^~~~~~~~~~~~~~~~
->
->Error got introduced because functions are mistakenly declared in a
->`#if defined(CONFIG_OF)` block=2E Instead of moving functions around,
->avoid any future mistake and drop the block entirely=2E
->
->Change the module content slightly on CONFIG_OF=3Dn=2E Previously match
->tables were ignored=2E Now they appear in the resulting build=2E This is
->considered trivial in size by most and is the common case:
->
->   =E2=9F=A9 18 out of 254 OF net drivers reference CONFIG_OF
->   =E2=9F=A9 rg -lF 'MODULE_DEVICE_TABLE(of,' drivers/net/ | tee /tmp/a |=
- wc -l
->   254
->   =E2=9F=A9 xargs -a /tmp/a rg -l CONFIG_OF | wc -l
->   18
->
->Tangent: no, of_match_ptr() does not imply that the compiler can
->optimize out match tables, because MODULE_DEVICE_TABLE(of, =2E=2E=2E)
->unconditionally puts the match tables in the binary=2E It is only meant
->to avoid undefined declaration issues when match tables are hidden
->behind a #ifdef, as was done before=2E We therefore drop the macro call=
-=2E
->
->Fixes: 5262eab9462a ("net: macb: allocate tieoff descriptor once across d=
-evice lifetime")
->Signed-off-by: Th=C3=A9o Lebrun <theo=2Elebrun@bootlin=2Ecom>
->---
->This is a fix to a build issue present on net/main (91ec20351349) and
->linux-next/master(7079a12d7506)=2E The problematic just landed in
->net/main=2E
->
->Two fixes [0][1] were sent previously (both the same solution):
->[PATCH net] net: macb: Move macb_{alloc,free}_tieoff() out of CONFIG_OF b=
-lock
->[PATCH net-next] net: macb: fix CONFIG_OF=3Dn build
->
->Instead I'm suggesting [2] we drop the error-prone preprocessor blocks
->and do as everyone else=2E
->
->[0]: https://lore=2Ekernel=2Eorg/netdev/20260818-macb-fix-no-of-build-v1-=
-1-f2a009616384@kernel=2Eorg/
->[1]: https://lore=2Ekernel=2Eorg/netdev/20260819040913=2E109367-1-running=
-910@gmail=2Ecom/
->[2]: https://lore=2Ekernel=2Eorg/netdev/DKT4CBU8YB5G=2E2W0766H2NU6Y8@boot=
-lin=2Ecom/
->---
-> drivers/net/ethernet/cadence/macb_main=2Ec | 4 +---
-> 1 file changed, 1 insertion(+), 3 deletions(-)
->
->diff --git a/drivers/net/ethernet/cadence/macb_main=2Ec b/drivers/net/eth=
-ernet/cadence/macb_main=2Ec
->index 1476bce77f34=2E=2E76ee4f506033 100644
->--- a/drivers/net/ethernet/cadence/macb_main=2Ec
->+++ b/drivers/net/ethernet/cadence/macb_main=2Ec
->@@ -4926,7 +4926,6 @@ static const struct macb_usrio_config at91_default_=
-usrio =3D {
-> 	=2Eclken =3D MACB_BIT(CLKEN),
-> };
->=20
->-#if defined(CONFIG_OF)
-> /* 1518 rounded up */
-> #define AT91ETHER_MAX_RBUFF_SZ	0x600
-> /* max number of receive buffers */
->@@ -5754,7 +5753,6 @@ static const struct of_device_id macb_dt_ids[] =3D =
-{
-> 	{ /* sentinel */ }
-> };
-> MODULE_DEVICE_TABLE(of, macb_dt_ids);
->-#endif /* CONFIG_OF */
->=20
-> static const struct macb_config default_gem_config =3D {
-> 	=2Ecaps =3D MACB_CAPS_GIGABIT_MODE_AVAILABLE |
->@@ -6267,7 +6265,7 @@ static struct platform_driver macb_driver =3D {
-> 	=2Eremove		=3D macb_remove,
-> 	=2Edriver		=3D {
-> 		=2Ename		=3D "macb",
->-		=2Eof_match_table	=3D of_match_ptr(macb_dt_ids),
->+		=2Eof_match_table	=3D macb_dt_ids,
-> 		=2Epm	=3D &macb_pm_ops,
-> 	},
-> 	=2Eshutdown	=3D macb_shutdown,
->
->---
->base-commit: 91ec2035134982b98fab0609a9fd8480e8217dc1
->change-id: 20260820-macb-fix-x86-eb78a1fcc63e
->
->Best regards,
->-- =20
->Th=C3=A9o Lebrun <theo=2Elebrun@bootlin=2Ecom>
->
+Due to the fact that the source is very similar with zl3073x, please
+look at its git history to see how it was submitted in past.
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net=2Ede>
+...and please do not forget to include me in the CC list ;-)
 
-Thanks
-Nicolai
+Thanks,
+Ivan
+
