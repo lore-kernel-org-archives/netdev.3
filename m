@@ -1,182 +1,280 @@
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668A4302767
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 20:02:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862D93515CE;
+	Thu, 20 Aug 2026 20:03:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787256175; cv=none; b=PnOgKaIKM7UO0O5PfimkE0fjCnbETUuYKk4Kor0l2vTym+/cWWplWJ3babL8Fz3KRbsE91mZj+9To5BOoloZXVWAzzLa2kFRCf1mQy1vNNeug9PZAHyfu8rlm8HfRQ818Eu7XAAq+FdJeJAWA0FjKkLPUu8nEJlO5RglWgRt+NM=
+	t=1787256229; cv=none; b=jl0kL9hIF7b4IW+TrWv65I+xDand50jxzUcgQPB8XZ/IiIwwBE449LC78+NU2RCPe5JykHiwwPw2eknCEuUZ01R1351dQB2iUssPZHfsMdcmPLsF4cH3mGq5NSixIMHwTSSM2f1CE3dlB3XZhkyTwdaPoUTERG357a/3SyEds/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787256175; c=relaxed/simple;
-	bh=A97p7/oO1FEEWJb7XQgTlrEih60GzyHAcVdcsXpl0Fw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EA2JAawVSbuCdllP0NuKZQa2kdWbBn/lhzoO38M7FAdbbtQlkaNgi6zHUPrcBVgPpR1fUwhwVArpcNN/YHXysX+ZQQZBY1VA7MhHvQsfR/+sOiV9N9BxOcyhZ+193jFt6SgBxACgYkwgHjmbIXRWCXCJ+4OX0MKxgFadOofmKOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SCGsIvmJ; arc=none smtp.client-ip=209.85.128.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787256229; c=relaxed/simple;
+	bh=JDI/5RPnjEHlzYWVfQF06rFoQRgLrkZ+cdgQghuuhZI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rOF6/WiccSAK5itbdEmdDckKkhkbsNTOmOnXkiDqGPBG8fGE8AI58zYBEKy7L84IACutlcX4HUFWrMkA4V0F/v1sz9rJmPhYktlrzlR+pW/Md3ScxG5T9qS241Df0ObuqBStftptFIiRphtgNkouGsodRdx3TpWNGW34Dz2kmkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U6jSqkgQ; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SCGsIvmJ"
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-836c718715fso3895537b3.0
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 13:02:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787256173; x=1787860973; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yLkvx6w7BDuxuNWMAFemUduU8jiN2X4Klba5ZW9AWpA=;
-        b=SCGsIvmJbDA7wWiVdUlx3XaZ/n1dpHKLQDlTNNqgyMOmk5jpsngT3HS0hXSqxGBElf
-         qvw3b4nRDr/R9PBIMOnWhMBAx3BPgdVHfZOGAWbyXUXB+iO1LF8qKwOeLxo2ZZdYBCoc
-         bKggG4OPJ6PgmGNHPnZJq5iiBDfbwaCJsqEYxZmefEdvQwZrlpfb30A7p4YCN7q6U2MN
-         L8BYvHwXihuT8ns/Qr9j+th+N1WJgjvDYkGtaDUmZJH1TSHrhYhONQxV4cyckATGXFvO
-         qFnvdN20aLL3snWPo2sesfJsdOwFCQWBuPloTUHUzOZt/523l0nnqAcOzNK9xjC03Na3
-         7p2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787256173; x=1787860973;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=yLkvx6w7BDuxuNWMAFemUduU8jiN2X4Klba5ZW9AWpA=;
-        b=jLPxGJY++MuFAtKgP+3+4gjHZxEI+kkFrPHtbyNyz62IOas3X9kVtKjqb35c9A2UxD
-         9MnhktVEuTKb6y8yMsHhO18JGya8zRk7TTgtgpEiPtsehpwo5TvCPySKc5dZbTlDp2Xp
-         gLJYYeBmOjkh773eDaYe6Ihhv3pnPVDCRggND4bgA2hRNUC0t3sRMa91A/URL0qLD12/
-         7KtpUJAjO+UVZBnnlua5//WZ7JcCSkK9yYLpNjtnFDKhGyFrEMi+5kV2dfyh5Btf3gJi
-         +ZXddud+4L1CuJseIG1JDZguqiYABkykl8rKu41gR0K2x7lNO0dtXYnoE+PV2thYmBR0
-         1Agg==
-X-Forwarded-Encrypted: i=1; AHgh+RphCkZaAi72F1OIydBec7q2r66dlkx7BnQHIzYbdcMywL440kyJfgxNKixgwevnnCYfjnDe9Q0=@vger.kernel.org
-X-Gm-Message-State: AFuF++l4FvDAYxqM8oiXWfUSMkBgfPJ7OmUy81GRdX3FVRzfJ6d6PdVa
-	dWzfjcaJLZUsBPIZnl38u2l0vH61+x3fM5x2h6skhs2YhHCJMi1VaRiC
-X-Gm-Gg: AR+sD127PvkumCErBaL39qiUE/Pxw06NcZkuPXTkMYsqwsscCyTmiPcr6XdsvXmQsa2
-	jIwv8G2+N81LyzPeMA+LU1MbNd9a3ME/2rcDUsnJP1+8cq3vw4iF3ZxMRL2ciPFOnPmTtPiuyia
-	nEln7l4Gu7Db1fJD/hu+LkvcdnTKNdXjE3IXGEwIZP0Z+4nrSnlMHcZCj+aTLQ1WRPNqMKGCWYc
-	uiv+vLypCBaiy/dEJl1tAPcI9hFf09pzaLz1+9bvxw9HFkFOs3Ko+EisGhcFs4BnOUukSD8H90t
-	mBS3jJAOfXN7ZOVMhDD8ZsA91eHhp4ekncovOAIIX3xixTy+KoxoOqEnS0jEPrDnyEytjSyucea
-	eecOMO72yf4tRIKuqpe0jBPfUjyw5hkkuTg5mps44nywBCT9rcsgCcA0iOZcn7Oi6MnR2ukbkZW
-	hCSTNuhg7P1SXF/0iVI0UrPmsOIV7084Rx8VVLKuGl5TB7QcqA1DxCI4TwCSyS8iz0Qqg=
-X-Received: by 2002:a05:690c:e3e5:b0:841:ba65:ae35 with SMTP id 00721157ae682-849f18abb29mr4135467b3.10.1787256173173;
-        Thu, 20 Aug 2026 13:02:53 -0700 (PDT)
-Received: from mac.lan ([136.55.173.105])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-84511abce11sm30016807b3.2.2026.08.20.13.02.52
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 20 Aug 2026 13:02:52 -0700 (PDT)
-From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-To: steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	AutonomousCodeSecurity@microsoft.com,
-	xmei5@asu.edu,
-	tgopinath@linux.microsoft.com,
-	kys@microsoft.com,
-	blbllhy@gmail.com
-Subject: [PATCH net] xfrm: hold net_device reference under RCU in bundle creation
-Date: Thu, 20 Aug 2026 16:02:45 -0400
-Message-ID: <20260820200245.44312-1-blbllhy@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U6jSqkgQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787256228; x=1818792228;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=JDI/5RPnjEHlzYWVfQF06rFoQRgLrkZ+cdgQghuuhZI=;
+  b=U6jSqkgQfJ4F4t3wpwMuLGnHGaFfPZrFi4hVjPELChTNT/UxaaFvWCnT
+   thoeDJ5zre+Bzv0FjK3Nofm72YjsOJaaxIbuY6yftn/G2pOzyPq5FUNyW
+   AEyyzVbDny7DSIg9JIBr6Kfe+XIqXaCCL/9QeuWJP1J5d6w9AJqT00/Ec
+   WUNU7UG3p9CsL+U67reJK6NB3stBXaa/9HLFZse/crlJWqhAD92QvYZBM
+   VkSkxTxOzMeSSatALl9tmm7sgF+1zyd8ziqZF0BgtaRFmO92W9ETWv4Sk
+   aGUR8h6aCJc+OAf5p5LW22U8KsvGEGSgZDGmBvL7UXY5WzSkxypcm2SkZ
+   w==;
+X-CSE-ConnectionGUID: yoFWP4ckR3Gj07EaRh0imQ==
+X-CSE-MsgGUID: JJjApijwROa3D26+W+jAeQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="87567728"
+X-IronPort-AV: E=Sophos;i="6.25,233,1779174000"; 
+   d="scan'208";a="87567728"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 13:03:48 -0700
+X-CSE-ConnectionGUID: Paz7+YKkTq2/4ynv96Bpfg==
+X-CSE-MsgGUID: f4grEtbTSiGrLigFeBgE2Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,233,1779174000"; 
+   d="scan'208";a="296060084"
+Received: from bradocaj-mobl.ger.corp.intel.com (HELO [10.125.108.63]) ([10.125.108.63])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 13:03:46 -0700
+Message-ID: <60af3a30-dabd-4013-8324-f950d8add1fb@intel.com>
+Date: Thu, 20 Aug 2026 13:03:45 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 08/16] NTB: ntb_transport: Add opt-in direct-DMA channel
+ reservation
+To: Koichiro Den <den@valinux.co.jp>, Jon Mason <jdmason@kudzu.us>,
+ Frank Li <Frank.Li@kernel.org>, Allen Hubbe <allenbh@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Niklas Cassel <cassel@kernel.org>, Nicholas Bellinger <nab@linux-iscsi.org>
+Cc: ntb@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260810165136.2292436-1-den@valinux.co.jp>
+ <20260810165136.2292436-9-den@valinux.co.jp>
+From: Dave Jiang <dave.jiang@intel.com>
+Content-Language: en-US
+In-Reply-To: <20260810165136.2292436-9-den@valinux.co.jp>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-xfrm_bundle_create() and xfrm_create_dummy_bundle() read dst->dev into
-a local pointer without taking a device reference, then pass it to
-xfrm_fill_dst().  A concurrent RTM_DELLINK replaces dst->dev via
-dst_dev_put() and frees the old net_device, causing a use-after-free
-when xfrm6_fill_dst() later dereferences the stale dev pointer.
 
-  BUG: KASAN: slab-use-after-free in xfrm6_fill_dst+0x82c/0x860
-  (net/ipv6/xfrm6_policy.c:86 netdev_hold())
-  Read of size 8 at addr ffff8880142fe588 by task exploit/153
-  Call Trace:
-   xfrm6_fill_dst+0x82c/0x860
-   xfrm_resolve_and_create_bundle+0x21d4/0x2bd0
-   xfrm_lookup_with_ifid+0x485/0x1640
-   ip6_dst_lookup_flow+0x19b/0x1e0
-   udpv6_sendmsg+0x1443/0x2dd0
 
-Fix by reading dst->dev under rcu_read_lock() via dst_dev_rcu() and
-taking dev_hold() before leaving the RCU critical section.  To properly
-release the reference, add dev_put() on both the success and error
-paths, and initialize dev to NULL to prevent dev_put() on an
-uninitialized pointer when put_states falls through to free_dst before
-dev is assigned.
+On 8/10/26 9:51 AM, Koichiro Den wrote:
+> Direct DMA is opt-in. Add 'use_direct_dma' module parameter to request
+> it. Some endpoint integrations expose NTB and DMA through sibling PCI
+> functions, so add direct_dma_func to select the DMA function when the
+> NTB device cannot return the DMA device directly.
+> 
+> When use_direct_dma is set and negotiation scratchpads are available,
+> locate the DMA device and reserve one suitable channel for every QP
+> before registering clients. This avoids negotiating direct TX before a
+> later-created QP discovers that no channel is available. If the full set
+> is unavailable, leave direct TX disabled. Note that direct RX does not
+> require these channels.
+> 
+> Signed-off-by: Koichiro Den <den@valinux.co.jp>
+> ---
+>  drivers/ntb/ntb_transport.c | 120 ++++++++++++++++++++++++++++++++++++
+>  1 file changed, 120 insertions(+)
+> 
+> diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
+> index f873eacd532b..6051d8abfc0d 100644
+> --- a/drivers/ntb/ntb_transport.c
+> +++ b/drivers/ntb/ntb_transport.c
+> @@ -98,6 +98,16 @@ static bool use_dma;
+>  module_param(use_dma, bool, 0644);
+>  MODULE_PARM_DESC(use_dma, "Use DMA engine to perform large data copy");
+>  
+> +static bool use_direct_dma;
+> +module_param(use_direct_dma, bool, 0644);
+> +MODULE_PARM_DESC(use_direct_dma,
+> +		 "Use PCI endpoint DMA to transfer directly to peer RX buffers");
+> +
+> +static unsigned int direct_dma_func;
+> +module_param(direct_dma_func, uint, 0644);
+> +MODULE_PARM_DESC(direct_dma_func,
+> +		 "PCI function number of a sibling endpoint DMA function");
 
-Fixes: 25ee3286dcbc ("[IPSEC]: Merge common code into xfrm_bundle_create")
-Fixes: a0073fe18e71 ("xfrm: Add a state resolution packet queue")
-Reported-by: AutonomousCodeSecurity@microsoft.com
-Reported-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
-Reported-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
-Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
----
- net/xfrm/xfrm_policy.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+This feel like very adhoc way of determining which DMA device to use. Is there a better way to do some sort of auto discovery without required user input?
 
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index 932a313b9460..13585ff24aba 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -2668,7 +2668,7 @@ static struct dst_entry *xfrm_bundle_create(struct xfrm_policy *policy,
- 	const struct xfrm_mode *inner_mode;
- 	struct net *net = xp_net(policy);
- 	unsigned long now = jiffies;
--	struct net_device *dev;
-+	struct net_device *dev = NULL;
- 	struct xfrm_dst *xdst_prev = NULL;
- 	struct xfrm_dst *xdst0 = NULL;
- 	int i = 0;
-@@ -2770,7 +2770,11 @@ static struct dst_entry *xfrm_bundle_create(struct xfrm_policy *policy,
- 	xdst0->path = dst;
- 
- 	err = -ENODEV;
--	dev = dst->dev;
-+	rcu_read_lock();
-+	dev = dst_dev_rcu(dst);
-+	if (dev)
-+		dev_hold(dev);
-+	rcu_read_unlock();
- 	if (!dev)
- 		goto free_dst;
- 
-@@ -2789,6 +2793,7 @@ static struct dst_entry *xfrm_bundle_create(struct xfrm_policy *policy,
- 		trailer_len -= xdst_prev->u.dst.xfrm->props.trailer_len;
- 	}
- 
-+	dev_put(dev);
- 	return &xdst0->u.dst;
- 
- put_states:
-@@ -2798,6 +2803,8 @@ static struct dst_entry *xfrm_bundle_create(struct xfrm_policy *policy,
- 	if (xdst0)
- 		dst_release_immediate(&xdst0->u.dst);
- 
-+	if (dev)
-+		dev_put(dev);
- 	return ERR_PTR(err);
- }
- 
-@@ -3058,11 +3065,16 @@ static struct xfrm_dst *xfrm_create_dummy_bundle(struct net *net,
- 	xfrm_init_path((struct xfrm_dst *)dst1, dst, 0);
- 
- 	err = -ENODEV;
--	dev = dst->dev;
-+	rcu_read_lock();
-+	dev = dst_dev_rcu(dst);
-+	if (dev)
-+		dev_hold(dev);
-+	rcu_read_unlock();
- 	if (!dev)
- 		goto free_dst;
- 
- 	err = xfrm_fill_dst(xdst, dev, fl);
-+	dev_put(dev);
- 	if (err)
- 		goto free_dst;
- 
--- 
-2.55.0
+
+> +
+>  static unsigned int direct_dma_ring_entries = 64;
+>  module_param(direct_dma_ring_entries, uint, 0644);
+>  MODULE_PARM_DESC(direct_dma_ring_entries,
+> @@ -147,6 +157,7 @@ struct ntb_transport_qp {
+>  	void *cb_data;
+>  	struct dma_chan *tx_dma_chan;
+>  	struct dma_chan *rx_dma_chan;
+> +	struct dma_chan *direct_dma_chan;
+>  
+>  	bool client_ready;
+>  	bool link_is_up;
+> @@ -269,6 +280,7 @@ struct ntb_transport_ctx {
+>  	struct work_struct link_cleanup;
+>  
+>  	struct dentry *debugfs_node_dir;
+> +	struct device *direct_dma_dev;
+>  	u32 direct_features;
+>  	u32 peer_direct_features;
+>  	unsigned int direct_ring_entries;
+> @@ -352,6 +364,97 @@ static inline u32 ntb_direct_ring_used(u32 head, u32 tail)
+>  	return head - tail;
+>  }
+>  
+> +static bool ntb_direct_dma_filter_fn(struct dma_chan *chan, void *data)
+> +{
+> +	struct dma_slave_caps caps;
+> +
+> +	if (chan->device->dev != data || dma_get_slave_caps(chan, &caps))
+> +		return false;
+> +
+> +	/* Payload and completion descriptors must complete in order. */
+> +	return caps.cmd_terminate &&
+> +	       !dma_has_cap(DMA_COMPLETION_NO_ORDER, chan->device->cap_mask) &&
+> +	       (caps.directions & BIT(DMA_MEM_TO_DEV));
+> +}
+> +
+> +static struct device *ntb_direct_get_dma_dev(struct ntb_dev *ndev)
+> +{
+> +	struct pci_dev *pdev = ndev->pdev;
+> +	struct pci_dev *dma_pdev;
+> +	struct device *dev;
+> +
+> +	if (ndev->ops->get_dma_dev) {
+> +		dev = ntb_get_dma_dev(ndev);
+> +		return dev ? get_device(dev) : ERR_PTR(-ENODEV);
+> +	}
+> +
+> +	if (!pdev || !pdev->bus || direct_dma_func > 7)
+> +		return ERR_PTR(-ENODEV);
+> +
+> +	dma_pdev = pci_get_domain_bus_and_slot(pci_domain_nr(pdev->bus),
+> +					       pdev->bus->number,
+> +					       PCI_DEVFN(PCI_SLOT(pdev->devfn),
+> +							 direct_dma_func));
+> +	if (!dma_pdev)
+> +		return ERR_PTR(-ENODEV);
+> +
+> +	return &dma_pdev->dev;
+> +}
+> +
+> +static void ntb_direct_dma_release_channels(struct ntb_transport_ctx *nt)
+> +{
+> +	unsigned int i;
+> +
+> +	for (i = 0; i < nt->qp_count; i++) {
+> +		if (!nt->qp_vec[i].direct_dma_chan)
+> +			continue;
+> +
+> +		dma_release_channel(nt->qp_vec[i].direct_dma_chan);
+> +		nt->qp_vec[i].direct_dma_chan = NULL;
+> +	}
+> +}
+> +
+> +static void ntb_direct_dma_release(struct ntb_transport_ctx *nt)
+> +{
+> +	ntb_direct_dma_release_channels(nt);
+> +	if (nt->direct_dma_dev) {
+> +		put_device(nt->direct_dma_dev);
+> +		nt->direct_dma_dev = NULL;
+> +	}
+> +}
+> +
+> +static void ntb_direct_dma_init(struct ntb_transport_ctx *nt)
+> +{
+> +	dma_cap_mask_t mask;
+> +	unsigned int i;
+> +
+> +	if (!use_direct_dma)
+> +		return;
+> +
+> +	nt->direct_dma_dev = ntb_direct_get_dma_dev(nt->ndev);
+> +	if (IS_ERR(nt->direct_dma_dev)) {
+> +		dev_info(&nt->ndev->dev, "direct DMA device unavailable: %pe\n",
+> +			 nt->direct_dma_dev);
+> +		nt->direct_dma_dev = NULL;
+> +		return;
+> +	}
+> +
+> +	dma_cap_zero(mask);
+> +	dma_cap_set(DMA_SLAVE, mask);
+
+Are only slave DMA usable in this case? Is it not possible to do DMA with host DMA engines?
+
+My main concern in all of this is looking for a way to make this usable for all ntb_transport users if possible and not niche the generic code to a specific hardware vendor.
+
+DJ
+> +
+> +	for (i = 0; i < nt->qp_count; i++) {
+> +		nt->qp_vec[i].direct_dma_chan =
+> +			dma_request_channel(mask, ntb_direct_dma_filter_fn,
+> +					    nt->direct_dma_dev);
+> +		if (!nt->qp_vec[i].direct_dma_chan) {
+> +			dev_info(&nt->ndev->dev,
+> +				 "not enough direct DMA channels for all QPs\n");
+> +			ntb_direct_dma_release_channels(nt);
+> +			return;
+> +		}
+> +	}
+> +}
+> +
+>  struct ntb_payload_header {
+>  	unsigned int ver;
+>  	unsigned int len;
+> @@ -1476,6 +1579,16 @@ static int ntb_transport_probe(struct ntb_client *self, struct ntb_dev *ndev)
+>  		return -ENOMEM;
+>  
+>  	nt->ndev = ndev;
+> +	if (use_direct_dma &&
+> +	    (direct_dma_ring_entries < 2 ||
+> +	     direct_dma_ring_entries > NTB_DIRECT_MAX_RING_ENTRIES ||
+> +	     !is_power_of_2(direct_dma_ring_entries))) {
+> +		dev_err(&ndev->dev,
+> +			"direct DMA ring entries must be a power of two between 2 and %u\n",
+> +			NTB_DIRECT_MAX_RING_ENTRIES);
+> +		rc = -EINVAL;
+> +		goto err;
+> +	}
+>  	nt->direct_ring_entries = direct_dma_ring_entries;
+>  
+>  	/*
+> @@ -1582,6 +1695,11 @@ static int ntb_transport_probe(struct ntb_client *self, struct ntb_dev *ndev)
+>  		if (rc)
+>  			goto err2;
+>  	}
+> +	if (ntb_direct_spads_available(nt))
+> +		ntb_direct_dma_init(nt);
+> +	else if (use_direct_dma)
+> +		dev_info(&ndev->dev,
+> +			 "not enough scratchpads for direct DMA negotiation\n");
+>  
+>  	mutex_init(&nt->link_event_lock);
+>  	INIT_DELAYED_WORK(&nt->link_work, ntb_transport_link_work);
+> @@ -1605,6 +1723,7 @@ static int ntb_transport_probe(struct ntb_client *self, struct ntb_dev *ndev)
+>  err3:
+>  	ntb_clear_ctx(ndev);
+>  err2:
+> +	ntb_direct_dma_release(nt);
+>  	kfree(nt->qp_vec);
+>  err1:
+>  	while (i--) {
+> @@ -1648,6 +1767,7 @@ static void ntb_transport_free(struct ntb_client *self, struct ntb_dev *ndev)
+>  		iounmap(nt->mw_vec[i].vbase);
+>  	}
+>  
+> +	ntb_direct_dma_release(nt);
+>  	kfree(nt->qp_vec);
+>  	kfree(nt->mw_vec);
+>  	kfree(nt);
 
