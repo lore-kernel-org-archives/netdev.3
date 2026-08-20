@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD90439D6CA
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 19:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5896F46D547
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 19:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787255464; cv=none; b=a0vpX8VhdJ9UfbGRLfti7X2cR2musJHo+UGXlc0h5wDizduq8LuFQEP0jF2FPcp3k49zIebXtNqjhxqgw1pMFobYhyZuapaJmZhXIG5L5gfCdDDUJyFq44ViRCzQYDZlwSgcSzvk0LKA1bBDe59jztwhy33/PHgPitADPwPgH+I=
+	t=1787255465; cv=none; b=jLI9zinmDlQjPn2gvmELyRcuvCH+2XLikEZhksQaDmN0Kp2YGsfP+hG4iBUXogREu/HGCheopVrrL5rLjBrxEXjdJdvBj5HFU1ZX+x+fMHhQ8bwKrvhYP1GSA/EUXInNKqx7vnSWXAku5y8quLAT2IQn10jKE6ToJ5uhbPWYxkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787255464; c=relaxed/simple;
-	bh=UGxe5IsITOYVsm8MFGa9OZEe9VtGLjqP+bavvTthmjc=;
+	s=arc-20240116; t=1787255465; c=relaxed/simple;
+	bh=FbO4rE6IQJlnM5MLsxadARAVRK1jIZ8J7aIqm29X8rE=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=gDQ4V1ED2TYdy6/+T6cvPMzOcPRcGutN/R14CzJTYUFymbjBSZ4lAi2UmoJ1+bpGpRryQsGyNkb3uPLLChfZ/dZthw0BprefTZyxeib6nX7fTJB9dQqJ5lCKyzIRjkhssTqcEwjnYgiqWpkjF1xAuQi5EpNoEjZUe5j3GNrFcZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bO+G4IzN; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=Y7Mg5wb689lGZ/A17arX5/CRJxpNdhdcXAvz2cPpRTmVKAjhyizdkayKmSbmaRtIgyYQM0Sc89ir3u25CEnQrxAcEDpcNvr4KIisSZB4QyMnkGLZqqVol1AaaKnJkIJtIr1JKfeiPhUoLQs5vhjAwbVWL94YQkPtMzAJRO8B4bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IxlSeG7g; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bO+G4IzN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AA801F000E9;
-	Thu, 20 Aug 2026 19:51:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IxlSeG7g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E12A81F00A3A;
+	Thu, 20 Aug 2026 19:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787255462;
-	bh=nQTwOUt3ZBVKu5oqjiP+HW4LZw8Uwn7fJ9WGHyOJ+TQ=;
+	s=k20260515; t=1787255463;
+	bh=ZmzURh3e104jMEf2GL3KuXhFzoYXoBDb4fHpP8hvXvs=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=bO+G4IzNcCGnPf5siT0irXiLuqUZc0pr/QiCCbeMdKqejf5vqeQjk78JKeQ9OOsY4
-	 7jDejeEET3TpgVpst/WXGFYqzwmwrH2rhJgppSLhDqUPeoK6udBMHkS/nkngAgg/sn
-	 U5CMu0HVQTKcwc5RFD5mundEl+n0JyvqX3ptCmTaGCqKp9b78kHiuIPMloitWqf9oF
-	 MKyvVD21t3zb4bl913SSwSvXFNJuWl/lhVvdmSLkymMQcWpqLdlQKJ9rvDeuJ6Z2W+
-	 1uT71F1F/KOjdvt3I6T9mlTmnohi+qSpmPGT/CgNSkqHAI/G4ESTr/2H9e5NxjugO6
-	 wHTqWkb3fIbHA==
+	b=IxlSeG7gMfb4kzqnC4F65rdt0ySEl9f7U7p6OmP4vhe3Cb4PLORzLGF4bXZcu9NJ4
+	 LJge+l5BW4tYHAWFWxv5WadVenhBMng9QPDg4lFEt1msIQk2X0T/SAqlnssVocUfJH
+	 NDzGKNs/q9lQnV9zXH7qMNdCd059gO1uLvmw4aQtylvBLS7/KPj1VwXYoC9+1qR0OZ
+	 YsSi1uCh/JHF/LqBdHS1Js+/ZgTabfvg1nzpUV0EsHjHFSURQrlC/3YCP1P9JAcoVd
+	 7IZmmA+oZggM2JEctByPtp2Qpy8fzWt6LHTCZ2FG9AZ2gp7dkgQXDYP+mq1/kvvRVu
+	 NBmpFd+nBOtjQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A7B392445B;
-	Thu, 20 Aug 2026 19:50:13 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568CF392445B;
+	Thu, 20 Aug 2026 19:50:15 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,36 +37,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: add missing ref_tracker_dir_exit() to
- net_passive_dec()
+Subject: Re: [PATCH net] netdevsim: update queue NAPI association on queue
+ reset
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178725541238.453960.865428404528698321.git-patchwork-notify@kernel.org>
-Date: Thu, 20 Aug 2026 19:50:12 +0000
-References: <64254d80-9248-466c-8108-95f43bd71117@I-love.SAKURA.ne.jp>
-In-Reply-To: <64254d80-9248-466c-8108-95f43bd71117@I-love.SAKURA.ne.jp>
-To: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Cc: netdev@vger.kernel.org, kuba@kernel.org, edumazet@google.com
+ <178725541388.453960.9872212090120825046.git-patchwork-notify@kernel.org>
+Date: Thu, 20 Aug 2026 19:50:13 +0000
+References: <20260817082511.2300402-1-edumazet@google.com>
+In-Reply-To: <20260817082511.2300402-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com,
+ syzbot+483a6efbc4882c1201ee@syzkaller.appspotmail.com
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 17 Aug 2026 23:08:15 +0900 you wrote:
-> I found that trying to read /sys/kernel/debug/ref_tracker/* causes NULL
-> pointer dereference crash when alloc_netdev_mqs() via unshare() returned
-> NULL, for commit 9ba74e6c9e9d ("net: add networking namespace refcount
-> tracker") added ref_tracker_dir_exit(&net->refcnt_tracker) to only
-> __put_net() path whereas commit 65b584f53611 ("ref_tracker: automatically
-> register a file in debugfs for a ref_tracker_dir") added
-> ref_tracker_dir_debugfs() to ref_tracker_dir_init() path.
+On Mon, 17 Aug 2026 08:25:11 +0000 you wrote:
+> In netdevsim, receive queues (struct nsim_rq) embed their own struct
+> napi_struct. When queue reset is performed (e.g. via queue_reset
+> debugfs), nsim_queue_start() swaps in a newly allocated struct nsim_rq,
+> and nsim_queue_mem_free() later deletes and frees the old one.
+> 
+> However, nsim_queue_start() failed to update the queue-to-NAPI mapping
+> via netif_queue_set_napi(). As a result, dev->_rx[idx].napi continued to
+> point to the old NAPI struct. After the old queue was freed, a subsequent
+> queue dump via Netlink (NETDEV_CMD_QUEUE_GET) triggered a KASAN
+> slab-use-after-free read in nla_put_napi_id() when accessing
+> rxq->napi->napi_id.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] net: add missing ref_tracker_dir_exit() to net_passive_dec()
-    https://git.kernel.org/netdev/net/c/f85dc137aabf
+  - [net] netdevsim: update queue NAPI association on queue reset
+    https://git.kernel.org/netdev/net/c/07e98a4d5e9c
 
 You are awesome, thank you!
 -- 
