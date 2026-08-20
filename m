@@ -1,85 +1,80 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7FF41A571
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 11:14:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2EE5414A38
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 11:15:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787224481; cv=none; b=J6oH0x1xhKwU3EuUh844KF0OlvmdfjxTck+30egv0gIStIYAP1kiyaGbbaWuNnB5WyqzNRqeD2eGClWnL+DQ+7FMxyCCPu/LlsZ1s1P59El77vnMq1pPQqDWWLPyGxXPrqAXu0hY9Csncz/8EIGMTyARbqiCCKJnKcbwu6bw9rg=
+	t=1787224519; cv=none; b=LW+alHhwI+btxmYdLzBKWFOfF/jh+Ka3PXvHLjghdQn1Vpl9vNGmTQ05rTfqgYWAvw0YfQlvAVSJ+TZ+SVLVqB2SdsFmT8Bh0Tm6aB2bUYF/gz7Wz1o1QrsTvFe5CQ8pcl6XmLNQ6nxzJx9tkuXq2J8WW1bWS69jt9khVWO10Ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787224481; c=relaxed/simple;
-	bh=ZdtX8xsbh4lQi/ck9/fe2r/hcaarQC4xCPivdR8GLbk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vBalFMWAoFIivOiCgNBhzujTKilCgDJcEKSD45DNyyu8fJNel0kIgsrgEIm76CCkMR01+pLagrmqRuk8rlC6tD3knlTTxC/OKsv+zVowwTjk7H/7phkDSDrDgzt63V01BIz0UPro6XpmUrCuOadTf49+FlpueRpa9yLYdh+hjNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dAtCVG3D; arc=none smtp.client-ip=209.85.216.53
+	s=arc-20240116; t=1787224519; c=relaxed/simple;
+	bh=tDOaMrFdQycGq4gE+wvlWrHRDJh4uLwsjNOPncdFApk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G2Bv3jaqiAdEa1cu4UHkFG4siKHLktai+YUb97KYTQbNIoNAY9Tfb6268NvQeZqljc1ZZuiGn7OlMsSugtA1iNfrxlh8Ixb1BZVfIdqH3GwCbg3nrS1UwxD/tgkAB9uNYO/shBo85jNh0/lvzbzc9icWfQ86mnn07yWkPoom/+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=He+Z+9Dx; arc=none smtp.client-ip=209.85.215.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dAtCVG3D"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-381b831d535so3175250a91.0
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 04:14:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="He+Z+9Dx"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-ca80d708489so538909a12.1
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 04:15:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787224480; x=1787829280; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=aa8JvoP4ttlAqARvv1+FX+80Og3e2TOWzjjuAVcvE4k=;
-        b=dAtCVG3D3DxF951n4lxmzQk8RQi4gC3qu1IdSCONOqssA65WifAL9DSY7hcwASJ94K
-         ss4gfrzGe1Rgqg4ofLzkmn0nBBibDX3HbcC2hnpJrmxryGWyUCwYBQzvbeY9Yo8f9qIb
-         GUOl4YyfjOnYFjK3zYQ46NO8F73DEZXLNrhGeQ3ZAgFMqDp0yn8RUlL1FL7+yUZ0qZnI
-         us/f3N9j41/m81y6/PPdP5QyGO5orkFYuJYVWKh6NsJu2xUKab0bAAe25oxE7hCY998D
-         0yvbd5z1bN6tbcJcWA+QxB3wriNBgfw3QMaXSjhp9RaCXpqgnX8nTwUMKDhlKa8sZ4bO
-         4m5w==
+        d=gmail.com; s=20251104; t=1787224516; x=1787829316; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=urlQN4Jr9Sogk2+osjcgcQBKU653EuK+ku6So/bCSdM=;
+        b=He+Z+9DxAiWMkl5z7Ww6tdGfJqyEoRN3dreT/2nmn8Pib1iggtlUvMHzsXtzoMrmGI
+         Cue3C2hUzcEv9DsUK7l9WreChatmy6KRebxviKIZs9tDv54D+CdDV13BpN0HsHCbxcLN
+         HDOuC+wHR9eRJjA52Ij8TRytlZokNvEXE3VM51dH/XwDpsimCq3cmq6uMz8scIxp3Sxd
+         dgp5s20swtADV66L/HsxpyaGBJT6NBzzpnjBQvBn5iBqn0xNS2HFjhtorDDwx9/QIR7I
+         8rmoWyYTQ9hoXxCMkxbuudRk25qhBKJv/IpXUonm9CCSKAi5kZ+8SSoX2AK9LGRPGwl6
+         0kjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787224480; x=1787829280;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=aa8JvoP4ttlAqARvv1+FX+80Og3e2TOWzjjuAVcvE4k=;
-        b=dmgAdaMZP1z+5XLZDNvRTML9RUsiRWGCfAgX/OngtDE48me6T5PMXcNdoYTS+R1HOs
-         yi/98ORe+7WoqXD6yF8J2eSvoIWo6FD3sGjNQNekTwGF2XTArEFUA4zJnKQNHn0MqF88
-         iz25IyIwjPp0dO/gorApK4S7S2boPgUuRRFWeFePpmPHOY1kSY6VhaR9/xUsbMtH6bre
-         ZZ117nSfiNpPC4plsc/FEUawOtlqcj/vOp/nUQGkGV7dPKjUTn12/ydCrtXtG57L959X
-         Zr7HAMG0m2RdZ2MLfQxQ/JLeJjIaPTBY3hMTHkflyvJRfTh1QnYi/L0tNNR1lOIuqOf9
-         F8Xw==
-X-Forwarded-Encrypted: i=1; AHgh+RpAaT0H3DhtWKhH28VYn1ml6JHTdMmauyAgDohfXgjR2D875Dyjuk+qWTu9UwFxSiXjrGNr3AA=@vger.kernel.org
-X-Gm-Message-State: AFuF++myNvwXf2CBVLg8SyjxLRUIopGTkN9MGXQy5w12wTLXFno3HArT
-	or1FDNamQmfi7OQFNpTiL3vTOT6EYDnOK9NtHtDoJUT2qrtDJVVfzTjv
-X-Gm-Gg: AR+sD11/V33L06kNnMYVtAZjKFPs2SWtdIgfZ6HAc2XBOic6YGqqdjEs0ue3Nll3fGV
-	wjl0kdtfygeZdda/NGovw7OHNq79AFGj5ARjTHiL9Pni9VB9woKyKz2CJW5gyvmYeNsquS75xC6
-	WStAXl5QD2UP5SbTi6oTYKhKS2mFcZPpNqYPW7YAEVmIl9hnmHMgUOY6/XhLLouKKTgYV2q8iSm
-	7UT+HHz7fUHrHRDhwqjn4jY9jFlJ7tcJHZ3noyZsmCT/t4wIBU0Qxw2uD27YoEn/+LucouENv6Q
-	Mae3LxNiRVGbggoUTnunxE2hAWo2a6OEoLp0cZCOeluO9THSsG69YPKz7XekE04lnHWLx4zOegz
-	A17tc6d+HpBK+/2r3wum4eYWktGgko2ydogQmjbsrN153sBuEP/m1pH+tLKK1cqVM3fUEgg4TA2
-	yRbz/oIjJSGpq5PzRDr/KW5qpx7NAkSdQqP2INPu6QsvwSPdpwK9nwDo4a7sq7mVvj5zDd0SI4z
-	5+Z2o10Ym3yzw6Y8rN+GXFEECPd0MEwXMLgJkxSrwGvtzrXYXm7Zu6oS24l9GhafCYhkor+Ngc3
-	PvGx
-X-Received: by 2002:a17:90b:2e42:b0:380:fead:448d with SMTP id 98e67ed59e1d1-3958109a525mr23538513a91.13.1787224479729;
-        Thu, 20 Aug 2026 04:14:39 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787224516; x=1787829316;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=urlQN4Jr9Sogk2+osjcgcQBKU653EuK+ku6So/bCSdM=;
+        b=Lh6jjEjwD2qvfcFOylA/5iR0xn8oY+tCff0lnrPl4XgoItFKCWXYzIWwwl7KrefMxR
+         FGQjycW7qIEfjmD1GPo1/UnMENbQqKA+NXw7KT/kBXH03BRr6h8sMPuXwkGtLf4Jkivp
+         gm4C4jdhUwBWErvVnSnczmfCNCw4u2GqyWec6lESpO/gZ/OIC3VTWWHsce7xAoqbP7BB
+         0p8CXBCSW7pS1ezC7j4KHkRtpIqyRLNiIZKMynvnIRvAtiMtjiJrHu2bW0oQ2ikxTM6U
+         UPbuIHEgflvfAwEsyWkzo9ojiI8tb/9fTdvl/LAWrYnVChR7t1XgkQmrz72h+QRRSqBn
+         SDSg==
+X-Forwarded-Encrypted: i=1; AHgh+RqWSOH6SdkT5h02Dul+M+uk4iCGggB/4ZwYxalfsz51HZHT1JS6QcXALqmtWGrtGmOqW1A9fl4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnlrQ4VV/bvJMHKR1ymftKY249rOZUfALPwkFTpmb721MS0XK1
+	lKuDg4zTUj9c3MPhw5m36nWEcIZp5rdE9SxzambhrSgfYU0wqHviVONT
+X-Gm-Gg: AR+sD106EL0tSKBMrzXkeHsmlmShXMVMlasaPOk0isV4dBFh0Tay4f0u73EkJ2GG/oU
+	DUDjvjnruQzMbLVR6ziPPiUeTtzaS+gSqgMYzo0NyaaPF9Z+y+N4RVt86YgKQH7xBUoTumrl5lb
+	Gt/ocQCtOoAydtar/UMwrsrkyWjAlSXvVTB4oypDNxTijzIlIYsyidrKL+mYEEgHJoxxQ4Ol+zK
+	86DZIPBr65A2+1yzMJR8jDVxl8Gcf6RkitsdNSPGg45BXVesy9GfZtxKHVxU49gXVOP4VjRZqVG
+	bng2QQ28jsNi6DcPvFoZxiTOYdLd/4Xki0PMfd3jGz/f3SLky4EhFtOYgUt5JkJhqmrS5bbHPpi
+	ViwGnn4PfV6/rwSCSpU6mfpx+hiq8cjqDFQ1SvVdsBheNGdM6mN6HwojyfMKt+AQVGEvLwqkl7s
+	N6iu7pL1fkQDCxuyjB7o385u/Fn0i5Hi4ADiNe7EslDmMinlckPereaA1HUi5JKXr50hNTE6AEm
+	CkkbBF6y7oKtbp1F5M+slRGbtbhvZ353Udn+XverHFtHmE4JKbzGHlakqPcLYO/dDd8laVF/lll
+	h7VZ
+X-Received: by 2002:a05:6a21:888a:b0:3c3:75c5:48d5 with SMTP id adf61e73a8af0-3cd14c6b2a1mr6258489637.4.1787224515872;
+        Thu, 20 Aug 2026 04:15:15 -0700 (PDT)
 Received: from phuc-desktop.. ([183.91.15.56])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-395ada57c39sm719965a91.3.2026.08.20.04.14.36
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc15568c722sm1676503a12.24.2026.08.20.04.15.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Aug 2026 04:14:39 -0700 (PDT)
+        Thu, 20 Aug 2026 04:15:15 -0700 (PDT)
 From: phucduc.bui@gmail.com
-To: Wei Fang <wei.fang@nxp.com>,
-	Frank Li <frank.li@nxp.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>
+To: Justin Chen <justin.chen@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Doug Berger <opendmb@gmail.com>
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	davem@davemloft.net,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	imx@lists.linux.dev,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	bui duc phuc <phucduc.bui@gmail.com>
-Subject: [PATCH 2/2] net: fec: Handle PTP initialization errors in probe
-Date: Thu, 20 Aug 2026 18:14:16 +0700
-Message-ID: <20260820111416.97917-2-phucduc.bui@gmail.com>
+Subject: [PATCH 0/4] net: broadcom: Improve IRQ error handling
+Date: Thu, 20 Aug 2026 18:14:52 +0700
+Message-ID: <20260820111456.97947-1-phucduc.bui@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260820111416.97917-1-phucduc.bui@gmail.com>
-References: <20260820111416.97917-1-phucduc.bui@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -90,47 +85,29 @@ Content-Transfer-Encoding: 8bit
 
 From: bui duc phuc <phucduc.bui@gmail.com>
 
-Check the return value of fec_ptp_init() and abort the probe if PTP
-initialization fails.
+Hi all,
 
-Only call fec_ptp_stop() when PTP support was initialized to avoid
-stopping an uninitialized PTP instance during error handling.
+This series improves IRQ error handling in several Broadcom Ethernet
+drivers by propagating IRQ lookup and request errors instead of
+silently ignoring them.
 
-Found by manual code inspection.
+The changes were found by manual code inspection and compile-tested
+only.
 
-Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
----
- drivers/net/ethernet/freescale/fec_main.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+Best regards,
+Phuc
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index ced4dbf8cd90..b6c22d6c1e69 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -5384,8 +5384,11 @@ fec_probe(struct platform_device *pdev)
- 		goto failed_reset;
- 
- 	irq_cnt = fec_enet_get_irq_cnt(pdev);
--	if (fep->bufdesc_ex)
--		fec_ptp_init(pdev, irq_cnt);
-+	if (fep->bufdesc_ex) {
-+		ret = fec_ptp_init(pdev, irq_cnt);
-+		if (ret)
-+			goto failed_reset;
-+	}
- 
- 	ret = fec_enet_init(ndev);
- 	if (ret)
-@@ -5457,7 +5460,8 @@ fec_probe(struct platform_device *pdev)
- failed_irq:
- 	fec_enet_deinit(ndev);
- failed_init:
--	fec_ptp_stop(pdev);
-+	if (fep->bufdesc_ex)
-+		fec_ptp_stop(pdev);
- failed_reset:
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
+bui duc phuc (4):
+  net: bcmasp: Use platform_get_irq() for IRQ lookup
+  net: bcmasp: Propagate WoL IRQ errors from probe
+  net: systemport: Propagate IRQ lookup errors
+  net: bcmgenet: Propagate WoL IRQ errors
+
+ drivers/net/ethernet/broadcom/asp2/bcmasp.c    | 17 +++++++++--------
+ drivers/net/ethernet/broadcom/bcmsysport.c     | 12 ++++++++++--
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c |  8 +++++---
+ 3 files changed, 24 insertions(+), 13 deletions(-)
+
 -- 
 2.43.0
 
