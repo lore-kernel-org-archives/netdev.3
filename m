@@ -1,163 +1,198 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A8F3815E3
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 18:41:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18B33876A1;
+	Thu, 20 Aug 2026 18:42:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787251301; cv=none; b=nYla516rpSNDgMmJwMNtE0/0uvuvPRsZvuz88QCU2KhT0I8wniRavxcSYBgUyrMIZmlTlfD11ioQ+QZe6Fz+cTozsCjRFtFvwd/muPC9kk8EC7Tl82ZqaBXPOLATre0ZbIzqzFvvyuYzg8yiQFKF487Pwk1FPskZ9o2K3RXK+BA=
+	t=1787251350; cv=none; b=harJWvMipY2KLggvnTH5rCXODgAV3L/nnJmHPgK+RJWbsN/MrQL/H9NnR5loETLLFZdh+ZqcYQfu6N/PLxle8FaXBo3eYVnHREIzj/sAhmdqEFQaPW8jP4u1r/MJ6T19VVwaLGZ8i8nWwnyzEEK5QcjXqqOucDsPRKnv2BlvE0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787251301; c=relaxed/simple;
-	bh=tNLgd/FfC4f53hgSjcu9ATEmRr5XYCTKBn1ygO83kDY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DkWnzKBmrIahie6SvM8DMhPI8ohMRw1/eYC/LMIV8wUnUAhM4PEtK3tSA7X2aF1SOlY+W4tmLxTV14TgVF+aizolRmft5wWTxMLqosQEk0ks/bH8htby5+hW4oFEkh7Db/NxDhvzWbd4Oc6JFga1br6J4MRcp5HT7oNxTtwagmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=VgfZFLLY; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1787251350; c=relaxed/simple;
+	bh=zqKTHR2rIfPyrDPM6dA4hSanXkPHfLg1xE54agR4UWY=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=AQny2grdlulcRZcY5wfChKRBRfm3A1kFEGDzC7slbbf01o0ZIWnqjgoKIVqhSxJXcvYsHzGbQ9VunRUvWmSOk6YWwDV4caP0Mf6/zXL/Nxi8jmZuApln+ezz6Koum6wXUU7FKdcHWKmbY+Ch+H+axgBs9AjI1QBP/5ewNATzViE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aBjmEBZ2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="VgfZFLLY"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-38e347638adso129115a91.0
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 11:41:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1787251299; x=1787856099; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=QbbEA8njahnpZFXoKuwhGp1hqSSP84JqOYyTbSBwwxs=;
-        b=VgfZFLLY8YiGUuaxsyeBoZIjhLzQkUj5MPGgUIl+EBkc/pj1xB/VFmDCC+j7E1ruUS
-         BIqHcesTGHldg6IDJ3ZxLKltgB1KYP+YJSnWVnOVKWIrA30ec2SiGXETRUQr0zos2gbX
-         rrmozKjZkdU6IVo5OX4rRo++qqnpq44534Y60+Gfvf/NBXlqSGuTBNYisUBHoqouh9xl
-         Ug7ObTa9EPI+k6kSi1IpsHpSXwa35SEmP574CA3OwdmHQZjA3vo3BV80X1OTzl4HYooc
-         VkzG/+X9TWjumlHH+SjX7sD9RV2IIe6wDq3+xeB7aggK+459Ijk9UeNmUq2AO28zONQM
-         1yAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787251299; x=1787856099;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=QbbEA8njahnpZFXoKuwhGp1hqSSP84JqOYyTbSBwwxs=;
-        b=TXkfs2D+SnlG1hUhfUUQdBw9OJ3XblAkg3ah4QHW0xIPdUR+4S7rE3MjVeHKidPQ6t
-         GUZP5M1UlqMM4gsxIcIjRh7HxGHx9rHX7vWUPnDARO2iTkRh6R1GGacWmAle9vZa5ZaE
-         KAQoy/SGYOKvGqrWdJldEGmueR1yjBCWCN5osgvClQN0G2JE7SOiW2eefCmlVI66xCNI
-         YX2MeyKC9xLIjcCSZR8A3of/dlVCCGTTlyvb5PsnolrOwKDSlmrl4VYdInuqLPeHkha3
-         g+uES3xBgT46S0GdMZ1mae3YImDkT/WMvclx+7kFBVzsqSsadwPI+HD/mwg1jAg4t4sq
-         0shg==
-X-Gm-Message-State: AFuF++kAgM6ez8BGK6tGQaQRQGBSPmonN+hMOFNv7Gx6EDK71eOICb6t
-	cn7Y4Sy3dq9rM38GY8BPl7rdipsDY+Cz/0bif7km7/XcF2iHii50QAeOQ+tZLqXHDduZXefCK33
-	puUhQq1yzY3U=
-X-Gm-Gg: AR+sD11Q/4Qezbar2fqqDujQAm2o7Ec27OSpRMkOBMWAwPpYThulfxkIi8gbd/zsBbi
-	rN0K9/tBrBpfRcIXfvibJr5b/SmivZlqbAM6Oed3FPGWZe/2r7t8tPtHgBGhDSk3LIyynsmgR80
-	S9plytjGSW3tPpSgb1/t3COGAo24huX4Y6Wut+iwX+5XpwmFVO/N6yyYbZEGVkOo21+LOBW1Q0n
-	tn8YhsmVzoAIOZHUm4B2vcerMN6QiTjetjRtCKAR+F8AjgmJdEgXJYxohbyvip8odAIED0xbpb2
-	qf2HBu1eauKjVdY4TcyjQf9D6zg5YIXqXgmJKJ2UJFe1aojv1jM2Hx41Zf1fDibPw+vjK7lHi6M
-	9L+L+KGGjs55XNcnaRo45WsKzPLkr41bCaYWKTfoA/GwXCKwnSUqIkWK/IJ2j1hAPF7OuMWbNFB
-	iFyfqzLVFwpPJsLFGahtueQL0wS9n7g0suqQbKoazV/P+SQ4WSnp+DBe6wKibwwsp7NphAhH70b
-	VKIUR0r4sbXRxI=
-X-Received: by 2002:a17:90a:ec8e:b0:38e:659b:f366 with SMTP id 98e67ed59e1d1-395c2f2d9d1mr1256800a91.0.1787251299357;
-        Thu, 20 Aug 2026 11:41:39 -0700 (PDT)
-Received: from gmail.com ([115.192.250.163])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-395c46b88e9sm20142a91.7.2026.08.20.11.41.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Aug 2026 11:41:37 -0700 (PDT)
-From: Zihan Xi <zihanx@nebusec.ai>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	Zihan Xi <zihanx@nebusec.ai>,
-	stable@vger.kernel.org,
-	Vega <vega@nebusec.ai>
-Subject: [PATCH net v2 1/1] net: l2tp: do not propagate multicast notification errors
-Date: Thu, 20 Aug 2026 18:40:28 +0000
-Message-ID: <54f48e812ca0424c47ffdb9a8182180921f7e6b2.1787247008.git.zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1787247008.git.zihanx@nebusec.ai>
-References: <cover.1787247008.git.zihanx@nebusec.ai>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aBjmEBZ2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F6A1F000E9;
+	Thu, 20 Aug 2026 18:42:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787251349;
+	bh=Zj1xHxGnvyZZGb+rxiXQX6j2llNLJltAIvL9HceQOcA=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=aBjmEBZ2l/WgnHLGBgUGKsETPQbm3tn5QwVN8LZii9AWI7UZCrzm7B8KDOvwhxJQS
+	 2aEXCdfAiT63hztQGZBW0DbM191aosfymrePLTOnStMgydSTDbLcTKFF8k4dgBmSBw
+	 hGMNK1x8sqvKC+u7VAeMIiuUAEkcsD6kvUpv0I+Ml73uUKVjiDeFpF9KC0yBinfiKi
+	 XGHlNraIvrgTpLXR5r+8PJtw6m+2FA6qepir/BOmZYHhu4K1gG8s59g9keRnsvN+AP
+	 9trRAZAnAHFQnNe3721ibP4nK7oAGTBh7AVHq0DbWz2eLku7Jbh6mVEJs7kZNVz+XV
+	 IYdnzr568c/kQ==
+Content-Type: multipart/mixed; boundary="===============5239840134286460907=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-Id: <aaa1b41eac6b31399de8a2d553393c71cdcc5288ca00885b112b39d2b6cc3866@mail.kernel.org>
+In-Reply-To: <20260819024443.781764-5-tushar.vyavahare@intel.com>
+References: <20260819024443.781764-5-tushar.vyavahare@intel.com>
+Subject: Re: [PATCH net-next v3 4/4] selftests/xsk: add shared-UMEM callback framework and initial test cases
+From: bot+bpf-ci@kernel.org
+To: tushar.vyavahare@intel.com,netdev@vger.kernel.org,magnus.karlsson@intel.com,maciej.fijalkowski@intel.com,stfomichev@gmail.com,kernelxing@tencent.com,davem@davemloft.net,kuba@kernel.org,pabeni@redhat.com,ast@kernel.org,daniel@iogearbox.net,tirthendu.sarkar@intel.com,tushar.vyavahare@intel.com,andrii@kernel.org
+Cc: bpf@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Thu, 20 Aug 2026 18:42:29 +0000 (UTC)
 
-The tunnel create, tunnel modify, session create, and session modify
-netlink handlers send multicast notifications through helpers that can fail
-while allocating or encoding a message, or while multicasting it.
+--===============5239840134286460907==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-For tunnel and session create/modify, a notification is sent after the live
-operation has completed. Returning a best-effort notification error as the
-command result can therefore report failure for an operation that already
-committed and can cause callers to retry and accumulate live objects.
+> diff --git a/tools/testing/selftests/bpf/prog_tests/test_xsk.c b/tools/testing/selftests/bpf/prog_tests/test_xsk.c
+> index 814b8325493f..5d4eb47cbfee 100644
+> --- a/tools/testing/selftests/bpf/prog_tests/test_xsk.c
+> +++ b/tools/testing/selftests/bpf/prog_tests/test_xsk.c
+> @@ -224,6 +224,12 @@ int hw_ring_size_reset(struct ifobject *ifobj)
+>  static void __test_spec_init(struct test_spec *test, struct ifobject *ifobj_tx,
+>  			     struct ifobject *ifobj_rx)
+>  {
+> +	/*
+> +	 * Keep the same default as xskxceiver startup: when TX and RX share the same netdev,
+> +	 * shared UMEM is the baseline mode for this test harness. Individual tests can still
+> +	 * override this as needed.
+> +	 */
+> +	bool shared_default = ifobj_tx->ifindex == ifobj_rx->ifindex;
+>  	u32 i, j;
+>
+>  	for (i = 0; i < MAX_INTERFACES; i++) {
+> @@ -235,6 +241,7 @@ static void __test_spec_init(struct test_spec *test, struct ifobject *ifobj_tx,
+>  		ifobj->use_fill_ring = true;
+>  		ifobj->release_rx = true;
+>  		ifobj->validation_func = NULL;
+> +		ifobj->shared_umem = shared_default;
+>  		ifobj->use_metadata = false;
 
-Keep sending notifications for listener visibility, but do not propagate
-their best-effort status as the command result. This also keeps the tunnel
-modify command consistent with the other notification-only paths.
+The shared_default derivation here can never be true in this harness,
+can it?
 
-Fixes: 33f72e6f0c67 ("l2tp : multicast notification to the registered listeners")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: Codex:gpt-5.4
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+prog_tests/xsk.c uses distinct veth pair ends (VETH_RX "veth0" /
+VETH_TX "veth1"), and configure_ifobj() resolves two different
+ifindexes. Nothing in test_xsk.c ever assigns ifobj->shared_umem =
+true. The only other writer is testapp_poll_txq_tmout(), which merely
+saves and restores the current value.
+
+Consequently the umem->base_addr offsetting in xsk_configure_umem(),
+the 'shared = (ifobject->shared_umem && tx)' branch in
+xsk_configure(), and thread_common_ops_tx() remain unreachable.
+
+The comment asserts the opposite: "when TX and RX share the same
+netdev, shared UMEM is the baseline mode for this test harness." In
+xskxceiver.c the equivalent derivation can be true because that
+binary accepts '-i' twice with the same interface; the ported
+harness has no such option, so the copied logic plus its three-line
+justification describe behavior that cannot occur.
+
+Should this assignment and comment be removed, or is there a plan to
+add same-netdev configuration so the mode is actually exercised?
+
+[ ... ]
+
+> @@ -593,28 +600,95 @@ static int pkt_stream_receive_half(struct test_spec *test)
+>  	return 0;
+>  }
+>
+> +static int pkt_stream_replace_seq(struct test_spec *test, pkt_stream_dims_fn dims,
+> +				  const void *ctx)
+> +{
+> +	struct pkt_stream *tx_streams[MAX_SOCKETS] = {};
+> +	struct pkt_stream *rx_streams[MAX_SOCKETS] = {};
+> +	u32 i, nb_pkts, pkt_len;
+> +
+> +	for (i = 0; i < test->nb_sockets; i++) {
+> +		dims(test->ifobj_tx->xsk_arr[i].pkt_stream, i, ctx, &nb_pkts, &pkt_len);
+> +		tx_streams[i] = __pkt_stream_generate(nb_pkts, pkt_len, i, 2);
+> +		if (!tx_streams[i])
+> +			goto err;
+> +
+> +		dims(test->ifobj_rx->xsk_arr[i].pkt_stream, i, ctx, &nb_pkts, &pkt_len);
+> +		rx_streams[i] = __pkt_stream_generate(nb_pkts, pkt_len, i, 2);
+> +		if (!rx_streams[i])
+> +			goto err;
+> +	}
+
+The hardcoded stride of 2 in __pkt_stream_generate() is correct for the
+pre-existing two-socket XDP_SHARED_UMEM test (it produces the even/odd
+split), but is it also correct for the new SHARED_UMEM_4_SOCKETS case?
+
+With four sockets the four generated sequences are not disjoint: socket 0
+gets pkt_nb = {0,2,4,...,4094} and socket 2 gets pkt_nb = {2,4,...,4096};
+socket 1 gets {1,3,...,4095} and socket 3 gets {3,5,...,4097}.
+
+Because the payload written by pkt_generate()/write_payload() and
+validated by is_frag_valid() is a function of pkt_nb only (the seqnum
+word is '(pkt_nb << 16) | word_index'), a packet that leaks from TX
+socket 0 to RX socket 2 (or 1 to 3, and vice versa) is indistinguishable
+from the packet that socket really expected, and it is also received in
+the expected order.
+
+The only thing that would still catch cross-delivery between those pairs
+is the aggregate per-socket count check in receive_pkts(), so the test
+largely cannot detect the very misrouting it is meant to cover. The
+changelog's '4-socket even/odd split' does not describe the generated
+streams (there is no 4-way split).
+
+Using test->nb_sockets as the stride argument would give each socket a
+disjoint pkt_nb class while preserving current 2-socket behavior. Does
+that make sense here?
+
+[ ... ]
+
+> +static void uneven_dist_dims(struct pkt_stream *orig, u32 sock_id, const void *ctx,
+> +			     u32 *nb_pkts, u32 *pkt_len)
+> +{
+> +	const struct shared_umem_uneven_dist_ctx *cfg = ctx;
+> +	u32 pkts_sock0 = cfg->total_pkts / 4;
+> +
+> +	*nb_pkts = sock_id ? cfg->total_pkts - pkts_sock0 : pkts_sock0;
+> +	*pkt_len = cfg->pkt_len;
+> +}
+
+[ ... ]
+
+> +static int pkt_stream_uneven_dist_seq(struct test_spec *test,
+> +				      const struct shared_umem_uneven_dist_ctx *cfg)
+> +{
+> +	if (test->nb_sockets < 2 || cfg->total_pkts < 4)
+> +		return -EINVAL;
+> +
+> +	return pkt_stream_replace_seq(test, uneven_dist_dims, cfg);
+> +}
+
+The guard validates nb_sockets < 2, but uneven_dist_dims() only
+distinguishes socket 0 from "everything else":
+
+	u32 pkts_sock0 = cfg->total_pkts / 4;
+	*nb_pkts = sock_id ? cfg->total_pkts - pkts_sock0 : pkts_sock0;
+
+So the 1:3 split it implements is only meaningful for exactly two
+sockets. With nb_sockets == 3 or 4 every non-zero slot gets 3/4 *
+total_pkts and the aggregate becomes (n - 1) * 3/4 + 1/4 of total_pkts
+instead of total_pkts, silently contradicting the ctx the caller
+supplied.
+
+The check accepts precisely the configurations the callback cannot
+express while rejecting nothing that matters (the only caller,
+testapp_shared_umem_uneven_dist(), passes 2).
+
+Should the condition be 'test->nb_sockets != 2', or should
+uneven_dist_dims() distribute the remaining 3/4 across the remaining
+sockets?
+
+[ ... ]
+
+
 ---
-changes in v2:
-  - Extend best-effort notification handling to tunnel_modify.
-  - Follow the existing bare-call style instead of explicit (void) casts.
-  - Document the observed ENOBUFS and committed-state reproduction.
-  - v1 Link: https://lore.kernel.org/all/cover.1786962220.git.zihanx@nebusec.ai/
- net/l2tp/l2tp_netlink.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-diff --git a/net/l2tp/l2tp_netlink.c b/net/l2tp/l2tp_netlink.c
-index 59457c0c1..fbdd3d055 100644
---- a/net/l2tp/l2tp_netlink.c
-+++ b/net/l2tp/l2tp_netlink.c
-@@ -248,8 +248,8 @@ static int l2tp_nl_cmd_tunnel_create(struct sk_buff *skb, struct genl_info *info
- 		kfree(tunnel);
- 		goto out;
- 	}
--	ret = l2tp_tunnel_notify(&l2tp_nl_family, info, tunnel,
--				 L2TP_CMD_TUNNEL_CREATE);
-+	l2tp_tunnel_notify(&l2tp_nl_family, info, tunnel,
-+			   L2TP_CMD_TUNNEL_CREATE);
- 	l2tp_tunnel_put(tunnel);
- 
- out:
-@@ -305,8 +305,8 @@ static int l2tp_nl_cmd_tunnel_modify(struct sk_buff *skb, struct genl_info *info
- 		goto out;
- 	}
- 
--	ret = l2tp_tunnel_notify(&l2tp_nl_family, info,
--				 tunnel, L2TP_CMD_TUNNEL_MODIFY);
-+	l2tp_tunnel_notify(&l2tp_nl_family, info,
-+			   tunnel, L2TP_CMD_TUNNEL_MODIFY);
- 
- 	l2tp_tunnel_put(tunnel);
- 
-@@ -645,8 +645,8 @@ static int l2tp_nl_cmd_session_create(struct sk_buff *skb, struct genl_info *inf
- 		session = l2tp_session_get(net, tunnel->sock, tunnel->version,
- 					   tunnel_id, session_id);
- 		if (session) {
--			ret = l2tp_session_notify(&l2tp_nl_family, info, session,
--						  L2TP_CMD_SESSION_CREATE);
-+			l2tp_session_notify(&l2tp_nl_family, info, session,
-+					    L2TP_CMD_SESSION_CREATE);
- 			l2tp_session_put(session);
- 		}
- 	}
-@@ -710,8 +710,8 @@ static int l2tp_nl_cmd_session_modify(struct sk_buff *skb, struct genl_info *inf
- 	if (info->attrs[L2TP_ATTR_RECV_TIMEOUT])
- 		session->reorder_timeout = nla_get_msecs(info->attrs[L2TP_ATTR_RECV_TIMEOUT]);
- 
--	ret = l2tp_session_notify(&l2tp_nl_family, info,
--				  session, L2TP_CMD_SESSION_MODIFY);
-+	l2tp_session_notify(&l2tp_nl_family, info,
-+			    session, L2TP_CMD_SESSION_MODIFY);
- 
- 	l2tp_session_put(session);
- 
--- 
-2.43.0
-
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/32400920730
+--===============5239840134286460907==--
