@@ -1,186 +1,120 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747EE3E1222
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 08:59:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40A236DA14
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 09:00:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787216365; cv=none; b=aRv9gSkP084VvvYLhaWYOYwBlCQq9ARcv17N5OH6VTL6dtjHXOkOKu+apoZwJoWJTqxBiTR+Sc/8ajLOKQvN+I8xEaiREl58FnG4jumv6hIY9dR1XL8f/RTa405S2zXPefiQo+f3zNkL7iQOppEK353CB6E+EAiU58OStrnaGic=
+	t=1787216405; cv=none; b=D2mkDTErYTpmAtQ3qwLgLlyTpSgG1uVLvC2+WT3+lIEgUH+tlxwPoxjjapGP+Ml53yyDDCPZhAuXL0Z8aQ3UTi6g45FAwgrnzDetggFKVL6a28lxwBGIdm41AhoZMXUVxgYI0LAcXuzHn5oG8ulJ3iqZpaUio1BUR5XASiDchg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787216365; c=relaxed/simple;
-	bh=A+zUCLXifVgTuHB4fPwTYTmQVtckKJL/x1J77vP12OQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oWelxz8E4A0iDtjvcZ3d/irzQvY0dwFb7vP8lrW8gDwuZ/9H8LLyf2BuV3lhHptqxI8yVIhFkGUDNdgopUxSCx3IvXY3fhjO1/CBoR1J8q9frw5xaQgrqX+9b6hrG+Pjbv9PlFafJ6mou7O5M3IYp1dmadxaC946FbQg8aAZ0FY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DnvSgCcU; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=dCjdRYzk; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1787216405; c=relaxed/simple;
+	bh=VzPpM2GYjcCEeJWlE8mh0m6YvB2umDl21dj1zgLCayI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kAO5q5BY9Tiuo1pAqGm2DYU+BwjlnN0T/Yu1wp6XdkFh+nDnX5h42St/80W5/VeLsdRqvLof3LEC3cOsGezR2eAHgLF12XfqfVEM+kQsNQ/qqTi42PJqACDfidbfsVUsoSbtLHgGgKtdHNcfiBCcJD/8mk0gucMejysihPAazJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zg1VR/gb; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DnvSgCcU";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="dCjdRYzk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787216362;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DTl22GoWoyN6aViItfu2yJEcGK2iytdtHBsWnD7u58U=;
-	b=DnvSgCcU3U6O6jWd6inFHOzD2W+28rTrSbAFdLqeUYDcKt4ACYMeO6IA1Xqibzd4wHQ6x/
-	ZqizsO7qPCvKflRwWoQlcVwyH1na4vvaa0GqPelg3whVAbMfl2uuiQI7qX247DaB6JFuI6
-	Cdf0SCsC5aw37f6MYBNzU2ylljtEeK8=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-680-W0YKCbScOQufZBAysOQHYg-1; Thu, 20 Aug 2026 04:59:21 -0400
-X-MC-Unique: W0YKCbScOQufZBAysOQHYg-1
-X-Mimecast-MFC-AGG-ID: W0YKCbScOQufZBAysOQHYg_1787216360
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-495529a93f9so16773405e9.3
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 01:59:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zg1VR/gb"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4956242332dso20463225e9.2
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 02:00:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1787216360; x=1787821160; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=DTl22GoWoyN6aViItfu2yJEcGK2iytdtHBsWnD7u58U=;
-        b=dCjdRYzknoSPA1GUALnN/oLKs5uka8sk4BAYk+tobMmfIo3QTfko7dFt1wX7WJ4atM
-         2KVh+tblDIxXoxL6O8K97Rzya2VU9OLeqlXLpFxOEQacvyzddtqWggRuwKo+xws1+YDA
-         a/E+zFpBHk+pe6IO6YUOcnmOEABM5F7Dgxcg+BWAkiMMyFX6a66cTdU8dGV9vOjTVJ4q
-         /4/mOehBg4GwZe93xA2dBYhryIFkQz0+7Cf1hwhTDEnTzzMMskrSTfafl4YSkJ1CLIkP
-         ha3xGzOUjGfCZ1svghEIjoIxyaxFUKVsn0CrYLDfe0GpVmpVBEqnbwI6MY4+6Z4VzPpK
-         C4eA==
+        d=gmail.com; s=20251104; t=1787216401; x=1787821201; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fzpmYFmR3xRBQWp75KCP75aMVcwBSxfqQwzCsWsaceU=;
+        b=Zg1VR/gb1MLXG8lE+ZKtQLaZbeMdUHc23+2mHFh/GiD5twpsY8kbovoreudRsdcn/f
+         5rCKdDNPR5CQ1TR0xENLwMzoaE9Q54N4ogFxWi96HT4w2k6PFt2Ea/VRvE0x9mJe6dlL
+         jdGQvudPg+SSsVuRqCJ1wjEmqP2lpPjWcUvm+JAooJiiWVyHrCCA8divFRdVXpt80ou0
+         7o66ZzSMpD7ANfDY8uavdmj9eZgBaqil3XcuaS6Wc3N1R3JujKm8NYbLFgmZV8Kt07To
+         oXYmrEbdz9x6mEAl2sF6alCJEJvTqAf1J1NF7N7YhBL+US/6ouwkqOd7n91e1y2sCd1k
+         ocCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787216360; x=1787821160;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DTl22GoWoyN6aViItfu2yJEcGK2iytdtHBsWnD7u58U=;
-        b=tO6tv+i90c5C1r965y3JHkPR2QFBOp6BKFmP8gtVR6ptpsFPAgw0Zod6LFmRnkvcct
-         ySeggSvNrQtI9GURvJ70u1FFoPWbvPOtEmmTd7YHWAzIHAGFv7qMSCSSjArmdK1GWAvD
-         Us41//fk3LMG7QgsHABlga8iNe67IX9XneqPAs+EmDyTkB+R5VAeyBub4ysbSWf8wenv
-         zbGRZYMcCo5rEz8gGH68t+TKg0bmen21CrYJpolLwdA2uCEjDaiWJIa6wDGb0hiiFX3F
-         1YtLBCv9FT6qkRQOtobpC6xkLnN2wsRah/ObyEVqXNNnGGNVAY8Op9uJT3W/RyGsHerB
-         EzAg==
-X-Forwarded-Encrypted: i=1; AHgh+RpfHRHjg0spFymOrrp5xsBIKrwT7p/IdlZDyNk7G9mrWM4RBcuE0IYf5cbpxDIXbU0Fd7d+8PM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywq9HfoKFts3PhTh5Rbo1/zXPJFcRNdYKhPhRHnoCDnAeQgTjJ+
-	1t9AAXSG/t/nPYBR86tVdGdN6Qn9F2IVqcO0jEHdq9RYJmTwbmYnjgvUIqYfPDt2l4qevAqKbkE
-	IFh+JzliIUlTbF/Cv1ISDI4xcgGk2I00UMLTw1z1JXVKIKKu+kcYmSSriXNuf5BnUkQ==
-X-Gm-Gg: AR+sD106qnzABEJsCIDx+ObS9MyZ//UgqhhFyT54CdLGu382SPY73b9sYwuAx5/UXHf
-	YXvANSK1KFdcKwOqMlXG2pW6k6RJ61z0eWatchlLPWo742d6nmO6ZG2mGOA+PTDzPRCnzX1MZXL
-	+ivUPWM59Qrgis8a3UUJK1TF3aXDVjIaomILF2dfdD3EyNw0n7AeOAzqut16ZUoXNI+Z6CUAI0T
-	OYojd042G7NsLMFdWkKCy+MhJ+1L1LQbnYHweLlHp2xS5OqEJ/swiJHVSvEA5ap+trPcC2+OX1h
-	zHRj3/iZU7knAA0hHErC27sqSCNYNu/fcDCbYO2Bls2F2lfKxd8qzi1WBJwWbXI6x12d7GWfc3v
-	41k7k+0pAJt6nmf9lrmexgERcdU4SvnJgmzXSwwCSaBIqlxbGbrGn
-X-Received: by 2002:a05:600c:5253:b0:499:79b9:e226 with SMTP id 5b1f17b1804b1-499aa109edbmr172010385e9.0.1787216359745;
-        Thu, 20 Aug 2026 01:59:19 -0700 (PDT)
-X-Received: by 2002:a05:600c:5253:b0:499:79b9:e226 with SMTP id 5b1f17b1804b1-499aa109edbmr172009765e9.0.1787216359289;
-        Thu, 20 Aug 2026 01:59:19 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-135-154.retail.telecomitalia.it. [82.53.135.154])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499b3c556a3sm17318315e9.3.2026.08.20.01.59.18
+        d=1e100.net; s=20251104; t=1787216401; x=1787821201;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fzpmYFmR3xRBQWp75KCP75aMVcwBSxfqQwzCsWsaceU=;
+        b=CJnw0nCS6mlBgVIsAM+99HMVaYgJQEQhSiUjqI6VEnsSARbfepXnw2y0pkrNWkuBFJ
+         v33NfmCwNEIdoj3HA+RDAVFtz/aFrVcekjhjgWyCDrhACF7t6uQJ8IYArKz8yZKYxvZU
+         kOtR7p+q12VDTKLtqs6HrXHGFx0W3CO7eU3d9vLkieEAqxptAhrmoKGeuVkuN6cxyZyI
+         jwaT807U86QuIrGARnthQ/9irlwr/y8DnSemfHagP0CKttNrk06zqT6vq102iOGqB03V
+         h+Cin8qBJxeUWXk+t5s+/4w/Nbe2DOmlLMg+/oeKJxRWu3NOPwXdoR70dEreVI3gTN8L
+         D/Eg==
+X-Gm-Message-State: AOJu0YwxC68cce4NWrcJUaIz/Kb2cVCAB6wTb/m+nKihMUPoMMzKRxiB
+	eQhxLyGmeYey0SgfzS294L2o619izRtvHlY94ta76h1h5aoDhCqFZ5L769TqeqEi
+X-Gm-Gg: AR+sD10CQcKOfp7F1/Ib4MigxirlVMkgQ4Ld0nZyc7Et2i8HW61iUSCjWqdDPt+ibEt
+	1s4bJfyATWPUd3sP2YWV5wjZrBCRWzsfsUGSRj4MTAp8YktzUzAgN/uux6zhBjiEPZgJ5jRJJfI
+	iMU8xJ+koPqTTllZqZxsyvB7cBh9iGQiko2qUtocfShBtZ5TW+xvT4YzPWF7zQRooDk8XjUzfCh
+	W9I9kgk+6+Audp9cvEPk0O1FliZ6wJLKonmrpyC2jfOUN1qpYZcNgxUfNhnFyJT63g1TlKhQ7cl
+	LAxjFgM+43VkNS+aGczOiFGnnFQRjzjb32cns8ykiKLCukEogSstE4WMif6tdCP6fKzEtKPjRZa
+	TFmmAOi5eYyfAWXWA//rqKnL1EnE6yJLNT0KbKOJnZnf6Fcg3FyFgn1e8bbP8QW1s3b8pKoDGx5
+	HLOOE87ocNNX8r2OANRb6Yg2wwyzqJLc5Xc4ZhtX5egIGYfPktjN5QxfudF8Q9AYPixDXcCGLhy
+	KYOtWG2H197pCOATmUNpbcYVBj/u6/6sv42fjFzKd4=
+X-Received: by 2002:a05:600c:a30f:b0:499:b01e:911c with SMTP id 5b1f17b1804b1-499b01e9125mr80109845e9.2.1787216401010;
+        Thu, 20 Aug 2026 02:00:01 -0700 (PDT)
+Received: from fedora ([46.205.218.68])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499aa1111b2sm176837215e9.5.2026.08.20.01.59.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Aug 2026 01:59:18 -0700 (PDT)
-Date: Thu, 20 Aug 2026 10:59:13 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
-	jasowangio@gmail.com, eperezma@redhat.com
-Subject: Re: [PATCH v2] vhost: clear vq->worker under vq->mutex when freeing
- workers
-Message-ID: <aobAlM7l67fpDaPO@sgarzare-redhat>
-References: <20260819114328.426131-1-andrey.drobyshev@virtuozzo.com>
+        Thu, 20 Aug 2026 02:00:00 -0700 (PDT)
+From: Daniel Pawlik <pawlik.dan@gmail.com>
+To: netdev@vger.kernel.org
+Cc: linux-mediatek@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	kuba@kernel.org,
+	lorenzo@kernel.org,
+	nbd@nbd.name,
+	sean.wang@mediatek.com,
+	Mark-MC.Lee@mediatek.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	yangshiji66@outlook.com,
+	Daniel Pawlik <pawlik.dan@gmail.com>
+Subject: [PATCH v10 1/2] net: airoha: npu: fix missing streaming DMA mask
+Date: Thu, 20 Aug 2026 10:59:40 +0200
+Message-ID: <20260820085941.380401-1-pawlik.dan@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260819114328.426131-1-andrey.drobyshev@virtuozzo.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Aug 19, 2026 at 02:43:28PM +0300, Andrey Drobyshev wrote:
->Every other update of vq->worker is done under vq->mutex - the worker
->attach/swap ioctls and vhost_worker_killed().  vhost_workers_free() is
->the sole exception: it clears vq->worker without holding the lock.
->
->The effect is harmless in practice, as this only happens while the
->owning process (and thus the whole device) is dying, but the lockless
->write is inconsistent with the rest of the code.  Clear vq->worker under
->vq->mutex, like everyone else, so that all writers of vq->worker follow
->the same locking rule.
->
->vhost_vq_reset() also used to clear vq->worker locklessly, earlier on
->the same teardown path, making the write in vhost_workers_free()
->redundant.  Drop the clear from vhost_vq_reset() and initialize the
->pointer in vhost_dev_init() instead, so that vhost_workers_free() is the
->only place clearing vq->worker on teardown.  Any work queued while
->vq->worker is still set is drained by the synchronize_rcu() +
->vhost_dev_flush() in vhost_workers_free() before the workers are freed.
->
->Reported-by: Sashiko Bot <sashiko-bot@kernel.org>
->Closes: https://lore.kernel.org/kvm/20260721102325.1BD6C1F00A3A@smtp.kernel.org
->Link: https://lore.kernel.org/kvm/20260724153334.1BCBF1F000E9@smtp.kernel.org
->Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
->---
->
->v1 -> v2:
->
->  * Drop the lockless vq->worker clear from vhost_vq_reset(), initialize
->    vq->worker in vhost_dev_init() instead;
->  * Rebase onto Michael's mst/linux-next tree (with my previously merged
->    vsock patches);
->  * Add links to Sashiko reports and adjust commit message.
->
->v1: https://lore.kernel.org/kvm/20260723153310.745855-1-andrey.drobyshev@virtuozzo.com
->
-> drivers/vhost/vhost.c | 12 +++++++++---
-> 1 file changed, 9 insertions(+), 3 deletions(-)
->
->diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
->index a0c1d54019aa..5764a54ddc92 100644
->--- a/drivers/vhost/vhost.c
->+++ b/drivers/vhost/vhost.c
->@@ -392,7 +392,6 @@ static void vhost_vq_reset(struct vhost_dev *dev,
-> 	vq->busyloop_timeout = 0;
-> 	vq->umem = NULL;
-> 	vq->iotlb = NULL;
->-	rcu_assign_pointer(vq->worker, NULL);
-> 	vhost_vring_call_reset(&vq->call_ctx);
-> 	__vhost_vq_meta_reset(vq);
-> }
->@@ -613,6 +612,7 @@ void vhost_dev_init(struct vhost_dev *dev,
-> 		vq->heads = NULL;
-> 		vq->nheads = NULL;
-> 		vq->dev = dev;
->+		RCU_INIT_POINTER(vq->worker, NULL);
-> 		mutex_init(&vq->mutex);
-> 		vhost_vq_reset(dev, vq);
-> 		if (vq->handle_kick)
->@@ -722,13 +722,19 @@ static void vhost_worker_destroy(struct vhost_dev *dev,
-> static void vhost_workers_free(struct vhost_dev *dev)
-> {
-> 	struct vhost_worker *worker;
->+	struct vhost_virtqueue *vq;
+The driver calls dma_set_coherent_mask() but never dma_set_mask(),
+leaving the streaming DMA mask at the bus default. On the non-coherent
+EN7581 platform (Cortex-A53), this causes the NPU mailbox to hang
+after approximately 41 calls when using streaming DMA mappings.
 
-nit: `vq` is used only in the for loop, so you can move this declaration 
-inside the loop. (I'm not asking to respin for just this)
+Replace dma_set_coherent_mask() with dma_set_mask_and_coherent() to
+set both the streaming and coherent DMA masks, matching standard
+driver practice.
 
-> 	unsigned long i;
->
-> 	if (!dev->use_worker)
-> 		return;)
->
->-	for (i = 0; i < dev->nvqs; i++)
->-		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
->+	for (i = 0; i < dev->nvqs; i++) {
->+		vq = dev->vqs[i];
->+
->+		mutex_lock(&vq->mutex);
->+		rcu_assign_pointer(vq->worker, NULL);
->+		mutex_unlock(&vq->mutex);
->+	}
->
+Fixes: 6f884eb87a79 ("net: airoha: Fix DMA direction for NPU mailbox buffer")
+Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20260814110017.2795022-1-pawlik.dan@gmail.com/
+Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20260809152813.585797-1-pawlik.dan@gmail.com/
+Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20260805070851.2885888-1-pawlik.dan@gmail.com/
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Daniel Pawlik <pawlik.dan@gmail.com>
+---
+ drivers/net/ethernet/airoha/airoha_npu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-LGTM!
-
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ethernet/airoha/airoha_npu.c
+index b679bed952de..4045d1eb93ea 100644
+--- a/drivers/net/ethernet/airoha/airoha_npu.c
++++ b/drivers/net/ethernet/airoha/airoha_npu.c
+@@ -766,7 +766,7 @@ static int airoha_npu_probe(struct platform_device *pdev)
+ 		npu->irqs[i] = irq;
+ 	}
+ 
+-	err = dma_set_coherent_mask(dev, DMA_BIT_MASK(32));
++	err = dma_set_mask_and_coherent(dev, DMA_BIT_MASK(32));
+ 	if (err)
+ 		return err;
+ 
+-- 
+2.55.0
 
