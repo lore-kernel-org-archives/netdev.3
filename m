@@ -1,107 +1,186 @@
-Received: from mail-oi2-f11.google.com (mail-oi2-f11.google.com [74.125.231.203])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBB9313546
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 22:09:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.203
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12D739BFFE;
+	Thu, 20 Aug 2026 23:36:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787263781; cv=none; b=O9AkLEGTysnsU45BB2tTRi94H2T2Q+ZgRWQfIfj0g8UX3jl9y0eHLjuv6VikNqslRzg5I4kA1plIz0xxw8AY3U2GiumJxN9oL+qe3Ce6CsMk4xz2aa5HqT1HwmZzRnqtUXs44Y4sWxN6jveU8le9CuUCP/7wDZL7MKxhyR02NJg=
+	t=1787269012; cv=none; b=PROcfzpIFMjXoSuk41PxKHc3Tbwr1GHak4QlObetUGCa45LLHKg5OejGO0s8WU9ftGh0WjIpb8p45GbU1tHQ+FNJvQRkYZ9xpwUwpH6HQe0dYR8Xb80Q18Yfz3wf6aHhqaGc+j/GRtkU39VkmdUIiF1Gi/ck5DYKddG/BMEzaWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787263781; c=relaxed/simple;
-	bh=gKEl5BDKm7NPtHmYouZILv51lFhr9lX8HXHWK89Ha1I=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=uEkqUAkthWxjgxpOgmROTlVCprtn9g3p/dBh1k/nOImTBcJQKuSx/TWXJ0oh+fJgdGGOG4FpEm4pVQcyqAHH1lkL22kF4yXlNGYhwjFAvkZ9ZFiVd7dyoYtbLZFJm5mMFy8PfQ+Y8G4jzqhq0NnSBE5JFMge4ojJGScwdLscPWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.203
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi2-f11.google.com with SMTP id 5614622812f47-4af7193adb7so139640b6e.0
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 15:09:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787263779; x=1787868579;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=aXWG3iaT3vGs1SrxMuVGI6eYYcjA+z2LE04ReofBQBI=;
-        b=crcCyTiz6hf+MJwrnKEcTJQ/DAZcez+BACjjSosPxYBsdbl8Ngg9MMlzIhNzO2y+6i
-         TsqkyTeOfYHreKc8TFK1pu/othQQYawHnOav2ytTcnUd/ihPC9L+kbwN5f204fmphosA
-         MlWnlWDGicVBz1nYH7RMivxdeH7NJnso7WyDucp/ikWFE3fangPSCvWBCN6fdizIsdYS
-         +shaPdJIJqLz3Ve/uI2Hor7+jVXLxEx1Pd3GNKvVqVwQsei9X+2eikSd6G4p9lY/AomK
-         u8tVqP7jZq0T2/SfFw3R5ZV3e0Hdu2bUBOjLlp+NJtU54CbkN+Cbh6xieYI6FAs6EBPl
-         20bg==
-X-Forwarded-Encrypted: i=1; AHgh+RoN9XFUwg1l6C1+/6TzZ1JPM/4KFlWRDbqX2fxhxk9pNRMNVY8xVrUcixvp5DUJn6Mb7RVIZ0s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZkKzoyC4MsFUeb45wYaZqeI/FZ63oxjB/gyySDUSx6DM5C471
-	EQ+4ONEbMFBuDNnaEHpU27lSTSTscmj3hdoVX/ha+RnpK/6AM5DiydOxo0YcgP3uPqQSqavqxGy
-	dt7/pgCatY/BiwFolwzKwU7EpyK24/90X6iNXpR45xHy9We+17cFODnW+wSA=
+	s=arc-20240116; t=1787269012; c=relaxed/simple;
+	bh=WYdS8cuXDQ4Jbws4BDAaBy1iXKHcHdiyXPopP085M+8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gqSJ2iSVcfWW7f64r5dkIJv1ENZtG7FILKSnMX7xzbMxPHda4NPWbaPe1AXK0qt03ydJIla4InWhAmzFn/uMDBzsvepqWV6s28LxjEdveT5jv/mv3MyntmvfCGHyE80ssPpTHfoJu8/UzFGQOsbjEXwg93p1rFhYQa3ZKTwTWTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VMj2JenB; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VMj2JenB"
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id B3E331F000E9;
+	Thu, 20 Aug 2026 23:36:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787269011;
+	bh=Zh9idyOh197MX3SCXLYzWxIQZd6s6K24PVFf7BacxzY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VMj2JenBtyjelTQFTPnYDVQrlGy+jExggBnh3IcSoXVQp/qUumqzw6jvmQC2LW7sg
+	 JM7FK2QQXl7n3QMjMaOZAlUizM4+OO3AA9x0/WRZcQlC4qI3SET8lSZyzDFEsInZl1
+	 9cKH+RbppRbTh8lfMe6Z9bVnhSXwvNiBH5wMBT1MgwZorsmA1Qe1/vmyD9+/uq3SVq
+	 B9WMX+PBigyM4clft9RfkCdmsddZP4/T1OnVjQABDYjTWvnMuiwaZGjy8Q+yLqfExr
+	 EUPX7yA3R4zoOw70KnpfGlIeP49C7U91dJBgiVR2+v6xhGM6VWGcyChNKa5deXKISs
+	 RSYiFN+Oop+ig==
+Date: Fri, 21 Aug 2026 02:36:47 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: netdev@vger.kernel.org, Marc Dionne <marc.dionne@auristor.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, linux-afs@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Jeffrey Altman <jaltman@auristor.com>,
+	keyrings@vger.kernel.org, stable@kernel.org
+Subject: Re: [PATCH net v7 07/11] keys: Add refcounting to user-defined key
+ type payload
+Message-ID: <aoePj0fIQTn6Plae@kernel.org>
+References: <20260812110129.979970-1-dhowells@redhat.com>
+ <20260812110129.979970-8-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:514c:b0:490:315d:e0d5 with SMTP id
- 5614622812f47-4b2ef42cc98mr1376891b6e.16.1787263778649; Thu, 20 Aug 2026
- 15:09:38 -0700 (PDT)
-Date: Thu, 20 Aug 2026 15:09:38 -0700
-In-Reply-To: <6a75d605.01d0871a.3a0d52.0047.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a877b22.f7a79266.2f965f.004d.GAE@google.com>
-Subject: Re: [syzbot] BUG: Address fc00:: on device lo is missing its host route.
-From: syzbot <syzbot+ded267b328e950a7c0c4@syzkaller.appspotmail.com>
-To: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
-	horms@kernel.org, idosch@nvidia.com, kuba@kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
-	pimyn@google.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260812110129.979970-8-dhowells@redhat.com>
 
-syzbot has found a reproducer for the following issue on:
+On Wed, Aug 12, 2026 at 12:01:22PM +0100, David Howells wrote:
+> Add refcounting to user-defined key type payload so that a kernel service
+> wanting to use such a key can hold onto the payload without the RCU read
+> lock held in order that it can do an allocation without having to be
+> concerned with the key getting updated.
+> 
+> This is the first part of the fix for the AF_RXRPC challenge response
+> generation code.
+> 
+> Link: https://sashiko.dev/#/patchset/20260624163819.3017002-1-dhowells%40redhat.com
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> cc: Marc Dionne <marc.dionne@auristor.com>
+> cc: Jeffrey Altman <jaltman@auristor.com>
+> cc: Eric Dumazet <edumazet@google.com>
+> cc: "David S. Miller" <davem@davemloft.net>
+> cc: Jakub Kicinski <kuba@kernel.org>
+> cc: Paolo Abeni <pabeni@redhat.com>
+> cc: Simon Horman <horms@kernel.org>
+> cc: Jarkko Sakkinen <jarkko@kernel.org>
+> cc: linux-afs@lists.infradead.org
+> cc: keyrings@vger.kernel.org
+> cc: stable@kernel.org
+> ---
+>  include/keys/user-type.h     |  2 ++
+>  net/dns_resolver/dns_key.c   |  1 +
+>  security/keys/user_defined.c | 23 ++++++++++++++++-------
+>  3 files changed, 19 insertions(+), 7 deletions(-)
+> 
+> diff --git a/include/keys/user-type.h b/include/keys/user-type.h
+> index 386c31432789..7002a993a472 100644
+> --- a/include/keys/user-type.h
+> +++ b/include/keys/user-type.h
+> @@ -26,6 +26,7 @@
+>   */
+>  struct user_key_payload {
+>  	struct rcu_head	rcu;		/* RCU destructor */
+> +	refcount_t	ref;
+>  	unsigned short	datalen;	/* length of this data */
+>  	char		data[] __aligned(__alignof__(u64)); /* actual data */
+>  };
+> @@ -37,6 +38,7 @@ struct key_preparsed_payload;
+>  
+>  extern int user_preparse(struct key_preparsed_payload *prep);
+>  extern void user_free_preparse(struct key_preparsed_payload *prep);
+> +void put_user_key_payload(struct user_key_payload *payload);
+>  extern int user_update(struct key *key, struct key_preparsed_payload *prep);
+>  extern void user_revoke(struct key *key);
+>  extern void user_destroy(struct key *key);
+> diff --git a/net/dns_resolver/dns_key.c b/net/dns_resolver/dns_key.c
+> index c3c8c3240ef9..aa3c058f4095 100644
+> --- a/net/dns_resolver/dns_key.c
+> +++ b/net/dns_resolver/dns_key.c
+> @@ -208,6 +208,7 @@ dns_resolver_preparse(struct key_preparsed_payload *prep)
+>  		kleave(" = -ENOMEM");
+>  		return -ENOMEM;
+>  	}
+> +	refcount_set(&upayload->ref, 1);
+>  
+>  	upayload->datalen = result_len;
+>  	memcpy(upayload->data, data, result_len);
+> diff --git a/security/keys/user_defined.c b/security/keys/user_defined.c
+> index 6f88b507f927..90c1bd5d7dfe 100644
+> --- a/security/keys/user_defined.c
+> +++ b/security/keys/user_defined.c
+> @@ -67,6 +67,7 @@ int user_preparse(struct key_preparsed_payload *prep)
+>  	upayload = kmalloc_flex(*upayload, data, datalen);
+>  	if (!upayload)
+>  		return -ENOMEM;
+> +	refcount_set(&upayload->ref, 1);
+>  
+>  	/* attach the data */
+>  	prep->quotalen = datalen;
+> @@ -88,12 +89,22 @@ EXPORT_SYMBOL_GPL(user_free_preparse);
+>  
+>  static void user_free_payload_rcu(struct rcu_head *head)
+>  {
+> -	struct user_key_payload *payload;
+> +	struct user_key_payload *payload =
+> +		container_of(head, struct user_key_payload, rcu);
+>  
+> -	payload = container_of(head, struct user_key_payload, rcu);
+>  	kfree_sensitive(payload);
+>  }
+>  
+> +/*
+> + * Free a user defined key payload.
+> + */
+> +void put_user_key_payload(struct user_key_payload *payload)
+> +{
+> +	if (payload && refcount_dec_and_test(&payload->ref))
+> +		call_rcu(&payload->rcu, user_free_payload_rcu);
+> +}
+> +EXPORT_SYMBOL_GPL(put_user_key_payload);
+> +
+>  /*
+>   * update a user defined key
+>   * - the key's semaphore is write-locked
+> @@ -115,8 +126,7 @@ int user_update(struct key *key, struct key_preparsed_payload *prep)
+>  	rcu_assign_keypointer(key, prep->payload.data[0]);
+>  	prep->payload.data[0] = NULL;
+>  
+> -	if (zap)
+> -		call_rcu(&zap->rcu, user_free_payload_rcu);
+> +	put_user_key_payload(zap);
+>  	return ret;
+>  }
+>  EXPORT_SYMBOL_GPL(user_update);
+> @@ -134,7 +144,7 @@ void user_revoke(struct key *key)
+>  
+>  	if (upayload) {
+>  		rcu_assign_keypointer(key, NULL);
+> -		call_rcu(&upayload->rcu, user_free_payload_rcu);
+> +		put_user_key_payload(upayload);
+>  	}
+>  }
+>  
+> @@ -147,9 +157,8 @@ void user_destroy(struct key *key)
+>  {
+>  	struct user_key_payload *upayload = key->payload.data[0];
+>  
+> -	kfree_sensitive(upayload);
+> +	put_user_key_payload(upayload);
+>  }
+> -
+>  EXPORT_SYMBOL_GPL(user_destroy);
+>  
+>  /*
+> 
 
-HEAD commit:    9d2ed026f031 Merge tag 'sysctl-7.03-rc1' of git://git.kern..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=10661e79580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=996f19b48f3c7123
-dashboard link: https://syzkaller.appspot.com/bug?extid=ded267b328e950a7c0c4
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10d20415580000
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-9d2ed026.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/dbab070bbde5/vmlinux-9d2ed026.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/857014a70033/bzImage-9d2ed026.xz
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+ded267b328e950a7c0c4@syzkaller.appspotmail.com
-
-netdevsim netdevsim0 netdevsim1: set [1, 0] type 2 family 0 port 6081 - 0
-IPv6: BUG: Address fc00:: on device lo is missing its host route.
-netdevsim netdevsim0 netdevsim3 (unregistering): unset [1, 0] type 2 family 0 port 6081 - 0
-netdevsim netdevsim0 netdevsim2 (unregistering): unset [1, 0] type 2 family 0 port 6081 - 0
-netdevsim netdevsim0 netdevsim1 (unregistering): unset [1, 0] type 2 family 0 port 6081 - 0
-netdevsim netdevsim0 netdevsim0 (unregistering): unset [1, 0] type 2 family 0 port 6081 - 0
-bridge_slave_1: left allmulticast mode
-bridge_slave_1: left promiscuous mode
-bridge0: port 2(bridge_slave_1) entered disabled state
-bridge_slave_0: left allmulticast mode
-bridge_slave_0: left promiscuous mode
-bridge0: port 1(bridge_slave_0) entered disabled state
-bond0 (unregistering): (slave bond_slave_0): Releasing backup interface
-bond0 (unregistering): (slave bond_slave_1): Releasing backup interface
-bond0 (unregistering): Released all slaves
-hsr_slave_0: left promiscuous mode
-hsr_slave_1: left promiscuous mode
-batman_adv: batadv0: Interface deactivated: batadv_slave_0
-batman_adv: batadv0: Removing interface: batadv_slave_0
-batman_adv: batadv0: Interface deactivated: batadv_slave_1
-batman_adv: batadv0: Removing interface: batadv_slave_1
-veth1_macvtap: left promiscuous mode
-veth0_macvtap: left promiscuous mode
-veth1_vlan: left promiscuous mode
-veth0_vlan: left promiscuous mode
-team0 (unregistering): Port device team_slave_1 removed
-team0 (unregistering): Port device team_slave_0 removed
-
-
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+BR, Jarkko
