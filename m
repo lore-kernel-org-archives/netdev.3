@@ -1,59 +1,61 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB793CC7D3
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 09:57:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4780339F16B
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 09:57:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787219870; cv=none; b=akLpRNc4pqoM0/FcR4LT9I5B6njxcEUYd1zGVFMeW8+8KKLXZDoGuLREH1NVEXq8uJPrt1vrda6HG52JlBipM6c1pY2AAhOPNTfcSugfQgWp3QJhcFQoIb90QsvfWF+ChW+3PmlvDg6WjX3EZHgh9g7zpDsUGejrB+KvBfl3CUs=
+	t=1787219871; cv=none; b=fTlhog31uV2wlPzo4uz+9sGCtuswKTBngPebdXyZEQhh14cBhuXGbYznYAzytZ8X1a8CiRuM/nsbc9brn9CSt7bMLueKNAckkNdrsO4chhl+IYHLlTewidHXd6cNGyE23mo3todv5nN8SFPN2svmOmUKtezt+9xiEaMP/yRpvUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787219870; c=relaxed/simple;
-	bh=U/wixShyu10A4AT9h30/voJvGjaqHe845FsoIYSl9ec=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QsTUCrTtZ8UXSU/3yF0HhWJHR7xS7Cm+0Ys2+fiiF5iYwQ/ESowu8aIPE+VJwxYtefRDEJXc2aPO5hwDGG6ClomI7SdqVaF3WKGVEhjdAa3Dt+eflX2sqEgR/vM4J0WiJfpJ/Buel9A2UXkyM22adkNaiX3MKSMdjQyg6B1l7PI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=ZOru24Uz; arc=none smtp.client-ip=209.85.160.176
+	s=arc-20240116; t=1787219871; c=relaxed/simple;
+	bh=15Cw9oblK/D1vb486tpmsk9GW0qXeom/MxvsqfjbR04=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=syKx+E0X8bMNhnADj9+R7/fFPlPDmxST1Y64sZFay2KwvDldtJaBLZn3gypS+j0X8uJ5KE9Q3ZmmteFZ6hxgDx8txJVaIsV9kVTAftpXa5DUaOrM9rsMPTBrs9U2M6oJJ6IVfShqEhHZRWpH2Dntg63IIRHWUe4dRDpxfUDAruU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=rseub10l; arc=none smtp.client-ip=209.85.219.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="ZOru24Uz"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-51c1372f84dso12901991cf.2
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 02:57:47 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="rseub10l"
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-90a6b298889so16785096d6.3
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 02:57:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787219866; x=1787824666; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hsCp/I13XrlSV13nvixD/aFZtUTWYd+PouN++96+VBo=;
-        b=ZOru24UzSVWvrxNzKwM9yNwv9uquDrWtTMmT9vQ04CMnXOZF98ZDNUTVNWn1Q4aRL1
-         PSW++cY2kwX6dhDVnCsbuZdXcXfVP327hb1a59dM2lZgtJLvRpyNGw9oAMl2Jgm4Oain
-         HxtQKdmK7hhls2vU5yLSRB7f76Rtk/G9PVJbw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787219866; x=1787824666;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=mojatatu.com; s=google; t=1787219868; x=1787824668; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=hsCp/I13XrlSV13nvixD/aFZtUTWYd+PouN++96+VBo=;
-        b=bo8X0u8YQGg4EKutnEdyBx3ZrqGnIfkTlp99Mi6TbGnTr0MmNbFy/cuXwEUBS5ZOGk
-         I1A+5Iqey5SDulHa8P9c/2+o7VPyDPB1OcS/LhXAmqdiYD9ZhO5UP1jcXfruTmeDzFZr
-         NwLZjJ/kejWRGSUo5F1VTpG7BGeUY6A0CU4y0lUlTtZR61nbSmZs1hZboU0Z50jPcTWK
-         IRO+DeRuLITfBbpkzI2RwmlortvBuQxupxV5NcOeDYNYyEKRcIDWvkmtbzozYV0zHPzQ
-         C/Or5bBca+9y/TXiEJboif/buU7enPB+fWkvGhTjG/se2JGFtmL4xb3wyDgb4cD0EL6u
-         TggQ==
-X-Gm-Message-State: AOJu0YzsrjgBTd4WJMqnmlQiW1h78oR0ma+qgTXoxaJSZ2OFvIucsLzB
-	TT2vZs4OFECa7bPv6DcEcG3vYd5HFAijLoYip7P6v9vR9t8IJMcsDt55OJ6O6IyVhUhUKbGR34G
-	mIK8I0A==
-X-Gm-Gg: AR+sD132TtqMd2Wq5fb0yJ3gMLQzjJQ+CnMp8UXqpEjEny9alPoqMS9O5+8x7BVfOEr
-	APClQ8iKgwJTKmBo7FEO7rxqeWdAjzVYCSVexXwevNmw6c65yTa9Y0Iofy+TAyanLoexFCq7v/D
-	KK72wdTvY+CzmfamWJmVa4WfOUIMqRiZ84iA9tIxZ1ycJVpi5CR2+JsaUgG7hPdV41tb5YQDQde
-	Gcw5l7rQLqO/ea6f6UPzgFNCXcCwZu4/rFrDxvU9QoIydDIvP7vDGCBFozJ2/X2lQg+J/XMi6JG
-	H5jOitJb2bU/uwT6Qd1Spfcqq97D0lr8lMKTsPapLIONhHoyTJRD/tTcPM/lOXHLcu0jTI1omIw
-	YCOSCh//l3PhcdSq4oVIc+3FK8Ij92g3kIWjHptnKZANmt5D+AIGzFVfmRYJtfJVAwzEuOkQIPX
-	GW1LQ+0dPG4pfVGt7MwfquDVPMOJjqeZxJ31h0mIMDSzqM61k96eZZaMwT54ZX/1GqwAsuuS9L3
-	vu/DENHrc+Jt82JvlOqE8tzDJdhIfij9cDog0UE74RE6A==
-X-Received: by 2002:a05:622a:191c:b0:51b:f640:2a4f with SMTP id d75a77b69052e-52dd57bc618mr109829491cf.4.1787219866550;
-        Thu, 20 Aug 2026 02:57:46 -0700 (PDT)
+        bh=yWiRk4eGbnJIOLSDci/J7Dj9lG9H1Q4ou0ubiJm1Mow=;
+        b=rseub10lS0f0Y8gtYUfKPx9WxIHqL/psU1Z/DPU/GbBHh9lHt3Je8B+nYTTEgUyQZ7
+         ab4ZXd67lFmBnbpHcHyvtCLCVXd6Ie29YMiHleOExr9KotFwjVqCms//tgUicyNTITcU
+         Yt/wvmWzXTlPUvu99T767L8M4RSdfITIXkAfY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787219868; x=1787824668;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=yWiRk4eGbnJIOLSDci/J7Dj9lG9H1Q4ou0ubiJm1Mow=;
+        b=pr1nWaDmYYfU40ah0V+j0H0QqXBBQATNa3eWzEtYvqFhLCZeEy24Tf5pzGuY/smxRC
+         /qCtdH//Lp5/0991rhKbf0oGkJgxpb2mri1OHPHzAeXgFcyPKriWG0Yd66UC+bQ740wu
+         vj5omIL+hY+jM7V/PJOldAwhdyQMARKpIw9ieImHaZNFqWJFQHhEvIo7QAsAsc0uke0w
+         TiS3UboO1+IfCgCyarKX0Uelw0tKOs/iW6TKJbJO8xlfmUi43JMyo7AW2LlaZ95avCwV
+         itx+18bw9/eUmMhixBc0uW76UUm/aNYTJAY2ERHmA0RQJLX0+PD5pC6sUi6jXGuxFNc9
+         K+Sg==
+X-Gm-Message-State: AFuF++ngPrm4oWBiOrV71p7iWVw+DH/rwzjTEYjYwF1vTfgMg+dZnEbt
+	RHl5sQQa3iKGuogQqGoO7ZA3lqdwQQ0kp4pDMEHx3fIPY4az0flqzY0di67YCk0DsLtzGptjiXO
+	1RsAmQQ==
+X-Gm-Gg: AR+sD10JHHD2HpIO4iQZqgBOE6kEB0sBl1jIefAnNZl3+DWXmkDBnqLZ89T9YaaClns
+	DfBtTNHBV+hH/i1wnGCmYAPx3jsupIT120YfFv1XN7sjd3LvkE8Fla4U1JkCs6nk40UsdH4g+Av
+	NuVd7Cq1Evr2n8aYgO5l4ksCl+BGQLE0tau7QCHbSBKeVrzuUrS6E7srmFN5fRZsaxuv6fzQClY
+	9fInjB0hEEgnObypd94GHp8pmYBkJExK+S4s2HWtjRML4xjxxcX5g4dNQycXuXRnfIyBnHGGH4m
+	hNayN4nVCYCB3l5y3y47+Ski28Mgws9pPRPb2h7EuQ7AG3qMLHE7mQpjlmVX65yfS7SXb+ugl/Y
+	+OWdT1nJyqSaTAr0XiFOXSIUAu2fCktsi48hsb6RHHRfzDcnwv78N2F48FOLFIO/SHkGz/8X8eC
+	F0K1AOX5U8hcGyxa8Qus34ynI6D+WQFnLeuLmKpN+XhcSHpqijH3ErWh556viY/O/wbzLXcEnN3
+	uEtcR5af6RBhk1DMSX2LU53Wgf0e0BN5IaG5AvoyB3utw==
+X-Received: by 2002:a05:6214:4016:b0:8f0:2c80:caa5 with SMTP id 6a1803df08f44-90c5eb91f13mr95769106d6.23.1787219867923;
+        Thu, 20 Aug 2026 02:57:47 -0700 (PDT)
 Received: from majuu.waya (bras-base-kntaon1621w-grc-04-184-144-29-222.dsl.bell.ca. [184.144.29.222])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90c5f2b8164sm34565336d6.48.2026.08.20.02.57.45
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90c5f2b8164sm34565336d6.48.2026.08.20.02.57.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Aug 2026 02:57:46 -0700 (PDT)
+        Thu, 20 Aug 2026 02:57:47 -0700 (PDT)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
@@ -67,10 +69,12 @@ Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
 	stable@vger.kernel.org,
 	vega@nebusec.ai,
 	"Victor Nogueira" <victor@mojatatu.com>
-Subject: [PATCH net 1/2] net/sched: pfifo_fast: cap ring size and account to memcg
-Date: Thu, 20 Aug 2026 05:57:41 -0400
-Message-Id: <20260820095742.68511-1-jhs@mojatatu.com>
+Subject: [PATCH net 2/2] selftests: tc-testing: add pfifo_fast ring cap regression test
+Date: Thu, 20 Aug 2026 05:57:42 -0400
+Message-Id: <20260820095742.68511-2-jhs@mojatatu.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260820095742.68511-1-jhs@mojatatu.com>
+References: <20260820095742.68511-1-jhs@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,79 +83,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-pfifo_fast_init() and pfifo_fast_change_tx_queue_len() allocate skb
-ring arrays sized by dev->tx_queue_len with GFP_KERNEL and no upper
-bound. An unprivileged user (via unshare -Urn) can set a huge
-tx_queue_len and attach many pfifo_fast qdiscs to exhaust global
-memory, causing a system-wide OOM.
-
-Cap the ring size to 65535 (default tx_queue_len is 1000) and use
-GFP_KERNEL_ACCOUNT so the allocations are charged to the allocating
-process's memory cgroup. A pr_warn_ratelimited is emitted when the
-ring size is capped so the user is not silently clamped.
-
-Conditions to recreate the bug:
-- CONFIG_NET_SCHED=y, CONFIG_VETH=y, CONFIG_USER_NS=y, CONFIG_NET_NS=y.
-- Unprivileged user in a fresh user+net namespace (unshare -Urn).
-- Create a veth pair, set tx_queue_len to a huge value (e.g. 500000)
-  while the devices are down.
-- Attach mq at root, then replace each child queue with pfifo_fast:
-    tc qdisc replace dev veth0 root handle 1: mq
-    tc qdisc replace dev veth0 parent 1:1 pfifo_fast
-    tc qdisc replace dev veth0 parent 1:2 pfifo_fast ...
-- Repeat across many veth pairs. Each pfifo_fast allocates 3 skb_array
-  rings of tx_queue_len entries (~12MB per qdisc at QLEN=500000).
-- On the unfixed kernel this exhausts global memory in ~28 iterations
-  on a 2GB guest -> OOM panic. On the fixed kernel the ring is capped
-  to 65535 entries (~1.5MB per qdisc) and charged to the memcg.
+Add a tdc test case (0249) that sets a huge tx_queue_len (100000000)
+on a dummy device and attaches pfifo_fast. On the fixed kernel the
+ring is internally capped to 65535 entries, so the qdisc is created
+successfully (exit 0). On the unfixed kernel the 100M-entry ring
+allocation (~2.4GB) fails, causing the qdisc add to fail (exit 2).
 
 Fixes: c5ad119fb6c0 ("net: sched: pfifo_fast use skb_array")
-Reported-by: vega@nebusec.ai
-Tested-by: Victor Nogueira <victor@mojatatu.com>
 Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 ---
- net/sched/sch_generic.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ .../tc-tests/qdiscs/pfifo_fast.json           | 23 +++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
-index ef2b4bf51564..e98fd236afa0 100644
---- a/net/sched/sch_generic.c
-+++ b/net/sched/sch_generic.c
-@@ -910,11 +910,17 @@ static int pfifo_fast_init(struct Qdisc *qdisc, struct nlattr *opt,
- 	if (!qlen)
- 		return -EINVAL;
- 
-+	if (qlen > 65535) {
-+		pr_warn_ratelimited("pfifo_fast: capping ring size %u to 65535 for dev %s\n",
-+				    qlen, qdisc_dev(qdisc)->name);
-+		qlen = 65535;
-+	}
-+
- 	for (prio = 0; prio < PFIFO_FAST_BANDS; prio++) {
- 		struct skb_array *q = band2list(priv, prio);
- 		int err;
- 
--		err = skb_array_init(q, qlen, GFP_KERNEL);
-+		err = skb_array_init(q, qlen, GFP_KERNEL_ACCOUNT);
- 		if (err)
- 			return -ENOMEM;
- 	}
-@@ -957,8 +963,14 @@ static int pfifo_fast_change_tx_queue_len(struct Qdisc *sch,
- 		bands[prio] = q;
- 	}
- 
-+	if (new_len > 65535) {
-+		pr_warn_ratelimited("pfifo_fast: capping ring size %u to 65535 for dev %s\n",
-+				    new_len, qdisc_dev(sch)->name);
-+		new_len = 65535;
-+	}
-+
- 	return skb_array_resize_multiple_bh(bands, PFIFO_FAST_BANDS, new_len,
--					    GFP_KERNEL);
-+					    GFP_KERNEL_ACCOUNT);
- }
- 
- struct Qdisc_ops pfifo_fast_ops __read_mostly = {
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json
+index 30da27fe8806..2cbe9738d699 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json
+@@ -105,5 +105,28 @@
+         "teardown": [
+             "$TC qdisc del dev $DUMMY handle 1: root"
+         ]
++    },
++    {
++        "id": "0249",
++        "name": "Create pfifo_fast with huge tx_queue_len (ring cap regression)",
++        "category": [
++            "qdisc",
++            "pfifo_fast"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "$IP link set dev $DUMMY txqueuelen 100000000"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root pfifo_fast",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $DUMMY",
++        "matchPattern": "qdisc pfifo_fast 1: root",
++        "matchCount": "1",
++        "teardown": [
++            "$IP link set dev $DUMMY txqueuelen 1000",
++            "$TC qdisc del dev $DUMMY handle 1: root"
++        ]
+     }
+ ]
 -- 
 2.43.0
 
