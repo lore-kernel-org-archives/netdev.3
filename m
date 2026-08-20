@@ -1,114 +1,119 @@
-Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9605B253340;
-	Thu, 20 Aug 2026 22:03:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD6D231A3B
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 22:06:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787263388; cv=none; b=blhJqXox2oN8A5nvAA8H4A8SvFbHMMkv3wN4bgQN7bXYVvQxxEbXEhrV6aWY8spgZClOSRsx2aIUMW5uc+My6zxt7Gb3y9uadonpeLE/64ufYOPMQNAKEVldxxNnmYQBgwdPqwHfiae90+ZopVLjhf/cODgtHgGgrCRY8fQeNP8=
+	t=1787263569; cv=none; b=eTNXfOSCu332JRlCP7LU00ddorShAQd9G2wX/gqtoMy5SErf16nlqiNxTt2N3MWKLc4/UBlhGc1JsB2W2+Wx4nyzzCX0XMXNVSH+m2lt+ZDIzsR+toZS4vcdPQ1OodenWW40Q4HW1SKD04r7ugB7CfLARZ0pNFNvzY9pRuBRngY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787263388; c=relaxed/simple;
-	bh=Z+qG1MVfTdCueXPAF+cS20lMMjifLDyXO3y2iby3Fc0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kDCAEemIdtn8ccdGoL2FUmh7zrVgOYfSidByJYCyQenZXRcyIX3gMgRxIUqCLvg8TtMkNZlhLDZr1SQkJAyUv5I9W2PrDM6ePTUeVdzrlK3b/bVK85xfkQs4ncPOjfBYq+i625mE1MIQE71lV3xqrp1wQXC0sNCag64vf9lM2S4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=qO3bJY7W; arc=none smtp.client-ip=51.159.188.251
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
+	s=arc-20240116; t=1787263569; c=relaxed/simple;
+	bh=dD13UkGfcPZNbD79K9GXyXffJjKMgiNpho1msYOG8BA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h7myGnw1nH0kUbpNGwRmbF/p4BWTJbZ/MnPCTDZOxKSoNXr6cE6wn+WBR6tO7ck5G1GtQjJuCGWy5wJobplKE+Mdw9ehCosjQ5cuXq8H/Au6FZaukXwoZQj1AggP6I0TmGR/Ndthskq34iMHtZLHqT9VWUISVQvpy5rhgeRoTMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U9w3hxh2; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="qO3bJY7W"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=EUFDvQueKTA0Kg8VM5wig7vU2XqvnDG0jtKGl3w49sU=; b=qO3bJY7WGiLEn2SC8qZVrAuggx
-	WC+FVisbhWy8ypbZjPAEWjUo1fuU73UumCHVsgGYRUOgkX9C0Qyvivny1F8XcKkvSVPIzxpuqfbi2
-	vHouHl0NW5RLngbGl/hbW0AOp7M8Rj5oW/yXbKwXttATpKE4X269y0mne7CamXdqf3aNWN/ZH0hlt
-	zunkX9Dq/hYpU7Wlu2hXQgGXgcQOqwLNpuenkH/vxRfUN9MlUNeJGo0jZ1hWhpZIA2Qceg+zDgAO/
-	iOR6z9iqQAnBqLRM7cKszpwoNnQTAR5FfkQ3M6xmaxDYu1TqxedIZUgKkI9mCSincQkKpuWoy6MPo
-	sZFQERfA==;
-Received: from [151.115.150.205] (port=51212 helo=gepetto..)
-	by pf-012.whm.fr-par.scw.cloud with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <Jeremy.Jean@oss.cyber.gouv.fr>)
-	id 1wxAqm-0000000AJER-0jCk;
-	Fri, 21 Aug 2026 00:03:04 +0200
-From: =?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
-To: "David S. Miller" <davem@davemloft.net>,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U9w3hxh2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787263566;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=lBCqBsTXomNoN7l1FC6bHoUAUjFGXpi8oElm1Kq3dv0=;
+	b=U9w3hxh22+BBLyNgwXlwTdA5moSUAbdEsOqI099aZVttozv/omh8WidA+KsVN2NY2SZMEb
+	h+P4cxSvtUMditXOB2dpSROYgYdL5y2nxdsYFJijG1PWPuDn3R+F5eEpAvcIfYfWjL4wG1
+	Fogq5RH7lgWjcqE4k1zEDR3Di/MTQ4Q=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-383-awuLMl_IN6-tH65WWTWM_A-1; Thu,
+ 20 Aug 2026 18:06:03 -0400
+X-MC-Unique: awuLMl_IN6-tH65WWTWM_A-1
+X-Mimecast-MFC-AGG-ID: awuLMl_IN6-tH65WWTWM_A_1787263561
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2AF3D1956040;
+	Thu, 20 Aug 2026 22:06:01 +0000 (UTC)
+Received: from tokka.redhat.corp (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B1963180034F;
+	Thu, 20 Aug 2026 22:05:59 +0000 (UTC)
+From: Thomas Walsh <thwalsh@redhat.com>
+To: Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
+Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
-Subject: [PATCH] net: gue: reject invalid REMCSUM offsets
-Date: Thu, 20 Aug 2026 22:02:10 +0000
-Message-ID: <20260820220210.3122690-2-Jeremy.Jean@oss.cyber.gouv.fr>
-X-Mailer: git-send-email 2.47.3
+	Thomas Walsh <thwalsh@redhat.com>,
+	Michal Schmidt <mschmidt@redhat.com>
+Subject: [PATCH net v2] bnxt_en: Gate TPH enablement behind BNXT_SUPPORTS_QUEUE_API check
+Date: Thu, 20 Aug 2026 18:05:44 -0400
+Message-ID: <20260820220544.1240879-1-thwalsh@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
-X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
-X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-The REMCSUM option carries an absolute checksum start and checksum field
-offset. gue_remcsum() passes them to skb_remcsum_process(), whose
-partial path stores offset - start in the u16 skb->csum_offset. If
-offset is less than start, this underflows (for example, 1/0 becomes
-0xffff).
+In bnxt_request_irq(), pcie_enable_tph() is called unconditionally to
+enable PCIe TPH when setting up interrupts.
 
-A forwarded packet can retain CHECKSUM_PARTIAL and reach a
-NETIF_F_HW_CSUM driver which trusts the metadata, leading
-skb_copy_and_csum_dev() to write two bytes about 64 KiB beyond the
-destination buffer.
+If the NIC hardware or firmware capabilities do not support queue ops,
+attempting to enable TPH during bnxt_request_irq() is unnecessary.
 
-Reject reversed tuples in both normal and GRO receive paths.
+As a result a flood of "RX queue restart failed: err=-95"  messages is
+seen upon boot.
 
-Fixes: fe881ef11cf0 ("gue: Use checksum partial with remote checksum offload")
-Assisted-by: Codex:gpt-5
-Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+Older NICs (pre-Thor / BCM57414) do not support TPH or queue management.
+TPH requires queue management to restart the queue.  NICs that support
+queue management (with updated FW) all support TPH.
+
+Gate the call to pcie_enable_tph() and setting of bp->tph_mode
+behind BNXT_SUPPORTS_QUEUE_API(bp) to ensure TPH is only initialized
+on devices capable of supporting queue ops. This prevents a guaranteed
+-EOPNOTSUPP error from occurring due to NULL operations.
+
+Fixes: 1410c7416dc3 ("eth: bnxt: always set the queue mgmt ops")
+Suggested-by: Michal Schmidt <mschmidt@redhat.com>
+Signed-off-by: Thomas Walsh <thwalsh@redhat.com>
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
 ---
- net/ipv4/fou_core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+v2:
+ - Updated commit message to include context on hardware support 
+   and added Michael Chan's Reviewed-by tag.
+ - Rebased onto net/main.
 
-diff --git a/net/ipv4/fou_core.c b/net/ipv4/fou_core.c
-index ab09dfcdecbd..c4b8b7293994 100644
---- a/net/ipv4/fou_core.c
-+++ b/net/ipv4/fou_core.c
-@@ -97,6 +97,9 @@ static struct guehdr *gue_remcsum(struct sk_buff *skb, struct guehdr *guehdr,
- 	size_t plen = sizeof(struct udphdr) + hdrlen +
- 	    max_t(size_t, offset + sizeof(u16), start);
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 9377bf675981..abe24d749cc2 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -11946,9 +11946,11 @@ static int bnxt_request_irq(struct bnxt *bp)
+ #endif
  
-+	if (unlikely(offset < start))
-+		return NULL;
-+
- 	if (skb->remcsum_offload)
- 		return guehdr;
+ 	/* Enable TPH support as part of IRQ request */
+-	rc = pcie_enable_tph(bp->pdev, PCI_TPH_ST_IV_MODE);
+-	if (!rc)
+-		bp->tph_mode = PCI_TPH_ST_IV_MODE;
++	if (BNXT_SUPPORTS_QUEUE_API(bp)) {
++		rc = pcie_enable_tph(bp->pdev, PCI_TPH_ST_IV_MODE);
++		if (!rc)
++			bp->tph_mode = PCI_TPH_ST_IV_MODE;
++	}
  
-@@ -308,6 +311,9 @@ static struct guehdr *gue_gro_remcsum(struct sk_buff *skb, unsigned int off,
- 	size_t start = ntohs(pd[0]);
- 	size_t offset = ntohs(pd[1]);
- 
-+	if (unlikely(offset < start))
-+		return NULL;
-+
- 	if (skb->remcsum_offload)
- 		return guehdr;
- 
+ 	for (i = 0, j = 0; i < bp->cp_nr_rings; i++) {
+ 		struct cpumask *cpu_mask = bp->ring_cpu_mask[i];
 -- 
-2.47.3
+2.55.0
 
