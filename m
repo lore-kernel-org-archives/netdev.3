@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468083DC84C;
-	Thu, 20 Aug 2026 21:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42DF3C13F5;
+	Thu, 20 Aug 2026 21:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787260862; cv=none; b=olxcpIsM/Y6GU4nIUGUrqzPiLsYHOk01JWIXC8YrYx2MLOiRE0vs7aYBxIfAlCz20q1oT83d5tmQvKZc6+bapEsPdMfLJ3RYLNFDfCZ4vEQ2S7IllLBBGPxuT69KSSP6ojA++Ik+fDi2997rdmYf9DSGoPexQorj2LPR0ILFiS4=
+	t=1787260864; cv=none; b=Hc4xWpi2Y0WGl1oGvx60ya+t/QwI20GRBM/r18DcesivJoj1v8wZ3vJrsLO2G0lse5iZIsUx6yYH7Okw9qVd220G32lMDi3dpv9LW/p7rHbylXxuQ8eABL+lv1wBqTvpezAECaFbNstXNT5W1GMUqx3HtEo5at/U+cMhc3PzDhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787260862; c=relaxed/simple;
-	bh=/OZar+hXES8NmK99LVUKSS/Gd2B13Fbq+ROqEj/YGgo=;
+	s=arc-20240116; t=1787260864; c=relaxed/simple;
+	bh=DNcgQTkBQf2hIYzPb7ktk7cjetRYxnCKlQ68rhPpbdM=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=BghCTauTvk9WBeM3ovyWG8W63QCeyK7DezTnaZ97cY64olV5cLbaUP5BUAL1bhHmEm7F1BCMNoZgrJjdxXMTAtTKZqAbgITabuT4bjEFnfuks9fNHnOgsCgd+MjUZHVANU9qznkZAq6DXGy6JlWyb450xjMVREa2F6IRAf3lDNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XyWRgRSZ; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=F83f/YGkIsN1ARE8pNtTlcswKhpT+Q9qPvt5B+8fupshs2QyoGZgs+5iUsHwlayCFuoRH8KtEGcrZFMhDwgc4qVdUNraqi0zrtBgz/kqa16PKMxkuGOJ5wnFDWKZ9SbRy6kC6wlIg1Ig/rnArlq5dnVPDtDUHiwIFjOcBEEpewE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hdDZ13lj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XyWRgRSZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F02211F00A3A;
-	Thu, 20 Aug 2026 21:21:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hdDZ13lj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 747231F000E9;
+	Thu, 20 Aug 2026 21:21:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787260861;
-	bh=uDNFb2ziRldfusGy5sfr09/4Uuh8b7cSYJ/ewjTv5bk=;
+	s=k20260515; t=1787260862;
+	bh=/MsSEeUrcW/6FkkcmaBIPSVkJ82YiN7xLenniToTdDw=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=XyWRgRSZRaaOY4P841ayCzV1hbM64tESeWyIG7blReRfFtUgiYtPZBu5BzkmJNFGi
-	 vNYYuALhSPssu5KsZEAch9kFBTcBAFTC0ed7HBiloDuNsDJrBTQ05DAxIa2/mY90p/
-	 /uoDpC164nANShnhonRQzcewPJ8JmO58njL7bZIUb03ZZZjXuZqid0mjEZOWCk8YKR
-	 R+PyeReByjTaXr4hGZavyetecF0cRj/gUaTMazGmaY5i6dImqjFa/Fu+M9SAc4ZLF6
-	 kGA82KZVwlZ2AhKHUr1r7m6cOKQRFaGoTDpYQNp7IMrCyaTR5DIL57J79iJe+JJYoL
-	 1eSevKy/DZUxQ==
+	b=hdDZ13ljdGisw+qb4tXoiJXBynhWxnMiUocwI4YT0u6a21mpLOZ/XSuOUrfVsMd9y
+	 g/0s14JRc1+i4rJZq09uC39q/Q/2VNXhKfbEY9UPbXg45AZXPDfzLi5BB6TI55J7JO
+	 0AAXTcCHn8zYjx3JdNiLeVLyWy2m6nVwk9KVGdtEpszgw7F/AWLm/vAF5t/yU603QC
+	 uq7ql1ZD0DW+tBQ2jv/PBwZVoWy4UKuFKuJsu2iZYAEBGLKVzSpj6ED0EkO0w/wjF3
+	 AXlF1cd+d/sh7YMxSMh2ZANz4Tzi1hSVOLi09x10wAfLTAiZv6Li54I8IVCPIrxmz3
+	 LaBgqQj1QluqQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 567D23924468;
-	Thu, 20 Aug 2026 21:20:12 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D09BC3924468;
+	Thu, 20 Aug 2026 21:20:13 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,42 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net/smc: free stashed qentry before overwrite in
- REQ_ADD_LINK to ADD_LINK transition
+Subject: Re: [PATCH net] net: phylink: correctly validate returned PCS in
+ phylink_inband_caps
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178726081088.489531.2829353523689897272.git-patchwork-notify@kernel.org>
-Date: Thu, 20 Aug 2026 21:20:10 +0000
-References: <20260818073107.466506-1-mjambigi@linux.ibm.com>
-In-Reply-To: <20260818073107.466506-1-mjambigi@linux.ibm.com>
-To: Mahanta Jambigi <mjambigi@linux.ibm.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
- dust.li@linux.alibaba.com, sidraya@linux.ibm.com, pasic@linux.ibm.com,
- horms@kernel.org, tonylu@linux.alibaba.com, guwen@linux.alibaba.com,
- netdev@vger.kernel.org, linux-s390@vger.kernel.org, hidayath@linux.ibm.com
+ <178726081238.489531.4616366200802806687.git-patchwork-notify@kernel.org>
+Date: Thu, 20 Aug 2026 21:20:12 +0000
+References: <20260817213009.13924-1-ansuelsmth@gmail.com>
+In-Reply-To: <20260817213009.13924-1-ansuelsmth@gmail.com>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: linux@armlinux.org.uk, andrew@lunn.ch, hkallweit1@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ rmk+kernel@armlinux.org.uk, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 18 Aug 2026 09:31:07 +0200 you wrote:
-> When smc_llc_event_handler() transitions the local LLC flow from
-> SMC_LLC_FLOW_REQ_ADD_LINK to SMC_LLC_FLOW_ADD_LINK on arrival of an ADD_LINK
-> request, it calls smc_llc_flow_qentry_set() unconditionally:
+On Mon, 17 Aug 2026 23:30:03 +0200 you wrote:
+> In phylink_inband_caps(), the PCS returned by mac_select_pcs is only
+> checked if NULL but mac_select_pcs can also return an error pointer.
 > 
-> 	if (lgr->llc_flow_lcl.type == SMC_LLC_FLOW_REQ_ADD_LINK) {
-> 		lgr->llc_flow_lcl.type = SMC_LLC_FLOW_ADD_LINK;
-> 		smc_llc_flow_qentry_set(&lgr->llc_flow_lcl, qentry);
-> 		...
-> 	}
+> This can cause a kernel panic as phylink_pcs_inband_caps() only checks
+> if passed PCS is not NULL and directly dereference ops from the phylink_pcs
+> struct.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net/smc: free stashed qentry before overwrite in REQ_ADD_LINK to ADD_LINK transition
-    https://git.kernel.org/netdev/net/c/036322025d6e
+  - [net] net: phylink: correctly validate returned PCS in phylink_inband_caps
+    https://git.kernel.org/netdev/net/c/f2849b1fd059
 
 You are awesome, thank you!
 -- 
