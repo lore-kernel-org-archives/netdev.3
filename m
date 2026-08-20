@@ -1,119 +1,107 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi2-f11.google.com (mail-oi2-f11.google.com [74.125.231.203])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD6D231A3B
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 22:06:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBB9313546
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 22:09:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.203
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787263569; cv=none; b=eTNXfOSCu332JRlCP7LU00ddorShAQd9G2wX/gqtoMy5SErf16nlqiNxTt2N3MWKLc4/UBlhGc1JsB2W2+Wx4nyzzCX0XMXNVSH+m2lt+ZDIzsR+toZS4vcdPQ1OodenWW40Q4HW1SKD04r7ugB7CfLARZ0pNFNvzY9pRuBRngY=
+	t=1787263781; cv=none; b=O9AkLEGTysnsU45BB2tTRi94H2T2Q+ZgRWQfIfj0g8UX3jl9y0eHLjuv6VikNqslRzg5I4kA1plIz0xxw8AY3U2GiumJxN9oL+qe3Ce6CsMk4xz2aa5HqT1HwmZzRnqtUXs44Y4sWxN6jveU8le9CuUCP/7wDZL7MKxhyR02NJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787263569; c=relaxed/simple;
-	bh=dD13UkGfcPZNbD79K9GXyXffJjKMgiNpho1msYOG8BA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h7myGnw1nH0kUbpNGwRmbF/p4BWTJbZ/MnPCTDZOxKSoNXr6cE6wn+WBR6tO7ck5G1GtQjJuCGWy5wJobplKE+Mdw9ehCosjQ5cuXq8H/Au6FZaukXwoZQj1AggP6I0TmGR/Ndthskq34iMHtZLHqT9VWUISVQvpy5rhgeRoTMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U9w3hxh2; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U9w3hxh2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787263566;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=lBCqBsTXomNoN7l1FC6bHoUAUjFGXpi8oElm1Kq3dv0=;
-	b=U9w3hxh22+BBLyNgwXlwTdA5moSUAbdEsOqI099aZVttozv/omh8WidA+KsVN2NY2SZMEb
-	h+P4cxSvtUMditXOB2dpSROYgYdL5y2nxdsYFJijG1PWPuDn3R+F5eEpAvcIfYfWjL4wG1
-	Fogq5RH7lgWjcqE4k1zEDR3Di/MTQ4Q=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-383-awuLMl_IN6-tH65WWTWM_A-1; Thu,
- 20 Aug 2026 18:06:03 -0400
-X-MC-Unique: awuLMl_IN6-tH65WWTWM_A-1
-X-Mimecast-MFC-AGG-ID: awuLMl_IN6-tH65WWTWM_A_1787263561
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2AF3D1956040;
-	Thu, 20 Aug 2026 22:06:01 +0000 (UTC)
-Received: from tokka.redhat.corp (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B1963180034F;
-	Thu, 20 Aug 2026 22:05:59 +0000 (UTC)
-From: Thomas Walsh <thwalsh@redhat.com>
-To: Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Thomas Walsh <thwalsh@redhat.com>,
-	Michal Schmidt <mschmidt@redhat.com>
-Subject: [PATCH net v2] bnxt_en: Gate TPH enablement behind BNXT_SUPPORTS_QUEUE_API check
-Date: Thu, 20 Aug 2026 18:05:44 -0400
-Message-ID: <20260820220544.1240879-1-thwalsh@redhat.com>
+	s=arc-20240116; t=1787263781; c=relaxed/simple;
+	bh=gKEl5BDKm7NPtHmYouZILv51lFhr9lX8HXHWK89Ha1I=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=uEkqUAkthWxjgxpOgmROTlVCprtn9g3p/dBh1k/nOImTBcJQKuSx/TWXJ0oh+fJgdGGOG4FpEm4pVQcyqAHH1lkL22kF4yXlNGYhwjFAvkZ9ZFiVd7dyoYtbLZFJm5mMFy8PfQ+Y8G4jzqhq0NnSBE5JFMge4ojJGScwdLscPWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.203
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi2-f11.google.com with SMTP id 5614622812f47-4af7193adb7so139640b6e.0
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 15:09:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787263779; x=1787868579;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=aXWG3iaT3vGs1SrxMuVGI6eYYcjA+z2LE04ReofBQBI=;
+        b=crcCyTiz6hf+MJwrnKEcTJQ/DAZcez+BACjjSosPxYBsdbl8Ngg9MMlzIhNzO2y+6i
+         TsqkyTeOfYHreKc8TFK1pu/othQQYawHnOav2ytTcnUd/ihPC9L+kbwN5f204fmphosA
+         MlWnlWDGicVBz1nYH7RMivxdeH7NJnso7WyDucp/ikWFE3fangPSCvWBCN6fdizIsdYS
+         +shaPdJIJqLz3Ve/uI2Hor7+jVXLxEx1Pd3GNKvVqVwQsei9X+2eikSd6G4p9lY/AomK
+         u8tVqP7jZq0T2/SfFw3R5ZV3e0Hdu2bUBOjLlp+NJtU54CbkN+Cbh6xieYI6FAs6EBPl
+         20bg==
+X-Forwarded-Encrypted: i=1; AHgh+RoN9XFUwg1l6C1+/6TzZ1JPM/4KFlWRDbqX2fxhxk9pNRMNVY8xVrUcixvp5DUJn6Mb7RVIZ0s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZkKzoyC4MsFUeb45wYaZqeI/FZ63oxjB/gyySDUSx6DM5C471
+	EQ+4ONEbMFBuDNnaEHpU27lSTSTscmj3hdoVX/ha+RnpK/6AM5DiydOxo0YcgP3uPqQSqavqxGy
+	dt7/pgCatY/BiwFolwzKwU7EpyK24/90X6iNXpR45xHy9We+17cFODnW+wSA=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Received: by 2002:a05:6808:514c:b0:490:315d:e0d5 with SMTP id
+ 5614622812f47-4b2ef42cc98mr1376891b6e.16.1787263778649; Thu, 20 Aug 2026
+ 15:09:38 -0700 (PDT)
+Date: Thu, 20 Aug 2026 15:09:38 -0700
+In-Reply-To: <6a75d605.01d0871a.3a0d52.0047.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a877b22.f7a79266.2f965f.004d.GAE@google.com>
+Subject: Re: [syzbot] BUG: Address fc00:: on device lo is missing its host route.
+From: syzbot <syzbot+ded267b328e950a7c0c4@syzkaller.appspotmail.com>
+To: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
+	horms@kernel.org, idosch@nvidia.com, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	pimyn@google.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-In bnxt_request_irq(), pcie_enable_tph() is called unconditionally to
-enable PCIe TPH when setting up interrupts.
+syzbot has found a reproducer for the following issue on:
 
-If the NIC hardware or firmware capabilities do not support queue ops,
-attempting to enable TPH during bnxt_request_irq() is unnecessary.
+HEAD commit:    9d2ed026f031 Merge tag 'sysctl-7.03-rc1' of git://git.kern..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=10661e79580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=996f19b48f3c7123
+dashboard link: https://syzkaller.appspot.com/bug?extid=ded267b328e950a7c0c4
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10d20415580000
 
-As a result a flood of "RX queue restart failed: err=-95"  messages is
-seen upon boot.
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-9d2ed026.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/dbab070bbde5/vmlinux-9d2ed026.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/857014a70033/bzImage-9d2ed026.xz
 
-Older NICs (pre-Thor / BCM57414) do not support TPH or queue management.
-TPH requires queue management to restart the queue.  NICs that support
-queue management (with updated FW) all support TPH.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+ded267b328e950a7c0c4@syzkaller.appspotmail.com
 
-Gate the call to pcie_enable_tph() and setting of bp->tph_mode
-behind BNXT_SUPPORTS_QUEUE_API(bp) to ensure TPH is only initialized
-on devices capable of supporting queue ops. This prevents a guaranteed
--EOPNOTSUPP error from occurring due to NULL operations.
+netdevsim netdevsim0 netdevsim1: set [1, 0] type 2 family 0 port 6081 - 0
+IPv6: BUG: Address fc00:: on device lo is missing its host route.
+netdevsim netdevsim0 netdevsim3 (unregistering): unset [1, 0] type 2 family 0 port 6081 - 0
+netdevsim netdevsim0 netdevsim2 (unregistering): unset [1, 0] type 2 family 0 port 6081 - 0
+netdevsim netdevsim0 netdevsim1 (unregistering): unset [1, 0] type 2 family 0 port 6081 - 0
+netdevsim netdevsim0 netdevsim0 (unregistering): unset [1, 0] type 2 family 0 port 6081 - 0
+bridge_slave_1: left allmulticast mode
+bridge_slave_1: left promiscuous mode
+bridge0: port 2(bridge_slave_1) entered disabled state
+bridge_slave_0: left allmulticast mode
+bridge_slave_0: left promiscuous mode
+bridge0: port 1(bridge_slave_0) entered disabled state
+bond0 (unregistering): (slave bond_slave_0): Releasing backup interface
+bond0 (unregistering): (slave bond_slave_1): Releasing backup interface
+bond0 (unregistering): Released all slaves
+hsr_slave_0: left promiscuous mode
+hsr_slave_1: left promiscuous mode
+batman_adv: batadv0: Interface deactivated: batadv_slave_0
+batman_adv: batadv0: Removing interface: batadv_slave_0
+batman_adv: batadv0: Interface deactivated: batadv_slave_1
+batman_adv: batadv0: Removing interface: batadv_slave_1
+veth1_macvtap: left promiscuous mode
+veth0_macvtap: left promiscuous mode
+veth1_vlan: left promiscuous mode
+veth0_vlan: left promiscuous mode
+team0 (unregistering): Port device team_slave_1 removed
+team0 (unregistering): Port device team_slave_0 removed
 
-Fixes: 1410c7416dc3 ("eth: bnxt: always set the queue mgmt ops")
-Suggested-by: Michal Schmidt <mschmidt@redhat.com>
-Signed-off-by: Thomas Walsh <thwalsh@redhat.com>
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+
 ---
-v2:
- - Updated commit message to include context on hardware support 
-   and added Michael Chan's Reviewed-by tag.
- - Rebased onto net/main.
-
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 9377bf675981..abe24d749cc2 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -11946,9 +11946,11 @@ static int bnxt_request_irq(struct bnxt *bp)
- #endif
- 
- 	/* Enable TPH support as part of IRQ request */
--	rc = pcie_enable_tph(bp->pdev, PCI_TPH_ST_IV_MODE);
--	if (!rc)
--		bp->tph_mode = PCI_TPH_ST_IV_MODE;
-+	if (BNXT_SUPPORTS_QUEUE_API(bp)) {
-+		rc = pcie_enable_tph(bp->pdev, PCI_TPH_ST_IV_MODE);
-+		if (!rc)
-+			bp->tph_mode = PCI_TPH_ST_IV_MODE;
-+	}
- 
- 	for (i = 0, j = 0; i < bp->cp_nr_rings; i++) {
- 		struct cpumask *cpu_mask = bp->ring_cpu_mask[i];
--- 
-2.55.0
-
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
