@@ -1,206 +1,272 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5D147CA9D
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 16:23:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787243009; cv=none; b=O6bI2iAwx+6ajxVDPoLUmYzP4jSWVADQY+3tOKF72nGapC+ZwjZY0Pkv0Czi3fBxn7fOdzxYPZXE/HmA4ok5HQra3pwIvuRVeyNpT5bjJbwLyw7opkDFIVx4RsMhu/pTDoCM9tdeCkPttu/kHDfIe4tqBzlcG2E0C7aqYDUnNKs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787243009; c=relaxed/simple;
-	bh=wOpPq8J9xFk6jgQSnvisusIVhRRpuSYK+LEmi6Tqw/4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WBoHtRXf86KsG1WsxS+lhhPISjZMLHrqALnoGZzWo0sXfZ8zZDEOQpU8UfN6/Vdomu7SP8AeAvYrLd+wWig8y777vP67lrMw0mwv9/iKfpwV1s7yM1RuxVs+y/gFQxxoQtptBFrM1Ih5NjCNcfF4wBPjJivQV77P63h666y8ekY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=strqcKdA; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DE347B438
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 16:32:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787243576; cv=pass; b=icrer+Ehj45jrZKjWEnX3F9DcI81/4afElGrUnTnoAcuKq/cuXBCX6UrgxdJXzwXKzrHoyy0rWr31Wwgw1xrb+3TKl9/i9Kd5oq+PXKqWaP1g1nQj/E/yFwQzZV4BRjn7tYA2A8iPkMYgAGHqy0a+otO3HwKFj6QvOmDk94ETvI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787243576; c=relaxed/simple;
+	bh=rkzyXPSR/jn/a62GdHaVSAEuVNznsSW+rgf0zyHH41A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tGtOqqj8phdY7FZfkxBvZtWONmQvKnO3n4zMPH+460caJNz/4Sa56x3XR7HS3NBTt1kZEyQPPT5kiczYyTN7TfWaOYg18+Lw8TKnUA5hQz/dldfLYe5YCWGFpKAPQrNc5QBOosW19YyBhVok7RvFQFDOWvE1G8zZ+lgJlKBkyqU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PC/GqwMc; arc=pass smtp.client-ip=209.85.222.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="strqcKdA"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-38759bcd877so2994011a91.2
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 09:23:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PC/GqwMc"
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-936cda0e3fbso200724385a.3
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 09:32:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787243574; cv=none;
+        d=google.com; s=arc-20260327;
+        b=YlxILfn34k0Alkbd+sXVCoXKTTg6ATqNB0rEttneZYdy2v6zP8PhTaExUj7wgyC5x6
+         h7ikuCUjo7XafhFbswxe+0i8UVgTRiqdMgQEYSIgnDImij3r43mULZvaGW/T3ySPVhTC
+         xJoLZ33wYvoSvvvNrLzy/P42H7OaSKYZhRwr2ZECZ4tKqNTZaWFzzjG5RgPaax7fb4D9
+         Su+rubz7/E87P5xN5zhAoBqXBQtkVHbwfPdXYtpCkJu2ECHeudXX2gKTI/iW0IjDXiCC
+         gClRZFGX0BA8UGuPHLrZ6xP5ZntCZYVhxJeLG/uWwQ6m1HmbAyOj/SUUOeOB31f8nzMw
+         6BRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=CUsp03bfJ3WOX3d6yN4GEyHo28ulSrFzk+2hL6X786Q=;
+        fh=qzZHubj28t0VFQOgMl/GFpCu8n22KXUUnbnIJWubRNI=;
+        b=cKoHkr49SDk0CAEL2yPHSnASQxbDcXNVKIPN0uiMFHrUpeERJ4M372Fh6cA2WEom/x
+         AwcqfUBjEdMDvc4EbvCaeoYa48ilR6pa6aBxJAuGxItqVQsnAF3CQnJhQByhRnmv8cbu
+         tEfmV1RXdggDaL49wOfF+1aF1JHHs3Dkx7E3xQSizyfOwOzbphYe5dCl8U0gIwXJhBhR
+         Ly1Y6tS68G+Mr8eai+dyxjgETMAyMay9tZ3pwSLWTvc1cWKvw+FxJzZEjYJkr0OTdY8i
+         vMPY5z+nTKTsGYmXXiypYSugLxQP6ePS16Dqe98rBfv+DYDimMMrpQRjVkAgQAHmcfP0
+         JokA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787243007; x=1787847807; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=z9hOE/x1CqgPd8sqR178LEmzWO/estVscP715cq7wwU=;
-        b=strqcKdAVFhxaFF0NmV2/2rfCtdVRlnHuSZw+HlcrPJzuYLnp3F04dMIicOJ5qcmxM
-         7ZtrKFXK57F3Ec+9HaICicRU9iHYR7Pr9czqKwtoYkn6A3b6GkTeuVxO7SoOYRMJc+CM
-         IMXZvXix1+6wbJtXWvaf2Y7zbg2CL78DMQuDjt5pV4QqNnS1DH8pNpM3S2e8uockbnyk
-         pBtkkeojqK0n8mygncst+0yFiht00lUtS1moxjElizdeCzians+tO5nzsWkkCnKVNa5z
-         cKHxvW3XOfz2irMu9vLAb/FnKAjkJ43NXEhaSxfHHtOg0ep3+v7J//Lq+id9RhzmD5Lw
-         mT2g==
+        d=google.com; s=20251104; t=1787243574; x=1787848374; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=CUsp03bfJ3WOX3d6yN4GEyHo28ulSrFzk+2hL6X786Q=;
+        b=PC/GqwMcvwqu70/79l/HF7Il7H6JXT5kQYoo0RiGfK5RmsA8QliYeQrHlpMtYd9/r5
+         8pF03dGpepeC24eydiyXbP9S1gYp+yPLilvESR8wyVqE1KF9jp8C4OJf9JYS6jsOdy/w
+         w0wBa/7QBY/+W4GqeCHabmkCcXBTk72WwH4JFH7AiVZ+lOVYz098y+bYxqstxUl8TaWp
+         XR0eL9lLjtplRVyrd1m4hSi29qsc1mEtY5mSQ7jg+KXpUg4KFVsgBucMrrM8qUE2um5Y
+         VRRr0l1aXi2mQsepWcKDSDft7vqK5kIGYJA3wtscCoxUdrOZm3AEYpF1A93hnDmWpaBk
+         vP/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787243007; x=1787847807;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=z9hOE/x1CqgPd8sqR178LEmzWO/estVscP715cq7wwU=;
-        b=PEUyiTgERRLEU2h/I71r2NbkHp1f3H1y6rr3/QVY+kBMFCYQ68aKaulfR3vqqfvyxC
-         YpYEOT6WARflPqtIBbVFTDTxV97nNgCbq+UHbjZl+Uu+O7uCjy9zuLYf8g45QVoRQGZ+
-         6ZupkU2kE0YTkfg61xrakouMsr9ruAiZ3NMmPpVAu5zal1iHFFNuD2qjGB6Ieu6Eea0w
-         KncR16bbmM35MsRMKcUe+FlFunu3CrHirGXHO4P+7JBFmIvGHxiqdzjPzBIQAcPOVTPV
-         UzbKmWOBmgNiAmsn7GELZP/I7snRwFuM41fnCFX2SYgm1q30o/YSVBz2iBErlCz91RU3
-         Xsiw==
-X-Forwarded-Encrypted: i=1; AHgh+Rol9+B7vZu74zxRECk/9GnIxY0DzvJ9HG4w2JQJPa34CVGA/WYwKAQhnc/8k2i7g7N9ZEUYWqc=@vger.kernel.org
-X-Gm-Message-State: AFuF++m+h/J60+cDiSLpYWECvUEeRqEMExtEPI2iRMlVrEucFkP9NRuU
-	p4HrzdTKRVOyFHhPkaWadlgYLOSdLn7PS/IIZhC329J5mtVoRyh7PgEl
-X-Gm-Gg: AR+sD13at81iCj0YreSMPNkD9orMNYj7+XO/pYbZVHwsRXF1AcIIbo4yj7r3ob5epDE
-	CKxgKTaRjA5QgBs4QlZjUVO6IpSeTpbZlkNPtU0mHgrD1yjnOATku0fHYxWbBXPKzOX0aFo0aHZ
-	ipvnAgvRBaxld9TjEoOPGxvICb8pGmikVcfx3rD/FsVeCe8p5IS25CMizLBAdq7YGaj4pqEv7de
-	6LiUGz0+BBSrxa72xa3IeXEU5Fn7x//NStclpal/7yGQ5SADv7qAA4H8Q+5P3YicgL2ExT2Qn/j
-	v2HxDu5+SaxCjPHIDaw6CQpANGqr/Pw8bg135PyYH17vlUAsNvfNfxw4BwVuQFgYw9IvW9r26gd
-	XB7CfYb2Y+UTSDltEi+/k/9rBInYnhpxNvmOrcixp9an9PJFk1pPrPoRlFslYZ+J22GNvaJBSpA
-	dmTl0AFvvyGpk3MGrhRPGHBheNqwcIQpOURc3Em3lWR+Xc+sB/0mcrFCQZGrlTL1fQuE7P14lXX
-	PKQr7oF+d/8QamFUYt+
-X-Received: by 2002:a17:90b:164c:b0:393:19a3:4e5 with SMTP id 98e67ed59e1d1-395812c6e07mr22875749a91.16.1787243006832;
-        Thu, 20 Aug 2026 09:23:26 -0700 (PDT)
-Received: from localhost ([82.40.34.252])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3957fb3069csm8652740a91.15.2026.08.20.09.23.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Aug 2026 09:23:25 -0700 (PDT)
-Sender: Weiming Shi <thebestswings@gmail.com>
-From: bestswngs@gmail.com
-To: marcelo.leitner@gmail.com,
-	lucien.xin@gmail.com,
-	linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: horms@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	xmei5@asu.edu,
-	Weiming Shi <bestswngs@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] sctp: fix NULL deref on untransmitted RECONF completion
-Date: Fri, 21 Aug 2026 00:22:36 +0800
-Message-ID: <20260820162235.2668698-2-bestswngs@gmail.com>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20251104; t=1787243574; x=1787848374;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CUsp03bfJ3WOX3d6yN4GEyHo28ulSrFzk+2hL6X786Q=;
+        b=Js+H6ODTI9VtWdL0WagwcVY0+6snGNcGmMLIgAx8/9CFEN6g+X7wX6jl5WvxjpfTb0
+         qzXmegAY+wrUkz9+SEctksyLey2KqDumrV2se5Cb2KF+SIWz19w/zRVStD1OnYdINkHV
+         IZa1Bcyyq+qvYDJhaj5j992yulK2vwijoIm+x5S+y3zAfpZvGbUA8AQugWWR0agEVaUT
+         URHYactwdKpQAcxMGtiY+oh6ZNFDrhBAQMgPxg7gf1RF9+QPH0EFNGFTwP4dfpgoQuVv
+         QRNlI2ubAHP84QALd1rMH3cJgh2Pi5f+H2JXal9KqsNZAZsiK1yM5DKteYPjTNbwDl0Y
+         mKmw==
+X-Forwarded-Encrypted: i=1; AHgh+Ro1cp+pRXhDGb8nbvxWpkwMeGEUGB8BNWKH4gml662TydwGI9kK33wTWa4LBCSMM5MSaA4v+wA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwfVmn1aY5I90IeHa0iL4bWh/3YYQVCtlTcsJSXJSMwN8eWWsC
+	JW8fIkeK4EACVIUibTUDvf7dYG5b88A0h2PTXBpiPFjsjiQjenYjiPdMK9llOgJLInldC6aLHu+
+	rbd6EJZ1/BgrU2DzT4WX5TgLLLlUmKD5NQ0ZnNtpO
+X-Gm-Gg: AR+sD10AYS+eG5cATkqJgNiSSpMZiuFK/wo+rFykiZBjydOLdzOlh8I2BVZ13u+4vlA
+	IkRO5cW6HmiGQp+ieXCp+3gSclQYfaH7Y9B4B9SFaABM3H7FrTsRnkUzUbce4SpiEYcHTP1nipr
+	WMtO3TyKC5/t+qG5Vh84d8NBv42bjN5VnxHwIJEA/VXtwD5SMXKvYAd+mwa9d/29BIgDOSSK5hA
+	bQ8YUvyA9ws5vFc3eyHgDxEvDQaRZjeC6C2uF/bYqyw+Z2v8zes2pZCqk86pVvClzktkqfu+1Fg
+	IvxBQXGY5YAZNjRhBNXDrwAaQ47VTYzyaje4w3MVl1j7WaRmzlOTgIIZW9Dr1luIpoGgmyvMMEK
+	wTfHgZt11fZOyNPvpef1s+iRrdHVU8mEbIdv8Uh5BAA65mM57NZCD0WOqS3vx3qg=
+X-Received: by 2002:a05:620a:4556:b0:936:eeab:307e with SMTP id
+ af79cd13be357-9371e1f7192mr1321430885a.9.1787243573194; Thu, 20 Aug 2026
+ 09:32:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260813033855.3372172-1-dongchenchen2@huawei.com>
+ <CANn89iLCrzmOfUVwa0yeROpkZxWmVsAkbH7=SBA3XuVxkmTfKA@mail.gmail.com>
+ <53e86f6f-43b9-4e06-b185-1344f69cd650@huawei.com> <CANn89iJWTwiQJbjWz5jY6DE_TSA0EEMyJtQFbDSzMJfjV=MHQQ@mail.gmail.com>
+ <9a80f88e-c8a6-44fb-a7b2-7cdbaa3bba24@huawei.com>
+In-Reply-To: <9a80f88e-c8a6-44fb-a7b2-7cdbaa3bba24@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 20 Aug 2026 18:32:40 +0200
+X-Gm-Features: AcwNN1UU9ZZ7sVr18Pu_QFOm8Zo1rQRMjJJjwDbuNLkDJDkAveZeMpa4YGe78fw
+Message-ID: <CANn89iKg5XhJQQQWaF0UMxs+Bwjthk=StBKVnKfh+VKBAywkpA@mail.gmail.com>
+Subject: Re: [PATCH net] net: iptunnel: fix stale transport header during
+ tunnel decapsulation
+To: "dongchenchen (A)" <dongchenchen2@huawei.com>
+Cc: davem@davemloft.net, pabeni@redhat.com, kuba@kernel.org, horms@kernel.org, 
+	herbert@gondor.apana.org.au, kuniyu@google.com, idosch@nvidia.com, 
+	andrew+netdev@lunn.ch, ap420073@gmail.com, steffen.klassert@secunet.com, 
+	laforge@gnumonks.org, jiayuan.chen@linux.dev, jhs@mojatatu.com, 
+	zhangchangzhong@huawei.com, netdev@vger.kernel.org, 
+	syzbot+83181a31faf9455499c5@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Weiming Shi <bestswngs@gmail.com>
+On Thu, Aug 20, 2026 at 12:04=E2=80=AFPM dongchenchen (A)
+<dongchenchen2@huawei.com> wrote:
+>
+>
+>
+> =E5=9C=A8 2026/8/20 17:16, Eric Dumazet =E5=86=99=E9=81=93:
+> > On Thu, Aug 20, 2026 at 10:58=E2=80=AFAM dongchenchen (A)
+> > <dongchenchen2@huawei.com> wrote:
+> >>
+> >>
+> >>> On Thu, Aug 13, 2026 at 5:30=E2=80=AFAM Dong Chenchen <dongchenchen2@=
+huawei.com> wrote:
+> >>>>
+> >>>> Syzbot reported a crash in qdisc_pkt_len_segs_init() caused by a sta=
+le
+> >>>> transport_header offset after tunnel decapsulation.
+> >>>>
+> >>>> BUG: unable to handle page fault for address: ffffed102091a42e
+> >>>> Oops: Oops: 0000 [#1] SMP KASAN NOPTI
+> >>>> CPU: 0 UID: 0 PID: 340 Comm: qdisc_uaf_repro Not tainted 7.2.0-rc4-0=
+0061-g248951ddc14d #256 PREEMPT(full)
+> >>>> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debi=
+an-1.16.3-2 04/01/2014
+> >>>> RIP: 0010:__asan_load2
+> >>>> <IRQ>
+> >>>> qdisc_pkt_len_segs_init (net/core/dev.c:4145)
+> >>>> __dev_queue_xmit (net/core/dev.c:4787)
+> >>>> br_dev_queue_push_xmit (net/bridge/br_forward.c:53)
+> >>>> br_handle_frame_finish (net/bridge/br_input.c:229)
+> >>>> br_handle_frame (net/bridge/br_input.c:315)
+> >>>> __netif_receive_skb_core.constprop.0 (net/core/dev.c:6099)
+> >>>> __netif_receive_skb_list_core (net/core/dev.c:6287)
+> >>>> netif_receive_skb_list_internal (net/core/dev.c:6445)
+> >>>> napi_complete_done (net/core/dev.c:6813)
+> >>>> gro_cell_poll (net/core/gro_cells.c:74)
+> >>>> __napi_poll (net/core/dev.c:7735)
+> >>>> net_rx_action (net/core/dev.c:7798 net/core/dev.c:7955)
+> >>>> handle_softirqs (kernel/softirq.c:622)
+> >>>> do_softirq (kernel/softirq.c:523  kernel/softirq.c:510 )
+> >>>> __local_bh_enable_ip (kernel/softirq.c:450)
+> >>>> tun_get_user (drivers/net/tun.c:1986 (discriminator 1))
+> >>>> tun_chr_write_iter (drivers/net/tun.c:2032)
+> >>>>
+> >>>> The crash requires four conditions to line up:
+> >>>>
+> >>>> 1. The incoming packet is encapsulated and carries GSO metadata.  Th=
+e outer
+> >>>>      transport header offset is stored in skb->transport_header whil=
+e the
+> >>>>      packet is still in the outer tunnel context.
+> >>>> 2. The tunnel receiver strips the outer headers.  skb->data is advan=
+ced to
+> >>>>      the inner frame, but skb->transport_header is left pointing to =
+the
+> >>>>      now-removed outer L4 header, so it becomes a negative offset re=
+lative to
+> >>>>      the new data.
+> >>>> 3. The inner frame is not delivered to the local IP stack.  Instead,=
+ it
+> >>>>      is forwarded at L2 by a bridge or HSR, so ip_rcv_core() never r=
+uns and
+> >>>>      the transport header is not reset to the inner L4 offset.
+> >>>> 4. The forwarding path calls __dev_queue_xmit(), which enters
+> >>>>      qdisc_pkt_len_segs_init().  That function computes the GSO head=
+er length
+> >>>>      from skb_transport_offset(skb).  Because the offset is negative=
+, the
+> >>>>      unsigned cast overflows and pskb_may_pull(skb, hdr_len +
+> >>>>      sizeof(struct tcphdr)) reads past the end of the skb, triggerin=
+g a
+> >>>>      KASAN fault or page fault.
+> >>>>
+> >>>> Fix this by clearing skb->transport_header to the ~0U sentinel at th=
+e
+> >>>> tunnel decapsulation boundary, after each tunnel receive function ha=
+s
+> >>>> finished all processing that needs the outer L4 header and before th=
+e skb
+> >>>> is handed to GRO or the stack. The IP/GRO receive paths then set the
+> >>>> transport header correctly when they parse the inner packet.
+> >>>>
+> >>>> Fixes: 7fb4c1967011 ("net: pull headers in qdisc_pkt_len_segs_init()=
+")
+> >>>
+> >>> This Fixes: tag seems pretty random to me. Issue was present long
+> >>> before that commit.
+> >>> Next time, please be precise with the `Fixes:` tag; it's not decorati=
+on.
+> >>>
+> >> Thanks for your review. Sorry for the late reply.
+> >> The stale transport header has been present since 1da177e4c3f4
+> >> ("Linux-2.6.12-rc2"), which is completely latent until
+> >> 7fb4c1967011 ("net: pull headers in qdisc_pkt_len_segs_init()"
+> >> was merged.
+> >>
+> >>   From the perspective of the root cause introduced by the issue,
+> >> we can use 1da177e4c3f4 ("Linux-2.6.12-rc2") as fixtag.
+> >>
+> >>> Also, calling skb_unset_transport_header(skb) directly from
+> >>> gro_cells_receive() would make more sense and
+> >>> your patch would be less intrusive.
+> >>>
+> >>
+> >> gtp=EF=BC=8Csit use netif_rx to receive pkt. so modifying only gro_cel=
+ls_receive
+> >> cannot solve all the problems. netif_rx is widely
+> >> used and is not only invoked by the tunnel driver, and serval path
+> >> (such as genve encap) will reset transport header before netif_rx.
+> >> Therefore, should we retain unset in the GTP/SIT tunnel?
+> >
+> > Hi Dong,
+> >
+> > 1) Regarding SIT:
+> >
+> > SIT decapsulates IPv6 over IPv4 (IPPROTO_IPV6). There is no outer L4 tr=
+ansport
+> > header (no UDP/TCP), so skb->transport_header is not pointing to an
+> > outer L4 header.
+> >
+> > 2) Regarding GTP:
+> >
+> > GTP is an L3-only point-to-point device (ARPHRD_NONE). It cannot be
+> > enslaved by a bridge
+> > or forwarded at L2; its packets always go through ip_rcv()/ip6_rcv()
+> > where the headers
+> > are properly parsed/reset,
+> >
+> Hi, Eric. Thanks for the review!
+>
+> I missed the rcv path in the commit message.
+> With an ingress qdisc attached to gtp, the stale transport header
+> will been consumed in sch_handle_ingress() and its not covered by
+> gro_cells_receive() either. So maybe gtp is not safe by
+> construction.
+>
+> gtp_encap_rcv
+>    gtp_rx //stale transport header
+>      __netif_rx
+>        __netif_receive_skb_core
+>          sch_handle_ingress
+>            qdisc_pkt_len_segs_init
+>
 
-sctp_process_strreset_outreq(), sctp_process_strreset_addstrm_out() and
-sctp_process_strreset_resp() finish a pending stream reconfiguration
-request by stopping the reconf timer on the transport the request was
-sent on:
+Let's step back a bit :)
 
-	t = asoc->strreset_chunk->transport;
-	if (timer_delete(&t->reconf_timer))
-		sctp_transport_put(t);
+For non-GSO packets, qdisc_pkt_len_segs_init() returns immediately:
 
-On the transmit path chunk->transport is assigned by
-__sctp_packet_append_chunk(), that is, when the chunk is actually
-appended to an outbound packet. A RECONF chunk that was queued but never
-transmitted keeps transport == NULL, and its reconf timer is never armed
-either, since that too only happens once the chunk has been appended.
+qdisc_skb_cb(skb)->pkt_len =3D skb->len;
+if (!shinfo->gso_size) {
+    qdisc_skb_cb(skb)->pkt_segs =3D 1;
+    return SKB_NOT_DROPPED_YET;
+}
 
-sctp_outq_flush_ctrl() skips every non-ASCONF control chunk while
-asoc->src_out_of_asoc_ok is set and leaves it on control_chunk_list, so
-in that state a RECONF is never put on the wire. The sender side has
-already published the chunk in asoc->strreset_chunk and armed
-asoc->strreset_outstanding, so an incoming RECONF that drives
-strreset_outstanding down to 0 dereferences the NULL transport.
+It does not inspect skb->transport_header at all. It will be set
+eventually later if needed,
 
-sctp_send_asconf_del_ip() reaches that state without any peer
-interaction: when the address being removed is the association's last
-one it stashes the address in asoc->asconf_addr_del_pending, sets
-src_out_of_asoc_ok and skips chunk creation and transmission
-("stored = 1; goto skip_mkasconf"). As only sctp_process_asconf_ack()
-clears the flag, it stays set until a later bindx() ADD picks the pending
-delete up. An unprivileged process that removes the last address of an
-ASCONF-enabled association and then asks for a stream reset panics the
-kernel from softirq:
+GTP does not implement GRO on RX and does not use gro_cells, so incoming
+packets in gtp_rx() have gso_size =3D=3D 0.
 
-  Oops: general protection fault, probably for non-canonical address
-  0xdffffc000000003d: 0000 [#1] SMP KASAN NOPTI
-  KASAN: null-ptr-deref in range [0x00000000000001e8-0x00000000000001ef]
-  RIP: 0010:timer_delete+0x67/0x110
-  Call Trace:
-   <IRQ>
-   sctp_process_strreset_addstrm_out (net/sctp/stream.c:832)
-   sctp_sf_do_reconf (net/sctp/sm_statefuns.c:4212)
-   sctp_do_sm (net/sctp/sm_sideeffect.c:1172)
-   sctp_assoc_bh_rcv (net/sctp/associola.c:1044)
-   sctp_rcv (net/sctp/input.c:243)
-   ip_protocol_deliver_rcu (net/ipv4/ip_input.c:207)
-   ip_local_deliver (net/ipv4/ip_input.c:262)
-   ip_rcv (net/ipv4/ip_input.c:612)
-   process_backlog (net/core/dev.c:6680)
-   net_rx_action (net/core/dev.c:7959)
-   handle_softirqs (kernel/softirq.c:622)
-   </IRQ>
-  Kernel panic - not syncing: Fatal exception in interrupt
+The issue specifically requires GSO packets (shinfo->gso_size !=3D 0), whic=
+h are
+processed/aggregated through gro_cells. Fixing this in
+gro_cells_receive() covers
+all the relevant tunnel drivers in one place.
 
-Skip the timer deletion when the RECONF chunk never reached a packet:
-there is no armed reconf timer and no transport reference to drop.
-
-Fixes: 810544764536 ("sctp: implement receiver-side procedures for the Outgoing SSN Reset Request Parameter")
-Cc: stable@vger.kernel.org
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
----
-Note to reviewers: this only stops the crash, and I want to be upfront that it
-does not remove the state that produces it.
-
-That state has exactly one producer. sctp_send_asconf_del_ip() latches
-src_out_of_asoc_ok on the branch that stashes the association's last address
-without building or sending an ASCONF, and sctp_process_asconf_ack() is the
-only place that clears it -- so the flag survives until the application issues
-the follow-up bindx() ADD that sctp_make_asconf_update_ip()'s del_pickup needs.
-8a07eb0a50ae ("sctp: Add ASCONF operation on the single-homed host") describes
-this as a transient state ("the other chunks cannot be transmitted in this
-state"), but nothing bounds how long it lasts: an application that never adds a
-replacement address leaves the association unable to send any DATA or
-non-ASCONF control chunk for the rest of its life, with the RECONF sitting on
-control_chunk_list and strreset_outstanding armed.
-
-I kept this patch to the dereference because it is what the rest of net/sctp
-already does -- every other chunk->transport dereference is NULL-checked -- and
-because it backports cleanly. But would you prefer the latch itself to be
-addressed, or the reconf request to be abandoned here rather than completed
-against a chunk that never went out? Happy to follow up with either for
-net-next. net/sctp/stream.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/net/sctp/stream.c b/net/sctp/stream.c
-index 34ffe6c945a4..1cb30def2eb9 100644
---- a/net/sctp/stream.c
-+++ b/net/sctp/stream.c
-@@ -577,7 +577,7 @@ struct sctp_chunk *sctp_process_strreset_outreq(
- 			struct sctp_transport *t;
- 
- 			t = asoc->strreset_chunk->transport;
--			if (timer_delete(&t->reconf_timer))
-+			if (t && timer_delete(&t->reconf_timer))
- 				sctp_transport_put(t);
- 
- 			sctp_chunk_put(asoc->strreset_chunk);
-@@ -829,7 +829,7 @@ struct sctp_chunk *sctp_process_strreset_addstrm_out(
- 			struct sctp_transport *t;
- 
- 			t = asoc->strreset_chunk->transport;
--			if (timer_delete(&t->reconf_timer))
-+			if (t && timer_delete(&t->reconf_timer))
- 				sctp_transport_put(t);
- 
- 			sctp_chunk_put(asoc->strreset_chunk);
-@@ -1084,7 +1084,7 @@ struct sctp_chunk *sctp_process_strreset_resp(
- 	/* remove everything for this reconf request */
- 	if (!asoc->strreset_outstanding) {
- 		t = asoc->strreset_chunk->transport;
--		if (timer_delete(&t->reconf_timer))
-+		if (t && timer_delete(&t->reconf_timer))
- 			sctp_transport_put(t);
- 
- 		sctp_chunk_put(asoc->strreset_chunk);
--- 
-2.55.0
-
+Thanks.
