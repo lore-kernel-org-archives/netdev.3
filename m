@@ -1,50 +1,51 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from forwardcorp1b.mail.yandex.net (forwardcorp1b.mail.yandex.net [178.154.239.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D40389111;
-	Thu, 20 Aug 2026 10:57:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D891E4189D6;
+	Thu, 20 Aug 2026 11:03:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787223476; cv=none; b=IiCpUo5Le/wrXHxf9eI1d+fag96tMMz4lEhJmjL+Zv14v5bWentYdNQTZyk547a26OZxdIPuqZappt45podxvSbYb0DdyHKBAN/gUumMQ4EojsdZtIYqwsJoIMQ900iP/65g5j0N8S0mRwxM8HkHxnUFer6+jOLZ8XncWazBi/Y=
+	t=1787223838; cv=none; b=X168YOmU/2GyKPL/b0qzE1d+04/6TfLLb2Cbfls19O59Iq6GsAP8Oej8CeHfeQ+Lb4w8kjSLbqCsizHX7UjysN79QepqasB5mX3AMquBuCWjyUB9Y5wyrReww0vf0lHupOvBAPwxQbYn0oeP7MOvwG8jQyDSOMzKf54syQgm+io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787223476; c=relaxed/simple;
-	bh=LPCaldm1q4JDm8FZLdWWbyaeIP6P1AL+d9WYWPyUt9Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TZbt/4F6bvXNM/VF+MnCpkqGB4gWZImwc5m/8z3xdXumUDNW29pUx5pgswQzt0ZOu3R2YYvkGoFt67dXlovyM1a72lqGizQK5WHqOUumqiC6hfsb/MRiM7ehX1bExOr9JmO9GTrnPTKdXDl0ls4fV6ve7ZPMHwYZBsdVkF6NDIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nKEUBudo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787223838; c=relaxed/simple;
+	bh=u2pF2GNUqDzigognq4YQNhHFswq+S8aSF39z0rgKmX0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=krkx32ueIYtHQz0dpkp5uZtCHBzKZUpSn7ucOe8Gml4Z2HnflJdzqTCsz0rqcxzuUPzlfr14N7kSEOEsmyQZQH4SHUSlWBRA2u0B9/QsvylBtYJsxPoSCXUFs+hbEOPJhOR081CQJDhKkmeNHKKYz1AGLQQU5SLD8YE6elwWSLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=uJvr59SS; arc=none smtp.client-ip=178.154.239.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nKEUBudo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 465FF1F000E9;
-	Thu, 20 Aug 2026 10:57:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787223474;
-	bh=SD5iTaJbc9q/M3QLf1krpo13nJxVMOZPGPuInSi7uu0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nKEUBudoL/z+PvJxHEUPgdsLzUwBgEvEOex5lRNUtYeHBuDpVPZtvxCIoj489g2bt
-	 aklW1DgzWo+yoEMQ0DUC9wXUOW/KdTnnuIWmQeTb6xnnv/ttEdUdC2Z9yMVrGA7Uh2
-	 GByTkM9vh8PYAgbN+MZ0UABSRW0j0jhN54oMj+ooPGmd246gHSr4kXF2bJNhezeE0Q
-	 QzyvElnOl6VvNNSoRpixQKJGZ3/4iRPzswM49zj3PjZRT6dtUEq4o3rJOg4oeP1uaw
-	 bQYRXznCZO7rpPJ2CW632BBnAUaKfMGZo9ZHq7z98e7jDvbeDXP/1zMyJ51HwN3L3y
-	 vJidVCcus+VJQ==
-From: Simon Horman <horms@kernel.org>
-To: fffsqian@163.com
-Cc: Simon Horman <horms@kernel.org>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	shuah@kernel.org,
-	sjpark@amazon.de,
+	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="uJvr59SS"
+Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net [IPv6:2a02:6b8:c11:43a8:0:640:574d:0])
+	by forwardcorp1b.mail.yandex.net (postfix) with ESMTPS id A20DD80A71;
+	Thu, 20 Aug 2026 14:03:43 +0300 (MSK)
+Received: from i111667286.ld.yandex.ru (unknown [2a02:6bf:8080:13b::1:2c])
+	by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp) with ESMTPSA id A3ViXADYAa60-ySjHZlX8;
+	Thu, 20 Aug 2026 14:03:42 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+	s=default; t=1787223823;
+	bh=rSn7M1UDvQ0ftxc8DTA90GKJYqMBwAkeOwGyR2im04Q=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=uJvr59SS8uAqLAOhx8IcYMg+5T3+q6k15Z1CtqjuiwZyZA5DhN0a9cWZChPfhPUYj
+	 dpZgtYZjEDiXbCyHVsjdbL+nQ0ICPxaTWIotI2sdBfvQLQ99g0uPQZdK3GpVqQUq6L
+	 gqbJM3GtznvoVjeLGYm4o794qSUCBP1s0AhlfMgY=
+Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
+From: Andrey Troshin <drtrosh@yandex-team.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Andrey Troshin <drtrosh@yandex-team.ru>,
+	Sasha Levin <sashal@kernel.org>,
+	Karsten Graul <kgraul@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-s390@vger.kernel.org,
 	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	fuqingshuang@kylinos.cn
-Subject: Re: [PATCH] selftests/net: fix kill() argument order in fin_ack_lat
-Date: Thu, 20 Aug 2026 11:57:01 +0100
-Message-ID: <20260820105702.803812-1-horms@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260817091017.281104-1-fffsqian@163.com>
-References: <20260817091017.281104-1-fffsqian@163.com>
+	lvc-project@linuxtesting.org
+Subject: [PATCH 5.15] net/smc: reject CHID-0 ACCEPT that matches an empty ism_dev slot
+Date: Thu, 20 Aug 2026 14:03:10 +0300
+Message-ID: <20260820110310.2090-1-drtrosh@yandex-team.ru>
+X-Mailer: git-send-email 2.51.0.windows.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,100 +54,64 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260817091017.281104-1-fffsqian@163.com?part=1
+From: Xiang Mei <xmei5@asu.edu>
+
+[ Upstream commit 277740023def559a4a2ddc3e8e784ee37a0f16a9 ]
+
+On the SMC-D client, slot 0 of ini->ism_dev[]/ini->ism_chid[] is
+reserved for an SMC-Dv1 device. smc_find_ism_v2_device_clnt()
+populates V2 entries starting at index 1, so when no V1 device is
+selected slot 0 is left in its kzalloc()'ed state with ism_dev[0] ==
+NULL and ism_chid[0] == 0.
+
+smc_v2_determine_accepted_chid() then matches the peer's CHID against
+the array starting from index 0 using the CHID alone. A malicious
+peer replying to a SMC-Dv2-only proposal with d1.chid == 0 matches
+the empty slot, ini->ism_selected becomes 0, and the subsequent
+ism_dev[0]->lgr_lock dereference in smc_conn_create() faults at
+offsetof(struct smcd_dev, lgr_lock) == 0x68:
+
+  BUG: KASAN: null-ptr-deref in _raw_spin_lock_bh+0x79/0xe0
+  Write of size 4 at addr 0000000000000068 by task exploit/144
+  Call Trace:
+   _raw_spin_lock_bh
+   smc_conn_create (net/smc/smc_core.c:1997)
+   __smc_connect (net/smc/af_smc.c:1447)
+   smc_connect (net/smc/af_smc.c:1720)
+   __sys_connect
+   __x64_sys_connect
+   do_syscall_64
+
+Require ism_dev[i] to be non-NULL before accepting a CHID match.
+
+Fixes: a7c9c5f4af7f ("net/smc: CLC accept / confirm V2")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Link: https://patch.msgid.link/20260511062138.2839584-1-xmei5@asu.edu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Andrey Troshin <drtrosh@yandex-team.ru>
 ---
---- Patch [1]: [PATCH] selftests/net: fix kill() argument order in fin_ack_lat ---
-commit c8d7888fff6c43f1844cd283115315b6ce892cad
-Author: Qingshuang Fu <fuqingshuang@kylinos.cn>
+Backport fix for CVE-2026-64048
+Link: https://nvd.nist.gov/vuln/detail/CVE-2026-64048
+---
+ net/smc/af_smc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-selftests/net: fix kill() argument order in fin_ack_lat
-
-The patch swaps the arguments of the kill() call in sig_handler() so the
-server forwards SIGTERM to the client instead of passing a pid as the
-signal number, and adds a child_pid > 0 guard so the client (which
-inherits the handler and sees child_pid == 0) does not signal the whole
-process group.
-
-> diff --git a/tools/testing/selftests/net/fin_ack_lat.c b/tools/testing/selftests/net/fin_ack_lat.c
-> index 70187494b57af..f985e01354b44 100644
-> --- a/tools/testing/selftests/net/fin_ack_lat.c
-> +++ b/tools/testing/selftests/net/fin_ack_lat.c
-> @@ -103,7 +103,8 @@ static void server(int sock, struct sockaddr_in address)
->  
->  static void sig_handler(int signum)
->  {
-> -	kill(SIGTERM, child_pid);
-> +	if (child_pid > 0)
-> +		kill(child_pid, SIGTERM);
->  	exit(0);
->  }
-
-[Severity: Low]
-[Finding: main-2-1]
-[Sources: opus-5]
-Now that the forwarding actually works, can the wrapper script's cleanup
-path start failing?  Both processes carry the comm name fin_ack_lat
-because main() forks:
-
-  child_pid = fork();
-  if (!child_pid)
-          client(ntohs(laddr.sin_port));
-  else
-          server(sock, laddr);
-
-so pidof returns two pids in fin_ack_lat.sh:
-
-  set -e
-  ...
-  cleanup() {
-          kill $(pidof fin_ack_lat)
-          rm -f $tmpfile
-  }
-
-  trap cleanup EXIT
-
-If bash signals the server pid first, the server now runs sig_handler(),
-forwards SIGTERM to the client and exits.  The client then exits, is
-reparented to init and reaped.  If that completes before bash issues the
-second kill(2), the builtin gets ESRCH and returns non-zero.
-
-With set -e in effect, wouldn't that abort the EXIT trap, so the script
-exits non-zero even when do_test() saw zero spikes, and rm -f $tmpfile is
-skipped, leaving /tmp/fin_ack_latency.*.log behind?
-
-Before this change the forwarding call always failed with EINVAL, so the
-client was still alive when bash reached its pid and this window did not
-exist.  Would it make sense to make the wrapper tolerant, for example
-kill $(pidof fin_ack_lat) 2>/dev/null || true, or to kill only the server
-pid?
-
-[Severity: Medium]
-[Finding: gpt-5-6-sol-3-4]
-[Sources: gpt-5-6-sol, opus-5]
-This isn't a bug introduced by this patch, but the new child_pid > 0 guard
-is the only place the fork() failure sentinel is considered, and it handles
-it by doing nothing.  main() never checks fork() for failure:
-
-  child_pid = fork();
-  if (!child_pid)
-          client(ntohs(laddr.sin_port));
-  else
-          server(sock, laddr);
-
-On failure child_pid is -1, the !child_pid test is false, and the process
-falls into server()'s infinite accept() loop with no client ever
-connecting, so nothing is printed.
-
-fin_ack_lat.sh's do_test() only counts lines and treats an empty log as
-success:
-
-  NR_SPIKES=$(wc -l $tmpfile | awk '{print $1}')
-  if [ $NR_SPIKES -gt 0 ]
-
-so a fork() failure (EAGAIN/ENOMEM, RLIMIT_NPROC) is scored as a passing
-test.  Since this file already uses error() for every other syscall, would
-adding if (child_pid < 0) error(-1, errno, "fork"); be appropriate here?
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 6b60a5dd240d..c283f0272a77 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -1107,7 +1107,8 @@ smc_v2_determine_accepted_chid(struct smc_clc_msg_accept_confirm_v2 *aclc,
+ 	int i;
+ 
+ 	for (i = 0; i < ini->ism_offered_cnt + 1; i++) {
+-		if (ini->ism_chid[i] == ntohs(aclc->chid)) {
++		if (ini->ism_dev[i] &&
++			ini->ism_chid[i] == ntohs(aclc->chid)) {
+ 			ini->ism_selected = i;
+ 			return 0;
+ 		}
 -- 
-pw-bot: changes-requested
+2.34.1
+
