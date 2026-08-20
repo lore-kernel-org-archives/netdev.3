@@ -1,35 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD4A43B8BC4;
-	Thu, 20 Aug 2026 19:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257AE3A8744;
+	Thu, 20 Aug 2026 19:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787254298; cv=none; b=A0Hp0+7eDH3gWnP/GoYbsbtE+lp5LYoXcHL3WkzvaT8niuxz/Sw3jGfF+WW0motbDtmEqe0/TLyhKQ55H4/bJPtt39k4S++lU1M55q7W4DBRnE4iP25BYx8ogYYhcZx2RiKblIiPgLDmR63FtXkH8Zxu9eeNvkd68cM2DqhTTaU=
+	t=1787254700; cv=none; b=DcHztLY0yOGC90MbNrCD7pePrTmB3yA+vRu+jaGIc+1d2pN2SHl6b+fD81gjflegpKnGYrXLCuDSMconjxeIti7C3TlEEuXnqFScR6WWH/ir2VAwyvscpRKm3fRge16vYTvMsTHqmDcVkOdSokFcBQXf03AiAKbGXZ3xATIJQg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787254298; c=relaxed/simple;
-	bh=QbVf+BNpEUdA5JHFn/DcKTS3IW02pR7/TAHmTGXyYRQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=IFUdvKrJ2xsxLN+9ya7D14OIScylMjHZg/1ldiF1NwtM6/Cf3MNCz496LNBqjuXtJQ/stNr5KXk9gDOrEG0i9O08UUecyp13V43Y0+4SLU6Kx9zhSB2ah2rDJkLnAF5EYINp2ahmbZ0UDyP26k+5d6rLYf4tDHnzZxFap7I6j1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E8A4vG3l; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787254700; c=relaxed/simple;
+	bh=CidQNYatH9N2Pkv+BLfb4wV7pTXzdh+2CGiwnDlirX8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Q2F7If5cLQBBqbEA1Z3aiVkO1CCeGvP/uHS4YbaTsxRsKi1uYamN3AeuuNmQDMQOdKMDQnA0VRRP3x1wC/qWBXMVRNNnE2Pzq23hzmlhu696K8pZIEFkHbPohQw+CfU+pXbzw3nk8b4iw2XXDSNXvrI4Eoyc7YKwX/A2nIkSK6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WnIWFBs/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E8A4vG3l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F1611F00A3E;
-	Thu, 20 Aug 2026 19:31:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WnIWFBs/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 787D31F000E9;
+	Thu, 20 Aug 2026 19:38:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787254289;
-	bh=1HSCBBGC4RaeTefarmYVGcRMNxjyi5eyHlf2CKWdXLk=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=E8A4vG3l0+TQGwuAumWpwljlL3Ted57uVHuHcJ8H4++JTaSCq9FOihlTcftQccY7t
-	 iPXQt3T26IvJG0GgG7D4maNWBAmyUc63yKHcxeYaBC5Ru4nQ0+opnevqplHrX2urZ5
-	 CktBfqvjWgE5ZBgD4H6ixRNbyvcP5jdaqPN/tDYLzK0KmhGmyn2OGRzkV/HBw7V9Ji
-	 l1sVuJoxX0AdpCGqOgn0h0TpDA0b4lXulASz3C+B81oRbCQnELV6xKvnKTuGZoEzTQ
-	 DjGWTqnPzVYAKWv1TRC63ReYVClGD/sQCz7ie7mOR6tVm5EMn73TfXYT7p+fPHrAWI
-	 nFw9Dfrsh/pKA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 197FA3924459;
-	Thu, 20 Aug 2026 19:30:41 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1787254698;
+	bh=jd05/T6XOx8+PsGvJHhZ5lO54VPfdCsg2wRzOdeNY6Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=WnIWFBs/vZVKPvQRZPzFuT6uhCKgTXnGXMxJxgPc1JFETJJ3+5qYiQyUgEgPzMUrA
+	 kt0l2fvMBdQ/ieVKHYu0MNa2rY29iYrYtPKu73V/kLVZ015aFXAThAYb6ZY/QIAUXg
+	 GNtNJ1XbNX7Jfbkh8Y9dSfULzn6TUtI3NU7M5mzzsq6AEukZ3YbkoEjE8wMM5fLG+W
+	 p+VGgj9Z+1BNL673aFU/978bd+XZXcm8ja68qwH4yQphGGtv1RCaqnUskGO1N7QEN0
+	 HWOutGy9AD2qFd1cYkSEckWj6dLox8eV0jcGcHUz52NFQ28vq7ISSA/kK7yXs7Q/gm
+	 iN9uutq1ifVXQ==
+From: Jakub Kicinski <kuba@kernel.org>
+To: hexlabsecurity@proton.me
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	davem@davemloft.net,
+	wintera@linux.ibm.com,
+	twinkler@linux.ibm.com,
+	hidayath@linux.ibm.com,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org,
+	ursula.braun@de.ibm.com,
+	netdev@vger.kernel.org,
+	linux-s390@vger.kernel.org
+Subject: Re: [PATCH net] net/iucv: reconcile the socket state when connect() severs the path
+Date: Thu, 20 Aug 2026 12:37:53 -0700
+Message-ID: <20260820193752.1074271-2-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260815-b4-disp-e1faf4b7-v1-1-2a8a143a0055@proton.me>
+References: <20260815-b4-disp-e1faf4b7-v1-1-2a8a143a0055@proton.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,42 +53,122 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: ipa: balance runtime PM reference on remove
- error
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178725423963.446762.8002019450211307478.git-patchwork-notify@kernel.org>
-Date: Thu, 20 Aug 2026 19:30:39 +0000
-References: <20260815151737.3758320-1-ruoyuw560@gmail.com>
-In-Reply-To: <20260815151737.3758320-1-ruoyuw560@gmail.com>
-To: Ruoyu Wang <ruoyuw560@gmail.com>
-Cc: elder@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, elder@riscstar.com
 
-Hello:
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+net/iucv: reconcile the socket state when connect() severs the path
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+When a classic AF_IUCV connect() fails and severs the path, the socket
+could be left in IUCV_CONNECTED with iucv->path already NULL. The patch
+adds a state reconciliation to IUCV_DISCONN right after iucv_sever_path()
+so that a later sendmsg() does not walk the NULL path pointer.
 
-On Sat, 15 Aug 2026 23:17:37 +0800 you wrote:
-> ipa_remove() takes a runtime PM reference before accessing IPA hardware
-> during teardown. If a concurrent modem start or stop keeps
-> ipa_modem_stop() busy across both attempts, the callback intentionally
-> returns without releasing the remaining resources because proceeding
-> with teardown could crash. That return also skips the matching
-> pm_runtime_put_noidle(), leaving the callback's usage-count reference
-> held.
-> 
-> [...]
+> diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
+> index ea047bab65e7c..6fb0041c4c987 100644
+> --- a/net/iucv/af_iucv.c
+> +++ b/net/iucv/af_iucv.c
+> @@ -778,8 +778,16 @@ static int iucv_sock_connect(struct socket *sock, struct sockaddr_unsized *addr,
+>  	if (sk->sk_state == IUCV_DISCONN || sk->sk_state == IUCV_CLOSED)
+>  		err = -ECONNREFUSED;
+>  
+> -	if (err && iucv->transport == AF_IUCV_TRANS_IUCV)
+> +	if (err && iucv->transport == AF_IUCV_TRANS_IUCV) {
+>  		iucv_sever_path(sk, 0);
+> +		/* A connack may have landed while the wait was unwinding; the
+> +		 * path is gone, so the socket must not still claim it.
+> +		 */
+> +		if (sk->sk_state == IUCV_CONNECTED) {
+> +			sk->sk_state = IUCV_DISCONN;
+> +			sk->sk_state_change(sk);
+> +		}
+> +	}
 
-Here is the summary with links:
-  - [net,v2] net: ipa: balance runtime PM reference on remove error
-    https://git.kernel.org/netdev/net/c/6b9eaa61ff2d
+[Severity: Critical]
+This isn't a bug introduced by this patch, but it should probably be
+fixed at the same time. Does the same CONNECTED-with-NULL-path state
+remain reachable from the HiperSockets receive path, so that the NULL
+dereference described in the changelog survives?
 
-You are awesome, thank you!
+afiucv_hs_rcv() matches sockets on the global iucv_sk_list by name only:
+
+net/iucv/af_iucv.c:afiucv_hs_rcv() {
+	...
+	sk_for_each(sk, &iucv_sk_list.head) {
+		if (trans_hdr->flags == AF_IUCV_FLAG_SYN) {
+			...
+		} else {
+			if ((!memcmp(&iucv_sk(sk)->src_name,
+				     trans_hdr->destAppName, 8)) &&
+			    ...
+			    (!memcmp(&iucv_sk(sk)->dst_user_id,
+				     trans_hdr->srcUserID, 8))) {
+				iucv = iucv_sk(sk);
+				break;
+	...
+}
+
+There is no check of iucv->transport, no check of iucv->hs_dev and no
+network namespace check, and iucv_packet_type is registered globally in
+afiucv_init() with dev_add_pack(&iucv_packet_type) and no .dev filter.
+
+afiucv_hs_callback_synack() then only requires IUCV_BOUND before writing
+the connected state:
+
+net/iucv/af_iucv.c:afiucv_hs_callback_synack() {
+	if (!iucv || sk->sk_state != IUCV_BOUND) {
+		kfree_skb(skb);
+		return NET_RX_SUCCESS;
+	}
+
+	bh_lock_sock(sk);
+	iucv->msglimit_peer = iucv_trans_hdr(skb)->window;
+	sk->sk_state = IUCV_CONNECTED;
+	sk->sk_state_change(sk);
+	...
+}
+
+So a classic-transport socket that has only been bound, or one whose
+connect() failed with the wait timing out or being interrupted (path
+severed to NULL, state left at IUCV_BOUND, which the new code does not
+reconcile), can end up at IUCV_CONNECTED with iucv->path == NULL.
+
+Once that happens, iucv_below_msglim() dereferences the NULL path:
+
+net/iucv/af_iucv.c:iucv_below_msglim() {
+	if (sk->sk_state != IUCV_CONNECTED)
+		return 1;
+	if (iucv->transport == AF_IUCV_TRANS_IUCV)
+		return (atomic_read(&iucv->skbs_in_xmit) < iucv->path->msglim);
+	...
+}
+
+and it is called from iucv_sock_poll():
+
+	if (sock_writeable(sk) && iucv_below_msglim(sk))
+
+which the sk_state_change() above has just woken, as well as from
+iucv_sock_sendmsg() via iucv_sock_wait(sk, iucv_below_msglim(sk), timeo).
+iucv_sock_sendmsg() also reads iucv->path->flags:
+
+	if (((iucv->path->flags & IUCV_IPRMDATA) & iucv->flags) &&
+
+and passes iucv->path to pr_iucv->message_send().
+
+The changelog says:
+
+    The sever is a barrier against a later connack: iucv_path_sever()
+    clears the path from iucv_path_table[] under the lock the tasklet
+    holds across dispatch.
+
+Is that statement complete? It holds for the classic iucv tasklet, where
+iucv_tasklet_fn() holds iucv_table_lock across dispatch, but the
+HiperSockets callbacks run from the netdev RX softirq under
+bh_lock_sock() only, and are not excluded by iucv_table_lock.
+
+Would it make sense to also check iucv->transport (and iucv->hs_dev)
+in the afiucv_hs_rcv() socket lookup or in afiucv_hs_callback_synack(),
+and/or to have iucv_below_msglim() and iucv_sock_sendmsg() test
+iucv->path before dereferencing it?
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
