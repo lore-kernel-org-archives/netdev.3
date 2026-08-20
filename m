@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649223BE644;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11ED23BB9FD;
 	Thu, 20 Aug 2026 19:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787254291; cv=none; b=BqHs4saAjKIjasOl6F/VD7guh7EnqjO4YrCah81Ub1fLNyM8CdMpcNrS0KE9WAimDZ12YRL2L8JQCYsbEKudM3/GxUn7tgvq29jfIVqsEZlHu0cNXqSr4O86tpaTAyJAIxPDLNzpqwMeGwjan3r3w28qyCmdmtoJTufbB4fuzcM=
+	t=1787254290; cv=none; b=Y9U0bFRi7AhyWgLdr8E3t2Su6xXHjWGSoDLlgAajH8+BD0xu9dWxOH7J5lbyVPcG5iesKO59/ooPDALP0ehSBDwHUYrpV68GFqhXVi2Ac3lHDnoyBZDkTqdHKULR18GdK6v6JuVxIu/zfFHlsKX4jSI6gPzpdGIDCeWdJtTUHsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787254291; c=relaxed/simple;
-	bh=9jkwQl3i32HJ4KnV04V52xW0b1Vpq+kgOnU3sfODbx4=;
+	s=arc-20240116; t=1787254290; c=relaxed/simple;
+	bh=maz2zRskyqzDCXuLvPo1sYBPnIfN4LDYuI4ZmcMTYmM=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=j4XLTG/7etWYOgX4/5Fo00hVkSmfxUrF15k6zzXXBfyE0cWQ7owfCzG8yiegwIQlK7iH6F9VZkFAxKZU7PS7HVNVINZ09O0/Yag8lOpQmcffu6NpldeKFrf8q+5it2hHzWIvvlv4R84/ELlxbRqGerFeE5j82k14JxAaW4mRIwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gRDKa1qs; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=L9/I1X6meLnRci/bb0pMg3psWO2vGmLrPzG3uNJJJueJfeJEhhe+B2weXAFiPslj2O6uciCYqQVDssLP5d6nl8Xz4Uy8FhHjrl2uostdWuqVjDH9xTQFCtt9862FFKj1nO7qEvxVSv/oekBEfnLHPgxMDx67asYzoxAb5IigaB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MO4SZxoN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gRDKa1qs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25FED1F00A3A;
-	Thu, 20 Aug 2026 19:31:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MO4SZxoN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3E91F00A3D;
+	Thu, 20 Aug 2026 19:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787254285;
-	bh=ZLhXfnX/l9WPUe0VTKcKtenacPwnOuj7cH8YQl2JyOQ=;
+	s=k20260515; t=1787254286;
+	bh=2VTYN3MgxEq+G5/2VOWw15orGhBdyNhe8pssUuvz/ZY=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=gRDKa1qsctEljbYM1m965SPhP2MQd6Ux+KXP5Sqo1YmHwMyt5unzqD0LAlntBCdBR
-	 nR/axXcUMw/HbT8UHrbdmXThtXfkwO6C1KQsQmR7Y6VJaxHZ40pfnVhZYb9uOKeAXZ
-	 ++iiKGBV66NvuzoDOEvpgCY6fN61PtCyTDwgXnbX/BcdDCUvY+1KsMArJ6Ek4D7VM6
-	 AAFHYzH0sarRSKkJ9/9vFMCdZLd+HMkp2YeVBmA33QTiifPoJUm27qmrlg2cs11m4N
-	 4rmI7oqE9tmOHydfSS9zOurLN0b0BbyBg3osei7q5+F805kYG6WT+qWOPzJqhvUaRl
-	 4OMjDgH3PftlA==
+	b=MO4SZxoNudDT9Ry7if9WLygukSRfAGNNrNAehUiY9zPA4C1v6M2TxamlcbImjBB8x
+	 WGgzBnq7JTma6wOb/6qTkuhOX+jzy52tMugdtc7Pr49AfKSPghoGS2a1T4atD9npKV
+	 lwNjcb+fu5tOc4XT6mEsY2FMK0GGqqzYDNjnF69FwoxcL3CmnBHlPlD/AHgjaOhoYL
+	 wtCxU8OEJ69Z1ona6ncw7DiwB+TZy79r5lYITfCeUyh8ZLJVveubgnH2fH7WmIYc6l
+	 bIATlNF6nORzKv/NMQ4o8DtoYcpKQBiQmBFa/TC9NxzqGs7+7kAw49eD0Glxjt3l3m
+	 GUsuy+0Yo1M0w==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A063924459;
-	Thu, 20 Aug 2026 19:30:36 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 199A63924459;
+	Thu, 20 Aug 2026 19:30:38 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,45 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: thunderbolt: Count delivered packets in
- rx_packets and rx_bytes
+Subject: Re: [PATCH net 0/2] forcedeth: two register-window bounds fixes
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178725423513.446762.1505425827203047692.git-patchwork-notify@kernel.org>
-Date: Thu, 20 Aug 2026 19:30:35 +0000
-References: <20260815-tbnet-rx-stats-v1-1-8da375c2cd09@gmail.com>
-In-Reply-To: <20260815-tbnet-rx-stats-v1-1-8da375c2cd09@gmail.com>
-To: Fan Ye <fy15309206903@gmail.com>
-Cc: westeri@kernel.org, pabeni@redhat.com, davem@davemloft.net,
- kuba@kernel.org, andrew+netdev@lunn.ch, edumazet@google.com,
- YehezkelShB@gmail.com, andriy.shevchenko@linux.intel.com,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+ <178725423663.446762.8387913060215636639.git-patchwork-notify@kernel.org>
+Date: Thu, 20 Aug 2026 19:30:36 +0000
+References: <178682367884.3748309.5288746298966501007@gmail.com>
+In-Reply-To: <178682367884.3748309.5288746298966501007@gmail.com>
+To: Marek Czernohous <mczernohous@gmail.com>
+Cc: netdev@vger.kernel.org, rain.1986.08.12@gmail.com, zyjzyj2000@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, tobiasdiedrich@gmail.com,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sat, 15 Aug 2026 10:21:52 +0000 you wrote:
-> From: Fan Ye <fy15309206903@gmail.com>
+On Sat, 15 Aug 2026 21:54:38 +0200 you wrote:
+> From: Marek Czernohous <marek@czernohous.de>
 > 
-> tbnet_poll() increments rx_packets once per received frame because that is
-> the NAPI work unit, and then adds the same number to stats.rx_packets. An
-> skb is handed to the stack only when the last frame of a packet arrives,
-> so once the MTU exceeds TBNET_MAX_PAYLOAD_SIZE the statistic reports
-> frames. tx_packets is bumped once per skb, so the two ends of a link
-> disagree: at MTU 65330 the receiver reports 16 times the packets its
-> sender sent.
+> Two bounds fixes in forcedeth, both in the same shape: a loop that walks
+> the register window one step too far. They are independent of each other
+> and touch different functions.
+> 
+> 1/2 nv_suspend() and nv_resume() save and restore the non-PCI config
+>     space with i <= register_size/sizeof(u32). On a VER3 device that is
+>     exactly the length of saved_config_space[], so the last iteration
+>     reads and writes one element past the array, and on resume it
+>     writel()s that element one dword past the length the driver mapped.
+>     UBSAN catches it.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: thunderbolt: Count delivered packets in rx_packets and rx_bytes
-    https://git.kernel.org/netdev/net/c/c5ae83ee02c0
+  - [net,1/2] forcedeth: fix off-by-one when saving/restoring non-PCI config space
+    https://git.kernel.org/netdev/net/c/9393f1d656a7
+  - [net,2/2] forcedeth: stop the tx_timeout register dump past the requested window
+    https://git.kernel.org/netdev/net/c/cfa9178ce2e5
 
 You are awesome, thank you!
 -- 
