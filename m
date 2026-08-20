@@ -1,116 +1,138 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f206.google.com (mail-oi1-f206.google.com [209.85.167.206])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D8913D886
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 01:23:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 041F7280CC1
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 01:33:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787189039; cv=none; b=J3MjAD3bZ3BLJmp7YsWRrlTiOeNWgJGtWiTlgQYR6ZLQr+HyztMkeqsgD6b0kCzWuZ8Z7UHxXDkpNIYp1hVkyZ/mWN9k9Wsu4Wdtlyc41joQvaKAlGTvxyYkisQbFkPVyYo0Xg/XjSYzCaxymZsAifQ+IruPf7iteN/eSzWTDd4=
+	t=1787189618; cv=none; b=fLu5ei3p7URc32QXGOuxo3zn7XpQeKftvRJwNhtBimMahmz1Fff+uvsSDgVklw7rm8PD4y8XvxhkBF1H0Vuiq6Sc2AOA+rKNYHpXd7IlHThepSatD8CJ0HMGsKizibJmqSNfyC7g1g+VcoTxKvLLPHJxFfQfwSnNmA+sTLqHFaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787189039; c=relaxed/simple;
-	bh=rGdHdaufUQbl/XHAGbOn03/PuPGRUsVA6K9FwIyNosQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lQQI7WkxUdvZc5gMHU6bSgQYxRJdL7qEQ+4dy/nrIKbrG+TPybzdSInkT75LGsxuKTxMPmZ57ljDek7Hf9TwFhN3MwkNrgdBDeXbgG0uhGtuIdH1HTh1pfIbfDhpHcsOqlc0rVXs9rvVF2nKD+RBuXuIdjBetuP2C9mer4wft8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: cc9656409c3511f19a56ed5b684f684d-20260820
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:729eeacc-7267-4a90-b859-aede4c23b542,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:0
-X-CID-META: VersionHash:7db8b62,CLOUDID:3c4bcd297c66daf3279dcf58207c7cfb,BulkI
-	D:nil,BulkQuantity:0,SF:81|82|102|850|865|898,TC:nil,Content:0|15|50,EDM:5
-	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
-	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: cc9656409c3511f19a56ed5b684f684d-20260820
-X-User: gonglinkai@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <gonglinkai@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 91295608; Thu, 20 Aug 2026 09:23:50 +0800
-From: Linkai Gong <gonglinkai@kylinos.cn>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	gonglinkai@kylinos.cn
-Subject: [PATCH net-next v2] net: stmmac: platform: use scoped child loops in stmmac_mtl_setup()
-Date: Thu, 20 Aug 2026 09:23:39 +0800
-Message-Id: <20260820012339.3231289-1-gonglinkai@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260819073258.467604-1-gonglinkai@kylinos.cn>
-References: <20260819073258.467604-1-gonglinkai@kylinos.cn>
+	s=arc-20240116; t=1787189618; c=relaxed/simple;
+	bh=HecCHWRTRIpMgpE3/xm4LT5FKbed6+kdrrbMAArklok=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=C4Uo3ZHe1oIE1jd5atyBGlumRfqfIf+WgB6PDrlKvProfKbrnSFyBWYh5Fa9ow1cQnPXOvV3mEnFh8AGw0BCcYF1vydQopMbVt8mDJ5CRUSWatcYh21NdyrUU+5ouveuxmm15fOBKhfxOFQVpO4g//luJmAjX9iVJbzcKiaeU84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f206.google.com with SMTP id 5614622812f47-4a45b3f0bdfso2012053b6e.1
+        for <netdev@vger.kernel.org>; Wed, 19 Aug 2026 18:33:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787189610; x=1787794410;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+kxloYZBBdq+m0W3SA/Re27+lBVZgsgMvtrM7lv9M/Q=;
+        b=Ird5oNNcNze1k5l2gc3nVZvLfw4zmeBOh4j3IKtjw+NuzlxLz3z8shJXKSut8cBXCy
+         obq6XuctfnFrXJOoScoePlUKaALMUwCDG/Ie8O8OezaUAiNkipRRCabcz0NrGINxkCU7
+         Dm0piWdou1UTFcvBIN1oexj+I+WvCsMW5KPYJC39bQ4yt3ruKVD2pGxJwiFZ7O3p1Jqn
+         AyVkUCjmD9gbULakXdJ2vHrCohEcGOfz43mt1gIvQX84XZeiM8z/rFwK4C251NbigcFh
+         rHQywkfQrlATvXCTOaxW7lRSZehAQyTreoPoK4juFDkOnBycjONAMsszGQlUJj2BAjR/
+         orcg==
+X-Forwarded-Encrypted: i=1; AHgh+RqFTJY5Ajdc8Is4TFQpw82a+sX2A6vIZDmdvXAq2nw74q1hLYlZ9LID/vkkHnges70rdNANJ3c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUe0lARss1Dhqp351Jn5WqmaU4BZUz8g2PLQ60jR+T4AjsR9IQ
+	gEDKXR+fjCpjdQ8OH1diGIPt07xduyR8m7NwqlYIqm/b+/J4VSHfxHusyBgfrm+/aBQ0eluE4pp
+	0a3+DQDRHIuS5I8SqhFZbtimMcv41/i8FRsWjsqNwqOp9Mnq1vPGzR01hzec=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6808:c183:b0:496:11f1:f2b3 with SMTP id
+ 5614622812f47-4b2bcb6de00mr9172659b6e.20.1787189610464; Wed, 19 Aug 2026
+ 18:33:30 -0700 (PDT)
+Date: Wed, 19 Aug 2026 18:33:30 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a86596a.ae6ddae5.3da009.0015.GAE@google.com>
+Subject: [syzbot] [bpf?] UBSAN: array-index-out-of-bounds in print_bpf_insn (2)
+From: syzbot <syzbot+3544d9b2a9206be8ba37@syzkaller.appspotmail.com>
+To: andrii@kernel.org, ast@kernel.org, bpf@vger.kernel.org, 
+	daniel@iogearbox.net, eddyz87@gmail.com, emil@etsalapatis.com, 
+	ihor.solodrai@linux.dev, jolsa@kernel.org, linux-kernel@vger.kernel.org, 
+	martin.lau@linux.dev, memxor@gmail.com, netdev@vger.kernel.org, 
+	qmo@kernel.org, song@kernel.org, syzkaller-bugs@googlegroups.com, 
+	yonghong.song@linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-for_each_child_of_node() takes a reference on the current child. Breaking
-out of the RX loop leaks that node because the TX loop then overwrites
-q_node. The TX loop has the same break, and only happens to be safe
-because of_node_put(q_node) at the out label drops the last TX child.
+Hello,
 
-Use for_each_child_of_node_scoped() for both loops so the child is put
-on every exit, including break, and drop the out-label put of q_node.
+syzbot found the following issue on:
 
-Fixes: d976a525c371 ("net: stmmac: multiple queues dt configuration")
-Signed-off-by: Linkai Gong <gonglinkai@kylinos.cn>
+HEAD commit:    c93cbdb13f99 selftests/bpf: Add ksock test for async callb..
+git tree:       bpf-next
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=104b9279580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=2ca5f2f2c4197664
+dashboard link: https://syzkaller.appspot.com/bug?extid=3544d9b2a9206be8ba37
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12a1aa25580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15019a79580000
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/1714feee6e8f/disk-c93cbdb1.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/74187e85e93c/vmlinux-c93cbdb1.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/b18812cc3696/bzImage-c93cbdb1.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+3544d9b2a9206be8ba37@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+UBSAN: array-index-out-of-bounds in kernel/bpf/disasm.c:306:6
+index 3 is out of range for type 'const char *const[3]'
+CPU: 0 UID: 0 PID: 5622 Comm: syz-executor350 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ ubsan_epilogue+0xa/0x30 lib/ubsan.c:233
+ __ubsan_handle_out_of_bounds+0xe8/0xf0 lib/ubsan.c:455
+ print_bpf_insn+0x21f1/0x2910 kernel/bpf/disasm.c:306
+ format_disasm_line kernel/bpf/diagnostics.c:633 [inline]
+ diag_print_insn_context+0x433/0xd00 kernel/bpf/diagnostics.c:783
+ bpf_diag_source+0x66a/0x1950 kernel/bpf/diagnostics.c:-1
+ bpf_diag_program_structure+0x31c/0x430 kernel/bpf/diagnostics.c:1211
+ check_subprogs+0x66b/0x740 kernel/bpf/verifier.c:3049
+ bpf_check+0x17ba/0x2e10 kernel/bpf/verifier.c:21099
+ bpf_prog_load+0x14d6/0x1c20 kernel/bpf/syscall.c:3133
+ __sys_bpf+0xd0d/0xd90 kernel/bpf/syscall.c:6367
+ __do_sys_bpf kernel/bpf/syscall.c:6486 [inline]
+ __se_sys_bpf kernel/bpf/syscall.c:6483 [inline]
+ __x64_sys_bpf+0xba/0xd0 kernel/bpf/syscall.c:6483
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fe861ccec79
+Code: c0 79 93 eb d5 48 8d 7c 1d 00 eb 99 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 d8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffe8118b7b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000141
+RAX: ffffffffffffffda RBX: 00007ffe8118b8f8 RCX: 00007fe861ccec79
+RDX: 0000000000000094 RSI: 0000200000000180 RDI: 0000000000000005
+RBP: 0000000000000001 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffe8118b8e8
+R13: 0000000000000002 R14: 00007fe861d5fca0 R15: 0000000000000002
+ </TASK>
+---[ end trace ]---
+
+
 ---
-v2:
-- Use for_each_child_of_node_scoped() for RX and TX (Andrew Lunn)
-- Target net-next
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
- drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-index dc5f951a311d..c0ffee11e0a0 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-@@ -130,7 +130,6 @@ static int stmmac_axi_setup(struct platform_device *pdev)
- static int stmmac_mtl_setup(struct platform_device *pdev,
- 			    struct plat_stmmacenet_data *plat)
- {
--	struct device_node *q_node;
- 	struct device_node *rx_node;
- 	struct device_node *tx_node;
- 	u8 queue = 0;
-@@ -169,7 +168,7 @@ static int stmmac_mtl_setup(struct platform_device *pdev,
- 		plat->rx_sched_algorithm = MTL_RX_ALGORITHM_SP;
- 
- 	/* Processing individual RX queue config */
--	for_each_child_of_node(rx_node, q_node) {
-+	for_each_child_of_node_scoped(rx_node, q_node) {
- 		if (queue >= plat->rx_queues_to_use)
- 			break;
- 
-@@ -227,7 +226,7 @@ static int stmmac_mtl_setup(struct platform_device *pdev,
- 	queue = 0;
- 
- 	/* Processing individual TX queue config */
--	for_each_child_of_node(tx_node, q_node) {
-+	for_each_child_of_node_scoped(tx_node, q_node) {
- 		if (queue >= plat->tx_queues_to_use)
- 			break;
- 
-@@ -276,7 +275,6 @@ static int stmmac_mtl_setup(struct platform_device *pdev,
- out:
- 	of_node_put(rx_node);
- 	of_node_put(tx_node);
--	of_node_put(q_node);
- 
- 	return ret;
- }
--- 
-2.25.1
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
