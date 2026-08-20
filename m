@@ -1,65 +1,65 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979CC41D101
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 11:15:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BDBC421246
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 11:15:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787224533; cv=none; b=m1YWKSeuQQte0AI0oT6U6qi4aLSwddu3YrQrtczyIk7cNwStjzvFRGql28OoLm+l/Xikt2bwfcehUKSq7V/yv55nh6xTqoqR6fifSkDHNQv1owfd0x3TbVT81CX/Knf3pQjebKPsvXVupZHuOR6bUQLWQO8WjKkHgq6t8x6Kp+M=
+	t=1787224537; cv=none; b=D9IVpZEERoJYBxGbtX6d8ws6JiFUzAFzdGocC640A7g6MzTGGVq1Yy8LqhC5R7ZlPqzkYawqPqyZ1qLJdvuUTJluCPD33+LPKcuD3tXEaIuEZF+EdDICm9BXcesclih5iWkBmAt5jBtcXOu60HEntZaJ5m7dWoQT/uVNJ7WXEr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787224533; c=relaxed/simple;
-	bh=o5CuQsLtqAHkVCYO0+td7xiYDLntqu61PDPsgViuQIY=;
+	s=arc-20240116; t=1787224537; c=relaxed/simple;
+	bh=1x2GjawIorbw/4908l+ScmK5Fw9DJ/ZcMIgpbcs16xM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rAJ5/vJ0ddXpDuICVxYn73/XH72hrgR7f71uBWp9XCMRoJM10XyN3wupBtxzfJ9ainWCX4jNqoKh0jziAEkrgJ62dqkU4mfhiq4TawzdNq292CP6pCaZca8kl9bPebyf9qgfwZhc3VUa6/fC9Y8ejvbWFgxPvTaYpAwxDf68eZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=efpxZWKj; arc=none smtp.client-ip=209.85.210.176
+	 MIME-Version; b=WnIy/tL5lN7igv/rBLei06i67hheSD18K+I6qMrOo8vip5T7Ai1PN+ay5NpwX7xZDDcDZ+wVAewFwq3/BoKtXb5OtvKBQk0SZxiPq1QcW8Pvwx6ibmNX/PEfn5/lbOUZhlv0H88tooPYfi4F5I9t/HXeympc56dJXmMJdNuto5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b4qavLid; arc=none smtp.client-ip=209.85.215.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="efpxZWKj"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-84eb992a881so1662331b3a.2
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 04:15:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b4qavLid"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-cc1469c1b83so2080659a12.1
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 04:15:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787224531; x=1787829331; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1787224535; x=1787829335; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=kXwo8eezAKAf2A4o/+O3GLjl9XPgejnrObTpGultTzc=;
-        b=efpxZWKjmdjKc8Rgl4dBxb8pRxaF5owqeizHklNX3qIps4/V/E+yHT6K4fCdcXzKT8
-         5VPOigTn7Q8QD7dFe8uVldtFVfHTfDNURJgj/tvvciQXRNB8qlxowzReqgS+nr1wZT0K
-         cWmlplD+y6xdIAl3iFiMupZQUHPQwJPt4bUxDXthshme4QsyGZbfH6WIjq7pcHlb4ZPh
-         VegLNLRE8AjsiKcG3b1FwEMih6QvDMhQe6Mifr/GgoMmPmRzI5WRc9QgpFI7qZmK6M4v
-         vwRHFK1BUKMkHoil+KH3jNAg0FWe6ZUQAFlhmAqeKkcvJ+SfgOhKEBEdildVoObr80x8
-         257g==
+        bh=3splNz+eKCLGRh8XFY3AA6oSixILCEDeXRfbtthshOI=;
+        b=b4qavLidcS7rsxUKMhUFKAXMMRSMP3XCCZc99ChEsGt6Xc2PGmpFNj+mEPxVZs6DVg
+         zCxsbOlr2EJSJWSxvRP2o9Bsl9NPeiNPeRh0T10wg5u1fwNffEmmn8LqLBvA5u5M/svG
+         ow6yC8Spw03t/+5qq2t9rgNXYvmbJayRheO+eAUZzDeALp2K/jIBjIOb69PTV92Hp1oE
+         Nfs0R0lbQXVI0Jw0OYx5E7KOQNri51vYz/F3ERN/0AcSBV2Q7h9ymIeGQP8VeM8fBcpn
+         XNDD8+C4TqjWBHH0lCKB+G291sFBBuHu7Q+uOhEgGWopEWMXmO1fCpRDs/fkem4M9zTE
+         TTPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787224531; x=1787829331;
+        d=1e100.net; s=20251104; t=1787224535; x=1787829335;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kXwo8eezAKAf2A4o/+O3GLjl9XPgejnrObTpGultTzc=;
-        b=bW+1X1TdWh+an0BAK3nsFOqjBdMHvljFWJEqGIYnpnayi9qIFlTgmyyAL1jqU31peY
-         fZMvF03Ep+JYtA86u6xMSe9+0BTurOqEVr/eT3nu6+0mbTPBk5PvYHGoSdjGpE+d5wUE
-         gBv1QW8SWLMVmnNP2WZw+KeYVzbUZzm8QxpolIftvOEctBj0OR4zeB0VzeymGdr5ZNk4
-         8RyDCn/EA1henuTXWugy6PQk1lYMzcnj+aDfEGk14p+yJjuSvQFwerHLP/m48l1o9Zlf
-         fI9/4pd9SJh5xvFNX/32innz+BQtHmDHg8xvtpbhDl970fj7K2s5GoZdk7TBd1aY02tp
-         WSMQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rpe0ylEBhN6+UcjkoulURaUzL1Rdl57VXVVVMnzay9hTkRPlm2loqQI8TAAJiPnpsbrSKI5MYc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyM9ZNMLWOJHzaQsRlpWPvO7N4+uesG0QN3sv8wYG3sHol6pCDD
-	++2Nnm+hdy4VLve2n4WeXE4XPpSz/U2NLGYP/GySFHTb17Jxhyh4x44p
-X-Gm-Gg: AR+sD13zSQKx6dhX4BHhTK52MUB+QA2PeZAhL8JuWIFFbJcCwdpo/6+VS7Xw6x7GGS0
-	xSvKPrBwVK7mb5Wk9Q3l3LnIbB8NjZTG9OU5oMh8Y4bjru+f1D/+IgNckN6Wrt2I2HcmWQwlwoz
-	sbh5Ke21hpstPQgV3eKiZZcxnbyE7zy1kbJAg+IOT84CCCgsqLDN6KhqufXT/a37hKDgMhlcGqv
-	siXkn/gvHyrCsfIJSQCci6WS38wZxCUwxIgDo06O2xI9+7Gqanw+2WTXHjqG6bidm41ayD3xK3c
-	X+8XJLE5dEt1o+gbV+P6Kjiko0tl3vwVeJVYicQWDuqaNeTZxIgtIjgesqJ9fTT7yhx2Q8LkjJg
-	wUaAjY/7J0SMAKru6iQ+RsXt1kZ0Rm3tJ+EkW/yw+ew83ZKlJ6Oa33a2tKwlIA9YqJlg0XXUAaj
-	0RkItVlH3brSMXIqdTiqxzhifFT1fbgnTVDU0AsODUca2LW2bdG7jNl4S8YwRM29zKBLej2LTqW
-	9aptEEx8zHc9Y6F1268VGahNQash3j+9IeRHAvFRSXmYYOuGqom3yqKLgmcqshrdACKh+QPwx78
-	PHYF
-X-Received: by 2002:a05:6a20:3ca1:b0:3c3:66c5:68d6 with SMTP id adf61e73a8af0-3cd00f77410mr21961884637.9.1787224530717;
-        Thu, 20 Aug 2026 04:15:30 -0700 (PDT)
+        bh=3splNz+eKCLGRh8XFY3AA6oSixILCEDeXRfbtthshOI=;
+        b=aS1URQDjq2FTzm9IYoaa24LDQVl+IELGElNFSwCY/9Dpp8Arn5s2T7zGOvSdjo8xRL
+         qQP4hFbheDswrAhSrGRKEbGlKgzloGOOmDCfmQnq+V5wPPRhRhTWIAOPufqUcIBWBNto
+         ciuxTQ06YFAsaB8IsGilMJ6H+25wHwgJPxESR0/6611fUd3CWh9v1G7u+uMgPSRYadCU
+         ylqdJJcf+a6bpgVIAbmWSFAGTosDFrf43KY8ghzJwmQvvHjgQz02i+qOFWHLF9fdUtc/
+         5BHjSr6PaWUsYh8GNDLikeVf3bS/oaZ91MfJ1ORuhfYh09iF27GLepX4F9cQrbhRovaq
+         a72Q==
+X-Forwarded-Encrypted: i=1; AHgh+RrVolkBQNc6QdiUOT1+3WcEOi7ddUGy/Bw/5180cWWt2wGEBXC58RZ2k+K8NWqQ6Oqd9wK+BFM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxsz6jjvfDMH/xWAdgDCsGQPKE8jNpa68QmwxP1XRE+W7MXdRsF
+	WZV/mjORvaot7oFXS+aLksmfYZ25NQJXgh0QJx/uKienWYPXsbU9CobW
+X-Gm-Gg: AR+sD135UZuII1EYMaGtw6SdM+BuYBHMLzf/vH6jgVUAH4KyrRVe1WbNtZo2nVhUZaK
+	Fcg7+Pgz1OBvdZ/hyx024wjPSqokRy17Fez0sOLS/nXddAZMGN40gmMgNAu24N2gkLVNnzYKIie
+	GZEqhS5MExypHt2iQMttDfn/bXE4l1N7o2GSHeFDC4732LZRbjWolM6aJLKOI/I4AtY6zvU2qtH
+	51qOYikUAFVeEtz2mM6/DkQgrbsu6oWCbmZyGq0XV/+nM6ViqBzxX2EY8YHUQasRYQqkgXuJ3me
+	G6uwcVgKMDtJcZ1JTegTTSYk+462VC6PXRiyHQRO6uni0i7vddTHnnbATanzTQOiYn2YAsRnLrn
+	Kl6GkEE6QEXWWKGm3QyDcuDByRBP07Kdvn2qM/U77NkIeBo4OXAg3EqZXWVfqDJ72DGoQKV81CP
+	ymKl7UjewD1b8L0+HnmL5Eoky1Ym9tLLPI0RKQslsqZbHHlXfE0afymJoztiw3ctCjQuESZnByN
+	F6B3xX47dTpK+l54GIIrdguTnwiWkxc7YAQS4jDsfD3hKqpsKPgoy3MNjjJSx/WZ+/q9djWJtQK
+	WmSi
+X-Received: by 2002:aa7:9319:0:b0:846:bc60:5bf7 with SMTP id d2e1a72fcca58-851d3862b53mr23055166b3a.6.1787224534715;
+        Thu, 20 Aug 2026 04:15:34 -0700 (PDT)
 Received: from phuc-desktop.. ([183.91.15.56])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc15568c722sm1676503a12.24.2026.08.20.04.15.27
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc15568c722sm1676503a12.24.2026.08.20.04.15.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Aug 2026 04:15:30 -0700 (PDT)
+        Thu, 20 Aug 2026 04:15:34 -0700 (PDT)
 From: phucduc.bui@gmail.com
 To: Justin Chen <justin.chen@broadcom.com>,
 	Florian Fainelli <florian.fainelli@broadcom.com>,
@@ -73,9 +73,9 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	bui duc phuc <phucduc.bui@gmail.com>
-Subject: [PATCH 3/4] net: systemport: Propagate IRQ lookup errors
-Date: Thu, 20 Aug 2026 18:14:55 +0700
-Message-ID: <20260820111456.97947-4-phucduc.bui@gmail.com>
+Subject: [PATCH 4/4] net: bcmgenet: Propagate WoL IRQ errors
+Date: Thu, 20 Aug 2026 18:14:56 +0700
+Message-ID: <20260820111456.97947-5-phucduc.bui@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260820111456.97947-1-phucduc.bui@gmail.com>
 References: <20260820111456.97947-1-phucduc.bui@gmail.com>
@@ -89,48 +89,46 @@ Content-Transfer-Encoding: 8bit
 
 From: bui duc phuc <phucduc.bui@gmail.com>
 
-Propagate the error codes returned by platform_get_irq() and
-platform_get_irq_optional() instead of converting them to -EINVAL.
+Propagate errors from platform_get_irq_optional() instead of only
+handling -EPROBE_DEFER. Allow -ENXIO to indicate that the optional
+WoL IRQ is not available.
 
-For the optional WoL IRQ, allow -ENXIO to indicate that the IRQ is not
-available, but propagate any other error returned by the IRQ lookup.
+Also propagate errors from devm_request_irq() instead of continuing
+the probe when the WoL IRQ cannot be requested.
 
 Found by manual code inspection.
 
 Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
 ---
- drivers/net/ethernet/broadcom/bcmsysport.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
-index 4d06c6ba6641..2acaffccdb08 100644
---- a/drivers/net/ethernet/broadcom/bcmsysport.c
-+++ b/drivers/net/ethernet/broadcom/bcmsysport.c
-@@ -2499,14 +2499,22 @@ static int bcm_sysport_probe(struct platform_device *pdev)
- 	priv->num_rx_desc_words = params->num_rx_desc_words;
- 
- 	priv->irq0 = platform_get_irq(pdev, 0);
-+	if (priv->irq0 < 0) {
-+		ret = priv->irq0;
-+		goto err_free_netdev;
-+	}
- 	if (!priv->is_lite) {
- 		priv->irq1 = platform_get_irq(pdev, 1);
- 		priv->wol_irq = platform_get_irq_optional(pdev, 2);
- 	} else {
- 		priv->wol_irq = platform_get_irq_optional(pdev, 1);
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index a2305e6428d1..c1c66a52efd0 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -3993,7 +3993,7 @@ static int bcmgenet_probe(struct platform_device *pdev)
+ 		goto err;
  	}
--	if (priv->irq0 <= 0 || (priv->irq1 <= 0 && !priv->is_lite)) {
--		ret = -EINVAL;
-+	if (priv->irq1 < 0 && !priv->is_lite) {
-+		ret = priv->irq1;
-+		goto err_free_netdev;
-+	}
+ 	priv->wol_irq = platform_get_irq_optional(pdev, 2);
+-	if (priv->wol_irq == -EPROBE_DEFER) {
 +	if (priv->wol_irq < 0 && priv->wol_irq != -ENXIO) {
-+		ret = priv->wol_irq;
- 		goto err_free_netdev;
+ 		err = priv->wol_irq;
+ 		goto err;
+ 	}
+@@ -4033,8 +4033,10 @@ static int bcmgenet_probe(struct platform_device *pdev)
+ 	if (priv->wol_irq > 0) {
+ 		err = devm_request_irq(&pdev->dev, priv->wol_irq,
+ 				       bcmgenet_wol_isr, 0, dev->name, priv);
+-		if (!err)
+-			device_set_wakeup_capable(&pdev->dev, 1);
++		if (err)
++			goto err;
++
++		device_set_wakeup_capable(&pdev->dev, 1);
  	}
  
+ 	/* Set the needed headroom to account for any possible
 -- 
 2.43.0
 
