@@ -1,112 +1,161 @@
-Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFD3442375;
-	Thu, 20 Aug 2026 12:40:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.154
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787229641; cv=none; b=ENqFsQ2jgXsYPxHlg0IMmxZ+iwK2bdD5m4EqO7v/Gi0KwtTtTeWH2fJMTkIncB/FY4FmjzALCUTygr8/4idwmbkyOPjQCcM9S7djZSxOe4R466EaysgCAWB0hvgbJ3kUbPjJULMRxd8ROevx9RfwdjSylitAkoE0Y888YGg3hos=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787229641; c=relaxed/simple;
-	bh=+CLrnI6QozE3Chi0jE1AKG2QhdYDt9tGJmR+l0Tqqps=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gjq31noa5pCAYgw3qQxxkDYMHmYXYFGeAwgKs7R+rIyKIB0YrG+swzpyjlIHh+kYaclnkFOV+GXoK/rIMuIJ+hJnNM/PmVlWXHgNzT1nl/rcFO+aAHNz8ACdGJ3o6hJA8OAK/rxMP4C+T3YwgVK1sndgM0Sa3Llr3VxUymI3RqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=Oio3762m; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZWs22ZRG; arc=none smtp.client-ip=103.168.172.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD4643E08F
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 12:41:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787229699; cv=pass; b=DNtcG8eWgz2Ou5SlhwMXZmnaue8287KvAThMFYqG/trYJ4rlAYfhP4f9mkeN0RT+xx2WNIFj/aVMb9YF3JApqhBgKuL/EE22STTiQ5lqu/zSJOJow4/94gImy67zFw1Qq+6ZaXF6xuBwL/ru3St055S19WfdgRcTAHgSk2sRgXM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787229699; c=relaxed/simple;
+	bh=pjEu49fJXCBZxcggrQ/SmLGHyVXfgvqpXDkL90EVyK4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=i9CTF1nJkOXLeAqpdT7XlHoiMWZfEIkbNMxfmp36C+ahbR2JOgRfqh4qjLYQd21K1CxQZ6SFg1hHtBn7NJXB1VuvbsQQARB3eEexYeJ9Y6keHUSgmeDqEQiXiIi0ewSUCdH98QpRaLCelThoqXgXb/ns3IROn1Z6WgFkp7n2v7A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=BA3sBpNk; arc=pass smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="Oio3762m";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZWs22ZRG"
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 1883C140019E;
-	Thu, 20 Aug 2026 08:40:38 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Thu, 20 Aug 2026 08:40:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1787229638; x=1787316038; bh=HHkMYMnPke
-	eakbHaqDKa97BPRup14XFlGkMtZPGbznU=; b=Oio3762m+xJE6Vou0Y1Z9Eo82M
-	p7/zBFTKmbr1LgM8GtAsPcdxwoxgaWz/51qusLRlTj19A6dZ4G87P21TRrnirR/O
-	74y5Uf5BUN2uiB9IV6C6T9IhGJ5JJcsDyzpRt3nxEw2hc0txd/fq3bXscJj5zho6
-	MLHfV2pGQVXejDtDYu7iq7IZO86Ff5v/H38xn4mniYsnF/PmRvzu91dJGFRby7PB
-	ofvpdyTtJC6dbIqYu8Qf3qULETFavQQt3Mpm/TKW1I/j69KPexGPId7UKkR76112
-	aYIoJ58heXnHRc9EhWP1aBxIdM5d16I0AWL/8SoFVC5SmoC0soS36HPB7ILQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1787229638; x=1787316038; bh=HHkMYMnPkeeakbHaqDKa97BPRup14XFlGkM
-	tZPGbznU=; b=ZWs22ZRGrhQI7GxltBC79wqrZ64c9jOqXS2cEvJzI3fpOXAqpES
-	uVTdYC5H088nGus/IEcn8xEvAcCbIucZZfbr0lFxPlEqPkWRwLZ/IGvbrNWJYvph
-	w6pHNSSyQAVsoD/W7gFddc/kWbJSnLnM2RwHO4DszanY5UaHZahJqpN5wxO5ARJr
-	w4ProwuTRISDpC1ZmzJINzzw/3+ptK0EGvehE2DZCce20NUukuAdXRHcU/RJCqov
-	/N8OSqMxyeUxBlfSe4z1yIQQxhZ35Bbzh93zmvrsCD2YGrp6BTg8u7say5yblP+i
-	0kxZ26TjV4x5xk4xBAMoOv6KJwal2/diM5Q==
-X-ME-Sender: <xms:xfWGatRxgT523weMose7njlNqJywhDjBDVCcxeDagsHpCYi5TX4Fqg>
-    <xme:xfWGairCtqc_vmzDwwOdwX2qZ9rOBuc1O1dFJoykK8wI1e-ROArgjEln6Nt_TxwVx
-    Gri_rwgnvp5hyhiNYAnVXmIxaVcgjrZLdrrLSotqA_6-k609oo>
-X-ME-Received: <xmr:xfWGav2CxdX-jjEV8abNzwSM7imLl0TyNSy-mrwhEdWihEhN-hlbDD3qTX3OzOStNROvXyZ5ZZDoscajfh6octsGXWOhp8GIrAmRH26nnJI>
-X-ME-Proxy-Cause: dmFkZTEhFlgN6PeITnv6jMsb0ROMIICe2s9VxzKVNf0KZZeawpQRU2MmHCbwl5HSl4rjm3
-    UoZ784peHLIV8y62ZWHO+szmj9FZhOFaGQoGec7yTzPIr1HiMc2l7NIP7AMwmfq2tcZqHC
-    dpf0gcadd6eiALfSc7lbJ3YQrhNCz4+aRFz3N9soV9i+H1QrGbvJTLY1tmOLHKm+X502Fr
-    6lB3yoVs5PWkSOrHIigY2a5QjKmodkgqnhbg2pdagK5zDs2Jj6OuAJRdqf/w0pQ8sE0KuE
-    lHUio9vqJ19KtQ+LowA6fe7YK2pCno95B4j4bh3s8PE2LV0Fp6zHSGWJQtR/sLqcV9ymMc
-    ML7g9xVsbBwkdVnGzYDzXJxgKQ4qW+2XVLimgvZ0bET/Qkt+pVAYH1iJv5slxAujoeYEiO
-    6qdv6fZopRfCaEu+roSH5aF8aODvtI9HjHdHdz9m6OUqIvAzEt52ZkaEniJPGJNAjfld+I
-    340P66xwBSE2Zp39ucqVW/EXu4BD2pbaFCpEoGAS1EXPOX/Mr06T6bW9e/+Kb/GbuEGKf8
-    nmnYhxcbQEgLHyd8FJn+H24mTMza5bx7OtorGBtbA5pW5xShDI60AZPlM78DG1wkLCXTtW
-    HNuDhkWXoweL0k8QUH0hO/2X60FGH3ODIZo6KMlPVr1KYWt+hWIhczz6pbIw
-X-ME-Proxy: <xmx:xfWGap5-NV04D_k2Q-KEO6Qr00lS6nNzPp8Y4TjXojuqf8l2yBbQNw>
-    <xmx:xfWGarQWgkXsr2sAHrOKwZjGnVgPOd7ToDPBFF9fa9Kr1CWRDGpahg>
-    <xmx:xfWGauWfZ7G6EjvDzAuF66hyiIJq1gnHDPbG0vHHe72r_b4wha7m1A>
-    <xmx:xfWGagFpbeZ5K9BvzvviM9tpj-8gx9oZeJxSuXNir2hdGrMxl-xJrA>
-    <xmx:xvWGakdNaTbQ2hzKYjAW4I_V8qfOiLNaefajEhboJAKRBtlNn5bfd-LV>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 20 Aug 2026 08:40:36 -0400 (EDT)
-Date: Thu, 20 Aug 2026 14:32:14 +0200
-From: Greg KH <greg@kroah.com>
-To: Artem Dinaburg <artem@trailofbits.com>
-Cc: stable@vger.kernel.org, Xiang Mei <xmei5@asu.edu>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 6.1.y] net: bonding: fix use-after-free in
- bond_xmit_broadcast()
-Message-ID: <2026082028-curled-try-e7c5@gregkh>
-References: <20260819165924.1184-1-artem@trailofbits.com>
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="BA3sBpNk"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-84e04df8c46so2053389b3a.2
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 05:41:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787229696; cv=none;
+        d=google.com; s=arc-20260327;
+        b=dIHb/tll7VBM9YiklMQ3KM24KqZ0S7nORMKOgjty8dVrdZb3VXXHwjCW6Vv0TAYpBW
+         Epc4S0vfOEqIWwek+2ue4p/KBs8mJ0FWAC21HTSMA2jT2WyFAD4PzZNEH/jCIGcyqFOz
+         7p1ibEFxbslB6iU1NHZ8NW4HtcUL0gzmf2HoRjP63EBSE6Z/324Y4RdiwISxu2T2om/f
+         RwGC3dJAhxgMPioEGq0nYLjgFukCwXYbwmFVk5HpPfZNVTwGvPmx2X6ktLbTsbUg5bnh
+         imhKpMeypOIVbaXSn4vdvhN4NpIJ2iVQJ096IIfEWSqlqh+sFtavMB0KBKKw37UIbDqM
+         ZF4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=MN6K5LaS827qFsNfPJFjKO3bo+XxHFnIs992QmHH034=;
+        fh=Mo4jABy+Qqpu3ugugQfCi9Eaac8e5YZFLy7xCFbdG2c=;
+        b=MMO+iZjdEL8QBKI1k6DizXhx2ccvsCGhmj6es24bkIZASjSTegMAKtOu56y7/zDga6
+         hbL3noH+OxR6YRX6Qebfpi2bLcITAJf1z5IFR3wt6cKxnlJ6EVKOfFcu/ihM3V4+R8RA
+         6q7n0ZoD32X4hcRGlJc5ATjbDPCgCvtDFUtG31Rwc3phUyaey4R3snmWgSLBzZsAiWpM
+         bfzcBuLLP2RtJ/Q4T9mPOHRxlmXkukFoCECHgr3czPE+8JBGqBVhSO8pRiBUEGbheLcr
+         2ASUqPB4C7FKVWIP070G5vR5bjj4ogWHWXVeSeFfCpS2jI1hy0yHw9NzeflRpc7X1art
+         d05g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1787229696; x=1787834496; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MN6K5LaS827qFsNfPJFjKO3bo+XxHFnIs992QmHH034=;
+        b=BA3sBpNka40QsYyu3w07kJBwDBIn/gcF8mrc38wlPCC39U1hBoA9qqZBXxrm1nWt+l
+         15qDPltAxHw/z6NTXOb7ImIl61vf/zhsQWd/UIJBaPPRBAXsSt+9UHlxvev9+k+09Owh
+         VV30z2AjFBMwMERNsk2br3Curkwtts56wPgWI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787229696; x=1787834496;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=MN6K5LaS827qFsNfPJFjKO3bo+XxHFnIs992QmHH034=;
+        b=oWzoUoWET4KKrs1QTJ7fezHYdSQZ8BaqWWjRYLRdFbGv39LmG53TgjJ2E/NZK56cMA
+         tnD/PuYHP8c5+rer8B9P1SPm3Up/4tTpfq/7xOGDaIbl4JldkHngrVUZAM4WohOocDaT
+         NkL03CDuGvU5xxiTVRTLHfyFQWSfwYxsfLzXdY/n93e1jBCHaWRytKcb5gasM+/LUJNo
+         Bf3M8af0k4Wq9sM1CwWBLZnU4BzDIG8Gf+PpW+u75r9odQ5NmwllGPFyFS19mGbnh+ky
+         NCG6dPE0GQ/rCWrMqLxxIaKNcn5iPOcgxbIluznBRhwwRVL8l2QXpv4qSlsmT+pRYb8b
+         OzXw==
+X-Gm-Message-State: AOJu0YwmBcCfSwCvY+NNCqHyfEjlq9lTiv3McSFdEACRmSZOjSimhtFQ
+	nrkuzpnlIggUX7UBV0fNUsPVxPQGyWQRXb9gRlpJqH3K2BzGGrhH4sic/lxbs7j20k9p4zzUQUu
+	j3ghpLcQmQu5/0JRJQrfHrPfIwuDx5X1gyaYYPsFZ
+X-Gm-Gg: AR+sD13GMjqBvHTi2uzXHka115l1yMra1gjt+8aLzznmPmXLe8624/zltmlJEeElJOO
+	s2MOiFQ0OU2Ytt8wS3kgG+UuKA9LpgnUFe/JF9QFALKqZprCcpa8DbD+m7GW8QT+LOLp/xc6Kl3
+	LtNmsamzAnKTdam8+sc3U6DyECA0ClVZod/+P+jf9f9qd6EZAEVyKahWU95+w8H2dp2T/0L4ArQ
+	ZBVn1t3CAkNk+M8y3PM5aPHhqNRZw2MNie1MelA/5d9YtpmiiyCYwy+c9hOqW/N7s0x5YBcGuUc
+	WDqFnYFBEiRbi5ZzGw2h3IcXNj8eIyunL6HALHiN2tZbL375pqC2lUoh
+X-Received: by 2002:a05:6a00:6ca2:b0:848:8715:c2d9 with SMTP id
+ d2e1a72fcca58-851d383142dmr22125250b3a.2.1787229696568; Thu, 20 Aug 2026
+ 05:41:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260819165924.1184-1-artem@trailofbits.com>
+References: <20260819204210.23722-1-fw@strlen.de> <CAM0EoMmT7xFtxrVwCm1ohpfVAPBuVBFHB8q_eTQ5taSquKo9og@mail.gmail.com>
+ <aoboL020DIcOn2lx@strlen.de> <CAM0EoMnvz6A_v65s=jcdw5nxL6N2+yd7ZBvp78mtt7edkPe-sw@mail.gmail.com>
+ <aobuk1osK-Lq-aMk@strlen.de>
+In-Reply-To: <aobuk1osK-Lq-aMk@strlen.de>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Thu, 20 Aug 2026 08:41:24 -0400
+X-Gm-Features: AcwNN1UpFvYrcQTitibXq00qJxEsxIdVdGcrG3kY2OUmcWMPjFUT_iyVnlqIEA0
+Message-ID: <CAM0EoMm8G9FaZZfctYKsm4Rkd3RVmVxkWMp6zJ1Gbxge5hdp0A@mail.gmail.com>
+Subject: Re: [PATCH net 0/4] net/sched: reset conntrack after packet munging
+To: Florian Westphal <fw@strlen.de>
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, victor@mojatatu.com
+Content-Type: multipart/mixed; boundary="000000000000326193065979d767"
 
-On Wed, Aug 19, 2026 at 12:59:22PM -0400, Artem Dinaburg wrote:
-> From: Xiang Mei <xmei5@asu.edu>
-> 
-> Please queue the attached backport of upstream commit 2884bf72fb8f. It fixes
-> CVE-2026-31419 in 6.1.y.
-> 
-> An unprivileged user can create a broadcast bond and dummy slaves in a user
-> and network namespace. Racing ordinary packet sends with slave release makes
-> `bond_xmit_broadcast()` give the same skb to two transmitters. I reproduced a
-> KASAN use-after-free in `skb_clone()` on v6.1.182.
-> 
-> The attached one-line upstream fix applies cleanly to v6.1.182. The same
-> workload completed over one million sends and 299 slave mutations with the
-> patched module and no sanitizer, oops, lock, or BUG output.
-> 
-> The fix is already released in 6.6.143, 6.12.95, 6.18.22, and 6.19.12, but no
-> corresponding fix is present in 6.1.y.
-> 
-> Signed-off-by: Artem Dinaburg <artem@trailofbits.com>
+--000000000000326193065979d767
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-You stripped off all of the original commit changelog info :(
+On Thu, Aug 20, 2026 at 8:09=E2=80=AFAM Florian Westphal <fw@strlen.de> wro=
+te:
+>
+> Jamal Hadi Salim <jhs@mojatatu.com> wrote:
+> > Example: If the ebpf one could be reproduced with unshare -urn would
+> > it have been fine to make the fix sit in netfilter?
+>
+> I don't know how to 'fix netfilter'.  We would have to remove skb->nfct
+> and re-parse at every turn.  Is that a viable option...? Don't think so.
+>
+> > > And that doesn't solve BPF (can sit anywhere) or OVS (no idea here if
+> > > its affected or not).
+> >
+> > OVS is very likely affected.
+> > I saw your other email and you are the expert, but I am itchy to try
+> > the nf_confirm() approach.
+> > At minimal it should fix the PoC imo.
+>
+> As I said, I don't see any existing function that could be used
+> to add the required re-validation.  nf_confirm() is the last step
+> in the pipeline, its way too late.
 
-thanks,
+Sigh - couldnt help myself. Attached  fixes the poc from kyle - i know
+you are hinting there are other scenarios where it wont work.
 
-greg k-h
+
+>  nf_conntrack_in() doesn't work
+> either because you can install matches earlier than that, e.g. via
+> -t raw -m conntrack in classic iptables, or via 'hook prerouting
+> type filter priority -2147483647' or something like that in
+> nftables.
+>
+> The only other option is playing whack-a-mole, accepting the original
+> proposed patch for nft_ct, but I can already tell this will not be
+> enough and revalidation will have to be added everywhere.
+
+whack-a-mole is what i was worrying about. Someone will come up with a
+scenario for ebpf and likely ovs and you will have to fix multiple
+spots until the next one.
+
+cheers,
+jamal
+
+--000000000000326193065979d767
+Content-Type: application/octet-stream; name="nf-confirm.patchlet"
+Content-Disposition: attachment; filename="nf-confirm.patchlet"
+Content-Transfer-Encoding: base64
+Content-ID: <f_mt1ie8sa0>
+X-Attachment-Id: f_mt1ie8sa0
+
+ZGlmZiAtLWdpdCBhL25ldC9uZXRmaWx0ZXIvbmZfY29ubnRyYWNrX3Byb3RvLmMgYi9uZXQvbmV0
+ZmlsdGVyL25mX2Nvbm50cmFja19wcm90by5jCmluZGV4IDdhNDBlNGUwZTMzZS4uMzAyYjRhYTkw
+NzNlIDEwMDY0NAotLS0gYS9uZXQvbmV0ZmlsdGVyL25mX2Nvbm50cmFja19wcm90by5jCisrKyBi
+L25ldC9uZXRmaWx0ZXIvbmZfY29ubnRyYWNrX3Byb3RvLmMKQEAgLTE1MSw2ICsxNTEsMjIgQEAg
+dW5zaWduZWQgaW50IG5mX2NvbmZpcm0odm9pZCAqcHJpdiwKIAlpZiAoIWN0IHx8IGluX3ZyZl9w
+b3N0cm91dGluZyhzdGF0ZSkpCiAJCXJldHVybiBORl9BQ0NFUFQ7CiAKKwlzd2l0Y2ggKG5mX2N0
+X2wzbnVtKGN0KSkgeworCWNhc2UgTkZQUk9UT19JUFY0OgorCQlwbnVtID0gaXBfaGRyKHNrYikt
+PnByb3RvY29sOworCQlicmVhazsKKwljYXNlIE5GUFJPVE9fSVBWNjoKKwkJcG51bSA9IGlwdjZf
+aGRyKHNrYiktPm5leHRoZHI7CisJCWJyZWFrOworCWRlZmF1bHQ6CisJCXBudW0gPSBuZl9jdF9w
+cm90b251bShjdCk7CisJCWJyZWFrOworCX0KKwlpZiAocG51bSAhPSBuZl9jdF9wcm90b251bShj
+dCkpIHsKKwkJbmZfcmVzZXRfY3Qoc2tiKTsKKwkJcmV0dXJuIE5GX0FDQ0VQVDsKKwl9CisKIAlo
+ZWxwID0gbmZjdF9oZWxwKGN0KTsKIAogCXNlcWFkal9uZWVkZWQgPSB0ZXN0X2JpdChJUFNfU0VR
+X0FESlVTVF9CSVQsICZjdC0+c3RhdHVzKSAmJiAhbmZfaXNfbG9vcGJhY2tfcGFja2V0KHNrYik7
+Cg==
+--000000000000326193065979d767--
