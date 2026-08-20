@@ -1,181 +1,144 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D419395D86;
-	Thu, 20 Aug 2026 18:42:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C83F039769B
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 18:42:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787251352; cv=none; b=qenYFp1Rw8bBpZpKNQPRwa3s3Kzj3OKhqbQqZG5AvPCW6PXxEccvbI4d4ZuNziVhmctVdySwa1AOetgS18qn83iyPdGsBl8A0DjtOABYRUvR8SvNcruSOBVkETuG1ROtaTHDX8+4jiH+Hz2PCCrVALcyQ61hK1kMJbBxhDz9NKc=
+	t=1787251354; cv=none; b=AQMwvN83IQ4a2v8k6EjRfvhyX4ISodShiM10JM3x1/2ru7MTCDOAmi8d8C9d06+iy6O4V+A+n3SUC29cdB4VuraLWRjQQPbfh1eA7ueTHsa6zewQ7MQa1f4Uz31AnXP2e0LsLbTCKMaJ477NpO2i/TVjoaaNvX1j4n4B2a1Nh5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787251352; c=relaxed/simple;
-	bh=RbNRiPiz6g5rVDofceZOR0NDHloJ3pSrF/HfzeU/f9Q=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=M+AUX+594SV9a3Abb6MqMxhaRvzVooZeGjKCnTO00VQdwAFQVg2uNGXWFCQzZwskLE2THWj2R+1VwBLo4Gr+5fsREbfKlcmkUBxfJe2qoyveMUK3TCC7SYOcgkeZPNxtuZK8wOcEb9zbzgS5Qn4ePKePZVMj9AnCltOudZaBVBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=meWdqk1e; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787251354; c=relaxed/simple;
+	bh=SYX+JlrGNTDEXjKAoWcQL6ELgpKDbWRqmiR8KoABcNw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kjvlV92Cw7BRBDH390/hnA2+p8dIEoiSba7bVxScPAI8qFYs0Wbcg7VI+SEcSNT4iVXkB6eOiFUUshbgMKQQ2fgRwDhmNVres0APif8WbZ+GT/9glbPTbSdiTgjBQjajmj5geO51KeIH3gx1fAJMap0f0QCEyFQO4vSQiVMuR9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=EFoC2iyL; arc=none smtp.client-ip=209.85.216.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="meWdqk1e"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB7531F00A3A;
-	Thu, 20 Aug 2026 18:42:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787251351;
-	bh=HbroSlgN6GJtwz9zz/Ki2k5fbll8gvlJgyXkpYx3h0o=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=meWdqk1e0k5jspXnXg004XGNtnZleruKHU4yAAa1oOlSH8IJXVkbAozaFuY5g+4wr
-	 saas7l6jaYUvCFLxYUJQIBaSo+Yvh8GYYDQ/IUXQYtMJc7rHsYPkRkc9LvoY6j0UlJ
-	 QGY7ESzU7NbBxrFRjekL7x/DZ2G89jKM7Jl8459jnMSA7TTpZdPMwtqCM0Vq7Ex7VQ
-	 pvqCvk2SjS9aS/8kHzRS9Kig9Xqvh+SRXdCO5ewgYAMIPxX+kCPOX4v2BjSI2NJ9Qx
-	 skHhf4mra7YmxKGYhLOKBDVNy2tlMVEUzRYYSY9hqRyx8qhDUnPOg6MxZ16fI3beSx
-	 6RUfIbLH9rKcQ==
-Content-Type: multipart/mixed; boundary="===============8020047159908745968=="
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="EFoC2iyL"
+Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-38dfe910e9dso129726a91.3
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 11:42:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787251352; x=1787856152;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=fEKZKwe8xin78Zky0TWTYOaM5koa7MSpaMH+Oal8e4c=;
+        b=m043ISoBLGPBgK/QJxI0xZKNnJHfDV379R1+2ou5bbdQl2joDBGOLV+EHt69LCnc5X
+         q3iYgkgx3r4xdNYkyZ4NJfZGSeVVAAH0f0ig7iUVsRTrYZXN1l5Hb3hXjNjaHLimqd8N
+         0PhdidNQ0WXoMdOwDpkcS93aAqvCZXfKuYdYzd0qt5h0YMJPW6MzIZvYoDVJ4+nfqKKC
+         yai9yCghp4AQvzTC73lrwupiJDICRGWcNODzP8jomR3FuvXcZ2+raFUNzKw/IE1xWELa
+         WJYz1lpmRY4qxYw8YiT7iMChTvBJe4yBF0s/ucZb3kx4H/LZNX3QBGQIHyuU+wVfHmDi
+         V3kw==
+X-Forwarded-Encrypted: i=1; AHgh+RrUBEWZR3deo3cA3Wz3Ylqw3zL0vOGKpDGHjIzJo9goWRIf0f955ncF55TeqzJGUf5HjTvtdjI=@vger.kernel.org
+X-Gm-Message-State: AFuF++nmFYtKOsDyGb6Oj9I5lRUuJAJjhrwR9TYp66Io6ELMVxo/7TAY
+	CmTeNNXWzEd3Nhy2hLgZyqmyfIrk8xUFGmu3GAItpNKriG5CzUUsul1t3qna01HBkyrw9R3DqMT
+	rtDfVJoqWET0R37QPLVGgeLlXkBnFY6S4clGHBLbGe2XLllc6AJaIkfEEeKjgEd4TMycPJjy8PU
+	DOtpJychd/Xz6y9tLlz9cBaY2VOwGSPuGGF8/fWtFHQ/MifmlTpqpaUCzBnLB7UKoN3kr9odbG0
+	QoQPUrSbw==
+X-Gm-Gg: AR+sD13OwnxLmWaXxLsY3jXvx4hZIwuEAyP6MmAwcd7P66tef4Jh+ov7EC9QPPPg5lY
+	K13z05EQ0FbWHNk9fwXGdiVlCd3x63AgMEdgeFUtOJl9pYds3beGM+qB3aeoT8ejyAY+NM5hs4A
+	pnOk7jVTvoskOMezbsJt0X0lA9a4KOAR881NR6t6agoAzdLAG/dlggUMHYomXBj1PslrNFwxO1W
+	KaH2e1cF9b9ceqL9Se0AyAG4LpwtnQAci62tv50UVjC5X2uAVC/khArrza2eJECgbXnKPjh7ODJ
+	/5gMhbhYRMOw+0OykGUydepgNoBG2q2RNoXKTYJY4Bc3OkxEzDDkuOfC7x1Qfg0BnoH4N1SdYn2
+	CiX9dbeShfft/AJ/V8GZGqm1wrxlkeSZWmJusMwg7ynVUNiGdJrVzDjXwWVqQyy43PlWOs0Knkn
+	KXSHeptDFFChcFzaRRrdGe60onnF4EQ+3vfw==
+X-Received: by 2002:a17:90b:4c8e:b0:38d:fda6:4873 with SMTP id 98e67ed59e1d1-395c352aee9mr926388a91.10.1787251351876;
+        Thu, 20 Aug 2026 11:42:31 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-16.dlp.protect.broadcom.com. [144.49.247.16])
+        by smtp-relay.gmail.com with ESMTPS id a92af1059eb24-1416ac220b5sm467904c88.5.2026.08.20.11.42.31
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 20 Aug 2026 11:42:31 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-90410c668adso2376786d6.1
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 11:42:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1787251350; x=1787856150; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fEKZKwe8xin78Zky0TWTYOaM5koa7MSpaMH+Oal8e4c=;
+        b=EFoC2iyLRY7Bk+U7ReY85lzmeomUvwoHMvQyrFNL30fy1lIx3OYvUIVIH3OGhvZs4n
+         /mMbn8ql7H/+danzRE+GtcTDOHu1DVRdXXiFV9nk3DowLxH8ppCNIZAm5VEQofovwVKn
+         bKJFsnXf8ysU0RmDn2eAqXOnKxfld0YIkQKgU=
+X-Forwarded-Encrypted: i=1; AHgh+Rq6tQ+nkjksbGFPgcBnTsQV/V+o2tcJ/IG78xNgLFx/z+vbWPMjAlSPS+QUJOtOjzc8CUygyrc=@vger.kernel.org
+X-Received: by 2002:a05:6214:124d:b0:8ee:5e59:7b04 with SMTP id 6a1803df08f44-90c80e00b57mr2004766d6.18.1787251350417;
+        Thu, 20 Aug 2026 11:42:30 -0700 (PDT)
+X-Received: by 2002:a05:6214:124d:b0:8ee:5e59:7b04 with SMTP id 6a1803df08f44-90c80e00b57mr2003896d6.18.1787251349742;
+        Thu, 20 Aug 2026 11:42:29 -0700 (PDT)
+Received: from [10.69.70.219] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90c5f2906afsm44099346d6.25.2026.08.20.11.42.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Aug 2026 11:42:29 -0700 (PDT)
+Message-ID: <1958a140-a3ff-4f0c-8982-9695d1dbd8a1@broadcom.com>
+Date: Thu, 20 Aug 2026 11:42:27 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <c7043ee1ffe17c6204bfd2f151109af394c65bea110a24e687d44f5556bf9407@mail.kernel.org>
-In-Reply-To: <20260819024443.781764-2-tushar.vyavahare@intel.com>
-References: <20260819024443.781764-2-tushar.vyavahare@intel.com>
-Subject: Re: [PATCH net-next v3 1/4] selftests/xsk: add UMEM users refcount and centralize socket teardown
-From: bot+bpf-ci@kernel.org
-To: tushar.vyavahare@intel.com,netdev@vger.kernel.org,magnus.karlsson@intel.com,maciej.fijalkowski@intel.com,stfomichev@gmail.com,kernelxing@tencent.com,davem@davemloft.net,kuba@kernel.org,pabeni@redhat.com,ast@kernel.org,daniel@iogearbox.net,tirthendu.sarkar@intel.com,tushar.vyavahare@intel.com,andrii@kernel.org
-Cc: bpf@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Thu, 20 Aug 2026 18:42:30 +0000 (UTC)
-
---===============8020047159908745968==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] net: broadcom: Improve IRQ error handling
+To: Florian Fainelli <florian.fainelli@broadcom.com>,
+ Paolo Abeni <pabeni@redhat.com>, phucduc.bui@gmail.com,
+ Doug Berger <opendmb@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20260820111456.97947-1-phucduc.bui@gmail.com>
+ <a618bdba-c370-4f16-ac09-0f7ceb742d42@redhat.com>
+ <cc18ef57-4f5b-4459-b110-b29bf2c8b8eb@broadcom.com>
+Content-Language: en-US
+From: Justin Chen <justin.chen@broadcom.com>
+In-Reply-To: <cc18ef57-4f5b-4459-b110-b29bf2c8b8eb@broadcom.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-
-> commit 90d52cd76f2fe834a2cca6abb76d0ae53c96b8e5
-> Author: Tushar Vyavahare <tushar.vyavahare@intel.com>
-> Date:   Wed Aug 19 02:44:40 2026 +0000
->
->     selftests/xsk: add UMEM users refcount and centralize socket teardown
->
->     UMEM ownership is currently implicit. xsk_configure_umem() maps the
->     buffer, but freeing it is spread across testapp_clean_xsk_umem(),
->     clean_sockets() and clean_umem(), each called from a different error path.
->
->     thread_common_ops() returns without releasing the UMEM when
->     xsk_configure() fails after the UMEM was already mapped, leaking the
->     mmap()ed buffer.
->
->     The pthread_barrier_destroy() failure path in __testapp_validate_traffic()
->     unmaps the UMEM owned by ifobj1 while sockets belonging to ifobj2 are left
->     alive. With shared_umem, those sockets reference the buffer that was just
->     unmapped.
->
->     Make ownership explicit instead. Add a refcount_t users field to struct
->     xsk_umem_info and release exactly one reference per socket on teardown, so
->     that the last socket to go away frees the UMEM regardless of which path
->     tears it down. Keep shared sockets pointing to the same xsk_umem_info
->     instead of copying ownership state, so all users update the same reference
->     count.
->
->     Propagate UMEM deletion errors from xsk_delete_socket() so callers with
->     stack-allocated state can handle a deferred cleanup before that state goes
->     out of scope. The in-test teardown paths cannot retry, because
->     __test_spec_init() clears the UMEM state at the start of the next test and
->     the mapping is then unrecoverable, so xsk_delete_all_ifobj_sockets()
->     records the failure in test->fail instead of dropping it. A UMEM that
->     survives teardown now fails the test rather than leaking silently.
->
->     clean_umem() skipped ifobj2 whenever it shared the UMEM owned by ifobj1,
->     which was only there to avoid unmapping the same buffer twice. The
->     reference count makes that distinction unnecessary, so the helper and its
->     special case are removed along with the other ad-hoc cleanup paths.
->
->     Co-developed-by: Magnus Karlsson <magnus.karlsson@intel.com>
->     Signed-off-by: Magnus Karlsson <magnus.karlsson@intel.com>
->     Signed-off-by: Tushar Vyavahare <tushar.vyavahare@intel.com>
-
-This looks like a bug fix for the shared UMEM feature. Should this
-include:
-
-  Fixes: 6d198a89c004 ("selftests/xsk: Add a test for shared umem feature")
-
-> diff --git a/tools/testing/selftests/bpf/prog_tests/test_xsk.c b/tools/testing/selftests/bpf/prog_tests/test_xsk.c
-> index 4549358cc8c2..bba5e8d4222d 100644
-> --- a/tools/testing/selftests/bpf/prog_tests/test_xsk.c
-> +++ b/tools/testing/selftests/bpf/prog_tests/test_xsk.c
-
-[ ... ]
-
-> @@ -1508,8 +1529,15 @@ static int thread_common_ops_tx(struct test_spec *test, struct ifobject *ifobjec
->  	}
->
->  	umem_rx = test->ifobj_rx->xsk_arr[0].umem;
-> +	/* Non-owning view used only for TX buffer arithmetic; the sockets below bind to
-> +	 * the RX-owned UMEM, so the handle, cq and refcount stay in one place.
-> +	 */
->  	umem_tx = ifobject->xsk_arr[0].umem_real;
-
-A subsystem pattern flags this as potentially concerning: BPF code style
-expects multi-line comments to have the opening /* on its own line
-(bpf.md guide), even when surrounding code uses the old style. The patch
-shows the correct format in xsk_configure_socket():
-
-	/*
-	 * For shared sockets refcount_inc hasn't run yet, so clear umem to mark this slot
-	 * as having no reference. For the owner (non-shared) the reference was taken by
-	 * xsk_configure_umem; leave umem set so the caller's rollback path can release it
-	 * via umem_ref.
-	 */
-
-but three other new comments in this patch start their text on the same
-line as the opening /* (this one, the "Keep ownership explicit" comment
-in xsk_delete_socket, and the "A UMEM that could not be deleted" comment
-in xsk_delete_all_ifobj_sockets). Would it be clearer to follow the same
-format throughout?
-
-> -	memcpy(umem_tx, umem_rx, sizeof(*umem_tx));
-> +	umem_tx->num_frames = umem_rx->num_frames;
-> +	umem_tx->frame_headroom = umem_rx->frame_headroom;
-> +	umem_tx->buffer = umem_rx->buffer;
-> +	umem_tx->frame_size = umem_rx->frame_size;
-> +	umem_tx->unaligned_mode = umem_rx->unaligned_mode;
->  	umem_tx->base_addr = 0;
->  	umem_tx->next_buffer = 0;
->
-> @@ -1599,6 +1627,8 @@ static int thread_common_ops(struct test_spec *test, struct ifobject *ifobject)
->  	ret = xsk_configure_umem(ifobject, umem, bufs, umem_sz);
->  	if (ret)
->  		return ret;
-> +	/* Mark before xsk_configure so rollback can release the UMEM if it fails. */
-> +	ifobject->xsk->umem_ref = true;
->
->  	ret = xsk_configure(test, ifobject, umem, false);
->  	if (ret)
-
-[ ... ]
-
-> diff --git a/tools/testing/selftests/bpf/prog_tests/test_xsk.h b/tools/testing/selftests/bpf/prog_tests/test_xsk.h
-> index 03753ddc5dcd..15d6fe2b9568 100644
-> --- a/tools/testing/selftests/bpf/prog_tests/test_xsk.h
-> +++ b/tools/testing/selftests/bpf/prog_tests/test_xsk.h
-> @@ -4,6 +4,7 @@
->
->  #include <linux/ethtool.h>
->  #include <linux/if_xdp.h>
-> +#include <linux/refcount.h>
->
->  #include "../kselftest.h"
->  #include "xsk.h"
-
-[ ... ]
-
-> diff --git a/tools/testing/selftests/bpf/xskxceiver.c b/tools/testing/selftests/bpf/xskxceiver.c
-> index 7dad8556a722..5d8a29e7224e 100644
-> --- a/tools/testing/selftests/bpf/xskxceiver.c
-> +++ b/tools/testing/selftests/bpf/xskxceiver.c
-
-[ ... ]
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
 
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/32400920730
---===============8020047159908745968==--
+On 8/20/26 9:45 AM, Florian Fainelli wrote:
+> On 8/20/26 06:30, Paolo Abeni wrote:
+>> On 8/20/26 1:14 PM, phucduc.bui@gmail.com wrote:
+>>> From: bui duc phuc <phucduc.bui@gmail.com>
+>>>
+>>> Hi all,
+>>>
+>>> This series improves IRQ error handling in several Broadcom Ethernet
+>>> drivers by propagating IRQ lookup and request errors instead of
+>>> silently ignoring them.
+>>>
+>>> The changes were found by manual code inspection and compile-tested
+>>> only.
+>> ## Form letter - net-next-closed
+>>
+>> We have already submitted our pull request with net-next material for 
+>> v7.3,
+>> and therefore net-next is closed for new drivers, features, code 
+>> refactoring
+>> and optimizations. We are currently accepting bug fixes only.
+>>
+>> Please repost when net-next reopens after Aug 31st.
+>>
+>> RFC patches sent for review only are obviously welcome at any time.
+>>
+>> See: https://www.kernel.org/doc/html/next/process/maintainer- 
+>> netdev.html#development-cycle
+>>
+> 
+> Not seeing much value in these patches, to be honest.
+
+Agreed. I prefer the current behavior. Even if the optional WoL IRQ 
+exist, but fails to initialize correctly, the rest of the network 
+functions will still work. No need to take down everything in this case.
+
+Thanks,
+Justin
+
