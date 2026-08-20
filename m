@@ -1,133 +1,185 @@
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4780339F16B
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 09:57:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD1473DD874
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 10:03:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787219871; cv=none; b=fTlhog31uV2wlPzo4uz+9sGCtuswKTBngPebdXyZEQhh14cBhuXGbYznYAzytZ8X1a8CiRuM/nsbc9brn9CSt7bMLueKNAckkNdrsO4chhl+IYHLlTewidHXd6cNGyE23mo3todv5nN8SFPN2svmOmUKtezt+9xiEaMP/yRpvUw=
+	t=1787220185; cv=none; b=dl8GK0cJ4Yl1fF8T7V6fCGpFSolubXtaGETKg2bdJsRRB8pOHPUL0OPzNj7TxK8vLJHcPDwcqxmS1qNvXbIsxfrigHcyXALpy0S7m4A1Q+IhHJKRjv3D6FBcTKi4Ch7bal2khXON2yCDxZjmrHQZKAsT0Nc7fajsEJABEE8ZZkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787219871; c=relaxed/simple;
-	bh=15Cw9oblK/D1vb486tpmsk9GW0qXeom/MxvsqfjbR04=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=syKx+E0X8bMNhnADj9+R7/fFPlPDmxST1Y64sZFay2KwvDldtJaBLZn3gypS+j0X8uJ5KE9Q3ZmmteFZ6hxgDx8txJVaIsV9kVTAftpXa5DUaOrM9rsMPTBrs9U2M6oJJ6IVfShqEhHZRWpH2Dntg63IIRHWUe4dRDpxfUDAruU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=rseub10l; arc=none smtp.client-ip=209.85.219.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1787220185; c=relaxed/simple;
+	bh=yjRzldArbYODxSvNEvZ7dRry3VO1egD2am5/cK5Vqt8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=elmMjGt0U9MbyzFqRuYJPVnwyd4yz5HKQxTKhEjjzAOFqFfZ/VTkXr2NhQCr+UceiJcZOBdBTTr4Fn0HrfSeRHO1lds7JX/Dwdpc8Spfsj4EXi8KjDDS2A72x5LA+C6bzW1FwZJOdrJ4gsiz4irpWA/Sde6UyaN2ICwQBW/Tomo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mL0uwQLc; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="rseub10l"
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-90a6b298889so16785096d6.3
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 02:57:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787219868; x=1787824668; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=yWiRk4eGbnJIOLSDci/J7Dj9lG9H1Q4ou0ubiJm1Mow=;
-        b=rseub10lS0f0Y8gtYUfKPx9WxIHqL/psU1Z/DPU/GbBHh9lHt3Je8B+nYTTEgUyQZ7
-         ab4ZXd67lFmBnbpHcHyvtCLCVXd6Ie29YMiHleOExr9KotFwjVqCms//tgUicyNTITcU
-         Yt/wvmWzXTlPUvu99T767L8M4RSdfITIXkAfY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787219868; x=1787824668;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yWiRk4eGbnJIOLSDci/J7Dj9lG9H1Q4ou0ubiJm1Mow=;
-        b=pr1nWaDmYYfU40ah0V+j0H0QqXBBQATNa3eWzEtYvqFhLCZeEy24Tf5pzGuY/smxRC
-         /qCtdH//Lp5/0991rhKbf0oGkJgxpb2mri1OHPHzAeXgFcyPKriWG0Yd66UC+bQ740wu
-         vj5omIL+hY+jM7V/PJOldAwhdyQMARKpIw9ieImHaZNFqWJFQHhEvIo7QAsAsc0uke0w
-         TiS3UboO1+IfCgCyarKX0Uelw0tKOs/iW6TKJbJO8xlfmUi43JMyo7AW2LlaZ95avCwV
-         itx+18bw9/eUmMhixBc0uW76UUm/aNYTJAY2ERHmA0RQJLX0+PD5pC6sUi6jXGuxFNc9
-         K+Sg==
-X-Gm-Message-State: AFuF++ngPrm4oWBiOrV71p7iWVw+DH/rwzjTEYjYwF1vTfgMg+dZnEbt
-	RHl5sQQa3iKGuogQqGoO7ZA3lqdwQQ0kp4pDMEHx3fIPY4az0flqzY0di67YCk0DsLtzGptjiXO
-	1RsAmQQ==
-X-Gm-Gg: AR+sD10JHHD2HpIO4iQZqgBOE6kEB0sBl1jIefAnNZl3+DWXmkDBnqLZ89T9YaaClns
-	DfBtTNHBV+hH/i1wnGCmYAPx3jsupIT120YfFv1XN7sjd3LvkE8Fla4U1JkCs6nk40UsdH4g+Av
-	NuVd7Cq1Evr2n8aYgO5l4ksCl+BGQLE0tau7QCHbSBKeVrzuUrS6E7srmFN5fRZsaxuv6fzQClY
-	9fInjB0hEEgnObypd94GHp8pmYBkJExK+S4s2HWtjRML4xjxxcX5g4dNQycXuXRnfIyBnHGGH4m
-	hNayN4nVCYCB3l5y3y47+Ski28Mgws9pPRPb2h7EuQ7AG3qMLHE7mQpjlmVX65yfS7SXb+ugl/Y
-	+OWdT1nJyqSaTAr0XiFOXSIUAu2fCktsi48hsb6RHHRfzDcnwv78N2F48FOLFIO/SHkGz/8X8eC
-	F0K1AOX5U8hcGyxa8Qus34ynI6D+WQFnLeuLmKpN+XhcSHpqijH3ErWh556viY/O/wbzLXcEnN3
-	uEtcR5af6RBhk1DMSX2LU53Wgf0e0BN5IaG5AvoyB3utw==
-X-Received: by 2002:a05:6214:4016:b0:8f0:2c80:caa5 with SMTP id 6a1803df08f44-90c5eb91f13mr95769106d6.23.1787219867923;
-        Thu, 20 Aug 2026 02:57:47 -0700 (PDT)
-Received: from majuu.waya (bras-base-kntaon1621w-grc-04-184-144-29-222.dsl.bell.ca. [184.144.29.222])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90c5f2b8164sm34565336d6.48.2026.08.20.02.57.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Aug 2026 02:57:47 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	stable@vger.kernel.org,
-	vega@nebusec.ai,
-	"Victor Nogueira" <victor@mojatatu.com>
-Subject: [PATCH net 2/2] selftests: tc-testing: add pfifo_fast ring cap regression test
-Date: Thu, 20 Aug 2026 05:57:42 -0400
-Message-Id: <20260820095742.68511-2-jhs@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260820095742.68511-1-jhs@mojatatu.com>
-References: <20260820095742.68511-1-jhs@mojatatu.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mL0uwQLc"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id C4D584E412F5;
+	Thu, 20 Aug 2026 10:02:54 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9114D602B8;
+	Thu, 20 Aug 2026 10:02:54 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0D61711C760F1;
+	Thu, 20 Aug 2026 12:02:45 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1787220169; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=J9IkcMn3tZqQRLkfuwau8kV3b82A8qd50t+xwVLTmcs=;
+	b=mL0uwQLcWjES7km3xswrfFIgO3kPR+28koBeAY093sSHY69/2uCC36acHPlX0QHae4QzdI
+	Nqy8HXu2SuKY6A8kgETxqJRRwkFAmti7afRrYrE+SDzWUmy2RyIxWXf6n9cJucsDJ84z0f
+	a0QHXnAsMauSFXkh9PG5dSC+bdo4oAjK/5ko8l7E24c3yGm0b7atzi9gBuOPoDtNWBJz11
+	PAjNBiP/lNRHC+i6ssOdJ7Myz3egTse1iH07x7d/RrLCaq8n2S5EzLq8cRwR6jFHOcqNBi
+	SPGSkgtUbgu43uZHD+lGbqK8xaoAqNpvkmrzXSy00rgSGIJFWv2f2gxhKcgKoQ==
+From: Miguel Gazquez <miguel.gazquez@bootlin.com>
+Date: Thu, 20 Aug 2026 12:02:10 +0200
+Subject: [PATCH 6.12.y] ipv4: start using dst_dev_rcu()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260820-cve-2025-40074-v1-1-f045d5f74950@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQ6CMBCE4Vchc3bJdilIfBXjgdZV1wOaFomE8
+ O5WPX6TzL8iazLNOFQrks6W7TEWuF2FeBvGq5KdiyEsHffCFGelgpY8895TkNBHbhsvg0M5PZN
+ e7P0LHtHVTuoFp/+eX+GucfrWsG0flmFy3noAAAA=
+X-Change-ID: 20260820-cve-2025-40074-b2b8c05342a1
+To: stable@vger.kernel.org, Eric Dumazet <edumazet@google.com>, 
+ "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Martin KaFai Lau <kafai@fb.com>, 
+ Wei Wang <weiwan@google.com>
+Cc: thomas.petazzoni@bootlin.com, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Miguel Gazquez <miguel.gazquez@bootlin.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787220165; l=3915;
+ i=miguel.gazquez@bootlin.com; s=20250708; h=from:subject:message-id;
+ bh=tyMQo+nHOrlj15/tqkrNb1JIaPH5z08HC5uc4TA6Tk8=;
+ b=dedXycg5ejqcSSYocRIam//aOLzLxuxfN576X/Cn/Jm2461iKnd6u9G4/1IhaYk+xtkkpH62g
+ eu2PCB8S7sxBN0d3+687/gB+GPwYJAoC7tsfwYngO2FlDCkaFuvXfzF
+X-Developer-Key: i=miguel.gazquez@bootlin.com; a=ed25519;
+ pk=k/2KI9jkmayaF0ghZ8QYUH9Wm/kFHDhl8QoZ0RHbr4w=
+X-Last-TLS-Session-Version: TLSv1.3
 
-Add a tdc test case (0249) that sets a huge tx_queue_len (100000000)
-on a dummy device and attaches pfifo_fast. On the fixed kernel the
-ring is internally capped to 65535 entries, so the qdisc is created
-successfully (exit 0). On the unfixed kernel the 100M-entry ring
-allocation (~2.4GB) fails, causing the qdisc add to fail (exit 2).
+From: Eric Dumazet <edumazet@google.com>
 
-Fixes: c5ad119fb6c0 ("net: sched: pfifo_fast use skb_array")
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+[ Upstream commit 6ad8de3cefdb6ffa6708b21c567df0dbf82c43a8 ]
+
+Change icmpv4_xrlim_allow(), ip_defrag() to prevent possible UAF.
+
+Change ipmr_prepare_xmit(), ipmr_queue_fwd_xmit(), ip_mr_output(),
+ipv4_neigh_lookup() to use lockdep enabled dst_dev_rcu().
+
+Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250828195823.3958522-9-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ minor modifications to fix conflict ]
+Signed-off-by: Miguel Gazquez <miguel.gazquez@bootlin.com>
 ---
- .../tc-tests/qdiscs/pfifo_fast.json           | 23 +++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ net/ipv4/icmp.c        | 6 +++---
+ net/ipv4/ip_fragment.c | 6 ++++--
+ net/ipv4/ipmr.c        | 4 ++--
+ net/ipv4/route.c       | 4 ++--
+ 4 files changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json
-index 30da27fe8806..2cbe9738d699 100644
---- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json
-+++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json
-@@ -105,5 +105,28 @@
-         "teardown": [
-             "$TC qdisc del dev $DUMMY handle 1: root"
-         ]
-+    },
-+    {
-+        "id": "0249",
-+        "name": "Create pfifo_fast with huge tx_queue_len (ring cap regression)",
-+        "category": [
-+            "qdisc",
-+            "pfifo_fast"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+            "$IP link set dev $DUMMY txqueuelen 100000000"
-+        ],
-+        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root pfifo_fast",
-+        "expExitCode": "0",
-+        "verifyCmd": "$TC qdisc show dev $DUMMY",
-+        "matchPattern": "qdisc pfifo_fast 1: root",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$IP link set dev $DUMMY txqueuelen 1000",
-+            "$TC qdisc del dev $DUMMY handle 1: root"
-+        ]
-     }
- ]
--- 
-2.43.0
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index c7af8b914e13..1fc967a60bb9 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -320,17 +320,17 @@ static bool icmpv4_xrlim_allow(struct net *net, struct rtable *rt,
+ 		return true;
+ 
+ 	/* No rate limit on loopback */
+-	dev = dst_dev(dst);
++	rcu_read_lock();
++	dev = dst_dev_rcu(dst);
+ 	if (dev && (dev->flags & IFF_LOOPBACK))
+ 		goto out;
+ 
+-	rcu_read_lock();
+ 	peer = inet_getpeer_v4(net->ipv4.peers, fl4->daddr,
+ 			       l3mdev_master_ifindex_rcu(dev));
+ 	rc = inet_peer_xrlim_allow(peer,
+ 				   READ_ONCE(net->ipv4.sysctl_icmp_ratelimit));
+-	rcu_read_unlock();
+ out:
++	rcu_read_unlock();
+ 	if (!rc)
+ 		__ICMP_INC_STATS(net, ICMP_MIB_RATELIMITHOST);
+ 	else
+diff --git a/net/ipv4/ip_fragment.c b/net/ipv4/ip_fragment.c
+index d3abc84a6c02..790df2c5f747 100644
+--- a/net/ipv4/ip_fragment.c
++++ b/net/ipv4/ip_fragment.c
+@@ -483,13 +483,15 @@ static int ip_frag_reasm(struct ipq *qp, struct sk_buff *skb,
+ /* Process an incoming IP datagram fragment. */
+ int ip_defrag(struct net *net, struct sk_buff *skb, u32 user)
+ {
+-	struct net_device *dev = skb->dev ? : skb_dst_dev(skb);
+-	int vif = l3mdev_master_ifindex_rcu(dev);
++	struct net_device *dev;
+ 	struct ipq *qp;
++	int vif;
+ 
+ 	__IP_INC_STATS(net, IPSTATS_MIB_REASMREQDS);
+ 
+ 	/* Lookup (or create) queue header */
++	dev = skb->dev ? : skb_dst_dev_rcu(skb);
++	vif = l3mdev_master_ifindex_rcu(dev);
+ 	qp = ip_find(net, ip_hdr(skb), user, vif);
+ 	if (qp) {
+ 		int ret;
+diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+index de0d9cc7806a..ad0b922ebc73 100644
+--- a/net/ipv4/ipmr.c
++++ b/net/ipv4/ipmr.c
+@@ -1906,7 +1906,7 @@ static void ipmr_queue_xmit(struct net *net, struct mr_table *mrt,
+ 		goto out_free;
+ 	}
+ 
+-	encap += LL_RESERVED_SPACE(dev) + rt->dst.header_len;
++	encap += LL_RESERVED_SPACE(dst_dev_rcu(&rt->dst)) + rt->dst.header_len;
+ 
+ 	if (skb_cow(skb, encap)) {
+ 		ip_rt_put(rt);
+@@ -1943,7 +1943,7 @@ static void ipmr_queue_xmit(struct net *net, struct mr_table *mrt,
+ 	 * result in receiving multiple packets.
+ 	 */
+ 	NF_HOOK(NFPROTO_IPV4, NF_INET_FORWARD,
+-		net, NULL, skb, skb->dev, dev,
++		net, NULL, skb, skb->dev, dst_dev_rcu(&rt->dst),
+ 		ipmr_forward_finish);
+ 	return;
+ 
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 4dce0de6ab89..0f31ae4da3d9 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -413,11 +413,11 @@ static struct neighbour *ipv4_neigh_lookup(const struct dst_entry *dst,
+ 					   const void *daddr)
+ {
+ 	const struct rtable *rt = container_of(dst, struct rtable, dst);
+-	struct net_device *dev = dst_dev(dst);
++	struct net_device *dev;
+ 	struct neighbour *n;
+ 
+ 	rcu_read_lock();
+-
++	dev = dst_dev_rcu(dst);
+ 	if (likely(rt->rt_gw_family == AF_INET)) {
+ 		n = ip_neigh_gw4(dev, rt->rt_gw4);
+ 	} else if (rt->rt_gw_family == AF_INET6) {
+
+---
+base-commit: 7155f3c7a69b8480e785f2a4252d31df95daa8d1
+change-id: 20260820-cve-2025-40074-b2b8c05342a1
+
+Best regards,
+--  
+Miguel Gazquez <miguel.gazquez@bootlin.com>
 
