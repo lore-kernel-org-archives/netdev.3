@@ -1,75 +1,79 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D490417355
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 11:16:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85D0415B78
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 11:16:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787224561; cv=none; b=TfdR+RFKdfXB3XN63d8u977TWcStZ48YWGerNIc7LagNoJMs6xbi3SPHFqG9/vmTwO/OmWRfIN0o231a2AcH2UbLPWmu1VbPvK1bfkkOrWmg3BYCj43KqVvBfAdmM2iry3xJ7kUAW12hpVLOnxwNDEItoKk5Fd+TglG4yPFfDHY=
+	t=1787224586; cv=none; b=HRgyWT4pBpzdZ7FWuPAAZh8kEqgVBWimJwE+ktrvU8a88l53pgbso6adckIFMIvsjEnX2tYPvMlDE5hpYoALkbYttfulFOuaRzrQUFO/mF6/nPiv+BER23sDoTf9sRQdhEnEUz2CLYHCPtVyxc/pb9YG9x46hlWZEyTFRYdTuQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787224561; c=relaxed/simple;
-	bh=25xWmE1Aw5OhhpAVuAXQnuyzKV0mIHMiuoUcNa77BFQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FkP8K27bTw3CuTcY2qtMKE9+gFpe6kVbcPQAiYs6RGznGhVvtfWCZbAkmVyTP77/25CGwtL11rEPJ8h8Fwdf9pnG1eUNe/hR/xJc2+0eYEjM46cCZzU64JdbC96Z5kQxzK1oUyzzT68YAsTxwTT0Iew7/ssbk9B2nKhTpXvpPno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KRtQwhn7; arc=none smtp.client-ip=209.85.216.49
+	s=arc-20240116; t=1787224586; c=relaxed/simple;
+	bh=ppue0JSqwEjX5KpVPCrk1v1pQBRDVVORRdtVZNi4u3Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=egTLiU3ebxQICzjefGalu08g7VGs++CaF0fs74gN9Q3oGFS4IbR5BLeLTcbxiEmtJHDoaiUmwEGmIIjqy04EaNFhK9j9+PjBkRV+QUybOtg5ffoyLSQCY/IWv75W67B0jY3eH0p2Jb+BOU/oprEgvOdiQPWuu9J2GgISg93YYXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rPkSKk3V; arc=none smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KRtQwhn7"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-38101f85591so617698a91.1
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 04:16:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rPkSKk3V"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-84faf87d19dso2128805b3a.3
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 04:16:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787224559; x=1787829359; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1787224584; x=1787829384; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=K3bUlSyExGxMXTwtT3kv6u/5DTQGMhNhhhuxzC6RV5U=;
-        b=KRtQwhn7qtQrkp5Cl6A/5jCgXtOwRPpfTJpfHBsVcRDdUcX1D2UR8/8Sh9UkRTzsEq
-         1ZsNPfNhcZFe81QM8PPbtMA4n5dl4+etuGee2wG7bBETbBbPIW2gcfeVaIsc6Jg41Mbq
-         2ZRVnqRQLifRVSqFNMGm+MqUqNCWscsOkJS8nA1lGd12yq2j8ujo8C+zcFzY45j1kY7p
-         KSfGvHHBHDdpKhP75La/EayTIDB/8pucN5PBMw9kvw7FJDfzQXi/BYe1hA8Lfd81f43X
-         y0LUzWX9mYOQO2TlUc+OQPOMD3rkm4QIV6sUcckQnENAoAFujaZh80IMxxrtLXHRH9w+
-         1EGA==
+        bh=tLJE4MWDqQkE9SdIsVgvMszarH9pKrrkx4zPhYzjrH8=;
+        b=rPkSKk3VQAMw+Vcpoo9/VbGkLvLeW6mBsz8tKFlW0rz099kofcrScwA5pzlksGs6XS
+         Xk2tt6m80eIZEdknba4lvQH7etNmZODpJ7CuOiJsXT7a1VjkBb+iZiytdVlT6OYYJP7J
+         /GTGj897hDOdXPXE8+NrvQ0hW83I7bTY8lSlc/exH0FROPbRDBeAsa+G8ETgiYbHTgCm
+         fgvsO0Iq+bORfq5K90ZEbTTicZ2jnQ63EN3pY+sGCzYAAurXVk2wldP1kJJSETqzD0uk
+         opWSLyV/g1lafnpJe0RDuZx+964I7SYYw+VIKoACLRqL+VirCMgn34ioPKuWZN8se7DG
+         A6CA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787224559; x=1787829359;
+        d=1e100.net; s=20251104; t=1787224584; x=1787829384;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=K3bUlSyExGxMXTwtT3kv6u/5DTQGMhNhhhuxzC6RV5U=;
-        b=WinwNLIeufSouO8d/u10Aop2lI/Sb+P7Cjj4vbyWMa9zLgHUzuTG4JcloLnQ91+Dxf
-         wooD3iRbI814chgsUG1a3rXmP+X60NwczOIZnekpo1RCsaECFJt7t2xCM8uYwiZvRd1M
-         W3axNrje6PSxc9pkqLghO4x2+2e/uL6Nygu1mFFwR32L5kvr9wj4BoZZhcYtqxJcEWzM
-         OliT2Q/BCxyaGO2Rw6d36IhsyqOIgtuhHdGk6B541bHZ/qpUT0HGtXwCIZ9HOTMISLr8
-         cssinxDoZKHKIdYLO1boopKvGiT9C2RvTTdsPKZW38U6WhmRAOMton5mlc/pQ93mn10D
-         p+8Q==
-X-Forwarded-Encrypted: i=1; AHgh+RoP5+md6msOkcu6ssfC/g32WF2WgQB0qs5RqFeL6vrup2ZmLpbcFjtiU13GRJaDhXcMiP4iLjw=@vger.kernel.org
-X-Gm-Message-State: AFuF++kJWkYQdkY3Jz9j5UnZivmB1JvSiR41q2Qabg4NY6YYbfAXk5OW
-	1a7/ujfk143IQ6jw29wEq6twBT0ecyWzZUVDUIDf7n+PSCncf9hJj+7t
-X-Gm-Gg: AR+sD12ZOlIsYt+uoz9xjXjKgoiNBMEp7PkTCcBXxb/wauH2IiGA67nNeFORyfkA8J2
-	rMIxeTuy0omA0ONx+Ax0hbIO7gnlRv5aHn5vGgRKb9n9LzEuvu9zeXUrzHcGMvYZSQUNACA8jgG
-	J4xdgdS6+sdKRsJdzoYbBiEWX9CCxQxn2aI+99B49ikaJQqDOPq3JrDvyYYp9yYmu7qWhTtmkgA
-	uVNXJMJ8Qtbt9zYNzNJGFGm2wyCa4qYR5E4Qj8iU6W1PCC4CI4Ww0mtsDv84Jdf+AypfkWwnbOR
-	y37uF01LLeyurAFvoVrK0002iw4niEZillr1DunT/L6GMwAOc/y0FgAEdUDNNIsob7f4NX/H/yr
-	wHA3oxsXUdo1YkX8D1b0NOaZsIFZ6LtMc2ZKmZvfp9mB2ajHymuKut1W50niNF13sE15c+qqBQM
-	nX7g/wGE7Kc11IjiQuz/XWY1KppTW5WhwxG6iW4N8d0IYwbmR/GEBlqZ6Cb4nwJBsV2iTbVwSgE
-	rn2nwubPyp8AgZJqln+P2+0a6CqodRH1EC0Le6SXcBSa1ybPtYyXe6Hln/ea4bclGh6SVBv94iN
-	75eE
-X-Received: by 2002:a17:90b:2584:b0:38f:de94:bf34 with SMTP id 98e67ed59e1d1-395a074aab8mr6160121a91.10.1787224559411;
-        Thu, 20 Aug 2026 04:15:59 -0700 (PDT)
+        bh=tLJE4MWDqQkE9SdIsVgvMszarH9pKrrkx4zPhYzjrH8=;
+        b=ZVQlTCWL0nBpY1guSynp8zS/asLphg93T9MdywEit6xASPda90zWonElTDUIppK6KZ
+         y9uS0bNUf9IIxcpNs1xh7VZs77Dyj7aW40LJ/mTwV/CGOVdCX/wY4fLBzh7Gt4wzx9WK
+         CW/UDCKkpz/B1SslgrMSvCWlVwdc0evulx6EJX53F8zLzRsvrtRMyGN6+AvX/33jBh3k
+         OM5vxp6zZlLqKvia20+jV/5+xs8JMSri+M2/NcZ/wNXJ/mljyrVnrSzwAHbFenMBBXz3
+         JDDlLtLQCxvk9kEObJzWvTfZ4xqGTUCg7qzBKrd9NZZNkK6rhvj56mG95gy2PjdkUIvk
+         gadA==
+X-Forwarded-Encrypted: i=1; AHgh+RroYKvmoAUOUGsp5G/OgkNJIg146aRqBnxgZkn27U1DWacMMyOm4NZ2sJNnCB72woVqUM6G36k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2HbOIX3nGXMdpy2nOCkzrJfQRbMksksWkMrIKFv2JDmquzRmj
+	vWyoHACe/pEi3W1fHzWgDEqBFc1J4nDoXDXE8w+OSckd/TJrF1UiECNi
+X-Gm-Gg: AR+sD10iowWKBQsPg4Ua3cn1Mq0Kti4lFmXKFzFDV/jxy+loaqhHPen/eRn+phmKyGu
+	4JfMbQwG3BC1lgA7ap9dIIKj8KwJLuMRaS2Io7McHIn+HkFXt9lqvCZlwtD54aZarV+sQdk9r+o
+	f3e+2uXOyeUKbpOQN0aaMNIxhAeo3BP7ohD1YvhIZ33v1Yet9zKEKF8EagZVaxEYECRdhkIL10A
+	qUjcjtOXu9F0sGLb8azfNjNva5PZmZ0WVxIhO5s4qAgd+D1aNeJrcFfyvD/sDQYJsJleHqJot6F
+	mc4YOGznyxR2ye2mNxx8f3bPEMdVDKRReYHs/yPyqJtOcyOsBagirmU73jSW4hlBCmbjjHgBKwr
+	NHgkMWVYWNTSsFtKHCcOXuvD0+rqlfjLzDkjI2FQbrq+afTsP4TgziebVZBYA3r23nZWQHTtysA
+	VEud3nOZBk3o5WYemyPSxzwjmAWwUdL9C2o8Z7pDcVyIuFYNLc+DRiJrhEz8zpVl2hU/EUpdf00
+	rpLoSdhr9x2MVGETVYK+TNbES9O+y9w1X21rbbeKpFA+4jK7OTvkg3wqwsxfx/2cco0SMbZo6jl
+	Ymzr
+X-Received: by 2002:a05:6a00:9515:b0:84e:24f:2677 with SMTP id d2e1a72fcca58-851d380a098mr19994118b3a.4.1787224584420;
+        Thu, 20 Aug 2026 04:16:24 -0700 (PDT)
 Received: from phuc-desktop.. ([183.91.15.56])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3957fb51271sm6803505a91.7.2026.08.20.04.15.56
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-851d366f028sm1509554b3a.53.2026.08.20.04.16.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Aug 2026 04:15:58 -0700 (PDT)
+        Thu, 20 Aug 2026 04:16:24 -0700 (PDT)
 From: phucduc.bui@gmail.com
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	davem@davemloft.net,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>
-Cc: linux-kernel@vger.kernel.org,
+Cc: Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	u.kleine-koenig@baylibre.com,
+	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	bui duc phuc <phucduc.bui@gmail.com>
-Subject: [PATCH] net: davicom: Propagate wakeup IRQ errors
-Date: Thu, 20 Aug 2026 18:15:47 +0700
-Message-ID: <20260820111548.97990-1-phucduc.bui@gmail.com>
+Subject: [PATCH] net: marvell: mvmdio: Handle errors from optional IRQ lookup
+Date: Thu, 20 Aug 2026 18:16:12 +0700
+Message-ID: <20260820111612.98011-1-phucduc.bui@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -81,52 +85,36 @@ Content-Transfer-Encoding: 8bit
 
 From: bui duc phuc <phucduc.bui@gmail.com>
 
-The wakeup IRQ is optional, but errors from platform_get_irq_optional()
-are currently ignored. Propagate errors from the IRQ lookup, except
--ENXIO which indicates that the optional IRQ is not available.
+platform_get_irq_optional() returns a positive IRQ number on success or
+a negative error code on failure. For an optional IRQ, -ENXIO indicates
+that no optional IRQ is available. Other errors should be propagated so
+that the caller can handle them appropriately.
 
-Also propagate errors from request_irq() and irq_set_irq_wake() instead
-of continuing the probe after the wakeup IRQ setup fails.
+The existing code propagates -EPROBE_DEFER, but ignores other negative
+errors. Propagate negative errors other than -ENXIO.
 
 Found by manual code inspection.
 
 Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
 ---
- drivers/net/ethernet/davicom/dm9000.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/mvmdio.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/davicom/dm9000.c b/drivers/net/ethernet/davicom/dm9000.c
-index b87eaf0c250c..904b859f0a63 100644
---- a/drivers/net/ethernet/davicom/dm9000.c
-+++ b/drivers/net/ethernet/davicom/dm9000.c
-@@ -1511,13 +1511,18 @@ dm9000_probe(struct platform_device *pdev)
+diff --git a/drivers/net/ethernet/marvell/mvmdio.c b/drivers/net/ethernet/marvell/mvmdio.c
+index 2ccb8c8f5feb..d59cf332d1ec 100644
+--- a/drivers/net/ethernet/marvell/mvmdio.c
++++ b/drivers/net/ethernet/marvell/mvmdio.c
+@@ -373,8 +373,8 @@ static int orion_mdio_probe(struct platform_device *pdev)
+ 		writel(MVMDIO_ERR_INT_SMI_DONE,
+ 			dev->regs + MVMDIO_ERR_INT_MASK);
+ 
+-	} else if (dev->err_interrupt == -EPROBE_DEFER) {
+-		ret = -EPROBE_DEFER;
++	} else if (dev->err_interrupt < 0 && dev->err_interrupt != -ENXIO) {
++		ret = dev->err_interrupt;
+ 		goto out_mdio;
  	}
  
- 	db->irq_wake = platform_get_irq_optional(pdev, 1);
--	if (db->irq_wake >= 0) {
-+	if (db->irq_wake < 0 && db->irq_wake != -ENXIO) {
-+		ret = db->irq_wake;
-+		goto out;
-+	}
-+	if (db->irq_wake > 0) {
- 		dev_dbg(db->dev, "wakeup irq %d\n", db->irq_wake);
- 
- 		ret = request_irq(db->irq_wake, dm9000_wol_interrupt,
- 				  IRQF_SHARED, dev_name(db->dev), ndev);
- 		if (ret) {
- 			dev_err(db->dev, "cannot get wakeup irq (%d)\n", ret);
-+			goto out;
- 		} else {
- 
- 			/* test to see if irq is really wakeup capable */
-@@ -1525,6 +1530,7 @@ dm9000_probe(struct platform_device *pdev)
- 			if (ret) {
- 				dev_err(db->dev, "irq %d cannot set wakeup (%d)\n",
- 					db->irq_wake, ret);
-+				goto out;
- 			} else {
- 				irq_set_irq_wake(db->irq_wake, 0);
- 				db->wake_supported = 1;
 -- 
 2.43.0
 
