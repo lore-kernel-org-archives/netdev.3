@@ -1,147 +1,152 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from bg-bec.cloudflare-smtp.org (bg-bec.cloudflare-smtp.org [104.30.16.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8132E0B5C
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 07:58:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787212711; cv=pass; b=nxUg7lJFNX0fAKFb3geaMnofWNj7ErtB8sfzw+CuCV21oLPAPIX4sKq3X4+A3dXyhw6FZdKuou44xNj9AIBFVTPPeYSBSmkUXdzVyyW8YxoqDyyWha+ek7Dx376YmRYuh4XkFPOtakIfYaOewA4Kktg6FejlywRmbfoNoJJgudY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787212711; c=relaxed/simple;
-	bh=ld9tX3tNqRAYZkztoXc81bDrAANuLRFFkOUuCv57/8Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ompnGbtr/PBa6O7bEyaFrKS63VNOyBZLDCNPoci87Fe9kYHwCgE7aQMOdxWVtnEZAglQju91lvCODNLawh22oKRoFTp4TSS99SUWRcLDgOwlQRkjbW6i3usV0iS0ai6rqrLy8Vi/N8kotBQiE/Jd+2wH651dMXW0sUu/K2fI5E0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=cl2dz5uq; arc=pass smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDD33101A5
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 08:03:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=104.30.16.142
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787213004; cv=none; b=h60dcrB6TYyg6c+j9Q0dIICDJKOJoxG0psD7WXkJLC7XxsisYU+udiIy0VQTWR/cDwNMhuY6JWwzTlA9KdL0uGuRwByyNKris+H2i/dYFCWCR/bYXzYWKTGqhLyZV/ivGbkRkdb9g3IbOnYpuLftEzS0CKHx5yvCxEl/VDSisG0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787213004; c=relaxed/simple;
+	bh=7KEUql1pcIdIO6/hnwxclBYxB4sona0fkWlZ3KLZmIY=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=uBqtEBaH5Pc6uo8wVd+20Kkxyk48MreG2YShsjQCh/yQJBtmB7Ffszub3TLWA7us8z81LIgaZRvMep5HwdHkw3TrX5pcMa6H+8+O3YPA6hQhOwa+n+ZrJrb7x/pl5CShe4ajlI/Q/a3GnruV3d+P/urIS+4+NAgbFatmCMlENBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bugs.sh; spf=pass smtp.mailfrom=cf-bounce.bugs.sh; dkim=pass (2048-bit key) header.d=cloudflare-smtp.org header.i=@cloudflare-smtp.org header.b=aHwOP4F+; dkim=pass (2048-bit key) header.d=bugs.sh header.i=@bugs.sh header.b=axX0CIsT; arc=none smtp.client-ip=104.30.16.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bugs.sh
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cf-bounce.bugs.sh
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="cl2dz5uq"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c15d47266baso204538066b.3
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 00:58:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787212707; cv=none;
-        d=google.com; s=arc-20260327;
-        b=W0GxKXOXT1qEvdbHCrmlKgwGRebrzZcH3BaEShaMKaiJ9PdLFjtG3BA+pCiuaio21F
-         2K9KwcNL/S0Sr5sGJuzZdnAM3MNOKEn0x98jSSdNQaN9H0Pzj2xOHsWtA/9jd7KrGsyD
-         k2q1DV3XSni0CarLKbpzhpQxPROHOTCKkC25fGIbkFuQZIXz8QrsPq+ylP8HjtCCK/gL
-         AvnQiW4vjXban63tu1P3AISGVInXyPOlmO9NT9JPTwiSfJNKb/XZDTQF9P8AOX8IxXUz
-         Bt4HxWeYHCZrKXtQlO68V+7O1hIYAKSOD+Ip0oBm073ULd6CoA0/aayShsakctnTTp5O
-         izrg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ld9tX3tNqRAYZkztoXc81bDrAANuLRFFkOUuCv57/8Y=;
-        fh=pK6sp88Bpa+RD/7aylOxxAl/xIAnFih5RsUyal9/Ks8=;
-        b=eYSuwWprm7Ii/W/jnIw6N1KHSNgva7ivAilZvWgy22hv0w0MyvjZKluZF53eU8bJ5I
-         BdPQ3eJA0mZX+UeXARdJ+Mt0p8LMpUNGA77zBMMrJTpnWxcoss+UOe8fIN5CzUCbZ/QZ
-         HarX0nkeYrAnmKAEV9X3CiLcp6Un6ZTEyFIGrH8LHLpYX00Ili94gZroYFNFyM31kAJm
-         apOhYClROIPpNkz1R3oMPslo1EMXnpIGYV01nCBIQmQIX4YiwjXmJH8136mdV+Aa/8Mp
-         Rql6DlIoQ4rzSmR/7ij22gNZPZSl1IIBNqYZpX1m35hr8awjDVWy/q+YZlq7xOmtny+I
-         sdog==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1787212707; x=1787817507; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ld9tX3tNqRAYZkztoXc81bDrAANuLRFFkOUuCv57/8Y=;
-        b=cl2dz5uqdczMIf1RYj02u9eZhpUWvHot+RwvYiprJYj2Ow9n/mOW9DnAl4Xl2QObZw
-         HjumdrYnmSn7dkvJDbUmHhBdjBG303xALjDDM+zypqxh+fDcyV2HIfiD4JEs0s0zRCp+
-         UrVEaGptaxx1yI0FG9fFMDo4MzenNax3+sxR2sZRezNl4s0kj46qBzI0EsR8bGjPqx4p
-         NN28O2vsGP1yRgp1i8WH0h2ZD1QbX5ndNErcV3AOJIGrhB4FqYVFjW5Tq9WcLLcx6Gg8
-         DZ+6SjFsxImq6aPV/m0eZnwRjMElqw7ETw43HQ1d4lSy8GNvA8A5XktM6rGj7jS3oF1Q
-         NDKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787212707; x=1787817507;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ld9tX3tNqRAYZkztoXc81bDrAANuLRFFkOUuCv57/8Y=;
-        b=lUib63+ar1yhFVQPIvsYvocggb52Q9xeRO9Nsb2/EO2abSJ7VKoJBmGgf9YYc0m+Hu
-         ulUMYotUWBhLYXSKoW2sgcz4O0gHw5nKBZGoE5zbVYqUTD8fMfsudXuUh/qZm9vkXJxC
-         AZdsDUdeyxwokqXhXo9YOoPZeEe1aNPkPHffuaCHVecd0Cd9iNHZ4fTc8pyRS+sn+EdM
-         OuQOXAigWmYO83P2DAaANv8A5dzrb1dD4J6yusdEdJsKPsV4eo0R9rZC9rJA3qs2Dcoj
-         454DHSe/OOM7l6W6+iRjYz390zPrZRDhMjs7r7EU7RU3I1864GxIFwzNVO/6JFtpg/bY
-         tTtA==
-X-Forwarded-Encrypted: i=1; AHgh+RrjDkVwNCbjOeKxLUic32ZGhX5BBPYDf/XCpSlgXqrwBwMulVVWrxLCPKTo1LpaKcK8YxA05UQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6CEEhJWWMd7aAWRNLPpGM9STSxnFiHkDXe5Gy0kTYvtpf1r7i
-	F2N7oGoOOhG2JivFZwgikP87CFgmmTVBDw6+gQs7sSLJsXYLAQtm2zftnhw2rvjYeWs38YY4yT/
-	AeUzSySqqQHWQIIQ4/KxJWjbevx+cnk0zNb7hYWcLxQ==
-X-Gm-Gg: AR+sD13t1lJNH8/U6TlbrMDNmH0g2kZC0vWynx3k8TiTV6WE/tr1GnB4Mx+4VIGvbfh
-	Wl2w9w/6a1YHPZKzadbzAWiD5mfEcwIp2vo9rDfuYwLT+1y+LCFSoho2JD1SdaGqTt2uBTYNOh4
-	qA06d+n4UBd+ATRrF4+NLoXDf6Ex7JTvMv/NVj6ycZWVGYiNJDsN2gt5i4wk2M4zER06W15HTVX
-	Zg3T8AoCqOJypEHSTRZ2D+hIem5I3ZdLqbvtvduIUPTVaxODGCr3UuABA6ntPuukXWq7JcD54lu
-	vyfXbZ/gTS5039LAHJ8F4dNOG6fs+aLLeq5tNjVsHZWKQBZP1JavsPpP8V4dHeYyPGRvklpetfQ
-	=
-X-Received: by 2002:a17:907:1ca7:b0:c16:6a42:c7d6 with SMTP id
- a640c23a62f3a-c242a6a48fdmr650154166b.9.1787212707445; Thu, 20 Aug 2026
- 00:58:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=cloudflare-smtp.org header.i=@cloudflare-smtp.org header.b="aHwOP4F+";
+	dkim=pass (2048-bit key) header.d=bugs.sh header.i=@bugs.sh header.b="axX0CIsT"
+DKIM-Signature: v=1; a=rsa-sha256; s=cf2024-1; d=cloudflare-smtp.org; c=relaxed/relaxed;
+	h=Date:Subject:Cc:To:From:Feedback-ID:from:reply-to:resent-date
+	:resent-from:resent-to:resent-cc:in-reply-to:references:list-id:list-help
+	:list-unsubscribe:list-unsubscribe-post:list-subscribe:list-post
+	:list-owner:list-archive; t=1787213003; x=1787817803; bh=PFC61e8Czd7ToOUasW
+	MkDiVQsWyqU1ojrO02DWrqu8o=; b=aHwOP4F+XdmzXCycYEkvwFfUtB3EWvO6i9/FucndxguSR
+	pMxyqEuGUcUYB7ZAjmv3nSfjytdKKdk9tU4c7z+ZdWM5dt3s98CEgQ0v8XTrB2BjrZRck+aTuJ5
+	xxZTx/tKCf8w4ydnpRhhzU+DuOJCS1VyGqBiTfElvXN7vG5yZrUoRpK1IH4o4QtCOfjz/eepgB0
+	cU17Mr7lgjTuIwwdtyylim08+LFEJZ4r66pOpBNF7buraX9+SvF/rQpcI96T6SJdafb28ORhp1M
+	AWce6O5hoqx3qk4bNF95uVQgdmOoGNAapaot3ld1ba0dw48SVE4HoNIDWFpgpY1Y0Q64wMWA==;
+DKIM-Signature: v=1; a=rsa-sha256; s=cf-bounce; d=bugs.sh; c=relaxed/relaxed;
+	h=Date:Subject:Cc:To:From:Feedback-ID:from:reply-to:resent-date
+	:resent-from:resent-to:resent-cc:in-reply-to:references:list-id:list-help
+	:list-unsubscribe:list-unsubscribe-post:list-subscribe:list-post
+	:list-owner:list-archive; t=1787213003; x=1787817803; bh=PFC61e8Czd7ToOUasW
+	MkDiVQsWyqU1ojrO02DWrqu8o=; b=axX0CIsTxa8ZcBO/iMoVTGSGwP6FOSE3gIAVonjOQTk+O
+	lRAdLApHNZYnLIRIEIgpCYl9kcG7qS9l9rZeie/st7i+Nmt9rTg2r/CYJTqBMsipoyQXPrkQx9M
+	VTyVFT9zzHotOpu6aoRyVE8CvVAUACjNEIDANxx0wbEBQAbIGAKkBAFAdB4yDjD1jQSGQnNjD40
+	SFmBHi8mKF8zDmYSC0obs3OaxMMBTkvt9pznZZjZWH+aLHJmMzpz8HkiEVUyCLw+y6TdeUY6PDd
+	+m2dEK/i0qkk+XGW3L9cYcWnbP7p61VqOVvufvFzKXdnsE/Xdv8deTE848gN5tB8sm/K+KDg==;
+Feedback-ID: bugs.sh:5:6:Cloudflare
+Message-ID: <ijg79FFMfIvKJbivdJEKvTO90Q9dTvyBkJck@bugs.sh>
+Received: from authenticated-submission.invalid
+        by mx.cloudflare.net (Cloudflare Email Submission) with ESMTPSA id lfuTgtUuxjQK; Thu, 20 Aug 2026 08:03:01 +0000
+From: co <co+4638111fe2a12980@bugs.sh>
+To: netdev@vger.kernel.org,
+	Subash Abhinov Kasiviswanathan <subash.a.kasiviswanathan@oss.qualcomm.com>,
+	Sean Tranchetti <sean.tranchetti@oss.qualcomm.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: linux-kernel@vger.kernel.org,
+	co <co+4638111fe2a12980@bugs.sh>
+Subject: [BUG] drivers/net: NULL pointer dereference in rmnet_map_send_ack()
+Date: Thu, 20 Aug 2026 01:02:59 -0700
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260625114216.2507435-1-louis.scalbert@6wind.com> <fc98de42-02cb-4de9-8986-b77414793df5@kernel.org>
-In-Reply-To: <fc98de42-02cb-4de9-8986-b77414793df5@kernel.org>
-From: Louis Scalbert <louis.scalbert@6wind.com>
-Date: Thu, 20 Aug 2026 09:58:16 +0200
-X-Gm-Features: AcwNN1UKxrXTkwbNlKylbgQIYr5s0mfcS9Y7aWl5a9E0h2lGjgRRNbxcs4-1fwQ
-Message-ID: <CAJ5u_Od76V6cxcEUT4h4EQQ4opJk9tLYHYWum7tWp0t1CWjGZw@mail.gmail.com>
-Subject: Re: [PATCH iproute2-next v5] ip/bond: add lacp_strict support
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: David Ahern <dsahern@kernel.org>, Stephen Hemminger <stephen@networkplumber.org>, 
-	andrew+netdev@lunn.ch, jv@jvosburgh.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, fbl@redhat.com, andy@greyhouse.net, shemminger@vyatta.com, 
-	maheshb@google.com, jonas.gorski@gmail.com, horms@kernel.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hello Matthieu,
+We found a bug reachable in:
 
-thank you for pinging.
+    path    drivers/net/ethernet/qualcomm/rmnet
+    crash   NULL pointer dereference in rmnet_map_send_ack()
+    commit  b027ca66ec02
 
-There is no version 6, and there are no comments regarding version 5.
+Config, environment, the sanitizer report and a C reproducer follow.
 
-best regards
+== Notes ===============================================================
+    If you patch the bug based on our artifacts, a tag would be
+    appreciated:
+
+Reported-by: co+4638111fe2a12980@bugs.sh
+
+    Everything in this mail is validated by the reproducer below.
+
+    We also hold an LLM-generated root-cause analysis and a candidate
+    patch. The patch passes an A/B test: the same reproducer panics the
+    unpatched kernel and runs clean on the patched one. Neither has had
+    human review, so both still require validation before you send or
+    apply them. Available on:
+
+        patch.diff  https://bugs.sh/b/4638111fe2a12980/patch.diff
+        report.md   https://bugs.sh/b/4638111fe2a12980/report.md
+
+    This is an open science project. The code and the full set of PoCs
+    are not public at this moment, as we intend to disclose our findings
+    in an ethical way.
+
+    Happy to test patches. Complaints and suggestions about our work
+    are welcome at:
+
+        cedalion@bugs.sh
+
+== Environment =========================================================
+    Reproduced on  b027ca66ec02
+    VM setup       https://bugs.sh/b/4638111fe2a12980/run.sh
+    config         https://bugs.sh/b/4638111fe2a12980/config.gz
+    poc            https://bugs.sh/b/4638111fe2a12980/repro.c
+
+== Sanitizer Report ====================================================
+Oops: general protection fault, probably for non-canonical address 0xdffffc00000000b2: 0000 [#1] SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000590-0x0000000000000597]
+CPU: 0 UID: 0 PID: 5011 Comm: exploit Not tainted 7.2.0-rc7-00095-g24ef02f934ee #33 PREEMPT(full)
+RIP: 0010:kasan_byte_accessible+0x15/0x30
+Call Trace:
+__kasan_check_byte+0x13/0x50
+lock_acquire+0x136/0x360
+_raw_spin_lock+0x2e/0x40
+netif_tx_lock+0x19/0x30
+rmnet_map_command+0x213/0x320
+__rmnet_map_ingress_handler+0x57a/0x900
+rmnet_rx_handler+0x350/0x4d0
+__netif_receive_skb_core.constprop.0+0x6bf/0x3610
+__netif_receive_skb_one_core+0xb0/0x1e0
+__netif_receive_skb+0x1f/0x120
+netif_receive_skb+0x13e/0x7d0
+tun_rx_batched.isra.0+0x3ee/0x740
+tun_get_user+0x2874/0x3aa0
+tun_chr_write_iter+0xdc/0x210
+vfs_write+0x6ac/0x1050
+ksys_write+0x12a/0x250
+do_syscall_64+0x116/0x7d0
+entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x4240c4
+RIP: 0010:kasan_byte_accessible+0x15/0x30
+Kernel panic - not syncing: Fatal exception in interrupt
+Kernel Offset: disabled
+Kernel panic - not syncing: Fatal exception in interrupt
 
 
+---
+The report format is based on syzbot bug report.
 
-Le mer. 19 ao=C3=BBt 2026 =C3=A0 18:46, Matthieu Baerts <matttbe@kernel.org=
-> a =C3=A9crit :
->
-> Hi David, Stephen,
->
-> On 25/06/2026 13:42, Louis Scalbert wrote:
-> > lacp_strict defines the behavior of a LACP bonding interface
-> > when no slaves are in Collecting_Distributing state while at least
-> > 'min_links' slaves have carrier.
-> >
-> > In the default (off) mode, the bonding master remains up and a
-> > single slave is selected for TX/RX, while traffic received on other
-> > slaves is dropped. This preserves the existing behavior.
-> >
-> > In lacp_strict mode, the bonding master reports carrier down in this
-> > situation.
->
-> I'm sorry to ping you about this, but I'm wondering if this patch has
-> not been archived on Patchwork by mistake:
->
-> https://patchwork.kernel.org/project/netdevbpf/patch/20260625114216.25074=
-35-1-louis.scalbert@6wind.com/
->
-> I didn't see any reviews on this v5, and there is no v6: is there
-> something to fix?
->
-> > Link: https://lore.kernel.org/netdev/20260603150331.1919611-1-louis.sca=
-lbert@6wind.com/
-> I'm asking, because this patch is required to execute the
-> drivers/net/bonding selftests target from 7.2 released this WE.
->
-> Cheers,
-> Matt
-> --
-> Sponsored by the NGI0 Core fund.
->
+This report is generated by a bot. It may contain errors.
+See https://github.com/n132/cedalion for more information.
+
+For any issue with this report, reach out to cedalion@bugs.sh
+
+If the report is already addressed, let us know by replying with:
+#co fix: <commit hash>
+
+If the report is a duplicate of another one, reply with:
+#co dup: <lore link>
+
+If you want to undo deduplication, reply with:
+#co undup
+
