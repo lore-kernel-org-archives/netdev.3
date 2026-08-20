@@ -1,239 +1,157 @@
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998A2BA3D
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 09:56:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB793CC7D3
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 09:57:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787219810; cv=none; b=n6UPr+vqr04hFaqVJEPAKJqpVuyvpkyP5DQaHnZbnAE/jVT0b5d1pR+ZcgRHInOC5g6NW2ZJjCvcF4wm6ufT4ZqpkCwiau+9UznjDVmysP6NEpslHcuP/NVgBqCcMi+H/49P/ax6cE7q0xhYlc/2+Ycl0l7NeX+RgEk+/9WAcsg=
+	t=1787219870; cv=none; b=akLpRNc4pqoM0/FcR4LT9I5B6njxcEUYd1zGVFMeW8+8KKLXZDoGuLREH1NVEXq8uJPrt1vrda6HG52JlBipM6c1pY2AAhOPNTfcSugfQgWp3QJhcFQoIb90QsvfWF+ChW+3PmlvDg6WjX3EZHgh9g7zpDsUGejrB+KvBfl3CUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787219810; c=relaxed/simple;
-	bh=wPjr1TyTXUzxg/BH6ejJTsDv1VPKc6NIqnv/swa6440=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ve0+/LUjGNsxRqXV5zfvfXQbbbCoVjIEEhoKc83XOZOmUdvc1d3QqNYHGJFPz2ez+G+XlxRFPkJzd4vG3mPP6Q3UGq5e++MrCakOnN/CG/vhFXE4iKspgKWMiTM3aN15M0Fh+pTCfEfY2Jy3xP0bvZ497HNaOn1gUfK0RmlyePA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [141.14.13.172] (g427.RadioFreeInternet.molgen.mpg.de [141.14.13.172])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 210A74C1A2DF84;
-	Thu, 20 Aug 2026 11:56:15 +0200 (CEST)
-Message-ID: <11560b0b-515b-4f43-8f8d-1c84ecb57696@molgen.mpg.de>
-Date: Thu, 20 Aug 2026 11:56:13 +0200
+	s=arc-20240116; t=1787219870; c=relaxed/simple;
+	bh=U/wixShyu10A4AT9h30/voJvGjaqHe845FsoIYSl9ec=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QsTUCrTtZ8UXSU/3yF0HhWJHR7xS7Cm+0Ys2+fiiF5iYwQ/ESowu8aIPE+VJwxYtefRDEJXc2aPO5hwDGG6ClomI7SdqVaF3WKGVEhjdAa3Dt+eflX2sqEgR/vM4J0WiJfpJ/Buel9A2UXkyM22adkNaiX3MKSMdjQyg6B1l7PI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=ZOru24Uz; arc=none smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="ZOru24Uz"
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-51c1372f84dso12901991cf.2
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 02:57:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1787219866; x=1787824666; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=hsCp/I13XrlSV13nvixD/aFZtUTWYd+PouN++96+VBo=;
+        b=ZOru24UzSVWvrxNzKwM9yNwv9uquDrWtTMmT9vQ04CMnXOZF98ZDNUTVNWn1Q4aRL1
+         PSW++cY2kwX6dhDVnCsbuZdXcXfVP327hb1a59dM2lZgtJLvRpyNGw9oAMl2Jgm4Oain
+         HxtQKdmK7hhls2vU5yLSRB7f76Rtk/G9PVJbw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787219866; x=1787824666;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=hsCp/I13XrlSV13nvixD/aFZtUTWYd+PouN++96+VBo=;
+        b=bo8X0u8YQGg4EKutnEdyBx3ZrqGnIfkTlp99Mi6TbGnTr0MmNbFy/cuXwEUBS5ZOGk
+         I1A+5Iqey5SDulHa8P9c/2+o7VPyDPB1OcS/LhXAmqdiYD9ZhO5UP1jcXfruTmeDzFZr
+         NwLZjJ/kejWRGSUo5F1VTpG7BGeUY6A0CU4y0lUlTtZR61nbSmZs1hZboU0Z50jPcTWK
+         IRO+DeRuLITfBbpkzI2RwmlortvBuQxupxV5NcOeDYNYyEKRcIDWvkmtbzozYV0zHPzQ
+         C/Or5bBca+9y/TXiEJboif/buU7enPB+fWkvGhTjG/se2JGFtmL4xb3wyDgb4cD0EL6u
+         TggQ==
+X-Gm-Message-State: AOJu0YzsrjgBTd4WJMqnmlQiW1h78oR0ma+qgTXoxaJSZ2OFvIucsLzB
+	TT2vZs4OFECa7bPv6DcEcG3vYd5HFAijLoYip7P6v9vR9t8IJMcsDt55OJ6O6IyVhUhUKbGR34G
+	mIK8I0A==
+X-Gm-Gg: AR+sD132TtqMd2Wq5fb0yJ3gMLQzjJQ+CnMp8UXqpEjEny9alPoqMS9O5+8x7BVfOEr
+	APClQ8iKgwJTKmBo7FEO7rxqeWdAjzVYCSVexXwevNmw6c65yTa9Y0Iofy+TAyanLoexFCq7v/D
+	KK72wdTvY+CzmfamWJmVa4WfOUIMqRiZ84iA9tIxZ1ycJVpi5CR2+JsaUgG7hPdV41tb5YQDQde
+	Gcw5l7rQLqO/ea6f6UPzgFNCXcCwZu4/rFrDxvU9QoIydDIvP7vDGCBFozJ2/X2lQg+J/XMi6JG
+	H5jOitJb2bU/uwT6Qd1Spfcqq97D0lr8lMKTsPapLIONhHoyTJRD/tTcPM/lOXHLcu0jTI1omIw
+	YCOSCh//l3PhcdSq4oVIc+3FK8Ij92g3kIWjHptnKZANmt5D+AIGzFVfmRYJtfJVAwzEuOkQIPX
+	GW1LQ+0dPG4pfVGt7MwfquDVPMOJjqeZxJ31h0mIMDSzqM61k96eZZaMwT54ZX/1GqwAsuuS9L3
+	vu/DENHrc+Jt82JvlOqE8tzDJdhIfij9cDog0UE74RE6A==
+X-Received: by 2002:a05:622a:191c:b0:51b:f640:2a4f with SMTP id d75a77b69052e-52dd57bc618mr109829491cf.4.1787219866550;
+        Thu, 20 Aug 2026 02:57:46 -0700 (PDT)
+Received: from majuu.waya (bras-base-kntaon1621w-grc-04-184-144-29-222.dsl.bell.ca. [184.144.29.222])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90c5f2b8164sm34565336d6.48.2026.08.20.02.57.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Aug 2026 02:57:46 -0700 (PDT)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	stable@vger.kernel.org,
+	vega@nebusec.ai,
+	"Victor Nogueira" <victor@mojatatu.com>
+Subject: [PATCH net 1/2] net/sched: pfifo_fast: cap ring size and account to memcg
+Date: Thu, 20 Aug 2026 05:57:41 -0400
+Message-Id: <20260820095742.68511-1-jhs@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-next v2] igc: Support ACPI-based MAC passthrough
-To: Dima Ruinskiy <dima.ruinskiy@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- anthony.l.nguyen@intel.com, allen.lan@intel.com, acelan.kao@canonical.com,
- kuba@kernel.org
-References: <20260820092137.1835887-1-dima.ruinskiy@intel.com>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20260820092137.1835887-1-dima.ruinskiy@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Dear Dima,
+pfifo_fast_init() and pfifo_fast_change_tx_queue_len() allocate skb
+ring arrays sized by dev->tx_queue_len with GFP_KERNEL and no upper
+bound. An unprivileged user (via unshare -Urn) can set a huge
+tx_queue_len and attach many pfifo_fast qdiscs to exhaust global
+memory, causing a system-wide OOM.
 
+Cap the ring size to 65535 (default tx_queue_len is 1000) and use
+GFP_KERNEL_ACCOUNT so the allocations are charged to the allocating
+process's memory cgroup. A pr_warn_ratelimited is emitted when the
+ring size is capped so the user is not silently clamped.
 
-Thank you for the patch.
+Conditions to recreate the bug:
+- CONFIG_NET_SCHED=y, CONFIG_VETH=y, CONFIG_USER_NS=y, CONFIG_NET_NS=y.
+- Unprivileged user in a fresh user+net namespace (unshare -Urn).
+- Create a veth pair, set tx_queue_len to a huge value (e.g. 500000)
+  while the devices are down.
+- Attach mq at root, then replace each child queue with pfifo_fast:
+    tc qdisc replace dev veth0 root handle 1: mq
+    tc qdisc replace dev veth0 parent 1:1 pfifo_fast
+    tc qdisc replace dev veth0 parent 1:2 pfifo_fast ...
+- Repeat across many veth pairs. Each pfifo_fast allocates 3 skb_array
+  rings of tx_queue_len entries (~12MB per qdisc at QLEN=500000).
+- On the unfixed kernel this exhausts global memory in ~28 iterations
+  on a 2GB guest -> OOM panic. On the fixed kernel the ring is capped
+  to 65535 entries (~1.5MB per qdisc) and charged to the memcg.
 
-Am 20.08.26 um 11:21 schrieb Dima Ruinskiy:
-> Some systems implement a system MAC address object in the ACPI table,
-> using either \\_SB.AMAC or \\MACA object names. This system MAC address,
-> when enabled, is intended to override the permanent MAC address of a
-> network controller in a docking station connected to the system.
-> 
-> Implement lookup of the relevant ACPI object names and use them to
-> initialize the MAC address. Limit the scope to I225/I226 device IDs used
-> in docking stations, to avoid interfering with onboard I225/I226 NICs.
+Fixes: c5ad119fb6c0 ("net: sched: pfifo_fast use skb_array")
+Reported-by: vega@nebusec.ai
+Tested-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+---
+ net/sched/sch_generic.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-Please document a system where this can be tested on. Please also paste 
-the new log line.
+diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+index ef2b4bf51564..e98fd236afa0 100644
+--- a/net/sched/sch_generic.c
++++ b/net/sched/sch_generic.c
+@@ -910,11 +910,17 @@ static int pfifo_fast_init(struct Qdisc *qdisc, struct nlattr *opt,
+ 	if (!qlen)
+ 		return -EINVAL;
+ 
++	if (qlen > 65535) {
++		pr_warn_ratelimited("pfifo_fast: capping ring size %u to 65535 for dev %s\n",
++				    qlen, qdisc_dev(qdisc)->name);
++		qlen = 65535;
++	}
++
+ 	for (prio = 0; prio < PFIFO_FAST_BANDS; prio++) {
+ 		struct skb_array *q = band2list(priv, prio);
+ 		int err;
+ 
+-		err = skb_array_init(q, qlen, GFP_KERNEL);
++		err = skb_array_init(q, qlen, GFP_KERNEL_ACCOUNT);
+ 		if (err)
+ 			return -ENOMEM;
+ 	}
+@@ -957,8 +963,14 @@ static int pfifo_fast_change_tx_queue_len(struct Qdisc *sch,
+ 		bands[prio] = q;
+ 	}
+ 
++	if (new_len > 65535) {
++		pr_warn_ratelimited("pfifo_fast: capping ring size %u to 65535 for dev %s\n",
++				    new_len, qdisc_dev(sch)->name);
++		new_len = 65535;
++	}
++
+ 	return skb_array_resize_multiple_bh(bands, PFIFO_FAST_BANDS, new_len,
+-					    GFP_KERNEL);
++					    GFP_KERNEL_ACCOUNT);
+ }
+ 
+ struct Qdisc_ops pfifo_fast_ops __read_mostly = {
+-- 
+2.43.0
 
-> On systems where the feature is disabled or unsupported, the ACPI objects
-> do not exist or do not contain a valid Ethernet MAC, causing a fallback
-> to the existing MAC address initialization path.
-> 
-> Assisted-by: GitHub-Copilot:claude-opus-4.7
-> Signed-off-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
-> ---
-> v2: limit scope to dock device ids
-> v1: initial version
-> ---
->   drivers/net/ethernet/intel/igc/igc.h      |  1 +
->   drivers/net/ethernet/intel/igc/igc_base.c |  8 +++
->   drivers/net/ethernet/intel/igc/igc_hw.h   |  2 +
->   drivers/net/ethernet/intel/igc/igc_main.c | 69 +++++++++++++++++++++--
->   4 files changed, 76 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/igc/igc.h b/drivers/net/ethernet/intel/igc/igc.h
-> index 88291f775c22..05affaa04aa4 100644
-> --- a/drivers/net/ethernet/intel/igc/igc.h
-> +++ b/drivers/net/ethernet/intel/igc/igc.h
-> @@ -567,6 +567,7 @@ enum igc_tx_flags {
->   
->   enum igc_boards {
->   	board_base,
-> +	board_dock,
->   };
->   
->   /* The largest size we can write to the descriptor is 65535.  In order to
-> diff --git a/drivers/net/ethernet/intel/igc/igc_base.c b/drivers/net/ethernet/intel/igc/igc_base.c
-> index ab9120a3127f..c9067cc79b69 100644
-> --- a/drivers/net/ethernet/intel/igc/igc_base.c
-> +++ b/drivers/net/ethernet/intel/igc/igc_base.c
-> @@ -474,4 +474,12 @@ const struct igc_info igc_base_info = {
->   	.get_invariants		= igc_get_invariants_base,
->   	.mac_ops		= &igc_mac_ops_base,
->   	.phy_ops		= &igc_phy_ops_base,
-> +	.is_dock		= false,
-> +};
-> +
-> +const struct igc_info igc_dock_info = {
-> +	.get_invariants		= igc_get_invariants_base,
-> +	.mac_ops		= &igc_mac_ops_base,
-> +	.phy_ops		= &igc_phy_ops_base,
-> +	.is_dock		= true,
->   };
-> diff --git a/drivers/net/ethernet/intel/igc/igc_hw.h b/drivers/net/ethernet/intel/igc/igc_hw.h
-> index 62aaee55668a..d14b7666b5d7 100644
-> --- a/drivers/net/ethernet/intel/igc/igc_hw.h
-> +++ b/drivers/net/ethernet/intel/igc/igc_hw.h
-> @@ -69,9 +69,11 @@ struct igc_info {
->   	struct igc_mac_operations *mac_ops;
->   	const struct igc_phy_operations *phy_ops;
->   	struct igc_nvm_operations *nvm_ops;
-> +	bool is_dock;
->   };
->   
->   extern const struct igc_info igc_base_info;
-> +extern const struct igc_info igc_dock_info;
->   
->   enum igc_forced_speed_duplex {
->   	IGC_FORCED_10H,
-> diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-> index 82800a4a6d6c..15d0815a2110 100644
-> --- a/drivers/net/ethernet/intel/igc/igc_main.c
-> +++ b/drivers/net/ethernet/intel/igc/igc_main.c
-> @@ -11,6 +11,8 @@
->   #include <net/pkt_sched.h>
->   #include <linux/bpf_trace.h>
->   #include <net/xdp_sock_drv.h>
-> +#include <linux/acpi.h>
-> +#include <linux/hex.h>
->   #include <linux/pci.h>
->   #include <linux/mdio.h>
->   
-> @@ -44,6 +46,7 @@ static const char igc_copyright[] =
->   
->   static const struct igc_info *igc_info_tbl[] = {
->   	[board_base] = &igc_base_info,
-> +	[board_dock] = &igc_dock_info,
->   };
->   
->   static const struct pci_device_id igc_pci_tbl[] = {
-> @@ -54,8 +57,8 @@ static const struct pci_device_id igc_pci_tbl[] = {
->   	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I225_K), .driver_data = board_base },
->   	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I225_K2), .driver_data = board_base },
->   	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I226_K), .driver_data = board_base },
-> -	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I225_LMVP), .driver_data = board_base },
-> -	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I226_LMVP), .driver_data = board_base },
-> +	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I225_LMVP), .driver_data = board_dock },
-> +	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I226_LMVP), .driver_data = board_dock },
->   	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I225_IT), .driver_data = board_base },
->   	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I226_LM), .driver_data = board_base },
->   	{ PCI_VDEVICE(INTEL, IGC_DEV_ID_I226_V), .driver_data = board_base },
-> @@ -7116,6 +7119,57 @@ static enum hrtimer_restart igc_qbv_scheduling_timer(struct hrtimer *timer)
->   	return HRTIMER_NORESTART;
->   }
->   
-> +static bool igc_get_acpi_mac_passthru(u8 *mac)
-> +{
-> +	static const struct {
-> +		const char *name;
-> +		acpi_object_type type;
-> +		u32 length;
-> +	} sources[] = {
-> +		{ "\\_SB.AMAC", ACPI_TYPE_BUFFER, 23 },
-> +		{ "\\MACA",     ACPI_TYPE_STRING, 22 },
-> +	};
-> +	struct acpi_buffer buffer;
-> +	union acpi_object *obj;
-> +	bool mac_found = false;
-> +	acpi_status status;
-> +	u8 buf[ETH_ALEN];
-> +	int i;
-> +
-> +	if (!IS_ENABLED(CONFIG_ACPI))
-> +		return false;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(sources) && !mac_found; i++) {
-> +		buffer.length = ACPI_ALLOCATE_BUFFER;
-> +		buffer.pointer = NULL;
-> +
-> +		status = acpi_evaluate_object(NULL, (char *)sources[i].name,
-> +					      NULL, &buffer);
-> +		if (ACPI_FAILURE(status))
-> +			continue;
-> +
-> +		obj = buffer.pointer;
-> +		if (!obj || obj->type != sources[i].type ||
-> +		    obj->string.length != sources[i].length)
-> +			goto free_obj;
-> +
-> +		if (!strncmp(obj->string.pointer, "_AUXMAC_#", 9) ||
-> +		    obj->string.pointer[21] != '#')
-> +			goto free_obj;
-> +
-> +		if (hex2bin(buf, obj->string.pointer + 9, ETH_ALEN) ||
-> +		    !is_valid_ether_addr(buf))
-> +			goto free_obj;
-> +
-> +		ether_addr_copy(mac, buf);
-> +		mac_found = true;
-> +free_obj:
-> +		kfree(obj);
-> +	}
-> +
-> +	return mac_found;
-> +}
-> +
->   /**
->    * igc_probe - Device Initialization Routine
->    * @pdev: PCI device information struct
-> @@ -7279,9 +7333,16 @@ static int igc_probe(struct pci_dev *pdev,
->   	}
->   
->   	if (eth_platform_get_mac_address(&pdev->dev, hw->mac.addr)) {
-> -		/* copy the MAC address out of the NVM */
-> -		if (hw->mac.ops.read_mac_addr(hw))
-> +		/* Look for a system-provided MAC in the ACPI table before
-> +		 * falling back to reading the address from the NVM.
-> +		 */
-> +		if (ei->is_dock && igc_get_acpi_mac_passthru(hw->mac.addr)) {
-> +			netdev->addr_assign_type = NET_ADDR_STOLEN;
-> +			dev_info(&pdev->dev, "Using ACPI pass-thru MAC addr %pM\n",
-> +				 hw->mac.addr);
-> +		} else if (hw->mac.ops.read_mac_addr(hw)) {
->   			dev_err(&pdev->dev, "NVM Read Error\n");
-> +		}
->   	}
->   
->   	eth_hw_addr_set(netdev, hw->mac.addr);
-
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-
-
-Kind regards,
-
-Paul
