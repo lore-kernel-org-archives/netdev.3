@@ -1,142 +1,231 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013029.outbound.protection.outlook.com [40.107.162.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74BE44606A
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 14:11:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787235075; cv=none; b=gfgdG0fPFOY+1PKG/l8RGfvmPaX3t3glk1XnkEvovJveCPeEoT6xShODShCrwYWb8eBfSA4D1D22u+ouRYrHSIzCZPpPdq0RAi1YI+eeLJzYnh1qeKWhtUNkLBJCZP2XcG2DMegdh9pgIvZjZnr2U/v8PJ4hwns2X2YMfzj+6J0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787235075; c=relaxed/simple;
-	bh=metf2ewWaWZ0KpVLK8I17SpTkIQoS2trLjNMVLBctbE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I+rAooF8qxrOpLHx19yX0noz0pCalyOyBMFSIsvPDjSZehXWmgNyNJ7bOsplSpFysllviNZ0CUSYok/9SbGJRKWneLVwzD1RNQi4iCWj+BEakkos85Mwf/aiCvSG/BA0d2EfXKHcHlXoegisZUcJQJT68THUtyFH26wQ1L/fLh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ffRgwING; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87EE47043B;
+	Thu, 20 Aug 2026 14:25:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.29
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787235945; cv=fail; b=nPsXnvoDlxEV6jjqC8Z+gGANsQFrDVa/SaT+vMWEhfHfkBk8D2Q8IAY9/6j9Mrx6K6reWLi501XPK84tQ3qIl4eb3jbZdAg+FSc47aGPoFn/remdb0Ky467nwcNKN5SDKYULPvly5fATL6esKMm7qmkzwKcdVo5Dxdseu6Xf+TQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787235945; c=relaxed/simple;
+	bh=MlnRC/dQ/elCV5gyOfnsNxz2oH47wySIvWqLuTdyvTs=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=IA6M9ye+BFwHJs1iFaIKVZc2IMDvi92DtFYjUlb04xQVcE2ICUmvjiKlpGT8IkHSAk5n1JoQN3X6Zp1pWCW6jrPjSF9GmMXYxl8hN5cDXcVDVu5AFKB7h+sdU257YRYX0FztjrdcJ70U+PCPWHegkz9yT/6fOXuOHYSDKXfcrQo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=cMp5kNgS; arc=fail smtp.client-ip=40.107.162.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ffRgwING"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2cace91f112so22278295ad.0
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 07:11:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787235073; x=1787839873; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1hpIbb+DTG55eyPgd22Z6RIQxrSuxt17lMHiQN1C9mU=;
-        b=ffRgwINGaoTDX2gKAu2OVZHYTsnpRE2EgJFlViCahOSeI+sPuYGNzzf08TStoW9nBO
-         4BbF/gTcb8BfJpdDoeqyCsoycplY3KxYIq7VRAXoGg4aa9/wtYzNCsEyymG+F6eMkBMS
-         kNbpXjG/OQj6G8r7Ycf0e1x2ToHfvRBkRASpJQI5RkPa3fJAZv30iM7zEzDBzEbho138
-         8vi8qNXhNsLbhXZTWOnA5Qzr/iKRS5ChdT8WceXHxT9aKNk7mVZbjH2vf14sRZdXJBR/
-         aWywkd0TRP0CEBJ3BYh7bM8TJXiEQ8Yi9pr2BwCHX98jHUq//XYJMlMdrT25Ks5zFIrl
-         S4NA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787235073; x=1787839873;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1hpIbb+DTG55eyPgd22Z6RIQxrSuxt17lMHiQN1C9mU=;
-        b=Bqs4jId3R3V442DxeWGD2x4OxNOL+l/oRqBWJmBL+nIHCzFph3ZzcfGUBYR1W2GvNH
-         3VwKDCC14Jln5qxT3x8h3Sdny1QUlvRF4/uG33KylH3v+aoGzovjP7HQe1Ik2l3tX1xd
-         xBL+IzqIeG0Fyosfl4X1YxW8R82aj5n8g9blYOYlmFIBB5y859zuDziE3AyU19Zg6jSm
-         xRTJAc5hmVNk/5OwFyoBzBaHHKOtGy9FYlLeCVBFNSPzDRui0fSyO+Jd5EGZbG9qpmMD
-         RbdnlX+RJlgGp3Y3h0pt11OwGlUiBstWLn2n7QdvwVEWUcXgA2eJADa7hsSRxs2M1b1Y
-         Hejg==
-X-Gm-Message-State: AFuF++lxFt6YnZBY4JCOrQvHAShU15EUR+pX+TwPAlnbfV/Guk9EdDOo
-	Yoh94nPjlbjtxSUCd7b5F6SNPtWzbZcLdPySyD8Vj5xopKu36ebZhVMTA3u7PkYGTVh1uIGg
-X-Gm-Gg: AR+sD123QLATgQZ4i5mrylabnorixPcHzRO7SyPiiG1ig3n8ZkFo6y3N/Rjvwx2/ifN
-	bfBv/pwMW9gyIzG2/CBvTICbls0Ln3PeY9mbok+7uzvNGvRpL4yn1lIyB1UBprVmNiyaxOlIGJp
-	B844MW3llgKvy1fn9RKraLV1rCgmlMrz6hMkvfjNC47XwcL5T1E5a5DQRqEqHfMdEoGTjw+Ks/Y
-	IFX7S5OvO+dF8qgvEsGR22GyvpVSHcStPVQYvuF/KLVU6Z4bLIhRrhNDRdcYfRspzoOYZ42/t/D
-	5GtgHR9PROe/Glz1Pq/kREWf9UfHuKKbnhyq5AtPF7rM+u5Xeq2mtteJcou32awQBVecrbGo/0j
-	IEKivj33+gtYPrc095uQzbfBLI/V5eOljFVr19y85g+KjKBhUeajp3Ls7iLvvBMOFqSuMZBMn6W
-	Esg0IdgMqLsKgnOgDTR31GM6vfplI5VXbk2htCRbdakb5H7W7I5Ahz8AUTRjjla/F7Q1L7C/RAL
-	XVWnOuAtQ==
-X-Received: by 2002:a17:902:ef43:b0:2c9:b8b7:5d27 with SMTP id d9443c01a7336-2d5fd5ff363mr253093705ad.1.1787235072883;
-        Thu, 20 Aug 2026 07:11:12 -0700 (PDT)
-Received: from DESKTOP-FD9BUFI.lan ([240e:3a1:925d:9350:d471:c081:b8c9:1eec])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d62d58a811sm7801075ad.25.2026.08.20.07.11.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Aug 2026 07:11:11 -0700 (PDT)
-From: Ziyou Xu <xuziyougm@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Ziyou Xu <xuziyougm@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Woudstra <ericwouds@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: phy: air_en8811h: restore LED GPIO output after MCU restart
-Date: Thu, 20 Aug 2026 22:10:34 +0800
-Message-ID: <20260820141034.1400439-1-xuziyougm@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="cMp5kNgS"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Lb6ojGcu/kKbFoq0DO8JUGYpi/5OEoV07P0CZrODjT7j0Q4VXlpyj4OixDKJio33yuotznFX2CVequw/cv23SLeba3tL1mLWF0cfsUuNbB5b0utKa0jIKXDE8Tn4Mp27uzxkOtRxhQPrFNOBThONyXrUFVsFZl2dqsRf8fSQ4zziYYfiWfDQ6sLjGzJhgGoxMBYCUYRMFzj6P4YR1M/GYbpI4HJGqzR2LUgb0HBZFZpsCXccFlKRN+EN6sZzJL82ZyoL2gzvfblzd7tO8r2eb5SEcESRGsNFVWRbYUUxV+how4PIdACqH6WVvdOnDJ1p4qbMGwNYOMSC1DOeyxOa9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZhlWqaDOEHw1xAOpYvwkF+Tj1feSSmX+ry1VZ+KKdEs=;
+ b=tuUx2VdywqKW9RnP3rdK2XteCT9qvD2DPLRIno6+vq/xILOrYtntMJG/TAZ8OBUfXEjYHB732Z9aeDL1cLu7+eo8Jcg34/kSn0s0MQZpcZQGxUMesjMIYcNERY6xaFYrRWP5dd442WOQq9IAGO64CTSAOB0JBdvwcv9Z2hJRRibbB40fJ0p2dEkuegM+aK4utOEmVQkobSFF4VXqFBpHBG408BB3+PcTJJWduJ/8xVIR+7CwxLcQQUIikpgv1rHQEuh2n4FMoEPu2+HThZgXuhdQdelfqoOqrDhd5ZFoe1/ejajJuZo+1T9hdVGm7tbfSi9H2nIOnX3dkTARJpnEwg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
+ dkim=pass header.d=est.tech; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZhlWqaDOEHw1xAOpYvwkF+Tj1feSSmX+ry1VZ+KKdEs=;
+ b=cMp5kNgSBJsVqsgSoe/cyXTr+q8m/aqLF4dXzh8bzZMknSAgQqYZwD/NhWLz8VWrA6HqK/zrsQFV55RFMTw9sqbVxV3nV+SAAr/q9NT116HwNZPHNS5/bn7NgH7M5GV5wsz+Bidi2Udqode88fMsO25fxo7f7+TAtpFJ36Nwlq5zgLTBsXwUgGKPLjoN5H7qdncUbzCelJh1yFkd3IPGwo9/tVWgaQ91nmHTOR++ImYX5KPWo9MwzMG+4lrE/AVkD7PkCdkiZ7TuCy11rJJag0DbnxyQ8tcIor3aYv7UIJi657bwE5WgidRKCcd7nI/sv9VCx+2/5SaJKmyj1u1Ucg==
+Received: from AM7P189MB0807.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:115::19)
+ by VI1P189MB2600.EURP189.PROD.OUTLOOK.COM (2603:10a6:800:1cc::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.3; Thu, 20 Aug
+ 2026 14:25:39 +0000
+Received: from AM7P189MB0807.EURP189.PROD.OUTLOOK.COM
+ ([fe80::744:fbdb:56c3:26f5]) by AM7P189MB0807.EURP189.PROD.OUTLOOK.COM
+ ([fe80::744:fbdb:56c3:26f5%6]) with mapi id 15.21.0339.007; Thu, 20 Aug 2026
+ 14:25:39 +0000
+From: Kyle Swenson <kyle.swenson@est.tech>
+To: "o.rempel@pengutronix.de" <o.rempel@pengutronix.de>,
+	"kory.maincent@bootlin.com" <kory.maincent@bootlin.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>
+CC: Kyle Swenson <kyle.swenson@est.tech>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, =?iso-8859-1?Q?Roland_Kov=E1cs?=
+	<roland.kovacs@est.tech>, =?iso-8859-1?Q?David_Nystr=F6m?=
+	<david.nystrom@est.tech>
+Subject: [RFC PATCH net-next v2 0/2] net: pse-pd: Add LTC4266 PSE controller
+ driver
+Thread-Topic: [RFC PATCH net-next v2 0/2] net: pse-pd: Add LTC4266 PSE
+ controller driver
+Thread-Index: AQHdMK/GAoecupEPdUSnby/yYa1CLA==
+Date: Thu, 20 Aug 2026 14:25:39 +0000
+Message-ID: <20260820142429.2285172-1-kyle.swenson@est.tech>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=est.tech;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AM7P189MB0807:EE_|VI1P189MB2600:EE_
+x-ms-office365-filtering-correlation-id: ca5b0736-7d27-4983-fcd1-08defec6e894
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|376014|7416014|366016|1800799024|38070700021|921020|10067099003|11063799006|56012099006|18002099003;
+x-microsoft-antispam-message-info:
+ q1veKRrUjJv7b5A0NIcM32U3hged3MOPTcNpKDaSpe05HXtNkXFHeDNcYW5GULSsBLfjvwg3nOBr4+572/Na6bWwDsaoLCap0xKjRO/kNwePguOs+IvfBCrBTH2nCEYB7nJLfEYLmbVpB8rl/kb1VMQdgYWSQ1V6pp8vx6z10aJUQyVf0wb2yJ49udIH7NQXrwduHpSFtH2R+qf2frgjdHung6ZHIrxsKmojyDKiVT1nR3PmNZWUfByZD5BQyKTBeeyBChCgvvOg6KyZ/39hRyTQT7dhgWZBwUa+FetLBwGLVb4x+uBmmT1bdtd4/TLr+c5CDChdC86XclGnR2ICHN8S6tYw3IxBHsjPT5NFQp5c6t7NZRYcZ2sSdnejvOqBfeS3aBbhvVf5D2CycN9REqaVl3Ys3zTNYy6d1JIMQdnD2gR4213EQV98Ux6bDdTozv3pPFssX6u4Wy8zv1nDidTBwfFB1WSJPUXrarROicxlAqGyUKTgzdPQ/A6vUxBDjG1R+ROoBKySVAFFoK7ZfZgwglyMfAsB+BeRxxx/cA3nQh0Wg9vzDxQdAX97ymBM8n1hXoN8tzIIuTUlO8bm+tqStqa3TIaeXS0RKDrKYML0cpAr4K+jcDsO62dykS/CwqMXKTfm1i++G4gUW6H4UuK2dO2V7vF9CkIKxhKg/Gty36Ures4o1K38NZTOV3BV18ViDd5tponmHkiK8da62zvpB8XS/F4dd1tqV/S0QPbQdwXau9UkLxpW3JhU633P
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7P189MB0807.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(366016)(1800799024)(38070700021)(921020)(10067099003)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?kkLkIls3oKQEz5WNfZL2NgabJu5Nvn+CaRvdYUVSo8htIAIW7d6LV4pD8y?=
+ =?iso-8859-1?Q?js2Vfyy9caABxBaHQ2VMG/dt6RvAlioERc41UoeNXlxc0BKYlwtxhXHkMR?=
+ =?iso-8859-1?Q?FhaNJDcZsSw4gSL/bT2iPfCehwFodu1BEFbQ5U8RjjuKkRw/ZVdXNcr7HB?=
+ =?iso-8859-1?Q?05odk8EX9Ljs7kqDFfu2ggVpMvC41UDUbv2DMY553i9Q5ggr/ZtoT4M74o?=
+ =?iso-8859-1?Q?Ez06NLwHjhAPkRNieGAYmRjK17wxnybQEJ9wKm2LMHN0rlVSSEXFyZ4qmO?=
+ =?iso-8859-1?Q?30FQayx2eaRjUgv66aVJvmo9g5jI3SlGXoUfQy9Z3IZqJpBYDpQzcraj9i?=
+ =?iso-8859-1?Q?knK6XYXtzDgxi0DRd7Z0psgXtvwiwS/7kc7Ir2flSckFKXoLscc/P4XBxQ?=
+ =?iso-8859-1?Q?3T6AAgJ6vP+HDTl5SL/wz+q1NOgf21HR89xd5K7rt631a2c/kmOZLcen/B?=
+ =?iso-8859-1?Q?A7tOWvSK5Ptu/5czG+M6Yz14TTLeQ/WzLfGrR0z8d7UGjn2LplRtkwZthX?=
+ =?iso-8859-1?Q?bDhxNyCT0zXd5/s+/7FOTuUJzB47S0oK3YZygNm8PLJ5aeS7p6lUvYAv15?=
+ =?iso-8859-1?Q?2Br+XABEOX3bSxVa6NM4WAciHdGdQaz5KIxCnYeK8hNdl78uoVYeoGq3Dt?=
+ =?iso-8859-1?Q?15dL+xOv5Vx408UyUj22wY2WQQTzIVdz87xS/xsbd1vs61Ek+yz3XdnQtZ?=
+ =?iso-8859-1?Q?1GMzc8ovDMWlvh9y31oLKLVnIO+a2JatrJ18spioZ5G8WdrU8Oq/ihbTQy?=
+ =?iso-8859-1?Q?DMPbOwNjyOm71Bakr7Bz7aHjBSFQPwoIVG6/RnhiC5xeszC1knJ3SWK30N?=
+ =?iso-8859-1?Q?dRgZoLBfNFKZ+r4HpXh/lBqVHLKkRZeqvVO7ByHJiXaHMK2cEA+JDV1gBC?=
+ =?iso-8859-1?Q?RV5fy7wo0TcXVEUj8trFdQDUiWO/bkJyxn3nLXNUcfn7U/xYN4HT1dfxrn?=
+ =?iso-8859-1?Q?7bNoQ9UTB1LdZ/v96D9BlpEwOKHLPA+R2Swl3zsm4nAu/EnFCvaetsoLLJ?=
+ =?iso-8859-1?Q?S3GxX7Rawma3Bje7VW5RDdOFbwY2LBCaceAgfLTlKmH4WMtxeozHedXoFG?=
+ =?iso-8859-1?Q?lOVOimn3ejWLhM/9EUwE6cD+pBZEBb2vWMFYAo1D70K2LX5Fxp/k0uJRV1?=
+ =?iso-8859-1?Q?QNTBpk8imk3XPLMVvJPwSO4YIJ41LVuJBRD6Gnxrpuqu2NjVTlzWxN32NZ?=
+ =?iso-8859-1?Q?fYJb/CdTsJo22gAZf+1sQ6Ne8t9+oUm/V/ofGw0buIiGuA01g7EwtTO8PM?=
+ =?iso-8859-1?Q?Snf1mf/Y2VxMkAzInklaSx2pbWxL42gpRly6PT/Bumc6BWMOJuoIPjQabm?=
+ =?iso-8859-1?Q?BXj7jF0rqcquj5TXRWqGsEBn/YqWETjrUPRwB0KrHYXD8qrjwMdBIz2opV?=
+ =?iso-8859-1?Q?B2h3TW5L42VPa8EhK5xlV3Ky5yPY78DXku0FFjLNxsRi0sDyUVnlAQMtGT?=
+ =?iso-8859-1?Q?86qyDy9SBTo8xAnBzjVFV3MNHeNN0kRn6zEYKMXZ2DrfkzLl0+Hm4VtMm4?=
+ =?iso-8859-1?Q?6bqGpbZJLRTT7mQP9Uuf6jO5LxHCkelOOT5/n74aYQmSw8UVn8cc11E8H6?=
+ =?iso-8859-1?Q?ldN72YOoSomvceDLS7kkg4btrEpJpT/LCXZgCOnsf76fDNFy0QQmvkiZWx?=
+ =?iso-8859-1?Q?aRdG/q5nLVlK5381D/53lF765KPH+9b0XKVivjemWACq/AOUfbjRqkiXCw?=
+ =?iso-8859-1?Q?xQ2DQgFA7ccm9QxzVsziAP7x8RULxxG5C48qgRJsC+OpgV/YjzGFyKY64K?=
+ =?iso-8859-1?Q?DfcwZLHs+mR7qx6d+4h8jbDxbArbeKcFVZxilaXJKIU56HkFif+Uj7RUh6?=
+ =?iso-8859-1?Q?15mc0/7cGA=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: est.tech
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM7P189MB0807.EURP189.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: ca5b0736-7d27-4983-fcd1-08defec6e894
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Aug 2026 14:25:39.2147
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: RPWDfbatl6I139XWtjXYKsA2vY+NgAsFhD78D5nNaGCFukdM5eaegHoCgli4T4wLMUUd22Adq7g3UK+KQoLlTQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1P189MB2600
 
-en8811h_probe() enables the GPIO3/4/5 output bits after loading the
-MD32 firmware, but a subsequent config_init() restarts the MCU, which
-clears EN8811H_GPIO_OUTPUT[5:3]. The LED event registers survive the
-restart, so the LEDs work during early boot and then go dark after the
-MCU is restarted.
+This RFC series intends to continue discussion around the support for
+the LTC4266, an older PSE controller that supports powering Type 1 and
+Type 2 PDs.
 
-Move the GPIO output setup into config_init() so it is reapplied after
-every MCU restart.
+This chip has four individually controllable ports, each with its own
+detection, classification and current-limiting abilities.  The driver
+declares the static power budgeting strategy.
 
-Tested with warm reboot, cold boot and cable unplug/replug. The failure
-was confirmed by reading EN8811H_GPIO_OUTPUT as 0x00; setting only
-EN8811H_GPIO_OUTPUT_345 was sufficient to restore the LEDs.
+The LTC4266 only enforces a current limit (I_CUT and I_LIM), not a power
+limit, so an admin power limit has to be turned into a current limit.
+There are two problems that fall out of this I don't feel like I've got
+a great solution to either and would welcome feedback, hence the 2nd RFC
+version.
 
-Fixes: 71e79430117d ("net: phy: air_en8811h: Add the Airoha EN8811H PHY driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ziyou Xu <xuziyougm@gmail.com>
+The first problem is programming the current limit from the
+admin-specified power limit for power limits other than a specific PD
+class.  For this, I replaced the linear regression in the first RFC with
+the minimum port voltage for a Type 2 PSE (50V, from Table 33-11 in the
+IEEE 802.3 spec) to convert power to current.
+
+The second problem is that when the admin does something like
+
+    ethtool --set-pse eth1 c33-pse-avail-pw-limit 10000
+
+the command fails with:
+
+    netlink error: Can't calculate the current, PSE voltage read is 0
+    netlink error: Result not representable
+
+unless the PSE port has been enabled first, and the PSE has detected and
+classified a PD on that port.  I'm hopeful I'm just missing something I
+can do differently in this driver, but if not I'm open to adjusting
+things at other layers to support this.
+
 ---
- drivers/net/phy/air_en8811h.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+RFC v1 -> RFC v2:
+  - Rebase on net-next/main
+  - Integrate and test with the PSE core's PSE_BUDGET_EVAL_STATIC.
+  - ltc4266: Convert register access to the regmap API (replaces the
+    open-coded read-modify-write helper and its explicit mutex).  Note
+    the explicit mutex is gone because it only protected reading both the
+    high and low bytes of a port's voltage/current.  This isn't actually
+    needed because reading the LSB will latch the MSB until the MSB is
+    read, so I2C transactions between the two reads are benign (Oleksij)
+  - ltc4266: Rename LTC4266_ICUT_RSENSE to LTC4266_ICUT_RSENSE_025_OHM
+    (Oleksij)
+  - ltc4266: Rename the ILIM AF/AT constants to TYPE1/TYPE2 (IEEE 802.3
+    terminology) (Oleksij)
+  - ltc4266: Add kernel-doc to ltc4266_port_set_ilim() citing IEEE Std
+    802.3-2022 Table 33-11 / Eq. (33-6) and the datasheet Table 5
+    sense-resistor dependence (Oleksij)
+  - ltc4266: Use the standard "2-event classification" term (IEEE
+    802.3-2022, Clause 33) instead of the datasheet's "Ping-Pong" name
+    (Oleksij)
+  - ltc4266: Document the ltc4266_port_mode enum
+    (SHUTDOWN/MANUAL/SEMI/AUTO).  The suggestion to treat any OPMD other
+    than SHUTDOWN as ADMIN_STATE_ENABLED didn't really apply since the
+    PSE core added the PSE_BUDGET_EVAL_STRAT_STATIC (Oleksij)
+  - ltc4266: Return 0 from ltc4266_read_iv() rather than -EINVAL when the
+    port is not delivering power, so an "ethtool --show-pse" query is not
+    aborted, and clarify the "delivering power" wording (Oleksij)
+  - ltc4266: Replace the I_CUT (18750, 0x3F, 850) and current/voltage
+    (122070, 61035, 5835) magic numbers with named defines (Oleksij)
+  - dt-bindings: Drop the blank line after "channels:" (Krzysztof)
+  - dt-bindings: Move the channels "description" after
+    "additionalProperties" so the structural keywords stay together
+    (Krzysztof)
+  - dt-bindings: Drop the blank line before "type: object" (Krzysztof)
+  - dt-bindings: Collapse the double blank line before
+    "patternProperties" to one (Krzysztof)
+  - dt-bindings: Use single quotes consistently for
+    '#address-cells'/'#size-cells' (Krzysztof)
+  - dt-bindings: Move "unevaluatedProperties: false" after the top-level
+    "required" block (Krzysztof)
+  - dt-bindings: Drop 'status =3D "okay";' from the example and tidy the
+    surrounding blank lines, including separating the channels and
+    pse-pis nodes (Krzysztof)
+  - dt-bindings: Reword the channels description based on the review in
+    [1] (Kory)
 
-diff --git a/drivers/net/phy/air_en8811h.c b/drivers/net/phy/air_en8811h.c
-index edd49c193..fbd87fc71 100644
---- a/drivers/net/phy/air_en8811h.c
-+++ b/drivers/net/phy/air_en8811h.c
-@@ -1173,13 +1173,6 @@ static int en8811h_probe(struct phy_device *phydev)
- 	if (ret)
- 		return ret;
- 
--	/* Configure led gpio pins as output */
--	ret = air_phy_buckpbus_reg_modify(phydev, EN8811H_GPIO_OUTPUT,
--					  EN8811H_GPIO_OUTPUT_345,
--					  EN8811H_GPIO_OUTPUT_345);
--	if (ret < 0)
--		return ret;
--
- 	return 0;
- }
- 
-@@ -1317,6 +1310,16 @@ static int en8811h_config_init(struct phy_device *phydev)
- 	if (ret < 0)
- 		return ret;
- 
-+	/*
-+	 * Restarting MD32 clears the GPIO3/4/5 output enable bits. Restore
-+	 * them after every restart, before enabling the corresponding LEDs.
-+	 */
-+	ret = air_phy_buckpbus_reg_modify(phydev, EN8811H_GPIO_OUTPUT,
-+					  EN8811H_GPIO_OUTPUT_345,
-+					  EN8811H_GPIO_OUTPUT_345);
-+	if (ret < 0)
-+		return ret;
-+
- 	ret = air_leds_init(phydev, EN8811H_LED_COUNT, AIR_PHY_LED_DUR,
- 			    AIR_LED_MODE_USER_DEFINE);
- 	if (ret < 0) {
+[1] https://lore.kernel.org/netdev/20250517003525.2f6a5005@kmaincent-XPS-13=
+-7390/
+RFC v1: https://lore.kernel.org/netdev/20250603230422.2553046-1-kyle.swenso=
+n@est.tech/
 
-base-commit: 564973a259ec76f2dad0853420e7034cc43994c4
--- 
-2.43.0
+Kyle Swenson (2):
+  dt-bindings: net: pse-pd: Add bindings for LTC4266 PSE Controller
+  net: pse-pd: Add LTC4266 PSE controller driver
+
+ .../bindings/net/pse-pd/lltc,ltc4266.yaml     |  180 +++
+ drivers/net/pse-pd/Kconfig                    |   11 +
+ drivers/net/pse-pd/Makefile                   |    1 +
+ drivers/net/pse-pd/ltc4266.c                  | 1305 +++++++++++++++++
+ 4 files changed, 1497 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/pse-pd/lltc,ltc42=
+66.yaml
+ create mode 100644 drivers/net/pse-pd/ltc4266.c
+
+--=20
+2.55.0
