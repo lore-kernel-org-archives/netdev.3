@@ -1,189 +1,178 @@
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542821D54FA
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 18:01:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F6538E5C4
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 18:07:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787248873; cv=none; b=EiQnRNc9GY/OZdVDsvbbVKL1hMYZha6jyeaEMplI5OcZE5L9DX1+c95qjtfHSja2rB6uLSpLV3qTjByxdCB/aXw9bqZXGq1XkvNpljSoNXIHIJ6MpQSCLB305G2oWylx8YMfPTzX+NZ/cbNiEe9vZ7ucMzGVxiT8RcI7AZM9Fy4=
+	t=1787249244; cv=none; b=JamnbeQqFFRqxEyfIAYUrg0x7hghj1/wqQCsYTUtK9eX2MFWGGUni6pZeb643/f+BnQp+00GbPrxFZMiqO7Fe4ahy74rlCUkWul8pPvSc1MqewZzTTYl1iPivjPVw2eH8dZnzAkYHvA3NRNWkkjCcsZlKz+2Jm2GY7nv74S3UJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787248873; c=relaxed/simple;
-	bh=VEXnQra9k6V+m354UMX/hahQNUSRIlisEfWNAK66TYc=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=OCpR+s4jlEn3lJr4XXd4h0uDJ7PQaNDxwMTy2l1dK3wRzIYZFZA+oBMZ8Ith+b4FYvuyZ0gQDoe6JShOuHrs7TrRpYW8zRf27vweKRLR4EZOE+YlkDlPFv4dZpfPbNPryWmcaYjRglaQmu5Z6sCjzVnmLbVnde1dzecT81T20CM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LIAkTUod; arc=none smtp.client-ip=209.85.219.50
+	s=arc-20240116; t=1787249244; c=relaxed/simple;
+	bh=ni3ajiGa788PkOa6kZ1AEOtext1QsSQ8nmKnd6IXZ/g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hs5sHSnrhdVMPeHs/xeDqVI9JDFoUaohYhHtCXDxBQzyVBpum5q3JAhuOlqIZacGhCmibxNBZG//mR2NB7ZaFhoHFkISeZOjOGSAItXdrfb+wNwO8Hm+jN4mOji6l3xjnRqzJAPHIfh5oPxrUznFdUXDdrNgrZfySFIZ5DDK19I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cNiYTEwt; arc=none smtp.client-ip=209.85.161.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LIAkTUod"
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8ff20870ac7so1452806d6.1
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 11:01:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cNiYTEwt"
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-6b153acb276so179059eaf.1
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 11:07:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787248871; x=1787853671; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:content-type:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=oScT+ENnlXTLQHf3HxenqBsWnHCI1YjhKxNuZRXNgT8=;
-        b=LIAkTUod2Crl2f2xJ7dHCxcXtDqnuiHxkc6dRtKLzVLKTC36dvtr5EJC1aVTmFKO/c
-         2LomNFBjCHB81WunlU/0MOrh6fL7PSfYIcX4b/eCi3t5jaBIuveq93LRcIzAcQnHKGD2
-         KJaGOy/DS10eJLDLYXC2HERdDBDADZM8rKx5eN8PdByi4/UOo7XOyOgkwPdAuwbXA/e1
-         juuJVbedX90hZHKI9vHyTHJJapBWcr/Zvx+aQHM0wDt1yTxaNX0N6XWSIsu8eBHwpMrG
-         4AxlxyU4xiERF5XMVoCrwZRmHSFd/OrAfOL2taQUUv4n03k53S7cX0fPgKz4beH9I18V
-         MCTg==
+        d=gmail.com; s=20251104; t=1787249240; x=1787854040; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=eoDlMO2HjMe2TjRXcPUA1zA1Xxgl6+t6qZXrrtvEsbA=;
+        b=cNiYTEwtBZuNWZLDWnRwQGlGSYISkQaf4dpfnC/ad/XKLWypGhD+bGT5fVbDcAN9TN
+         625YREsAdDWFR/15UyGsocacOtfLNMlVmxaCQoya60ef/rAJDCIkBT6q8WBdYtYW1IDB
+         8hAKcpDda1BR3GKuEwIhIyAgNyYrSuZZFhp1mwkifxO7mj/gEvLm1LLHjVpIiZPQYHJL
+         rvTnuKsSmVkgZ+g1hGW6UnkhRls48EaL/LgtOMrdjAYbm9wfe/oOUgrdy4ItMja3OLkU
+         cJafOPrJ5ugK5s0HD563bWlBxtrXP/Jsw3V6OOSLaCx1rDrtU3/bfH7cMuodCofwQy7h
+         ycFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787248871; x=1787853671;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:content-type:x-gm-gg
+        d=1e100.net; s=20251104; t=1787249240; x=1787854040;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=oScT+ENnlXTLQHf3HxenqBsWnHCI1YjhKxNuZRXNgT8=;
-        b=jZb9bDtkSLUGksiDMqBCdf9UFK6JeWaUR4dYK+jvIWfl8qos7KpmrOPgasPNRZLMsV
-         Iawr9TsS+KCwnVDZ5TRJCdWiIkQGzEadIY7f3IaqSHfJRcFmIfLRqXzT5dnzmJLjTdax
-         LCOkOz0VVAMuXLpIu4UjkcHihAbIZNo/IPwujxRQgTTf+h3lbYrQzQpHPnPua29mTq+3
-         nv8M4J2DZx5GmDkQh2xbLQm4yezQHiP6VYoPaDhzUgCgypK7HagGqg6AUBvyrlZXFFUj
-         /Kk1SjLTVcuR8ORC+l63sXjbwIfoxPdiceFVIo3cP1E8W9DlQBYymOj4q2NhAKC5IX71
-         0PWg==
-X-Forwarded-Encrypted: i=1; AHgh+Rp3Pe7BxVC+8jNyPZcXDqfZHWEHTKxDo0/0geKdf6Qznsz7cjeW/aDHcxhdqk7WBRBR0fQEpvk=@vger.kernel.org
-X-Gm-Message-State: AFuF++k1xn5XWsininBQaBzkUhrkt3y14vS9rgC08APuafY3NxTA4+Jv
-	hoCpmOf4DDZkioE5T9o4ksARgkhd0/1G9WZsF/a65406zB4bAcakMAyCEXQS0KZW
-X-Gm-Gg: AR+sD11JmRfRBrw3Qr+K4txb2JAjO/3GgRxSWDMUbeN0hSrd15X22cuWvbzXRfZ+nJz
-	NO5Bpe5wSqzsTowFfMDJfwG3eccbwmeuaQuUB6DZ3q3ooSvqQZPkAsaxlkFoGYIWJVmJYay0la/
-	H40254bEKN/+CXjFKqIqIbrLAAoRvCSh/CPZvn/GmSMNaa0T6by3p2+LLc3YEdvzisWI7cuyX/x
-	4aVzgiz6gPH3urgwAO5BDjrDOqiO1Xjg0YYA6YLMHScrTUGKDXkG7nITuGWP2bdrl49IDbnlVzk
-	geYipyYmRtqcFgzfMOob+Ur7BLV2ay0c0d13S7J/uW5uCBAt5DanH289Jk5jsMNRGPIY7GhJT4S
-	h2H5Gx8S2GcRNg/heFAgs0Vb/CKMBansgvsZRMBv2SgcomaAwNxooKf3DhGGvlvSkghj9Ao6Weo
-	X+tzpszVlXNh2+UUyJTrjXzjCKzcG6Y6fV8XBR/VdD11IbsAJeZH+n6Ybh72Wmq7bwKUEXFjJfU
-	e0Il1m2n0qUtltmQY0D+bXyj2bdZfs=
-X-Received: by 2002:a05:6214:2a49:b0:8f1:440c:7f81 with SMTP id 6a1803df08f44-90c80942e22mr127546d6.4.1787248870845;
-        Thu, 20 Aug 2026 11:01:10 -0700 (PDT)
-Received: from smtpclient.apple ([165.85.199.100])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90c5f2b4ad5sm43810486d6.42.2026.08.20.11.01.09
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 20 Aug 2026 11:01:10 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+        bh=eoDlMO2HjMe2TjRXcPUA1zA1Xxgl6+t6qZXrrtvEsbA=;
+        b=o2ulpHoGbdyza4rdbPKyoFKulStX0POVSNS6Kv5WaZmS4pWXOVjvyvcYk+TjR6xm03
+         a1g4S6QPpZR+LMcEZT8duw3CGGQe+i3zVV4JI8iqnAcv/6qatUsGzm1Y7tRcs1oWlvnu
+         8ewavbgYAXs0zIVbRnJdk0fsKx2FEkan2BDo4MW0iUtVYajmZ/HFcLISTLS4xC4PihE+
+         rYPdXcvV8HrvTxLvyD3KcLpk8AMIhd7T5Up3MFZ5/iKB3UKetVBNX/clYhsyQAcH7DXg
+         1MnmjmPmBgwyxYBb3qKqOm5XsnSWzyRbg9xcfw2W2wXRrB5EOJByEnEI+PzGYqnsgQXb
+         T+NA==
+X-Gm-Message-State: AOJu0YztburuIe7zEe0C9G2TznWIZavZU/hQLGESI9URo+9anBUtq6xV
+	lddkGzFGSkqKm7kLvf82AajB3wA6CQTyiPlCWfEOL5NiRe5bKdB4VLtN
+X-Gm-Gg: AR+sD13Q6Cs1tM4cPcmlH6vHF3eYWFLA0mE3CutBh5Ht3PYVzJfdFuZhfvRLFdWyFv2
+	V78xosdSnxIveZ+qSAWoVGeHhvibNXhDYK9O/OwVQs2llzEcXNq/LQHwoa9aKd8nUWieBK5nPZs
+	qEFlHjn4aGczx6BiR34kMorEjt97n4DfWGNSMjAhcpICk5A62o+G0PMbVj5cwazSFEnq4Iuqhg7
+	LnIFkugsRgbsDwCwwQFkKQcuj7QN4WB8L9PcGVbHljpIYttoB9hmBWQhi+TjEKZhMPVBWL4xksA
+	VFiblcuU2jGUpaneeqIejrECUXXqSb7m9ZsxvR8DgayVEebUtkkLIdzfEG1AwJXBOTNmpj3RCy4
+	tKFfGIqanI2W/1ZoZx8v43Hovm2J4hCgrs/xauWMrEqKVEaewvL7a0828qWdeuxaswbmPFlk58M
+	kjQx+Hk0uPu4/+kKrYH2fMVmc7pOlhh/TBKOg5SaJdiJMxn6+MBO19al/fb0WIvkEGS5e4OXgcx
+	0sN7fsp
+X-Received: by 2002:a05:6820:200a:b0:6ab:13:b207 with SMTP id 006d021491bc7-6b1593ee12cmr572636eaf.27.1787249240224;
+        Thu, 20 Aug 2026 11:07:20 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:6::])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6b13cf065d3sm5797270eaf.12.2026.08.20.11.07.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Aug 2026 11:07:18 -0700 (PDT)
+Date: Thu, 20 Aug 2026 11:07:16 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Daehyeon Ko <4ncienth@gmail.com>
+Cc: netdev@vger.kernel.org, Stefan Hajnoczi <stefanha@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	virtualization@lists.linux.dev, kvm@vger.kernel.org
+Subject: Re: [PATCH net v2] vsock/virtio: validate packet source for
+ connected sockets
+Message-ID: <aodCVDNMDPhxw45G@devvm29614.prn0.facebook.com>
+References: <20260820001517.2148196-1-4ncienth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [BUG] nfc: KASAN: slab-use-after-free in nfc_llcp_rx_skb
-From: Shuangpeng <shuangpeng.kernel@gmail.com>
-In-Reply-To: <CANn89iL2_QhxnZvng7LJ-Rx8KSX5pvymYf_mBgP8aFSeVkPY=g@mail.gmail.com>
-Date: Thu, 20 Aug 2026 14:00:37 -0400
-Cc: David Heidelberg <david@ixit.cz>,
- "David S. Miller" <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- oe-linux-nfc@lists.linux.dev,
- netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <7E2F7328-DA5E-428D-8A2B-37479B1435EE@gmail.com>
-References: <20260819002050.3476701-1-shuangpeng.kernel@gmail.com>
- <CANn89iL2_QhxnZvng7LJ-Rx8KSX5pvymYf_mBgP8aFSeVkPY=g@mail.gmail.com>
-To: Eric Dumazet <edumazet@google.com>
-X-Mailer: Apple Mail (2.3864.600.51.1.1)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260820001517.2148196-1-4ncienth@gmail.com>
 
+On Thu, Aug 20, 2026 at 09:15:17AM +0900, Daehyeon Ko wrote:
+> virtio_transport_recv_pkt() looks up sockets first by the full source and
+> destination tuple, then by destination only in the bound table.  The
+> fallback is needed for listening and connecting sockets, but sockets remain
+> in the bound table after connect(), so it can also return a non-listening
+> socket.
+> 
+> The fallback does not validate the source address.  In TCP_SYN_SENT, a
+> RESPONSE from an unrelated source can transition the victim socket to
+> TCP_ESTABLISHED while its stored remote address remains unchanged.
+> Subsequent RW packets from that source are delivered through the same
+> destination-only fallback.
+> 
+> This was reproduced with capability-empty processes under different UIDs.
+> The attacker discovered the target tuple through unprivileged AF_VSOCK
+> sock_diag and caused the victim socket to read 16 attacker-chosen bytes;
+> the intended peer-side socket read 0 of those 16 bytes.
+> 
+> After lock_sock(), reject packets for non-listening sockets unless their
+> source port matches the stored remote port.  Require the CID to match too,
+> except that the loopback transport uses VMADDR_CID_LOCAL as the packet
+> source for connections addressed through its valid CID aliases.
+> 
+> Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
+> Closes: https://lore.kernel.org/netdev/20260813121236.2328599-1-4ncienth@gmail.com/
+> Cc: stable@vger.kernel.org
+> Assisted-by: Codex:gpt-5.6-sol
+> Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+> ---
+> Changes in v2:
+> - Preserve valid loopback CID aliases by matching the source port and
+>   accepting VMADDR_CID_LOCAL only for the loopback transport.
+> - Rewrite the commit message and receive-path comment for clarity.
+> 
+> v1: https://lore.kernel.org/netdev/20260813121236.2328599-1-4ncienth@gmail.com/
+> 
+>  net/vmw_vsock/virtio_transport_common.c | 24 ++++++++++++++++++++++--
+>  1 file changed, 22 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+> index 8becad812..d8990f5f6 100644
+> --- a/net/vmw_vsock/virtio_transport_common.c
+> +++ b/net/vmw_vsock/virtio_transport_common.c
+> @@ -1764,6 +1764,21 @@ static bool virtio_transport_valid_type(u16 type)
+>  	       (type == VIRTIO_VSOCK_TYPE_SEQPACKET);
+>  }
+>  
+> +static bool virtio_transport_source_matches(const struct virtio_transport *t,
+> +					    const struct sockaddr_vm *src,
+> +					    const struct sockaddr_vm *remote)
+> +{
+> +	if (src->svm_port != remote->svm_port)
+> +		return false;
+> +
+> +	if (src->svm_cid == remote->svm_cid)
+> +		return true;
+> +
+> +	/* The loopback transport represents its peer as VMADDR_CID_LOCAL. */
+> +	return t->transport.get_local_cid() == VMADDR_CID_LOCAL &&
+> +	       src->svm_cid == VMADDR_CID_LOCAL;
 
+nit: not a strong preference, but I feel this comes out a little more
+readable as:
 
-> On Aug 19, 2026, at 03:55, Eric Dumazet <edumazet@google.com> wrote:
->=20
-> On Wed, Aug 19, 2026 at 2:21=E2=80=AFAM Shuangpeng Bai
-> <shuangpeng.kernel@gmail.com> wrote:
->>=20
->> Hi Kernel Maintainers,
->>=20
->> I hit the following report while testing current upstream kernel:
->>=20
->> KASAN: slab-use-after-free in nfc_llcp_rx_skb
->>=20
->> on commit: 3609fa95fb0f2c1b099e69e56634edb8fc03f87c (2026-01-04)
->=20
-> Are you sure this was not already fixed by 2b5dd4632966
-> ("nfc: llcp: add missing return after LLCP_CLOSED checks") ?
->=20
+	return src->svm_cid == t->transport.get_local_cid(); 
 
-You're right. I overlooked commit 2b5dd4632966. I confirmed that this =
-issue
-has already been fixed by it.
-Sorry for the noise, and thanks for pointing it out.
+Otherwise, all looks good to me.
 
->>=20
->> The reproducer and .config files are here.
->> =
-https://gist.github.com/shuangpengbai/70e3bdc241dbd675970fe89f30f0b84e
->>=20
->> I'm happy to test debug patches or provide additional information.
->>=20
->> Reported-by: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
->>=20
->> Decoded source path:
->>=20
->> use: net/nfc/llcp_core.c:1185 in nfc_llcp_recv_disc(), reading =
-sk->sk_state
->>     after nfc_llcp_sock_put() at line 1182; DISC dispatch is called =
-from
->>     net/nfc/llcp_core.c:1483 in nfc_llcp_rx_skb().
->> free: concurrent socket release drops the final reference through
->>      net/nfc/llcp_sock.c:646 sock_put(), then sk_free() releases the =
-same
->>      struct nfc_llcp_sock allocation.
->>=20
->> [   81.172360][  T830] BUG: KASAN: slab-use-after-free in =
-nfc_llcp_rx_skb (net/nfc/llcp_core.c:? net/nfc/llcp_core.c:1483)
->> [   81.173044][  T830] Read of size 1 at addr ffff888119369812 by =
-task kworker/1:2/830
->> [   81.173940][  T830] Tainted: [B]=3DBAD_PAGE, [W]=3DWARN
->> [   81.173941][  T830] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX =
-+ PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
->> [   81.173943][  T830] Workqueue: events nfc_llcp_rx_work
->> [   81.173946][  T830] Call Trace:
->> [   81.173947][  T830]  <TASK>
->> [   81.173952][  T830]  print_report (mm/kasan/report.c:379 =
-mm/kasan/report.c:482)
->> [   81.173959][  T830]  kasan_report (mm/kasan/report.c:597)
->> [   81.173965][  T830]  nfc_llcp_rx_skb (net/nfc/llcp_core.c:? =
-net/nfc/llcp_core.c:1483)
->> [   81.173973][  T830]  nfc_llcp_rx_work (net/nfc/llcp_core.c:1533)
->> [   81.173976][  T830]  process_scheduled_works =
-(kernel/workqueue.c:3262 kernel/workqueue.c:3340)
->> [   81.173980][  T830]  worker_thread (./include/linux/list.h:381 =
-kernel/workqueue.c:946 kernel/workqueue.c:3422)
->> [   81.173984][  T830]  kthread (kernel/kthread.c:465)
->> [   81.174000][  T830]  ret_from_fork (archkernel/process.c:164)
->> [   81.174011][  T830]  ret_from_fork_asm =
-(arch/x86/entry/entry_64.S:256)
->> [   81.174014][  T830]  </TASK>
->> [   81.187221][  T830] Allocated by task 4409 on cpu 1 at 75.384100s:
->> [   81.188593][  T830]  __kmalloc_noprof (mm/slub.c:5658 =
-mm/slub.c:5669)
->> [   81.189018][  T830]  sk_prot_alloc (./include/linux/slab.h:961 =
-net/core/sock.c:2245)
->> [   81.189420][  T830]  sk_alloc (net/core/sock.c:2301)
->> [   81.189779][  T830]  nfc_llcp_sock_alloc (net/nfc/llcp_sock.c:979)
->> [   81.190222][  T830]  nfc_llcp_rx_skb (net/nfc/llcp_core.c:971 =
-net/nfc/llcp_core.c:1478)
->> [   81.190656][  T830]  nfc_llcp_rx_work (net/nfc/llcp_core.c:1533)
->> [   81.193365][  T830] Freed by task 31 on cpu 196609 at 78.490492s:
->> [   81.195183][  T830]  kfree (mm/slub.c:6670 mm/slub.c:6878)
->> [   81.195531][  T830]  __sk_destruct (net/core/sock.c:2285 =
-net/core/sock.c:2384)
->> [   81.195937][  T830]  nfc_llcp_rx_skb (.net/sock.h:? =
-net/nfc/llcp_core.c:233 net/nfc/llcp_core.c:1194 =
-net/nfc/llcp_core.c:1483)
->> [   81.196379][  T830]  nfc_llcp_rx_work (net/nfc/llcp_core.c:1533)
->> [   81.199084][  T830] The buggy address belongs to the object at =
-ffff888119369800
->> [   81.199084][  T830]  which belongs to the cache kmalloc-1k of size =
-1024
->> [   81.200297][  T830] The buggy address is located 18 bytes inside =
-of
->> [   81.200297][  T830]  freed 1024-byte region [ffff888119369800, =
-ffff888119369c00)
->>=20
->>=20
->> Best,
->> Shuangpeng
+Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
 
+> +}
+> +
+>  /* We are under the virtio-vsock's vsock->rx_lock or vhost-vsock's vq->mutex
+>   * lock.
+>   */
+> @@ -1823,10 +1838,15 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
+>  	lock_sock(sk);
+>  
+>  	/* Check if sk has been closed or assigned to another transport before
+> -	 * lock_sock (note: listener sockets are not assigned to any transport)
+> +	 * lock_sock (note: listener sockets are not assigned to any transport).
+> +	 * The bound-table fallback matches only the destination, so reject packets
+> +	 * from a peer other than the one stored in the socket.
+>  	 */
+>  	if (sock_flag(sk, SOCK_DONE) ||
+> -	    (sk->sk_state != TCP_LISTEN && vsk->transport != &t->transport)) {
+> +	    (sk->sk_state != TCP_LISTEN &&
+> +	     (vsk->transport != &t->transport ||
+> +	      !virtio_transport_source_matches(t, &src,
+> +					       &vsk->remote_addr)))) {
+>  		(void)virtio_transport_reset_no_sock(t, skb, net);
+>  		release_sock(sk);
+>  		sock_put(sk);
+> 
+> base-commit: e2466392a0b8496000e12181cb1ee1535eb0da25
+> -- 
+> 2.54.0
