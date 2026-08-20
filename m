@@ -1,141 +1,163 @@
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44AB8635D;
-	Thu, 20 Aug 2026 15:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787238037; cv=none; b=riKrfh6lenirNzYO3IoqF8ZaQNZrG3k86l2wpr8ZXA4SwIsTJRgHE1TBPhlmgy94lmipeBKgAOvPUSDUy8SGPIAM/osEAepieJrKc3CXicE8BSwMx4EPdyWheofpsyrfqFj4O8bOX9pm9IctO4E5WW7JiHhWfE59WCAGhofetvM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787238037; c=relaxed/simple;
-	bh=XY4JzP5ma2KQH4gyE4kaYXAqEKpyo5FR9wDQl00t85Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PwcIJxUqElhfnRXuKMVsFctffTGR2LmApDjVrhYCY5OX1FuuUfLgalH+NI9ztWAgsQR3nIbmhcvpEZZtEe0pqT7cgne/EBzLEm4RHKjMUBMJIrNZbtTSRQKe5tlbEIGrGCzsTATNrgJZHipHIYc08SeG3YAXQDnlXLbyAbV7LB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=ybSy9LUp; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=PHxqwqwy; arc=none smtp.client-ip=103.168.172.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D32C37C923
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 15:01:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787238099; cv=pass; b=g2M7jTBVxy1hS7wGJ/Qz18GhsMHjCURmGhSgt2rRxPrC7vAUiruhLUY79VGgBopHK6GhAzEoVNlGzYZ2TDftMKiH/fR1Tp47DjRBf13CgxzS9wcPXL2Bp2BhCOAn/PcGktFwpgTc0C4SA4vBR5BK9iPRextJ3df7b07X3OzZ0e4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787238099; c=relaxed/simple;
+	bh=D2RYwrgKpm1Dr/0cRan7fmW2KfUcHQ42FPGSFv7Bbso=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=K1xWmT4ZqasOFm5VIcHEsoX5x/LzWh7Io8tS9Cd4j3JjbUEQH2Bm/vaycyCMcjFh/jHgipw82ApcaRsUgVtVTkwpRSschsbdH0H/hNYGErsDyBOQaKH651EBf2bWot7oAmzntg+mtEyprZG4mqOL6TP/Ul510OvqFev5FIyhJaU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WhDBX2g5; arc=pass smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="ybSy9LUp";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="PHxqwqwy"
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id CED8F14000F9;
-	Thu, 20 Aug 2026 11:00:34 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Thu, 20 Aug 2026 11:00:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1787238034; x=
-	1787324434; bh=9NHH3MAtXegQM8wmmdhADbFPM8G3Gs+3JvKoiIEVOUc=; b=y
-	bSy9LUpE2TURrJNCOInPhz/J81lPAqVQADV0DEAbsVj6h+mjSiK+Pl5c2no3xAln
-	ZT+pzGa5KiN3qQ1x3RGqaD2pT7iMHj66SjHDcH4vpCe+WtG9UYs1/w1HQt3DgXYw
-	ItJLSrzyMCOODVb9vONn/rL509AB5VFE8/QGOMilyEcJ4sDB3ebU1+mbDFlpyRkA
-	zjdEmsD+LkS6yLwImrIg6rHzcVhXV2236J9+up/B3D0Avpxf0iUqUZosYUgX1Idt
-	LOAcDc3RVspuEr9GEoy+OVY0Lgf6FmLe97KGYBiI9H4Yj5GiICPjiwyAL5TNkSPP
-	v6j3URIh8hBHdCcpwVcOw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1787238034; x=1787324434; bh=9NHH3MAtXegQM8wmmdhADbFPM8G3Gs+3JvK
-	oiIEVOUc=; b=PHxqwqwynGL8tEvQeE+15D03uaZFylAb8AkxfjH8V5Vt6Jbvlp7
-	AhiFrpT+7afJNlj81D3/Iq4+NDqmGfRvB5Rr11IX8jH0uj85Dr62ruGO/6sQxZOR
-	g+kdENZsyo9MQ8rah61ds4e2rrVYWo6P+hlDTmsrRUYVubr7bffCwgDcM7qei2SA
-	NWuR1t7zRwAeoEM4wWKYT/BILWDwM8huFhdZiSxg2fSTQsHuyt04/fcxKlpuggyX
-	IuAbbyI85ALz3lifCqJPfyXbX6yD7d+OJAnM2dcgWhVYHjuYRhxBaOwxwU9d0Wl/
-	wCP27Dpn5O/7UcZHkAShrBw+OxBleBUYP9g==
-X-ME-Sender: <xms:khaHamGnNRiFZlkdmJZ4zuJg3rhsgAjyObmc5LXpP_-6mO31if4RTQ>
-    <xme:khaHaqpYN-WTlny29pDASt1_ZFQWgmW1Fx5qHl0s9tyr4ADGxZvU9Yho15Y3g-CAs
-    JIeKX93VxZmhF21HB-OIrBa57AdC_Ofhw_hIgAgUeZhzYKJX4a138E>
-X-ME-Received: <xmr:khaHakMmKYlYiSlWPA-bm_BW25GZzfm-WBHlsMm4cBrPFLv_40aJgT8Rmp0>
-X-ME-Proxy-Cause: dmFkZTE0/9X7WIzT7v0cJ1Q68jjWE24R4f9YD+0vv/l4GrYIP7tL5wuv093UaXVgVH30E8
-    80/ZyKNSEHmGq7ojjVQqWlktXNiRKQYT8pxO4ERvYN1NOvSqsMenUQKZxDhs+dHKXEVPI6
-    UQQI3Cnxqx257NeEinkkbSMAgIyrxGy+3LyIVGD662Q9JoUG3XYDJGL2sXVXCbPKO39QrX
-    iwCOxpG2/06ZaIhxY9r4yHvNjqDfm/OrVj93wsPLClOa0UNxBIXUehNGDPpbqr4MpNbeSo
-    /3U46K13FXumbfTWf33t2x28XQ8MR5zuXgJxJvRFw/xeMsvO6a64SnRydROJmhGIrt/wFH
-    +K37V1yOAoB6fwsiRq0cHC06gi2Y2E1FBp+ddRUkRsBuF3CEoKbKmiOMyflSStNRWTUL1p
-    4YxUt6h0cGoKGpPXs2vMr7wzHwnBvtaQ7z07Q8Nqk4q+/UZeJf/45TWikhigUxinmx3azV
-    gkxUA+qHp/NWcZnaPXxmyxVm/KlKpppJOftyEkqSyzEpWyk6VjF4dxF89yrWKVjrYxs38c
-    6SDNc5ybBk5uGxQycyp0kY3hDW8o0WKvG928wnqhTqjl4XLvTrfde9HVu8Cstdt+S4DcNQ
-    xqQredZLSBYoxAqpvtNV5sv1zjhBl6xxcp0rcFpHtzkKB8a9BpAwcFFa2+RA
-X-ME-Proxy: <xmx:khaHamfGePOUDx_KIr-CYt3fgla9L8ETY60ZgWHB3MG9ENcYDXguvw>
-    <xmx:khaHaiRHdbUzGdikB4dUgxAaZ50EPlCYGgwP-F2hKm_OH9Y37ujDog>
-    <xmx:khaHalqo3uZVoZSbr8MTIBVao_ZEKKDSTO4_xcKgfOBhGywwyYHwSg>
-    <xmx:khaHao7-20IRSnV_KugpYALdKzVrKpiwHmYgttlohevlP5g-tGBAJQ>
-    <xmx:khaHao0eLrIu1KQhhVdJ-QeLxcqyJPJ_P4rsas9Zlo6hPkmOBkTLIK4J>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 20 Aug 2026 11:00:32 -0400 (EDT)
-Date: Thu, 20 Aug 2026 16:00:31 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Qi Xi <xiqi2@huawei.com>, akpm@linux-foundation.org, vbabka@kernel.org, 
-	longli@microsoft.com, kotaranov@microsoft.com, jan.kiszka@siemens.com, 
-	kbingham@kernel.org, surenb@google.com, mhocko@suse.com, brendan.jackman@linux.dev, 
-	hannes@cmpxchg.org, linux-hyperv@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	sunnanyong@huawei.com, wangkefeng.wang@huawei.com
-Subject: Re: [PATCH] mm: drop stale MAX_ORDER references
-Message-ID: <aocWWrK_K1iCtq4P@thinkstation>
-References: <20260818122408.4182417-1-xiqi2@huawei.com>
- <aocAePwuxr4te2jG@thinkstation>
- <AF9812A4-550F-4E3A-B67C-EAF6F9F56982@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WhDBX2g5"
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5b15dcaca31so2535750e87.0
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 08:01:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787238095; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ceVHfLKIiYIemRL4YitslpjbsGkxC+SWFBlqdgngh+USpiWeNFp2RMxZzEmkJreW/1
+         lNrk7j/gNw4Sj5ZOG6N5fqLL8U2Boiweq5PAkc57lkY8QylgnV6RHcuThsh4t1hTo4Da
+         ihoi74HnV6E9mFTOsIzOb4zXfhm6BrhkFbD09HZkY5qnc4tFRpqmzRe6WDL0noSwkUyp
+         rvQs9gJUAjc0kP7xjDiHyZIJgy4DbIChFlORNCzvp2JONq6DXmji1m+g8PBP3YL4HJ7U
+         GSZbhdegBglWZ0jeX3xEEfInhGF9fXaZZ5Bz6/C9DUQ1kxjiKbPFxj2d6/RNXHrvCXOE
+         D6EA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=OSZwf29aWQYmqvx2RohxX/kujaj1xOnXQAP4WizdVvA=;
+        fh=yaTypwqVjjXAB91v8X7WXvNnfxO4YfwGsjJrhQBzCu8=;
+        b=RMtQANDAHDpK0B98wAZ3Ukl4FQzsR33NyyUA1xEpJTgTf6df9fuGDnouBv4PSoBrju
+         GbvE0xg6+BcDu8T4VgT0qYHca2IecxcihpKd7d2oWl9Lmv85xr+4UQTq5WRsfm0vnieS
+         bsmHHzjnDx8pm8FAQfC0T55+IL+gL9ATKDlNHX6ylbrPKAFj1laafSRwCFrcGSob/k9m
+         qJcBcwYJaBAzz4GTCCflXqXighEC5r1j1mnU78aiIPimSiFVvrq8OEReBeaP98ado6GY
+         eE2C3+gI0Vblg7H6e1JCtzAd+/5jP4BhqVzZOZM6w/kvyjIOqL66+bI8e5xCzkQXbXy2
+         YKeg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787238095; x=1787842895; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OSZwf29aWQYmqvx2RohxX/kujaj1xOnXQAP4WizdVvA=;
+        b=WhDBX2g5UkkTpNBG9Nu9/W90AiB98dxzXaYf4PteOmubZCELWbVeTTZz3lytfLccQ1
+         EI71dZFYfU7W6RznPfRWtSCEIQv71ljXIRJOd/JCYfZnyoWvDUN/D87h3aeCF8BEyGqe
+         yQdJVWA0RF7RAEmiv88If/n6xlQelAghaE1CI8SdQZvqQnHb5pkmbs+WysxJrvjGtoaK
+         QNwPgk+yn9PbeFGcSHGfota+3MclgNd9eRBXmgIiqZ2pPox/WG3JGZe35YZqei0pZMt8
+         YLbZMiAuRqfOmbJZoE3Itc7qAsQOFe0USpewcrQbuZN/odrjkYPlZGO0+5T8SHP8uvCw
+         bPZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787238095; x=1787842895;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=OSZwf29aWQYmqvx2RohxX/kujaj1xOnXQAP4WizdVvA=;
+        b=W/uyEXqkH/0hcCS0/yZwKknnRN1+PPT9njHe2qhSzXsukh0FDjkcfWhgOJvpINpNw+
+         W8uE/u7Lp4CO+NRJ7F3tAW75O/LCmPQLAf4DFVFofddJSq9X1estqF1pfXc2uPnrI6bO
+         AqLX2CdQXm8BUp4M5HmhlDH3IX6h8huoavecWjri89PtezcXB8M97FGWhk/JHsdJ4Wvh
+         obzyhqC2ZG9RakTgnBe+7z9ov8hBUXEsIF/Tbq8ZUIiQFVw73nIHBxbONBvb8prWlfkl
+         KhTRE9qw2zHuu2FEaQ0rn6wzDuWPsihct3Pb1lYFolUuOM4mf45r5spgbr2uetcvjk2x
+         DF7A==
+X-Gm-Message-State: AOJu0YzsuCu9CK8Yi0CpA0POgN+LoWP8cbvkQX/6MZy8fw1eDLHBOqx4
+	G+P0dX+yIL3RfMZhxiF6J0toFvbijeObELXP01ovuhHJcJUctz5TB/xBH4eLrYMG9uJpHqMmfmE
+	lQVDVzhwGAfbx4Ep2RJz4nyxy0LbXnLizP95T
+X-Gm-Gg: AR+sD13wkvf0HeJQxHv6lIvexIpyGS5tP9WS65M72PTWqaYnuJuzP0U4YcB/XulYjn4
+	e/oIk4m6MYhrb1GtGZDwiy4JyehU2TldXyAYzwzmXjBV+pT42CHfrOWvLAXTKiYJcsRckZ8Lam0
+	66OGsmjWK3qfGEP8oEvzWx8CfgDs+LhzuRmx2/AeM7tUdee1RHeLxSYPh5WBrT5+Yua/6qrfGnT
+	2/aGQcYEmONnoqEnV0utpfGL6SusAjQWEmx21I/dkDuhTHl6/WM6AC6Yhtk3wyyAwD/GIERXQim
+	8NUV+uPVk+hXHaXkNaF5UPnKQmIF5xZTploJRaGLysk=
+X-Received: by 2002:a05:6512:b97:b0:5b0:6ae9:c4de with SMTP id
+ 2adb3069b0e04-5b478bc61fdmr4854266e87.5.1787238094765; Thu, 20 Aug 2026
+ 08:01:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <AF9812A4-550F-4E3A-B67C-EAF6F9F56982@nvidia.com>
+From: Sagi Maimon <maimon.sagi@gmail.com>
+Date: Thu, 20 Aug 2026 18:01:08 +0300
+X-Gm-Features: AcwNN1VzRv-ECUsEcu1CHy39ydYIXDbKBCbYQCKYfM7Am5QSe-gSNbU_ds8Mwf0
+Message-ID: <CAMuE1bHr84n5LKcj02HmMR5XefPtvQ-UEJAx7+UKfYvRgS0eDg@mail.gmail.com>
+Subject: [RFC] ptp: ocp: exposing the TimeCard X2 AXI Ethernet port - which approach?
+To: Netdev <netdev@vger.kernel.org>
+Cc: Jonathan Lemon <jonathan.lemon@gmail.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Aug 20, 2026 at 09:52:03AM -0400, Zi Yan wrote:
-> On 20 Aug 2026, at 9:27, Kiryl Shutsemau wrote:
-> 
-> > On Tue, Aug 18, 2026 at 08:24:08PM +0800, Qi Xi wrote:
-> >> The treewide rename in commit 5e0a760b4441 ("mm, treewide: rename
-> >> MAX_ORDER to MAX_PAGE_ORDER") left a few spots still using the old
-> >> name:
-> >>
-> >>   - two comments in include/net/mana/mana.h and mm/page_alloc.c;
-> >>   - the gdb helper scripts/gdb/linux/mm.py, where self.MAX_ORDER is
-> >>     a local mirror of the kernel's MAX_ORDER define.
-> >>
-> >> Rename the leftover instances to MAX_PAGE_ORDER so the tree is
-> >> consistent.
-> >>
-> >> No functional changes.
-> >>
-> >> Signed-off-by: Qi Xi <xiqi2@huawei.com>
-> >> ---
-> >>  include/net/mana/mana.h | 4 ++--
-> >>  mm/page_alloc.c         | 2 +-
-> >>  scripts/gdb/linux/mm.py | 8 ++++----
-> >>  3 files changed, 7 insertions(+), 7 deletions(-)
-> >>
-> >> diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-> >> index 04acb6791dbd..1d5bed71d6a7 100644
-> >> --- a/include/net/mana/mana.h
-> >> +++ b/include/net/mana/mana.h
-> >> @@ -40,8 +40,8 @@ enum TRI_STATE {
-> >>  #define COMP_ENTRY_SIZE 64
-> >>
-> >>  /* This Max value for RX buffers is derived from __alloc_page()'s max page
-> >> - * allocation calculation. It allows maximum 2^(MAX_ORDER -1) pages. RX buffer
-> >> - * size beyond this value gets rejected by __alloc_page() call.
-> >> + * allocation calculation. It allows maximum 2^(MAX_PAGE_ORDER -1) pages. RX
-> >
-> > Should it reference MAX_ORDER_NR_PAGES instead?
-> 
-> It is fixed in v2[1].
+Hi,
 
-It is not :)
+Before posting patches I would like to check which of two approaches you would
+prefer, since they differ a lot in how much code lands and where.
 
-My point is that 2^MAX_PAGE_ORDER is MAX_ORDER_NR_PAGES.
+The ADVA TimeCard X2 is a PCIe card whose FPGA image contains a Xilinx AXI
+Ethernet MAC and an AXI DMA engine alongside the timing blocks ptp_ocp already
+supports. We want to expose that Ethernet port as a netdevice.
 
-But v2 is good enough.
+Approach A - let xilinx_axienet drive it.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+ptp_ocp creates a platform device describing the two register windows and the
+three MSI-X vectors, and xilinx_axienet binds to it. This is what ptp_ocp
+already does for the Xilinx SPI and I2C cores on the same card, see
+ptp_ocp_i2c_bus() and ptp_ocp_register_spi().
+
+There is no device tree, so a software node stands in for one: "phy-mode"
+replaces a phy-handle, since the MAC is wired to the fabric internally with no
+MDIO and no PHY, and a "fixed-link" child node pins the link at 1 Gbit/s full
+duplex.
+
+This needs two things from xilinx_axienet:
+
+  1. Read its configuration through the generic device property API instead of
+     the OF-specific one, so it can be described by a software node. On a
+     device-tree system dev_fwnode() resolves to the OF fwnode and the reads
+     land in the same OF code as today, so this is a no-op for existing users.
+     It is also in line with the wider move from of_* to
+     device_property_*/fwnode_*.
+
+  2. A dma_dev in struct axienet_local. Descriptors and buffers must be mapped
+     against the device that masters the bus, which for a platform device
+     created by a PCIe parent is that parent - a platform device does not
+     inherit its parent's DMA ops or IOMMU domain. For every existing user
+     dma_dev would equal dev, so no behavioural change.
+
+That comes to about 50 changed lines in xilinx_axienet and about 180 new lines
+in ptp_ocp.
+
+Approach B - a separate driver under drivers/ptp.
+
+Reimplement the descriptor rings, NAPI and ethtool support against the same IP,
+roughly 2500 lines, and share xilinx_axienet's register definitions out of
+drivers/net/ethernet/xilinx/.
+
+We have both working. Approach A is tested on 7.0.0-rc1 with the card:
+
+  xilinx_axienet xilinx_axienet.512 eth0: configuring for
+fixed/internal link mode
+  xilinx_axienet xilinx_axienet.512 eth0: Link is Up - 1Gbps/Full -
+flow control off
+
+ping at 0% loss, a 90 s bulk TCP transfer moving ~9000 packets each way with
+zero errors and no TX timeouts, ethtool -S/-g/-c/-a all working, and clean
+module unload and reload.
+
+We would much rather do A than maintain a duplicate of an existing driver, so
+the questions are:
+
+  1. Is instantiating xilinx_axienet from a PCIe parent as a platform device
+     acceptable, or would you prefer the driver split so the device can be
+     created on the auxiliary bus? The platform device route keeps the change
+     to xilinx_axienet small and matches what ptp_ocp already does for the SPI
+     and I2C cores, but auxiliary bus is the more usual choice for sub-devices
+     of a PCIe function and would make the DMA parent explicit.
+
+  2. For the dma_dev, we currently infer it by testing whether the parent is a
+     PCI device. That is concise but implicit; we are happy to pass it in
+     explicitly if you would prefer it were not inferred.
+
+I can post the series straight away if you would rather look at the code.
+
+Thanks,
+Sagi Maimon
