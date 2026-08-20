@@ -1,168 +1,165 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30772C15A0
-	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 08:29:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA204339398;
+	Thu, 20 Aug 2026 08:36:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787214561; cv=none; b=Qly5I7nGr9Prxx2gdr4UCHWMjIyR5Pcx+RAelu5cAiCGuxCu5srmREjGdtvfFa9PTAKnw8dKdzW1xJFNKuTMqaTpYseqQ3oQloM0lL2oOYzXlBzngdkAQMksZw6oA+bVpCvaQA30XjWnszV7UBfxiMpb8lXNayonvGqDNKKi0KI=
+	t=1787215020; cv=none; b=CN/mRMmVY0T27fUTNEXZYez2vKCKNUTRZWL8d1FREljajQdceJ2csVJXhZjVkA02Q1aYrXdFzQnmdaFKC0S1IFn7t7J5+QUdPKltDziYcmD19lbkHlrUYoN8WznHqPucreFEDy5W6XsupGN+ZS1NXX5wllPXhCf406CN2QWecxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787214561; c=relaxed/simple;
-	bh=Tcqaa4bqXMU/Z4jGuu4RMTJjgw1xL0gh5E7zFg6CssY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g9Xe+K1W1r2yHFUsYttJzKHD8s4Y4UtRZmFi2ENrCVUzgJB37AV+Wwp+joO6txFms9E1fbmarP0zpQDLLEcJ5XjW9/J0ZQE6g8Pl4KPtfaBrBQbx8NWulBl28XLWA2BOp7ig2tSfL7aIgBAIkq2doRL1Y+8AT3IyB1aPLOc5QIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=PI5sRbII; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1787215020; c=relaxed/simple;
+	bh=7eytI4yX8yMn1CWTJ9shmCsF0txTNe1CbIBhtmGz8jo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AWHllpANOiyJHZviUV1N6az+86oLvDAmuUQQ6pMw09TSgMlM7S9Jmqbm9teNsUY3cLgZhf9I8IU7D7QX8HCV0hqQwnVSGV+rdx8zghIdS+9TgpaRDs2VU9BcqQ3WXSix4nB+YwFgGnrkGMAhsfw2mSaUmgIgoSD57P9IrNqxyOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=EbauOuaZ; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="PI5sRbII"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67JLVe7R3543497;
-	Thu, 20 Aug 2026 08:29:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=13wrTu
-	b/SodjGz2PB4pQRQjbsXMZr0p9z3daqZcn5VY=; b=PI5sRbII/6dKSEgoMTMMiz
-	rkgoR4nd22lfinMM1QwHd3w/4QspBBCfd6QXt6jBXJHe+I7yMXzzsjjZZf6RcOnI
-	YZDHhgYv7Nb68PqWBHfahz2g5xHVN1o9uwBgMpEZ+cg5isnF3n/YQQiNY7sVsmKr
-	BJ4MPXSJM/yJUE63EVg8mPjKW/0rwSt4e1Z3U6rz/aIx9dim6OyAJ+aeLj3v8d4J
-	THCCG8/kZ5mofO+/vjjZ3JZCvdiFc9NzXNG8VJmzRIYWCFIwtEdCIuHzpcnHNMbd
-	WaItxvBRUW87bF8HXn2KrwmT89G87DJnN3mbknXx1SC8tWKAOOf9C8O8giN6r8fw
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g4yu28whk-1
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="EbauOuaZ"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67K6ckDP1176072;
+	Thu, 20 Aug 2026 01:36:43 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=RvttJWDyCJhvTLufhP1gnRu
+	ztSjOtC0Of4OeqqAO2Fg=; b=EbauOuaZ0BZBLrjFNeb3bspDFTH9xfH+bH0mQiF
+	ZwaHK5m6dwkxMEQYAN3teR1ukDYratk0X8McOAnR35lMkcYIGGvcZOqO2iaPT0FT
+	lSxmczYOfRbYSXuQsJa7UgymtfBUQNT53Np5xnjsf+XvLpP7SqttxN7+CUYrY6bt
+	ZIoUvA5pPZnIqGqbgMztrX+tC9EMyYyLDtUvoM4XtK6VVwwJ4ul/Pt8FaOQekV7a
+	j8iOQM6cGZvoGAYLQy4lx1VR55nbjMPgAlqNIu7Cdhe7xtHn/P8bCvwx9TiBFnoA
+	m01tqbA+BAhwhz0WoGAuc2YDaLt84gjfJTfXkq4LwljYZig==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4g5vg508ef-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 20 Aug 2026 08:29:09 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67K8QHKV014813;
-	Thu, 20 Aug 2026 08:29:08 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g34ngn8m1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 20 Aug 2026 08:29:08 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67K8T6E746006762
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 20 Aug 2026 08:29:07 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CFA5620043;
-	Thu, 20 Aug 2026 08:29:06 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A280F20040;
-	Thu, 20 Aug 2026 08:29:06 +0000 (GMT)
-Received: from [9.224.90.36] (unknown [9.224.90.36])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 20 Aug 2026 08:29:06 +0000 (GMT)
-Message-ID: <9cad8318-049c-4ba5-9e3e-fe1d843055f4@linux.ibm.com>
-Date: Thu, 20 Aug 2026 10:29:06 +0200
+	Thu, 20 Aug 2026 01:36:43 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Thu, 20 Aug 2026 01:36:42 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Thu, 20 Aug 2026 01:36:42 -0700
+Received: from kernel-ep2.caveonetworks.com (unknown [10.29.36.53])
+	by maili.marvell.com (Postfix) with ESMTP id D34813F707E;
+	Thu, 20 Aug 2026 01:36:37 -0700 (PDT)
+From: <nshettyj@marvell.com>
+To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: Anshumali Gaur <agaur@marvell.com>, Nitin Shetty J <nshettyj@marvell.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Ratheesh Kannoth <rkannoth@marvell.com>,
+        Subbaraya Sundeep
+	<sbhatta@marvell.com>,
+        Bharat Bhushan <bbhushan2@marvell.com>,
+        Andrew Lunn
+	<andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Eric
+ Dumazet" <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>,
+        Naveen Mamindlapalli <naveenm@marvell.com>,
+        "Sunil
+ Kovvuri Goutham" <Sunil.Goutham@marvell.com>
+Subject: [PATCH net] octeontx2-vf: fix workqueue and netdev race in probe/remove
+Date: Thu, 20 Aug 2026 14:06:34 +0530
+Message-ID: <20260820083634.1641740-1-nshettyj@marvell.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: do not bond/team netdevices which use ml_priv
-To: Hangbin Liu <hangbin.liu@linux.dev>,
-        Oliver Hartkopp <socketcan@hartkopp.net>
-Cc: Stephen Hemminger <stephen@networkplumber.org>, netdev@vger.kernel.org,
-        Jiri Pirko <jiri@resnulli.us>, Jay Vosburgh <jv@jvosburgh.net>,
-        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Jiale Yao <yaojiale02@163.com>, Aswin Karuvally <aswin@linux.ibm.com>
-References: <20260815153938.187073-1-socketcan@hartkopp.net>
- <20260815090015.4a518a54@phoenix.local>
- <02333bd9-89c4-4952-8ae2-ff3c15dcd4df@hartkopp.net> <aoQwCj9AXNI1qfsu@fedora>
- <072004e8-d5a8-4f01-9dd5-da2d3aeaa447@hartkopp.net> <aoVzaHfKWG-_OJOY@fedora>
-Content-Language: en-US
-From: Alexandra Winter <wintera@linux.ibm.com>
-In-Reply-To: <aoVzaHfKWG-_OJOY@fedora>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=AdqB2XXG c=1 sm=1 tr=0 ts=6a86bad6 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=ivnOcfrofSNn3e7DLqgA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: vZaMPFWjpx8mVIlk78tCHvM8EPpCVpRS
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODIwMDA1NyBTYWx0ZWRfX5Ta3xNw8Ll8J
- loCUC5Mg5s15S+MC+lgZXTKePtaJSR3klAbscGtByLnk13Oi9lDFpVycyncWVBjHggHozC9v03i
- z+lzDH49qB6VqlgZIdAVNHtPM3k/GgDQcTUtTC3n4J/8mQg96TEC5bHN/hxNSq2AZ0UznxX/Njp
- F89CtMzsMUOOtukZphV1sKQV7UcNgptfDxUI+g076NT10Lz7GeuTHfjkB6WSsdlalI1YY4JqbEl
- KUUDbLNJUTAHQMc3UvS1mtzyEhsXmSc/I5Vy0Zlb3GIJPOlLjhoHU2K0H2Je/QSPK5iuguaIeXp
- yDNPnH+hDKz4ioEkR5WmYJG7l00ZTcYGAcq2kNyzDpnnKgG/mnWc2uaTjZPE9yMw1W/MXXVPVPE
- 5+U6t3Zvdy+aoe8+LX1JJ0ESu6wQgl61T5nlzkduYWyxOo054So1pHMpuMbBivquW7eZnnhvCPM
- Pj9CQvsFxXWnqEYg8jg==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODIwMDA1NyBTYWx0ZWRfXxfvP2eaovIeL
- t90KzjoB9Kpg+DZNvA3+AI5mVvInPORLC38OatAutfKap419ZOLmU6bmzJhHuNIe1snVK2iRMci
- YD22jKQw+ETleC9nh/5yGPCKFj9f68w=
-X-Proofpoint-ORIG-GUID: qaqoQcGBSBKZwuE7jYe4q8mUDHvg0G2y
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODIwMDA2MSBTYWx0ZWRfX5MaV1mFIjH9p
+ pDiBGFrXEDB9PsvL7uXfpr8xkvtfLlJg5B2BqyY9BRofvoxuB4eedLEQ1z8SER2jl+Os1oaM7gw
+ Ev5XOELxCeUaxZ/Cg5cCZ4x+O3MhcxOwiMCTmyrtDsLo5RN/VPTbhRrfVxN5TktF80r4yMmUzdc
+ DxDOQUPKryAKHYcbTo4TXZPn818xlrWxrPibamARB2vBpyrlkBiuEPzZxfOg4pAtVC4ocnJ8z+k
+ STW/PXUi1+hToQww13qwQKwCKgRsM+OYPrQmRkc4hnQrT52yo6fGad2ibSAdBVzrd+9sSP/bpvg
+ y+Fi215dxKAzjNzAZbBml5rd1S+pM7nc0yw1zegtCnfhzk4RiRfz85rRyTENozeE1sxArytGTmE
+ GxFRUiFvmKphfOkIJMKfExRtGAA2n7O6g+Z5Pmo4k/wYbu5Cc4DjN3X70Rl+2sZ6HVrKEp8lmtJ
+ kmrigNZvYGK6MUKW4Cg==
+X-Proofpoint-GUID: XVYQXM27iaDafybm5Gt4oCZuUzuzE3x8
+X-Authority-Analysis: v=2.4 cv=B7qJFutM c=1 sm=1 tr=0 ts=6a86bc9b cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8 a=VRz9UsUYjh-wbl8M3HoA:9
+ a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODIwMDA2MSBTYWx0ZWRfX16kUNjRDYVzH
+ IG8h6JIF6ml2Bh+cgBlgpNLaD1WhSBY87Kiyt3SBpgGm3HrTMaYTAeA9Ru3VUIxyuEUBt2lOhEf
+ es0eksRgkVjlVVtLa3okVbF8myoHMwU=
+X-Proofpoint-ORIG-GUID: XVYQXM27iaDafybm5Gt4oCZuUzuzE3x8
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-19_06,2026-08-19_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 priorityscore=1501 suspectscore=0 malwarescore=0
- impostorscore=0 adultscore=0 bulkscore=0 lowpriorityscore=0 phishscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608200057
 
+From: Anshumali Gaur <agaur@marvell.com>
 
+Initialize the VF workqueue before register_netdev() so ndo_set_rx_mode
+does not queue work on a NULL workqueue. Unregister the netdev before
+destroying the workqueue, and add proper probe error cleanup.
 
-On 19.08.26 11:12, Hangbin Liu wrote:
->> The fact that the issues have been found by syzbot for CAN devices might be
->> through to the fact that the virtual CAN interface (vcan) can be created by
->> netlink commands and can be easily used in test setups.
->>
->> So what would happen, if the same tests with bonding/teaming/tunneling would
->> be done with real hardware drivers as the mentioned "direct ml_priv writers
->> still in tree at this revision:
->>
->>   drivers/s390/net/qeth_core_main.c:qeth_alloc_netdev()
->>       dev->ml_priv = card;
->>   drivers/net/ethernet/chelsio/cxgb/cxgb2.c:init_one()
->>       netdev->ml_priv = adapter;
->>   drivers/net/wan/hdlc_fr.c:fr_add_pvc()
->>       dev->ml_priv = pvc;
->>
->> plus drivers/net/ethernet/i825xx/82596.c, drivers/s390/net/ctcm_main.c,
->> the libertas main.c/mesh.c paths and
->> drivers/net/wireless/microchip/wilc1000/netdev.c."
->>
->> ??
-> I'm not worry about cxgb2 or 82596, which are too old. But s390 qeth is
-> still actively maintained (Cc the maintainers). Can we block them directly?
+Fixes: cbc100aa2205 ("octeontx2-nicvf: add ndo_set_rx_mode support for multicast & promisc")
+Signed-off-by: Nitin Shetty J <nshettyj@marvell.com>
+Signed-off-by: Anshumali Gaur <agaur@marvell.com>
+---
+ .../ethernet/marvell/octeontx2/nic/otx2_vf.c  | 20 ++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-
-Thank you very much for the Cc I would have missed this otherwise.
-While drivers/s390/net/qeth may be decades old, it is still the most used
-network driver for the s390 architecture.
-
-!!
-qeth_l2 is an ethernet driver and bonding is heavily used by our customers.
-So: No, please do NOT block bonding over qeth.
-
-I see your discussion has moved on to other options, but I wanted to point that out.
-
-
-
-qeth_l3 is a transport layer driver (arp offloaded), so I don't think bonding or teaming
-can work at all there.
-ctcm is not based on ethernet, so I don't think bonding or teaming can work there neither.
-Aswin and I will put it on our ToDo list to find out what happens, if somebody tries.
-Maybe we to add them to the blacklist you mention in a later reply?
-
-
-> 
->> If bonding/teaming/tunneling might accidentally overwrite dev->ml_priv we
->> have to block all those devices. No matter if it is CAN or whatever ethernet
->> device.
-> How would bonding modify dev->ml_priv?
-
-
-Could you give more information about this?
-I hope there is no issue for qeth_l2. There we use and rely on dev->ml_priv.
-
-
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
+index b022f52c6845..fcdf891f90b5 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
+@@ -737,16 +737,16 @@ static int otx2vf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	if (err)
+ 		goto err_ptp_destroy;
+ 
++	err = otx2_vf_wq_init(vf);
++	if (err)
++		goto err_ipsec_clean;
++
+ 	err = register_netdev(netdev);
+ 	if (err) {
+ 		dev_err(dev, "Failed to register netdevice\n");
+-		goto err_ipsec_clean;
++		goto err_wq_destroy;
+ 	}
+ 
+-	err = otx2_vf_wq_init(vf);
+-	if (err)
+-		goto err_unreg_netdev;
+-
+ 	otx2vf_set_ethtool_ops(netdev);
+ 
+ 	err = otx2vf_mcam_flow_init(vf);
+@@ -789,6 +789,10 @@ static int otx2vf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	otx2_shutdown_tc(vf);
+ err_unreg_netdev:
+ 	unregister_netdev(netdev);
++err_wq_destroy:
++	cancel_work_sync(&vf->reset_task);
++	cancel_work_sync(&vf->rx_mode_work);
++	destroy_workqueue(vf->otx2_wq);
+ err_ipsec_clean:
+ 	cn10k_ipsec_clean(vf);
+ err_ptp_destroy:
+@@ -836,11 +840,13 @@ static void otx2vf_remove(struct pci_dev *pdev)
+ 	}
+ #endif
+ 
+-	cancel_work_sync(&vf->reset_task);
+ 	otx2_unregister_dl(vf);
+ 	unregister_netdev(netdev);
+-	if (vf->otx2_wq)
++	if (vf->otx2_wq) {
++		cancel_work_sync(&vf->reset_task);
++		cancel_work_sync(&vf->rx_mode_work);
+ 		destroy_workqueue(vf->otx2_wq);
++	}
+ 	cn10k_ipsec_clean(vf);
+ 	otx2_ptp_destroy(vf);
+ 	otx2_mcam_flow_del(vf);
+-- 
+2.48.1
 
