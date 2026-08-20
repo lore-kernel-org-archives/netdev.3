@@ -1,89 +1,133 @@
-Received: from outbound.baidu.com (mx24.baidu.com [111.206.215.185])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id 08CCB377EA2;
-	Thu, 20 Aug 2026 03:08:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.206.215.185
+Received: from mta1.migadu.com (out-30.mta1.migadu.com [95.215.58.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B051FCFEF
+	for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 03:13:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787195323; cv=none; b=q/Q4FFJFHGN5Kt4MGYdNUEXVVrl7Tk2itpHWSo2vTTsw8wWXAZbESZsU1l0Y80m0JkHdsB7DwivFrbvOfm2Azmn3VvT3DQ1SbarEVngxFQ7OAYDBa+rFtg6W+xGz4pugvRy0GWXydPBb/Abl9mlMDjWgsiJaA/3uie4Sk73bs84=
+	t=1787195595; cv=none; b=NHHdD4i0+5AkdM+sxfQ4KKq6hGfW+hxYed0daKAngehNWOtsPWi59vEf5E0nCXla0qmqY023ENs9NIOmwjzfKstxhN9HG66vKy+77OUSdjec9ccHHmtwQWPMgIedsu6hDmqlNCA+s6UexIN4m8fVQAW4UUY457sL5uZFZMv5XHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787195323; c=relaxed/simple;
-	bh=qinbcPkjWI/i4M1//mn/c7Wgz6Yusqo9KIJ1BWhpke8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=b5TLD6mpSLR6keWomtOC9AMI4J5VxDrMwq75DXz4bw+vT4yitA9byGPaMmA9bBk2Tli0ps/3l4lEe1VLhxYoy8mSBvWmbDckBfk7DmyeCC6X57ClZ/v6VVzwft0caXp0TUjfWnfnYV4WPlNvpMnh2PowM8hioKh5PsSSmHhZsxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b=jl0JyiJ6; arc=none smtp.client-ip=111.206.215.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
+	s=arc-20240116; t=1787195595; c=relaxed/simple;
+	bh=3LV6u6BSP3d3OSqWxksUK0AqLicPVWoRRXmku2xGEmI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LoWR22dC0fx+wvH85mWcehQMhz7WtcHkUMxnlLF464FSqD+36EWrQQXVQomtx4WKVAWya/xyilswN60g4NZ2kARxSiD4NBlhbpYOAIB+I2Ish4a5n/ANvfDEJ/pxBJCdTy1zTFth2Hil1ibFGsxBx+gxpIuaTKsmGCRnNV1yNNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=M2RNS9vj; arc=none smtp.client-ip=95.215.58.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b="jl0JyiJ6"
-X-MD-Sfrom: lirongqing@baidu.com
-X-MD-SrcIP: 172.31.50.47
-From: lirongqing <lirongqing@baidu.com>
-To: Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Mark
- Bloch <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, <netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: Li RongQing <lirongqing@baidu.com>
-Subject: [PATCH net] net/mlx5e: Order ICOSQ cc update after CQ doorbell
-Date: Thu, 20 Aug 2026 11:08:21 +0800
-Message-ID: <20260820030821.1731-1-lirongqing@baidu.com>
-X-Mailer: git-send-email 2.17.1
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="M2RNS9vj"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=3LV6u6BSP3d3OSqWxksUK0AqLicPVWoRRXmku2xGEmI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787195590; v=1; x=1787800390;
+ b=M2RNS9vjiunCbuUSTUEeV75tmvCQZ1LfxnPuOlBCgG6Sn5qIBhmjHQb/sHmbauk/fJU97KMx
+ aF/l2iCl7NBhMmcnGeuTvRi9+bpCHTSBWv3S4ha6RltH5SDHo5q3o1z93v7KaHIhRakaXZMTCf7
+ Z9FE1A1gu/neNhTyIiybEWro=
+X-Envelope-To: netdev@vger.kernel.org
+Received: from [198.18.0.1] (116.128.244.171)
+	by smtp.migadu.com with ESMTPS id 67db544991d7f40b;
+	Thu, 20 Aug 2026 03:13:10 +0000
+X-Mizu-Trace-ID: 67db544991d7f40b
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <f3093e85-fd58-420b-b435-c39263c46e3c@linux.dev>
+Date: Thu, 20 Aug 2026 11:12:59 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: bjkjy-exc11.internal.baidu.com (172.31.51.11) To
- bjkjy-exc3.internal.baidu.com (172.31.50.47)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
-	s=selector1; t=1787195313;
-	bh=frjw2iB/d4Pj6EgsUUqnI4Rf1ZcwzdNBqHEkWxU6Cr4=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
-	b=jl0JyiJ6AUwfdRYV0x8NNIWEtBveV0lGC31v/h1267YgTLuPRotxhP3wy3dxhRoQL
-	 ajPAk5T9W49vJ9qD44g2HBj4pYk0FB+E4A1wd/xi6I0z45ASDjKnF8Q2bN3O2Ou80L
-	 SlJEIwyQzr7uqh5ev+WasLDGvpU3dzI2BVNa5ETIQw6RtDwoNrlqSyOahbkVdCle1j
-	 +KXHRku/RvBI9EDK5Ef2EWU9r/vasWlbhrApbPkgAi82iUcaZDf3IGExz5XXMcXVV6
-	 y4bIj2NWbDPzppjL9mK6QH1z1YCK5DEQC3DnxKMKxwVF9yvlU+RldIAzxtiYGBgsKI
-	 AcZvakUxAOjZg==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] netfilter: ipset: list:set: defer ip_set_put_byindex
+ to RCU callback
+To: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
+Cc: phil@nwl.cc, horms@kernel.org, kadlec@netfilter.org, kees@kernel.org,
+ enrico.pozzobon@dissecto.com, sbrivio@redhat.com,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ AutonomousCodeSecurity@microsoft.com, xmei5@asu.edu,
+ tgopinath@linux.microsoft.com, kys@microsoft.com, pablo@netfilter.org,
+ fw@strlen.de, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com
+References: <20260820010617.46851-1-blbllhy@gmail.com>
+From: luoxuanqiang <xuanqiang.luo@linux.dev>
+In-Reply-To: <20260820010617.46851-1-blbllhy@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-From: Li RongQing <lirongqing@baidu.com>
+在 2026/8/20 09:06, Cen Zhang (Microsoft) 写道:
+> list_set_del() and list_set_replace() call ip_set_put_byindex() before
+> call_rcu(), dropping the child set refcount to zero. Meanwhile,
+> list_set_ktest() on another CPU may have already read e->id under
+> rcu_read_lock(). A concurrent ip_set_destroy() sees refcount zero,
+> NULLs ip_set_list[index], and frees the child set. list_set_ktest()
+> then passes the now-dangling index to ip_set_test(), ip_set_rcu_get()
+> returns NULL, and BUG_ON(!set) fires at ip_set_core.c:746.
+>
+>   kernel BUG at net/netfilter/ipset/ip_set_core.c:746!
+>     ip_set_test+0x329/0x590
+>     list_set_kadt+0x2a6/0x810
+>     ip_set_test+0x24f/0x590
+>     set_match_v1+0x1a9/0x280
+>     ipt_do_table+0x83d/0x1360
+>     nf_hook_slow+0xac/0x1e0
+>
+> Move ip_set_put_byindex() from list_set_del()/list_set_replace() into
+> the __list_set_del_rcu() callback so the refcount is not decremented
+> until all RCU readers have finished.
+>
+> Fixes: 439cd39ea136 ("netfilter: ipset: list:set: Decrease refcount synchronously on deletion and replace")
+> Reported-by: AutonomousCodeSecurity@microsoft.com
+> Reported-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
+> Reported-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
+> Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
+> ---
+>   net/netfilter/ipset/ip_set_list_set.c | 8 ++------
+>   1 file changed, 2 insertions(+), 6 deletions(-)
+>
+> diff --git a/net/netfilter/ipset/ip_set_list_set.c b/net/netfilter/ipset/ip_set_list_set.c
+> index f070088742d6..aeee0c6c314d 100644
+> --- a/net/netfilter/ipset/ip_set_list_set.c
+> +++ b/net/netfilter/ipset/ip_set_list_set.c
+> @@ -144,7 +144,9 @@ __list_set_del_rcu(struct rcu_head * rcu)
+>   {
+>   	struct set_elem *e = container_of(rcu, struct set_elem, rcu);
+>   	struct ip_set *set = e->set;
+> +	struct list_set *map = set->data;
+>   
+> +	ip_set_put_byindex(map->net, e->id);
+>   	ip_set_ext_destroy(set, e);
+>   	kfree(e);
+>   }
+> @@ -152,21 +154,15 @@ __list_set_del_rcu(struct rcu_head * rcu)
+>   static void
+>   list_set_del(struct ip_set *set, struct set_elem *e)
+>   {
+> -	struct list_set *map = set->data;
+> -
+>   	set->elements--;
+>   	list_del_rcu(&e->list);
+> -	ip_set_put_byindex(map->net, e->id);
+>   	call_rcu(&e->rcu, __list_set_del_rcu);
+>   }
+>   
+>   static void
+>   list_set_replace(struct ip_set *set, struct set_elem *e, struct set_elem *old)
+>   {
+> -	struct list_set *map = set->data;
+> -
+>   	list_replace_rcu(&old->list, &e->list);
+> -	ip_set_put_byindex(map->net, old->id);
+>   	call_rcu(&old->rcu, __list_set_del_rcu);
+>   }
+>   
 
-mlx5e_poll_ico_cq() requires sq->cc to be updated only after
-mlx5_cqwq_update_db_record(), otherwise a CQ overrun may occur.
+Thanks for the patch.
 
-The current implementation updates sq->cc before the CQ doorbell
-record, violating this ordering requirement.
+But this is effectively a revert of 439cd39ea136 and brings back the
+problem it fixed: within the grace period after the del, userspace still
+sees a stale refcount, and destroy/rename are briefly rejected as well.
 
-Update the CQ doorbell record first and use dma_wmb() before updating
-sq->cc. This ensures that the CQ space is released to the device
-before the corresponding ICOSQ consumer index is updated by software.
-
-Fixes: fd9b4be8002c ("net/mlx5e: RX, Support multiple outstanding UMR posts")
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
----
- drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-index f6eff03..01867dd 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-@@ -905,10 +905,12 @@ int mlx5e_poll_ico_cq(struct mlx5e_cq *cq)
- 		} while (!last_wqe);
- 	} while ((++i < MLX5E_TX_CQ_POLL_BUDGET) && (cqe = mlx5_cqwq_get_cqe(&cq->wq)));
- 
--	sq->cc = sqcc;
--
- 	mlx5_cqwq_update_db_record(&cq->wq);
- 
-+	/* ensure cq space is freed before enabling more cqes */
-+	dma_wmb();
-+
-+	sq->cc = sqcc;
- 	return i;
- }
- 
--- 
-2.9.4
+Please take a look at that commit's message first.
 
