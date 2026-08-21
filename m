@@ -1,131 +1,222 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143F539DBDB;
-	Fri, 21 Aug 2026 08:29:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3353D3B27C5
+	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 08:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787300983; cv=none; b=h3wXgdLhaHZA0XSAnnGJC9i6V9u2Yt2X0VCIV2QTb6ZPvzfKOYrI7lkYHCrYD1NVy34zULAYzsWIfPTh+Oq8zAA0z/77C+szJk+PUEKErzrapFMi26bT98FP0g1WQu2dZjekBuDsi1ZXz6Sku23ynNkWCynal8clfyFqDvv9jmY=
+	t=1787302283; cv=none; b=fDRpg1RuILQg57Ogrl1R3vuWAsp3ZE7elGrUNx8+QW/DwI06IVQ9GbIdmooeiEfBEX03NC4KejDyR8QdrveQ+EsqBCHJnfBZygABTDPAF8zDxL54q1oxd/pKnFfHfcr9omOLceA2zf25MxD37shkZcLJ0G9PLe2UvmCqurUFlcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787300983; c=relaxed/simple;
-	bh=pO6xYMFJKTe2ShsD7yUi6/oCNnhbhZG9kHUEP8r2PBs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=NTg+D9jhUHAMITcT7NkPoMH3Iv1V85hSgDxFkSNgf/oFLh0mat4I6/cyrkfIxEftP7VB2CFFMO2hgoVpglMU0JWcflQ8W7eNZXpNM1NvrQd59bCa3QMSlY2Gh+v5hAcJ6Dm9rRzfmO2ysM/o0aUzb1Esc7DBrof4ZnfiXK3YnIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=rr+8XmF6; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	s=arc-20240116; t=1787302283; c=relaxed/simple;
+	bh=1Tod6uMNvMI753P4muUbJppzBeqFN07J+ccstjPlhiI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cGH3WfZdaAhZvctRcIdPVKxHhhEe74/LEkarFQ68/V1lWCb4DRZXDDYffqNFvTGaZPslwxkBFXh2DgCz9DN5V+irRRT+sIFUSBQ7VZ+taAeAQVa/4YuvI6OWbhJ3RhBUEBugrRdE0V+eIxH2zxiJXUAhkDK4L82csPzZbWzEAPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L9t4644a; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=jtDlJCsr; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="rr+8XmF6"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=5T29lbsacAkEP7xO4Tkdq4ITYB3YlBN0FJhlVC1mJIQ=; b=rr+8XmF62HspNhs0tMBGizxabg
-	1Hty7xbRRm22X1ARjTbetAy5rka7wSaQGSGWyRY3M92L2OEKblRuVYZd/2rhsFN50+cYNAUvUkknX
-	gpnAGpfKMWzhyJZGDsmt6T0gmvYOtjKl6Bg4dw2EIQLs/L9U8FGwe054pkfmkYL2WLFVtfbTeBpTt
-	+wTDTj3F+jhXC7E+TNE+vybV/O7Yj2mFg3WiThG1p/tEvLSdf+9f4EpgyYrz5GrNfiwuUYunYf2FH
-	IMsjSIjDmqN/s2v7kjm8P4Hmq662V+q95coz3T2Z+9kVsUEm5lyczG1Lvn5zp/sn4/x5BnD86A203
-	2zvckEEw==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wxKd4-00BD4M-2y;
-	Fri, 21 Aug 2026 08:29:36 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Fri, 21 Aug 2026 01:28:32 -0700
-Subject: [PATCH net v2] net/socket: remove unused
- do_sock_{set,get}sockopt() exports
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L9t4644a";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="jtDlJCsr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787302281;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dAMfT7dZIDZktTjpF23N4xlIpV3/mfSKrwhJnlOP5bk=;
+	b=L9t4644avHxP4mPu2JbDkgCuBwRaYW2E5Y+dlq+HdgxFkqGFph2bpyQtUyJpj5l073v7QY
+	lrNwUXuXYolOqeLiSSHcfrcEcUP6s02aSQi47X9MUWbgiPKKnQ86Mld4NrcHPv0EXCx+mV
+	z9gisesvs2MtdPcjY/BCR+p6xyao5es=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-620-XKsMbcFnNEKVFLdZ-M5rgA-1; Fri, 21 Aug 2026 04:51:18 -0400
+X-MC-Unique: XKsMbcFnNEKVFLdZ-M5rgA-1
+X-Mimecast-MFC-AGG-ID: XKsMbcFnNEKVFLdZ-M5rgA_1787302278
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c16740eb587so54454466b.1
+        for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 01:51:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1787302277; x=1787907077; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=dAMfT7dZIDZktTjpF23N4xlIpV3/mfSKrwhJnlOP5bk=;
+        b=jtDlJCsrad/UeAxoSQC8E+9Cy30e2BPLIGYbewYrj/C7p/9NZAj+KwAWNpl1MwX/qj
+         KN0obhOFZMxD3bJgvSFvLKjggRXvPXxpNtxoZFNa4MrR1B/HtvG3BH7V00rAYtG11XN8
+         ibsdocDZfLhHFbz7LwozhzJ1A8eanhJVd+CBtktQ2S8nlweN1zps1vo6Nu3QnE39o8X9
+         pgEDbUbHQ6J2N2pt58Uzu6iS1h6ZUV9H3GkN/CKedpqdbnXev2li+SS56ViHL4J3qR+e
+         tbl2NbLxxN2+ck1k/Vd9QUE8T/Z5hcTCbDQEs4piCRaFH9WilXoYYTPhVaGZebcc3P27
+         /oBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787302277; x=1787907077;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dAMfT7dZIDZktTjpF23N4xlIpV3/mfSKrwhJnlOP5bk=;
+        b=M1mQvuFl+cv3qqtBgRPRNLhDLY5z5BKUp4W8306gD8hFPgEVvPkZKJZcb6VmYxcqj6
+         UJDizQIKrSzjFTaABh0ta1M6mOb5HBG7bMwU6XAh4BpBiEKXmuRtJwXVGcGkNtfTZ9LI
+         7XZaWVgwPj59E+MBbwt+eOSzCqlZZfdjq9ngiMxzwAORaADk0EwYGYgGeO2B2Mov/ETZ
+         cdX+nwGmieGbpQHNHdbgNbyldVY7nVjz7dxm9B/b2tLxYQbpfXddupjXknbGnxGZH7RH
+         26E39OTDNZ7y3ZEG4XCnNZxsuIZqEimrNew5e05yzqdZUEGnjFQgZhin57Q9O1ccm/T/
+         TX6w==
+X-Gm-Message-State: AFuF++nU7xjVpMjbBr3PST7yIJJQs52hKSIi04O2uweiP0hXd4Dj5kk9
+	KC4Tyazgfr+jNLvBQDnIOfbRxo43RPae0/01fMSwqf5osRsCzF1ChdgZitxConDnWBBX8cFrDno
+	kHqPP0VXMG/U8c7e7DhGmju+8QXTQjdGui60RnGEyBl0xbf05FriSl/dp1A==
+X-Gm-Gg: AR+sD130pKOExFq5vX5GB89N81ShNuQLBg6/Zz/O4FO4UFz6q5VgkljOZe3Nx5PZegj
+	YIRy0fY2o1NWtRqed11Clk/C4AVnsvPBQUihuA+ayza+kG2fnW3gf79yJPxgBDGXwYPhD30Xi6X
+	Zezme8WVBL677PEfiAmZ42rE08V1Jcgeq6golVTYqIi17Xu/mXeXtzFF3TuoYdX9NCgd3FG2LN+
+	GfHAo0/7fQQ2l1F4glYcsWZTIwSPPQv2wJHT7qiC2IR+VTL+hqBVXqZLkxPPFTCZIZx0iZGCXA/
+	Za5QZerVLGg1XcReHDjFhYwsBDqCRencL69tiuAVBTbaE6sUbKJQkM+vBGlxhCQVjTRFwaSxSXc
+	0Bg==
+X-Received: by 2002:a17:906:6b86:b0:c21:74ad:8b7a with SMTP id a640c23a62f3a-c246a398994mr383580766b.9.1787302277601;
+        Fri, 21 Aug 2026 01:51:17 -0700 (PDT)
+X-Received: by 2002:a17:906:6b86:b0:c21:74ad:8b7a with SMTP id a640c23a62f3a-c246a398994mr383574666b.9.1787302277050;
+        Fri, 21 Aug 2026 01:51:17 -0700 (PDT)
+Received: from sgarzare-redhat ([5.77.88.208])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2458b09349sm360276866b.19.2026.08.21.01.51.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Aug 2026 01:51:16 -0700 (PDT)
+Date: Fri, 21 Aug 2026 10:51:11 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Daehyeon Ko <4ncienth@gmail.com>
+Cc: netdev@vger.kernel.org, Stefan Hajnoczi <stefanha@redhat.com>, 
+	Bobby Eshleman <bobbyeshleman@gmail.com>, virtualization@lists.linux.dev, kvm@vger.kernel.org
+Subject: Re: [PATCH net v2] vsock/virtio: validate packet source for
+ connected sockets
+Message-ID: <aogL1SZD9lsE5qyC@sgarzare-redhat>
+References: <20260820001517.2148196-1-4ncienth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260821-hch_not_export-v2-1-c62b62ec459f@debian.org>
-X-B4-Tracking: v=1; b=H4sIAC8MiGoC/3XNQQqDMBRF0a2ENzYlsaVVR91HEYnJ1/xJIkkQi
- 2TvBecdXzj3RKbElDGIE4l2zhwDBtE2AtabsJJkh0GgVe1TdbqX3vopxDLRscVUZK86Zy2ZWek
- FjcCWaOHjAj8IVDA2Ap5ziel7TXZ9pX/erqWWZnnMytFLkb6/Hc1swi2mFWOt9QfbIjHrsgAAA
- A==
-X-Change-ID: 20260819-hch_not_export-908dcceab01f
-To: Eric Dumazet <edumazet@google.com>, 
- Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
- Willem de Bruijn <willemb@google.com>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Simon Horman <horms@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
- Martin KaFai Lau <martin.lau@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- kernel-team@meta.com, Christoph Hellwig <hch@lst.de>, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.16-dev-f8e9d
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1795; i=leitao@debian.org;
- h=from:subject:message-id; bh=pO6xYMFJKTe2ShsD7yUi6/oCNnhbhZG9kHUEP8r2PBs=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqiAxpIV8zfBLUI7tU2R5RlOyLCRB0h2Y4UmENl
- LQ0+5FbQFKJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaogMaQAKCRA1o5Of/Hh3
- bYsiEACSJZvzs2w9xMiuov9iLlyjzSLvsj4KfQZc2ZDOXGSxPTVaX/hoCr98Nd5xr3aysu9f/Os
- IKMrvWcBSY6Cuw6264PwLyoSEfnkEiYuwLdjyPIDOOSXr94N3L7MyqV0NX2rGbj2xaCmRBLSrRc
- zbNCXKmlmNfU9Rhp1m2xAkMimI5TTAK8nBvPf7nAU/+Z7KdoM0inPB2YeiSKD+R2ok3msW34zcD
- QJx9cUtNB9lYyIb/se0vf6BwPSX2pvHKGvkYCyL3Xl5qQbL+xlKer90vXx0b3RPxuvvWl/mnFVx
- AN1zrV/V8GVUdiboniQwVHNNXp7zC98gGlhO+frR4Qw+J5UU4yhT0T17DXfajQPV/ZB9RB7Zu89
- XuLLAnobt73+brbu5dtY1635/avphuVeWhzWb+LS7JIXjDrWPO40DTiOjunJNUJHLbXHBtZ8RkP
- mVUR1WU7jqg/SAQUfoidpWZ1+KWFuzu7lynuT4b3IWJ2OYJ9HlHndJsbeB3m2HcrdeQFtj1Vvu0
- E54nKJphM3KwB8Jla+fC3hr27PAsssfMdb+x8z/jITramcM7bwvVKGxIMfoHbYCjPjCq/tWGuyl
- 5K1BKQcHT5zB14vqFAket9i+fnmFr3SgIKTEyOW36w0kicIphxdniHYDzcXOV7vXLAOCjazS1Ha
- Q6EEGUJYOguDlCw==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260820001517.2148196-1-4ncienth@gmail.com>
 
-do_sock_setsockopt() and do_sock_getsockopt() have been exported since
-they were split out of the syscall handlers for io_uring to reuse.
+On Thu, Aug 20, 2026 at 09:15:17AM +0900, Daehyeon Ko wrote:
+>virtio_transport_recv_pkt() looks up sockets first by the full source and
+>destination tuple, then by destination only in the bound table.  The
+>fallback is needed for listening and connecting sockets, but sockets remain
+>in the bound table after connect(), so it can also return a non-listening
+>socket.
+>
+>The fallback does not validate the source address.  In TCP_SYN_SENT, a
+>RESPONSE from an unrelated source can transition the victim socket to
+>TCP_ESTABLISHED while its stored remote address remains unchanged.
+>Subsequent RW packets from that source are delivered through the same
+>destination-only fallback.
+>
+>This was reproduced with capability-empty processes under different UIDs.
+>The attacker discovered the target tuple through unprivileged AF_VSOCK
+>sock_diag and caused the victim socket to read 16 attacker-chosen bytes;
+>the intended peer-side socket read 0 of those 16 bytes.
+>
+>After lock_sock(), reject packets for non-listening sockets unless their
+>source port matches the stored remote port.  Require the CID to match too,
+>except that the loopback transport uses VMADDR_CID_LOCAL as the packet
+>source for connections addressed through its valid CID aliases.
+>
+>Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
+>Closes: https://lore.kernel.org/netdev/20260813121236.2328599-1-4ncienth@gmail.com/
+>Cc: stable@vger.kernel.org
+>Assisted-by: Codex:gpt-5.6-sol
+>Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+>---
+>Changes in v2:
+>- Preserve valid loopback CID aliases by matching the source port and
+>  accepting VMADDR_CID_LOCAL only for the loopback transport.
+>- Rewrite the commit message and receive-path comment for clarity.
+>
+>v1: https://lore.kernel.org/netdev/20260813121236.2328599-1-4ncienth@gmail.com/
+>
+> net/vmw_vsock/virtio_transport_common.c | 24 ++++++++++++++++++++++--
+> 1 file changed, 22 insertions(+), 2 deletions(-)
+>
+>diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+>index 8becad812..d8990f5f6 100644
+>--- a/net/vmw_vsock/virtio_transport_common.c
+>+++ b/net/vmw_vsock/virtio_transport_common.c
+>@@ -1764,6 +1764,21 @@ static bool virtio_transport_valid_type(u16 type)
+> 	       (type == VIRTIO_VSOCK_TYPE_SEQPACKET);
+> }
+>
+>+static bool virtio_transport_source_matches(const struct virtio_transport *t,
 
-io_uring is the only caller outside net/socket.c, and it is never
-modular: cmd_net.o is built under obj-$(CONFIG_NET), and both CONFIG_NET
-and CONFIG_IO_URING are bool. The declarations in <net/sock.h> are all
-it needs, so no module has ever been able to use these exports.
+This doesn't seem virtio-specific, so why introducing this function 
+here?
 
-Drop the symbol exports.
+IIRC we agreed that also VMCI has the same issue, so what about adding 
+this function in af_vsock.c?
 
-Fixes: 1406245c2945 ("net/socket: Break down __sys_setsockopt")
-Fixes: 0b05b0cd78c9 ("net/socket: Break down __sys_getsockopt")
-Suggested-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/all/20260819090439.GB9267@lst.de/
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
-Changes in v2:
-- s/export/exports/ in the commit message (hch)
-- Link to v1: https://patch.msgid.link/20260819-hch_not_export-v1-1-af4b0de70e13@debian.org
----
- net/socket.c | 2 --
- 1 file changed, 2 deletions(-)
+Also I don't see VMCI changes, why not doing them together in a series 
+since they are strictly related?
 
-diff --git a/net/socket.c b/net/socket.c
-index 63c69a0fa74e1..ba3eca4324e7b 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -2371,7 +2371,6 @@ int do_sock_setsockopt(struct socket *sock, bool compat, int level,
- out_put:
- 	return err;
- }
--EXPORT_SYMBOL(do_sock_setsockopt);
- 
- /* Set a socket option. Because we don't know the option lengths we have
-  * to pass the user mode parameter for the protocols to sort out.
-@@ -2484,7 +2483,6 @@ int do_sock_getsockopt(struct socket *sock, bool compat, int level,
- 
- 	return err;
- }
--EXPORT_SYMBOL(do_sock_getsockopt);
- 
- /*
-  *	Get a socket option. Because we don't know the option lengths we have
+>+					    const struct sockaddr_vm *src,
+>+					    const struct sockaddr_vm *remote)
+>+{
 
----
-base-commit: 564973a259ec76f2dad0853420e7034cc43994c4
-change-id: 20260819-hch_not_export-908dcceab01f
+What about moving here also the transport check?
 
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
+So we can have something like this (with some documentation):
+
+bool vsock_check_source(const struct vsock_sock *vsk,
+			const struct vsock_transport *transport,
+			const struct sockaddr_vm *src)
+{
+	if (vsk->transport != transport)
+		return false;
+
+	if (src->svm_port != vsk->remote_addr.svm_port)
+		return false;
+
+etc.
+
+>+	if (src->svm_port != remote->svm_port)
+>+		return false;
+>+
+>+	if (src->svm_cid == remote->svm_cid)
+>+		return true;
+>+
+>+	/* The loopback transport represents its peer as VMADDR_CID_LOCAL. */
+>+	return t->transport.get_local_cid() == VMADDR_CID_LOCAL &&
+>+	       src->svm_cid == VMADDR_CID_LOCAL;
+
+Could this be just `t->transport.get_local_cid() == VMADDR_CID_LOCAL` ?
+
+I guess the source is trusted and if we are in a local transport, it's 
+always set to it, no?
+
+Thanks,
+Stefano
+
+>+}
+>+
+> /* We are under the virtio-vsock's vsock->rx_lock or vhost-vsock's vq->mutex
+>  * lock.
+>  */
+>@@ -1823,10 +1838,15 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
+> 	lock_sock(sk);
+>
+> 	/* Check if sk has been closed or assigned to another transport before
+>-	 * lock_sock (note: listener sockets are not assigned to any transport)
+>+	 * lock_sock (note: listener sockets are not assigned to any transport).
+>+	 * The bound-table fallback matches only the destination, so reject packets
+>+	 * from a peer other than the one stored in the socket.
+> 	 */
+> 	if (sock_flag(sk, SOCK_DONE) ||
+>-	    (sk->sk_state != TCP_LISTEN && vsk->transport != &t->transport)) {
+>+	    (sk->sk_state != TCP_LISTEN &&
+>+	     (vsk->transport != &t->transport ||
+>+	      !virtio_transport_source_matches(t, &src,
+>+					       &vsk->remote_addr)))) {
+> 		(void)virtio_transport_reset_no_sock(t, skb, net);
+> 		release_sock(sk);
+> 		sock_put(sk);
+>
+>base-commit: e2466392a0b8496000e12181cb1ee1535eb0da25
+>-- 
+>2.54.0
+>
 
