@@ -1,84 +1,141 @@
-Received: from mta1.migadu.com (out-67.mta1.migadu.com [95.215.58.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0663DDAED
-	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 09:42:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4E23DA5DC;
+	Fri, 21 Aug 2026 09:42:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787305341; cv=none; b=niOzxClimtvcR61x79DDee94tqZn2wdwSeI6797nofSq5SgKRGUUs/ncHpfwbQWsjGHvl4QXpWAcVdwyUHRwSPiFFIUAppz08v8zli5DtMQQ3DdDlhlUwoAYDk4idGJQDNTbqOuunn3Vc3YCW7XZZMi7L5UJowZAaU2dU+gy+t4=
+	t=1787305362; cv=none; b=iw/1oy31elcvrFm3Ts7dS2udM9/kREogyseQpy6RvBVThv8UQdV9fSvibZc7o6X5v1YhNJMm8EaPlazK0lFXfZOQ2+EK49Sax/mgbFsWbEHoIe58vMhSSmau7Ee9mwcoeezdHoMXfazR1zyozQoLmiInJNlELTDuDjQblqOKOs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787305341; c=relaxed/simple;
-	bh=Rxfi0wehmMz5zSrQZjn/MPFcE7dvwqlrAiXUCl2TjJg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iKrXxkhYtXBjpcM9rApPz8JiNNTjNKx+ZRLSPr02Ho37k3ZLYl+rQOm6Z1+o3GW4nSFgqyAv8QZGdHUFM+LRn7GjhpPQUPGtSb0yQZ9JE7o9CFrFqapLx8LZsVj28Gap21DJp71+6tZIPkdPXlT52kWN2ssjwNShRdMWWvWXDmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=UhJEpVZT; arc=none smtp.client-ip=95.215.58.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1787305362; c=relaxed/simple;
+	bh=JO5QFe2wQoESZjh0FkcnVu82NHIer0fa+ChwsfnRqos=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XQlY2mpQQlOmjTX7jFDciZH5EffmQ4bTG1Tzgx/iV3qyl5FoSMnGcv5G6LIND+lQUm4Tb8yoBj9cCpYxhv6dsKJDHLTzGVE22VmCrvdUNkgeLOpaGI6XEdvs9471jLkgPUDhJ+SiWGFojiGX1gMMJL9OOFcb1fPqGNX8IqDUvhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h8Ik3Pq5; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="UhJEpVZT"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=Rxfi0wehmMz5zSrQZjn/MPFcE7dvwqlrAiXUCl2TjJg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787305328; v=1; x=1787910128;
- b=UhJEpVZTtbbQqFcrIqr3Q/0sGemwzuxFT5h3xGrIakKUwzs8hnZZF7hG9oopal1EDZIYMt5F
- smrPobJZr9ffnHjYg5Br+jPNmoNzM6BA69K3BMm59tBUWaBrKnzwKmrX1a+p+A34f+wzG5cd3ml
- A5ty5jTP10UApEj+zB8VyTR8=
-X-Envelope-To: netdev@vger.kernel.org
-Received: from [198.18.0.1] (116.128.244.171)
-	by smtp.migadu.com with ESMTPS id e00fe8bc45fea054;
-	Fri, 21 Aug 2026 09:42:08 +0000
-X-Mizu-Trace-ID: e00fe8bc45fea054
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <3d9ee2ae-aa8d-41d3-b034-956c9003d2f2@linux.dev>
-Date: Fri, 21 Aug 2026 17:42:02 +0800
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h8Ik3Pq5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787305355; x=1818841355;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=JO5QFe2wQoESZjh0FkcnVu82NHIer0fa+ChwsfnRqos=;
+  b=h8Ik3Pq5NxyhGq/XHCvLum5vanmGDFC0BY9gyhIbtunyG0Ivo+D+0NlC
+   c+uEl60kRjAkBa0zqQ3B1p7cggdFpSRqsf2Ygaz++NEPgMJBgcUJER3G9
+   34HbSmdfKoLqi68ZIwqUNlgvTTUPbUlo0eBEoNT1Bca79ouIsml/Hekyr
+   j+Eym8S5SBZR84zg5ftWkNxvpo/N0s+T4LpDdT/z7JKnu9giAX81Xec93
+   9Bw3SNz8Ga3kX8r29kvusky5tHuXkLDQQtQRR5xE/6tlcZCHIMDsLnTuM
+   oQCga19XLdY8LftVn2jwPo7ZyoM66Kv0SJm17+5e6PWUoPYqspwbj7qOv
+   g==;
+X-CSE-ConnectionGUID: oSdphr2sSjyB8HbTy7UYow==
+X-CSE-MsgGUID: oYEp2J0eQ3qioWjwZJFTFQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="87621430"
+X-IronPort-AV: E=Sophos;i="6.25,234,1779174000"; 
+   d="scan'208";a="87621430"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 02:42:29 -0700
+X-CSE-ConnectionGUID: 0YMZmJ6YR0WVtkjU/AjEAw==
+X-CSE-MsgGUID: rNMgWl/HSUy923rouI6tiQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,234,1779174000"; 
+   d="scan'208";a="270113233"
+Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 21 Aug 2026 02:42:25 -0700
+Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wxLlV-00000000phh-2ll1;
+	Fri, 21 Aug 2026 09:42:21 +0000
+Date: Fri, 21 Aug 2026 17:41:25 +0800
+From: kernel test robot <lkp@intel.com>
+To: Yuqi Xu <xuyuqiabc@gmail.com>, Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Pravin B Shelar <pshelar@ovn.org>, Jakub Kicinski <kuba@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Yi-Hung Wei <yihung.wei@gmail.com>,
+	netdev@vger.kernel.org, dev@openvswitch.org,
+	linux-kernel@vger.kernel.org, Vega <vega@nebusec.ai>,
+	Nan Li <tonanli66@gmail.com>, Ren Wei <enjou1224z@gmail.com>
+Subject: Re: [PATCH net v8 1/1] openvswitch: Fix CT limit teardown
+ use-after-free
+Message-ID: <202608211727.eYRZFh9r-lkp@intel.com>
+References: <d9687780533d0b257e01ab792c8206a69beb281e.1787129643.git.xuyuqiabc@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v4 5/6] net: phy: propagate errors from default port
- setup
-To: netdev@vger.kernel.org, andrew@lunn.ch, maxime.chevallier@bootlin.com,
- kuba@kernel.org
-Cc: hkallweit1@gmail.com, qingfang.deng@siflower.com.cn,
- hao.guan@siflower.com.cn, linux@armlinux.org.uk, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, linux-kernel@vger.kernel.org,
- Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-References: <20260821070327.16147-1-xuanqiang.luo@linux.dev>
- <20260821070327.16147-6-xuanqiang.luo@linux.dev>
-From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
-In-Reply-To: <20260821070327.16147-6-xuanqiang.luo@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d9687780533d0b257e01ab792c8206a69beb281e.1787129643.git.xuyuqiabc@gmail.com>
 
-在 2026/8/21 15:03, Xuanqiang Luo 写道:
+Hi Yuqi,
 
-> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
->
-> phy_default_setup_single_port() ignores errors from phy_add_port() and
-> always reports success. If a PHY driver attach_mdi_port() callback fails,
-> the phy_port is leaked and PHY probing continues without the expected
-> default port.
->
-> Destroy the port and return the error.
->
-> Fixes: 589e934d2735 ("net: phy: Introduce PHY ports representation")
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+kernel test robot noticed the following build errors:
 
-I realized I made a mistake.
+[auto build test ERROR on 564973a259ec76f2dad0853420e7034cc43994c4]
 
-The Reviewed-by tag added to patch 5/6 should be:
+url:    https://github.com/intel-lab-lkp/linux/commits/Yuqi-Xu/openvswitch-Fix-CT-limit-teardown-use-after-free/20260819-172433
+base:   564973a259ec76f2dad0853420e7034cc43994c4
+patch link:    https://lore.kernel.org/r/d9687780533d0b257e01ab792c8206a69beb281e.1787129643.git.xuyuqiabc%40gmail.com
+patch subject: [PATCH net v8 1/1] openvswitch: Fix CT limit teardown use-after-free
+config: i386-buildonly-randconfig-005-20260821 (https://download.01.org/0day-ci/archive/20260821/202608211727.eYRZFh9r-lkp@intel.com/config)
+compiler: clang version 22.1.3 (https://github.com/llvm/llvm-project e9846648fd6183ee6d8cbdb4502213fcf902a211)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260821/202608211727.eYRZFh9r-lkp@intel.com/reproduce)
 
-Maxime Chevallier <maxime.chevallier@bootlin.com>
-rather than:
-Andrew Lunn <andrew@lunn.ch>
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202608211727.eYRZFh9r-lkp@intel.com/
 
-Sorry for the mistake. I will send a corrected version after 24 hours.
+All errors (new ones prefixed by >>):
 
-Thanks,
-Xuanqiang
+>> net/openvswitch/datapath.c:2777:36: error: no member named 'ct_exit_data' in 'struct ovs_net'
+    2777 |         ovs_ct_exit_finish(dnet, ovs_net->ct_exit_data);
+         |                                  ~~~~~~~  ^
+   1 error generated.
 
+
+vim +2777 net/openvswitch/datapath.c
+
+  2766	
+  2767	static void __net_exit ovs_exit_net(struct net *dnet)
+  2768	{
+  2769		struct ovs_net *ovs_net = net_generic(dnet, ovs_net_id);
+  2770		struct vport *vport, *vport_next;
+  2771		struct datapath *dp, *dp_next;
+  2772		struct net *net;
+  2773		LIST_HEAD(head);
+  2774	
+  2775		ovs_lock();
+  2776	
+> 2777		ovs_ct_exit_finish(dnet, ovs_net->ct_exit_data);
+  2778	
+  2779		list_for_each_entry_safe(dp, dp_next, &ovs_net->dps, list_node)
+  2780			__dp_destroy(dp);
+  2781	
+  2782		down_read(&net_rwsem);
+  2783		for_each_net(net)
+  2784			list_vports_from_net(net, dnet, &head);
+  2785		up_read(&net_rwsem);
+  2786	
+  2787		/* Detach all vports from given namespace. */
+  2788		list_for_each_entry_safe(vport, vport_next, &head, detach_list) {
+  2789			list_del(&vport->detach_list);
+  2790			ovs_dp_detach_port(vport);
+  2791		}
+  2792	
+  2793		ovs_unlock();
+  2794	
+  2795		cancel_delayed_work_sync(&ovs_net->masks_rebalance);
+  2796		cancel_work_sync(&ovs_net->dp_notify_work);
+  2797	}
+  2798	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
