@@ -1,223 +1,304 @@
-Received: from mail-qk1-f226.google.com (mail-qk1-f226.google.com [209.85.222.226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCEC38B7DC
-	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 05:12:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FCAC33C536;
+	Fri, 21 Aug 2026 05:20:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787289123; cv=none; b=cmGMdDJ36vxr7gxcU/3jzCFSe3J7lBfDVmMWZ0CQzCAaK3ovedS5oFVs1l8nUFo73Q9pc6zrKpP3dZ7h6ZvJWSkHj4qljo7N3LLTKJsRPmzLs1gzcSpE+HMFbyVLt+EOcC2cjMMZnfeyMSZRyi7Pu7orhAiTXIr3IJtCvmy14RA=
+	t=1787289648; cv=none; b=NTEowMMsS1miwhX1DPSq/Zi03BFKLv4HTImp2unL8i+VH+VsAqZ2h/aArYpiOELoCZpxBnLRZZG0/f2ScICIRRRw4HOtoKv6coUTsImt1sx5+4S3cwkChKZlPIfSWTcqIyHMh2rRg75q2VrFyn0EKH+pzconDo1dMMcslPduYQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787289123; c=relaxed/simple;
-	bh=nJhbiCLK84rp2WQ+CwowQJYRnrHkS510SjkHuCImd9s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kUX+D6W+4CdSkI07NlSkiRhTY7wlYSwI7VNzjV7vrcLXGPEdiGhgPcYKnnYP7Bs6Ip7uZaLhV3SYgOxTqq5Pm/cO+X/y8NrZwya0wfP9RDGl4VRkpXDms/3U+ksSuxmXxABj4HvYwwtzDotArjKzoTCjJp3GNppMkbd2E7b8glQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=W+n6Z8LR; arc=none smtp.client-ip=209.85.222.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1787289648; c=relaxed/simple;
+	bh=0k2AWNwBuSt2Pevwn2ZACUPH3UeGE2EfwwGnXtb3KhY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=F7WeDhlvEEdyMQuPHLwN6CdHBqR5OqDwTqsXY5jvUQ+KCodPefwfFzrkr7o9aG/ddlpIb45TnTcyNeqvZQDxsVytjlKnKKZQAAFswpCl7RMwYmeAk3k8PexRsQt+SU+fAg0kaD3Sm6N0CgFcNmO5+qB2z/PnUHcTNiZsBjXuDsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=N9DuQWeN; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="W+n6Z8LR"
-Received: by mail-qk1-f226.google.com with SMTP id af79cd13be357-92e6c4a867cso39654585a.0
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 22:12:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787289120; x=1787893920;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nJhbiCLK84rp2WQ+CwowQJYRnrHkS510SjkHuCImd9s=;
-        b=o/Verri7E4FRmlsUYQLgy28IBYJbi4q3J7QoYHfuZnIVe4TnMEJYAeYXtMg5o7FsF+
-         En5BTP2eHGpGayo2IfUx8kJZ53U+McQOOiToe3u2HRyy7x0Cs0nIXhnzZmiZOlyp9/Qf
-         JluGwKsfCodQrmxCyjg25p3T5I2dcs8by0kPJeOsklcWxrFqooAHfn1H0p/V8p/18xVl
-         9RGsow4KDWwY7scsQbKQPvglHAGfORStpjpZHHiEiFck9vp2U3XsWd8tI+l1yHv3OGzY
-         HqsXrtMwszBpk3DgDIxRrq2umsWCn8LZ+OPm1eIAHy2St2BD87XAtEDjIjXd5Zck6plq
-         pcJg==
-X-Forwarded-Encrypted: i=1; AHgh+RqyUOLxvIgQL5mz9IMd5srLCay1K7rcfsZWCZS1IdlYmD3UDJPQbxQlB3XyX2VSyV7Bbf8ChFg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCsn2GFmNW13Yg3hR1u3JicUxPI7uXVlcq1E6vt35EKy3JBBHU
-	Xgqb9mFY7Bj9tDM6Z+TppUdE41rOjXNF+7XRtPRTOK/uMXsNj7RkA2/QWWH+3h8Y12Krvr+dm9R
-	s7wjEggPs2v6L3BH18vrQFgo67MVl7J6ORO50/uLV5OpRjaq69t46lXvJK738gaZWhA5d+BMzbw
-	6GbFaLRerKTDDUMlnMk9pj8H/5Hrr5vBwDsTowZMR2Xk1v4GPSXvJpIKKYUxWXD3jHjMVz1rIT8
-	f3Kk66I++PVkEZuRGZa3pLN
-X-Gm-Gg: AR+sD13+824TQ7eYdIOMcAUKMx4jFLLkQV8vPjd5oRrVVeWFkzcR5LJVVoz9wOAOgoR
-	hWzesA7YF/GhjPjaA8xkeBO7vhOb9jAbyisHb/ohLjIkH6O6wBvHILqTjFng8Z3mWW+hkPx7Zj9
-	5ndRAAs7Mbou1CBQPBMYssnvcZFmK9QGxWSt/Gpi++J7esUGpfiDnhLV40l5lXBh7VXsKlBUUHa
-	rnXVxKqY9uB1Su4oYc42/6wQSlmrSwnnjwehaTxmFNXlbTpV8j9acjuay/WvSo8vnVdx0nqjXQU
-	c2YGZ0q+B+OBNTwyRkLUvViZHki6J+F0Bl6Pkp134C/4Id1fyeMa7PkIXFxg7BOLvIOe9ll1+rq
-	MYuhBL+VgKXQcO830o3Zi7wQCeMYv7DthNAnql4XjsN6qEnxCGfd3ZYmB+5M/8xfDT1OUvWVovm
-	t3pjw0Zbs2En4DCHdBrBv8ttaDzIiIsHmOY5qDG8waptXQByiI
-X-Received: by 2002:a05:620a:4048:b0:936:cf9c:a9ab with SMTP id af79cd13be357-937394a4f60mr293235585a.21.1787289119449;
-        Thu, 20 Aug 2026 22:11:59 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-26.dlp.protect.broadcom.com. [144.49.247.26])
-        by smtp-relay.gmail.com with ESMTPS id af79cd13be357-93720513cc1sm167482585a.3.2026.08.20.22.11.58
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 20 Aug 2026 22:11:59 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84e3d575d6eso973883b3a.3
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 22:11:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1787289118; x=1787893918; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nJhbiCLK84rp2WQ+CwowQJYRnrHkS510SjkHuCImd9s=;
-        b=W+n6Z8LRZP9TZNeHDBs5QaVUh4g7A/NRfXnLcHqf/Pei9iHlB13PQAz2gVR47FGOwL
-         AuIVgxj6rHcY+Dt3G5hXFkfDNB5KTlPpU1HE7uz7+bYvdiLTBFYaLYvP14Y1PFGu8xZT
-         oc2FugFYhCkqDfJmkcy6RaPyvOCWI5HOszMqU=
-X-Forwarded-Encrypted: i=1; AHgh+Rp6UT8t23t1V4qQ8Voe8EeZZ6v7dYnFsIZlLW97SpEE9sy+GAgYJd6gIJR2gRxVo7Kau9nGmb0=@vger.kernel.org
-X-Received: by 2002:a05:6a00:418b:b0:848:56d4:3288 with SMTP id d2e1a72fcca58-851f9a8fba2mr5957730b3a.4.1787289117710;
-        Thu, 20 Aug 2026 22:11:57 -0700 (PDT)
-X-Received: by 2002:a05:6a00:418b:b0:848:56d4:3288 with SMTP id
- d2e1a72fcca58-851f9a8fba2mr5957605b3a.4.1787289117030; Thu, 20 Aug 2026
- 22:11:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="N9DuQWeN"
+Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67L21Kbo3501479;
+	Thu, 20 Aug 2026 22:20:38 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=+GlpK6/E0efJRTfLasGycHD
+	4fki+vsKaJ1h1eMH5ToA=; b=N9DuQWeN6cbtzcUaI50Gr1bv9mHtA9x3o2G7PSQ
+	jie8qZwgeMIAh05PEinrfYCkLQIu+3q+0KLZ04JbaMCfWQCgr7zjR95L9k/JWqgV
+	GEsuRdjaREnP+AXU4XQi7sIINJheSWkIGTdBbINGu2jyxOWlvapwpOYUAdQ9wvpx
+	oLKDrHQFz5Oz8UCBsWZgkGonjI6WgwckEM/fk144oJYevlP4GVbdh0nbhKFrqrfy
+	tcp2x4DuIM3HIUS6G67eNDHGWdLcqUTcymbFgkBq47whbZF9L4/KhInkMnmt5bXZ
+	cHVZJ1T/4NRzjPkiqaKXNsLANm16g7bnDP63k7/6oXM+kbA==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4g602evakr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 20 Aug 2026 22:20:38 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Thu, 20 Aug 2026 22:20:37 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Thu, 20 Aug 2026 22:20:37 -0700
+Received: from kernel-ep2.caveonetworks.com (unknown [10.29.36.53])
+	by maili.marvell.com (Postfix) with ESMTP id D44113F7053;
+	Thu, 20 Aug 2026 22:20:32 -0700 (PDT)
+From: <nshettyj@marvell.com>
+To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: Geetha sowjanya <gakula@marvell.com>,
+        Nitin Shetty J
+	<nshettyj@marvell.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        "Ratheesh
+ Kannoth" <rkannoth@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        "Paolo
+ Abeni" <pabeni@redhat.com>,
+        Bharat Bhushan <bbhushan2@marvell.com>,
+        "Harman
+ Kalra" <hkalra@marvell.com>, Simon Horman <horms@kernel.org>
+Subject: [PATCH net] octeontx2-af: Fix Rep link state sync up with PF/VFs
+Date: Fri, 21 Aug 2026 10:50:29 +0530
+Message-ID: <20260821052030.2361371-1-nshettyj@marvell.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260821044512.663941-1-linux@roeck-us.net>
-In-Reply-To: <20260821044512.663941-1-linux@roeck-us.net>
-From: Kalesh Anakkur Purayil <kalesh-anakkur.purayil@broadcom.com>
-Date: Fri, 21 Aug 2026 10:41:43 +0530
-X-Gm-Features: AcwNN1UPUQjzQ6vOltKIZNqdd3U1R84hzrfyMlOyJth8RB7I3VGxY2EyssjSaHk
-Message-ID: <CAH-L+nMkXGv7P6=x3oWFfqa0vscdqT5sN1B8wcjy=7JPR=R5sQ@mail.gmail.com>
-Subject: Re: [PATCH] bnxt_en: Fix call to hardware monitoring event handler
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Michael Chan <michael.chan@broadcom.com>, Pavan Chebbi <pavan.chebbi@broadcom.com>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000fdc6d8065987acb8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: YwA-c4pWcECr6H1_S3AmUAVzpQmk5txy
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODIxMDAzNSBTYWx0ZWRfX/FaHKlegqplC
+ VUJOjNA+s36D2OVhELSvJ7JZAjY2jCQRhkpb0yS0TvlSTEqPLdTtX0DJIFk8oz4MJqAgYRiQBAs
+ J1ZNVtgWgxl+Os6mwF2Vab5llbkFt4Z8Ye8daWKJ60wsg/BaKinyJ/tkAB+FUTaMD81gdAnNi2y
+ ZW3ujItxaP5t3+ALQgunsMm4mxY5xI7KevGItDeZxFLQU18gBWOkn//cbvqQFoVSHEIFExiKH2f
+ zmfHj3fUH7XKmzI039SRMcs6LNsxcZnMuSkz1Ji/YYvS0mP7O3ZfJuK7nNTaIIK5y81f05cm19U
+ IKz6aH5XCl7MjQ9G8qf8pbxa+WYD9MU8/TwU+B0x7KeZIQXlmyMzS5FeBfJ5ZAGRHHF64hUZroM
+ ELBxdc3kNO3MBlgrea1EDNb21jO9R2woi6z3UL9iupdbaxVHS4b02dUbtvfrl7pYsEZeUym7Vz8
+ cgiZZibqpNY5pRLaaPw==
+X-Authority-Analysis: v=2.4 cv=NNvlPU6g c=1 sm=1 tr=0 ts=6a87e026 cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=TtqV-g6YmW1Jfm2GSLaY:22 a=M5GUcnROAAAA:8 a=eZ0GRgrAo8MkU3D3ccEA:9
+ a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODIxMDAzNSBTYWx0ZWRfX0IkmM2M7/1B3
+ MeAR4tbGYRIIIu7h16SfEMocY6WkLPb9UvomCMFH8uOg92UQE2VW8zGQFGCQAPejiNyicynyLl7
+ DH1vedb+ifB+4M8+1RMTrq+HUF2KWAI=
+X-Proofpoint-GUID: YwA-c4pWcECr6H1_S3AmUAVzpQmk5txy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-21_01,2026-08-20_02,2025-10-01_01
 
---000000000000fdc6d8065987acb8
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: Geetha sowjanya <gakula@marvell.com>
 
-On Fri, Aug 21, 2026 at 10:15=E2=80=AFAM Guenter Roeck <linux@roeck-us.net>=
- wrote:
->
-> The first parameter of hwmon_notify_event() is supposed to be the hardwar=
-e
-> monitoring device. The bnxt driver calls it with the platform device as
-> first parameter instead. This API break results in undefined behavior and
-> may result in a crash.
->
-> Pass the hardware monitoring device as parameter instead to fix the
-> problem.
->
-> Fixes: a19b4801457b0 ("bnxt_en: Event handler for Thermal event")
-> Cc: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Sync representor link state with PF/VFs and move rep event workqueue
+init to rvu_mbox_handler_get_rep_cnt().
 
-Thank you for the fix, LGTM!
+Fixes: b8fea84a0468 ("octeontx2-pf: Add support to sync link state between representor and VFs")
+Signed-off-by: Nitin Shetty J <nshettyj@marvell.com>
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+---
+ .../net/ethernet/marvell/octeontx2/af/rvu.c   |  4 +
+ .../ethernet/marvell/octeontx2/af/rvu_rep.c   | 77 +++++++++++--------
+ .../net/ethernet/marvell/octeontx2/nic/rep.c  |  6 ++
+ 3 files changed, 56 insertions(+), 31 deletions(-)
 
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+index ffba56ee8a60..69983091a5e3 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+@@ -3709,6 +3709,10 @@ static void rvu_remove(struct pci_dev *pdev)
+ 	rvu_unregister_dl(rvu);
+ 	rvu_unregister_interrupts(rvu);
+ 	rvu_flr_wq_destroy(rvu);
++	if (rvu->rep_evt_wq) {
++		destroy_workqueue(rvu->rep_evt_wq);
++		rvu->rep_evt_wq = NULL;
++	}
+ 	rvu_cgx_exit(rvu);
+ 	rvu_fwdata_exit(rvu);
+ 	rvu_mcs_exit(rvu);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
+index a2781e0f504e..9daee5de0185 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
+@@ -44,6 +44,8 @@ static int rvu_rep_up_notify(struct rvu *rvu, struct rep_event *event)
+ 	if (event->event & RVU_EVENT_MAC_ADDR_CHANGE)
+ 		ether_addr_copy(pfvf->mac_addr, event->evt_data.mac);
+ 
++	if (event->event & RVU_EVENT_PFVF_STATE)
++		pf = rvu_get_pf(rvu->pdev, event->hdr.pcifunc);
+ 	mutex_lock(&rvu->mbox_lock);
+ 	msg = otx2_mbox_alloc_msg_rep_event_up_notify(rvu, pf);
+ 	if (!msg) {
+@@ -53,6 +55,10 @@ static int rvu_rep_up_notify(struct rvu *rvu, struct rep_event *event)
+ 
+ 	msg->hdr.pcifunc = event->pcifunc;
+ 	msg->event = event->event;
++	msg->pcifunc = event->pcifunc;
++
++	if (event->event & RVU_EVENT_PFVF_STATE)
++		msg->hdr.pcifunc = event->hdr.pcifunc;
+ 
+ 	memcpy(&msg->evt_data, &event->evt_data, sizeof(struct rep_evt_data));
+ 
+@@ -119,31 +125,17 @@ int rvu_mbox_handler_rep_event_notify(struct rvu *rvu, struct rep_event *req,
+ 
+ int rvu_rep_notify_pfvf_state(struct rvu *rvu, u16 pcifunc, bool enable)
+ {
+-	struct rep_event *req;
+-	int pf;
++	struct rep_event req = { 0 };
++	struct msg_rsp rsp;
+ 
+ 	if (!is_pf_cgxmapped(rvu, rvu_get_pf(rvu->pdev, pcifunc)))
+ 		return 0;
+ 
+-	pf = rvu_get_pf(rvu->pdev, rvu->rep_pcifunc);
+-
+-	mutex_lock(&rvu->mbox_lock);
+-	req = otx2_mbox_alloc_msg_rep_event_up_notify(rvu, pf);
+-	if (!req) {
+-		mutex_unlock(&rvu->mbox_lock);
+-		return -ENOMEM;
+-	}
+-
+-	req->hdr.pcifunc = rvu->rep_pcifunc;
+-	req->event |= RVU_EVENT_PFVF_STATE;
+-	req->pcifunc = pcifunc;
+-	req->evt_data.vf_state = enable;
+-
+-	otx2_mbox_wait_for_zero(&rvu->afpf_wq_info.mbox_up, pf);
+-	otx2_mbox_msg_send_up(&rvu->afpf_wq_info.mbox_up, pf);
+-
+-	mutex_unlock(&rvu->mbox_lock);
+-	return 0;
++	req.hdr.pcifunc = rvu->rep_pcifunc;
++	req.event = RVU_EVENT_PFVF_STATE;
++	req.pcifunc = pcifunc;
++	req.evt_data.vf_state = enable;
++	return rvu_mbox_handler_rep_event_notify(rvu, &req, &rsp);
+ }
+ 
+ #define RVU_LF_RX_STATS(reg) \
+@@ -325,6 +317,7 @@ int rvu_rep_install_mcam_rules(struct rvu *rvu)
+ 	u16 start = rswitch->start_entry;
+ 	struct rvu_hwinfo *hw = rvu->hw;
+ 	u16 pcifunc, entry = 0;
++	struct rvu_pfvf *pfvf;
+ 	int pf, vf, numvfs;
+ 	int err, nixlf, i;
+ 	u8 rep;
+@@ -334,7 +327,10 @@ int rvu_rep_install_mcam_rules(struct rvu *rvu)
+ 			continue;
+ 
+ 		pcifunc = rvu_make_pcifunc(rvu->pdev, pf, 0);
++		pfvf = rvu_get_pfvf(rvu, pcifunc);
+ 		rvu_get_nix_blkaddr(rvu, pcifunc);
++		if (test_bit(NIXLF_INITIALIZED, &pfvf->flags))
++			rvu_switch_enable_lbk_link(rvu, pcifunc, true);
+ 		rep = true;
+ 		for (i = 0; i < 2; i++) {
+ 			err = rvu_rep_install_rx_rule(rvu, pcifunc,
+@@ -354,6 +350,9 @@ int rvu_rep_install_mcam_rules(struct rvu *rvu)
+ 		rvu_get_pf_numvfs(rvu, pf, &numvfs, NULL);
+ 		for (vf = 0; vf < numvfs; vf++) {
+ 			pcifunc = rvu_make_pcifunc(rvu->pdev, pf, vf + 1);
++			pfvf = rvu_get_pfvf(rvu, pcifunc);
++			if (test_bit(NIXLF_INITIALIZED, &pfvf->flags))
++				rvu_switch_enable_lbk_link(rvu, pcifunc, true);
+ 			rvu_get_nix_blkaddr(rvu, pcifunc);
+ 
+ 			/* Skip installimg rules if nixlf is not attached */
+@@ -379,16 +378,6 @@ int rvu_rep_install_mcam_rules(struct rvu *rvu)
+ 			}
+ 		}
+ 	}
+-
+-	/* Initialize the wq for handling REP events */
+-	spin_lock_init(&rvu->rep_evtq_lock);
+-	INIT_LIST_HEAD(&rvu->rep_evtq_head);
+-	INIT_WORK(&rvu->rep_evt_work, rvu_rep_wq_handler);
+-	rvu->rep_evt_wq = alloc_workqueue("rep_evt_wq", WQ_PERCPU, 0);
+-	if (!rvu->rep_evt_wq) {
+-		dev_err(rvu->dev, "REP workqueue allocation failed\n");
+-		return -ENOMEM;
+-	}
+ 	return 0;
+ }
+ 
+@@ -443,12 +432,28 @@ int rvu_mbox_handler_esw_cfg(struct rvu *rvu, struct esw_cfg_req *req,
+ 	return 0;
+ }
+ 
++static int rvu_rep_get_rep_map(struct rvu *rvu, struct msg_req *req,
++			       struct get_rep_cnt_rsp *rsp)
++{
++	int rep;
++
++	rvu->rep_pcifunc = req->hdr.pcifunc;
++	rsp->rep_cnt = rvu->rep_cnt;
++	for (rep = 0; rep < rvu->rep_cnt; rep++)
++		rsp->rep_pf_map[rep] = rvu->rep2pfvf_map[rep];
++
++	return 0;
++}
++
+ int rvu_mbox_handler_get_rep_cnt(struct rvu *rvu, struct msg_req *req,
+ 				 struct get_rep_cnt_rsp *rsp)
+ {
+ 	int pf, vf, numvfs, hwvf, rep = 0;
+ 	u16 pcifunc;
+ 
++	if (rvu->rep_cnt)
++		return rvu_rep_get_rep_map(rvu, req, rsp);
++
+ 	rvu->rep_pcifunc = req->hdr.pcifunc;
+ 	rsp->rep_cnt = rvu->cgx_mapped_pfs + rvu->cgx_mapped_vfs;
+ 	rvu->rep_cnt = rsp->rep_cnt;
+@@ -473,5 +478,15 @@ int rvu_mbox_handler_get_rep_cnt(struct rvu *rvu, struct msg_req *req,
+ 			rep++;
+ 		}
+ 	}
++
++	/* Initialize the wq for handling REP events */
++	spin_lock_init(&rvu->rep_evtq_lock);
++	INIT_LIST_HEAD(&rvu->rep_evtq_head);
++	INIT_WORK(&rvu->rep_evt_work, rvu_rep_wq_handler);
++	rvu->rep_evt_wq = alloc_workqueue("rep_evt_wq", 0, 0);
++	if (!rvu->rep_evt_wq) {
++		dev_err(rvu->dev, "REP workqueue allocation failed\n");
++		return -ENOMEM;
++	}
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
+index 0f5d5642d3f7..3f89a2c04b2b 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
+@@ -459,6 +459,9 @@ static int rvu_rep_open(struct net_device *dev)
+ 	netif_carrier_on(dev);
+ 	netif_tx_start_all_queues(dev);
+ 
++	if (rep->pcifunc & RVU_PFVF_FUNC_MASK)
++		return 0;
++
+ 	evt.event = RVU_EVENT_PORT_STATE;
+ 	evt.evt_data.port_state = 1;
+ 	evt.pcifunc = rep->pcifunc;
+@@ -478,6 +481,9 @@ static int rvu_rep_stop(struct net_device *dev)
+ 	netif_carrier_off(dev);
+ 	netif_tx_disable(dev);
+ 
++	if (rep->pcifunc & RVU_PFVF_FUNC_MASK)
++		return 0;
++
+ 	evt.event = RVU_EVENT_PORT_STATE;
+ 	evt.pcifunc = rep->pcifunc;
+ 	rvu_rep_notify_pfvf(priv, RVU_EVENT_PORT_STATE, &evt);
+-- 
+2.48.1
 
---=20
-Regards,
-Kalesh AP
-
---000000000000fdc6d8065987acb8
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-tJVewHuOmXgWQxNWV7Oiszu1d9xAcqyj65s1PrEIIaHnxEM3eTK+teecLEy8QymZjjDTrCHg4x36
-2AczdlQAIiq5TSAucGja5VP8g1zTnfL/RAxEZvLS471GABptArolXY2hMVHdVEYcTduZlu8aHARc
-phXveOB5/l3bPqpMVf2aFalv4ab733Aw6cPuQkbtwpMFifp9Y3s/0HGBfADomK4OeDTDJfuvCp8g
-a907E48SjOJBGkh6c6B3ace2XH+CyB7+WBsoK6hsrV5twAXSe7frgP4lN/4Cm2isQl3D7vXM3PBQ
-ddI2aZzmewTfbgZptt4KCUhZh+t7FGB6ZKppQ++Rx0zsGN1s71MtjJnhXvJyPs9UyL1n7KQPTEX/
-07kwIwdMjxC/hpbZmVq0mVccpMy7FYlTuiwFD+TEnhmxGDTVTJ267fcfrySVBHioA7vugeXaX3yL
-SqGQdCWnsz5LyCxWvcfI7zjiXJLwefechLp0LWEBIH5+0fJPB1lfiy1DUutGDJTh9WZHeXfVVFsf
-rSQ3y0VaTqBESMjYsJnFFYQJ9tZJScBluOYacW6gqPGC6EU+bNYC1wpngwVayaQQMIIGtzCCBJ+g
-AwIBAgIMEvVs5DNhf00RSyR0MA0GCSqGSIb3DQEBCwUAMFIxCzAJBgNVBAYTAkJFMRkwFwYDVQQK
-ExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBSNiBTTUlNRSBDQSAy
-MDIzMB4XDTI1MDYyMDEzNDI1N1oXDTI3MDYyMTEzNDI1N1owgfUxCzAJBgNVBAYTAlVTMRMwEQYD
-VQQIEwpDYWxpZm9ybmlhMREwDwYDVQQHEwhTYW4gSm9zZTEZMBcGA1UEYRMQTlRSVVMrREUtNjYx
-MDExNzEYMBYGA1UEBBMPQW5ha2t1ciBQdXJheWlsMQ8wDQYDVQQqEwZLYWxlc2gxFjAUBgNVBAoT
-DUJST0FEQ09NIElOQy4xLDAqBgNVBAMMI2thbGVzaC1hbmFra3VyLnB1cmF5aWxAYnJvYWRjb20u
-Y29tMTIwMAYJKoZIhvcNAQkBFiNrYWxlc2gtYW5ha2t1ci5wdXJheWlsQGJyb2FkY29tLmNvbTCC
-ASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAOG5Nf+oQkB79NOTXl/T/Ixz4F6jXeF0+Qnn
-3JsEcyfkKD4bFwFz3ruqhN2XmFFaK0T8gjJ3ZX5J7miihNKl0Jxo5asbWsM4wCQLdq3/+QwN/xAm
-+ZAt/5BgDoPqdN61YPyPs8KNAQ8zHt8iZA0InZgmNkDcHhnOJ38cszc1S0eSlOqFa4W9TiQXDRYT
-NFREznPoL3aCNNbDPWAkAc+0/X1XdV1kt4D9jrei4RoDevg15euOaij9X7stUsj+IMgzCt2Fyp7+
-CeElPmNQ0YOba2ws52no4x/sT5R2k3DTPisRieErWuQNhePfW2fZFFXYv7N2LMgfMi9hiLi2Q3eO
-1jMCAwEAAaOCAecwggHjMA4GA1UdDwEB/wQEAwIFoDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcB
-AQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQv
-Z3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEFBQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2ln
-bi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1UdIAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAy
-ASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNv
-bS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAyhjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29t
-L2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwLgYDVR0RBCcwJYEja2FsZXNoLWFuYWtrdXIucHVyYXlp
-bEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYBBQUHAwQwHwYDVR0jBBgwFoAUACk2nlx6ug+v
-LVAt26AjhRiwoJIwHQYDVR0OBBYEFJ/R8BNY0JEVQpirvzzFQFgflqtJMA0GCSqGSIb3DQEBCwUA
-A4ICAQCLsxTSA9ERT90FGuX/UM2ZQboBpTPs7DwZPq12XIrkD58GkHWgWAYS2xL1yyvD7pEtN28N
-8d4+o6IcPz7yPrfWUCCpAitaeSbu0QiZzIAZlFWNUaOXCgZmHam8Oc+Lp/+XJFrRLhNkzczcw3zT
-cyViuRF/upsrQ3KY/kqimiQjR9BduvKiX/w/tMWDib1UhbVhXxuhuWMr8j8sja2/QR9fk670ViD9
-amx7b5x595AulQfiDhcN0qxG4fr7L22Y/RYX8fCoBAGo0SF7IpxSukVsp6z5uZp5ggdNr2Cq88qk
-if7GG/Oy1beosYD9I5S5dIRcP25oNbcJkbCb/GuvWegzGfxCCBuirb09mTSZRxaBmb1P6dANmPvh
-PdqGqxfFrXagvwbO15DN46GarD9KiHa8QHyTtWghL3q+G6ZHlZUWnyS4YMacrx8Ngy0x7HR4dNdT
-pqAqOOsOwDmQFBNRYomMdAaOXm6x6MFDnp51sIWVNGWK2u4le2VI6RJMzEqLzMZKL0vTW+HPqMaT
-hWv2s5x6cJdLio1vP63rDxJS7vH++zMaY0Jcptrx6eAhzfcq+y/TkHJaZ4dWrtbof1yw3z5EpCvT
-YDxV0XFQiCRLNKuZhkVvQ8dtmVhcpiT/mENrWKWOt0DwNEeC/3Fr1ruoyriggbnRmBQt1bC5uxfv
-+CEHcDGCAlcwggJTAgEBMGIwUjELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYt
-c2ExKDAmBgNVBAMTH0dsb2JhbFNpZ24gR0NDIFI2IFNNSU1FIENBIDIwMjMCDBL1bOQzYX9NEUsk
-dDANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQgmYChlMeQRsm43vuFG22b3TUh6SQt
-ees/3W6Zms/3qF8wGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjYw
-ODIxMDUxMTU4WjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
-YIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcN
-AQEBBQAEggEASovyxXKFw+6KKbZUTaAQNiZUe/vDGQcfQ/9Qa0h8/EoxJ7CuJb3668Gai8/UnYfG
-iCO2kQ/QTygeFdVYzXCfJc9YIhaM5sjHPRBM7hUua/qme0QGPQGeekwMqYFfOZIP7GGJP9C2cZQp
-0T1d0mkH/P9toxolaz7nb+e3IomFTqFwdeIzeyzEqf/MNDTOt15AEgnGbYHlyhIl6CmvB6Xcodok
-SU6z/1wLsvyhckFxdczZG55vZQF2hIlE+pmwJcI4O6BuHcZ4qjbZwKsSXrNro4kqoGGwj1NeCfok
-0Ym9OYtw+bjPrsmkK/x+OVQuHmVSLAd29m54Qs0kLFZPnmWuSw==
---000000000000fdc6d8065987acb8--
