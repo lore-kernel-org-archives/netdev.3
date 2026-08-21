@@ -1,128 +1,174 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF8283264F7;
-	Fri, 21 Aug 2026 17:22:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ABD538425A
+	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 17:28:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787332980; cv=none; b=qkA6UN/lxWMx90auQ7LswjItv9eIb5OvIZEYiSmuR6CKWbS6yJhEQHRhesuNoRx7O+u8ehC14Pcw8NAsDrapBvRspdRE5RnLU8W92cimc7W0jNg7ySAHMy/rslxRxcS0wZ2Hf7I2v34Bv4DmIj+uMtG1lQ7SvchOq2uVvcVW9II=
+	t=1787333340; cv=none; b=es8RlGz2sKQICRUO7lc4m4arB9Laz/jJ4LB/moyVJXtiJNqE43xn+jo/pr81Eqq7Ltcs1wP7iKONdq9p4EtnKNdxLu2OXaxE1x3l/M0HV3BCgDPODsh0nC6mc9qkx4M6HYE3wDh3KojFaRj1dItstdbvCiNj9Q1YfH0AckSdJSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787332980; c=relaxed/simple;
-	bh=WWiMj4PA5NTv6VJ4P8XB2m6beaVJiVsJptaajE7nVeE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=q6/EX1Kt/WRUoFAHB9fA0KnncsztYAIVGxVxZEORVf2dEOoh/lvXYUBbMWZ/MTae9I6OiSwocEWmFgZfZT8RlzwCTLzpmXNRLDGHPcdIcaGt9T5nQ+ZA6ldBavUrlqxA34l67QfLF5eySetPNV113gpm+sm7nMLb10MUKvp3Tlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fu9Bd3MA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787333340; c=relaxed/simple;
+	bh=8RUjnU6xRjcmNvUjJtxfa9pOtsNBEqKceMyc7GHbth8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ebn6d/bG4qZJ2FRG4FglakB5mTWi8cyhskJL40OHOknw8y3kA5eNc2LHgLYeE3B0mZp9Cb7zvvFP7Rw31k3ar2Us9ONyAjDwNa4vcfFvik+hc7e3COQH4mCEY4s4u3pshC1zrtsjKx2voz6HjnRqKvaWDeXir1BWdQqZS4+CKsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qNxgTY18; arc=none smtp.client-ip=74.125.227.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fu9Bd3MA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 836D01F00A3A;
-	Fri, 21 Aug 2026 17:22:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787332979;
-	bh=cZGI608/0mTlF6Yn6F9gbY6WkBWnyoCdgyNeswFAlok=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Fu9Bd3MAJEmBt+sRxu50NxSIfI+e3jbq8N2ouBeMP5T7NTAL5MH8baUR633/Y+7ZZ
-	 zf59PHDrEOeX8N9mmI0wtFzK1aLYzI6+hsIPcNUhgxRE/Rlnmbo5R8Y3KD6Ab1JIUE
-	 vkOH4upmpvILx+PzYkF/2NoO+x6VRcGBsooXKUH7xEhSHFdwMe/+t4W5VcwJuJpv9n
-	 aPm0tFzlpYNAdN0qKBkLkg2EPs4gZJ8PnAbe2AMlAY/VwijIH2ZxDZ7dli0KaB9rj8
-	 iQvWz794U4YrRkSgpcz/0dcPs4kM81oXsAHhSFn5XQBxWOQ0lPNpTYXfjTCKum5l7X
-	 VOJkD2dA6bovw==
-From: Chuck Lever <cel@kernel.org>
-Date: Fri, 21 Aug 2026 13:22:43 -0400
-Subject: [PATCH 5/5] SUNRPC: Bypass sock_recvmsg() for the TLS
- control-record receive
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qNxgTY18"
+Received: by mail-pj2-f11.google.com with SMTP id d9443c01a7336-2cf02ecb572so10804735ad.1
+        for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 10:28:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787333332; x=1787938132; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+RpCheSrOdysr+r97ve0JN+xVtWYbZrCXCOuzISS1Oo=;
+        b=qNxgTY18rOb7T0OC5VtF0SuhunEmmcsk/6gTTAGgDGaKIylfjtjTQnxeL6DngsqYDz
+         zaDZTNMNmL/T82F72I3x60JxeumK3DKoSkRDl9R2GOaTyjmFXpQgDHi9UvURWtYAXQd8
+         2Ym+Hdi/6vKrBTZyNSBXCXyYdtE2J6NY6FgBnWJRp2icp4f/riSus4fp5f/SMYasIHvV
+         mqJsgQ+nEynE7aO+ose+SBqN2r+VRf4hYMzI8mhVJQpLi2ggGitsfJM6CK7BbkQmOV6r
+         pARfwYuZ0INZ9cMXZIJmNRGWXAqWgWOrecA/GmoHT4mA4iccPhmirpXnopgjHt5Squ0K
+         1rZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787333332; x=1787938132;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+RpCheSrOdysr+r97ve0JN+xVtWYbZrCXCOuzISS1Oo=;
+        b=WEikkU1HoxLOOsOp8mizOCVhMu76KMU0BE+vhyL2IuMein/NLWeZOW5owI2/76xdZ3
+         EZQVI7n/iwrGT9vfMb3w4JFDLNaxBHoonUHh3ewdLdS8SrfcD79SXDjuTLTPFhU/phLZ
+         ZvtR85bzLFsT+f0h0nJ7RjXRuZ1SaYcelTh3zcW6y9whKMFAiTZS8HxW8MqzB7YwV7fO
+         ExrDR61T6bwLZOk1pGQuOyB93OC/+C4XTHmHrfnpy5x2gvyNLVXEXWObJ8nOV2HavquQ
+         TQT9Iv298sGIWWTwEmwGG66jc/zX6g0JfwR2A/VIP16bKDrTBQJwuNgF46+yI0JwA95C
+         2ZOQ==
+X-Gm-Message-State: AFuF++mZjuemdwjcp2fWUpGSjlDisVlAfs+TfPOgi7E4ccpYwE8HMzo8
+	3P4JlYBvNeiV8h020pv9WOs29XVyEGr7k0Lrr1EDrLx5AkSJ8NRPdSf/
+X-Gm-Gg: AR+sD11/Sic8VnhP2GVzMn6Y1ar1OP0HlNBOTEQog1WlnODxvQk+b03Qo3E4L/1e8lW
+	vFYYA0NxtFDuZ+Ag1Ss80LKQQ7vi/UptnvwP/O1AcodxukD+svcvCeEq0rbLuAQCXw0WA89dwY/
+	lHxcMtXCNbOFD0v9MapbXiHF66VprRgyYKCOseCre1bCWs6w0GbXdjbGou+Rla9JsWIlZDixbNu
+	0kDat+ifLaSq8JE05H3sPRGJDYSxPi6RZsyab6Dzbnso8YF7gKiBAKbdpfpVUajYn0XShsRqZeR
+	S2iK2bQYRwFUUoqf1QvkJrySWjzh1AH4XfuC1XCzS2hfEvyg6l8DnAzzWadUy/aR+r+5Zu/TXVO
+	c/bbz8g8WGdMqsuqeBwk19hg4v+8XcY+MYVZaxp6X7M9+NBhmz7ApH+exY165MlBqc52F34BCFO
+	BWSNWuOoDimqRSdq498bL0wmED7UvVt+kBe1hJkqs4jZATF6Vb1zTArw==
+X-Received: by 2002:a17:902:e943:b0:2d6:3c2f:69b with SMTP id d9443c01a7336-2d64af6f8cemr156390915ad.8.1787333331890;
+        Fri, 21 Aug 2026 10:28:51 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:48::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d62d555b51sm21790945ad.7.2026.08.21.10.28.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Aug 2026 10:28:51 -0700 (PDT)
+Date: Fri, 21 Aug 2026 10:28:47 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, anthony.l.nguyen@intel.com, 
+	przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, saeedm@nvidia.com, tariqt@nvidia.com, 
+	mbloch@nvidia.com, maxime.chevallier@bootlin.com, mcoquelin.stm32@gmail.com, 
+	alexandre.torgue@foss.st.com, aleksander.lobakin@intel.com, horms@kernel.org, 
+	magnus.karlsson@intel.com, sdf@fomichev.me, ast@kernel.org, daniel@iogearbox.net, 
+	hawk@kernel.org, john.fastabend@gmail.com, guoren@kernel.org, dtatulea@nvidia.com, 
+	witu@nvidia.com, martin.lau@kernel.org, yoong.siang.song@intel.com, 
+	intel-wired-lan@lists.osuosl.org, linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org, 
+	linux-csky@vger.kernel.org, leon@kernel.org
+Subject: Re: [PATCH net v3 3/3] net: stmmac: document oversized AF_XDP frame
+ handling
+Message-ID: <aoiIarzdjk92RkCN@devvm7509.cco0.facebook.com>
+References: <20260819160535.1472459-1-sdf@fomichev.me>
+ <20260819160535.1472459-4-sdf@fomichev.me>
+ <aoceSoSFMx69Z9up@boxer>
+ <aoeoJ6-njBxcWs4w@devvm7509.cco0.facebook.com>
+ <aogpDsa8hz6CPpD3@boxer>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260821-tls-read-sock-2-v1-5-7ffce164eb45@kernel.org>
-References: <20260821-tls-read-sock-2-v1-0-7ffce164eb45@kernel.org>
-In-Reply-To: <20260821-tls-read-sock-2-v1-0-7ffce164eb45@kernel.org>
-To: Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
- Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
- Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
- Tom Talpey <tom@talpey.com>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Cc: linux-nfs@vger.kernel.org, netdev@vger.kernel.org, 
- Chuck Lever <cel@kernel.org>
-X-Mailer: b4 0.16-dev-da966
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2257; i=cel@kernel.org;
- h=from:subject:message-id; bh=WWiMj4PA5NTv6VJ4P8XB2m6beaVJiVsJptaajE7nVeE=;
- b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBqiIlrwkOx1hvsrg743hJCPJjtXTqQaysyvWPsV
- tFgC7Wn3OGJAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCaoiJawAKCRAzarMzb2Z/
- l0cSD/91Nn/CLKbrhfS9HznxLCxRdCQLR8TNC0Ccyx/R8PTTE33bt5Pyd5ou26m1hrd82lWfon4
- KO/i8Y7Y4j2U4lLlIUIqb177ZSlyaf+DpTsT5xxNOCqzybAKvK0budt4BaS0AS+8zPsG7W9VBxg
- IjyTuF+xvZhlHgxtmj8C3TwmDACoJFTDu/vOwDyn36BGdPCqUFX5HWS7sVGvepmMCDYYu3us5x+
- FFblLYdCU+e9OYmKKioq/jq5Z7uwzYwjmte0nywS6cHmuDyVFtI6SRWwrnzqEWd+VxXQHOJopc7
- p84jVHUSZSfUC7d85PnQZh57kxDRWVwZlVqMou3A/fCofM30wICgEa296AOdn3X7Ff9b0KPazyr
- wWMTNSQa2DdF2Ugn5EmmaXgXGGGgRXhlfxR0GPFlIkoXU8/3BrmlQ4E8mPMOrih3i0mzO0ULZ62
- AAh6PzH7yJK8JEgfdivEoL7+pvHyximJlMKqOqa8lp5KSWwpCFmGtyXFGXkxekZ6KgRpe8z7/q0
- Jf4poQE+i/X98eBTI98qmK/6uHGRvdDLgQZ9NFo0tF2sOaeFeBKBkxfwLql3TZSiaWdx6vawnuS
- eXd/buS1HJ7rPQL8V/8Y98rIo6rRI2YNLHN8W2v0I0+HtKhidizv3AYSzDkkRP9n+QThEN66iuB
- 4mPZb+FPW/n5FOg==
-X-Developer-Key: i=cel@kernel.org; a=openpgp;
- fpr=28B2E5B01286DF243CF23EFE336AB3336F667F97
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aogpDsa8hz6CPpD3@boxer>
 
-svc_tcp_recvfrom() parses the RPC record stream with ->read_sock,
-which calls neither security_socket_recvmsg() nor the
-sock:sock_recv_length tracepoint. svc_tcp_recv_cmsg() still goes
-through sock_recvmsg(), so an LSM mediates only the TLS control
-records on a server socket, and sock:sock_recv_length reports only
-those. Partial coverage is worse than none. It makes the RPC stream
-look mediated and observed when it is not.
+On 08/21, Maciej Fijalkowski wrote:
+> On Thu, Aug 20, 2026 at 06:29:16PM -0700, Stanislav Fomichev wrote:
+> > On 08/20, Maciej Fijalkowski wrote:
+> > > On Wed, Aug 19, 2026 at 09:05:35AM -0700, Stanislav Fomichev wrote:
+> > > > stmmac drops AF_XDP zero-copy frames that exceed taprio's queueMaxSDU
+> > > > after xsk_tx_peek_desc() has reserved their completion entries.
+> > > > 
+> > > > Completing a rejected descriptor is unsafe because AF_XDP completions are
+> > > > ordered: xsk_tx_completed(pool, 1) would complete the oldest outstanding
+> > > > descriptor, which may still be owned by hardware. Instead, leave the
+> > > > completion pending so the ring eventually wedges and increment the drop
+> > > > counter to expose the application error without risking hardware
+> > > > misbehavior.
+> > > > 
+> > > > Document this intentional ring imbalance at the check.
+> > > > 
+> > > > Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+> > > > ---
+> > > >  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 4 ++++
+> > > >  1 file changed, 4 insertions(+)
+> > > > 
+> > > > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > > > index 62de03e65a90..6a532747c039 100644
+> > > > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > > > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > > > @@ -2713,6 +2713,10 @@ static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
+> > > >  		if (priv->est && priv->est->enable &&
+> > > >  		    priv->est->max_sdu[queue] &&
+> > > >  		    xdp_desc.len > priv->est->max_sdu[queue]) {
+> > > > +			/* Completions are ordered, so this descriptor cannot
+> > > > +			 * be completed safely. Wedge the ring to expose the
+> > > > +			 * application error instead.
+> > > > +			 */
+> > > >  			priv->xstats.max_sdu_txq_drop[queue]++;
+> > > >  			continue;
+> > > 
+> > > Hmm. I read the discussion on v2. Maybe we could cancel cq entry here in
+> > > this branch? Also it feels like something achievable at bind time when
+> > > taprio is configured and vice versa?
+> > > 
+> > > Otherwise we over-commit cq entries.
+> > 
+> > What do you want to achieve with the cancel here? IIUC it will make it look
+> > as if some (if the user has posted many) tx descriptor has not been consumed
+> > by the kernel?
+> 
+> Oof. My bad. I meant completely different thing :D
+> 
+> Right now the semantics are that we post invalid/dropped addrs to cq (the
+> rationale was that dropped descs are gone and unreachable which might
+> eventually lead to dying traffic).
+> 
+> We should submit xdp_desc's addr to cq.
+> 
+> Regarding the comment included in code I must disagree. CQ entries no
+> longer imply that 'this particular descriptor has been successfully sent
+> by HW'.
 
-Until the record stream moved to ->read_sock, an LSM saw every octet
-NFSD read from a TCP socket. An SELinux policy that denies
-SOCKET__READ to NFSD blocked the receive. After this change no call
-on the server's TCP receive path consults an LSM, so that denial has
-no effect.
+But then we need to support some sort of out-of-order completions, no?
+This looks similar to
+https://lore.kernel.org/netdev/20260818162442.3980697-1-kuba@kernel.org/
 
-Dispatch ->recvmsg directly so the whole receive path behaves one
-way. sock_recvmsg_nosec() reaches ->recvmsg through
-INDIRECT_CALL_INET(), so on a retpoline build the direct dispatch
-costs one indirect call per control record. Control records are rare
-on an established connection.
+We write desc to cq at xsk_tx_peek_desc, so when we get an error here
+we might have already "queued" a bunch of cq entries (which will be
+xsk_tx_completed(num) from sirq). So unless we rewrite the way
+we do completions, there is no easy way to put that desc on cq without
+breaking the order and racing with real completions from the HW.
+Am I missing something here?
 
-Signed-off-by: Chuck Lever <cel@kernel.org>
----
- net/sunrpc/svcsock.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+> > I do agree that a better idea is to probably do these checks during control
+> > paths, but it's a bit more involved (and not sure if it's possible? if we
+> > have a bunch of xsk sockets and we change that max_sdu, do we go over all
+> > sockets on the system somehow?). My main motivation with this patch was
+> > to make our LLM reviewers less chatty about preexisting issues.
+> 
+> I hear you, however I feel like we do not know this driver too much and
+> probably we don't have a HW to test out such changes, so maybe let us try
+> to fix existing behavior?
 
-diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
-index fe307d8314c4..ef7ac080fcd3 100644
---- a/net/sunrpc/svcsock.c
-+++ b/net/sunrpc/svcsock.c
-@@ -229,10 +229,16 @@ static int svc_one_sock_name(struct svc_sock *svsk, char *buf, int remaining)
- 	return len;
- }
- 
-+/*
-+ * The ->read_sock data path invokes neither security_socket_recvmsg()
-+ * nor the sock:sock_recv_length tracepoint. Dispatch ->recvmsg
-+ * directly so the whole receive path behaves one way.
-+ */
- static int svc_tcp_recv_cmsg(struct socket *sock, int flags,
- 			     struct kvec *payload, u8 *type,
- 			     unsigned int *msg_flags)
- {
-+	const struct proto_ops *ops = READ_ONCE(sock->ops);
- 	union {
- 		struct cmsghdr	cmsg;
- 		u8		buf[CMSG_SPACE(sizeof(u8))];
-@@ -244,7 +250,7 @@ static int svc_tcp_recv_cmsg(struct socket *sock, int flags,
- 	int ret;
- 
- 	iov_iter_kvec(&msg.msg_iter, ITER_DEST, payload, 1, payload->iov_len);
--	ret = sock_recvmsg(sock, &msg, flags);
-+	ret = ops->recvmsg(sock, &msg, msg_data_left(&msg), flags);
- 	if (ret < 0)
- 		return ret;
- 	*msg_flags = msg.msg_flags;
-
--- 
-2.54.0
-
+Let's definitely fix it properly if you have better ideas. But since we
+don't have HW, I'm not super confident doing anything sophisticated
+myself :-D
