@@ -1,326 +1,220 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f98.google.com (mail-pj1-f98.google.com [209.85.216.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C38415F36;
-	Fri, 21 Aug 2026 07:56:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6DC63B14B8
+	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 08:19:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787299017; cv=none; b=juBKrFGGjE7qBhsfa+rZSVV9vBRcQ9y0GxWgeWBzi+iYxlCu8i3kg1OColmoxV22pdPxM3xxQ4Ha9O2BMY+W4vWTbzwdZwDGhIEsKguhkMa2TgFlpBXLZltBKbWOVI2N7IKqz4bYV3hKTUqDupaP1b/bQWTzImFzRkt5IaxWo20=
+	t=1787300386; cv=none; b=YGlxYsr0dPgE8Qs/g8lpXxtFVKH1XoN4Utf2xMFBWMts4N9ayCT43T0nnv+MerAnhFKBZIWUfiNs5Wtyg0UwDTnVxN+njn2xD30xbQZEYZIbcwP9JrLGI1Bl16XmPK6qiaAHDgx3freTHu7ObxoQqNPXbV9uMJzFlM61vB1Lf7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787299017; c=relaxed/simple;
-	bh=Ktoz30SyulwVUFAipYMHhrBB8vsqFxIFo0/c4PKW/g8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f8gmwIZ32O2pqHLYX4wi4ln9onqDgJJCPPfDAdewE9wN+N0jmRGcFOvN/oo3OW9dWZPOXzJpU+TQWXEOOerM3cSk36MKI/JQuPZ8q+KBOEchwg92wZyA1aZ2PHjJIfRFND73pJEmpZK8shCAkMbqkfzZ/8oJl3scX+inltPJk6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B7FKkvTN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787300386; c=relaxed/simple;
+	bh=rJf98OgAUEzgfDwyvaochi3BZbDjOoExMZpTPSUCtTU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DRpP/Dgg/WxQ25RH3yXfe2U0UEOnyS/LNY8+w6YtcvmzFcLR5dhOmPTqqYOQ6nSQ91vUzSzvIlxL28r+PjZyhuoCDLQdQ3WhnX337MZXsVXd8ouLBqka54d1Mxd0U0f6Ri0NqY4ops+hoUf5x07LAN4uKjv98B/4haYqG84wts0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=BNPS84kj; arc=none smtp.client-ip=209.85.216.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B7FKkvTN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21AD01F000E9;
-	Fri, 21 Aug 2026 07:56:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787299015;
-	bh=tjjBBZ/k0RLbSDGZaWeN6t6IvNROJ7OMmNej421EHXw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=B7FKkvTN+AVvwFWaae0GEz5bWAYGMjhYykTrLQH6sZHxNtmwJSC06TT6oijP5rGyj
-	 05snL9vfZwtw3LreSzJcJqjZ+mG5lZDEdTI7rgZMcN83z1uikEHEHFp6A30/1kJ8xg
-	 MQZMOcXRp+Za4puQ9RCN8egvQkgBEJkMzE4BZXTAxNeqfyifjPZwrFCMZN/uQ8E5Yt
-	 IfHqTL4RoEmG+mjLKT4CyTVKh+p2vEprX8aMnavjB8RCBKRNBPSIVagli0TSSk1WTd
-	 JJ7dScWvo11ij5GhsRdhzrY2RwyJIcUIt9NYe5bcObHvjJmePWnU1OQpzeGEubLNlk
-	 G8Y435QyEiqcQ==
-Message-ID: <825134a8-ceae-430c-b2fc-d1d0c7240f39@kernel.org>
-Date: Fri, 21 Aug 2026 09:56:05 +0200
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="BNPS84kj"
+Received: by mail-pj1-f98.google.com with SMTP id 98e67ed59e1d1-38511175ad3so656847a91.2
+        for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 01:19:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787300384; x=1787905184;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=rJf98OgAUEzgfDwyvaochi3BZbDjOoExMZpTPSUCtTU=;
+        b=NoFjCJQAwEsxA4nDm+kYlwix8wmdGa7VDNR938vvG4t+l3iamTEOKiGokmy5Wu3GLz
+         W8KrAdvLSsqV5vE8ioRuRX9pJBPgacj2yjaXfldb8UWqgXmdiIVxi4VIuXQYedwAFt+N
+         +DkUzoOqm+M1hYQucuSAse/sCpYi0G+RKtD5DJt04ZgrKvjU3AkgzZeGHG26Yh9BEaGS
+         /8ZgKMpXezk000mdnVus6j7kqDrikyOzSz7cumZvpLODI9iixNYw0jaiDf/v9CxCD0by
+         M0KUILYZvNCcgDMHwQbtv6G7lwHn+gOFWS5LOF7aTx31OLr269mDu9EEknKuPc25OW5p
+         8NWQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoIHKZQki+YBUFZ/yjSfTVxK4V/FKcYCNLr8ciUOJJoKdEdIj7bztw9qGgiNVRfI5Hzpm7Q6pk=@vger.kernel.org
+X-Gm-Message-State: AFuF++nz4eh3a4hDkX+9iSl3NPZQiA1QlcF3tjfc4kVntRXbH/PrAbOY
+	FFiY/3Ri6YHZPhte8npUJhqYiYgukSp6ydff4TsijE5JJONpol6VRG02CgEo563jsFzKZnHwLVy
+	YKJjXFaAKKepL405ZPo7fETLuAI4WEceEXUQXp1BdVezmLChAVxcqMiUGz8oAYMb/INgJECN4X0
+	gtJCb8cdl4ifHbuNewDxHR3dlhpRp9IcSPZjE1Tx1ycNBKrvBY0IxoHqSI3xf3/tiuuZPwc0QPj
+	wVcZAKphdTY5BnD2fNLM1wT
+X-Gm-Gg: AR+sD13k0o1XFHtEGn4NdSsnuywbCTA7tfTD2428LIBpuJcYLsFarb2DVXFKwSxWGCX
+	ADjDWGHsXzu8DTS4zvVLMOtYsJCZvrOq8vmbr21psu0EEvvNC5LrCCh3OPDgz5cKE8QNb+xMxSl
+	qmYvnPze1h5mT27jd4q1hG09xSDkaHQAIOgGylMDoOJ/7qz9aXaHJgjge1xuCwCmn2ljNMHH/x2
+	7NdI3p9+ar5dLmidgiAL2he7VUHymYsg9EaL/r52LbUCCqqeSI5Zy5FUq7TvgE8jy9yu4HsGrMN
+	59Ww46SWMIBr5M5irid50Y1mAn7V8zMhOlJN1a6SfpS4YxDa1x1Kv7vdIdKBaQx8R79bGwWachM
+	cgWXWNjxWP7IrEGYGx70a4CHR3aWpsHxvHNxtP5FqKSiWCu6/ZJxpHRVqkMJ+IfsP3MxIBfZ0Wo
+	UlDeQE5hhoAVvM4lvBREoXxGqOn9JHeQXaNKd64Z1i1Y0K+ajk
+X-Received: by 2002:a17:90b:1c90:b0:393:19a3:4f1 with SMTP id 98e67ed59e1d1-395c351d788mr8372495a91.6.1787300383955;
+        Fri, 21 Aug 2026 01:19:43 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-16.dlp.protect.broadcom.com. [144.49.247.16])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-395c4cd5a83sm764956a91.11.2026.08.21.01.19.43
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 21 Aug 2026 01:19:43 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8485d853b08so1202889b3a.1
+        for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 01:19:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1787300382; x=1787905182; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rJf98OgAUEzgfDwyvaochi3BZbDjOoExMZpTPSUCtTU=;
+        b=BNPS84kjDcSL6cu2SbZM+FQyUCZ6rhCii+KCinFrnvXmDTsIStOXMbYTWu91oXZnzM
+         6zmSY++NbSPt8B+ynTvs/zi9z2YlB60FKzO1tknlM3g1CrIIuMtdms2yF3euUsHaZeD+
+         NLpIlzRxdW0h+xXi5STWTHEfB0cpoWIDSHDLg=
+X-Forwarded-Encrypted: i=1; AHgh+RrqcxcufRYORSTKM0u2YH/xjZmpYBannRtPDpM3hIhMh6Z3FwBlHDeIyV4SrKss9aHynMSdXnk=@vger.kernel.org
+X-Received: by 2002:a05:6a00:14cc:b0:846:bc60:5bf7 with SMTP id d2e1a72fcca58-851f9ef273fmr7112630b3a.6.1787300382292;
+        Fri, 21 Aug 2026 01:19:42 -0700 (PDT)
+X-Received: by 2002:a05:6a00:14cc:b0:846:bc60:5bf7 with SMTP id
+ d2e1a72fcca58-851f9ef273fmr7112576b3a.6.1787300381890; Fri, 21 Aug 2026
+ 01:19:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v19 00/40] DEPT(DEPendency Tracker)
-To: Byungchul Park <byungchul@sk.com>
-Cc: linux-kernel@vger.kernel.org, max.byungchul.park@gmail.com,
- kernel_team@skhynix.com, torvalds@linux-foundation.org,
- damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
- adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, mingo@redhat.com,
- peterz@infradead.org, will@kernel.org, tglx@linutronix.de,
- rostedt@goodmis.org, joel@joelfernandes.org, sashal@kernel.org,
- daniel.vetter@ffwll.ch, duyuyang@gmail.com, johannes.berg@intel.com,
- tj@kernel.org, tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
- amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
- linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
- minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
- sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
- penberg@kernel.org, rientjes@google.com, vbabka@suse.cz, ngupta@vflare.org,
- linux-block@vger.kernel.org, josef@toxicpanda.com,
- linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
- dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
- dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
- melissa.srw@gmail.com, hamohammed.sa@gmail.com, harry.yoo@oracle.com,
- chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com, boqun.feng@gmail.com,
- longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
- yeoreum.yun@arm.com, netdev@vger.kernel.org, matthew.brost@intel.com,
- her0gyugyu@gmail.com, corbet@lwn.net, catalin.marinas@arm.com, bp@alien8.de,
- x86@kernel.org, hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
- gustavo@padovan.org, christian.koenig@amd.com, andi.shyti@kernel.org,
- arnd@arndb.de, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- rppt@kernel.org, surenb@google.com, mcgrof@kernel.org, petr.pavlu@suse.com,
- da.gomez@kernel.org, samitolvanen@google.com, paulmck@kernel.org,
- frederic@kernel.org, neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
- josh@joshtriplett.org, urezki@gmail.com, mathieu.desnoyers@efficios.com,
- jiangshanlai@gmail.com, qiang.zhang@linux.dev, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, dietmar.eggemann@arm.com, bsegall@google.com,
- mgorman@suse.de, vschneid@redhat.com, chuck.lever@oracle.com,
- neil@brown.name, okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com,
- trondmy@kernel.org, anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
- clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
- kristina.martsenko@arm.com, wangkefeng.wang@huawei.com, broonie@kernel.org,
- kevin.brodsky@arm.com, dwmw@amazon.co.uk, shakeel.butt@linux.dev,
- ast@kernel.org, ziy@nvidia.com, yuzhao@google.com,
- baolin.wang@linux.alibaba.com, usamaarif642@gmail.com,
- joel.granados@kernel.org, richard.weiyang@gmail.com,
- geert+renesas@glider.be, tim.c.chen@linux.intel.com, linux@treblig.org,
- alexander.shishkin@linux.intel.com, lillian@star-ark.net,
- chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com,
- link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org,
- brauner@kernel.org, thomas.weissschuh@linutronix.de, oleg@redhat.com,
- mjguzik@gmail.com, andrii@kernel.org, wangfushuai@baidu.com,
- linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
- linux-i2c@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-modules@vger.kernel.org, rcu@vger.kernel.org,
- linux-nfs@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- 2407018371@qq.com, dakr@kernel.org, miguel.ojeda.sandonis@gmail.com,
- neilb@ownmail.net, bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
- dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
- alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, rust-for-linux@vger.kernel.org
-References: <20260706061928.66713-1-byungchul@sk.com>
- <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
- <20260821042143.GA40890@system.software.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260821042143.GA40890@system.software.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260821070512.3122442-1-edumazet@google.com>
+In-Reply-To: <20260821070512.3122442-1-edumazet@google.com>
+From: Kalesh Anakkur Purayil <kalesh-anakkur.purayil@broadcom.com>
+Date: Fri, 21 Aug 2026 13:49:29 +0530
+X-Gm-Features: AcwNN1U596RHx4CuHe6ROJZOj-LFeu6CdG8kOK37S_Nt9BPdTYvt_5tW4PbS384
+Message-ID: <CAH-L+nMLCK=fkZ0HV65MSZOuWwYjCxADBpnYQtyqpuDwO+_s9Q@mail.gmail.com>
+Subject: Re: [PATCH] RDMA/core: Fix use-after-free in ib_get_eth_speed()
+To: Eric Dumazet <edumazet@google.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, linux-rdma@vger.kernel.org, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="00000000000069c84f06598a4c7f"
 
+--00000000000069c84f06598a4c7f
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-[...]
+On Fri, Aug 21, 2026 at 12:37=E2=80=AFPM Eric Dumazet <edumazet@google.com>=
+ wrote:
+>
+> In ib_get_eth_speed(), dev_put(netdev) is called before inspecting
+> rc and dereferencing netdev->name in pr_warn(). If dev_put() drops
+> the final reference to netdev, netdev->name accesses freed memory.
+>
+> Move dev_put(netdev) after the warning block so netdev is kept
+> alive while its name is read.
+>
+> Fixes: d41861942fc5 ("IB/core: Add generic function to extract IB speed f=
+rom netdev")
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
 
-> Exactly.  That's why we use classification e.g. lock class - DEPT also
-> makes use of the concept.
-> 
-> DEPT doesn't use a full map in each page but uses a minimum space for a
-> timestamp in each to track when each starts to wait so as to use the
-> recorded timestamp when the event occurs e.g. folio_unlock().
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-Thanks for that information!
+--=20
+Regards,
+Kalesh AP
 
-> 
->> Given that lockdep is a debug feature, and we will at some point allocate struct
->> folio separately, I assume we could just squeeze a "struct lockdep_map" in there
->> in such debug configs and the world would not collapse.
-> 
-> That's a good news for lockdep.  (And even for DEPT :)
+--00000000000069c84f06598a4c7f
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-He :) Where do you currently store the additional per-page information?
-
-> 
->> Doing that today (one "struct lockdep_map" in each "struct page") wouldn't work
->> as mm_zero_struct_page() would not expect such large "struct page". But
->> conceptually, for a debug kernel with a special CONFIG_LOCKDEP_PAGE_LOCK, maybe
->> that would already be ok and we could just do that (and optimize it as we
->> allocate folios separately).
-> 
-> Sounds great.
-> 
->> Not that it's ideal, but for a debug feature to at least check PG_lock, probably
->> an easier way to achieve it than some completely new infrastructure.
-> 
-> I understand what you are going to tell.
-> 
-> However, it's worth noting that lockdep tracks dependencies basically
-> based on **lock acqusition orders** in the system.  To make it track
-> even rwlock and general synchronization mechanism as well, lockdep has
-> no choice but to get more complicated.
-
-Well, yes, sure :)
-
-> 
-> Focusing on only the dependency checking, the most parts of lockdep are
-> for the tricky things, so the reusable parts are not that big.
-> 
->> Now, Willy said "locking rules don't really apply to individual folios", I
->> wonder if that could just help to also let lockdep check PG_lock with less
->> metadata? (didn't fully wrap my head around the implications)
-> 
-> That's what DEPT did and what brought external wgen introduced in DEPT.
-> I was considering the exactly same thing :)
-> 
-> Again, lockdep that tracks lock acquisition orders can't do that.
-> 
->> [1]
->> https://lore.kernel.org/all/aR3WHf9QZ_dizNun@casper.infradead.org/?utm_source=chatgpt.com
->>
->>
->> It's your guiding example, that's why I mention it. You do mention other wait
->> cases here, I don't know anything about them, but for folios it's really just
->> "we used a single bit so far" AFAIKs.
-> 
-> It doesn't matter whether it's implemented using bit or not.  folio lock
-> is quite special since it's allowed to be released other than the
-> acquisition context that makes lockdep impossible to track them.
-
-Does that really make lockdep *impossible* to track them? IOW, there is no way
-to extend lockdep to support lock release in different context?
-
-I guess there is a way, but the question is at which price (I seriously have no
-idea, maybe this was already discussed and people have a pointer for me).
-
-> 
->> [...]
->>
->>>
->>> Q. Why not build DEPT into lockdep?
->>>
->>> A. Lockdep is stable, battle-tested code. I chose separation because
->>>    while DEPT borrows BFS and hashing ideas, the wait/event model
->>>    requires rebuilding from scratch. Lockdep was designed for lock
->>>    acquisition order — retrofitting it would risk its stability.
->>
->> Why can't this just be some configurable extension to lockdep
->> (CONFIG_LOCKDEP_XYZ) until the feature is stable and can unconditionally be
->> enabled along with it?
-> 
-> Answered?
-
-Not quite. I don't understand why this must be a completely separate machinery,
-even if, conceptually, it would do more than traditional lockdep.
-
-Is it either DEPT or LOCKDEP in current configurations? Can both run at the same
-time?
-
-> 
->> I don't quite buy the "would risk its stability" argument. A lot of stuff we do
->> "risks stability", every day :)
-> 
-> That's awsome anyway :)
-> 
->> Is there another good reason (incompatible with X, dangerous with Y, cinfusing
->> Z) why this really must be a separate thing?
-> 
-> Roughly:
-> 
->    1. Similar or less effort is needed for the new one - retrofitting
->       lockdep is not easy and big changes are required since the
->       reusable parts are not that big.
-> 
->    2. Even though you didn't agree, retrofitting it would risk its
->       stability.
-
-Well, I don't buy the stability argument, really :)
-
-Retrofitting effort for lockdep is an interesting point, though. Lockdep
-maintainers would have to make the call here regarding direction and feasibility.
-
-[...]
-
->> But I am not a locking maintainer. I think there was plenty of discussion in the
->> past, so I might just be raising points that were already discussed in the past,
->> but I really just read some random pieces of earlier discussions. (ideally
->> previous discussions would be summarized here)
->>
->> Long story short: we are now in v19 and I think there was pushback in the past.
->> Did the opinion of locking maintainers change, or is there a way forward to
->> integrate this in a way that would make locking maintainers accept this?
-> 
-> One of locking maintainers who I met in an LPC told me that he agrees
-> with the direction of DEPT and supports DEPT, not officially tho.
-
-Hm.
-
-> 
-> What he and other people are concerning w.r.t DEPT the most is, false
-> positives, which is the most important issue for now.
-
-Thanks for highlighting that. What's the main reason for false positives? Is it
-something conceptual that is mostly impossible to solve, or rather just
-implementation work to cover all edge cases?
-
-> 
-> At the same time, I think the most important thing is to make DEPT
-> useful in practice especially with folio locks involved.  Actually, I'm
-> planning to share DEPT's true reports periodically to LKML and work with
-> people who believe DEPT can make things better.
-> 
-> Any advices will be welcome.  Thanks for your opinions.
-
-I think we must come to some conclusion on how to proceed with DEPT. I see the
-following options:
-
-(1) Don't merge it and carry it OOT. Shame if it delivers real value.
-
-(2) Merge it (after proper review and acks from relevant maintainers ;) ),
-    keeping it entirely separate from lockdep.
-
-(3) Integrate it with lockdep on a high level, giving us a single locking
-    dependency checker, but mostly letting dept have a separate implementation.
-    Look into possible merging afterwards.
-
-(4) Retrofit and extend lockdep to really have one mechanism.
-
-As the saying goes, it's hard to teach old dogs new tricks, but in the end
-taking care of two dogs is likely harder than only a single dog? :)
-
-I tend to favor (4) (or 3 with possible future work to achieve 4), but I am not
-a locking maintainer, so really they have to voice what to do.
-
-I do see value in DEPT (even if the folio lock might be handled differently).
-
--- 
-Cheers,
-
-David
+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
+tJVewHuOmXgWQxNWV7Oiszu1d9xAcqyj65s1PrEIIaHnxEM3eTK+teecLEy8QymZjjDTrCHg4x36
+2AczdlQAIiq5TSAucGja5VP8g1zTnfL/RAxEZvLS471GABptArolXY2hMVHdVEYcTduZlu8aHARc
+phXveOB5/l3bPqpMVf2aFalv4ab733Aw6cPuQkbtwpMFifp9Y3s/0HGBfADomK4OeDTDJfuvCp8g
+a907E48SjOJBGkh6c6B3ace2XH+CyB7+WBsoK6hsrV5twAXSe7frgP4lN/4Cm2isQl3D7vXM3PBQ
+ddI2aZzmewTfbgZptt4KCUhZh+t7FGB6ZKppQ++Rx0zsGN1s71MtjJnhXvJyPs9UyL1n7KQPTEX/
+07kwIwdMjxC/hpbZmVq0mVccpMy7FYlTuiwFD+TEnhmxGDTVTJ267fcfrySVBHioA7vugeXaX3yL
+SqGQdCWnsz5LyCxWvcfI7zjiXJLwefechLp0LWEBIH5+0fJPB1lfiy1DUutGDJTh9WZHeXfVVFsf
+rSQ3y0VaTqBESMjYsJnFFYQJ9tZJScBluOYacW6gqPGC6EU+bNYC1wpngwVayaQQMIIGtzCCBJ+g
+AwIBAgIMEvVs5DNhf00RSyR0MA0GCSqGSIb3DQEBCwUAMFIxCzAJBgNVBAYTAkJFMRkwFwYDVQQK
+ExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBSNiBTTUlNRSBDQSAy
+MDIzMB4XDTI1MDYyMDEzNDI1N1oXDTI3MDYyMTEzNDI1N1owgfUxCzAJBgNVBAYTAlVTMRMwEQYD
+VQQIEwpDYWxpZm9ybmlhMREwDwYDVQQHEwhTYW4gSm9zZTEZMBcGA1UEYRMQTlRSVVMrREUtNjYx
+MDExNzEYMBYGA1UEBBMPQW5ha2t1ciBQdXJheWlsMQ8wDQYDVQQqEwZLYWxlc2gxFjAUBgNVBAoT
+DUJST0FEQ09NIElOQy4xLDAqBgNVBAMMI2thbGVzaC1hbmFra3VyLnB1cmF5aWxAYnJvYWRjb20u
+Y29tMTIwMAYJKoZIhvcNAQkBFiNrYWxlc2gtYW5ha2t1ci5wdXJheWlsQGJyb2FkY29tLmNvbTCC
+ASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAOG5Nf+oQkB79NOTXl/T/Ixz4F6jXeF0+Qnn
+3JsEcyfkKD4bFwFz3ruqhN2XmFFaK0T8gjJ3ZX5J7miihNKl0Jxo5asbWsM4wCQLdq3/+QwN/xAm
++ZAt/5BgDoPqdN61YPyPs8KNAQ8zHt8iZA0InZgmNkDcHhnOJ38cszc1S0eSlOqFa4W9TiQXDRYT
+NFREznPoL3aCNNbDPWAkAc+0/X1XdV1kt4D9jrei4RoDevg15euOaij9X7stUsj+IMgzCt2Fyp7+
+CeElPmNQ0YOba2ws52no4x/sT5R2k3DTPisRieErWuQNhePfW2fZFFXYv7N2LMgfMi9hiLi2Q3eO
+1jMCAwEAAaOCAecwggHjMA4GA1UdDwEB/wQEAwIFoDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcB
+AQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQv
+Z3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEFBQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2ln
+bi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1UdIAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAy
+ASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNv
+bS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAyhjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29t
+L2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwLgYDVR0RBCcwJYEja2FsZXNoLWFuYWtrdXIucHVyYXlp
+bEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYBBQUHAwQwHwYDVR0jBBgwFoAUACk2nlx6ug+v
+LVAt26AjhRiwoJIwHQYDVR0OBBYEFJ/R8BNY0JEVQpirvzzFQFgflqtJMA0GCSqGSIb3DQEBCwUA
+A4ICAQCLsxTSA9ERT90FGuX/UM2ZQboBpTPs7DwZPq12XIrkD58GkHWgWAYS2xL1yyvD7pEtN28N
+8d4+o6IcPz7yPrfWUCCpAitaeSbu0QiZzIAZlFWNUaOXCgZmHam8Oc+Lp/+XJFrRLhNkzczcw3zT
+cyViuRF/upsrQ3KY/kqimiQjR9BduvKiX/w/tMWDib1UhbVhXxuhuWMr8j8sja2/QR9fk670ViD9
+amx7b5x595AulQfiDhcN0qxG4fr7L22Y/RYX8fCoBAGo0SF7IpxSukVsp6z5uZp5ggdNr2Cq88qk
+if7GG/Oy1beosYD9I5S5dIRcP25oNbcJkbCb/GuvWegzGfxCCBuirb09mTSZRxaBmb1P6dANmPvh
+PdqGqxfFrXagvwbO15DN46GarD9KiHa8QHyTtWghL3q+G6ZHlZUWnyS4YMacrx8Ngy0x7HR4dNdT
+pqAqOOsOwDmQFBNRYomMdAaOXm6x6MFDnp51sIWVNGWK2u4le2VI6RJMzEqLzMZKL0vTW+HPqMaT
+hWv2s5x6cJdLio1vP63rDxJS7vH++zMaY0Jcptrx6eAhzfcq+y/TkHJaZ4dWrtbof1yw3z5EpCvT
+YDxV0XFQiCRLNKuZhkVvQ8dtmVhcpiT/mENrWKWOt0DwNEeC/3Fr1ruoyriggbnRmBQt1bC5uxfv
++CEHcDGCAlcwggJTAgEBMGIwUjELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYt
+c2ExKDAmBgNVBAMTH0dsb2JhbFNpZ24gR0NDIFI2IFNNSU1FIENBIDIwMjMCDBL1bOQzYX9NEUsk
+dDANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQg7Y/xcw8Dk6mtLbxSxZfwgajhq5OL
+6nsiJ84Ywvw8zOQwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjYw
+ODIxMDgxOTQyWjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
+YIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcN
+AQEBBQAEggEAJ5ae7+MK1HrJLi1pjo7IBQcE1B6k8kHzNIqR+4c5I8Juub/ouPQEvCdob6TEcvUi
+fajYcQGv4C2yvQozdQz0NOsPWwc39f3FBS97162uDgBPxTyWDBu+pmMV9jy3p30KZIZQGodldTGA
+X8bE3SR+BrRBvPaDZq1UaXmHdvU7n6a57AH1j6GG5oN+QThUTrY+s0E4SWn3D99Ydo9Z3Bgxt/jt
+r8xdpEu8lKc+xq/UTjaL0PBP0UpdKAJD/GS6mcMmExgVVx81ppnZoWYStMdWpw1KZ+ZqoIpGgTMP
+SF443hwQgktaOBQoui0D8dYt7zE5W1Psw9Fi0ymoGJvQIAR0jw==
+--00000000000069c84f06598a4c7f--
