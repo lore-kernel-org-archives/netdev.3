@@ -1,64 +1,64 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F7C38238F
-	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 18:25:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E9238C42B
+	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 18:25:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787336720; cv=none; b=kG6wbv1VNbbjtwQgxgEnYrzDW+XQhH69Xeq9kt9a/7qPmyTAjvh1GciUGH5pZBOMMU+PF83dUIXQ+WLLWXWTpTBDiA3gMQ+So/L74OrR6bKr7zS7s5k0sRPexcdwoNMpswg9BkzkRtvE1f3MkthW0ttaUMNJqbCNIJk3En0jotM=
+	t=1787336735; cv=none; b=PogxY2oHeTZbhyj1qVn/MPm7SVoEnifDVZwttZsIBZCvLhTav/rDxUyiEC7HWgCf4iKlLFcXQb7DkTC1jpiagToQgZkij10dkfgYEJvU9Ai8wFbDO1NFE8fH8u4n/5adWoFlc4DNSmw0lUJq5ljegG5QoFYxhWt+yvppm+CLoK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787336720; c=relaxed/simple;
-	bh=XmKuM/0b01xWi9YKVoLDLMW2oWBahlMckE8zXLiEyq8=;
+	s=arc-20240116; t=1787336735; c=relaxed/simple;
+	bh=+jEjnMMcx1Z4BgKf7iCzxIErD7+9CDxFlLEG/VspZIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mdyhs4RbiTq7WEgUhA1slGm5dVyefVYnaAj6tpUaGPcCFVeKE1QXMdOJ5/OH+5wAqN4DNNHz8pFRyUbYTspbBjD/p+yGMow3073YymffYtINPlNpP/LlsJVAyVsWpqs8JGYtv9kS/In+nNcovU/5zOZCF1SkzRybq5oxwllMG5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gh9kn9QX; arc=none smtp.client-ip=209.85.215.179
+	 MIME-Version; b=OwrwPQc1crywC0x9rxjgquEM1WrzmTpn7ePOVL4cNW4M4QGgZtNU4rMNiQ+DJSkkrGxU4nBv9vbU1G5Cn+hZA588s7hT5bEH4gPhCZDtZKybFVwyYXbdt35VL6ktgkoYImUyxMv62XuAs7zDgIDldT3ThAmt2xUq19lV66CI4Dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IJk8E6Dd; arc=none smtp.client-ip=209.85.216.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gh9kn9QX"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-cbedda4c154so793867a12.1
-        for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 11:25:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IJk8E6Dd"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38759bcd877so1501079a91.2
+        for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 11:25:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787336718; x=1787941518; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1787336732; x=1787941532; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=BODlkzVUXjqQa90yL80vDBlFyCIYJnEhwn1aK5Y4XIs=;
-        b=gh9kn9QXRC6VCpjAdXQ6hneIEFkMosprNIM7FHktLX+reWgR6XF9tL/mhK5kOh0muI
-         LY8ClTHwffYcJrdh+f6H1sxXVr0v94AXql/+P4Y4d4y9xsbRYrru3JmG4wHzb/KMpRk5
-         /vUZbFcikVGIXvzXnziLaKG4TMjGzc4gNwKf/raZACPWr5IfAakC7lyk83oCCE9hIZUj
-         x14L7Js2g/uEF9jzXysJHTt/hz7R5qtmdwEa4uYI+KARnbNdB4QuU98EfKAeXxzQCEJK
-         8YVqbgkr9YmwL2XSIq6eESRsXyNEizh7aLX4l40LO+bpJEwTN7l2qqJsVmWqqXAoBF7H
-         pBEg==
+        bh=F9B7c0XpIh0nkrhvveEJrVj3ZjtXGrKz5tFqZu7UN7Y=;
+        b=IJk8E6Ddh/4Or6soIIeUdxTnJCrNTKKr+qwGH6dyvyp61DvObHtxW47t1GbfDgNdUu
+         7u53AnjEJ/2c1dFqpg3aokXEpCGu50tqoxUmSCo2zoYvidybeEkgiFzzx8EnlZurqgAW
+         wDJPMML+E1gAxrDdJIW8WhykFfgc+mb4ULChucJQddaYpPdCxHy1nykEEtM5abibOblR
+         JH6YXBrhm+etQul7HrXcFBP6o2wO4KPI2EjFom0ndOWsgk4juW+VobWt5wa7TaqUlDgm
+         7HuMWkzaX2VcEYHiUQnGkv2CXC6V16LfgMXh77xBkRPehomjIi+CZyJKYjXCVt3xOwY1
+         i2Kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787336718; x=1787941518;
+        d=1e100.net; s=20251104; t=1787336732; x=1787941532;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BODlkzVUXjqQa90yL80vDBlFyCIYJnEhwn1aK5Y4XIs=;
-        b=B5pI7gCWy1ahnW8Yi5Xd8MqUaanhzdmimvQKK0HlFrDd4qLeIFHaMKmB2moFkOvngn
-         Kf6U5n6SwT7pl9d961IE1Hv1DeMwdAfHZ7L5/8tVViwvIKbBczfAf8joSFtr2GOIwIvO
-         KcWXXgvK7/I6LTwdaPgjFXN6qqGEAdvHYOEpLaMmBm56fv5S+R/g7ygjLRInZVp80FKp
-         KfHbABNngFROHkrMB5bn1ogMP6ZSSdzKpHM/mYsNodZMI4UZ2M2eA03pM1lkj7iSISQ8
-         l+b1T/pKLVJJg1ooTb1fkRvrSJnANocn8O9OW5H2AagPY682g32z+XiDy1Ie1yJ44eC7
-         txjQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqF6kapgtauOfnkhOoYHSo5YK8teZsxcDvFLrn3x2f3wn+KBXGqYpMKNqPXox/PcWEooP32PMk=@vger.kernel.org
-X-Gm-Message-State: AFuF++mlGH4U4K1hk7sTE+Z8ogM1McY9eOdZTlYyIIfB44QImfMazQt5
-	RKXGV+q8unRwjeT29ZxZLFeJmTSRfmmO5ZT50rrET8WIezRo7+ElALnK
-X-Gm-Gg: AR+sD132RJ/mCmnVqMe4hD0T5RShdZLZ+Sr3wQnVjspF19NoJXXHPvrnoHDNuQVb7OI
-	+CbA4kxibYa56GbLJXtP+lwGEY9i6DLA3EvcWitQ6kuJl9LfqIds6ivh/DsDO6uB95005mS7cdf
-	CyzOd9y5d+sKjv7pkPSzlK/dKYxmuGgZ4ztHfj0xRwg3c5B8kemXAS4BbRF/aX1UGez2uRd5ny6
-	doEUXTSp3EmpgTZ+i5Qz0dU4cxxqMzUATHCCs4qCnLq+MEIr/j8azKoUQhw9z+SXgirz1pHU7Gm
-	HqNfZ4+snLl9vLkvLuTYvuPEA41hk66Q0yC8rPtivd24XA9wcI+iNMWUkue/sdjIM8MjWhXPCWu
-	hEcEi8kysNGABY+fcTESdX5Pqnji/QSHagHvtnPThrqRhjiHTebfWT1qhMNbpz1vS0wpIWY8T9o
-	myGTpCz6wT5MZAwnxigY/1OTbfwtmE2pHCmpt8EgKhjxY9M+/yw++2FRbJngtm+2aMhZUjXMt2t
-	yn85ANUoUX/lkpBJzjj9pUp99H+EEJP/zvJ
-X-Received: by 2002:a17:90b:3149:b0:38e:ad9d:1151 with SMTP id 98e67ed59e1d1-395c33ec565mr14588270a91.4.1787336718383;
-        Fri, 21 Aug 2026 11:25:18 -0700 (PDT)
+        bh=F9B7c0XpIh0nkrhvveEJrVj3ZjtXGrKz5tFqZu7UN7Y=;
+        b=j/BHeysj/d7C6P6w1RyM2z4WICKbHLQVeKSFtiO45DXdAH+ANlgINvXkRyuK3RDwYK
+         P2EEo9oLdd+sCXK1i1M/u9kvzdu47lXQk52Ps24A+NwyZOCzT5xbhG6a6AhJo4kzDJKn
+         OqaWhEwjCOJ4v9e5ya3yjo+km7SXjGKCZR9D9vtNnmmtiLt5AzVbbGfIfxDP68eB9Nn0
+         q8X9eEi4MUgWBSe/lAHb9OQMNw1BKcr0CM/wnUrirHpvNhdP/kdq+Nuj3jvNqdTFnpL6
+         ArLaC6ymFna3gcXHAWogWQRvZgLpQ3BF7+j3HxC/mbS3mQiiUJKMwlUWZMYqYTmht7ff
+         vrag==
+X-Forwarded-Encrypted: i=1; AHgh+RoA+IWSFHJCke0TlqSTspIbxQuYAMck1PTKgpZBga54wLbs9RJ4KY0uoJeomvHfygnSSzn+7Ek=@vger.kernel.org
+X-Gm-Message-State: AFuF++lvZ12jXkV6gomU2euZzgmad4t1OTki3sTXBXK+NM130LbRmrD5
+	1ts50uVCjEsHZriuXyve+04eYvYdbCG7+BaSnnHV6+38Vr/xaJOsDoZj
+X-Gm-Gg: AR+sD1240wrFIEwNAq4/WunWZBg0FA5YrxP3uSZLBh9gIZ/2fq/susq7akrjOzqiLhh
+	zOOIQkypQ3m8e+dvvSsdLbVnj0nrG0q8ikYi+6JWI8NdtS4K8zTKkjcIWoSCeQBwBoul8v9fFLB
+	Ifn6I83qq4jeHxhNCXZ/Xl5U6kjFLGonlyydaAKuQM2Tqr9SceDKAWjS7HaixlhQp0OEwI9FIHH
+	EmlPSVsVQQYDOJI56Lalch23EEMw0IUK5Zv0Qhxd0pnXKX8Glkpy7EBpgkBZ7Bmbj/ncuMfZDm1
+	IfZ7bq1qUxqPGhnoYzbF0o/u2SkSgVsr8w8FBqNR6bKtdx/rxhje2Q0CIbWwUhkTNLeY4PFtWYr
+	rLR9ZJA8wu1i8p9cgLsjtZWZXzhqExcVSJvTJP7fvpO/iQK8i9ZNlECL2C4srX3hUFq8H8r+3Co
+	XY1+NiLG4oc8l6mc5/8SjLM6b9ejgHUjmJyW5PXOf1z5xnoXnj9R89sxcEdwEGgCYtEbIi+0Z4R
+	zryhuq+rdoWLvR9UuACALIl
+X-Received: by 2002:a17:90b:3c50:b0:37c:607b:2cd9 with SMTP id 98e67ed59e1d1-395dec98ad3mr1029902a91.0.1787336732318;
+        Fri, 21 Aug 2026 11:25:32 -0700 (PDT)
 Received: from localhost.localdomain ([2001:4898:a800:1012:54e3:69b5:423e:871a])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-395c45539a1sm4243013a91.3.2026.08.21.11.25.15
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-395c45539a1sm4243013a91.3.2026.08.21.11.25.28
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 21 Aug 2026 11:25:17 -0700 (PDT)
+        Fri, 21 Aug 2026 11:25:31 -0700 (PDT)
 From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
 To: edumazet@google.com,
 	ncardwell@google.com,
@@ -80,9 +80,9 @@ Cc: kuniyu@google.com,
 	kys@microsoft.com,
 	blbllhy@gmail.com,
 	stable@vger.kernel.org
-Subject: [PATCH net 1/2] tcp: fix use-after-free in do_tcp_getsockopt(TCP_CONGESTION)
-Date: Fri, 21 Aug 2026 14:24:48 -0400
-Message-ID: <20260821182449.79785-2-blbllhy@gmail.com>
+Subject: [PATCH net 2/2] tcp: fix use-after-free in do_tcp_getsockopt(TCP_CC_INFO)
+Date: Fri, 21 Aug 2026 14:24:49 -0400
+Message-ID: <20260821182449.79785-3-blbllhy@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260821182449.79785-1-blbllhy@gmail.com>
 References: <20260821182449.79785-1-blbllhy@gmail.com>
@@ -94,25 +94,23 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-do_tcp_getsockopt() reads icsk->icsk_ca_ops->name without holding
-rcu_read_lock(). Since commit 0baf26b0fcd7 ("bpf: tcp: Support
-tcp_congestion_ops in bpf"), icsk_ca_ops can point to dynamically
-allocated BPF struct_ops memory that may be freed concurrently via
-setsockopt(TCP_CONGESTION), leading to a use-after-free.
+do_tcp_getsockopt() reads icsk->icsk_ca_ops and dereferences the
+get_info function pointer without rcu_read_lock(). With BPF struct_ops
+congestion control, ca_ops can point to dynamically allocated memory
+that is freed concurrently, resulting in a use-after-free when the
+kernel dereferences or calls through the stale pointer.
 
-  BUG: KASAN: slab-use-after-free in _copy_to_user+0x37/0x60
-  Read of size 16 at addr ffff888013505260 by task exploit/149
-   _copy_to_user+0x37/0x60
-   do_tcp_getsockopt+0x158a/0x2460 (net/ipv4/tcp.c:4585)
+  BUG: KASAN: slab-use-after-free in do_tcp_getsockopt+0x2037/0x23e0
+  Read of size 8 at addr ffff888013701258 by task exploit/149
+   do_tcp_getsockopt+0x2037/0x23e0 (net/ipv4/tcp.c:4564)
    tcp_getsockopt+0x91/0xf0
    __sys_getsockopt+0xf7/0x170
 
-Fix this by holding rcu_read_lock() around the ca_ops->name access and
-copying the name to a stack buffer before releasing the lock.
+Fix this by wrapping the ca_ops load and get_info call within
+rcu_read_lock()/rcu_read_unlock().
 
 Fixes: 0baf26b0fcd7 ("bpf: tcp: Support tcp_congestion_ops in bpf")
 Reported-by: AutonomousCodeSecurity@microsoft.com
-Reported-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
 Reported-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
 Cc: stable@vger.kernel.org
 Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
@@ -122,39 +120,24 @@ READ_ONCE()/WRITE_ONCE() annotations are intentionally left to a
 separate change; related TCP annotation work is available at:
 https://lore.kernel.org/all/20260416200319.3608680-1-edumazet@google.com/
 
- net/ipv4/tcp.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ net/ipv4/tcp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index b4237d0e994d..7360ff718f1d 100644
+index 7360ff718f1d..43ccd2d37f9c 100644
 --- a/net/ipv4/tcp.c
 +++ b/net/ipv4/tcp.c
-@@ -4577,16 +4577,23 @@ int do_tcp_getsockopt(struct sock *sk, int level,
- 		val = !inet_csk_in_pingpong_mode(sk);
- 		break;
+@@ -4562,9 +4562,11 @@ int do_tcp_getsockopt(struct sock *sk, int level,
+ 		if (copy_from_sockptr(&len, optlen, sizeof(int)))
+ 			return -EFAULT;
  
--	case TCP_CONGESTION:
-+	case TCP_CONGESTION: {
-+		char ca_name[TCP_CA_NAME_MAX] = {};
-+
- 		if (copy_from_sockptr(&len, optlen, sizeof(int)))
- 			return -EFAULT;
- 		len = min_t(unsigned int, len, TCP_CA_NAME_MAX);
- 		if (copy_to_sockptr(optlen, &len, sizeof(int)))
- 			return -EFAULT;
--		if (copy_to_sockptr(optval, icsk->icsk_ca_ops->name, len))
-+
 +		rcu_read_lock();
-+		memcpy(ca_name, icsk->icsk_ca_ops->name, sizeof(ca_name));
+ 		ca_ops = icsk->icsk_ca_ops;
+ 		if (ca_ops && ca_ops->get_info)
+ 			sz = ca_ops->get_info(sk, ~0U, &attr, &info);
 +		rcu_read_unlock();
-+
-+		if (copy_to_sockptr(optval, ca_name, len))
- 			return -EFAULT;
- 		return 0;
--
-+	}
- 	case TCP_ULP:
- 		if (copy_from_sockptr(&len, optlen, sizeof(int)))
- 			return -EFAULT;
+ 
+ 		len = min_t(unsigned int, len, sz);
+ 		if (copy_to_sockptr(optlen, &len, sizeof(int)))
 -- 
 2.55.0
