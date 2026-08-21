@@ -1,180 +1,139 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BEC4611E1
-	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 09:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5691645FFBB;
+	Fri, 21 Aug 2026 09:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787304392; cv=none; b=AG+DKbn4sJiQV7n7rrTSdv5DmomTfMUAM6Wb/P6PHHDuqHh37YohAKVxDWLfU6EGdeVGxBiCT8+HG1SRtmTYbull07FT5cG9OTUMhK2HtT+BFAQ/50+IGMxWJE4OxI3FSUyH2/B+VFG+PwZlf94uG8190kMxVSYkhRnVHCyUFIQ=
+	t=1787304483; cv=none; b=eDstfbjt1lcm+dWBWVEPUCBo8O5TmUChBlZc664vh3wJ2yIenrYwDYySAY6Ypi5RglBDoTZAYM5jj7FQKB0lJfrHsHaZGXCEfgKfCqUhxg9jZ09Bp6XwDnHhjwPfr5uLLk1Uynarlf+Q3+BnaqXMT6LA9Xqzc0bCJgXEIyPehnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787304392; c=relaxed/simple;
-	bh=XLg7rKpGO8Yqvak+1z62LOnFxoHsD2BRglXUoG22Z/0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BKpgKJ6IZ5NOlgFNHpebwIzLcy0toz7i/GRKm3c6eaqYA8J7Avj6Bvk+ojN1ld/ip1B4MtyEXFEzHSHeIg3nLF/fCOxRrOg69TotLb86Vrw4CkHsdgrxBi8ROyZQcZbaFiG+mm57x66rAadCIFe+KSF6tMO15yIG10CqjLIqZCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sj1AMAZR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787304483; c=relaxed/simple;
+	bh=1wTh39NdS2AJGUiEuIl6241+4n9++m3+6F1OUYIdnHE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OXRveIaPll7Oay1Tey0dVLd7jKshBbpDdG+tzOZyEjjIXMUUd/VPE+jqgO+Yewenmq2easHcOTORMoG0euHKXg4/zDPvx8z5bXsKKNjpEu6gcav/3PJy2JQzRPeSg/kSN/nMF5wrAfOVoU+h1Eu+gQ7PZjRqY+zd96OG4a4+EuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=djf7NOZ8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sj1AMAZR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B5C81F000E9;
-	Fri, 21 Aug 2026 09:26:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="djf7NOZ8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257FA1F000E9;
+	Fri, 21 Aug 2026 09:27:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787304381;
-	bh=I30nrGeVO2qSThwkhJivSx17E/vdPy7KXMU/8oZ0upI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Sj1AMAZRqGlZVa4zLN7VDewwhJLnCOYiu1RENgLPr6TnDMXMODja+63+nRAqpSdMT
-	 TkO6fr5qsKBxGhUp+/03Rfg/pNskL/1Y5qgF34cBDOULxcgDWbucb/oqplO8p+LH9A
-	 y91CvQ0i8BBJ9208yeUm8GgMRsre3rQTXpHHkiOJo9pZggZycG/WoiZrh/o42YIG4s
-	 V+0i56HmL9CqSm69SGVV6J0KHn7FAYL77DJs3ziwQD1YTWjrSo3G/SWOCbE13XrE1d
-	 OLtSCdSMHQCHZhB5TzEaLlcClRIiaiv76c3VWuqdLcuiO6kLNIZiPcaSaOY1btGIIU
-	 pqzrHjpzXtepw==
-Date: Fri, 21 Aug 2026 10:26:18 +0100
-From: Simon Horman <horms@kernel.org>
-To: Chuyf26 <Chuyf26@linux.alibaba.com>
-Cc: Dmitry Kozlov <xeb@mail.ru>, netdev@vger.kernel.org
-Subject: Re: [PATCH] pptp: reject payloads shorter than the PPP protocol field
-Message-ID: <20260821092618.GF265046@horms.kernel.org>
-References: <20260818162143.gn-j15t2twSq3EK4tluniorb9JMdD9cS6_NWtWioiRc@z>
+	s=k20260515; t=1787304469;
+	bh=mEdAGVzPUoyqrfbaWfJzZ3/gyva0sQPDevVMAwj477g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=djf7NOZ8scVNbwjo7n61Um9iJmA1QFmribD8NS5XFcKw+udiRqevv9qvv+ewRLvmN
+	 blKlkq4jjn1avHCLKCNiUe1SPULqcR2F0u16AH2ljLun/E0alBU9RIMSVYqe6LiKFd
+	 H9SkyfXaGcVsEyE6FS94+lqzYE9mOzbQ52abqUZUsnPs+9XTjbMwwyPMCCYIO1n8OT
+	 y0+/uRleEwC2qmWs6STY9HKJEeZooqSW5j/0aWIOpCYUqKr9Tmen1e0CYQ/0l6lkTd
+	 GCGurP8pJ3oibxRbrOurDpL4P8Kk+jhSIVbKOlX+TUqQvoJfgQ+G6P15q7mccjDCcK
+	 dLOxlNeGBIlyg==
+Message-ID: <64365932-c765-472e-bf6c-b07c9ee25eaf@kernel.org>
+Date: Fri, 21 Aug 2026 11:27:43 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260818162143.gn-j15t2twSq3EK4tluniorb9JMdD9cS6_NWtWioiRc@z>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 00/14] skb extension for BPF metadata
+To: Jakub Sitnicki <jakub@cloudflare.com>, netdev@vger.kernel.org,
+ Alexei Starovoitov <ast@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Stanislav Fomichev <sdf@fomichev.me>
+Cc: bpf@vger.kernel.org, kernel-team@cloudflare.com,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+ Emil Tsalapatis <emil@etsalapatis.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Simon Horman <horms@kernel.org>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+References: <20260814-bpf-meta-inside-skb-ext-v1-0-767edd862656@cloudflare.com>
+Content-Language: en-US
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+In-Reply-To: <20260814-bpf-meta-inside-skb-ext-v1-0-767edd862656@cloudflare.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260818162229.yOFI43Vfo0v911uVw0AFpyHQ_aOe_fsjoQXPZP70vMI@z?part=1
 
-Simon says:
 
-Given the first issue raised by the AI-generated review below, it seems to
-me that this is more of a hardening patch - for net-next, no Fixes tag -
-than a bug fix - for net, with a Fixes tag.
+On 14/08/2026 10.14, Jakub Sitnicki wrote:
+> [I realize net-next closes soon. Posting only to collect more feedback.]
+> 
+> Please see the RFC cover letter for the overview [1].
+> I will focus here just on the latest developments.
+> 
+> 1) Based on feedback from the RFC - the BPF skb extension is *no longer
+> scrubbed* on tunnel encap/decap or veth traversal. There is also *no
+> mechanism* to enable scrubbing as we don't seem to have a use case for it.
+> 
+> 2) Since the RFC I've enabled access to BPF skb extension for the remaining
+> BPF program types which operate on skbs, namely netfilter, lwt family, and
+> - everyone's favorite - sk_skb.
+> 
+> Outside the patch set, two things happened:
+> 
+> 3) At NetConf 2026 Kuniyuki presented effectively the same idea with a use
+> case in mind to attach metadata to packets on egress (IIRC). Hoping for
+> feedback if this meets your needs as well.
+> 
+> 4) At BPF Summit 2026, Alexei asked - I'm paraphrasing: What percentage of
+> skbs will carry metadata in our workload? This determines if the cost of
+> attaching a tracing prog to consume_skb gets amortized. We've run
+> experiments and have some answers.
+> 
+> If bpf skb ext existed today, we would adopt it to attach metadata to
+> incoming TCP connections and ingress UDP packets to CDN to identify flows
+> that have been forwarded from one PoP to another.
+> 
+> Based on stats from a production node where we've been testing this patch
+> set, the fraction of skbs that would carry the metadata is <1% (~0.7%):
+> 
+> ```
+> 923m16$ sudo perf stat -a -r 10 \
+>              -e skb:consume_skb -e skb:kfree_skb \
+>              -e probe:skb_ext_add -- sleep 1
+> 
+>   Performance counter stats for 'system wide' (10 runs):
+> 
+>             334,256      skb:consume_skb                            ( +-  1.63% )
+>               1,525      skb:kfree_skb                              ( +-  4.09% )
+>               2,218      probe:skb_ext_add                          ( +- 18.58% )
+> 
+>             1.02305 +- 0.00243 seconds time elapsed  ( +-  0.24% )
+> ```
+> 
+> I expect that even if we adopted bpf skb ext for other use cases we have in
+> mind, like labeling egress CDN packets with a customer identifier, we would
+> attach metadata only to around 5% of all skbs in flight.
+> 
+> We've run an experiment to evaluate this patch set - bpf skb extension -
+> against the alternative - using a BPF map keyed by &skb (LRU_HASH) to stash
+> metadata plus consume/kfree_skb tracepoint programs to clean up the
+> entries.
+> 
+> To do that we've modified the CDN component that labels the incoming
+> connections forwarded from another PoP:
+> 
+> - with bpf skb ext, BPF progs involved in processing consumed 7.5..10 CPU%,
+> - with BPF map + consume/kfree_skb tp, the overhead was between 15..20 CPU%
+> 
+> Not surprising considering the low fraction of skbs we attach metadata to.
+> (For graphs see slides 30 & 40 from our presentation at Netdev 0x1A [2].)
+> 
 
----
---- Patch [1]: [PATCH] x25: validate class D facility length before reading it ---
-commit 37de2e4212c8268079bc40f17b99b1685565a4da
-Author: Chuyf26 <Chuyf26@linux.alibaba.com>
+It seems quite clear to me that the kfree_skb tracepoint approach have
+too high overhead.  Simply due to frequency as it getting invoked for
+ALL packets in the system.
 
-    x25: validate class D facility length before reading it
+--Jesper
 
-The patch adds a len < 2 test to the X25_FAC_CLASS_D case of
-x25_parse_facilities() so that the two facility header bytes are known to
-be present before p[1] is loaded. Classes A, B and C already validate
-their fixed lengths in the same way.
 
-No Link: tags are present in the commit header.
 
-> x25: validate class D facility length before reading it
->
->     The over-read lands one byte past the packet data but inside the skb
->     data allocation, where KASAN does not report it, and the value read
->     then controls how many further bytes the parser believes remain.
 
-[Severity: Medium]
-[Finding: main-1-0]
-[Sources: opus-5]
-Does the value read actually reach the parser's length arithmetic?  In the
-only case where p[1] is outside the validated range, len == 1, the
-pre-existing check already rejected the frame:
-
-net/x25/x25_facilities.c:x25_parse_facilities() {
-	unsigned int len;
-	...
-	len = skb->data[0];
-
-	if (!pskb_may_pull(skb, 1 + len))
-		return -1;
-
-	p = skb->data + 1;
-	...
-		case X25_FAC_CLASS_D:
-			if (len < p[1] + 2)
-				return -1;
-}
-
-len is unsigned int, p[1] is unsigned char so p[1] + 2 is an int in
-[2, 257], and the comparison is done after conversion to unsigned, so
-1 < p[1] + 2 holds for every possible byte value.
-
-That means the len -= p[1] + 2; / p += p[1] + 2; statements and the
-CALLING_AE/CALLED_AE memcpy() paths were unreachable for len == 1 both
-before and after this change, and the new len < 2 clause returns the same
--1 for the same input.
-
-Would it be more accurate to describe this as removing a benign one-byte
-read rather than as a parser length bug, given the commit message itself
-notes the read stays inside the skb head allocation?  Does the
-Fixes: 1da177e4c3f4 tag still make sense if there is no behavioural
-change for stable trees to pick up?
-
-> diff --git a/net/x25/x25_facilities.c b/net/x25/x25_facilities.c
-> index 6dadb217e101..bfb269538984 100644
-> --- a/net/x25/x25_facilities.c
-> +++ b/net/x25/x25_facilities.c
-> @@ -147,7 +147,7 @@ int x25_parse_facilities(struct sk_buff *skb, struct x25_facilities *facilities,
->  			len -= 4;
->  			break;
->  		case X25_FAC_CLASS_D:
-> -			if (len < p[1] + 2)
-> +			if (len < 2 || len < p[1] + 2)
->  				return -1;
->  			switch (*p) {
->  			case X25_FAC_CALLING_AE:
-
-[Severity: Medium]
-[Finding: main-2-1]
-[Sources: opus-5]
-This isn't a bug introduced by this patch, but while the class D branch is
-being touched: should the facility length byte and the declared semi-octet
-count also be checked against each other?
-
-The CALLING_AE and CALLED_AE cases in x25_parse_facilities() validate the
-two independently:
-
-			case X25_FAC_CALLED_AE:
-				if (p[1] > X25_MAX_DTE_FACIL_LEN || p[1] <= 1)
-					return -1;
-				if (p[2] > X25_MAX_AE_LEN)
-					return -1;
-				dte_facs->called_len = p[2];
-				memcpy(dte_facs->called_ae, &p[3], p[1] - 1);
-
-There is no test that p[1] - 1 >= (p[2] + 1) / 2, while the emitter
-x25_create_facilities() ties them together:
-
-	if (dte_facs->calling_len && (facil_mask & X25_MASK_CALLING_AE)) {
-		unsigned int bytecount = (dte_facs->calling_len + 1) >> 1;
-		*p++ = X25_FAC_CALLING_AE;
-		*p++ = 1 + bytecount;
-		*p++ = dte_facs->calling_len;
-		memcpy(p, dte_facs->calling_ae, bytecount);
-
-So a peer sending p[1] = 2 with p[2] = 40 makes the kernel store
-called_len = 40 while copying only one byte into called_ae.
-
-Two follow-on effects: userspace reading SIOCX25GDTEFACILITIES in
-af_x25.c gets a semi-octet count for 39 semi-octets the peer never sent
-(the buffers are memset at the top of x25_parse_facilities(), so this is
-fabricated zero data rather than a memory disclosure), and on the accept
-path x25_rx_call_request() clears only the calling side:
-
-net/x25/af_x25.c:x25_rx_call_request() {
-	/* ensure no calling address extension on accept */
-	makex25->vc_facil_mask &= ~X25_MASK_CALLING_AE;
-}
-
-so the peer-supplied called_len survives into makex25->dte_facilities and
-is fed back to x25_create_facilities() when x25_write_internal() builds
-X25_CALL_ACCEPTED, emitting up to 20 mostly-zero AE bytes.
-
-There is no memory-safety consequence here: the memcpy() length is bounded
-by X25_MAX_DTE_FACIL_LEN - 1 = 20, which matches sizeof(called_ae), and
-the worst-case emitted facilities block stays inside X25_MAX_FAC_LEN.
-
-Would it make sense to reject encodings the emitter can never produce, in
-the same spirit as the header-length check being added here?
--- 
-pw-bot: changes-requested
+> [1] https://patch.msgid.link/20260714-bpf-meta-inside-skb-ext-v1-0-5871c07a8dd6@cloudflare.com
+> [2] https://github.com/jsitnicki/talks/blob/5d64c151f4dc0c38b2832fdcbce7284ec93fdca2/Netdev%200x1A%20-%20Thrice%20the%20charm%20-%20an%20skb%20extension%20for%20BPF%20metadata.pdf
+> 
