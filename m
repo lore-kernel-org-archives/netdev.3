@@ -1,123 +1,165 @@
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3DF43F8D7
-	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 08:58:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787302710; cv=pass; b=jvRuwQQ6E8LwesZv32OiCD4A4en9VujI/HOXjmTBifh+WE5Nn9428krFeLsZNSyBN6hEE4oIPSy1cm8gsjDjeuTYTi49nlBKzppw285xykKFWdhni1eJuElHG0rDPtCsNkM9KN0/RqH6cwlbS3KKR5VdNBkfAW258AyRZWjP4xY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787302710; c=relaxed/simple;
-	bh=cWURZBce2Co6LLpSdW/y7GirAma8nKHh0LJ9gYyKZ5U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cC5w5ox90/E22SxODtcYHBFlpsJFoGG2swz+LHp1e0IF7JEq3ax1BiRSdibDklr/iqYqkPUhSYpfgCJj8gr6lAHNqxiesl0NiPtW7DavWBDtNby8+GzuAz5cTu+Qr1fm60dM5eBXDCx7VsN2bxWu5RjgFv0ocIrUe02NTyO+SVg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HcfN4yvd; arc=pass smtp.client-ip=209.85.128.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666A43D5643
+	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 09:07:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787303256; cv=none; b=Po56wov94TU1ILAhYiI7g2s2/EXCcL7dfxdEBLXo1Im+0muWdajv13M9zaRpMgse1PVewm8Riw8vzuoDDlvtFoOJ+Uvia0GUnAVmUKX/w2IwnWDXRF2tf2ky6VlGYNKEZEN6mjD70Noq5sWy7a0cNsLh3x7/v3sHw3WnQ6NDZ+Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787303256; c=relaxed/simple;
+	bh=klROXT761z9hnQ/lx8RdyrhzAFJ0TXuwT+b74SuZ9rs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aiAUsQpcXX6prh4J1I1h34u0KtuL0TECO5QsBlqbohsP7DWoriqzMTtSwUaY5Rtm875p1YDdEhnCaMIareKUZDVd6Nzj22P50f8xZrivdTTPmAdZTMRhIvxT8wI00ePY67/0M88QmUhu9jG51BSKzIuM7JM/gilxj6S0LplMd0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L+l+txHs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HcfN4yvd"
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-836cbcd0a48so10964437b3.1
-        for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 01:58:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787302701; cv=none;
-        d=google.com; s=arc-20260327;
-        b=EdSQIMg+2TFoVTIC62nACuo8N6M7WNn/d2ZyVmL+OiKNDUC3elXiodBYVVZjcSRhsC
-         K4sTQXWEm419SjF9h2ilMTGgLiphC+gQ+iBQZMdfh86fG3QMDN0DfqbM1pljICGI59MG
-         KqpC/Yfn6EeNZ/ovT38RESBLdtuNwoQghIvbtpEsvvKN62SkExRymks+YJ9IkcpFIH19
-         GyE+paXPj1Pa5gf2LzY2mSI5UVQaKFBptYxtPxdt5cCJWVcpyCjKHr0mWUctMGKveCMg
-         BqTxDPqXPh7O9BT4uV5BHVoKipz2jbV+acjCQNt74kkkrtCEVAPdLkBUIPzEXzRTktHT
-         FUMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cWURZBce2Co6LLpSdW/y7GirAma8nKHh0LJ9gYyKZ5U=;
-        fh=ZGAYbm8GfdiwCpgqqM9TtV7VfMCdw3or6/U1lNHCo6E=;
-        b=myPtFb8L0Zr3JmWHZ9P9aWNwiK7p6yEkZG+BG4zm3b9pYub4B3ubzar/P47aIlvvrB
-         +nxtzXaSaUkmEp/cJcAjIwR2oRlwo2OsbzR7ISbiUye8z3OoeKwHrz2863mFH/Xecrg/
-         FlPK6snA9xsZ1zML7El9i+uGaj0UXj7gdUO86//T06SWAXsqmLC0us+q5fLtFJIKEVj/
-         3BJQX88JysgyL5sANPcjM75k2BB7wEPglzAxqLhPLPZoIHu1/wGAPHhzccvrbxkn3s7v
-         s/2/dZW2I2Fj4ehfn5nwFuN/rfj+P/jyHtuXvvdHE20fayEPy/fYCx5tvlxHpA1MKQiF
-         d7Bw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787302701; x=1787907501; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cWURZBce2Co6LLpSdW/y7GirAma8nKHh0LJ9gYyKZ5U=;
-        b=HcfN4yvdd524rRs/fqfuNn+B8XE3xxrM9KMDxhrBWoz+/2ngJhmYENcUxJq1f7tGyC
-         5gcroFqA7KhSu9gYFX8J3BWKcnV/sZNrBC1YHf3nfWJ+ll1Ombb5AzcKJvQ0LE/YFNmz
-         0rjPdzciD5OSZ7ECl+8J5M/dhwoISCSy807NF0qkmmHSfN58ZVKlIPmKIXNS7m0Xg8au
-         iqPKCsPyf5xoFYyo+hP5vrNs/VJatXO9LSXtuoAOYnL30nFnHN8Tyjp9hgLtwBhZWxvH
-         YY5EtoCNu3CUBgQxgQR43kmY3bAkRlEMyLKxgFP7Y2Ko/voTS7td8OW+TUpDOYS+vDaU
-         ZDHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787302701; x=1787907501;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cWURZBce2Co6LLpSdW/y7GirAma8nKHh0LJ9gYyKZ5U=;
-        b=PpWzU+EKTz4KpkuvQHjZsS6/K9mWCYgt7TKU9TiMb8uRqB/DnbncKXgq9M/91u6Jo/
-         k6P85kQHVln1v+h3rfld/xKVaq5Yf3k/YxXbMqTiqEHmjLSsb5rYnR8RZ8m7eRDbJlUJ
-         Bay4GNwTs6gAfpHIA6f161W5BCrGuF2Vek/XxncdANnPn5mvM1OwjIoLZHPcr+avWHw1
-         7KpCFHJr94rxYOTdrAGyNSoxaDQovtjpA0xfwzGPJMCjdxorNP+3tFo9RYCsyOA+5Ll2
-         Xcc21/rk6TU08JCr+YSe3J2fOd0uOxeB2c/pFn1k0eOtJ1Dypqk2FJ+n0/YW+SoBS0TN
-         aINw==
-X-Forwarded-Encrypted: i=1; AHgh+RpAqSrrL4mJJ3ft7JOqxkbCUJjFF51jk3p7fzfTSWTDew81LTeKraWDbMr5ZJZKgd20Xi6NLzo=@vger.kernel.org
-X-Gm-Message-State: AFuF++kQpJoYNk3ZE7qQW8znMP1pOQxflpoSe/oNou7soMPuOrWIv3+y
-	l4SAqVfaLG0XxgReg7JYCyxR/ASOR1Jft+ctDIYcm0bz8kp0vwSwfro1URnk+yPUXd4FsDYuyt0
-	FmL/pmYwJ5ZQGzP8F0UqpTvlOlT+KXfWLUMS19XUV
-X-Gm-Gg: AR+sD11mnr88acsLc5VRQxSfAMT+OHY2YEgXs/JVFutKsSzIEgjZPq9tHG3Ovb1C/k7
-	0m8MLottlvsxtoAQHzb9kJ/88FpPdGUDT6viJ4hDmZa+odeUhma6dwFC0pCsCXf67TKaGFLj++X
-	pE4ppQNK3gUfbV/e3zeZdjZACxZSeJT+CL86oY+/vz6yFigou7j8DNPJXk5EMzYujPcFtaC1ypa
-	64OZEjbCknbjL2v5axmfkh6WQ/GvzgXXyijL44a81BETxn5yUC11cedpXR8Gi/1um8Ra/v/0wJ4
-	tqgHe0813xze4O9U4UFi6h9FRHhcDVOTdddoqxtImc5G0P/B+eW7mzJjAaPOsFl1d0Z63TsOtsI
-	msOHSUMcSOLvBsHyAQjSJwwqdO3jhtrXXtILMqoO3tWbKQ5l63+P0NdFTtw==
-X-Received: by 2002:a05:690c:e197:10b0:81e:c17d:7b8f with SMTP id
- 00721157ae682-849f7454600mr18143687b3.31.1787302700140; Fri, 21 Aug 2026
- 01:58:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L+l+txHs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3241A1F00A3D;
+	Fri, 21 Aug 2026 09:07:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787303237;
+	bh=gvw7TUZTzqyvJK/GTnAHBl9nD+SCDjuoU9N3OW+oEgI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=L+l+txHs7hewSLhy+FZckP0iMd7taNVF5A+CTLhPoYMhrJo28XJZopAqJiTR41tJP
+	 z68xieGI/W/JhZxFgt3RWraApyUHXli0FnjPR7BFhHeEXKrJrEgfo0d5hDRskR6bYm
+	 pGPuplRs1EVkpFO2J750rar3a/5iHAeLtl0VtTXVot/CcNfDOhQTcvpR/WVRqTx2AU
+	 Z75y46tVKfzr58BgCL3i29qk7pV+F/ejx/RJB9jyiZCLU8/oCVxW9rAyGuJ1EDV69Y
+	 iZVEBp/S6pNejU5bc6LXBxwK3x+dPQWKYimDuyetlWTxqjLtj4V3GoMxbnFM9ApKbu
+	 mNZo/N9PZI7cw==
+Date: Fri, 21 Aug 2026 10:07:13 +0100
+From: Simon Horman <horms@kernel.org>
+To: Chuyf26 <Chuyf26@linux.alibaba.com>
+Cc: Dmitry Kozlov <xeb@mail.ru>, netdev@vger.kernel.org,
+	Zhixing Chen <running910@gmail.com>
+Subject: Re: [PATCH] pptp: reject payloads shorter than the PPP protocol field
+Message-ID: <20260821090713.GE265046@horms.kernel.org>
+References: <20260818162143.gn-j15t2twSq3EK4tluniorb9JMdD9cS6_NWtWioiRc@z>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260821-hch_not_export-v2-1-c62b62ec459f@debian.org>
-In-Reply-To: <20260821-hch_not_export-v2-1-c62b62ec459f@debian.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Fri, 21 Aug 2026 10:58:08 +0200
-X-Gm-Features: AcwNN1W6KOZg2gyTMwlLV5UwyQrWhgQTXvNqX4deyDny_vDV1CNcKxXQyAea3hU
-Message-ID: <CANn89iJku1MgH+NRPQ7s4+9d5XQ8vjKD1bBLM-VmaA=BC1Yr5A@mail.gmail.com>
-Subject: Re: [PATCH net v2] net/socket: remove unused do_sock_{set,get}sockopt()
- exports
-To: Breno Leitao <leitao@debian.org>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
-	Martin KaFai Lau <martin.lau@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260818162143.gn-j15t2twSq3EK4tluniorb9JMdD9cS6_NWtWioiRc@z>
 
-On Fri, Aug 21, 2026 at 10:29=E2=80=AFAM Breno Leitao <leitao@debian.org> w=
-rote:
->
-> do_sock_setsockopt() and do_sock_getsockopt() have been exported since
-> they were split out of the syscall handlers for io_uring to reuse.
->
-> io_uring is the only caller outside net/socket.c, and it is never
-> modular: cmd_net.o is built under obj-$(CONFIG_NET), and both CONFIG_NET
-> and CONFIG_IO_URING are bool. The declarations in <net/sock.h> are all
-> it needs, so no module has ever been able to use these exports.
->
-> Drop the symbol exports.
->
-> Fixes: 1406245c2945 ("net/socket: Break down __sys_setsockopt")
-> Fixes: 0b05b0cd78c9 ("net/socket: Break down __sys_getsockopt")
-> Suggested-by: Christoph Hellwig <hch@lst.de>
-> Link: https://lore.kernel.org/all/20260819090439.GB9267@lst.de/
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+On Tue, Aug 18, 2026 at 04:21:43PM +0000, Chuyf26 wrote:
+> pptp_rcv_core() dereferences the first payload bytes after pulling the
+> GRE header: payload[0] and payload[1] when stripping the address/control
+> field, and up to payload[4] when checking for an LCP echo request in
+> the out-of-order case. Only headersize + payload_len bytes of the skb
+> are pulled, so a PPTP packet with a payload_len smaller than these
+> accesses makes the driver read past the end of the packet data.
+> 
+> The path is: a GRE packet for an established PPTP channel arrives
+> through the IP protocol 47 handler pptp_rcv(), which validates the GRE
+> flags, looks the channel up by call id and source address and queues
+> the skb to the pppox socket, where pptp_rcv_core() runs for sockets in
+> PPPOX_CONNECTED state. payload_len is taken from the GRE header without
+> any lower bound, so an attacker who can inject packets carrying the
+> channel's call id and peer address can make pskb_may_pull() pull as
+> little as the GRE header itself; payload then points at the end of the
+> pulled data and the dereferences above read up to five bytes past the
+> packet. The sequence number is likewise attacker controlled, so both
+> the out-of-order LCP echo check and the in-order address/control
+> stripping are reachable.
+> 
+> The read lands inside the skb data allocation (tailroom of the same
+> slab object), so KASAN does not report it and the access does not
+> fault, but the bytes read are undefined and steer the accept/drop
+> decision: garbage may let a short malformed frame through to
+> ppp_input(), and the LCP echo check is meaningless for payloads
+> shorter than a PPP protocol field.
+> 
+> A PPTP payload is a PPP frame and therefore always carries at least
+> the two-byte PPP protocol field, and the LCP echo check needs five
+> bytes to be meaningful. Drop packets shorter than two bytes and only
+> perform the LCP echo check when at least five bytes are present.
+> Valid packets are unaffected.
+> 
+> Fixes: 00959ade36ac ("PPTP: PPP over IPv4 (Point-to-Point Tunneling Protocol)")
+> Reported-by: Abaci <abaci@linux.alibaba.com>
+> Assisted-by: abaci:qwen3.8-max
+> Signed-off-by: Chuyf26 <Chuyf26@linux.alibaba.com>
+> ---
+>  drivers/net/ppp/pptp.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ppp/pptp.c b/drivers/net/ppp/pptp.c
+> index 3a10303eb756..ce1cd72baadf 100644
+> --- a/drivers/net/ppp/pptp.c
+> +++ b/drivers/net/ppp/pptp.c
+> @@ -317,10 +317,18 @@ static int pptp_rcv_core(struct sock *sk, struct sk_buff *skb)
+>  	if (!pskb_may_pull(skb, headersize + payload_len))
+>  		goto drop;
+>  
+> +	/* The payload is a PPP frame, so it always carries at least the
+> +	 * two-byte PPP protocol field. The payload bytes are dereferenced
+> +	 * below, reject packets too short to hold them.
+> +	 */
+> +	if (payload_len < 2)
+> +		goto drop;
+> +
+>  	payload = skb->data + headersize;
+>  	/* check for expected sequence number */
+>  	if (seq < opt->seq_recv + 1 || WRAPPED(opt->seq_recv, seq)) {
+> -		if ((payload[0] == PPP_ALLSTATIONS) && (payload[1] == PPP_UI) &&
+> +		if (payload_len >= 5 &&
+> +				(payload[0] == PPP_ALLSTATIONS) && (payload[1] == PPP_UI) &&
+>  				(PPP_PROTOCOL(payload) == PPP_LCP) &&
+>  				((payload[4] == PPP_LCP_ECHOREQ) || (payload[4] == PPP_LCP_ECHOREP)))
+>  			goto allow_packet;
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+Hi,
+
+Thanks for your patch.
+Some feedback from my side.
+
+* The CC list for patch is incomplete.
+  An accurate CC list can be generated with assistance from:
+  get_maintainers.pl this.patch
+
+* Please target Networking patches at either net, for fixes (this case),
+  or net-next, for other patches.
+
+  Subject: [PATCH net] ...
+
+* This patch seems similar to:
+
+  - [PATCH net-next] pptp: validate payload length before parsing PPP fields
+    https://lore.kernel.org/netdev/20260813082247.31499-1-running910@gmail.com/
+
+  And the same concern I raised in relation to that patch seems present here.
+  I'll copy that concern here for your consideration (although in this
+  case there is only one new guard).
+
+    Both new guards bound the reads by the peer-advertised payload_len rather
+    than by the bytes actually present (skb->len - headersize), which is what
+    pskb_may_pull() guaranteed and what the pre-existing check just below
+    already uses.  Is it intentional that one skb_pull(skb, 2) is now gated by
+    two different length authorities?
+
+    Since the skb is never trimmed to headersize + payload_len, payload_len is
+    only a lower bound, so a peer that under-reports it still passes
+    pskb_may_pull() and is still delivered.  For an in-sequence frame whose
+    real PPP payload starts with 0xff 0x03 but whose header says
+    payload_len < 2, the address/control octets are no longer stripped, and
+    the frame continues down:
+
+    drivers/net/ppp/ppp_generic.c:__ppp_decompress_proto() {
+	if (ppp_skb_is_compressed_proto(skb))
+		*(u8 *)skb_push(skb, 1) = 0x00;
+    }
+
+    0xff has the low bit set, so a 0x00 is pushed and ppp_input() then sees:
+
+	proto = PPP_PROTO(skb);
+	if (!ppp || proto >= 0xc000 || proto == PPP_CCPFRAG) {
+
+    with proto == 0x00ff instead of the real protocol, so the frame never
+    reaches its intended handler.  Similarly, out-of-sequence LCP Echo
+    keepalives from such a peer are now dropped by the PPP_HDRLEN + 1 guard
+    instead of allowed, which can tear a tunnel down.  Would using
+    skb->len - headersize for both comparisons avoid this?
+
