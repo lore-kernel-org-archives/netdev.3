@@ -1,316 +1,172 @@
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013009.outbound.protection.outlook.com [52.101.83.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF114156DF
-	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 06:35:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B293905E7;
+	Fri, 21 Aug 2026 06:38:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.9
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787294144; cv=pass; b=VE2H5/KlFMEDDBpcCAUv+yhdZcgi8xCXK9u7DD7qc7QUCK9Uv3blbb0DbeTaJ+mJzrXbkSDBAN3+uGTqvoE3yxtCkQHFc7ROJ3BssxWrcrDIM/pTFr/2QjfulyhyM1+le73ibMxcxmmOPHlaL0HB7xYcU5tLuI8ccvC7JM3Tu9w=
+	t=1787294289; cv=fail; b=IpGJ/pla6jT4hRYiSjN/3FfV5du8N3+Z0ejKVkJpGgc/tymIg4XEiIxnj/qpbrrc21J5XxXe2GavMjYqq1waQKlN/N2JfLUG7D9uYuuTE+ZFq1IZFo5+ozqxKGjSgYSaqhNzsMrjRXkJtd8iaqSNDKcsR4x6fXSMUc0f3e7DO88=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787294144; c=relaxed/simple;
-	bh=ag1yFpe3Herrhw5HFjVmcTPH4/yyI4bVFWNis89tczE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jf+q/RnpWzhp82jo2w+0FdnJHlGtEm+Gex4QL8+CqOmP7sCdss6hngTzs4yN3gVGRW9VOKAeysvBIRGZpLR71G86FOyo5SR88FsyeN8AJ8hjd9Mu3RFUIuIeO9uul3L58AxJUE2Id+OhjfLRPfEd7zQkKFQZh1cCkMZhPL5hmUM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mRJuzJDZ; arc=pass smtp.client-ip=209.85.128.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1787294289; c=relaxed/simple;
+	bh=2lrMv9ZkWia8PnM5gzCiV/XdpjWqtKKUIAbne+wmaAA=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=fhRa5L1xzpyFEZr4wshFNoKK9YRJ7IGHVfJZ7yRmN3drpx0mBQN1vYcs1oHH5nHA48XQnnj1jm1of0UW3GfJ4p0ry/QGOiwt7/TdOTIJ+/jxLdkW7q7tGfV/8BQp+2rIap5gnKDgu+Tdlgen9hnYevemfb42YNWeCgPikBI8K5c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=KnloBnUW; arc=fail smtp.client-ip=52.101.83.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mRJuzJDZ"
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-81dfdbd86d1so10071177b3.1
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 23:35:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787294138; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Fk84pqGIDd7VjL18/MFdDZ9yQgfFYW4iMkvxeC0ulG+vqJoRc+wTDVt19xFapEw068
-         3aQcQLuLL68aiuFyrFbdSvxjvAEuaAySboBrdvZuu6/RpsDVhnq/tz2sa2MAEMNb3sDp
-         1qUVtnprk3aAo9ZOQFS+/Gzo2oMRJbxNcffazkPeZvWLGTrAzVh651YEOK8L1oy8fkFH
-         z9G7F7bYZjE8ICD98eMycqFerpeTFvd3sglduG9R7ltVv3l7zfCZFdln3Xf3uBVU1usf
-         Anaq5X5ab/hqaqbYQ20Hgw3h0uktBj8nvROJ9YJJDSEr0mPituBMK1HSj4CU8n95naSh
-         QuRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=v8w5n7BW+hAKEm33YG90unDP82OEl/cgKgYMKYKcCWY=;
-        fh=MleuEGGG1ov478itHBMR/Kxn9xtVbRWYD1YYd7Y+6xo=;
-        b=aS1YZuaCbnh7qbOZ+YNezJgzWpBh5pYrT45Zl2hhqzVIRJB1aC75o/boo3sFL0UkN+
-         mc+6t9wYiAdatTs8L9fClXOP0J/iGnhXJeaZZgQXwrFloWG8kGx83+pbJXyBV/KXS2Pf
-         05e3lHiEYKiNFgtr6dLuhoQUGtaRkQDY66eBQsRcyGm4JBxbB8qPgdaeyl6vpa+kzFov
-         SQT3dnls4ODhUGLirylnDOEaMEJjTgJSpsv0fjrw36wyEL1rOwRGHWNSethdMAWyAubU
-         1QH8M5VCnmuVJECvfZVC/IpkheWuWfTqC/YeDYBcM4cPIqTIh779Jyo3sy4ejxTPxXJ0
-         RPKA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787294138; x=1787898938; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=v8w5n7BW+hAKEm33YG90unDP82OEl/cgKgYMKYKcCWY=;
-        b=mRJuzJDZv5jr/NBqLamcAu2pT97MVm6E80+CgonE/hZvW8kc4QMAClr/hZEuR//+7w
-         UMYnd6tQN6R2Qus/Z5EIsh/pcN/6gwOKEwwQm+QHLCVfEHp/XQVxuU60nI2EXnAT4Dlm
-         cQ1iN4OvHcb033vb1OmHzYBzGfXXqIezq3x70HRW6XoZwHbWGsnfIsxvQIVZIGYoHM3J
-         jm8Iu1jg2i42qm7ee7xSYIjmH+hMt0UlSK+WFPglCmY/VV0FAkR83ibi1yfNTYj+bAJB
-         0J75xUHuy79UYoDjHWYXq0BvKHCr+Lqw86STUEnCZGws8mg5/ZdcVVf5dt3WQWMDx7Ba
-         4lzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787294138; x=1787898938;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=v8w5n7BW+hAKEm33YG90unDP82OEl/cgKgYMKYKcCWY=;
-        b=Wjl9sfAonOMmJqdbummBtDqpzTm+qfmaSxPUPIQ+GBAdHfDYlj/v9m8gB+QBE6CyCa
-         QuKr7mwZNJMa6/7zfceufB0/ikZbFfgbTmj694OInYHgTVU/maFdLikJ5qY8D7Bu5rvT
-         Dr1m/ClUhcn2+c8BGjG3mwtbdUUAxqSaQxDWPGJYFEH46iUerbbqZccMN+5is7b3pyg3
-         cUTUrKVtfiKlUAMMaKgsY7BBid5uyqd//CIP2kxa2FH7h4ctBtq5RL1+OEuF+5e9XeXl
-         s1ocxbM+RgFJ44JMHX59MSZMaj+apDpdq9cHoXgim3Cajx4p+rDhfkKTP36SMmbsBV98
-         CNEw==
-X-Forwarded-Encrypted: i=1; AHgh+RpDU0CMDiWb0P/QfE4u6XnMffEIhTvW6vliax9CCKDMeJbU077qM1arI596+ZzAJrg5bHHWXWY=@vger.kernel.org
-X-Gm-Message-State: AFuF++ksvkw3y+nQGvJInk44PdBll1AmEzhy3TQaiVaBQrm3lO0hHkup
-	umMPycPWMa/1LwqumRJyTYB1BH3hw54MvbUiXovuPE1M3FYiHSmX1/ZVqDKYcPIXw+4EM3OdU6w
-	RypOOiU90QZ9NYqvqbZIH8yOQkHMwinCqounzwko7
-X-Gm-Gg: AR+sD10WcUMSyzURJQOF3a9YNIJudUz43HqKAUudN08KjG8gmToJoF9gsg0hRdrIwPa
-	a+IO4VhykLyzxfOS6MAimAC+I6KWKSI/V9CEeQpnDFdVLh/f/9VxCLgKvNAUzze20O8NErtRcBm
-	dxB4hkeH7xP7cugsEPOKH118fGFcZHN4UEKy5WqGMinJe+40hSgiRvg2Jmq4DsRfnK89eMuEjuM
-	eX0A+mWNh2i+AI33S/6ZWfNu0lC0fcyKfP5ewWXHeAcGZuModwrhiXDBjN6OeqIHzmgqeLwsavD
-	9GhmzPoqdXwCB/3RGKFCkNKP8fkJ2Rr71HFnBTnx0vBBsCDm5HWIO7/nPqqRkuwI4Tkry+Ufhd9
-	Aa5LlRF70+8FhX6nfg6POj/WrRh8IMSeg/qA5oKCsiwEAv0cngsiYwHFs8Q==
-X-Received: by 2002:a05:690c:e188:10b0:821:2f24:5a42 with SMTP id
- 00721157ae682-849f782f130mr11190087b3.25.1787294137373; Thu, 20 Aug 2026
- 23:35:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="KnloBnUW"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HTtDgzn11adaykT+ZQK9KZaMgkbUg4LEwTkdNFH2aGAXzCbnEZf8rEAOU3f3WCHTG9zdv7dEXrVKF6Dei+R2O7hiMVYzaL09gFMLws6QslLWGxL4pBLnLdSwmi7sSPDQdGPe/+x1ucpMgGB8Qp1baJUAHqPFLK4dJA0hSlSGFr+xxoQJpnk6x9Z8tu0F+bQu8iZT9W+uUokkPhn9Xu9XuqyNwJjNRahpmELEMyyKEQwni3dUDmlBBC+a5oin99jY8N0ft69K/2JmTMS1GyW1jvDC+bTif5+lpfPvvxJ2AJ30THxl6VbwyZjnoy4MM9lHUYVeNV0PyqNS/HW6YTiwvA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DHfI+rjmc3CAAenuWxjjB23gnYSlWbuLAibkg71MW6k=;
+ b=xhy1yDFev26DQhGI49+6zCUQOZ8xk/2sIEr2K3UfMT/QBJiFsdjRSZDEInwm7Z/+SD9jjiYly3gEyJKGCN6xbUsqGVkYHcGrSDjrdHLksNuDDLhqMAu5bSpBTIsO+Yn4K85T8rVy68Qzojo3uAJonfPB9TmYpqjpvPpER0QNcVw3Ht+lgINlxwBwwK0T5AJ1zY8ZU8xNb5Y2eUvVaU7HS34e7OpSinu/35N2mzDPTqFWRxLPGPl9DUmexUf04LvFMZkKqnMQauRf7Z6PecMvsYW2ls1bJCJK+I9fy5a6q3CtKlPoyfTCgUvHSqzO25Jxd4l2h65OODlZ2eyK0KWCDA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DHfI+rjmc3CAAenuWxjjB23gnYSlWbuLAibkg71MW6k=;
+ b=KnloBnUWIlkU3xO+VsGNAOBxZMyd3EsrXxFSbD6MPKsjBYyQS2IpGNVZbZmVSvndvh7C7iiHNboZb9bp3301pIu9ulS53h/+FzwrtySS2MAnEMK6qh7NLbM+W08u93EsP9iXTkMe2wsBWCDeKql7W5iSGKSJIo8O53Px5e+BHzzxQnrAM4AbmlVv8E8/zlePPj8WAD+lT9UbM/sqjFWk47SH3DEFx8q8ImLHovWmMnRsP1+kIgu/WIXHH8gbkDx5xpKTuyRmX/c1RGUbcO8iqXntaw3n/q4nZYjCx/pRzrQkL6/aoiz4lnslf3W3ceWxalJt8s5fbpFhRJfLe1K2ww==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
+ by PAXPR04MB8718.eurprd04.prod.outlook.com (2603:10a6:102:21d::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.10; Fri, 21 Aug
+ 2026 06:38:02 +0000
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74%3]) with mapi id 15.21.0339.008; Fri, 21 Aug 2026
+ 06:38:02 +0000
+From: wei.fang@oss.nxp.com
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	Frank.Li@nxp.com
+Cc: wei.fang@nxp.com,
+	imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 net 0/2] net: enetc: restore RX ring congestion mode after ring reconfiguration
+Date: Fri, 21 Aug 2026 14:41:38 +0800
+Message-Id: <20260821064140.1315611-1-wei.fang@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI1PR02CA0042.apcprd02.prod.outlook.com
+ (2603:1096:4:1f6::17) To VE1PR04MB7216.eurprd04.prod.outlook.com
+ (2603:10a6:800:1b0::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260813033855.3372172-1-dongchenchen2@huawei.com>
- <CANn89iLCrzmOfUVwa0yeROpkZxWmVsAkbH7=SBA3XuVxkmTfKA@mail.gmail.com>
- <53e86f6f-43b9-4e06-b185-1344f69cd650@huawei.com> <CANn89iJWTwiQJbjWz5jY6DE_TSA0EEMyJtQFbDSzMJfjV=MHQQ@mail.gmail.com>
- <9a80f88e-c8a6-44fb-a7b2-7cdbaa3bba24@huawei.com> <CANn89iKg5XhJQQQWaF0UMxs+Bwjthk=StBKVnKfh+VKBAywkpA@mail.gmail.com>
- <f8549a27-8052-4d74-a505-9c0b42c73687@huawei.com> <CANn89iKxgad2uPQqNCuf1iA7ntUM-twA_deZY=JB+uqABBqwVw@mail.gmail.com>
-In-Reply-To: <CANn89iKxgad2uPQqNCuf1iA7ntUM-twA_deZY=JB+uqABBqwVw@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Fri, 21 Aug 2026 08:35:26 +0200
-X-Gm-Features: AcwNN1XnYe8C04UxhaW5X-ZBHMoZDfsKaAorJzRLb0M863MoS-Q3eJqjWcXi0nY
-Message-ID: <CANn89iJQ3UNnfLaMtrb3W09=7AYxA0_4OtPEomN+jo3Wsk4Muw@mail.gmail.com>
-Subject: Re: [PATCH net] net: iptunnel: fix stale transport header during
- tunnel decapsulation
-To: "dongchenchen (A)" <dongchenchen2@huawei.com>
-Cc: davem@davemloft.net, pabeni@redhat.com, kuba@kernel.org, horms@kernel.org, 
-	herbert@gondor.apana.org.au, kuniyu@google.com, idosch@nvidia.com, 
-	andrew+netdev@lunn.ch, ap420073@gmail.com, steffen.klassert@secunet.com, 
-	laforge@gnumonks.org, jiayuan.chen@linux.dev, jhs@mojatatu.com, 
-	zhangchangzhong@huawei.com, netdev@vger.kernel.org, 
-	syzbot+83181a31faf9455499c5@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|PAXPR04MB8718:EE_
+X-MS-Office365-Filtering-Correlation-Id: 01f62ccd-fb83-4dc0-b55c-08deff4ebf70
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|376014|23010399003|366016|1800799024|6133799003|10067099003|11063799006|5023799004|56012099006|18092099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	KxLC8gjOW6PGpVHRbn+ZLfwo4HDLorBai7GUF7d5m93g4FK4ulD18VhsUZYU9ululg2lfT9v74SZherqwdY4BN/nR82YpovGHxvBjliKmUk1YdBlPdEW+ePaA4TZBRLOD7D6G7ZIkCgU09CdJcyCcdT250+y2w0poHnfQvcL4rNBGX28kuxvsnVtnMk2ufwnOJln3VOpPkvbixx+7vHC+qyXL+yOVhkaCblkVjoJ+24znAF0Dod2bfZhLC5redZzThyHvV74YslMVU83wa/MZIEtmSOiqYTriKzuDlQKSxyPvyuxVRENcomXiy8+NJ6y4Vf/7IaN3eWGsTe9Bf/HVCdNTykJCYzvUbPXqSAS77u10r2dTdj8HFh3LKj/N3zwsdenMQt7BH5Xfow3uPX8ffm3dlKJP4EsFUxODMbIvzgu44EBLsbSIc0w2yKj2ZkOobMRdrV8zDuLttYWxMsXsQoxq/h+rv8wnfs68k4Ht+izvXZ9CJ0d6SKHuvJIGCpjh/Duek3LMxl9Z41halL8DbkKP64pOIN9z2IWC2QWznBZAGj5OiQcow75KJwf4YCAJyzXI5yaQ7glB660jyNw7QlgyMjRJpEUVaHZJGlO7au0SR2KNZ/7e1AyUekdkjEITP3eKO2ZwqCQg+158kKrMhQMExe6Z+wzMtdzatslEIE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(23010399003)(366016)(1800799024)(6133799003)(10067099003)(11063799006)(5023799004)(56012099006)(18092099006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?aWTmobGgOwvHLmOAkraIweFBoq/HePw7YFM40K04T3Tmqw8KsYleGVl2BRP6?=
+ =?us-ascii?Q?v3d10nbfMO6wjG5VI3qClLMuVvu54MolA0M6mixdT9T11huJeGrbQVzrnWj2?=
+ =?us-ascii?Q?8fR/1utvEV9vHwBOF+dOkyMGZAZTAU4EWUcDZ9jpKfy7BLMnfCv+P8Uktu0B?=
+ =?us-ascii?Q?mQntCND0iBQnRlyfd/dhm9K96pwFxV85tYGcR3+ZkX32Mleu7yF00EJLjzQr?=
+ =?us-ascii?Q?VffHJo0H0CTj5we5Zfx8veFU2HNKKFSxFf2s11NGpsb2eI/mIIrjNaHw26YC?=
+ =?us-ascii?Q?/GKRcsqCPazwWGPSWzcQuqgn1KOU7qCzZK0WQ6dBS6nPX9AD1r66uY+9a7WF?=
+ =?us-ascii?Q?Zvuyah5a9pqERLA8wN80q+SQSYV7D3BzfzQUKaVzM63kyobi3Z5mcF1WER4B?=
+ =?us-ascii?Q?TiShVozi2rUi3UyYTNgwi+0Y7Xa0Z2a2lZPD6TJl4tHSEzDbSLTCG5L9seyg?=
+ =?us-ascii?Q?U7HWfosiTp2CwwkFXiCGPs/mbZwaaKUwPja3SF94dK8pyDbw+o5gDcR5Kpqd?=
+ =?us-ascii?Q?kkkYlwjJxqpAp+W5cHO9VtRk8nuBhmZpPOBGqX+TjgJtIumMdfp+ktJ7k3ED?=
+ =?us-ascii?Q?3JZ2D3ycz0/+xzuvL3QvqlgCL1aRFvk2RaV8vGb6HMbiP7cmUok5jTOZ2rsC?=
+ =?us-ascii?Q?mr7vpDSJ30L3Kh4/l092HCDhjQJq0k0AfOyIzrRarFn4h/bKUBGMewsMugmI?=
+ =?us-ascii?Q?a1u3Ufas1FhBEtqf1OpZO9cuVvukbnBxsJ/chBWEy3Mp4HOwtPvT80mHU4ry?=
+ =?us-ascii?Q?rdPF+fcdZirKl9S6s2lTLVydovNK18C6PSSZAlRlYu7dgRtWIZ9Eha7+dqF0?=
+ =?us-ascii?Q?nprd3JrU6VLntvk+I6lBlEJag19ehXcekhYRTbe5XUExvNmzVROjMN8NeWh2?=
+ =?us-ascii?Q?SFhgskJf9TY2AAwm7AXocllSSMTzmQe5nBeHP1aAC3otnvrsanwboBf+kVPm?=
+ =?us-ascii?Q?avFJ3xHQolc2ut6q2PZ0QOEuZVUMtytd4ewACk4pWsAWFdp39iO/l9njTMUS?=
+ =?us-ascii?Q?eg7Y4kD20HWL1w23axqfs3jdAqOtZhnnle/WT5vGvbi1xGqG/yXSz+AkcRor?=
+ =?us-ascii?Q?Tz0wFl/HmVODGJDgAw6vPC+hnM2vLX27b77hDWuI77bLmBfTg7/CWloCS38B?=
+ =?us-ascii?Q?HJjoT5YK3Z60FMhv8U9g12pPEf2PQA8U3BxkItjR8E6LtGW8q6OVI8vzrS7r?=
+ =?us-ascii?Q?V2wRHd6wRy2Eappxprgnhf/5578E8AUiItBdzsU8VyA5I5ewa38fcK3T+sAl?=
+ =?us-ascii?Q?L/5CYzTrYOcUwAIBSkMLHpLkFhFiJtem/HgcEzvR++MZY1hjjSe0KXhKkVlC?=
+ =?us-ascii?Q?PVRxgN6mf2J8eUKuJB9cd74ng8FX0LwOBrHMBQ7F36hFGpzQLklzai6myhQy?=
+ =?us-ascii?Q?y+StACJ90l6Rtw/M/KuL1QSy14nJBC+5eVe2SsREACb2IDkE7EL7MVp9CY8u?=
+ =?us-ascii?Q?4P0QV3AX20yjveR1l/EcqSnrZM1ZK2jTgLlzXvjtp2GPDgEH8vmlRfRKdylV?=
+ =?us-ascii?Q?bDKIjhW8bDIYXf9UlsAVJrqkfAJ7cjHOplASUSFft4BsJV7wbG3uxnG/Uzok?=
+ =?us-ascii?Q?n+EeXDss8A5g/Y/23GtDk0g1XSA7nrPFh+bDFxi/lJ1H7EG15ml4UKANPbfq?=
+ =?us-ascii?Q?q8Yz9E0XG8tJ7zBJalJ8FNaq+C8vSchhkqAux3/RDMLDFLhr9cnyRFFeJuYt?=
+ =?us-ascii?Q?foZsF66DtLlQpP5Po5/BckZUl/uFWxjgzbLForB8qguEBkRVtGg1f7PUNtMN?=
+ =?us-ascii?Q?utzmYG4PQD4/1GKvP505ikBEbcRHt40Sq3MbcKYvHH9YsaSO6Z3M?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 01f62ccd-fb83-4dc0-b55c-08deff4ebf70
+X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 06:38:02.4083
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jm2MSReEHVK1lZiUnhh/lTh3h8Dgn0xK1bWU+xaxf85lX+Y/5mixwA4qv8gWTfHpEwHvGKJTFGizxtuPmzK96B4P7vliMN6iShdDEXbBK79IGcvugCVojxP1ejnghsQv
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8718
 
-On Fri, Aug 21, 2026 at 8:23=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
-wrote:
->
-> On Fri, Aug 21, 2026 at 4:21=E2=80=AFAM dongchenchen (A)
-> <dongchenchen2@huawei.com> wrote:
-> >
-> >
-> >
-> > =E5=9C=A8 2026/8/21 0:32, Eric Dumazet =E5=86=99=E9=81=93:
-> > > On Thu, Aug 20, 2026 at 12:04=E2=80=AFPM dongchenchen (A)
-> > > <dongchenchen2@huawei.com> wrote:
-> > >>
-> > >>
-> > >>
-> > >> =E5=9C=A8 2026/8/20 17:16, Eric Dumazet =E5=86=99=E9=81=93:
-> > >>> On Thu, Aug 20, 2026 at 10:58=E2=80=AFAM dongchenchen (A)
-> > >>> <dongchenchen2@huawei.com> wrote:
-> > >>>>
-> > >>>>
-> > >>>>> On Thu, Aug 13, 2026 at 5:30=E2=80=AFAM Dong Chenchen <dongchench=
-en2@huawei.com> wrote:
-> > >>>>>>
-> > >>>>>> Syzbot reported a crash in qdisc_pkt_len_segs_init() caused by a=
- stale
-> > >>>>>> transport_header offset after tunnel decapsulation.
-> > >>>>>>
-> > >>>>>> BUG: unable to handle page fault for address: ffffed102091a42e
-> > >>>>>> Oops: Oops: 0000 [#1] SMP KASAN NOPTI
-> > >>>>>> CPU: 0 UID: 0 PID: 340 Comm: qdisc_uaf_repro Not tainted 7.2.0-r=
-c4-00061-g248951ddc14d #256 PREEMPT(full)
-> > >>>>>> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-=
-debian-1.16.3-2 04/01/2014
-> > >>>>>> RIP: 0010:__asan_load2
-> > >>>>>> <IRQ>
-> > >>>>>> qdisc_pkt_len_segs_init (net/core/dev.c:4145)
-> > >>>>>> __dev_queue_xmit (net/core/dev.c:4787)
-> > >>>>>> br_dev_queue_push_xmit (net/bridge/br_forward.c:53)
-> > >>>>>> br_handle_frame_finish (net/bridge/br_input.c:229)
-> > >>>>>> br_handle_frame (net/bridge/br_input.c:315)
-> > >>>>>> __netif_receive_skb_core.constprop.0 (net/core/dev.c:6099)
-> > >>>>>> __netif_receive_skb_list_core (net/core/dev.c:6287)
-> > >>>>>> netif_receive_skb_list_internal (net/core/dev.c:6445)
-> > >>>>>> napi_complete_done (net/core/dev.c:6813)
-> > >>>>>> gro_cell_poll (net/core/gro_cells.c:74)
-> > >>>>>> __napi_poll (net/core/dev.c:7735)
-> > >>>>>> net_rx_action (net/core/dev.c:7798 net/core/dev.c:7955)
-> > >>>>>> handle_softirqs (kernel/softirq.c:622)
-> > >>>>>> do_softirq (kernel/softirq.c:523  kernel/softirq.c:510 )
-> > >>>>>> __local_bh_enable_ip (kernel/softirq.c:450)
-> > >>>>>> tun_get_user (drivers/net/tun.c:1986 (discriminator 1))
-> > >>>>>> tun_chr_write_iter (drivers/net/tun.c:2032)
-> > >>>>>>
-> > >>>>>> The crash requires four conditions to line up:
-> > >>>>>>
-> > >>>>>> 1. The incoming packet is encapsulated and carries GSO metadata.=
-  The outer
-> > >>>>>>       transport header offset is stored in skb->transport_header=
- while the
-> > >>>>>>       packet is still in the outer tunnel context.
-> > >>>>>> 2. The tunnel receiver strips the outer headers.  skb->data is a=
-dvanced to
-> > >>>>>>       the inner frame, but skb->transport_header is left pointin=
-g to the
-> > >>>>>>       now-removed outer L4 header, so it becomes a negative offs=
-et relative to
-> > >>>>>>       the new data.
-> > >>>>>> 3. The inner frame is not delivered to the local IP stack.  Inst=
-ead, it
-> > >>>>>>       is forwarded at L2 by a bridge or HSR, so ip_rcv_core() ne=
-ver runs and
-> > >>>>>>       the transport header is not reset to the inner L4 offset.
-> > >>>>>> 4. The forwarding path calls __dev_queue_xmit(), which enters
-> > >>>>>>       qdisc_pkt_len_segs_init().  That function computes the GSO=
- header length
-> > >>>>>>       from skb_transport_offset(skb).  Because the offset is neg=
-ative, the
-> > >>>>>>       unsigned cast overflows and pskb_may_pull(skb, hdr_len +
-> > >>>>>>       sizeof(struct tcphdr)) reads past the end of the skb, trig=
-gering a
-> > >>>>>>       KASAN fault or page fault.
-> > >>>>>>
-> > >>>>>> Fix this by clearing skb->transport_header to the ~0U sentinel a=
-t the
-> > >>>>>> tunnel decapsulation boundary, after each tunnel receive functio=
-n has
-> > >>>>>> finished all processing that needs the outer L4 header and befor=
-e the skb
-> > >>>>>> is handed to GRO or the stack. The IP/GRO receive paths then set=
- the
-> > >>>>>> transport header correctly when they parse the inner packet.
-> > >>>>>>
-> > >>>>>> Fixes: 7fb4c1967011 ("net: pull headers in qdisc_pkt_len_segs_in=
-it()")
-> > >>>>>
-> > >>>>> This Fixes: tag seems pretty random to me. Issue was present long
-> > >>>>> before that commit.
-> > >>>>> Next time, please be precise with the `Fixes:` tag; it's not deco=
-ration.
-> > >>>>>
-> > >>>> Thanks for your review. Sorry for the late reply.
-> > >>>> The stale transport header has been present since 1da177e4c3f4
-> > >>>> ("Linux-2.6.12-rc2"), which is completely latent until
-> > >>>> 7fb4c1967011 ("net: pull headers in qdisc_pkt_len_segs_init()"
-> > >>>> was merged.
-> > >>>>
-> > >>>>    From the perspective of the root cause introduced by the issue,
-> > >>>> we can use 1da177e4c3f4 ("Linux-2.6.12-rc2") as fixtag.
-> > >>>>
-> > >>>>> Also, calling skb_unset_transport_header(skb) directly from
-> > >>>>> gro_cells_receive() would make more sense and
-> > >>>>> your patch would be less intrusive.
-> > >>>>>
-> > >>>>
-> > >>>> gtp=EF=BC=8Csit use netif_rx to receive pkt. so modifying only gro=
-_cells_receive
-> > >>>> cannot solve all the problems. netif_rx is widely
-> > >>>> used and is not only invoked by the tunnel driver, and serval path
-> > >>>> (such as genve encap) will reset transport header before netif_rx.
-> > >>>> Therefore, should we retain unset in the GTP/SIT tunnel?
-> > >>>
-> > >>> Hi Dong,
-> > >>>
-> > >>> 1) Regarding SIT:
-> > >>>
-> > >>> SIT decapsulates IPv6 over IPv4 (IPPROTO_IPV6). There is no outer L=
-4 transport
-> > >>> header (no UDP/TCP), so skb->transport_header is not pointing to an
-> > >>> outer L4 header.
-> > >>>
-> > >>> 2) Regarding GTP:
-> > >>>
-> > >>> GTP is an L3-only point-to-point device (ARPHRD_NONE). It cannot be
-> > >>> enslaved by a bridge
-> > >>> or forwarded at L2; its packets always go through ip_rcv()/ip6_rcv(=
-)
-> > >>> where the headers
-> > >>> are properly parsed/reset,
-> > >>>
-> > >> Hi, Eric. Thanks for the review!
-> > >>
-> > >> I missed the rcv path in the commit message.
-> > >> With an ingress qdisc attached to gtp, the stale transport header
-> > >> will been consumed in sch_handle_ingress() and its not covered by
-> > >> gro_cells_receive() either. So maybe gtp is not safe by
-> > >> construction.
-> > >>
-> > >> gtp_encap_rcv
-> > >>     gtp_rx //stale transport header
-> > >>       __netif_rx
-> > >>         __netif_receive_skb_core
-> > >>           sch_handle_ingress
-> > >>             qdisc_pkt_len_segs_init
-> > >>
-> > >
-> > > Let's step back a bit :)
-> > >
-> > > For non-GSO packets, qdisc_pkt_len_segs_init() returns immediately:
-> > >
-> > > qdisc_skb_cb(skb)->pkt_len =3D skb->len;
-> > > if (!shinfo->gso_size) {
-> > >      qdisc_skb_cb(skb)->pkt_segs =3D 1;
-> > >      return SKB_NOT_DROPPED_YET;
-> > > }
-> > >
-> > > It does not inspect skb->transport_header at all. It will be set
-> > > eventually later if needed,
-> > >
-> > > GTP does not implement GRO on RX and does not use gro_cells, so incom=
-ing
-> > > packets in gtp_rx() have gso_size =3D=3D 0.
-> > >
-> >
-> > Hi, Eric. Thanks for your patient explanation.
-> >
-> > Normal GTP traffic indeed cannot trigger this issue and pkt without
-> > SKB_GSO_UDP_TUNNEL will be caught by udp_unexpected_gso.
-> > The only way to reproduce this for gtp is by constructing and injecting
-> > packets, such as TAP device injects a GSO UDP-tunnel packet (with
-> > GSO_TCPV4 and GSO_UDP_TUNNEL flag, Ethernet/IPv4/UDP/GTP-U/IPV4/TCP).
-> > Should we add interception for such illegal pkts?
-> >
-> > diff --git a/net/core/dev.c b/net/core/dev.c
-> > index af260ff5462a..8620428b950f 100644
-> > --- a/net/core/dev.c
-> > +++ b/net/core/dev.c
-> > @@ -4138,6 +4138,10 @@ static enum skb_drop_reason
-> > qdisc_pkt_len_segs_init(struct sk_buff *skb)
-> >          if (likely(shinfo->gso_type & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6))=
-) {
-> >                  const struct tcphdr *th;
-> >
-> > +               /* Defensive: stale offsets from buggy tunnel decap can
-> > underflow. */
-> > +               if (unlikely(hdr_len > INT_MAX))
-> > +                       return 0;
-> > +
-> >                  if (!pskb_may_pull(skb, hdr_len + sizeof(struct tcphdr=
-)))
-> >                          return SKB_DROP_REASON_SKB_BAD_GSO;
->
-> Certainly not. Do not add defensive code in the fast path for GTP that
-> nobody uses.
->
-> Add everything you think of in GTP itself, I do not care.
->
->  I suggest you look at skb_gso_reset(), this might be missing in GTP.
+From: Wei Fang <wei.fang@nxp.com>
 
-Or simply drop GSO packets in GTP they must be evil: we do not support
-GSO in GTP and never will.
+The RX BD ring congestion mode (CM) enables the ENETC MAC to generate
+PAUSE frames when ingress congestion occurs. It is configured only in
+the phylink .mac_link_up() callback, which is invoked when the link
+status changes.
+
+However, enetc_reconfigure() tears down and re-creates the RX BD rings
+at runtime without any link status change, for example when enabling or
+disabling PTP RX hardware timestamping. enetc_setup_rxbdr() rebuilds the
+RBMR register from zero, which clears the CM bit, and since the link
+status does not change, .mac_link_up() is not called again to restore
+it. As a result, flow control silently stops working after such a
+reconfiguration.
+
+To solve this issue, track the desired CM state in a software flag
+ENETC_RXBDR_CM, which is maintained by the .mac_link_up() /
+.mac_link_down() callbacks and consulted by enetc_setup_rxbdr() when the
+RX BD rings are (re)configured. Both ENETC v1 and ENETC v4 are affected
+and are fixed in the same way.
+
+---
+v2:
+1. Add a generic helper enetc_set_congestion_mode() to set the
+   congestion mode of the SI's RX BD rings
+2. Move the setting of ENETC_RBMR from enetc_setup_rxbdr() to
+   enetc_enable_rxbdr()
+3. Add gen_lock to struct enetc_si to prevent concurrent access to
+   ENETC_RBMR and the ENETC_RXBDR_CM bit of priv->flags
+v1 link: https://lore.kernel.org/imx/20260728023217.2499420-1-wei.fang@oss.nxp.com/
+---
+
+Wei Fang (2):
+  net: enetc: restore RX ring congestion mode after ring reconfiguration
+  net: enetc: restore RX ring congestion mode for ENETC v4
+
+ drivers/net/ethernet/freescale/enetc/enetc.c  | 72 +++++++++++++++----
+ drivers/net/ethernet/freescale/enetc/enetc.h  |  9 +++
+ .../net/ethernet/freescale/enetc/enetc4_pf.c  | 16 ++---
+ .../net/ethernet/freescale/enetc/enetc_pf.c   | 14 +---
+ 4 files changed, 72 insertions(+), 39 deletions(-)
+
+-- 
+2.34.1
+
