@@ -1,316 +1,223 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8016423783
-	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 15:39:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787326762; cv=none; b=R+CHNSvNQK1142+WrD8DaT1SQjtvvpjttI76PXIQHuZT0ScNGVMblPjZZ1PBdDYlFGCEKYqFoHQjTkzDGq/vZWDlHnF4f5vHLylYFh7erbMXXY+7xeF1Ngo44jG8ZS3sRwG7VMIN87MVPN1TSflWA1AZWcHKbtbpXnjS5EuCQ+A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787326762; c=relaxed/simple;
-	bh=8mOs0BKz29UHmKLCjpg+g7eGThyC+fJmCW2alcp7cNc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dYP2sjSnQiS168gPO+likZfMkXx0l0+hrdEz9vtpraXQ9/RCFtwKeaTRu72HJeT7Q4M/EfbKLVzDjD3DqLnLajsogPCGbfKJMrlWCA9qhuWIqTgxbOoM7LSjnKUhbvs97w25HwlriWQy28vUEYwVcokUiKv4puRLAo6PKi3Ap44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isovalent.com; spf=pass smtp.mailfrom=isovalent.com; dkim=pass (2048-bit key) header.d=isovalent.com header.i=@isovalent.com header.b=MAcFd0fa; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isovalent.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isovalent.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5EC27A907
+	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 16:04:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787328266; cv=pass; b=EhVgZzLDcG0e/MYxxaHTxV3lT5VPAXSgQwPyIdCpa7nqWVjA6E9LFKgvTX8a9VZh2OXJzik/e9C7EmW/20kao2IM0u3681uUCHMEKahWT6tFkSKHwsLnGUcRnrS6dR9FfYjmxM66VDEHC1HpWO0Pjp5WrdHhWcSYdxZiRcRjfHA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787328266; c=relaxed/simple;
+	bh=SerHokd/DjReQDG8vtbBBC8t/wy+cBj5FkxUWoJCcDw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lwvII7pW/atH/Vp2Mu4KqZuVjCIqtXneyE7INihl5WEUteNqNSwzQ48EW5F64Dtr34NlpShpUOeDIrf2u27v/FL+7vuL52UoD57nQSo73GL+shcDrnbvo6v7pz03HGblPYd9gET6ablTB+pa5tpwLfDVmGiXKuqJNV+wJ7Ti9to=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=mZDqar3r; arc=pass smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=isovalent.com header.i=@isovalent.com header.b="MAcFd0fa"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6a15d54ac95so2229153a12.0
-        for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 08:39:18 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="mZDqar3r"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-84f38f3b36eso787925b3a.1
+        for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 09:04:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787328264; cv=none;
+        d=google.com; s=arc-20260327;
+        b=JHrpouFEQxJZM7vf16l2kA8trTxnKvmy7akdaDou0fjoNR3jG+17Bu/NnRW8REQvUD
+         wWCinOwrmRObWvF+sfuo3I9SHI/p3TfQdpOm+/KLg8etI/Zku5hqgLbAtJc8lm3qIQfv
+         Uwy8qfC8W5lWTHmYzZCPvXmO7E+n7rRzVczeeAojd/uKkhobRVgKXWB7POxL4PYuPRVh
+         T2/30S8WMh+FZrw5B8TN+ICXhUolJx24HMkxCfHzX14XmTHN/uMCLYgAHDcvFaDnID4p
+         hTV0CfwtDVRryn8qPR52FK8W8Xak465dIkNPG9hbvMspbavMQCx3k11vwK9hYQIwlHom
+         AKAA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=40B84Kno1PtoPAti0QyzQp4UA1yoqhnYSR2vpkV5e5g=;
+        fh=T+lcaWEP4TbvTDTxY3V+GOJqeVz/AjJrP9ekRJzR/3k=;
+        b=GJ9Fa/3N6er/xrmS1wL++l4s9a2euVwLarKHVmM3b/RuwB1OYt/TOLN5YNt22Z5YJe
+         Sq0WDzUHfBs1hMnfsf2ooNry0Iqgu44LR4VJ2G6Ybfatm8+KkTOPjbM3aRREoOgHLqFg
+         x4GG9/NmBgiVHZh/KEp1fIw6yrXGi9qjJQAAvCvWfB5XyXDsVa93gt4tnPYsA0drFe4l
+         JGmn1fgm1CrCpHUb3XiBmHGsa+tnfv3l9QSJgmR5gVwWleR0uR4m54Twr9EdvDh8Bxk6
+         AxgXM4wKrJFvTL2Xta6JF5zlh7Cwn2uvsoUfJiQ7cRkhVY/tsc/SUDYzmqayeCc+3HhK
+         0OOQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=isovalent.com; s=google; t=1787326756; x=1787931556; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=BMZJ2+cqn7iqDrGZ+Rr84RRomxOfrfCEoQBiqMvQsZc=;
-        b=MAcFd0fau8xUQmhy7wai5L2zI58Jhx1ojrCRUYIiR6xwEg6C0W5Qve59dpMLRch46j
-         bb6bGE+NEBcnIEiqFWLmFL9km3LzG//GJVGcOaymiiPvsEcVt2V87F5OjAAY/cUUzo6S
-         ZOLv4dnD20hEyyJ+VIZDl8Yzhanfz7ddpDEk7sqm44b4tcExfFlnb4eBxhOAIDCtWgLJ
-         AEElv5kTxQ2oBWx4klCtvnUkPrXVD+SLoNGZ52TugcEGtrvUvoy/oLqAap8IFAVqEDeh
-         HQXfz6Dhk5Ffjm+rc+mCnZJ+ByBzjJC41+N74EHd7lvpxf+0dUaSALOlwjWVZ1NuUEpM
-         Ps5g==
+        d=mojatatu.com; s=google; t=1787328264; x=1787933064; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=40B84Kno1PtoPAti0QyzQp4UA1yoqhnYSR2vpkV5e5g=;
+        b=mZDqar3rhhD5gh0162MTi8HPMtMhynT4KVVyyGRJHUXUc5RJmV6IitGCNOCZF35fPc
+         QkKJZdHNzuFk9P5Ot4e2qjuQn7BTu7RYySdfd1ldvXMXodlEyDJp7Jbtvy5Ao1qkqBKq
+         namLtbf1O/RXlOVfJmz7i0MXA8h2+v6j7Hz4A=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787326756; x=1787931556;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BMZJ2+cqn7iqDrGZ+Rr84RRomxOfrfCEoQBiqMvQsZc=;
-        b=Vihhf4RHoxqXYgEksA3HOZk/JpNvV5okks9JcsVdT7ZxP5WoaeZnMgp2NTGabpMWKf
-         vwWloKeU1fN0U7K38o4ohwNdDnfqVYKi2Slcba/2Yb2HDqY3wcXIl+EbYvWAr+XbOAB2
-         KcpcXVDAMa/1JM7JXr9HXKWCQle05iRTOqk7NbQ4aJE3Jsxbznbt/RqHw86426/l0DmX
-         h30nIHoIOYpGL/bZ5pOP5e7OHatG1IJoohnYcB7roNDuZ+wIY2mxCXmxdOxy2d6wS/bw
-         s0Lp2yMYH0QZsnubFbaluFOMKxk+azXmMUdNGIRZjjG/3B+RxXV1R/1+GOOFTex1BSmv
-         pjuw==
-X-Gm-Message-State: AFuF++nGQZZpvnuGzG2xSMGLn78HpsFvwmClabOFSaYDgfAEYkubLUy3
-	AoxK0c7/k2bq06iEjq97r94EUW4YXFFsvMwdWQ7uktGHsYcvCloDnCAAPOp+DdtLqKbI6mMbC6+
-	5moF23fdl/w==
-X-Gm-Gg: AR+sD12E/mWPFZwnXrozHUEtZb2AdSOGDExY5dqCVP0VP52ITv6hdZo9nqh6r0aYM2A
-	aEDq+MTIiEfQlA+x4NfoUxrr0FNUp/OC8NK/P/Vt2GwA662q+1LDdPBwIcCNKBdpzKl6bpk+Cyt
-	BijCROJugzWcOnzuOCSZDcyX8dmDWQX9OnKJ2PhL+WX7uI8TBErtj4+ZIodmLuVhlTuqkVwOOIj
-	jvRR0Sz9YG3OUy5ZjyyqoE1hRssuMjRTruHofRAjPQoqE0+TzBQLHoWlCBKkElq/DH2/inGx2FD
-	S7KceHcjEVbL9fCftOyN0Lz06C7fb6JomHSx/RDGBZCiCado0folNe5sQ6xrGwSPppk0zkyas05
-	pkQ6i4X9gGxCIY/+myedPnP5oF6ZGjzYVxZQIuKIR/Irp19LDolKcyXVdVb9psjH3pA9Mz8CvG8
-	hAB6/DF62l4yy5Hjgci8H77NYZr+BTdqL8zwP2WBLMgvNc30NXzoehsWQEZX2xbHv2Tm84XoE5n
-	kEVY21tG15TGAGwjTFSjfvCnLUFCY+/2PyMATQYO3hPTJl/WPlwi4aeN85FZ4k=
-X-Received: by 2002:a05:6402:2489:b0:69f:4c65:86c2 with SMTP id 4fb4d7f45d1cf-6a42f1b974amr7989854a12.2.1787326756229;
-        Fri, 21 Aug 2026 08:39:16 -0700 (PDT)
-Received: from localhost.localdomain (92-180-236-231.dynamic.orange.sk. [92.180.236.231])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a3feeca188sm7395734a12.6.2026.08.21.08.39.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Aug 2026 08:39:16 -0700 (PDT)
-From: Rastislav Szabo <rastislav.szabo@isovalent.com>
-To: netdev@vger.kernel.org
-Cc: edumazet@google.com,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	shuah@kernel.org,
-	dima@arista.com,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net 2/2] selftests: net: tcp_ao: test VRF-scoped key deletion
-Date: Fri, 21 Aug 2026 17:38:23 +0200
-Message-ID: <20260821153823.266343-2-rastislav.szabo@isovalent.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260821153823.266343-1-rastislav.szabo@isovalent.com>
-References: <20260821153823.266343-1-rastislav.szabo@isovalent.com>
+        d=1e100.net; s=20251104; t=1787328264; x=1787933064;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=40B84Kno1PtoPAti0QyzQp4UA1yoqhnYSR2vpkV5e5g=;
+        b=Ff3RdkCXXNqSiDpLT0o9L6/Cjrx42oQHnREWMPwqubQHVs6XuJmR2/E5ZLm0YZyzd0
+         6PpFxqbluwTA5hyJY54Ndv/YvT+4r2ZRCRwZtS6ivznZpydXKc7a/VrrPQUUCNioQQEQ
+         l4nZo1Xi5M22vpoHLvOEZmjMaNp7BKKxkmNiQ6NU+Qu5U93qjTu9wwXpYzRUFpTD1908
+         dY+YwmEpJbSnLNmq/pEJcbB+n73Ha19ZaYKOnvLV0YwfRhFEmpNbkZJnOKtDg/fBfWI8
+         8WX0OMGwQzknVU02Yruk19q2iMFreEZ+fQujrfHnI+vU08txP/sjQ6whxQ20B+C7S55m
+         gZOg==
+X-Forwarded-Encrypted: i=1; AHgh+Rqxs8IgMYbo/5J1nFfIpF57LJusXAWnEuxCmWWr5TVE8eocFRJOZIaT6pjlsWLaM3tl+uoczGc=@vger.kernel.org
+X-Gm-Message-State: AFuF++mbWaT8YMv/x4sKM8JkPK1P33vJ7kJu3IoxeDzJAC9e6GuBq6Rc
+	VLAsQwPGlYHO1ROCYySYIwkz4ef0spOcd8zy4bpPEvWg9eg1CqublhR4LqiJgv2NOO8W8l3gJwO
+	eOhVB+Q/M6f94PWCjVr7atp+nbQW5AEsMDEu+ijWh
+X-Gm-Gg: AR+sD10buFpG/SE1DrGhV5/jVwJuAqNKg2xdPOm8b/C5EDeeNyYv581w7/xWiA3aEVz
+	FIWb4/20OijXe5q7fWe2+aOyH4s0IsL48ICsnpZ6MFxEZFsrmZ5furUSw8vopdf2cIE20qKWPKl
+	fwtI8CXA4Nd89ulC5CQW5xxi1B2lVY6TA+LClHu6iEX+de3DHqn44sSwLt4xpAjd6pOXRJ0zdcR
+	UE7/VTTIZuQURuTMvUcaShyZLUwmDPW/UuTJyuUiO7PMA3UQrAZKcZiWLBcQkQuRVYFUsJfmMq+
+	LmzAu4Gp4Y8p4ltvKxL6gufPH6JtIfkzsdS55sf4lA==
+X-Received: by 2002:a05:6a00:410f:b0:845:c694:5c3d with SMTP id
+ d2e1a72fcca58-851f972a856mr13293160b3a.1.1787328264050; Fri, 21 Aug 2026
+ 09:04:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260807133155.1242599-1-victor@mojatatu.com> <20260811001150.1034738-1-kuba@kernel.org>
+In-Reply-To: <20260811001150.1034738-1-kuba@kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Fri, 21 Aug 2026 12:04:12 -0400
+X-Gm-Features: AcwNN1UPcX8vgRn80g01oSrQ4CzFPiLQ8dsCaDHOt4uR_dCWdXTO3jFrw0zJBEU
+Message-ID: <CAM0EoMmXhqmuSkLCS1hXczFK4GZtQR2Gy1YZ5Vx2wfqCD87PDA@mail.gmail.com>
+Subject: Re: [PATCH net] net/sched: sch_teql: restore skb->dev on the slave
+ failure path
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: victor@mojatatu.com, davem@davemloft.net, edumazet@google.com, 
+	pabeni@redhat.com, jiri@resnulli.us, horms@kernel.org, bestswngs@gmail.com, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Verify that TCP_AO_DEL_KEY can remove a TCP-AO key scoped to a VRF.
+On Mon, Aug 10, 2026 at 8:11=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> net/sched: sch_teql: restore skb->dev on the slave failure path
+>
+> teql_master_xmit() used to leave skb->dev pointing at a slave after that
+> slave's ndo_start_xmit() failed, so the skb could end up queued on a late=
+r
+> slave's neighbour arp_queue while referring to the earlier slave.  The
+> patch restores skb->dev to the master device at the end of each slave
+> iteration.
+>
 
-Assisted-by: Codex:GPT-5
-Signed-off-by: Rastislav Szabo <rastislav.szabo@isovalent.com>
----
- .../selftests/net/tcp_ao/key-management.c     | 66 ++++++++++++-------
- .../testing/selftests/net/tcp_ao/lib/aolib.h  |  6 +-
- tools/testing/selftests/net/tcp_ao/lib/sock.c |  4 +-
- 3 files changed, 51 insertions(+), 25 deletions(-)
+Let's please apply this patch. The patch correctly fixes the reported
+UAF (namespace-reachable, slave deleted while skb queued on another
+slave's neighbour).
 
-diff --git a/tools/testing/selftests/net/tcp_ao/key-management.c b/tools/testing/selftests/net/tcp_ao/key-management.c
-index d86bb380b79f..1e01e805dba7 100644
---- a/tools/testing/selftests/net/tcp_ao/key-management.c
-+++ b/tools/testing/selftests/net/tcp_ao/key-management.c
-@@ -63,7 +63,8 @@ static int prepare_lsk(union tcp_addr *addr, uint8_t sndid, uint8_t rcvid)
- 	return sk;
- }
- 
--static int test_del_key(int sk, uint8_t sndid, uint8_t rcvid, bool async,
-+static int test_del_key(int sk, uint8_t sndid, uint8_t rcvid, int ifindex,
-+			bool async,
- 			int current_key, int rnext_key)
- {
- 	struct tcp_ao_info_opt ao_info = {};
-@@ -76,6 +77,10 @@ static int test_del_key(int sk, uint8_t sndid, uint8_t rcvid, bool async,
- 	del.prefix = DEFAULT_TEST_PREFIX;
- 	del.sndid = sndid;
- 	del.rcvid = rcvid;
-+	if (ifindex) {
-+		del.keyflags = TCP_AO_KEYF_IFINDEX;
-+		del.ifindex = ifindex;
-+	}
- 
- 	if (current_key >= 0) {
- 		del.set_current = 1;
-@@ -95,7 +100,8 @@ static int test_del_key(int sk, uint8_t sndid, uint8_t rcvid, bool async,
- 
- 	tcp_addr_to_sockaddr_in(&sockaddr, &this_ip_dest, 0);
- 	err = test_get_one_ao(sk, &key, &sockaddr, sizeof(sockaddr),
--			      DEFAULT_TEST_PREFIX, sndid, rcvid);
-+			      DEFAULT_TEST_PREFIX, sndid, rcvid,
-+			      del.keyflags, del.ifindex);
- 	if (!err)
- 		return -EEXIST;
- 	if (err != -E2BIG)
-@@ -112,12 +118,12 @@ static int test_del_key(int sk, uint8_t sndid, uint8_t rcvid, bool async,
- }
- 
- static void try_delete_key(char *tst_name, int sk, uint8_t sndid, uint8_t rcvid,
--			   bool async, int current_key, int rnext_key,
-+			   int ifindex, bool async, int current_key, int rnext_key,
- 			   fault_t inj)
- {
- 	int err;
- 
--	err = test_del_key(sk, sndid, rcvid, async, current_key, rnext_key);
-+	err = test_del_key(sk, sndid, rcvid, ifindex, async, current_key, rnext_key);
- 	if ((err == -EBUSY && fault(BUSY)) || (err == -EINVAL && fault(CURRNEXT))) {
- 		test_ok("%s: key deletion was prevented", tst_name);
- 		return;
-@@ -236,15 +242,15 @@ static void check_closed_socket(void)
- 	int sk;
- 
- 	sk = prepare_sk(&this_ip_dest, 200, 200);
--	try_delete_key("closed socket, delete a key", sk, 200, 200, 0, -1, -1, 0);
--	try_delete_key("closed socket, delete all keys", sk, 100, 100, 0, -1, -1, 0);
-+	try_delete_key("closed socket, delete a key", sk, 200, 200, 0, 0, -1, -1, 0);
-+	try_delete_key("closed socket, delete all keys", sk, 100, 100, 0, 0, -1, -1, 0);
- 	close(sk);
- 
- 	sk = prepare_sk(&this_ip_dest, 200, 200);
- 	if (test_set_key(sk, 100, 200))
- 		test_error("failed to set current/rnext keys");
--	try_delete_key("closed socket, delete current key", sk, 100, 100, 0, -1, -1, FAULT_BUSY);
--	try_delete_key("closed socket, delete rnext key", sk, 200, 200, 0, -1, -1, FAULT_BUSY);
-+	try_delete_key("closed socket, delete current key", sk, 100, 100, 0, 0, -1, -1, FAULT_BUSY);
-+	try_delete_key("closed socket, delete rnext key", sk, 200, 200, 0, 0, -1, -1, FAULT_BUSY);
- 	close(sk);
- 
- 	sk = prepare_sk(&this_ip_dest, 200, 200);
-@@ -254,10 +260,12 @@ static void check_closed_socket(void)
- 	if (test_add_key(sk, "Glory to Ukraine!", this_ip_dest,
- 			 DEFAULT_TEST_PREFIX, 12, 13))
- 		test_error("test_add_key()");
--	try_delete_key("closed socket, delete a key + set current/rnext", sk, 100, 100, 0, 10, 13, 0);
--	try_delete_key("closed socket, force-delete current key", sk, 10, 11, 0, 200, -1, 0);
--	try_delete_key("closed socket, force-delete rnext key", sk, 12, 13, 0, -1, 200, 0);
--	try_delete_key("closed socket, delete current+rnext key", sk, 200, 200, 0, -1, -1, FAULT_BUSY);
-+	try_delete_key("closed socket, delete a key + set current/rnext", sk,
-+		       100, 100, 0, 0, 10, 13, 0);
-+	try_delete_key("closed socket, force-delete current key", sk, 10, 11, 0, 0, 200, -1, 0);
-+	try_delete_key("closed socket, force-delete rnext key", sk, 12, 13, 0, 0, -1, 200, 0);
-+	try_delete_key("closed socket, delete current+rnext key", sk,
-+		       200, 200, 0, 0, -1, -1, FAULT_BUSY);
- 	close(sk);
- 
- 	sk = prepare_sk(&this_ip_dest, 200, 200);
-@@ -272,6 +280,18 @@ static void check_closed_socket(void)
- 				  this_ip_dest, DEFAULT_TEST_PREFIX,
- 				  false, true, 20, 10, 0);
- 	close(sk);
-+
-+	if (!should_skip_test("closed socket, add + delete VRF-scoped key",
-+			      KCONFIG_NET_VRF)) {
-+		sk = prepare_sk(&this_ip_dest, 200, 200);
-+		if (test_add_key_vrf(sk, SECOND_PASSWORD, TCP_AO_KEYF_IFINDEX,
-+				     this_ip_dest, DEFAULT_TEST_PREFIX,
-+				     test_vrf_ifindex, 201, 201))
-+			test_error("test_add_key_vrf()");
-+		try_delete_key("closed socket, add + delete VRF-scoped key", sk, 201, 201,
-+			       test_vrf_ifindex, 0, -1, -1, 0);
-+		close(sk);
-+	}
- }
- 
- static void assert_no_current_rnext(const char *tst_msg, int sk)
-@@ -322,8 +342,8 @@ static void check_listen_socket(void)
- 	int sk, err;
- 
- 	sk = prepare_lsk(&this_ip_dest, 200, 200);
--	try_delete_key("listen socket, delete a key", sk, 200, 200, 0, -1, -1, 0);
--	try_delete_key("listen socket, delete all keys", sk, 100, 100, 0, -1, -1, 0);
-+	try_delete_key("listen socket, delete a key", sk, 200, 200, 0, 0, -1, -1, 0);
-+	try_delete_key("listen socket, delete all keys", sk, 100, 100, 0, 0, -1, -1, 0);
- 	close(sk);
- 
- 	sk = prepare_lsk(&this_ip_dest, 200, 200);
-@@ -345,8 +365,10 @@ static void check_listen_socket(void)
- 	if (listen(sk, 10))
- 		test_error("listen()");
- 	assert_no_current_rnext("listen() after current/rnext keys set", sk);
--	try_delete_key("listen socket, delete current key from before listen()", sk, 100, 100, 0, -1, -1, FAULT_FIXME);
--	try_delete_key("listen socket, delete rnext key from before listen()", sk, 200, 200, 0, -1, -1, FAULT_FIXME);
-+	try_delete_key("listen socket, delete current key from before listen()", sk,
-+		       100, 100, 0, 0, -1, -1, FAULT_FIXME);
-+	try_delete_key("listen socket, delete rnext key from before listen()", sk,
-+		       200, 200, 0, 0, -1, -1, FAULT_FIXME);
- 	close(sk);
- 
- 	assert_no_tcp_repair();
-@@ -359,13 +381,13 @@ static void check_listen_socket(void)
- 			 DEFAULT_TEST_PREFIX, 12, 13))
- 		test_error("test_add_key()");
- 	try_delete_key("listen socket, delete a key + set current/rnext", sk,
--		       100, 100, 0, 10, 13, FAULT_CURRNEXT);
-+		       100, 100, 0, 0, 10, 13, FAULT_CURRNEXT);
- 	try_delete_key("listen socket, force-delete current key", sk,
--		       10, 11, 0, 200, -1, FAULT_CURRNEXT);
-+		       10, 11, 0, 0, 200, -1, FAULT_CURRNEXT);
- 	try_delete_key("listen socket, force-delete rnext key", sk,
--		       12, 13, 0, -1, 200, FAULT_CURRNEXT);
-+		       12, 13, 0, 0, -1, 200, FAULT_CURRNEXT);
- 	try_delete_key("listen socket, delete a key", sk,
--		       200, 200, 0, -1, -1, 0);
-+		       200, 200, 0, 0, -1, -1, 0);
- 	close(sk);
- 
- 	sk = prepare_lsk(&this_ip_dest, 200, 200);
-@@ -1131,7 +1153,6 @@ static void check_established_socket(void)
- {
- 	unsigned int port = test_server_port;
- 
--	setup_vrfs();
- 	try_client_run("client: Check current/rnext keys unset before connect()",
- 		       port++, 20, -1, -1);
- 	try_client_run("client: Check current/rnext keys set before connect()",
-@@ -1150,6 +1171,7 @@ static void *client_fn(void *arg)
- {
- 	if (inet_pton(TEST_FAMILY, TEST_WRONG_IP, &wrong_addr) != 1)
- 		test_error("Can't convert ip address %s", TEST_WRONG_IP);
-+	setup_vrfs();
- 	check_closed_socket();
- 	check_listen_socket();
- 	check_established_socket();
-@@ -1158,6 +1180,6 @@ static void *client_fn(void *arg)
- 
- int main(int argc, char *argv[])
- {
--	test_init(121, server_fn, client_fn);
-+	test_init(122, server_fn, client_fn);
- 	return 0;
- }
-diff --git a/tools/testing/selftests/net/tcp_ao/lib/aolib.h b/tools/testing/selftests/net/tcp_ao/lib/aolib.h
-index ebb2899c12fe..53be1744237e 100644
---- a/tools/testing/selftests/net/tcp_ao/lib/aolib.h
-+++ b/tools/testing/selftests/net/tcp_ao/lib/aolib.h
-@@ -404,7 +404,8 @@ static inline int test_prepare_def_key(struct tcp_ao_add *ao,
- 
- extern int test_get_one_ao(int sk, struct tcp_ao_getsockopt *out,
- 			   void *addr, size_t addr_sz,
--			   uint8_t prefix, uint8_t sndid, uint8_t rcvid);
-+			   uint8_t prefix, uint8_t sndid, uint8_t rcvid,
-+			   uint8_t keyflags, int ifindex);
- extern int test_get_ao_info(int sk, struct tcp_ao_info_opt *out);
- extern int test_set_ao_info(int sk, struct tcp_ao_info_opt *in);
- extern int test_cmp_getsockopt_setsockopt(const struct tcp_ao_add *a,
-@@ -418,7 +419,8 @@ static inline int test_verify_socket_key(int sk, struct tcp_ao_add *key)
- 	int err;
- 
- 	err = test_get_one_ao(sk, &key2, &key->addr, sizeof(key->addr),
--			      key->prefix, key->sndid, key->rcvid);
-+			      key->prefix, key->sndid, key->rcvid,
-+			      key->keyflags, key->ifindex);
- 	if (err)
- 		return err;
- 
-diff --git a/tools/testing/selftests/net/tcp_ao/lib/sock.c b/tools/testing/selftests/net/tcp_ao/lib/sock.c
-index ef8e9031d47a..2e7b06a1a156 100644
---- a/tools/testing/selftests/net/tcp_ao/lib/sock.c
-+++ b/tools/testing/selftests/net/tcp_ao/lib/sock.c
-@@ -252,7 +252,7 @@ static int test_get_ao_keys_nr(int sk)
- 
- int test_get_one_ao(int sk, struct tcp_ao_getsockopt *out,
- 		void *addr, size_t addr_sz, uint8_t prefix,
--		uint8_t sndid, uint8_t rcvid)
-+		uint8_t sndid, uint8_t rcvid, uint8_t keyflags, int ifindex)
- {
- 	struct tcp_ao_getsockopt tmp = {};
- 	socklen_t tmp_sz = sizeof(tmp);
-@@ -262,6 +262,8 @@ int test_get_one_ao(int sk, struct tcp_ao_getsockopt *out,
- 	tmp.prefix = prefix;
- 	tmp.sndid  = sndid;
- 	tmp.rcvid  = rcvid;
-+	tmp.keyflags = keyflags;
-+	tmp.ifindex = ifindex;
- 	tmp.nkeys  = 1;
- 
- 	ret = getsockopt(sk, IPPROTO_TCP, TCP_AO_GET_KEYS, &tmp, &tmp_sz);
--- 
-2.43.0
+What sashikos are claiming is partly followup material (the rmmod
+issue requires root where this UAF requires CAP_NET_ADMIN) and
+partially hallucinations. So, let's address those issues in follow-up
+patches.
 
+cheers,
+jamal
+
+> > diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
+> > index 5c42a29a981c..9e52afc2d980 100644
+> > --- a/net/sched/sch_teql.c
+> > +++ b/net/sched/sch_teql.c
+> > @@ -377,6 +377,7 @@ static netdev_tx_t teql_master_xmit(struct sk_buff =
+*skb, struct net_device *dev)
+> >                       nores =3D 1;
+> >                       break;
+> >               }
+> > +             skb->dev =3D dev;
+>
+> [Severity: High]
+> This isn't a bug introduced by this patch, but does it leave a smaller
+> version of the same dangling skb->dev behind, with the master netdev in
+> place of the previous slave?
+>
+> After the restore, skb->dev is the teql master, and the skb can still be
+> parked on the arp_queue of a neighbour that belongs to a slave device.  O=
+n
+> the second pass (skb_res =3D=3D skb after the goto restart), teql_resolve=
+() ->
+> __teql_resolve() creates the neighbour on the slave because dst->dev is t=
+he
+> master:
+>
+> net/sched/sch_teql.c:__teql_resolve() {
+>         ...
+>         if (dst->dev !=3D dev) {
+>                 struct neighbour *mn;
+>
+>                 mn =3D __neigh_lookup_errno(n->tbl, n->primary_key, dev);
+>         ...
+>         if (neigh_event_send(n, skb_res) =3D=3D 0) {
+>         ...
+>         } else {
+>                 err =3D (skb_res =3D=3D NULL) ? -EAGAIN : 1;
+>         }
+> }
+>
+> __neigh_event_send() then keeps the skb:
+>
+> net/core/neighbour.c:__neigh_event_send() {
+>         ...
+>                 skb_dst_force(skb);
+>                 __skb_queue_tail(&neigh->arp_queue, skb);
+>         ...
+> }
+>
+> teql_master_xmit() returns NETDEV_TX_OK for the err =3D=3D 1 case and los=
+es
+> ownership.  At that point the queued skb's skb->dev (master) is not the
+> neighbour's device (slave), so the arp_queue flushing done by
+> arp_ifdown()/neigh_ifdown() for the master's device never sees this skb.
+> skb->dev also takes no netdev reference.
+>
+> Is the held dst enough to pin the master here?  On NETDEV_UNREGISTER,
+> rt_flush_dev() and dst_dev_put() swap dst->dev to blackhole_netdev via
+> netdev_ref_replace(), which drops the master's refcount, so
+> netdev_wait_allrefs() does not hold off free_netdev().  The master has no
+> rtnl_link_ops, so the free comes from teql_exit():
+>
+> net/sched/sch_teql.c:teql_exit() {
+>         ...
+>                 unregister_qdisc(&master->qops);
+>                 unregister_netdev(master->dev);
+>                 free_netdev(master->dev);
+>         ...
+> }
+>
+> which means rmmod sch_teql after the last teql qdisc is deleted, racing a
+> pending neighbour resolution (the retransmit window is multiple seconds b=
+y
+> default).  The next use of the queued skb dereferences the freed master
+> through the same path as the KASAN report quoted in the commit message,
+> neigh_invalidate() -> arp_error_report() -> dst_link_failure() ->
+> ipv4_link_failure() -> __icmp_send():
+>
+> net/ipv4/icmp.c:__icmp_send() {
+>         ...
+>         if (!(skb_in->dev && (skb_in->dev->flags&IFF_LOOPBACK)) &&
+>               !icmpv4_global_allow(net, type, code, &apply_ratelimit))
+>         ...
+> }
+>
+> and on the successful resolution path,
+> neigh_update_process_arp_queue() -> n1->output() -> dev_queue_xmit() uses
+> the freed device's netdev_ops and _tx.
+>
+> Would setting skb->dev to the device of the neighbour that actually takes
+> the skb (the slave used by __teql_resolve()), or declining to hand the sk=
+b
+> to a neighbour whose device differs from skb->dev, close the remaining
+> window?
+>
+> > \t\t__skb_pull(skb, skb_network_offset(skb));
+> >       } while ((q =3D rcu_dereference(NEXT_SLAVE(q))) !=3D start);
+> >
+> --
+> pw-bot: cr
