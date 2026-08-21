@@ -1,93 +1,110 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291FD471CF3;
-	Fri, 21 Aug 2026 10:53:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7EF3DDAF4;
+	Fri, 21 Aug 2026 10:54:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787309596; cv=none; b=gTWLGnGWc1GRiIR9J3hIAf/4I8MaqX57cvWvTmlCx1hbEAIqPKR1/2MgQ4x16tWa0GS+RrCJeltMh+dn4HaAcbRuyQJA7ILfQcWDBMbZLLyNE6Y7n2VgsDWkfYXH0bPMkZD03O8fsjhkZCRD3KWVQU6doHyy75R72EUYfbnbgAM=
+	t=1787309676; cv=none; b=ifoxya64QUHzfjZX4PPqs+f1OGucciAOTFv9nuRGrlfAPxGtBaZ8kIENnplAkYjiUIqaJTavOxg+IHNB2t/TlYMk1RRKMpAxq2F1HEaFs4BB/4frAxQpNAIrqQEYyg6RDFzk0Ekmr5FbtF4DcO6Aifi9JDwDOEQjZV8XBvmj0rM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787309596; c=relaxed/simple;
-	bh=db9tvE++slmSkBi47GlKRkGxKG6uu119fd5Trvcau+c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mNE/7OZaKCc+lqXbopTcmNE5uxzngPHCeuw0MNNatweARFhgA1mvYVlgnLn19gt8QoCfl5zfff1KNmEejTfgvtLKnrThW/CCdmjofCG4gAOsWnYEKBou8rhMKuQd2NvHl5pWt5HfAbrx2ow5O4UT/XqHBtf4RA2BuVLlOuiNLPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sm+SplkN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4d50prHH; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1787309676; c=relaxed/simple;
+	bh=xk9UX3jvbTOlr/WZ0ZRUrNdC5t6L0WkRrjlgktWsEV0=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hfk1zDTZgnHQGYN/jcy7qJeZVRpuvb1thw39KDq5gVcifZgYqHB+nWUme/J5qOfsA5H379qB8CG/jVYbYeBK/kF/ztTFD/2GMSMdqVChlVocwe2EGqKhGh2O0k690iDouaaL8yLRBa3t+kvZaF3tWMYymBtYhNGeOZUDhveHx4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=PcbeGOwx; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sm+SplkN";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4d50prHH"
-Date: Fri, 21 Aug 2026 12:53:10 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1787309591;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XOfj9iWnujkJXGCKkSSLRpyruq4aYxWH0TC7ipj0KRA=;
-	b=sm+SplkNZFrICX9Fb0x5cjvPTX1Nl43EIl5/jxIR8+H/Ke9ZRXCd+ZHXX2mFhfFV112VOR
-	mIrG9UoLse0L+L/A4T5ZDTAhUY1olw0NBYiKXRCC1yQ6JVHChCsE1QtT3V92ABG3gwAX5B
-	sHXuB/ytWthEyT+8WDmPoTsl2Y+mXBFhsA0BfKayGRBy1YP9s7X4mvflbzxC3Xw2KCSrpe
-	xjOslBkfF2qeUfsFwTe2EsSUWIHs7gJSNOaP17sDQTVjfiQMvQ0X1DIKbXiREPzhEkgbZG
-	5JGdMmYLXwNfEJy6EcfSVX5OcGVmwRXfISpLWyUHmxfQ+o4EaTZ881Wus2MmwA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1787309591;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XOfj9iWnujkJXGCKkSSLRpyruq4aYxWH0TC7ipj0KRA=;
-	b=4d50prHHZbcMsOnjLv+aq7L6GtmqE62MkA8FN7P6Pd/xcbYtjFbFbWZZ4hi/ZD3dhty1Z/
-	ixTUDOIrkQ46E0Cw==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Florian Bezdeka <florian.bezdeka@siemens.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Thomas Gleixner <tglx@kernel.org>, netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH RFC 2/3] genirq: Honor existing IRQ affinities when
- setting affinity hints
-Message-ID: <20260821105310.ZRK2TO93@linutronix.de>
-References: <20260819-flo-net-7-2-make-stmmac-default-affinity-aware-v1-0-3f79a99cadaf@siemens.com>
- <20260819-flo-net-7-2-make-stmmac-default-affinity-aware-v1-2-3f79a99cadaf@siemens.com>
- <20260820094153.420202f6@kernel.org>
- <11c2d3c4-ea05-46a2-8579-c5aba1bfa204@siemens.com>
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="PcbeGOwx"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67L9Paxb4183272;
+	Fri, 21 Aug 2026 03:54:11 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=xk9UX3jvbTOlr/WZ0ZRUrNdC5
+	t6L0WkRrjlgktWsEV0=; b=PcbeGOwxACVB0m5+lPqeYXlGxU6mP5pQMPrBG6Yc0
+	Peydwds/f/B0hYss7lnaekoVgLdtX1gGB64FMepLlslIfWRntJPzf4wVMy/DQJFH
+	MGz9UqxYiwHQsNYLaOe/PGUFfMqwkdAuS9s2QZ/vFo5U4ioWka/M29CswS58KObz
+	BD6hxrvC/SfKEcMM+qMBaRNDbjuHvOMashrogeXMaZDCNKUvnOTOIAVvlKR6/RWJ
+	cFYYeHHZzHjgahBddRPsr/6DKxhZVX7XYcoGRQFv50BqfclXuw7fAUa2H/wvOOgi
+	md9NcLWnDtYe/JQarI4KWxftFro+/mVXGyuqyy7UTlojA==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4g6m1k054t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 21 Aug 2026 03:54:10 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Fri, 21 Aug 2026 03:54:09 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Fri, 21 Aug 2026 03:54:09 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id 62EC33F7091;
+	Fri, 21 Aug 2026 03:54:05 -0700 (PDT)
+Date: Fri, 21 Aug 2026 16:24:04 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <pabeni@redhat.com>, <sumang@marvell.com>
+CC: <andrew+netdev@lunn.ch>, <ast@kernel.org>, <daniel@iogearbox.net>,
+        <davem@davemloft.net>, <edumazet@google.com>, <hawk@kernel.org>,
+        <john.fastabend@gmail.com>, <kuba@kernel.org>, <sdf@fomichev.me>,
+        <sgoutham@marvell.com>, Geetha sowjanya <gakula@marvell.com>
+Subject: Re: [PATCH net] octeontx2-pf: fix NULL deref of af_xdp_zc_qidx on
+ rep setup
+Message-ID: <aoguTKQIJa6IZ5r4@rkannoth-OptiPlex-7090>
+References: <20260820090533.2681578-1-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <11c2d3c4-ea05-46a2-8579-c5aba1bfa204@siemens.com>
+In-Reply-To: <20260820090533.2681578-1-rkannoth@marvell.com>
+X-Authority-Analysis: v=2.4 cv=UbVhjqSN c=1 sm=1 tr=0 ts=6a882e52 cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8
+ a=mZbQywTzfupek0yPt5kA:9 a=CjuIK1q_8ugA:10 a=ZXulRonScM0A:10
+ a=OBjm3rFKGHvpk9ecZwUJ:22 a=Oh551-UHZqmTy8JkqTUo:22
+X-Proofpoint-GUID: a-v89ckQhUU12DwPlBNPqYOLChLzFIEy
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODIxMDA4MSBTYWx0ZWRfXyHAXS5idqWyA
+ yj7D7kxkDs6YDpNASi6fGpgNVt2z/p8lO2jhprbHmZZCy7DecXJ3tqJk92rxNh0zk4OajKhvoTo
+ 5XF0ois7PEfKOhWT7Ujzz60x5rJgxiB0eXXwycpIPAj59vsvIhzK64y/KKTvrOVDIxNoebLCOr1
+ kBMbca9PUVPXmJSPWsp3ZJ7Py/5AowZ/C4XCH3MCjlYxbI/170pf+QLvjxDPIXeCoEClkldXHWU
+ HAPVze7sXrztewe98UdB7CSYwFgYWdayL+SB0Lk5s+Mg0uMOfeI91CApm3xzc5MOoQj40v9imSr
+ KrMTZnRvfPv+yakbuGyDOgTYA4np9QHfyBUP/2GATachpANKcCNNJIaWRWdHyI51VMMU+dJQe6I
+ epU4HLK3ogLgkHTZhPlu22v4E5ERmDPU9wMTjMdUuQWlcFhl70qQ2zHCdHOk+XIRgyoGg2k0Cgi
+ wLG3bb2ygW8J2ve00Rg==
+X-Proofpoint-ORIG-GUID: a-v89ckQhUU12DwPlBNPqYOLChLzFIEy
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODIxMDA4MSBTYWx0ZWRfX/LKMFe7XZlly
+ dQkVqyf03HFZahlRzRr7P/zJyfrz0wyJevq4/xu9IEfWNdXcPCkKi8SkTeEvkrKYhqv41NBip7e
+ 1WbRXevXbMv+v2cpxH5KGfBHRRC7r54=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-21_03,2026-08-21_01,2025-10-01_01
 
-On 2026-08-21 12:38:52 [+0200], Jan Kiszka wrote:
-> Fully agree: drivers should not set affinities. They should just express
-> desires or additional constraints. The ultimately resulting affinity for
-> an IRQ should be the result of the various constraints that kernel and
-> userland may express via NUMA placements, isolcpus, some dynamic
-> isolation/grouping constraints, or you-name-it.
+On 2026-08-20 at 14:35:33, Ratheesh Kannoth (rkannoth@marvell.com) wrote:
+> From: Suman Ghosh <sumang@marvell.com>
+>
+> af_xdp_zc_qidx tracks receive queues using AF_XDP zero-copy and is
+> allocated during PF/VF probe. Representors and other non-AF_XDP paths
+> leave the pointer NULL, but several call sites used test_bit() on it
+> unconditionally.
+>
+> Switching to devlink eswitch mode creates representors and runs
+> otx2_init_hw_resources(), which reaches otx2_pool_aq_init() and oopses
+> when dereferencing the NULL bitmap. Add NULL checks before every
+> af_xdp_zc_qidx test_bit() use in the RSS, ethtool, XSK, and pool init
+> paths.
+>
+> Fixes: efabce290151 ("octeontx2-pf: AF_XDP zero copy receive support")
+> Signed-off-by: Suman Ghosh <sumang@marvell.com>
+> Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 
-You might want to look at irq_create_affinity_masks()/
-group_cpus_evenly() which attempts to spread irqs evenly across CPUs/
-NUMA nodes. This is used by storage is considered a bit by the
-isolcpus=managed_irq option.
+Will address sashiko comments in v2
 
-> I think we need a big picture how things should eventually look like and
-> then develop a strategy how to step-wise convert existing code.
-> 
-> Jan
-
-Sebastian
+pw-bot: changes-requested
