@@ -1,104 +1,116 @@
-Received: from mta0.migadu.com (out-168.mta0.migadu.com [91.218.175.168])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4205621CC71
-	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 13:01:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.168
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9B448A8D1
+	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 13:02:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787317289; cv=none; b=JpCQgShhWcw0kSlFlDOXA0bem5BaRU8EJO8FuQ7e1eE3/cngY3NmYmb9TNslAOwHvWQLGM0H+wsFgnl7rPxJNSt612QXJOzERJ9yT7K3LgGLpIa3qj2W6njo1YhifPwKJ7iLAfrYOwfUQJ2+pXA4XNEhfSQC+L20RpuWFn/uJdg=
+	t=1787317325; cv=none; b=M49bCuj8iV6y8z1ysjdPbtq0kyA7KBfey34iLe+yvTLGCdhAyErZZ1hE3Byu1ZZmBDl+p/ilqvNZ87sohQ3x27eYQwywEMEeywjmxeqf/WGFElUZspi/cx1/x60y2pOpHFdAVfNSI3/4aT7qmrqFLhU89o2n23VRWfp4go9BwVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787317289; c=relaxed/simple;
-	bh=5UQEbg8CJ9Ltey3HOYemgtScprFgZKG6U4xVnm9WJHo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b4EHOMCaf6JAAaEUKi3dNCLOIE5dqDEjAEiFKsHpEG1B4ZFmDWbCVGNldc1+kechE1v2QZ7n986uCtM+w7R8k79a28ISuTUK7f6zMOEwuesBOSvWhn1cZ8GGGCzycsY+WQ5T+6zsHy2BOo8p1mcXsm50oIL7+R8a4gYsYRvVSNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=JG1LMcPK; arc=none smtp.client-ip=91.218.175.168
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1787317325; c=relaxed/simple;
+	bh=nw3iUyLxXldjaUCaQJDPrq3oYRJPiB2mPDaxB+mHRck=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aiF79o5zLi1QVcpBp8Ls3sqXOphu/kWtCOrmMA0l1hxTAwPAdiWfdYv6mt0t/iH3V+V+JSzRoQ+yQgwnXnMALkfiSBK1MgoGEtP6446cvtABufH2MH/p95nHWNJldN3lAQ/wtvBdJKhiSpIh3O2pmURVWo6wzXwtLCGnXII3E2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SQ+39YcQ; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="JG1LMcPK"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=5UQEbg8CJ9Ltey3HOYemgtScprFgZKG6U4xVnm9WJHo=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787317285; v=1; x=1787922085;
- b=JG1LMcPKS8ZZShW7g5rHLiGTtdOPk/KjMDWoRQrgw5nbbQO8R7RoAXDVPWx2KtyYOnSb/3Mp
- Kv9f9RBMDDbIHXISwNP/6eHo2iLOy0FHI2KLfovfxtb5DII6qCd1TefX+WXDpuYfNvpVCNvK3pT
- IzrQLi/1m+OjI1wUw1iwyW4I=
-X-Envelope-To: netdev@vger.kernel.org
-Received: from fedora (203.175.12.242)
-	by smtp.migadu.com with ESMTPS id 66ea74ae35e86623;
-	Fri, 21 Aug 2026 13:01:24 +0000
-X-Mizu-Trace-ID: 66ea74ae35e86623
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 21 Aug 2026 21:01:17 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Oliver Hartkopp <socketcan@hartkopp.net>
-Cc: Jiale Yao <yaojiale02@163.com>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>,
-	Jay Vosburgh <jv@jvosburgh.net>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Aswin Karuvally <aswin@linux.ibm.com>
-Subject: Re: [PATCH net] net: do not bond/team netdevices which use ml_priv
-Message-ID: <aohMHTTH4VqqgZA7@fedora>
-References: <20260815153938.187073-1-socketcan@hartkopp.net>
- <20260815090015.4a518a54@phoenix.local>
- <02333bd9-89c4-4952-8ae2-ff3c15dcd4df@hartkopp.net>
- <aoQwCj9AXNI1qfsu@fedora>
- <072004e8-d5a8-4f01-9dd5-da2d3aeaa447@hartkopp.net>
- <aoVzaHfKWG-_OJOY@fedora>
- <9cad8318-049c-4ba5-9e3e-fe1d843055f4@linux.ibm.com>
- <9e3e44ac-8725-4372-af4b-e5092c8a3810@hartkopp.net>
- <aoet6aHyJI5lGNOX@fedora>
- <6001bd73-ef68-4820-8371-a22775fb820a@hartkopp.net>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SQ+39YcQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787317323; x=1818853323;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=nw3iUyLxXldjaUCaQJDPrq3oYRJPiB2mPDaxB+mHRck=;
+  b=SQ+39YcQJH9K+HJL8B8rKbO9/mGeB/MjlExFdBOkhvCy8BRa0bW6nxd0
+   W9LfGgfMOuEAnfSZjgQj84dEr24V3FDQckIJSEcWj4zZALXWjzesNvlY1
+   KomHoEJgOA15r74IvkvANyvb47qCjFai5JwIa3+c8v2ufBI4iViG0o5jQ
+   Q/KYxVuBYrBhsHT4N9Di9DN4I3TWDfHQrlzUyvUBqCKKpsQeD+gipH2nB
+   VWX5GJRlrnWSTq7WjEkyD49LztcPH6i+SYppD8EjBgcIGKv5Flj+hU7fp
+   kxBJgkFGh76rKu9XZr8k4gDKRowdRnwMwJJTX+UD7WBvSkgJ2sUaFFVnP
+   g==;
+X-CSE-ConnectionGUID: n8DMam4vQ166wvwVxshm0w==
+X-CSE-MsgGUID: sNoMp7JXT+SE+3PQ3LrGmg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11882"; a="75400962"
+X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; 
+   d="scan'208";a="75400962"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 06:02:01 -0700
+X-CSE-ConnectionGUID: USNqRBxKQ0OgKvCPieX+Ww==
+X-CSE-MsgGUID: GOh2slfXSJeSDoOtm9AlAg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; 
+   d="scan'208";a="271568479"
+Received: from amlin-019-225.igk.intel.com ([10.102.19.225])
+  by fmviesa005.fm.intel.com with ESMTP; 21 Aug 2026 06:01:59 -0700
+From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+To: intel-wired-lan@lists.osuosl.org,
+	anthony.l.nguyen@intel.com,
+	aleksandr.loktionov@intel.com
+Cc: netdev@vger.kernel.org,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH iwl-net v2 0/2] i40e: fix set_ringparam error path crashes
+Date: Fri, 21 Aug 2026 15:01:55 +0200
+Message-ID: <20260821130157.1451118-1-aleksandr.loktionov@intel.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6001bd73-ef68-4820-8371-a22775fb820a@hartkopp.net>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 21, 2026 at 01:17:10PM +0200, Oliver Hartkopp wrote:
-> On 21.08.26 03:46, Hangbin Liu wrote:
-> 
-> > > This caused a problem on CAN devices that were not created by the CAN driver
-> > > infrastructure (creating proper ml_priv content). When TUN/TAP set the
-> > > dev->type of an ethernet device to ARPHRD_CAN the CAN ml_priv is NULL (not
-> > > initialized).
-> > 
-> > I don't know why a user change the tun/tap dev->type to CAN. Can they work
-> > together? If it's a miss config, I think we can just leave it since we already
-> > block CAN slave.
-> 
-> Correct. We currently block ARPHRD_CAN in bond_main.c
-> 
-> > > Not sure if collecting a bunch of ARPHRD values is the right approach or
-> > > whether team/bonding should check required features and settings (like IFF
-> > > flags, e.g. IFF_ARP or specific address length)?
-> > 
-> > Bond supports none arp devices. It also supports infiniband devices. So we
-> > can't check it with IFF_ARP or address length.
-> > 
-> >  From my perspective, we can keep the existing check as it only causes issues
-> > with CAN devices. We can work out a better solution if more incompatible
-> > devices are found under bond/team.
-> 
-> I've checked some whitelisting ideas for bond and team which did not really
-> work and turned out to be risky.
-> 
-> In the end the V2 patch from Jiale Yao testing for ARPHRD_CAN and
-> ARPHRD_IEEE802154 / ARPHRD_IEEE802154_MONITOR (suggested by Gemini/Jakub)
-> seems to be the best idea!
-> 
-> https://lore.kernel.org/netdev/20260728151240.89434-1-yaojiale02@163.com/
-> 
-> ARPHRD_IEEE802154 / ARPHRD_IEEE802154_MONITOR do similar things like the CAN
-> dev->ml_priv approach but with dev->ieee802154_ptr :-/
+i40e_set_ringparam() has two independent ways to crash a live queue
+while resizing descriptors. Both need a failure injected into the
+middle of the resize to hit, but both are 100% reliable once you know
+where.
 
-+1
+Patch 1 is the reported bug: the free_tx: label frees vsi->tx_rings[i]
+(the live, NAPI-active ring) instead of &tx_rings[i] (the staged copy),
+on Rx allocation failure. desc/tx_bi go to NULL under a running NAPI,
+next poll dereferences them. Reproduced by forcing an Rx alloc failure
+right after a Tx descriptor count change; panic address matched the
+original report exactly (CR2 == old_count * sizeof(desc)).
 
-Hangbin
+Patch 2 was found reviewing patch 1. The staged tx_rings[] copies are
+shallow copies of the live rings, so they carry over the same
+ring->netdev/queue_index. Freeing one of these copies before
+i40e_down() has run - either from this same free_tx: label or from the
+i40e_setup_tx_descriptors() failure unwind loop above it - resets BQL
+state for the live queue it was copied from. dql_completed() then
+BUG_ONs the next time the live ring reports a completion that was
+queued before the reset. This one predates patch 1's bug by four
+years (Fixes: 9f65e15b4f98, 2013) and doesn't need patch 1 applied to
+be reachable via the setup_tx_descriptors() path.
+
+Reproduced by forcing i40e_setup_tx_descriptors() to fail on a later
+queue while flooding real Tx traffic on the earlier ones:
+
+  kernel BUG at lib/dynamic_queue_limits.c:99!
+  RIP: dql_completed+0x285/0x2a0
+  Call Trace:
+   <IRQ>
+   i40e_napi_poll+0x74b/0x1700 [i40e]
+   __napi_poll+0x10a/0x200
+   net_rx_action+0x2f7/0x380
+   handle_softirqs+0xcc/0x270
+
+Confirmed clean with the fix applied, same traffic, repeated
+resize cycles.
+
+Patch 2 touches both error paths above, but only the free_tx: hunk
+needs patch 1 applied first to match its diff context - the
+setup_tx_descriptors() unwind hunk applies, and matters, on its own.
+
+Cc: Simon Horman <horms@kernel.org>
+
+Aleksandr Loktionov (2):
+  i40e: fix set_ringparam error path freeing live Tx rings
+  i40e: avoid resetting BQL state when freeing temporary Tx rings in
+    set_ringparam
+
+ drivers/net/ethernet/intel/i40e/i40e_ethtool.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+-- 
+2.52.0
