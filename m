@@ -1,320 +1,1517 @@
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2789F30BF70;
-	Fri, 21 Aug 2026 04:21:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B482837DAAD
+	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 04:27:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787286116; cv=none; b=pC3rt5r0zWa5kqWG1eefw0EI3wgkhoqzquzTXXOWMTYumiqFkBJdYkIzVkIAVJVF0PsvdbLyCOUITbQdCEb0g0n/vXRKKmWXA0YwYxUgCqEYO2MjR8VaIBA93IQo0U0cOjDBnYXXSN/K+5PxSdsfwf9DyARU76oAUdKhOfopdvc=
+	t=1787286444; cv=none; b=TlTeOUmxSy0FOoEINOx1BH8BX9TOxKfhZocKxHVKaJWV1zXxamW3KvUzoWgFbEmkjSaJwpR2c87WTmPecZ5120kEd09T59xtRH4xjgdVxoubXot65qdDPqdugKdfYw+VWQnFG4LI4Fu9X+bAyZvXWxelmcQgSwXv6Dh6/1xIamI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787286116; c=relaxed/simple;
-	bh=I34vR31HpuX9yQf4CCCk//8sxnSuE5CwojFxgmCYmNA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LoJHzDGHqZrcPIGWLDFgPR6CiXWwqEFTlTcwnp8yvED9zjCqTcUNmwqbweXu3Re5wVRKCR12WAiZcfURHdYNm7IEoUTq+quYXmPhPy8pCU5nBQxrUVXI6DQ+S4OygLCVCYTcNCryXiGQE+n7utRf19jSN/LWzGuyFKsnTXaTq50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-c2dff70000001609-1e-6a87d2577020
-Date: Fri, 21 Aug 2026 13:21:43 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, max.byungchul.park@gmail.com,
-	kernel_team@skhynix.com, torvalds@linux-foundation.org,
-	damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
-	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
-	mingo@redhat.com, peterz@infradead.org, will@kernel.org,
-	tglx@linutronix.de, rostedt@goodmis.org, joel@joelfernandes.org,
-	sashal@kernel.org, daniel.vetter@ffwll.ch, duyuyang@gmail.com,
-	johannes.berg@intel.com, tj@kernel.org, tytso@mit.edu,
-	willy@infradead.org, david@fromorbit.com, amir73il@gmail.com,
-	gregkh@linuxfoundation.org, kernel-team@lge.com, linux-mm@kvack.org,
-	akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
-	hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
-	jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
-	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
-	ngupta@vflare.org, linux-block@vger.kernel.org,
-	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
-	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
-	djwong@kernel.org, dri-devel@lists.freedesktop.org,
-	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
-	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
-	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
-	boqun.feng@gmail.com, longman@redhat.com, yunseong.kim@ericsson.com,
-	ysk@kzalloc.com, yeoreum.yun@arm.com, netdev@vger.kernel.org,
-	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
-	catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
-	hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
-	gustavo@padovan.org, christian.koenig@amd.com,
-	andi.shyti@kernel.org, arnd@arndb.de, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
-	mcgrof@kernel.org, petr.pavlu@suse.com, da.gomez@kernel.org,
-	samitolvanen@google.com, paulmck@kernel.org, frederic@kernel.org,
-	neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
-	josh@joshtriplett.org, urezki@gmail.com,
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
-	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
-	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
-	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
-	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
-	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
-	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
-	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
-	yuzhao@google.com, baolin.wang@linux.alibaba.com,
-	usamaarif642@gmail.com, joel.granados@kernel.org,
-	richard.weiyang@gmail.com, geert+renesas@glider.be,
-	tim.c.chen@linux.intel.com, linux@treblig.org,
-	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
-	chenhuacai@kernel.org, francesco@valla.it,
-	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
-	masahiroy@kernel.org, brauner@kernel.org,
-	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
-	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
-	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org,
-	miguel.ojeda.sandonis@gmail.com, neilb@ownmail.net,
-	bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
-	dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v19 00/40] DEPT(DEPendency Tracker)
-Message-ID: <20260821042143.GA40890@system.software.com>
-References: <20260706061928.66713-1-byungchul@sk.com>
- <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
+	s=arc-20240116; t=1787286444; c=relaxed/simple;
+	bh=Sjmy2ZfZit4xpzDzilLx2DZFJtenv5ruq9mWRucBucM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=P+5PIQgeJW3zk6eMe0uWQNh3vo6NQ+Z7pH34nUB5568AvgXVipMtSsZp/6pZsdzkfGWZnbNIFEFaR5F56rT1U0d+29WOA0a8og05EI7OmMAuCQzXcQ6MYGqyZHYzxP5XT9+DbG7ZKdvd8lzVy8i1wYJ2Lsa4K22Iv7xTWCrgrsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kHVz9cZT; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kHVz9cZT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE8C1F000E9
+	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 04:27:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787286440;
+	bh=LwpFt+LnTp+muHxqvGS3w2X5tK0X5Z5VO3o6gZf4HdM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=kHVz9cZT1PpP9mIsg6yB9Mca/y0pVlq72OKiADp6ecfXHy2afj6QWHE2CjWePQO2e
+	 kB4CgDsk2DBiNyI46nGt4tF4Qlu4GlG/8BWvEm+lhe5LdRn3n6FxUYiZdeQ00PtVND
+	 J7Jt/QXo2tSFQ/3nFqhL/DJCAWWnaVzyYdzqhsJE/fsymJbB8y42MrrtID0kSJjWs3
+	 PPsdXl+wEmAE8bJNR6TVFNrYjIRxlKfUW9yltgXgkoegwh/zEf9rP1UD0Vv8hpDOaI
+	 5bSTYQEJu0vb+6fog49N1vYlknSzdSFE5ryFb0jOm6stiI22s1Cr5TkAfdDFHjWXEp
+	 rmDSGl98MlukQ==
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6a173ad7cf4so1222155a12.3
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 21:27:20 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqfpkNboB5gRyxynHZhzUgxX4Nwcq2g2Vky8FntXGH9cMV6hVNPTQlbsxxXpMBjy9VrDQGe/oE=@vger.kernel.org
+X-Gm-Message-State: AFuF++n/x2jp+UU81N1nz67y9caB8lICrTjnp66xfh+OK1nx+eDthn2P
+	qVcrC68zyMKU/idxxBhgijbMCLdd1CjQzc11SktPMHjM9jmNKyX+PoSEv2FAAlbAeIPVhDUOB6+
+	o5JlbkQH3aXcYg6zMV6aXUJj4/DvUIy8=
+X-Received: by 2002:a05:6402:42c7:b0:697:f6b2:a94e with SMTP id
+ 4fb4d7f45d1cf-6a42f2120dcmr3341924a12.13.1787286438893; Thu, 20 Aug 2026
+ 21:27:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0ybZRiG835nmhU+6nTvtkRN52JggTGzxCeZmxpN/NRtMZnGZfvhmvEF
-	OsrBwjhojJzXAWrBUaTNCIxROtptUmAHEMdwDAgHC1mgcsyAtTYFWbBAwFJsS4z8eXPlvt88
-	1/Pj4UhZE7OHUyalieokhUrOSCjJwo5rUaeHL12I8XnCQFPwLYzkdFCw7NFQsGG4y4LGWklD
-	z2guBav/GEgouL9JgW6ojARLcw4Bf//sY2DRWIJA7zCw4Or6ADYnnQSMrswjMM75CJjruIRg
-	Q5cAbt1zBirKbQjaTbkMPNO2kPBkeZGB3vJiBqpz22kY6ncjuGooQ5BXe5uBIbeXgAldGQFm
-	6wmYNjoo6NNeI6DCxYCucRcYKvII//MnAeU32whYMzaw0F87QYExez/MmPQseJ8egs3qZHhs
-	drLQOzVCg9tRxsB0dyEN1j+6EHiePCXAUuIgwTrrb9vHDkBN4XUKKqsmGNBseBBMWTZpyDas
-	0mDr6KNh2Gzzb/G4h4LxgR9Y+L31Jv1OrLBa8D0lWKosSPhtfpEU8psyhLq+eUa4fnmdEEoH
-	ooT7+klWyP91jBWqrReF/EcLtNBkihRqf3ERQs3SMi2MuY8K1obLzCdRZyRvxYoqZbqoPnjs
-	nCR+1jnKpnQdzTRdsRPZqPxgEQrhMH8Y67W3iSLEBflBzueBmOL341mXhgoww7+O7fY1MsA7
-	+Rjs7Mn1f5dwJG9+GV+Z7mYDxQv8m7h5opgJsJQHfGt9PMgyXomvPjCjrTwc91bOBYeS/qHe
-	qmEy4CX5vbjex23Fr+C8FkPQFcIfw7NFz4P8Ir8Pd9zpJrZWXgrBaz9+vcW78UOTndKicP02
-	g36bQf+/Qb/NUI2oBiRTJqUnKpSqw9HxWUnKzOjzyYlW5D9l4zfes/fQku1UJ+I5JN8hjZkq
-	vCCjFempWYmdCHOkfKf0lsYfSWMVWV+J6uQv1BdVYmon2stR8l3SN1YyYmV8nCJNTBDFFFH9
-	X0twIXuykeqe69xrssjBd5/VeeJCc8arLKdfeji+El7smM9otg1GFNSHNn4c8WrYzNmIn8JO
-	ffpZypftxz8adIeVJJxfP6mwEJXvR88MGNtaD2T6Ss2ljYJ34Ui0vX/wZNvxqPfevvNdXULN
-	SKnzUf3dNPZE5r7dG/QoO8nEJfbeCG058mFrj/YvOZUarzgUSapTFf8Cx7i0xsYDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxTVxjHc865Pb00q1xrpzeyuKRzMSER2aLxWXBmbjHezGj0w4ZhS2aV
-	m1He1NYxMNm0dJ2lugUbW7QVRZRqLCJrgY2ZDgIDYWoEVOgUKIRCR0BBVmSUt7WYZXw5+Z3/
-	8zy/53w4LFFY6WpWk31U1GarM1VUxsh2JxnWJ3ecTE+89mANmIzHodsfkECnvp6ByZCJgQu3
-	yinMOX6Wgsl9XgItXfkMtFW4EPgnTQimZhwEjLULDMxZmqUQmn4qBasewYK3GYGt3ULA11ZH
-	oLxKj+HvynkKI40TCKz9AQpFw3oGxpynEdiHHFIYbtoBz/y3JbDQE8TQ9XIUgTMwjyFQfxLB
-	nC0DLpV6IuO2cQoz9x8QKLK2Ibjc30NgYrgPQVVzL4JgdRiB93o+hcHCagIPA8vg0eQYhVbr
-	KQrP2i9geF5JoSTfK4H2eyMIih0WBENPvBgMV25RsBW7Gajt+1UK7SOzGLptFgwu9y7wO4cY
-	uFtYiiNvjnT9tAocRQYcOf7CYL15G3/gRMKU8UdGuOGpwYKxY44K5RfLkTATtiAhVGYggrEw
-	cm0cHSPCd56vhbK7o1QITz6mgvdlCSP8UcoLVwvCWDhzf71Qa++R7tmWItuSKmZqckTthq37
-	ZWkDwS7p4ab3c6+f9eETyLrBjFiW5zbydfpkM4phGe5tfmDYxESZcut4n2+aRFnJJfLBlnxs
-	RjKWcK41/Fn/HWm0sILbzFd1n6JRlnPAV4SfLrKC0/DFdS70Kl/Ot54PLEpJRDp7sYNE9xIu
-	jr82z76K3+QN1Y7FXTHcVn7APL7Ir3Nv8fU1d3AhWmZfYrIvMdn/N9mXmEoQcwMpNdk5WWpN
-	5qYEXUZaXrYmN+HgoSw3inxW5zezZ35BoYc7GhDHItVr8sTe79MVEnWOLi+rAfEsUSnlFaZI
-	JE9V5x0TtYe+0H6VKeoaUBzLqFbJP04W9yu4L9VHxQxRPCxq/6tiNmb1CaQekR9R/pCymaQ8
-	173ojB/d7hsvOLLTHJrX1aZubDwQ/LbrvbV9sZ+sdW3rv/JCGbviXNPlhgKPO6Z1i+nzeIXq
-	sz+f9ApJ3dvLht4tbdk7uG/itOq3jsrfafrYYPOHcf8sJIaKOh+/8em56eWKhKapWNmx4+59
-	nqAv6aOVuTXpN8db96oYXZr6nXii1an/BXiILQioAwAA
-X-CFilter-Loop: Reflected
+References: <20260818-submit-phy-package-fwdevlink-v1-v3-0-40a905ea16b6@gmail.com>
+ <20260818-submit-phy-package-fwdevlink-v1-v3-4-40a905ea16b6@gmail.com>
+In-Reply-To: <20260818-submit-phy-package-fwdevlink-v1-v3-4-40a905ea16b6@gmail.com>
+From: Saravana Kannan <saravanak@kernel.org>
+Date: Thu, 20 Aug 2026 21:27:05 -0700
+X-Gmail-Original-Message-ID: <CACRMN=fEPoyEk1oi4QRMX0whMEF=xQv=kkd62bueKTKWtxDedA@mail.gmail.com>
+X-Gm-Features: AcwNN1W4jxXR15kzgJAdC7fSGJapyONShiqTKQITYhYSR59uulEemZy8CloVVys
+Message-ID: <CACRMN=fEPoyEk1oi4QRMX0whMEF=xQv=kkd62bueKTKWtxDedA@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 4/4] driver core: handle managed links for
+ class devices
+To: James Hilliard <james.hilliard1@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, 
+	Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Christian Marangi <ansuelsmth@gmail.com>, devicetree@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	driver-core@lists.linux.dev, linux-acpi@vger.kernel.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 20, 2026 at 07:16:05PM +0200, David Hildenbrand (Arm) wrote:
-> On 7/6/26 08:18, Byungchul Park wrote:
-> > Hi Linus and folks,
-> 
-> Hi,
+On Mon, Aug 17, 2026 at 11:59=E2=80=AFPM James Hilliard
+<james.hilliard1@gmail.com> wrote:
+>
+> fw_devlink deliberately lets the nearest device pick up dependencies belo=
+w
+> class-backed firmware nodes because driverless class devices do not
+> currently progress through managed device-link states. This can leave
+> consumers of class suppliers dormant, while sync-state-only links from
+> class consumers never reach the successful-probe cleanup.
+>
+> Track class-only devices through equivalent registration and removal
+> transitions. Mark them probing before device_add() publishes them, comple=
+te
+> their incoming and outgoing links after class interfaces run, and enter t=
+he
+> unbind and no-driver states during device_del(). Preserve firmware links
+> below class-backed nodes so later-created descendants can acquire their o=
+wn
+> links.
+>
+> Include class registration in wait_for_device_probe() so supplier unbind
+> cannot race a class consumer that is still being published. Transition
+> managed links which existed before device_add(), remove stale
+> waiting_for_supplier attributes and do not revive a link whose supplier h=
+as
+> already started unbinding.
+>
+> During supplier teardown, wait for class registration to finish, but move
+> an already registered class consumer directly to the unbinding link state
+> because it has no driver to release. Keep consumer-autoremove links valid
+> until class consumer removal without triggering driver-only cleanup
+> warnings.
+>
+> Factor the supplier-bound, consumer-bound and cleanup transitions shared
+> with driver-backed devices. Activate late links involving an already
+> functional class endpoint instead of trying to reprobe it, and let
+> sync-state-only links retire without forcing consumer unbind. Ordinary
+> supplier links cannot defer class registration, so they must not be the
+> only mechanism on which a class consumer relies for functionality.
+>
+> Class devices do not match drivers, so distinguish a genuinely unavailabl=
+e
+> supplier from a probing or registered class endpoint before relaxing
+> inferred links. Preserve normal probe and runtime-PM ordering for those
+> links. Also recognize class-backed nodes when refreshing dependencies aft=
+er
+> firmware-tree overlays.
+>
+> Exclude the internal device-link class because device-link objects are
+> registered while the device-links lock is held. Document the class-device
+> state transitions and add KUnit coverage for supplier and consumer links,
+> pre-existing links, inferred-link preservation, registration waiters and =
+a
+> concurrent supplier unbind.
+>
+> Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+>
+> ---
+> Changes v2 -> v3:
+>   - Replace the framework-specific proxy cleanup API with generic
+>     class-device managed-link lifecycle handling, as suggested by
+>     Saravana Kannan
 
-Hi,
+Please add the Suggested-by tag.
 
-> I think there was plenty of feedback from locking maintainers in the past. One
-> question and a comment below.
-> 
-> >
-> > DEPT(DEPendency Tracker) is a runtime deadlock detection framework that
-> > sees what lockdep cannot.
-> >
-> > I'm thrilled to share that DEPT has moved beyond theory and is now
-> > catching real deadlocks in the wild:
-> >
-> >    https://lore.kernel.org/lkml/6383cde5-cf4b-facf-6e07-1378a485657d@I-love.SAKURA.ne.jp/
-> >    https://lore.kernel.org/lkml/1674268856-31807-1-git-send-email-byungchul.park@lge.com/
-> >    https://lore.kernel.org/all/b6e00e77-4a8c-4e05-ab79-266bf05fcc2d@igalia.com/
-> >
-> > I've added comprehensive documentation explaining DEPT's design and usage.
-> > Getting started is as simple as enabling CONFIG_DEPT and watching dmesg.
-> >
-> > THE PROBLEM LOCKDEP CANNOT SOLVE
-> > --------------------------------
-> >
-> > Lockdep has been our trusted deadlock detector for two decades, but it
-> > has a fundamental blind spot: it tracks lock acquisition order, not the
-> > actual waits and events that cause deadlocks. This means lockdep misses:
-> >
-> >   * Deadlocks involving folio locks (not released within the context)
-> >   * Cross-context synchronization like wait_for_completion()/complete()
-> >   * DMA fence waits, RCU waits, and general waitqueue patterns
-> >   * Any synchronization primitive outside the classic lock/unlock model
-> >
-> > Consider this real deadlock pattern that lockdep cannot detect:
-> >
-> >    context X              context Y              context Z
-> >
-> >                           mutex_lock A
-> >    folio_lock B
-> >                           folio_lock B <- DEADLOCK
-> >                                                  mutex_lock A <- DEADLOCK
-> >                                                  folio_unlock B
-> >                           folio_unlock B
-> >                           mutex_unlock A
-> >                                                  mutex_unlock A
-> 
-> But that really just boils down to folio lock being implemented as a PG_lock +
-> some advanced wait mechanism. And we must do that because of lack of bits in
-> struct page.
-> 
-> Willy mentioned in a previous version [1]: "I don't think it makes sense to
-> track lock state in the page (nor folio).  Partly because there's just so many
-> of them, but also because the locking rules don't really apply to individual
-> folios so much as they do to the mappings (or anon_vmas) that contain folios."
+I'm okay with the use of AI to write patches, but it's not clear if
+you understand the existing code base enough to use it correctly? If
+not, maybe I'll take a weekend to write the patch series to add
+devlink support for class devices and you can test it? You can then
+write the networking part of the fix.
 
-Exactly.  That's why we use classification e.g. lock class - DEPT also
-makes use of the concept.
+Just the class devices devlink support alone should be a long patch
+series. And should be sent to driver core next. Not net next.
 
-DEPT doesn't use a full map in each page but uses a minimum space for a
-timestamp in each to track when each starts to wait so as to use the
-recorded timestamp when the event occurs e.g. folio_unlock().
+Thanks,
+Saravana
 
-> Given that lockdep is a debug feature, and we will at some point allocate struct
-> folio separately, I assume we could just squeeze a "struct lockdep_map" in there
-> in such debug configs and the world would not collapse.
-
-That's a good news for lockdep.  (And even for DEPT :)
-
-> Doing that today (one "struct lockdep_map" in each "struct page") wouldn't work
-> as mm_zero_struct_page() would not expect such large "struct page". But
-> conceptually, for a debug kernel with a special CONFIG_LOCKDEP_PAGE_LOCK, maybe
-> that would already be ok and we could just do that (and optimize it as we
-> allocate folios separately).
-
-Sounds great.
-
-> Not that it's ideal, but for a debug feature to at least check PG_lock, probably
-> an easier way to achieve it than some completely new infrastructure.
-
-I understand what you are going to tell.
-
-However, it's worth noting that lockdep tracks dependencies basically
-based on **lock acqusition orders** in the system.  To make it track
-even rwlock and general synchronization mechanism as well, lockdep has
-no choice but to get more complicated.
-
-Focusing on only the dependency checking, the most parts of lockdep are
-for the tricky things, so the reusable parts are not that big.
-
-> Now, Willy said "locking rules don't really apply to individual folios", I
-> wonder if that could just help to also let lockdep check PG_lock with less
-> metadata? (didn't fully wrap my head around the implications)
-
-That's what DEPT did and what brought external wgen introduced in DEPT.
-I was considering the exactly same thing :)
-
-Again, lockdep that tracks lock acquisition orders can't do that.
-
-> [1]
-> https://lore.kernel.org/all/aR3WHf9QZ_dizNun@casper.infradead.org/?utm_source=chatgpt.com
-> 
-> 
-> It's your guiding example, that's why I mention it. You do mention other wait
-> cases here, I don't know anything about them, but for folios it's really just
-> "we used a single bit so far" AFAIKs.
-
-It doesn't matter whether it's implemented using bit or not.  folio lock
-is quite special since it's allowed to be released other than the
-acquisition context that makes lockdep impossible to track them.
-
-> [...]
-> 
-> >
-> > Q. Why not build DEPT into lockdep?
-> >
-> > A. Lockdep is stable, battle-tested code. I chose separation because
-> >    while DEPT borrows BFS and hashing ideas, the wait/event model
-> >    requires rebuilding from scratch. Lockdep was designed for lock
-> >    acquisition order — retrofitting it would risk its stability.
-> 
-> Why can't this just be some configurable extension to lockdep
-> (CONFIG_LOCKDEP_XYZ) until the feature is stable and can unconditionally be
-> enabled along with it?
-
-Answered?
-
-> I don't quite buy the "would risk its stability" argument. A lot of stuff we do
-> "risks stability", every day :)
-
-That's awsome anyway :)
-
-> Is there another good reason (incompatible with X, dangerous with Y, cinfusing
-> Z) why this really must be a separate thing?
-
-Roughly:
-
-   1. Similar or less effort is needed for the new one - retrofitting
-      lockdep is not easy and big changes are required since the
-      reusable parts are not that big.
-
-   2. Even though you didn't agree, retrofitting it would risk its
-      stability.
-
-> >
-> > Q. Will DEPT replace lockdep?
-> >
-> > A. No. Lockdep validates correct lock usage — that's not going away.
-> >    DEPT supersedes only the dependency-checking logic when mature.
-> 
-> It's quite unfortunate that we'd end up with another similar-but-different
-> mechanism, that will just end up confusing people.
-
-I meant, at least dependency checking engine should be altered, but you
-make sense.  Worth thinking it more.
-
-> But I am not a locking maintainer. I think there was plenty of discussion in the
-> past, so I might just be raising points that were already discussed in the past,
-> but I really just read some random pieces of earlier discussions. (ideally
-> previous discussions would be summarized here)
-> 
-> Long story short: we are now in v19 and I think there was pushback in the past.
-> Did the opinion of locking maintainers change, or is there a way forward to
-> integrate this in a way that would make locking maintainers accept this?
-
-One of locking maintainers who I met in an LPC told me that he agrees
-with the direction of DEPT and supports DEPT, not officially tho.
-
-What he and other people are concerning w.r.t DEPT the most is, false
-positives, which is the most important issue for now.
-
-At the same time, I think the most important thing is to make DEPT
-useful in practice especially with folio locks involved.  Actually, I'm
-planning to share DEPT's true reports periodically to LKML and work with
-people who believe DEPT can make things better.
-
-Any advices will be welcome.  Thanks for your opinions.
-
-	Byungchul
+>   - Preserve inferred links to probing and registered class suppliers in
+>     no-driver fallback paths and include class nodes in overlay refresh
+>   - Cover pre-existing and inferred links, wait_for_device_probe()
+>     integration, waiting_for_supplier cleanup and supplier-unbind races
+>   - Document the limits of ordinary supplier links for driverless class
+>     consumers
+>   - Handle registered class consumers during supplier teardown without a
+>     no-op driver release or driver-only cleanup warning
+>   - Derive class handling inside the shared bound helpers and clarify the
+>     lifecycle documentation
+> ---
+>  Documentation/driver-api/device_link.rst   |  47 ++-
+>  drivers/base/base.h                        |   2 +
+>  drivers/base/core.c                        | 270 +++++++++++-----
+>  drivers/base/dd.c                          |  21 +-
+>  drivers/base/test/Makefile                 |   1 +
+>  drivers/base/test/device-link-class-test.c | 479 +++++++++++++++++++++++=
+++++++
+>  include/linux/device.h                     |   9 +-
+>  7 files changed, 739 insertions(+), 90 deletions(-)
+>
+> diff --git a/Documentation/driver-api/device_link.rst b/Documentation/dri=
+ver-api/device_link.rst
+> index ee913ae16371..c248ec9fa9f8 100644
+> --- a/Documentation/driver-api/device_link.rst
+> +++ b/Documentation/driver-api/device_link.rst
+> @@ -253,6 +253,18 @@ child one.
+>  State machine
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> +Driverless class devices participate in the managed-link state machine a=
+s
+> +supplier and consumer endpoints, including as consumers of sync-state-on=
+ly
+> +proxy links.  Their registration is treated like a successful driver pro=
+be:
+> +links are completed after :c:func:`device_add()` has finished running cl=
+ass
+> +interfaces.  During removal, driver-backed consumers are unbound before =
+the
+> +class device is deleted and its links return to the no-driver state.
+> +
+> +Class devices are not probed, so an ordinary supplier link cannot defer =
+their
+> +registration in the way that it defers a driver probe.  Frameworks must =
+not use
+> +such a link as the only mechanism guaranteeing that a class consumer's
+> +supplier is functional.
+> +
+>  .. kernel-doc:: include/linux/device.h
+>     :functions: device_link_state
+>
+> @@ -271,10 +283,13 @@ State machine
+>    and consumer.  If the link is created before any devices are probed, i=
+t
+>    is set to ``DL_STATE_DORMANT``.
+>
+> -* When a supplier device is bound to a driver, links to its consumers
+> -  progress to ``DL_STATE_AVAILABLE``.
+> -  (Call to :c:func:`device_links_driver_bound()` from
+> -  :c:func:`driver_bound()`.)
+> +* When a supplier device is bound to a driver, links to its consumers pr=
+ogress
+> +  to ``DL_STATE_AVAILABLE``.  Registering a driverless class supplier pe=
+rforms
+> +  the equivalent transition, or activates a late link whose consumer is
+> +  already functional.
+> +  The driver-backed path calls :c:func:`device_links_driver_bound()` fro=
+m
+> +  :c:func:`driver_bound()`, while the class-device completion path perfo=
+rms
+> +  the equivalent transition from :c:func:`device_add()`.
+>
+>  * Before a consumer device is probed, presence of supplier drivers is
+>    verified by checking the consumer device is not in the wait_for_suppli=
+ers
+> @@ -286,17 +301,28 @@ State machine
+>    (Call to :c:func:`wait_for_device_probe()` from
+>    :c:func:`device_links_unbind_consumers()`.)
+>
+> +  Registering a driverless class consumer similarly moves existing avail=
+able
+> +  links to ``DL_STATE_CONSUMER_PROBE`` before publishing the device, and=
+ its
+> +  registration participates in :c:func:`wait_for_device_probe()`.  Unlik=
+e a
+> +  driver probe, class registration is not deferred for unavailable suppl=
+iers.
+> +
+>  * If the probe fails, links to suppliers revert back to ``DL_STATE_AVAIL=
+ABLE``.
+>    (Call to :c:func:`device_links_no_driver()` from :c:func:`really_probe=
+()`.)
+>
+>  * If the probe succeeds, links to suppliers progress to ``DL_STATE_ACTIV=
+E``.
+> -  (Call to :c:func:`device_links_driver_bound()` from :c:func:`driver_bo=
+und()`.)
+> +  A driverless class consumer activates usable incoming links when its
+> +  registration completes, drops sync-state-only proxy links and preserve=
+s
+> +  links whose suppliers are dormant or unbinding.  The driver-backed pat=
+h
+> +  calls :c:func:`device_links_driver_bound()` from :c:func:`driver_bound=
+()`,
+> +  while :c:func:`device_add()` performs the equivalent class-device
+> +  transition.
+>
+>  * When the consumer's driver is later on removed, links to suppliers rev=
+ert
+>    back to ``DL_STATE_AVAILABLE``.
+>    (Call to :c:func:`__device_links_no_driver()` from
+>    :c:func:`device_links_driver_cleanup()`, which in turn is called from
+> -  :c:func:`__device_release_driver()`.)
+> +  :c:func:`__device_release_driver()`.)  Removing a driverless class con=
+sumer
+> +  performs the equivalent cleanup from :c:func:`device_del()`.
+>
+>  * Before a supplier's driver is removed, links to consumers that are not
+>    bound to a driver are updated to ``DL_STATE_SUPPLIER_UNBIND``.
+> @@ -305,14 +331,17 @@ State machine
+>    This prevents the consumers from binding.
+>    (Call to :c:func:`device_links_check_suppliers()` from
+>    :c:func:`really_probe()`.)
+> -  Consumers that are bound are freed from their driver; consumers that a=
+re
+> -  probing are waited for until they are done.
+> +  Driver-backed consumers that are bound are freed from their driver;
+> +  driverless class consumers remain registered and their links move dire=
+ctly
+> +  to ``DL_STATE_SUPPLIER_UNBIND``.  Consumers that are probing or being
+> +  registered as class devices are waited for until they are done.
+>    (Call to :c:func:`device_links_unbind_consumers()` from
+>    :c:func:`__device_release_driver()`.)
+>    Once all links to consumers are in ``DL_STATE_SUPPLIER_UNBIND`` state,
+>    the supplier driver is released and the links revert to ``DL_STATE_DOR=
+MANT``.
+>    (Call to :c:func:`device_links_driver_cleanup()` from
+> -  :c:func:`__device_release_driver()`.)
+> +  :c:func:`__device_release_driver()`.)  Removing a driverless class sup=
+plier
+> +  follows the same sequence from :c:func:`device_del()`.
+>
+>  API
+>  =3D=3D=3D
+> diff --git a/drivers/base/base.h b/drivers/base/base.h
+> index a5b7abc10ff0..8bdf0a709401 100644
+> --- a/drivers/base/base.h
+> +++ b/drivers/base/base.h
+> @@ -166,6 +166,8 @@ void device_release_driver_internal(struct device *de=
+v, const struct device_driv
+>  void driver_detach(const struct device_driver *drv);
+>  void driver_deferred_probe_del(struct device *dev);
+>  void device_set_deferred_probe_reason(const struct device *dev, struct v=
+a_format *vaf);
+> +void device_probe_begin(void);
+> +void device_probe_end(void);
+>  static inline int driver_match_device(const struct device_driver *drv,
+>                                       struct device *dev)
+>  {
+> diff --git a/drivers/base/core.c b/drivers/base/core.c
+> index d2f9ff65138c..0c26ba38e6cf 100644
+> --- a/drivers/base/core.c
+> +++ b/drivers/base/core.c
+> @@ -213,10 +213,10 @@ static void __fwnode_links_move_consumers(struct fw=
+node_handle *from,
+>   * @fwnode: fwnode from which to pick up dangling consumers
+>   * @new_sup: fwnode of new supplier
+>   *
+> - * If the @fwnode has a corresponding struct device and the device suppo=
+rts
+> - * probing (that is, added to a bus), then we want to let fw_devlink cre=
+ate
+> - * MANAGED device links to this device, so leave @fwnode and its descend=
+ant's
+> - * fwnode links alone.
+> + * If the @fwnode has a corresponding struct device whose device-link st=
+ate is
+> + * managed by the driver core (that is, a bus or class device), then we =
+want to
+> + * let fw_devlink create MANAGED device links to this device, so leave @=
+fwnode
+> + * and its descendants' fwnode links alone.
+>   *
+>   * Otherwise, move its consumers to the new supplier @new_sup.
+>   */
+> @@ -225,7 +225,7 @@ static void __fw_devlink_pickup_dangling_consumers(st=
+ruct fwnode_handle *fwnode,
+>  {
+>         struct fwnode_handle *child;
+>
+> -       if (fwnode->dev && fwnode->dev->bus)
+> +       if (fwnode->dev && (fwnode->dev->bus || fwnode->dev->class))
+>                 return;
+>
+>         fwnode_set_flag(fwnode, FWNODE_FLAG_NOT_DEVICE);
+> @@ -259,7 +259,7 @@ void fw_devlink_refresh_fwnode(struct fwnode_handle *=
+fwnode)
+>
+>         /*
+>          * Find the closest ancestor fwnode that has been converted to a =
+device
+> -        * that can bind to a driver (bus device).
+> +        * whose managed-link lifecycle is handled by the driver core.
+>          */
+>         fwnode_handle_get(fwnode);
+>         do {
+> @@ -270,15 +270,15 @@ void fw_devlink_refresh_fwnode(struct fwnode_handle=
+ *fwnode)
+>                 if (!dev)
+>                         continue;
+>
+> -               if (dev->bus)
+> +               if (dev->bus || dev->class)
+>                         break;
+>
+>                 put_device(dev);
+>         } while ((fwnode =3D fwnode_get_next_parent(fwnode)));
+>
+>         /*
+> -        * If none of the ancestor fwnodes have (yet) been converted to a=
+ device
+> -        * that can bind to a driver, there's nothing to fix up.
+> +        * If none of the ancestor fwnodes have (yet) been converted to s=
+uch a
+> +        * device, there's nothing to fix up.
+>          */
+>         if (!fwnode)
+>                 return;
+> @@ -287,10 +287,9 @@ void fw_devlink_refresh_fwnode(struct fwnode_handle =
+*fwnode)
+>              "Don't multithread overlaying and probing the same device!\n=
+");
+>
+>         /*
+> -        * If the device has already bound to a driver, then we need to r=
+edo
+> -        * some of the work that was done after the device was bound to a
+> -        * driver. If the device hasn't bound to a driver, running things=
+ too
+> -        * soon would incorrectly pick up consumers that it shouldn't.
+> +        * If the device's managed links are available, redo some of the =
+work
+> +        * performed when it reached that state. Running this too soon wo=
+uld
+> +        * incorrectly pick up consumers that it shouldn't.
+>          */
+>         if (dev->links.status =3D=3D DL_DEV_DRIVER_BOUND) {
+>                 fw_devlink_pickup_dangling_consumers(dev);
+> @@ -1088,6 +1087,12 @@ static bool dev_is_best_effort(struct device *dev)
+>                 (dev->fwnode && fwnode_test_flag(dev->fwnode, FWNODE_FLAG=
+_BEST_EFFORT));
+>  }
+>
+> +static bool dev_is_unmatchable(const struct device *dev)
+> +{
+> +       return READ_ONCE(dev->links.status) =3D=3D DL_DEV_NO_DRIVER &&
+> +              !dev_can_match(dev);
+> +}
+> +
+>  static struct fwnode_handle *fwnode_links_check_suppliers(
+>                                                 struct fwnode_handle *fwn=
+ode)
+>  {
+> @@ -1152,7 +1157,7 @@ int device_links_check_suppliers(struct device *dev=
+)
+>
+>                         if (dev_is_best_effort(dev) &&
+>                             device_link_test(link, DL_FLAG_INFERRED) &&
+> -                           !dev_can_match(link->supplier)) {
+> +                           dev_is_unmatchable(link->supplier)) {
+>                                 ret =3D -EAGAIN;
+>                                 continue;
+>                         }
+> @@ -1307,6 +1312,33 @@ static void device_link_drop_managed(struct device=
+_link *link)
+>         kref_put(&link->kref, __device_link_del);
+>  }
+>
+> +static bool device_links_track_class(const struct device *dev)
+> +{
+> +       /* Device-link objects are class devices registered with the lock=
+ held. */
+> +       return dev->class && !dev->bus && dev->class !=3D &devlink_class;
+> +}
+> +
+> +static void device_links_class_start(struct device *dev)
+> +{
+> +       struct device_link *link;
+> +
+> +       device_probe_begin();
+> +       device_links_write_lock();
+> +       WARN_ON(dev->links.status !=3D DL_DEV_NO_DRIVER);
+> +       list_for_each_entry(link, &dev->links.suppliers, c_node) {
+> +               if (!device_link_test(link, DL_FLAG_MANAGED))
+> +                       continue;
+> +
+> +               /* Do not revive a link whose supplier is already unbindi=
+ng. */
+> +               if (link->status =3D=3D DL_STATE_AVAILABLE ||
+> +                   (device_link_test(link, DL_FLAG_SYNC_STATE_ONLY) &&
+> +                    link->status !=3D DL_STATE_SUPPLIER_UNBIND))
+> +                       WRITE_ONCE(link->status, DL_STATE_CONSUMER_PROBE)=
+;
+> +       }
+> +       dev->links.status =3D DL_DEV_PROBING;
+> +       device_links_write_unlock();
+> +}
+> +
+>  static ssize_t waiting_for_supplier_show(struct device *dev,
+>                                          const struct device_attribute *a=
+ttr,
+>                                          char *buf)
+> @@ -1356,43 +1388,11 @@ void device_links_force_bind(struct device *dev)
+>         device_links_write_unlock();
+>  }
+>
+> -/**
+> - * device_links_driver_bound - Update device links after probing its dri=
+ver.
+> - * @dev: Device to update the links for.
+> - *
+> - * The probe has been successful, so update links from this device to an=
+y
+> - * consumers by changing their status to "available".
+> - *
+> - * Also change the status of @dev's links to suppliers to "active".
+> - *
+> - * Links without the DL_FLAG_MANAGED flag set are ignored.
+> - */
+> -void device_links_driver_bound(struct device *dev)
+> +static void __device_links_supplier_bound(struct device *dev,
+> +                                         struct list_head *sync_list)
+>  {
+> -       struct device_link *link, *ln;
+> -       LIST_HEAD(sync_list);
+> -
+> -       /*
+> -        * If a device binds successfully, it's expected to have created =
+all
+> -        * the device links it needs to or make new device links as it ne=
+eds
+> -        * them. So, fw_devlink no longer needs to create device links to=
+ any
+> -        * of the device's suppliers.
+> -        *
+> -        * Also, if a child firmware node of this bound device is not add=
+ed as a
+> -        * device by now, assume it is never going to be added. Make this=
+ bound
+> -        * device the fallback supplier to the dangling consumers of the =
+child
+> -        * firmware node because this bound device is probably implementi=
+ng the
+> -        * child firmware node functionality and we don't want the dangli=
+ng
+> -        * consumers to defer probe indefinitely waiting for a device for=
+ the
+> -        * child firmware node.
+> -        */
+> -       if (dev->fwnode && dev->fwnode->dev =3D=3D dev) {
+> -               fwnode_links_purge_suppliers(dev->fwnode);
+> -               fw_devlink_pickup_dangling_consumers(dev);
+> -       }
+> -       device_remove_file(dev, &dev_attr_waiting_for_supplier);
+> -
+> -       device_links_write_lock();
+> +       struct device_link *link;
+> +       bool class_device =3D device_links_track_class(dev);
+>
+>         list_for_each_entry(link, &dev->links.consumers, s_node) {
+>                 if (!device_link_test(link, DL_FLAG_MANAGED))
+> @@ -1409,16 +1409,35 @@ void device_links_driver_bound(struct device *dev=
+)
+>                         continue;
+>
+>                 WARN_ON(link->status !=3D DL_STATE_DORMANT);
+> -               WRITE_ONCE(link->status, DL_STATE_AVAILABLE);
+> +               /*
+> +                * A class interface can add a link from an already-bound=
+ consumer
+> +                * while the class supplier is being registered.  Likewis=
+e, a class
+> +                * consumer has no driver probe to retry when a late supp=
+lier binds.
+> +                * Those consumers are already functional, so activate th=
+eir links.
+> +                */
+> +               if ((class_device ||
+> +                    device_links_track_class(link->consumer)) &&
+> +                   link->consumer->links.status =3D=3D DL_DEV_DRIVER_BOU=
+ND) {
+> +                       WRITE_ONCE(link->status, DL_STATE_ACTIVE);
+> +               } else {
+> +                       WRITE_ONCE(link->status, DL_STATE_AVAILABLE);
+>
+> -               if (device_link_test(link, DL_FLAG_AUTOPROBE_CONSUMER))
+> -                       driver_deferred_probe_add(link->consumer);
+> +                       if (device_link_test(link, DL_FLAG_AUTOPROBE_CONS=
+UMER))
+> +                               driver_deferred_probe_add(link->consumer)=
+;
+> +               }
+>         }
+>
+>         if (defer_sync_state_count)
+>                 __device_links_supplier_defer_sync(dev);
+>         else
+> -               __device_links_queue_sync_state(dev, &sync_list);
+> +               __device_links_queue_sync_state(dev, sync_list);
+> +}
+> +
+> +static void __device_links_consumer_bound(struct device *dev,
+> +                                         struct list_head *sync_list)
+> +{
+> +       struct device_link *link, *ln;
+> +       bool class_device =3D device_links_track_class(dev);
+>
+>         list_for_each_entry_safe(link, ln, &dev->links.suppliers, c_node)=
+ {
+>                 struct device *supplier;
+> @@ -1431,13 +1450,13 @@ void device_links_driver_bound(struct device *dev=
+)
+>                         /*
+>                          * When DL_FLAG_SYNC_STATE_ONLY is set, it means =
+no
+>                          * other DL_MANAGED_LINK_FLAGS have been set. So,=
+ it's
+> -                        * save to drop the managed link completely.
+> +                        * safe to drop the managed link completely.
+>                          */
+>                         device_link_drop_managed(link);
+> -               } else if (dev_is_best_effort(dev) &&
+> +               } else if (!class_device && dev_is_best_effort(dev) &&
+>                            device_link_test(link, DL_FLAG_INFERRED) &&
+>                            link->status !=3D DL_STATE_CONSUMER_PROBE &&
+> -                          !dev_can_match(link->supplier)) {
+> +                          dev_is_unmatchable(link->supplier)) {
+>                         /*
+>                          * When dev_is_best_effort() is true, we ignore d=
+evice
+>                          * links to suppliers that don't have a driver.  =
+If the
+> @@ -1446,9 +1465,17 @@ void device_links_driver_bound(struct device *dev)
+>                          * (consumer probed before supplier). So delete i=
+t.
+>                          */
+>                         device_link_drop_managed(link);
+> -               } else {
+> +               } else if (!class_device) {
+>                         WARN_ON(link->status !=3D DL_STATE_CONSUMER_PROBE=
+);
+>                         WRITE_ONCE(link->status, DL_STATE_ACTIVE);
+> +               } else if (link->status =3D=3D DL_STATE_CONSUMER_PROBE ||
+> +                          link->status =3D=3D DL_STATE_AVAILABLE) {
+> +                       WRITE_ONCE(link->status, DL_STATE_ACTIVE);
+> +               } else {
+> +                       WARN_ON(link->status !=3D DL_STATE_ACTIVE &&
+> +                               link->status !=3D DL_STATE_DORMANT &&
+> +                               link->status !=3D DL_STATE_SUPPLIER_UNBIN=
+D);
+> +                       continue;
+>                 }
+>
+>                 /*
+> @@ -1460,10 +1487,67 @@ void device_links_driver_bound(struct device *dev=
+)
+>                 if (defer_sync_state_count)
+>                         __device_links_supplier_defer_sync(supplier);
+>                 else
+> -                       __device_links_queue_sync_state(supplier, &sync_l=
+ist);
+> +                       __device_links_queue_sync_state(supplier, sync_li=
+st);
+>         }
+>
+>         dev->links.status =3D DL_DEV_DRIVER_BOUND;
+> +}
+> +
+> +static void device_links_class_bound(struct device *dev)
+> +{
+> +       LIST_HEAD(sync_list);
+> +
+> +       device_remove_file(dev, &dev_attr_waiting_for_supplier);
+> +
+> +       device_links_write_lock();
+> +       __device_links_supplier_bound(dev, &sync_list);
+> +       __device_links_consumer_bound(dev, &sync_list);
+> +       device_links_write_unlock();
+> +
+> +       device_links_flush_sync_list(&sync_list, NULL);
+> +       driver_deferred_probe_trigger();
+> +       device_probe_end();
+> +}
+> +
+> +/**
+> + * device_links_driver_bound - Update device links after probing its dri=
+ver.
+> + * @dev: Device to update the links for.
+> + *
+> + * The probe has been successful, so update links from this device to an=
+y
+> + * consumers by changing their status to "available".
+> + *
+> + * Also change the status of @dev's links to suppliers to "active".
+> + *
+> + * Links without the DL_FLAG_MANAGED flag set are ignored.
+> + */
+> +void device_links_driver_bound(struct device *dev)
+> +{
+> +       LIST_HEAD(sync_list);
+> +
+> +       /*
+> +        * If a device binds successfully, it's expected to have created =
+all
+> +        * the device links it needs to or make new device links as it ne=
+eds
+> +        * them. So, fw_devlink no longer needs to create device links to=
+ any
+> +        * of the device's suppliers.
+> +        *
+> +        * Also, if a child firmware node of this bound device is not add=
+ed as a
+> +        * device by now, assume it is never going to be added. Make this=
+ bound
+> +        * device the fallback supplier to the dangling consumers of the =
+child
+> +        * firmware node because this bound device is probably implementi=
+ng the
+> +        * child firmware node functionality and we don't want the dangli=
+ng
+> +        * consumers to defer probe indefinitely waiting for a device for=
+ the
+> +        * child firmware node.
+> +        */
+> +       if (dev->fwnode && dev->fwnode->dev =3D=3D dev) {
+> +               fwnode_links_purge_suppliers(dev->fwnode);
+> +               fw_devlink_pickup_dangling_consumers(dev);
+> +       }
+> +
+> +       device_remove_file(dev, &dev_attr_waiting_for_supplier);
+> +
+> +       device_links_write_lock();
+> +       __device_links_supplier_bound(dev, &sync_list);
+> +       __device_links_consumer_bound(dev, &sync_list);
+>
+>         device_links_write_unlock();
+>
+> @@ -1548,17 +1632,7 @@ void device_links_no_driver(struct device *dev)
+>         device_links_write_unlock();
+>  }
+>
+> -/**
+> - * device_links_driver_cleanup - Update links after driver removal.
+> - * @dev: Device whose driver has just gone away.
+> - *
+> - * Update links to consumers for @dev by changing their status to "dorma=
+nt" and
+> - * invoke %__device_links_no_driver() to update links to suppliers for i=
+t as
+> - * appropriate.
+> - *
+> - * Links without the DL_FLAG_MANAGED flag set are ignored.
+> - */
+> -void device_links_driver_cleanup(struct device *dev)
+> +static void device_links_cleanup(struct device *dev)
+>  {
+>         struct device_link *link, *ln;
+>
+> @@ -1568,7 +1642,8 @@ void device_links_driver_cleanup(struct device *dev=
+)
+>                 if (!device_link_test(link, DL_FLAG_MANAGED))
+>                         continue;
+>
+> -               WARN_ON(device_link_test(link, DL_FLAG_AUTOREMOVE_CONSUME=
+R));
+> +               WARN_ON(device_link_test(link, DL_FLAG_AUTOREMOVE_CONSUME=
+R) &&
+> +                       !device_links_track_class(link->consumer));
+>                 WARN_ON(link->status !=3D DL_STATE_SUPPLIER_UNBIND);
+>
+>                 /*
+> @@ -1589,6 +1664,21 @@ void device_links_driver_cleanup(struct device *de=
+v)
+>         device_links_write_unlock();
+>  }
+>
+> +/**
+> + * device_links_driver_cleanup - Update links after driver removal.
+> + * @dev: Device whose driver has just gone away.
+> + *
+> + * Update links to consumers for @dev by changing their status to "dorma=
+nt" and
+> + * invoke %__device_links_no_driver() to update links to suppliers for i=
+t as
+> + * appropriate.
+> + *
+> + * Links without the DL_FLAG_MANAGED flag set are ignored.
+> + */
+> +void device_links_driver_cleanup(struct device *dev)
+> +{
+> +       device_links_cleanup(dev);
+> +}
+> +
+>  /**
+>   * device_links_busy - Check if there are any busy links to consumers.
+>   * @dev: Device to check.
+> @@ -1599,7 +1689,9 @@ void device_links_driver_cleanup(struct device *dev=
+)
+>   * state to "supplier unbind" to prevent the consumer from being probed
+>   * successfully going forward.
+>   *
+> - * Return 'false' if there are no probing or active consumers.
+> + * Sync-state-only links are moved to "supplier unbind" without making t=
+he
+> + * supplier busy, since they do not require the consumer to be unbound.
+> + * Return 'false' if there are no other probing or active consumers.
+>   *
+>   * Links without the DL_FLAG_MANAGED flag set are ignored.
+>   */
+> @@ -1613,6 +1705,11 @@ bool device_links_busy(struct device *dev)
+>         list_for_each_entry(link, &dev->links.consumers, s_node) {
+>                 if (!device_link_test(link, DL_FLAG_MANAGED))
+>                         continue;
+> +               /* Sync-state-only links do not require consumer unbindin=
+g. */
+> +               if (device_link_test(link, DL_FLAG_SYNC_STATE_ONLY)) {
+> +                       WRITE_ONCE(link->status, DL_STATE_SUPPLIER_UNBIND=
+);
+> +                       continue;
+> +               }
+>
+>                 if (link->status =3D=3D DL_STATE_CONSUMER_PROBE
+>                     || link->status =3D=3D DL_STATE_ACTIVE) {
+> @@ -1668,6 +1765,10 @@ void device_links_unbind_consumers(struct device *=
+dev)
+>                 if (status =3D=3D DL_STATE_ACTIVE) {
+>                         struct device *consumer =3D link->consumer;
+>
+> +                       /* Class consumers have no driver to release. */
+> +                       if (device_links_track_class(consumer))
+> +                               continue;
+> +
+>                         get_device(consumer);
+>
+>                         device_links_write_unlock();
+> @@ -1826,7 +1927,7 @@ static int fw_devlink_no_driver(struct device *dev,=
+ void *data)
+>  {
+>         struct device_link *link =3D to_devlink(dev);
+>
+> -       if (!dev_can_match(link->supplier))
+> +       if (dev_is_unmatchable(link->supplier))
+>                 fw_devlink_relax_link(link);
+>
+>         return 0;
+> @@ -3704,6 +3805,7 @@ int device_add(struct device *dev)
+>         struct device *parent;
+>         struct kobject *kobj;
+>         struct class_interface *class_intf;
+> +       bool track_class_links =3D false;
+>         int error =3D -EINVAL;
+>         struct kobject *glue_dir =3D NULL;
+>
+> @@ -3737,6 +3839,10 @@ int device_add(struct device *dev)
+>         if (error)
+>                 goto name_error;
+>
+> +       track_class_links =3D device_links_track_class(dev);
+> +       if (track_class_links)
+> +               device_links_class_start(dev);
+> +
+>         pr_debug("device: '%s': %s\n", dev_name(dev), __func__);
+>
+>         parent =3D get_device(dev->parent);
+> @@ -3838,7 +3944,7 @@ int device_add(struct device *dev)
+>          * match with any driver, don't block its consumers from probing =
+in
+>          * case the consumer device is able to operate without this suppl=
+ier.
+>          */
+> -       if (dev->fwnode && fw_devlink_drv_reg_done && !dev_can_match(dev)=
+)
+> +       if (dev->fwnode && fw_devlink_drv_reg_done && dev_is_unmatchable(=
+dev))
+>                 fw_devlink_unblock_consumers(dev);
+>
+>         if (parent)
+> @@ -3858,6 +3964,8 @@ int device_add(struct device *dev)
+>                 mutex_unlock(&sp->mutex);
+>                 subsys_put(sp);
+>         }
+> +       if (track_class_links)
+> +               device_links_class_bound(dev);
+>  done:
+>         put_device(dev);
+>         return error;
+> @@ -3886,6 +3994,10 @@ int device_add(struct device *dev)
+>  parent_error:
+>         put_device(parent);
+>  name_error:
+> +       if (track_class_links) {
+> +               device_links_no_driver(dev);
+> +               device_probe_end();
+> +       }
+>         kfree(dev->p);
+>         dev->p =3D NULL;
+>         goto done;
+> @@ -3980,9 +4092,17 @@ void device_del(struct device *dev)
+>         struct device *parent =3D dev->parent;
+>         struct kobject *glue_dir =3D NULL;
+>         struct class_interface *class_intf;
+> +       bool track_class_links =3D device_links_track_class(dev);
+>         unsigned int noio_flag;
+>
+>         device_lock(dev);
+> +       if (track_class_links) {
+> +               while (device_links_busy(dev)) {
+> +                       device_unlock(dev);
+> +                       device_links_unbind_consumers(dev);
+> +                       device_lock(dev);
+> +               }
+> +       }
+>         kill_device(dev);
+>         device_unlock(dev);
+>
+> @@ -4024,6 +4144,8 @@ void device_del(struct device *dev)
+>         device_pm_remove(dev);
+>         driver_deferred_probe_del(dev);
+>         device_platform_notify_remove(dev);
+> +       if (track_class_links)
+> +               device_links_cleanup(dev);
+>         device_links_purge(dev);
+>
+>         /*
+> diff --git a/drivers/base/dd.c b/drivers/base/dd.c
+> index 60c005223844..61288fcceb5b 100644
+> --- a/drivers/base/dd.c
+> +++ b/drivers/base/dd.c
+> @@ -555,9 +555,21 @@ int device_bind_driver(struct device *dev)
+>  }
+>  EXPORT_SYMBOL_GPL(device_bind_driver);
+>
+> +/* Driver probes and driverless class-device registrations in progress. =
+*/
+>  static atomic_t probe_count =3D ATOMIC_INIT(0);
+>  static DECLARE_WAIT_QUEUE_HEAD(probe_waitqueue);
+>
+> +void device_probe_begin(void)
+> +{
+> +       atomic_inc(&probe_count);
+> +}
+> +
+> +void device_probe_end(void)
+> +{
+> +       atomic_dec(&probe_count);
+> +       wake_up_all(&probe_waitqueue);
+> +}
+> +
+>  static ssize_t state_synced_store(struct device *dev,
+>                                   struct device_attribute *attr,
+>                                   const char *buf, size_t count)
+> @@ -797,7 +809,7 @@ static int really_probe_debug(struct device *dev, con=
+st struct device_driver *dr
+>
+>  /**
+>   * driver_probe_done
+> - * Determine if the probe sequence is finished or not.
+> + * Determine if the probe and class-device registration sequence is fini=
+shed.
+>   *
+>   * Should somehow figure out how to use a semaphore, not an atomic varia=
+ble...
+>   */
+> @@ -811,7 +823,7 @@ bool __init driver_probe_done(void)
+>
+>  /**
+>   * wait_for_device_probe
+> - * Wait for device probing to be completed.
+> + * Wait for device probing and driverless class registration to be compl=
+eted.
+>   */
+>  void wait_for_device_probe(void)
+>  {
+> @@ -894,7 +906,7 @@ static int driver_probe_device(const struct device_dr=
+iver *drv, struct device *d
+>         int trigger_count =3D atomic_read(&deferred_trigger_count);
+>         int ret;
+>
+> -       atomic_inc(&probe_count);
+> +       device_probe_begin();
+>         ret =3D __driver_probe_device(drv, dev);
+>         if (ret =3D=3D -EPROBE_DEFER || ret =3D=3D EPROBE_DEFER) {
+>                 driver_deferred_probe_add(dev);
+> @@ -906,8 +918,7 @@ static int driver_probe_device(const struct device_dr=
+iver *drv, struct device *d
+>                     !defer_all_probes)
+>                         driver_deferred_probe_trigger();
+>         }
+> -       atomic_dec(&probe_count);
+> -       wake_up_all(&probe_waitqueue);
+> +       device_probe_end();
+>         return ret;
+>  }
+>
+> diff --git a/drivers/base/test/Makefile b/drivers/base/test/Makefile
+> index d871a71dbbaa..c33c615eaabf 100644
+> --- a/drivers/base/test/Makefile
+> +++ b/drivers/base/test/Makefile
+> @@ -3,6 +3,7 @@ obj-$(CONFIG_TEST_ASYNC_DRIVER_PROBE)   +=3D test_async_d=
+river_probe.o
+>
+>  obj-$(CONFIG_DM_KUNIT_TEST)    +=3D root-device-test.o
+>  obj-$(CONFIG_DM_KUNIT_TEST)    +=3D platform-device-test.o
+> +obj-$(CONFIG_DM_KUNIT_TEST)    +=3D device-link-class-test.o
+>  obj-$(CONFIG_DM_KUNIT_TEST)    +=3D fwnode-link-test.o
+>
+>  obj-$(CONFIG_DRIVER_PE_KUNIT_TEST) +=3D property-entry-test.o
+> diff --git a/drivers/base/test/device-link-class-test.c b/drivers/base/te=
+st/device-link-class-test.c
+> new file mode 100644
+> index 000000000000..7d52efb55aa5
+> --- /dev/null
+> +++ b/drivers/base/test/device-link-class-test.c
+> @@ -0,0 +1,479 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <kunit/platform_device.h>
+> +#include <kunit/resource.h>
+> +#include <kunit/test.h>
+> +
+> +#include <linux/completion.h>
+> +#include <linux/device.h>
+> +#include <linux/device/driver.h>
+> +#include <linux/fwnode.h>
+> +#include <linux/jiffies.h>
+> +#include <linux/kernfs.h>
+> +#include <linux/kthread.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/sched/task.h>
+> +#include <linux/slab.h>
+> +#include <linux/sysfs.h>
+> +
+> +#define TEST_CLASS_NAME                "device-link-test"
+> +#define TEST_DRIVER_NAME       "device-link-test-consumer"
+> +
+> +enum test_class_action {
+> +       TEST_CLASS_NONE,
+> +       TEST_CLASS_SUPPLIER,
+> +       TEST_CLASS_SYNC_CONSUMER,
+> +       TEST_CLASS_OBSERVE,
+> +       TEST_CLASS_WAIT,
+> +       TEST_CLASS_UNBIND_RACE,
+> +};
+> +
+> +struct device_link_class_context {
+> +       enum test_class_action action;
+> +       struct device *endpoint;
+> +       struct device_link *link;
+> +       struct completion waiter_started;
+> +       struct completion waiter_done;
+> +       struct task_struct *waiter;
+> +       struct completion unbind_started;
+> +       struct completion unbind_done;
+> +       struct task_struct *unbinder;
+> +       bool waiter_completed_during_add;
+> +       bool unbind_completed_during_add;
+> +       bool waiting_for_supplier_seen;
+> +};
+> +
+> +struct test_class_device {
+> +       struct device dev;
+> +       struct fwnode_handle fwnode;
+> +       struct fwnode_handle missing_supplier;
+> +       bool added;
+> +};
+> +
+> +static struct class *test_class;
+> +static struct device_link_class_context *test_context;
+> +static atomic_t remove_count;
+> +static atomic_t sync_count;
+> +
+> +static int test_driver_probe(struct platform_device *pdev)
+> +{
+> +       return 0;
+> +}
+> +
+> +static void test_driver_remove(struct platform_device *pdev)
+> +{
+> +       atomic_inc(&remove_count);
+> +}
+> +
+> +static void test_driver_sync_state(struct device *dev)
+> +{
+> +       atomic_inc(&sync_count);
+> +}
+> +
+> +static struct platform_driver test_driver =3D {
+> +       .probe =3D test_driver_probe,
+> +       .remove =3D test_driver_remove,
+> +       .driver =3D {
+> +               .name =3D TEST_DRIVER_NAME,
+> +               .sync_state =3D test_driver_sync_state,
+> +       },
+> +};
+> +
+> +static bool test_has_waiting_for_supplier(struct device *dev)
+> +{
+> +       struct kernfs_node *kn;
+> +
+> +       kn =3D sysfs_get_dirent(dev->kobj.sd, "waiting_for_supplier");
+> +       if (kn)
+> +               kernfs_put(kn);
+> +
+> +       return !!kn;
+> +}
+> +
+> +static int test_wait_for_probe(void *data)
+> +{
+> +       struct device_link_class_context *context =3D data;
+> +
+> +       complete(&context->waiter_started);
+> +       wait_for_device_probe();
+> +       complete(&context->waiter_done);
+> +
+> +       return 0;
+> +}
+> +
+> +static int test_unbind_supplier(void *data)
+> +{
+> +       struct device_link_class_context *context =3D data;
+> +
+> +       complete(&context->unbind_started);
+> +       device_release_driver(context->endpoint);
+> +       complete(&context->unbind_done);
+> +
+> +       return 0;
+> +}
+> +
+> +static int test_class_add(struct device *dev)
+> +{
+> +       struct device_link_class_context *context =3D test_context;
+> +
+> +       if (!context)
+> +               return 0;
+> +
+> +       switch (context->action) {
+> +       case TEST_CLASS_SUPPLIER:
+> +               context->link =3D device_link_add(context->endpoint, dev,
+> +                                               DL_FLAG_INFERRED |
+> +                                               DL_FLAG_AUTOPROBE_CONSUME=
+R);
+> +               return context->link ? 0 : -ENOMEM;
+> +       case TEST_CLASS_SYNC_CONSUMER:
+> +               context->link =3D device_link_add(dev, context->endpoint,
+> +                                               DL_FLAG_INFERRED |
+> +                                               DL_FLAG_SYNC_STATE_ONLY);
+> +               return context->link ? 0 : -ENOMEM;
+> +       case TEST_CLASS_OBSERVE:
+> +               context->waiting_for_supplier_seen =3D
+> +                       test_has_waiting_for_supplier(dev);
+> +               return 0;
+> +       case TEST_CLASS_WAIT:
+> +               context->waiter =3D kthread_create(test_wait_for_probe, c=
+ontext,
+> +                                                "device-link-wait");
+> +               if (IS_ERR(context->waiter))
+> +                       return PTR_ERR(context->waiter);
+> +               get_task_struct(context->waiter);
+> +               wake_up_process(context->waiter);
+> +               wait_for_completion(&context->waiter_started);
+> +               context->waiter_completed_during_add =3D
+> +                       wait_for_completion_timeout(&context->waiter_done=
+,
+> +                                                   msecs_to_jiffies(50))=
+;
+> +               return 0;
+> +       case TEST_CLASS_UNBIND_RACE:
+> +               context->link =3D device_link_add(dev, context->endpoint,=
+ 0);
+> +               if (!context->link)
+> +                       return -ENOMEM;
+> +               context->unbinder =3D kthread_create(test_unbind_supplier=
+, context,
+> +                                                  "device-link-unbind");
+> +               if (IS_ERR(context->unbinder))
+> +                       return PTR_ERR(context->unbinder);
+> +               get_task_struct(context->unbinder);
+> +               wake_up_process(context->unbinder);
+> +               wait_for_completion(&context->unbind_started);
+> +               context->unbind_completed_during_add =3D
+> +                       wait_for_completion_timeout(&context->unbind_done=
+,
+> +                                                   msecs_to_jiffies(50))=
+;
+> +               return 0;
+> +       case TEST_CLASS_NONE:
+> +               return 0;
+> +       }
+> +
+> +       return -EINVAL;
+> +}
+> +
+> +static struct class_interface test_class_interface =3D {
+> +       .add_dev =3D test_class_add,
+> +};
+> +
+> +static void test_unregister_device(void *data)
+> +{
+> +       device_unregister(data);
+> +}
+> +
+> +static void test_resume_sync_state(void *data)
+> +{
+> +       device_links_supplier_sync_state_resume();
+> +}
+> +
+> +static struct platform_device *
+> +test_register_platform_device(struct kunit *test)
+> +{
+> +       struct platform_device_info info =3D {
+> +               .name =3D TEST_DRIVER_NAME,
+> +               .id =3D PLATFORM_DEVID_AUTO,
+> +       };
+> +       struct platform_device *pdev;
+> +
+> +       pdev =3D kunit_platform_device_register_full(test, &info);
+> +       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pdev);
+> +       KUNIT_ASSERT_EQ(test, pdev->dev.links.status, DL_DEV_DRIVER_BOUND=
+);
+> +
+> +       return pdev;
+> +}
+> +
+> +static void test_class_device_release(struct device *dev)
+> +{
+> +       struct test_class_device *tdev =3D
+> +               container_of(dev, struct test_class_device, dev);
+> +
+> +       fwnode_links_purge(&tdev->fwnode);
+> +       fwnode_links_purge(&tdev->missing_supplier);
+> +       kfree(tdev);
+> +}
+> +
+> +static void test_class_device_cleanup(void *data)
+> +{
+> +       struct test_class_device *tdev =3D data;
+> +
+> +       if (tdev->added)
+> +               device_unregister(&tdev->dev);
+> +       else
+> +               put_device(&tdev->dev);
+> +}
+> +
+> +static struct test_class_device *
+> +test_class_device_alloc(struct kunit *test, const char *name)
+> +{
+> +       struct test_class_device *tdev;
+> +       int ret;
+> +
+> +       tdev =3D kzalloc_obj(*tdev);
+> +       KUNIT_ASSERT_NOT_NULL(test, tdev);
+> +
+> +       device_initialize(&tdev->dev);
+> +       fwnode_init(&tdev->fwnode, NULL);
+> +       fwnode_init(&tdev->missing_supplier, NULL);
+> +       tdev->dev.class =3D test_class;
+> +       tdev->dev.release =3D test_class_device_release;
+> +       device_set_node(&tdev->dev, &tdev->fwnode);
+> +       ret =3D dev_set_name(&tdev->dev, "%s", name);
+> +       if (ret) {
+> +               put_device(&tdev->dev);
+> +               KUNIT_FAIL(test, "failed to name class device: %d", ret);
+> +               return NULL;
+> +       }
+> +
+> +       ret =3D kunit_add_action_or_reset(test, test_class_device_cleanup=
+, tdev);
+> +       KUNIT_ASSERT_EQ(test, ret, 0);
+> +
+> +       return tdev;
+> +}
+> +
+> +static void device_link_class_supplier_test(struct kunit *test)
+> +{
+> +       struct device_link_class_context *context =3D test->priv;
+> +       struct platform_device *consumer;
+> +       struct device *supplier;
+> +       int ret;
+> +
+> +       consumer =3D test_register_platform_device(test);
+> +       context->action =3D TEST_CLASS_SUPPLIER;
+> +       context->endpoint =3D &consumer->dev;
+> +
+> +       supplier =3D device_create(test_class, NULL, 0, NULL,
+> +                                TEST_CLASS_NAME "-supplier");
+> +       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, supplier);
+> +       ret =3D kunit_add_action_or_reset(test, test_unregister_device, s=
+upplier);
+> +       KUNIT_ASSERT_EQ(test, ret, 0);
+> +
+> +       KUNIT_ASSERT_NOT_NULL(test, context->link);
+> +       KUNIT_EXPECT_EQ(test, supplier->links.status, DL_DEV_DRIVER_BOUND=
+);
+> +       KUNIT_EXPECT_EQ(test, READ_ONCE(context->link->status), DL_STATE_=
+ACTIVE);
+> +       KUNIT_EXPECT_TRUE(test, device_link_test(context->link,
+> +                                                DL_FLAG_AUTOPROBE_CONSUM=
+ER));
+> +       KUNIT_EXPECT_FALSE(test, device_link_test(context->link,
+> +                                                 DL_FLAG_SYNC_STATE_ONLY=
+));
+> +
+> +       kunit_release_action(test, test_unregister_device, supplier);
+> +       device_link_wait_removal();
+> +
+> +       KUNIT_EXPECT_EQ(test, atomic_read(&remove_count), 1);
+> +       KUNIT_EXPECT_EQ(test, consumer->dev.links.status, DL_DEV_NO_DRIVE=
+R);
+> +}
+> +
+> +static void device_link_class_consumer_sync_test(struct kunit *test)
+> +{
+> +       struct device_link_class_context *context =3D test->priv;
+> +       struct platform_device *supplier;
+> +       struct device *consumer;
+> +       int ret;
+> +
+> +       device_links_supplier_sync_state_pause();
+> +       ret =3D kunit_add_action_or_reset(test, test_resume_sync_state, N=
+ULL);
+> +       KUNIT_ASSERT_EQ(test, ret, 0);
+> +
+> +       supplier =3D test_register_platform_device(test);
+> +       context->action =3D TEST_CLASS_SYNC_CONSUMER;
+> +       context->endpoint =3D &supplier->dev;
+> +
+> +       consumer =3D device_create(test_class, NULL, 0, NULL,
+> +                                TEST_CLASS_NAME "-consumer");
+> +       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, consumer);
+> +       ret =3D kunit_add_action_or_reset(test, test_unregister_device, c=
+onsumer);
+> +       KUNIT_ASSERT_EQ(test, ret, 0);
+> +
+> +       KUNIT_ASSERT_NOT_NULL(test, context->link);
+> +       KUNIT_EXPECT_EQ(test, consumer->links.status, DL_DEV_DRIVER_BOUND=
+);
+> +       KUNIT_EXPECT_TRUE(test, list_empty(&consumer->links.suppliers));
+> +       kunit_release_action(test, test_resume_sync_state, NULL);
+> +       KUNIT_EXPECT_EQ(test, atomic_read(&sync_count), 1);
+> +}
+> +
+> +static void device_link_class_existing_consumer_link_test(struct kunit *=
+test)
+> +{
+> +       struct device_link_class_context *context =3D test->priv;
+> +       struct test_class_device *consumer;
+> +       struct platform_device *supplier;
+> +       struct device_link *link;
+> +       int ret;
+> +
+> +       supplier =3D test_register_platform_device(test);
+> +       consumer =3D test_class_device_alloc(test,
+> +                                          TEST_CLASS_NAME "-existing-lin=
+k");
+> +       KUNIT_ASSERT_NOT_NULL(test, consumer);
+> +
+> +       link =3D device_link_add(&consumer->dev, &supplier->dev,
+> +                              DL_FLAG_AUTOREMOVE_CONSUMER);
+> +       KUNIT_ASSERT_NOT_NULL(test, link);
+> +       KUNIT_ASSERT_EQ(test, READ_ONCE(link->status), DL_STATE_AVAILABLE=
+);
+> +       ret =3D fwnode_link_add(&consumer->fwnode,
+> +                             &consumer->missing_supplier, 0);
+> +       KUNIT_ASSERT_EQ(test, ret, 0);
+> +
+> +       context->action =3D TEST_CLASS_OBSERVE;
+> +       ret =3D device_add(&consumer->dev);
+> +       KUNIT_ASSERT_EQ(test, ret, 0);
+> +       consumer->added =3D true;
+> +
+> +       KUNIT_EXPECT_EQ(test, consumer->dev.links.status, DL_DEV_DRIVER_B=
+OUND);
+> +       KUNIT_EXPECT_EQ(test, READ_ONCE(link->status), DL_STATE_ACTIVE);
+> +       KUNIT_EXPECT_TRUE(test, context->waiting_for_supplier_seen);
+> +       KUNIT_EXPECT_FALSE(test, test_has_waiting_for_supplier(&consumer-=
+>dev));
+> +}
+> +
+> +static void device_link_class_registration_wait_test(struct kunit *test)
+> +{
+> +       struct device_link_class_context *context =3D test->priv;
+> +       struct device *dev;
+> +       unsigned long timeout;
+> +       int ret;
+> +
+> +       wait_for_device_probe();
+> +       context->action =3D TEST_CLASS_WAIT;
+> +       dev =3D device_create(test_class, NULL, 0, NULL,
+> +                           TEST_CLASS_NAME "-wait");
+> +       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, dev);
+> +       ret =3D kunit_add_action_or_reset(test, test_unregister_device, d=
+ev);
+> +       KUNIT_ASSERT_EQ(test, ret, 0);
+> +
+> +       KUNIT_EXPECT_FALSE(test, context->waiter_completed_during_add);
+> +       timeout =3D wait_for_completion_timeout(&context->waiter_done,
+> +                                             msecs_to_jiffies(1000));
+> +       KUNIT_EXPECT_GT(test, timeout, 0UL);
+> +}
+> +
+> +static void device_link_class_supplier_unbind_race_test(struct kunit *te=
+st)
+> +{
+> +       struct device_link_class_context *context =3D test->priv;
+> +       struct platform_device *supplier;
+> +       struct device *consumer;
+> +       unsigned long timeout;
+> +       int ret;
+> +
+> +       supplier =3D test_register_platform_device(test);
+> +       context->action =3D TEST_CLASS_UNBIND_RACE;
+> +       context->endpoint =3D &supplier->dev;
+> +       consumer =3D device_create(test_class, NULL, 0, NULL,
+> +                                TEST_CLASS_NAME "-unbind-race");
+> +       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, consumer);
+> +       ret =3D kunit_add_action_or_reset(test, test_unregister_device, c=
+onsumer);
+> +       KUNIT_ASSERT_EQ(test, ret, 0);
+> +
+> +       KUNIT_ASSERT_NOT_NULL(test, context->link);
+> +       KUNIT_EXPECT_FALSE(test, context->unbind_completed_during_add);
+> +       timeout =3D wait_for_completion_timeout(&context->unbind_done,
+> +                                             msecs_to_jiffies(1000));
+> +       KUNIT_EXPECT_GT(test, timeout, 0UL);
+> +       KUNIT_EXPECT_EQ(test, atomic_read(&remove_count), 1);
+> +       KUNIT_EXPECT_EQ(test, supplier->dev.links.status, DL_DEV_NO_DRIVE=
+R);
+> +}
+> +
+> +static int device_link_class_test_init(struct kunit *test)
+> +{
+> +       struct device_link_class_context *context;
+> +
+> +       context =3D kunit_kzalloc(test, sizeof(*context), GFP_KERNEL);
+> +       if (!context)
+> +               return -ENOMEM;
+> +
+> +       init_completion(&context->waiter_started);
+> +       init_completion(&context->waiter_done);
+> +       init_completion(&context->unbind_started);
+> +       init_completion(&context->unbind_done);
+> +       test->priv =3D context;
+> +       test_context =3D context;
+> +       atomic_set(&remove_count, 0);
+> +       atomic_set(&sync_count, 0);
+> +
+> +       return 0;
+> +}
+> +
+> +static void device_link_class_test_exit(struct kunit *test)
+> +{
+> +       struct device_link_class_context *context =3D test->priv;
+> +
+> +       if (context->waiter && !IS_ERR(context->waiter)) {
+> +               kthread_stop(context->waiter);
+> +               put_task_struct(context->waiter);
+> +       }
+> +       if (context->unbinder && !IS_ERR(context->unbinder)) {
+> +               kthread_stop(context->unbinder);
+> +               put_task_struct(context->unbinder);
+> +       }
+> +       test_context =3D NULL;
+> +}
+> +
+> +static int device_link_class_suite_init(struct kunit_suite *suite)
+> +{
+> +       int ret;
+> +
+> +       test_class =3D class_create(TEST_CLASS_NAME);
+> +       if (IS_ERR(test_class))
+> +               return PTR_ERR(test_class);
+> +
+> +       ret =3D platform_driver_register(&test_driver);
+> +       if (ret)
+> +               goto destroy_class;
+> +
+> +       test_class_interface.class =3D test_class;
+> +       ret =3D class_interface_register(&test_class_interface);
+> +       if (ret)
+> +               goto unregister_driver;
+> +
+> +       return 0;
+> +
+> +unregister_driver:
+> +       platform_driver_unregister(&test_driver);
+> +destroy_class:
+> +       class_destroy(test_class);
+> +
+> +       return ret;
+> +}
+> +
+> +static void device_link_class_suite_exit(struct kunit_suite *suite)
+> +{
+> +       class_interface_unregister(&test_class_interface);
+> +       platform_driver_unregister(&test_driver);
+> +       class_destroy(test_class);
+> +       device_link_wait_removal();
+> +}
+> +
+> +static struct kunit_case device_link_class_test_cases[] =3D {
+> +       KUNIT_CASE(device_link_class_supplier_test),
+> +       KUNIT_CASE(device_link_class_consumer_sync_test),
+> +       KUNIT_CASE(device_link_class_existing_consumer_link_test),
+> +       KUNIT_CASE(device_link_class_registration_wait_test),
+> +       KUNIT_CASE(device_link_class_supplier_unbind_race_test),
+> +       {}
+> +};
+> +
+> +static struct kunit_suite device_link_class_test_suite =3D {
+> +       .name =3D "device-link-class",
+> +       .suite_init =3D device_link_class_suite_init,
+> +       .suite_exit =3D device_link_class_suite_exit,
+> +       .init =3D device_link_class_test_init,
+> +       .exit =3D device_link_class_test_exit,
+> +       .test_cases =3D device_link_class_test_cases,
+> +};
+> +
+> +kunit_test_suite(device_link_class_test_suite);
+> +
+> +MODULE_DESCRIPTION("KUnit tests for class device links");
+> +MODULE_LICENSE("GPL");
+> diff --git a/include/linux/device.h b/include/linux/device.h
+> index aee79fd6b32b..3783744df86e 100644
+> --- a/include/linux/device.h
+> +++ b/include/linux/device.h
+> @@ -446,11 +446,16 @@ enum device_link_state {
+>  #define DL_FLAG_CYCLE                  BIT(9)
+>
+>  /**
+> - * enum dl_dev_state - Device driver presence tracking information.
+> + * enum dl_dev_state - Device availability tracking information.
+>   * @DL_DEV_NO_DRIVER: There is no driver attached to the device.
+>   * @DL_DEV_PROBING: A driver is probing.
+>   * @DL_DEV_DRIVER_BOUND: The driver has been bound to the device.
+>   * @DL_DEV_UNBINDING: The driver is unbinding from the device.
+> + *
+> + * Class devices which are not on a bus use the same states for their
+> + * registration lifecycle.  In that case, PROBING and DRIVER_BOUND mean =
+that
+> + * device_add() is in progress or has completed, respectively, and UNBIN=
+DING
+> + * means that device_del() is in progress.
+>   */
+>  enum dl_dev_state {
+>         DL_DEV_NO_DRIVER =3D 0,
+> @@ -480,7 +485,7 @@ enum device_removable {
+>   * @suppliers: List of links to supplier devices.
+>   * @consumers: List of links to consumer devices.
+>   * @defer_sync: Hook to global list of devices that have deferred sync_s=
+tate.
+> - * @status: Driver status information.
+> + * @status: Driver or class-device availability status.
+>   */
+>  struct dev_links_info {
+>         struct list_head suppliers;
+>
 > --
-> Cheers,
-> 
-> David
+> 2.53.0
+>
