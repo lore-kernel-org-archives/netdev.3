@@ -1,163 +1,190 @@
-Received: from aer-iport-6.cisco.com (aer-iport-6.cisco.com [173.38.203.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed2-f8.google.com (mail-ed2-f8.google.com [74.125.228.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12B03C988E;
-	Fri, 21 Aug 2026 21:38:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.38.203.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DC518C332
+	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 21:45:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787348332; cv=none; b=C4MwjxHLFcvZA/j6Aq3UvwHQg2g13BuZ+w2baxDqLTjlBIo/g3mR0hO9J65QnAgk5IS1+Oj3gEKyoDGLtGQgstIugBgGryL5J4Gm7gKE9mF10A2jzbQ0kKPzU1pUS4oeC8Z3C/I0efltQt+HceGLwnN6F/+SKeetXJl4QKrKZBY=
+	t=1787348746; cv=none; b=cC3gqvxU9b6XvIUoxb/sqJMzy8ry2BOI2jWduYotO8yMFkS+GM+z1ODxcikcmTq4SMRCkCvbmlpevVz5kSVTgzRKfapfK7dmu3pOB1dKGd7m4R+pFFAmeMWGjfW/st4tfWIdSXdiSHCZNej03jAEaaPJcFAZbNBypQCnDIwNLSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787348332; c=relaxed/simple;
-	bh=fL9I0FIOdljGTeoVp4eM1RD5K7ahN8IClrirStl9klU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NQAhBul9/2kFlzPDKxqcTNTA40qFNdEtenu/XUZAEcnJJJyiKbih0Rk6JejbipU3uklcS+CRXGo4nazHkolIKDlCnKRoSMIrYYXy6encfhKF/4eSNh3T4M2L9X7tLry/gIMIGMZhAnAMg15YA9TZd/dx2oMRIBGWiGKyvtypquo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=R4hH6j8g; arc=none smtp.client-ip=173.38.203.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="R4hH6j8g"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=2159; q=dns/txt;
-  s=iport01; t=1787348330; x=1788557930;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=JyBwlx5IO1iiLzZ8YxacdSgho9wzqqVl4F5mopwsHQE=;
-  b=R4hH6j8gzjhRbXPzxo4jwXNeHvZjkjZqYkJqpcqeyrFtj2+73UVljgVM
-   GkC6ORv6q0lOxRDdNlhb3DtRFjsUOpSWptJu3RdUniqoBtjOy2DwglT+I
-   ofm6C4OJ8UUZZUC24jrEJHLoAqOhtfwttKlyJRXrBdUP9kz0bitvZD647
-   H46fsERHmkRiAlwiA6IZbf5kF0V09GmUYr5Z5SFcxrYm4iTjPfsqqnSOk
-   Dw8WkzxvFb8NzQxEiLVEJjNa8JbxrhusRTlewlSiSg0VmcPyO7xWWe6jt
-   jcFwlLDu7Lb56MKhWWStUO7IMM2YW/Q+plAZ7zzxovSYgOOpBKhqoLfPR
-   A==;
-X-CSE-ConnectionGUID: a9Hd/yHDQvKF4zoi/0Vv1A==
-X-CSE-MsgGUID: w00Nf1UpRYC5EO3XoHy5qA==
-X-IPAS-Result: =?us-ascii?q?A0DEAgADxIhq/9JK/pBaglmCGD+BUkNJlCmCIYEWnQiBf?=
- =?us-ascii?q?g8BAQEPUQQBAYUFAo1sAiY1CA4BAgQDAgMBAQEBAQEBAQEBAQsBAQUBAQECA?=
- =?us-ascii?q?QcFgQ4ThlyGWwIBAycLAUYQUVYZgwKCdQPBV4F5M4EB3keBZgELFAGBOI1hd?=
- =?us-ascii?q?oR8JxuBSUSBFTKCQQdvhRCFeASDLpNXSIEeA1ksAVUTDQoLBwWBZgM1EioVM?=
- =?us-ascii?q?jwyHYEjPheBDRsGBYEdWU+EECMZNnqBCV6BKylgARIXgQmCBwKCWoIFAgFJQ?=
- =?us-ascii?q?w4HSCILGA1IESw3FBkEPm4Hjl4fggpCATFdCoFlbpZdsCOEKKF2M5dfkw2ZC?=
- =?us-ascii?q?KlDgWoBOYFZMxoIGxWDIlMZD45feAECzmRFMj0BAQcCBw4DC4FokX4BAQ?=
-IronPort-Data: A9a23:J82ej6/32NjuFusu5yI2DrUDSH6TJUtcMsCJ2f8bNWPcYEJGY0x3x
- jcaUGDUO//cYmXzc4p1Odyz8xtU6JKHnYA3GQs9pShEQiMRo6IpJzg2wmQcns+2BpeeJK6yx
- 5xGMrEsFOhtEDmE4EzrauS9xZVF/fngbqLmD+LZMTxGSwZhSSMw4TpugOdRbrRA2bBVOCvT/
- 4mvyyHjEAX9gWAsYjhNs/vrRC5H5ZwehhtJ5jTSWtgT1LPuvyF9JI4SI6i3M0z5TuF8dsamR
- /zOxa2O5WjQ+REgELuNyt4XpWVTH9Y+lSDX4pZnc/DKbipq/0Te4Y5nXBYoUnq7vh3S9zxHJ
- HqhgrTrIeshFvWkdO3wyHC0GQkmVUFN0OevzXRSLaV/wmWeG0YAzcmCA2k/bK0UvfdXLVhQ1
- tJEOjcMKUi9mbuflefTpulE3qzPLeHiMZlavjRryivUSK53B5vCWK7No9Rf2V/chOgXQaqYP
- ZdFL2UzKk6ZO3WjOX9PYH46tOW0gX37fiFwo1OOrq1x6G/WpOB0+OWzYYWNJ4fTLSlTtlnA/
- kTIplnhOCAxafG4kgqC0mPxn8aayEsXX6pXTtVU7MVCjFSNy2k7BBQIWF6/pvelzEizR7p3M
- EAa0iQpqKk59EG1CNzwNzW6p36C+BAVQMZZGeA85CmCz6PV50CSAW1sZjNNddkvpsIqbTMt0
- VCNkpXiAjkHmLGcT3OQ8p+Vqjy/MDIfKn9EYyIYJSMM+MXLo4wpiB/LCNF5H8adjtTqGhnzz
- iqMoSx4gK8c5eYIyq+y1VPKmTShot7OVAFdzgzRUnio8UB/aZKpapKA7UXd67BLLO6xQkWIo
- GUAlsG26v4PAZCE0ieKRY0lGLyu4eyCGDvCgFJuFt8q8DHF03upeYdb4Bl4OkZlM89CcjjsC
- GfIsA5c6Jp7OmWrYa5+JYm2DqwC0aH6FM35fvbKb9ZPa956cwrv1Dlnb0OW3kj3nUQsmL15M
- pCeGe6mFXgyF6tq1ny1Sv0b3LttwToxrUvXRJbm31Gk3KCYaXq9V7gIKh2NY/o/4afCpx/am
- /5bNs2X21BFXOj3SjfY/JRVLl0QK3U/Q5fspKR/cOOfLgd4MH8uBuWXwr47fYFh2aNPmY/g5
- W20UEtV4ETwiGeBKgiQbH1nLrT1Uv5CQWkTNCE2eFLt0H85bMP3veEUdoA8ev8s8+kLIeNIc
- sTpsv6oWpxnIgkrMRxEBXUhhOSOrCiWuD8=
-IronPort-HdrOrdr: A9a23:xG+T3qHOJkhD+CxFpLqEyMeALOsnbusQ8zAXPo5KJSC9Ffbo8/
- xG88506faZslwssTQb6LO90cq7MBbhHPxOgLX5VI3KNGLbUSmTXeNfBODZrAEIdReSygck78
- ddWpk7LsHsBl5nisu/ygy5H9E8hOSjysmT9IDjJ7MHd3ASV0mmhD0JbDqmLg==
-X-Talos-CUID: =?us-ascii?q?9a23=3AAhXSOWpyCrMlBAMGEPEzdaHmUcl0UnGa3Vf8GlG?=
- =?us-ascii?q?bJzp7T7zSEWGOoYoxxg=3D=3D?=
-X-Talos-MUID: 9a23:wc3g3glYYpm+evmU2jYndnp9bJ9O7f2TEHo8usgrnJK0MgxhZi602WE=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="6.25,235,1779148800"; 
-   d="scan'208";a="56970531"
-Received: from aer-l-core-09.cisco.com ([144.254.74.210])
-  by aer-iport-6.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 21 Aug 2026 21:37:35 +0000
-Received: from localhost (unknown [10.189.108.235])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by aer-l-core-09.cisco.com (Postfix) with ESMTPS id 8D7041800010E;
-	Fri, 21 Aug 2026 21:37:35 +0000 (GMT)
-From: Jerome Tollet <jtollet@cisco.com>
-To: netdev@vger.kernel.org
-Cc: saeedm@nvidia.com,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com,
-	leonro@nvidia.com,
-	dtatulea@nvidia.com,
-	daniel@iogearbox.net,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	ast@kernel.org,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net v3 2/2] net/mlx5e: Prevent stale XSK buffer release on MPWQE refill retry
-Date: Fri, 21 Aug 2026 23:37:32 +0200
-Message-ID: <675ce8a404cfe305e788a8e273b4091c9a90f867.1787347981.git.jtollet@cisco.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <cover.1787347981.git.jtollet@cisco.com>
-References: <20260820151558.11015-1-jtollet@cisco.com> <cover.1787347981.git.jtollet@cisco.com>
+	s=arc-20240116; t=1787348746; c=relaxed/simple;
+	bh=XJWOALC07zd1MTx2R/9zStBeRTLiIdAazDeHZtufKlU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qsIzjxsDD55x1ZgT9dYS3nT8+cs4ysvxd4bhyIPA+/Y2Leq5SRoSSwldTqvEo8fxxrV3uAAxb8XjBSdfQt0BVr1hdHaHrF8iF3R5cyJQ2FLdx1NkhWKQtLBdNM5Jsaiqwrn+Avb7CbT/ouWRBoTdUfJnMe2NxvKqGqJ5k3LQJy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.228.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed2-f8.google.com with SMTP id 4fb4d7f45d1cf-6a18fec4137so785066a12.0
+        for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 14:45:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787348743; x=1787953543;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CagO51GU01dr01lTuGgIuEnt6N6I5+STWWJTUDMHOh8=;
+        b=lYS/0U952FzOxJzmqecvVMxOC7IajcS7z4mTRm43FqhSkySJubIrRJ9QTVP6wI7tHG
+         F4z+A/7OlsW23fB98gXgF44rrdcKfNnY3mMx+pFHX7l8AuznGRT/pvLjli4/NqCGVbdU
+         1CPtPiZYGiNnkzOC+gN12ckixBG82RRXRZE6+2cyJU0M9NF284TeEPmic6UXyg+b0jMj
+         2Qv5UK/xIOJyUAQfcr1Niy2X7twNYqEx7HJymDTSM/e3dDzcuk85AMQYV1VjbM/AFiVi
+         /SSUwv/FXQfhJxm8sU5gdKcEPS24h1oCqwDXgM9Juf3+NNCFnybDhSKv4XXVCom0tU5h
+         s6fA==
+X-Forwarded-Encrypted: i=1; AHgh+RphIN4emRCSxCg/JcNABH+jqkHS+qy/fE/d/7XevvdWHfjuTzDFq3wd8TC5k3KLBJU2YhJ0nTU=@vger.kernel.org
+X-Gm-Message-State: AFuF++mjiLWsrrvX3KPNryIg4EyrByXbfG0FnrM76L220usAMn/6yQI2
+	hWdqaZpETre293KdE1f3QLhrouiCBnTG0wjPHWQEHSsN6oQRO9OTDN5F
+X-Gm-Gg: AR+sD13IVdOb67Wm+zn/ipr7xEZgM7CwaZYv3ObM1nNxgmFeDhcu74Tqa6HIUYt8mlh
+	+mdfd5ZG4xzwX9TOnJULATHrC2fMQymqzEspVAZff/13lR+OeSNHGQjYV+CjmCp3li+ETKUxwZf
+	BF8c/9sCKaZMNhaaEVd7S91ubu7yS8vIBM9rEp139tei0rfaCDMjEzpfSg9qyFZ1GzGArFQUz1g
+	vU1G5Jm2EP5ve6uNGLTIBh0ZgHZ48MzVvU3lOD0M7A3qYXqZd53A3Ip5J6uRyVnrfss1eO9qpMF
+	Tw04jjUC+llHzdJXtq3bfnoxDCe98Dnm+Ei/5rUBYr0q28b4BWi/YekPOiGCsArrF6IVsS+6Qf7
+	L+pRHuSQJ5JVmLL7p4RsiJy48egs5qm68eYm8kCtFlt6AnWXNs0KRi+3KvXBU8Y//jaCuqAI4wt
+	7GpfJPKJN6J4ppf7t98/Ivi+M8QONJ+MX+OXsxaG5VY3NteQg/DVWq3baYHJ70/e5ngXK4lLWiO
+	gzNc8Bx248fzaFA
+X-Received: by 2002:a17:907:d501:b0:c21:9cf4:e1b0 with SMTP id a640c23a62f3a-c246a30a9f5mr1016821266b.3.1787348743308;
+        Fri, 21 Aug 2026 14:45:43 -0700 (PDT)
+Received: from [192.168.88.241] (89-24-57-65.nat.epc.tmcz.cz. [89.24.57.65])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c24962bd8fasm20064466b.28.2026.08.21.14.45.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 21 Aug 2026 14:45:42 -0700 (PDT)
+Message-ID: <34c64d08-0484-4f3b-b61a-ed68115d01a4@ovn.org>
+Date: Fri, 21 Aug 2026 23:45:41 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Outbound-Client-TLS: ANONYMOUS;unknown [10.189.108.235];TLSv1.3;TLS_AES_256_GCM_SHA384;256
-X-Outbound-SMTP-Client: 10.189.108.235, [10.189.108.235]
-X-Outbound-Node: aer-l-core-09.cisco.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 0/3] net: don't strip zerocopy frag markers from a
+ forwarded skb
+To: Norbert Szetei <norbert@doyensec.com>, netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>,
+ Ilya Maximets <i.maximets@ovn.org>,
+ Steffen Klassert <steffen.klassert@secunet.com>,
+ Kuan-Ting Chen <h3xrabbit@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ linux-kernel@vger.kernel.org, dev@openvswitch.org,
+ Jongmin Jang <payload.jang@gmail.com>
+References: <F3B9E5BA-0AC1-4AD1-A7D9-F38033304270@doyensec.com>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ xsFNBF77bOMBEADVZQ4iajIECGfH3hpQMQjhIQlyKX4hIB3OccKl5XvB/JqVPJWuZQRuqNQG
+ /B70MP6km95KnWLZ4H1/5YOJK2l7VN7nO+tyF+I+srcKq8Ai6S3vyiP9zPCrZkYvhqChNOCF
+ pNqdWBEmTvLZeVPmfdrjmzCLXVLi5De9HpIZQFg/Ztgj1AZENNQjYjtDdObMHuJQNJ6ubPIW
+ cvOOn4WBr8NsP4a2OuHSTdVyAJwcDhu+WrS/Bj3KlQXIdPv3Zm5x9u/56NmCn1tSkLrEgi0i
+ /nJNeH5QhPdYGtNzPixKgPmCKz54/LDxU61AmBvyRve+U80ukS+5vWk8zvnCGvL0ms7kx5sA
+ tETpbKEV3d7CB3sQEym8B8gl0Ux9KzGp5lbhxxO995KWzZWWokVUcevGBKsAx4a/C0wTVOpP
+ FbQsq6xEpTKBZwlCpxyJi3/PbZQJ95T8Uw6tlJkPmNx8CasiqNy2872gD1nN/WOP8m+cIQNu
+ o6NOiz6VzNcowhEihE8Nkw9V+zfCxC8SzSBuYCiVX6FpgKzY/Tx+v2uO4f/8FoZj2trzXdLk
+ BaIiyqnE0mtmTQE8jRa29qdh+s5DNArYAchJdeKuLQYnxy+9U1SMMzJoNUX5uRy6/3KrMoC/
+ 7zhn44x77gSoe7XVM6mr/mK+ViVB7v9JfqlZuiHDkJnS3yxKPwARAQABzSJJbHlhIE1heGlt
+ ZXRzIDxpLm1heGltZXRzQG92bi5vcmc+wsGUBBMBCAA+AhsDBQsJCAcCBhUKCQgLAgQWAgMB
+ Ah4BAheAFiEEh+ma1RKWrHCY821auffsd8gpv5YFAmfB9JAFCQyI7q0ACgkQuffsd8gpv5YQ
+ og/8DXt1UOznvjdXRHVydbU6Ws+1iUrxlwnFH4WckoFgH4jAabt25yTa1Z4YX8Vz0mbRhTPX
+ M/j1uORyObLem3of4YCd4ymh7nSu++KdKnNsZVHxMcoiic9ILPIaWYa8kTvyIDT2AEVfn9M+
+ vskM0yDbKa6TAHgr/0jCxbS+mvN0ZzDuR/LHTgy3e58097SWJohj0h3Dpu+XfuNiZCLCZ1/G
+ AbBCPMw+r7baH/0evkX33RCBZwvh6tKu+rCatVGk72qRYNLCwF0YcGuNBsJiN9Aa/7ipkrA7
+ Xp7YvY3Y1OrKnQfdjp3mSXmknqPtwqnWzXvdfkWkZKShu0xSk+AjdFWCV3NOzQaH3CJ67NXm
+ aPjJCIykoTOoQ7eEP6+m3WcgpRVkn9bGK9ng03MLSymTPmdINhC5pjOqBP7hLqYi89GN0MIT
+ Ly2zD4m/8T8wPV9yo7GRk4kkwD0yN05PV2IzJECdOXSSStsf5JWObTwzhKyXJxQE+Kb67Wwa
+ LYJgltFjpByF5GEO4Xe7iYTjwEoSSOfaR0kokUVM9pxIkZlzG1mwiytPadBt+VcmPQWcO5pi
+ WxUI7biRYt4aLriuKeRpk94ai9+52KAk7Lz3KUWoyRwdZINqkI/aDZL6meWmcrOJWCUMW73e
+ 4cMqK5XFnGqolhK4RQu+8IHkSXtmWui7LUeEvO/OwU0EXvts4wEQANCXyDOic0j2QKeyj/ga
+ OD1oKl44JQfOgcyLVDZGYyEnyl6b/tV1mNb57y/YQYr33fwMS1hMj9eqY6tlMTNz+ciGZZWV
+ YkPNHA+aFuPTzCLrapLiz829M5LctB2448bsgxFq0TPrr5KYx6AkuWzOVq/X5wYEM6djbWLc
+ VWgJ3o0QBOI4/uB89xTf7mgcIcbwEf6yb/86Cs+jaHcUtJcLsVuzW5RVMVf9F+Sf/b98Lzrr
+ 2/mIB7clOXZJSgtV79Alxym4H0cEZabwiXnigjjsLsp4ojhGgakgCwftLkhAnQT3oBLH/6ix
+ 87ahawG3qlyIB8ZZKHsvTxbWte6c6xE5dmmLIDN44SajAdmjt1i7SbAwFIFjuFJGpsnfdQv1
+ OiIVzJ44kdRJG8kQWPPua/k+AtwJt/gjCxv5p8sKVXTNtIP/sd3EMs2xwbF8McebLE9JCDQ1
+ RXVHceAmPWVCq3WrFuX9dSlgf3RWTqNiWZC0a8Hn6fNDp26TzLbdo9mnxbU4I/3BbcAJZI9p
+ 9ELaE9rw3LU8esKqRIfaZqPtrdm1C+e5gZa2gkmEzG+WEsS0MKtJyOFnuglGl1ZBxR1uFvbU
+ VXhewCNoviXxkkPk/DanIgYB1nUtkPC+BHkJJYCyf9Kfl33s/bai34aaxkGXqpKv+CInARg3
+ fCikcHzYYWKaXS6HABEBAAHCwXwEGAEIACYCGwwWIQSH6ZrVEpascJjzbVq59+x3yCm/lgUC
+ Z8H0qQUJDIjuxgAKCRC59+x3yCm/loAdD/wJCOhPp9711J18B9c4f+eNAk5vrC9Cj3RyOusH
+ Hebb9HtSFm155Zz3xiizw70MSyOVikjbTocFAJo5VhkyuN0QJIP678SWzriwym+EG0B5P97h
+ FSLBlRsTi4KD8f1Ll3OT03lD3o/5Qt37zFgD4mCD6OxAShPxhI3gkVHBuA0GxF01MadJEjMu
+ jWgZoj75rCLG9sC6L4r28GEGqUFlTKjseYehLw0s3iR53LxS7HfJVHcFBX3rUcKFJBhuO6Ha
+ /GggRvTbn3PXxR5UIgiBMjUlqxzYH4fe7pYR7z1m4nQcaFWW+JhY/BYHJyMGLfnqTn1FsIwP
+ dbhEjYbFnJE9Vzvf+RJcRQVyLDn/TfWbETf0bLGHeF2GUPvNXYEu7oKddvnUvJK5U/BuwQXy
+ TRFbae4Ie96QMcPBL9ZLX8M2K4XUydZBeHw+9lP1J6NJrQiX7MzexpkKNy4ukDzPrRE/ruui
+ yWOKeCw9bCZX4a/uFw77TZMEq3upjeq21oi6NMTwvvWWMYuEKNi0340yZRrBdcDhbXkl9x/o
+ skB2IbnvSB8iikbPng1ihCTXpA2yxioUQ96Akb+WEGopPWzlxTTK+T03G2ljOtspjZXKuywV
+ Wu/eHyqHMyTu8UVcMRR44ki8wam0LMs+fH4dRxw5ck69AkV+JsYQVfI7tdOu7+r465LUfg==
+In-Reply-To: <F3B9E5BA-0AC1-4AD1-A7D9-F38033304270@doyensec.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-With AF_XDP on a striding RQ, mlx5e defers releasing XSK buffers until
-an MPWQE is refilled. If XSK allocation then returns -ENOMEM,
-actual_wq_head is not advanced and a later NAPI poll retries the same
-WQE.
+On 8/18/26 10:43 AM, Norbert Szetei wrote:
+> queue_userspace_packet() calls skb_tx_error() on the packet skb in its
+> error path, but it only borrows that skb: on the OVS_ACTION_ATTR_USERSPACE
+> action path do_execute_actions() ignores output_userspace()'s return value
+> and keeps forwarding the same skb through the flow's remaining actions.
+> skb_tx_error() completes the zerocopy uarg and clears SKBFL_ALL_ZEROCOPY,
+> and with it SKBFL_SHARED_FRAG.
+> 
+> For a MSG_ZEROCOPY skb carrying page-cache frags, SKBFL_SHARED_FRAG is
+> what makes esp_input() skb_cow_data() instead of taking the in-place AEAD
+> path. Once it is stripped, a later local ESP delivery decrypts in place
+> over pages the sender still shares with the page cache.
+> 
+> Patch 1 moves the skb_tx_error() into the one path that does drop the
+> packet, the "default" arm of ovs_dp_process_packet()'s switch(error).
+> 
+> Patch 2 removes a second such strip, in skb_zerocopy(), which calls
+> skb_tx_error() on its source when skb_orphan_frags() fails. A copy helper
+> should not perform a destructive action on its source, and both callers
+> already report the error on their own drop path. MSG_ZEROCOPY skbs cannot
+> reach that one -- SKBFL_DONT_ORPHAN makes skb_orphan_frags() return early
+> -- but producers that do not set that flag, such as vhost-net, can.
+> Patch 3 is new in v2. It stops skb_tx_error() from touching skb_shinfo()
+> state that is shared with clones, so patch 1's new call site cannot reach
+> a live skb either. For a non-last OVS_ACTION_ATTR_RECIRC action
+> clone_execute() sends a skb_clone() into ovs_dp_process_packet() while
+> do_execute_actions() keeps forwarding the original, and skb_clone() does
+> not privatise the frags for these skbs -- skb_orphan_frags() returns early
+> on SKBFL_DONT_ORPHAN -- so a flow miss on the clone strips
+> SKBFL_SHARED_FRAG from the packet still in flight. Confirmed on a KASAN
+> build with a flow matching recirc_id 0 and actions RECIRC(1),OUTPUT(0):
+> with patches 1 and 2 applied it still reproduces the page-cache write,
+> with patch 3 on top it no longer does (5/5 runs). A kprobe on
+> skb_tx_error() shows the datapath drop path is still reached in both
+> cases, so the difference is the guard and not the reproducer.
+> 
+> As Ilya noted, that makes patch 3 the general fix -- an skb can enter any
+> skb_tx_error() caller already cloned elsewhere in the stack -- while
+> patches 1 and 2 keep the callers from acting on an skb they do not own.
+> Removing skb_tx_error() altogether looks like the right long-term cleanup
+> and is planned as a net-next follow-up.
+> 
+> v3:
+>   - patch 3: Fixes tag corrected to 25121173f7b1 ("skb: api to report
+>     errors for zero copy skbs"), the commit that added skb_tx_error()
+>     (Ilya Maximets)
+>   - Tested-by from Jongmin Jang picked up on patches 1 and 3
+>   - v2: https://lore.kernel.org/netdev/AD1B7BEE-C04C-4A1B-982C-8385F1908911@doyensec.com/
+> 
+> v2:
+>   - new patch 3: skip the shared skb_shinfo() work in skb_tx_error() when
+>     the skb is cloned, which also covers the OVS_ACTION_ATTR_RECIRC path
+>     that patch 1 alone leaves open (suggested by Ilya Maximets)
+>   - patches 1 and 2 unchanged, Reviewed-by from Ilya Maximets picked up
+>   - v1: https://lore.kernel.org/netdev/8063260C-05C9-4997-B9B6-2135063C4858@doyensec.com/
+> 
+> Norbert Szetei (3):
+>   openvswitch: only skb_tx_error() a packet we are about to drop
+>   net: skbuff: don't skb_tx_error() the source skb in skb_zerocopy()
+>   net: skbuff: don't touch shared zerocopy state in skb_tx_error()
+> 
+>  net/core/skbuff.c          | 10 ++++++----
+>  net/openvswitch/datapath.c |  3 +--
+>  2 files changed, 7 insertions(+), 6 deletions(-)
+> 
 
-mlx5e_free_rx_mpwqe() currently leaves each released slot marked as
-releasable. On retry it can therefore call xsk_buff_free() again through
-stale pointers after the frames have returned to the XSK pool and been
-reallocated.
+Unfortunately, this needs a rebase now that a conflicting change
+for skb_zerocopy() was merged:
+  https://lore.kernel.org/all/20260814191336.187243-1-almasrymina@google.com/
 
-Mark each slot as released immediately after xsk_buff_free(). The
-successful allocation path already clears the bitmap after replacing
-all buffers, so retries become idempotent without changing the success
-path.
-
-Fault injection forced three consecutive allocation failures for one
-selected MPWQE in AF_XDP zero-copy mode. Stock freed the same 16 XSK
-buffer pointers on all three attempts, for 48 frees. With this change,
-only the initial 16 frees occurred; retries observed a full bitmap, and
-a later successful allocation cleared it.
-
-Fixes: 4c2a13236807 ("net/mlx5e: RX, Defer page release in striding rq for better recycling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jerome Tollet <jtollet@cisco.com>
----
- drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-index 7bd0606a5..5fe17d295 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-@@ -609,9 +609,12 @@ mlx5e_free_rx_mpwqe(struct mlx5e_rq *rq, struct mlx5e_mpw_info *wi)
- 		 * is no way to return the page to userspace when the interface
- 		 * goes down.
- 		 */
--		for (i = 0; i < rq->mpwqe.pages_per_wqe; i++)
--			if (no_xdp_xmit || !test_bit(i, wi->skip_release_bitmap))
-+		for (i = 0; i < rq->mpwqe.pages_per_wqe; i++) {
-+			if (no_xdp_xmit || !test_bit(i, wi->skip_release_bitmap)) {
- 				xsk_buff_free(xsk_buffs[i]);
-+				__set_bit(i, wi->skip_release_bitmap);
-+			}
-+		}
- 	} else {
- 		for (i = 0; i < rq->mpwqe.pages_per_wqe; i++) {
- 			if (no_xdp_xmit || !test_bit(i, wi->skip_release_bitmap)) {
--- 
-2.55.0
-
+Best regards, Ilya Maximets.
