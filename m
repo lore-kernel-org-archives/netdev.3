@@ -1,128 +1,111 @@
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B867E31E838
-	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 13:34:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787319243; cv=pass; b=A0wvkSi07uUu7lZ1f6fuY00gaCLvz66m9g7VG24yyPLysCCEaM6Q7UppzaYVG1b9jpOHaWrpux67AkeDhRGy/7WX/SDkrYsawEbN9jI61FissfaqLaQ4Hrylnws1FBnQU36dkvO2CNzMZc7ap3mHJVQTAVt+742QK9/Bdgnlgc0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787319243; c=relaxed/simple;
-	bh=nYoghiuz9Kdd84pNDouWdj+ruzp0xFI/cFX1/gP+hvE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TfRNm2i/AWbTQE/UY7+VHGadJP3cv6ZnJK49S+uKiaUC0G+zweEMrVkzxLShtycYPVdUaXLhVXpatFMtjBwdqWKqkAjV+Lv58xLl3gGfkdut+APYw2FF4FK3LGwY7v3g/HpGZ51z53PLheyXzIB2lno6CyBcspZ/pmIC4N3sohU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L6lBhVqF; arc=pass smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C3F322B8C;
+	Fri, 21 Aug 2026 13:34:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787319256; cv=none; b=cfTcKHTFlSNUWZRyL+sskvwCRpiyjZJQUqHUKVe97j90dHw3DQGgFXDDV+pTVEhNIntaASeLwAsRkKxP5pEK0JGhpGZSsdCsr6HKoVH7aiP4wP8HmBfVRnB0O0OOi5QempQ+hIUM0KNaxSE1FNHkO7hZE2b+9+VKcb1zPsTcSkg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787319256; c=relaxed/simple;
+	bh=bAdbSU41Z/vBmC+QsvGL2nnUK1uHasaCpMfmR5D0HMk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gvEVT9Gz9KgLNxFpxCJu8L9qmE8VHBp7tjfja+qJTf+57+Xx9UJpwDS03OPzjLAnjojlUWYmDtIFrXPRrhjqLa6+Txqd/tC2ZZbTRI25Lk3HPrlfMAhNDN7jD78Wg5+30xAVF/o+jYXOJfCDp7nNzDlZmQqGC2gOy18zzgr7gEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=r7kCHm7F; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L6lBhVqF"
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-51c2a818fc4so6342791cf.2
-        for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 06:34:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787319241; cv=none;
-        d=google.com; s=arc-20260327;
-        b=oaiLqeQYaWngH68eCFxK8aF5meS5HmuWxfKMAAgyn+ZaM8DuZ6PzQ70gAJLXzwfLG4
-         hCYgG6JDGRvTyV56r1ycTs/4jPCRMLA4bXMEL2WSJ85AsZ0JMB7PBWefD8rcd0RK5vN8
-         oWuqSmdypF9DqhAibxg2Kf4t9S2Ne1KniJCcHxVAYxH7VW9Zm142fEhRyyrJRFxkhB+A
-         tZb3VwoSg7L2mSR9prxrtN6DyyKEx23wxScULGEbp7Wcp/VrpProHjcWORR4IzskOo0H
-         9OBdtWJVTnfa6Mv82GfutqY2ckWNPv0cCURelg+7V2+0xqA9qmoL1A9dyUN3FRtUgnB8
-         8ylQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ss8Ivk3OqymC8x/f9L+J2Hz80x7W0eguZdcZDa7wz+E=;
-        fh=9H1yTruTCpiK6n2jobKsPrSMjvF8yXWg5ZHubKURew4=;
-        b=nHks9zDKxmwWN1AYR+KB86bVsGp4/GhPMPOUHd545bW9fw8bONl2+1hgHlMwRWYZIh
-         1wdL6bsw03dI/8HL2IPhHhXb+2P+a/ycdmUGp1QiJSfgZHUbOebGOhBRzUPt2hyawy3U
-         Fz01DqkhAC4lg8aAMcjd2NzwX6JWwSKY2Hpi3Qk9IvYoUGwY5n8QzEBdK4+cwTEyPHOK
-         xkdtWs6kglD1+ETTwvYlqc+HUMQpTOn20XhGcUUFMm2nr+gH4LP3JbvvzLZ2h8zkH9cD
-         pH3t6xOfI2eDp693Qgbu5mB9pElpMA5cSPyvE8DQ9mRAt7r1re0L2+SfouIC0yjSgWcp
-         KeJg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787319241; x=1787924041; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ss8Ivk3OqymC8x/f9L+J2Hz80x7W0eguZdcZDa7wz+E=;
-        b=L6lBhVqFS9NpZWa4D7h4mBqhfDtv/y56qf3cgAeXMxP2mJun/lAPx7yaxvdHlpwOHB
-         rjEHojVLp6hyWIn+gekpn403abCkDS9hWlkEXW2SOlWK/zuUi504kAcDVhSek7ps30rx
-         kGLnnT3uq4jL6PeI/2+cHhJ63PohWdjP9yOAOVlbRyoNo+vGS9FGrvCOrt2FshLBcDen
-         zq0SvbG0csC0QjB5mHpMZFf9TMd9W7cinTGyLdL84kZfRiualNXSNs4GZlnWI5kpSB4N
-         M+OxtWMgFuvEMJDglg55KxuRi3UKWNAX0yWDhE1GNjBke2RlQGdRzivbgHQcPSy7v7B3
-         DB3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787319241; x=1787924041;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ss8Ivk3OqymC8x/f9L+J2Hz80x7W0eguZdcZDa7wz+E=;
-        b=Ul9LfOri6JMqnw0C5C4Kn4guafNgjwjn3Fh8Ne+43UiqUk7iKDkoaWrT0+nHK/gs9Z
-         HHVC0H1WJMH5TwujQCJOb3/MZF2yceAbOWcsuSygrFJQSsBZjVTGQ41KvddLErP3WJqz
-         mIITof2l+OEbtdqhYUvQ5+l4hg+8JASpqabsv9ZGzWmtW61y9zGjhjG+XtsB7QR7xvkZ
-         5Dn2IeTlOkyPWcX0fTR/nwsPizzRQ78FusAW4DQHDoHTRQKd1sF9chukLfF246HnQyah
-         F/pt/Lt5IHkeHFhtr5rsBHYmufbaiHiVNMXCtQpY01toFpZA4+e6IGN+XFsYNn1EfrJ1
-         qecg==
-X-Forwarded-Encrypted: i=1; AHgh+RoDn960V3ITlrAvqfFEVRJhHaGPgG2svWx8xV1CjiESFWdf+QOSXssXW8YupLqZb5ZIP54j4ZI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3BihWg3COaVaXqvb+xmVGjkHM5mKf1ngMPqY2/o8ti9RvbWU8
-	BUfskSsBpNXfiQM9l6y1ZINrMYMEwE4O6OKqLy9KFV98zFCVDWR9WPPrhg4KDNsLBk2i9MUwJd7
-	yr5Su3yHnaBp1R5zKPy2mHxiDws7688cYJVLolcxT
-X-Gm-Gg: AR+sD104s8IukAeDST4YehAQJ/iLBLJf/ZGGkh6G0/0z4vUHV4RqqilSRHPj+fSBTKz
-	Cm1zi+jbJOiAy/ZX5+XZjsi1mREoGQm66bA21ZdtEyBnvLGItx9F/97sjE8f+ystognC4k1gfkZ
-	DKXLgCftl2qcFoUF+lc5RvoJr+NZW/LUpppBxkKCSU89TE6TI9zPVBW0TL+lHMG3rAzWS252VKb
-	GGx7NNvw3IXZEi/2IgqS8U+W3JsQgNnAjxaS6ak+n8ZfKMAkdnSFGt/nI9QA5b+sqbD/kbhLWlz
-	imye0Mm6ZpnPd2Y3tdFPOCKmM7Ykrjw+2cQwaDZlQ3P31vQYFb0c90mM+z28fuPOJGxro8/78oF
-	FIXFgXePoVwAMuDq35g6oQnbszpgAN76JhvK4A4X7jYXkavUNmOI7Ez6XBQbXDZ6Honhm
-X-Received: by 2002:a05:622a:8a:b0:528:17d9:2d99 with SMTP id
- d75a77b69052e-52df5a748c7mr56019081cf.43.1787319239877; Fri, 21 Aug 2026
- 06:33:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="r7kCHm7F"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id A502C4E4131C;
+	Fri, 21 Aug 2026 13:34:06 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6FB8D604AA;
+	Fri, 21 Aug 2026 13:34:06 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AB14C11C7714B;
+	Fri, 21 Aug 2026 15:33:54 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1787319241; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=zW+S1lFLlEZ8r/53t/D9PI+ul66jA+3Kp+sHgvAr+/w=;
+	b=r7kCHm7FWgieHBMibFsZedfMtdS736rojrERN7LviZCgayDbUyYjDVyCc3aQq725kI+1by
+	yAnf4w2NK2zH+U6epwNMvNqvsMfjCFwSMC5nk/2U05WkJebnfjer2ZSJmX7mFS0i1U6kF4
+	HCiYcp8nGKnhHqhUfGuk+TNxQl0VXq2GwA2/PbXuks8p/uI2PnS/Go44lhgdmb/tFzX/i+
+	JZL4ipXEdmwsCxCQZE0/4ZBkRaMJ9qvWN9wAno8e9Tot9q063I8nvXdyVu3T23jlMM+ISU
+	S1Eu7Woy6pDLK7wBvQ/DfORBIkSJZykkSZAzJGTaHiqCaycs1I6DNuSf9OU95w==
+From: "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
+Subject: [PATCH 0/4] ipv4: start using dst_dev_rcu()
+Date: Fri, 21 Aug 2026 15:33:34 +0200
+Message-Id: <20260821-cve-2025-40074-6-1-v1-0-cad5cf499b76@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260821070512.3122442-1-edumazet@google.com> <20260821132600.GA1114497@ziepe.ca>
-In-Reply-To: <20260821132600.GA1114497@ziepe.ca>
-From: Eric Dumazet <edumazet@google.com>
-Date: Fri, 21 Aug 2026 15:33:47 +0200
-X-Gm-Features: AcwNN1V6oNdvFwAAv3HY3JcQlXjx8ONj-vvgS2EgMpIJf3AFwislXa6y7fMMyxw
-Message-ID: <CANn89i+qesZmW6tO6tOPriGYYqpxr+c2L7Tdvb2OG-GX0H_ODg@mail.gmail.com>
-Subject: Re: [PATCH] RDMA/core: Fix use-after-free in ib_get_eth_speed()
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Leon Romanovsky <leon@kernel.org>, linux-rdma@vger.kernel.org, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQ6CMBCE4Vchc3bJttIqvIrhAHXR9YCm1UZCe
+ HerHr9J5l+RJKokdNWKKFmT3ucCs6sQrsN8EdJzMSxbz0fLFLJQgaOG+dCQJ0OtC47Fj+0w7VG
+ OjyiTvn/RE7KvTb2g/+/pNd4kPL9FbNsHx3Hk9H4AAAA=
+X-Change-ID: 20260820-cve-2025-40074-6-1-95c50e6b9af3
+To: stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Wei Wang <weiwan@google.com>, 
+ Martin KaFai Lau <kafai@fb.com>, 
+ Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>, 
+ David Ahern <dsahern@kernel.org>, 
+ Steffen Klassert <steffen.klassert@secunet.com>, 
+ Herbert Xu <herbert@gondor.apana.org.au>, 
+ Pablo Neira Ayuso <pablo@netfilter.org>, 
+ Jozsef Kadlecsik <kadlec@netfilter.org>, Florian Westphal <fw@strlen.de>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, netfilter-devel@vger.kernel.org, 
+ coreteam@netfilter.org, Miguel Gazquez <miguel.gazquez@bootlin.com>, 
+ Kuniyuki Iwashima <kuniyu@google.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787319234; l=1466;
+ i=miguel.gazquez@bootlin.com; s=20250708; h=from:subject:message-id;
+ bh=bAdbSU41Z/vBmC+QsvGL2nnUK1uHasaCpMfmR5D0HMk=;
+ b=olU9DwrBVWSMkioHfKwGPrq0oLqinw/QYpzOKDRXs31MmmfhIOU7GTNoh+QXx0L6SzUhHm7Q6
+ +R710KwyYW9AKQuBYQWMKHfixeWGrYDririy8MNXii/4khh3/61IRWx
+X-Developer-Key: i=miguel.gazquez@bootlin.com; a=ed25519;
+ pk=k/2KI9jkmayaF0ghZ8QYUH9Wm/kFHDhl8QoZ0RHbr4w=
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Aug 21, 2026 at 3:26=E2=80=AFPM Jason Gunthorpe <jgg@ziepe.ca> wrot=
-e:
->
-> On Fri, Aug 21, 2026 at 07:05:12AM +0000, Eric Dumazet wrote:
-> > In ib_get_eth_speed(), dev_put(netdev) is called before inspecting
-> > rc and dereferencing netdev->name in pr_warn(). If dev_put() drops
-> > the final reference to netdev, netdev->name accesses freed memory.
-> >
-> > Move dev_put(netdev) after the warning block so netdev is kept
-> > alive while its name is read.
-> >
-> > Fixes: d41861942fc5 ("IB/core: Add generic function to extract IB speed=
- from netdev")
-> > Signed-off-by: Eric Dumazet <edumazet@google.com>
-> > ---
-> >  drivers/infiniband/core/verbs.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> I was intending to take this patch next cycle:
->
-> https://patchwork.kernel.org/project/linux-rdma/patch/20260812081708.3246=
-8-1-krystianmkaniewski@gmail.com/
+Three other patches are required to be able to apply cleanly the final patch.
 
-Ah... I missed that.
+Signed-off-by: Miguel Gazquez <miguel.gazquez@bootlin.com>
 
->
-> Which has the same change embedded?
+---
+Eric Dumazet (4):
+      net: dst: add four helpers to annotate data-races around dst->dev
+      ipv4: adopt dst_dev, skb_dst_dev and skb_dst_dev_net[_rcu]
+      net: dst: introduce dst->dev_rcu
+      ipv4: start using dst_dev_rcu()
 
-SGTM thanks.
+ include/net/dst.h             | 34 ++++++++++++++++++++++++++++++----
+ include/net/inet_hashtables.h |  2 +-
+ include/net/ip.h              | 11 ++++++-----
+ include/net/route.h           |  2 +-
+ net/core/dst.c                |  4 ++--
+ net/core/sock.c               |  6 +++---
+ net/ipv4/icmp.c               | 28 +++++++++++++++-------------
+ net/ipv4/igmp.c               |  2 +-
+ net/ipv4/ip_fragment.c        |  9 +++++++--
+ net/ipv4/ip_output.c          |  4 ++--
+ net/ipv4/ip_vti.c             |  4 ++--
+ net/ipv4/ipmr.c               |  2 +-
+ net/ipv4/netfilter.c          |  4 ++--
+ net/ipv4/route.c              | 10 +++++-----
+ net/ipv4/tcp_fastopen.c       |  4 +++-
+ net/ipv4/tcp_ipv4.c           |  3 ++-
+ net/ipv4/tcp_metrics.c        |  8 ++++----
+ net/ipv4/xfrm4_output.c       |  2 +-
+ 18 files changed, 88 insertions(+), 51 deletions(-)
+---
+base-commit: 7e6e670547210424443261b2d54d2acfff85a37c
+change-id: 20260820-cve-2025-40074-6-1-95c50e6b9af3
+
+Best regards,
+--  
+Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
+
