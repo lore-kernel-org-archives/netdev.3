@@ -1,231 +1,135 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A65347A884
-	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 11:11:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787310717; cv=fail; b=htk4TistO+OITdu5xcEhRuc0DSK/1bQuMo4l0tFikIqRVvpEZoXTNjncXPaNV+bUPcVS2rlb/nYd06jri8tX1lMZl1wBhHxBQZtFwPI4zkKyyVqB3YjT3t0vRXSYsEMmzdKIVU/UWgur35/QchnahNwVGmdbLytIrSqs6gNJnQM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787310717; c=relaxed/simple;
-	bh=3mqOkLFXM7E7LXfZOiQ9C2REmBNZp46NSOZP5bgVSeg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=dJWI8bmpqOm/9Cnlb73YWHAXLy4fotYpA1oWJJKnRcF8i+kCle8PntPBjE8W5Xnu4BwvOuhfnfBIrpq5DwHmTGOdi/IgOc1FJXIuwGS/2SYCqa1KeqNdkHc75gdEztgx5P6dkFVPkbd3VHu09kkTSyrqgTV+JZOWv+Ld2eQQVkM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Op6bIbuI; arc=fail smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E2023AE87;
+	Fri, 21 Aug 2026 11:17:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787311052; cv=none; b=dGE85BVXh6piXmtJV6x4/925XyGSr1nM6eK6xd/fv7nZ5iukJl9MAZk9ImwzVOZNH9oaAmdGn0smwIcvZUvvW3cu3ORysYrz0gwmAJMUEEaRzqQZpsH/EYCPCRIp6nv80bZbwde9PxgKyO+b/+lF3cesJ1RMGWCSDrJcJwxtlvI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787311052; c=relaxed/simple;
+	bh=Z2qkCOW6uOoE4Tcm2xkjLfssvPh/evtQRuReVm29Y1s=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=W1FwKZhxYPGJVvUAbVBWu9h336SGOSADWE8f+ZiemnUX8seIqgXSAefhCUAQ+3WYPJK1LBCRp0tNiIjS4K0buXMqxUy78JwXAL85sa6e2deq6ulZLngBBtpaSKvRMEtcXNCjQvjTTcZgmnLXAhkHcvtf8PJPErb/49L/5nNKvkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T2EQMrOW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Op6bIbuI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787310716; x=1818846716;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=3mqOkLFXM7E7LXfZOiQ9C2REmBNZp46NSOZP5bgVSeg=;
-  b=Op6bIbuILHBlmVc8SEP1vDwryVWzkwzDd8Ntua4QBSGpq2X+QkcjcEkz
-   CQZAbj7MR0xMKdRMs8YC/UsNaEM09kRDhXDbfMTwqnioNXKah96222zcx
-   wCJjtO64Om4KBgsrLMJdPFvwEd2cZt/kP5dfe3F0D61FOdElPfpVocn5L
-   eov/RMgM6Fc1IdR5om1JnyRhiZBpie7tuQ4RA4X+uYfphew55yTsMvf+f
-   8rKFkHHRF9MtYCigX8wIbOI1vcgZ0Ao4GGzWDwzKtP8E2vl0uY6AnuR8/
-   5zxLk1wn7XncN6WKU41P3UMLM101TeBvtyvyXtqCSGYHbPGXxMxlrguou
-   w==;
-X-CSE-ConnectionGUID: w5tRaTZGQxq12lthLnVbow==
-X-CSE-MsgGUID: DnNViW7fQiK2VESVXSagpg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="87627300"
-X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; 
-   d="scan'208";a="87627300"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 04:11:55 -0700
-X-CSE-ConnectionGUID: BjiZimvySPedfLEyHWrADw==
-X-CSE-MsgGUID: G/zvEP14Rbq+TRauIxz2Bg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; 
-   d="scan'208";a="262603696"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 04:10:49 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 21 Aug 2026 04:10:48 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Fri, 21 Aug 2026 04:10:48 -0700
-Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.7) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 21 Aug 2026 04:10:47 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DfEXS0SYbKYTf2P7AXVueUgxx/CeSpaFYUmXhjHHXdOib0fv966/4tv8u9rnU0EqsHUvo2yEU5vJdhBBtVzphHFKgsv8RMUJ7qR4kKTVMv93yA5Ks4Ml2Sn0BXFuK+oZMyQBeA+7wg3KkaPPPLIR8dZgEAcAWXfOpxAiFmKBOa1c2BOcb8JjG9E5lRmer6UAydRzdiCaYlc0T4raxrlZE+o+/tiWWgWJj/vF8gJrBtHusyAjnQHc0RHjLBWLlUa4RX39LDZRjRIutI7dLx+5KzFPNCwTc7GTs98wUIyLgPU/ftPBizId/+0CcFsohnpr9YP07cnQaIvH15RnyO5RYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=M8wFe1BOI8xU7NO1AFinkJmhR3cWhtCAED+Zn56H3m4=;
- b=GaEZ0+4ISVlbKsfl/Hje5LzKS+0i715p5RSRzUWYhORK+ZC5wBxrfdE8Nyk2gZ474K/hzFaxIuePY65m/2t4RIZ1RVbwwbpICBlibDp636p3ICNqCNSVCtbz89+QW5g+d3HpoixGyOzRoBMRUHxU0+zsq9dvMjjYNj8GOWRwAtKFhLG8Qc6pcWN6kNGBU/IBDDouawElULOvk+02fqq1NFnipxW1OeZybgGp3dRAZxyaMq3Xhj2iNsiQnOpTKzZIzC9SjaMeDOv2tXVMvCFSbWi+oQ1HepWS25bLXxH1I+wtbDWDvdGsQ2EwmnDm+uQRuSd0s5aCxJgg6UcLp5fG0g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
- by BL3PR11MB6457.namprd11.prod.outlook.com (2603:10b6:208:3bc::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.11; Fri, 21 Aug
- 2026 11:10:44 +0000
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::e6f0:6afb:6ef9:ab5c%6]) with mapi id 15.21.0339.008; Fri, 21 Aug 2026
- 11:10:44 +0000
-From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-To: Simon Horman <horms@kernel.org>
-CC: "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-Subject: RE: [PATCH iwl-net v1] i40e: fix set_ringparam error path freeing
- live Tx rings
-Thread-Topic: [PATCH iwl-net v1] i40e: fix set_ringparam error path freeing
- live Tx rings
-Thread-Index: AQHdEDkjxHhTWICfq029YQNAK4bGX7Zv/xiAgDibsRA=
-Date: Fri, 21 Aug 2026 11:10:43 +0000
-Message-ID: <IA3PR11MB898627357B69696EFD995B7DE5A32@IA3PR11MB8986.namprd11.prod.outlook.com>
-References: <20260710065530.4138116-1-aleksandr.loktionov@intel.com>
- <20260716104217.268158-1-horms@kernel.org>
-In-Reply-To: <20260716104217.268158-1-horms@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|BL3PR11MB6457:EE_
-x-ms-office365-filtering-correlation-id: 5bab1208-de64-4e87-9a84-08deff74d81f
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|366016|376014|1800799024|3023799007|6133799003|10067099003|56012099006|4143699003|5023799004|11063799006|22082099003|38070700021|18002099003;
-x-microsoft-antispam-message-info: fWoJwpIXSMhKF1n2zfLWAliPDV3KqSK9TgrIUhLSm3xdFfCgZpoSyXMAh7lOMZhvQuzC8JiXGv+NE4dRpyLAirlVCwG+FyLbn/yolL+dcUj0q5Qmo99W7nusrcbqSimN+m9EYt8zdRBDqKfTS639kbJ91mRqKOZ3g6J+0oTxLJ2GWNE0uERlRrUszJhb5IcbAOoH2ZHdCxW2libc2QiyN/1L2xtIDu9VH0jP9SyVyHpnMxccciMDCi1mEfnqL4BF38WhcpV2WBq6Ol0HSY56keJDROJLF8ZoARLu5B6UPi6ts2qdqPkUgeucBTCbLhYJvm8zPQwgTaecdUVElRe9MzpIv51MomCLDwko6AGGVFoB+84nL6IdD2ahrnYni1necTVEMLagfQ0fXY0hboOvYakrWXmrdDNVl/Zg1KaoD9eLlx7SBoiTbZvxS6kf1nk69XkNEWew5AqgEtc+WrLr3OSvE0IfUu6dKDO01H8hl9PbDEiJnIdfDFYCnkHJfM6EA7aE4we3GKSSU/ykT7f25nhUotm4PslYcwtu/U9jGnuYLRcs62snjI64DJK6/gkV9lNM4+46+vgRP8RAFiVDSIV14rug5OHPseymX8rWt3g5Qxgg01SoilpwBHc1Yrv6recumuxhrVFRqxzQUS3Y/sb+qKSZ9pgcBetyk710K0M=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(1800799024)(3023799007)(6133799003)(10067099003)(56012099006)(4143699003)(5023799004)(11063799006)(22082099003)(38070700021)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Un+h3DSbOLt/Fs/bG8mdujw9OVs+8gqZBx7herCbL8vAWTuK/6MN3slLBIMp?=
- =?us-ascii?Q?XoKPlr8TRPF3VOWIE1ML9pZGGGzxmXXiOAt0D6x8JVFk4Ck2R93mMqv/QbzM?=
- =?us-ascii?Q?aCmGfezbyGFQgikR6Yjqmr5NdfxyOL/81XaYVEjA563AlDwsZWrC5u3GuoKS?=
- =?us-ascii?Q?z39nN5b62ezsnzucdvcFekkNddhmyb6052l8Yyj3rzlHKbJBQwnB4KGN5E47?=
- =?us-ascii?Q?znDAxlfj25f1hrBgb7g71hj5a80g5A+rh/fNinVCWRkjAJLb4yJmPYATD7+j?=
- =?us-ascii?Q?pNiIoDFbiybnU6Ofeat26pmrwGPL+mkAL+S37fE8ShDn9KQQfLIfpfBi29kf?=
- =?us-ascii?Q?kdUPT/vB3cSmsTavHn9xRL/H02GmlVSTEtXizAt8QP6WOjxe9vJgi2CQeajc?=
- =?us-ascii?Q?t0mKirmf/WBW+xvT2n6CeaB+yeBZk2eErktrxebp+PhQvkL+Ayn0IKyZgwOB?=
- =?us-ascii?Q?dOGydsR0yVB3M0m+lBiLroUDLna9QgWQjCPD4L3xgm5hr9zn7jr7mdd8Y/t2?=
- =?us-ascii?Q?OmqGRVfz+UsM25UWaI7ywFRi6cO/mUIqRa8s3w9/Jzf01I692Zf0TYb+FADL?=
- =?us-ascii?Q?Xn5oFD0Vt7DWqxsrndS4UhUqF7TIAY7GSphsmTOO4ec3VNG0+3LopsFsZTYZ?=
- =?us-ascii?Q?tDwgMWZrnisu3oR8EyABjWTgFSFmmVQVxlPdu448KFKsGOBew2JWxBLdOOz4?=
- =?us-ascii?Q?154+RGJgU9X2hZZeTyJnQbLpQB+znLJ3c9EXw6HuhJMIAnu6uiKhf4ky7J9w?=
- =?us-ascii?Q?ecdf8X0pzHzm5tVTtaa6nl7cKy3PIOU1Bte7JzqYZ+hwKrVeV3/FLshqJouV?=
- =?us-ascii?Q?QCkKSdiEZkfQpYj1OeGdRsxLNr/PD2xTgcIIiuikE6UDL/ezS/wP8kDUoXjt?=
- =?us-ascii?Q?7p13QtGRpGbf2xO6eOzPYaTZRZdd+Xw1le5361i2y3m92ddirjj3E3KAaf3K?=
- =?us-ascii?Q?QRX7sDMui8jhHFgTzZ2fqm+iD9xuB/xrL46V/FAjR3F4YXuEb6i2GvlyBh9/?=
- =?us-ascii?Q?p9nXc8FCowukhPYvF+MvSJZBzx0LMfoin49+lpsIy7cW9znmljvvdSZdHehr?=
- =?us-ascii?Q?Ps6KWQctscvINRU8yDCWU+nDn2HyXsUA2jlKXSRZUy+RzGM7rAvq20bOf99+?=
- =?us-ascii?Q?PDmqVStw6lGCsIFTTrpfQYK16ykahKQMt/J4hMAoU1HtjI6Ris09Rw2UM/XY?=
- =?us-ascii?Q?BtjJx+8oPRNuDJ9ww+a+Oabx4GvGItPKm5d7gomWyFLHZJYtZVKRHN5lKeLZ?=
- =?us-ascii?Q?GJkyYbcQ02a6Ddc2ZoeB2J3oUJohZEi6NE0r4nI81j6o6J8cTcEKmleNbA+5?=
- =?us-ascii?Q?xxR7ok6wK4lDx4SeshAj+4lv3BufPoAToZuHi3JfVuXVHTfxwRpoJ/COt9y0?=
- =?us-ascii?Q?+MCEXBbumTIBuW174bEIZXXDOa4H8DF5cbJnLmJTo7zqtJEHJ0+gyR5jlqf2?=
- =?us-ascii?Q?7WokL0fm7PMloiNTBQSB+llK+v5bCNalo3RC+IW7vQ2VQHQ5yXewrIbR6NVC?=
- =?us-ascii?Q?pgezeGfVqtIst2BmanGL0P6T1RNzRVrHMtn7gsNCWJDvxlrrYYzmyGQ0iFCt?=
- =?us-ascii?Q?B29YsXq2n6AgG2YvylEatVNQO9BUZUxX8W8M0A/mt2pvSjtrbhhKuVZvm2sf?=
- =?us-ascii?Q?MuRMigYmuyv774NwFqjDg0sapuISv0iCPV1eKsPmIPAnYNbCjVMNw/Teg91q?=
- =?us-ascii?Q?OSYx8psJbJq2x8guOF9H9POShUpTeBwCUsZ59l2PtgUqlt808hjf5nhd6GJO?=
- =?us-ascii?Q?+CRb3Agj6TCI6SRmldpCB0dDP9KVt0Q=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T2EQMrOW"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C12D6C2BCF6;
+	Fri, 21 Aug 2026 11:17:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1787311051;
+	bh=Z2qkCOW6uOoE4Tcm2xkjLfssvPh/evtQRuReVm29Y1s=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=T2EQMrOWrgXqTt3S7iNddF3R1H0t/Tt/l2N7LOxdV6S3pUZzR2mc6FWd9mu4kOc3Y
+	 4tLvVRgB4WLPj8pwOKIsqUSjzQIRDgplzw2U/QFXt8R1IGB2MR7u3gczqUGKc7KDNx
+	 nPfgUL/JvIMhhP7cs70ENhhOO93vthbFKhpsYAcELbg7wl6g8u1a/DwlyKt5ogzw5p
+	 AvSfsIKEKh9mW3tWihc8UH5s+AHYRSg6sA09ntUkVfklSzJhPf89ZUnO+igxzcs/YR
+	 mBm/jTxOsuXHlVeDQTAeYZAZMEf+XfyLXr8nvds3D6Oy+CxYa9lKJNsRUKiAci1sCQ
+	 fQP+HfzAkWuoQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A04C6C5DF87;
+	Fri, 21 Aug 2026 11:17:31 +0000 (UTC)
+From: Bryam Vargas via B4 Relay <devnull+hexlabsecurity.proton.me@kernel.org>
+Date: Fri, 21 Aug 2026 06:17:32 -0500
+Subject: [PATCH net v2 2/3] net/iucv: claim the receive credit atomically
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: SDHC4fdOVOtb92WEDNTyHuk988XB3zhCRQuu4AyBCa7/HVKzSkZu171x4dJFnDf+HAQ5OYR6WNDytb5ydx75tECnQs165jd2Fkc8rdq11rwOQBUMCfC88kbNBrnfoDiqs6wCHzRw6yd/EmnpdSJpNNKNGoGDxRxbJcJKZ4Ri46kY4kPJrPzWk4gQGjuEDRUqFJFiRBUvL3T9DBciIUxw3OZREtOdnHmxbr2xVUak8D7x2rdsZKOJn0SimDzYjHcWx3cOuMJ+MJ2nfdW/9J787jKIIGkQ+e+aRDGl5AF3i5G28A7uVxNIqz1G7nVj/LNO+5rVrIN3QMpL5uZ94Tt77w==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5bab1208-de64-4e87-9a84-08deff74d81f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Aug 2026 11:10:44.0378
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: f2YBmLPZOu6E+DuqqRRmUub7oeDLuKDc+oftxRSD8Ii4TBeBL8gNGtEyIY600UPs5HjwYz4RmC19QkvWdZ59MVMLRD50QpiCJ+LfeK7Lkro=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR11MB6457
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260821-b4-disp-3a6e8695-v2-2-37597ff723a8@proton.me>
+References: <20260821-b4-disp-3a6e8695-v2-0-37597ff723a8@proton.me>
+In-Reply-To: <20260821-b4-disp-3a6e8695-v2-0-37597ff723a8@proton.me>
+To: Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Alexandra Winter <wintera@linux.ibm.com>, 
+ Thorsten Winkler <twinkler@linux.ibm.com>, 
+ "David S. Miller" <davem@davemloft.net>
+Cc: Hidayath Khan <hidayath@linux.ibm.com>, Simon Horman <horms@kernel.org>, 
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-s390@vger.kernel.org, Ursula Braun <ursula.braun@de.ibm.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787311050; l=2680;
+ i=hexlabsecurity@proton.me; s=default; h=from:subject:message-id;
+ bh=gdWnKR2zta/pTzLbRUr1dcaH2AxxQQj7YNfOq5qNvR4=;
+ b=zqGOlGCSiF/k0bUYBWLokM3x49KYfuMD+pmlbvhvcEII4VXlHTl0qCJo0NIbd5XnvkfOp8YJ/
+ EFnXIm3r+q4AZxHrn3GA3SNQsI59sg8NHDGkBTGUKAUY5qtboegyOn1
+X-Developer-Key: i=hexlabsecurity@proton.me; a=ed25519;
+ pk=xw1AhCtQdvuoQc+bOQIYy9o8G++cp4/VniI2G/tc3G8=
+X-Endpoint-Received: by B4 Relay for hexlabsecurity@proton.me/default with
+ auth_id=893
+X-Original-From: Bryam Vargas <hexlabsecurity@proton.me>
+Reply-To: hexlabsecurity@proton.me
+
+From: Bryam Vargas <hexlabsecurity@proton.me>
+
+afiucv_hs_send() samples msg_recv, advertises it to the peer as the window,
+and subtracts it once dev_queue_xmit() has returned. Nothing owns the
+counter across the two: iucv_sock_sendmsg() reaches it under lock_sock()
+and iucv_sock_recvmsg() reaches it under no socket lock, so an unprivileged
+process running both on one socket can have them subtract the same value.
+msg_recv goes negative and trips the WARN_ON(); the same interleaving puts
+that credit on the wire twice, and the peer's afiucv_hs_callback_win()
+subtracts the wire value from msg_sent unchecked.
+
+Claim it with atomic_xchg(), after the last error exit so the counter reads
+zero only while the transmit is in flight, and hand it back if that fails.
+Nothing subtracts now, so the WARN_ON() goes too.
+
+Fixes: 3881ac441f64 ("af_iucv: add HiperSockets transport")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
+---
+ net/iucv/af_iucv.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
+
+diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
+index 0bc4a15f4b56..492a45bb2bba 100644
+--- a/net/iucv/af_iucv.c
++++ b/net/iucv/af_iucv.c
+@@ -210,12 +210,6 @@ static int afiucv_hs_send(struct iucv_message *imsg, struct sock *sock,
+ 	phs_hdr->flags = flags;
+ 	if (flags == AF_IUCV_FLAG_SYN)
+ 		phs_hdr->window = iucv->msglimit;
+-	else if ((flags == AF_IUCV_FLAG_WIN) || !flags) {
+-		confirm_recv = atomic_read(&iucv->msg_recv);
+-		phs_hdr->window = confirm_recv;
+-		if (confirm_recv)
+-			phs_hdr->flags = phs_hdr->flags | AF_IUCV_FLAG_WIN;
+-	}
+ 	memcpy(phs_hdr->destUserID, iucv->dst_user_id, 8);
+ 	memcpy(phs_hdr->destAppName, iucv->dst_name, 8);
+ 	memcpy(phs_hdr->srcUserID, iucv->src_user_id, 8);
+@@ -250,13 +244,22 @@ static int afiucv_hs_send(struct iucv_message *imsg, struct sock *sock,
+ 	}
+ 	skb->protocol = cpu_to_be16(ETH_P_AF_IUCV);
+ 
++	/* Claim the receive credit here, not while building the header: every
++	 * way this frame can be dropped has now been ruled out, so the window
++	 * is zeroed only for as long as the transmit itself takes.
++	 */
++	if (flags == AF_IUCV_FLAG_WIN || !flags) {
++		confirm_recv = atomic_xchg(&iucv->msg_recv, 0);
++		phs_hdr->window = confirm_recv;
++		if (confirm_recv)
++			phs_hdr->flags = phs_hdr->flags | AF_IUCV_FLAG_WIN;
++	}
++
+ 	atomic_inc(&iucv->skbs_in_xmit);
+ 	err = dev_queue_xmit(skb);
+ 	if (net_xmit_eval(err)) {
+ 		atomic_dec(&iucv->skbs_in_xmit);
+-	} else {
+-		atomic_sub(confirm_recv, &iucv->msg_recv);
+-		WARN_ON(atomic_read(&iucv->msg_recv) < 0);
++		atomic_add(confirm_recv, &iucv->msg_recv);
+ 	}
+ 	return net_xmit_eval(err);
+ 
+
+-- 
+2.55.0
 
 
-
-> -----Original Message-----
-> From: Simon Horman <horms@kernel.org>
-> Sent: Thursday, July 16, 2026 12:42 PM
-> To: Loktionov, Aleksandr <aleksandr.loktionov@intel.com>
-> Cc: Simon Horman <horms@kernel.org>; intel-wired-lan@lists.osuosl.org;
-> Nguyen, Anthony L <anthony.l.nguyen@intel.com>; netdev@vger.kernel.org
-> Subject: Re: [PATCH iwl-net v1] i40e: fix set_ringparam error path
-> freeing live Tx rings
->=20
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> Full review at: https://sashiko.dev
-> ---
-> --- Patch [1]: [PATCH iwl-net v1] i40e: fix set_ringparam error path
-> freeing live Tx rings --- commit
-> 7042e7b9f58a75bdb26437aed842a7b6780df035
-> Author: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
->=20
-> i40e: fix set_ringparam error path freeing live Tx rings
->=20
-> This commit fixes an issue in the i40e_set_ringparam() error path
-> where it mistakenly frees live, NAPI-active TX rings instead of the
-> temporary rings allocated for a configuration change. It does this by
-> passing the address of the temporary rings instead of the live ring
-> pointer.
->=20
-> > diff --git a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-> > b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-> > index 3da9ec49cc745..6d2b076049f7e 100644
-> > --- a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-> > +++ b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-> > @@ -2249,7 +2249,7 @@ static int i40e_set_ringparam(struct
-> net_device *netdev,
-> >  	if (tx_rings) {
-> >  		for (i =3D 0; i < tx_alloc_queue_pairs; i++) {
-> >  			if (i40e_active_tx_ring_index(vsi, i))
-> > -				i40e_free_tx_resources(vsi->tx_rings[i]);
-> > +				i40e_free_tx_resources(&tx_rings[i]);
->=20
-> [Severity: High]
-> This is a pre-existing issue, but does calling
-> i40e_free_tx_resources() on the cloned &tx_rings[i] inadvertently
-> reset the Byte Queue Limits (BQL) state on the live TX queues?
->=20
-> Because the temporary rings are shallow copies of the live rings, they
-> inherit the netdev and queue_index fields. When
-> i40e_free_tx_resources() cleans up the temporary rings, it calls
-> i40e_clean_tx_ring():
->=20
-> drivers/net/ethernet/intel/i40e/i40e_txrx.c:i40e_clean_tx_ring() {
->     ...
->     netdev_tx_reset_queue(txring_txq(tx_ring));
->     ...
-> }
->=20
-> Since i40e_down() has not yet been called on this error path, the live
-> queue is still actively transmitting. Locklessly resetting BQL here
-> zeroes num_queued. When the hardware subsequently completes the
-> already-queued packets, won't dql_completed() underflow and trigger a
-> BUG_ON()?
->=20
-> The same issue also seems to be present in the earlier error path if
-> i40e_setup_tx_descriptors() fails.
->=20
-> >  		}
-> >  		kfree(tx_rings);
-> >  		tx_rings =3D NULL;
-
-Thank you for your review.
-I'll re-spin v2 asap
-
-Alex
