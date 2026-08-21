@@ -1,142 +1,141 @@
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mta-65-226.siemens.flowmailer.net (mta-65-226.siemens.flowmailer.net [185.136.65.226])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372663C3F76
-	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 16:38:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787330316; cv=pass; b=OWPvy9/UR6SbkZyWj9fGwc1V7NY0m1G1Bm5xSxZIHahFI03XSviq3mQDDHW3omjuMcfJBb/HUM2d2ZIUYTqihGyVcA35Q1D4e+YPCjBm7qsXs6HJ50BEhQFBIQxy53IzgQkhLrS2BhFiPooIyNnwgcQvcw1zv0EJ729ffU7QMOs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787330316; c=relaxed/simple;
-	bh=739k+zQEqGdV7V1L/t1tMPFaOUIQd626ub+Svf/bY+4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P35+/67gP+vu0+Ol16rjhkBdcTWPYtxLKYn+RHhmxUIfj5nhIQx0BUzG0I2o6/XO/Aty8aC6lHbf1Jvy5iPI2HK5DSafD7PynMDD7mRxFTv3el+2s17vUwmj6EHs93hv9yCfwIrPsdiWa2rLI9s6UItrwVWbGUEgojXxXVNyg1A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B4MdwpS3; arc=pass smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CAA3603EB
+	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 16:40:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.226
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787330423; cv=none; b=SCzV5f5EKh1dnn3QD/F0UDaxGJF1HddRmQoSw6KY3irsEwaMTN/mxIPiYE3her07niM8aMnv/pym/wz23IVWDma+mRcw6v55QA+z7sS6wnv+VvD+mxUudR1WSM2uPe6DSDFC3mncvUpsyaUsN7e8lB7Fj8dFDaLKdfnrIsOejR0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787330423; c=relaxed/simple;
+	bh=krIjNFDmwrJT5RrKvOhYmZtfUIaj4jTYxlDZuiXsTP4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Ow4hMXQDI81mu3JPY8EtMMCxmHcD38RmTHfgvvXcb9OJsHDMdJWUrOzOHiRAKN0P2bWz1kYg/MMCg2UAyZIGs0M9naxCAxfD7SLQ79SO7Hc4Ajt3shTUUqiJIGJ5+Sbvgn5e6fnOt8UsMEPk+RGiZ/jTXjq5YBKiR3E2mipQalk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=florian.bezdeka@siemens.com header.b=bMcd9dKv; arc=none smtp.client-ip=185.136.65.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B4MdwpS3"
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6a1f8757b4eso13970a12.0
-        for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 09:38:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787330310; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VSWFxrkIVU7Qwz0w7GTx1j0ZJIlrk7zhq3R2yJudpINZP8gXCPe/ar9iQGT9T1QbDr
-         jt8GEe/LpNWSDNGg4FEM2YcGV+Tgc6rR2xqahgx74lulU2Oaz2Adqd2XPi+gNlYifHlE
-         YJJdA8oYf58IY/drePOYddoZk2iwHCj2d5CkZBcbdZ24qaPLHoBocVsEIejgqnoZRP3A
-         KsPKVNimWJVRpxLEiURZWZUqYGdH0GijZYHTKaZ8HtQetxU0bS1A1GiRVtrJecWjAect
-         zR0Sa21DswqI2rnm2Asyt71q1YPnWE14DGVIlO/hg2lvaRWd3BJ+6rzwbb6TzQuqMRqT
-         +Mcg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5dENA6n5/WGxSCS6HU3D04SsaNXhFXC7pf6saOa79aE=;
-        fh=SJv1MWtgvJZhPSZyQX9hVwfWFSgzWDdAQZjBTMMU1Mk=;
-        b=fv2Siu/iszEG8TxfQ56hLlQgGqO6Av0KJI5ntlkuROeW5e1z9cir0hXrFLcZR8xBNP
-         /cF0rwAkcefsz//SUWRpkn2d5J6UMfwKnKgBORROeooPtxq3jaz426ZgJqmGPDvVY8W2
-         rBaUAkPpLC7M9PL8dvRj68XbzxBhKSglB0kr9BVxu0bMfF1htC+aCNfWhQbqJBXJ9iCe
-         S1dKjdXOBoBUPk7wQjN+Ut6ND3WB93gdhl4TatIaXxHje+JZcudrjzjhoLnxQ2t3dwtK
-         IKsYDyQNbKRN5e2k404cm/Ng7H9uFKj9HRqWPRFSKwUzhkWJVn8fa6jRTK/wFS1wiSuA
-         r72A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787330310; x=1787935110; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5dENA6n5/WGxSCS6HU3D04SsaNXhFXC7pf6saOa79aE=;
-        b=B4MdwpS3XOKvhBRrpkPtiQUwMS5+M0FmI/0GXmKDi15gLNtSKdu3audJqaRVx9VL61
-         hQEp9S6+dvMXTqRnVrYys9jX+QD8Gt0VOKGz19eZPSdgQ0temzjdQsWDiIP+MA/OxAMC
-         ADnb4taxwhr0LeX02dck293kv3ZmYXdjiCv4Bf2+u9L7cPSanEPZu2XCuFdT6+Zl20CY
-         gwtoBTJginoewxryGL+S/jiZi2JTMg/PqVNlCOEpwpgR9nARE3wzJPKEb8xEWEwiBhAa
-         IhDSDffqLdMy5wzHt86bNT3zBn/7t9pPRKKHezBrk8G1i4Iilz3Eu++i476otNHcQrh1
-         PbeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787330310; x=1787935110;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5dENA6n5/WGxSCS6HU3D04SsaNXhFXC7pf6saOa79aE=;
-        b=Rl+t+0QOwGc+Lk+FzeIIkXWIo/HnrMn6Qiqzi821AW7oHbv+eKOCrTi/he7eL8rPFu
-         RfFv4lkWXpf1kOVje6rDhMoDFBqHH+42QyjOkJFsVEoBYsJprc94CyW5GwcL2/2B9o6W
-         NQqR/CnsIJUUoKgWgPK5eJYXNNe3bvtFYNcDh5EUQMe8f8qgA9Rq3WRnbcwJEStsXx1N
-         +1k9sxfz8KyGrMug7cebixFY2z6vRRvTOLSzU9KqGZZiwC+z4C41QJfz1vSfysNW/X8+
-         VjtAHxsh9q3jO3KnD/ZhfVtFgK4zRm3m/7E7J1scSAZzXb/BENw4Q9pgDuWFOu7oPetD
-         z+Qw==
-X-Forwarded-Encrypted: i=1; AHgh+RrSxhRXXWlrX4QBzs+OhkAEYx6XhQ6aGmg6Eha5jVjX9ticYeyaUyfUgZADfLxgLZ9jl4sw+9E=@vger.kernel.org
-X-Gm-Message-State: AFuF++ncb43CscDiQpQWVTgsc8qZye+nkPqWj8V/FQQAd4NriROnrJJ7
-	AOWbgr8jvNW2NwJEdnux7PXeKt5aXg+mxfzw7/P1vHkMjuSOVMj4ZzvurRxyR9rsBHeFYLVpZDS
-	seLmZE+RPYaCqmcx6HkjvMHprOGjnOmkyvJBdQb//
-X-Gm-Gg: AR+sD12RrSQy90GyhqurgeGKo4O9YR1bqI18fne8iiOYzTgCcs88hlHZiDdGiuY0BJ+
-	lAyfqD8sdyC7/RTiSPrcn71pYR/DzZ/0GkOXClgAycnTdeb+txqez/Kial3ODzhDNcpvbHGhH7p
-	H+NJ35DTzxSWm3gLdYZgBWql0AtDAEu2EPzhhXv9rWU/7M9LOiwZZATpAB9Q1HhBOyidPRM4ndD
-	G5h3Alqmqj6LiqGsn06bDWMRBBPr/U2ZCv4wA4t/R/kn5QE2oC83bJxbZmpjWTBPeuKHG5sRSJh
-	B4kYdrWM38rNMjuRj6hcEEcJYzBZN5/NWr2WamJKZZ9SzfW+JJ2Ma/B99t9w3nmBQyoSeLbBL+U
-	Ubti7GXHoKA==
-X-Received: by 2002:aa7:d34f:0:b0:6a4:abe:52db with SMTP id
- 4fb4d7f45d1cf-6a42f60959cmr67712a12.12.1787330309312; Fri, 21 Aug 2026
- 09:38:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=florian.bezdeka@siemens.com header.b="bMcd9dKv"
+Received: by mta-65-226.siemens.flowmailer.net with ESMTPSA id 20260821164012e9ac9cab99000207ab
+        for <netdev@vger.kernel.org>;
+        Fri, 21 Aug 2026 18:40:12 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
+ d=siemens.com; i=florian.bezdeka@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
+ bh=6LdCN8NzDzrZlxlx10gtZoWk+7I60n+3MMYtlcuqxbk=;
+ b=bMcd9dKvvOlWyh3WwT71xtjxR+P/Lc0WkdnLkmgoZtQfXT4UPhRHxsq1XchYkVkAebI4xA
+ PI7gglJrp0TkXd8L8Ms1d3XNYYefC5qiSp1gCpRSTZ5bz9xzhqkmJNQiut4M30bneWJR9kS6
+ yGLHzXxrYNvm+e6X0z1t10ppT5UQcwD8Mgp/SLs8DYfIdYICRYG6IxHas0cRajHaO1eqRPZX
+ XsrebHGFTcs82AYj1Xhu34N/V8k20u0TUq7i2JOAVawUwtZmvsne3J5YXOkvXFN5VsIcoGqE
+ 8arcNlOglmxEvDdM3ZyaXdCONkpQWlcT20E6CVj0qeL24mWQQ3FQIXJw==;
+Message-ID: <ade455ea48cbb0680945536dc8f05c8db64f41ba.camel@siemens.com>
+Subject: Re: [PATCH RFC 3/3] net: stmmac: Migrate IRQ balancing to
+ cpumask_local_spread()
+From: Florian Bezdeka <florian.bezdeka@siemens.com>
+To: Yury Norov <ynorov@nvidia.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn	
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet	 <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni	 <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, Yury Norov
+ <yury.norov@gmail.com>, Rasmus Villemoes	 <linux@rasmusvillemoes.dk>,
+ Andrew Morton <akpm@linux-foundation.org>,  Sebastian Andrzej Siewior	
+ <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, Steven
+ Rostedt	 <rostedt@goodmis.org>, Thomas Gleixner <tglx@kernel.org>, Jan
+ Kiszka	 <jan.kiszka@siemens.com>, netdev@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, 	linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev
+Date: Fri, 21 Aug 2026 18:40:11 +0200
+In-Reply-To: <aoX5wglLYYtLcE5J@yury>
+References: 
+	<20260819-flo-net-7-2-make-stmmac-default-affinity-aware-v1-0-3f79a99cadaf@siemens.com>
+	 <20260819-flo-net-7-2-make-stmmac-default-affinity-aware-v1-3-3f79a99cadaf@siemens.com>
+	 <aoX5wglLYYtLcE5J@yury>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260814191336.187243-1-almasrymina@google.com> <178725782538.470503.1324832379530837261.git-patchwork-notify@kernel.org>
-In-Reply-To: <178725782538.470503.1324832379530837261.git-patchwork-notify@kernel.org>
-From: Mina Almasry <almasrymina@google.com>
-Date: Fri, 21 Aug 2026 09:38:17 -0700
-X-Gm-Features: AcwNN1XkzSoVkkBd0LcjbNxP8qE8mfjPqBhJfXoo68SrZ_ZPjrJrEXlVwRFEcsc
-Message-ID: <CAHS8izMiO0Wm5dghHjj6ZJEOezPnLo3VP2AafYfLYv-DXM=kbQ@mail.gmail.com>
-Subject: Re: [PATCH net v4 1/2] net: core: propagate unreadable flag in skb_zerocopy
-To: patchwork-bot+netdevbpf@kernel.org
-Cc: kuba@kernel.org, kaiyuanz@google.com, willemb@google.com, 
-	edumazet@google.com, pabeni@redhat.com, sdf@fomichev.me, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, dev@openvswitch.org, 
-	davem@davemloft.net, horms@kernel.org, ncardwell@google.com, 
-	kuniyu@google.com, aconole@redhat.com, echaudro@redhat.com, 
-	i.maximets@ovn.org, kerneljasonxing@gmail.com, asml.silence@gmail.com, 
-	bobbyeshleman@gmail.com, fw@strlen.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-68982:519-21489:flowmailer
 
-On Thu, Aug 20, 2026 at 1:31=E2=80=AFPM <patchwork-bot+netdevbpf@kernel.org=
-> wrote:
->
-> Hello:
->
-> This series was applied to netdev/net.git (main)
-> by Jakub Kicinski <kuba@kernel.org>:
->
-> On Fri, 14 Aug 2026 19:13:30 +0000 you wrote:
-> > skb_zerocopy() fails to propagate the unreadable flag when copying
-> > unreadable fragments, causing target skbs to appear as readable memory.
-> >
-> > This patch fixes the flag propagation. Additionally, it returns -EFAULT
-> > if readable fragments are mixed with unreadable fragments during
-> > extraction, and returns -EFAULT in openvswitch queue_userspace_packet()=
-.
-> >
-> > [...]
->
-> Here is the summary with links:
->   - [net,v4,1/2] net: core: propagate unreadable flag in skb_zerocopy
->     https://git.kernel.org/netdev/net/c/68d8c6532659
->   - [net,v4,2/2] net: tcp: block mixing readable and unreadable frags
->     https://git.kernel.org/netdev/net/c/d9c56501c72f
->
-> You are awesome, thank you!
-> --
-> Deet-doot-dot, I am a bot.
-> https://korg.docs.kernel.org/patchwork/pwbot.html
->
->
+Hi Yury,
 
-Thank you sir for picking this up. I was mildly concerned about going
-down this "also this bit is broken" clashiko hole forever. I'll work
-on submitting fixes for the other pre-existing issues separately.
+On Wed, 2026-08-19 at 14:45 -0400, Yury Norov wrote:
+> On Wed, Aug 19, 2026 at 04:30:32PM +0200, Florian Bezdeka wrote:
+> > The previous balancing mechanism was based on num_online_cpus(), which
+> > is a problem for systems cpu-isolating workloads. IRQs were targeting
+> > CPUs that were isolated for those sensitive workloads.
+> >=20
+> > With a migration to cpumask_local_spread() we
+> >     - get NUMA locality
+> >     - honor the default SMP affinity mask, which avoids targeting
+> >       isolated CPUs.
+> >=20
+> > This also aligns with the pattern used by most network drivers dealing
+> > with IRQ affinities / affinity hints.
+> >=20
+> > Signed-off-by: Florian Bezdeka <florian.bezdeka@siemens.com>
+> > ---
+> >  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 21 +++++++++++++++=
+++----
+> >  1 file changed, 17 insertions(+), 4 deletions(-)
+> >=20
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/driver=
+s/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > index a71f0df263785dd8badc45292ca3067ab33bda05..949ced7e46d2814b57c6bd8=
+6b4886ac3bf33996c 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > @@ -3826,11 +3826,16 @@ static int stmmac_request_irq_multi_msi(struct =
+net_device *dev)
+> >  	struct stmmac_priv *priv =3D netdev_priv(dev);
+> >  	struct stmmac_msi *msi =3D priv->msi;
+> >  	enum request_irq_err irq_err;
+> > +	cpumask_var_t affinity;
+> >  	int irq_idx =3D 0;
+> >  	char *int_name;
+> > +	int node;
+> >  	int ret;
+> >  	int i;
+> > =20
+> > +	if (!zalloc_cpumask_var(&affinity, GFP_KERNEL))
+> > +		return -ENOMEM;
+> > +
+> >  	/* For common interrupt */
+> >  	int_name =3D msi->int_name_mac;
+> >  	sprintf(int_name, "%s:%s", dev->name, "mac");
+> > @@ -3916,6 +3921,7 @@ static int stmmac_request_irq_multi_msi(struct ne=
+t_device *dev)
+> >  	}
+> > =20
+> >  	/* Request Rx MSI irq */
+> > +	node =3D dev_to_node(&priv->dev->dev);
+> >  	for (i =3D 0; i < priv->plat->rx_queues_to_use; i++) {
+> >  		if (i >=3D MTL_MAX_RX_QUEUES)
+> >  			break;
+> > @@ -3935,8 +3941,10 @@ static int stmmac_request_irq_multi_msi(struct n=
+et_device *dev)
+> >  			irq_idx =3D i;
+> >  			goto irq_error;
+> >  		}
+> > -		irq_set_affinity_hint(msi->rx_irq[i],
+> > -				      cpumask_of(i % num_online_cpus()));
+> > +
+> > +		cpumask_clear(affinity);
+> > +		cpumask_set_cpu(cpumask_local_spread(i, node), affinity);
+> > +		irq_set_affinity_and_hint(msi->rx_irq[i], affinity);
+>=20
+> If you want to spread more than one IRQ, you'd better convert your
+> loop into for_each_numa_hop_mask(). That way you don't need to
+> introduce new function. See the comment on top of
+> cpumask_local_spread():
+>=20
 
---=20
-Thanks,
-Mina
+I was knowingly ignoring this "optimization". As already noted the patch
+1 thread: I'm currently trying to demonstrate the shortcomings,
+optimizations will follow once we agree on a plan / vision.
