@@ -1,74 +1,103 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263C13A1A26
-	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 20:26:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3731628C009;
+	Fri, 21 Aug 2026 20:29:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787343965; cv=none; b=BAWfqNp5Vwmb1JXF9U33GKhxW0GvQODJvwyYiamFyp21R1/HzXPAEubFXQFHFCP4dU/Z///XjgI1MK8isozaCPRkLvaXwZoiN75ic1nix4G7ZuY40nNhKQmpd/H++/ZtkL5FFmiaWN0p14UzFIvZfHjNvG+8mvIyS47jJqDJDTc=
+	t=1787344172; cv=none; b=lEJUOYpV3jUX5+nGW7w2DW10LQj2BmxcmCSbANPhclBn2l8QcvcZqqqCchYGBJrn+Vp7ImeGJPFG9Rcb5a0elDTtd+oMBvK9sR8ZVmGxvZKk2o/5QoPFIRM1g6xqmk5iMEzncwxnlvCt+YoKF94nvYgXvAG/aC/2qR/Fsx5E1NE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787343965; c=relaxed/simple;
-	bh=dqztLAEjQt25I4z6TvIhZhRmwvhsEHhSiihQ+t4gxPQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hSWe4+sAhbnr4OfAJrSMjyL3yxof+DYzwzhyE6Y5UBc6aNnD0Fq1Zzea3zgYYCgC6PBkbckbXNyz8i6rvMpGCyolKgrkxhYYKSUC/1eOloljdWSm3ufEoWoRA1dJyV0RC5FsmVKwzCEPv3lqqjtFJvi50g9WUGcJ08cBZ2oRNLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=a7QG3wHI; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1787344172; c=relaxed/simple;
+	bh=5Z7zTShx/tz8zQU68ki8h3ljCOiWq2XceVd8PCQm8sk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pk73+lwosu859llJKmq3sgKB36ddc1n+QzFFd9Sk1eUG4H7p5mhQsey0qMbiMa9+U3bCQQGEkk3mVTSBJGzxvGahWrCrmE6LZZjCfoVVbcuFKVKzl0nDgrSzy+clVhIJDdW4q8Ms3jgvG8Y0m3TWBskGtrDvYtyMyuJHDhNTVK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=ZJZuKDWr; arc=none smtp.client-ip=51.159.188.251
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="a7QG3wHI"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=wmCkvVLaR+rDdpiswuyBWNbJIzNwVmoEfscdzHsxPY4=; b=a7QG3wHIEqBeNup0aOP/3SXNCK
-	b/fgiENDUdqt+qKEejNuut+mH5qWjF2CL2uJ6na0VbQ8wRYS7cePRgEg1o0e9cjIj9ef3zN8kkKzh
-	iYQu6H38mK8vhU3EZxbXH06yBS6N7LYIISBgvOsB8V2CbLLtp5ttvduJVWmcNBQ5W010=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wxVo3-000yLH-Ea; Fri, 21 Aug 2026 22:25:39 +0200
-Date: Fri, 21 Aug 2026 22:25:39 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Kurt Kanzenbach <kurt@linutronix.de>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	Lorenzo Bianconi <lorenzo@kernel.org>
-Subject: Re: [PATCH net-next] net: stmmac: stm32: Set TSO/TBS Tx queues
- default settings
-Message-ID: <5d48515a-862d-4990-b4b4-12d86fb6f3b0@lunn.ch>
-References: <20260812-stm32mp2_txtime-v1-1-f9e2462cc85d@linutronix.de>
- <20260817103337.74c30adc@kernel.org>
- <87mrujzzjv.fsf@jax.kurt.home>
- <20260818075335.48936b08@kernel.org>
- <87h5kq1s1f.fsf@jax.kurt.home>
- <20260820144528.7107ba90@kernel.org>
- <87y0e0x7ic.fsf@jax.kurt.home>
+	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="ZJZuKDWr"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=GJVYThdLX6flGpGPc+xAe8iCpnn+ESplzc1fhpKsD7M=; b=ZJZuKDWrb2je8EOYNJ+W2Dh5wL
+	nRMwlo2YPo2Q1FuJy1w+0v2XSUsvDplBEFh+KzCjf4MpFVJVNZxuMfdwaaoq1tmB85JYORxGFCOrB
+	3Bt8si65z9wRWzvXNS8BlkmEaCpKL/TbVg6JjO7IIdGzyCGKF8YMOOY/TFjj8jDa29WKkQeI40D2I
+	KRplknwA7fAuKQ/lDaSjC+KcckXZxfhiZk54+ZnxgcivpuKxB/2+Tdx1DMtyLV8xw7oQzbPkuc6K7
+	dO1BTDFMN/tuLaX0BYHdddbnCaxn0Fe4VaNXis+dZCYwOEy2HhxxAUL9ur9W5i6ZjTo5OQ2gUUm2O
+	HmwLDM3g==;
+Received: from [151.115.150.205] (port=58992 helo=gepetto..)
+	by pf-012.whm.fr-par.scw.cloud with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <Jeremy.Jean@oss.cyber.gouv.fr>)
+	id 1wxVrk-0000000EXYi-367R;
+	Fri, 21 Aug 2026 22:29:28 +0200
+From: =?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
+To: Subash Abhinov Kasiviswanathan <subash.a.kasiviswanathan@oss.qualcomm.com>,
+	Sean Tranchetti <sean.tranchetti@oss.qualcomm.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
+Subject: [PATCH] net: qualcomm: rmnet: require real-netns admin for bridging
+Date: Fri, 21 Aug 2026 20:28:46 +0000
+Message-ID: <20260821202845.4053530-2-Jeremy.Jean@oss.cyber.gouv.fr>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87y0e0x7ic.fsf@jax.kurt.home>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
+X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
+X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-> No objections here. I've briefly looked at the TBS thingy. I think we
-> just need to reconfigure one Tx queue instead of doing a full
-> release/open cycle. The XDP/ZC code does something similar. So the
-> infrastructure seems to be in place.
+An rmnet device remains linked to its real device after it is moved to a
+different network namespace. When it is used as a master, rmnet_add_bridge()
+follows that pointer and switches the real device's port to bridge mode.
 
-I suggest you look back in the list. There have been a few emails
-about people working in this area. You should try to do some
-coordination.
+The rtnetlink master operation only requires CAP_NET_ADMIN in the namespace
+holding the visible rmnet and slave devices. A caller privileged only there
+can therefore bridge an attacker-controlled interface to the real device
+in another namespace, receiving and transmitting raw traffic across the
+namespace boundary.
 
-There are some symmetry issues which would be nice to solve.
+Require CAP_NET_ADMIN in the network namespace of the real device before
+configuring the bridge.
 
-	Andrew
+Fixes: 60d58f971c10 ("net: qualcomm: rmnet: Implement bridge mode")
+Assisted-by: Codex:gpt-5
+Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+---
+ drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
+index bed6f63facf2..45e6c16a5a70 100644
+--- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
++++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
+@@ -441,6 +441,14 @@ int rmnet_add_bridge(struct net_device *rmnet_dev,
+ 	struct rmnet_port *port, *slave_port;
+ 	int err;
+ 
++	/*
++	 * The rtnl path only checks CAP_NET_ADMIN against dev_net(rmnet_dev),
++	 * but bridge mode below controls real_dev, which may live in another
++	 * netns.
++	 */
++	if (!rtnl_dev_link_net_capable(rmnet_dev, dev_net(real_dev)))
++		return -EPERM;
++
+ 	port = rmnet_get_port_rtnl(real_dev);
+ 
+ 	/* If there is more than one rmnet dev attached, its probably being
