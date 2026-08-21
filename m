@@ -1,35 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from aer-iport-8.cisco.com (aer-iport-8.cisco.com [173.38.203.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53AF439EF1C
-	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 21:31:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76873AA4F6;
+	Fri, 21 Aug 2026 21:38:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.38.203.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787347867; cv=none; b=jXlYaDzO0Qs9vPGjKmJdmZftH2LS2weXcpLdX8NdIZpV3lpNK8P2h/cI37/H/B+WTh5yZSn+yJrJGpCRm4PP3TJ1EFl9EWYf10m4mHtH3toHsEMIhZiejBfoc9l+gjI/N2hiFdUk/cDx7G+TbdTXJYm0PZmtNnKr6dr1HPPOR/U=
+	t=1787348329; cv=none; b=K6KloNoiLhqtPfy2pKa4Vw4yhwQBo0TX/xKMzhhMCu99YlhSYhogSvbUQMzuKPkVoKOypsYtlzvwZ+Bz2pf4FZSJw5gCz2tLj7eAFXAvf2ZIZYHeaIcHWbscV9NFzfncGMeCSZ62RjC2jT3EVQPtL8SitfDbeS39pJgxl3xXKC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787347867; c=relaxed/simple;
-	bh=wKnVjk7D3CWFpZyxOtWg9bT42pneiIWFmtCrDJuEmUg=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=OKbbZjcZo1axIKSqa3MJuZsLLViS/UVAq3yZmqb04YvOexXXqW8mj36q9+UTTpF1UL3b4BWN/ruw3wY4esQ9eOB4sgDOmBXYKhCHSE7jU+ew2Eed2GFTbOH9PwBbieWzzwD9ERbkB7dm2vYvI65i3oFHyLjgiIthID3sneUsCqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LvjYZppi; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787348329; c=relaxed/simple;
+	bh=Gc/7lBy3gbT7mQGnUkK/8rD2GP7clWUe59xDWl8TZvw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tVKfr9URCqErmdxEBdnL5ZzYPH96kGOgw98Al9ni+dm8WFeJQlgaJvCuBIpWi3t6+X/44hNHS8QHx4hWC0KmvQhxIt722NSRw20E1cgTG27SCp77FOijPE9G1aXUuNrkrjd0xnQOB3o+XfbOZ0u2/PPGWrDDDFi51bc8qyT/JAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=kqtsx3Ez; arc=none smtp.client-ip=173.38.203.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LvjYZppi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A8E1F000E9;
-	Fri, 21 Aug 2026 21:31:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787347863;
-	bh=rRqbcegCSPyeqTLKs/6aR9/i6fFlourhx4KmyNj0Gls=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=LvjYZppiUr8ifNTdBK1fYQU9kO7MvzGKzg7ZaD6rmiBt+v9l5sGGxV9OXlJb7Owwa
-	 e7N8sI4V7E+SKFHN89vpNqN6u7BK15P5JBgPs50QICk4nB1yo4zGvhyue9oGl7yAHf
-	 Ol/BJDGjWWXd1OmpRckl+M3EbH+Q0U9PpS01RapzLz44tycEA40TciNtSxTuk/8CNF
-	 B9sHpJH4RKn1T1OoV4R8kw/4qSP/lCEheUNurYJ13XmZyQgu1PfmgQcjhGLhNLBBGN
-	 TwhnI+fIu0fpmcQM1g1RGIcC+/EuxxQ/8Jvyg8YxUGzM6xJBqcTkn2KEbTwnIMzwnu
-	 B2y9JOMjb530g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 197A5380CED0;
-	Fri, 21 Aug 2026 21:30:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="kqtsx3Ez"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=cisco.com; i=@cisco.com; l=1113; q=dns/txt;
+  s=iport01; t=1787348327; x=1788557927;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=SXWUYgWL4b+Bz3+W8zIynJxlan1c5WkPCLgXTDERme0=;
+  b=kqtsx3Ezla5B0/LJmJSAGS3Je+DTWz5Uj32glcoT+lwmMu5F9QyNwAdZ
+   muRyPqVfTcpkenQaYjo9G7lxzo6xLoOQmRqFZH9Yymgt9y4zo/glpHe84
+   8IdYRJ+8t08IER6o+pPpZBC1r7YZd5wWupiO8Lh9/6PA3MwGpDkMiQZbA
+   k3zh1cffOLH0oUQKYgLyASnoF872u4WQAe5BZcY5LR3vcr7kpDrPnSsFr
+   Rd4hbTXZ9vbWkN5MFjG0NzFjT5BlfIea3jSZyzk3RA6Wrrp3vmJx2mkQ9
+   20JE6iLFhty15SLBab1+Zf5SNt8N67jnTeFsMek6/y8BilYcb9Wp6aIqS
+   Q==;
+X-CSE-ConnectionGUID: 165d0COrSfayiv4oN5CASw==
+X-CSE-MsgGUID: /om3+WFNSpumQ0CO/Qsz9A==
+X-IPAS-Result: =?us-ascii?q?A0BkAwCGw4hq/9RK/pBaglmDS15DSQSUJYIhkiuLcxSBa?=
+ =?us-ascii?q?g8BAQEPRA0EAQGFBQKNbAImNAkOAQIEAwIDAQEBAQEBAQEBAQELAQEFAQEBA?=
+ =?us-ascii?q?gEHBYEOE4ZPDYZbAgEDMgFGEFFWGYMCAYJ0AxHBRYIsgQHeR4FsBhWBOI1hd?=
+ =?us-ascii?q?oR8JxuBSUSECAdvhCpmhXgEgxwSk1dIgR4DWSwBVRMNCgsHBYFmAzUSKhUyP?=
+ =?us-ascii?q?DIdgSM+F4ENGwYFgR2BKIQQIxk2eoEJXoErKWABEheBCYIHAoJaggUCAUlDD?=
+ =?us-ascii?q?gdIIgsYDUgRLDcUGQQ+bgeOXh+CGDWBDgoigUNQAZZ6sCOEKIwilVMBM5dfk?=
+ =?us-ascii?q?w2ZCI4KmzmBaDyBWTMaCBsVgyMSQBkPlzbHCEU0AToBAQcCBw4DC4FokX4BA?=
+ =?us-ascii?q?Q?=
+IronPort-Data: A9a23:wT7+P6DgGLLL5RVW/xnjw5YqxClBgxIJ4kV8jS/XYbTApDsl1zJUn
+ zcfWG7QPP7fZzb0KIh/YIrj9B4EvMTUxtdmOVdlrnsFo1CmBibm6XV1Cm+qYkt+++WaFBoPA
+ /02M4eGdIZvCCeA+n9BC5C5xVFkz6aEW7HgP+DNPyF1VGdMRTwo4f5Zs7ZRbrVA357jXmthh
+ fuo+5eBYA//gmYtWo4pw/vrRC1H7ayaVAww5jTSVdgT1HfCmn8cCo4oJK3ZBxPQXolOE+emc
+ P3Ixbe/83mx109F5gSNy+uTnuUiG9Y+DCDW4pZkc/HKbitq+kTe5p0G2M80Mi+7vdkmc+dZk
+ 72hvbToIesg0zaldO41C3G0GAkmVUFKFSOuzXWX6aSuI0P6n3TEmqszABkdGpcj9O9mAH8S8
+ tpFAxk2cUXW7w626OrTpuhEj8k5ac2uN4QFtzQ5lHfSDO0tRtbIRKCiCd1whWtswJoTQbCBO
+ 4xDMGAHgBfoO3WjPn8VFJU6mOq0rnL+aDZf7lmSoMLb5kCOk1UsjOGzbLI5fPTNQsAO3Xm2g
+ Fne4mHAWjo9c+WE22uspyfEaujn2HmTtJgpPLGx6PNvqFGa2GEWDBoYSR29rOXRolWyVfpRL
+ EkV8Sojs+43+SSDTN79WVu2qWWYtxQRXdZ4HOgz6QXLwa3Riy6UCnUBRyxMdPQps8g5QTFs3
+ ViM9/vlDDpuvbm9SHWS+76OpzSify4YMQcqbDQYZQgI+d/upMc0lB2nZtZqD62djdDvHzz0h
+ TeQo0AWhKgZhOYI2r+98FSBhCijzrDASAIv6xqUWG+54g5nTIq4YYru4lizxfpcJZqESlSIl
+ H4amsSf5aYFCpTlvCiAR+MXG5mv+feJMTSaillqd7Ek/TCq8H6Le55R7DB3YkxuN64sYjbkb
+ UPWkQVP5ZNSNT2haqofS564EcUz0YDmC9XpV/mSZd1LCrBpfQWK+iBGf0Oc32nx1kMrlMkXM
+ 4+VWdijAGxcCql9yjeyAeAH3tcDwiE42HOWRp3hyRmj+aSRaWTTSrofNlaKKOcj48uspATT7
+ sYaLcePwj1BX+DkJCra64geKRYNN3dTLZb7t8BaaMadLQd8XmIsEfncxfUmYYMNokhOvu7F5
+ DS5H0Rf0le63CSBIgSRYXclY7TqNXpikU8G0eUXFQ7A8xAejUyHtc/zq7NfkWEbydFe
+IronPort-HdrOrdr: A9a23:KFXrpK8fA3hHLipmZOtuk+D4I+orL9Y04lQ7vn2ZhyY4TiX+rb
+ HLoB1173HJYVoqMk3I3OrwW5VoIkmskKKdg7NxAV7KZmCP01dAbrsSj7cKqAeOJ8SRzINgPN
+ 9bE5RWOZnXEUVwi9r87U2TFtYtx8TCzYWT7N2uqEuEiWpRGthdB8ATMHf8LnFL
+X-Talos-CUID: 9a23:8abEt2z7Q51H4VrCUpfZBgVNRJ0pKlb61kzeKl65FzpubuC+YGSPrfY=
+X-Talos-MUID: 9a23:VV4+zwbY3Qcan+BT8Djp33JdGuFT+7mrMRgmttI/oNvVHHkl
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.25,235,1779148800"; 
+   d="scan'208";a="57154164"
+Received: from aer-l-core-11.cisco.com ([144.254.74.212])
+  by aer-iport-8.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 21 Aug 2026 21:37:33 +0000
+Received: from localhost (unknown [10.189.108.235])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by aer-l-core-11.cisco.com (Postfix) with ESMTPS id 17E93180001C5;
+	Fri, 21 Aug 2026 21:37:33 +0000 (GMT)
+From: Jerome Tollet <jtollet@cisco.com>
+To: netdev@vger.kernel.org
+Cc: saeedm@nvidia.com,
+	tariqt@nvidia.com,
+	mbloch@nvidia.com,
+	leonro@nvidia.com,
+	dtatulea@nvidia.com,
+	daniel@iogearbox.net,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	ast@kernel.org,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH net v3 0/2] net/mlx5e: Prevent stale XSK buffer release on refill retries
+Date: Fri, 21 Aug 2026 23:37:30 +0200
+Message-ID: <cover.1787347981.git.jtollet@cisco.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260820151558.11015-1-jtollet@cisco.com>
+References: <20260820151558.11015-1-jtollet@cisco.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,43 +105,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH iproute2-next v6] ip/bond: add lacp_strict support
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178734781256.1491177.16610625029555097734.git-patchwork-notify@kernel.org>
-Date: Fri, 21 Aug 2026 21:30:12 +0000
-References: <20260820164352.1933916-1-louis.scalbert@6wind.com>
-In-Reply-To: <20260820164352.1933916-1-louis.scalbert@6wind.com>
-To: Louis Scalbert <louis.scalbert@6wind.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, jv@jvosburgh.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, fbl@redhat.com,
- andy@greyhouse.net, shemminger@vyatta.com, maheshb@google.com,
- jonas.gorski@gmail.com, horms@kernel.org, stephen@networkplumber.org,
- matttbe@kernel.org, dsahern@kernel.org
+X-Outbound-Client-TLS: ANONYMOUS;unknown [10.189.108.235];TLSv1.3;TLS_AES_256_GCM_SHA384;256
+X-Outbound-SMTP-Client: 10.189.108.235, [10.189.108.235]
+X-Outbound-Node: aer-l-core-11.cisco.com
 
-Hello:
+Prevent duplicate XSK buffer release when a deferred RX refill fails and
+the same WQE is retried.
 
-This patch was applied to iproute2/iproute2-next.git (main)
-by David Ahern <dsahern@kernel.org>:
+Patch 1 fixes legacy cyclic RQ. It is unchanged from v2 and retains
+Dragos' Reviewed-by tag.
 
-On Thu, 20 Aug 2026 18:43:52 +0200 you wrote:
-> lacp_strict defines the behavior of a LACP bonding interface
-> when no slaves are in Collecting_Distributing state while at least
-> 'min_links' slaves have carrier.
-> 
-> In the default (off) mode, the bonding master remains up and a
-> single slave is selected for TX/RX, while traffic received on other
-> slaves is dropped. This preserves the existing behavior.
-> 
-> [...]
+Patch 2 fixes the analogous striding-RQ MPWQE path pointed out by the
+Sashiko automated review. Targeted fault injection forced three
+consecutive allocation failures for one MPWQE. Stock freed the same 16
+XSK buffer pointers three times; the fix freed each pointer only once,
+made subsequent releases no-ops, and preserved the successful
+allocation path's bitmap reset.
 
-Here is the summary with links:
-  - [iproute2-next,v6] ip/bond: add lacp_strict support
-    https://git.kernel.org/pub/scm/network/iproute2/iproute2-next.git/commit/?id=30365d0967bd
+Changes in v3:
+- Turn the submission into a two-patch series.
+- Add the striding-RQ MPWQE fix and its dedicated Fixes tag.
+- Rebase onto net/main at 4e15e89faac9.
 
-You are awesome, thank you!
+v2: https://lore.kernel.org/netdev/20260820151558.11015-1-jtollet@cisco.com/
+
+Jerome Tollet (2):
+  net/mlx5e: Prevent stale XSK buffer release on refill retry
+  net/mlx5e: Prevent stale XSK buffer release on MPWQE refill retry
+
+ drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+2.55.0
