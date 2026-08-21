@@ -1,160 +1,159 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB99B324B33
-	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 13:41:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D985B3B19A0;
+	Fri, 21 Aug 2026 13:42:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787319704; cv=none; b=WayroEZnSgEzw2PpRayAYydMUJgnGmLXQw72QPJ4PnKxSmo1V1BcXWWQpjUvLn2900yiKFrvO3ls2gAC+ZbYnqwOKsR96g0yEPU4dhcFs4QwMm57DR3J/2PwjofFB67SLjrdr48XN9s5sImht+BSxQXP6KIPI2wKkzXh2+fPUAI=
+	t=1787319779; cv=none; b=jTbu6hHeSH89Ub+gED00evDe4j2V1Aa/P+ohTZIQbISq3xUNnoVJW4nsq4xeZOU9pLxvMVcEn4mYKNnEAOGz2zVJDzSa1P1ZRGvMxNE8D23UXBFnQjnlvLcplgc6d/D4HB78pozA73VvUnpMYSRnok1tM3B0GcMeo62ql8B5gME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787319704; c=relaxed/simple;
-	bh=csKG4jsdSZoEyLklM2fqjsuhF4NA0+aRfRToqSPhd+A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WXwyGPnwbCDMAg8PV7p6F2jiqrZGycPNBwQhlX0y7Y3RcvWE31SUDGuqWqL0FXwe+cjaMJCth8n+YOlZDzi5nH8Tnm9XoLoygJtbkSrWa5d3bjEVYPDoFLmk5rgFQGSTMXKdLarOAd3tyvffqQLMMjeHU/LHhBNMqeLFyiChVf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=AvqrzzRi; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1787319779; c=relaxed/simple;
+	bh=Vtr/AME7bqSs8l6XgDgP3asMbVIBSojJl6gtu57j2uQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZuWEHkuTAOZK3zVILQRDyVRpVtLuLpue5vkbMmTaaxl8Tg8cGkN62wjQFInWTjlck1kasYWB4MfMVZdRdNSr/BPHBZsw9vOBLJM8iu+ECFYmNllIa2VwQSeMq5G9llWQ7DHne42nEZ+zw/u9wpFmbxH9NvgqHa6b6BNQOZ4Zhzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=tiQovgVv; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="AvqrzzRi"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 164874E4131C;
-	Fri, 21 Aug 2026 13:41:37 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D4CF9604AA;
-	Fri, 21 Aug 2026 13:41:36 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A1F8011C77174;
-	Fri, 21 Aug 2026 15:41:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787319692; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=0zgZgDh7aVAOkoqDbyZC6cL4rz+qele9fsZ91dWkXpg=;
-	b=AvqrzzRi+NQofrXerRpVaUlPTHMdubK8vJEVHpvd5n3vpY3hl7s1q+Drkz88ytOfSNvBUT
-	50qqcaqJkrPUomdZvFRO/2hiKkicz7NjhEbJa67uOCGDflXDGba1c+pK9s8yDKudYf/bXd
-	b3pshwfgjRkxfrMY/AY4NljfBFR6hwvEinqkSLai+LDJkgn6oH/l8WTa+SupL9zRigA90v
-	Gn5BMW1PrjKEV+ACddGYpEH72sW+oJdAp4efjtau+0piUPrnmHP1WKuEmY1rQI38bOyU9d
-	iQUP6LVY5oWzWmEhsHaoy4BENg+khWgebv3TTVPmcNf2EHDGCwCntjYG5EdCtQ==
-Message-ID: <5693c628-dffb-46c4-8f7c-5a5a6c101660@bootlin.com>
-Date: Fri, 21 Aug 2026 15:41:26 +0200
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="tiQovgVv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1787319768;
+	bh=CdNOh3OTKrRnxjFkGuwoM6wDkGD+fUjLsk2ZX6r4pUU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tiQovgVvGA4juqTN+no18Gi+2KdRjg6kKVinvVWBBnDjiV4dB5lkL80rzklSan/TI
+	 3+by/thnu4RDdQnGsET4530m9zFaVvSJV40juHEW8cGJ3lHrryY4bR/+x7oy1qjOm6
+	 mRoFKwbKgqdnyNOo2xbrbPYudM+jGjKOMsh1LvKYmO0P4j5w2iz6E6x8+V5D6Fgzzc
+	 X1SNxXCX412TKEvYAVEHoNkffkkCFFBSc/7EilChNoGNEoMHI1c6Oz3PQefS0eVcCU
+	 ZwfTEcPCVVB8sCgjWCQqaRvIamUreioMXJko3o7LGEzcJiprrjxBggAWxC+Lkn1t1D
+	 4yutwIWrZaWzg==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 08E466021B;
+	Fri, 21 Aug 2026 15:42:48 +0200 (CEST)
+Date: Fri, 21 Aug 2026 15:42:43 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: David Lee <david.lee@trailofbits.com>
+Cc: fw@strlen.de, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, Kyle Zeng <kylebot@openai.com>,
+	Dominik 'Disconnect3d' Czarnota <dominik.czarnota@trailofbits.com>,
+	phil@nwl.cc, horms@kernel.org, netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH nf v2] netfilter: nf_reject: initialize IPCB at inet
+ ingress
+Message-ID: <aohV0xIb23Pvs7yt@chamomile>
+References: <20260810160703.861885-1-david.lee@trailofbits.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: stmmac: stm32: Set TSO/TBS Tx queues
- default settings
-To: Kurt Kanzenbach <kurt@linutronix.de>, Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
- <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, Lorenzo Bianconi <lorenzo@kernel.org>
-References: <20260812-stm32mp2_txtime-v1-1-f9e2462cc85d@linutronix.de>
- <20260817103337.74c30adc@kernel.org> <87mrujzzjv.fsf@jax.kurt.home>
- <20260818075335.48936b08@kernel.org> <87h5kq1s1f.fsf@jax.kurt.home>
- <20260820144528.7107ba90@kernel.org> <87y0e0x7ic.fsf@jax.kurt.home>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <87y0e0x7ic.fsf@jax.kurt.home>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260810160703.861885-1-david.lee@trailofbits.com>
 
-Hi Kurt,
-
-On 8/21/26 09:22, Kurt Kanzenbach wrote:
-> On Thu Aug 20 2026, Jakub Kicinski wrote:
->> On Wed, 19 Aug 2026 09:35:40 +0200 Kurt Kanzenbach wrote:
->>>>> I want to use ETF Qdisc with hardware offload, which is currently not
->>>>> possible on the stm32mp2.  
->>>>
->>>> Do you need multiple queues for ETF/normal traffic?
->>>> Or one ETF and one "normal"?
->>>>
->>>> How do you sort the traffic between the queues?  
->>>
->>> So the stm32mp2 has two CPU cores. I've isolated CPU1 for Profinet. That
->>> one uses Tx/Rx queue 1 with ETF to reduce the Tx jitter. Everything else
->>> is routed to Tx/Rx queue 0.
->>>
->>> Config looks like this:
->>>
->>> #
->>> # Tx Assignment with SP.
->>> #
->>> # Tx Q 0 - Everything else
->>> # Tx Q 1 - RTC
->>> #
->>> tc qdisc replace dev ${INTERFACE} handle 100 parent root mqprio num_tc 2 \
->>>   map 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 \
->>>   queues 1@0 1@1 \
->>>   hw 1
->>>
->>> #
->>> # Enable Tx launch time support for TC 1.
->>> #
->>> tc qdisc replace dev ${INTERFACE} parent 100:2 etf \
->>>   clockid CLOCK_TAI \
->>>   delta 500000 \
->>>   offload
->>>
->>> On Rx incoming frames are steered via PCP field (vlan tagged).
->>
->> Thanks for explaining!
+On Mon, Aug 10, 2026 at 04:07:03PM +0000, David Lee wrote:
+> From: Kyle Zeng <kylebot@openai.com>
 > 
-> No problem.
+> The inet ingress hook runs before ip_rcv_core() and ip6_rcv_core(), so
+> neither IPCB nor IP6CB has been initialized when nft_reject_inet passes
+> a packet to nf_send_unreach() or nf_send_unreach6(). skb->cb can
+> therefore retain metadata from an earlier protocol layer.
 > 
->>
->>>>> It seems like a static configuration in the driver today. I basically
->>>>> followed the same convention as dwmac-imx, dwmac-intel, dwmac-mediatek
->>>>> and dwmac-qcom-ethqos. Only dwmac-socfpga does it differently.
->>>>>
->>>>> Tx Launch Time requires a different DMA descriptor layout. Currently
->>>>> tc_setup_etf() just returns -EINVAL if the DMA configuration is not
->>>>> setup appropriately. I guess a dynamic configuration requires to change
->>>>> the DMA config and perform a full release/open cycle.  
->>>>
->>>> release/open is not ideal but still better than hardcoding?  
->>>
->>> For sure it's better than hardcoding :). But, again the driver does it
->>> statically. Maybe there's a good reason for it. Maybe not. I'm not that
->>> familiar with the stmmac driver. I'll prototype something to see whether
->>> we can enable TBS at run time using the ETF Qdisc callback. It may take
->>> some time though.
->>
->> I think the m in stmmac stand for 'mistake'. 
-
-let's rename it stmmmmmmmmmmmmmmmmmmmmmmmac then
-
+> For IPv4, icmp_send() treats IPCB(skb)->opt as parsed IPv4 options.
+> Stale option offsets can make __ip_options_echo() copy an
+> attacker-controlled length into its 40-byte reply option buffer and
+> overflow the stack. On an unpatched v7.2-rc5 kernel, the IPv4
+> reproducer produced:
 > 
-> :D
+>   BUG: KASAN: stack-out-of-bounds in __ip_options_echo()
+>   Write of size 255
 > 
->> We need to start cleaning it up.
+> For IPv6, icmpv6_send() consumes IP6CB(skb) as parsed IPv6 metadata. It
+> always uses iif for source selection and, when MIP6 is enabled, uses
+> dsthao as an extension-header offset. These fields must not be stale.
 > 
-> No objections here. I've briefly looked at the TBS thingy. I think we
-> just need to reconfigure one Tx queue instead of doing a full
-> release/open cycle. The XDP/ZC code does something similar. So the
-> infrastructure seems to be in place.
+> For NF_INET_INGRESS, clear the address-family-specific control block
+> and restore its input interface before constructing the ICMP error.
+> This matches the initialization normally performed by ip_rcv_core()
+> and ip6_rcv_core().
 > 
-> However, we need to keep track of what SoC implementation can enable TBS
-> on which queue. For gmac4 we can probably reuse tbs_en and for xgmac
-> there's is capability field tbs_ch_num. Let's see.
-
-Thanks for tackling this, let me know if you need testing. In the past weeks
-I've been looking deep in my drawers as well as on various online shops, and
-I'm starting to have a farily comprehensive set of stmmac-enabled devices
-(although I couldn't get my hands on XGMAC, AgileX5 devkits appear to be way
-outside my budget).
-
-Let me know if you need help in testing for this, and we can ask the Altera folks
-for some help in XGMAC testing.
-
-Maxime
-
+> Fixes: 117ca1f8920c ("netfilter: nft_reject_inet: allow to use reject from inet ingress")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Codex:gpt-5.6-sol Codex:gpt-5.5-cyber
+> Signed-off-by: Kyle Zeng <kylebot@openai.com>
+> Co-developed-by: David Lee <david.lee@trailofbits.com>
+> Signed-off-by: David Lee <david.lee@trailofbits.com>
+> ---
+> Changes in v2:
+> - Initialize IP6CB in nf_send_unreach6() for inet ingress.
+> - Preserve the IPv6 input interface before constructing the reply dst.
 > 
-> Thanks,
-> Kurt
+> v1: https://lore.kernel.org/netfilter-devel/20260804095105.715387-1-david.lee@trailofbits.com/
+> 
+> Bug found and triaged by OpenAI Security Research and
+> validated by Trail of Bits.
+> 
+> Trail of Bits has an IPv4 reproducer for this bug that triggers the
+> KASAN stack-out-of-bounds write in __ip_options_echo() and can share it
+> if needed. A separate IPv6 test reaches nf_send_unreach6() from inet
+> ingress and confirms that an ICMPv6 unreachable is constructed.
+> 
+>  net/ipv4/netfilter/nf_reject_ipv4.c | 6 ++++++
+>  net/ipv6/netfilter/nf_reject_ipv6.c | 9 +++++++++
+>  2 files changed, 15 insertions(+)
+> 
+> diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
+> index 4626dc46808f..4933f65138d6 100644
+> --- a/net/ipv4/netfilter/nf_reject_ipv4.c
+> +++ b/net/ipv4/netfilter/nf_reject_ipv4.c
+> @@ -355,6 +355,12 @@ void nf_send_unreach(struct sk_buff *skb_in, int code, int hook)
+>  	if (!skb_dst(skb_in) && nf_reject_fill_skb_dst(skb_in) < 0)
+>  		return;
+>  
+> +	/* Inet ingress runs before IPv4 initializes IPCB. */
+> +	if (hook == NF_INET_INGRESS) {
+> +		memset(IPCB(skb_in), 0, sizeof(*IPCB(skb_in)));
+> +		IPCB(skb_in)->iif = skb_in->skb_iif;
+> +	}
+> +
+>  	if (skb_csum_unnecessary(skb_in) ||
+>  	    !nf_reject_verify_csum(skb_in, dataoff, proto)) {
+>  		icmp_send(skb_in, ICMP_DEST_UNREACH, code, 0);
+> diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
+> index ef5b7e85cffa..c36910b8a95a 100644
+> --- a/net/ipv6/netfilter/nf_reject_ipv6.c
+> +++ b/net/ipv6/netfilter/nf_reject_ipv6.c
+> @@ -9,6 +9,7 @@
+>  #include <net/ip6_fib.h>
+>  #include <net/ip6_checksum.h>
+>  #include <net/netfilter/ipv6/nf_reject.h>
+> +#include <net/dst_metadata.h>
+>  #include <linux/netfilter_ipv6.h>
+>  #include <linux/netfilter_bridge.h>
+>  
+> @@ -440,6 +441,14 @@ void nf_send_unreach6(struct net *net, struct sk_buff *skb_in,
+>  	if (hooknum == NF_INET_LOCAL_OUT && skb_in->dev == NULL)
+>  		skb_in->dev = net->loopback_dev;
+>  
+> +	/* Inet ingress runs before IPv6 initializes IP6CB. */
+> +	if (hooknum == NF_INET_INGRESS) {
+> +		memset(IP6CB(skb_in), 0, sizeof(*IP6CB(skb_in)));
+> +		IP6CB(skb_in)->iif = skb_valid_dst(skb_in) ?
+> +				     ip6_dst_idev(skb_dst(skb_in))->dev->ifindex :
+> +				     skb_in->dev->ifindex;
 
+Why do different? Maybe just use:
+
+        IP6CB(skb_in)->iif = skb_in->skb_iif;
+
+like in the IPv4 chunk?
+
+> +	}
+> +
+>  	if (!skb_dst(skb_in) && nf_reject6_fill_skb_dst(skb_in) < 0)
+>  		return;
+>  
+> -- 
+> 2.53.0
+> 
