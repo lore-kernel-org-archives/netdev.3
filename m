@@ -1,110 +1,84 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7EF3DDAF4;
-	Fri, 21 Aug 2026 10:54:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29F039A06F;
+	Fri, 21 Aug 2026 10:54:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787309676; cv=none; b=ifoxya64QUHzfjZX4PPqs+f1OGucciAOTFv9nuRGrlfAPxGtBaZ8kIENnplAkYjiUIqaJTavOxg+IHNB2t/TlYMk1RRKMpAxq2F1HEaFs4BB/4frAxQpNAIrqQEYyg6RDFzk0Ekmr5FbtF4DcO6Aifi9JDwDOEQjZV8XBvmj0rM=
+	t=1787309688; cv=none; b=CfW46xHlkfJWm6hMacO3Gy8+PyJSBXEMz0QDf0MYPEI+WWN8z+XmgCYFKdrxkUqiOZ7Jcfpu2pnGBpo345dMv/8Coi4AcjGswPQyPuD68DIKntYq7WPxUyPHtKrgpEw4WVg+BgJUvOBYlvyLgOoThYz7kSVduVNhithtk3g4Lro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787309676; c=relaxed/simple;
-	bh=xk9UX3jvbTOlr/WZ0ZRUrNdC5t6L0WkRrjlgktWsEV0=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hfk1zDTZgnHQGYN/jcy7qJeZVRpuvb1thw39KDq5gVcifZgYqHB+nWUme/J5qOfsA5H379qB8CG/jVYbYeBK/kF/ztTFD/2GMSMdqVChlVocwe2EGqKhGh2O0k690iDouaaL8yLRBa3t+kvZaF3tWMYymBtYhNGeOZUDhveHx4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=PcbeGOwx; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1787309688; c=relaxed/simple;
+	bh=9yvVCPblnl1Hs0m2R1ompmgF5XK7HcESyQp5Hoe2Ifs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NOfRkUDhl92DiTC+fm4sr/P9AoIfSBHJeeG8j9GpOQ615xDsDXUGVtxgmdkAV4FjGw+YuFKrZHcHSgwxQki8bJyTMxwX7ZnnqNXd/5Ai8wMdOvfwnB0ddASDhL7X6wZvYXpurXM+nWO6gTZ2LguWrYCrgnXaGeXt1btpjUSJxb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OPLlhxMu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="PcbeGOwx"
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67L9Paxb4183272;
-	Fri, 21 Aug 2026 03:54:11 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=xk9UX3jvbTOlr/WZ0ZRUrNdC5
-	t6L0WkRrjlgktWsEV0=; b=PcbeGOwxACVB0m5+lPqeYXlGxU6mP5pQMPrBG6Yc0
-	Peydwds/f/B0hYss7lnaekoVgLdtX1gGB64FMepLlslIfWRntJPzf4wVMy/DQJFH
-	MGz9UqxYiwHQsNYLaOe/PGUFfMqwkdAuS9s2QZ/vFo5U4ioWka/M29CswS58KObz
-	BD6hxrvC/SfKEcMM+qMBaRNDbjuHvOMashrogeXMaZDCNKUvnOTOIAVvlKR6/RWJ
-	cFYYeHHZzHjgahBddRPsr/6DKxhZVX7XYcoGRQFv50BqfclXuw7fAUa2H/wvOOgi
-	md9NcLWnDtYe/JQarI4KWxftFro+/mVXGyuqyy7UTlojA==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4g6m1k054t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Aug 2026 03:54:10 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Fri, 21 Aug 2026 03:54:09 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Fri, 21 Aug 2026 03:54:09 -0700
-Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with SMTP id 62EC33F7091;
-	Fri, 21 Aug 2026 03:54:05 -0700 (PDT)
-Date: Fri, 21 Aug 2026 16:24:04 +0530
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <pabeni@redhat.com>, <sumang@marvell.com>
-CC: <andrew+netdev@lunn.ch>, <ast@kernel.org>, <daniel@iogearbox.net>,
-        <davem@davemloft.net>, <edumazet@google.com>, <hawk@kernel.org>,
-        <john.fastabend@gmail.com>, <kuba@kernel.org>, <sdf@fomichev.me>,
-        <sgoutham@marvell.com>, Geetha sowjanya <gakula@marvell.com>
-Subject: Re: [PATCH net] octeontx2-pf: fix NULL deref of af_xdp_zc_qidx on
- rep setup
-Message-ID: <aoguTKQIJa6IZ5r4@rkannoth-OptiPlex-7090>
-References: <20260820090533.2681578-1-rkannoth@marvell.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OPLlhxMu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD0D01F000E9;
+	Fri, 21 Aug 2026 10:54:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787309687;
+	bh=PgY1M31eUBna9lj2b3bxg1PT8jUYs9RMaq/pBozhfFo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=OPLlhxMuijwp1cpaegIpHgaDEYqSlPEXLfZeN11vQaKUhms/r5LmyldSO7pCLrmVS
+	 ue+KfDTc0/yBxcBxztTS4g8WiV4mdpI2aE6MYqcnYzAkEjfSIjVnUXMF8qiBmCrwo+
+	 xSbikCEK4FTzg4rJWAwKe6PXM5/9ni7AOC1rqIvWIDt7WV9XA833Hoe/PUwQumKOgQ
+	 qFOAiwSdF5BCbWFPQwJe7lc3JPb0NAn89tVFq8G+9Gab7zgiiABqHbPzEEzWpsy4V4
+	 x2W7B17UYSrqGOfryBJj6wfe7bekhkGHJMXvadaZ+NlkpmXJsakU92hIlS8qKupigd
+	 2BPmkWnXkRMzA==
+Date: Fri, 21 Aug 2026 11:54:42 +0100
+From: Simon Horman <horms@kernel.org>
+To: Shiji Yang <yangshiji66@outlook.com>
+Cc: netdev@vger.kernel.org, Rex Lu <rex.lu@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH] net: ethernet: mtk_wed: increase WED v2 WDMA RESV_BUFF
+ to 0x80
+Message-ID: <20260821105442.GI265046@horms.kernel.org>
+References: <OSZPR01MB779537889255E2F606E47EABBCA52@OSZPR01MB7795.jpnprd01.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260820090533.2681578-1-rkannoth@marvell.com>
-X-Authority-Analysis: v=2.4 cv=UbVhjqSN c=1 sm=1 tr=0 ts=6a882e52 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8
- a=mZbQywTzfupek0yPt5kA:9 a=CjuIK1q_8ugA:10 a=ZXulRonScM0A:10
- a=OBjm3rFKGHvpk9ecZwUJ:22 a=Oh551-UHZqmTy8JkqTUo:22
-X-Proofpoint-GUID: a-v89ckQhUU12DwPlBNPqYOLChLzFIEy
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODIxMDA4MSBTYWx0ZWRfXyHAXS5idqWyA
- yj7D7kxkDs6YDpNASi6fGpgNVt2z/p8lO2jhprbHmZZCy7DecXJ3tqJk92rxNh0zk4OajKhvoTo
- 5XF0ois7PEfKOhWT7Ujzz60x5rJgxiB0eXXwycpIPAj59vsvIhzK64y/KKTvrOVDIxNoebLCOr1
- kBMbca9PUVPXmJSPWsp3ZJ7Py/5AowZ/C4XCH3MCjlYxbI/170pf+QLvjxDPIXeCoEClkldXHWU
- HAPVze7sXrztewe98UdB7CSYwFgYWdayL+SB0Lk5s+Mg0uMOfeI91CApm3xzc5MOoQj40v9imSr
- KrMTZnRvfPv+yakbuGyDOgTYA4np9QHfyBUP/2GATachpANKcCNNJIaWRWdHyI51VMMU+dJQe6I
- epU4HLK3ogLgkHTZhPlu22v4E5ERmDPU9wMTjMdUuQWlcFhl70qQ2zHCdHOk+XIRgyoGg2k0Cgi
- wLG3bb2ygW8J2ve00Rg==
-X-Proofpoint-ORIG-GUID: a-v89ckQhUU12DwPlBNPqYOLChLzFIEy
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODIxMDA4MSBTYWx0ZWRfX/LKMFe7XZlly
- dQkVqyf03HFZahlRzRr7P/zJyfrz0wyJevq4/xu9IEfWNdXcPCkKi8SkTeEvkrKYhqv41NBip7e
- 1WbRXevXbMv+v2cpxH5KGfBHRRC7r54=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-21_03,2026-08-21_01,2025-10-01_01
+In-Reply-To: <OSZPR01MB779537889255E2F606E47EABBCA52@OSZPR01MB7795.jpnprd01.prod.outlook.com>
 
-On 2026-08-20 at 14:35:33, Ratheesh Kannoth (rkannoth@marvell.com) wrote:
-> From: Suman Ghosh <sumang@marvell.com>
->
-> af_xdp_zc_qidx tracks receive queues using AF_XDP zero-copy and is
-> allocated during PF/VF probe. Representors and other non-AF_XDP paths
-> leave the pointer NULL, but several call sites used test_bit() on it
-> unconditionally.
->
-> Switching to devlink eswitch mode creates representors and runs
-> otx2_init_hw_resources(), which reaches otx2_pool_aq_init() and oopses
-> when dereferencing the NULL bitmap. Add NULL checks before every
-> af_xdp_zc_qidx test_bit() use in the RSS, ethtool, XSK, and pool init
-> paths.
->
-> Fixes: efabce290151 ("octeontx2-pf: AF_XDP zero copy receive support")
-> Signed-off-by: Suman Ghosh <sumang@marvell.com>
-> Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+On Wed, Aug 19, 2026 at 09:07:07PM +0800, Shiji Yang wrote:
+> Change WDMA RESV_BUFF from 0x40 to 0x80 to avoid CDM TX FIFO overflow.
+> Without this patch mt7986 and mt7981 may have WDMA TX hang issue. This
+> patch was pulled from mtk-openwrt-feeds GPL open source project.
+> 
+> Link: https://github.com/mediatek/mtk-openwrt-feeds/commit/07c87502e854b68b48544d101b6fe17ec059b97b
+> Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
 
-Will address sashiko comments in v2
+As a bug fix for code present in the net tree, this should
 
-pw-bot: changes-requested
+1. Be targeted at the net tree
+
+   Subject: [PATCH net] ...
+
+2. Be CCed to stable
+
+3. Have a fixes tag. Perhaps this one?
+
+   Fixes: cf26df8833cc ("net: ethernet: mtk_eth_wed: add mtk_wed_configure_irq and mtk_wed_dma_{enable/disable}")
+
+I'm unsure if the maintainers would like a repost because of this.
+But at any rate, please keep it in mind for the future.
+
+More information on the netdev development processes can be found here:
+https://docs.kernel.org/process/maintainer-netdev.html
+
+The above not withstanding, this looks good to me.
+
+Reviewed-by: Simon Horman <horms@kernel.org>
