@@ -1,64 +1,77 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4BF38399E;
-	Fri, 21 Aug 2026 05:55:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46C9383312
+	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 05:57:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787291707; cv=none; b=jcYgfpLroAf3vNoc97+Xgru0ghiKt9JHuQ+3SUFqAYsjBooXa+0caFltbjnQ54WWjZ1aYYSvWUrqSsqSUQ6hbtFbD+ExcY7p9/WerV5XX4VTs+HOCHO9s+Fe9rXvaHMcPkalGqjdTB03NqKBehN18IBsNUaB3Uw4GRBCAvQYB5M=
+	t=1787291868; cv=none; b=DKmYqRvGRhXUacUTBiE3EDmDY8UeGDYOt1Fnex2Gyar/1bpjDg6T30nIWKNJXYY6HhcT/WUHtBe1FmUf97UkxHrKfcGIViS1QajgO/E4z6IoNqxhcC4whFNG/2ec+ftHxgF2mJ3PvKJW8cEY/dOArLx84JfJfJ6SgJrjcWpNc30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787291707; c=relaxed/simple;
-	bh=+80evn1FmyOQJoH2c/YgqrkQaOcsU397yIL1IyjGbxw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CDnLUC0gJEFdqU2fQMzM39c1NajuUX1pgixFpSna96rcJiMh0DPy0slTkopaIEIQhwu7FpwIeqzRCA3ZaJDlAXOtGtXSkjH6mBNEc7q+L44YyQaYpZc38XruQRSchRQBgfRRw9HIWrfY3s8QjVRy5F4PRyw2DTTMXqVm5fMtS8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=Fp5Jpbji; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1787291868; c=relaxed/simple;
+	bh=VegC6J9gni9wLSQrbDq1hZYsQqCQiWAPBDqy/WYEg0M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e61V2QRMeKPLplOouYQ/YxqtLDNXH0V3P8BNqmkyE08HODwlMDAwDqnYXz5UAhefeEGnav/mj7YRL+9kRsqW5JUBXBjtODpyhGEgZlG9kaG5tmRUJrA+4l8KFiHu69ySUIVyOaKmEixBd752wsFg7GT2XHyP870lEdw8s1gcdOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G/RIhTyc; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="Fp5Jpbji"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67L5WEJo3794732;
-	Thu, 20 Aug 2026 22:54:53 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=4tCcaWn1kVbKCxqClph9/fp
-	eB0HQCekLshW8SgwMgl8=; b=Fp5JpbjiecLyhBpoGHtD+7LAVjPlM7ydPaqlmUK
-	6Ro1S/v+HybRFuFjzyU1zP4e5n4KaKGatRRFtcLsODu87zUQVAXFqZytRqGAojgM
-	MCgKQSX9ghm7NmMuxcrwkoSpsDX4qgdFc6vdnBQL5BWdT2wlcgwT99GyBUPcQwuf
-	MQR1MtRG+4Xw90mNarWpPcW2dEhzKEqusIKG0oty+G5bJOuTgrHZXcqfLIvy9a+B
-	U/Jx3D37W+7V4YQkoiQ6DeTRVaX+XBnKA7N6ni8LorwaSxCqx0xYM7MXk+5l1NHK
-	pIPZRiT2k/S7F7Vb8fcN/r3m6q7Y7wFIzov7rIQ4PJGQ2JQ==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4g6ccdrmx7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 20 Aug 2026 22:54:53 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 20 Aug 2026 22:54:52 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Thu, 20 Aug 2026 22:54:52 -0700
-Received: from kernel-ep2.caveonetworks.com (unknown [10.29.36.53])
-	by maili.marvell.com (Postfix) with ESMTP id 33B5D3F7090;
-	Thu, 20 Aug 2026 22:54:47 -0700 (PDT)
-From: <nshettyj@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Naveen Mamindlapalli <naveenm@marvell.com>,
-        Nitin Shetty J
-	<nshettyj@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        "Ratheesh
- Kannoth" <rkannoth@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net] octeontx2-af: Fix TL3/TL2 link config ENA clearing
-Date: Fri, 21 Aug 2026 11:24:45 +0530
-Message-ID: <20260821055445.2517568-1-nshettyj@marvell.com>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G/RIhTyc"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38e58034d05so471481a91.2
+        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 22:57:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787291867; x=1787896667; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=p4zubKJfP4d5jonGYtKrpPAyp+ZFeoBJ9/vh3Z7kgRY=;
+        b=G/RIhTycuaI5NaQuj3io/qYgL2Q+GnpVaHW0tVVhEwm/ZqtVTG4CFjYsw0YhxpkPVW
+         Ny/Hkr/jnXnbq4el/mFKU7M0YNl5THx0ItqA9xSUjP1O2fwkm2oChWlszNzyXfM6xIX1
+         cVl84mJC8rLoOEaFIpmPGGmkoXhJvDWd9NNwm83u8DY3V8icKZVfkQSnFzGTkmDt+Vuf
+         7GA0h1msG/KIAp5Pe1TNyjYIF52qWMRhmfD79r4jTR+5CAtjOlhURaFThhSY5QmzbX1G
+         nDO7g+jJ8Zg1sb6uUpYMnfEm0L2L/+EmnwbqUBhgSGSY+Za67jkd2bRjLZQtZYmJfeWd
+         UEZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787291867; x=1787896667;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=p4zubKJfP4d5jonGYtKrpPAyp+ZFeoBJ9/vh3Z7kgRY=;
+        b=SOkMOW01ahc5VnSLjyoVeZEMq8fGQKl7TZPugqYAUinarQfnCmJRF+AEV5ciOCEtgd
+         x54StiSCF11rZN6rRo+ZYMXmaFpXQM/Wpg/uwRivAVPRcG3yqtBwOGm+33kkE7EzGs9R
+         kOwtBV41QO12SjKlKXu4+px3MAiT+Fydj4gaR+i3iSiUPQYmDf9KlZT4lGhYXRvUFln9
+         VgwnBiIAdpP5iv49gBoFSF9tS9sVf4b9DgjiBFSo/1Z41NXErZjUQuP+ZkisV7xUaZbq
+         TKDwOpph6SO72CMgk7S5uZp4SIJAP0zkzezTn8cIEGedNgLCP4sEkZDuyCiLmCdngt7x
+         8BUg==
+X-Gm-Message-State: AFuF++lK3AZIn2nfl4mRy9yNmMbrws2qb9GQzD0iCMZMg09o/2OO59+1
+	5wmcE3YtDA4zA3lKhqWlleCSZLD7nZIRsWsBxp5ySp8qyAwzKWA1nDq4
+X-Gm-Gg: AR+sD13ZoHb7U9m7zQv80+NTQBVesszfUxv0TKe1a6273uEIxNUBMfnKQckUNlzkRdq
+	USdZWgiwnP9KkflhCvdEpCttKiyQagKD87rLaMdbZOY5nlAj6+lEVQ2iCsdlfWNLyij1M+2h1oC
+	fJYkEu/iLkiOKb07oI5Dor2z1cjxmUGKYWq9Y0f2hG+8LgIAyHDQflycm6dfnY+82QSsZGlUVX2
+	srUfkIr164ihyL2FKuwNQ2F2nUwHbOF5MMt5DJvA7LLtGSn9yhfXXsaHVsfkXEXRErhdQzc574V
+	0UyEzyEwGjiCGkwVCI7XV29Merdcl0dAHwIFjP+OR5aOx7Seimo/UNWNnVs0X19z82WExGoisui
+	QPZOq9JF8JCGQhzwAmQMTjCMTJMTgNwAx6+eeQN1nIMeFoYT35yH6FtxfIOVEjAAe8xIhhP9cm6
+	SianiL6/Lu636rc6K62rdyAom+nG5fV1qo3X1IeA4cbBO4Qwg5m0dAwIJmhV92xqfYDqCDRUBrp
+	01LjIJjUQLyv+gX3/iyhcoL+XlXFQD+Yxes6sdvvFKDqZ4=
+X-Received: by 2002:a17:90b:6cb:b0:366:3517:1aa2 with SMTP id 98e67ed59e1d1-395c2f13243mr8189537a91.0.1787291867058;
+        Thu, 20 Aug 2026 22:57:47 -0700 (PDT)
+Received: from DESKTOP-8BCFI4I ([202.12.123.126])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1416ad3dd15sm20391581c88.2.2026.08.20.22.57.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Aug 2026 22:57:46 -0700 (PDT)
+From: Md Rabbani <rabbanyhmm@gmail.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	Md Rabbani <rabbanyhmm@gmail.com>
+Subject: [PATCH] net: stmmac: fix device node reference leaks in stmmac_mtl_setup()
+Date: Fri, 21 Aug 2026 11:57:18 +0600
+Message-ID: <20260821055718.57-1-rabbanyhmm@gmail.com>
+X-Mailer: git-send-email 2.55.0.windows.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,91 +79,64 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: yyfKs5s-BamJqj4MZRbMFeghyDizH-CP
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODIxMDAzOSBTYWx0ZWRfX4LzxLyOnem3e
- TLWG4Lo9UmLznTvlGvTmOi7pTaNYoignc4Rj96Pr0M7CQwWjuyAcLUsgDiqA09d9Srf9J943ATQ
- 5r/O/DzuNB3TwTs+hgYNZsv3ZQ7l2K9TDqt+ACppsiAtApuLYfhUrVfAtd9t9uEg9Teaf4AK5sY
- V6eWH7DIUuAcrNji81YLnWeKJKhtUbPObwJ6Dv8jmctHe9BNwtb7F+RqBOLqHuMhH0LYoNGaHXR
- E3oFzvNhTlWDOMtPnosphl1stWwTLe9rlTQHo/UNQ9aAt1YPSI5rBTMlOuM7gV2meifxGWzqPdK
- v9nzaso8OurewcdFOAwxjtcgp6eW1RMBua4twhmkuundA6LRZOQnIfv5w1u/7K+JNuKlp+Uwv3A
- 88Qt6apLxHlWLrs1X0mSJysW2fjVsY0yiXLKQc2ri0w+rbISuYHlvKTGhUDNwmRVjvpvB1c5FZb
- ig1hXY7Lkx11H8eqsew==
-X-Proofpoint-ORIG-GUID: yyfKs5s-BamJqj4MZRbMFeghyDizH-CP
-X-Authority-Analysis: v=2.4 cv=Nu7htcdJ c=1 sm=1 tr=0 ts=6a87e82d cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=EAYMVhzMl8SCOHhVQcBL:22 a=M5GUcnROAAAA:8 a=XNy1rerU-O3ekx9n268A:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODIxMDAzOSBTYWx0ZWRfX/QbIJeZoCDHg
- W2jSf193EFfQJ6MCW2kUcOMOFZEDNrqx2Hs4jM01/nRoe68yvbXEbaWlVpXc1phGBCJGEUdL4Jc
- vIboJvWJHgJAufY6/Nm1Hn/3SIqQCJo=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-21_02,2026-08-20_02,2025-10-01_01
 
-From: Naveen Mamindlapalli <naveenm@marvell.com>
+In stmmac_mtl_setup(), q_node is shared across the RX and TX queue
+parsing loops. When the RX queue loop breaks early because the number
+of parsed queues reaches plat->rx_queues_to_use, q_node retains an
+acquired reference count. If the error check passes
+(queue == plat->rx_queues_to_use), execution proceeds directly to the
+TX queue loop, where of_get_next_child() immediately overwrites q_node
+with the first TX child, permanently leaking the retained RX child
+device node reference.
 
-Clear and restore the ENA bit for each TL3/TL2 link entry during
-SMQ flush instead of repeatedly using the same link index.
+Switch both loops to for_each_child_of_node_scoped() so child node
+references are automatically dropped upon loop exit or early break,
+and remove the now-unnecessary function-scoped q_node variable and
+its manual of_node_put() at the exit label.
 
-Fixes: 019aba04f08c ("octeontx2-af: Modify SMQ flush sequence to drop packets")
-Signed-off-by: Nitin Shetty J <nshettyj@marvell.com>
-Signed-off-by: Naveen Mamindlapalli <naveenm@marvell.com>
+Signed-off-by: Md Rabbani <rabbanyhmm@gmail.com>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index 964bcaae098e..7f100bdf23a4 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -2483,7 +2483,7 @@ static int nix_smq_flush(struct rvu *rvu, int blkaddr,
- 	int pf = rvu_get_pf(rvu->pdev, pcifunc);
- 	u8 cgx_id = 0, lmac_id = 0;
- 	u16 tl2_tl3_link_schq;
--	u8 link, link_level;
-+	u8 link_level;
- 	u64 cfg, bmap = 0;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+index dc5f951a31..6128ed1bd5 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -130,7 +130,6 @@ static struct stmmac_axi *stmmac_axi_setup(struct platform_device *pdev)
+ static int stmmac_mtl_setup(struct platform_device *pdev,
+ 			    struct plat_stmmacenet_data *plat)
+ {
+-	struct device_node *q_node;
+ 	struct device_node *rx_node;
+ 	struct device_node *tx_node;
+ 	u8 queue = 0;
+@@ -169,7 +168,7 @@ static int stmmac_mtl_setup(struct platform_device *pdev,
+ 		plat->rx_sched_algorithm = MTL_RX_ALGORITHM_SP;
  
- 	if (!is_rvu_otx2(rvu)) {
-@@ -2516,7 +2516,6 @@ static int nix_smq_flush(struct rvu *rvu, int blkaddr,
- 	link_level = rvu_read64(rvu, blkaddr, NIX_AF_PSE_CHANNEL_LEVEL) & 0x01 ?
- 			NIX_TXSCH_LVL_TL3 : NIX_TXSCH_LVL_TL2;
- 	tl2_tl3_link_schq = smq_flush_ctx->smq_tree_ctx[link_level].schq;
--	link = smq_flush_ctx->smq_tree_ctx[NIX_TXSCH_LVL_TL1].schq;
+ 	/* Processing individual RX queue config */
+-	for_each_child_of_node(rx_node, q_node) {
++	for_each_child_of_node_scoped(rx_node, q_node) {
+ 		if (queue >= plat->rx_queues_to_use)
+ 			break;
  
- 	/* SMQ set enqueue xoff */
- 	cfg = rvu_read64(rvu, blkaddr, NIX_AF_SMQX_CFG(smq));
-@@ -2526,13 +2525,13 @@ static int nix_smq_flush(struct rvu *rvu, int blkaddr,
- 	/* Clear all NIX_AF_TL3_TL2_LINK_CFG[ENA] for the TL3/TL2 queue */
- 	for (i = 0; i < (rvu->hw->cgx_links + rvu->hw->lbk_links); i++) {
- 		cfg = rvu_read64(rvu, blkaddr,
--				 NIX_AF_TL3_TL2X_LINKX_CFG(tl2_tl3_link_schq, link));
-+				 NIX_AF_TL3_TL2X_LINKX_CFG(tl2_tl3_link_schq, i));
- 		if (!(cfg & BIT_ULL(12)))
- 			continue;
- 		bmap |= BIT_ULL(i);
- 		cfg &= ~BIT_ULL(12);
- 		rvu_write64(rvu, blkaddr,
--			    NIX_AF_TL3_TL2X_LINKX_CFG(tl2_tl3_link_schq, link), cfg);
-+			    NIX_AF_TL3_TL2X_LINKX_CFG(tl2_tl3_link_schq, i), cfg);
- 	}
+@@ -227,7 +226,7 @@ static int stmmac_mtl_setup(struct platform_device *pdev,
+ 	queue = 0;
  
- 	/* Do SMQ flush and set enqueue xoff */
-@@ -2553,10 +2552,10 @@ static int nix_smq_flush(struct rvu *rvu, int blkaddr,
- 		if (!(bmap & BIT_ULL(i)))
- 			continue;
- 		cfg = rvu_read64(rvu, blkaddr,
--				 NIX_AF_TL3_TL2X_LINKX_CFG(tl2_tl3_link_schq, link));
-+				 NIX_AF_TL3_TL2X_LINKX_CFG(tl2_tl3_link_schq, i));
- 		cfg |= BIT_ULL(12);
- 		rvu_write64(rvu, blkaddr,
--			    NIX_AF_TL3_TL2X_LINKX_CFG(tl2_tl3_link_schq, link), cfg);
-+			    NIX_AF_TL3_TL2X_LINKX_CFG(tl2_tl3_link_schq, i), cfg);
- 	}
+ 	/* Processing individual TX queue config */
+-	for_each_child_of_node(tx_node, q_node) {
++	for_each_child_of_node_scoped(tx_node, q_node) {
+ 		if (queue >= plat->tx_queues_to_use)
+ 			break;
  
- 	/* clear XOFF on TL2s */
+@@ -276,7 +275,6 @@ static int stmmac_mtl_setup(struct platform_device *pdev,
+ out:
+ 	of_node_put(rx_node);
+ 	of_node_put(tx_node);
+-	of_node_put(q_node);
+ 
+ 	return ret;
+ }
 -- 
-2.48.1
+2.55.0.windows.3
 
