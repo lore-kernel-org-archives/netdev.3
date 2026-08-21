@@ -1,233 +1,217 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8EC9478E47;
-	Fri, 21 Aug 2026 10:32:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787308339; cv=fail; b=Ofl1ZVUNNlsBwXs9CL/ebQI6z7Pa5SohIbHp7lSO5u/6mH/p9wI6F5+Qu6YHR4vl4QKbKNZm0fYmR8dstH1gYNQC9M0L6ZWjRygtayChHtea/ZMIAmsRxVtYVFkqjy9R+feCK23JcdQuKQ5RG3rTxnM2WqvC/w676lXJgk8iHrw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787308339; c=relaxed/simple;
-	bh=kmJGQE7E/wdVOT/+t0iDSz2wFDoQPXn5dcohef0pHuk=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=HyrW4dLYp1a99WjiDF2MB2y2jPXcW2Xv70KhIP+E6ORCvFu2j3m54M1zSj4rd8l5cQt8hw48Zzju70bV9whdzRJIi376+bvtKJvJSgGeIcIaFdM48UVyvnoDtDjRZVVuQ2bd2Yvggvtkuy1G52mTs8zKBnwvBpHGQ5dH8mea558=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LUqJQylC; arc=fail smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525C2393DF0
+	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 10:33:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787308396; cv=none; b=Sk7Bk8ZCtVfl/gWgPGnPlKK+kjKOp/TZOY/F4Q5+Tmpjt2OHV27UAMA1kQf2ruSOmfn9GMbms24kx2DNiVqQfQ3AwLp7eGUg3tbEhb4gzFz9oNtEPjlRsKGcjqcBYLZPrWjnwFK6HpYN1JiYCQRr1KV7DnFQS2EzoRVRfQ2k9XU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787308396; c=relaxed/simple;
+	bh=P9LNGp4ErkxhdCsTUyDwbamdFttHanhpRzoX604x2UI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PGet9+ZRRqGZHUxrenGQKmwVh+NKUYMNXVtpaHxS1Gc55kB/XXNrQGX+7zqByylY8hXj9HgwdOdfQ8QgKafJrMe7cchYSETrgig9e2KWl2Ic77x47yZWcdwDnYIndXicNz5W2jRjXQPdIv4V8p/XQ/7HVuKgbhDxYFqap0pJIio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ch9M24/g; arc=none smtp.client-ip=209.85.128.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LUqJQylC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787308333; x=1818844333;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=kmJGQE7E/wdVOT/+t0iDSz2wFDoQPXn5dcohef0pHuk=;
-  b=LUqJQylCtIgxRWtZ3vSpK/GvBHUQK5Amg51VK/F2J1MNIfFD2dUXzu0O
-   FBn8cq55xMYejn+kBTgi669ZVwgIZiVqcWn7I8WM7IlIcIzpx6btdSM+4
-   g1i9kpaRaOAkFYgBFEwGblTvUVvI/FLHVmHTIPr+y47KqRz/Icb7ESYZj
-   eEFe9SkT9crwD/R9loL43OlxW/dSbu+YRMY7q3V4hvnksTpRTX9BZDz+n
-   bmGeNuzZNrdwN9DU7JeyxoFYG76FQ9oaVF2lgHQKvIldlJyt8jRnVnvBQ
-   KBftCNuyaAyplzJaFIJV2/yADUJ/3GyUOBbq99aKsySwiiV2sZvnYDtlc
-   w==;
-X-CSE-ConnectionGUID: JAWJmCvgRUKp2UivkPTAcQ==
-X-CSE-MsgGUID: GQWmDCUxTTmZ2sYsR0BASA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="87874898"
-X-IronPort-AV: E=Sophos;i="6.25,234,1779174000"; 
-   d="scan'208";a="87874898"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 03:32:06 -0700
-X-CSE-ConnectionGUID: rZQWCpZQSZGHGKKmDm+7fA==
-X-CSE-MsgGUID: HjGYWxbfQq+6HP6bQ8SPdA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,234,1779174000"; 
-   d="scan'208";a="266374294"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 03:32:05 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 21 Aug 2026 03:32:04 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Fri, 21 Aug 2026 03:32:04 -0700
-Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.39) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 21 Aug 2026 03:32:03 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=op8V68Scf9phuRzLRs3TKE0ZFqWhwP5GBEuxCaB+fIJ3NMOP3RFlka5N5/hKyOe8gfQbg7QWjtWGlebzhZ4iWwAEYeqVs7jB0LgE7pDRmJxgiJb6P66LAo06gqj6RB7ojDHE0b4g+ZTU6wpZmQMuInr7lY5oNWghkVUwCy1JZPqGloerXDEtWt0G43Um6fQuwE1HUyLpe5gsdL3KY78W43j1Zvj1V0eH0RhRl1EZiM/jaxaOnlyQ5X1SZXk/vVvp6kCGUwhMDNrqi4VhNc9ZX/B6yNOJ2J4fUhWIXcrPP1cZAtWY4FXNgcds0w0P6/vZHEmTiNbG2WumcFm3JygVgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YUc8cUpKMiwfQZiHw3aNiFIwFwgzdQU/CWaB+eB2FC4=;
- b=p0Fg5HX+7MptP09SuAQkEwdW1oXWe38rKDcsoTqJpHyEWv0xaTir+mJGGOjZmFiHmPh1R7StAw+J4B/lyk0aFjOlWQpWQa11DUHSJDRytfdZGC4UrcsXG0N6BXq6pEdbnXlhZK35XddZlLg62VN5FImstFVzKauyCOXp8BRYo6LHDQeTARjiEX134IsaA9nPHRrf9aW3GblPl0KsrDMwAdAb6P1ec9OZHg/Tt9VYvjPIP3C9Z+qx89Tq9fC2RVOWlGIhMVSTsmQ6fnkCXbe3NpaQ8AFE9C25/WcffwXh6D1B8vc7heYVTlS3FYJB1MI0lnIvzpBL36NG0PXCBCtbKw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM4PR11MB6117.namprd11.prod.outlook.com (2603:10b6:8:b3::19) by
- IA1PR11MB7870.namprd11.prod.outlook.com (2603:10b6:208:3f8::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.11; Fri, 21 Aug
- 2026 10:32:00 +0000
-Received: from DM4PR11MB6117.namprd11.prod.outlook.com
- ([fe80::d9b3:e942:2686:3cdd]) by DM4PR11MB6117.namprd11.prod.outlook.com
- ([fe80::d9b3:e942:2686:3cdd%6]) with mapi id 15.21.0339.010; Fri, 21 Aug 2026
- 10:32:00 +0000
-Date: Fri, 21 Aug 2026 12:31:42 +0200
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-CC: <netdev@vger.kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <anthony.l.nguyen@intel.com>,
-	<przemyslaw.kitszel@intel.com>, <andrew+netdev@lunn.ch>, <saeedm@nvidia.com>,
-	<tariqt@nvidia.com>, <mbloch@nvidia.com>, <maxime.chevallier@bootlin.com>,
-	<mcoquelin.stm32@gmail.com>, <alexandre.torgue@foss.st.com>,
-	<aleksander.lobakin@intel.com>, <horms@kernel.org>,
-	<magnus.karlsson@intel.com>, <sdf@fomichev.me>, <ast@kernel.org>,
-	<daniel@iogearbox.net>, <hawk@kernel.org>, <john.fastabend@gmail.com>,
-	<guoren@kernel.org>, <dtatulea@nvidia.com>, <witu@nvidia.com>,
-	<martin.lau@kernel.org>, <yoong.siang.song@intel.com>,
-	<intel-wired-lan@lists.osuosl.org>, <linux-kernel@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
-	<linux-arm-kernel@lists.infradead.org>, <bpf@vger.kernel.org>,
-	<linux-csky@vger.kernel.org>, <leon@kernel.org>
-Subject: Re: [PATCH net v3 3/3] net: stmmac: document oversized AF_XDP frame
- handling
-Message-ID: <aogpDsa8hz6CPpD3@boxer>
-References: <20260819160535.1472459-1-sdf@fomichev.me>
- <20260819160535.1472459-4-sdf@fomichev.me>
- <aoceSoSFMx69Z9up@boxer>
- <aoeoJ6-njBxcWs4w@devvm7509.cco0.facebook.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <aoeoJ6-njBxcWs4w@devvm7509.cco0.facebook.com>
-X-ClientProxiedBy: TL2P290CA0029.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:3::19) To DM4PR11MB6117.namprd11.prod.outlook.com
- (2603:10b6:8:b3::19)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ch9M24/g"
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-8111c0c7561so12968707b3.3
+        for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 03:33:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787308384; x=1787913184; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZJG1RQ6i/ZR/FqUkuEQhANL+pwQMNfsxmBOMfyZT2Bc=;
+        b=ch9M24/g25CCliIkmjJU1zZvAaiepCNyvJDX7DjUfftSa7xDAQHzpD4yVv+aroD8EY
+         CVm8RBrbiynN2MlY+nYHSVHWNdcth4ZZQ2CoscYG09EdbBmlWix07xMh841xq8mS0hVt
+         NChOP3lfxJWOl7T9qlsaWC1xY8jz8R9ZuKcesOsGt6JZcXbv00PMQPJZx863lZN5/r7M
+         u+nqy7CptpLHhGzn00UCIzHQIIjf1mbS3UfsaVICpHhNw/xKmDfatpYwVe4ktzlN1PFO
+         VN+Qxz+X5FecILHdu2lybAPOgkycrGbdSX5dQBAqxFMOjF5fnU76+0ojOkfEMURFtkn4
+         ikFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787308384; x=1787913184;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ZJG1RQ6i/ZR/FqUkuEQhANL+pwQMNfsxmBOMfyZT2Bc=;
+        b=Q9BX96atj2n97r4dR6hr5q2BR2Cdji4K3GWSmMVvgxixJsCGI1HJRsI4yL46DPe4FA
+         nhs6uzRLc8hnnePtanxEyI0UtjMQ1TTRKnaGa2d8+uNlOs5xYuvKbCtvZi9lhfacYJsR
+         RMlgEUkYJadj0XURSA5K3GNOwlGoV29doUhFKoQ/ijYgeUCUq6cb/b9jaHH36JMe80dt
+         BoVK7fcT/zMy1ttcr8A1Jf0WhRZB882DkKTL+TpZlhMGtKiYVRbT3aj8nPbq3aB2Oo+D
+         vbCrC2pMYBLShXRGqMY94tJ1NsnViZ2OmQnQtawJK4IcJwyE6w3SxqZntBrCps5IMnkg
+         RquQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoItk8pt52y7RF4JWTsEXlM33GZwpzmn5zrOTCc3Pj/11+HrFHri2lB02Cn1E/SvROvHAtsCLc=@vger.kernel.org
+X-Gm-Message-State: AFuF++kQecpxDAwPdDzLsKWfEA/bXfjKKEi6NyRahqeUpPLTpyI2rWD1
+	B/mKrLlcJjwjqSWZ+gnOYGFR5bpTC4n3EhJIhuqYDGqiDertRNogGy3N
+X-Gm-Gg: AR+sD13dTYKVFQRjyyclVrsVJ9XyoKO1Wn5/CixEEoedrnUBSGCztp1wCLZFiUSwop7
+	ypo73VNY9hbvrLzSsN30ZdvNLTFRKQGyGE7nao/8TIckrf0jUebeOD6xQ1U++pFCWB7jSBEhZfS
+	nT3FGZSpeY0NHnlDLO5pBUo++Mt895bIAgzydE0bBtzGim1SKfae8y8IX7q7pmzEGojGfFpu2yx
+	FPoese6vjlLN3RA4WT4dGQLTR5Odw2D0Y5fAbQfF2SzyM4X/qN6r+Y7BNgBZmZ42B0031X0R4nR
+	G3usi7os5p2U4cBOAmuH4ATnv1Ha3AdBJ6beCeXqz8BHlScXv5xTckN7ngHZdFfmx0hL6XxJTj/
+	oxYcW/bkrUnR+fXu+QhmnMaewMIl0TLVkZE3cSpHWTChRrdnWjRqZ8RG5ekVNrues0HbGESl9Kw
+	rn/GSYa1mV5gphlw/hAis3xaZwrUNcVtrkywAvvmRUI+1BdTjrmRDguXhkiMtPv4P/odViHLdkq
+	3MP
+X-Received: by 2002:a05:690c:e68d:10b0:81e:eb11:6e5f with SMTP id 00721157ae682-849f6c946edmr17102527b3.34.1787308383954;
+        Fri, 21 Aug 2026 03:33:03 -0700 (PDT)
+Received: from jdoh-CompSec.. ([141.223.124.60])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-84512c408a3sm37632227b3.18.2026.08.21.03.32.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Aug 2026 03:33:03 -0700 (PDT)
+From: Junwoong Doh <jdoh.kernel@gmail.com>
+To: David Heidelberg <david@ixit.cz>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	oe-linux-nfc@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Junwoong Doh <jdoh.kernel@gmail.com>
+Subject: [PATCH net v2] nfc: llcp: fix NULL pointer dereference race in nfc_llcp_send_ui_frame()
+Date: Fri, 21 Aug 2026 19:32:44 +0900
+Message-Id: <20260821103244.72313-1-jdoh.kernel@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB6117:EE_|IA1PR11MB7870:EE_
-X-MS-Office365-Filtering-Correlation-Id: b56b599a-8cb8-43b5-7a30-08deff6f6ecf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|23010399003|7416014|1800799024|366016|6133799003|56012099006|10067099003|11063799006|4143699003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: 1FJfcUSEd8RjSLBi+aOZcVH6THiwW8cD6mMD/kmwjFLlWIb4YWpICPqXu/IHGD2VDv4C8Lj9mxYODTobveJlILb65D+CSg9RlW1p8IQwHkVY/1dU0Xh046ePYS6moN6+BGmhCUrEC+CsRKgO8mQWTcOKXd6EpE8F6Dj6Qrni6tAzNtBKhIEU+rK260uFcYTDj/8VxHn2fGPtI2dndOkBTWLUt0CkV2/oEYaqBHj/isP98Ng//TwZMEkaiYXJOdpJr8Lew3W+ZGanNjrdmcZr5rG1LRAtR4rrg1Yf8zd62RT+XeUoK7sidho3tGqV3XlbybnfvmKIuUfbkHLOqx/bjTYcwKcUZUGg/UTTcN8AvfqwKjpC+1k3XTBDR3NgJkeq2n7PQuGdzFQCz6/xSCFtPlb7qjP6L3p1COmxOnLO6JnNjJlbYe0m23yIq+r5DzXG5MuXUvbtYaF1E42Q3EsisRrZOuZFu0i1/X5aHtwzD9vLMTqz7kllkUiN3urdGQ1mpA5PDy/phiYC471OtydhOpP4fZFv8BetqHKnCWRN7itLLkqRKFhxtigSi39szYpG46IWbuQ0IDX6SCxUzhfW0z+ghG4guYGZUEpotf1vEOTqUqXM3LQ1Ell/tLra+RaErtt2dMhfemXZ+TIXRrfE05CbD0LnJarTnEQgoLMMC6I=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6117.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(7416014)(1800799024)(366016)(6133799003)(56012099006)(10067099003)(11063799006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?aBFVOGagoniy/jDNZ/qYv+KGiueCK+eM1JA1+zZqM87paHq3lwDPqEFXNAMP?=
- =?us-ascii?Q?yQG3TQWeeqskSefBlOVNfs85n7KpZMXFONPabt6nYBMGwARll1ZraVflz1tp?=
- =?us-ascii?Q?itQ2+/MJ0VXOFxdwdotAF8AXRIH7QIScUgT2s0thpzdUeoh8Q1F5JgCAAUL5?=
- =?us-ascii?Q?CHxHLx68fPVK8+8FiD5873ilmhBre+Qust6z0VFqcdqMpBkOA7OUrCfgMKUa?=
- =?us-ascii?Q?L54do3y1B7lJGc/DkG/qlRAdpst9T+ilsOOV4BTDH+LbabJtsV3Wzhgalj6A?=
- =?us-ascii?Q?c5rwC1JaBSJZaqVhp/SsfR0jh9eL32gD50E9R4xmdI2TX/rYBIY8zlGHXh6a?=
- =?us-ascii?Q?dd7qsvKYTJK5uFC2AEZfjgypDGoY/TQO8ZV4uMFatvz3YFwg7vwZGSjvjS0B?=
- =?us-ascii?Q?/ImG5YCnpiNawXTthP3qetXJn0a1kx0iDflRSDUPTGyA+nxvYqHtfr8SVmSo?=
- =?us-ascii?Q?dX0mvsXlg0yr7/UoGSovngto/SkO/JQFRvs8NJygZsBv57TA05TxK99Lv7S6?=
- =?us-ascii?Q?TRgIh1iPZC+RcczuyfvzbJyNC6Vs9FExZg3CSzKyXGZkGznpzptDlZlmf8uf?=
- =?us-ascii?Q?r/mJvko8sHwDzSIN8WxCBQ+x7M+BNdQUW9U08v/y5k7kw/GSBDxqUFtuf4xE?=
- =?us-ascii?Q?QPOVxNXcgVbvCdtKoyR4nW/pAByeRDAJP70wTPUO1CzVXvDlpLSlcbDvVsQ6?=
- =?us-ascii?Q?k99JecGWRInRZifJjCf8gEIg/jT1yh4rrygzlTYofBETJ/FjbeBfdSYprkUl?=
- =?us-ascii?Q?q6i6VIpY29sWeW+664XbIUBw5az5X5AEEWXb4iYZ/eOzcDyk/dUtnx4k1qzH?=
- =?us-ascii?Q?jdOF6iwxEl0dew2UTd37Uq7hCSfEF6CaesETgF8X/g8ca2XiY9gTR65pan24?=
- =?us-ascii?Q?6FoY5WmsjVEPbC4MZcWMDSaUyQR34R3+FQbhsASQLZY9T56/z9JnTZ9B34uV?=
- =?us-ascii?Q?aaOH7d4798QglhK71F2PEKgrXz3bAKb6qHSy1cz+6aDP1lt9zJhdiK/IrPLL?=
- =?us-ascii?Q?fiYwMBS6gB70Bc6/U4vuhZCixA2b4R1Q6s/UJ0lc/4Dws0Phv7x2Ja/O/uoS?=
- =?us-ascii?Q?HolGTG4kRqMar55XQrB7P3LsTgHbzYSs4sHiTviJ+jbjM7PxMtcGf0pfudWb?=
- =?us-ascii?Q?PIpC29qWHnIxH9S190XLKb8k2VyaaLKBxScAlTuoI2sN0dyWmaDOyqcDmfkS?=
- =?us-ascii?Q?/rKC+Ja7uiHChyG5Ach9VsynaU/ckfjxjU+ByTBRM4yKqC6rOULW8XGJ1YrL?=
- =?us-ascii?Q?qIwNjvsfOwkOIGz7rHVkxr1fRhdrpYY+iZL5tB+Wq2skbxuGzPTcvRTXCBMp?=
- =?us-ascii?Q?GO1sdEMQeaNh+M/TxmX8Pe0oRMNcoUmFpoLE2FvmhuM8rETlQjnxhM/irzh4?=
- =?us-ascii?Q?qYklthlrNnGCstSiXg9nn8iTV7k412V4rpkq7N6lTE8OkQDVfMsJL5yL97T9?=
- =?us-ascii?Q?0zwiaDgFlZNkJeMLyowGdfTimHNowH79ZqRfCrZJnZRmr7F41sZ5MktSexXJ?=
- =?us-ascii?Q?KndVpct4PNK1L8RZzHxniErDqxMONKmoDaiq8YB27gKP0tYQ6Sl8jtcQJ/6o?=
- =?us-ascii?Q?+l79/zPxLZsAEPcHrBhwRIKV7LzsrSPofMOefh7odJwphUpw6WYucdxZQSIm?=
- =?us-ascii?Q?EGiQsT0v60uLuZPhuoki0ERJ7IxLKB8HQ5e8hgNZjhQd1gA30SR1yQDULQBq?=
- =?us-ascii?Q?QYblZ1MFzH9tahwcCMXf+JpejvFqJhkt/h3dfQUj0un0hfEL8MItdCkinjkC?=
- =?us-ascii?Q?Rf12iuF8K8Di2nVBI3mmXlmIXAltOcM=3D?=
-X-Exchange-RoutingPolicyChecked: PKqa6WN4CnjULbHtavo4nwcCc9ge2JCYHisIaKDxhzuJ9QXkkB6mSt4NGA5HjuHbEgUGgQVAIY1l/ilwwRXj1EpRKGYHCHtNLIfL/uFnstkZwg9NcrJm8lBr7QBpjvp5ePwULk08ExxDqNkwlYS4U46Jm+AZm82u9ZTXNmgaAiez7Gcy7xNtc/E1PIiGHj64FZgk5cloJda/exkqyTZ+4olc48+MfkVyIU9l0s156WlOtH1kKoNDrDBWLI3O+cKcuSN4EJneL2QRMLlIZqmhwGgey6iccJA9KdOsSv48Mk/FLXgIth/KSZ31fuyqfbd6++T9HfRrEZ5xsSzNLdTDAQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: b56b599a-8cb8-43b5-7a30-08deff6f6ecf
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6117.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 10:32:00.0474
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZDLUbWFANWJeMZw2RSOE/WjOXlhLN9tpI5oxsS6y+b4wg4486kp5zUm1ZYEF1QRarifaMHBMR3pP957RkovXaF+AOVBijPJOirnZXLZRmLM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7870
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 20, 2026 at 06:29:16PM -0700, Stanislav Fomichev wrote:
-> On 08/20, Maciej Fijalkowski wrote:
-> > On Wed, Aug 19, 2026 at 09:05:35AM -0700, Stanislav Fomichev wrote:
-> > > stmmac drops AF_XDP zero-copy frames that exceed taprio's queueMaxSDU
-> > > after xsk_tx_peek_desc() has reserved their completion entries.
-> > > 
-> > > Completing a rejected descriptor is unsafe because AF_XDP completions are
-> > > ordered: xsk_tx_completed(pool, 1) would complete the oldest outstanding
-> > > descriptor, which may still be owned by hardware. Instead, leave the
-> > > completion pending so the ring eventually wedges and increment the drop
-> > > counter to expose the application error without risking hardware
-> > > misbehavior.
-> > > 
-> > > Document this intentional ring imbalance at the check.
-> > > 
-> > > Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
-> > > ---
-> > >  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 4 ++++
-> > >  1 file changed, 4 insertions(+)
-> > > 
-> > > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > > index 62de03e65a90..6a532747c039 100644
-> > > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > > @@ -2713,6 +2713,10 @@ static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
-> > >  		if (priv->est && priv->est->enable &&
-> > >  		    priv->est->max_sdu[queue] &&
-> > >  		    xdp_desc.len > priv->est->max_sdu[queue]) {
-> > > +			/* Completions are ordered, so this descriptor cannot
-> > > +			 * be completed safely. Wedge the ring to expose the
-> > > +			 * application error instead.
-> > > +			 */
-> > >  			priv->xstats.max_sdu_txq_drop[queue]++;
-> > >  			continue;
-> > 
-> > Hmm. I read the discussion on v2. Maybe we could cancel cq entry here in
-> > this branch? Also it feels like something achievable at bind time when
-> > taprio is configured and vice versa?
-> > 
-> > Otherwise we over-commit cq entries.
-> 
-> What do you want to achieve with the cancel here? IIUC it will make it look
-> as if some (if the user has posted many) tx descriptor has not been consumed
-> by the kernel?
+nfc_llcp_send_ui_frame() checks whether sock->local is NULL, but it is
+called by llcp_sock_sendmsg() without the socket lock held, which opens
+a window for a race condition. Between the sock->local check and the
+sock->dev use in nfc_alloc_send_skb(), llcp_sock_bind() can run
+concurrently and set both sock->local and sock->dev to NULL, which can
+lead to a NULL pointer dereference in nfc_alloc_send_skb().
 
-Oof. My bad. I meant completely different thing :D
+Take a reference to sock->local under the socket lock and pass it to
+nfc_llcp_send_ui_frame(), which now uses the pinned local->dev instead
+of re-reading sock->dev. nfc_llcp_local_get() also pins the nfc_dev, so
+both stay valid against a concurrent llcp_sock_bind().
 
-Right now the semantics are that we post invalid/dropped addrs to cq (the
-rationale was that dropped descs are gone and unreachable which might
-eventually lead to dying traffic).
+Fixes: dded08927ca3 ("nfc: llcp: fix NULL error pointer dereference on sendmsg() after failed bind()")
+Signed-off-by: Junwoong Doh <jdoh.kernel@gmail.com>
+Link: https://lore.kernel.org/all/a89d0419-8bcf-40a2-b52d-3e5d911f11da@gmail.com/
+---
+v2:
+  - Changed locking to refcounting to avoid holding the socket lock
+    across the blocking send.
 
-We should submit xdp_desc's addr to cq.
+v1: https://lore.kernel.org/all/20260725115556.1250160-1-jdoh.kernel@gmail.com/
 
-Regarding the comment included in code I must disagree. CQ entries no
-longer imply that 'this particular descriptor has been successfully sent
-by HW'.
+ net/nfc/llcp.h          |  4 +++-
+ net/nfc/llcp_commands.c | 10 +++-------
+ net/nfc/llcp_core.c     |  2 +-
+ net/nfc/llcp_sock.c     | 10 ++++++++--
+ 4 files changed, 15 insertions(+), 11 deletions(-)
 
-> 
-> I do agree that a better idea is to probably do these checks during control
-> paths, but it's a bit more involved (and not sure if it's possible? if we
-> have a bunch of xsk sockets and we change that max_sdu, do we go over all
-> sockets on the system somehow?). My main motivation with this patch was
-> to make our LLM reviewers less chatty about preexisting issues.
+diff --git a/net/nfc/llcp.h b/net/nfc/llcp.h
+index d8345ed57c95..3ff9729daf63 100644
+--- a/net/nfc/llcp.h
++++ b/net/nfc/llcp.h
+@@ -201,6 +201,7 @@ void nfc_llcp_sock_link(struct llcp_sock_list *l, struct sock *s);
+ void nfc_llcp_sock_unlink(struct llcp_sock_list *l, struct sock *s);
+ void nfc_llcp_socket_remote_param_init(struct nfc_llcp_sock *sock);
+ struct nfc_llcp_local *nfc_llcp_find_local(struct nfc_dev *dev);
++struct nfc_llcp_local *nfc_llcp_local_get(struct nfc_llcp_local *local);
+ int nfc_llcp_local_put(struct nfc_llcp_local *local);
+ u8 nfc_llcp_get_sdp_ssap(struct nfc_llcp_local *local,
+ 			 struct nfc_llcp_sock *sock);
+@@ -243,7 +244,8 @@ int nfc_llcp_send_dm(struct nfc_llcp_local *local, u8 ssap, u8 dsap, u8 reason);
+ int nfc_llcp_send_disconnect(struct nfc_llcp_sock *sock);
+ int nfc_llcp_send_i_frame(struct nfc_llcp_sock *sock,
+ 			  struct msghdr *msg, size_t len);
+-int nfc_llcp_send_ui_frame(struct nfc_llcp_sock *sock, u8 ssap, u8 dsap,
++int nfc_llcp_send_ui_frame(struct nfc_llcp_sock *sock,
++			   struct nfc_llcp_local *local, u8 ssap, u8 dsap,
+ 			   struct msghdr *msg, size_t len);
+ int nfc_llcp_send_rr(struct nfc_llcp_sock *sock);
+ 
+diff --git a/net/nfc/llcp_commands.c b/net/nfc/llcp_commands.c
+index ca89fe967d6a..1549ed2631f5 100644
+--- a/net/nfc/llcp_commands.c
++++ b/net/nfc/llcp_commands.c
+@@ -740,11 +740,11 @@ int nfc_llcp_send_i_frame(struct nfc_llcp_sock *sock,
+ 	return len;
+ }
+ 
+-int nfc_llcp_send_ui_frame(struct nfc_llcp_sock *sock, u8 ssap, u8 dsap,
++int nfc_llcp_send_ui_frame(struct nfc_llcp_sock *sock,
++			   struct nfc_llcp_local *local, u8 ssap, u8 dsap,
+ 			   struct msghdr *msg, size_t len)
+ {
+ 	struct sk_buff *pdu;
+-	struct nfc_llcp_local *local;
+ 	size_t frag_len = 0, remaining_len;
+ 	u8 *msg_ptr, *msg_data;
+ 	u16 remote_miu;
+@@ -752,10 +752,6 @@ int nfc_llcp_send_ui_frame(struct nfc_llcp_sock *sock, u8 ssap, u8 dsap,
+ 
+ 	pr_debug("Send UI frame len %zd\n", len);
+ 
+-	local = sock->local;
+-	if (local == NULL)
+-		return -ENODEV;
+-
+ 	msg_data = kmalloc(len, GFP_USER | __GFP_NOWARN);
+ 	if (msg_data == NULL)
+ 		return -ENOMEM;
+@@ -777,7 +773,7 @@ int nfc_llcp_send_ui_frame(struct nfc_llcp_sock *sock, u8 ssap, u8 dsap,
+ 		pr_debug("Fragment %zd bytes remaining %zd",
+ 			 frag_len, remaining_len);
+ 
+-		pdu = nfc_alloc_send_skb(sock->dev, &sock->sk, 0,
++		pdu = nfc_alloc_send_skb(local->dev, &sock->sk, 0,
+ 					 frag_len + LLCP_HEADER_SIZE, &err);
+ 		if (pdu == NULL) {
+ 			pr_err("Could not allocate PDU (error=%d)\n", err);
+diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+index cac1b5487064..52e72399d731 100644
+--- a/net/nfc/llcp_core.c
++++ b/net/nfc/llcp_core.c
+@@ -143,7 +143,7 @@ static void nfc_llcp_socket_release(struct nfc_llcp_local *local, bool device,
+ 	write_unlock(&local->raw_sockets.lock);
+ }
+ 
+-static struct nfc_llcp_local *nfc_llcp_local_get(struct nfc_llcp_local *local)
++struct nfc_llcp_local *nfc_llcp_local_get(struct nfc_llcp_local *local)
+ {
+ 	/* Since using nfc_llcp_local may result in usage of nfc_dev, whenever
+ 	 * we hold a reference to local, we also need to hold a reference to
+diff --git a/net/nfc/llcp_sock.c b/net/nfc/llcp_sock.c
+index 5558d8a4d48b..4d38025e8213 100644
+--- a/net/nfc/llcp_sock.c
++++ b/net/nfc/llcp_sock.c
+@@ -787,6 +787,7 @@ static int llcp_sock_sendmsg(struct socket *sock, struct msghdr *msg,
+ {
+ 	struct sock *sk = sock->sk;
+ 	struct nfc_llcp_sock *llcp_sock = nfc_llcp_sock(sk);
++	struct nfc_llcp_local *local;
+ 	int ret;
+ 
+ 	pr_debug("sock %p sk %p", sock, sk);
+@@ -819,10 +820,15 @@ static int llcp_sock_sendmsg(struct socket *sock, struct msghdr *msg,
+ 			return -EINVAL;
+ 		}
+ 
++		local = nfc_llcp_local_get(llcp_sock->local);
+ 		release_sock(sk);
++		if (!local)
++			return -ENODEV;
+ 
+-		return nfc_llcp_send_ui_frame(llcp_sock, addr->dsap, addr->ssap,
+-					      msg, len);
++		ret = nfc_llcp_send_ui_frame(llcp_sock, local, addr->dsap,
++					     addr->ssap, msg, len);
++		nfc_llcp_local_put(local);
++		return ret;
+ 	}
+ 
+ 	if (sk->sk_state != LLCP_CONNECTED) {
+-- 
+2.34.1
 
-I hear you, however I feel like we do not know this driver too much and
-probably we don't have a HW to test out such changes, so maybe let us try
-to fix existing behavior?
