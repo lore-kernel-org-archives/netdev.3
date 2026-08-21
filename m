@@ -1,81 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8BA3D73;
-	Fri, 21 Aug 2026 00:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9D4242D72;
+	Fri, 21 Aug 2026 00:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787271062; cv=none; b=UU8Dsp+3jHA9pvpXuLL58odpyshDTTCmC9gSrtstSTGosVJj4vhFQYKVz/3C1KrFZlRJR/tQ3jE+v9zxS7zf0RdLLK00Hw6OIS3FqsdXcyz+lz9X9TXf2d08tbhsjPCZrgh+bU3sfqREzLWH9+NB89owUlhDFQ6sOyLUwJWdVD4=
+	t=1787271076; cv=none; b=TWtb7Z6qAPViH2kBacRYrixzTushfLCMtQvOZwlJ0S7YrniBA3+9VVGL64MGZMvn07JMoTqR7kxruGVAqoVcgkA6DZXEjfW1fbzpfIdl0Cl/3LLRXWMl2W5wNFLSpgncxFiVW1iDPiuOtMc2YidnV1mQnezjiOBHKKPvcbr4g7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787271062; c=relaxed/simple;
-	bh=eZUt8fPjYa1+DVmXshZcLojC+m0a0P2PjBRc5ew1EuU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=OMVsiDA3YQuAoShPMldAjlpDmRZnqUAzbv3CKESmZDCOghK4RQZwSQvkgQFXFUarmALCQCjJVpGRrDFENAR7x+z651Is8YWP4V5gOnsGtWCB29lvxzYHGbmkvZeMImSAj7wCW8M1QaAMF2aA1bicA+tQFwQjFDeNUW2wQtu5ASE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cJJ3HaHT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787271076; c=relaxed/simple;
+	bh=9hUgGEreFwFPuEvjfCDr8xlZlYy4DYhbfja55WfQixc=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=kdJCuWsr/nstbE2pYsl29puiqdoptTLTa0VK6VSDI4QAi4+Z6qNAxmQfzA+fHNHUmIVkCeZrPOikQ4K1r+9VD7dCfImOI3FShuUA995w2MqTZl51Ggktrjzt8GApjfE2Kc7ZPGO0l7m9wkQJU1kKDOZw905PbNNNFndI4NDu61k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=diptitNN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cJJ3HaHT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5ACD1F000E9;
-	Fri, 21 Aug 2026 00:11:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="diptitNN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C67121F000E9;
+	Fri, 21 Aug 2026 00:11:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787271060;
-	bh=t760hyY492cbUB8YsdFB9IQdPK8aCKhgkoFldCVEzfw=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=cJJ3HaHTWtqX7DK/XgH1EYmv9t7SmWsVcZaVg04NPuMx63lLjQek8GPyb2JE+K2AO
-	 DstdhMKeny2LRWSEBEO/BgIyyl9SsZVrtIUalY/IfXjm4YMfP9fN3adxhTKpIOviyX
-	 YxWZ6aT+ex6BdHhRg0mARvHCD6jGchIcGuCO9Sv+GIVKQhhHSM8KCUaE666YHhsflE
-	 boAd/R9Zn1OZBNuwlYHMwZWp9k8wvds9qQtFVPvYqdXKl42yPo4udrWpp/z41QlCq7
-	 LQP6IuXRmICFEnd4y+x1ib1PRYNQ9LgLvOpz402gdB0wHh+BEV6hjw02+GlJ+27aAa
-	 e632Gnqq/lYag==
+	s=k20260515; t=1787271074;
+	bh=VtxMgH/D+tWPzdttlkyqh6KK71n6PeivsVR/hRZbqW8=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc;
+	b=diptitNN/DlAgctSQNCIBr2mujhI/Q8q1Z6uLvKiLC1+NbC1YEQZNBUi2dY3ZqXhn
+	 SK1UcPBEZKYdOY5T/twVkxvF6XM8cfcYwqq7DRFeApRGQps5WxvS2Gj+R7DkPNOcjm
+	 JwpNgDYXFTICsLhkwwKHQmgayuY0qQ8kjeLYUHjh1FoPpf8EbPdcAto1RdKd3XKglU
+	 rKuZ8DOpw1NBmuDrO0kI6p9iAn8wi9oCHVYh11yU+MJWyFWdn4gi+ClIQqSi5ewnug
+	 nE3DNm9GTYQtpmtOdo7OMg1sGKhYi9ACGTvKfbDBzAs2dahptUjd4DyRAsQuW/pEJ8
+	 nLeubaw1kVj3A==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1985D3924472;
-	Fri, 21 Aug 2026 00:10:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19DB93924472;
+	Fri, 21 Aug 2026 00:10:26 +0000 (UTC)
+Subject: Re: [GIT PULL] vhost,vdpa,virtio: fixes, features
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20260819124604-mutt-send-email-mst@kernel.org>
+References: <20260819124604-mutt-send-email-mst@kernel.org>
+X-PR-Tracked-List-Id: <stable.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20260819124604-mutt-send-email-mst@kernel.org>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
+X-PR-Tracked-Commit-Id: b282418bc366194677eafd1dad180d92254586ac
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 7f063b2f17eaba2a35e251aa53627f2a70d536e2
+Message-Id: <178727102496.546823.16524833429188272058.pr-tracker-bot@kernel.org>
+Date: Fri, 21 Aug 2026 00:10:24 +0000
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, kvm@vger.kernel.org, virtualization@lists.linux-foundation.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, aesteve@redhat.com, ben.dooks@codethink.co.uk, chenyichong@uniontech.com, david@kernel.org, den@openvz.org, eperezma@redhat.com, gsomlo@gmail.com, hexlabsecurity@proton.me, linfeng.sun.dev@gamil.com, lirongqing@baidu.com, me@linux.beauty, mst@redhat.com, panchuang@vivo.com, pankaj.gupta.linux@gmail.com, pengpeng@iscas.ac.cn, peter.hilber@oss.qualcomm.com, sgarzare@redhat.com, stable@vger.kernel.org, syzbot+28e5f3d207b14bae122a@syzkaller.appspotmail.com, tavip@google.com, wangyufeng@kylinos.cn, xiongweimin@kylinos.cn, xiongwm2026@163.com, yangjinqian1@huawei.com, zhaoguohan@kylinos.cn
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: usb: cdc_ncm: add Apple MacBook Pro USB product ID
- 0x1902
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178727101062.546801.1501934338708694048.git-patchwork-notify@kernel.org>
-Date: Fri, 21 Aug 2026 00:10:10 +0000
-References: <20260816040426.57132-1-mehrdad@signeen.com>
-In-Reply-To: <20260816040426.57132-1-mehrdad@signeen.com>
-To: Mehrdad Afshari <mehrdad@signeen.com>
-Cc: oliver@neukum.org, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux-usb@vger.kernel.org
 
-Hello:
+The pull request you sent on Wed, 19 Aug 2026 12:46:04 -0400:
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+> https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
 
-On Sat, 15 Aug 2026 21:04:26 -0700 you wrote:
-> The cdc_devs[] quirk table special-cases the Mac CDC-NCM private
-> interface personality only for USB product ID 0x1905.
-> Some MacBook Pro models (e.g. M1 Max) connected over a
-> USB4/Thunderbolt 3/4 cable to a host whose Thunderbolt controller
-> lacks PCIe tunneling support (no NHI function, USB4-only mode)
-> present themselves with product ID 0x1902 instead,
-> using the same descriptor layout as 0x1905: a Communications
-> control interface with zero endpoints (no interrupt/status endpoint)
-> paired with a CDC Data interface, at
-> interface numbers 0 and 2.
-> 
-> [...]
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/7f063b2f17eaba2a35e251aa53627f2a70d536e2
 
-Here is the summary with links:
-  - net: usb: cdc_ncm: add Apple MacBook Pro USB product ID 0x1902
-    https://git.kernel.org/netdev/net/c/746fc0787f61
+Thank you!
 
-You are awesome, thank you!
 -- 
 Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+https://korg.docs.kernel.org/prtracker.html
