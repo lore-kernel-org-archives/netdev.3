@@ -1,34 +1,34 @@
-Received: from mta0.migadu.com (out-127.mta0.migadu.com [91.218.175.127])
+Received: from mta0.migadu.com (out-132.mta0.migadu.com [91.218.175.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6FC392C32
-	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 07:04:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.127
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADABF357CE0
+	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 07:04:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787295881; cv=none; b=CpWnF1LrzPlIZzrNqYUseQVjBT4dEPCawMEr94ewem+5ZdDLGYeIfWjO7FmqiQZZzZZBp0ihHXrU9I2ydTx6qrVe/rSNpFkyKGOF/8seQHOO+OiFvtbiKb4HzuMmVDNkn3gT7OyKYVujEsnEUkrL/4XvNXzyOOUkZt7vEkMgdKg=
+	t=1787295893; cv=none; b=B8sVs2lBhCvxEdkyuDtjyxh2Kythenq22coV/sMcyP3ye4b685RsoKtQO8le1nr6qv/QYSbzw/bGqox+XGmR2vFbhaUeFtTtaYthUkZpfMVRfsmi3aS922qOv3Eoapa97SAUUI2zQJIbSROsIuhYna3kbnSfhIi5C4JkcsMtkMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787295881; c=relaxed/simple;
-	bh=zBNB+lv/4uFx+0jKJ/L0bskD//2Tm9LY0LvconbI2o8=;
+	s=arc-20240116; t=1787295893; c=relaxed/simple;
+	bh=DPdelFgodIfEtmagZl8+Evmyjeurak0kZ5Io6d7ielI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OkW44CiTVeZd9pmHx0/ycHSzF8a/dKUS7L4NhR9ruEfSwuleW4XTmkOlu8avcCc+6hYoey2bwvdVX1mwRgiJsCrHwo0GroCPYY5pADHb3Zk/4nPKK3EL6RFWhXKsxKsd+w7wgyJ0yytOFqiGj4FuzZbeAE58wo16qqm7V4kw6V8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Yb232Erp; arc=none smtp.client-ip=91.218.175.127
+	 MIME-Version; b=I07DST82jkADI+KLD6vh6LVpr4fBH+5fsTrG+0OUkzLI0s9iRi2jw/XdG4fIQ6OamUyAgJY7j1FFu89kHH32K+ekXrCbe+7YAZs9773VQYKNHxDVQRiwa9Gs4mWj9ACAfICqWCTkl3V0oxkJO3BGiZov+XNHrjFTlLva+d+Eujg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=SREtXM3p; arc=none smtp.client-ip=91.218.175.132
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Yb232Erp"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="SREtXM3p"
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=zBNB+lv/4uFx+0jKJ/L0bskD//2Tm9LY0LvconbI2o8=;
+DKIM-Signature: a=rsa-sha256; bh=DPdelFgodIfEtmagZl8+Evmyjeurak0kZ5Io6d7ielI=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787295877; v=1; x=1787900677;
- b=Yb232Erp7/tetdnO+c17tY1dNO6eyTffSF6SUssv5chlCXF25ymjgTOk8pyUbyomipGV5k0W
- jdgdW7ogrCSC7VrrlLQd8P5uzVql1NHC3F6qFNFZweYVpggakxmKvSX9o92jDUdj8Xj0EQ0OUwH
- WlWttqWpOn3E+SITsqdABUtg=
+ t=1787295889; v=1; x=1787900689;
+ b=SREtXM3pyTyDHbTiWPVU+wSrLg84N31GVxa4umXzGlZMPj2ElXMX5FqYr8NgJh441s4oB89H
+ PEMAUxNCUq0MqAGB1Zgi/K349F5P6+g4p+bH6J89Zc9eAYlYigqJ7tsCgHB7RHuf2Mi31RDyxbm
+ Uf3PIp3VUDMFOtx07NUdGluQ=
 X-Envelope-To: netdev@vger.kernel.org
 Received: from localhost.localdomain (116.128.244.171)
-	by smtp.migadu.com with ESMTPS id 5995ade47ca2e225;
-	Fri, 21 Aug 2026 07:04:37 +0000
-X-Mizu-Trace-ID: 5995ade47ca2e225
+	by smtp.migadu.com with ESMTPS id 9b0adc2a607b779f;
+	Fri, 21 Aug 2026 07:04:49 +0000
+X-Mizu-Trace-ID: 9b0adc2a607b779f
 X-Migadu-Flow: FLOW_OUT
 From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
 To: netdev@vger.kernel.org,
@@ -44,9 +44,9 @@ Cc: hkallweit1@gmail.com,
 	pabeni@redhat.com,
 	linux-kernel@vger.kernel.org,
 	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-Subject: [PATCH net v4 5/6] net: phy: propagate errors from default port setup
-Date: Fri, 21 Aug 2026 15:03:26 +0800
-Message-ID: <20260821070327.16147-6-xuanqiang.luo@linux.dev>
+Subject: [PATCH net v4 6/6] net: phy: avoid double-free after LED trigger registration failure
+Date: Fri, 21 Aug 2026 15:03:27 +0800
+Message-ID: <20260821070327.16147-7-xuanqiang.luo@linux.dev>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260821070327.16147-1-xuanqiang.luo@linux.dev>
 References: <20260821070327.16147-1-xuanqiang.luo@linux.dev>
@@ -60,46 +60,54 @@ Content-Transfer-Encoding: 8bit
 
 From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-phy_default_setup_single_port() ignores errors from phy_add_port() and
-always reports success. If a PHY driver attach_mdi_port() callback fails,
-the phy_port is leaked and PHY probing continues without the expected
-default port.
+When a speed trigger registration fails, phy_led_triggers_register() frees
+phy_led_triggers but leaves the pointer set to the freed allocation. It
+then clears phy_num_led_triggers.
 
-Destroy the port and return the error.
+phy_probe() ignores this error. If device-tree LED setup then fails, its
+error path calls phy_led_triggers_unregister(). The zero trigger count
+skips the per-trigger unregister loop, but the helper still frees the
+dangling pointer.
 
-Fixes: 589e934d2735 ("net: phy: Introduce PHY ports representation")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Clear the pointer after partial registration cleanup and make
+phy_led_triggers_unregister() walk and free the array only while it is
+present.
+
+Fixes: b7f0ee992adf ("net: phy: leds: fix memory leak")
 Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 ---
- drivers/net/phy/phy_device.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/phy/phy_led_triggers.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 691396794decd..8cb0d60fcbba9 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -3483,6 +3483,7 @@ static int phy_default_setup_single_port(struct phy_device *phydev)
+diff --git a/drivers/net/phy/phy_led_triggers.c b/drivers/net/phy/phy_led_triggers.c
+index 4eb7716bb9d6c..ff6e518395be0 100644
+--- a/drivers/net/phy/phy_led_triggers.c
++++ b/drivers/net/phy/phy_led_triggers.c
+@@ -126,6 +126,7 @@ int phy_led_triggers_register(struct phy_device *phy)
+ 	while (i--)
+ 		phy_led_trigger_unregister(&phy->phy_led_triggers[i]);
+ 	kfree(phy->phy_led_triggers);
++	phy->phy_led_triggers = NULL;
+ out_unreg_link:
+ 	phy_led_trigger_unregister(phy->led_link_trigger);
+ out_free_link:
+@@ -141,10 +142,12 @@ void phy_led_triggers_unregister(struct phy_device *phy)
  {
- 	struct phy_port *port = phy_port_alloc();
- 	unsigned long mode;
-+	int ret;
+ 	int i;
  
- 	if (!port)
- 		return -ENOMEM;
-@@ -3509,9 +3510,11 @@ static int phy_default_setup_single_port(struct phy_device *phydev)
- 		port->pairs = max_t(int, port->pairs,
- 				    ethtool_linkmode_n_pairs(mode));
+-	for (i = 0; i < phy->phy_num_led_triggers; i++)
+-		phy_led_trigger_unregister(&phy->phy_led_triggers[i]);
+-	kfree(phy->phy_led_triggers);
+-	phy->phy_led_triggers = NULL;
++	if (phy->phy_led_triggers) {
++		for (i = 0; i < phy->phy_num_led_triggers; i++)
++			phy_led_trigger_unregister(&phy->phy_led_triggers[i]);
++		kfree(phy->phy_led_triggers);
++		phy->phy_led_triggers = NULL;
++	}
  
--	phy_add_port(phydev, port);
-+	ret = phy_add_port(phydev, port);
-+	if (ret)
-+		phy_port_destroy(port);
- 
--	return 0;
-+	return ret;
- }
- 
- static int of_phy_ports(struct phy_device *phydev)
+ 	if (phy->led_link_trigger) {
+ 		phy_led_trigger_unregister(phy->led_link_trigger);
 -- 
 2.43.0
 
