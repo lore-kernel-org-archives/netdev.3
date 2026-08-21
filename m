@@ -1,236 +1,320 @@
-Received: from mail-pf1-f228.google.com (mail-pf1-f228.google.com [209.85.210.228])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB91E2F7F09
-	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 04:20:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.228
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2789F30BF70;
+	Fri, 21 Aug 2026 04:21:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787286020; cv=none; b=KIVKWkDvstUluaJxUKGvPuhaf4afiaMTkNXPe/RTEEt2HjS6OcJuOzlyGjEJW51AE3Q/2oKAHwJzGc8XtofQSuM4ekvxOrRzaPRLUgGyU8CqCqlP8FMKV83nTRixwYiTp6JIjQ577M/OCRBw2YYsDa7gzC4K55X9poA03ce4rfM=
+	t=1787286116; cv=none; b=pC3rt5r0zWa5kqWG1eefw0EI3wgkhoqzquzTXXOWMTYumiqFkBJdYkIzVkIAVJVF0PsvdbLyCOUITbQdCEb0g0n/vXRKKmWXA0YwYxUgCqEYO2MjR8VaIBA93IQo0U0cOjDBnYXXSN/K+5PxSdsfwf9DyARU76oAUdKhOfopdvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787286020; c=relaxed/simple;
-	bh=Z6MxMcFGGNSCf9ekoQngj6dcATO6RIKIHMqw/fAqXco=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mKuH20SXT/iOxUsqbj1D9A8WyO3PKT6l15ICb1gUTMYBkoEgcUwV/VkbyZPDZi+sJx21f0s1It6OE1alEiV910A33JdPKoouxrnJFKzYorjLsXwQhiz3ig7cl6GK9Of96sk994jpXHgMbQBJ3cRfCkoicuB3sP+r2XABZeJNFIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=I+acG18m; arc=none smtp.client-ip=209.85.210.228
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="I+acG18m"
-Received: by mail-pf1-f228.google.com with SMTP id d2e1a72fcca58-84e3007a2b7so472685b3a.0
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 21:20:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787286018; x=1787890818;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3yqqr7PiYNHfGSUaE0gWKM322NdJyYNyz95C+H4wzRw=;
-        b=enR2TV9d+vu7v5yYdjtdLTYUJblpZnn866Gjyoi2ZqQjx2xNBUTAMojQ27+QIQMcDW
-         y7CZc+mi4g30SfaLk5c7Il9FlUSpgoiEcL9PBYa2w5sQdm4hZ3gbHRHlT0q+VtqYdq4R
-         UGF35uNK/40b0pJ35Jk44esqzpK8FAU6RDYhdzMDgOnQpeezi0LtsUknjE8d5Fu+u29/
-         uKNb2CbT3D6iMj0G4iaOD3WSw+gHbZDLcrsgI937sp2KpPJCXl1+TWM+fe1I0z6Eryop
-         n6YGnsULoLNwg9TpM6Yvt/oqh5XpN/qGtGTwxeCsOmqB4fYpVfbjKPfQGfuoKYM+zeBw
-         LZ/Q==
-X-Forwarded-Encrypted: i=1; AHgh+Rrid2YzROSv6d1FVtAEywSBdYjLfLg/bgiR6uHjD+fyi4MF2M+i+0uilPMzqdmJKhRPvkOOyrU=@vger.kernel.org
-X-Gm-Message-State: AFuF++nQmfePVdRHK/f/m8JBIBq4H/HwnNYXNxcQjmE0Zy4yac43GxCj
-	QO5Pc0lW8nqdjgmt3/YVrnyQEBpJqOzOpMq4ol4/B80ieeCiHuCzDAWgsGEi/7coxp4mpU5Tw32
-	CbAGlxm0JHYwk2v80T2r1znd1LjDttOKzrXdrDpHNcjzINd751Uq8jBQtfFjoASeI1GCD7x//iO
-	ldqzsFoqQMgv5jaPLs0J4hDImKEP/Mp/cYVhz8ZZC4MZNcu4sL+0kklCwdnWE0ee66tgw2WsFLh
-	QbS/K6pMwg=
-X-Gm-Gg: AR+sD11yAwO/cgruAemdWs1nzFl/u8zQP4cauNLu3sKhETckcJ9zI/wDsWVF4uC5DiD
-	SbgGV7j5JrdS22s7fKr29gc+w4mZWpmkYnsbxRvq+T7be6JRUYgv3gl6qvxS4NhhrKPcg3J7GVs
-	EKe9mdgiqZe/eKPNDVaB6zo9frP9VeVNnW400843wZzKuen0+kAxRG6/tvjsapwvNDh2BhhkZ7L
-	ReV+XEuyhln3IkQKcaaByw/FqQ0JBj7A6vtCPusmVEtIp8shsGR6aA7xJii1CcXBKhf8x3n2qUf
-	T1SVXObftKZ4LckS9LR0Agy6slTh59/OKCOTTwEFN4FuVXgaTz3A3toyqbHQRTxf6Xh1GNok1Lf
-	XvDzovWgjHhI2pIuTyrlgq5q64HfoC8o/XDn01rzdKPqHMpZ2JLvGkKjAxNyb2rDdypm5aFo8jT
-	ESEG3sqWuI0tWJAM7KhNYKOgEEkX5vCaYoI64=
-X-Received: by 2002:a05:6a00:e1a:b0:847:83bd:6676 with SMTP id d2e1a72fcca58-851fa05baa6mr5496047b3a.17.1787286017794;
-        Thu, 20 Aug 2026 21:20:17 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-26.dlp.protect.broadcom.com. [144.49.247.26])
-        by smtp-relay.gmail.com with ESMTPS id d2e1a72fcca58-851d336b34dsm2352111b3a.1.2026.08.20.21.20.17
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 20 Aug 2026 21:20:17 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-84a67b16217so908610b3a.3
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 21:20:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1787286016; x=1787890816; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3yqqr7PiYNHfGSUaE0gWKM322NdJyYNyz95C+H4wzRw=;
-        b=I+acG18m9j3yAi8HpqDjLlXQKbn36HaIp+KCbfUtjCXsmMDfxCZOv61+YsvOf/6bx2
-         ae+OOmgx1rhz23R3VbepsUS0t1qjdxYfujiD/XfZsgAUUotJ9WRCalYRDOIiyX3Zp8ss
-         rRgPVPSFSrf0oR94QlT96ika1UmiOKeya+ftw=
-X-Forwarded-Encrypted: i=1; AHgh+RrZSrgeXrv1WawSSTeRBRByIdiB7Ss1wzk7+ra2+Kt82lsWF01l9euNs33NGqIRtGt9NZV+XBQ=@vger.kernel.org
-X-Received: by 2002:a05:6a00:288e:b0:84f:3f5e:f072 with SMTP id d2e1a72fcca58-851f9f78300mr5349548b3a.10.1787286015847;
-        Thu, 20 Aug 2026 21:20:15 -0700 (PDT)
-X-Received: by 2002:a05:6a00:288e:b0:84f:3f5e:f072 with SMTP id
- d2e1a72fcca58-851f9f78300mr5349494b3a.10.1787286015424; Thu, 20 Aug 2026
- 21:20:15 -0700 (PDT)
+	s=arc-20240116; t=1787286116; c=relaxed/simple;
+	bh=I34vR31HpuX9yQf4CCCk//8sxnSuE5CwojFxgmCYmNA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LoJHzDGHqZrcPIGWLDFgPR6CiXWwqEFTlTcwnp8yvED9zjCqTcUNmwqbweXu3Re5wVRKCR12WAiZcfURHdYNm7IEoUTq+quYXmPhPy8pCU5nBQxrUVXI6DQ+S4OygLCVCYTcNCryXiGQE+n7utRf19jSN/LWzGuyFKsnTXaTq50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-c2dff70000001609-1e-6a87d2577020
+Date: Fri, 21 Aug 2026 13:21:43 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, max.byungchul.park@gmail.com,
+	kernel_team@skhynix.com, torvalds@linux-foundation.org,
+	damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
+	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
+	mingo@redhat.com, peterz@infradead.org, will@kernel.org,
+	tglx@linutronix.de, rostedt@goodmis.org, joel@joelfernandes.org,
+	sashal@kernel.org, daniel.vetter@ffwll.ch, duyuyang@gmail.com,
+	johannes.berg@intel.com, tj@kernel.org, tytso@mit.edu,
+	willy@infradead.org, david@fromorbit.com, amir73il@gmail.com,
+	gregkh@linuxfoundation.org, kernel-team@lge.com, linux-mm@kvack.org,
+	akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
+	hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
+	jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+	ngupta@vflare.org, linux-block@vger.kernel.org,
+	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
+	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
+	djwong@kernel.org, dri-devel@lists.freedesktop.org,
+	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
+	boqun.feng@gmail.com, longman@redhat.com, yunseong.kim@ericsson.com,
+	ysk@kzalloc.com, yeoreum.yun@arm.com, netdev@vger.kernel.org,
+	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
+	catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
+	hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
+	gustavo@padovan.org, christian.koenig@amd.com,
+	andi.shyti@kernel.org, arnd@arndb.de, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
+	mcgrof@kernel.org, petr.pavlu@suse.com, da.gomez@kernel.org,
+	samitolvanen@google.com, paulmck@kernel.org, frederic@kernel.org,
+	neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
+	josh@joshtriplett.org, urezki@gmail.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
+	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
+	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
+	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
+	yuzhao@google.com, baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com, joel.granados@kernel.org,
+	richard.weiyang@gmail.com, geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com, linux@treblig.org,
+	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+	chenhuacai@kernel.org, francesco@valla.it,
+	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
+	masahiroy@kernel.org, brauner@kernel.org,
+	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
+	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org,
+	miguel.ojeda.sandonis@gmail.com, neilb@ownmail.net,
+	bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
+	dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v19 00/40] DEPT(DEPendency Tracker)
+Message-ID: <20260821042143.GA40890@system.software.com>
+References: <20260706061928.66713-1-byungchul@sk.com>
+ <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260820220544.1240879-1-thwalsh@redhat.com>
-In-Reply-To: <20260820220544.1240879-1-thwalsh@redhat.com>
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Date: Fri, 21 Aug 2026 09:50:03 +0530
-X-Gm-Features: AcwNN1VTOsRUSlRBNv7-siM0Rdlc-zyryAs0TT5Pn25LF1PvMOGPkOVJXB5NGnI
-Message-ID: <CALs4sv36yBmdfnm8_PWD4CrAKboOeTLXYqY3vGSN=yz2ThV-Rw@mail.gmail.com>
-Subject: Re: [PATCH net v2] bnxt_en: Gate TPH enablement behind
- BNXT_SUPPORTS_QUEUE_API check
-To: Thomas Walsh <thwalsh@redhat.com>
-Cc: Michael Chan <michael.chan@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Michal Schmidt <mschmidt@redhat.com>
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000001b15f2065986f4ed"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0ybZRiG835nmhU+6nTvtkRN52JggTGzxCeZmxpN/NRtMZnGZfvhmvEF
+	OsrBwjhojJzXAWrBUaTNCIxROtptUmAHEMdwDAgHC1mgcsyAtTYFWbBAwFJsS4z8eXPlvt88
+	1/Pj4UhZE7OHUyalieokhUrOSCjJwo5rUaeHL12I8XnCQFPwLYzkdFCw7NFQsGG4y4LGWklD
+	z2guBav/GEgouL9JgW6ojARLcw4Bf//sY2DRWIJA7zCw4Or6ADYnnQSMrswjMM75CJjruIRg
+	Q5cAbt1zBirKbQjaTbkMPNO2kPBkeZGB3vJiBqpz22kY6ncjuGooQ5BXe5uBIbeXgAldGQFm
+	6wmYNjoo6NNeI6DCxYCucRcYKvII//MnAeU32whYMzaw0F87QYExez/MmPQseJ8egs3qZHhs
+	drLQOzVCg9tRxsB0dyEN1j+6EHiePCXAUuIgwTrrb9vHDkBN4XUKKqsmGNBseBBMWTZpyDas
+	0mDr6KNh2Gzzb/G4h4LxgR9Y+L31Jv1OrLBa8D0lWKosSPhtfpEU8psyhLq+eUa4fnmdEEoH
+	ooT7+klWyP91jBWqrReF/EcLtNBkihRqf3ERQs3SMi2MuY8K1obLzCdRZyRvxYoqZbqoPnjs
+	nCR+1jnKpnQdzTRdsRPZqPxgEQrhMH8Y67W3iSLEBflBzueBmOL341mXhgoww7+O7fY1MsA7
+	+Rjs7Mn1f5dwJG9+GV+Z7mYDxQv8m7h5opgJsJQHfGt9PMgyXomvPjCjrTwc91bOBYeS/qHe
+	qmEy4CX5vbjex23Fr+C8FkPQFcIfw7NFz4P8Ir8Pd9zpJrZWXgrBaz9+vcW78UOTndKicP02
+	g36bQf+/Qb/NUI2oBiRTJqUnKpSqw9HxWUnKzOjzyYlW5D9l4zfes/fQku1UJ+I5JN8hjZkq
+	vCCjFempWYmdCHOkfKf0lsYfSWMVWV+J6uQv1BdVYmon2stR8l3SN1YyYmV8nCJNTBDFFFH9
+	X0twIXuykeqe69xrssjBd5/VeeJCc8arLKdfeji+El7smM9otg1GFNSHNn4c8WrYzNmIn8JO
+	ffpZypftxz8adIeVJJxfP6mwEJXvR88MGNtaD2T6Ss2ljYJ34Ui0vX/wZNvxqPfevvNdXULN
+	SKnzUf3dNPZE5r7dG/QoO8nEJfbeCG058mFrj/YvOZUarzgUSapTFf8Cx7i0xsYDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxTVxjHc865Pb00q1xrpzeyuKRzMSER2aLxWXBmbjHezGj0w4ZhS2aV
+	m1He1NYxMNm0dJ2lugUbW7QVRZRqLCJrgY2ZDgIDYWoEVOgUKIRCR0BBVmSUt7WYZXw5+Z3/
+	8zy/53w4LFFY6WpWk31U1GarM1VUxsh2JxnWJ3ecTE+89mANmIzHodsfkECnvp6ByZCJgQu3
+	yinMOX6Wgsl9XgItXfkMtFW4EPgnTQimZhwEjLULDMxZmqUQmn4qBasewYK3GYGt3ULA11ZH
+	oLxKj+HvynkKI40TCKz9AQpFw3oGxpynEdiHHFIYbtoBz/y3JbDQE8TQ9XIUgTMwjyFQfxLB
+	nC0DLpV6IuO2cQoz9x8QKLK2Ibjc30NgYrgPQVVzL4JgdRiB93o+hcHCagIPA8vg0eQYhVbr
+	KQrP2i9geF5JoSTfK4H2eyMIih0WBENPvBgMV25RsBW7Gajt+1UK7SOzGLptFgwu9y7wO4cY
+	uFtYiiNvjnT9tAocRQYcOf7CYL15G3/gRMKU8UdGuOGpwYKxY44K5RfLkTATtiAhVGYggrEw
+	cm0cHSPCd56vhbK7o1QITz6mgvdlCSP8UcoLVwvCWDhzf71Qa++R7tmWItuSKmZqckTthq37
+	ZWkDwS7p4ab3c6+f9eETyLrBjFiW5zbydfpkM4phGe5tfmDYxESZcut4n2+aRFnJJfLBlnxs
+	RjKWcK41/Fn/HWm0sILbzFd1n6JRlnPAV4SfLrKC0/DFdS70Kl/Ot54PLEpJRDp7sYNE9xIu
+	jr82z76K3+QN1Y7FXTHcVn7APL7Ir3Nv8fU1d3AhWmZfYrIvMdn/N9mXmEoQcwMpNdk5WWpN
+	5qYEXUZaXrYmN+HgoSw3inxW5zezZ35BoYc7GhDHItVr8sTe79MVEnWOLi+rAfEsUSnlFaZI
+	JE9V5x0TtYe+0H6VKeoaUBzLqFbJP04W9yu4L9VHxQxRPCxq/6tiNmb1CaQekR9R/pCymaQ8
+	173ojB/d7hsvOLLTHJrX1aZubDwQ/LbrvbV9sZ+sdW3rv/JCGbviXNPlhgKPO6Z1i+nzeIXq
+	sz+f9ApJ3dvLht4tbdk7uG/itOq3jsrfafrYYPOHcf8sJIaKOh+/8em56eWKhKapWNmx4+59
+	nqAv6aOVuTXpN8db96oYXZr6nXii1an/BXiILQioAwAA
+X-CFilter-Loop: Reflected
 
---0000000000001b15f2065986f4ed
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Thu, Aug 20, 2026 at 07:16:05PM +0200, David Hildenbrand (Arm) wrote:
+> On 7/6/26 08:18, Byungchul Park wrote:
+> > Hi Linus and folks,
+> 
+> Hi,
 
-On Fri, Aug 21, 2026 at 3:36=E2=80=AFAM Thomas Walsh <thwalsh@redhat.com> w=
-rote:
->
-> In bnxt_request_irq(), pcie_enable_tph() is called unconditionally to
-> enable PCIe TPH when setting up interrupts.
->
-> If the NIC hardware or firmware capabilities do not support queue ops,
-> attempting to enable TPH during bnxt_request_irq() is unnecessary.
->
-> As a result a flood of "RX queue restart failed: err=3D-95"  messages is
-> seen upon boot.
->
-> Older NICs (pre-Thor / BCM57414) do not support TPH or queue management.
-> TPH requires queue management to restart the queue.  NICs that support
-> queue management (with updated FW) all support TPH.
->
-> Gate the call to pcie_enable_tph() and setting of bp->tph_mode
-> behind BNXT_SUPPORTS_QUEUE_API(bp) to ensure TPH is only initialized
-> on devices capable of supporting queue ops. This prevents a guaranteed
-> -EOPNOTSUPP error from occurring due to NULL operations.
->
-> Fixes: 1410c7416dc3 ("eth: bnxt: always set the queue mgmt ops")
-> Suggested-by: Michal Schmidt <mschmidt@redhat.com>
-> Signed-off-by: Thomas Walsh <thwalsh@redhat.com>
-> Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-> ---
-> v2:
->  - Updated commit message to include context on hardware support
->    and added Michael Chan's Reviewed-by tag.
->  - Rebased onto net/main.
->
+Hi,
 
-OK with the consensus.
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+> I think there was plenty of feedback from locking maintainers in the past. One
+> question and a comment below.
+> 
+> >
+> > DEPT(DEPendency Tracker) is a runtime deadlock detection framework that
+> > sees what lockdep cannot.
+> >
+> > I'm thrilled to share that DEPT has moved beyond theory and is now
+> > catching real deadlocks in the wild:
+> >
+> >    https://lore.kernel.org/lkml/6383cde5-cf4b-facf-6e07-1378a485657d@I-love.SAKURA.ne.jp/
+> >    https://lore.kernel.org/lkml/1674268856-31807-1-git-send-email-byungchul.park@lge.com/
+> >    https://lore.kernel.org/all/b6e00e77-4a8c-4e05-ab79-266bf05fcc2d@igalia.com/
+> >
+> > I've added comprehensive documentation explaining DEPT's design and usage.
+> > Getting started is as simple as enabling CONFIG_DEPT and watching dmesg.
+> >
+> > THE PROBLEM LOCKDEP CANNOT SOLVE
+> > --------------------------------
+> >
+> > Lockdep has been our trusted deadlock detector for two decades, but it
+> > has a fundamental blind spot: it tracks lock acquisition order, not the
+> > actual waits and events that cause deadlocks. This means lockdep misses:
+> >
+> >   * Deadlocks involving folio locks (not released within the context)
+> >   * Cross-context synchronization like wait_for_completion()/complete()
+> >   * DMA fence waits, RCU waits, and general waitqueue patterns
+> >   * Any synchronization primitive outside the classic lock/unlock model
+> >
+> > Consider this real deadlock pattern that lockdep cannot detect:
+> >
+> >    context X              context Y              context Z
+> >
+> >                           mutex_lock A
+> >    folio_lock B
+> >                           folio_lock B <- DEADLOCK
+> >                                                  mutex_lock A <- DEADLOCK
+> >                                                  folio_unlock B
+> >                           folio_unlock B
+> >                           mutex_unlock A
+> >                                                  mutex_unlock A
+> 
+> But that really just boils down to folio lock being implemented as a PG_lock +
+> some advanced wait mechanism. And we must do that because of lack of bits in
+> struct page.
+> 
+> Willy mentioned in a previous version [1]: "I don't think it makes sense to
+> track lock state in the page (nor folio).  Partly because there's just so many
+> of them, but also because the locking rules don't really apply to individual
+> folios so much as they do to the mappings (or anon_vmas) that contain folios."
 
---0000000000001b15f2065986f4ed
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+Exactly.  That's why we use classification e.g. lock class - DEPT also
+makes use of the concept.
 
-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
-/HTPxpDrr4vzZL0yoc9XefyCbdiwfyFl99oBekp+1ZxXc5bZsVhRPVyEWFtCys66nqu5cU2GPT3a
-ySQEHOtIKyGGgzMVvitOzO2suQkoMvu/swsftfgCY/PObdlBZhv0BD97+WwR6CQJh/YEuDDEHYCy
-NDeiVtF3/jwT04bHB7lR9n+AiCSLr9wlgBHGdBFIOmT/XMX3K8fuMMGLq9PpGQEMvYa9QTkE9+zc
-MddiNNh1xtCTG0+kC7KIttdXTnffisXKsX44B8ECAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
-oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
-Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
-BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
-IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
-FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
-hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
-BB0wG4EZcGF2YW4uY2hlYmJpQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
-HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUxJ6fps/yOGneJRYDWUKPuLPk
-miYwDQYJKoZIhvcNAQELBQADggIBAI2j2qBMKYV8SLK1ysjOOS54Lpm3geezjBYrWor/BAKGP7kT
-QN61VWg3QlZqiX21KLNeBWzJH7r+zWiS8ykHApTnBlTjfNGF8ihZz7GkpBTa3xDW5rT/oLfyVQ5k
-Wr2OZ268FfZPyAgHYnrfhmojupPS4c7bT9fQyep3P0sAm6TQxmhLDh/HcsloIn7w1QywGRyesbRw
-CFkRbTnhhTS9Tz3pYs5kHbphHY5oF3HNdKgFPrfpF9ei6dL4LlwvQgNlRB6PhdUBL80CJ0UlY2Oz
-jIAKPusiSluFH+NvwqsI8VuId34ug+B5VOM2dWXR/jY0as0Va5Fpjpn1G+jG2pzr1FQu2OHR5GAh
-6Uw50Yh3H77mYK67fCzQVcHrl0qdOLSZVsz/T3qjRGjAZlIDyFRjewxLNunJl/TGtu1jk1ij7Uzh
-PtF4nfZaVnWJowp/gE+Hr21BXA1nj+wBINHA0eufDHd/Y0/MLK+++i3gPTermGBIfadXUj8NGCGe
-eIj4fd2b29HwMCvfX78QR4JQM9dkDoD1ZFClV17bxRPtxhwEU8DzzcGlLfKJhj8IxkLoww9hqNul
-Md+LwA5kUTLPBBl9irP7Rn3jfftdK1MgrNyomyZUZSI1pisbv0Zn/ru3KD3QZLE17esvHAqCfXAZ
-a2vE+o+ZbomB5XkihtQpb/DYrfjAMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
-ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
-MjAyMwIMClwVCDIzIfrgd31IMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCDMt/Gi
-66DzLRVz8oyQC9n84t/yu3DfgiAlhWUIZ6VmzzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
-CSqGSIb3DQEJBTEPFw0yNjA4MjEwNDIwMTZaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
-MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
-SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQDFy2axtsmtTxeLXxUbJ2ejOfVxI2FV+KtoxNkKatsL
-xLADI2LfxK4PF1FEDBKLCGQDKFdbXOgcIdj0E270IiaEbEQ5iI86KKUHOi7I4VcsDfB+00oT8l3j
-guUYKDrCLg+75tsRRFm/Vu0i9nQZNteGH2D7AbWc0Q1307W+f6Ydj/duanmO8LFi0OctRaCWtTjp
-5088ZwMeOLqmtp+10BFvk/PwnImrIPx8AH9xryakkB62zflBAwbiKrG4+5MWJ0qpm+kkk8mj+ECS
-MfhSi3Mp6uvSvtzBEH2D68KGtenOo8kaZ1pIN6pbRqZ7HfhtsMDMtQiy3iNW2wMlAfndYuoS
---0000000000001b15f2065986f4ed--
+DEPT doesn't use a full map in each page but uses a minimum space for a
+timestamp in each to track when each starts to wait so as to use the
+recorded timestamp when the event occurs e.g. folio_unlock().
+
+> Given that lockdep is a debug feature, and we will at some point allocate struct
+> folio separately, I assume we could just squeeze a "struct lockdep_map" in there
+> in such debug configs and the world would not collapse.
+
+That's a good news for lockdep.  (And even for DEPT :)
+
+> Doing that today (one "struct lockdep_map" in each "struct page") wouldn't work
+> as mm_zero_struct_page() would not expect such large "struct page". But
+> conceptually, for a debug kernel with a special CONFIG_LOCKDEP_PAGE_LOCK, maybe
+> that would already be ok and we could just do that (and optimize it as we
+> allocate folios separately).
+
+Sounds great.
+
+> Not that it's ideal, but for a debug feature to at least check PG_lock, probably
+> an easier way to achieve it than some completely new infrastructure.
+
+I understand what you are going to tell.
+
+However, it's worth noting that lockdep tracks dependencies basically
+based on **lock acqusition orders** in the system.  To make it track
+even rwlock and general synchronization mechanism as well, lockdep has
+no choice but to get more complicated.
+
+Focusing on only the dependency checking, the most parts of lockdep are
+for the tricky things, so the reusable parts are not that big.
+
+> Now, Willy said "locking rules don't really apply to individual folios", I
+> wonder if that could just help to also let lockdep check PG_lock with less
+> metadata? (didn't fully wrap my head around the implications)
+
+That's what DEPT did and what brought external wgen introduced in DEPT.
+I was considering the exactly same thing :)
+
+Again, lockdep that tracks lock acquisition orders can't do that.
+
+> [1]
+> https://lore.kernel.org/all/aR3WHf9QZ_dizNun@casper.infradead.org/?utm_source=chatgpt.com
+> 
+> 
+> It's your guiding example, that's why I mention it. You do mention other wait
+> cases here, I don't know anything about them, but for folios it's really just
+> "we used a single bit so far" AFAIKs.
+
+It doesn't matter whether it's implemented using bit or not.  folio lock
+is quite special since it's allowed to be released other than the
+acquisition context that makes lockdep impossible to track them.
+
+> [...]
+> 
+> >
+> > Q. Why not build DEPT into lockdep?
+> >
+> > A. Lockdep is stable, battle-tested code. I chose separation because
+> >    while DEPT borrows BFS and hashing ideas, the wait/event model
+> >    requires rebuilding from scratch. Lockdep was designed for lock
+> >    acquisition order — retrofitting it would risk its stability.
+> 
+> Why can't this just be some configurable extension to lockdep
+> (CONFIG_LOCKDEP_XYZ) until the feature is stable and can unconditionally be
+> enabled along with it?
+
+Answered?
+
+> I don't quite buy the "would risk its stability" argument. A lot of stuff we do
+> "risks stability", every day :)
+
+That's awsome anyway :)
+
+> Is there another good reason (incompatible with X, dangerous with Y, cinfusing
+> Z) why this really must be a separate thing?
+
+Roughly:
+
+   1. Similar or less effort is needed for the new one - retrofitting
+      lockdep is not easy and big changes are required since the
+      reusable parts are not that big.
+
+   2. Even though you didn't agree, retrofitting it would risk its
+      stability.
+
+> >
+> > Q. Will DEPT replace lockdep?
+> >
+> > A. No. Lockdep validates correct lock usage — that's not going away.
+> >    DEPT supersedes only the dependency-checking logic when mature.
+> 
+> It's quite unfortunate that we'd end up with another similar-but-different
+> mechanism, that will just end up confusing people.
+
+I meant, at least dependency checking engine should be altered, but you
+make sense.  Worth thinking it more.
+
+> But I am not a locking maintainer. I think there was plenty of discussion in the
+> past, so I might just be raising points that were already discussed in the past,
+> but I really just read some random pieces of earlier discussions. (ideally
+> previous discussions would be summarized here)
+> 
+> Long story short: we are now in v19 and I think there was pushback in the past.
+> Did the opinion of locking maintainers change, or is there a way forward to
+> integrate this in a way that would make locking maintainers accept this?
+
+One of locking maintainers who I met in an LPC told me that he agrees
+with the direction of DEPT and supports DEPT, not officially tho.
+
+What he and other people are concerning w.r.t DEPT the most is, false
+positives, which is the most important issue for now.
+
+At the same time, I think the most important thing is to make DEPT
+useful in practice especially with folio locks involved.  Actually, I'm
+planning to share DEPT's true reports periodically to LKML and work with
+people who believe DEPT can make things better.
+
+Any advices will be welcome.  Thanks for your opinions.
+
+	Byungchul
+> --
+> Cheers,
+> 
+> David
