@@ -1,470 +1,203 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2663009F2;
-	Fri, 21 Aug 2026 20:45:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787345146; cv=none; b=NQ/2ssf8wr6DBEUZsQ5gtStImOTVe+KqMWnJ4SRbWEqSMopvToW2AFbagsul8LEtulcMN5zBhShhcxH9/2ZNfqSbIea18d7MJ0khn989coviLBk8LgClNaHWGzrnd7EGHCqxc8c09iYHeFD7XLf7bkJ4S2f2S+Lf5EvYyPKM5U4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787345146; c=relaxed/simple;
-	bh=KT5KoulurJxwZ4s5uV9c/koWdTL/edq5PI6Qic+HNAA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=inBrL9EF6UDVjLKxfzD5xtXq0apBKyuyFlruW3lMNEdM0n5M9znf1SftfHO9B9B9wea0H/nBzbQiYNUTZDOxINdC50UbQ3YJ5ASdx6LeaeOVNoUHtergNf/3SL/Vy5iRrPolJs4xIsBg6yYq4/8OOIrXnoxo8pbkc2hBHT8f28Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EIm5XS3q; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C91493651;
+	Fri, 21 Aug 2026 20:59:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787345975; cv=fail; b=DrsiZhqsP3FG+5uMyBnzgTfYvNTudYGv67qdZdV4OcPAn/kEB10YfIdEfQdFD06IauQIxu7sNcG25PMPPwYEob83myfPRrGyEQxKK5Boki/JHa9cyFfDTfJbVBN3cP0vfTLxLR0+g4Cfu5yhcETypiA+CUnJ0W+a+Vp2aZLdU/M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787345975; c=relaxed/simple;
+	bh=QdGEGlxGlnZNuREN/7k5kDYI4hboQnEeZgGn7L1+8g4=;
+	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=eNoknU6XcHmwGJuEqvymq2D7RjZOgEA9/2nquUUak3IUT46nrcCVSM/pR/gyErAgLHjN9VBQDTt3CTuYxdJ0MsC4dE9fT2W4YTT9++TfpP+a3R8e46y1k1IE7bBh2UoEta5JL4e196OqA8DqmvDBg4SqrUzjyG1umNZTLf6Xfsc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AFiR91Od; arc=fail smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EIm5XS3q"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AFiR91Od"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787345145; x=1818881145;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=KT5KoulurJxwZ4s5uV9c/koWdTL/edq5PI6Qic+HNAA=;
-  b=EIm5XS3qCJESudAXJe+6ZjoZpZVmK5qbYVvuE3RkhickXsBbyjSlpK1y
-   fADYRs5NZPSY5/LbdFp0sLM4LHMTiRQRgmnnpmHGl3U6TVFLp6mlmBsJj
-   VuD7+BzYXi8ZorJn7FdcPCJ4CP6tOLSf/yCPoamC7Vhj1K04NJMkQymK4
-   Jaa7hE8xgu6qkuwKlLGrO6BN3EZbb6WON1D9hCA2e1GS6H16r2Bz+RasK
-   xnzk8F6ZFvnvLYfMxf6B4WDLRA8+gYCXVXWuzotZoRXRA+sjOR7GquQdf
-   wNsfG+6ejMH0EhHlZaUhVRoFBv6k8nOuveY8FWtBBCCzanG85p1kUznI8
-   A==;
-X-CSE-ConnectionGUID: MiIWPY8BT6S596K5Bkmkrw==
-X-CSE-MsgGUID: 6f2Mbc+gRqGnPqs8miT+WQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11882"; a="88027613"
+  t=1787345974; x=1818881974;
+  h=message-id:date:subject:to:references:from:in-reply-to:
+   content-transfer-encoding:mime-version;
+  bh=QdGEGlxGlnZNuREN/7k5kDYI4hboQnEeZgGn7L1+8g4=;
+  b=AFiR91OdFkPVnvRYyp2rjAkuz3+MKt1n/uTWoN+Sq517e+t9LWHZWbXc
+   ysvn6+QcBERMWWx6Pt7XwMxqtr1oR4T0Lgcvr5mvzKobYtfUD40jSqJm7
+   CxbSqbCXWFNo32lgmAwVK0fJA78yh+75GvuuZ0kwQD38SgaTr6L9kqf3X
+   kxd2TwTW5PhQ8qrOKoA5HeEppKhOY+6rPwhMl1FqQfGOZTnpeQWJ2dC/o
+   e1Mey6/CIhJhGXnmdzx64yjMvxXpNSIAWiNbiiJxWaSPJfXSP6YPDg+9/
+   VVMWB7mFslE0ddlJPqPiHN+RFwoPywXaUEZmJwLq77VLaNQk3bmMJXqM9
+   Q==;
+X-CSE-ConnectionGUID: DqS2ql+FTtSHeFTwh5RgBA==
+X-CSE-MsgGUID: CCL3iD5SRFOfYbDzf1j5ug==
+X-IronPort-AV: E=McAfee;i="6800,10657,11882"; a="110686858"
 X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; 
-   d="scan'208";a="88027613"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 13:45:43 -0700
-X-CSE-ConnectionGUID: gReNSpNyS7G8PezoGwoNeQ==
-X-CSE-MsgGUID: vFRS/tTVQM2LDrwbcsAz9g==
+   d="scan'208";a="110686858"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 13:59:33 -0700
+X-CSE-ConnectionGUID: 4wUPg2sZSZ+F6LZDvhkpGw==
+X-CSE-MsgGUID: xVNzzE73TOOr9MODuBJU7g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; 
-   d="scan'208";a="268400234"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa004.fm.intel.com with ESMTP; 21 Aug 2026 13:45:43 -0700
+   d="scan'208";a="260297792"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 13:59:32 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Fri, 21 Aug 2026 13:59:31 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Fri, 21 Aug 2026 13:59:31 -0700
+Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.47) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Fri, 21 Aug 2026 13:59:31 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=H72DcxbfNBgyg1kLJIvDymPEtsywYqEZB/SIwcC37bj0RNmk6a+M49v90z3OwjR2dfm9836/iGrsHQnSZFTHt6Dv+rTJkxF6Ydd5X/gZFiqoNBpgHcAXBQQyVz/5N9urLuAaFTVVKqrMlZo8KjrFnT08WRTYxGsC1z3Se9giz5WTh40C0iLZ/svgXvJeltLNNXoxZE5pPfljAmwWVWACWXc7paHqjyJbAlv5lgEQSjx5HrZiZj7MB6uzfRpC00ltuX3XVVWwdNzt7zAAUntZb6IfIUiS/T7xv13UIZTyQuD1hUsp/G5FZR5hOgcEw/FxIklbKCoEmwSdI+0gzmrpOw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LebL994XkMcN/9zTWfEffqb7UQOujw6A1rp1cyz9GW8=;
+ b=VjSs5Pj6hY5jG3/d3cQDt113UroO+zuKb3hgCypD0R1oF+AKQDI9lLBZPIIZ0xRaXFJ23MGjI1PovOWgYLjya/TqsPmTQ49umHB23v9Sme1B6z2khw5oPPmgy9h54gAhZyqJPREbtBPdm5QzCdYi136li9GtRe2T2mcGjd5roL0nj159flFxPYjh2uEJojJ9yDpsAR08z05wfWXAhSNqOdElXvsYGz3HDB2tEbs6tlzG2huLpsMEhZ9/EG+XPF6YA9DG9PiTr9jbczlMEJbvTUhQUqTm0vzc4IPeUWmEsaAb6TV7WcKFl0EEhP1vSFFJEoA2Dr+MwJIDk7IWUhqOYg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB8230.namprd11.prod.outlook.com (2603:10b6:8:158::21)
+ by SJ0PR11MB8272.namprd11.prod.outlook.com (2603:10b6:a03:47d::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Fri, 21 Aug
+ 2026 20:59:28 +0000
+Received: from DS0PR11MB8230.namprd11.prod.outlook.com
+ ([fe80::2592:f5a9:a751:be40]) by DS0PR11MB8230.namprd11.prod.outlook.com
+ ([fe80::2592:f5a9:a751:be40%5]) with mapi id 15.21.0339.010; Fri, 21 Aug 2026
+ 20:59:28 +0000
+Message-ID: <477734d9-ed8e-4696-8160-382b29e7491c@intel.com>
+Date: Fri, 21 Aug 2026 13:59:26 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] ice: rephrase LLDP filter fallback message
+To: Thomas Bogendoerfer <tbogendoerfer@suse.de>, Przemek Kitszel
+	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	<intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, "Ertman, David M" <david.m.ertman@intel.com>
+References: <20260717084453.9521-1-tbogendoerfer@suse.de>
+Content-Language: en-US
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Cc: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	jacob.e.keller@intel.com,
-	aleksandr.loktionov@intel.com,
-	sdf@fomichev.me,
-	horms@kernel.org,
-	stable@vger.kernel.org,
-	Rafal Romanowski <rafal.romanowski@intel.com>
-Subject: [PATCH net 3/4] iavf: send MAC change request synchronously
-Date: Fri, 21 Aug 2026 13:45:35 -0700
-Message-ID: <20260821204537.2189112-4-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20260821204537.2189112-1-anthony.l.nguyen@intel.com>
-References: <20260821204537.2189112-1-anthony.l.nguyen@intel.com>
+In-Reply-To: <20260717084453.9521-1-tbogendoerfer@suse.de>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR04CA0344.namprd04.prod.outlook.com
+ (2603:10b6:303:8a::19) To DS0PR11MB8230.namprd11.prod.outlook.com
+ (2603:10b6:8:158::21)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB8230:EE_|SJ0PR11MB8272:EE_
+X-MS-Office365-Filtering-Correlation-Id: b6598860-a666-48ab-e40a-08deffc71700
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|18002099003|22082099003|10067099003|6133799003|56012099006|11063799006|921020;
+X-Microsoft-Antispam-Message-Info: HqaZYyRXaqpnYAVBVpQ5VKi1dVzAlFG3y5tW5wpBcJxyigkECWlb8gzEk2Gpm8pcOLkDGwif7X50R3IrabUwTVgOgj11DxLIs2dZnH8QhIFmvKQtXwmQTgv7RQ+l8YIqyAWYbL1m0IQLSn4Fx9CARNPKlcR/3W7kvWR9hGCJkpAaiHuXnlUapGd0uarSOkbL2omqliSROVfnf7BNGjXV2xwk6+Hx7HKyoVaawNkOt1Wy3fX1+jfv6g5oxixanoIlL0KUodvSIedsJyBH2uInDLBmtD5baNVbS5Z+x7MSRN8kAm28iKYTtXxRE2G0K1ccU+4aZ/ZmOZnx7sSsWikZ4V0lTTKopC8JkEoAOKTcJk+3JlTC08P2C1MTovTpYOzp/namEAU1JHPtGiIKvJF3CYFUQ1/H4WR60wh5ZDRWl2fjClczZxRI77cXDUG6OVJ4gfkYgOh+pDffzwOUj1eq7oP0Fm9AkLJCoW4KXXpV+olxx6wqwDF3GBDVP7JTMRjAb5lirpWrinHJxcovGxphdy5SYh1Ra8ek4ExO8X5mlODQiwq/NxTTfkcoDooK7xPkglSDk6TaDxb9qNCa2FCsucXGqlCnz4LMKpAk8DVSiAmIGViCYHZmiszX8jmazB4tacEPZHutlcDAOBQQRCG3o05nKTCNhA7O7RgPxyZxKJo+ESPYD1NE0vXZxtpj/7eg9z8xME2ytYfVNK60hjle3g==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8230.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(18002099003)(22082099003)(10067099003)(6133799003)(56012099006)(11063799006)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VWM4bUk5c3lwVEtHaTNFdExoblhJdzVtbE94emc1MlJWZ2hzRWROWG1POG1K?=
+ =?utf-8?B?ekhwSVpXUng1MXk3VjdMMG9JemkzblJoNWRuZy9icGdOTnhkZXpFRFMrZThi?=
+ =?utf-8?B?OFJ6MzZaWXRRaWN4U0dZSHhhaG11amZvS1BQdmJRRGFLeGllSlQ5emkwQ25o?=
+ =?utf-8?B?ckxycFErc3lDc21YZXZBd21ad3FiQXg3Ni9rMzNzN1JPRXQrNS9iWWg5U2tJ?=
+ =?utf-8?B?Y0VwaElsMS9hbDJXcEIzbmRUeWkvMTZMVlBmYm5MT1luSEhQcFJmNXRHbVRq?=
+ =?utf-8?B?bHF0a0lmcy9hcFRvZHhNMHR0TmlEMUdRMjc2b3pwWi9CQTJrRHR3YnFXdk0x?=
+ =?utf-8?B?Zlp3NTFYcW5JZHRtc0xiZjBSbWpjUklpaFlkSXg4T0xKNTlXVmp1Q21NanlG?=
+ =?utf-8?B?cEIzWkdsUElPbnJQNlV0Q3IyYkNQZEtBTXZ0cU9kZlVSS3VDVmVJaEFML0xL?=
+ =?utf-8?B?ZHR3WVRNMEVNZnhUZUh3MktLSnMwV04wTHFOWU5vdFV1NE5ZRHBvd3YzWExC?=
+ =?utf-8?B?OU83U0ttTGh6QmZQaHdiU0pRejdWVHhweFUxVi9yNWVSeW1wMkRIV0tyK0RT?=
+ =?utf-8?B?SnFCQTNHS0ZIU3BIWW1xSWFPOXlpTm9xZkJNdHhSVFpuVWtkWGtvQWNnWTJO?=
+ =?utf-8?B?dXA0UENPMkhnSU9TbmwyWm1TNWg1RUhVaWdOU2RtbG40aXdseEdiaHFKcVpw?=
+ =?utf-8?B?SXlVcHN5SXliVDVZL0x5Ky9zZk9YVzRnN0NjckIvUGJXQ1dtaTUrcW1jNENw?=
+ =?utf-8?B?MEVOb2ZhcFB1dUg2YTNCNlpzdXE0ejhjN3VsWW5MZzZaZ1c0Zkt1Y01HeHlx?=
+ =?utf-8?B?cVh3NHVPTG9XckI4K3ZIZnJzc3gvQzlxZGNvRmdYbnh3MThVMXV3cDRJdE0r?=
+ =?utf-8?B?MDJmRm1QM1ZQczAxNHptb2hFUkp2RjlEOXdCRmxjSmRMdHgycExaV2JmeUly?=
+ =?utf-8?B?R1BKQ2JoZHZxN05ReTlibFVpbHkyN0phK2orWVpGVlYvR2htNXZQKzVFUTV0?=
+ =?utf-8?B?UmE1UGxndmVFckpDODhaTGRiY29EcUpXaVdobGhpQ2VyU2JSTXB6M3FrT0oz?=
+ =?utf-8?B?akFZVDVSZUovdGdWS29QNmdXQVZuVFN5YjdzOU55YXBiSXh5ZTBjZjIxbzk5?=
+ =?utf-8?B?NTFLNVFmaGhmRW85ejNSMkFGSjNiSGZvMC84WjNzYkVodHloZ1FpOFkxQmQy?=
+ =?utf-8?B?ZVJVTW1JZG1VbDRoQXRaWDI5eFF4bEtMeG5oSlhucXpzMzVJd1J4REtGM2dx?=
+ =?utf-8?B?QnFaYUoxaFQxZ2t0ZUg1UjA3RENEQ3J3TWxyZW1QZkxmN0VjLzgvdGgzcHh1?=
+ =?utf-8?B?UkF2UVU3aFVsWXY5WnVaNFpXdXhrSERVeDUvc3BhdFBmaHVXNnovY1FFS1FJ?=
+ =?utf-8?B?dFB5QldNY3c5WXk2ZHpwRWpCT0RlblF6c25JbisyQzdnSjh0VWRXSEt1NFNJ?=
+ =?utf-8?B?Z0JVUG1rYTMzazFGbDhFUlpyblEzaWdqQ1EwRGdGa0JSQ2VVMGR3dFdzbmgw?=
+ =?utf-8?B?TnZ5OVEwUStJYitrbGpCUVBZbjd4dThaSnNxL1huZXZNUXJOZVFVQmhoaE9r?=
+ =?utf-8?B?Yk96MldvMjRJYlYvczIvUXh6VVNXUDJrSXpIUm9QeDJ5cUhUTVduV2d5RXRT?=
+ =?utf-8?B?Kyt1eG1JK0V5eCtQeXA5K3FsS000T25wd0U5Sm5qem1Xcll2RmhNU0pYQUtN?=
+ =?utf-8?B?aktISGhBS21GL2s4T0EzR0Z4R1A0UWo0NUI5YzJmUmdrbEIybXY0TzFWUU1y?=
+ =?utf-8?B?ZnVaZ0VGOHFwaGU3dHJTMnN1NFlmVG9LSzM3blhIVEJMYU5vaEVrQTJFaFFm?=
+ =?utf-8?B?UzFxbnlaL0RYZjVPR2JPSUlFQnVac1RJdTQvNFh5eVdqYVVzaFZlTDVsZEw5?=
+ =?utf-8?B?Mzg0YjNTY3F2Z1RPL2NKTjlTRFpNTk1CMkhLc0FCWlVJbWhJcnd3WHVQSXRa?=
+ =?utf-8?B?b3lsNVlKNUZDbnE1NytvNytLRnozV2VzSk1iNnNoWGJha1VGWFNCUUpoN3NX?=
+ =?utf-8?B?dHFPQUhsYWtYaVo5ZG9wWS9GamozaTY3Smdwam12WkhCNmNRamlLeStCQkI5?=
+ =?utf-8?B?c3pTTklhYW9ud3JpRmRkSzRFT3laamp2a01pblhHakQwNm51UFdnUjR0eG1r?=
+ =?utf-8?B?OTZXNExHTVdJUUg4azhVMWlPSkVwcTlRd2FySS9IOHplV3FLeFA3Y2w2bXBL?=
+ =?utf-8?B?ZSt0ZzFDUzVieGh3bzJwTVJqbFVMcENwamM3Qm1SSXhuM1R4N0I1eldFYVVB?=
+ =?utf-8?B?aTdnZnpQUmtGNjZQdnRSMGhmTkxGQnA4SmRqT1JXMlFpRnBiRzJlcDRKNjc4?=
+ =?utf-8?B?Ri9PZm1KQ2E4YWN2SVpXUkVUZUhON2YxMSt2N0tNNHdjaWkyeDcvcTFDNnR4?=
+ =?utf-8?Q?FEZhKIBNOi5C+sTk=3D?=
+X-Exchange-RoutingPolicyChecked: WiW75Z2RrqsqxgHwE3WasBPoC3L4DvzZMVni/DYHZDSdpdpt7jn3D0BKqa0hzZJCA8X7Aebs4JU9iiBFhwvE2HGogU1Trwn1JUxa4Oetx9Q5SbudAYmRiVAdZOPIYd0fFz5kCEXxxQhluBhZ2yUTJ1rLHucgR6uORfysrphL+IqyH+RaeudZ0+ioF8mSIb7rU89CL8GL1jVPhyoCyUX32x5v0jWMYVOyOcQZdvwD2AdyIVHrJEmL/rW5+n3/SXv/6FMV/87JpPgGj6EwuE12KVZ8lNJPCwFZWgHxah08KGzUSkgcXmbJ296j57lr2K9wst0DezTweSxSP0BqgUCrew==
+X-MS-Exchange-CrossTenant-Network-Message-Id: b6598860-a666-48ab-e40a-08deffc71700
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8230.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 20:59:28.4908
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: IXOrkcnaJuh3VhXH3/zaYl0Msb92P8MjcaWN2tfsn4vyk48qi3+Vle8R1WkU0p3CjGhQFIJk8QvR7qfpsvgfZCiyFQ6w3lYznqioJ+zp8D4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB8272
+X-OriginatorOrg: intel.com
 
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-After commit ad7c7b2172c3 ("net: hold netdev instance lock during sysfs
-operations"), iavf_set_mac() is called with the netdev instance lock
-already held.
 
-The function queues a MAC address change request via
-iavf_replace_primary_mac() and then waits for completion. However, in
-the current flow, the actual virtchnl message is sent by the watchdog
-task, which also needs to acquire the netdev lock to run. Additionally,
-the adminq_task which processes virtchnl responses also needs the netdev
-lock.
+On 7/17/2026 1:44 AM, Thomas Bogendoerfer wrote:
+> Seeing an error message in a logfile triggers scripts/admins thinking of
+> problems. The LLDP fallback message itself is not an error, it just
+> indicates it's using a different filter mechanism. So rephrase to a
+> less "scary" message.
 
-This creates a deadlock scenario:
-1. iavf_set_mac() holds netdev lock and waits for MAC change
-2. Watchdog needs netdev lock to send the request -> blocked
-3. Even if request is sent, adminq_task needs netdev lock to process
-   PF response -> blocked
-4. MAC change times out after 2.5 seconds
-5. iavf_set_mac() returns -EAGAIN
+Hi Thomas,
 
-This particularly affects VFs during bonding setup when multiple VFs are
-enslaved in quick succession.
+I believe this patch [1] will remove the need for this change. Could 
+test it and confirm that it will work for you?
 
-Fix by implementing a synchronous MAC change operation similar to the
-approach used in commit fdadbf6e84c4 ("iavf: fix incorrect reset handling
-in callbacks").
+Thanks,
+Tony
 
-The solution:
-1. Send the virtchnl ADD_ETH_ADDR message directly (not via watchdog)
-2. Poll the admin queue hardware directly for responses
-3. Process all received messages (including non-MAC messages)
-4. Return when MAC change completes or times out
+[1] 
+https://lore.kernel.org/intel-wired-lan/20260811181127.1142095-1-david.m.ertman@intel.com/ 
 
-A new generic function iavf_poll_virtchnl_response() is introduced that
-can be reused for any future synchronous virtchnl operations. It takes a
-callback to check completion, allowing flexible condition checking.
-
-This allows the operation to complete synchronously while holding
-netdev_lock, without relying on watchdog or adminq_task. The function
-can sleep for up to 2.5 seconds polling hardware, but this is acceptable
-since netdev_lock is per-device and only serializes operations on the
-same interface.
-
-To support this, change iavf_add_ether_addrs() to return an error code
-instead of void, allowing callers to detect failures. Additionally,
-export iavf_mac_add_reject() to enable proper rollback on local failures
-(timeouts, send errors) - PF rejections are already handled automatically
-by iavf_virtchnl_completion().
-
-Remove vc_waitqueue entirely because iavf_set_mac was the only waiter on
-this waitqueue and after the changes it is not needed.
-
-Fixes: ad7c7b2172c3 ("net: hold netdev instance lock during sysfs operations")
-cc: stable@vger.kernel.org
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
----
- drivers/net/ethernet/intel/iavf/iavf.h        | 11 ++-
- drivers/net/ethernet/intel/iavf/iavf_main.c   | 85 ++++++++++++----
- .../net/ethernet/intel/iavf/iavf_virtchnl.c   | 99 +++++++++++++++++--
- 3 files changed, 165 insertions(+), 30 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
-index dc31202b2a94..8c45536fd502 100644
---- a/drivers/net/ethernet/intel/iavf/iavf.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf.h
-@@ -259,7 +259,6 @@ struct iavf_adapter {
- 	struct work_struct adminq_task;
- 	struct work_struct finish_config;
- 	wait_queue_head_t down_waitqueue;
--	wait_queue_head_t vc_waitqueue;
- 	struct iavf_q_vector *q_vectors;
- 	struct list_head vlan_filter_list;
- 	int num_vlan_filters;
-@@ -588,8 +587,9 @@ void iavf_configure_queues(struct iavf_adapter *adapter);
- void iavf_enable_queues(struct iavf_adapter *adapter);
- void iavf_disable_queues(struct iavf_adapter *adapter);
- void iavf_map_queues(struct iavf_adapter *adapter);
--void iavf_add_ether_addrs(struct iavf_adapter *adapter);
-+int iavf_add_ether_addrs(struct iavf_adapter *adapter);
- void iavf_del_ether_addrs(struct iavf_adapter *adapter);
-+void iavf_mac_add_reject(struct iavf_adapter *adapter);
- void iavf_add_vlans(struct iavf_adapter *adapter);
- void iavf_del_vlans(struct iavf_adapter *adapter);
- void iavf_set_promiscuous(struct iavf_adapter *adapter);
-@@ -606,6 +606,13 @@ void iavf_disable_vlan_stripping(struct iavf_adapter *adapter);
- void iavf_virtchnl_completion(struct iavf_adapter *adapter,
- 			      enum virtchnl_ops v_opcode,
- 			      enum iavf_status v_retval, u8 *msg, u16 msglen);
-+int iavf_poll_virtchnl_response(struct iavf_adapter *adapter,
-+				struct iavf_arq_event_info *event,
-+				bool (*condition)(struct iavf_adapter *adapter,
-+						  const void *data,
-+						  enum virtchnl_ops v_op),
-+				const void *cond_data,
-+				unsigned int timeout_ms);
- int iavf_config_rss(struct iavf_adapter *adapter);
- void iavf_cfg_queues_bw(struct iavf_adapter *adapter);
- void iavf_cfg_queues_quanta_size(struct iavf_adapter *adapter);
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 630388e9d28c..3fa288e3798a 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -1029,6 +1029,60 @@ static bool iavf_is_mac_set_handled(struct net_device *netdev,
- 	return ret;
- }
- 
-+/**
-+ * iavf_mac_change_done - Check if MAC change completed
-+ * @adapter: board private structure
-+ * @data: MAC address being checked (as const void *)
-+ * @v_op: virtchnl opcode from processed message
-+ *
-+ * Callback for iavf_poll_virtchnl_response() to check if MAC change completed.
-+ *
-+ * Return: true if MAC change completed, false otherwise
-+ */
-+static bool iavf_mac_change_done(struct iavf_adapter *adapter,
-+				 const void *data, enum virtchnl_ops v_op)
-+{
-+	const u8 *addr = data;
-+
-+	return iavf_is_mac_set_handled(adapter->netdev, addr);
-+}
-+
-+/**
-+ * iavf_set_mac_sync - Synchronously change MAC address
-+ * @adapter: board private structure
-+ * @addr: MAC address to set
-+ *
-+ * Send MAC change request to PF and poll admin queue for response.
-+ * Caller must hold netdev_lock. This can sleep for up to 2.5 seconds.
-+ * Event buffer is allocated before sending to avoid state mismatch if
-+ * allocation fails after message is sent to PF.
-+ *
-+ * Return: 0 on success, negative on failure
-+ */
-+static int iavf_set_mac_sync(struct iavf_adapter *adapter, const u8 *addr)
-+{
-+	struct iavf_arq_event_info event;
-+	int ret;
-+
-+	netdev_assert_locked(adapter->netdev);
-+
-+	event.buf_len = IAVF_MAX_AQ_BUF_SIZE;
-+	event.msg_buf = kzalloc(event.buf_len, GFP_KERNEL);
-+	if (!event.msg_buf)
-+		return -ENOMEM;
-+
-+	ret = iavf_add_ether_addrs(adapter);
-+	if (ret)
-+		goto out;
-+
-+	ret = iavf_poll_virtchnl_response(adapter, &event,
-+					  iavf_mac_change_done, addr, 2500);
-+
-+out:
-+	kfree(event.msg_buf);
-+	return ret;
-+}
-+
- /**
-  * iavf_set_mac - NDO callback to set port MAC address
-  * @netdev: network interface device structure
-@@ -1049,25 +1103,23 @@ static int iavf_set_mac(struct net_device *netdev, void *p)
- 		return -EADDRNOTAVAIL;
- 
- 	ret = iavf_replace_primary_mac(adapter, addr->sa_data);
--
- 	if (ret)
- 		return ret;
- 
--	ret = wait_event_interruptible_timeout(adapter->vc_waitqueue,
--					       iavf_is_mac_set_handled(netdev, addr->sa_data),
--					       msecs_to_jiffies(2500));
--
--	/* If ret < 0 then it means wait was interrupted.
--	 * If ret == 0 then it means we got a timeout.
--	 * else it means we got response for set MAC from PF,
--	 * check if netdev MAC was updated to requested MAC,
--	 * if yes then set MAC succeeded otherwise it failed return -EACCES
--	 */
--	if (ret < 0)
-+	ret = iavf_set_mac_sync(adapter, addr->sa_data);
-+	if (ret) {
-+		/* Rollback only if send failed (message never reached PF).
-+		 * Don't rollback on timeout (-EAGAIN) because the message was
-+		 * sent and PF will eventually respond. When the response arrives,
-+		 * iavf_virtchnl_completion() will handle rollback (on PF error)
-+		 * or acceptance (on PF success) automatically.
-+		 */
-+		if (ret != -EAGAIN) {
-+			iavf_mac_add_reject(adapter);
-+			ether_addr_copy(adapter->hw.mac.addr, netdev->dev_addr);
-+		}
- 		return ret;
--
--	if (!ret)
--		return -EAGAIN;
-+	}
- 
- 	if (!ether_addr_equal(netdev->dev_addr, addr->sa_data))
- 		return -EACCES;
-@@ -5397,9 +5449,6 @@ static int iavf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	/* Setup the wait queue for indicating transition to down status */
- 	init_waitqueue_head(&adapter->down_waitqueue);
- 
--	/* Setup the wait queue for indicating virtchannel events */
--	init_waitqueue_head(&adapter->vc_waitqueue);
--
- 	INIT_LIST_HEAD(&adapter->ptp.aq_cmds);
- 	init_waitqueue_head(&adapter->ptp.phc_time_waitqueue);
- 	mutex_init(&adapter->ptp.aq_cmd_lock);
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-index ec234cc8bd9d..e6b7e8f82c7c 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-@@ -2,6 +2,7 @@
- /* Copyright(c) 2013 - 2018 Intel Corporation. */
- 
- #include <linux/net/intel/libie/rx.h>
-+#include <net/netdev_lock.h>
- 
- #include "iavf.h"
- #include "iavf_ptp.h"
-@@ -555,20 +556,23 @@ iavf_set_mac_addr_type(struct virtchnl_ether_addr *virtchnl_ether_addr,
-  * @adapter: adapter structure
-  *
-  * Request that the PF add one or more addresses to our filters.
-- **/
--void iavf_add_ether_addrs(struct iavf_adapter *adapter)
-+ *
-+ * Return: 0 on success, negative on failure
-+ */
-+int iavf_add_ether_addrs(struct iavf_adapter *adapter)
- {
- 	struct virtchnl_ether_addr_list *veal;
- 	struct iavf_mac_filter *f;
- 	int i = 0, count = 0;
- 	bool more = false;
- 	size_t len;
-+	int ret;
- 
- 	if (adapter->current_op != VIRTCHNL_OP_UNKNOWN) {
- 		/* bail because we already have a command pending */
- 		dev_err(&adapter->pdev->dev, "Cannot add filters, command %d pending\n",
- 			adapter->current_op);
--		return;
-+		return -EBUSY;
- 	}
- 
- 	spin_lock_bh(&adapter->mac_vlan_list_lock);
-@@ -580,7 +584,7 @@ void iavf_add_ether_addrs(struct iavf_adapter *adapter)
- 	if (!count) {
- 		adapter->aq_required &= ~IAVF_FLAG_AQ_ADD_MAC_FILTER;
- 		spin_unlock_bh(&adapter->mac_vlan_list_lock);
--		return;
-+		return 0;
- 	}
- 	adapter->current_op = VIRTCHNL_OP_ADD_ETH_ADDR;
- 
-@@ -594,8 +598,9 @@ void iavf_add_ether_addrs(struct iavf_adapter *adapter)
- 
- 	veal = kzalloc(len, GFP_ATOMIC);
- 	if (!veal) {
-+		adapter->current_op = VIRTCHNL_OP_UNKNOWN;
- 		spin_unlock_bh(&adapter->mac_vlan_list_lock);
--		return;
-+		return -ENOMEM;
- 	}
- 
- 	veal->vsi_id = adapter->vsi_res->vsi_id;
-@@ -615,8 +620,15 @@ void iavf_add_ether_addrs(struct iavf_adapter *adapter)
- 
- 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
- 
--	iavf_send_pf_msg(adapter, VIRTCHNL_OP_ADD_ETH_ADDR, (u8 *)veal, len);
-+	ret = iavf_send_pf_msg(adapter, VIRTCHNL_OP_ADD_ETH_ADDR, (u8 *)veal, len);
- 	kfree(veal);
-+	if (ret) {
-+		dev_err(&adapter->pdev->dev,
-+			"Unable to send ADD_ETH_ADDR message to PF, error %d\n", ret);
-+		adapter->current_op = VIRTCHNL_OP_UNKNOWN;
-+	}
-+
-+	return ret;
- }
- 
- /**
-@@ -712,8 +724,8 @@ static void iavf_mac_add_ok(struct iavf_adapter *adapter)
-  * @adapter: adapter structure
-  *
-  * Remove filters from list based on PF response.
-- **/
--static void iavf_mac_add_reject(struct iavf_adapter *adapter)
-+ */
-+void iavf_mac_add_reject(struct iavf_adapter *adapter)
- {
- 	struct net_device *netdev = adapter->netdev;
- 	struct iavf_mac_filter *f, *ftmp;
-@@ -2364,7 +2376,6 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
- 			iavf_mac_add_reject(adapter);
- 			/* restore administratively set MAC address */
- 			ether_addr_copy(adapter->hw.mac.addr, netdev->dev_addr);
--			wake_up(&adapter->vc_waitqueue);
- 			break;
- 		case VIRTCHNL_OP_DEL_ETH_ADDR:
- 			dev_err(&adapter->pdev->dev, "Failed to delete MAC filter, error %s\n",
-@@ -2555,7 +2566,6 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
- 			eth_hw_addr_set(netdev, adapter->hw.mac.addr);
- 			netif_addr_unlock_bh(netdev);
- 		}
--		wake_up(&adapter->vc_waitqueue);
- 		break;
- 	case VIRTCHNL_OP_GET_STATS: {
- 		struct iavf_eth_stats *stats =
-@@ -2950,3 +2960,72 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
- 	} /* switch v_opcode */
- 	adapter->current_op = VIRTCHNL_OP_UNKNOWN;
- }
-+
-+/**
-+ * iavf_poll_virtchnl_response - Poll admin queue for virtchnl response
-+ * @adapter: adapter structure
-+ * @event: pre-allocated event buffer to use for polling
-+ * @condition: callback to check if desired response received
-+ * @cond_data: context data passed to condition callback
-+ * @timeout_ms: maximum time to wait in milliseconds
-+ *
-+ * Polls the admin queue and processes all incoming virtchnl messages.
-+ * After processing each valid message, calls the condition callback to check
-+ * if the expected response has been received. The callback receives the opcode
-+ * of the processed message to identify which response was received. Continues
-+ * polling until the callback returns true or timeout expires.
-+ *
-+ * Caller must allocate event buffer before sending any messages to PF to avoid
-+ * state mismatch if allocation fails after message is sent.
-+ *
-+ * Caller must hold netdev_lock. This can sleep for up to timeout_ms while
-+ * polling hardware.
-+ *
-+ * Return: 0 on success (condition met), -EAGAIN on timeout, or error code
-+ */
-+int iavf_poll_virtchnl_response(struct iavf_adapter *adapter,
-+				struct iavf_arq_event_info *event,
-+				bool (*condition)(struct iavf_adapter *adapter,
-+						  const void *data,
-+						  enum virtchnl_ops v_op),
-+				const void *cond_data,
-+				unsigned int timeout_ms)
-+{
-+	struct iavf_hw *hw = &adapter->hw;
-+	enum virtchnl_ops received_op;
-+	unsigned long timeout;
-+	int ret = -EAGAIN;
-+	u16 pending = 0;
-+	u32 v_retval;
-+
-+	netdev_assert_locked(adapter->netdev);
-+
-+	timeout = jiffies + msecs_to_jiffies(timeout_ms);
-+	do {
-+		if (!pending)
-+			usleep_range(50, 75);
-+
-+		if (iavf_clean_arq_element(hw, event, &pending) == IAVF_SUCCESS) {
-+			received_op = (enum virtchnl_ops)le32_to_cpu(event->desc.cookie_high);
-+			if (received_op != VIRTCHNL_OP_UNKNOWN) {
-+				v_retval = le32_to_cpu(event->desc.cookie_low);
-+
-+				iavf_virtchnl_completion(adapter, received_op,
-+							 (enum iavf_status)v_retval,
-+							 event->msg_buf, event->msg_len);
-+
-+				if (condition(adapter, cond_data, received_op)) {
-+					ret = 0;
-+					break;
-+				}
-+			}
-+
-+			memset(event->msg_buf, 0, IAVF_MAX_AQ_BUF_SIZE);
-+
-+			if (pending)
-+				continue;
-+		}
-+	} while (time_before(jiffies, timeout));
-+
-+	return ret;
-+}
--- 
-2.47.1
+> Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+> ---
+>   drivers/net/ethernet/intel/ice/ice_lib.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+> index 8cdc4fda89e9..59341b5a0c05 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_lib.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+> @@ -2097,7 +2097,7 @@ void ice_vsi_cfg_sw_lldp(struct ice_vsi *vsi, bool tx, bool create)
+>   				goto report;
+>   
+>   			dev_info(dev,
+> -				 "Failed to add generic LLDP Rx filter on VSI %i error: %d, falling back to specialized AQ control\n",
+> +				 "Using generic LLDP Rx filter on VSI %i is not possible (%d), falling back to specialized AQ control\n",
+>   				 vsi->vsi_num, status);
+>   		}
+>   
 
