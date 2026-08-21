@@ -1,133 +1,163 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14BA3290AA
-	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 20:36:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55AFE1DE894
+	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 20:45:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787344614; cv=none; b=O12yvmyl03ToCsBYEzJ7VKgqyMcW+5VWm2XWj1AV1lLckUpjK6X05FfgdfT9h9cRnu1//tDMO9ederVmS9yuHEUEDKYs6bSfWyfxCZ8v7tIcjbh0sxJlIei8GRAgpdvuH6CwSkmYPc+GMc7Fz4XyVufsfNDEB2la6l2R/P9ybwI=
+	t=1787345144; cv=none; b=WktNUPSTfyS9Xf1Xl9dR4ncT/vIFQ2xFMvZ4ylETv+hLp8wkdX+h4Y0SM5wwpUHWCNCSsuEi/F9epsa1f8sXnhMozeT08Qg6cuCmbMyZaTA82u4tDFFEdxXeWDcP8mMae26i+3mFQ3spszYp+Dgg91DkvfnJkjx0bLzVJ0L648c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787344614; c=relaxed/simple;
-	bh=juFzRqmgnp4GrYjLQBzkac0XkXptzzDEmGklZO07cHM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IfVm+FNZ0ZNBI+Gy9J0ombxQannE4Dt3PP37B52ZDeV/t3Zvflv5tj24q7ewKtF5eLDtxGytEm8SoExBU3MuQKlDIxtsajvn29wY8946Fd6kRA39Sid2HEs74515W5xZmnK2mDUFL0Xp0S7IzVo845YCzN3nfR6K0+ogvA+93TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cBtKvkKX; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787345144; c=relaxed/simple;
+	bh=YlaU70I7d9fkB/zdJIATfkN2tt70EEVaI+++t4fmDUk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tB+Z36/SCnuGRjxExlE1VOWaTEjLRYl2enX96+IxW4pzjjax+kJ+n4R3TU5qCDfOjKMzW/D+JD3dRRCkIfkcG9/wVeIIgm7fhRPE80dlPkd8YG2LUCOZAwx8rG4Vf4iq5IgOu739cQg5y8nctN2ji2dp/IOtcepkoCD+SDbBlps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YM9aVmEZ; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cBtKvkKX"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4953de5be0aso9816295e9.0
-        for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 13:36:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787344611; x=1787949411; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7GhATLDXR0r37fdF81Q936jYQcN6+SnW0C5ynuRsfMc=;
-        b=cBtKvkKXWPBpUuBxWRcb/WC8RIBDyRKGDeJc8c8YO+FrTXBJDnBtndxe1M4Cn/qdL4
-         sAqZ//y1gw72c6w7CbZrkm+qfjprAQWy9atTow5cSBboDUNWbG+1+Gig4sZ3CmC/6S2Z
-         uOij++eJaO8xJZN/piKtKEv4Cdry853qdddTG3Rrhcwj5f2fbfQi6QguT51k3VikviD4
-         n/UwnhuvzNNUYjAPzBmmrS5KORldqPNxt8VDdgscTZtAkCjLX7EZl1OIf1W6cGvnn70v
-         x+uY0Q0ibYpX2GdMSdsjLFKD+bd7geWzR3/HHzp0AjY1MwDuHbIiuvXzJO6nmq5ImTU8
-         o60g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787344611; x=1787949411;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7GhATLDXR0r37fdF81Q936jYQcN6+SnW0C5ynuRsfMc=;
-        b=GIL6+Lr6R9PfhmqfqUKwiCcxZlBnworS8+Brn/dGPQ9hsMMIBH7c+Ns6AarTAopsHX
-         4Q6xjRsjWLpaMb6aQV2Ux7UCzXPZBEJ16L5LBwgI9FOLY2ULipVahWcYTWOhM6/NRs+m
-         W7+TSlwWYIhHb29lEURkfjgdGxW0i03VxcTZc7PUcuzNSRidfWXY1Wa4M0C/FljssDuc
-         3xyUQWPWHLXWKFR4MKcRZ6lxqfWViFqk2ptu2mC61pTrg4sHE7AZUYhDLutfn0yn7WG6
-         bprBKi8rr5g1Opwe7ns8uphmS6TV7faDKHofF37Uq/oziA5I9MV7lLEl707KjiPkZ8HS
-         Z4Rw==
-X-Forwarded-Encrypted: i=1; AHgh+RrMXMq5MDm7ZnaLDtPP7+Le6oYSthHbjeDLlYyhb6Pyz+DwjXhyVssW5LJkxp701jCSnMCMvWg=@vger.kernel.org
-X-Gm-Message-State: AFuF++mXACSq1S5nEmUo9n30637k2S2oo1z+uCu91ejhyWI+3qwQJuHw
-	SmkEpd6GLSBXmYgHUp5SWn8x0T0CtmiG2XLfv4wVOaRRiqscnIZS6Ppf
-X-Gm-Gg: AR+sD11uhqImoNMCJPx0MJjgwE3qVFo18x5D1J8npqeSgMqZfvGXOtPJlWVfHYNRIcH
-	TzEEXjKw2MMZxFWxg66S4rsQ6uMwDdd4bm7spyDrjSgVQpmfZbDq4cGqJhXHSJEzM1eTkgHVO1t
-	VI+vfDBUtdQ2GYjnAZ1CZoFUvIKGTrmKvgY1xX2rFmATLCvoHUqfh20QGzUqRhf0d/d7E4+eWfl
-	x/sFQv1Ghqqf1IPj9f/mTAGA7fo4j+59095Q778nVt4nkOMiogYY6Y2DWBZZR8V3O7AVPxlDt+L
-	4zIJIoN7/9hpr294x103D3WPaAi2Qsb9NlXhccXKdx6PIqTiiV7gFZWt+HaWwSeaijzho54s4Fd
-	s1Hs7VqKoracZz43nbdSKIr5WYSUSUHy+xnAWnOCo1kIs0dB/3/0miLsqbpKGg3JvTYSvYTku/U
-	tIXhEKNCAhk3OT/8BHLY9fH+ztSlg164+b2x+ggdrDvb8XAAiZwGZQJeiv+LfHjARifK3qqrsl6
-	ciN6EGB3qDJxxdWBHssU5xaFg==
-X-Received: by 2002:a05:600c:4f0c:b0:499:80d0:8b73 with SMTP id 5b1f17b1804b1-499b8324cebmr141784375e9.4.1787344610835;
-        Fri, 21 Aug 2026 13:36:50 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499b915c6ccsm39410185e9.13.2026.08.21.13.36.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Aug 2026 13:36:50 -0700 (PDT)
-Date: Fri, 21 Aug 2026 21:36:46 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: James <aslan.jnn@gmail.com>
-Cc: Raju Rangoju <Raju.Rangoju@amd.com>, Prashanth Kumar K R
- <PrashanthKumar.K.R@amd.com>, netdev@vger.kernel.org,
- Thomas.Lendacky@amd.com, Simon Horman <horms@kernel.org>, Jakub Kicinski
- <kuba@kernel.org>
-Subject: Re: [PATCH net v2] net: amd-xgbe: support receiving packets with
- bad FCS
-Message-ID: <20260821213646.7bbb94d6@pumpkin>
-In-Reply-To: <20260819091656.23943-1-aslan.jnn@gmail.com>
-References: <20260812091616.35811-1-aslan.jnn@gmail.com>
-	<20260819091656.23943-1-aslan.jnn@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YM9aVmEZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787345142; x=1818881142;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=YlaU70I7d9fkB/zdJIATfkN2tt70EEVaI+++t4fmDUk=;
+  b=YM9aVmEZlnAtR8fZwueRPZboNXu4eo8Fw7OVfaWQaCsD0Dyy2SZTVgZc
+   hNdQQfbDK9CA/fnjzp0t3XQ7IjjkDWaiat9w9ugdpJRSbY4lPHQMIOu3U
+   cpNkg5RX6p+38ysF3ct+c/5dQAU4gSuUkMM0UJynjYg0hDrj9oUzAMBFc
+   jtgMbox6IOAe4oJSuV2gz3X6TFlMVNLbZY23xj6k4xzfgRdnU81YL0Lnh
+   MkpvTKr5fyA9Y2/ReLBupw7p8jm860nc5lOBkvjj7GZT7YMBowcU3Jw2E
+   nuED6xGag28qtoP1bOVAIapDA+6cqNAGkfjNEVoQS96hMWN4gKkYxWB1Q
+   g==;
+X-CSE-ConnectionGUID: 8E9H3jh+QaeMlAKQVAwwCQ==
+X-CSE-MsgGUID: k3BJeQRjRuqLcyOTYc0rBg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11882"; a="88027592"
+X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; 
+   d="scan'208";a="88027592"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 13:45:41 -0700
+X-CSE-ConnectionGUID: fG5WLkOtQLmf4qLozmOznA==
+X-CSE-MsgGUID: xoeqWfxRR3qPIVNgUgelHg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; 
+   d="scan'208";a="268400221"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by fmviesa004.fm.intel.com with ESMTP; 21 Aug 2026 13:45:41 -0700
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	przemyslaw.kitszel@intel.com,
+	jacob.e.keller@intel.com,
+	aleksandr.loktionov@intel.com,
+	sdf@fomichev.me,
+	horms@kernel.org
+Subject: [PATCH net 0/4][pull request] Fix i40e/ice/iavf VF bonding after netdev lock changes
+Date: Fri, 21 Aug 2026 13:45:32 -0700
+Message-ID: <20260821204537.2189112-1-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Wed, 19 Aug 2026 19:16:56 +1000
-James <aslan.jnn@gmail.com> wrote:
+Jose Ignacio Tornos Martinez says:
 
-> amd-xgbe driver currently sets the MAC_RCR.DCRCC bit whenever RX is
-> enabled. This disables hardware FCS validation, causing packets with
-> bad FCS to be accepted unconditionally.
-> 
-> This change unsets DCRCC so that packets with bad FCS will be dropped,
-> in-line with typical behaviours of many other network controllers.
-> 
-> Tests:
-> - Verified that packets with bad FCS are now dropped.
-> - Verified that receiving packets with bad FCS will increment the
->   `rx_crc_errors` counter.
-> 
-> Signed-off-by: James Nugraha <aslan.jnn@gmail.com>
-> ---
-> Changes in v2:
-> - Eliminated DCRCC toggling via RXALL: now it simply sets the
->   correct default value on MAC Rx enable
->  drivers/net/ethernet/amd/xgbe/xgbe-dev.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-dev.c b/drivers/net/ethernet/amd/xgbe/xgbe-dev.c
-> index 2de974213..3ceb130a0 100644
-> --- a/drivers/net/ethernet/amd/xgbe/xgbe-dev.c
-> +++ b/drivers/net/ethernet/amd/xgbe/xgbe-dev.c
-> @@ -3400,7 +3400,7 @@ static void xgbe_enable_rx(struct xgbe_prv_data *pdata)
->  	XGMAC_IOWRITE(pdata, MAC_RQC0R, reg_val);
->  
->  	/* Enable MAC Rx */
-> -	XGMAC_IOWRITE_BITS(pdata, MAC_RCR, DCRCC, 1);
-> +	XGMAC_IOWRITE_BITS(pdata, MAC_RCR, DCRCC, 0);
->  	XGMAC_IOWRITE_BITS(pdata, MAC_RCR, CST, 1);
->  	XGMAC_IOWRITE_BITS(pdata, MAC_RCR, ACS, 1);
->  	XGMAC_IOWRITE_BITS(pdata, MAC_RCR, RE, 1);
-> 
+This series fixes VF bonding failures introduced by commit ad7c7b2172c3
+("net: hold netdev instance lock during sysfs operations").
 
-You can delete the line in the disable function that turns it off.
+When adding VFs to a bond immediately after setting trust mode, MAC
+address changes fail with -EAGAIN, preventing bonding setup. This
+affects both i40e (700-series) and ice (800-series) Intel NICs.
 
-But, really, you should be setting the required MAC_RCR bits in a single
-write.
-Doing RMW sequences on the hardware registers for each bit is really wrong.
-You also need to start with a known value for all the bits, otherwise
-'silly' things can happen is (say) some bios boot code set bits you don't
-otherwise change.
+The core issue is lock contention: iavf_set_mac() is now called with the
+netdev lock held and waits for MAC change completion while holding it.
+However, both the watchdog task that sends the request and the adminq_task
+that processes PF responses also need this lock, creating a deadlock where
+neither can run, causing timeouts.
 
-	David
+Additionally, setting VF trust triggers an unnecessary ~10 second VF reset
+in i40e driver that delays bonding setup, even though filter
+synchronization happens naturally during normal VF operation. For ice
+driver, the delay is not so big, but in the same way the operation is not
+necessary.
+
+This series:
+1. Adds safety guard to prevent MAC changes during reset or early
+   initialization (before VF is ready)
+2. Eliminates unnecessary VF reset when setting trust in i40e (reset only
+   if revoking trust and VF has advanced features configured).
+3. Fixes lock contention by polling admin queue synchronously
+4. Eliminates unnecessary VF reset when setting trust in ice, (reset only
+   if revoking trust and VF has advanced features configured).
+
+The key fix (patch 3/4) implements a synchronous MAC change operation
+similar to the approach used for ndo_change_mtu deadlock fix:
+https://lore.kernel.org/intel-wired-lan/20260211191855.1532226-1-poros@redhat.com/
+Instead of scheduling work and waiting, it:
+
+- Sends the virtchnl message directly (not via watchdog)
+- Polls the admin queue hardware directly for responses
+- Processes all messages inline (including non-MAC messages)
+- Returns when complete or times out
+
+This allows the operation to complete synchronously while holding
+netdev_lock, without relying on watchdog or adminq_task.
+
+The function can sleep for up to 2.5 seconds polling hardware, but this
+is acceptable since netdev_lock is per-device and only serializes
+operations on the same interface.
+
+Testing shows VF bonding now works reliably in ~5 seconds vs 15+ seconds
+before (i40e), without timeouts or errors (i40e and ice).
+
+Tested on Intel 700-series (i40e) and 800-series (ice) dual-port NICs
+with iavf driver.
+
+Thanks to Jan Tluka <jtluka@redhat.com> and Yuying Ma <yuma@redhat.com> for
+reporting the issues.
+---
+These patches are split off from this submission:
+https://lore.kernel.org/netdev/20260804222205.1580328-1-anthony.l.nguyen@intel.com/
+
+Which had comments from Sashiko; responses to each patch are linked below.
+
+From patch 1 response:
+All the comments below fall into pre-existing issues, concerns already
+addressed in previous versions, out-of-scope items, or extreme edge
+cases. No code changes are considered necessary for a new version.
+
+Patch 1: https://lore.kernel.org/netdev/20260812065650.10326-1-jtornosm@redhat.com/
+Patch 2: https://lore.kernel.org/netdev/20260812065955.10460-1-jtornosm@redhat.com/
+Patch 3: https://lore.kernel.org/netdev/20260812070236.10559-1-jtornosm@redhat.com/
+Patch 4: https://lore.kernel.org/netdev/20260812070502.10679-1-jtornosm@redhat.com/
+
+IWL: https://lore.kernel.org/intel-wired-lan/20260623101800.991293-1-jtornosm@redhat.com/
+
+The following are changes since commit 746fc0787f616da418ffc04a110296fe95d53491:
+  net: usb: cdc_ncm: add Apple MacBook Pro USB product ID 0x1902
+and are available in the git repository at:
+  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/net-queue 40GbE
+
+Jose Ignacio Tornos Martinez (4):
+  iavf: return EBUSY if reset in progress or not ready during MAC change
+  i40e: skip unnecessary VF reset when setting trust
+  iavf: send MAC change request synchronously
+  ice: skip unnecessary VF reset when setting trust
+
+ .../ethernet/intel/i40e/i40e_virtchnl_pf.c    | 38 +++++--
+ drivers/net/ethernet/intel/iavf/iavf.h        | 11 ++-
+ drivers/net/ethernet/intel/iavf/iavf_main.c   | 88 +++++++++++++----
+ .../net/ethernet/intel/iavf/iavf_virtchnl.c   | 99 +++++++++++++++++--
+ drivers/net/ethernet/intel/ice/ice_sriov.c    | 35 ++++++-
+ 5 files changed, 226 insertions(+), 45 deletions(-)
+
+-- 
+2.47.1
+
