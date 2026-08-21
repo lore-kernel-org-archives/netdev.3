@@ -1,142 +1,126 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46C9383312
-	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 05:57:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD86379C24;
+	Fri, 21 Aug 2026 06:09:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787291868; cv=none; b=DKmYqRvGRhXUacUTBiE3EDmDY8UeGDYOt1Fnex2Gyar/1bpjDg6T30nIWKNJXYY6HhcT/WUHtBe1FmUf97UkxHrKfcGIViS1QajgO/E4z6IoNqxhcC4whFNG/2ec+ftHxgF2mJ3PvKJW8cEY/dOArLx84JfJfJ6SgJrjcWpNc30=
+	t=1787292557; cv=none; b=BAKPEZrgjzQer9kY6f2M6zBSlw3WkjzCpTmiZAfX4zOgd80rzttmlyvh7U2WVn80+WAlacAZUSwCg0xyzANgxqYSOm6zOtLwA/3U5tGU7opZsMk7T7WjsSj8w6PYwA7/rD1HDoCBKzKswOn6XvAgDIxnWlbMEAkCh/2/T1u8z70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787291868; c=relaxed/simple;
-	bh=VegC6J9gni9wLSQrbDq1hZYsQqCQiWAPBDqy/WYEg0M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e61V2QRMeKPLplOouYQ/YxqtLDNXH0V3P8BNqmkyE08HODwlMDAwDqnYXz5UAhefeEGnav/mj7YRL+9kRsqW5JUBXBjtODpyhGEgZlG9kaG5tmRUJrA+4l8KFiHu69ySUIVyOaKmEixBd752wsFg7GT2XHyP870lEdw8s1gcdOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G/RIhTyc; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787292557; c=relaxed/simple;
+	bh=UVuhDLGaUIh0ajpPdivhSs9ZFGhCoQqK94zlxZ0gD6Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OVnKHEXge/XMm6RmaeaY4pxl4BilpngPDFrlsSPEQe982F6T3GbBO56WHnujlnadAGWFWACH8e4Ktyz3SPnxWQNNwLSxeJ+3NYHC51Eww0mYUIss/fndMcQYf5cYoQf5JPUpZSVWvbA3l4rmYZJuBImkQ4VcBasQ8szBz3HF4/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gr2WDXsC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G/RIhTyc"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38e58034d05so471481a91.2
-        for <netdev@vger.kernel.org>; Thu, 20 Aug 2026 22:57:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787291867; x=1787896667; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=p4zubKJfP4d5jonGYtKrpPAyp+ZFeoBJ9/vh3Z7kgRY=;
-        b=G/RIhTycuaI5NaQuj3io/qYgL2Q+GnpVaHW0tVVhEwm/ZqtVTG4CFjYsw0YhxpkPVW
-         Ny/Hkr/jnXnbq4el/mFKU7M0YNl5THx0ItqA9xSUjP1O2fwkm2oChWlszNzyXfM6xIX1
-         cVl84mJC8rLoOEaFIpmPGGmkoXhJvDWd9NNwm83u8DY3V8icKZVfkQSnFzGTkmDt+Vuf
-         7GA0h1msG/KIAp5Pe1TNyjYIF52qWMRhmfD79r4jTR+5CAtjOlhURaFThhSY5QmzbX1G
-         nDO7g+jJ8Zg1sb6uUpYMnfEm0L2L/+EmnwbqUBhgSGSY+Za67jkd2bRjLZQtZYmJfeWd
-         UEZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787291867; x=1787896667;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=p4zubKJfP4d5jonGYtKrpPAyp+ZFeoBJ9/vh3Z7kgRY=;
-        b=SOkMOW01ahc5VnSLjyoVeZEMq8fGQKl7TZPugqYAUinarQfnCmJRF+AEV5ciOCEtgd
-         x54StiSCF11rZN6rRo+ZYMXmaFpXQM/Wpg/uwRivAVPRcG3yqtBwOGm+33kkE7EzGs9R
-         kOwtBV41QO12SjKlKXu4+px3MAiT+Fydj4gaR+i3iSiUPQYmDf9KlZT4lGhYXRvUFln9
-         VgwnBiIAdpP5iv49gBoFSF9tS9sVf4b9DgjiBFSo/1Z41NXErZjUQuP+ZkisV7xUaZbq
-         TKDwOpph6SO72CMgk7S5uZp4SIJAP0zkzezTn8cIEGedNgLCP4sEkZDuyCiLmCdngt7x
-         8BUg==
-X-Gm-Message-State: AFuF++lK3AZIn2nfl4mRy9yNmMbrws2qb9GQzD0iCMZMg09o/2OO59+1
-	5wmcE3YtDA4zA3lKhqWlleCSZLD7nZIRsWsBxp5ySp8qyAwzKWA1nDq4
-X-Gm-Gg: AR+sD13ZoHb7U9m7zQv80+NTQBVesszfUxv0TKe1a6273uEIxNUBMfnKQckUNlzkRdq
-	USdZWgiwnP9KkflhCvdEpCttKiyQagKD87rLaMdbZOY5nlAj6+lEVQ2iCsdlfWNLyij1M+2h1oC
-	fJYkEu/iLkiOKb07oI5Dor2z1cjxmUGKYWq9Y0f2hG+8LgIAyHDQflycm6dfnY+82QSsZGlUVX2
-	srUfkIr164ihyL2FKuwNQ2F2nUwHbOF5MMt5DJvA7LLtGSn9yhfXXsaHVsfkXEXRErhdQzc574V
-	0UyEzyEwGjiCGkwVCI7XV29Merdcl0dAHwIFjP+OR5aOx7Seimo/UNWNnVs0X19z82WExGoisui
-	QPZOq9JF8JCGQhzwAmQMTjCMTJMTgNwAx6+eeQN1nIMeFoYT35yH6FtxfIOVEjAAe8xIhhP9cm6
-	SianiL6/Lu636rc6K62rdyAom+nG5fV1qo3X1IeA4cbBO4Qwg5m0dAwIJmhV92xqfYDqCDRUBrp
-	01LjIJjUQLyv+gX3/iyhcoL+XlXFQD+Yxes6sdvvFKDqZ4=
-X-Received: by 2002:a17:90b:6cb:b0:366:3517:1aa2 with SMTP id 98e67ed59e1d1-395c2f13243mr8189537a91.0.1787291867058;
-        Thu, 20 Aug 2026 22:57:47 -0700 (PDT)
-Received: from DESKTOP-8BCFI4I ([202.12.123.126])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1416ad3dd15sm20391581c88.2.2026.08.20.22.57.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Aug 2026 22:57:46 -0700 (PDT)
-From: Md Rabbani <rabbanyhmm@gmail.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	Md Rabbani <rabbanyhmm@gmail.com>
-Subject: [PATCH] net: stmmac: fix device node reference leaks in stmmac_mtl_setup()
-Date: Fri, 21 Aug 2026 11:57:18 +0600
-Message-ID: <20260821055718.57-1-rabbanyhmm@gmail.com>
-X-Mailer: git-send-email 2.55.0.windows.3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gr2WDXsC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53FA21F000E9;
+	Fri, 21 Aug 2026 06:09:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787292555;
+	bh=BYMpbY6//lXXJsyd0KVwF4tNxEPtY6aLpXTe/zYx2g0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Gr2WDXsCj05+E6MbHAxC20Bq2AoybRWI0lNEiR1qvHRrBfnFjy/132/l1yqmSAzR1
+	 v/Cbl0aS3VVwduHuke7N19i3f++p9RzY8dfP7G/H/oTsUdznt1/vPHJwukihZIF/hY
+	 0zZ9arbiVmU9FEnxtXMFSzVSyBy33CQPUydYIyC3JxAnlwI20yEitA5d/gUUCUVQub
+	 6rumTp1sLSY650DDfE/Kp1CqYhRvWUtELy/OP/GXmjtqk6misenbl3VJeit3meZhQj
+	 kkp09fNcoBwStnd9DTWWm0E/wBeIWU3hK4Uh1N5CWo6AV1/2qI01mQ0oFUsOTfSQuU
+	 3MdSROZ74mkug==
+Message-ID: <cca417a5-c1e5-41d3-8736-ba7fb7c0d9df@kernel.org>
+Date: Fri, 21 Aug 2026 08:09:09 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/3] nfc: st-nci: Fairphone 5 NFC bring-up (ST21NFCD)
+To: Kristian Brox <isyourbrainfoss@proton.me>
+Cc: Luca Weiss <luca.weiss@fairphone.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+ oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org
+References: <20260820-fp5-st21nfcd-v3-v3-0-5ee0a7f44d04@proton.me>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <20260820-fp5-st21nfcd-v3-v3-0-5ee0a7f44d04@proton.me>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-In stmmac_mtl_setup(), q_node is shared across the RX and TX queue
-parsing loops. When the RX queue loop breaks early because the number
-of parsed queues reaches plat->rx_queues_to_use, q_node retains an
-acquired reference count. If the error check passes
-(queue == plat->rx_queues_to_use), execution proceeds directly to the
-TX queue loop, where of_get_next_child() immediately overwrites q_node
-with the first TX child, permanently leaking the retained RX child
-device node reference.
+On 20/08/2026 22:56, Kristian Brox wrote:
+> This adds NFC on the Fairphone 5 (qcm6490). The board uses an ST21NFCD
+> on I2C. That part speaks raw NCI; the current st-nci driver always
+> wraps NDLC, so using st,st21nfcb-i2c leaves the adapter unusable.
+> 
+> The series adds a st,st21nfcd compatible for the raw-NCI path and the
+> Fairphone 5 DT node. Boards that already use st21nfcb / st21nfcc keep
+> the NDLC path.
+> 
+> Patches are against linux-nfc/for-next (v7.2-rc7). Hardware test was on
+> a Fairphone 5 running postmarketOS, with these changes as modules on a
+> 7.1.2 sc7280 kernel:
+> 
+> - nfctool: Powered: Yes
+> - initiator poll / neard: NTAG 215, NDEF URI read OK
+> 
+> ese-present and uicc-present follow the public schematic (NFC_SWP1/SWP2:
+> SWP_SE to SIM1, SWP_UICC to SIM2). SE/HCE is not tested.
+> 
+> CLK_REQ (GPIO 39) is omitted, as on Fairphone 6 NFC. VBAT and VDD_TX sit
+> on VPH_PWR and are not modelled. VCC_UICC_IN (L4C) is not modelled;
+> UICC SWP is untested.
+> 
+> To/Cc from scripts/get_maintainer.pl via b4 prep --auto-to-cc on this tree.
 
-Switch both loops to for_each_child_of_node_scoped() so child node
-references are automatically dropped upon loop exit or early break,
-and remove the now-unnecessary function-scoped q_node variable and
-its manual of_node_put() at the exit label.
+Still not. I do not believe you did it. You either run these on
+different tree, or have some commits interfering like changing
+maintainers, or did not actually run it, because you still miss all of
+the DT maintainers.
 
-Signed-off-by: Md Rabbani <rabbanyhmm@gmail.com>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-index dc5f951a31..6128ed1bd5 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-@@ -130,7 +130,6 @@ static struct stmmac_axi *stmmac_axi_setup(struct platform_device *pdev)
- static int stmmac_mtl_setup(struct platform_device *pdev,
- 			    struct plat_stmmacenet_data *plat)
- {
--	struct device_node *q_node;
- 	struct device_node *rx_node;
- 	struct device_node *tx_node;
- 	u8 queue = 0;
-@@ -169,7 +168,7 @@ static int stmmac_mtl_setup(struct platform_device *pdev,
- 		plat->rx_sched_algorithm = MTL_RX_ALGORITHM_SP;
- 
- 	/* Processing individual RX queue config */
--	for_each_child_of_node(rx_node, q_node) {
-+	for_each_child_of_node_scoped(rx_node, q_node) {
- 		if (queue >= plat->rx_queues_to_use)
- 			break;
- 
-@@ -227,7 +226,7 @@ static int stmmac_mtl_setup(struct platform_device *pdev,
- 	queue = 0;
- 
- 	/* Processing individual TX queue config */
--	for_each_child_of_node(tx_node, q_node) {
-+	for_each_child_of_node_scoped(tx_node, q_node) {
- 		if (queue >= plat->tx_queues_to_use)
- 			break;
- 
-@@ -276,7 +275,6 @@ static int stmmac_mtl_setup(struct platform_device *pdev,
- out:
- 	of_node_put(rx_node);
- 	of_node_put(tx_node);
--	of_node_put(q_node);
- 
- 	return ret;
- }
--- 
-2.55.0.windows.3
-
+Best regards,
+Krzysztof
