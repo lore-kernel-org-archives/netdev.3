@@ -1,102 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CE847989B
-	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 10:39:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B66376A0C
+	for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 10:42:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787308775; cv=none; b=dXcBbDljTRxaDm5cP8r4YGsZVBIatEefvLMgcwwJH7rKUG23pbzsTBf36Prj3KIsehLw1D/nvAYICqRCKa60J9bVefirsgb45Rurn04imwkd9k/OpWKiq8hjVgMS8h6Hkd9//AgeuOf5dDHGd/sINwzOtErN2zk70jzQuxWL0MQ=
+	t=1787308980; cv=none; b=nzjX4328ir2DWVnp//JaKa1YIEgYC5moGobTicGHKrKnc4p08Rnipkm8R66++89U8jlLjHzXFQsMGMLaVfl6AJRvd6LXONpBxyOEDN2TH/ofx1CowMguk7sLQOGLkvuysuHWu2z5/t0PHHnuGfcah2oFIkYGDQRM+wEdtoW2bPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787308775; c=relaxed/simple;
-	bh=VpI9zyMrCXCLLBDpLtHgHw/RjiHjnkUGrmAWEX9s2jU=;
+	s=arc-20240116; t=1787308980; c=relaxed/simple;
+	bh=HIJtjC+DGHEiaopHeYxaIrtkuNdtQ2BjdMUGtvCpRkE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Io5dx+HIxT1JIp/5F41nGqvOX+H3YJ4FN31Lf8kCfiySLYDMhw0rjUjYnJU6hgCrk+yX5h6q/dDGG+TiWI504d6WLPqh8BbaWs053RYRTHz1PRKkkwJAUEDPxyi3o3f28QfotgMr4S/1zK2VlPSwEy1zQLduKyaVxOUGUfWf4Hc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ttd7QdRv; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=j6wWCtQ0JBf0oEpA8sfFGKdGW01jysp7bZQDPgeMPl8i9Q8ht6kQKRsYxTGmhY+Xzr7BBJrSN4Iso29Em8uK8Fzol+aDLJavpWedYnQpxey/rQCyqPrzvSzY38luINM2jCRTG4hXcQbdOBTIakBpM67jPl6Qm5cFeadYji/avvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=kje/0qFb; arc=none smtp.client-ip=91.218.175.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ttd7QdRv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD441F000E9;
-	Fri, 21 Aug 2026 10:39:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787308767;
-	bh=qeRDeP9iuB9ZokUo+XkYCwc3Q58UTeL18RhdmDyfYmk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Ttd7QdRvBD2s/0xY+t/xP6Wd5AMwfKcGRBIgvcQSmQL9rmceiixW9GIJ784NNwfJ4
-	 TY1AQfw3pyWRT1RT1iODjE0LvDmgbgGXz6XOfUH0S4sNkRHigDZt4R5A+r4nFXEVdU
-	 TQrrYJ5oL3HWkm0E3/YvTsG/i8QnOyInd0tLdc9DbPjjjpUzuqLgTFYqMJDNRhBlPg
-	 iiyVzSrF6r6UVAn4Cg5UcLDTvSgud3NoHZY6P4/9eFbnPn4Wr+ODFoYdH3El1/DCdt
-	 hZPShMhaul1NEzqvg+cTByNpv4ZGW3JqsMGdCoXTqUhlw2xUjvHrSCFRArD+cm6Q+l
-	 bsp2UDR/3CMyQ==
-Date: Fri, 21 Aug 2026 11:39:24 +0100
-From: Simon Horman <horms@kernel.org>
-To: James <aslan.jnn@gmail.com>
-Cc: Raju Rangoju <Raju.Rangoju@amd.com>,
-	Prashanth Kumar K R <PrashanthKumar.K.R@amd.com>,
-	netdev@vger.kernel.org, Thomas.Lendacky@amd.com,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH net v2] net: amd-xgbe: support receiving packets with bad
- FCS
-Message-ID: <20260821103924.GH265046@horms.kernel.org>
-References: <20260812091616.35811-1-aslan.jnn@gmail.com>
- <20260819091656.23943-1-aslan.jnn@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="kje/0qFb"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=HIJtjC+DGHEiaopHeYxaIrtkuNdtQ2BjdMUGtvCpRkE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787308965; v=1; x=1787913765;
+ b=kje/0qFbqzz4ZquQJQn5qq22kNUSoioRSzy3kY6iqWxaWXAi6pJFDHxKIyFa06GksWRkK7H7
+ PRN4MOLdrKjRvAxtpT3DOz7cXMDNQiPdBL6K4+jHgrLDxDbk9FOggvKoh8VqQyx4uTgGdQRooQh
+ fH+MN0HuayXrq+xH0ffOYf5g=
+X-Envelope-To: netdev@vger.kernel.org
+Received: from fedora (203.175.12.241)
+	by smtp.migadu.com with ESMTPS id 2a6fe22ca90daeed;
+	Fri, 21 Aug 2026 10:42:45 +0000
+X-Mizu-Trace-ID: 2a6fe22ca90daeed
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 21 Aug 2026 18:42:38 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
+Subject: Re: [PATCH net v4 2/2] bonding: fix u32 overflow in compute_gap()
+Message-ID: <aogrnqQ0c077G4-B@fedora>
+References: <20260820-bond_overflow-v4-0-805ba0d3efb6@kylinos.cn>
+ <20260820-bond_overflow-v4-2-805ba0d3efb6@kylinos.cn>
+ <b63cb237-8bc0-4c95-820f-d004433f5577@blackwall.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260819091656.23943-1-aslan.jnn@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <b63cb237-8bc0-4c95-820f-d004433f5577@blackwall.org>
 
-On Wed, Aug 19, 2026 at 07:16:56PM +1000, James wrote:
-> amd-xgbe driver currently sets the MAC_RCR.DCRCC bit whenever RX is
-> enabled. This disables hardware FCS validation, causing packets with
-> bad FCS to be accepted unconditionally.
+Hi Nikolay,
+On Fri, Aug 21, 2026 at 01:16:20PM +0300, Nikolay Aleksandrov wrote:
+> > -static long long compute_gap(struct slave *slave)
+> > +static u64 compute_gap(struct slave *slave)
+> >   {
+> > -	return (s64) (slave->speed << 20) - /* Convert to Megabit per sec */
+> > -	       (s64) (SLAVE_TLB_INFO(slave).load << 3); /* Bytes to bits */
+> > +	u64 slave_load = SLAVE_TLB_INFO(slave).load << 3; /* Bytes to bits */
+> > +	u32 raw_speed = READ_ONCE(slave->speed);
+> > +	u64 speed = (u64)raw_speed << 20; /* Convert to bits per sec */
+> > +
+> > +	/* It's meaningless to compare gap on unknown speed NIC */
+> > +	if (raw_speed == (u32)SPEED_UNKNOWN)
+> > +		return 0;
+> > +
+> > +	/* Skip slave which is over loaded */
+> > +	if (speed <= slave_load)
+> > +		return 0;
+> > +
+> > +	return speed - slave_load;
+> >   }
+> >   static struct slave *tlb_get_least_loaded_slave(struct bonding *bond)
+> >   {
+> >   	struct slave *slave, *least_loaded;
+> >   	struct list_head *iter;
+> > -	long long max_gap;
+> > +	u64 max_gap = 0;
+> >   	least_loaded = NULL;
+> > -	max_gap = LLONG_MIN;
+> >   	/* Find the slave with the largest gap */
+> >   	bond_for_each_slave_rcu(bond, slave, iter) {
+> >   		if (bond_slave_can_tx(slave)) {
+> > -			long long gap = compute_gap(slave);
+> > +			u64 gap = compute_gap(slave);
+> > -			if (max_gap < gap) {
+> > +			/* Make sure we have one available slave */
+> > +			if (max_gap <= gap) {
+> >   				least_loaded = slave;
+> >   				max_gap = gap;
 > 
-> This change unsets DCRCC so that packets with bad FCS will be dropped,
-> in-line with typical behaviours of many other network controllers.
+> I think Sashiko's review has a point here:
+> "Does clamping the gap to 0 completely break load balancing when all interfaces
+> are overloaded?
+> When all slaves are overloaded, compute_gap() returns 0 for all of them. Since
+> max_gap is initialized to 0, max_gap <= gap will evaluate to 0 <= 0, which is
+> true.
+> This means tlb_get_least_loaded_slave() will continually update least_loaded to
+> the current slave, ultimately routing all traffic to the last slave in the list
+> instead of distributing it across the least overloaded interfaces."
+
+Yes, I have thought about this question. Previous code set max_gap LLONG_MIN,
+so there always has a slave assigned. Now we use u64. If we use (max_gap < gap),
+there may return NULL pointer.
+
 > 
-> Tests:
-> - Verified that packets with bad FCS are now dropped.
-> - Verified that receiving packets with bad FCS will increment the
->   `rx_crc_errors` counter.
+> That is, compute_gap makes multiple different scenarios look the same:
+>  if speed is unknown           = 0
+>  if exactly equal capacity     = 0
+>  if overloaded by *any* amount = 0
+
+Yes, if there is are 2 NICs with 1 Gbps and 10 Gbps, but both shows as
+unknown. There is no meaning to compare the gaps. Because they use the same
+speed value (u32)-1 << 20.
+
+If two NICs both overloaded or equal capacity. There is also no mean to select
+any devices.
+
 > 
+> So Sashiko's comment seems correct, it doesn't matter if a slave is overloaded
+> with 1 gbps or 100, they will look the same.
 
-Hi James,
+I've thought like:
 
-I think this warrants a fixes tag
-(no blank line between it and your signed-off-by line).
+  if (speed over load)
+  	return 1;
+  if (speed unknown)
+  	return 2;
 
-Fixes: c5aa9e3b8156 ("amd-xgbe: Initial AMD 10GbE platform driver")
+That sounds reasonable: we could select an unknown‑speed NIC that is not
+overloaded. However, this does not work.
 
-> Signed-off-by: James Nugraha <aslan.jnn@gmail.com>
+When performing the `speed <= slave_load` check, the speed value has already
+been shifted. Unknown speed is converted to a very large value, so the
+calculation will never report an overload condition — even though the actual
+hardware may already be overloaded.
 
-net:amd-xgbe: discard rx packets with bad FCS
+This is why I end up returning 0 for all such cases. Hope my explanation
+is clear.
 
-> ---
-> Changes in v2:
-> - Eliminated DCRCC toggling via RXALL: now it simply sets the
->   correct default value on MAC Rx enable
->  drivers/net/ethernet/amd/xgbe/xgbe-dev.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
-I think you may have forgotten to update the patch description
-as per the suggestion made by David in his review of v1.
-
-	net: amd-xgbe: discard rx packets with bad FCS
-
-And, some points on process:
-
-* Please post updated versions of patches
-  as separate threads rather than as respones to earlier versions.
-
-* Please make sure the author of the patch matches the signed off by line.
-  You can do this by updating the from address in the email. Or
-  if that is not possible add an extra From: line at exactly
-  the first line of the body of the email.
-
-Thanks!
-
--- 
-pw-bot: changes-requested
-
+Thanks
+Hangbin
