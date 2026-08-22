@@ -1,32 +1,32 @@
 Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848D764;
-	Sat, 22 Aug 2026 11:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68B249364E;
+	Sat, 22 Aug 2026 11:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787397362; cv=none; b=g10otyeibBS4xocVCXBxom4/mAq+5sMP9VKQ85y6acPnkO/47xGBJ/JIQK4nFou6WrYh4aWKbF+ZA5fUXtcvBwo7TEIKNqe8rJTFfmbEDtTy3sqyLwwVVkkea8XyGjrxkWy1naxrDSSttcaBXxDQcwb/VMS9Xl/T2RLO2zI8PPk=
+	t=1787398513; cv=none; b=S03rUujJC6ShX504pblwbZ/QbOTCj9WKeBRXIW+wlohzsWq1RKz7dRCgZH7FD6LaOsBFegNOhY6U8EOKD/KdyXmNRNq/tKNbb7q0DgkZneVgE+f5aOZ19/QnCUBUsJRrt2BaeYMAduR7wJhvUYqfUagjYrYqtFjW+Tidie0ZNeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787397362; c=relaxed/simple;
-	bh=NrzvX4U2UqnDLWIvL2I2Yt5Yq+EbbVQHhIo2K9yQ45U=;
+	s=arc-20240116; t=1787398513; c=relaxed/simple;
+	bh=Lmv0RBam7gF2jzthrWoAzLPwdTgxPiFyVRoa+sVeICQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Csed2F22BSD9krpAZ29hG1HWvt+kjqDBAACtDe4mVIDkuKs0PEYB6s4o6e4Cy6iLg8O7ZWJq9XY/Lx9atRcwiHoG25v0IOfjd/nbbKdP0vo23lYQIeX2k61h8GQoaFTjLc2gv/tIk7X8xn/MZox8upjeKREWkzGji/6e0YCg+o4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=CdvO0Fcc; arc=none smtp.client-ip=213.160.73.56
+	 MIME-Version:Content-Type; b=uW72s2CcraZ/oZxsSd2G5pr9TwgDKjvuHcgZ5iAfWI4OxmCM09R2+4t/3XFpkU5DAFUJuuSiSrISNabf6sdWK0S/DUmYtXD1cJLK9s9KJZcKGNTrSAQr89OcMcITDoKANTm4ONn7SdfeEmZnEiKhoubcWommIhkRuyjjXaCGO1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=vN0HVntM; arc=none smtp.client-ip=213.160.73.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="CdvO0Fcc"
-Received: by dvalin.narfation.org (Postfix) id DEF5C1FD5A;
-	Sat, 22 Aug 2026 11:15:53 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="vN0HVntM"
+Received: by dvalin.narfation.org (Postfix) id 03B081FDD3;
+	Sat, 22 Aug 2026 11:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1787397354;
+	s=20121; t=1787398505;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aJqFFme5zny2M+ndpmnl6LydymRJAkASRNq66ejAgzE=;
-	b=CdvO0FccrsDHcoW+djXygOmYVd/tvOIPlv0IL1jAkFMfGf0LTMoQcuKGnPV6P5aKQEcNyf
-	96GJCygAWbOB6oCK9Aq7KdDICYhk2N+5tuETjvBUVSFw3+BV7kjk1pBLu5Cm6WhUv96fnE
-	cL6rvUyz4GzJDwWEie+Fn/MFetpQz1U=
+	bh=WOiom71t1by/uQEF/Udcx0yVbE8LR7SZNYRLdPXyC0w=;
+	b=vN0HVntMQ+37Vkra/uFtyrDuTSrdaGw6U2iiSUA8+VWf0hXZIFzpaBDvFFSA2uOKbGfVec
+	eP968BzuVvCcWxY0g+vJiDz9GuG9DX3Dhy7/g7aPS+6Qi8zRXAcfmu8CPan0OYu8PAXP1M
+	k0d+7RiwmdCjHKoBx1X8ZcetRW53k2w=
 From: Sven Eckelmann <sven@narfation.org>
 To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -35,146 +35,146 @@ Cc: "David S. Miller" <davem@davemloft.net>,
  b.a.t.m.a.n@lists.open-mesh.org, stable@vger.kernel.org,
  Simon Wunderlich <sw@simonwunderlich.de>
 Subject:
- Re: [PATCH net 3/9] batman-adv: bla: prevent CRC corruptions after claim
- flush
-Date: Sat, 22 Aug 2026 13:15:45 +0200
-Message-ID: <23219208.EfDdHjke4D@sven-desktop>
-In-Reply-To: <20260821094813.201800-4-sw@simonwunderlich.de>
+ Re: [PATCH net 6/9] batman-adv: fix TX priority extraction for
+ BATADV_FORW_MCAST
+Date: Sat, 22 Aug 2026 13:34:57 +0200
+Message-ID: <1972590.CQOukoFCf9@sven-desktop>
+In-Reply-To: <20260821094813.201800-7-sw@simonwunderlich.de>
 References:
  <20260821094813.201800-1-sw@simonwunderlich.de>
- <20260821094813.201800-4-sw@simonwunderlich.de>
+ <20260821094813.201800-7-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart7985708.EvYhyI6sBW";
+Content-Type: multipart/signed; boundary="nextPart24491166.6Emhk5qWAg";
  micalg="pgp-sha512"; protocol="application/pgp-signature"
 
---nextPart7985708.EvYhyI6sBW
+--nextPart24491166.6Emhk5qWAg
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
 From: Sven Eckelmann <sven@narfation.org>
 To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
-Date: Sat, 22 Aug 2026 13:15:45 +0200
-Message-ID: <23219208.EfDdHjke4D@sven-desktop>
-In-Reply-To: <20260821094813.201800-4-sw@simonwunderlich.de>
+Date: Sat, 22 Aug 2026 13:34:57 +0200
+Message-ID: <1972590.CQOukoFCf9@sven-desktop>
+In-Reply-To: <20260821094813.201800-7-sw@simonwunderlich.de>
 MIME-Version: 1.0
 
 https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260821094813.201800-1=
-=2Dsw%40simonwunderlich.de?part=3D3
+=2Dsw%40simonwunderlich.de?part=3D6
 
 [...]
-> Discovered by: gpt-5-6-sol =C2=B7 Missed by: opus-5, sashiko-gemini =C2=
-=B7 Confirmed by: opus-5
-> This isn't a bug introduced by this patch, but since the patch touches
-> exactly this function: is the ownership test in the loop just above the
-> removed hunk sufficiently synchronized?
+> > @@ -338,6 +340,9 @@ static netdev_tx_t batadv_interface_tx(struct sk_bu=
+ff *skb,
+> > =20
+> >  send:
+> >  		if (do_bcast && !is_broadcast_ether_addr(ethhdr->h_dest)) {
+> > +			/* WARNING batadv_mcast_forw_mode might add more headers
+> > +			 * in front of the skb. and might even reallocate the skb
+> > +			 */
+> >  			forw_mode =3D batadv_mcast_forw_mode(bat_priv, skb, vid,
+> >  							   &mcast_is_routable);
 >=20
-> net/batman-adv/bridge_loop_avoidance.c:batadv_bla_del_backbone_claims() {
-> 	...
-> 	spin_lock_bh(list_lock);
-> 	hlist_for_each_entry_safe(claim, node_tmp, head, hash_entry) {
-> 		if (claim->backbone_gw !=3D backbone_gw)
-> 			continue;
+> Discovered by: opus-5 =C2=B7 Missed by: gpt-5-6-sol, sashiko-gemini =C2=
+=B7 Confirmed by: gpt-5-6-sol
+> This isn't a bug introduced by this patch, but would it make sense to put
+> this warning into the kernel-doc of the callee instead of (or in addition
+> to) the call site?
 >=20
-> 		hlist_del_rcu(&claim->hash_entry);
-> 		batadv_claim_put(claim);
-> 	}
-> 	spin_unlock_bh(list_lock);
-> 	...
-> }
+> Today only batadv_mcast_forw_push() carries the contract in
+> net/batman-adv/multicast_forw.c:
 >=20
-> claim->backbone_gw is read here with only the claim hash bucket list_lock
-> held, but the writer in batadv_bla_add_claim() only takes
-> claim->backbone_lock:
+>   * Warning: This function may reallocate the skb data buffer via
+>   * batadv_mcast_forw_expand_head()/... Any pointer into the skb data (e.=
+g.
+>   * obtained from skb->data or eth_hdr()) before this call must be
+>   * considered invalid afterwards and has to be reacquired.
 >=20
-> net/batman-adv/bridge_loop_avoidance.c:batadv_bla_add_claim() {
-> 	...
-> 	/* replace backbone_gw atomically and adjust reference counters */
-> 	spin_lock_bh(&claim->backbone_lock);
-> 	if (claim->backbone_gw !=3D backbone_gw) {
-> 		changed =3D true;
->=20
-> 		old_backbone_gw =3D claim->backbone_gw;
-> 		kref_get(&backbone_gw->refcount);
-> 		claim->backbone_gw =3D backbone_gw;
-> 	} else {
-> 	...
-> }
->=20
-> The two paths can run at the same time:
->=20
-> CPU0 (workqueue)
-> batadv_bla_periodic_work()
->   batadv_bla_purge_backbone_gw()
->     batadv_bla_del_backbone_claims()   /* reads claim->backbone_gw */
->     hlist_del_rcu(&backbone_gw->hash_entry);
->=20
-> CPU1 (rx/tx softirq)
-> batadv_bla_rx() / batadv_bla_tx()
->   batadv_bla_process_claim()
->     batadv_handle_claim()
->       batadv_bla_add_claim()           /* writes claim->backbone_gw */
->=20
-> The same interleaving looks reachable purely from received frames, since
-> batadv_handle_announce() calls batadv_bla_send_request() on a CRC mismatc=
-h,
-> which also calls batadv_bla_del_backbone_claims().
->=20
-> If the purge observes the stale owner after a racing CLAIM frame has
-> reassigned the claim to another backbone gateway, does it unlink a claim
-> that is now legitimately owned by that other gateway, so the next mesh fr=
-ame
-> from that client MAC makes batadv_bla_rx() claim it locally and two backb=
-one
-> gateways forward broadcast/multicast into the bridged LAN until the
-> claim/CRC request protocol resynchronizes?
->=20
-> In the opposite order, if the purge observes the newly written owner and
-> skips a claim that was just reassigned to the gateway being purged, the
-> claim survives pointing at a backbone gw that is removed from the backbone
-> hash immediately afterwards. Since batadv_bla_purge_claims() only expires
-> claims owned by our own address, can such an entry linger and make
-> batadv_bla_tx() keep dropping multicast frames from that client MAC until=
- a
-> unicast mesh frame triggers a re-claim?
->=20
-> Refcounting and the CRC XOR accounting do stay balanced here, because
-> batadv_claim_release() re-reads the owner under claim->backbone_lock, so
-> this looks like a claim table state consistency issue rather than memory
-> corruption.=20
+> The two callers=20
 
-Minor problem, self healing and not about this patch. Not sure if Simon wan=
-ts=20
-to fix it.
+What are the two callers? I only find batadv_mcast_forw_mode_by_count()
 
+> in net/batman-adv/multicast.c do not mention it.
+> batadv_mcast_forw_mode_by_count() only says:
+>=20
+>   * For a multicast packet with multiple destination originators, checks =
+which
+>   * mode to use. For BATADV_FORW_MCAST it also encapsulates the packet wi=
+th a
+>   * complete batman-adv multicast header.
+>=20
+> and the exported entry point batadv_mcast_forw_mode() (declared in
+> net/batman-adv/multicast.h) documents only:
+>=20
+>   * Return: The forwarding mode as enum batadv_forw_mode.
+>=20
+> Since batadv_mcast_forw_mode() is the exported symbol, wouldn't a future
+> caller reading its kernel-doc have no way to know that skb->data was push=
+ed
+> or that the buffer may have been reallocated?
 
-> The code is unchanged at the end of the series
-> (b32d9323b268). Would taking claim->backbone_lock around the ownership
-> test, or comparing against a value read under that lock, be appropriate?
+Will not modify this patch for this request. Linus (or anyone else) can dea=
+l=20
+with it: https://www.open-mesh.org/issues/466
 
-No, this is wrong. You would then complain that this patch is having a TOCT=
-OU=20
-problem. I will not fall for this trap.
+>=20
+> Related to that: batadv_interface_tx() does not re-acquire ethhdr after
+> batadv_mcast_forw_mode() returns, even though the new comment warns about
+> reallocation. The only later use, is_broadcast_ether_addr(ethhdr->h_dest),
+> is evaluated before the call,=20
+
+The later use is before? This is crazy
+
+> so nothing is dereferenced stale right now.
+> Is it worth re-acquiring it anyway, or noting in the comment that ethhdr
+> must not be used past this point?
+
+Will not modify the patch for this.
+
+>=20
+> >  			switch (forw_mode) {
+>=20
+> [ ... ]
+>=20
+> > @@ -355,8 +360,6 @@ static netdev_tx_t batadv_interface_tx(struct sk_bu=
+ff *skb,
+> >  		}
+> >  	}
+> > =20
+> > -	batadv_skb_set_priority(skb, 0);
+> > -
+> >  	/* ethernet packet should be broadcasted */
+> >  	if (do_bcast) {
+> >  		primary_if =3D batadv_primary_if_get_selected(bat_priv);
+>=20
+> Discovered by: opus-5 =C2=B7 Missed by: gpt-5-6-sol, sashiko-gemini =C2=
+=B7 Confirmed by: gpt-5-6-sol
+> This is a pre-existing issue and not caused by this patch, but while the
+> priority handling is being looked at: should the multicast forwarding path
+> also set skb->priority?
+
+This is a feature (or maybe minor bugfix) request. Will definitely not deal=
+=20
+with it here. Documented it at https://www.open-mesh.org/issues/467
 
 Regards,
 	Sven
---nextPart7985708.EvYhyI6sBW
+--nextPart24491166.6Emhk5qWAg
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part.
 Content-Transfer-Encoding: 7Bit
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCaomE4QAKCRBND3cr0xT1
-y7v/AQDPKO7s5WxY8IMFpBmmglO7ByGKPEKeG7czt8xaYg5kAAEAhlcqYavv8IPK
-kq/Lfs0218blq7PYob14oQZzGNsrzAc=
-=MvmJ
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCaomJYQAKCRBND3cr0xT1
+yzw5AP469c4z36X+byxIhnBaFmyRFiC/GpvlzlbsdL78KzUgSAD/aOU0xoOo4kkb
+LAvboFcaIx0WGERyigppjmQ/N0r+kA8=
+=gQlZ
 -----END PGP SIGNATURE-----
 
---nextPart7985708.EvYhyI6sBW--
+--nextPart24491166.6Emhk5qWAg--
 
 
 
