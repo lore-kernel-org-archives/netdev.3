@@ -1,126 +1,128 @@
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95D02C1584
-	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 11:56:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DEDA3BBFA9
+	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 11:57:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787399792; cv=none; b=ANYXmdxYC8+m1aR93LLk/UyN8PxqImNOSkcoHxHabyhBNtalZxEjMsxVU+D1YqMvcBxuX8Iq07H1+WDM95W0bhhgDeS0DgTQQyx2JB/qKZnMVpfOOC3A6zJVR59u8Hh9aJHQd8hQztFVnZ7TPHIa4uLMqH8gveXDYjJy24kVTdI=
+	t=1787399853; cv=none; b=AZHq0EXkx8ncTW2zCrGIErKtNWsySkqpwRx8M9kcCazyfwBGKD8MJnxJtcV37xtRYAqMsNN7MRsdhFlIeekXzTKo8PljNBbSW1/hLdUr7jGpBkUaXomFuQ8bPhLl6kXaWHWwhF8h+ZT83pxJUvYxH0SPVVGLfe6HsA+XG0PbldI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787399792; c=relaxed/simple;
-	bh=caqA0avrxy6pCPXQFoGDoN6deZ5R/Gph2QHjMY+rQVk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o2Q/IsXyA2gYofQ2pFQfnrfS14lZ6l1y4wef5srvM0IED69MtHImTVdYerY6ao1OS7ur1M8gQ4yKAdJQP25Ukv/jODVQGgeLkq1w5i1cE1tiFzHGtInfOPnI+UR/NO9BAfqQFlY1XYmbWwcM3uc3ZbnCA5TiLxgu3kratorDvgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=QtB2CuQj; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+	s=arc-20240116; t=1787399853; c=relaxed/simple;
+	bh=Zlm5L8K0s90SM5zcTEdh/SZ8hbaKIrmefN9A8cEZP1A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JXYkDcc387mKZlXx7ZlWyldmn21cmbLFOBx9vc3XWg9hQ8IAv+C7Wtb/AMiKdlD1FRN6TE9nVHX/SHxcmvju6DBhUlkCjNqAYy7xrF4/Bh//bYDpU4vORYa6gMUYeltO9lYLjo+hERd/lBUMcIgWWhl5UpkJTveNB/b4o8OV4U0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=ttjvJJrA; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=J3brXx4R; arc=none smtp.client-ip=103.168.172.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="QtB2CuQj"
-Received: by dvalin.narfation.org (Postfix) id 8C843200FB;
-	Sat, 22 Aug 2026 11:56:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1787399784;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YkrHjrxPJU2+2QsZs39qamgqA/1b0zrZYk1nxsr4q7w=;
-	b=QtB2CuQjIFfssKD6hyWFZQdJmT6KlCW4CEalHrAn1uEZGRXGS917+dg5Lmxp1tjbKP09xo
-	3S/T5m8mQKl0dyZiUXi9Woyt+g2aX+1tp4HlmuzwJ7k2C580dIBJ4SLjZcLOBd+K2PGB7X
-	XhfrlWuZH+hoZMCEARq3f+N8g5JUcQ4=
-From: Sven Eckelmann <sven@narfation.org>
-To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
+	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="ttjvJJrA";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="J3brXx4R"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 15479140013E;
+	Sat, 22 Aug 2026 07:57:30 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Sat, 22 Aug 2026 07:57:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
+	cc:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm3; t=1787399850; x=1787486250; bh=BqfWSkw+jVAYIMJ5sUU9T
+	d+A9vXCtfJa427AkjPzauw=; b=ttjvJJrApnHu/X5fG47vxSzijOlnTKOVvjDMx
+	lUxo8Mjto+MWw+vs24Ttg7apTW5iDrVgvEEpbgDpObtgb0DNOdWp4pOuF6+RMBQ5
+	4P1jn7x8MfTWulTk9+WNb+ck+WC3DeWMpe+lo4TqvJsn9kvkphHRltpz9suN4kPb
+	YsgqNPF0qt01Kcmn+oaNZB4srW9cuEbVx9kAjUY5wXUumNMpd7+QYBowyCn7ELa7
+	Pk8+NGE/fAERhJiak0IVtif/gS3UrNr8NoHOgazXK3svDcLraLRGjUKJvIEzOMX8
+	3HNBxmHMXmsSeBuCWr7Ne4NhF7UtTRweCuvu9qxv1F9bQhADw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1787399850; x=1787486250; bh=BqfWSkw+jVAYIMJ5sUU9Td+A9vXCtfJa427
+	AkjPzauw=; b=J3brXx4RGE1SqqUqwix4hS0iOt8bmWN9Chq/ZLuam3Pq8fxSfyj
+	pwSBaO8cdZy8K20tPTzzI5zS7pG5fAJ22QMK/KPeQSk8MYWFS8TtvnTiOgYHCvMb
+	JsAq1EW7iweqr0NZFTgEmYW2QiuxtIUqf5BetsMhjSd8mm5VIszdBs3Nju0dAbUU
+	mzR43K0XpWsTix/z3/MZWE7FMv01JE1JVw4IN8kWVcImZWcXM1mMuax97EoKLIhn
+	RTYizpBUt/ZJJ1S5zU930gkamJwcTIWLjeUfZyARWGTuTYYiQGceGutvTKkTr8Ne
+	yG9BHUsRkgNoAUUz61ukc3d1rwWy3oke3Jw==
+X-ME-Sender: <xms:qY6JavXURAx93Xz-URKciquSO0-ynKngjtrHRS2mDke5ZXTwEAP7cw>
+    <xme:qY6Jat9I6SpeQ8dKjmTzFOS9Mt3x0LtrQRew7HBMiZGvIx1ZR78hQ7W1ogHydg5wD
+    VwTMhRpPCbAoFtgz9Roj7OPmC-VhCTpu-0LNvZBbd9gwfcCZusEaA>
+X-ME-Received: <xmr:qY6JanqCUOmz-DHuJ4JZUty0rnvLjR8W9NHCWC-v1PD07q5pewylTdbXKMskeGkd>
+X-ME-Proxy-Cause: dmFkZTG28zW6wnDATFp4KnlBgDN75UrsFJ7x4jtaqL+8kw77Zt7QsgOq0BBUk7rgM6F+VS
+    IV0Yrq7ppZA+Z2l0NhRDClATGOpvjlB6ROQ9g4UExgfIPjXEHLunek2VaOv784wTxvJhRE
+    BXgjERs8tIXa8GeaHJTLVXMHWP4RWbROdEimPwWd30Gqaremvsud7mBxQbEnF+MVa4LtfN
+    FDNV6bMlyplW+VKZ3UCqk4MfV1W3OCuFHgdmayZadqM4Bs9x0LPX1Bf/intLCxPwzayIiV
+    3h2ymArUFLgMXLdExtyS4BbW9woloDOQ837p2Ulg5BYUDyBgQL293UGuM1iJbS68188QL7
+    VQp2KwnNJypispkOH3pLedIkqMVBw+FcexcDbdfJ6yZPB7NkZwZlMCf2Gw0CtHYqxlEbSu
+    g7V8Eof+eUkyTeRp1mqmfMipJOy546E1mbrGmB6jOzWaIO2fJaqRDiuP/qBuVYN131svXo
+    5SGEUJfKs9L+4VqWTJUELIlXMMgXZE7WrNlrjQy0A1hVsmbEViYlTiNKAk8bOa3A+5WVA8
+    gW7gaoIF4Nf9deMVJ6CCr1t9zBmhYTzRb3fJeWEeNt4ex9qzjrqmDyz6d3k9gcuGd8+B+h
+    NKZrf37MliG2NWtcHZzoHOughbhbqcoPNOk1Tt+teDKMU0Mdzmf+Rgl6DDEA
+X-ME-Proxy: <xmx:qY6JaoLJZiZ01XVvH2ST0o2m7oIdt8X32cV_4fOF1MzoSWjnMRQpiA>
+    <xmx:qY6JaiOjkMuYvXmsU8EkLYwECRdACKoEeDYMThUWCiF-p_IyH3u0HA>
+    <xmx:qY6JatozFWs5Uud6CipoxXtF7gyVd7j5xPt0xq2fBi_j4PnMcfzwzw>
+    <xmx:qY6JatLSgvcEHd8iB7sXAkKDAaiyL0tuX6TZrilLuaJ5ciWG9SFEcw>
+    <xmx:qo6JajtrZZUl06r3Pwk857M3KC6j7JoRN0GLnfoG9j0VWas45YjLk4zh>
+Feedback-ID: i559e4809:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 22 Aug 2026 07:57:29 -0400 (EDT)
+From: Alice Mikityanska <alice.kernel@fastmail.im>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
 Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- b.a.t.m.a.n@lists.open-mesh.org, stable@kernel.org,
- Simon Wunderlich <sw@simonwunderlich.de>
-Subject:
- Re: [PATCH net 9/9] batman-adv: bla: fix freeing of claims on meshif deletion
-Date: Sat, 22 Aug 2026 13:56:13 +0200
-Message-ID: <2492208.NG923GbCHz@sven-desktop>
-In-Reply-To: <20260821094813.201800-10-sw@simonwunderlich.de>
-References:
- <20260821094813.201800-1-sw@simonwunderlich.de>
- <20260821094813.201800-10-sw@simonwunderlich.de>
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Hannes Frederic Sowa <hannes@stressinduktion.org>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	netdev@vger.kernel.org,
+	Alice Mikityanska <alice@isovalent.com>
+Subject: [PATCH net v3 0/4] Fix UDP length overflow in edge cases
+Date: Sat, 22 Aug 2026 14:57:13 +0300
+Message-ID: <20260822115717.1161782-1-alice.kernel@fastmail.im>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart893706146.0ifERbkFSE";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Transfer-Encoding: 8bit
 
---nextPart893706146.0ifERbkFSE
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
-Date: Sat, 22 Aug 2026 13:56:13 +0200
-Message-ID: <2492208.NG923GbCHz@sven-desktop>
-In-Reply-To: <20260821094813.201800-10-sw@simonwunderlich.de>
-MIME-Version: 1.0
+From: Alice Mikityanska <alice@isovalent.com>
 
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260821094813.201800-1=
-=2Dsw%40simonwunderlich.de?part=3D9
+These are fixes for rare edge cases of 16-bit UDP length field overflow
+that might happen on netdevs with MTU >= 64k.
 
-[...]
-> Discovered by: opus-5 =C2=B7 Missed by: sonnet-5, gpt-5-6-sol, sashiko-ge=
-mini =C2=B7 Confirmed by: gpt-5-6-sol
->=20
-> This isn't a regression introduced by this patch, but since the commit
-> message names the missing rehashing as the reason for the change, is there
-> a plan to address the underlying problem in
-> batadv_bla_update_orig_address()?
+Exposed by the new WARN added to udp_set_len_short, reported by syzbot.
 
-See https://www.open-mesh.org/issues/452
+v3 changes: Split IPv4, IPv6 and selftest; limited the clamp to UDP
+sockets to support UDP jumbograms over raw sockets; added a selftest for
+raw sockets; added the kernel config check to the selftest.
 
-[...]
-> Discovered by: opus-5 =C2=B7 Missed by: sonnet-5, gpt-5-6-sol, sashiko-ge=
-mini =C2=B7 Confirmed by: gpt-5-6-sol
->=20
-> Also pre-existing rather than caused by this patch: the 6 byte
-> ether_addr_copy() into backbone_gw->orig is not a single atomic store, and
-> batadv_bla_purge_claims() reads that same field under rcu_read_lock() and
-> forwards the pointer straight into batadv_handle_unclaim():
->=20
-> net/batman-adv/bridge_loop_avoidance.c:batadv_bla_purge_claims() {
-> 	...
-> 			batadv_handle_unclaim(bat_priv, primary_if,
-> 					      backbone_gw->orig,
-> 					      claim->addr, claim->vid);
-> 	...
-> }
->=20
-> After this patch the batadv_compare_eth(backbone_addr,
-> primary_if->net_dev->dev_addr) test is the only remaining decision in
-> batadv_handle_unclaim(), because the claim is now removed unconditionally.
-> Can a reader that observes a mix of the old and new MAC bytes here wrongly
-> skip, or wrongly inject, the local UNCLAIM frame while the claim is delet=
-ed
-> either way?
+v2: https://lore.kernel.org/netdev/20260813120351.2807829-1-alice.kernel@fastmail.im/
 
-Will definitely not change the patch because of this unrelated finding (whi=
-ch=20
-seems to be self-healing). Documented for Simon at=20
-https://www.open-mesh.org/issues/469
+v2 changes: Restored the MTU clamp in ip6_dst_mtu_maybe_forward.
 
-Regards,
-	Sven
---nextPart893706146.0ifERbkFSE
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+v1: https://lore.kernel.org/netdev/20260805205957.1652619-1-alice.kernel@fastmail.im/
 
------BEGIN PGP SIGNATURE-----
+Alice Mikityanska (4):
+  net: ipv4: Fix UDP length overflow with PMTU discover and big MTU
+  net: ipv6: Fix UDP length overflow with PMTU discover and big MTU
+  selftests: net: Test UDP length overflow with PMTU discover and big
+    MTU
+  net: ipv6: Clamp to IP6_MAX_MTU in ip6_dst_mtu_maybe_forward
 
-iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCaomOXQAKCRBND3cr0xT1
-yww/AP92Z4vUW62S/ucm+Ddse7NTAyiBbQr06N84OSjUqSfsLwD/Y2BBFwxC1dzr
-H2ONzWMF3P2rHHJaVidIgmjszrJlXgY=
-=IEGh
------END PGP SIGNATURE-----
+ include/net/ip6_route.h                      |   2 +
+ net/ipv4/ip_output.c                         |   1 +
+ net/ipv6/ip6_output.c                        |   2 +
+ tools/testing/selftests/net/Makefile         |   1 +
+ tools/testing/selftests/net/cork_fragsize.py | 130 +++++++++++++++++++
+ 5 files changed, 136 insertions(+)
+ create mode 100755 tools/testing/selftests/net/cork_fragsize.py
 
---nextPart893706146.0ifERbkFSE--
-
-
+-- 
+2.55.0
 
