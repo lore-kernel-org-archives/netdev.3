@@ -1,110 +1,212 @@
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A822931FB
-	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 18:41:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051BD2AD37
+	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 18:47:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787424098; cv=none; b=EwXDNj1QTOU4s2KBBbWsx9/gm0wGt2/9oqrYKr6IDcX/XI1WP0KEVup9wu9IBiLYhhBpKSeJl4EjqtP0c40g3R4u5vrGm1HPfLdswcwLf3VPMr0X6CMJ7tZ93PgERMxmgr7aXe8wrFkf83e7jL/fgwbIeAsbX2YHHSLbeeD61Rk=
+	t=1787424439; cv=none; b=htK8PaEDb6zsXx64et53ebhfZR4TxSgxsILE+cJLPJITuI8XU4WFQbfLs5a8wPwaWN/6NAl1CGpMhp1uW3z0yISVgZG/G0shEvIu7G1600+1oPs0LoZwTCb5Tpfy7lgIL5YKKGl4MrWMEtrNVJleiWW2pV5Gb/FhW/tJlwXmMrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787424098; c=relaxed/simple;
-	bh=iRiDS5/jrxEd5xw31AJdfUGuWr17uHAWSnZjldo72B8=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=iO6Rg263+LfObAW9OOrM+Jai1fp0QH0CwKYdmfI5YipnVFMTnraEANf7hZVu8aYjkYp6EZ8c4TfhRrvURtjb1fUyTaUlQ96BEKN8ps/41TqRMUIoofgXOmt7QtNAPMwQbU93qyOZZIGMisM0pbJt0SwwgofMVo3wI+KEW5aHMpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KV2THt9/; arc=none smtp.client-ip=209.85.128.169
+	s=arc-20240116; t=1787424439; c=relaxed/simple;
+	bh=5G43uPiVL/j+Dzwm9QTc44uc3K3VaXP56vy3ld8EoOE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=igyXz07yluaCuoDTfXptBrJ3Ruj/UHwtENCrxlqVdvponNW5iQldkLgwbMwKX1W9ZMo/h2DwMFwfZ4qNfjXgyF3vR9GmR1KZydHnZDH/PnBMRP6Qa0vM9e3A0y7vmXtBzKPHZm4Xtt93TOssy1P9uzoM5kVwdplyCdnKysEgpDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OfMgf1F+; arc=none smtp.client-ip=209.85.215.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KV2THt9/"
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-8200ca16f26so31450747b3.3
-        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 11:41:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OfMgf1F+"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c9d290216d0so186345a12.3
+        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 11:47:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787424096; x=1788028896; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=pIGukARc6FHAKLoVYPaAGIp8bI73xdZO1uyFXBaoVME=;
-        b=KV2THt9/CADnC1m+1b62ZZQzrlUgpPJNRX28Ljb4EEQhQIsnQuAQNJ6LALf3tvWnwp
-         ZRHSWHXKJeMCijCHbLPPy85rkZ3KPRk7fMsQBr281tO+NP5i0JO8sEG7wok42Z/XyFts
-         3esIohSp4yWBnTNTWEU5rc0b1ANOgZxtdewfvYC/LaQ9crFbLqw/gDMgcWecNkdvyrmr
-         g6HkjCDEFKfoia4oxDdjox9jHHmGzYbpUTzH2UxLSeA9ZVIArOWKgqWGLDooMps0y+XZ
-         GbHxv8SCaQySR8BekvMFtRoKXFHe5fwthxpYc8jNI1jJoac9lZyQxXeqm3UofCTf0IKy
-         4I5Q==
+        d=gmail.com; s=20251104; t=1787424437; x=1788029237; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=r6krEZZrAdPiGjprMWBKZfrQRUv9wjYiRrwTo40Vuek=;
+        b=OfMgf1F+Vxyq+yV3XHsyCTTLvHGVdO9N2BEk2bI0Cg/SdKLPaG1cxRuI2tqTWTvXCV
+         Y3SQRzlLUu12A0F8mGV2EFw0H+ibPj2q4JPDAS2u14w7PXHzRl2QXka2LO9uNYoq2fU0
+         nOEb8EJr7lC6PnsAdjhuE/7u/t03Da/tvvJlZD39+Ru/MGF9Znl9zGLVkL3jxyzCCc04
+         DkYV2YtMu6q2hlM9Nf4mKfnE9LN25anbFu2cAa4utOJ1Q66ou8LLvdWrilANCDtX2nKk
+         OajxTqC6tuo3QMfiPKKfvyhi7kiMxybM+FqZaTSzVZBA96ZmnXCrolRKh0KKLWjvrgQQ
+         C4wQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787424096; x=1788028896;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=pIGukARc6FHAKLoVYPaAGIp8bI73xdZO1uyFXBaoVME=;
-        b=VThLoMOORHzgPQmQRlK6qn+rx1WXDADyFvmMjnUg8yPtDofBfGcVSYTVl+IWvWyptJ
-         jBa1An+ZH/W6sxXaqK8rPJVW9Jxp+nBaGyqTb4C6YhO8F0Kp0YR32t2g9QLcAeK/HilV
-         ruXBYs5HRGuI0EBwgKs+Ugc1s9p25kGe6azRmRRslnzzTDcu2Vg1/yUa4Q/qGJPjjCbT
-         2opcxvpTlsl13rtaZIigucE44Eedk2tWqdC4dVNFcytTQ5HVU+Vjdh11A6KSJOGrCszF
-         cnm+x1IeZHxgD2iLL4I9q2CtcS4OamhIQCy0OARfS+OuTcGgnnEx1xdJFe0nG3EqaDdA
-         zu2Q==
-X-Forwarded-Encrypted: i=1; AHgh+RpfXQKHkx4MUi7rKtOjY2Gxm40FG5TF3UQU2NChJMZc11nco0KyX1uUg199ZLKtwaBG1vPRjX8=@vger.kernel.org
-X-Gm-Message-State: AFuF++mxb9MCEEDkuzKcW08xr/Np5W32ffatjgROf4scVO3xHnLvSnSs
-	rYH53uxuDQ/t5LU9U9acfQjMqFFsovzddDJgrL0jlxhssBt1DGBrk3Gh
-X-Gm-Gg: AR+sD13bK3lWf6vO8Ig1LFwsmNoyyVWwJHScVQqlfCFjNMEjDDll5uDdTkZY5ydvlZ2
-	UTqb3LSw3orLpSCdkwHCqu0P7GplpqdeDzP6HZ/M/f6MoSVOxHqK5q9MFF7jKTprqi76DuD0lSQ
-	SDNF0Xy+QgCAIWwWpf+T5JEju+YuBqX4qaBMhNzQOOnrmcFUkcoyWcp4M971FX5W0CaP/0WZoR2
-	ZePPVA0WmDhH+XtI4cv+KbGpMawjUDtWX0MHZeHQjOJXNywYsU+6QvtoYHQelvpEitrnQxFlDu3
-	KuJH0FOD3hEuT0tfaCUUagdJ7HvSckHZcqgg0KQp7L2PX3fNDDXhFZGMbYZX8YwUciSSTLF3J1U
-	/vjEDdNsu/1XfBPgZVAqp3WaoE7WhaqHY63NaEN6DUl+3EKLM4zRKTn4mIAqSAB8+pEKpQz7Ha4
-	MneHYOjkvFoZc3GwqsOIxwwTCUtXjhjRE1i00b3Ae24OAfiHXY0NpzRAvQPeEaYOPO4UdjD98rf
-	08Iucg3HhYqsw8sg/OsL8waE/S2hkvx9N0KT9uy/A==
-X-Received: by 2002:a05:690c:e1dc:20b0:7db:ccda:a40d with SMTP id 00721157ae682-849f01479c1mr47272297b3.5.1787424095754;
-        Sat, 22 Aug 2026 11:41:35 -0700 (PDT)
-Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-84ca68c1b14sm13427547b3.21.2026.08.22.11.41.35
+        d=1e100.net; s=20251104; t=1787424437; x=1788029237;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=r6krEZZrAdPiGjprMWBKZfrQRUv9wjYiRrwTo40Vuek=;
+        b=hSyr7T6jjQ6TykNnaGpIVB3vJZN5N9tY2etEJ0PDH7aUHBtJpnk19fs5U+O2bFE8O9
+         TsSIoQalppjjzm9kG+TCuHC5ETmb2OkiYmLzIFRiC1xmbH3Ff54u7ArUBZIvsCxMUfyp
+         +3PSqbooYsyFNJ//2nh0aYEWVL2PT7LFo1DuH1PpmLnDZsP5T6pl6kBgIAO2sVvuAJJL
+         6c8YveCRjtdhoBajd8nmi795D0iFktaEC6gNcFuUyc06bUen8KokC6+pmUgWx/O3aoOe
+         zc63bUWkvGImDKxHYJ74w+KBQJ7fcYo1f22sEvADozN4tsLmnGlQeyvO9nSL2HyDlSiB
+         PIoQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rrb/PwG2PHzwhwo+5QfTvA+HD1IksgNk5dcarW2AM7x/b5yGdH9EwD9/hCsFv2TcR1tn4+Gjvk=@vger.kernel.org
+X-Gm-Message-State: AFuF++kricm+fgm82s8Dz21gC1UBZJVvMrUXD4Ye7FIRB3kf0Kjdiqc/
+	V7fajsHGDwP8vsFPoYFihIMiOq5q2Ag7/wkGTYCMlIYyjyb106Pih5P+
+X-Gm-Gg: AR+sD13Abff6+sNo7VhqIuwHfIaDy0mj1SYIBgaHpSdb1TM3f4ytjAaYEQoI7eVS25V
+	wjeBVwXSnhyj0PRu1y45FJeCmBktKJbZveeABY5RqKX3yjbDoh7M5FdldziWrAgn2H/R3bSRJl1
+	fCHucPz+Jv1f9nP6P6744AxKem5pAJZPhW2t1juP5r7fD4Bfm1D7Y0IKLw5RT7elhi/j/NoQA8D
+	AAxj0YhsqcloTq6sE1hFYSyBjwlezpHHK9N3Ul21Uh/t5GY+cVo/aLVKOfGAe4OGjaD4w5nOsRy
+	iqt2QtxmPFS/qEH0Bi0nwNG5mUSMQVBDyBz7ooNN4j5xVajL4FXPaj8sFpoJzW1+7TBGcsS/bwJ
+	ai2cZ9iFfoZOyLWNLX1Bke/z3vMPARVTz1FgF0SIMyYhjjQ/gsWOS8hNyIv/O0K5Q9ANHkTm/R/
+	XyLRKkktGndLKIFb8zmAMMZoQ7Q/cUdMXno5oZqA6DXeQcZGQud7mSC9ig7bO39KLv9vBQMf3AO
+	fKeZuCnwfXX3dk0PeJlsXwCsbJHCwr/Cflu/cJ/nRzvdiaTx12PmHc=
+X-Received: by 2002:a17:902:fc4e:b0:2d3:aecd:51f7 with SMTP id d9443c01a7336-2d64ae3a7c7mr135100305ad.1.1787424437214;
+        Sat, 22 Aug 2026 11:47:17 -0700 (PDT)
+Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327f9209fafsm16623681eec.23.2026.08.22.11.47.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Aug 2026 11:41:35 -0700 (PDT)
-Date: Sat, 22 Aug 2026 14:41:34 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Alice Mikityanska <alice.kernel@fastmail.im>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- David Ahern <dsahern@kernel.org>, 
- Ido Schimmel <idosch@nvidia.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, 
- Simon Horman <horms@kernel.org>, 
- Shuah Khan <shuah@kernel.org>, 
- Hannes Frederic Sowa <hannes@stressinduktion.org>, 
- Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
- netdev@vger.kernel.org, 
- Alice Mikityanska <alice@isovalent.com>
-Message-ID: <willemdebruijn.kernel.28e276abec867@gmail.com>
-In-Reply-To: <20260822115717.1161782-5-alice.kernel@fastmail.im>
-References: <20260822115717.1161782-1-alice.kernel@fastmail.im>
- <20260822115717.1161782-5-alice.kernel@fastmail.im>
-Subject: Re: [PATCH net v3 4/4] net: ipv6: Clamp to IP6_MAX_MTU in
- ip6_dst_mtu_maybe_forward
+        Sat, 22 Aug 2026 11:47:16 -0700 (PDT)
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Gao feng <gaofeng@cn.fujitsu.com>
+Cc: netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chengfeng Ye <nicoyip.dev@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] netfilter: nf_log: clear per-net loggers on unregister
+Date: Sun, 23 Aug 2026 02:46:58 +0800
+Message-ID: <20260822184658.3787672-1-nicoyip.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Alice Mikityanska wrote:
-> From: Alice Mikityanska <alice@isovalent.com>
-> 
-> Commit 427faee167bc ("net: ipv6: introduce ip6_dst_mtu_maybe_forward")
-> dropped the IP6_MAX_MTU clamp that used to be present in ip6_mtu(). A
-> similar IPv4 commit ac6627a28dbf ("net: ipv4: Consolidate ipv4_mtu and
-> ip_dst_mtu_maybe_forward") preserves the IP_MAX_MTU clamp.
-> 
-> Restore the upper bound in the IPv6 flow to avoid potential 16-bit
-> overflows in forwarding paths.
-> 
-> Fixes: 427faee167bc ("net: ipv6: introduce ip6_dst_mtu_maybe_forward")
-> Signed-off-by: Alice Mikityanska <alice@isovalent.com>
-> Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Logger backends unregister their per-network namespace operations before
+unregistering their global logger. This leaves a window where a sysctl or
+netlink writer can rebind a per-net logger after the old per-net
+selection was cleared, but before the global logger registration is
+removed.
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+The race looks like this:
+
+  CPU 0                                 CPU 1
+  ----                                  ----
+  unregister_pernet_subsys()
+    nf_log_unset(net, logger)
+      net->nf.nf_loggers[pf] = NULL
+
+                                        lock nf_log_mutex
+                                        find logger in loggers[][]
+                                        net->nf.nf_loggers[pf] = logger
+                                        unlock nf_log_mutex
+
+  nf_log_unregister(logger)
+    lock nf_log_mutex
+    loggers[pf][type] = NULL
+    unlock nf_log_mutex
+    synchronize_rcu()
+  module exit returns
+  module core frees backend memory
+
+Later, a sysctl read or nf_log_packet() reads net->nf.nf_loggers[pf]
+and dereferences the stale logger.
+
+nf_log_unregister() only removes the backend from the global logger
+table. It does not clear matching net->nf.nf_loggers[] entries that were
+rebound by CPU 1 after per-net teardown. Once module unload completes,
+those per-net pointers can still reference static data from the unloaded
+logger backend, and later readers can dereference freed module memory.
+
+The kernel reported:
+
+  BUG: unable to handle page fault for address: fffffbfff806d2f4
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  Oops: Oops: 0000 [#1] SMP KASAN NOPTI
+  RIP: 0010:nf_log_proc_dostring+0x2aa/0x4d0
+  Call Trace:
+   proc_sys_call_handler+0x325/0x540
+   vfs_read+0x6e1/0xa20
+   ksys_read+0xf7/0x1c0
+   do_syscall_64+0xf9/0x520
+  Modules linked in: [last unloaded: nf_log_syslog]
+
+Fix this by clearing matching per-net logger selections in every live
+network namespace while holding nf_log_mutex after removing the global
+registrations. Writers that run before this pass are covered by the
+per-net clears, and writes that run later can no longer find the logger
+in loggers[][]. The existing synchronize_rcu() then covers readers of
+both the global and per-net pointers before module memory is released.
+
+Fixes: 5b023fc8d8e0 ("netfilter: enable per netns support for nf_loggers")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+---
+ net/netfilter/nf_log.c | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
+
+diff --git a/net/netfilter/nf_log.c b/net/netfilter/nf_log.c
+index f4d80654dfe6..442c69f544a1 100644
+--- a/net/netfilter/nf_log.c
++++ b/net/netfilter/nf_log.c
+@@ -42,6 +42,18 @@ static struct nf_logger *__find_logger(int pf, const char *str_logger)
+ 	return NULL;
+ }
+ 
++static void __nf_log_unset(struct net *net, const struct nf_logger *logger)
++{
++	const struct nf_logger *log;
++	int i;
++
++	for (i = 0; i < NFPROTO_NUMPROTO; i++) {
++		log = nft_log_dereference(net->nf.nf_loggers[i]);
++		if (log == logger)
++			RCU_INIT_POINTER(net->nf.nf_loggers[i], NULL);
++	}
++}
++
+ int nf_log_set(struct net *net, u_int8_t pf, const struct nf_logger *logger)
+ {
+ 	const struct nf_logger *log;
+@@ -62,15 +74,8 @@ EXPORT_SYMBOL(nf_log_set);
+ 
+ void nf_log_unset(struct net *net, const struct nf_logger *logger)
+ {
+-	int i;
+-	const struct nf_logger *log;
+-
+ 	mutex_lock(&nf_log_mutex);
+-	for (i = 0; i < NFPROTO_NUMPROTO; i++) {
+-		log = nft_log_dereference(net->nf.nf_loggers[i]);
+-		if (log == logger)
+-			RCU_INIT_POINTER(net->nf.nf_loggers[i], NULL);
+-	}
++	__nf_log_unset(net, logger);
+ 	mutex_unlock(&nf_log_mutex);
+ }
+ EXPORT_SYMBOL(nf_log_unset);
+@@ -112,6 +117,7 @@ EXPORT_SYMBOL(nf_log_register);
+ void nf_log_unregister(struct nf_logger *logger)
+ {
+ 	const struct nf_logger *log;
++	struct net *net;
+ 	int i;
+ 
+ 	mutex_lock(&nf_log_mutex);
+@@ -120,6 +126,10 @@ void nf_log_unregister(struct nf_logger *logger)
+ 		if (log == logger)
+ 			RCU_INIT_POINTER(loggers[i][logger->type], NULL);
+ 	}
++	rcu_read_lock();
++	for_each_net_rcu(net)
++		__nf_log_unset(net, logger);
++	rcu_read_unlock();
+ 	mutex_unlock(&nf_log_mutex);
+ 	synchronize_rcu();
+ }
+-- 
+2.43.0
