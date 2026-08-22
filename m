@@ -1,48 +1,85 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC5535C6B3;
-	Sat, 22 Aug 2026 19:52:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5F932B10A
+	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 19:52:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787428352; cv=none; b=WJKesHDPNSw9dTOcUhPY2uHvTFu8y4BzE+WOpSW1HIxA5bxMuAmQv4ZU2KSofr87xl95Dat+qt22YMRy73jJHpz5jSTTgP9dNYW1S6jI83CrrBCDNuoVX3gPAJ+5FriMtpvX9FuWlqKmiR+krCEd1IXsavvzUkBYXhtbsTWIxhQ=
+	t=1787428380; cv=none; b=sZiF5KPi/57HpmMAnekqhogB5R7FF2K5suWfEXzbvTdeR0zqLAe+mga6A/y6TqndJZHxuCzJgO5lXSlnxNu7dLJtMXxFMMwgdTtAkGyLeSjNsJia1j3Yo5ZOkuZljkVQRzLus/IzBYqPJwBDfKAwJN44ZjuCocXarb7HR8OBWhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787428352; c=relaxed/simple;
-	bh=DDSQG0YTmPN70vhZ5heV8FldIgtoTMseXM/RPgNLpzI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lBTh7KvAt/v2TW6pLBxfn80M2IecIr5XWDs2W5AuYF/WUjD+ZGBJhNQM1DfrKTTxc+6flJ58IgSvXzZDDzjjTR2w/0OXheBJ5axVRXnq3hJJAUcA0P9kcwmQ55s1V/KDba66hsK7CWa5AkTyyMTGYNYGOFHXpHkT0rT15IUfHGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kewWpmXr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787428380; c=relaxed/simple;
+	bh=UqQuL+AXIRZqPn6VNUMyOijNM+5doE4BGR5QBRJIq3o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bgPRJTMI+8e9JtFg08Z11QmKH8VL1wf/nrDmYQ3l3qKSjE9KkqAPINmwi38RW9bnP7RdJqnJjxmxN6WiCkirodgpplHXIpkYBABxp6+J1JEGNHxCvw1ETDnXxQnB4RttkmBdn0h5X446fpBzTtewYXUyeLrUvfVpTpzvkeGeUjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=I+DvfO58; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kewWpmXr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95ABA1F000E9;
-	Sat, 22 Aug 2026 19:52:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787428350;
-	bh=6iEer5yYBqesO3j/DLpaZgcrBEZ9aOZfrMNyVlTbvp4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kewWpmXrzBOO0rGRmYwRWq4Cq5vrxjGhUV7VNcilbr8VXL8vcoHWaDD3FNwz6/xSN
-	 h7tYieYZDdR8ansxgCOAKzNT5B5afXwgU0BOPT3Jg5KN4JwzPC0htaoy7B67/XTIot
-	 gvhc7GnTYkbY2fv1ECgUWICkbnye3OCLgKY4BpPNnDaSu019/LmcSLlYFs/iOazsFw
-	 qGvH8KioFyjjlypcemvGNpbnLdczDI2FjFzOY++anoxgj6mz5KK75Q2dcCQrFy7nML
-	 /SW97Wll+C8yHqX2rrR69Uz+U7dxVK2/Am31y5h2xTSg8CFYzTkUfpdw0Gxs21Fv7L
-	 fxkHWlT4qu+Fg==
-From: Jakub Kicinski <kuba@kernel.org>
-To: pablo@netfilter.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netfilter-devel@vger.kernel.org,
-	davem@davemloft.net,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	horms@kernel.org,
-	fw@strlen.de,
-	ja@ssi.bg
-Subject: Re: [PATCH net 08/10] netfilter: nf_tables: fix device name and prefix match in hook lookup
-Date: Sat, 22 Aug 2026 12:52:30 -0700
-Message-ID: <20260822195230.2202763-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="I+DvfO58"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-69c600f76ccso3678722a12.0
+        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 12:52:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=lex.la; s=google; t=1787428375; x=1788033175; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=MbRs6SJvz6u9cGosQWklZdWE9HBk6wlNApB8tJN/dPQ=;
+        b=I+DvfO58anM90A3ODO2y3Eynj7KalPx4W/h058HK3Fd7VUU+7cxKqgKDzPcrBAHLzS
+         qrpYCmPrZx5R5bMSkS/hJq+s1NBYAzhFm1IthoDFp/ihMLzY+6Ec/fE4lrog/zIguaBi
+         HsZJUHjNaUhCzUlO7Quy2oOquHVh39RBvQy9Bt6CrPx/Xb7fgNqTqVS8JyRZCbDRNjJM
+         l52xCDuy9QqgeE67Sag284EOa2caIioqiKOxuHzltOLVtd4+uCraj70LlKxnVzfYXN1Q
+         YE18I45yyhtTx9zvl6L6kD/ci21yjASA9V+9nGfsiUroYyHL1H5ODR0QoeL1OYQiMAgN
+         8XVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787428375; x=1788033175;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=MbRs6SJvz6u9cGosQWklZdWE9HBk6wlNApB8tJN/dPQ=;
+        b=iFrv++hxpcl8zffYDHU7wGIp74EhYoO3HyHR8MWSnIBmsM/0kTF115rP7lzVDoh0/v
+         j5L2QlrGxGx+dnzNEwNKANnmqVBJ35jOJ/AAZW+3SbZmqJv/+pqIa8Q7vs8Um3ci2gt7
+         ck6GS1W6CxjeMcHh52Vu0omTXL9ZGG2bRvU9luIT/Ee+/yOsaScSq5M+EIhn/NvKhVNO
+         dY9+zkhq2vms9rezKKUJntE3P1ym6tNDtLl6VSIxJSxRLSGeuxfCMd4NNQcbW0tlmsaa
+         1zlViq44cKfEJs5hr9UYPyo4eNB62jM293yo5r6hCKH1hI70uco5SkaqXtVwkFN3EZcS
+         qLfQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrL0lUAnW3rW3WYb0HNQSM4Qt6Rt5yjI7FFcq7gQlhngCJDP0nC4L3ZGVAUZho7VJdEgGlEIP4=@vger.kernel.org
+X-Gm-Message-State: AFuF++lX+/9swEdDXlbaBV1yMKmO8DMpQxHdnCDsn7RdfZfF3jxyHRZW
+	ymct2HM9a9x5WENw9u2/sHQm1ybebGg01q4DxXMn5jelYiHS5loziC3lCxW7tHcbCJ4=
+X-Gm-Gg: AR+sD10De17w4ca1GuRuMC6HLFusd3gPNf1YHwpvMBtMogUzPG9yG01f++k6rSxlzba
+	NfqVtf4gtOad8uojnCM7jqaPgRuC0j3C+nx2I/8iUq95ZzZ9h8pn+GcHTxxvlLG/A66VphMJ5WD
+	aC33uzphzHN9ty2azEmDtv1HzlSr/kNNqoJnlgAQXplYovlL7h5tHUl4KghAvq6iajKXOC0TO2G
+	bPvfRFhEVhu2nguTC7Tk4cAeDMOZaVip0hRbvl8LQeRIMNO9mjh8GhESDgn5NHKqB34Cr6uNPHZ
+	3WProLKE6RyC+LvsoMiFc3QIPVCecpFcS2k0K3H7BEKayAKfgtsf6AVoLE8NasAQ+MM/fVs4piF
+	GL//asdX7Tjt+oSIx/CDycRfvgF2Xc5vp4E2Ji/IQ16t8MvM1z2o1jxRlsx/21OdDAdY7FcS7N5
+	J+QBzZ2LLuRIBck3VaAYZTKjDBsRjUrnRD59Qa/Zf+orshRU5s4EO8Xl0rEk7iTIgACjFOLw==
+X-Received: by 2002:a17:907:3d0a:b0:c20:83b1:396c with SMTP id a640c23a62f3a-c246a62b68fmr1552247666b.17.1787428375029;
+        Sat, 22 Aug 2026 12:52:55 -0700 (PDT)
+Received: from ownbook.home.lex.la ([84.17.55.225])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2495ee5295sm475032666b.0.2026.08.22.12.52.53
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 22 Aug 2026 12:52:54 -0700 (PDT)
+From: Aleksei Sviridkin <f@lex.la>
+To: "Chester A . Unal" <chester.a.unal@arinc9.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org
+Cc: Russell King <linux@armlinux.org.uk>,
+	Qingfang Deng <dqfext@gmail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Aleksei Sviridkin <f@lex.la>
+Subject: [PATCH net 0/2] net: restore EEE on MediaTek switches and SoC MACs
+Date: Sat, 22 Aug 2026 22:52:50 +0300
+Message-ID: <20260822195252.2934-1-f@lex.la>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260821153833.245589-9-pablo@netfilter.org>
-References: <20260821153833.245589-9-pablo@netfilter.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,147 +88,116 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-netfilter: nf_tables: fix device name and prefix match in hook lookup
+Both drivers fill in phylink_config.lpi_capabilities and
+lpi_timer_default but never lpi_interfaces. phylink treats a MAC as
+supporting managed EEE only when the tx_lpi methods are implemented and
+BOTH bitmaps are non-empty, which phylink_create() decides once and for
+all, so EEE has been off on every mt753x port and on every mtk_eth_soc
+MAC that uses mtk_phylink_ops since the two conversions named in the
+Fixes: tags. Because the tx_lpi methods ARE implemented, phylink takes
+the other branch and calls phy_disable_eee(), which fills
+eee_disabled_modes - so userspace cannot enable EEE either.
 
-This changes nft_hook_list_find() so a hook spec only matches another
-spec of the same kind (prefix vs exact name) and the same length,
-replacing the previous strncmp() over min(hook->ifnamelen,
-this->ifnamelen).  hook_is_prefix() also gains a const argument.
+On an MT7981B board with an MT7531 switch, before these patches:
 
-Closes: https://lore.kernel.org/netfilter-devel/CANE+tVrDeNCHQVmsqkV2ozeBqyE3GtRDMhZgsg1bhw10yGNTRQ@mail.gmail.com/
+  == lan1
+  Cannot get EEE settings: Not supported
+  == lan2
+  Cannot get EEE settings: Not supported
+  == lan3
+  Cannot get EEE settings: Not supported
+  == lan4
+  Cannot get EEE settings: Not supported
+  == wan
+  Cannot get EEE settings: Not supported
 
-> diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-> index 20c562174b278..d160f6ea0dc29 100644
-> --- a/net/netfilter/nf_tables_api.c
-> +++ b/net/netfilter/nf_tables_api.c
+lan1-3 are the MT7531 internal PHYs, lan4 is an EN8811H on switch port
+5 whose MAC side runs 2500BASE-X rate matched to a 1 Gbps media link,
+and wan is the mtk_eth_soc MAC with its directly attached 1 Gbps PHY -
+so both drivers are covered.
 
-[ ... ]
+On MT7531 this undoes half of a deliberate arrangement.
+Commit 06dfcd4098cf ("net: dsa: mt7530: fix enabling EEE on MT7531
+switch on all boards") turned EEE on at the switch MACs while zeroing
+the switch PHYs' EEE advertisement, and ended "With this change, EEE
+can now be enabled using ethtool". Only the "off out of the box" half
+survives.
 
-> @@ -2445,8 +2445,11 @@ static struct nft_hook *nft_hook_list_find(struct list_head *hook_list,
->  	struct nft_hook *hook;
->  
->  	list_for_each_entry(hook, hook_list, list) {
-> -		if (!strncmp(hook->ifname, this->ifname,
-> -			     min(hook->ifnamelen, this->ifnamelen))) {
-> +		if (hook_is_prefix(hook) != hook_is_prefix(this))
-> +			continue;
-> +		if (hook->ifnamelen != this->ifnamelen)
-> +			continue;
-> +		if (!strncmp(hook->ifname, this->ifname, hook->ifnamelen)) {
->  			if (hook->flags & NFT_HOOK_REMOVE)
->  				continue;
->  
+Each patch fills lpi_interfaces from supported_interfaces, minus the
+interfaces the MAC cannot signal LPI on, and corrects lpi_capabilities,
+which takes effect for the first time as a result: neither MAC has EEE
+force bits above 1 Gbps. Neither driver sets eee_enabled_default, so
+LPI stays off until userspace asks for it with ethtool --set-eee. The
+EEE advertisement is a different matter: phylink stops force-clearing
+it, so a PHY that advertises EEE out of reset advertises it again and
+the link may negotiate EEE, without this MAC asserting LPI. There are
+two exceptions: MT7531's five internal PHYs, whose advertisement
+mt7531_setup() zeroes before they are probed, and EN7528, where the
+driver deliberately leaves both LPI bitmaps empty so phylink keeps
+taking the phy_disable_eee() branch.
 
-[Severity: Critical]
-nft_hook_list_find() has two callers with different expectations, and this
-turns it into a pure identity comparator for both.  The delete/get paths
-(nf_tables_delchain_hook(), nft_flowtable_del_hook()) want identity, but
-the add paths use it as an overlap rejector:
+The two patches are independent and touch different subsystems; they
+are sent together because they are the same bug.
 
-nf_tables_parse_netdev_hooks()
-	if (nft_hook_list_find(hook_list, hook)) {
-		NL_SET_BAD_ATTR(extack, tmp);
-		nft_netdev_hook_free(hook);
-		err = -EEXIST;
-		goto err_hook;
-	}
+Splitting each patch further - lpi_interfaces in one, the
+lpi_capabilities correction in another - was considered and rejected: a
+value that never reached phy->advertising_eee is not a reviewable
+behavioural unit on its own, and the split would leave an intermediate
+commit claiming 2.5 Gbps LPI that the registers do not implement.
 
-and the same in nf_tables_updchain(), nft_register_flowtable_net_hooks()
-and nft_flowtable_update().
+Targeted at net as a regression fix with an active userspace lockout;
+can be retargeted at net-next if maintainers prefer.
 
-The Fixes-referenced commit 6d07a289504a states the min() compare was
-deliberate: "When checking for duplicate hooks, compare the shortest
-prefix so a device may never match more than a single hook spec."  Does
-this change intentionally drop that invariant?
+Based on net-next at 91ec20351349. Both driver files are byte
+identical in net/main and the series applies there unchanged.
 
-Concretely, is this still rejected after the patch?
+After the series, all five ports report:
 
-  nft add chain netdev t c \
-    '{ type filter hook ingress devices = { "eth*", "eth0" } ; }'
+  EEE status: disabled
+  Tx LPI: disabled
+  Supported EEE link modes:  100baseT/Full
+                             1000baseT/Full
+  Advertised EEE link modes:  Not reported
 
-Before, prefix "eth" (ifnamelen 3) and exact "eth0" (ifnamelen 5) matched
-via strncmp(..., min(3, 5)) and gave -EEXIST.  Now
-hook_is_prefix(hook) != hook_is_prefix(this) short-circuits, so both hooks
-end up in the same hook_list.  Prefix "eth" versus prefix "eth0" is
-likewise separated by the ifnamelen compare.
+No 2.5G mode is offered, which is the corrected lpi_capabilities, and
+nothing is advertised until userspace asks. On this board no PHY came
+out of reset advertising EEE, so the case where the advertisement
+returns once phylink stops clearing it is not exercised here.
 
-nft_netdev_hook_alloc() then builds one nf_hook_ops per matching netdev
-per hook:
+Enabling it on lan1, whose partner advertises EEE at both speeds:
 
-	for_each_netdev(net, dev) {
-		if (strncmp(dev->name, hook->ifname, hook->ifnamelen))
-			continue;
-		...
-		ops->dev = dev;
-		list_add_tail(&ops->list, &hook->ops_list);
-	}
+  # ethtool --set-eee lan1 eee on
+  EEE status: enabled - active
+  Advertised EEE link modes:  100baseT/Full 1000baseT/Full
+  Link partner advertised EEE link modes:  100baseT/Full 1000baseT/Full
 
-so two distinct nft_hook objects each own an ops with ops->dev == eth0,
-and nft_netdev_register_hooks() registers both.  nf_hook_entries_grow()
-only rejects duplicates for NF_HOOK_OP_BPF, so both land in
-eth0->nf_hooks_ingress and the base chain is evaluated twice per packet.
-For flowtables the cross-flowtable -EEXIST guard in
-nft_register_flowtable_net_hooks() is bypassed the same way, so the same
-device gets two FLOW_BLOCK_BIND calls.
+  # ethtool --set-eee lan1 eee on tx-lpi on
+  EEE status: enabled - active
+  Tx LPI: 30 (us)
 
-Can this also leave a dangling struct net_device pointer?  Both notifier
-loops service only the first hook that owns an ops for the device, because
-of the unconditional break after the switch:
+With LPI armed, 30 parallel ICMPv6 streams of 1400-byte payload, 300
+packets each one second apart - so every gap crosses the LPI threshold
+and the link enters and leaves LPI thousands of times over 300 s - lost
+nothing: 300/300 on every stream, tx and rx error counters unchanged,
+carrier_changes unchanged, and no mac_enable_tx_lpi errors in dmesg.
 
-net/netfilter/nft_chain_filter.c:nft_netdev_event() {
-	list_for_each_entry(hook, &basechain->hook_list, list) {
-		ops = nft_hook_find_ops(hook, dev);
-		...
-		switch (event) {
-		case NETDEV_UNREGISTER:
-			...
-			nf_unregister_net_hook(dev_net(dev), ops);
-			list_del_rcu(&ops->list);
-			kfree_rcu(ops, rcu);
-			break;
-		...
-		}
-		break;
-	}
-	return 0;
-}
+On wan the link partner advertises no EEE, so enabling it settles at
+"enabled - inactive", which is the correct outcome, and the link
+survived the autonegotiation restart. Its Tx LPI reads 1000 (us)
+against lan1's 30; see the note below the scissors of patch 1.
 
-nft_flowtable_event() in nf_tables_api.c has the same trailing break.  On
-ip link del eth0 only the first hook's ops is unregistered and freed; the
-second hook keeps a registered nf_hook_ops whose ops->dev points at the
-device that is then freed, since nf_hook_ops holds no device reference.
+lan4 keeps EEE disabled and never arms LPI, which is what dropping
+2500BASE-X from lpi_interfaces is for. Forwarding through it was
+lossless with no carrier change.
 
-A later teardown (nft delete chain, nft delete table, dormant toggle,
-netns exit) walks every ops:
+Aleksei Sviridkin (2):
+  net: dsa: mt7530: populate lpi_interfaces to fix EEE support
+  net: ethernet: mtk_eth_soc: populate lpi_interfaces to fix EEE support
 
-net/netfilter/nf_tables_api.c:nft_netdev_unregister_hooks() {
-	list_for_each_entry_safe(hook, next, hook_list, list) {
-		if (!(table->flags & NFT_TABLE_F_DORMANT)) {
-			list_for_each_entry(ops, &hook->ops_list, list)
-				nf_unregister_net_hook(net, ops);
-		}
-	...
-}
+ drivers/net/dsa/mt7530.c                    | 24 ++++++++++++++++-----
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 22 ++++++++++++++++---
+ 2 files changed, 38 insertions(+), 8 deletions(-)
 
-and __nf_unregister_net_hook() reaches nf_hook_entry_head(net, pf,
-reg->hooknum, reg->dev), which does dev_net(dev) and returns
-&dev->nf_hooks_ingress, i.e. a read and then a write through the stale
-pointer.  For flowtables, nft_unregister_flowtable_ops() additionally
-calls ->setup(..., ops->dev, FLOW_BLOCK_UNBIND) on the freed device.  The
-orphaned nf_hook_entries blob is also leaked.
+-- 
+2.55.0
 
-On NETDEV_REGISTER the same break means only one of two covering hooks
-gains an ops, so the other stays permanently unhooked.
-
-Would it work to keep the strict identity match only for the
-delete/update lookups and retain the prefix-overlap semantics for the
-add/-EEXIST paths, e.g. as two separate helpers?  Alternatively, should
-the unconditional break in nft_netdev_event() and nft_flowtable_event()
-be dropped so every matching hook is serviced?
-
-The commit message describes only the delete/update lookup semantics; the
-fact that configurations previously rejected with -EEXIST are now
-accepted is not mentioned.  Could that be spelled out?
