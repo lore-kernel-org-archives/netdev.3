@@ -1,396 +1,573 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C94339853;
-	Sat, 22 Aug 2026 19:09:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6AC7363C5E;
+	Sat, 22 Aug 2026 19:14:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787425763; cv=none; b=obiZDT4RuTEy0d/cTCMtDKJYPccf4mkrfxJ9LAMfvuMrOSoVLPFIQ1hPY5noEINrONdfcILfArFwvCN2encinfEK38ylimnyHuDt6CuDLC25dTgHihxeDy2B7IYmyx06enKTCRNGyJJRvT+CQiXJQq5fGHoGLi+s44cdXFfvLfQ=
+	t=1787426083; cv=none; b=ZqhH888Kf8DsmngoRt0DzDq/+6XjT8sWaaIY2lzzaiD5loLUeLB8FLRSi4ICsWcoQQkkt5NoeRSE1FmlYYTPJ4oWbr8e1s9MoFaWaQjRqE65mhLoOq3u2IY0Ghdtx+VqVe1o230milAjpFpwdsL8u6U2cHkg5wGrPAVxdhflick=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787425763; c=relaxed/simple;
-	bh=8tztOfkSZw/va2Hqq8iiZwPtZQQetJK1wlwYI4W9W4Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=brJ0V3oqfWJXpuQq07XprMvC20S0uwdBvYA+TEN02cHgUUCRbyWTrwwrJf1r3jVkcTw1tfxM5zC6PqtL8cFUSuvHm6BscNvXnt3QmtU9m+m6YEVqbDzLDFsn8ZVNKrXfTn+Kei+7GMhXNBkBNZ39+VXhFibJzdmrrZv9i/pyRzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Fr3boQP6; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1787426083; c=relaxed/simple;
+	bh=p97ofeXu3cJL9HMeC0WK95ngz7z/l0sxVqXEkU2VVag=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=g/o9sy1e+M/XRsiwMlF3qe8I+zchkBwl1ta8fOPgFtFwWa6YH4Lcl2bT0/8tMJXwliIN+hUejSSNEgK9Byzwmas1aNnDEoGT/mgwS/INVLr/IJyQPyZyVl9zGn/x74IiPeFjRr8LW0QIv4/8SE+BM6j0LrdQPe3+0vWjJbb7gl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SHhD3My+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Fr3boQP6"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67MHVeuj3242775;
-	Sat, 22 Aug 2026 19:09:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ky68my
-	wYiQjflnx4pv+vOUDF5b5b1MYb6BAPJKYdjB0=; b=Fr3boQP6b/qYM+a4ScuX4C
-	B3soLYnaPh/ES3iOzhLnuPhrdN3CZCYDzyheHu3bTMITi6UropnUgwtHwpE3bJu6
-	WOZU722CgMdbgZQtDQSK+qrqtf5rxCpMklM/4TDCfND03OAnokoCWSyIwyrOrMkT
-	oHM0Fo851UBP8P9F755danAInP+xcN8gfXFK3sZSyMdaWDVdjtH20aMu6+VWF4I4
-	POIBu4pkqNJS5yfgROVfjW070Tt5RDaGVVJ0A/iHi3zCwOErvS+1gkkII2bVNI72
-	WEkyqItezeMuV2P1caGOOA+kVnH/kz2JqKqoNa8u1sUpvwm5WqzYs9Bpqd57YDAQ
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g73eqaan7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 22 Aug 2026 19:09:00 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67MIuZIH025504;
-	Sat, 22 Aug 2026 19:08:59 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g3550231c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 22 Aug 2026 19:08:59 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67MJ8vsT56754478
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 22 Aug 2026 19:08:57 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A5BED58055;
-	Sat, 22 Aug 2026 19:08:57 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 680335804B;
-	Sat, 22 Aug 2026 19:08:52 +0000 (GMT)
-Received: from [9.39.19.143] (unknown [9.39.19.143])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Sat, 22 Aug 2026 19:08:52 +0000 (GMT)
-Message-ID: <5f88daf4-cd8e-4464-b132-ac45be205121@linux.ibm.com>
-Date: Sun, 23 Aug 2026 00:38:50 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SHhD3My+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A7251F000E9;
+	Sat, 22 Aug 2026 19:14:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787426081;
+	bh=Ea6Z/PmroI0x87AWLnDQmNurQhRxmSEuWDOruKz5qfc=;
+	h=From:Date:Subject:To:Cc;
+	b=SHhD3My+ZVsezLwvxqor0U5e91ykfaJWAQh9AeQ94LS8NdjMzixJIfrPBqvoIVK6o
+	 P3ugDRGnjz/w7tp8P6lsKlGLS7OMXStIW8mLqtB3rPF5DunKkalB6qNDY/dhXsxhgg
+	 VJ8uhFE9Zs6tp4VM1etrm6fVqFu0Uun9uQQHSBwtodS0QmbawPLV5ZRH3l113/90zJ
+	 YkzDvSY8RHeNcEqVGXTx8A0iKQ1JNWGLEXG4c+TBI786/utdsW0mdz8Dhxy8ChgNOQ
+	 YdvEkPjXDIdWEo3qcgNfeNmMiBu0eqKluzJOXKX+txPjDml8/ddGulU5IHdqQsJ8wo
+	 K0zNej4LM+1bQ==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Date: Sat, 22 Aug 2026 20:14:02 +0100
+Subject: [PATCH v2] mm/secretmem: properly account locked pages
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] net/iucv: af_iucv socket locking - accounting, and a staged
- plan
-To: Alexandra Winter <wintera@linux.ibm.com>,
-        Bryam Vargas <hexlabsecurity@proton.me>,
-        Thorsten Winkler <twinkler@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        linux-s390@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260724222917.134769-1-hexlabsecurity@proton.me>
- <f74b9587-c09c-4fce-9415-e2d3b49d0247@linux.ibm.com>
-Content-Language: en-GB
-From: Hidayath Khan <hidayath@linux.ibm.com>
-In-Reply-To: <f74b9587-c09c-4fce-9415-e2d3b49d0247@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: CVJLQju0MoigeA9Ez6A3wqUSa27oDQgL
-X-Proofpoint-ORIG-GUID: 5KJ3cnWo_yuSk_EOLeZRWg0qmK0i9HNJ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODIyMDE2MCBTYWx0ZWRfX5iusBkoM44jg
- Ucy3tgQ9YufOStNNSzBte7VusSggtReF++CuCrruK3yQLdukCwLzUgNV28U8sVOQfdsjy8eW4BD
- IOXe6ZIBwtkpTekaHBw0MitcZqpu7GEhN+sV21ksrIoFMzShQbFtMINCNPhDYk/KU8vGN0fF4u3
- zSwed50bqg8O61SVk9OZGybyCu3t58rzHWUvdVDbA4Z/iydHAvZOeQ/ECYCuW4ggdPq/aZzSrO5
- M/73tmE5SKCTyQV1BwNoeZB8+hbVrzMeWB2jo7s8geTSG+3jR+lHuYP/UOsaJpI09cZ9/eZfmdi
- 7tblZigxI5SD+2aOnzkrF4GGBEYEw8IYoqNZUTe/pc0IvhoOKRxwg/EowZLqjkdFXDpAN4KydWa
- rforrJVDFGGGci7sAJE0amYTCKyLfHryGq8XA0rq4ecbzkpUBWOCegrubXV7mR5lOAAsDy2wztm
- rItGxBeUAWEM9FdRcCg==
-X-Authority-Analysis: v=2.4 cv=QsRuG1yd c=1 sm=1 tr=0 ts=6a89f3cc cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=OlRBskonR4vvretX3tcA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODIyMDE2MCBTYWx0ZWRfX8rKEqOTvyn1+
- ixrV+apuggSt6Mbr0TXFH1wXLXU8XHuoj5rQe5xFvJZzW6RZDrplocpsuXr/U/F1dRt3kizl5Uf
- PuzJeU+rFQumfkpmK0f3CISRaZ4UeOg=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-22_06,2026-08-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 suspectscore=0 priorityscore=1501 impostorscore=0
- spamscore=0 lowpriorityscore=0 clxscore=1015 bulkscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608220160
+Message-Id: <20260822-secretmem-accounting-v2-1-fe445a7c6eb1@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAPn0iWoC/4WNQQ6CMBBFr0JmbQ1tmgKuvIdhUcoAo9KaaSEaw
+ t0FPIDLl7z//gIRmTDCJVuAcaZIwW+gThm4wfoeBbUbg8qVyUupRUTHmEYchXUuTD6R74VtjdX
+ aqKqRFWzTF2NH7yN7q38cp+aOLu2t3RgopsCf43eWu/fnYpZCilZ1pTNFUZV5c30ge3yeA/dQr
+ +v6BaXuPfjLAAAA
+X-Change-ID: 20260814-secretmem-accounting-ad6a44629b19
+To: ljs@kernel.org
+Cc: Daehyeon Ko <4ncienth@gmail.com>, stable@vger.kernel.org, 
+ Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, 
+ David Hildenbrand <david@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Shuah Khan <shuah@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Jesper Dangaard Brouer <hawk@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, 
+ James Bottomley <James.Bottomley@HansenPartnership.com>, 
+ Hagen Paul Pfeifer <hagen@jauu.net>, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org, netdev@vger.kernel.org, 
+ bpf@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=15483; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=p97ofeXu3cJL9HMeC0WK95ngz7z/l0sxVqXEkU2VVag=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLI6v/LoNZ4oeit6yFWzOUYp1GHdaX2VXNU+a2c209Cgy
+ wvOTP/aUcrCIMbFICumyPL8i/j+IJGweZ0X/N1g5rAygQxh4OIUgInYzmT476i+eYrQzbapzOmv
+ v2j3rvtcJKxe//n1dW47xa7HmVsyVjH8lStP2xO642xq3sX3kXEG05q8FitzaB8se1T9Ivfampf
+ 5fAA=
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 
+secretmem has a relatively laissez-faire attitude to accounting the folios
+it allocates.
 
-On 28/07/26 6:22 pm, Alexandra Winter wrote:
->
-> On 25.07.26 00:29, Bryam Vargas wrote:
->> Alexandra,
->>
->> Here is the socket-locking RFC I promised. No patches yet, on purpose: the
->> accounting turned up one result that changes which fix is right, and I'd
->> rather agree the direction with you than post a series you have to redirect.
->>
->> All line numbers are against net-next 0c452fbdf413.
->>
-> Bryam,
-> thank you very much for this structured approach at this pile of work.
->
->> What's there today
->> ------------------
->>
->> sk->sk_state has 20 assignment sites. One (iucv_sock_alloc:504) runs before the
->> socket is published on iucv_sk_list at :506, and two set a child socket under
->> the parent's lock (below). The other 17 are spread across five contexts:
->>
->>    process, under lock_sock():
->>      iucv_sock_bind:633,647   iucv_sock_listen:806   iucv_sock_close:411,417,432
->>      iucv_sock_cleanup_listen:306
->>    process, under no lock:
->>      iucv_sock_recvmsg:1338
->>    iucv tasklet, under bh_lock_sock():
->>      iucv_callback_txdone:1793   iucv_callback_connrej:1810
->>    iucv tasklet, under no lock:
->>      iucv_callback_connack:1708
->>    NET_RX softirq, under bh_lock_sock():
->>      afiucv_hs_callback_synack:1941   afiucv_hs_callback_synfin:1961
->>      afiucv_hs_callback_fin:1983
->>    qeth TX completion, under no lock:
->>      afiucv_hs_callback_txnotify:2190,2197
->>    netdev notifier, under no lock:
->>      afiucv_netdev_event:2222
->>
->> Two counts sum it up: sock_owned_by_user() appears zero times in the file, and
->> there is no socket backlog at all - no .backlog_rcv in iucv_proto, no
->> sk_add_backlog() anywhere. iucv->backlog_skb_q is a private data queue, not the
->> socket layer backlog. So the machinery your option A refers to isn't being
->> mis-used here, it's absent.
->>
-> Yes, I was aware of that :-/
->
->> Child sockets get their state set under the parent's lock: connreq:1696 and
->> hs_callback_syn:1917 both set nsk->sk_state while holding bh_lock_sock on the
->> parent, and iucv_sock_alloc:506 already published the child on iucv_sk_list
->> before its state was set.
->>
->>
->> Three gaps, each with a herd7 witness
->> -------------------------------------
->>
->> I modelled the locking discipline in LKMM rather than argue it in prose. Six
->> litmus tests, herd7 7.58. Each RED has a GREEN whose only delta is the lock or
->> the check, plus a CONTROL so the harness is shown to discriminate:
->>
->>    RED     bh_lock_sock vs lock_sock, no owner check     Flag data-race
->>    GREEN   ... same, with sock_owned_by_user() + defer   clean
->>    RED     recvmsg unlocked, softirq HAS the owner check Flag data-race
->>    GREEN   ... same, with recvmsg under lock_sock        clean
->>    RED     a writer holding no lock at all               Flag data-race
->>    CONTROL two bh_lock_sock writers                      clean
->>
->> The first pair is your sentence from f558120cd709 ("bh_lock_sock() is not
->> serializing the tasklet context against process context") as a model verdict.
->> lock_sock() releases sk_lock.slock before its critical section and leaves only
->> sk_lock.owned set; bh_lock_sock() holds slock through its critical section. The
->> two critical sections share no lock, so only an explicit sock_owned_by_user()
->> check can order them.
->>
->> The third row is the one the plan turns on, so it's spelled out below. The rest
->> inline or in a follow-up, whichever you prefer.
->>
->>
->> The result that changes the plan
->> --------------------------------
->>
->> Option A as written in f558120cd709 doesn't reach the receive path.
->>
->> iucv_sock_recvmsg (1237-1362) takes no socket lock - not lock_sock, not
->> bh_lock_sock - and it writes sk->sk_state at :1338. Since it never sets
->> sk_lock.owned, a sock_owned_by_user() check added in the softirq always reads
->> zero and always takes the "process now" branch. The deferral branch is dead
->> code against recvmsg. That's the third litmus above; since it's the one the
->> plan turns on, here it is rather than on request. P1 already has the option-A
->> fix applied:
->>
->>    C iucv-recvmsg-vs-hs-callback
->>    {}
->>
->>    P0(int *sk_state)
->>    {
->>          *sk_state = 5;                  /* recvmsg:1338 -- no socket lock held */
->>    }
->>
->>    P1(spinlock_t *slock, int *owned, int *sk_state, int *backlog)
->>    {
->>          int r0;
->>
->>          spin_lock(slock);               /* bh_lock_sock */
->>          r0 = READ_ONCE(*owned);         /* sock_owned_by_user() */
->>          if (r0 == 0)
->>                  *sk_state = 2;          /* always taken: recvmsg never sets owned */
->>          else
->>                  WRITE_ONCE(*backlog, 1);        /* the branch that never runs */
->>          spin_unlock(slock);
->>    }
->>
->>    exists (sk_state=2)
->>
->>    $ cd tools/memory-model && herd7 -conf linux-kernel.cfg iucv-recvmsg.litmus
->>    Flag data-race
->>
->> Give P0 the lock_sock() handshake (set owned under slock, write sk_state, clear
->> it) and the flag goes away, with nothing else changed.
->>
->> So the owner check plus re-enqueue fixes the state machine against
->> close/bind/listen/shutdown, but not against the reader -- and the reader is the
->> path you asked about.
->
-> Yes, as discussed in your initial patch, I am aware that iucv_sock_recvmsg is
-> currently not protected.
->
->
->> Putting recvmsg under lock_sock isn't a one-liner either. Two things in the
->> way, both of which I'd rather you ruled on:
->>
->>    a) recvmsg:1313 calls iucv_sock_close(), which takes lock_sock:401. Taking
->>       the lock in recvmsg self-deadlocks there unless the close is split into a
->>       __iucv_sock_close() that assumes the lock.
->
-> I understand. Yes, that would be the way to go.
->
->
->>       That exact call already cost a CVE: 3589d20a666c ("net/iucv: fix locking
->>       in .getsockopt", CVE-2026-64004), which you reviewed and tested, fixed a
->>       NULL deref from getsockopt(SO_MSGSIZE) racing the iucv_sock_close() that
->>       recvmsg invokes at :1313. Locking getsockopt closed it because
->>       iucv_sock_close() takes the socket lock itself - which is also exactly why
->>       recvmsg cannot simply take it too.
->>
->>    b) skb_recv_datagram() doesn't release the socket lock while it waits, so a
->>       blocking recv would hold it across the sleep and stall backlog processing
->>       for the duration. __iucv_sock_wait already has the right shape for this
->>       (release_sock / schedule_timeout / lock_sock), but it changes recvmsg's
->>       blocking behaviour.
->
-> I understand. I'm not sure I can judge all the implications, but your proposal makes
-> sense to me.
->
-> I wonder, if there is more required than taking and releasing the socket lock.
-> e.g. I think recvmsg needs to check (sk->sk_state == IUCV_CONNECTED) before
-> iucv_send_ctrl(sk, AF_IUCV_FLAG_WIN).
-> But let's take it one by one.
->
->
->>
->> Staged plan
->> -----------
->>
->> Why split rather than send one rework: your caveat in f558120cd709 about return
->> values and "changes to all users of iucv" applies to the tasklet path, because
->> those handlers run from iucv_tasklet_fn while holding iucv_table_lock and
->> iucv_handler is shared with monreader, vmlogrdr, smsgiucv and hvc_iucv. It
->> doesn't apply to the HiperSockets path: afiucv_hs_rcv is a packet_type handler
->> in NET_RX softirq that owns the skb, so it can defer to the socket backlog with
->> no core change and no other driver touched.
->>
->> Stage 1, HiperSockets receive path. Add iucv_proto.backlog_rcv, hoist
->> bh_lock_sock from the individual afiucv_hs_callback_* into afiucv_hs_rcv, and
->> defer via sk_add_backlog() when the socket is owned. Put recvmsg under
->> lock_sock, with the two items above. Entirely inside af_iucv.c, and it's the
->> part you named.
->
-> Sounds good to me
->
->> Stage 2, iucv tasklet path. This is where option A vs option B actually has to> be answered, and where the core and the four other iucv users are affected.
->> Option B subsumes it but needs iucv_tasklet_fn to stop holding iucv_table_lock
->> across handler dispatch, or dispatch moved to the existing iucv_work_fn.
->>
->> Stage 3, the writers holding no lock. No amount of owner-check discipline at
->> the other sites reaches these; they need a lock first. iucv_callback_connack is
->> unambiguous - same tasklet as connrej and shutdown, which already take
->> bh_lock_sock - so it can just do the same. I have that one ready as a
->> standalone patch if you want it independently.
->>
-> That would be great, we are also working on several small fixes. Let's get them out of the way.
->
->> Questions
->> ---------
->>
->> Q1. For stage 1, is putting iucv_sock_recvmsg under lock_sock acceptable to
->>      you, given (b) changes its blocking behaviour? The alternative is to
->>      promote message_q.lock to the receive-path lock and move sk_state under it,
->>      which leaves recvmsg's sleep alone but makes message_q.lock cover something
->>      it doesn't cover today.
-> No, I don't like that. message_q is a concept for iucv not HS - I see message_q.lock
-> is already used in both paths, but I don't want to stretch it further.
-> I prefer your proposal above and would like to test it with KASAN etc.
->
->> Q2. For stage 2, option A or option B? B is more invasive in net/iucv/iucv.c
->>      but makes Q1 and stage 3 moot. If you and Hidayath would rather own the
->>      core change, I'll do stage 1 and hand you the analysis for the rest.
->
-> I would prefer option A: keep the tasklet and use bh_lock_sock(). You seem to
-> think that is doable?
-> Less invasive is attractive.
->
->
->> Q3. afiucv_hs_callback_txnotify runs in two contexts, which is why I didn't
->>      just add a lock to it: qeth_tx_poll (NAPI, softirq) and
->>      qeth_drain_output_queue (process, teardown) both reach it through
->>      qeth_notify_skbs. Which one should the locking be written for?
->>
-> This is a tough one. Maybe we need to add a context parameter to qeth_notify_skbs() ?
->
->
->
->> Caveats
->> -------
->>
->> I have no IBM Z, so none of this is validated on real HiperSockets. herd7
->> proves the accesses race under LKMM; it says nothing about memory-safety
->> impact, which would need a KASAN run on hardware. Treat the model results as an
->> argument about which lock covers which write, not as a reproduction. I'd rely
->> on you or Hidayath to validate each revision on real HW before anything lands.
->
-> Yes, we will validate any revision.
->
->
->> One coordination note: Hidayath's "net/af_iucv: fix use-after-free of listen
->> sock in iucv_callback_connreq()" is still open, and I'm deliberately not
->> touching that function. The staged plan resolves connreq as a consequence of
->> the general direction rather than competing with his patch.
->>
->> Prior discussion, for anyone picking this up cold:
->> https://lore.kernel.org/all/20260705-b4-disp-fc79c0dc-v1-1-d2cdcb57afa9@proton.me/
->> https://lore.kernel.org/all/20260707-b4-disp-783fedbb-v1-1-463b9dbda2ea@proton.me/
->> https://lore.kernel.org/all/20260706084825.6231-1-hidayath@linux.ibm.com/
->>
->> Thanks,
->> Bryam
->>
->>
-> Thanks again for working on this. You identified several workitems, are there any
-> where you would prefer me or Hidayath to work on?
-> Otherwise we will continue with issues that are not on this list and work on
-> running and improving our testcases.
-Hi Bryam, Alexandra,
+The intention is that the memory is treated as if it were mlock()'d and
+thus is limited by the RLIMIT_MEMLOCK limit if the CAP_IPC_LOCK capability
+is not in place (which broadly allows unlimited ranges of mlock()'d
+memory).
 
-On a related note regarding accept_q: iucv_accept_poll() walks the 
-parent's accept_q
-with no lock at all, while iucv_accept_enqueue() appends from the IUCV 
-tasklet and
-the HiperSockets softirq under bh_lock_sock(parent). It doesn't show up 
-in the sk_state
-accounting because both accept_q walkers only read sk_state. I have a 
-fix that takes
-accept_q_lock for that walk and will send it to netdev as a standalone 
-patch.
+The lifecycle for memfd accounting against this limit is - account on map,
+unaccount on unmap but the lifecycle of memfd folios is allocate on fault,
+deallocate on inode eviction.
 
-iucv_accept_dequeue() has the same problem, and I think it can also be 
-fixed with
-accept_q_lock rather than anything from the socket locking rework - 
-though not by
-simply wrapping the walk, since the loop body sleeps. It needs a 
-preparatory patch
-in iucv_callback_connreq() and afiucv_hs_callback_syn(), which are being 
-touched by
-the locking rework, so I'll hold both and rebase on your rework.
+This mismatch is problematic because the folios are unevictable and remain
+so until the inode is evicted (set using mapping_set_unevictable()).
 
-I also have a patch fixing sock/netdevice leaks on the connection 
-request error
-paths, in those same two functions. Just flagging it, since we will both 
-be touching them.
+This is problematic as it eliminates usual mlock() semantics - mapping
+folios then unmapping them does not clear their unevictable state, since it
+depends on AS_UNEVICTABLE, not PG_mlocked.
 
-Let me know how you'd like to sequence it.
+A user can therefore easily work around the RLIMIT_MEMLOCK limit - simply
+map then unmap and VmLck no longer counts the secretmem range (or more
+involved - fork which also achieves the same thing).
 
-Thanks,
-Hidayath
+Worse - they are not accounted in the process's RSS even if mapped again,
+meaning the OOM killer won't know to kill the process.
+
+A user without the CAP_IPC_LOCK capability can therefore repeatedly
+map/unmap (or map/fork) and consume all available system memory with
+unevictable folios and cause system instability.
+
+A secretmem fd can be passed between processes and over fork so a
+per-process limit simply does not make sense.
+
+So follow the precedent set by io_uring, perf, skbuff, iommufd and xdp -
+track the number of locked pages in user_struct->locked_vm.
+
+Since the scope tracked is actually inode lifetime, the RLIMIT_MEMLOCK
+applies per-user not per-process. Also given the change in scope it doesn't
+make sense to bypass for users with CAP_IPC_LOCK, so remove it.
+
+There is simply no reason to carry on marking the mapping as mlock()'d
+since it's misleading and the lifecycle is now correctly handled, so remove
+this too.
+
+Additionally, fix the selftest which checks the limit as this now must
+assert SIGBUS on limit violation on fault-in.
+
+__secretmem_account_pages() is more or less a duplicate of the code that
+io_uring etc. use, but since this is a bug fix that needs backporting,
+defer any de-duplication efforts to a follow-up.
+
+Reported-by: Daehyeon Ko <4ncienth@gmail.com>
+Closes: https://lore.kernel.org/linux-mm/20260813225328.2010303-1-4ncienth@gmail.com/
+Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+v2:
+- Tried to put the commit message on a diet, as per Mike.
+- Moved secretmem_init_inode_[priv, destroy]() nearer their callers as per
+  Mike.
+- Removed CAP_IPC_LOCK check as per discussion with Mike.
+- Removed redundant GFP_KERNEL in kzalloc_obj() call as per Mike.
+- Updated to consistently use goto err style in secretmem_file_create() as
+  per Mike.
+- Updated test_mlock_limit() to consistently use goto cleanup style as per
+  Mike.
+- Added a comment describing why we are capping the mlock limit in the
+  secretmem tests, as per Mike.
+- Set inode->i_priv to NULL after destroy.
+
+v1:
+https://patch.msgid.link/20260814-secretmem-accounting-v1-1-d2f8c677980b@kernel.org
+
+To: Andrew Morton <akpm@linux-foundation.org>
+To: Mike Rapoport <rppt@kernel.org>
+To: David Hildenbrand <david@kernel.org>
+To: "Liam R. Howlett" <liam@infradead.org>
+To: Vlastimil Babka <vbabka@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+To: Michal Hocko <mhocko@suse.com>
+To: Shuah Khan <shuah@kernel.org>
+To: Alexei Starovoitov <ast@kernel.org>
+To: Daniel Borkmann <daniel@iogearbox.net>
+To: "David S. Miller" <davem@davemloft.net>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Jesper Dangaard Brouer <hawk@kernel.org>
+To: John Fastabend <john.fastabend@gmail.com>
+To: Stanislav Fomichev <sdf@fomichev.me>
+To: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Hagen Paul Pfeifer <hagen@jauu.net>
+Cc: ljs@kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-kselftest@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Cc: bpf@vger.kernel.org
+---
+ include/linux/sched/user.h                |   3 +-
+ mm/secretmem.c                            | 117 +++++++++++++++++++++++++++---
+ tools/testing/selftests/mm/memfd_secret.c |  96 ++++++++++++++++++++++--
+ 3 files changed, 198 insertions(+), 18 deletions(-)
+
+diff --git a/include/linux/sched/user.h b/include/linux/sched/user.h
+index 4cc52698e214..8d7e5521f7cd 100644
+--- a/include/linux/sched/user.h
++++ b/include/linux/sched/user.h
+@@ -25,7 +25,8 @@ struct user_struct {
+ 
+ #if defined(CONFIG_PERF_EVENTS) || defined(CONFIG_BPF_SYSCALL) || \
+ 	defined(CONFIG_NET) || defined(CONFIG_IO_URING) || \
+-	defined(CONFIG_VFIO_PCI_ZDEV_KVM) || IS_ENABLED(CONFIG_IOMMUFD)
++	defined(CONFIG_VFIO_PCI_ZDEV_KVM) || IS_ENABLED(CONFIG_IOMMUFD) || \
++	defined(CONFIG_SECRETMEM)
+ 	atomic_long_t locked_vm;
+ #endif
+ #ifdef CONFIG_WATCH_QUEUE
+diff --git a/mm/secretmem.c b/mm/secretmem.c
+index d29865075b6e..b7c8b2057e81 100644
+--- a/mm/secretmem.c
++++ b/mm/secretmem.c
+@@ -18,6 +18,8 @@
+ #include <linux/secretmem.h>
+ #include <linux/set_memory.h>
+ #include <linux/sched/signal.h>
++#include <linux/sched/user.h>
++#include <linux/cred.h>
+ 
+ #include <uapi/linux/magic.h>
+ 
+@@ -47,10 +49,70 @@ bool secretmem_active(void)
+ 	return !!atomic_read(&secretmem_users);
+ }
+ 
++struct secretmem_inode_state {
++	struct user_struct	*user;
++	atomic_long_t		nr_pages_accounted;
++};
++
++static bool __secretmem_account_pages(struct user_struct *user,
++		unsigned long nr_pages)
++{
++	unsigned long page_limit, cur_pages, new_pages;
++
++	if (!nr_pages)
++		return true;
++
++	page_limit = rlimit(RLIMIT_MEMLOCK) >> PAGE_SHIFT;
++
++	cur_pages = atomic_long_read(&user->locked_vm);
++	do {
++		new_pages = cur_pages + nr_pages;
++		if (new_pages > page_limit)
++			return false;
++	} while (!atomic_long_try_cmpxchg(&user->locked_vm,
++					  &cur_pages, new_pages));
++	return true;
++}
++
++static bool secretmem_account_folio(struct secretmem_inode_state *state,
++		const struct folio *folio)
++{
++	unsigned long nr_pages;
++
++	nr_pages = folio_nr_pages(folio);
++	if (!__secretmem_account_pages(state->user, nr_pages))
++		return false;
++
++	atomic_long_add(nr_pages, &state->nr_pages_accounted);
++	return true;
++}
++
++static void __secretmem_unaccount_pages(struct secretmem_inode_state *state,
++		unsigned long nr_pages)
++{
++	atomic_long_sub(nr_pages, &state->user->locked_vm);
++	atomic_long_sub(nr_pages, &state->nr_pages_accounted);
++}
++
++static void secretmem_unaccount_folio(struct secretmem_inode_state *state,
++		struct folio *folio)
++{
++	__secretmem_unaccount_pages(state, folio_nr_pages(folio));
++}
++
++static void secretmem_unaccount_all_folios(struct secretmem_inode_state *state)
++{
++	unsigned long nr_pages_accounted;
++
++	nr_pages_accounted = atomic_long_read(&state->nr_pages_accounted);
++	__secretmem_unaccount_pages(state, nr_pages_accounted);
++}
++
+ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
+ {
+ 	struct address_space *mapping = vmf->vma->vm_file->f_mapping;
+ 	struct inode *inode = file_inode(vmf->vma->vm_file);
++	struct secretmem_inode_state *state = inode->i_private;
+ 	pgoff_t offset = vmf->pgoff;
+ 	gfp_t gfp = vmf->gfp_mask;
+ 	unsigned long addr;
+@@ -72,8 +134,15 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
+ 			goto out;
+ 		}
+ 
++		if (!secretmem_account_folio(state, folio)) {
++			folio_put(folio);
++			ret = VM_FAULT_SIGBUS;
++			goto out;
++		}
++
+ 		err = set_direct_map_invalid_noflush(folio_page(folio, 0));
+ 		if (err) {
++			secretmem_unaccount_folio(state, folio);
+ 			folio_put(folio);
+ 			ret = vmf_error(err);
+ 			goto out;
+@@ -82,6 +151,7 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
+ 		__folio_mark_uptodate(folio);
+ 		err = filemap_add_folio(mapping, folio, offset, gfp);
+ 		if (unlikely(err)) {
++			secretmem_unaccount_folio(state, folio);
+ 			/*
+ 			 * If a split of large page was required, it
+ 			 * already happened when we marked the page invalid
+@@ -112,22 +182,30 @@ static const struct vm_operations_struct secretmem_vm_ops = {
+ 	.fault = secretmem_fault,
+ };
+ 
++static void secretmem_destroy_inode_priv(struct inode *inode)
++{
++	struct secretmem_inode_state *state = inode->i_private;
++
++	secretmem_unaccount_all_folios(state);
++	free_uid(state->user);
++	kfree(state);
++	inode->i_private = NULL;
++}
++
+ static int secretmem_release(struct inode *inode, struct file *file)
+ {
+ 	atomic_dec(&secretmem_users);
++	secretmem_destroy_inode_priv(inode);
++
+ 	return 0;
+ }
+ 
+ static int secretmem_mmap_prepare(struct vm_area_desc *desc)
+ {
+-	const unsigned long len = vma_desc_size(desc);
+-
+ 	if (!vma_desc_test_any(desc, VMA_SHARED_BIT, VMA_MAYSHARE_BIT))
+ 		return -EINVAL;
+ 
+-	vma_desc_set_flags(desc, VMA_LOCKED_BIT, VMA_DONTDUMP_BIT);
+-	if (!mlock_future_ok(desc->mm, /*is_vma_locked=*/ true, len))
+-		return -EAGAIN;
++	vma_desc_set_flags(desc, VMA_DONTDUMP_BIT);
+ 	desc->vm_ops = &secretmem_vm_ops;
+ 
+ 	return 0;
+@@ -187,20 +265,40 @@ static const struct inode_operations secretmem_iops = {
+ 
+ static struct vfsmount *secretmem_mnt;
+ 
++static int secretmem_init_inode_priv(struct inode *inode)
++{
++	struct secretmem_inode_state *state;
++
++	state = kzalloc_obj(*state);
++	if (!state)
++		return -ENOMEM;
++
++	state->user = get_uid(current_user());
++	inode->i_private = state;
++	return 0;
++}
++
+ static struct file *secretmem_file_create(unsigned long flags)
+ {
+ 	struct file *file;
+ 	struct inode *inode;
+ 	const char *anon_name = "[secretmem]";
++	int err;
+ 
+ 	inode = anon_inode_make_secure_inode(secretmem_mnt->mnt_sb, anon_name, NULL);
+ 	if (IS_ERR(inode))
+ 		return ERR_CAST(inode);
+ 
++	err = secretmem_init_inode_priv(inode);
++	if (err)
++		goto err_free_inode;
++
+ 	file = alloc_file_pseudo(inode, secretmem_mnt, "secretmem",
+ 				 O_RDWR | O_LARGEFILE, &secretmem_fops);
+-	if (IS_ERR(file))
+-		goto err_free_inode;
++	if (IS_ERR(file)) {
++		err = PTR_ERR(file);
++		goto err_free_priv;
++	}
+ 
+ 	mapping_set_gfp_mask(inode->i_mapping, GFP_USER);
+ 	mapping_set_unevictable(inode->i_mapping);
+@@ -215,10 +313,11 @@ static struct file *secretmem_file_create(unsigned long flags)
+ 	atomic_inc(&secretmem_users);
+ 
+ 	return file;
+-
++err_free_priv:
++	secretmem_destroy_inode_priv(inode);
+ err_free_inode:
+ 	iput(inode);
+-	return file;
++	return ERR_PTR(err);
+ }
+ 
+ SYSCALL_DEFINE1(memfd_secret, unsigned int, flags)
+diff --git a/tools/testing/selftests/mm/memfd_secret.c b/tools/testing/selftests/mm/memfd_secret.c
+index aac4f795c327..26d2a4a527da 100644
+--- a/tools/testing/selftests/mm/memfd_secret.c
++++ b/tools/testing/selftests/mm/memfd_secret.c
+@@ -15,6 +15,8 @@
+ #include <sys/resource.h>
+ #include <sys/capability.h>
+ 
++#include <setjmp.h>
++#include <signal.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <unistd.h>
+@@ -22,6 +24,8 @@
+ #include <stdio.h>
+ #include <fcntl.h>
+ 
++#include <sys/mman.h>
++
+ #include "kselftest.h"
+ 
+ #define fail(fmt, ...) ksft_test_result_fail(fmt, ##__VA_ARGS__)
+@@ -31,6 +35,11 @@
+ #ifdef __NR_memfd_secret
+ 
+ #define PATTERN	0x55
++/*
++ * Set 8 MiB as a reasonable mlock limit so users with unlimited or absurdly
++ * high RLIMIT_MEMLOCK don't cause us to overflow in the tests.
++ */
++#define MLOCK_LIMIT_CAP	(8UL << 20)
+ 
+ static const int prot = PROT_READ | PROT_WRITE;
+ static const int mode = MAP_SHARED;
+@@ -39,6 +48,13 @@ static unsigned long page_size;
+ static unsigned long mlock_limit_cur;
+ static unsigned long mlock_limit_max;
+ 
++static sigjmp_buf fault_env;
++
++static void sigbus_handler(int sig)
++{
++	siglongjmp(fault_env, 1);
++}
++
+ static int memfd_secret(unsigned int flags)
+ {
+ 	return syscall(__NR_memfd_secret, flags);
+@@ -57,10 +73,31 @@ static void test_file_apis(int fd)
+ 		pass("file IO is blocked as expected\n");
+ }
+ 
+-static void test_mlock_limit(int fd)
++/* GUP disallows automatic fault-in of secretmem, so do it manually. */
++static bool fault_in_secretmem(char *mem, size_t len)
++{
++	if (sigsetjmp(fault_env, 1))
++		return false;
++	memset(mem, PATTERN, len);
++	return true;
++}
++
++static void test_mlock_limit(void)
+ {
+ 	size_t len;
+ 	char *mem;
++	int fd;
++
++	/* Locked pages have an inode lifetime, so need a new fd. */
++	fd = memfd_secret(0);
++	if (fd < 0) {
++		fail("memfd_secret failed: %s\n", strerror(errno));
++		return;
++	}
++	if (ftruncate(fd, mlock_limit_max * 2)) {
++		fail("ftruncate failed: %s\n", strerror(errno));
++		goto out_close;
++	}
+ 
+ 	len = mlock_limit_cur;
+ 	if (len % page_size != 0)
+@@ -69,19 +106,50 @@ static void test_mlock_limit(int fd)
+ 	mem = mmap(NULL, len, prot, mode, fd, 0);
+ 	if (mem == MAP_FAILED) {
+ 		fail("unable to mmap secret memory\n");
+-		return;
++		goto out_close;
++	}
++
++	if (!fault_in_secretmem(mem, len)) {
++		fail("unable to fault in secret memory\n");
++		goto out;
+ 	}
+-	munmap(mem, len);
+ 
++	munmap(mem, len);
+ 	len = mlock_limit_max * 2;
+ 	mem = mmap(NULL, len, prot, mode, fd, 0);
+-	if (mem != MAP_FAILED) {
+-		fail("unexpected mlock limit violation\n");
+-		munmap(mem, len);
+-		return;
++
++	if (mem == MAP_FAILED) {
++		fail("unable to mmap secret memory\n");
++		goto out_close;
++	}
++
++	if (fault_in_secretmem(mem, len)) {
++		fail("mlock limit is not respected\n");
++		goto out;
++	}
++
++	munmap(mem, len);
++	len = page_size;
++
++	/* map a page past the limit to assert inode scope. */
++
++	mem = mmap(NULL, page_size, prot, mode, fd,
++		   mlock_limit_max & ~(page_size - 1));
++	if (mem == MAP_FAILED) {
++		fail("unable to mmap secret memory\n");
++		goto out_close;
++	}
++
++	if (fault_in_secretmem(mem, page_size)) {
++		fail("mlock limit is not respected\n");
++		goto out;
+ 	}
+ 
+ 	pass("mlock limit is respected\n");
++out:
++	munmap(mem, len);
++out_close:
++	close(fd);
+ }
+ 
+ static void test_vmsplice(int fd, const char *desc)
+@@ -292,6 +360,12 @@ static void prepare(void)
+ 	if (page_size > mlock_limit_max)
+ 		mlock_limit_max = page_size;
+ 
++	/* Clamp huge or unlimited. */
++	if (mlock_limit_max > MLOCK_LIMIT_CAP)
++		mlock_limit_max = MLOCK_LIMIT_CAP;
++	if (mlock_limit_cur > mlock_limit_max)
++		mlock_limit_cur = mlock_limit_max;
++
+ 	if (set_cap_limits(mlock_limit_max))
+ 		ksft_exit_fail_msg("Unable to set mlock limit: %s\n",
+ 				   strerror(errno));
+@@ -301,6 +375,7 @@ static void prepare(void)
+ 
+ int main(int argc, char *argv[])
+ {
++	struct sigaction sa = { .sa_handler = sigbus_handler };
+ 	int fd;
+ 
+ 	prepare();
+@@ -316,10 +391,15 @@ int main(int argc, char *argv[])
+ 			ksft_exit_fail_msg("memfd_secret failed: %s\n",
+ 					   strerror(errno));
+ 	}
++
++	sigemptyset(&sa.sa_mask);
++	if (sigaction(SIGBUS, &sa, NULL))
++		ksft_exit_fail_msg("Cannot set up SIGBUS handler");
++
+ 	if (ftruncate(fd, page_size))
+ 		ksft_exit_fail_msg("ftruncate failed: %s\n", strerror(errno));
+ 
+-	test_mlock_limit(fd);
++	test_mlock_limit();
+ 	test_file_apis(fd);
+ 	/*
+ 	 * We have to run the first vmsplice test before any secretmem page was
+
+---
+base-commit: e737cebb8de0d38e8f64584a8bbfbcf9176c7537
+change-id: 20260814-secretmem-accounting-ad6a44629b19
+
+Cheers,
+-- 
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
