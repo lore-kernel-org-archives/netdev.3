@@ -1,148 +1,125 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5C43C1D70
-	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 16:46:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD84A3AD524;
+	Sat, 22 Aug 2026 16:57:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787417168; cv=none; b=mMqtbhlyEN+YoMM1fQWL4uHJgZqTkDNQebgOXxTvuM5NZQ9/8GyCCN98xqiGpX9z57sZ/Jd/bqFO9c8TEw2X8ql4Zu/61MswXWTGpEmAH8t2R0IIUfCDZnBN4ePvhAbeF6i4fANSamtjn6GPeeX2+nzyh1iVzQlM/vGekEVIHNY=
+	t=1787417877; cv=none; b=PWZICcON09mlh5yYX/YH6fC62fZRhJtCWPtdvTy44GHSe1jyAaEBJg1ci3BLCBE9fdahUicl7fXZMCuFoto6zifmgPZDEX38vqKFRaOCqhHiqUU92trMf3l93bcCoHOObgOgBpNKmDG613M70t99z/L0chXIoAaeeaD1SLlBeas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787417168; c=relaxed/simple;
-	bh=RZnSBXG7H5IfVESK5dV+papTZf4bB2+5pFdMF6y80Cc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G6l+ojrHvnB4wiwAKeFcvy1VSdPVr2wUVe8GzHmuvUt7HRtOQypDAjbbjsntIFaqUVkEMvPmRh8ho5WDKF6hBKsWzvy+7A2qYjmaA9OYPT6GHizG+GR9GckivNbx7TxaTFX+EMPHAbjcCP3n96koo5dtdlU7wiE2X3+9PUiag5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o50PTwrJ; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787417877; c=relaxed/simple;
+	bh=ZyUMEwGyn3c46u0NkjvE6TPVTBK/Rka0z+HlcRnaztA=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=qLYInuKIw+SQfQQdUEA6QJ5BE9lNUnohz34zWlmlq6GoA+Ss2Ip8jEdG+6MV+qa4FuG6nZ/t5rSgIsVxGFCr7v8zekAjK6GxXLVbL32Ftv72AZp8uf+YK6K/dKQ3RqGrH/ut64Nho4GM7YWorUyfW7ZZU4yLtlIXAyo4N+SXkgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=ZbJz80fF; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o50PTwrJ"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-cbedf082ba2so218505a12.1
-        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 09:46:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787417165; x=1788021965; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zxjo65j0/PC8LNmS95fdZuou6hT1feMI3IHbQQyBjIE=;
-        b=o50PTwrJBuwau13sNGF5h4O3fMo5o27/5Sy3+pjsyIesNKORDx6wwWGX0kKBL83BrD
-         BsYaVVmDe0VuuL2boO8nOBgHnqTnEdua0MNVB3TzccDP0QAuj+qPb7Xrje2h+HJS0ZLv
-         ofHR9qgWj564C/ap9pb13IqRfveb0K4H+d3xJ0sE1VMiE1y8Xre3g5ObJjvhjac7IqHZ
-         dk240TvBQjk2PUZNlz97PlBdO3qF4kAFNJIGmWLpyeZMkoaxJ5gf2qbX7HaNVEJhiJIu
-         Qot6JYoE6473NJg8I+1091cFGPiL1fDaz/Pt81NyEO0VKIE+zJqapI5Mxis4pT9IJwH4
-         5iCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787417165; x=1788021965;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zxjo65j0/PC8LNmS95fdZuou6hT1feMI3IHbQQyBjIE=;
-        b=qHdHyMf8iEpWZ952lsSSrKT1KO6L+vFPnBaRMBpi9ur6aJUa2dZfIwjPRksWP4H4FZ
-         Fz2LvhPn/InetcnxKqIkXe5U2uehVjhUg90vU13EtLFgPu9F8ZAFYDVAQQ3op9Ek/VB3
-         7i/+rZZUS1Kx9OQY2NpEo8q+Mkok4oe0/GZBBIyeZ5zgYETYXDNOZ98sWRIQZ99X14rF
-         OGOM6XmHh1d3XAORJizjKLJ4WnCu/5Dn0gZPW8q5GNSXCdfv2KAlo6Bv2IIZdITaMFd2
-         +usz63rE1sD+V124YBNCP+828EtZ6z4zYl/d1NBEMiX79W0SQoaBmSI5TIpi4MGl7vqr
-         vlBw==
-X-Forwarded-Encrypted: i=1; AHgh+RpJLvnbsMWsIEv87P3xf6L6iK7X96HFKVREgHCk9WU22+bflqstTiTJEKb5D6v/1+0/lewv8DE=@vger.kernel.org
-X-Gm-Message-State: AFuF++mVZrhDeOlKjE0zAiNSUk22kcHTTvD59n5969b1rBZlC6ZGPUh/
-	BzfMK4UntIYHPrU3BKnCwkU8z8kOnbl1DYstzGpLw0jmWzmtRcwlUJn4
-X-Gm-Gg: AR+sD10s1u0qSRPB0M6kN2L3JLHH/m9e5yyGsdo/JU2/ZC/n6qjotRLjTIj6/YZzNWH
-	nUiIS93hFDr/smngGPEuUbvxk8DnUy6pv3KWU2pkleCTb3Jlp5rzLojFNp/9gyBkO8H8APP6nJ5
-	bo4GtbSwDcraShqFgr21c13bivS/MSG17rXxpuOCrMoaipwXFYcMyl9Fz4pAxsvLdSMX4f+zG5m
-	YAzpEFdwOsAV8KkzrQBEgiCJ3Bpjld7UvMXkXbGkhE2edPXbIWlF+H2dHTWbszEAvIHJmiQ7PRJ
-	J48im0kmW7R6y/2zPnn/PHEzLjSFkqGFkafotL/0XFEQaGDy21yeH90Io55I+I+UeT7bxQKQ2au
-	jA2uOiEgmzy+b6iht8+WYNHqfCrQxo60NTRlcXJq4AWCS5SkkjzAPi9VMynKwc1wQnoIrUazMJB
-	ITUPqZNbrVEeTl7iQKMrgPUdHalQwPHItWwk/WYNTkVC8SkPW3K7fnbmbfXJ8+pa5QqFbI/huKT
-	nKUdYE5y2Epd0GLe3Y2BxtXK8sw/RzDiyK7vIfGSnfcDgSLpLLbK/c=
-X-Received: by 2002:a17:903:b43:b0:2d2:a952:2628 with SMTP id d9443c01a7336-2d64b0d7b26mr129424855ad.2.1787417164695;
-        Sat, 22 Aug 2026 09:46:04 -0700 (PDT)
-Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327f9209fafsm15623986eec.23.2026.08.22.09.46.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Aug 2026 09:46:04 -0700 (PDT)
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Asias He <asias@redhat.com>
-Cc: kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chengfeng Ye <nicoyip.dev@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] vsock/virtio: flush works in dependency order
-Date: Sun, 23 Aug 2026 00:45:56 +0800
-Message-ID: <20260822164556.3750959-1-nicoyip.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="ZbJz80fF"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:Message-ID:Subject:Cc:To
+	:From:Date:MIME-Version:From:Reply-To;
+	bh=yYKcqboW2hgBCm128jlsW+fEFCrg/+/6fC0pPe2118M=; b=ZbJz80fFfEN7nkrQcV8gZZ+oUE
+	hK4b5lCtnutJj1yjrMLG1BeMt0eRSLfkdrmKM4eHnKGLezlJuWTp5PE4Yk5I8WwkhFUD/NLwoWW4n
+	Kgoi6umxhGYQrdvfuOl1eQJfSB2LqC2y7kE7ojq4xPJnthVMSJ1B/QHaWoEf/g77lioyDCXJrLvb/
+	oQl5Mf6I5KIUU5NF4+0OK4F/1HCTyG3AyKjVGEAWQTKkqOyLofBPXDv5TiWlXFVXOhetvM/QCUWOj
+	m7wOT9QmpBgbf2IXG+RYeBlApw4DIxLHSB8HUlP5n8fh+hpB0Atv0lItGBl1gr+NsfEKmAfTF0dcm
+	tc6UfpYw==;
+Received: from maestria.local.igalia.com ([192.168.10.14] helo=mail.igalia.com)
+	by fanzine2.igalia.com with esmtps 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1wxp25-007Utx-Ae; Sat, 22 Aug 2026 18:57:25 +0200
+Received: from webmail.service.igalia.com ([192.168.21.45])
+	by mail.igalia.com with esmtp (Exim)
+	id 1wxp24-0013TF-9m; Sat, 22 Aug 2026 18:57:25 +0200
+Received: from localhost ([127.0.0.1] helo=webmail.igalia.com)
+	by webmail.service.igalia.com with esmtp (Exim 4.98.2)
+	(envelope-from <mfo@igalia.com>)
+	id 1wxp24-00000002uHU-0yE7;
+	Sat, 22 Aug 2026 18:57:24 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Date: Sat, 22 Aug 2026 13:57:24 -0300
+From: Mauricio Faria de Oliveira <mfo@igalia.com>
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Kees Cook <kees@kernel.org>, Joel Granados <joel.granados@kernel.org>,
+ Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, kernel-dev@igalia.com,
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ fsverity@lists.linux.dev, keyrings@vger.kernel.org, bpf@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ netdev@vger.kernel.org, linux-wpan@vger.kernel.org,
+ lvs-devel@vger.kernel.org, netfilter-devel@vger.kernel.org,
+ coreteam@netfilter.org, linux-sctp@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
+ bridge@lists.linux.dev, mptcp@lists.linux.dev, rds-devel@oss.oracle.com,
+ virtualization@lists.linux.dev
+Subject: Re: [PATCH RFC v3 03/13] sysctl, mod_devicetable: add macro
+ MODULE_SYSCTL_TABLE
+In-Reply-To: <aomlfGJM61qZKxx2@monoceros>
+References: <20260819-sysctl-module-aliases-v3-0-aab90569365d@igalia.com>
+ <20260819-sysctl-module-aliases-v3-3-aab90569365d@igalia.com>
+ <aomlfGJM61qZKxx2@monoceros>
+Message-ID: <4e3eaf1d3419e808be046035f114bf6c@igalia.com>
+X-Sender: mfo@igalia.com
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Spam-Report: NO, Score=-2.1, Tests=ALL_TRUSTED=-3,BAYES_50=0.8,KAM_DMARC_NONE=0.125,KAM_DMARC_STATUS=0.005
+X-Spam-Score: -20
+X-Spam-Bar: --
 
-virtio_vsock_remove() stops the virtqueues and then flushes each work
-item before freeing the enclosing virtio_vsock.  The current order does
-not account for dependencies between those items: tx_work may queue
-send_pkt_work, and send_pkt_work may queue rx_work.
+On 2026-08-22 10:41, Uwe Kleine-König wrote:
+> Hello,
 
-In particular, send_pkt_work can set restart_rx and release tx_lock.
-The remove path can then stop the queues and flush rx_work before
-send_pkt_work queues it.  Although the later send_pkt_work flush waits
-for that producer to finish, nothing waits for the newly queued rx_work,
-so kfree(vsock) can race with it.
+Hey,
 
-KASAN reported:
+> 
+> On Wed, Aug 19, 2026 at 03:16:16PM -0300, Mauricio Faria de Oliveira wrote:
+>> The MODULE_SYSCTL_TABLE macro emits a struct module_sysctl_table variable
+>> with pointers to a sysctl table's path and entries, and table/entry sizes.
+> 
+> That new struct doesn't seem to contain any pointer?
 
-  BUG: KASAN: slab-use-after-free in
-  virtio_transport_rx_work+0x487/0x4b0
-  Read of size 8 at addr ffff888114c2b008 by task kworker/1:1/47
-  Workqueue: virtio_vsock virtio_transport_rx_work
-  Call Trace:
-   virtio_transport_rx_work+0x487/0x4b0
-   process_one_work+0x688/0x1120
-   worker_thread+0x45b/0xd10
-  Allocated by task 1:
-   virtio_vsock_probe+0xef/0x6b0
-  Freed by task 84:
-   kfree+0x131/0x3c0
-   virtio_vsock_remove+0xd1/0x100
+The struct module_sysctl_table fields .path and .table are pointers,
+although with kernel_ulong_t type so that the same 32/64-bit size is
+used in file2alias.c based on KERNEL_ELFCLASS (and not on the host,
+which might differ with CROSS_COMPILE).
 
-Flush the works in producer-to-consumer order.  virtio_vsock_vqs_del()
-has already disabled the queue callbacks and cleared the run flags, so
-after tx_work and send_pkt_work are drained, no source remains that can
-queue rx_work after its flush.
+> 
+>> That symbol will be handled by file2alias.c (modpost) with the changes in
+>> mod_devicetable.h and devicetable-offsets.c.
+>> 
+>> The option macros MODULE_SYSCTL_TABLE_{DISABLE,UNIQUE_ID} can be used on
+>> a per-file basis to disable the macro and change the symbol name pattern.
+>> 
+>> Signed-off-by: Mauricio Faria de Oliveira <mfo@igalia.com>
+>> ---
+>>  include/linux/mod_devicetable.h   |  7 +++++++
+>>  include/linux/sysctl.h            | 42 +++++++++++++++++++++++++++++++++++++++
+>>  scripts/mod/devicetable-offsets.c |  6 ++++++
+>>  3 files changed, 55 insertions(+)
+> 
+> Please put the new struct in a separate header. Apart from not being
+> about a device table, I'm currently work on removing
+> <linux/mod_devicetable.h>. See commit
+> ad428f5811bd7fb3d91fa002174de533f9da94d7 for more details.
 
-Fixes: 0ea9e1d3a9e3 ("VSOCK: Introduce virtio_transport.ko")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
----
- net/vmw_vsock/virtio_transport.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sure; I looked at that earlier (thanks for the instructive commit
+message, by the way) and found the new struct to be similar to "struct
+cpu_feature isn't really a device_id struct" (not moved), but apparently
+missed the trailing "fow now", which is clearer now. Fixed for v4.
 
-diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-index 96c9fe8d357c..4f9aa9c4c3aa 100644
---- a/net/vmw_vsock/virtio_transport.c
-+++ b/net/vmw_vsock/virtio_transport.c
-@@ -872,10 +872,10 @@ static void virtio_vsock_remove(struct virtio_device *vdev)
- 	/* Other works can be queued before 'config->del_vqs()', so we flush
- 	 * all works before to free the vsock object to avoid use after free.
- 	 */
--	flush_work(&vsock->rx_work);
- 	flush_work(&vsock->tx_work);
- 	flush_work(&vsock->event_work);
- 	flush_work(&vsock->send_pkt_work);
-+	flush_work(&vsock->rx_work);
- 
- 	mutex_unlock(&the_virtio_vsock_mutex);
- 
+Thank you,
+
+> 
+> Best regards
+> Uwe
+
 -- 
-2.43.0
-
+Mauricio
