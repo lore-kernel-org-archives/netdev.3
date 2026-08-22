@@ -1,88 +1,60 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693A0380FCC;
-	Sat, 22 Aug 2026 20:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389EB3546EB;
+	Sat, 22 Aug 2026 20:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787431266; cv=none; b=hdWY0p2r2aYndeJzy0xsnf8HdAIvUTeXaq2JkNz8w/VjgRKxSCumS1fCrhDkc2idXdf4TxkhuPK17DsB6c436osFHg3h1MH+mselRQ3hNErcMwGkjTDk/4mAmGnXWjBJQyXBEutDEe7y0CxM8Op7nnZ1B5bK06DaghF9s9oT5Fc=
+	t=1787431444; cv=none; b=J63S/r1aEEfl4Dd1w3I34fa9vd94SVIGsIvoCK4fI9OQvsmNYmpI49enAcSnP+ZRopjzhAgYYcildhN2a33hRbVBegKszBznxJx77qq3Q14V62pCJO1FWPfiSVrP4Q5y+BRfFNtIrUSsTdwKR1TOXHwUk2AiSqhbDRTm/tOZvOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787431266; c=relaxed/simple;
-	bh=IR2wLuYQOSE+aMyK2ErvQGVSciuh8LGlAZSiFFC2Z2E=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=iez/6lMGkGybu4sk7JhKiXK6MJB11oo8Wnoj+m/DHu6PGtJZJcU+d3akL/9JPyFEZ4aK+qCRh1uwGvG4R1yzY6UJEiK3+0relx8m0TiI1WVEM/wTv56knwxw9P45PxYLGWtpx9y2ELO6cGfe659ZEvriy/e7yht95IiY7U8IDmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ONAtDSIe; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787431444; c=relaxed/simple;
+	bh=pE8em5ESimq7kEnbnIQn70TryphkT/GM8iNNxBxf+uo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Af4bfT2AgU8XiJYAk9QpAFFfepaIdiqsUuNrH0mOsT1LmjuUOt+iS0WfK781fpDp4R7i9br+hL2qrxg+TYFoqQHhNreeZFWAhADgowRoxDbbsS0nl2OA9ApuRMxwb7susj0jOVIAD9Khwot6rR50ucN6NkIc0E81SO3aiRfkEgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PCaghFYk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ONAtDSIe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 931881F000E9;
-	Sat, 22 Aug 2026 20:41:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PCaghFYk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6058A1F000E9;
+	Sat, 22 Aug 2026 20:44:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787431264;
-	bh=t6sqrQxCWB3rzPouF9yMKAVTFwqFJESx3h3EIMtjiP0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=ONAtDSIe8DQAjp4WBuHIlWEhZOScs1lAHHuoEEfNWM6oqMFJgVlGQ0bJp6rc+Fzk6
-	 pRz4XnhYt3Pca7W5dTynv6UDjoy1AgcqdC3l5qeMsYf9NxjAwm7yytFsicgpRU5cGG
-	 5nUU5x22e19xr4H74EB/vcKZwx7kunnH9zxOFDLXUcD+Pjts4BZV3gGQWiCl3E/J6i
-	 cYUeTZ9GfvN5/hoBOwJOGlYYkCVZxLds27lEao7t2P/wsU17iKKcBgWFxNy2ZCE2sN
-	 9rutEyWiz4zNM07q4Cgz5+2zkblCMxZOICL3aAuqCwpbpGR8qXx5n6zWe6V3W6Qbcf
-	 dyc9pwfCTmJfw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93965380CEF9;
-	Sat, 22 Aug 2026 20:40:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1787431442;
+	bh=Vvmofg7n35kucFRZzzYsmckgLsmxC+unu3ShITZiohw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=PCaghFYklys7Ri5/HUtvzxJYBjO1PheJgWcdUGbPI9dyq3L16RwV/PG1npbwL7DVN
+	 +HB7pjJd3eAOtveNrsigEnvSVPyNpF51XWJARJFmwXVkyd56YyP0Sn7SJy8QPIDKcl
+	 NSB6zLPQyZzYTMdkS6KouDpDiG2Tee0zrArxQdDzX0E37ABGBhl9m/FWHaWS0jqfHG
+	 KdBoAIR6XNI52Mx5+3C0Vr3NYdGL0Av14rVWrVk9mGxYT0TFtHGcNOZ+4p8b3EGHFH
+	 JdWS/iKgsXsKYWZCNFK2sCNLG4mPB+nzqncqfc2HuRIrMhb07bBG7oFTj+dVYIrRn5
+	 Rr1Expq8ekHZQ==
+Date: Sat, 22 Aug 2026 13:44:01 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, John Fastabend
+ <john.fastabend@gmail.com>, stable@vger.kernel.org, vega@nebusec.ai,
+ "Victor Nogueira" <victor@mojatatu.com>
+Subject: Re: [PATCH net 1/2] net/sched: pfifo_fast: cap ring size and
+ account to memcg
+Message-ID: <20260822134401.6545e4eb@kernel.org>
+In-Reply-To: <20260820095742.68511-1-jhs@mojatatu.com>
+References: <20260820095742.68511-1-jhs@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v7 0/3] net/smc: fix out-of-bounds and use-after-free
- in
- SMC-Rv2 LLC processing
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178743121314.1821669.490736256443928861.git-patchwork-notify@kernel.org>
-Date: Sat, 22 Aug 2026 20:40:13 +0000
-References: <20260819023306.644849-1-yhlee@isslab.korea.ac.kr>
-In-Reply-To: <20260819023306.644849-1-yhlee@isslab.korea.ac.kr>
-To: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
-Cc: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com,
- sidraya@linux.ibm.com, wenjia@linux.ibm.com, kuba@kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- leitao@debian.org, horms@kernel.org, mjambigi@linux.ibm.com,
- tonylu@linux.alibaba.com, guwen@linux.alibaba.com,
- guangguan.wang@linux.alibaba.com, kees@kernel.org, gustavoars@kernel.org,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-hardening@vger.kernel.org,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Thu, 20 Aug 2026 05:57:41 -0400 Jamal Hadi Salim wrote:
+> +	if (qlen > 65535) {
+> +		pr_warn_ratelimited("pfifo_fast: capping ring size %u to 65535 for dev %s\n",
+> +				    qlen, qdisc_dev(qdisc)->name);
+> +		qlen = 65535;
+> +	}
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Wed, 19 Aug 2026 11:33:03 +0900 you wrote:
-> Patch 1 fixes a use-after-free of the LLC queue entry in
-> smc_llc_srv_add_link(), patch 2 bounds the peer's rkey counts, and patch 3
-> carries the tail of an oversized v2 message in the queue entry so that both
-> readers are bounded by what arrived. All three are tagged for stable: a
-> tree that takes 1 and 2 without 3 still deletes rkeys read from whatever an
-> earlier message left in the shared receive buffer.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net,v7,1/3] net/smc: fix use-after-free of the LLC qentry in smc_llc_srv_add_link()
-    https://git.kernel.org/netdev/net/c/a42a459ef0e5
-  - [net,v7,2/3] net/smc: bound the peer rkey counts in SMC-Rv2 LLC messages
-    https://git.kernel.org/netdev/net/c/2d1e7c5aaa33
-  - [net,v7,3/3] net/smc: carry oversized SMC-Rv2 LLC messages in the queue entry
-    https://git.kernel.org/netdev/net/c/8d3c1ab82c11
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Why not a hard cap? We do that all over the place, once in a release we
+pick a value too small and someone quickly sends us a fix up to bump
+the number. No problem.
