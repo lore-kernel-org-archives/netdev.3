@@ -1,96 +1,86 @@
-Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6E017A314
-	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 12:01:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1415B49364E;
+	Sat, 22 Aug 2026 12:03:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787400107; cv=none; b=lXRaUwSXhTyeg8Etn7RSikteVCtLp0OGzEy/sgu/4XIBKwzljO8p2mcv2ckGOIrl5fyi7nEQLkPjv/y639KO9jR4VUakrshte+449jCPf5lB0FIqSLs5b3uZ0iP2jYlEhQRxB3jIABfa6JfV2gA+MfhWuQTd+0B69l7/7x01NZI=
+	t=1787400208; cv=none; b=p67TyVXGWlDkJjIOIPTHKil3K360+x0l+zIgC5/SjvUvcb2+zJEZTKDqIiclLXXJ4U/43JlJQia/zesZglZcdNl2egnjgN5X8hyY7ZCcs1oOv6ycFXGL6xL3nXkb6WOb/ONrl2jzJyUWrl/fzJYZ2TMvQg5iLHQpn2iO6h+gQUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787400107; c=relaxed/simple;
-	bh=tg1A0Vit7mKDNZtJZZKke768DSBVEI+360rKAgW2CkA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pY/1wu1iMe4MLp+D/+A8NDrS35FEHAFJru9UHJa9QnoIBgEHZoK6KcFBsl0ZspHrlA5BoGZC9opT1ZrmzlJ0ZSoZAxC7OAI46Ax7Gv3C6ImQ+57AqIVpwqJF5qiYjlSMRi5qZQLhtXn/BcfVX6nUl0byBpK5Qy7Pv9hG8u+DDhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=S0SDXHZp; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NYInRHyD; arc=none smtp.client-ip=202.12.124.158
+	s=arc-20240116; t=1787400208; c=relaxed/simple;
+	bh=rNJKTbTifnNGotg6lX4H/d/HzhAbv8OwwY3tZoUNHYk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MgSLIkADDRGXovI6zwGiRhE/LTLrB4zTMTVl+H1r0cP8IE06nfyhv7ko2OcwT4eUCOtBedN+ccP9nkIc5Tqtf2w+CfxhvwGRjbd9rOMmg2IgbYIxcWBnPSvTq0BLUvyy8yZ2zDyuzSgUJl2PPqC7kmUJeuET7LvGouxCQ5IbjE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=nK7O0PDZ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=PzOBFJFa; arc=none smtp.client-ip=202.12.124.149
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="S0SDXHZp";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NYInRHyD"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 782A17A0048;
-	Sat, 22 Aug 2026 08:01:38 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="nK7O0PDZ";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="PzOBFJFa"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.stl.internal (Postfix) with ESMTP id 292401D000D6;
+	Sat, 22 Aug 2026 08:03:26 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Sat, 22 Aug 2026 08:01:38 -0400
+  by phl-compute-06.internal (MEProxy); Sat, 22 Aug 2026 08:03:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1787400098; x=
-	1787486498; bh=Efr18sjWjKItAotTwy3gK1jQQkgQnyUd4Dfxl4J0yIE=; b=S
-	0SDXHZpi57n18jmIEtH8AKM5/kup3ARf8F7jhFjHSU/Pz9/sas36KoZGaO3+ISG1
-	5xm2E4/W3j1wOGREG1Ekbb8ZwUECLv8AMiKtQd8N2KMfz00dJ2K8JLB8n9wM2Uot
-	+OH0zmRiKnskfmbnPKzzwf7Vv+/Wntgcrc8zAJK/o8PyYIq31wqJdp2Nhkpus0v+
-	wPOJ50k+WB5iIfMYxmkE4wwqlsnfDIBJKLhucIJ811L2idpnW6iD28gccAZIcqrc
-	ysAq8MUsALTafgqvwzNcymVF1GbnZwqWI3ej2MxIIkQ3TuAmaL5Sqa30vyyxJh+q
-	9UKHpKIwi6TSnkCSr1CYA==
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm3; t=1787400206; x=1787486606; bh=NGC2Ea3wjGV5zv7cz0rFV
+	t8MXQMwMsonzcW8UdzfdxY=; b=nK7O0PDZtyUFR/HHvdaYLYmz2GTu+AIwsONDv
+	ILLbydKtwbIV5RwXKXb3PhooOzY03dir8C9iYHjpnWssE0KGWsnpOucFh8hZMi0h
+	bLNRByPIPWjmiGShpBcTp027tan+/A870uehgY2qoby7nVHUhTOiZ8XitNTC5967
+	FDcyNtRLRIW/x6cpXHWYGR50X92oGk71SO2nmXeA6qZ0B4nLT8LFhZqHLeowXk4h
+	FeX4ouFasNiRlyZlpTxXmoAA57ZtX8Fyieq1CdGt1CoEdMK8xW3puIf3Yn+NpnSN
+	S33iaVcIZy9W87YCVbbliz6utxJfdW8N+r/T3/6Zu/QyTE4WA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1787400098; x=1787486498; bh=E
-	fr18sjWjKItAotTwy3gK1jQQkgQnyUd4Dfxl4J0yIE=; b=NYInRHyDcVBGF0gHQ
-	P+c6mHIyJLnS3RFFl591SPvTZl22hDJkY4M5oVjv8kYEuLjBiOqaLIe8/3MNAA/+
-	4moQJ83zMd0ih2GnlvDoJn1gcAfz/Cq5BrWk8xm7u7naymjtbrVxPkesUhZSaSvF
-	bsvWny/TSI+FgOKzSGs0WCHPR6wCDVixlZXHae7V2ksg3hka25z1xvm3NA+0jUM1
-	MTsZDs6L0uLGNv+Ix9bXeK/2uozdno36POI10Un/lZP3AUnJ2cJtjshXaw/dt/ea
-	8ePwf9Nh6ExRvq7mH8b2TvXBlDS3LxWv6CzQnqyDFj+xcyV5pDFmeQBhnkpZbyLh
-	NC0ZA==
-X-ME-Sender: <xms:oo-JasUpZF07gnjTu2AjW4U83fVy5b9lCP6rABaBfuiPhEwY414YLQ>
-    <xme:oo-JaoKWWm9ALoN5CRXAbosc_fXF3vnCP0hDw5bJ4sH8S8j1pYOVuihOqEFDnwjcl
-    3s9Ngsw-cKSGcX4U6648gYvrHPaBsr3cdN4DZnkvvwOnbai3RjT5A>
-X-ME-Received: <xmr:oo-JagDsTWNrlsRVOB7OjbgjGwDjJtz9D1RDNuiaGzEMch4MZkLJDCh6lkOZqw>
-X-ME-Proxy-Cause: dmFkZTFPgAmQEyis45fEmVkGhQzSewoHRWe5HsZ8CjopN2sFnWAiVJIm3wyadXuzQeSRuU
-    IAFlKTfUTPCdruH1uxkPfM/WjBwbc94TWUiQZJ8X1J02XhdTpKmD65oYyoZGsWOTJAVokD
-    88NvM7kJMCeIupSY92G2At5iy1x0whvU252lFVNOA5u/GCjb/SntDJX5TAwl2ry+9ieV/P
-    Ffls5R0Sf/HRVbn6+LqKO7Pe4dCRyiFo2r+qG7WddBRemJB0pMTlKeVgcioNqvE3HTcX9/
-    Dtja3WAsZMcSWw9RvyebEF7K7jMVehQJBLvCFv5Dy1eC9hgf4GXk1kAGi3AtX54YyK8mA0
-    SZ2mXw0i4oQETh8yYRGXBPDxuNLtNdXZ3ngIehLvKrQdvcfUfWHO5xuLjPJDJcxDbU0g5h
-    LEKcrBbhMEUpaurloA0t14YNJ2HqBImR8CBDCJxXhjMTE+IT4Uypgb6XSYrDHmNuLszmcn
-    B9zI6KdObauGs61twsv1GdhUq+v4QE2MMUTzvkPRiOKispZEDjW1cj7Yc7tu19g2llqlzD
-    Mx0JOooRpt41tkUWBI5xEcA+ofPSo7bUeqgke+jTmKy2JNCYhtXd2711hmCJroFuJiReDD
-    UK/Y5kLtuNA0S6jupv0YKcDfWpW/Gm+M8xuXuEYxw5f7wNWWSmVEdR2HhUww
-X-ME-Proxy: <xmx:oo-JaoHb6I1AgsYiPwwximRArIi0NysXTXNLG5D4JaV2TFlz7SoUCQ>
-    <xmx:oo-JatLjmO4jiYN-h7htLTAH1Nhq0Ylrq3vTTZuMgqImzv7Pq5zqXA>
-    <xmx:oo-Janrq5fQzwkuaAj8cZD5L4jl0XHtouj3hqIhRKH3yfpo3klJoIw>
-    <xmx:oo-JasiNAkF8T13DpSvXh595iokgMcCY85-4u4Rk5pmBxStiAtvieQ>
-    <xmx:oo-JakTkjlO9bTPxEM9yEVRNgrBIQVTQuTKVTqdC1ZWvNq0-s-KWAkGA>
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1787400206; x=1787486606; bh=NGC2Ea3wjGV5zv7cz0rFVt8MXQMwMsonzcW
+	8UdzfdxY=; b=PzOBFJFaxVP8b86ktI6OSubaSLoU6ke65x9MHOQf7A630ygSjv8
+	euJVQtrgsu4E9xJHgywefeMGbZgQSoWaoqCxytAt/E8YnOClB5sSRMbYXnoONmeS
+	A2qG9tI8oRU8fZtuSP+4XygTieWH67G9QVlmzqHf03SG5kGR+DtQ3Nj4VQpiuPj4
+	zqLY661f3Kvv+OtBoTzmtFbRZ32E044sJCa6aB8+NdGA0mzWKWCtwD3ltTaGrrUO
+	wb/llky7Wn7E64pRz+8KOB5JU9Ef2bZmoeU5p47bfD+KB2bUiLVlp92+Db0mPTdY
+	0ftoAhpIhCEjp/Y70dx0dlkmRmi+6sXpJtQ==
+X-ME-Sender: <xms:DZCJaviaDtDTbbB0rXgqhUhGwu2T2ebfQH4LDIRLu_d2m2I0Mo12Ww>
+    <xme:DZCJaqRRiwRZffgEasy_Cup4TL6LUUHZ-xRXRxlGh192q9_704ONLXpPYJHkSCRdJ
+    je1FxXFqdQMqkkvXEMTt-i-CULXW70tLlRK30Kw_wDG8KacwHOPcRA>
+X-ME-Received: <xmr:DZCJaoZeKY3FQkYv0Ou26ZcYyIjsP7HjcB3saR_Xzf4Q2dSXwGGAokS7hzYFvA>
+X-ME-Proxy-Cause: dmFkZTGAUtaR5SGMZtwmGZA8zXTccG+8x2jFK2i5GYpgMeIlQtG634HopO170zJ1zeDPPS
+    H+G7nclAdPw5noyu3EOPbJRvvXFL5l7UZ6LEs8l1G2w7vOMMJ7E1xfmU0WGv1fsFbbfEk7
+    W6esyeJBln+magL22D8VfAt6oDwgHgc9UgHc/j0rFoP2Ppqi/JbUtxOtB2xLCnf9KL/rQ/
+    AjU46IM44edi8rT2I/y81ux5p0XW69EmWXd4qxXRUTPKA+zAXYkYFf/V4Dhz/6hP+51p9H
+    /XArFRdXEPC0YK8pdt7/95dThtvUcY+KMKnQlafG8kiP0eebeduG1fPzYyU7/4KGwel+YR
+    lqrq3D7X+US30aTztsuNAziSiKGjAceTYnh520ODPfYxQ1ml/mnaIscSA/li3sqKBgkxAh
+    keMB5SqPDJ3WybqOGYcEtePnHSPi6M25TWjE1pGhdbbS1hOldCHW3VG/7ei70as3oB1Zb8
+    y1duQwM0Sfg6rdrsp5vVlSxvKEowk+5zjGWnkuzKrQiyiiddJ8q5n/CzIJs/CYgZWFxRLS
+    1TAJX3aOhvcsikBlybFq/3NVcRVA6nBtgHUoBScE8XWwLw2em3MCpD94c7ME7vecxc6taA
+    5QiYA1VQ8wekEqNVpBcSLbg2YWabRC5sK7PzcQjA9ByxROZLBxHKTC4YaHnw
+X-ME-Proxy: <xmx:DZCJavR19pN-8PeLKuod2Ot_fD5OugB0LH4Ugjd4VBHSSSBfdejQ1g>
+    <xmx:DZCJav-LpJIeHsdvFk9i7KstnF0rgSIhiuHoCIXV3FwWS9UOre_KsQ>
+    <xmx:DZCJanggHDSDOOsnQEAMGCpPVlb2LVa9V8SWk2of9Q-0V7DnzPQWdA>
+    <xmx:DZCJaobcFjwNu90NZl4XsRmNeNONRqs5Bt4pWFpd0SYMpecN0R1JNA>
+    <xmx:DpCJajPVql9ob725Cf7m2EGr_Zh884zJmyIDqN6MnsLttCVRUw-YYwI9>
 Feedback-ID: i559e4809:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 22 Aug 2026 08:01:37 -0400 (EDT)
+ 22 Aug 2026 08:03:25 -0400 (EDT)
 From: Alice Mikityanska <alice.kernel@fastmail.im>
-To: Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
+To: Matthieu Baerts <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Cc: Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Simon Horman <horms@kernel.org>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Shuah Khan <shuah@kernel.org>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
 	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	Alice Mikityanska <alice@isovalent.com>
-Subject: [PATCH net v3 2/2] net: Guard for gso_segs overflow in skb_segment
-Date: Sat, 22 Aug 2026 15:01:17 +0300
-Message-ID: <20260822120117.1163423-3-alice.kernel@fastmail.im>
+Subject: [PATCH net v2 0/4] Improve stability of big_tcp_tunnels.sh selftest
+Date: Sat, 22 Aug 2026 15:03:04 +0300
+Message-ID: <20260822120308.1165200-1-alice.kernel@fastmail.im>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260822120117.1163423-1-alice.kernel@fastmail.im>
-References: <20260822120117.1163423-1-alice.kernel@fastmail.im>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -101,41 +91,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Alice Mikityanska <alice@isovalent.com>
 
-skb_segment calculates 32-bit partial_segs as len / gso_size, and then
-assigns it to the 16-bit gso_segs field. The division might overflow in
-some edge cases where the SKB is BIG TCP (65536 <= len <= 8*65535), and
-gso_size < TCP_MIN_GSO_SIZE = 8. While normally this can't happen due to
-TCP_MIN_GSO_SIZE, an AF_PACKET PACKET_VNET_HDR socket could generate
-such a malformed packet until the previous patch.
+This series addresses flakiness of big_tcp_tunnels.sh discussed at:
 
-Blocking malformed virtio_net packets was implemented in the previous
-patch, but this patch clamps partial_segs in skb_segment itself for more
-generic robustness. Should len / gso_size happen to be bigger than
-65535 in partial GSO, skb_segment will now just produce more than two
-output SKBs, all of which will be valid with gso_segs <= 65535.
+https://lore.kernel.org/netdev/349c582c-73e3-468c-91cd-ad6cc3562700@app.fastmail.com/
 
-In order to catch possible other cases of too many partial_segs, add a
-DEBUG_NET_WARN_ON_ONCE when len / gso_size happens to be too big.
+Lower the thresholds to avoid failures like this (number of packets
+below the threshold):
 
-Signed-off-by: Alice Mikityanska <alice@isovalent.com>
----
- net/core/skbuff.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+https://netdev-ctrl.bots.linux.dev/logview.html?f=/logs/vmksft/net-dbg/results/754376/28-big-tcp-tunnels-sh/stdout
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index d4382b68d56e..ceac295bb63d 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -4871,7 +4871,8 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
- 		 * doesn't fit into an MSS sized block, so take care of that
- 		 * now.
- 		 */
--		partial_segs = len / mss;
-+		DEBUG_NET_WARN_ON_ONCE(len / mss > GSO_MAX_SEGS);
-+		partial_segs = min(len / mss, GSO_MAX_SEGS);
- 		if (partial_segs > 1)
- 			mss *= partial_segs;
- 		else
+Tweak tcp_min_tso_segs and initcwnd to avoid failures like this (BIG TCP
+doesn't kick in in slow configurations):
+
+https://netdev-ctrl.bots.linux.dev/logview.html?f=/logs/vmksft/net-dbg/results/751124/21-big-tcp-tunnels-sh/stdout
+
+v2 changes: Use $KSFT_MACHINE_SLOW instead of probing kernel config.
+
+v1: https://lore.kernel.org/netdev/20260814194124.3102581-1-alice.kernel@fastmail.im/
+
+Alice Mikityanska (4):
+  selftests: net: Wait for netserver to launch
+  selftests: net: Lower threshold on debug kernels for
+    big_tcp_tunnels.sh
+  selftests: net: Lower threshold with csum offload off in
+    big_tcp_tunnels.sh
+  selftests: net: Fix slow configurations in big_tcp_tunnels.sh
+
+ .../testing/selftests/net/big_tcp_tunnels.sh  | 38 +++++++++++++++++--
+ 1 file changed, 34 insertions(+), 4 deletions(-)
+
 -- 
 2.55.0
 
