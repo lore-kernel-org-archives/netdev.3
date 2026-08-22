@@ -1,89 +1,94 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0731367280;
-	Sat, 22 Aug 2026 19:56:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E82D2D23BC;
+	Sat, 22 Aug 2026 20:01:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787428611; cv=none; b=G70C409nPyVYan/O5XMX709+N3jIPGsqMNXQl1gnXhvq8oZcasrFKP0ZHeXxQe16aa0rF2Rk+ucmZ079vs5iULiQnJr20R6Ojusth39MD7cwy34jORWLWBq64TCvNHuYbmoVZBq2VtSi4R2wPWiQsyMJAa8V5f4E4MiLu4t45IY=
+	t=1787428875; cv=none; b=mu/mr98Aj/JUG0bv8TsfQMLRwupDTIykaWtWL1/TM4kJ3yhug7k3MnO6+yR1fSzRvv4d+k41f2/VPFzmRQ6SJiG7o445AyDFf7aiwjzmOPbKRjYLd9l4+iSNT7joZXepw78kFnylyMR5rnawze4GtxEx10xeE+WiLnEzSz5XTfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787428611; c=relaxed/simple;
-	bh=Tbyf3dUCym/F3j9U7P8k+Kua7GYlhPRIrqrTOlMq/1U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i7rzODIgqwuBMrjgnqrVpqWvJ4JZnNukL0RZ1st7yDgCMlatqDVSWkwPpNoE8l9XG3IuztgRGbwquzF459ZtYBuzceTxbQErzakTD8WVT/vtus1kMfLHbPFSvT/gEASKUSgA9ebMs6jccr/KjvEjORgsMSyLQoxYlx44I+iea1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=AlWzgNpk; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1787428875; c=relaxed/simple;
+	bh=DWm37jv3KvQ5wyZ/OkmjUUIEfL6snBiU29SWVimdB+A=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=VK2TJJM+p8tH0xYsAzWTUIDkFXGsrf3/x8aT/B4duAwCs6Wi7YFvnFnDXV9rE2fiwMGOX9JLlRo8IVOWPq8Me90LlhUA0AH3JEZcQZzdD6rgL7FeTZnAS512gp6EEpk7W/rlkzE9+vz6u95dk/hZ9G6xu5oJX8zPGeYF680dArc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SkpqrcOt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="AlWzgNpk"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=sM3VSbszbYID+mAi53gO1CTblzm0fmSPiNawdrlLIS4=; b=AlWzgNpkzHrzt6qn9k58srU/yj
-	dLPS9xTGefzUq2gZV1UE4azKRFaGq6n2g8FL0FNoToFSQWwxzyn2ENFXqXgdyk5fYgRa82nKKlj8a
-	GrqHR4WSlR4E6QHDCoTXHUygrCdS3F/Sg/lLm0W9cFwzFH46i3bO+j0rMC4AempT6iDs=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wxrpW-0013cm-Pa; Sat, 22 Aug 2026 21:56:38 +0200
-Date: Sat, 22 Aug 2026 21:56:38 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Alexis =?iso-8859-1?Q?Lothor=E9?= <alexis.lothore@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	thomas.petazzoni@bootlin.com, linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
-Subject: Re: [PATCH net] net: stmmac: selftests: Pass the IP proto mask in
- the TC selftest
-Message-ID: <c7dcc194-7d30-4ac8-98cc-9d3a25cbc411@lunn.ch>
-References: <20260822153245.423259-1-maxime.chevallier@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SkpqrcOt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAE3F1F000E9;
+	Sat, 22 Aug 2026 20:01:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787428872;
+	bh=rG7xpvk/jI2Cf5bJb178qqtyZfjMEvbfQkdsZyaDBHQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=SkpqrcOtFGGlPgvuriGNJUclqSNUop5rJRa0UxQ5cDp/CMj36GZqoxckjNCQJmzTU
+	 HoCOL6XiRLA9ugOy//F77ETKiMNUU/nSWSXbmtMhSwkOkGORZ6QN4tmAnXWHtERZRK
+	 NX/UAJa/YQlsBxAtRCjAcEc02GVAC+5vPYcwcnQPv/EG0V+d0PYTM/M4JHtWzDW4gW
+	 ewgzz9Ua2lQXHe+kFWxk4/+wAj4lLKBqIfxnThvH6m+PgGhkFVMhcAm+FTm2X2TJ+E
+	 3ldI/8sn/Ti+cKv8AVfFyL38bTFJeiFxhzE2UDz8SlDC4gDLI8yQOFyknK+DW+/WGJ
+	 tHufXzJaucHew==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A40380CEF9;
+	Sat, 22 Aug 2026 20:00:22 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260822153245.423259-1-maxime.chevallier@bootlin.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 1/9] batman-adv: fix stale receive device on merged
+ fragments
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178742882155.1812309.6129874703667132966.git-patchwork-notify@kernel.org>
+Date: Sat, 22 Aug 2026 20:00:21 +0000
+References: <20260821094813.201800-2-sw@simonwunderlich.de>
+In-Reply-To: <20260821094813.201800-2-sw@simonwunderlich.de>
+To: Simon Wunderlich <sw@simonwunderlich.de>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ b.a.t.m.a.n@lists.open-mesh.org, zhilinz@nebusec.ai, stable@vger.kernel.org,
+ vega@nebusec.ai, sven@narfation.org
 
-On Sat, Aug 22, 2026 at 05:32:43PM +0200, Maxime Chevallier wrote:
-> The stmmac TC filtering rules have recently gained sanity checks to make
-> sure the passed keys and their respective masks are aligned with the HW
-> filtering abilities.
+Hello:
+
+This series was applied to netdev/net.git (main)
+by Sven Eckelmann <sven@narfation.org>:
+
+On Fri, 21 Aug 2026 11:48:05 +0200 you wrote:
+> From: Zhiling Zou <zhilinz@nebusec.ai>
 > 
-> The stmmac selftests failed to pass the mask in the match data for L4
-> filtering tests, and are now failing consistently with -EINVAL :
+> Fragment reassembly reuses the skb from the highest-numbered buffered
+> fragment as the merged packet. When that fragment was received on a hard
+> interface which is deleted before the chain completes, the merged skb can
+> re-enter the receive path with a stale skb->dev and skb_iif.
 > 
-> $ ethtool -t eth1
 > [...]
-> 23. L4 DA TCP Filtering          -22
-> 24. L4 SA TCP Filtering          -22
-> 25. L4 DA UDP Filtering          -22
-> 26. L4 SA UDP Filtering          -22
-> 
-> Let's pass the ip_proto mask in the l4 filtering tests match data. Found
-> on imx8mp, which now have passing L4 tests :
-> 
-> $ ethtool -t eth1
-> [...]
-> 23. L4 DA TCP Filtering          0
-> 24. L4 SA TCP Filtering          0
-> 25. L4 DA UDP Filtering          0
-> 26. L4 SA UDP Filtering          0
-> 
-> Fixes: 5536d7c84363 ("net: stmmac: fix l3l4 filter rejecting unsupported offload requests")
-> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Here is the summary with links:
+  - [net,1/9] batman-adv: fix stale receive device on merged fragments
+    https://git.kernel.org/netdev/net/c/ad46c907d7d9
+  - [net,2/9] batman-adv: bla: avoid CRC corruption due to parallel claim add
+    https://git.kernel.org/netdev/net/c/08645ab95768
+  - [net,3/9] batman-adv: bla: prevent CRC corruptions after claim flush
+    https://git.kernel.org/netdev/net/c/89f3502ff687
+  - [net,4/9] batman-adv: dat: avoid unaligned fault in IP extraction
+    https://git.kernel.org/netdev/net/c/0121afa52cdb
+  - [net,5/9] batman-adv: dat: atomically update mac addresses
+    https://git.kernel.org/netdev/net/c/e6de568d3eda
+  - [net,6/9] batman-adv: fix TX priority extraction for BATADV_FORW_MCAST
+    https://git.kernel.org/netdev/net/c/7aedb59b8099
+  - [net,7/9] batman-adv: mcast: ensure unshared skb for multicast packets
+    https://git.kernel.org/netdev/net/c/82bf207f48eb
+  - [net,8/9] batman-adv: mcast: linearize skbuff for packet generation
+    https://git.kernel.org/netdev/net/c/6a30a59e2660
+  - [net,9/9] batman-adv: bla: fix freeing of claims on meshif deletion
+    https://git.kernel.org/netdev/net/c/8d128c932bce
 
-    Andrew
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
