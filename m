@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E26038399C
-	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 20:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F5138553F
+	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 20:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787430679; cv=none; b=FKEQ5f1RDbl0QAnb2+Hdipv/lBAl27Ri196HrOJqykWREQXv9cWWZ6Osj9mrCLXI8tMSZN27qT+FxB/Py7PRLGKQxf4VTgEAgd9UvM7Qb0RzQx5GQJ1e6l0loxHXxGN7YfypRTP/rT56vdao+/wzPzJwcTaLK4kNkdFMLYiSK6c=
+	t=1787430680; cv=none; b=JOeY6YLHp9q3J7XM/9X3KmIuQpS9gyoPXDQkzKubAnGLm84VIt4VthA3zBXyrC/ohOiU53+Q8YCh0xy60wv0okZSdeeAqaa1T8meKckxrK2jF56gF9h+Lz6iSjRAUu4fi40oGLlcNZRd3gL1MPy+/4g+WUAzT4Ble/SYOOwN5/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787430679; c=relaxed/simple;
-	bh=YvKBf8K5pX+vq9v3qnTzymqxR0CHtRjMab7p2Kab8lA=;
+	s=arc-20240116; t=1787430680; c=relaxed/simple;
+	bh=HR9ebaDhgcIGvWKTuIfFmxBCOmlEEATKg+/tWrzxV7U=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=cXQKbgrCRUti6U8yLjs2x9WMPfRvmfIpgwsoYn10xptdgYJU6D1ACN0KNuJJYKdR0dJLJApDXgYof/UbSOFp/RoCYwywqpJn7JgIifzmgXyoWoLnkRNonJVh3q+gC6tEhbx2Db+7aTRn53Ed5SzFQbJaLx2xFv0FJrwnEAQL3Ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EaxJx+3H; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=q4Sgfc8xCtX3TVBi0foNQLotHhYXDrbwbParC4GWN5ggM3vZXYEzWlfcMAkCYos7fbFD02sXo3NF/+5Xyqk851P4D0xvHOB1Ia6pxC0qAeb3hj5Id7WEGyHqNDMR07KA46lXsfqDa5ewvmwn1Po8LBvPKWzwY/NrM8lujEy/TrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dhue2QGK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EaxJx+3H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D14E61F000E9;
-	Sat, 22 Aug 2026 20:31:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dhue2QGK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C5C1F00A3F;
+	Sat, 22 Aug 2026 20:31:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787430677;
-	bh=ETZxRWYH7GNAtJgc/eoEURY+wauuA3n6LMIP/ZBAP4s=;
+	s=k20260515; t=1787430679;
+	bh=N+Y7eFSesDwPMldg/5UXSU7VI0nF9YvLEtFMtoVSVgo=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=EaxJx+3H/ttuK6WH8HSipqdbFVtcm+MUqdZ2MRYx0bOhJfkYWEC1ECis+Qt2PnUq8
-	 XAglEJiaIcwFj9pK/ME5rzopR2sxpR25t36pk1rWWlBXv/wYWEkqE9hETIqtGVsPzt
-	 /sG/t6VBGyD7DFfLcWp/ffyrqiySAKjvLUr+K/xDbFUM43/kf/hJuZU/a/yQAIXc+4
-	 1BzeF9sHanH1pMdbadog7EFmDsIaxRU76N1LaufAQptulzqwNapRmDhO5T1c0/JVDA
-	 OHMhkow1KIBZQ9tCjHw+6ElUb7TjSA9nfVdQUAz4LcxLxJ+7ONPryemlcEoHRaKYAR
-	 aWjwCdJdmZ2Fg==
+	b=Dhue2QGKfmHCctq1B8CAZUZo9lbtg5/b4meen6RzRFOkSaU+rn8o4WBo0H7o1Cgdi
+	 me7/YpEtstYASBT4t8BypL5yuNPjdOfBsU9YT48z41mpvuPsu6ddxASmYmtmdB6lQW
+	 peXNueQgMwrBp8Ac+dlbHAq9jVTyWXKK+A8rAl1fAkNRi0UJWd08/3GZrihDafLfg6
+	 p6z/9PA34dRBIaTnusiAB+ulNUtsRHmjLmSYxx299/Nt2H0Zc9jIA3SIlcJpAFkm7M
+	 lw0fBbKjp2WnhCT4ZGYCdo//ChlHUkxpKO/kNKGQR1VEdM1X0kyy2deI/CP8hBt921
+	 LKIFnOS4LXHCg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A55380CEF9;
-	Sat, 22 Aug 2026 20:30:27 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56821380CEF9;
+	Sat, 22 Aug 2026 20:30:29 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: libwx: fix concurrent bitmap overwrite in PTP
- setup
+Subject: Re: [PATCH net v2] net: txgbe: fix MISC interrupt unmasking in
+ non-MSI-X
+ mode and device shutdown
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178743062638.1819488.16681314131778251958.git-patchwork-notify@kernel.org>
-Date: Sat, 22 Aug 2026 20:30:26 +0000
-References: <6C7EC12D69217315+20260818074721.45536-1-jiawenwu@trustnetic.com>
-In-Reply-To: <6C7EC12D69217315+20260818074721.45536-1-jiawenwu@trustnetic.com>
+ <178743062788.1819488.7883475761777498134.git-patchwork-notify@kernel.org>
+Date: Sat, 22 Aug 2026 20:30:27 +0000
+References: <56A53978B83EEDE9+20260818023026.6631-1-jiawenwu@trustnetic.com>
+In-Reply-To: <56A53978B83EEDE9+20260818023026.6631-1-jiawenwu@trustnetic.com>
 To: Jiawen Wu <jiawenwu@trustnetic.com>
 Cc: netdev@vger.kernel.org, mengyuanlou@net-swift.com, andrew+netdev@lunn.ch,
  davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- richardcochran@gmail.com, vadim.fedorenko@linux.dev
+ larysa.zaremba@intel.com, horms@kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 18 Aug 2026 15:47:21 +0800 you wrote:
-> In wx_ptp_set_timestamp_mode(), the driver copies the global `wx->flags`
-> bitmap to a local variable, modifies the PTP-related bits, and then writes
-> the entire bitmap back using memcpy().
+On Tue, 18 Aug 2026 10:30:26 +0800 you wrote:
+> In txgbe_misc_irq_thread_fn(), the driver unmasks the miscellaneous
+> interrupt at the end of the handler using TXGBE_INTR_MISC(wx) (which
+> resolves to BIT(wx->num_q_vectors)). While this is correct for MSI-X
+> mode, it is incorrect for legacy INTx or single MSI modes.
 > 
-> This Read-Copy-Update pattern is unsafe and introduces a critical race
-> condition. Other asynchronous contexts (such as Tx timeout routines or
-> GPIO IRQ handlers) update individual bits in `wx->flags` concurrently
-> using atomic bitops like set_bit() or clear_bit(). The memcpy() write-back
-> can silently overwrite and drop these concurrent changes, potentially
-> causing the driver to miss critical module reset or PCIe recovery requests.
+> Due to hardware behavior, the WX_PX_MISC_IVAR register is completely
+> ignored by the hardware when MSI-X is disabled. In non-MSI-X mode, the
+> hardware forcibly merges all interrupt causes (both Queue and MISC) into
+> a single bit: BIT(0) of the interrupt register.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] net: libwx: fix concurrent bitmap overwrite in PTP setup
-    https://git.kernel.org/netdev/net/c/f05516dd7b86
+  - [net,v2] net: txgbe: fix MISC interrupt unmasking in non-MSI-X mode and device shutdown
+    https://git.kernel.org/netdev/net/c/7bf29145d7a9
 
 You are awesome, thank you!
 -- 
