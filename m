@@ -1,35 +1,32 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.auroraos.dev (unknown [95.181.193.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3436C377ABB;
-	Sat, 22 Aug 2026 20:21:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE84433A9CB;
+	Sat, 22 Aug 2026 20:23:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.181.193.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787430067; cv=none; b=mT/fiG7yB2Ww6IPHPQqRa9BKJsFUJg04FxSsaIDtZ7llZrCTCGVpDGL89BdjSDIcuCEH2bnJZ6qlWQVzkakXeVFG35NnIr+gLPQAsPwDEQy6H05KhhZeASICibJmIcoZP7QGPxYJk+4mqWDhAP48wIr5eCeGaTR4t6wC2g9eUIs=
+	t=1787430187; cv=none; b=cU32Aob/bD6e7QQtqMB+FABLr4s7N2gGlHuVN+rLDYeNYStcMhJ7D68IFbylqAD7YotIPI94Txu992bPdPdoXPS6YhAvN7hTXGfhQUDQwfGDQbmUoTWtMZXOGOfJ4EMJenE5gyqGkYqG9s+KkFL9OW1bwBWP0SzBhyVAZHGCVzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787430067; c=relaxed/simple;
-	bh=/9CKKYQCqdY4XiCUMpdNyxh3//jzavoT9DFZ6LVJg1o=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=XlLHQ7DSu7d4BAPp/lVsfwaarh4o2WEnho9NvXzeJth/O0ozgr0yFjTak2Q30f7ZUrRhwuEeg+TtZjcgwjLVPuCsMrwCXSaxKzMedtY7mhZBOGcTsCMft2rF4x3I2p/KeuJEX5SGLF682RpBgIgTo2HQVyQ/nVfSm2w4KMxk6sA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NmugawC5; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NmugawC5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 915F71F000E9;
-	Sat, 22 Aug 2026 20:21:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787430065;
-	bh=4WD0WogA0oMH6MbCYigBK7N/MMl6KmyuJndmemunepQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=NmugawC53XgcrQ7MADx3D7JeVCGGnzrly9P78M9yAdBDNLBr1SgFL2mO6ujMA1m+0
-	 5z3jvie03sEWxlfPQFW7Gq6/KxdKBGKwg/xUQF1CG6mLmHtna+h2qddoEQKmfZAfIh
-	 tCehlVh5aC+rz+Er5VB7XwiEBqo6dZOrbhbwg8vTePpMQIupz8WkBD+KHOjOAD3+fz
-	 V0HPj26u287X1+BJubcl4NXJ0BdFIoQ5RRCPqZvAywgvMfpBuN8VGcD2h5EkEEVrb4
-	 kcsE0ddCwSKbvIOBV9kbzDz+1k+PljPN99etzFA88ra7EWsRyzY59VYdNHzghr2tVm
-	 rcTYRCoyDCMvw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93AD4380CEF9;
-	Sat, 22 Aug 2026 20:20:15 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1787430187; c=relaxed/simple;
+	bh=i1/OdJTULeQadISS4NWY/R3kadShy8DLHMx2FwyChZw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pD6rUguFEr3vtSZXGMxGhfeLsc4KI2bcTPQjJihCrxdRfXAIrd0EGRqaUJYkE5dwn0lfyBJbx8JzmFU+7tGUXQVj7vernRW5Vvjt6JxG3NLbj3SQ6+vc4q2nPUeGyJg4ltJ4iwOndhjRWCOj0BMFzNn0HeyCqEXEH/sz+seeaRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=auroraos.dev; spf=pass smtp.mailfrom=auroraos.dev; arc=none smtp.client-ip=95.181.193.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=auroraos.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=auroraos.dev
+Received: from wasted (91.78.19.215) by exch16.corp.auroraos.dev
+ (10.189.209.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1847.3; Sat, 22 Aug
+ 2026 23:22:52 +0300
+From: Sergey Shtylyov <s.shtylyov@auroraos.dev>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	<linux-usb@vger.kernel.org>, <netdev@vger.kernel.org>
+CC: Sergey Shtylyov <s.shtylyov@auroraos.dev>
+Subject: [PATCH] r8152: simplify loops in generic_ocp_{read,write}()
+Date: Sat, 22 Aug 2026 23:21:54 +0300
+Message-ID: <20260822202155.18632-1-s.shtylyov@auroraos.dev>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,46 +34,114 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/2] net: ntb_netdev: Fix RX statistics accounting
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178743001413.1816901.4726144309192201411.git-patchwork-notify@kernel.org>
-Date: Sat, 22 Aug 2026 20:20:14 +0000
-References: <20260819172539.1450821-1-den@valinux.co.jp>
-In-Reply-To: <20260819172539.1450821-1-den@valinux.co.jp>
-To: Koichiro Den <den@valinux.co.jp>
-Cc: kuba@kernel.org, jdmason@kudzu.us, dave.jiang@intel.com,
- allenbh@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, gregkh@linuxfoundation.org,
- nab@linux-iscsi.org, ntb@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain
+X-ClientProxiedBy: exch16.corp.auroraos.dev (10.189.209.38) To
+ exch16.corp.auroraos.dev (10.189.209.38)
 
-Hello:
+In generic_ocp_{read,write}(), the *while* loops look very strange:
+the last iteration is executed differently to the prior ones, doing
+some useless assignments before *break*. Move the code for the last
+iteration out of the loop bodies, dropping the pointless statements
+as well...
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Found by Linux Verification Center (linuxtesting.org) with the Svace
+static analysis tool.
 
-On Thu, 20 Aug 2026 02:25:37 +0900 you wrote:
-> Hi,
-> 
-> This series addresses Jakub's comment on ntb_netdev RX statistics
-> accounting:
-> https://lore.kernel.org/r/20260818092938.4121c220@kernel.org/
-> 
-> It fixes the double counting and also the related packet/byte accounting
-> on RX refill failure.
-> 
-> [...]
+Signed-off-by: Sergey Shtylyov <s.shtylyov@auroraos.dev>
 
-Here is the summary with links:
-  - [net,1/2] net: ntb_netdev: Avoid double-accounting netif_rx() drops
-    https://git.kernel.org/netdev/net/c/82e15be2d8b9
-  - [net,2/2] net: ntb_netdev: Count packets dropped on RX refill failure
-    https://git.kernel.org/netdev/net/c/31ded341c375
+---
+ drivers/net/usb/r8152.c | 67 ++++++++++++++++-------------------------
+ 1 file changed, 26 insertions(+), 41 deletions(-)
 
-You are awesome, thank you!
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index f61686433031..de9738bdce85 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -1431,27 +1431,19 @@ static int generic_ocp_read(struct r8152 *tp, u16 index, u16 size,
+ 	if ((u32)index + (u32)size > 0xffff)
+ 		return -EPERM;
+ 
+-	while (size) {
+-		if (size > limit) {
+-			ret = get_registers(tp, index, type, limit, data);
+-			if (ret < 0)
+-				break;
+-
+-			index += limit;
+-			data += limit;
+-			size -= limit;
+-		} else {
+-			ret = get_registers(tp, index, type, size, data);
+-			if (ret < 0)
+-				break;
++	while (size > limit) {
++		ret = get_registers(tp, index, type, limit, data);
++		if (ret < 0)
++			goto error1;
+ 
+-			index += size;
+-			data += size;
+-			size = 0;
+-			break;
+-		}
++		index += limit;
++		data += limit;
++		size -= limit;
+ 	}
+ 
++	ret = get_registers(tp, index, type, size, data);
++
++error1:
+ 	if (ret == -ENODEV)
+ 		rtl_set_unplug(tp);
+ 
+@@ -1498,31 +1490,24 @@ static int generic_ocp_write(struct r8152 *tp, u16 index, u16 byteen,
+ 		if (byen != BYTE_EN_DWORD)
+ 			size -= 4;
+ 
+-		while (size) {
+-			if (size > limit) {
+-				ret = set_registers(tp, index,
+-						    type | BYTE_EN_DWORD,
+-						    limit, data);
+-				if (ret < 0)
+-					goto error1;
+-
+-				index += limit;
+-				data += limit;
+-				size -= limit;
+-			} else {
+-				ret = set_registers(tp, index,
+-						    type | BYTE_EN_DWORD,
+-						    size, data);
+-				if (ret < 0)
+-					goto error1;
+-
+-				index += size;
+-				data += size;
+-				size = 0;
+-				break;
+-			}
++		while (size > limit) {
++			ret = set_registers(tp, index, type | BYTE_EN_DWORD,
++					    limit, data);
++			if (ret < 0)
++				goto error1;
++
++			index += limit;
++			data += limit;
++			size -= limit;
+ 		}
+ 
++		ret = set_registers(tp, index, type | BYTE_EN_DWORD, size, data);
++		if (ret < 0)
++			goto error1;
++
++		index += size;
++		data += size;
++
+ 		/* Set the last DWORD */
+ 		if (byen != BYTE_EN_DWORD)
+ 			ret = set_registers(tp, index, type | byen, 4, data);
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+2.55.0
