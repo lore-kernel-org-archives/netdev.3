@@ -1,79 +1,84 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A4D343883
-	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 16:41:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5C43C1D70
+	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 16:46:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787416877; cv=none; b=ijVMZfX0MELNEE7q5vWK+WteHiDEiY4e6WIcSH823MekmGLwH8CrPI2oPUu3r9OJ+Wt7Bn0bZL0Zpz/Jg2cryvudAGTZezzzCkG6i3r0L1Rb2W3kFldt+2mUSNAKWUvaCrdJ02/LEIkiwDU/5K5lB+zBMxBqDSFJ/B0K5zy8vHk=
+	t=1787417168; cv=none; b=mMqtbhlyEN+YoMM1fQWL4uHJgZqTkDNQebgOXxTvuM5NZQ9/8GyCCN98xqiGpX9z57sZ/Jd/bqFO9c8TEw2X8ql4Zu/61MswXWTGpEmAH8t2R0IIUfCDZnBN4ePvhAbeF6i4fANSamtjn6GPeeX2+nzyh1iVzQlM/vGekEVIHNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787416877; c=relaxed/simple;
-	bh=kP1cz0Wgy8H1Vo4OIydwD7cCtpRNRp7He/gqzqKUjIY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pNsDK2ehBciESmAfqWxfa7prqDlXW7azTLPL7QhD7qeYep+uX1a4dcbPXZtTbA14yvN+JkDxDzRRC7KsTcZMTFLqMrku5MW0Ah+LyQ86bLD8iYRB0yQnoSWG6cO4LPVFtIRKwPa07oU5+hBn5jGcr8NXUSYBmAaArHvgxp9GlhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=faXOmRpa; arc=none smtp.client-ip=209.85.216.50
+	s=arc-20240116; t=1787417168; c=relaxed/simple;
+	bh=RZnSBXG7H5IfVESK5dV+papTZf4bB2+5pFdMF6y80Cc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G6l+ojrHvnB4wiwAKeFcvy1VSdPVr2wUVe8GzHmuvUt7HRtOQypDAjbbjsntIFaqUVkEMvPmRh8ho5WDKF6hBKsWzvy+7A2qYjmaA9OYPT6GHizG+GR9GckivNbx7TxaTFX+EMPHAbjcCP3n96koo5dtdlU7wiE2X3+9PUiag5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o50PTwrJ; arc=none smtp.client-ip=209.85.215.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="faXOmRpa"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-392af6bda98so239255a91.0
-        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 09:41:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o50PTwrJ"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-cbedf082ba2so218505a12.1
+        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 09:46:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787416863; x=1788021663; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1787417165; x=1788021965; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=H5sYAzT/WtRiW1Ix2HTkpoXUx65zoV0tVj4oWbHryfc=;
-        b=faXOmRpadohKzUHTIGVP3KXy4KgLAxTUGEBvD3IMZwehSlXZ/UPlHrmFCWrYybWih2
-         R5v1gpqGxBwTja3lqPfU6in32uG3AFRNrh9cA1s9QJ8l16kUyvMXrNTcmHppcoSbJswv
-         OtcQ1NsrtSufcYRCAvNdcuMhscyK8YAflrTpPcGteNhvBEVGtb9z11iegG0//c1xtmvD
-         OQ57nyh6v7EMopgtS1TuRkWiX3BKnAy//wK0slUE4U2pEPF/dNATvH91xvRZC9PYTk73
-         +7dlVNVbeVa8f9p2HoPeXtMn55wFty3lq0loZi+0vWih6yUzygTkDTBy/C7OAzXNq9up
-         JtWg==
+        bh=zxjo65j0/PC8LNmS95fdZuou6hT1feMI3IHbQQyBjIE=;
+        b=o50PTwrJBuwau13sNGF5h4O3fMo5o27/5Sy3+pjsyIesNKORDx6wwWGX0kKBL83BrD
+         BsYaVVmDe0VuuL2boO8nOBgHnqTnEdua0MNVB3TzccDP0QAuj+qPb7Xrje2h+HJS0ZLv
+         ofHR9qgWj564C/ap9pb13IqRfveb0K4H+d3xJ0sE1VMiE1y8Xre3g5ObJjvhjac7IqHZ
+         dk240TvBQjk2PUZNlz97PlBdO3qF4kAFNJIGmWLpyeZMkoaxJ5gf2qbX7HaNVEJhiJIu
+         Qot6JYoE6473NJg8I+1091cFGPiL1fDaz/Pt81NyEO0VKIE+zJqapI5Mxis4pT9IJwH4
+         5iCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787416863; x=1788021663;
+        d=1e100.net; s=20251104; t=1787417165; x=1788021965;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=H5sYAzT/WtRiW1Ix2HTkpoXUx65zoV0tVj4oWbHryfc=;
-        b=YL08ZhnIVGF592/jOn4nysUHa3Wld2RLowlT+qHKmgiBJHz+bfTCS772IsdU9Hv71p
-         wuK1DYdCdv8d7QpGxmJs8LquzFdQAWAQ9/6mk/8p/LdCJd0szWHlXevAlnPPpRSj/JaO
-         AmmoNfi6XAW+e60RF1YbIuE7XOBaCE0Y1dkx6TwpVMnnPMIG7ZYbVrBLEw267dL4kTxg
-         Ql7DwJ9J8xJZj9c6xrS7pv/q/FTAKF85j1t4V+xEelYxNqq7V8WokAjtIOj1zfU4HHGk
-         i75mEJLUTAQO0VQJxHAo5+53Kn73ZicR1cF6hOfEmmlsP31gWeWiweb/tk/0LyiP7xOK
-         tg5Q==
-X-Gm-Message-State: AFuF++kX2xtuULnR4UN52d4MZydhS7/CjqtJrSfAJA4DB11XbE1JpBkC
-	7iO11hocFdg0h8zLAYxnqjec31lEibDyZYDaLeoJM3sW/+7btMCW5+5z
-X-Gm-Gg: AR+sD115xP3NipqnupHevuv4vngv2xNquGIWnVfcLCwDF4U+9awTo+Xoduw6GkSEzpH
-	J2UK20+W7RpXbVlqzpjNINrFx7ssBNcqMwmqyR5TJYcz9TyPn72xsp1IT9okeUIGepnKP92yDT1
-	f0N8kHU6iZlRI4cPfGO4yvzsc+LdwyXmermfWiyu9CKh0MopPid7VHN0p/G2/51LrKA7JTRrQ6E
-	aOdYpDFk4g5NxDf35/WSLskotQ2Ou6D4frYfCqM2dwEEYiKNkaGRk8Kb/bvZMjaU/wzrGxcwuGf
-	EGvBI5ExaveSRfPV5SGtC9pGV7Irw4027J4pUJY912yG0faBIJz//YZCs4lmhRNzpMhzgLVo1BX
-	yHkLDr6X2j/M2sOiXGfxKvlcS7GgmwU9HjAYA/+EBflmfBeKgRn0fpJVY8vdRATOo6QiT5xOa8d
-	EJB8ppDUqU40bIwHx9Z09XWmZ36n6dJvQfw0/PGrm5fw4ELunnJXau7oBEJEN2RoAHPJWc0PkBr
-	m29cQeD6cw97RycEZlultgM4o6Tk3Twl14nIA5flSijY+vsfcwK09c=
-X-Received: by 2002:a17:903:1b65:b0:2d5:3f09:4126 with SMTP id d9443c01a7336-2d64b13195dmr134518165ad.4.1787416863141;
-        Sat, 22 Aug 2026 09:41:03 -0700 (PDT)
+        bh=zxjo65j0/PC8LNmS95fdZuou6hT1feMI3IHbQQyBjIE=;
+        b=qHdHyMf8iEpWZ952lsSSrKT1KO6L+vFPnBaRMBpi9ur6aJUa2dZfIwjPRksWP4H4FZ
+         Fz2LvhPn/InetcnxKqIkXe5U2uehVjhUg90vU13EtLFgPu9F8ZAFYDVAQQ3op9Ek/VB3
+         7i/+rZZUS1Kx9OQY2NpEo8q+Mkok4oe0/GZBBIyeZ5zgYETYXDNOZ98sWRIQZ99X14rF
+         OGOM6XmHh1d3XAORJizjKLJ4WnCu/5Dn0gZPW8q5GNSXCdfv2KAlo6Bv2IIZdITaMFd2
+         +usz63rE1sD+V124YBNCP+828EtZ6z4zYl/d1NBEMiX79W0SQoaBmSI5TIpi4MGl7vqr
+         vlBw==
+X-Forwarded-Encrypted: i=1; AHgh+RpJLvnbsMWsIEv87P3xf6L6iK7X96HFKVREgHCk9WU22+bflqstTiTJEKb5D6v/1+0/lewv8DE=@vger.kernel.org
+X-Gm-Message-State: AFuF++mVZrhDeOlKjE0zAiNSUk22kcHTTvD59n5969b1rBZlC6ZGPUh/
+	BzfMK4UntIYHPrU3BKnCwkU8z8kOnbl1DYstzGpLw0jmWzmtRcwlUJn4
+X-Gm-Gg: AR+sD10s1u0qSRPB0M6kN2L3JLHH/m9e5yyGsdo/JU2/ZC/n6qjotRLjTIj6/YZzNWH
+	nUiIS93hFDr/smngGPEuUbvxk8DnUy6pv3KWU2pkleCTb3Jlp5rzLojFNp/9gyBkO8H8APP6nJ5
+	bo4GtbSwDcraShqFgr21c13bivS/MSG17rXxpuOCrMoaipwXFYcMyl9Fz4pAxsvLdSMX4f+zG5m
+	YAzpEFdwOsAV8KkzrQBEgiCJ3Bpjld7UvMXkXbGkhE2edPXbIWlF+H2dHTWbszEAvIHJmiQ7PRJ
+	J48im0kmW7R6y/2zPnn/PHEzLjSFkqGFkafotL/0XFEQaGDy21yeH90Io55I+I+UeT7bxQKQ2au
+	jA2uOiEgmzy+b6iht8+WYNHqfCrQxo60NTRlcXJq4AWCS5SkkjzAPi9VMynKwc1wQnoIrUazMJB
+	ITUPqZNbrVEeTl7iQKMrgPUdHalQwPHItWwk/WYNTkVC8SkPW3K7fnbmbfXJ8+pa5QqFbI/huKT
+	nKUdYE5y2Epd0GLe3Y2BxtXK8sw/RzDiyK7vIfGSnfcDgSLpLLbK/c=
+X-Received: by 2002:a17:903:b43:b0:2d2:a952:2628 with SMTP id d9443c01a7336-2d64b0d7b26mr129424855ad.2.1787417164695;
+        Sat, 22 Aug 2026 09:46:04 -0700 (PDT)
 Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327f9209fafsm15580796eec.23.2026.08.22.09.40.59
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327f9209fafsm15623986eec.23.2026.08.22.09.46.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Aug 2026 09:41:02 -0700 (PDT)
+        Sat, 22 Aug 2026 09:46:04 -0700 (PDT)
 From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: Jon Maloy <jmaloy@redhat.com>,
-	Tung Quang Nguyen <tung.quang.nguyen@est.tech>,
+To: Stefan Hajnoczi <stefanha@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	Tuong Lien <tuong.t.lien@dektech.com.au>,
-	Ying Xue <ying.xue@windriver.com>
-Cc: netdev@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net,
+	Asias He <asias@redhat.com>
+Cc: kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Chengfeng Ye <nicoyip.dev@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH net] tipc: protect node reset trace dump with node lock
-Date: Sun, 23 Aug 2026 00:40:55 +0800
-Message-ID: <20260822164055.3750284-1-nicoyip.dev@gmail.com>
+Subject: [PATCH net] vsock/virtio: flush works in dependency order
+Date: Sun, 23 Aug 2026 00:45:56 +0800
+Message-ID: <20260822164556.3750959-1-nicoyip.dev@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -83,69 +88,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The tipc_node_reset_links trace event asks tipc_node_dump() to walk the
-node's link entries. Unlike the other node events that request link data,
-this event runs without the node lock.
+virtio_vsock_remove() stops the virtqueues and then flushes each work
+item before freeing the enclosing virtio_vsock.  The current order does
+not account for dependencies between those items: tx_work may queue
+send_pkt_work, and send_pkt_work may queue rx_work.
 
-This permits bearer teardown to free a link while the trace callback is
-dumping it:
+In particular, send_pkt_work can set restart_rx and release tx_lock.
+The remove path can then stop the queues and flush rx_work before
+send_pkt_work queues it.  Although the later send_pkt_work flush waits
+for that producer to finish, nothing waits for the newly queued rx_work,
+so kfree(vsock) can race with it.
 
-  CPU 0                                CPU 1
-  trace_tipc_node_reset_links()
-    tipc_node_dump()
-      l = n->links[0].link
-                                       tipc_node_write_lock()
-                                       kfree(l)
-                                       n->links[0].link = NULL
-                                       tipc_node_write_unlock()
-      tipc_link_dump(l)
+KASAN reported:
 
-tipc_link_dump() then dereferences the stale pointer. KASAN reported:
-
-  BUG: KASAN: slab-use-after-free in tipc_link_dump+0x10cb/0x16b0
-  Read of size 4 by task ksoftirqd/0/14
+  BUG: KASAN: slab-use-after-free in
+  virtio_transport_rx_work+0x487/0x4b0
+  Read of size 8 at addr ffff888114c2b008 by task kworker/1:1/47
+  Workqueue: virtio_vsock virtio_transport_rx_work
   Call Trace:
-   tipc_link_dump+0x10cb/0x16b0
-   tipc_node_dump+0x4bb/0x740
-   trace_event_raw_event_tipc_node_class+0x258/0x360
-   tipc_node_reset_links+0x14d/0x1a0
-   tipc_rcv+0x13f5/0x3030
-   tipc_udp_recv+0x4e3/0x670
-  Allocated by task 0:
-   tipc_link_create+0x1e1/0x1020
-   tipc_node_check_dest+0x7d2/0x11a0
-   tipc_disc_rcv+0xdbf/0x1430
-  Freed by task 89:
+   virtio_transport_rx_work+0x487/0x4b0
+   process_one_work+0x688/0x1120
+   worker_thread+0x45b/0xd10
+  Allocated by task 1:
+   virtio_vsock_probe+0xef/0x6b0
+  Freed by task 84:
    kfree+0x131/0x3c0
-   tipc_node_link_down+0x267/0x4b0
-   tipc_node_delete_links+0xec/0x160
-   bearer_disable+0x107/0x260
+   virtio_vsock_remove+0xd1/0x100
 
-Take the node read lock around the trace event. This keeps link pointer
-loads and all dump dereferences serialized against link deletion while
-preserving the trace contents and reset flow.
+Flush the works in producer-to-consumer order.  virtio_vsock_vqs_del()
+has already disabled the queue callbacks and cleared the run flags, so
+after tx_work and send_pkt_work are drained, no source remains that can
+queue rx_work after its flush.
 
-Fixes: eb18a510b5cd ("tipc: add trace_events for tipc node")
+Fixes: 0ea9e1d3a9e3 ("VSOCK: Introduce virtio_transport.ko")
 Cc: stable@vger.kernel.org
 Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
 ---
- net/tipc/node.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/vmw_vsock/virtio_transport.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/tipc/node.c b/net/tipc/node.c
-index 683a136e53ef..127848e8a644 100644
---- a/net/tipc/node.c
-+++ b/net/tipc/node.c
-@@ -1333,7 +1333,9 @@ static void tipc_node_reset_links(struct tipc_node *n)
+diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+index 96c9fe8d357c..4f9aa9c4c3aa 100644
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -872,10 +872,10 @@ static void virtio_vsock_remove(struct virtio_device *vdev)
+ 	/* Other works can be queued before 'config->del_vqs()', so we flush
+ 	 * all works before to free the vsock object to avoid use after free.
+ 	 */
+-	flush_work(&vsock->rx_work);
+ 	flush_work(&vsock->tx_work);
+ 	flush_work(&vsock->event_work);
+ 	flush_work(&vsock->send_pkt_work);
++	flush_work(&vsock->rx_work);
  
- 	pr_warn("Resetting all links to %x\n", n->addr);
+ 	mutex_unlock(&the_virtio_vsock_mutex);
  
-+	tipc_node_read_lock(n);
- 	trace_tipc_node_reset_links(n, true, " ");
-+	tipc_node_read_unlock(n);
- 	for (i = 0; i < MAX_BEARERS; i++) {
- 		tipc_node_link_down(n, i, false);
- 	}
 -- 
 2.43.0
 
