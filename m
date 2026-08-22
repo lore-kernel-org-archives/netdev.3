@@ -1,159 +1,124 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0C1384256
-	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 21:03:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574543806AD;
+	Sat, 22 Aug 2026 21:10:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787432625; cv=none; b=pnoHsXqh7i3v/C8OLiMAh4w6hHzKb6VjbJ9aDSqaLImV1I0s2ZyOUlycpJT7SFaGnfUOTup4+nHCJ2FfsyfKIpyVRcyR2mkM147O/hPtwymTZKykqe3EFUMwGnAL8XEFbZ+on2/tVtXr3qToBRs6mj0uTlYoafseOUGpKqh5wog=
+	t=1787433009; cv=none; b=hDjcTKjDjXwLH4elIG7mqaWk3Xsr/XRDvmMHYF+lz7ym6dG52+mRTmL9mCR29FSzZBkSLpviTJRba46ZFtVJQO8IMqIrPqalzSm2/btlQ9kmEJeuV52wPkvp5hr7cufPrTPqOT3r8O3u9lSHbkoQs4MFHtohT3FFPyaqNPyNMvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787432625; c=relaxed/simple;
-	bh=pwiiJ4H3HaIWhZS+ojaNMKxfF4YFkeoAeM0o3DHBuSo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MGW93XHQv5yT9jojFNEl7s4rRol0Yc3mBttb6M2V67w0lY3pwsqcWyC5NpxVe8yvtLobZtBmbT8Krhe+vdglVE83VykDwJ1moNFd7Vlvq+gdJY2ANGIhr+vU7mGMSSB9Qm0JP+PVYzaPx0DTBReZ9yMiDXHtAip+R5hFhHPBnfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mp7jzMM+; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787433009; c=relaxed/simple;
+	bh=KgMG14rJzYNAPdkqdc/7hpNJMhpNCZOeJSw3p41Ibig=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XVyxTpEB8IPQVRapRg6k9gDDUnI+9dcRmS/EJfbmciv3ifkIujkQnsdwrAM+S1VuBgyU5ZqIT1BoR6b3ljPRQRptkLlBAQMqkSnSkaiQKa4qz1lwnLdonIVV7QNjQdBl7M3mA8OOSKjXz8RcGWUTm7BHR0nLzYpaBjZppyJXLU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=IlVRaI0a; arc=none smtp.client-ip=51.159.188.251
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mp7jzMM+"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c1670dad7a8so386055866b.3
-        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 14:03:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787432610; x=1788037410; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=WcpGyCIEh7F/5f7dZanL/yn6ecJPm8DEjLz6Iy2qqk8=;
-        b=mp7jzMM+IGOVWJchtueg0QKTlF7o56lCJn/Fc3L+ZRVpjIGgHuHdjsUNnCAc8CNHNQ
-         fmjtCCaMWSfsX6IArfc1e03jQCKkVQf7Kuo2rlKsccKryTDeU1CJj7QaY5w7WXlLnyLe
-         ujirCfD2iugT1DMORAVCKcR7rEIDa/cycIVUGO3mcpkP12hbbDBGYOfO2RKRcIvMWUbn
-         7QuJ8dv6uEukMWQeRpciPdswNmLMRnnPLDfnVRLO1/1FvLcQb41VS6JT5IdIvh6YuvqF
-         Sp6wq4MmOeGYDeB2zMjPEQlQ0DYoUMp/fZS9dovTqv34IvSKD+A0yV9IuR5cqcJJwrXv
-         zRAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787432610; x=1788037410;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WcpGyCIEh7F/5f7dZanL/yn6ecJPm8DEjLz6Iy2qqk8=;
-        b=EmLZI7fUuhQZuxwfISg2KUA56tOFenTC0GlKER15cf8DGqwV7CgmXDjGjlgHHkaUim
-         snalCRK5Qw4i4e6cfHJshsmwDwM8c/mMF7iG+9Vo6MPc/W8nFUEKiXbn2bjLJJZoPA+5
-         ZK/G/OvDV6Jccsrao9u5ohzL3nj6sTcBwgh+rEIDauddix0Y5lEDw7O3wgDNTC5AlVUk
-         Y/zkSr6WLzVyE0GnBFyrfEbtVmxFCUI2YONPI9kGh+gqJFyEzDWiCNoI13mlX2zFk02g
-         +ipNEbuYv4w481kt1AoiEixb8GIJbWvS43XPgyBvZKkbuZT8byZZ9OdbHrT+zqi90s17
-         sh2g==
-X-Forwarded-Encrypted: i=1; AHgh+RrW8TKqt3yw85ONZZ6v0itF1zEYo0dRERnbW3Q7oFw/eEEwb45gOymFxZk5FGHpuoO4LVFJiH8=@vger.kernel.org
-X-Gm-Message-State: AFuF++nzlnHY0Afgs0+bI1n0DqLw8OtFkKARTYbcNiNH0PnQKoBuAjAu
-	e0ez+9zsVBfUHW+V923hpXYjTwrEJYN0SJ+CpO9MQBQwBe45WgWJKAZr
-X-Gm-Gg: AR+sD101FWTjssRZ+FY8eCNU1i/HIpxwC+0jC3DSPsCPT3hdYkLli4rD/iHRrrLMD0W
-	oXxo25kmPW6epMoZV+ECS8nEZrdwLVmGTp08xlDzMn0ApYo1NJ96fVZJl9S3NgYmIvUf0cLzW2k
-	BUrUvNzrT1wOAynMih4XOqXU8Itdg1x2zJnhR6eJufVA7sthcJsIIsQ750fgKYJLQMfMPYM3vlk
-	UAUoVzP71ZqsQFign47GAsOGBaVEPB+3Is6dMr4IfNWwPyABc9JSB+cSGMB6Zg+N4ur6FkZIYoA
-	WEItUuiaWD/RmYUSJ0kh17nLOEab42OIcQNZCJ7EbibzSRkyM1Bmpz9b/2hSSWuK3vdPQHffjw7
-	y9b+I52IjR3FLYcvw6ewfgXPBH8d4zVg8QGDrC0vfi/sPKA2cQE13wJEnv1y2C9zK1nDZr150iM
-	Jdt1pbyyHBvqQxUxy58UBJXipMbcw2DNdJ5/oa/Uv/1P/neqIv5WjmW5o02cmswJ/tAPg=
-X-Received: by 2002:a17:906:6205:b0:c1c:2173:d412 with SMTP id a640c23a62f3a-c246a39ef9emr1883658466b.1.1787432609844;
-        Sat, 22 Aug 2026 14:03:29 -0700 (PDT)
-Received: from foxbook (bfk5.neoplus.adsl.tpnet.pl. [83.28.48.5])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c24967383e5sm461503366b.45.2026.08.22.14.03.28
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Sat, 22 Aug 2026 14:03:29 -0700 (PDT)
-Date: Sat, 22 Aug 2026 23:03:26 +0200
-From: Michal Pecio <michal.pecio@gmail.com>
-To: Sergey Shtylyov <s.shtylyov@auroraos.dev>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- <linux-usb@vger.kernel.org>, <netdev@vger.kernel.org>
-Subject: Re: [PATCH] r8152: simplify loops in generic_ocp_{read,write}()
-Message-ID: <20260822230326.5d642593.michal.pecio@gmail.com>
-In-Reply-To: <20260822202155.18632-1-s.shtylyov@auroraos.dev>
-References: <20260822202155.18632-1-s.shtylyov@auroraos.dev>
+	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="IlVRaI0a"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=F9fPZhNohuA0JOQgrOmi2L2GIR7rpgyy1St6QvWxGlM=; b=IlVRaI0aObrKY+vOmNgCHiXM9v
+	KcQx5d86IBU2ePAYMEShJg53/m2FJ67NzIf2KkSP6tpP9s8o7u0BJ4dTGRbaIwMUeqvvb62IHSB/8
+	RiRLT9OQC4fyp1xO8BY86MkSnjjG5PkaleTfnPeTe4cHla511igXStB137gojWgIj/4/YeKHTj39/
+	cqQQdKpWysIaIMHv5RctDz70f3q0T41DL2TA3HqKHQdrpGinJ89jPaNQIhgXdGGcDD0YGWpW/rfxG
+	hVv7Kpi4piBByYZ+Kqf2pb6L4ZPMRTLExsRHneWYnjbcYx8oBCDdZge23/Kwbji/kzewoGQ73eEQZ
+	91Oew7IA==;
+Received: from [151.115.150.205] (port=39662 helo=gepetto..)
+	by pf-012.whm.fr-par.scw.cloud with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <Jeremy.Jean@oss.cyber.gouv.fr>)
+	id 1wxsyb-00000002OEp-2AlV;
+	Sat, 22 Aug 2026 23:10:04 +0200
+From: =?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
+To: pablo@netfilter.org,
+	fw@strlen.de
+Cc: phil@nwl.cc,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
+Subject: [PATCH] netfilter: bpf: disallow conntrack kfuncs for token programs
+Date: Sat, 22 Aug 2026 21:09:46 +0000
+Message-ID: <20260822210945.1003967-2-Jeremy.Jean@oss.cyber.gouv.fr>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
+X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
+X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Sat, 22 Aug 2026 23:21:54 +0300, Sergey Shtylyov wrote:
-> In generic_ocp_{read,write}(), the *while* loops look very strange:
-> the last iteration is executed differently to the prior ones, doing
-> some useless assignments before *break*. Move the code for the last
-> iteration out of the loop bodies, dropping the pointless statements
-> as well...
-> 
-> Found by Linux Verification Center (linuxtesting.org) with the Svace
-> static analysis tool.
-> 
-> Signed-off-by: Sergey Shtylyov <s.shtylyov@auroraos.dev>
-> 
-> ---
->  drivers/net/usb/r8152.c | 67 ++++++++++++++++-------------------------
->  1 file changed, 26 insertions(+), 41 deletions(-)
-> 
-> diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-> index f61686433031..de9738bdce85 100644
-> --- a/drivers/net/usb/r8152.c
-> +++ b/drivers/net/usb/r8152.c
-> @@ -1431,27 +1431,19 @@ static int generic_ocp_read(struct r8152 *tp, u16 index, u16 size,
->  	if ((u32)index + (u32)size > 0xffff)
->  		return -EPERM;
->  
-> -	while (size) {
-> -		if (size > limit) {
-> -			ret = get_registers(tp, index, type, limit, data);
-> -			if (ret < 0)
-> -				break;
-> -
-> -			index += limit;
-> -			data += limit;
-> -			size -= limit;
-> -		} else {
-> -			ret = get_registers(tp, index, type, size, data);
-> -			if (ret < 0)
-> -				break;
-> +	while (size > limit) {
-> +		ret = get_registers(tp, index, type, limit, data);
-> +		if (ret < 0)
-> +			goto error1;
->  
-> -			index += size;
-> -			data += size;
-> -			size = 0;
-> -			break;
-> -		}
-> +		index += limit;
-> +		data += limit;
-> +		size -= limit;
->  	}
->  
-> +	ret = get_registers(tp, index, type, size, data);
-> +
-> +error1:
->  	if (ret == -ENODEV)
->  		rtl_set_unplug(tp);
+BPF tokens delegate BPF and network-admin capability checks to the token
+owning user namespace. Conntrack kfuncs nevertheless accept a network
+namespace ID relative to the program context without checking whether the
+token has authority over the resolved namespace.
 
-Looks like it could be shorter still.
+An XDP program attached to a veth in a child network namespace can use
+the peer namespace ID for init_net. bpf_xdp_ct_alloc() then allocates an
+entry in init_net, bpf_ct_insert_entry() publishes it, and the lookup and
+mutation kfuncs can subsequently access that host state.
 
-s/limit/chunk/
+The verifier retains the token in prog->aux, but it cannot determine the
+runtime namespace selected through bpf_ct_opts. Conservatively reject the
+conntrack kfunc set for token-loaded programs. The kfunc interface is
+explicitly unstable, and ordinary token-authorized XDP programs remain
+available.
 
-while (size) {
-	if (size < chunk)
-		chunk = size;
-	ret = get_registers(tp, index, type, chunk, data);
-	if (ret < 0)
-		break;
-	index += chunk;
-	data += chunk;
-	size -= chunk;
-}
+Fixes: caf8f28e036c ("bpf: Add BPF token support to BPF_PROG_LOAD command")
+Assisted-by: Codex:gpt-5
+Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+---
+ net/netfilter/nf_conntrack_bpf.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-Then it could be do-while, because we know size > 0, though
-I suppose compilers may figure it out themselves anyway.
+diff --git a/net/netfilter/nf_conntrack_bpf.c b/net/netfilter/nf_conntrack_bpf.c
+index c2df7c9..4075ee1 100644
+--- a/net/netfilter/nf_conntrack_bpf.c
++++ b/net/netfilter/nf_conntrack_bpf.c
+@@ -532,9 +532,24 @@ BTF_ID_FLAGS(func, bpf_ct_set_status)
+ BTF_ID_FLAGS(func, bpf_ct_change_status)
+ BTF_KFUNCS_END(nf_ct_kfunc_set)
+ 
++static int nf_conntrack_kfunc_filter(const struct bpf_prog *prog, u32 kfunc_id)
++{
++	/*
++	 * Conntrack kfuncs accept a netns ID relative to the program context.
++	 * The verifier cannot determine which user namespace owns that target.
++	 * Do not let a token delegate authority over arbitrary peer netns state.
++	 */
++	if (prog->aux->token &&
++	    btf_id_set8_contains(&nf_ct_kfunc_set, kfunc_id))
++		return -EACCES;
++
++	return 0;
++}
++
+ static const struct btf_kfunc_id_set nf_conntrack_kfunc_set = {
+ 	.owner = THIS_MODULE,
+ 	.set   = &nf_ct_kfunc_set,
++	.filter = nf_conntrack_kfunc_filter,
+ };
+ 
+ int register_nf_conntrack_bpf(void)
+-- 
+2.47.3
 
-Regards,
-Michal
+
