@@ -1,150 +1,146 @@
-Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00093B7B8C;
-	Sat, 22 Aug 2026 12:03:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A866C397E80
+	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 13:41:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787400220; cv=none; b=N1nwHPHUkEGBTzSfTgaL/lgJAK8UAmsGAXLSuQxttCrHi1nGs7chcOgkaRMj8bDPya7awLhSmWam5JjoA3+6oJ0rgwvm3jzm4/0NQvKW3U6+to2i+OTRU4oiQpUufopQu0dz+xZ9BC9sUP5VrqH0IZ2Ank8fN3Hw4VnB9FaxJvA=
+	t=1787406119; cv=none; b=lf9Vx2IjXSk8tKeky+jTmvhpxizv7zGWzDeWupE24tWq3uH8WdtS/Lj+RdgVj0wWd1hMCEL0HrXw/EdTomY+MJ9GfFGfMfnb8GC7WC7II4YPx2ZDlCl5mpEkCudRjZ6FRYDFQB1M7SWQlbKLarUC7jRbfm6eCI4fDMgPq2ZavmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787400220; c=relaxed/simple;
-	bh=NtmFVeW4kka0SmGN5xNAMDqOjqpQKVa6ihfiQCp798c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dwj05l/b3UBl3PIzxXvXrq+lWkl/CVuFvnoRviHYRFe2kSMlw5v9KjogO7u2Zak2iw0uAimJvapgAmDpl6ahq0SRbkFD9/5zo8o8GlnC4UV71GLPMFKLEFE6ID/eMTAOqbD53CKxJFJXiAWFN8lIeAhTCXsyz49JctV8nrhI1iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=RyzlJ4mw; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=T7hd0wDT; arc=none smtp.client-ip=202.12.124.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
+	s=arc-20240116; t=1787406119; c=relaxed/simple;
+	bh=ShtTkIU3ezbFJIydaBLYCMvhC/wGsulze2uz5bQe5G4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fqDGkBcvOV4xbBLMGAdU9fQ/H4OYs+AUyAr5vrXzmzHlJh6M3cM3CnGETa4CKEGlmqOPRQHCA5iklS+YDBwu5uV259R72NbUwG40arytROg8JR2kTc5KBXKjXq7kPfyKIRsTYEV/uFHZsUx6GidjKkOBNPIK3P2tIF+1ucutFFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=NWr95Y6+; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="RyzlJ4mw";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="T7hd0wDT"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.stl.internal (Postfix) with ESMTP id E21E31D000D6;
-	Sat, 22 Aug 2026 08:03:37 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Sat, 22 Aug 2026 08:03:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1787400217; x=
-	1787486617; bh=32UVSnM0pjaiOP5dmLZiUJErmQ+QeG77+593Av3g+Go=; b=R
-	yzlJ4mwTrW9weoskRcvsNpwq8LbPsEacgb8llts2cL+qsH8/EWUTqaSA/ktaRcmA
-	GgmwpkOxJYNl/AkZGKZRLMaEaUkFwquCiMbSmXrDFTlaKAmLt1J2hfminaw0UM+b
-	FTv9IYdtbz48B1VBMBiGhd7g21rQmXUt1/dJmuH60VCGlLda4nCmOJOWBTp1Jsri
-	9K3Chmn4T+qT6dvH0LV37rlHKTbwBGGoDHTTvkIGiMfJYkZRDz/DWYbDgBlIRD6t
-	2TDimSTYzkJQLTYmo9zO1M4VyF0ZsFXzJNeS7c+wTIzBt+1NdUDpUJdkrTKrZ+Dx
-	OVgf/k6i0nRp85XPmdmog==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1787400217; x=1787486617; bh=3
-	2UVSnM0pjaiOP5dmLZiUJErmQ+QeG77+593Av3g+Go=; b=T7hd0wDTmYlcch/vY
-	jC5QGDng5eGevNDurBGTEpeiIT16j2QB1s3M/5lnCuVlc/bPRuHAOLsmrIAfaxSi
-	2/HkmeJhMRt2VFTcug9ukgBAZp6zZdKG/ozjQ4DNINMPc4bsjG1vHaJaDO0B0qZ9
-	xVixjXtOFfZi+dE0Vt9NG1ScA1VFAoqPkn4dC6vggC/t/M+Bae4kWYbbsY+uCTiz
-	Avdm3dKirnYbTA1h72hpBERPb+l7BM+cRdnRPoQHS4EpYmZ0/r30rlrPpgcSwyPV
-	XXwllVcuePv4q3f8CpmZUNB2Eq2E0rx0Z5kW0tCzGc3rxYPUefL+wNHCOtdoLgmi
-	45ddw==
-X-ME-Sender: <xms:GZCJagd4s33_xUram9LU8HasHSgSsqf-Xc1-f9epQyCCWcm8y7JhLg>
-    <xme:GZCJagfrLN4DZnOUuhROYnRv3P8zzZZSrqnJrAZRtWyOpCi9A3BtybtE6T7mH0wKn
-    zn-7yeVau-dOF4tHVNU46j6zWm0ARrmye8-FzsqwrjSTKCys9_J1A>
-X-ME-Received: <xmr:GZCJaq2fCqgFgo8hMrQBvsB74uwBANX4KS079J2041831gKxC4UHiIE3H9_J8w>
-X-ME-Proxy-Cause: dmFkZTGtKJOb/1ErzFcRrgcqczqx38F/Dp1etLm/xtgm+4L59eUlbk8wR34hQg39CMJOx9
-    7EXAzcsth20bS7P88c2kw+IvEVs13toeM5GJkH4ltW2CZjCF1Szvv5F31rXlIkUtWTAAkV
-    jAHaDP/Erx+8iJPZwd87d8ns+6JCZX85WN4ekQrawHiR5m21u9gVT8TyCvTF6CUsY2x8Pc
-    cdjb9phLV+q5cpbiEeUDZJ4lcoVGCwEaIQm4DsPcfjwLHrqGDepjJy6DvKloM5xLTFXgea
-    QukG15OgrMMnI63W1MhzqM7oB0HrlmZdzZH8rhU2BX84M/th0OPJIxowms3dZxNyxWB2Q0
-    ByQqWBnc2HlW4ZBIAmee/Lic78rJkIhHXasf8EjfRZE7nv/qS6F0TN9NOxLVYfDhgtL365
-    iaaF+9aiDht4btvjWRGJwYGq2YN21+gjer374xLSoxUTdFlIANCO2ANb5JOhG6yyNxAu/C
-    rSlKAf+hB5cNfHc+ce74g2O8x2IvGUgoZi2UpcEPkIawUZxYCqzR7Z6JUnjiNTKhERhFiQ
-    tPKtSEcT90osDoX3kgu6Jgz852nTm38lr633WickK/aSZ2kY0f/FHX/ueFsgPEUDCSvLS5
-    CM6nbqJIpFoCfRjiw79PENTwuQcrpfK5peXd4chBh/1vWQKL9QkZLfeTvFHg
-X-ME-Proxy: <xmx:GZCJao89XEiMe67xXmyS1RaMr_MvCNeSUrGm4guj0n8NOw14p1zO2g>
-    <xmx:GZCJav7KM0BL04sZNZnMKQ3pagGHmkhpPCjEJ-Bo4RcFfWTmXcO5Qw>
-    <xmx:GZCJagsNxwGvqnf4-H37Mcb_BK5HOB11C_0Cxq1M1Giz7FOE3KQSEg>
-    <xmx:GZCJah2p7e9zJkJf2seCmdJaspTVBVYyPEZYbjjTeigO09WNRxPpJg>
-    <xmx:GZCJaga9N15Zjp-Vrw0M3s3IB3cv2cpZAg9ifuep77_hBlqsocw1CMom>
-Feedback-ID: i559e4809:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 22 Aug 2026 08:03:37 -0400 (EDT)
-From: Alice Mikityanska <alice.kernel@fastmail.im>
-To: Matthieu Baerts <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Cc: Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Alice Mikityanska <alice@isovalent.com>
-Subject: [PATCH net v2 4/4] selftests: net: Fix slow configurations in big_tcp_tunnels.sh
-Date: Sat, 22 Aug 2026 15:03:08 +0300
-Message-ID: <20260822120308.1165200-5-alice.kernel@fastmail.im>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260822120308.1165200-1-alice.kernel@fastmail.im>
-References: <20260822120308.1165200-1-alice.kernel@fastmail.im>
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="NWr95Y6+"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c197e7e4e94so355076066b.2
+        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 06:41:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1787406114; x=1788010914; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Aj3ZYubTvLgnR11pZYHVat4EVUJdKX6AnHgTVge4+Wc=;
+        b=NWr95Y6+8gr1dd6kImBWVKkc9Ow7+W1hOqUbome1tczYJ0l7VolXq0eP+XhSlE2lop
+         cfrU27AzjWjNSHtmZZ6RuHDw63H/Aw3j1SR3ZUJxRQSBgNqaamZlv7pWt8qP16vXkNr8
+         RFuxFu+K2wzi5JQkrBzAM56wOg7B0Pw6h7m1cwa5fQL+1N4vZ9VmnU0fSvXmiMFSSbLp
+         PwxvZznnm7VHgzn3KPh0fvhzv105HloBofPB+0hansRG9f8EL4WMC1/pwoxYuig5g5ac
+         rHPjkA9B4VHQUiuu3DSUboCniUrCCNStbMPToZGTj1YRemJ0JduZoppZNUOsUtWyRRr6
+         6eqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787406114; x=1788010914;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Aj3ZYubTvLgnR11pZYHVat4EVUJdKX6AnHgTVge4+Wc=;
+        b=Wo1YUpzY2sbliIqyG+dzs0TzI8ydBO9qyoMc2kE1ecyqHjQN4fjZrf/DxfeI4vl97C
+         0hXSt0NiNJoncKcePMrUKBH8yHP7wrXE15d8IgdaKiPTD6V+BLxTC3e+S5c3/Qt6pUbP
+         +WYZCuXpGJbTfEmUv90LICQRmlcAis9HBi0dT8pcd7++HT/72d87J4tnTdG0MsCXOq5d
+         2fv69jww3yKUW0qW8jTSdjeMM0pJBSCFVhPSvD9YavynlXWxVTS0GrdW7mthfHVEfh0G
+         GJdPLSiCjTTm5wQQFsskB2r9dAlMS5oiNHEugReLFvUSLvaANcz5Tly+oB5PmwsHCveZ
+         nCZg==
+X-Forwarded-Encrypted: i=1; AHgh+RooqioOJJFtRoI00EVBXl4D8++qSdQEp0Y9n8Arq7UyLo1Rzfus9+H162UxHSRgqq/pRm8vVz0=@vger.kernel.org
+X-Gm-Message-State: AFuF++mP9iROxTaA5BC41zwCU/18CPF33G1ys8tocO4Ov76ipsp7lKm4
+	mLXdS5x71VQrS3ZXNm9SEsbeHbobTzRApMnT+3mNQAxesUG9W3JS8mX8XacXMBP2aIQ=
+X-Gm-Gg: AR+sD10mzRZE4QjJEBj0EPDGyVEuBj8IReFMi00jheJMaSgIaDOsXoUV2iy5XZ5H+qK
+	olDLgN9gjt2juqE3F05eIfP+g/8SPPvjVDnZA8lECu2/QcExp2XKEBreXXtSpu9XDDoBtcGIiPy
+	aaXSFfILXZi1lYL+1ywz9pWHW2Np4rWNU5Q6+shVTgGxllPHgH7HS094fNWnwBvj0VIEz2Ucb7+
+	LvCZblLHaR9cVQhMwYVDqRQQf29Mga6+K6B1hzXSBKSORmNCEnDhhglhcA8Mc+5tygI6etfcpSj
+	pMZADm2Fy6NDK1EdiuW/YRukHkVJYAJy30HYMeHSOYJH2Ex53E+GSJCwZvqPfuGBNGq931nQiAD
+	B2ahcT2jya9ufpAmZE+mtqNK7c47ttr1/DQQtfLHBWQM35fhKkvvivah+KGIn6XTQxySGwCDyfA
+	XXM/Ei2a4XXSbt6wlsPIQE9eThX09U8dxoehVAVS2hShry5/FAiJ0bt6BdJMwOl+jOlQ==
+X-Received: by 2002:a17:907:8908:b0:c21:35d0:f435 with SMTP id a640c23a62f3a-c24924db408mr547750766b.10.1787406113365;
+        Sat, 22 Aug 2026 06:41:53 -0700 (PDT)
+Received: from localhost ([2a02:8071:56d1:2de0:1d24:d58d:2b65:c291])
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-c249606a8fasm387614266b.8.2026.08.22.06.41.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 22 Aug 2026 06:41:52 -0700 (PDT)
+Date: Sat, 22 Aug 2026 15:41:50 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Mauricio Faria de Oliveira <mfo@igalia.com>
+Cc: Kees Cook <kees@kernel.org>, Joel Granados <joel.granados@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	kernel-dev@igalia.com, linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	fsverity@lists.linux.dev, keyrings@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kbuild@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-wpan@vger.kernel.org, lvs-devel@vger.kernel.org, netfilter-devel@vger.kernel.org, 
+	coreteam@netfilter.org, linux-sctp@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	linux-s390@vger.kernel.org, bridge@lists.linux.dev, mptcp@lists.linux.dev, 
+	rds-devel@oss.oracle.com, virtualization@lists.linux.dev
+Subject: Re: [PATCH RFC v3 03/13] sysctl, mod_devicetable: add macro
+ MODULE_SYSCTL_TABLE
+Message-ID: <aomlfGJM61qZKxx2@monoceros>
+References: <20260819-sysctl-module-aliases-v3-0-aab90569365d@igalia.com>
+ <20260819-sysctl-module-aliases-v3-3-aab90569365d@igalia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="akn7oxv4v2qk2wdq"
+Content-Disposition: inline
+In-Reply-To: <20260819-sysctl-module-aliases-v3-3-aab90569365d@igalia.com>
 
-From: Alice Mikityanska <alice@isovalent.com>
 
-The combination of checksum offload disabled (that causes software GSO)
-and a debug kernel is inherently slow. Depending on the CPU power and
-load, RTT may increase, limiting sk_pacing_rate, so tcp_tso_autosize
-caps SKBs at around 40 segments, and zero BIG TCP packets are produced.
+--akn7oxv4v2qk2wdq
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH RFC v3 03/13] sysctl, mod_devicetable: add macro
+ MODULE_SYSCTL_TABLE
+MIME-Version: 1.0
 
-Increase sysctl net.ipv4.tcp_min_tso_segs and set a bigger initial value
-of CWND in these configurations to force BIG TCP.
+Hello,
 
-Fixes: 5cb53743e1ff ("selftests: net: Add a test for BIG TCP in UDP tunnels")
-Signed-off-by: Alice Mikityanska <alice@isovalent.com>
----
- tools/testing/selftests/net/big_tcp_tunnels.sh | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+On Wed, Aug 19, 2026 at 03:16:16PM -0300, Mauricio Faria de Oliveira wrote:
+> The MODULE_SYSCTL_TABLE macro emits a struct module_sysctl_table variable
+> with pointers to a sysctl table's path and entries, and table/entry sizes.
 
-diff --git a/tools/testing/selftests/net/big_tcp_tunnels.sh b/tools/testing/selftests/net/big_tcp_tunnels.sh
-index 003878df7415..cc0875e52fb9 100755
---- a/tools/testing/selftests/net/big_tcp_tunnels.sh
-+++ b/tools/testing/selftests/net/big_tcp_tunnels.sh
-@@ -49,6 +49,8 @@ setup() {
- 
- 	ip netns exec "$SERVER_NS" netserver >/dev/null
- 	wait_local_port_listen "$SERVER_NS" 12865 tcp
-+
-+	DEFAULT_TCP_MIN_TSO_SEGS=$(ip netns exec "$CLIENT_NS" sysctl -n net.ipv4.tcp_min_tso_segs)
- }
- 
- setup_tunnel() {
-@@ -135,6 +137,21 @@ do_test() {
- 		IPTABLES_SACK=ip6tables
- 	fi
- 
-+	if [ "$3" != 'on' ] && [ "$KSFT_MACHINE_SLOW" = yes ]; then
-+		echo 'Slow configuration; increasing net.ipv4.tcp_min_tso_segs and initcwnd'
-+		ip netns exec "$CLIENT_NS" sysctl -w net.ipv4.tcp_min_tso_segs=52
-+		if [ "$2" = 4 ]; then
-+			ip -netns "$CLIENT_NS" \
-+			    route change 192.168.2.0/24 dev tun0 initcwnd 100
-+		else
-+			ip -netns "$CLIENT_NS" -6 \
-+			    route change 2001:db8::2:0/112 dev tun0 initcwnd 100
-+		fi
-+	else
-+		ip netns exec "$CLIENT_NS" \
-+		    sysctl -w net.ipv4.tcp_min_tso_segs="$DEFAULT_TCP_MIN_TSO_SEGS"
-+	fi
-+
- 	ip netns exec "$SERVER_NS" "$IPTABLES" -w -t raw -I PREROUTING -i "${CAPTURE_IFACE}1" -m length ! --length 0:65535 -m comment --comment "bigtcp"
- 	ip netns exec "$CLIENT_NS" "$IPTABLES" -w -t raw -I OUTPUT -o "${CAPTURE_IFACE}0" -m length ! --length 0:65535 -m comment --comment "bigtcp"
- 	ip netns exec "$SERVER_NS" "$IPTABLES_SACK" -w -t raw -I OUTPUT -o "tun1" -p tcp -m tcp --tcp-flags ACK ACK --tcp-option 5 -m comment --comment "sack"
--- 
-2.55.0
+That new struct doesn't seem to contain any pointer?
 
+> That symbol will be handled by file2alias.c (modpost) with the changes in
+> mod_devicetable.h and devicetable-offsets.c.
+>=20
+> The option macros MODULE_SYSCTL_TABLE_{DISABLE,UNIQUE_ID} can be used on
+> a per-file basis to disable the macro and change the symbol name pattern.
+>=20
+> Signed-off-by: Mauricio Faria de Oliveira <mfo@igalia.com>
+> ---
+>  include/linux/mod_devicetable.h   |  7 +++++++
+>  include/linux/sysctl.h            | 42 +++++++++++++++++++++++++++++++++=
+++++++
+>  scripts/mod/devicetable-offsets.c |  6 ++++++
+>  3 files changed, 55 insertions(+)
+
+Please put the new struct in a separate header. Apart from not being
+about a device table, I'm currently work on removing
+<linux/mod_devicetable.h>. See commit
+ad428f5811bd7fb3d91fa002174de533f9da94d7 for more details.
+
+Best regards
+Uwe
+
+--akn7oxv4v2qk2wdq
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmqJpxsACgkQj4D7WH0S
+/k5bfgf9HJoNnVEr9RCdAghOTP5QqFmH5ae7Kbmnodv6c6Pi9JGIjjGbeT5eKw3e
+JkSKqdEnlVMrLoKrhneRsxwTDGPrZvrLZrPLdZwJmPWZn5Fg+kkOO9yFAGPeMsPX
+S6UP1NY9kaCiBtlcsGT9EvMWz0jWVAWX1xb7Y2WcVZJsCWdcPhvWc3/lIbw3E4o7
+PqLtSFblkQmtGl2OL4WkP6xhEPH6qQO9BAmhLVKKZwFW5/l4sHmXRrpgSJlroR3b
+iH3liIeS6wxFp/fMYuFRryGHNMXn6gC447OnOCTmGNEj7+7Y3COwSGivgubcRIzI
+RkmxkMf2Iuntnwp4oQzCbipE5EiKGA==
+=SPY4
+-----END PGP SIGNATURE-----
+
+--akn7oxv4v2qk2wdq--
