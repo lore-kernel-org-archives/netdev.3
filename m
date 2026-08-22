@@ -1,129 +1,114 @@
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32EE38F929
-	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 22:21:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787437269; cv=none; b=aBekOm3kiDTNE3ayW4mnGfnCDQGp/EFtSTNmwnrUzRJgDd812p8C/IujGf1uyvxlj3Pz3APj/O01N8su5hx6ECn3lTogjn6C8gGxaiC+sE3RpPIIvOYBK4GsreBGnB9kwJB8jYIcU2Z9U8WxYYNZuS/Axjmg8Xb3wBaydTFljME=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787437269; c=relaxed/simple;
-	bh=mcRUefXbq2vdLhI9DYOmodziQrFkQso4FtnaoRZk8As=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YnufFsxbdeM5yVIkSvSd+cV9N0TRYAPLkmwmMstCiQ823Gydl1pwaQP75P/HDuOjNKfyPXRhpKCc5aC3H2XJnDwx16Hqa9ktaLvqeEXfrnN0ddCELwjUnsIWUvgryDh7IyXya9nO4Z1uQd4/amxy8njBUM19Z913OW315uBiZgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=sCb+ISvx; arc=none smtp.client-ip=209.85.219.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C503231E822
+	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 22:37:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787438225; cv=pass; b=kn933hZq8pRbVes4TBn3IOPhV/UmUrCgrHryopJwatj4NwyPYA5Q+jC5A5ZW7vEcrmbKc9z2QjAB/f5zZbl0p7Lwv0LWuj4+leXhf+PnPEVUReHN65zo1xBfug57frdFuXA1H5zYtVxZG4xrW/0+Cqrt/2ioshym7bL5guBfI2w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787438225; c=relaxed/simple;
+	bh=POBb41hMSzY1caDEN4VAGdVyeL6t9zbft7UqUCEzIuo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QZHAPmRgrqSfDu3u7KccTJZ2gPEK1EJvwNLSQd7+yuNA4xerxmfgOJQqcalRneVg1Pv/YWh3oy4jnsTdJ9rALJvbwuUaATsjRU4yHP1NGFdgMijm1LR4h9VQkUuCGcR+sRp2L9iIAxypjkltvdhEyUsUBJiZFCW/bkn8n6EopMs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qwaHxTIh; arc=pass smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="sCb+ISvx"
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8f186025973so22917776d6.0
-        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 15:21:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qwaHxTIh"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2cab973140bso29311215ad.3
+        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 15:37:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787438223; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WZotOZLIBqSlse4ErH311nXyDrk64NJjh0EisaDPNfAHuKznN8UZ1GFaMjVPaJMvmr
+         RiPSzHKtl4Zy1SD/wrcoZ2pw8IhMkUsH/J5BgSMWhi5pTXjRQ21kMppKXKNYMxjhyPrg
+         aaMqVses+dFjbnlFiat1LaVeD1jyIBCKmv0k+vJknBw09wbIMAcDVJHNvaJjlyVrl6RS
+         hpbsKlQacTMuHkKYzdStw/EXRaZk0vYPX45t1IOpZI7jIReGZUQ/6ob+bA0AMcwkO4Eg
+         Xj5rY9hdBrCjBQZ953ThKAZ9PpqemgK9Gcgnqg8H+B5TjqUI8LCsdn+5Qug6ML1L/Jl8
+         hTJQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=POBb41hMSzY1caDEN4VAGdVyeL6t9zbft7UqUCEzIuo=;
+        fh=bkITgScllMBn0+4oCZbFQG+7axv4nTvYwfrCA7KOlHk=;
+        b=feXkzXNw/H8GU2u5A6+9Ve96OlK8dL7UcFCPajd/ad66teSsQyoQthuj6NhoiPasp+
+         d7yOBZJR06B58J/AswxQ2LvRB+SYyn4I8KkXExSatBJg3PMt3E0gwRgCM0DgHzvh9sd8
+         jxZk54t8ihBroQKrCscGFcKrQcO8rSxTUXUoDuCG81cUMfjMRAl0xOkAZ1QY1oUDU9uj
+         vaJkQ+pwnwd2Zoz6sn5z2+bjR2P0dsz2w1wb+tX4XCf0nMhAF1rd7NSFkSFlSAg0MGiA
+         FTklNluFVyiRl4n0BeoMMHJqD8i4I1PKqvu6C9elajpSRDwb6n9KbMsc+ffA/9HhRdox
+         3X5w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787437265; x=1788042065; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=io5C1w1GYj6CXvl65B79E+wOaWgBuAynXNmwcVVwEvY=;
-        b=sCb+ISvxAZZ5RaXQ4PZjuQ1xxJTuIrv6e6m0jdsxmhmP/luJWy1eY328OxwHOc1izn
-         nBtuczwAoVPiPqyfj6EH8+VO1SCAzog3AHOAcbkNnqm4U17wL+9MJt2VPL9yp3sTnEi8
-         thnkFoYaWmTeqStItLVtL3fKuvfeHE48EcAAY=
+        d=gmail.com; s=20251104; t=1787438223; x=1788043023; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=POBb41hMSzY1caDEN4VAGdVyeL6t9zbft7UqUCEzIuo=;
+        b=qwaHxTIh03fj0gvcPrQUS8w6mPkVDE+aREegWiZUyfC8oNh/35fndQhk/Bkv/CafnS
+         Ffrx0kPK0uihrDNJ/7F62jU2pJab+3BMFYKSPSYlTdYXk3aPHSgQh30FUaOIBg8ebo1u
+         68SIG72+4gUqBlkTOuhmarGsL9KOIVW46NmZKUwIz2YAWY/bFTMNUrErLGOMWdw9XSSb
+         xxcWHrB7c9yE7pFPsrO7gZlCp7e3dXuXdtdmX4Vh1Fov01aAN0Dy4RwKp2NEbxKt18+r
+         l0eZgECyELB6R5mOPF4Jc5BHGQXwSV4TA3kqQDuuoW9soVaD5kKCj4mDIDRz+oF0PmKy
+         0+Eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787437265; x=1788042065;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=io5C1w1GYj6CXvl65B79E+wOaWgBuAynXNmwcVVwEvY=;
-        b=BOmmB5e8ToPhVQInGnTm3W1HMhEOFbBXd3h7FC4cdmSDt2uoxgTUz/z7+uIXcgRJRu
-         s3U22uKta9cTo9lvJE7TbMAtDLdfsGIcUvYWTU8qH3GtS4ZPCCOs5qyi/KVclkez+9xm
-         Rtl8v1TYmNsVBcJJJgG3XyO4rQCrAY4wUOpEzuMwzmG77+SLG3QB5CCP6cK2z+0qH+My
-         0CfC1ycjWr53E1tZCzlEzz7olniUShNpM8NDlJbTOMZt+npjUJSSyvly8tjn5DdP7fTn
-         vKYrL+8G7NlD7ilVakQs7bwqahgHbUUUlBMzP1U0Nhfr2uewedawBKtcbPkug2PFGgsl
-         plgw==
-X-Gm-Message-State: AFuF++kop+7Tp/cuMs2faL8XtUqMpzp8pIS4FNhL3H33eDdrtRHEEAI/
-	7KmGeL/mGc5f8tdWRWz8OyH+Jq7Mom1u7rK9+D+S29sz5JWFocGrNfIQAeriXrBuTanPo3AnVGB
-	G+gD7NA==
-X-Gm-Gg: AR+sD12xz3rJlB3e0DKrNQb+2GgVHgeBvcd8ZXAL0brDDrv5dFEMQMApl+I0ioVjnpv
-	lDMWXX4kkEegcgbeVvYwX6EdXx6P3MkLrqaoZ8dLGyDIGbuK3boWcvbTzS/QQKZEfMmS0RkIAbs
-	0l8as/M+0+3SVC3K2vaC3r+PpSqUVw4KqnmiuySYzEYHp5rMcTFCcD3D/jKC/R3K1moH5NX4xh1
-	DWOXWdklapJ985C5o6ZbYVzzZ0tcCsO+hrv/FAI2YCIT261hnNZBOLA+9NBuP0X34tvzliIRfuB
-	2S/g1SakE4BfLAHhvA9V3goblAh/mcU7m455WwgqDYmx3lwHzif/8WdPRLLWIaLkdRoUQb6t6QQ
-	RsgspnYPNN0bJZtQxggBt8trXM4++vkpgaxwEQL/TWDfcC3Q2l29/imoGdnCa5HX8xDRnu7hNQG
-	kCieWSNR63o6LwhxDC408yFSlV7qyEFPr71M8NsV9k44nMra1k16ML
-X-Received: by 2002:a05:6214:1248:b0:8f2:940e:2423 with SMTP id 6a1803df08f44-90c8f9584e5mr77469296d6.11.1787437265210;
-        Sat, 22 Aug 2026 15:21:05 -0700 (PDT)
-Received: from majuu.waya ([184.144.29.222])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90c93a8be17sm22573156d6.46.2026.08.22.15.21.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Aug 2026 15:21:04 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	vega@nebusec.ai,
-	Victor Nogueira <victor@mojatatu.com>
-Subject: [PATCH net v2 2/2 RESEND] selftests: tc-testing: add u32 node ID pool exhaustion test
-Date: Sat, 22 Aug 2026 18:20:49 -0400
-Message-Id: <20260822222049.114526-2-jhs@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260822222049.114526-1-jhs@mojatatu.com>
-References: <20260822222049.114526-1-jhs@mojatatu.com>
+        d=1e100.net; s=20251104; t=1787438223; x=1788043023;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=POBb41hMSzY1caDEN4VAGdVyeL6t9zbft7UqUCEzIuo=;
+        b=mLKRW9e0OKUBvT7yP2teneWMB30yNS+rFnBrZCRJOiskgWICmICmLfMMxg7x1OnTgS
+         h0O6GLC4vEbLpbI/SIl9Jf2H8oQPjAA8guNEne47JV3UyJjGLkzui//er7U37V8ts5xU
+         A65dLoIzWJRdx77VoFkSTcVe2QE7iHx5OA3TgPzodd4THjha4eDSiy2GjvQ1ZqzhQVtz
+         AWn7OQ59PZA4WJymabszQ+j399FjFxC7m4Jp6nKFkT9Ws31sHSpK1AdwUsXhx4wvv2TF
+         1VPWdqhI36V21Pktfw9zPR1so3GMehtvgMSV2gXXDbxFQJSNLFIurCS3+F9bZEemRahz
+         u5Sg==
+X-Forwarded-Encrypted: i=1; AHgh+RrmuLefJs32sdq9+NOA+nIb9jUAUgiQbzPXI1Hl9fmK/TXOviWCglwfAs8+sdQeURPDkFLXJmM=@vger.kernel.org
+X-Gm-Message-State: AFuF++m0qWPVcNos7eniNjBF2F/hjdXnHPBALZhqBHVVlOsCVql1H+bq
+	CM6bcyFWTxGD7BTPxA+ADnS9zfGFEUFFHRc+vMruE/sju0F0lhHjisfTkcwTLDWMwc0fN1hUqXi
+	FT1wk8cZueK7kRCUSqy4r8hWpZIOYSy4=
+X-Gm-Gg: AR+sD13lAghqWHUADUYZ5CK6SNyxYueUCkS7/TJ2//pONMfIB5oKt25VYjW4Mki1ata
+	wXGo5g2pcmY4NK0gyvIeyowG+Ht31s64LmHy1q5S1LeBDx5kpDio5iw0O8e//IgV3cvlTcFYDSb
+	1pJZMLfY5RyDGA8z4j7BKgpIfi/s+hu7wBJiKXCU8tOfOMQHglY7SldEiWoGCJa4nH+VwiZ7piZ
+	3XSJWU/J0V/M8Jb+EVDNOdWLmVKy1XMDIZNGNYb7sacbUqxDoUkYks9jBZXUlrRz+BOsDe/9KD4
+	5ZQntK3bCf0ubyK7SX1r9xm7wrUkxORYZha0Ln9ja2uemFNFUaNnHQUNf/NI5DrI16k18T/fHp2
+	tE7jKA1fcHoWbbo0AVAydV1BDSoMOUF8KoePI/U92YvHAqI1rCD6Ckq7ZTcWk8nVjj6BW9Nwfzu
+	U2hYSLHBmyfqi2tBo=
+X-Received: by 2002:a17:902:d552:b0:2ca:e19c:97b with SMTP id
+ d9443c01a7336-2d670b85ea7mr162565105ad.5.1787438223003; Sat, 22 Aug 2026
+ 15:37:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260821123249.41527-1-phucduc.bui@gmail.com> <20260821123249.41527-4-phucduc.bui@gmail.com>
+ <e225c560-eae8-4487-be66-f624e5e215ee@amd.com>
+In-Reply-To: <e225c560-eae8-4487-be66-f624e5e215ee@amd.com>
+From: Bui Duc Phuc <phucduc.bui@gmail.com>
+Date: Sun, 23 Aug 2026 05:36:51 +0700
+X-Gm-Features: AcwNN1WrjE6UThXJFzEWU5wxN93h5aaiCp90Hxp9q8ViHfzBnLWUh1xBoSjqiDo
+Message-ID: <CAABR9nHwTFFGVS3Y0MXsBx2ubtexaZ6hqcZYQ5au1UjxEjb+qQ@mail.gmail.com>
+Subject: Re: [PATCH net v4 3/3] net: xilinx: axienet: Fix IRQ error handling
+To: "Gupta, Suraj" <suraj.gupta2@amd.com>
+Cc: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	davem@davemloft.net, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Michal Simek <michal.simek@amd.com>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Add a tdc test case that fills the u32 node ID space with 4095
-auto-generated handles, then attempts to add a 4096th. On the fixed
-kernel the 4096th filter is rejected with ENOSPC (exit 2). On the
-unfixed kernel it silently succeeds with a duplicate handle.
+Hi Gupta,
 
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
- .../tc-testing/tc-tests/filters/u32.json      | 24 +++++++++++++++++++
- 1 file changed, 24 insertions(+)
+>
+> ENOMEM is a slightly misleading errno for "IRQ not found" on the OF path
+> -EINVAL/-ENXIO would be more accurate. Since we are here, better to
+> correct that also.
+>
 
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/filters/u32.json b/tools/testing/selftests/tc-testing/tc-tests/filters/u32.json
-index b2ca9d4e991b..039bb8278a60 100644
---- a/tools/testing/selftests/tc-testing/tc-tests/filters/u32.json
-+++ b/tools/testing/selftests/tc-testing/tc-tests/filters/u32.json
-@@ -353,5 +353,29 @@
-         "teardown": [
-             "$TC qdisc del dev $DEV1 parent root drr"
-         ]
-+    },
-+    {
-+        "id": "934a",
-+        "name": "Add u32 filter when node ID pool is exhausted (4096th filter rejected)",
-+        "category": [
-+            "filter",
-+            "u32"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+            "$TC qdisc add dev $DUMMY clsact",
-+            "bash -c 'yes \"filter add dev $DUMMY ingress prio 1 protocol ip u32 match u8 0 0 at 0\" | head -n 4095 > /tmp/u32_batch.txt'",
-+            "bash -c '$TC -b /tmp/u32_batch.txt'"
-+        ],
-+        "cmdUnderTest": "$TC filter add dev $DUMMY ingress prio 1 protocol ip u32 match u8 0 0 at 0",
-+        "expExitCode": "2",
-+        "verifyCmd": "$TC -d filter show dev $DUMMY ingress",
-+        "matchPattern": "fh 800::",
-+        "matchCount": "4095",
-+        "teardown": [
-+            "$TC qdisc del dev $DUMMY clsact"
-+        ]
-     }
- ]
--- 
-2.43.0
+Thanks for pointing this out. I agree that -ENOMEM is misleading here.
+I'll address this separately.
 
+Best regards,
+Phuc
