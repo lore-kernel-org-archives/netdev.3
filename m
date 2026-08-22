@@ -1,153 +1,122 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3933E3803E1;
-	Sat, 22 Aug 2026 21:49:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787435371; cv=none; b=HAQxwAaADjqhn0lAN7x+L/a5ThU+bUzUc6YS4gNVW6f7E9z5wrkgI9phc6oMi6a8pgw2ov8ka8Eu1iG72mtxTMeZcAy5oZyOcYfUgl6splg3Kb1n7+qxPZlyn4uBjoGcfguQxvoRrHH84dl+7kMEKGm1ys68rh5WZfoMBouacyo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787435371; c=relaxed/simple;
-	bh=YTQ1dMOh1s6r91T8gw3jxSG0d41Rqt/ku+IQVi/q7l0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d7DDxXgxZ8yEkrwNk2gTST6/uWrq5FmqTBY+O+gOsejhOTT2hYMeXyeDRLQmuxx3bbdL/QHUXRAF4JI2hsElgghgbUcjmBU9OsDz2CE+XXqyxZAZojM6b84vgz0mrZfUv4LFZDN00Z70x4RSf7Y57h7z2o+6CqpGtaF2ty+Ud7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=fMEvHcPl; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE0F380FCC
+	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 22:15:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787436903; cv=pass; b=oCTzKHEstlFPTCsUzDpzHvu3tm9fut/m37Ij+R4F8zUITKAVzIcrR6v4Zo83eFtoJZ6X+z9VW5zDYJQ5PdFLz2I7c1SXMNiZizWMBd3SH87cDHq7uG9oeNNPkATTsmIVy0BFcllyVhnKguO+ZPLDxczjaz1HU3Hiakl9wS3W9eQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787436903; c=relaxed/simple;
+	bh=PIQiv4rYFC/YQmUvgpMaekv5c+4Q/IQ4ibbjWN0O0uI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CG1XUN3kPltMJ3qb6O1LLwUr4bsxLr+/iF9BdCCcEtIlUBzdb7Rp4uGPRCwF8+5F4dyQKkOtKOyf9eigNz5KlYcllXR6gfudooSmi54a6hUH3CQKOa9xGVifSxFP+Kmohred0+SyuOfDSO05oBNSLUvH33eE5sSzDaAHhwV6oSw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=ekdYeghC; arc=pass smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="fMEvHcPl"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=80UgMBvAIwndVclpnLX2WADk5OqrVIX0GJw2yYQPwPI=; b=fMEvHcPl1fB/pyc/wz6XfFlyuo
-	YB2BX60p4m0zDlEwcYJWZLx5v+B0V1H4JPS0LY0DqPRQ42O+0RGCqrEzGgrrjN4XTJiSOjfHvtBjW
-	TCgDM5G5EXtjOkMoT4KOC10bcXfeNoSdrUJdHGSMTVUuwZWD2L+2KTlcOFWaDuRi59Pk=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wxtaC-0014WS-S9; Sat, 22 Aug 2026 23:48:56 +0200
-Date: Sat, 22 Aug 2026 23:48:56 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Aleksei Sviridkin <f@lex.la>
-Cc: "Chester A . Unal" <chester.a.unal@arinc9.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Vladimir Oltean <olteanv@gmail.com>, Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
-	Qingfang Deng <dqfext@gmail.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net 1/2] net: dsa: mt7530: populate lpi_interfaces to fix
- EEE support
-Message-ID: <c501d5f8-015c-4ce1-87ee-c4cdaea57f7e@lunn.ch>
-References: <20260822195252.2934-1-f@lex.la>
- <20260822195252.2934-2-f@lex.la>
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="ekdYeghC"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-848743155bcso760807b3a.0
+        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 15:15:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787436901; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZQV8vwRHgx0aUFIiJTpSRL1hTJJsgZqxxKMNcH52qV7yhf6EZSdNQBjKP0ZeS3w4MM
+         0Mp9SalvR8PMWuOZNKrq1SBLEgPS+0zZ8eJC/8RhKk/7UgZwbADCBzRYj63kZaMje2JS
+         hAefgKyLmHG0YlcN1eqH8FKHHCEJVNOYqGMPAF/RIyakoRYoCgm3aQqbRnAGbM8YzYhO
+         LV59tfQSVYgQDO/oa8WTTSNCikRpNS+hTMuSkm0MI18z4UN4HftjKTuzgl9EUIkI+8u4
+         qJJHWYoRVOYbdOcufyrFt5Tmzc+7VHoZwviAJOAUbg6c5I05VldnyJGfh/+aTlZoxTXw
+         w5sg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9zdfLpdOOImhuOxfbPERCPpDH67KNJb3cbtZdAHIvCQ=;
+        fh=4N5FssHd/Gfyz1e29NYp9PS4UyorIoqzPqGhCOG7doY=;
+        b=NMrma16vCwqkdULZlf+hGBRFTg67dCnaJz/32Exo7jjMjGz7ATxQoTs92RG6Q7IXT3
+         rmHvwG8p+8zYolZQ8vJOloSSnGx63AKlJb1R+WryRhq2IemeQX8jjicUrvx6dqE36/aV
+         gcNjFDbXB+rT63IHDQTJB9SqhXNuT4emdS8NgJ10UqXsXR8+pyx4a2hMHdvwBKDC8eKa
+         FiHqe+dLJe2q7ariIRutAURS3g7/Tz4b4952qk99ZuceIdaDR0K88O7OZCpOLg9/wPhp
+         rh5Vt7AGR/65rVYT4ssDnSe9UsA7ojgl7UjYWBDcvEaOOIxCt8pe3iMh3DdUpYt0NxmX
+         vDIQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1787436901; x=1788041701; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=9zdfLpdOOImhuOxfbPERCPpDH67KNJb3cbtZdAHIvCQ=;
+        b=ekdYeghCRG60najTT/WFTNvsvOyPhbhYg7SBvrZOZChhs8T4+NmNjp/uO5UVqDSev8
+         M9hLFK1suweoo87rB3uqqDpiC22pm3PCTexPtaLVQBTwPbgzq4S8142cFf2lfzXZB6+N
+         jQVzGksbN+rd8GaZ06aqjGhpRvnop91ItnXLk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787436901; x=1788041701;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9zdfLpdOOImhuOxfbPERCPpDH67KNJb3cbtZdAHIvCQ=;
+        b=Eb0K0JOEcMgfeC6WxTjUU2CCSuoSTRwtW0GeGgSIaK2MjNnxITmAgRI4tPL6yCyTT5
+         kONJdFa5XG55DP1458lNacXNFFi6dnXA0unQw5oClnBrvdIg8JIxXD071FcpcJPouIJk
+         ewTqmq6hJ3dG5H8p8XSty837qLo4jhUgGtuUzvn68gnn9ExDu2i/Vm/RHG917GVr2Av2
+         YUBM6WfdyYABndCUU+TR+WGC5WVTGAIEaqVUAmZisMUk0vSc4f5INxrWuqbV1xyW11h7
+         001pMhJu3gaKqvA7VvIG0VqnYuskGvnnnqoDb6wLLFkWs27Qv2ooo3fRxp3Aqbc/c96h
+         sEmA==
+X-Gm-Message-State: AFuF++m0fEUJsPObS4mHrdZd1Kl00oP9F8eGluGL5U6zsqekUO3G49ar
+	j0qMEUe7PnUCAHMf9iDeR7++qZ+eMKdv/V2sJSq9TMUN+vwFVNIeUqF+OAcx0vXnKeKERQJf5wm
+	zPgOFZqZDYSIia8QhUkpQM2hhxy6yutPeGOBRW2+M
+X-Gm-Gg: AR+sD11F8tB/Dpvz8khjismCcsZb7f8HBJ36io7VeeXjtH14FoYIfnyAu0vicp9BcHT
+	tiH+i2DUMPAcOPoIDZMTtf3WAALZ84Mwc7joXdpAMEZfsP6uFrjgLzBKhoL4TzV21hAuvclfdww
+	n+r54b3Matu0BwHRN8lLx1SENjIYsQf2l8cDGTzNVPIO/7F24ZhxK2KKcnFhlJJQ0f0JY2BdQKq
+	++LIiob27dtNwS2+wIDVvVIc0CE2rGfl06F5QAtDYKUL9RWPM9vUsWo9Xj6lDs/sR95Zy/QbqA+
+	4uAoH7YWObpVdR2/EpOxh8VU1d/8A8gJHADscdMCF6E=
+X-Received: by 2002:a05:6a00:1821:b0:84e:4d6:78fe with SMTP id
+ d2e1a72fcca58-851f972a7f7mr26325133b3a.3.1787436900774; Sat, 22 Aug 2026
+ 15:15:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260822195252.2934-2-f@lex.la>
+References: <20260820095742.68511-1-jhs@mojatatu.com> <20260822134401.6545e4eb@kernel.org>
+In-Reply-To: <20260822134401.6545e4eb@kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Sat, 22 Aug 2026 18:14:49 -0400
+X-Gm-Features: AcwNN1UuQdiXBVyJm1U15TKSxMfOSROL1QtdvrNqRuFh2b8BQchTMpRF_8rs8n0
+Message-ID: <CAM0EoMnLnc2dtzRyaJs+V6Niq=39OQ=p-XC7M+FMTQ0ctSvmyw@mail.gmail.com>
+Subject: Re: [PATCH net 1/2] net/sched: pfifo_fast: cap ring size and account
+ to memcg
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, stable@vger.kernel.org, vega@nebusec.ai, 
+	Victor Nogueira <victor@mojatatu.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Aug 22, 2026 at 10:52:51PM +0300, Aleksei Sviridkin wrote:
-> mt753x_phylink_get_caps() fills in config->lpi_capabilities and
-> config->lpi_timer_default, but never populates config->lpi_interfaces.
-> phylink only treats a MAC as supporting phylink managed EEE when the
-> tx_lpi methods are implemented and both the LPI capabilities and the
-> LPI interfaces are non-empty, so EEE is unavailable on every port:
-> 
->   # ethtool --show-eee lan1
->   Cannot get EEE settings: Not supported
-> 
-> even though the driver implements mac_enable_tx_lpi() and
-> mac_disable_tx_lpi() and reads the LPI threshold back out of PMEEECR.
-> Since the tx_lpi methods are implemented, phylink takes the other
-> branch and calls phy_disable_eee(), which fills eee_disabled_modes, so
-> userspace cannot enable EEE either.
-> 
-> Only the first half of what commit 06dfcd4098cf ("net: dsa: mt7530: fix
-> enabling EEE on MT7531 switch on all boards") arranged therefore
-> survives. It left EEE off out of the box on purpose, by having
-> mt7531_setup() clear the switch PHYs' EEE advertisement, and ended
-> "With this change, EEE can now be enabled using ethtool". It cannot be,
-> any more.
-> 
-> Copy the supported interfaces into lpi_interfaces. This requires moving
-> the mac_port_get_caps() call ahead of the EEE block, since that is what
-> populates supported_interfaces - copying it beforehand would copy an
-> empty bitmap.
-> 
-> LPI stays off by default. The driver does not set eee_enabled_default,
-> so phylink leaves tx_lpi_enabled false, and phy_check_link_status()
-> computes enable_tx_lpi as tx_lpi_enabled && eee_active - nothing
-> asserts LPI until userspace enables it with ethtool --set-eee. The EEE
-> advertisement is the part that does change: phylink no longer takes the
-> phy_disable_eee() branch, so a PHY that advertises EEE out of reset
-> advertises it again and the link may negotiate EEE. MT7531's five
-> internal PHYs are the exception, as mt7531_setup() zeroes
-> MDIO_AN_EEE_ADV before the switch MDIO bus is registered, so
-> phy_probe() reads an empty advertisement and records eee_cfg.eee_enabled
-> as false. Nothing does that for an external PHY on port 5 or 6, or on
-> the other mt753x variants, EN7528 aside - see below.
-> 
-> This also makes lpi_capabilities take effect for the first time, so
-> correct its value in the same change. PMCR only has force bits for
-> 100 Mbps (PMCR_FORCE_EEE100) and 1 Gbps (PMCR_FORCE_EEE1G), and PMSR
-> only reports EEE state for those two speeds, so the MAC cannot signal
-> LPI at 2.5 Gbps: drop MAC_2500FD. Absence from the header is weak
-> evidence on its own, so for what it is worth, the Airoha AN8855 DSA
-> driver - posted but not merged [1] - describes a PMCR of the same shape
-> that does carry AN8855_PMCR_FORCE_EEE2P5G and AN8855_PMCR_FORCE_EEE5G
-> next to the 1 Gbps and 100 Mbps bits. Correcting the value here rather
-> than in a separate patch changes nothing observable: while
-> lpi_interfaces was empty, lpi_capabilities never reached
-> phy->advertising_eee, so no state ever claimed 2.5 Gbps LPI.
-> 
-> 2500BASE-X has to come out of lpi_interfaces as well, because
-> lpi_capabilities cannot express it: it masks the PHY's EEE
-> advertisement, a media side property, and never gates LPI activation on
-> the MAC side speed. phylink raises the MAC speed to the interface
-> maximum when the PHY rate matches (RATE_MATCH_PAUSE in
-> phylink_link_up()), so a 1 Gbps media link behind a rate matching 2.5G
-> PHY would otherwise arm LPI while the MAC runs at 2.5 Gbps. What that
-> costs is limited to setups that keep the MAC on 2500BASE-X, where there
-> are no LPI bits to use anyway; a PHY that switches the interface down
-> to SGMII or 1000BASE-X keeps LPI, as those stay in the mask.
-> 
-> For the same reason, skip ports that support neither 100 Mbps nor
-> 1 Gbps: on MT7988, EN7581 and AN7583, port 6 is 10 Gbps only, and it
-> shares PHY_INTERFACE_MODE_INTERNAL with the 1 Gbps user ports, so the
-> interface mask alone cannot tell them apart.
-> 
-> EEE remains unavailable on EN7528, whose GPHYs do not negotiate it
-> reliably. Both LPI bitmaps stay empty there, so phylink keeps taking
-> the phy_disable_eee() branch and its advertisement stays off.
+On Sat, Aug 22, 2026 at 4:44=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> On Thu, 20 Aug 2026 05:57:41 -0400 Jamal Hadi Salim wrote:
+> > +     if (qlen > 65535) {
+> > +             pr_warn_ratelimited("pfifo_fast: capping ring size %u to =
+65535 for dev %s\n",
+> > +                                 qlen, qdisc_dev(qdisc)->name);
+> > +             qlen =3D 65535;
+> > +     }
+>
+> Why not a hard cap?
 
-This is very verbose. Is it AI generated? Please revise it and make it
-suitable for a human. The important part of the commit message is
-"Why?", since "What?" can be answered by reading the code.
+sorry, where to put the hard cap and what would it be?
+Or maybe you misspoke and intended to say "why put a hardcap"?
 
-> - mt753x_phylink_mac_enable_tx_lpi() sets the PMCR force-EEE bits
->   without checking the resolved speed or interface, relying entirely on
->   phylink never calling it above 1 Gbps. A check there would make the
->   driver robust independently of lpi_interfaces being right;
->   deliberately not bundled into a fix.
+Or maybe in this case probably safer to just reject the change if > hard ca=
+p?
 
-It is normal to assume phylink is correct. Now, if you do find it
-doing the wrong thing, we want to know so we can fix it. So if you do
-want to validate it here, make it very noisy if the validation fails.
+cheers,
+jamal
 
-	
-    Andrew
-
----
-pw-bot: cr
+> We do that all over the place, once in a release we
+> pick a value too small and someone quickly sends us a fix up to bump
+> the number. No problem.
