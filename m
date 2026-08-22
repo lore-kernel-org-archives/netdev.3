@@ -1,179 +1,226 @@
-Received: from mail-oi1-f205.google.com (mail-oi1-f205.google.com [209.85.167.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD1413B5B3
-	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 00:10:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD9F78F3A
+	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 00:14:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787357432; cv=none; b=JjJDr/cyQxLKN91H2Y1jWfnMQwdEFyIP3aytXUS5x4WyZk4ss16GpNj75k/ZMMpmVhFe6Mx9ggnv1KT5pFUnwHH6pJKuXiekR3uYvQIkX8OKCF2zxRPPJ+FPPBwmFGEAHW2eoQETq4fzBwp18gipsxNagBYgZiUaKDhZKH3pSOM=
+	t=1787357699; cv=none; b=Y5ABGVPTvgmhpM/xQQbkAEuf7d2evfsN/VhCMBCfP3t9T/wZ22SQCYOCcdTESBLbM2QB8/J+6tpuNfo5JxxYi4q0t0uqw2J+6B9avTnlMfXYJl6VwTrWkgt919KB0K3OX7XHhZ4kS/vmGF28ub4I+mb12QZdqL4idek5ajrz0k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787357432; c=relaxed/simple;
-	bh=XAwwFxuRPmGpR9OgpYBfNCYENrXvwtp+pz8WfKq9zlA=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=k2z0xUQJRAmcun5amCRBZBCvNEn4rNftyRjlc62o+daCNR6rKmhR6I8L4NDithp3jLHviZeJvbCLKzALz6mlDMHqEjaaTZOgHj5uupqFkIoExQ3jkTvEtkCzvksxy6fqlydglmdBTR6OLmhBo7vqaOiU2xSuGyS1DmzkEuf+31M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f205.google.com with SMTP id 5614622812f47-4a45b3f0bdfso2856047b6e.1
-        for <netdev@vger.kernel.org>; Fri, 21 Aug 2026 17:10:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787357429; x=1787962229;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=c1hS2S/aDqJKduIpkYajditUXY7vqt9gPb/Kq0P9YPg=;
-        b=WpZWG3C0Me3WaW87HH5icNB0cE9IAtS8gmUQktQWkOk0Vq9iRRdrBYVHKEaDBOIFs8
-         UBOZZXG7k4dEc4klL5ly6b4YJCT4TmQtO8mkpFCiMICQTV5wBMsvgloYSEjbCN8AZqm5
-         iCaaOGr4XO1kp4Do9golXYTrDq69p3UlSPQTAJNnCdnkXCCmT70eOz7JNv5lde/P7Le1
-         FL4/bSEGhlYAxUdgA6c6cs6taV9ppiawt4fW14kkRNPPiDVhC3zNdLEWEO3sGXxQMy7l
-         s7KJ6f8O7qnvRfp52EiomFHR+CdaOFR+4xiHnEJUcqiooprQtC8ob3vpXlxjTrgY3Af/
-         xwjA==
-X-Forwarded-Encrypted: i=1; AHgh+RqVZZqRaK90YqQUO7f6bK61h3A4ns72UoOW9usa6WiTK90LEX1VKTHS+vQwk1RaSLWOKYwmTbY=@vger.kernel.org
-X-Gm-Message-State: AFuF++neb6CldOcS2i2vXf5br4ldI7i/RUh8Cks+TC1YSUXCVWFoqsXV
-	cYzSTIw0Rcrn/5+giYIxnYBiySyrzhWphLquCG2qwpJQy4Nm1xrkNit7Y/j0LaIQmHsCsitsrw9
-	y6IX1AK9lTFJRCEWzKsPMVXTuTmXpx36Wxd8HMdM6D4nbU/rGhgDxh0i58tw=
+	s=arc-20240116; t=1787357699; c=relaxed/simple;
+	bh=kYD3iI89NTE2YUXGl8/06/Xw9GgwasM6OadX6ns7lg4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Gu6OUpXJhFUTjgN3QHDtCHJyD0dcC+nVtieb/KRhgXTIqNUYxV13/ioyilnz/0IIh6d6MlbEgYvbXinEzx8YkZ90MibZqzVnCXxqZK8n75esO9JF7uzUctfaKjjXI2GwdYSeERZKYnObqF1RR8zZXHMqonafLfDF0eEoHjFoR04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bDCviVmJ; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bDCviVmJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787357697; x=1818893697;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=kYD3iI89NTE2YUXGl8/06/Xw9GgwasM6OadX6ns7lg4=;
+  b=bDCviVmJghyicufH7BpGreDedOGwca6MkBNOogAZfnHZnCr8j0qBeAgu
+   LkXOM50gRR9h4+NfkOuX3AuJp/jw3Gh3SSCiHxQZrWv+A79cX6SIK6s0x
+   9ShKy3ULf2JWy8ac+0zX9RZpfTAci738JJJOdFvcogRCazHqjhS5kWTrF
+   qa10xPLrrljlzBqNbcWfJezEYCBY2bRk2qD0V9ZF6xa/1IkiDSTm5nwiM
+   rbFkC4hALk7cryCQabk7yA2DLXkDvGO/OIe0AAKOVSQAXWaPpbgR+X8Zp
+   o1BO8jY0tBsL0/vL1D8nW3w2n5/DbF5ewwySxXytWt6fKcpr9/WNqQ17x
+   w==;
+X-CSE-ConnectionGUID: L8PQKb3VTAG6C6LzvJUTLg==
+X-CSE-MsgGUID: KJKyXO/CRbaE19l9bwvaoA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11882"; a="91584749"
+X-IronPort-AV: E=Sophos;i="6.25,236,1779174000"; 
+   d="scan'208";a="91584749"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 17:14:56 -0700
+X-CSE-ConnectionGUID: z92HXSDLSB2aFsDcDaH9Uw==
+X-CSE-MsgGUID: /zxDoQi2QEOvFbfdF+K/ag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,236,1779174000"; 
+   d="scan'208";a="263836454"
+Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 17:14:56 -0700
+From: Jacob Keller <jacob.e.keller@intel.com>
+Subject: [PATCH iwl-net 00/12] ice: E82x: timestamp processing logic fixes
+Date: Fri, 21 Aug 2026 17:13:05 -0700
+Message-Id: <20260821-jk-e825c-minimized-fixes-v1-0-9d0731eb4858@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:5142:b0:4b2:8da1:3be4 with SMTP id
- 5614622812f47-4b2ef25eb99mr11944086b6e.9.1787357429238; Fri, 21 Aug 2026
- 17:10:29 -0700 (PDT)
-Date: Fri, 21 Aug 2026 17:10:29 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a88e8f5.91706f20.16b6e3.02ab.GAE@google.com>
-Subject: [syzbot] [block?] INFO: rcu detected stall in blkdev_common_ioctl (4)
-From: syzbot <syzbot+9d041b75d7063b71360d@syzkaller.appspotmail.com>
-To: axboe@kernel.dk, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMwQ6CMBAFf4Xs2U1ok2rxV4wHbJ+6KNV0QYiEf
+ 7fqcTKZWUiRBUr7aqGMl6g8UgGzqShc23QBSyxMtrbb2puGuxvDWxe4lyS9vBH5LDOUvXNNGyO
+ C2Vkq+TPjJ0p9IJnunDDQ8S90PHUIw3dM6/oB9lkKhYUAAAA=
+X-Change-ID: 20260819-jk-e825c-minimized-fixes-8559addec172
+To: Intel Wired LAN <intel-wired-lan@lists.osuosl.org>
+Cc: netdev@vger.kernel.org, 
+ Maciej Machnikowski <maciej.machnikowski@intel.com>, 
+ Anthony Nguyen <anthony.l.nguyen@intel.com>, 
+ Przemyslaw Korba <przemyslaw.korba@intel.com>, 
+ Grzegorz Nitka <grzegorz.nitka@intel.com>, Petr Oros <poros@redhat.com>, 
+ alexander.nowlin@intel.com, kevin.bross@intel.com, ranjit.cavatur@intel.com, 
+ Jacob Keller <jacob.e.keller@intel.com>, 
+ Maciek Machnikowski <maciej.machnikowski@intel.com>, 
+ Karol Kolacinski <karol.kolacinski@intel.com>, 
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, 
+ Przemyslaw Korba <przemyslaw.korba@intel.com>
+X-Mailer: b4 0.17-dev-75809
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7603;
+ i=jacob.e.keller@intel.com; h=from:subject:message-id;
+ bh=kYD3iI89NTE2YUXGl8/06/Xw9GgwasM6OadX6ns7lg4=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhqyOlzdlLbY694gx+ut26CvOdHgmFJ/HMd2s5cASe/X81
+ exufFc7SlkYxLgYZMUUWRQcQlZeN54QpvXGWQ5mDisTyBAGLk4BmMhLb0aGLQf7Ls1lfX+S6wmr
+ SL/Bsa6bc48fPD/3jaz5pJfPhHW7shkZmic/rPyRd2vDy8mpHXXZf6/kzxV0+v7n3sdXh/3ENlX
+ 5cwAA
+X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
+ fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-Hello,
+This series contains several related fixes for the ice driver PTP logic
+relating to timestamp handling and device (re)initialization.
 
-syzbot found the following issue on:
+Of particular note is some changes around the handling of timestamps that
+are requested near device state changes such as administrative up/down
+cycles and link change events.
 
-HEAD commit:    24ef02f934ee net: page_pool: fix UAF in __page_pool_releas..
-git tree:       net
-console output: https://syzkaller.appspot.com/x/log.txt?x=108b3a79580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=2ca5f2f2c4197664
-dashboard link: https://syzkaller.appspot.com/bug?extid=9d041b75d7063b71360d
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=149dd69e580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17063949580000
+The E825 device logic in the PHY has an internal counter which is used as
+part of the "threshold" logic which determines when the device will trigger
+an interrupt signal from a given PHY port to the MAC. This internal counter
+requires some precise handling to ensure that the internal device state
+remains in sync with software expectations. Otherwise, the device can be
+finagled into a state where the PHY stops producing new timestamp interrupt
+notifications to the MAC indefinitely. This in turn degrades the timestamp
+processing latency and results in application failures for common
+timestamping applications such as ptp4l.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/7a991674b71f/disk-24ef02f9.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/67041713f1b8/vmlinux-24ef02f9.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/670139f0d1da/bzImage-24ef02f9.xz
+There are four major categories of problem resolved by this series:
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+9d041b75d7063b71360d@syzkaller.appspotmail.com
+ * Timestamp requests made while the PHY_REG_TX_OFFSET_READY bit is cleared
+   will increment the internal counter, but leave their valid bit set to 0.
+   Upon read, the counter is not decremented. This leads to a desync of the
+   counter and blocks the PHY interrupt.
 
-rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-rcu: 	1-...!: (1 GPs behind) idle=1e8c/1/0x4000000000000000 softirq=16934/16934 fqs=1
-rcu: 	(detected by 0, t=10505 jiffies, g=16269, q=1004 ncpus=2)
-Sending NMI from CPU 0 to CPUs 1:
-NMI backtrace for cpu 1
-CPU: 1 UID: 0 PID: 4979 Comm: udevd Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-RIP: 0010:check_region_inline mm/kasan/generic.c:185 [inline]
-RIP: 0010:kasan_check_range+0x20/0x2c0 mm/kasan/generic.c:200
-Code: 90 90 90 90 90 90 90 90 90 90 0f 1f 40 d6 55 41 57 41 56 41 55 41 54 53 b0 01 48 85 f6 0f 84 ae 01 00 00 4c 8d 04 37 49 39 f8 <0f> 82 36 02 00 00 49 b9 00 00 00 00 00 80 ff ff eb 0d cc cc cc 49
-RSP: 0018:ffffc90000a08d00 EFLAGS: 00000002
-RAX: 1ffff1100ef95601 RBX: 0000000000000010 RCX: ffffffff8bce3acf
-RDX: 0000000000000001 RSI: 0000000000000010 RDI: ffff888077cab308
-RBP: 0000000000000000 R08: ffff888077cab318 R09: 1ffffffff20af1e6
-R10: dffffc0000000000 R11: fffffbfff20af1e7 R12: 1ffff110170e5060
-R13: ffff888077cab300 R14: ffff888077cab308 R15: ffff8880b8728358
-FS:  00007feea5050880(0000) GS:ffff888125049000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055558c1f44e8 CR3: 000000007e048000 CR4: 00000000003526f0
-Call Trace:
- <IRQ>
- __asan_memset+0x22/0x50 mm/kasan/shadow.c:84
- rb_link_node include/linux/rbtree.h:96 [inline]
- __rb_add include/linux/rbtree.h:238 [inline]
- rb_add_linked include/linux/rbtree.h:281 [inline]
- timerqueue_linked_add+0x23f/0x2e0 lib/timerqueue.c:96
- enqueue_hrtimer+0x18e/0x2c0 kernel/time/hrtimer.c:1117
- __run_hrtimer kernel/time/hrtimer.c:2048 [inline]
- __hrtimer_run_queues+0x4ce/0xa10 kernel/time/hrtimer.c:2096
- hrtimer_interrupt+0x448/0x910 kernel/time/hrtimer.c:2215
- local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1051 [inline]
- __sysvec_apic_timer_interrupt+0x102/0x430 arch/x86/kernel/apic/apic.c:1068
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062 [inline]
- sysvec_apic_timer_interrupt+0xa1/0xc0 arch/x86/kernel/apic/apic.c:1062
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:674
-RIP: 0010:blkdev_common_ioctl+0x1cb1/0x3250 block/ioctl.c:712
-Code: 8b 7c 24 10 66 c7 47 0c f8 f8 e9 0e f8 ff ff e8 15 c3 10 fd 41 bc ff ff ff ff 48 8b 7c 24 10 66 c7 47 10 f8 f8 e9 f3 f7 ff ff <e8> fa c2 10 fd 48 8b 5c 24 18 48 83 c3 10 48 89 d8 48 c1 e8 03 42
-RSP: 0018:ffffc9000202fac0 EFLAGS: 00000246
-RAX: ffffffff84b62dc6 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: ffff88807f680000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffffc9000202fdf0 R08: ffff8880238950b3 R09: 1ffff11004712a16
-R10: dffffc0000000000 R11: ffffed1004712a17 R12: 0000000000000009
-R13: dffffc0000000000 R14: ffff8880238950b0 R15: fffff52000405f60
- blkdev_ioctl+0x528/0x740 block/ioctl.c:791
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7feea491d378
-Code: 00 00 48 8d 44 24 08 48 89 54 24 e0 48 89 44 24 c0 48 8d 44 24 d0 48 89 44 24 c8 b8 10 00 00 00 c7 44 24 b8 10 00 00 00 0f 05 <89> c2 3d 00 f0 ff ff 77 07 89 d0 c3 0f 1f 40 00 48 8b 15 49 3a 0d
-RSP: 002b:00007ffcb96a5f68 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 000055a9cc3c2180 RCX: 00007feea491d378
-RDX: 0000000000000000 RSI: 000000000000125f RDI: 000000000000000c
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 000000000000000c
-R13: 000055a9ade72100 R14: 0000000000000000 R15: 00007ffcb96a6160
- </TASK>
-rcu: rcu_preempt kthread timer wakeup didn't happen for 10499 jiffies! g16269 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402
-rcu: 	Possible timer handling issue on cpu=1 timer-softirq=3345
-rcu: rcu_preempt kthread starved for 10500 jiffies! g16269 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402 ->cpu=1
-rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
-rcu: RCU grace-period kthread stack dump:
-task:rcu_preempt     state:I stack:27496 pid:16    tgid:16    ppid:2      task_flags:0x208040 flags:0x00080000
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5510 [inline]
- __schedule+0x17d9/0x56c0 kernel/sched/core.c:7234
- __schedule_loop kernel/sched/core.c:7311 [inline]
- schedule+0x164/0x2b0 kernel/sched/core.c:7326
- schedule_timeout+0x152/0x2c0 kernel/time/sleep_timeout.c:99
- rcu_gp_fqs_loop+0x30c/0x11f0 kernel/rcu/tree.c:2123
- rcu_gp_kthread+0x9e/0x2b0 kernel/rcu/tree.c:2325
- kthread+0x388/0x470 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
+ * Software logic for tracking timestamps incorrectly cleared in-use bits
+   without waiting for completion in certain cases. If the timestamp *does*
+   later complete, it leaves an "orphaned" ready bit which is not
+   tracked by software. This results in the internal counter becoming
+   desynced if that index is re-used.
 
+ * The PHY timestamp memory region lacks pull-down zero-initialization at
+   power on, resulting in uninitialized random data in the memory region.
+   If software reads these values, an entry with its valid bit set to 1 can
+   trigger a counter decrement and cause an underflow which results in the
+   counter becoming desynced.
 
+ * Timestamp request which complete near the beginning of the PHY losing
+   link can become "stuck" such that the hardware logic triggered by a
+   timestamp read does not activate. The memory status bit and the valid
+   bit in the the timestamp index are not cleared. This window where this
+   may occur begins *before* the firmware notifies the driver of link loss.
+   When this occurs, the driver may accidentally re-use a stale timestamp,
+   and the IRQ re-trigger logic triggers a repeated IRQ "storm" that can
+   consume significant excess CPU time.
+
+The series' primary focus is towards preventing driver flows that can
+trigger the above sequences. It is based on work from Przemyslaw Korba which
+was previously posted at [1]. During that series development, Petr from
+RedHat reported the 3rd issue mentioned above. While attempting to root
+cause that issue, several other issues were uncovered and those fixes have
+also been included in this series.
+
+First, the locking around the PTP ports list in the adapter structure is
+converted to use RCU primitives and a spinlock, resolving a couple of
+reports from Petr about places where the original list was accessed without
+lock protection. Note that an older version of this fix used an xarray
+instead of the list. The xarray has more overhead and results in an
+increase of ~25 microseconds to the average latency for processing Tx
+timestamps. The list is simpler and avoids this overhead.
+
+Next, come two fixes for E822 hardware that were originally posted as part
+of Przemyslaw Korba's work [1]. The E822-only "vernier" offset validation
+work task is properly canceled during device reset, and new timestamp
+requests are kept disabled until the validation task completes.
+
+Next, Arkadiusz modifies the driver to stop pretending that the link has
+gone down during ice_down(). This removes "virtual" PTP link changes that
+occurred on several flows including MTU change, Eswitch setup, and others.
+Now, the driver only triggers a PTP PHY timer reinitialization when the
+physical PHY link has changed instead of during many other actions.
+
+Next, the driver is modified to stop clearing the PHY_REG_TX_OFFSET_READY
+bit. This bits only purpose is to tell hardware to mark any captured
+timestamps as invalid. Since this also disables the necessary side effects
+on read it is problematic to have cleared. According to hardware engineers,
+keeping it enabled should not have any other side effects.
+
+Next, the driver is modified to clear the PHY_REG_TX_MEMORY_STATUS by
+reading each index *prior* to the PHY soft reset. This ensures that any
+stale or invalid data left in the memory array is cleared, followed by the
+counter being reset via the PHY soft reset procedure.
+
+Next, the E825 timer start procedure is modified to first include a soft
+reset. This ensures that upon link up the device is reconfigured from a
+known-good state with its internal counter reset and everything cleared.
+
+Next, Petr modifies the ice_ptp_flush_tx_tracker() function to wait a little
+bit for any outstanding timestamps before flushing.
+
+Next, Petr modifies the ice_ptp_process_tx_tstamp() function to avoid
+releasing any index from software unless either a) it is actually completed
+by hardware or b) it is timed out waiting for a full two seconds. This
+closes the final gap from the second issue mentioned above. Instead of
+immediately releasing the index, the software now waits until hardware has
+completed it or the driver has waited long enough to be sufficiently sure
+that no such timestamp will be done.
+
+Next, the driver is modified to no longer mark timestamps as "stale" during
+a clock adjust event. This avoids marking timestamps as stale unnecessarily.
+
+Finally, the ice_ptp_process_tx_tstamp() function is modified to verify
+that hardware actually cleared the ready bitmap. This ensures that we do
+not report false timestamps near a link down event.
+
+Link: [1] https://lore.kernel.org/intel-wired-lan/20260720120151.2675206-1-przemyslaw.korba@intel.com/
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Arkadiusz Kubalewski (1):
+      ice: call PTP link change only from link events
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+Jacob Keller (7):
+      ice: use reference counting and RCU for PTP port access
+      ice: E825: stop clearing PHY_REG_TX_OFFSET_READY
+      ice: E825: clear PHY_REG_TX_MEMORY_STATUS prior to soft reset
+      ice: E825: perform a soft reset when starting the PHY timer
+      ice: remove unnecessary discarding of timestamps after clock adjust
+      ice: skip reading Tx ready bitmap on ports with no timestamps
+      ice: don't clear in_use until HW clears ready bitmap
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+Karol Kolacinski (2):
+      ice: E822: keep Tx timestamps disabled during offset calibration
+      ice: E822: cancel offset verification work during reset preparation
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+Petr Oros (2):
+      ice: wait for in-flight Tx timestamps before flushing the tracker
+      ice: keep Tx timestamp slots tracked until completion or timeout
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+ drivers/net/ethernet/intel/ice/ice_adapter.h |   6 +-
+ drivers/net/ethernet/intel/ice/ice_ptp.h     |  12 +-
+ drivers/net/ethernet/intel/ice/ice_adapter.c |   7 +-
+ drivers/net/ethernet/intel/ice/ice_main.c    |  13 +-
+ drivers/net/ethernet/intel/ice/ice_ptp.c     | 348 ++++++++++++++++++---------
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c  | 105 ++++----
+ 6 files changed, 318 insertions(+), 173 deletions(-)
+---
+base-commit: 564973a259ec76f2dad0853420e7034cc43994c4
+change-id: 20260819-jk-e825c-minimized-fixes-8559addec172
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+Best regards,
+--  
+Jacob Keller <jacob.e.keller@intel.com>
 
-If you want to undo deduplication, reply with:
-#syz undup
