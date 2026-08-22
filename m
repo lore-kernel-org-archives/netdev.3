@@ -1,212 +1,276 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051BD2AD37
-	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 18:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B925E349B0D
+	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 18:50:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787424439; cv=none; b=htK8PaEDb6zsXx64et53ebhfZR4TxSgxsILE+cJLPJITuI8XU4WFQbfLs5a8wPwaWN/6NAl1CGpMhp1uW3z0yISVgZG/G0shEvIu7G1600+1oPs0LoZwTCb5Tpfy7lgIL5YKKGl4MrWMEtrNVJleiWW2pV5Gb/FhW/tJlwXmMrc=
+	t=1787424659; cv=none; b=gHolrLWXkBwUbGcW69NIbZZtBhN68lL4miSH1vBbzMXa27JHUqytE5l9lvY3jUJvVpkKYTFK/5bIS8q2Vr6gSxavXt0zZ3KEQFnjsU4ReeRRw1t3C4Z2ZJ4NwcwfhVM9lJhsJI2fMQm3WPSiauVkzu0pegLUgSKfN9JGHRRh930=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787424439; c=relaxed/simple;
-	bh=5G43uPiVL/j+Dzwm9QTc44uc3K3VaXP56vy3ld8EoOE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=igyXz07yluaCuoDTfXptBrJ3Ruj/UHwtENCrxlqVdvponNW5iQldkLgwbMwKX1W9ZMo/h2DwMFwfZ4qNfjXgyF3vR9GmR1KZydHnZDH/PnBMRP6Qa0vM9e3A0y7vmXtBzKPHZm4Xtt93TOssy1P9uzoM5kVwdplyCdnKysEgpDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OfMgf1F+; arc=none smtp.client-ip=209.85.215.170
+	s=arc-20240116; t=1787424659; c=relaxed/simple;
+	bh=WWf9LUQcpHwHuf1f+4b+5zsctcktrraS70CsgdLxNi4=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=UBGcnlwd1QOAODRFjqho7KYBvUDIImJCAWya0VQoh7A/d8YVUV7lw9+IEWkuSlkh9zGpwgMBFFfe/Ex2vHCfEJShy1ykwEGRxCn4KSyeJCXPRD0oBdYr5mmHEVwF0NnnOZ0ss6T/Dyp/jJH9x9R4yLKoz/+lmG0cAYOPsZ4QO1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ah4QBeMh; arc=none smtp.client-ip=209.85.128.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OfMgf1F+"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c9d290216d0so186345a12.3
-        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 11:47:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ah4QBeMh"
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-81f3b227a4aso34352617b3.1
+        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 11:50:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787424437; x=1788029237; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=r6krEZZrAdPiGjprMWBKZfrQRUv9wjYiRrwTo40Vuek=;
-        b=OfMgf1F+Vxyq+yV3XHsyCTTLvHGVdO9N2BEk2bI0Cg/SdKLPaG1cxRuI2tqTWTvXCV
-         Y3SQRzlLUu12A0F8mGV2EFw0H+ibPj2q4JPDAS2u14w7PXHzRl2QXka2LO9uNYoq2fU0
-         nOEb8EJr7lC6PnsAdjhuE/7u/t03Da/tvvJlZD39+Ru/MGF9Znl9zGLVkL3jxyzCCc04
-         DkYV2YtMu6q2hlM9Nf4mKfnE9LN25anbFu2cAa4utOJ1Q66ou8LLvdWrilANCDtX2nKk
-         OajxTqC6tuo3QMfiPKKfvyhi7kiMxybM+FqZaTSzVZBA96ZmnXCrolRKh0KKLWjvrgQQ
-         C4wQ==
+        d=gmail.com; s=20251104; t=1787424655; x=1788029455; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=bBmCMXrHA99oVHH1jritYoFjKpO5jq3Zcr3ci9qCDJw=;
+        b=Ah4QBeMhHnRTZYYkMZPsp4aymd/p2Z/jfkZKRyLl9YucWcoLGRLKWgK4/qtR2BWFI5
+         tStkrSH1mou5kT++UQREsmaTP08d3o/AmJilXVP6yqlSXfgmWTajaZIxP18Z3xFehBOr
+         rGcecQEBRdSzZr/VwHDfF4hsQmkvtENEbLFvXwLrZr1+gjpii2XVHLs4tMBPxhRcV1fd
+         E8tTT7J5NUqKhfhEW8VH0sv0tvR9D3bXbrvVapwK6ZcjBFbKiyDVOAeMxcrhZTJxNyXC
+         LvL0V2MlcjljmPsiGMopdOI27Xsuo2gNZ0kyPg+4NrhxEbtQPSVhZDzNk+cijDKlhB7L
+         Q8Nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787424437; x=1788029237;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=r6krEZZrAdPiGjprMWBKZfrQRUv9wjYiRrwTo40Vuek=;
-        b=hSyr7T6jjQ6TykNnaGpIVB3vJZN5N9tY2etEJ0PDH7aUHBtJpnk19fs5U+O2bFE8O9
-         TsSIoQalppjjzm9kG+TCuHC5ETmb2OkiYmLzIFRiC1xmbH3Ff54u7ArUBZIvsCxMUfyp
-         +3PSqbooYsyFNJ//2nh0aYEWVL2PT7LFo1DuH1PpmLnDZsP5T6pl6kBgIAO2sVvuAJJL
-         6c8YveCRjtdhoBajd8nmi795D0iFktaEC6gNcFuUyc06bUen8KokC6+pmUgWx/O3aoOe
-         zc63bUWkvGImDKxHYJ74w+KBQJ7fcYo1f22sEvADozN4tsLmnGlQeyvO9nSL2HyDlSiB
-         PIoQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rrb/PwG2PHzwhwo+5QfTvA+HD1IksgNk5dcarW2AM7x/b5yGdH9EwD9/hCsFv2TcR1tn4+Gjvk=@vger.kernel.org
-X-Gm-Message-State: AFuF++kricm+fgm82s8Dz21gC1UBZJVvMrUXD4Ye7FIRB3kf0Kjdiqc/
-	V7fajsHGDwP8vsFPoYFihIMiOq5q2Ag7/wkGTYCMlIYyjyb106Pih5P+
-X-Gm-Gg: AR+sD13Abff6+sNo7VhqIuwHfIaDy0mj1SYIBgaHpSdb1TM3f4ytjAaYEQoI7eVS25V
-	wjeBVwXSnhyj0PRu1y45FJeCmBktKJbZveeABY5RqKX3yjbDoh7M5FdldziWrAgn2H/R3bSRJl1
-	fCHucPz+Jv1f9nP6P6744AxKem5pAJZPhW2t1juP5r7fD4Bfm1D7Y0IKLw5RT7elhi/j/NoQA8D
-	AAxj0YhsqcloTq6sE1hFYSyBjwlezpHHK9N3Ul21Uh/t5GY+cVo/aLVKOfGAe4OGjaD4w5nOsRy
-	iqt2QtxmPFS/qEH0Bi0nwNG5mUSMQVBDyBz7ooNN4j5xVajL4FXPaj8sFpoJzW1+7TBGcsS/bwJ
-	ai2cZ9iFfoZOyLWNLX1Bke/z3vMPARVTz1FgF0SIMyYhjjQ/gsWOS8hNyIv/O0K5Q9ANHkTm/R/
-	XyLRKkktGndLKIFb8zmAMMZoQ7Q/cUdMXno5oZqA6DXeQcZGQud7mSC9ig7bO39KLv9vBQMf3AO
-	fKeZuCnwfXX3dk0PeJlsXwCsbJHCwr/Cflu/cJ/nRzvdiaTx12PmHc=
-X-Received: by 2002:a17:902:fc4e:b0:2d3:aecd:51f7 with SMTP id d9443c01a7336-2d64ae3a7c7mr135100305ad.1.1787424437214;
-        Sat, 22 Aug 2026 11:47:17 -0700 (PDT)
-Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327f9209fafsm16623681eec.23.2026.08.22.11.47.13
+        d=1e100.net; s=20251104; t=1787424655; x=1788029455;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bBmCMXrHA99oVHH1jritYoFjKpO5jq3Zcr3ci9qCDJw=;
+        b=VugvvSKXnZnK1TTj90Spp+/+Bst0a9CgB62g1xeqIWVWIm9qQlMGwi3R0wgGiep8Ja
+         MnT5QfXniOpg6xLPvSJ6LbMfMcWEAx2E1XiWE8t4tA2BsmwscD6KUj7lyEsLiu43iwFf
+         rgFkBJcrc65rrSqrS6QiL/aQN4CCFCgMFp0MLRjvU1pskleFzAef/kBYfAxbzlo4hbSO
+         6bVMDtkCGp+HL1apunV2aPpCCNdHfYAetuAbGZHaGKlg31PlmpONSbp9/SfMQwuALRiv
+         5aFzZmRKWAodf+Ii/a3q4BF6SPK+LrKZAyo4wIlhCrvdB5wqnxuo8wBlQXNrCEU/F32l
+         pHlA==
+X-Forwarded-Encrypted: i=1; AHgh+RrWaSugvyrC8G/38vE4gn1NfKFxMPPQi+wpX7g1WCRLjpDbOiXGgpwxdSYhT95kCSpE4MPFmbo=@vger.kernel.org
+X-Gm-Message-State: AFuF++my0nhSZ6k1z+3YWImjzyOzM+DZfkkDQiogb469P3KM0dNmxWzA
+	+3MuoWvbDX2nW+LlN1Intt3bnH6gPG6G1a5NzGi7DuCdXYmWDVdFolTH
+X-Gm-Gg: AR+sD13NNDm/K9xOg+I2SD+iEwPyd9GLN08+xevlRtZyUotzYWqyyi2DqPTXUxaDvRk
+	fNY+CxYaIBEkQ/nj3vbfisKBmDyaqTyLAbYkN3yDQIkYEaqAJWFJ1BunZg6dW6dhb6JKTBcV3tV
+	Lr4ekf4qXq2YlosYT5X7pfs22es8SrFleCD2Xn0kOvjhmqu/qq4HhbkzF5AQeHoKjwEyrsmenZe
+	+B6cahLGWV+oBMXFCE/5JpVVm/NzTXG0YGI5oQyiQx4WO3HUt9Wl1sKWcyil1PPioijXBa5RwZR
+	xLLetoAK239TlXPAT+GShVBRWTluOuxWxVK0dJBq6nHRt0gh7Z4T7bvOjrAjLuTlQpfWNxLzT/b
+	22yRASKukozWFDjAC32GCo36FC0qrEJHBJzLbf0COCim4u54dfsQpcUnBDewAgXuh9XwPEo+pO8
+	RNpitNRiEJgxdY1h3N68o/tcCyE5HxpJn/hlmVNgErHxfQgl1lN4G0qaWzcgKfZbWW/ecbjr3Qf
+	PJm6uc2BSZYU9U16F37kWtSbdPiNVvExo2VO/AT/w==
+X-Received: by 2002:a05:690c:c626:b0:845:2054:2351 with SMTP id 00721157ae682-849f014841fmr42948367b3.6.1787424654987;
+        Sat, 22 Aug 2026 11:50:54 -0700 (PDT)
+Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-84c9fbfff73sm13956087b3.0.2026.08.22.11.50.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Aug 2026 11:47:16 -0700 (PDT)
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Gao feng <gaofeng@cn.fujitsu.com>
-Cc: netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chengfeng Ye <nicoyip.dev@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] netfilter: nf_log: clear per-net loggers on unregister
-Date: Sun, 23 Aug 2026 02:46:58 +0800
-Message-ID: <20260822184658.3787672-1-nicoyip.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Sat, 22 Aug 2026 11:50:54 -0700 (PDT)
+Date: Sat, 22 Aug 2026 14:50:53 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Alice Mikityanska <alice.kernel@fastmail.im>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ David Ahern <dsahern@kernel.org>, 
+ Ido Schimmel <idosch@nvidia.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>, 
+ Hannes Frederic Sowa <hannes@stressinduktion.org>, 
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+ netdev@vger.kernel.org, 
+ Alice Mikityanska <alice@isovalent.com>
+Message-ID: <willemdebruijn.kernel.351b61ea6fb41@gmail.com>
+In-Reply-To: <20260822115717.1161782-4-alice.kernel@fastmail.im>
+References: <20260822115717.1161782-1-alice.kernel@fastmail.im>
+ <20260822115717.1161782-4-alice.kernel@fastmail.im>
+Subject: Re: [PATCH net v3 3/4] selftests: net: Test UDP length overflow with
+ PMTU discover and big MTU
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Logger backends unregister their per-network namespace operations before
-unregistering their global logger. This leaves a window where a sysctl or
-netlink writer can rebind a per-net logger after the old per-net
-selection was cleared, but before the global logger registration is
-removed.
+Alice Mikityanska wrote:
+> From: Alice Mikityanska <alice@isovalent.com>
+> 
+> Two previous commits fixed overflow of UDP length when setsockopt
+> IP(V6)_MTU_DISCOVER is set to IPV6_PMTUDISC_DO or IP(V6)_PMTUDISC_PROBE,
+> and a large packet is sent over a netdev with an unusually large MTU.
+> 
+> This commit adds the selftests that replicate the described steps to
+> reproduce for IPv6 and IPv4, and also one more test that ensures that
+> sending UDP jumbograms over a raw socket is still possible after the
+> fix.
+> 
+> Signed-off-by: Alice Mikityanska <alice@isovalent.com>
+> ---
+>  tools/testing/selftests/net/Makefile         |   1 +
+>  tools/testing/selftests/net/cork_fragsize.py | 130 +++++++++++++++++++
+>  2 files changed, 131 insertions(+)
+>  create mode 100755 tools/testing/selftests/net/cork_fragsize.py
+> 
+> diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
+> index 0f5c178bc224..c6d332c90a54 100644
+> --- a/tools/testing/selftests/net/Makefile
+> +++ b/tools/testing/selftests/net/Makefile
+> @@ -25,6 +25,7 @@ TEST_PROGS := \
+>  	cmsg_so_mark.sh \
+>  	cmsg_so_priority.sh \
+>  	cmsg_time.sh \
+> +	cork_fragsize.py \
+>  	double_udp_encap.sh \
+>  	drop_monitor_tests.sh \
+>  	ecmp_rehash.sh \
+> diff --git a/tools/testing/selftests/net/cork_fragsize.py b/tools/testing/selftests/net/cork_fragsize.py
+> new file mode 100755
+> index 000000000000..d89ef9892329
+> --- /dev/null
+> +++ b/tools/testing/selftests/net/cork_fragsize.py
+> @@ -0,0 +1,130 @@
+> +#!/usr/bin/env python3
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +# Test possible UDP length overflow in udp_send_skb/udp_v6_send_skb.
+> +
+> +from lib.py import ksft_run, ksft_exit, ksft_true, KsftSkipEx
+> +from lib.py import ip, NetNS, NetNSEnter
+> +import errno
+> +import gzip
+> +import os
+> +import socket
+> +import struct
+> +import subprocess
 
-The race looks like this:
+Various pylint and ruff issues, such as ordering imports
 
-  CPU 0                                 CPU 1
-  ----                                  ----
-  unregister_pernet_subsys()
-    nf_log_unset(net, logger)
-      net->nf.nf_loggers[pf] = NULL
+> +
+> +
+> +IP_MTU_DISCOVER = 10
+> +IP_PMTUDISC_PROBE = 3
+> +IPV6_MTU_DISCOVER = 23
+> +IPV6_PMTUDISC_DO = 2
+> +IPV6_PMTUDISC_PROBE = 3
+> +IPV6_TLV_JUMBO = 194
+> +
+> +
+> +def check_kernel_config(option) -> bool | None:
+> +    for filename, method in [
+> +        ('/proc/config.gz', gzip.open),
+> +        (f'/boot/config-{os.uname().release}', open),
+> +    ]:
+> +        try:
+> +            with method(filename, 'rt') as config:
+> +                for line in config:
+> +                    if line.rstrip() == f'{option}=y':
+> +                        return True
+> +                return False
+> +        except OSError:
+> +            continue
+> +
+> +
+> +def assert_debug_kernel() -> None:
+> +    res = check_kernel_config('CONFIG_DEBUG_NET')
+> +    if res is None:
+> +        print("WARN: Can't read kernel config; assuming debug kernel, and running the test")
+> +    elif not res:
+> +        raise KsftSkipEx('CONFIG_DEBUG_NET is not set')
+> +
+> +
+> +def check_dmesg_clean(func) -> bool:
+> +    dmesg = subprocess.Popen(['dmesg'], stdout=subprocess.PIPE)
+> +    result = subprocess.run(['grep', '-q', f'WARNING:.*{func}'], stdin=dmesg.stdout)
+> +    dmesg.wait()
+> +    return result.returncode != 0 and dmesg.returncode == 0
+> +
+> +
+> +def ip_setup(ns: NetNS, mtu: int, ipv6: bool) -> None:
+> +    ip('link add dummy type dummy', ns=ns)
+> +    ip(f'link set dummy mtu {mtu}', ns=ns)
+> +    ip('link set dummy up', ns=ns)
+> +    flag = '-6' if ipv6 else ''
+> +    nodad = 'nodad' if ipv6 else ''
+> +    addr_local = 'fd00::1/64' if ipv6 else '10.0.0.1/24'
+> +    addr_remote = 'fd00::2' if ipv6 else '10.0.0.2'
+> +    ip(f'{flag} addr add {addr_local} dev dummy {nodad}', ns=ns)
+> +    ip(f'{flag} neigh add {addr_remote} lladdr 02:00:00:00:00:02 dev dummy nud permanent', ns=ns)
+> +
+> +
+> +def test_ipv6() -> None:
+> +    assert_debug_kernel()
+> +
+> +    with NetNS() as ns:
+> +        ip_setup(ns, 65576, True)
+> +
+> +        with NetNSEnter(ns):
+> +            with socket.socket(socket.AF_INET6, socket.SOCK_DGRAM) as fd:
+> +                fd.setsockopt(socket.IPPROTO_IPV6, IPV6_MTU_DISCOVER, IPV6_PMTUDISC_DO)
+> +                try:
+> +                    fd.sendto(b' ' * 65528, ('fd00::2', 1234))
+> +                except OSError as e:
+> +                    # Ignore EMSGSIZE: it happens on kernels with the fix.
+> +                    if e.errno != errno.EMSGSIZE:
+> +                        raise
+> +
+> +        ip('link del dummy', ns=ns)
+> +
+> +    ksft_true(check_dmesg_clean('udp_v6_send_skb'), 'WARNING detected in dmesg')
+> +
+> +
+> +def test_ipv4() -> None:
+> +    assert_debug_kernel()
+> +
+> +    with NetNS() as ns:
+> +        ip_setup(ns, 65556, False)
+> +
+> +        with NetNSEnter(ns):
+> +            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as fd:
+> +                fd.setsockopt(socket.IPPROTO_IP, IP_MTU_DISCOVER, IP_PMTUDISC_PROBE)
+> +                try:
+> +                    fd.sendto(b' ' * 65528, ('10.0.0.2', 1234))
+> +                except OSError as e:
+> +                    # Ignore EMSGSIZE: the check happens after the WARN is printed.
+> +                    if e.errno != errno.EMSGSIZE:
+> +                        raise
+> +
+> +        ip('link del dummy', ns=ns)
+> +
+> +    ksft_true(check_dmesg_clean('udp_send_skb'), 'WARNING detected in dmesg')
 
-                                        lock nf_log_mutex
-                                        find logger in loggers[][]
-                                        net->nf.nf_loggers[pf] = logger
-                                        unlock nf_log_mutex
+These two are identical apart from 7 constants.
 
-  nf_log_unregister(logger)
-    lock nf_log_mutex
-    loggers[pf][type] = NULL
-    unlock nf_log_mutex
-    synchronize_rcu()
-  module exit returns
-  module core frees backend memory
+Dedup and use @ksft_variants decorators?
 
-Later, a sysctl read or nf_log_packet() reads net->nf.nf_loggers[pf]
-and dereferences the stale logger.
+> +def test_ipv6_jumbo() -> None:
+> +    with NetNS() as ns:
+> +        ip_setup(ns, 65584, True)
+> +
+> +        with NetNSEnter(ns):
+> +            with socket.socket(socket.AF_INET6, socket.SOCK_RAW, socket.IPPROTO_UDP) as fd:
+> +                hopopts = struct.pack('!BBBBI', 0, 0, IPV6_TLV_JUMBO, 4, 65544)
+> +                fd.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_HOPOPTS, hopopts)
+> +                fd.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_CHECKSUM, 6)
+> +                fd.setsockopt(socket.IPPROTO_IPV6, IPV6_MTU_DISCOVER, IPV6_PMTUDISC_PROBE)
+> +                udp = struct.pack('!HHHH', 1234, 1234, 0, 0) + b' ' * 65528
+> +                fd.sendto(udp, ('fd00::2', 0))
+> +
+> +        ip('link del dummy', ns=ns)
 
-nf_log_unregister() only removes the backend from the global logger
-table. It does not clear matching net->nf.nf_loggers[] entries that were
-rebound by CPU 1 after per-net teardown. Once module unload completes,
-those per-net pointers can still reference static data from the unloaded
-logger backend, and later readers can dereference freed module memory.
+Should this have some test at the end? check_dmesg_clean or perhaps
+a socket receiving the data.
 
-The kernel reported:
+> +
+> +
+> +if __name__ == "__main__":
+> +    ksft_run([
+> +        test_ipv6,
+> +        test_ipv4,
+> +        test_ipv6_jumbo,
+> +    ])
+> +    ksft_exit()
+> -- 
+> 2.55.0
+> 
 
-  BUG: unable to handle page fault for address: fffffbfff806d2f4
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  Oops: Oops: 0000 [#1] SMP KASAN NOPTI
-  RIP: 0010:nf_log_proc_dostring+0x2aa/0x4d0
-  Call Trace:
-   proc_sys_call_handler+0x325/0x540
-   vfs_read+0x6e1/0xa20
-   ksys_read+0xf7/0x1c0
-   do_syscall_64+0xf9/0x520
-  Modules linked in: [last unloaded: nf_log_syslog]
 
-Fix this by clearing matching per-net logger selections in every live
-network namespace while holding nf_log_mutex after removing the global
-registrations. Writers that run before this pass are covered by the
-per-net clears, and writes that run later can no longer find the logger
-in loggers[][]. The existing synchronize_rcu() then covers readers of
-both the global and per-net pointers before module memory is released.
-
-Fixes: 5b023fc8d8e0 ("netfilter: enable per netns support for nf_loggers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
----
- net/netfilter/nf_log.c | 26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
-
-diff --git a/net/netfilter/nf_log.c b/net/netfilter/nf_log.c
-index f4d80654dfe6..442c69f544a1 100644
---- a/net/netfilter/nf_log.c
-+++ b/net/netfilter/nf_log.c
-@@ -42,6 +42,18 @@ static struct nf_logger *__find_logger(int pf, const char *str_logger)
- 	return NULL;
- }
- 
-+static void __nf_log_unset(struct net *net, const struct nf_logger *logger)
-+{
-+	const struct nf_logger *log;
-+	int i;
-+
-+	for (i = 0; i < NFPROTO_NUMPROTO; i++) {
-+		log = nft_log_dereference(net->nf.nf_loggers[i]);
-+		if (log == logger)
-+			RCU_INIT_POINTER(net->nf.nf_loggers[i], NULL);
-+	}
-+}
-+
- int nf_log_set(struct net *net, u_int8_t pf, const struct nf_logger *logger)
- {
- 	const struct nf_logger *log;
-@@ -62,15 +74,8 @@ EXPORT_SYMBOL(nf_log_set);
- 
- void nf_log_unset(struct net *net, const struct nf_logger *logger)
- {
--	int i;
--	const struct nf_logger *log;
--
- 	mutex_lock(&nf_log_mutex);
--	for (i = 0; i < NFPROTO_NUMPROTO; i++) {
--		log = nft_log_dereference(net->nf.nf_loggers[i]);
--		if (log == logger)
--			RCU_INIT_POINTER(net->nf.nf_loggers[i], NULL);
--	}
-+	__nf_log_unset(net, logger);
- 	mutex_unlock(&nf_log_mutex);
- }
- EXPORT_SYMBOL(nf_log_unset);
-@@ -112,6 +117,7 @@ EXPORT_SYMBOL(nf_log_register);
- void nf_log_unregister(struct nf_logger *logger)
- {
- 	const struct nf_logger *log;
-+	struct net *net;
- 	int i;
- 
- 	mutex_lock(&nf_log_mutex);
-@@ -120,6 +126,10 @@ void nf_log_unregister(struct nf_logger *logger)
- 		if (log == logger)
- 			RCU_INIT_POINTER(loggers[i][logger->type], NULL);
- 	}
-+	rcu_read_lock();
-+	for_each_net_rcu(net)
-+		__nf_log_unset(net, logger);
-+	rcu_read_unlock();
- 	mutex_unlock(&nf_log_mutex);
- 	synchronize_rcu();
- }
--- 
-2.43.0
