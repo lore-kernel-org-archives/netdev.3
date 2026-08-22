@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C9DB39060B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDF5390C8E
 	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 22:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787439334; cv=none; b=thYHhOu+iBa2AKazXLi3stV4HsL+j7oyaPGoV8vhW8dkSleDwIO7PRyXskzKrl6vvztyUU2gC5EEt9CP5rd7LD4X5elatz2VZ5uA/ix4Efpq7w3JmsczuUt9xm8lb+l6j+dkVJEh9sxuEWjdrFOtVK1Q7j5Xcv4WGD0rEJckyN4=
+	t=1787439334; cv=none; b=HZfZ0pbVlHii15VNyYPjXU0RQO8dP+I37+UIEpK3hguDiKHLiW+rFbuD58LRGwNlRPXsXwVcI/89VncFZVG95SfiSgHqZbByowCG2AbMu7jU1/B/QEKE/PCsWcQdbw0s5zfCPCT7HuNlFe10uHt3O5QoSF9WlweNmQuPeq5fA+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1787439334; c=relaxed/simple;
-	bh=94/dOq2HF5q+77VuAmwKxT/b2pxikqzHYXjV2qYCkQc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J54Py25wvY/yjTzlaXi/+X5aRbIV76E+iYu9VNaIbDNt+lIIPBHg29AA8HVVXKLqdpRqHZnIhvfmZkASQjk+R+eTrNXjjGdWFu+/HKlD+lrAanY11UZiooncglTbHnpCyvL/gqsdF7pWWXcFyjxKy1cgWAHh+UcU1YuHt+36238=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X/BqdxuO; arc=none smtp.client-ip=100.103.45.18
+	bh=bJAZZtDUU5c/+9Ki2mAas47xrgeTHNMSAUENbevgP7s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qeO1XswyLIHiBxRZ4Fp2fU1O6YGOjvZBMG/6czRgnS9s14RxnID9kZQOr6ljf1LiYxIxWJrHbRLhFlDLqM1xCFQYHefBJUcFjb6NgIbJ24RRmuHwHWhH/iih+opAUpij0tE5244eQ79KwmZX4j892ZIzRC7ennOikJ/OCa3Q/mI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c+s5Jyoa; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X/BqdxuO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F3DE1F000E9;
-	Sat, 22 Aug 2026 22:55:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c+s5Jyoa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 557661F00A3E;
+	Sat, 22 Aug 2026 22:55:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787439331;
-	bh=2Z5YoEZb+5pw2ySU42Srie5dHOJ9E3i6BMCjno0z9YU=;
-	h=From:To:Cc:Subject:Date;
-	b=X/BqdxuOf0ApQ6b7NUIjmeD8L+Sf+STw9WCFEudDFcfpHbq1PSWv4GtlAUD9xiHmv
-	 8kBiQQZnKloVR/8M9XRVnDbJL1cpqa66HhPlH6CfNpIoXtzYbghj/qMV7AZgE/Houk
-	 10cVBSWwSpTA53GEa0C+iDcYKgmHd8emVdr6vTB/qtzVdclwuuRydUF6bjCqIBU7iR
-	 9FzzAuxVfbtJ3n6FCkXDjTICKYWhgTxlx5BpL65frtDprz8nfAuJzdUngPzh7xIM0W
-	 Ta7VagoKYvG4f7ehAZZWwCE8t/zow0m9fUyN+U9ay+3HJ9mq5KPnhcBNW5F0wLkjQN
-	 CWJCiN68//IEA==
+	s=k20260515; t=1787439332;
+	bh=5L5nJ2/unYcO96asuBdmeDTfMO+02gXrtLQ3UOB49S4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=c+s5JyoagNMb28nO8ffkpjE2gCjR5//XveN2dogULb1fZ8JJkR/u/G5kLpsxj/dbL
+	 oObpB/gmXCcMkmh0Bn6UpxZwUnFb2kMy+O5CVTiljwJkMIG0ykWKzzksibb2U+fgut
+	 uivTFAslg56gretxKKFulpIg8+u0sDGdOsCLKHD9z8x6oB2Vn4Pi7JFdgB/DO+6eUJ
+	 UvLRqCNIYuw46yQygy4ze12gsK9l0MTL1mxK/9R3fNphXssH/Q1EwTYpYOi3b7iieO
+	 s6png51+m/tG9QDUTajKrCaaj7tM9MIGd/5/mG9MR8CeYQJsJQil2pDQCk4UjU8zdk
+	 VPEanzio24m7A==
 From: Jakub Kicinski <kuba@kernel.org>
 To: daniel.zahka@gmail.com,
 	willemdebruijn.kernel@gmail.com
@@ -34,10 +35,12 @@ Cc: edumazet@google.com,
 	kuniyu@google.com,
 	netdev@vger.kernel.org,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [RFC net-next 0/6] psp: use virt cookie as Rx steering hint
-Date: Sat, 22 Aug 2026 15:55:18 -0700
-Message-ID: <20260822225524.2328465-1-kuba@kernel.org>
+Subject: [RFC net-next 2/6] netdevsim: support PSP VC based queue steering
+Date: Sat, 22 Aug 2026 15:55:20 -0700
+Message-ID: <20260822225524.2328465-3-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260822225524.2328465-1-kuba@kernel.org>
+References: <20260822225524.2328465-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,92 +49,116 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi!
+Gives the PSP steering selftest something to run against without
+hardware. nsim_start_xmit() already mirrors the Tx queue index onto Rx,
+so all the cookie does is override that choice.
 
-This PoC series uses a field of the PSP header intended for tunnels
-to auto-steer Rx traffic. Various attempts have been made at trying
-to get Rx traffic to land close to the core where the application runs.
-By default RSS picks the Rx queue based on the flow hash.
-I'm not going to cover all previous solutions in detail but broadly
-- we have RFS in SW which looks on which CPU Tx happens and backlogs
-Rx packets there, it is quite efficient. aRFS is built on top
-of RFS but tries to program flows into the NIC. Some NICs have
-a "cache" and try to automatically remember the flow to queue
-association.
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+ drivers/net/netdevsim/netdevsim.h |  4 ++--
+ drivers/net/netdevsim/netdev.c    |  5 +++--
+ drivers/net/netdevsim/psp.c       | 26 ++++++++++++++++++++++++--
+ 3 files changed, 29 insertions(+), 6 deletions(-)
 
-All those solutions are entirely local to the receiver.
-Ideally we would want the solution to look something like
-TCP timestamp option - we send an opaque cookie to the peer,
-and the peer echoes it back to us. Our NIC can steer based
-on that echoed cookie.
-
-This patch set implements exactly that using the optional PSP
-Virtualization Cookie field. The PSP standard doesn't have much
-to say about this field:
-
- Virtualization Cookie - 64b
- An optional field, present if and only if V is set.
- It may contain a Virtual Network Identifier (VNI) or other data,
- as defined by the implementation.
-
-IOW it's a field in the header which can be used as VNI, so presumably
-most PSP-capable NICs will be able to feed it into some TCAM lookup.
-The main use of this field is when PSP is used for tunneling.
-Nothing in the standard precludes it's use in transport mode.
-
-This patchset splits this field as follows:
-
-   63           48 47           32 31           16 15            0
-  +---------------+---------------+---------------+---------------+
-  |    reserved   |    req qid    |    reserved   |    dst qid    |
-  +---------------+---------------+---------------+---------------+
-
-"req" is the value we want sender to put in "dst" when they respond.
-
-When the feature is enabled we expect the NIC to create low-priority
-steering rules matching on "dst" (bottom 16b of the Virt Cookie).
-The mapping is direct today so dst=2 means queue=2 within the receiving
-interface (see doc in patch 1 for more info). Any explicit steering
-rules (ethtool, TC etc) still take precedence over PSP steering,
-we are only overriding the RSS queue assignment.
-
-I'm sharing this as an RFC because I _think_ it's a good idea
-(feedback most welcome). We need some vendor cooperation to get this
-implemented - specifically IDK how to make mlx5 (the only PSP-capable
-NIC I have access to) to do the steering :(
-
-Jakub Kicinski (6):
-  psp: steer Rx queues with the virtualization cookie
-  netdevsim: support PSP VC based queue steering
-  selftests: drv-net: psp: move the PSP test plumbing into psp_lib.py
-  selftests: drv-net: psp_steer: test PSP VC based queue steering
-  selftests: drv-net: psp_steer: test where PSP steering sits in the Rx
-    pipeline
-  selftests: drv-net: psp_steer: cover corner cases and races
-
- MAINTAINERS                                   |   1 +
- Documentation/netlink/specs/psp.yaml          |  42 ++
- Documentation/networking/psp.rst              |  75 +++
- tools/testing/selftests/drivers/net/Makefile  |   5 +
- include/net/psp/types.h                       |  93 +++-
- drivers/net/netdevsim/netdevsim.h             |   4 +-
- include/net/psp/functions.h                   |  54 +-
- include/uapi/linux/psp.h                      |  17 +
- .../mellanox/mlx5/core/en_accel/psp_rxtx.c    |   2 +-
- drivers/net/netdevsim/netdev.c                |   5 +-
- drivers/net/netdevsim/psp.c                   |  26 +-
- net/psp/psp-nl-gen.c                          |   5 +-
- net/psp/psp_main.c                            |  53 +-
- net/psp/psp_nl.c                              |  21 +-
- net/psp/psp_sock.c                            |  35 ++
- .../selftests/drivers/net/psp_responder.c     |  42 ++
- tools/testing/selftests/drivers/net/psp.py    | 287 +++--------
- .../testing/selftests/drivers/net/psp_lib.py  | 184 +++++++
- .../selftests/drivers/net/psp_steer.py        | 473 ++++++++++++++++++
- 19 files changed, 1187 insertions(+), 237 deletions(-)
- create mode 100644 tools/testing/selftests/drivers/net/psp_lib.py
- create mode 100644 tools/testing/selftests/drivers/net/psp_steer.py
-
+diff --git a/drivers/net/netdevsim/netdevsim.h b/drivers/net/netdevsim/netdevsim.h
+index 55aec41237b9..3b1c52e43d46 100644
+--- a/drivers/net/netdevsim/netdevsim.h
++++ b/drivers/net/netdevsim/netdevsim.h
+@@ -453,13 +453,13 @@ void nsim_psp_uninit(struct netdevsim *ns);
+ void nsim_psp_handle_ext(struct sk_buff *skb, struct skb_ext *psp_ext);
+ enum skb_drop_reason
+ nsim_do_psp(struct sk_buff *skb, struct netdevsim *ns,
+-	    struct netdevsim *peer_ns, struct skb_ext **psp_ext);
++	    struct netdevsim *peer_ns, struct skb_ext **psp_ext, int *rxq);
+ #else
+ static inline int nsim_psp_init(struct netdevsim *ns) { return 0; }
+ static inline void nsim_psp_uninit(struct netdevsim *ns) {}
+ static inline enum skb_drop_reason
+ nsim_do_psp(struct sk_buff *skb, struct netdevsim *ns,
+-	    struct netdevsim *peer_ns, struct skb_ext **psp_ext)
++	    struct netdevsim *peer_ns, struct skb_ext **psp_ext, int *rxq)
+ {
+ 	return 0;
+ }
+diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
+index b4a99f3ceac6..04e416d1a377 100644
+--- a/drivers/net/netdevsim/netdev.c
++++ b/drivers/net/netdevsim/netdev.c
+@@ -147,11 +147,12 @@ static netdev_tx_t nsim_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		peer_dev = peer_ns->netdev;
+ 	}
+ 
+-	dr = nsim_do_psp(skb, ns, peer_ns, &psp_ext);
++	rxq = skb_get_queue_mapping(skb);
++
++	dr = nsim_do_psp(skb, ns, peer_ns, &psp_ext, &rxq);
+ 	if (dr)
+ 		goto out_drop_free;
+ 
+-	rxq = skb_get_queue_mapping(skb);
+ 	if (rxq >= peer_dev->num_rx_queues)
+ 		rxq = rxq % peer_dev->num_rx_queues;
+ 	rq = peer_ns->rq[rxq];
+diff --git a/drivers/net/netdevsim/psp.c b/drivers/net/netdevsim/psp.c
+index 32d95205a8cc..5aa5078889eb 100644
+--- a/drivers/net/netdevsim/psp.c
++++ b/drivers/net/netdevsim/psp.c
+@@ -14,9 +14,26 @@ void nsim_psp_handle_ext(struct sk_buff *skb, struct skb_ext *psp_ext)
+ 		__skb_ext_set(skb, SKB_EXT_PSP, psp_ext);
+ }
+ 
++/* Pick the Rx queue for a decapsulated frame. Devices which support
++ * PSP_VC_STEER_RX match the destination queue ID carried in the
++ * cookie ahead of consulting the RSS table.
++ */
++static int nsim_psp_steer(struct netdevsim *peer_ns, struct sk_buff *skb,
++			  int rxq)
++{
++	struct net_device *dev = peer_ns->netdev;
++	struct psp_skb_ext *pse;
++
++	pse = skb_ext_find(skb, SKB_EXT_PSP);
++	if (!pse || pse->vc_dst >= dev->real_num_rx_queues)
++		return rxq;
++
++	return pse->vc_dst;
++}
++
+ enum skb_drop_reason
+ nsim_do_psp(struct sk_buff *skb, struct netdevsim *ns,
+-	    struct netdevsim *peer_ns, struct skb_ext **psp_ext)
++	    struct netdevsim *peer_ns, struct skb_ext **psp_ext, int *rxq)
+ {
+ 	enum skb_drop_reason rc = 0;
+ 	struct psp_dev *peer_psd;
+@@ -44,7 +61,8 @@ nsim_do_psp(struct sk_buff *skb, struct netdevsim *ns,
+ 	}
+ 
+ 	net = sock_net(skb->sk);
+-	if (!psp_dev_encapsulate(net, skb, pas->tx.spi, pas->version, 0, 0)) {
++	if (!psp_dev_encapsulate(net, skb, pas->tx.spi, pas->version, 0,
++				 psp_assoc_vc_tx_get(pas))) {
+ 		rc = SKB_DROP_REASON_PSP_OUTPUT;
+ 		goto out_unlock;
+ 	}
+@@ -73,6 +91,9 @@ nsim_do_psp(struct sk_buff *skb, struct netdevsim *ns,
+ 			goto out_unlock;
+ 		}
+ 
++		if (peer_psd->config.vc_steer & (1 << PSP_VC_STEER_RX))
++			*rxq = nsim_psp_steer(peer_ns, skb, *rxq);
++
+ 		*psp_ext = skb->extensions;
+ 		refcount_inc(&(*psp_ext)->refcnt);
+ 		skb->decrypted = 1;
+@@ -216,6 +237,7 @@ static struct psp_dev_caps nsim_psp_caps = {
+ 		    1 << PSP_VERSION_HDR0_AES_GCM_256 |
+ 		    1 << PSP_VERSION_HDR0_AES_GMAC_256,
+ 	.assoc_drv_spc = sizeof(void *),
++	.vc_steer = true,
+ };
+ 
+ static void __nsim_psp_uninit(struct netdevsim *ns, bool teardown)
 -- 
 2.55.0
 
