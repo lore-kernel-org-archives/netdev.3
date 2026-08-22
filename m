@@ -1,79 +1,79 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD58638D6A2
-	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 09:10:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1DE36B910
+	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 09:12:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787389825; cv=none; b=RPGO1kid7/g/1cb4jBN/1wboaL7/wLOrzfYwOq69pvWnDzHIXG93hKe63B7H2CpoLmOP9fKU0fZ6CrOjxwo3o6+Xntes3buZ20n1SVhcBiQ0jDSPIZU91nxh6q2UHTagDrjFjazFS1361D/edQn7t43po1v5UF6kPnpWjci9wag=
+	t=1787389947; cv=none; b=JxVWzWzyu0iihdDyfIk1V3Wef8KUcboeMR2AqU5DIIITmYYYsKcDWHxAuzmT0Hn9P9gwDbVpzzaNE/rLiZD7GXc4ifqHqcOB+O+IEHSXrBKLJXxnCGh1HZVtzuOjwXNxXmm4vM0wPgXXHyMlfw7Gkwn+plGkA3cPtcF2unANgAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787389825; c=relaxed/simple;
-	bh=g61Q7meI59V8lUroCSzctVsJUOyOlfKbSpw9XUkVZ60=;
-	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=gyYF2CpDojTwz6Bpg5yZomolUacR4SDdlGLaXw0GHaELSRGwBHVRpCKqVIUopegC3vKrXqp+36TiJJk2N89ck7AL7O/nPLcYO8kSOAd0ol1cuIV21D43NoOdUdZLnTeawKjlbrckILFQu5aIDYof3bS98CuC8XOkrWO6OVfdd5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com; spf=pass smtp.mailfrom=doyensec.com; dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b=ZaIoKjxH; arc=none smtp.client-ip=209.85.208.48
+	s=arc-20240116; t=1787389947; c=relaxed/simple;
+	bh=XT5S148/6y5PD2abIdBJGe7naJ1gCbCR2/WdiwBaWPg=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=NFvtgLIyVxPWndpR2eQYVdxVj64qOSuEhAN4gMZQfW8yPBaRVSvkdSyMbRBwNwfOrUm5b8/H9agZ8nCBOrTpY9tuA0/pV6G9ezTHWH6+4N5M05rzgWvaa7hUqK51IPNriP3QpuS88B+yODksvVN33x2tlc1sIsfur5uNsBo7dRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com; spf=pass smtp.mailfrom=doyensec.com; dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b=iEG0di0y; arc=none smtp.client-ip=209.85.208.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=doyensec.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b="ZaIoKjxH"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6a082b3671fso3051868a12.3
-        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 02:10:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b="iEG0di0y"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6a17cb94b26so3724150a12.3
+        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 02:12:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=doyensec.com; s=google; t=1787389822; x=1787994622; darn=vger.kernel.org;
-        h=to:cc:date:message-id:subject:mime-version
-         :content-transfer-encoding:content-type:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=NGycyJVIW/OPIaiabbiESbEirLCCLD6vpNHjVSKQh1I=;
-        b=ZaIoKjxHU4lZAoheA49TmejxsmuPVHc7tZVB/wgRfTnRfaH1ueo+cd0w+HkIcqfMAe
-         47wxn8t0jLp1feGw5IVysLcUp7K55gtB1nQUYBGqRV4nEKzk9whMMobLZTdK2evA7FMY
-         kExmudcwQkIVOY2ksU9rkg5fISPOOupuvE/vwnBeuumz22PV3Q8n5CjGBHurv2ysnkjE
-         R+TKMZ4wVLiTv7kLfMT3KC141oX3ccKe2WXUr+eX8y9URptd8jQpokZH5nPTRYLKkk6n
-         kvF7kXttL/wJtfBGxpznH4gThJa1Cx90ko/J2V+6a3SIEH0NvF2bCD9kMOheovpf9xsW
-         /RhA==
+        d=doyensec.com; s=google; t=1787389944; x=1787994744; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:content-type:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=uQFsMzRQ7qJG+O1uCjBI7iyW2F5zaHwuZq7leRaTSoY=;
+        b=iEG0di0yoPIKluDXmcb1o0tKC0u8Xe/Gf9JGClCuRdkOeXKx3rVcLnZeaOIiJoPHVA
+         Y0K/xUDsI/UeBjz6EDhpksaIk/eBpwXu5TpKzWv+DYu8frS+IeQJGmzGqO+GlhYWFXJt
+         t67OaeFiR5q5r/Uxjw/Dl6eQkfP7e+DAY+Jq3u52TPU8nfGL+R2MXQ+2ay5et1sNLzBY
+         bU9W8kSZYZPXb7m+ONKSEG+W0MWNm4kKz2oJ4juCS8loUDejgTlbGB+rToxetuZyziwD
+         DKCExU/88ffZHQq6TYg7paZxuTGupCTPyYEvbyek60EgEplxgdqIfI15K2VnjeMxcKyi
+         7uKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787389822; x=1787994622;
-        h=to:cc:date:message-id:subject:mime-version
-         :content-transfer-encoding:content-type:from:x-gm-gg
+        d=1e100.net; s=20251104; t=1787389944; x=1787994744;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:content-type:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=NGycyJVIW/OPIaiabbiESbEirLCCLD6vpNHjVSKQh1I=;
-        b=Uwa4VqgtDXAeFmDI2/ASUMt1Uq/4E58wksCpB87H7zP8yRc92FMdKsDN7s7v+tU0PU
-         7TcJcUN/pPFA1UuC0GIIqYG5at7PuActuOkvrpvq8s65ZZVF3mf8XYoRBm+JrdR5DFzr
-         2NlufXVT1iXv5pMTANd+yutyM4TLEx2Zu0B7pw39WSNLCBUK6rdB7em6wsCBwTtyallE
-         ub4XQSEKxwaa1KJOqLc0ESASitBKAqtPNh0mScnpw/1xcbtrgiW/ZUt952N3c8CyYp3+
-         UHlqwBEMszDbouHQrjsbWe4dlYzVm/SHooomeWKnhLf+J+DPZxTsLFERupmeEdI0wE59
-         v2Rw==
-X-Gm-Message-State: AFuF++m3eN/rVIH9yVkNjWDFRnl1zxIQFP1U3yHGERW3PG7fMst5vUkL
-	fWRlSAy54eZpxK0H/OAWjibGEhiNHObzgynhJ0N76sk84GX6pAEllgU3xTlwyAukMfdhO7MslL7
-	t6jslnP1fyA==
-X-Gm-Gg: AR+sD12ZkRQ7Cs0pBqHNMnykHteBehZ+2YO4boU4mCtyPVY/Xhwn+FiBrHUc7R28N8e
-	TRLeNlQv/fhVjNkZngDwVDKPfgwGIeEp8nZntL3bsE0ywe4EVTa4uyKxNC5v+Qlvi1aBe9bZfRF
-	v7rX2CYKGk7XkTwxjVoCSrtkynaOeHURt+cbtu3NmtBKeNzu48UseHIsTolfa7Cegir4Q0CNXFe
-	s6LtP78DvUmusMh09GGpRGUR7pc6KypCmCJLWnFoV/xt3zWjgNkRD5wxgfejoTacdNsB0aXIzJP
-	D9wmcrrR0JJNbNz73pbsCUluqRWZ5uD8pKvPd97pL0NgptKrBXguZt8+zruF0dG+QzzwHTuXkgt
-	WLRXwiTUmoacilHEvQwL0QLrZ+MV8efmYMw31vFvMMLnAypmlDVhm7o/yUzLnMI2zDNdqJKHrhQ
-	4Qzz5SduwN9PrhPOfbzRbIruI3GLEjzf9/TaFbqxUlIyOGILm3iC6oGGaWapd1bGLlag8w9DUXP
-	ZpZElZy6eU1j7ftvQc6WxUOWRmRZBT/4GD1cupuxr/uRq0S823O4byiz8nS4m1isSufaN6+rjPQ
-	dbv06SK1XcEd2aDjzQwecWC4E+eGc1r3
-X-Received: by 2002:a17:906:99c4:b0:c20:af9d:4544 with SMTP id a640c23a62f3a-c246a4e6388mr1169614066b.6.1787389821846;
-        Sat, 22 Aug 2026 02:10:21 -0700 (PDT)
+        bh=uQFsMzRQ7qJG+O1uCjBI7iyW2F5zaHwuZq7leRaTSoY=;
+        b=XWZ8cUEn5DZrb2JBHSDINL6jUh6p52v6hL9nn8VteTBa2AhnZCsghePX2mA7re/dUE
+         dQtvF9ZcsdO+qVEhqERwsNDTncYzEk9BH9E60TGBJoXgpG7hDsaDRjY1cDevgskDY0Ya
+         o84CYdH+uQybZo9Nm4ADxYPlag36oFVxGfk45iwdHYkw/N5KRdNu0jqt6ETKSGcvrMqL
+         bCNzFE74xNJ2+o4z+O42UmVEA8GlHdFBGps1OWmZlVn8q9oyYkfjxxlwSZbv/OyOx0ey
+         lC6E8lr4NH6/dCaaydXDVAA45zYv6lD4oKpFJiMPt0OtIuzN3EQ+KA5lsEihu+SCKJuA
+         mj7w==
+X-Gm-Message-State: AFuF++nj3U6dKVPTG9oyJ0hI0AiVjVT/bzZ14/AKCYb5+Seu4DrltlJR
+	8Oizugbl14+m2kc9wetwCx1ks++9UW/S/S1coZRrZgF1F0nNwnS/cN2FCSgZj149MLFFkwpBQoj
+	D33lHCy2C0A==
+X-Gm-Gg: AR+sD11K9nflQd1AmUdUBvaOOo+R8f3m5EBAJOVBrImJlhhTY/FavYTPw2Rzk1X70rS
+	oT/4C0h/N3dqFMiiq5KPPpVOmiWHF6sN4ah7MlrzZcLRdgnQtJDblMkPtJCfx2USSi3ORjnwWyf
+	sBoEfpkS+0LTupmrY0cVxvkXDhFxaK/AotKTmf9fxcXppAO9E1q5ZSGPyBt0jhWFm7+sjUCKvOQ
+	9ScHS5quadvgwRqF4feZ/0zsZHqB7zyqpqPhZCX0VpPCtE2bvNdeiLidf7/cOrLOd21Glyc1RAT
+	UmP2nb4zXxCg8VJFpp7KFKQRF5vTO3R2YaJ+nNhn4zRARauh1l88oyEmCtDJUHSf2o2hJk5fUsS
+	oOKapqUVpnLJ/9XKAsmP6w9SAxJIRxu/m0iBGwvvzwVcr84TKsicY2h12dm14kwfRPI/U9hIqVF
+	G0StfKYbX7nil6+2cQ5ust8UUA/N1s6BZogaCqmNmlmfb+5vnBkamiunOU8WutRdQ8xVczf0pe7
+	hegcYal1iYmoDECHAU+OYG59Ww8T43bkmshBzslOth6e0uwdhQEyCwlucSNNYfR2ZhwYPxG5jez
+	GjdIKvBz1lo6rcnbMl10dggsuEBF+bh4VamwFA==
+X-Received: by 2002:a05:6402:3784:b0:6a0:eb:ae41 with SMTP id 4fb4d7f45d1cf-6a42f2096a5mr14464320a12.10.1787389943816;
+        Sat, 22 Aug 2026 02:12:23 -0700 (PDT)
 Received: from smtpclient.apple (78-141-71-213.dynamic.orange.sk. [78.141.71.213])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2495ee5295sm237495266b.0.2026.08.22.02.10.20
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a3ff16c546sm10836738a12.21.2026.08.22.02.12.21
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 22 Aug 2026 02:10:21 -0700 (PDT)
-From: Norbert Szetei <norbert@doyensec.com>
+        Sat, 22 Aug 2026 02:12:23 -0700 (PDT)
 Content-Type: text/plain;
 	charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
-Subject: [PATCH net v4 0/3] net: don't strip zerocopy frag markers from a
- forwarded skb
-Message-Id: <4B5CCA6E-2C49-4F86-8C4E-E1BE15C16C0A@doyensec.com>
-Date: Sat, 22 Aug 2026 11:10:09 +0200
+Subject: [PATCH net v4 1/3] openvswitch: only skb_tx_error() a packet we are
+ about to drop
+From: Norbert Szetei <norbert@doyensec.com>
+In-Reply-To: <4B5CCA6E-2C49-4F86-8C4E-E1BE15C16C0A@doyensec.com>
+Date: Sat, 22 Aug 2026 11:12:11 +0200
 Cc: "David S. Miller" <davem@davemloft.net>,
  Eric Dumazet <edumazet@google.com>,
  Jakub Kicinski <kuba@kernel.org>,
@@ -89,98 +89,76 @@ Cc: "David S. Miller" <davem@davemloft.net>,
  linux-kernel@vger.kernel.org,
  dev@openvswitch.org,
  Jongmin Jang <payload.jang@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <55A52703-7548-4A55-A9CE-2A37145BDCAD@doyensec.com>
+References: <4B5CCA6E-2C49-4F86-8C4E-E1BE15C16C0A@doyensec.com>
 To: netdev@vger.kernel.org
 X-Mailer: Apple Mail (2.3826.700.81.1.4)
 
-queue_userspace_packet() calls skb_tx_error() on the packet skb in its
-error path, but it only borrows that skb: on the =
-OVS_ACTION_ATTR_USERSPACE
-action path do_execute_actions() ignores output_userspace()'s return =
-value
-and keeps forwarding the same skb through the flow's remaining actions.
-skb_tx_error() completes the zerocopy uarg and clears =
-SKBFL_ALL_ZEROCOPY,
-and with it SKBFL_SHARED_FRAG.
+queue_userspace_packet() borrows the packet skb -- it only copies it =
+into
+a private netlink message (user_skb) and does not own it; on return
+do_execute_actions() keeps forwarding it through the flow's remaining
+actions. Its error path nevertheless calls skb_tx_error(skb), which via
+skb_zcopy_clear() does skb_shinfo(skb)->flags &=3D ~SKBFL_ALL_ZEROCOPY,
+stripping SKBFL_SHARED_FRAG from that live skb (skb_tx_error()'s =
+kerneldoc
+says "skb must be freed afterwards").
 
 For a MSG_ZEROCOPY skb carrying page-cache frags, SKBFL_SHARED_FRAG is
-what makes esp_input() skb_cow_data() instead of taking the in-place =
-AEAD
-path. Once it is stripped, a later local ESP delivery decrypts in place
-over pages the sender still shares with the page cache.
+what makes esp_input() skb_cow_data() before in-place AEAD; once it is
+stripped a later local ESP-in-UDP delivery decrypts in place over pages
+the sender does not own -- an unprivileged page-cache write (the
+"Fragnesia" primitive).
+do_execute_actions() ignores output_userspace()'s return value, so any
+action after a failed USERSPACE upcall inherits the stripped skb.
 
-Patch 1 moves the skb_tx_error() into the one path that does drop the
-packet, the "default" arm of ovs_dp_process_packet()'s switch(error).
+Move the skb_tx_error() to the flow-miss drop path - the "default"
+branch of ovs_dp_process_packet()'s switch(error), before kfree_skb().
 
-Patch 2 removes a second such strip, in skb_zerocopy(), which calls
-skb_tx_error() on its source when skb_orphan_frags() fails. A copy =
-helper
-should not perform a destructive action on its source, and both callers
-already report the error on their own drop path. MSG_ZEROCOPY skbs =
-cannot
-reach that one -- SKBFL_DONT_ORPHAN makes skb_orphan_frags() return =
-early
--- but producers that do not set that flag, such as vhost-net, can.
-Patch 3 is new in v2. It stops skb_tx_error() from touching skb_shinfo()
-state that is shared with clones, so patch 1's new call site cannot =
-reach
-a live skb either. For a non-last OVS_ACTION_ATTR_RECIRC action
-clone_execute() sends a skb_clone() into ovs_dp_process_packet() while
-do_execute_actions() keeps forwarding the original, and skb_clone() does
-not privatise the frags for these skbs -- skb_orphan_frags() returns =
-early
-on SKBFL_DONT_ORPHAN -- so a flow miss on the clone strips
-SKBFL_SHARED_FRAG from the packet still in flight. Confirmed on a KASAN
-build with a flow matching recirc_id 0 and actions RECIRC(1),OUTPUT(0):
-with patches 1 and 2 applied it still reproduces the page-cache write,
-with patch 3 on top it no longer does (5/5 runs). A kprobe on
-skb_tx_error() shows the datapath drop path is still reached in both
-cases, so the difference is the guard and not the reproducer.
+The call has been here since commit 36d5fe6a0007 ("core, nfqueue,
+openvswitch: Orphan frags in skb_zerocopy and handle errors") but was
+harmless until esp_input() began relying on SKBFL_SHARED_FRAG to gate
+in-place decrypt; only then did stripping it on a still-forwarded skb
+become a page-cache write primitive.
 
-As Ilya noted, that makes patch 3 the general fix -- an skb can enter =
-any
-skb_tx_error() caller already cloned elsewhere in the stack -- while
-patches 1 and 2 keep the callers from acting on an skb they do not own.
-Removing skb_tx_error() altogether looks like the right long-term =
-cleanup
-and is planned as a net-next follow-up.
-
-v4:
-  - rebased on net after commit 68d8c6532659 ("net: core: propagate
-    unreadable flag in skb_zerocopy"); patch 2 now only drops the
-    skb_tx_error() call from the error block, the -EFAULT/put_page()
-    handling added there stays (Ilya Maximets, Jakub Kicinski)
-  - Reviewed-by from Ilya Maximets picked up on patch 3
-  - v3: =
-https://lore.kernel.org/netdev/F3B9E5BA-0AC1-4AD1-A7D9-F38033304270@doyens=
-ec.com/
-
-v3:
-  - patch 3: Fixes tag corrected to 25121173f7b1 ("skb: api to report
-    errors for zero copy skbs"), the commit that added skb_tx_error()
-    (Ilya Maximets)
-  - Tested-by from Jongmin Jang picked up on patches 1 and 3
-  - v2: =
-https://lore.kernel.org/netdev/AD1B7BEE-C04C-4A1B-982C-8385F1908911@doyens=
-ec.com/
-
-v2:
-  - new patch 3: skip the shared skb_shinfo() work in skb_tx_error() =
-when
-    the skb is cloned, which also covers the OVS_ACTION_ATTR_RECIRC path
-    that patch 1 alone leaves open (suggested by Ilya Maximets)
-  - patches 1 and 2 unchanged, Reviewed-by from Ilya Maximets picked up
-  - v1: =
-https://lore.kernel.org/netdev/8063260C-05C9-4997-B9B6-2135063C4858@doyens=
-ec.com/
-
-Norbert Szetei (3):
-  openvswitch: only skb_tx_error() a packet we are about to drop
-  net: skbuff: don't skb_tx_error() the source skb in skb_zerocopy()
-  net: skbuff: don't touch shared zerocopy state in skb_tx_error()
-
- net/core/skbuff.c          | 6 ++++--
+Fixes: 36d5fe6a0007 ("core, nfqueue, openvswitch: Orphan frags in =
+skb_zerocopy and handle errors")
+Fixes: f4c50a4034e6 ("xfrm: esp: avoid in-place decrypt on shared skb =
+frags")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-5
+Signed-off-by: Norbert Szetei <norbert@doyensec.com>
+Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
+Tested-by: Jongmin Jang <payload.jang@gmail.com>
+---
  net/openvswitch/datapath.c | 3 +--
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
+diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
+index f2d5b5ab38de..2fc9ef6c321f 100644
+--- a/net/openvswitch/datapath.c
++++ b/net/openvswitch/datapath.c
+@@ -285,6 +285,7 @@ void ovs_dp_process_packet(struct sk_buff *skb, =
+struct sw_flow_key *key)
+ 			consume_skb(skb);
+ 			break;
+ 		default:
++			skb_tx_error(skb);
+ 			kfree_skb(skb);
+ 			break;
+ 		}
+@@ -604,8 +605,6 @@ static int queue_userspace_packet(struct datapath =
+*dp, struct sk_buff *skb,
+ 	err =3D genlmsg_unicast(ovs_dp_get_net(dp), user_skb, =
+upcall_info->portid);
+ 	user_skb =3D NULL;
+ out:
+-	if (err)
+-		skb_tx_error(skb);
+ 	consume_skb(user_skb);
+ 	consume_skb(nskb);
+=20
 --=20
-2.55.0=
+2.55.0
+
