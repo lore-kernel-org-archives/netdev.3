@@ -1,80 +1,51 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5AD356750
-	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 20:11:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63EA13537F9;
+	Sat, 22 Aug 2026 20:20:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787429508; cv=none; b=c0t3xgEWi1KyoTRa4XJPKC9xdniIba9pcJXhShARzoBJxEwMVc3W6Fr/3zX8+y6/3odd3dx55fDIPXt1Js6ivtckVpbduU+kyaXJV5wvfGf6P2Wcqv24+UJourcROWGdwksiZQhLDqYQ+125+7+U7DOCOTR4douNo06W89MD464=
+	t=1787430017; cv=none; b=bi49ZrWQ2Q7IHK4GRuiEqyt35TTiMkuK8gLQj4twg3GCA4uEPUwlR8s0LqCIozkKZ7EiWOrzgaen6Ji/FVivzALJSnqBO0++sQIh82N509JhWmbIEhN5XQwOZKDnPR5RlVacMBqAUhyyDHDJxesJHqsCa4BIZfsDDMeGWWejohA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787429508; c=relaxed/simple;
-	bh=/PnBKtgvrHRV4JL6qZBj+ZWGP1Az2ZXAav1JQfVyl6Q=;
+	s=arc-20240116; t=1787430017; c=relaxed/simple;
+	bh=5h72g/zzrOeltfq/dqMBOaM0J2KXToCScVOewaomkog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZjSTlblzYoFE32oQ7+qn5H81me8u02R4duxsh5XFo/xMn5sjKBQtySeezZINe0ujt4n1liM+Y9rRqqRtKGSX1rcuZ/ftQLMsOTt0uG5lswwu+pKGHus8gfm8sOtBvoDA6lIV+r+UamACuKnw/Nz+toTR12ehP2rp5jLWF4jL9+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isovalent.com; spf=pass smtp.mailfrom=isovalent.com; dkim=pass (2048-bit key) header.d=isovalent.com header.i=@isovalent.com header.b=esAhGC/3; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isovalent.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isovalent.com
+	 MIME-Version; b=pV34b7cfiqu/kv6rZJO7FoEljhJweEWu+sk73JXtqdsR6H0M4oKmZ1KHq8QOyXpgmsHH+5GEs2IzW9/bpnT1CTEyNO8/gZregem4152uhWUmrfLI+RZUsalJK3ZlDz940n+LqE8mjnRS6ysRUypyRFBrghut8RFFdDvvnLYfT2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VWT4LlRG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=isovalent.com header.i=@isovalent.com header.b="esAhGC/3"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6a082b3671fso3537726a12.3
-        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 13:11:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=isovalent.com; s=google; t=1787429505; x=1788034305; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=KzUPKMiG4VxZWjlyXNq686M66Aoo7Y803vMgcHVtz3g=;
-        b=esAhGC/3IQgjSSSNkwCJQLXGAef3bd89ZY6jTmuwcqBQeW1T7BZ3IRA4TE45/Nrngb
-         rDTwx3U5crni8PoOnm7NX/EZISsop5hKVaIHv5PTAJYKikCHeqUqirLXCciINIBodJmV
-         eESKLlF3MLHw6FfLUuIHhilIFP5EgsmEdoj2BYt6y5O5/oFGwXtV0BkvIDVopK3seHgC
-         iJJn4sRtg78hR1cl0ORDsW8EW3dCZPXVw1WbOXQHQQ3gP7eaagHGV+g9k6tCF5/N3roD
-         vv5gjrAQJYT9p5PStmlc/HTIH7REocOkrSl1iySurBLxpar4wlZxI0MTkXtO7QLW/lhA
-         2KhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787429505; x=1788034305;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KzUPKMiG4VxZWjlyXNq686M66Aoo7Y803vMgcHVtz3g=;
-        b=ilIkBgXdLzUO/HZ9TZMgiDicKNvZbguB7i9mU3AktFluM/z5bBMlVMFubm9AlLwvDw
-         iOwSn7hxKgkaLNk7QDWNtUjJVb/elfLFjl+2VPdBckL99dFzSdC3Fb6USWHzYWOHi14m
-         YxtrnUakhb/He5vYlxdp9YlOrk7TWaPlqE1I/SFh095cJujEhnM/m0KPOPjowjD8l58d
-         QLxgRDZtCKKpbnCMPBpEk3q3KVo97chymLe722KGjBSGMr6pGRgU17p+0a505gpW2BNI
-         dAQQZqCfoOUbUPT5VyehsrBcsM4DkC0Nb3UXK94Y0+fywMFqj+SDt2+ciu7jx/64zV0/
-         ojxw==
-X-Gm-Message-State: AFuF++kOBEd+dmwE38hP1pR2Gp9FSIU804GgEH2H0dOyG09cJpaPdFP1
-	ZSggb/gzBB1BqGfEGPZ87USjYdcDTQaUQZEuoZPQspu+lb3TqBLaP3rzhFwg5zjBU3P5YejAxll
-	2UXkl6DeBXg==
-X-Gm-Gg: AR+sD10UV3wqkpDPmBYIrkrJ7p66YxtjcDF5Etr2ElpQU8pnQtdMqfo++JmvbJuyX3L
-	i3JP1tlkhiVSFEYvV559tmKkWTodkXAOOep5wqTDIfyN57zb9+/ybXiCOsJj4K2kzp3Mc3WfA1A
-	eW81XCgKucXM85zulgARu+Bc4uHwMEPq83BYz/ZqBY/cETbYNchjBoYh+IlAmrSGSveTWPk3R0Y
-	wLexaGxDOMfejZEc+TIaPUK5SGOWKzM+Nq0ELctQPEhMZzcheK0PWw4yOuq49YQSJV5Y3cnWOwO
-	vvdz6TBB/QvbyuB3tkcWIqFtDlo3PB8vZO3Zyks4CUiKTlbYi1ei7wBV4i8Ihy0LWlTs5CYel9q
-	UN4aTD9+ndmglnSfdGDmkmYMw+QkM3FQFMobiESh5I9eYstPnTokplyIVRDseckyvcnpr7VbSdI
-	blzqceRLWBiQqGTDandCAWYeBDe3FO9+HQo88nF5wRPTwi8CT4xif0o4z5Iw7xVRlg25RTKyiXu
-	Rwylk5nyW8gh+i2F9qCtB8dj8FO/db5qAVxTtXsa12RCj5osLL/VBbA
-X-Received: by 2002:a05:6938:a090:20b0:c21:2c32:e2e6 with SMTP id a640c23a62f3a-c246a60cfe4mr1222072766b.10.1787429504815;
-        Sat, 22 Aug 2026 13:11:44 -0700 (PDT)
-Received: from localhost.localdomain (chello089173060039.chello.sk. [89.173.60.39])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c24966f99basm444347766b.37.2026.08.22.13.11.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Aug 2026 13:11:44 -0700 (PDT)
-From: Rastislav Szabo <rastislav.szabo@isovalent.com>
-To: netdev@vger.kernel.org
-Cc: edumazet@google.com,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VWT4LlRG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F01A31F000E9;
+	Sat, 22 Aug 2026 20:20:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787430013;
+	bh=7Z9x5qxv465JzS86KwfX75Nr/7vCi0SV2kb9LycxQhI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=VWT4LlRGh8FuDQmdLqzZWAuwaMIQRGKCM44PvTWordoUNFpEi+sTBQKI2IJZgLa0E
+	 +fpp6DXjAV4Yfl3BlA9uZntlNvo4vhPlx+zCbWDfromgFQKr1qxQruVftLYKBmNjN2
+	 IdfQT1skEuQ/yn9nvBsuVAWIV0SEqOEsvKWH0Q0ui4IgLWz9+4vxvfwDaXk/AkPo8y
+	 QufLpYeemIAIQR3J7QwpZZjRAWgtYHRk6K8oNBKXNz2cD0jzOb+lmySAkkWJfsVCKI
+	 eFTKiHp7wffVSaAUiAsLzNaZ4JzsgG3sQWRBK0pIWWOIyqlRqWHk9xq37nPqP3raoH
+	 evtntDt8U7guw==
+From: Jakub Kicinski <kuba@kernel.org>
+To: eadavis@qq.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	syzbot+0054fed3dc9085390f51@syzkaller.appspotmail.com,
+	jhs@mojatatu.com,
+	jiri@resnulli.us,
 	davem@davemloft.net,
-	dsahern@kernel.org,
-	kuba@kernel.org,
+	edumazet@google.com,
 	pabeni@redhat.com,
-	shuah@kernel.org,
-	dima@arista.com,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net v2 2/2] selftests: net: tcp_ao: test VRF-scoped key deletion
-Date: Sat, 22 Aug 2026 22:11:19 +0200
-Message-ID: <20260822201119.272269-2-rastislav.szabo@isovalent.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260822201119.272269-1-rastislav.szabo@isovalent.com>
-References: <20260822201119.272269-1-rastislav.szabo@isovalent.com>
+	horms@kernel.org,
+	Po.Liu@nxp.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzkaller-bugs@googlegroups.com
+Subject: Re: [PATCH] net/sched: act_gate: Limit the max value for cycletime
+Date: Sat, 22 Aug 2026 13:20:12 -0700
+Message-ID: <20260822202012.2229309-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <tencent_19FD76F366C43D4737EE9682371A4BF87409@qq.com>
+References: <tencent_19FD76F366C43D4737EE9682371A4BF87409@qq.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,240 +54,150 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Verify that TCP_AO_DEL_KEY can remove a TCP-AO key scoped to a VRF.
-
-Assisted-by: Codex:GPT-5
-Signed-off-by: Rastislav Szabo <rastislav.szabo@isovalent.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Acked-by: Dmitry Safonov <dima@arista.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 ---
-Changes in v2:
-- Put async on the same line as current_key in test_del_key().
-- Add review tags.
+net/sched: act_gate: Limit the max value for cycletime
 
- .../selftests/net/tcp_ao/key-management.c     | 67 ++++++++++++-------
- .../testing/selftests/net/tcp_ao/lib/aolib.h  |  6 +-
- tools/testing/selftests/net/tcp_ao/lib/sock.c |  4 +-
- 3 files changed, 51 insertions(+), 26 deletions(-)
+The patch clamps a user supplied TCA_GATE_CYCLE_TIME to S64_MAX in
+tcf_gate_init() before storing it in p->tcfg_cycletime, so that the
+ktime_t (s64) arithmetic used to compute gate close times does not see a
+negative cycle.  It is tagged as the fix for a syzbot soft lockup inside
+gate_timer_func().
 
-diff --git a/tools/testing/selftests/net/tcp_ao/key-management.c b/tools/testing/selftests/net/tcp_ao/key-management.c
-index d86bb380b79f..0451f92f4645 100644
---- a/tools/testing/selftests/net/tcp_ao/key-management.c
-+++ b/tools/testing/selftests/net/tcp_ao/key-management.c
-@@ -63,8 +63,8 @@ static int prepare_lsk(union tcp_addr *addr, uint8_t sndid, uint8_t rcvid)
- 	return sk;
- }
- 
--static int test_del_key(int sk, uint8_t sndid, uint8_t rcvid, bool async,
--			int current_key, int rnext_key)
-+static int test_del_key(int sk, uint8_t sndid, uint8_t rcvid, int ifindex,
-+			bool async, int current_key, int rnext_key)
- {
- 	struct tcp_ao_info_opt ao_info = {};
- 	struct tcp_ao_getsockopt key = {};
-@@ -76,6 +76,10 @@ static int test_del_key(int sk, uint8_t sndid, uint8_t rcvid, bool async,
- 	del.prefix = DEFAULT_TEST_PREFIX;
- 	del.sndid = sndid;
- 	del.rcvid = rcvid;
-+	if (ifindex) {
-+		del.keyflags = TCP_AO_KEYF_IFINDEX;
-+		del.ifindex = ifindex;
-+	}
- 
- 	if (current_key >= 0) {
- 		del.set_current = 1;
-@@ -95,7 +99,8 @@ static int test_del_key(int sk, uint8_t sndid, uint8_t rcvid, bool async,
- 
- 	tcp_addr_to_sockaddr_in(&sockaddr, &this_ip_dest, 0);
- 	err = test_get_one_ao(sk, &key, &sockaddr, sizeof(sockaddr),
--			      DEFAULT_TEST_PREFIX, sndid, rcvid);
-+			      DEFAULT_TEST_PREFIX, sndid, rcvid,
-+			      del.keyflags, del.ifindex);
- 	if (!err)
- 		return -EEXIST;
- 	if (err != -E2BIG)
-@@ -112,12 +117,12 @@ static int test_del_key(int sk, uint8_t sndid, uint8_t rcvid, bool async,
- }
- 
- static void try_delete_key(char *tst_name, int sk, uint8_t sndid, uint8_t rcvid,
--			   bool async, int current_key, int rnext_key,
-+			   int ifindex, bool async, int current_key, int rnext_key,
- 			   fault_t inj)
- {
- 	int err;
- 
--	err = test_del_key(sk, sndid, rcvid, async, current_key, rnext_key);
-+	err = test_del_key(sk, sndid, rcvid, ifindex, async, current_key, rnext_key);
- 	if ((err == -EBUSY && fault(BUSY)) || (err == -EINVAL && fault(CURRNEXT))) {
- 		test_ok("%s: key deletion was prevented", tst_name);
- 		return;
-@@ -236,15 +241,15 @@ static void check_closed_socket(void)
- 	int sk;
- 
- 	sk = prepare_sk(&this_ip_dest, 200, 200);
--	try_delete_key("closed socket, delete a key", sk, 200, 200, 0, -1, -1, 0);
--	try_delete_key("closed socket, delete all keys", sk, 100, 100, 0, -1, -1, 0);
-+	try_delete_key("closed socket, delete a key", sk, 200, 200, 0, 0, -1, -1, 0);
-+	try_delete_key("closed socket, delete all keys", sk, 100, 100, 0, 0, -1, -1, 0);
- 	close(sk);
- 
- 	sk = prepare_sk(&this_ip_dest, 200, 200);
- 	if (test_set_key(sk, 100, 200))
- 		test_error("failed to set current/rnext keys");
--	try_delete_key("closed socket, delete current key", sk, 100, 100, 0, -1, -1, FAULT_BUSY);
--	try_delete_key("closed socket, delete rnext key", sk, 200, 200, 0, -1, -1, FAULT_BUSY);
-+	try_delete_key("closed socket, delete current key", sk, 100, 100, 0, 0, -1, -1, FAULT_BUSY);
-+	try_delete_key("closed socket, delete rnext key", sk, 200, 200, 0, 0, -1, -1, FAULT_BUSY);
- 	close(sk);
- 
- 	sk = prepare_sk(&this_ip_dest, 200, 200);
-@@ -254,10 +259,12 @@ static void check_closed_socket(void)
- 	if (test_add_key(sk, "Glory to Ukraine!", this_ip_dest,
- 			 DEFAULT_TEST_PREFIX, 12, 13))
- 		test_error("test_add_key()");
--	try_delete_key("closed socket, delete a key + set current/rnext", sk, 100, 100, 0, 10, 13, 0);
--	try_delete_key("closed socket, force-delete current key", sk, 10, 11, 0, 200, -1, 0);
--	try_delete_key("closed socket, force-delete rnext key", sk, 12, 13, 0, -1, 200, 0);
--	try_delete_key("closed socket, delete current+rnext key", sk, 200, 200, 0, -1, -1, FAULT_BUSY);
-+	try_delete_key("closed socket, delete a key + set current/rnext", sk,
-+		       100, 100, 0, 0, 10, 13, 0);
-+	try_delete_key("closed socket, force-delete current key", sk, 10, 11, 0, 0, 200, -1, 0);
-+	try_delete_key("closed socket, force-delete rnext key", sk, 12, 13, 0, 0, -1, 200, 0);
-+	try_delete_key("closed socket, delete current+rnext key", sk,
-+		       200, 200, 0, 0, -1, -1, FAULT_BUSY);
- 	close(sk);
- 
- 	sk = prepare_sk(&this_ip_dest, 200, 200);
-@@ -272,6 +279,18 @@ static void check_closed_socket(void)
- 				  this_ip_dest, DEFAULT_TEST_PREFIX,
- 				  false, true, 20, 10, 0);
- 	close(sk);
-+
-+	if (!should_skip_test("closed socket, add + delete VRF-scoped key",
-+			      KCONFIG_NET_VRF)) {
-+		sk = prepare_sk(&this_ip_dest, 200, 200);
-+		if (test_add_key_vrf(sk, SECOND_PASSWORD, TCP_AO_KEYF_IFINDEX,
-+				     this_ip_dest, DEFAULT_TEST_PREFIX,
-+				     test_vrf_ifindex, 201, 201))
-+			test_error("test_add_key_vrf()");
-+		try_delete_key("closed socket, add + delete VRF-scoped key", sk, 201, 201,
-+			       test_vrf_ifindex, 0, -1, -1, 0);
-+		close(sk);
-+	}
- }
- 
- static void assert_no_current_rnext(const char *tst_msg, int sk)
-@@ -322,8 +341,8 @@ static void check_listen_socket(void)
- 	int sk, err;
- 
- 	sk = prepare_lsk(&this_ip_dest, 200, 200);
--	try_delete_key("listen socket, delete a key", sk, 200, 200, 0, -1, -1, 0);
--	try_delete_key("listen socket, delete all keys", sk, 100, 100, 0, -1, -1, 0);
-+	try_delete_key("listen socket, delete a key", sk, 200, 200, 0, 0, -1, -1, 0);
-+	try_delete_key("listen socket, delete all keys", sk, 100, 100, 0, 0, -1, -1, 0);
- 	close(sk);
- 
- 	sk = prepare_lsk(&this_ip_dest, 200, 200);
-@@ -345,8 +364,10 @@ static void check_listen_socket(void)
- 	if (listen(sk, 10))
- 		test_error("listen()");
- 	assert_no_current_rnext("listen() after current/rnext keys set", sk);
--	try_delete_key("listen socket, delete current key from before listen()", sk, 100, 100, 0, -1, -1, FAULT_FIXME);
--	try_delete_key("listen socket, delete rnext key from before listen()", sk, 200, 200, 0, -1, -1, FAULT_FIXME);
-+	try_delete_key("listen socket, delete current key from before listen()", sk,
-+		       100, 100, 0, 0, -1, -1, FAULT_FIXME);
-+	try_delete_key("listen socket, delete rnext key from before listen()", sk,
-+		       200, 200, 0, 0, -1, -1, FAULT_FIXME);
- 	close(sk);
- 
- 	assert_no_tcp_repair();
-@@ -359,13 +380,13 @@ static void check_listen_socket(void)
- 			 DEFAULT_TEST_PREFIX, 12, 13))
- 		test_error("test_add_key()");
- 	try_delete_key("listen socket, delete a key + set current/rnext", sk,
--		       100, 100, 0, 10, 13, FAULT_CURRNEXT);
-+		       100, 100, 0, 0, 10, 13, FAULT_CURRNEXT);
- 	try_delete_key("listen socket, force-delete current key", sk,
--		       10, 11, 0, 200, -1, FAULT_CURRNEXT);
-+		       10, 11, 0, 0, 200, -1, FAULT_CURRNEXT);
- 	try_delete_key("listen socket, force-delete rnext key", sk,
--		       12, 13, 0, -1, 200, FAULT_CURRNEXT);
-+		       12, 13, 0, 0, -1, 200, FAULT_CURRNEXT);
- 	try_delete_key("listen socket, delete a key", sk,
--		       200, 200, 0, -1, -1, 0);
-+		       200, 200, 0, 0, -1, -1, 0);
- 	close(sk);
- 
- 	sk = prepare_lsk(&this_ip_dest, 200, 200);
-@@ -1131,7 +1152,6 @@ static void check_established_socket(void)
- {
- 	unsigned int port = test_server_port;
- 
--	setup_vrfs();
- 	try_client_run("client: Check current/rnext keys unset before connect()",
- 		       port++, 20, -1, -1);
- 	try_client_run("client: Check current/rnext keys set before connect()",
-@@ -1150,6 +1170,7 @@ static void *client_fn(void *arg)
- {
- 	if (inet_pton(TEST_FAMILY, TEST_WRONG_IP, &wrong_addr) != 1)
- 		test_error("Can't convert ip address %s", TEST_WRONG_IP);
-+	setup_vrfs();
- 	check_closed_socket();
- 	check_listen_socket();
- 	check_established_socket();
-@@ -1158,6 +1179,6 @@ static void *client_fn(void *arg)
- 
- int main(int argc, char *argv[])
- {
--	test_init(121, server_fn, client_fn);
-+	test_init(122, server_fn, client_fn);
- 	return 0;
- }
-diff --git a/tools/testing/selftests/net/tcp_ao/lib/aolib.h b/tools/testing/selftests/net/tcp_ao/lib/aolib.h
-index ebb2899c12fe..53be1744237e 100644
---- a/tools/testing/selftests/net/tcp_ao/lib/aolib.h
-+++ b/tools/testing/selftests/net/tcp_ao/lib/aolib.h
-@@ -404,7 +404,8 @@ static inline int test_prepare_def_key(struct tcp_ao_add *ao,
- 
- extern int test_get_one_ao(int sk, struct tcp_ao_getsockopt *out,
- 			   void *addr, size_t addr_sz,
--			   uint8_t prefix, uint8_t sndid, uint8_t rcvid);
-+			   uint8_t prefix, uint8_t sndid, uint8_t rcvid,
-+			   uint8_t keyflags, int ifindex);
- extern int test_get_ao_info(int sk, struct tcp_ao_info_opt *out);
- extern int test_set_ao_info(int sk, struct tcp_ao_info_opt *in);
- extern int test_cmp_getsockopt_setsockopt(const struct tcp_ao_add *a,
-@@ -418,7 +419,8 @@ static inline int test_verify_socket_key(int sk, struct tcp_ao_add *key)
- 	int err;
- 
- 	err = test_get_one_ao(sk, &key2, &key->addr, sizeof(key->addr),
--			      key->prefix, key->sndid, key->rcvid);
-+			      key->prefix, key->sndid, key->rcvid,
-+			      key->keyflags, key->ifindex);
- 	if (err)
- 		return err;
- 
-diff --git a/tools/testing/selftests/net/tcp_ao/lib/sock.c b/tools/testing/selftests/net/tcp_ao/lib/sock.c
-index ef8e9031d47a..2e7b06a1a156 100644
---- a/tools/testing/selftests/net/tcp_ao/lib/sock.c
-+++ b/tools/testing/selftests/net/tcp_ao/lib/sock.c
-@@ -252,7 +252,7 @@ static int test_get_ao_keys_nr(int sk)
- 
- int test_get_one_ao(int sk, struct tcp_ao_getsockopt *out,
- 		void *addr, size_t addr_sz, uint8_t prefix,
--		uint8_t sndid, uint8_t rcvid)
-+		uint8_t sndid, uint8_t rcvid, uint8_t keyflags, int ifindex)
- {
- 	struct tcp_ao_getsockopt tmp = {};
- 	socklen_t tmp_sz = sizeof(tmp);
-@@ -262,6 +262,8 @@ int test_get_one_ao(int sk, struct tcp_ao_getsockopt *out,
- 	tmp.prefix = prefix;
- 	tmp.sndid  = sndid;
- 	tmp.rcvid  = rcvid;
-+	tmp.keyflags = keyflags;
-+	tmp.ifindex = ifindex;
- 	tmp.nkeys  = 1;
- 
- 	ret = getsockopt(sk, IPPROTO_TCP, TCP_AO_GET_KEYS, &tmp, &tmp_sz);
+Closes: https://syzkaller.appspot.com/bug?extid=0054fed3dc9085390f51
+
+> diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
+> index fdbfcaa3e2ab..ad5a6d75bbda 100644
+> --- a/net/sched/act_gate.c
+> +++ b/net/sched/act_gate.c
+> @@ -501,6 +501,8 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
+>  			cycle = ktime_add_ns(cycle, entry->interval);
+>  		cycletime = cycle;
+>  	}
+> +	if (cycletime > S64_MAX)
+> +		cycletime = S64_MAX;
+
+[Severity: High]
+This isn't a bug introduced by this patch, since cycletime == S64_MAX
+combined with a non-zero basetime already wrapped before it, but does
+clamping to S64_MAX actually close the reported soft lockup?
+
+The consumers do not use the cycle value on its own, they compute an
+absolute expiry as base + (n + 1) * cycle with plain signed ktime
+arithmetic:
+
+net/sched/act_gate.c:gate_get_start_time() {
+	...
+	cycle = param->tcfg_cycletime;
+
+	n = div64_u64(ktime_sub_ns(now, base), cycle);
+	*start = ktime_add_ns(base, (n + 1) * cycle);
+}
+
+With cycle == S64_MAX and any non-zero basetime that is not in the
+future, div64_u64(now - base, S64_MAX) is 0, so the addition is
+base + S64_MAX and wraps negative (for a basetime of 1000 ns, start
+becomes S64_MIN + 1000).  gate_start_timer() then takes
+min_t(ktime_t, start, expires) and arms the timer with that past
+absolute value in HRTIMER_MODE_ABS_SOFT.
+
+gate_timer_func() recomputes the same wrapped value on every invocation:
+
+net/sched/act_gate.c:gate_timer_func() {
+	...
+	if (ktime_after(now, close_time)) {
+		cycle = p->tcfg_cycletime;
+		base = ns_to_ktime(p->tcfg_basetime);
+		n = div64_u64(ktime_sub_ns(now, base), cycle);
+		close_time = ktime_add_ns(base, (n + 1) * cycle);
+	}
+	...
+	hrtimer_set_expires(&gact->hitimer, close_time);
+	...
+	return HRTIMER_RESTART;
+}
+
+Since the expiry never advances past now, doesn't __hrtimer_run_queues()
+keep re-running the callback in the same softirq pass, reproducing the
+watchdog trace quoted in the changelog?  Only basetime == 0
+self-corrects, because 0 + S64_MAX stays positive, which would explain
+why the syzbot reproducer no longer trips; adding a base-time of 1000
+appears to trip it again.
+
+Two follow-on effects of that loop: gate_timer_func() re-takes
+gact->tcf_lock on every iteration, and hrtimer_cancel() in
+tcf_gate_cleanup() (and on the replace path in tcf_gate_init()) can
+never see the perpetually re-armed timer dequeued, so the params and
+entry list are never handed to call_rcu(&p->rcu,
+tcf_gate_params_free_rcu).
+
+Note also that TCA_GATE_BASE_TIME is read with a plain nla_get_u64()
+and gate_policy declares it as unrestricted NLA_U64, so any
+basetime/cycletime pair whose sum exceeds S64_MAX wraps the same way,
+for example cycletime = 2^62 with basetime = 3 * 2^62.  Would bounding
+the computed expiry instead (basetime + cycletime <= KTIME_MAX), or
+rejecting the input in a narrower range as sch_taprio does, be a better
+fit?
+
+Related to this, the changelog says:
+
+    When initializing cycletime, ensuring its value does not exceed
+    S64_MAX guarantees that the hrtimer can correctly calculate a valid
+    expiry time.
+
+Given the wrap in base + (n + 1) * cycle above, is that guarantee
+accurate for non-zero basetime?
+
+[Severity: Medium]
+Should an out-of-range cycle time be rejected rather than silently
+rewritten?
+
+gate_policy declares the attribute with no range restriction:
+
+	[TCA_GATE_CYCLE_TIME]		= { .type = NLA_U64 },
+
+and tcf_gate_dump() echoes the stored value back in the same attribute:
+
+	if (nla_put_u64_64bit(skb, TCA_GATE_CYCLE_TIME,
+			      p->tcfg_cycletime, TCA_GATE_PAD))
+
+so a request with cycle-time 0xffffffffffffffff now succeeds, while a
+subsequent dump reports S64_MAX.  There is no -EINVAL, no
+NL_SET_BAD_ATTR and no extack message on that path.
+
+A later replace that omits the attribute also inherits the rewritten
+value:
+
+net/sched/act_gate.c:tcf_gate_init() {
+	...
+			if (!err && !tb[TCA_GATE_CYCLE_TIME])
+				cycletime = cur_p->tcfg_cycletime;
+	...
+}
+
+Every other invalid input in this file is rejected with -EINVAL plus
+extack (interval == 0 in fill_gate_entry(), bad clockid in
+gate_clock_resolve(), empty entry list), and the same knob in
+sch_taprio is rejected rather than clamped:
+
+net/sched/sch_taprio.c:parse_taprio_schedule() {
+	...
+		if (cycle < 0 || cycle > INT_MAX) {
+			NL_SET_ERR_MSG(extack, "'cycle_time' is too big");
+			return -EINVAL;
+		}
+	...
+}
+
+The branch immediately above the new check cannot exceed S64_MAX, since
+intervals are non-zero u32 values and roughly 2^31 entries would be
+needed, so the check only covers the user supplied attribute.  Could it
+move to the parse stage and return -EINVAL with NL_SET_BAD_ATTR on
+TCA_GATE_CYCLE_TIME instead?
+
+>  	p->tcfg_cycletime = cycletime;
+>  	p->tcfg_cycletime_ext = cycletime_ext;
+>
 -- 
-2.43.0
+pw-bot: cr
