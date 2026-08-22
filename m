@@ -1,112 +1,184 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431082D9792
-	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 08:56:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787388974; cv=none; b=nMQwlY+JoWS57aTXOchNv3Z+TwzX11ikHMqOuLOoZDi+daso288us4fTZ4Poxs0LM4HIPpc/6z6eOn5TpCylwE1sGhs7cgKySlbmDEysj91Ds+jJN04YucBXbE2PikZd33x9oPxTxowWszEyUzNHyTUqWC+e2FFEP7IyhNIp48Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787388974; c=relaxed/simple;
-	bh=/jmuCUjs41CYQ7kdv95y2qeY8k2bpfzz3gHEco6cbQM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fm51Blj/+HUE57b3xdn3+5jIgnoS/aJ4NMOoFdExohkOHwPBATkzKwHO5p+pLJAf+UKN9EUGzFng3ikSAqbMu7oWPHEha7JGxDIuCf0N24CVYRz6Y3Xl14K9r+vnS+eMdbMGxgPAuEPEnSkicCh0YkOQsurVfvc31hp0NcpxlmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yxb1eeqt; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585A038A70B
+	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 09:08:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.182
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787389683; cv=pass; b=JIVyBBzHUg/RjEdZbmy0IXShW5T9m8Krll86wWnCnwhcKKeFFqsji5Ds/Io2ChniLJogc+PaDOE2CkkDX7sl0j91GgdqRM4TCx3OsbIkYEa2Z6LnmzXRE4tiTyjY5/ti9/Tf2HmruCLmQR2OgHe4pzxi/FIxroCZcoVvhjzRu0g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787389683; c=relaxed/simple;
+	bh=LSY6pZTY0pN1XLw/IWutO45ypUvbEMPOBZu3gQ9gNVg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=N5g7+xiJm8/LJgM4GRubujPqbjx2P+IythVplXyjwx3fPHmb65ze6Lv8tcP8wHwhyXoVSVTpHEY4FUbQFf4nHYOpzqAY/n/EIe9tBwyi/4Hojw4mrkJxzdyvrrUMxNFdBq42Vth5afougnWlbFNoRRRce1VhunAC3/wshFn4gSs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h5j0/gde; arc=pass smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yxb1eeqt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 414131F000E9;
-	Sat, 22 Aug 2026 08:56:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787388972;
-	bh=6YE7rVKkppuVjzkxFH0bH0kbXzu8LKHWY6a+DsEbwnU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Yxb1eeqtycN/SSjtnUdYrw/LYXrdiQnrfclXmZl1EnqW6GnV/H17v80wm01TQKggo
-	 z01SZ5rAmYjyRU7i8Ok5QjqSoniTf61ZB7kwT0Bc22PX7yOG+qEm/poEETNZjyo3rE
-	 cYHmVXhTAfkpGw44d0pMJek0aOoOf4/kB1sP7PsmKU3UDLfOkzqxiG7wgJzDXyMCsd
-	 Mc2Dy7HdPBM1/XuED/DsfudhKBxx9dUas6pXtDUVzCk/Tfknp/MH4Y8mHvVoxqbqUm
-	 L94vNphRi/iZp1N3EppGc2txslRVN7iwCXSzi5gNtgE1KP+nZmweePDVWvS6hsVEfm
-	 PUupfJ9CtgnWA==
-Date: Sat, 22 Aug 2026 10:56:10 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Daniel Pawlik <pawlik.dan@gmail.com>
-Cc: netdev@vger.kernel.org, linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, kuba@kernel.org, nbd@nbd.name,
-	sean.wang@mediatek.com, Mark-MC.Lee@mediatek.com,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	andrew+netdev@lunn.ch, yangshiji66@outlook.com
-Subject: Re: [PATCH v10 1/2] net: airoha: npu: fix missing streaming DMA mask
-Message-ID: <aolkKmwLsvnmG8Td@lore-qca>
-References: <20260820085941.380401-1-pawlik.dan@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h5j0/gde"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2cf52d15d88so15372915ad.2
+        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 02:08:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787389681; cv=none;
+        d=google.com; s=arc-20260327;
+        b=FCm+IHl52R+9QSHUClGKWnRsbhVgRerAiQWvnlubyk+CWgu6tkN2bT7pNNOnD3g3XC
+         n1q/Hx45WsAodgDsl/9bSEVBUqnUiLzTBQk9DhDQZy6+IcNyoi/1ELJB002C+IxvVAa4
+         8kxZZ0B981cD7Vf1WnBS95/fU0OURUKZX/zEnUQvnmAfAMoWBFSTRN0r/F33HGJeud95
+         krjlRHCXzMVI9Gim2KnF6dMUGoIIf+wNNHp+8JI+F0ifs6PWdk/eh9ykhFcafATTpCJs
+         lZf5V//Qm7lxuILzOtijTXU6hMrgRaBdoBmKdWRyRxYJkvienGq2kWkQbl/pqsefj0yN
+         D21A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=6woqWYh79iNFHKYUnyFN0FJNuKmn+PKqFBiyiz14Gxc=;
+        fh=Y4t95OSII3ojq+ql5TMZeXnny7UDpmcYwfEX9/JstmQ=;
+        b=BDKa2Yr4IdRbMasoxnqedV9CQnUv92ZtcJqKkVtirDuxgbUG1zWqiXTIoZXmaufDHL
+         /kMGDd4hoj4FTSqru7wAw3KiQF3YDqeO8GY72n9secgRVaqhMWjZgF4GKk34D+VrWUtI
+         UXqcWWmxQwExzi+ZieDV7gyuUu4tRC0hZ5iJkZJPu98mO8q6KD2IL3K75oFyIN4+o33E
+         7v60oEQGYeuhD2UJreRXB2HYtOlIXc+uWU5qX6biBE/liAZ3oit3id6FjS8kLnuNo3Ao
+         x8z36Btyvriec8F07FIl1Pm3YQb9mvKKVds7mYWYXvi2N1uicoSKcEdorV8wCD0bTrTw
+         +FyA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787389681; x=1787994481; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6woqWYh79iNFHKYUnyFN0FJNuKmn+PKqFBiyiz14Gxc=;
+        b=h5j0/gdeXSWJd1o0UcnL6cVZG8ZpGA+zVi5VpfyAYWwT2cJiuZSkFJ+lXxizsitDZK
+         15neFEVmHwuRJ+2T/mner9qd7Rj2yetChUg70DnvF55bytyqcZ0Lt1gfJmkiBuEsB1pp
+         V1SAIqdbVC6LiLrBVSWOTYg6kA5GDTMKuwz9mwuBOJX4D7e3NInfCLU7BnHFRK2wfrEG
+         ZdSM3O8cRCgE+bFpM8mz6xY0nmXvvUAG8khUSwbsXe8BatQPJ72Y7xZUN/YOwU31bymC
+         UV2iwph/1zqThjXQNIto1SdUPHrxD+APLFzQIBaQFoE2UZxE5GvP7c7ncCN0zbRfCIxP
+         7ygw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787389681; x=1787994481;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=6woqWYh79iNFHKYUnyFN0FJNuKmn+PKqFBiyiz14Gxc=;
+        b=Nt+8h4RlqXSu7ghn3YoqzCCL18S5wML16XexcyfOqfOR2UGQ/iuqv5viCDyVogrxC5
+         6Bhm4cJX7eDZAsm5xFwSP9BEQQqNPcVyP+KS4b1536BVPLt2e/zQt9a+5IeVo5jNLbxf
+         JCZ6AEABEaZQGJ+47wvvFcg3b1mfd72QmfMkwVQw6J7xkIKFvDtrMJq/ifCGYB2Gask9
+         F3LkzL9lT45R2tsrPVOMrI2fWeyWDoovAlic1CeGpi0c4oft3dh8tI8fW3apjhMh3IuN
+         7cUFkFmUQ6I/UPwogtEUt+d7WlKn0gG6oabLnWnVuKZgWlIdwblLZdQaW3wXiYf8JjDi
+         kVaQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrMq8hgqgAFgK7dm34s8XiuX6KFUJZXNqH190jnADG68bZ0S9GbnQdLsAhGrM2Um7qkncmQ8yU=@vger.kernel.org
+X-Gm-Message-State: AFuF++npjWLD1s+cPiHUox2/0rd02rJNcvGpViI6O5KtmKwtuWg2Z/zs
+	7qut/UCRn+vq1VnBsKb0LRffeJyM1PBCilvp2FBVMNmhwDbSVxOVPUv8HnhUZYsNgIeaAqN02tl
+	pW2Z60bxy9mRArZF6W9ZLoR6A1d0Rf4U=
+X-Gm-Gg: AR+sD111Q163LDuri9Wqtf+nWF7OVCWGFW69azXM3Hz7gh87UQje28z6WrcWVRp04iX
+	KWPpGytbwAT0w6ECtwvTt+hmyLQkNgmJ7DynFbSo8nl+ekipisJ97MM64zGzNHtRIPKZVFGECc7
+	Um7ZFrUkuLOKU3T7jSeWNgVXUlgPPbrFH7CjUt8klqszHrYs0jB901VGEorqY8YpVsUInSS7sd+
+	TDet9zRJWI2sbE3fYyanDig7Q2PFNQf9cpAs46ew1PNqQBPLvZ28S6xdoNADZE5vzmuOuXwcHOW
+	n32AOkYycjD/3Ww5Y8Npfk2trMamsR1EcVRKIkm8qsS+CW8lOgNSkBZ9wGmX3cBfnBqI+Wk5EJZ
+	KzDDewjwGrhW1MS44mxkN+z9SkV/mwigwCNAKIVLYofolX75cVQGylwLaKcQayFcAbUaEJTqbpL
+	H4/Uxf1fAx/W0sRg==
+X-Received: by 2002:a17:902:f70e:b0:2cf:afa5:b19a with SMTP id
+ d9443c01a7336-2d64afd7c86mr244956595ad.11.1787389681421; Sat, 22 Aug 2026
+ 02:08:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="4UCTKtFfDws+VdJ1"
-Content-Disposition: inline
-In-Reply-To: <20260820085941.380401-1-pawlik.dan@gmail.com>
+References: <20260820111416.97917-1-phucduc.bui@gmail.com> <GV2PR04MB1173976A5DA80B2816493C84788A32@GV2PR04MB11739.eurprd04.prod.outlook.com>
+In-Reply-To: <GV2PR04MB1173976A5DA80B2816493C84788A32@GV2PR04MB11739.eurprd04.prod.outlook.com>
+From: Bui Duc Phuc <phucduc.bui@gmail.com>
+Date: Sat, 22 Aug 2026 16:07:49 +0700
+X-Gm-Features: AcwNN1VGh6KPneuM_bjYGwgQLpofzFqg25qsf12ZcvTaHcRYfF44Rr3qalHtEew
+Message-ID: <CAABR9nFeaLMzk=2_HGvCktZwU7DmNWsHV-vHSBGwbWU8k-TLfg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] net: fec: Propagate PTP initialization errors
+To: Wei Fang <wei.fang@nxp.com>
+Cc: Frank Li <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Richard Cochran <richardcochran@gmail.com>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
---4UCTKtFfDws+VdJ1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi Wei Fang,
 
-> The driver calls dma_set_coherent_mask() but never dma_set_mask(),
-> leaving the streaming DMA mask at the bus default. On the non-coherent
-> EN7581 platform (Cortex-A53), this causes the NPU mailbox to hang
-> after approximately 41 calls when using streaming DMA mappings.
->=20
-> Replace dma_set_coherent_mask() with dma_set_mask_and_coherent() to
-> set both the streaming and coherent DMA masks, matching standard
-> driver practice.
->=20
-> Fixes: 6f884eb87a79 ("net: airoha: Fix DMA direction for NPU mailbox buff=
-er")
-> Link: https://patchwork.kernel.org/project/linux-mediatek/patch/202608141=
-10017.2795022-1-pawlik.dan@gmail.com/
-> Link: https://patchwork.kernel.org/project/linux-mediatek/patch/202608091=
-52813.585797-1-pawlik.dan@gmail.com/
-> Link: https://patchwork.kernel.org/project/linux-mediatek/patch/202608050=
-70851.2885888-1-pawlik.dan@gmail.com/
-> Assisted-by: Claude:claude-opus-4-6
-> Signed-off-by: Daniel Pawlik <pawlik.dan@gmail.com>
+Thank you for your review.
 
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> > +     if (irq > 0) {
+> >               ret = devm_request_irq(&pdev->dev, irq, fec_pps_interrupt,
+> >                                      0, pdev->name, ndev);
+> >               if (ret < 0)
+> > -                     dev_warn(&pdev->dev, "request for pps irq failed(%d)\n",
+> > -                              ret);
+>
+> Why remove the diagnostic log?
+>
 
-> ---
->  drivers/net/ethernet/airoha/airoha_npu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ether=
-net/airoha/airoha_npu.c
-> index b679bed952de..4045d1eb93ea 100644
-> --- a/drivers/net/ethernet/airoha/airoha_npu.c
-> +++ b/drivers/net/ethernet/airoha/airoha_npu.c
-> @@ -766,7 +766,7 @@ static int airoha_npu_probe(struct platform_device *p=
-dev)
->  		npu->irqs[i] =3D irq;
->  	}
-> =20
-> -	err =3D dma_set_coherent_mask(dev, DMA_BIT_MASK(32));
-> +	err =3D dma_set_mask_and_coherent(dev, DMA_BIT_MASK(32));
->  	if (err)
->  		return err;
-> =20
-> --=20
-> 2.55.0
->=20
+The reason is that the error is already logged deeper in the call chain,
+after devm_request_irq() goes through several layers, with sufficient details:
 
---4UCTKtFfDws+VdJ1
-Content-Type: application/pgp-signature; name=signature.asc
+-----------------------------------------------------------------------------------------
+return dev_err_probe(dev, rc, "request_irq(%u) %ps %ps %s\n",
+                                    irq, handler, thread_fn, devname ? : "");
+-----------------------------------------------------------------------------------------
 
------BEGIN PGP SIGNATURE-----
+Therefore, I removed the diagnostic in this function to avoid duplicate error
+messages.
+If you prefer, I can keep it.
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaolkKgAKCRA6cBh0uS2t
-rNLJAQClqStH75ruqGvASzQdetMn8Ppz4CPPTVAsMWPo/akT/wD9ECaDg33ScsTK
-Dsxo0yNMrKwF78XzKE85XmFCUxf7jw8=
-=mecl
------END PGP SIGNATURE-----
+> >       if (IS_ERR(fep->ptp_clock)) {
+> >               fep->ptp_clock = NULL;
+> >               dev_err(&pdev->dev, "ptp_clock_register failed\n");
+> > +             return PTR_ERR(fep->ptp_clock);
+>
+> fep->ptp_clock is set to NULL on the line immediately before
+> PTR_ERR(fep->ptp_clock) is evaluated, so PTR_ERR receives NULL rather
+> than the original ERR_PTR value.
+>
 
---4UCTKtFfDws+VdJ1--
+You're right. This was an oversight on my part.
+The error value should be saved before clearing fep->ptp_clock:
+
+---------------------------------------------------------------------------
+if (IS_ERR(fep->ptp_clock)) {
+        ret = PTR_ERR(fep->ptp_clock);
+        fep->ptp_clock = NULL;
+        dev_err(&pdev->dev, "ptp_clock_register failed\n");
+        return ret;
+}
+--------------------------------------------------------------------------
+
+>
+> Additionally, the second patch can be merged with this patch. There is no
+> need to use two separate patches.
+>
+
+The error propagation part in the second patch is directly related to
+the first patch :
+
+------------------------------------------------------------
+-       if (fep->bufdesc_ex)
+-               fec_ptp_init(pdev, irq_cnt);
++       if (fep->bufdesc_ex) {
++               ret = fec_ptp_init(pdev, irq_cnt);
++               if (ret)
++                       goto failed_reset;
++       }
+------------------------------------------------------------
+
+So I agree that this part can be merged into the first patch.
+However, the change in failed_init is an independent pre-existing bug:
+
+-------------------------------------------------
+ failed_init:
+-       fec_ptp_stop(pdev);
++       if (fep->bufdesc_ex)
++               fec_ptp_stop(pdev);
+-------------------------------------------------
+
+Therefore, I think it would be better to keep this part as a separate patch so
+that the Fixes: tag can correctly identify the commit that introduced the bug.
+
+What do you think?
+
+Best regards,
+Phuc
