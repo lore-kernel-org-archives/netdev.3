@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C007B2C1586;
-	Sat, 22 Aug 2026 20:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DCF3803C7;
+	Sat, 22 Aug 2026 20:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787430674; cv=none; b=rVPDc/uNR1J0lVIPm+lSTzPSiyVcA2fzXltqJ3MpujMbxYx/VHEIPHLd2t7TjtOTbSbYQRwYcBqDZ5KbR9Zb2BilTLDmFvQyQ18nrJGVivY97vJ52BbUdeKCaBiqlZms12KlXauLnm36zC9Xb1xjR5Jn9uxhyn2RhiP8yqqY/oE=
+	t=1787430676; cv=none; b=gqhtDPgYRQjnu4NXoUC5t44W7+Uj58tbsChRhjXiNXpjQE8EnjPMj6T9St10fiNHathTxhGYW9Mfeu08Zc3+9H5MtL/9gVmYQjCEdHsrj9+VMIJ5Soio1HYlq/fVAsdrlXRoXonWncf2MDPxWTkzyScJl7nhfhCupV7HKeY4vNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787430674; c=relaxed/simple;
-	bh=yDzH8iljCPcuvzB0eUMSZKaMgoKwXLvINxwMKKOxwV8=;
+	s=arc-20240116; t=1787430676; c=relaxed/simple;
+	bh=bb829ReP77fPpPXBQ1aBSHRNqKouFLWIe4d842j6OF4=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=nG20JmEkSrndVt18QB3cVz+gcKZy1QqBSGA/ARX0hqV9CGgzYz8AVg9VZIQW1eAuwTGqdP0mtg6Jcbl3pd4NX8pQsd3tT5DR90fjHxfgrjSOQxGimwPXrzEHGEVTgOUOSN8vL43o+okXJ08eSPNnuDZEvLLDBiDgX178nCyB1Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pj2gwk8c; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=sPQkA0z3RMvIEogCMFYBi12X0FnQkSQJrmgI8JJpDRQktV0iV93vlCxYCfIh0dkkzY54pF0s2bifsyk8IIB+AnVXq3hr8Gi763dTCUYabPBiNGxyUCy0z+5oQ4mwSYnXEgNjeyWI0PBtllCugvmxBln+MR8Rc5klZGPsNgKq90w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IbYsD1B2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pj2gwk8c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56AF71F000E9;
-	Sat, 22 Aug 2026 20:31:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IbYsD1B2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A371F00A3A;
+	Sat, 22 Aug 2026 20:31:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787430673;
-	bh=v7vpcojRv1+YHhH/nJQaLge8CmSjruhW4FLUNpf81as=;
+	s=k20260515; t=1787430674;
+	bh=U2WhrpQyzjfizAD7WjiNO5bi7n4CM21BaILhRpMuMmA=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Pj2gwk8cXC4y390aDUciYkjT4AlGXPMXYXa64bhX5xpegDJJ62NwBclrLsOGYyD1J
-	 8VGbEFvAAiZQ/2nto7p885KD4wPB5Um0Fbas1D4HDAFuYh72vPIc4E/oi+Qm0ooHRK
-	 125m6Lsob3XztuNCMpU3q0knDdL+UzFusyKL/FeifJteDdtbB+nGvYfV18HKyLrE/Y
-	 Guhtrcfq4JhFyVPDtiaUYnLGCObfBqjaRjkzQdsRin8AJ3B6qVbOnBxxQVBGKQAjoz
-	 FwSdA+Ws5Y2dprl8qw8tP/smNn5jyZLArM9E0s/G+d+ZrWFgcpIos/e0JDsl9Bnnuy
-	 LlHVUOtlMt/+w==
+	b=IbYsD1B28Snl7Pxro13woCr2Do96Ncq0OUQywwKJzr1KILoT/m8w97s7skvNKOjfO
+	 26YIopy3u/XpRFBIrSm75kUkMR0/A6UXITmr9WyGMckXKSc9Gnf1mrGoIFSeiEdvVA
+	 RMs3vBsnGncnSL8pWlDq8i9xGjokh3JI3MecdcbaD97DVgrtjVap1DKWZRz7Zwg2GZ
+	 CiCqFVg85/03tY03e6/kowwkV7SvcyLbvjdHg/pGc5xC2ZniVkoG82hTiY8aBXlh/o
+	 hLay/oQNQhdQzp/dhXB9rerFUpZgpWQijxLvknvzjK90ws1vfJ9Kt7+d+oum6yq+J8
+	 zAIRZDnhJpdIQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56903380CEF9;
-	Sat, 22 Aug 2026 20:30:23 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0AB5380CEF9;
+	Sat, 22 Aug 2026 20:30:24 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,45 +37,45 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v5] qede: Fix NULL pointer dereference in TPA fragment
- processing
+Subject: Re: [PATCH net v3 0/2] net: sparx5: misc fixes for sparx5 and lan969x
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178743062214.1819488.4090246622562487688.git-patchwork-notify@kernel.org>
-Date: Sat, 22 Aug 2026 20:30:22 +0000
-References: <20260818073309.2266072-1-vnagare@redhat.com>
-In-Reply-To: <20260818073309.2266072-1-vnagare@redhat.com>
-To: Vaibhav Nagare <nagarevaibhav@gmail.com>
-Cc: horms@kernel.org, davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, andrew+netdev@lunn.ch, matvey.kovalev@ispras.ru,
- Pavel.Zhigulin@kaspersky.com, aelior@marvell.com, manishc@marvell.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- vnagare@redhat.com
+ <178743062338.1819488.10941044627288151617.git-patchwork-notify@kernel.org>
+Date: Sat, 22 Aug 2026 20:30:23 +0000
+References: 
+ <20260817-misc-fixes-sparx5-lan969x-v3-0-c7c7fef723a8@microchip.com>
+In-Reply-To: 
+ <20260817-misc-fixes-sparx5-lan969x-v3-0-c7c7fef723a8@microchip.com>
+To: Daniel Machon <daniel.machon@microchip.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, Steen.Hegelund@microchip.com,
+ UNGLinuxDriver@microchip.com, bigeasy@linutronix.de, clrkwllms@kernel.org,
+ rostedt@goodmis.org, bjarni.jonasson@microchip.com,
+ lars.povlsen@microchip.com, p.zabel@pengutronix.de, kees@kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steen.hegelund@microchip.com,
+ linux-rt-devel@lists.linux.dev
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 18 Aug 2026 13:03:09 +0530 you wrote:
-> Under memory pressure, the qede driver encounters NULL pointer
-> dereferences when processing TPA continuation fragments.
+On Mon, 17 Aug 2026 17:41:57 +0200 you wrote:
+> This series fixes various issues in the sparx5 driver, which also
+> serves lan969x.
 > 
-> Commit 8a8633978b84 ("qede: Add build_skb() support.") accidentally
-> dropped the assignment of tpa_info->buffer.data in qede_tpa_start().
+> Details are in the individual commit descriptions.
 > 
-> When memory pressure causes an SKB allocation failure in qede_tpa_start(),
-> the driver sets tpa_start_fail = true and attempts to recycle the physical
-> page later in qede_tpa_end() via qede_reuse_page(). However, because
-> buffer.data was left uninitialized (NULL), qede_reuse_page() pushes a
-> "ghost" BD (valid DMA mapping but NULL data pointer) back into the
-> active Rx ring.
+> Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v5] qede: Fix NULL pointer dereference in TPA fragment processing
-    https://git.kernel.org/netdev/net/c/06aa3d26327f
+  - [net,v3,1/2] net: microchip: vcap: use port number instead of netdev name for debugfs
+    https://git.kernel.org/netdev/net/c/b7adcc56fd3d
+  - [net,v3,2/2] net: sparx5: fix sleep in atomic context in MAC table access
+    https://git.kernel.org/netdev/net/c/b62793a7baee
 
 You are awesome, thank you!
 -- 
