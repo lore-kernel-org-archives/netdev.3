@@ -1,44 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2152FC8EB;
-	Sat, 22 Aug 2026 00:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A11835975;
+	Sat, 22 Aug 2026 00:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787357030; cv=none; b=O0P/LOJfMUoOCD2lmIobgREDjLdmqe84EtGmTq63wihCZ+aKfn9Q78eIOcWz0jcXL0VWr4vt+Oz2IA8fQThPcghokOz21rtv7WONvPIxl0twMq9y8dkohPmWGDixqNRvwLUz/2J2yGeHddU8/bRG2FxX8JSfYfxyzyDJ+v7W938=
+	t=1787357392; cv=none; b=n4F9D1REi594d7olUAc+2qDRBpAMHeqLkJnuq9kWVIjkeStFbRCENBFEhAsLQF1ZqwnJzoxe5aZ0i+woH7RwYBXtTLae4+zxut7OwrgGEwvjo6RFAUxL9T0F6ZJYWcyT7U1rbbQunA9W+uGu5vW/w+1gHHDt+R97b2I22xUgUjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787357030; c=relaxed/simple;
-	bh=NqoHc45I7VXGON+fDtU9Hag2iX7RjPG6uEFny+9vx4s=;
+	s=arc-20240116; t=1787357392; c=relaxed/simple;
+	bh=WrCr4YC0296g9BLq5T0GUO8apgmfaBqIuaPr8JYGYcg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y5i4aJst7Bcrax67DC6mFS3LwP9MlyL6m1k43jrKLHxWSLg0d/RcKoAbKZQgeUYrZvNVhmSQOvE/p/h7XGxaD45ANfLMiVl3Fd6kgYLsp/5Utqoj9V89DpsXvUdLHRBH1mJsekn0IHHMyhGu53mCCM/l9cBX5WYPfmHESrA/jcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MXJqTa5Q; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=s9v6j689QU9APwJO/zdShTJmglWr9YvQ5yJh13xsnsc9UZqVZkwMinBnda4D6fIPPpQ9Ap0W1Qr7t0XQaZ5TBvT7fRc3wJ5+BCv3f5+gfdYD+osQm3mduxXwMbI5zGFY6aK8HYLjKqPjkuJRQ0HYY6geaqnnL4H0RyJk1GrT6/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BLhglvGx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MXJqTa5Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF771F000E9;
-	Sat, 22 Aug 2026 00:03:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BLhglvGx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 880561F000E9;
+	Sat, 22 Aug 2026 00:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787357028;
-	bh=un4boMs1vDHu0wMf34UCmT71RQC3T3xUNRxC7MFg3BI=;
+	s=k20260515; t=1787357391;
+	bh=WrCr4YC0296g9BLq5T0GUO8apgmfaBqIuaPr8JYGYcg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=MXJqTa5Qb47WTnnPLzvt5kXZeOpMB2zeX/3buzzwCfEyjYgWJPiPEUhj3KRB8+VT4
-	 qTjZ49HqQHG9tbIjYdEHj7eI8TGD31nV5w79Y2GDUdj7o5D6fx9SvWKR2jhfLpIjmO
-	 n8ejezEguSDVRhJ4+uvLnZNFhwJKULQKGeIDZDYNEhhPU7rgA83C7ZOCJob5aTHpGL
-	 1IGtIYis210PCPYNVK/tFZ97sMbjNSd8XWTN/X61vlpAql4riLTSXLNbQYPk1ItHAC
-	 BwouWHCPHrhymvJfRrsDjYFgBje2LQi3y0NDnqSykxUeJMrU1szP4cnLqFs8M1ksqG
-	 NqdKKo73NH9XA==
-Date: Fri, 21 Aug 2026 17:03:47 -0700
+	b=BLhglvGxzxQqA/gUltIaLqbbLiIu1dh5uJMDXfjCYyHJdVCfrsLSIfbJvDQvTDvCp
+	 3STQ0labDg2YOnf4EVt+PNJLq0VmfewwisqhanXB5fjrls5QFMPQTdJAOkcipnyFXQ
+	 2GFKuHydCSKbbJ0Ixcuug4PjJleOV9wsYMM4sc/S9luzo7FKoshmR7qQ4C4WO4oNYv
+	 tQ63CHz1ptqwpmfx19uVAI/6NkJOlMGC7HtVayVU94yiP7+8IgqPso444Igxp1GVyN
+	 71ErMHo2lVU+85lvBJMTR4/Z0dowkSIExyZQePSnAU0EyT8ZC9eaPibv8OXWQoNZ2D
+	 S3rYMLisYGfDA==
+Date: Fri, 21 Aug 2026 17:09:50 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Allison Henderson <achender@kernel.org>
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, pabeni@redhat.com,
- edumazet@google.com, horms@kernel.org, jhubbard@nvidia.com,
- woni9911@gmail.com, michal.kubiak@intel.com, leon@kernel.org
-Subject: Re: [PATCH net-next v2 0/5] net/rds: own the fastpath locks across
- connection teardown
-Message-ID: <20260821170347.77cfaadd@kernel.org>
-In-Reply-To: <c3c9a3f2683a37474256b9f879f9ee896d62704c.camel@kernel.org>
-References: <20260816001510.73645-1-achender@kernel.org>
-	<20260820133832.5384be37@kernel.org>
-	<c3c9a3f2683a37474256b9f879f9ee896d62704c.camel@kernel.org>
+To: Ilya Maximets <i.maximets@ovn.org>
+Cc: Norbert Szetei <norbert@doyensec.com>, netdev@vger.kernel.org, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Aaron Conole
+ <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>, Steffen
+ Klassert <steffen.klassert@secunet.com>, Kuan-Ting Chen
+ <h3xrabbit@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ linux-kernel@vger.kernel.org, dev@openvswitch.org, Jongmin Jang
+ <payload.jang@gmail.com>, Willem de Bruijn <willemb@google.com>
+Subject: Re: [PATCH net v3 0/3] net: don't strip zerocopy frag markers from
+ a forwarded skb
+Message-ID: <20260821170950.3e278b1f@kernel.org>
+In-Reply-To: <34c64d08-0484-4f3b-b61a-ed68115d01a4@ovn.org>
+References: <F3B9E5BA-0AC1-4AD1-A7D9-F38033304270@doyensec.com>
+	<34c64d08-0484-4f3b-b61a-ed68115d01a4@ovn.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,15 +52,10 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 20 Aug 2026 22:07:26 -0700 Allison Henderson wrote:
-> The other commentary nits from the review do have merit though. If you
-> like, I can send a v3 with those corrected, but I think the code itself
-> is ok. The patch 1 comment about cong.c is a pre-existing issue similar
-> to the lost-wakeup issue that patch 1 fixes. So I can send a follow-up
-> converting those waitqueue_active() calls to wq_has_sleeper().
-> 
-> I hope that helps? Thank you for being accommodating with the branch
-> targeting.
+On Fri, 21 Aug 2026 23:45:41 +0200 Ilya Maximets wrote:
+> Unfortunately, this needs a rebase now that a conflicting change
+> for skb_zerocopy() was merged:
 
-Thanks, yes! IIUC you don't mind sending a v3 so let's go with that
-option.
+Ugh, I was supposed to merge this first, wasn't I? Sorry.
+I was hoping for Willem to TAL since skb_tx_error() is a tx ZC
+thing, now I realized that he wasn't CCed :S (please do so on v4)
