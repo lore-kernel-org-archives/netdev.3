@@ -1,90 +1,81 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A07936826B
-	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 19:53:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C3D3537E5
+	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 19:55:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787428390; cv=none; b=QPpQIpMxR/+E2CGTJnrrCcIfR2aO1/jvVTXQOjZ0Gu2baMrIW+EulkFDsXENCN2F4jfmfdtEdqNvcslJA69R7fkHS99yQY5mfXZ8OsBePWDQeW0Hh5N7Yk7SNizH9NeO6mpNpFkD5J/Kiz6Zs58dhci/airoWSq0aaYPD54jBeo=
+	t=1787428528; cv=none; b=cQUxru/bmYbIg7yLXqs5V65PpT5amRcgkMjXxe0VaeHf/BSgDsWezfNf/iloJqMa20R7fQeY/1xGje/40GyGcrLxGz9YbvpzBQkVOxOBHvK4DPuoA1+SFGPR3Y6U184T8qOmmaIVcDZk8PMm0cNBKn/13UKHsNPsiUeBUe6iATY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787428390; c=relaxed/simple;
-	bh=rYDFwLmw4rqtLoCuHgoPh3rMzXjmfiowCEUJa3nZGcQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ICtEW56zisvycfLi4UJ7n/PRPqp/fmaSjp1v5iZ+MbzFXyayDYbv/5LaQ2EWWgM+Afe1Q3Zp1UaKe/olrT98G7YtG2QsucZ2TQV0hOa+Tz5JU1T23m3tXD8xyZC12jmTjmtGqPiqj7d3yxoBXzNsHDZRccNR75jDMbO7Iv0inU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=Qu580He+; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
+	s=arc-20240116; t=1787428528; c=relaxed/simple;
+	bh=OuinkhGiY9Wlt0SjaWtdAlRrZ8kDjoV+1Q94FTYUtWo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EQOfn+wCTJm08pPi0F2edaXrTbV649kL3IgmEveJXJjdSEceUSBChXgzQ6EYyxiuOqaegDCZIlBXqEEvSMAYsSHPvBNVGb9ENFrKMM4v0tFdxZHWmAWSgD1FVqA6Ke6uWwnuz6HTwtLG/nB0A8KVzg2J+CJDZcll0flA6aXjRyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=AfMso72E; arc=none smtp.client-ip=209.85.222.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="Qu580He+"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c160420289bso321621566b.0
-        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 12:53:00 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="AfMso72E"
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-930f4e5eed1so115462285a.2
+        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 12:55:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1787428379; x=1788033179; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0uy0OKeVpCAmhbj0eyrSB4RHofJlj5Ul/6v78/RLpNA=;
-        b=Qu580He+uEEIL3Dh+cu3R6tAxCK57MEYM7jRPG4147jv28KQUuH61s6w47b/3S5i8A
-         3TYQD5lLsaoqV5ctbfuZfT+t6LM5YBOXLrlk9wOQTQYVlIkGJKbCorPJnr5X0Wa0fOY2
-         zc8yH/UHBhv+iz3vVsNlNo1PP2HECYyKiKdGozNKC4GFZ2/LWoaED/8/YA+Lm66Km3FT
-         JbF6E6IC4c5A6fdafUnQyCTjnUpRSMQCZbL/oLnUKfurcCr8g+D2/jDCypkyoD4GJup1
-         ojjbCDTn4YV3zeWPDtiUUjzh3iNdHj+iIkTdESTKQDRcdj33oPtQTRCQILNBgQd4xRM7
-         KHMQ==
+        d=mojatatu.com; s=google; t=1787428525; x=1788033325; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Pks3+xNByEla+xxq2SjPUPd0B0r/fsFaUQdyItrSd30=;
+        b=AfMso72EMoGMPLge0ZJSJ/n+PK6PelfXJHZ+PkBpfJE0X3gshHFQzNpoOO4OsTt58+
+         lsR2UDq+taAEGESMzJrhJZ8rGsaoxXU/A0ALQe5DwqyYdAC9+PsddOEkDNhXz3TVesvM
+         aJ7qTUvpi/ANNt9ZmH8HuxphcLiCJn+1fRr20=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787428379; x=1788033179;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0uy0OKeVpCAmhbj0eyrSB4RHofJlj5Ul/6v78/RLpNA=;
-        b=gSqN67popDa4ZohVf8kZvbPTMVrhlE++qdNn7o67+OJ33FOfhbqlqFhFALrtDIMkfo
-         UwrqSR2GbB4kFTMmXlEMv+q4N5gaSchF+J2UFqzIgMmhqUfX9yiNd02a8BmX6TvU/vtC
-         4LEN6DVmQ+kKhHCErHarZIreRnvnxPEDHJdA+8XT+gv8Jp02G1Jn68fx06t0+jVlmodG
-         /RQRVVszo84DIOj30ysNyCjpTFaWDHW4nxcDaFtY4petPgLKyEJKUI+0U4YUfY8aIfK2
-         1mRESOod1MXO17pMFadhmq0uDk6OYbwtRcOryBF/pGgFCXIb1n7cQ9J6eCct9tpIdFOI
-         VPrw==
-X-Forwarded-Encrypted: i=1; AHgh+RpxHHIhd4frNYyRNku0cU5EaYiIgtL9JTh92/zlF94Ri77f094h0S2xRajw0pkF3hzLAQMqPgA=@vger.kernel.org
-X-Gm-Message-State: AFuF++k8+jg/cFvU8a9YiqdXKyCgnaL4e7Xq01O5NRp9fEfJzSFdARGu
-	s1SKX+Itp5Na+0Dts2sQVBEklYR20jPnPceCJUbX14yYyLnYbln7U+6bSuJRGSM2msA=
-X-Gm-Gg: AR+sD12eXljJksUHiUSWcKhvRKMR+LprjK3GZa02177uSfqBCYWtcbNTsSpxthmCwsq
-	MLka/tR+NUG9K+xM7D2/Md8g1bQJYabJx3p7JH0i2oHm9W6m65mqdGPCnBIWxIJchQ3Z+sVD/o2
-	eSLiToFhW/F3qSsZrtHKuDAGxpVitUzhUurrtaTpRdmfZS+cF1IF14jnaSHs4iur9kT76dDKKch
-	9EyDUuBgt4LabB974GFf/mVyy6db9QO9IfK6XQ0fM3xneK4cRCR+nrJU5caMjAAEFW7MulSrQAd
-	7dR/ahBipkgvzY1GOYjhn1mt98ZGM48gxSLfrmLQKmTz5oxMYosEy0Q/G+GO1j9qJpR+VzLaXyF
-	EnwJBPzHcrqOjUYoD5cr+R6t7ywQrb22sy1kKTz0Vw5Z0+De1BUUddEu+rYWEERHoMc0KoTAWD1
-	h947WuXI6X5kyev75vUoljX6MWP71Uy2FHJImC12gjD/3YCZvq5A/zapr9T+LCgA4xSVH3XUyku
-	Lfg/n+a
-X-Received: by 2002:a17:907:ea8b:b0:c21:2c32:e2da with SMTP id a640c23a62f3a-c246a5f4515mr1912226866b.8.1787428378632;
-        Sat, 22 Aug 2026 12:52:58 -0700 (PDT)
-Received: from ownbook.home.lex.la ([84.17.55.225])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2495ee5295sm475032666b.0.2026.08.22.12.52.56
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 22 Aug 2026 12:52:58 -0700 (PDT)
-From: Aleksei Sviridkin <f@lex.la>
-To: "Chester A . Unal" <chester.a.unal@arinc9.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
+        d=1e100.net; s=20251104; t=1787428525; x=1788033325;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Pks3+xNByEla+xxq2SjPUPd0B0r/fsFaUQdyItrSd30=;
+        b=mlPCy+lHbIht8TVOVlZwQ148T3HtxdErmqUHxuiwjdFMj4jx+jZ45lOp6LC0t/nXiQ
+         tGnezcx9dAEeXhFp2/A/wyyRkvET0oda44ImcpAzBl4MWwWGfw3euTYGAd0jLaA1apMe
+         g8UepVPHqT/jdXC1EJIWqYUANJjOd0L2LSLG8wVmhICHFgQelUnvTzceW81N5zSZyTAF
+         GJakjH8z1iszlQPWZ0R25kFzN/NuYEAWY5deqEQofxx84nR5Vvi4AntWg1k1iTl0cvcw
+         jvH/ZsADYnyGjNDw+dT4V/9IwmKRY8+EfeL8rUkpXp6JiSrIJVO5QSj430oEHXFFRxH7
+         iLrg==
+X-Gm-Message-State: AFuF++ny/ugembXGF1iXi7iVvAa9KuPDI+0qIn+1eTat1KxqzunKYYlT
+	tpJ4eftGV0HjIPKEijuj68h4v1rPLYeorDmhQsS6JmoYStKkLWXIWGMApggG8/Tkhjcx0Mrq7XC
+	Yz2OvYw==
+X-Gm-Gg: AR+sD10PNSfj95n7ePE3QjNl3m3uWjGA1YAatqowexj/blx+PttynHSP8bzjXLzcRyx
+	l/WxFaHmWJcAuDQ+WKb1FRmDGhgvsvsOncXDV4wjxUc5vrVUuP1gzyBAuqZq0xswJ8/CuYh7xIf
+	zhgee3luFHshGrxL/Uwktjmd/RSq+FMQp84Hfr0Qr0XlAnJO9svH0gOGhE0mLKwd+Rdrfkbqw73
+	6vhOwgg167sgJfNxYRv1/6GdqICVA8aTDZloFgaD517bCKmAQgUZS65/xNC0zZWea9vz9EJrWfR
+	LX7joUviX5g7t4zQAfDCvMRmUnLjuq63nIKiJENE51SheDKJZCO62J2IU/J7RPbRP6dFrMh15tJ
+	5v3OESsavYgD4h3OwJkKAl0XjHRkoEtVP9n+CDCXkY6NostkzxCFv8gOu1XAfpBP28bJ0DsEwVd
+	wkyWrCcnvPAu6uMPUpD1KpTddPXfOtz97EW+t1SSxOlud6uCZ7k2af
+X-Received: by 2002:a05:620a:942:b0:936:ae3c:bc99 with SMTP id af79cd13be357-9373939a61cmr1035660585a.0.1787428525510;
+        Sat, 22 Aug 2026 12:55:25 -0700 (PDT)
+Received: from majuu.waya ([184.144.29.222])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93749adef4csm172997385a.11.2026.08.22.12.55.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 22 Aug 2026 12:55:24 -0700 (PDT)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Cc: Russell King <linux@armlinux.org.uk>,
-	Qingfang Deng <dqfext@gmail.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Aleksei Sviridkin <f@lex.la>
-Subject: [PATCH net 2/2] net: ethernet: mtk_eth_soc: populate lpi_interfaces to fix EEE support
-Date: Sat, 22 Aug 2026 22:52:52 +0300
-Message-ID: <20260822195252.2934-3-f@lex.la>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260822195252.2934-1-f@lex.la>
-References: <20260822195252.2934-1-f@lex.la>
+	Simon Horman <horms@kernel.org>,
+	"Mohit P. Tahiliani" <tahiliani@nitk.edu.in>,
+	"Sachin D . Patil" <sdp.sachin@gmail.com>,
+	"V. Saicharan" <vsaicharan1998@gmail.com>,
+	Mohit Bhasi <mohitbhasi1998@gmail.com>,
+	Leslie Monis <lesliemonis@gmail.com>,
+	Gautam Ramakrishnan <gautamramk@gmail.com>,
+	Terry Lam <vtlam@google.com>,
+	stable@vger.kernel.org,
+	vega@nebusec.ai,
+	Victor Nogueira <victor@mojatatu.com>
+Subject: [PATCH net v3 0/6] net: sched: fix quantum/mtu overflow in fq, fq_codel, sch_codel, fq_pie, hhf, sfq
+Date: Sat, 22 Aug 2026 15:55:03 -0400
+Message-Id: <20260822195509.112717-1-jhs@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -93,128 +84,96 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-mtk_add_mac() fills in phylink_config.lpi_capabilities and
-phylink_config.lpi_timer_default, but never populates
-phylink_config.lpi_interfaces. phylink only treats a MAC as supporting
-phylink managed EEE when the tx_lpi methods are implemented and both
-the LPI capabilities and the LPI interfaces are non-empty, so EEE is
-unavailable on every MAC that uses mtk_phylink_ops:
+Several qdiscs derive their per-flow quantum or CoDel mtu from
+psched_mtu() without an overflow or zero clamp, which can drive the
+dequeue/credit-refill loop into a soft lockup or silently disable the
+AQM. vega@nebusec.ai provided reports and PoCs for the following qdiscs:
+sch_fq, sch_fq_codel, sch_fq_pie, sch_hhf, and sch_sfq.
 
-  # ethtool --show-eee wan
-  Cannot get EEE settings: Not supported
+sch_codel was found by inspection for the same pattern. It's TheLinuxWay
+(i.e cutnpaste code from somewhere for your new feature) and the AIs
+are having a lot of fun finding patterns. We must overcome!
 
-even though those ops implement mac_enable_tx_lpi() and
-mac_disable_tx_lpi(). Since the methods are implemented, phylink takes
-the other branch and calls phy_disable_eee(), which fills
-eee_disabled_modes, so userspace cannot enable EEE either. MT7628 is
-unaffected, as rt5350_phylink_ops has no tx_lpi methods at all.
+Clamp the quantum (and, for the codel family, the cparams/params mtu)
+to a sane range at init/change time so the dequeue loops terminate and
+the AQM stays armed. The clamps live in the init/change paths, not the
+per-packet fast path, so no hot-path cost is added for a configuration
+issue.
 
-Copy the supported interfaces into lpi_interfaces once they are
-complete, that is after the SoC specific fixups have added and removed
-modes. In particular the netsys v3 switch path clears the bitmap
-before setting PHY_INTERFACE_MODE_INTERNAL, so copying it any earlier
-would leave stale modes behind.
+This series depends on "net/sched: bound qdisc_pkt_len to prevent qdisc
+soft lockup", which caps qdisc_pkt_len() at GSO_MAX_SIZE in
+__qdisc_calculate_pkt_len(). That cap closes the fq_codel TCA_STAB
+backlog-wrap vector (qdisc_pkt_len inflated to ~1 GiB wrapping the u32
+per-flow backlog to 0 and NULL-derefing in fq_codel_drop()); with it
+upstream this series no longer needs the fq_codel_drop() hardening hunk
+that the earlier respin carried. The five quantum/mtu fixes here are
+psched_mtu()-driven and orthogonal to the qdisc_pkt_len() cap.
 
-The MAC does not start using LPI on its own: the driver does not set
-eee_enabled_default, so phylink leaves tx_lpi_enabled false, and
-phy_check_link_status() computes enable_tx_lpi as tx_lpi_enabled &&
-eee_active. One thing does change, and it is worth being explicit
-about: phylink no longer takes the phy_disable_eee() branch, so a PHY
-that advertises EEE out of reset advertises it again instead of being
-forced quiet, and the link may negotiate EEE where it previously could
-not. Nothing on this side asserts LPI until userspace enables it with
-ethtool --set-eee.
+Q: Why not bound the MTU at the source instead? dummy's max_mtu == 0 is
+intentional (dev_validate_mtu() treats 0 as unbounded), other drivers
+can legitimately advertise large MTUs, and qdiscs must not trust
+psched_mtu() regardless.
 
-This also makes lpi_capabilities take effect for the first time, so
-correct its value in the same change. MAC_MCR only has EEE force bits
-for 100 Mbps (MAC_MCR_EEE100M) and 1 Gbps (MAC_MCR_EEE1G), and
-MAC_EEECR only carries wakeup times for those two speeds
-(MAC_EEE_WAKEUP_TIME_100, MAC_EEE_WAKEUP_TIME_1000), so the MAC cannot
-signal LPI at 2.5 Gbps: drop MAC_2500FD. Correcting the value here
-rather than in a separate patch changes nothing observable: while
-lpi_interfaces was empty, lpi_capabilities never reached
-phy->advertising_eee, so no state ever claimed 2.5 Gbps LPI.
+Conditions to recreate the bug: a device whose MTU (plus
+hard_header_len) wraps 2 * psched_mtu() or psched_mtu() into the sign
+bit (e.g. a dummy device with max_mtu == 0 accepting a huge MTU).
+Requires CAP_NET_ADMIN in a user namespace.
 
-Two sets of interfaces have to come out of lpi_interfaces as well.
-lpi_capabilities cannot express either: it masks the PHY's EEE
-advertisement, a media side property, and never gates LPI activation on
-the MAC side speed, while phylink raises the MAC speed to the interface
-maximum when the PHY rate matches (RATE_MATCH_PAUSE in
-phylink_link_up()), so 2500BASE-X would arm LPI on a 2.5 Gbps MAC even
-for a 1 Gbps media link. Separately, mtk_mac_enable_tx_lpi() refuses
-the xGMII modes outright, which on netsys v3 includes
-PHY_INTERFACE_MODE_INTERNAL, the mode MT7988's built-in 2.5G PHY runs
-in; offering those to phylink would log an error on link up once EEE is
-enabled. What that costs is limited to setups that keep the MAC on
-2500BASE-X or on an xGMII mode, neither of which the MAC has LPI bits
-for; a PHY that switches the interface down to SGMII or 1000BASE-X
-keeps LPI, as those stay in the mask.
-
-On the netsys v3 switch MAC, that empties lpi_interfaces outright,
-since PHY_INTERFACE_MODE_INTERNAL is the only interface it supports.
-Nothing changes there: it is a fixed link port with no PHY, so phylink
-had no EEE to manage on it before this patch either.
-
-Fixes: 952d7325362f ("net: ethernet: mediatek: add EEE support")
-Signed-off-by: Aleksei Sviridkin <f@lex.la>
 ---
+v2 to v3
+General: Feeback from Eric and Sashiko and one addtional qdisc from
+inspection.
+1. Split into one patch per file (Eric Dumazet).
+2. Clamp to a range [256, FQ_CODEL_QUANTUM_MAX], not just a lower
+   bound, in fq_codel/fq_pie init (Sashiko).
+3. Clamp psched_mtu() before multiplying in fq_init() (Sashiko).
+4. Move hhf clamp before hhf_change() (Sashiko).
+5. Fold fq_codel cparams.mtu clamp: same unclamped psched_mtu() six
+   lines below q->quantum disables codel; hoist one clamped mtu.
+6. New patch 3: add sch_codel -- same params.mtu issue.
+7. Drop the fq_codel_drop() hardening hunk: the qdisc_pkt_len() cap
+   in the posted "bound qdisc_pkt_len" dependency closes the TCA_STAB
+   backlog wrap at the source, making the empty-flow fallback unreachable.
+8. Switch sfq to clamp_t(..., 256, 1 << 20) - all patches now 
+   have same pattern.
+9. Drop the stale TCA_FQ_INITIAL_QUANTUM narrowing: .max = INT_MAX was
+   set deliberately by 7041101ff6c3 and already guarantees f->credit
+   stays non-negative; lowering it would reject working configs.
 
-Pre-existing, made live by this patch and not addressed here:
-mtk_mac_enable_tx_lpi() programs MT7531's reset wakeup times (17 for
-1 Gbps, 36 for 100 Mbps) whenever it runs, as its own comment says, so
-they now apply to every SoC driven by mtk_phylink_ops once a user
-enables EEE on an eligible interface. Those values do not appear to
-have been confirmed for MT7981, MT7986 or MT7988.
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 22 ++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+v1 to v2
+Changes based on feedback from Eric and Sashikos on V1.
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index be3bd025c41a..5412c89685f2 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -4828,7 +4828,7 @@ static int mtk_add_mac(struct mtk_eth *eth, struct device_node *np)
- 	phy_interface_t phy_mode;
- 	struct phylink *phylink;
- 	struct mtk_mac *mac;
--	int id, err;
-+	int id, err, i;
- 	int txqs = 1;
- 	u32 val;
- 
-@@ -4907,8 +4907,11 @@ static int mtk_add_mac(struct mtk_eth *eth, struct device_node *np)
- 	mac->phylink_config.type = PHYLINK_NETDEV;
- 	mac->phylink_config.mac_capabilities = MAC_ASYM_PAUSE | MAC_SYM_PAUSE |
- 		MAC_10 | MAC_100 | MAC_1000 | MAC_2500FD;
--	mac->phylink_config.lpi_capabilities = MAC_100FD | MAC_1000FD |
--		MAC_2500FD;
-+	/* MAC_MCR only has EEE force bits for 100 Mbps and 1 Gbps, and
-+	 * MAC_EEECR only has wakeup times for those two speeds, so the MAC
-+	 * cannot signal LPI at 2.5 Gbps.
-+	 */
-+	mac->phylink_config.lpi_capabilities = MAC_100FD | MAC_1000FD;
- 	mac->phylink_config.lpi_timer_default = 1000;
- 
- 	/* MT7623 gmac0 is now missing its speed-specific PLL configuration
-@@ -4966,6 +4969,19 @@ static int mtk_add_mac(struct mtk_eth *eth, struct device_node *np)
- 		__set_bit(PHY_INTERFACE_MODE_INTERNAL,
- 			  mac->phylink_config.supported_interfaces);
- 
-+	phy_interface_copy(mac->phylink_config.lpi_interfaces,
-+			   mac->phylink_config.supported_interfaces);
-+
-+	/* The MAC side of 2500BASE-X is never below 2.5 Gbps, not even when
-+	 * a rate matching PHY drops the media to 1 Gbps, and
-+	 * mtk_mac_enable_tx_lpi() refuses the xGMII modes outright.
-+	 */
-+	__clear_bit(PHY_INTERFACE_MODE_2500BASEX,
-+		    mac->phylink_config.lpi_interfaces);
-+	for (i = 0; i < PHY_INTERFACE_MODE_MAX; i++)
-+		if (mtk_interface_mode_is_xgmii(eth, i))
-+			__clear_bit(i, mac->phylink_config.lpi_interfaces);
-+
- 	phylink = phylink_create(&mac->phylink_config,
- 				 of_fwnode_handle(mac->of_node),
- 				 phy_mode, mac_ops);
--- 
-2.55.0
+1. Drop the fast-path changes in fq_dequeue() (Eric).
+2. Clamp to a range, not just a lower bound (Eric); upper bound 1M
+   matches fq_change()'s TCA_FQ_QUANTUM cap, not Eric's 16M.
+3. Dropped the TCA_FQ_INITIAL_QUANTUM policy narrowing (see v2 to v3
+   note 9 for why).
+4. Fold fq_codel_init() quantum clamp (Sashiko).
+5. Fold fq_pie_init()/fq_pie_change() quantum clamp (Sashiko).
+6. Reword the hhf/sfq comments (Sashiko).
 
+Sashiko links:
+  https://sashiko.dev/#/patchset/20260818101130.16203-1-jhs@mojatatu.com
+  https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260818101130.16203-1-jhs@mojatatu.com
+  https://sashiko.dev/#/patchset/20260819143136.57350-1-jhs@mojatatu.com
+  https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260819143136.57350-1-jhs@mojatatu.com
+
+---
+Jamal Hadi Salim (6):
+  net/sched: fq: add overflow bounds to quantum and initial quantum
+  net/sched: fq_codel: clamp default quantum and mtu
+  net/sched: sch_codel: clamp default mtu to avoid disabling CoDel
+  net/sched: fq_pie: clamp default quantum to avoid signed overflow
+  net/sched: hhf: clamp quantum before hhf_change() to avoid overflow
+  net/sched: sfq: clamp quantum to avoid signed overflow soft lockup
+
+ net/sched/sch_codel.c    |  2 +-
+ net/sched/sch_fq.c       |  6 ++++--
+ net/sched/sch_fq_codel.c |  6 ++++--
+ net/sched/sch_fq_pie.c   |  3 ++-
+ net/sched/sch_hhf.c      |  4 ++++
+ net/sched/sch_sfq.c      |  3 ++-
+ 6 files changed, 17 insertions(+), 7 deletions(-)
+
+--
+2.43.0
