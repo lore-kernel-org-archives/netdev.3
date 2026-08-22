@@ -1,129 +1,153 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309F031DD97
-	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 21:46:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3933E3803E1;
+	Sat, 22 Aug 2026 21:49:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787435175; cv=none; b=uJHafpOP3ZcVVH/z4ZDdMNnMqj42XzjUJtglgTiATrGkUVPvc4OAVZKWGk5LS5xvOjJ2sB4k76GR/1j4qReKe6L21tRvuBuZ8MoJs95izaV1c71mnnJneBHoZ2mAf6zy9kOEt1ABHuz8At4n8/iP1MLT9JvgA4tQjCYwl5EASE8=
+	t=1787435371; cv=none; b=HAQxwAaADjqhn0lAN7x+L/a5ThU+bUzUc6YS4gNVW6f7E9z5wrkgI9phc6oMi6a8pgw2ov8ka8Eu1iG72mtxTMeZcAy5oZyOcYfUgl6splg3Kb1n7+qxPZlyn4uBjoGcfguQxvoRrHH84dl+7kMEKGm1ys68rh5WZfoMBouacyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787435175; c=relaxed/simple;
-	bh=UmgvCKUP0H8uODNulO701AA2T0o+efkbq8XvmXjShdg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VQgrMZimVRVJVNl5emTV1sbNI81BGt7x2UbqsvzuxwxIGaACMgOiAu6/Hn0Av1R8FgVbdBv8grLM3UqZXfdQyHAl1dwJAiiaXUVqNuEG50gp1nY+cG8zT/tfh5JPkH5pJ6cW2p8aCNWKfONOI1tSyIMII3Msbugq3HYkFjPyTKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XcBnJ1LX; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787435371; c=relaxed/simple;
+	bh=YTQ1dMOh1s6r91T8gw3jxSG0d41Rqt/ku+IQVi/q7l0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d7DDxXgxZ8yEkrwNk2gTST6/uWrq5FmqTBY+O+gOsejhOTT2hYMeXyeDRLQmuxx3bbdL/QHUXRAF4JI2hsElgghgbUcjmBU9OsDz2CE+XXqyxZAZojM6b84vgz0mrZfUv4LFZDN00Z70x4RSf7Y57h7z2o+6CqpGtaF2ty+Ud7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=fMEvHcPl; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XcBnJ1LX"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-49800c6a846so19307935e9.3
-        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 14:46:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787435172; x=1788039972; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=FrBapT21Y1aERBdCT2Syr4G7i9enRjq/X+87/IKMeRY=;
-        b=XcBnJ1LXjJ/1Hb0F0dJM0irUZkrFiTrUtCy5SEcmg4pCRI/4ipF3niWUyzLIvwel5t
-         uQU1IfuLrWDeC/Bc55pDAuihL0RJdPYL8SDeNurCWFqTtkfbDQmxyxuW7nY/siwC0sa5
-         UFlFX2WP9aanUte4rr3tAB4mttuvtswHsg7LbUH6XXGrcHRDZpLmmsZqf6y87PgHanx6
-         BnqhaQmXEW7qovFkC+kzXqiZICoV8o8otSKhH3beanrV7LEMv6gLSRux4kxO7HJ5kGn6
-         WTSNTodQmPAFxRcFQ0eCZ+CdSjR87IHEQymLG6lIiyEdI/+M0+ZxbowJ0+ylibvALg4r
-         UZmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787435172; x=1788039972;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FrBapT21Y1aERBdCT2Syr4G7i9enRjq/X+87/IKMeRY=;
-        b=rg7QQPkbT0pYPcTtJeH+Lg1ehDtmUA1dhxr+Z4x8bvaogqpzXcEtdtIc8Y7kpzoeST
-         WpqBTgYx0dW+HA89p1UJXomrt/qs6R+W3p7lD4nHtTzKeYz8rk8r0/iFAQMaQnmiGul+
-         zoqxmXKdgbQzQQzpzyobu9zRDIAFuodsro1xsuOBQWT86caI/uwdQE/qbrKh5AFCooXG
-         RPEtxQFl14QBByEvE0A0fUqcc+QXxg4hTcaxCjlKVyWfRPd0y9l94pdJEveg2bfbqKar
-         Mb8upCrBq7W8dwE2Vw2BSKuzEfLOE/YEP711BdnN+5gFH5XJRuGrrVmDv4Q1+EYYgA+P
-         8yeQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rq6Vk8SGcTqaF7BBGBM5Hn/AlrAxlgz9xoEWh5Pslhy75JY4srCXxY3WHpDwJedpmiRYx7i9xo=@vger.kernel.org
-X-Gm-Message-State: AFuF++lDCaDyTBuSPEN5vxCT5PpUj7kipVPg5ChMxxvlHMpYZ14Bzctv
-	83w+uTZLKtPjd6kBy0HffYoz2LAz3AUtkgZuXPScz26hLRzWxA7U0xXz
-X-Gm-Gg: AR+sD13MIrlLF74LI9KvrX1KRNQxG+R9eCO6qr7iz4wRiVK3fgnfUW68NViEalR73YQ
-	olo+sOFwclY1Kh0WJlKgT7eXvc2yLE/VAzZ27WmOo/IoiUT4YQFpYx6+KCk6BJcOiINNrSF9ce+
-	YyLo7g9ppVMMf9UB0vA3Np8f9HC8t8ofpQw9HENh3dQ0iaciDg54E1e9UE27pDB8NG9APTRSlZm
-	O2KEex7j5p5h9KU9qXMtxlKHNrww6YedlnQCLjl+uogzxKtspzRKkP9Vhc/Gxud6PhiWHFVQ/QG
-	RyyIjpLdPZFyz7n8ZX/i79ua8tUDjgJMTWf9k2OuItm/Stya4/FSA4MWKfwfHlwHsCxKVknxpvR
-	42Y0hbFQcM65UNm3jDwFHfNDjAlrJsQYk+ijtZZywFHsj7pBgsahqYKY53yTeRW1i6L/Pmcen3e
-	mshmXlQ46Jf0kPjBsKUlMgialXdVKQNoRLeuXAysEVkr6aQRdiqFtvFcTenx3lXkRIOeAkPtzqv
-	v+heG30SKdZuwOE1GzUOSrcjQ==
-X-Received: by 2002:a05:600c:8b77:b0:499:48bb:417e with SMTP id 5b1f17b1804b1-499b82f4163mr208115045e9.2.1787435172108;
-        Sat, 22 Aug 2026 14:46:12 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499b915c6ccsm71423695e9.13.2026.08.22.14.46.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Aug 2026 14:46:11 -0700 (PDT)
-Date: Sat, 22 Aug 2026 22:46:07 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Breno Leitao <leitao@debian.org>, Eric Dumazet <edumazet@google.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Willem de Bruijn <willemb@google.com>, "David S. Miller"
- <davem@davemloft.net>, Simon Horman <horms@kernel.org>, Jens Axboe
- <axboe@kernel.dk>, Martin KaFai Lau <martin.lau@kernel.org>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH net v2] net/socket: remove unused
- do_sock_{set,get}sockopt() exports
-Message-ID: <20260822224607.3777abf2@pumpkin>
-In-Reply-To: <20260822123957.694f2812@kernel.org>
-References: <20260821-hch_not_export-v2-1-c62b62ec459f@debian.org>
-	<20260822123957.694f2812@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="fMEvHcPl"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=80UgMBvAIwndVclpnLX2WADk5OqrVIX0GJw2yYQPwPI=; b=fMEvHcPl1fB/pyc/wz6XfFlyuo
+	YB2BX60p4m0zDlEwcYJWZLx5v+B0V1H4JPS0LY0DqPRQ42O+0RGCqrEzGgrrjN4XTJiSOjfHvtBjW
+	TCgDM5G5EXtjOkMoT4KOC10bcXfeNoSdrUJdHGSMTVUuwZWD2L+2KTlcOFWaDuRi59Pk=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wxtaC-0014WS-S9; Sat, 22 Aug 2026 23:48:56 +0200
+Date: Sat, 22 Aug 2026 23:48:56 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Aleksei Sviridkin <f@lex.la>
+Cc: "Chester A . Unal" <chester.a.unal@arinc9.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Vladimir Oltean <olteanv@gmail.com>, Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+	Qingfang Deng <dqfext@gmail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH net 1/2] net: dsa: mt7530: populate lpi_interfaces to fix
+ EEE support
+Message-ID: <c501d5f8-015c-4ce1-87ee-c4cdaea57f7e@lunn.ch>
+References: <20260822195252.2934-1-f@lex.la>
+ <20260822195252.2934-2-f@lex.la>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260822195252.2934-2-f@lex.la>
 
-On Sat, 22 Aug 2026 12:39:57 -0700
-Jakub Kicinski <kuba@kernel.org> wrote:
-
-> On Fri, 21 Aug 2026 01:28:32 -0700 Breno Leitao wrote:
-> > do_sock_setsockopt() and do_sock_getsockopt() have been exported since
-> > they were split out of the syscall handlers for io_uring to reuse.
-> > 
-> > io_uring is the only caller outside net/socket.c, and it is never
-> > modular: cmd_net.o is built under obj-$(CONFIG_NET), and both CONFIG_NET
-> > and CONFIG_IO_URING are bool. The declarations in <net/sock.h> are all
-> > it needs, so no module has ever been able to use these exports.  
+On Sat, Aug 22, 2026 at 10:52:51PM +0300, Aleksei Sviridkin wrote:
+> mt753x_phylink_get_caps() fills in config->lpi_capabilities and
+> config->lpi_timer_default, but never populates config->lpi_interfaces.
+> phylink only treats a MAC as supporting phylink managed EEE when the
+> tx_lpi methods are implemented and both the LPI capabilities and the
+> LPI interfaces are non-empty, so EEE is unavailable on every port:
 > 
-> FTR I'd prefer this export (or something along these lines) to having 
-> to add individual helpers for every sockopt for in-kernel networking
-> socket users. Maybe other maintainers disagree.
+>   # ethtool --show-eee lan1
+>   Cannot get EEE settings: Not supported
 > 
+> even though the driver implements mac_enable_tx_lpi() and
+> mac_disable_tx_lpi() and reads the LPI threshold back out of PMEEECR.
+> Since the tx_lpi methods are implemented, phylink takes the other
+> branch and calls phy_disable_eee(), which fills eee_disabled_modes, so
+> userspace cannot enable EEE either.
+> 
+> Only the first half of what commit 06dfcd4098cf ("net: dsa: mt7530: fix
+> enabling EEE on MT7531 switch on all boards") arranged therefore
+> survives. It left EEE off out of the box on purpose, by having
+> mt7531_setup() clear the switch PHYs' EEE advertisement, and ended
+> "With this change, EEE can now be enabled using ethtool". It cannot be,
+> any more.
+> 
+> Copy the supported interfaces into lpi_interfaces. This requires moving
+> the mac_port_get_caps() call ahead of the EEE block, since that is what
+> populates supported_interfaces - copying it beforehand would copy an
+> empty bitmap.
+> 
+> LPI stays off by default. The driver does not set eee_enabled_default,
+> so phylink leaves tx_lpi_enabled false, and phy_check_link_status()
+> computes enable_tx_lpi as tx_lpi_enabled && eee_active - nothing
+> asserts LPI until userspace enables it with ethtool --set-eee. The EEE
+> advertisement is the part that does change: phylink no longer takes the
+> phy_disable_eee() branch, so a PHY that advertises EEE out of reset
+> advertises it again and the link may negotiate EEE. MT7531's five
+> internal PHYs are the exception, as mt7531_setup() zeroes
+> MDIO_AN_EEE_ADV before the switch MDIO bus is registered, so
+> phy_probe() reads an empty advertisement and records eee_cfg.eee_enabled
+> as false. Nothing does that for an external PHY on port 5 or 6, or on
+> the other mt753x variants, EN7528 aside - see below.
+> 
+> This also makes lpi_capabilities take effect for the first time, so
+> correct its value in the same change. PMCR only has force bits for
+> 100 Mbps (PMCR_FORCE_EEE100) and 1 Gbps (PMCR_FORCE_EEE1G), and PMSR
+> only reports EEE state for those two speeds, so the MAC cannot signal
+> LPI at 2.5 Gbps: drop MAC_2500FD. Absence from the header is weak
+> evidence on its own, so for what it is worth, the Airoha AN8855 DSA
+> driver - posted but not merged [1] - describes a PMCR of the same shape
+> that does carry AN8855_PMCR_FORCE_EEE2P5G and AN8855_PMCR_FORCE_EEE5G
+> next to the 1 Gbps and 100 Mbps bits. Correcting the value here rather
+> than in a separate patch changes nothing observable: while
+> lpi_interfaces was empty, lpi_capabilities never reached
+> phy->advertising_eee, so no state ever claimed 2.5 Gbps LPI.
+> 
+> 2500BASE-X has to come out of lpi_interfaces as well, because
+> lpi_capabilities cannot express it: it masks the PHY's EEE
+> advertisement, a media side property, and never gates LPI activation on
+> the MAC side speed. phylink raises the MAC speed to the interface
+> maximum when the PHY rate matches (RATE_MATCH_PAUSE in
+> phylink_link_up()), so a 1 Gbps media link behind a rate matching 2.5G
+> PHY would otherwise arm LPI while the MAC runs at 2.5 Gbps. What that
+> costs is limited to setups that keep the MAC on 2500BASE-X, where there
+> are no LPI bits to use anyway; a PHY that switches the interface down
+> to SGMII or 1000BASE-X keeps LPI, as those stay in the mask.
+> 
+> For the same reason, skip ports that support neither 100 Mbps nor
+> 1 Gbps: on MT7988, EN7581 and AN7583, port 6 is 10 Gbps only, and it
+> shares PHY_INTERFACE_MODE_INTERNAL with the 1 Gbps user ports, so the
+> interface mask alone cannot tell them apart.
+> 
+> EEE remains unavailable on EN7528, whose GPHYs do not negotiate it
+> reliably. Both LPI bitmaps stay empty there, so phylink keeps taking
+> the phy_disable_eee() branch and its advertisement stays off.
 
-As a 'user' I'd re-instate the kernel_setsockopt() that was removed in 5.7
-before sockptr_t was added in 5.8.
-Before I retired I supported some code that contains:
+This is very verbose. Is it AI generated? Please revise it and make it
+suitable for a human. The important part of the commit message is
+"Why?", since "What?" can be answered by reading the code.
 
-int xxx_setsockopt(struct socket *sock, int level, int optname,
-	void *optval, unsigned int optlen)
-{
-	sockptr_t koptval = KERNEL_SOCKPTR(optval);
+> - mt753x_phylink_mac_enable_tx_lpi() sets the PMCR force-EEE bits
+>   without checking the resolved speed or interface, relying entirely on
+>   phylink never calling it above 1 Gbps. A check there would make the
+>   driver robust independently of lpi_interfaces being right;
+>   deliberately not bundled into a fix.
 
-	if (level == SOL_SOCKET)
-		return sock_setsockopt(sock, level, optname, koptval, optlen);
-	else
-		return sock->ops->setsockopt(sock, level, optname, koptval, optlen);
-}
+It is normal to assume phylink is correct. Now, if you do find it
+doing the wrong thing, we want to know so we can fix it. So if you do
+want to validate it here, make it very noisy if the validation fails.
 
-I suspect both bpf and io_uring have to do the same.
+	
+    Andrew
 
-The code does need one getsockopt() - SCTP_STATUS to get the negotiated
-number of output streams, any code using SCTP needs to do that.
-However that returns the wrong value for kernels 5.1 to 5.8 so the driver
-digs the value out of the sctp internal data structures.
-(Not exporting functions doesn't make much difference!)
-
-David
+---
+pw-bot: cr
