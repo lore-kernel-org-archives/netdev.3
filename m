@@ -1,60 +1,60 @@
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE16368D7E
-	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 19:55:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3985368D4A
+	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 19:55:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787428537; cv=none; b=lcqvP7QbKJWirXIa7i8VAAzquxkLscHeMPhJoArXJe+uLuRim0Yq6fIzACTMLfp6rT+03S8h3h3iYGie8PZOFq30Junb6CkWWQoYK2hpRDeRtbJSR3GFWyIlKb1OG0P1HJqQjifYVmxv3NoSdwSbOrI6N/ZJ8zMy6IwuYUcIo18=
+	t=1787428540; cv=none; b=Jsj8pC1CPubxMBwUhkjzzfiT00wQV2fl260EJk53LlinHQaGDexKnLWWM9d5lr5iwPZ0jteu4H+uOS4C8B+mNX3tjuAO2ZYC/obTWNP5ozTm4qBi32z424pnB6P3NlC7FioLfDYwbewTc90ghm5O3Wn5nrzjNlQdgYgZI6iL2eA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787428537; c=relaxed/simple;
-	bh=p+iuf3goQGfdg3eS+bSvkUUzL+pJBXz0TDWhbuggpSQ=;
+	s=arc-20240116; t=1787428540; c=relaxed/simple;
+	bh=M3PTJqDCQA1BXV4LzCNUeCnnbEkKeELK+aNvFvWOOWg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DwWTkEr67nNNmSMnh/O3YouFTwwBAkyoCT3ybypdSgAAeFnakaaNJhl0n+6/PHFYFmXIVJYqf3drZXzK+FvQLOOx3XiVHFoZtgfdqWgrn2UvfCdu3uFa6Bz+cTVDb5GJ6VC7YXk0MgCxsLYD3+fH7IdUGqEyZc8NZb9KMLUytDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=FzaIf4oY; arc=none smtp.client-ip=209.85.222.182
+	 MIME-Version; b=aTuEjPIR2B/Kr+XxhjzTOMn7om+kKrfzZr1ID35nTj6xuSIIfLyefQXuhX1ymoDcknH7UtQM9qIbfY0aoKj5Fo+5JufjOqaQkApgh3phDzozJabCrGRdyU2cp2eleBe9YaavJNZXEPhfNaWSxEduTyiE3TIYePTdYO0O5CMdvK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=ezdgeyTb; arc=none smtp.client-ip=209.85.222.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="FzaIf4oY"
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-930f72317a6so121648885a.3
-        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 12:55:36 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="ezdgeyTb"
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-92ed19f4d60so117895685a.0
+        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 12:55:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787428535; x=1788033335; darn=vger.kernel.org;
+        d=mojatatu.com; s=google; t=1787428538; x=1788033338; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=BUREPyeQYoMY/Ohx9nG5ofB1l7i1YkW1VcVay50y8NI=;
-        b=FzaIf4oY14yiJqPH3y5EeHKMR+rHQ4yw932o6V5MOX6PPpdjswaWsWo7sKjt79rq4b
-         kqnjpBzslB7BA4Q4SaDf1xZ6gvymHKeeyHStOxKq/KWefvz+vtVXddEXv72ZfbQZjrUA
-         buibJQZ5Jp2BizOByUkJ5ChnLvn/zafZW2CjM=
+        bh=V6HrdUaz7lkWm6/+aWbGhNRgT19l/HZ5BPcrR7RGLnE=;
+        b=ezdgeyTbjiLxnAsxzXBW7ONzXlgGJD/SA5jPCAtG9EGWVPHNHTFpzv0J49nJc3LfLJ
+         cQlW7ot06sfwgdqnxh+nSwsIPJGmYUmhuWKcCk8p+4tT5wAMkOIO2f3HZ0fjP9pTYZgO
+         KQcOZ0U1jxPoXToKp24UVM9dV0iPBRdIuHtbg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787428535; x=1788033335;
+        d=1e100.net; s=20251104; t=1787428538; x=1788033338;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BUREPyeQYoMY/Ohx9nG5ofB1l7i1YkW1VcVay50y8NI=;
-        b=DxVgP//7WesDnNKapC/VlL+G12dFJQvIo0fOTArHw0Qu6itt3jqEvhWrAcabk2Uznt
-         AtMJqvS60DgVRY5hYDDB5XVZkHgmrR4Unb+0UqyW00viJIpuoyiyt1ypCy66/4EVnh8I
-         kIgZnz67IA0Ru2FEiYxxkycfMj5C7ZdTFTYBhoseeCAQWPjr6KVACS+0TPEh4lagM/tE
-         EnjP9494T4xQYihqZUGWDUEu3dqHBjJzZrx0sfLQL+hmTojI3cXQ0nsPUUlXRmfZuqgu
-         LcRJsqKk1qCNfT7mtgaVxLfJksLT/HK2sZN22xCYS6dJtwoTcU5tMuIgF976Jf7nrb33
-         o49g==
-X-Gm-Message-State: AFuF++mFmxtaB0DZPvjiOOO7t3nPsTOmjwtOJ9F/AYYzWTmTCfeXnF5+
-	cpF1N4JzEhX2/gz51005IlSmqSqX9YFBSqwaNT8rgumduzHy2sU9+/dHvyqHDMjYRVlKbRL1Mm5
-	+auK9ZQ==
-X-Gm-Gg: AR+sD12bKPbd7hk9bc5yA205NGUrya9TM6vcqPlvSAEYoyJQQg4BlwqT0T84Tf5kVkW
-	KYEm2ZUJ67QcBpoViT63rVCh/Tjyq8pr+WGyJ7/JlG90TsgaMAmlFfmYPWZmuNbKjXrWZXVJZ2M
-	qRj63XkZQilZuYeyvnXC5ykeqaU6+LFrdPW/WJ0Eya6F1py7YV363WSrYeCFL1F4chg+woZ7Loi
-	jE7UBy+RZFlj/XCp9Nsj4mWOI4yTDfWy9ndWGh0IHVouecQKtZwHEhyDonFj5st9dU84ZP9wJNG
-	ft8eBpYAI9aBwVwlLQmWOzhL1/yeBJRKiSQ8/xAuM9KBfw8GHzsBAyhFNt5eLF4JizFTe3ds/+r
-	/iwJZsWpEsC0O+9Jqy+gfYN80LXZVCt94EOhxpT1S9ynT81iaga+aD+o669fxd7W5KNJXLElWns
-	N7ITet8fFWrsJMNgDPE1s2fpJE94CYgt57IXBWgw93i3fsmYY9KEY+
-X-Received: by 2002:a05:620a:1b86:b0:933:9e3:b95d with SMTP id af79cd13be357-937396e774amr1502902685a.43.1787428535289;
-        Sat, 22 Aug 2026 12:55:35 -0700 (PDT)
+        bh=V6HrdUaz7lkWm6/+aWbGhNRgT19l/HZ5BPcrR7RGLnE=;
+        b=jFod2vExq67HGKb41gIg2kpa5Wvy0f94k3nS9OTFLyknsxbc2O5Jpo4Z06ztjevHw/
+         BAn4TmisfF2RbKslU10KdfnZpzo/OkngzRIGzhXjfQRaDtd7sxVTFn/rfUuFiywfGGEw
+         8I9CLE5J8gTgGGMb3PhTU06jDaQ+Gr/6AY53g6LPcs5VQeu95x7zjlb29BsXq65rYcAH
+         3ZGOlAvbYDU6v8JJnLx+GRcGUXHNkcdLE6YHbxasiFixhIHLfbbIx6UVTdQHE40TEFYc
+         QyXCOsR5FfuW7p/Nn6LXnxkzPOIlzqZalrFDBwI9OPvBoQ1F7q75DqgAdChX71tWlf0f
+         aXdQ==
+X-Gm-Message-State: AFuF++nh1jD6CK6U5FYRGr/Asxph3wdoEdj6yROts+SBZQ9rzQ5pJzIY
+	Xn0Z28zJ+kjhwvMKPIYdCxYtXNXawPfGDeL7J5F7mMStK6VpP9Z/ZJikamsn8PI6y7fLdjMCote
+	xwS4ORw==
+X-Gm-Gg: AR+sD11cI1ABOSqbvB/ISfj6PQT3MxFJWvUYt5aZv+yVtCPd8kDUg+FLD8NjU8adTf+
+	EGIEbJkzLiKNE9xgoE3BdWR4cvCfbK5Qu1rw6skxF9QlPQG8v/UyNUPZOf6kt2kcUfIlr4NvnVO
+	FZywCVtAspTm4NCcvp82h1LmxVBFP1xZ+Zyyw6NyCc036vXqQpzoaK/enaekSBp4PhzQdha1Esj
+	wiao9muG2aaLJPDOIzqSUwZmbqZ0PIQwODKvE15MLjUuaS1zu+QblJY0tKfvScso7tja+qYKcuI
+	Ie9Emd+xCh/1QhoCI17w+YxKjZtFTcyub6vvJMV33w/k0WMommAQoAexR6x+qv1J/jVnvf8EocL
+	PLXdvI4vz8lcB77McdHSBWgYuLUx894gzoMX7mcsvDYSTnxJZ0ByZ0/ADDXjRpSv0VDhErvYtuR
+	otr16Ee5feHSP0gtI8F1xCju0AtfTgxS5Ke1twE99MPVsw9L+qcyvsZ7O5I3vy4UM=
+X-Received: by 2002:a05:620a:294d:b0:936:a184:3cf3 with SMTP id af79cd13be357-9372840f584mr2180174085a.10.1787428537718;
+        Sat, 22 Aug 2026 12:55:37 -0700 (PDT)
 Received: from majuu.waya ([184.144.29.222])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93749adef4csm172997385a.11.2026.08.22.12.55.33
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93749adef4csm172997385a.11.2026.08.22.12.55.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Aug 2026 12:55:34 -0700 (PDT)
+        Sat, 22 Aug 2026 12:55:36 -0700 (PDT)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
@@ -64,18 +64,13 @@ Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	"Mohit P. Tahiliani" <tahiliani@nitk.edu.in>,
-	"Sachin D . Patil" <sdp.sachin@gmail.com>,
-	"V. Saicharan" <vsaicharan1998@gmail.com>,
-	Mohit Bhasi <mohitbhasi1998@gmail.com>,
-	Leslie Monis <lesliemonis@gmail.com>,
-	Gautam Ramakrishnan <gautamramk@gmail.com>,
+	Terry Lam <vtlam@google.com>,
 	stable@vger.kernel.org,
 	vega@nebusec.ai,
 	Victor Nogueira <victor@mojatatu.com>
-Subject: [PATCH net v3 4/6] net/sched: fq_pie: clamp default quantum to avoid signed overflow
-Date: Sat, 22 Aug 2026 15:55:07 -0400
-Message-Id: <20260822195509.112717-5-jhs@mojatatu.com>
+Subject: [PATCH net v3 5/6] net/sched: hhf: clamp quantum before hhf_change() to avoid overflow
+Date: Sat, 22 Aug 2026 15:55:08 -0400
+Message-Id: <20260822195509.112717-6-jhs@mojatatu.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260822195509.112717-1-jhs@mojatatu.com>
 References: <20260822195509.112717-1-jhs@mojatatu.com>
@@ -87,41 +82,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-fq_pie_init() sets q->quantum = psched_mtu(qdisc_dev(sch)) without
-clamping. A device with a huge MTU (e.g. dummy with max_mtu == 0
-accepting MTU 2147483634) makes psched_mtu() return 0x80000000, which
-overflows the signed flow->deficit to INT_MIN in fq_pie_qdisc_dequeue(),
-causing an infinite loop and soft lockup. Emulate fq_pie_policy which
-is already bounded to [1, 1 << 20]; clamp the default to [256, 1 << 20].
-256 matches fq_codel's floor and is a sane minimum for a DRR quantum.
+hhf_init() sets q->quantum = psched_mtu(qdisc_dev(sch)) with no overflow
+check. A device with a huge MTU (e.g. dummy with max_mtu == 0 accepting
+MTU 2147483634) makes weight * quantum overflow the signed deficit in
+hhf_dequeue(), spinning forever.
+
+Clamp q->quantum before hhf_change() so both the opt and !opt paths see
+a sane quantum. Without this, bare "tc qdisc add ... hhf" succeeds with
+a clamped quantum but "tc qdisc add ... hhf limit 1000" (any option
+present) fails with -EINVAL because hhf_change() re-validates the
+unclamped default (sch_hhf.c:559). 256 matches fq_codel's floor and is
+a sane minimum for a DRR quantum.
 
 Conditions to recreate the bug: a device whose MTU (plus
 hard_header_len) wraps psched_mtu() into the sign bit (e.g. a dummy
 device with max_mtu == 0 accepting MTU 2147483634). Requires
 CAP_NET_ADMIN in a user namespace.
 
-Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet scheduler")
+Fixes: 10239edf86f1 ("net-qdisc-hhf: Heavy-Hitter Filter (HHF) qdisc")
 Reported-by: vega@nebusec.ai
 Tested-by: Victor Nogueira <victor@mojatatu.com>
 Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 ---
- net/sched/sch_fq_pie.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/sched/sch_hhf.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
-index 069e1facd413..b27d95418707 100644
---- a/net/sched/sch_fq_pie.c
-+++ b/net/sched/sch_fq_pie.c
-@@ -427,7 +427,8 @@ static int fq_pie_init(struct Qdisc *sch, struct nlattr *opt,
- 	pie_params_init(&q->p_params);
- 	sch->limit = 10 * 1024;
- 	q->p_params.limit = sch->limit;
--	q->quantum = psched_mtu(qdisc_dev(sch));
-+	q->quantum = clamp_t(u32, psched_mtu(qdisc_dev(sch)),
-+			     256, 1 << 20);
- 	q->sch = sch;
- 	q->ecn_prob = 10;
- 	q->flows_cnt = 1024;
+diff --git a/net/sched/sch_hhf.c b/net/sched/sch_hhf.c
+index d85cb0263b67..96acab6a8da0 100644
+--- a/net/sched/sch_hhf.c
++++ b/net/sched/sch_hhf.c
+@@ -624,6 +624,10 @@ static int hhf_init(struct Qdisc *sch, struct nlattr *opt,
+ 	q->hhf_evict_timeout = HZ;      /* 1  sec */
+ 	q->hhf_non_hh_weight = 2;
+ 
++	if ((int)q->quantum <= 0 ||
++	    (u64)q->quantum * q->hhf_non_hh_weight > INT_MAX)
++		q->quantum = 256;
++
+ 	if (opt) {
+ 		int err = hhf_change(sch, opt, extack);
+ 
 -- 
 2.43.0
 
