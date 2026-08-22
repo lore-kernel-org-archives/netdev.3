@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816943624C8;
-	Sat, 22 Aug 2026 21:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489D538399C
+	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 21:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787432462; cv=none; b=m6WaBVEhx49VU/hTcWezCJFNxe7N8Xd4pTJfFYwV9pa+noTbj9/L2sIQHBJAx8mFfxNsVDv7HfX7C1lYLx9RJBgwnmEIQyFhOjTTWMaF/7KQZdHy/oVvMpQJbM0T6yyDeKNf/TMvG3293+mprcVAKFBFr2Q9itxomhOUoacHzHw=
+	t=1787432464; cv=none; b=rs/Pu+vZJZf3ocwCqwXsBM2jZq/2AWSz37b2oJXHBSOzLtdoM93BX4dvnF671whRHRiY3q0KYEsOFcShPg5y/+63+49Cpev21ZK/OOiyq0jMa+EX2McghU86RfC6CxhmZpgtIB5mEX071LkE0aLIccl+AR33pYCJeBdScsSLAuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787432462; c=relaxed/simple;
-	bh=jya/UxGSU6N9V0uRs/vggE4iMo0P+Jl4nOb80Oef4ug=;
+	s=arc-20240116; t=1787432464; c=relaxed/simple;
+	bh=1h6bedumtxdIt4uJ6D3eTlJfLh+23jnH7slE8JXsUzI=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=uEDMLBP3GBnETPT6egzKE4ZHsDK5bGZ60E3UbSQCDe2SQ/8iJu+B81b7izGGZJvYFag5JQCL9k+fxG0SK7j+uImqtrA69xvc0eT5avINYXx+t+Hx7QynPYvtZ2zj/53Rl5Tkw3q/nAhbwCbnZK0UFyxu7bINfetXbmG8JzBux3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qd4pimVD; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=VCsgaal9gg9H39syxpKwzhhJGwTsOSJgvdkumZSAX+aS3/UxGmi/bFtmMS9fzKzbsMSlR094IcD23qXYlCwAKzdfY3tUC6kikFv7jhlKhEzvJ5q+n1gvQX/Hr50H1DaDAeCAOghTKgw83n/pFOko1ZZ2GpblZOo1zWUgo352jvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gme3OZsE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qd4pimVD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F9501F00A3A;
-	Sat, 22 Aug 2026 21:01:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gme3OZsE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ABA91F000E9;
+	Sat, 22 Aug 2026 21:01:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787432461;
-	bh=oOpNkOm+Xlohq34j/Z2D4xaT+zHIxpVyHczvt4SUeRE=;
+	s=k20260515; t=1787432462;
+	bh=ajbowqQ+gXi4EG8IeHsSzJBz/EESZeixXoHD8I4z2RA=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Qd4pimVDAvssCtPFNK0EsPzNk0LitorQt9iL9EkV+VkDUSGYVYpIXslnDTZTKQ+yh
-	 s4iQalES70L8eA2ZHJLK6SM1o9YYoQVErwM7q6mEVjSM1rQ8PQ9Z8epVN73bpf0MJu
-	 5UCPMlKpiuBlAgTrXzojxi4+F8wiacJLEAtFRQh2IhbDvD9nz4kG6WP/T9v8TdbUj+
-	 pZGwmDBGhzFuObzdikpvrE7sxioIUqju9FPnP0GrL61kUzQgOiBIX8/48cbD7cqO4W
-	 rwron4zs0huUq955V2iu6Pt8CfRJrQyu2C38Rdr9wyJk2xe1yMdpS3e6frxM8cetlO
-	 dX4nlyNzURxdA==
+	b=gme3OZsE198UB5XxZ5+69RCXyL2q/CHUxha5/IhK/DJlfKgVgmzD0JCVuG35Hjhdg
+	 1C7CuRqdTXey5QmGeuvkK5lB6xTRmUIGVj6VfAEfal/a947TP8ObFl8gLa2WZIkvL5
+	 94VKwPqzUY4Rw/1aDbRNdbFi2oXqSlnqms/ykUznj/DJabBGDjBAJEu9OU1e306Y9m
+	 UpLER373H45NKPLJRfsK4DrvgNQ+SytFZUtwIda6TikwkWqnvpWUDB9EsJgPnhgJ/F
+	 gYmWGqpkqohmh+UD7Z2PKYcS7O8ZodlTEIpRMhRb6EZcf+fT6OxLSkHMlj+yFd4HEx
+	 BzDuQHuAJcS2Q==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1992D380CEF9;
-	Sat, 22 Aug 2026 21:00:11 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A76380CEF9;
+	Sat, 22 Aug 2026 21:00:12 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: hibmcge: fix page_pool DMA direction mismatch
+Subject: Re: [PATCH net] net_sched: sch_fq: fix pacing delay underflow with
+ pacing
+ offload
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178743240988.1826211.7757239597300892281.git-patchwork-notify@kernel.org>
-Date: Sat, 22 Aug 2026 21:00:09 +0000
-References: <20260820124346.4097115-1-shaojijie@huawei.com>
-In-Reply-To: <20260820124346.4097115-1-shaojijie@huawei.com>
-To: Jijie Shao <shaojijie@huawei.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- shenjian15@huawei.com, liuyonglong@huawei.com, chenhao418@huawei.com,
- yangshuaisong@h-partners.com, ningwei15@huawei.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <178743241114.1826211.13344127816621627635.git-patchwork-notify@kernel.org>
+Date: Sat, 22 Aug 2026 21:00:11 +0000
+References: <20260820120706.1995449-1-willemdebruijn.kernel@gmail.com>
+In-Reply-To: <20260820120706.1995449-1-willemdebruijn.kernel@gmail.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org, willemb@google.com
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 20 Aug 2026 20:43:46 +0800 you wrote:
-> From: Jian Shen <shenjian15@huawei.com>
+On Thu, 20 Aug 2026 08:06:25 -0400 you wrote:
+> From: Eric Dumazet <edumazet@google.com>
 > 
-> The driver memsets the RX buffer page head to zero before
-> submitting it to hardware, then calls dma_sync_single_for_device()
-> with DMA_TO_DEVICE.  This sync direction does not match the pool
-> dma_dir which is DMA_FROM_DEVICE, violating the DMA API contract
-> that the sync direction must match the mapping direction.
+> When pacing offload is enabled (q->offload_horizon > 0),
+> FQ can dequeue packets early (now < f->time_next_packet).
+> 
+> In this case, the drift calculation (now - f->time_next_packet)
+> underflows to a large unsigned value.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: hibmcge: fix page_pool DMA direction mismatch
-    https://git.kernel.org/netdev/net/c/11efd7963dac
+  - [net] net_sched: sch_fq: fix pacing delay underflow with pacing offload
+    https://git.kernel.org/netdev/net/c/137b8ae233ca
 
 You are awesome, thank you!
 -- 
