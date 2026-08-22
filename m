@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004BA25228C;
-	Sat, 22 Aug 2026 21:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816943624C8;
+	Sat, 22 Aug 2026 21:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787432461; cv=none; b=sJYgoJWvDV5Yvd7dF5YSUyt2uTh8a7dzxz3h7wm/gLMdbg/6YxqYmlC02zIQDRibvS/XSVscRZcCrV5HPqPEEJtDDmZjH9bB5AP98aJYB/NPFiecazDztoTkI5yw5gffPWegissl4/V9Urk01U0LUCvSY5AItVKvXsJrnSRh4UM=
+	t=1787432462; cv=none; b=m6WaBVEhx49VU/hTcWezCJFNxe7N8Xd4pTJfFYwV9pa+noTbj9/L2sIQHBJAx8mFfxNsVDv7HfX7C1lYLx9RJBgwnmEIQyFhOjTTWMaF/7KQZdHy/oVvMpQJbM0T6yyDeKNf/TMvG3293+mprcVAKFBFr2Q9itxomhOUoacHzHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787432461; c=relaxed/simple;
-	bh=tAiGPIF5mxYF7nO36+AWFjDBMRHsgpVxlWZKnbb9O+E=;
+	s=arc-20240116; t=1787432462; c=relaxed/simple;
+	bh=jya/UxGSU6N9V0uRs/vggE4iMo0P+Jl4nOb80Oef4ug=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=LVGyF9AZrb6RGgmU76pSb/28ct6cSMZmQ2hnWGF3LuLI1o8UTu8RJbeCxIA+yYFvlpzB7stHaLeliDvaCX+nNTSUXtXhKvEvlBOwBYW3S9CH7B07I0nK4Ilu21DG806pgfKyGyt/5frLgMkuzVaDgeCcqGcIkPwH9xTdfbj7A7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jdRyfj93; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=uEDMLBP3GBnETPT6egzKE4ZHsDK5bGZ60E3UbSQCDe2SQ/8iJu+B81b7izGGZJvYFag5JQCL9k+fxG0SK7j+uImqtrA69xvc0eT5avINYXx+t+Hx7QynPYvtZ2zj/53Rl5Tkw3q/nAhbwCbnZK0UFyxu7bINfetXbmG8JzBux3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qd4pimVD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jdRyfj93"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F921F000E9;
-	Sat, 22 Aug 2026 21:00:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qd4pimVD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F9501F00A3A;
+	Sat, 22 Aug 2026 21:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787432459;
-	bh=LGDmQ6cRbjMqxOx1LEurkxiARKkNGjBPY8XmdJnrS3k=;
+	s=k20260515; t=1787432461;
+	bh=oOpNkOm+Xlohq34j/Z2D4xaT+zHIxpVyHczvt4SUeRE=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=jdRyfj93vxhfufbeVuk03gqS/sWPCW/dXhFCoburWg6VFmZG7uN2160yqjd5q5eXm
-	 yOm+pG2qslkox75oD4Q9GIoJChDJKXtkIpXgdAFJSPq8O4RzE568oLDVkYUzVDDsVs
-	 EN59JXq4604UdkRm+qWABeSk9P6yeeaVqwSzBk3ellX9x//tmRW/wBGmO9XkRmwmBi
-	 bMBUW+MboEZdmGlyV/Rc1/kYNR8TsMNVbd6h3MfE3w2jJvdv4MWZ2WZc63NQer/7g/
-	 pXB9aa3a1mXI/zAeAIWyFvr9d1gUFIB3+KXi9xploBPwPYkxHbNUXidS7nkVvjBAPg
-	 gfBQ2fXuiv0IA==
+	b=Qd4pimVDAvssCtPFNK0EsPzNk0LitorQt9iL9EkV+VkDUSGYVYpIXslnDTZTKQ+yh
+	 s4iQalES70L8eA2ZHJLK6SM1o9YYoQVErwM7q6mEVjSM1rQ8PQ9Z8epVN73bpf0MJu
+	 5UCPMlKpiuBlAgTrXzojxi4+F8wiacJLEAtFRQh2IhbDvD9nz4kG6WP/T9v8TdbUj+
+	 pZGwmDBGhzFuObzdikpvrE7sxioIUqju9FPnP0GrL61kUzQgOiBIX8/48cbD7cqO4W
+	 rwron4zs0huUq955V2iu6Pt8CfRJrQyu2C38Rdr9wyJk2xe1yMdpS3e6frxM8cetlO
+	 dX4nlyNzURxdA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0AD1380CEF9;
-	Sat, 22 Aug 2026 21:00:09 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1992D380CEF9;
+	Sat, 22 Aug 2026 21:00:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,18 +37,18 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] net/sched: sch_cake: fix autorate reconfiguration
- throttling
+Subject: Re: [PATCH net] net: hibmcge: fix page_pool DMA direction mismatch
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178743240841.1826211.17628425791592872645.git-patchwork-notify@kernel.org>
-Date: Sat, 22 Aug 2026 21:00:08 +0000
-References: <20260820154503.892214-1-ooonea@gmail.com>
-In-Reply-To: <20260820154503.892214-1-ooonea@gmail.com>
-To: Giuseppe Piscitelli <ooonea@gmail.com>
-Cc: toke@toke.dk, jhs@mojatatu.com, jiri@resnulli.us, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- cake@lists.bufferbloat.net, netdev@vger.kernel.org,
+ <178743240988.1826211.7757239597300892281.git-patchwork-notify@kernel.org>
+Date: Sat, 22 Aug 2026 21:00:09 +0000
+References: <20260820124346.4097115-1-shaojijie@huawei.com>
+In-Reply-To: <20260820124346.4097115-1-shaojijie@huawei.com>
+To: Jijie Shao <shaojijie@huawei.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ shenjian15@huawei.com, liuyonglong@huawei.com, chenhao418@huawei.com,
+ yangshuaisong@h-partners.com, ningwei15@huawei.com, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org
 
 Hello:
@@ -56,21 +56,20 @@ Hello:
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 20 Aug 2026 17:45:03 +0200 you wrote:
-> CAKE's autorate-ingress path intends to limit shaper reconfiguration to
-> once per 250 ms, but last_reconfig_time is only checked and never updated.
-> Since the field stays zero, every qualifying capacity-estimate window can
-> call cake_reconfigure(), causing avoidable rate churn and scheduler work
-> under bursty traffic.
+On Thu, 20 Aug 2026 20:43:46 +0800 you wrote:
+> From: Jian Shen <shenjian15@huawei.com>
 > 
-> Store the current timestamp when autorate actually reconfigures the qdisc
-> so the guard enforces the intended interval.
+> The driver memsets the RX buffer page head to zero before
+> submitting it to hardware, then calls dma_sync_single_for_device()
+> with DMA_TO_DEVICE.  This sync direction does not match the pool
+> dma_dir which is DMA_FROM_DEVICE, violating the DMA API contract
+> that the sync direction must match the mapping direction.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v3] net/sched: sch_cake: fix autorate reconfiguration throttling
-    https://git.kernel.org/netdev/net/c/7cbfb180945c
+  - [net] net: hibmcge: fix page_pool DMA direction mismatch
+    https://git.kernel.org/netdev/net/c/11efd7963dac
 
 You are awesome, thank you!
 -- 
