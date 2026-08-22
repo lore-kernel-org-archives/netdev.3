@@ -1,59 +1,60 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A996C389453
-	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 22:21:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32EE38F929
+	for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 22:21:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787437268; cv=none; b=GbF7sgA+MkDm2NFhTFhYPErksPbM01Sr/f9OD1wZi4CfV49y/6ylFzeqfJA/22IHHab2ES9VPukOlwAC0koZwCtG94vvtgLwaGZHe6tTz149ojELU38N9lqYAlBYdn8hu/WfIZkRMbPS+MToiP9mTI/36sh2D8QCCD1lC4PKzIg=
+	t=1787437269; cv=none; b=aBekOm3kiDTNE3ayW4mnGfnCDQGp/EFtSTNmwnrUzRJgDd812p8C/IujGf1uyvxlj3Pz3APj/O01N8su5hx6ECn3lTogjn6C8gGxaiC+sE3RpPIIvOYBK4GsreBGnB9kwJB8jYIcU2Z9U8WxYYNZuS/Axjmg8Xb3wBaydTFljME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787437268; c=relaxed/simple;
-	bh=Hm6DGsvEv0UfW3kLRDGah7GifgO4QxzKNiyueKgICDw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=tcKfOsmXhDtayzeCex3WHE1x9ZhQEDlCYrfyycahrVfsBks0PJU39D8ITGRRSu7UYsH7pICHKqt4pDjR3UJi+jgPXGXoOGadDzoXTnHacsICH5XvPxVgUFgjTsVXK4JIyP1SGZJBtNpu3MvRUS3eMPzerzocIkpN0XcJGN9PCD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=PcmDii1h; arc=none smtp.client-ip=209.85.160.169
+	s=arc-20240116; t=1787437269; c=relaxed/simple;
+	bh=mcRUefXbq2vdLhI9DYOmodziQrFkQso4FtnaoRZk8As=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=YnufFsxbdeM5yVIkSvSd+cV9N0TRYAPLkmwmMstCiQ823Gydl1pwaQP75P/HDuOjNKfyPXRhpKCc5aC3H2XJnDwx16Hqa9ktaLvqeEXfrnN0ddCELwjUnsIWUvgryDh7IyXya9nO4Z1uQd4/amxy8njBUM19Z913OW315uBiZgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=sCb+ISvx; arc=none smtp.client-ip=209.85.219.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="PcmDii1h"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-52de50e77ffso16768711cf.2
-        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 15:21:04 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="sCb+ISvx"
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8f186025973so22917776d6.0
+        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 15:21:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787437263; x=1788042063; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FRESx+fjyo1UXWDp3GcCh/xEpgAf6GkQkCqatIvZlVU=;
-        b=PcmDii1h5i7TKJKEycPSQ+ZeM/5QMkQfuPbbQj33Dw5S4GXFyKFUUJ4YAls0ab8S7K
-         rsT77CKubfFESZbBWMdKRWBbpcTKNsgr8dfTE90ZCbvT7eF60nrowvBo5gwMiWgSwIjS
-         LPDgjp1gKx4c9jPF/wVB02TItkZAjW3V7ZTUg=
+        d=mojatatu.com; s=google; t=1787437265; x=1788042065; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=io5C1w1GYj6CXvl65B79E+wOaWgBuAynXNmwcVVwEvY=;
+        b=sCb+ISvxAZZ5RaXQ4PZjuQ1xxJTuIrv6e6m0jdsxmhmP/luJWy1eY328OxwHOc1izn
+         nBtuczwAoVPiPqyfj6EH8+VO1SCAzog3AHOAcbkNnqm4U17wL+9MJt2VPL9yp3sTnEi8
+         thnkFoYaWmTeqStItLVtL3fKuvfeHE48EcAAY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787437263; x=1788042063;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=FRESx+fjyo1UXWDp3GcCh/xEpgAf6GkQkCqatIvZlVU=;
-        b=cKoIioebnb6JTatUBySe4F9GqDDTw4TGGGqzLOAxTNSwUy4fe8+0jjB+wLtPzCLMjG
-         Y6zpB7HnvsbG2bn5d7vihmykhfWjfoJmUpxOL0PyVES30p/w96vxHHJGuJZMjtkGd33g
-         Zjcf5iZJEWSKnwZ7Kjkn7TVm5hmb615WEh2w3tGZvCN0tXlUAdO/z9LLpqWlF/1V0pa2
-         uT2qL8FEVWUwttMiUximpDhCfUw+QxnQAqjk62GkRsiwLe5ORk5gsxMSZQ7rdCah5FSE
-         I1fiAXm/CErf7jnx1jJSdOtpuEkxJp9c+bUaaDJDRg7kxOXQFuqiJTIyDLKwd0Y5FJKK
-         UnFw==
-X-Gm-Message-State: AFuF++nDUGZiqr4gDV4gDbLIHons0CQDdk4tauTlaG9b0pMAryNmJYZ1
-	p4AQX9w4xVI80gMN60eq014RjZSeqyPEjfCd3FIafiW6EpTg4mW9xowkHJ/LP+nTEQ0WEyptK1o
-	IPvt+Lw==
-X-Gm-Gg: AR+sD10bIY6TQOMaoyhwLpWwA9t1K7BqkA+OReOH9nugR9npaPPUxgRTpqx2Fuw8Xlh
-	0Z+naBd7Hzr7/vuc1g1BJCeg0Kworeuxh+v6x9bc4QMDMt7i/gTj9xiclloshRwqNKEXBt0UjOu
-	w6Ocyxo3kJHdNgoFuImrBC5I55ii65vLg1wIXuVcDE6SlMMsfIvLKTWj5jD/StkCPuq/EgYnbC8
-	acsfa1SwtqkSROI0sW24MGA4cGKYpbRZ+aD6T49A32dYchxH+SOQwiZXcwG3wI751dN/oysohVi
-	WvyoZNUSJPz2RBignnL/011oN5RqB6EY2w0EAGHVjPZW9uDOMncP+ozHY70dwLvzDnjQlqycuDV
-	+TT6ELsJwNPerub9/t56mNEgkrVSgCGqOsEyGIW/ksjDYDGbFlJT+6SiN16cOG67wa4osdE0d/1
-	0YEx0/GytVeXage2Hf1d7W6AFKDQ/Sy1LyFWRU4bCjDOscANQxVpl9
-X-Received: by 2002:ac8:584e:0:b0:517:a7ff:935f with SMTP id d75a77b69052e-52e09bad99fmr81845291cf.9.1787437262923;
-        Sat, 22 Aug 2026 15:21:02 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787437265; x=1788042065;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=io5C1w1GYj6CXvl65B79E+wOaWgBuAynXNmwcVVwEvY=;
+        b=BOmmB5e8ToPhVQInGnTm3W1HMhEOFbBXd3h7FC4cdmSDt2uoxgTUz/z7+uIXcgRJRu
+         s3U22uKta9cTo9lvJE7TbMAtDLdfsGIcUvYWTU8qH3GtS4ZPCCOs5qyi/KVclkez+9xm
+         Rtl8v1TYmNsVBcJJJgG3XyO4rQCrAY4wUOpEzuMwzmG77+SLG3QB5CCP6cK2z+0qH+My
+         0CfC1ycjWr53E1tZCzlEzz7olniUShNpM8NDlJbTOMZt+npjUJSSyvly8tjn5DdP7fTn
+         vKYrL+8G7NlD7ilVakQs7bwqahgHbUUUlBMzP1U0Nhfr2uewedawBKtcbPkug2PFGgsl
+         plgw==
+X-Gm-Message-State: AFuF++kop+7Tp/cuMs2faL8XtUqMpzp8pIS4FNhL3H33eDdrtRHEEAI/
+	7KmGeL/mGc5f8tdWRWz8OyH+Jq7Mom1u7rK9+D+S29sz5JWFocGrNfIQAeriXrBuTanPo3AnVGB
+	G+gD7NA==
+X-Gm-Gg: AR+sD12xz3rJlB3e0DKrNQb+2GgVHgeBvcd8ZXAL0brDDrv5dFEMQMApl+I0ioVjnpv
+	lDMWXX4kkEegcgbeVvYwX6EdXx6P3MkLrqaoZ8dLGyDIGbuK3boWcvbTzS/QQKZEfMmS0RkIAbs
+	0l8as/M+0+3SVC3K2vaC3r+PpSqUVw4KqnmiuySYzEYHp5rMcTFCcD3D/jKC/R3K1moH5NX4xh1
+	DWOXWdklapJ985C5o6ZbYVzzZ0tcCsO+hrv/FAI2YCIT261hnNZBOLA+9NBuP0X34tvzliIRfuB
+	2S/g1SakE4BfLAHhvA9V3goblAh/mcU7m455WwgqDYmx3lwHzif/8WdPRLLWIaLkdRoUQb6t6QQ
+	RsgspnYPNN0bJZtQxggBt8trXM4++vkpgaxwEQL/TWDfcC3Q2l29/imoGdnCa5HX8xDRnu7hNQG
+	kCieWSNR63o6LwhxDC408yFSlV7qyEFPr71M8NsV9k44nMra1k16ML
+X-Received: by 2002:a05:6214:1248:b0:8f2:940e:2423 with SMTP id 6a1803df08f44-90c8f9584e5mr77469296d6.11.1787437265210;
+        Sat, 22 Aug 2026 15:21:05 -0700 (PDT)
 Received: from majuu.waya ([184.144.29.222])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90c93a8be17sm22573156d6.46.2026.08.22.15.21.01
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90c93a8be17sm22573156d6.46.2026.08.22.15.21.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Aug 2026 15:21:02 -0700 (PDT)
+        Sat, 22 Aug 2026 15:21:04 -0700 (PDT)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
@@ -63,152 +64,66 @@ Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	stable@vger.kernel.org,
 	vega@nebusec.ai,
 	Victor Nogueira <victor@mojatatu.com>
-Subject: [PATCH net v2 1/2 RESEND] net/sched: cls_u32: fix duplicate handle when node ID pool is exhausted
-Date: Sat, 22 Aug 2026 18:20:48 -0400
-Message-Id: <20260822222049.114526-1-jhs@mojatatu.com>
+Subject: [PATCH net v2 2/2 RESEND] selftests: tc-testing: add u32 node ID pool exhaustion test
+Date: Sat, 22 Aug 2026 18:20:49 -0400
+Message-Id: <20260822222049.114526-2-jhs@mojatatu.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260822222049.114526-1-jhs@mojatatu.com>
+References: <20260822222049.114526-1-jhs@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-gen_new_kid() falls back to returning max (htid | 0xFFF) when both
-idr_alloc_u32() ranges are full, instead of reporting an error.
-u32_change() trusts that value and inserts a new knode with a handle
-that is already live in the hash table, breaking handle uniqueness
-within the table's node ID space.
+Add a tdc test case that fills the u32 node ID space with 4095
+auto-generated handles, then attempts to add a 4096th. On the fixed
+kernel the 4096th filter is rejected with ENOSPC (exit 2). On the
+unfixed kernel it silently succeeds with a duplicate handle.
 
-The handle was never reserved in ht->handle_idr, so every later error
-path that does idr_remove(&ht->handle_idr, handle) removes the
-reservation of a different, live knode, which is then reused — one
-failed add compounds into further duplicates.
-
-The 4095 limit is per (table, bucket) — ht->handle_idr is per hash
-table and the range is derived from htid (bucketid), so a table with
-divisor 256 can legitimately hold 256*4095 knodes.
-
-The sibling helper gen_new_htid() has the same silent in-band failure:
-it returns 0 when the tp_c handle pool (1..0x7FF) is full, and
-u32_init() publishes the root hash table with handle 0 without
-checking.  Two root tables with handle 0 alias in u32_lookup_ht(),
-allowing cross-tcf_proto knode add/lookup/delete.  Add the same
-exhaustion check that the divisor path already has.
-
-Return an error so u32_change() fails with ENOSPC/ENOMEM when the
-node ID space is exhausted, and so u32_init() fails with -ENOMEM
-when the hash table ID space is exhausted.
-
-Conditions to recreate the bug:
-- CONFIG_NET_SCHED=y, CONFIG_CLS_U32=y (or =m with module loaded)
-- Create a clsact qdisc on a device, then add 4095 u32 filters with
-  auto-generated handles to fill the node ID space for the root hash
-  table (single bucket). The 4096th auto-handle filter add triggers
-  the duplicate handle (fh 800::fff reused). Reachable at Level 2
-  (unshare -Urn, namespace-local CAP_NET_ADMIN).
-- For gen_new_htid: create 2047 u32 proto entries on the same block
-  to fill the tp_c handle pool, then create one more. The root table
-  gets handle 0 and aliases with other handle-0 root tables.
-
-Fixes: 7801db8aec95 ("net_sched: avoid generating same handle for u32 filters")
-Reported-by: vega@nebusec.ai
-Tested-by: Victor Nogueira <victor@mojatatu.com>
 Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 ---
-v1 -> v2:
-- Commit message: removed incorrect "4095-knode cap" claim (knodes is a
-  liveness counter, not a limit; 4095 is per (table, bucket) via
-  ht->handle_idr/htid); reworded to "handle uniqueness within node ID
-  space".
-- Commit message: added IDR-desync paragraph (max handle never reserved
-  -> erridr removes other live knode's reservation -> reuse compounds).
-- Commit message: noted ENOSPC/ENOMEM both reachable (idr_get_free/
-  radix_tree_extend).
-- Fixes: e7614370d6f04 -> 7801db8aec95 (duplicate-handle bug predates
-  the IDR conversion; e761 only added the IDR-desync consequence).
-- Added NL_SET_ERR_MSG_MOD(extack, "Hash table node ID pool exhausted")
-  at both gen_new_kid() call sites; bare -ENOSPC -> "No space left on
-  device" was confusing.
-- Folded gen_new_htid() exhaustion check in u32_init() (Sashiko nipa
-  main-1-0): same silent in-band failure pattern — gen_new_htid()
-  returns 0 when tp_c handle pool full, u32_init() published root table
-  with handle 0 without checking, causing cross-tcf_proto aliasing.
-- Renewed tdc test (v1 tdc failed in long-running sweep, prompting v2).
----
- net/sched/cls_u32.c | 27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ .../tc-testing/tc-tests/filters/u32.json      | 24 +++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
-index c297d7dbcf91..1a72817bd449 100644
---- a/net/sched/cls_u32.c
-+++ b/net/sched/cls_u32.c
-@@ -370,6 +370,10 @@ static int u32_init(struct tcf_proto *tp)
- 
- 	refcount_set(&root_ht->refcnt, 1);
- 	root_ht->handle = tp_c ? gen_new_htid(tp_c, root_ht) : id2handle(0);
-+	if (root_ht->handle == 0) {
-+		kfree(root_ht);
-+		return -ENOMEM;
-+	}
- 	root_ht->prio = tp->prio;
- 	root_ht->is_root = true;
- 	idr_init(&root_ht->handle_idr);
-@@ -695,16 +699,19 @@ static int u32_delete(struct tcf_proto *tp, void *arg, bool *last,
- 	return ret;
- }
- 
--static u32 gen_new_kid(struct tc_u_hnode *ht, u32 htid)
-+static u32 gen_new_kid(struct tc_u_hnode *ht, u32 htid, int *err)
- {
- 	u32 index = htid | 0x800;
- 	u32 max = htid | 0xFFF;
- 
-+	*err = 0;
-+
- 	if (idr_alloc_u32(&ht->handle_idr, NULL, &index, max, GFP_KERNEL)) {
- 		index = htid + 1;
--		if (idr_alloc_u32(&ht->handle_idr, NULL, &index, max,
--				 GFP_KERNEL))
--			index = max;
-+		*err = idr_alloc_u32(&ht->handle_idr, NULL, &index, max,
-+				     GFP_KERNEL);
-+		if (*err)
-+			return 0;
- 	}
- 
- 	return index;
-@@ -1079,7 +1086,11 @@ static int u32_change(struct net *net, struct sk_buff *in_skb,
- 		 * handle which is used to uniquely identify the match entry.
- 		 */
- 		if (!TC_U32_NODE(handle)) {
--			handle = gen_new_kid(ht, htid);
-+			handle = gen_new_kid(ht, htid, &err);
-+			if (err) {
-+				NL_SET_ERR_MSG_MOD(extack, "Hash table node ID pool exhausted");
-+				return err;
-+			}
- 		} else {
- 			handle = htid | TC_U32_NODE(handle);
- 			err = idr_alloc_u32(&ht->handle_idr, NULL, &handle,
-@@ -1091,7 +1102,11 @@ static int u32_change(struct net *net, struct sk_buff *in_skb,
- 		/* The user did not give us a handle; lets just generate one
- 		 * from the table's pool of nodeids.
- 		 */
--		handle = gen_new_kid(ht, htid);
-+		handle = gen_new_kid(ht, htid, &err);
-+		if (err) {
-+			NL_SET_ERR_MSG_MOD(extack, "Hash table node ID pool exhausted");
-+			return err;
-+		}
- 	}
- 
- 	if (tb[TCA_U32_SEL] == NULL) {
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/filters/u32.json b/tools/testing/selftests/tc-testing/tc-tests/filters/u32.json
+index b2ca9d4e991b..039bb8278a60 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/filters/u32.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/filters/u32.json
+@@ -353,5 +353,29 @@
+         "teardown": [
+             "$TC qdisc del dev $DEV1 parent root drr"
+         ]
++    },
++    {
++        "id": "934a",
++        "name": "Add u32 filter when node ID pool is exhausted (4096th filter rejected)",
++        "category": [
++            "filter",
++            "u32"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "$TC qdisc add dev $DUMMY clsact",
++            "bash -c 'yes \"filter add dev $DUMMY ingress prio 1 protocol ip u32 match u8 0 0 at 0\" | head -n 4095 > /tmp/u32_batch.txt'",
++            "bash -c '$TC -b /tmp/u32_batch.txt'"
++        ],
++        "cmdUnderTest": "$TC filter add dev $DUMMY ingress prio 1 protocol ip u32 match u8 0 0 at 0",
++        "expExitCode": "2",
++        "verifyCmd": "$TC -d filter show dev $DUMMY ingress",
++        "matchPattern": "fh 800::",
++        "matchCount": "4095",
++        "teardown": [
++            "$TC qdisc del dev $DUMMY clsact"
++        ]
+     }
+ ]
 -- 
 2.43.0
 
