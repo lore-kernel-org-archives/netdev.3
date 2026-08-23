@@ -1,83 +1,91 @@
 Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 858561DFF0
-	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 00:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214811E1024
+	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 00:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787443554; cv=none; b=j+rZsRZfOIvP2DAnemxckC5DCX2WyElTeSkCXbFPuN74FVK6/U+TCVuM+jlk5P1viQgKzUZrUPKmbfVHwNp/HnhstfNpF8a7/H8PpMukNev/hbUsUYAoeXoobKg0uJHxTiVTVwvbfBkU5a4aeGGsSeQrDDJX9SvsYApSk+V/GUk=
+	t=1787444572; cv=none; b=J2HRDQH8qV5SYM1mHRTd6jrW2jCArJlx82b7+LjWYhrZZnfzfngoawHKqkB1RZ1Jz/ZwwyjsHdPW5dgobquYF233VvrV2S6Mo1tUkpWZjxa9iFcfMXDBMBzymSSlb7gul0gq5eHIKSDU6UyzLUEU9oeJQ7hutB/zA9fLNxET270=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787443554; c=relaxed/simple;
-	bh=aZhme+fPtNRc4Hp5eZBvER/rDdLrQ2TdabO+HmWc3ho=;
+	s=arc-20240116; t=1787444572; c=relaxed/simple;
+	bh=PnfycOpIeVLKHmflGiUF526cXqauQ3cReF2OjuRBrdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cqJfCvTcMROKNfdozpfGwdERh6JPEL2euf0NSK/UXKoLIA7k+r8j+ZhZNQQPC7voB98YqIQUu7YUuwwPJiu5Aq6yAyRvQ97GiC5bxMsXYoBlC4T0uilNITBq1Smqptfv+ZWjL20gn2kLW8lZ+ZaRBvl15L7RA60HvDV9Y5Tg1Sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=OF9i+Gwa; arc=none smtp.client-ip=209.85.218.51
+	 MIME-Version; b=bruwp7RKzs0wBjLAHuAqBpLENX182B69ipYbz10ic2vkfHZGCWr9Ktmfj67vlbyTdQ0AiBkuz9rFa4IJy3CUQnOdUi8n5LvLXDEmfk6dt6yHJUUa9w+8u1oOg9jK61KbvRy0jUiwJ60KnMzwYkHFz34ziViIkshwqYXpY/AUi+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=GVO2adbP; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="OF9i+Gwa"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c214321dc32so440415766b.0
-        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 17:05:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="GVO2adbP"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c15cf78d1a2so258338266b.1
+        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 17:22:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1787443552; x=1788048352; darn=vger.kernel.org;
+        d=lex.la; s=google; t=1787444569; x=1788049369; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=aZhme+fPtNRc4Hp5eZBvER/rDdLrQ2TdabO+HmWc3ho=;
-        b=OF9i+Gwa6gIwvVESgm6EA0ZAECIUCylJzd25w56Ghw6eVXcG1lbO18VAgbHIGDzMKY
-         fkHwioOuFguTOheG5TZ3qJeCc1PAyDnyglrN3+Kg18LYzhQqsVQaeuaEFTBEP/jr+Vx+
-         dKO/C4gDqeZ+bStM3GHDIu65klkO97jqnX8AN2Sgnay0T3yqx7C8a7c0T0dVWLXCXjIi
-         /kfG/WMAyFkKgZu7wuaS35ft3Ca7bwVnk3AD1FMDzfCgmHKIrWqYwavRIfezHXExLayd
-         H3YVHqbG5UzFVygulHAMfDERlajlbwuiVVT7DTOCQeznnC1nodjfs/ZI6JyIVTJEKogJ
-         m1xw==
+        bh=PnfycOpIeVLKHmflGiUF526cXqauQ3cReF2OjuRBrdk=;
+        b=GVO2adbP3Rh+tY9bjOWmsUTnK6YUer80M6KbtIHfR5BACdryy5Qf+kqHko+5yXIOYj
+         DuoDS0aDtin/f9P2FsYsTrt++tXrMP8Yxyuqt+pCE6NcnKfZ2AVHHi0X386sQ2fPccSc
+         dzuLvWCgWDQC7ejBPXg/PDQvrmdDXQ/m31qeXUsEMuqL8oRQXcT5nHFKe/4QN7sNvVPj
+         691TQKh52gDGXw7cllPMnpLdNzTWtEt+0qv3lBOPNXqjMU4uQsnnzLEk8zUqM5+4v2XK
+         ylhnz0rHPxNF2NO6yZtplZ3ycwGagC0gvprES6CfVi/VLIfkX0mB5x9edoEbwcjW59a3
+         3ZWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787443552; x=1788048352;
+        d=1e100.net; s=20251104; t=1787444569; x=1788049369;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=aZhme+fPtNRc4Hp5eZBvER/rDdLrQ2TdabO+HmWc3ho=;
-        b=IOtF7gxB2qTV3dnr/RdbIvjIe3ROcYreypNwQc5lY10vz3VM3GXCpxqHAaqYGzgJWo
-         U5T9i1fp/0e5Jp2mM3qK32uKRgEc6gI76TLV9aK7XitwtYuXrFC/ysBru8O/+kCB8uWa
-         kYDu8+dxl7VRzq+qIaleCWzesTLXG0iU4WCBl3tvCUwjHJvL/ST0s11rspvlgy2vkjge
-         CZgQF10uI46Gea4bdEgBpyyciyJpW8vdbUNmLsKfmRVSuHLkDZ+eAQOWgU5puIR/IcK9
-         RJkaP1kNXZEQPJV20/gAVMbR+pJ7MW3om9PEBix4Do73HHdg+2+WsE3YtSVO329LiGat
-         BeXg==
-X-Forwarded-Encrypted: i=1; AHgh+RoZnPK0UiTAbpzImgxQn9KbptUtyLFsfG8CeeqkajY5SWrBx7nEibDsAGUC04babLj+wmab3PE=@vger.kernel.org
-X-Gm-Message-State: AFuF++lMjVVOy+fQ38izIXU3V5ONQomYtWNURAdUs8VT5QfL64OrMlrH
-	IfTsCvfszcApz+qfFxJVOPFEx1MYjA9tstbGjHfbFkc4Wg5OrNQrYS8S9nEtLqah3T0=
-X-Gm-Gg: AR+sD12vBflEy5nClaG2zkNYsxRss+AdqxJT49wQdY6Ff016sq/a0xUck/4t4p/oUpw
-	KcDB0X4QQ+uUntOPWObuKpBV2fZ2rnkg27PJZJWH06KyH2r4Yf5YL9x+9/7Ew08jfb0qoFQ78ux
-	6Hhk/hYRPNLpF3jV6rj19/G/0XtAOe4y1qn8b6s52GUCQ43xmiPVLiRdeRqddCPeasky87RgmjD
-	0+grYYJxtALfScFuILhpkghQNhTRlFcZmRvavI7PigeAuW14+IGbVxMDT/DhpNAgHFUlW92ZYaH
-	Q4gtoPh3PtmAdeYY4X8+afRSe/KpOEGHCyADZEIiZ6szUZwWHSeN/+xaCIeahxkNW9Yx3hAnCUG
-	mJij2XJRtXpZWxAO5HN0ILWYm0i273DBblWVu0juWYoqOdvRFdi2zVwJMnhJbOJlk2fP16voqnL
-	QeD5gUIffqJEJ7qLl3oJkMkk5nQaqlwnV8y7YOd/e72z/rLedTQ3gkqRKrVAjP3E5SO5yZE7UXd
-	q6pMbEO
-X-Received: by 2002:a17:907:930a:b0:c1c:6f0d:5b22 with SMTP id a640c23a62f3a-c246a654342mr1941819866b.11.1787443551459;
-        Sat, 22 Aug 2026 17:05:51 -0700 (PDT)
+        bh=PnfycOpIeVLKHmflGiUF526cXqauQ3cReF2OjuRBrdk=;
+        b=lc/IFL60YFIyHPsMoUxmR/c0hSjTS/7tdTW7ref9k6ObmgHHi0+2aSDx8MP/rgYVfk
+         rhjCOE39yoYbYNKfB+vPmYEB89vuUzo2XCVzuUKXo7nvsvhMRG9m5++JmEemMN5LjVKn
+         vpksXWXqNxSHcIS3atTYRNO5tVmENCccbw9GKA3FvzRv1sOaF41rESbsE37qHfGlKFNW
+         3E7juIQ0JSQ4mD40u7nhWUqNRuEWBJMw9Emd4NBeWV4pZF1C4wVOJ+gIq/DzNSMLXdct
+         te5fnkaty/gCsxq59jdqk8brqYSWpOeKqlds8Gylf7Xh2Vw25eIAnlNDEn4BX7/gxGDk
+         lp5A==
+X-Forwarded-Encrypted: i=1; AHgh+RqH/W52bspNABGnR1762mLWVpCl0Rl8qVGHCzayRh68Aoodc54oNAVDLXagVsHxI3F4IJdsMl0=@vger.kernel.org
+X-Gm-Message-State: AFuF++ms6YcTz38BW5gCQ6/Luo9cwytkLfsajN3pHs6JKwV6j4TFtPPA
+	rViRS3U1VlU67kVUC/9s1qePd6/RwMW7eZO2EwsogDrHU3lM/gref8UMtpTNQ477ioLkpTyVyGu
+	uzsYDnZ5KQA==
+X-Gm-Gg: AR+sD132D2HHYYM7Gz+ar/aRhWDMFrdyYLvrp4Eo99cApG7cVDTMKtdN5CbEZlo0aAl
+	qVdr+qJEMTMEwlJRf4733GSszaabTUZepQbS5BkE7vPDL/NDYG+wiIvU8mcxzMJq5SAWZWg2v4A
+	zojOoKaPp7RoAzCNwse61wl12H1R8lRCnp6JFGmntjieootCTAzhwwIDTyWq0uUJjE0Ez90wrmI
+	HV9soqSwsT86piMXpF1RQI55ppyLo+wR78OXbAph1kFKqpN9+yu5dV/mdH+ZG1DpKjmOHwfonCP
+	yoCbYEcdNb2AeR7vdd45AgLUjaDvbctOz36M5BKDhDrOOau/6ptUUf/xEhQ1bPHdBmUOerMosXj
+	4Bn6IiiQFxMbqPyC5Aj3XwROVGF82cTGyWWwceUBUwlo1auvsi5IWiHrWMOcm0DqJVXOX21h3WA
+	6Sn39af+OosgxH4mEjWjoj8RVNS7iEDN/IFWU45w/D1R+xCrSmZR+5dNBeIaJpLrOhPfUC291vH
+	i1GiDZZ
+X-Received: by 2002:a17:906:6a27:b0:c20:2eee:97be with SMTP id a640c23a62f3a-c246a33ed69mr1775593266b.7.1787444568708;
+        Sat, 22 Aug 2026 17:22:48 -0700 (PDT)
 Received: from ownbook.home.lex.la ([84.17.55.225])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c24966f6adfsm504267866b.31.2026.08.22.17.05.50
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c24968a2e42sm438394466b.59.2026.08.22.17.22.46
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 22 Aug 2026 17:05:51 -0700 (PDT)
+        Sat, 22 Aug 2026 17:22:48 -0700 (PDT)
 From: Aleksei Sviridkin <f@lex.la>
 To: Andrew Lunn <andrew@lunn.ch>
-Cc: Vladimir Oltean <olteanv@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
+Cc: "Chester A . Unal" <chester.a.unal@arinc9.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
+	Russell King <linux@armlinux.org.uk>,
+	Qingfang Deng <dqfext@gmail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
 	Aleksei Sviridkin <f@lex.la>
-Subject: Re: [PATCH net-next 3/3] net: dsa: connect a late-arriving PHY at ifup
-Date: Sun, 23 Aug 2026 03:05:49 +0300
-Message-ID: <20260823000549.6095-1-f@lex.la>
+Subject: Re: [PATCH net 1/2] net: dsa: mt7530: populate lpi_interfaces to fix EEE support
+Date: Sun, 23 Aug 2026 03:22:46 +0300
+Message-ID: <20260823002246.28455-1-f@lex.la>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <9557daed-f039-434a-ae64-ac849b9860be@lunn.ch>
-References: <20260822155259.87146-1-f@lex.la> <20260822155259.87146-4-f@lex.la> <9557daed-f039-434a-ae64-ac849b9860be@lunn.ch>
+In-Reply-To: <c501d5f8-015c-4ce1-87ee-c4cdaea57f7e@lunn.ch>
+References: <20260822195252.2934-1-f@lex.la> <20260822195252.2934-2-f@lex.la> <c501d5f8-015c-4ce1-87ee-c4cdaea57f7e@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,39 +94,18 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-> The problem is, this is not guaranteed to work. The driver might still
-> not be loaded, or it is still downloading firmware to the PHY.
+> This is very verbose. Is it AI generated? Please revise it and make it
+> suitable for a human.
 
-These are two separate halves, and the driver can only reach one of
-them. When the firmware is late, your scheme works, and I want to do it
-as a follow-up. When the module itself is still on an unmounted rootfs,
-there is no probe to return success from, so the connect at switch
-setup still gets the genphy fallback and the port is gone for good.
-This patch is for that half, and it is the half the board in the
-commit message hits: the driver is a module on the rootfs.
+AI assisted, English is not my first language and I lean on it for
+prose. The verbosity is my fault though, I reviewed and approved every
+word. v2 will carry the Why only and move the mechanism notes below
+the scissors.
 
-> Think about the case of NFS root. The kernel will open() the interface
-> as soon as netdev_register() is called.
+> It is normal to assume phylink is correct. Now, if you do find it
+> doing the wrong thing, we want to know so we can fix it. So if you do
+> want to validate it here, make it very noisy if the validation fails.
 
-With NFS root the module and the firmware sit behind the network they
-are supposed to bring up, so that setup already requires building them
-in or an initramfs. With those in place the connect at setup succeeds
-and this patch stays out of the way. Without them, today's kernel drops
-the port at setup and NFS root is just as dead, so this does not
-regress it.
-
-> I think you need to look at the PHY driver. Make its probe function
-> return success, but start a thread downloading the firmware. While
-> firmware is downloading, either soft_reset() or config_init() needs to
-> block.
-
-I would rather not block: config_init runs inside phy_attach_direct, so
-on a DSA switch the blocked port holds up the whole switch probe and
-every other port with it. For the follow-up I want to attach with the
-real driver's features immediately and keep the link down until the
-firmware lands, then trigger aneg, the way an SFP port sits linkless
-without a module. aquantia and mscc load firmware from probe too, so a
-phylib helper for this would have three users.
-
-If the async firmware part should come first and this patch second, I
-can reorder.
+That note was about a possible defensive check in
+mt753x_phylink_mac_enable_tx_lpi(), not something this series adds. If
+I ever send it, it will warn loudly.
