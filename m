@@ -1,160 +1,119 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-pj2-f0.google.com (mail-pj2-f0.google.com [74.125.227.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C60E308F3B
-	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 13:32:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A732631ED80
+	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 14:26:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787491974; cv=none; b=UI+NHVcIcZD/NjTd0+VnDIa2vCJBNSdUDOozRJZJT9wbRlM0iSG4mrh6xSGfpDKO4qdzTqqvCOZXDA4FCVeF0fwLo+JgwGLaHiwOZzq1AJhEawH6gzrUpiRiQoxAjigNk9cyZoXcCz3xbI4hyT6/vsXgTxbBVxOjilao+2j3UbQ=
+	t=1787495191; cv=none; b=Z03vVF98dfwfiadYiNa1iocRjDZwn1rYd1SFlZciYijDdMQBbUEaU83Jz4BR9dZCPsX4eH41v8u3lnqb5fLT4udEjtRFbgea6OVBMJPEcQ6QP2frBZiShZxf33WHGIUE/93GLWmD5SzW78YVNh2sHEHX0konVYCS2+h00Jqib28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787491974; c=relaxed/simple;
-	bh=QnsqlWV2+HTY6HhUI51xQCDZ22CyVTT5ZguwayhWJac=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hy6pEREw/pkZnHL6Q+1qZSkQr0uaPF/hYrHa5P8Iy/go0G6cQg5uTdNJlKkc9znnryOPW3W2rV3Th3+tzon1Og136aOtUjuKfBPi9FYd77LL5lvR/yGMo90Zz7lxVhEDHwuqE00VZOkzFNKK/qowelzIKn750mhVL2BM6bGfv4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=L1k/Q6pB; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	s=arc-20240116; t=1787495191; c=relaxed/simple;
+	bh=HROw/c6Y0BlXY0my7bZMyZmW2RvDTA+v5z0vY+JjSzk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ic/ewha6ayrnga4S/haCi2oerR+39yVXzof+enPRNPOOSar1PqAt4TDOg6Y+1XUxX3sfc+irc3u5P0wgI7MwzAy/kStn3MWdkGXEFonn/gc4yRaOUgVlI+L+eDQM9tQSk596iwFyMxfa2+RRZKU3/jtA2L/Ucs5u0AuY7//Euqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X7bXSfaC; arc=none smtp.client-ip=74.125.227.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="L1k/Q6pB"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c20fb91ed0fso381316766b.3
-        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 06:32:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X7bXSfaC"
+Received: by mail-pj2-f0.google.com with SMTP id d9443c01a7336-2cc2c6e0688so14530585ad.0
+        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 07:26:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1787491971; x=1788096771; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=oKNZxXkQOBpNNoBVz2Q1UXI7fB4yjnJyzapqPLmW9AA=;
-        b=L1k/Q6pBsL21Tm6puhF0m8ly5kRjkhPxDnxj4i/qClUFjb9vE3TLBTqX/MhAa95wbe
-         M3gdYmI5c+nkNhfLqGrUsvckDFS2CVl/a4nFAPfowwmoPGkKAt98gxOsxtAXI9DbSX9E
-         IhQIIMEM1vrHbxsP5BxztScxq+bhPfXZlOor6KInHPaKSuqG4FN4gxi+Omz3uJUDNyKu
-         FZD3/jlgv4Bjx5SfRtsN5TYftYIzisUI1PjtIuJT/9e37BV7cYnYBxVMPEvfUF6thRIO
-         j0x4jAaNVU3vPWwzKm+js2ad43z3viI+n4aiByicc73JTKuWZid9fxys0saJP3rbQ0Vk
-         64mA==
+        d=gmail.com; s=20251104; t=1787495190; x=1788099990; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Nc2OpDByISqZ6cUjaeCWgnfFVc3xyfspITbujS5lcD8=;
+        b=X7bXSfaCIdw+lkGtwjsHX0Gr6uSP68xugtONC9k9KTo7L0Nt/Kfkg1Klr76ajfq+br
+         b9Zt+RcrKKen5ZC6i9RMHYaAguBd3ZqKPkOpNMZfTCWd1C6ObJa3OiCUw2z1Vg8D/FtP
+         rkiPb2uLtXQaafO30s7yTH7Vu+meQHMOUfruXkvc8j6UTjNd8KEe9gk2Qz1aK2vSZCkU
+         UQD7TRVoucjccpl4Qz4vk0MF7NJHNoe1vnVw0eKGNcn5I3SeeF1SeajfpCeGyy8wj8Ns
+         Xq49hyCDEi/ftcIJojfuhDncNExfIQd0eVlwUkipzAF52ToQYB1mDK79qSfdB9+uRdbP
+         KYgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787491971; x=1788096771;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1787495190; x=1788099990;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=oKNZxXkQOBpNNoBVz2Q1UXI7fB4yjnJyzapqPLmW9AA=;
-        b=s4JgQXt4ZgRiDqB7buNCaHHJ7rE27sGXK9Uil/TqquDKPyqHc1Jc+OjUxvb4xswfUS
-         3PFcQTslTSU+2ogFG/vOR/MAFjL/qCvYIEiachrArgdKtNWoSXCis6AgEidSbbjwmEuh
-         1UjJqsyT2ssTCeIpdGiBq5aGn8Tx6ilMcDW8rajKh3+NgdfXV3oYcDORyT7H0DHxmuJX
-         IiHQp9fhEnULd5IZve7cGZVfWloYrDZyiSuc2OFIe/V+YSkqzfvFw+J7+4BY9ioZKn4q
-         Thjl9xTOjloD3Uj2I1XaqR9erifF7aNkdWs2i4k6DtE4dPtoI+3uCdp/6y7svkf+Ibpf
-         xBwg==
-X-Forwarded-Encrypted: i=1; AHgh+RpjAdn4XdlcXEdur272QxDWnYKtaotNDnzq6iFYeH3BhDwmqz+5B52qHqNb5Gf2lfwF+PRQUr0=@vger.kernel.org
-X-Gm-Message-State: AFuF++mEH1G8jfMGnv6KVnczyAJltl/SYvcEjErcHJRMaRVotHKioaCV
-	xw/qa3A8f2x9udaNngSwXtN/aaoxmTTLH+D5iQ5OWkdmU6dIoZ2Smb6tuoW87r6Op0o=
-X-Gm-Gg: AR+sD11w0ihae1Bj8qjEjhRE9lSNsbrSk2Pj19+ubf6DCrNNk+chZOQxnsgkY3iN8Ai
-	ON62qJ6FXofCzo8Hx7+MkYed1ebN85q9fvFXncfvr6iZFLWgZITPc/4utUX5L9oCoI0+uxyTfgP
-	ULmBNFoQvWQg8+0QxQ2DnE4WR7VVpl6LfKMTCEV/q0nw6NfvWYFE/zjJu3Lejlg7t8OpP/upuoY
-	eHLmJ0AGTrTESWa+Sr9o+1SY4abMQdzvPFaSQsEDVBJapdGADGP+PboqPZ9k4y2MrOOelTSQvfx
-	SNEvk5tmGBpCFcancndrMGbLRoKQaBVzyEg6ulSIPOEaxM/cBHU4wmSKKgJHb/icW3i7OUYqtDV
-	HFAngDx7pAm+5nKllGR0yMuU1PqMWGTs5aNWKsYU3QbicKSNAwRC4C6lgKY+jcLo2nckxTpZV3+
-	0zYbwuA+FKtwN0MyIFmUyJ1LlnxzLAjgTUpY2JUflsAHZ48yTr4OecS/IqbqswBTkPaRRSLM29+
-	Sc+yBJyMJU+qHv1Eow=
-X-Received: by 2002:a17:907:6094:b0:c1f:9c3b:96a7 with SMTP id a640c23a62f3a-c246a6269d2mr2107478766b.17.1787491971003;
-        Sun, 23 Aug 2026 06:32:51 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c249629563dsm794720866b.17.2026.08.23.06.32.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 23 Aug 2026 06:32:50 -0700 (PDT)
-Message-ID: <a7cc297b-ae54-40b6-92fc-2d1311f2e76f@blackwall.org>
-Date: Sun, 23 Aug 2026 16:32:48 +0300
+        bh=Nc2OpDByISqZ6cUjaeCWgnfFVc3xyfspITbujS5lcD8=;
+        b=nU0zcuIgCHTboElDwO6w2OMnuBW1nemrrvc7OL+ppMwHhchHtAIWebHHz08w7HE859
+         qCAl8X//M3qTgGdd5wtkG36fh+83Wpi+0GariFN+QuULlcZ8vkz6QZcMF8Up8GkgenGr
+         n4lB04y2dhKjM/7Iwlk5f5Q7PVZOEeTJG2bbMe5h5/JoJK822Iv82aW0vMrV1eqDBPWo
+         ng/4V9uKIhhInITyyr4VW7S/mOuR+BdcBDCZe6PY3n96fJ3tKiyVbhwJx0IBtCPEpD/g
+         K7/B/ptRSzaOR0ZuoltwDIN88kzLSOXy9GvmU4uUaJmkXnEM/BoX8aZ7skh61F//qHLt
+         jPyQ==
+X-Gm-Message-State: AFuF++liMPndHDEMMT6HDYhf730FKa8D+xX6wpO+5DFbAJliB9S5pyfB
+	DulnwF3WqpTkoBcfpGobC/mT4BaPxi7Sj0bu6xD+9M6rzlDi7YrwJDMrpt6sLn+5JzKgZyAK
+X-Gm-Gg: AR+sD11I/CK1IJQ+t8D6NV5IFE+t5x48TXh+YjH9xSjKve8K02rGDquYqLx2MxHHHr5
+	TpZMuIU9OfLCygjgkDVMGJLIcXn2ZfYDUsX8hC0IXwarwlycIKtuaSKPm0YYFse5fLIWL3TE/Ev
+	FEXnPA+g9372n0EsE4xKiECN7a2d391D2Ds3A25VxtMC7yTtkPkBeXEWbX7XKSyiYYpveYFfI/8
+	AtTxhq3ZovsqX7xg49h13dSPO2sqoQGledi8TEeXTt+LjL0LKl/0sXrwaWfccaPRf72yFyx7FzS
+	QJQ0r5T1yOKgnqFY/PHq+FjIDToC/+gN6BJAgkN4PJuX9pSoVWm2i1m/dhKbIbpx9usPWM8DL6b
+	OuCX8BVRtK249SfV6MyBCglBWhL/8ilyaPie3SB9iPkXGf8v35LWUPVKsGHyuuINTM4Suj3f9oE
+	gGnlJhOYYMNO/5+Z4b7YCIYdigLAbxeQIPIjCVnLDPGCUsfs/rmnZYjolJEZRqgwIi2ETD80Gka
+	nSDprUdaw==
+X-Received: by 2002:a17:903:1a28:b0:2d0:401c:2ebb with SMTP id d9443c01a7336-2d64adc3f0amr374069365ad.4.1787495189979;
+        Sun, 23 Aug 2026 07:26:29 -0700 (PDT)
+Received: from J4f-Laptop.localdomain ([2409:8a55:94ef:8231:5513:5a56:ca01:ec16])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d676895799sm9847435ad.38.2026.08.23.07.26.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Aug 2026 07:26:29 -0700 (PDT)
+From: Shihuang Liu <shlomojune6@gmail.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org,
+	Shihuang Liu <shlomojune6@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] net: skbuff: reject invalid pull bounds
+Date: Sun, 23 Aug 2026 22:26:20 +0800
+Message-ID: <20260823142620.126424-1-shlomojune6@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: bridge: mcast: fix use-after-free of a master
- VLAN's multicast context
-Content-Language: en-US, bg
-To: Norbert Szetei <norbert@doyensec.com>, netdev@vger.kernel.org
-Cc: Ido Schimmel <idosch@nvidia.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, bridge@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <B41EB55B-E5FC-431D-956C-503CA7B95C30@doyensec.com>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <B41EB55B-E5FC-431D-956C-503CA7B95C30@doyensec.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 23/08/2026 14:58, Norbert Szetei wrote:
-> br_multicast_toggle_one_vlan() clears BR_VLFLAG_MCAST_ENABLED under
-> br->multicast_lock before stopping a VLAN's multicast context.  That is
-> the teardown handshake: lockless readers gate on the flag through
-> br_multicast_ctx_should_use() -> br_multicast_ctx_vlan_disabled(), so
-> once it is cleared under the lock no reader can arm the context again.
-> 
-> For a master VLAN the handshake never runs.  __vlan_del() clears
-> BRIDGE_VLAN_INFO_BRENTRY before calling br_vlan_put_master(), so
-> br_multicast_toggle_one_vlan(masterv, false) returns early on
-> !br_vlan_is_brentry(vlan): the flag stays set and br->multicast_lock is
-> never taken.  br_vlan_put_master() then drains the context in
-> br_multicast_ctx_deinit() and frees the VLAN through call_rcu(), while a
-> reader still inside rcu_read_lock() sees the context as enabled and
-> re-arms it.  The port and port-VLAN branch of the function has no
-> br_vlan_is_brentry() test and flips the flag under br->multicast_lock,
-> so it is not affected.
-> 
-> The reader is the bridge transmit path.  For a master VLAN
-> br_multicast_rcv() selects brmctx = &vlan->br_mcast_ctx with
-> pmctx = NULL, so IGMP sent to the bridge device re-arms the context's
-> timers after br_multicast_ctx_deinit() has already stopped them.
-> 
-> Any user able to create a bridge can trigger this, which includes an
-> unprivileged user in a user namespace, by deleting and re-adding the
-> master VLAN while sending IGMP to the bridge device:
-> 
+skb_maybe_pull_tail() subtracts skb_headlen(skb) from the unsigned max
+argument and passes the result to __pskb_pull_tail() as a signed int.  The
+function does not ensure that max is at least skb_headlen(skb).
 
-So much AI slop... at least drop this paragraph which is completely useless.
+This can happen while parsing IPv6 extension headers when an skb already
+has a linear area larger than MAX_IPV6_HDR_LEN.  Once the parser needs data
+beyond the linear area, max - skb_headlen(skb) wraps and is converted to a
+negative delta.  __pskb_pull_tail() then passes that negative length to
+skb_copy_bits(), where it can become a very large copy length.
 
->    BUG: KASAN: slab-use-after-free in detach_if_pending+0x412/0x4a0
->    Write of size 8 at addr ffff88810ac39918 by task brmc/601
->     __mod_timer+0x51a/0xc50
->     br_multicast_host_join+0x25b/0x390
->     __br_multicast_add_group+0x468/0x530
->     br_ip4_multicast_add_group+0x1a0/0x260
->     br_multicast_rcv+0x2cda/0x61e0
->     br_dev_xmit+0x6c4/0x1540
->    Allocated by task 610:
->     br_vlan_add+0x111/0xb40
->     br_vlan_info+0x370/0x3e0
->    Freed by task 0:
->     kfree+0x1a7/0x4f0
->     rcu_core+0x7dc/0x10a0
-> 
-> Only test br_vlan_is_brentry() when enabling, like the
-> br_multicast_ctx_vlan_global_disabled() test next to it.  Disabling then
-> always clears BR_VLFLAG_MCAST_ENABLED under br->multicast_lock before
-> br_multicast_ctx_deinit() drains the context.
-> 
-> Fixes: 7b54aaaf53cb ("net: bridge: multicast: add vlan state initialization and control")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-5
-> Signed-off-by: Norbert Szetei <norbert@doyensec.com>
-> ---
->   net/bridge/br_multicast.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-> index 75e1e2a8fc83..3ef5d8bbf552 100644
-> --- a/net/bridge/br_multicast.c
-> +++ b/net/bridge/br_multicast.c
-> @@ -4377,8 +4377,8 @@ void br_multicast_toggle_one_vlan(struct net_bridge_vlan *vlan, bool on)
->   	if (br_vlan_is_master(vlan)) {
->   		br = vlan->br;
->   
-> -		if (!br_vlan_is_brentry(vlan) ||
-> -		    (on &&
-> +		if (on &&
-> +		    (!br_vlan_is_brentry(vlan) ||
->   		     br_multicast_ctx_vlan_global_disabled(&vlan->br_mcast_ctx)))
->   			return;
->   
+Reject this inconsistent bound before doing the subtraction.  In this case
+pulling up to max cannot satisfy len because the initial check established
+that skb_headlen(skb) is smaller than len.
+
+Fixes: 1431fb31ecba ("xen-netback: fix fragment detection in checksum setup")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Shihuang Liu <shlomojune6@gmail.com>
+---
+ net/core/skbuff.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index c82a147..33022f7 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -5838,6 +5838,9 @@ static int skb_maybe_pull_tail(struct sk_buff *skb, unsigned int len,
+ 	if (max > skb->len)
+ 		max = skb->len;
+ 
++	if (max < skb_headlen(skb))
++		return -EPROTO;
++
+ 	if (__pskb_pull_tail(skb, max - skb_headlen(skb)) == NULL)
+ 		return -ENOMEM;
+ 
+-- 
+2.43.0
 
