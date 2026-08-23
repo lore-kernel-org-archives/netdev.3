@@ -1,62 +1,82 @@
-Received: from szelinsky.de (szelinsky.de [85.214.127.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658063563CD;
-	Sun, 23 Aug 2026 17:18:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957FD33D6FD
+	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 17:29:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787505513; cv=none; b=YrjNxgqJQ1iATGzdMYF8U3YXdDkjkUF/9gk5pPuINWJGYxqAES4orS4rRxBqu1Npyf6YKYpZkLEZbMpanzRB4AMk9Hdcrk27ksUG+mXEtFuWQZrtsbzvK2yXsOOcHZGaSnWTYxb2Euv0jLN+3aholwTX/VvF8Yq2Q1rCH0llqiI=
+	t=1787506154; cv=none; b=iUtYTWj1VCxH36+5P/TQaGjUNGe5xNW9Q6r2QrftOEDKSKAS7ZfxWF0Fbwce3h4B9Jq+cn/kghxOthxeEtQUntz668/+5A60ZawkkqDQJkQgAziItSM9sBFbbj7F3LiV9qQUq4d7ByRTvpw4MKxXw8ZH2ezg6/dFxYQx+nTMDds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787505513; c=relaxed/simple;
-	bh=s2Ofoq3QFJCf+pWdDJdnlg51ogjBRNucz+965DL/fGE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jXckFGo9PxWf9GPwRl7vVQ3EkuATVo7+BM1hHd57wYb4M529N/05ZN48GeEGM5oSsMxxPyDE5U5GVXjpPPrpLMKIE8kkO5Bbuxlv4e94+kFPjO4RYyP0fJlDWF1hoWwpXAJle9oEKtwnZzLhZvIi54QdHe6XB5VPyO7n4PYm6Ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=YQ5LUO4b; arc=none smtp.client-ip=85.214.127.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
+	s=arc-20240116; t=1787506154; c=relaxed/simple;
+	bh=iTKOf7uCI2/d91q6OlhbzHUwpygffkInnHb9WWl1Ops=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SRiYT/5Mw7EjWS7pu8uYLKdTQTsCsgN+lneH/ePRsVldR6EQHNFXRyrkp7WVNYgMrFME5R0g7aBZIY9yraPYL2a7LfRk1vHGXy8bwaprowpRX3ekxeQGHDAXTm8TeUVPgOfbL7SmtgG2CMgISsHedH+snCG+SkhsdVFb3WRuNUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nWnCPnBq; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="YQ5LUO4b"
-Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id C9B1DE8368A;
-	Sun, 23 Aug 2026 19:08:37 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1787504917;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0sPDN2D2ApdJ/kSQZK4Y9a3jBKLYMsxmH+j0j+sH9hw=;
-	b=YQ5LUO4bQ2IuCk/WzvLRHY7HVBFHnXZSvQMfoXSjPzPYpFymYdOOGygO2h62Okjn4KVNeC
-	jkEEYPw0mnFemKH1Kr9L2R2/O2kuqV7ebKhe/puzf+MRfRrNuB1/ZxvefyVUfyAXhijFzD
-	dEbRAdDEc4JysMsDWKAQYi0/W8oBgpnnabeE9dpg+R2aIxcXpf5vO3w8rTgs2MObKZJwDM
-	oLkSvCsjyW2V8tlP4ghRBfFv8HCmCQD1Ni3PZv493BMiUlZQIejzAHc2383mXbVnzKc3Rh
-	jsjZda0Haohf4KoQz9KfxpAHOuvFqLridtQVo12le/qP3up156YeSNqXZSXg8w==
-X-Virus-Scanned: Debian amavis at szelinsky.de
-Received: from szelinsky.de ([127.0.0.1])
- by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id DzZcx4Pl6ErL; Sun, 23 Aug 2026 19:08:37 +0200 (CEST)
-Received: from p14sgen5.lan (p578611d6.dip0.t-ipconnect.de [87.134.17.214])
-	by szelinsky.de (Postfix) with ESMTPSA;
-	Sun, 23 Aug 2026 19:08:37 +0200 (CEST)
-From: Carlo Szelinsky <github@szelinsky.de>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nWnCPnBq"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-38de840f2f0so2034114a91.0
+        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 10:29:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787506153; x=1788110953; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+uH7PuwtEATmQil0pCnUwHz2U63JqlbC31pLQWpx/cs=;
+        b=nWnCPnBq3+vFqpFZmpCAeU/bXJVqkd9JPWlMQ4yT2/ynUAXzLEC1Apt6Dxt3khYOTf
+         s6t8XckSwgg9PBTZypV1SHNDdPk79lH3W4oIEBtj1S09EVBW1eX+nLGAGxCAFf/lzAFC
+         iAdPsg34LWwqtkdW7DMgdWoYLHgQEclgetUSyHFNvL5i7sjWO01Qa2JUqjlGTgKe7xFk
+         9RSb3sFiMcgQydRzdo2eP+86ZmMBHp/BYXQNFnXNUiZHEnh+wO6vpBfuFzc0u5xZNCdk
+         AHReBPvkjpPO6gb4tFB/OioxJIbHOGKfSUJp2PcLivhVxtZqdUVmMsUt/fr/p39Y6yQX
+         KnEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787506153; x=1788110953;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+uH7PuwtEATmQil0pCnUwHz2U63JqlbC31pLQWpx/cs=;
+        b=TBCJPfbPsIuoUGwQQC250mXtwrtqkPWLMfoKqud0ulpPsP3c8Y2q/bB+2R5NoeW7WW
+         YdaGw9fD1smnLhLjwAiyx196nLgNKsWRvauvVVNItkRErL6pn+UrrD2gEH1GcrESTagZ
+         NBCfVaNIb2CFcYpI/ETk7A+qExl3B3RnD3tDpM9IM0UFC4p17iGx9s70M15+MZk63uL6
+         eQ3b4mNHvxLC72tUsCIbF7iK08XJG4ape7L+N+JBu6U5TzwnrjvmkLBxQq37JamGVvIb
+         A6H7FWu7x1I1ySTQkhNjOla3fwehd4vYcHK8W9BjuYI3kX4EZFvqnQvzSiukzmxzlpfS
+         4Fjg==
+X-Forwarded-Encrypted: i=1; AHgh+RpmPJmVWGtj6uGTfWS2LFOPYoIJAIC72dycx1iSo/y8X24O2KHBRD4JTD5+yvRxsREy2/s/thU=@vger.kernel.org
+X-Gm-Message-State: AFuF++kIJheGvibDgjftwizYXhwYWvmQ/eDOlRXQoOdvQq7pQxKckRDI
+	sYW9J4YLMlM6ZhQ3kuggHd0geLKSGwgSWtTs04zOR4gIN9mxpdZczSaa
+X-Gm-Gg: AR+sD112v/WjHYWUQ4mAbU5RKJ8zQSNaOryDwM2axUDiSy40wDKFP8nr/bgKJ2xNLJG
+	ftXqQY2rAju9gbzy4w2SYMpF0UVtvn25Gc4x8+mw76Czq8jLcodh7cbXq8wTiw88Sy3WTr7uZbg
+	QRCyLa6dZsuJ8PEEM32RupffbvrErvKIErq2KoC74aBz3R0tcOydV88UhQ1Cbst1j34xM9bs5Fl
+	IVWqrZlqhFIKOLMriYJBY72w7zipDsUwUR9k8JG4/jlsNNkaDqhVh3CwdRGyGaD271UWX6a/j6S
+	wHMJePi/hvcxqe/Q0ly389TBe6fTx1pGk6ZnM4p9XEzYAE+CGS1Nh+KrjYeFEkn+HFSosmI2lXp
+	QkWJisGAGVKtfzYU2/0bap6dvJufrRVNLyvnpy9CNHQu7w3qSUCL82e3CUT2uT+CwJvja2F0PNm
+	YW0i/syfjjOyM7zdNaWihqhQ6p/asKkQg+i+80O8BFKNuJvtY/GjZqtHspZC91So9iFpnavUSxe
+	OdTJDL0+I6HEgFwBmYIUPM=
+X-Received: by 2002:a17:90b:224f:b0:381:1f51:1ff0 with SMTP id 98e67ed59e1d1-395c354d445mr33626577a91.2.1787506152714;
+        Sun, 23 Aug 2026 10:29:12 -0700 (PDT)
+Received: from 192.168.50.3 ([183.193.113.149])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-395e4a1597csm6654547a91.13.2026.08.23.10.29.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Aug 2026 10:29:11 -0700 (PDT)
+Sender: Weiming Shi <thebestswings@gmail.com>
+From: Weiming Shi <bestswngs@gmail.com>
+To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jonas Jelonek <jelonek.jonas@gmail.com>,
+	Simon Horman <horms@kernel.org>
+Cc: linux-sctp@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Carlo Szelinsky <github@szelinsky.de>
-Subject: Re: [PATCH net v3 2/3] net: pse-pd: guard regulator ops against freed PI data during unregister
-Date: Sun, 23 Aug 2026 19:08:24 +0200
-Message-ID: <20260823170824.1429431-1-github@szelinsky.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260818162606.3981504-1-kuba@kernel.org>
-References: <20260818162606.3981504-1-kuba@kernel.org>
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v3] sctp: fix NULL deref on untransmitted RECONF completion
+Date: Mon, 24 Aug 2026 01:28:58 +0800
+Message-ID: <20260823172857.896146-2-bestswngs@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,88 +85,80 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Thanks for running this through review, Jakub.
+sctp_process_strreset_outreq(), sctp_process_strreset_addstrm_out() and
+sctp_process_strreset_resp() complete a pending stream reconfiguration
+request by stopping the reconf timer on the transport it was sent on:
 
-Most of the points fall into two buckets: the consumer-outlives-controller
-race that I'm already leaving to the notifier series, and pre-existing bugs
-that aren't really about this teardown fix. Let me go through them.
+	t = asoc->strreset_chunk->transport;
+	if (timer_delete(&t->reconf_timer))
+		sctp_transport_put(t);
 
-> [Severity: High]
-> Now that pcdev->pi can legitimately be NULL, do the other readers of
-> pcdev->pi in this file need the same guard?  Only the three regulator ops
-> were updated, but the consumer-facing paths still index the array
-> unconditionally:
-[...]
-> So after unbinding the PSE controller driver, an ethtool PSE request on
-> the still registered interface, or a later PHY removal, would reach these
-> reads with pcdev->pi == NULL.
+chunk->transport is assigned by __sctp_packet_append_chunk() when the
+chunk is appended to an outbound packet, and sctp_outq_flush_ctrl() arms
+the reconf timer at that same point. A request already published in
+asoc->strreset_chunk but not yet transmitted has neither, so completing
+it dereferences NULL.
 
-Right. This is the case where a phy keeps its pse_control across driver
-unbind - of_pse_control_get() only takes a module ref, no device link - so
-ethtool and __pse_control_release() can still land here after pcdev->pi is
-gone. Adding !pcdev->pi checks to all these paths doesn't really fix it, the
-handle itself is stale by then.
+Two ways to get there. sctp_send_asconf_del_ip() sets
+asoc->src_out_of_asoc_ok without sending anything when the address being
+removed is the association's last one, and sctp_outq_flush_ctrl() then
+leaves every non-ASCONF control chunk queued; as only
+sctp_process_asconf_ack() clears that flag, it persists. An unprivileged
+process that removes such an address and then asks for a stream reset
+panics the kernel from softirq. A peer needs neither ASCONF nor local
+help: sctp_cmd_interpreter() uncorks the outqueue only once the whole
+packet has been processed, so a reply built while walking a RECONF chunk
+stays untransmitted for the rest of that walk, and one RECONF chunk
+carrying [Incoming SSN Reset Request, Outgoing SSN Reset Request,
+Response] -- or two RECONF chunks in one packet -- reaches the same
+dereference.
 
-So I'd leave these paths as they are here and not add guards. The notifier
-series [1] fixes it properly: on PSE_UNREGISTERED the phy layer drops
-phydev->psec before pse_release_pis() frees anything, and phy is the only
-pse_control user in tree.
+  KASAN: null-ptr-deref in range [0x00000000000001e8-0x00000000000001ef]
+  RIP: 0010:timer_delete+0x67/0x110
+  Call Trace:
+   <IRQ>
+   sctp_process_strreset_addstrm_out (net/sctp/stream.c:832)
+   sctp_sf_do_reconf (net/sctp/sm_statefuns.c:4212)
+   sctp_do_sm (net/sctp/sm_sideeffect.c:1172)
+   sctp_assoc_bh_rcv (net/sctp/associola.c:1044)
+   sctp_rcv (net/sctp/input.c:243)
+   ip_local_deliver (net/ipv4/ip_input.c:262)
+   process_backlog (net/core/dev.c:6680)
+   </IRQ>
 
-> [Severity: High]
-> This isn't a bug introduced by this patch, but the ordering in
-> pse_controller_unregister() looks like it leaves part of the window the
-> commit message claims to close still open:
-[...]
-> pse_flush_pw_ds() drops the power-domain kref, and __pse_pw_d_release()
-> calls regulator_put(pw_d->supply) [...] the new guards pass and the ops
-> proceed to the released supply
+A response can only acknowledge a request that was actually sent, so do
+not match asoc->strreset_chunk while chunk->transport is NULL. Guarding
+the lookup covers all three completion sites.
 
-Good catch, it's real. But it needs the same racing consumer to hit it -
-something has to call into the regulator ops while unregister sits between
-pse_flush_pw_ds() and the free. The notifier series closes this one too: it
-fires PSE_UNREGISTERED at the top of unregister, so every consumer is gone
-before pse_flush_pw_ds() drops the supply. Same bucket as above.
+Fixes: 810544764536 ("sctp: implement receiver-side procedures for the Outgoing SSN Reset Request Parameter")
+Cc: stable@vger.kernel.org
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Suggested-by: Xin Long <lucien.xin@gmail.com>
+Assisted-by: Claude:claude-opus-5
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+---
 
-If you'd rather net not carry that window until [1] lands, I can add a small
-stopgap - NULL pcdev->pi[i].pw_d in pse_flush_pw_ds() under pcdev->lock, so
-pse_pi_deallocate_pw_budget()'s existing !pi->pw_d check catches it. Happy to
-do either. Makes sense?
+v3:
+- No code change; v2's changelog linked the wrong v1 posting.
 
-> [Severity: High]
-> This isn't a bug introduced by this patch, but since these lines are being
-> reworked anyway: should ret be returned here instead of 0?
+v2: https://lore.kernel.org/linux-sctp/20260822172352.63025-3-bestswngs@gmail.com/
+v1: https://lore.kernel.org/linux-sctp/20260820162235.2668698-2-bestswngs@gmail.com/
+ net/sctp/stream.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Yes, that's a real one, but it's pre-existing and not about the UAF -
-pse_pi_disable() has always swallowed the disable error. I'd send that as its
-own patch with its own Fixes tag rather than bury it in here. Correct?
+diff --git a/net/sctp/stream.c b/net/sctp/stream.c
+index 34ffe6c945a4..2012f61e250e 100644
+--- a/net/sctp/stream.c
++++ b/net/sctp/stream.c
+@@ -488,7 +488,7 @@ static struct sctp_paramhdr *sctp_chunk_lookup_strreset_param(
+ 	struct sctp_reconf_chunk *hdr;
+ 	union sctp_params param;
+ 
+-	if (!chunk)
++	if (!chunk || !chunk->transport)
+ 		return NULL;
+ 
+ 	hdr = (struct sctp_reconf_chunk *)chunk->chunk_hdr;
+-- 
+2.55.0
 
-> [Severity: High]
-> One more pre-existing item [...] pse_controller_register() [...] there is
-> no error unwinding after the early allocations. [...] devres then frees the
-> pw_d while the xarray still points at it
-
-Also real, also pre-existing, and it's in the register path, not the teardown
-one this series is about. The dangling xarray entry is the nasty part. I'd
-recommend we handle that as its own patch rather than in this series - ok?
-
-> [Severity: Medium]
-> Also, pse_pi_enable() returns -ENODEV for the same condition while this one
-> returns 0.  Is the asymmetry intended?
-
-I understood it like this: a disable that races teardown has nothing left to
-turn off, so returning "done" keeps the regulator core from warning, while
-enable really can't proceed so -ENODEV made sense there. If that's right I'd
-add a one-line comment so it doesn't read like an oversight. Makes sense to
-you?
-
-So, short version: I'd keep patches 1-3 as they are, leave the consumer
-lifetime stuff and the supply window to the notifier series [1], and send the
-two pre-existing bugs on their own.
-
-Does that sound right to you, or would you do it differently? What would you
-recommend as the next step?
-
-[1] https://lore.kernel.org/netdev/20260630091125.3162481-1-github@szelinsky.de/
-
-Thanks,
-Carlo
