@@ -1,125 +1,93 @@
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB20E31E858
-	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 15:11:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787497879; cv=pass; b=kyu/BbtQvw9uNvL/FCdEq5KUFVwUWoLZRG9K5XxYFKvfc/RY7fTJv7SAv9EBXmE+CHZCmgha02PSq+p1dZLBPZp7zCHPPIm9/1Jm/8iNta6cCaNJ6xyvTbQdoRJsbtBSp2jwaVq3teCjxrJuJsZtdbDJiRH7rPXfdR00QuxR01I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787497879; c=relaxed/simple;
-	bh=xIkR7zg5lhtFvWgzMHNup3lKSqq6a/c/k1dJRgDfsLc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qBpInlq+eAU12kPskdR9DPFLZN4MegM3tGm5QmStpaSvw0aIdPwNv29Aa20Y5HrmlkaViGH2WAScbg137SrDE5E95zFyeTUY9XDMJ8Tf1pmoGNVOpFezdubgf9ccWxzrIc/9jPLbra3xxeb466+2M8Bj70FwGdIHoI+BLRcxy2k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OAiHS/nS; arc=pass smtp.client-ip=209.85.160.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C5E30DEDC;
+	Sun, 23 Aug 2026 15:20:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787498423; cv=none; b=Eew1nzu3n6mtvdT9njBZTNrwphbDUH1LrFMI0EEAyzBOAXixRXXCz0ACLj85NWfl0sIdh0QGhKUpjjs+86FjbTbvSjLN5E1ENUsLth6MUHqpto/K5oIlOzX3qmL2iWog9ANLBK3384Xs7Ux9W2sYOj+uR2ZkUvl4iEoE0sAMcVk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787498423; c=relaxed/simple;
+	bh=U/2EVVSqc6UaAFmmIQSjkhqRLdgmUBoMcbB+TWfiQ7I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jY5I+6T/HQLLvNcN5oHzK9pTfZK0B4MmuKghxhyBoxN2c+VFM5lpyaswVmjj429QSetPkGk5XKGJZJNeZY587MsAK6UGIKe3AJ1gd8sRJw7SPf5lxHUTfWlqACl/cI/gmfeezj/c/pJ++u7e4Juf17t80yD7oPmNzVOKhLtNrLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=aWPYAPfM; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OAiHS/nS"
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-526f963372aso18569081cf.1
-        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 08:11:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787497877; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kLOJuseHxTruBD3+RRH7Uw+vGBMtPDALu/z2CEUptnLWs1XscD1MHvHKcX8BwJzamD
-         Q4m7QCjLUS08lQfIrSnAxw/Tc6Nawgzg5iGRO5e1UjACCV7A6L0jYyxhgO7eTOkzD1eE
-         AUrhXWgNIy6rT2WUyudkpGYnMZ/ZbpuJG4uqIQ6hJaXtPv6Qk2sUHLTQFMN6pLGF90bh
-         gCRjKdhgWs1lpbOSxL1r9DdN0akamI6EaT/ORzyzPwE9g9Pmo8Nxpw41XuttFzSpn+tk
-         dS7idyxoFa/5ZsLmYb0n5lurH9WsU5ncPO/fv7IO80BzBcJYfGYbNUG8Eu5FuhrwcC4t
-         soXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xIkR7zg5lhtFvWgzMHNup3lKSqq6a/c/k1dJRgDfsLc=;
-        fh=WYeCS5IGOFL6tFMdoIPPrr5zqVlBSTlREkYd+1FPD/Q=;
-        b=kvt85FqBpz+ubEYrTmP9CtzcnZs7xzwpmDXsYdZHjXKc4pqEVa4qcTC4sa8QUgfh12
-         iDjrkfgP1e5TcKxqSLQ2iJU9hBldXJ4Kz/eFjA2VszcX/n2NptcaR8rhLMMVQg+SxDeL
-         LAHUlFOSGW8uDUWCDJoqfvyyOhsZfBUYzHHOp8DfBocLVUAxEwqIHdvGamspCPuETsPu
-         S9mBtDjYKFTM8dDuwvjRu+1Iv1RE9uj95yrqHQgnmWQEPhMvY+7lG7F7l4b1oTH/eisF
-         +r53cVdf8v1PMp4cBEpiuWtsOE3GRQ+XwtlIXwdV9FEiNvHjvRrEdLRF5WNeZL93lfOo
-         0VIg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787497877; x=1788102677; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xIkR7zg5lhtFvWgzMHNup3lKSqq6a/c/k1dJRgDfsLc=;
-        b=OAiHS/nSmpqHFH949qkvPRDHKimAT91CmO98Ppxv+VVRd9Fcfs+8Cl4AOA+tdMhxPQ
-         rZTnlPe3SvbnMR7hpDDXqeQ72koj7ZAb7VidsXjqEXwk1AkYrWiCH4AJLNqUmsCYos8n
-         7HVwuWW27Xuxdu6KZ395WxHKrS4lFs2n0u0Z4af/mI5mKXn57k/jqU51tauSmcgXXiAg
-         IoSwX1yCywnU/IaUYo4VVs0PHNlgE3EeU0cpCnCKJIn6o4TmUw8R/Td27VKpX4fjpWzO
-         WKd5qwqMK70JtFrPsdngN2HR4mbzngQLG0TkYWi/98D7euqY/pSIADFa1B1ujnYLmkmJ
-         htWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787497877; x=1788102677;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xIkR7zg5lhtFvWgzMHNup3lKSqq6a/c/k1dJRgDfsLc=;
-        b=geuc42bujTvJPYmLQ6Mmi5Lcg6zkI4tH1TIXZBDTZPZdClquHrs2Z4WwjwNQss/fQY
-         AeNGEcrMwmy5mNR9+LfclvmN5CdWBQpyrDbsoMC4WcAC0J/kyeKkbtQibXVoqx9Blpq5
-         6fzi3iaR1PfhM6JPhzO1Gmzx+kOLXgx0mBdgqhKMirvHSxXdok1OuAx+4aeTKemFRp5R
-         FWdkoMVpnQbTO4E1JYvfxUt3bkCliDhNtnu2Z1UmkkwwKZ9Uj1X8WybX9pO9Xw9YvNGK
-         9I8pdHTZEVAWFsuLaXOl8s4+paPlftdqkMEwbs3iIbNLj9V3DiaopHW1OY7Yf/HkuQVD
-         gTAw==
-X-Gm-Message-State: AFuF++ng0hmmG2bFyCvCtFo9ejLfbycTHQABedzWvJhrs90D06DrBzrH
-	9OttukLSGEYRT/X1HOeXSyWkWRm48+4awTSBrAZBOxQIcrbQ6lTr2lsfRpLk+rOM383LUn0ZpM8
-	hCzzyxXQ35ROJiU1RYJszQdSL3EXxt+6ATd80Pmz3rTduwehQHMxDTSxUlBk=
-X-Gm-Gg: AR+sD11SrgkID8w7XVlRIIj3BNDvRN8nxCAwfnOK4ivy+dPs8xxk3sDl2EH69u9D2+m
-	p04gbphkH0ipzew+EMpYPU5W14sU46ZE46Hp5U3KeOJ8OAFGGU9ZzQeRzPQnxNvjtvsoRJVGmRG
-	cR3+gzMcHDqYPDFm1gZd1n4vDNn4j0nvDp98ExO3Awb76PRhQRoTqKMPpnlCml9l5gMsSE2s2xl
-	Z1ckbnU7yhHo+2kzmmP8gnfxKJz1WgjkUK7O8uuPoFAGYFKLAA5arhe5fqN31wV35EnzvIUf3f9
-	P+QJqNDRNf1ptleaMlBuqOfzmGR/AL6pENZjJmhwwmVe6fgVUyLNSWMwc7SZo9DfJTBp0PpSVaD
-	/YlymD/Am1LnhPKNB2F/wz0UkD9nfslCzuVzwYP8jztpldqf+sliPN4op
-X-Received: by 2002:a05:622a:1f91:b0:52d:8c01:5238 with SMTP id
- d75a77b69052e-52e09cb983fmr112871311cf.33.1787497876233; Sun, 23 Aug 2026
- 08:11:16 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="aWPYAPfM"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=IF0e+/ogV8XGdn84iopTOnNrKlY/M8FLVrcqVbBiYd0=; b=aWPYAPfMq1pe23Ljzp8hN5sdai
+	bXArGEprCmrW57YdSx8e/HIvPxxJe5es6eJaezziIsyyn3IR/d1XlNUpfi3U4ox1A723/94mcjPOx
+	BBxKenGa6kvUrZr4UPHxqDwJqPZGPSvIXzlGcmFTZy28O1BzS5lNvqVtiA1HvGIH81pk=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wy9zU-0018Uv-OI; Sun, 23 Aug 2026 17:20:08 +0200
+Date: Sun, 23 Aug 2026 17:20:08 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Aleksei Sviridkin <f@lex.la>
+Cc: Vladimir Oltean <olteanv@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 3/3] net: dsa: connect a late-arriving PHY at
+ ifup
+Message-ID: <eec9896e-9350-40f9-a91f-03ba918cc8fd@lunn.ch>
+References: <20260822155259.87146-1-f@lex.la>
+ <20260822155259.87146-4-f@lex.la>
+ <9557daed-f039-434a-ae64-ac849b9860be@lunn.ch>
+ <20260823000549.6095-1-f@lex.la>
+ <c712cd5d-d4bd-413f-82a8-6303ff3e6526@lunn.ch>
+ <20260823123729.74290-1-f@lex.la>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260823101809.26802-1-shlomojune6@gmail.com>
-In-Reply-To: <20260823101809.26802-1-shlomojune6@gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Sun, 23 Aug 2026 17:11:04 +0200
-X-Gm-Features: AcwNN1XEn31QwNoOjATtV2OBczN_PVRdSeHeaGm1GS7qzu4XZoVeex3ZR6dO9QY
-Message-ID: <CANn89iJALGUB4jYyRWWMQENyNqBtSChOTiBwFzOVs-s6uX9Eig@mail.gmail.com>
-Subject: Re: [PATCH net 1/1] net: Don't deliver IPv6 packets to IPv4 sockets
-To: Shihuang Liu <shlomojune6@gmail.com>
-Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Joe Stringer <joe@wand.net.nz>, Alexei Starovoitov <ast@kernel.org>, Martin KaFai Lau <kafai@fb.com>, bpf@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260823123729.74290-1-f@lex.la>
 
-On Sun, Aug 23, 2026 at 12:18=E2=80=AFPM Shihuang Liu <shlomojune6@gmail.co=
-m> wrote:
->
-> bpf_sk_assign() allows a TC ingress program to attach an arbitrary
-> hashed socket to an skb, without checking that the socket family
-> matches the packet's network layer. As a result, an IPv6 UDP packet
-> can be assigned to an AF_INET UDP socket: udpv6_rcv() steals the
-> socket via inet6_steal_sock(), which also lacks a family check, and
-> queues the IPv6 skb on the AF_INET socket.
->
-> recvmsg() on that socket then runs the IPv4 udp_recvmsg(), which
-> interprets the IPv6 skb control block as IPv4 IP options. When
-> IP_RETOPTS is enabled on the target socket, __ip_options_echo()
-> copies up to 153 bytes of attacker-controlled data from the IPv6
-> Destination Options extension header into the 40-byte option-data
-> area of the stack-allocated optbuf in ip_cmsg_recv_retopts():
->
->
+On Sun, Aug 23, 2026 at 03:37:29PM +0300, Aleksei Sviridkin wrote:
+> > How about making the DSA driver depend on the PHY. That would be much
+> > simpler.
+> 
+> I worked through both halves of that for OpenWrt, where one kernel
+> image serves every board of a target, so every kilobyte lands on all of
+> them.
+> 
+> Built-in: the PHY driver itself is cheap, under 8k of text and data on
+> arm64. The firmware still lives on the rootfs though, and a built-in
+> driver probes from an initcall, before mount_root(), so blocking in
+> config_init() until the firmware shows up deadlocks the boot. Putting
+> the firmware in the kernel image costs 144k on every board of the
+> target, and almost none of them have this PHY.
+> 
+> Modules: that works, and the kernel gets smaller. OpenWrt already does
+> it elsewhere, kmod-dsa-mv88e6xxx depends on kmod-phy-marvell. What
+> stops me is that it moves the switch driver out of the kernel for every
+> board of the target, and NFS root goes with it. That is a bigger change
+> than I want to push on my own, and it gives up the case you asked
+> about.
 
-Really you need to ask your LLM to not slow down linux fast paths.
+Another option is move the firmware download into the bootloader.
 
-Fix bpf_sk_assign() and bpf_sk_assign_tcp_reqsk() instead.
+Going back to the big picture...
 
-Thank you.
+My opinion is that moving the binding of MAC to PHY into open is
+wrong. We should be building on phylinks support for hotplug of SFP
+modules.
 
-pw-bot: cr
+But i've not yet figured out how that would work. I need to think on
+it for a while.
+
+   Andrew
