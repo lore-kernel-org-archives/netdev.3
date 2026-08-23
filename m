@@ -1,247 +1,215 @@
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ABB93101A6
-	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 07:42:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787470970; cv=pass; b=YyGcqA8fJ/Sps2zXzVO6lZDichosZEbAhpm2TuymPiOYr0RjveZk7mZ17VndYM6YVD+YhN4I0w61rw0moO9ERQjWU8xN/F2O9b8sHGcOs5iMkbmpiloIpc3F+rn3m/FDnrYooPSm5QKst0Kw5RoJod7rSoWg/HCwBQZpYFaymvM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787470970; c=relaxed/simple;
-	bh=iZLa9HXd4kU1GXbQg9lSu+H7QZyfF+DTXLWBMc6zZ5k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tgWyHWzhUylWYSlMfQrEap1J2Pwp8aPCuOXeSztgFPq1wgPgpBNmu0d0UL0D5yYtG0C3+xEa8s8gjqH5cNFU368/8gvduRt/EmONYe4Qb+GcbgR2+lzt1fAqDswDZjyFU5AuEKeBjah8613EpZ/jiF8qLp5h9FyzudoKlUsje/E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=nflTc6BD; arc=pass smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7A52F363F
+	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 07:49:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787471357; cv=none; b=R7Y5QFWTzVG3EFO16bSn4XPs7yZJG5IkKZV54KtqEzpGNeiXEis0hJNIe/LX9kwTMD7pXTO3LQWGy2tok3s/GD1cojR/kPn9kHDQANQvcZ5N52oqlTWk+ZicbfJm9NInXpPyTLiVbBj44oXCNdG2T8VHlu3Xq8DBPimHlpgfLXk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787471357; c=relaxed/simple;
+	bh=RGX08P+xnEhR0Q9RX3DjlNna4a0Wrv5QiJ4KeOlwMmI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GbbMTn2rHYkZve8/LOWNc7Q8Zwbp//+vvEb56t0C4A7QSnrXY4jMviplhEqxe5ndhw3KKyQIyfztJvVF+lqCYBurGQyKHsZScF+evvKNJC7CYB2bYAPgqoxgEnprR009+Wu31eX1uclz8SVuTe8ShNnN592k4wV9NgcUyxf5niU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=e/xw8yce; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="nflTc6BD"
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5b015b2d792so2437125e87.3
-        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 00:42:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787470965; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ZIa1szjqY15jbLxsS2M2d/6qwMagEfhiDcmlUxZk2j5JL6xPHwUQFKq6DZWq4LD1CB
-         FgProOqqg1q5KhZ7IoNG/z/7TKo039IzkOd3rMldlTEvN5kkXr+2/0Ili3oFQgkkD1rf
-         DhehTJzFKQfMVe0g14382c8exb0EBDf0q3pw0iDJBOBfojF5O6s0RGId6PeAHlZ+o1PB
-         8gvFtNiydBDE8ZUNhZySIcI2LUUm8PLEbF5jbglcIlSfx7HUkXpLG85mHFwWrUmDAzyj
-         JSWFrBLzKem3OInAdi6kWUb/B8ebQDMPmGv84dW2gIxPF+j1uXHso8Y/Ma7JnvfSbcza
-         vtWA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ZIXe1/OfraU4vJY9+KRuKmSL65qK+92J/1UICFbNvbM=;
-        fh=Hz6BoFgiwLzFJffdOcyS5KPozp6lnXe+3Y7NJNpdd0Y=;
-        b=Nuy7DtfEhaARrWuhWeDSp1NvC7UyrXcAUljPNZmEiSuaamOS1ihXFJos8FpayrlM5U
-         FV97Mn0ErTQlDsNJ6EzUiA4um6zeCwYO2ksvvVwSCMCqwvCkHv4G0MA4mli19EF2PfZN
-         RdVev/cBZ8uMONFneg+/QaURuxEj68ggl8gk9TtdjvHWc23/yX4fDtnEhgVMqerhgki9
-         BG7EhEyUAWVqVX/FlqxnpIPvvv3AWuvy/oy7kty9tgJ7XJSY7/oktFEhJiX52h3teHG8
-         zol0bMCTSZ991LV6BFroaar9XGZGzsmMiiiSxtSAI1kA22EDymtdP4VwrWjLialhUP9y
-         3sSg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1787470965; x=1788075765; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ZIXe1/OfraU4vJY9+KRuKmSL65qK+92J/1UICFbNvbM=;
-        b=nflTc6BDliU6TIePcDGxqBpRt7a/9a2uVFl3wb/gl5RcjKTQwOhyRzkdcj3DibWdHt
-         SgWiZ+GfRgCAbTaywdPRR4r+SfZSSJ7BGyAXlCkAhVylPIgrt2ziE43pDyZeLtlOBnGJ
-         cc982sVksnhAu7UzSxJHjQHNZ/P0NdiJ6oSv3uH5SqV1/PPkAG8BB1H3z8WKoQtr2+mv
-         XjrTcgIln1Y1kx19YeFks7FIP+t6LfvyjQAtyACVWt+57LopG7IJhaeX87V9lMqS63er
-         ZvXeWXqh7NBmPMfXCfdir/VezM6ENlSJkQw46fJqq94xsXmWZUSf6UsT7D3MT08RYbt5
-         6GUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787470965; x=1788075765;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZIXe1/OfraU4vJY9+KRuKmSL65qK+92J/1UICFbNvbM=;
-        b=eDKD/2PuMfZAixduIDq9J7Eh6biIpkPs9UdnNaVeLm3ih1ETUcZF16T1r6Vjoi5h8r
-         2/QICAELjkUS5tOdrORxkf9UpT1rbSp2/2vQRJasTyAob2Aq4xGdvb/91rlPov0vvqMP
-         luABOKvP9JUu/h2ut4juZpnxixd+ygBGxIlhLBbgFz0UV3LiLjxYRrEsvAQzoNZE8Y9N
-         Rwo2TFsguJcYnNZP1WXrJtNRQnajitDpvMXnIuZf56qNfSiF+Ag2AuFpVj5t0Ix/4E0M
-         MjBCqIvFLUOzuxqbHuPup74717mzpX+dyhfkwQkVi9ELMeZ74B/ySwtNtEy3G1WxWesI
-         f9Rw==
-X-Forwarded-Encrypted: i=1; AHgh+RqrHtJrqEF/nqmyQ94vna/kpNiGgSGz4s8yJkm4xHCGScwfbRm8pLSGdN5tD1l95/Hp1jLnFAw=@vger.kernel.org
-X-Gm-Message-State: AFuF++koUt3Xza2s+QSl3Lt6O9u80GLh4kkeA6f4hU2wz3f/9UbQzX6F
-	9TdB6rhv5T8MJkwNlakO4Npo7xTZe+W0NaV6M+vgYmdmhWc+EUB7Xn7W6rq2I9xHNkYuUN60uQA
-	L7/5ogNxD0TKN+zCzPvxiuWwVynsi8MyZt/2XNTyUNmc=
-X-Gm-Gg: AR+sD12DdBjpvS8SJFE8vB69AEWeAEy2dG+pZldonK2RboLMcoPSeLziaYJwqZqqxAn
-	8g5TCkc5lhT1eqQtT1RgbS6a7X7r/olVM2qvk9h1gs7UBK8LB3F2UNaQE9hioP/CvPdzJa5xB1j
-	08w+QCPIe8oiKaUpzYoUgu4+IOossSUjWJAX6mqFL/kTncnb7kZUA+qH7AJhYFwfD0QLPoX6mJ0
-	8wOlM1kn6Qi7k4n7R6jqnBf3LLXHMzVmV5RfwCYmX+U27CafmclNDuaywa3//T/6yY7EChPaPQA
-	ssfKaF/y13ZpfBwxu3jtv25OfFrjJ/oQOWV/nfRtjqg=
-X-Received: by 2002:a05:651c:43d1:20b0:3a1:31c3:961d with SMTP id
- 38308e7fff4ca-3a1aec64cb2mr30527711fa.10.1787470964768; Sun, 23 Aug 2026
- 00:42:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="e/xw8yce"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id EFAC71A10BA;
+	Sun, 23 Aug 2026 07:49:09 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id BB1D160378;
+	Sun, 23 Aug 2026 07:49:09 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7614D11C77DF9;
+	Sun, 23 Aug 2026 09:48:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1787471344; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=m8focN8MgYMTxmFhIcF5B+/EEPnshV8AwXtxnCM7fNo=;
+	b=e/xw8yceFqEVChChp4aCT7NZ8Y82oMlz6gJosV6pRD9Jiv6ECIc0Mk/R9qhuuK43FbzPKf
+	xrTa2Dmk/ISWC/TvAxwy1irIOoKSIp4CeGZe3xM9uebUEZEJ++2EwrxhOl0HLHGvESV4nw
+	U0vwMdeADElG2rNsZc+N/UCV6eXFP4OqozvKKI6bsJ33zpwW5V5LIPmFyHWdAAipx9Gp+O
+	GF9cGwsMD8j61N25M4CKgLE4OB6J/sb1P/D9Ob9zDf5h0mZBOoqB74mb+AVf4NJsUv1u8M
+	Ns9QS0SL2mnjSVM+oU+5K74Xg94uq1YY7bm0mk4deSL3U6aGcojWuxmi7bBvEQ==
+Message-ID: <714bc86e-9f9c-4cc7-806b-a3f7e221ec94@bootlin.com>
+Date: Sun, 23 Aug 2026 09:48:56 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1787381531.git.zhilinz@nebusec.ai> <db594f875fdac39aff6f4f44dd1e270b0ce5ad4c.1787381531.git.zhilinz@nebusec.ai>
-In-Reply-To: <db594f875fdac39aff6f4f44dd1e270b0ce5ad4c.1787381531.git.zhilinz@nebusec.ai>
-From: zhilin zou <zhilinz@nebusec.ai>
-Date: Sun, 23 Aug 2026 15:42:31 +0800
-X-Gm-Features: AcwNN1Xv2ziO9z1i63XvEZZgv_ZKEjr906MakG-vn61ioIfd5BVbpqtKdnpl-Fk
-Message-ID: <CANB6i5wG6_K_J-MvXetoE0-4B893_V3S43OZ+x5uHjkdwxe+jg@mail.gmail.com>
-Subject: Re: [PATCH net v3 1/1] xfrm: save input state data before secpath resets
-To: steffen.klassert@secunet.com, netdev@vger.kernel.org
-Cc: herbert@gondor.apana.org.au, davem@davemloft.net, edumazet@google.com, 
-	pabeni@redhat.com, horms@kernel.org, vega@nebusec.ai
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 1/6] net: stmmac: Remove VLAN perfect matching dead
+ code
+To: Ovidiu Panait <ovidiu.panait.rb@renesas.com>, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ shuah@kernel.org, joabreu@synopsys.com, yi.fang.gan@intel.com,
+ jun.ann.lai@intel.com
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kselftest@vger.kernel.org
+References: <20260821170959.79708-1-ovidiu.panait.rb@renesas.com>
+ <20260821170959.79708-2-ovidiu.panait.rb@renesas.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260821170959.79708-2-ovidiu.panait.rb@renesas.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Sat, Aug 22, 2026 at 3:03=E2=80=AFPM Zhiling Zou <zhilinz@nebusec.ai> wr=
-ote:
->
-> From: Zhiling Zou <zhilinz@nebusec.ai>
->
-> xfrm_input() keeps the current state reference through the skb secpath
-> while it performs final transport processing. Some input paths can reset
-> the secpath before xfrm_input() is done using data from that state.
->
-> Receive callback users such as VTI and XFRM interfaces can scrub packets
-> that cross network namespaces by resetting the secpath. The
+Hi Ovidiu,
 
-Hi Sashiko,
+On 8/21/26 19:09, Ovidiu Panait wrote:
+> stmmac_vlan_update() falls back to "perfect matching" when the VLAN hash
+> filter is unavailable (!priv->dma_cap.vlhash). This fallback has been
+> unreachable in normal operation since its introduction in
+> commit c7ab0b8088d7 ("net: stmmac: Fallback to VLAN Perfect filtering if
+> HASH is not available") because the NETIF_F_HW_VLAN_{CTAG,STAG}_FILTER
+> features are advertised only when priv->dma_cap.vlhash is true.
+> 
+> The fallback is also duplicating the code in vlan_add_hw_rx_fltr(), which
+> is always available since stmmac_get_num_vlan() returns at least 1.
+> 
+> Therefore, remove it.
+> 
+> Fixes: c7ab0b8088d7 ("net: stmmac: Fallback to VLAN Perfect filtering if HASH is not available")
+> Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
 
-Thanks for the review. The finding is correct.
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-vti_rcv_cb() calls skb_scrub_packet(), which resets the skb extensions
-before checking xnet. Therefore, the VTI receive path drops the secpath
-regardless of whether the packet crosses network namespaces.
+Maxime
 
-The cross-network-namespace qualifier only applies to the XFRM interface
-path, where xfrmi_scrub_packet() calls secpath_reset() only when xnet is
-true.
-
-I will update the wording in the next revision to distinguish the two
-cases. No code change is needed for this finding.
-
-Thanks,
-Zhiling
-
-> XFRM_MAX_DEPTH error path can also reset the secpath before the final dro=
-p
-> callback reports the current state's protocol. If that drops the last
-> state reference and the state is concurrently deleted, xfrm_input() can
-> still dereference the freed state.
->
-> Save the state protocol on the stack while the state is still valid, and
-> use the already saved address family for transport_finish(). A larval
-> XFRM_STATE_ACQ state has no type, so retain nexthdr as its protocol. This
-> preserves the existing drop-path fallback while avoiding the post-reset
-> state dereferences without adding an extra state reference to every
-> received packet.
->
-> Fixes: df3893c176e9 ("vti: Update the ipv4 side to use it's own receive h=
-ook.")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
 > ---
-> changes in v3:
-> - Retain nexthdr for larval XFRM_STATE_ACQ entries, whose x->type is NULL=
-.
-> - Avoid dereferencing x->type before the existing state validity checks.
-> - v2 Link: https://lore.kernel.org/all/e59b617d27acb3a38a3523649d52b90f02=
-2fa28d.1785288865.git.zhilinz@nebusec.ai/
->
-> changes in v2:
-> - Avoid per-packet xfrm_state refcounting by saving state data on the sta=
-ck.
-> - Use the saved protocol and family after secpath resets instead of
->   dereferencing x.
-> - v1 Link: https://lore.kernel.org/all/89be67de93958a00193c8c4bd668733c97=
-6e2aa9.1785135576.git.zhilinz@nebusec.ai/
->
->  net/xfrm/xfrm_input.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
->
-> diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
-> index eecab337bd0a7..77b9f4d4568d6 100644
-> --- a/net/xfrm/xfrm_input.c
-> +++ b/net/xfrm/xfrm_input.c
-> @@ -474,6 +474,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be=
-32 spi, int encap_type)
->         struct xfrm_state *x =3D NULL;
->         xfrm_address_t *daddr;
->         u32 mark =3D skb->mark;
-> +       u8 xfrm_proto =3D nexthdr;
->         unsigned int family =3D AF_UNSPEC;
->         int decaps =3D 0;
->         int async =3D 0;
-> @@ -485,6 +486,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be=
-32 spi, int encap_type)
->         if (encap_type < 0 || (xo && (xo->flags & XFRM_GRO || encap_type =
-=3D=3D 0 ||
->                                       encap_type =3D=3D UDP_ENCAP_ESPINUD=
-P))) {
->                 x =3D xfrm_input_state(skb);
-> +               xfrm_proto =3D x->type ? x->type->proto : nexthdr;
->
->                 if (unlikely(x->km.state !=3D XFRM_STATE_VALID)) {
->                         if (x->km.state =3D=3D XFRM_STATE_ACQ)
-> @@ -592,11 +594,13 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __=
-be32 spi, int encap_type)
->
->                 x =3D xfrm_input_state_lookup(net, mark, daddr, spi, next=
-hdr, family);
->                 if (x =3D=3D NULL) {
-> +                       xfrm_proto =3D nexthdr;
->                         secpath_reset(skb);
->                         XFRM_INC_STATS(net, LINUX_MIB_XFRMINNOSTATES);
->                         xfrm_audit_state_notfound(skb, family, spi, seq);
->                         goto drop;
->                 }
-> +               xfrm_proto =3D x->type ? x->type->proto : nexthdr;
->
->                 if (unlikely(x->dir && x->dir !=3D XFRM_SA_DIR_IN)) {
->                         secpath_reset(skb);
-> @@ -604,6 +608,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be=
-32 spi, int encap_type)
->                         xfrm_audit_state_notfound(skb, family, spi, seq);
->                         xfrm_state_put(x);
->                         x =3D NULL;
-> +                       xfrm_proto =3D nexthdr;
->                         goto drop;
->                 }
->
-> @@ -728,7 +733,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be=
-32 spi, int encap_type)
->         } while (!err);
->
->         rcu_read_lock();
-> -       err =3D xfrm_rcv_cb(skb, family, x->type->proto, 0);
-> +       err =3D xfrm_rcv_cb(skb, family, xfrm_proto, 0);
->         if (err) {
->                 rcu_read_unlock();
->                 goto drop;
-> @@ -753,7 +758,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be=
-32 spi, int encap_type)
->                         xfrm_gro =3D xo->flags & XFRM_GRO;
->
->                 err =3D -EAFNOSUPPORT;
-> -               afinfo =3D xfrm_state_afinfo_get_rcu(x->props.family);
-> +               afinfo =3D xfrm_state_afinfo_get_rcu(family);
->                 if (likely(afinfo))
->                         err =3D afinfo->transport_finish(skb, xfrm_gro ||=
- async);
->                 if (xfrm_gro) {
-> @@ -776,7 +781,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be=
-32 spi, int encap_type)
->  drop:
->         if (async)
->                 dev_put(dev);
-> -       xfrm_rcv_cb(skb, family, x && x->type ? x->type->proto : nexthdr,=
- -1);
-> +       xfrm_rcv_cb(skb, family, xfrm_proto, -1);
->         kfree_skb(skb);
->         return 0;
+> v2 changes: None.
+> 
+>  drivers/net/ethernet/stmicro/stmmac/hwif.h    |  2 +-
+>  .../net/ethernet/stmicro/stmmac/stmmac_main.c | 13 +-----
+>  .../net/ethernet/stmicro/stmmac/stmmac_vlan.c | 41 +------------------
+>  3 files changed, 4 insertions(+), 52 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
+> index 04dafec021b4..6f26dbf95ce1 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
+> +++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
+> @@ -633,7 +633,7 @@ struct stmmac_est_ops {
+>  struct stmmac_vlan_ops {
+>  	/* VLAN */
+>  	void (*update_vlan_hash)(struct mac_device_info *hw, u32 hash,
+> -				 u16 perfect_match, bool is_double);
+> +				 bool is_double);
+>  	void (*enable_vlan)(struct mac_device_info *hw, u32 type);
+>  	void (*rx_hw_vlan)(struct mac_device_info *hw, struct dma_desc *rx_desc,
+>  			   struct sk_buff *skb);
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index b2b7d0242dd3..16fe56a1f617 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -6809,29 +6809,18 @@ static u32 stmmac_vid_crc32_le(__le16 vid_le)
+>  static int stmmac_vlan_update(struct stmmac_priv *priv, bool is_double)
+>  {
+>  	u32 crc, hash = 0;
+> -	u16 pmatch = 0;
+> -	int count = 0;
+>  	u16 vid = 0;
+>  
+>  	for_each_set_bit(vid, priv->active_vlans, VLAN_N_VID) {
+>  		__le16 vid_le = cpu_to_le16(vid);
+>  		crc = bitrev32(~stmmac_vid_crc32_le(vid_le)) >> 28;
+>  		hash |= (1 << crc);
+> -		count++;
+> -	}
+> -
+> -	if (!priv->dma_cap.vlhash) {
+> -		if (count > 2) /* VID = 0 always passes filter */
+> -			return -EOPNOTSUPP;
+> -
+> -		pmatch = vid;
+> -		hash = 0;
+>  	}
+>  
+>  	if (!netif_running(priv->dev))
+>  		return 0;
+>  
+> -	return stmmac_update_vlan_hash(priv, priv->hw, hash, pmatch, is_double);
+> +	return stmmac_update_vlan_hash(priv, priv->hw, hash, is_double);
 >  }
-> --
-> 2.43.0
+>  
+>  /* FIXME: This may need RXC to be running, but it may be called with BH
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
+> index e24efe3bfedb..983a90cb9767 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
+> @@ -162,7 +162,7 @@ static void vlan_restore_hw_rx_fltr(struct net_device *dev,
+>  }
+>  
+>  static void vlan_update_hash(struct mac_device_info *hw, u32 hash,
+> -			     u16 perfect_match, bool is_double)
+> +			     bool is_double)
+>  {
+>  	void __iomem *ioaddr = hw->pcsr;
+>  	u32 value;
+> @@ -184,20 +184,6 @@ static void vlan_update_hash(struct mac_device_info *hw, u32 hash,
+>  		}
+>  
+>  		writel(value, ioaddr + VLAN_TAG);
+> -	} else if (perfect_match) {
+> -		u32 value = VLAN_ETV;
+> -
+> -		if (is_double) {
+> -			value |= VLAN_EDVLP;
+> -			value |= VLAN_ESVL;
+> -			value |= VLAN_DOVLTC;
+> -		} else {
+> -			value &= ~VLAN_EDVLP;
+> -			value &= ~VLAN_ESVL;
+> -			value &= ~VLAN_DOVLTC;
+> -		}
+> -
+> -		writel(value | perfect_match, ioaddr + VLAN_TAG);
+>  	} else {
+>  		value &= ~(VLAN_VTHM | VLAN_ETV);
+>  		value &= ~(VLAN_EDVLP | VLAN_ESVL);
+> @@ -251,7 +237,7 @@ static void vlan_set_hw_mode(struct mac_device_info *hw)
+>  }
+>  
+>  static void dwxgmac2_update_vlan_hash(struct mac_device_info *hw, u32 hash,
+> -				      u16 perfect_match, bool is_double)
+> +				      bool is_double)
+>  {
+>  	void __iomem *ioaddr = hw->pcsr;
+>  
+> @@ -279,29 +265,6 @@ static void dwxgmac2_update_vlan_hash(struct mac_device_info *hw, u32 hash,
+>  
+>  		value &= ~VLAN_VID;
+>  		writel(value, ioaddr + VLAN_TAG);
+> -	} else if (perfect_match) {
+> -		u32 value = readl(ioaddr + XGMAC_PACKET_FILTER);
+> -
+> -		value |= XGMAC_FILTER_VTFE;
+> -
+> -		writel(value, ioaddr + XGMAC_PACKET_FILTER);
+> -
+> -		value = readl(ioaddr + VLAN_TAG);
+> -
+> -		value &= ~VLAN_VTHM;
+> -		value |= VLAN_ETV;
+> -		if (is_double) {
+> -			value |= VLAN_EDVLP;
+> -			value |= VLAN_ESVL;
+> -			value |= VLAN_DOVLTC;
+> -		} else {
+> -			value &= ~VLAN_EDVLP;
+> -			value &= ~VLAN_ESVL;
+> -			value &= ~VLAN_DOVLTC;
+> -		}
+> -
+> -		value &= ~VLAN_VID;
+> -		writel(value | perfect_match, ioaddr + VLAN_TAG);
+>  	} else {
+>  		u32 value = readl(ioaddr + XGMAC_PACKET_FILTER);
+>  
+
