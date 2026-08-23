@@ -1,269 +1,285 @@
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A892868AB
-	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 17:36:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787506606; cv=pass; b=EZPnqchZMy5+LI+Rm8l/yjdQBBPM9OKlMoiwGoOZ9Cm+ZpJd+ZoVOTmzAU4fpL4jl5wgOtf6ugCjKbk1Y/quO/JZDhQ2uq4iPmrVzBaRjdO6l1alip+cgvaoTXsKYS9+04CS0rKQkrE2EUFqFHyOMtuy4rEJv8C6vqqAMlSqh/k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787506606; c=relaxed/simple;
-	bh=ZTG7jVjcTi86l5dazmQruPuJYLfOT+grKua4hiNOklI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BoT9ga5b0uJmEw2GOJpv2nGHNegjQa+mDsf4tQebdchJdvB725K//ASNh1bHw+M0Mf/tP7kP5oqrTuwXsEVa0oZOAQt5uggJSeIoCf4Kw08O54mFaLmBrKmZekM6giUuPGjaVc34bv7uJZaRITU/nW/YmR2uWzGU+agnpcLMNZY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BXbUKvpV; arc=pass smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE732F693B;
+	Sun, 23 Aug 2026 17:37:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787506655; cv=none; b=t04BCz2dvPeHWAd7EcnBiHHuldj1oWd8GZ1QJQUBLzsybJvyWkPilk/vUF3Yk5rFY/WaZauGtnOc+brkJJidV+25aPQp7DlA8OZTW3DU2IKvfP+kP8bxIpFNHBNzQVAa15uZbqLFXZZ7NjsYpzPs8GfOs52mvEHkYEiTJ96fDdk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787506655; c=relaxed/simple;
+	bh=jG22L5f2P1rIBR7jfV20CBvuPd9BU82NjHCemViNrwc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CPERq5+IgMRD8K/NXObQe0J/clHogGAXeu00N0UvMVe0clsRrFD1M95nwggvYFri2zWCEG8Zbv6j83OqljjEjuwKoR033FKqyuPzVPvSmq/WmjXzbSuH8QTbYsqBo+agqLqy0A7GvL2MwDJ9CP1ijIdRkAKR38dgXjyCRktPrIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=oqQ4cIgS; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=WCxgppjr; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=wKhzLl9P; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=fn/hEGc0; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BXbUKvpV"
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-836f34a0ceaso41955117b3.1
-        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 10:36:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787506604; cv=none;
-        d=google.com; s=arc-20260327;
-        b=B3bhxJhqMqxgGMFj5I9bT2YuWtfAjeWxX5BoBR8fgwDazq91/wmiSlyPfZJmqL/l7N
-         TYXeBE/XEXcaihAaYnSBWCFC5MzURhIrDc4oRd9haTyUawdQNQWTyJk2No6y/Fhb8enQ
-         B57KuxjcmBf416+gxflDEpfF5C7jkwS794jZ/uowZ5bT9CbT9O+iBUijqfwncp41lpOP
-         V/bNN4GEPBp8gT+4n4Qi4NFjRyxUR7i0TiTtkADyfEkBXkhxnsezAQTQebfXXMgkmnCG
-         frsvC+JPiKDeAoycLCjbiICw7KCYhPDZ8oUKWnsAVGHUx53vviFvVpCtXDHV+ekLqMH6
-         WCZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ZFaM240eicHlNZGsa1WgcDYHiUAJ1fjLwFBjJU8YruQ=;
-        fh=6rtlFwcI08lNloA1r7sXoFAAUg1l6ustR2+6ZMAqPoI=;
-        b=FROP+bKZCS8ZA6yN/J4MxMUHXrk2NU9tKbvuoQa0+z2AdO8jKH7zy8arzd09uDPCzR
-         I57KVZklvuvuC0hPteAwEsq4O8bXN7f8riIFIBDwdzHecRjNbE99rinJL3qOWhv8n0pP
-         4xbzHmp6UHkY8d8fKKbATk+8cTOMOcMoPZ0tIirNzMajaiVHy/QqaiXyrYvHaCOHUN8o
-         a2fE9Uzc+XkJS44lLdbcLqk5fE15OqzEOmqwoDm0wtoCdSQ86qze9p8HzaILfWDDpTp5
-         EtEiqb99j42TMSMOMPXfxyzdw8daX1GjKeV+QPOWr4OcWmgZ6GRmB9vdD16Zthji4Sic
-         bMkw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787506604; x=1788111404; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ZFaM240eicHlNZGsa1WgcDYHiUAJ1fjLwFBjJU8YruQ=;
-        b=BXbUKvpV/z6rXuQY3VQAy6sfXCLy1kHi+aXn/KYA7tPA8erh6cdD+DZfXV2HKtCjXh
-         B5KS5By+XLiyYrdzpklJWKhBmf3EW3GIjWs16FAdaOqNkcvQVMM/T4lkdxZCc4Tnr7o6
-         9CCg2WHPHWFHZ77BLtLwLy2+BtNEe/IUNrj8sv6RQ40WhAB8B3bnf32085EvfeGI7IDV
-         UcypRMHgq4/BMBxAMoVOVuhJAsVy4t1wFGi6c2dr/q/yz4o9/IxVU0emAIut7CNQTPJi
-         Myph8ZIQiCU//TNtQkDqz0VLvr3H5BeEFm2Az6eHyjdfx6xkAMSgfldTVQGgKlnPLLYS
-         VNUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787506604; x=1788111404;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZFaM240eicHlNZGsa1WgcDYHiUAJ1fjLwFBjJU8YruQ=;
-        b=SaLztNqgzZMNc6wJ9MqwKKa5305DQ1W8+ayoi+wnR5anF6n2CqlMqkHIOghYhOteHL
-         zZXbBdBZuucsznR/9gly5NdKGkq0JiMFE+1AKcezK4GJ8Ds84OzjZ0Q0a+lFZy0G/q1Q
-         1D5dM099o6IL+GIxkSFRIQLZIY5+0TXK+JBXjQIRZDChjMreXIBAU6SdPuRKpCONeI9L
-         ap1TGRyetIi+E5pMlgwPuvPJvUXBwT84/bINdhAzRmjfdH03eZH3q8M4gkYVIrsuOfUt
-         dkHjhqIEq2emBTcMl8mBHSMIyu+gQG1n+U/AmNOQQ6NOwFqY/zBgL3woWlf+/pR8ZaqA
-         Vf/A==
-X-Forwarded-Encrypted: i=1; AHgh+Rr9+eyi0u8Nfk9eZMLcN3JGj7qCh29l+sZd1ANae/a0pta+VFLNOyr/dKaajo3+gRbzeQqBB1A=@vger.kernel.org
-X-Gm-Message-State: AFuF++kBBMxLDsLoLaniLE41/NLM8I1+nqrlK6RLKDbZKo9RrwmDAawD
-	HKgGte+ELnvkB2CDd6H7JfYa3b80u8eLa/O6cqrSc+0qjyeCI1Ez5rTwhozbBHEDl6q/NWwGgIC
-	UoPNZ1kyiq7klyt75DxOG2EOX/h5wasA=
-X-Gm-Gg: AR+sD12pEiL+4TyicHJbHRfSNWajlgdXTl1850dZqap4/MsUwlGTcAcjCsJcxwaW1WC
-	yKuvXc3m4orE+AiEGwue+jnfs5hz0TAsXus6xE7EVhKLFY/uVIRLSZrc4KFj1+1ba6KW9Z2xlTC
-	X4I3PrTcO2BVUtUi81mPVy6blAszH2SfI7CvK2dQQjFX/5+zZvfd0Pmqw/8IKUIWrt50JUb+3b3
-	wDPP1G9E22aw1vtjgghJMxtrT6Wh1xzZjqRiS6/xKQ52dmmCdOqhGtSYPuWpEkz+iXzWFAsiq7U
-	SQIfvywAebgNzpYhSJoFjVvsNqg3uknhM7fMYojjrRzdYkNJ7DVPADv5coijNdaIztJ8pYw2vJI
-	=
-X-Received: by 2002:a05:690c:e1c6:10b0:826:f78b:8462 with SMTP id
- 00721157ae682-847091daa5amr80352677b3.7.1787506604304; Sun, 23 Aug 2026
- 10:36:44 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="oqQ4cIgS";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="WCxgppjr";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="wKhzLl9P";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="fn/hEGc0"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 7A5D386466;
+	Sun, 23 Aug 2026 17:37:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1787506647; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FJ9rwPgU84Y78qa/zDD9kIClhwNRKRJnBFUV1+JnGVw=;
+	b=oqQ4cIgSBQ5OEayjijalPlXj/1V8butCH0ymsXEklKjZoMMK5nNkT/7g4yICALDsx21fwT
+	yaK+ETfNUJtFjmSkDx1NOqP2KV+5nedCHbhPjUcnFFK3Riqt7p4sxN8rI4felV2GPxVon6
+	uckfa6EIVV2/LruiFEpfAh5wmsEGBmo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1787506647;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FJ9rwPgU84Y78qa/zDD9kIClhwNRKRJnBFUV1+JnGVw=;
+	b=WCxgppjrHK2mRp6Br/IJjk+6GWdrj74axsZl6/d2AlWR+lPHFFEUNBuyKgGLgsNazQ8xul
+	agREMWOp4f/juwCg==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wKhzLl9P;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="fn/hEGc0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1787506643; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FJ9rwPgU84Y78qa/zDD9kIClhwNRKRJnBFUV1+JnGVw=;
+	b=wKhzLl9P4LhGkVagfRn9DLBkgaznwaDEufQYJWyOWcHvLuHGCj1dg/99+gG7edhmN55f2c
+	io7DwbtOC5LyLvIGG4tJwNpQH/ebwGHDQje3Bqfo5xuBFE0bi+ll2qcNcPrrH0Xlpp+d1I
+	3EUrilNxu319CJ/tPjmpRNiVIZE9KRo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1787506643;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FJ9rwPgU84Y78qa/zDD9kIClhwNRKRJnBFUV1+JnGVw=;
+	b=fn/hEGc0ShGG1W/qqK1ScGA4aZ/uL1R7EBTYigtZ+m7lvF61+T/NZX5MOkjUthk3RXqlBN
+	fxkg0y954fXhm7DA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E982513325;
+	Sun, 23 Aug 2026 17:37:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id bPwxNtIvi2p8ZwAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Sun, 23 Aug 2026 17:37:22 +0000
+Message-ID: <456872c2-d5ee-4951-aac6-2573cfb6b585@suse.de>
+Date: Sun, 23 Aug 2026 19:36:48 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260820162235.2668698-2-bestswngs@gmail.com> <CADvbK_cC8A3vjV0mweyBX_RyHFk_-ruyQ-Wp6UDmWpeAvNMvTQ@mail.gmail.com>
-In-Reply-To: <CADvbK_cC8A3vjV0mweyBX_RyHFk_-ruyQ-Wp6UDmWpeAvNMvTQ@mail.gmail.com>
-From: Weiming Shi <thebestswings@gmail.com>
-Date: Mon, 24 Aug 2026 01:36:05 +0800
-X-Gm-Features: AcwNN1WIN7ZamSxeHE9CfMftmz0TsLLVundqqXQL6dY4xi55zsOABCO5R4pkbyQ
-Message-ID: <CANgPUi1KkHNn=BeEG32B6kbYNArn0XV1rgeF3A6-wR7+oELpyA@mail.gmail.com>
-Subject: Re: [PATCH net] sctp: fix NULL deref on untransmitted RECONF completion
-To: Xin Long <lucien.xin@gmail.com>
-Cc: marcelo.leitner@gmail.com, linux-sctp@vger.kernel.org, 
-	netdev@vger.kernel.org, horms@kernel.org, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, xmei5@asu.edu, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 08/10] netfilter: nf_tables: fix device name and
+ prefix match in hook lookup
+To: Jakub Kicinski <kuba@kernel.org>, pablo@netfilter.org
+Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
+ netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
+ horms@kernel.org, fw@strlen.de, ja@ssi.bg
+References: <20260821153833.245589-9-pablo@netfilter.org>
+ <20260822195230.2202763-1-kuba@kernel.org>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <20260822195230.2202763-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim];
+	RCVD_COUNT_TWO(0.00)[2];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Flag: NO
+X-Spam-Score: -4.51
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 7A5D386466
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
 
-Xin Long <lucien.xin@gmail.com> =E4=BA=8E2026=E5=B9=B48=E6=9C=8821=E6=97=A5=
-=E5=91=A8=E4=BA=94 23:28=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Thu, Aug 20, 2026 at 12:23=E2=80=AFPM <bestswngs@gmail.com> wrote:
-> >
-> > From: Weiming Shi <bestswngs@gmail.com>
-> >
-> > sctp_process_strreset_outreq(), sctp_process_strreset_addstrm_out() and
-> > sctp_process_strreset_resp() finish a pending stream reconfiguration
-> > request by stopping the reconf timer on the transport the request was
-> > sent on:
-> >
-> >         t =3D asoc->strreset_chunk->transport;
-> >         if (timer_delete(&t->reconf_timer))
-> >                 sctp_transport_put(t);
-> >
-> > On the transmit path chunk->transport is assigned by
-> > __sctp_packet_append_chunk(), that is, when the chunk is actually
-> > appended to an outbound packet. A RECONF chunk that was queued but neve=
-r
-> > transmitted keeps transport =3D=3D NULL, and its reconf timer is never =
-armed
-> > either, since that too only happens once the chunk has been appended.
-> >
-> > sctp_outq_flush_ctrl() skips every non-ASCONF control chunk while
-> > asoc->src_out_of_asoc_ok is set and leaves it on control_chunk_list, so
-> > in that state a RECONF is never put on the wire. The sender side has
-> > already published the chunk in asoc->strreset_chunk and armed
-> > asoc->strreset_outstanding, so an incoming RECONF that drives
-> > strreset_outstanding down to 0 dereferences the NULL transport.
-> >
-> > sctp_send_asconf_del_ip() reaches that state without any peer
-> > interaction: when the address being removed is the association's last
-> > one it stashes the address in asoc->asconf_addr_del_pending, sets
-> > src_out_of_asoc_ok and skips chunk creation and transmission
-> > ("stored =3D 1; goto skip_mkasconf"). As only sctp_process_asconf_ack()
-> > clears the flag, it stays set until a later bindx() ADD picks the pendi=
-ng
-> > delete up. An unprivileged process that removes the last address of an
-> > ASCONF-enabled association and then asks for a stream reset panics the
-> > kernel from softirq:
-> >
-> >   Oops: general protection fault, probably for non-canonical address
-> >   0xdffffc000000003d: 0000 [#1] SMP KASAN NOPTI
-> >   KASAN: null-ptr-deref in range [0x00000000000001e8-0x00000000000001ef=
-]
-> >   RIP: 0010:timer_delete+0x67/0x110
-> >   Call Trace:
-> >    <IRQ>
-> >    sctp_process_strreset_addstrm_out (net/sctp/stream.c:832)
-> >    sctp_sf_do_reconf (net/sctp/sm_statefuns.c:4212)
-> >    sctp_do_sm (net/sctp/sm_sideeffect.c:1172)
-> >    sctp_assoc_bh_rcv (net/sctp/associola.c:1044)
-> >    sctp_rcv (net/sctp/input.c:243)
-> >    ip_protocol_deliver_rcu (net/ipv4/ip_input.c:207)
-> >    ip_local_deliver (net/ipv4/ip_input.c:262)
-> >    ip_rcv (net/ipv4/ip_input.c:612)
-> >    process_backlog (net/core/dev.c:6680)
-> >    net_rx_action (net/core/dev.c:7959)
-> >    handle_softirqs (kernel/softirq.c:622)
-> >    </IRQ>
-> >   Kernel panic - not syncing: Fatal exception in interrupt
-> >
-> > Skip the timer deletion when the RECONF chunk never reached a packet:
-> > there is no armed reconf timer and no transport reference to drop.
-> >
-> > Fixes: 810544764536 ("sctp: implement receiver-side procedures for the =
-Outgoing SSN Reset Request Parameter")
-> > Cc: stable@vger.kernel.org
-> > Reported-by: Xiang Mei <xmei5@asu.edu>
-> > Assisted-by: Claude:claude-opus-5
-> > Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-> > ---
-> > Note to reviewers: this only stops the crash, and I want to be upfront =
-that it
-> > does not remove the state that produces it.
-> >
-> > That state has exactly one producer. sctp_send_asconf_del_ip() latches
-> > src_out_of_asoc_ok on the branch that stashes the association's last ad=
-dress
-> > without building or sending an ASCONF, and sctp_process_asconf_ack() is=
- the
-> > only place that clears it -- so the flag survives until the application=
- issues
-> > the follow-up bindx() ADD that sctp_make_asconf_update_ip()'s del_picku=
-p needs.
-> > 8a07eb0a50ae ("sctp: Add ASCONF operation on the single-homed host") de=
-scribes
-> > this as a transient state ("the other chunks cannot be transmitted in t=
-his
-> > state"), but nothing bounds how long it lasts: an application that neve=
-r adds a
-> > replacement address leaves the association unable to send any DATA or
-> > non-ASCONF control chunk for the rest of its life, with the RECONF sitt=
-ing on
-> > control_chunk_list and strreset_outstanding armed.
-> >
-> > I kept this patch to the dereference because it is what the rest of net=
-/sctp
-> > already does -- every other chunk->transport dereference is NULL-checke=
-d -- and
-> > because it backports cleanly. But would you prefer the latch itself to =
-be
-> > addressed, or the reconf request to be abandoned here rather than compl=
-eted
-> > against a chunk that never went out? Happy to follow up with either for
-> > net-next. net/sctp/stream.c | 6 +++---
-> >  1 file changed, 3 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/net/sctp/stream.c b/net/sctp/stream.c
-> > index 34ffe6c945a4..1cb30def2eb9 100644
-> > --- a/net/sctp/stream.c
-> > +++ b/net/sctp/stream.c
-> > @@ -577,7 +577,7 @@ struct sctp_chunk *sctp_process_strreset_outreq(
-> >                         struct sctp_transport *t;
-> >
-> >                         t =3D asoc->strreset_chunk->transport;
-> > -                       if (timer_delete(&t->reconf_timer))
-> > +                       if (t && timer_delete(&t->reconf_timer))
-> >                                 sctp_transport_put(t);
-> >
-> >                         sctp_chunk_put(asoc->strreset_chunk);
-> > @@ -829,7 +829,7 @@ struct sctp_chunk *sctp_process_strreset_addstrm_ou=
-t(
-> >                         struct sctp_transport *t;
-> >
-> >                         t =3D asoc->strreset_chunk->transport;
-> > -                       if (timer_delete(&t->reconf_timer))
-> > +                       if (t && timer_delete(&t->reconf_timer))
-> >                                 sctp_transport_put(t);
-> >
-> >                         sctp_chunk_put(asoc->strreset_chunk);
-> > @@ -1084,7 +1084,7 @@ struct sctp_chunk *sctp_process_strreset_resp(
-> >         /* remove everything for this reconf request */
-> >         if (!asoc->strreset_outstanding) {
-> >                 t =3D asoc->strreset_chunk->transport;
-> > -               if (timer_delete(&t->reconf_timer))
-> > +               if (t && timer_delete(&t->reconf_timer))
-> >                         sctp_transport_put(t);
-> >
-> >                 sctp_chunk_put(asoc->strreset_chunk);
-> > --
-> > 2.55.0
-> >
-> If the STRRESETSTRRESET chunk has never been sent, we should NOT allow an=
- incoming
-> chunk to =E2=80=9CACK=E2=80=9D it.
->
-> Could you try fixing this by returning NULL from
-> sctp_chunk_lookup_strreset_param() if the STRRESETSTRRESET chunk has not =
-been
-> transmitted yet? like:
->
-> @@ -488,7 +488,7 @@ static struct sctp_paramhdr
-> *sctp_chunk_lookup_strreset_param(
->         struct sctp_reconf_chunk *hdr;
->         union sctp_params param;
->
-> -       if (!chunk)
-> +       if (!chunk || !chunk->transport)
->                 return NULL;
->
-> Please also share the PoC with the maintainers, if there is one.
->
-> Thanks.
+On 8/22/26 9:52 PM, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> netfilter: nf_tables: fix device name and prefix match in hook lookup
+> 
+> This changes nft_hook_list_find() so a hook spec only matches another
+> spec of the same kind (prefix vs exact name) and the same length,
+> replacing the previous strncmp() over min(hook->ifnamelen,
+> this->ifnamelen).  hook_is_prefix() also gains a const argument.
+> 
+> Closes: https://lore.kernel.org/netfilter-devel/CANE+tVrDeNCHQVmsqkV2ozeBqyE3GtRDMhZgsg1bhw10yGNTRQ@mail.gmail.com/
+> 
+>> diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+>> index 20c562174b278..d160f6ea0dc29 100644
+>> --- a/net/netfilter/nf_tables_api.c
+>> +++ b/net/netfilter/nf_tables_api.c
+> 
+> [ ... ]
+> 
+>> @@ -2445,8 +2445,11 @@ static struct nft_hook *nft_hook_list_find(struct list_head *hook_list,
+>>   	struct nft_hook *hook;
+>>   
+>>   	list_for_each_entry(hook, hook_list, list) {
+>> -		if (!strncmp(hook->ifname, this->ifname,
+>> -			     min(hook->ifnamelen, this->ifnamelen))) {
+>> +		if (hook_is_prefix(hook) != hook_is_prefix(this))
+>> +			continue;
+>> +		if (hook->ifnamelen != this->ifnamelen)
+>> +			continue;
+>> +		if (!strncmp(hook->ifname, this->ifname, hook->ifnamelen)) {
+>>   			if (hook->flags & NFT_HOOK_REMOVE)
+>>   				continue;
+>>   
+> 
+> [Severity: Critical]
+> nft_hook_list_find() has two callers with different expectations, and this
+> turns it into a pure identity comparator for both.  The delete/get paths
+> (nf_tables_delchain_hook(), nft_flowtable_del_hook()) want identity, but
+> the add paths use it as an overlap rejector:
+> 
+> nf_tables_parse_netdev_hooks()
+> 	if (nft_hook_list_find(hook_list, hook)) {
+> 		NL_SET_BAD_ATTR(extack, tmp);
+> 		nft_netdev_hook_free(hook);
+> 		err = -EEXIST;
+> 		goto err_hook;
+> 	}
+> 
+> and the same in nf_tables_updchain(), nft_register_flowtable_net_hooks()
+> and nft_flowtable_update().
+> 
+> The Fixes-referenced commit 6d07a289504a states the min() compare was
+> deliberate: "When checking for duplicate hooks, compare the shortest
+> prefix so a device may never match more than a single hook spec."  Does
+> this change intentionally drop that invariant?
+> 
+> Concretely, is this still rejected after the patch?
+> 
+>    nft add chain netdev t c \
+>      '{ type filter hook ingress devices = { "eth*", "eth0" } ; }'
+> 
+> Before, prefix "eth" (ifnamelen 3) and exact "eth0" (ifnamelen 5) matched
+> via strncmp(..., min(3, 5)) and gave -EEXIST.  Now
+> hook_is_prefix(hook) != hook_is_prefix(this) short-circuits, so both hooks
+> end up in the same hook_list.  Prefix "eth" versus prefix "eth0" is
+> likewise separated by the ifnamelen compare.
+> 
+> nft_netdev_hook_alloc() then builds one nf_hook_ops per matching netdev
+> per hook:
+> 
+> 	for_each_netdev(net, dev) {
+> 		if (strncmp(dev->name, hook->ifname, hook->ifnamelen))
+> 			continue;
+> 		...
+> 		ops->dev = dev;
+> 		list_add_tail(&ops->list, &hook->ops_list);
+> 	}
+> 
+> so two distinct nft_hook objects each own an ops with ops->dev == eth0,
+> and nft_netdev_register_hooks() registers both.  nf_hook_entries_grow()
+> only rejects duplicates for NF_HOOK_OP_BPF, so both land in
+> eth0->nf_hooks_ingress and the base chain is evaluated twice per packet.
+> For flowtables the cross-flowtable -EEXIST guard in
+> nft_register_flowtable_net_hooks() is bypassed the same way, so the same
+> device gets two FLOW_BLOCK_BIND calls.
+> 
+> Can this also leave a dangling struct net_device pointer?  Both notifier
+> loops service only the first hook that owns an ops for the device, because
+> of the unconditional break after the switch:
+> 
+> net/netfilter/nft_chain_filter.c:nft_netdev_event() {
+> 	list_for_each_entry(hook, &basechain->hook_list, list) {
+> 		ops = nft_hook_find_ops(hook, dev);
+> 		...
+> 		switch (event) {
+> 		case NETDEV_UNREGISTER:
+> 			...
+> 			nf_unregister_net_hook(dev_net(dev), ops);
+> 			list_del_rcu(&ops->list);
+> 			kfree_rcu(ops, rcu);
+> 			break;
+> 		...
+> 		}
+> 		break;
+> 	}
+> 	return 0;
+> }
+> 
+> nft_flowtable_event() in nf_tables_api.c has the same trailing break.  On
+> ip link del eth0 only the first hook's ops is unregistered and freed; the
+> second hook keeps a registered nf_hook_ops whose ops->dev points at the
+> device that is then freed, since nf_hook_ops holds no device reference.
+> 
+> A later teardown (nft delete chain, nft delete table, dormant toggle,
+> netns exit) walks every ops:
+> 
+> net/netfilter/nf_tables_api.c:nft_netdev_unregister_hooks() {
+> 	list_for_each_entry_safe(hook, next, hook_list, list) {
+> 		if (!(table->flags & NFT_TABLE_F_DORMANT)) {
+> 			list_for_each_entry(ops, &hook->ops_list, list)
+> 				nf_unregister_net_hook(net, ops);
+> 		}
+> 	...
+> }
+> 
+> and __nf_unregister_net_hook() reaches nf_hook_entry_head(net, pf,
+> reg->hooknum, reg->dev), which does dev_net(dev) and returns
+> &dev->nf_hooks_ingress, i.e. a read and then a write through the stale
+> pointer.  For flowtables, nft_unregister_flowtable_ops() additionally
+> calls ->setup(..., ops->dev, FLOW_BLOCK_UNBIND) on the freed device.  The
+> orphaned nf_hook_entries blob is also leaked.
+> 
+> On NETDEV_REGISTER the same break means only one of two covering hooks
+> gains an ops, so the other stays permanently unhooked.
+> 
+> Would it work to keep the strict identity match only for the
+> delete/update lookups and retain the prefix-overlap semantics for the
+> add/-EEXIST paths, e.g. as two separate helpers?  Alternatively, should
+> the unconditional break in nft_netdev_event() and nft_flowtable_event()
+> be dropped so every matching hook is serviced?
+> 
+> The commit message describes only the delete/update lookup semantics; the
+> fact that configurations previously rejected with -EEXIST are now
+> accepted is not mentioned.  Could that be spelled out?
+> 
 
 Hi,
 
-Thanks for your review. Updated patch and PoC are sent.
+About the add path it was intended, what it wasn't is the UAF. The AI 
+review managed to catch it. Btw, sashiko.dev didn't catch it, it seems 
+the NIPA instance is managing to catch more subtle bugs.
+
+This patch needs a V2 enforcing an exact match on delete/update path 
+while using the current approach on the add path. I am sending one 
+tomorrow first thing in the morning.
+
+Thanks,
+Fernando.
