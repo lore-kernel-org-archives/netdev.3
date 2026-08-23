@@ -1,113 +1,133 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+Received: from mail-oi1-f207.google.com (mail-oi1-f207.google.com [209.85.167.207])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2B2379EFF
-	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 18:36:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28DE12765D7
+	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 18:53:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787510165; cv=none; b=D1wcElFikusLVFWZfXJ5EhjUY/W+B6RPSKVb9bMoyhsN5WHyOGrlKgj6mElPjc7c/j3VCeVjaEHfADHkwAw+QJBoSzajpkl72LWiJVY/4PJwfXyGvKky9uoqoz67JsHcIwkFBNsruXqYd99GZJdCntEFOnm6AWEyL3tL7+81+Lo=
+	t=1787511222; cv=none; b=Hy5ab3yflWuRuZMwbZLEEQjjEXwMDLPUO0uFwRKZ7CH7BC2+DWnyRqhx3s66y3dyR/a76A0ZVIx0YLr31/s/SDQZt8bCiiJl6dvlEBKmYtnWW0SuIz8WuXkMhRNY4S7SnyMsQCp1LR81XNCSMFs26CHxe4Szw6zaVe7HdZAuW50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787510165; c=relaxed/simple;
-	bh=gscrcobiFZjTV8CWh53O8e36+ERF3+9AvCKc+SjayGE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=n+FGzl5EdGRJDQwxzIFIZ5mWvZySCcWiZZ+IYR4SmoLSt+v7oe9MIbDuyJAdKWrksRWk7DL7ox86hICqNqI4LPAo8eM9leKgOClwvKsFhoCe4a3rcEC1xPPiaiC9smq0gcs+PD1YIDydLguVC8038B3RvdMAptT+lePooHnqQRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TCjZXzmt; arc=none smtp.client-ip=209.85.215.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TCjZXzmt"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cb5ea36f969so3331201a12.2
-        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 11:36:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787510164; x=1788114964; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2UUizFyvTXfnDZkThaHs02zvim1q/J5mzBIkFP4tM+c=;
-        b=TCjZXzmtmOU36XVBrEpFFhsEMJMjd5to8BAfJAVU+j5kptVcXqo+Q9QCj3Efa+twCU
-         n/gpjTy6DxkfMur2ZHm8ufEjtPLTG6f1dmd7e8gVuJaN9iq+sLUrL6w8pw/HU/NJQKnf
-         Iy23VMiycz+3L0im6wAYlsfeD7x+DqX9cnmLDIwsJQfjTq33rACeE+ljkE76J+VcyNWU
-         qSdTZ5Vi1ZjircucKH1vOjyU4CM98LaE2l8wUkVcBWtlAz38LKQSi3uzH5gy8x4fNAf4
-         +VhKhrvg/heqtmhvkH6T3pxFQcbF/LnTZXSBHqHybq0Eobmrr7uXaHoNBSVWkCMOd7ga
-         FwlQ==
+	s=arc-20240116; t=1787511222; c=relaxed/simple;
+	bh=WTksam5mMLhz7n6lMlgAb94sGR5kh2LCcO7+DRlNbCs=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=fH8ehIp8tG+VLIeapw1b23XLFG5JW2C+JEdJdtU5/VdK1g2ftSS+ohpm+fI8BZ+XGptagboDyGqioR/reUTzOJzZKgzKII8PAM2vSJ+9nNHimF/Fffp+8PGRoVgB39A5N0Fev2D8SkLISfs/zNJGOd44DSNJMv/CX1Rn/QKSlL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f207.google.com with SMTP id 5614622812f47-4ab260600easo7424379b6e.1
+        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 11:53:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787510164; x=1788114964;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2UUizFyvTXfnDZkThaHs02zvim1q/J5mzBIkFP4tM+c=;
-        b=Do3PNwhfsBsFa1d1b4+TXXlEYKTfexnPw2D7NBMzJoimRkHZeckDXiUyPBEIOnb/uq
-         s67iuvB338LTG6wCylRrBza4xcPmxgMwa85UllgkiZ8hO3B/mOCZb3JrSqNcAoJyshZL
-         ccavGlj5H647sg86LKoc69xizihtqciXZFgpRYvjDjSkoQN07srIrMW3NEqpwgTvBrRm
-         FRaKcmF7GJedPCIraglUQsJCblw1lnMDr7BFx3lyY5HXi1nab+UtgeNSZn78n1fm4cyr
-         o4KJrs+xBwoY9ABkR+HLdFNHEFW+LyefFu/xwH4k8H15NvtXYTF10YroSTgoIWQflpgh
-         WEmA==
-X-Forwarded-Encrypted: i=1; AHgh+RqbYqQIk+9zFCSp0AxUKNlIh+HgkHKG4Ib85GPNXBhg2nGfVPWZ8oXZWxiZFiuDu1tETD2FvZY=@vger.kernel.org
-X-Gm-Message-State: AFuF++mzR/XSWQYL51rUghhzOKyIBgjhCPEW1BApga19xty6rD8SFkg4
-	5p6MPYWpb8Yy9TYTSvQSVQNWe4TfftgH1luATHrPBOG+YGJdY7PV4tbxPFVWzJrvoTEa2aOPI3I
-	VedfS1a0Hst67Tk7S2dXj9g1TcA==
-X-Received: from dlbbz30.prod.google.com ([2002:a05:7022:239e:b0:13e:5cad:4689])
- (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:c90c:b0:3cc:22bb:8911 with SMTP id adf61e73a8af0-3cd2fe7a2cdmr41465461637.6.1787510163813;
- Sun, 23 Aug 2026 11:36:03 -0700 (PDT)
-Date: Sun, 23 Aug 2026 18:36:02 +0000
-In-Reply-To: <20260823183602.1051453-1-almasrymina@google.com>
+        d=1e100.net; s=20251104; t=1787511220; x=1788116020;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pQNESQLTwJVhBbULXD8kpwkLCSyER8yPmkxG+TsSPnM=;
+        b=WOQd4+nH9dYB+oqcKdx/5eX+mmb2vf3LT22fvdc0RVBq3o5+C5AVbrkswcP7ZksFpE
+         KEvgxc9KIF8VQK9M1PqLWRC6Mj9m9EKlzX+0ZeiUwtDf2rADlFcbjeZzlePAJvfQwb5W
+         Tp76bPGcnx1dgq3rsuNuZbjq/OwEwVgy2Ple9wKKU2llHEuQUknOjHZicOwbID63IfQl
+         sd1x2hlGs0ROmpsq5MydByAtH3hurq5DbIIldFHRmsnCoxXCaD0Biej98n+H3Q/2UjrR
+         DCvpbVS+yiXq52AimVdt99W992rK2hdENc7n1/j2jd1yJFgJ4t4+bcN+82W0JH8XLSvk
+         UqUQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoudanWdElZpHcGJ+Ih6QzWupxAAtZRU4gfkNTGfUeAtetBnJtg39YxA8fNLcbGz+JbS8t3kPI=@vger.kernel.org
+X-Gm-Message-State: AFuF++k8OOTIgpQOcYMzNXGS7u9imcp+poaDJaflHgo12YVXnSTjLKf2
+	BtqKBqK2c3GTtNYCZES+t7MHSVhclHY/IHaAxUh0E4SoCCfRA/k4OBOp+eb9WWi1Dt8eCLgHCAs
+	rlaTlv/TDJBDSAwEYePJ4HmN2fYV5HCUnKE1PLcrbidF636AZUFTZi39yo9s=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260823183602.1051453-1-almasrymina@google.com>
-X-Mailer: git-send-email 2.55.0.766.g2966f0265a-goog
-Message-ID: <20260823183602.1051453-2-almasrymina@google.com>
-Subject: [PATCH net v1 2/2] net: core: fix head-page leak in skb_zerocopy
-From: Mina Almasry <almasrymina@google.com>
-To: Jakub Kicinski <kuba@kernel.org>, Kaiyuan Zhang <kaiyuanz@google.com>, 
-	Willem de Bruijn <willemb@google.com>, Mina Almasry <almasrymina@google.com>, 
-	Eric Dumazet <edumazet@google.com>, Zoltan Kiss <zoltan.kiss@citrix.com>, 
-	"David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jason Xing <kerneljasonxing@gmail.com>
+MIME-Version: 1.0
+X-Received: by 2002:a05:6808:4704:b0:4ab:224d:6dd6 with SMTP id
+ 5614622812f47-4b2cddd4647mr25073978b6e.15.1787511220196; Sun, 23 Aug 2026
+ 11:53:40 -0700 (PDT)
+Date: Sun, 23 Aug 2026 11:53:40 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a8b41b4.dbb3a75c.13dd47.0052.GAE@google.com>
+Subject: [syzbot] [net?] [usb?] UBSAN: shift-out-of-bounds in vcc_connect
+From: syzbot <syzbot+6665d3db5fef15914802@syzkaller.appspotmail.com>
+To: 3chas3@gmail.com, davem@davemloft.net, edumazet@google.com, 
+	horms@kernel.org, kuba@kernel.org, linux-atm-general@lists.sourceforge.net, 
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 
-When skb_orphan_frags() throws -ENOMEM, skb_copy_ubufs() may have
-already reallocated and replaced 'from->head'. Accessing from->head to
-drop the old refcount leaks the original head page, and erroneously
-puts an unrelated new buffer. Use the local 'page' tracker variable
-instead to drop the reference properly.
+Hello,
 
-Fixes: 36d5fe6a0007 ("core, nfqueue, openvswitch: Orphan frags in skb_zerocopy and handle errors")
+syzbot found the following issue on:
 
-Signed-off-by: Mina Almasry <almasrymina@google.com>
+HEAD commit:    bd5f485f3f02 Merge tag 'soc-arm-7.3' of git://git.kernel.o..
+git tree:       upstream
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=16736e79580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=6d6c2a05eaadaf10
+dashboard link: https://syzkaller.appspot.com/bug?extid=6665d3db5fef15914802
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=133f2549580000
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/2da33ef8d789/disk-bd5f485f.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/7e8921e0c1e1/vmlinux-bd5f485f.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/c7e5335b79c8/bzImage-bd5f485f.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+6665d3db5fef15914802@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+UBSAN: shift-out-of-bounds in net/atm/common.c:381:10
+shift exponent -1 is negative
+CPU: 0 UID: 0 PID: 6073 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/16/2026
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ ubsan_epilogue+0xa/0x30 lib/ubsan.c:233
+ __ubsan_handle_shift_out_of_bounds+0x279/0x2a0 lib/ubsan.c:494
+ __vcc_connect net/atm/common.c:381 [inline]
+ vcc_connect.cold+0xe0/0x123 net/atm/common.c:498
+ pvc_bind+0x33f/0x460 net/atm/pvc.c:52
+ __sys_bind_socket net/socket.c:1945 [inline]
+ __sys_bind_socket net/socket.c:1937 [inline]
+ __sys_bind+0x1a9/0x260 net/socket.c:1976
+ __do_sys_bind net/socket.c:1981 [inline]
+ __se_sys_bind net/socket.c:1979 [inline]
+ __x64_sys_bind+0x72/0xb0 net/socket.c:1979
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f6a3099e0d9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fff44bcea08 EFLAGS: 00000246 ORIG_RAX: 0000000000000031
+RAX: ffffffffffffffda RBX: 00007f6a30c25fa0 RCX: 00007f6a3099e0d9
+RDX: 000000000000000c RSI: 0000200000000100 RDI: 0000000000000004
+RBP: 00007f6a30a35024 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f6a30c25fac R14: 00007f6a30c25fa0 R15: 00007f6a30c25fa0
+ </TASK>
+---[ end trace ]---
+
+
 ---
-Note to sashiko: if you find pre-existing issues, mark them clearly as pre-existing.
----
- net/core/skbuff.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 201c9ec1519c7..92aad6f0b0e14 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -3907,7 +3907,7 @@ skb_zerocopy(struct sk_buff *to, struct sk_buff *from, int len, int hlen)
- 	}
- 
- 	if (!skb_frags_readable(from) && j > 0 && len) {
--		put_page(virt_to_head_page(from->head));
-+		put_page(page);
- 		return -EFAULT;
- 	}
- 
-@@ -3916,7 +3916,7 @@ skb_zerocopy(struct sk_buff *to, struct sk_buff *from, int len, int hlen)
- 	if (unlikely(skb_orphan_frags(from, GFP_ATOMIC))) {
- 		skb_tx_error(from);
- 		if (j > 0)
--			put_page(virt_to_head_page(from->head));
-+			put_page(page);
- 		return -ENOMEM;
- 	}
- 	skb_zerocopy_clone(to, from, GFP_ATOMIC);
--- 
-2.55.0.766.g2966f0265a-goog
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
