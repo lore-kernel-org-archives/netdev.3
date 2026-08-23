@@ -1,77 +1,78 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845197E792
-	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 08:11:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03724313543
+	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 08:16:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787472704; cv=none; b=YrKXKnm0mtMe08FIjmSndnD5aKWrAU7C4SqVHz+QPzBVVQXZkuk+Px2UubtCJOsS7z/b+bH+NExQhss0ryh78oV1r44oQqc4SIykmk5a9SfZZdC6TbqTHV1TfAtAUEo6rKdxsEDhQ5NFxS2OAdOPOe+z5V2m7RnsHABxgw45F8Q=
+	t=1787472996; cv=none; b=Pq3vSc+8K7Z0cJ4n9lZUrADeQgH0sZXmO0c28eTWvf0xaNXXl0+26eqfqODBQSOUsQltxS5dm3oEDi6WyRKMgjYL1HW0wMpNCN7Lo/Mhg5NZaWbiZ9fJOIPV8MPqm2Qa18zm3nJrqp1B5Zro0qB8y6dtyWyJwy+SN520D3RDYPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787472704; c=relaxed/simple;
-	bh=Rd4EE3XYzr7VSs/X+/vrVBS1ODg6CeHiRfdOAqi+ECU=;
+	s=arc-20240116; t=1787472996; c=relaxed/simple;
+	bh=BhwbpsARyPxk9fWPXCp8zQNF2jqsCU6NgXzTYhgj2IQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XZZAdkbLqAdCLroU+nMkBVf2r/VkBB0eBuCxnsv9XgEoc0YKqRrUcNBHT3PpSvv8f2C6ZgucUhZ8IKRL1NlGehiwUms9dlQXUU+Kdd2kSqTFjB/DNntV/KDyBPeN3jq54y5e0DYx7a+QOjo13PxwLolc67slY0GIw8LlR7hbQWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j+9nyvFB; arc=none smtp.client-ip=209.85.221.54
+	 MIME-Version:Content-Type; b=dt6Dnale1GfNvdJ82oxjVJFU81BATzjXFwDL7Yx9vBXot8CPkE3zTlBLn821K++zqUlcm8Ito3MJI6teACMjk4RafKyLKzvNCnjhOmgSbgGL1Jbtc8h6/8E1boG+cZyW/QwbO8yf9bh5+I6DzZRRjXln50fTUdbmD8mPRUUjgSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oZj9b0KT; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j+9nyvFB"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-47de0093c42so1964280f8f.3
-        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 01:11:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oZj9b0KT"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-47de008b020so1284897f8f.1
+        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 01:16:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787472699; x=1788077499; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1787472991; x=1788077791; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=oAs8Os4guZZM4r4YhT9hwvHdJywXro3jgAjf2xZLwWU=;
-        b=j+9nyvFBOi8YeZlOuuszNEP1XIg5c2FgUIeskll2+yVB8ri/OGXHSH6V5QGkR6lE41
-         bY8eUMwSOtT6ZYTKU21xZ51gvvnmcLe2GvYe2b3Aw4ppVl63V2gyonV5iL9FxrtjTihd
-         aH0rubkHFEnlAwKzdUibRZzgn5VYFDP+H+Y1gI+nGfCYEfwpKp6A4uvVo39Go17TmA9a
-         lrW4G9FDYwZUfE4uR0tECgI+Zz3JrSTouV0AUGUQ5UDRr+I04AegwJ9OnxioPouPvzne
-         ibOBvyXWuKx+SxtEwvzgxp1J9t7+/5gboFwUp/jnvN8uX2QXJ5VMN26DgGqkFGZx5Qci
-         D8mw==
+        bh=FPtVO2IqXJnahImnb+To18BwB5dcSt8DZxfA0Asvvp4=;
+        b=oZj9b0KTBEW6hpjjPhQ2XokqbXeJBPMONv4WhnFHls+XpbA1bPOhLFbejop4C3Chif
+         wO3MCWhSFQnIKNXQLUzmNi3qxmax7qrcrKNcmMviSCGmFCFlXw+9yg39VZgF1O//NBWG
+         dACSctv2Yr+J/b4gt8GpExK7njzmAxEBWSTV94LzzCAsOoH1MrA6HTUNyuUHjVT5hdl9
+         qIMT1/d9xodEjGYS+e6g6zTN6C6L8Bjt2fsoxf4U1rgwLQdIlBO+MeZE7LW2cXe2tOeb
+         q+boW14fM7lqboH3EN7IhYSSAyn2qTiI2LAAWHM2R9nK71WQPMpxz2mw+R7RNhH78kQu
+         DAzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787472699; x=1788077499;
+        d=1e100.net; s=20251104; t=1787472991; x=1788077791;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=oAs8Os4guZZM4r4YhT9hwvHdJywXro3jgAjf2xZLwWU=;
-        b=Exe5J8sWmxY5kTrEgKG1AISA4hKEh7zVv+dRnutmA4jCoWo5DhAeDFrhgsARAX68J2
-         +HEbxOFsjmQHWX/k04Mz/J3Y6rd7dPV+4tPrxf1rPlkpW6VdKIQedHWr6wKCImMJhzgv
-         x9N6N9N2X5NYpPIF1cbTlze/sD0xa3hqkOfTNOQKY8P65YokRe1qMtvayED0JqQtf9J5
-         f6fs8Jv8HXSD0Uu+lVWcmiNX+xFVHHdzlPtmwdQHJbVmjC9D+SFuGiN6UffqAHS6YsV5
-         kyfaOBTnRzGBlYwBgtLK4jBUsZKbWQVXo9YLrGR+z8XJbm0uD8bPeqdoXb+8u6nI5/0Q
-         sdNg==
-X-Forwarded-Encrypted: i=1; AHgh+RpcbPjCStBVRh95U37V5F/GAtAU2n3DzryI5h9v06i7ofdrb9P1hdMsBOzmKR3KGIV9NvSMLt8=@vger.kernel.org
-X-Gm-Message-State: AFuF++lOWEdwbh9z1cM8JvU9d0fxdxF2h70kp3vAMB1+c6E165QYXCIt
-	Hjq2M6FKKqInT/DnlA2v6fJFkygcnIseSF5XIxrNWb627B1j4ycVOfuZ
-X-Gm-Gg: AR+sD137aHO+vNQy1Fg+7SkoH1xr9crAw2n9xNmPr/lrJD3Iw8izklmHRuBLQGOCNkf
-	jWiuTQMYFQuAAJ74o/Vyht+WTfCPX6Fte197YZIY4smvMrR2qVCGAizfeDQYFqhaUIRkZatAyyJ
-	hdy2fHP4Uf1swYubINjLZ3SM1xBnwfGmhpkvl4DSWL2DTl+2TBpTA8dUOpIPkw9lJqmfGljpyjI
-	c5YfDOVuANuKBP+Vri4bO4024N3nE6eues1vlnwiq1IPUVWIdN+dqRA+/wMXGgm72brnxwI0npx
-	Rg5CS8A7OcibM3kfmY40MPjPVxIdi454kE816tboCDYBcwnuVRow8Q/FjxmaQ7W2f6028s8v3dJ
-	2o2mt6Gj0GtCE95E3f7+lOJi3HP8wubD3UpyC1fRoH3RSmZBXt+DU4eMk5Au6BgXBMOeYVIogK7
-	gvKmrivCQ0UCZXMjyOpnOBeek/QUnbe+1gQOHLcQZnh5EE4VWLb953yTMgqg4IoPFbIDhhc6aGH
-	mThEp7LFozDQGXwn5BgLSJoow==
-X-Received: by 2002:a05:600c:4e4e:b0:499:b01e:911c with SMTP id 5b1f17b1804b1-499b830d697mr236154815e9.2.1787472698556;
-        Sun, 23 Aug 2026 01:11:38 -0700 (PDT)
+        bh=FPtVO2IqXJnahImnb+To18BwB5dcSt8DZxfA0Asvvp4=;
+        b=E9pnzNsB/64Oq58InBWNFZqOpIx7ICnv1Dbheq6FF9ZxEpdpIImj6V8uHOImQ/tp3+
+         Ob22M4UlkSn6k+5LEgQ9VIroN6vGc2qKri9xUht3JNGMUFJQHI/oHjeaYNrAFlu97xUA
+         SV+fmxOysjsbG2H9pckzY5jrfWv8y27bAg3xk1GhxgBEDOTwifA6no2hpaWpHv27cJl0
+         ccY7wTNI5nMY6m0T3f9CetHMBpueGI1FHGq7JMPiZzSoDht9pE9q4Jl9zNFDjRqBKWhu
+         aruasgJCZ0BVIscWlYnSWMpPdrHHBv1h/pWgjRtyHdt5IsFse2Qjvm6grph3BLEQUBeW
+         8XRA==
+X-Forwarded-Encrypted: i=1; AHgh+RplqBoxVlgbdlbihW4ys7Ubyhn1mEY9RwRnFkm6DyDPnOITaQu8UQtsk2QEkHGX0wMjNcmEFDc=@vger.kernel.org
+X-Gm-Message-State: AFuF++lKx/m6aMGnP3t3HB1uRxLZ1shdUjd5P+v307CIZlVWaeSJODIc
+	gV/dH+uY4URSzwNX9PeMG+7pn8D7PK0OzFp3Xj3equmtWch/CWpKe8mk
+X-Gm-Gg: AR+sD10ru+ouFEds1nsn6mp92lci0lqYnd1gc3tq0kN0wWre+csEvOftbj+DITUVl7a
+	yls8ZqIjhbfU9attZeTSQrFSt62AUto6IpG8cixrYS0lAxZcadw2FvMTEht7ckDj8lbCWMqqdKk
+	Qqw81cuIOz9f+sNjWMxVd7paXowiXm3mEiRL/WE8842XSJH3X9SWMcpYc3b6xJMai01SOCzwxCR
+	NVJPycw+Q5OFw14d4Ep++f5oVH9+kwAok1T18dV4shGpAKCJhR28v6EZjwIwCX+FN7VB4b0fkBr
+	RyrJzXfJ0Trps6NkIdqzOfySo5u4fLKOSrcO1UAjdllu+k9pLeD5bv+r0+bpU5U6qGPm9dp/cwk
+	AYqykkWmyCt0+RbNOGN6ZGQP2gHhCV1S6GBfwVljCG/yQLDynROh/hb0HUSZL6ONQcxXzJDvqV+
+	RV5PFLiK5e8yScAsxnqkRhVY+j7d/Bidl0ai2+aBdmelY57fKzDRsyvW10wymng7RvRn3Iu6LeJ
+	Kd7emSkGOPherWu4CIMCNfIDA==
+X-Received: by 2002:a05:6000:4683:b0:482:b823:cc3a with SMTP id ffacd0b85a97d-482b823cd2amr24472494f8f.12.1787472991003;
+        Sun, 23 Aug 2026 01:16:31 -0700 (PDT)
 Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499c35a1aeasm46040645e9.12.2026.08.23.01.11.37
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482c9b78eb4sm4281631f8f.13.2026.08.23.01.16.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Aug 2026 01:11:38 -0700 (PDT)
-Date: Sun, 23 Aug 2026 09:11:31 +0100
+        Sun, 23 Aug 2026 01:16:30 -0700 (PDT)
+Date: Sun, 23 Aug 2026 09:16:29 +0100
 From: David Laight <david.laight.linux@gmail.com>
-To: Sergey Shtylyov <s.shtylyov@auroraos.dev>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- <linux-usb@vger.kernel.org>, <netdev@vger.kernel.org>
+To: Michal Pecio <michal.pecio@gmail.com>
+Cc: Sergey Shtylyov <s.shtylyov@auroraos.dev>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, <linux-usb@vger.kernel.org>,
+ <netdev@vger.kernel.org>
 Subject: Re: [PATCH] r8152: simplify loops in generic_ocp_{read,write}()
-Message-ID: <20260823091131.0254d6ab@pumpkin>
-In-Reply-To: <bf541361-3d57-4e53-8c67-78b474b420a2@auroraos.dev>
+Message-ID: <20260823091629.1a8441f2@pumpkin>
+In-Reply-To: <20260822230326.5d642593.michal.pecio@gmail.com>
 References: <20260822202155.18632-1-s.shtylyov@auroraos.dev>
-	<bf541361-3d57-4e53-8c67-78b474b420a2@auroraos.dev>
+	<20260822230326.5d642593.michal.pecio@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -82,11 +83,10 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 23 Aug 2026 10:52:12 +0300
-Sergey Shtylyov <s.shtylyov@auroraos.dev> wrote:
+On Sat, 22 Aug 2026 23:03:26 +0200
+Michal Pecio <michal.pecio@gmail.com> wrote:
 
-> On 8/22/26 11:21 PM, Sergey Shtylyov wrote:
-> 
+> On Sat, 22 Aug 2026 23:21:54 +0300, Sergey Shtylyov wrote:
 > > In generic_ocp_{read,write}(), the *while* loops look very strange:
 > > the last iteration is executed differently to the prior ones, doing
 > > some useless assignments before *break*. Move the code for the last
@@ -96,11 +96,13 @@ Sergey Shtylyov <s.shtylyov@auroraos.dev> wrote:
 > > Found by Linux Verification Center (linuxtesting.org) with the Svace
 > > static analysis tool.
 > > 
-> > Signed-off-by: Sergey Shtylyov <s.shtylyov@auroraos.dev>  
-> 
->    Actually, scratch this patch -- it's not entirely correct... :-/
-> 
-> [...]> diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+> > Signed-off-by: Sergey Shtylyov <s.shtylyov@auroraos.dev>
+> > 
+> > ---
+> >  drivers/net/usb/r8152.c | 67 ++++++++++++++++-------------------------
+> >  1 file changed, 26 insertions(+), 41 deletions(-)
+> > 
+> > diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
 > > index f61686433031..de9738bdce85 100644
 > > --- a/drivers/net/usb/r8152.c
 > > +++ b/drivers/net/usb/r8152.c
@@ -135,74 +137,44 @@ Sergey Shtylyov <s.shtylyov@auroraos.dev> wrote:
 > > +		data += limit;
 > > +		size -= limit;
 > >  	}
-> >    
-> 
->    I forgot to check size for 0 here...
-
-I don't think it can be zero - assuming it isn't zero on entry.
-
-David
-
-> 
+> >  
 > > +	ret = get_registers(tp, index, type, size, data);
 > > +
 > > +error1:
 > >  	if (ret == -ENODEV)
-> >  		rtl_set_unplug(tp);
-> >  
-> > @@ -1498,31 +1490,24 @@ static int generic_ocp_write(struct r8152 *tp, u16 index, u16 byteen,
-> >  		if (byen != BYTE_EN_DWORD)
-> >  			size -= 4;
-> >  
-> > -		while (size) {
-> > -			if (size > limit) {
-> > -				ret = set_registers(tp, index,
-> > -						    type | BYTE_EN_DWORD,
-> > -						    limit, data);
-> > -				if (ret < 0)
-> > -					goto error1;
-> > -
-> > -				index += limit;
-> > -				data += limit;
-> > -				size -= limit;
-> > -			} else {
-> > -				ret = set_registers(tp, index,
-> > -						    type | BYTE_EN_DWORD,
-> > -						    size, data);
-> > -				if (ret < 0)
-> > -					goto error1;
-> > -
-> > -				index += size;
-> > -				data += size;
-> > -				size = 0;
-> > -				break;
-> > -			}
-> > +		while (size > limit) {
-> > +			ret = set_registers(tp, index, type | BYTE_EN_DWORD,
-> > +					    limit, data);
-> > +			if (ret < 0)
-> > +				goto error1;
-> > +
-> > +			index += limit;
-> > +			data += limit;
-> > +			size -= limit;
-> >  		}
-> >    
+> >  		rtl_set_unplug(tp);  
 > 
->    And here...
+> Looks like it could be shorter still.
 > 
-> > +		ret = set_registers(tp, index, type | BYTE_EN_DWORD, size, data);
-> > +		if (ret < 0)
-> > +			goto error1;
-> > +
-> > +		index += size;
-> > +		data += size;
-> > +
-> >  		/* Set the last DWORD */
-> >  		if (byen != BYTE_EN_DWORD)
-> >  			ret = set_registers(tp, index, type | byen, 4, data);  
+> s/limit/chunk/
 > 
-> MBR, Sergey
+> while (size) {
+> 	if (size < chunk)
+> 		chunk = size;
+
+I think you meant:
+	chunk = min(size, limit);
+
+> 	ret = get_registers(tp, index, type, chunk, data);
+> 	if (ret < 0)
+> 		break;
+> 	index += chunk;
+> 	data += chunk;
+> 	size -= chunk;
+> }
+
+That is the usual pattern...
+Although may you need to be careful to stop min() bleating if size
+is a signed type.
+Changing the loop to 'while (size > 0)' can be enough.
+
+David
+
 > 
+> Then it could be do-while, because we know size > 0, though
+> I suppose compilers may figure it out themselves anyway.
+> 
+> Regards,
+> Michal
 > 
 
