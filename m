@@ -1,120 +1,96 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D1238B7DC
-	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 10:50:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787482255; cv=pass; b=tjxZE//Wr7hnb8//O+kP2QK28AcbP/ne5axaU4t18tTbZiLxUHgOFD7n/DsjTHxm/H9ifx5xwsybhRJF4mvOgmL2WyGtyFUd6en1tB1cefdcmsPhktwzgwROtSofeLeEpq1RgvxHLVeA2o4toyj0moPxju5m/YIdGIe/BDfR13Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787482255; c=relaxed/simple;
-	bh=8kglFWqTCwHtE9XrFU6hsXHswROaTysasuAI1AQqwzA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BX2yiyoUJhsVudteQqOW0YMYVsT38xetX+KQRY2g41a/0tnp205w6k9qHvzLy0CIM595yn4Nj8vfcOO3NEwFEflZF8SHWRy3XvgZ9le1RS1+WoNml1dZ4tiCoUgZQlwk70hqGE+IrN2hnC3eQLeuJ1NHxSvsBrtw58gPUXbBVTA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pR24J/Tl; arc=pass smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CF92E2840
+	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 11:07:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787483239; cv=none; b=ZI5jrHmjDwWfGl5R00Gm5mD/9jZ6WE7r83To0HMdHHiRSu+b7a3fvJT/HqFoOF1R86l/a2nfADctlwRQiFPVNViXi7C5yy/jv7OdbUMfIJKzbbAJQXYV4tQfwHVo9iITilgDmEuM+MA8l6vMKB6NZukts521HGckZshSLLin0AU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787483239; c=relaxed/simple;
+	bh=oOLd4/NCDvLsCU7E1foO+QYUFPSlplt4rMf+O/pxJmE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=vEuPRU9N3fUB4duAxEPjKthVzbo1HvnPXTcP+kPw/BlXH+0ca3r5xsByOFuSZy5omiaU/5/Ysiun/3h2bnNXGh83TFsFsoMMaKvjI4mPpJ+UUuTIwyFRYD3guFlPG5qw8umJ04gRLkW3I4eqznNy3VIG8GlGUaKQxiw/5qa8pCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RUKVCZq7; arc=none smtp.client-ip=209.85.167.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pR24J/Tl"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2d03fcd26a6so2641055ad.2
-        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 03:50:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787482252; cv=none;
-        d=google.com; s=arc-20260327;
-        b=rLBSESRewdibhj20lZF4zdR3Pb6MUjxeft2+BiJm8DmIo09e/lLJrySohq46k4HRv4
-         S0hvT8t1p/r3YI1P2HZv3phKLLMRpeIu3KzZweAX01mJs6I/nILCFr610hX6ejF6veze
-         Nk0R5dkTL9fkgv63J2JPi+nWEOJHU9vvZ1PquBGsEWtE/dHvFWJzPSyUOGddog4Hx24u
-         0DA4QOiKJDNZDyAJElvVleHDIL/dTNzhhl8EJ7Su0l4C2xqYIKyQ1VQHwwGCOW3fTiPz
-         SeMoGUghqJa2mXFRKDWBkaKQ+dWt6rm8fYB/lE3tkBg4VY5SWv3w4ul2xPIqH38tVTp3
-         G2lQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=8kglFWqTCwHtE9XrFU6hsXHswROaTysasuAI1AQqwzA=;
-        fh=YKZbRo17X06x80y1Eleh+CxqIVmiBIGewjkqWaSgj8s=;
-        b=f7z57fURc5FRr+AaGYqJ9f1tau5+0yWseYHde1xgIBDJuUx/SEixm7s9YuSYcXDOnm
-         3cMsDtwSPBTd1tW4PbYV/F775LxHtvUwqPeGN5SVrV0fIYhdY7VKrcnjoq9+i4A2UCys
-         3FgJrvKx3cfYpQrEKOHbc7KFmgBxc5ySiIO9vl+pv3L8bMEbm4c9KbGJ0CfBPdnkxdYD
-         uMRCHehAFynf9n7PTuIgAd9b+l2DIRW0GwiaP3HVY1CAMy7s7eI1KxFcqs+7nEFl0WP9
-         DPQdaB8I5LqLdlP7KdK1aqgmZAFCEANYXjJGqTratU0F2FEnGrqqYNFj8GNFf8p9g/5P
-         +WkQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RUKVCZq7"
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5b0117d49dcso2594403e87.3
+        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 04:07:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787482252; x=1788087052; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=8kglFWqTCwHtE9XrFU6hsXHswROaTysasuAI1AQqwzA=;
-        b=pR24J/TlYUjxGBCt7rWgY4YDRb9RbnNX4F6ZfQolxvk5VDmndiGEcWTTTPhP1fJlpj
-         /mdgfOONgDCHqyDm0yR8bWjPLQ4hdmrlrQ2TkmvGsOPB/aQtgeVxlyaaw3ZNuqxC/UjH
-         Z37e211/Xfg/drIXMZmIDLz7bNd8U1bvqvQLHgBEVsgFAqV0zd+HXcl2zO+Vf5IK9j1f
-         RvJPE5m3XzdpxafDYTIRhUA4M7aqOq3F2XVU5KdN9DLCr7xHP0gZeu7j2//hN1gObZb8
-         AYE+pq+WH10qhehdXc0zr2RFmSZz1HPlxwMsdVbJOQr/v+yFwOL9TN4d3Q1+HVfKHy3x
-         f3Iw==
+        d=gmail.com; s=20251104; t=1787483236; x=1788088036; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=uWawBJbVIptjhuQku9JCKqKhz9haE6JzFWqrvZOjUxU=;
+        b=RUKVCZq7nCH4MaZSSz+0km+h9FUFjNzQ75rl46zsyTPf+YY0s5il2n8cmtN/kegxJI
+         BJqRTMSMFMAnErmZZ4olYYjAZmC/mXWF8SqGnyTQ4YnHW63ZOzRfswIjlWH2s9tEZt4m
+         +BxhlqdfdA8dkkmjE15xp3Lsj3pm2siq9QrVmzyyapptrOdDxJxyetSoq9FjbEBfIhkB
+         naH7CgRHUZxsu+XMrEnrUnaaj+JKjWd34BhVCDzG2pwGCPPKM/gh8GsB2I/nlLfEzTsP
+         iPTFeoFlHVGf4QB0cdWUbgYVaJqfwPsDNcBnmKV0DSWsedbORa8UcdyU93EiV4sUflwE
+         BWzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787482252; x=1788087052;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8kglFWqTCwHtE9XrFU6hsXHswROaTysasuAI1AQqwzA=;
-        b=OsI6m6FUM0EyiUo6IePxMKmur+PZe3LaFq6l9EURGjF7kHfef9PovVFLpE9PVeAfxl
-         vhUKX3IUpta4EamUqjvBRSK/nT5ig3Bf9O/4iyjuTwSj3saLo1XpTHF4hOEEmCDIM03O
-         szN6JVLWRRCBO8PhQBq1sRbs90TXIbhInwuvuAk+KGgLV/2FJSSKEO7AIUrwchv2f0Xs
-         YthQ9L0GTocvt1Z7uokgD6I/9Cvz/8h0pSuNawVoUXS6jq6wHT4hkvwoHjBWM9Yknukr
-         jH/SBxRJjA5X4jcopcWiK6OJnYJjNrOLV1oy8WsVhn6jiaAal+Im7bFm0oZG66r4ums7
-         7U1g==
-X-Forwarded-Encrypted: i=1; AHgh+RpnFgdWEby5osgviwXw9RqxNCWCVURu7c8XpVY2xaUiVgwChmE543DUtGXG7nag1SURFRxg5+Q=@vger.kernel.org
-X-Gm-Message-State: AFuF++mA9hzuSsw0uV+2O13Xda7k84uKnXWBy+tmbRg74p10uUL26M2x
-	KJsIUdJjjTHcfBPNvSAtHJQw97BGT1b9VeNX+PIQ9uPFpwLcd7KLHTe9XofAuGuxJyb7Gso5/8y
-	64tkwq+t5oUrzg7yEO+MV5j/85/c6mVU=
-X-Gm-Gg: AR+sD10lqco2fPdo97IA8rLNZ7DIRG13bEZosurye+Jv2hRs8IbQmZfHtY5MSUPU8v8
-	p5UeklEe6xeDIbRfg23cxdSkjcl8UnRPWJHJEB4JOaMnA/1nKWS9mglZ5XHZHsLU/13kPXZ7NNI
-	QJswu0kcPVHwi5Vm/xvmOpTnpXiEJslONPVeTbKijhvH/lodCNcZxuRt+3hvUREpTmFo1rCHHnp
-	dcPKjH47tUjb8yYGvmkbdiUsZLk8zYWR/0l5dS+0xoBvsqw0QUqovtHvI8a6oFvWz7UpeSiZfcS
-	u+3sNHuD355erSIVlV59yeEWG6vTyS6g+9R9i+NM+0jP1AfpgVAzJdg5FD2bSGiajJ0254MXY6P
-	Xs2kbJKr9E291yrAY0DMie03DMLx0s3wO/iLqz4wCTvTZS+sRF6biZrE0Fba/
-X-Received: by 2002:a17:902:ef01:b0:2cf:7dfa:7f56 with SMTP id
- d9443c01a7336-2d64aff2aa4mr169800735ad.2.1787482251737; Sun, 23 Aug 2026
- 03:50:51 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787483236; x=1788088036;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=uWawBJbVIptjhuQku9JCKqKhz9haE6JzFWqrvZOjUxU=;
+        b=ErviklDQSRqbpTkwczO9EiPli4AuAr80JEr+kUhiXZH/2bkvcj9g4/wN4EC2rz0zoQ
+         yQXYmCiHYRcWXeVYxIdFmb1k2LRshJ9XFQdKxcmnVH2/5hi7vMLWffDiAacW9/YE0INP
+         t91LTlbWiZ9oWQSAU3S0F3sX1dB3N5bUbgxGOVTU8+M/tEVDcmheJH/WXOfF91tfXyTm
+         YYwF98Ab8XeSIO1omBPVRa4dI+Ylr4oJdbDvV+tYs+/dTEznMywlbfBLNEMik0VxZZwK
+         jEMKfrC+EWPrCUJeZn1R5zUYHijr9sfaIN2poUC6ucAVCMOeVXfqJz2wazQFjIJiNDaK
+         0oEQ==
+X-Gm-Message-State: AFuF++nHElot+HOgnHpzibiu5L3sXB5lfx/8HvWES6T0BqvEYyn7aJss
+	0ZxQYo2G0/bA7wc2K38d/OU947+eslI34+Z7p0qxq6+0+iZ95ewyvulqndPIzruYNA==
+X-Gm-Gg: AR+sD11yq04YunG/6vEuzkZOjFZ78JvOTmdiqOCdneaUJMcsNqXCfFIeLYLFXk5XJt7
+	beNOrvIUidHs90IIONZCr/GkS7QVUbs4MUmxWLlvu4vDwMFiDQ1sAcTAktAY1B3RCsfPxSEnK7B
+	LU911U1G0PmJ0uOfkefeTF6/luZ6BbjnZ6guV54cTxbXCg3c6H10/0DNY8+430WKtiMnymMqCVw
+	IKEe9POFpbQY6He+A65jlviUtGu8LiLlAifNjzCdvVuKmQ/0F21EIjrpw4N+Fd1cdHDlzvvzB1C
+	va+ANipOH7dlDkDcsrdtj+9//eQ+maYsSkUWsJdYN0hCSM20zvK3J4bYzv+fv2NgNJlRmguwGhU
+	fqug15FTxdmI9kbWxd4Tu0oOBzQqC4SmZDGXlK6MVv6RQUbePmDGpDw5LXMtXt0D7baQ5BDru9j
+	bX/h/u8TEN/mW76gmIS7Oebi0b6l0GtZdE78nu8YadNcS5VMSmhLfR
+X-Received: by 2002:a05:6512:3f16:b0:5b2:158e:9918 with SMTP id 2adb3069b0e04-5b484261b55mr6704565e87.19.1787483236019;
+        Sun, 23 Aug 2026 04:07:16 -0700 (PDT)
+Received: from fedora ([46.8.219.5])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b48cda2627sm964748e87.19.2026.08.23.04.07.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Aug 2026 04:07:15 -0700 (PDT)
+From: Vitaliy Sochnev <sochnev.v.74@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Vitaliy Sochnev <sochnev.v.74@gmail.com>
+Subject: [PATCH 0/2] net: phy: air_en8811h: fix LED GPIO not surviving MCU restart
+Date: Sun, 23 Aug 2026 14:06:35 +0100
+Message-ID: <20260823130638.1166453-1-sochnev.v.74@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260823103644.342849-1-springbreeze@stu.pku.edu.cn>
-In-Reply-To: <20260823103644.342849-1-springbreeze@stu.pku.edu.cn>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 23 Aug 2026 12:50:39 +0200
-X-Gm-Features: AcwNN1U32Y3hhanB8r-CtzhdGzr7wCxmADWbHO0oI_XJH4CRbLj7vuGyKQElzTQ
-Message-ID: <CANiq72mUbkEcvffQV-mNLfCxGkgTqwq1qQLuWpENsUCCBAHOqw@mail.gmail.com>
-Subject: Re: [PATCH] rust: net: phy: fix off-by-one bit positions in device
- status accessors
-To: Chunfeng Song <springbreeze@stu.pku.edu.cn>
-Cc: rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Aug 23, 2026 at 12:37=E2=80=AFPM Chunfeng Song
-<springbreeze@stu.pku.edu.cn> wrote:
->
-> Fixes: f20fd5449ada ("rust: core abstractions for network PHY drivers")
-> Link: https://www.spinics.net/lists/netdev/msg951815.html (v8 cover lette=
-r, where the bitfield access was flagged as needing a fix)
+The EN8811H PHY's LED GPIO pins are only ever configured as outputs
+once, in .probe(). Every .config_init() call after the first restarts
+the PHY's MD32 MCU, which resets that GPIO configuration back to
+inputs, so the LEDs silently stop reflecting link/activity state after
+the first link renegotiation, ifdown/ifup, or resume. Patch 1 fixes
+that. Patch 2 is a small follow-on cleanup enabled by patch 1's
+removal of code from .probe(), kept as a separate patch so patch 1
+stays a minimal, clean Fixes: change.
 
-I assume that this will need:
+Verified on hardware (Nokia XG-040G-MD, Airoha AN7581) via OpenWrt:
+before the fix, the LED stayed dark after the board's first link
+renegotiation post-boot; after the fix, it lit correctly through
+repeated link up/down cycles.
 
-| Cc: stable@vger.kernel.org
+Vitaliy Sochnev (2):
+  net: phy: air_en8811h: move LED GPIO configuration to config_init
+  net: phy: air_en8811h: simplify en8811h_probe() trailing return
 
-By the way, a link to lore.kernel.org would be better.
+ drivers/net/phy/air_en8811h.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-In addition, is there a way to avoid this to begin with? e.g. why are
-hardcoded literals used?
+-- 
+2.55.0
 
-Thanks!
-
-Cheers,
-Miguel
