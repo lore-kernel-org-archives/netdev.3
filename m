@@ -1,212 +1,158 @@
-Received: from mail-oi2-f0.google.com (mail-oi2-f0.google.com [74.125.231.192])
+Received: from mta0.migadu.com (out-117.mta0.migadu.com [91.218.175.117])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B590A21A459
-	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 03:23:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.192
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC2E25D530
+	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 03:56:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.117
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787455413; cv=none; b=MHxHvUsgGoizEfy/kjKUj1McLAC/t/6QhwXTV1PIGtuQ3hNxxnBDDC7zGugJMl7T37qRCprjjie4KKr5pRf/j8YTs2WsXcbnLKT7Zzd/R9J78aXzwlX7m5JngIFgI0W9ahfO2TIXsh7lOZXquWRNDRW/addLhnDU1xfZI8F9TJI=
+	t=1787457386; cv=none; b=c1CXPn9tiUAp44LsEl1chenvVaxevTZIX3U/cKd+dFhmDarLme2z0kDxmXtk9B8DBDQB1dIpW8w2uu9RYbh0mvomX0tGx8vs4VwBVkoEtX93NYmyIc/9y7AWi2Nk15kEWCSCNFB16fSew1cLWESRqmGqBWS2bsPK8P9gUFYhylg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787455413; c=relaxed/simple;
-	bh=mUNCGUauvzblBdSwOBREqqLfRUQykoK2gjgnu77KoH8=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=uR3i3fIhnNmRDxGY0ydKv6zzx503hc1tJiZkdxMAAWsGweGBOSuIir6h+3X2QKIffk9hgeiPhg9ml2gaK1Khb1norDLJ2yHGPR42xg2PRrGIZnz8eiKV2hCy01STOqf7pZ4moe/Fgp2dJvNoN3h9jd+/x1Z+lEGWh3A5Ybmkyh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.192
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi2-f0.google.com with SMTP id 5614622812f47-4a49b13b745so841104b6e.0
-        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 20:23:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787455410; x=1788060210;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=reYCA9texGA+i4hhGkr84lFQt3J7gOmzTWCCQAJBp5U=;
-        b=WRkPci4dWYPmnBQcy6yE9i70gcD/NkJDpjUiOGDy2wdmbLiggNYKJyaUdDK6FrxqaJ
-         F6SnRP7mhg+SC/xdnvAxvpfqhfRrddZjUHpLRyLlx6qquc+Uy2r8kO0xlsSwt3eXxbKx
-         K5kfZ+yybzCODoEXwbfaTJeKgoZz5AThUjfKV/MEJZk6KmYpbH3iCTlAvLMFpAYA20T+
-         u/kCBYyIIGYXwc+WujWy3hvm3oAtHC5j5J4nUVFP9k7sUnm0dOL5eLVJivTa4ruLClL7
-         yScDxaY4Y4SpgnBNNH8UBU1zHrBYH4TVG+ikuZOVnPCs7cgyOHpgvWQN5Brp7I6mmYN6
-         3Wog==
-X-Forwarded-Encrypted: i=1; AHgh+RrZGTODJckQVN3VRgHAyJrbxua/CDHsddc4eLjg64OBWa7Pd/faWnyKNBvkIysxWhz2dnyoAfQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++mY4Ea0QRooqPIsBAGqKGNgcb+rhSkciG9Qf2q7k1vOoNm1QQt0
-	YzqXJNX3FeEWZUYZ+fbDbe+DjtPbaBT1HEvOXXJN5AZ2WK3GJXMx84cnAfzwjV22CByZS2Ietcz
-	HoDHx7ZWzKLhaLFo1wp2X350tZ9YAo4gkt4ocg0KCmpSPKJ+ZZd+rD+vJVJs=
+	s=arc-20240116; t=1787457386; c=relaxed/simple;
+	bh=b8WeBQHou80WQkLqEmCbOcvkNaWevOAbDfV9nSLIBr4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sqdwQa1+FjYVN8UacB+soY5y18F3P3qT1vgWDmtPYgf4FNDZb3awhikwd+4PaAzE5P3A1Re7sg5K021x5q1XESEHWJI9mt65owHZ2zrNbUo0o3vzitiBFoN2lwhULOuc+0a2lEapTLt2UmwwZvJNy1hDo8GkemAnbke66kG7Tss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=SU+fjKkB; arc=none smtp.client-ip=91.218.175.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="SU+fjKkB"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=b8WeBQHou80WQkLqEmCbOcvkNaWevOAbDfV9nSLIBr4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787457380; v=1; x=1788062180;
+ b=SU+fjKkBf4JdlMEhadg0heyJ42Bp85QKpdF1kHJqKA2xA1x/A7ZxhgVS9Ntf6pR4iljWbxzf
+ aJQGxHDJ8MVdQCeoWozPv71ZdZMnDcbarQA8FXbs4RlUDK3nF5lMTv+WcO5Sgtc9oF7wIaRpf26
+ ykrFmhol6YkJ1BL9pIR2YI9I=
+X-Envelope-To: netdev@vger.kernel.org
+Received: from localhost.localdomain (116.128.244.171)
+	by smtp.migadu.com with ESMTPS id 43fa2e50163e711d;
+	Sun, 23 Aug 2026 03:56:20 +0000
+X-Mizu-Trace-ID: 43fa2e50163e711d
+X-Migadu-Flow: FLOW_OUT
+From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+To: netdev@vger.kernel.org,
+	andrew@lunn.ch,
+	maxime.chevallier@bootlin.com,
+	kuba@kernel.org
+Cc: hkallweit1@gmail.com,
+	chleroy@kernel.org,
+	qingfang.deng@siflower.com.cn,
+	hao.guan@siflower.com.cn,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	linux-kernel@vger.kernel.org,
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Subject: [PATCH net v5 0/6] net: phy: fix cleanup after probe failure
+Date: Sun, 23 Aug 2026 11:55:54 +0800
+Message-ID: <20260823035600.188864-1-xuanqiang.luo@linux.dev>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:c145:b0:48b:5dcb:85ab with SMTP id
- 5614622812f47-4b2ef242470mr19647197b6e.8.1787455410663; Sat, 22 Aug 2026
- 20:23:30 -0700 (PDT)
-Date: Sat, 22 Aug 2026 20:23:30 -0700
-In-Reply-To: <699fe31c.050a0220.2fcbed.0002.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a8a67b2.ae6ddae5.3da009.0060.GAE@google.com>
-Subject: Re: [syzbot] [input?] possible deadlock in __kernfs_remove (3)
-From: syzbot <syzbot+1075f6dc93f398c1857e@syzkaller.appspotmail.com>
-To: dmitry.torokhov@gmail.com, driver-core@lists.linux.dev, 
-	gregkh@linuxfoundation.org, linux-input@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com, tj@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-syzbot has found a reproducer for the following issue on:
+From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-HEAD commit:    66fb95a52111 Merge tag 'caps-pr-20260820' of git://git.ker..
-git tree:       upstream
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=11ca4625580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=b0978f5ed2905b98
-dashboard link: https://syzkaller.appspot.com/bug?extid=1075f6dc93f398c1857e
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10815549580000
+phy_probe() initializes the PHY driver, ports, SFP upstream, and LEDs in
+stages. Its error paths do not always release only the resources acquired
+at each stage. It can also mark the PHY ready before all setup succeeds.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/e7d9049723b0/disk-66fb95a5.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/a04d6efe59a0/vmlinux-66fb95a5.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/81e3f2b9c049/bzImage-66fb95a5.xz
+Port setup also leaves SFP cleanup split between phy_sfp_probe(),
+phy_setup_ports(), and phy_probe(), and default port setup ignores errors
+from attaching the port to the PHY driver.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+1075f6dc93f398c1857e@syzkaller.appspotmail.com
+This series makes each initialization layer own its cleanup and propagates
+setup failures to the caller.
 
-======================================================
-WARNING: possible circular locking dependency detected
-syzkaller #0 Not tainted
-------------------------------------------------------
-syz.0.17/6104 is trying to acquire lock:
-ffff888035f1b008 (kn->active#59){++++}-{0:0}, at: __kernfs_remove+0x34c/0xb80 fs/kernfs/dir.c:1579
+Patch 1 splits the phy_probe() cleanup by initialization stage.
 
-but task is already holding lock:
-ffffffff904d00c0 (serio_mutex){+.+.}-{4:4}, at: class_mutex_constructor include/linux/mutex.h:253 [inline]
-ffffffff904d00c0 (serio_mutex){+.+.}-{4:4}, at: serio_unregister_port+0x1b/0x40 drivers/input/serio/serio.c:677
+Patch 2 makes SFP and port setup unwind their resources in the required
+order.
 
-which lock already depends on the new lock.
+Patch 3 sets PHY_READY only after LED setup succeeds.
 
+Patch 4 calls the PHY driver remove callback after later probe failures.
 
-the existing dependency chain (in reverse order) is:
+Patch 5 propagates errors from default port setup.
 
--> #1 (serio_mutex){+.+.}-{4:4}:
-       lock_acquire kernel/locking/lockdep.c:5886 [inline]
-       lock_acquire+0x1b9/0x370 kernel/locking/lockdep.c:5843
-       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
-       __mutex_lock+0x1a4/0x1bc0 kernel/locking/mutex.c:821
-       class_mutex_intr_constructor include/linux/mutex.h:255 [inline]
-       drvctl_store+0x3c/0x350 drivers/input/serio/serio.c:360
-       dev_attr_store+0x58/0x80 drivers/base/core.c:2509
-       sysfs_kf_write+0xf2/0x150 fs/sysfs/file.c:145
-       kernfs_fop_write_iter+0x3e0/0x5f0 fs/kernfs/file.c:345
-       new_sync_write fs/read_write.c:595 [inline]
-       vfs_write+0x6af/0x1050 fs/read_write.c:687
-       ksys_write+0x12a/0x250 fs/read_write.c:739
-       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-       do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
--> #0 (kn->active#59){++++}-{0:0}:
-       check_prev_add+0xeb/0xe60 kernel/locking/lockdep.c:3181
-       check_prevs_add kernel/locking/lockdep.c:3300 [inline]
-       validate_chain kernel/locking/lockdep.c:3924 [inline]
-       __lock_acquire+0x1492/0x1ec0 kernel/locking/lockdep.c:5253
-       lock_acquire kernel/locking/lockdep.c:5886 [inline]
-       lock_acquire+0x1b9/0x370 kernel/locking/lockdep.c:5843
-       kernfs_drain+0x4f0/0x600 fs/kernfs/dir.c:532
-       __kernfs_remove+0x34c/0xb80 fs/kernfs/dir.c:1579
-       kernfs_remove_by_name_ns+0x7c/0x120 fs/kernfs/dir.c:1797
-       kernfs_remove_by_name include/linux/kernfs.h:644 [inline]
-       remove_files+0x96/0x1c0 fs/sysfs/group.c:28
-       sysfs_remove_group+0x8b/0x1b0 fs/sysfs/group.c:328
-       sysfs_remove_groups fs/sysfs/group.c:352 [inline]
-       sysfs_remove_groups+0x60/0xb0 fs/sysfs/group.c:344
-       device_remove_groups drivers/base/core.c:2918 [inline]
-       device_remove_attrs+0x192/0x290 drivers/base/core.c:3048
-       device_del+0x36e/0x9b0 drivers/base/core.c:3964
-       serio_destroy_port+0x476/0x590 drivers/input/serio/serio.c:543
-       serio_unregister_port+0x2b/0x40 drivers/input/serio/serio.c:680
-       userio_char_release+0x91/0xe0 drivers/input/serio/userio.c:105
-       __fput+0x3ff/0xb50 fs/file_table.c:512
-       task_work_run+0x150/0x240 kernel/task_work.c:233
-       ptrace_notify+0xf3/0x120 kernel/signal.c:2531
-       ptrace_report_syscall include/linux/ptrace.h:416 [inline]
-       ptrace_report_syscall_exit include/linux/ptrace.h:477 [inline]
-       arch_ptrace_report_syscall_exit include/linux/entry-common.h:233 [inline]
-       syscall_exit_work include/linux/entry-common.h:266 [inline]
-       syscall_exit_to_user_mode_work include/linux/entry-common.h:297 [inline]
-       syscall_exit_to_user_mode include/linux/entry-common.h:334 [inline]
-       do_syscall_64+0x5e7/0x790 arch/x86/entry/syscall_64.c:89
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-other info that might help us debug this:
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  lock(serio_mutex);
-                               lock(kn->active#59);
-                               lock(serio_mutex);
-  lock(kn->active#59);
-
- *** DEADLOCK ***
-
-locks held by syz.0.17/6104: 1, last CPU#1:
- #0: ffffffff904d00c0 (serio_mutex){+.+.}-{4:4}, at: class_mutex_constructor include/linux/mutex.h:253 [inline]
- #0: ffffffff904d00c0 (serio_mutex){+.+.}-{4:4}, at: serio_unregister_port+0x1b/0x40 drivers/input/serio/serio.c:677
-
-stack backtrace:
-CPU: 1 UID: 0 PID: 6104 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/16/2026
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
- print_circular_bug.cold+0x178/0x1be kernel/locking/lockdep.c:2059
- check_noncircular+0x146/0x160 kernel/locking/lockdep.c:2191
- check_prev_add+0xeb/0xe60 kernel/locking/lockdep.c:3181
- check_prevs_add kernel/locking/lockdep.c:3300 [inline]
- validate_chain kernel/locking/lockdep.c:3924 [inline]
- __lock_acquire+0x1492/0x1ec0 kernel/locking/lockdep.c:5253
- lock_acquire kernel/locking/lockdep.c:5886 [inline]
- lock_acquire+0x1b9/0x370 kernel/locking/lockdep.c:5843
- kernfs_drain+0x4f0/0x600 fs/kernfs/dir.c:532
- __kernfs_remove+0x34c/0xb80 fs/kernfs/dir.c:1579
- kernfs_remove_by_name_ns+0x7c/0x120 fs/kernfs/dir.c:1797
- kernfs_remove_by_name include/linux/kernfs.h:644 [inline]
- remove_files+0x96/0x1c0 fs/sysfs/group.c:28
- sysfs_remove_group+0x8b/0x1b0 fs/sysfs/group.c:328
- sysfs_remove_groups fs/sysfs/group.c:352 [inline]
- sysfs_remove_groups+0x60/0xb0 fs/sysfs/group.c:344
- device_remove_groups drivers/base/core.c:2918 [inline]
- device_remove_attrs+0x192/0x290 drivers/base/core.c:3048
- device_del+0x36e/0x9b0 drivers/base/core.c:3964
- serio_destroy_port+0x476/0x590 drivers/input/serio/serio.c:543
- serio_unregister_port+0x2b/0x40 drivers/input/serio/serio.c:680
- userio_char_release+0x91/0xe0 drivers/input/serio/userio.c:105
- __fput+0x3ff/0xb50 fs/file_table.c:512
- task_work_run+0x150/0x240 kernel/task_work.c:233
- ptrace_notify+0xf3/0x120 kernel/signal.c:2531
- ptrace_report_syscall include/linux/ptrace.h:416 [inline]
- ptrace_report_syscall_exit include/linux/ptrace.h:477 [inline]
- arch_ptrace_report_syscall_exit include/linux/entry-common.h:233 [inline]
- syscall_exit_work include/linux/entry-common.h:266 [inline]
- syscall_exit_to_user_mode_work include/linux/entry-common.h:297 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:334 [inline]
- do_syscall_64+0x5e7/0x790 arch/x86/entry/syscall_64.c:89
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f094979e0d9
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffca1bdeb48 EFLAGS: 00000246 ORIG_RAX: 00000000000001b4
-RAX: 0000000000000000 RBX: 00007f0949a27da0 RCX: 00007f094979e0d9
-RDX: 0000000000000000 RSI: 000000000000001e RDI: 0000000000000003
-RBP: 00007f0949a27da0 R08: 0000000000000006 R09: 0000000000000000
-R10: 00007f0949a27cb0 R11: 0000000000000246 R12: 000000000001aa1e
-R13: 00007f0949a25fac R14: 000000000001a7d2 R15: 00007ffca1bdec50
- </TASK>
-
+Patch 6 prevents a double-free after partial LED trigger registration.
 
 ---
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+Changes:
+v5:
+  Patch 1:
+  - Describe the NULL-dereference path after a probe/remove cycle and add
+    the corresponding Fixes tag. (Sashiko.)
+
+  Patch 5:
+  - Correct the Reviewed-by tag to Maxime Chevallier.
+
+  Patch 6:
+  - Mention the phy_remove() teardown path that can also trigger the
+    double-free. (Sashiko.)
+
+v4: https://lore.kernel.org/all/20260821070327.16147-1-xuanqiang.luo@linux.dev/
+  Patch 1:
+  - Explain that LED triggers are initialized after the SFP upstream and
+    ports, so they must be unwound first. (Andrew Lunn.)
+
+  Patch 2-5:
+  - Add Reviewed-by: Andrew Lunn <andrew@lunn.ch>.
+
+  Patch 6 (new):
+  - Prevent a double-free after partial LED trigger registration and make
+    the cleanup ownership explicit. (Sashiko.)
+
+v3: https://lore.kernel.org/all/20260819060236.24665-1-xuanqiang.luo@linux.dev/
+  Patch 1:
+  - Rename cleanup labels to include verbs describing their actions.
+    (Jakub Kicinski.)
+
+  Patch 3:
+  - Do not clear phydev->drv before device-core teardown completes; this
+    can expose NULL dereferences in concurrent attach paths and devres
+    callbacks. Set PHY_READY only after LED setup succeeds and update the
+    Fixes tag. (Sashiko, Jakub Kicinski.)
+
+v2: https://lore.kernel.org/all/20260813132946.116176-1-xuanqiang.luo@linux.dev/
+  Patch 1:
+  - Limit this patch to splitting phy_probe() error paths, moving the SFP
+    teardown fixes to Patch 2.
+
+  Patch 2 (new):
+  - Make SFP and port setup unwind their resources in the required order.
+  - Add phy_sfp_release() for complete SFP teardown instead of open-coding
+    sfp_bus_del_upstream(). (Andrew Lunn, Maxime Chevallier.)
+
+  Patch 3 (new):
+  - Restore PHY_DOWN and clear phydev->drv after probe failure.
+
+  Patch 4:
+  - Move the former Patch 2 to Patch 4; no functional changes.
+
+  Patch 5 (new):
+  - Propagate errors from default port setup.
+
+v1: https://lore.kernel.org/all/20260812125127.106255-1-xuanqiang.luo@linux.dev/
+
+Xuanqiang Luo (6):
+  net: phy: split phy_probe() error paths
+  net: phy: unregister SFP upstream before port cleanup
+  net: phy: set PHY_READY after LED setup
+  net: phy: call driver remove when core initialization fails
+  net: phy: propagate errors from default port setup
+  net: phy: avoid double-free after LED trigger registration failure
+
+ drivers/net/phy/phy_device.c       | 80 ++++++++++++++++++++++--------
+ drivers/net/phy/phy_led_triggers.c | 11 ++--
+ 2 files changed, 65 insertions(+), 26 deletions(-)
+
+
+base-commit: 746fc0787f616da418ffc04a110296fe95d53491
+-- 
+2.43.0
