@@ -1,123 +1,78 @@
-Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
+Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED5E3A1D02;
-	Sun, 23 Aug 2026 19:40:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56FD345EB5;
+	Sun, 23 Aug 2026 19:42:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787514020; cv=none; b=bCXogrXI2r8r6xrR1QHAscsznxUq9ZNvXt/2VawqyAKpEJzPXwReVHow9hp6VlRQmcDCNWFr4SNRkaPomAbiK7tOC3cgDgSHY35G+uuVq+0iZSlNSNPDNZZcsWjFcxPhVMwwTJeoL0k6dD6Y4aMZrUbVS/HMsBjk6ZBm64TDr48=
+	t=1787514140; cv=none; b=eLtr/wnUUqoxWFkQsS4NT5fIhnaRpF8P/VYLAXiPfv37ZLxoqKUVMiWfgWibvbW2tH7HlaIa5Z4VViczswJ6guc8nJqfv1VgNA8bqUsWTR7EJpX9Q9/i8NDgacHxWfffET2Ed8ippcgYrYAC6NrzElTy6ZivYdFyu82FnCSPzIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787514020; c=relaxed/simple;
-	bh=rgqzCJQu8gPbKqfuVaMw5ziRxD/SJ0mfwANpxBUAkG0=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=NgiP32vaNVAA9bnNuMP6pQjwMJOLUxkN6ChyZXXy5Ogmpd5c7Y5o6wduf/WrdgztTowJeXjX3cPKs1SfJZzM52kB0uDFNTdg87PeJuGJnSHdfwBK9BoJ3TiDoWUid1GqgXKK986RE2xYmXYeKDtwxOVUUuwwXNUO1O0goTcugRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=MB0wE10N; arc=none smtp.client-ip=51.159.188.251
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
+	s=arc-20240116; t=1787514140; c=relaxed/simple;
+	bh=aPBoR/SrsNjXZtRLindVuRnXvTuc6wCuIe9LUpNd6xY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KP/fmsogyqIEBa5yKl6/7h9zgvyRhtX/z1p14GgX9+O0TDT87+4EEQfokScjK2UkjrBnObI6JlqVCoNpqD17YV7v/4Mx5QQOFM5UOQSYwc2mbzk6gEXXBZ5/O4U+RaY14vqmhRSCaol2+BOhap1V/JTHCNhMqTT8s561KOhaoHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=bUI6AdXG; arc=none smtp.client-ip=109.224.244.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="MB0wE10N"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
-	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=3qEAzX+DfQca6vdvKFV3joFRrQQ3XK5yBMSP9yHeC6I=; b=MB0wE10N04O5PYHkaUBa9dwCp6
-	PzPG2L7je5duLnbwQRra4gD7skmbUz/CrmIZiO+/ykrNfkl8z3q5NoI5H1XaiNwzsYwKmi0ZX1doj
-	BCW8y5mUN42+oMW+QNQVAbmT8fjgEfVInIJ3HF7zvzS69lFk+oEweAus0kcJykjkqul/k9WdcQeLt
-	OIsWmyvlIX3QL0ItgMs1ymc35GnlLLdxkHT/XUPTPQ9g5DUZqEcQabCCIk7sqDITvOyWd28l+z9yL
-	3/4I6BNZ46CM0kJptDbvrefp092BzsgBTWOdZxr/fAh2F44r149Md2L66aG8/UFI+iqW2n3BU6nvK
-	hoS/n5Pg==;
-Received: from [::1] (port=42402 helo=pf-012.whm.fr-par.scw.cloud)
-	by pf-012.whm.fr-par.scw.cloud with esmtpa (Exim 4.99.5)
-	(envelope-from <jeremy.jean@oss.cyber.gouv.fr>)
-	id 1wyE38-000000068bZ-2vvK;
-	Sun, 23 Aug 2026 21:40:10 +0200
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="bUI6AdXG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=wgg54forqrhdrizm4bumlw33ce.protonmail; t=1787514127; x=1787773327;
+	bh=UScXlwRR/M1y2OECh3339hzVY9m2bouWXTszntHiI1o=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=bUI6AdXGPCkTC2bHxkE9PD3xfmKrvq2GXd8gkw/2W8Hefphk6mEx7P9LrBXqqlZz5
+	 3R0dL32f+ZN89lyNQ0UkDaL2+P3uJZM+nTjTNbIHg5f7nZa1XAQhaTGQoWZq5c+NEi
+	 4Tj77nWDIiUJRYdxbD/wkuqYgewPbm2/o4CLVaksTbYXeriFAhkq5LdG4WQfSwnF94
+	 ed2cdKNvvYINAnLQCoifB4ounI9tgq0I+uqz97jzN8YthPLDt3LY2wERrg0eCqn1wi
+	 9UjQ3CThX6vC/BEbtY/Arii56eaPAssZptvpRtqTBY1+qjBsAvl5I8xdTwFdLOA+vN
+	 vo85uo+ixK1dg==
+Date: Sun, 23 Aug 2026 19:42:02 +0000
+To: Luca Weiss <luca.weiss@fairphone.com>
+From: Kristian Brox <isyourbrainfoss@proton.me>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, David Heidelberg <david@ixit.cz>, oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, Kristian Brox <isyourbrainfoss@proton.me>
+Subject: Re: [PATCH v3 0/3] nfc: st-nci: Fairphone 5 NFC bring-up (ST21NFCD)
+Message-ID: <20260823194152.501107-1-isyourbrainfoss@proton.me>
+In-Reply-To: <DKUIKHDS44LA.10CHEGZHLQSNS@fairphone.com>
+References: <20260820-fp5-st21nfcd-v3-v3-0-5ee0a7f44d04@proton.me> <DKUIKHDS44LA.10CHEGZHLQSNS@fairphone.com>
+Feedback-ID: 203906395:user:proton
+X-Pm-Message-ID: 8d39a5982a299822bc8981a11884d845d111b1ed
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Sun, 23 Aug 2026 21:40:10 +0200
-From: =?UTF-8?Q?J=C3=A9r=C3=A9my_Jean?= <jeremy.jean@oss.cyber.gouv.fr>
-To: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Cc: pablo@netfilter.org, fw@strlen.de, phil@nwl.cc,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH] netfilter: bpf: disallow conntrack kfuncs for token
- programs
-In-Reply-To: <DKWK8L9QBA37.2QGA0WNXIBV9C@gmail.com>
-References: <20260822210945.1003967-2-Jeremy.Jean@oss.cyber.gouv.fr>
- <DKWK8L9QBA37.2QGA0WNXIBV9C@gmail.com>
-User-Agent: Roundcube Webmail/1.6.18
-Message-ID: <fab86b47f4fcc7fa3f180f86c6e3f914@oss.cyber.gouv.fr>
-X-Sender: jeremy.jean@oss.cyber.gouv.fr
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
-X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
-X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 2026-08-23 21:12, Kumar Kartikeya Dwivedi wrote:
-> On Sat Aug 22, 2026 at 11:09 PM CEST, Jérémy Jean wrote:
->> BPF tokens delegate BPF and network-admin capability checks to the 
->> token
->> owning user namespace. Conntrack kfuncs nevertheless accept a network
->> namespace ID relative to the program context without checking whether 
->> the
->> token has authority over the resolved namespace.
->> 
->> An XDP program attached to a veth in a child network namespace can use
->> the peer namespace ID for init_net. bpf_xdp_ct_alloc() then allocates 
->> an
->> entry in init_net, bpf_ct_insert_entry() publishes it, and the lookup 
->> and
->> mutation kfuncs can subsequently access that host state.
->> 
->> The verifier retains the token in prog->aux, but it cannot determine 
->> the
->> runtime namespace selected through bpf_ct_opts. Conservatively reject 
->> the
->> conntrack kfunc set for token-loaded programs. The kfunc interface is
->> explicitly unstable, and ordinary token-authorized XDP programs remain
->> available.
->> 
->> Fixes: caf8f28e036c ("bpf: Add BPF token support to BPF_PROG_LOAD 
->> command")
->> Assisted-by: Codex:gpt-5
->> Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
-> 
-> So your solution is to just begin rejecting its use? Proper scoping and
-> containerization of programs is a bigger project that needs more 
-> thought.
-> It needs to be addressed properly across the API surface, we probably 
-> have
-> several other helpers/kfuncs that have similar ns-unaware behavior.
-> 
-> If we went on to simply reject each case programs using BPF tokens 
-> would
-> basically become useless.
-> 
-> pw-bot: cr
-> 
->> [...]
+Hi Luca,
 
-Hello,
+On Fri, Aug 21, 2026 at 11:28:22 +0200, Luca Weiss wrote:
+> Can you please confirm how you tested this on your side, and if I'm
+> maybe missing some parts?
 
-Thanks for your answer.
-I merely raised the issue to you; there indeed may exist more similar 
-ones.
-However, I unfortunately don't have enough time to allocate to a broader 
-fix.
+Cover letter tests were postmarketOS, these changes as modules on
+7.1.2: nfctool -d nfc0 -1 -p on an NTAG 215, then neard for NDEF.
+No extra firmware or userspace on top of the three patches.
 
-Regards,
-Jérémy
+That 7.1.2 dmesg already had
+
+  nci_ntf_packet: unsupported ntf opcode 0xf02
+
+I treated a found tag as enough and did not mention it. I have a
+driver change so that NTF is handled; I'll send it in v4. The ndlc:
+dumps are debug prints.
+
+I also ran nfctool -d nfc0 -1 -p on a locally built 7.2.0 kernel
+(sc7280-mainline, with that handler): no 0xf02 line, a Type 2 tag
+in about 0.13 s, and Ctrl-C with no tag still left Powered: Yes.
+
+I have not reproduced an error after Ctrl-C with nfctool on that
+kernel. If you have the nfctool and dmesg lines from the second
+start, that would help.
+
+Regards
+Kristian
+
