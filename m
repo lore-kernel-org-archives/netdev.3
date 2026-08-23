@@ -1,144 +1,133 @@
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9546123B638
-	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 17:48:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C612E1D9A5F
+	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 17:59:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787507289; cv=none; b=emyyy38S7U5xdz5oGNOevEsdjtfS+OT5KltASq0vtVoCHcQEwd1io0hS4ChRHgrnZZgi08XCcs1UhUTUgJbMYNYX7U8IfnN1kokwU28DuXwDrPJ43NUQpj1ppE7c6YAHL0HqxhOdhS9Vgpgfyu9N3iVqhprl/X7Fyr094iZ+jcU=
+	t=1787507981; cv=none; b=M6Sfj+E0ztWfUo+85fxkZpf0kt/XHG9NB//F2e3jZzBfhbzv+vrZmwyZy7IB6FC08nxP1YEQ4Z/hTh1RbynMule9cLmbj1osfJOhRrqwJKTh9DT+HOUEz/vGVMprrv5hCgZNVwfPB9OoTpC4SqrNPlhKozHWGqaoCQtNMqzqFmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787507289; c=relaxed/simple;
-	bh=x9a7F6Xn7AsPtGHNM278OAhW2duib729pbRTrTBj5xY=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=se7g0/Aw/AWTTqjLdFNVDTwtorj65AVWOD5xcpMi9ZWvuyRVsbD/U7voa8pcRc95fyZkctFdRbK0YSVRSxSERdJ5zsJshD0o0GFJNeFzHzhv40O5XgSMl6y4wHeqgC6XTkkCSYVp/W483HDF6AmngHfzupEoinIw8SLzYGZT30U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UGQljfqw; arc=none smtp.client-ip=209.85.128.171
+	s=arc-20240116; t=1787507981; c=relaxed/simple;
+	bh=j+GvspEPFMJKw6+StUj0ft/LLbZU8zbHTx8oX1MMKJI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VVsmuLy/kQmD52TfTKFLK34UssxO/CEVY+HMwK8irvJ8H4rb4ygIZaUDkwSvojXDQqkHzv4dMF1509xH7m30pMkcxUq0dnRdgJCLYm0Jz4uD6KrgWtKfjQoSlpAGSiBsFuIJHQd66xPch/PguLD9bwceT5rS8pRwlzCK6Vzx5Vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f4oRtADo; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UGQljfqw"
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-81f36179d72so43685857b3.2
-        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 10:48:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f4oRtADo"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38ec1402b05so1924999a91.2
+        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 10:59:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787507286; x=1788112086; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=DuL2oALqrhJs4xUXx1njL4oc6NDgkUSb9N20AmGz1Wc=;
-        b=UGQljfqwYP484H+gxzyQ41M0LafwT8n5enugGq/LVHYlQckwDKqfKAzNy6sRd4YkgW
-         91HlGlgLmondK3aDGDUwndBm643BoGBbtHGYVVjbs20AszA49GBsEbpxGlAr7ofJA5vp
-         WVx8aecLO5qulqyBm1IkSlzliD+5VogyvA94iN/7vCPxvAYSeN8V3W53dIkVSi5X9DTl
-         kctOHDfbXkTZrV6kvEHWnChN9gSoH9T7oaiDf5IMGySKvQSBC4zVkNnytWw5iaeglpzY
-         gbnSYF07fWFxO9Shady92xcIiNtzgoJiC0qQvnOtNCYAhDnlT2Ra34I3QBcvYOVMbb9R
-         3FnQ==
+        d=gmail.com; s=20251104; t=1787507978; x=1788112778; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oSG6MK2qQTE9wpGTHa2F4jMVfX6350zfMS2a14Bvdsw=;
+        b=f4oRtADoEr14b5rw/5GmI7QM6w8Gw6/ITb4Jd3bc/sYrjzHflzu55LtZE8O00WFNoF
+         NbjGGk/37VnUCCs8SI1FS+5H+YBPL2JzqMFm/oEq1KK/ynyWb6Ji14HVhvazcLThq099
+         azdtDa9V/iIp0RZAettYkrXgaZxWgDjXZbUySBLg80vsUNi6KfQsJNHMRUJH7JlOPm94
+         8DI/BP/QmAX6e/EBxZmyfsoPgHiCx9fa84mDfPvaABF5Kv/XIaOqvUdQiYpVvneGEXu0
+         B20LBI5LmOQ98aEGEvh3l5zQTWlGOY9ojEsxFrym5fPqsqKKZm0GMn7E7i7fmt9EbyuQ
+         Bh6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787507286; x=1788112086;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DuL2oALqrhJs4xUXx1njL4oc6NDgkUSb9N20AmGz1Wc=;
-        b=MCf8YjpafarQR8IbDe4VSKe+REQ0uZD8cog665KmueFLQ1WyDKFATKOXH8EPkqVAnk
-         nHdHAfijPkzz/yr/l+0BJgVledyn7VIzsTnLmAyxwH2MZadqG1fGN2DOq+DSbKggFecU
-         BleQmWlh9cihzxqFVOn+c4waFXpE6PQIvf7zHec/WO7zpqQ2QVoKvHsh8OWF7b4cMy+b
-         bYqokXf1byTEEhXbbZIHFKftG0Fr8rWUce/YAkCVJ78w+Ls47ex1BbB7o5JIMHVOGsMB
-         EkBIkGeJIhtaQ+Hq6T/QjMi+ksU1Wc0+xMUHY8elaP3TgC89ULg0bWBar1/yp0cX264y
-         GrMA==
-X-Forwarded-Encrypted: i=1; AHgh+RooiIz2S72sg5rXBIi2Os8pjcRDwX8IQthqr4NaKQ8EQKnqpZUul2Dnhx/Iq/EyCCNKMliPF20=@vger.kernel.org
-X-Gm-Message-State: AFuF++k3pGj9bmiGDjRravml5Z6KFsX9ISCcKXH1UqE2v12OaiCEfPkb
-	LyDzPK6k75SNcY0O/jlhv0/TzzbrxAcHpy3VIwlpEpiaIyp3+MNnmtl/
-X-Gm-Gg: AR+sD11q6b4TnJsh/1afLND1gNZqpcZCzpkkqwI/Q60WLmJ1FyHyUZ/53HmLbu0wYdl
-	XyJAkekcZgiHpSDPlKty38gWI4qpMS4ruJiTojJ7zp1hP3mvyH9qxa5G0bROxXGfF8pAVSmnuBo
-	hN6wotIsi0Ia5j7CV1SCQ6cH5NfXbuqczr0BfhiMt2/s3A6fzinrXmSDuyu+EhUcS+SBULaykI+
-	iRpjknaPqdueCOz85pCRMB6kSoGd5x0K4r2kLBGCDg8txw62DitNbwHXGWTnOMySlXtVR/lSBFm
-	plWNiB0t7v7VqBVlw14hLEJ5FgEiKqKSo9lFQv8iSmGd4sAnke3LRy1N0AxSvqEi9ayOmDMzt3H
-	syLszaEPmM/Y5pkRunC7EIAbvFE+JpN5hB9aFemh0XukeyqmSdugns0g7alWA0Bfftb1pCPlgDm
-	K4iCqdXx9HxZO2Z8egnncpe0uw5rls2lECM688EN9o1nGhTGuyKiXPiaZGH6M/CJr3ZCyMtk7n+
-	o8AucJ22AKXiuKKQxq10oO7sHVxL8Knum9gIP0JkA==
-X-Received: by 2002:a05:690c:7482:b0:826:8d7f:f498 with SMTP id 00721157ae682-84c936608a9mr54675927b3.2.1787507286405;
-        Sun, 23 Aug 2026 10:48:06 -0700 (PDT)
-Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-84cabd2861esm22501077b3.37.2026.08.23.10.48.05
+        d=1e100.net; s=20251104; t=1787507978; x=1788112778;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oSG6MK2qQTE9wpGTHa2F4jMVfX6350zfMS2a14Bvdsw=;
+        b=E56H6YNP46A3iJ3LrxONywncIsho7jyLemY6Y/61nlHkwAbGDOhGvNzE6fejrXU1yL
+         Nc5AX3+gP05uXj7kq57hUpzvR3lXD05zN3pvUtChHTq1dvRQTB202MC0hDZF/8JoxWXG
+         D8w1Xs+wqytE1kqZuTREAO73hInANQmwhqlvShGYC9k7MNFrsZirlePUN5frvzQTQETN
+         yTRpYOrhJzXBAuu8QDpm/oAt88R6LACEF1i8Y9YmlkBqELYPhZGDBbMCij9WCzi/NYjg
+         dmEpt1knOBoqa/9o22XHRwlOjdeTBkemV2GZYnPxPDQibjM3a/Z6zJjHEO9LiwLiKrPv
+         zxoQ==
+X-Gm-Message-State: AFuF++m1g72zvx1GzuVdjkC8qv3e2yvdpfh0leI+L/mKN6MAh5wYvMUs
+	1D1YKn/Ln8p19yvDqMd64u5T/7syYl3/YIdeSszX5yUM0zYbvZyYlyDQb1QqNYsxVm17Xg==
+X-Gm-Gg: AR+sD10/J4l/d+i5d45u6WQ71G2tHY8epIms8s+EoCvdZMrOBoUXTqoUPs1FfAYzGEP
+	tlfIIFY5ogkKvladWBKMoRg1oXh6ochISF02uJpEem90kwfMRWkchS73U+0vURUzQ0Kh+YaQY3e
+	LnA0sTq9POYc6WIXrAyKVAYcuJgXGCbmDec5k+W7tFD1i9UUTdmHcceFTRYwMu0m6qCMdJkudH4
+	nEyFu9prSYQLGVza350GfLP4OJ6oIeJHA8oV5fcZEi9iUh4blQZccIeMbxfEZQQhUbUhxevhoHk
+	UjdJRz4BqOBFdAZQlDAB4ftdL/pXuI4zsWpb/+WB0zPm0jT9+jGh6/kgtSL5YPBOO6DieveRjwA
+	xpmOrWVfs2o+1Lksa1xbHc67aiXDljxaTK86M+6MASZkUHyyEYOE/Th7T8dvBAtpR6XnGtT4JTh
+	aZDpe3irT8iFYpfbiy3OVLqBRZDOWyHuuPqhzm9uEORnEn+m3TAJbZOxOWBZKjXsSEmASeoVsz
+X-Received: by 2002:a17:90b:4a0d:b0:38e:5b59:c2ff with SMTP id 98e67ed59e1d1-395c3376963mr33466205a91.3.1787507977903;
+        Sun, 23 Aug 2026 10:59:37 -0700 (PDT)
+Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-395c8fd34d9sm3722818a91.1.2026.08.23.10.59.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Aug 2026 10:48:05 -0700 (PDT)
-Date: Sun, 23 Aug 2026 13:48:05 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>, 
- daniel.zahka@gmail.com, 
- willemdebruijn.kernel@gmail.com
-Cc: edumazet@google.com, 
- cratiu@nvidia.com, 
- borisp@nvidia.com, 
- kuniyu@google.com, 
- netdev@vger.kernel.org, 
- Jakub Kicinski <kuba@kernel.org>
-Message-ID: <willemdebruijn.kernel.1157fb673940e@gmail.com>
-In-Reply-To: <20260822225524.2328465-1-kuba@kernel.org>
-References: <20260822225524.2328465-1-kuba@kernel.org>
-Subject: Re: [RFC net-next 0/6] psp: use virt cookie as Rx steering hint
+        Sun, 23 Aug 2026 10:59:37 -0700 (PDT)
+From: Daehyeon Ko <4ncienth@gmail.com>
+To: netdev@vger.kernel.org
+Cc: sgarzare@redhat.com,
+	stefanha@redhat.com,
+	bobbyeshleman@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	mst@redhat.com,
+	jasowangio@gmail.com,
+	xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com,
+	bryan-bt.tan@broadcom.com,
+	vishnu.dasa@broadcom.com,
+	bcm-kernel-feedback-list@broadcom.com,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v3 0/2] vsock: validate packet sources after bound lookup fallback
+Date: Mon, 24 Aug 2026 02:58:56 +0900
+Message-ID: <20260823175858.351431-1-4ncienth@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Jakub Kicinski wrote:
-> Hi!
-> 
-> This PoC series uses a field of the PSP header intended for tunnels
-> to auto-steer Rx traffic. Various attempts have been made at trying
-> to get Rx traffic to land close to the core where the application runs.
-> By default RSS picks the Rx queue based on the flow hash.
-> I'm not going to cover all previous solutions in detail but broadly
-> - we have RFS in SW which looks on which CPU Tx happens and backlogs
-> Rx packets there, it is quite efficient. aRFS is built on top
-> of RFS but tries to program flows into the NIC. Some NICs have
-> a "cache" and try to automatically remember the flow to queue
-> association.
-> 
-> All those solutions are entirely local to the receiver.
-> Ideally we would want the solution to look something like
-> TCP timestamp option - we send an opaque cookie to the peer,
-> and the peer echoes it back to us. Our NIC can steer based
-> on that echoed cookie.
+Both virtio and VMCI look up connected sockets by the full tuple before
+falling back to a destination-only bound lookup. The fallback can select a
+non-listening socket without validating the packet source.
 
-Another option is to reverse RSS entropy. This requires knowledge of
-the RSS secret.
+V2 covered only the virtio path. Following Stefano's review, this series
+moves the source and transport validation into a documented AF_VSOCK helper
+and uses it for both virtio and VMCI. The VMCI patch checks both its
+bottom-half and deferred workqueue receive paths.
 
-Especially with PSP, the outer UDP source port is defined as flow
-hash, so can be used for this.
+The combined series was tested on x86_64 KASAN kernels. The original
+cross-UID virtio injection remained blocked in three boots, CID_LOCAL and
+CID_HOST loopback aliases passed, selected VSOCK selftests passed, and VMCI
+accepted a matched RST while rejecting a mismatched-context RST in three
+boots. All changed objects built without warnings under allmodconfig and
+allyesconfig with W=1.
 
-Have the receiver compute a 4-tuple hash such that it knows the RSS
-block will select the intended queue. The only free variable here in
-general is the source port. Then communicate this preferred source
-port to the sender.
+The current-tree guest-CID vhost probe could not be rerun because the test
+user lacks access to /dev/vhost-vsock.
 
-> This patch set implements exactly that using the optional PSP
-> Virtualization Cookie field. The PSP standard doesn't have much
-> to say about this field:
-> 
->  Virtualization Cookie - 64b
->  An optional field, present if and only if V is set.
->  It may contain a Virtual Network Identifier (VNI) or other data,
->  as defined by the implementation.
+Changes in v3:
+- Move transport and source validation into vsock_check_source().
+- Trust the internally generated source CID for the local transport.
+- Add VMCI validation in the bottom-half and workqueue receive paths.
+- Send the related virtio and VMCI fixes in one series.
+- Do not carry Bobby's v2 Reviewed-by because the helper and loopback logic
+  changed; renewed review is requested.
 
-If using the PSP option space, no need to (ab)use the VC:
+v2: https://lore.kernel.org/netdev/20260820001517.2148196-1-4ncienth@gmail.com/
+v1: https://lore.kernel.org/netdev/20260813121236.2328599-1-4ncienth@gmail.com/
 
-"When the Hdr Ext Len is greater than 1, a Virtualization Cookie
-and/or other header extension fields may be present.  The presence of
-a Virtualization Cookie is determined by the state of the V bit.  For
-example, given Hdr Ext Len of 3, when V bit is set, there is an 8B VC
-after the IV, and another 8B extension header after the VC.  The
-format of other header extension fields is determined by the
-applications and is opaque to the PSP hardware. "
+Daehyeon Ko (2):
+  vsock/virtio: validate packet source for connected sockets
+  vsock/vmci: validate packet source for connected sockets
 
-Right now all use besides VC is opaque to the device.
+ include/net/af_vsock.h                  |  3 +++
+ net/vmw_vsock/af_vsock.c                | 32 +++++++++++++++++++++++++
+ net/vmw_vsock/virtio_transport_common.c |  3 ++-
+ net/vmw_vsock/vmci_transport.c          | 29 +++++++++++++++++-----
+ 4 files changed, 60 insertions(+), 7 deletions(-)
 
-For use-cases that should be interoperable across vendors, we should
-probably define a standard option space, with well defined options.
 
-In a manner that is cheap to parse at high rate, so no arbitrary order
-variable length headers.
+base-commit: 7cbfb180945ce529608e4d4e24a6d483699fab1e
+-- 
+2.54.0
