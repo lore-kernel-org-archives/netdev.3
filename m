@@ -1,63 +1,63 @@
 Received: from mail-oa2-f11.google.com (mail-oa2-f11.google.com [74.125.231.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07EF331EA4
-	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 05:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229F13BFE38
+	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 05:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.75
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787464428; cv=none; b=Z3YaXbrp/w93nr7faFA53+l2342GTJjxDr6RdbEszTO+tuCKoRidfjHIwtBO8hRpyXlCc7WEo+hBh0AvkKaWOqSEP+BGKhZoTg11Vf1uGO6DdXZfmP6Qyks4iO0Atj/h+28NkyhyJrovUNhwWqaZm7cQ6cAH3kcKpsPpQQJGywQ=
+	t=1787464435; cv=none; b=i5nx9q8D6HkHzYz99YDvxoH1gDlsFFXvIeXhgie/B1oRew8SZ0WxComUIsO4zs7dZ3Tl8LxO1CmDutrm/OiD7pZxAIq59mjmssnYW6Nu6P8wSXaXLQqx8Bz6nGsbL9R4AnyjVc4KymJqJpJbXxmn0qw5jhiGx8D8vyhdseC+37o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787464428; c=relaxed/simple;
-	bh=OYpKDRPJ5QqkKzY5a0l3W1nbybixDlewt8wC1thOTG4=;
+	s=arc-20240116; t=1787464435; c=relaxed/simple;
+	bh=SlD5lR1aIvJRJc4FywWIzTLHOW2kSU8TeeUrEUHNB5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tA+AryCBcZMBXFhsCwaRveT10Fi8HMwX+1tY+4ZTruXjpQkXZx9uZvRVwbaL6HDfk+E/RFBnMOoyCTkT7fKhapBBFWOXnx3uQGXuNyqU/0zWwGVZALWH9+AebmFk4vvCaEYSGvLzeEaN+55Jnc8Q691zmrQQNQ4c3tyOYtY3fUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D3HpT4vF; arc=none smtp.client-ip=74.125.231.75
+	 MIME-Version; b=Or931jW/G2IO3AJdxPrrAqKFtuhG7tlYG88XS0gylTEemRPu9QIn/0K61e3JItGSFIoiyecvbZFPykTRd+uKEK+5oIWLdjlScpdtI9GSg4+a0XXl0e5v/gcVegtY+nDsu+uu+Zxs1DA0vUkk2tqEOZg+hWiCJF9r6tdwCI8anbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jwzv8lvY; arc=none smtp.client-ip=74.125.231.75
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D3HpT4vF"
-Received: by mail-oa2-f11.google.com with SMTP id 586e51a60fabf-45e2c1e33e1so1762512fac.1
-        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 22:53:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jwzv8lvY"
+Received: by mail-oa2-f11.google.com with SMTP id 586e51a60fabf-45e2c1e33e1so1762581fac.1
+        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 22:53:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787464426; x=1788069226; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1787464433; x=1788069233; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=q5ykELDhJxT1ChCufXvrVdtewa2pltNuabVAzU3EqHM=;
-        b=D3HpT4vFCYaeWHezvW5SX+ghaGjDGjGXDMGDBHf2NsaKD32DV9cL2cVp5ZedPmWrQb
-         hFoaRxvt9J+rtEZcPhAJ7rioencWr9Twa0gs4WMWQ002cAPxPWMWu2g9WQWbwc7//jb7
-         /RZtjD9Ay0BSVQRBMptYyxC+SiYIEpxNkScYW0plpm7A3+HiudOKBk+4YWMibJky9ZXV
-         zzboJdvzRRODTBNV4tM1iYtnb52Q1s+GYOlU5P97Z0Ne+5oF7WZIuEghivz3wsk6lXXa
-         t90NyhJSctg9nzjK/iI3WLlefUuoIpTdh42/LTxmHnc0eevWi5qO/BtSFKmFBW5CE2jf
-         XYfQ==
+        bh=cfeuwGJyq2Vxzfo2kOM1yuG2Ob6x8BTRxw3KWGoeGBQ=;
+        b=Jwzv8lvYOMyOw4XHSl6WGHODSjHZfBVbizNwqnfXeQSmqc0etfG09JEAbZV/Uys801
+         XqM90y9+gc6C5TMp70L4OiTIlfwEhr6OXb2a7tPch6GynNct8gE3uHlIvj5hpFl90kCJ
+         3EmFIz+wZb6m4UvblVVcVHd6j+mSs3M5WOlb5HdDX4pwkSH5+eP5gfApv7uBooD+40nh
+         mGNaBd+VBo4fkLnfB7BAD7e7ke1+2Io97hj0uRBFXxniKzyu/tu8nQHt2Ig29Z05XnMt
+         CtHN0ZEiB2crQIpqalspxytH28P3xjTwTgspdhjLYo3ZQWI4BWfWuVgznsIntducxb0G
+         k9Yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787464426; x=1788069226;
+        d=1e100.net; s=20251104; t=1787464433; x=1788069233;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=q5ykELDhJxT1ChCufXvrVdtewa2pltNuabVAzU3EqHM=;
-        b=EwMyVxgwRLj4QksAh65CzdEjU4/zDD4XMNcmovewRP1stKVLicwxMrAt6666DZFHL8
-         iii6YA/7QerZ7bLeoR3HEhhYfc/QUtodLKNDW0PmU20Dj3OmsJWmsUqGLbnyRhqaTYEJ
-         XP4QfWj20bB9J/3N5plzvt/nmDRd9l7pIet5Nw4mIAyGqAxY1vr/vLYL36ZYdCa8IZ6B
-         cBOTsoN+LiSWW/HEmIzO/DZH2C1HjrIaIPgoDnLIcPWTol7Vt22awv00/9YS51gXV61/
-         QPRhtLqCDZYQmhuZU/W87yoibJYJocWWsahB/DRXNcv81I2KQ2mkIeq6AowFFh3vYe9y
-         ckTg==
-X-Gm-Message-State: AFuF++m4QPB71+fx7Z97dIe1Pcn8/R4Z4G1ycwei5xxUZov5k7bj4DJ7
-	KDUj7mmc54Kj9znJk//urZ0bPLCaueGVzBW+fTYtzeZENYKKr0M6BmRQ3Q7HsKjX2W0=
-X-Gm-Gg: AR+sD13kuugRvYvvUocelQlk13u8RoII+HHM8yof0ebR3g1dFkFJbEWtK90XRga1eTr
-	OJVgnhQji72k7GqJH9tHetQHpCrCT9sZMRs5GRXBv8iDtrV1JQkSSibPLhmLW6n0nDhXowMz5d1
-	32ZEAH4JVWEKj2HMY4H8o/yerfe4PlzZlNrsT1eJpz6ybN/PM8yFbpdjeATsxHWdKRoP8ymnIKd
-	9701RzW45tm70RK6eiHcSH5uhq7yJkC8Gy6KcFkzRYq5WOTcqd13Ce2EVCt47nRvEtVxa2UCSTf
-	n5PDUnDHIuGsIv84ammaGajLtta7nezdtev0lvO7cazCSXBuhBSx5CS2CINhuO8lrJR6+ptLBF2
-	ZgKjQzG3XLJK6tkURI/ONmSr39kmVO1yFfX7FyiRNTZfhYnq8nP/QXdEct8N7SZa5vdBvcKC8aG
-	ZCAuFYbQiOyf+H0gicpWBCF2utBnlPfKGrJqj9SWqYDp5MdIkUpS9+RZHHszxyJVIaAljgpeoB0
-	nA5OFS4UiD+wxIdPADwFpSckakpIS5o47Lz
-X-Received: by 2002:a05:6871:14e:b0:459:8f4e:94f2 with SMTP id 586e51a60fabf-46351380696mr16991206fac.10.1787464425834;
-        Sat, 22 Aug 2026 22:53:45 -0700 (PDT)
+        bh=cfeuwGJyq2Vxzfo2kOM1yuG2Ob6x8BTRxw3KWGoeGBQ=;
+        b=cmycnErrLCtWgp/Wywez1Bi1SzijHcE9VMYd4Cqem72yK1u/5ZRYbxOoMZ8gD9FPc3
+         tkMxc17FwTo0iVpw0s5GlSl6r6/Utfat91QZv5Ylt+MWkVbthyj5gFVaaNv8glBPaKK/
+         vqWBwX0wcmyfRMrFUk1bmVlabysvJOfkRT0PN8ZopI6/arbyNy6ajgY1jpkA4qeV7neE
+         5BRfzMs122MKxUZvjm+IiDrZYdTk/Tyys1bmvahBqD6+97ZbKEj0jW2DGB+sb/MCYEPG
+         WGFvfnTKYHaNmI8ckxGUcB0aMsmMPIH0Pl90SkiAoQ0GtpmL4Iy/K3WeJ5C4y/OQcPWP
+         HD0g==
+X-Gm-Message-State: AFuF++lyqWX6F1oVVoPIRvD6jagx006Zin6Pt31mFY+rveUfLuhUGYj/
+	4+oE5v0z/o9y+SGDf9S7TSygEJ6YTevXaIBJBXRLDjoPiNHa+Pps5V5vYNO+01IdJBc=
+X-Gm-Gg: AR+sD119WrzaScFfafAdrlUbeezUVqbJv58fR0neT5V1jIbYxojeKeusBzB1HFFzxwA
+	WDCMGC2FsvZSUFgHoNwfTU/eJi+5MjH6keTDPZPhT6q+tqznfXWR9X8lirKvaKfaeg71Pm/MpQl
+	4GGEi9iTGtJKconYh5bmdcu9j9tkmbh2Po8HUIJfinIj1P1tsr8RPADAfQ0BTx9DddCpShtScue
+	rVu6CpvZRgljbavPy53QHNtIIpkBMz4BsPJ/EfrZlDj5c2Jfo/uZFE8JT8/+MBytYBvTTw16PAx
+	Yj8855q/xxR+Lzgo6bi0iQ/N547usOXX7KTs2hwQLvoo4CLe79JJLieSadlxtZ9buQUWMjnNpm9
+	aOjiEo2QtmkNwb9JGeIDj9RB6egxhXCyXteWdIkRSb9n301tHAuKJ+slUIGnZK/Cyx9BmYnUPzM
+	rzvnWF/BeXMrEgkJY8DKDlatjr+qy6VuIQSnWQOV/R+zMQsHgfb2HVZEKgpRfRH6hYF2ZfiaRuT
+	mogY3ng0Msou1T76FBQGBsryA==
+X-Received: by 2002:a4a:ec4b:0:b0:6b1:3cb7:f535 with SMTP id 006d021491bc7-6b158fcbe26mr18729841eaf.0.1787464432934;
+        Sat, 22 Aug 2026 22:53:52 -0700 (PDT)
 Received: from localhost.localdomain ([14.22.11.161])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4638313340dsm2791832fac.2.2026.08.22.22.53.40
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4638313340dsm2791832fac.2.2026.08.22.22.53.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Aug 2026 22:53:44 -0700 (PDT)
+        Sat, 22 Aug 2026 22:53:51 -0700 (PDT)
 From: Henry Martin <bsdhenrymartin@gmail.com>
 To: netdev@vger.kernel.org
 Cc: David Howells <dhowells@redhat.com>,
@@ -70,9 +70,9 @@ Cc: David Howells <dhowells@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	Henry Martin <bsdhenrymartin@gmail.com>
-Subject: [PATCH 1/3] rxrpc: fix stack OOB read in TLP soft-ACK processing
-Date: Sun, 23 Aug 2026 13:53:16 +0800
-Message-ID: <20260823055318.371374-2-bsdhenrymartin@gmail.com>
+Subject: [PATCH 2/3] rxrpc: wait for deferred conn destruction before conn_proc_list check
+Date: Sun, 23 Aug 2026 13:53:17 +0800
+Message-ID: <20260823055318.371374-3-bsdhenrymartin@gmail.com>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <20260823055318.371374-1-bsdhenrymartin@gmail.com>
 References: <20260823055318.371374-1-bsdhenrymartin@gmail.com>
@@ -84,52 +84,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-rxrpc_seq_in_txq() is meant to test whether a sequence number belongs
-to a given txqueue segment, but it compares the in-segment slot
-number (seq & 63, range 0..63) against the segment's absolute base
-sequence (tq->qbase, 0/64/128/...). Two consequences:
+rxrpc_destroy_all_connections() flushes rxrpc_workqueue and then
+immediately asserts that rxnet->conn_proc_list is empty. However,
+connection destruction is normally deferred to system_wq: the
+final-ACK timer is still pending when the last ref is dropped, so
+rxrpc_put_connection() schedules conn->destructor instead of running
+it inline. conn->proc_link is only removed by the deferred
+destructor (rxrpc_clean_up_connection()), which the
+flush_workqueue(rxrpc_workqueue) call does not cover - so the
+assertion can fire on a perfectly healthy intermediate state:
 
-- For the first segment (qbase == 0), any seq that is a multiple of
-  64 is wrongly judged to belong to it;
-- For any later segment (qbase >= 64), the test is always false, so
-  TLP probe handling is silently skipped for them.
+	rxrpc: Assertion failed
+	kernel BUG at net/rxrpc/conn_object.c:488!
+	Workqueue: netns cleanup_net
 
-In rxrpc_input_soft_ack_tq() the first case leads to
+The BUG kills the cleanup_net kworker mid-teardown, leaving the
+netns half-destroyed and potentially wedging later netns operations.
+This is easily reachable from an unprivileged userns+netns running
+loopback AF_RXRPC traffic.
 
-	test_bit(call->tlp_seq - tq->qbase, &new_acks)
+The existing wait_var_event() on nr_conns is exactly the right
+synchronization: nr_conns only reaches zero after every destructor
+and RCU free has completed, which implies proc_link has been removed
+from every connection. It is, however, placed *after* the assertion
+it is meant to make reliable. Move it between the service_conns
+leak check (whose outcome is already final once the reaper has been
+flushed) and the conn_proc_list assertion.
 
-being evaluated with tlp_seq - qbase == 64*N while new_acks is a
-single unsigned long on the stack, i.e. a stack out-of-bounds read
-8*N bytes above new_acks (KASAN reports stack-out-of-bounds at
-offset 40 for tlp_seq == 64). With a large enough tlp_seq the read
-walks off the vmalloc'd kthread stack into the guard page and panics.
-
-Turn the broken slot comparison into a real range check. This bounds
-tlp_seq - tq->qbase to [0, RXRPC_NR_TXQUEUE), keeping the test_bit()
-inside new_acks, and also fixes TLP probe handling for non-first
-segments.
+This also silences the spurious "AF_RXRPC: Leaked peer" messages
+seen during netns teardown, which share the same root cause: peer
+references are dropped by the same deferred destructors.
 
 Found by the autokbug dynamic kernel fuzzer at Tencent Yunding Lab.
 
-Fixes: 7c482665931b ("rxrpc: Implement RACK/TLP to deal with transmission stalls [RFC8985]")
 Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
 ---
- net/rxrpc/ar-internal.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/rxrpc/conn_object.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
-index 865f05fe37ab9..27992e10d82ad 100644
---- a/net/rxrpc/ar-internal.h
-+++ b/net/rxrpc/ar-internal.h
-@@ -1580,7 +1580,8 @@ static inline u32 latest(u32 seq1, u32 seq2)
+diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
+index 0ece717db0f85..df3f92b1a42e9 100644
+--- a/net/rxrpc/conn_object.c
++++ b/net/rxrpc/conn_object.c
+@@ -485,11 +485,13 @@ void rxrpc_destroy_all_connections(struct rxrpc_net *rxnet)
+ 	write_unlock(&rxnet->conn_lock);
+ 	BUG_ON(leak);
  
- static inline bool rxrpc_seq_in_txq(const struct rxrpc_txqueue *tq, rxrpc_seq_t seq)
- {
--	return (seq & (RXRPC_NR_TXQUEUE - 1)) == tq->qbase;
-+	return after_eq(seq, tq->qbase) &&
-+	       before(seq, tq->qbase + RXRPC_NR_TXQUEUE);
+-	ASSERT(list_empty(&rxnet->conn_proc_list));
+-
+-	/* We need to wait for the connections to be destroyed by RCU as they
+-	 * pin things that we still need to get rid of.
++	/* Connection destruction is normally deferred to system_wq because
++	 * the final-ACK timer is still pending when the last ref is dropped.
++	 * Wait for the deferred destructors (and the RCU frees) to complete
++	 * before checking conn_proc_list; they remove conns from it.
+ 	 */
+ 	wait_var_event(&rxnet->nr_conns, !atomic_read(&rxnet->nr_conns));
++
++	ASSERT(list_empty(&rxnet->conn_proc_list));
+ 	_leave("");
  }
- 
- static inline void rxrpc_queue_rx_call_packet(struct rxrpc_call *call, struct sk_buff *skb)
 -- 
 2.43.0
