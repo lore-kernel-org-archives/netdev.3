@@ -1,186 +1,152 @@
-Received: from mout.web.de (mout.web.de [212.227.15.3])
+Received: from szelinsky.de (szelinsky.de [85.214.127.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09A1342C80;
-	Sun, 23 Aug 2026 17:15:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658063563CD;
+	Sun, 23 Aug 2026 17:18:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787505325; cv=none; b=QQLJ4g3/YFEn8aKNfvfLDUuOzYFrItsroImFaC4LG32Z84Vw9sddpoCZhrsA7y8gOwnuYkQjNhnsb4pG3fNpuVWrLkEiQMoYvwnKheuNMsy5e+U6Er2W8zsGoOchU1BOwCuzTl4N+deru1xWTRd6ehGsbsCw6eexFu2nyfDKKO0=
+	t=1787505513; cv=none; b=YrjNxgqJQ1iATGzdMYF8U3YXdDkjkUF/9gk5pPuINWJGYxqAES4orS4rRxBqu1Npyf6YKYpZkLEZbMpanzRB4AMk9Hdcrk27ksUG+mXEtFuWQZrtsbzvK2yXsOOcHZGaSnWTYxb2Euv0jLN+3aholwTX/VvF8Yq2Q1rCH0llqiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787505325; c=relaxed/simple;
-	bh=3A3uh2GpYNNmVXV8sAJaW3BhTwJVG91WKcpfhW012DE=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=SmKZ+rzdZhJX9rKw7gkv/bZXJXc3V65okGYPGLLaSPUVj9euBrPmUCjMtzShtP1/8GBUY6gbjAuJ3x1//p2cCR0tkgnAbwTANdBtxF7DSgbFArejxF4zS3/8wVlxDoheHqPQBIBtoC6uJOH0B40yCN/Q6JDDo4faZMEOt33LQw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=HkuVk9PX; arc=none smtp.client-ip=212.227.15.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	s=arc-20240116; t=1787505513; c=relaxed/simple;
+	bh=s2Ofoq3QFJCf+pWdDJdnlg51ogjBRNucz+965DL/fGE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jXckFGo9PxWf9GPwRl7vVQ3EkuATVo7+BM1hHd57wYb4M529N/05ZN48GeEGM5oSsMxxPyDE5U5GVXjpPPrpLMKIE8kkO5Bbuxlv4e94+kFPjO4RYyP0fJlDWF1hoWwpXAJle9oEKtwnZzLhZvIi54QdHe6XB5VPyO7n4PYm6Ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=YQ5LUO4b; arc=none smtp.client-ip=85.214.127.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="HkuVk9PX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1787505309; x=1788110109; i=markus.elfring@web.de;
-	bh=3A3uh2GpYNNmVXV8sAJaW3BhTwJVG91WKcpfhW012DE=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=HkuVk9PX7vObQI7au39ixzxRqVs0u4UJMRFtDteK0+LRgjY5t1EGHI1vigR8iRt1
-	 Aw0myITMac0lHZ9XUnNQhqZfbDn6WX0HIjgHcGSbIaSUo8h7LDfsS2q87wCK1u/kC
-	 0lvk8d99JX7v70p4WABmNhe654Y/IR0AuYQuJg/XfFtGtNXZGhzvQ0u8GjUjwBZGL
-	 dr8CdHemYLsgfJtXmVgnyz3DBP+Wdm5WM9WOYSfRfzicmQ6NVlcsIpRFKBOTTXWS8
-	 vR0X7aWztsXU8b3qYdGJBT6xeZNaK0vuu5lMS/xuV58HvY78PCLr6VS5uoFqWSzgp
-	 7Fu5pVD+HNpRXo2aAg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from client.hidden.invalid by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MN6FV-1xGgfo1iyL-00V3Le; Sun, 23
- Aug 2026 19:15:09 +0200
-Message-ID: <00ef4774-5155-4c32-a65f-4affcb52b620@web.de>
-Date: Sun, 23 Aug 2026 19:15:05 +0200
+	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="YQ5LUO4b"
+Received: from localhost (localhost [127.0.0.1])
+	by szelinsky.de (Postfix) with ESMTP id C9B1DE8368A;
+	Sun, 23 Aug 2026 19:08:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
+	s=mail; t=1787504917;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0sPDN2D2ApdJ/kSQZK4Y9a3jBKLYMsxmH+j0j+sH9hw=;
+	b=YQ5LUO4bQ2IuCk/WzvLRHY7HVBFHnXZSvQMfoXSjPzPYpFymYdOOGygO2h62Okjn4KVNeC
+	jkEEYPw0mnFemKH1Kr9L2R2/O2kuqV7ebKhe/puzf+MRfRrNuB1/ZxvefyVUfyAXhijFzD
+	dEbRAdDEc4JysMsDWKAQYi0/W8oBgpnnabeE9dpg+R2aIxcXpf5vO3w8rTgs2MObKZJwDM
+	oLkSvCsjyW2V8tlP4ghRBfFv8HCmCQD1Ni3PZv493BMiUlZQIejzAHc2383mXbVnzKc3Rh
+	jsjZda0Haohf4KoQz9KfxpAHOuvFqLridtQVo12le/qP3up156YeSNqXZSXg8w==
+X-Virus-Scanned: Debian amavis at szelinsky.de
+Received: from szelinsky.de ([127.0.0.1])
+ by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
+ id DzZcx4Pl6ErL; Sun, 23 Aug 2026 19:08:37 +0200 (CEST)
+Received: from p14sgen5.lan (p578611d6.dip0.t-ipconnect.de [87.134.17.214])
+	by szelinsky.de (Postfix) with ESMTPSA;
+	Sun, 23 Aug 2026 19:08:37 +0200 (CEST)
+From: Carlo Szelinsky <github@szelinsky.de>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jonas Jelonek <jelonek.jonas@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Carlo Szelinsky <github@szelinsky.de>
+Subject: Re: [PATCH net v3 2/3] net: pse-pd: guard regulator ops against freed PI data during unregister
+Date: Sun, 23 Aug 2026 19:08:24 +0200
+Message-ID: <20260823170824.1429431-1-github@szelinsky.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260818162606.3981504-1-kuba@kernel.org>
+References: <20260818162606.3981504-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: manushprajwal555@gmail.com, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Sunil Goutham <sgoutham@marvell.com>
-Cc: LKML <linux-kernel@vger.kernel.org>, kernel-janitors@vger.kernel.org,
- Simon Horman <horms@kernel.org>
-References: <20260823111231.372-1-manushprajwal555@gmail.com>
-Subject: Re: [PATCH 1/2] net: thunder_bgx: fix fwnode leak in
- bgx_init_of_phy()
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20260823111231.372-1-manushprajwal555@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:jP22yZpJ6ss1UcZnT8GmjTFwGcSSa59mud7Lmo0P9M8M75JY5dC
- lEGJ1Chr1CgMYVXrEZqIhyIwjQ/d8Thw0ledfb7D+NoSq0dGJR9gkUx0z+ePw26CqrJ56tl
- 0XinQ583AePNruVrgkt9zQn8NJxYs6OppbeIg4mZHwDHUOWvp06A4XWWAqzZE4dFFslksaW
- UxvBKvEkxfdApuwxY92/Q==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:vl/UPVSX3Ew=;jhc5/EFdxl4b92pa8LX1k50ljTP
- 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
+Content-Transfer-Encoding: 8bit
 
-> If a child returned by device_for_each_child_node() is not backed by
-> a device_node, to_of_node() returns NULL and the loop is aborted with
-> a bare break, without releasing the reference on the current fwnode
-> that device_for_each_child_node() took. Call fwnode_handle_put()
-> before breaking out of the loop, mirroring the existing of_node_put()
-> call a few lines below for the "lmac =3D=3D bgx->max_lmac" exit path.
+Thanks for running this through review, Jakub.
 
-How do you think about to add any tags (like =E2=80=9CFixes=E2=80=9D and =
-=E2=80=9CCc=E2=80=9D) accordingly?
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?h=3Dv7.2#n145
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/stable-kernel-rules.rst?h=3Dv7.2#n34
+Most of the points fall into two buckets: the consumer-outlives-controller
+race that I'm already leaving to the notifier series, and pre-existing bugs
+that aren't really about this teardown fix. Let me go through them.
 
-https://elixir.bootlin.com/linux/v7.2/source/drivers/net/ethernet/cavium/t=
-hunder/thunder_bgx.c#L1466-L1531
+> [Severity: High]
+> Now that pcdev->pi can legitimately be NULL, do the other readers of
+> pcdev->pi in this file need the same guard?  Only the three regulator ops
+> were updated, but the consumer-facing paths still index the array
+> unconditionally:
+[...]
+> So after unbinding the PSE controller driver, an ethtool PSE request on
+> the still registered interface, or a later PHY removal, would reach these
+> reads with pcdev->pi == NULL.
 
-See also once more:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/maintainer-netdev.rst?id=3Dv7.2#n3
+Right. This is the case where a phy keeps its pse_control across driver
+unbind - of_pse_control_get() only takes a module ref, no device link - so
+ethtool and __pse_control_release() can still land here after pcdev->pi is
+gone. Adding !pcdev->pi checks to all these paths doesn't really fix it, the
+handle itself is stale by then.
 
+So I'd leave these paths as they are here and not add guards. The notifier
+series [1] fixes it properly: on PSE_UNREGISTERED the phy layer drops
+phydev->psec before pse_release_pis() frees anything, and phy is the only
+pse_control user in tree.
 
-Would a cover letter be helpful also for the presented small =E2=80=9Cpatc=
-h series=E2=80=9D?
+> [Severity: High]
+> This isn't a bug introduced by this patch, but the ordering in
+> pse_controller_unregister() looks like it leaves part of the window the
+> commit message claims to close still open:
+[...]
+> pse_flush_pw_ds() drops the power-domain kref, and __pse_pw_d_release()
+> calls regulator_put(pw_d->supply) [...] the new guards pass and the ops
+> proceed to the released supply
 
-Regards,
-Markus
+Good catch, it's real. But it needs the same racing consumer to hit it -
+something has to call into the regulator ops while unregister sits between
+pse_flush_pw_ds() and the free. The notifier series closes this one too: it
+fires PSE_UNREGISTERED at the top of unregister, so every consumer is gone
+before pse_flush_pw_ds() drops the supply. Same bucket as above.
+
+If you'd rather net not carry that window until [1] lands, I can add a small
+stopgap - NULL pcdev->pi[i].pw_d in pse_flush_pw_ds() under pcdev->lock, so
+pse_pi_deallocate_pw_budget()'s existing !pi->pw_d check catches it. Happy to
+do either. Makes sense?
+
+> [Severity: High]
+> This isn't a bug introduced by this patch, but since these lines are being
+> reworked anyway: should ret be returned here instead of 0?
+
+Yes, that's a real one, but it's pre-existing and not about the UAF -
+pse_pi_disable() has always swallowed the disable error. I'd send that as its
+own patch with its own Fixes tag rather than bury it in here. Correct?
+
+> [Severity: High]
+> One more pre-existing item [...] pse_controller_register() [...] there is
+> no error unwinding after the early allocations. [...] devres then frees the
+> pw_d while the xarray still points at it
+
+Also real, also pre-existing, and it's in the register path, not the teardown
+one this series is about. The dangling xarray entry is the nasty part. I'd
+recommend we handle that as its own patch rather than in this series - ok?
+
+> [Severity: Medium]
+> Also, pse_pi_enable() returns -ENODEV for the same condition while this one
+> returns 0.  Is the asymmetry intended?
+
+I understood it like this: a disable that races teardown has nothing left to
+turn off, so returning "done" keeps the regulator core from warning, while
+enable really can't proceed so -ENODEV made sense there. If that's right I'd
+add a one-line comment so it doesn't read like an oversight. Makes sense to
+you?
+
+So, short version: I'd keep patches 1-3 as they are, leave the consumer
+lifetime stuff and the supply window to the notifier series [1], and send the
+two pre-existing bugs on their own.
+
+Does that sound right to you, or would you do it differently? What would you
+recommend as the next step?
+
+[1] https://lore.kernel.org/netdev/20260630091125.3162481-1-github@szelinsky.de/
+
+Thanks,
+Carlo
