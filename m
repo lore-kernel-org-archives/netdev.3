@@ -1,118 +1,109 @@
-Received: from mail-ej2-f10.google.com (mail-ej2-f10.google.com [74.125.228.138])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060C437D131
-	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 19:12:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC61739E18F;
+	Sun, 23 Aug 2026 19:33:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787512337; cv=none; b=Qzx/rkrCmyzQW10bTJjGWNXqY0/7B73afCYK7MDdNCloEGFNDNBiI6nc1ecn9vRTd2DPCA//C16OFkMmR7baQhWJ6mPXLZMKdzyB0zpvyCBKTPxtzbkmdJ/lrQbCSe3YQl7xqv4TrEatNJ+VExkogCs13iZV6TfWNw2iOm2Atrs=
+	t=1787513590; cv=none; b=KwgvVs8Z+EDFwZ9woujibvfqyZyMivpVJBhyW8BJIikdM1EcxDCivR4IPl/y8a4VwomhlEdTQMIGX52XFDYEh7tGOCQA9SkUxy8X4m3LwB73Ck1422F8aL34zKHpIORIt3CVcLpbS3z/mng6VZlAREo8q0U38QFAJvAqRaQSU7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787512337; c=relaxed/simple;
-	bh=bCZO65107Zw67SaivJ+auwgRTrcxaY7YXiKV7VzHv6I=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=LAqGtlQlmNWoAzA3JAkBSrCV15T2E01NUGVMDljmrtCX1Nd3bSvlkK7WASa4jmqomLwomFt+VEKetBW9RxYwYaT1FuomBVpahYdtbC6/vLHxDfYHXz4h0hp/QhEQSv847zfEWEL5uaVmlwMkBGsYLQiaCDxkh2gxhcD7b76UAQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d7WsQq8o; arc=none smtp.client-ip=74.125.228.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d7WsQq8o"
-Received: by mail-ej2-f10.google.com with SMTP id a640c23a62f3a-c1fd40c88b6so178849866b.0
-        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 12:12:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787512334; x=1788117134; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=bCZO65107Zw67SaivJ+auwgRTrcxaY7YXiKV7VzHv6I=;
-        b=d7WsQq8okdU+iCcPHihGMFp/2AutGXHQO83L5ezqBkq78I2xvTwKeydq+WSy4QT++G
-         z11c8irE0djh/i4UJaL4WR3/FmiRJvQ26z+tNdKv06teuwIodSCzd+TpEd8FHrBIECQ0
-         de93q7al+TVABQ6xwGrK5vGo6pF68FuXqBdHPtJqSmK+tUc4kDxpfzDetzp4TWVq/C1m
-         HyVwoulewIIkn5uaCaM2Tq5FtP8t5XOOJOoLJ+tvNgTyUo/J3gZ6K2kxOTJ1hs/3zERe
-         suuF9Zz3psdRqDCU0MSykMYsKJiMcO1hlG1z7vVUJsROUkGCppBOyKMu7MyAq0RgMWff
-         ZFFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787512334; x=1788117134;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bCZO65107Zw67SaivJ+auwgRTrcxaY7YXiKV7VzHv6I=;
-        b=CUvxwMW6l9lgxaBWH9+GIt12qoiawF7+X/pxfoyDNolQf5bWRmsBQPk2ygRg0G4MnF
-         TbnvdHPVX6IhTN177GXXkGm+6tMgBqYdYcg3EYmXYTqIuaKhi/pPg8m2/K6hcMoNNe96
-         kus241XPg6kjQcHHF4SVZaURPWxcOOve6YPHZHXS30ybXHLpCJB34ck9tqdOvtqfzxBS
-         eF6Q3NZJj91Unktztdx1+XBhlQGjPRheyK9/BiAX9Eljhw32+6EQy8xx4FQrSSK+2DJa
-         KRsDvC8Q4b13zvqS9dcM8YBCz+Tx1nv29fpdjwcwyTpyIkfGhDE8LoraDAfhSLjJSdGL
-         cBhw==
-X-Forwarded-Encrypted: i=1; AHgh+RpSikcm3p8cFLAOcRLPwwMJ9FBOJFXjmpG3cganZBpscLeShy32B0/HrjLqcaTTS+tTnX8ylP4=@vger.kernel.org
-X-Gm-Message-State: AFuF++n9IlQCQCBO9CjAuQ9SmFeS9J+cTAJTGOgnZZt0uSwEKxA6Vzt0
-	YdnUCAvn4HBiI/w7mwkMIEljsZ1GLadW7pWlTxPuDf8YMM/2T8VBEa6D
-X-Gm-Gg: AR+sD13j8rx7iIsNxc3qhzCQ0nBe1g6TLh36noIIvm45QXfh0Fo2u9ULetUMj78Uoix
-	QD7BSX1DZDfxf+BB7ztwjaggKZ3vFg1sglScTCl4pYig9dbVDEWR8Z87UXH+AYS1xPFIlukLh0r
-	zOKUblWqR7Hs0evfhf+zyrOTyXEg5R4K6bp1KbebeJdxbpz3xF5yy+mwjzz04m42EL296f4xJWI
-	pd2f/uzp19nO6amrQ8hgQ4cEVc/7xThHpJESMSPc1VSU/Qy2/XRK00eSWckD3jKJWYvOeyI8J9T
-	OnQ6eLDYDnoorXA421rxl5oDi1qCBzssi6xGdRKCrX6+gpD+N6x51guPKjvUvB9w8FFXExMdA/h
-	iPoJ9Up72B4Xsfz4OD2MXpSZQFCYb/mr5/lTUlMo7ZiB8l9XmWV9ZH+V2cMnCE3OBe8PH9iy6oQ
-	WP6SEf4z5BtTc7Ibi1yentUcCBA0RhYdqWR8FxJ+qKTM8KdW+iWnPcuAMnFWexjTtlaL0t6nVfM
-	+KgJ00aN8/edOl6dayiLpqISsAk5ivJUwZTtGcr712Wq+hZ5UrPrRShDRaOz+eMJC5NnE4rmP66
-	qKvXcNziAEMFf+wN+If/jZ4Q+nc=
-X-Received: by 2002:a05:6938:a093:10b0:c21:3c4e:cb8e with SMTP id a640c23a62f3a-c246a654f43mr1785408866b.12.1787512333931;
-        Sun, 23 Aug 2026 12:12:13 -0700 (PDT)
-Received: from localhost (nat-icclus-192-26-29-3.epfl.ch. [192.26.29.3])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c24962bd8fasm1270648766b.28.2026.08.23.12.12.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 23 Aug 2026 12:12:13 -0700 (PDT)
+	s=arc-20240116; t=1787513590; c=relaxed/simple;
+	bh=Wn07tO4tEQJGFN8jhs7v95AZI924gQZoyCqH1pLCdoc=;
+	h=Message-ID:Date:Mime-Version:From:To:Cc:Subject:Content-Type; b=WpfKTuxoKAGjC/+GHHHokKQjiA7DkcKinaZ+ZIb535Yj239ZJqfIoxRwIrA42E1OtWn1zHL/jmzFsCsj3uuExbFsfloEUnTAcLHw3VDyP5KrTcoaf8mbcRHv8Q+UJARFSkUgl88SHHixt2fAqaOx7Jx2ASYn0P6budSBZbaeHjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4hSkj65XrSz8R03f;
+	Mon, 24 Aug 2026 03:32:58 +0800 (CST)
+Received: from njy2app02.zte.com.cn ([10.40.13.116])
+	by mse-fl2.zte.com.cn with SMTP id 67NJWjGF020919;
+	Mon, 24 Aug 2026 03:32:45 +0800 (+08)
+	(envelope-from han.junyang@zte.com.cn)
+Received: from mapi (njy2app02[null])
+	by mapi (Zmail) with MAPI id mid204;
+	Mon, 24 Aug 2026 03:32:49 +0800 (CST)
+X-Zmail-TransId: 2afa6a8b4ae1b5f-29569
+X-Mailer: Zmail v1.0
+Message-ID: <20260824033249934VsArgTPOU_qew94PPABbD@zte.com.cn>
+Date: Mon, 24 Aug 2026 03:32:49 +0800 (CST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 23 Aug 2026 21:12:12 +0200
-Message-Id: <DKWK8L9QBA37.2QGA0WNXIBV9C@gmail.com>
-From: "Kumar Kartikeya Dwivedi" <memxor@gmail.com>
-To: =?utf-8?q?J=C3=A9r=C3=A9my_Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>,
- <pablo@netfilter.org>, <fw@strlen.de>
-Cc: <phil@nwl.cc>, <netfilter-devel@vger.kernel.org>,
- <coreteam@netfilter.org>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>
-Subject: Re: [PATCH] netfilter: bpf: disallow conntrack kfuncs for token
- programs
-X-Mailer: aerc 0.21.0
-References: <20260822210945.1003967-2-Jeremy.Jean@oss.cyber.gouv.fr>
-In-Reply-To: <20260822210945.1003967-2-Jeremy.Jean@oss.cyber.gouv.fr>
+From: <han.junyang@zte.com.cn>
+To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <han.junyang@zte.com.cn>, <ran.ming@zte.com.cn>,
+        <han.chengfei@zte.com.cn>, <zhang.yanze@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIG5ldC1uZXh0IHYxIDAvM10gZGluZ2hhaTogZmlybXdhcmUgaGFuZHNoYWtlLCBNU0ktWCBpbnRlcnJ1cHRzIGFuZCBhc3luYyBldmVudCBxdWV1ZQ==?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl2.zte.com.cn 67NJWjGF020919
+X-TLS: YES
+X-ENVELOPE-SENDER: han.junyang@zte.com.cn
+X-SOURCE-IP: 10.5.228.133 unknown Mon, 24 Aug 2026 03:32:58 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A8B4AEA.000/4hSkj65XrSz8R03f
 
-On Sat Aug 22, 2026 at 11:09 PM CEST, J=C3=A9r=C3=A9my Jean wrote:
-> BPF tokens delegate BPF and network-admin capability checks to the token
-> owning user namespace. Conntrack kfuncs nevertheless accept a network
-> namespace ID relative to the program context without checking whether the
-> token has authority over the resolved namespace.
->
-> An XDP program attached to a veth in a child network namespace can use
-> the peer namespace ID for init_net. bpf_xdp_ct_alloc() then allocates an
-> entry in init_net, bpf_ct_insert_entry() publishes it, and the lookup and
-> mutation kfuncs can subsequently access that host state.
->
-> The verifier retains the token in prog->aux, but it cannot determine the
-> runtime namespace selected through bpf_ct_opts. Conservatively reject the
-> conntrack kfunc set for token-loaded programs. The kfunc interface is
-> explicitly unstable, and ordinary token-authorized XDP programs remain
-> available.
->
-> Fixes: caf8f28e036c ("bpf: Add BPF token support to BPF_PROG_LOAD command=
-")
-> Assisted-by: Codex:gpt-5
-> Signed-off-by: J=C3=A9r=C3=A9my Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+From: Junyang Han <han.junyang@zte.com.cn>
 
-So your solution is to just begin rejecting its use? Proper scoping and
-containerization of programs is a bigger project that needs more thought.
-It needs to be addressed properly across the API surface, we probably have
-several other helpers/kfuncs that have similar ns-unaware behavior.
+This series continues the DingHai PF driver bring-up on top of the
+probe skeleton and the BAR/PCI capability access already merged in
+net-next ("dinghai: add ZTE network driver support" and "dinghai:
+add hardware register access and PCI capability scanning").
 
-If we went on to simply reject each case programs using BPF tokens would
-basically become useless.
+Patch 1 makes the probe talk to the firmware for the first time: it
+waits for the version compatibility block to appear in BAR 0, checks
+the driver/firmware version contract and then waits for the RISC-V
+management core to finish booting, so later steps can talk to it.
+Firmware images predating the protocol are detected and skipped.
 
-pw-bot: cr
+Patch 2 allocates the fixed MSI-X vector layout of the device and
+manages the vectors in per-purpose pools. IRQs are reference counted
+so that several event queues can share one vector; delivery fans out
+through an atomic notifier chain attached to each IRQ.
 
-> [...]
+Patch 3 adds the event queue table and the first async event queue:
+it takes one vector from the async pool, reads the event id from the
+PF receive sub-channel of the BAR message area on interrupt and
+dispatches it to the per-event-type notifier chains of the table.
+
+Design note: struct zxdh_core_dev is shared by several core device
+types (PF, VF, SF, MPF) whose IRQ pool and event queue layouts
+differ, so the generic tables in the core only carry a private
+pointer, and each device type keeps its concrete layout local to its
+own source file. This series wires up the PF async part only; the
+remaining pools and queues grow with the series that use them.
+
+The BAR message channel handshake that tells the firmware which
+vectors to signal, the vq queue pairs and the remaining event queues
+follow in later series.
+
+Junyang Han (3):
+  dinghai: add firmware version check and RISC-V readiness polling
+  dinghai: add MSI-X interrupt pools
+  dinghai: add async event queue for firmware notifications
+
+ drivers/net/ethernet/zte/dinghai/Makefile   |   2 +-
+ drivers/net/ethernet/zte/dinghai/en_pf.c    | 221 ++++++++++
+ drivers/net/ethernet/zte/dinghai/en_pf.h    |  57 +++
+ drivers/net/ethernet/zte/dinghai/zxdh_eq.c  | 145 +++++++
+ drivers/net/ethernet/zte/dinghai/zxdh_eq.h  |  61 +++
+ drivers/net/ethernet/zte/dinghai/zxdh_irq.c | 424 ++++++++++++++++++++
+ drivers/net/ethernet/zte/dinghai/zxdh_irq.h |  71 ++++
+ 7 files changed, 980 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_eq.c
+ create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_eq.h
+ create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_irq.c
+ create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_irq.h
+
+-- 
+2.27.0
