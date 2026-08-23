@@ -1,239 +1,208 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D6B1DDC1B
-	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 07:53:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845197E792
+	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 08:11:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787471583; cv=none; b=bQ0hJefq7tZ5c/R56qTN1lFsnjPv5uWmJu94QD8aHAVBjBDuqhQuXoGYqU3hbydzYTql/4KPvJsA9IEdIo+/EJT0gRUYZKRkTB/rb9UyKyUPSDUJva0FLKMVZV2LBTiBST75Re30GtdwokmkQwdHLUJc2EfuH2wiDWO+Emq4/CY=
+	t=1787472704; cv=none; b=YrKXKnm0mtMe08FIjmSndnD5aKWrAU7C4SqVHz+QPzBVVQXZkuk+Px2UubtCJOsS7z/b+bH+NExQhss0ryh78oV1r44oQqc4SIykmk5a9SfZZdC6TbqTHV1TfAtAUEo6rKdxsEDhQ5NFxS2OAdOPOe+z5V2m7RnsHABxgw45F8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787471583; c=relaxed/simple;
-	bh=kuwQtewEk0kU1N04kRFQDlv5VR78QFEhkeU436zemzA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UA/aYbzBiWou9ZRMmIFvt8Q/LLehw0MVBUjiroi7kdv/i4EmYb7Ci5O+jp4FFF5rpVQBX7ite4sN8w0OzBIwu8cKLAQIoNil1l/FjkLvcylaJ6UZNb2W8o/I0O44yjR6+ReTw8jKYyt06jkrDWN00FyJn/fBbUzNLWYSG+Ud1h4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=plJijy2n; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1787472704; c=relaxed/simple;
+	bh=Rd4EE3XYzr7VSs/X+/vrVBS1ODg6CeHiRfdOAqi+ECU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XZZAdkbLqAdCLroU+nMkBVf2r/VkBB0eBuCxnsv9XgEoc0YKqRrUcNBHT3PpSvv8f2C6ZgucUhZ8IKRL1NlGehiwUms9dlQXUU+Kdd2kSqTFjB/DNntV/KDyBPeN3jq54y5e0DYx7a+QOjo13PxwLolc67slY0GIw8LlR7hbQWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j+9nyvFB; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="plJijy2n"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id B2DE61A17BE;
-	Sun, 23 Aug 2026 07:52:59 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7AE4460378;
-	Sun, 23 Aug 2026 07:52:59 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1525511C77E04;
-	Sun, 23 Aug 2026 09:52:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787471574; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=0fhUMIAyhHyUqTny7qIQebeim9hGmWBvshZ2J8DNqrQ=;
-	b=plJijy2n0SbryKMd9AR/5KgVmzUabWpxH7JMMgRN2K+TOZwa0S3GQqNsr776OnuQFQqjjk
-	aVCM5FvJl9w9Co/WAZvA5Jkjm56NEuv5SP4WoqB5NOp+46c/TA6svpMdpRG6NIAFXLd1Ga
-	TujJqqWbXPDpKOvIPRs+ZZyQxWT5vbKyzeRe5FWc3qTcu+O39VkxpZS+9opViyO3ejZyQn
-	XiPyN6yVSZ9ZB/p17VtqVxEQhh+Tg28QL8Me/zrX3oPIpf/WImc7HAurQOyqd//+BDISk6
-	7Q/udo9c/BOLVcL3i3BwX5Y0cSdjQfrqYEdF5F+qqdZY9JeNwhGVwOCViLdwzw==
-Message-ID: <44aa070c-830b-4d5e-bc02-cba5f10c585a@bootlin.com>
-Date: Sun, 23 Aug 2026 09:52:49 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j+9nyvFB"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-47de0093c42so1964280f8f.3
+        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 01:11:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787472699; x=1788077499; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=oAs8Os4guZZM4r4YhT9hwvHdJywXro3jgAjf2xZLwWU=;
+        b=j+9nyvFBOi8YeZlOuuszNEP1XIg5c2FgUIeskll2+yVB8ri/OGXHSH6V5QGkR6lE41
+         bY8eUMwSOtT6ZYTKU21xZ51gvvnmcLe2GvYe2b3Aw4ppVl63V2gyonV5iL9FxrtjTihd
+         aH0rubkHFEnlAwKzdUibRZzgn5VYFDP+H+Y1gI+nGfCYEfwpKp6A4uvVo39Go17TmA9a
+         lrW4G9FDYwZUfE4uR0tECgI+Zz3JrSTouV0AUGUQ5UDRr+I04AegwJ9OnxioPouPvzne
+         ibOBvyXWuKx+SxtEwvzgxp1J9t7+/5gboFwUp/jnvN8uX2QXJ5VMN26DgGqkFGZx5Qci
+         D8mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787472699; x=1788077499;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oAs8Os4guZZM4r4YhT9hwvHdJywXro3jgAjf2xZLwWU=;
+        b=Exe5J8sWmxY5kTrEgKG1AISA4hKEh7zVv+dRnutmA4jCoWo5DhAeDFrhgsARAX68J2
+         +HEbxOFsjmQHWX/k04Mz/J3Y6rd7dPV+4tPrxf1rPlkpW6VdKIQedHWr6wKCImMJhzgv
+         x9N6N9N2X5NYpPIF1cbTlze/sD0xa3hqkOfTNOQKY8P65YokRe1qMtvayED0JqQtf9J5
+         f6fs8Jv8HXSD0Uu+lVWcmiNX+xFVHHdzlPtmwdQHJbVmjC9D+SFuGiN6UffqAHS6YsV5
+         kyfaOBTnRzGBlYwBgtLK4jBUsZKbWQVXo9YLrGR+z8XJbm0uD8bPeqdoXb+8u6nI5/0Q
+         sdNg==
+X-Forwarded-Encrypted: i=1; AHgh+RpcbPjCStBVRh95U37V5F/GAtAU2n3DzryI5h9v06i7ofdrb9P1hdMsBOzmKR3KGIV9NvSMLt8=@vger.kernel.org
+X-Gm-Message-State: AFuF++lOWEdwbh9z1cM8JvU9d0fxdxF2h70kp3vAMB1+c6E165QYXCIt
+	Hjq2M6FKKqInT/DnlA2v6fJFkygcnIseSF5XIxrNWb627B1j4ycVOfuZ
+X-Gm-Gg: AR+sD137aHO+vNQy1Fg+7SkoH1xr9crAw2n9xNmPr/lrJD3Iw8izklmHRuBLQGOCNkf
+	jWiuTQMYFQuAAJ74o/Vyht+WTfCPX6Fte197YZIY4smvMrR2qVCGAizfeDQYFqhaUIRkZatAyyJ
+	hdy2fHP4Uf1swYubINjLZ3SM1xBnwfGmhpkvl4DSWL2DTl+2TBpTA8dUOpIPkw9lJqmfGljpyjI
+	c5YfDOVuANuKBP+Vri4bO4024N3nE6eues1vlnwiq1IPUVWIdN+dqRA+/wMXGgm72brnxwI0npx
+	Rg5CS8A7OcibM3kfmY40MPjPVxIdi454kE816tboCDYBcwnuVRow8Q/FjxmaQ7W2f6028s8v3dJ
+	2o2mt6Gj0GtCE95E3f7+lOJi3HP8wubD3UpyC1fRoH3RSmZBXt+DU4eMk5Au6BgXBMOeYVIogK7
+	gvKmrivCQ0UCZXMjyOpnOBeek/QUnbe+1gQOHLcQZnh5EE4VWLb953yTMgqg4IoPFbIDhhc6aGH
+	mThEp7LFozDQGXwn5BgLSJoow==
+X-Received: by 2002:a05:600c:4e4e:b0:499:b01e:911c with SMTP id 5b1f17b1804b1-499b830d697mr236154815e9.2.1787472698556;
+        Sun, 23 Aug 2026 01:11:38 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499c35a1aeasm46040645e9.12.2026.08.23.01.11.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Aug 2026 01:11:38 -0700 (PDT)
+Date: Sun, 23 Aug 2026 09:11:31 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Sergey Shtylyov <s.shtylyov@auroraos.dev>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ <linux-usb@vger.kernel.org>, <netdev@vger.kernel.org>
+Subject: Re: [PATCH] r8152: simplify loops in generic_ocp_{read,write}()
+Message-ID: <20260823091131.0254d6ab@pumpkin>
+In-Reply-To: <bf541361-3d57-4e53-8c67-78b474b420a2@auroraos.dev>
+References: <20260822202155.18632-1-s.shtylyov@auroraos.dev>
+	<bf541361-3d57-4e53-8c67-78b474b420a2@auroraos.dev>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 3/6] net: stmmac: Move double VLAN handling to a
- dedicated op
-To: Ovidiu Panait <ovidiu.panait.rb@renesas.com>, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- shuah@kernel.org, joabreu@synopsys.com, yi.fang.gan@intel.com,
- jun.ann.lai@intel.com
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kselftest@vger.kernel.org
-References: <20260821170959.79708-1-ovidiu.panait.rb@renesas.com>
- <20260821170959.79708-4-ovidiu.panait.rb@renesas.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260821170959.79708-4-ovidiu.panait.rb@renesas.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hi,
+On Sun, 23 Aug 2026 10:52:12 +0300
+Sergey Shtylyov <s.shtylyov@auroraos.dev> wrote:
 
-On 8/21/26 19:09, Ovidiu Panait wrote:
-> The double VLAN bits (EDVLP, ESVL, DOVLTC) are currently handled inside
-> update_vlan_hash(). This ties the double VLAN state to the hash filter
-> update, even though the two features are independent: hash filtering is
-> controlled by dma_cap.vlhash and double vlan by dma_cap.dvlan.
+> On 8/22/26 11:21 PM, Sergey Shtylyov wrote:
 > 
-> In preparation for removing double vlan support from dwmac4, move the
-> double vlan logic into a separate update_dvlan_state() VLAN operation.
+> > In generic_ocp_{read,write}(), the *while* loops look very strange:
+> > the last iteration is executed differently to the prior ones, doing
+> > some useless assignments before *break*. Move the code for the last
+> > iteration out of the loop bodies, dropping the pointless statements
+> > as well...
+> > 
+> > Found by Linux Verification Center (linuxtesting.org) with the Svace
+> > static analysis tool.
+> > 
+> > Signed-off-by: Sergey Shtylyov <s.shtylyov@auroraos.dev>  
 > 
-> Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-
-This is some nice code simplification, no more is_double everywhere, thanks!
-
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-
-Maxime
-
-> ---
-> v2 changes: None.
+>    Actually, scratch this patch -- it's not entirely correct... :-/
 > 
->  drivers/net/ethernet/stmicro/stmmac/hwif.h    |  6 ++-
->  .../net/ethernet/stmicro/stmmac/stmmac_main.c |  6 +--
->  .../net/ethernet/stmicro/stmmac/stmmac_vlan.c | 45 ++++++++-----------
->  3 files changed, 25 insertions(+), 32 deletions(-)
+> [...]> diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+> > index f61686433031..de9738bdce85 100644
+> > --- a/drivers/net/usb/r8152.c
+> > +++ b/drivers/net/usb/r8152.c
+> > @@ -1431,27 +1431,19 @@ static int generic_ocp_read(struct r8152 *tp, u16 index, u16 size,
+> >  	if ((u32)index + (u32)size > 0xffff)
+> >  		return -EPERM;
+> >  
+> > -	while (size) {
+> > -		if (size > limit) {
+> > -			ret = get_registers(tp, index, type, limit, data);
+> > -			if (ret < 0)
+> > -				break;
+> > -
+> > -			index += limit;
+> > -			data += limit;
+> > -			size -= limit;
+> > -		} else {
+> > -			ret = get_registers(tp, index, type, size, data);
+> > -			if (ret < 0)
+> > -				break;
+> > +	while (size > limit) {
+> > +		ret = get_registers(tp, index, type, limit, data);
+> > +		if (ret < 0)
+> > +			goto error1;
+> >  
+> > -			index += size;
+> > -			data += size;
+> > -			size = 0;
+> > -			break;
+> > -		}
+> > +		index += limit;
+> > +		data += limit;
+> > +		size -= limit;
+> >  	}
+> >    
 > 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-> index 6f26dbf95ce1..66837caafa84 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
-> +++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-> @@ -632,8 +632,8 @@ struct stmmac_est_ops {
->  
->  struct stmmac_vlan_ops {
->  	/* VLAN */
-> -	void (*update_vlan_hash)(struct mac_device_info *hw, u32 hash,
-> -				 bool is_double);
-> +	void (*update_vlan_hash)(struct mac_device_info *hw, u32 hash);
-> +	void (*update_dvlan_state)(struct mac_device_info *hw, bool enable);
->  	void (*enable_vlan)(struct mac_device_info *hw, u32 type);
->  	void (*rx_hw_vlan)(struct mac_device_info *hw, struct dma_desc *rx_desc,
->  			   struct sk_buff *skb);
-> @@ -650,6 +650,8 @@ struct stmmac_vlan_ops {
->  
->  #define stmmac_update_vlan_hash(__priv, __args...) \
->  	stmmac_do_void_callback(__priv, vlan, update_vlan_hash, __args)
-> +#define stmmac_update_dvlan_state(__priv, __args...) \
-> +	stmmac_do_void_callback(__priv, vlan, update_dvlan_state, __args)
->  #define stmmac_enable_vlan(__priv, __args...) \
->  	stmmac_do_void_callback(__priv, vlan, enable_vlan, __args)
->  #define stmmac_rx_hw_vlan(__priv, __args...) \
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 880cf3fab913..802f9e67a4bc 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -6820,10 +6820,10 @@ static int stmmac_vlan_update(struct stmmac_priv *priv, bool is_double)
->  	if (!netif_running(priv->dev))
->  		return 0;
->  
-> -	if (!priv->dma_cap.dvlan)
-> -		is_double = false;
-> +	if (priv->dma_cap.dvlan)
-> +		stmmac_update_dvlan_state(priv, priv->hw, is_double);
->  
-> -	return stmmac_update_vlan_hash(priv, priv->hw, hash, is_double);
-> +	return stmmac_update_vlan_hash(priv, priv->hw, hash);
->  }
->  
->  /* FIXME: This may need RXC to be running, but it may be called with BH
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
-> index 983a90cb9767..1e47ae62093e 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
-> @@ -161,8 +161,20 @@ static void vlan_restore_hw_rx_fltr(struct net_device *dev,
->  		vlan_write_filter(dev, hw, i, hw->vlan_filter[i]);
->  }
->  
-> -static void vlan_update_hash(struct mac_device_info *hw, u32 hash,
-> -			     bool is_double)
-> +static void vlan_update_dvlan_state(struct mac_device_info *hw, bool enable)
-> +{
-> +	void __iomem *ioaddr = hw->pcsr;
-> +	u32 value;
-> +
-> +	value = readl(ioaddr + VLAN_TAG);
-> +	if (enable)
-> +		value |= VLAN_EDVLP | VLAN_ESVL | VLAN_DOVLTC;
-> +	else
-> +		value &= ~(VLAN_EDVLP | VLAN_ESVL | VLAN_DOVLTC);
-> +	writel(value, ioaddr + VLAN_TAG);
-> +}
-> +
-> +static void vlan_update_hash(struct mac_device_info *hw, u32 hash)
->  {
->  	void __iomem *ioaddr = hw->pcsr;
->  	u32 value;
-> @@ -173,21 +185,9 @@ static void vlan_update_hash(struct mac_device_info *hw, u32 hash,
->  
->  	if (hash) {
->  		value |= VLAN_VTHM | VLAN_ETV;
-> -		if (is_double) {
-> -			value |= VLAN_EDVLP;
-> -			value |= VLAN_ESVL;
-> -			value |= VLAN_DOVLTC;
-> -		} else {
-> -			value &= ~VLAN_EDVLP;
-> -			value &= ~VLAN_ESVL;
-> -			value &= ~VLAN_DOVLTC;
-> -		}
-> -
->  		writel(value, ioaddr + VLAN_TAG);
->  	} else {
->  		value &= ~(VLAN_VTHM | VLAN_ETV);
-> -		value &= ~(VLAN_EDVLP | VLAN_ESVL);
-> -		value &= ~VLAN_DOVLTC;
->  		value &= ~VLAN_VID;
->  
->  		writel(value, ioaddr + VLAN_TAG);
-> @@ -236,8 +236,7 @@ static void vlan_set_hw_mode(struct mac_device_info *hw)
->  	writel(value, ioaddr + VLAN_TAG);
->  }
->  
-> -static void dwxgmac2_update_vlan_hash(struct mac_device_info *hw, u32 hash,
-> -				      bool is_double)
-> +static void dwxgmac2_update_vlan_hash(struct mac_device_info *hw, u32 hash)
->  {
->  	void __iomem *ioaddr = hw->pcsr;
->  
-> @@ -253,15 +252,6 @@ static void dwxgmac2_update_vlan_hash(struct mac_device_info *hw, u32 hash,
->  		value = readl(ioaddr + VLAN_TAG);
->  
->  		value |= VLAN_VTHM | VLAN_ETV;
-> -		if (is_double) {
-> -			value |= VLAN_EDVLP;
-> -			value |= VLAN_ESVL;
-> -			value |= VLAN_DOVLTC;
-> -		} else {
-> -			value &= ~VLAN_EDVLP;
-> -			value &= ~VLAN_ESVL;
-> -			value &= ~VLAN_DOVLTC;
-> -		}
->  
->  		value &= ~VLAN_VID;
->  		writel(value, ioaddr + VLAN_TAG);
-> @@ -275,8 +265,6 @@ static void dwxgmac2_update_vlan_hash(struct mac_device_info *hw, u32 hash,
->  		value = readl(ioaddr + VLAN_TAG);
->  
->  		value &= ~(VLAN_VTHM | VLAN_ETV);
-> -		value &= ~(VLAN_EDVLP | VLAN_ESVL);
-> -		value &= ~VLAN_DOVLTC;
->  		value &= ~VLAN_VID;
->  
->  		writel(value, ioaddr + VLAN_TAG);
-> @@ -285,6 +273,7 @@ static void dwxgmac2_update_vlan_hash(struct mac_device_info *hw, u32 hash,
->  
->  const struct stmmac_vlan_ops dwmac_vlan_ops = {
->  	.update_vlan_hash = vlan_update_hash,
-> +	.update_dvlan_state = vlan_update_dvlan_state,
->  	.enable_vlan = vlan_enable,
->  	.add_hw_vlan_rx_fltr = vlan_add_hw_rx_fltr,
->  	.del_hw_vlan_rx_fltr = vlan_del_hw_rx_fltr,
-> @@ -295,11 +284,13 @@ const struct stmmac_vlan_ops dwmac_vlan_ops = {
->  
->  const struct stmmac_vlan_ops dwxlgmac2_vlan_ops = {
->  	.update_vlan_hash = dwxgmac2_update_vlan_hash,
-> +	.update_dvlan_state = vlan_update_dvlan_state,
->  	.enable_vlan = vlan_enable,
->  };
->  
->  const struct stmmac_vlan_ops dwxgmac210_vlan_ops = {
->  	.update_vlan_hash = dwxgmac2_update_vlan_hash,
-> +	.update_dvlan_state = vlan_update_dvlan_state,
->  	.enable_vlan = vlan_enable,
->  	.add_hw_vlan_rx_fltr = vlan_add_hw_rx_fltr,
->  	.del_hw_vlan_rx_fltr = vlan_del_hw_rx_fltr,
+>    I forgot to check size for 0 here...
+
+I don't think it can be zero - assuming it isn't zero on entry.
+
+David
+
+> 
+> > +	ret = get_registers(tp, index, type, size, data);
+> > +
+> > +error1:
+> >  	if (ret == -ENODEV)
+> >  		rtl_set_unplug(tp);
+> >  
+> > @@ -1498,31 +1490,24 @@ static int generic_ocp_write(struct r8152 *tp, u16 index, u16 byteen,
+> >  		if (byen != BYTE_EN_DWORD)
+> >  			size -= 4;
+> >  
+> > -		while (size) {
+> > -			if (size > limit) {
+> > -				ret = set_registers(tp, index,
+> > -						    type | BYTE_EN_DWORD,
+> > -						    limit, data);
+> > -				if (ret < 0)
+> > -					goto error1;
+> > -
+> > -				index += limit;
+> > -				data += limit;
+> > -				size -= limit;
+> > -			} else {
+> > -				ret = set_registers(tp, index,
+> > -						    type | BYTE_EN_DWORD,
+> > -						    size, data);
+> > -				if (ret < 0)
+> > -					goto error1;
+> > -
+> > -				index += size;
+> > -				data += size;
+> > -				size = 0;
+> > -				break;
+> > -			}
+> > +		while (size > limit) {
+> > +			ret = set_registers(tp, index, type | BYTE_EN_DWORD,
+> > +					    limit, data);
+> > +			if (ret < 0)
+> > +				goto error1;
+> > +
+> > +			index += limit;
+> > +			data += limit;
+> > +			size -= limit;
+> >  		}
+> >    
+> 
+>    And here...
+> 
+> > +		ret = set_registers(tp, index, type | BYTE_EN_DWORD, size, data);
+> > +		if (ret < 0)
+> > +			goto error1;
+> > +
+> > +		index += size;
+> > +		data += size;
+> > +
+> >  		/* Set the last DWORD */
+> >  		if (byen != BYTE_EN_DWORD)
+> >  			ret = set_registers(tp, index, type | byen, 4, data);  
+> 
+> MBR, Sergey
+> 
+> 
 
