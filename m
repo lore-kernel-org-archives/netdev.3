@@ -1,111 +1,104 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214811E1024
-	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 00:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100631A23A6;
+	Sun, 23 Aug 2026 01:25:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787444572; cv=none; b=J2HRDQH8qV5SYM1mHRTd6jrW2jCArJlx82b7+LjWYhrZZnfzfngoawHKqkB1RZ1Jz/ZwwyjsHdPW5dgobquYF233VvrV2S6Mo1tUkpWZjxa9iFcfMXDBMBzymSSlb7gul0gq5eHIKSDU6UyzLUEU9oeJQ7hutB/zA9fLNxET270=
+	t=1787448304; cv=none; b=N92CwhITwkXhE4ZphSAB84SBgGRvgcciwkUi6o+GjC3KYbZiQdaoY9oLiP70V6kGjw9ByHIjptEP9YVrO1mNWzvVkxRAxVo1Bxk6ZmD1UNXNveED2yxL0Duemasz1nkzt+AxGcBHz8aQYEl0kNwlrFTN7mJS/61SAOZMZwRNXyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787444572; c=relaxed/simple;
-	bh=PnfycOpIeVLKHmflGiUF526cXqauQ3cReF2OjuRBrdk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bruwp7RKzs0wBjLAHuAqBpLENX182B69ipYbz10ic2vkfHZGCWr9Ktmfj67vlbyTdQ0AiBkuz9rFa4IJy3CUQnOdUi8n5LvLXDEmfk6dt6yHJUUa9w+8u1oOg9jK61KbvRy0jUiwJ60KnMzwYkHFz34ziViIkshwqYXpY/AUi+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=GVO2adbP; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
+	s=arc-20240116; t=1787448304; c=relaxed/simple;
+	bh=z6F4tVrcTTTgdabnuXXhg6zWCUz382I96CZfxslnjf0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MjPzTowG8XqjG+JjRhUTprdi5FQ1mVG1vrIysGA5B9uNJBJrEwZdDQygD9PfKKNQnyqCpW9mlMCdZrxC0dz/r5DK0o51i1zXpdz4lToR7MsJuUgyhSUFbneJqgu8y+ibgNg0XrsI47QppDVNmBsuRcphDYm5HTYog19P6yZYrIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=CFGKAAQ8; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="GVO2adbP"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c15cf78d1a2so258338266b.1
-        for <netdev@vger.kernel.org>; Sat, 22 Aug 2026 17:22:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1787444569; x=1788049369; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=PnfycOpIeVLKHmflGiUF526cXqauQ3cReF2OjuRBrdk=;
-        b=GVO2adbP3Rh+tY9bjOWmsUTnK6YUer80M6KbtIHfR5BACdryy5Qf+kqHko+5yXIOYj
-         DuoDS0aDtin/f9P2FsYsTrt++tXrMP8Yxyuqt+pCE6NcnKfZ2AVHHi0X386sQ2fPccSc
-         dzuLvWCgWDQC7ejBPXg/PDQvrmdDXQ/m31qeXUsEMuqL8oRQXcT5nHFKe/4QN7sNvVPj
-         691TQKh52gDGXw7cllPMnpLdNzTWtEt+0qv3lBOPNXqjMU4uQsnnzLEk8zUqM5+4v2XK
-         ylhnz0rHPxNF2NO6yZtplZ3ycwGagC0gvprES6CfVi/VLIfkX0mB5x9edoEbwcjW59a3
-         3ZWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787444569; x=1788049369;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PnfycOpIeVLKHmflGiUF526cXqauQ3cReF2OjuRBrdk=;
-        b=lc/IFL60YFIyHPsMoUxmR/c0hSjTS/7tdTW7ref9k6ObmgHHi0+2aSDx8MP/rgYVfk
-         rhjCOE39yoYbYNKfB+vPmYEB89vuUzo2XCVzuUKXo7nvsvhMRG9m5++JmEemMN5LjVKn
-         vpksXWXqNxSHcIS3atTYRNO5tVmENCccbw9GKA3FvzRv1sOaF41rESbsE37qHfGlKFNW
-         3E7juIQ0JSQ4mD40u7nhWUqNRuEWBJMw9Emd4NBeWV4pZF1C4wVOJ+gIq/DzNSMLXdct
-         te5fnkaty/gCsxq59jdqk8brqYSWpOeKqlds8Gylf7Xh2Vw25eIAnlNDEn4BX7/gxGDk
-         lp5A==
-X-Forwarded-Encrypted: i=1; AHgh+RqH/W52bspNABGnR1762mLWVpCl0Rl8qVGHCzayRh68Aoodc54oNAVDLXagVsHxI3F4IJdsMl0=@vger.kernel.org
-X-Gm-Message-State: AFuF++ms6YcTz38BW5gCQ6/Luo9cwytkLfsajN3pHs6JKwV6j4TFtPPA
-	rViRS3U1VlU67kVUC/9s1qePd6/RwMW7eZO2EwsogDrHU3lM/gref8UMtpTNQ477ioLkpTyVyGu
-	uzsYDnZ5KQA==
-X-Gm-Gg: AR+sD132D2HHYYM7Gz+ar/aRhWDMFrdyYLvrp4Eo99cApG7cVDTMKtdN5CbEZlo0aAl
-	qVdr+qJEMTMEwlJRf4733GSszaabTUZepQbS5BkE7vPDL/NDYG+wiIvU8mcxzMJq5SAWZWg2v4A
-	zojOoKaPp7RoAzCNwse61wl12H1R8lRCnp6JFGmntjieootCTAzhwwIDTyWq0uUJjE0Ez90wrmI
-	HV9soqSwsT86piMXpF1RQI55ppyLo+wR78OXbAph1kFKqpN9+yu5dV/mdH+ZG1DpKjmOHwfonCP
-	yoCbYEcdNb2AeR7vdd45AgLUjaDvbctOz36M5BKDhDrOOau/6ptUUf/xEhQ1bPHdBmUOerMosXj
-	4Bn6IiiQFxMbqPyC5Aj3XwROVGF82cTGyWWwceUBUwlo1auvsi5IWiHrWMOcm0DqJVXOX21h3WA
-	6Sn39af+OosgxH4mEjWjoj8RVNS7iEDN/IFWU45w/D1R+xCrSmZR+5dNBeIaJpLrOhPfUC291vH
-	i1GiDZZ
-X-Received: by 2002:a17:906:6a27:b0:c20:2eee:97be with SMTP id a640c23a62f3a-c246a33ed69mr1775593266b.7.1787444568708;
-        Sat, 22 Aug 2026 17:22:48 -0700 (PDT)
-Received: from ownbook.home.lex.la ([84.17.55.225])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c24968a2e42sm438394466b.59.2026.08.22.17.22.46
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 22 Aug 2026 17:22:48 -0700 (PDT)
-From: Aleksei Sviridkin <f@lex.la>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: "Chester A . Unal" <chester.a.unal@arinc9.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="CFGKAAQ8"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=/pFVgLB2egbbiOgju3ns7KhA9TuQVN0MC655HT5IVfs=; b=CFGKAAQ83dVVAZC1EqUEYK4RFA
+	wRWrhMiSXzMJW0eeHjMKdRICDasxR/6S/Vb399IUAzaFTXhKHOqLECwk+xGGxs6CENRM3syunlSvq
+	8B5vM7x9kSDlpNifBIy3hgqIlULcAWsR2jAJBb1wewnvTk0UJ280fZj1G+d2YfmWpAes=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wxwx7-0015aB-Sv; Sun, 23 Aug 2026 03:24:49 +0200
+Date: Sun, 23 Aug 2026 03:24:49 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Aleksei Sviridkin <f@lex.la>
+Cc: Vladimir Oltean <olteanv@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	Russell King <linux@armlinux.org.uk>,
-	Qingfang Deng <dqfext@gmail.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Aleksei Sviridkin <f@lex.la>
-Subject: Re: [PATCH net 1/2] net: dsa: mt7530: populate lpi_interfaces to fix EEE support
-Date: Sun, 23 Aug 2026 03:22:46 +0300
-Message-ID: <20260823002246.28455-1-f@lex.la>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <c501d5f8-015c-4ce1-87ee-c4cdaea57f7e@lunn.ch>
-References: <20260822195252.2934-1-f@lex.la> <20260822195252.2934-2-f@lex.la> <c501d5f8-015c-4ce1-87ee-c4cdaea57f7e@lunn.ch>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 3/3] net: dsa: connect a late-arriving PHY at
+ ifup
+Message-ID: <c712cd5d-d4bd-413f-82a8-6303ff3e6526@lunn.ch>
+References: <20260822155259.87146-1-f@lex.la>
+ <20260822155259.87146-4-f@lex.la>
+ <9557daed-f039-434a-ae64-ac849b9860be@lunn.ch>
+ <20260823000549.6095-1-f@lex.la>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260823000549.6095-1-f@lex.la>
 
-> This is very verbose. Is it AI generated? Please revise it and make it
-> suitable for a human.
+On Sun, Aug 23, 2026 at 03:05:49AM +0300, Aleksei Sviridkin wrote:
+> > The problem is, this is not guaranteed to work. The driver might still
+> > not be loaded, or it is still downloading firmware to the PHY.
+> 
+> These are two separate halves, and the driver can only reach one of
+> them. When the firmware is late, your scheme works, and I want to do it
+> as a follow-up. When the module itself is still on an unmounted rootfs,
+> there is no probe to return success from, so the connect at switch
+> setup still gets the genphy fallback and the port is gone for good.
 
-AI assisted, English is not my first language and I lean on it for
-prose. The verbosity is my fault though, I reviewed and approved every
-word. v2 will carry the Why only and move the mechanism notes below
-the scissors.
+How about making the DSA driver depend on the PHY. That would be much
+simpler. Both are then builtin or bother are modules, so both should
+be available at the same time. You might also be able to use
+MODULE_SOFTDEP() to get dracut to put the PHY module in the initramfs.
 
-> It is normal to assume phylink is correct. Now, if you do find it
-> doing the wrong thing, we want to know so we can fix it. So if you do
-> want to validate it here, make it very noisy if the validation fails.
+> > I think you need to look at the PHY driver. Make its probe function
+> > return success, but start a thread downloading the firmware. While
+> > firmware is downloading, either soft_reset() or config_init() needs to
+> > block.
+> 
+> I would rather not block: config_init runs inside phy_attach_direct, so
+> on a DSA switch the blocked port holds up the whole switch probe and
+> every other port with it.
 
-That note was about a possible defensive check in
-mt753x_phylink_mac_enable_tx_lpi(), not something this series adds. If
-I ever send it, it will warn loudly.
+Given the poor hardware design, your choices are limited. We really
+try hard not to put workarounds for bad designs in core code. We try
+to hide it within the drivers. So it might be the whole switch needs
+to wait.
+
+> For the follow-up I want to attach with the
+> real driver's features immediately and keep the link down until the
+> firmware lands, then trigger aneg, the way an SFP port sits linkless
+> without a module.
+
+SFPs are different. The Linux code was designed from the ground up to
+handle hot plugable devices. phylib itself is much older, and does not
+handle hot plugable PHYs. The SFP case is made easier by the fact the
+MDIO bus is hot plugged at the same time as the PHY. So from phylibs
+perspective, it is not hot plugged.
+
+> aquantia and mscc load firmware from probe too, so a phylib helper
+> for this would have three users.
+
+I agree a general solution would be nice, and people have put some
+thought into trying to find one, but it is not easy.
+
+	Andrew
