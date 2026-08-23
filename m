@@ -1,35 +1,38 @@
 Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC61739E18F;
-	Sun, 23 Aug 2026 19:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ADF2383C85;
+	Sun, 23 Aug 2026 19:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787513590; cv=none; b=KwgvVs8Z+EDFwZ9woujibvfqyZyMivpVJBhyW8BJIikdM1EcxDCivR4IPl/y8a4VwomhlEdTQMIGX52XFDYEh7tGOCQA9SkUxy8X4m3LwB73Ck1422F8aL34zKHpIORIt3CVcLpbS3z/mng6VZlAREo8q0U38QFAJvAqRaQSU7k=
+	t=1787513746; cv=none; b=aznEDjvXBcwPCjqPWdMoSbHnSong5Lu2r0lFRIrrAKwe4yX2JF4CpnSLiPtYZPQa0tYgr+38H7efa44SirdFByAKWeP18TrgfaqMiRD8KtfxB9r7CB/mrJTfRGChcSNElf3Np7rCue9mJi5Gtsfl3LrRSZnkLqSufK7jPVuM4Ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787513590; c=relaxed/simple;
-	bh=Wn07tO4tEQJGFN8jhs7v95AZI924gQZoyCqH1pLCdoc=;
-	h=Message-ID:Date:Mime-Version:From:To:Cc:Subject:Content-Type; b=WpfKTuxoKAGjC/+GHHHokKQjiA7DkcKinaZ+ZIb535Yj239ZJqfIoxRwIrA42E1OtWn1zHL/jmzFsCsj3uuExbFsfloEUnTAcLHw3VDyP5KrTcoaf8mbcRHv8Q+UJARFSkUgl88SHHixt2fAqaOx7Jx2ASYn0P6budSBZbaeHjQ=
+	s=arc-20240116; t=1787513746; c=relaxed/simple;
+	bh=i8m8Zm44SiLLp/+YfQXWpzXz3v1kX0ua9zOKSWvMcoM=;
+	h=Message-ID:In-Reply-To:References:Date:Mime-Version:From:To:Cc:
+	 Subject:Content-Type; b=ZRZXmV2ehhV4dOxrONCEMN6okcBeeYO2RIphYBewweu97vodih4fkBGk8nsnqXU2H9hgtfIU2owymZYRbXnXOEIUdZKVcBX6Cpb444KDeDGtZ4EmB3bC/bUF/0xxyZcmBIBU2kIbUQ0oHMaMnmX4PIRFcEY22JiiNPaM0wJUEZ0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.35
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4hSkj65XrSz8R03f;
-	Mon, 24 Aug 2026 03:32:58 +0800 (CST)
-Received: from njy2app02.zte.com.cn ([10.40.13.116])
-	by mse-fl2.zte.com.cn with SMTP id 67NJWjGF020919;
-	Mon, 24 Aug 2026 03:32:45 +0800 (+08)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4hSkmG41SCz8Xrkn;
+	Mon, 24 Aug 2026 03:35:42 +0800 (CST)
+Received: from njy2app03.zte.com.cn ([10.40.13.14])
+	by mse-fl1.zte.com.cn with SMTP id 67NJZXic085811;
+	Mon, 24 Aug 2026 03:35:33 +0800 (+08)
 	(envelope-from han.junyang@zte.com.cn)
-Received: from mapi (njy2app02[null])
+Received: from mapi (njy2app03[null])
 	by mapi (Zmail) with MAPI id mid204;
-	Mon, 24 Aug 2026 03:32:49 +0800 (CST)
-X-Zmail-TransId: 2afa6a8b4ae1b5f-29569
+	Mon, 24 Aug 2026 03:35:38 +0800 (CST)
+X-Zmail-TransId: 2afb6a8b4b8ae6c-27878
 X-Mailer: Zmail v1.0
-Message-ID: <20260824033249934VsArgTPOU_qew94PPABbD@zte.com.cn>
-Date: Mon, 24 Aug 2026 03:32:49 +0800 (CST)
+Message-ID: <20260824033538020rXU4GiMrh05w37DWs5k7v@zte.com.cn>
+In-Reply-To: <20260824033249934VsArgTPOU_qew94PPABbD@zte.com.cn>
+References: 20260824033249934VsArgTPOU_qew94PPABbD@zte.com.cn
+Date: Mon, 24 Aug 2026 03:35:38 +0800 (CST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,68 +45,229 @@ To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
 Cc: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
         <han.junyang@zte.com.cn>, <ran.ming@zte.com.cn>,
         <han.chengfei@zte.com.cn>, <zhang.yanze@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIG5ldC1uZXh0IHYxIDAvM10gZGluZ2hhaTogZmlybXdhcmUgaGFuZHNoYWtlLCBNU0ktWCBpbnRlcnJ1cHRzIGFuZCBhc3luYyBldmVudCBxdWV1ZQ==?=
+Subject: =?UTF-8?B?W1BBVENIIG5ldC1uZXh0IHYxIDEvM10gZGluZ2hhaTogYWRkIGZpcm13YXJlIHZlcnNpb24gY2hlY2sgYW5kCiBSSVNDLVYgcmVhZGluZXNzIHBvbGxpbmc=?=
 Content-Type: text/plain;
 	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 67NJWjGF020919
+X-MAIL:mse-fl1.zte.com.cn 67NJZXic085811
 X-TLS: YES
 X-ENVELOPE-SENDER: han.junyang@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Mon, 24 Aug 2026 03:32:58 +0800
+X-SOURCE-IP: 10.5.228.132 unknown Mon, 24 Aug 2026 03:35:42 +0800
 X-CLEAN: YES
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A8B4AEA.000/4hSkj65XrSz8R03f
+X-Fangmail-MID-QID: 6A8B4B8E.000/4hSkmG41SCz8Xrkn
 
 From: Junyang Han <han.junyang@zte.com.cn>
 
-This series continues the DingHai PF driver bring-up on top of the
-probe skeleton and the BAR/PCI capability access already merged in
-net-next ("dinghai: add ZTE network driver support" and "dinghai:
-add hardware register access and PCI capability scanning").
+The DingHai firmware publishes a version compatibility block and a
+RISC-V health buffer at fixed offsets within BAR 0.
 
-Patch 1 makes the probe talk to the firmware for the first time: it
-waits for the version compatibility block to appear in BAR 0, checks
-the driver/firmware version contract and then waits for the RISC-V
-management core to finish booting, so later steps can talk to it.
-Firmware images predating the protocol are detected and skipped.
+After the PCI capabilities are mapped, poll the compatibility block
+until the firmware populates it (the region reads as all ones until
+then) and verify the driver/firmware version contract. Then wait for
+the RISC-V management core to set its power-on flag in the health
+buffer before the rest of the probe continues.
 
-Patch 2 allocates the fixed MSI-X vector layout of the device and
-manages the vectors in per-purpose pools. IRQs are reference counted
-so that several event queues can share one vector; delivery fans out
-through an atomic notifier chain attached to each IRQ.
+Firmware images predating the health buffer protocol (health version
+other than 1 and patch level below ZXDH_HPIRQ_PATCH) skip the
+readiness wait.
 
-Patch 3 adds the event queue table and the first async event queue:
-it takes one vector from the async pool, reads the event id from the
-PF receive sub-channel of the BAR message area on interrupt and
-dispatches it to the per-event-type notifier chains of the table.
+Signed-off-by: Junyang Han <han.junyang@zte.com.cn>
+---
+ drivers/net/ethernet/zte/dinghai/en_pf.c | 103 +++++++++++++++++++++++
+ drivers/net/ethernet/zte/dinghai/en_pf.h |  46 ++++++++++
+ 2 files changed, 149 insertions(+)
 
-Design note: struct zxdh_core_dev is shared by several core device
-types (PF, VF, SF, MPF) whose IRQ pool and event queue layouts
-differ, so the generic tables in the core only carry a private
-pointer, and each device type keeps its concrete layout local to its
-own source file. This series wires up the PF async part only; the
-remaining pools and queues grow with the series that use them.
+diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.c b/drivers/net/ethernet/zte/dinghai/en_pf.c
+index 86d437408820..232d95420d2e 100644
+--- a/drivers/net/ethernet/zte/dinghai/en_pf.c
++++ b/drivers/net/ethernet/zte/dinghai/en_pf.c
+@@ -6,6 +6,8 @@
 
-The BAR message channel handshake that tells the firmware which
-vectors to signal, the vq queue pairs and the remaining event queues
-follow in later series.
+ #include <linux/module.h>
+ #include <linux/pci.h>
++#include <linux/delay.h>
++#include <linux/io.h>
+ #include <net/devlink.h>
+ #include <linux/dma-mapping.h>
+ #include "en_pf.h"
+@@ -369,6 +371,95 @@ int zxdh_pf_modern_cfg_init(struct zxdh_core_dev *zxdh_dev)
+ 	return ret;
+ }
 
-Junyang Han (3):
-  dinghai: add firmware version check and RISC-V readiness polling
-  dinghai: add MSI-X interrupt pools
-  dinghai: add async event queue for firmware notifications
++/* Read the firmware version block and verify the driver/firmware
++ * version contract.
++ */
++static int zxdh_pf_fw_compat_check(struct zxdh_core_dev *zxdh_dev)
++{
++	struct zxdh_pf_dev *pf_dev = zxdh_dev->priv;
++	struct zxdh_fw_compat *fw_compat;
++	void __iomem *compat_base;
++	int i;
++
++	fw_compat = &pf_dev->fw_compat;
++	compat_base = pf_dev->pci_ioremap_addr[0] + ZXDH_FW_COMPAT_OFFSET;
++
++	/* The region reads as all ones until the firmware populates it at
++	 * the end of its boot; allow up to 200 s for a cold boot.
++	 */
++	for (i = 0; i < ZXDH_FW_COMPAT_TIMEOUT_SEC; i++) {
++		if (ioread32(compat_base) != 0xffffffffU)
++			break;
++		msleep(MSEC_PER_SEC);
++	}
++
++	/* Firmware predating the compatibility region keeps the erased
++	 * pattern, which fails the module id check below and defers the
++	 * decision to the readiness wait.
++	 */
++	ioread32_rep(compat_base, fw_compat, sizeof(*fw_compat) / 4);
++
++	if (fw_compat->module_id != ZXDH_MODULE_ID) {
++		dev_info(zxdh_dev->device,
++			 "unknown module id %u, skip fw compat check\n",
++			 fw_compat->module_id);
++		return 0;
++	}
++
++	if (fw_compat->major != ZXDH_MAJOR) {
++		dev_err(zxdh_dev->device,
++			"driver major %u incompatible with firmware major %u\n",
++			ZXDH_MAJOR, fw_compat->major);
++		return -EINVAL;
++	}
++
++	if (fw_compat->fw_minor < ZXDH_FW_MINOR) {
++		dev_err(zxdh_dev->device,
++			"firmware fw_minor %d older than required %u\n",
++			fw_compat->fw_minor, ZXDH_FW_MINOR);
++		return -EINVAL;
++	}
++
++	if (fw_compat->drv_minor > ZXDH_DRV_MINOR) {
++		dev_err(zxdh_dev->device,
++			"driver drv_minor %u older than required by firmware %u\n",
++			ZXDH_DRV_MINOR, fw_compat->drv_minor);
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++/* Wait for the RISC-V management core of the firmware to finish
++ * booting, so that later probe steps can talk to it.
++ */
++static int zxdh_pf_wait_riscv_ready(struct zxdh_core_dev *zxdh_dev)
++{
++	struct zxdh_pf_dev *pf_dev = zxdh_dev->priv;
++	struct zxdh_health_buffer __iomem *hb;
++	u8 health_version;
++	int i;
++
++	hb = pf_dev->pci_ioremap_addr[0] + ZXDH_RISCV_HB_OFFSET;
++	health_version = ioread8(&hb->health_version);
++
++	/* Firmware predating the health buffer protocol has neither a
++	 * valid version byte nor a power-on flag to wait for.
++	 */
++	if (health_version != 1 &&
++	    pf_dev->fw_compat.patch < ZXDH_HPIRQ_PATCH)
++		return 0;
++
++	for (i = 0; i < ZXDH_RISCV_READY_TIMEOUT_SEC; i++) {
++		if (ioread8(&hb->riscv_power_on) == 1)
++			return 0;
++		msleep(MSEC_PER_SEC);
++	}
++
++	dev_err(zxdh_dev->device, "timed out waiting for riscv power on\n");
++	return -ETIMEDOUT;
++}
++
+ static int zxdh_pf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ {
+ 	struct zxdh_core_dev *zxdh_dev;
+@@ -405,6 +496,18 @@ static int zxdh_pf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		goto err_cfg_init;
+ 	}
 
- drivers/net/ethernet/zte/dinghai/Makefile   |   2 +-
- drivers/net/ethernet/zte/dinghai/en_pf.c    | 221 ++++++++++
- drivers/net/ethernet/zte/dinghai/en_pf.h    |  57 +++
- drivers/net/ethernet/zte/dinghai/zxdh_eq.c  | 145 +++++++
- drivers/net/ethernet/zte/dinghai/zxdh_eq.h  |  61 +++
- drivers/net/ethernet/zte/dinghai/zxdh_irq.c | 424 ++++++++++++++++++++
- drivers/net/ethernet/zte/dinghai/zxdh_irq.h |  71 ++++
- 7 files changed, 980 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_eq.c
- create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_eq.h
- create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_irq.c
- create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_irq.h
++	ret = zxdh_pf_fw_compat_check(zxdh_dev);
++	if (ret) {
++		dev_err(&pdev->dev, "zxdh_pf_fw_compat_check failed: %d\n", ret);
++		goto err_cfg_init;
++	}
++
++	ret = zxdh_pf_wait_riscv_ready(zxdh_dev);
++	if (ret) {
++		dev_err(&pdev->dev, "zxdh_pf_wait_riscv_ready failed: %d\n", ret);
++		goto err_cfg_init;
++	}
++
+ 	devlink_register(devlink);
 
+ 	return 0;
+diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.h b/drivers/net/ethernet/zte/dinghai/en_pf.h
+index 7373dee8d1a9..a1e2b24d861d 100644
+--- a/drivers/net/ethernet/zte/dinghai/en_pf.h
++++ b/drivers/net/ethernet/zte/dinghai/en_pf.h
+@@ -29,6 +29,51 @@
+ #define ZXDH_PF_ALIGN2			2
+ #define ZXDH_PF_MAP_MINLEN2		2
+
++/* Fixed offsets of the firmware interface regions within BAR 0. */
++#define ZXDH_RISCV_HB_OFFSET	0x5300
++#define ZXDH_FW_COMPAT_OFFSET	0x5400
++
++/* Driver/firmware version contract. The firmware publishes its side of
++ * the contract in the region at ZXDH_FW_COMPAT_OFFSET.
++ */
++#define ZXDH_MODULE_ID		1
++#define ZXDH_MAJOR		1
++#define ZXDH_FW_MINOR		0
++#define ZXDH_DRV_MINOR		0
++/* Firmware patch level that introduced the health buffer protocol. */
++#define ZXDH_HPIRQ_PATCH	4
++
++#define ZXDH_FW_COMPAT_TIMEOUT_SEC	200
++#define ZXDH_RISCV_READY_TIMEOUT_SEC	40
++
++/* Firmware version compatibility block at ZXDH_FW_COMPAT_OFFSET.
++ * Copied out with ioread32_rep(), which converts from little-endian.
++ */
++struct zxdh_fw_compat {
++	u8 module_id;
++	u8 major;
++	s8 fw_minor;
++	u8 drv_minor;
++	u16 patch;
++	u16 rsv;
++} __packed;
++
++/* Health buffer at ZXDH_RISCV_HB_OFFSET, maintained by the RISC-V
++ * management core of the firmware. Fields are read through ioread*().
++ */
++struct zxdh_health_buffer {
++	u32 synd;		/* Bitmask of active syndrome flags. */
++	u32 health_counter;	/* Incremented heartbeat counter. */
++	u8 status;
++	u8 rfr;
++	u8 fw_exception;
++	u8 riscv_power_on;	/* Set to 1 once the core finished booting. */
++	u8 fw_version[32];
++	u8 pf_status[5];
++	u8 health_version;	/* Health buffer protocol version. */
++	u8 rsv1[30];
++} __packed;
++
+ struct zxdh_core_dev {
+ 	struct device *device;
+ 	struct pci_dev *pdev;
+@@ -54,6 +99,7 @@ struct zxdh_pf_dev {
+ 	s32 modern_bars;
+ 	void __iomem *pci_ioremap_addr[6];
+ 	u32 dev_cfg_bar_off;
++	struct zxdh_fw_compat fw_compat;
+ };
+
+ void *zxdh_core_alloc_priv(struct zxdh_core_dev *zxdh_dev, size_t size);
 -- 
 2.27.0
