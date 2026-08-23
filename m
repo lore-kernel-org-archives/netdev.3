@@ -1,34 +1,34 @@
-Received: from mta1.migadu.com (out-135.mta1.migadu.com [95.215.58.135])
+Received: from mta0.migadu.com (out-137.mta0.migadu.com [91.218.175.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32EEB25D530
-	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 03:56:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.135
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A6925D530
+	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 03:56:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787457403; cv=none; b=DWHKZfDI6ZVtBziJkcoBqugnckQKbH4ESAjrs6OHeN3r7o37MDKkecdK7jJ6xfL+58QOz+n6gmhJs60eddekKq0Oo3H4fvHVhaLzu3GvLfexrkoy59XDUSZZNixVfuK3XUyLSkzD0oB6sZVIGO7K8fFnigb/QAmsbji7m7wM+b4=
+	t=1787457410; cv=none; b=lkK6nVGbD1SMsnE/tNW+MebHjU5HQMPPgJQmlxRl7dDxL9sjrG6W/AZNg5eukq9oJP3KoECF9G1JkaJpdtATHzQc5pCPxgbl3sPRbxTqALqQ8PrBPQ5bR+2R9Tki0HQhwwrnxkCDcp2AvDPOHpKt7bMjlCQf/1RxldGgr+crcaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787457403; c=relaxed/simple;
-	bh=kceR1WD9rU0gLSlXC/8jFxD0IxMnAmNomzwTUhSuZpg=;
+	s=arc-20240116; t=1787457410; c=relaxed/simple;
+	bh=Pibs+c7tZQLPitx0IfvSOl7lc/8t3c9y/LRGCRLWcAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jZ3j92flVI+xJIRtL3Djrm5HW8D0THWtBzlqxvt59WJsoI6HpWYf42R+WeAN1N8x8sOHIaJ4JOS+xJeyKUN/GJjKa1DAEMPG9wYSLbbovfD5T2B6Yh4l77ljaS2jKzNrIJEOH09eSpwEqpYgM3ToD58elO2+GdxJ8aga3+xGgBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=OZ/Jj2Dp; arc=none smtp.client-ip=95.215.58.135
+	 MIME-Version; b=QkRvTBPzUvIopAyki/N8d2MA4i0wMssGP8Q91gdhTWct7Wk8QuQIVwot4I/3La7ankfvNR2KqASDht72+LMyPZTtstPHnjuFtomemBBdtwOGPa1/2T4BfX+Ijj/M5HV4qHKu0qQR74a9iryHdOAEED/kgHU5zUh2uJ3W70gEp4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=SJWJ5bg/; arc=none smtp.client-ip=91.218.175.137
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="OZ/Jj2Dp"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="SJWJ5bg/"
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=kceR1WD9rU0gLSlXC/8jFxD0IxMnAmNomzwTUhSuZpg=;
+DKIM-Signature: a=rsa-sha256; bh=Pibs+c7tZQLPitx0IfvSOl7lc/8t3c9y/LRGCRLWcAg=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787457400; v=1; x=1788062200;
- b=OZ/Jj2DpaNGFLDO2frg6VbFamdIdTSE6bH9koxfnkySpX9UXlWaBI4lAftYyT7BZOC1THMLu
- Cw5CRvmAT3M1WUjkHQnD4EGqf2lDXMfOy+hczfBjAKR3dER4gii/gaJs9/aT0K3BKq0xvr8I6Em
- 3RbZPnonVAm/Bi4k+S+8qd6A=
+ t=1787457404; v=1; x=1788062204;
+ b=SJWJ5bg/DacWfs0bQCrLJRIXuTEbFdYJ5bJbeJYIPvwW4YC5ptloUuKzqLGWaZkvF05c9xz2
+ aCAGlDvBoMcgCCIOliNc/cbws3iX4Xvio0g0Hi3r8xK+lH9WaLkC2WnUSDPYzRD0fNMtEuvvMZr
+ GsfFuYZYAu7Xzizpiczm1mP4=
 X-Envelope-To: netdev@vger.kernel.org
 Received: from localhost.localdomain (116.128.244.171)
-	by smtp.migadu.com with ESMTPS id c291d9e0db372878;
-	Sun, 23 Aug 2026 03:56:40 +0000
-X-Mizu-Trace-ID: c291d9e0db372878
+	by smtp.migadu.com with ESMTPS id 01a76de9a4044b4a;
+	Sun, 23 Aug 2026 03:56:44 +0000
+X-Mizu-Trace-ID: 01a76de9a4044b4a
 X-Migadu-Flow: FLOW_OUT
 From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
 To: netdev@vger.kernel.org,
@@ -45,9 +45,9 @@ Cc: hkallweit1@gmail.com,
 	pabeni@redhat.com,
 	linux-kernel@vger.kernel.org,
 	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-Subject: [PATCH net v5 3/6] net: phy: set PHY_READY after LED setup
-Date: Sun, 23 Aug 2026 11:55:57 +0800
-Message-ID: <20260823035600.188864-4-xuanqiang.luo@linux.dev>
+Subject: [PATCH net v5 4/6] net: phy: call driver remove when core initialization fails
+Date: Sun, 23 Aug 2026 11:55:58 +0800
+Message-ID: <20260823035600.188864-5-xuanqiang.luo@linux.dev>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260823035600.188864-1-xuanqiang.luo@linux.dev>
 References: <20260823035600.188864-1-xuanqiang.luo@linux.dev>
@@ -61,43 +61,54 @@ Content-Transfer-Encoding: 8bit
 
 From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-phy_probe() sets PHY_READY before calling of_phy_leds(). If LED setup
-fails, the error path releases the initialized resources while the PHY
-state remains READY even though probing failed.
+phy_probe() may fail while querying features or completing other core
+initialization after the PHY driver probe callback has succeeded. The
+driver core does not run the remove path after a probe error, so
+resources that the PHY driver releases in its remove callback are
+leaked.
 
-Set PHY_READY only after LED setup succeeds.
+Call the PHY driver remove callback on these failures.
 
-Fixes: 01e5b728e9e4 ("net: phy: Add a binding for PHY LEDs")
+Fixes: efbdfdc29bdd ("net: phy: Add support for asking the PHY its abilities")
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 ---
- drivers/net/phy/phy_device.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/phy/phy_device.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 4b9b2300422fb..891df46d0597f 100644
+index 891df46d0597f..691396794decd 100644
 --- a/drivers/net/phy/phy_device.c
 +++ b/drivers/net/phy/phy_device.c
-@@ -3824,9 +3824,6 @@ static int phy_probe(struct device *dev)
- 				 phydev->supported);
- 	}
+@@ -3758,7 +3758,7 @@ static int phy_probe(struct device *dev)
+ 		err = genphy_read_abilities(phydev);
  
--	/* Set the state to READY by default */
--	phydev->state = PHY_READY;
--
- 	/* Register the PHY LED triggers */
- 	if (!phydev->is_on_sfp_module)
- 		phy_led_triggers_register(phydev);
-@@ -3840,6 +3837,9 @@ static int phy_probe(struct device *dev)
- 			goto out_unreg_led_triggers;
- 	}
+ 	if (err)
+-		goto out_reset;
++		goto out_remove;
  
-+	/* Set the state to READY by default */
-+	phydev->state = PHY_READY;
+ 	if (!linkmode_test_bit(ETHTOOL_LINK_MODE_Autoneg_BIT,
+ 			       phydev->supported))
+@@ -3775,7 +3775,7 @@ static int phy_probe(struct device *dev)
+ 
+ 	err = phy_setup_ports(phydev);
+ 	if (err)
+-		goto out_reset;
++		goto out_remove;
+ 
+ 	phy_advertise_supported(phydev);
+ 
+@@ -3850,6 +3850,10 @@ static int phy_probe(struct device *dev)
+ 	phy_sfp_release(phydev);
+ 	phy_cleanup_ports(phydev);
+ 
++out_remove:
++	if (phydev->drv->remove)
++		phydev->drv->remove(phydev);
 +
- 	return 0;
- 
- out_unreg_led_triggers:
+ out_reset:
+ 	/* Re-assert the reset signal on error */
+ 	phy_device_reset(phydev, 1);
 -- 
 2.43.0
 
