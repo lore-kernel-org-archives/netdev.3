@@ -1,509 +1,247 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5512833A032
-	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 07:19:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787469595; cv=none; b=bUot8qrb/ZluMYO8FCXLsww0/FMy03lL8pYn3McM2Tut3MM05PqUKjwZ5rdZAP/lS+dWPbEqUZco3/oK2krHgubNBaznkjeCv5eNqV+RLgva0l9ktpP0mSvQXN/Ws9IPk1seypoTcDjiB+gYu5W6GEozpcEZwM4Pefg2ueAxHRw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787469595; c=relaxed/simple;
-	bh=soPX9URTqu+PEA5vsxlPEJtSFHBOiIVK5TIIyiXZW9g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tAXOxXCHtyre5EmP/n8ikuRVHsFwAkSjRgMEcKGM8URIpq0bY4GxNGbYPEMQiLkGYA7uYTM1QIzmZF7Gc8T8RnPDfZoRFq7PHJLEYGnlvS4qVu/KlUuzuc+Lo9cRT0CKsDwK4PtHKtvt2rOaEK01P9L1A+ku6UBW9RK8XOOqSe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FO1+ab+i; arc=none smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ABB93101A6
+	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 07:42:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787470970; cv=pass; b=YyGcqA8fJ/Sps2zXzVO6lZDichosZEbAhpm2TuymPiOYr0RjveZk7mZ17VndYM6YVD+YhN4I0w61rw0moO9ERQjWU8xN/F2O9b8sHGcOs5iMkbmpiloIpc3F+rn3m/FDnrYooPSm5QKst0Kw5RoJod7rSoWg/HCwBQZpYFaymvM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787470970; c=relaxed/simple;
+	bh=iZLa9HXd4kU1GXbQg9lSu+H7QZyfF+DTXLWBMc6zZ5k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tgWyHWzhUylWYSlMfQrEap1J2Pwp8aPCuOXeSztgFPq1wgPgpBNmu0d0UL0D5yYtG0C3+xEa8s8gjqH5cNFU368/8gvduRt/EmONYe4Qb+GcbgR2+lzt1fAqDswDZjyFU5AuEKeBjah8613EpZ/jiF8qLp5h9FyzudoKlUsje/E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=nflTc6BD; arc=pass smtp.client-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FO1+ab+i"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cb5b8572b70so3010186a12.2
-        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 00:19:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="nflTc6BD"
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5b015b2d792so2437125e87.3
+        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 00:42:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787470965; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZIa1szjqY15jbLxsS2M2d/6qwMagEfhiDcmlUxZk2j5JL6xPHwUQFKq6DZWq4LD1CB
+         FgProOqqg1q5KhZ7IoNG/z/7TKo039IzkOd3rMldlTEvN5kkXr+2/0Ili3oFQgkkD1rf
+         DhehTJzFKQfMVe0g14382c8exb0EBDf0q3pw0iDJBOBfojF5O6s0RGId6PeAHlZ+o1PB
+         8gvFtNiydBDE8ZUNhZySIcI2LUUm8PLEbF5jbglcIlSfx7HUkXpLG85mHFwWrUmDAzyj
+         JSWFrBLzKem3OInAdi6kWUb/B8ebQDMPmGv84dW2gIxPF+j1uXHso8Y/Ma7JnvfSbcza
+         vtWA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ZIXe1/OfraU4vJY9+KRuKmSL65qK+92J/1UICFbNvbM=;
+        fh=Hz6BoFgiwLzFJffdOcyS5KPozp6lnXe+3Y7NJNpdd0Y=;
+        b=Nuy7DtfEhaARrWuhWeDSp1NvC7UyrXcAUljPNZmEiSuaamOS1ihXFJos8FpayrlM5U
+         FV97Mn0ErTQlDsNJ6EzUiA4um6zeCwYO2ksvvVwSCMCqwvCkHv4G0MA4mli19EF2PfZN
+         RdVev/cBZ8uMONFneg+/QaURuxEj68ggl8gk9TtdjvHWc23/yX4fDtnEhgVMqerhgki9
+         BG7EhEyUAWVqVX/FlqxnpIPvvv3AWuvy/oy7kty9tgJ7XJSY7/oktFEhJiX52h3teHG8
+         zol0bMCTSZ991LV6BFroaar9XGZGzsmMiiiSxtSAI1kA22EDymtdP4VwrWjLialhUP9y
+         3sSg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787469593; x=1788074393; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=DrGHq8r3D01YmLa3ynPoRNi1Se8roY1+DBnK05JQYrk=;
-        b=FO1+ab+iJhJJGYLgrHlAECVDIQ1nGs7P0su931NS5IcIR7MnKcXXFMi79edtV7jReh
-         t1b7vDOP/In0xd6H80svk2cDoy512vHFa9I3N74YVjHOJqtIcDz4AnSREUdtllEA21Ri
-         /RdwkOO9oPjAaOGhdft4nNEr5k4eNlZCb+rpNFI7W32CHdXl1jvslD1pQQGbh9xom2LI
-         VJhzwPu4wCDTTfkDgz9FWNqnmrtwPF/4jsFkcYCQZRE0KO2IDJrZgeS18HSNyYf0ljuw
-         3lG8/Y1NJ+CSKT0HNu7IhEsNS28MfpnIlCj+yuLRV73hQRw8MBS7iAaTX0qB3bWySNF8
-         oAjg==
+        d=nebusec.ai; s=google; t=1787470965; x=1788075765; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ZIXe1/OfraU4vJY9+KRuKmSL65qK+92J/1UICFbNvbM=;
+        b=nflTc6BDliU6TIePcDGxqBpRt7a/9a2uVFl3wb/gl5RcjKTQwOhyRzkdcj3DibWdHt
+         SgWiZ+GfRgCAbTaywdPRR4r+SfZSSJ7BGyAXlCkAhVylPIgrt2ziE43pDyZeLtlOBnGJ
+         cc982sVksnhAu7UzSxJHjQHNZ/P0NdiJ6oSv3uH5SqV1/PPkAG8BB1H3z8WKoQtr2+mv
+         XjrTcgIln1Y1kx19YeFks7FIP+t6LfvyjQAtyACVWt+57LopG7IJhaeX87V9lMqS63er
+         ZvXeWXqh7NBmPMfXCfdir/VezM6ENlSJkQw46fJqq94xsXmWZUSf6UsT7D3MT08RYbt5
+         6GUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787469593; x=1788074393;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=DrGHq8r3D01YmLa3ynPoRNi1Se8roY1+DBnK05JQYrk=;
-        b=FME/cMr4Xgr84c1LZhvCj9OTCxIaaqCHcVMdf+VWjojR/ukPZtXhHDJN7glv/+ktO3
-         ncC4JAj8IrJpmwrxRybosSha0nFTDbyFbe2JTn9VjD1o0zTUvaWR3xgNdSaqFLYZx15m
-         f87KJhUFyYvgE+wVA1yUuxnPUOd56sGQXdk87N4sxGnhOvRMKcMuHwYJdR+H7wiJe1Vk
-         JqMbqFOviyCbK0IRxgLGEVXeiIxJg9edPczvhCCdbtyr9QlEBnjoRxcwzrvG4JacgUpH
-         J+0iqTCzRKYlQs4hPKvYR25RxqveqGqvqY4PeSOMNq393q/+zeY07XZyLWW2U+ZGSB0O
-         9Ppg==
-X-Forwarded-Encrypted: i=1; AHgh+RpYK062E1tL6e6ExuNXeffd+Lr+TXtagFRe5EPxkd8/8cpSkcFYTj7B3z6UToVtly/lqtWwKsE=@vger.kernel.org
-X-Gm-Message-State: AFuF++neRgBqrSAKZs9arv64C5AA5Ef6vpLe9QxvBslfHaTwF/dlFpD7
-	I1IvZogS60eNdi7B/zDLRpj2q6TvKi1bsuMxO6dImnrHuPKLBEwcdGkWGpFI8R7CaatxyQ==
-X-Gm-Gg: AR+sD12Isp0hpYdHZJvWJN7wVNOlPKq3eWMxVzDM/GAGpExSCPyXrxBeqypU63O6j6W
-	l8+vJAwr46Eai4+Jb/efCcUuR/XHCn6BCAz1d9bLRlBFLP34mr4u4XBd5eIEKYhQU9RrQN63cBE
-	LAvbdvNZKqlitdNm9R1xqa3NijUMIK8qeSsHeI9hxdmnVXmwt+9FhoGYa82arAW5YkL3QvZxfTp
-	Sjt7yiwAOaVkpNZjBdGOMlRVyGDQRapykK883Qu8EhbpC9l7E4/veH/R3hLj1uhUEgKmG4k8Iwg
-	yB3NESILWdwWeszRpSOeHpREAnYzI3JynO1/sadHbspbTLLRtFPDmbxpts+48OzmYI2iE+OfVHG
-	l/L2g/X3YlkRunTwocflgqPBkO3wAX0gjytGbSIzbNRO77fAOT9jyht2bSxcZjcLasubILXdsq/
-	rUdQxl8jJKHa3gHzV3G6iXRe6lDxDiGSVaie12dg2O1qTHxhhJ/pDMUFysJFWh01htQZ+CqqphM
-	pYexUpHMASRD4xjYf44e+dh2WgtgraAqAt8uDQkCEuUCgujvcp6cxoDj3gwk5kbXdbbtQnoPLzI
-	thtea2U=
-X-Received: by 2002:a05:6a21:1644:b0:3bf:ba48:ca88 with SMTP id adf61e73a8af0-3cd3011c9e3mr35880462637.15.1787469592503;
-        Sun, 23 Aug 2026 00:19:52 -0700 (PDT)
-Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([45.135.228.94])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327f9209f51sm22644122eec.22.2026.08.23.00.19.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Aug 2026 00:19:51 -0700 (PDT)
-From: Qi Zhang <marsy12010123@gmail.com>
-To: alibuda@linux.alibaba.com,
-	dust.li@linux.alibaba.com,
-	sidraya@linux.ibm.com,
-	mjambigi@linux.ibm.com
-Cc: tonylu@linux.alibaba.com,
-	guwen@linux.alibaba.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	nicoyip.dev@gmail.com,
-	Qi Zhang <marsy12010123@gmail.com>
-Subject: [PATCH net v2] net/smc: prevent device removal during connection setup
-Date: Sun, 23 Aug 2026 15:19:08 +0800
-Message-ID: <20260823071908.93212-1-marsy12010123@gmail.com>
-X-Mailer: git-send-email 2.54.0
+        d=1e100.net; s=20251104; t=1787470965; x=1788075765;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZIXe1/OfraU4vJY9+KRuKmSL65qK+92J/1UICFbNvbM=;
+        b=eDKD/2PuMfZAixduIDq9J7Eh6biIpkPs9UdnNaVeLm3ih1ETUcZF16T1r6Vjoi5h8r
+         2/QICAELjkUS5tOdrORxkf9UpT1rbSp2/2vQRJasTyAob2Aq4xGdvb/91rlPov0vvqMP
+         luABOKvP9JUu/h2ut4juZpnxixd+ygBGxIlhLBbgFz0UV3LiLjxYRrEsvAQzoNZE8Y9N
+         Rwo2TFsguJcYnNZP1WXrJtNRQnajitDpvMXnIuZf56qNfSiF+Ag2AuFpVj5t0Ix/4E0M
+         MjBCqIvFLUOzuxqbHuPup74717mzpX+dyhfkwQkVi9ELMeZ74B/ySwtNtEy3G1WxWesI
+         f9Rw==
+X-Forwarded-Encrypted: i=1; AHgh+RqrHtJrqEF/nqmyQ94vna/kpNiGgSGz4s8yJkm4xHCGScwfbRm8pLSGdN5tD1l95/Hp1jLnFAw=@vger.kernel.org
+X-Gm-Message-State: AFuF++koUt3Xza2s+QSl3Lt6O9u80GLh4kkeA6f4hU2wz3f/9UbQzX6F
+	9TdB6rhv5T8MJkwNlakO4Npo7xTZe+W0NaV6M+vgYmdmhWc+EUB7Xn7W6rq2I9xHNkYuUN60uQA
+	L7/5ogNxD0TKN+zCzPvxiuWwVynsi8MyZt/2XNTyUNmc=
+X-Gm-Gg: AR+sD12DdBjpvS8SJFE8vB69AEWeAEy2dG+pZldonK2RboLMcoPSeLziaYJwqZqqxAn
+	8g5TCkc5lhT1eqQtT1RgbS6a7X7r/olVM2qvk9h1gs7UBK8LB3F2UNaQE9hioP/CvPdzJa5xB1j
+	08w+QCPIe8oiKaUpzYoUgu4+IOossSUjWJAX6mqFL/kTncnb7kZUA+qH7AJhYFwfD0QLPoX6mJ0
+	8wOlM1kn6Qi7k4n7R6jqnBf3LLXHMzVmV5RfwCYmX+U27CafmclNDuaywa3//T/6yY7EChPaPQA
+	ssfKaF/y13ZpfBwxu3jtv25OfFrjJ/oQOWV/nfRtjqg=
+X-Received: by 2002:a05:651c:43d1:20b0:3a1:31c3:961d with SMTP id
+ 38308e7fff4ca-3a1aec64cb2mr30527711fa.10.1787470964768; Sun, 23 Aug 2026
+ 00:42:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1787381531.git.zhilinz@nebusec.ai> <db594f875fdac39aff6f4f44dd1e270b0ce5ad4c.1787381531.git.zhilinz@nebusec.ai>
+In-Reply-To: <db594f875fdac39aff6f4f44dd1e270b0ce5ad4c.1787381531.git.zhilinz@nebusec.ai>
+From: zhilin zou <zhilinz@nebusec.ai>
+Date: Sun, 23 Aug 2026 15:42:31 +0800
+X-Gm-Features: AcwNN1Xv2ziO9z1i63XvEZZgv_ZKEjr906MakG-vn61ioIfd5BVbpqtKdnpl-Fk
+Message-ID: <CANB6i5wG6_K_J-MvXetoE0-4B893_V3S43OZ+x5uHjkdwxe+jg@mail.gmail.com>
+Subject: Re: [PATCH net v3 1/1] xfrm: save input state data before secpath resets
+To: steffen.klassert@secunet.com, netdev@vger.kernel.org
+Cc: herbert@gondor.apana.org.au, davem@davemloft.net, edumazet@google.com, 
+	pabeni@redhat.com, horms@kernel.org, vega@nebusec.ai
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
+On Sat, Aug 22, 2026 at 3:03=E2=80=AFPM Zhiling Zou <zhilinz@nebusec.ai> wr=
+ote:
+>
+> From: Zhiling Zou <zhilinz@nebusec.ai>
+>
+> xfrm_input() keeps the current state reference through the skb secpath
+> while it performs final transport processing. Some input paths can reset
+> the secpath before xfrm_input() is done using data from that state.
+>
+> Receive callback users such as VTI and XFRM interfaces can scrub packets
+> that cross network namespaces by resetting the secpath. The
 
-smc_pnet_determine_gid() stores an smc_ib_device pointer in connection
-initialization data while holding smc_ib_devices.mutex. Connection setup
-keeps using the pointer after releasing the mutex, but device removal only
-waits for links which have already incremented lnk_cnt.
+Hi Sashiko,
 
-This permits the following interleaving:
+Thanks for the review. The finding is correct.
 
-  connection setup                 device removal
-  ----------------                 --------------
-  select smcibdev
-  store ini->smcrv2.ib_dev_v2
-  mutex_unlock()
-                                   remove smcibdev from the device list
-                                   observe lnk_cnt == 0
-                                   return from the remove callback
-                                   kfree(smcibdev)
-  copy smcibdev->pnetid
+vti_rcv_cb() calls skb_scrub_packet(), which resets the skb extensions
+before checking xnet. Therefore, the VTI receive path drops the secpath
+regardless of whether the packet crosses network namespaces.
 
-KASAN reported:
+The cross-network-namespace qualifier only applies to the XFRM interface
+path, where xfrmi_scrub_packet() calls secpath_reset() only when xnet is
+true.
 
-  BUG: KASAN: slab-use-after-free in smc_conn_create+0x1330/0x2680
-  Read of size 16 at addr ffff888112dbd934 by task smc_bug86/97
-  Call Trace:
-   __asan_memcpy
-   smc_conn_create
-   __smc_connect
-   smc_connect
-   __sys_connect
-  Allocated by task 93:
-   smc_ib_add_dev
-   add_client_context
-   ib_register_device
-   nldev_newlink
-  Freed by task 98:
-   kfree
-   remove_client_context
-   __ib_unregister_device
-   nldev_dellink
+I will update the wording in the next revision to distinguish the two
+cases. No code change is needed for this finding.
 
-Hold a lifetime reference on every SMCR device selected for connection
-setup. The reference also pins the underlying ib_device, but does not make
-device removal wait for the peer-controlled CLC handshake.
+Thanks,
+Zhiling
 
-Before turning the selection into a link, check under
-smc_ib_devices.mutex that the device is still registered. Track only the
-short local interval between that check and publishing the new link group.
-Device removal waits for this interval before terminating links, ensuring
-that it cannot miss a link being created concurrently. Keep the lifetime
-reference until after the final counter decrement and wakeup, and serialize
-begin/end with device delisting so no thread touches a freed smcibdev.
-
-This change is limited to the reported SMCR lifetime race. SMC-D device
-selection has a similar pre-existing borrowed-pointer lifetime issue and
-requires a separate fix.
-
-Fixes: a046d57da19f ("smc: CLC handshake (incl. preparation steps)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
-Signed-off-by: Qi Zhang <marsy12010123@gmail.com>
----
-Changes in v2:
-- Replace the handshake-long removal wait with a lifetime reference that
-  defers object release without blocking device removal.
-- Revalidate the selected device and wait only while a new link is being
-  published, so the removal-side termination pass cannot miss it.
-- Keep a lifetime reference across the final publication-counter decrement
-  and wakeup, and serialize begin/end with device delisting to close the
-  reviewed wake-after-free window.
-- Explicitly scope this patch to SMC-R; the analogous pre-existing SMC-D
-  borrowed-pointer lifetime issue requires a separate fix.
-- Rebase onto net/main at 7cbfb180945c and preserve the intervening LLC
-  qentry lifetime fixes.
-
-v1: https://lore.kernel.org/r/20260804123418.2214979-1-marsy12010123@gmail.com
-Review: https://lore.kernel.org/r/20260805151051.GV51943@horms.kernel.org
-
- net/smc/af_smc.c   | 11 +++++++----
- net/smc/smc_core.c | 29 ++++++++++++++++++++++++----
- net/smc/smc_core.h |  3 +++
- net/smc/smc_ib.c   | 47 +++++++++++++++++++++++++++++++++++++++++++++-
- net/smc/smc_ib.h   |  9 +++++++++
- net/smc/smc_llc.c  |  8 +++++---
- net/smc/smc_pnet.c |  8 ++++++++
- 7 files changed, 103 insertions(+), 12 deletions(-)
-
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index e9f93b3ab435..d781dee1b329 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -1225,7 +1225,7 @@ void smc_fill_gid_list(struct smc_link_group *lgr,
- 	       SMC_GID_SIZE);
- 
- out:
--	kfree(alt_ini);
-+	smc_init_info_free(alt_ini);
- }
- 
- static int smc_connect_rdma_v2_prepare(struct smc_sock *smc,
-@@ -1596,14 +1596,14 @@ static int __smc_connect(struct smc_sock *smc)
- 	SMC_STAT_CLNT_SUCC_INC(sock_net(smc->clcsock->sk), aclc);
- 	smc_connect_ism_vlan_cleanup(ini);
- 	kfree(buf);
--	kfree(ini);
-+	smc_init_info_free(ini);
- 	return 0;
- 
- vlan_cleanup:
- 	smc_connect_ism_vlan_cleanup(ini);
- 	kfree(buf);
- fallback:
--	kfree(ini);
-+	smc_init_info_free(ini);
- 	return smc_connect_decline_fallback(smc, rc, version);
- }
- 
-@@ -2344,7 +2344,10 @@ static void smc_find_rdma_v2_device_serv(struct smc_sock *new_smc,
- 
- not_found:
- 	ini->smcr_version &= ~SMC_V2;
-+	if (ini->smcrv2.ib_dev_v2_ref)
-+		smc_ibdev_put(ini->smcrv2.ib_dev_v2);
- 	ini->smcrv2.ib_dev_v2 = NULL;
-+	ini->smcrv2.ib_dev_v2_ref = false;
- 	ini->check_smcrv2 = false;
- }
- 
-@@ -2588,7 +2591,7 @@ static void smc_listen_work(struct work_struct *work)
- 	smc_listen_decline(new_smc, rc, ini ? ini->first_contact_local : 0,
- 			   proposal_version);
- out_free:
--	kfree(ini);
-+	smc_init_info_free(ini);
- 	kfree(buf);
- }
- 
-diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-index 181647982490..d97bc7323106 100644
---- a/net/smc/smc_core.c
-+++ b/net/smc/smc_core.c
-@@ -55,6 +55,17 @@ static void __smc_lgr_terminate(struct smc_link_group *lgr, bool soft);
- 
- static void smc_link_down_work(struct work_struct *work);
- 
-+void smc_init_info_free(struct smc_init_info *ini)
-+{
-+	if (!ini)
-+		return;
-+	if (ini->ib_dev_ref)
-+		smc_ibdev_put(ini->ib_dev);
-+	if (ini->smcrv2.ib_dev_v2_ref)
-+		smc_ibdev_put(ini->smcrv2.ib_dev_v2);
-+	kfree(ini);
-+}
-+
- /* return head of link group list and its lock for a given link group */
- static inline struct list_head *smc_lgr_list_head(struct smc_link_group *lgr,
- 						  spinlock_t **lgr_lock)
-@@ -793,14 +804,21 @@ int smcr_link_init(struct smc_link_group *lgr, struct smc_link *lnk,
- 	int rc;
- 
- 	if (lgr->smc_version == SMC_V2) {
--		lnk->smcibdev = ini->smcrv2.ib_dev_v2;
-+		smcibdev = ini->smcrv2.ib_dev_v2;
- 		lnk->ibport = ini->smcrv2.ib_port_v2;
--		lnk->wr_rx_sge_cnt = lnk->smcibdev->ibdev->attrs.max_recv_sge < 2 ? 1 : 2;
-+	} else {
-+		smcibdev = ini->ib_dev;
-+		lnk->ibport = ini->ib_port;
-+	}
-+	rc = smc_ibdev_init_begin(smcibdev);
-+	if (rc)
-+		return rc;
-+	lnk->smcibdev = smcibdev;
-+	if (lgr->smc_version == SMC_V2) {
-+		lnk->wr_rx_sge_cnt = smcibdev->ibdev->attrs.max_recv_sge < 2 ? 1 : 2;
- 		lnk->wr_rx_buflen = smc_link_shared_v2_rxbuf(lnk) ?
- 			SMC_WR_BUF_SIZE : SMC_WR_BUF_V2_SIZE;
- 	} else {
--		lnk->smcibdev = ini->ib_dev;
--		lnk->ibport = ini->ib_port;
- 		lnk->wr_rx_sge_cnt = 1;
- 		lnk->wr_rx_buflen = SMC_WR_BUF_SIZE;
- 	}
-@@ -882,6 +900,7 @@ int smcr_link_init(struct smc_link_group *lgr, struct smc_link *lnk,
- 	if (!atomic_dec_return(&smcibdev->lnk_cnt))
- 		wake_up(&smcibdev->lnks_deleted);
- 	smc_lgr_put(lgr); /* lgr_hold above */
-+	smc_ibdev_init_end(smcibdev);
- 	return rc;
- }
- 
-@@ -997,6 +1016,8 @@ static int smc_lgr_create(struct smc_sock *smc, struct smc_init_info *ini)
- 	spin_lock_bh(lgr_lock);
- 	list_add_tail(&lgr->list, lgr_list);
- 	spin_unlock_bh(lgr_lock);
-+	if (!ini->is_smcd)
-+		smc_ibdev_init_end(lnk->smcibdev);
- 	return 0;
- 
- free_wq:
-diff --git a/net/smc/smc_core.h b/net/smc/smc_core.h
-index 5c18f08a4c8a..9f5a69a30cb3 100644
---- a/net/smc/smc_core.h
-+++ b/net/smc/smc_core.h
-@@ -403,6 +403,7 @@ struct smc_init_info_smcrv2 {
- 
- 	/* Output fields when saddr is set */
- 	struct smc_ib_device	*ib_dev_v2;
-+	bool			ib_dev_v2_ref; /* owns an smc_ibdev reference */
- 	u8			ib_port_v2;
- 	u8			ib_gid_v2[SMC_GID_SIZE];
- 
-@@ -438,6 +439,7 @@ struct smc_init_info {
- 	u8			peer_mac[ETH_ALEN];
- 	u8			peer_systemid[SMC_SYSTEMID_LEN];
- 	struct smc_ib_device	*ib_dev;
-+	bool			ib_dev_ref; /* owns an smc_ibdev reference */
- 	u8			ib_gid[SMC_GID_SIZE];
- 	u8			ib_port;
- 	u32			ib_clcqpn;
-@@ -594,6 +596,7 @@ void smc_rtoken_set2(struct smc_link_group *lgr, int rtok_idx, int link_id,
- void smc_sndbuf_sync_sg_for_device(struct smc_connection *conn);
- void smc_rmb_sync_sg_for_cpu(struct smc_connection *conn);
- int smc_vlan_by_tcpsk(struct socket *clcsock, struct smc_init_info *ini);
-+void smc_init_info_free(struct smc_init_info *ini);
- 
- void smc_conn_free(struct smc_connection *conn);
- int smc_conn_create(struct smc_sock *smc, struct smc_init_info *ini);
-diff --git a/net/smc/smc_ib.c b/net/smc/smc_ib.c
-index 9bb495707445..d858453c64d9 100644
---- a/net/smc/smc_ib.c
-+++ b/net/smc/smc_ib.c
-@@ -934,6 +934,44 @@ void smc_ib_ndev_change(struct net_device *ndev, unsigned long event)
- 	mutex_unlock(&smc_ib_devices.mutex);
- }
- 
-+static void smc_ibdev_release(struct smc_ib_device *smcibdev)
-+{
-+	put_device(&smcibdev->ibdev->dev);
-+	kfree(smcibdev);
-+}
-+
-+void smc_ibdev_get(struct smc_ib_device *smcibdev)
-+{
-+	refcount_inc(&smcibdev->refcnt);
-+}
-+
-+void smc_ibdev_put(struct smc_ib_device *smcibdev)
-+{
-+	if (refcount_dec_and_test(&smcibdev->refcnt))
-+		smc_ibdev_release(smcibdev);
-+}
-+
-+int smc_ibdev_init_begin(struct smc_ib_device *smcibdev)
-+{
-+	int rc = 0;
-+
-+	mutex_lock(&smc_ib_devices.mutex);
-+	if (list_empty(&smcibdev->list))
-+		rc = -ENODEV;
-+	else
-+		atomic_inc(&smcibdev->init_cnt);
-+	mutex_unlock(&smc_ib_devices.mutex);
-+	return rc;
-+}
-+
-+void smc_ibdev_init_end(struct smc_ib_device *smcibdev)
-+{
-+	mutex_lock(&smc_ib_devices.mutex);
-+	if (atomic_dec_and_test(&smcibdev->init_cnt))
-+		wake_up(&smcibdev->init_wait);
-+	mutex_unlock(&smc_ib_devices.mutex);
-+}
-+
- /* callback function for ib_register_client() */
- static int smc_ib_add_dev(struct ib_device *ibdev)
- {
-@@ -949,7 +987,11 @@ static int smc_ib_add_dev(struct ib_device *ibdev)
- 		return -ENOMEM;
- 
- 	smcibdev->ibdev = ibdev;
-+	get_device(&ibdev->dev);
-+	refcount_set(&smcibdev->refcnt, 1);
- 	INIT_WORK(&smcibdev->port_event_work, smc_ib_port_event_work);
-+	atomic_set(&smcibdev->init_cnt, 0);
-+	init_waitqueue_head(&smcibdev->init_wait);
- 	atomic_set(&smcibdev->lnk_cnt, 0);
- 	init_waitqueue_head(&smcibdev->lnks_deleted);
- 	mutex_init(&smcibdev->mutex);
-@@ -1000,11 +1042,14 @@ static void smc_ib_remove_dev(struct ib_device *ibdev, void *client_data)
- 	mutex_unlock(&smc_ib_devices.mutex);
- 	pr_warn_ratelimited("smc: removing ib device %s\n",
- 			    smcibdev->ibdev->name);
-+	if (atomic_read(&smcibdev->init_cnt))
-+		wait_event(smcibdev->init_wait,
-+			   !atomic_read(&smcibdev->init_cnt));
- 	smc_smcr_terminate_all(smcibdev);
- 	smc_ib_cleanup_per_ibdev(smcibdev);
- 	ib_unregister_event_handler(&smcibdev->event_handler);
- 	cancel_work_sync(&smcibdev->port_event_work);
--	kfree(smcibdev);
-+	smc_ibdev_put(smcibdev);
- }
- 
- static struct ib_client smc_ib_client = {
-diff --git a/net/smc/smc_ib.h b/net/smc/smc_ib.h
-index ef8ac2b7546d..d32547350e8b 100644
---- a/net/smc/smc_ib.h
-+++ b/net/smc/smc_ib.h
-@@ -15,6 +15,7 @@
- #include <linux/interrupt.h>
- #include <linux/if_ether.h>
- #include <linux/mutex.h>
-+#include <linux/refcount.h>
- #include <linux/wait.h>
- #include <rdma/ib_verbs.h>
- #include <net/smc.h>
-@@ -51,6 +52,9 @@ struct smc_ib_device {				/* ib-device infos for smc */
- 	struct work_struct	port_event_work;
- 	unsigned long		port_event_mask;
- 	DECLARE_BITMAP(ports_going_away, SMC_MAX_PORTS);
-+	refcount_t		refcnt;		/* object lifetime */
-+	atomic_t		init_cnt;	/* unpublished link initializations */
-+	wait_queue_head_t	init_wait;	/* wait for links to be published */
- 	atomic_t		lnk_cnt;	/* number of links on ibdev */
- 	wait_queue_head_t	lnks_deleted;	/* wait 4 removal of all links*/
- 	struct mutex		mutex;		/* protect dev setup+cleanup */
-@@ -59,6 +63,11 @@ struct smc_ib_device {				/* ib-device infos for smc */
- 	int			ndev_ifidx[SMC_MAX_PORTS]; /* ndev if indexes */
- };
- 
-+void smc_ibdev_get(struct smc_ib_device *smcibdev);
-+void smc_ibdev_put(struct smc_ib_device *smcibdev);
-+int smc_ibdev_init_begin(struct smc_ib_device *smcibdev);
-+void smc_ibdev_init_end(struct smc_ib_device *smcibdev);
-+
- static inline __be32 smc_ib_gid_to_ipv4(u8 gid[SMC_GID_SIZE])
- {
- 	struct in6_addr *addr6 = (struct in6_addr *)gid;
-diff --git a/net/smc/smc_llc.c b/net/smc/smc_llc.c
-index c9ccd8480369..e16aaa514368 100644
---- a/net/smc/smc_llc.c
-+++ b/net/smc/smc_llc.c
-@@ -1108,6 +1108,7 @@ int smc_llc_cli_add_link(struct smc_link *link, struct smc_llc_qentry *qentry)
- 	rc = smcr_link_init(lgr, lnk_new, lnk_idx, ini);
- 	if (rc)
- 		goto out_reject;
-+	smc_ibdev_init_end(lnk_new->smcibdev);
- 	smc_llc_save_add_link_info(lnk_new, llc);
- 	lnk_new->link_id = llc->link_num;	/* SMC server assigns link id */
- 	smc_llc_link_set_uid(lnk_new);
-@@ -1143,7 +1144,7 @@ int smc_llc_cli_add_link(struct smc_link *link, struct smc_llc_qentry *qentry)
- out_reject:
- 	smc_llc_cli_add_link_reject(qentry);
- out:
--	kfree(ini);
-+	smc_init_info_free(ini);
- 	kfree(qentry);
- 	return rc;
- }
-@@ -1217,7 +1218,7 @@ static void smc_llc_cli_add_link_invite(struct smc_link *link,
- 	smc_llc_send_add_link(link, ini->ib_dev->mac[ini->ib_port - 1],
- 			      ini->ib_gid, NULL, SMC_LLC_REQ);
- out:
--	kfree(ini);
-+	smc_init_info_free(ini);
- 	kfree(qentry);
- }
- 
-@@ -1487,6 +1488,7 @@ int smc_llc_srv_add_link(struct smc_link *link,
- 	if (rc)
- 		goto out;
- 	link_new = &lgr->lnk[lnk_idx];
-+	smc_ibdev_init_end(link_new->smcibdev);
- 
- 	rc = smcr_buf_map_lgr(link_new);
- 	if (rc)
-@@ -1544,7 +1546,7 @@ int smc_llc_srv_add_link(struct smc_link *link,
- 	}
- out:
- 	kfree(qentry);
--	kfree(ini);
-+	smc_init_info_free(ini);
- 	if (send_req_add_link_resp)
- 		smc_llc_send_req_add_link_response(req_qentry);
- 	return rc;
-diff --git a/net/smc/smc_pnet.c b/net/smc/smc_pnet.c
-index 63e286e2dfaa..be1f5137c8ee 100644
---- a/net/smc/smc_pnet.c
-+++ b/net/smc/smc_pnet.c
-@@ -980,14 +980,22 @@ static int smc_pnet_determine_gid(struct smc_ib_device *ibdev, int i,
- 	if (!ini->check_smcrv2 &&
- 	    !smc_ib_determine_gid(ibdev, i, ini->vlan_id, ini->ib_gid, NULL,
- 				  NULL)) {
-+		if (ini->ib_dev_ref)
-+			smc_ibdev_put(ini->ib_dev);
-+		smc_ibdev_get(ibdev);
- 		ini->ib_dev = ibdev;
-+		ini->ib_dev_ref = true;
- 		ini->ib_port = i;
- 		return 0;
- 	}
- 	if (ini->check_smcrv2 &&
- 	    !smc_ib_determine_gid(ibdev, i, ini->vlan_id, ini->smcrv2.ib_gid_v2,
- 				  NULL, &ini->smcrv2)) {
-+		if (ini->smcrv2.ib_dev_v2_ref)
-+			smc_ibdev_put(ini->smcrv2.ib_dev_v2);
-+		smc_ibdev_get(ibdev);
- 		ini->smcrv2.ib_dev_v2 = ibdev;
-+		ini->smcrv2.ib_dev_v2_ref = true;
- 		ini->smcrv2.ib_port_v2 = i;
- 		return 0;
- 	}
--- 
-2.25.1
-
+> XFRM_MAX_DEPTH error path can also reset the secpath before the final dro=
+p
+> callback reports the current state's protocol. If that drops the last
+> state reference and the state is concurrently deleted, xfrm_input() can
+> still dereference the freed state.
+>
+> Save the state protocol on the stack while the state is still valid, and
+> use the already saved address family for transport_finish(). A larval
+> XFRM_STATE_ACQ state has no type, so retain nexthdr as its protocol. This
+> preserves the existing drop-path fallback while avoiding the post-reset
+> state dereferences without adding an extra state reference to every
+> received packet.
+>
+> Fixes: df3893c176e9 ("vti: Update the ipv4 side to use it's own receive h=
+ook.")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+> ---
+> changes in v3:
+> - Retain nexthdr for larval XFRM_STATE_ACQ entries, whose x->type is NULL=
+.
+> - Avoid dereferencing x->type before the existing state validity checks.
+> - v2 Link: https://lore.kernel.org/all/e59b617d27acb3a38a3523649d52b90f02=
+2fa28d.1785288865.git.zhilinz@nebusec.ai/
+>
+> changes in v2:
+> - Avoid per-packet xfrm_state refcounting by saving state data on the sta=
+ck.
+> - Use the saved protocol and family after secpath resets instead of
+>   dereferencing x.
+> - v1 Link: https://lore.kernel.org/all/89be67de93958a00193c8c4bd668733c97=
+6e2aa9.1785135576.git.zhilinz@nebusec.ai/
+>
+>  net/xfrm/xfrm_input.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
+>
+> diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
+> index eecab337bd0a7..77b9f4d4568d6 100644
+> --- a/net/xfrm/xfrm_input.c
+> +++ b/net/xfrm/xfrm_input.c
+> @@ -474,6 +474,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be=
+32 spi, int encap_type)
+>         struct xfrm_state *x =3D NULL;
+>         xfrm_address_t *daddr;
+>         u32 mark =3D skb->mark;
+> +       u8 xfrm_proto =3D nexthdr;
+>         unsigned int family =3D AF_UNSPEC;
+>         int decaps =3D 0;
+>         int async =3D 0;
+> @@ -485,6 +486,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be=
+32 spi, int encap_type)
+>         if (encap_type < 0 || (xo && (xo->flags & XFRM_GRO || encap_type =
+=3D=3D 0 ||
+>                                       encap_type =3D=3D UDP_ENCAP_ESPINUD=
+P))) {
+>                 x =3D xfrm_input_state(skb);
+> +               xfrm_proto =3D x->type ? x->type->proto : nexthdr;
+>
+>                 if (unlikely(x->km.state !=3D XFRM_STATE_VALID)) {
+>                         if (x->km.state =3D=3D XFRM_STATE_ACQ)
+> @@ -592,11 +594,13 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __=
+be32 spi, int encap_type)
+>
+>                 x =3D xfrm_input_state_lookup(net, mark, daddr, spi, next=
+hdr, family);
+>                 if (x =3D=3D NULL) {
+> +                       xfrm_proto =3D nexthdr;
+>                         secpath_reset(skb);
+>                         XFRM_INC_STATS(net, LINUX_MIB_XFRMINNOSTATES);
+>                         xfrm_audit_state_notfound(skb, family, spi, seq);
+>                         goto drop;
+>                 }
+> +               xfrm_proto =3D x->type ? x->type->proto : nexthdr;
+>
+>                 if (unlikely(x->dir && x->dir !=3D XFRM_SA_DIR_IN)) {
+>                         secpath_reset(skb);
+> @@ -604,6 +608,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be=
+32 spi, int encap_type)
+>                         xfrm_audit_state_notfound(skb, family, spi, seq);
+>                         xfrm_state_put(x);
+>                         x =3D NULL;
+> +                       xfrm_proto =3D nexthdr;
+>                         goto drop;
+>                 }
+>
+> @@ -728,7 +733,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be=
+32 spi, int encap_type)
+>         } while (!err);
+>
+>         rcu_read_lock();
+> -       err =3D xfrm_rcv_cb(skb, family, x->type->proto, 0);
+> +       err =3D xfrm_rcv_cb(skb, family, xfrm_proto, 0);
+>         if (err) {
+>                 rcu_read_unlock();
+>                 goto drop;
+> @@ -753,7 +758,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be=
+32 spi, int encap_type)
+>                         xfrm_gro =3D xo->flags & XFRM_GRO;
+>
+>                 err =3D -EAFNOSUPPORT;
+> -               afinfo =3D xfrm_state_afinfo_get_rcu(x->props.family);
+> +               afinfo =3D xfrm_state_afinfo_get_rcu(family);
+>                 if (likely(afinfo))
+>                         err =3D afinfo->transport_finish(skb, xfrm_gro ||=
+ async);
+>                 if (xfrm_gro) {
+> @@ -776,7 +781,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be=
+32 spi, int encap_type)
+>  drop:
+>         if (async)
+>                 dev_put(dev);
+> -       xfrm_rcv_cb(skb, family, x && x->type ? x->type->proto : nexthdr,=
+ -1);
+> +       xfrm_rcv_cb(skb, family, xfrm_proto, -1);
+>         kfree_skb(skb);
+>         return 0;
+>  }
+> --
+> 2.43.0
