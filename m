@@ -1,123 +1,163 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2FD36A375
-	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 11:40:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787485247; cv=pass; b=YikQGZSnxKj4uVOr9LOcfjPFRy7zHVrbH9ugsoP0h6mlHJTiQsmLiBTtfyt27KwIRs5Hr8dnWaKjEtJopey41SU38FXn1m7irPFXIAWxXjVgxaosS0O4WbW38CR/Abc25VoMfQXA8UMp5dORidJbBB04zHzHUk6hbYawRXsXr3Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787485247; c=relaxed/simple;
-	bh=t1yOB6lXAkXZSgznHtcAAF62SrqAAlNeqdd99qDvIqs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mdDhDK09n91xGzQAsKko85xq1ZSxT2gFwYlT7SpoPbiTte44X4LVat2P3q4ZSQ8WGldrBfWKvWi7rLE6/sZQZ2swhdcjl+tT1JipjAJaZAvpFN1B9ix789dtRAO3zVfl9/GPmJ4mmkGbNj2Zl9ojz/8k3hLDn02geB7hBat+5mI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e4OSHurU; arc=pass smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE72339372
+	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 11:58:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787486301; cv=none; b=XTWd/c/9RuhakOwnOeVZIjbd+QQuLnzLg4FtmHpe+/bMaSSRZL9JzSUTFCB0OBFLD4beG0DmRjBvFmDkWkkj0xVLLMfwR7KLEr153BBVcKOz5aJ0EyRXipf9tpiTlkLzcdXJSqtwcpWcZV905Kh+gV1GkYjauU57PbkDAbnovTY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787486301; c=relaxed/simple;
+	bh=Sga20T/P8MWq7f+aP48sgyMUgOEeXsNmwdBnKjmMyOY=;
+	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=Ve5mBAcXlq+8mbO3tlI7rQRvhFVKedAI4ceOajCNY1Ab/H/Zz/U5eP6Z4EzhaKJuBYsnASIYKPOhv5iraVpX1gt/YU/KGOW1sRycF2PZwu0KztdAqkArgGpxzHKGoFF79ivyP3E253RhyIipPMwVmK42YK4ZpiH5gFttEdJ/MuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com; spf=pass smtp.mailfrom=doyensec.com; dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b=LHweCiSd; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=doyensec.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e4OSHurU"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-384c94c9423so341592a91.2
-        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 04:40:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787485246; cv=none;
-        d=google.com; s=arc-20260327;
-        b=rNkc+N/vsnroETvDUB96xLYNgUeckKHwVyOSY53HN2sbZghBu+2Rgxy/n8LOyh3daS
-         uOPKELjA+/g7wbFwsfATn2XhhXlQ0E389DkMxizEequkCamoEIUEQmkH2bu+LuwKgJHD
-         QOA1xkkJcy7UxFGmicZSKIDhWcdlipmIiqJ+BHwH3Ntv6V5R/ZmNUtowwN7NixpK0siI
-         a2o6ETW1s1nvN1i9vt4NPq5T9krMhhZSBZA7uoQBCjqlYUaf9f7LmSc8QGdpmqWSSqFn
-         g+25H2F4BOk+CNtVIBIVapUrCF1E2Dv9eccfXbUWg9tt8GuWMId52QUJDFkbAS/Xo27Z
-         CHHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=t1yOB6lXAkXZSgznHtcAAF62SrqAAlNeqdd99qDvIqs=;
-        fh=v1X3uVXea6BqgkPUeN4S/ZmjZeEpy4TNCZhxcX+5o1o=;
-        b=WCYwf1lpK4HRnFdQW87TSTLB92NJGhmTxW+xqjvnzFORL7Pfz1Lf0zdLu8jlWNnmbL
-         MTF0VekQg4/jKlwCc8oAy1fBsO9wnHvyB5kERHCjCSF5kUt21cP3HLzi7xlE4saGPIin
-         xzcsRd3EAQvxZLwB3AEoaxeC3rRz2fUsyF0CIeWtBrHdKkc/qPbZifIN/oOoxik4J0qa
-         JTyxVjg+EH7xcextJFaz87Usmj63YbpBE6dWWg2olDqnSyuFy0k91/+MHM0E1iMedD1i
-         RrdW+eWqbdkchxdVuQjN/mWIXm67vZitCPJqZ/e9Gkh+bVNmUQ5NYWiWn2/jI+Mp3Y0F
-         RLgA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b="LHweCiSd"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c1600d040e4so383101266b.1
+        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 04:58:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787485246; x=1788090046; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=t1yOB6lXAkXZSgznHtcAAF62SrqAAlNeqdd99qDvIqs=;
-        b=e4OSHurUi3FPik7E2pe+GIl7rr52gHTBQdlGv4kvB6+3pFk0HCsB/cQ5OX0KLD0U9s
-         0yx2zbTLUVfsHloogFiUPoVHNs8W6gcB+ST2ugSikvyE78qiVuHTHeuSiMyKSXIlEzfQ
-         0JK98nEbQhNa0zN3KsSX23aLxtXoVp2o2gywwM7gkz4ffG7VgQvAB7Hm3jzEgSmJJksU
-         uqdCVGEgWde25J+r9GyLYTzyXRH5Fru0mXNrB08RHzKZ3fF5PMamLhin10NCPgYrurDx
-         RTNl5hRTEzpnC7Uqa817ba5GKWaEogiVSJebem4p8moFCoUyk7OznK7urbg52BO9VWaG
-         kh8Q==
+        d=doyensec.com; s=google; t=1787486297; x=1788091097; darn=vger.kernel.org;
+        h=to:cc:date:message-id:subject:mime-version
+         :content-transfer-encoding:content-type:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=9VCdZ1UGkHSoNerNHN6y4WQf9dSCo072rCjQ4W0h48s=;
+        b=LHweCiSdWbpEhMSMjNp5345PIVQ8k26Bhug1g4Qkr03Hljym0DYU8xo+KPrccA49Sm
+         dnxVj9HIqHTEugU4Tlr50pxz3N8em6ZLOxIzpuZjEGblB0DqeMigYqLl2nT7eU96rMdM
+         RlgQdKkFjUXfy9EOU794y/PE5BTPdklVsCVFBzy7VN+QxxnbimodvQX49C2XM5QoBxLP
+         px8SkHU+bbjD8Q+8wULTnYLvKAapyc+CBmETDIM1W5M1SJ++kFj7wZct/9eHKZ65CUru
+         BL3tygxrMCGIY/Be/C33LRczzUb1YW2nCVwUottkGClQhf6zUgCo3wRbuXl1rJQNdYBf
+         Eu/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787485246; x=1788090046;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1787486297; x=1788091097;
+        h=to:cc:date:message-id:subject:mime-version
+         :content-transfer-encoding:content-type:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=t1yOB6lXAkXZSgznHtcAAF62SrqAAlNeqdd99qDvIqs=;
-        b=sgihgvWTqwyPU1Uod74bYgl1fOf2a8e3UJpieBuPxw785wt9H9XEFMNw0f+Rn7+B5D
-         JibMnnCLjOJqXMDnO6Hpt536ZQI35bK0UcwnkURrpbRoZDojsfULj6NT0aEYzUvNeqlH
-         PApOZXO0Fkli9FKa6daFLrVhUaCU6ls9BwU/6brzDkms3jYNISPrVV9tq4oKonr0ZOTd
-         cwMnOlv8ax3RBnNiFT74OYy1l21ryeRZpF3J8uFx7JajsqU4w5Z+cEZLOpeiPAgb7Flb
-         XMQ3P0Ux7pJ3xSQozvGBKqjC0xI2prlCyl4aQccfXwUvaXJAy5t5N6+ssziye6v1XMoX
-         JsPQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrO19m2hlaDuPMpAx+JkKoVh947kaQyPm+nPKIVF9MZgEdf4aNYTCmaC/lIgbNOxdklQcySfOo=@vger.kernel.org
-X-Gm-Message-State: AFuF++lt2nMJCV1KyNXcIZsl8bJsw4h3ujwHLYT+A/ta7WAWXVfqPcHR
-	qpRJOpyHjPG5cSDqI7o3jmPPUYuipWhFZhcAUslvIqHVwAILjkjM3ZIVOLUympSRH1qSbbB8NYn
-	J5X5RboLpYyyuuLAQ74ydHOKIj9AAorFfgS93
-X-Gm-Gg: AR+sD10kJBursHHakjf/1Onjz1oy9C+V72/eMorgKgcu+mEnj1KwDkyGAnkN4avmrUL
-	BR/SWfz02m9Mz4+K1Gij72SeSFyN+/N9Zos16XnfQlCiaWsXM0fZPIvyh2dkT6WmSMKK+8USP8Z
-	XqHUquffGo25UAG6IRqIhmJqrgqAe0SQdYaS8mbcxH2gD8849ze93FW6ekaL3EJ+p/bUSoLZJEM
-	LHb1PLXUG/ex/JBFmkAvp2G/DZWv6Fv80ptyKiRNH5XpuCheAMxV0HDYBG66DJ6tHuWqpNImM8b
-	gptEta4erhQFOm8qMjYCmKL94a0Pdn1Lka2Ph7EBbl+vucgqY302uQRmBXhLjfGdHvQ6bd+UD1r
-	kD/rLY6C/lyWNTSoOrQsIj/+fkjulB1nw1eia2CMPeueAhnlNbJIhWRgQmH7z
-X-Received: by 2002:a17:902:fc4d:b0:2c9:e846:a582 with SMTP id
- d9443c01a7336-2d64a9a668bmr165095525ad.0.1787485245660; Sun, 23 Aug 2026
- 04:40:45 -0700 (PDT)
+        bh=9VCdZ1UGkHSoNerNHN6y4WQf9dSCo072rCjQ4W0h48s=;
+        b=eZD3K/7zrb5wJgilLvkcMLWNAKRVY8CxxH4C5aEv7AxGzeWonkXbwaNdUDIN6S1btq
+         Uk9NjI7mEbAA1Jmh4bMv6jdh4ArzTVvyHmUcK7El+KYBLhWtYqDF2spb9SPbGyQbOm0E
+         SC+K9RaFCqThELkrFCwW7kOWzDYMbbWPsu/9cJtCV0HN1mI/Z7mDk/YpkeFiWW73pq2z
+         yYwq0P5pAEId0yk2CGS7FNIJ4rdJx7zzMAb3eQUf/LiQWlY5YHHHuvQ9SHUuRxhJ+oGc
+         rkY739FWu9QhuPO5VZOFxsSkVf90alSv6WXaz3KFtp6dSgfyh8vFfbvxfAtcukuXFJEB
+         d3hw==
+X-Gm-Message-State: AFuF++kjfae83+1n3ivAErValXXdsB7/2W+HZGuKM208GokM6oi9HJ9z
+	vstN45mW+ue7mWvfNmTCjcDsY+3e+IgyUCFsgqsvreYGHtsnbeHW/kXcMQP58jaOl/VpT+kYInk
+	udGoIv342iaNi
+X-Gm-Gg: AR+sD11FvMoyrbWY978NzVySY+Nu7PEqqN5nkOJmc0UQA9lTF0fTjnuMn+ZFfUY3f9F
+	/07HqH68Tyg806fCZM8xszDy6AUh8HOmnnauLBfDTIq7whkFVU7FC1OiXdYR0n2Dm+pDCT27NZr
+	j2G/nfGca2QauQNCUSlxv39NvOvUnbQ/v0a+xK7+f0AUeIxxBTn3BmvSB/tDDCK+YSrYdXvTwVy
+	tIDpdRN6PMgrvjoiPRsbuQYyjKjFXRMof6bkaxEbHkylSKXgn3xaAcVqGAY03eIaK92NheyefW0
+	8vQw5MovOi7wpo4zz184dR35lTrS5izihagMIgc5jDS6U6kXOp9kZOO9Mmc7mpy3+V8RMPJaJhe
+	+W+u1sLm+RclCM90Bvcu+nVh6mTDG3X5p2I2EwpxiFx5wIHsVfwimz6hzH7qvUMK3cP+OFHUnC9
+	x53y+uPlLspfr7nXMYz8sZuGiYxpf4xRaDeYx4s8Uy4FlFipEyTJ6uu9e0Q/VsM1dEz2W66PynB
+	mFiDYw+SEAV9flckNz9oaHHV0tSoEZpg9Jg31R0mBTon5yiN+yHqXAN0DmpCd9lIzjmfTi75mie
+	kcz1sdBVE2wlP9SHk5bG6F1JX26NloqhgRna3A==
+X-Received: by 2002:a05:6938:a08b:10b0:beb:d461:7b09 with SMTP id a640c23a62f3a-c246dcc72afmr1228120866b.11.1787486297276;
+        Sun, 23 Aug 2026 04:58:17 -0700 (PDT)
+Received: from smtpclient.apple (host-79-57-139-67.business.telecomitalia.it. [79.57.139.67])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c249685ab3csm762988166b.49.2026.08.23.04.58.15
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 23 Aug 2026 04:58:16 -0700 (PDT)
+From: Norbert Szetei <norbert@doyensec.com>
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260823103644.342849-1-springbreeze@stu.pku.edu.cn>
- <CANiq72mUbkEcvffQV-mNLfCxGkgTqwq1qQLuWpENsUCCBAHOqw@mail.gmail.com> <AOUA5wCUK5sso-ea1NbU-4rk.2.1787484007018.Hmail.2401213299@stu.pku.edu.cn>
-In-Reply-To: <AOUA5wCUK5sso-ea1NbU-4rk.2.1787484007018.Hmail.2401213299@stu.pku.edu.cn>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 23 Aug 2026 13:40:32 +0200
-X-Gm-Features: AcwNN1Uws01evHg50TElosuDV-b_vS4j4csMx5AQPXdF_CkFs-0dBW7hZfXwcMw
-Message-ID: <CANiq72mQ8bfEw-NM4phjgp-QxEP5RpqNTkXrjjGqkX+VukqkaQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: net: phy: fix off-by-one bit positions in device
- status accessors
-To: springbreeze <springbreeze@stu.pku.edu.cn>
-Cc: "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Andrew Lunn <andrew@lunn.ch>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
+Subject: [PATCH net] net: bridge: mcast: fix use-after-free of a master VLAN's
+ multicast context
+Message-Id: <B41EB55B-E5FC-431D-956C-503CA7B95C30@doyensec.com>
+Date: Sun, 23 Aug 2026 13:58:04 +0200
+Cc: Nikolay Aleksandrov <razor@blackwall.org>,
+ Ido Schimmel <idosch@nvidia.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>,
+ bridge@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+To: netdev@vger.kernel.org
+X-Mailer: Apple Mail (2.3826.700.81.1.4)
 
-On Sun, Aug 23, 2026 at 1:20=E2=80=AFPM springbreeze
-<springbreeze@stu.pku.edu.cn> wrote:
->
-> Thanks for the review!
-> The literals were a stopgap; the code carried a TODO to replace them
-> with bindgen-generated accessors "when it becomes possible". I checked
-> the current bindgen output: it now generates layout-derived accessors
-> for these bitfields (phydev.link(), phydev.autoneg(),
-> phydev.autoneg_complete()), so v2 drops the hand-written offsets
-> entirely and uses the generated accessors instead, which removes this
-> class of bug.
+br_multicast_toggle_one_vlan() clears BR_VLFLAG_MCAST_ENABLED under
+br->multicast_lock before stopping a VLAN's multicast context.  That is
+the teardown handshake: lockless readers gate on the flag through
+br_multicast_ctx_should_use() -> br_multicast_ctx_vlan_disabled(), so
+once it is cleared under the lock no reader can arm the context again.
 
-netdev may prefer the minimal fix for backporting, though, i.e. the
-improvement could in principle be a separate patch.
+For a master VLAN the handshake never runs.  __vlan_del() clears
+BRIDGE_VLAN_INFO_BRENTRY before calling br_vlan_put_master(), so
+br_multicast_toggle_one_vlan(masterv, false) returns early on
+!br_vlan_is_brentry(vlan): the flag stays set and br->multicast_lock is
+never taken.  br_vlan_put_master() then drains the context in
+br_multicast_ctx_deinit() and frees the VLAN through call_rcu(), while a
+reader still inside rcu_read_lock() sees the context as enabled and
+re-arms it.  The port and port-VLAN branch of the function has no
+br_vlan_is_brentry() test and flips the flag under br->multicast_lock,
+so it is not affected.
 
-But, of course, up to them, thanks!
+The reader is the bridge transmit path.  For a master VLAN
+br_multicast_rcv() selects brmctx =3D &vlan->br_mcast_ctx with
+pmctx =3D NULL, so IGMP sent to the bridge device re-arms the context's
+timers after br_multicast_ctx_deinit() has already stopped them.
 
-[ Please reply in plain text; otherwise, your message may be dropped
-by the mailing lists. ]
+Any user able to create a bridge can trigger this, which includes an
+unprivileged user in a user namespace, by deleting and re-adding the
+master VLAN while sending IGMP to the bridge device:
 
-Cheers,
-Miguel
+  BUG: KASAN: slab-use-after-free in detach_if_pending+0x412/0x4a0
+  Write of size 8 at addr ffff88810ac39918 by task brmc/601
+   __mod_timer+0x51a/0xc50
+   br_multicast_host_join+0x25b/0x390
+   __br_multicast_add_group+0x468/0x530
+   br_ip4_multicast_add_group+0x1a0/0x260
+   br_multicast_rcv+0x2cda/0x61e0
+   br_dev_xmit+0x6c4/0x1540
+  Allocated by task 610:
+   br_vlan_add+0x111/0xb40
+   br_vlan_info+0x370/0x3e0
+  Freed by task 0:
+   kfree+0x1a7/0x4f0
+   rcu_core+0x7dc/0x10a0
+
+Only test br_vlan_is_brentry() when enabling, like the
+br_multicast_ctx_vlan_global_disabled() test next to it.  Disabling then
+always clears BR_VLFLAG_MCAST_ENABLED under br->multicast_lock before
+br_multicast_ctx_deinit() drains the context.
+
+Fixes: 7b54aaaf53cb ("net: bridge: multicast: add vlan state =
+initialization and control")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-5
+Signed-off-by: Norbert Szetei <norbert@doyensec.com>
+---
+ net/bridge/br_multicast.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
+index 75e1e2a8fc83..3ef5d8bbf552 100644
+--- a/net/bridge/br_multicast.c
++++ b/net/bridge/br_multicast.c
+@@ -4377,8 +4377,8 @@ void br_multicast_toggle_one_vlan(struct =
+net_bridge_vlan *vlan, bool on)
+ 	if (br_vlan_is_master(vlan)) {
+ 		br =3D vlan->br;
+=20
+-		if (!br_vlan_is_brentry(vlan) ||
+-		    (on &&
++		if (on &&
++		    (!br_vlan_is_brentry(vlan) ||
+ 		     =
+br_multicast_ctx_vlan_global_disabled(&vlan->br_mcast_ctx)))
+ 			return;
+=20
+--=20
+2.55.0
+
