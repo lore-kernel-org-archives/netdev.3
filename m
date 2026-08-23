@@ -1,309 +1,186 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A391990C7
-	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 20:47:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B70E342C9E
+	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 21:42:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.176
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787518072; cv=pass; b=eSj13D/BpdtQ+rGEOiezoY11F7yY9TBzRRJQtqbUEceTDZGIUmbJXGdKzWclWLJMNS85tt+4ng2gblTj7PjbSMVARoG8hOwVMs73a+TqhGXA0Cj7M4rM/otGCdTRFNCiwORKFpTR1UwM3QOIB/dbeA7vVe5jOf8o2Pint+qtPrI=
+	t=1787521335; cv=pass; b=IKtd4OQTJYsae72a8hJqdYrVDwQ3UDAAp7wEb3R2uo/JaQSK4nMEdkRoDGOr/Pcx0R45xttMdnHbgEV5ntC9fWO68z7NVVsu9xyHOYZyi42tKboMSZ2JhF8ljNXbRPAo9pCANl5IIoiaFuESz+cVHBzXj3u+RGp77cdtF01iihw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787518072; c=relaxed/simple;
-	bh=EdSkScQPivDj05j/2sLx7CQW8EZz3IaYzt7gqPhjb2Q=;
+	s=arc-20240116; t=1787521335; c=relaxed/simple;
+	bh=UUVZ4QEhiifkU4/PdlgixLKGOpIioQqZ8H2mXpqOKwo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d3ArOLyqlvLnvLI89CLlaqVeGNnuRysqO8zzEeL+0mttZRWevFhl+HipmLS1UhTpGGuY4mfIh8/zIg4tv0Wd2ZB0AbTIav0sXRF5s41EqYB5mO3KOHNEQHcwg3dTjhnXrgCRFoRkwf10ArY73aqXXna7z+OHsVsW/W5hN5mbqV8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SKqnsg8M; arc=pass smtp.client-ip=209.85.210.182
+	 To:Cc:Content-Type; b=YDQ4HUyib9mbU761jt66xVMrKtRUvGeCuuHSzoV28HxUUcGr9VGVBb99EVMBX+JnjDjXgXH+Tkc6u7AqSDCv332SuaaBagQp+31Txo70XKpUgd3MSsnYcBqVvKdv/qLChl73W+PUHQ0IdPkgk1UnmOQGbGRbV4Ha2IrrzzFHooE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TzLDOo66; arc=pass smtp.client-ip=209.85.210.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SKqnsg8M"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8486ac3f347so3266281b3a.1
-        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 13:47:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787518069; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TzLDOo66"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-84e507b079dso1622865b3a.0
+        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 14:42:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787521333; cv=none;
         d=google.com; s=arc-20260327;
-        b=EGXF+VQpI/U+gev8JTXWmBsL07gQx47sJ4cIIlDVm0fqjVQPls9kdUPbhdLAgTIevr
-         kfRPPp4RH7L6ABL9LvVBGox9WKSlUVJGvJdqP7SatmsspbdFgZdDInqwGegdsMbSy2D6
-         xNprY0CQNwTT6vUQZH6r4AvRnkd8rt8lHAhPxw4y6HrhZJ5msLlu8clgwbXct5qmXhVX
-         IvUaiiBry/N4KgrViAnVux9w/S6IiE2d9BfFt7ZDbyAABG1WyrO6qujz0ZpPvLY4gWKa
-         /zZUtGvXphvZtJFWHc8ahbI5dzSLDs26wYtmLKU5hqRwbwy2iaQ02XqyFBvA+DRCI79P
-         JLKQ==
+        b=o/IEcFhfIZnKHUTQRYjt9P6ihnjJeYyz4hx5igrszx0/Z7+5D2aP5GGAtW1x//FqLA
+         oj8d9dDkfoP76/mtj1GwzvLFgwUA8FgH3DQRFpOGXdalczAMQwK2H0KUK7Q9iQb8luDK
+         wBfa8b8R3/KvTXSWHCOCfpeqqV7RjmYvEarGg4MZVKb9SfN5YmYbeD25rtnHNhJJ1Mjl
+         kPLf4PfL7MFphA3dqjbYOXPzmQiJQgQP3Ic/K38AaMHhuNumLanqxs4lbMw08FAfi/TK
+         u86ksFpntAhKYVOpVJ1IZHTv+/fTxBFLVRBEUNb5v5usijwiCJVAd8mAjph2plN9kAOP
+         1EdA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=NaOd5F/ipfNJOZxCZ2AViEp5mUXDbyZwZgqkyHb5ep4=;
-        fh=PkWsZYxIRvTr8ZzSKG6o4ZBAxUzcs01USQFwhDKKSnI=;
-        b=V1EKNh+CKVauLND3YOvo2L0ulXbBgUXwTHhfpoDb8HrInUMTlH6jtiCVx3KRDz0Lbf
-         23DizckgDlT+Uks5GCIeZedIBSGb3KLHzufvYlZidtCIUZdi/DHhuxmq2/RPmPitJ6Nx
-         xV9e3SHCcr5hl20OyWcQnTGF8KYI3+Dwb2l1uetX4AVy7ioNPLKwjaKNXK/+BoRWsIKJ
-         /JymsPCAu416h0+94Dx8nCNA3k2VVFcAI1Wy3J8D2ZliGD0SScIPOKEOZ3OhPyAR2HD8
-         898qWLNnKlJaN8z5dp9varWaGSoOxGeU3ZFWXNgDFWI65prfwUdnwuW9j9F2in8MJ1zb
-         1lAQ==;
+        bh=MiBiSqEstYsBT9CowHcGMjwsGGy57PEcAXTCZ8mkb0o=;
+        fh=qwIqDjkBFNzqIqQRjvCKK4NLpSSC+4wQM4G6+l0H+Hw=;
+        b=UwSj+pRytRCoLOnYVNx4TUx/o3EbajLBANUHuTSNYRn9tFnxjiCPtBuA3t0bTcXO4X
+         N/WK93AukEcU+Q7HJHs5Mew87P3U0E0DGJmBh9xBy+mcZ1EdqSU+K6XqGRDnut+xi/X9
+         hD70jIAWZzak2HpcPSAn1PPcUKdRJrtftPTNtePJlbsVMfjBGOUyjGUpyqnexVqW9BPZ
+         x+wS7MnpbaDp44bNHKbreWJZqsqQJUnM3YbbCc0MbOF+oJQOSCz45F6bY0fA88/Ehn3A
+         /TjzTQF/YEflApbAV+q/9Mjugri8bgpvKW/vJy/IHLpIQdScC8yVS54qky2uL5Nl6ZeW
+         BqHQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787518069; x=1788122869; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1787521333; x=1788126133; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=NaOd5F/ipfNJOZxCZ2AViEp5mUXDbyZwZgqkyHb5ep4=;
-        b=SKqnsg8MrtfPrFjTPh1gKDno1moC592JeZ8/MtwK2l0NoowC209DRvWbaVGatvUCnh
-         L/sjYkw8DG36clN1B5t4eOUTZyu1sVF7e58RLrkPXkyx2xYfDwsU1FSLaZPsMG+I+n26
-         tiR/6RsONpyIaWWE0ZWbUKm+I4wuf8JXP7rMA/f56ish76m/OpNozinw6vz7qtNHjfj3
-         2rKqyFmPckpq6h9XX3qf9iOQ28J+OyphALz4SpLvjVAERdTnvUXC293z0BY1N7lZAU4D
-         CKPlC8A8NNb+CImJ/+uUXTPCSaoc/ZS0OOPFh0iCnBqScsGsrYketbJZZObkjt8mXbbb
-         grrw==
+        bh=MiBiSqEstYsBT9CowHcGMjwsGGy57PEcAXTCZ8mkb0o=;
+        b=TzLDOo66deUWndxnkcuVLsI+dUfFk9AdQgkn3ZayVHlPH3qdWS1WKfextC0SYNn4KY
+         jjQ+5b9Na+zcTqZCvfFKLYeBhXTvcn+LKds9FwI1sBpFifvVaOLLaYbqHdOFE0skB7E/
+         sHGERnP9gHiMMGlXlQ+4jwtqFFalY7LR2Yr8iv2onnpkFFLxdlHWIqmlg4dIHnJXSI2S
+         bYiAiZuKTCyNTxa+kc4ugeeTCB3wxItobDuT7KnUnS6bb/sGg/1RCwsbtx7wEMK2ZOnn
+         RgvBgEXE0c83bw+BsH1ZgNYCdS9lWjxpY06nzT369htDVps3oZetrj3eYUtT3jwZRU92
+         Bcsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787518069; x=1788122869;
+        d=1e100.net; s=20251104; t=1787521333; x=1788126133;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=NaOd5F/ipfNJOZxCZ2AViEp5mUXDbyZwZgqkyHb5ep4=;
-        b=EwylrQUhDhUkXtfBCS1k3G8Desr+Q5naoCZvUqxgAqjs07Jqoyps5dYty47lvxZ4LU
-         4Lt0lJ81yF7q//CTnT1f+MqqW/q4FR2sggQQHYYxTBhpdbrUEGlIN7D/c13g16xetaH3
-         7Nmpwye0uvTO9UY8Nyt9aVW9U4t9IIkNJDnAErVIpP1knQpWKokKV5Qx++lzJq9sG4DO
-         YiIPHXfckMgUvXhHhkQptCkhrakgNH7dyiain2Ij01nUW+i59cOyFpDkbF1Nb5VfSu8/
-         JtfuAL81bmS1mW6JhHBU54c24trWPfJ9PcccEUyQ2s7g15YFaCBtvRZ7QMNDbTs+Pip4
-         7zYQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrbcdkT+piK0srQ1HAQTHEHYgt5SV7uFG7+DE8RZ28ZotTE31JcnH+g8cOtgCjqdo+Y5RZKM6c=@vger.kernel.org
-X-Gm-Message-State: AFuF++kUbzFCtPo4jrKGRKj7LLMProIvQ2yY/wUfAUnfZUQA9TC1fMOx
-	uddx9JBNjMMzLaFTMapZpN2bBEmqk1AAY5oXWkToMYB3cTLG2EmxpPKA9LZcXj7sVOL3Yr2fpqo
-	juOvW3s9yc1psScjKfj5RwIPhgysncsKlmXcx
-X-Gm-Gg: AR+sD11W6acYCZpA/hjPmIWxkEOlBDGzEBHC80/A9DVLI4RdY1eNJZW1cXP+dEbHEyq
-	ysJ5mKdF0LD97q6YAJo5G0O1q0fA3bhgNROXi6kywdfSmpwmhP8LtZBPzpmQ1/EQmzmyQX8BgN3
-	px2hqXifFjKRjPL3OROoWIxiDHiILGVu2HlLbF/md51FfRYeucvtljn50OqIRT42ns6ZvBy2d9g
-	Vcforl53gu5HQxT6MxstuthBNcC1cuNp/urn2Mz60wChjcCZzNtEjsk+b3YR7nqNfUftV6BHdbb
-	UQUv+KOaDpFQLqQgSb4yRNHvuNWsAeF/EYh+ucdx4CVZGBOX7nMR/Qc73rp3mo5RPU3kO6jbfDh
-	xCajZKGhqjuWz9Hp8zByvIlkDvN4oWeCxvAvuufVou54=
-X-Received: by 2002:a05:6a00:12c6:b0:845:3033:6cbb with SMTP id
- d2e1a72fcca58-851dfa05cf7mr30925366b3a.11.1787518069023; Sun, 23 Aug 2026
- 13:47:49 -0700 (PDT)
+        bh=MiBiSqEstYsBT9CowHcGMjwsGGy57PEcAXTCZ8mkb0o=;
+        b=MedVZw2azE7WQ5f7MJ3Yl8PcFjHIALEg3mx1To2hKxc48LlhOiVTDij214zmHXhrZw
+         GdEoJ0q1aBonTAjC/prOUNc+8zTt3IsWWiNDDTSqKBVAHOiW/uoekXQAyc9rYZRnmRNn
+         H2+f/ZMBfbJrOAOFHx6PvkiH0KYd8QyDrO129rtWookKJN0xTbxFwyiG8OV84PCb++kA
+         HQj+egMNBTqpCJ7xBrDGjXltB2WkAJbX4jRT97olEJcSiiJZaC48lcIJNcPoqKpmRCcU
+         FDM1OwxEhwUY/MT09MK8GqSa7Orx8FFFaAMvQ7fCWyGGJVVMUVAgUFL7XQH1SgK1BnYN
+         zskA==
+X-Forwarded-Encrypted: i=1; AHgh+Rqpo2Lep+6GyEmK7WAFmUyseoxRMLvd0Xv6Ll7j+gjaDE690/nBsMcxvM7Zt83tsbyVTc6b+Hc=@vger.kernel.org
+X-Gm-Message-State: AFuF++m1BZVgOD7PGUDjBItt7WkCP0pS0kUlES94QiAHK1LZKG4YNF07
+	dL9W56D7Dw6OpD3trm0jPusY2ualYe70TXq1Nu7lZ5ZYhsgnE+YgI1RcE7FPuuOZaN3ReDQKfvX
+	uxBYHwWIdiMTfBRuynV4KuMtuk2nZjDQ=
+X-Gm-Gg: AR+sD1271DWTUF9fAKKTMNzrVPB6fA+fABzO3yPlq2IIR6q0TFbdiyKwosKH3HOFiy2
+	R59tHpgvL6ljjTGpXTdcWJY7HLGMYzB2rl4Ifk5BXyXf64w2DKZZZgQ2Wtpimxsd68Nb6XeGFum
+	hr6kC120z4UyDaKnKP7i0xy4Orz6NIwP7xVxdAE2RMhHlxP4lGrn6n1G60h6mWogTrwc+IuWacU
+	J4opIbv4oJaXa7IhpuDnej6XeEJ149MxgYr6tts/tMHAZ3jt/nvl870VZR/9E1c8aISI9vev6MY
+	ZiHpIGjbBH6YDeOiLC+gxdkF/VO0VcqzI2zQmH/iBNGIywW1CfcwjeRxjUW/NgZe7R224sqdlez
+	n8/D8jTRO9nVftV1ppVVwUrgcjARAnW02Oq7Gnln1jzU=
+X-Received: by 2002:a05:6a00:39a1:b0:847:93f3:a4b6 with SMTP id
+ d2e1a72fcca58-851fa0667d8mr33292027b3a.17.1787521333426; Sun, 23 Aug 2026
+ 14:42:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260821091440.6496-1-junvyyang@tencent.com> <20260821091440.6496-3-junvyyang@tencent.com>
-In-Reply-To: <20260821091440.6496-3-junvyyang@tencent.com>
+References: <20260823172857.896146-2-bestswngs@gmail.com>
+In-Reply-To: <20260823172857.896146-2-bestswngs@gmail.com>
 From: Xin Long <lucien.xin@gmail.com>
-Date: Sun, 23 Aug 2026 16:47:36 -0400
-X-Gm-Features: AcwNN1UtODEX5ElhnYKDPtmKRWtoo8kix_cFHZ7Lkb49-rKEd-u3jvvIpcZYJTE
-Message-ID: <CADvbK_dABUb_=VnO60AO=pj=jvjCG5dCBRj3wDAt7kM4=71_zQ@mail.gmail.com>
-Subject: Re: [PATCH net v3 2/2] sctp: fix stream->outcnt underflow on
- duplicate RECONF responses
-To: Jun Yang <juny24602@gmail.com>
-Cc: linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
-	marcelo.leitner@gmail.com, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	Jun Yang <junvyyang@tencent.com>, stable@kernel.org, 
-	TencentOS Corvus AI <corvus@tencent.com>
+Date: Sun, 23 Aug 2026 17:42:01 -0400
+X-Gm-Features: AcwNN1XZvnlzQT-i245u9UsXUJjCTtcPxPiiTlaJcAj7ZTFwxNFgd5I0mNBreL8
+Message-ID: <CADvbK_c6rqUdxyMSC=XF7ShHbjHSY1d2wEUmYpr0RGO+E0i_Kg@mail.gmail.com>
+Subject: Re: [PATCH net v3] sctp: fix NULL deref on untransmitted RECONF completion
+To: Weiming Shi <bestswngs@gmail.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Xiang Mei <xmei5@asu.edu>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 21, 2026 at 5:14=E2=80=AFAM Jun Yang <juny24602@gmail.com> wrot=
-e:
+On Sun, Aug 23, 2026 at 1:29=E2=80=AFPM Weiming Shi <bestswngs@gmail.com> w=
+rote:
 >
-> A cached RECONF chunk may contain more than one request parameter.  A
-> duplicate response can therefore find and process the same ADD_OUT reques=
-t
-> again while another parameter is still outstanding, rolling back outcnt
-> twice and possibly underflowing it.
+> sctp_process_strreset_outreq(), sctp_process_strreset_addstrm_out() and
+> sctp_process_strreset_resp() complete a pending stream reconfiguration
+> request by stopping the reconf timer on the transport it was sent on:
 >
-> Track outstanding request types as bits and clear each bit after its firs=
-t
-> response.  Later responses for the same request are then ignored.
+>         t =3D asoc->strreset_chunk->transport;
+>         if (timer_delete(&t->reconf_timer))
+>                 sctp_transport_put(t);
 >
-> Fixes: 11ae76e67a17 ("sctp: implement receiver-side procedures for the Re=
-conf Response Parameter")
-> Cc: stable@kernel.org
-> Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-> Link: https://lore.kernel.org/netdev/20260730110225.37371-1-juny24602@gma=
-il.com/
+> chunk->transport is assigned by __sctp_packet_append_chunk() when the
+> chunk is appended to an outbound packet, and sctp_outq_flush_ctrl() arms
+> the reconf timer at that same point. A request already published in
+> asoc->strreset_chunk but not yet transmitted has neither, so completing
+> it dereferences NULL.
+>
+> Two ways to get there. sctp_send_asconf_del_ip() sets
+> asoc->src_out_of_asoc_ok without sending anything when the address being
+> removed is the association's last one, and sctp_outq_flush_ctrl() then
+> leaves every non-ASCONF control chunk queued; as only
+> sctp_process_asconf_ack() clears that flag, it persists. An unprivileged
+> process that removes such an address and then asks for a stream reset
+> panics the kernel from softirq. A peer needs neither ASCONF nor local
+> help: sctp_cmd_interpreter() uncorks the outqueue only once the whole
+> packet has been processed, so a reply built while walking a RECONF chunk
+> stays untransmitted for the rest of that walk, and one RECONF chunk
+> carrying [Incoming SSN Reset Request, Outgoing SSN Reset Request,
+> Response] -- or two RECONF chunks in one packet -- reaches the same
+> dereference.
+>
+>   KASAN: null-ptr-deref in range [0x00000000000001e8-0x00000000000001ef]
+>   RIP: 0010:timer_delete+0x67/0x110
+>   Call Trace:
+>    <IRQ>
+>    sctp_process_strreset_addstrm_out (net/sctp/stream.c:832)
+>    sctp_sf_do_reconf (net/sctp/sm_statefuns.c:4212)
+>    sctp_do_sm (net/sctp/sm_sideeffect.c:1172)
+>    sctp_assoc_bh_rcv (net/sctp/associola.c:1044)
+>    sctp_rcv (net/sctp/input.c:243)
+>    ip_local_deliver (net/ipv4/ip_input.c:262)
+>    process_backlog (net/core/dev.c:6680)
+>    </IRQ>
+>
+> A response can only acknowledge a request that was actually sent, so do
+> not match asoc->strreset_chunk while chunk->transport is NULL. Guarding
+> the lookup covers all three completion sites.
+>
+> Fixes: 810544764536 ("sctp: implement receiver-side procedures for the Ou=
+tgoing SSN Reset Request Parameter")
+> Cc: stable@vger.kernel.org
+> Reported-by: Xiang Mei <xmei5@asu.edu>
 > Suggested-by: Xin Long <lucien.xin@gmail.com>
-> Assisted-by: tencentos-corvus-ai:kimi-k3
-> Signed-off-by: Jun Yang <junvyyang@tencent.com>
+> Assisted-by: Claude:claude-opus-5
+> Signed-off-by: Weiming Shi <bestswngs@gmail.com>
 > ---
+>
 > v3:
->  - Split the response_seq =3D=3D 0 lookup fix into patch 1 (Simon Horman)=
-.
->  - Keep the request bit helper local to stream.c.
+> - No code change; v2's changelog linked the wrong v1 posting.
 >
-> v2:
->  - Track outstanding requests by type instead of sequence (Xin Long).
->  - Drop the redundant arithmetic guard (Xin Long).
+> v2: https://lore.kernel.org/linux-sctp/20260822172352.63025-3-bestswngs@g=
+mail.com/
+> v1: https://lore.kernel.org/linux-sctp/20260820162235.2668698-2-bestswngs=
+@gmail.com/
+>  net/sctp/stream.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> v1: https://lore.kernel.org/netdev/20260730110225.37371-1-juny24602@gmail=
-.com/
->
->  include/net/sctp/structs.h |  2 +-
->  net/sctp/stream.c          | 39 +++++++++++++++++++++++++++-----------
->  2 files changed, 29 insertions(+), 12 deletions(-)
->
-> diff --git a/include/net/sctp/structs.h b/include/net/sctp/structs.h
-> index cccc662..b21f23b 100644
-> --- a/include/net/sctp/structs.h
-> +++ b/include/net/sctp/structs.h
-> @@ -2057,7 +2057,7 @@ struct sctp_association {
->              force_delay:1;
->
->         __u8 strreset_enable;
-> -       __u8 strreset_outstanding; /* request param count on the fly */
-> +       __u8 strreset_outstanding; /* request param bitmask on the fly */
->
->         __u32 strreset_outseq; /* Update after receiving response */
->         __u32 strreset_inseq; /* Update after receiving request */
 > diff --git a/net/sctp/stream.c b/net/sctp/stream.c
-> index cfca5aa..e1a215d 100644
+> index 34ffe6c945a4..2012f61e250e 100644
 > --- a/net/sctp/stream.c
 > +++ b/net/sctp/stream.c
-> @@ -22,6 +22,9 @@
->  #include <net/sctp/sm.h>
->  #include <net/sctp/stream_sched.h>
+> @@ -488,7 +488,7 @@ static struct sctp_paramhdr *sctp_chunk_lookup_strres=
+et_param(
+>         struct sctp_reconf_chunk *hdr;
+>         union sctp_params param;
 >
-> +#define SCTP_STRRESET_BIT(type) \
-> +       BIT(ntohs(type) - ntohs(SCTP_PARAM_RESET_OUT_REQUEST))
-> +
-Hi, Jun Yang,
-
-Any reason for removing SCTP_STRRESET_RET/CLEAR/TEST()?
-Each of these macros is used at least twice below, so removing
-them increases the number of lines of code.
-
-Note: The pre-existing issue reported in sashiko [1] is false positive,
-as a peer can't answers an IN_REQUEST or ADD_IN_STREAMS with
-SCTP_STRRESET_PERFORMED according to rfc6525.
-
-[1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260821091440.6496=
--1-junvyyang%40tencent.com
-
-Thanks.
-
->  static void sctp_stream_shrink_out(struct sctp_stream *stream, __u16 out=
-cnt)
->  {
->         struct sctp_association *asoc;
-> @@ -372,7 +375,9 @@ int sctp_send_reset_streams(struct sctp_association *=
-asoc,
->                 goto out;
->         }
->
-> -       asoc->strreset_outstanding =3D out + in;
-> +       asoc->strreset_outstanding =3D
-> +               (out ? SCTP_STRRESET_BIT(SCTP_PARAM_RESET_OUT_REQUEST) : =
-0) |
-> +               (in ? SCTP_STRRESET_BIT(SCTP_PARAM_RESET_IN_REQUEST) : 0)=
-;
->
->  out:
->         return retval;
-> @@ -417,7 +422,8 @@ int sctp_send_reset_assoc(struct sctp_association *as=
-oc)
->                 return retval;
->         }
->
-> -       asoc->strreset_outstanding =3D 1;
-> +       asoc->strreset_outstanding =3D
-> +               SCTP_STRRESET_BIT(SCTP_PARAM_RESET_TSN_REQUEST);
->
->         return 0;
->  }
-> @@ -474,7 +480,9 @@ int sctp_send_add_streams(struct sctp_association *as=
-oc,
->                 goto out;
->         }
->
-> -       asoc->strreset_outstanding =3D !!out + !!in;
-> +       asoc->strreset_outstanding =3D
-> +               (out ? SCTP_STRRESET_BIT(SCTP_PARAM_RESET_ADD_OUT_STREAMS=
-) : 0) |
-> +               (in ? SCTP_STRRESET_BIT(SCTP_PARAM_RESET_ADD_IN_STREAMS) =
-: 0);
->
->  out:
->         return retval;
-> @@ -564,13 +572,16 @@ struct sctp_chunk *sctp_process_strreset_outreq(
->         if (asoc->strreset_chunk) {
->                 if (!sctp_chunk_lookup_strreset_param(
->                                 asoc, outreq->response_seq,
-> -                               SCTP_PARAM_RESET_IN_REQUEST, true)) {
-> +                               SCTP_PARAM_RESET_IN_REQUEST, true) ||
-> +                   !(asoc->strreset_outstanding &
-> +                     SCTP_STRRESET_BIT(SCTP_PARAM_RESET_IN_REQUEST))) {
->                         /* same process with outstanding isn't 0 */
->                         result =3D SCTP_STRRESET_ERR_IN_PROGRESS;
->                         goto out;
->                 }
->
-> -               asoc->strreset_outstanding--;
-> +               asoc->strreset_outstanding &=3D
-> +                       ~SCTP_STRRESET_BIT(SCTP_PARAM_RESET_IN_REQUEST);
->                 asoc->strreset_outseq++;
->
->                 if (!asoc->strreset_outstanding) {
-> @@ -669,7 +680,8 @@ struct sctp_chunk *sctp_process_strreset_inreq(
->                         SCTP_SO(stream, i)->state =3D SCTP_STREAM_CLOSED;
->
->         asoc->strreset_chunk =3D chunk;
-> -       asoc->strreset_outstanding =3D 1;
-> +       asoc->strreset_outstanding =3D
-> +               SCTP_STRRESET_BIT(SCTP_PARAM_RESET_OUT_REQUEST);
->         sctp_chunk_hold(asoc->strreset_chunk);
->
->         result =3D SCTP_STRRESET_PERFORMED;
-> @@ -816,13 +828,16 @@ struct sctp_chunk *sctp_process_strreset_addstrm_ou=
-t(
->
->         if (asoc->strreset_chunk) {
->                 if (!sctp_chunk_lookup_strreset_param(
-> -                       asoc, 0, SCTP_PARAM_RESET_ADD_IN_STREAMS, false))=
- {
-> +                       asoc, 0, SCTP_PARAM_RESET_ADD_IN_STREAMS, false) =
-||
-> +                   !(asoc->strreset_outstanding &
-> +                     SCTP_STRRESET_BIT(SCTP_PARAM_RESET_ADD_IN_STREAMS))=
-) {
->                         /* same process with outstanding isn't 0 */
->                         result =3D SCTP_STRRESET_ERR_IN_PROGRESS;
->                         goto out;
->                 }
->
-> -               asoc->strreset_outstanding--;
-> +               asoc->strreset_outstanding &=3D
-> +                       ~SCTP_STRRESET_BIT(SCTP_PARAM_RESET_ADD_IN_STREAM=
-S);
->                 asoc->strreset_outseq++;
->
->                 if (!asoc->strreset_outstanding) {
-> @@ -899,7 +914,8 @@ struct sctp_chunk *sctp_process_strreset_addstrm_in(
->                 goto out;
->
->         asoc->strreset_chunk =3D chunk;
-> -       asoc->strreset_outstanding =3D 1;
-> +       asoc->strreset_outstanding =3D
-> +               SCTP_STRRESET_BIT(SCTP_PARAM_RESET_ADD_OUT_STREAMS);
->         sctp_chunk_hold(asoc->strreset_chunk);
->
->         stream->outcnt =3D outcnt;
-> @@ -929,7 +945,8 @@ struct sctp_chunk *sctp_process_strreset_resp(
->
->         req =3D sctp_chunk_lookup_strreset_param(asoc, resp->response_seq=
-, 0,
->                                                true);
-> -       if (!req)
-> +       if (!req || !(asoc->strreset_outstanding &
-> +                     SCTP_STRRESET_BIT(req->type)))
+> -       if (!chunk)
+> +       if (!chunk || !chunk->transport)
 >                 return NULL;
 >
->         result =3D ntohl(resp->result);
-> @@ -1079,7 +1096,7 @@ struct sctp_chunk *sctp_process_strreset_resp(
->                         nums, 0, GFP_ATOMIC);
->         }
->
-> -       asoc->strreset_outstanding--;
-> +       asoc->strreset_outstanding &=3D ~SCTP_STRRESET_BIT(req->type);
->         asoc->strreset_outseq++;
->
->         /* remove everything for this reconf request */
+>         hdr =3D (struct sctp_reconf_chunk *)chunk->chunk_hdr;
 > --
 > 2.55.0
 >
+
+Acked-by: Xin Long <lucien.xin@gmail.com>
