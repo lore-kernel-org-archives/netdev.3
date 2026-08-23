@@ -1,163 +1,112 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE72339372
-	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 11:58:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8C138E8C6
+	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 12:37:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787486301; cv=none; b=XTWd/c/9RuhakOwnOeVZIjbd+QQuLnzLg4FtmHpe+/bMaSSRZL9JzSUTFCB0OBFLD4beG0DmRjBvFmDkWkkj0xVLLMfwR7KLEr153BBVcKOz5aJ0EyRXipf9tpiTlkLzcdXJSqtwcpWcZV905Kh+gV1GkYjauU57PbkDAbnovTY=
+	t=1787488663; cv=none; b=dHyC05BBpwXJgAvQL4JbFtyFx13EbXAPZSb1gO5trnfPTQVMskTQUfwI4NgmsX4FkRoXRxvJSienXOyDx1fkPmCxAGdhDhCH86FkbkDt2rPzPPBFHGow6fCajgjVz4621tfPC0zYpraJFb0tsyurHufIKWxdfW5ANNUyCZYCZ2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787486301; c=relaxed/simple;
-	bh=Sga20T/P8MWq7f+aP48sgyMUgOEeXsNmwdBnKjmMyOY=;
-	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=Ve5mBAcXlq+8mbO3tlI7rQRvhFVKedAI4ceOajCNY1Ab/H/Zz/U5eP6Z4EzhaKJuBYsnASIYKPOhv5iraVpX1gt/YU/KGOW1sRycF2PZwu0KztdAqkArgGpxzHKGoFF79ivyP3E253RhyIipPMwVmK42YK4ZpiH5gFttEdJ/MuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com; spf=pass smtp.mailfrom=doyensec.com; dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b=LHweCiSd; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=doyensec.com
+	s=arc-20240116; t=1787488663; c=relaxed/simple;
+	bh=XaOpaGXMPr9YkCRAQJOKJig23iwcq1i3BikLgYLofvk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Hhb8MYtj1aj5IZLzE6pnUAehVqMl+SFiv2vQg/CeGinl7jrvQT6333ahfqZrdFUgWlRrkV8iGIWMn5W0WyEqNDanxwhjaklmrCfNZjf1WjDEQyO9APERN9QElp5FZPLo03/Au7FFGvatvyRjlBvhBp1ejEt8kDHhX8KJTl/woSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=PboOZ/t/; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b="LHweCiSd"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c1600d040e4so383101266b.1
-        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 04:58:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="PboOZ/t/"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c197e7e4e94so456674866b.2
+        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 05:37:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=doyensec.com; s=google; t=1787486297; x=1788091097; darn=vger.kernel.org;
-        h=to:cc:date:message-id:subject:mime-version
-         :content-transfer-encoding:content-type:from:from:to:cc:subject:date
+        d=lex.la; s=google; t=1787488660; x=1788093460; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=9VCdZ1UGkHSoNerNHN6y4WQf9dSCo072rCjQ4W0h48s=;
-        b=LHweCiSdWbpEhMSMjNp5345PIVQ8k26Bhug1g4Qkr03Hljym0DYU8xo+KPrccA49Sm
-         dnxVj9HIqHTEugU4Tlr50pxz3N8em6ZLOxIzpuZjEGblB0DqeMigYqLl2nT7eU96rMdM
-         RlgQdKkFjUXfy9EOU794y/PE5BTPdklVsCVFBzy7VN+QxxnbimodvQX49C2XM5QoBxLP
-         px8SkHU+bbjD8Q+8wULTnYLvKAapyc+CBmETDIM1W5M1SJ++kFj7wZct/9eHKZ65CUru
-         BL3tygxrMCGIY/Be/C33LRczzUb1YW2nCVwUottkGClQhf6zUgCo3wRbuXl1rJQNdYBf
-         Eu/Q==
+        bh=XaOpaGXMPr9YkCRAQJOKJig23iwcq1i3BikLgYLofvk=;
+        b=PboOZ/t/pC1cfMAFXkeGwnUP7ZE8oeGDGwN18RTZcobNpGhqqNWg5USVOCxrg10rxZ
+         FL4fy2xXg/EEl2uC0BJ+hZiG4BitkrZ/9URCe+AHkalwYjxaXcttE/L6YKgAGtRtvsI0
+         nzPQlWEPHAfmzfARwHoYRnqHQbIoE7fKYo+ia+iSPi9DmTg+ar7vd/I50QmBWC/zB6Be
+         qepZojn4XG3XIVjHWeacP23Q8Hr+Oj03iyACLLMXGYMdHGTWWx/WZnshk2R5o2mk4fhZ
+         kNi6Zy0oMwZbKVSi17WCc2vplCk/Gao0qtAXaj4LnEilJjM4I/YdZia6TiLxYn2+9j4M
+         LP4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787486297; x=1788091097;
-        h=to:cc:date:message-id:subject:mime-version
-         :content-transfer-encoding:content-type:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9VCdZ1UGkHSoNerNHN6y4WQf9dSCo072rCjQ4W0h48s=;
-        b=eZD3K/7zrb5wJgilLvkcMLWNAKRVY8CxxH4C5aEv7AxGzeWonkXbwaNdUDIN6S1btq
-         Uk9NjI7mEbAA1Jmh4bMv6jdh4ArzTVvyHmUcK7El+KYBLhWtYqDF2spb9SPbGyQbOm0E
-         SC+K9RaFCqThELkrFCwW7kOWzDYMbbWPsu/9cJtCV0HN1mI/Z7mDk/YpkeFiWW73pq2z
-         yYwq0P5pAEId0yk2CGS7FNIJ4rdJx7zzMAb3eQUf/LiQWlY5YHHHuvQ9SHUuRxhJ+oGc
-         rkY739FWu9QhuPO5VZOFxsSkVf90alSv6WXaz3KFtp6dSgfyh8vFfbvxfAtcukuXFJEB
-         d3hw==
-X-Gm-Message-State: AFuF++kjfae83+1n3ivAErValXXdsB7/2W+HZGuKM208GokM6oi9HJ9z
-	vstN45mW+ue7mWvfNmTCjcDsY+3e+IgyUCFsgqsvreYGHtsnbeHW/kXcMQP58jaOl/VpT+kYInk
-	udGoIv342iaNi
-X-Gm-Gg: AR+sD11FvMoyrbWY978NzVySY+Nu7PEqqN5nkOJmc0UQA9lTF0fTjnuMn+ZFfUY3f9F
-	/07HqH68Tyg806fCZM8xszDy6AUh8HOmnnauLBfDTIq7whkFVU7FC1OiXdYR0n2Dm+pDCT27NZr
-	j2G/nfGca2QauQNCUSlxv39NvOvUnbQ/v0a+xK7+f0AUeIxxBTn3BmvSB/tDDCK+YSrYdXvTwVy
-	tIDpdRN6PMgrvjoiPRsbuQYyjKjFXRMof6bkaxEbHkylSKXgn3xaAcVqGAY03eIaK92NheyefW0
-	8vQw5MovOi7wpo4zz184dR35lTrS5izihagMIgc5jDS6U6kXOp9kZOO9Mmc7mpy3+V8RMPJaJhe
-	+W+u1sLm+RclCM90Bvcu+nVh6mTDG3X5p2I2EwpxiFx5wIHsVfwimz6hzH7qvUMK3cP+OFHUnC9
-	x53y+uPlLspfr7nXMYz8sZuGiYxpf4xRaDeYx4s8Uy4FlFipEyTJ6uu9e0Q/VsM1dEz2W66PynB
-	mFiDYw+SEAV9flckNz9oaHHV0tSoEZpg9Jg31R0mBTon5yiN+yHqXAN0DmpCd9lIzjmfTi75mie
-	kcz1sdBVE2wlP9SHk5bG6F1JX26NloqhgRna3A==
-X-Received: by 2002:a05:6938:a08b:10b0:beb:d461:7b09 with SMTP id a640c23a62f3a-c246dcc72afmr1228120866b.11.1787486297276;
-        Sun, 23 Aug 2026 04:58:17 -0700 (PDT)
-Received: from smtpclient.apple (host-79-57-139-67.business.telecomitalia.it. [79.57.139.67])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c249685ab3csm762988166b.49.2026.08.23.04.58.15
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 23 Aug 2026 04:58:16 -0700 (PDT)
-From: Norbert Szetei <norbert@doyensec.com>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
+        d=1e100.net; s=20251104; t=1787488660; x=1788093460;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XaOpaGXMPr9YkCRAQJOKJig23iwcq1i3BikLgYLofvk=;
+        b=eecFIeVxYfqQBMjhsFHo51lqArGdxrH1+NKZIlgrYnGJVmhETWjK2llVD0UyGdzArb
+         eaNwD4bmpPoudMJMXaheZ3L9pyJGgOxmjZ5DUbPV8r8eVrk+XY28AaKKpd1SAHkZ0oa5
+         Pf5G3GgZbBYOzKNXl/K1+HGX+nf4TkxfWwmxwNX/HVrPTfZPx1gMLbRqpx5lg5Qw4hUn
+         ldT9FdHCslCzs8bnw5E/lLiprjyQ+l9dv8v57vA7Cx5TVM5ExffEjEvJhLSfepem9BjJ
+         BY50e6wKugiW6tsfUmsLiuBtlOqfZ2ucZ4xZdgca15EyKPb5xv8GMDUyofSGhKpMpwYP
+         q20A==
+X-Forwarded-Encrypted: i=1; AHgh+Ro2vdIsP+e6fehiMBykFUglhdy5W3P6myN17vb+YTJYSf/rjvGwHuuiT4ba7biuzQEbwbqCoiA=@vger.kernel.org
+X-Gm-Message-State: AFuF++mskL2Mmn+5+OFkDmOKWh1KrO9TEdl2DM0IKhSvHxQubQyX2lmu
+	bBvreoQVzQ9sv4RjLFSQMovQzX1vNUhfrtMpFBcxLvxHcaNf/CLRkurdIrKggsyxsR8=
+X-Gm-Gg: AR+sD11Prl6rfAABXOEQlKFOActO1LkE4Jt4q97+1l97z7eSZvUwrYB9sY+soD/ggop
+	yKWhS/VRJACy6BQNuWeaNc5CTmRjccFHW+iMwnqi4f4gv3uvwDNL7pKl3x8FZ1iQjBO6Rt8qvgD
+	Y6uy9p8CQX0A5/5COC4yjid/Hu0F6IELtFo1SIfzJS+Z0IYI/A1cD26YzEiwqC1gElKVVoYgw6Q
+	/+WYlopamK5G0t2ZDlIW0g8h4NkIERVuVKtq9tAVRT9HE47vQLUTc770+O79R16GwMEaWltUccu
+	W3tADv4BHHwlxREtZMam4Kzylhkg1h5s+FnTZa6bi2CIXPWb5l4NJCnWtvbXy7kk4UdjWkrO3rJ
+	eirqy/XUzuagRa4W9hJivgPdUDTErplqMrorCVe9SAwHE/znbRFEsV8gtmfK+isoCzUAx+T/D7k
+	/esTF1d8DZBHvNwlBkVynmwy1AW+gqcrgfUeEMg9cVKs1sIRht
+X-Received: by 2002:a17:906:9f8e:b0:c12:6d25:2c7a with SMTP id a640c23a62f3a-c2492621d0fmr1233591366b.17.1787488659081;
+        Sun, 23 Aug 2026 05:37:39 -0700 (PDT)
+Received: from ownbook ([109.61.81.82])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c249606b696sm859023966b.7.2026.08.23.05.37.33
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 23 Aug 2026 05:37:38 -0700 (PDT)
+From: Aleksei Sviridkin <f@lex.la>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Vladimir Oltean <olteanv@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Aleksei Sviridkin <f@lex.la>
+Subject: Re: [PATCH net-next 3/3] net: dsa: connect a late-arriving PHY at ifup
+Date: Sun, 23 Aug 2026 15:37:29 +0300
+Message-ID: <20260823123729.74290-1-f@lex.la>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <c712cd5d-d4bd-413f-82a8-6303ff3e6526@lunn.ch>
+References: <20260822155259.87146-1-f@lex.la> <20260822155259.87146-4-f@lex.la> <9557daed-f039-434a-ae64-ac849b9860be@lunn.ch> <20260823000549.6095-1-f@lex.la> <c712cd5d-d4bd-413f-82a8-6303ff3e6526@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
-Subject: [PATCH net] net: bridge: mcast: fix use-after-free of a master VLAN's
- multicast context
-Message-Id: <B41EB55B-E5FC-431D-956C-503CA7B95C30@doyensec.com>
-Date: Sun, 23 Aug 2026 13:58:04 +0200
-Cc: Nikolay Aleksandrov <razor@blackwall.org>,
- Ido Schimmel <idosch@nvidia.com>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- bridge@lists.linux.dev,
- linux-kernel@vger.kernel.org
-To: netdev@vger.kernel.org
-X-Mailer: Apple Mail (2.3826.700.81.1.4)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-br_multicast_toggle_one_vlan() clears BR_VLFLAG_MCAST_ENABLED under
-br->multicast_lock before stopping a VLAN's multicast context.  That is
-the teardown handshake: lockless readers gate on the flag through
-br_multicast_ctx_should_use() -> br_multicast_ctx_vlan_disabled(), so
-once it is cleared under the lock no reader can arm the context again.
+> How about making the DSA driver depend on the PHY. That would be much
+> simpler.
 
-For a master VLAN the handshake never runs.  __vlan_del() clears
-BRIDGE_VLAN_INFO_BRENTRY before calling br_vlan_put_master(), so
-br_multicast_toggle_one_vlan(masterv, false) returns early on
-!br_vlan_is_brentry(vlan): the flag stays set and br->multicast_lock is
-never taken.  br_vlan_put_master() then drains the context in
-br_multicast_ctx_deinit() and frees the VLAN through call_rcu(), while a
-reader still inside rcu_read_lock() sees the context as enabled and
-re-arms it.  The port and port-VLAN branch of the function has no
-br_vlan_is_brentry() test and flips the flag under br->multicast_lock,
-so it is not affected.
+I worked through both halves of that for OpenWrt, where one kernel
+image serves every board of a target, so every kilobyte lands on all of
+them.
 
-The reader is the bridge transmit path.  For a master VLAN
-br_multicast_rcv() selects brmctx =3D &vlan->br_mcast_ctx with
-pmctx =3D NULL, so IGMP sent to the bridge device re-arms the context's
-timers after br_multicast_ctx_deinit() has already stopped them.
+Built-in: the PHY driver itself is cheap, under 8k of text and data on
+arm64. The firmware still lives on the rootfs though, and a built-in
+driver probes from an initcall, before mount_root(), so blocking in
+config_init() until the firmware shows up deadlocks the boot. Putting
+the firmware in the kernel image costs 144k on every board of the
+target, and almost none of them have this PHY.
 
-Any user able to create a bridge can trigger this, which includes an
-unprivileged user in a user namespace, by deleting and re-adding the
-master VLAN while sending IGMP to the bridge device:
+Modules: that works, and the kernel gets smaller. OpenWrt already does
+it elsewhere, kmod-dsa-mv88e6xxx depends on kmod-phy-marvell. What
+stops me is that it moves the switch driver out of the kernel for every
+board of the target, and NFS root goes with it. That is a bigger change
+than I want to push on my own, and it gives up the case you asked
+about.
 
-  BUG: KASAN: slab-use-after-free in detach_if_pending+0x412/0x4a0
-  Write of size 8 at addr ffff88810ac39918 by task brmc/601
-   __mod_timer+0x51a/0xc50
-   br_multicast_host_join+0x25b/0x390
-   __br_multicast_add_group+0x468/0x530
-   br_ip4_multicast_add_group+0x1a0/0x260
-   br_multicast_rcv+0x2cda/0x61e0
-   br_dev_xmit+0x6c4/0x1540
-  Allocated by task 610:
-   br_vlan_add+0x111/0xb40
-   br_vlan_info+0x370/0x3e0
-  Freed by task 0:
-   kfree+0x1a7/0x4f0
-   rcu_core+0x7dc/0x10a0
-
-Only test br_vlan_is_brentry() when enabling, like the
-br_multicast_ctx_vlan_global_disabled() test next to it.  Disabling then
-always clears BR_VLFLAG_MCAST_ENABLED under br->multicast_lock before
-br_multicast_ctx_deinit() drains the context.
-
-Fixes: 7b54aaaf53cb ("net: bridge: multicast: add vlan state =
-initialization and control")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Norbert Szetei <norbert@doyensec.com>
----
- net/bridge/br_multicast.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-index 75e1e2a8fc83..3ef5d8bbf552 100644
---- a/net/bridge/br_multicast.c
-+++ b/net/bridge/br_multicast.c
-@@ -4377,8 +4377,8 @@ void br_multicast_toggle_one_vlan(struct =
-net_bridge_vlan *vlan, bool on)
- 	if (br_vlan_is_master(vlan)) {
- 		br =3D vlan->br;
-=20
--		if (!br_vlan_is_brentry(vlan) ||
--		    (on &&
-+		if (on &&
-+		    (!br_vlan_is_brentry(vlan) ||
- 		     =
-br_multicast_ctx_vlan_global_disabled(&vlan->br_mcast_ctx)))
- 			return;
-=20
---=20
-2.55.0
-
+Do you see a third option, or is the module direction the one you would
+take, with NFS root treated as acceptable to lose on boards like these?
+MODULE_SOFTDEP looks useful where dracut builds the initramfs, OpenWrt
+builds its own, so I am not sure it applies here.
