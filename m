@@ -1,133 +1,160 @@
-Received: from mail-oi2-f11.google.com (mail-oi2-f11.google.com [74.125.231.203])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81498368D51
-	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 13:05:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.203
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C60E308F3B
+	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 13:32:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787490321; cv=none; b=F+s9d2bUyEuJh+xPMvfj8uGn9qgF74B6K6vjpt1nvWHhi9W+rlkeOD3JP1kic93nu43V8Ch/wELkyoGUHLz0WNY9ymaV58qpoHMY13DvRZjkOOluGcJkE+PM7sqW6RiEPcxKsO5lJsP48G2OpaXNSqY6cPRt1/8ofjXkjMhlyms=
+	t=1787491974; cv=none; b=UI+NHVcIcZD/NjTd0+VnDIa2vCJBNSdUDOozRJZJT9wbRlM0iSG4mrh6xSGfpDKO4qdzTqqvCOZXDA4FCVeF0fwLo+JgwGLaHiwOZzq1AJhEawH6gzrUpiRiQoxAjigNk9cyZoXcCz3xbI4hyT6/vsXgTxbBVxOjilao+2j3UbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787490321; c=relaxed/simple;
-	bh=jQmvTJ/tAAOZBRx6Hwb3Iik13elJGbKOMTtn+JmDyXg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nX+J53VYU3OhHQz8GMsj79pSk6Fyt1t/zH9GySorv1Ho2mfeYLrr2GfG8XUhonYGPiExnxx2XwHUVWlgDWinBCtZ3gf8Ri/7Z5nxzwgFNiSLFE3OiYV/T7HIQi0KABA3ooga5k+A018o4BeTfpUpktzGUeHyChk5JsZuYyJCz+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T2Sp+f2M; arc=none smtp.client-ip=74.125.231.203
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787491974; c=relaxed/simple;
+	bh=QnsqlWV2+HTY6HhUI51xQCDZ22CyVTT5ZguwayhWJac=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hy6pEREw/pkZnHL6Q+1qZSkQr0uaPF/hYrHa5P8Iy/go0G6cQg5uTdNJlKkc9znnryOPW3W2rV3Th3+tzon1Og136aOtUjuKfBPi9FYd77LL5lvR/yGMo90Zz7lxVhEDHwuqE00VZOkzFNKK/qowelzIKn750mhVL2BM6bGfv4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=L1k/Q6pB; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T2Sp+f2M"
-Received: by mail-oi2-f11.google.com with SMTP id 46e09a7af769-7e9feadef81so1211801a34.1
-        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 06:05:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="L1k/Q6pB"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c20fb91ed0fso381316766b.3
+        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 06:32:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787490319; x=1788095119; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=mroXYSbpDLq/pWQ9I/nQbeSIztlLPt22fxJ5q2vkeTA=;
-        b=T2Sp+f2M7Qh+dt6lRyDDniNN/EYH/SABS1inYy+eHUY2aTnlWtMPR/XruNaw7JW3kn
-         9IVoFy3TgqqSFC5g1PPqP4N7bOKyjcOisedaEeSGFn8AZUPGpcRoHeEytCP4L1UVPhcB
-         TkuDOQXM55X71IYo84BIdPB53A5/v+FDhHMfRfT13mxkiqpIeqxqnrmBDkAzJpEfoN9N
-         pgLnxqYjMrBii4Af4DeeR9GuliwHB1ythLIbRtz8V9be3UMJIKaDJAh3xpb0rOUgVRcT
-         LPJSMpGmPHXE3C52Jt2kVbV92245kmt3I13diL6Fdmi7RNZSptarv7NY7zlWXyBMWgHt
-         LDNw==
+        d=blackwall.org; s=google; t=1787491971; x=1788096771; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oKNZxXkQOBpNNoBVz2Q1UXI7fB4yjnJyzapqPLmW9AA=;
+        b=L1k/Q6pBsL21Tm6puhF0m8ly5kRjkhPxDnxj4i/qClUFjb9vE3TLBTqX/MhAa95wbe
+         M3gdYmI5c+nkNhfLqGrUsvckDFS2CVl/a4nFAPfowwmoPGkKAt98gxOsxtAXI9DbSX9E
+         IhQIIMEM1vrHbxsP5BxztScxq+bhPfXZlOor6KInHPaKSuqG4FN4gxi+Omz3uJUDNyKu
+         FZD3/jlgv4Bjx5SfRtsN5TYftYIzisUI1PjtIuJT/9e37BV7cYnYBxVMPEvfUF6thRIO
+         j0x4jAaNVU3vPWwzKm+js2ad43z3viI+n4aiByicc73JTKuWZid9fxys0saJP3rbQ0Vk
+         64mA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787490319; x=1788095119;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1787491971; x=1788096771;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=mroXYSbpDLq/pWQ9I/nQbeSIztlLPt22fxJ5q2vkeTA=;
-        b=r9AC4tsJh7MhFcfMBNY+HMogVGqpmbbJWcgSZo90Tyc0gGvHOdwUdq0OuPcEOrdURL
-         kfFG3MRiZ+pF2stLAMduSu7yu5udBCfreekag+jWnrXzuDm7h8AXLIg+lM3qO3lLJupb
-         4c0hxPRQ2y5PKL0irncy9hqqp3apdV6qVnfuBG0NighnRXL3uUpUCVnsaP61QNzsC+nd
-         /XgPVM5CDmP6mpLZbrk+wUsuxZaCHePWokD27HV+oh6WJmOCqXCdP6+hf+8bHn3AG/QQ
-         vHATDUKPaXkWLL7jKcGO7SNkssyc0LGWUGEQoInALa0TCCVHFfB+UDKPVIP6tzYYVUdP
-         9KAw==
-X-Gm-Message-State: AFuF++nhnT5UCcsjR01FdDoFKJs+BeILMjkhZl6HU8AXvWkPRVI506Z7
-	f1y48snfaJtaWxWK1XCKWTs9XyPbTZsvVIFxpz8QWg9cHLMq/tckIiAt1L5aaRoBlyQ=
-X-Gm-Gg: AR+sD10/VHL0NkKmrrB5JnrESDV1CLWLT8lB35RP+kznUWqioKb/7u8KEplKrlWjwfY
-	Wpbg67GOIgWdajurQbUco7QL3AcaN3rJ3vOsU/eKtLeM3jA0gSVs9vpz2dvNW6DtLuydlqPm9V6
-	snvArxCe+2MZKOT/CFuXLu9q1bqzdYEPvjQgtqgOSiA5dQxKMfjpql2JhO8SGjIDlU8Je+8s7lh
-	dFtxjBswXg30nGmHT3xxZ/KnXFvnKjvY3ivArCiPKAigze8eDsbcascwHy2Jh7aXXPVHHMQcXD1
-	oG1rVQjVsXVx+MqUQ+ClnTU39IkKkpK8/yPIruYzANbHYKjyVH3w/bhWQJxjBxRl52vnP/LgJij
-	NDGRL+2BPAfaIm2MwpEeKjlpPBMfEQsmYRKRoYQYPnywPMlAZtneOmAfZGrawkb3VyUM7bhXdFt
-	GlFkFWNiFb04DHsLmbnAFTabA6HKlechE6JmVtaN9rUXTNQjYFhtybXPYgsV7cctK+iyx1EYZMH
-	Ufo4Xm/CIDEYF73Aon3/Jy8rg==
-X-Received: by 2002:a4a:edc3:0:b0:6b0:4c0b:4846 with SMTP id 006d021491bc7-6b16b359e13mr10745373eaf.10.1787490319351;
-        Sun, 23 Aug 2026 06:05:19 -0700 (PDT)
-Received: from localhost.localdomain ([14.22.11.162])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-463831398aesm3423042fac.1.2026.08.23.06.05.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Aug 2026 06:05:17 -0700 (PDT)
-From: Henry Martin <bsdhenrymartin@gmail.com>
-To: netdev@vger.kernel.org
-Cc: linux-sctp@vger.kernel.org,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Henry Martin <bsdhenrymartin@gmail.com>
-Subject: [PATCH net] sctp: fix soft lockup from unpadded ASCONF-ACK parameter iteration
-Date: Sun, 23 Aug 2026 21:05:10 +0800
-Message-ID: <20260823130510.1341584-1-bsdhenrymartin@gmail.com>
-X-Mailer: git-send-email 2.43.7
+        bh=oKNZxXkQOBpNNoBVz2Q1UXI7fB4yjnJyzapqPLmW9AA=;
+        b=s4JgQXt4ZgRiDqB7buNCaHHJ7rE27sGXK9Uil/TqquDKPyqHc1Jc+OjUxvb4xswfUS
+         3PFcQTslTSU+2ogFG/vOR/MAFjL/qCvYIEiachrArgdKtNWoSXCis6AgEidSbbjwmEuh
+         1UjJqsyT2ssTCeIpdGiBq5aGn8Tx6ilMcDW8rajKh3+NgdfXV3oYcDORyT7H0DHxmuJX
+         IiHQp9fhEnULd5IZve7cGZVfWloYrDZyiSuc2OFIe/V+YSkqzfvFw+J7+4BY9ioZKn4q
+         Thjl9xTOjloD3Uj2I1XaqR9erifF7aNkdWs2i4k6DtE4dPtoI+3uCdp/6y7svkf+Ibpf
+         xBwg==
+X-Forwarded-Encrypted: i=1; AHgh+RpjAdn4XdlcXEdur272QxDWnYKtaotNDnzq6iFYeH3BhDwmqz+5B52qHqNb5Gf2lfwF+PRQUr0=@vger.kernel.org
+X-Gm-Message-State: AFuF++mEH1G8jfMGnv6KVnczyAJltl/SYvcEjErcHJRMaRVotHKioaCV
+	xw/qa3A8f2x9udaNngSwXtN/aaoxmTTLH+D5iQ5OWkdmU6dIoZ2Smb6tuoW87r6Op0o=
+X-Gm-Gg: AR+sD11w0ihae1Bj8qjEjhRE9lSNsbrSk2Pj19+ubf6DCrNNk+chZOQxnsgkY3iN8Ai
+	ON62qJ6FXofCzo8Hx7+MkYed1ebN85q9fvFXncfvr6iZFLWgZITPc/4utUX5L9oCoI0+uxyTfgP
+	ULmBNFoQvWQg8+0QxQ2DnE4WR7VVpl6LfKMTCEV/q0nw6NfvWYFE/zjJu3Lejlg7t8OpP/upuoY
+	eHLmJ0AGTrTESWa+Sr9o+1SY4abMQdzvPFaSQsEDVBJapdGADGP+PboqPZ9k4y2MrOOelTSQvfx
+	SNEvk5tmGBpCFcancndrMGbLRoKQaBVzyEg6ulSIPOEaxM/cBHU4wmSKKgJHb/icW3i7OUYqtDV
+	HFAngDx7pAm+5nKllGR0yMuU1PqMWGTs5aNWKsYU3QbicKSNAwRC4C6lgKY+jcLo2nckxTpZV3+
+	0zYbwuA+FKtwN0MyIFmUyJ1LlnxzLAjgTUpY2JUflsAHZ48yTr4OecS/IqbqswBTkPaRRSLM29+
+	Sc+yBJyMJU+qHv1Eow=
+X-Received: by 2002:a17:907:6094:b0:c1f:9c3b:96a7 with SMTP id a640c23a62f3a-c246a6269d2mr2107478766b.17.1787491971003;
+        Sun, 23 Aug 2026 06:32:51 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c249629563dsm794720866b.17.2026.08.23.06.32.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 23 Aug 2026 06:32:50 -0700 (PDT)
+Message-ID: <a7cc297b-ae54-40b6-92fc-2d1311f2e76f@blackwall.org>
+Date: Sun, 23 Aug 2026 16:32:48 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: bridge: mcast: fix use-after-free of a master
+ VLAN's multicast context
+Content-Language: en-US, bg
+To: Norbert Szetei <norbert@doyensec.com>, netdev@vger.kernel.org
+Cc: Ido Schimmel <idosch@nvidia.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, bridge@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <B41EB55B-E5FC-431D-956C-503CA7B95C30@doyensec.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <B41EB55B-E5FC-431D-956C-503CA7B95C30@doyensec.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-sctp_verify_asconf() walks ASCONF-ACK parameters with
-sctp_walk_params(), which advances by SCTP_PAD4(length), and its
-SCTP_PARAM_ERR_CAUSE case performs no length checks, so an odd-length
-parameter passes verification. The consumer sctp_get_asconf_response()
-then iterates the same parameters advancing by the raw length, without
-padding. A single odd-length parameter desynchronises the two walks and
-makes the consumer interpret attacker-controlled bytes at a misaligned
-offset.
+On 23/08/2026 14:58, Norbert Szetei wrote:
+> br_multicast_toggle_one_vlan() clears BR_VLFLAG_MCAST_ENABLED under
+> br->multicast_lock before stopping a VLAN's multicast context.  That is
+> the teardown handshake: lockless readers gate on the flag through
+> br_multicast_ctx_should_use() -> br_multicast_ctx_vlan_disabled(), so
+> once it is cleared under the lock no reader can arm the context again.
+> 
+> For a master VLAN the handshake never runs.  __vlan_del() clears
+> BRIDGE_VLAN_INFO_BRENTRY before calling br_vlan_put_master(), so
+> br_multicast_toggle_one_vlan(masterv, false) returns early on
+> !br_vlan_is_brentry(vlan): the flag stays set and br->multicast_lock is
+> never taken.  br_vlan_put_master() then drains the context in
+> br_multicast_ctx_deinit() and frees the VLAN through call_rcu(), while a
+> reader still inside rcu_read_lock() sees the context as enabled and
+> re-arms it.  The port and port-VLAN branch of the function has no
+> br_vlan_is_brentry() test and flips the flag under br->multicast_lock,
+> so it is not affected.
+> 
+> The reader is the bridge transmit path.  For a master VLAN
+> br_multicast_rcv() selects brmctx = &vlan->br_mcast_ctx with
+> pmctx = NULL, so IGMP sent to the bridge device re-arms the context's
+> timers after br_multicast_ctx_deinit() has already stopped them.
+> 
+> Any user able to create a bridge can trigger this, which includes an
+> unprivileged user in a user namespace, by deleting and re-adding the
+> master VLAN while sending IGMP to the bridge device:
+> 
 
-When those bytes yield a length of zero, the while loop over
-asconf_ack_len makes no progress, spinning forever in softirq context,
-and the watchdog reports a soft lockup. A remote peer can trigger this
-with a crafted ASCONF-ACK on an ADD-IP enabled association with an
-outstanding ASCONF (RFC 5061 section 4.1.2 requires the chunk to be
-authenticated, but the predefined empty key id 0 allows the peer to
-compute the same association HMAC from publicly exchanged parameters,
-so the gate does not help).
+So much AI slop... at least drop this paragraph which is completely useless.
 
-All reads stay within the received skb, so this is a pure remote
-denial of service.
+>    BUG: KASAN: slab-use-after-free in detach_if_pending+0x412/0x4a0
+>    Write of size 8 at addr ffff88810ac39918 by task brmc/601
+>     __mod_timer+0x51a/0xc50
+>     br_multicast_host_join+0x25b/0x390
+>     __br_multicast_add_group+0x468/0x530
+>     br_ip4_multicast_add_group+0x1a0/0x260
+>     br_multicast_rcv+0x2cda/0x61e0
+>     br_dev_xmit+0x6c4/0x1540
+>    Allocated by task 610:
+>     br_vlan_add+0x111/0xb40
+>     br_vlan_info+0x370/0x3e0
+>    Freed by task 0:
+>     kfree+0x1a7/0x4f0
+>     rcu_core+0x7dc/0x10a0
+> 
+> Only test br_vlan_is_brentry() when enabling, like the
+> br_multicast_ctx_vlan_global_disabled() test next to it.  Disabling then
+> always clears BR_VLFLAG_MCAST_ENABLED under br->multicast_lock before
+> br_multicast_ctx_deinit() drains the context.
+> 
+> Fixes: 7b54aaaf53cb ("net: bridge: multicast: add vlan state initialization and control")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Claude:claude-opus-5
+> Signed-off-by: Norbert Szetei <norbert@doyensec.com>
+> ---
+>   net/bridge/br_multicast.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
+> index 75e1e2a8fc83..3ef5d8bbf552 100644
+> --- a/net/bridge/br_multicast.c
+> +++ b/net/bridge/br_multicast.c
+> @@ -4377,8 +4377,8 @@ void br_multicast_toggle_one_vlan(struct net_bridge_vlan *vlan, bool on)
+>   	if (br_vlan_is_master(vlan)) {
+>   		br = vlan->br;
+>   
+> -		if (!br_vlan_is_brentry(vlan) ||
+> -		    (on &&
+> +		if (on &&
+> +		    (!br_vlan_is_brentry(vlan) ||
+>   		     br_multicast_ctx_vlan_global_disabled(&vlan->br_mcast_ctx)))
+>   			return;
+>   
 
-Advance the iterator with the same padding rule as the verifier and
-reject zero or truncated lengths to guarantee forward progress.
-
-The issue was found by ZeroHive, a vulnerability hunting agent at
-Tencent Yunding Lab.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
----
- net/sctp/sm_make_chunk.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
-index 5a335c980a7a4..0634241fd6649 100644
---- a/net/sctp/sm_make_chunk.c
-+++ b/net/sctp/sm_make_chunk.c
-@@ -3452,8 +3462,10 @@ static __be16 sctp_get_asconf_response(struct sctp_chunk *asconf_ack,
- 		}
- 
- 		length = ntohs(asconf_ack_param->param_hdr.length);
--		asconf_ack_param = (void *)asconf_ack_param + length;
--		asconf_ack_len -= length;
-+		if (length < sizeof(struct sctp_paramhdr))
-+			return SCTP_ERROR_INV_PARAM;
-+		asconf_ack_param = (void *)asconf_ack_param + SCTP_PAD4(length);
-+		asconf_ack_len -= SCTP_PAD4(length);
- 	}
- 
- 	return err_code;
---
-2.43.0
