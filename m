@@ -1,156 +1,192 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3654F5E0
-	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 14:37:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787495827; cv=none; b=YVBWDBqCztIoZj6T45DeXpdjCtxg3K7npL3SJKzxfunB2en9YIunxMipFgz5QuSUm6MyUy8KmOIYpLSgHw8j3fsZjU5wHYnA4JF/+KFZd2C1kyEZAtCC94grd2dfbnrx2/sddc1osbrNmrNf7VmQmvMc/u7YsKJFLs46Kx0swNI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787495827; c=relaxed/simple;
-	bh=qZZWn22YQl20SjyVdcx7nzk3Bsd1rFBGXKmPjvWGvSI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZBW9rpt59d3vyGeI9V8Ahu5EyE5/ynI/ivuCvugUkwDCMAzIDe1NPvz3RgZCYqtSFbjouXBmaiZ4fI82Buxr5E/lN6pawMoy6bN2YMJKfq7Hi1UX05soWyK5s6gyJwiQA2i2xuP4UIizx26VCn4B7ils3zZWrUr9CXBC9Hjp3fM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GD++IGa9; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901D630B509
+	for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 14:51:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787496712; cv=pass; b=bOTISzhNOA4912owdUUKUVmVUwx1bZMGN0fBW0NqJdadgk2FOtcXbB3UjgAw5gb/kz8DmbahjyuJHQsDeMdXy+CdFCxSkWF8OdeUBHnERRVgt3w/9qZSZm8weFYqJ65Ks/7dgddj4DjxxBvx1fonnBWnYMZEudiyxdJHhfIJVhM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787496712; c=relaxed/simple;
+	bh=Le1qMMXndZqMhyvPrNPrroqdRA/dktc4UX2DKI7dx+4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Lz6e50vi47XwYX7XKmY9zc6EOeZT2A9Zpi7ZFJdKXLqOpBpGKnpUx5ylz/NAxxObUNQWt/jj80ltVjzlgs4n/aF1/K9ZICMdC3UjYh5kXDtscEh3PT8ZvN0JgTJjjZxb2CkB1X0FUWGR0egN4fsGRY71iNHNO6s3d041TMfvcRA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VFB9IZro; arc=pass smtp.client-ip=209.85.222.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GD++IGa9"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-47ddf7b09e5so2355858f8f.1
-        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 07:37:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VFB9IZro"
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-92e7632b193so145179585a.2
+        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 07:51:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787496709; cv=none;
+        d=google.com; s=arc-20260327;
+        b=N8FAUuggRua4SFh5+wQ+Yq4c//jqzCX0ZVHhQGxsK10IVti3W8E8ztZsbIGEWHJ4iy
+         DZ6Jd4NbhN3eWEMSf/t9cwRPYGNXT0SHhpV73DU6zliQcX8Fc8uy86R1kip5viP5LXRK
+         mGC15qehwQly7Nw3fSPJBCENK0N0v7DiXQ3PQdpPv2V8VWiWJaoX4oBWNArZlE6psP4h
+         h+PA14Vi2n8d57rskupFIuvzmBO7U38hMSMTsGMEQ8V2e7f0/e44nqi1qd31xwN0KToz
+         l0SdkKg5BUsM3os56Lw7DjwFoLRVp/K1CYtbVaSy75pmxlEEl6K3SBsBycJApbtQEegD
+         3M7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=xwG6NI1rbMeiLX/3P+c85FlciFYa4SxM2JUZchrcE58=;
+        fh=6/uIM/oxSw6k+K4Pn7E/3JhLie3n6l2yVsXjOTq0g8A=;
+        b=pai1PDGo0vJwxt4XWCdw5+1Q4A7meSxPkkPSOWKZ+N4sjAvaOnGJvJvi0iS07MFUny
+         XVtvupsZSULugTAxaX/SXAmY/7QF1148OqyAEentD6dLmX1B1dGHMoflBGdbr8q0pWQI
+         L0f5b85JxQzHTZueRMqVcbLxm3NpK0QIovRtTV6XeOocwuEHuyGcOGp58Nwfr3+jelhw
+         4L582zbF5xmiORpBshZ39sGD+6az9l3MPh3qyWivJ4/6Qn9Q68h3HMJ2IoE5b54vftRP
+         UbX/Ur89FX+3WoGSkrPbZak23lWgT5zK2MDMKUXDxzOHsNDCMZ62Nb88wDWUxH/oDBlK
+         cXmg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787495824; x=1788100624; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IjVwgap47YOeIukz8yw67SDCadu22oFRx+M5RlZB4jk=;
-        b=GD++IGa9pYcoFWRdE3RHolqCSG0lblSQw1MsJHHGf4BS3EcF4zSSsNaTKc6KSXwHZM
-         nUSrVtHeadufgS9HBiGZhmZZFvu+d0u87acz4CYS+8Z26PBJl3vHwA+JauKDovU/XeVE
-         44sSZbXozsFGkdRFZRy4RjKHjEUtb8D/JEGiySlQ6BcHP6re8caqVRbKrb71ixqSXBC3
-         q2IO60fTDPQj/BsPAFtIy//qFF41N44vbPWUqZGB92IMENx+/ZD78M0A1hT/T9xjTtIX
-         u+j4wJXMgWPd8Bgfq6JJ7BrpvqSq3zxHcxzunHRO/b5J28guxXxk9YWZprjTXPakzmQr
-         Hfiw==
+        d=google.com; s=20251104; t=1787496709; x=1788101509; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=xwG6NI1rbMeiLX/3P+c85FlciFYa4SxM2JUZchrcE58=;
+        b=VFB9IZro2Qw+C8MuStZLwrrWI0Acqv2qTDrmkawNTTBjRcK+N8dVQCZd61Uon+8Fcr
+         g7BUn3mMS0lMNn/CmnlRgA93//ulGIl792lyKL86EKM/Auxqg8ZaqfbHNC5BtzpfT87S
+         MBI6p9YaWDymQdlELBMZW9+ULcoCHzHwJDeUj9hTMX7zL9Wm6yeK7MXHOUgyBUF51dEg
+         lDshmXCe9U5I1Bji+bGI+5VWA29CVZunSQz3JNbqp1RNEaGrEKpe2gB7/tgwmA+bf6Ql
+         QpyUNQGdhNLWiiIKYCdGqxIpNIFrd8hsb+UXsoe12PY24C4fqk80eGdCu8ffquDrpaA3
+         Nt9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787495824; x=1788100624;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=IjVwgap47YOeIukz8yw67SDCadu22oFRx+M5RlZB4jk=;
-        b=Q01Gc1ZTxYiR4AIzok7rYNMX8RYs8GiqiN33vNi3wWPz7rOc2g0mF4EHd4ejcz69hi
-         cJIFR8LmLmp+1E/9T7O90mNOLyAXJs1ULKWXQl19LbG2CwbblOVaNLZuJKKPucQr2fqv
-         1bsuZ+6NxbSZ38AIykPdzdYhrfBk8Ehxh85IGQc0GOjgroaqaS5su/biwi5CllTA3ac4
-         QaC32yZfX1kzzB6L+rwVG5Vt1i0eZb0VpjUYcUkhmGAtpdnYQ1lmgj9Ot2QwBG/QTA08
-         Q3oXvzAxQBdzYbr1SkcHZmWFx12VvOb3vhi8M5vbrSEwGVY6cMN2jcwu2gaQiKZb9W8V
-         fRmQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rru1ZJqBiL3D4BmCpON/4J5fZI9pRtjOzdLhAaATojRjLmHIGrWzdl8PMBd27Z9qRSLba/GWWM=@vger.kernel.org
-X-Gm-Message-State: AFuF++l6HDmDdi7X1Fszuy2BjjD/gBiN8vkKCYr4JFUVLc4ag+Q53ywC
-	/CuEmZZZZfM+KDxwzOwpeDpfK4ODWvT2cO9oJkAJd2D2rARcwbP2ArYW
-X-Gm-Gg: AR+sD10Ub9uDvbz0fC1j0YUhJupFCqjtGwoNIELHFe/cPFkJmoms6yCs87AITFX/SpE
-	VHicR06+sL49Z9GAijsH2KGyB/GQGlXBFP1anpjDsayHrE4XkhXhNIX+91y3ASIQWjvccdBvPyK
-	wQhBl1JlNgVhvkxpVwwJ661AcJGmTMP0hLyEbPNyFU4BdNPEeUDN8rW/CI1Q5CZ1uSVYsuSV2sJ
-	5RajybqWcXLbrn5bZ7eZczGQS/IZF4SLrLcMGVMOTyngqXb9uLJGKr9MwdvGt5NTuId7rv7iaF+
-	tjNp7A55qltDIKLYLPpFdyukAuIdg/Gxr58CnplkWP6J9IfZHLaQCRpinT4LqP6h5PeIMlm5d5/
-	9tL1r0YgC/wyMxQxeSJKa5lzJWsuB5aK8ZEMUcrQ15gir1tWm35RoircW/RSJ0EYj5ACTccIOj+
-	UFf3jKxbInUTTdjbae0GYLU9XIF57cU9THoQycLAotZ+kPOgu3tPAgd0O+0+7CBamdzRd+jxpwt
-	/mzJYrCzc7CMdWZCwzrScO9mtb5t+sLDJ7TPqaL74PIHD0B1fhCT5BI8Q==
-X-Received: by 2002:a05:6000:46c2:b0:482:c650:8c89 with SMTP id ffacd0b85a97d-482c6508d4emr12735930f8f.9.1787495824002;
-        Sun, 23 Aug 2026 07:37:04 -0700 (PDT)
-Received: from [10.128.10.232] (195-23-151-163.net.novis.pt. [195.23.151.163])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482c9b69b3csm5404807f8f.3.2026.08.23.07.37.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 23 Aug 2026 07:37:03 -0700 (PDT)
-Sender: Julian Braha <julian.braha@gmail.com>
-Message-ID: <f66f3199-df76-4158-9ddd-23e9096a1fd4@gmail.com>
-Date: Sun, 23 Aug 2026 15:37:01 +0100
+        d=1e100.net; s=20251104; t=1787496709; x=1788101509;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xwG6NI1rbMeiLX/3P+c85FlciFYa4SxM2JUZchrcE58=;
+        b=XBkto9LX0v/Jgaw9jwR5baqyEerYY9WPFWnawFpEOk7zwABGb48eu0jS1Yc0OYubnc
+         F0w8sSAqLeo4qRgkYeXDpaLjOPj77+OwJJB+jdutGrIV9seFT48cG5vduuz78IGy6vrc
+         E4PoFrtuVm+tU4TEuIIB7tpdj+YEhBS2uOqooF+eZOUSmzVObcB1OIweBUkBq2GEXOtZ
+         C0+BMkBL1tS0MuU7nV/dQhpeZbKFP01P3Pbvr/D2CE006B0tUy2NQxaFMqZxs4RVDhi1
+         hawWkUbTblylImQLf3tW8FWupq25k5h1coTd4b24QImpSsKxs1iW1J93S7GZSBKzEWOg
+         1SKg==
+X-Gm-Message-State: AFuF++l9KWLJyCGzZDQ0Xrx0tj98fI6FiXw2XUKlOaSeuarkmh9YyM03
+	QX8w6acFBI5xbNoWvQL6dzVDTVtfirlP5oEz7maAAIJtXfkdWEtn9mdVnf8sgQAfgGvf3B1tDb2
+	myOW2S3sDFF5FlAKma38TEY87nQZuwS1G+bWSx7RATbnjxyChrDqvBSRbPqY=
+X-Gm-Gg: AR+sD10YIf2rfIKZnmtgfRHazew88UoqzNecLppd8cV9giThzeEJeZf8fkW1ASK8QHK
+	dm+gIdatXwR1uVqyTF69GyNENP4SXO6DiSiaC0N/3NPRMTbhyeL9W+dZTKpYbCITi/inodIJwih
+	32k5Z+hO5aqMcGxQvUYFxfqx1yf6kQFXPiEFdEaqm8aukvorchWx6HB6qs+TQ24ng5jUeOtWLSO
+	VaDfpxBWK31ew/67BQeeqmeiIVKsLkA7SVsOJiCEKIKHKlyJWAfy+dsnGC2x8GrZTQyU5K4zNHO
+	dLiENI9NxZnVSc0oH51HvaaUK9u/py24YnI0lJz56IWGcng1R/nimWlKf+zcOXsard3OFz0q8EY
+	cm000awRqdw9wMdlIO0zEnM56FDS0tcBY2j3WVTXy9La2Jn4omCBY/AXz
+X-Received: by 2002:a05:620a:3714:b0:936:befe:42a4 with SMTP id
+ af79cd13be357-93739693082mr1777467585a.42.1787496708724; Sun, 23 Aug 2026
+ 07:51:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc: remove dead 440SP code
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, maddy@linux.ibm.com,
- mpe@ellerman.id.au, npiggin@gmail.com, Frank.Li@kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com
-Cc: linusw@kernel.org, kees@kernel.org, colin.i.king@gmail.com,
- rosenp@gmail.com, joao@joaoff.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
- netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20260816125615.985387-1-julianbraha@gmail.com>
- <c4d970dd-cb54-4530-9491-01b6d90e4a2b@kernel.org>
-Content-Language: en-US
-From: Julian Braha <julianbraha@gmail.com>
-In-Reply-To: <c4d970dd-cb54-4530-9491-01b6d90e4a2b@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260823142620.126424-1-shlomojune6@gmail.com>
+In-Reply-To: <20260823142620.126424-1-shlomojune6@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Sun, 23 Aug 2026 16:51:36 +0200
+X-Gm-Features: AcwNN1UvSqU38SAKixc2_G_TDw1LEOp1jNSBCTwPktQLry4hJ_0mTRvDAKBudgo
+Message-ID: <CANn89i+5o16tSTk9MpLE24nCAn+SkMeZvHv0W=MqxnXGZDBBiQ@mail.gmail.com>
+Subject: Re: [PATCH net] net: skbuff: reject invalid pull bounds
+To: Shihuang Liu <shlomojune6@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Christophe,
+On Sun, Aug 23, 2026 at 4:26=E2=80=AFPM Shihuang Liu <shlomojune6@gmail.com=
+> wrote:
+>
+> skb_maybe_pull_tail() subtracts skb_headlen(skb) from the unsigned max
+> argument and passes the result to __pskb_pull_tail() as a signed int.  Th=
+e
+> function does not ensure that max is at least skb_headlen(skb).
+>
+> This can happen while parsing IPv6 extension headers when an skb already
+> has a linear area larger than MAX_IPV6_HDR_LEN.  Once the parser needs da=
+ta
+> beyond the linear area, max - skb_headlen(skb) wraps and is converted to =
+a
+> negative delta.  __pskb_pull_tail() then passes that negative length to
+> skb_copy_bits(), where it can become a very large copy length.
+>
+> Reject this inconsistent bound before doing the subtraction.  In this cas=
+e
+> pulling up to max cannot satisfy len because the initial check establishe=
+d
+> that skb_headlen(skb) is smaller than len.
+>
+> Fixes: 1431fb31ecba ("xen-netback: fix fragment detection in checksum set=
+up")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
 
-On 8/17/26 07:29, Christophe Leroy (CS GROUP) wrote:
-> 
-> 
-> Le 16/08/2026 à 14:56, Julian Braha a écrit :
->> The 440SP config option can never be enabled, making all references to it
->> dead code.
->>
->> Let's remove support for 440SP, since nobody can be using it anyway.
->>
->> This dead code was found by kconfirm, a static analysis tool for Kconfig.
-> 
-> It would be good to include history in the commit description:
-> 
-> As far as I can see, users of CONFIG_440SP were commented out by commit
-> f65573314e4e ("[POWERPC] Re-organize Kconfig code for 4xx in arch/
-> powerpc") and removed by commit ff5f483f3091 ("powerpc: 4xx: remove
-> commented out Kconfig entries")
-> 
-> 
->>
->> Signed-off-by: Julian Braha <julianbraha@gmail.com>
->> ---
->>   arch/powerpc/boot/cuboot-katmai.c   |  2 +-
->>   arch/powerpc/include/asm/async_tx.h |  2 +-
->>   arch/powerpc/include/asm/dcr-regs.h | 10 +++++-----
->>   arch/powerpc/kernel/cpu_specs_44x.h | 12 ------------
->>   arch/powerpc/platforms/44x/Kconfig  |  3 ---
->>   drivers/dma/Kconfig                 |  2 +-
->>   drivers/dma/ppc4xx/adma.c           |  9 ---------
->>   drivers/dma/ppc4xx/adma.h           |  2 +-
->>   drivers/dma/ppc4xx/dma.h            |  9 ---------
->>   drivers/net/ethernet/ibm/emac/mal.h |  2 +-
->>   10 files changed, 10 insertions(+), 43 deletions(-)
->>
->> diff --git a/arch/powerpc/boot/cuboot-katmai.c b/arch/powerpc/boot/
->> cuboot-katmai.c
->> index 034a748fde24..fcd71e76309f 100644
->> --- a/arch/powerpc/boot/cuboot-katmai.c
->> +++ b/arch/powerpc/boot/cuboot-katmai.c
->> @@ -31,7 +31,7 @@ static void katmai_fixups(void)
->>   {
->>       unsigned long sysclk = 33333000;
->>   -    /* 440SP Clock logic is all but identical to 440GX
->> +    /* 440SPe Clock logic is all but identical to 440GX
->>        * so we just use that code for now at least
->>        */
->>       ibm440spe_fixup_clocks(sysclk, 6 * 1843200, 0);
->> diff --git a/arch/powerpc/include/asm/async_tx.h b/arch/powerpc/
->> include/asm/async_tx.h
->> index a14758426dd5..1ff5b2ca3ed1 100644
->> --- a/arch/powerpc/include/asm/async_tx.h
->> +++ b/arch/powerpc/include/asm/async_tx.h
->> @@ -7,7 +7,7 @@
->>   #ifndef _ASM_POWERPC_ASYNC_TX_H_
->>   #define _ASM_POWERPC_ASYNC_TX_H_
->>   -#if defined(CONFIG_440SPe) || defined(CONFIG_440SP)
->> +#if defined(CONFIG_440SPe)
-> 
-> Replace by #ifdef CONFIG_440SPe
+> Signed-off-by: Shihuang Liu <shlomojune6@gmail.com>
+> ---
+>  net/core/skbuff.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> index c82a147..33022f7 100644
+> --- a/net/core/skbuff.c
+> +++ b/net/core/skbuff.c
+> @@ -5838,6 +5838,9 @@ static int skb_maybe_pull_tail(struct sk_buff *skb,=
+ unsigned int len,
+>         if (max > skb->len)
+>                 max =3D skb->len;
+>
+> +       if (max < skb_headlen(skb))
+> +               return -EPROTO;
+> +
 
-Thanks for your feedback, will send a v2!
+pw-bot: rejected
 
-- Julian Braha
+Please ask your LLM not to slow down the fast path, and find a better
+fix in skb_checksum_setup_ipv6().
 
+Note how skb_checksum_setup_ip() is fine.
+
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index d4382b68d56e0b3b247868b4d29ab383cfcf7440..f77d7480594ca6a1dcce2fea737=
+e421d5ea2d38d
+100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -5974,7 +5974,8 @@ static int skb_checksum_setup_ipv6(struct
+sk_buff *skb, bool recalculate)
+                        err =3D skb_maybe_pull_tail(skb,
+                                                  off +
+                                                  sizeof(struct ipv6_opt_hd=
+r),
+-                                                 MAX_IPV6_HDR_LEN);
++                                                 off +
++                                                 sizeof(struct ipv6_opt_hd=
+r));
+                        if (err < 0)
+                                goto out;
+
+@@ -5989,7 +5990,8 @@ static int skb_checksum_setup_ipv6(struct
+sk_buff *skb, bool recalculate)
+                        err =3D skb_maybe_pull_tail(skb,
+                                                  off +
+                                                  sizeof(struct ip_auth_hdr=
+),
+-                                                 MAX_IPV6_HDR_LEN);
++                                                 off +
++                                                 sizeof(struct ip_auth_hdr=
+));
+                        if (err < 0)
+                                goto out;
+
+@@ -6004,7 +6006,8 @@ static int skb_checksum_setup_ipv6(struct
+sk_buff *skb, bool recalculate)
+                        err =3D skb_maybe_pull_tail(skb,
+                                                  off +
+                                                  sizeof(struct frag_hdr),
+-                                                 MAX_IPV6_HDR_LEN);
++                                                 off +
++                                                 sizeof(struct frag_hdr));
+                        if (err < 0)
+                                goto out;
