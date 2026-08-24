@@ -1,108 +1,144 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC60411680
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 12:33:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787574828; cv=none; b=V50UJASa4+bBu3eUuatNPCVRDOd8cZBTQYKjSwx7xshbVoBRXofIgvc9Idm4AhTVrq0ZbHLslGEEwguWWMSPpqdlinmIJru1ayZAwXU+ZBzLqxmrap+5Ztcv2+XDtqIUARVxheIvO6/sVqiLq4YGzoMa+NBVSVIYDWDZlkLGpTM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787574828; c=relaxed/simple;
-	bh=bw8kYtOO5U+FYmtTM1M9KgNeI5l95N1tcJQbU4Owl4k=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ERf00plnKZYmVf66DEYzlyMLcNOtYHuKHy/mnTl5iozQkWz6PlQMBbele4FutScKynn9nzAr0jdrIS7DJVJcD5GDbddpwTkNzHryl3EXCduN4dh2lbGBDtf2QVcPjmPKa/ILHtwWV0F8223YDLwMNwwel36v9Pumyi4/hd4KG/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffroot.co.za; spf=none smtp.mailfrom=ffroot.co.za; dkim=pass (2048-bit key) header.d=ffroot-co-za.20251104.gappssmtp.com header.i=@ffroot-co-za.20251104.gappssmtp.com header.b=s73KDYXY; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffroot.co.za
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffroot.co.za
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C1515A85A
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 12:37:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787575064; cv=pass; b=RFHbuz8R+f2CfQWCWAYRBTMY9RaSb2dfMd8xkwag4F6gDjH+vz2e/YXXY4EK1ixF7NJKdilviodmTxWj5K0l8Fc9P8vlB76RzuQ5nneoDu4x33/cDK6lHRlPLQ8EI+L1156SRzfzURa6yQryqNJ71TTlz1MmQCqRPWFiJzyLRks=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787575064; c=relaxed/simple;
+	bh=AFPMXYM952CeZn+6Ksl36QVco5ORZ9O5pGTpwuoCQ8Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hj8/O44npIvK9KXs08kR3/BgzK6eBsXm2YKhZKY47civPoczd85pRGhX81MZ3MfORFih8wiTntY43+GWWIQS0QcTGeCIC8qB3SOvn6ePfPWf3ZNsHjQfMhvwByFy/0/nRUIW1/3sGGzPc67OuOvt8eofVk+CksE8pZUioIJt1/M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=q490xa/o; arc=pass smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ffroot-co-za.20251104.gappssmtp.com header.i=@ffroot-co-za.20251104.gappssmtp.com header.b="s73KDYXY"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6a157f90752so5731716a12.3
-        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 05:33:44 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="q490xa/o"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-84864086bfeso1025675b3a.1
+        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 05:37:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787575062; cv=none;
+        d=google.com; s=arc-20260327;
+        b=g4W8VE7LLTud411tHmDTA5UpD4AqckYYC9hKMgwRnnWe6cAApGIbLzdKZCvTQfjk/S
+         Zn0iBeFD718XRS++c8yLtWAd6bdkX0rFV9pKPnQdsH5lPN7UcEv68Jzm0ExDtzUUYB6p
+         Gy5B9b9VQ/YZk/rbqe8Kue40MDgTXHCHb8kn8akD24TF3EAQ1MGnOEjbMNKJDiyqqEGM
+         KWkct5VqZuMvL7gGBLN6WgRd4Bj/5tAwmsyIxO0Q4KX490iMaC8r4iPxOWBGJDSo37IK
+         JK0uxbUGzc/+i/VfOq5EKkNqeDVQUDb4G4P6kzl+ct7BeYmX45IG71pNPPK2F8AVphNl
+         lwcg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=W+zQW6HBQa1lN1ja3xskW7ThxwtJGSF8B4qtZOtAofw=;
+        fh=4N5FssHd/Gfyz1e29NYp9PS4UyorIoqzPqGhCOG7doY=;
+        b=TS82bHwVvYG039K5T5d59ZYYz/JSRa5DU7fuUS/pOVEh1/QUxQjkQ1dSJQ9ThkVohC
+         wENrgoOkM1c9aCg67lqUlfKY+oxeL+GNhOOKqY+/79taM1BckvbojhR8JXWisGRSo64F
+         159ao1WrJSF+JNfRAKWjSg+AJ1U0JfhV90SAlzbzhYAjwTR+iuuRJP/TgOsIVfpQLni9
+         BrqHE338p4l2XT4akSI1RKnghh67LABroHnKcCG1sAhp2QcnozppeZKGYFbz+VAAMrCB
+         VyNTJ+vgzF+7L7Q/DzQAYnOaPJrS9ViaUKCPXRDCJ+1ZuDm+Y0HQE2K4XXnXSK5tIM0c
+         Bcvw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffroot-co-za.20251104.gappssmtp.com; s=20251104; t=1787574823; x=1788179623; darn=vger.kernel.org;
-        h=content-type:mime-version:message-id:date:user-agent:references
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=LYsstLUHA4+O8kBjsO8+8kq4A2q37DKWSh7yXTB84NU=;
-        b=s73KDYXYmcNSZni3/cRIO5TzgwI4Bv+WHRKXFvFKzsYI6QXJ2NQyVmy4lk0Nkkrvuk
-         EjncP+mqsJLvlXGLLmf63Cvj+Q8JLUaOUrgZqELm8cgSYgWC/Bld2F2ogtODEgC2wVJd
-         ZCYfsQYS8uKfozewxOXBjeKtC2upV6hAIorm2di//nvHXE4g6Hm3BwOLyRhjCI99er3M
-         60xEafpGUo5JQfCv4GS48+FAVZPlBt8okuZtlQlZJIZnVUgjdFyoea9ubI7pXpqLsb8R
-         7pnrm+2UGLF2OwAV4DpdFHDp/eDihMPfTYiqIrhsiHOxI0rIaTjpHIzCplQwngSGmzi9
-         vasg==
+        d=mojatatu.com; s=google; t=1787575062; x=1788179862; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=W+zQW6HBQa1lN1ja3xskW7ThxwtJGSF8B4qtZOtAofw=;
+        b=q490xa/o3ZB7pnEmNVEGqKuLPnH61YtL/mi5ngA5404lHPWNdT74hWYiLtiFqeqT4l
+         QQL4+FWB2Xw+Y3QUpXTNHdTxUcsvP5sycWcDa6cbnNef1u5kHZxRfNxuiwS2en7bchqN
+         Z+y2i8bMWC/xY8VluHvdwJ9Of0WuLpehpX9wo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787574823; x=1788179623;
-        h=content-type:mime-version:message-id:date:user-agent:references
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=LYsstLUHA4+O8kBjsO8+8kq4A2q37DKWSh7yXTB84NU=;
-        b=W7x5NetZa7Ig/eQeBK5dzei/k4tnnCqTGj6hqQooWSE7XiBCpdtSB/b+I0tXzW/4wi
-         pO5JKAiIH0dyN6YtiQbXwFz5CxyDFcSx8PC3gJkU2fCE1YBK1bO6DCN8lWk3CC2cPEyZ
-         f7Hc/RMWwxVdY8n22ek30fdqcFEymXB2FsrC5dB3khd4pWkkRLmd1tZnTsF8IgBluWEU
-         /9pLjr18HVZoKjDRfZV/nI/V+M5ByG5ZHA77PIzakMSA2Qb9GzaIQiIE1ZwRYak/tvaG
-         6gHpdSjscYCcz6D7HPG5Qx/2G+Y9jkzK2kbPGn1UeykrgSKrX/a3XLuIVKVTSpqrNBSJ
-         zewA==
-X-Gm-Message-State: AFuF++logXCCVmOK09a4j0VyXDIF0b69k0rUrHl6a5UZaFBORKsLhCmo
-	baTJiliXWuGnLGqaOnJGKURlfqsR3FYpertV2M5h5ZsDpR/S8K5j6PtICPw+fM8n4gM=
-X-Gm-Gg: AR+sD10WAx+15C92h0mNwMBN0bQX6w3M1eypQ6MudEYjgxFlfg4wffLkIaSN6ir89dq
-	jMSbkv9+b0hR4+1lGYr4bEgfF/jGm+XLr4vg9RpCIhZVrO/C7keCy7kDzbwq/jqsJa9fibwle5Y
-	YsKqUvBZn5IixU9YeveQPHHNPU88kw6cV1NvcPAw4B/VC8IS4eY/JtSTSyG+85uc0tL/Fl0Lqi1
-	DX7yhQV8yIlwes1BPjiQWhG5J6cL2AXZ5B8NuUfNQbQKLYwkXM2DFLAFbmasbSsVkKDuGDxF99T
-	lLggKhhpXIyul1l1pjeAph721xpAfZfLh7ojAkvyDwy1DnnGoFbcoQjwQLnva4BMrE0FoptG2LF
-	0hnqcmUgqk16pu/NXMQFEWOxLVy897eJP56Cn5ZwfYKXJSOAc2a7kBAW0hqD+47P7M/p2jBoofo
-	OkKVMwztNnRmDenFo4sAd8K8GMXDiTt/38ZDQjHsazMqzPIXstXdlt7TbZr+cF3II7So2QqkVuF
-	ieujxB5BLdWfDQG
-X-Received: by 2002:a05:6402:24c8:b0:6a1:4458:7f2d with SMTP id 4fb4d7f45d1cf-6a42f172088mr22058897a12.5.1787574822559;
-        Mon, 24 Aug 2026 05:33:42 -0700 (PDT)
-Received: from dev-ag ([102.33.165.38])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a59e1d741asm8342424a12.27.2026.08.24.05.33.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 05:33:41 -0700 (PDT)
-From: Andrew Gaylard <ag@ffroot.co.za>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org,  wellslutw@gmail.com,  andrew+netdev@lunn.ch,
-  davem@davemloft.net,  edumazet@google.com,  pabeni@redhat.com,
-  linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] net: sunplus: fix tx_poll spin_lock missing irqsave in
- NAPI context
-In-Reply-To: <20260822135103.6711ba25@kernel.org> (Jakub Kicinski's message of
-	"Sat, 22 Aug 2026 13:51:03 -0700")
-References: <20260820130159.1584806-1-ag@ffroot.co.za>
-	<20260822135103.6711ba25@kernel.org>
-User-Agent: mu4e 1.12.14; emacs 30.2
-Date: Mon, 24 Aug 2026 14:33:36 +0200
-Message-ID: <sa67blfpujj.fsf@dev-ag>
+        d=1e100.net; s=20251104; t=1787575062; x=1788179862;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=W+zQW6HBQa1lN1ja3xskW7ThxwtJGSF8B4qtZOtAofw=;
+        b=nbFPV6mEMXBKI6U1DtBKiB/ODVBXQaDJTrGHqIkz86D7JfQHGxb/3D+Xb+XSpnt50s
+         B73MZi4jUXr5IDhH7kiRlzW/Z+LAIdPJWJG3cXtFFcq5TKZKpb44iya8yfMuzgKOr/M2
+         2XXqEH0HcsHCkLjHwVcVQbYxSFahXoqNXTVeNwRNAyv/mEHilW8acMBTfSpTrm1+KZUA
+         ItARjg2yxNygxrmkpPfpVm133kT+UW5li7/DYYXRhGG5lrxB675Uc7imFK4cA2ZTgEn1
+         BBfzog4nkTlqNOBi+QIKjhFDBn7Nb9cogFe+YPE7spbGVuVF3i4vwD2R2QP9trYkgnyf
+         jYTA==
+X-Gm-Message-State: AFuF++mRusXqFvVSeISdCWslDSoW4ovHh9lweNfc6MeGcC4vnMMcx/Fi
+	7Qzmyr4mE3u11gL5twXe8h8GEyd8dmcTFbJbQviwBJA9XygpScXJnCXDS5gFT5xsHIKFo6Wc9UT
+	YlfJWoLvB8xunWydoM8tLdEm5fMKfOi5SQUI4/Oog
+X-Gm-Gg: AR+sD13fCvvKl/QI8V/KFrN5+CNy/V6/29paNd8mnhHDc4zMJuDcwlLu2v/ygg+LPI7
+	4LC1twklGYZ400/Rg6cE4HVmH6MQaeIln4aB1hdB7IkIVdGyhHDlF5wmf2pD3b3wTH0Mdy81A8H
+	gXH4g7RzAqyIZZ6ps7paZkUyIqmrDtjea/u10DQM6P3WLuYBYradH3fnPevsuPqHai/y7Ovjp9J
+	1cfWkLnH0tC49wPwR/vwXLlqgSXSOYIE4cLa8Wo7PRblmSPO57NqmW1pmpLI8p5FW8AIzuEYNXc
+	mto9RutBzjO5m7EoJNk4tzHe/j0lpgFuZfIgyW3aug==
+X-Received: by 2002:a05:6a00:139d:b0:852:38ff:b4b6 with SMTP id
+ d2e1a72fcca58-85239000a70mr1261001b3a.17.1787575062221; Mon, 24 Aug 2026
+ 05:37:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20260820095742.68511-1-jhs@mojatatu.com> <20260822134401.6545e4eb@kernel.org>
+ <CAM0EoMnLnc2dtzRyaJs+V6Niq=39OQ=p-XC7M+FMTQ0ctSvmyw@mail.gmail.com> <20260822160234.7115ccdc@kernel.org>
+In-Reply-To: <20260822160234.7115ccdc@kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Mon, 24 Aug 2026 08:37:30 -0400
+X-Gm-Features: AcwNN1WFd__tN3SEBdmdHGbGryvUOqmS9T3vj_hnC4iwPbQb1gXTPHuTvm9wapk
+Message-ID: <CAM0EoMm0orPkSuMLrpGMNkUATjmBPCvqWmKMEPQoYuYAEvCAQg@mail.gmail.com>
+Subject: Re: [PATCH net 1/2] net/sched: pfifo_fast: cap ring size and account
+ to memcg
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, stable@vger.kernel.org, vega@nebusec.ai, 
+	Victor Nogueira <victor@mojatatu.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Jakub Kicinski <kuba@kernel.org> writes:
-
-> On Thu, 20 Aug 2026 15:01:59 +0200 Andrew Gaylard wrote:
->> spl2sw_tx_poll() runs in NAPI (softirq) context and acquires
->> comm->tx_lock with plain spin_lock(). The hardirq handler
->> spl2sw_ethernet_interrupt() acquires the same lock, so a hardirq on
->> the same CPU while the NAPI poll holds the lock would deadlock with
->> IRQs disabled. Use spin_lock_irqsave/spin_unlock_irqrestore.
+On Sat, Aug 22, 2026 at 7:02=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
 >
-> Please explain how the issue was found and how the fix was tested.
-> I mean - this is an ancient driver, if you don't have a way to test the
-> fix you should not be sending the patch.
+> On Sat, 22 Aug 2026 18:14:49 -0400 Jamal Hadi Salim wrote:
+> > > On Thu, 20 Aug 2026 05:57:41 -0400 Jamal Hadi Salim wrote:
+> > > > +     if (qlen > 65535) {
+> > > > +             pr_warn_ratelimited("pfifo_fast: capping ring size %u=
+ to 65535 for dev %s\n",
+> > > > +                                 qlen, qdisc_dev(qdisc)->name);
+> > > > +             qlen =3D 65535;
+> > > > +     }
+> > >
+> > > Why not a hard cap?
+> >
+> > sorry, where to put the hard cap and what would it be?
+> > Or maybe you misspoke and intended to say "why put a hardcap"?
+> >
+> > Or maybe in this case probably safer to just reject the change if > har=
+d cap?
+>
+> The latter, I'm asking why not:
+>
+> if (qlen > 64k)
+>         return -EINVAL;
+>
+> To be clear I didn't dig into the code, just read the commit msg, so
+> maybe you have a reason. But the "normal behavior" for out of range
+> params should be to return an error rather than silently clamp() into
+> the allowed range?
 
-I'm testing on a Tibbo LTTP3G2 board:
-https://tibbo.com/store/tps/ltpp3g2.html
+No real concreate reason other than the thought that it's a device
+param as opposed to a pfifo one.
 
-This work is part of getting it to boot, getting it stable, adding a
-couple of missing drivers, and sending the changes upstream.
+I am going to send a v2. Will switch to similar to what virtio does:
 
-I found the issue using lockdep. At least, I though I did, but I've not
-been able to reproduce it, so I must have been mistaken.
+  if (qlen > S16) {
+      //extack here
+      return -E2BIG;
+  }
 
-Apologies.  Please drop this patch.
+The followup as identified by sashikos is on tun/tap - i have a rough
+patch, untested but there are others ahead of that i need to send out
+first.
 
--- 
-Andrew
+cheers,
+jamal
