@@ -1,60 +1,61 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304D1359A6C;
-	Mon, 24 Aug 2026 04:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5213749F4;
+	Mon, 24 Aug 2026 05:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787547553; cv=none; b=WzC7K8Lob5L3kX6B2omFjjw9Ljk46fcmFbokUh8551Dq6G9CoExOiZx8MSNzF7ccAvyMU9eo5IH/JCaqSMzFNteR6Mjluh/sNiQ6idzBOkUIiQlXX+QGmb1cvfzNoGyyg+nLoedqNw/5XblVn2Qo+mgc6+jq6jQf7G0zKjKXkDM=
+	t=1787547608; cv=none; b=fLkCSQj147KuSqa0J/qD3NrpiC60YnacJno80AB6oCtityZF9hAa2duuLhlsmXSzbUI9oV7ZJEUXPJ8fdHzFvUNblPWDKJjtrImWsf6gLqxFb5dWsT/kioMA1Zt6HU2X5gbU0Vd62HEIstGDb4RWsgF2Ly7V51zleyCDPkfkxBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787547553; c=relaxed/simple;
-	bh=mXGG9q+THO9KOxOqNudrKA+jmd49OYRCkGi4ONweQq0=;
+	s=arc-20240116; t=1787547608; c=relaxed/simple;
+	bh=RWs8mTbLJgqu/Fkk55Fv0q2rBFlmUShscweawdaqxrk=;
 	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZeBiWB6ea7+G7ex6Vfc5FdptgfqF5XyHNfvMtk61fyVK0UeGv2B3QZI+Y1SeH5BCpCYE3iROZdOkzI8Bj42beFemWJ2LZoADgRIpNat/FC9ehJ5PPnOjoghFQ7g7/uGcyriBn6jJeZ8K9pSFJ+S4ODt+oyMMFl3J+Sw0VPrGBgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=YPMeM1P7; arc=none smtp.client-ip=62.96.220.36
+	 Content-Type:Content-Disposition:In-Reply-To; b=WOHUx+7vjdZWD47QBJXSayGJE0NxOLQwmHtIB86MrKee8hjON3QnLsBdS79M/f1NIU7o1LNLCtW2/pGpREI6BR5XHZ4Pa9r4+8YD12ebjhz1+90ZTriTb+QgbwwlKWLnRj3qy78iC6Qz0ibLKXMBLq+v+SimhpNmNDVLjFS4y+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=RUzOWYsU; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="YPMeM1P7"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="RUzOWYsU"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 106F02053D;
-	Mon, 24 Aug 2026 06:59:02 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id 99ED320748;
+	Mon, 24 Aug 2026 07:00:03 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 54JMrjtSxjv4; Mon, 24 Aug 2026 06:59:01 +0200 (CEST)
+ with ESMTP id YUPn9RYHB6sT; Mon, 24 Aug 2026 07:00:03 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id B00D5207B3;
-	Mon, 24 Aug 2026 06:59:00 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com B00D5207B3
+	by mx1.secunet.com (Postfix) with ESMTPS id 0E0072050A;
+	Mon, 24 Aug 2026 07:00:03 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 0E0072050A
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1787547540;
-	bh=JTm1w23mxDXrqpcOFSDrL71we0REw6mbw6Pxu60MEks=;
+	s=202301; t=1787547603;
+	bh=ZpsIx13iiJhi+xdvoVFT++JH+PhlUy2haj/loKZwOPk=;
 	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=YPMeM1P7Wj+kqazKmYgDybWTqIgtGFgOPPuERI4cl0nLXjl46w/D4aEgjso/BipmA
-	 YCwXrTSemvd12mUz116GbvXZD60a3T4FLw3tUOg2jlnB1yWPJX7UBpDpQGWt82PZa1
-	 hWDheITZrBZnRXHRoqSrvIId6CA2+2X0yxtk27eAH0tJYBH0QcAkVHo85dKKTHf+cs
-	 YCtYQNHwgTiJl6ZT/1oaUv/l+awDiHqBQAC94uLSgexEk2hGZeTMaxRKou9lRKX6D4
-	 9eEitFDXdfr+y1kHIWTS7bzkA37mSr7EOtMw9n9/bAr3DY1wkDoHkBvjjAYf4qpfrh
-	 wOVm22iBJMZVw==
+	b=RUzOWYsUBWf5JZlYbUbGGjEEUJ2YybSbEAzTcZoJRwDDMReKnnpmnmXkw3ytOh9z+
+	 nNsgYxSRcVatltPUyMas8cG2nEIO0uQbo8TtRh9eOhgT6sWrazPKLuepUQLsSq9iFA
+	 a1iTrSNjc3LWVzEftcCHpWZjTmgz5NInFvj9ajy5mTeUBgFTOiJQHEeN3nJDuA83Vn
+	 twG6hn8P6wluIqPLe3RkMp7lCAEM5CGrU8SkEugot+XzNSE0uODtNZhJ/9ZhtF9lAX
+	 WROpL4kFpiDayxrD9r1AiT2rGCRyGaffu52PXmieDsZM4HHBJamX7dIm26eS5db3v0
+	 sdmfbwF7XpArQ==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 24 Aug
- 2026 06:58:59 +0200
-Received: (nullmailer pid 651190 invoked by uid 1000);
-	Mon, 24 Aug 2026 04:58:58 -0000
-Date: Mon, 24 Aug 2026 06:58:58 +0200
+ 2026 07:00:02 +0200
+Received: (nullmailer pid 652096 invoked by uid 1000);
+	Mon, 24 Aug 2026 05:00:01 -0000
+Date: Mon, 24 Aug 2026 07:00:01 +0200
 From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Roshan Kumar <roshaen09@gmail.com>
-CC: <netdev@vger.kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>,
-	Christian Hopps <chopps@labn.net>, Sabrina Dubroca <sd@queasysnail.net>,
-	"David S . Miller" <davem@davemloft.net>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] xfrm: iptfs: fix stack OOB read in
- iptfs_skb_reset_frag_walk()
-Message-ID: <aovPkmpvxHEwUIR9@secunet.com>
-References: <20260728052608.2898018-1-roshaen09@gmail.com>
+To: Chengfeng Ye <nicoyip.dev@gmail.com>
+CC: Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH] xfrm: serialize state GC with device state flush
+Message-ID: <aovP0ZKcUaQlQryp@secunet.com>
+References: <20260730103543.2077749-1-nicoyip.dev@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,57 +64,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20260728052608.2898018-1-roshaen09@gmail.com>
-X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
+In-Reply-To: <20260730103543.2077749-1-nicoyip.dev@gmail.com>
+X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
  (10.32.0.171)
 
-On Tue, Jul 28, 2026 at 10:56:08AM +0530, Roshan Kumar wrote:
-> iptfs_skb_reset_frag_walk() advances to the fragment containing @offset
-> with an unbounded loop:
+On Thu, Jul 30, 2026 at 06:35:43PM +0800, Chengfeng Ye wrote:
+> The deferred-device pass in xfrm_dev_state_flush() finds states under
+> xfrm_state_dev_gc_lock, but drops the lock before calling
+> xfrm_dev_state_free() because the driver callback may sleep.  The device
+> GC list does not hold an xfrm_state reference, so the state GC worker can
+> destroy the same state concurrently.
 > 
-> 	while (offset >= walk->past + walk->frags[walk->fragi].len)
-> 		walk->past += walk->frags[walk->fragi++].len;
+> The race can proceed as follows:
 > 
-> walk->fragi is advanced and walk->frags[walk->fragi] is dereferenced
-> without ever checking fragi against walk->nr_frags. When the requested
-> offset is at or beyond the total length spanned by the walk's fragments,
-> fragi runs past nr_frags and off the end of the fixed-size on-stack
-> frags[MAX_SKB_FRAGS + 1] array, reading out-of-bounds stack memory.
+>   CPU 0                               CPU 1
+>   find x on the device GC list
+>   drop xfrm_state_dev_gc_lock
+>   read x->xso.dev
+>                                       xfrm_state_gc_destroy(x)
+>                                       xfrm_dev_state_free(x)
+>                                       xfrm_state_free(x)
+>   continue xfrm_dev_state_free(x)
 > 
-> The two callers behave differently: iptfs_skb_add_frags() already guards
-> against this with
+> Both paths can invoke the driver callback and drop the device reference.
+> CPU 0 can also access the xfrm_state after CPU 1 has freed it.
 > 
-> 	if (!walk->nr_frags ||
-> 	    offset >= walk->total + walk->initial_offset)
-> 		return len;
+> KASAN reported:
 > 
-> but iptfs_skb_can_add_frags() has no such guard and calls
-> iptfs_skb_reset_frag_walk() unconditionally, so it performs the
-> out-of-range walk. Its own "fragi < walk->nr_frags" bound check runs only
-> afterwards, too late to prevent the read.
+>   BUG: KASAN: slab-use-after-free in xfrm_dev_state_free+0x24c/0x2a0
+>   Read of size 8 at addr ffff88810bbaa960 by task poc/102
 > 
-> This is reachable from the receive path: a crafted IP-TFS (AGGFRAG)
-> payload delivered to an IPTFS SA drives iptfs_reassem_cont() ->
-> iptfs_skb_can_add_frags() with an offset past the fragment total, e.g.:
+>   Call Trace:
+>    xfrm_dev_state_free+0x24c/0x2a0
+>    xfrm_dev_state_flush+0x353/0x400
+>    xfrm_dev_event+0x26d/0x3a0
+>    notifier_call_chain+0xc0/0x280
+>    __dev_notify_flags+0x169/0x250
+>    netif_change_flags+0xe7/0x160
+>    dev_change_flags+0x96/0x220
+>    devinet_ioctl+0x7f4/0x1880
 > 
->   BUG: KASAN: stack-out-of-bounds in iptfs_skb_reset_frag_walk+0x235/0x250
->   Read of size 4 at addr ffff888008ad7210 by task repro/345
->    iptfs_skb_reset_frag_walk+0x235/0x250 net/xfrm/xfrm_iptfs.c:392
->    iptfs_skb_can_add_frags+0x155/0x310  net/xfrm/xfrm_iptfs.c:420
->    iptfs_reassem_cont+0xcf8/0x1140      net/xfrm/xfrm_iptfs.c:902
->    iptfs_input_ordered+0x552/0x670      net/xfrm/xfrm_iptfs.c:1280
->    iptfs_input+0x3d6/0xde0              net/xfrm/xfrm_iptfs.c:1741
->    xfrm_input+0x282f/0x6140             net/xfrm/xfrm_input.c:700
->    xfrm4_esp_rcv+0x93/0x120             net/ipv4/xfrm4_protocol.c:104
->    ip_rcv+0x278/0x2d0                   net/ipv4/ip_input.c:612
+>   Allocated by task 87:
+>    xfrm_state_alloc+0x1e/0x5c0
+>    xfrm_add_sa+0xe7f/0x5820
+>    xfrm_user_rcv_msg+0x4f3/0x940
 > 
-> Give iptfs_skb_can_add_frags() the same up-front guard that
-> iptfs_skb_add_frags() already has, so the walk is never entered with an
-> out-of-range offset. When it triggers, the caller falls back to the
-> existing linearize-and-copy path, which is safe.
+>   Freed by task 57:
+>    kmem_cache_free+0xcb/0x3d0
+>    xfrm_state_gc_task+0x4a8/0x650
+>    process_one_work+0x63a/0x1070
 > 
-> Fixes: 5f2b6a909574 ("xfrm: iptfs: add skb-fragment sharing code")
-> Reported-by: Roshan Kumar <roshaen09@gmail.com>
-> Signed-off-by: Roshan Kumar <roshaen09@gmail.com>
+> Serialize xfrm_state destruction against the deferred-device pass with a
+> mutex.  Keep xfrm_state_dev_gc_lock limited to list operations and retain
+> the existing callback and device-reference release ordering.
+> 
+> Fixes: 07b87f9eea0c ("xfrm: Fix unregister netdevice hang on hardware offload.")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
 
-Applied, thanks a lot!
+Applied to the ipsec tree, thanks!
