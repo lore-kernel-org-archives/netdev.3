@@ -1,150 +1,101 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.dspace.de (mail2.dspace.de [80.228.58.149])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC266403B0A
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 12:12:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ABC031D375;
+	Mon, 24 Aug 2026 12:14:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.228.58.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787573574; cv=none; b=WNSaRWLwwyK2vxHAPaNdTQbxcb5Wuik377xaJIXhNbbBxkJ3UkbQpKn9DiCS0ExnMWKbmuj0BxKaHW1pykcCvoEtM0SQjiocTc+SGDYihn0b9osBqqs2qfETzLZUxVTYJ3+Nx4iweLKTdXq5SgYkxCAmZAWuomiqTwIhcZwG4z0=
+	t=1787573667; cv=none; b=oGQcl3rE+wU8biLVw/Jm6cubZ8kMudG4kVBdMl8wZ/ocAkC+PJ1I+JVL0LPr6xxDpW5QYwaZfR5TttxmIPiGm1wZaSvYM1mg0mW+zSH2Eo34qIwt9Z5lSmiu3PWOIUooSA1moqG2DBym8K/zLNZBp1oJWLNF8ZBePcvM8E2WpOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787573574; c=relaxed/simple;
-	bh=qTuo0XGpd3/TJoBr7VlydNUS5gAgjPvXjtLTX//eAj0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=F1CCQMaF9ksWdl3iFyXff433eN5eGVHCzLJBkZOMRv+zbhG7bLVXGfJ738V27GoofYUT8a5PvzvzbwqVvzLBNwrRkj1mxePa1Mvmk3qdJUMubGU5CkYEo9dKuW7iwa4Zj/jMDrBtQWQ716jHks+zYE8Klh95SHCFMCGd+APB8To=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dNKg45UB; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787573667; c=relaxed/simple;
+	bh=C5+FTcJeQfZJ79QNwnVuBLuUcoOGbLQYmpNKCs0b0/A=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rNARb9kLGIWxWKAUbuC4cxXsfWCbn5iy2HxPP67F1BFCeV6kPeVEbsJfYC+eKQMSiHIOeS4lg8y+nkgmi6y30UCQ2Z1asrs8CmPIFk9N0qFbzRpdvfQA2CmH1mDoibkPgf8QuYXQGCzaXGR5KYbGAg/0p6o6ZwZc3aEJqIkdMso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dspace.de; spf=pass smtp.mailfrom=dspace.de; dkim=pass (1024-bit key) header.d=dspace.de header.i=@dspace.de header.b=P2mocnUr; arc=none smtp.client-ip=80.228.58.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dspace.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dspace.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dNKg45UB"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cbe41618110so293404a12.2
-        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 05:12:52 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=dspace.de header.i=@dspace.de header.b="P2mocnUr"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787573572; x=1788178372; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Y0ppQhbiQcCeg1OqwKrv6XM0T1yzd97yREoqT41AZzU=;
-        b=dNKg45UBwquvACLINh3/RMXrzf4oSej41PPI3JJj5vaZgrYeloEC/zX6biqvwbfN4V
-         /35WCX8AuyFZGh4Dj0Qd7Zzx5ljA5HrUAzSax5pQMj4Zo9FGaiQcPAAZgQWhYl7iuoGZ
-         /YLcSLe+VuZ82vJGSI3aMV0OGGYXAMMigDmoTlTLVBD7Ej1TIuPLPy5YXELoxte4YqjC
-         m1tJjYcoIb1PHwr17zYtqPiQGA2fGCE1pJrO2ks9WZ4lrX9IWD+GbDKM/J2GpuRy94bY
-         p5smS55RvvU647vD3qoOQqLl7nCTbhtoZyHs4MQVq1pcNiimRYUPytvt2ztg9m6tsz0g
-         OUGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787573572; x=1788178372;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Y0ppQhbiQcCeg1OqwKrv6XM0T1yzd97yREoqT41AZzU=;
-        b=pUbivSaBRfpUFMxNLzhQjZdnKlm6eCbnZlhVMdk/OtaRWb2ecZFwYD9VJoQrbK58Q+
-         Ay/RH/YtVqmUQLDkZ9hKy5aImWD99JRNdx/a+u8k3q+Hj9qi2Z2mfXWKLNCjDsDCkrWO
-         gyQhuEQI4K1+5IDuUuLwXiy5pallmI+qNbv+LHIvfag59h5Ds/kdnvN0rw53bigYH2EX
-         lkT9NipyTaJHiI4CATuhZOprbmkAVRPONfXLHC3SIyimpAOHMnLWE9hUXhhVF7bXcKpP
-         nb0yqYs/oczCJFahxLFCUTvvO7lbyGeRNd/dM6dae7D4OZVcFC2WkJYvD7F5bXtGO+JE
-         OzgQ==
-X-Forwarded-Encrypted: i=1; AHgh+RovEwSLZ1AwAduuf6IZUiU4v+Y720p/uHA/qjxayJ91F3kcYn1HbnOvAiaEmHs4aU5G7ZTFTcE=@vger.kernel.org
-X-Gm-Message-State: AFuF++lRFQE6dQmDQ8z5hNrxR6XojYG4Szirv7VSdodtWh7iCIolLdd4
-	VEVJJPzXdVC/o6oINrGw00MDeTUJ9nN9masf6HGjFNlsF52/LNJ/sHM5
-X-Gm-Gg: AR+sD12fXDYl2OzEsuKpf/sOcBO+Yq2K5gIsB4D974Oagyb1eib4j7XwkIpfaXHeZ/m
-	frJ38pF2S26kd6LMBto5fvLWQnNnWJ+o+epu6qS/CPsOUIUcq6FBuLgyUbYB4943MvuV2s4974q
-	ohvZH8764R6j62204Lk1WjvA5gACQ8ouDNApiwKhW2qQLWVECTsPONVydNcz+DBb+kMn2QPlMgA
-	zXg90ImquzA0SjQeTGH+QV7vGvNPDsJUaY0itClKD/RoqPHAOV0JkJR7LYlUKXbyygvW5ki+AKt
-	562RH4DVBhrvmZYujAqBwIDcwcjbLEsagh15BaPzzgULKnQtRhdprVKcr0HDpk++lb+oVjpwNZJ
-	wtZIo/3OfclHpYN3Ivh2EtA1JBc+kAOLfon1Bap5rCEA+2+XCbALVBFtlRBd5se3gcsrM/oww3E
-	rh0npwJHkK3z2RJLTcy7IaEklhObuhYx3lhVmSDH4im/Eq/W9wimuqBTucGJRMZtWyOFrzuUviH
-	Zd+pqUc4nNFp7espnz1n/1EDYBYUJuEPI7Jst95Lu9+5sC4DqqoWfc=
-X-Received: by 2002:a17:903:3b84:b0:2cc:f4d4:29a0 with SMTP id d9443c01a7336-2d64b0a908emr230320855ad.3.1787573571971;
-        Mon, 24 Aug 2026 05:12:51 -0700 (PDT)
-Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3280d116cb1sm16516298eec.10.2026.08.24.05.12.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 05:12:51 -0700 (PDT)
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chengfeng Ye <nicoyip.dev@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] netfilter: cttimeout: prevent UAF during module unload
-Date: Mon, 24 Aug 2026 20:12:38 +0800
-Message-ID: <20260824121238.205812-1-nicoyip.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
+  d=dspace.de; i=@dspace.de; q=dns/txt; s=dkim1;
+  t=1787573663;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=C5+FTcJeQfZJ79QNwnVuBLuUcoOGbLQYmpNKCs0b0/A=;
+  b=P2mocnUrmK/FVfF+c9SSdqPo7IeTAFdh6hLKCZmkclALeVH7FC9hXKST
+   juijGaYN2lYtJviEJA6lwt/9YGR9GF425NSOZGeUgL230WELN6fUoscCl
+   7T42VJUQNA62vYm20Wjm3UleGU5Q6Dm/2q3yJMshYdHbjHB5wk1rgZZUc
+   Q=;
+X-CSE-ConnectionGUID: ibBBQgkQSHu4RUeEFYL0Tw==
+X-CSE-MsgGUID: emOEdhnyR4uvF9vS93N+DQ==
+X-IronPort-AV: E=Sophos;i="6.25,240,1779141600"; 
+   d="scan'208";a="5057880"
+Received: from unknown (HELO Z1-1000) ([10.1.1.222])
+  by mail.dspace.de with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 24 Aug 2026 14:13:11 +0200
+Received: from VM-Z1-1000-LIVE.dspace.de (localhost [127.0.0.1])
+	by Z1-1000 (Postfix) with ESMTP id 5D89760038;
+	Mon, 24 Aug 2026 14:13:11 +0200 (CEST)
+Received: from exchange.dspace.de (EX-DE-PAD-SE.dspace.de [10.100.196.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by Z1-1000 (Postfix) with ESMTPS id 5030660037;
+	Mon, 24 Aug 2026 14:13:11 +0200 (CEST)
+Received: from PascalKW11-NB.dspace.de (10.71.4.31) by EX-DE-PAD-SE.dspace.de
+ (10.100.196.14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Mon, 24 Aug
+ 2026 14:13:10 +0200
+From: Pascal Kneuper <PKneuper@dspace.de>
+To: kuba@kernel.org
+CC: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, rmk+kernel@armlinux.org.uk,
+	maxime.chevallier@bootlin.com, 0x1207@gmail.com,
+	si.yanteng@linux.dev, larysa.zaremba@intel.com,
+	aleksander.lobakin@intel.com, netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	DBaldin@dspace.de
+Subject: Re: [PATCH net] net: stmmac: restore NET_IP_ALIGN in the non-XDP RX
+ path
+Date: Mon, 24 Aug 2026 14:13:09 +0200 (CEST)
+Message-ID: <20260824121309.45411-1-PKneuper@dspace.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260818012216.3825070-2-kuba@kernel.org>
+References: <20260818012216.3825070-2-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX-DE-PAD-SE.dspace.de (10.100.196.14) To
+ EX-DE-PAD-SE.dspace.de (10.100.196.14)
+X-C2ProcessedOrg: 563f5800-21cf-4d8d-8aed-fddd1469e4ee
+Content-Transfer-Encoding: quoted-printable
+X-TBoneOriginalFrom: Pascal Kneuper <PKneuper@dspace.de>
+X-TBoneOriginalTo: kuba@kernel.org
+X-TBoneOriginalCC: andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, rmk+kernel@armlinux.org.uk,
+	maxime.chevallier@bootlin.com, 0x1207@gmail.com,
+	si.yanteng@linux.dev, larysa.zaremba@intel.com,
+	aleksander.lobakin@intel.com, netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	DBaldin@dspace.de
+X-TBoneDomainSigned: false
 
-nf_ct_set_timeout() protects the timeout hook dereference and policy lookup
-with rcu_read_lock(). cttimeout_exit(), however, unregisters the per-net
-operations before it clears the hook.
+On Mon, 17 Aug 2026 18:22:17 -0700, Jakub Kicinski wrote:
+> [Severity: High]
+> Should the XDP branch of stmmac_rx_offset() get the same treatment?
 
-This allows the following interleaving:
+Thanks for pointing that out, you are right. I reproduced the panic with =
+a
+dummy XDP program: without NET_IP_ALIGN in the XDP path my box again dies
+on the first incoming ping.
 
-  CPU 0                              CPU 1
-  cttimeout_exit()                   nf_ct_set_timeout()
-    unregister_pernet_subsys()         rcu_read_lock()
-      kfree(pernet)                     h = nf_ct_timeout_hook
-                                        h->timeout_find_get()
-                                          nfct_timeout_pernet()
+I will adjust the patch and retitle it accordingly in v2.
 
-The hook still points to ctnl_timeout_find_get() when CPU 1 looks up the
-already freed per-net timeout list. KASAN reported:
-
-  BUG: KASAN: slab-use-after-free in ctnl_timeout_find_get
-  Read of size 8 by task poc/90
-  Call Trace:
-   ctnl_timeout_find_get+0x271/0x2a0 [nfnetlink_cttimeout]
-   nf_ct_set_timeout+0x7b/0x3c0
-   xt_ct_tg_check+0x724/0xb20
-   xt_check_target+0x234/0xa90
-   do_ipt_set_ctl+0x570/0x1270
-  Allocated by task 89:
-   __kmalloc_noprof+0x16e/0x460
-   ops_init+0x6d/0x420
-   register_pernet_operations+0x2f6/0x670
-  Freed by task 91:
-   kfree+0x131/0x390
-   ops_undo_list+0x3d4/0x730
-   unregister_pernet_operations+0x232/0x490
-   unregister_pernet_subsys+0x1c/0x30
-   cttimeout_exit+0x52/0x970 [nfnetlink_cttimeout]
-
-Clear the hook and wait for existing readers before unregistering the
-per-net operations. This blocks new policy lookups and ensures readers that
-observed the hook finish before the per-net storage is freed.
-
-Fixes: ebfbe67568a7 ("netfilter: cttimeout: use net_generic infra")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
----
- net/netfilter/nfnetlink_cttimeout.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/netfilter/nfnetlink_cttimeout.c b/net/netfilter/nfnetlink_cttimeout.c
-index 66c2016f6049..132c02ac7c4e 100644
---- a/net/netfilter/nfnetlink_cttimeout.c
-+++ b/net/netfilter/nfnetlink_cttimeout.c
-@@ -652,9 +652,9 @@ static void __exit cttimeout_exit(void)
- {
- 	nfnetlink_subsys_unregister(&cttimeout_subsys);
- 
--	unregister_pernet_subsys(&cttimeout_ops);
- 	RCU_INIT_POINTER(nf_ct_timeout_hook, NULL);
- 	synchronize_net();
-+	unregister_pernet_subsys(&cttimeout_ops);
- }
- 
- module_init(cttimeout_init);
--- 
-2.43.0
-
+Thanks for the review!
+Pascal
