@@ -1,142 +1,165 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9F8395D86
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 07:31:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE90B39478B;
+	Mon, 24 Aug 2026 07:40:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787556696; cv=none; b=NMY325MGSfx4KdyQgzOi1U22gOvYXvuHlSSGXrdfO+bFiuqIcqPPVlcqQmI51nH77CxhCBZ0NMoDEWMVqPuGKtrI8U9vT3b53r113m2pHmdHuTvLgQzPPlQKESHPrzOl9QGHW+dW2JW5AD+jRFPpdGTclPvmXrxjjPfEJ51uRzA=
+	t=1787557259; cv=none; b=CIqFvfZn0AXL5O7nMobO566g0oGqXLDVh9OPEhY3PmeNsZsuYShUAp8y8R6iXzDG56GGsKfQPVjXadAkXddQBQ1+tsaZQifROLbqliS8r016asVm6+0u/uHvtV2etG4hiSVHrWb/+uqV6ojcwydsZh1LKhGF/Ddg/lxAA6Vqc3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787556696; c=relaxed/simple;
-	bh=PveI3powooGQqU85bnZ0Z1EeX9FyZE3ak0omOVQUrTc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ye0IagB3YzBbPCsTcMVa1oAeGIJruEOC686y2F3JNSG3mb6lnhIqLK9fEsNFSj9SvNa/EuV2kXg2DdhYacZCZj8LGYWCImrpfGow4VCKMlKsioaSy+SMF+dRuRHODrvXRpYpLhuxmTczIMLAXhIwqjNoSdXbHv99yfOcBmkCfHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aronleigh.au; spf=fail smtp.mailfrom=aronleigh.au; dkim=pass (2048-bit key) header.d=aronleigh.au header.i=@aronleigh.au header.b=HIlH8TJ0; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aronleigh.au
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=aronleigh.au
+	s=arc-20240116; t=1787557259; c=relaxed/simple;
+	bh=4DiRGhi1TvzZV4W80SJkA3lMNoPMv/R0URzocXvKmOg=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iHp+pmzPIAgz8alWc9NeMDRspzsySoIbB8IsZC0FtowgJNHIdGTwVEOuVrrcuRsK1R7PpKyynJ+H6DXwg93l1nUKBmHggGzdd/u8R1eDCeBdhQvOWM8fsMYFpLLUwAXYfPAHyIXoN8YfbDF+wp8JSWsWa8sme3fsXCDyJ4sxLNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=eiAHhoc6; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aronleigh.au header.i=@aronleigh.au header.b="HIlH8TJ0"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2d032846c95so38090935ad.1
-        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 00:31:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=aronleigh.au; s=google; t=1787556692; x=1788161492; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uLb5oidJqIEh95Ts+9Y1LRvCSg2t1mOJW2d3dmW0KHI=;
-        b=HIlH8TJ0GGKwvSzeEALLYtnXZMQaQ1xZMJalClEBHa4c0660bpJFkLVCpax4NOcPzw
-         T7YRsxaJH1s+7OFcZ4JyQz6WuuBHb9cWW/datcnMLLB1HhG5LIw/voAtOHMwqMNejBV9
-         gU83sGFeR+WD1SlAGFq4HEGLn7f6QqoXa5CwyHhuN9GiEdg0ZS6cea0Z9Me3X+AZDv8M
-         Ksp+NBWu7Gq/Vj0wuB2xfLqTGzQ4xmfbI1ziz/ao2D83VT7l1TBlsAzSK14EDoMMwFHk
-         gPSugZw4qGIwy9gGyFv3adQTanwaf53pFvCxk7o5wWd/ah48fjPtAb6U23vflPWDvdtB
-         uc4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787556692; x=1788161492;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uLb5oidJqIEh95Ts+9Y1LRvCSg2t1mOJW2d3dmW0KHI=;
-        b=sJzsP7WvGFHPavq6AtmH2x9sLq1IKetQ+YTyYUIvd/qzMl1//kdd3j5FHmv+X3Ywgo
-         UzZxIynMHWvM0/5SSC2jOdSxWQmG+59TFJ7aGX8atjh2E6VLZHa7LaR3etw1b0QfWp01
-         /2KQ4OpZMl4BT1DBe1EJpvxmEEXyaXvK1RKTv5KEIEwLGHhCtsxAGcTg34hCAVEjxTMO
-         UtS94mvgGs83qxpKuU4IdHHkC8RZ/LGCnRCB4hoWmGlgYjdIWqvatwPChOA8m5SVOu74
-         zyl8th25MpCOZugIaYPVfbKcI9r4IC5leXtvIMvoAEhreuKVzJd6vRvCkSMCMphaSMGZ
-         ZK3Q==
-X-Forwarded-Encrypted: i=1; AHgh+RqKc5om67cPPyBEcVOeUljF6KXymz6AAEHhxYVNhnJtvUdgj/KJyResPdI6vw4GnSdMl2JWuYo=@vger.kernel.org
-X-Gm-Message-State: AFuF++lOb0i1hgKlVdMIYTIXl9Npw39pGkkU3mVyCppcgE+Yt7smvxmv
-	JWfYH6mDfsu7PRi2S7jUhNmCw6ibdWxjR0928EnemWnwOSaz+4Olon6kjHbPLe6uDF+3
-X-Gm-Gg: AR+sD123APom3wz6FwvK/3Q97nhmUlOOSe9zYasf34YvyKdy8g1jqvqmdGtFEE7sxh7
-	fUT0mwGyA0JdvMa+9zBps5nlyuyf1ZBmyOI3S5n0KqoZbxzKqKQItjzxuYUgTn2++vs/e1kgISj
-	Vp9eK7Hry6w+ovHL40gemSJHq5pYqGq6pwx+SUFs/b6GdRoKrDQYAwblfKaFBZKarfTmq05qNUk
-	99wxvVn0/XQaQaxZbLPC7f+tAp9zQvyx48pDDy3AwDnUfGb0wb1x8hLM86y9yOoUFtY3ZdEzjZO
-	/FysvpO3coGw9gZpQbyIflu3+ODvjs9o2VusnJfhCcM+eJxnwedgfGrtz7H9KgtsqGbByA9+ZAq
-	mhbnrnFp5biwAcrGKvOksTWSTL/xcI7XK87y2Nm6kJzXdnClILuVgYotd6l/3ax23RKX5Ko9lSb
-	6FfolT/O3MkIjqM0dfxmO0y2QmJpCXwQoFe6rrJ+xRnAjed31v7frzspSk0fAWZTQfH+u7bODQn
-	QQy4RJJ7HZFdWox2qE0+d2Jsr+O1aTJr64=
-X-Received: by 2002:a17:90b:180d:b0:38e:2524:724f with SMTP id 98e67ed59e1d1-395c3733e65mr43431160a91.12.1787556692517;
-        Mon, 24 Aug 2026 00:31:32 -0700 (PDT)
-Received: from ghostoverflow.. ([1.145.153.192])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327f90cb8e3sm33763741eec.12.2026.08.24.00.31.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 00:31:31 -0700 (PDT)
-From: Lilly Aronleigh <lilly@aronleigh.au>
-To: steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au
-Cc: Lilly Aronleigh <lilly@aronleigh.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Christian Hopps <chopps@labn.net>,
-	netdev@vger.kernel.org (open list:NETWORKING [IPSEC]),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net v3] xfrm: iptfs: avoid canceling reorder-window drop timer
-Date: Mon, 24 Aug 2026 17:28:52 +1000
-Message-ID: <20260824072851.301644-3-lilly@aronleigh.au>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="eiAHhoc6"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id B1C3820610;
+	Mon, 24 Aug 2026 09:40:54 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id dPCLM2ERTEF3; Mon, 24 Aug 2026 09:40:54 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 10FA8201E5;
+	Mon, 24 Aug 2026 09:40:54 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 10FA8201E5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1787557254;
+	bh=ruNVAXXWd9MD4JqF23rWLe4mX+5aUsyMcFGU/yx8xEQ=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=eiAHhoc6jslKlmeYZxMq+Sg7J5yz/V6Lgtwju8yxz4AnS2jD5v5EHX5XNyd9TwFaL
+	 uaFSJj9LfjXEU+e1gyLEVeeITJsze8OEMCjEPiA4MrZKOhtpi7Bc38VZ7LgGavbkY+
+	 tv364Gzvi7s6/qU1MTlQHQYz9X3AFUaJWY7JZ/Z2jgpbbRwnOvKH7uDyeU8b0RfojR
+	 zAwZ+e7wV2yvW1qk+AZ7Qfvmoyuy2NLxp98UnWWf8zpGFTaWQsKreUDHFnSr5bPrw1
+	 qJx1pS3QkWEhBhKWjKuRmcRoliHZ5zgEypLE1cedfzYX5xpUJwg1iBiKukiMKIDbg9
+	 RZuDrm6ysMW5g==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 24 Aug
+ 2026 09:40:53 +0200
+Received: (nullmailer pid 815868 invoked by uid 1000);
+	Mon, 24 Aug 2026 07:40:52 -0000
+Date: Mon, 24 Aug 2026 09:40:52 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
+CC: <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<horms@kernel.org>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<AutonomousCodeSecurity@microsoft.com>, <xmei5@asu.edu>,
+	<tgopinath@linux.microsoft.com>, <kys@microsoft.com>
+Subject: Re: [PATCH net] xfrm: hold net_device reference under RCU in bundle
+ creation
+Message-ID: <aov1hEK0BjxGe4xg@secunet.com>
+References: <20260820200245.44312-1-blbllhy@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260820200245.44312-1-blbllhy@gmail.com>
+X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-IP-TFS uses xtfs->drop_timer for both partial inner-packet
-reassembly and the reorder-window drop timeout. Reassembly completion
-currently cancels the timer unconditionally.
+On Thu, Aug 20, 2026 at 04:02:45PM -0400, Cen Zhang (Microsoft) wrote:
+> xfrm_bundle_create() and xfrm_create_dummy_bundle() read dst->dev into
+> a local pointer without taking a device reference, then pass it to
+> xfrm_fill_dst().  A concurrent RTM_DELLINK replaces dst->dev via
+> dst_dev_put() and frees the old net_device, causing a use-after-free
+> when xfrm6_fill_dst() later dereferences the stale dev pointer.
+> 
+>   BUG: KASAN: slab-use-after-free in xfrm6_fill_dst+0x82c/0x860
+>   (net/ipv6/xfrm6_policy.c:86 netdev_hold())
+>   Read of size 8 at addr ffff8880142fe588 by task exploit/153
+>   Call Trace:
+>    xfrm6_fill_dst+0x82c/0x860
+>    xfrm_resolve_and_create_bundle+0x21d4/0x2bd0
+>    xfrm_lookup_with_ifid+0x485/0x1640
+>    ip6_dst_lookup_flow+0x19b/0x1e0
+>    udpv6_sendmsg+0x1443/0x2dd0
+> 
+> Fix by reading dst->dev under rcu_read_lock() via dst_dev_rcu() and
+> taking dev_hold() before leaving the RCU critical section.  To properly
+> release the reference, add dev_put() on both the success and error
+> paths, and initialize dev to NULL to prevent dev_put() on an
+> uninitialized pointer when put_states falls through to free_dst before
+> dev is assigned.
+> 
+> Fixes: 25ee3286dcbc ("[IPSEC]: Merge common code into xfrm_bundle_create")
+> Fixes: a0073fe18e71 ("xfrm: Add a state resolution packet queue")
+> Reported-by: AutonomousCodeSecurity@microsoft.com
+> Reported-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
+> Reported-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
+> Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
+> ---
+>  net/xfrm/xfrm_policy.c | 18 +++++++++++++++---
+>  1 file changed, 15 insertions(+), 3 deletions(-)
+> 
+> diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+> index 932a313b9460..13585ff24aba 100644
+> --- a/net/xfrm/xfrm_policy.c
+> +++ b/net/xfrm/xfrm_policy.c
+> @@ -2668,7 +2668,7 @@ static struct dst_entry *xfrm_bundle_create(struct xfrm_policy *policy,
+>  	const struct xfrm_mode *inner_mode;
+>  	struct net *net = xp_net(policy);
+>  	unsigned long now = jiffies;
+> -	struct net_device *dev;
+> +	struct net_device *dev = NULL;
+>  	struct xfrm_dst *xdst_prev = NULL;
+>  	struct xfrm_dst *xdst0 = NULL;
+>  	int i = 0;
+> @@ -2770,7 +2770,11 @@ static struct dst_entry *xfrm_bundle_create(struct xfrm_policy *policy,
+>  	xdst0->path = dst;
+>  
+>  	err = -ENODEV;
+> -	dev = dst->dev;
+> +	rcu_read_lock();
+> +	dev = dst_dev_rcu(dst);
+> +	if (dev)
+> +		dev_hold(dev);
+> +	rcu_read_unlock();
 
-That is only correct when the reorder window is empty. If the reorder
-window already contains saved packets, the same timer belongs to the
-reorder-window state and must remain armed so the missing sequence can
-be considered lost and the window can advance.
+Can't we move the rcu_read_unlock() to the end of the function and
+avoid the additional refcount?
 
-Only cancel drop_timer from __iptfs_reassem_done() when the reorder
-window has no saved packets. The existing drop_lock serializes this
-with the reorder-window paths, and a failed cancel remains harmless.
+>  	if (!dev)
+>  		goto free_dst;
+>  
+> @@ -2789,6 +2793,7 @@ static struct dst_entry *xfrm_bundle_create(struct xfrm_policy *policy,
+>  		trailer_len -= xdst_prev->u.dst.xfrm->props.trailer_len;
+>  	}
+>  
+> +	dev_put(dev);
+>  	return &xdst0->u.dst;
+>  
+>  put_states:
+> @@ -2798,6 +2803,8 @@ static struct dst_entry *xfrm_bundle_create(struct xfrm_policy *policy,
+>  	if (xdst0)
+>  		dst_release_immediate(&xdst0->u.dst);
+>  
+> +	if (dev)
+> +		dev_put(dev);
+>  	return ERR_PTR(err);
+>  }
+>  
+> @@ -3058,11 +3065,16 @@ static struct xfrm_dst *xfrm_create_dummy_bundle(struct net *net,
+>  	xfrm_init_path((struct xfrm_dst *)dst1, dst, 0);
+>  
+>  	err = -ENODEV;
+> -	dev = dst->dev;
+> +	rcu_read_lock();
+> +	dev = dst_dev_rcu(dst);
+> +	if (dev)
+> +		dev_hold(dev);
+> +	rcu_read_unlock();
 
-Tested with a reproducer that completes reassembly while the reorder
-window contains saved packets.
-
-With this change, the reorder-window timeout remains active and the
-window can advance correctly when the missing sequence is not received.
-
-Fixes: 0756947654468 ("xfrm: iptfs: handle received fragmented inner packets")
-Assisted-by: ChatGPT:5.5-extrahigh
-Assisted-by: Claude:4.6-opus
-Signed-off-by: Lilly Aronleigh <lilly@aronleigh.au>
-
----
-v3:
- - Resubmission via git send-email to fix formatting
-
-v2:
- - Rebased onto current net tree
- - No functional changes
-
-Link: https://lore.kernel.org/netdev/CAFrrV-O1fesaza+5_WqH8OciXRu9KKE4UsB6RcMamDu0j2-nBA@mail.gmail.com/T/#u
----
- net/xfrm/xfrm_iptfs.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-index 6920940a35b4..23e0face2b9f 100644
---- a/net/xfrm/xfrm_iptfs.c
-+++ b/net/xfrm/xfrm_iptfs.c
-@@ -707,8 +707,12 @@ static void __iptfs_reassem_done(struct xfrm_iptfs_data *xtfs, bool free)
- {
- 	assert_spin_locked(&xtfs->drop_lock);
- 
--	/* We don't care if it works locking takes care of things */
--	hrtimer_try_to_cancel(&xtfs->drop_timer);
-+        /*
-+         * The drop timer also drives the reorder window timeout. Locking makes
-+         * a failed cancel harmless.
-+         */
-+        if (!xtfs->w_savedlen)
-+                hrtimer_try_to_cancel(&xtfs->drop_timer);
- 	if (free)
- 		kfree_skb(xtfs->ra_newskb);
- 	xtfs->ra_newskb = NULL;
--- 
-2.43.0
+Same here.
 
