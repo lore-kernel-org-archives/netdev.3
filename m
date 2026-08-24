@@ -1,145 +1,137 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF54D25CC79
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 02:18:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADF43515CC
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 02:21:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787537939; cv=none; b=FjnI6FXGYLsASrHUvHM4k6vHrUzZxhzBuv18AegQtWPlXZrL/eNBQ4FoZL2a113tx3DexclVgt3Lr8BqaQA9TFuy/Fg0PXmOtEXQ+v7u2Z0Ui7uDA2ZB7hK02F8jmSBZIJQdteQszT02Pi3s/j2XOiqxqEwREAu2UQNxhDTUg08=
+	t=1787538090; cv=none; b=LzCmZ2eTHG4YXkJOVX8aeV6tHydCV+2SBrw8Pc08q1bu/GzDAQJ1o8aE+00sH3T2uNXaQ1Q22XwcCX15t6qj6mvvPToVwbXoEeDfWOqAOP8jS8SFsOBLlJuoII45GxWU7h4GFM5FWnj7F6DI9SAndp4yb45LOcoBX+R9G6AMvvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787537939; c=relaxed/simple;
-	bh=COq2dJsX4Wo4xfq0ZUJE3cGkk7NlbkPtkeLagPTO2aQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PgNQwXHNP+0fc3K1QOKiUWev5qSqEvCfD/by4qLNB3bSKOuiz6LonH0cZHda1JIfkQdO7yU/8RJBLKhVlLRO6IR/700grLOFzRw9bfT6O0oH5w/h0yU34oIb+bX5FyfYBK/WfaRrznGV3upMt1dJylNlS8v8GzyF14UXmtq6yTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=beSAqEWY; arc=none smtp.client-ip=209.85.215.175
+	s=arc-20240116; t=1787538090; c=relaxed/simple;
+	bh=q8YhVJrZvS/QQQddF/6UPO+8G8SkN4sVGbcI8HfrVjU=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=tlHH2/OPqWGx+MY8xxy9MG/xyv95g4vFDCq9FgjHHzKPXyfd5CLXgLUXFjO8MT9/JuDK+erIrDU3pz1nG3NQvagykjCmfo8Ia6ZySsB1VDUkhoypwgx4Gq2/V9D/k6wbTkQfSJQrMcBBAqiynAq+EZBm3CRTj7TIvDCdNn8q4Ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oVNOcv5w; arc=none smtp.client-ip=209.85.128.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="beSAqEWY"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c8612812170so219398a12.2
-        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 19:18:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oVNOcv5w"
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-836c4474028so33957587b3.0
+        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 19:21:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787537937; x=1788142737; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zrDILERb95TsNDPp/xr8y+ID/sGXxmyWy+d24zww8cY=;
-        b=beSAqEWYePx+PdXAYzH7ezka5kThlEDdzFBoqLDqYepzCgXao9SNfHBAZXTjmRyVzr
-         C4s91xAZYj+GV1cnz/CgpCjbB9khsEOj2/0E+M32r5Q+dA02/LMIbGWsfbtpaGQ1hb45
-         9GKamI6GPavNCDs9p7SlFiCGfhZb51NL2AmQay0bClrzHzlMSBqoCfTSypazzN/X/kMx
-         N3d3TPPW2w9Ciwx3ZXbV+/SDj2nvLJT/sG2SQPVIwL1E6CqH6SNzeGJJlUpW4xQyWAgt
-         QZoCANm4JZuZCuDArLeQeyN3QBXtqyPoSn/Fih4Wt64ZVaUyoDh6i1o0uHSMyoNRKxJ5
-         XRIg==
+        d=gmail.com; s=20251104; t=1787538088; x=1788142888; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=xHVdt5IiHgW6qoa9feoKqRdTj5+Yw/6Pwu6Ox8ZTric=;
+        b=oVNOcv5wbzvaJ/p87n71tBUQtcnncv5HWWkiCRJKyuZ9OKbecp1FXLpNBEoEwuqnkp
+         UN0NWz0u1MDx9Ahft9gFjbKe0+6SAC8FosczyTXzrWaPqR+M/cjlNYRCxeZTjh798Op0
+         tGU59jHZZarj18dGPNmZJrqxfV22HHRnJR56+d/9rHhDWwceiCyE/KU6eWmW3s7bfMgh
+         GZRLqd9eJO7TCxmNGRtQRbg5fNJ0GtOcOJNpz7aYdb1WKMBz0adUIdlzZYXMJ3p02vHN
+         RVOv0ysWxE7gHJvFFHOMaBqmnP/rt35g1PsZad9x2An8gAB7CRQf7llhdkyCfgOcUKCH
+         qtBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787537937; x=1788142737;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zrDILERb95TsNDPp/xr8y+ID/sGXxmyWy+d24zww8cY=;
-        b=oAClaBetuyA9lR27wOPqMkT531IOIKPWaxWfmW/hS76cthHKAr3PfyQOt4D+7v5LH/
-         e/CkAha5LUm7yzr7GYdRDNzSs4Qb3Bt7dhP78RLHDWxqIYKQFj7feW94ng/80ibQvFAx
-         94RyAI9cIxda089ChBTVf6juq99YTVD7NooxJPA6uGpnOnhCrIKakIr+bT4fGn3He9U+
-         hG1RBFawGrZFobTrg4W3EeJ0YNRgMq7x3QK4mmcWh0CN7j1vXvNdLuEf1S4eUYy9dkuY
-         mZvVAjVrjEC4hV72RCawloXFd0AlG554zKeaJFYAUpdIVpTNBRIQPrlTKqS4gc3hfdAI
-         Jrog==
-X-Forwarded-Encrypted: i=1; AHgh+RpFGufvgUM0NUH6SUOcUvFH8ePjgoE7uqajt5WrE5fsZw2oFBm9RUTKj3+tYh4egpSyDXAKwX8=@vger.kernel.org
-X-Gm-Message-State: AFuF++nIVRhHzjbmEmMhktFLvtbJDyFT/XxyIVtLsn9a0MFdyQo6/yMx
-	6r/jq5u/h4PLq2FEBCdGsK7yaen3wJBlU9niaRnu05GM8ZQ8iAFAb7Fm
-X-Gm-Gg: AR+sD11cn0/WChHDXcRDryTQXSIBQjL+MUxotwgtKpgxJZSM0ble0baUG8qLMT40LRj
-	VDtUv3GshN6WnQmNzq2vuVtgTEBBkjjzlK8ZW+6euOFip7wvxFnX95fQSPW9db5laMB0PmLdX2L
-	MOJM6dy+MWLNHJxaLonIIbHS51491EuvvWnWNCMp5kBjup3zRBhdVCmEYWbMOX4y0W6bercWdP2
-	NCPfn9E/WUSrAqXM4HkGp2mLEsnxfexYe7eVBZ73bIuhcNzwassomOWGrJLWDRK+2fMJYJhCI0o
-	sJyipZS3TS6e1tunxc9YKXyDnp9QRCpD1xrGZOamf+bBc94Wsb/LV9C22cc8UfTR+i1c13iHUsR
-	EhyAqOXf4kqtcxRlIfEanEyEniR8zt1nMY205f6hg8kRO/65q8dZC50u6crPjVQucmNoI5B7wNm
-	6yg8G3EquWLkdro0M8XMBsGqYN3d4UDaUDAkaa8C3KzT5mOy5dpHpPyY9Ll6+u+Xn9sCNQ2Rv7G
-	tXhUV035ytpKxNcymEc7tJxWHLTF0OZ0z4verl9rit4JUJ4IUGMqTAChJYNzg==
-X-Received: by 2002:a05:6300:4044:b0:3c3:7f50:fc39 with SMTP id adf61e73a8af0-3cd2f9cbbe0mr19412557637.0.1787537936940;
-        Sun, 23 Aug 2026 19:18:56 -0700 (PDT)
-Received: from localhost.localdomain ([139.159.170.75])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8520f03b185sm1406434b3a.39.2026.08.23.19.18.48
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 23 Aug 2026 19:18:56 -0700 (PDT)
-From: Qihang <q.h.hack.winter@gmail.com>
-To: jv@jvosburgh.net,
-	jiri@resnulli.us
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	willemb@google.com,
-	netdev@vger.kernel.org,
-	Qihang Tang <q.h.hack.winter@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net 2/2] team: reject frames with insufficient headroom in team_header_create
-Date: Mon, 24 Aug 2026 10:18:02 +0800
-Message-ID: <20260824021802.90369-2-q.h.hack.winter@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260824021802.90369-1-q.h.hack.winter@gmail.com>
-References: <20260824021802.90369-1-q.h.hack.winter@gmail.com>
+        d=1e100.net; s=20251104; t=1787538088; x=1788142888;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xHVdt5IiHgW6qoa9feoKqRdTj5+Yw/6Pwu6Ox8ZTric=;
+        b=ew1IR1PXTtFbFqM9shZacBc6EokodSKSHtLwhM9T/wxmqJ26+Gx/EPcYjFGkvkLLy/
+         NairXeQ5lrP4Wnnm07vfQvsIO7eIlXvUiujZ9gacbSB73vmTdZccsyfsVEM2d10G+KKh
+         JDImtCehJZU53bU6+AnZ4vWqtR57ApfDu43+QU5AXWEAXc0kJP4a8SOINdpKi9Yssz8K
+         Jup1ygoAvcOCx+a9NBtRvSAULx07zajEyMDx9NzrD8lp2P8+DDFp4YjVDyMTYeQw5nRG
+         j10fPrvjGS2DnIYv12i9H5n2yfJj3Zhv2ZFtkNXVuJZBLAuon1/QktmluS7AR02P6d+L
+         JjKQ==
+X-Gm-Message-State: AFuF++ny38NYRFvHBdBuMWEXZr2k+XWUve09VZk7wopa6rBn29n8owzH
+	KEWGAjOw687vnmJHtsLDKXsGrerijzlu8YRnxiTv4/Zyim0hrfQXeIht
+X-Gm-Gg: AR+sD13Z2gbsxD87fg5ULHs/CGqbo2aa+2CC2bNrKIfgR4FvBzAWx9Q50Qnl8DdedS7
+	lKsEucYyQNgWW/1ZT1/4C/EtvFZzzBFa0nUiZpYUxiqMETTbJbKC498P5k5EbFnoe0Fqsu1xTEe
+	G+EsiCPFsc2lBpVSjp2Dvn/ZKq2iwsz+l4N0h6qCeO6gfxMF3xbN9nLQ26zfDDDANqWcIWOBHoI
+	ZnIUJgELk9Jkqf67z+qVHWw7TuHR6nVJEC3T8641+9h1482tr9BpuU0xv45f+6Qn4dURq5hRHKj
+	7y9mka3MmpnQ/dCDY+YwPQBf0ECnZjt+/zW2HQQgdL2YO2WesCKVxx2VHDT35niUJr3KRp9zGcw
+	vaHI7ubY39Wiu2O4bwbW4eT/AHPNUCnT93Rb4FH6J1912EX2Ppqb9G/hAna5SiHayUBMqp4263Q
+	zI9jaO3s4zHfnBgDg33V8QaZtinT89Bx7dnNsU3HCyrTMoY/oTUwM/ybYpG+cg9gcm4B8phG95t
+	PDNX1k68WN0YPXwA28SbFX31HbMlx413Nv3AVHFmw==
+X-Received: by 2002:a05:690c:2503:b0:847:d0cd:11eb with SMTP id 00721157ae682-849f2a38e40mr84787637b3.9.1787538087832;
+        Sun, 23 Aug 2026 19:21:27 -0700 (PDT)
+Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-84cac01868dsm26303247b3.42.2026.08.23.19.21.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Aug 2026 19:21:26 -0700 (PDT)
+Date: Sun, 23 Aug 2026 22:21:26 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: JR Lanteigne <root@dnim.dev>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Kuniyuki Iwashima <kuniyu@google.com>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Willem de Bruijn <willemb@google.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, 
+ Simon Horman <horms@kernel.org>, 
+ Miroslav Lichvar <mlichvar@redhat.com>, 
+ richardcochran@gmail.com
+Message-ID: <willemdebruijn.kernel.150ff949d6753@gmail.com>
+In-Reply-To: <178746246095.3786864.2262454553798466512@dnim.dev>
+References: <178746246095.3786864.2262454553798466512@dnim.dev>
+Subject: Re: [PATCH net] net: fall back to skb_iif for the timestamping
+ pktinfo if_index
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-From: Qihang Tang <q.h.hack.winter@gmail.com>
+JR Lanteigne wrote:
+> put_ts_pktinfo() resolves the interface index of a received packet
+> from its napi id. The lookup fails on drivers whose napi instances
+> are not attached to the delivering net_device (e.g. ti cpsw, which
+> keeps them on an internal dummy device) and on kernels built without
+> CONFIG_NET_RX_BUSY_POLL, where skb_napi_id() is always 0. In those
+> cases SCM_TIMESTAMPING_PKTINFO carries if_index 0 and applications
+> cannot tell which interface produced the hardware timestamp. chronyd,
+> for example, then ignores valid hardware timestamps.
+> 
+> Fall back to skb->skb_iif, which is set for every received packet.
+> On aggregated interfaces this reports the aggregating device instead
+> of the physical one, but only in cases where the napi lookup already
+> failed and nothing was reported at all.
 
-AF_PACKET SOCK_DGRAM sends reserve skb headroom from a snapshot of
-team_dev->hard_header_len.  A concurrent team type change can switch the
-selected port to one with a larger hard_header_len between that snapshot
-and team_header_create(), so the port's create() pushes or writes past
-skb->head.
+Interestingly, the referenced commit explains that it added this
+method because the skb_iif reported by IP_PKTINFO is insufficient:
 
-This is the same race as in bond_header_create(); the snapshot series
-that fixed the SOCK_RAW send paths deferred it.  dev->header_ops is the
-stable team_header_ops, so snapshotting header_ops in the caller does
-not help.
+"The index is useful with bonding, bridges and other interfaces, where
+IP_PKTINFO doesn't allow applications to determine which PHC made the
+timestamp."
 
-Reject the frame if skb headroom is smaller than the selected port's
-hard_header_len, before delegating under the existing rcu_read_lock.
-
-Fixes: 425000dbf173 ("team: fix header_ops type confusion with non-Ethernet ports")
-Cc: stable@vger.kernel.org
-Cc: Willem de Bruijn <willemb@google.com>
-Cc: Jiri Pirko <jiri@resnulli.us>
-Signed-off-by: Qihang Tang <q.h.hack.winter@gmail.com>
----
- drivers/net/team/team_core.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
-index feaa75fbf8fc..2742a4bfc9d0 100644
---- a/drivers/net/team/team_core.c
-+++ b/drivers/net/team/team_core.c
-@@ -2269,10 +2269,24 @@ static int team_header_create(struct sk_buff *skb, struct net_device *team_dev,
- 	port = team_header_port_get_rcu(team, true);
- 	if (port) {
- 		port_ops = READ_ONCE(port->dev->header_ops);
--		if (port_ops && port_ops->create)
-+		if (port_ops && port_ops->create) {
-+			unsigned int hlen = READ_ONCE(port->dev->hard_header_len);
-+
-+			/* Headroom was reserved from a snapshot of
-+			 * team_dev->hard_header_len that may predate this
-+			 * port (concurrent team type change); reject if
-+			 * insufficient for the port's create(), which
-+			 * pushes its own hlen.
-+			 */
-+			if (skb_headroom(skb) < hlen) {
-+				ret = -EINVAL;
-+				goto unlock;
-+			}
- 			ret = port_ops->create(skb, port->dev,
- 					       type, daddr, saddr, len);
-+		}
- 	}
-+unlock:
- 	rcu_read_unlock();
- 	return ret;
- }
--- 
-2.50.1 (Apple Git-155)
+I don't mind adding a fallback. As long as possibly passing an
+aggregate (or tunnel) device cannot cause regressions to existing
+users, notably chrony and linuxptp.
+ 
+> Fixes: aad9c8c470f2 ("net: add new control message for incoming HW-timestamped packets")
+> Signed-off-by: JR Lanteigne <root@dnim.dev>
+> ---
+> A userspace fallback for existing kernels was proposed to chrony
+> separately.
+> 
+>  net/socket.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/net/socket.c b/net/socket.c
+> --- a/net/socket.c
+> +++ b/net/socket.c
+> @@ -900,6 +900,8 @@ static void put_ts_pktinfo(struct msghdr *msg, struct sk_buff *skb,
+>  			if_index = orig_dev->ifindex;
+>  		rcu_read_unlock();
+>  	}
+> +	if (!if_index)
+> +		if_index = skb->skb_iif;
+>  	ts_pktinfo.if_index = if_index;
+>  
+>  	ts_pktinfo.pkt_length = skb->len - skb_mac_offset(skb);
 
