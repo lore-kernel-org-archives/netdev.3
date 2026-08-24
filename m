@@ -1,117 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4420B25A642
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 07:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F611D63E4;
+	Mon, 24 Aug 2026 07:15:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787555606; cv=none; b=tOQJoNb4Lbl1JMdQHy4mVUeJ0zTe7cfVipy5HU8kuBu2GDXD2bocZ6Ox+CVYo6l5BwUYtSoakJhxNqblrRijlOHaLs6/v90IoPj60od4kFCB77sw1Y71Lnz5BpFk/Kcd71APTqvExEt+SY4hInW1Q80WBb/CUqsL6Y5FAIRpzF0=
+	t=1787555726; cv=none; b=GeuYQyJiLgOcnXsL7Qa+lr9LqzB8grjVD8gY6oZHRekHk4AgjhZyUPiHd0UDYEjGYFKNlvBherZmGZyeZUduBXrBEOgmzmQY3U0TvaP1Ik9DcDznpKSPuF8clyL4CW58LBh2rvXrklY6mrDMsgUw+eswU9BhKUDMmLw6E0Ol/PQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787555606; c=relaxed/simple;
-	bh=rnMxnQ0x2QQGkEKahy+gvFaX4CXTGisUtZpSfR+IKmo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MKzV6hKGciyqV/7O/uCntzOom4854QkR1KiAW5Rm2j3Edp2NZqGvzOJ4v8e0hgMk+jkC+Qu9vp2fj+0HuqJaXrh7H9nFG0nx94z6AmbmHm5xh44CwguED/Gj6vLN/rKcmH4mhrqztwTNyRvN3Rk7FXMcKA2Mw3Ncom63GRnYs6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jFK8SuSa; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787555726; c=relaxed/simple;
+	bh=t8nswsNBaJpU/DtC2ufgweGppB2rKtfMQsRcyw+rzUM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TyRxYm6E4fVGI4BEaRnQSnyqNMA1xIFzMoovJc3HB5TFNkCO48T4rAn4MypcD2Rn3kZv3r0r8GBfWIjPaLmYbxBmhsdAniNSKR2sgGlt6MnXNg1vRb3Suy6dv+VeBhiLIWmMsdIcwBSuftYI9VnekQ4QPp6FuDwl6uKDqks26uE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=DXw5Oz9q; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jFK8SuSa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A36B1F000E9;
-	Mon, 24 Aug 2026 07:13:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787555604;
-	bh=BkGkUHBq+UzBxHDBQnM/lS2NOOgRMTBcY7T2S+1CUvo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jFK8SuSaJ5QR1mA7ZeGkUBxv4gHNCd0PX9+Y4yYg/ZYq41xf8aecNaidHg/XK9aa6
-	 GnWuYMeOIDiLoowf/QU3t4fCBUPZNRagABhNkyncj4Uzh16+rtPLrGEfNKEJivUG2k
-	 YBHRGVQ/VBxpdz8FT7/vXWst69TfruryUZR0CclD5AsQIOQyfptzrMPT9gllGnLrdI
-	 xu3Q1Eogo8FWcYp5/AVCbprx0C6P2YoaIV/SQdXOSjfAH48B4Sm9aMOV5cebfCoYIa
-	 I1xGh+Z5ZOSHs6VKI3PSts0RkT+OILcDxzmxh2tousbER04F6OFyXVVMx8j1+wJaH3
-	 8pkudckDSzKFQ==
-Date: Mon, 24 Aug 2026 09:13:22 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Daniel Pawlik <pawlik.dan@gmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, nbd@nbd.name,
-	sean.wang@mediatek.com, Mark-MC.Lee@mediatek.com,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	andrew+netdev@lunn.ch, yangshiji66@outlook.com, upstream@airoha.com
-Subject: Re: [PATCH v10 1/2] net: airoha: npu: fix missing streaming DMA mask
-Message-ID: <aovvEvI4sADve2iu@lore-desk>
-References: <20260820085941.380401-1-pawlik.dan@gmail.com>
- <20260822122727.4f437bb5@kernel.org>
- <CALC2Api8nhePvuUPsw9CE6nX-0pFOMO5qy=4fzqox8_XM4eSqw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="DXw5Oz9q"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67O5VauV1014032;
+	Mon, 24 Aug 2026 07:15:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=t8nsws
+	NBaJpU/DtC2ufgweGppB2rKtfMQsRcyw+rzUM=; b=DXw5Oz9qNrtaVOzRG9SMfb
+	Mt/Irhy9PRol2/G9JMnKhRCAgJ22rpY7z7TZNN5GziIIVUuI33YcoVfvwSN7J/EK
+	O7FWDgMt6wTiCtQq4mwodCvodbo4PpjKuiYTfchJ61G8EYOITZgKke3x4VaVURgo
+	OTrWNjfubA8YCMwRKXnv0sqEk9XuaKFiVQ/1mNnZVC8NdUbU+PL/OYmGhIzVnG+t
+	eNu3ChrgZrrAq/hPTlNITObBcNbLjyAnobAw1KxkJ1cXuNr+WAE+tZGzdAIzglyh
+	mSDMiHzKaDmupg8Y4dXur6sXdySfsGBhcTgneQrnRRRMaUZgkXTzDbqbLS2DIpWA
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g73dwyku1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Aug 2026 07:15:17 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67O7BEIE022221;
+	Mon, 24 Aug 2026 07:15:16 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g7p3pvqc3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Aug 2026 07:15:16 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67O7FFI926411734
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 24 Aug 2026 07:15:16 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A8D8558059;
+	Mon, 24 Aug 2026 07:15:15 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 54E4A58043;
+	Mon, 24 Aug 2026 07:15:10 +0000 (GMT)
+Received: from [9.124.213.220] (unknown [9.124.213.220])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 24 Aug 2026 07:15:09 +0000 (GMT)
+Message-ID: <b4f836d3-d909-4228-945d-b11231290725@linux.ibm.com>
+Date: Mon, 24 Aug 2026 12:45:08 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="mUbn9b3xpUqnPYR0"
-Content-Disposition: inline
-In-Reply-To: <CALC2Api8nhePvuUPsw9CE6nX-0pFOMO5qy=4fzqox8_XM4eSqw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3] net/smc: fix clcsock and lgr/lnk races in smc_diag
+ dump path
+To: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
+        dust.li@linux.alibaba.com, sidraya@linux.ibm.com
+Cc: pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
+        guwen@linux.alibaba.com, netdev@vger.kernel.org,
+        linux-s390@vger.kernel.org
+References: <20260807081606.3200128-1-mjambigi@linux.ibm.com>
+Content-Language: en-US
+From: Mahanta Jambigi <mjambigi@linux.ibm.com>
+In-Reply-To: <20260807081606.3200128-1-mjambigi@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODI0MDA2MCBTYWx0ZWRfXwqjBnH9jN1WD
+ /Wd8ZIUtLMGVXAvXyFze/u6nc8mfCwNq7J06EdbPUgKSD7UWJqTpdNEnLa/n1KB7YYX/1ONcIHK
+ xTanVgii1JFXMFrbk3a/1f5NuvkbLi8=
+X-Authority-Analysis: v=2.4 cv=AYuB2XXG c=1 sm=1 tr=0 ts=6a8bef86 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=1vQF1UkLROcUZo-dBVkA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: of2Cm08DmUC2OwBgVFdayGll6y8neaBD
+X-Proofpoint-GUID: SqIgg5iKNswZMbwmUDe6UEosHU1c_YHh
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI0MDA2MCBTYWx0ZWRfX31N2DwuhE26k
+ SbHFz7n9tDtG/qr/shRdJkpamM6d3LRISUiJlblmDo9sbzlDlhMoaf8RyAK8mD0eEK7tSQoTUJl
+ MMwjE0+YB//mf1gkuo3dCPkwyK5BZrQkp2hPaUECO59NwtvkjiJ6eg+tkGN3Il0+HxXU/yijHXQ
+ dOB8lEuHqSyRmTuKTNG6e5YF92UgmzqfW9bp0bItAlnbJ613kTnFEVdCLrBjWjf4oZdsePmCzjv
+ 9w9gqxoe++wp/Xn4t3rXHAN3Eh2EqZquCqzp4uQ+wwi6Cch5wRLEI5FG+orw80Zi7JFZ+1n8YB5
+ Sb9rxmiiIUyGKa7Qw02q0zkmW9rhEqm0JDF+cwxkrgmVvyqY/vaaEdDjG+E7ThDdkmmZBWtPrqb
+ kakArlviXAebps9gPzR1XBv4RUvukPdWuecPYRZGsaKdwiI+lEukVZVz6A/ip/RFY9KOhC+BOQU
+ ZMGjKZ8zlO4NATAlLTQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-24_02,2026-08-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 phishscore=0 clxscore=1015 adultscore=0 bulkscore=0
+ impostorscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608240060
 
---mUbn9b3xpUqnPYR0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-> Hi,
->=20
-> I tested both patches independently:
->=20
-> - Patch 1 alone (DMA mask): NPU reports version 0.0 - probe fails.
->   The streaming mask is correct but 24-byte buffers still bounce
->   through swiotlb, and the NPU can't write to that address range.
-
-I guess we need to understand why swiotlb bounce buffers are not working
-here since these are valid address where the device should be capable of
-performing DMA ops.
-
-Adding Airoha folks in the loop. Any input on this?
-
->=20
-> - Patch 2 alone (cacheline buffers): NPU reports version 0.1111 -
->   works. Cache-line-aligned allocations bypass swiotlb entirely.
-
-I guess this is just a workaround for this particular case.
-
-Regards,
-Lorenzo
-
->=20
-> So patch 2 is the essential fix, but patch 1 is still good to have as
-> a defensive measure - without a proper streaming DMA mask, any
-> future sub-cacheline streaming mapping would silently break.
->=20
-> Dan
->=20
-> sob., 22 sie 2026 o 21:27 Jakub Kicinski <kuba@kernel.org> napisa=C5=82(a=
-):
-> >
-> > On Thu, 20 Aug 2026 10:59:40 +0200 Daniel Pawlik wrote:
-> > > The driver calls dma_set_coherent_mask() but never dma_set_mask(),
-> > > leaving the streaming DMA mask at the bus default. On the non-coherent
-> > > EN7581 platform (Cortex-A53), this causes the NPU mailbox to hang
-> > > after approximately 41 calls when using streaming DMA mappings.
-> >
-> > Can you confirm if patch 2 is still needed after this fix?
->=20
->=20
->=20
-> --
-> Z powa=C5=BCaniem,
-> Daniel Pawlik
-
---mUbn9b3xpUqnPYR0
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaovvEgAKCRA6cBh0uS2t
-rNgQAP4gzAxPwYlVZLcsD8FbF199r8CFHfwu4FtyHed86dqaVQD+IEWDsuyiWXi+
-Vf05SS9bTDTKiUc1LIT1fLizV1htAAE=
-=ET2e
------END PGP SIGNATURE-----
-
---mUbn9b3xpUqnPYR0--
+I am currently addressing all the review comments raised by Sashiko.
+Once they are resolved, I will send out a new version.
