@@ -1,166 +1,182 @@
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CDB38E8A7;
-	Mon, 24 Aug 2026 21:04:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA5C31715D;
+	Mon, 24 Aug 2026 21:58:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787605474; cv=none; b=KMisXyDPE8iQzJgKO4IoXM/RU4TcrkRtJe/1ibppRWAUh3lGF+GVJGFJAQbOIIkJs85X1ZgZ1pL1nkyWzy8QcpPmpiuG9QX2Xn5eb5JOPHbUdNiN3ivkhuEM3ycqQXF3FS4CHvY3O007CYHZ0Q+FN5tWaehWbVY/HmZNF0VHl/4=
+	t=1787608689; cv=none; b=ZnwszMndCFj83Tmto3yLQ9hP7Sx2h3TQ1wqJbgpWdM+5Ua2heA5xTQtmypRZtbJj9B7lO+GcwMW2EMx74acJqOhQuxrQvh3g0hI2YEDZDVNPDi1U8qHSYfKcOo1Rx8nwvfbpdB2zST8T6fQbCdFwNhurShmtMEOvN40p665cjyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787605474; c=relaxed/simple;
-	bh=lxWgaRS9cMBj7nzIKwYlcYTMb1BOWwOR02+GTkayrjs=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=tOJcsLmxSt32AlM8oGbzxW3CAcfdRTAb+tn11139PffJiCr5hehlx8+2AVFXu30urmDTAvjcAotF+sKrJBLl0x4CiDhdqiuJOBB85wCO54imV5b9COHMGuTK43tM6l2tksifIbWRaBa2PB9gzdd1VLOBn9S1qql6YVhPMuhEsO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=iN4IZpg9; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+	s=arc-20240116; t=1787608689; c=relaxed/simple;
+	bh=TV1QbD6sXr1+8Yw4eER0rG1GZxkPLsn7PNhNAV+mTJk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=YA7cRbrVwPZSnzbuKfoM7VDNPYPWgnMiEpXnewOFi7CrG+Yw9QcbUM+VcH24YQ9L5L9RZjLuCAM9tBSNg4VZ2PqV/opXH08DLcNrp5ugHJJW/hr/u5vffMmi2Sfn/euugImKDDu5NReQxq67wHxLaY05TxIVcaEJlcSML6C3Zng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=komAWAxz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="iN4IZpg9"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:Message-ID:Subject:Cc:To
-	:From:Date:MIME-Version:From:Reply-To;
-	bh=8Sz3WqkTSXrjfECQs9syX3OabIkTQfaoXng/2r3y3YI=; b=iN4IZpg94uQW7Qq71fa8RM3vEW
-	kYkZAE7Go3UMAHPCbMam59vi5F2G4bm4hWXaQvDe+IlXyYEvE3ysOyCUtZqscnptJn7q2InbNaFyu
-	soOubYTTGaNo34QYmi9ty2VVZJpRy9sTLLWPw/LK3yUGKpUbS/U50cLhVIERjuM4Ft+aoWfPy9dJE
-	gK9eUfYGXhRTBPX+kELcjgSnMYflg6ghgE0MkoYvLv42MzvqNcu61ANFS228b1Ien6EVqp3z8FXTb
-	NuEjADHZt8gwoX1gXWGgh+2+Dm/yjJ9PlQHQ27wXDkIEUhwmsrSPlTWDbQQk59YiDr1KX9MY2E47t
-	G2P9q0Eg==;
-Received: from maestria.local.igalia.com ([192.168.10.14] helo=mail.igalia.com)
-	by fanzine2.igalia.com with esmtps 
-	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1wybpt-008hfh-DY; Mon, 24 Aug 2026 23:04:05 +0200
-Received: from webmail.service.igalia.com ([192.168.21.45])
-	by mail.igalia.com with esmtp (Exim)
-	id 1wybps-003b3A-2i; Mon, 24 Aug 2026 23:04:05 +0200
-Received: from localhost ([127.0.0.1] helo=webmail.igalia.com)
-	by webmail.service.igalia.com with esmtp (Exim 4.98.2)
-	(envelope-from <mfo@igalia.com>)
-	id 1wybps-00000003RKa-04eN;
-	Mon, 24 Aug 2026 23:04:03 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="komAWAxz"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 58EA0C19425;
+	Mon, 24 Aug 2026 21:58:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1787608689;
+	bh=TV1QbD6sXr1+8Yw4eER0rG1GZxkPLsn7PNhNAV+mTJk=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=komAWAxzzCWQZMhEEYPrESC9XIx/AcSXbtxbNUfSyLCenFGWcpRrSF3klEmC3GVTy
+	 pZ1TbXXJVz6Wz8Bhqxm90EmvY4q/iNkFCy9zQq+9idiDckIjxe6s343qbqlqX7Zr34
+	 HpTqax49xk4TO8apfFB8rMkn2NfaoJISwe4vBywXAYPhH2himk4i9KWs4b1pyYBaw5
+	 Qnwje+hIaW8WckPk9SZ1YfcaVFu+r1BcaFQ2LsXjBe/j5cjOJ053ZpoZ9pA9jyigEL
+	 ZvzEgJmeC8GEQlqh37hEf2bd66bi/yvaFnRBk1U+WG9GkUovK2JVu8g5bRd/4HhYSN
+	 vjkf8Cdw83qbg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 34408C5DF81;
+	Mon, 24 Aug 2026 21:58:09 +0000 (UTC)
+From: Selvamani Rajagopal via B4 Relay <devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
+Subject: [PATCH net v7 0/4] Fix to possible skb leak due to race condtion
+ in tx path
+Date: Mon, 24 Aug 2026 14:57:57 -0700
+Message-Id: <20260824-fix-race-condition-and-crash-v7-0-4323279b18f2@onsemi.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 24 Aug 2026 18:04:03 -0300
-From: Mauricio Faria de Oliveira <mfo@igalia.com>
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Kees Cook <kees@kernel.org>, Joel Granados <joel.granados@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, kernel-dev@igalia.com,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- fsverity@lists.linux.dev, keyrings@vger.kernel.org, bpf@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kbuild@vger.kernel.org,
- netdev@vger.kernel.org, linux-wpan@vger.kernel.org,
- lvs-devel@vger.kernel.org, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, linux-sctp@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
- bridge@lists.linux.dev, mptcp@lists.linux.dev, rds-devel@oss.oracle.com,
- virtualization@lists.linux.dev
-Subject: Re: [PATCH RFC v3 03/13] sysctl, mod_devicetable: add macro
- MODULE_SYSCTL_TABLE
-In-Reply-To: <aotteDcc588iwC6g@monoceros>
-References: <20260819-sysctl-module-aliases-v3-0-aab90569365d@igalia.com>
- <20260819-sysctl-module-aliases-v3-3-aab90569365d@igalia.com>
- <aomlfGJM61qZKxx2@monoceros> <4e3eaf1d3419e808be046035f114bf6c@igalia.com>
- <aotteDcc588iwC6g@monoceros>
-Message-ID: <4aa22e41e8ff4bab6638cf0baaa9d07b@igalia.com>
-X-Sender: mfo@igalia.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Report: NO, Score=-2.1, Tests=ALL_TRUSTED=-3,BAYES_50=0.8,KAM_DMARC_NONE=0.125,KAM_DMARC_STATUS=0.005,KAM_SHORT=0.001
-X-Spam-Score: -20
-X-Spam-Bar: --
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGW+jGoC/43QvW7DIBAA4FeJmEsFBxzQqe9RdSBwbhiCI7CsV
+ pHfvcRLXHlwx/vRdz931qhmauztdGeV5tzyWHpgX04sXkL5Ip5TjxkIQIEg+ZC/eQ2ReBxLylN
+ v56EkHmtoF+51EsYERBM168StUu9f+Q9WaGKfPXnJbRrrzzpylmvpf/osueDOEniRvDJ2eB9Lo
+ 2t+jeN1lWfYanigQdfOGE2UglDovaaemhXmQFNdU2Sk05L6F9xO0xsNxIGmH5eCVQSDckHudzN
+ bzR9o5rGbF3iO2pkU9ho+NSfhQMOuYRy8GHQAK8MfbVmWX6uxJnNUAgAA
+To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>, 
+ Andrew Lunn <andrew@lunn.ch>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787608678; l=4757;
+ i=Selvamani.Rajagopal@onsemi.com; s=20260531; h=from:subject:message-id;
+ bh=TV1QbD6sXr1+8Yw4eER0rG1GZxkPLsn7PNhNAV+mTJk=;
+ b=vr/i5du32kkegiOGNuoZXE3IOj8tano+NqSGrEBuuOGEl8MsFpb6uBSg2yH/gCad35if0xYnO
+ qQ1A2BpgzJ1DvRujBgxxLAZ5TDcVIBKsmvfbfdBY8klp0DfTf4ufB/0
+X-Developer-Key: i=Selvamani.Rajagopal@onsemi.com; a=ed25519;
+ pk=5QRdM0HS/LGWWcUZZ9hVfZ+qbPQGZCumcTXOiN7Fyug=
+X-Endpoint-Received: by B4 Relay for
+ Selvamani.Rajagopal@onsemi.com/20260531 with auth_id=803
+X-Original-From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+Reply-To: Selvamani.Rajagopal@onsemi.com
 
-On 2026-08-23 19:12, Uwe Kleine-König wrote:
-> Hello Mauricio,
-> 
-> On Sat, Aug 22, 2026 at 01:57:24PM -0300, Mauricio Faria de Oliveira wrote:
->> On 2026-08-22 10:41, Uwe Kleine-König wrote:
->> > On Wed, Aug 19, 2026 at 03:16:16PM -0300, Mauricio Faria de Oliveira wrote:
->> >> The MODULE_SYSCTL_TABLE macro emits a struct module_sysctl_table variable
->> >> with pointers to a sysctl table's path and entries, and table/entry sizes.
->> > 
->> > That new struct doesn't seem to contain any pointer?
->> 
->> The struct module_sysctl_table fields .path and .table are pointers,
->> although with kernel_ulong_t type so that the same 32/64-bit size is
->> used in file2alias.c based on KERNEL_ELFCLASS (and not on the host,
->> which might differ with CROSS_COMPILE).
-> 
-> Cross compilation isn't an issue for the already existing device id
-> structures; many of them also contain pointers.
-> (While modpost doesn't use the pointers, the size of the structures must
-> be known to correctly interpret the arrays.)
+Now the traffic is handled in threaded IRQ, and the
+disable_traffic flag is checked before handling the
+data, new race condition is exposed, in which
+buffer may leak, if threaded IRQ interrupts the
+trasmit path midway.
 
-Indeed. I missed some device_id structures with pointers, and that
-devicetable-offsets.c is cross-compiled to generate
-devicetable-offsets.h for file2alias.c to use offsets and sizes of the
-target architecture.
+With this change, disable_traffic and waiting_tx_skb
+pointer are protected by spin lock/unlock pair.
 
-I'll change .path and .table to pointers in the next version.
+This is highlighted in Sashiko review
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260611-level-trigger-v5-0-4533a9e85ce2%40onsemi.com
 
-> Also sizeof(long) differs between architectures and I can compile for
-> arm(32) just fine on amd64.
-> 
-> Additionally there is hardware out there that has sizeof(void *) = 16
-> but sizeof(long) = 8. Up until recently I worked on mainlining that (and
-> it has business reasons only I stopped, so I guess and hope I will
-> continue at some point in the future). See
-> https://lwn.net/Articles/1037974/ for some details if you're interested.
+Also on buffer overrun condition, probably due to loss of
+SPI data chunks, receive path doesn't see the expected
+data chunk with end_valid bit set. As a result, driver
+keeps adding data chunks to the skb before running out
+of space and kernel panic is seen.
 
-Cool.
+With this change, before adding data to the skb, if there
+is no space, skb is freed and driver starts looking for
+new frame by looking for a data chunk with start_valid
+bit set.
 
-> 
-> I would be great if your series didn't introduce a new obstacle for
-> that.
+[  705.405490] skbuff: skb_over_panic: text:ffffffd2eb72a264 len:1600 put:64 head:ffffff804e5cdc40 data:ffffff804e5cdc80 tail:0x680 end:0x640 dev:eth1
+[  705.405569] ------------[ cut here ]------------
+[  705.405575] kernel BUG at net/core/skbuff.c:214!
+[  705.405589] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
 
-Absolutely. I'll be happy to adjust the series and testing for that.
+[ 6703.427690] Call trace:
+[  705.925157]  skb_panic+0x58/0x68 (P)
+[  705.928726]  skb_put+0x74/0x80
+[  705.931772]  oa_tc6_update_rx_skb+0x44/0x98 [oa_tc6_mod]
+[  705.937084]  oa_tc6_macphy_threaded_irq+0x3f4/0x900 [oa_tc6_mod]
+[  705.943084]  irq_thread_fn+0x34/0xb8
+[  705.946654]  irq_thread+0x1a0/0x300
+[  705.950134]  kthread+0x138/0x150
+[  705.953356]  ret_from_fork+0x10/0x20
 
-Could you please confirm one should just follow [1], which uses [2] to
-build the LLVM toolchain, and use it to build the kernel [3]?
+To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: David S. Miller <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>
+Cc: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
-[1] https://github.com/cheri-linux#building-and-running
-[2] https://github.com/cheri-linux/buildroot
-[3] https://github.com/CHERI-Alliance/linux/tree/codasip-cheri-riscv-7.1
+Changes in v7:
+- Changed the comments to make it simple on why tx queues are
+  disabled.
+- Link to v6: https://lore.kernel.org/r/20260812-fix-race-condition-and-crash-v6-0-6cf90f4a271a@onsemi.com
 
->> >> That symbol will be handled by file2alias.c (modpost) with the changes in
->> >> mod_devicetable.h and devicetable-offsets.c.
->> >> 
->> >> The option macros MODULE_SYSCTL_TABLE_{DISABLE,UNIQUE_ID} can be used on
->> >> a per-file basis to disable the macro and change the symbol name pattern.
->> >> 
->> >> Signed-off-by: Mauricio Faria de Oliveira <mfo@igalia.com>
->> >> ---
->> >>  include/linux/mod_devicetable.h   |  7 +++++++
->> >>  include/linux/sysctl.h            | 42 +++++++++++++++++++++++++++++++++++++++
->> >>  scripts/mod/devicetable-offsets.c |  6 ++++++
->> >>  3 files changed, 55 insertions(+)
->> > 
->> > Please put the new struct in a separate header. Apart from not being
->> > about a device table, I'm currently work on removing
->> > <linux/mod_devicetable.h>. See commit
->> > ad428f5811bd7fb3d91fa002174de533f9da94d7 for more details.
->> 
->> Sure; I looked at that earlier (thanks for the instructive commit
->> message, by the way) and found the new struct to be similar to "struct
->> cpu_feature isn't really a device_id struct" (not moved), but apparently
->> missed the trailing "fow now", which is clearer now. Fixed for v4.
-> 
-> Yeah, I didn't move that because it was an outlier in the header as it's
-> not a device id. IMHO it should go to something like
-> include/linux/cpu_feature.h.
+Changes in v6:
+- Changed the rx_buf_overflow flag to appropriate one
+- Using skb_tailroom instead of fields from skb
+- Updated commit IDs and comments to be accurate
+- Link to v5: https://lore.kernel.org/r/20260729-fix-race-condition-and-crash-v5-0-3906bc485daf@onsemi.com
 
-Ack.
+Changes in v5:
+- Fixed typo in commit messages.
+- Changed the commit message to be more accurate.
+- Fixed the wrong data type used.
+- Link to v4: https://lore.kernel.org/r/20260720-fix-race-condition-and-crash-v4-0-8273e2f38a1f@onsemi.com
 
-cheers,
+Changes in v4:
+  - As disable_traffic means device is uselss unless
+    driver re-loaded, all tx queues are turned off.
+  - Process all the received chunks on buffer overflow,
+    as long as data chunks doesn't have any error bits set
+    in their footer.
+  - Added spin lock protection in every place wait_tx_skb
+    is used.
+  - Carrier is not turned off on disable_traffic.
 
-> 
-> Best regards
-> Uwe
+- Link to v3: https://lore.kernel.org/r/20260705-fix-race-condition-and-crash-v3-0-3e51841e4d08@onsemi.com
 
+Changes in v3:
+- Cover all the instances of disable_traffic flag with
+  spin lock to serialize the access
+- Disabling the tx queue and mark the carrier off when
+  disable_traffic is set.
+- Continue processing received chunks on buffer overflow
+  error and "out of skb" error.
+- Link to v2: https://lore.kernel.org/r/20260626-fix-race-condition-and-crash-v2-0-b6c5c10e604f@onsemi.com
+
+Changes in v2:
+- Improvment to how error -EAGAIN is handled. Took care of
+  couple of use cases where start_bit and end_bit may be missing or
+  repeated due to lost data chunks.
+- Protected handling of waiting_tx_skb pointer with spin lock
+- Link to v1: https://lore.kernel.org/r/20260621-fix-race-condition-and-crash-v1-0-87e290d9357f@onsemi.com
+
+---
+Selvamani Rajagopal (4):
+      net: ethernet: oa_tc6: Protect skb pointer used by two different kernel instances
+      net: ethernet: oa_tc6: Improve the error recovery
+      net: ethernet: oa_tc6: Disable tx queues on fatal error
+      net: ethernet: oa_tc6: Fix for the wrong data type
+
+ drivers/net/ethernet/oa_tc6.c | 258 +++++++++++++++++++++++++++++++-----------
+ 1 file changed, 189 insertions(+), 69 deletions(-)
+---
+base-commit: b70b7b71561f2be1183b6046964d950c2b203bfc
+change-id: 20260621-fix-race-condition-and-crash-94d055a665c4
+
+Best regards,
 -- 
-Mauricio
+Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+
+
