@@ -1,100 +1,108 @@
-Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E0C3E49DA;
-	Mon, 24 Aug 2026 06:33:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38833E5EF8
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 06:48:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787553188; cv=none; b=VYuNqLNd7hVEnXFEg/kygzUuqyeUoUT2InxETJwbdmPtBQwk7fnDwn0UuSfzZFuCiwLJZyRBUKE/6C2mHRnE69Lff2JBJxtYyh98MGDbwRV8STxX2FwHWPBAYQxOU34eX4bXFmiqfXwQgqNEqCHfcLVX+Y6RW1/f4jKI5rXdqbg=
+	t=1787554086; cv=none; b=P2e9mhlOvQZK4VgCPpyhzovsIvxWgVIhovuO7hkdIUy5NPWEHy6OcXc77K/LoNMNUbzWq9DB3m2e+JY23+O2/lcI2PZjkIgpRPJ1Y1WtWzZ2Ze+eIfYzlQcy2hFuz88UDhYRpyiFYONfpGGqXw0QUKQwVSmHClJHjI3WGAYiZ/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787553188; c=relaxed/simple;
-	bh=4NxF+lhQZdA5dOP1V64bmTM/WrZkAVCR1bc2prj8l2I=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qyxWXRv/cMPdB9RwlIqLD7rFrt3Bz0Vrt3PC9yfzcwhhHAHs0yXVsVynSW6H1AsMEzjwEVvbWd5DnO1lJnt+iTTBphiVmYCK8fO+IRpX/gDEHhtsn5/gqjPlPmgUaG87WzblIw6KYN6IZPpKux2dccE9Y5QV5MjK0tMWs5DPmek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=A5N+O187; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1787554086; c=relaxed/simple;
+	bh=gsh3FwRHXOEoHxf9WDBD7FV63wrPPPV+1wXS/k/EffQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n3Y9mKnbIBW78dMZkhiMayu3o4EHH85uayfGS42N3RaQJrMUt9DZXdmveYqDHijNt1k0lpSqCUr+ptNoIj4djWkg11wosoXABmorR9/U/kGwcycjHb9C6JZ4VZ5iuPf2ubEUKcayX46Vl1BYqtl/iMS/KMplY26p+U44SB6OhyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W+Yo88Zs; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="A5N+O187"
-Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67O5UhGa3045512;
-	Sun, 23 Aug 2026 23:32:57 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=4NxF+lhQZdA5dOP1V64bmTM/W
-	rZkAVCR1bc2prj8l2I=; b=A5N+O187gjmXKXPjWAmbyvhDuaRuLIJbohZk7ZVFn
-	8RW0sb1Lw/imA5/JQGc3QO0cjzhUnF7hO0JUvPpuLe1nSzP2ZVj6njENo0BlevaC
-	4CHhG6/YRmtrbgEumzfOFCKt61689QwKYU0ZPNeNOrrtYEuDg2aXSdWNKiUe2YjA
-	ivlDKDwXk9E82xlajrE1+2ba/YolPyOr/yDsaLj8lPYrsOL6eXEM2FXqRPgWIEFN
-	7u7cMXaOyWj3t2TV6rLP8CPTM/SCI6h+sBmSCg5MBhgHnStW1YBiSOy6mr7mawYg
-	SKecxmkbb9gBxb4bg4in79a52Q3afb9b7Ms/cH5wRwRCA==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4g801720k2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 23 Aug 2026 23:32:57 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Sun, 23 Aug 2026 23:32:56 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Sun, 23 Aug 2026 23:32:56 -0700
-Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with SMTP id 899BB3F704B;
-	Sun, 23 Aug 2026 23:32:53 -0700 (PDT)
-Date: Mon, 24 Aug 2026 12:02:52 +0530
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <davem@davemloft.net>, <hkelam@marvell.com>,
-        <linux-kernel@vger.kernel.org>, <naveenm@marvell.com>,
-        <netdev@vger.kernel.org>, <sgoutham@marvell.com>
-CC: <andrew+netdev@lunn.ch>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>
-Subject: Re: [PATCH net] octeontx2-pf: reset TL4 topology on HTB offload
- teardown
-Message-ID: <aovllDUTmYmHlQBy@rkannoth-OptiPlex-7090>
-References: <20260821072812.2890922-1-rkannoth@marvell.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W+Yo88Zs"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6a3efa2b38aso5586464a12.2
+        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 23:48:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787554083; x=1788158883; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ROwzLFkAwtTrfltmkckqtugY5BGlQdk0vedqqolGcRo=;
+        b=W+Yo88ZsmjtZ33a3NWARzSQAs8oRKliSMcDl035Dj4EH0RPi7F9Lh+8PsZT/cny/OX
+         SznLq5BPLQ4d3f909/cEABZ/WRiG7psRIBko6BPFtqA7t38pp5cclj5aLFaQEl6lHxZD
+         4nXj2ykgNN8/2qrAKo88QQZG7ljJD6atBEJjeNPyuBpY757iMjZMXKw5ox80druMfUlR
+         dzM8qFLbECR12OFMuFExM5OYSITrEAEss3APkMkP/36mApq3bErzSG95nEAfthdASp+l
+         9romZtb6a2Re4VvAjNv3qM1r7SqyKPCaasxMODV6pXPzRXo5lNgXPl7RDWAHLV+PPbDc
+         7OrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787554083; x=1788158883;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ROwzLFkAwtTrfltmkckqtugY5BGlQdk0vedqqolGcRo=;
+        b=P9uNbUkgR2Tepn4Ai4Q+FzaHmK2gGPc5OS2FZXm5deT6cLy+LRLkrWpb7ksj1qC/VB
+         eUic1o9uMWq2FGj+en2T1C4irTY7M5J9eIf86xLxrq8u37dwJzK6+IJqI+zdhXN7nSFY
+         jeJNj8HhoUsJ1OsZFjlVb0xZjdBkXrRXlUo0o4VHKD0kpRg8WP6Yxh2IphCy4XDznazg
+         IfX7Y7otIPg8M1y7PgmT8McMGMva08+1AHH9PWfBZxTRD7hYvqf96/b1fUbUq0Ry76fu
+         ZoA5fmxFadk+q9sHxYNGbqC5pgwgWdJk1fnhDkQP0IhzbwbpkXEZRYJKDQNVxOb2kf/i
+         152g==
+X-Forwarded-Encrypted: i=1; AHgh+Rpva8QSwAOTNXqI7OApcc1QBNIrPwwS8lZaTyaCt6oVr2RqQsfMCDc2qevCqETwz1FUVafrGL8=@vger.kernel.org
+X-Gm-Message-State: AFuF++lT+Fwo+tBdMuEmGXZct0wtXIV6kTweGZlQyHVsq1j9QQa9kspq
+	yjrxYG5pKVIxX+pbDJsQ3wTWemz01/z7CpAMNZH8C7TsPFNQ/4B0QqY1
+X-Gm-Gg: AR+sD13A+0tzutwN5B88HxiCA7cylj56gXSMN0JAB1XJEmmJSlilMb2OSn9Q1bZIOLw
+	ylvjWdSW5SQa6b1ESsvhMjWNOcwS7i0cGGwtregnHYplUmJn+RTDvTaLSVjat1CJN1KWWXGWv4t
+	CjbJWE3Eu++3wsoj+76ADOojp7DkacVAFwhnCnlIAS7xbEi54BFCYBj4mHZ0HUmIB6YGyffcEyM
+	t/m7vLMYlT0fQRXthx+cYwZu54FSw0miFU4knkOdzvPO51HnYsXzaCbgSR/qveX4Vy/vidQlrPr
+	pNNoL1pYvcK4dpatz2gjHH6WE2w1VwNDS14O7xmrHIFlO2QmJD5p+fMEjLqwrDyqX94PwE6BuIq
+	iOsRfCWF36AN7DfUaQ2+UBLww3rfpIjToS5LT3DZ2iVZ1AEhMydGIUlYVTsahDR+QTQ7uINpFCV
+	txhPr2dRle8zn/Md9+vR2ak75m0enttvGhF2uCgM0i/VjIpXjak3KBZQcpHcCY0Q0D
+X-Received: by 2002:a05:6402:4498:b0:6a1:44c8:edc4 with SMTP id 4fb4d7f45d1cf-6a42f21ee3amr8021391a12.12.1787554082677;
+        Sun, 23 Aug 2026 23:48:02 -0700 (PDT)
+Received: from mobilestation ([2a00:1fa1:c28e:9a7a:6251:3e2d:4f32:3e5e])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a59e1cdbe9sm7097133a12.24.2026.08.23.23.47.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Aug 2026 23:48:02 -0700 (PDT)
+Date: Mon, 24 Aug 2026 09:47:57 +0300
+From: Joseph Steel <recv.jo@gmail.com>
+To: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, shuah@kernel.org, 
+	joabreu@synopsys.com, yi.fang.gan@intel.com, jun.ann.lai@intel.com, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net v2 2/6] net: stmmac: Enable double VLAN processing
+ only when supported
+Message-ID: <a77cwrdtjmzi6zextnlg7llrqh56behj6zl6jkon4ta6gwnbdj@unwirtt36qwn>
+References: <20260821170959.79708-1-ovidiu.panait.rb@renesas.com>
+ <20260821170959.79708-3-ovidiu.panait.rb@renesas.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260821072812.2890922-1-rkannoth@marvell.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI0MDA1NiBTYWx0ZWRfX7NP4atRE60OQ
- 56c2V2zVQYW57fFpDOSurB6CTlzdSrh3FFVxGMjXnXJ1UBNqXdbUky2YMp7KNbYpGjDtA/J6M9t
- QZO2096AU4foFD4dhUxl2byXrsPhrsX3wTqiV4RvwXAkkQX949OFCU5mO3b7iFjBfaO/9WA3wqr
- hCmuRi+qi59x5RGBUF9EwmuP4qQ/MJnNvQ4SFLpwC6OgnQNXbv7U2AIYxHi3ys1OOzHFWNaDpQm
- Zd+2i7SvkT3nRZo4ELNHqsp5vh05J9iiVxwJgorw56o34Nk9K0VP7xBjXX0llSWDw7KeHOWLS/V
- GyyelrEgIEh+C5svzknLV6riPHfef8WEu3t4K8XsIIxRssLPPziY3u015L/kFFQH/1Tu34hTM3s
- qN17hqntPyYW/Bb+QcfkFIBWnDSTjHwDcwnLU4E1ovBATgkxfL6aPOSk5bGJLeooAgN4q6MnEdy
- yqVZ/Q9D3gAa9IB1VDg==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI0MDA1NiBTYWx0ZWRfX2aTHfRa+Jlz8
- RjU+eQbhdCXOzSg0ir4MFRekWBPK16xJjLhf4WrQWTlWntFZLjPNq9OTBUDF50K3FI216cQcbMx
- GfhZi/CyKw8wHgg1V2Aien26FP2HA6E=
-X-Proofpoint-ORIG-GUID: 24Rj-w1fhlYjyo6QSaOTAtOBynzRmPAY
-X-Authority-Analysis: v=2.4 cv=Z+Hc2nRA c=1 sm=1 tr=0 ts=6a8be599 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=TtqV-g6YmW1Jfm2GSLaY:22 a=M5GUcnROAAAA:8
- a=AU38-qS1yCvJ3THEYhgA:9 a=CjuIK1q_8ugA:10 a=ZXulRonScM0A:10
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-GUID: 24Rj-w1fhlYjyo6QSaOTAtOBynzRmPAY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-24_02,2026-08-21_02,2025-10-01_01
+In-Reply-To: <20260821170959.79708-3-ovidiu.panait.rb@renesas.com>
 
-On 2026-08-21 at 12:58:12, Ratheesh Kannoth (rkannoth@marvell.com) wrote:
-> HTB offload programs NIX_AF_TL4X_TOPOLOGY with RR priority and anchor
-> settings that the AF retains after scheduler nodes are freed. When mqprio
-> bandwidth offload later parents MDQs under TL4[0], stale HTB topology can
-> starve transmit queues. Restore the default TL4 topology for every active
-> TL4 node when TC_HTB_DESTROY tears down the HTB hierarchy.
->
-> Fixes: 5e6808b4c68d ("octeontx2-pf: Add support for HTB offload")
-> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+On Fri, Aug 21, 2026 at 05:09:55PM +0000, Ovidiu Panait wrote:
+> stmmac_vlan_update() turns on double/S-VLAN processing whenever an
+> 802.1ad VLAN is registered, without checking whether the MAC actually
+> supports double VLAN processing. That capability is reported in
+> dma_cap.dvlan.
 
-Will address sashiko comments in v2
+This is not true. S-VLAN is never reported by the dma_cap.dvlan
+feature flag. Double VLAN tagging and S-Tag VLAN features are fully
+independent.
 
-pw-bot: changes-requested
+-Joseph
+
+> 
+> This was found while investigating a separate bug in the double VLAN RX
+> stripping path. The outer 802.1ad tags were unexpectedly stripped by the
+> MAC (because the ESVL bit was set).
+> 
+> Check dma_cap.dvlan before enabling EDVLP/ESVL/DOVLTC bits, so that double
+> VLAN processing is enabled only on supported hardware. Also, advertise
+> NETIF_F_HW_VLAN_STAG_RX and NETIF_F_HW_VLAN_STAG_FILTER only when
+> dma_cap.dvlan is set.
+> 
+
