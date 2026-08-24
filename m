@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B007B32AADB;
-	Mon, 24 Aug 2026 19:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC1535F602;
+	Mon, 24 Aug 2026 19:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787598068; cv=none; b=bMaI2gHudbtYhEYPbCbc5mAnlocNQjdaSzcjcTkaO4O3vfEMLiu080ANk9IQvCxcqXnbyxDwLsspVaR58/XsKRAedtiqngTZiTzayyDxZmU9SXeGbOUSTKDO8jr1ptIPegtmncXgsjIDLX7iPuvAG3vyRGPG/LnQR/y/t58iTk8=
+	t=1787598070; cv=none; b=OU40rT/xwoW092bmTiNYvD6Po854oVeNhkRA5I3C4oCFEPmrVvLgZC10JsFqo0d/NfxwHm5QPmZxpJVgTdiM4pH4eatTmfhLVq4bqy/gCBEV+7erKPHIATgD5xf1d/9CVCBqebZLoX8Mr4MVg5Q2bauaigGhMw0toqXkIN7/sR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787598068; c=relaxed/simple;
-	bh=ss29Ho8jfloNSHB3l0+lT8sdzOlc1XcpXcGpbxazr3M=;
+	s=arc-20240116; t=1787598070; c=relaxed/simple;
+	bh=kN3gYtcGX5EZyvcWjto/WRQprDWEn/YFnn04yBNSskM=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=WZHreeecak8WVqxUah5l0wF8ne4qRhq9iVNxn5LJi3KDuOO/0+PRPUdcCMQNDjcbdRePc4+aUJnpXSiPp9mfWPk6X25ZYsS3sXVrQmYnq3DZOWlSgCA6jAuxZZ+HIoIzDm4fQIkbIzleuR7Gy0wdpyL+KMJYszFDkz58DRIIsmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PNDy7SFX; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=bHYwTGL/C586SnMnHKehRvRRxUNc7NgxKZl98GGQcCkZN4keTF/SS7HisZpUC4tdocQtiiQaUPlKYpgUS8TZbRLubNQDDgYSOwb934byrdEEnQaEQ6XUsSYfeeL3X+brGkgqomDei7fwcEEr+4QqO7KUtrWpoHQ40IhmZO1JQgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UFJ/SW8f; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PNDy7SFX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD881F000E9;
-	Mon, 24 Aug 2026 19:01:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UFJ/SW8f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D27FE1F000E9;
+	Mon, 24 Aug 2026 19:01:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787598067;
-	bh=1D6zSH2p7zNhEQcHhM31l8omj11fcFAzWOqFnURSKn8=;
+	s=k20260515; t=1787598068;
+	bh=WlD8NSrX33+fqV6gSsGS3Os8oxiZYeoy8DsPYvW/d+8=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=PNDy7SFX+diXE3+aojkm7Nblce2e0t/r9IE33KRPRJA5HnalKqAeyAGXIsf2gvsxw
-	 PyttKbHSt4PGFz2YtYWd93m7A+naKEiVc2P52QY8u6TRNqUvJd47kT4uZbbKrwgs+5
-	 kTYLCyNLsXAow/JXq5DWjbRkuAx7bP/23HNXM8oMpPJX4ANgK0+m6FOWT2hhvVOE9E
-	 VAPwJIgemG8l+y4Vot/Z9Yf8jROzGxwakgxV/4mwSwyNqoXMZtTCdA5NinHid1ekq9
-	 857ulzFtZaA0yIiFssIOyd8klR1eAqaI1p+XnGxrK8loBtp1mffVx7/gXf6TRsHkMJ
-	 m+gNmTHTMd0HQ==
+	b=UFJ/SW8f+cVZvpo8o39oIIRBEvI+mEFABc7UAeepKRVJDXzhJOkEDxaSwXTqEb64o
+	 l1sjzMsPcYUuAQN7enfFpAo53L5PJvqIAB7f8w4/2YBVJbeirfAKbIJ3AIjqpahBSK
+	 EjcAXLSMMgl/cP6cNxT+dxVs0bEFCWwrDDbZHHZwIZQd6/plM9Y2Z/UCKf7ChDYpc0
+	 vWRFfDE+XNcPfuaqqrzOLgWObICzHBsUsA7ObBAVx0RpQwr+htNvB50mMFcQLzy5Uz
+	 dbaY4TvOz7KL6PB8aADDZD/zB+WJNdrS7ueoHM46vLIVwaPm1w8XEUcW6n04bB+ZzI
+	 0ggAWOQGBnHiw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 09F393924A4C;
-	Mon, 24 Aug 2026 19:00:16 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A0D3924A4C;
+	Mon, 24 Aug 2026 19:00:17 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,44 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net/smc: fix socket refcount leak in
- smc_switch_conns()
+Subject: Re: [PATCH v2 net 0/2] net: enetc: restore RX ring congestion mode
+ after
+ ring reconfiguration
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178759801486.3065827.12722922197149697052.git-patchwork-notify@kernel.org>
-Date: Mon, 24 Aug 2026 19:00:14 +0000
-References: <20260820144729.1019399-1-hidayath@linux.ibm.com>
-In-Reply-To: <20260820144729.1019399-1-hidayath@linux.ibm.com>
-To: Hidayath Khan <hidayath@linux.ibm.com>
-Cc: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com,
- sidraya@linux.ibm.com, mjambigi@linux.ibm.com, andrew+netdev@lunn.ch,
- tonylu@linux.alibaba.com, guwen@linux.alibaba.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- pasic@linux.ibm.com, linux-s390@vger.kernel.org, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org
+ <178759801607.3065827.9285537541360975986.git-patchwork-notify@kernel.org>
+Date: Mon, 24 Aug 2026 19:00:16 +0000
+References: <20260821064140.1315611-1-wei.fang@oss.nxp.com>
+In-Reply-To: <20260821064140.1315611-1-wei.fang@oss.nxp.com>
+To: Wei Fang (OSS) <wei.fang@oss.nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, Frank.Li@nxp.com, wei.fang@nxp.com,
+ imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 20 Aug 2026 16:47:29 +0200 you wrote:
-> smc_switch_conns() takes a reference on the SMC socket before dropping
-> lgr->conns_lock, so the connection stays alive while the CDC slot is
-> fetched:
+On Fri, 21 Aug 2026 14:41:38 +0800 you wrote:
+> From: Wei Fang <wei.fang@nxp.com>
 > 
->         sock_hold(&smc->sk);
->         read_unlock_bh(&lgr->conns_lock);
->         /* pre-fetch buffer outside of send_lock, might sleep */
->         rc = smc_cdc_get_free_slot(conn, to_lnk, &wr_buf, NULL, &pend);
->         if (rc)
->                 goto err_out;
+> The RX BD ring congestion mode (CM) enables the ENETC MAC to generate
+> PAUSE frames when ingress congestion occurs. It is configured only in
+> the phylink .mac_link_up() callback, which is invoked when the link
+> status changes.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] net/smc: fix socket refcount leak in smc_switch_conns()
-    https://git.kernel.org/netdev/net/c/719296c4aa82
+  - [v2,net,1/2] net: enetc: restore RX ring congestion mode after ring reconfiguration
+    https://git.kernel.org/netdev/net/c/9e94d8e14ae4
+  - [v2,net,2/2] net: enetc: restore RX ring congestion mode for ENETC v4
+    https://git.kernel.org/netdev/net/c/fa1a8457b858
 
 You are awesome, thank you!
 -- 
