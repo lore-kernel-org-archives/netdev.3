@@ -1,238 +1,237 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012001.outbound.protection.outlook.com [52.101.66.1])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012070.outbound.protection.outlook.com [52.101.43.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D423FA5CC;
-	Mon, 24 Aug 2026 17:24:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACE037F75E;
+	Mon, 24 Aug 2026 17:37:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.70
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787592296; cv=fail; b=Ng93DW4TQYl3xTUGo6hPjiDKtVuYPKWpTdsItsQ9OgefDbtuv6BKiMX4zOi/TiY7rQCTKbrh47glNkWSPPZXLjtZkKdKxfVcimVT84aCxQKYsJRo783IuCiKcKOnp4An1RpOEPKeopMr+2glrtqDrmQfMhjBbBoikZGGBs6fCsY=
+	t=1787593060; cv=fail; b=FRIfycW8iBBw1mIWfcyQF+unipBzDtZOEUhQjza6QMNizYcZ3rBN7GwDaf4vQHirdZLHoHr3Xdrq2RILL/+qqaLlwpCPS4BmSQQa94I+ySRxVMmI2HOVid3uDJREwtuN8C83R90d8lh9poylHWKJjyyTGGNvLyrsSox+0JDFaj4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787592296; c=relaxed/simple;
-	bh=1vbj/dAGlTQsCZw80PAh64V05oEODoE873h7vrqy6WU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=L9F2spSIPJOnI8LteL7OPzArHtPDIOlJg0VyEQB6NgkWVNrBQMaHRkBmF6g/F4ALmCsZDL8r83CtkyvyHJqRH4JtCpITcgfeweDg5YQUVr5WxnczWeVVoHulDpwAuSFmeR7L4Z/UvP2ZBAuptIE+DwpFr0k303Qi8X2Vgt0va1w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com; spf=fail smtp.mailfrom=nokia-bell-labs.com; dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b=EHZCsa4k; arc=fail smtp.client-ip=52.101.66.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nokia-bell-labs.com
+	s=arc-20240116; t=1787593060; c=relaxed/simple;
+	bh=Se8cRfs5y8ZMzxYdVjqpNqYVQ8hqKePNv4OVk55CS5E=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=FBGplRMB91Wk4KbQUcYGfgNRXQJ+1giYkIb09OwoVq47sTt4Ri+dS6lcnrtVITgBVPE51gomjTc1oBadmoOz1wLLIweEpIZVTY6fOOwxOExI/kpifojwIZIcQLWAD4ZP0orirhu4uHOQXBWOEUuboYaSpezqDfxhobi0TseyH00=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ktyKXM85; arc=fail smtp.client-ip=52.101.43.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b="EHZCsa4k"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ktyKXM85"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=djkDKb6VKMChlEejCwgMPUPDheGt5OqjkTNqI6wjUMS22rEKJOA7Kpg0J6PCxqBCKdW0gZZKqzhE8b6EWUvm4vs9x8mMWiKhO5QMDjbpNuzJrHfAPVbZEWRUn7haj2MlKzNfsgJkwPBblkjgV0QIdaCeww3I/M358e2ZXnC4akV3J9szCcGFNSGZ7CQtWQ8hHOOXiNhJY3sZz3XZrIQ5yqsr1kewbZqrxy4OQKj+DbpKg3DnXcPAPu0y0Z5rKqvuig1mMYXz/vWOcH4T7Ha0W0bTHnX2L/U4aOy4MJbU17fYnRnjQgHK9QiyN0UQFpFzPrs7JWu9gUtdRYW0kFWgNQ==
+ b=BT+w3hpfiMHYh8DDA+KUsfL0LsnSO8M1dSXebU/Q3ZbUjaqAAQ51FltXYvLA76DnPzbEXeGaqev4DStV5lcTzmqcJdMUQLBxoxSA9Tmz/3IC1lkkOdQhiz/h8QQ0l7QclUdblfVnGncqnxEX0hFS1I8JnyW6h3ox1QGSkoFSoVS4WalVIoyRcRB2mRW1Ofo5a0GbvbO4P9jA3ittzLr4hZwXtMRWx9M8/dX1Z+zMTeDwx/oERIPRkCJuqUKhSCswuzG4Jf9F64Q94GyByVM+vty6ozXCLpIUHFR8wCAlLY1aval4ELjNinHuKJPRgE1A1v6uRI9wFAf5IP9/jXsR2g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IF7WvxO1pgPjTKRVlEbDus9sinWcH8DbQul9YMGpJxk=;
- b=q2HmAIVMvlUw5MovTkKITNi2ad7W4BxQEGti2ZlrZgzd3zru3MPnf6XEEJD/Heh1686N3s0O0k3qT1eEYIdP4p6iVAvzcTT9TYGkoAPLF/GnyHHUmZN5rBt4q394fKqJ5bTwIjlMTXuw1n6PFtKudlQJS1XgNMed9PgUToFwWo8De7mSVbngOHTXIDb/u9TleVApRanwBA8edbAWpPd4VX3b9D7WvTH+qVSkjLdW3Y4hdrn2wks86iWcObejZ6mflls5zP2psHtxKPWx+EPGGGi3OAClkg85MwZyaD/ifjBORJS9Ju8pBFDKeGHaF6FPe6gX+HYaHqaAj/zbBKCRhQ==
+ bh=H/v4/Ju3TA+grNjG8VSenMc1hAaIAdhudawg5hoWdio=;
+ b=huDHUYvATCFSMp/qF0/urKLNm6ZXnXX/LV7vDxSegz/qRWmYQielZW1kf3/audmHeLvm0s6eJxsOlv2HOgeyJZE/mm1ojZcotQkBsb5YILXRrimsPliWSt9uWCalCo+KNKrrP5f8OCtUei3i85gHqhDS7u2Ti3PBQFvWMi1L7YFnATqnvy3C7lIPk6G7Makm3XezbR/4B/p7feC7z4X8+B3DmToAxgMgUhcAkXmmlvYodKvMDBYSfSwm0IMBT8xRVB/0xnUvcOxQIabbB18wdewILsGSzbZkvYMCevdDQxLmtu1ZMwmHl5G80wA4l5MdvquowUe7vufI4vqeijfXGQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nokia-bell-labs.com; dmarc=pass action=none
- header.from=nokia-bell-labs.com; dkim=pass header.d=nokia-bell-labs.com;
- arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia-bell-labs.com;
- s=selector1;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IF7WvxO1pgPjTKRVlEbDus9sinWcH8DbQul9YMGpJxk=;
- b=EHZCsa4kyAgscskFrvuJTO4GFamgYaN6UGnHzp8wmMjP8Saomwmc4a5kVvRFs+HtUpuHxsN/bkArCc3DwQaYvrKpfGzLQXlt0RXjHFcXAknfcFy1Ux6EdPBxqpg3g4RjGMlJCmBDjsvtZPOZIZmj8r2yma1O9RVOptg8hv3R6ier3PY7k6iuR0A9WkCv+po7A26ku+1dMZEAe2Cvt6qQ5FtyQJy9dEbtoCq6ZQDOknVkq+XDO1wHoj8bwzK8lMY9tax5JPBf0HFal5kDkP43u9X6l7DI8sCfmJ0o2Ru58NprFNMWb6CnE5lINeyxeg5nOLbsTzk5mLBOmbvjqtRW9g==
-Received: from PAXPR07MB7984.eurprd07.prod.outlook.com (2603:10a6:102:133::12)
- by DU2PR07MB8255.eurprd07.prod.outlook.com (2603:10a6:10:278::19) with
+ bh=H/v4/Ju3TA+grNjG8VSenMc1hAaIAdhudawg5hoWdio=;
+ b=ktyKXM85sEOpccectpir4qL5hUZzA4g5mvYP1sGzo6uiO2UcJZ4A+Dx6umFzSuiM6J7TFSyoPkHasBgL/5SzEOby81wJJliFX/op+GJpSy1XMgdQ37t433RxW+NSo+BNeAXrOPHmdKFxYq2SCd3MQeD8rnmO359B7SSWQGHFl8MZ1LO2Gzyehs+gvffotF9H5EQ+/H1+GG2U9Mx6j9jfwS2SZr4XZfiC6H1f0XYLs1jtEMXwYqHCN1M5c68/Wbho5Dup2CQ5l4Gu2CiK11OMK5g5jg0cV1eA8O1goyG4CRz1/TxKJeYPJd9LMEgTKMzmQkWShpXJQGv7OF9GanFJww==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8728.namprd12.prod.outlook.com (2603:10b6:610:171::12)
+ by SA1PR12MB9514.namprd12.prod.outlook.com (2603:10b6:806:458::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.6; Mon, 24 Aug
- 2026 17:24:50 +0000
-Received: from PAXPR07MB7984.eurprd07.prod.outlook.com
- ([fe80::f708:4bd3:9987:b9e5]) by PAXPR07MB7984.eurprd07.prod.outlook.com
- ([fe80::f708:4bd3:9987:b9e5%2]) with mapi id 15.21.0360.005; Mon, 24 Aug 2026
- 17:24:49 +0000
-From: "Chia-Yu Chang (Nokia)" <chia-yu.chang@nokia-bell-labs.com>
-To: Jijie Shao <shaojijie@huawei.com>, Jakub Kicinski <kuba@kernel.org>
-CC: "shenjian15@huawei.com" <shenjian15@huawei.com>,
-	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-	"eperezma@redhat.com" <eperezma@redhat.com>, "jasowang@redhat.com"
-	<jasowang@redhat.com>, "virtualization@lists.linux.dev"
-	<virtualization@lists.linux.dev>, "mst@redhat.com" <mst@redhat.com>,
-	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "edumazet@google.com"
-	<edumazet@google.com>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, "corbet@lwn.net" <corbet@lwn.net>,
-	"horms@kernel.org" <horms@kernel.org>, "dsahern@kernel.org"
-	<dsahern@kernel.org>, "kuniyu@google.com" <kuniyu@google.com>,
-	"bpf@vger.kernel.org" <bpf@vger.kernel.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "dave.taht@gmail.com" <dave.taht@gmail.com>,
-	"jhs@mojatatu.com" <jhs@mojatatu.com>, "stephen@networkplumber.org"
-	<stephen@networkplumber.org>, "xiyou.wangcong@gmail.com"
-	<xiyou.wangcong@gmail.com>, "jiri@resnulli.us" <jiri@resnulli.us>,
-	"davem@davemloft.net" <davem@davemloft.net>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "donald.hunter@gmail.com" <donald.hunter@gmail.com>,
-	"ast@fiberby.net" <ast@fiberby.net>, "liuhangbin@gmail.com"
-	<liuhangbin@gmail.com>, "shuah@kernel.org" <shuah@kernel.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-	"ij@kernel.org" <ij@kernel.org>, "ncardwell@google.com"
-	<ncardwell@google.com>, "Koen De Schepper (Nokia)"
-	<koen.de_schepper@nokia-bell-labs.com>, "g.white@cablelabs.com"
-	<g.white@cablelabs.com>, "ingemar.s.johansson@ericsson.com"
-	<ingemar.s.johansson@ericsson.com>, "mirja.kuehlewind@ericsson.com"
-	<mirja.kuehlewind@ericsson.com>, "cheshire@apple.com" <cheshire@apple.com>,
-	"rs.ietf@gmx.at" <rs.ietf@gmx.at>, "Jason_Livingood@comcast.com"
-	<Jason_Livingood@comcast.com>, "vidhi_goel@apple.com" <vidhi_goel@apple.com>
-Subject: RE: [PATCH v5 net-next 2/2] net: hns3: fix GSO_ECN flag setting in
- the RX path
-Thread-Topic: [PATCH v5 net-next 2/2] net: hns3: fix GSO_ECN flag setting in
- the RX path
-Thread-Index: AQHdJFknwofVPz0NnEuqy57Qt9muFbaY4t2AgAFg0yCAANAQgIAJrtaAgAjHFcA=
-Date: Mon, 24 Aug 2026 17:24:49 +0000
-Message-ID:
- <PAXPR07MB7984BC22EF5F2BCE5319D8A1A3A02@PAXPR07MB7984.eurprd07.prod.outlook.com>
-References: <20260804213510.673084-1-chia-yu.chang@nokia-bell-labs.com>
- <20260804213510.673084-3-chia-yu.chang@nokia-bell-labs.com>
- <61721708-0d77-4f59-aa08-02562af282bb@huawei.com>
- <PAXPR07MB79842CC27C2F5CF9BD40E007A3DC2@PAXPR07MB7984.eurprd07.prod.outlook.com>
- <20260812155927.57ee295b@kernel.org>
- <b1aa6136-3dc1-4190-beaa-32bee88b7091@huawei.com>
-In-Reply-To: <b1aa6136-3dc1-4190-beaa-32bee88b7091@huawei.com>
-Accept-Language: en-GB, en-US
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Mon, 24 Aug
+ 2026 17:37:24 +0000
+Received: from CH3PR12MB8728.namprd12.prod.outlook.com
+ ([fe80::2641:1046:bdf3:93d7]) by CH3PR12MB8728.namprd12.prod.outlook.com
+ ([fe80::2641:1046:bdf3:93d7%6]) with mapi id 15.21.0339.012; Mon, 24 Aug 2026
+ 17:37:24 +0000
+Message-ID: <c682982e-a807-43e1-a7d6-5a0bc96d1d24@nvidia.com>
+Date: Mon, 24 Aug 2026 19:37:19 +0200
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v2 0/5] swiotlb: avoid swiotlb copy on network sockets
+To: Luigi Rizzo <lrizzo@google.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>, Willem de Bruijn <willemb@google.com>,
+ Kuniyuki Iwashima <kuniyu@google.com>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Luigi Rizzo <rizzo.unipi@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, netdev@vger.kernel.org,
+ linux-mm@kvack.org, iommu@lists.linux.dev, driver-core@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20260615234220.3946885-1-lrizzo@google.com>
+ <20260824152932.1583506-1-lrizzo@google.com>
 Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nokia-bell-labs.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR07MB7984:EE_|DU2PR07MB8255:EE_
-x-ms-office365-filtering-correlation-id: 7a747943-2038-42bc-0f02-08df02049a20
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|7416014|1800799024|376014|23010399003|10067099003|56012099006|6133799003|4133799003|22082099003|18002099003|4143699003|11063799006|38070700021;
-x-microsoft-antispam-message-info:
- 1p6oevB/XMeJVLIbwXqFst3wNqEpCDlLMfnkXblPLugt8yJfeFM6U7BIGwdxo5Jcziba77y4+lr1Kn7idAJADAINjiFC+HPFJrIaRP7aUvWtxUSZxEQ4n1/l6qYLC71H2KSa8zvcvtgAqNftFXpF5PjQNv/QXHwL2ditJCKa1Ti0JZ3w1TujGVgqXL5f2UV2jcTobQ1rQ0+UADQRlGzObMsbncmvXD3BIBZ0oYM0E8ZSskSG43BUS3gOwtP0tm8WOD/W/q+uqRklSFoEw5beSCmgsy7N6wZtfnNJdlrVpRLKwaxV+u0yb4XaM/WU4yBGONmFPuWTrCcrbaXFRbdBMjVhxQY8hGxyCB1q7yg9jUY9yY/suXcRVqu/g7VxL4r+opfCiM3sQKpHLhdaq6wSBS9Jhz6yMxOCyt+mcArWWr9HucuGclnbsFuLXvNmuLtjHEvSKr2E7S6D6xXon0fE+k9C6zoAXXBMDeXYQ9xh/4nmoRezS7cqSQcjwDxwZY5oZyqnfURlIYhZQlKsSC7xbEqHDS6OtFW+yl0m8+61zaxWt9Xh5ASyaDUVbOHINPLOSOAPF9gINsIhwLB2ok4ld2ZNWgfyy3C8J0kwKuceZ5FFKNCEha5ef63fHpxZaQP89xF9e5R988Ud25dmK4JpuHf654+LWYB4SQW3e/5TP9NTO0D2ECR/+FtkFHJbs/aZ7KBJXWLURLt4RTcunlzXPLSB4C/yY1RQc7z4ab1JNQQ=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR07MB7984.eurprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(23010399003)(10067099003)(56012099006)(6133799003)(4133799003)(22082099003)(18002099003)(4143699003)(11063799006)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?Hnp2mIfuI0QYucNSpIAi/BAqTYd9Ake3E43dhsp6wg/hBSWl+miP/sNLwlq/?=
- =?us-ascii?Q?rd5KDxcd85RdHUDTePZ4mxr4tI+lipKlVwpT9iqAIzVlwPFkdg3VR8QivKnk?=
- =?us-ascii?Q?Wg3KACq/CDGhHjb5jVfXr/J0TgS1X/4wIylLfyV7bY8XXWduXR02l6FKZfsc?=
- =?us-ascii?Q?37QmUa8F7ZduUVhFlEDbxq/p26nTPUOWSxnIfkfjlk23B481aTV9N4HuOGxn?=
- =?us-ascii?Q?yxu9MlpJdnUc+8PcKFv7oYJXaWxRhUQVD1xOpR7GFBU6Xx+QDfGdBZkET3PR?=
- =?us-ascii?Q?FbSKfcn5FjslVHCOafISQqdtgo9b8aiGkbbd2VMV9SDkQIP1frJyzluqn7GV?=
- =?us-ascii?Q?1ZsCz5WwAhVI/0Os3GqLyajSsfn2/FlDKRmY0/s93oIJB2bzK7rmqfuqIdzh?=
- =?us-ascii?Q?cMpN1pzGbuMutwbpmoYmLrt8S9wy6OTLzARxeIhm4E89eP3oD6DHMc7b9yjd?=
- =?us-ascii?Q?E9SNv5LYpHzZG1+hluqij4Sos1/qtVGVnmKzXc4ndabsdOAlHzZtudNOepCy?=
- =?us-ascii?Q?kkXZj0wlg++xmtvIsJNW3RcjZbAHGmfxQhabjvzVCMAlZAn+xMoLZTZc+OvT?=
- =?us-ascii?Q?LGnFJWHGjRxOmYEBt9TQy9/emGjB2h8LkA7ZqmuEBDw6ZmpzSxMXfABxYgKt?=
- =?us-ascii?Q?p2KIjUWE2exrBVXebLUuDfshFWpQVWg96IBtmc7VRpaHIss9Te9pWbkKnp9P?=
- =?us-ascii?Q?c9xUu9SO7i/2Ful1982f4YVy+FRsMLMAKJeoZnEGV1tcCVmr+8GZ6W3pzDHR?=
- =?us-ascii?Q?uUFwAdrlPoJvkHTLVOxzmj4N382UgUVQBIi6ykZXaXUZT2Ew9ypkrdOQu9KY?=
- =?us-ascii?Q?6gx/T2BIqqspBzJ9VvosO44Ozi1c9z5iYdHeMvcQmR03Lx3McnXfyxjw69Hr?=
- =?us-ascii?Q?+xWkaAss/cxsBMSmz8chJ3KUUJNW+peVhdNFsfh4WJt9FuDRF5AaYNOjB26i?=
- =?us-ascii?Q?HynI35wUn4+D4Ae5s52ZTo80tjvcIrk8HS1T5+bna/tgIkDgCb6yMVsjj7eh?=
- =?us-ascii?Q?Yr1exA0k53+84UIDCFlWs3m7tjnrwuavbWWwCZnig1JC5S8BQamw5Fdv8HkM?=
- =?us-ascii?Q?NmtEwBOEOlF3uU1wPdALXx6MAk6VXNF/pDw66EqbUD0O7OfWJpDHjkQkCEJS?=
- =?us-ascii?Q?Cy5cbqwjL9Qh/jDIP576YHzDxL65iWTovypvvbRmPPjH1MaojGHagsqXszY2?=
- =?us-ascii?Q?/h2Ias2qAXWY3t0emDNovsgdN4ya7Coy0JKqsJNPy9jCcpiVfQO1o/JE9j+T?=
- =?us-ascii?Q?R1msRwTtGNh1HbPZvWrjl4Kt2acgAo8XvYmNwosXB7ys5e1CMkV5S1qU+YVt?=
- =?us-ascii?Q?7B2aAWrg1NqDqYbQOnYmA5WSRsjGDDMZmd7dESC7G+agy+lPMLzyEKebhX61?=
- =?us-ascii?Q?KK1JwXFMppPO7yPELDKd6PzQfybjXBajq6GjsmkpLVz4TyvtDp8hX963njnX?=
- =?us-ascii?Q?6FCP9a3wnCiSeHZk5OXdZ18PlWuXXd2qq4kPphtdOYpmWMHAi/xwWMyxBK6y?=
- =?us-ascii?Q?6arv0IN7yTjnPrAEG7i198BmYWiWWLtJe4BitzAGzuYVGUNxFAUga7gUU55d?=
- =?us-ascii?Q?CxtMI8YzGSDowyQetw1Y2t6WWL6wkczMy6TxJAFjDUIkuh+3s908YNL7kzoF?=
- =?us-ascii?Q?Inqo38RpgXF8IUjBH3qDWJZJ+siAlIt1KzX+DCEebc3MJjz8pqObIvps+7SZ?=
- =?us-ascii?Q?rNBEnx45cGtJM8Vub0GdMLxW7PPmhbPxc2OnSNk/hIDkOLwlb8JrO5VZAJyE?=
- =?us-ascii?Q?/YhqdCAgjvZffyIHPu12JxKnOqLKrkk=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+From: Dragos Tatulea <dtatulea@nvidia.com>
+In-Reply-To: <20260824152932.1583506-1-lrizzo@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR0P281CA0206.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ad::15) To CH3PR12MB8728.namprd12.prod.outlook.com
+ (2603:10b6:610:171::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nokia-bell-labs.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8728:EE_|SA1PR12MB9514:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4d9564bc-e719-4810-75a8-08df02065bb9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|376014|1800799024|7416014|921020|6133799003|56012099006|11063799006|10067099003|4143699003|3023799007|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	q70u1rohmYr/d/YCgJTr4ZankEgnBEOq0GC6nLf00/Mw/eECM3oSGgMps9ylUDM+4LjXQ0NDOg4BK88bHmdgA+dPl67L2SfjUqlhaKs3031uwE/JWun9ATnAa4/ZeswqZ1Oq4Q/qi0+l1tL8pVLAdvwf8KIB/dL/8OhB1fITxDhBy9MOk28PyS+2TkMmtg/zCi5lGk35EmW7F59HebBI+5nn5pVOi4KdVTIekjtri+8hWrRE/0252+IqSCZ5WHFeSykO4IzjGFUtq2jXgmZAC4xBIi6Vp3ua9EGyLNENZjkSaUBBx7BSQ1oGocWHp3bltakle2DzR1Vr87chWbTt1XInCQdbHP7TCgWehpBQkyxViu/bT1lfVY1Ju2eSY0VQG9GWNewQHIg8fZNEaTgRb+UXfjYoKsw8Tt9MRoqHKCrZuWR5Yu+q+gNfuZMkI58QJJ99+BHs6AMY2kJDMPnmE2HzMDY3/LvZSljsOaXdoiAcIAUcHzn18SPvbG9FQdzcj2W8VIXnol4YMgko4NR9tbTI65twCaVclLwInEGYaX7bwddUA/BaBivNDTvx1mVDRXDHigxSGc4rm6IioJ4JrMuJ/b+f20n9Osrs9oQqNfX7pXwBUQt/1trXxPjTbde0kXCDwNegpgI7iKgL3FbxkhSvad9Xx0T67aSmNpGmaC5d07IETYcDliRF0H/0dLHJDOB7HS9WOj09YYJMZG2gAw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8728.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(1800799024)(7416014)(921020)(6133799003)(56012099006)(11063799006)(10067099003)(4143699003)(3023799007)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NjJOSERCUmdVOEpOQjg5NUZqL2J5SitNYmUxeWhZamlhNVA4S3pJVHErMysw?=
+ =?utf-8?B?YUdDVVFBWW1kRjJ1YUhrTExnb28wWWJML1dPMVJxWEF2RlFVN3g2TkpFRHIx?=
+ =?utf-8?B?QUszRktIWFdJZ2ZpaVhYVG1CNVVLSFdZR215bndGbXovS29UUERRNkVVbTZQ?=
+ =?utf-8?B?QlJGNlVBZysvSW5yQXc5Rmt3YU5rbDQzMlZLWmVkaXdwTldoU0VhN1RnQXdy?=
+ =?utf-8?B?OFNaTU55ZkpiRm5JWENPakFqV3UyblNlTG83TW9icE5xYnVZTXN0LzE3ellU?=
+ =?utf-8?B?RG4wa29yNnRHVGVUYldSaThyUEcxdEk2ZnlCSGF5bHBIdmFMdzc4TEdFWGZP?=
+ =?utf-8?B?TDA1NEVab25pcnQrcS9RWjZIaTUzMnNOUi9KR2FpL1YwN2h1M1VqL1grOCs2?=
+ =?utf-8?B?NHhXU2lZUzBCOWYzeUtmM2RjSzhBTGo0bFV6WGlySVIyeFpXcVVUS29MUWdp?=
+ =?utf-8?B?WisrK3NPUm9xN2xYMVdobHcyK2d0OVJPdWxnVlM0T1hyZWg3KzlTalF2bkYw?=
+ =?utf-8?B?OWpaVlFWTkl2VzFxYXNLcTlQRVZYaldFcDl2M0xCaHRyQ05LdlQ4K1NQbFNq?=
+ =?utf-8?B?bXNxcjExVUdCSWJQRlpNcTEvR29yMkZzU0FwSkJhVkphUElNODRIbHRKTElq?=
+ =?utf-8?B?eXBFVTVucDVNMG45REEvcVJjekhBaXVLaW55UHR3MEdFeW4vc1Vwb3U2ejBC?=
+ =?utf-8?B?emh4SW1OZ2ROSUNUK1NldjYxZVBsK1VINjRETlhMZWN5NjNPUVVvanFYek5n?=
+ =?utf-8?B?QnVQek1OQ1J1a1lwVUE1NEE2Wm5hQ2VsWmFSaWR1OGZFNnRrUU5rVkNpSFd2?=
+ =?utf-8?B?QloyRDdRT1E0TktHeVN3OXBMZk5YS0xlcHRvem43N1ozOVQyV3c0eTM2bmc2?=
+ =?utf-8?B?cUxwTnNvb3I5d2Jyb3lJdzZ5U01CN1V5c3dxaFp2bHRyVkhGdkNobUtsT2Jl?=
+ =?utf-8?B?UzVZQ2Z4M0pRaEEwN3BRbVdadkxmejRVUFE5Q3p3TGhtRUVYSGZPdlRSUE1a?=
+ =?utf-8?B?RUdXY24rMElzQlk4NTJtNjlCYVBQLzBnWCtJakY4dmxlK0R6Q1llNGc5eWZk?=
+ =?utf-8?B?bHJNMWtQSnRVbWJVdVpHa0ltdDNhenROdnFHQUhjdyttcEduOUo1ODg1c1pi?=
+ =?utf-8?B?UVhlV1ZldmZScklsTmJWSCtrTDl1bmRCK0lmQ1pvVi9LZXVLbTJHQzF2QXVY?=
+ =?utf-8?B?MU5wU01ZdGJzTDIya092ZC9HRTR3Q1Ezdnp4ZEFKYThiSnR5K1crU29kUVF6?=
+ =?utf-8?B?eWdOZWFVTmJ0MUNRUW9RVGlDY1lHWHY5YS9KM2F2OVNwQW5IeWFJaGl4Sk02?=
+ =?utf-8?B?LzNTOWhEdnhBVUpVckFiUmtqZlRQT3dnKzZncEJ3TFVNSjh3RTB1VUNBbXdS?=
+ =?utf-8?B?RVdXN0F4RWxqTEtuMDFrRHdaWENqd2hwMU43TnVhSnI5aitqcWFsdUg2Y2g4?=
+ =?utf-8?B?S0dOL1cvZ1VFbUZrTkxSbm16TVhmQTA4Vkk0RjUvSU1iY1VxUnBxQUkwZnB3?=
+ =?utf-8?B?RVZvTVZsVksyYzdoKzBvZ3l2Mk82Mk1vUitBa2EzeEprVDhFdzdUYTkwLzdZ?=
+ =?utf-8?B?SjRsYlo4UU41LytobWtBbng3cUh2Z2RkS01YNEg0RjdNc2NDd1Vtbm15cXhM?=
+ =?utf-8?B?K2pubnNVdjFYSXVpTU5IdW4yNXRtZGVaUStjdGRPdUVpMEIvNVhNaXh4NEgw?=
+ =?utf-8?B?cTIrOVMvcDhnRXl4VHZub2RpZEExU1BsOXhmV2ZxQnJ4RzE5MlBWellpaTFV?=
+ =?utf-8?B?QndkSkg5MHNwYXFQYU9DVFhIdUlwWUNXeGpiSS9PSWlaS3Vpelo3bzlLR1BN?=
+ =?utf-8?B?bllsYlBhWlBmNnR0ckRpVG5WZHBiWHU3SmxGN2ZGakJuQ0dQUlEwV0FxZUZ0?=
+ =?utf-8?B?UUR4emhoaUR1OW5rS25WSVdnKzE5T1U4SHZha0ZDbmhhWlYwaExTa2dSOTc3?=
+ =?utf-8?B?SEZGZDExSDg3ZFlSU2ExK0RMek0wbkl2Snh0N2tka0t6UkhFQnJmcEU3dFhV?=
+ =?utf-8?B?elVkZktnZzVxSkt1VThFbjdBZ0Rlcm9aQllOOU5TbGpGQW13NE83OVYxNWlm?=
+ =?utf-8?B?U1ZtUzQzUGs1dHVwYWRhNHN0WWtiSllnazkrdnFhemtYRFFJelhoKzI5U2Za?=
+ =?utf-8?B?cXdmOElRcDdTYnk3b3VqMHBsdTBYblFwazcxQXBSYUNLeTdHWjhmcEFIRlU3?=
+ =?utf-8?B?cnk5OTZUMkd6bklVa3dITmxMbGpqWnA5a2tyYXBadEMveWtqbGZVZGtZTW02?=
+ =?utf-8?B?WEt6UnlGb3dYYkdQOHp2eWMyaXVyUDAzQTUrWHNYdWp5YmhtSGZHQTNUcVRt?=
+ =?utf-8?B?M1lTSG5LWkt5ejRtR0w5cE5rL1V1dDBtZE5ONUxZN0p0OXdOaUEzdz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4d9564bc-e719-4810-75a8-08df02065bb9
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8728.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR07MB7984.eurprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7a747943-2038-42bc-0f02-08df02049a20
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Aug 2026 17:24:49.8778
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2026 17:37:24.4168
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 5d471751-9675-428d-917b-70f44f9630b0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: My8Q79kYWrX4DSPZDeNrQg8zRN80KSnyriy6/C9y4fety/M6bc66y4Fg9Zb8InBtlS02c/zeYq8sz/gEpis+CBEtFPoqG3DwN2mY/GWYWs8qyDbVSzObNefu+wA6nuBM
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR07MB8255
-
------Original Message-----
-From: Jijie Shao <shaojijie@huawei.com>
-Sent: Wednesday, August 19, 2026 4:52 AM
-To: Jakub Kicinski <kuba@kernel.org>; Chia-Yu Chang (Nokia) <chia-yu.chang@=
-nokia-bell-labs.com>
-Cc: shaojijie@huawei.com; shenjian15@huawei.com; linux-rdma@vger.kernel.org=
-; eperezma@redhat.com; jasowang@redhat.com; virtualization@lists.linux.dev;=
- mst@redhat.com; xuanzhuo@linux.alibaba.com; pabeni@redhat.com; edumazet@go=
-ogle.com; linux-doc@vger.kernel.org; corbet@lwn.net; horms@kernel.org; dsah=
-ern@kernel.org; kuniyu@google.com; bpf@vger.kernel.org; netdev@vger.kernel.=
-org; dave.taht@gmail.com; jhs@mojatatu.com; stephen@networkplumber.org; xiy=
-ou.wangcong@gmail.com; jiri@resnulli.us; davem@davemloft.net; andrew+netdev=
-@lunn.ch; donald.hunter@gmail.com; ast@fiberby.net; liuhangbin@gmail.com; s=
-huah@kernel.org; linux-kselftest@vger.kernel.org; ij@kernel.org; ncardwell@=
-google.com; Koen De Schepper (Nokia) <koen.de_schepper@nokia-bell-labs.com>=
-; g.white@cablelabs.com; ingemar.s.johansson@ericsson.com; mirja.kuehlewind=
-@ericsson.com; cheshire@apple.com; rs.ietf@gmx.at; Jason_Livingood@comcast.=
-com; vidhi_goel@apple.com
-Subject: Re: [PATCH v5 net-next 2/2] net: hns3: fix GSO_ECN flag setting in=
- the RX path
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2NgcRRQzKtg9F1qyE/2goT2Ud19t67hUDknG9EJs9WBlIAojy/egUsA3okaQNytibx5R3+tyH1IgwU0WhVIpYw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB9514
 
 
-> on 2026/8/13 6:59, Jakub Kicinski wrote:
-> > On Wed, 12 Aug 2026 10:35:25 +0000 Chia-Yu Chang (Nokia) wrote:
-> >>> Tested on hns3 HW (2x 100G, direct cable, openEuler 24.03, kernel 7.2=
-.0-rc6).
-> >>>
-> >>> tcpdump confirms HW GRO zeroes IP ToS: aggregated (>MTU) packets carr=
-y tos 0x0, while non-aggregated packets keep their ToS/ECN marks - so the z=
-eroing is done by HW GRO, not the sender. Before patch, CWR packets had SKB=
-_GSO_TCP_ECN set (0x5 =3D SKB_GSO_TCPV4 | SKB_GSO_TCP_ECN). After patch, al=
-l GRO events gso_type=3D0x1 (SKB_GSO_TCPV4 only), no 0x5 observed.
-> >>>
-> >>> Tested-by: Jijie Shao <shaojijie@huawei.com>
-> >> Thanks Jijie for confirmation, I will submit to net in the next round.
-> > Hold on.. Sounds like hns3 zeros ToS out (?!)
-> >
-> > This would be invalid and illegal for HW-GRO. If hns3 nukes crucial IP
-> > header fields it should probably be advertising LRO not HW-GRO in the
-> > first place.
->
-> Your assessment is correct - HW GRO on hns3 does NOT zero IP ToS.
->
-> My earlier Tested-by claiming "HW GRO zeroes IP ToS" was wrong. The
-> tos=3D0x0 I observed was caused by a test methodology error: I used
-> iperf3 with --tos but did not set net.ipv4.tcp_ecn=3D1, so the sender's k=
-ernel TCP stack cleared the ECN bits before the packets hit the wire.
-> I mistakenly attributed this TX-side clearing to HW GRO.
->
-> I have retested with tesgine (direct packet construction, bypassing the k=
-ernel TCP stack) and confirmed:
->    - HW GRO preserves IP ToS - each aggregate group retains the head
->      packet's ToS value (verified with 0x00/0x02/0x03/0x10/0xB8)
->    - HW GRO segments flows by ToS boundaries - any ToS change (DSCP or
->      ECN bits) terminates the current aggregate group
->    - ECN signals are intact - CE packets (tos=3D0x03) are delivered
->      independently with the CE mark preserved
->
-> hns3 HW GRO is behaving correctly. Sorry for the confusion caused by my e=
-arlier report.
->
-> Full test details in my correction reply to the patch 2/2 thread:
-> https://lore.kernel.org/all/dd817755-eb4d-4ac2-b282-ac06f847270d@huawei.c=
-om/
->
-> Regards,
-> Jijie Shao
 
-Hi Jijie,
+On 24.08.26 17:29, Luigi Rizzo wrote:
+> The use of swiotlb, common in Confidential Computing, causes an extra
+> data copy on each I/O. Focusing on network sockets:
+> - on tx, the copy has a high chance of happening in the tx softirq handler
+>   (especially with greedy senders where the device queue is often full)
+> - on rx, it is guaranteed to happen in the rx softirq handler.
+> Thus, on top of the copy cost, swiotlb concentrates the overhead on an
+> already constrained resource (CPUs processing network interrupts).
+> 
+> Reduce or remove the extra copy by conditionally allocating socket buffers
+> directly from the swiotlb buffer pool.
+> 
+Isn't it dangerous for RX to expose kernel structures to the HV? If SKB the
+linear area is exposed to the HW, the headroom and tailroom are up for grabs
+for the HV: the HV could modify them in a TOCTOU fashioon.
 
-Thank you for the update, but I'd like to follow up on the CWR flag issue.
-How does your HW-GRO determine whether to flush packages related to the CWR=
- flag?
+> The feature is controlled by runtime parameters to set the percentage of 
+> swiotlb buffers that can be used for this purpose. This avoids stranding
+> the entire swiotlb pool in socket buffers.
+> 
+> The implementation is made of four main parts:
+> - introduce a swiotlb page allocator that can be used instead of
+>   regular pages, and teach __free_frozen_pages(), free_unref_folio()
+>   how to handle them
+> - dynamically track the leaf device for each tx network socket,
+>   so we can tell at copy_from_user() time whether we need to use
+>   swiotlb for this socket
+> - modify skb_page_frag_refill() to allocate from swiotlb if needed.
+>   This implements the copy elision for the transmit path
+> - modify __page_pool_alloc_page_order() to allocate from swiotlb if needed.
+>   This implements the copy elision for the receive path.
+> 
+> The savings are especially visible with fewer queues. In synthetic
+> benchmarks, senders with 1-2 queues would cap around 50Gbps with
+> conventional swiotlb, and reach over 170Gbps with the feature enabled.
+> 
+> OPEN ISSUES
+> 
+> Currently the swiotlb allocator looks for free slots using an
+> approximately linear scan of each pool (with some hints to likely
+> candidates) and then does a linear scan of subsequent pools.
+> This works extremely well when the number of pools matches the number of
+> CPUs, and there is plenty of memory available. In fact, it is almost
+> unbeatable by any more complex strategy.
+> 
+> Under high load or buffer fragmentation, a CPU might repeatedly do a
+> full scan of its starting pool before finding a suitable candidate.
+> Even worse, with multiple tx/rx queues, what happens is that multiple CPUs
+> will trail each other on the same sequence of pools. The effect is that
+> some allocations will end up costing O(100us) and more.
+I encountered this as well: even with maxed out swiotlb memory the
+page_pool will suck a lot of pages from there. And TX allocations are left
+scrambling for scraps.
 
-Currently, the software approach (see the test case in 6f74bc8b6e8d) flushe=
-s only when the CWR value is different.
-This behavior has changed since patch  ab4c8b6f7fcb.
+Why can't we create per device pools instead on relying on the swiotb?
+ > 
+> I have tried to implement two improvements:
+> - a buddy allocator on top of each pool, so to make it quicker to find a
+>   candidate of the requested size
+> - make each CPU use a different sequence to explore other pools in case
+>   one is full, so they will not end up queueing one after the other
+> While they are very effective on the tails, for low load scenarios the
+> current linear allocators is better. Thus this will take more
+> investigation.
+> 
+> ---
+> v1 -> v2:
+> 
+> - split components into separate commits
+> - simplified allocator, no need for a new page type
+> - many code cleanups
+> - also implement the rx side
+> 
+> Luigi Rizzo (5):
+>   swiotlb: enforce pool nareas and nslabs invariants
+>   swiotlb/mm: Implement SWIOTLB nocopy page allocator
+>   net/swiotlb: Track bounce device per socket
+>   net: Divert socket allocations to SWIOTLB for nocopy TX
+>   swiotlb: Implement RX nocopy with fast recycling eviction
+> 
+>  drivers/base/core.c       |   1 +
+>  drivers/iommu/dma-iommu.c |   9 +-
+>  include/linux/netdevice.h |  21 +++
+>  include/linux/skbuff.h    |   7 +-
+>  include/linux/swiotlb.h   |  63 ++++++++
+>  include/net/sock.h        |  46 ++++++
+>  kernel/dma/direct.h       |  11 ++
+>  kernel/dma/swiotlb.c      | 296 ++++++++++++++++++++++++++++++++++++--
+>  mm/page_alloc.c           |  61 +++++++-
+>  net/core/page_pool.c      |  25 +++-
+>  net/core/sock.c           | 101 +++++++++++--
+>  11 files changed, 617 insertions(+), 24 deletions(-)
+> 
 
-Thanks.
-Chia-Yu
