@@ -1,107 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C1947126D;
-	Mon, 24 Aug 2026 16:49:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81AC46E005
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 16:49:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787590161; cv=none; b=J6EFyWCMD1+MTRqab1B+vld1wY4+XPOrBBxLTeyWgIOlnlhEFvwqthioZFCUB93ja/zwLfxLZa89hX/QV2j5h/Z/bdv6+hQKMjMyx/IVg8K8QS5ykK6/w2caLA7TmNlbQnIgyo7iLEfOpppSNvLi4CgsZE0oyz7UYxxhuFrDhYA=
+	t=1787590172; cv=none; b=bdVKn7o2+SfSBaNwBqe5Krcs5OKdQXYFOHdtlGBRTlsin0WPVZXmUH7Q6gAmYFyjV0XKJZZaBYuVOU0qjPS6OtQLHJOsoqZ+Sh2EkcPt+YXWzWHAch0VcIC7pqKFGQCDTqz66fhVyfuaorqTz9gCBPZGE7ZDw7sONw5rlLHU5TU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787590161; c=relaxed/simple;
-	bh=m62Sm5zsSGQmKpn0Ji7keLrY8G/l7KNlTM+gNCjrpIU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kqd3DzF4RZ5x6LgYuPcwUq28k9xWD5zZbOlOwvHb8xaTmuRh7Iw5AR2eQSZNqEhUCEdvPGjg4+EpQtYa8JNglPswm3o072kc2inhJJgjWepe3IDSkdJurZZD5E0LuWmObdtD7sFgZ4tY32aVmPH8nnJP2zlWZ6obwQE+K1ZEhmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TO9v0YBg; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787590172; c=relaxed/simple;
+	bh=SHRUZ8sJurUIXz9RUsC4qyeB5gvhbcvDMlA2o17YJ0Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HBL3768/GLQ34vTim/Shx57KSkf2ePLpyS9nT5826ARszz17vGw1qnNpPGVEkyxsgJNvu7Ndb3JoKD+OYh7MrDOSeB4538CozCcrtCtDmV2oNHtZD+iJ6ToFrJvYLpr/TmdCEPmIiC66r9oTXTP4hAdzzYNMgwmfWjMFUQ04QZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=D8vLxGdH; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TO9v0YBg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CCF61F000E9;
-	Mon, 24 Aug 2026 16:49:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787590160;
-	bh=2CY9/h6bPYd37mUpBWNnX4vDgsBq4zadcxpSS7We6yk=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=TO9v0YBgPF30FEM0lHL/DLQXLw20GMgTk6Wns4R32ijxJmLOG1hSOKQAHV6Wia+R1
-	 ID1aEc3LuC4bm1c8sgFLWaeQ6SGjA4nXmlbsKuT6JbtvXGEslJu0ppK1B12qim3KBt
-	 PrB2shhBd4mUkuhMmyM5TN7lTb17tHTZPg50Q2g8/Qov1sHKSxBx1iVtBWMuGT4RFs
-	 pNdjCF/bJk/Zv6a6f5Ohngo2lVlTBswV47LSSLLXPwLsjUO+YFJQna7ImN0YPE3csm
-	 VUGIFU72iGmolyc6c5ny2M+yJlmBp2Dc2zp/Eu9iSuFgRPQnJ9M4U1k10xAxOvgGkX
-	 2jwhW5bT+XrGQ==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Mon, 24 Aug 2026 18:48:34 +0200
-Subject: [PATCH net 14/14] mptcp: avoid pruning for OoW data
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="D8vLxGdH"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2caced6038eso1375275ad.0
+        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 09:49:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1787590170; x=1788194970; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wo8UXqbLNIs+Jdc4TRjKQJjrdjMcgJ+wf5JwoXpifAM=;
+        b=D8vLxGdHtudMVt0h9EokfP7OkpGNt/k4GqAXSyhKPGCql9cCddS3A4tYX+ddiL5fgI
+         ZCbYQhp5xOvtnn7UyPJ/CVglm8uJLzcvU5g53hGv1/bcIfKa7TzepZdNQTLW1AXZSjQ6
+         pR+tQGXS/Nv9zdhOiuUT0nh9QDx0yp8ZLfi0PddsTVkKfTNzVDCGdwTg6TpSdiQJkDoX
+         A4jCdY9zh7EStvYWEDrpeqCrrSGk87GiKvQis6nSfpovu2d2Ca6SPg38ZVIRcot/Dvw+
+         4kxnHQFQsVQ8FDrWnG0WONyHKb4mflc+15W/YWArCw4Apgy5fm7cNrRC+uiWDKy896NK
+         lW9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787590170; x=1788194970;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=wo8UXqbLNIs+Jdc4TRjKQJjrdjMcgJ+wf5JwoXpifAM=;
+        b=af41SZ8L9SSW3oa9w7NLSLkx6lzOQOd/rwxpW9CrUev29ey/h3g342wlxiP4oZLRaw
+         cZHtp9by0tZRRFcEwkCSZBb6BKd9GPo1MmeXVSrlKSaovdKAv6+FYtQN0ClXHy83P58M
+         lixNNABDDR1qAo4UfQZk2XSOQxHkIHlrH6WnbMlvAx07JDHM20y9KnJMmtU+l2stKjk2
+         469okvq2gfsmb6sinAooRPxXDVUFm5dEHi9kilxQzY4+HTSptSCL0mwIgmBaLKWigy2c
+         vVUw6xvZpOQctQ4fW9U5AXHDLMo7a0XAOErZOCRDEpzzye4qqcowEGeqwKHYP5GfXF8S
+         G1eQ==
+X-Gm-Message-State: AFuF++koaCqx8i3cXHZsWtAmuuLHjvllsiygrZ4wgf94NXl7iT/+vuFg
+	A9fWOM0xUaD8AX36+Unqf4uy8+V1rTZuTFzOqv0It8exr4/NShGh3LN2BCBkZf7WJ//2WLh+t4B
+	18RQF
+X-Gm-Gg: AR+sD12yKbuAfF4oK6GMD7qGN78hkcViA5P7iH0TVK+UCKYtSRskvl+lZBGv/uPiddZ
+	PXliOQ0semLIu1TfFv6vMCPZ/AFkndRtPlvNw2oi3/2oySIIKmyBrbq3ZQrzheH0CIrFbk1pHY0
+	M2+b3d7S5N23DJfrdoEA47t9crZa6/c8bhxPIFfCvNOaiXLvi7ra3+bCr6GrIIJm3pbj4CAcEtY
+	gawvl1nu8ftp3bM5652mB4aJ3GX0AfibMuN5rdDeCZFYdGraBIN/DKRMHpgmSeaJGmupOH7BJgM
+	wbSEH/lOY1JQ/cVbl70RqfqUKcPvH8xmv7TCNinv9bnAlAMgnA14Jf7s1pNtxsFxmz9fHEv32tH
+	JpM4UtKBnvqcol8fb74ijGb+SIj25X2J+8Ec5hbWVVGYAK8sbXtdZqtX6WlTcCBfW7mJ7Sa2Oar
+	c1eTQpvnWEWGNPekCWXP71NsXVJtQ9xlViVPrjiPqTsVF2vothhQL3ln2iyouyHoM0aYEb4RetT
+	rxMy2kaVcONoaap/9C+UStI+z0wx54cSREcCA==
+X-Received: by 2002:a17:903:468d:b0:2cf:8aa7:7810 with SMTP id d9443c01a7336-2d6dc97b332mr6673345ad.2.1787590170224;
+        Mon, 24 Aug 2026 09:49:30 -0700 (PDT)
+Received: from phoenix.lan (204-195-96-226.wavecable.com. [204.195.96.226])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d6767626d6sm19552125ad.11.2026.08.24.09.49.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2026 09:49:29 -0700 (PDT)
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: netdev@vger.kernel.org
+Cc: Stephen Hemminger <stephen@networkplumber.org>
+Subject: [PATCH iproute2] iplink/can: fix format string warnings
+Date: Mon, 24 Aug 2026 09:49:22 -0700
+Message-ID: <20260824164922.575038-1-stephen@networkplumber.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260824-net-mptcp-misc-fixes-7-3-rc1-v1-14-a92309d121ca@kernel.org>
-References: <20260824-net-mptcp-misc-fixes-7-3-rc1-v1-0-a92309d121ca@kernel.org>
-In-Reply-To: <20260824-net-mptcp-misc-fixes-7-3-rc1-v1-0-a92309d121ca@kernel.org>
-To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
- linux-kernel@vger.kernel.org, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1473; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=vn/+T+fXbkpwPKwvL+UwDd6h1lgOJiFXr8yi5+YYNd0=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGLJ6Sp/xuv6pnTuh1OSZ6ZM5jxaaHFW4cP/VrGvHogP/b
- d+xc8794x2lLAxiXAyyYoos0m2R+TOfV/GWePlZwMxhZQIZwsDFKQATsZRg+GfArPZG2Er+WoTv
- exYJ4YY9L/ivL8zcd+T0ze9r+3nWaKgz/BXgLa+//eXy8ejlnYwL7q5c5rN39vzGCE7TIwbbE1y
- O5jACAA==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
 
-From: Paolo Abeni <pabeni@redhat.com>
+Clang complains about non-literal format string
 
-Pruning is expansive and destructive, do it only when we expect
-to accept the skb triggering the cleanup.
+  iplink_can.c:531:36: warning: format string is not a string literal
+        [-Wformat-nonliteral]
+    531 |                 can_print_timing_min_max("tdcv", tdcv, *tdcv_min, *...
+        |                                                  ^~~~
 
-Fixes: e468d371180d ("mptcp: implemented OoO queue pruning")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Small change to use "%s" in can_print_timing_min_max.
+
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
 ---
- net/mptcp/protocol.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ ip/iplink_can.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index be59ffa4bd31..b26a8d560612 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -313,12 +313,6 @@ static void mptcp_data_queue_ofo(struct mptcp_sock *msk, struct sk_buff *skb)
- 	u64 seq, end_seq, max_seq;
- 	struct sk_buff *skb1;
+diff --git a/ip/iplink_can.c b/ip/iplink_can.c
+index f631aab8..450a19b9 100644
+--- a/ip/iplink_can.c
++++ b/ip/iplink_can.c
+@@ -448,11 +448,11 @@ static void can_print_nl_indent(void)
+ 	print_string(PRINT_FP, NULL, "%s", "\t ");
+ }
  
--	if (!mptcp_try_rmem_schedule(sk, skb)) {
--		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
--		mptcp_drop(sk, skb);
--		return;
--	}
--
- 	seq = MPTCP_SKB_CB(skb)->map_seq;
- 	end_seq = MPTCP_SKB_CB(skb)->end_seq;
- 	max_seq = atomic64_read(&msk->rcv_wnd_sent);
-@@ -335,6 +329,12 @@ static void mptcp_data_queue_ofo(struct mptcp_sock *msk, struct sk_buff *skb)
- 		return;
- 	}
- 
-+	if (!mptcp_try_rmem_schedule(sk, skb)) {
-+		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
-+		mptcp_drop(sk, skb);
-+		return;
-+	}
-+
- 	p = &msk->out_of_order_queue.rb_node;
- 	MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_OFOQUEUE);
- 	if (RB_EMPTY_ROOT(&msk->out_of_order_queue)) {
-
+-static void __attribute__((format(printf, 2, 0)))
++static void
+ can_print_timing_min_max(const char *json_attr, const char *fp_attr,
+ 			 int min, int max)
+ {
+-	print_null(PRINT_FP, NULL, fp_attr, NULL);
++	print_string(PRINT_FP, NULL, "%s", fp_attr);
+ 	open_json_object(json_attr);
+ 	print_uint(PRINT_ANY, "min", " %d", min);
+ 	print_uint(PRINT_ANY, "max", "..%d", max);
 -- 
 2.53.0
 
