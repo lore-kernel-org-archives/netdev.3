@@ -1,64 +1,64 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30C6376A03
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 03:34:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECDE8374A12
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 03:34:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787542489; cv=none; b=AonKZ+cu1iSEdRRdJRFZgUU8SBCQM7MiDweFMGMSuICRHb+N15E6idau1QbDnTm7cQD9BcF0drVB51CO5CoBxePS5l6ZLLEgU/MODrkFMrctCTyXfgXhuzeHis0M1B9RWjJYZjYSTzASdw2LAUZYPh3KU3ngRroBgoxv3U9Gd5Y=
+	t=1787542494; cv=none; b=qSj9YZtJ9lGv6Un6gZa2pRGzRgqvtvmDEUC6II9SncVXc1pa4AMmkuJhPXKvMGPkAzfc1zuroYDwBpXv/xHT0Di6yxHX2pbMHAtPubhR14Sa0IopRU6doC1mLm+8cELwd0yQiHYGx31Z2KdqXxMPouwSFfo43BL7jGFFW/15/vU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787542489; c=relaxed/simple;
-	bh=sz4I1sq4K0b/4zGjd0FzYdICKmLEOx+P2s0EyxNw1ck=;
+	s=arc-20240116; t=1787542494; c=relaxed/simple;
+	bh=tXbprwIsw4+TnWQEjWhGgnauvC05A6g8kXeB1lZBCK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UsExpWf9OT5TVYPUKtJ31HrdpJX2ThevCo5GmrQNSY7roML6soZUHb8r0xcyXGzr2eXYMqPFKnn8AmlOUGw0Xk/2GdKgTCZJs3cmBID5gfRzSjuDXrdk8TLKZ9D26KGsImMYcXfhf9VfZY6uiXKizBRpL/lkrKXEsWjiyeDvTAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UD75Iysx; arc=none smtp.client-ip=209.85.216.53
+	 MIME-Version; b=qNLHj7hAQIerGYgqk3kDxmPRIkEQjKa+j40Cbm6b1Ud/sWi6V7JM4kyMfNGjI8Xk/YNIDOsUMczIyUOz5IOaC3KTScpXU4JSdnAQQTqwabAHSZ09+udQWytqX5KpRrz9DhTSIcmPOwQK+z1riAqKQishOOQkJC4pLwWUis88/vY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G5rp0jFo; arc=none smtp.client-ip=209.85.216.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UD75Iysx"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3856d6fbcb3so2417552a91.2
-        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 20:34:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G5rp0jFo"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-383cb94f742so3063062a91.3
+        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 20:34:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787542487; x=1788147287; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1787542492; x=1788147292; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=h3czPEGgc8kYZ51pcfr/0w7zOEtrgQWrgOFC5Loyaz4=;
-        b=UD75Iysx8wdyY58cFjzUVXdFvohgn4QrSvPOepcBrVuUaLz8D+ip2mLntd5qFPE2Fr
-         lEZzPZqcny2Ny6mYcbHK6j8vjnQNplMDE4sW9vUH5s/2xn0RIEI9X/FzQDMApEmfCYow
-         Cs4bo0vlGl1Do3QCubUmrZBaQDo0ojeod82X2JrVhpkI48pZxgMXyH9Hspah+vnHWSO7
-         r8So9mIeFEscjcV2qFT6lUpsIGrIqy/2cShFPckUz4fpabmhGctpyEFlNeXuy52JgWAE
-         ZoXtRc44mNiGBHPoq5gjWN8nT2tNCA5JhwDV8A+cWsboX59fhoBx8CBYUDFBxbpqWR86
-         i0qA==
+        bh=1ZjZkSQf+Zktufc09rNjCOpfzvoTH5+6Bb0FnK3Vps4=;
+        b=G5rp0jFoCjnG4bg8/dOC+KBVRCWYOQxDWcKFKxH5EWfeg4ji9GHoKUNNNE07W/LluB
+         qD+MvkprQQmp083+qbwWLN51UAwGVaqXaQmw5rMa+LkI9E9Op1CETnumK1pOopshgyuf
+         wROyb0ZdZzzBwGNxvAKpFJqLwD4yy0STfJalC1eNYOpwPeYn4Vbq3gVjt3R8SNSJsCox
+         wgmTfY4lpPhenREZIJTCTBfJRqRb/xDVKKA5lzPs2iBtbXf2RgL/fb6VEdJhIeWDznWk
+         lF85YvoIlfPjs4BVLHB7bvNICwpLeWEQstmdtzsVU71wvzyRdIvyjEoUOP7yt8A3Iqq1
+         HybA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787542487; x=1788147287;
+        d=1e100.net; s=20251104; t=1787542492; x=1788147292;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=h3czPEGgc8kYZ51pcfr/0w7zOEtrgQWrgOFC5Loyaz4=;
-        b=G0RXY69k2DD8QvXKTNh96dq00PnZef8jFuo/poM+yUDQPGe0xeuQ8EVkd0gXNnqEcg
-         eXx5UukWqlFZ2Lqh75/XbOwi0YmvC4KefIql9JYbXrWdq0uvAYWOojCz62unuGe8QAIQ
-         s814l6VpLNGUi0cvcVaEHBauKFOIrvpH502Q1hzwK6C4gizZSeRD+3yVuhu47n/HSTcU
-         OY1p7wi59vvJ1w5/9CxFqc6aaFC5+ADPT9i4yGy8Jg7SYxnYkZegAySpUFn+TgrecEPJ
-         YjXbEhUiWXyY9qXP/h6xk/pm2aDgM1AL8np5439JF9mJV8BwQDzrWzl6D3naRdMW6TX8
-         panw==
-X-Forwarded-Encrypted: i=1; AHgh+RrKIMDuPhEU5EPHB2vjFnmsOscauCWciVjrgyei1aMY/QF1cI9fE2GfQr27wand0/mwuy8/AbM=@vger.kernel.org
-X-Gm-Message-State: AFuF++nur1aW/t95ykCRrwGgWtSqMPb/MefCapGWMmW6ak0RRbXHKjLO
-	kB5QuQCWmksvctsOSGitVF1CG81a3PKGt/6Elr2vGKS+M40HYSo9XP86
-X-Gm-Gg: AR+sD11ilGRTjnqk3P81Mh6qeZVm1jHtINnpDrrM/T4rI1GqTZO/0X7hOViMXk93uBX
-	k3wyxKO2WDkK8wmVlJUqgLthUq8ChvpCXvEh8iy4Wy0ywHlLVy6ZlLIvjp6Kn+d6lmLX/a9tCsF
-	jeGR3ovLCIs02HST4VG9y0LkpXGOm9G5o7bw4OVI0O1BUB6ypW2bR3iEBLWQ8G50zUuIJySvGt6
-	2XTKdDsGp4UEUKB/LK5yraFIVqw4VYYxoHzw15fB/uIAGCwijibmP5gmtcfdJoNpHsw47gtrGTM
-	iA6H2mLFiN1Lh/h/ZoT6qRQoRS6JbZSaPSm2D39WGiGRxQiNaYfqF5tKRMU5y/JEG5twF9P5SNO
-	mVpHhZVYfE/5gAVC/+az+t3KKPMnnLqb2osGFCCgrZb6g4sBxwXrVgX1y1P003J9MULgLcvPwGS
-	yGn2CLgPXRfhIOEU12urpwOPyGIbPiW2w2/x9JSEjLjJq+ShHMeubf/58iAoyrVkErcLiNayLdP
-	m/9kl1Li2TXmJ06ih40xw==
-X-Received: by 2002:a17:90b:5805:b0:38e:485c:ebd3 with SMTP id 98e67ed59e1d1-395c3a514a5mr42206353a91.15.1787542486850;
-        Sun, 23 Aug 2026 20:34:46 -0700 (PDT)
+        bh=1ZjZkSQf+Zktufc09rNjCOpfzvoTH5+6Bb0FnK3Vps4=;
+        b=fGE+XsaCEUGbbws2rDxfwKAJN3yavOpAJrlTXitXS7bXeMbSMG6UU/g1frFWuqpNDI
+         kVefkJOKPU9gJLHXntsm8Gpq8D/OdeKQ9LVNRTCZOeowFPqmvXPdI9ZR+QasElA2cYhV
+         s+PrNGtsbZngF9aoOACvkcXNrCb2nevXN56egbBRNcJ8NMn+iQZ9tfIM2k0lR2pEEuH1
+         nFNeaIaV+ODEPF0GTzWdQFeJnH9USygGnFNGkfrdVY4p/15LpCSCHfitFqNm0pO4tnU5
+         uyz51g7aaxEZxk1FwH4wbvHnLIfzy7+s1zhhTBrEVM1lb3kiw2d5y8nCb5bEy12LgUlJ
+         +QZw==
+X-Forwarded-Encrypted: i=1; AHgh+RqgfLqovO48+HqdzBbViQUHO/T4JIr2uo/ebN8tYXgGiDMorriy15TDv00jsN5ij2YIl0+ah4g=@vger.kernel.org
+X-Gm-Message-State: AFuF++mBxPCP5R41c6ltuQfkJ05ZvLteKVGxNpBPKU2cDKUy/XfITJWX
+	w2FtqFLThdbVGFIoZ3ok19/zEM9TDlfBNmNQQvzwvyQsMUZcCRLJ3EU3
+X-Gm-Gg: AR+sD12u3zkyYkiLHdJX7fARWaAYLUqRlhUCKHjidRcKDKC8zRB4rZ3UuGdkLx8PUob
+	ldLzrj3Cxsj0NEArZTICdjMb20+y1Z7Ly3n+2nPd+w2hCW0htV1kbpVnJJLn8TMvrc/cEz6tT9h
+	FIxtcz3q3HdnOdxuOQhVVxjzMrsiqDDZz2UcG3Jr57m9VSaCK6Tj1eGZQf/B8LF3XN0db3GshdI
+	Sb48dxksU3jOqhsM3ucEKccFqQDVNfxAM9rnBLUe3L8e2vuyb4+xlnCmfrnj2EFpIrcOORGIz9h
+	wlYehGB3Otuc05rpmWGtI4c7+xgVNYhaITTCqkXgJVqpE4rMwTKkbGlyICVd85flu5YXu/EGBTg
+	YPLanA2JcWhWrpCNlEV09A4kWz83fIj2MTJ1XtWWyeUY/9BibJPxICQ+QPz+Sk2PFjNM7eQM228
+	M4uJ8nrLQx34utc03cbrf8CXcmSGeAnjSN7e+kBEgjcz3aEhuAM7luWWwOWIHTHTpG2Dlofm9bC
+	S8kf3b6p1U=
+X-Received: by 2002:a17:90b:4ac6:b0:38f:18f9:785 with SMTP id 98e67ed59e1d1-395df13ced5mr26345382a91.8.1787542492202;
+        Sun, 23 Aug 2026 20:34:52 -0700 (PDT)
 Received: from v4bel.. ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-395c8fd34d9sm4227256a91.1.2026.08.23.20.34.41
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-395c8fd34d9sm4227256a91.1.2026.08.23.20.34.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Aug 2026 20:34:46 -0700 (PDT)
+        Sun, 23 Aug 2026 20:34:51 -0700 (PDT)
 From: Hyunwoo Kim <imv4bel@gmail.com>
 To: davem@davemloft.net,
 	edumazet@google.com,
@@ -83,9 +83,9 @@ Cc: kerneljasonxing@gmail.com,
 	linux-kernel@vger.kernel.org,
 	imv4bel@gmail.com,
 	stable@vger.kernel.org
-Subject: [PATCH net v2 7/8] net: clear sk_tsq_flags in sk_clone()
-Date: Mon, 24 Aug 2026 12:32:51 +0900
-Message-ID: <20260824033331.1084971-8-imv4bel@gmail.com>
+Subject: [PATCH net v2 8/8] tcp: do not inherit retransmit state from parent
+Date: Mon, 24 Aug 2026 12:32:52 +0900
+Message-ID: <20260824033331.1084971-9-imv4bel@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260824033331.1084971-1-imv4bel@gmail.com>
 References: <20260824033331.1084971-1-imv4bel@gmail.com>
@@ -97,99 +97,120 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A socket returned by accept() can be freed while its fd is still open. A
-setsockopt() on that fd then hits a use-after-free.
+A child gets a copy of the parent's retransmit state when it is cloned.
+On a listener it is all zero, which is why commit eb2c80ca87b1 ("tcp: do
+not clear packets_out in tcp_create_openreq_child()") and
+commit 5c701549c9a6 ("tcp: move retrans_out, sacked_out, tlp_high_seq,
+last_oow_ack_time init to tcp_disconnect()") dropped the initialization
+of packets_out, retrans_out and sacked_out here. lost_out,
+retransmit_skb_hint and highest_sack have never been cleared here.
 
-TCP_TSQ_DEFERRED owns a socket reference. tcp_tsq_handler() sets the bit
-and calls sock_hold() when the socket is owned by user, and
-tcp_release_cb() clears the bit and calls __sock_put(). sock_copy() gives
-the child the bit but not the reference, so the __sock_put() that runs when
-accept() locks and unlocks the child has nothing to pair with. The socket
-is freed by the next put, which in the log below came from a timer.
+The parent can morph from listener to active session while a request is
+still being processed, and connect(AF_UNSPEC) followed by connect()
+gets it there. tcp_check_req() does not hold the listener lock, so
+nothing pins the parent's state between the TCP_LISTEN test and the
+clone. The child then copies the counters and the two pointers into the
+parent's retransmit queue.
 
-A listener can be holding this bit. An established socket becomes a
-listener again through connect(AF_UNSPEC) and listen(), and
-tcp_clear_xmit_timers() only calls hrtimer_try_to_cancel(), so a pacing
-callback that is already running survives. That callback sets the bit while
-accept() holds the socket lock, and in the same window the child is created
-in the TCP_NEW_SYN_RECV branch of tcp_v4_rcv(), which does not take the
-listener lock.
-
-All seven bits in sk_tsq_flags describe work pending on the parent, and
-four of them own a reference. They are set in four different places, so
-clear the whole word in sk_clone().
+sk_clone() sets sk_send_head to NULL, and tcp_rtx_queue is unioned with
+it, so the child's retransmit queue is empty. That does not help.
+packets_out is set again as soon as the child sends anything, and
+tcp_xmit_retransmit_queue() picks the copied hint over the queue head.
+When the parent disconnects, tcp_write_queue_purge() frees those skbs,
+but the pointers the child copied are left alone. The child then gets
+an ACK, enters the retransmit path and writes into a freed skb.
 
 In short:
 
-  socket(AF_INET) -> setsockopt(SO_MAX_PACING_RATE, 100000)
-                  -> setsockopt(TCP_MAXSEG, 1200) -> bind -> connect(peer)
-  send(64KB)                          // arms the pacing timer, sock_hold()
-  connect(AF_UNSPEC)                  // stop being connected
-  listen()                            // become a listener again
-  setsockopt(TCP_DEFER_ACCEPT)
-      // another socket connects, and with TCP_DEFER_ACCEPT there is no
-      // child yet
-  accept()                            // the child is created when one byte
-                                      // arrives. while accept() holds the
-                                      // lock the pacing callback sets the
-                                      // bit, and the child is cloned by
-                                      // the receive path, which does not
-                                      // take the listener lock
-      // a timer on the child does the last put and the socket is freed
-  setsockopt(accepted, TCP_NODELAY)   // use-after-free
+  socket(AF_INET) -> setsockopt(TCP_DEFER_ACCEPT, 30) -> bind -> listen
+      // a client connects and sends one byte. the kernel processes
+      // that segment while the steps below run
+  connect(AF_UNSPEC)              // stop listening
+  connect(peer)                   // become an active session
+  send() repeatedly               // lower IP_TTL so the peer's IP_MINTTL
+                                  // drops most of them, and let one
+                                  // through to get a SACK
+      // parent: packets_out 6, sacked_out 1, lost_out 5, retrans_out 1
+      // retransmit_skb_hint points at an skb in the parent's queue
+      // the leftover request completes and copies this state
+  connect(AF_UNSPEC)              // those skbs are freed
+  listen()                        // or the child is dropped
+  accept()
+      // the child sends data, one segment is lost, and the ACK that
+      // comes back takes the retransmit path to the copied hint
 
 KASAN log:
 
-  BUG: KASAN: slab-use-after-free in sock_common_setsockopt+0x44/0x80
-  Read of size 8 at addr ffff88800e2ab668 by task repro/94
+  BUG: KASAN: slab-use-after-free in __pskb_trim_head+0x66b/0x900
+  Write of size 16 at addr ffff888008141530 by task repro/76
   ...
   Call Trace:
-   sock_common_setsockopt+0x44/0x80
-   do_sock_setsockopt+0x15e/0x2b0
-   __sys_setsockopt+0x9e/0xe0
-   __x64_sys_setsockopt+0x64/0x80
+   __pskb_trim_head+0x66b/0x900
+   tcp_trim_head+0x69/0x540
+   __tcp_retransmit_skb+0x14e/0x26b0
+   tcp_retransmit_skb+0x1b/0x250
+   tcp_xmit_retransmit_queue.part.0+0x3b1/0x970
+   tcp_ack+0x3382/0x7430
+   tcp_rcv_established+0x631/0x3a00
+   tcp_v4_do_rcv+0x449/0x960
+   __release_sock+0x1f2/0x2a0
+   release_sock+0x176/0x1d0
+   tcp_sendmsg+0x30/0x40
+   __sys_sendto+0x316/0x380
+   __x64_sys_sendto+0xdb/0x1b0
   ...
-  Allocated by task 95:
-   sk_prot_alloc+0x45/0x170
-   sk_clone+0x49/0x960
-   inet_csk_clone_lock+0x29/0x2c0
-   tcp_create_openreq_child+0x2a/0xf20
-   tcp_v4_syn_recv_sock+0xd3/0x7e0
-   tcp_check_req+0x374/0xff0
-   tcp_v4_rcv+0xc2d/0x2040
+  Allocated by task 76:
+   __alloc_skb+0x11e/0x890
+   tcp_stream_alloc_skb+0x2c/0x5c0
+   tcp_sendmsg_locked+0x1377/0x3df0
+   tcp_sendmsg+0x26/0x40
+   __sys_sendto+0x316/0x380
   ...
-  Freed by task 0:
-   slab_free_after_rcu_debug+0xc5/0x200
-   rcu_core+0x4de/0xd30
+  Freed by task 80:
+   skb_release_data+0x554/0x810
+   __kfree_skb+0x42/0x60
+   tcp_write_queue_purge+0x6ef/0xf40
+   tcp_disconnect+0x2fc/0x1e10
+   __inet_stream_connect+0x6d0/0xdf0
+   inet_stream_connect+0x52/0xa0
+   __sys_connect+0xfc/0x130
   ...
-  Last potentially related work creation:
-   kmem_cache_free+0x11d/0x5f0
-   __sk_destruct+0x29a/0x3d0
-   call_timer_fn+0x12f/0x3f0
-   __run_timers+0x4a4/0x5e0
-  ...
-  The buggy address belongs to the object at ffff88800e2ab640
-   which belongs to the cache TCP of size 3200
+  The buggy address belongs to the object at ffff888008141380
+   which belongs to the cache skbuff_small_head of size 704
 
-Fixes: 73a6bab5aa2a ("tcp: switch pacing timer to softirq based hrtimer")
+We need to make sure this can not happen, by clearing them after socket
+cloning. A listener always has them zero, so an ordinary passive open is
+not affected. Clearing only the pointers is not enough: the counters
+would then describe a retransmit queue the child does not have, and
+tcp_fastretrans_alert() and tcp_retransmit_timer() warn.
+
+Very similar to commit 8b485ce69876 ("tcp: do not inherit fastopen_req
+from parent")
+
+Fixes: 079096f103fa ("tcp/dccp: install syn_recv requests into ehash table")
 Cc: stable@vger.kernel.org
 Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
 ---
- net/core/sock.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/tcp_minisocks.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 098e58b40f304b..06fbb19824e267 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2533,6 +2533,7 @@ struct sock *sk_clone(const struct sock *sk, const gfp_t priority,
- 	newsk->sk_reserved_mem  = 0;
- 	DEBUG_NET_WARN_ON_ONCE(newsk->sk_drop_counters);
- 	sk_drops_reset(newsk);
-+	newsk->sk_tsq_flags	= 0;
- 	newsk->sk_send_head	= NULL;
- 	newsk->sk_userlocks	= sk->sk_userlocks & ~SOCK_BINDPORT_LOCK;
- 	atomic_set(&newsk->sk_zckey, 0);
+diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
+index 7fe318d9e0aed2..2fde196dd302f5 100644
+--- a/net/ipv4/tcp_minisocks.c
++++ b/net/ipv4/tcp_minisocks.c
+@@ -660,6 +660,12 @@ struct sock *tcp_create_openreq_child(const struct sock *sk,
+ 	tcp_ecn_openreq_child(newsk, req, skb);
+ 	newtp->fastopen_req = NULL;
+ 	RCU_INIT_POINTER(newtp->fastopen_rsk, NULL);
++	newtp->packets_out = 0;
++	newtp->retrans_out = 0;
++	newtp->sacked_out = 0;
++	newtp->lost_out = 0;
++	newtp->retransmit_skb_hint = NULL;
++	newtp->highest_sack = NULL;
+ 
+ 	newtp->bpf_chg_cc_inprogress = 0;
+ 	tcp_bpf_clone(sk, newsk);
 -- 
 2.43.0
 
