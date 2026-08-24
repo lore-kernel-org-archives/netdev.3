@@ -1,111 +1,125 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48E8422E2A;
-	Mon, 24 Aug 2026 13:20:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABA217B50A;
+	Mon, 24 Aug 2026 13:21:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787577612; cv=none; b=UkOZg620JAA+Q7WPvQRBGLDXVsYH5gFCSvG3IE6dstICP+1kgUZdv/7WpmYXbyMP4JKxfTrkGJiVq/WgTiYExdIkkWgyA1sqOZtTrVxa8J7nXDiOcsCuxqYLnX92FsECiAiJ+6xkOFbKIluCIhNDUOW20dJOQajq5CIeYVdx+6A=
+	t=1787577710; cv=none; b=EV9u4Y7TeYJPLn7wtcyfM0+jxZq+eQCOHxzz4sLuiuK9rbEKJWzUZdMquHs6xDhUhjtOgW78ZPa8m3cs+rwObsyy5ovhVlVTDl5XYMfOniKOEzHxNO63PtSY23gGLW2szD2/33Xd/09BcB+4XBApTcwL0Xa3pd+QFmB2ZN6ZFdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787577612; c=relaxed/simple;
-	bh=HPd8tvlAjRUOeEobAEyALdyT4TBP0fKvqWpUgesG7tc=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=c8y5DK04s18qE89yvxzAkMoolIaNTfUKjkNVn5mgbq0jBsD3tt7o8h0rRyzeENfK0tuSvW/2WwmqY9BMxDKhlcfuHHz7ryyumVhyJ7lLHjtoqO8ounyOX7ok/6BceUaVjpskCg7NYdN781JXFbzyjmdrOjljj7UIs12VieAyiqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=E6QUcRym; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1787577710; c=relaxed/simple;
+	bh=Lw0JsDV0WTzHsR1mYq2sQkaCsFm2SnOuXntn3KxvQ10=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BEDk3HyBB0mmRXnnD0e8WcEm+cH6t5Mlhglz/IUrIUlR71PjVj0u059G7ZRRsLQSsmAC22XQv41Faq9ZRH1feU/h6/OYW/nAAT0JOpme1i5gRBm96kzD+RblmCsfY0CxFbE4/XrzCLdNNbI4TuKlwL11yyDyDsjSr2wGXN0FX/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C3kIUzMh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="E6QUcRym"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id F30BF1A17FC;
-	Mon, 24 Aug 2026 13:20:07 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id BE24D5FFC1;
-	Mon, 24 Aug 2026 13:20:07 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A585711C794F1;
-	Mon, 24 Aug 2026 15:20:01 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787577606; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=DC7nFQT/pTbwg2uD11ECk4kgDtuYsLL8hiclC7MfSTk=;
-	b=E6QUcRympFgTENQsMSUa8GGT6yjUAP5laBWRMf+CK2RoR67C6bjRw1gEPBp9GgyL8G/LGF
-	smsFQ3NDMfz53Vhi8JtaVr9oDxk2DZ6PKm4xmKJlsRqf5AsAw1Laye4BsudT4xJ0H6tcF8
-	aP1HdAcMZxt49SXBT3gg6KUXjd/5ljPCez4UCiA6JlXli8pnFCvNnvMusKDB3aOuxkLWTb
-	cbn1UZQ6esYAYDZDgnLnXd4OYxBMEFE9s1bv7QmkC/CyhS3Zrn/599y6zaDSIF2aPKqofQ
-	oMxH97kOK/6lS9L/rN1Xm0hlY/tbtLeYH4rUD4jBiYpmYx7BHOmTXvDpd7hrTQ==
-Message-ID: <73cd1654-b97f-49a2-9bc3-eea90857feac@bootlin.com>
-Date: Mon, 24 Aug 2026 15:20:00 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C3kIUzMh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8431A1F000E9;
+	Mon, 24 Aug 2026 13:21:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787577709;
+	bh=C1JOhLm4zg8p33Eesvf4KAwYUKhywd17N8ZTmUOFlhU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=C3kIUzMhBQVJBfsXshHzLfqtoxocGaUhRkQoECbAKeJQlpCpUfZUYrgKN+hbK6Fmm
+	 vZ+AH6AecQm4ImUrVUYSpRNZ7vp6fEPBYgLlAwq6ojg0QZ8ExNDQ/BV5BMi0+PSfOS
+	 jnFW3wNpWO7dNuN4Z+5XMMJReiDd/893GjpZhJuhHBn6d5+l+XALb/h3/DysSKN75q
+	 cf7disUtAvAF8RdKux/E1FKxBTsU2c0cTsyEdfslqfP/riTetz4RZ8IJMw0HHxujLW
+	 aaB0xLOyX3AwIgIoHEIxVwXQl3pBUpttWNkd0G+TOdXoi+eK8lDcC16I2Syb/hHUXI
+	 TGqNKfKngLeig==
+Date: Mon, 24 Aug 2026 16:21:38 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Daehyeon Ko <4ncienth@gmail.com>, stable@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Hagen Paul Pfeifer <hagen@jauu.net>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+	netdev@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [PATCH v2] mm/secretmem: properly account locked pages
+Message-ID: <aoxFYlkTvHMqdqf_@kernel.org>
+References: <20260822-secretmem-accounting-v2-1-fe445a7c6eb1@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Linux)
-From: Kory Maincent <kory.maincent@bootlin.com>
-Subject: Re: [PATCH net-next v4 3/3] net: phy: own phydev->psec via PSE
- notifier and remove fwnode_mdio hook
-To: Carlo Szelinsky <github@szelinsky.de>,
- Aleksander Jan Bajkowski <olek2@wp.pl>,
- Oleksij Rempel <o.rempel@pengutronix.de>, Andrew Lunn
- <andrew+netdev@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
- Russell King <linux@armlinux.org.uk>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Corey Leavitt <corey@leavitt.info>,
- Jonas Jelonek <jelonek.jonas@gmail.com>, Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <bac5e6e9-7358-4ccb-87fc-9c40baa33682@wp.pl>
- <20260823170921.1429827-1-github@szelinsky.de>
-Content-Language: en-US
-In-Reply-To: <20260823170921.1429827-1-github@szelinsky.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260822-secretmem-accounting-v2-1-fe445a7c6eb1@kernel.org>
 
-
-
-On 8/23/26 19:09, Carlo Szelinsky wrote:
->> This patch causes a deadlock with the etop driver (lantiq arx100 soc
->> family).
+On Sat, Aug 22, 2026 at 08:14:02PM +0100, Lorenzo Stoakes (ARM) wrote:
+> secretmem has a relatively laissez-faire attitude to accounting the folios
+> it allocates.
 > 
-> Thanks Aleksander, and thanks for testing it on real hardware. It's a real
-> deadlock and you're right about the cause.
+> The intention is that the memory is treated as if it were mlock()'d and
+> thus is limited by the RLIMIT_MEMLOCK limit if the CAP_IPC_LOCK capability
+> is not in place (which broadly allows unlimited ranges of mlock()'d
+> memory).
 > 
-> The cause is that this patch makes phy_device_register() take rtnl_lock()
-> around the psec attach. etop registers its MDIO bus from ndo_init
-> (ltq_etop_mdio_init -> mdiobus_register -> mdiobus_scan ->
-> phy_device_register), and ndo_init already runs under rtnl inside
-> register_netdevice(). So the second rtnl_lock() deadlocks. It only shows up
-> on drivers that register the bus from ndo_init - most do it from probe,
-> outside rtnl - which is why it didn't turn up here earlier.
-
-This is a known issue that some netdev hold the rtnl during phy register 
-and removal and some don't depending on the path.
-I faced the same issue when working on timestamping, the reply from net 
-maintainers was that we should add rtnlock in the netdev drivers that 
-don't take the lock. I started the work but never finished it due to 
-missing available time.
-
-> I don't think we should revert. As Jonas said, this should be fixed in the
-> patch. My idea for the next version is to stop using rtnl for the psec
-> attach/detach and use a small dedicated mutex instead. A private lock can't
-> recurse against the caller's rtnl, so the etop case would go away.
+> The lifecycle for memfd accounting against this limit is - account on map,
+> unaccount on unmap but the lifecycle of memfd folios is allocate on fault,
+> deallocate on inode eviction.
 > 
-> Kory, others - does that sound like the right direction to you?
->
-> One thing I want to flag: rtnl there wasn't only guarding the attach, it was
-> also keeping the ethtool code that reads phydev->psec from racing the detach
-> that frees it. So the mutex would need to sit in two places - the phy side and
-> the ethtool paths in net/ethtool/pse-pd.c - otherwise the deadlock is gone but
-> the use-after-free comes back. Just so we pick the right approach.
+> This mismatch is problematic because the folios are unevictable and remain
+> so until the inode is evicted (set using mapping_set_unevictable()).
+> 
+> This is problematic as it eliminates usual mlock() semantics - mapping
+> folios then unmapping them does not clear their unevictable state, since it
+> depends on AS_UNEVICTABLE, not PG_mlocked.
+> 
+> A user can therefore easily work around the RLIMIT_MEMLOCK limit - simply
+> map then unmap and VmLck no longer counts the secretmem range (or more
+> involved - fork which also achieves the same thing).
+> 
+> Worse - they are not accounted in the process's RSS even if mapped again,
+> meaning the OOM killer won't know to kill the process.
+> 
+> A user without the CAP_IPC_LOCK capability can therefore repeatedly
+> map/unmap (or map/fork) and consume all available system memory with
+> unevictable folios and cause system instability.
+> 
+> A secretmem fd can be passed between processes and over fork so a
+> per-process limit simply does not make sense.
+> 
+> So follow the precedent set by io_uring, perf, skbuff, iommufd and xdp -
+> track the number of locked pages in user_struct->locked_vm.
+> 
+> Since the scope tracked is actually inode lifetime, the RLIMIT_MEMLOCK
+> applies per-user not per-process. Also given the change in scope it doesn't
+> make sense to bypass for users with CAP_IPC_LOCK, so remove it.
+> 
+> There is simply no reason to carry on marking the mapping as mlock()'d
+> since it's misleading and the lifecycle is now correctly handled, so remove
+> this too.
+> 
+> Additionally, fix the selftest which checks the limit as this now must
+> assert SIGBUS on limit violation on fault-in.
+> 
+> __secretmem_account_pages() is more or less a duplicate of the code that
+> io_uring etc. use, but since this is a bug fix that needs backporting,
+> defer any de-duplication efforts to a follow-up.
+> 
+> Reported-by: Daehyeon Ko <4ncienth@gmail.com>
+> Closes: https://lore.kernel.org/linux-mm/20260813225328.2010303-1-4ncienth@gmail.com/
+> Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-You can try it, but don't forget to enable PROVE_LOCKING to be sure it 
-works well.
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Regards,
 -- 
-Köry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
-
+Sincerely yours,
+Mike.
