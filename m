@@ -1,45 +1,56 @@
-Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E4234D916
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 07:21:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.132.163.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83DB125A642;
+	Mon, 24 Aug 2026 07:22:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787556111; cv=none; b=RxDKjioHqRIDiWF7Je/rjnd/dx/53/XVqBkOfg4Zv5rirDIh2rnWNdatzYDOZA55TxopEH1+0y6Z4bxzdnwj2FvChB9fzEccOO2Ra9QWpKBZZ2C5PJHZ29lIWpcYWR2mYKBkuljs9A3+Fcyc8qQxdSKisVzsTpKCNZm239krf2M=
+	t=1787556140; cv=none; b=PROY95PgrKH5TM5tRVM9PngaVZ2oCxOMPh3AZnkxjAQW8yUxAbmtdxKqrkFGZxFh0XOFWiRptHR1osjrAg5U/Jf8YVjOBmM7XVTjtlqDo1ljb9iT9rNWHRhBE8m6+wxhyarHJkn9gogcjlmVmM7Clru17GCnDwvphIv6OUw2G7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787556111; c=relaxed/simple;
-	bh=KZLL9l7vBSgzHCJ4Pzxm9xVyGvQf3zaSoWNYHRdZzK8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NHpaKKs/6+zNEVXshtOA0Qjw1z15TphaymilIpHFBsRzOwRccVfy1bZylLh2Ls/KBQyFRJ2t8ajP1BirQYGGx50kzgtiqxL8iHe7iYJfwqs1FA08JMp64fDCvKLgtd14nKwKHfaQDh+T3O1swhmlLvjRUV87f4BWEMxt7g51DKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=18.132.163.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz11t1787556090t775b4900
-X-QQ-Originating-IP: odfNvXbq3q4F+a6Ae+gUqcQnu5FVHHDO1Oztdp2ddH4=
-Received: from w-MS-7E16.trustnetic.com ( [122.233.170.62])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 24 Aug 2026 15:21:23 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 3996461450332086053
-EX-QQ-RecipientCnt: 13
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Fabio Baltieri <fabio.baltieri@gmail.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net] net: wangxun: use BIT_ULL() to prevent shift overflow on 32-bit archs
-Date: Mon, 24 Aug 2026 15:21:19 +0800
-Message-ID: <45F5565CE6AC4329+20260824072119.48399-1-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1787556140; c=relaxed/simple;
+	bh=A5iivlwhDTIgazqaRga4/q+jiHpQX/slYfvX2bEXcQk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=aS1udir7CGivh1H8br4ClGabCcGGkO0xd9IxSZugvb3WlW6Aa4kx0ZhSCYRYeU8yNXpNNWmlC0ssN1nbcaeZZaXX1xBtzTRv5j7YRxteCu5j2o4jCjKpWJ0LUwITCOeB+nKEclkLxClmmCJYR2u/pbwk9tpEtOhGb4W1BdOcA0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=e54z4C+P; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="e54z4C+P"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67O5Ug253170620;
+	Mon, 24 Aug 2026 00:22:10 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=rjFWIwAGPHYSrNb1UI9AKcz
+	ctPXxKsk3uOADORVsUgs=; b=e54z4C+PJF+HJFXbGUvGeBz5mxk9xPCQmJP/q0H
+	3BNw6d6jEg8gUmlDqvUSy2Jo/sdHT7ed/+4UztTRwsyojh8P445EA1+5nEQslMxE
+	K7yQrqQq9lZ313dvXcPiEO1Xl61QWyGKdtslVRZXlxhmKhqgySEKNDdb4H3QQ55m
+	+6kXcs6lvXNPyyKBVqIECMzsxTznrXBpa9p16N2YdLWNlVXfyDQsI50ed3kHKdvY
+	m9iL/Wul8RraC0QflOcfqdLJBJP1Row6DGqsJEpiirnB250b79Uyzho02nmCKl+g
+	4N1BH2+IxFB0w8l9kbjwtVTpbOcwpmyQTscxDXhbkjT7eSg==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4g8cabgntr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Aug 2026 00:22:10 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 24 Aug 2026 00:22:08 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Mon, 24 Aug 2026 00:22:08 -0700
+Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with ESMTP id 320D83F707F;
+	Mon, 24 Aug 2026 00:22:04 -0700 (PDT)
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <davem@davemloft.net>, <hkelam@marvell.com>,
+        <linux-kernel@vger.kernel.org>, <naveenm@marvell.com>,
+        <netdev@vger.kernel.org>, <sgoutham@marvell.com>
+CC: <andrew+netdev@lunn.ch>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, Ratheesh Kannoth <rkannoth@marvell.com>
+Subject: [PATCH v2 net] octeontx2-pf: reset HTB scheduler topology before freeing queues
+Date: Mon, 24 Aug 2026 12:51:46 +0530
+Message-ID: <20260824072147.3524339-1-rkannoth@marvell.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,75 +58,147 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: NhdiEwnVOUqESVJ3VD6pDQ2Br+to/uSEuWCAqosAQUcEft4JVXQI/I9g
-	kBEEG0ZSvZoT+BcZG3eF5RynzB3jNACYOfa0d/L5bcw7lclsKokOE6IEq2xcCUV20okp+Fm
-	7OfvzJFzFj965Cd4FTjB13CDRW9DEzB0IMKtdy2xOXSwLrYJowJiIhAa4mGz/+4lrGf7Ckj
-	ivbguXghh+83czSy10BIgfkX5BJn5UaIbJBjhf2qxuwsLXCfWp9blQBE9ziZJij15W4x/rQ
-	qpBrb/m0BozPl20JhL4GSnJWejHkJsEhU+Y+2f+oJMqJhxPMKaQnX/VOEwGV8aEU7SDV+Hq
-	M6z85nDkrRUCxfHvn97/NvRkpVU1tPu+JfITkcGhzF29pepN97saAVR+3fj1IDMia3pisSH
-	kT6VRwJE1xhqE3e9IzOKvSnt8VxpKx6DTMVVdGx8Jkp0Hzn46hbC172Bb6+IRDHb7Tn2Cih
-	gNmm+37N7JXTOl5Xm6dnixSjdzqM8ZsgrH+jLfOHLoFfYm7YuZfHIahEwMabUkfY4sIjU31
-	yjqGAfh7a0mhK7Gs7H7ggd1TnH9Px9V11dYr2yZViKqXCiHq/wqc0122/btVUoV1fTafInD
-	TSPHVj4wacy6I+1bsxFPQ7RIre8sXBnTdeTtjATlZSCZvUgF4xpQIMDzNahjAxgMSPZNyN0
-	DbJHR23Mf/8ReYPr4TQbbwimOCersrNqUqe4a+fb8jncczaY8E+HdxfdrtZjdEASEpyI/dD
-	wSFYwqckb0udayfsiJ50jtW5j4bXYxCAEKqADLRXGlj5HIKl7o/l5jHSJT9wtl16F7GX3WF
-	Mq0zzmqOJS1J/q/Xm+KTAGSTSDge8xMz5i8VICGTk7BMch1qflj7i2Ov2MPAaFXf2fTrP7Y
-	eR4+60za1muEP3XxI5atNMfoRN9vr9f0iIK7lPM0Xm/HhRh+jQDc0zwR02KTQw6pwB8VaWp
-	BkY+OSFH/CMdjQA1Aa3PJV8vvuawKsJBLmuDnnTYJVHhE5ucHYvGfBP3932WgkPZhX4/s6I
-	N4HvmCz5tg0Lum9r1rnMY8/cZph6Tvhh/G1CSCj7mNX/yt9nEjL7jK44Q4GTv0lfsU4eYEe
-	g==
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODI0MDA2MyBTYWx0ZWRfX50KhgrHEWPuV
+ Cu0AhGm8rmIXPcHVY0DKPX7req+aIE+1J/+dHVSnPvfbZJMtFog0n/M2/806j3uURjm6pdXcdBY
+ wxfSz0kzDHMnzbNZWOF9BcPGNnqzwhc=
+X-Proofpoint-ORIG-GUID: dbRnIJd3noyhqON8QwoTfVJIFLa4_Cva
+X-Authority-Analysis: v=2.4 cv=SePHsPRu c=1 sm=1 tr=0 ts=6a8bf122 cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=QXcCYyLzdtTjyudCfB6f:22 a=c92rfblmAAAA:8 a=M5GUcnROAAAA:8
+ a=0m6KuKFDjvClTsrKsqMA:9 a=GvGzcOZaWPEFPQC_NcjD:22 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI0MDA2MyBTYWx0ZWRfXzKJlIpZuK+Rx
+ R2SZ4k1BZuXniCCZDhs/7QgYR8AuC5V2yP9leI2Oby4YXDsknV34/qzpN3mN4WVG2b4S1GHmMXd
+ KZ6PFp2zDYiAep/WMqYkhSlbgqV9pSqpvDroAL5nn85fzpcMHF6uTZjWkarjEGiwDyq59fPNfZ5
+ QdNmjW2K5ZHG7pJCAfP+mAhFR13qQ02GzzwAdbClBu2XYu2nso5d4tAYdAcOG0zxlzKWtCOy/yX
+ 2F/COgZrjDz7Mlun9YC3o1+QB/exNfhBTf9PzYbxhsgUjlgqsnGeIJ0MGx5nVGS9GPsm21kIQHj
+ fpnM3FUu+KNqSiKKM5WaVZ/vKLWV6XN2pArfjJsrB3E/0/agPIUY5/8bmHa9Qg79ZCJf7+hj/og
+ vt4mk4gAeHUNGWici8lhoi92OifRr1jhbCCw4iruEDFjNY8yCngWV1/D9VxpCImpE+kX/J33eJQ
+ uJgtx5J2LbySg1tmUPw==
+X-Proofpoint-GUID: dbRnIJd3noyhqON8QwoTfVJIFLa4_Cva
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-24_02,2026-08-21_02,2025-10-01_01
 
-The macros TXGBE_INTR_MISC() and WX_INTR_Q() rely on the standard BIT()
-macro to generate interrupt masks based on the queue vector index.
+HTB offload programs NIX_AF_TLxX_TOPOLOGY on QoS-allocated scheduler
+queues via otx2_qos_txschq_set_parent_topology(), but teardown freed
+those queues without clearing TOPOLOGY. The AF only restores PARENT and
+SCHEDULE on free, so PRIO_ANCHOR/RR_PRIO settings can survive in the
+shared scheduler pool and affect later allocations.
 
-On 32-bit architectures, BIT() evaluates to a 32-bit `unsigned long`.
-Since the number of queue vectors can be up to 63 on txgbe devices,
-performing a left shift of 32 or more results in an integer overflow
-and undefined behavior. This causes incorrect interrupt masking and
-unmasking logic for both the queue and miscellaneous interrupts on
-32-bit systems.
+Reset TL1 through TL4 TOPOLOGY to zero on each HTB node's schq before
+returning it to the AF during hierarchy teardown and cfg rollback.
 
-Fix this by replacing BIT() with BIT_ULL() in these macros. This
-ensures that the bitwise shift is always performed safely on a 64-bit
-`unsigned long long` type, regardless of the underlying architecture.
+Fixes: 5e6808b4c68d ("octeontx2-pf: Add support for HTB offload")
+Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 
-Fixes: e37546ad1f9b ("net: wangxun: revert the adjustment of the IRQ vector sequence")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_type.h    | 2 +-
- drivers/net/ethernet/wangxun/txgbe/txgbe_type.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+v1 -> v2: Addressed sashiko comments
+	https://sashiko.dev/#/patchset/20260821072812.2890922-1-rkannoth%40marvell.com
+---
+ .../net/ethernet/marvell/octeontx2/nic/qos.c  | 60 +++++++++++++++++--
+ 1 file changed, 56 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index 65e3e55db1cf..0520288d18ab 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -1427,7 +1427,7 @@ struct wx {
- };
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
+index 69c0911e28e9..100342b68ffa 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
+@@ -235,6 +235,58 @@ static int otx2_qos_txschq_set_parent_topology(struct otx2_nic *pfvf,
+ 	return rc;
+ }
  
- #define WX_INTR_ALL (~0ULL)
--#define WX_INTR_Q(i) BIT((i))
-+#define WX_INTR_Q(i) BIT_ULL((i))
++static int otx2_qos_reset_schq_topology(struct otx2_nic *pfvf, u16 lvl,
++					u16 schq)
++{
++	struct mbox *mbox = &pfvf->mbox;
++	struct nix_txschq_config *cfg;
++	int rc;
++
++	if (lvl < NIX_TXSCH_LVL_TL4 || lvl > NIX_TXSCH_LVL_TL1)
++		return 0;
++
++	mutex_lock(&mbox->lock);
++
++	cfg = otx2_mbox_alloc_msg_nix_txschq_cfg(mbox);
++	if (!cfg) {
++		mutex_unlock(&mbox->lock);
++		return -ENOMEM;
++	}
++
++	cfg->lvl = lvl;
++	cfg->num_regs = 1;
++
++	if (lvl == NIX_TXSCH_LVL_TL4)
++		cfg->reg[0] = NIX_AF_TL4X_TOPOLOGY(schq);
++	else if (lvl == NIX_TXSCH_LVL_TL3)
++		cfg->reg[0] = NIX_AF_TL3X_TOPOLOGY(schq);
++	else if (lvl == NIX_TXSCH_LVL_TL2)
++		cfg->reg[0] = NIX_AF_TL2X_TOPOLOGY(schq);
++	else
++		cfg->reg[0] = NIX_AF_TL1X_TOPOLOGY(schq);
++
++	cfg->regval[0] = 0;
++
++	rc = otx2_sync_mbox_msg(mbox);
++
++	mutex_unlock(&mbox->lock);
++
++	return rc;
++}
++
++static void otx2_qos_free_hw_schq(struct otx2_nic *pfvf, u16 lvl, u16 schq)
++{
++	int err;
++
++	err = otx2_qos_reset_schq_topology(pfvf, lvl, schq);
++	if (err)
++		netdev_warn(pfvf->netdev,
++			    "QoS: failed to reset topology for schq %u at level %u: %d\n",
++			    schq, lvl, err);
++
++	otx2_txschq_free_one(pfvf, lvl, schq);
++}
++
+ static void otx2_qos_free_hw_node_schq(struct otx2_nic *pfvf,
+ 				       struct otx2_qos_node *parent)
+ {
+@@ -252,7 +304,7 @@ static void otx2_qos_free_hw_node(struct otx2_nic *pfvf,
+ 	list_for_each_entry_safe(node, tmp, &parent->child_list, list) {
+ 		otx2_qos_free_hw_node(pfvf, node);
+ 		otx2_qos_free_hw_node_schq(pfvf, node);
+-		otx2_txschq_free_one(pfvf, node->level, node->schq);
++		otx2_qos_free_hw_schq(pfvf, node->level, node->schq);
+ 	}
+ }
  
- /* register operations */
- #define wr32(a, reg, value)	writel((value), ((a)->hw_addr + (reg)))
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-index 877234e3fdc2..fddcb011fa2f 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-@@ -303,7 +303,7 @@ struct txgbe_fdir_filter {
- #define TXGBE_DEFAULT_RX_WORK           128
- #endif
+@@ -266,7 +318,7 @@ static void otx2_qos_free_hw_cfg(struct otx2_nic *pfvf,
+ 	otx2_qos_free_hw_node_schq(pfvf, node);
  
--#define TXGBE_INTR_MISC(A)    BIT((A)->num_q_vectors)
-+#define TXGBE_INTR_MISC(A)    BIT_ULL((A)->num_q_vectors)
- #define TXGBE_INTR_QALL(A)    (TXGBE_INTR_MISC(A) - 1)
+ 	/* free node hw mappings */
+-	otx2_txschq_free_one(pfvf, node->level, node->schq);
++	otx2_qos_free_hw_schq(pfvf, node->level, node->schq);
  
- #define TXGBE_MAX_EITR        GENMASK(11, 3)
+ 	mutex_unlock(&pfvf->qos.qos_lock);
+ }
+@@ -913,7 +965,7 @@ static void otx2_qos_free_cfg(struct otx2_nic *pfvf, struct otx2_qos_cfg *cfg)
+ 	for (lvl = 0; lvl < NIX_TXSCH_LVL_CNT; lvl++) {
+ 		for (idx = 0; idx < cfg->schq[lvl]; idx++) {
+ 			schq = cfg->schq_list[lvl][idx];
+-			otx2_txschq_free_one(pfvf, lvl, schq);
++			otx2_qos_free_hw_schq(pfvf, lvl, schq);
+ 		}
+ 	}
+ 
+@@ -921,7 +973,7 @@ static void otx2_qos_free_cfg(struct otx2_nic *pfvf, struct otx2_qos_cfg *cfg)
+ 		for (idx = 0; idx < cfg->schq_contig[lvl]; idx++) {
+ 			if (cfg->schq_index_used[lvl][idx]) {
+ 				schq = cfg->schq_contig_list[lvl][idx];
+-				otx2_txschq_free_one(pfvf, lvl, schq);
++				otx2_qos_free_hw_schq(pfvf, lvl, schq);
+ 			}
+ 		}
+ 	}
 -- 
-2.51.0
+2.43.0
 
