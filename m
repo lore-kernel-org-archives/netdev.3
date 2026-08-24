@@ -1,91 +1,152 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E135745A284;
-	Mon, 24 Aug 2026 16:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97EA8340A6F;
+	Mon, 24 Aug 2026 16:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787589362; cv=none; b=Msck+VpuP/RhyOqCbZYxtArHKzrhVLsz5wRUB5PokUWmmGXv3DhpXSB/1yK93iUnlBl/4thXMp3hHhYxP12DooJ2orv2MMw5s50hbKTZ20aFhjDqrXDyTv1vhQEa6yTfah6I5hHsKLw3/SrwyIajZiGv/NQN7Fii7pgG3ZF3Qvk=
+	t=1787590124; cv=none; b=BPl9qB0ghq7ZNOuiNFX9u4vsuQHrCDLBdXaOOYx3Kaab2j24eni2qQCj/PTTzPjzUhi3IDIMZwXP6w5U3mvQqbOL8UNgUr3UjjIIXIKLjnOe6CiIZOyMt0O0jlq+rvgr+nmACtLrWo4AAv/zqj/wmmYn1I521EoVwWuoHqZBD60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787589362; c=relaxed/simple;
-	bh=+ZW1hMJjctBtwALiC5du66462Lu1h+TE1aq1uFtvCzs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mJGvnfszi7goJFCO9cAtl56pvkd1sVygeOcm36MLz4UmTJ7A6W/+OlR4tZ+939ZWL2uwZs0vmzh1tQZ+7yeNKdH4Sxr6SWQWn2ViCVMAWj5QnKYEs70zLQa1p27ZM/HEgJE+bXQO7ulYEnhfdSegUQR5JflZlGkcwSo7tJEVSzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f/0tXVws; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787590124; c=relaxed/simple;
+	bh=OdzcroVIBks3JFTSAjW6CRoFsw9jd2L4sObexLqmZhE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jnNVJ/VD8H+116t84isMgFITXT6d4uGw1FxptGuuwXhkE39QAstF8qxjMaKqut4DgAt7wPfZEYkJ1yEFICBfWnAqGw+HjgTwbhqlf3H8wOVJiGp7VgZNv0rIDWFlTBeRMIwAljapBY/nbw3chngxuWLRuGmBinyVecUqobNteIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DZlRnYzT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f/0tXVws"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7ED1F000E9;
-	Mon, 24 Aug 2026 16:35:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DZlRnYzT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504941F000E9;
+	Mon, 24 Aug 2026 16:48:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787589361;
-	bh=+ZW1hMJjctBtwALiC5du66462Lu1h+TE1aq1uFtvCzs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=f/0tXVwsKq25OehT4aF6oByzoBr+fUQgx8jEPl9VcGEMUgdrDwSA+5eTPy8oG5eZ0
-	 0bF4stDY4TtdQ6oY4oFpgEXlbOShy6myLj9OmTIn0IIVoRB8lH4yluP+hpN/lUh/wt
-	 VbZ7/YoGWPjVm1OVSz2oWvKe5DwYiMk21moAaFy8CNg8njIbJfCiReY2PMeB35Ezvm
-	 bu66QZs1GdSZ2gSFkxu7bmbDaSt8Gkh8ZpaG/4Oxet0EQx31rRgMWuKtuby9X2krqJ
-	 W+EemDg7WvgATo8HDfl/YDKzJ2aDTuMhig28BH8syvUH7T+fWR5WHh4vdC7l7WpULX
-	 geMzR54f7i0rw==
-Date: Mon, 24 Aug 2026 17:35:53 +0100
-From: Conor Dooley <conor@kernel.org>
-To: wangjia@ultrarisc.com
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Anup Patel <anup@brainfault.org>, Mark Brown <broonie@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
-	Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@sifive.com>, devicetree@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-i2c@vger.kernel.org,
-	netdev@vger.kernel.org, dmaengine@vger.kernel.org
-Subject: Re: [PATCH 01/12] dt-bindings: riscv: cpus: Fix yamllint style issues
-Message-ID: <20260824-outpost-mandarin-532989726b7d@spud>
-References: <20260824-ultrarisc-dts-v1-0-61ab7aebe9e5@ultrarisc.com>
- <20260824-ultrarisc-dts-v1-1-61ab7aebe9e5@ultrarisc.com>
+	s=k20260515; t=1787590123;
+	bh=7eG18ALqGrAc0R4jlhNdqf4NA5blrLBjDEioLV0nwrU=;
+	h=From:Subject:Date:To:Cc;
+	b=DZlRnYzTLz9SKJeKspWhnZ0AYyPKwx72K4WF1EivckXKFRMM6eZRvIg1EYmo71apE
+	 yYWxXUFS9ePCaECM/dIr5qe8Id1vKP+ttoZvmyZjMyFqYWbSXUKiZNSUoi6Yk5gcv3
+	 xos0HLFMX0nWo1btBj4G0Qk1Lyf3RH/0yeq7yiFI66QL7pqLwa+oHG+PJi+xL7x8m1
+	 VIETsoZnvYcGDs0eojoV9ym9hhb1lHLaiyEEr6o63eIqMD9v98tJpa4Bgl40h7RI6z
+	 sO1SSWAVywYSGLVY0tSv8XJ7VR00S5wyXMbaBppu1CPVwGogisQOg3GoyyGEsilLnG
+	 1fC7yOZHFphgg==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net 00/14] mptcp: misc fixes for v7.3-rc1
+Date: Mon, 24 Aug 2026 18:48:20 +0200
+Message-Id: <20260824-net-mptcp-misc-fixes-7-3-rc1-v1-0-a92309d121ca@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="8v5dm5XnVj40MIRJ"
-Content-Disposition: inline
-In-Reply-To: <20260824-ultrarisc-dts-v1-1-61ab7aebe9e5@ultrarisc.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWM0QrCMAxFf2Xk2cCalSr+ivgws6gRVkvTiTD27
+ 0Z9PJd7zgomVcXg2K1Q5aWmz+wQdh3wfcw3QZ2cgXpK/YEiZmk4l8YFZzXGq77FcI8DVg6Yxjg
+ lokE4BvBEqfI7eOEEbsL5P9pyeQi3bxi27QMCBTl0hQAAAA==
+X-Change-ID: 20260824-net-mptcp-misc-fixes-7-3-rc1-6a4d6223ec41
+To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
+ stable@vger.kernel.org, Florian Westphal <fw@strlen.de>, 
+ Kalpan Jani <kalpan.jani@mpiricsoftware.com>, 
+ syzbot+55c2a5c871441261ed14@syzkaller.appspotmail.com, 
+ Tao Cui <cuitao@kylinos.cn>, Gang Yan <yangang@kylinos.cn>, 
+ Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org, 
+ Qing Luo <luoqing@kylinos.cn>, Kishen Maloor <kishen.maloor@intel.com>, 
+ Kuniyuki Iwashima <kuniyu@google.com>, Keita Morisaki <kmta1236@gmail.com>, 
+ Jakub Sitnicki <jakub@cloudflare.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3308; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=OdzcroVIBks3JFTSAjW6CRoFsw9jd2L4sObexLqmZhE=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGLJ6Su9yWSu4fZ6+asvuiDjGi1svaqeXl8zV81O6Wr7X+
+ ttF4Vf1HaUsDGJcDLJiiizSbZH5M59X8ZZ4+VnAzGFlAhnCwMUpABO5qs3wT+s6Z9zyz5UzL3bP
+ tT3p3ifT4iFZ3NUidHu6iIrgdu/gHQz/3QsWT8h3ebgq6FDQIruv9m9eyHjKOR/b72UZst8xzKy
+ dAQA=
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
---8v5dm5XnVj40MIRJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Here are various unrelated fixes:
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-pw-bot: not-applicable
+- Patch 1: Do not reschedule the RTX timer for sockets that fell back to
+  TCP. A fix for v5.7.
 
-Or I can take it if needs be.
+- Patch 2: Avoid copying thmac which will not be used and could be
+  uninitialised. A fix for v5.7.
 
---8v5dm5XnVj40MIRJ
-Content-Type: application/pgp-signature; name=signature.asc
+- Patch 3: Re-set the request backup flag when SYN cookies are used. A
+  fix for v5.9.
 
------BEGIN PGP SIGNATURE-----
+- Patch 4: Drop pending ADD_ADDR when removing ID0, and avoid a WARN. A
+  fix for v5.13.
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaoxy6QAKCRB4tDGHoIJi
-0vb9AQDtUF9H8kkJH+6QKRQJH8iwwdaldMbo3HPU6yiA6vWiuwD9H2afICo0iqA0
-++arQAoMF3AH3z4DdOsNWb0Fnh+g2gA=
-=5zz5
------END PGP SIGNATURE-----
+- Patch 5: Handle invalid suboptions where the checksum is requested in
+  the MP_CAPABLE 4th ACK with data, but not added in the option. A fix
+  for v5.14.
 
---8v5dm5XnVj40MIRJ--
+- Patch 6: Fix a use-after-free in the selftests that could lead to
+  false positive. A fix for v5.17.
+
+- Patch 7: Limit new addresses with the userspace PM to avoid an address
+  ID overflow. A fix for v5.19.
+
+- Patch 8: Reset the ADD_ADDR retransmission counter when the timer is
+  reused. A fix for v5.19.
+
+- Patch 9: Remove unneeded and confusing READ_ONCE() annotations. A fix
+  for v6.13.
+
+- Patches 10-11: Get nstat counters for the current test, not since the
+  creation of the netns. A fix for v6.19.
+
+- Patch 12: Fix an uninit-value in mptcp_write_data_fin for a corner
+  case now that only a part of the tcp_out_options struct is reset. A
+  fix for v7.1.
+
+- Patches 13-14: Two follow-up patches addressing minor comments
+  discovered after the human review. A fix for v7.3-rc0.
+
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+Gang Yan (1):
+      selftests: mptcp: fix an UAF in mptcp_connect.c
+
+Kalpan Jani (1):
+      mptcp: pm: kernel: drop pending ADD_ADDR when removing ID0
+
+Matthieu Baerts (NGI0) (7):
+      mptcp: subflow: no need to copy thmac during ulp_clone
+      mptcp: syncookies: remember the request backup flag
+      mptcp: options: handle MPC data + csum reqd + no csum
+      mptcp: pm: reset retrans_time when ADD_ADDR entry is reused
+      selftests: mptcp: lib: dump nstat for the right test
+      selftests: mptcp: lib: get counters for the right test
+      mptcp: options: fix uninit-value in mptcp_write_data_fin
+
+Paolo Abeni (4):
+      mptcp: do not reschedule the RTX timer for fallback sockets
+      mptcp: remove unneeded READ_ONCE() annotation
+      mptcp: being below memory limit is a likely() condition
+      mptcp: avoid pruning for OoW data
+
+Qing Luo (1):
+      mptcp: pm: userspace: fix address ID overflow
+
+ net/mptcp/options.c                               |  8 ++++---
+ net/mptcp/pm.c                                    |  2 +-
+ net/mptcp/pm_kernel.c                             |  8 +++++++
+ net/mptcp/pm_userspace.c                          | 18 ++++++++++----
+ net/mptcp/protocol.c                              | 29 +++++++++++++----------
+ net/mptcp/protocol.h                              |  1 +
+ net/mptcp/subflow.c                               |  1 -
+ net/mptcp/syncookies.c                            |  5 +++-
+ tools/testing/selftests/net/mptcp/mptcp_connect.c |  4 +++-
+ tools/testing/selftests/net/mptcp/mptcp_lib.sh    | 26 +++++++++++---------
+ 10 files changed, 68 insertions(+), 34 deletions(-)
+---
+base-commit: 7cbfb180945ce529608e4d4e24a6d483699fab1e
+change-id: 20260824-net-mptcp-misc-fixes-7-3-rc1-6a4d6223ec41
+
+Best regards,
+--  
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
