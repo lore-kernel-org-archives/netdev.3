@@ -1,189 +1,142 @@
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984254418F2
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 15:29:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.69
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787585386; cv=none; b=I+2tixlvK+S20FD3NCgNSDd2zpmbF2mXB7KDhn1NqeL3YcI0kNaMRvz9ZsMfcyVn2Ip9sHKlV4Iq7vtHLXOA9OKNX65x7xNXENMMN3Ur7dTx3gY3JPDiQ5tSSvfX1lTYtV6I6iRbZuLSskF6eY92Qqxs5UYulteN/o+M6vBqWAY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787585386; c=relaxed/simple;
-	bh=Y8jENIUNDeT2CaDx0lPDFpqJK/OjLgdPk5Qq7s+pqKQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hWFko/6hiX1psd74vgAdD42J1KzmQlOQaW7crNL7NOydjWlRNxWOjRXGiYPAPUpisDlF13p5SUQzuO0aEwYuQeiReWIaVE54j2keWjHwbpODni0Z0S7y9tKnHPCMhvA3IfLplVzIyj+PgOCCM6zygtBBBz1O8OpPS0wujT/VUKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--lrizzo.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=irk2HsTW; arc=none smtp.client-ip=209.85.208.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3696F2DB7BF
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 15:32:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787585564; cv=pass; b=foGlwrWnaV8PmMeifMDrpVg8VK7HRaP20E9gYTJRNGgTZQ4JOXimB0bC8p3UGkxIBlSXcGSeDls187SEBUQ1RjOKvQ9ljte7yh/FSrDC9c9zWVa1+cOp1UED1JF8ZAWZR8p6Rme9mEfis53QptwCxPc35csf5Kp6RZjK0kBV1wc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787585564; c=relaxed/simple;
+	bh=pMin6QXf6mzaFI9tqvtNXTL3PhczVNb4o6Q4NA2CycA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DIxfgqR37tOrVUdrDrs+ofs+iYdrMo+bc1QoOgWvvKmIF/9PvTcZQq3dTvo8ZSU/lj6vGeq2KblFSUubz096JExBFE6T+R2yVKhuH4konkYZ/ejLzDQmIhC1WTO18BahiHb7h6Ibel5Ov0qnKrXnEjF8etXK3baTE0LZY33jf44=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FY4/UpLe; arc=pass smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--lrizzo.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="irk2HsTW"
-Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-6983e9c028dso2781928a12.3
-        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 08:29:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FY4/UpLe"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2d3b440b97aso175245ad.1
+        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 08:32:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787585563; cv=none;
+        d=google.com; s=arc-20260327;
+        b=X2eHOBtL1DDL4kEIvnnEBDp5KveH35+tC5RfJi8hc5gv+7HgOOYohBCEpowFkwGZXB
+         NNBtGtLaaN0qkgUUo9oIZnFli/mUXkJWkTHicoFbPdEs+DfKvAg3N7X2J4YYzzZKo3g5
+         TMxHb+8oSE0unL0yMS1Lsta7IS2y1juE0lWu5Wo/HdUQm1HO4hsGBKr+aEG1T1xqap6T
+         8sdCKMo1QS+/elzQ3Xwg3BLi5aij4KLSGyBrAqClXU+g2zaEE4lPQH2WKSJwnXgDOFE3
+         8F1AuwTxipEnA65ULIAzDxLY/i05TpXeU5pgcsovVodoi7exo8chrZ+x50dQLYGPjWzx
+         m6wA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=pMin6QXf6mzaFI9tqvtNXTL3PhczVNb4o6Q4NA2CycA=;
+        fh=BFTEPSwohNBdsSqCI8in/CcVmVW1ZlOCpQwfVKrqBac=;
+        b=jzlWYk8vFe2IkFm90FOcY4sjytD9ieeYiw/WEzYa2jewR10Q30vr1rjGFsBaK0clED
+         gFgevtO8oCLHDeNzWQY+WaCNHHCdtOcxRLjV7o1kbk56C1eR9dltJhJRYyQUgnSeqM60
+         B7IBZfLd4MFF+W2etHJCq/q0vPoPxonZWVZxweLUfDISUA5dxMdBH8/11j+bUUz73/Mf
+         oBR8KRcyF/6jHQhQjVioLViPzlxyP9aIa6UkXOYL7xpk/bJusTFCMnYQiwWQ8zCHbNuR
+         A01RGv6DkRwxplltgfPOdIL+UG0NoLzLrdvw7oQdTIu3FkGQJaFExLwDCCgLMRv03Zl1
+         ECRg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787585381; x=1788190181; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JPV7mwpWvFlRgLJpo7McYGSN9ACQlDljrVAQMeggU7g=;
-        b=irk2HsTWJIob0bXN0S/1VWBAdk/hIXUxQmHMNj/ZLztvvnPw+e4O7yiNJkdF4vwsnW
-         QKpQvDuRRaqPu8LY5wScdbwQI/Z1FaEnzqfoPNo0g0kLxBdcXXikbnPySRuPPss12xzX
-         kj6pd9ftfSSi18JSExUYEypmW623o5d2Fv523g9FHmfAtanZiDyssGNk3MY8lSF5I9PE
-         EsBWLVBiVz1F2YPRkCDjj97pWQWYfEJTd5uVmpdvSWwEBcRmVkVk2u8fHA+K9FmHQiUv
-         fvZ+ngiqC92nqsOd3AH7w6b9NuUiDj9rgLPNycqV2ijbP7ZxEWtfq5qv5mWzbSXFRjuQ
-         +UfA==
+        d=google.com; s=20251104; t=1787585563; x=1788190363; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=pMin6QXf6mzaFI9tqvtNXTL3PhczVNb4o6Q4NA2CycA=;
+        b=FY4/UpLeE5asGr+ZYS1AB5j8fDq5k869mMaIXfEFucXrY5+h+b1atIJxebGpebFr6o
+         62kwCwAcR2lQL+RHR9WzR3QyaoQdoSy+bV0Ox2zlAnGoYYH4wqb7RxKrUpXOHkCcijUb
+         k96YJZOJmlL+0MzgyfJyXYl+OBXh0A+6X9gEfXIf92g7Ft0zp+wE+8OmSgP5jCiZwdTd
+         nB2npEeTb51sLhNFkxCTnoB6rgxTyX4dRvMjJwhEd1RY1CMgstpPQDgjvF289Y0tqnmW
+         ODX8MQONNZw5wifcDMuo4l4u8iljXKGhHwC2wJ7jBcHPxLkipgSr91TpajVcqOEOjsX8
+         6d1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787585381; x=1788190181;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JPV7mwpWvFlRgLJpo7McYGSN9ACQlDljrVAQMeggU7g=;
-        b=cXq2tFbIoh8ERMdt+9xv2N3pmxuazBFTECTbg4m7XBW+yU5+TH0olfsYVJLgbcbBfR
-         J+ODH4qltF9CUBpj4z6HFbS6ZmW+09Qfc58kt6vzoDssYLpJIYx6ao7jFj1Crl66r0D6
-         3PzaOaeQOmshrB6VF4ZPiiLxBy/2X7ODs5m3K2hQxoTLO8IxPrxOM+MbY+kAbPotT54Q
-         FtXq6kVMd2K2MTJapTtWHgatpcdArq7P99eSmCu3noq2qhkh2+6xj6tDVZlxZDlM++Bu
-         RU/FyiL75V44yBLuq8tdc2INQ+ojCXzDof8UUb7b7r7B3agfFlMwf8soNzCfxvPinq1b
-         R2Eg==
-X-Forwarded-Encrypted: i=1; AHgh+RrfoIw77svBbH1x4NB2OEpn2GaJ01vA2zRfmrUCA8pV0NcEnVLCNZQsg9tsj7dO5gnqwlhIVDU=@vger.kernel.org
-X-Gm-Message-State: AFuF++m+qth5yDoiBNTVfjz+X9azuJ9hrz69sL/Y0FdLuDXT1U3w6wHh
-	y5ncKndx/TEGWE7wALanyW597prXAIWxkAeeeUnZAmIvOOb+WF6xwmbtAkUKmFVoBfJsIZ7JQYU
-	A4N1nbQ==
-X-Received: from edro3.prod.google.com ([2002:aa7:d3c3:0:b0:698:6d8c:dd8e])
- (user=lrizzo job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:321a:b0:6a3:f3dc:d7f3
- with SMTP id 4fb4d7f45d1cf-6a42f216053mr33518684a12.16.1787585381419; Mon, 24
- Aug 2026 08:29:41 -0700 (PDT)
-Date: Mon, 24 Aug 2026 15:29:32 +0000
-In-Reply-To: <20260824152932.1583506-1-lrizzo@google.com>
+        d=1e100.net; s=20251104; t=1787585563; x=1788190363;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pMin6QXf6mzaFI9tqvtNXTL3PhczVNb4o6Q4NA2CycA=;
+        b=hcKRbydnlxfa7eD6tX3ZGC58CmSiT1i3gZ3cggHtKk+FhgZ5+46rSt2p7yPPubFy/T
+         +8FDcunKlaeb177Any1oi/qn7sdblVQf/jGob6fY7pEeDu0C4PN6aGiAeeypo/8ejN9M
+         pOncn13t3rgxl5E8WeGDixnilOdjl4zEq7Sv6JeldyWRvZUGiToUrkhi23vq21CJKKKM
+         rqUACB5OwFfzvNM/f+UjFxjWMtGnclVjdaBNBidMARS8tNkQ+4faRpfMTT9prCfIv6cS
+         28odJ+KUowd/fEHrBsfP8BQlyx0ovWhMEq7Tk2HKrxPxmhTKfqGm2QqfVZS2jj1ZiM+m
+         XCmg==
+X-Forwarded-Encrypted: i=1; AHgh+RqznbmzEj6Wu82B32Ymz20F/ZrxbD+Guc4L2C6ugUMqDNhivkQ/ZqXNbjTanr2iq4hRuu1JCeQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++lSR1bseXlEUWU/Wha6EhFMuEoIfeBaWPzo1Aki4eMjpAkKqAhB
+	NGbVfQRHTwC3a5N+A1ugGatG0XZESQvGoY1eBvxHrOqaRhKxjK7xunph4SUyWAvET80NIn7XnJV
+	LUs1+D03FmjHcizm6BZr5Vl7RVArE+FRc+b6koHGS
+X-Gm-Gg: AR+sD133nRqxXPTp8olWkepevALA4Aj9wdOmkJRSwAoOzoUe7n+r0fsOqgyub2fM8s3
+	YSZ7Y2DjwimVZrfa33tRp6Z7P0MCprt+m29ht+0nVPkJAWyCLV3v26ULSXtYImufbZlP00NN7uU
+	Xw3DKYHxKQjNFTNQQSKghOzzmJt8Xw8lppruY5qPwDzNMLjauyZQC6bgn7F8M2EtdwYxMe1DLyE
+	xz4c0Lac8CBroKmXrqfgVbBXVO//5Vciuhdpc7O29V+19fHDbgypD3pR6BxB30NTlAaPerjzHav
+	joKWHS2x2m9+K805cHIK7y94vlAFwpbAfU/IS7ciLxJcHDlfTolnSReE7CNF5w==
+X-Received: by 2002:a17:902:d592:b0:2ca:bf8e:360b with SMTP id
+ d9443c01a7336-2d673b9e9f2mr10182565ad.9.1787585561896; Mon, 24 Aug 2026
+ 08:32:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260615234220.3946885-1-lrizzo@google.com> <20260824152932.1583506-1-lrizzo@google.com>
-X-Mailer: git-send-email 2.55.0.766.g2966f0265a-goog
-Message-ID: <20260824152932.1583506-6-lrizzo@google.com>
-Subject: [PATCH v2 5/5] swiotlb: Implement RX nocopy with fast recycling eviction
+MIME-Version: 1.0
+References: <20260615234220.3946885-1-lrizzo@google.com> <20260615172535.080cf94f@kernel.org>
+ <CAMOZA0KAHKsvA9yRcdrjG13S+=rJhw-Cvnw2WdLjGGY0azG0kw@mail.gmail.com>
+ <ajEuUZMgS_NRmDcp@google.com> <ac473a83-c77f-4a41-bc86-8a857d2d6e36@nvidia.com>
+In-Reply-To: <ac473a83-c77f-4a41-bc86-8a857d2d6e36@nvidia.com>
 From: Luigi Rizzo <lrizzo@google.com>
-To: Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Luigi Rizzo <lrizzo@google.com>, 
-	Luigi Rizzo <rizzo.unipi@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dragos Tatulea <dtatulea@nvidia.com>, 
-	"Rafael J . Wysocki" <rafael@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, netdev@vger.kernel.org, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, driver-core@lists.linux.dev, 
+Date: Mon, 24 Aug 2026 17:32:05 +0200
+X-Gm-Features: AcwNN1VGtdaRS1g0BYe1RjEgd2mMtkM251D-YEt_DU0VPfQjcinAUbJbvNKEsc0
+Message-ID: <CAMOZA0LJ9qTs+d5Mg9CB1Pio-Kw1HDmuVSMiz=zUZdWFC7zqdg@mail.gmail.com>
+Subject: Re: [PATCH] swiotlb: avoid double copy with swiotlb on tx socket
+To: Dragos Tatulea <dtatulea@nvidia.com>
+Cc: Mostafa Saleh <smostafa@google.com>, Jakub Kicinski <kuba@kernel.org>, rizzo.unipi@gmail.com, 
+	m.szyprowski@samsung.com, robin.murphy@arm.com, willemb@google.com, 
+	kuniyu@google.com, davem@davemloft.net, edumazet@google.com, 
+	pabeni@redhat.com, gregkh@linuxfoundation.org, rafael@kernel.org, 
+	akpm@linux-foundation.org, david@kernel.org, netdev@vger.kernel.org, 
+	linux-mm@kvack.org, iommu@lists.linux.dev, driver-core@lists.linux.dev, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Conditionally divert receive buffer allocations in page_pool
-to the SWIOTLB page allocator.
+On Mon, Aug 24, 2026 at 10:59=E2=80=AFAM Dragos Tatulea <dtatulea@nvidia.co=
+m> wrote:
+>
+...
+> An example of this is Jiri's system_cc_shared heap which is a dma-buf
+> heap with decrypted memory for userspace.
+>
+> > I am still looking into this, I was planning to bring this up in the
+> > upcoming LPC.
+> > I will give this patch a try. However, I believe that we need a more
+> > generalised concept for CoCo pre-decrypted allocators in the kernel.
+> >
+> There is a talk at LPC in the networking track about this [2]. This is
+> exactly the type of discussion that I was hoping to have there.
+>
+> Besides the issues mentioned in this thread we've also found that a lot
+> of overhead can come only from swiotlb allocations when running many queu=
+es.
+>
+> I will add information about this series in my talk. Hopefully I will als=
+o
+> have time to add some numbers for comparison.
+>
+> Sorry for the late reply but I spotted this thread only now by
+> accident.
+>
+> [1] https://lore.kernel.org/all/20260325192352.437608-3-jiri@resnulli.us/
+> [2] https://lpc.events/event/20/contributions/2464
 
-This only happens when swiotlb usage is below the threshold set by module
-parameter swiotlb.nocopy_rx_percent (default 0, range 0..90).
-A value of 0 disables the feature.
+Thank you for the feedback and links.
 
-To prevent existing DRAM or SWIOTLB pages from circulating indefinitely
-in the lockless receive ring after changing the parameter at runtime,
-__page_pool_put_page() checks residency against the active parameter
-state. Mismatched pages are immediately evicted back to their
-respective allocators, achieving rapid, lockless mode conversion across
-active network streams without requiring interface or queue resets.
+Do you have some code describing [2] ?
 
-Signed-off-by: Luigi Rizzo <lrizzo@google.com>
----
- include/linux/swiotlb.h |  1 +
- kernel/dma/swiotlb.c    |  5 +++++
- net/core/page_pool.c    | 25 ++++++++++++++++++++++---
- 3 files changed, 28 insertions(+), 3 deletions(-)
+I just sent a cleaned-up v2 of my previous series, if you want to try
+it please use the latter.
 
-diff --git a/include/linux/swiotlb.h b/include/linux/swiotlb.h
-index 3baf52e6572d0..f4597fd01c52d 100644
---- a/include/linux/swiotlb.h
-+++ b/include/linux/swiotlb.h
-@@ -205,6 +205,7 @@ void swiotlb_destroy_compound_page(struct page *page, unsigned int order);
- void swiotlb_safe_put_device(struct device *dev);
- 
- extern unsigned int nocopy_tx_percent;
-+extern unsigned int nocopy_rx_percent;
- 
- /* Track epoch (number of delete operations) for leaf device info. */
- extern atomic_t global_device_epoch;
-diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index 7b818a796ff96..91f175c34a34e 100644
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -129,6 +129,11 @@ struct io_tlb_slot {
- static bool swiotlb_force_bounce;
- static bool swiotlb_force_disable;
- 
-+/* enable nocopy rx swiotlb and set the percentage of buffers allowed for it. */
-+unsigned int nocopy_rx_percent;
-+module_param(nocopy_rx_percent, uint, 0644);
-+MODULE_PARM_DESC(nocopy_rx_percent, "percentage of swiotlb buffer allowed for nocopy rx");
-+
- #ifdef CONFIG_SWIOTLB_DYNAMIC
- 
- static void swiotlb_dyn_alloc(struct work_struct *work);
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 50ee550fef73a..fe8839a7c70a8 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -19,6 +19,7 @@
- 
- #include <linux/dma-direction.h>
- #include <linux/dma-mapping.h>
-+#include <linux/swiotlb.h>
- #include <linux/page-flags.h>
- #include <linux/mm.h> /* for put_page() */
- #include <linux/poison.h>
-@@ -578,10 +579,16 @@ static bool page_pool_dma_map(struct page_pool *pool, netmem_ref netmem, gfp_t g
- static struct page *__page_pool_alloc_page_order(struct page_pool *pool,
- 						 gfp_t gfp)
- {
-+	unsigned int pct = READ_ONCE(nocopy_rx_percent);
- 	struct page *page;
- 
- 	gfp |= __GFP_COMP;
--	page = alloc_pages_node(pool->p.nid, gfp, pool->p.order);
-+	page = NULL;
-+	if (pct && is_swiotlb_active(pool->p.dev))
-+		page = swiotlb_alloc_pages(pool->p.dev, pool->p.order, gfp,
-+					   pct);
-+	if (!page)
-+		page = alloc_pages_node(pool->p.nid, gfp, pool->p.order);
- 	if (unlikely(!page))
- 		return NULL;
- 
-@@ -616,8 +623,9 @@ static noinline netmem_ref __page_pool_alloc_netmems_slow(struct page_pool *pool
- 	if ((gfp & GFP_ATOMIC) == GFP_ATOMIC)
- 		gfp |= __GFP_NOWARN;
- 
--	/* Don't support bulk alloc for high-order pages */
--	if (unlikely(pp_order))
-+	/* Don't support bulk alloc for high-order pages or nocopy SWIOTLB */
-+	if (unlikely(pp_order || (READ_ONCE(nocopy_rx_percent) &&
-+				  is_swiotlb_active(pool->p.dev))))
- 		return page_to_netmem(__page_pool_alloc_page_order(pool, gfp));
- 
- 	/* Unnecessary as alloc cache is empty, but guarantees zero count */
-@@ -835,6 +843,17 @@ __page_pool_put_page(struct page_pool *pool, netmem_ref netmem,
- {
- 	lockdep_assert_no_hardirq();
- 
-+	/*
-+	 * If runtime nocopy mode toggled, evict circulating buffers immediately
-+	 * back to their respective allocators rather than recycling them.
-+	 */
-+	if (unlikely(!netmem_is_net_iov(netmem) &&
-+		     swiotlb_is_nocopy_addr(pool->p.dev, page_to_phys(netmem_to_page(netmem))) !=
-+		     (READ_ONCE(nocopy_rx_percent) > 0))) {
-+		page_pool_return_netmem(pool, netmem);
-+		return 0;
-+	}
-+
- 	/* This allocator is optimized for the XDP mode that uses
- 	 * one-frame-per-page, but have fallbacks that act like the
- 	 * regular page allocator APIs.
--- 
-2.55.0.766.g2966f0265a-goog
-
+cheers
+luigi
