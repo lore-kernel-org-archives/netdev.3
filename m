@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FE33815CE;
-	Mon, 24 Aug 2026 18:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0A73839B9;
+	Mon, 24 Aug 2026 18:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787595664; cv=none; b=bqxuF7e/V/7kXrvHRLIno5mrHXzpgBcs1FlJnXKtZnokSCiPUYdycGNnUgyie939v7W0ONLOw/+x5EcsC8Hga2qiSkBZ4tkFI+BMRgi1OZqto+A4hzF/rMFUFlzgPC57I1tlaKVfd13OH0v0RIgqdUvbH8+WzGT4i9Sfu6kjVaA=
+	t=1787595666; cv=none; b=GHIoL+REIaQspNyktrJl1LLfC/ctD3EPaH+gZpGDzGHXwyVgVND1SS/IaOt6l+qcEEgLefRWr+rDsXT1oUM99M1UKpkZoS+31Aiaj5tjcaQ+2G0q7LjoFAiTOAMi9zj1eMYMqk+nB11cdZpyg1EVWqbkqS6hNYYl7YHz54JEBtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787595664; c=relaxed/simple;
-	bh=F0dEvCUyQEyIj6qW4WR5Gl+pMQGgkZl2dYI6VyGEY1U=;
+	s=arc-20240116; t=1787595666; c=relaxed/simple;
+	bh=WA+DMs6W+l9PG5WMFeSHJGhcnhvFqznANMyCq/1qbCw=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=u3GusjsDb/NFbotMrAIRPUY1Pw5ukmao/3wJijGa9YSSCUtlph72FGuCGzhQQPmZVvLbvBebA8/Dot1HWcUc4MigBqGsksSrshOoYd+3UFx75IpKcEb2nr+Zd4vbcTF6ZudSlxCGjUl4+7V5kE3ZA4JTqiCMiWgtky9DBxM0JZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VrGbKR9V; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=HhoIZcgG6OxC8rwbi6RKw66kwSkIBTgsGZE0jXwxtZyqsHBBEDQQ+7hEfUVPCT/qMluwuDkMMtQ2YDi9IfjAPXhE1la0FjUY0dWiz2zHlYXIwKGyn9kLWSyE7zVFKzzir0vGBxAFh2LHkbXl+KVaU6CT4khQQz8Ec1JL2bqe4sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=asWIVPnD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VrGbKR9V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E6021F000E9;
-	Mon, 24 Aug 2026 18:21:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="asWIVPnD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF6FA1F000E9;
+	Mon, 24 Aug 2026 18:21:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787595663;
-	bh=sETMReISMBe6rjtQEm20AuiXiK56X85vfYOV++AGSe0=;
+	s=k20260515; t=1787595664;
+	bh=VC4G+XqTAfrFRT64hospUFqXl0HFoiSRWtgAhJL/a7Q=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=VrGbKR9VGsJYoffJbq9RnobYFUSqZaedkdBTA9n+E0B8M/63QpKK2qWaY6o6GUbE5
-	 Yy5mFkwiYeMj6Wn2sImSQDB4h8GlwgUpFEP7LV21npHJhCrl+N/X2lwWeQVEoZUcH9
-	 9rLU3chh0c8FKvVXPacPV7VED0TUFNKreWGOXHxNgCNEIoEmPv+oqx2Cid1JDfF0V8
-	 ff1cnVCX1dXwwd/2ld/uu2p4CdQeCe8G7wum/2xp/v84ZK47b9UQeQZOm7Glr5nNhe
-	 Kwnr8dOiinRNdnlrPCI9+kVoW42AfuMNHDPhXwHz3eFIFqzu8biPlkPmxe4OnExdTd
-	 TLVmIr73BSt1g==
+	b=asWIVPnDJTek2DU4bX3bTdXnsGHKhQxERRvr5tTvYCyhEWPtoUjvefBo1gyS1UW0c
+	 qme9iVwF6OuNAv4rALq0+Yfbe8SiiVdJ8RTdEsOiFgTFIKUPGg9DcUoFYrSVzvtMkv
+	 AccRbe9dGSIBTIwycaqHVW21yHOuY5/ZutfX58TL0zVHMMJydHLoIdRSSjHQCT++HR
+	 AOP1axogqC8H9N5vYkOAO+mryC5l1cVUCqP7Q8RRf720hk4w1MO6WT0fqsNtPta5fZ
+	 lyIuDqzXTu8HFeEeJvbuF1JW2MIREZJaMdP5TI7wCJeO3fzNmW2bXdMyxMF9IhV2su
+	 R5dLvVnF8MjAQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0FF863924A4C;
-	Mon, 24 Aug 2026 18:20:12 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 727BB3924A4C;
+	Mon, 24 Aug 2026 18:20:13 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,60 +37,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3 0/3] xsk: pre-existing AF_XDP TX metadata fixes
- from
- Sashiko
+Subject: Re: [PATCH] net: ethernet: mtk_wed: increase WED v2 WDMA RESV_BUFF to
+ 0x80
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178759561065.3051903.3086695861982033843.git-patchwork-notify@kernel.org>
-Date: Mon, 24 Aug 2026 18:20:10 +0000
-References: <20260819160535.1472459-1-sdf@fomichev.me>
-In-Reply-To: <20260819160535.1472459-1-sdf@fomichev.me>
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, anthony.l.nguyen@intel.com,
- przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, saeedm@nvidia.com,
- tariqt@nvidia.com, mbloch@nvidia.com, maxime.chevallier@bootlin.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- aleksander.lobakin@intel.com, horms@kernel.org, magnus.karlsson@intel.com,
- maciej.fijalkowski@intel.com, sdf@fomichev.me, ast@kernel.org,
- daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
- guoren@kernel.org, dtatulea@nvidia.com, witu@nvidia.com,
- martin.lau@kernel.org, yoong.siang.song@intel.com,
- intel-wired-lan@lists.osuosl.org, linux-kernel@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org,
- linux-csky@vger.kernel.org, leon@kernel.org
+ <178759561210.3051903.7350962309805353332.git-patchwork-notify@kernel.org>
+Date: Mon, 24 Aug 2026 18:20:12 +0000
+References: 
+ <OSZPR01MB779537889255E2F606E47EABBCA52@OSZPR01MB7795.jpnprd01.prod.outlook.com>
+In-Reply-To: 
+ <OSZPR01MB779537889255E2F606E47EABBCA52@OSZPR01MB7795.jpnprd01.prod.outlook.com>
+To: Shiji Yang <yangshiji66@outlook.com>
+Cc: netdev@vger.kernel.org, rex.lu@mediatek.com, nbd@nbd.name,
+ lorenzo@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 19 Aug 2026 09:05:32 -0700 you wrote:
-> A few fixes to address pre-existing issues from Sashiko review.
+On Wed, 19 Aug 2026 21:07:07 +0800 you wrote:
+> Change WDMA RESV_BUFF from 0x40 to 0x80 to avoid CDM TX FIFO overflow.
+> Without this patch mt7986 and mt7981 may have WDMA TX hang issue. This
+> patch was pulled from mtk-openwrt-feeds GPL open source project.
 > 
-> Notes on the feedback from net-next v1 posting [0]:
-> - It correctly complains about ABI breakage for 32 bit systems, added
->   an explanation why I think we unlikely to have any 32 bit users with
->   launch time
-> - mlx5 batching (pre existing) - I think my point in the comment still
->   stays (that we do not make it worse)
-> - stmmac recycled descriptors (pre existing) - seems valid but I don't feel
->   confident sending a vibe-coded fix
-> - stmmac queueMaxSDU vs taprio offload - don't think this is real but
->   we can fix separately later if it is (the existing issue with breaking
->   xsk seems more real)
+> Link: https://github.com/mediatek/mtk-openwrt-feeds/commit/07c87502e854b68b48544d101b6fe17ec059b97b
+> Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v3,1/3] xsk: align TX metadata layout across ABIs
-    https://git.kernel.org/netdev/net/c/bd7d30bd1d38
-  - [net,v3,2/3] xsk: honor XDP_TX_METADATA in zero-copy path
-    https://git.kernel.org/netdev/net/c/a6e4b9a6deb9
-  - [net,v3,3/3] net: stmmac: document oversized AF_XDP frame handling
-    (no matching commit)
+  - net: ethernet: mtk_wed: increase WED v2 WDMA RESV_BUFF to 0x80
+    https://git.kernel.org/netdev/net/c/c0ef04232f9f
 
 You are awesome, thank you!
 -- 
