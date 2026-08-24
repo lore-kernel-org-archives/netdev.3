@@ -1,202 +1,281 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1E1382397
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 18:22:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787595773; cv=pass; b=XBN9Pwea08k/qcN0esZAgqe0iaqDr06MjuAGjBuHivuN0FpqLaNxD5lEGShGfGBwlemIpga8eavNsvlXInyqYzGW8sy1Zx4jCDgxhsR+422HigjaGBbgC19jnkaowi+O+B+mSn3BY2InL31rtmpQXtYoeD9U1AZQz5otQ/yXgsw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787595773; c=relaxed/simple;
-	bh=1h7+5SdSR5g5oWKqRm0UyCzSJRi1vMseV9lOc1BqdN4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AIVFkoI2TYoIH2Ju8IT4oZFHu3LlN6Sc6E9kvhdfAmEM6VEMOiJBMDRzekfQwjiAtvIWLvmPeCpeXIkedk0O/yFPsos/hxAkAwmYD3U5uahRKGvKbmOlvx0mSszUB/B71hVT8R/gioCDvYEuE69tBiHqOIWrIU37mlp7r7NL1c8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hcCOGBt/; arc=pass smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E6E383981;
+	Mon, 24 Aug 2026 18:22:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787595775; cv=none; b=i/7tYW8HSf9r2qw+717JQTEgRsy65NnXxPV8dBsMK5lpkYcOcZup3DiHZwoqLt7neVIM/dEopTbeXe2nNlaKGxga7EEgix1aFITSQPQzqSLEp4ptQOj0hTicsBz+wtMloRPc2rLICvyMeh2iiDqqpQ6J7bIqrIjw4tdU/JA9x6g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787595775; c=relaxed/simple;
+	bh=rxs7sO3FqqvreuB3ejp0DZZxGpzhU8PhCvK/ZvhE8/c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ikUX5mtsR/6qO5kDJEb/l5wF9oFkKC3gA9oy8DNUJdeMXYBD0D5shQoQ8O55Ks3AHew+KVLGIhiMa6C04jVobGM4sxfZIZbzvYvkUhx5ww4UjRKWfWI/BXj5x+jl83us7z3DwI65/sghlN082h/0XVvNpO/oU5k4U/Rxht25Oj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kdNQ1jqD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hcCOGBt/"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ceab75934dso51980415ad.2
-        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 11:22:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787595771; cv=none;
-        d=google.com; s=arc-20260327;
-        b=IFCU0sM8k351gUQi5wV4/Ijqt8u4UamL8ZDRwepxQWH1T5+tA4gCtQoL3ObqpRgRQp
-         oBrFGBUMW4KhGZv5Fmg2mJPp61SnTEILJfMSNnUyjDZ6ZlFzp6E1WxTiUt84xM0uf7k0
-         SsJAYzDzjoBmh7msXJ604rC6mSBCsfQHEPr9Pq8RBNCuopNKZ2NlrEXxNIZ6DMypV2AX
-         eDxu9nPtYjwovF/4aZIhJKq82s6/szctqL+2K8YEFzWvlYgUN2mW7eJ9QXB9Nk61tIdr
-         a4/OuRcabNsG1ejR5VRnesj1nm842QqpZdO3b4kQyELZwZ8VmUCkhvDMLkJST335gtfu
-         T7sQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CMsomiXlkv8l2V0OZC02rc+ZeIqlCAWy3EWkF+bVKPY=;
-        fh=XDtm/5d+kvRmsxN/HbTiW9l+AnAth9b1kGIYIfgoyJs=;
-        b=FilVrK8UBoPr02U1xhbmNqMcdRCJqLErwAqaRA9AMGPR6ZztcBIVa+9ATOLbbCHLM8
-         DVgCgfbalkxxCtsiNUrh3noSR299MoanQPDqnPlnSYfVUPxgnSEQYLfDBC4NEfHYhb04
-         YD53oLe2a/MdXFa2HHTj8Kz2Fnfjk83jQYPdiswtm957cd5m9u/4iCm9/Z63nrU0v/Cl
-         BDDUQNPVw+wgqL9JO606GJGITXqjPxqpZ3AOWUTfnGQmMY2AnBUy6TRr0C5ZTPvCzLQr
-         LFCgIHs9aCjUvSo+FDK+FOjxQd1TsIvxo7udMA31+NDAAs9VqLmOVPHCiWTJN850/L5k
-         k0ug==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787595771; x=1788200571; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CMsomiXlkv8l2V0OZC02rc+ZeIqlCAWy3EWkF+bVKPY=;
-        b=hcCOGBt/vumZi0WXqE50raHwr0VhsYvxl58wI9Y+VZT3C70o/LnbM9cx3Fm3n3fBpg
-         0yZ6eiHDVbRlu5FMxEQsZ8T3HDbp76m95ZuzeJKdHi4xkNV2r2ZjbhWxIH+l8xZQC8y9
-         yDJ8nnlPrqIN1nmatFwJ/2qzPmN+1b0pYWNMX9BiNSEQzokH143CbBE8fKCvXxtlmZKg
-         PA0KQXw157mrzqfOjJV95ARQZM+I5tG8xIJCU4goggD6FLVsYYecAaeOX0OCGwIKKvtU
-         HbYpF6YbPk7FoY/GR4qNQNG5rRYDy0E2R2yVGqKyF56wB6ty3tLT/Bnd/pXBc9HjJHXA
-         RDuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787595771; x=1788200571;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CMsomiXlkv8l2V0OZC02rc+ZeIqlCAWy3EWkF+bVKPY=;
-        b=hRxqRDMaJee/djxwLXmIyRJlc4VOY69KfdTTNGmP01D9f+SzBCUZ/UO8wuBVZ2ryu+
-         qlv8l2Y/9AEXiihA3KdYKBxBhN3dnHfdzBdIHlhrPZTvM5PJjfc5WsReH4D35gaU6g57
-         SvBkmZlZ1Q5b+WhjVOsVMUMraB6PZpmBpVZv5PcrTv7ln1iZhqnkLhg4Nc+Rvbu+lbtG
-         UbK7vfmkhoes+m6APZsdF1iGrfMaL/PT+I1//oKavB4k/ZiIZtNSY9Opc/K/j7pEsllN
-         EuoaRIH/Y8HYrA3yfu98qfNHVpU/uKDq/444xdCskQy3S9Q4encx04aItVHYblB3w1EY
-         VURg==
-X-Forwarded-Encrypted: i=1; AHgh+RqFuvj/WXPDB6ypP1X6tv5s25rcTUxiMSYtdp7P7bwUiO3hvY5f3h8lcG+Ywuy0kPb796yCDvY=@vger.kernel.org
-X-Gm-Message-State: AFuF++lXr7gqRq4HVlp31+1fVbNa9iiAvqe4/QAUOFaLxvsh902OwUkU
-	eYMsBnLPhI/DG5y2ZkRm0ht/a+lumtgSJxttYpS2RVNQA5Z7LYT+2o7Nqn2XwmRKf0OY0+0i5MX
-	0+qILnSQToCRl/17g8OE5wrr6V4hzVgCvwG/A6wwU
-X-Gm-Gg: AR+sD111pSeggOTzF2TkuqKXVYcgy1nkPp9F0IlBgbzc7QZcenjHT6pVv6CieiCVfZG
-	KsFVLUCQCDeLgxjh+a7AbJ/xerlAtZJPqvubBMmUUUZ1YRReU33X/fxEEKPS5pldmlwZV95qyyT
-	lsoJYwd9HU2yDZ6MUnHCbSa3dAjIeiS1ICM5zBsI5IlVhHcjKEO03Ia1ubWSoGRsOkz3WE3syCM
-	xitKJkrlxy7OWt6R2Paoszn1YM++W6+Vix/YMHoVXJYTgV1DUbF3bX6DPh4QtHA81MxoO3uhTYH
-	GVcgG15SLOwr58JWnqf5RhHsA6YSQI9gQampPdorHTVxlXTSa0+h0U7GMNa6iH9l3wbm+txiiMk
-	yKURUT/A1fuv2Q4qvXxVNKETgoJcWXgrSUAsCEvdsXMV0xmB3rsJu1wofZ+q0l40nCplho273tc
-	avtkCStT2/qDvCbFYcSsYFuQ==
-X-Received: by 2002:a17:90b:3811:b0:393:288:29e3 with SMTP id
- 98e67ed59e1d1-395df24f20cmr34888338a91.10.1787595770675; Mon, 24 Aug 2026
- 11:22:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kdNQ1jqD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FE451F000E9;
+	Mon, 24 Aug 2026 18:22:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787595773;
+	bh=WmNoSysQv/hBxiCyPDAmxrJYxNZ925BTiUeBMsz9xA8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=kdNQ1jqD/Tkj0Wt9MM86oo99kzAarxOUdsVBK2ZWAMWj2uaYfWdvrtp1iloo9NXoD
+	 WdTXl95nljlmM0b2SKl2yPc8eP+j5ahmACpK1sfcCDpoJhkauqW+rnXWLek/CQXwZg
+	 V1FiX56jdTPTQH5QTSOT92SDyNwCqrc4ZJJnkhG5Gh++71bZ0rF4mp2JDr9CzCI9gX
+	 npgVdwS+nByplKEP0ugnR4N4A6DSgKYNhQ93nVTqT4emspIDbceTQh1CLQAXlMGm/j
+	 hJdEiFW/M/zfsMAGGXj5nWddxup1gpGP3yB16L9uaGz9BiDTk1d7FVto+yTEYEX12O
+	 P8ru86ZCenRTQ==
+From: Jakub Kicinski <kuba@kernel.org>
+To: meatuni001@gmail.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	jhs@mojatatu.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net/sched: act_csum: Fix missing headroom COW and integer underflow in header rewriting
+Date: Mon, 24 Aug 2026 11:22:52 -0700
+Message-ID: <20260824182252.2672540-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260818221519.75088-3-meatuni001@gmail.com>
+References: <20260818221519.75088-3-meatuni001@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260823171311.3857087-1-nicoyip.dev@gmail.com>
-In-Reply-To: <20260823171311.3857087-1-nicoyip.dev@gmail.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Mon, 24 Aug 2026 11:22:39 -0700
-X-Gm-Features: AcwNN1VSZLYcZjBQm5hSVMCTVl1bVSQ-ufx1mFWI5AReSPKrzbgP1iQ2TR2WFHk
-Message-ID: <CAAVpQUAaCuwYyC97xXAwry=0QAWLo7+AM1ct2xqq45PkwJKKOw@mail.gmail.com>
-Subject: Re: [PATCH net] net: pin protocol module before socket allocation
-To: Chengfeng Ye <nicoyip.dev@gmail.com>
-Cc: Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, Frank Filz <ffilzlnx@us.ibm.com>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Aug 23, 2026 at 10:13=E2=80=AFAM Chengfeng Ye <nicoyip.dev@gmail.co=
-m> wrote:
->
-> sk_prot_alloc() reads prot->slab and starts allocating the socket
-> before it gets a reference to prot->owner. A protocol module can begin
-> unloading after its protocol was selected but before the reference is
-> taken, allowing this interleaving:
->
->   CPU 0                                CPU 1
->   slab =3D prot->slab
->                                        proto_unregister(prot)
->                                          kmem_cache_destroy(prot->slab)
->   kmem_cache_alloc(slab, ...)
->
-> kmem_cache_alloc() then dereferences a freed struct kmem_cache and can
-> crash or corrupt memory. The kernel reported:
->
->   Oops: general protection fault, probably for non-canonical address
->   KASAN: maybe wild-memory-access in range
->   RIP: kmem_cache_alloc_noprof+0x63/0x370
->   Call Trace:
->    sk_prot_alloc+0x74/0x2c0
->    sk_alloc+0x2b/0x6c0
->    inet_create+0x2cd/0xd40
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+net/sched: act_csum: Fix missing headroom COW and integer underflow in header rewriting
 
-inet_create() rather looks broken.
+This adds a helper csum_ensure_writable() to act_csum that calls
+skb_cow(skb, -offset) when the network offset is negative before calling
+skb_ensure_writable(), and converts two of the existing offset
+computations in tcf_csum_skb_nextlayer() and tcf_csum_ipv4() to use it.
 
-inet_unregister_protosw() calls synchronize_net(), but the following
-proto_unregister() might be done after rcu_read_unlock() and before
-WARN_ON(!answer_prot->slab) in inet_create().
+A few questions below, first about the changelog and then inline in the
+diff.
 
-Which module did you use to trigger the bug ?
+>     2. skb_try_make_writable() only evaluates writability from skb->data
+>        forwards and does not invoke skb_cow() on the headroom. When modifying
+>        cloned SKBs (e.g. from packet sockets, tc mirred, or BPF redirects),
+>        updating headers via ip_send_check() or L4 checksum replacements mutates
+>        shared headroom data directly, leading to packet corruption and page
+>        cache corruption.
 
+[Severity: Low]
+Can this code reach page cache pages at all?  The bytes protected here are
+the headroom in front of skb->data, which lives inside the skb head
+allocation, and skb_cow() -> __skb_cow() -> pskb_expand_head() only
+reallocates and copies skb->head .. skb_tail_pointer().
 
->    __sock_create+0x1c3/0x430
->    __sys_socket+0x116/0x1d0
->
-> Take the module reference before reading prot->slab so module removal
-> cannot destroy the cache during allocation. Drop that reference after
-> freeing the allocation on either failure path; on success sk_prot_free()
-> continues to release it as before.
->
-> Fixes: a79af59efd20 ("[NET]: Fix module reference counts for loadable pro=
-tocol modules")
-> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
-> ---
->  net/core/sock.c | 13 ++++++++-----
->  1 file changed, 8 insertions(+), 5 deletions(-)
->
-> diff --git a/net/core/sock.c b/net/core/sock.c
-> index 1ad41904db25..59f4b15fd594 100644
-> --- a/net/core/sock.c
-> +++ b/net/core/sock.c
-> @@ -2240,33 +2240,34 @@ static struct sock *sk_prot_alloc(struct proto *p=
-rot, gfp_t priority,
->         struct sock *sk;
->         struct kmem_cache *slab;
->
-> +       if (!try_module_get(prot->owner))
-> +               return NULL;
-> +
->         slab =3D prot->slab;
->         if (slab !=3D NULL) {
->                 sk =3D kmem_cache_alloc(slab, priority & ~__GFP_ZERO);
->                 if (!sk)
-> -                       return sk;
-> +                       goto out_module_put;
->                 if (want_init_on_alloc(priority))
->                         sk_prot_clear_nulls(sk, prot->obj_size);
->         } else
->                 sk =3D kmalloc(prot->obj_size, priority);
->
-> -       if (sk !=3D NULL) {
-> -               if (security_sk_alloc(sk, family, priority))
-> -                       goto out_free;
-> -
-> -               if (!try_module_get(prot->owner))
-> -                       goto out_free_sec;
-> -       }
-> +       if (!sk)
-> +               goto out_module_put;
-> +
-> +       if (security_sk_alloc(sk, family, priority))
-> +               goto out_free;
->
->         return sk;
->
-> -out_free_sec:
-> -       security_sk_free(sk);
->  out_free:
->         if (slab !=3D NULL)
->                 kmem_cache_free(slab, sk);
->         else
->                 kfree(sk);
-> +out_module_put:
-> +       module_put(prot->owner);
->         return NULL;
+Page cache pages only show up in skb_shinfo(skb)->frags (sendfile,
+MSG_ZEROCOPY), and neither the old nor the new act_csum code writes there.
+
+The "cloned SKBs" framing also looks questionable for the ntkoff >= 0 case.
+skb_ensure_writable() falls back to a full head copy:
+
+net/core/skbuff.c:skb_ensure_writable() {
+	if (!skb_cloned(skb) || skb_clone_writable(skb, write_len))
+		return 0;
+
+	return pskb_expand_head(skb, 0, 0, GFP_ATOMIC);
+}
+
+and the fast path only triggers when
+
+include/linux/skbuff.h:skb_clone_writable() {
+	return !skb_header_cloned(skb) &&
+	       skb_headroom(skb) + len <= skb->hdr_len;
+}
+
+i.e. when the header area including headroom was explicitly handed to this
+skb as privately writable (see "DOC: dataref and headerless skbs" in
+include/linux/skbuff.h).  Could the changelog drop the page cache claim and
+describe the headroom case only?
+
+> diff --git a/net/sched/act_csum.c b/net/sched/act_csum.c
+> index 078d3a27130b..c8e2f20e2da3 100644
+> --- a/net/sched/act_csum.c
+> +++ b/net/sched/act_csum.c
+> @@ -121,6 +121,18 @@ static int tcf_csum_init(struct net *net, struct nlattr *nla,
+>  	return err;
 >  }
->
-> --
-> 2.43.0
+>  
+> +static int csum_ensure_writable(struct sk_buff *skb, int offset, size_t len)
+> +{
+> +	if (offset < 0) {
+> +		if (skb_cow(skb, -offset))
+> +			return -ENOMEM;
+> +		if (offset + (int)len > 0)
+> +			return skb_ensure_writable(skb, offset + len);
+> +		return 0;
+> +	}
+> +	return skb_ensure_writable(skb, offset + len);
+> +}
+
+[Severity: High]
+Is the (int)len cast here safe?  len is size_t, so any length above INT_MAX
+becomes negative in this test, the helper returns 0 without calling
+pskb_may_pull() or skb_ensure_writable() at all, and the caller treats the
+range as validated.
+
+On the IPv6 path ipl is not bounded.  tcf_csum_ipv6_hopopts() can overwrite
+pl with the full 32-bit Jumbo Payload value:
+
+net/sched/act_csum.c:tcf_csum_ipv6_hopopts() {
+	...
+			*pl = ntohl(*(__be32 *)(xh + off + 2));
+			goto done;
+	...
+}
+
+so with pl = 0xffffffc8 the caller passes len = ipl = 0xfffffff0, where
+(int)len == -16 and ntkoff < 0 makes offset + (int)len > 0 false.
+tcf_csum_skb_nextlayer() then returns skb_network_header(skb) + ihl and the
+L4 handler walks the claimed length:
+
+net/sched/act_csum.c:tcf_csum_ipv6_icmp() {
+	...
+	skb->csum = csum_partial(icmp6h, ipl - ihl, 0);
+	...
+}
+
+The removed pskb_may_pull(skb, ipl + ntkoff) rejected this input
+(0xfffffff0 + (-20) = 0xffffffdc, pull fails).  Should the helper reject
+lengths it cannot represent instead of returning success, and should the
+kernel-doc claim "Check the expected next layer availability" still hold?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but tcf_csum_sctp() recomputes
+the offset independently of this helper and hands it to an unsigned
+parameter:
+
+net/sched/act_csum.c:tcf_csum_sctp() {
+	...
+	sctph->checksum = sctp_compute_cksum(skb,
+					     skb_network_offset(skb) + ihl);
+	...
+}
+
+include/net/sctp/checksum.h:sctp_compute_cksum(struct sk_buff *skb,
+						unsigned int offset) {
+	struct sctphdr *sh = (struct sctphdr *)(skb->data + offset);
+	__le32 old = sh->checksum;
+	...
+	sh->checksum = 0;
+	new = ~skb_crc32c(skb, offset, skb->len - offset, ~0);
+	sh->checksum = old;
+	...
+}
+
+ihl comes from iph->ihl * 4 and tcf_csum_ipv4() never checks iph->ihl >= 5,
+so ihl == 0 is packet selectable; with ntkoff == -20 the offset becomes
+0xffffffec and both sh->checksum writes land roughly 4 GiB past skb->data.
+
+Since this patch declares negative network offsets supported, and the new
+offset + (int)len <= 0 branch admits packets that pskb_may_pull(skb,
+ipl + ntkoff) previously rejected, does this widen the set of packets
+reaching that write?  Should tcf_csum_sctp() also go through a signed,
+bounds-checked path?
+
+>  
+>  /**
+>   * tcf_csum_skb_nextlayer - Get next layer pointer
+>   * @skb: sk_buff to use
+> @@ -138,8 +150,7 @@ static void *tcf_csum_skb_nextlayer(struct sk_buff *skb,
+>  	int ntkoff = skb_network_offset(skb);
+>  	int hl = ihl + jhl;
+>  
+> -	if (!pskb_may_pull(skb, ipl + ntkoff) || (ipl < hl) ||
+> -	    skb_try_make_writable(skb, hl + ntkoff))
+> +	if (ipl < hl || csum_ensure_writable(skb, ntkoff, max_t(unsigned int, ipl, hl)))
+>  		return NULL;
+>  	else
+>  		return (void *)(skb_network_header(skb) + ihl);
+
+[Severity: Medium]
+Is the change of the requested writable length intentional here?  The old
+code asked for hl + ntkoff (mac_len plus IP plus L4 header); the new code
+asks for ntkoff + ipl, the whole packet length taken from iph->tot_len or
+the IPv6 payload length.
+
+Because the ipl < hl test short-circuits first, ipl >= hl always holds when
+the helper runs, so max_t(unsigned int, ipl, hl) is always ipl and the
+max_t() looks like dead code.
+
+The widened length also disables the clone fast path:
+
+include/linux/skbuff.h:skb_clone_writable() {
+	return !skb_header_cloned(skb) &&
+	       skb_headroom(skb) + len <= skb->hdr_len;
+}
+
+For transport clones (__skb_header_release() plus skb_clone(), i.e. every
+non-GSO TCP transmit skb) hdr_len - headroom covers only the mac plus IP
+plus TCP bytes pushed after cloning, which satisfied hl + ntkoff but never
+satisfies ntkoff + tot_len.  Those skbs now take
+pskb_expand_head(skb, 0, 0, GFP_ATOMIC) in skb_ensure_writable() per
+packet, and when that allocation fails the action drops a packet that was
+previously forwarded without allocating.
+
+The callers only write inside the L4 header, so would hl be the right
+length to request, and should the changelog mention the per-packet copy?
+
+> @@ -437,7 +448,7 @@ static int tcf_csum_ipv4(struct sk_buff *skb, u32 update_flags)
+>  	}
+>  
+>  	if (update_flags & TCA_CSUM_UPDATE_FLAG_IPV4HDR) {
+> -		if (skb_try_make_writable(skb, sizeof(*iph) + ntkoff))
+> +		if (csum_ensure_writable(skb, ntkoff, sizeof(*iph)))
+>  			goto fail;
+>  
+>  		ip_send_check(ip_hdr(skb));
+
+[Severity: Medium]
+Can this new call ever run for the negative offsets the changelog talks
+about?  Earlier in the same function the entry gate is untouched:
+
+net/sched/act_csum.c:tcf_csum_ipv4() {
+	ntkoff = skb_network_offset(skb);
+
+	if (!pskb_may_pull(skb, sizeof(*iph) + ntkoff))
+		goto fail;
+	...
+}
+
+sizeof() is size_t, so a negative ntkoff is converted: the sum is exactly 0
+for ntkoff == -20 (passes) and wraps for ntkoff <= -21 (pull fails).  The
+new headroom COW in the IPV4HDR branch is therefore unreachable for the
+deeply negative offsets.
+
+The changelog names "sizeof(*iph) + ntkoff" as one of the expressions being
+fixed, but that expression is left in place.
+
+tcf_csum_ipv6() also keeps four such computations:
+
+net/sched/act_csum.c:tcf_csum_ipv6() {
+	if (!pskb_may_pull(skb, hl + ntkoff))
+		goto fail;
+	...
+			if (!pskb_may_pull(skb, hl + sizeof(*ip6xh) + ntkoff))
+	...
+			if (!pskb_may_pull(skb, hl + ixhl + ntkoff))
+	...
+	} while (pskb_may_pull(skb, hl + 1 + ntkoff));
+}
+
+so the IPv6 half still rejects negative offsets while feeding the now
+negative-offset-tolerant tcf_csum_skb_nextlayer(), and tcf_csum_sctp()
+still passes skb_network_offset(skb) + ihl unsigned.  Should negative
+ntkoff be handled in all of these places, or rejected once at the top of
+both tcf_csum_ipv4() and tcf_csum_ipv6()?
+-- 
+pw-bot: cr
