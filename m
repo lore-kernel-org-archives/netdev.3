@@ -1,112 +1,285 @@
-Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7610407CEA;
-	Mon, 24 Aug 2026 10:45:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F84B3EEAC4;
+	Mon, 24 Aug 2026 10:46:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787568317; cv=none; b=RsnFvUVrHFB+HamD9JuUGnRuidqjy3V6V3noPXCozmpKDbx4Q8QLQxhXp/sONiSxWAZlNM+PbHJLMztMt8ZUKBlx01/tOwh8+bW8YyWlsljYV4SobALxaaD/V8//pvhGCkmkM0pUH5C7E85usHHuDNcdb+s1akWeyfFNltI1Pvs=
+	t=1787568420; cv=none; b=SpqpvDbd1i9efdU35aIfPYVSn1NDlwzPAwyIgh7tZYjI9ZLv2SBwNrH8mwvmZuR9si9V+hM3/upowtXXkARQCY1e9W8ioTviCD9kV6/L3XtcDftD66QReexjZXCO9WPAQHzIUzK4KJs5lTcveIC3gIT/T2LmTVlNxFyfiswSQ/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787568317; c=relaxed/simple;
-	bh=ekimUOFKRsJW59biBg+6TH9kSS66XL+A2y6QCkT+DK0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gTv1gJHS3eW0wpGSmxLd1xpmiHZ2gGUBXeciD6HwYC88D+0bSND27D/ESE9IBRM+rCS7PksM/QrRUaT7UNXUt/zCkvch56cJ7t/aieeyVrLRXePqJ+nhGGYL6TPV+nMnWPGvwNqkFBD+6hXIxzWxKRFdfehdsVq0Sn1UCxaFRAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=tf0zeAzf; arc=none smtp.client-ip=193.104.135.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
+	s=arc-20240116; t=1787568420; c=relaxed/simple;
+	bh=NhHoUqjsSGGKoQ8soMQnUuRdpoAj8PLKNnRoNFbOF/g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=q9msis+oV89ht9Ts511pQvjaBAw/ssoBzMglWgewphOksdqJWioatmxX2W4/9rkasqZvUgQDRULTtQgV7B4VNTCHiY9VQITstaENXebojIaTxE87bw5FtiNn7efP+x6EYsfHswTnpeAzbKlkoD6rlm4fI1OuVdKLxfAzZM7vufA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=kZDgwjbD; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="tf0zeAzf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
-	s=202008; t=1787567968;
-	bh=ekimUOFKRsJW59biBg+6TH9kSS66XL+A2y6QCkT+DK0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=tf0zeAzf+nKhB8vDjms85ZJiACDTbWR3Xlj/2qIhbmZx1CYHYlHESzpB0Vm9TOyOM
-	 wY0WwQJ+bs3qO8d6Sdh2ht7Oq5z6bSyIc2FxBVKyRzdM1XKWEsIqzwWmABXJ/dxbuJ
-	 qT/s7Sg6kww6W1Df5MgX3qLb9luJX+R3iyl4qNqo1RYkiHaLXd9PhnN3AftjSZP7qM
-	 2MPU68OmPIii36NOJ6yJ8KXLFsG3PTpRFwtxSS+ukdj6x7ZXtvZ/RBERz/lGMUBbR0
-	 TcNv33qeDDRmxU7OMzEiMeKav/w8Gudp+7i/q1i4KEHUwLdz8MvImfxBsYKVxoQ5du
-	 meBIXkHXIrz1g==
-Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 29B166000C;
-	Mon, 24 Aug 2026 10:39:18 +0000 (UTC)
-Received: by x201s (Postfix, from userid 1000)
-	id 87320200662; Mon, 24 Aug 2026 10:38:16 +0000 (UTC)
-From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
-To: Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Felix Maurer <fmaurer@redhat.com>,
-	Danielle Ratson <danieller@nvidia.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net] netlink: specs: rt-link: fix ipv6 devconf doc
-Date: Mon, 24 Aug 2026 10:38:15 +0000
-Message-ID: <20260824103816.40040-1-ast@fiberby.net>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="kZDgwjbD"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id ACC091A17E4;
+	Mon, 24 Aug 2026 10:46:53 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5F59B5FFC1;
+	Mon, 24 Aug 2026 10:46:43 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C3B7111C79150;
+	Mon, 24 Aug 2026 12:46:36 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1787568402; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=BhZZBUETH8qQBmbmXUyu8ssNHxGDUGnmiu0xmE5vVIQ=;
+	b=kZDgwjbD6ld2yFIVAokM6lBIRAYVjgMgSJdN5/qtzvlGpNacIzB9G5EGkXX2pS9kF3A+T3
+	N2F7tw70fm5la07OxIMvhsToCIe/kQ0T06O71hpbhcS3l78baTimbcmjMwcQsNEv9vGl/q
+	gG2jHU3H+3uK/tD65OV7u2LETgQFbochElpWSvw2HBnhi6eAUykAFZXKJeRZDt+tmg1aTz
+	TEoPqD0uszWkMuDFOxrMIZcWJuonjD8guSpcZinyizfQWAzxXasnOsmVaSU1ByjlzKLh5O
+	ahNOUiECH72Q/snenLVM+AbDaqi6PxANhBZqaPW4WQtDYZiN8OD8W+Xrn0neyw==
+Message-ID: <4b16ca01-a09c-49bd-8c3e-ffa9921a0823@bootlin.com>
+Date: Mon, 24 Aug 2026 12:46:35 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Betterbird (Linux)
+Subject: Re: [RFC PATCH net-next v2 1/2] dt-bindings: net: pse-pd: Add
+ bindings for LTC4266 PSE Controller
+To: Kyle Swenson <kyle.swenson@est.tech>,
+ "o.rempel@pengutronix.de" <o.rempel@pengutronix.de>,
+ "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+ "davem@davemloft.net" <davem@davemloft.net>,
+ "edumazet@google.com" <edumazet@google.com>,
+ "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com"
+ <pabeni@redhat.com>, "robh@kernel.org" <robh@kernel.org>,
+ "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+ "conor+dt@kernel.org" <conor+dt@kernel.org>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ =?UTF-8?Q?Roland_Kov=C3=A1cs?= <roland.kovacs@est.tech>,
+ =?UTF-8?Q?David_Nystr=C3=B6m?= <david.nystrom@est.tech>
+References: <20260820142429.2285172-1-kyle.swenson@est.tech>
+ <20260820142429.2285172-2-kyle.swenson@est.tech>
+From: Kory Maincent <kory.maincent@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260820142429.2285172-2-kyle.swenson@est.tech>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-devconf is even odder than described in the blamed commit, where bpth
-IPv4 and IPv6 are described in an identical way:
-"u32 indexed by ipv?-devconf - 1 on output, on input it's a nest".
+Hello Kyle,
 
-There are two issues with that line for IPv6:
+Glad to see the v2 landing in the mailing list.
 
-1) The subtraction is an IPv4 specific quirk, to avoid having an unused
-   u32 at index 0, thus saving 4 bytes per net device being dumped:
+On 8/20/26 16:25, Kyle Swenson wrote:
+> Add the LTC4266 Power Sourcing Equipment controller device tree bindings
+> documentation.
+> 
+> Signed-off-by: Kyle Swenson <kyle.swenson@est.tech>
+> ---
+>   .../bindings/net/pse-pd/lltc,ltc4266.yaml     | 180 ++++++++++++++++++
+>   1 file changed, 180 insertions(+)
+>   create mode 100644 Documentation/devicetree/bindings/net/pse-pd/lltc,ltc4266.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/net/pse-pd/lltc,ltc4266.yaml b/Documentation/devicetree/bindings/net/pse-pd/lltc,ltc4266.yaml
+> new file mode 100644
+> index 000000000000..b3da8fea0b07
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/pse-pd/lltc,ltc4266.yaml
+> @@ -0,0 +1,180 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/pse-pd/lltc,ltc4266.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Linear Technology LTC4266 Power Sourcing Equipment controller
+> +
+> +maintainers:
+> +  - Kyle Swenson <kyle.swenson@est.tech>
+> +
+> +allOf:
+> +  - $ref: pse-controller.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - lltc,ltc4266
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  reset-gpios:
+> +    maxItems: 1
 
-   - In include/uapi/linux/ip.h the IPV4_DEVCONF_* enum begins with
-     IPV4_DEVCONF_FORWARDING = 1, so the enum starts at 1, which is
-     the reason for the subtraction in the IPv4 variant.
+The reset-gpios is currently not implemented in your driver. Maybe add 
+it in the binding when it will be the case.
 
-   - In include/uapi/linux/ipv6.h the DEVCONF_* enum begins with
-     DEVCONF_FORWARDING = 0, so subtraction would underflow.
+> +  channels:
+> +    type: object
+> +    additionalProperties: false
+> +    description:
+> +      Defines the 4 physical delivery channels on the controller that can be
+> +      referenced by PSE PIs through their "pairsets" property. The actual port
+> +      matrix mapping is created when PSE PIs reference these channels in their
+> +      pairsets.
+> +
+> +    properties:
+> +      '#address-cells':
+> +        const: 1
+> +
+> +      '#size-cells':
+> +        const: 0
+> +
+> +    patternProperties:
+> +      '^channel@[0-3]$':
+> +        type: object
+> +        additionalProperties: false
+> +
+> +        properties:
+> +          reg:
+> +            maxItems: 1
+> +
+> +          sense-resistor-micro-ohms:
+> +            description: Sense resistor connected to the channel's MOSFET, used
+> +              for current measurement for overcurrent detection.
+> +            enum: [250000, 500000]
+> +
+> +        required:
+> +          - reg
+> +          - sense-resistor-micro-ohms
 
-   - ipv6_store_devconf() in net/ipv6/addrconf.c also doesn't do the
-     subtraction in the output path.
+I am bit skeptical about having sense-resistor-micro-ohms as a mandatory 
+parameter. As you have described it's only for current measurement so 
+it's not a requirement for PSE functioning. Maybe set it as a default 
+value if not specified.
 
-2) Setting IPv6 devconf through Netlink is not yet supported, as
-   IFLA_INET6_CONF is not handled in inet6_set_link_af().
+Else LGTM.
 
-Fixes: 720447bd0b24 ("netlink: specs: rt-link: remove implicit structs from devconf")
-Cc: stable@vger.kernel.org
-Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
----
+> +    required:
+> +      - '#address-cells'
+> +      - '#size-cells'
+> +
+> +  pse-pis:
+> +    type: object
+> +    additionalProperties: false
+> +
+> +    properties:
+> +      '#address-cells':
+> +        const: 1
+> +
+> +      '#size-cells':
+> +        const: 0
+> +
+> +    patternProperties:
+> +      '^pse-pi@[0-3]$':
+> +        type: object
+> +        properties:
+> +          pairsets:
+> +            description: The LTC4266 delivers power to a PI over a single
+> +              pairset, driven by one of the controller's four channels. There
+> +              is no 4-pair mode spreading a PI over two channels, so exactly
+> +              one channel phandle is expected.
+> +            maxItems: 1
+> +          pairset-names:
+> +            maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - channels
+> +  - pse-pis
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    i2c {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +
+> +      ethernet-pse@2f {
+> +        compatible = "lltc,ltc4266";
+> +        reg = <0x2f>;
+> +        interrupts = <8 IRQ_TYPE_LEVEL_LOW>;
+> +        interrupt-parent = <&gpio>;
+> +
+> +        channels {
+> +          #address-cells = <1>;
+> +          #size-cells = <0>;
+> +
+> +          phys0: channel@0 {
+> +            reg = <0>;
+> +            sense-resistor-micro-ohms = <500000>;
+> +          };
+> +
+> +          phys1: channel@1 {
+> +            reg = <1>;
+> +            sense-resistor-micro-ohms = <500000>;
+> +          };
+> +
+> +          phys2: channel@2 {
+> +            reg = <2>;
+> +            sense-resistor-micro-ohms = <500000>;
+> +          };
+> +
+> +          phys3: channel@3 {
+> +            reg = <3>;
+> +            sense-resistor-micro-ohms = <500000>;
+> +          };
+> +        };
+> +
+> +        pse-pis {
+> +          #address-cells = <1>;
+> +          #size-cells = <0>;
+> +
+> +          pse_pi0: pse-pi@0 {
+> +            reg = <0>;
+> +            #pse-cells = <0>;
+> +            pairset-names = "alternative-a";
+> +            pairsets = <&phys0>;
+> +            polarity-supported = "MDI";
+> +            vpwr-supply = <&vreg_pse>;
+> +          };
+> +
+> +          pse_pi1: pse-pi@1 {
+> +            reg = <1>;
+> +            #pse-cells = <0>;
+> +            pairset-names = "alternative-a";
+> +            pairsets = <&phys1>;
+> +            polarity-supported = "MDI";
+> +            vpwr-supply = <&vreg_pse>;
+> +          };
+> +
+> +          pse_pi2: pse-pi@2 {
+> +            reg = <2>;
+> +            #pse-cells = <0>;
+> +            pairset-names = "alternative-a";
+> +            pairsets = <&phys2>;
+> +            polarity-supported = "MDI";
+> +            vpwr-supply = <&vreg_pse>;
+> +          };
+> +
+> +          pse_pi3: pse-pi@3 {
+> +            reg = <3>;
+> +            #pse-cells = <0>;
+> +            pairset-names = "alternative-a";
+> +            pairsets = <&phys3>;
+> +            polarity-supported = "MDI";
+> +            vpwr-supply = <&vreg_pse>;
+> +          };
+> +        };
+> +      };
+> +    };
 
-Fernando, please remember to reintroduce the ", on input it's a nest"
-in your WIP/planned patchset that introduces support for setting IPv6
-devconf via IFLA_INET6_CONF.
-https://lore.kernel.org/bd560c89-c71f-4ef5-a0fd-5ea096a0f767@suse.de/
-
- Documentation/netlink/specs/rt-link.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netlink/specs/rt-link.yaml
-index b80c2ac3ac31..00c915031efd 100644
---- a/Documentation/netlink/specs/rt-link.yaml
-+++ b/Documentation/netlink/specs/rt-link.yaml
-@@ -2218,7 +2218,7 @@ attribute-sets:
-         name: conf
-         type: binary
-         sub-type: u32
--        doc: u32 indexed by ipv6-devconf - 1 on output, on input it's a nest
-+        doc: u32 indexed by ipv6-devconf on output, input is not yet implemented
-       -
-         name: stats
-         type: binary
-
-base-commit: 7cbfb180945ce529608e4d4e24a6d483699fab1e
 -- 
-2.55.0
+Köry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
 
