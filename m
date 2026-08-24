@@ -1,143 +1,146 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3333360EF9
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 15:01:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BFC3655E0
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 15:02:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787583685; cv=none; b=HhnaUr0a+o4fkteCZjPkdzXbRf0ofAetKkPwK+dChPV3Z/ESw2yRTq5Dh0gSS+I8z+/sD/AGyErwd2Ubj/3tiyMJ+Ew1RxSVTFm9rBoW0j18ah72re/i3jL6cUiF1GGazasWEtG2AFy6IudNq+MXKcRJ/hg+SMWnffV6f4FXWxA=
+	t=1787583751; cv=none; b=eefKeze1oHbkMw/WIHWFmJ98s6AxLGJxIWh+q25TO0mCwFzLojv8MrTDwrjb3LIRq4hbGcu72/GtVkA8sTQSBtlYISCyPgT1XJBlfp5bGhVU62EHn+YyAS8i/teSkpPbXU2JdF+iAEK5rwy2lUx1nk05YCQQu2FiIKSwKzFncUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787583685; c=relaxed/simple;
-	bh=NyxZOPfmcvYycaO0/GB1x544T8zdLlUGZ5oDJiPPBrY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uCedeIXaz641Egb9ph6IK0f5JcC3RLiyQiPBU6ey5b9PJRXvecdzNy598orviKnp6KssERz6A5uThZY1pHU2PB57kGyg1tp9tDHHEZ62MPzN0u8lQnsR6uhXs469dcwJwrwS/bvgBQwD+0nrL0pT+Iw/Cr+2KEkb2cb1odXZJa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZEoBdXIh; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787583751; c=relaxed/simple;
+	bh=y/5A4oExzkDVdOs3ToZMMCiwL9Kh46PsSmy8ZWZE5AM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SvWA8cQKIuKKYawxWR3vyljFtAJ7dnFDr9/eCfHFRTD6JQMO2WP6Ln9jRH0DckbtnykcGmFPJeW9MYI75C2cfUc1J/GHNdlCCIGfj1AphBteCRCxfDA0P2b7sIx+/Kb/uIYv6OwJrJN3yIChdeqn4/HOmb0lV7ZBkoPcUWWNZLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CHQs/iDx; arc=none smtp.client-ip=209.85.160.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZEoBdXIh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21A4B1F000E9;
-	Mon, 24 Aug 2026 15:01:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787583683;
-	bh=xCvHEDlGeMC/nupSeEr3NtezEDMx1EIe2VQVji1m3Aw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ZEoBdXIhZlEbH7Y4Oz6deKO6gb1VXBa5UTOnA5dBSjwW1VD02N3izMq+fmZFbal+4
-	 /0AlszTGQm/JZEOGg6nWK4xL+mvb9q68q6b0bNdmo8PxL8sHyELHRb6l/fRCVO3k5m
-	 hjGNa/SDoRo+KHMzkOWPaUsoB3WZgJtSyJubb29F5liApyx1OwZN2kE4mFw4hkHBlk
-	 25TqwViFHAJG2aOn4ca+9/wA1ANvmFHcZmWCpXToambCkylQNKDjYWKMD5jiolhc3m
-	 TBHBf30HMRDdbWAV38UTy5bmtFQdm1dMivk3d+b2VV10L6fr8yvl8nxoLoleUZTbz4
-	 KAULRRXrGpIRw==
-Date: Mon, 24 Aug 2026 08:01:22 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: "Daniel Zahka" <daniel.zahka@gmail.com>
-Cc: <willemdebruijn.kernel@gmail.com>, <edumazet@google.com>,
- <cratiu@nvidia.com>, <borisp@nvidia.com>, <kuniyu@google.com>,
- <netdev@vger.kernel.org>
-Subject: Re: [RFC net-next 1/6] psp: steer Rx queues with the virtualization
- cookie
-Message-ID: <20260824080122.17be0e16@kernel.org>
-In-Reply-To: <DKWFJ9D12OPD.2ZLQHDM0276G4@gmail.com>
-References: <20260822225524.2328465-1-kuba@kernel.org>
-	<20260822225524.2328465-2-kuba@kernel.org>
-	<DKWFJ9D12OPD.2ZLQHDM0276G4@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CHQs/iDx"
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-462c8de7446so413915fac.2
+        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 08:02:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787583747; x=1788188547; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=4WYYuHUTr1TvsvQZbyAeodfCziWwiccRptU66x2uPT0=;
+        b=CHQs/iDxyP+UJKchN1ZXMXKlKyYyzGTCdt4rQq0iTlBuHq8wohUlbvA5UQ2s/YLwM9
+         dCSbNf+k+8tF1kj7IkdSQOEIfC503BGHm5gSpgt197oiXcYM/ZrFXKqdsVuPC+uBcUl3
+         f+Z/y5f5Qx7fK3nyitATSQiMLY0o4qfwHuKkCswg6E/90QSP/Yn8DJWoGYyH7ANQJJNR
+         KxItb/ymEP8BX+MphM+6i6yPJPrUdmwBpKYSSXM3WoQvCvRFMqNPXQrKKmv8f+1w9fKv
+         /28GXA7KvLSrSC5OHoIla3lJ++DvhMwnqrSbk2iqN2fuj1HnmyVd9AQDOS3i64QCVOnj
+         KKow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787583747; x=1788188547;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4WYYuHUTr1TvsvQZbyAeodfCziWwiccRptU66x2uPT0=;
+        b=nmDEiDxJU5eDRyAlj7IrmEsbEQyxDkDRIMzreyMdpeoDOnNVLB+QROBtfnlc0DZK/q
+         w+TjZmxJ34uZ6xPVV+79PwhnnDesESj1VWa7DVoP16s+E2g+5xXM5RGP9rQeJt4uGFLx
+         c2o/+MiNvKfOcvq0MJlrDXfiCoobayUQTbg6EjWk8s0IEH0y1/3eaizsMmiQPB75YHQK
+         +/RuakFBMw0L/y7AKgB/r0BA2Am/3DsPDwNlEQ5+Qq/VJVKuV3X8BsMze7WK0UztrIM1
+         p6AxmXkShQJasSup1xmtB7MX6VlGV5j8kolD2tByoAxbEqj1I58BjHGynVZLXJO/J+Z4
+         OkiA==
+X-Forwarded-Encrypted: i=1; AHgh+RoOKJLJBCVLXi3IyNdecwriQzAIzTJ1o0ysvhxE1Shn0zL998wtzjXCvXG4c8aNkyF3A25ieLk=@vger.kernel.org
+X-Gm-Message-State: AFuF++nYdEDXSGsfZfordk6CUInaPj4aK6AqNFKc6W6Byrl/BCfSTaUB
+	bpZUPdBZORnkaOm2LJ2boEgkNZy+QD86u4keu5eSUBiCHpQv0sFLY8Vr
+X-Gm-Gg: AR+sD136YA2RbgflrVOa/gLJt7jUs3KT1s//1745v0X1y7Xx2ANMcRujdVrMZKvvSfY
+	00NGRKrGAz+zAbiqleQXO/cYaf8ZTN2Q4FE/ejy9eq9zEMxlYXMyhY9r2t+ztsBPJlUO2nXaeWq
+	CxBQTfR0Le8cdhkDW/8baPMMkN5AkM7iHbLCDDhQ6GHM9++InEMcwCVigELmG+yag61JLWQOP+4
+	GMHaUhSoeXHuGxC7eFOavlyQBSSeZnyKuE8RMgUFiXT+25mKZ5aEsEKGAsIMJ1Py1nfIYacjRCO
+	31L1yb+D/2OGqffWjAEfpSAdC63AI5zV0EADykvApUt3Mv7F2WZ41CjqhoibSqUhf9SAF0/jH3J
+	WJVL9OCUFcUXg7ftWsL+cmKenBG079CqwVKIWA+VXVGUFlI86z7s48QUylSNsa9fuzrDS07fRsH
+	9f8MZG5cFLaDWwaodJvu8DE3ONnre9gCKnJ+wRLJ7melDzFVWf/sA4nLOOUexKdw8F5S4Y70i6j
+	+A9n27vBxc1OROlJZiTHM6KR1RIjL1V017/k5LnCNhVa9km1cLH57M=
+X-Received: by 2002:a05:6820:400b:b0:6aa:c26c:e4dc with SMTP id 006d021491bc7-6b15939d5d7mr12394392eaf.2.1787583747230;
+        Mon, 24 Aug 2026 08:02:27 -0700 (PDT)
+Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14186173199sm24978669c88.9.2026.08.24.08.02.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2026 08:02:26 -0700 (PDT)
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+To: David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chengfeng Ye <nicoyip.dev@gmail.com>
+Subject: [PATCH net] rxrpc: Take write lock when publishing the initial RxGK key
+Date: Mon, 24 Aug 2026 23:02:20 +0800
+Message-ID: <20260824150220.216067-1-nicoyip.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Sun, 23 Aug 2026 11:31:03 -0400 Daniel Zahka wrote:
-> On Sat Aug 22, 2026 at 6:55 PM EDT, Jakub Kicinski wrote:
-> > @@ -72,6 +90,27 @@ name: psp
-> >            Present when in associated namespace, absent when in primary/host
-> >            namespace.
-> >          type: flag
-> > +      -
-> > +        name: vc-steer-cap
-> > +        doc: |
-> > +          Device can steer received traffic on the PSP virtualization
-> > +          cookie (VC). The VC is split into a 32b reserved part, a 16b
-> > +          queue ID the sender is asking the peer to send to, and a 16b
-> > +          queue ID granting the peer's own request. Steering installs low
-> > +          priority rules matching the latter, which win over the RSS table
-> > +          result. Only needed for the rx direction; granting a peer's
-> > +          request is just header generation and needs no device support.
-> > +        type: flag
-> > +      -
-> > +        name: vc-steer-ena
-> > +        doc: |
-> > +          Directions taking part in VC based queue steering. Leave the
-> > +          attribute out of a dev-set request to keep the current setting.
-> > +          Applies to associations created from then on, existing ones keep
-> > +          the setting they were created with.
-> > +        type: u32
-> > +        enum: vc-steer
-> > +        enum-as-flags: true
-> >    
-> 
-> Should vc-steer-ena be a connection level setting? Maybe it could go
-> into rx-assoc. The way it's implemented here, the state is already per
-> assoc.
+rxgk_rekey() updates the transport-key ring under security_use_lock,
+and rxgk_get_key() takes a reference under the corresponding read
+lock.  The initial publication in rxgk_init_connection_security()
+writes conn->rxgk.enctype and conn->rxgk.keys[] without the write
+lock.
 
-That's what I started with but then given the security implications
-of the current simple design I could not think of a reason do configure
-this connection by connection. Besides the SW stack responsible for
-security is likely somewhat orthogonal to steering configuration. 
-Should have put this in the cover letter as well.
+On a client connection, a second sendmsg can observe
+RXRPC_CONN_CLIENT through a lockless load of conn->state, skip
+rxrpc_init_client_conn_security(), and call rxgk_get_key() without
+ever acquiring security_lock.  Because the initializer never took
+the write lock, the reader's read lock provides neither exclusion
+nor a matching acquire-release pair.
 
-> > +Every driver has to carry the cookie, not just those which advertise
-> > +``vc-steer-cap`` - granting a peer's request needs no help from the
-> > +device, so the ``tx`` direction of ``vc-steer-ena`` may be turned on
-> > +anywhere. Drivers must ask ``psp_assoc_vc_tx_get()`` for the cookie to
-> > +place in the Tx header, and report the queue IDs a received cookie held
-> > +in ``psp_skb_ext.vc_req`` and ``vc_dst`` (``psp_dev_rcv()`` does this for
-> > +drivers which let the core strip the headers). Reporting is what allows
-> > +the core to grant the peer's request. The steering itself is only
-> > +expected of drivers which advertise ``vc-steer-cap``.
-> > +
-> > +When VC steering is enabled GRO implementations are allowed to ignore
-> > +changes in the cookie for transport mode PSP.
-> > +  
-> 
-> Makes sense. Do we would need to update __psp_skb_coalesce_diff() here
-> then for the sw gro?
+Concurrent RxGK key consumers were observed in a two-sender
+workload.  KCSAN reported:
 
-Ack.
+  BUG: KCSAN: data-race in rxgk_get_key / rxgk_secure_packet
 
-> Unrelated, but this reminds me: some of the other fields here:
-> generation, spi, peer_tx, have some reads/writes that probably require
-> READ/WRITE_ONCE() and maybe deserve a similar comment here... Probably
-> all bugs that I introduced :/
-> 
-> >  /* Encapsulate a TCP packet with PSP by adding the UDP+PSP headers and filling
-> > - * them in.
-> > + * them in. @vc is the virtualization cookie to place in the header, 0 for
-> > + * a header with no optional fields.
-> >   */
-> >  bool psp_dev_encapsulate(struct net *net, struct sk_buff *skb, __be32 spi,
-> > -			 u8 ver, __be16 sport)
-> > +			 u8 ver, __be16 sport, u64 vc)
-> >  {
-> >  	u32 network_len = skb_network_header_len(skb);
-> >  	u32 ethr_len = skb_mac_header_len(skb);
-> >  	u32 bufflen = ethr_len + network_len;
-> > +	u32 encap_len = PSP_ENCAP_HLEN;
-> >  
-> >  	if (skb->protocol != htons(ETH_P_IP) &&
-> >  	    skb->protocol != htons(ETH_P_IPV6))
-> >  		return false;
-> >  
-> > -	if (skb_cow_head(skb, PSP_ENCAP_HLEN))
-> > +	if (vc)
-> > +		encap_len += PSP_VC_SIZE;
-> > +  
-> 
-> I suppose vc of 0 is probably valid. We might need something else to
-> disambiguate "not present".
+  write to 0xffff8aef4023c318 of 8 bytes by task 1968 on cpu 0:
+   rxgk_secure_packet+0x46c/0x820
+   rxrpc_send_data+0x562/0x1a20
+   rxrpc_do_sendmsg+0x976/0xa80
+   rxrpc_sendmsg+0x20f/0x2a0
 
-Ah, good point. We should probably encode the queue as idx+1,
-I was going back and forth on this. Doesn't feel super clean but
-it solves a bunch of corner cases, so the benefits probably outweigh
-the slightly confusing indexing.
+  read to 0xffff8aef4023c318 of 8 bytes by task 1969 on cpu 1:
+   rxgk_get_key+0x209/0x5e0
+   rxgk_alloc_txbuf+0xa4/0x2a0
+   rxrpc_send_data+0x8e2/0x1a20
+   rxrpc_do_sendmsg+0x976/0xa80
+   rxrpc_sendmsg+0x20f/0x2a0
+
+  value changed: 0x7fffffffffffffff -> 0x7fffffffffffffee
+
+That report is on the key context's byte counter rather than the
+initial publication, but it shows that lookup and secured transmit
+already overlap on the same connection.
+
+Take security_use_lock for writing while publishing the initial
+enctype and transport key, matching the locking used when rekeying.
+
+Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+---
+ net/rxrpc/rxgk.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/net/rxrpc/rxgk.c b/net/rxrpc/rxgk.c
+index 77a67ace1d24..b49221f57f67 100644
+--- a/net/rxrpc/rxgk.c
++++ b/net/rxrpc/rxgk.c
+@@ -251,8 +251,10 @@ static int rxgk_init_connection_security(struct rxrpc_connection *conn,
+ 					 GFP_NOFS);
+ 	if (IS_ERR(gk))
+ 		return PTR_ERR(gk);
++	write_lock(&conn->security_use_lock);
+ 	conn->rxgk.enctype = gk->krb5->etype;
+ 	conn->rxgk.keys[gk->key_number & 3] = gk;
++	write_unlock(&conn->security_use_lock);
+ 
+ 	switch (conn->security_level) {
+ 	case RXRPC_SECURITY_PLAIN:
+-- 
+2.43.0
+
