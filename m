@@ -1,110 +1,141 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F611D63E4;
-	Mon, 24 Aug 2026 07:15:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BCB1D63E4
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 07:17:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787555726; cv=none; b=GeuYQyJiLgOcnXsL7Qa+lr9LqzB8grjVD8gY6oZHRekHk4AgjhZyUPiHd0UDYEjGYFKNlvBherZmGZyeZUduBXrBEOgmzmQY3U0TvaP1Ik9DcDznpKSPuF8clyL4CW58LBh2rvXrklY6mrDMsgUw+eswU9BhKUDMmLw6E0Ol/PQ=
+	t=1787555864; cv=none; b=QlS+w18MXl0G19uZQ1pWiZHTLad+b6fYmtzOeO1o8Kwdvl9uRp1u+ph4jPn+c6rRK7Ku6rg8cb6VnR6IoEfeD31czJMJoaLXGW/CJGoE2wKog9PsHwYGLKtut+/2I/U1uu1DaNjaY1RD3Hd+5hkYrX9ZjVCUcemqcgP3n814+hI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787555726; c=relaxed/simple;
-	bh=t8nswsNBaJpU/DtC2ufgweGppB2rKtfMQsRcyw+rzUM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TyRxYm6E4fVGI4BEaRnQSnyqNMA1xIFzMoovJc3HB5TFNkCO48T4rAn4MypcD2Rn3kZv3r0r8GBfWIjPaLmYbxBmhsdAniNSKR2sgGlt6MnXNg1vRb3Suy6dv+VeBhiLIWmMsdIcwBSuftYI9VnekQ4QPp6FuDwl6uKDqks26uE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=DXw5Oz9q; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1787555864; c=relaxed/simple;
+	bh=22234UwCrQDKWzSyIlzAANv2pvj+mKhbip/k/ysyHjg=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b/q6oAqRdbzAI360cv3Z8U11eqWZ4LoSlFpxXWc6+jaJVZwtDIrujFW7P78cbr1Ha06uI6HRpaO709udRw7/diORjdRinw6ehpgbvt1D6QYmTkRVVr057do1x/W8IffiAe0OR/ZF1+fJ6UmePtQBgAz4amfeZidEp++wgpswCUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=uSRjA9LQ; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="DXw5Oz9q"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67O5VauV1014032;
-	Mon, 24 Aug 2026 07:15:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=t8nsws
-	NBaJpU/DtC2ufgweGppB2rKtfMQsRcyw+rzUM=; b=DXw5Oz9qNrtaVOzRG9SMfb
-	Mt/Irhy9PRol2/G9JMnKhRCAgJ22rpY7z7TZNN5GziIIVUuI33YcoVfvwSN7J/EK
-	O7FWDgMt6wTiCtQq4mwodCvodbo4PpjKuiYTfchJ61G8EYOITZgKke3x4VaVURgo
-	OTrWNjfubA8YCMwRKXnv0sqEk9XuaKFiVQ/1mNnZVC8NdUbU+PL/OYmGhIzVnG+t
-	eNu3ChrgZrrAq/hPTlNITObBcNbLjyAnobAw1KxkJ1cXuNr+WAE+tZGzdAIzglyh
-	mSDMiHzKaDmupg8Y4dXur6sXdySfsGBhcTgneQrnRRRMaUZgkXTzDbqbLS2DIpWA
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g73dwyku1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Aug 2026 07:15:17 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67O7BEIE022221;
-	Mon, 24 Aug 2026 07:15:16 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g7p3pvqc3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Aug 2026 07:15:16 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67O7FFI926411734
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 24 Aug 2026 07:15:16 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A8D8558059;
-	Mon, 24 Aug 2026 07:15:15 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 54E4A58043;
-	Mon, 24 Aug 2026 07:15:10 +0000 (GMT)
-Received: from [9.124.213.220] (unknown [9.124.213.220])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 24 Aug 2026 07:15:09 +0000 (GMT)
-Message-ID: <b4f836d3-d909-4228-945d-b11231290725@linux.ibm.com>
-Date: Mon, 24 Aug 2026 12:45:08 +0530
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="uSRjA9LQ"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id A0E60207BE;
+	Mon, 24 Aug 2026 09:17:38 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id z9yXcf9Jgbaq; Mon, 24 Aug 2026 09:17:37 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id A0A9F206D2;
+	Mon, 24 Aug 2026 09:17:37 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com A0A9F206D2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1787555857;
+	bh=1Q3LZwngKCyj7sRt7FJw+9fWPzm6tGFDiCscvI5EXik=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=uSRjA9LQNITsbhFZE6rgo8Muy0sENy8AbL3nuz3VK7wROa5cOp5DCpp94CWh/Zjbf
+	 nC9P0wjUbyuOg6eH/SZ77V+dVbXQlAN9vIvUFR9/AFi1KqdA097XLMtJbhO6LEnTjz
+	 NpHa/ZDyVmMRk/7bHp97sLHz8Wwwv4dRLAS4/UKeMBJ8EDt2reo3/m0RKi/tFXT9/F
+	 VMbYZD5k4Wsx6+cctNqaX3O839S/2EyaV8oHnVpOKmaCIIDGTnu5CnYy2DjBh5oJVr
+	 ZiQQIIakKRRr4DHf0AQ6XryItUG44BO29MqITt/P2ZoX4jpv8NYu3UaQFWvdbRdnEa
+	 D+s05gPdSQVUA==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 24 Aug
+ 2026 09:17:37 +0200
+Received: (nullmailer pid 794627 invoked by uid 1000);
+	Mon, 24 Aug 2026 07:17:36 -0000
+Date: Mon, 24 Aug 2026 09:17:36 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Hu EnZe <paulinsider@gmail.com>
+CC: <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+	<netdev@vger.kernel.org>, <corvus@tencent.com>, <slamhu@tencent.com>
+Subject: Re: [PATCH net v3] xfrm: hold state while flushing device GC list
+Message-ID: <aovwEHzXvAPHZpc2@secunet.com>
+References: <20260816084642.76154-1-paulinsider@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3] net/smc: fix clcsock and lgr/lnk races in smc_diag
- dump path
-To: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
-        dust.li@linux.alibaba.com, sidraya@linux.ibm.com
-Cc: pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
-        guwen@linux.alibaba.com, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org
-References: <20260807081606.3200128-1-mjambigi@linux.ibm.com>
-Content-Language: en-US
-From: Mahanta Jambigi <mjambigi@linux.ibm.com>
-In-Reply-To: <20260807081606.3200128-1-mjambigi@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI0MDA2MCBTYWx0ZWRfXwqjBnH9jN1WD
- /Wd8ZIUtLMGVXAvXyFze/u6nc8mfCwNq7J06EdbPUgKSD7UWJqTpdNEnLa/n1KB7YYX/1ONcIHK
- xTanVgii1JFXMFrbk3a/1f5NuvkbLi8=
-X-Authority-Analysis: v=2.4 cv=AYuB2XXG c=1 sm=1 tr=0 ts=6a8bef86 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=1vQF1UkLROcUZo-dBVkA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: of2Cm08DmUC2OwBgVFdayGll6y8neaBD
-X-Proofpoint-GUID: SqIgg5iKNswZMbwmUDe6UEosHU1c_YHh
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI0MDA2MCBTYWx0ZWRfX31N2DwuhE26k
- SbHFz7n9tDtG/qr/shRdJkpamM6d3LRISUiJlblmDo9sbzlDlhMoaf8RyAK8mD0eEK7tSQoTUJl
- MMwjE0+YB//mf1gkuo3dCPkwyK5BZrQkp2hPaUECO59NwtvkjiJ6eg+tkGN3Il0+HxXU/yijHXQ
- dOB8lEuHqSyRmTuKTNG6e5YF92UgmzqfW9bp0bItAlnbJ613kTnFEVdCLrBjWjf4oZdsePmCzjv
- 9w9gqxoe++wp/Xn4t3rXHAN3Eh2EqZquCqzp4uQ+wwi6Cch5wRLEI5FG+orw80Zi7JFZ+1n8YB5
- Sb9rxmiiIUyGKa7Qw02q0zkmW9rhEqm0JDF+cwxkrgmVvyqY/vaaEdDjG+E7ThDdkmmZBWtPrqb
- kakArlviXAebps9gPzR1XBv4RUvukPdWuecPYRZGsaKdwiI+lEukVZVz6A/ip/RFY9KOhC+BOQU
- ZMGjKZ8zlO4NATAlLTQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-24_02,2026-08-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0 clxscore=1015 adultscore=0 bulkscore=0
- impostorscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608240060
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260816084642.76154-1-paulinsider@gmail.com>
+X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-I am currently addressing all the review comments raised by Sashiko.
-Once they are resolved, I will send out a new version.
+On Sun, Aug 16, 2026 at 04:46:34PM +0800, Hu EnZe wrote:
+> From: Hu EnZe <slamhu@tencent.com>
+> 
+> The device GC list does not hold a reference to the states it
+> contains. During netdevice teardown, xfrm_dev_state_flush() drops
+> xfrm_state_dev_gc_lock before calling xfrm_dev_state_free(), so the
+> regular GC worker can concurrently destroy and free the entire
+> xfrm_state. Subsequent access through the stale pointer can corrupt
+> memory and cause a kernel panic.
+> 
+> Pin live states with xfrm_state_hold_rcu() while holding the device GC
+> lock, and skip states whose reference count has already reached zero.
+> Drop the acquired reference after the device state cleanup completes.
+> Also use hlist_del_init() when removing dev_gclist so the node is
+> marked as unhashed after removal.
+> 
+> Fixes: 07b87f9eea0c ("xfrm: Fix unregister netdevice hang on hardware offload.")
+> Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+> Assisted-by: Codex:GPT-5.6-Sol
+> Signed-off-by: Hu EnZe <slamhu@tencent.com>
+> ---
+> v3:
+>   - fix the outer email From name from "paulinsider" to "Hu EnZe"
+>   - no code changes
+> 
+> v2: https://lore.kernel.org/netdev/20260809081151.56774-1-paulinsider@gmail.com/
+>   - rebase onto the latest ipsec tree
+>   - use Hu EnZe <slamhu@tencent.com> for authorship and Signed-off-by
+>   - add the Assisted-by trailer for Codex
+>   - clarify the netdevice teardown trigger in the commit message
+>   - no code changes
+> 
+> v1: https://lore.kernel.org/netdev/20260801041340.92117-1-paulinsider@gmail.com/
+> 
+>  net/xfrm/xfrm_state.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+> index 36a4f6793ede..01138d3d1067 100644
+> --- a/net/xfrm/xfrm_state.c
+> +++ b/net/xfrm/xfrm_state.c
+> @@ -785,7 +785,7 @@ void xfrm_dev_state_free(struct xfrm_state *x)
+>  	if (dev && dev->xfrmdev_ops) {
+>  		spin_lock_bh(&xfrm_state_dev_gc_lock);
+>  		if (!hlist_unhashed(&x->dev_gclist))
+> -			hlist_del(&x->dev_gclist);
+> +			hlist_del_init(&x->dev_gclist);
+>  		spin_unlock_bh(&xfrm_state_dev_gc_lock);
+>  
+>  		if (dev->xfrmdev_ops->xdo_dev_state_free)
+> @@ -1006,8 +1006,13 @@ int xfrm_dev_state_flush(struct net *net, struct net_device *dev, bool task_vali
+>  		xso = &x->xso;
+>  
+>  		if (xso->dev == dev) {
+> +			/* The device GC list does not hold a reference to x. */
+> +			if (!xfrm_state_hold_rcu(x))
+> +				continue;
+
+Can we avoid that additional refcount somehow?
+
+>  			spin_unlock_bh(&xfrm_state_dev_gc_lock);
+>  			xfrm_dev_state_free(x);
+
+Maybe opencode the list removal here and create a
+__xfrm_dev_state_free() function that does the rest.
+
+> +			xfrm_state_put(x);
+>  			spin_lock_bh(&xfrm_state_dev_gc_lock);
+>  			goto restart_gc;
+>  		}
+> 
+> base-commit: c12cbf56320fb633484ee0ca1fb7d68d6b64b213
+> -- 
+> 2.55.0
