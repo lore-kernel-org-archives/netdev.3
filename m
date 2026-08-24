@@ -1,414 +1,248 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E75390981;
-	Mon, 24 Aug 2026 21:58:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787608689; cv=none; b=Gd8Tq996R3nrLm1sr6i4KVBmJ3hVi4B4+zmh0SFfuzsX/yuE+Fia5vsIfNASZ5lIsRyhA0a3RapUCZj/m8SBcA2PO3ToAvTqFn5wtCl6oE6B7LZg4E+YJc4CFguDxhhjUTgRkOeUAZDXv7/RFII7FuhtR9yw6JsRpcqsH8o6O4A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787608689; c=relaxed/simple;
-	bh=2pxhAuQFzHMjZBkz3QsjWTBHIHdeXRH340tahMGKLzM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=F8nV1vgmYYa2fQC2k9VdeQtIwRlMmMFsA6eEISgspoIGR4igltlBCwv+tuwbwR5zBLpK85/HebQIXw53uqIT5KiRexwg6RK2qABQJI3e1R1Qk0tqE0BpvfTLvF2IahXet/PICBR7beeQPXGCgOc2RwLy+TlEVATRvwn4F6qmAwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ba2inUlh; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C779F35975
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 23:36:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787614621; cv=fail; b=LrvtrER2U1JnZhpvqkWDl37o5HddFnFfJ+Om7/3Cl2n6LlLe7972c6FvPFdKpJiV7/2EcLl2v+X7NgTlq4JS+yvAo5p6ihe69kaMyNMm8yDnjw0AOTIjQuNe8LM/dBzHDDZ3aTRwum1VTuBWrf4/n3nkBf8013VpAufE8bUAwH4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787614621; c=relaxed/simple;
+	bh=Emo9IUQu7AMP9r9dAp6Ny4aLQUPsDt8gPr9++LKXSqU=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=DEo0bRb3L/5ikd8N/nMyx47sb8+yz73ErZU3h+bo2+yAIljQaZVrQzj6OdWYKBk/YNgtABzYCN8dBV8vrpZrgpzcMM91RfTbLIYK1x+AFiL7BtcibTbZvrvAF/sBBavI70/oms/zTIdgxxWGbbr4IkKswRqXOntMsj2Sbi9MiK4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ENFEHR0d; arc=fail smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ba2inUlh"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 79BDDC2BCF7;
-	Mon, 24 Aug 2026 21:58:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1787608689;
-	bh=2pxhAuQFzHMjZBkz3QsjWTBHIHdeXRH340tahMGKLzM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Ba2inUlhZJGKXb9OBH7NRGTnI1NExhzTdG8ZLPN3FtHFBItl1mKeCO/1zuO7n5Loh
-	 CBR7dCj8r4mVtrVsVh06lW55I8l54cMr0dazNqWvNg6/iyHTHvWrsa0YiC07kaRjN3
-	 IRzBUP23l2xPDXJ17qhgTzVRfKLNITY8FxEAI6PCFzkXR96c0eQJ3o2f1n7NtX7GnX
-	 9wo45FPZ3bpJyApvJIi1kIGQmLWtmAvjkG7CZB6FqgrLPmfW4HC92pOzh9JVfQx/hj
-	 9bqFumrSLDKvIeKQnkpaSpDfWYtz+ePf8Jy3NAWEEuUIrB2EoHxlUcyOG0GSqoqO52
-	 78YBLQOt9OHdg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 58390C5DF94;
-	Mon, 24 Aug 2026 21:58:09 +0000 (UTC)
-From: Selvamani Rajagopal via B4 Relay <devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
-Date: Mon, 24 Aug 2026 14:57:59 -0700
-Subject: [PATCH net v7 2/4] net: ethernet: oa_tc6: Improve the error
- recovery
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ENFEHR0d"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787614619; x=1819150619;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=Emo9IUQu7AMP9r9dAp6Ny4aLQUPsDt8gPr9++LKXSqU=;
+  b=ENFEHR0dpufO0d6pG0jWMiuwUmHJxc2nDGJPC3Fkghv33CpOuSNtuclR
+   rMk4jWoOVNwEX/ae54nhS4vdRlmwnQByyE45zCorVXURkMKdpFv/HYB0c
+   BroixLqkHxybYhrv/Y8Iw6iVJGd7dmXEbA4JL+yMutTvWw6xDGI0DlRDn
+   /qvlQ3EhCQlfvMhyWGPZ8RYjHeaBl/8GQw1rSy8ehjCojRetB0sSRna+v
+   bfdBurBidsWcy1+ND9vuNBEebGD5REM6LkXVlBF64QLZhad5vAVi664zT
+   rost6bhsRuIM4BTq3iefWmqndcFTzOdwzsGmEp+2RSjL+5Qm4uhLsvntW
+   w==;
+X-CSE-ConnectionGUID: iY4myo2DRx6sYBrACD6gLA==
+X-CSE-MsgGUID: kMXyLMMsTkeetiaqlZrHNQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="88091707"
+X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
+   d="scan'208";a="88091707"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 16:36:58 -0700
+X-CSE-ConnectionGUID: OCPhmLO3QTuu1gQEXspEMQ==
+X-CSE-MsgGUID: sxXNNtReS965l3m7cuetoQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
+   d="scan'208";a="305371675"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 16:36:59 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Mon, 24 Aug 2026 16:36:57 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Mon, 24 Aug 2026 16:36:57 -0700
+Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.21) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Mon, 24 Aug 2026 16:36:57 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tf8oDEo/aYHXBarjLXomql4jfZzj4sRaX60eahHE9vGQAWmiY2bdLDw5Lf/8Y+h0eqg1ATHjgTxiH0e9jtV03g6wKt+IvNdiyr9LJh+BbuRHju0E3Mqk9mNZI9zHhQivVG49lRA4xi7Aux5foQ99pHKor5Jk9D2zTx1A1R/34hw9SOQi1pcdcQOWXaBNkOvRrrz7qdnMB6CqP0sTBHBMWnI5ELmpk5hmh2/pwKk+AMziBr54GGogAov4UJyZevXb+kobDspS8bH2xSfPt0Ed9dgwmPN5dIUd1p+naougLeL1xiHYNJYJVim4O7Bt3plCdb5IjWCujxS3YtGEgfxxQQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1Xb8GluMSe5FMwWusvdyRrZO522r2Z87QVofjd6bSos=;
+ b=yVFUOYB+2mGU6TZs4X0sHDRErn7Wuk4fNbABTyZUIJWKiAewevO/m5PaDbaC4wDnO28XTt0K3ME9mZkM1iFdy4/H3xKPYMv0b0nHuUKQ882hZ1JtU87TRuUlK6ye3F516l9jW4QZGrHsxEyZVuNmn6SBzVJ53blJSnj70QD6jQ+ZT1CbGiuGi/f7t4EIjceEpMVYFokfr0GbhaYlIzYsmWj+Bj9hALY0mwAPBrPwsl1ptLo6jjCj/VZriSH5nyr08bxZX56svSagb30PSwdBjEYDkuw6nNQlrFMGYY4oaR0k5WEwAjXAL98+fFqvgbFDwl9Gutx+mRCjfdxbUelHoA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
+ by MN2PR11MB4597.namprd11.prod.outlook.com (2603:10b6:208:268::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Mon, 24 Aug
+ 2026 23:36:49 +0000
+Received: from DS0PR11MB7381.namprd11.prod.outlook.com
+ ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
+ ([fe80::4c39:dfe6:d6dc:6f58%6]) with mapi id 15.21.0339.012; Mon, 24 Aug 2026
+ 23:36:49 +0000
+Message-ID: <659ce543-a6b1-41ac-b0b2-4640af341bc3@intel.com>
+Date: Mon, 24 Aug 2026 16:36:47 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwl-net 01/12] ice: use reference counting and RCU for PTP
+ port access
+To: Intel Wired LAN <intel-wired-lan@lists.osuosl.org>
+CC: <netdev@vger.kernel.org>, Maciej Machnikowski
+	<maciej.machnikowski@intel.com>, Anthony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemyslaw Korba <przemyslaw.korba@intel.com>, Grzegorz Nitka
+	<grzegorz.nitka@intel.com>, Petr Oros <poros@redhat.com>,
+	<alexander.nowlin@intel.com>, <kevin.bross@intel.com>,
+	<ranjit.cavatur@intel.com>
+References: <20260821-jk-e825c-minimized-fixes-v1-0-9d0731eb4858@intel.com>
+ <20260821-jk-e825c-minimized-fixes-v1-1-9d0731eb4858@intel.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
+Content-Language: en-US
+In-Reply-To: <20260821-jk-e825c-minimized-fixes-v1-1-9d0731eb4858@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR04CA0159.namprd04.prod.outlook.com
+ (2603:10b6:303:85::14) To DS0PR11MB7381.namprd11.prod.outlook.com
+ (2603:10b6:8:134::14)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260824-fix-race-condition-and-crash-v7-2-4323279b18f2@onsemi.com>
-References: <20260824-fix-race-condition-and-crash-v7-0-4323279b18f2@onsemi.com>
-In-Reply-To: <20260824-fix-race-condition-and-crash-v7-0-4323279b18f2@onsemi.com>
-To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>, 
- Andrew Lunn <andrew@lunn.ch>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787608678; l=11990;
- i=Selvamani.Rajagopal@onsemi.com; s=20260531; h=from:subject:message-id;
- bh=n6xmoy9Ow94zsgmapgdxwdj0UmLU1HSJkYrXkWdxbd4=;
- b=32/FN3tca8szXNb4Yfo0rZXb16aA4tPkx+JZp9fqM+fEshn5cBVtgsHbKBNIEPcBtE3ZVwL+K
- k2RLj+dqzjMAPdxB6v1I1G3rJONIYvRAnfLbkiGR7vrrXtXNVd4G54q
-X-Developer-Key: i=Selvamani.Rajagopal@onsemi.com; a=ed25519;
- pk=5QRdM0HS/LGWWcUZZ9hVfZ+qbPQGZCumcTXOiN7Fyug=
-X-Endpoint-Received: by B4 Relay for
- Selvamani.Rajagopal@onsemi.com/20260531 with auth_id=803
-X-Original-From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
-Reply-To: Selvamani.Rajagopal@onsemi.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|MN2PR11MB4597:EE_
+X-MS-Office365-Filtering-Correlation-Id: 25b587ed-6ec2-42d8-650c-08df0238918b
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|10067099003|11063799006|56012099006|4143699003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: X/g1nY3kgVWpO5WOvUnn4vJAr5WHmvxlckhCns7FYEDcmAGXS78Tjzh4rVdqvO0VkW6zaWCOR/c4P47k5mHZyetIMCewhf9d427teQXYxPetTVTulnO5D8S1v1as0KQdrpUopl2rem7+vuUUMgi0R0+BsH14Ce8Vo2fretyrY/m7bNtHpNXK30dZwlEHSxdvWKtiMNSvxFPvgtCNAfUcfH1x73Fb5P6U8VkD7/9AaJa41k04eJuvebi/E/I2MQ9xLifiBxHcqZXQY/07R8Q6sqt5pQX/Oh1O0qG9nmywU8gXpkY1h+xBWxdXIivxYwHRtUZtfo1h9NUyT51ZpoE1mnfy9HDzXL3bQVfDK+dvarlZY50Xzpj1HM3WZdSWC1H8wZiNwygg8wYjk2swd3wQcl5aKkofNi/l3DDBm29mujKXZX3ytvyNCUj+y6SyVTo8zPCa2yS4DrawvlYc9RFDc3StcXlBFsW6Q/NGfGX+GFnQ5ZJZCZYUAuLIBm0GWG8abLCu7gEurJqH/O4OfudKpYI/f/eCSYum0N+/emLyRqyy9lM5JHX9Uen4Mh+0tSjpPvB9S9GK5t6dbVUs18R0qibvPGtnoLCgKUYe6O4fTNm9PcQgWnbIO7W2fr03ty5P1DKJjd9OFcvX7E9tl6lNFW6c5vGUE/AYPJ57hfUaMhs=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(10067099003)(11063799006)(56012099006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bXpGVmUzTXdFTERSemtNYU1SSjZEODhMclBiUDhyUkRteUIvVFhCck16S1dn?=
+ =?utf-8?B?Tzg1ZFVKTVNVc2h3MjdpTnJrRmpkdXBPazNXWmU4SmJLN1lEOTFaRjlSaG1t?=
+ =?utf-8?B?REkxVXFSRGw5QjZHOUEzOGdlMWdtSE1CUCtVODJ5NTdjMnpxR3hpSlV3cmxF?=
+ =?utf-8?B?bUs0RktOeFFjNnFodXl6ZkgxbUtCS0Z3SjhRb3YwYW9MektvYWF2Q2kwYm1H?=
+ =?utf-8?B?L3FIQXBQS0NSb0pWZExLSmVtTmp4QndQOHA1N05Gb2lCbFNPcTZBTkpKeExY?=
+ =?utf-8?B?em9mN0JGZENaRmM0eUtTYzNHK2Q3RkEySmZ2T2JyaHdFY1E0NVc3VUk2TFRK?=
+ =?utf-8?B?RXFKOUduVVFEL0ZtL09UQTVWeDI1MHdkK1psWGZSRXVGU0pzMWZvSGJGRjBt?=
+ =?utf-8?B?SVR0Q1Y1UDF1U3B4YnNwQkYyOUZQdDlnbEtXVnQ5Y1dSUjNUY3dqMThsTzl6?=
+ =?utf-8?B?b3BaeGoyU2d3bEdJdjV3WlRBM2g1S3lXY3dzMndMb0h3Y0MremdDRmJQZGd2?=
+ =?utf-8?B?QlVUZzdhaGptcWNMejArcnlLSmNaODZBdVFNUVB5a3lnMVQ0WkxxZ1pERUhL?=
+ =?utf-8?B?UkorcGF0ZWhGdjhYQ1lFYm9scWJRencxM0tFRnpVS3ZVWFB3WDhRNmt6QnJj?=
+ =?utf-8?B?WFlBbnA5bnZ2Mmw4Qm4xUzZtWDROVE5iT3U2MHQzWmJrRXcxa2FYVUJ4SWNi?=
+ =?utf-8?B?dHFqbzgrN3NSckFFcDg3dlgvSEt6K2t2Sk8yTkhFL1lCZy93Wk9JTzJzdHJ1?=
+ =?utf-8?B?U2wyNk9TRnhlQVRtRUpZS3JZV0I4RXBnR2VUOGRKUGZ2cG9jbmhUS3JoSlBp?=
+ =?utf-8?B?THVzM2E3enpPekEza2JhTVU1NnZYMlJzeTR1VlVLdFZJaGxXVVdsajB2WnpW?=
+ =?utf-8?B?ZjBLaUZKaWl5Z2ptc2R5WkZMekltdXFPOUpEM1l0KzEwL1J6UU1RWFMzREVm?=
+ =?utf-8?B?ZTFScFFxN1lMNzdtQVpUcEUvdnJFRlcrZi8wZm02RGRsLzFMVk0yb2I3cDJi?=
+ =?utf-8?B?QlBCMkZ1eXpBWkdxNmRUUEYzeElLVFlmcGJIMWZFc0Jic3hnOG1IUnh2Z2Ex?=
+ =?utf-8?B?dno4cGMwN3hkeWYzb2FOK0dORGc4OGJQMFNpdXozZ0s5Qk9DRE8vQkRjTGFq?=
+ =?utf-8?B?djM1WnFLZlBKVWdMU2FtYUFNZkRVaXhCWm5PZEY0MGF0ZkFpV2xaN1FldUJJ?=
+ =?utf-8?B?bHFUeGJEZC9WVzd6K2E4Y1JlemdZWG1TKzEzb0w0VTdvSTJPUElNTnBFcGRn?=
+ =?utf-8?B?WWZCTk1jaVpnZUgrdWxOa3c2bWFpQTB5SU00VjE2R2NNL3NpTFBIZ2E4dzZq?=
+ =?utf-8?B?ZGVGam9CVkxTbll4Q0IzOEtRNXFJSzkraGZSY3lra3pqSUlGVENub2dZT2xs?=
+ =?utf-8?B?M3hLRlkzMkNjTjMyRmhTeUxBS1FvdVVnSy92SVdMd0FMckNIQWxwUERYV0ZR?=
+ =?utf-8?B?cGxVdHY5SGhvSllhdlROYno1dmx0a2VHN0FNTllWVU5KbHN3U0kreGE2V1lp?=
+ =?utf-8?B?M2pOVEx5RmkrWW01L3FaZEd4c3dmMjNtcGtPWEk4di84TTZLNHBPMWtGc1Ju?=
+ =?utf-8?B?ZVRyWHhPc1RRb3VWQ2V0RTRuNGpTSHBldEdzMW9QTG52dDFBS0s0eXpFRjJh?=
+ =?utf-8?B?MFVjV3F0R0szQXdvTFROb2liVEY5UjNkbGZxc3VyYzdudWE0Y1IwdTR0K0Jq?=
+ =?utf-8?B?SWNlK1dLZ3g3KzJnNkJaajhWSk5WNmZobTA2K2JjdGU5UjY5UDRiS1Z5TzNp?=
+ =?utf-8?B?YTdBWjZHSCt2RXRUamRmT3ZVNjdqaDZrWG5IRjF6RkVkd2taMllsV21FK1hw?=
+ =?utf-8?B?REZ2Ni9wUmVHb2ZvUmxvMjlZQUtrQUdhb0hIMkRpZzFUZVc0Qm1SNjk2U0dw?=
+ =?utf-8?B?cWpVUEZIaHFLRVNyMHpyaTNrN0FhVDBlQVBaOUZTVVovRUhDK2RpM1JKS0dw?=
+ =?utf-8?B?QWxudVR3TmZaOUdiQ0VrRHg4MFljeSthS2VNWjg2VEVHQ0NSN0NBdDNLVDc1?=
+ =?utf-8?B?M21SYWlRc04wdk1rMU9IenVBN3BuYUNnaUY2amJBUVNzNlB2MU1nSzU2RW13?=
+ =?utf-8?B?aVBsdXZkSmwvWVVSVkE2WFNnSjY5eEJYRWlqajBLTEg4aUZYRFdZNm03WDdr?=
+ =?utf-8?B?elNLM2RBUFNWQ3hiQzFubG1obHBKMThtaGNXTU5VYmNvdG5BVHQwSVdNVk9J?=
+ =?utf-8?B?VGQzK0w0NUtDblY4cHhHQ0xFYVNKNmdNckl2bFlkdXNyd3VSRlpCMVBkQ0xI?=
+ =?utf-8?B?UTFrdGs5TTNaMkVWSXlnVmVWanlEQU1LN3lUU1JlMGgvcDFyeEREZGJXRXNq?=
+ =?utf-8?B?bHdmc2diaU1WeTBWYlVSc21zYU0za3Jkd05tV0dldGJqZGZDS1dPdz09?=
+X-Exchange-RoutingPolicyChecked: 1nVV+P+U5CGpKLIRy5XB4tr3kQz/QCILXEYIrNHt0CkcuwNu9e16FfiOyuaXCC78QBssG96Vll1znYrRWhGvrupx64knMY2oD7NfIpOezf4RzHWjBm1Tw5d1gQTvNdaD+rSpna0odK0QFU22qLC2OqNubsudCcwuF9/bfM+CM+vLrLLVq/ERrHIJGq0jBzu9S6hHsUY9adt2Bx2AqwLoPDXQUYNGmbM/aQeu0jOLlEkxntc4JF0HK40apjtWEe5uR4rUTYKHmHuy3e2BM6uwiM4zgstPmBm7k5g1IoyconLPGRVU2iBv50ckvM8YB61u8YK3/QqgGX/nsd6eh2D1rg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 25b587ed-6ec2-42d8-650c-08df0238918b
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2026 23:36:49.4992
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: t+crtmOgq2nbrB0HFLmwuHW2djh8Md2ecYKgSec1PaYpZ12EPgtABZAGV5dChsQ10DXivWKpYQdaPxP2VWeMX/UWZ/PAAz1n3+d0HpLg3M0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB4597
+X-OriginatorOrg: intel.com
 
-From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+On 8/21/2026 5:13 PM, Jacob Keller wrote:
+> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.h b/drivers/net/ethernet/intel/ice/ice_ptp.h
+> index c4b0da7ce20e..da2003ba3bb0 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_ptp.h
+> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.h
+> @@ -673,20 +675,33 @@ static void ice_ptp_process_tx_tstamp(struct ice_ptp_tx *tx)
+>  	pf->ptp.tx_hwtstamp_good += tstamp_good;
+>  }
+>  
+> +static void ice_ptp_release_port_rcu(struct kref *ref)
+> +{
+> +	wake_up_var(ref);
+> +}
+> +
+>  static void ice_ptp_tx_tstamp_owner(struct ice_pf *pf)
+>  {
+>  	struct ice_ptp_port *port;
+>  
+> -	mutex_lock(&pf->adapter->ports.lock);
+> -	list_for_each_entry(port, &pf->adapter->ports.ports, list_node) {
+> +	rcu_read_lock();
+> +	list_for_each_entry_rcu(port, &pf->adapter->ports.list, list_node) {
+>  		struct ice_ptp_tx *tx = &port->tx;
+>  
+> -		if (!tx || !tx->init)
+> +		if (!tx->init)
+>  			continue;
+>  
+> +		if (!kref_get_unless_zero(&port->ref))
+> +			continue;
+> +
+> +		rcu_read_unlock();
+> +
+>  		ice_ptp_process_tx_tstamp(tx);
+> +
+> +		kref_put(&port->ref, ice_ptp_release_port_rcu);
+> +		rcu_read_lock();
+>  	}
+> -	mutex_unlock(&pf->adapter->ports.lock);
+> +	rcu_read_unlock();
+>  }
+>  
 
-When oversubscribed traffic causes lot of buffer overflow errors,
-probably due to loss of data chunks, driver fails to find a
-data chunk with end_valid bit set, before it runs out of sk buffer
-space. As a result, assert is seen during skb_put.
+Sashiko says:
 
-Now, check is made if skb buffer has enough tailroom for the
-incoming data before accepting. If there is no room, current
-frame is abandoned and it will start looking for a data chunk
-with start_valid bit, that is a new frame.
+> Can this sequence lead to a use-after-free when advancing the iterator?
+> The list_for_each_entry_rcu() macro evaluates port->list_node.next at the end
+> of each iteration to find the next element.
+> If kref_put() drops the last reference here, it wakes up the teardown thread
+> in ice_ptp_cleanup_pf().
+> Since the iterator thread previously dropped the RCU read lock via
+> rcu_read_unlock(), could the following race happen?
+> Iterator thread:
+>     kref_put(&port->ref, ice_ptp_release_port_rcu);
+>     // Last ref dropped, wakes up ice_ptp_cleanup_pf()
+> Teardown thread (ice_ptp_cleanup_pf):
+>     wakes up from wait_var_event_timeout()
+>     synchronize_rcu(); // Completes without waiting for iterator thread
+>     // Port memory is freed
+> Iterator thread:
+>     rcu_read_lock();
+>     // list_for_each_entry_rcu evaluates port->list_node.next on freed port
+> Is it necessary to use a safe iterator or pre-fetch the next pointer before
+> dropping the reference, to prevent reading from the freed port?
+> This same traversal pattern dropping the lock and reference appears to also
+> be present in ice_ptp_flush_all_tx_tracker(), ice_ptp_restart_all_phy(),
+> and ice_ptp_prepare_rebuild_sec().
 
-SK buffer allocation error is considered as recoverable error.
+I am not sure there is a problem here. I need to investigate carefully.
 
-rx_buf_overflow flag is too specific and no longer the only
-condition this flag is used for. Therefore it is renamed as
-wait_until_start_valid. This is more appropriate as this flag
-is used to look for the next data chunk with SV bit set, after
-failures like buffer overflow, buffer allocation failure, skb pointer
-validity besides buffer overflow error.
+I think there is a problem here because the original logic was built
+around xarray iterators which may not work exactly the same as the list
+iterator. We currently remove the item from the list before releasing
+the final reference.
 
-Not writing to status0 if it reads 0.
+I believe that worked for the xarray but doesn't work for this list
+based approach. I think the best solution here is to follow the guidance
+from Documentation/core-api/kref.rst under the kref + RCU section.
 
-Fixes: d70a0d8f2f2d ("net: ethernet: oa_tc6: implement receive path to receive rx ethernet frames")
-Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
-
----
-changes in v7
-  - No change
-changes in v6
-  - Changed the rx_buf_overflow flag to more appropriate name
-  - Using skb_tailroom instead of skb fields directly
-  - Avoid reading status0, where it is not needed
-changes in v5
-  - Changed the summary to match the convention
-  - Added more clarity to why the return code is not checked for
-    the call to oa_tc6_prcs_rx_frame_end
-changes in v4
-  - rx_buf_overflow flag cleared, when end of frame and start of
-    frame are handled in the same data chunk.
-  - Added more comments to answer some of the AI review questions.
-changes in v3
-  - Continue processing more chunks on error code -EAGAIN. Previously
-    we were bailing out.
-changes in v2
-  - Check rx_skb pointer before new allocation and NULL before use.
----
- drivers/net/ethernet/oa_tc6.c | 143 +++++++++++++++++++++++++++++++-----------
- 1 file changed, 108 insertions(+), 35 deletions(-)
-
-diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6.c
-index 2f45001be0f5..657b1c6119da 100644
---- a/drivers/net/ethernet/oa_tc6.c
-+++ b/drivers/net/ethernet/oa_tc6.c
-@@ -83,7 +83,7 @@ struct oa_tc6 {
- 	u16 spi_data_tx_buf_offset;
- 	u16 tx_credits;
- 	u8 rx_chunks_available;
--	bool rx_buf_overflow;
-+	bool wait_until_start_valid;
- 	bool int_flag;
- 	bool disable_traffic;
- 	bool prot_ctrl;
-@@ -751,6 +751,12 @@ static void oa_tc6_free_pending_skbs(struct oa_tc6 *tc6)
- 	oa_tc6_cleanup_waiting_tx_skb(tc6);
- }
- 
-+static void oa_tc6_look_for_new_frame(struct oa_tc6 *tc6)
-+{
-+	tc6->wait_until_start_valid = true;
-+	oa_tc6_cleanup_ongoing_rx_skb(tc6);
-+}
-+
- /* If the failure is at SPI interface level, masking and clearing
-  * the interrupt of the device won't work. Since SPI interrupt is
-  * disabled, it should stop the repeated interrupts.
-@@ -785,6 +791,13 @@ static int oa_tc6_process_extended_status(struct oa_tc6 *tc6)
- 		return ret;
- 	}
- 
-+	/* This function is called for each chunk received in a given SPI
-+	 * transaction. In case, extended status bit is set in more than
-+	 * one chunk, skip the write, if status0 is already cleared.
-+	 */
-+	if (!value)
-+		return 0;
-+
- 	/* Clear the error interrupts status */
- 	ret = oa_tc6_write_register(tc6, OA_TC6_REG_STATUS0, value);
- 	if (ret) {
-@@ -794,8 +807,7 @@ static int oa_tc6_process_extended_status(struct oa_tc6 *tc6)
- 	}
- 
- 	if (FIELD_GET(OA_TC6_STATUS0_RX_BUFFER_OVERFLOW_ERROR, value)) {
--		tc6->rx_buf_overflow = true;
--		oa_tc6_cleanup_ongoing_rx_skb(tc6);
-+		oa_tc6_look_for_new_frame(tc6);
- 		net_err_ratelimited("%s: Receive buffer overflow error\n",
- 				    tc6->netdev->name);
- 		return -EAGAIN;
-@@ -821,6 +833,8 @@ static int oa_tc6_process_extended_status(struct oa_tc6 *tc6)
- 
- static int oa_tc6_process_rx_chunk_footer(struct oa_tc6 *tc6, u32 footer)
- {
-+	int ret = 0;
-+
- 	/* Process rx chunk footer for the following,
- 	 * 1. tx credits
- 	 * 2. errors if any from MAC-PHY
-@@ -831,9 +845,11 @@ static int oa_tc6_process_rx_chunk_footer(struct oa_tc6 *tc6, u32 footer)
- 					     footer);
- 
- 	if (FIELD_GET(OA_TC6_DATA_FOOTER_EXTENDED_STS, footer)) {
--		int ret = oa_tc6_process_extended_status(tc6);
--
--		if (ret)
-+		ret = oa_tc6_process_extended_status(tc6);
-+		/* EAGAIN error is recoverable. Move on to check
-+		 * HEADER and SYNC errors before returning.
-+		 */
-+		if (ret && ret != -EAGAIN)
- 			return ret;
- 	}
- 
-@@ -851,7 +867,7 @@ static int oa_tc6_process_rx_chunk_footer(struct oa_tc6 *tc6, u32 footer)
- 		return -ENODEV;
- 	}
- 
--	return 0;
-+	return ret;
- }
- 
- static void oa_tc6_submit_rx_skb(struct oa_tc6 *tc6)
-@@ -876,13 +892,35 @@ static void oa_tc6_submit_rx_skb(struct oa_tc6 *tc6)
- 	tc6->rx_skb = NULL;
- }
- 
--static void oa_tc6_update_rx_skb(struct oa_tc6 *tc6, u8 *payload, u8 length)
-+/* On oversubscribed traffic condition, particularly with overwhelming rx
-+ * buffer overflow errors, there could be data chunk loss. If tail + length
-+ * goes beyond end pointer, that is an indication that the data chunk with
-+ * end_valid bit is lost. Time to look for a data chunk with start_valid bit.
-+ *
-+ * If rx_skb is NULL, it is time to start looking for data chunk with
-+ * start_bit.
-+ */
-+static int oa_tc6_update_rx_skb(struct oa_tc6 *tc6, u8 *payload, u8 length)
- {
-+	if (!tc6->rx_skb ||
-+	    skb_tailroom(tc6->rx_skb) < length) {
-+		oa_tc6_look_for_new_frame(tc6);
-+		return -EAGAIN;
-+	}
-+
- 	memcpy(skb_put(tc6->rx_skb, length), payload, length);
-+	return 0;
- }
- 
-+/* On overwhelming rx buffer overflow errors, due to data chunk loss, it is
-+ * possible that we get two data chunks with start_valid bit set, without
-+ * end_valid bit set in between. In this case, rx_skb would have a valid
-+ * buffer pointer. We should release, if a valid pointer is found before
-+ * allocating a new one.
-+ */
- static int oa_tc6_allocate_rx_skb(struct oa_tc6 *tc6)
- {
-+	oa_tc6_cleanup_ongoing_rx_skb(tc6);
- 	tc6->rx_skb = netdev_alloc_skb_ip_align(tc6->netdev, tc6->netdev->mtu +
- 						ETH_HLEN + ETH_FCS_LEN);
- 	if (!tc6->rx_skb) {
-@@ -902,7 +940,9 @@ static int oa_tc6_prcs_complete_rx_frame(struct oa_tc6 *tc6, u8 *payload,
- 	if (ret)
- 		return ret;
- 
--	oa_tc6_update_rx_skb(tc6, payload, size);
-+	ret = oa_tc6_update_rx_skb(tc6, payload, size);
-+	if (ret)
-+		return ret;
- 
- 	oa_tc6_submit_rx_skb(tc6);
- 
-@@ -917,22 +957,24 @@ static int oa_tc6_prcs_rx_frame_start(struct oa_tc6 *tc6, u8 *payload, u16 size)
- 	if (ret)
- 		return ret;
- 
--	oa_tc6_update_rx_skb(tc6, payload, size);
--
--	return 0;
-+	return oa_tc6_update_rx_skb(tc6, payload, size);
- }
- 
--static void oa_tc6_prcs_rx_frame_end(struct oa_tc6 *tc6, u8 *payload, u16 size)
-+static int oa_tc6_prcs_rx_frame_end(struct oa_tc6 *tc6, u8 *payload, u16 size)
- {
--	oa_tc6_update_rx_skb(tc6, payload, size);
-+	int ret;
- 
--	oa_tc6_submit_rx_skb(tc6);
-+	ret = oa_tc6_update_rx_skb(tc6, payload, size);
-+	if (!ret)
-+		oa_tc6_submit_rx_skb(tc6);
-+	return ret;
- }
- 
--static void oa_tc6_prcs_ongoing_rx_frame(struct oa_tc6 *tc6, u8 *payload,
--					 u32 footer)
-+static int oa_tc6_prcs_ongoing_rx_frame(struct oa_tc6 *tc6, u8 *payload,
-+					u32 footer)
- {
--	oa_tc6_update_rx_skb(tc6, payload, OA_TC6_CHUNK_PAYLOAD_SIZE);
-+	return oa_tc6_update_rx_skb(tc6, payload,
-+				    OA_TC6_CHUNK_PAYLOAD_SIZE);
- }
- 
- static int oa_tc6_prcs_rx_chunk_payload(struct oa_tc6 *tc6, u8 *data,
-@@ -947,10 +989,10 @@ static int oa_tc6_prcs_rx_chunk_payload(struct oa_tc6 *tc6, u8 *data,
- 	u16 size;
- 
- 	/* Restart the new rx frame after receiving rx buffer overflow error */
--	if (start_valid && tc6->rx_buf_overflow)
--		tc6->rx_buf_overflow = false;
-+	if (start_valid && tc6->wait_until_start_valid)
-+		tc6->wait_until_start_valid = false;
- 
--	if (tc6->rx_buf_overflow)
-+	if (tc6->wait_until_start_valid)
- 		return 0;
- 
- 	/* Process the chunk with complete rx frame */
-@@ -972,8 +1014,7 @@ static int oa_tc6_prcs_rx_chunk_payload(struct oa_tc6 *tc6, u8 *data,
- 	/* Process the chunk with only rx frame end */
- 	if (end_valid && !start_valid) {
- 		size = end_byte_offset + 1;
--		oa_tc6_prcs_rx_frame_end(tc6, data, size);
--		return 0;
-+		return oa_tc6_prcs_rx_frame_end(tc6, data, size);
- 	}
- 
- 	/* Process the chunk with previous rx frame end and next rx frame
-@@ -987,6 +1028,15 @@ static int oa_tc6_prcs_rx_chunk_payload(struct oa_tc6 *tc6, u8 *data,
- 		if (tc6->rx_skb) {
- 			size = end_byte_offset + 1;
- 			oa_tc6_prcs_rx_frame_end(tc6, data, size);
-+
-+			/* Return value from oa_tc6_prcs_rx_frame_end is not
-+			 * checked. If it returned an error, it is to make
-+			 * the code to look for new frame. At this stage,
-+			 * code below is going to process a new frame. So,
-+			 * error condition is set to false, in case it is
-+			 * set before proceeding.
-+			 */
-+			tc6->wait_until_start_valid = false;
- 		}
- 		size = OA_TC6_CHUNK_PAYLOAD_SIZE - start_byte_offset;
- 		return oa_tc6_prcs_rx_frame_start(tc6,
-@@ -995,9 +1045,7 @@ static int oa_tc6_prcs_rx_chunk_payload(struct oa_tc6 *tc6, u8 *data,
- 	}
- 
- 	/* Process the chunk with ongoing rx frame data */
--	oa_tc6_prcs_ongoing_rx_frame(tc6, data, footer);
--
--	return 0;
-+	return oa_tc6_prcs_ongoing_rx_frame(tc6, data, footer);
- }
- 
- static u32 oa_tc6_get_rx_chunk_footer(struct oa_tc6 *tc6, u16 footer_offset)
-@@ -1013,8 +1061,9 @@ static u32 oa_tc6_get_rx_chunk_footer(struct oa_tc6 *tc6, u16 footer_offset)
- static int oa_tc6_process_spi_data_rx_buf(struct oa_tc6 *tc6, u16 length)
- {
- 	u16 no_of_rx_chunks = length / OA_TC6_CHUNK_SIZE;
-+	bool retry = false;
-+	int ret = 0;
- 	u32 footer;
--	int ret;
- 
- 	/* All the rx chunks in the receive SPI data buffer are examined here */
- 	for (int i = 0; i < no_of_rx_chunks; i++) {
-@@ -1023,8 +1072,11 @@ static int oa_tc6_process_spi_data_rx_buf(struct oa_tc6 *tc6, u16 length)
- 						    OA_TC6_CHUNK_PAYLOAD_SIZE);
- 
- 		ret = oa_tc6_process_rx_chunk_footer(tc6, footer);
--		if (ret)
--			return ret;
-+		if (ret) {
-+			if (ret != -EAGAIN)
-+				return ret;
-+			retry = true;
-+		}
- 
- 		/* If there is a data valid chunks then process it for the
- 		 * information needed to determine the validity and the location
-@@ -1036,12 +1088,35 @@ static int oa_tc6_process_spi_data_rx_buf(struct oa_tc6 *tc6, u16 length)
- 
- 			ret = oa_tc6_prcs_rx_chunk_payload(tc6, payload,
- 							   footer);
--			if (ret)
--				return ret;
-+			if (ret) {
-+				if (ret != -ENOMEM && ret != -EAGAIN)
-+					return ret;
-+				retry = true;
-+			}
- 		}
- 	}
- 
--	return 0;
-+	/* Not bailing out on recoverable error codes, -EAGAIN and
-+	 * -ENOMEM. If subsequent loop iterations, if any, succeeds,
-+	 * error code would be overwritten. retry flag helps to
-+	 * make the caller to continue and retry. Since recovery
-+	 * action for -ENOMEM and -EAGAIN are same, we are returning
-+	 * one of the error codes, that is -EAGAIN.
-+	 *
-+	 * Successful recovery depends on how small the frames are,
-+	 * how many chunks, among the received chunks triggered the
-+	 * error, whether data is intact even with error conditions.
-+	 * As a result, there is no single, best method to recover
-+	 * most data when error conditions hit. We do our best by
-+	 * processing all the chunks with good "footer header" and
-+	 * "data valid" bit set.
-+	 */
-+	if (retry) {
-+		ret = -EAGAIN;
-+		oa_tc6_look_for_new_frame(tc6);
-+	}
-+
-+	return ret;
- }
- 
- static __be32 oa_tc6_prepare_data_header(bool data_valid, bool start_valid,
-@@ -1203,10 +1278,8 @@ static int oa_tc6_try_spi_transfer(struct oa_tc6 *tc6)
- 		}
- 
- 		ret = oa_tc6_process_spi_data_rx_buf(tc6, spi_len);
--		if (ret) {
--			if (ret == -EAGAIN)
--				continue;
- 
-+		if (ret && ret != -EAGAIN) {
- 			oa_tc6_free_ongoing_skbs(tc6);
- 			netdev_err(tc6->netdev, "Device error: %d\n", ret);
- 			return ret;
-
--- 
-2.43.0
-
-
+I will fix this in a v2, along with any other issues pointed out by sashiko
