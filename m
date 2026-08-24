@@ -1,55 +1,55 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B025405C3F
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 11:06:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6717A3EDE7A
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 11:08:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787569576; cv=none; b=ZMejakWlkhFQ9z+aSTmTHv8moGaDZCwRSAyDu5s8hSIOOEOHKgIHkyFET5PKJCBzHf7PsQ5RDRkV9419yi5YjWejpZTWLqhrAADjDX35nvDX2zNIIuOOZR/kgwHEaVNvTJMZB8eEp7HR7DwLX7GFCgLh3NH6splHKXl+N7WbSV8=
+	t=1787569721; cv=none; b=lNbjgV2It36hXYkjk1RK09SVRfr1eGmWEfIqFc09Mun+3rTpzO5OmYtDb1Wmg24vXsvBj7Drd1+RZeamsuVrS9qjV+DBGjgq3ZAViZvEW4ppopygo/PgqMwysCGTo+jVXdwhXPP/DrlCXsBjPI+qIJzpJUXI63zL++VYR29GMeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787569576; c=relaxed/simple;
+	s=arc-20240116; t=1787569721; c=relaxed/simple;
 	bh=lA+X1Ot4fcWYWjS0LfvO0PtshSw2LjPWXsggrfDer4M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ysv9ds3pEr9tf9hypHrYEZMPzvIC6vN/TOFkxljmBimEImlR/+MH5gzAZ1dMFiBoRzdM9HGSXzjXWS68YJ84rgg3Ew1mq2LM0XrTjYJrm5FkL9fCRBF9IZhRDA4fEEeRuLr1caWIDWUQBoTuoD9XIHH3KdM+pQyYhsJkSSdHS3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ltLRQFhR; arc=none smtp.client-ip=198.175.65.15
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Dnb43P1Wnc5uDkhVDQEstqb9uve1uA4TPNMhrk/qz6l4tfEpFLYtaxU1JkI942FQULcYQA9XlISpMpQ23mW5/wN3PfLNGL3fy1NFJ+RWwNZoy7BHFeBJ9wvYhcuvfc1LDFP33xVFih6I/XNAnMgr3wTv5q3duLD2rhvnODybdQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cmix+2d9; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ltLRQFhR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cmix+2d9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787569574; x=1819105574;
+  t=1787569720; x=1819105720;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
   bh=lA+X1Ot4fcWYWjS0LfvO0PtshSw2LjPWXsggrfDer4M=;
-  b=ltLRQFhRBoWXzIivPaxAYiSXahwp/XYXSrlK/JbwnglfEF5ae4JKP1Td
-   2TNyVYVfh/gvIa/0gqAmWs6/5WsYLN7clf1LkemeRUzolh+BXq0i4mxbi
-   pr4SDjJcNa0U9yLRSPbwz1aPtf0n62hoPvjCbYZRPLgmuzAQ2tIonDQko
-   z6jNQ4xU9dcJVBEjTriZf8JWaO3t/BZnR0oDMdvco8CHJB1Zgq6E1B1Qa
-   OxbB3KooW/LoHhReKkJ0fm1JkpxBtuPL7XFLUI7axu0u8GXI/iud4GB3w
-   XhBiXK99Nq/qo3lPg9h9DEYe7XyJW4/+qXtfmpDp7LGI+Nb9PzZHsg9zQ
+  b=cmix+2d9qqrlBkRAQQlu5ZfJq7vYnxElqJD6XMyVaw94mgN1QxXVUKpP
+   FODU50wubv0/PKqtele5PAQqD8MKgNiUF4tM2RogcwVddfO1yM/NjBNUa
+   +uukW3uFdFPzoev6dE7JN2+YptXSm+l8f7qJYMBpuB/rz9GB4Jg9RpHpv
+   Bax6/01eMZpDxtxjiaCRpETPPGLLejLXEHO9QnermtEcSubwkV5wUQgBK
+   c9+Kj19uj09jxAWnqI4jISbQH3Pt8Z/IONH0SEAwfCUsXgGMYANOxbm22
+   w0SrVXogSdAQDcrH1EnFKQV0QddyZ7D3tzAJRF6vOnFW+MkfypUfOlmmX
    g==;
-X-CSE-ConnectionGUID: fJA+b8uhQUyAtIOAMZvJ1Q==
-X-CSE-MsgGUID: xFGyVof8TtanB22/fcUEpw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11884"; a="91695917"
+X-CSE-ConnectionGUID: Wsng+2SNSmepdRv9HJpS2g==
+X-CSE-MsgGUID: O2lVrP8hSkObgv0SB8h0Ag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11884"; a="87877501"
 X-IronPort-AV: E=Sophos;i="6.25,240,1779174000"; 
-   d="scan'208";a="91695917"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 04:06:13 -0700
-X-CSE-ConnectionGUID: rYJRJx2rTgilBT/v2TEPpw==
-X-CSE-MsgGUID: nHGEwayGTc22CMw4osEjvQ==
+   d="scan'208";a="87877501"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 04:08:37 -0700
+X-CSE-ConnectionGUID: Xqq9QbCXR5us33s8r07w4g==
+X-CSE-MsgGUID: ThmbwuijSAmh17OtH+AHhw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,240,1779174000"; 
-   d="scan'208";a="268922305"
+   d="scan'208";a="296869999"
 Received: from os-delivery.igk.intel.com ([10.123.220.8])
-  by fmviesa004.fm.intel.com with ESMTP; 24 Aug 2026 04:06:11 -0700
+  by orviesa002.jf.intel.com with ESMTP; 24 Aug 2026 04:08:36 -0700
 From: Tomasz Lichwala <tomasz.lichwala@linux.intel.com>
 To: intel-wired-lan@lists.osuosl.org
 Cc: netdev@vger.kernel.org,
 	Tomasz Lichwala <tomasz.lichwala@linux.intel.com>,
 	Marcin Szycik <marcin.szycik@linux.intel.com>
-Subject: [PATCH net-next v4] ixgbevf: fix link speed reporting for Hyper-V E610 VFs
-Date: Mon, 24 Aug 2026 13:06:10 +0200
-Message-ID: <20260824110610.2364027-1-tomasz.lichwala@linux.intel.com>
+Subject: [PATCH iwl-net v4] ixgbevf: fix link speed reporting for Hyper-V E610 VFs
+Date: Mon, 24 Aug 2026 13:08:34 +0200
+Message-ID: <20260824110834.2364407-1-tomasz.lichwala@linux.intel.com>
 X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
