@@ -1,281 +1,822 @@
-Received: from mail-oi2-f1.google.com (mail-oi2-f1.google.com [74.125.231.193])
+Received: from mail-oi2-f11.google.com (mail-oi2-f11.google.com [74.125.231.203])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C46433D6FD
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC54D32E12E
 	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 19:47:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.193
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.203
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787600859; cv=none; b=Qip68pdxu8pn88d9+oqjI/epIuc+5iOrYpL/OfG5dITBbYx/0rAODvibKdmoic10rCUw753J+Furl+nrLcle7eh15RJw0eA56GQfiBRU8Qbbx3Kta7pIStH0gQgOvgR6Kge1e1Hswt6opS/0sqXfFqfQeEIshqu5p65Nlr0Jylw=
+	t=1787600860; cv=none; b=DqPK58/lSjBf5AeOC29QXwCDdbWm0as0UXag5QKSfYfvhXtz1YwgcoDYDwqy/ZZ8aw8rVwwgm5BseHUt4xNGsuktvFpLh4gu66aE3TDgIWICd+Ikyy2Riqsv5aN3e5s/ePMIt7oJOUIUkak1sD2HrkLFsQZ1JA6OatiUITY9rKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787600859; c=relaxed/simple;
-	bh=bl0OwzUa8aQ0DpD/dn50WTvFX6XCzxNIb2Z2St5B8So=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=IiW1W8IIrIrqKEsifV0Q8rAmhYxUY0K2d8XON4xTt3B+w1pOf0S5VYoH7biXs+E1WW/MI0tqpELIbv70+leHavufN+MpSXgvjmrlRj9tL5qXIflpBKqB03QlVVrNh3BhBBbcV2KLTnDnDSJZ/vFiKisYeRTu2hvmKcOb2h78DG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.193
+	s=arc-20240116; t=1787600860; c=relaxed/simple;
+	bh=v6Q47YLktRY+V2MCW9UGDjT53Ag9+rLJrNs0cKMNxm8=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=nL+kUEldKBgNBBBPEXx6fXc0nfHslDwMWso5ZC/yNLxzumAauoG8UmMem1m/oRCO057LNXbgYdMS7Pj/0CDMeqaeQh3fGvI/pPceqSy6hhhEnPaTCLp1sAhxAKydGxquBGcwyF8Ffo4RP+SBJY7G7y76MphBQzRPvfy5JXsP35U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.203
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi2-f1.google.com with SMTP id 5614622812f47-4960a23d5e1so1504937b6e.1
+Received: by mail-oi2-f11.google.com with SMTP id 5614622812f47-4af7193adb7so1291941b6e.0
         for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 12:47:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1787600857; x=1788205657;
         h=content-type:to:from:subject:message-id:date:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=eOde3qSWo3L7OAF4ky3nsQL9z4RmP+Uscn74bSTAfB8=;
-        b=PUslzU419OH6r4D0wtJ71xAt9+xwJcJsDbPydQwv/H67NwaZa/nWU/BqdE0PL+4A5z
-         WRbtnPIleWxLT8BiJEUApQjWyQs8ReFLC6OCsRUWPEopEH4JODpqSDtKC7FtUE4Fb2Jv
-         RS3HEQdKjqsTAlVnkra9pAqbnU1Hog05U6SwIlOgKnPcdNzr3EftriKMzliHYuDMKxFx
-         +mtuaZlXmsCtist4hxe3D+6tmNzNOt0oQgD6/UWypwlDsSSd8ZwqEy3KI8x9pl3LXzsc
-         p8xWHnes8zRgadZsVVHErPW4Cn5Hv6PRWTPewO8E8ZQnTiGdvRijdszUElUKdtVjI0tK
-         HfcQ==
-X-Forwarded-Encrypted: i=1; AHgh+RorPtZZ8GTjfNQLyJ5xxAI3CYUy0dMvaOfsQLXOSza7dPMOa92C8Sr2dDBnpaG6IN7mApJ7Ops=@vger.kernel.org
-X-Gm-Message-State: AFuF++k5UcSUmyGlG5aZlEc392nuUshKFN8pmeP6QVil3D6qjFWsdpQk
-	JIg8En9zHDVQGKrqhajU19exHz8APOl7yDBetbk8BF+licuRRVyi9jHBOSG/YVvi/Uff7phB8XA
-	95h382tvdqxTCJba+pecw9KBRdGt8r6nWNe019C2L9U1jnjjfd5CZmPFp0Y8=
+        bh=2K9XH4FWtMdmA3NTxpUS7TtOHEjFGVnzKTgFWMmUGLY=;
+        b=MyIlzy+cFT46ypBFwhxwNQCBcZnFTtzDWxKswgf8t90pWWjw1AkTOTT3sexDHHOD/s
+         lx8vmUw5ahrNNA3G3V6GWZk5u2BM3h0VBL2TNZwmKsN6+n/RENfJaFTkv5apVUd6tX0p
+         hEISmwXJongVv8E7+92Na8kd/iYa0GQkcGX2NzG44HHN7aftQzcgDNS+JcQUSg9YuR66
+         PcFI+Y7z8MUA0mDcrJwyOoltSWOWKQktz9FKuHW/PPUcLfpS+BzAThEcVXJbDn5q81gF
+         VlyCGunANV8P6Edz9m8XLB07GgryVFbS9jCELYf0t3i2WIWFC/gdBu8t/Co+h8RUsC0I
+         xXCg==
+X-Forwarded-Encrypted: i=1; AHgh+RqzNnuKGbrRyf8UJ2bcd+VjyPbA8vrifBZtvHTUB3u1y9SjyItZEetgo7Wj3Z7o6e4TDaLkiFE=@vger.kernel.org
+X-Gm-Message-State: AFuF++keLr+jtgT3f4WMo15zt26umrrySgOU/3JbQvnI9E1rr2HdV+ku
+	VkZKvp5YvDEbum+OaIpgvXwYw2YTld07X0uAoNgUJfHg6kazOZy4gurl1r9npVfnTwcv/CWdj06
+	LJJ1RqEwdccDcAQnYzz+G780ehbu5j0u081jC6w6dJRR04KhNkNx2ioZvapc=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:c292:b0:4a4:9e18:607a with SMTP id
- 5614622812f47-4b309c4666bmr21715315b6e.21.1787600857078; Mon, 24 Aug 2026
- 12:47:37 -0700 (PDT)
-Date: Mon, 24 Aug 2026 12:47:37 -0700
+X-Received: by 2002:a05:6809:289:20b0:4b3:1e40:640b with SMTP id
+ 5614622812f47-4b31e4068ffmr11239161b6e.6.1787600856868; Mon, 24 Aug 2026
+ 12:47:36 -0700 (PDT)
+Date: Mon, 24 Aug 2026 12:47:36 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a8c9fd9.dbb3a75c.7844.000c.GAE@google.com>
-Subject: [syzbot] [bpf?] [net?] possible deadlock in xsk_diag_dump (3)
-From: syzbot <syzbot+aa48b5fe7bfda62d1682@syzkaller.appspotmail.com>
-To: andrii@kernel.org, ast@kernel.org, bpf@vger.kernel.org, 
-	daniel@iogearbox.net, davem@davemloft.net, edumazet@google.com, 
-	horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	maciej.fijalkowski@intel.com, magnus.karlsson@intel.com, 
-	netdev@vger.kernel.org, pabeni@redhat.com, sdf@fomichev.me, 
-	syzkaller-bugs@googlegroups.com
+Message-ID: <6a8c9fd8.dbb3a75c.7844.000b.GAE@google.com>
+Subject: [syzbot] [net?] [nfs?] BUG: stack guard page was hit in inet_stream_connect
+From: syzbot <syzbot+c9834a0c0215e6d8697a@syzkaller.appspotmail.com>
+To: Dai.Ngo@oracle.com, anna@kernel.org, cel@kernel.org, davem@davemloft.net, 
+	edumazet@google.com, horms@kernel.org, jlayton@kernel.org, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, neil@brown.name, 
+	netdev@vger.kernel.org, okorniev@redhat.com, pabeni@redhat.com, 
+	syzkaller-bugs@googlegroups.com, tom@talpey.com, trondmy@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
 Hello,
 
 syzbot found the following issue on:
 
-HEAD commit:    26260251022f Merge tag 'livepatching-for-7.3' of git://git..
+HEAD commit:    d58772d8520c Merge tag 'regmap-fix-v7.2-rc7' of git://git...
 git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=100d4415580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=b5a17c415a27e42e
-dashboard link: https://syzkaller.appspot.com/bug?extid=aa48b5fe7bfda62d1682
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-
-Unfortunately, I don't have any reproducer for this issue yet.
+console output: https://syzkaller.appspot.com/x/log.txt?x=14733132580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=8a233ed2ce9a8096
+dashboard link: https://syzkaller.appspot.com/bug?extid=c9834a0c0215e6d8697a
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+userspace arch: i386
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12f51079580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=159c92c6580000
 
 Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/05f9f33a1f1f/disk-26260251.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/197f5b9a6961/vmlinux-26260251.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/ad671f043000/bzImage-26260251.xz
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-d58772d8.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/a4e864f7b043/vmlinux-d58772d8.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/f485f29307dc/bzImage-d58772d8.xz
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+aa48b5fe7bfda62d1682@syzkaller.appspotmail.com
+Reported-by: syzbot+c9834a0c0215e6d8697a@syzkaller.appspotmail.com
 
-======================================================
-WARNING: possible circular locking dependency detected
-syzkaller #0 Tainted: G             L     
-------------------------------------------------------
-syz.6.13158/8347 is trying to acquire lock:
-ffff888063c308f0 (&xs->mutex){+.+.}-{4:4}, at: xsk_diag_fill net/xdp/xsk_diag.c:113 [inline]
-ffff888063c308f0 (&xs->mutex){+.+.}-{4:4}, at: xsk_diag_dump+0x533/0x1560 net/xdp/xsk_diag.c:166
-
-but task is already holding lock:
-ffff888061732440 (&net->xdp.lock){+.+.}-{4:4}, at: xsk_diag_dump+0x184/0x1560 net/xdp/xsk_diag.c:158
-
-which lock already depends on the new lock.
-
-
-the existing dependency chain (in reverse order) is:
-
--> #3 (&net->xdp.lock){+.+.}-{4:4}:
-       __mutex_lock_common kernel/locking/rtmutex_api.c:559 [inline]
-       mutex_lock_nested+0x5a/0x1d0 kernel/locking/rtmutex_api.c:578
-       xsk_notifier+0x89/0x230 net/xdp/xsk.c:2106
-       notifier_call_chain+0x1a5/0x3d0 kernel/notifier.c:85
-       call_netdevice_notifiers_extack net/core/dev.c:2313 [inline]
-       call_netdevice_notifiers net/core/dev.c:2327 [inline]
-       unregister_netdevice_many_notify+0x17fa/0x2130 net/core/dev.c:12518
-       ipvlan_device_event+0xf1f/0xfb0 drivers/net/ipvlan/ipvlan_main.c:851
-       notifier_call_chain+0x1a5/0x3d0 kernel/notifier.c:85
-       call_netdevice_notifiers_extack net/core/dev.c:2313 [inline]
-       call_netdevice_notifiers net/core/dev.c:2327 [inline]
-       unregister_netdevice_many_notify+0x17fa/0x2130 net/core/dev.c:12518
-       rtnl_delete_link net/core/rtnetlink.c:3652 [inline]
-       rtnl_dellink+0x5be/0x810 net/core/rtnetlink.c:3694
-       rtnetlink_rcv_msg+0x802/0xc00 net/core/rtnetlink.c:7132
-       netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
-       netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
-       netlink_unicast+0x7f5/0x990 net/netlink/af_netlink.c:1345
-       netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
-       sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
-       __sock_sendmsg net/socket.c:815 [inline]
-       ____sys_sendmsg+0x565/0x870 net/socket.c:2713
-       ___sys_sendmsg+0x2a5/0x360 net/socket.c:2767
-       __sys_sendmsg net/socket.c:2799 [inline]
-       __do_sys_sendmsg net/socket.c:2804 [inline]
-       __se_sys_sendmsg net/socket.c:2802 [inline]
-       __x64_sys_sendmsg+0x1b7/0x290 net/socket.c:2802
-       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-       do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
--> #2 (&port->pnodes_lock){+.+.}-{4:4}:
-       __mutex_lock_common kernel/locking/rtmutex_api.c:559 [inline]
-       mutex_lock_nested+0x5a/0x1d0 kernel/locking/rtmutex_api.c:578
-       ipvlan_device_event+0x489/0xfb0 drivers/net/ipvlan/ipvlan_main.c:810
-       notifier_call_chain+0x1a5/0x3d0 kernel/notifier.c:85
-       call_netdevice_notifiers_extack net/core/dev.c:2313 [inline]
-       call_netdevice_notifiers net/core/dev.c:2327 [inline]
-       netdev_features_change net/core/dev.c:1612 [inline]
-       netdev_change_features net/core/dev.c:11182 [inline]
-       netdev_compute_master_upper_features+0x944/0xb30 net/core/dev.c:13069
-       bond_slave_netdev_event drivers/net/bonding/bond_main.c:4045 [inline]
-       bond_netdev_event+0x7a3/0xf80 drivers/net/bonding/bond_main.c:4090
-       notifier_call_chain+0x1a5/0x3d0 kernel/notifier.c:85
-       call_netdevice_notifiers_extack net/core/dev.c:2313 [inline]
-       call_netdevice_notifiers net/core/dev.c:2327 [inline]
-       netdev_features_change net/core/dev.c:1612 [inline]
-       netdev_sync_lower_features net/core/dev.c:10945 [inline]
-       __netdev_update_features+0xde7/0x1ef0 net/core/dev.c:11107
-       netdev_change_features net/core/dev.c:11181 [inline]
-       netdev_compute_master_upper_features+0x90c/0xb30 net/core/dev.c:13069
-       __bond_release_one+0x9db/0x11c0 drivers/net/bonding/bond_main.c:2543
-       do_set_master+0x332/0x720 net/core/rtnetlink.c:3055
-       do_setlink+0xe7b/0x4670 net/core/rtnetlink.c:3273
-       rtnl_changelink net/core/rtnetlink.c:3905 [inline]
-       __rtnl_newlink net/core/rtnetlink.c:4076 [inline]
-       rtnl_newlink+0x15a3/0x1c30 net/core/rtnetlink.c:4215
-       rtnetlink_rcv_msg+0x802/0xc00 net/core/rtnetlink.c:7132
-       netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
-       netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
-       netlink_unicast+0x7f5/0x990 net/netlink/af_netlink.c:1345
-       netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
-       sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
-       __sock_sendmsg net/socket.c:815 [inline]
-       ____sys_sendmsg+0x565/0x870 net/socket.c:2713
-       ___sys_sendmsg+0x2a5/0x360 net/socket.c:2767
-       __sys_sendmsg net/socket.c:2799 [inline]
-       __do_sys_sendmsg net/socket.c:2804 [inline]
-       __se_sys_sendmsg net/socket.c:2802 [inline]
-       __x64_sys_sendmsg+0x1b7/0x290 net/socket.c:2802
-       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-       do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
--> #1 (&dev_instance_lock_key#23){+.+.}-{4:4}:
-       __mutex_lock_common kernel/locking/rtmutex_api.c:559 [inline]
-       mutex_lock_nested+0x5a/0x1d0 kernel/locking/rtmutex_api.c:578
-       netdev_lock include/linux/netdevice.h:2861 [inline]
-       netdev_lock_ops include/net/netdev_lock.h:42 [inline]
-       xsk_bind+0x331/0x11d0 net/xdp/xsk.c:1627
-       __sys_bind_socket net/socket.c:1945 [inline]
-       __sys_bind+0x2e9/0x410 net/socket.c:1976
-       __do_sys_bind net/socket.c:1981 [inline]
-       __se_sys_bind net/socket.c:1979 [inline]
-       __x64_sys_bind+0x7a/0x90 net/socket.c:1979
-       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-       do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
--> #0 (&xs->mutex){+.+.}-{4:4}:
-       check_prev_add kernel/locking/lockdep.c:3181 [inline]
-       check_prevs_add kernel/locking/lockdep.c:3300 [inline]
-       validate_chain kernel/locking/lockdep.c:3924 [inline]
-       __lock_acquire+0x1520/0x2ce0 kernel/locking/lockdep.c:5253
-       lock_acquire+0x106/0x350 kernel/locking/lockdep.c:5886
-       __mutex_lock_common kernel/locking/rtmutex_api.c:559 [inline]
-       mutex_lock_nested+0x5a/0x1d0 kernel/locking/rtmutex_api.c:578
-       xsk_diag_fill net/xdp/xsk_diag.c:113 [inline]
-       xsk_diag_dump+0x533/0x1560 net/xdp/xsk_diag.c:166
-       netlink_dump+0x711/0xee0 net/netlink/af_netlink.c:2331
-       __netlink_dump_start+0x589/0x7b0 net/netlink/af_netlink.c:2446
-       netlink_dump_start include/linux/netlink.h:341 [inline]
-       xsk_diag_handler_dump+0x1a0/0x250 net/xdp/xsk_diag.c:193
-       sock_diag_rcv_msg+0x4b0/0x5f0 net/core/sock_diag.c:-1
-       netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
-       netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
-       netlink_unicast+0x7f5/0x990 net/netlink/af_netlink.c:1345
-       netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
-       sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
-       __sock_sendmsg net/socket.c:815 [inline]
-       sock_write_iter+0x2e4/0x3f0 net/socket.c:1266
-       do_iter_readv_writev+0x624/0x8d0 fs/read_write.c:-1
-       vfs_writev+0x34c/0x990 fs/read_write.c:1058
-       do_writev+0x15a/0x2e0 fs/read_write.c:1104
-       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-       do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-other info that might help us debug this:
-
-Chain exists of:
-  &xs->mutex --> &port->pnodes_lock --> &net->xdp.lock
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  lock(&net->xdp.lock);
-                               lock(&port->pnodes_lock);
-                               lock(&net->xdp.lock);
-  lock(&xs->mutex);
-
- *** DEADLOCK ***
-
-locks held by syz.6.13158/8347: 2, last CPU#0:
- #0: ffff88803f078928 (nlk_cb_mutex-SOCK_DIAG){+.+.}-{4:4}, at: __netlink_dump_start+0xf4/0x7b0 net/netlink/af_netlink.c:2410
- #1: ffff888061732440 (&net->xdp.lock){+.+.}-{4:4}, at: xsk_diag_dump+0x184/0x1560 net/xdp/xsk_diag.c:158
-
-stack backtrace:
-CPU: 0 UID: 0 PID: 8347 Comm: syz.6.13158 Tainted: G             L      syzkaller #0 PREEMPT_{RT,(full)} 
-Tainted: [L]=SOFTLOCKUP
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
+BUG: TASK stack guard page was hit at ffffc900062a7ff8 (stack is ffffc900062a8000..ffffc900062b0000)
+Oops: stack guard page: 0000 [#1] SMP KASAN NOPTI
+CPU: 1 UID: 0 PID: 5926 Comm: syz.0.18 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:svc_tcp_state_change+0x8/0x350 net/sunrpc/svcsock.c:911
+Code: 90 90 f3 0f 1e fa e8 27 63 3a f7 90 0f 0b 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 41 56 41 55 <41> 54 55 53 48 89 fb e8 fc 62 3a f7 48 8d bb a8 04 00 00 48 b8 00
+RSP: 0018:ffffc900062a8000 EFLAGS: 00010246
+RAX: ffffffff8acf6c90 RBX: ffff88804bcda700 RCX: ffffffff8a23004b
+RDX: 1ffff110046ce059 RSI: ffffffff8acf6cdb RDI: ffff88804bcda700
+RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: ffff888023670000
+R13: 0000000000000002 R14: ffff88804bcda700 R15: ffff888050125a40
+FS:  0000000000000000(0000) GS:ffff888096cf3000(0063) knlGS:0000000057414480
+CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
+CR2: ffffc900062a7ff8 CR3: 0000000052f7a000 CR4: 0000000000352ef0
 Call Trace:
  <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- print_circular_bug+0x2e1/0x300 kernel/locking/lockdep.c:2059
- check_noncircular+0x12e/0x150 kernel/locking/lockdep.c:2191
- check_prev_add kernel/locking/lockdep.c:3181 [inline]
- check_prevs_add kernel/locking/lockdep.c:3300 [inline]
- validate_chain kernel/locking/lockdep.c:3924 [inline]
- __lock_acquire+0x1520/0x2ce0 kernel/locking/lockdep.c:5253
- lock_acquire+0x106/0x350 kernel/locking/lockdep.c:5886
- __mutex_lock_common kernel/locking/rtmutex_api.c:559 [inline]
- mutex_lock_nested+0x5a/0x1d0 kernel/locking/rtmutex_api.c:578
- xsk_diag_fill net/xdp/xsk_diag.c:113 [inline]
- xsk_diag_dump+0x533/0x1560 net/xdp/xsk_diag.c:166
- netlink_dump+0x711/0xee0 net/netlink/af_netlink.c:2331
- __netlink_dump_start+0x589/0x7b0 net/netlink/af_netlink.c:2446
- netlink_dump_start include/linux/netlink.h:341 [inline]
- xsk_diag_handler_dump+0x1a0/0x250 net/xdp/xsk_diag.c:193
- sock_diag_rcv_msg+0x4b0/0x5f0 net/core/sock_diag.c:-1
- netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
- netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
- netlink_unicast+0x7f5/0x990 net/netlink/af_netlink.c:1345
- netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
- sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
- __sock_sendmsg net/socket.c:815 [inline]
- sock_write_iter+0x2e4/0x3f0 net/socket.c:1266
- do_iter_readv_writev+0x624/0x8d0 fs/read_write.c:-1
- vfs_writev+0x34c/0x990 fs/read_write.c:1058
- do_writev+0x15a/0x2e0 fs/read_write.c:1104
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f22bcb6e0d9
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f22badc6028 EFLAGS: 00000246 ORIG_RAX: 0000000000000014
-RAX: ffffffffffffffda RBX: 00007f22bcdf5fa0 RCX: 00007f22bcb6e0d9
-RDX: 0000000000000001 RSI: 0000200000000140 RDI: 0000000000000004
-RBP: 00007f22bcc05024 R08: 0000000000000000 R09: 0000000000000000
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ svc_tcp_state_change+0x81/0x350 net/sunrpc/svcsock.c:917
+ tcp_done+0x1da/0x360 net/ipv4/tcp.c:5100
+ tcp_done_with_error+0x57/0xd0 net/ipv4/tcp_input.c:4877
+ tcp_reset+0x13b/0x310 net/ipv4/tcp_input.c:4909
+ tcp_rcv_synsent_state_process net/ipv4/tcp_input.c:6903 [inline]
+ tcp_rcv_state_process+0x20c5/0x7190 net/ipv4/tcp_input.c:7197
+ tcp_v4_do_rcv+0x691/0x1260 net/ipv4/tcp_ipv4.c:1876
+ sk_backlog_rcv include/net/sock.h:1190 [inline]
+ __release_sock+0x35a/0x440 net/core/sock.c:3260
+ release_sock+0x1e5/0x280 net/core/sock.c:3859
+ inet_wait_for_connect net/ipv4/af_inet.c:616 [inline]
+ __inet_stream_connect+0x5c7/0xfa0 net/ipv4/af_inet.c:710
+ inet_stream_connect+0x57/0xa0 net/ipv4/af_inet.c:755
+ __sys_connect_file+0x141/0x1a0 net/socket.c:2135
+ __sys_connect+0x141/0x170 net/socket.c:2154
+ __do_sys_connect net/socket.c:2160 [inline]
+ __se_sys_connect net/socket.c:2157 [inline]
+ __ia32_sys_connect+0x71/0xb0 net/socket.c:2157
+ do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:83 [inline]
+ __do_fast_syscall_32+0xe7/0x970 arch/x86/entry/syscall_32.c:307
+ do_fast_syscall_32+0x32/0x70 arch/x86/entry/syscall_32.c:332
+ entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+RIP: 0023:0xf705efec
+Code: Unable to access opcode bytes at 0xf705efc2.
+RSP: 002b:00000000ff81576c EFLAGS: 00000296 ORIG_RAX: 000000000000016a
+RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 0000000080000000
+RDX: 0000000000000010 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
 R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f22bcdf6038 R14: 00007f22bcdf5fa0 R15: 00007ffc199cb668
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
  </TASK>
-netlink: 24 bytes leftover after parsing attributes in process `syz.6.13158'.
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:svc_tcp_state_change+0x8/0x350 net/sunrpc/svcsock.c:911
+Code: 90 90 f3 0f 1e fa e8 27 63 3a f7 90 0f 0b 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 41 56 41 55 <41> 54 55 53 48 89 fb e8 fc 62 3a f7 48 8d bb a8 04 00 00 48 b8 00
+RSP: 0018:ffffc900062a8000 EFLAGS: 00010246
+RAX: ffffffff8acf6c90 RBX: ffff88804bcda700 RCX: ffffffff8a23004b
+RDX: 1ffff110046ce059 RSI: ffffffff8acf6cdb RDI: ffff88804bcda700
+RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: ffff888023670000
+R13: 0000000000000002 R14: ffff88804bcda700 R15: ffff888050125a40
+FS:  0000000000000000(0000) GS:ffff888096cf3000(0063) knlGS:0000000057414480
+CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
+CR2: 00000000f705f000 CR3: 0000000052f7a000 CR4: 0000000000352ef0
+----------------
+Code disassembly (best guess):
+   0:	90                   	nop
+   1:	90                   	nop
+   2:	f3 0f 1e fa          	endbr64
+   6:	e8 27 63 3a f7       	call   0xf73a6332
+   b:	90                   	nop
+   c:	0f 0b                	ud2
+   e:	0f 1f 40 00          	nopl   0x0(%rax)
+  12:	90                   	nop
+  13:	90                   	nop
+  14:	90                   	nop
+  15:	90                   	nop
+  16:	90                   	nop
+  17:	90                   	nop
+  18:	90                   	nop
+  19:	90                   	nop
+  1a:	90                   	nop
+  1b:	90                   	nop
+  1c:	90                   	nop
+  1d:	90                   	nop
+  1e:	90                   	nop
+  1f:	90                   	nop
+  20:	90                   	nop
+  21:	90                   	nop
+  22:	f3 0f 1e fa          	endbr64
+  26:	41 56                	push   %r14
+  28:	41 55                	push   %r13
+* 2a:	41 54                	push   %r12 <-- trapping instruction
+  2c:	55                   	push   %rbp
+  2d:	53                   	push   %rbx
+  2e:	48 89 fb             	mov    %rdi,%rbx
+  31:	e8 fc 62 3a f7       	call   0xf73a6332
+  36:	48 8d bb a8 04 00 00 	lea    0x4a8(%rbx),%rdi
+  3d:	48                   	rex.W
+  3e:	b8                   	.byte 0xb8
 
 
 ---
@@ -288,6 +829,10 @@ https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
 If the report is already addressed, let syzbot know by replying with:
 #syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
 If you want to overwrite report's subsystems, reply with:
 #syz set subsystems: new-subsystem
