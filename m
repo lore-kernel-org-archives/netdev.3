@@ -1,200 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF293EDE56;
-	Mon, 24 Aug 2026 09:05:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F439374185
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 09:16:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787562357; cv=none; b=iZeVoTFzjV5tYID6yywSuVVG5p3sgG473D82VZShm0n/yFtFHfcWvkqPiME3xwYWjTK8q9e5WdpTyqmNSUFhAuwbTrlwjBX7LX3apNLVSwtrbaBFmncFLggEfKdN6cMgADAXH8HRgiEXQltgjzOIxnumNmo/tHAXsmi2x5fObWk=
+	t=1787562973; cv=none; b=PwTprQwMqmJ0/Mqi1ppXjS8d9FJEdK/3K44YSzI7PCJ3PmAMK+wpotA+Lziboi+yXZEBju+AAqAf9i5n7iB5OrXlsHCRQg5zaObmXu2hrO84HvbN/R2z3op0R3O8SO5H50dJRS4ZFN2c/u2b689eSJtPuIAmWAI3P5lri9Vmr+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787562357; c=relaxed/simple;
-	bh=oZxCWFuQD6szuHl1pKGylf7564QNTW6TXi3gd9V3HWY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EotuGmW3fwXgrS5BKJJwNqWDjiEFoWWipjvLqRwJnYfQ4dGLdwfNWCpCLhLyQGaQWQoYjpk0ovWDbWYygVkY/SzWBgLEE6A7OS7kBVOJ3vRUPHJoHNNCMLsPHAF4/fDGlLYqMOmwI9NBYHlWsC5e0NpsYXFrORzTb4m5G4oz51o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jEe2Ixuk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787562973; c=relaxed/simple;
+	bh=+nOV6NkIgUqBKBqIy66tJwhBsmV6pwSIrq/6q0PXurs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=g2VxzotNGVcdKCL+D+p1RISrUeXH7rnHdJm6PmKYP0di2N3OLf4w3Q9BMIodAehzxtUZDLHlZ6Udpd9ZgCMDBh0v3L4zC7fR0T2gP59YrWLDljUv/h/wO+ytsXL21qymDPtSk2fXubFO93GLtoCsbUieWvh0rCAMr/hW34KKPUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=SgrloLNY; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jEe2Ixuk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C7431F000E9;
-	Mon, 24 Aug 2026 09:05:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1787562355;
-	bh=dmNYOyggAsYWtg/mnF83LfjOdjmihcNh48F4hWdUPDs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jEe2Ixuk5b+/7QpBLgs0Nc+0uAVNmAKzgLj0/XlI2Dr6aOfYVr2cy+2mbscRYjI98
-	 NRBMaqugh4HXKpFvxmGkEzNmnL1XUFZslrPlB7eHezJEJcMHRsKSsbFKRb3KwlKHPd
-	 d6QcfPgD+BdUXaBNmIKWAsDe3V4lllbYoYeRFPQI=
-Date: Mon, 24 Aug 2026 11:05:52 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
-Cc: stable@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	Martin KaFai Lau <kafai@fb.com>, Wei Wang <weiwan@google.com>,
-	thomas.petazzoni@bootlin.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.12.y v2] ipv4: start using dst_dev_rcu()
-Message-ID: <2026082420-reanalyze-dehydrate-c386@gregkh>
-References: <20260821-cve-2025-40074-v2-1-7cb3fcb7c3ac@bootlin.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="SgrloLNY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=xz
+	6Zn8pKxyQnTNAKDy7+cGCULMrW3RLqW541vFp+R6k=; b=SgrloLNYJQXLOoFJyO
+	rwRCIMTXiED56NMsB61/HstWJoVezBqx0WW3QmnKC2g4Cupy2khFuE7XazDy8etL
+	wU8OE71da8l7DzoM8bN0yuc2AmBUR6xKB0ZldcPCaPg2pyk9a765XEG7TO3Tu+Nv
+	+2PGHFMwDQSd9OicUVw/ZLD8o=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wDX7osaC4xq61QtRw--.13833S2;
+	Mon, 24 Aug 2026 17:12:59 +0800 (CST)
+From: Rongguang Wei <clementwei90@163.com>
+To: sgarzare@redhat.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	Rongguang Wei <weirongguang@kylinos.cn>
+Subject: [PATCH net v1] vsock: validate buffer min/max size in setsockopt
+Date: Mon, 24 Aug 2026 17:12:57 +0800
+Message-Id: <20260824091257.136269-1-clementwei90@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260821-cve-2025-40074-v2-1-7cb3fcb7c3ac@bootlin.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDX7osaC4xq61QtRw--.13833S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7uw4fGry8CrWrKFW8AFy8Grg_yoW8tF1kpF
+	yakrWIqw4DJry2q3ZYyrn0qay5Aan5Xw4UWrWxtF97Jr1DKrZ2grW8Ar9xKrW7AFs3Ga4r
+	Xr98Wr1vk3Wjq3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jjtC7UUUUU=
+X-CM-SenderInfo: 5fohzv5qwzvxizq6il2tof0z/xtbC-huG8WqMCxuyTAAA3a
 
-On Fri, Aug 21, 2026 at 11:54:04AM +0200, Miguel Gazquez (Schneider Electric) wrote:
-> From: Eric Dumazet <edumazet@google.com>
-> 
-> [ Upstream commit 6ad8de3cefdb6ffa6708b21c567df0dbf82c43a8 ]
-> 
-> Change icmpv4_xrlim_allow(), ip_defrag() to prevent possible UAF.
-> 
-> Change ipmr_prepare_xmit(), ipmr_queue_fwd_xmit(), ip_mr_output(),
-> ipv4_neigh_lookup() to use lockdep enabled dst_dev_rcu().
-> 
-> [ minor modifications to fix conflict , added rcu_read_lock and unlock
-> to ip_defrag function ]
-> 
-> Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> Reviewed-by: David Ahern <dsahern@kernel.org>
-> Link: https://patch.msgid.link/20250828195823.3958522-9-edumazet@google.com
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> Signed-off-by: Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
-> ---
-> Signed-off-by: Miguel Gazquez <miguel.gazquez@bootlin.com>
-> ---
-> Changes in v2:
-> - Added rcu_read_lock and unlock to ip_defrag function
-> - Link to v1: https://patch.msgid.link/20260820-cve-2025-40074-v1-1-f045d5f74950@bootlin.com
-> ---
->  net/ipv4/icmp.c        | 6 +++---
->  net/ipv4/ip_fragment.c | 9 +++++++--
->  net/ipv4/ipmr.c        | 4 ++--
->  net/ipv4/route.c       | 4 ++--
->  4 files changed, 14 insertions(+), 9 deletions(-)
-> 
-> diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
-> index c7af8b914e13..1fc967a60bb9 100644
-> --- a/net/ipv4/icmp.c
-> +++ b/net/ipv4/icmp.c
-> @@ -320,17 +320,17 @@ static bool icmpv4_xrlim_allow(struct net *net, struct rtable *rt,
->  		return true;
->  
->  	/* No rate limit on loopback */
-> -	dev = dst_dev(dst);
-> +	rcu_read_lock();
-> +	dev = dst_dev_rcu(dst);
->  	if (dev && (dev->flags & IFF_LOOPBACK))
->  		goto out;
->  
-> -	rcu_read_lock();
->  	peer = inet_getpeer_v4(net->ipv4.peers, fl4->daddr,
->  			       l3mdev_master_ifindex_rcu(dev));
->  	rc = inet_peer_xrlim_allow(peer,
->  				   READ_ONCE(net->ipv4.sysctl_icmp_ratelimit));
-> -	rcu_read_unlock();
->  out:
-> +	rcu_read_unlock();
->  	if (!rc)
->  		__ICMP_INC_STATS(net, ICMP_MIB_RATELIMITHOST);
->  	else
-> diff --git a/net/ipv4/ip_fragment.c b/net/ipv4/ip_fragment.c
-> index d3abc84a6c02..f8919b2543e1 100644
-> --- a/net/ipv4/ip_fragment.c
-> +++ b/net/ipv4/ip_fragment.c
-> @@ -483,13 +483,16 @@ static int ip_frag_reasm(struct ipq *qp, struct sk_buff *skb,
->  /* Process an incoming IP datagram fragment. */
->  int ip_defrag(struct net *net, struct sk_buff *skb, u32 user)
->  {
-> -	struct net_device *dev = skb->dev ? : skb_dst_dev(skb);
-> -	int vif = l3mdev_master_ifindex_rcu(dev);
-> +	struct net_device *dev;
->  	struct ipq *qp;
-> +	int vif;
->  
->  	__IP_INC_STATS(net, IPSTATS_MIB_REASMREQDS);
->  
->  	/* Lookup (or create) queue header */
-> +	rcu_read_lock();
-> +	dev = skb->dev ? : skb_dst_dev_rcu(skb);
-> +	vif = l3mdev_master_ifindex_rcu(dev);
->  	qp = ip_find(net, ip_hdr(skb), user, vif);
->  	if (qp) {
->  		int ret;
-> @@ -499,9 +502,11 @@ int ip_defrag(struct net *net, struct sk_buff *skb, u32 user)
->  		ret = ip_frag_queue(qp, skb);
->  
->  		spin_unlock(&qp->q.lock);
-> +		rcu_read_unlock();
->  		ipq_put(qp);
->  		return ret;
->  	}
-> +	rcu_read_unlock();
->  
->  	__IP_INC_STATS(net, IPSTATS_MIB_REASMFAILS);
->  	kfree_skb(skb);
-> diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
-> index de0d9cc7806a..ad0b922ebc73 100644
-> --- a/net/ipv4/ipmr.c
-> +++ b/net/ipv4/ipmr.c
-> @@ -1906,7 +1906,7 @@ static void ipmr_queue_xmit(struct net *net, struct mr_table *mrt,
->  		goto out_free;
->  	}
->  
-> -	encap += LL_RESERVED_SPACE(dev) + rt->dst.header_len;
-> +	encap += LL_RESERVED_SPACE(dst_dev_rcu(&rt->dst)) + rt->dst.header_len;
->  
->  	if (skb_cow(skb, encap)) {
->  		ip_rt_put(rt);
-> @@ -1943,7 +1943,7 @@ static void ipmr_queue_xmit(struct net *net, struct mr_table *mrt,
->  	 * result in receiving multiple packets.
->  	 */
->  	NF_HOOK(NFPROTO_IPV4, NF_INET_FORWARD,
-> -		net, NULL, skb, skb->dev, dev,
-> +		net, NULL, skb, skb->dev, dst_dev_rcu(&rt->dst),
->  		ipmr_forward_finish);
->  	return;
->  
-> diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-> index 4dce0de6ab89..0f31ae4da3d9 100644
-> --- a/net/ipv4/route.c
-> +++ b/net/ipv4/route.c
-> @@ -413,11 +413,11 @@ static struct neighbour *ipv4_neigh_lookup(const struct dst_entry *dst,
->  					   const void *daddr)
->  {
->  	const struct rtable *rt = container_of(dst, struct rtable, dst);
-> -	struct net_device *dev = dst_dev(dst);
-> +	struct net_device *dev;
->  	struct neighbour *n;
->  
->  	rcu_read_lock();
-> -
-> +	dev = dst_dev_rcu(dst);
->  	if (likely(rt->rt_gw_family == AF_INET)) {
->  		n = ip_neigh_gw4(dev, rt->rt_gw4);
->  	} else if (rt->rt_gw_family == AF_INET6) {
-> 
-> ---
-> base-commit: 7155f3c7a69b8480e785f2a4252d31df95daa8d1
-> change-id: 20260820-cve-2025-40074-b2b8c05342a1
-> 
-> Best regards,
-> --  
-> Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
-> 
-> 
+From: Rongguang Wei <weirongguang@kylinos.cn>
 
-Doesn't apply to the queue anymore due to me taking this patch series
-from Sasha:
-	https://lore.kernel.org/r/20260821144926.3428433-1-sashal@kernel.org
+SO_VM_SOCKETS_BUFFER_MIN_SIZE and SO_VM_SOCKETS_BUFFER_MAX_SIZE
+do not cross-validate against each other, allowing userspace to
+set buffer_min_size > buffer_max_size.
+When min > max, buffer_size is silently clamped to an incorrect
+value. For example, setting min=512KB then max=128 results in
+buffer_size=128 despite the user requesting much larger buffers
+via SO_VM_SOCKETS_BUFFER_SIZE.
 
-Can you rebase it on that?
+Reproduced with a test program:
+setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_MIN_SIZE,
+	   512 * 1024, sizeof(int));
+setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_MAX_SIZE,
+	   128, sizeof(int));
+// User asked for 1MB but got 128 bytes silently
+setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_SIZE,
+	   1024 * 1024, sizeof(int));
 
-thanks,
+After that use getsockopt to get the buffer_size = 128 and
+buffer_min_size = 524288, buffer_max_size = 128.
+The buffer_min_size > buffer_max_size and the kernel accepted
+contradictory values without error.
 
-greg k-h
+Add value check to fix this issue. Return -EINVAL to userspace
+when setting MAX_SIZE to a value smaller than the current MIN_SIZE
+or setting MIN_SIZE to a value larger than the current MAX_SIZE.
+
+Fixes: b9f2b0ffde0c ("vsock: handle buffer_size sockopts in the core")
+Signed-off-by: Rongguang Wei <weirongguang@kylinos.cn>
+---
+ net/vmw_vsock/af_vsock.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index a33b2a2d381d..5faa30ee8745 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -2050,12 +2050,20 @@ static int vsock_connectible_setsockopt(struct socket *sock,
+ 
+ 	case SO_VM_SOCKETS_BUFFER_MAX_SIZE:
+ 		COPY_IN(val);
++		if (val < vsk->buffer_min_size) {
++			err = -EINVAL;
++			goto exit;
++		}
+ 		vsk->buffer_max_size = val;
+ 		vsock_update_buffer_size(vsk, transport, vsk->buffer_size);
+ 		break;
+ 
+ 	case SO_VM_SOCKETS_BUFFER_MIN_SIZE:
+ 		COPY_IN(val);
++		if (val > vsk->buffer_max_size) {
++			err = -EINVAL;
++			goto exit;
++		}
+ 		vsk->buffer_min_size = val;
+ 		vsock_update_buffer_size(vsk, transport, vsk->buffer_size);
+ 		break;
+-- 
+2.25.1
+
+
+No virus found
+		Checked by Hillstone Network AntiVirus
+
