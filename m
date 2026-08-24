@@ -1,127 +1,80 @@
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AF3344DA0
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 13:38:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787578734; cv=pass; b=DZ+e9gaoFRf7bv3+aL5cdTeIXV9FmPgWGsUP8RwZ2kQ+daVKwZGKEteZ6HD4mp03tEZRgt/frnHxhjBpnMkqHnRxIbv6hEORrUJJd0yQ/QMM1fNXafPKL93SvcoOwRklQ3PjJgo0poZ1IXH9dYuu82S5LBu8tNdV29quD7Cs84w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787578734; c=relaxed/simple;
-	bh=mx0KOi+weQiY7kc5hNoEAZSp64A9icInZaz4gW9IUhc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LHToQbglxsVUVvb04YfONsNErGWRhfMRaOlCCSzMgg2cKSaodDsj6f8zwtjW5mUsp7FzC47lTzfyoBOsqGBeR9kiZFnErCzftwX9/mOJgrYWNz2EuxqsQzML/lv4UqQLRx07BnFdOYeCpWGXzjsf1oE27dgQLDC+dQtxpXDkPKo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B+m9BKjD; arc=pass smtp.client-ip=209.85.128.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC0C343D8F;
+	Mon, 24 Aug 2026 13:39:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787578767; cv=none; b=eeTfgM6yy97R5vCb+p69sKQpC92PuJlXR1bEitMKibRlpwfNArXsjgagcyKH5tSjh0idjAeodUtfKIsXWRJ4uiROUiFt0Tx5gqxzn92ss4g3xRSYy5MHpIMKz6r2R07AGb9e3oAm/TNXtc0dNybSg3K4L4gy7s7m3ss826Rs8Pg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787578767; c=relaxed/simple;
+	bh=yKqGWjGp3rHF6omkTB0bqqNoD0qLPY39GgvUNlHrS0s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZNkSoBs5SdimZtd63mBXHW2fPkmNsMb+PnHU/QovwenRvX4zG2MiJ3WGbFvMnslpXyEdrIAUnzF37tTxdcoTFmGt9szQufXYL/q1NIXJ9bqaOgnq4h4E8QGS9KT/SyIPJTRF+E4T+g065XTnKZBAopssMfslu4D19U9Zf1LCvpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nYK35Z7l; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B+m9BKjD"
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-7dbcb505578so39966547b3.3
-        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 06:38:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787578729; cv=none;
-        d=google.com; s=arc-20260327;
-        b=i0gOf18fNRAKjkCE7nWtuymw9Vfnbf6kg9SUfeqkI2ZTXGqv9+vKoyUwm1UigV9Qkz
-         a90U9HoFM59Sapzh1swl7LHdfw6eWRYRgtecNT3e18ohXxq90vwGDCfmsAhqV+70Rnfn
-         n82B7va0mhvPWFxXktG2VeW+dbtlHwE86qSiMLt1jk1FFD/Ydr/zAPh98nJwd64G4ApB
-         WcWoRnjQBDnVPsDs5fB7Az8RdLQbw/G7Aw/vKiVnlKgUBPz6ndS7N42EBq8i4ghBoDRg
-         X/QN1j/7OCn1MyWFnV8xKGOJ3oR3xkglaFBOcfUGAee0uVmWAWUPkSLEoI717uhn9lWT
-         5Kcg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=mx0KOi+weQiY7kc5hNoEAZSp64A9icInZaz4gW9IUhc=;
-        fh=m0kPnEn3kjSnYuv5V+QiSsl1nRF3hk5wibiYKX+0rDU=;
-        b=TbSX/h9+DVAWW4TuWDBccDK/18q1vlOc7ljJYDXI/oZrvusMcB0t8sx7NmU0m/bPsi
-         QKMLzUcxvgCRk/cnzmQHikaZlB69ugq4mcCLx4SCcwWGJOitaJ27hM00Cf5oIlBz5YEn
-         ISXRahM6Mzr4Ujj+ucV2buBJoiE9nkqFzC19NdbAfQU3PasANG8WRt37moU/X6d4bc2S
-         KiYCZclbeBksPXvW/pfGNYk7nr5wK3hUFLufJIos0Ohbp2kzCpiPpzw7/ffh5rOV8jEW
-         Ao2cjEeHwFiSUl8pTlTPISnfBL1ANwoE8VJGxZnJ+5q465UOK8i83wNUTFPVAk0fkbBe
-         dLcA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787578729; x=1788183529; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mx0KOi+weQiY7kc5hNoEAZSp64A9icInZaz4gW9IUhc=;
-        b=B+m9BKjDvaoPxabDnOwVXwkpEj2/UtVQ8SAJcKbJSbOjW8loUNi8beTDSWIMlh5/Vo
-         Cgov5NivN6GYDpKT2oohbsav07iybaPFNDtCHqUAWT8h8IXyw4JCwYbHKUzfGPzjamSf
-         YzHimpL67PMuU8Q9f7sSrlRflSYskwKymwauMoYcSGWDyMrNwZWOZ/DSDziPppAEpcAg
-         Mjj28rURpp9KzY+l01frqcr6g8RDOYntDyX5s5gcmQLaLfEn/3Y11Yhp/nmMdLIeeMpw
-         kqNqtvz4GGh/TRZjKzM79HkppU3llblbYh96CUUaU6BKBxULyKrlCaWLw/zIA1kAH9R0
-         FTtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787578729; x=1788183529;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mx0KOi+weQiY7kc5hNoEAZSp64A9icInZaz4gW9IUhc=;
-        b=EM+PDoKrj9NV0WgiHEnFTYJIm+jb2odBg9QZL09pKgvu6mvx82Z6HLvcuFASvAdTgV
-         v/mjmb6Z+UcXM+LGl+vajMzeEA8TwesLV76DT3H2Y/75rsOwr1gJGx0uc3wyWI2cAIjE
-         E9YHzmF2C7lsV2cb9NfgP01Wljii6fMd5nVUSS3iJ41Fec0MPjSB8/Duw1ih3tyMGRPs
-         aiIWn9IAdYto4OhI59F3eJBy/S4Tlal5UyEZMAieA8jmSDgr4xbDyjrT2dvTfK6P7zp8
-         8/akv+qn2E96BJxBOPoMWC4OSyRYhbfsHKLrjbPHrzuF6ypNYIKzyiho3/4sHQkKjU1c
-         N9Dw==
-X-Forwarded-Encrypted: i=1; AHgh+RoxZacxYRLA9FZeO7SuANglpFHkF5bMG0feIpgv1RiUVDflbbXcIbXrfABstl6try8UgyM5xqI=@vger.kernel.org
-X-Gm-Message-State: AFuF++kHk1gMNE9R91pjXFCRK8cyS5K5OIiCPJ9wy+1TONF1GM3gKSu3
-	M2UHbGbDnO/nMnwXd1HAIN0e2tgz2AD9M1czpyGu0r0LvsWcct5/wWP0cUcJ6U8wyMME0EIBhGQ
-	O5lRGCiyGOjBBbXOYFkLEFgCj/VhsuhisrXgfbCMn
-X-Gm-Gg: AR+sD11JJWPFjLbbGh1BVtxpYRa1Qk858xhUK3rFB92eKoOOijgMqF80h6TqtOgpGIy
-	CUdU1nbHjyDzHeLjkjWSh05mD63trUE/JYizofMDIMNLTjWJcle3pdLYQCEWOIk1xGMH4Lh+0JE
-	fQI+IEqdTxGXR/tIw23GOY93DMCQeRxr/yjofDlnPGPmYyAP9Mt3pRkv0e9MqctxZEdlnglyTCu
-	BNsQ1BdjbXnFp1J1YKmS449kLhOPnPWbvLHpyvOjJktIRSK5BC33t1LXN8PmAZz5QGwZTXcyIdP
-	/owqgmgGBeGeYOkSV/9cwCct+PhmrdMSBg1H742aSLmHJFhB+R0EGV8Wt6wacU3qM6vBxQyp/pk
-	BhAd5hh2iyH7XUKnna9aqYQAloqmV11ncJk3ffqEBisHh3P/jIqlWg5B2
-X-Received: by 2002:a05:690c:e188:10b0:821:2f24:5a42 with SMTP id
- 00721157ae682-849f782f130mr62895847b3.25.1787578728765; Mon, 24 Aug 2026
- 06:38:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nYK35Z7l"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99421F000E9;
+	Mon, 24 Aug 2026 13:39:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787578764;
+	bh=XJdIxHVPwuHe/RAOOk/4sfALm/vbkNUDkga0EDq9Tuo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nYK35Z7lNGTh0d0nwDBjCBsI1Nkk6yolUK0J8ZarFWmWNDQzO4eBAxQxrFisQtuuC
+	 0WNy7Mx6yWNHYmc+9WJo6sLYM6qihWAWEshMYrjExpYuFSBqJOs+o1honvQwCZ+AIF
+	 jmF8xWNV1AjxsCiONmVffNcPE/SvMBBGRrzcnPWSQMJg+gcLUZ698A3Ujk22Y4Ggkn
+	 y5lgr3ZrNDUyxzkWRfQ7WmbUuP+d+77F0kIbC09GV/w58G7bc56uj+haR49CULuWTr
+	 ocKWUthYT/+K1hcLV0G4hbYrgZKUOOv8ywM8hDe4MYia1VGReBK7mIp10f6gWlDSD8
+	 bZ7nDMLrrIM8g==
+Date: Mon, 24 Aug 2026 14:39:20 +0100
+From: Simon Horman <horms@kernel.org>
+To: Ratheesh Kannoth <rkannoth@marvell.com>
+Cc: kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	saikrishnag@marvell.com, sbhatta@marvell.com, sgoutham@marvell.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	pabeni@redhat.com
+Subject: Re: [PATCH v2 net] octeontx2-af: fix cn20k mailbox lifetime on
+ repeated rvu_mbox_init()
+Message-ID: <20260824133920.GV265046@horms.kernel.org>
+References: <20260821102337.2989169-1-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260820220210.3122690-2-Jeremy.Jean@oss.cyber.gouv.fr> <20260824122706.GR265046@horms.kernel.org>
-In-Reply-To: <20260824122706.GR265046@horms.kernel.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 24 Aug 2026 15:38:37 +0200
-X-Gm-Features: AcwNN1V6t--ufb5SOU1mwTwG8o3UkknUrnFTGC33fAAW3Me0847rV0DjJB36GWI
-Message-ID: <CANn89iK3kYytLOn+RkxsCsdwC+GxTGgDeyhhZ230jMSeyhXr1w@mail.gmail.com>
-Subject: Re: [PATCH] net: gue: reject invalid REMCSUM offsets
-To: Simon Horman <horms@kernel.org>
-Cc: =?UTF-8?B?SsOpcsOpbXkgSmVhbg==?= <Jeremy.Jean@oss.cyber.gouv.fr>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260821102337.2989169-1-rkannoth@marvell.com>
 
-On Mon, Aug 24, 2026 at 2:27=E2=80=AFPM Simon Horman <horms@kernel.org> wro=
-te:
->
-> On Thu, Aug 20, 2026 at 10:02:10PM +0000, J=C3=A9r=C3=A9my Jean wrote:
-> > The REMCSUM option carries an absolute checksum start and checksum fiel=
-d
-> > offset. gue_remcsum() passes them to skb_remcsum_process(), whose
-> > partial path stores offset - start in the u16 skb->csum_offset. If
-> > offset is less than start, this underflows (for example, 1/0 becomes
-> > 0xffff).
-> >
-> > A forwarded packet can retain CHECKSUM_PARTIAL and reach a
-> > NETIF_F_HW_CSUM driver which trusts the metadata, leading
-> > skb_copy_and_csum_dev() to write two bytes about 64 KiB beyond the
-> > destination buffer.
-> >
-> > Reject reversed tuples in both normal and GRO receive paths.
-> >
-> > Fixes: fe881ef11cf0 ("gue: Use checksum partial with remote checksum of=
-fload")
-> > Assisted-by: Codex:gpt-5
-> > Signed-off-by: J=C3=A9r=C3=A9my Jean <Jeremy.Jean@oss.cyber.gouv.fr>
->
-> Reviewed-by: Simon Horman <horms@kernel.org>
+On Fri, Aug 21, 2026 at 03:53:37PM +0530, Ratheesh Kannoth wrote:
+> From: Sai Krishna <saikrishnag@marvell.com>
+> 
+> rvu_mbox_init() is called separately for AF-PF mailboxes during probe
+> and for AF-VF mailboxes when SR-IOV is enabled.  Each call used to
+> allocate a new ng_rvu object, leaking the first allocation when the
+> pointer was overwritten on the second call.
+> 
+> Sharing one ng_rvu across both paths exposed several teardown bugs:
+> the error path freed all cn20k mailbox DMA and kfree()d ng_rvu even
+> when only the failing init type should be unwound, leaving live AF-PF
+> mailbox memory in use after an AF-VF init failure.  mutex_init() was
+> also re-run on the AF-VF path while AF-PF mailbox handlers could still
+> hold rvu->mbox_lock.  Probe and SR-IOV failure paths did not release
+> cn20k mailbox DMA either, since cleanup only happened in rvu_remove().
+> 
+> Allocate ng_rvu once with devm_kzalloc(), initialize mbox_lock in the
+> same block, unwind only the mailbox memory for the failing init type,
+> and free cn20k mailbox DMA from the probe and pci_enable_sriov()
+> error paths.
+> 
+> Fixes: e53ee4acb220 ("octeontx2-af: CN20k basic mbox operations and structures")
+> Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
+> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+> 
+> ---
+> v1 -> v2: Addressed sashiko comments
+> 	https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260820053656.2614614-1-rkannoth%40marvell.com
 
-Patch looks fine. I wonder if it would make sense to catch the issue earlie=
-r in
-a single place ( validate_gue_flags())
+Reviewed-by: Simon Horman <horms@kernel.org>
+
