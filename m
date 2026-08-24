@@ -1,117 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2A336EAAE
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 15:11:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4028E3655CA;
+	Mon, 24 Aug 2026 15:13:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787584313; cv=none; b=OBCN8EysnOjFfLpy3jDMs9A7fj3MWq9LpKBP7rXuDVzjnYyXt/bj9tgkEj24+aa0FU3RngAm4FBT98gLwo3mkFBCVbIDeDxsD6lTQI/hNfZj1YuErlGPVmyFOSmNKr5MLl9TCfG6hn4ukI/gxOK0f1SPLe9kD5kM7QDhuLbSCo8=
+	t=1787584406; cv=none; b=qyEwnHJ0eiPaja03/3kKSzBKc8VuDxsN0UCaJCP1gQHPLEsxQ8oaImBWrY/qv9HlMNB5Yvv7sAI16o/2Z9W5g1l+SpQ6HBBi2mn/T+bz8I2dEjvprLCVhVm84jCgqvNPJm02XO61TjfdcNahIGU1zObQiNwTI6SGRyZLbSDrmwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787584313; c=relaxed/simple;
-	bh=d8ui/WiyJ972BJaFhdt/Rp/05hFEx7J86nBq74tNX6s=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=emr5cDQA4SjhiIuYP5/LSE2znLil4X6H9ux8ovn0rh0dE5xyhzNm1ggKW9z6NWCTtkyDg4S8eOUBTI3/xU0rCa46mac7Ph0wPopsu2+08uGw3KgZ+3VHfbvVl7DXVwHLEf9mCVUt1VJ0UO4flQbJrpYvhYgMzgdTxyGMk4NTxBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KIvbJZOB; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787584406; c=relaxed/simple;
+	bh=LMUl0wRqk8+xqojqeT+SrIqH8HRZqBkNpw5r+kVtCp4=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=tYmIZmhfvW0D6Ohrn6lJT4uME2W2gqPD2M+tDIo5mohVZoPmMRB5+gSFBPi3LTE8eZ9GBwfgRrq/ko4/oJzhSopmCMOI2TCS6gXjIOiiMZx80VhPlS0fG/gij4ledRqw81E+yvJ3W8v1iDwadGB28srh9uV3x7KLGZcNgWgnMk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=Vd/XN1i0; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KIvbJZOB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE2091F000E9;
-	Mon, 24 Aug 2026 15:11:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787584311;
-	bh=h70IIaWa0slZ8JAXXi+A9370yTaqPxMYwDbxWMitVcg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=KIvbJZOBzcfEzTfVv64aL7b4KVYf/75NfqDnnuPV205EAT6uwpg9qzVwNm6scpbLK
-	 ahaxdE9w5VDH8fX58iv5EqyP5Z9kUWkmBSyxwzvnsbqAx/Z/qdkPjO9OlN3wwdukau
-	 HwnQyffypZVDijjkmNZV/hUX2BrZi0FzBIg6IY7FMrTxu6LnH3m4XRqMXlmq3UptBs
-	 wFCOALSHJ9FCTVhGpRZQFNVu7z8WBbWfDeOQkynCC3PuC8svaHAGKN2SPqcHobzvDy
-	 MrhLu14rCBPn4/5Th/yZgsLdQT8KzMIr6DFjQ8lwbuVmDZLz5/stp+Ekekwidvz0X7
-	 Qkp6kqbJY0GFw==
-Date: Mon, 24 Aug 2026 08:11:51 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: daniel.zahka@gmail.com, edumazet@google.com, cratiu@nvidia.com,
- borisp@nvidia.com, kuniyu@google.com, netdev@vger.kernel.org
-Subject: Re: [RFC net-next 0/6] psp: use virt cookie as Rx steering hint
-Message-ID: <20260824081151.4a37c3c6@kernel.org>
-In-Reply-To: <willemdebruijn.kernel.1157fb673940e@gmail.com>
-References: <20260822225524.2328465-1-kuba@kernel.org>
-	<willemdebruijn.kernel.1157fb673940e@gmail.com>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="Vd/XN1i0"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 15017A02A3;
+	Mon, 24 Aug 2026 17:13:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1787584396; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=g2xnyjbL7P8HZTzEf65T2GecraVsWg2Jd43dBvLVMt8=;
+	b=Vd/XN1i0CL0GldedKnpeyvV+Vlv5B0hFCIyJjqg8nN0knzNp5a9OUhscpONcUs8CMyfogY
+	fPerXxJEgz1Xr62Ml6PiAMYAoIvSQGfzzoxmTfJV47SzJ4VwNKceRadBZsn1haH0sgrh34
+	P29MCwRTHxRM/z8ppQToaslxBRSPNy5Mo3s/g3WQtgt0ZKrXiZo1DvjPlmeQsMHB3L+NoA
+	Kjuibwgl2chYyFIvRqzVZBaJwU+1lpuicmspP1boTkM8JeP1uwHovwZd7lQ7EsU4Z/Hptw
+	I63REv8GSBbQzpksGlDa/eCoQqlcZSsh+eatDLXU8sToU6w83TAKXlKok0z8nw==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Date: Mon, 24 Aug 2026 17:13:13 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Breno Leitao <leitao@debian.org>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, Florian Westphal <fw@strlen.de>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net] net: fix spurious TX timeout after dev_activate()
+In-Reply-To: <20260824-trans_start-v1-1-0419cc427ed9@debian.org>
+References: <20260824-trans_start-v1-1-0419cc427ed9@debian.org>
+Message-ID: <4f3857029d855ed4e513ae01a2e8f018@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Sun, 23 Aug 2026 13:48:05 -0400 Willem de Bruijn wrote:
-> Jakub Kicinski wrote:
-> > This PoC series uses a field of the PSP header intended for tunnels
-> > to auto-steer Rx traffic. Various attempts have been made at trying
-> > to get Rx traffic to land close to the core where the application runs.
-> > By default RSS picks the Rx queue based on the flow hash.
-> > I'm not going to cover all previous solutions in detail but broadly
-> > - we have RFS in SW which looks on which CPU Tx happens and backlogs
-> > Rx packets there, it is quite efficient. aRFS is built on top
-> > of RFS but tries to program flows into the NIC. Some NICs have
-> > a "cache" and try to automatically remember the flow to queue
-> > association.
-> > 
-> > All those solutions are entirely local to the receiver.
-> > Ideally we would want the solution to look something like
-> > TCP timestamp option - we send an opaque cookie to the peer,
-> > and the peer echoes it back to us. Our NIC can steer based
-> > on that echoed cookie.  
-> 
-> Another option is to reverse RSS entropy. This requires knowledge of
-> the RSS secret.
-> 
-> Especially with PSP, the outer UDP source port is defined as flow
-> hash, so can be used for this.
-> 
-> Have the receiver compute a 4-tuple hash such that it knows the RSS
-> block will select the intended queue. The only free variable here in
-> general is the source port. Then communicate this preferred source
-> port to the sender.
+Hi Breno
 
-Yes, we toyed with this a little. Communicating the hash to remote
-is far less trivial. The thing that made me switch to the PSP idea
-is that modern NICs can RSS on the flow label. Which is nice for
-non-steering capable clients, and it conflicts with pre-computing.
-Maybe the benefit is not big enough to matter.
+On 24.8.2026 13:45, Breno Leitao wrote:
+> While debugging another issue today, I found out that my TX queue is
+> stopped for 136.07 years (4294907392 ms).
 
-Do you have any practical experience deploying reverse RSS?
-Maybe I shied away from it too quickly..
+nit: 4294907392 ms is ~49.7 days
 
-> > This patch set implements exactly that using the optional PSP
-> > Virtualization Cookie field. The PSP standard doesn't have much
-> > to say about this field:
-> > 
-> >  Virtualization Cookie - 64b
-> >  An optional field, present if and only if V is set.
-> >  It may contain a Virtual Network Identifier (VNI) or other data,
-> >  as defined by the implementation.  
 > 
-> If using the PSP option space, no need to (ab)use the VC:
+>     bnxt_en 0002:01:00.0 eth0: NETDEV WATCHDOG: CPU: 28: transmit queue 
+> 23 timed out 4294907392 ms
 > 
-> "When the Hdr Ext Len is greater than 1, a Virtualization Cookie
-> and/or other header extension fields may be present.  The presence of
-> a Virtualization Cookie is determined by the state of the V bit.  For
-> example, given Hdr Ext Len of 3, when V bit is set, there is an 8B VC
-> after the IV, and another 8B extension header after the VC.  The
-> format of other header extension fields is determined by the
-> applications and is opaque to the PSP hardware. "
+> 4294907392 is not an elapsed time. It is the value of jiffies at that
+> moment: INITIAL_JIFFIES is 4294667296.
 > 
-> Right now all use besides VC is opaque to the device.
+> dev_activate() runs transition_one_qdisc() over every TX queue, which
+> resets trans_start to 0, and then stamps only queue 0 through
+> netif_trans_update().
 > 
-> For use-cases that should be interoperable across vendors, we should
-> probably define a standard option space, with well defined options.
+> Stamp jiffies instead. A queue stopped across dev_activate() now gets a
+> full watchdog_timeo of grace, and is still reported if it is stopped
+> that long.
 > 
-> In a manner that is cheap to parse at high rate, so no arbitrary order
-> variable length headers.
+> Fixes: 9b36627acecd ("net: remove dev->trans_start")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  net/sched/sch_generic.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+> index ef2b4bf515641..4539dc2c6d380 100644
+> --- a/net/sched/sch_generic.c
+> +++ b/net/sched/sch_generic.c
+> @@ -1278,7 +1278,7 @@ static void transition_one_qdisc(struct 
+> net_device *dev,
+> 
+>  	rcu_assign_pointer(dev_queue->qdisc, new_qdisc);
+>  	if (need_watchdog_p) {
+> -		WRITE_ONCE(dev_queue->trans_start, 0);
+> +		WRITE_ONCE(dev_queue->trans_start, jiffies);
+>  		*need_watchdog_p = 1;
+>  	}
+>  }
 
-TBH I don't see the need for this at all. VC is well defined, and fed
-into TCAMs. IMHO classifying the use of the VC as VNI vs steering tag
-can be left entirely to SW / association state. The non-V options
-should remain completely opaque to the HW IMHO.
+Follow up or v2: netif_trans_update() in dev_activate() now seems 
+redundant?
+
+> 
+> ---
+> base-commit: 0a0d1d55dad570724bf8c7ea83409639cfb4be9b
+> change-id: 20260824-trans_start-557ecd4c8866
+> 
+> Best regards,
+> --
+> Breno Leitao <leitao@debian.org>
+
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+
+Thanks,
+Nicolai
