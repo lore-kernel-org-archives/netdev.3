@@ -1,82 +1,79 @@
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7523374169
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 02:40:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C350636F905
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 02:40:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787539224; cv=none; b=Xhy/WMTNk0yqSkhaw52CoPYgZVrFthl4iVeg3ufy8K14YbGd1/W7j+ekPJOO683yXQycf3GwfxtxKfyNO6Qwf5L1roAaF5o/BkWkX2YPYHHfrOGyPTE6JHNq7ca3rJKM/ahElAGncIls9jyZVxGkBtcixpO/oLS8FbsosveXa8c=
+	t=1787539242; cv=none; b=aQkW8nm4/ZG+4//n5mY/riZ7CC+qj+XlSVtr1ZsfJT/H9eU3+MCxOUm0vpekgBrh16zoon/pZfshh3U1VgcC38t6FVTCkQsXEA7VCr/sRn1nyff2RIm7hhT0BfBiRjgAbm2laj6zJNiP1SXG0i2wqFAt+Ruv6gFGkIv3WM64IDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787539224; c=relaxed/simple;
-	bh=AYu3qPUBsFTn43fSjEMlrPrBNFTqVVASAlsfrSCV2H0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SZGqRUB9+kXQPUGxT7nsreb5BToIhCq2wLGmgoSxNoyMCyoCkinkjuM3jUORRGwOf09haOuHj4p62AID1JlMIdOZcIiL0oUhC/kzXlsfBzK7l8Fj7baAGn04WqXlNvR/GhZ3wj/UxmllNvpR6b+uX9sr7uYTTcQN2FkpY0EaUWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=FUwz3SRz; arc=none smtp.client-ip=209.85.208.44
+	s=arc-20240116; t=1787539242; c=relaxed/simple;
+	bh=IwSXKBlu3u3dkzZJ0/MbjNAlkmnA7FQiy8L7S1VG7+U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oZ/d/ES/1yqPrEvZbrWm+26PL033xAqndR1DDyJ9XirA4laaH2RN3hSXXXsThrm/9JGaQ2bi9VE/EGq+wTQQc8U7F6Q4GDLowQFZQpJr0JNg/FnE/YV8InD62EEH+yDGT4NkYsekZWYAObpuLohHYaYNZGFfyBLVXSlxSGd0Bag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=FiMF2CCJ; arc=none smtp.client-ip=209.85.208.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="FUwz3SRz"
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6a10d02ff43so5928188a12.0
-        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 19:40:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="FiMF2CCJ"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-69c600f76ccso4888337a12.0
+        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 19:40:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1787539219; x=1788144019; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=AYu3qPUBsFTn43fSjEMlrPrBNFTqVVASAlsfrSCV2H0=;
-        b=FUwz3SRzBVeJhpzqxWioCq9fi3hNv0lJAuT81vmVeaQVBgvtXXdZps6B32kCEUUP/o
-         l0985An/horW03r5jaw+IiNbcLERMUMsg5veOxu7FBaxxl0SrNwpdjhPprsbLjHSo5+b
-         iGjO+oTN/cPe1NPuvl/or+sNBUAo+LkRhpVZb7VYfM4sRzgPVKqEjSa1TxafAvPokSud
-         3c/joNxviU0Tru7HE3Nl8XGAWKHba4Wzgl8EybLjbzM23g3TqMDuimxcdTNMnxBTRHa3
-         RzjegSCR1VnrDTkH+3mqQM+E7KHybRJSU01xh0HWqL5Pv+y515JA/viLj/dVu89XHeXG
-         wZdg==
+        d=lex.la; s=google; t=1787539236; x=1788144036; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=WXY56n3V2L63OEbG30eQkGDHCSrf+Q80MsU3+pYzFhE=;
+        b=FiMF2CCJ/vWvo1+5OsFkoI1fPYroAYwSKR/qRWZlsiDsGSfiANDMhrt5wolPYjFNO7
+         bmPwrpD6ef/cKe5vk21JU40V582IFknIr21jP/Io/2/j5Nnm68+Dazw0PTt4iFDlhIn/
+         A0JNRgAM3r32R2qGsD7E6SSjoZzGf9+Fb9Q6eOwAyRrzNjzB+nnMinWkrfhKmSdXOsUO
+         OF3j8PUhRtvq+2g0izjlr9zkHgmKHX+0bc/mGgZ2x5cXh/b5LVSPb9PQX5Dpt/HScQq1
+         +aO/PuUi0HGrHYqoV6aV/kiCTNaoh55OUkCAJw8f6ieJbMXFXfcJwP3W5Vn9uSKcb/3Z
+         a4TQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787539219; x=1788144019;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=AYu3qPUBsFTn43fSjEMlrPrBNFTqVVASAlsfrSCV2H0=;
-        b=C6kDU14/orVTQKS7doGmITDjmwU+JNEssQ8gQoPcvSCvYuI/5w/0RwYN1aKsVIE2g8
-         H/HidhB73ZuqpJ74UJqNoCmTG5zqod3VQ3vEuzvzNdfFVaFxrL0xw2qZ/ellt68iJkat
-         qJIfVrM7tLZ9XgSzH0YJuayfjExywUexXlT041e0IYUn5DTIDsCg6AlWhYK6mOcEYi6i
-         ahgOPrCF15h6VKdVIzW/s2OfNhDKnUFAnXkhVVb/J72KsdJku0eJ7dASMr2kea5CeDA5
-         Qb5TYb+yvldC/Ab5A+lZtn9L/XrJYjOYbmFgrAFdalRnpHGriXIm76tTIShuyC1PFY9c
-         6ELw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp3QVRQPHg9p0NFrV7HjUgxVevytPPy7RgVN1fAj2rSvynhDS1PdMIRzRO5Y6H3S6rKKbdPlE8=@vger.kernel.org
-X-Gm-Message-State: AFuF++lBEk8LcCWBahH/1Wt7bDm5Z97OW/mT4j3Rr5GEM+atDUpK3HOY
-	+vrmwHCc2aaULmdrZS9rjqjif/CjP/oK8lDGBBbeMLfn4uc4WYmZS07G2M2jRHzMCEg=
-X-Gm-Gg: AR+sD11SAKw45vXdSD6diwmcgfdCErWvfhXBilfc2uuIczn+EOt+sz3rYtEcTOzyc+v
-	FDRxiA9Ufnga/+D9ajdq57Vka+vmg8Eu6sbXHg4eSfa7HgYXA9tF6YqXuJIOQW8IWOZwI/MetHz
-	NXCffXxIhWK7yFxUpUr5LRHHggAKbacYKXqT74CQHaiivQ/ZgNnAtHjeLzRdeMvtbQqLXGJLcwZ
-	07l8+e0ZvG5bhWNoC92S1Li/wr4v0Ayc6Q8tG/z71LRU81Abf0iIOY/lI+Y7IHvFcH4j9F+KGjd
-	PxyTfn/XzzNW5GTJuV+JWkRaffYW8yo02lw32QiWoN5xD6CalaEntRFZ8W0iUSMRPdeCSYw5tyT
-	Cm6rS9s6AIPXiRDnutZz3/W3s8lJ/xBlAmGgIuDZRTJ+k+9qmDQ37f3HL6PulUXWVHXq3F7SZ5E
-	8hZ3r1nHDHFka+I4abYeaUOqZ4OWdROQ9GCOwPJ5aO/IA0hrwRVnDyfT0y8A==
-X-Received: by 2002:a17:907:980d:b0:c20:56e8:5457 with SMTP id a640c23a62f3a-c246a359c6fmr2233438066b.6.1787539219351;
-        Sun, 23 Aug 2026 19:40:19 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787539236; x=1788144036;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=WXY56n3V2L63OEbG30eQkGDHCSrf+Q80MsU3+pYzFhE=;
+        b=Dr9eYERh3yhOvxN6b6pd6muBVkB7FWW/4Zf98FPd+VmtOXIt4Eph0guP5l7z0AhYGD
+         MESESrIXBP/vb8sX8valFOh6DLZ4DufcePiab3NyFiw99AUnmRrnZktx8ymIRGekvPui
+         bdXLELLCaaJv3c36QfJ2nbEPhS55swir9B6vKqu9jJjMzR8nnibok42C750vXhyC0+TW
+         okERqrush82Bvf0LkSVqXJtaav0pvBSniV5GCuANHSPb67H29lqfyPzKHCwuLc4kZ407
+         lkMWKCuBeRldE5DN78Md9ap9b/8nNDon50WI3dCHsaV9uMt9qxF3GOIHUqTnk9e98g9z
+         seCQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpHgH/SVjIAsozts3cXDSI3Oz/+ct9m734X/WOUMm7bFHMXt8RWhksVKdcEhKikvA4sublGPFU=@vger.kernel.org
+X-Gm-Message-State: AFuF++lWZhF7wSTDCO2MMaHTYv0AqG0FhD3pb68MT6NYRMgdf0C2CjHW
+	Zw2leIe2RFLUjuGrEmZbq4Uk9LCR6k5HeVDDr06I2HBqaF2lYbCXyX39RnkKs03fH6Y1BFS5jOO
+	52yM9x60HR1Q+
+X-Gm-Gg: AR+sD12Vbf4+we851VOk9GG914grN5e62nO8zgyXOgTLj8+UFD1iQWQ5u9zci7c8aRo
+	dDqbra+k258fX+leL3nz3WeMImLvC0sTWyowhXPhqWKP7wTNEV+EZC1knF+ohkpIh6NCeL6v6bl
+	8+/ukip4f26/XRgqyQ8E1r9zXWedptqGmcZy2J6FfmiqbGO4ltdGv4B8VCuvz9RSe8eoK36dvUb
+	wdDeLAidP/+7OjHdMABSwB0WX3b4+TOpgmtM2Au2z0y1yZ4yf7evmEjR1BZlODuU3/PE7zxn+tR
+	jndztQIF1jayLGA3XKhPp6tneNjWhCZtMmbyh6JGSaslSWWEwN41HZQIOdBtiRcsmWCLXmSmVMS
+	57TRrX9eZxFJJ2IR12ltFOfDP04xE0Toh6YtdEyVmsbu7Y67Xs8ANYSHMQoSjo8SHiPFo+7gdXF
+	m63/Ru+Kd5vGU5QC2dWwTeXlt5pXMJzA9lr2zlRGYNj3j+UPDueMPYZ7aU
+X-Received: by 2002:a17:907:6d26:b0:c15:dcc6:d06d with SMTP id a640c23a62f3a-c2469f9cbb0mr2525458666b.0.1787539235814;
+        Sun, 23 Aug 2026 19:40:35 -0700 (PDT)
 Received: from ownbook ([195.181.160.194])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2496738e7esm1121017466b.46.2026.08.23.19.40.17
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c24966f8f2asm1051909566b.36.2026.08.23.19.40.31
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 23 Aug 2026 19:40:19 -0700 (PDT)
+        Sun, 23 Aug 2026 19:40:35 -0700 (PDT)
 From: Aleksei Sviridkin <f@lex.la>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Vladimir Oltean <olteanv@gmail.com>,
+To: Andrew Lunn <andrew@lunn.ch>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
+	Russell King <linux@armlinux.org.uk>
+Cc: Aleksei Sviridkin <f@lex.la>,
+	Vladimir Oltean <olteanv@gmail.com>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Aleksei Sviridkin <f@lex.la>
-Subject: Re: [PATCH net-next 3/3] net: dsa: connect a late-arriving PHY at ifup
-Date: Mon, 24 Aug 2026 05:40:15 +0300
-Message-ID: <20260824024015.39701-1-f@lex.la>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2 0/2] net: fix a stale phylink PHY pointer and a lost PHY interrupt
+Date: Mon, 24 Aug 2026 05:40:26 +0300
+Message-ID: <20260824024029.41310-1-f@lex.la>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <c712cd5d-d4bd-413f-82a8-6303ff3e6526@lunn.ch>
-References: <20260822155259.87146-1-f@lex.la> <20260822155259.87146-4-f@lex.la> <9557daed-f039-434a-ae64-ac849b9860be@lunn.ch> <20260823000549.6095-1-f@lex.la> <c712cd5d-d4bd-413f-82a8-6303ff3e6526@lunn.ch> <20260823123729.74290-1-f@lex.la>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -85,34 +82,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-> Another option is move the firmware download into the bootloader.
+Two independent fixes, both found while chasing a PHY whose driver is a
+module on a rootfs that is not mounted yet when a DSA switch probes.
+Neither one depends on that setup, and neither depends on the other.
 
-I went and looked at what that would take, and it does not help here,
-for a reason that also corrects something in my own commit message.
+Patch 1: phylink_bringup_phy() records the PHY in pl->phydev before its
+last fallible step, so a failure there leaves a pointer to a PHY the
+caller has already detached. A later phylink_disconnect_phy() detaches
+it a second time and drops references the first detach already
+released.
 
-The firmware is not what makes this PHY late. air_en8811h is a module
-in the rootfs, and on this board it probes at 6.25 s, while the port is
-already dropped at 1.878 s. Moving the blobs earlier changes nothing
-while the driver itself arrives that late.
+Patch 2: a PHY that goes through a generic-driver bind cycle comes out
+of it in polling mode for good. The specific driver that binds
+afterwards never sees the interrupt the firmware node declared.
 
-Even with the firmware preloaded, en8811h_probe() calls
-en8811h_load_firmware() unconditionally, and that starts with
-request_firmware_direct(). Nothing reads the version register or the
-ready bit first, so a preloaded PHY is reloaded, and a PHY with no
-blobs available still fails probe. A bootloader preload would need a
-kernel-side early-out to have any effect at all.
+Tested on an MT7981B board: an Airoha EN8811H on an MT7531 switch port,
+its interrupt declared in the device tree, its driver a module on the
+rootfs. lan4 attaches with irq=15 rather than irq=POLL, the line is
+claimed as mt-eint 0 in /proc/interrupts, and its counter goes 1 -> 3
+-> 5 across two forced aneg restarts, matching the link dropping and
+coming back each time, and holding steady in between. wan, whose
+internal PHY has no interrupt in the device tree, still attaches with
+irq=POLL: that is the observation which says the bus table cannot hand
+back an interrupt the device never had. Patch 2's other exit, the one
+in phy_attach_direct(), needs a generic probe to fail and is
+compile-tested only.
 
-And it would be gone before then anyway: the failed bringup ends in
-phy_detach(), which asserts the reset line, and this PHY has
-reset-gpios. So whatever the bootloader put in the MD32 is wiped at
-1.88 s.
+---
+Changes in v2:
+ - patch 1: the unwind now shares a helper with phylink_disconnect_phy()
+   instead of repeating its inner block (Andrew Lunn), and the patch
+   gained a Fixes: tag
+ - patch 2: the interrupt comes back from the MDIO bus interrupt table,
+   so the new phy_device member, its kernel-doc and the save site in
+   phy_attach_direct() are gone (Andrew Lunn)
+ - dropped "net: dsa: connect a late-arriving PHY at ifup": binding the
+   MAC to the PHY from open is the wrong layer
+ - v1: https://lore.kernel.org/netdev/20260822155259.87146-1-f@lex.la/
 
-U-Boot does already carry the whole loader, in v2026.07, which is what
-we build. What it cannot do here is read the blobs out of a squashfs
-inside UBI, and mtk_eth_probe() takes the switch branch and never
-connects a PHY on this board, so it would be new code either way.
+Aleksei Sviridkin (2):
+  net: phylink: unwind the PHY binding when bringup fails late
+  net: phy: restore the interrupt after a generic-driver bind cycle
 
-None of that argues against your main point. I am dropping this patch
-and sending the phylink and phylib fixes on their own, since they stand
-without it. If the phylink hotplug direction ends up wanting someone to
-test it on hardware that reproduces this, I have the board.
+ drivers/net/phy/phy_device.c | 14 ++++++++++++++
+ drivers/net/phy/phylink.c    | 29 ++++++++++++++++++++---------
+ 2 files changed, 34 insertions(+), 9 deletions(-)
+
+-- 
+2.55.0
+
