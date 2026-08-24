@@ -1,94 +1,337 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B285368D79;
-	Mon, 24 Aug 2026 10:30:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D5C4078DE
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 10:31:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787567427; cv=none; b=YNkTOnGhnZTRq1kXOph9SA3eMV3PtTncC4pNpO/2QQwHcWH1a7XgmL4AMyJCt/agOUVKMaF1K1q9Xj226Tep4rgqSDQwYAuKPxq2+CZnOSUXFTBNiifRQe20qdIav2+HQr8l5+ISuQtvWiMbKx6P1JLMIPCo5/tx2yYiVDj41DM=
+	t=1787567490; cv=none; b=fc3/kEFdkJrEIN3IgnNWgcLXHJn4D/q+1mNVEf1+CyAympozASz6jx0GPcpC5ZCTc+yXScqbxxvaQTfox4SpJQmwVv6OZzlmXseULvE5clwPcFtHKZbYQ7wmYUK5sXEM68mSffrd502cGwccvmxYPiwrTq09Ks/200UB4t/8CTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787567427; c=relaxed/simple;
-	bh=wycIIvwXZRxYCgpRVJZz3RmffOZL//Gi0OydGD24uMM=;
+	s=arc-20240116; t=1787567490; c=relaxed/simple;
+	bh=LHsuwi5wr8Wn/lWzmx79XyU/0DpMMKJs2KNquDLlIKI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DY2Dm6nwM7WAYnawkFFyi5O6fKe2h+yykUiQMdufbAFlCs/u2NrGTSm290LciyPozvkUqz5m9cyIx1mFpluZU+w848SUGodNY5HKO7M0IZc2xw/SdwfVU0N0safZsxUuPWlo0uuhxd5/hhUDww5YUYehahOj977lTyxLJ0dZwEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MXNXJE30; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=u99RGnZwFT2O1DJyMB1p1Jn9KChmuJly1s7VpJ16N678fTaNDDwYMPGvapfOlh9YebR3QD/3Z7Sw5nnpZ2rDyfItA4rJNIZY+K458uilMF+hUm/VlGfjjwMWLohI9m5t5j+xUkDi7FLIkyaxy1Tr3NKJl9BgZqxov5wyJ9NxY+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=eU7IMq+h; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=RDACqO1j; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MXNXJE30"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D36F1F000E9;
-	Mon, 24 Aug 2026 10:30:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787567425;
-	bh=YTJx4dBRZAybNR3HI9pgVr2GlnnH8dp6QvB0gcnDMNI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MXNXJE30qWUtcm1NT8yEay24jDlVuNDHRTUdAj5/W9cVv41rPFfmbAxom10H4mxdt
-	 P6kZsPEFe26zd3EhXOSOMXtRElSohFaOu2q74SzHUGIq//2PrtlaVfNzRLR7p8eRc1
-	 vJYYEsit0BTmM+PYbc6/ZLLH2/guLaWEHbv4/LduGpwS8NF/lp2nuzeQKGPCkvGe+t
-	 HnD4AdNDUYsXXz/tqwLOn/Jz7Eo1M/grJNEny0kYXZKLk8deUUo/1OemVnX1xO2pBk
-	 72C7xQkOebsUoITNaW8B0LpYQpygVlp9FBGIBzkQQDBNR2xKhqlyGmfbx0FzVyMFpQ
-	 CJBtDxWoLnqmA==
-Date: Mon, 24 Aug 2026 11:30:20 +0100
-From: Simon Horman <horms@kernel.org>
-To: Hidayath Khan <hidayath@linux.ibm.com>
-Cc: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com,
-	sidraya@linux.ibm.com, mjambigi@linux.ibm.com,
-	andrew+netdev@lunn.ch, tonylu@linux.alibaba.com,
-	guwen@linux.alibaba.com, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, pasic@linux.ibm.com,
-	linux-s390@vger.kernel.org, netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: Re: [PATCH net v2 0/2] net/smc: fix use-after-free in
- smc_rx_pipe_buf_release()
-Message-ID: <20260824103020.GN265046@horms.kernel.org>
-References: <20260820074642.966856-1-hidayath@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="eU7IMq+h";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="RDACqO1j"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67O997bR2081917
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 10:31:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=HlvDuI9BkqCNqqwLhQdUP/gB
+	QLcwTMgLu7ompPtRaSA=; b=eU7IMq+hyKffrNtpZvme5OIjUhncrC13GDVaQdY1
+	0OX0CNGD6jlN0I0QgtoJcpjdW0OcQGqeAs+Z2IXHUmXF+z7re8HII2gX5t53o1Xz
+	zZ6MUPluHTx15H6SUwCag169FkhVoGxbSf+/w8tm0iLJ+Ok/kyuQwepS7G/n82vN
+	MZgyxAUiiHFFdfxOiG86a3ExLG09aNehpb6mb8+zGXAQbHd+sjHYjxnuxy2niet4
+	2ESwQbTNOnh8Ht2lr6KUxdcAONc12QfgMgm5yTefsaKNcCvy8W0om0eifx+a3d3K
+	P7NoRU/U4CKMOspwdR4tMhRDV+xYVIt7GpeYazGiv0N/FQ==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4g8gdsh65j-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 10:31:25 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-5174a23afcbso47050501cf.3
+        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 03:31:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1787567485; x=1788172285; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=HlvDuI9BkqCNqqwLhQdUP/gBQLcwTMgLu7ompPtRaSA=;
+        b=RDACqO1jn9R/RNBbvbkpD92h2gwVonqTQ6IzBHZHWA2BGilcmCCisWs3oKDjBkEXbY
+         3q7+zeAypJnPb9mW6xTKWzKJjNQcI22Lorpvn1p/vR98zebhWwTqeN4Wpuc61VShtYsH
+         g/pjrWSapcnkvxOe2TQNzM3UkaEHzFIYtBMu5ZhJhbW6XLqv5J5qH+ItEeGh889lxd8t
+         rQN7BTPcxXIt/z9nAe3/W5pXii3KW4L83FFeGvQ2YtvyCGOGLJIBi8EXgq7zWq8hvelS
+         cyyT8lewlFKCFwXcfcbnSJkg5u59Dhu5gnrN6D3kALFCC839kQcv6bSHHvqOsQZ6Bqa2
+         wk4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787567485; x=1788172285;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HlvDuI9BkqCNqqwLhQdUP/gBQLcwTMgLu7ompPtRaSA=;
+        b=hk+eK/HV2OCiWnniLwr5a7csmNpLnM5gZjU1sCnFeSi/+dbqDOHKzG2fPq8HIxzkvW
+         ytkH5bVF45k3jGFqeIFwtfsp/fsVD/heHnX6iBXnbjxgrZc8QVq6HDWJS9OYKH9NMTrO
+         2qMgQFaLqWpPrUPVs1bczf5Heq+H/XJBIqqw3D3nvZxvDltSJLfH4Kh5UvOG0sXuGgpK
+         kFGDkzS+eubz7tSq2gXidUtYF9MQaZwUFWaZAGw2Pds7/ljAfNw8X0n3EYzKQq8GeaHm
+         hinzY5q4imA+zcCsDJ7tOCS2kvXBUFB2IH51RrFZnZ6zJ/T/6c1raF0lhfQWXr7Sjolw
+         YjYQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rrc59/zXdgarOdm779U85uGkKzeU+4I+mLX9j0fn3GUqQRLYLKyd7i9/X8D2F7cbuF4TWqPQSY=@vger.kernel.org
+X-Gm-Message-State: AFuF++nRKpKosB9M2XJZttZlrYcS2xI0NLwJyJ/QUJgVpvBgbv+9udVR
+	znzC07u+38ofMcxg86i3WAGThzJ/6uwsD6jMmmLHjIcSOMGVJ2bAzTSzig72prC1Vb8P+8sKvny
+	W4YWk5Y3aT+zTT83I/tKooEYXuEMkD6afmfqg5FZ2uDqUFOoIHhbER/pH7p4=
+X-Gm-Gg: AR+sD103x5XO5zpZjq4FnB4Lm+xUtYGojsJuwe2zKkYWUUwx627ZVyaWzOap2FfbE2b
+	EoyArIw/7Q+7Br9we11knTe6YT5l/DRjWjeUB43o2Lrs5mjod37FekZ4yB75Scgkx/MPpyB23bo
+	f9b3pqYdnU0FvFnXgJQXoLFO8oB6AW7Vz4ofYyP9AoAPijGsCbplh7RzWX1twSy4XRxY2z2rmu8
+	BcOnAANFaalvF9LGaJe5kqHltvaU62GFE44qeb0aIwTcsVDFKnlYJpyNO78aifWxWmopAMm3vwJ
+	6Z03kbkeU/uIQpXxrc+0UBdebJXIMs6iOrFWlkjTuSqk8h3At6yYfxrRJ3Sc30YqXDUrWIeZ+we
+	HZKz/1iO/UJxkY4A=
+X-Received: by 2002:a05:622a:1f96:b0:52d:9637:554c with SMTP id d75a77b69052e-52df5bc7960mr268635021cf.43.1787567484617;
+        Mon, 24 Aug 2026 03:31:24 -0700 (PDT)
+X-Received: by 2002:a05:622a:1f96:b0:52d:9637:554c with SMTP id d75a77b69052e-52df5bc7960mr268634011cf.43.1787567483987;
+        Mon, 24 Aug 2026 03:31:23 -0700 (PDT)
+Received: from localhost ([188.216.77.92])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c24d6f203acsm166444066b.24.2026.08.24.03.31.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2026 03:31:23 -0700 (PDT)
+Date: Mon, 24 Aug 2026 12:31:22 +0200
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org,
+        syzbot+237bbeed8dfe0699b7f5@syzkaller.appspotmail.com,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Stanislav Fomichev <sdf@fomichev.me>, Simon Horman <horms@kernel.org>,
+        Martin KaFai Lau <martin.lau@linux.dev>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Eduard Zingerman <eddyz87@gmail.com>,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
+        Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+        Emil Tsalapatis <emil@etsalapatis.com>,
+        Ihor Solodrai <ihor.solodrai@linux.dev>, Shuah Khan <shuah@kernel.org>,
+        Kuniyuki Iwashima <kuniyu@google.com>,
+        Hangbin Liu <liuhangbin@gmail.com>, Krishna Kumar <krikku@gmail.com>,
+        Martin Karsten <mkarsten@uwaterloo.ca>,
+        Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH bpf v2 1/2] bpf, veth: xdp: fix page_pool page leak on
+ skb-backed XDP
+Message-ID: <aowdem3KQVfvocE7@lore-desk>
+References: <20260824030257.263179-1-jiayuan.chen@linux.dev>
+ <20260824030705.266049-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="upSIBUhSliXFFaM1"
+Content-Disposition: inline
+In-Reply-To: <20260824030705.266049-1-jiayuan.chen@linux.dev>
+X-Proofpoint-GUID: AoyJJxjCrWjxWfji7SBh0Wuj6shpMBNE
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI0MDA4NyBTYWx0ZWRfXyChAYmVnjOGy
+ 3/VjLErbKV5F+N38pcgwo6Iusi1EQOWHX1SHhGFj8iubtXvh8Cz6zVlLL0wgcT5mxQz+Km9JlXN
+ MGjNx34NDqiXTKpn35pftm/JWWgwZfN94TRrdTNL0yYPWvittfeVH0qEbMybl0gAsONg4pTM11d
+ 1fPw587RLTUNXi7P8RTTJPJA2cO48DLjkGhKdMchyXaZitG6rrwQXfjlq3wJ5NUVb/c25S/GgSw
+ yRZSUfyA9jc4ozBg51PWLkILX+MEP4DTGAxxbbXcRQ2eT9njiE8is7/tkb+VyjEq3OsSxXIqx0T
+ uDBOsZh0i0le4r7omIpPBcB/CFT5ZQ/PmTlQIj99UNotwBMhM5Zi54rIf8vWuOsJ+MGIXZOc6JV
+ XItjcq0QGLM4du4g6tl8oSFEge5pz7zJ4DFQC/JmA/IClsb+GLJHmb5+CZVE/eHjl/jjfceAv3Z
+ 39jk/RJIN+ALVERrdYg==
+X-Authority-Analysis: v=2.4 cv=Fqo1OWrq c=1 sm=1 tr=0 ts=6a8c1d7d cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
+ a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22 a=edf1wS77AAAA:8
+ a=hSkVLCK3AAAA:8 a=McGmopZ3JXA0FyUL-jwA:9 a=CjuIK1q_8ugA:10
+ a=kVLQuquJ2CynHSLU3hYA:9 a=uxP6HrT_eTzRwkO_Te1X:22 a=DcSpbTIhAlouE1Uv7lRv:22
+ a=cQPPKAXgyycSBL8etih5:22
+X-Proofpoint-ORIG-GUID: AoyJJxjCrWjxWfji7SBh0Wuj6shpMBNE
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODI0MDA4NyBTYWx0ZWRfXw8FXKMgI8Gyb
+ T8RhEaZEIJ/BYBgN8uMpgrryGhZa4K5G1lnupksyMUVpyZnM3Ju3LHiGWrsICQRMp6RnOug5a/n
+ jSmGaEv3ZhOQY6a8QjtZ5e/LXUQNtfY=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-24_03,2026-08-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0 suspectscore=0
+ impostorscore=0 phishscore=0 spamscore=0 clxscore=1015 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608240087
+
+--upSIBUhSliXFFaM1
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260820074642.966856-1-hidayath@linux.ibm.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 20, 2026 at 09:46:40AM +0200, Hidayath Khan wrote:
-> smc_rx_pipe_buf_release() tests sk_state before taking the socket lock
-> and then dereferences conn->rmb_desc and conn->lgr. A concurrent close
-> runs smc_conn_free() in between, which releases those structures. On the
-> is_reg_err path smcr_buf_unuse() frees the descriptor outright, so this
-> is a use-after-free.
-> 
-> Patch 2/2 fixes this by taking the socket lock first and testing
-> conn->freed instead. smc_conn_free() sets that flag before releasing
-> anything, under the same lock, so the two paths exclude each other.
-> 
-> Patch 1/2 is a prerequisite. conn->freed shares a byte with killed and
-> out_of_sync as single-bit bitfields. out_of_sync is written from the
-> receive tasklet without the socket lock, so a concurrent store to freed
-> from process context can be lost in the read-modify-write. Patch 1/2
-> gives each flag its own byte so stores do not interfere.
-> 
-> Hidayath Khan (2):
->   net/smc: stop killed, freed and out_of_sync sharing a byte
->   net/smc: fix use-after-free in smc_rx_pipe_buf_release()
-> 
->  net/smc/smc.h    |  6 +++---
->  net/smc/smc_rx.c | 11 +++++------
->  2 files changed, 8 insertions(+), 9 deletions(-)
-> 
+> bpf_xdp_shrink_data() frees a released frag via __xdp_return() using
+> xdp->rxq->mem.type, but that type is wrong for skb-backed XDP: the skb is
+> cow'd into page_pool memory while the rxq still says MEM_TYPE_PAGE_SHARED,
+> so the page_pool page is freed with page_frag_free() and we hit
+> "Bad page state ... page_pool leak".
+>=20
+> Both generic XDP and veth are affected. A non-linear skb is cow'd into
+> page_pool memory (skb_cow_data_for_xdp() -> skb_pp_cow_data() for generic
+> XDP, veth_convert_skb_to_xdp_buff() for veth), so its frags become
+> page_pool pages while the rxq keeps MEM_TYPE_PAGE_SHARED.
+>=20
+> We can't just fix rxq->mem.type in place:
+> - generic XDP: xdp->rxq is dev->_rx[queue].xdp_rxq (see
+>   bpf_prog_run_generic_xdp()), a shared rxq that other CPUs may access in
+>   parallel, so we must not write to it.
+> - veth: rq->xdp_rxq.mem is shared per-queue state that veth resets on XDP
+>   teardown, and with GRO that reset runs without stopping in-flight NAPI,
+>   so a type stashed there can be clobbered under a packet still in flight.
+>=20
+> Adding a check in __xdp_return() or bpf_xdp_shrink_data() itself is not an
+> option either: without recording it somewhere, both can only guess the
+> frag's memory type, which quickly gets confusing.
+>=20
+> So record it in the xdp_buff. Add a XDP_FLAGS_FRAGS_PAGE_POOL flag; the t=
+wo
+> skb-cow sites set it, and bpf_xdp_shrink_data() frees the frag to the
+> page_pool when it is set, otherwise it keeps falling back to
+> xdp->rxq->mem.type unchanged. No other path changes behaviour.
+>=20
+> Fixes: e6d5dbdd20aa ("xdp: add multi-buff support for xdp running in gene=
+ric mode")
+> Fixes: 0ebab78cbcbf ("net: veth: add page_pool for page recycling")
+
+Hi Jiayuan Chen,
+
+thx for fixing it. Can we do something like the patch below instead?
+
+Regards,
+Lorenzo
+
+diff --git a/net/core/xdp.c b/net/core/xdp.c
+index 1d679e8fd649..4ed659b58141 100644
+--- a/net/core/xdp.c
++++ b/net/core/xdp.c
+@@ -433,16 +433,16 @@ EXPORT_SYMBOL_GPL(xdp_rxq_info_attach_page_pool);
+ void __xdp_return(netmem_ref netmem, enum xdp_mem_type mem_type,
+ 		  bool napi_direct, struct xdp_buff *xdp)
+ {
++	netmem_ref head_netmem =3D netmem_compound_head(netmem);
++	if (netmem_is_pp(head_netmem))
++		mem_type =3D MEM_TYPE_PAGE_POOL;
++
+ 	switch (mem_type) {
+ 	case MEM_TYPE_PAGE_POOL:
+-		netmem =3D netmem_compound_head(netmem);
+ 		if (napi_direct && xdp_return_frame_no_direct())
+ 			napi_direct =3D false;
+-		/* No need to check netmem_is_pp() as mem->type knows this a
+-		 * page_pool page
+-		 */
+-		page_pool_put_full_netmem(netmem_get_pp(netmem), netmem,
+-					  napi_direct);
++		page_pool_put_full_netmem(netmem_get_pp(head_netmem),
++					  head_netmem, napi_direct);
+ 		break;
+ 	case MEM_TYPE_PAGE_SHARED:
+ 		page_frag_free(__netmem_address(netmem));
+
+
+> Reported-by: syzbot+237bbeed8dfe0699b7f5@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3D237bbeed8dfe0699b7f5
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 > ---
-> v2:
-> - Patch 1/2 is new. It is a prerequisite for 2/2.
-> - Patch 2/2 replaces the conn->rmb_desc = NULL approach from v1 with a
->   conn->freed check. The NULL store exposed smc_cdc_msg_recv_action()
->   and the sock_diag dump to NULL dereferences on paths that do not take
->   the socket lock.
+>  drivers/net/veth.c |  5 +++++
+>  include/net/xdp.h  | 14 ++++++++++++++
+>  net/core/dev.c     |  5 +++++
+>  net/core/filter.c  |  7 +++++++
+>  4 files changed, 31 insertions(+)
+>=20
+> diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+> index 6ed3ee81153f..0afa0661ada1 100644
+> --- a/drivers/net/veth.c
+> +++ b/drivers/net/veth.c
+> @@ -775,6 +775,11 @@ static int veth_convert_skb_to_xdp_buff(struct veth_=
+rq *rq,
+>  	if (skb_shinfo(skb)->nr_frags) {
+>  		skb_shinfo(skb)->xdp_frags_size =3D skb->data_len;
+>  		xdp_buff_set_frags_flag(xdp);
+> +		/* A nonlinear skb was cow'd into rq->page_pool above, so the
+> +		 * frags must be freed to that pool, not via the rxq's
+> +		 * MEM_TYPE_PAGE_SHARED.
+> +		 */
+> +		xdp_buff_set_frag_pp(xdp);
+>  	} else {
+>  		xdp_buff_clear_frags_flag(xdp);
+>  	}
+> diff --git a/include/net/xdp.h b/include/net/xdp.h
+> index aa742f413c35..b389dc527adc 100644
+> --- a/include/net/xdp.h
+> +++ b/include/net/xdp.h
+> @@ -81,6 +81,10 @@ enum xdp_buff_flags {
+>  	 * XDP program is not attached.
+>  	 */
+>  	XDP_FLAGS_FRAGS_UNREADABLE	=3D BIT(2),
+> +	/* frags are page_pool memory even though rxq->mem.type is not: a
+> +	 * skb-backed XDP buff (generic XDP, veth) is cow'd into a page_pool.
+> +	 */
+> +	XDP_FLAGS_FRAGS_PAGE_POOL	=3D BIT(3),
+>  };
+> =20
+>  struct xdp_buff {
+> @@ -131,6 +135,16 @@ static __always_inline void xdp_buff_set_frag_unread=
+able(struct xdp_buff *xdp)
+>  	xdp->flags |=3D XDP_FLAGS_FRAGS_UNREADABLE;
+>  }
+> =20
+> +static __always_inline void xdp_buff_set_frag_pp(struct xdp_buff *xdp)
+> +{
+> +	xdp->flags |=3D XDP_FLAGS_FRAGS_PAGE_POOL;
+> +}
+> +
+> +static __always_inline bool xdp_buff_is_frag_pp(const struct xdp_buff *x=
+dp)
+> +{
+> +	return !!(xdp->flags & XDP_FLAGS_FRAGS_PAGE_POOL);
+> +}
+> +
+>  static __always_inline u32 xdp_buff_get_skb_flags(const struct xdp_buff =
+*xdp)
+>  {
+>  	return xdp->flags;
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index 38336858c168..be36020484b6 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -5532,6 +5532,11 @@ u32 bpf_prog_run_generic_xdp(struct sk_buff *skb, =
+struct xdp_buff *xdp,
+>  	if (skb_is_nonlinear(skb)) {
+>  		skb_shinfo(skb)->xdp_frags_size =3D skb->data_len;
+>  		xdp_buff_set_frags_flag(xdp);
+> +		/* A nonlinear skb was cow'd into page_pool memory by
+> +		 * skb_cow_data_for_xdp() before we got here, so the frags must
+> +		 * be freed to that pool, not via the rxq's MEM_TYPE_PAGE_SHARED.
+> +		 */
+> +		xdp_buff_set_frag_pp(xdp);
+>  	} else {
+>  		xdp_buff_clear_frags_flag(xdp);
+>  	}
+> diff --git a/net/core/filter.c b/net/core/filter.c
+> index 61940e753552..d34ba56d79d8 100644
+> --- a/net/core/filter.c
+> +++ b/net/core/filter.c
+> @@ -4378,6 +4378,13 @@ static bool bpf_xdp_shrink_data(struct xdp_buff *x=
+dp, skb_frag_t *frag,
+>  	if (mem_type =3D=3D MEM_TYPE_XSK_BUFF_POOL) {
+>  		netmem =3D 0;
+>  		zc_frag =3D bpf_xdp_shrink_data_zc(xdp, shrink, tail, release);
+> +	} else if (xdp_buff_is_frag_pp(xdp)) {
+> +		/*
+> +		 * Skb-backed XDP (generic XDP, veth) cow's the frags into a
+> +		 * page_pool while the rxq stays MEM_TYPE_PAGE_SHARED, so free
+> +		 * the frag to the pool, not via page_frag_free().
+> +		 */
+> +		mem_type =3D MEM_TYPE_PAGE_POOL;
+>  	}
+> =20
+>  	if (release) {
+> --=20
+> 2.43.0
+>=20
 
-Thanks for the updates.
+--upSIBUhSliXFFaM1
+Content-Type: application/pgp-signature; name=signature.asc
 
-The AI-generated reviews provided by sashiko-bot elsewhere in this
-thread appear to relate to pre-existing issues that I don't believe
-should impact the progress of this patch.
+-----BEGIN PGP SIGNATURE-----
 
-For the series:
-Reviewed-by: Simon Horman <horms@kernel.org>
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaowdegAKCRA6cBh0uS2t
+rJGbAP0TKzr2n3NCwgiDdeslVGC7scK/HYqht13htuRgE0ixHAEAwIsqgO3mN1D9
+7ii7J90tRRebrB44+8j3U937MKgYjwQ=
+=6sj/
+-----END PGP SIGNATURE-----
 
+--upSIBUhSliXFFaM1--
