@@ -1,158 +1,364 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011030.outbound.protection.outlook.com [40.93.194.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A4D3AAF62;
-	Mon, 24 Aug 2026 08:32:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787560343; cv=none; b=Uj15LASRsBzl8BJHCL//eyXHD+mV/aeVx6iATFDS5PZXkRQh6yUau+h0QUbtKXX5nATwkV3WVWjxCl7bhIA2qSGSxfRK3IQblwdFmwe87bM2EV00oyGhT7c5qks8433uqWi909H0Ul8Vm/2CdRkuZUUqXPSNooskYtfbfgT8PPU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787560343; c=relaxed/simple;
-	bh=s0vFBnZMwlAfy6AMmoxszWppenAdjDviStyPtJLJD+w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ipXo8kiyGES3DG7Q+LTYls7L5V5aFyWcB/vm/EOkdtEkRtiuJwWySTEtOp+cTSDj04/lnRLS6ll2jfzfDHM6COJDO5YStRJJHlxhJaPhdmyV72IBtS375jY+J++T5izDj2CEXeDScCYnxqw+ZTvcIKuUBC1m98gJOmj+HMxnOlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=N3UbUk9J; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029B2363C60;
+	Mon, 24 Aug 2026 08:33:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787560403; cv=fail; b=ZnDVQtTVqMs4ZtncFWb6Ucm085cp2HLsNGp/fRhTl+gOJtnFvXWkbBZZnj7tk501kFa+i9AGqLepf8JmDqf+YOI72jeVltvJxmPjU9cQ/8U12KwSavXHo7Ce2nAyaC3BarwWSEPlHEljwDVYPUjeklngXrx5Mhd64HkpNykHjw0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787560403; c=relaxed/simple;
+	bh=z8twWem0Ha6bzk4S6azkXIl3kY+D3EBoqQ3V9F5l7sE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=J9JZDAeDGvkaOWyVHIW+TTjC5ROEPR9JcSSU4/3PzTiPJw50W/avQcmfWheNTTLf5Hl6SNe6qt0uCQSggGTH1+l8ECKiprOwR2wLLW7ZNtauyTEBDNKHSQ183+KthI/+RHS8bizTR97Rxk0pFoLkPF+aVJDKED+naFiR6BkQC/8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rMmmrROR; arc=fail smtp.client-ip=40.93.194.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="N3UbUk9J"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67O5W5H3940186;
-	Mon, 24 Aug 2026 08:32:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=1zrRQ2
-	NH/FFY8kJhmuzfVwPT/3VJi62Ewq0b4x/TINU=; b=N3UbUk9J0MUuSPiSElyn5e
-	frrb74QxV6J7ybPWrnyCz093hHjd3x0QartNP/IqhFKbAgd0UCR+xNlKfy4wbF8R
-	E2Z6YeotWDgXdRd5+MJiyx78qP+NRo7W7gml4Gr37KdMlrRK2QP2LctQYsBfMNLq
-	/+/5gsQnWrIWF3MZQ46Ph+kdzTJcfzL731Ns2HqHwADp8haYx4miUt/l27MR5PWS
-	xLMCKQZL+zUmrg5yV9IaEVCOxjzECyfd4HKda+TyqwpmEGprT/HqZORAE2fufjL5
-	RuurqexF0Z2HvmpvZ/07FZyjnGlkGlFcLhuLrUjO55HppPV409y4DOw0pIF3Q3qQ
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g7393r3mq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Aug 2026 08:32:13 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67O8QJKe019299;
-	Mon, 24 Aug 2026 08:32:12 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g7pfvvx0h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Aug 2026 08:32:12 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67O8WAiJ17629752
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 24 Aug 2026 08:32:11 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A3E9A5805D;
-	Mon, 24 Aug 2026 08:32:10 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1524B58053;
-	Mon, 24 Aug 2026 08:32:04 +0000 (GMT)
-Received: from [9.124.213.220] (unknown [9.124.213.220])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 24 Aug 2026 08:32:03 +0000 (GMT)
-Message-ID: <758a944c-c26f-4509-a898-d93f345c19ca@linux.ibm.com>
-Date: Mon, 24 Aug 2026 14:02:01 +0530
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rMmmrROR"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cn9PcK/q/9qh30WY09ERp/ZxvWFGsed9ExZUHItwg/jWXEHUBPzdMVbKpGA/dJRg5jtn4JHWb3K4iGpfP3/xEyU2M717tfvh7U4/oReIE5htA3ZpGRE0K+eYreMGv4aFVUn+R+JfS8u11A5X9itMcbwJqqDAk2RNNodtKmI624dCe0dlQLsZNijNGvfrxdGl0AwnbMWsXjQDYbqrAbOfJNhTH1JJn58gWiw8wwDU6zjvBnwEaQwsEVsnWWlVqtPFGho3SxQ9V53qQSeDF2UOOY+lV/mOzpqVV1VZLbiCPJYonYTBBZB2UtXRWUNqj//z0a/4Zd7+Q9ujkxf6F1p8ng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xKcjMdGshiJnYuDJ9omh3+W8v+G39rpe/TxRagk7JTU=;
+ b=c3E06CdoDsJGujsfX8R0BQYHyb4b2XjhH0UHF6yTo3BhPXiAad25aA5MDP8scMAdOw8/kRkQPyC/zcQNRr2U+p8I6HYGNNp4iUJDTf9T+KtUvBRhG6JyIcxexWfr9sRnDicax8ryoGVcJUlhjpfNBSlTI9emJg38TgkBHw7XI3th+PVQSqX+oLk0ohXJd2B+rSZ9qOR093MlA3lpWWy22bCAB28abeHd6TQyHo2AGnc2I+PZm5HdNU3RRciEnoF0/kuVVdOywGMH3UInOFho8ihnVkbPBwheZL+rXV5ru+Qhlq5aftWKONLlcoHmc44JD7mzABRZtlJn6UhjPE8K4A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xKcjMdGshiJnYuDJ9omh3+W8v+G39rpe/TxRagk7JTU=;
+ b=rMmmrRORKoqI9vUK59xdWYBaByINf8yrQx/N0OE4kV/Bqudz2FLMRzenu0NFAfcJqSEA+Mz3iu9ku7x4rCmYdEOgtB7MnMb63iB0Mj4kqrJrC16myYC6Y4b5oA/ELTTz+wC1/lZLHTMLLfPiPOqUcgW6CGHqWslHZSPy3UepHB837zZUEFhweKVqjDDZzmHFsSadnRRWQoZD52OFqQl1BKb6z4J78bkoKRfbGCgsxGEvVx0yGGvAUXbl1DUfwO56KH1dz2znFQ3djI8cJzSYeM1Tya+jfBdDnpysKHgqCLldBXgMr9ZektY3BdmTDCRonU/K6PemLPSyxQUev35TLg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BL0PR12MB2370.namprd12.prod.outlook.com (2603:10b6:207:47::27)
+ by PH8PR12MB6697.namprd12.prod.outlook.com (2603:10b6:510:1cc::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Mon, 24 Aug
+ 2026 08:33:17 +0000
+Received: from BL0PR12MB2370.namprd12.prod.outlook.com
+ ([fe80::86cf:c3ec:2cf5:74c8]) by BL0PR12MB2370.namprd12.prod.outlook.com
+ ([fe80::86cf:c3ec:2cf5:74c8%5]) with mapi id 15.21.0339.012; Mon, 24 Aug 2026
+ 08:33:17 +0000
+Date: Mon, 24 Aug 2026 16:33:09 +0800
+From: Richard Cheng <icheng@nvidia.com>
+To: alejandro.lucero-palau@amd.com
+Cc: linux-cxl@vger.kernel.org, netdev@vger.kernel.org, edward.cree@amd.com, 
+	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, edumazet@google.com, 
+	dave.jiang@intel.com, Alejandro Lucero <alucerop@amd.com>
+Subject: Re: [RFC 1/2] cxl/memdev: add support for mutipf device
+Message-ID: <aov-jfhJtNtZJxlN@MWDK4CY14F>
+References: <20260821155134.260053-1-alejandro.lucero-palau@amd.com>
+ <20260821155134.260053-2-alejandro.lucero-palau@amd.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260821155134.260053-2-alejandro.lucero-palau@amd.com>
+X-ClientProxiedBy: JH0PR04CA0035.apcprd04.prod.outlook.com
+ (2603:1096:990:78::20) To BL0PR12MB2370.namprd12.prod.outlook.com
+ (2603:10b6:207:47::27)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 2/2] net/smc: reduce TX slot contention with
- exclusive wait
-To: "D. Wythe" <alibuda@linux.alibaba.com>, wenjia@linux.ibm.com,
-        wintera@linux.ibm.com, dust.li@linux.alibaba.com,
-        tonylu@linux.alibaba.com, guwen@linux.alibaba.com
-Cc: kuba@kernel.org, davem@davemloft.net, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org,
-        leonro@nvidia.com, pabeni@redhat.com, edumazet@google.com,
-        sidraya@linux.ibm.com, jaka@linux.ibm.com,
-        oliver.yang@linux.alibaba.com
-References: <20260821091702.21458-1-alibuda@linux.alibaba.com>
- <20260821091702.21458-3-alibuda@linux.alibaba.com>
-Content-Language: en-US
-From: Mahanta Jambigi <mjambigi@linux.ibm.com>
-In-Reply-To: <20260821091702.21458-3-alibuda@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: WApZ08PhHDNh6VX1HZBLVxf3Zxs2qbhu
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI0MDA3NCBTYWx0ZWRfXyvuaPqPotyiN
- E2xAe5dkMdXsA3HsCB8XDxKI/CRUkDLtTvQamoNilyyjeke1ThrZKxL1SGdCOJidysF6luZGSZU
- UNXYM0VPsCZJwJ8xHRAxBJbRal7PWgDGquDdyVRrmtbOQem4ZkIpxm5rxlJo5YSw11hHsYeBA5L
- TqZ9OzucH+TevVPuH6hvIiSA0TBRg5D8vzdduKMasedtwgOkYEEdLM42g5mhhkYr2yf+zDaNwnQ
- N9FTE1wxBXLasVyLRi4SjgQCFwmv4vV92u4cXQ9Wa+FjelImtM2u00fYNM7+on2SEsSEcvJBhzz
- eKdfbwEU+YDFS4SOlWccyZOVY+cscgd25TG1obSLeP3LVSA3WD3jh1q8XJg740CMDVZysCxaAWj
- rKii/n++8RSy8L4bWWJP9oJTTnLLd2c1+DJrwxaPDox+eoIrtrTohZiCpnBk32RHXqDPvLBQ4O6
- xzS4ileDJ5d6kWUp6XQ==
-X-Authority-Analysis: v=2.4 cv=Y/nIdBeN c=1 sm=1 tr=0 ts=6a8c018d cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=SRrdq9N9AAAA:8
- a=VnNF1IyMAAAA:8 a=WkmksbYtVH5hfBaYqvIA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI0MDA3NCBTYWx0ZWRfX2d5hFw5ZNCCl
- b5lguwu2dKqcdHcC0ryB8iFR2pYp14vdO+NP4V9/FufiaplOCJfNBVB4+O2iUDYZuTPl1QSuJVh
- gBwoN5AfLQ+76kqooxICx75kYed+rv0=
-X-Proofpoint-ORIG-GUID: pqF10GpYHgGShriTzhZpY2wQhv9uJRsZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-24_02,2026-08-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0 priorityscore=1501 adultscore=0 bulkscore=0
- suspectscore=0 malwarescore=0 clxscore=1015 lowpriorityscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608240074
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR12MB2370:EE_|PH8PR12MB6697:EE_
+X-MS-Office365-Filtering-Correlation-Id: b720ee8e-52f4-40c8-4406-08df01ba588c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|6133799003|10067099003|5023799004|11063799006|4143699003|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	t2GxCJjS8f5QRSxghvWMTzrDnaFMlT0uOK2BkIZjWCJ89fqVqrU+Vnhpecd7y60mfVZiJ1WGFPKyj/ki6mzPX56R59PYFi91yUY5yLtN0g9/KpiFGTgwpot8gm3Jl/HoZMvSsfcobNNGvnC0LFEcKEcibO9fJfosbOmF6PDxqvxnxPeuLKF145j/ctnkOcG3T1ekaDv89djec1qrrA7rZfksNP/0tzXQ0BzdDi+9EfFSK9AMiUW1PHNQAK7n4X/IuKK9OcQKrm9HEZuXiLn+oN6DimNfs6HiLUYDcb+5Kw6C2u2DkjFgMQBvP9k6KhbrvXx7SWUWemuRjqoU/XY5g2WLOGpgJWYWGhAzgplF+yRJdk14CWGaGmYs8kQyPTyljv5CJ0HAqo9L6hVlru4nmjWhQFLkjwKl4XXNMuGS59uwV/ZjnuP2TRFRDG5cfpWeADX+MTzIUq87U9+Aq5szee5BkUjVaihz8sZz6gbOBEOJAjXP/KK0lqxXMquyj8G+pgCCqKc/uub+FSMo3DAaUgzHrWanIY1S+44BSp0u5oKpYy5opUL4fjRg6wGmpa0fOPbGdvDm6ZoSG0V2NP5Ljp5iuFfA0ywFyPnbsXccVilyQr+/J9sOkFsX0HF/bNV5UorJuonPF2Bdwlg1vod0x1x/bLtzZCuhy5pzt/+aSIk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2370.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(6133799003)(10067099003)(5023799004)(11063799006)(4143699003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?rrkzRdsNqaBvnbL2pkigDiR8ObNoPekB1WMzWmvzdbIaDINvxR0K+yowpZn2?=
+ =?us-ascii?Q?33DMGqgcgYNEc2AxV9oi77XF+SVgOuOnPCk4icb0eI/cIm6876990nFmRfsb?=
+ =?us-ascii?Q?RpiYJLdFHOXgNHA+tr9/Ud1jH/UwP//Xdgchiqq8ywJT+vvuvdpEfc0FRGb8?=
+ =?us-ascii?Q?aSEzUnnPn+0GC3yJ24naSyB5NsBDpctj+iZnujWkgBrU0noMOrjgDHk+w9pS?=
+ =?us-ascii?Q?51e/mvyxXVRpyayxO1YMB9jhCzXNbmKdlKVhYSgEGD71wf3+T2yHMHktBYma?=
+ =?us-ascii?Q?ouHn0AMxwY8/7Mlwcr75QVESMRsoHiHndchtwo5eR6ej43WXyKD2p9UMxZEP?=
+ =?us-ascii?Q?kfID7ETIGfQylTvSncFQqtD/2ZLDGXmcEg4KQMIIg9BmCAdliJKZHfM/62dc?=
+ =?us-ascii?Q?sG4bvZQf5B4dicWf+Auicbke4yB1VvvHlG1k3Qc0r3Siqunzqc9RQNTq4sjP?=
+ =?us-ascii?Q?FVZCRhYsf1h0eeTv9rTOhzhPx+LvL56KW0Fq/x6V4ySRtK6IEpKpXKrEePZ0?=
+ =?us-ascii?Q?dami2dFhdroUc4QAR8iIuMDLETK7dDMF+izvfaYS3BUGU7lc1NyoZ0eATzXi?=
+ =?us-ascii?Q?F5c1M+8znVGve191Z7dIbG9fDyExWNVN7yVtxNcjumFn7TXgSpLa2f5ikbVB?=
+ =?us-ascii?Q?8rzC2V8xmou/atj4u1mdGbM/7czexQW33YScPi3ZRoI9gAtclfdiMx5vdte7?=
+ =?us-ascii?Q?t3qq/5RmkFuQcvKVnAumk/lBbh2FbzPgEYHOuyG3xAC/wZoOh4lzIGokXj6P?=
+ =?us-ascii?Q?ZCMp3gZGx3bx45Bf/ucHc2hA+GPOzlRLdmcrGPjqt7OC5CHbMiIpvIrmYQNG?=
+ =?us-ascii?Q?ct1Q+AWY9uZMOTgY3bDw6+LET14WNVcKrYYzW3VBLipgDJewkK1NjrDsgCDc?=
+ =?us-ascii?Q?2XEH5tNJr1Fr14BAusdpNZq6HyIgpUeoQGUa0f9p2/dooiJ0wylfoOcszZHO?=
+ =?us-ascii?Q?ptOu01Y99x2u3Y3EHfEkUmOVYa2NNn4TndgILqzUcONkpsNBYRUqVUm9JKWC?=
+ =?us-ascii?Q?PSlmyY0NsC8MMeE9aPZCjIycqQULOLJtTrATFNh4BmDjH8uczXToZvambq8T?=
+ =?us-ascii?Q?/Q985M51cd9q92LIDUiQvNoDYaNjPd/y6AIJYX3kkQfv1wLbLOJ/nrRdgtRT?=
+ =?us-ascii?Q?1v5zpL92yGPEwzqXOWNQrN7cYhKYGqTLyLk6coZRB/1arpT0dzbwdThQhQd+?=
+ =?us-ascii?Q?DPnOFvsQ+i3l4TKyaq+VCOViP3wWzveTNNQxq008nuULDkKJ3Xh3IDVwnSeT?=
+ =?us-ascii?Q?P33jZ7ubE13fjzL23xYRwMel65WKTivjHmZXuLebR07sUFsQ8reM/H6Ck4Bl?=
+ =?us-ascii?Q?LZxUN7lXjI24xCGZdmiMyM1bNgmaujnJs3rzVy0sSWebSNurWdXcL4eAtpeW?=
+ =?us-ascii?Q?SPFK/TNo9IRxc1CZxzQZIinl2WX+Vp5dLCxvJsDBcle61nT3f8qubuBF2yfR?=
+ =?us-ascii?Q?mEewWAqrTN1xEXFGPbJ+g7QoBVlh5/bGkIIHGIgu7/OSiQAFggl6JZcQWY+n?=
+ =?us-ascii?Q?1JHDDzVED7sOWpl71JUS5YHNWsIgqdPntKtccIjwRUx2HMvDBCbwI9H1ZcTM?=
+ =?us-ascii?Q?zRiGfJQokd9JxiDLk+xAVmzJaFfb4sTAJMVdIHfgnVSDqQ1QBEVdVXRVTmiL?=
+ =?us-ascii?Q?bpyWiW86/decUPBiK4mejr3Bz52Q2SfqcylDjJqi3LC8yq0FTQiWlbRCCgeP?=
+ =?us-ascii?Q?PHrVREWYhWMintZ0xjdcXbnNyIJIKkz6XfnxM15gqoWlMdncXKhp+iaIIG/l?=
+ =?us-ascii?Q?R2zBDQmhnw=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b720ee8e-52f4-40c8-4406-08df01ba588c
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2370.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2026 08:33:17.5765
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Q+ozCqYWuPDPsPHMPsghOoCR3aXti8Mnrg53HqGfGeFFsNQlkfzox2CGMmY38K5ldu0CecK8RuR376dwNxneJg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6697
 
+On Fri, Aug 21, 2026 at 04:51:33PM +0800, alejandro.lucero-palau@amd.com wrote:
+> From: Alejandro Lucero <alucerop@amd.com>
+> 
+> A PCI device can present multiple Physical Functions(PFs) but the CXL
+> specs restrict to the first one, PF0, the discovery and management of
+> CXL capabilities accessed through a PF0 BAR. Other non-PF0 PFs need to
+> obtain the CXL.mem range to work with somehow.
+> 
+> Although this could be handled internally by an accelerator/Type2
+> driver, it requires to properly handle changes to the CXL mem device,
+> mainly its release by the CXL core, but also potential CXL device
+> resets. When this release happens, those other PFs need to be told about
+> it.
+> 
+> Implement a way for non-PF0 PFs to register/unregister to the memdev
+> linked to the PF0 device. At memdev release, trigger the release of
+> those non-PF0 PFs devices registered to such memdev from the driver they
+> are bound to.
+> 
+> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+> ---
+>  drivers/cxl/core/memdev.c | 122 ++++++++++++++++++++++++++++++++++++++
+>  drivers/cxl/cxlmem.h      |   1 +
+>  include/cxl/cxl.h         |   4 ++
+>  3 files changed, 127 insertions(+)
+> 
+> diff --git a/drivers/cxl/core/memdev.c b/drivers/cxl/core/memdev.c
+> index b3419df586b9..327c4da3208f 100644
+> --- a/drivers/cxl/core/memdev.c
+> +++ b/drivers/cxl/core/memdev.c
+> @@ -26,6 +26,35 @@ static void cxl_memdev_release(struct device *dev)
+>  {
+>  	struct cxl_memdev *cxlmd = to_cxl_memdev(dev);
+>  	struct device *parent = dev->parent;
+> +	struct device *sibling;
+> +	unsigned long index;
+> +
+> +	/*
+> +	 * Type2 multipf support implies other non-PF0 PFs could be having a
+> +	 * temporal reference to the memdev, only for registering/unregistering
+> +	 * as sibling, requiring to postpone the memdev release and the sibling
+> +	 * management until no further references. While detach_memdev() calls
+> +	 * for pf0 release from its driver (parent device of the memdev device)
+> +	 * it is not safe to invoke for sibling PFs to be detached at that time
+> +	 * as it could race with PFs registering/unregistering as memdev siblings.
+> +	 */
+> +	if (cxlmd->attach) {
+> +		xa_for_each(&cxlmd->siblings, index, sibling) {
+> +			device_release_driver(sibling);
+> +			xa_erase(&cxlmd->siblings, index);
+> +		}
+> +
+> +		/* Several possibilities trigger a memdev release with one being
+> +		 * its parent device (Type2 device) released from its driver. If
+> +		 * so, such release is the context for this function, precluding
+> +		 * the mutex lock and therefore safely avoiding to invoke the
+> +		 * release again which would trigger a deadlock.
+> +		 */
+> +		if (mutex_trylock(&cxlmd->dev.parent->mutex)) {
+> +			mutex_unlock(&cxlmd->dev.parent->mutex);
+> +			device_release_driver(cxlmd->dev.parent);
+> +		}
+> +	}
+>  
+>  	ida_free(&cxl_memdev_ida, cxlmd->id);
+>  	kfree(cxlmd);
+> @@ -795,6 +824,7 @@ static struct cxl_memdev *cxl_memdev_alloc(struct cxl_dev_state *cxlds,
+>  
+>  	cdev = &cxlmd->cdev;
+>  	cdev_init(cdev, fops);
+> +	xa_init(&cxlmd->siblings);
+>  	return cxlmd;
+>  
+>  err:
+> @@ -802,6 +832,98 @@ static struct cxl_memdev *cxl_memdev_alloc(struct cxl_dev_state *cxlds,
+>  	return ERR_PTR(rc);
+>  }
+>  
+> +static int match_memdev_by_parent_device(struct device *dev, const void *data)
+> +{
+> +	const struct device *pf_dev = data;
+> +	struct cxl_memdev *cxlmd;
+> +
+> +	if (!is_cxl_memdev(dev))
+> +		return 0;
+> +
+> +	cxlmd = to_cxl_memdev(dev);
+> +	return (cxlmd->cxlds->dev == pf_dev);
+> +}
+> +
+> +/**
+> + * cxl_get_pf0_memdev - register as PF0's memdev sibling
+> + * @pf0: device for PF0 used to match current memdevs.
+> + * @pfx: device to register as sibling to PF0's memdev.
+> + * @index: where to register the device in the xarray.
+> + * @range: to be set with the PF0's memdev range.
+> + *
+> + * Return: PF0 memdev pointer or error.
+> + */
+> +struct cxl_memdev *cxl_get_pf0_memdev(struct device *pf0, struct device *pfx,
+> +				      unsigned long index, struct range *range)
+> +{
+> +	struct cxl_attach_region *attach;
+> +	struct cxl_memdev *cxlmd;
+> +	struct device *mem_dev __free(put_device) =
+> +		bus_find_device(&cxl_bus_type, NULL, pf0,
+> +				match_memdev_by_parent_device);
+> +
+> +	if (!mem_dev)
+> +		return ERR_PTR(-ENODEV);
+> +
+> +	cxlmd = to_cxl_memdev(mem_dev);
+> +
+> +	/*
+> +	 * we got the cxl_memdev and the implicit get_device in bus_find_device
+> +	 * makes the next steps safe.
+> +	 */
+> +
+> +	xa_store(&cxlmd->siblings, index, pfx, GFP_KERNEL);
+> +	attach = container_of(cxlmd->attach, struct cxl_attach_region, attach);
+> +
+> +	/*
+> +	 * The cxlmd object does exist and it can be found in the cxl bus after
+> +	 * creation but before attach probe setting the proper HPA range. If so,
+> +	 * the caller will need to try later.
+> +	 */
+> +	if (attach->hpa_range.end == -1)
+> +		return ERR_PTR(-EPROBE_DEFER);
+> +
+> +	range->start =  attach->hpa_range.start;
+> +	range->end =  attach->hpa_range.end;
+> +
+> +	return to_cxl_memdev(mem_dev);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(cxl_get_pf0_memdev, "CXL");
+> +
+> +/**
+> + * cxl_put_pf0_memdev - unregister as PF0's memdev sibling
+> + * @pf0: device for PF0 used to match current memdevs.
+> + * @pfx: device to register as sibling to PF0's memdev.
+> + * @index: where to unregister the device in the xarray.
+> + *
+> + */
+> +void cxl_put_pf0_memdev(struct device *pf0, struct device *pfx,
+> +			unsigned long index)
+> +{
+> +	struct cxl_memdev *cxlmd;
+> +	struct device *mem_dev __free(put_device) =
+> +		bus_find_device(&cxl_bus_type, NULL, pf0,
+> +				match_memdev_by_parent_device);
+> +
+> +	/*
+> +	 * This is not an error but a possibility if triggered by PF0 being
+> +	 * released which triggers the caller driver releasing pfx. It should
+> +	 * not happen if the caller driver does the release of pfx independently
+> +	 * but we do not have a simple way to ensure this here.
+> +	 */
+> +	if (!mem_dev)
+> +		return;
+> +
+> +	/*
+> +	 * we got the cxl_memdev and the implicit get_device in bus_find_device
+> +	 * makes the next steps safe.
+> +	 */
+> +
+> +	cxlmd = to_cxl_memdev(mem_dev);
+> +	xa_erase(&cxlmd->siblings, index);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(cxl_put_pf0_memdev, "CXL");
+> +
+>  static long __cxl_memdev_ioctl(struct cxl_memdev *cxlmd, unsigned int cmd,
+>  			       unsigned long arg)
+>  {
+> diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
+> index c401e3a1af06..430014c4a046 100644
+> --- a/drivers/cxl/cxlmem.h
+> +++ b/drivers/cxl/cxlmem.h
+> @@ -54,6 +54,7 @@
+>   */
+>  struct cxl_memdev {
+>  	struct device dev;
+> +	struct xarray siblings;
+>  	struct cdev cdev;
+>  	struct cxl_dev_state *cxlds;
+>  	struct work_struct detach_work;
+> diff --git a/include/cxl/cxl.h b/include/cxl/cxl.h
+> index 802b143de83d..883ce9f1b73f 100644
+> --- a/include/cxl/cxl.h
+> +++ b/include/cxl/cxl.h
+> @@ -228,4 +228,8 @@ struct cxl_memdev *devm_cxl_probe_mem(struct cxl_dev_state *cxlds,
+>  				      struct range *range);
+>  
+>  int cxl_set_capacity(struct cxl_dev_state *cxlds, u64 capacity);
+> +struct cxl_memdev *cxl_get_pf0_memdev(struct device *pf0, struct device *pfx,
+> +				      unsigned long index, struct range *range);
+> +void cxl_put_pf0_memdev(struct device *pf0, struct device *pfx, unsigned long index);
+> +//struct range *cxl_get_memdev_region_range(struct cxl_memdev *cxlmd);
+>  #endif /* __CXL_CXL_H__ */
+> -- 
+> 2.34.1
+> 
+>
 
+Hi Alejandro,
 
-On 21/08/26 2:47 pm, D. Wythe wrote:
-> smc_wr_tx_get_free_slot() waits for a free TX slot with
-> wait_event_interruptible_timeout(). Since the wait_event family
-> enqueues waiters as non-exclusive, wake_up() may wake multiple
-> waiters even though only one can use the slot, causing
-> thundering-herd contention when slots are scarce.
-> 
-> Use an exclusive wait loop with prepare_to_wait_exclusive() so
-> wake_up() wakes only one waiter per freed slot.
-> smc_wr_wakeup_tx_wait() still uses wake_up_all() during link
-> teardown, so teardown behavior is unchanged.
-> 
-> This also corrects the return value on a pending signal: the previous
-> wait_event_interruptible_timeout() path fell through to the "no free
-> slot" case and returned -EPIPE, masking the signal as a connection
-> error. The open-coded loop now returns -ERESTARTSYS, matching the
-> standard interruptible-wait semantics and letting the syscall restart
-> machinery handle it.
-> 
-> Performance
-> ===========
-> 
-> Measured with uperf between two peers over SMC-R. The benefit depends
-> on how often the TX slot wait path is actually taken.
-> 
-> With the default settings, where many connections share a link group
-> and the send queue is small, slots are scarce and the wait path is hot:
-> 
->   net.smc.smcr_max_conns_per_lgr = 255
->   net.smc.smcr_max_send_wr       = 16
->   net.smc.smcr_max_recv_wr       = 48
-> 
->   workload                 baseline      patched     delta
->   ---------------------------------------------------------
->   rr1c-200x1000-50.xml     655.06 Mb/s   1.53 Gb/s   +134%
->   rr1c-1x1-250.xml         371.03 Kb/s   2.07 Mb/s   +458%
+I agree that non-PF0 functions must stop using the CXL range before it disappears.
+However, I don't think cxl_memdev_release() is the right place to unbind them.
 
-Overall, I am also seeing significant performance improvements with this
-patch, ranging from approximately 20% to over 150% across several
-workloads. Do we expect to see further improvements once the CQ pooling
-patch is applied?
+For Type-2 device, PF0 driver creates the memdev, and therefore the memdev
+is tied to the PF0 driver, while CXL core manages its attachment to
+the topology.
 
-> Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
-> Reviewed-by: Wen Gu <guwen@linux.alibaba.com>
+cxl_memdev_release() is the final object release callback. It can run much
+later than the CXL attachment teardown.
+For example, an open /dev/cxl/memX file holds a device ref. PF0 and the CXL
+region can be torn down while that file remains open. During that time,
+other PF driver remain bound with mapping to a range that's no longer valid.
 
-Reviewed-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+I suggest replacing cxl_get_pf0_memdev() and cxl_put_pf0_memdev() with another
+helper, e.g.:
+
+int cxl_memdev_link_consumer(struct device *pf0, struct device *consumer, struct range *range);
+ 
+It should live in cxl/core/memdev.c , and the behavior is something like
+
+1. Find PF0's memdev and take a temp ref.
+2. Lock the memdev
+3. Verify that the memdev is still registered, driver-bound, attached, and has a valid HPA range
+4. Create a managed devce link via device_link_add(consumer, &cxlmd->dev, DL_FLAG_AUTOREMOVE_CONSUMER);
+5. Copy the HPA range
+6. Unlock the memdev and drop the temp ref
+
+This helper can return only an error code and the range. The sfc driver doesn't need the cxl_memdev pointer then, and
+no put helper would be needed.
+
+And driver core would unbind the non-PF0 consumer before unbinding or removing the supplier ( memdev ).
+
+I think this can remove the sibling xarray , raw device pointers and mutex_trylock() context check.
+
+Would this modle work for your teardown requirements ?
+
+Best regards,
+Richard Cheng.
