@@ -1,57 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D748844102E;
-	Mon, 24 Aug 2026 17:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FDD37B407;
+	Mon, 24 Aug 2026 17:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787593391; cv=none; b=Mh7QVZD/Gv6SQc0Hl4CLp9OdUwuHtMawjOCJxepZvygvhIl4TAdUFFPltjZ1N11+YIOf5p9lpPrSfNCwn9CCF2wtmSQllzmUNybvLnKISFDBlJn+NL+Ijw9bhUk5oFtaB18Lw1L7/0MfoZS93Y/wCPD7SnG8YWLMIN/vc2YDpVk=
+	t=1787593489; cv=none; b=Iun5ioQ0pqhw1yqbTYfrMY7Lh3c/3FxHQX20VcPkv+RptL9S1odRqfcj/DQJCRwQNPlFZEGCD42i3ZN/rB6hsf8iJyzHYDhMas+mQyIf671YMMNCEVx+WrrgA9H7W1aFY8iUqC6uLyty/2IbhF9yCPilzVlVgHxVV2bqKjir+Dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787593391; c=relaxed/simple;
-	bh=ePHR80m6R78iWS3iwuomrR4ig+skKBHr+oUa7HQhsMU=;
+	s=arc-20240116; t=1787593489; c=relaxed/simple;
+	bh=5RVUR7L0TAJrmEPRLJ47R/yFU6FVmwj1SlAhWvACNYs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tlXmOoN1Q9Yqw8bdKqyHZ0qeXKbLcedFO4Alt0xaAFyutP6UnnoRm+T7OpKgjX1e4J9wlCFQ+9yLUMvAm18dgpUJCv36mdQSbBieZz2hOk1NbcEMrlnFWx/ZTwUXmH6P9mt+y0p6a63yHcOicyOBCMJJ5Xx17kT/a+4zirFOZlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n4eJX8yI; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=NWhzW2PMgsqoNKPwGtIUEmiFND4qQFzF/9+hYpT1LGYztOEMoAT8uGcUZpFTNnkGPQgprTPzsx/VeJXdQNEwSlhDtmztHdGmNTJxZ66bPmhDWYpSLWtJRINDYfGvlhvqDCCJUJ4MA7ANt9PLRcQ3u/FNzF8U2F/sd7H621cM/CI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TzxK/FXT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n4eJX8yI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657CA1F00A3A;
-	Mon, 24 Aug 2026 17:43:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TzxK/FXT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ACA81F000E9;
+	Mon, 24 Aug 2026 17:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787593381;
-	bh=Udh8uRDFFJUfzxnnMCbUXMeEOOBUXXwIj9CxP3a/cSA=;
+	s=k20260515; t=1787593478;
+	bh=cwM75j6Ct06d8edJFVPqmdjfyWWFtH2RX/SZGqU7M7o=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=n4eJX8yIFWAL774dvneolSQrQozT6DR+74sYyr06cxlX2Pqk6Yp6NrM8bvNSjTa7X
-	 SHqPQtLYzMERMUnqr5N7Uzvxx68dd49bX8VFWN0zWcCXyBg9ho0eOxJ7UbIGpvu3RC
-	 UPqiPYuov6FJMOlswd630H19m9vPGDGnseijqVIyxzkureVmGA7LTSu6LBfahX06oA
-	 T5bql7TSbto2wZBTI978PP2jh3dfolH3MbgZs5IoLTmU37ulbqaV7esS/AUM5B1VQD
-	 R89moxNtLys/PHRs4iLIZkkRujgLGpeKSWTF0ZXDwOso65il7aUd4XlkzVLVk3L8Ie
-	 sEjdpIQyuj7kw==
-Date: Mon, 24 Aug 2026 10:42:59 -0700
+	b=TzxK/FXTk9/LwKjKVHKtCOBg2i+z8se3vWgp9CkvuA4mGrcMzc8lqyozqioeAvBZK
+	 V7aetApjHfa1L5ZeYKaKZ4sIoRLbPQFBdsZ+3Ns8mYXgelqQXWrN1OnMLNeNzHFDj4
+	 qYuFeKhqMOCBu3IirXxcMdYWuQu5uVGC5j7fvNgmQVX2ybZT1zzr8yLsDOGp5msh4v
+	 W4f7domEL1vvnfs7jcyryNHypgMQaU/Anmxx+5lBrKF/q4g7vjM3arMp+35ISIWFO2
+	 ElZ4n0bFQELjYqjpF8OryXeZ37gsCnCHdpw2Yrw72SKKUUQahKH29rV5WEqQOnzn5+
+	 31h0cyGdC15YQ==
+Date: Mon, 24 Aug 2026 10:44:37 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, "maxime.chevallier@bootlin.com"
- <maxime.chevallier@bootlin.com>, "andrew+netdev@lunn.ch"
- <andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
- "edumazet@google.com" <edumazet@google.com>, "pabeni@redhat.com"
- <pabeni@redhat.com>, "mcoquelin.stm32@gmail.com"
- <mcoquelin.stm32@gmail.com>, "alexandre.torgue@foss.st.com"
- <alexandre.torgue@foss.st.com>, "shuah@kernel.org" <shuah@kernel.org>,
- "joabreu@synopsys.com" <joabreu@synopsys.com>, "yi.fang.gan@intel.com"
- <yi.fang.gan@intel.com>, "jun.ann.lai@intel.com" <jun.ann.lai@intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-stm32@st-md-mailman.stormreply.com"
- <linux-stm32@st-md-mailman.stormreply.com>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, "linux-kselftest@vger.kernel.org"
- <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH net v2 6/6] selftests: drv-net: Add VLAN test
-Message-ID: <20260824104259.374ae2c9@kernel.org>
-In-Reply-To: <OSCPR01MB12769466CF2256ACC6FCCCDD4D3A02@OSCPR01MB12769.jpnprd01.prod.outlook.com>
-References: <20260821170959.79708-1-ovidiu.panait.rb@renesas.com>
-	<20260821170959.79708-7-ovidiu.panait.rb@renesas.com>
-	<d614d8de-0da2-4673-bd11-02497d8a37e0@lunn.ch>
-	<OSCPR01MB12769466CF2256ACC6FCCCDD4D3A02@OSCPR01MB12769.jpnprd01.prod.outlook.com>
+To: "D. Wythe" <alibuda@linux.alibaba.com>
+Cc: mjambigi@linux.ibm.com, wenjia@linux.ibm.com, wintera@linux.ibm.com,
+ dust.li@linux.alibaba.com, tonylu@linux.alibaba.com,
+ guwen@linux.alibaba.com, davem@davemloft.net, netdev@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org, leonro@nvidia.com,
+ pabeni@redhat.com, edumazet@google.com, sidraya@linux.ibm.com,
+ jaka@linux.ibm.com, oliver.yang@linux.alibaba.com
+Subject: Re: [PATCH net-next v2 0/2] net/smc: fix v2 slot clearing and
+ reduce TX slot contention
+Message-ID: <20260824104437.11adefb8@kernel.org>
+In-Reply-To: <20260821091702.21458-1-alibuda@linux.alibaba.com>
+References: <20260821091702.21458-1-alibuda@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,27 +49,23 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 24 Aug 2026 11:50:12 +0000 Ovidiu Panait wrote:
-> > +            no_change = False
-> > +            if current[name]["fixed"]:
-> > +                raise KsftXfailEx(f"Device does not support {name}")
-> > 
-> > I'm not too familiar with the self test framework, so i could have
-> > this wrong.
-> > 
-> > It looks to me like you fail the text if it is fixed. But does not
-> > fixed just mean the hardware does not support it? So i think it should
-> > actually skip the test?
-> 
-> I compared the XFAIL vs SKIP usage when a certain hw feature is not
-> supported and it seems that most tests use SKIP (tso.py, gro_hw.py,
-> hds.py, ntuple.py, etc). I will switch to SKIP in v3, which should also
-> allow for some reduction in code duplication across tests.
+On Fri, 21 Aug 2026 17:17:00 +0800 D. Wythe wrote:
+> This series contains the two reviewed patches from the previously posted
+> "net/smc: transition to RDMA core CQ pooling" series (v4), reposted as a
+> standalone series so they can land independently. The remaining CQ pooling
+> patch will be reposted separately after these two are merged.
 
-Please double check that the test passes on netdevsim (without NETIF)
-We can't have skips in SW mode, all drivers/net tests are expected to 
-run against netdevsim, really. If they don't they should live under hw/
-(where the SKIP vs XFAIL distinction does not matter).
+## Form letter - net-next-closed
 
-BTW there are ruff check and new pylint --disable=R warnings in the
-python code, pls fix
+net-next pull request for v7.3 has already been merged, and therefore
+the net-next tree is closed for new drivers, features, code refactoring
+and optimizations. We are currently accepting bug fixes only.
+
+Please repost when net-next reopens after Aug 31st.
+
+RFC patches sent for review only are obviously welcome at any time.
+
+See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
+-- 
+pw-bot: defer
+pv-bot: closed
