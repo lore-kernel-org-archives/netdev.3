@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB01B38737E;
-	Mon, 24 Aug 2026 19:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A06388862;
+	Mon, 24 Aug 2026 19:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787598669; cv=none; b=fOMuwSseBHljeCgXDDRoG1c+sL4EqU+ZIMzKfeLmgKeOsNnixXtgFxhf2lPJEGpq7ihPXmsZ7nc4pNjjt2AJde75VqGZKLNB4jtJVO/RlMazE/wTkoir17QN1RyMFJUQGiMAJ5DPC66Gp1pcIp+lrtrw5+0nQ0JXqTJAVVVmiyw=
+	t=1787598672; cv=none; b=oQkR/SiuH2OS0Hb4GJ9KTzVNVmtszc5IsX3UJL4UDau6WVCTCeSoqo3VU5bAfowtn4TiYmO88Xl2s+aKzQVkVgXaqO7HdaAjryk0hXc8F7jlhmWbf9Gzmoly1yPFNqnsTQpKcPGxM8m9cLwjmS/J4472oJc1AHkCkK113trXJwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787598669; c=relaxed/simple;
-	bh=mitEZn98pxBDnOUFwbQDEm/3gYZ4iN/lJWDw8XIgGVw=;
+	s=arc-20240116; t=1787598672; c=relaxed/simple;
+	bh=FXWJXyN/mKulL+f9lDpH+/dIJm9BRIj0rXSAiI1dvYY=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=KN/c65yOgzi55dypjyVf6EPR1ePG+2W2ZTeyniivWjgT/UOfL/vsUhvwowxRNH6oC+9pf5ML5HGGfyAKe0hXI3TtuNUhvz0t/k2ywURt8E6q64jhlVd3sGcNXoTGpJVwE+lgq+O7XvCZXhRvN1p4xkHZ9mjPRAli0FMJ2QsQiVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TDpWE3vh; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=pbHDx030U8VIi4fON9HBf8SMvGs5XtJf5qwweS8fQpf/owsDTpUT2JcjoDVtX05i2JjcyvVZ92df3aiS4S6szVilC2Bev1LqyfMJCcFrgz2UufJlMdr0Vicp4Z9OPvFZ0zy+dmgYacBd+OLJlheeTUXdcL1Kzdm0QRGmd75X5IE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QVl7FgWR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TDpWE3vh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFEF51F00A3A;
-	Mon, 24 Aug 2026 19:11:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QVl7FgWR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CB7A1F00A3A;
+	Mon, 24 Aug 2026 19:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787598667;
-	bh=ZEJWbdEIzy+Rgjf/YiOo6hMxIWf+If8R7/DjjZcYWac=;
+	s=k20260515; t=1787598669;
+	bh=1XQHG9tJF2dhP6jjsu2Mr5B6Kq/UMcHQOkApQzDlgIU=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=TDpWE3vh/0fXpi5somHvI8pTWwoncG0MMf0ObCmJM5JrlDlrfU3n+Ag0XsA9U/iiT
-	 YFeDSHGQhhljH12lA0UMzZUorGKrW7rjSxVLh/eShX3as4p5zsWgq/NeBZtPoHf8oU
-	 j/DMHqPWLlbDfs7WwCM7mIaM9lLwGlLpAx3mUX3oy4ntSDE8LMJRYxDqXqv4wf8NUb
-	 bVCYPgflkAf/VXmR+Mzc48u3lJZGoWJtzvvUDWh6zzeZMi6L4Kx0NHyWFo/xyRvavX
-	 RYOKo2bs19fhzO2zAxZMYnsNcugK9QG8Gl/797pETH1XYdh7xwehZ5IlpNFI18T3/O
-	 ikbuEcA5yfnEg==
+	b=QVl7FgWRjxLTlf72hJDQJI06m4nFQ5HZ7dh/nzdX2omxKGypU1OcrdpPvmGR7Z3J/
+	 en9sSKgwePflDQjHKqB6OSZlTf+GMf4QTMYkHEHFpxbX3eJlCJoTV3ZhLjT6Ob6yP9
+	 MBNrNaTXA35bXeGT2qJrrhAUvvol/h+wuGvZPcIeO/bRQOZpNVR9wdktMBdjzSdVOt
+	 zf/fgjgeTielArkt12DxWeFswbZKWsQh3Mzr9vsiD2p3OKvo9SJ3MRrPf1kZapWUGg
+	 Xtymx7JgZDyaZlsTVJCes7GtvlFhsdi+NJWN/99WL09snxNyI8n9YWXkiexHphgeUE
+	 FdO6D/5ngBnEg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 8B6E83924A4C;
-	Mon, 24 Aug 2026 19:10:16 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 199033924A4C;
+	Mon, 24 Aug 2026 19:10:18 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,45 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net/rds: use wq_has_sleeper() in
- rds_cong_map_updated()
+Subject: Re: [PATCH net] net/iucv: filter frames in afiucv_hs_rcv() by ingress
+ device
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178759861538.3069565.16016431579626517202.git-patchwork-notify@kernel.org>
-Date: Mon, 24 Aug 2026 19:10:15 +0000
-References: <20260822052647.88318-1-achender@kernel.org>
-In-Reply-To: <20260822052647.88318-1-achender@kernel.org>
-To: Allison Henderson <achender@kernel.org>
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, pabeni@redhat.com,
- edumazet@google.com, kuba@kernel.org, horms@kernel.org, jhubbard@nvidia.com,
- woni9911@gmail.com, michal.kubiak@intel.com, leon@kernel.org
+ <178759861660.3069565.6430583853807571931.git-patchwork-notify@kernel.org>
+Date: Mon, 24 Aug 2026 19:10:16 +0000
+References: <20260821125501.3718748-1-wintera@linux.ibm.com>
+In-Reply-To: <20260821125501.3718748-1-wintera@linux.ibm.com>
+To: Alexandra Winter <wintera@linux.ibm.com>
+Cc: hexlabsecurity@proton.me, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com, edumazet@google.com, andrew+netdev@lunn.ch,
+ hidayath@linux.ibm.com, aswin@linux.ibm.com, twinkler@linux.ibm.com,
+ brueckner@linux.ibm.com, netdev@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-kernel@vger.kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
+ agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
+ horms@kernel.org, stable@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 21 Aug 2026 22:26:47 -0700 you wrote:
-> rds_cong_map_updated() runs after a peer's congestion map has been
-> rewritten (by rds_tcp_cong_recv() and rds_ib_cong_recv(), or the
-> clear-all in the loopback and IB send-completion paths).  It bumps
-> rds_cong_generation and then checks waitqueue_active() on
-> map->m_waitq and on rds_poll_waitq to decide whether anyone needs
-> waking.  atomic_inc() carries no ordering and waitqueue_active() is a
-> plain load, so nothing orders the map and generation stores before
-> the wait queue reads.  The waiters do the mirror image: rds_cong_wait()
-> adds itself to m_waitq and then tests the port bit, and rds_poll()
-> registers on rds_poll_waitq and then reads the generation.  That is
-> the store-buffering pattern described above waitqueue_active() in
-> include/linux/wait.h - the updater can observe an empty wait queue
-> while the waiter still observes the port as congested, and no wake-up
-> is issued.
+On Fri, 21 Aug 2026 14:55:01 +0200 you wrote:
+> afiucv_hs_rcv() selects a socket from iucv_sk_list by matching four 8-byte
+> name fields in the transport header alone. No check is made against the
+> net_device the frame arrived on.
+> 
+> This can cause a frame arriving on any netdev to be delivered to an AF_IUCV
+> socket. Three problems follow.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net/rds: use wq_has_sleeper() in rds_cong_map_updated()
-    https://git.kernel.org/netdev/net/c/d4f484661961
+  - [net] net/iucv: filter frames in afiucv_hs_rcv() by ingress device
+    https://git.kernel.org/netdev/net/c/80230a18c164
 
 You are awesome, thank you!
 -- 
