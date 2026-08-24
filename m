@@ -1,303 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E300035F8D2;
-	Mon, 24 Aug 2026 16:30:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787589043; cv=none; b=K8H1nJSU6A4H2yFGQ/+OSXNF/AeSyFphiLQfvG9cL6eW/sdhs3UBdnXMvSp2dIx5w56bXziI46qBYi/hLU+XHKKovtz3pGJIBmbevC6PCTOtjef9s2Qk9ewy2rLjeL4507JtNVDNMSRrcVBUmBjWf31gJ7N7Bf5jOxhvhF5joE0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787589043; c=relaxed/simple;
-	bh=QqPjj7ldJ0heWDbPJ00z8ATxo9dRfqyDS51BJi8W3O8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u0+RA1s4jH2w7ICYohwmRtRFEMcRpF+XHk+ALug2x5srXqIl25413cLWHTeRIrJyV2lsGXpScH5sjhOXGUGRH8BMm18RmnACYT+KfCS/6yFUdQsz2bBhwLlSVCOc9cKh3j58GbO7zrS2dv00oOLk4esiK9RZs+VVayeIyiANNiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZVLxiV+o; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A078346C821
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 16:31:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.182
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787589094; cv=pass; b=FjlSr9eDgcPJAAFEYDHYN3wRPhS5NlcqrYKbt8oNxwhk3BFhI3dBfT6nLVXX9ZTljD9KuZePDA85hDei+ZHB1utyWIE0IDY3X/Yip23aqKBuprOGZ7j7qXj1b2fchtNojYBtL3Bi5idTmQihaN7U2MjWf1MA/QIQKSJ5ejef8ek=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787589094; c=relaxed/simple;
+	bh=roisqT8iKq+LRB/VLs0WzYDy3i23i29fG7pAUt2iNuM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WpbikCcGU8VPJ+JtgL5ErZ910CK1LHsfiADPhFb/L3y46R+d/ejRwailQ0D4BOKwnAymuFMk6630ZngpBoz6o3QUg5G0tabRWXhX445o9oHkSK9MBQ8//SH9yGPP9odA5NvA6UZF2weZmEDD1MkBct+uFwAPLFN1awWDpQC8iA4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UxdzAeNK; arc=pass smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZVLxiV+o"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB90A1F000E9;
-	Mon, 24 Aug 2026 16:30:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787589041;
-	bh=ccprj7uvs6H815Axks6UBkPHSJxlZwnAj8ISZ9LuDAM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZVLxiV+oTRWjlhl9TLRFJ+ftJKIt0tfvbR4cvhxwJEzVduSN62BDHTGD0X0vshAG7
-	 fMHpTQDiXPSA+4vvc23tau/brQBHzbwInKsyG18zIpwQkChA3OI13nBKTmp0/wydXN
-	 vL/cHwRtcOGL+XY5+Dg4W+TYf+I0TD9KXhWqCty8M3zhlwnLERAzGJeqZaF+J/gS3J
-	 A7Oeb58ttpDBCla4SzvRntAJhJTzUWxZKYBUoKbv/AFs8dESkdOZSfmpN5gBcYUJHD
-	 xk0DLhzV5WAh+wO6tHt3c8uKRbTmtTzX1wnBbIvLMZmTT92CFxkZi1TcoYIIB1BeeA
-	 pruFyUwOoP+yA==
-From: Simon Horman <horms@kernel.org>
-To: blbllhy@gmail.com
-Cc: Simon Horman <horms@kernel.org>,
-	ap420073@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	AutonomousCodeSecurity@microsoft.com,
-	xmei5@asu.edu,
-	tgopinath@linux.microsoft.com,
-	kys@microsoft.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] amt: fix tunnel list corruption on device stop
-Date: Mon, 24 Aug 2026 17:30:29 +0100
-Message-ID: <20260824163029.1034695-1-horms@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260822045407.28983-1-blbllhy@gmail.com>
-References: <20260822045407.28983-1-blbllhy@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UxdzAeNK"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2cede6375caso195095ad.0
+        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 09:31:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787589093; cv=none;
+        d=google.com; s=arc-20260327;
+        b=sfS7bIgf/uYtJWnFtaxz+7WsEFUEX/qd/2y9bScBTwHnCgO3SDSsyq2xeHKVow1gdn
+         zodgRv8xDiQLUwQlC1pRzrbU7rY7QJKUnbhE2+/OhkYmDhHs4Le4c6oAF4+0J9RkWzit
+         b4/Pad6cl9VKwFKWT/vf/g3DdYGsAe/0eXYYvzkhd+yP17+4sfEb682xrD0C8w8nq7C2
+         QPePv7DiWtZ+mK+W0qb7OF/814ScnZbjBeOuJFAQHnwNiBNxLjt3yXBDe6jVdjnsOwgT
+         UH31oRqCaEpB+XBvVtCcDzlur8Cp+N4dlc+MwpRo50RcCS4nXug6N1IsYpFMNwssauFn
+         78Xg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=q6jDXnJz5bszG8pnLHnZK0KeQdaX8tcSfusG1JTMhO0=;
+        fh=HMZXNL2Wshiop0b+27RMVPgo1uVLuq81sUIF3thE+qI=;
+        b=LH1iH8EZ2hMuw4mYgXocPsF/wKZwEB6Ca7gVDW+J+pBd6nOsM9pExpvSOKcTYtNlKl
+         Gz50jZR5qdj5sitw9faZnUcEUzyai5wt1h8xTIU7PNbQfaqeabNeKYYOFK2oKPjG1ZCL
+         6Qa4fAnH2JCQALGMyfdwdWFY9AXOR6ErVNbDioemFgz29BsSgBGvBXf8sKHwGTG83vVB
+         ReRemATcgowfL6YReXbKTZ7IIRAmdM38NGb7aVk5PO8SBIgBkHS0SRk/BCdNbJoO1AYL
+         n/dlslzlT4vsxGO4WS/D4aXiFkSdoAW6N+MFj0REZSE573pbXYQrNBsPgoKMi/R1X68c
+         T86Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787589093; x=1788193893; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=q6jDXnJz5bszG8pnLHnZK0KeQdaX8tcSfusG1JTMhO0=;
+        b=UxdzAeNKyRf4edW2PuPnPr+4wQTlNpmZ63XdBxD8boi7bfOKvnZk9PIFh2dx2Qckre
+         NGJagg3bJo8sU9j5EtgyNn6SCepPJgFEMVXcAq6FNCVfivAu6pMQv9wfz2qbxl0oW8rc
+         6EZ6nfUojnbDm492Venw4fOXH6PuViXfr73J4ZooDlBOgiLF45Bxe3NbXKGTmlH9mPpH
+         kRkFIrmRKRVUdHL3j47p9bws9hopAXwJg4ENTgxCSLbYz9F2+JFbVRrYtLSp+8MEyNjN
+         fj4LbR4dT3lVnQisBC8mJr1grIEl3Hmdv/v+UKFMzPBAeuPNFeWpcO0YQtudpEv2eV4N
+         /Pqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787589093; x=1788193893;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=q6jDXnJz5bszG8pnLHnZK0KeQdaX8tcSfusG1JTMhO0=;
+        b=qWAhKR92HVgrF2gXyuVfJZtDUjitV80DQq03XAcJKg6HF/GulAfcSEDt/XE+Sqayio
+         FvnyegIoR9GuS5t9O2uIn2w6dKFhY0ZwSuP/ttLviIa9TjctXq1iS8/S9IpzYESN0InF
+         rulmTqrgtc0m2yDZ7rXH2VCNzaAJ/HVsG2QisBGSH0hqUAyxy1H8xyBGcOe+Jbdgdivk
+         ZFZvnoh4VqpfCXl5uFN9A2YrJUJoUp18o5D6NBfwXUaVG88CYBy2cJi59xnDfviy56aU
+         h3wuFN73qmhSTuLo9d/hr+ouFjJRD8pIV4Ndr+GCYwwd3w+mllisXpcB62D6NRhkVG3r
+         OyFg==
+X-Forwarded-Encrypted: i=1; AHgh+RpIBrqaVqgMoFF4xprgtTdtWt6ciDPfTIpKjfuS9XFQO+3Rwz8gvP1QdWzpeP9HUSFn9LTEfNI=@vger.kernel.org
+X-Gm-Message-State: AFuF++kWzqfg/xl77HghQMN/MU1HesZTDA1RPtndjxfKqqvO+kkaY1Kc
+	qEf1fODzmG8eZJiRdKFLX3Vns8NYmvI0TZaKea206vhNF+oZ36cuC44Im9b75R46r+dMinksuVV
+	vZonoqeZOfLlWrn2x9wgdx3k6t1TM94tYILPruuuN
+X-Gm-Gg: AR+sD12gAz4HktV35FCFPo+YQvZBqjEcuFUuVayXgJyALmrDbs+2ypIev/k3ptTut4w
+	TkmaPFLCnpgBSmtwhGVeySgdmyANPQQgeH/cedvv4jCA7aD/LqJvJAma4Uww4fBXCsg+wJ9koG8
+	VbjxpobevuP7t99UjQo3UgPjLH5TsZmNZtBDcLMXNMqvkzLOsqdNuDzGh2O1Sq9ferD6Y0FnQOP
+	a7KH4voYLcYq9Tgyb3FhChM78RQl0xN4FBApxKdF/I/xEmfFfmraQpOd4Q5VaO7kA6HljESd6IP
+	WCuJdMDqgz3+O354bkGivOF8EvPKK6D2EW5Zbd43/e5Cmw==
+X-Received: by 2002:a17:903:3c4b:b0:2d5:db3d:1a45 with SMTP id
+ d9443c01a7336-2d66ffd7057mr11511785ad.18.1787589091990; Mon, 24 Aug 2026
+ 09:31:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260615234220.3946885-1-lrizzo@google.com> <20260824152932.1583506-1-lrizzo@google.com>
+ <20260824152932.1583506-3-lrizzo@google.com> <a826c7cb-5e77-4c21-a649-d40a9f0ef564@arm.com>
+In-Reply-To: <a826c7cb-5e77-4c21-a649-d40a9f0ef564@arm.com>
+From: Luigi Rizzo <lrizzo@google.com>
+Date: Mon, 24 Aug 2026 18:30:55 +0200
+X-Gm-Features: AcwNN1XmT87hJkoGkp9jcEKvjnY9kL9lu9ePxKQtYVAUZgS8n1wQenRujPZyI_4
+Message-ID: <CAMOZA0JstwiwoWFuFjpoC1W12ir2b=SrWPO9i9tto1rOksKGgQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/5] swiotlb/mm: Implement SWIOTLB nocopy page allocator
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>, Willem de Bruijn <willemb@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Luigi Rizzo <rizzo.unipi@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Dragos Tatulea <dtatulea@nvidia.com>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, netdev@vger.kernel.org, 
+	linux-mm@kvack.org, iommu@lists.linux.dev, driver-core@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260822045407.28983-1-blbllhy@gmail.com?part=1
----
-amt: fix tunnel list corruption on device stop
+On Mon, Aug 24, 2026 at 6:06=E2=80=AFPM Robin Murphy <robin.murphy@arm.com>=
+ wrote:
+>
+> On 2026-08-24 4:29 pm, Luigi Rizzo wrote:
+> > Introduce swiotlb_alloc_pages() and swiotlb_free_pages() to allocate
+> > and release compound pages directly from the default SWIOTLB pool.
+>
+> Huh? The sole intended purpose of SWIOTLB is for bounce-buffering data
+> which already exists in some other memory that is unsuitable for DMA for
+> whatever reason. If you want to allocate directly from some kind of
+> pre-shared DMA page pool to avoid bounce-buffering, set up some kind of
+> pre-shared DMA page pool and allocate from that in a manner which can
+> avoid bouncing entirely (see DMA_ATTR_CC_SHARED). The idea of getting as
+> far as calling swiotlb_bounce() to then have a special case saying "haha
+> not really" seems entirely absurd. Don't hack stuff into the SWIOTLB
+> code which has no business being there.
 
-This changes amt_dev_stop() to unlink tunnels under amt->lock using
-list_del_init(), adds a list_empty() ownership check to
-amt_tunnel_expire(), clears sk_user_data before synchronize_net(), and
-switches the per-tunnel GC work to disable_delayed_work_sync().
+Ah I see DMA_ATTR_CC_SHARED did not exist when I implemented the
+swiotlb allocator. Cool, one less piece, it should be possible to replace
+this chunk witth the DMA_ATTR_CC_SHARED.
 
-A few questions on the changelog and on the new drain loop below.
+The other pieces are still relevant though ?
 
-First, about the two justifications given in the changelog:
+- use these dma-able pages for page pool allocations (small)
+- [PATCH v2 3/5] net/swiotlb: Track bounce device per socket
+  or one would have to unconditionally allocate from that pool,
+  even for e.g. local sockets
+- divert socket allocations for eligible sockets to a DMA-able pool
 
->     1. Quiesce RX: clear sk_user_data and call synchronize_net() to ensure
->        no RCU readers are traversing tunnel_list. This makes list_del_init()
->        safe (it is not RCU-reader-safe unlike list_del_rcu()).
-
-[Severity: Medium]
-Is this claim accurate for all readers of amt->tunnel_list?
-
-amt_dev_xmit() traverses the same list in relay mode:
-
-drivers/net/amt.c:amt_dev_xmit() {
-	...
-	list_for_each_entry_rcu(tunnel, &amt->tunnel_list, list) {
-		hash = amt_group_hash(tunnel, &group);
-	...
-}
-
-That reader is not reached through amt->sk / sk_user_data, so clearing
-sk_user_data and calling synchronize_net() does not cover it.
-
->     4. Use disable_delayed_work_sync() instead of cancel_delayed_work_sync()
->        to prevent amt_update_handler() from rearming the GC timer in a rare
->        race where a packet arrives before the socket is fully released.
-
-Can this window still exist after the change in point 1?
-
-amt_update_handler() and amt_request_handler() are only called from
-amt_rcv(), which resolves amt via rcu_dereference_sk_user_data(sk) inside
-rcu_read_lock_bh(). Once sk_user_data is NULLed and synchronize_net() has
-returned, amt_rcv() can no longer find amt, so the packet-driven
-mod_delayed_work(amt_wq, &tunnel->gc_wq, ...) in amt_update_handler()
-cannot run any more.
-
-So point 1 says no RCU reader can be traversing tunnel_list, while point 4
-describes a packet reaching amt_update_handler(), which can only reach that
-mod_delayed_work() from inside list_for_each_entry_rcu() over
-amt->tunnel_list. Could the changelog be made consistent about which
-readers the quiesce actually covers, given that this is the stated reason
-for dropping the RCU-safe removal primitive and the patch is tagged for
-stable?
-
-> diff --git a/drivers/net/amt.c b/drivers/net/amt.c
-> index bddc24e1856d..a5db02d81291 100644
-> --- a/drivers/net/amt.c
-> +++ b/drivers/net/amt.c
-> @@ -1348,6 +1348,11 @@ static void amt_tunnel_expire(struct work_struct *work)
->  	struct amt_dev *amt = tunnel->amt;
->  
->  	spin_lock_bh(&amt->lock);
-> +	/* amt_dev_stop() marks tunnels it owns with list_del_init(). */
-> +	if (list_empty(&tunnel->list)) {
-> +		spin_unlock_bh(&amt->lock);
-> +		return;
-> +	}
->  	rcu_read_lock();
->  	list_del_rcu(&tunnel->list);
->  	amt->nr_tunnels--;
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does the new list_empty()
-guard cover the case where the GC work is rearmed while it is already
-running?
-
-amt_update_handler() rearms the work under rcu_read_lock_bh() only, without
-amt->lock:
-
-drivers/net/amt.c:amt_update_handler() {
-	list_for_each_entry_rcu(tunnel, &amt->tunnel_list, list) {
-		if (tunnel->ip4 == saddr) {
-			if ((nonce == tunnel->nonce &&
-			     response_mac == tunnel->mac)) {
-				mod_delayed_work(amt_wq, &tunnel->gc_wq,
-						 msecs_to_jiffies(amt_gmi(amt))
-								  * 3);
-	...
-}
-
-Once process_one_work() has cleared the work's PENDING bit,
-mod_delayed_work() arms the delayed timer again, and amt_tunnel_expire()
-then proceeds to list_del_rcu() + kfree_rcu(tunnel, rcu) with
-tunnel->gc_wq.timer still armed. The rearm delay is amt_gmi() * 3, which is
-far longer than the grace period behind kfree_rcu(), so the timer_list
-inside the freed tunnel stays linked in the timer wheel.
-
-The drain loop in amt_dev_stop() does not help here, because the first
-callback has already removed the tunnel from amt->tunnel_list, so
-disable_delayed_work_sync() is never called for it.
-
-And if the work does run again on still-mapped memory, the new guard cannot
-detect it either: list_del_rcu() leaves entry->next unchanged, so
-list_empty(&tunnel->list) is false and a second list_del_rcu() runs with
-prev == LIST_POISON2, which is the same lib/list_debug.c BUG this patch is
-fixing.
-
-> @@ -3097,13 +3104,21 @@ static int amt_dev_open(struct net_device *dev)
->  	amt->req_cnt = 0;
->  	WRITE_ONCE(amt->remote_ip, 0);
->  
-> -	list_for_each_entry_safe(tunnel, tmp, &amt->tunnel_list, list) {
-> -		list_del_rcu(&tunnel->list);
-> +	spin_lock_bh(&amt->lock);
-> +	while (!list_empty(&amt->tunnel_list)) {
-> +		tunnel = list_first_entry(&amt->tunnel_list,
-> +					  struct amt_tunnel_list, list);
-> +		list_del_init(&tunnel->list);
->  		amt->nr_tunnels--;
-
-[Severity: High]
-Can this wedge a concurrent amt_dev_xmit()?
-
-list_del_init() points the node at itself:
-
-include/linux/list.h:list_del_init() {
-	__list_del_entry(entry);
-	INIT_LIST_HEAD(entry);
-}
-
-amt->tunnel_list is published with list_add_tail_rcu() in
-amt_request_handler() and read locklessly in amt_dev_xmit():
-
-drivers/net/amt.c:amt_dev_xmit() {
-	...
-	list_for_each_entry_rcu(tunnel, &amt->tunnel_list, list) {
-	...
-}
-
-A reader parked on the node being unlinked gets itself back from
-list_next_entry_rcu() and never reaches the list head, so it spins forever
-with BH disabled inside an RCU read-side section. That also stalls the
-grace period behind the kfree_rcu(tunnel, rcu) calls in the same loop.
-
-Is this TX reader quiesced anywhere? amt_link_setup() sets:
-
-drivers/net/amt.c:amt_link_setup() {
-	dev->priv_flags		|= IFF_NO_QUEUE;
-	dev->lltx		= true;
-	...
-}
-
-With the noqueue qdisc, noqueue_init() leaves qdisc->enqueue == NULL, so
-dev_deactivate_queue() never sets *sync_needed and dev_deactivate_many()
-skips its synchronize_net() for this device. And __dev_direct_xmit(), used
-by AF_PACKET PACKET_QDISC_BYPASS and xsk generic xmit, tests liveness
-before disabling BH:
-
-net/core/dev.c:__dev_direct_xmit() {
-	if (unlikely(!netif_running(dev) ||
-		     !netif_carrier_ok(dev)))
-		goto drop;
-
-	skb = validate_xmit_skb_list(skb, dev, &again);
-	...
-	local_bh_disable();
-	...
-}
-
-so a sender can pass the check, be preempted across __dev_close_many() and
-amt_dev_stop()'s synchronize_net(), and only then enter amt_dev_xmit().
-
-The previous list_del_rcu() poisoned only entry->prev and left entry->next
-intact, so a racing reader still terminated. Would keeping list_del_rcu()
-here (and using a different marker for the ownership test in
-amt_tunnel_expire()) avoid this?
-
-> -		cancel_delayed_work_sync(&tunnel->gc_wq);
-> +		spin_unlock_bh(&amt->lock);
-> +
-> +		disable_delayed_work_sync(&tunnel->gc_wq);
->  		amt_clear_groups(tunnel);
->  		kfree_rcu(tunnel, rcu);
-
-[Severity: High]
-This is a pre-existing issue, but the works nested under the tunnel are
-still only cancelled with the non-waiting cancel_delayed_work() while the
-tunnel-level work is now upgraded to disable_delayed_work_sync().
-
-amt_clear_groups() -> amt_del_group() does:
-
-drivers/net/amt.c:amt_del_group() {
-	if (cancel_delayed_work(&gnode->group_timer))
-		dev_put(amt->dev);
-	hlist_del_rcu(&gnode->node);
-	...
-	kfree_rcu(gnode, rcu);
-}
-
-and amt_destroy_source() does the same for the source timer:
-
-drivers/net/amt.c:amt_destroy_source() {
-	cancel_delayed_work(&snode->source_timer);
-	hlist_del_init_rcu(&snode->node);
-	...
-}
-
-cancel_delayed_work() returns false once process_one_work() has cleared
-PENDING, and it is never waited for. The callbacks dereference the objects
-and take tunnel->lock before entering any RCU read-side section:
-
-drivers/net/amt.c:amt_group_work() {
-	struct amt_tunnel_list *tunnel = gnode->tunnel_list;
-	struct amt_dev *amt = gnode->amt;
-	...
-	spin_lock_bh(&tunnel->lock);
-	...
-}
-
-drivers/net/amt.c:amt_source_work() {
-	struct amt_group_node *gnode = snode->gnode;
-	struct amt_dev *amt = gnode->amt;
-	...
-	tunnel = gnode->tunnel_list;
-	spin_lock_bh(&tunnel->lock);
-	rcu_read_lock();
-	...
-}
-
-A worker preempted between PENDING being cleared and spin_lock_bh() is in
-plain preemptible process context, not an RCU reader, so the grace periods
-behind kfree_rcu(gnode, rcu) and kfree_rcu(tunnel, rcu) can complete. When
-it resumes it takes spin_lock_bh() on freed memory, reads gnode fields from
-freed memory, and can call dev_put(amt->dev) derived from that state.
-
-Would it make sense to use the sync cancel for the group and source timers
-too, so the cancel-before-free ordering is complete for everything nested
-under the tunnel?
-
->  	}
-> +	spin_unlock_bh(&amt->lock);
->  
->  	return 0;
->  }
+cheers
+Luigi
