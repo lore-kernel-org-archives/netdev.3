@@ -1,64 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E07335AC11;
-	Mon, 24 Aug 2026 15:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60375367F36
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 15:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787584603; cv=none; b=W8w+3mrwoprZhM9p9FboZDECRdp1zXxS6Yol0ojFbnpVVlxFwc1MoSSCcZPc3pADlnQJHer6TQGcILydyoU5xHRv0GIz4P5lxXAV9vemswmGGCZmKzWZKBkOnIhIb377pf/xgGcvbL9k3jVwp99uhtRz5x0oGxgGc9KI9GZx2qQ=
+	t=1787584796; cv=none; b=gPCUIJtKlczDjmiuHF0dTsNJ3S2fMU9Bw5M5Ly2N2eOeffOuQGwgcxQkeOo04bdvSAnU2a96GNLNcVJOIq7GiimWKzGQdxSBnGneBeo7XYr0RE1kTjPM0iMyGysXfVgPETbD9RRpVJoeK6qS7KhV6gcHRNINSHocYs+91nc8uIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787584603; c=relaxed/simple;
-	bh=yERbh1D5+TBS3EF2mArulBMjtPYfB4hlHuES0xwoAQw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mJvIR4+fOq5Yknn6sLQvrPlxh7OXhObupF+pYTti05r4Utq91bIe0C5t67MC3TqdHdY+U5cXAljw5zdOIaC9y2qYo9318YE2CNJNPG6lAx47jTXruxrQyvx8WDvV//znjy93JNn1bqja10roRxtNbAPbc9QHD+RKYk/l9sQjGTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2bzLXKi; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787584796; c=relaxed/simple;
+	bh=xnN7/cB6R60McvMyMAsz6tChEhEHHBXzEew/vvxLTBg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gFSAgRc0E8hAkAHDWQjmvvke7YDsORF/r9HkQ8slIJhYBMPgVmQUJJB3A8rhy8ZbQVsPcstELedPQ/ZmT7nmNAfuK+fqBJNE0g3COYxMOj5OVTDx270ip23GsmfUaY8l7GCMwHQCChfj4ZGETUPAo7/C8G63wjXlBBYNu2sLP48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HngcMw22; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2bzLXKi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44B191F000E9;
-	Mon, 24 Aug 2026 15:16:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1787584601;
-	bh=q0+lX+x3jHWxzyQifnQxqFsMR9R+DvvDGbmtvXnWtD0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=r2bzLXKihJlYf6Vvj4N6w2rFrhJ0Q0adkWtqJLfxIT/0DEK9t2YCMBhIHk6pjBvq4
-	 co9hK7hbAbLro/c87CcccWryx3TkOQhlToFbVAXUhr1mDMwMUMhKHqx8gRGOLPgVaC
-	 MszDFLCD1cwjQ9W1Mv2PlK22sCMu+Em+S1DeOQJ0=
-Date: Mon, 24 Aug 2026 17:16:38 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Li Xiasong <lixiasong1@huawei.com>
-Cc: stable@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, yuehaibing@huawei.com,
-	zhangchangzhong@huawei.com, weiyongjun1@huawei.com
-Subject: Re: [PATCH linux-6.1.y linux-6.6.y linux-6.12.y 0/1] ndisc: backport
- ndisc_send_redirect() cleanup
-Message-ID: <2026082425-struck-compacter-2bdf@gregkh>
-References: <20260824133852.328978-1-lixiasong1@huawei.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HngcMw22"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED7D1F000E9;
+	Mon, 24 Aug 2026 15:19:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787584795;
+	bh=66hczHWglZoaCKzVlQ8YbYptRZp3iaDdQzrhf97qXUg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=HngcMw220igR0F+qbvYCvlamE8+1KCLmGoiSU/YTa+3k5+e9+FgTuq8ntos7g5elB
+	 0AjgfGZjwwf8ZTTDB7rV7Hu/e4jbAbFlYzywgJMhxF0BT6lAFJcYmrHY/+kZqbftBv
+	 cUVCcz6ZPnOGs2kvzGmtRgMw3PeIYh4sNWtl9NrsZPD6VZhVBrVyDOdf5lK+PjsbUa
+	 imarEEWiJjVpij5XshyDcUCIdt+/il3TjNYa3GAv7UdmLZmjhzaCNpwsH6pK/2n+tl
+	 FH2ipyDHHmptAXvmozoWv9OsN8kDPWJR6oaMZNB/5KcN1XGfAUE5S163GzLX9v6oGv
+	 BD8tIULvYsa4Q==
+Date: Mon, 24 Aug 2026 08:19:54 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Cosmin Ratiu <cratiu@nvidia.com>
+Cc: "daniel.zahka@gmail.com" <daniel.zahka@gmail.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "willemdebruijn.kernel@gmail.com" <willemdebruijn.kernel@gmail.com>,
+ "edumazet@google.com" <edumazet@google.com>, Boris Pismenny
+ <borisp@nvidia.com>, "kuniyu@google.com" <kuniyu@google.com>
+Subject: Re: [RFC net-next 1/6] psp: steer Rx queues with the virtualization
+ cookie
+Message-ID: <20260824081954.2cb8eac8@kernel.org>
+In-Reply-To: <4aa7871fcfc4a662d32a7ca7929b07a42a89ff6d.camel@nvidia.com>
+References: <20260822225524.2328465-1-kuba@kernel.org>
+	<20260822225524.2328465-2-kuba@kernel.org>
+	<DKWFJ9D12OPD.2ZLQHDM0276G4@gmail.com>
+	<20260824080122.17be0e16@kernel.org>
+	<4aa7871fcfc4a662d32a7ca7929b07a42a89ff6d.camel@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260824133852.328978-1-lixiasong1@huawei.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 24, 2026 at 09:38:51PM +0800, Li Xiasong wrote:
-> Please consider backporting upstream 0784d83df3bf to 6.1.y,
-> 6.6.y and 6.12.y. It looks like the missing prerequisite for
-> dbc3791e3b24 ("net: do not send ICMP/NDISC Redirects when peer
-> allocation fails") already queued on these trees.
+On Mon, 24 Aug 2026 15:09:31 +0000 Cosmin Ratiu wrote:
+> On Mon, 2026-08-24 at 08:01 -0700, Jakub Kicinski wrote:
+> > On Sun, 23 Aug 2026 11:31:03 -0400 Daniel Zahka wrote:  
+> > > On Sat Aug 22, 2026 at 6:55 PM EDT, Jakub Kicinski wrote:  
+> > > Should vc-steer-ena be a connection level setting? Maybe it could
+> > > go
+> > > into rx-assoc. The way it's implemented here, the state is already
+> > > per
+> > > assoc.  
+> > 
+> > That's what I started with but then given the security implications
+> > of the current simple design I could not think of a reason do
+> > configure
+> > this connection by connection. Besides the SW stack responsible for
+> > security is likely somewhat orthogonal to steering configuration. 
+> > Should have put this in the cover letter as well.  
 > 
-> dbc3791e3b24 adds "if (!peer) goto release;" inside
-> rcu_read_lock()/rcu_read_unlock() in ndisc_send_redirect(),
-> which seems to leak the read lock on the NULL-peer path on
-> these trees. This cleanup drops the pair (callers already hold
-> rcu_read_lock()), so the leak would go away.
-> 
-> The patch below is against 6.12.y; the identical change applies
-> to 6.1.y and 6.6.y.
+> I looked at implementing the current design in mlx5 and a per-assoc
+> setting wouldn't be enough, because flipping this on requires device-
+> level steering changes (basically adding num_queues steering rules).
+> For device-level settings, we conveniently have the .set_config()
+> callback. There's no per-assoc callbacks, but theoretically, we could
+> detect the first use of VC-based steering and do things. Doesn't feel
+> that clean though compared to device-level.
 
-Thanks for noticing this and the backport.
+To be clear - the per-assoc would be in addition to the device level
+setting. We'd have to enable the feature and then instead of
+snapshoting the device config in psp_assoc_create() we'd have explicit
+Netlink flags. We can do this later, the two flags I added here can be
+thought of as "enable for all assocs", we can add "enable per-assoc"
+device config later. Tho for Tx not echoing a request would be pure
+spite...
+
+I implemented the per-assoc things first but then I thought about
+deploying this and really there's no reason to plumb this policy thru
+Fizz/Thrift handshaking which creates assocs.
