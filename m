@@ -1,143 +1,175 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6893D3A2E2B
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 15:23:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561953783D4
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 15:23:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787584994; cv=none; b=A2d32FRQQgFPlzJ33hO5RRY0BnwQf1EiWOqXue+2V/9zQR1/G/R2An8z3Gz//zjl/tOVw4C+7INDtJ6cUwmZJSqHc3ajfVN/EGsiD/cvZC38SS8vVN6x2gYF8PqtpDnslKw4kiTEzx2GDUp4TbN+D0SL2NqzXgBUC9gOltO9+iY=
+	t=1787585023; cv=none; b=Glo33XkXw4ChOpyp3k3jsx3ICNxGLHip05g991PcYGLCV2ggZfLm+1tuBi52IZRPrQmjScS5DohCvR3BW4gjCMjLmOUA+Z+Yf0+JmxgbxwPDy/97g63O/gkWReO9TyRVLTPvAyhyawYflzc+w444r1Cw2t5OZyW3dgzzZYkBe6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787584994; c=relaxed/simple;
-	bh=e+ytmXFE3JSx2HG+7wOm2fBXGt3tT6P8fb9ziEakcJ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pzrv1cbjCMg+7kbbdDwIiKlt02XuHEOtSJyJKoUhmfCP8XMw3A2eDAE6tmty0PH1C0XMFWbs0aRGPwBbEQVmjHTzH/l6Y4tCy5mRSf3SMSw5thlEbfQOb4sitUhAsPQDxACe4t89EqyFYESbOHSxYYBYQebno2QWa6KX5juEfkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H6enZLbH; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=M60N09jh; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1787585023; c=relaxed/simple;
+	bh=hYw7cY7OvliXTsXG2DhqQQpoKZ04lNep+PHc/o1u//s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rToGhaYfkoD54/pW/Fq5A+bTTu+/rHak49RxfgrRq2zlIIeLOTzxpgLlX1vEFf3Zh54YFh2Cis54/1SHMc8fz4qODEDnvR4bzdgioUf2AUDsNHSiDWwsi0Zo1vL6GKhSN00QlXCrbIFb6ZPnThQLJkD/3zlYLACMN8Q2VkWG/ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e8fz4OEx; arc=none smtp.client-ip=74.125.224.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H6enZLbH";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="M60N09jh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787584992;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hDfbqGOe33LfiN0dznJh5Z23M0Lr3/BSZqPKm5UAkFI=;
-	b=H6enZLbHTx5fwk9ZHtWF4ZSwIjE3pouyUNWsjHjQtG4tjwZKVeZkoJs/Sr5IGM7QMb4AHL
-	T7d8d1rIfu2vktsVa+AiBE7g3/xwTL3fCZ9dWm2VacITOwWzah+hSUH+ORTxxFAh30J7l7
-	G9ta720/4+p4NTobbj1ZEFO+GK2U7Fo=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-172-1QqiYEj1OI-3vhI_ZnW_Sg-1; Mon, 24 Aug 2026 11:23:10 -0400
-X-MC-Unique: 1QqiYEj1OI-3vhI_ZnW_Sg-1
-X-Mimecast-MFC-AGG-ID: 1QqiYEj1OI-3vhI_ZnW_Sg_1787584990
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-92e82060977so360803185a.1
-        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 08:23:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e8fz4OEx"
+Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-669bcef451aso395702d50.2
+        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 08:23:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1787584990; x=1788189790; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=hDfbqGOe33LfiN0dznJh5Z23M0Lr3/BSZqPKm5UAkFI=;
-        b=M60N09jhdJ3t8MPue+qWkRiZtpUk0hSjBenz1Vt3MeXbQS6camnLzqFTyKdjidt29c
-         qBI6dOHTPFZ4ASAsFotO8Jmu6nV9EDAeLJcLFIsS2xIb8l+5wJuu9yQEgIbkO7XsaD3o
-         5Rl2I0NgoqKemFypJFwX6Svgy3gAqOkOVHAm3+Eux9KAfkSzWlT8mo7Wy8lbAZEOt8yq
-         ctuwztmixGPBQNG4MTnuJTT2cn7DPFLOwoVm4IL3zhFoHHco+1Tids2BYleUWY9jifh9
-         LBZPoj1Cy2ZNsGvKdjgUPFWvO6sRn4YWZmGyvuNwcH+es51zg9M8WEKGFa20/+k5EISs
-         EdVw==
+        d=gmail.com; s=20251104; t=1787585019; x=1788189819; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ApOsiVTZO2JtdB21Z6pP35hGptW3NA1WFLKYP2hHn7c=;
+        b=e8fz4OExPhrQpoLn3q3MmA6nw/X+OJPmzd7JtS1SI8dGWdAkUGd1MS+XPWoQzbpfPd
+         TaKn6cvR2BqqmNO7EsDF2WBZNCciq/QrdMMCjJaDxClAmYdFs1CtB9UeBrPBx6XPuCnk
+         +Ray11mrTzbruMD9GLQwtCq5fIJKo7OBitNVYcWhsZkwu3P9jZ8dyPs6QcRyF+rSvboe
+         FMF74xxUKlW9LADegKDY6wIzqkuFGxAZm9uyWJYNaSHcHhs2XW/pxF2SwwiwXt2cV8UL
+         jIXKOtrNATNqKpq/qvCUOgzcesM1Vwn5SkiZrR9QBGUy0DNieH8YpIk0hKyPs5XAVFPC
+         q8kQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787584990; x=1788189790;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hDfbqGOe33LfiN0dznJh5Z23M0Lr3/BSZqPKm5UAkFI=;
-        b=WtbRMeQReE+t1cptg6q7XIg4EaFiiQMT5pzAX8S5n0ghg/kaAUjCb2S6/ow7YmOdLk
-         pAYbsCjyqiWD0Nlmmu/s7OaiNQ0R7f4vOk9oIwQKQNX9peYCmBmCphpHv9NhOclYINct
-         CwQZeEIGifXkEEHBspoughTo0FYRCWIZt+ngc65z9sxpW1kXAxqinXfL9m+/DGAjzc76
-         jMkh6qk9cTi2rzHRh+iHfxtZDbDHBM0rqK3kNBJsjPH0pNHXJwIi4kFIRffAFVwncD4K
-         WgLg2WOlHb+yUDlwlOW/fXUIdx/bE7crEnEd+5dYcU/9mxtmyB7k2y91I57kYUO5vn8Q
-         qTFg==
-X-Forwarded-Encrypted: i=1; AHgh+Rr2rXEfTpBvrij/cQ0fkke14nz3Uc/isYpeKOZRua7ALGrLMTLAwqEWk6c6H7Q+EnVihesPbl8=@vger.kernel.org
-X-Gm-Message-State: AFuF++ktoJkB+FWmnwXU3V7VR3KDJnysE4f2BIkqH1rVEYMyvoyNVj5x
-	k0P+jc3Z1UwlFq5t4DECH5Ousc2gShyY/lB8iC/AW5ZYNJuDBvSkdQrafDHZmHqAxIYwh6RUFIe
-	l03qELMZFnPCHTtXvhNHBadNsrv6pyE2djlsECItsdHBLZ10xzdVfZnqlkA==
-X-Gm-Gg: AR+sD11s7D80D4QIUEFq9aOJbwygH/Nzk5mUr2cF7FOs9NVVn7KxK4lDC1ElFXtVhKf
-	SknO6WZ9wdlf/uTr+lUcer8oKFbXSQ/VzJDMqdzpYNA3lmCqCLsULc8hs2XurlP/vqeLEfwNvle
-	XEsZHx2v4ECEG5QgQA4dqSqvZbHv+XPKufpV4sR4O2ZTH+XZT+r13thUoc0+/rF1mR2hBBp+B+A
-	L5tEz2WRKo/gphOb/iEA5PL20smZvSX7C/lY40TrlBRoOU+N4WUi+YGqSc/C2+0CLetVDRzkBrB
-	hQkq8hF6O/2guQkVgdM/3zQMrkeJVEfTRelgHtBQvvBC/dsFBT1uy0NDooS0LVm5vgDj9OVg50r
-	5CCDrYxgbf42kD3uuDxSxGw7VNpCfVFle65E=
-X-Received: by 2002:a05:620a:8011:b0:915:5216:e5bf with SMTP id af79cd13be357-937398f7702mr2565548685a.22.1787584989892;
-        Mon, 24 Aug 2026 08:23:09 -0700 (PDT)
-X-Received: by 2002:a05:620a:8011:b0:915:5216:e5bf with SMTP id af79cd13be357-937398f7702mr2565541085a.22.1787584989359;
-        Mon, 24 Aug 2026 08:23:09 -0700 (PDT)
-Received: from redhat.com (c-73-183-53-213.hsd1.pa.comcast.net. [73.183.53.213])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93749e9f94bsm517466385a.37.2026.08.24.08.23.07
+        d=1e100.net; s=20251104; t=1787585019; x=1788189819;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ApOsiVTZO2JtdB21Z6pP35hGptW3NA1WFLKYP2hHn7c=;
+        b=ebBmea/1UHQQ8J8BEukjZOS5Nw0lKVb8ENOygfKTwrvlaPK38HwkFkNGI36TbvHKnd
+         vTb85ZghV3uS8dilG0/RYBqyhRKcncXJ/8WOkp5+RNe0dZ+h+QWsPTnplwWB/VJWT000
+         CsgiASqV+3GFFW0lCR38SQBBkZeXlKV8f6/qxT0dbrn4WeqTL0yizP5jr9XF3D2guas2
+         C9DBMitFbT63ROtNokDnUM5Dui1kqVI7B2L8+ztp/swfwjTcBmhaM7g27ZPmb4ofs0R8
+         BvQWN24xFxGLdgZMUqQDxxAOiydIvJFOhEfq/uetkiAIMuq9N7Uv7po+P/N3hAUVF8z0
+         rvMg==
+X-Gm-Message-State: AFuF++mHyM+8eGSHkBWegvFHdiwqyd3YwI3+J8fHTNUKCBjjy+Gif6nN
+	H1itajhLYlGEJ46qRtF1GEftM/tWCxOvk1LvWYnHa0EXzdXJHyKppRM9
+X-Gm-Gg: AR+sD13Sp46HW8BGypTOALuPssTl1tWo11vwk4Ww/yY/r8ydW7nWqtT3OGaC+8+3heP
+	hGr0WZPBiFpvamM6r/m2CmX6PH2DHcd5EBL1plC6XOMXmVxiOVgXc9gNPSQuxzv/tloq5YTs6cJ
+	Sz4HOe++v+NUWZYYJTYBPVef8yd7hh39hJgzjIv7+TUHZVPGRUaYPux4rqMqLksSYj+oXqE7Dzs
+	XTxCNac3mzwkb1nqZ4BtwDz+xJoGCfEXZpudioTlRwGKn+W1/5i9uKfgTXkY24KraoZlZs7KFav
+	WLt6j5jRgYeVAzgqmiDI3w3n5OVwEH3XUKtzbocqjhEEGq8pdpTNTl0bqMRd0MSUlYeddcRxixo
+	scE65uHNBIWWo+Agzi8WagPatrKPWXPLfjfplYoZcpDxVRZF8tSjmZHoaURdVVE51UGYOWa0TDD
+	ChAVbt0hfZgFoZW/pNEdypq0gtNHipWWZ9O/PAYmAbi85ohbA3IthD2iEsJJvrTyek7cY2wEU9Y
+	WdOMOWBa83U9Dty/GulDucPa8/gOsvQbiSE2A6z20h4yfzhy5/gWnjD2plT
+X-Received: by 2002:a05:690e:80d:10b0:66b:2964:eb0a with SMTP id 956f58d0204a3-66ce4ae6f92mr6238565d50.3.1787585019068;
+        Mon, 24 Aug 2026 08:23:39 -0700 (PDT)
+Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66cfb3671f5sm3062475d50.15.2026.08.24.08.23.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 08:23:08 -0700 (PDT)
-Date: Mon, 24 Aug 2026 11:23:07 -0400
-From: Brian Masney <bmasney@redhat.com>
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: =?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+        Mon, 24 Aug 2026 08:23:38 -0700 (PDT)
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+To: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org, linux-clk@vger.kernel.org
-Subject: Re: [PATCH net-next 0/3] net: Make sure clk_init_data is fully
- initialized
-Message-ID: <aoxh2xyb4sQwfHXC@redhat.com>
-References: <cover.1787240118.git.geert+renesas@glider.be>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Chengfeng Ye <nicoyip.dev@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Qi Zhang <marsy12010123@gmail.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Alice Mikityanska <alice.kernel@fastmail.im>,
+	Florian Westphal <fw@strlen.de>,
+	Jesper Dangaard Brouer <hawk@kernel.org>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net] net: pktgen: keep device lookup under RCU protection
+Date: Mon, 24 Aug 2026 23:23:31 +0800
+Message-ID: <20260824152331.216494-1-nicoyip.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1787240118.git.geert+renesas@glider.be>
-User-Agent: Mutt/2.4.0 (2026-06-19)
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 21, 2026 at 12:07:29PM +0200, Geert Uytterhoeven wrote:
-> 	Hi all,
-> 
-> The clk_init_data structure contains several mutually-exclusive members
-> for different methods to specify the possible parents of a clock,
-> prompting drivers to initialize only the members they need.  However,
-> not initializing all members may cause subtle issues, which are only
-> exposed when CONFIG_INIT_STACK_ALL_PATTERN or CONFIG_INIT_STACK_NONE is
-> enabled.
-> 
-> Hence this series aims to make sure all members are fully initialized,
-> to avoid such bugs, and to prevent future breakage when converting
-> drivers to a different method for specifying the parents.
-> 
-> Part One[1] fixed all cases that I identified to be real bugs, in
-> response to a crash I saw on BeagleBone Black.
-> 
-> This series is the networking subpart of Part Two, which fixes remaining
-> cases that are currently harmless.  These are still fragile, and may
-> cause future breakage when converting drivers to a different method for
-> specifying the parents.
-> 
-> Thanks for your comments!
-> 
-> [1] "[PATCH treewide 0/5] clk: Make sure clk_init_data is fully
->      initialized (part 1)"
->     https://lore.kernel.org/cover.1787165329.git.geert+renesas@glider.be
+pktgen_find_dev() releases its RCU read-side critical section before
+returning pkt_dev. __pktgen_NN_threads() then sets removal_mark through
+that unprotected pointer.
 
-For the series:
+The worker can concurrently remove the device and queue it for RCU
+freeing:
 
-Reviewed-by: Brian Masney <bmasney@redhat.com>
+  CPU 0 (netdevice unregister)     CPU 1 (kpktgend)
+  rcu_read_lock()
+  find pkt_dev
+  rcu_read_unlock()
+                                   list_del_rcu(&pkt_dev->list)
+                                   kfree_rcu(pkt_dev, rcu)
+                                   RCU grace period ends
+  pkt_dev->removal_mark = 1
+
+The mutex held by CPU 0 does not cover the worker and does not delay an
+RCU grace period, so the final write can access freed memory. KASAN
+reported:
+
+  BUG: KASAN: slab-use-after-free in __pktgen_NN_threads+0x241/0x280
+  Write of size 4 at addr ffff88810dab804c
+  Call Trace:
+   __pktgen_NN_threads+0x241/0x280
+   pktgen_device_event+0x24e/0x3d0
+   unregister_netdevice_many_notify+0xde8/0x1ec0
+   rtnl_dellink+0x35d/0xa90
+  Allocated by task 92:
+   __kasan_kmalloc+0x8f/0xa0
+   pktgen_thread_write+0x498/0x14e0
+  Freed by task 0:
+   __kasan_slab_free+0x43/0x70
+   rcu_core+0x50a/0x1850
+
+Move the existing RCU read lock into the sole caller and release it only
+after setting removal_mark. The object therefore remains alive through
+the dereference, while lookup order and control handling remain
+unchanged.
+
+Fixes: 8788370a1d4b ("pktgen: RCU-ify "if_list" to remove lock in next_to_run()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+---
+ net/core/pktgen.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/net/core/pktgen.c b/net/core/pktgen.c
+index 7f81aed46672..4fb1853589b3 100644
+--- a/net/core/pktgen.c
++++ b/net/core/pktgen.c
+@@ -2032,14 +2032,17 @@ static struct pktgen_dev *__pktgen_NN_threads(const struct pktgen_net *pn,
+ 	bool exact = (remove == FIND);
+ 
+ 	list_for_each_entry(t, &pn->pktgen_threads, th_list) {
++		rcu_read_lock();
+ 		pkt_dev = pktgen_find_dev(t, ifname, exact);
+ 		if (pkt_dev) {
+ 			if (remove) {
+ 				pkt_dev->removal_mark = 1;
+ 				t->control |= T_REMDEV;
+ 			}
+-			break;
+ 		}
++		rcu_read_unlock();
++		if (pkt_dev)
++			break;
+ 	}
+ 	return pkt_dev;
+ }
+@@ -3776,7 +3779,6 @@ static struct pktgen_dev *pktgen_find_dev(struct pktgen_thread *t,
+ 	struct pktgen_dev *p, *pkt_dev = NULL;
+ 	size_t len = strlen(ifname);
+ 
+-	rcu_read_lock();
+ 	list_for_each_entry_rcu(p, &t->if_list, list)
+ 		if (strncmp(p->odevname, ifname, len) == 0) {
+ 			if (p->odevname[len]) {
+@@ -3787,7 +3789,6 @@ static struct pktgen_dev *pktgen_find_dev(struct pktgen_thread *t,
+ 			break;
+ 		}
+ 
+-	rcu_read_unlock();
+ 	pr_debug("find_dev(%s) returning %p\n", ifname, pkt_dev);
+ 	return pkt_dev;
+ }
+-- 
+2.43.0
 
