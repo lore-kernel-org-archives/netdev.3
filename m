@@ -1,85 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C65D46AEDD;
-	Mon, 24 Aug 2026 16:55:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1969746C847
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 16:55:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787590556; cv=none; b=XVCKK8tdQPV8xTKarUH0lWZRpkfV/TMMGJWUs3Q7dDf4STnKHwVFSTPSnRbmxQzOPDbUXwJ/Iqm4qqcYzAmzF7stDcSsY40bygDp/AODCaY9cb5jYtNkcs5I7ER1RYXmgAgXniV8An+0N7ZzZZH5Wkv7VQUWg7yDg6gi+yura+4=
+	t=1787590558; cv=none; b=jDVrxWyXIce77YufGieWf10c7sa/GVYM62M0cId3oOnq9TWIXbD7Onqiqmfjlw7Oa7jtglTHA3uaUJV8hhrwUv54I2ERyvtAjnr3cG6DG2hRPz9Bhlhr+SWSwCvBWxaaJQN5m5PIwaAHN6LhbC1ZhntPG9V37pSrWc9+ulDAGyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787590556; c=relaxed/simple;
-	bh=QTfhsM4tx7H9Nid8lOZz9x6zBpJM/kF+pd9YOx9Wb2g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BsOYvRxtz7NZNCbhqbVsyaic/L4GmfyXEVzSsDpcXuYeC18triQptksiEcMGJKU7IL80YVn4OfmaiXcwjPi0UUUPLsK4L4cpc+F/zU0qC9Epp5aux2SuAhP9Xl07DOeVbpVvYKU3qVpcsqHYFk4JkKGZo6aGvV4kwcPjy4wQ8oA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mNS3XifT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787590558; c=relaxed/simple;
+	bh=90+/tOBKCR0tL5zuqESaCxvdFdnzYhVt3aAtBlDvc9I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=t/sjAfNcErWyWzImqSc6KAEA8JwJxEQrEdslSwHLDs9rI2aOsDXdo05T4aUBLfLQoo+t5NEb3lMXzPaJvC1MUfh73Yqx5r37nL+dv5uqYapFJwEoij7urZ1EF4p19oul+5/3U1zfRybK0PP216PCM5qrWD64FroYz5Fuo3UwLv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dnim.dev; spf=pass smtp.mailfrom=dnim.dev; dkim=pass (2048-bit key) header.d=dnim.dev header.i=@dnim.dev header.b=WCw3nU0b; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=F7uEdByn; arc=none smtp.client-ip=202.12.124.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dnim.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dnim.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mNS3XifT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE02C1F0155C;
-	Mon, 24 Aug 2026 16:55:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787590554;
-	bh=OutC5dLw6ljlz2bW2icJUsCK2hZR63wcb5VCopr1tlY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mNS3XifTBPUW1kJ9Nd7MyVaiP8bxWjy27JxyFZUZW6RLpLE5n7f1e0FP9e7ZbnnGf
-	 0iduJabMNOAABEKQOHFks9a/QQDmNyKGhdmo1OPWdxtRRKvgJF3oSsV8lz4HLeabcS
-	 4JL6dSoxdgxMuvT4eN6/VaSfehOnm/adEraTe+07bNiS5zfFsstw0ADNIEJKcVEkoq
-	 GxovXf9brW8qW7yUDbF7/L/DsjrBsu42EcYCpJyQ7n9nsxDJp5J0ECU6hanLMUCfcP
-	 Ki9HpiYf7Ac8NaF0VKm+UEV1p3ZwBzZGlO7WcBn5vQtMLp8Yj+i8Q2fJyyKFznyTIx
-	 U1GvGncutwRKQ==
-Date: Mon, 24 Aug 2026 17:55:50 +0100
-From: Simon Horman <horms@kernel.org>
-To: Allison Henderson <achender@kernel.org>
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, pabeni@redhat.com,
-	edumazet@google.com, kuba@kernel.org, jhubbard@nvidia.com,
-	woni9911@gmail.com, michal.kubiak@intel.com, leon@kernel.org
-Subject: Re: [PATCH net] net/rds: use wq_has_sleeper() in
- rds_cong_map_updated()
-Message-ID: <20260824165550.GZ265046@horms.kernel.org>
-References: <20260822052647.88318-1-achender@kernel.org>
+	dkim=pass (2048-bit key) header.d=dnim.dev header.i=@dnim.dev header.b="WCw3nU0b";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="F7uEdByn"
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfout.stl.internal (Postfix) with ESMTP id D40A81D000BB;
+	Mon, 24 Aug 2026 12:55:54 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Mon, 24 Aug 2026 12:55:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dnim.dev; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1787590554;
+	 x=1787676954; bh=90+/tOBKCR0tL5zuqESaCxvdFdnzYhVt3aAtBlDvc9I=; b=
+	WCw3nU0bgzNyrix+a/HRC7u6xcjjVeZOtSfgiw6gdto758oaPJtrSdFheczbNNTm
+	zGkNHRd3dsrFfZ0AYss5azNk0siGMOelFerTf3xANhvooQYfregXbiuNFa+UVXf0
+	Ev7osxieAZT6jZ/dVGtzbzUR4r4/i+fI08PZWkPEJ5v+lzoOQobRDdCYYbCjVWd0
+	ea4r+hPP/LpYWHjJDrwFDjgFXX5d8JqduOVCkHmYbkr9k5YgLFyPMjNbGRh2D/BF
+	9mrNRDWG623Ul/xu8oC8TwhPcK0YZsaNPflvRbtjccreqQk49mE51QCa48oVtVtc
+	DztOizPRSPKrMaxThVvvAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787590554; x=
+	1787676954; bh=90+/tOBKCR0tL5zuqESaCxvdFdnzYhVt3aAtBlDvc9I=; b=F
+	7uEdBynXEMNZAa05ljSlcLiSDVclw71R+BieAu0GvKyPkmdphNZZSxiIcXN8lkwu
+	ntVpp6nKErRpdaIWo7zIof5bWCE4gdj8RRAZTi8LiGaPy4Yjixlbqj7SjBliKdnt
+	pn75IUvpTqQYA2dLHXNiOYxpsXyhVp/CDRWv1JApw+kSD8uDbUdNxzmtmygyQi+g
+	iNEmw7bxqwapPy6ttHYyxMj3Lh5/EgaJzSk2eyDhGWeDrmogTuiMVHd6ZxaavR1m
+	BWN11ZGX+30lLAwjzZcua7Lxs2mZEKH5kuRuqjpkFvE7b09KHQw6CUSKLmiKnO12
+	ZO5PgBqNKPu9JxhsSAFcg==
+X-ME-Sender: <xms:mneManhnOSlTUF_zkBUISyZn92ogyH5iJPmf6MejSAZJgJdJ1xtgkA>
+    <xme:mneMajuggRzphfzK9J4CGSyjlraQ0xyMc1rZUvGuXBxi2rlK6RYcyhfAXvn5GXit0
+    LL5HHVADpepArXl9mf_r1gKmdwWq0fu06svppSj7myvL4gXqTlCAfc>
+X-ME-Received: <xmr:mneMaivBAtzY0p_Evd7_zLm837_Qbu0187pGvMJ5KnjZMgxIu6EtDMYSe6fvVCWoespb8wzMxqgka91u1w4RGqheSzqSxIOHoDNoaId70Z8JbRsqhh4ZbBDAUISIv44ABat05Yp_7Qo3kUg>
+X-ME-Proxy-Cause: dmFkZTFU/ebiYip6Hzt4pJUd67o5aWGJU7/l4IdwHv+hXBqFGMWWHcPzj9cgSZQT5HdSZc
+    KnzVdj9a6sg5LmM2kG2MQQ9UDB1cZgl+sF/AF16r/gKMR29+MHGgE0VJxmbjfZpD9tlWwT
+    rBiis1C7VOei096O+hLQ1utFeikYbhQwm/SLGw3yOrTg7t80fPpQlD5InyLlkii1zNvvIX
+    uWCBBVCH2JiO1FRq60mRXu5cafUMFG30Vp2kkSuA7o+LJIQAvUBFKajYPUkCUduVXEPm1t
+    MophBmI8eVSKIfwssZ5NomT2Sb4Adl5DueTWWGsDEw+pxdwu9PLiLu6p84Z05QXn4sjndx
+    y3x3IYCIjKptlVx1YbaBseAdrB0VHuI8qex/4fASwmTRegP6m1IZ7zbU7RdIj/WnWyIEuz
+    GuxODSKWk7l0dc6XJdOsEU036UrjEzdm3lCmPKLvKuALgu20QPdYJNeA9V0gONceT0wwzw
+    tniNoPoK8I4//HMU5mIcF6gHRL1DuN1H4JwZxcjNwffNMgh3Zvn/mCZH/TMJUKsEzK+a5+
+    2pCzrb/AetOQWD9CNVC9mdoNExoE1zxnrhJYjmRupiVanEhSA74MJj0Lyuce0uJFEOp+QY
+    axb5J651wLHRzwnlT3PNyss4uM9nFldfDcX5pYbidc9x/96T1RxTW0qmfvyQ
+X-ME-Proxy: <xmx:mneMagElq3tTm84f1NGZQbuT0FO1aXt89N_ATRREk-PQ4oefNvBGTg>
+    <xmx:mneMalN67lxL70hxrUf5kKVc1fGp0Veiki4RJ5fFrLvWv-ol764INg>
+    <xmx:mneManLCv2G-Peyld6Uci6cvdf0fhDwuwcNfjwVq-0nffyWpg3fbjw>
+    <xmx:mneMam-hocExthEd5CAR4ZrcPRg1Whk8EZV9Ly8yY8MSfVyrZxEU1Q>
+    <xmx:mneMasqNmyhcTmFI9Q7kO5d82vS3hnvndhW3WmrZSW2irazlgVBw3VKY>
+Feedback-ID: i14ee4b4c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 24 Aug 2026 12:55:53 -0400 (EDT)
+From: JR Lanteigne <root@dnim.dev>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: Eric Dumazet <edumazet@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>,
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ netdev@vger.kernel.org, Simon Horman <horms@kernel.org>,
+ Miroslav Lichvar <mlichvar@redhat.com>, richardcochran@gmail.com
+Subject: Re: [PATCH net] net: fall back to skb_iif for the timestamping
+ pktinfo if_index
+Date: Mon, 24 Aug 2026 13:55:53 -0300
+Message-ID: <178759055328.4181951.10346301845266420247@dnim.dev>
+In-Reply-To: <willemdebruijn.kernel.1e07ba16c4cf4@gmail.com>
+References: <178746246095.3786864.2262454553798466512@dnim.dev>
+ <178756707212.4073008.8425791726071449399@dnim.dev>
+ <willemdebruijn.kernel.1e07ba16c4cf4@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260822052647.88318-1-achender@kernel.org>
 
-On Fri, Aug 21, 2026 at 10:26:47PM -0700, Allison Henderson wrote:
-> rds_cong_map_updated() runs after a peer's congestion map has been
-> rewritten (by rds_tcp_cong_recv() and rds_ib_cong_recv(), or the
-> clear-all in the loopback and IB send-completion paths).  It bumps
-> rds_cong_generation and then checks waitqueue_active() on
-> map->m_waitq and on rds_poll_waitq to decide whether anyone needs
-> waking.  atomic_inc() carries no ordering and waitqueue_active() is a
-> plain load, so nothing orders the map and generation stores before
-> the wait queue reads.  The waiters do the mirror image: rds_cong_wait()
-> adds itself to m_waitq and then tests the port bit, and rds_poll()
-> registers on rds_poll_waitq and then reads the generation.  That is
-> the store-buffering pattern described above waitqueue_active() in
-> include/linux/wait.h - the updater can observe an empty wait queue
-> while the waiter still observes the port as congested, and no wake-up
-> is issued.
-> 
-> rds_cong_wait() is an interruptible sleep with no timeout, so a
-> sender blocked on a congested port stays blocked until the next
-> congestion update from that peer arrives or a signal is delivered.
-> A poll() waiter misses the map-updated notification the same way.
-> 
-> Use wq_has_sleeper(), which is waitqueue_active() preceded by the
-> required full barrier, as rds_tcp_state_change() already does for
-> the same pattern.
-> 
-> Fixes: 922cb17a5c81 ("RDS: Congestion-handling code")
-> Assisted-by: Claude-Code:claude-fable-5
-> Signed-off-by: Allison Henderson <achender@kernel.org>
-> ---
-> Raised during review of "net/rds: own the fastpath locks across
-> connection teardown", whose first patch fixes the same pattern in
-> release_in_xmit():
-> https://lore.kernel.org/netdev/20260820133832.5384be37@kernel.org/
-> This patch is independent of that set and applies on its own.
+Willem de Bruijn wrote:
+> It may be possible to detect whether an skb_iif points to a physical
+> or aggregate device (e.g., through lower_dev)? If so, then the value
+> can still be used in most cases.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+That only guesses less often (tunnels register no lower adjacency).
+I agree with Miroslav: 0 when the physical interface is unknown.
 
+The userspace check fixes chrony only; every other consumer of
+SCM_TIMESTAMPING_PKTINFO has to rediscover that if_index can be 0
+and grow its own IP_PKTINFO fallback. The kernel is the one place a
+fix reaches all of them.
+
+The gap on cpsw: one napi serves both ports, the driver delivers
+with netif_receive_skb() so the id is never set, and it would name
+port 1 for every frame if it were. The driver knows the source port
+per packet (CPDMA_RX_SOURCE_PORT) and needs a way to hand it to
+put_ts_pktinfo(), e.g. via skb_shared_hwtstamps.
