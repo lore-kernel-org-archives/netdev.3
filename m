@@ -1,224 +1,172 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9E63E1200;
-	Mon, 24 Aug 2026 06:14:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE696331ED1;
+	Mon, 24 Aug 2026 06:15:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787552051; cv=none; b=PWCqyzrx/nAqNp8LZDVuDDQCNK/WTDPof6257yJnrbyPH1KQ/0JuVInZZoH8vt002t2h3CcQ5R0Y9aNrUFzLBZLnzcjZkQuotNggrQBEjbQS+X9uoALLtlu3Fi23EsUYCVJkl2ZcJEodeGgX4QJMvL8sxOkGsCGR6GObXTCtB7M=
+	t=1787552111; cv=none; b=lKBPkz5OKo82MewRUn4VDd8iBvaKjt7nSAaRuWocz5Hl4b1N6oscK4RxDWsp2yHGEV78htg+hGq/18aNvU+fp80ETB5R/VzRj57m/1jDLMOX9s1STZTPwoSXaFKkq+is+/vvNWcXzcAFoilh2niAK58WQflTPuKCy+kIM6Gfczc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787552051; c=relaxed/simple;
-	bh=BZ7IwJMO4MfhnQONjq+NB28trzI968B5/QEAjYm1OxY=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=BuO7fnehmmBOU45UdXvwHuzw2S5nmeSQkk9T+hZZqty0g3bSTAQ6Iy9CGUAR0CHAC2QcBdU3toZ+zz65+d+ApPHpY0GMGfENDXLApthppkrwh3AbdMC6QJouofSjLwAh2N8iWBtS8MiWI5P47vq2HyUZS10CEJOgHzHoGpzKMPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=aHDCc/S4; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1787552111; c=relaxed/simple;
+	bh=0/Xzhe2w9Sk25MhwhUaru7RZxcbtsKDtkT59/Di0x8U=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=n7/1i3XnJ01ZJVjQtQ4BhPYd9VlavW5jk7fRNbMSLgMfobO1p1XUEUB9cg1rVhdfR6gqjRycLWA1IRUgCPLlgQIbMdv/Wffrfatoab2ey+gOoBAFbi1VlTOI1pYeXqw8Fap5OZGjJsSe81BXtYEYCpnHFab8AzaEdkNvAS1AMpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tpEWe64a; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="aHDCc/S4"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67O5VpxJ857153;
-	Mon, 24 Aug 2026 06:13:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=ohqzTW2XLqIuG25AhuPv0Xcp52Z9
-	X5GJJ42qTZOubcw=; b=aHDCc/S4uzaFaI7J4JmhPFeCofYeklyj/50FUPb+Fjg9
-	OjlihNHIBezNqvMaATxfYXBBdy3Z8ONe9I7mFt8FsF9oqfP2I9Q5ILl1umvQmc07
-	yN9SvWSNiUpwjRehpUTCm8CHt0DejdGK3oKFoEopChiLIZYrnxsN8y+Y67qBMyHm
-	eyLZWSav48LS80p9+EG9pwskSl+ONvP/KxPxvN9oaCjMKtfsdkgOgTd1CeHKGzF/
-	c8unIpF/m9/z/XrohuFjakdZsVfHp1NEBQPnbWDQj9QGhN1P3WYtfZCzN9e0UZyg
-	TQNgrSDOt6WEqavn8nJIrqeBzgIhxAcRTxYORGpw6g==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g716hfr2m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Aug 2026 06:13:56 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67O6BGkk013960;
-	Mon, 24 Aug 2026 06:13:56 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g7qkgv81p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Aug 2026 06:13:56 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67O6Ds6O9503310
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 24 Aug 2026 06:13:54 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 755EC58043;
-	Mon, 24 Aug 2026 06:13:54 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4575A58059;
-	Mon, 24 Aug 2026 06:13:48 +0000 (GMT)
-Received: from [9.124.213.220] (unknown [9.124.213.220])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 24 Aug 2026 06:13:47 +0000 (GMT)
-Message-ID: <5dc1fe2b-289e-4786-b9e9-e181dda8d4e9@linux.ibm.com>
-Date: Mon, 24 Aug 2026 11:43:46 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tpEWe64a"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7A7DEC2BCF4;
+	Mon, 24 Aug 2026 06:15:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1787552110;
+	bh=0/Xzhe2w9Sk25MhwhUaru7RZxcbtsKDtkT59/Di0x8U=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=tpEWe64aeJPhbY/8iS6k98xzCTy5t4MZCsj2rhXtFWZy/bJLbbqUJ/8YbDQZEIC+u
+	 GG1ghSml13r4uiK71H3Pa/od0hRtNf85yFFyw+POMEpJGIgMkN3DvJCFHna6BM2Lr0
+	 n+3X6HPBEg19SZ+GiDhikqQok4o40gmidkPJaEVlFVvopOZ48qnxwD/tL2ZOt+QU2R
+	 o6tVL1QsX43bZ3ytiXVbC0/dFtEs3jQ4eX6X78mmvV/81SiFpL8pnqTxTclTesrpS7
+	 x+cepDG+z19TZ6W5+gWWE2+x+5FYDKUUy18lqmdr0v05fGCNWP2l7iQHW5WdeLRgsR
+	 3NgKAjzvau72A==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BEA4C5DF81;
+	Mon, 24 Aug 2026 06:15:10 +0000 (UTC)
+From: Jia Wang via B4 Relay <devnull+wangjia.ultrarisc.com@kernel.org>
+Subject: [PATCH 00/12] riscv: Add device tree support for UltraRISC DP1000
+Date: Mon, 24 Aug 2026 13:54:13 +0800
+Message-Id: <20260824-ultrarisc-dts-v1-0-61ab7aebe9e5@ultrarisc.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-From: Mahanta Jambigi <mjambigi@linux.ibm.com>
-Subject: [RFC] module: init-failure path can free a module with live
- try_module_get() users
-To: Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
-        Daniel Gomez <da.gomez@kernel.org>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        Aaron Tomlin <atomlin@atomlin.com>
-Cc: linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, linux-s390@vger.kernel.org,
-        "D. Wythe" <alibuda@linux.alibaba.com>,
-        Dust Li <dust.li@linux.alibaba.com>,
-        Sidraya Jayagond <sidraya@linux.ibm.com>,
-        Tony Lu
- <tonylu@linux.alibaba.com>,
-        Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
-        Alexandra Winter <wintera@linux.ibm.com>,
-        Halil Pasic <pasic@linux.ibm.com>,
-        Hidayath Khan <hidayath@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI0MDA1MSBTYWx0ZWRfX8iz10sYdxjfN
- ucR+7s4gyC2sWvQR2rG/6q/HOC7re2RiwHzSBUzN0jX/M1ptH1J7DQTVE2LiDFc23ih9blkiOFi
- NneS/AcTYZXycK518rSAMGQhoJj+eXI=
-X-Proofpoint-GUID: tyarUeiplgB3t8PjeCrkG0mPQopA7BRG
-X-Proofpoint-ORIG-GUID: 4qlPXTpx764y-loKHhdmkaj7ID_i2eIt
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI0MDA1MSBTYWx0ZWRfX97ikndDvwT3Y
- yEbKJdfYYtaZ7CeZINStTKwf6iLzQdTwp+eL2Ai1QZKCgM9Ge8OEAdGDH9peuEKO7Biqv15Gubi
- Cz2Q85Moso+UKx+j+DfVb7TG03upQqN6r6Amv1wu5p0OBokDrRfBT3wydPhdLnsugqKegSuD3Qg
- 2nqpTAPpLACI8Tk7IbQAR0H9/WSFEaUhtx9nEq4VQlkLCVey6i0xFHhEtKgQG6fisdTl8YlZ2nf
- iRfTqWrXbRagNBexB11MHS/QZ3qlCJW2vWlU6I0EvgeB3u8v60lytnhAy5/DCPrhKyPjUPuj+mk
- 9lC37X90YLY9MPa/Xm0J/XWJHmAqkr7Z07JtBEByLMvrFxTsIcyYBgLSagQIawGtfkYWQUEuZ4l
- Sayj7ei6NysDLXGDwvkjuhx8c6lm3Xtesmg0VXzVtUa3qJJXHRzPXhwNqb+sH+W3Eof1RizLI19
- f3cab1OGOt88zaqFtzQ==
-X-Authority-Analysis: v=2.4 cv=H7brBeYi c=1 sm=1 tr=0 ts=6a8be125 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=ivB86U3Dv6JuGY3LHcgA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-24_02,2026-08-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0 spamscore=0
- bulkscore=0 adultscore=0 priorityscore=1501 clxscore=1011 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608240051
+X-B4-Tracking: v=1; b=H4sIAIXci2oC/22Nyw6DIBQFf8WwLgmCgPorjYsLXFtaHy2gaWL89
+ 2pt0k2Xk5wzs5CIwWMkdbaQgLOPfhw2yE8ZsVcYLki925hwxhWTnNOpSwGCj5a6FGnlwAjgIld
+ Gke3zCNj618d3bg6Ok7mhTbvkuwj4nLZQOma/Tp39qdhutHcKudEAsmoVM/Vc7CIDEakd+96nO
+ iuE5KYExKpkTJZSACjRSu2U0JqX3GGuQYiWNOv6BtIRknj0AAAA
+X-Change-ID: 20260522-ultrarisc-dts-9dab3a2316b6
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Alexandre Ghiti <alex@ghiti.fr>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
+ Thomas Gleixner <tglx@kernel.org>, 
+ Samuel Holland <samuel.holland@sifive.com>, 
+ Anup Patel <anup@brainfault.org>, Mark Brown <broonie@kernel.org>, 
+ Andi Shyti <andi.shyti@kernel.org>, 
+ Mika Westerberg <mika.westerberg@linux.intel.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+ Jose Abreu <joabreu@synopsys.com>, 
+ Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>, 
+ Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>, 
+ Palmer Dabbelt <palmer@sifive.com>, Conor Dooley <conor@kernel.org>, 
+ devicetree@vger.kernel.org, linux-riscv@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, 
+ linux-i2c@vger.kernel.org, netdev@vger.kernel.org, 
+ dmaengine@vger.kernel.org, Jia Wang <wangjia@ultrarisc.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787552108; l=4470;
+ i=wangjia@ultrarisc.com; s=20260515; h=from:subject:message-id;
+ bh=0/Xzhe2w9Sk25MhwhUaru7RZxcbtsKDtkT59/Di0x8U=;
+ b=muAC+VMha9vnX4vL4gDakTbk8VFQlQQhKDwQGjzBj7GfU6pvTzZXdrQ5kUQKMiW2JcExPOqSO
+ EhlHFWHWBomAbCbQ3MnlJ5UsptqgsPUWV8cJfCN49tMU0XuTPJCsT6R
+X-Developer-Key: i=wangjia@ultrarisc.com; a=ed25519;
+ pk=wGVm18siRScehKOkOz0WKxgxDy7IezHEszhnN4/TUCY=
+X-Endpoint-Received: by B4 Relay for wangjia@ultrarisc.com/20260515 with
+ auth_id=779
+X-Original-From: Jia Wang <wangjia@ultrarisc.com>
+Reply-To: wangjia@ultrarisc.com
 
-Hi Luis, Petr, Daniel, Sami, Aaron,
+Add Devicetree support for the UltraRISC DP1000 RISC-V SoC and two
+DP1000-based motherboards: Shenzhen Rongda M0 and Milk-V Titan.
 
-I'm writing to ask about what looks like a generic module-init failure
-lifetime problem in the module loader. I ran into it while working on
-the SMC networking module (net/smc/), but after several patch
-iterations, it seems the root issue may belong in kernel/module/main.c
-rather than in SMC itself. I'd appreciate your guidance on whether this
-reading is correct, and if so, what fix direction would be preferred.
+DP1000 integrates eight UltraRISC CP100 CPU cores.  The SoC description
+includes the CPU and cache topology, CLINT, PLIC, clock controller,
+pinctrl, GPIO, four UARTs, two SPI controllers, four I2C controllers,
+three PCIe root complexes, GMAC, and the DMA controller.
 
-THE ISSUE IN do_init_module()
-=============================
+The Shenzhen Rongda M0 and Milk-V Titan device trees add their
+board-specific pin multiplexing, RTC devices, and Ethernet PHY
+configuration.  Both boards enable the three PCIe root complexes and
+the GMAC described as disabled by default in the SoC DTS.  The Titan
+description also provides its GPIO wakeup keys.
 
-include/linux/module.h has a long-standing FIXME in module_is_live():
+The binding patches add the vendor, CPU, board, and peripheral
+compatible strings consumed by the new device trees.  The SPI, I2C,
+GMAC, and AXI DMA nodes use their respective generic DesignWare
+compatible strings as fallbacks.
 
-    /* FIXME: It'd be nice to isolate modules during init, too, so they
-       aren't used before they (may) fail. But presently too much code
-       (IDE & SCSI) require entry into the module during init. */
-    static inline bool module_is_live(struct module *mod)
-    {
-        return mod->state != MODULE_STATE_GOING;
-    }
+An earlier version of the DP1000 SoC and board Devicetree support was
+posted as part of a combined Devicetree and pinctrl series. The pinctrl
+binding and driver were subsequently split out and merged separately.
+This series carries the updated Devicetree portion.
 
-Because MODULE_STATE_COMING is not MODULE_STATE_GOING, try_module_get()
-can succeed once a module's __init is executing. If __init makes the
-module externally reachable partway through and then later fails, the
-failure path in do_init_module() appears to do:
+Link: https://lore.kernel.org/all/20260515-ultrarisc-pinctrl-v1-0-bf559589ea8a@ultrarisc.com/
 
-    fail:
-        mod->state = MODULE_STATE_GOING;
-        synchronize_rcu();
-        module_put(mod);
-        ...
-        free_module(mod);
+This series depends on the UltraRISC DP1000 clock controller series:
 
-synchronize_rcu() waits for RCU readers, but not for threads that
-already obtained a module reference via try_module_get() and are still
-executing module text.
+clk: ultrarisc: add DP1000 clock support
+https://patch.msgid.link/20260720-ultrarisc-clock-v4-0-fe639d63bbac@ultrarisc.com
 
-By contrast, the normal unload path in try_stop_module() refuses to
-proceed while the refcount is non-zero.
+Testing:
+- Built dp1000-shenrongda-m0.dtb and dp1000-milkv-titan.dtb with
+  ARCH=riscv and W=1.
+- Ran dt_binding_check for the modified and prerequisite bindings.
+- Validated both DTBs against the relevant Devicetree schemas with
+  CHECK_DTBS=y.
+- Boot-tested both DTBs on Shenzhen Rongda M0 and Milk-V Titan. Verified
+  the CPU topology and CBO selftests, UART, SPI, I2C/RTC, Ethernet, system
+  memory, and all three PCIe root complexes. The expected PCIe endpoints
+  were enumerated on both boards.
 
-So the asymmetry seems to be that the normal unload path waits for
-references to drain, while the init-failure path does not.
+Signed-off-by: Jia Wang <wangjia@ultrarisc.com>
+---
+Jia Wang (12):
+      dt-bindings: riscv: cpus: Fix yamllint style issues
+      dt-bindings: vendor-prefixes: Add shenrongda
+      dt-bindings: riscv: cpus: Add UltraRISC CP100 compatible
+      dt-bindings: riscv: Add UltraRISC DP1000 board compatibles
+      dt-bindings: timer: Add UltraRISC DP1000 CLINT
+      spi: dt-bindings: snps,dw-apb-ssi: Add compatible for UltraRISC DP1000 SoC
+      dt-bindings: i2c: dw: Add compatible for UltraRISC DP1000 SoC
+      dt-bindings: net: snps,dwmac: Add compatible for UltraRISC DP1000 SoC
+      dt-bindings: dma: snps,dw-axi-dmac: Add UltraRISC DP1000 compatible
+      riscv: dts: ultrarisc: Add initial device tree for UltraRISC DP1000
+      riscv: dts: ultrarisc: Add Shenzhen Rongda M0 board device tree
+      riscv: dts: ultrarisc: Add Milk-V Titan board device tree
 
-A concrete race would look like:
-
-  1. Module __init registers an externally reachable interface.
-  2. User space enters through that interface and try_module_get()
-     succeeds while the module is still COMING.
-  3. A later __init step fails.
-  4. do_init_module() frees the module.
-  5. The in-flight caller is still executing module text.
-
-SMC AS A CONCRETE EXAMPLE
-=========================
-
-In SMC, simply moving registration later does not appear to eliminate
-the window, because there are two separate registration points that can
-make the module reachable via socket():
-
-  1. sock_register(&smc_sock_family_ops)
-     After this, socket(AF_SMC, ...) can succeed and reach
-     try_module_get() via __sock_create().
-
-  2. smc_inet_init() -> inet_register_protosw()
-     After this, socket(AF_INET, SOCK_STREAM, IPPROTO_SMC) can succeed
-     and again reach try_module_get().
-
-Either registration point can succeed before a later init step fails.
-
-This may not be specific to SMC; other protocol modules that become
-reachable during init, such as Bluetooth, may have similar exposure and
-appear worth auditing as well.
-
-ON THE FIXME'S IDE/SCSI CONCERN
-===============================
-
-The FIXME mentions IDE and SCSI as reasons not to isolate modules
-during init.
-
-  1. IDE was removed in Linux 5.14, so that half of the concern no
-     longer applies.
-
-  2. SCSI still appears to self-reference during init
-     (scsi_device_get() -> try_module_get(hostt->module) during
-     scsi_scan_host()), so a blanket wait-for-refcount-to-drain
-     approach in the failure path may deadlock there.
-
-Also, strong_try_module_get() already rejects MODULE_STATE_COMING with
--EBUSY, so the infrastructure for refusing callers during init already
-exists in some form.
-
-QUESTIONS
-=========
-
-First, is my reading of this init-failure refcount/lifetime asymmetry
-correct?
-
-If so, would one of the following directions be acceptable?
-
-  1. An opt-in mechanism (for example, a module flag) for modules that
-     are safe to isolate during init and whose init-failure path should
-     wait for external references to drain.
-
-  2. Treating MODULE_STATE_COMING as non-live for normal
-     try_module_get() users, with some explicit escape hatch for the
-     remaining subsystems that genuinely need self-entry during init.
-
-Any guidance on the preferred direction would be much appreciated.
+ .../devicetree/bindings/dma/snps,dw-axi-dmac.yaml  |   1 +
+ .../bindings/i2c/snps,designware-i2c.yaml          |   1 +
+ .../devicetree/bindings/net/snps,dwmac.yaml        |   1 +
+ Documentation/devicetree/bindings/riscv/cpus.yaml  |   9 +-
+ .../devicetree/bindings/riscv/ultrarisc.yaml       |  27 +
+ .../devicetree/bindings/spi/snps,dw-apb-ssi.yaml   |   1 +
+ .../devicetree/bindings/timer/sifive,clint.yaml    |   1 +
+ .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
+ MAINTAINERS                                        |   8 +
+ arch/riscv/boot/dts/Makefile                       |   1 +
+ arch/riscv/boot/dts/ultrarisc/Makefile             |   3 +
+ .../dts/ultrarisc/dp1000-milkv-titan-pinctrl.dtsi  | 108 +++
+ .../boot/dts/ultrarisc/dp1000-milkv-titan.dts      | 203 +++++
+ arch/riscv/boot/dts/ultrarisc/dp1000-pinctrl.h     |  63 ++
+ .../ultrarisc/dp1000-shenrongda-m0-pinctrl.dtsi    |  79 ++
+ .../boot/dts/ultrarisc/dp1000-shenrongda-m0.dts    | 114 +++
+ arch/riscv/boot/dts/ultrarisc/dp1000.dtsi          | 899 +++++++++++++++++++++
+ 17 files changed, 1517 insertions(+), 4 deletions(-)
+---
+base-commit: 4352b8aee98005853aa63f57d6377282de17a33f
+change-id: 20260522-ultrarisc-dts-9dab3a2316b6
+prerequisite-change-id: 20260522-ultrarisc-clock-a1b7aa59f60b:v4
+prerequisite-patch-id: 9dc814b858bc1cf4736cc54bb85c26e9ca89eb59
+prerequisite-patch-id: 4b2811f1845e86731e887f66fd31978b72885f37
+prerequisite-patch-id: 37ec1006cbead8c4eef7e3c8f146fabab5875edf
 
 Best regards,
-Mahanta Jambigi
+--  
+Jia Wang <wangjia@ultrarisc.com>
+
+
