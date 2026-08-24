@@ -1,157 +1,108 @@
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30CA1403B1F
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 12:29:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC60411680
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 12:33:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787574586; cv=none; b=WI7DLAdwu+mh/G9xGt0MtSpfrowgRCbG57VH/S4ZUNfb8p6PTmmt/yuKb4HWRva8K4K6vh8NyYSoBn8h7C4de0Z6msbxXf6l3KC3SD/c7ix+3EW0Te3c8/voav6IdlbASswQ1MKTEurkGZwDiziSFIvefpO6ELDxiQooGdbgi9s=
+	t=1787574828; cv=none; b=V50UJASa4+bBu3eUuatNPCVRDOd8cZBTQYKjSwx7xshbVoBRXofIgvc9Idm4AhTVrq0ZbHLslGEEwguWWMSPpqdlinmIJru1ayZAwXU+ZBzLqxmrap+5Ztcv2+XDtqIUARVxheIvO6/sVqiLq4YGzoMa+NBVSVIYDWDZlkLGpTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787574586; c=relaxed/simple;
-	bh=/p4Yl9cRrA/08EFs7XUHDyj23xIlq6ZPP0gzi9wHapg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Q9cl1r0YlzJYdoJfmLSuNnetuLzC0M+VndE7afsvzD/HYv9mI+JTxcri8obTEd0H2V6+/vfuqgNnHsPULQRUiKW9q47+tNkKNeCSJF4Y9j91DYiWv+/lPe0sStrJZhtwFf7fbPP+ygCKeHnz2kzu3XjXKF4JJmNksEL01/DK7T8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=USrDBV0b; arc=none smtp.client-ip=209.85.160.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787574828; c=relaxed/simple;
+	bh=bw8kYtOO5U+FYmtTM1M9KgNeI5l95N1tcJQbU4Owl4k=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ERf00plnKZYmVf66DEYzlyMLcNOtYHuKHy/mnTl5iozQkWz6PlQMBbele4FutScKynn9nzAr0jdrIS7DJVJcD5GDbddpwTkNzHryl3EXCduN4dh2lbGBDtf2QVcPjmPKa/ILHtwWV0F8223YDLwMNwwel36v9Pumyi4/hd4KG/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffroot.co.za; spf=none smtp.mailfrom=ffroot.co.za; dkim=pass (2048-bit key) header.d=ffroot-co-za.20251104.gappssmtp.com header.i=@ffroot-co-za.20251104.gappssmtp.com header.b=s73KDYXY; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffroot.co.za
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffroot.co.za
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="USrDBV0b"
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-451fe9bf738so481975fac.1
-        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 05:29:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ffroot-co-za.20251104.gappssmtp.com header.i=@ffroot-co-za.20251104.gappssmtp.com header.b="s73KDYXY"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6a157f90752so5731716a12.3
+        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 05:33:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787574581; x=1788179381; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=udVPUe6IPHcf7p6BJaM0xcgin13VVHNN5Zpwgn/hQ6I=;
-        b=USrDBV0bKQZq9JYtrMP2fBafqLKGBeX/fy3asHPsvY+XBbwv3V0sRSF7QKlk0w2al7
-         cFw5Vwd2IYBOPkmoYH7USfKgKZCXUrYkZh5cDr8FPdRI8jLgtYhCJjMVv0Ab7yBxQhF+
-         TTZCTwi/oZlqCukP8q94ImTs0zoQrorFjrM9hBQSJIJqdUasGIg6ihcck4D3SYuV14p7
-         /1L/PgWtRgOQpDdjccYU/3O8a7HMI0LDTM/nu1DxeUY29gmUzV7DhVZF/X3E+jv0Ytwr
-         XiIX5vSx/WphTevs3Zrw307wYpgD0scVEuOagsdam7X3Ap4PTmyuWMP3C7kYmhhInOcf
-         QcEg==
+        d=ffroot-co-za.20251104.gappssmtp.com; s=20251104; t=1787574823; x=1788179623; darn=vger.kernel.org;
+        h=content-type:mime-version:message-id:date:user-agent:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=LYsstLUHA4+O8kBjsO8+8kq4A2q37DKWSh7yXTB84NU=;
+        b=s73KDYXYmcNSZni3/cRIO5TzgwI4Bv+WHRKXFvFKzsYI6QXJ2NQyVmy4lk0Nkkrvuk
+         EjncP+mqsJLvlXGLLmf63Cvj+Q8JLUaOUrgZqELm8cgSYgWC/Bld2F2ogtODEgC2wVJd
+         ZCYfsQYS8uKfozewxOXBjeKtC2upV6hAIorm2di//nvHXE4g6Hm3BwOLyRhjCI99er3M
+         60xEafpGUo5JQfCv4GS48+FAVZPlBt8okuZtlQlZJIZnVUgjdFyoea9ubI7pXpqLsb8R
+         7pnrm+2UGLF2OwAV4DpdFHDp/eDihMPfTYiqIrhsiHOxI0rIaTjpHIzCplQwngSGmzi9
+         vasg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787574581; x=1788179381;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=udVPUe6IPHcf7p6BJaM0xcgin13VVHNN5Zpwgn/hQ6I=;
-        b=mFhau4sjz7Yfao3eFkS0+8jIkmMYXprPKknaXTdAJPEA1yVFcPZ8giuRNfgcIY7Ung
-         N0qWexEIoq6rBKE1PyIadba4inoIXdgRoWfVA1QXCXfymfTOOJSjMWQdft7WYPWbyAp4
-         gYN5BwUMpVE5WYeowIx8/NfYC53ETPP1rD+7YUesrMxvnaaC+tIXwmYy9bkyIdY29aRK
-         XyqFW7X2eGHPToiI6Hr2u/uQcII1M9kOOX9p6v66w644RGNMHGMk6TKIc8Z2kyR12AJ7
-         vl2dXkFQ2Yc2JYBtPL09xplcAilNDl92Lp/ooNEd/IpB+2HkskKWlpX6ZLvcagoVBzvo
-         Pwrg==
-X-Forwarded-Encrypted: i=1; AHgh+RoE3jq7sPxde4ZCvQNxDtpg3Dgr0/LGUG0wGrYvP5NA/ZFfXb859NehZY1isbp5qAfKcdFTLVc=@vger.kernel.org
-X-Gm-Message-State: AFuF++m+XWz+q/lkO5nbXtQtgkTp3aByoDlFLqvKAnPi/FJSYv0zZklN
-	Q6JN+95zRqkwrva4EHZRyayIBrmzOduJPgdNobVD/OA8nq/44hNQahZ6
-X-Gm-Gg: AR+sD11btsflI+Hf+Ww7pRwv5snw5V41PCOW3FGSMJVA8ijeNZ7HTPVRb3p4IJJpvXo
-	lLuHMKpMUvfoFMFe7E6xA4FdXCaFLWdHHdWxQGlBOUgMOA4n1bEfiarL0XnJgC6iibVkjdHK99j
-	ra0r8y0C7iOwpullwfJrIsxgpURc33OklUy+YN83enNWp7tb3mgf+qbOTqu9J7TJQgpy+ypCgg6
-	0b+gtXeEiuEASHlLIqbXNHpEXZKCXV1HSGKsH3B7VCoaye5IBbN6rXGXfRk9zlk8gHIsxNk3e4a
-	D3475L2EP06C7yXmid/si92QPF11anM4sG3mkq9PRk/pOrQi1tBF7ac1OLGxpdKjdt5IR5KF7U9
-	+TeVeZ5LKa32wWCEUopeHA48B9r/3tJSS79s7MwKOL6VJ+CsK3CoaUDoqYWgMaw4rThNEPGnaNv
-	FJ+z30tRLDNJ2umC7UI+TnDOdzCVtuQ6H7mX8zNABWCuGC2z6UtRwaxf4aleOb6iB0+XscHQWQq
-	geOuPz6zfyww7LKuDMNaZfeDRpwlnuJAdbr+17HhEY9i7OnLETu5X87
-X-Received: by 2002:a05:6820:341a:20b0:6a3:6bb0:e584 with SMTP id 006d021491bc7-6b1592c253cmr9992591eaf.1.1787574580793;
-        Mon, 24 Aug 2026 05:29:40 -0700 (PDT)
-Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6b17c832d31sm3598839eaf.5.2026.08.24.05.29.36
+        d=1e100.net; s=20251104; t=1787574823; x=1788179623;
+        h=content-type:mime-version:message-id:date:user-agent:references
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=LYsstLUHA4+O8kBjsO8+8kq4A2q37DKWSh7yXTB84NU=;
+        b=W7x5NetZa7Ig/eQeBK5dzei/k4tnnCqTGj6hqQooWSE7XiBCpdtSB/b+I0tXzW/4wi
+         pO5JKAiIH0dyN6YtiQbXwFz5CxyDFcSx8PC3gJkU2fCE1YBK1bO6DCN8lWk3CC2cPEyZ
+         f7Hc/RMWwxVdY8n22ek30fdqcFEymXB2FsrC5dB3khd4pWkkRLmd1tZnTsF8IgBluWEU
+         /9pLjr18HVZoKjDRfZV/nI/V+M5ByG5ZHA77PIzakMSA2Qb9GzaIQiIE1ZwRYak/tvaG
+         6gHpdSjscYCcz6D7HPG5Qx/2G+Y9jkzK2kbPGn1UeykrgSKrX/a3XLuIVKVTSpqrNBSJ
+         zewA==
+X-Gm-Message-State: AFuF++logXCCVmOK09a4j0VyXDIF0b69k0rUrHl6a5UZaFBORKsLhCmo
+	baTJiliXWuGnLGqaOnJGKURlfqsR3FYpertV2M5h5ZsDpR/S8K5j6PtICPw+fM8n4gM=
+X-Gm-Gg: AR+sD10WAx+15C92h0mNwMBN0bQX6w3M1eypQ6MudEYjgxFlfg4wffLkIaSN6ir89dq
+	jMSbkv9+b0hR4+1lGYr4bEgfF/jGm+XLr4vg9RpCIhZVrO/C7keCy7kDzbwq/jqsJa9fibwle5Y
+	YsKqUvBZn5IixU9YeveQPHHNPU88kw6cV1NvcPAw4B/VC8IS4eY/JtSTSyG+85uc0tL/Fl0Lqi1
+	DX7yhQV8yIlwes1BPjiQWhG5J6cL2AXZ5B8NuUfNQbQKLYwkXM2DFLAFbmasbSsVkKDuGDxF99T
+	lLggKhhpXIyul1l1pjeAph721xpAfZfLh7ojAkvyDwy1DnnGoFbcoQjwQLnva4BMrE0FoptG2LF
+	0hnqcmUgqk16pu/NXMQFEWOxLVy897eJP56Cn5ZwfYKXJSOAc2a7kBAW0hqD+47P7M/p2jBoofo
+	OkKVMwztNnRmDenFo4sAd8K8GMXDiTt/38ZDQjHsazMqzPIXstXdlt7TbZr+cF3II7So2QqkVuF
+	ieujxB5BLdWfDQG
+X-Received: by 2002:a05:6402:24c8:b0:6a1:4458:7f2d with SMTP id 4fb4d7f45d1cf-6a42f172088mr22058897a12.5.1787574822559;
+        Mon, 24 Aug 2026 05:33:42 -0700 (PDT)
+Received: from dev-ag ([102.33.165.38])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a59e1d741asm8342424a12.27.2026.08.24.05.33.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 05:29:40 -0700 (PDT)
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: Jon Maloy <jmaloy@redhat.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Tuong Lien <tuong.t.lien@dektech.com.au>,
-	Ying Xue <ying.xue@windriver.com>,
-	netdev@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Chengfeng Ye <nicoyip.dev@gmail.com>
-Subject: [PATCH net v2] tipc: protect node reset trace dump with node lock
-Date: Mon, 24 Aug 2026 20:29:29 +0800
-Message-ID: <20260824122929.210431-1-nicoyip.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Mon, 24 Aug 2026 05:33:41 -0700 (PDT)
+From: Andrew Gaylard <ag@ffroot.co.za>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org,  wellslutw@gmail.com,  andrew+netdev@lunn.ch,
+  davem@davemloft.net,  edumazet@google.com,  pabeni@redhat.com,
+  linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] net: sunplus: fix tx_poll spin_lock missing irqsave in
+ NAPI context
+In-Reply-To: <20260822135103.6711ba25@kernel.org> (Jakub Kicinski's message of
+	"Sat, 22 Aug 2026 13:51:03 -0700")
+References: <20260820130159.1584806-1-ag@ffroot.co.za>
+	<20260822135103.6711ba25@kernel.org>
+User-Agent: mu4e 1.12.14; emacs 30.2
+Date: Mon, 24 Aug 2026 14:33:36 +0200
+Message-ID: <sa67blfpujj.fsf@dev-ag>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-The tipc_node_reset_links trace event asks tipc_node_dump() to walk the
-node's link entries. Unlike the other node events that request link data,
-this event runs without the node lock.
+Jakub Kicinski <kuba@kernel.org> writes:
 
-This permits bearer teardown to free a link while the trace callback is
-dumping it:
+> On Thu, 20 Aug 2026 15:01:59 +0200 Andrew Gaylard wrote:
+>> spl2sw_tx_poll() runs in NAPI (softirq) context and acquires
+>> comm->tx_lock with plain spin_lock(). The hardirq handler
+>> spl2sw_ethernet_interrupt() acquires the same lock, so a hardirq on
+>> the same CPU while the NAPI poll holds the lock would deadlock with
+>> IRQs disabled. Use spin_lock_irqsave/spin_unlock_irqrestore.
+>
+> Please explain how the issue was found and how the fix was tested.
+> I mean - this is an ancient driver, if you don't have a way to test the
+> fix you should not be sending the patch.
 
-  CPU 0                                CPU 1
-  trace_tipc_node_reset_links()
-    tipc_node_dump()
-      l = n->links[0].link
-                                       tipc_node_write_lock()
-                                       kfree(l)
-                                       n->links[0].link = NULL
-                                       tipc_node_write_unlock()
-      tipc_link_dump(l)
+I'm testing on a Tibbo LTTP3G2 board:
+https://tibbo.com/store/tps/ltpp3g2.html
 
-tipc_link_dump() then dereferences the stale pointer. KASAN reported:
+This work is part of getting it to boot, getting it stable, adding a
+couple of missing drivers, and sending the changes upstream.
 
-  BUG: KASAN: slab-use-after-free in tipc_link_dump (net/tipc/link.c:2910)
-  Read of size 4 by task poc/115
-  Call Trace:
-   tipc_link_dump+0x10cb/0x16b0
-   tipc_node_dump+0x4bb/0x740
-   trace_event_raw_event_tipc_node_class+0x258/0x360
-   tipc_node_reset_links+0x14d/0x1a0
-   tipc_rcv+0x13f5/0x3030
-   tipc_udp_recv+0x4e3/0x670
-  Allocated by task 0:
-   tipc_link_create+0x1e1/0x1020
-   tipc_node_check_dest+0x7d2/0x11a0
-   tipc_disc_rcv+0xdbf/0x1430
-  Freed by task 89:
-   kfree+0x131/0x3c0
-   tipc_node_link_down+0x267/0x4b0
-   tipc_node_delete_links+0xec/0x160
-   bearer_disable+0x107/0x260
+I found the issue using lockdep. At least, I though I did, but I've not
+been able to reproduce it, so I must have been mistaken.
 
-Take the node write lock around the trace event. This serializes the
-dump against tipc_node_link_down(delete=true), which frees the link
-under the same write lock.
+Apologies.  Please drop this patch.
 
-Do not take the lock inside tipc_node_dump() itself: several dump
-callers, including tipc_node_link_down(), already hold the write lock.
-
-Fixes: eb18a510b5cd ("tipc: add trace_events for tipc node")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
----
-v1 -> v2:
-- Use tipc_node_write_lock() instead of tipc_node_read_lock() so the
-  dump is exclusive with link deletion.
-
- net/tipc/node.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/net/tipc/node.c b/net/tipc/node.c
-index 683a136e53ef..127848e8a644 100644
---- a/net/tipc/node.c
-+++ b/net/tipc/node.c
-@@ -1333,7 +1333,9 @@ static void tipc_node_reset_links(struct tipc_node *n)
- 
- 	pr_warn("Resetting all links to %x\n", n->addr);
- 
-+	tipc_node_write_lock(n);
- 	trace_tipc_node_reset_links(n, true, " ");
-+	tipc_node_write_unlock(n);
- 	for (i = 0; i < MAX_BEARERS; i++) {
- 		tipc_node_link_down(n, i, false);
- 	}
 -- 
-2.43.0
+Andrew
