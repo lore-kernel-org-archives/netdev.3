@@ -1,128 +1,266 @@
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11021106.outbound.protection.outlook.com [40.107.74.106])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301BF1DED42
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 02:46:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787539591; cv=none; b=fSXDxNP+PLL4rwMpBbw1yd8RcyGqZSOFpuqjYaIuQyGBoa9vX140VED6v7dRBydq8JHYWXJERct+WSe1Y+O+OMdXYR2eyrk05U1x+p9axtrhVlbswusPWRyArYxhqXQS190UBwnXUp4XpCxHK/LbJ/8VsdBJ43/Tw3ju3zqH8mg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787539591; c=relaxed/simple;
-	bh=6wHJp5jWLPXyCPbYYK7srf8P7Lk/x3nahhhtNbm1rOc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WMWS4JHHEbW1qimUu3kqJjZc/yaY3Nw8i94Z4r4gsXcVNSTDt0Kpqti5fqtSQM583chR32ZUCs1udyJ0qXaVM+LYOxRioNjhW5ibU3JLsS0gsj4Prnw/g4bjTgPF4hcgX5BNdKkcovWoLY4fpxxOGGKr4RdE1w6k6K0rfARUE9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=tHwzdLUG; arc=none smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814C9303C8A;
+	Mon, 24 Aug 2026 02:57:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.106
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787540252; cv=fail; b=LE4tl2TSy/XuKuecKA7i3BtiyxxnnbW+k+nd2M7iIE6qHMTvVjlekwl6NCuFiIRDo42jV+hUS0qmnSU2kzs11hYSfjPxEQ0FsbhtZXKH7lgaf9KJxNfLdYAVSQEA9Qg5ZVQLLGhrDCQdJxWtVMsIam/32RoRi85jv2nN2DC1hgQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787540252; c=relaxed/simple;
+	bh=h3hZolDHy4AlOQWt9b1Oyb49OMLRho11DWXItelsOcY=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=kpsUqI+/Jts1Liy8hOdfdtIr+ATEKzuHz7/5wXY91OemwZbLzq8isHBG3qTmmq1xPO83MKGz6/vPTNu3UBjoeCJg8+5CywJrhhqg532278C0BQgOw869DF7LNXJwHzzLWzWS2H+9TTjoUbJiRyVTfd1uRd+9i+4hU/v48YVLj1U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=mcMGn9Xr; arc=fail smtp.client-ip=40.107.74.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="tHwzdLUG"
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-cbee846deecso3393713a12.1
-        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 19:46:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787539589; x=1788144389; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JdXAVtfWW5XJfHD/rPxea3ZWIOeQzMPQX3bPL/2GZJM=;
-        b=tHwzdLUGkEuymfGBZd0yUkMv9ICFDKDT/V2s5F2wZ0XOQN/ujIIXDGZp+v6hlLPr6c
-         BkqlIlw5O7abckrZ4/bqWLVcjQpspOlzfje5uqkGoXhMXeRBu3sTr2skr2qCeLlN2D2w
-         udlCwEKwK/TJoQZC9H/uon8315p+Qq6ZkElrOy2TnqbQ+Zhe6KBcfYIU47JoM8CYRKKs
-         f0i5zpELEbBo37AJ006EXlC5n8fX6Ha4FzyBi29AKDxCEwJGptDfqRv243TEW+nS4Se6
-         lAjGB9xG9mQLT/vZ3AO9XvK/VH61eix1/M2YBMGnkyQurUndIGXsZt74h1rrHpuStz4R
-         1J6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787539589; x=1788144389;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JdXAVtfWW5XJfHD/rPxea3ZWIOeQzMPQX3bPL/2GZJM=;
-        b=RkicavwDRmjt4Q2SeCiA8+399v/YU0DYxRI8lAozJfzPgrUxHNLIRK963bRkh6LMRK
-         L3/r0cuCUpu+5hI1t0741lwySsjnk+vrfZCFxrb9INfkS4wzRXcW7n76x8o9iPFKCjj7
-         EiJiH3G/qsgEr6+g9kJBURya3SDVXtF/dLhUFfUT5/iQZMztSxk7tH3rfcTGzDpZxFsj
-         4FiNOzVdm1X2qtVZvOfxT06U0tiF98Zu92ZSmlbmroPRGjAUuuVDND2WjGAzQF+0c9En
-         pvgzXut1AyzjKcmJnSCNzRoy0iUoH4DQwKo4gioRuwalBw2JPFGT8Zwhxe50xgFNIYl0
-         uWzw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp/LrtJzjQmh2MebVWxYijBep37ZZZJMg/Rlomx4Bd+p58AXIzshP+qb9dbhpNihJYpK/cyYK0=@vger.kernel.org
-X-Gm-Message-State: AFuF++meABRb+y8wnbWPaIfK2qYyGLIA7n66ybsK2qbi0mAInRQ2ulo0
-	U6jt6/Mkr7T2UiKum7C2+FuM0OOC1gdqIhLzrJwhQBdMK4aA1lzvKWfw
-X-Gm-Gg: AR+sD10XKbWBUQ/NWVVHAD7x++MIsnhdgHnf5M4Ctm7PzOSs27BgEq3D9qPcaD9RJww
-	JkXOLGvTlfkz3IwjtoqwchErm757926rCr2Kn/xsSpNeSuS6K1jHRb2dgD6hViSZSnt31jc3Jt+
-	Bg9aY9JHkywiZ3SpcJSiuURvHkKFBWvFh9lByfViVZSKG9emM2rpipEJp5lvhFht0OyiIrgzg5j
-	YTwtkaUA2be6PXHzbAknMbvLEct7FtFqf6iKf0nnWECHfDkkMb5HkI6OE8PW2bU1mbVP8zB6vTc
-	/XPsA6Tyj5ybVQ06A2C3AyGSdMVDrajSKet0XZ6twe5W9JLzjNqWeTDUqs/y5zKckA8tA3v0TwE
-	czOn1U+4gByhWzR2FMJxU6xIhSMsPhdFki4TwTevg2V994Qg+0Gd3SFlDKRDAYTC0Vn8vZySgPr
-	cTODMou6WmFg40xjxY6BWhKzeVfSgnHOrAJuOyQLxy+NxM2dWVrina3pyn1f3nHKXIVboSjTv6L
-	lMxg19XPXMg2Vc/xlHMsZg=
-X-Received: by 2002:a17:90b:2e8f:b0:381:e74f:8a6a with SMTP id 98e67ed59e1d1-395c3abee54mr41014455a91.16.1787539589306;
-        Sun, 23 Aug 2026 19:46:29 -0700 (PDT)
-Received: from deepanshu.. ([2405:201:682f:383f:4cf4:9e7a:69d:2900])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327f90e22f8sm18744195eec.13.2026.08.23.19.46.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Aug 2026 19:46:28 -0700 (PDT)
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-To: 3chas3@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: linux-atm-general@lists.sourceforge.net,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	syzbot+6665d3db5fef15914802@syzkaller.appspotmail.com
-Subject: [PATCH] net: atm: fix shift-out-of-bounds in __vcc_connect()
-Date: Mon, 24 Aug 2026 08:16:20 +0530
-Message-Id: <20260824024620.23485-1-kartikey406@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="mcMGn9Xr"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VWjLCMd6vwv6KSQ06HRmouMHDSgKF85qF6JkfnYBV0rSyVc3zYuRoOSws1ND1COGkQK8nG/qW4zzDnEY2mLCmtwlZTlfd1QXCBSD/UpS6dUNxaPyxZvTj0W8lJYtlWi13nFHBv6+MERmBlv/RqTp5PgQy0dIlqhNNtDKU5I+vTzvcYQza2AYlpJBJoYa8R1WnN7i2ecLJrtXxZaQDxOx3lhGupGtYK70ALLSdiLWZvB1p9ga2UaTEVzBL935DpmdP1/DueN/a3DsUhg8vedypZQsVTLHcjA85JQX5zuefZUXSWF/mH8kNvhPOSueeeJLAqWirD4Ii7Wd3gG15hWlaQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qbxOFuuJLHgSDGhlVMaGVVF4605rOIZkwsHLrxa2jC8=;
+ b=UnZR9yADkYDnJ1RUkCfz4axDY6YUSyuAfK4VFg9cSueBN8ToXljo+971qNtWv0JBcNDVTM0ei6x8nN40zVd/CtMBuAmd77b74mGdKEcHCwFE7jaSgcwoc48eIMIfb8ZxUtELR7dDUhF+cvVluu33d9740l4N6JNjcdE+3lPnkY7SVYpgHXl+E2TPhcjS8mB8lmpjMHYun7MWAQVw74TfjM5SXGdc9P7Ei268CrJOL/pXDsLLVMzO4fWbWFUqK8fOQ2edxmNWqKyaLpiHOaVe216ZA7k2UyqdYK0ZbaJhyHp9zCgpccySlERGxFdWC8FHwtTMiFQ5zIIi2VcfE69i8Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
+ header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qbxOFuuJLHgSDGhlVMaGVVF4605rOIZkwsHLrxa2jC8=;
+ b=mcMGn9XrsisJxNa+xt7KNEZ5aIhhHNZ3L/mvHonEapBLhrKbeAmK89dtHDYt9APDTxOHDg98C8eecYOCxtIZz1S1lEyhPpfGQ1IMhVn6iRAWC50PPhuR1q7wBin7YblvnnVqC0yyRGi1LzqRo6p11u9i4C6nEdrGrlbio+phBaA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=valinux.co.jp;
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
+ by TYYP286MB4188.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:109::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Mon, 24 Aug
+ 2026 02:57:27 +0000
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32%4]) with mapi id 15.21.0339.012; Mon, 24 Aug 2026
+ 02:57:27 +0000
+From: Koichiro Den <den@valinux.co.jp>
+To: Jakub Kicinski <kuba@kernel.org>,
+	Jon Mason <jdmason@kudzu.us>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Allen Hubbe <allenbh@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	ntb@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] net: ntb_netdev: Fix statistics races
+Date: Mon, 24 Aug 2026 11:57:20 +0900
+Message-ID: <20260824025720.3520288-1-den@valinux.co.jp>
+X-Mailer: git-send-email 2.51.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TYCPR01CA0209.jpnprd01.prod.outlook.com
+ (2603:1096:405:7a::14) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:38f::10)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|TYYP286MB4188:EE_
+X-MS-Office365-Filtering-Correlation-Id: 21a1fe12-9b84-4115-1db4-08df018b6e0d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|1800799024|10070799003|376014|7416014|56012099006|10067099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	0dEKW145xYOQYzqpn2z/m4rccKdBms2Yh7TDmvOanSWD9IjzAk9xZ6N/7VO8dytcmWw7VU++XOX2Fkt9agKmlu4P7UM6Iyk6raVjgZ/on46eX4hSbOGnA1ml/GhKebhcOlGRpu8yFnZSKmfOhhKcspHXPxveMchLSWpDlD95vrcxj/egSx9EU2x7O5cmjM9ulgoRw2VgldFAWn43kV0hZekEYvzig4F2crVa4jABKHwYeSaDNOlOtWfTbXTjvlZImk7vOXtvhPaD1r4L3a/DNMMtBmRsANHHwJdpz7BC9xh+t+Zt8On0tB/cnIkl0LwfO9a4JPLT/nVzlgDXfq5/QiNQWXU5tf2UIkrKTcTO3tZ3hbCvEDFKEMUrTBbntRngrFLnhAgjD0jXrIElBsZQN1LUZZaYNGSmexFZpkNBkJr0b+UsXsFDWezEmqasclepy67jSSTjkrZ/HO5UKKgD3rCwtXqqoFQD3W+hHc29WmN0/k5XyTOTYfTiSWtkxnhBsdV+QBBlx/6ZSJnVvGtQP2tYrrgsliondMV3HNT1FBUkQlS2Ef2YS3Lt4evFZLQsFQ8AV9wY9nFXMIYpColv+5HfdYvZQc8GujxVl+hv9+vUKjSUGkwJhDchWI6/Qhguw6WCL8qWZD+Pzui2LIhNBm7r23cj0K97CDcHQZrvHhI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(10070799003)(376014)(7416014)(56012099006)(10067099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Txhc957PbitMZz11uZFl8w9TqMRgaHdfA0BWm/nefJBNMMoSN76F7aTLbywP?=
+ =?us-ascii?Q?hGCpbNtei96pdk5ZUmlXxgPWnSD+iToyrv2HNTrmkWn0tBDo3JP43REmStEz?=
+ =?us-ascii?Q?zbm8i1AFhVH/VZReHUlMxfwVuSXNhhfv5qj/FOwbNeDD0N/LUISlUfJ7CO35?=
+ =?us-ascii?Q?LFkbs7gQdWDdb7IgQwUyn9BK64aUk/qqPRml0ZXj2WVlkjzX+3yubQ05Rsmx?=
+ =?us-ascii?Q?jgSkrK15wsDBPpbCK9Bkw+fIdU1zZei4fSYYNUZn2JRfa2dCwgx/HsOnu5tC?=
+ =?us-ascii?Q?INscLAQ/RmEeMaUIve3dYbeqUSsDcJVqwEpIKngFnqLO9NNOr4RSRfZJaMvH?=
+ =?us-ascii?Q?RNR5Zri08SH7MBn8GKkoMNhJaDznR6E4B4EO7ptIKE3eZyVnVjHruyAtqLY6?=
+ =?us-ascii?Q?RV+6mfGlEotVQ9f6RnByYtkl8JBfwcJZHxNAGSnnGV+yi6+1aZpc2hYB85nU?=
+ =?us-ascii?Q?RfQ7tOpLv1WcZE8gr+3XJdsqFxr4iG+H1M4GNnX6U9CbWRFXHH1nSWxEoWs5?=
+ =?us-ascii?Q?m5xLAiOXh6OVVCsBvKL39G8ASywkihbCzC5btjXz7pJssiJINNG4MapudLBn?=
+ =?us-ascii?Q?Z9y+rBC8CyzZPqNrW2BS+a6gvHuIRC5r6SRUOxyEMaHPmmcWP+bdAZkfNS+V?=
+ =?us-ascii?Q?0468U8WnAaKdkc1EbPKij4HeuUXo1rEkPt2zZLruPoxTJkFzplCRPoTCdzWH?=
+ =?us-ascii?Q?YFj6wllsYSOw0Xsgv7WWdGNn0CGe477E1ySuQpnCf8JYz77LmIoD+pcj0gsT?=
+ =?us-ascii?Q?NBYfm5692lPqQl6PiIMlHlyuiwPNb5Uj5C4ParRUaOPNGisQl+3arfyhKMIj?=
+ =?us-ascii?Q?1jljoa6LKL6R1mQsu+EMbzQ6XdhXIwAumbyMa9v82gvbHCvi7onDsa3LWxG5?=
+ =?us-ascii?Q?rE1Hd6Q+A0US3+ORxwWK3Eon6fTRoQuSKWHy3BUusqzSR7D1zoYxuKRDkllL?=
+ =?us-ascii?Q?VMSU0FvK9HO+xXNBNSkZQy6wdYpEab/FSAPfdcVvkYKjxKan4uiSwl1AXfZ0?=
+ =?us-ascii?Q?CXd0HZF6yY2pKpCG/LWAiMic/qHgCURp/S3g9h/EbxivhFufEdhK/WD+qL2O?=
+ =?us-ascii?Q?1D7gQHMnoHIYkuUsNb1pylOErORvYvezMzIGk3POPKTVdSf68sz453t/BTKW?=
+ =?us-ascii?Q?ps/HHz5bbzbtjGEq4EomDASlrVKtVjHdTHFJ0NCEHkYZlL9qyJRQCBi0nKkZ?=
+ =?us-ascii?Q?ffVE7z0g/ycudUo1HYb/lOropzJMATSTu73a6p/nWEw6DrSfGVFMe3mwoXkn?=
+ =?us-ascii?Q?rYxPTRk1vgs3odu5jUvp1KmS78Z64Oelx0g0mibn8TMlyq5E9wcmqfbFq+ER?=
+ =?us-ascii?Q?0Z+3Sh3IEdU+5dGKu7EvI+1Ys3JQsN/DZGPixSraUCmuVyoQIA7fiEXGIHr/?=
+ =?us-ascii?Q?rw01YHEriZObx6+s4Hm9hlUB4j9XV7tsSad3FRvjrwXh3i5bsb5PobKgO/ac?=
+ =?us-ascii?Q?2KZRzhSGZP17y4jBpruRehzm9BKphpipfqB83LvNzta7CR/88iEb1pYmQ/qG?=
+ =?us-ascii?Q?88S8ZJJd3BMvbZB13mFQiKFrUfmsegyw6frWtIGQ5anLvy87e7GPhYjbp8ec?=
+ =?us-ascii?Q?oJ6BtPpRr08kxAq0ETP8Hl1qhHM4m3sM6+i/L1BdOmYMiVV3AZhLWa4occJY?=
+ =?us-ascii?Q?JnNp8JEL2ZOq20kZUPymSpx1WvVn1HabjBYY+3v8ZraMizKzdBkt9Uv4ZCnc?=
+ =?us-ascii?Q?k4hNW9ZStbQJvGUwlMkLey/1X4Q9L6dsVbW3ZPqE0VI7L9zA0Lg1C3DC1ad6?=
+ =?us-ascii?Q?iC6UYg8BOfip/3YJrdMF5SkySdjQi/FW8FcWKn6H1BJhcmjbOtiC?=
+X-OriginatorOrg: valinux.co.jp
+X-MS-Exchange-CrossTenant-Network-Message-Id: 21a1fe12-9b84-4115-1db4-08df018b6e0d
+X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2026 02:57:26.9644
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sqGNsBNzWNo2HpkM7PAvjPiI+K9usuJ/EF6q2/8N7WHpXzMSjSCOglGnsw2qt+p3MD5zZCfLII4gYiLBIlXQCQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYYP286MB4188
 
-dev->ci_range.vpi_bits and vci_bits can legitimately be ATM_CI_MAX (-1),
-a sentinel meaning "no range configured, use maximum" (see
-include/uapi/linux/atmdev.h). Some drivers, such as usbatm_atm_init()
-in drivers/usb/atm/usbatm.c, set this sentinel and never resolve it to
-an actual bit width.
+ntb_netdev updates shared net_device stats from per-QP RX and TX
+callbacks. Once multiple queues are enabled, concurrent updates can be
+lost.
 
-__vcc_connect() uses these fields directly as a shift amount without
-checking for the sentinel, so binding a PVC socket on such a device
-triggers a negative shift:
+Use core-managed per-CPU dstats for packet, byte and drop counters.
+Keep infrequent error counters in net_device_stats with atomic
+DEV_STATS_INC(). The core handles allocation and aggregation.
 
-  UBSAN: shift-out-of-bounds in net/atm/common.c:381:10
-  shift exponent -1 is negative
+Transport queues can still complete after ndo_stop. Tear them down from
+ndo_uninit before the core frees dstats.
 
-Skip the range check when ci_range.vpi_bits/vci_bits is still
-ATM_CI_MAX, since that value means "unrestricted".
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+6665d3db5fef15914802@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6665d3db5fef15914802
-Tested-by: syzbot+6665d3db5fef15914802@syzkaller.appspotmail.com
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Fixes: 24d9e73c7e00 ("net: ntb_netdev: Support ethtool channels for multi-queue")
+Cc: stable@vger.kernel.org
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
 ---
- net/atm/common.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+This is the follow-up mentioned here:
+https://lore.kernel.org/r/20260819172539.1450821-1-den@valinux.co.jp/
+The related TX and RX fixes have now landed in net.
 
-diff --git a/net/atm/common.c b/net/atm/common.c
-index 81195727fa18..73057bb016f7 100644
---- a/net/atm/common.c
-+++ b/net/atm/common.c
-@@ -378,8 +378,11 @@ static int __vcc_connect(struct atm_vcc *vcc, struct atm_dev *dev, short vpi,
- 	int error;
+ drivers/net/ntb_netdev.c | 44 ++++++++++++++++++++++++----------------
+ 1 file changed, 27 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/net/ntb_netdev.c b/drivers/net/ntb_netdev.c
+index 9c171697e762..6a1e58d5d7d6 100644
+--- a/drivers/net/ntb_netdev.c
++++ b/drivers/net/ntb_netdev.c
+@@ -139,17 +139,16 @@ static void ntb_netdev_rx_handler(struct ntb_transport_qp *qp, void *qp_data,
+ 	netdev_dbg(ndev, "%s: %d byte payload received\n", __func__, len);
  
- 	if ((vpi != ATM_VPI_UNSPEC && vpi != ATM_VPI_ANY &&
-+	    dev->ci_range.vpi_bits != ATM_CI_MAX &&
- 	    vpi >> dev->ci_range.vpi_bits) || (vci != ATM_VCI_UNSPEC &&
--	    vci != ATM_VCI_ANY && vci >> dev->ci_range.vci_bits))
-+	    vci != ATM_VCI_ANY &&
-+	    dev->ci_range.vci_bits != ATM_CI_MAX &&
-+	    vci >> dev->ci_range.vci_bits))
- 		return -EINVAL;
- 	if (vci > 0 && vci < ATM_NOT_RSV_VCI && !capable(CAP_NET_BIND_SERVICE))
- 		return -EPERM;
+ 	if (len < 0) {
+-		ndev->stats.rx_errors++;
+-		ndev->stats.rx_length_errors++;
++		DEV_STATS_INC(ndev, rx_errors);
++		DEV_STATS_INC(ndev, rx_length_errors);
+ 		goto enqueue_again;
+ 	}
+ 
+-	ndev->stats.rx_packets++;
+-	ndev->stats.rx_bytes += len;
++	dev_dstats_rx_add(ndev, len);
+ 
+ 	new_skb = netdev_alloc_skb(ndev, ndev->mtu + ETH_HLEN);
+ 	if (!new_skb) {
+-		ndev->stats.rx_dropped++;
++		dev_dstats_rx_dropped(ndev);
+ 		goto enqueue_again;
+ 	}
+ 
+@@ -166,8 +165,8 @@ static void ntb_netdev_rx_handler(struct ntb_transport_qp *qp, void *qp_data,
+ 	rc = ntb_transport_rx_enqueue(qp, skb, skb->data, ndev->mtu + ETH_HLEN);
+ 	if (rc) {
+ 		dev_kfree_skb_any(skb);
+-		ndev->stats.rx_errors++;
+-		ndev->stats.rx_fifo_errors++;
++		DEV_STATS_INC(ndev, rx_errors);
++		DEV_STATS_INC(ndev, rx_fifo_errors);
+ 	}
+ }
+ 
+@@ -219,11 +218,13 @@ static void ntb_netdev_tx_handler(struct ntb_transport_qp *qp, void *qp_data,
+ 		return;
+ 
+ 	if (len > 0) {
+-		ndev->stats.tx_packets++;
+-		ndev->stats.tx_bytes += skb->len;
++		/* TX completion may run from the memcpy kthread. */
++		local_bh_disable();
++		dev_dstats_tx_add(ndev, skb->len);
++		local_bh_enable();
+ 	} else {
+-		ndev->stats.tx_errors++;
+-		ndev->stats.tx_aborted_errors++;
++		DEV_STATS_INC(ndev, tx_errors);
++		DEV_STATS_INC(ndev, tx_aborted_errors);
+ 	}
+ 
+ 	dev_kfree_skb_any(skb);
+@@ -277,7 +278,7 @@ static netdev_tx_t ntb_netdev_start_xmit(struct sk_buff *skb,
+ 
+ drop:
+ 	dev_kfree_skb_any(skb);
+-	ndev->stats.tx_dropped++;
++	dev_dstats_tx_dropped(ndev);
+ 	return NETDEV_TX_OK;
+ }
+ 
+@@ -427,7 +428,19 @@ static int ntb_netdev_change_mtu(struct net_device *ndev, int new_mtu)
+ 	return rc;
+ }
+ 
++static void ntb_netdev_uninit(struct net_device *ndev)
++{
++	struct ntb_netdev *dev = netdev_priv(ndev);
++	unsigned int q;
++
++	for (q = 0; q < dev->num_queues; q++) {
++		ntb_transport_free_queue(dev->queues[q].qp);
++		dev->queues[q].qp = NULL;
++	}
++}
++
+ static const struct net_device_ops ntb_netdev_ops = {
++	.ndo_uninit = ntb_netdev_uninit,
+ 	.ndo_open = ntb_netdev_open,
+ 	.ndo_stop = ntb_netdev_close,
+ 	.ndo_start_xmit = ntb_netdev_start_xmit,
+@@ -647,6 +660,7 @@ static int ntb_netdev_probe(struct device *client_dev)
+ 	}
+ 
+ 	ndev->features = NETIF_F_HIGHDMA;
++	ndev->pcpu_stat_type = NETDEV_PCPU_STAT_DSTATS;
+ 
+ 	ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
+ 
+@@ -696,8 +710,7 @@ static int ntb_netdev_probe(struct device *client_dev)
+ 	return 0;
+ 
+ err_free_qps:
+-	for (q = 0; q < dev->num_queues; q++)
+-		ntb_transport_free_queue(dev->queues[q].qp);
++	ntb_netdev_uninit(ndev);
+ 
+ err_free_queues:
+ 	kfree(dev->queues);
+@@ -711,11 +724,8 @@ static void ntb_netdev_remove(struct device *client_dev)
+ {
+ 	struct net_device *ndev = dev_get_drvdata(client_dev);
+ 	struct ntb_netdev *dev = netdev_priv(ndev);
+-	unsigned int q;
+ 
+ 	unregister_netdev(ndev);
+-	for (q = 0; q < dev->num_queues; q++)
+-		ntb_transport_free_queue(dev->queues[q].qp);
+ 
+ 	kfree(dev->queues);
+ 	free_netdev(ndev);
+
+base-commit: 7cbfb180945ce529608e4d4e24a6d483699fab1e
 -- 
-2.34.1
+2.51.0
 
