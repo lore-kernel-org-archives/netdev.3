@@ -1,89 +1,78 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C15E374A11
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 02:41:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301BF1DED42
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 02:46:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787539297; cv=none; b=IA6qzjm4nWIpjX6hNblXkE4VIPFGfuEKQ+n/z5pJWsPehocKqYEW3IlOIXSAyLc5zVxXodWQnZF3DkeD8Ov5JAjmFpFtSDP1Tf4MN0gUd2IYYB1/b5iJbmQdwa7UhaBZMLyBGMXjewpck9OOz2XONBmPuk6eZ7l+ifFdaH/XFRk=
+	t=1787539591; cv=none; b=fSXDxNP+PLL4rwMpBbw1yd8RcyGqZSOFpuqjYaIuQyGBoa9vX140VED6v7dRBydq8JHYWXJERct+WSe1Y+O+OMdXYR2eyrk05U1x+p9axtrhVlbswusPWRyArYxhqXQS190UBwnXUp4XpCxHK/LbJ/8VsdBJ43/Tw3ju3zqH8mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787539297; c=relaxed/simple;
-	bh=AD9+/6KWGvFpcCoDcfBCRac/d4Y11iTlGJwO4GZJrJI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J7VOF3M/EROKFcXtx7bxrvykB6juVJ8aUxtpdd/1GnWs5A87a/O/cXQzRHEZTervezfKFENivh8J5VdS8BEhFEfT4Oz5lSo18exT6XrxHxf1yUDAr3bdXG8FzBCAOqPrNoT+2DQstEbo+i8XRgXRM2N0I2R8cqM7/KV4jYuOFIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=DOjypVL6; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
+	s=arc-20240116; t=1787539591; c=relaxed/simple;
+	bh=6wHJp5jWLPXyCPbYYK7srf8P7Lk/x3nahhhtNbm1rOc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WMWS4JHHEbW1qimUu3kqJjZc/yaY3Nw8i94Z4r4gsXcVNSTDt0Kpqti5fqtSQM583chR32ZUCs1udyJ0qXaVM+LYOxRioNjhW5ibU3JLsS0gsj4Prnw/g4bjTgPF4hcgX5BNdKkcovWoLY4fpxxOGGKr4RdE1w6k6K0rfARUE9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=tHwzdLUG; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="DOjypVL6"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c1c26d7e951so429866566b.0
-        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 19:41:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="tHwzdLUG"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-cbee846deecso3393713a12.1
+        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 19:46:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1787539291; x=1788144091; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=eff4/RO9BXDKGgT0WoHgozDOguCB0zRc8wyBEOOYuWg=;
-        b=DOjypVL60KufgUoQRHYpdjd5DCPA2xrcHtVE/FYbZ2kAKprmVTX1i+Rd56A33Nhg3l
-         IJTgDk7AdtQYmHIP69sVxDIP7o9hJk3SajxDe9gE7m5GPKPTf244tQRV9T0A5CS96iWb
-         RfhBbgEYAWkoK5wcMU/IjzJMJ6R19AZv5s5MlFnIup6HqM3mJNDZPWkX+ogWoXu3MlOP
-         4E0PT3hKz2nvX3jvRA0gm8zjpI9Sby4SDGcpeTV/nq3x1NebhLbgfZoyJ/MiJTPnNQIN
-         zGwGZ6pIhhVMfGuL6TT0gtm/LebFwk+pBe5qMdoPoL9TOZJGHwl6mgYkvGUCSl/gU7lv
-         QNsQ==
+        d=gmail.com; s=20251104; t=1787539589; x=1788144389; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JdXAVtfWW5XJfHD/rPxea3ZWIOeQzMPQX3bPL/2GZJM=;
+        b=tHwzdLUGkEuymfGBZd0yUkMv9ICFDKDT/V2s5F2wZ0XOQN/ujIIXDGZp+v6hlLPr6c
+         BkqlIlw5O7abckrZ4/bqWLVcjQpspOlzfje5uqkGoXhMXeRBu3sTr2skr2qCeLlN2D2w
+         udlCwEKwK/TJoQZC9H/uon8315p+Qq6ZkElrOy2TnqbQ+Zhe6KBcfYIU47JoM8CYRKKs
+         f0i5zpELEbBo37AJ006EXlC5n8fX6Ha4FzyBi29AKDxCEwJGptDfqRv243TEW+nS4Se6
+         lAjGB9xG9mQLT/vZ3AO9XvK/VH61eix1/M2YBMGnkyQurUndIGXsZt74h1rrHpuStz4R
+         1J6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787539291; x=1788144091;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=eff4/RO9BXDKGgT0WoHgozDOguCB0zRc8wyBEOOYuWg=;
-        b=FY6uKsnQsnbgalOxuqyDcNOFQVuWZZ7n9hXCGE0yaP/buP1yMdssZxTpvScg+Qk2Pc
-         M0FHDnI2T4Dnl2pF6yI67W6I4l6iCGKumongOYF5ypSBJ/aQGDqm+ZhnjMLnKDZK0HIv
-         u/LleBoeQVe1QACcWdkH5AYFDWVrsfFRueUvoCjZCO6OuUZklXjgDV/XXFQxgI8436Fx
-         KDnfBiPbgoxBf8mVraENUbJQdIjMriGXiQzbaMKAqd4lZ1HeibwCkUqGl02yJRMKB+AN
-         tZCcANxhpoOQLzLb6+VCSfNpiefN4PVoJ2GoX6Ebvgn5xIWImaoUOH0/Nr/GnrJp2ONE
-         RP/w==
-X-Forwarded-Encrypted: i=1; AHgh+RpXDw3/6YPHDXvdbh0o+0ztQjTjj5VossgkLrskNdnyyQFbC0TH/yeWBBUNpa6x0Co6Ywm0lUY=@vger.kernel.org
-X-Gm-Message-State: AFuF++kN7tPFuyTQh8/C2lUnaTGP3CtB7xMrJf15hcYG2GJFWFk77sc4
-	zXdVO5bWkJs+jD1gn3pOolYM0NIqe5KHoIXTkUA1jQStVERpoX5Yz3c0y9Z3ljYFQzY=
-X-Gm-Gg: AR+sD12TLRqqyTmnE2AnSUrfjfHZeOaCKS4MD3xxPB+V3S1DbrtYla6/0rHYNuCW8vg
-	VoB1cncAXG2nCldY/C/wOPoYv/4P4LZWquDnfbQzU2LEykJACjQXXf1aoxhXYlmwPEH4/nQ0k8r
-	FxAYjhps5PO73TRPbEGtQDMbE8y7V9dSm0IHZhihf5GMIK6zqs4xbyL/nWfYwLPEo8DQ96ZmOeU
-	zrzfRuEd2Pjgyens+zbeJzh92eqb4+suJnHUQaeMKkDlon7GYfOfn2egP0zqXqScjUywBjzYkDn
-	DLWgWljPvP9iTeMeRyICXiOnAb56I+jTMBew5idMH5v3L2/8r2EOi7GKRUhYrcYrsZapLUftYaH
-	y+p0JTpRBvcMfGeq6hA1rSkcIq2NNZ2AfEKI/Wr6wHk8oXGs67XAed5Gs5BGGqnxQMVzSBEF2Wf
-	qPMaa0qML2n8yyQTYiJCMl2v0v9/iBQ7cBoAFjn9E9w6MoXh9voTsJAYGV
-X-Received: by 2002:a17:906:fd83:b0:c12:5a0e:3e0 with SMTP id a640c23a62f3a-c246a651b90mr2593036066b.19.1787539288568;
-        Sun, 23 Aug 2026 19:41:28 -0700 (PDT)
-Received: from ownbook ([195.181.160.194])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c249686e37bsm949008466b.55.2026.08.23.19.41.25
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 23 Aug 2026 19:41:28 -0700 (PDT)
-From: Aleksei Sviridkin <f@lex.la>
-To: "Chester A . Unal" <chester.a.unal@arinc9.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Cc: Russell King <linux@armlinux.org.uk>,
-	Qingfang Deng <dqfext@gmail.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+        d=1e100.net; s=20251104; t=1787539589; x=1788144389;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JdXAVtfWW5XJfHD/rPxea3ZWIOeQzMPQX3bPL/2GZJM=;
+        b=RkicavwDRmjt4Q2SeCiA8+399v/YU0DYxRI8lAozJfzPgrUxHNLIRK963bRkh6LMRK
+         L3/r0cuCUpu+5hI1t0741lwySsjnk+vrfZCFxrb9INfkS4wzRXcW7n76x8o9iPFKCjj7
+         EiJiH3G/qsgEr6+g9kJBURya3SDVXtF/dLhUFfUT5/iQZMztSxk7tH3rfcTGzDpZxFsj
+         4FiNOzVdm1X2qtVZvOfxT06U0tiF98Zu92ZSmlbmroPRGjAUuuVDND2WjGAzQF+0c9En
+         pvgzXut1AyzjKcmJnSCNzRoy0iUoH4DQwKo4gioRuwalBw2JPFGT8Zwhxe50xgFNIYl0
+         uWzw==
+X-Forwarded-Encrypted: i=1; AHgh+Rp/LrtJzjQmh2MebVWxYijBep37ZZZJMg/Rlomx4Bd+p58AXIzshP+qb9dbhpNihJYpK/cyYK0=@vger.kernel.org
+X-Gm-Message-State: AFuF++meABRb+y8wnbWPaIfK2qYyGLIA7n66ybsK2qbi0mAInRQ2ulo0
+	U6jt6/Mkr7T2UiKum7C2+FuM0OOC1gdqIhLzrJwhQBdMK4aA1lzvKWfw
+X-Gm-Gg: AR+sD10XKbWBUQ/NWVVHAD7x++MIsnhdgHnf5M4Ctm7PzOSs27BgEq3D9qPcaD9RJww
+	JkXOLGvTlfkz3IwjtoqwchErm757926rCr2Kn/xsSpNeSuS6K1jHRb2dgD6hViSZSnt31jc3Jt+
+	Bg9aY9JHkywiZ3SpcJSiuURvHkKFBWvFh9lByfViVZSKG9emM2rpipEJp5lvhFht0OyiIrgzg5j
+	YTwtkaUA2be6PXHzbAknMbvLEct7FtFqf6iKf0nnWECHfDkkMb5HkI6OE8PW2bU1mbVP8zB6vTc
+	/XPsA6Tyj5ybVQ06A2C3AyGSdMVDrajSKet0XZ6twe5W9JLzjNqWeTDUqs/y5zKckA8tA3v0TwE
+	czOn1U+4gByhWzR2FMJxU6xIhSMsPhdFki4TwTevg2V994Qg+0Gd3SFlDKRDAYTC0Vn8vZySgPr
+	cTODMou6WmFg40xjxY6BWhKzeVfSgnHOrAJuOyQLxy+NxM2dWVrina3pyn1f3nHKXIVboSjTv6L
+	lMxg19XPXMg2Vc/xlHMsZg=
+X-Received: by 2002:a17:90b:2e8f:b0:381:e74f:8a6a with SMTP id 98e67ed59e1d1-395c3abee54mr41014455a91.16.1787539589306;
+        Sun, 23 Aug 2026 19:46:29 -0700 (PDT)
+Received: from deepanshu.. ([2405:201:682f:383f:4cf4:9e7a:69d:2900])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327f90e22f8sm18744195eec.13.2026.08.23.19.46.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Aug 2026 19:46:28 -0700 (PDT)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: 3chas3@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: linux-atm-general@lists.sourceforge.net,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Aleksei Sviridkin <f@lex.la>
-Subject: [PATCH net v2 2/2] net: ethernet: mtk_eth_soc: populate lpi_interfaces to fix EEE support
-Date: Mon, 24 Aug 2026 05:41:17 +0300
-Message-ID: <20260824024117.46154-3-f@lex.la>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260824024117.46154-1-f@lex.la>
-References: <20260824024117.46154-1-f@lex.la>
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+6665d3db5fef15914802@syzkaller.appspotmail.com
+Subject: [PATCH] net: atm: fix shift-out-of-bounds in __vcc_connect()
+Date: Mon, 24 Aug 2026 08:16:20 +0530
+Message-Id: <20260824024620.23485-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -92,107 +81,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-mtk_add_mac() fills in lpi_capabilities and lpi_timer_default but
-never lpi_interfaces, so phylink treats every MAC that uses
-mtk_phylink_ops as not supporting EEE: ethtool reports "Not
-supported" and phy_disable_eee() keeps userspace locked out. MT7628
-is unaffected, as rt5350_phylink_ops has no tx_lpi methods.
+dev->ci_range.vpi_bits and vci_bits can legitimately be ATM_CI_MAX (-1),
+a sentinel meaning "no range configured, use maximum" (see
+include/uapi/linux/atmdev.h). Some drivers, such as usbatm_atm_init()
+in drivers/usb/atm/usbatm.c, set this sentinel and never resolve it to
+an actual bit width.
 
-Copy the supported interfaces into lpi_interfaces once the SoC
-specific fixups have finished changing them, and leave 2.5 Gbps out
-for now: drop 2500BASE-X from the copy and MAC_2500FD from
-lpi_capabilities. MAC_MCR folds SPEED_2500 onto MAC_MCR_SPEED_1000, so
-MAC_MCR_EEE1G is what would govern LPI on such a link, and it is
-unvalidated rather than unsupported: MediaTek's SDK driver sets the
-EEE force bits for 100 Mbps and 1 Gbps link speed only, EEE signalling
-on 2500BASE-X is outside 802.3, and the 1 us unit of the wakeup timers
-is undocumented with the port clock at 2.5 times the rate. Narrowing
-lpi_capabilities alone would not do it, since it gates on the media
-speed a rate matching PHY reports rather than on the speed the MAC
-runs at. Drop the xGMII modes too, which mtk_mac_enable_tx_lpi()
-refuses outright and which on netsys v3 include the mode of MT7988's
-built-in 2.5G PHY.
+__vcc_connect() uses these fields directly as a shift amount without
+checking for the sentinel, so binding a PVC socket on such a device
+triggers a negative shift:
 
-LPI stays off until userspace enables it. The EEE advertisement of a
-PHY that advertises it out of reset does come back, since phylink
-stops force-clearing it.
+  UBSAN: shift-out-of-bounds in net/atm/common.c:381:10
+  shift exponent -1 is negative
 
-Fixes: 952d7325362f ("net: ethernet: mediatek: add EEE support")
-Signed-off-by: Aleksei Sviridkin <f@lex.la>
+Skip the range check when ci_range.vpi_bits/vci_bits is still
+ATM_CI_MAX, since that value means "unrestricted".
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+6665d3db5fef15914802@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6665d3db5fef15914802
+Tested-by: syzbot+6665d3db5fef15914802@syzkaller.appspotmail.com
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
 ---
+ net/atm/common.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-On leaving 2.5 Gbps out: the absence of 2.5 Gbps EEE force bits in
-MAC_MCR is not the argument, since the same reasoning applied to the
-speed field would say the MAC cannot do 2.5 Gbps at all - 2500BASE-X
-here is 1000BASE-X at 2.5 times the clock, and the MAC does not know
-the difference. MAC_2500FD was deliberate in the original EEE
-submission [1], which set MAC_MCR_EEE1G for SPEED_2500 and SPEED_1000
-alike. The masks say nobody has validated it, not that the hardware
-refuses.
-
-On the netsys v3 switch MAC the xGMII filter empties lpi_interfaces
-outright, as PHY_INTERFACE_MODE_INTERNAL is the only interface it
-supports. It is a fixed link port with no PHY, so phylink had no EEE to
-manage there before this patch either.
-
-Pre-existing, made live by this patch and not addressed here:
-mtk_mac_enable_tx_lpi() programs MT7531's reset wakeup times (17 for
-1 Gbps, 36 for 100 Mbps) whenever it runs, as its own comment says, so
-they now apply to every SoC driven by mtk_phylink_ops once a user
-enables EEE on an eligible interface. Those values do not appear to
-have been confirmed for MT7981, MT7986 or MT7988.
-
-[1] https://lore.kernel.org/all/20250210125246.1950142-1-dqfext@gmail.com/
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 22 ++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index be3bd025c41a..37a831f73da6 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -4828,7 +4828,7 @@ static int mtk_add_mac(struct mtk_eth *eth, struct device_node *np)
- 	phy_interface_t phy_mode;
- 	struct phylink *phylink;
- 	struct mtk_mac *mac;
--	int id, err;
-+	int id, err, i;
- 	int txqs = 1;
- 	u32 val;
+diff --git a/net/atm/common.c b/net/atm/common.c
+index 81195727fa18..73057bb016f7 100644
+--- a/net/atm/common.c
++++ b/net/atm/common.c
+@@ -378,8 +378,11 @@ static int __vcc_connect(struct atm_vcc *vcc, struct atm_dev *dev, short vpi,
+ 	int error;
  
-@@ -4907,8 +4907,11 @@ static int mtk_add_mac(struct mtk_eth *eth, struct device_node *np)
- 	mac->phylink_config.type = PHYLINK_NETDEV;
- 	mac->phylink_config.mac_capabilities = MAC_ASYM_PAUSE | MAC_SYM_PAUSE |
- 		MAC_10 | MAC_100 | MAC_1000 | MAC_2500FD;
--	mac->phylink_config.lpi_capabilities = MAC_100FD | MAC_1000FD |
--		MAC_2500FD;
-+	/* MAC_MCR folds SPEED_2500 onto MAC_MCR_SPEED_1000, so LPI above
-+	 * 1 Gbps would be governed by MAC_MCR_EEE1G and is unvalidated
-+	 * rather than unsupported.
-+	 */
-+	mac->phylink_config.lpi_capabilities = MAC_100FD | MAC_1000FD;
- 	mac->phylink_config.lpi_timer_default = 1000;
- 
- 	/* MT7623 gmac0 is now missing its speed-specific PLL configuration
-@@ -4966,6 +4969,19 @@ static int mtk_add_mac(struct mtk_eth *eth, struct device_node *np)
- 		__set_bit(PHY_INTERFACE_MODE_INTERNAL,
- 			  mac->phylink_config.supported_interfaces);
- 
-+	phy_interface_copy(mac->phylink_config.lpi_interfaces,
-+			   mac->phylink_config.supported_interfaces);
-+
-+	/* The MAC side of 2500BASE-X is never below 2.5 Gbps, not even when
-+	 * a rate matching PHY drops the media to 1 Gbps, and
-+	 * mtk_mac_enable_tx_lpi() refuses the xGMII modes outright.
-+	 */
-+	__clear_bit(PHY_INTERFACE_MODE_2500BASEX,
-+		    mac->phylink_config.lpi_interfaces);
-+	for (i = 0; i < PHY_INTERFACE_MODE_MAX; i++)
-+		if (mtk_interface_mode_is_xgmii(eth, i))
-+			__clear_bit(i, mac->phylink_config.lpi_interfaces);
-+
- 	phylink = phylink_create(&mac->phylink_config,
- 				 of_fwnode_handle(mac->of_node),
- 				 phy_mode, mac_ops);
+ 	if ((vpi != ATM_VPI_UNSPEC && vpi != ATM_VPI_ANY &&
++	    dev->ci_range.vpi_bits != ATM_CI_MAX &&
+ 	    vpi >> dev->ci_range.vpi_bits) || (vci != ATM_VCI_UNSPEC &&
+-	    vci != ATM_VCI_ANY && vci >> dev->ci_range.vci_bits))
++	    vci != ATM_VCI_ANY &&
++	    dev->ci_range.vci_bits != ATM_CI_MAX &&
++	    vci >> dev->ci_range.vci_bits))
+ 		return -EINVAL;
+ 	if (vci > 0 && vci < ATM_NOT_RSV_VCI && !capable(CAP_NET_BIND_SERVICE))
+ 		return -EPERM;
 -- 
-2.55.0
+2.34.1
 
