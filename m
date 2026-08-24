@@ -1,115 +1,181 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4028E3655CA;
-	Mon, 24 Aug 2026 15:13:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787584406; cv=none; b=qyEwnHJ0eiPaja03/3kKSzBKc8VuDxsN0UCaJCP1gQHPLEsxQ8oaImBWrY/qv9HlMNB5Yvv7sAI16o/2Z9W5g1l+SpQ6HBBi2mn/T+bz8I2dEjvprLCVhVm84jCgqvNPJm02XO61TjfdcNahIGU1zObQiNwTI6SGRyZLbSDrmwM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787584406; c=relaxed/simple;
-	bh=LMUl0wRqk8+xqojqeT+SrIqH8HRZqBkNpw5r+kVtCp4=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=tYmIZmhfvW0D6Ohrn6lJT4uME2W2gqPD2M+tDIo5mohVZoPmMRB5+gSFBPi3LTE8eZ9GBwfgRrq/ko4/oJzhSopmCMOI2TCS6gXjIOiiMZx80VhPlS0fG/gij4ledRqw81E+yvJ3W8v1iDwadGB28srh9uV3x7KLGZcNgWgnMk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=Vd/XN1i0; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032F9363C50
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 15:14:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787584485; cv=pass; b=tAcS5+4RSmcZospE1zatxTKaoE2O4D/NK8kCWzNOwC5kUFPorlf/cRKuHuk7N5sZpYRlo/+1iIQduhFio2Z3A+p5H3YlcVZWsZ4VwBlm41xOeuTKhQukehAFZ/XL/VblN2Gx7Nk1FrIHLFwL6Yo7KlSQO+YNcDdPOTl4IgzyOXA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787584485; c=relaxed/simple;
+	bh=VJATUq+652VOGyti/HO0Gm3D5hCpmMFQ9J+4hCktu+o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aufZLJgBCDby5kFtHYjW1jjrO16rXrWdEbbTMuxNyfaDtCPF+l2jQauzXF1Da5MxKOG8siFH7UQH1B5LGLrxVC/O3t2Tvg8BMrsMDZQVX1bL2C4ItdFSEs57g4R3EZwB9npT9lcw8V9T9PKQ5RKZDkll8ECaX15k+l1ZXRsfbUM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JRT1h3Ju; arc=pass smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="Vd/XN1i0"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 15017A02A3;
-	Mon, 24 Aug 2026 17:13:14 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1787584396; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=g2xnyjbL7P8HZTzEf65T2GecraVsWg2Jd43dBvLVMt8=;
-	b=Vd/XN1i0CL0GldedKnpeyvV+Vlv5B0hFCIyJjqg8nN0knzNp5a9OUhscpONcUs8CMyfogY
-	fPerXxJEgz1Xr62Ml6PiAMYAoIvSQGfzzoxmTfJV47SzJ4VwNKceRadBZsn1haH0sgrh34
-	P29MCwRTHxRM/z8ppQToaslxBRSPNy5Mo3s/g3WQtgt0ZKrXiZo1DvjPlmeQsMHB3L+NoA
-	Kjuibwgl2chYyFIvRqzVZBaJwU+1lpuicmspP1boTkM8JeP1uwHovwZd7lQ7EsU4Z/Hptw
-	I63REv8GSBbQzpksGlDa/eCoQqlcZSsh+eatDLXU8sToU6w83TAKXlKok0z8nw==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JRT1h3Ju"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-84830c774a0so4045021b3a.1
+        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 08:14:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787584483; cv=none;
+        d=google.com; s=arc-20260327;
+        b=QC1lLsKZKNhRaZV6q1zcGUCTzAF/zGdjcYMTVLlx9ifQolFBdI5IR7b1B9XVxNCQ3C
+         0ebPdGv+4hPRDhlkg0gcQ0kIAXsb97MKYkrYRqhnBzmUjhBzQXPMXGL+K7ElreU5eesi
+         A1BndMbMSGl/0OZXyc0FWLj85i08hqY8mkwK2JUb/0C3ots7gCMGM5E4CTt7zk4NZRps
+         hbZy4ExOic9g917FbVMrMLAlcovjIZT7H9P3CH/Se9GpuihXwUv1eLlWEFLce5SvgaTe
+         Xpc7gF9frzdfafT4QB72X/GglyvKJJXO+rloJNkI8nX6vKOBF1HY+I3epSf95RBvUCl8
+         9OFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=nhOkI8BfwHJxYD+mu7kqK3AB9orV2yeL9tFKuyBojLk=;
+        fh=v2dSMgacBgRqHiY3xqwesamGIBNqgB/fiGctN7z1qdk=;
+        b=r/bEpaRaoQp9CRAMPrOB0bko5pOLA0mbfVKU118qOVRn6eCF5LJvr6A+4i5DSCDrcd
+         tfMQtyHMmt3Jr+D2Riv+cfayN7TQktdtR9B3NkxE1SWFee21AtwUn2SgzYbWOxRHH86k
+         EfMhUQmZ2WdEWRZSzf18bbFrDbfmkSvqpRRbhv43yfPUiiC/2hiq21KiP8WLv9WutnAE
+         nQjm15nXGygmD2fQ2bF+JyQ1tbOlYHbEcMRucsUNhCHmb4IkJr6Sql5TpsqFTMEjIagZ
+         8bcwLB4zTnn0on9zqV31satTr1LcIYKsZKu4qgrdX7RfYiY0IPynNh8ArxoUuvtwfTyy
+         9GNQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787584483; x=1788189283; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=nhOkI8BfwHJxYD+mu7kqK3AB9orV2yeL9tFKuyBojLk=;
+        b=JRT1h3JuklS0Q2omBU/uTB/DzkpWaM6Bpsne5e6mjWwmDcdAFFSmSKP5asLWL+Np6P
+         P4roxvwl+OJvC1iXNtB2S/xTJYHm4jTutD/US3+FEWxLt/NwswGGKEBnPDyXm+ssdnMO
+         CITYQ1p3JzBXf5B2HN27xS3fubY2PEg6ZMb9zXafncEK8wey11w1iCWbqEUwBHuX77FS
+         zRD6BmvCOaUddSFNCidsaPImGPLTKh9whXg44XAEbcsSGdkC5SqQ7nn+6Y9rn0PZL+2N
+         VeZa4xYCjjrkIZBOlNLjg9OVM+50VgLI0srhb0onOdqNgQQWyxXyV9rolVg9mizICBFe
+         YsAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787584483; x=1788189283;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nhOkI8BfwHJxYD+mu7kqK3AB9orV2yeL9tFKuyBojLk=;
+        b=CP4SRE3baHBqCVrcbpV4AuaQTzQ2JFl7B4tEYdXCLul4baOlRcI0L2xS2d+CWfN1jo
+         KzQL7hJ87s0YE7LJmmy1jt7ztAH5tPQfpDcavvVUnro44vwGpV7+Lv103BwdXPBmwEZy
+         TRXRjdh9+Q4XtG9itv8hkq9AQV0QJd4fTKFT149apBIpSyIeSx7VpA1A92Z9HQ9voc/x
+         YNTQPWR6u3BRhvQrsDiA1RAnaNVEe4m28LjKf3SvYXEIbRhpl4h0d17c5/1NcUZtbdyd
+         co4qG26XX7QBngETiIDrxEUJm1KCebfZZk2nyZoyzQsFtrcq9lPL9VraG1pNCKU+rGnL
+         MXFA==
+X-Gm-Message-State: AFuF++kneTrAyM2zTi+vBgYENGQ87ljkrL+lBemW5/I0LS7floqw002E
+	udl8Gm7UxvQeaG48PwpB3LfdvDa+DUTcoSwA463PQMWs7r6HSZQMicLV4T1lSkXp7luyeyMBAuQ
+	q5aXaP5Hcbv3cstlCMo3R7s233FfbA3A=
+X-Gm-Gg: AR+sD11lZRJAM9r1Q5euJrp/JcX3LQG3FP2ay5EMargMhxIyxH4QxgddBzs3GhaK4Zi
+	CpvVUZ13Fa1TSwAPTJ8BiOSvXVsis3D2yPEwfKyjuUNdvNmMUtBjrQdavdNtVz4e95FN/k82u9w
+	GvzbOADVqW0XzHVwO5PfqnxSO17KQVlISNgSooaUxYE01sf3PlI0ObLNKOza97Eky7jf73T5Bj+
+	VW6mhj5B6CwSgKLldL3lSGP8z7sPfOgHJZuPUXe908mtZtuFAfT7SWwXN+izfUxcFuax+KYFkKO
+	bP1PWFUXYU//MaxoBejIUZIUwQPrvUIio8ev9WV6/tNNcm3EjcaauhqgO7l4JVA2mn1xB+qRg6H
+	+oAcALAINvZ7lykOP2uwX+bXXelYGAPx072gAoHC/bytg0Q==
+X-Received: by 2002:a05:6a00:a585:b0:847:97a4:d6b3 with SMTP id
+ d2e1a72fcca58-851fa017b6emr50017161b3a.16.1787584483231; Mon, 24 Aug 2026
+ 08:14:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 24 Aug 2026 17:13:13 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Breno Leitao <leitao@debian.org>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Florian Westphal <fw@strlen.de>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- stable@vger.kernel.org
-Subject: Re: [PATCH net] net: fix spurious TX timeout after dev_activate()
-In-Reply-To: <20260824-trans_start-v1-1-0419cc427ed9@debian.org>
-References: <20260824-trans_start-v1-1-0419cc427ed9@debian.org>
-Message-ID: <4f3857029d855ed4e513ae01a2e8f018@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20260823130510.1341584-1-bsdhenrymartin@gmail.com>
+In-Reply-To: <20260823130510.1341584-1-bsdhenrymartin@gmail.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Mon, 24 Aug 2026 11:14:31 -0400
+X-Gm-Features: AcwNN1Vq5tzN8r2zBbD7fXHd8EuGLLynOeV-kIP_OlLCpzFNsL2qNZD6BOJE3d4
+Message-ID: <CADvbK_dr8Oz7DFpA3YJ_YH0HXgWJgkQPRK7QNDCUQrQzQnw-MQ@mail.gmail.com>
+Subject: Re: [PATCH net] sctp: fix soft lockup from unpadded ASCONF-ACK
+ parameter iteration
+To: Henry Martin <bsdhenrymartin@gmail.com>
+Cc: netdev@vger.kernel.org, linux-sctp@vger.kernel.org, 
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Breno
-
-On 24.8.2026 13:45, Breno Leitao wrote:
-> While debugging another issue today, I found out that my TX queue is
-> stopped for 136.07 years (4294907392 ms).
-
-nit: 4294907392 ms is ~49.7 days
-
-> 
->     bnxt_en 0002:01:00.0 eth0: NETDEV WATCHDOG: CPU: 28: transmit queue 
-> 23 timed out 4294907392 ms
-> 
-> 4294907392 is not an elapsed time. It is the value of jiffies at that
-> moment: INITIAL_JIFFIES is 4294667296.
-> 
-> dev_activate() runs transition_one_qdisc() over every TX queue, which
-> resets trans_start to 0, and then stamps only queue 0 through
-> netif_trans_update().
-> 
-> Stamp jiffies instead. A queue stopped across dev_activate() now gets a
-> full watchdog_timeo of grace, and is still reported if it is stopped
-> that long.
-> 
-> Fixes: 9b36627acecd ("net: remove dev->trans_start")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+On Sun, Aug 23, 2026 at 9:05=E2=80=AFAM Henry Martin <bsdhenrymartin@gmail.=
+com> wrote:
+>
+> sctp_verify_asconf() walks ASCONF-ACK parameters with
+> sctp_walk_params(), which advances by SCTP_PAD4(length), and its
+> SCTP_PARAM_ERR_CAUSE case performs no length checks, so an odd-length
+> parameter passes verification. The consumer sctp_get_asconf_response()
+> then iterates the same parameters advancing by the raw length, without
+> padding. A single odd-length parameter desynchronises the two walks and
+> makes the consumer interpret attacker-controlled bytes at a misaligned
+> offset.
+>
+> When those bytes yield a length of zero, the while loop over
+> asconf_ack_len makes no progress, spinning forever in softirq context,
+> and the watchdog reports a soft lockup. A remote peer can trigger this
+> with a crafted ASCONF-ACK on an ADD-IP enabled association with an
+> outstanding ASCONF (RFC 5061 section 4.1.2 requires the chunk to be
+> authenticated, but the predefined empty key id 0 allows the peer to
+> compute the same association HMAC from publicly exchanged parameters,
+> so the gate does not help).
+>
+> All reads stay within the received skb, so this is a pure remote
+> denial of service.
+>
+> Advance the iterator with the same padding rule as the verifier and
+> reject zero or truncated lengths to guarantee forward progress.
+>
+> The issue was found by ZeroHive, a vulnerability hunting agent at
+> Tencent Yunding Lab.
+>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
 > ---
->  net/sched/sch_generic.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
-> index ef2b4bf515641..4539dc2c6d380 100644
-> --- a/net/sched/sch_generic.c
-> +++ b/net/sched/sch_generic.c
-> @@ -1278,7 +1278,7 @@ static void transition_one_qdisc(struct 
-> net_device *dev,
-> 
->  	rcu_assign_pointer(dev_queue->qdisc, new_qdisc);
->  	if (need_watchdog_p) {
-> -		WRITE_ONCE(dev_queue->trans_start, 0);
-> +		WRITE_ONCE(dev_queue->trans_start, jiffies);
->  		*need_watchdog_p = 1;
->  	}
->  }
+>  net/sctp/sm_make_chunk.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+> index 5a335c980a7a4..0634241fd6649 100644
+> --- a/net/sctp/sm_make_chunk.c
+> +++ b/net/sctp/sm_make_chunk.c
+> @@ -3452,8 +3462,10 @@ static __be16 sctp_get_asconf_response(struct sctp=
+_chunk *asconf_ack,
+>                 }
+>
+>                 length =3D ntohs(asconf_ack_param->param_hdr.length);
+> -               asconf_ack_param =3D (void *)asconf_ack_param + length;
+> -               asconf_ack_len -=3D length;
+> +               if (length < sizeof(struct sctp_paramhdr))
+> +                       return SCTP_ERROR_INV_PARAM;
 
-Follow up or v2: netif_trans_update() in dev_activate() now seems 
-redundant?
+This check doesn't seem necessary, as sctp_walk_params() together with the
+following check in sctp_verify_asconf():
 
-> 
-> ---
-> base-commit: 0a0d1d55dad570724bf8c7ea83409639cfb4be9b
-> change-id: 20260824-trans_start-557ecd4c8866
-> 
-> Best regards,
+        if (param.v !=3D chunk->chunk_end)
+                return false;
+
+already ensures this. Please confirm.
+
+Please also add the following check for the SCTP_PARAM_ERR_CAUSE case in
+sctp_verify_asconf():
+
+      if (length < sizeof(struct sctp_addip_param))
+          return false;
+
+This fixes the issue reported by Sashiko:
+
+https://sashiko.dev/#/patchset/20260823130510.1341584-1-bsdhenrymartin%40gm=
+ail.com
+
+> +               asconf_ack_param =3D (void *)asconf_ack_param + SCTP_PAD4=
+(length);
+> +               asconf_ack_len -=3D SCTP_PAD4(length);
+>         }
+>
+>         return err_code;
 > --
-> Breno Leitao <leitao@debian.org>
+> 2.43.0
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Please share the PoC with maintainers if there's any.
 
-Thanks,
-Nicolai
+Thanks.
