@@ -1,335 +1,197 @@
-Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BE031F986
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 10:37:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293614078EE;
+	Mon, 24 Aug 2026 10:43:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787567843; cv=none; b=N3kx+GeebUzCgLt7BKn1WuYHJfv12JR+XJ2FEZY7rP8ri8MOCGJOVULgSDI8f+tzCydBlcwXKPiagr7Otz2J9RT2ySvrye82ZSJu0nySHVwZBz24icpZhbRh3L0T+Au8PdUtW59e1KUwbwra/xw+wPGEBhL3Ua1NepDE6vPra0E=
+	t=1787568234; cv=none; b=CJFZAXYuffx/M9A0gMMp8TCxS8Fox5DShT68ekHiw/0xBbpRX59Py6h9b4vjyuE4e6GqDjHFOahfdDImxVYdvYePHOo9DcmEYiFG0nwcj2oAe2s5n2MJW93lqiVvlCzIotcIhMeVOAk+qg4VwrinSca+U8l27vbNY8FFkp9Nbvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787567843; c=relaxed/simple;
-	bh=kECWN0/pzXScznSeThBwo3vnkzeXw/lV52803oEcMbE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=jOGiqzQ2IACtyT5kqD2+2SnBymwKrMR4rLCFVfmXUf43iN6cRLjvLHkxqxVifsK0WNMuYAD1IHegEpvB/y+SqMGcoBtw+qaze+Ci1QsUrqsH+uyxMOtdRRuvDBoro68ZnoXpJxJdhI0xTIB0IBfdWp0d8w5PJFDRMsePele+zSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.207.22.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: zesmtpgz6t1787567775te9b9befc
-X-QQ-Originating-IP: 6l6kkU4gKuNMLPs8CNFcn9w5nubiblB/T/a1T/hgW8Q=
-Received: from localhost.localdomain ( [122.233.170.62])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 24 Aug 2026 18:36:11 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 12417051061719465739
-EX-QQ-RecipientCnt: 10
-From: Mengyuan Lou <mengyuanlou@net-swift.com>
-To: netdev@vger.kernel.org
-Cc: jiawenwu@trustnetic.com,
-	duanqiangwen@net-swift.com,
-	linglingzhang@net-swift.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	Mengyuan Lou <mengyuanlou@net-swift.com>
-Subject: [PATCH net v3] net: libwx: protect ring accesses with RCU
-Date: Mon, 24 Aug 2026 18:36:06 +0800
-Message-Id: <20260824103606.303-1-mengyuanlou@net-swift.com>
-X-Mailer: git-send-email 2.30.1
+	s=arc-20240116; t=1787568234; c=relaxed/simple;
+	bh=AdTE+vvMOTXSMGiO8D9OEhk9PjHBOyUBg/QEiNWXRoU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nPPlsYKQXJI+BmzKaChqA0ST9YatW6OD2ZOoPJrFdJpgdyX2DanabhSO1C7AzMsNDqRkLnx8rrPwh9tbCQGyJl9juAEqKJI1OUXmRL+adhQH6zHvzEllkBmGEd7oquQAzMpV05Iy64OSYN+6BbviePNh/PU/adjY+t3X1YuwsvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=bv7N5qxp; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=qnSyxlD7; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=mVuWLki9; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=tiRn8/G5; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="bv7N5qxp";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="qnSyxlD7";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="mVuWLki9";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="tiRn8/G5"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8145686738;
+	Mon, 24 Aug 2026 10:43:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1787568225; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mAqnFNQfpkjimKpQXv8mitMgk3RGxzvWI4q9JZf+DRE=;
+	b=bv7N5qxp01TDFnTXwZwfHk4RXo+HcydS1H9aivw1T/THNK15Zh2SkKBL5GQuBI6iXjOoN9
+	xpVEI6z7e28PF6jmTeYjAYBj4+p4bw6cv0C+gpTOl4gACQAK8T6TY/Ek0bZYLdIQw9hzfw
+	f6hwhBY+eL5Z+Fauiac+8zvdfz/drqE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1787568225;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mAqnFNQfpkjimKpQXv8mitMgk3RGxzvWI4q9JZf+DRE=;
+	b=qnSyxlD7fNpTKWDjjSAQB5gffnVFXWaqrZNOv/jtsTkpyPpfiU+5mzywlsIFcItJsBv7l7
+	2wb9jzlK/IM2jEAg==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=mVuWLki9;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="tiRn8/G5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1787568221; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mAqnFNQfpkjimKpQXv8mitMgk3RGxzvWI4q9JZf+DRE=;
+	b=mVuWLki915J/OvvIftApS/3R5nVwP4h7nWHOxhFQcKKdbHO7N4Sh1EFQBOMOlYD+/DtQbF
+	UVAW330XeRpmHUahoJ796/lCgbxof9fkdPqLAR+JgJlEgzKjMp7xGRBEiXygxvyde4ofUh
+	fFD2WXkEu2SuE85Yx3K7146H/Zjzbc8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1787568221;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mAqnFNQfpkjimKpQXv8mitMgk3RGxzvWI4q9JZf+DRE=;
+	b=tiRn8/G5+I4upmY+zQp6/HqT5SKrfeKWujAb1PBJakH8yruk5FW0VcIt3DsEs/BHhPKVS0
+	wWSluZcE0uvIMzDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CD10F1333B;
+	Mon, 24 Aug 2026 10:43:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id i/w0L1wgjGqDMwAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Mon, 24 Aug 2026 10:43:40 +0000
+Message-ID: <fdc1dcad-d061-41e9-b256-a6658cec6f60@suse.de>
+Date: Mon, 24 Aug 2026 12:42:54 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] netlink: specs: rt-link: fix ipv6 devconf doc
+To: =?UTF-8?Q?Asbj=C3=B8rn_Sloth_T=C3=B8nnesen?= <ast@fiberby.net>,
+ Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski <kuba@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Felix Maurer <fmaurer@redhat.com>,
+ Danielle Ratson <danieller@nvidia.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260824103816.40040-1-ast@fiberby.net>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <20260824103816.40040-1-ast@fiberby.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
-X-QQ-XMAILINFO: M0B+OzpJUlV88F42ld9q9gaLhn8qIhqljojRdVsOe7BHrE4E/Tlpmcma
-	Kb5qiZeNMfHKqAcH7RyVKbcZvdEFZghYeebDesniUnf5tQO03Kr7wnyJ6QSjDupITP0iHGy
-	awoqn/LdR9PzWZXWU7Vs7PPscWbThI8jasDKIzcls5HoKYQa2xE9bv3KigKgpPOi0fAFHal
-	BFE/5RYjDLVx74yVDkaD7jceuTZk6MGx8RUi8hQz8EUIU4pUk5HMWde0+XGpXLYLD1Yo/0d
-	33U9xEMEJmEluMsHxflVtMInI2Kvnunh6PmhrxGY3mID+osCUiMBOO66dizpf0UkX8UeLen
-	kg75Y53oap4f0V/aWRN/rJ9L1UVV7ihjhJpmy48g97UHlBazgBr+Yo2vV/NonXsjVvPCWur
-	LL+XyycbkKI1/D7JzFnw9wj/PnZxA3332Jd8KjSZE8Piu/Zv/sHDP8rPjG8mf98hlK7Tn1O
-	5TvOhUpa7LDQVFu8CCNNZ6UemBZa2n+qF0CIxrcm2fK8A4o6x4Rt0H7eQJW620QMGC72qSr
-	xUI/KbCpOcQojEQ/vaxLSICxPJoTFsLEl/dEDBLU7sAj4cl2p79fJLsuNBTG4npb5YkNMsR
-	UHbNwcrmjtvvinKaRbxo/Nr5RoDz1RiMQuv5ocIXnZ4FXOcECsNDtyiQhMdQ6+cawZcpRUW
-	vA3qYtvf7HOBsARTIFpHWrOmeQLWC4O7XyFvIOExLzwBuTDqUDV2GcWppjXRxTGCYfFygNf
-	WGMZmpdCfgqRZ6s4CvAuiKrqdiyWB4/dU7ELmiWEe2ovSDerBXYoNaff2nM6EguE4diiHpS
-	27UUM7oeQWx48uFzxueXzSN1gCry4JdAmxjSQCaArrkuurGl3E7H1UQpLmrBPP8xmICHpT/
-	W+u0faGz9HrBLrHO93F4Hr+myQJ8u+jdn9F+zn7vTE71hWTojmEA53t1/VHA6jv72Z0zpmI
-	dZIWdL89OEFIzGP12b4vY1PLkBulhxD6FoPoxO0J4m156rSzkiNtotFfMZ0uJ6NjaLFJvb1
-	z11c+oglz513AQS0OoLmQatpz33FLNNHcagi1eHLqKA2SuJbAv2NoDUgXYquUBd7Fh+OnQ2
-	eOvTBe3Kyczs2sqEcvXaMP3RQBb8a6N2w==
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
-X-QQ-RECHKSPAM: 0
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FREEMAIL_TO(0.00)[fiberby.net,gmail.com,kernel.org];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,fiberby.net:email,suse.de:email,suse.de:mid,suse.de:dkim]
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 8145686738
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
 
-During queue teardown or channel reconfiguration (e.g. via ethtool -L),
-ring pointers in wx->rx_ring[] and wx->tx_ring[] can be cleared to NULL
-and freed asynchronously via kfree_rcu().
+On 8/24/26 12:38 PM, Asbjørn Sloth Tønnesen wrote:
+> devconf is even odder than described in the blamed commit, where bpth
+> IPv4 and IPv6 are described in an identical way:
+> "u32 indexed by ipv?-devconf - 1 on output, on input it's a nest".
+> 
+> There are two issues with that line for IPv6:
+> 
+> 1) The subtraction is an IPv4 specific quirk, to avoid having an unused
+>     u32 at index 0, thus saving 4 bytes per net device being dumped:
+> 
+>     - In include/uapi/linux/ip.h the IPV4_DEVCONF_* enum begins with
+>       IPV4_DEVCONF_FORWARDING = 1, so the enum starts at 1, which is
+>       the reason for the subtraction in the IPv4 variant.
+> 
+>     - In include/uapi/linux/ipv6.h the DEVCONF_* enum begins with
+>       DEVCONF_FORWARDING = 0, so subtraction would underflow.
+> 
+>     - ipv6_store_devconf() in net/ipv6/addrconf.c also doesn't do the
+>       subtraction in the output path.
+> 
+> 2) Setting IPv6 devconf through Netlink is not yet supported, as
+>     IFLA_INET6_CONF is not handled in inet6_set_link_af().
+> 
+> Fixes: 720447bd0b24 ("netlink: specs: rt-link: remove implicit structs from devconf")
 
-Concurrency between interface reconfiguration and background tasks (such
-as service tasks or dev_get_stats) can result in NULL pointer dereferences
-or Use-After-Free (UAF) issues when accessing per-queue structures.
-Specifically:
-1. wx_update_stats() accesses per-queue Rx, RSC, and Tx rings without RCU
-   read-side protection, and lacked NULL checks in the RSC accumulation
-   loop.
-2. wx_update_xoff_rx_lfc() walks wx->tx_ring[] and modifies ring->state
-   without RCU protection or NULL checks, risking a kernel panic when flow
-   control pause frames are received during queue teardown.
-3. Queue status checks in wx_err.c and PTP watchdog in wx_ptp.c dereference
-   ring pointers without RCU read-side critical sections or NULL checks.
-4. Queue assignment in wx_alloc_q_vector() used plain stores without
-   release barrier semantics needed for lockless RCU readers.
+Does this really require a fixes tag + stable Cc'ed? In any case, LGTM.
 
-Fix these by:
-1. Enclosing queue statistics gathering in wx_update_stats(),
-   xoff processing in wx_update_xoff_rx_lfc(), error handling in wx_err.c,
-   and PTP status checks in wx_ptp.c inside
-   rcu_read_lock() / rcu_read_unlock() sections.
-2. Replacing unprotected accesses with rcu_dereference() and adding NULL
-   checks when traversing wx->rx_ring[] and wx->tx_ring[].
-3. Using rcu_assign_pointer() when publishing or clearing ring pointers in
-   wx_alloc_q_vector() and wx_free_q_vector().
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+> ---
+> 
+> Fernando, please remember to reintroduce the ", on input it's a nest"
+> in your WIP/planned patchset that introduces support for setting IPv6
+> devconf via IFLA_INET6_CONF.
+> https://lore.kernel.org/bd560c89-c71f-4ef5-a0fd-5ea096a0f767@suse.de/
 
-Fixes: 46b92e10d631 ("net: libwx: support hardware statistics")
-Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
----
-Changelogs:
-v3:
-- Replaced READ_ONCE() with rcu_dereference() when reading __rcu annotated
-  rx_ring and tx_ring pointers to fix Sparse static checker warnings and
-  enable Lockdep runtime validation.
-- Wrapped wx_update_xoff_rx_lfc() with its own rcu_read_lock() and
-  rcu_read_unlock() section to ensure self-contained protection regardless
-  of caller context.
-- Extended RCU read-side critical sections and NULL pointer checks to other
-  background tasks accessing ring arrays, including wx_ring_tx_pending(),
-  wx_detect_tx_hang() in wx_err.c, and wx_ptp_rx_hang() in wx_ptp.c.
-- Updated commit message to accurately reflect the use of rcu_dereference()
-  and the expanded scope of protected functions.
-v2: https://lore.kernel.org/netdev/20260818100841.37483-1-mengyuanlou@net-swift.com/
-- Moved rcu_read_unlock() after wx_update_xoff_rx_lfc() in wx_update_stats()
-  to ensure flow control processing remains fully protected within the RCU
-  read-side critical section.
-- Replaced WRITE_ONCE() with rcu_assign_pointer() when assigning and clearing
-  ring pointers in wx_alloc_q_vector() and wx_free_q_vector(), providing
-  proper release memory barrier semantics for lockless RCU readers.
-- Added __rcu annotations to tx_ring and rx_ring in struct wx (wx_type.h) to
-  align with Linux kernel RCU coding standards and fix Sparse warnings.
-v1: https://lore.kernel.org/netdev/20260813095141.88227-1-mengyuanlou@net-swift.com/
----
- drivers/net/ethernet/wangxun/libwx/wx_err.c  | 20 ++++++++++---
- drivers/net/ethernet/wangxun/libwx/wx_hw.c   | 31 ++++++++++++++++----
- drivers/net/ethernet/wangxun/libwx/wx_lib.c  | 12 ++++----
- drivers/net/ethernet/wangxun/libwx/wx_ptp.c  |  6 +++-
- drivers/net/ethernet/wangxun/libwx/wx_type.h |  4 +--
- 5 files changed, 54 insertions(+), 19 deletions(-)
+Thanks!
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.c b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-index b56fbdc959de..8eadb4d3abcf 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_err.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_err.c
-@@ -201,12 +201,18 @@ static bool wx_ring_tx_pending(struct wx *wx)
- {
- 	int i;
- 
-+	rcu_read_lock();
- 	for (i = 0; i < wx->num_tx_queues; i++) {
--		struct wx_ring *tx_ring = wx->tx_ring[i];
-+		struct wx_ring *tx_ring = rcu_dereference(wx->tx_ring[i]);
- 
--		if (tx_ring->next_to_use != tx_ring->next_to_clean)
-+		if (!tx_ring)
-+			continue;
-+		if (tx_ring->next_to_use != tx_ring->next_to_clean) {
-+			rcu_read_unlock();
- 			return true;
-+		}
- 	}
-+	rcu_read_unlock();
- 
- 	return false;
- }
-@@ -264,8 +270,14 @@ static void wx_detect_tx_hang(struct wx *wx)
- 
- 	/* Force detection of hung controller */
- 	if (netif_carrier_ok(wx->netdev)) {
--		for (i = 0; i < wx->num_tx_queues; i++)
--			set_bit(WX_TX_DETECT_HANG, wx->tx_ring[i]->state);
-+		rcu_read_lock();
-+		for (i = 0; i < wx->num_tx_queues; i++) {
-+			struct wx_ring *tx_ring = rcu_dereference(wx->tx_ring[i]);
-+
-+			if (tx_ring)
-+				set_bit(WX_TX_DETECT_HANG, tx_ring->state);
-+		}
-+		rcu_read_unlock();
- 	}
- }
- 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-index 122c4952d203..96ce3a4bbec7 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -2870,8 +2870,15 @@ static void wx_update_xoff_rx_lfc(struct wx *wx)
- 	if (!data)
- 		return;
- 
--	for (i = 0; i < wx->num_tx_queues; i++)
--		clear_bit(WX_HANG_CHECK_ARMED, wx->tx_ring[i]->state);
-+	rcu_read_lock();
-+	for (i = 0; i < wx->num_tx_queues; i++) {
-+		struct wx_ring *tx_ring = rcu_dereference(wx->tx_ring[i]);
-+
-+		if (!tx_ring)
-+			continue;
-+		clear_bit(WX_HANG_CHECK_ARMED, tx_ring->state);
-+	}
-+	rcu_read_unlock();
- }
- 
- /**
-@@ -2893,10 +2900,13 @@ void wx_update_stats(struct wx *wx)
- 
- 	spin_lock(&wx->hw_stats_lock);
- 
-+	rcu_read_lock();
- 	/* gather some stats to the wx struct that are per queue */
- 	for (i = 0; i < wx->num_rx_queues; i++) {
--		struct wx_ring *rx_ring = wx->rx_ring[i];
-+		struct wx_ring *rx_ring = rcu_dereference(wx->rx_ring[i]);
- 
-+		if (!rx_ring)
-+			continue;
- 		non_eop_descs += rx_ring->rx_stats.non_eop_descs;
- 		alloc_rx_buff_failed += rx_ring->rx_stats.alloc_rx_buff_failed;
- 		hw_csum_rx_good += rx_ring->rx_stats.csum_good_cnt;
-@@ -2912,19 +2922,28 @@ void wx_update_stats(struct wx *wx)
- 		u64 rsc_flush = 0;
- 
- 		for (i = 0; i < wx->num_rx_queues; i++) {
--			rsc_count += wx->rx_ring[i]->rx_stats.rsc_count;
--			rsc_flush += wx->rx_ring[i]->rx_stats.rsc_flush;
-+			struct wx_ring *rx_ring = rcu_dereference(wx->rx_ring[i]);
-+
-+			if (!rx_ring)
-+				continue;
-+
-+			rsc_count += rx_ring->rx_stats.rsc_count;
-+			rsc_flush += rx_ring->rx_stats.rsc_flush;
- 		}
- 		wx->rsc_count = rsc_count;
- 		wx->rsc_flush = rsc_flush;
- 	}
- 
- 	for (i = 0; i < wx->num_tx_queues; i++) {
--		struct wx_ring *tx_ring = wx->tx_ring[i];
-+		struct wx_ring *tx_ring = rcu_dereference(wx->tx_ring[i]);
-+
-+		if (!tx_ring)
-+			continue;
- 
- 		restart_queue += tx_ring->tx_stats.restart_queue;
- 		tx_busy += tx_ring->tx_stats.tx_busy;
- 	}
-+	rcu_read_unlock();
- 	wx->restart_queue = restart_queue;
- 	wx->tx_busy = tx_busy;
- 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-index ed5aad7857bd..423b14c56949 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -2191,7 +2191,7 @@ static int wx_alloc_q_vector(struct wx *wx,
- 		ring->queue_index = txr_idx;
- 
- 		/* assign ring to wx */
--		wx->tx_ring[txr_idx] = ring;
-+		rcu_assign_pointer(wx->tx_ring[txr_idx], ring);
- 
- 		/* update count and index */
- 		txr_count--;
-@@ -2217,7 +2217,7 @@ static int wx_alloc_q_vector(struct wx *wx,
- 		ring->queue_index = rxr_idx;
- 
- 		/* assign ring to wx */
--		wx->rx_ring[rxr_idx] = ring;
-+		rcu_assign_pointer(wx->rx_ring[rxr_idx], ring);
- 
- 		/* update count and index */
- 		rxr_count--;
-@@ -2245,10 +2245,10 @@ static void wx_free_q_vector(struct wx *wx, int v_idx)
- 	struct wx_ring *ring;
- 
- 	wx_for_each_ring(ring, q_vector->tx)
--		wx->tx_ring[ring->queue_index] = NULL;
-+		rcu_assign_pointer(wx->tx_ring[ring->queue_index], NULL);
- 
- 	wx_for_each_ring(ring, q_vector->rx)
--		wx->rx_ring[ring->queue_index] = NULL;
-+		rcu_assign_pointer(wx->rx_ring[ring->queue_index], NULL);
- 
- 	wx->q_vector[v_idx] = NULL;
- 	netif_napi_del(&q_vector->napi);
-@@ -3097,7 +3097,7 @@ void wx_get_stats64(struct net_device *netdev,
- 
- 	rcu_read_lock();
- 	for (i = 0; i < wx->num_rx_queues; i++) {
--		struct wx_ring *ring = READ_ONCE(wx->rx_ring[i]);
-+		struct wx_ring *ring = rcu_dereference(wx->rx_ring[i]);
- 		u64 bytes, packets;
- 		unsigned int start;
- 
-@@ -3113,7 +3113,7 @@ void wx_get_stats64(struct net_device *netdev,
- 	}
- 
- 	for (i = 0; i < wx->num_tx_queues; i++) {
--		struct wx_ring *ring = READ_ONCE(wx->tx_ring[i]);
-+		struct wx_ring *ring = rcu_dereference(wx->tx_ring[i]);
- 		u64 bytes, packets;
- 		unsigned int start;
- 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-index 3eea647c4742..47b1599a1afa 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-@@ -274,11 +274,15 @@ static void wx_ptp_rx_hang(struct wx *wx)
- 
- 	/* determine the most recent watchdog or rx_timestamp event */
- 	rx_event = wx->last_rx_ptp_check;
-+	rcu_read_lock();
- 	for (n = 0; n < wx->num_rx_queues; n++) {
--		rx_ring = wx->rx_ring[n];
-+		rx_ring = rcu_dereference(wx->rx_ring[n]);
-+		if (!rx_ring)
-+			continue;
- 		if (time_after(rx_ring->last_rx_timestamp, rx_event))
- 			rx_event = rx_ring->last_rx_timestamp;
- 	}
-+	rcu_read_unlock();
- 
- 	/* only need to read the high RXSTMP register to clear the lock */
- 	if (time_is_before_jiffies(rx_event + 5 * HZ)) {
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index 2eba5ab59925..ec75ca116979 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -1359,8 +1359,8 @@ struct wx {
- 	u32 tx_ring_count;
- 	u32 rx_ring_count;
- 
--	struct wx_ring *tx_ring[64] ____cacheline_aligned_in_smp;
--	struct wx_ring *rx_ring[64];
-+	struct wx_ring __rcu *tx_ring[64] ____cacheline_aligned_in_smp;
-+	struct wx_ring __rcu *rx_ring[64];
- 	struct wx_q_vector *q_vector[64];
- 	int num_rx_pools;
- 	int num_rx_queues_per_pool;
--- 
-2.30.1
+I will make sure to reintroduce it, once the netdev is open again I will 
+send a patch implementing it.
+
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+
+> 
+>   Documentation/netlink/specs/rt-link.yaml | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netlink/specs/rt-link.yaml
+> index b80c2ac3ac31..00c915031efd 100644
+> --- a/Documentation/netlink/specs/rt-link.yaml
+> +++ b/Documentation/netlink/specs/rt-link.yaml
+> @@ -2218,7 +2218,7 @@ attribute-sets:
+>           name: conf
+>           type: binary
+>           sub-type: u32
+> -        doc: u32 indexed by ipv6-devconf - 1 on output, on input it's a nest
+> +        doc: u32 indexed by ipv6-devconf on output, input is not yet implemented
+>         -
+>           name: stats
+>           type: binary
+> 
+> base-commit: 7cbfb180945ce529608e4d4e24a6d483699fab1e
 
