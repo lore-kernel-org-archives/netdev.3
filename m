@@ -1,123 +1,102 @@
-Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0054345EAD;
-	Mon, 24 Aug 2026 13:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E4042FCD0;
+	Mon, 24 Aug 2026 13:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787579242; cv=none; b=cIAQ0ceU8Ja3JT0Q+WIXLWxAc0dG4sHOBr1Lp50TLLgsaB0FsBkv2EerL4qhKXoEcdE+UyR81YB/RPjOIDBrT0kXAIrC6UKUdPsQvq0Svu2f96ensw5j/lfw+VwuD3hrWzm2Zmacz6Y3tYul6R/ecl9tMK05l9NYLNYWfCwAtoo=
+	t=1787579293; cv=none; b=U6e1pXaWlDq610QFLQrafgV3SvVV5bVyWBUr9mrb0fDGXIKFXHxPdhXAmxMLATLyUAbPLWWKETwXFkXXvyQBJVOPXTuDDbrenAWKfGQKU0/ukN1oUBikQ3/yUgjydA2XfA5WbgclvM4ijBZLLqH+jrXjQORUzar4xCJpieU8u9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787579242; c=relaxed/simple;
-	bh=gsZth2D5w2+FUxwW8I64Md+XCABLbTd3Ip9I+dJOdTA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qNIwppMknUsz4/PVBjiiS9LODSVlTbNgt7dFGfp2OmTdwjJ4TXNMX/TW6bpTVXY10sAHRw7AoLuvGDYwkmfM3L8gD7lGGvowwiZmgWWJOi39U68dUOrxn3UEZCJII5AitQL5NzQ+OtJ/yE+xv2U1ldapd8uMvoFZMkFHEEQr0Eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=lUNgbKWE; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=kEBExeIA; arc=none smtp.client-ip=202.12.124.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+	s=arc-20240116; t=1787579293; c=relaxed/simple;
+	bh=RgOGPPdVaOh2xWvIpyEoukN8vyU5QUzOzTKlJST29FI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tbb12XMngjZ16dVcmvYKWBkgqyAM8563g+UNOJRmOvi3EARkB2D/iMlh0G3vksZyB2pZJll8EaRuoitbak42wYRZeDfz4xpJ2TV8PLx9dvF//gmMu01OOvd2MjJnDkbqidZcTcTdrc1FpoGjbql21V2PmdywjaxNuEd/RQ19VOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=mmTuhc3T; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="lUNgbKWE";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="kEBExeIA"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.stl.internal (Postfix) with ESMTP id C786F1300075;
-	Mon, 24 Aug 2026 09:47:15 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Mon, 24 Aug 2026 09:47:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1787579235; x=1787586435; bh=v0eOO8mP3K
-	vc+I6zkuxDnQ7yn0ErBoVsdLcBQWhrggM=; b=lUNgbKWEU+TSOAdrRlhzdv2zIB
-	IR/RZtTNW1RSkmZy8TgEcXyVse+i1WIGbr26kod86DfJwn/IW0OtF9x0SjluCQe5
-	P8ZGu5oozI1iVddoWsNP4K0SabJqi9syhn0n7lBtGHQ+jUdeLIJZxnnQd2/ockNt
-	culPcHq5MA49b8XGNX58prG6eICgjj1LOEAfBXZ3SBuCHd5x+4dUjWc3uTEjbQjk
-	4xdtJqMyZ7zv2BIrlb7HKfNCfBOCW5LRL40Bjk8anuqjpNib8FZwNj+DbUmwW9cq
-	Il36zG99CR4LUKQkbVtNnlCSf/ZxdGUKief2D8eWhdH6tjp9zifrjU3Qz23Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1787579235; x=1787586435; bh=v0eOO8mP3Kvc+I6zkuxDnQ7yn0ErBoVsdLc
-	BQWhrggM=; b=kEBExeIAqdjlMDEu3AlSrjSPTXocCpyKyKuodb4tLOeGZxli4ZP
-	o4lU0fnOniSa+vzbx5n54/8qXzJFpxWfOmUDSmZIZAwAi+LepfgEdnIOdev/bmSA
-	1mgv34rv+2qXTFz6Y5tiCvCjN/Hz2YZbDUY+exvThK976WVX0mUWHwY2i7QFcz7z
-	EoIrddz/NJf8rdGozjNKM6qKPpkOVmwtw9MX9nJhSbMTa6KrcYStZUieANhXlvtp
-	JPK8ZHKb9nlprgffrI5Ar4QpwKXE2kXoLb/rlnrmC2Yo811luC00P3bndOs93CLG
-	QIoFNk6lew5S1nVN3TxxOMOPu61ON2lFCSw==
-X-ME-Sender: <xms:YkuMaq6ALhlGHFuHpwfws93_iyMOTSNLYBBIRuhkiUMXUDbvO8kA5g>
-    <xme:YkuMavlr1JlhmNiQVNcNz6PNZtjr8uiOX6Vc6LiIZJDm8xPMnkd8rp6VTk7OaE4uz
-    658-hxl_CICFZyf1rxOYFuvKssY9Pa3H969BdVtu88J2Tt_-f4>
-X-ME-Received: <xmr:YkuMatFMO4p4hb3BwWkVyUL9LcdQoDro1unhkJbk1FkZMPfLUhNB7YDrQqpukTexTSwrls4cQFhJrq9WMdPfDoDJWTBpQr5lW48bwksFAsQ>
-X-ME-Proxy-Cause: dmFkZTEo1+qQ5pn1rPMdWCcaft2bSBaYbe5yoW99KucM5sbb0NM+N53s+3Q8UNHPVUoYEV
-    swGT7AgHtJgWJs3OdNpJRcTo1LPOftAILAXRjyDdSzlJth+JxtnNXUUSGi3ReJRQhxi4bX
-    lrpyjQNVSt5/+Ty/iwQdFIdzFwUqFadTnbVDYZd4Yek9WrgC9tXUMfbP0dS7SQMUHj+SuN
-    Ugh46bDRiOICsRnjFVucUeAre8TZxDqm3i9ClfvaqMqKp8Fo0cJjoxiE/GONj6OLOT0x3f
-    pMRqt5dUlgOvlGtwhXGjvnibfg36qySeC4L4LfWeuqwZb3k0PSFwfjspbWcQ6EKd6I/pH3
-    4aau0ixZF4J/1YZsAKqhM33PzQhEn2erhtTEmyqRq/q/iYRtgOxOUo7zVcVd5rqrLNGLEj
-    5Gt2wWMSbigmAjNGJlgwwB6+o/CRbO8I4r96I8imy3Trz/bjJF7Xvk23bA754Iay4ALhsX
-    YM9AweG6uXx51e4mmqnN6qwXujQjngExUZ0K+Q+FWsv9epvHYRnUq/zKh1ZVr4I+YVFb0a
-    jyagL4+OYQeU04oE0tPQgNlDLziCoWhKN4iAdAnUhb8zbYizp6HmQgCRPfDYRqa4Dc2unw
-    BbtbaIZYMXarPxI5wWuIcVKcBfO66UVykrxciNpJJpLMfI15ezCTH3k81JSw
-X-ME-Proxy: <xmx:YkuManZJ8R071JOU9mDSxBMfV6B2MTWwEsElzm_XoZfBxg7CX8V3KA>
-    <xmx:YkuMasKQqn9gwrS5h3rTcSme0k-A1a2r7AixJ1gFGtjJHUkleYXbWw>
-    <xmx:YkuMagyQtL1HArvfT92UQVds6Qh_EiRjYA2Hhl87Xe0dR1huV3RuRg>
-    <xmx:YkuMak207O2KEwmnxN2A46K_Ay09DIR96YNbrenapmdPE0u9WXIhdw>
-    <xmx:Y0uMaiN8O1Y--Kv4TSWRswfV9XD6_73-1VlymsJewVrmZUAZqsrebZRo>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 24 Aug 2026 09:47:13 -0400 (EDT)
-Date: Mon, 24 Aug 2026 15:47:09 +0200
-From: Greg KH <greg@kroah.com>
-To: "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
-Cc: stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="mmTuhc3T"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A488CA47D5;
+	Mon, 24 Aug 2026 15:47:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1787579280; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=UI0369oIB2KvwXrc0Y4jF0QOhzgy0tpY4wqzeCSHVT4=;
+	b=mmTuhc3TNaSdIC/VDtqE5vrgqQz50Zme6g8gL/7VnLHkz32fWzGfqnAWXAj5dyjx3CTPQO
+	e+ZUKGrodyYj89IxJ0OC3PuX4DNeQm8lxKnZwSFv3NsiW6pkWiWXJHukM9OwbXXsLc/zMM
+	IDJRkyNx479wWec0CeA6uBefCV150vJ4WSz3s3FU1LEnTQaqBJINZKlBp0eUO8vA1xPI8m
+	4fgY7YhFTUralYSfdtNVgom+szyk/T2Aw/bF2hlXoWWWgECE0JBr4Sdy3kCc6l9di9Mk3z
+	FY+nSLyi9S5vwu3H9oUVDrIci5+E0/RPe+/ILrN0YdwDJXgDTLsSqPATM5t8pg==
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: =?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>
+Cc: Conor Dooley <conor.dooley@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Jonathan Bell <jonathan@raspberrypi.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Wei Wang <weiwan@google.com>, Martin KaFai Lau <kafai@fb.com>,
-	Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-	David Ahern <dsahern@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org
-Subject: Re: [PATCH v6.1.y 4/4] ipv4: start using dst_dev_rcu()
-Message-ID: <2026082454-jacket-gravity-6ddc@gregkh>
-References: <20260821-cve-2025-40074-6-1-v1-0-cad5cf499b76@bootlin.com>
- <20260821-cve-2025-40074-6-1-v1-4-cad5cf499b76@bootlin.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Nicolai Buchwitz <nb@tipi-net.de>
+Subject: [PATCH net 0/2] net: macb: fix zero UDPv4 checksum on transmit
+Date: Mon, 24 Aug 2026 15:47:01 +0200
+Message-ID: <20260824134703.766708-1-nb@tipi-net.de>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260821-cve-2025-40074-6-1-v1-4-cad5cf499b76@bootlin.com>
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Aug 21, 2026 at 03:33:38PM +0200, Miguel Gazquez (Schneider Electric) wrote:
-> From: Eric Dumazet <edumazet@google.com>
-> 
-> [ Upstream commit 6ad8de3cefdb6ffa6708b21c567df0dbf82c43a8 ]
-> 
-> Change icmpv4_xrlim_allow(), ip_defrag() to prevent possible UAF.
-> 
-> Change ipmr_prepare_xmit(), ipmr_queue_fwd_xmit(), ip_mr_output(),
-> ipv4_neigh_lookup() to use lockdep enabled dst_dev_rcu().
-> 
-> Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> Reviewed-by: David Ahern <dsahern@kernel.org>
-> Link: https://patch.msgid.link/20250828195823.3958522-9-edumazet@google.com
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> [ minor modifications to fix conflict, added rcu_read_lock and unlock
-> to ip_defrag function ]
-> Signed-off-by: Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
+When a UDPv4 checksum computes to zero, RFC 768 wants 0xffff on the
+wire, but the GEM sends the raw 0x0000, which receivers read as "no
+checksum". Raspberry Pi confirmed in a simulation of the Cadence IP
+that the engine skips the substitution for UDPv4. UDPv6 and TCP are
+fine, and the IP changelog suggests all GEM revisions could be affected.
+Reported and analyzed on the Raspberry Pi 5:
+https://github.com/raspberrypi/linux/issues/7550
 
-We need a working 6.6.y version first, before we can take this one.
+Patch 2 does UDPv4 checksums in software and lets the existing pad
+and FCS path keep the hardware off the frame, UDPv6 and TCP keep
+the offload. That path miscounts tx_bytes by the software FCS, so
+patch 1 fixes the accounting first.
 
-thanks,
+Tested on CM5. To reproduce, send bulk UDP to another host and capture
+zero checksums on the receiving side:
 
-greg k-h
+  iperf3 -c <host> -u -b 200M -t 30
+  tcpdump -ni <iface> 'src host <dut> and udp[6:2] == 0'
+
+Without the fix a packet shows up every few seconds:
+
+  12:46:20.002739 IP <dut>.36309 > <host>.5201: UDP, length 1448
+  12:46:23.773968 IP <dut>.36309 > <host>.5201: UDP, length 1448
+  12:46:40.227460 IP <dut>.36309 > <host>.5201: UDP, length 1448
+
+With the fix the capture showed none.
+
+Some numbers (udpgso_bench):
+- 18-byte UDP throughput dropped by ~ 8%
+- 256-byte UDP throughput dropped by ~ 10%
+- MTU-sized UDP and UDP GSO were unchanged at the 116 MiB/s link limit
+
+Unfortunately I don't see a cheaper fix, the zero only shows up after
+computing the checksum, the MAC inserts it in flight, and AFAIU there is
+no register or descriptor bit for the substitution.
+
+I'd appreciate testing on other silicon.
+
+Nicolai Buchwitz (2):
+  net: macb: exclude software FCS from TX byte statistics
+  net: macb: fix zero UDPv4 checksum on transmit
+
+ drivers/net/ethernet/cadence/macb.h      |  3 +++
+ drivers/net/ethernet/cadence/macb_main.c | 28 +++++++++++++++++++++-------
+ 2 files changed, 24 insertions(+), 7 deletions(-)
+
+-- 
+2.53.0
