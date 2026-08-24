@@ -1,143 +1,114 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013013.outbound.protection.outlook.com [52.101.83.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF3D3E7167
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 08:35:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0203EDE76;
+	Mon, 24 Aug 2026 08:36:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787560520; cv=fail; b=XLtBTBBOKpVj5zrqy+omYOJiqsvX83Ba16ugGYGMqOJ904W9aJ0qYj6uzNL+N6Bg0YDrgUBFU7TYkq9cNSY7iz1IIiuhi+ltiRhQ6RLCQNTsjoGm3rsEXznTxSkLTmgbH+IijwzG4CPQ47gSxCPeuY6678Aet0vX+yVIAH4SPuw=
+	t=1787560564; cv=fail; b=H2eayAJ9uniLV9+AlnLf50sRxrzKmUJLHQRvxTe+XSSrO2Wrr+cFMmFSflZ5pUI8z4HyYDyBwkLiOsF87mzlrpr6PkQYTpiktXAFSCyJmVL2HMCEp0FD8oAo4yuUHJ856nEH9nRoXkYNn91c8UfVy0/mHNWdvTNZ4ulmIqaUgRk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787560520; c=relaxed/simple;
-	bh=m2ijAy9vTdhJjA6b22sV+g+PL9r6jBiWwYOIrzuv6L8=;
+	s=arc-20240116; t=1787560564; c=relaxed/simple;
+	bh=6lhASRnJ6ELqog9ACsNGIyQ+S93Qb72zwCuOUkk92gQ=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=EKX5/1NGGNPGZMaFQ5R1lqolOPSruReLpsK1ymuCd9v5tfO9bomvoSr8mR45Fvh9C6avLbjHmHEmcmxbKaf+GbxHABz/dwqn5Bvf6zQgqe4oGeoe+pjstk5bJhiueUeeNnexjrz9U7GkQq9/xWvJC9LDrUDEAfKXN3egkfVGhC0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UsIM8CvQ; arc=fail smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:MIME-Version; b=Ezvr+83UMUV5hnahaNXvq/Z6wzpCEOzK3NPx84bneSAkwlOqZrqCYe9odJmmCRTywpR/UVYTxaGv3sYMePWcnGd4A/YuQh8hQey+jn1pzAepVJBfufgG7hQoCIJWSeu89K/dMz/JLrvjIpcNlVW2Z/nSFMXcrfvb9SZ+0dm62eM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=bekMm/ag; arc=fail smtp.client-ip=52.101.83.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UsIM8CvQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787560519; x=1819096519;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=m2ijAy9vTdhJjA6b22sV+g+PL9r6jBiWwYOIrzuv6L8=;
-  b=UsIM8CvQIF6OkWarPH3dm1ZHGa8uFnrl30EbFKFHrJRoAlAPO1dvaeDv
-   eNxBMmvYZIaDleZ7/Waw50aq+VbDm3mKLxicNqzZah5JhkgwjjLr7ipTm
-   zeUcEdxvTPyhXlQjUBDHgvRvEjvVITrH4KsD6l+GmYdgrn6ZS60Xpj2wR
-   InOEQ8Pryp/PRhsOiiZ733k5qIW/fidd2KrWea6RckfHO2hh1ihaofS4b
-   +AEUHxwwTBoQSvTUhKWljNJJYQL7MM7xC31zXsJ0aIwMow07nwiG8cy0n
-   w5pNaUZPJ/RM07WLJi/kl7pJxFThYw8eQ2BYqy7fL+azaBTQ8GOvlunoL
-   g==;
-X-CSE-ConnectionGUID: O5J5WgN4S7OpdGRflC4pSw==
-X-CSE-MsgGUID: QdWbIHwmSTyl1ZiIf5Mg2g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11884"; a="110791154"
-X-IronPort-AV: E=Sophos;i="6.25,240,1779174000"; 
-   d="scan'208";a="110791154"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 01:35:18 -0700
-X-CSE-ConnectionGUID: aue5sDwUTmuWZ/WkIBnj5w==
-X-CSE-MsgGUID: i9wS4S0/S+GVbLCrSEwpQg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,240,1779174000"; 
-   d="scan'208";a="268898300"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 01:35:18 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 24 Aug 2026 01:35:18 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Mon, 24 Aug 2026 01:35:18 -0700
-Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.20) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 24 Aug 2026 01:35:17 -0700
+	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="bekMm/ag"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TX+WOTUur2tCyBcf0OHwsXGoLp39SR9MIVc49mdguQeBzprQGE7IPn48gzIT7LQU7GkmFovnyoyeq7cR1hMsQ+70RSB0IQ0MsQlTEWnnhLxuR7vmxVvqOb0VKivcxKyAOQbJqjSjVLQbYIv5XE7/+lR9Tk5IHYgZ26kXgF3YuouyIsRiV6fU/ZpF8PPyplfAZQzwt2UJMxU3g7xVlgKyaesd3AsuO5dMIrG9yGMPIIz3ojZaiuh4yXojv9zSaDTDjFHTKPvv5c3R1tFnam137D77J+7QwWAFDpv6m6mYOM7aK6FAXdZ0EvRdJgWiG47l2LqwMHoG+aqduBKckRUBQw==
+ b=qNhB4MftGWxHO4G0fehQZmwToRoVlurUOUHy6mzZlqm4yWqKCSSgnOQ8mZRFEzg6zHi4nLvUQ6LvkB4fPXvL27N6GrJI0nSoNKh08i1qjgs7Xqf2IhvpemioVdkYUWg1Rgw2VW/b24AzWvarM+4gjS6lvj3QsmRRjKxvhv9NPkHaSPvUV+EcwVSya1lAnyJH8A/Plbsg8DNahXNNOJImftjyteDcihbswDa2kmYsZFbKbdbaOFod/Wefrl7tKfAJ/Y76Zijq/AT6PKOpDIkka+E+B5iiFmPeLOR6Z0xb+tdoH0m4bIBrt/zAz+THlssKC+PK6k/oxDg60QamaypImQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+lzKkTKcW9fGYBDtrmXE0OtvsavOXiYbfJBjURKrHu8=;
- b=L7LXtk234TjPGdLExnna1J8Kb19VO82x/4tsQW5xsq209sRjgBeAlSvUvYAVOSQk7W6RUjg4fZs8pVuJYBW9L31ChFFZ5cyRFm6mMnCg/gOY+MIugSpMuBqJWyNAwYb+17sxf8izlkfwBiAuKSsdJBNP92/NbfEMIXc2viz8UvJmgliB07cSAtkgy2Rotdu6MXPxIqyfxEbyA0shfz/r/Cr5/5yAtL/MfzVvMCogzFOPhGjw6Qkf/KuKmY4/HQUbolVm0Lut5Xz+kdK46viG+NwtbL5T+e+3H1mrNJpmhwzC5GWxnDyjSU496x1jlJ0wLbujeC4ExLUuCMks62Kd7Q==
+ bh=jb6jB9qRTNeGma9+D02+qL0B2P4Gve9G5NjG+ZSpHe4=;
+ b=TbUiRlmfN5QSwQK019Sj0RwlNMDAaEe4QSYkRLBbfaP6H8Kn5vVrVlywt7Wier592JNozfWhQhL9NNKm00iieSTYxe6rMY3ABKyt+QxhD2vx2irlbTiFT4e1VQBhXQkzpmukKiI9G0ndSjGJh4Rsh/TGSebpXwLHR+9ymhcyCmX5ea1COtJwwl/y60KH0eRyfBOSwUt8lstkWywm8EhywPTEHfQ+8VN/+bpcLUTXmKiOSjyQr8y+5f46ThwK+pVMO6zgOxtKzqolGk7TnFSbZx33ZSfPFjgC3jXXHdgDJGgV/P9OhA5gJGXG6H09vRCnpPVYPivBZcxcZyI9m0FbCQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
- by SA2PR11MB5211.namprd11.prod.outlook.com (2603:10b6:806:fb::7) with
+ smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
+ dkim=pass header.d=est.tech; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jb6jB9qRTNeGma9+D02+qL0B2P4Gve9G5NjG+ZSpHe4=;
+ b=bekMm/ag1Wg9lMV530W71WyhhmJLybGTAG86KPcfIFlu2i7v0qp5E6LFSAENB8fPetSzmEg3qxOErqfvuMns2ei7GdDiTNjKGwefDs0KsNBPg/hBS4sMJ2WJn3CJkZFawuJc3d7UjZF/AaHArl3Y5GoU5xZnTwWj/rzpHxe5eIjLlAlvVOcFVVDsOgX+xI548pXOg+cAQO/DysckG6FsNnk8T+GGHrvERtEoFdvtKexV3d81kC2B4C1zSxLLgmzLI3IFhSkQcz3RusUkqnWyfeXFCV7t7SYBtMj9N1AHFRYXi3DIMDaIVA4ss3nxoC966aiCWSCm5ktXStX5z5Cd3A==
+Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM (2603:10a6:150:63::5) by
+ VI1P18901MB0653.EURP189.PROD.OUTLOOK.COM (2603:10a6:800:128::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Mon, 24 Aug
- 2026 08:35:16 +0000
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::e6f0:6afb:6ef9:ab5c%6]) with mapi id 15.21.0339.012; Mon, 24 Aug 2026
- 08:35:16 +0000
-From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-To: Jiawen Wu <jiawenwu@trustnetic.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-CC: Mengyuan Lou <mengyuanlou@net-swift.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, "Keller, Jacob E" <jacob.e.keller@intel.com>, "Simon
- Horman" <horms@kernel.org>, Fabio Baltieri <fabio.baltieri@gmail.com>,
-	"Zaremba, Larysa" <larysa.zaremba@intel.com>
-Subject: RE: [PATCH net] net: wangxun: use BIT_ULL() to prevent shift overflow
- on 32-bit archs
-Thread-Topic: [PATCH net] net: wangxun: use BIT_ULL() to prevent shift
- overflow on 32-bit archs
-Thread-Index: AQHdM5lPkBlPZ+zK2EqYfXOnUqe/JLas36yg
-Date: Mon, 24 Aug 2026 08:35:16 +0000
-Message-ID: <IA3PR11MB8986E3061021A79E94ED5A59E5A02@IA3PR11MB8986.namprd11.prod.outlook.com>
-References: <45F5565CE6AC4329+20260824072119.48399-1-jiawenwu@trustnetic.com>
-In-Reply-To: <45F5565CE6AC4329+20260824072119.48399-1-jiawenwu@trustnetic.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.6; Mon, 24 Aug
+ 2026 08:35:56 +0000
+Received: from GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
+ ([fe80::bfff:5391:8a49:21b7]) by GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
+ ([fe80::bfff:5391:8a49:21b7%6]) with mapi id 15.21.0360.005; Mon, 24 Aug 2026
+ 08:35:55 +0000
+From: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
+To: Chengfeng Ye <nicoyip.dev@gmail.com>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"tipc-discussion@lists.sourceforge.net"
+	<tipc-discussion@lists.sourceforge.net>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, Jon Maloy <jmaloy@redhat.com>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>
+Subject: Re: [PATCH net] tipc: protect node reset trace dump with node lock
+Thread-Topic: [PATCH net] tipc: protect node reset trace dump with node lock
+Thread-Index: AQHdMlUIWq3tJ39DZ0C1QzQ8Zz1oKbas2get
+Date: Mon, 24 Aug 2026 08:35:55 +0000
+Message-ID:
+ <GV1P189MB1988E432599B256A18EED117C6A02@GV1P189MB1988.EURP189.PROD.OUTLOOK.COM>
+References: <20260822164055.3750284-1-nicoyip.dev@gmail.com>
+In-Reply-To: <20260822164055.3750284-1-nicoyip.dev@gmail.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
 X-MS-TNEF-Correlator:
+msip_labels:
 authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
+ header.d=none;dmarc=none action=none header.from=est.tech;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|SA2PR11MB5211:EE_
-x-ms-office365-filtering-correlation-id: 467d7217-a445-4db5-8988-08df01ba9f70
+x-ms-traffictypediagnostic: GV1P189MB1988:EE_|VI1P18901MB0653:EE_
+x-ms-office365-filtering-correlation-id: e878a8f3-36f1-459e-5eef-08df01bab711
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|23010399003|366016|38070700021|56012099006|10067099003|11063799006|18002099003|22082099003;
-x-microsoft-antispam-message-info: iJ0KY7feSZQX3Ekd1daatm9NqphH82lEBn6WKwhXyLJRA7ymRv46KUwlYWAwM1U9pIsM+eAM2e4fRY35HxbIVS6eWBGg8KvdOrYGkKmQRLnOA8F+m7r3supFykBbntOHi23tQZW7mDXkCXRHA3LOQ624cpVMLRNodqiZdWl2ndz2JWT/1OpwFQ+nXrZrUC+83uAskGY3AcQm8mvRNMRYA660A5/o6FeeKgVIl/kjzfnXff2hWLcztj7IC6RFA1GoWlIU1oC3QsswVgNNxCyZWygcUbETqWWDJbct+Fco+wJDGRyGPyj+Fk/Rrb7Mhag261Ojsg8OcxpQOd+qy1eH/A4dMoMgGcEksfWKhXAHY3t4GLa44d7eOJbPzkGqyJm4GLUCooGIi32jvdEq8ppapf1+FVzze7wr4VhMJ2CJNaUzEzcFvVBAz9yFwbvK523+Pmd6m79MZmRyM64ZWfyHCASeJo0uYCZCxJs4JU3lpKvjC2GD9V0Veh2Eyioamsg0shZPGOl/EBkZYLl8JBweiWjI2AT8QejpraZbQHADJVSqaD7o9qY3gwRVzQ6RNJ7ZnC0oEBhJYkngfMEACej8iFnq0MPiO7YTjYyPO2nBbEqA35xs8I92+RiK75ZIgrbQpVqECPY93+TgCMBXmJiUORSDWoItquiTaK5vQO1EG589Mf6Pw1SO50xfK/a8t2yYZJZRa36E8RhC9wylAnlhnCdn6fCNYUG3DNyALgbF2L8=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(23010399003)(366016)(38070700021)(56012099006)(10067099003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|1800799024|376014|7416014|366016|38070700021|6133799003|10067099003|56012099006|11063799006|22082099003|18002099003;
+x-microsoft-antispam-message-info:
+ 6AvzkTt5GnGBt8cfN0s27bhvckKZa7WxDVjmYRJYP1hWR9P1fKsW/3C7ie9+jOfaQmXD1ssqAYrsx0TMVT1jn2nCGAH34XQ4nZV/nzBLtLzMhvM6pnvgncGZSU8paRMVJjgcIe4h4f61d6JYAIwmXKrwFCKbc2BYhYZg2Sf0J6GGmulAEALDMiXwYQoV2Uy3fRReUGEIPClu9tZfDeAegycqpkwddn7morxW+mK1W/6jrrOGGhwUIFXvB3bycKKndcg2O19phv4shDuV/RqTDtAuONfsHLA04WXTCE5kqZaSjuDz8e1nbQKHP7+I53RKOirYRbyiAtoxLpTgan9cXl4c/hsDGON/wwl8YLKgqDUXYmkYW1lEapNiaKOYRct5EIAH+ns7QLQmn3FUb3DkV9J00Y5gPNILWQry9WdHj5UEAquBKZap/ZyQ9+nW1GshexY8Te7NAUZOjTrUG3wT5jBOe7xKsNxjvm9xEN/jKzeybLJvB/S+EJ7b7BHQlk93NopnsusrV63RvfMgpqrhIL3fPa5HGs0KWaaLFZa867l9mJDn/a2wH4IBvI/LuS3+PM+R/R//DvD1iufey8se4XxzAe1k3a+4yPrHjVAyEysrYYhjTBJl2p0m+n2584RjP76Bn/By8rvxqwjaukHf6qrq04DlHPl+BmtOM0gySNd1Eg7cnDvkErtxQLc3BUM830yYvB6NpE1XbuNNyg4BIy5lyLNEe0PbrWXrrEiYYF4=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1P189MB1988.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(7416014)(366016)(38070700021)(6133799003)(10067099003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?JmtD1LtZ4NTDFInmR2/k8PKvP9E/R8JjR4TWWcb+eCMLaSDEWxnpn3D1AYbt?=
- =?us-ascii?Q?cOW6Q5pd4Zu4CpPbP/mJRj/PtvC79aIHnlt58/zlkfBwfxzLuu5VneEl6nzY?=
- =?us-ascii?Q?BL85cCUkloDc6F02d9Wr+BRqXFTuF56weJVQw0ahN0IdCVLb34TMkR8mP8KF?=
- =?us-ascii?Q?1E+h3N9WH6Q1Zmj4fzl5xy4Krz3dZH3YDYt3+yXiXiNTrokajMJ17mL9IYGT?=
- =?us-ascii?Q?qHGht33gXUtl/MP8eAqGE6G6oxUV46KWA5RtAA931KyPoN8bwXn1fk6ZdYsb?=
- =?us-ascii?Q?S5/otrUp0OHtDv5YLa065CPEA6TLKMtWi3ANKyPm41tga1otCEh0TGVHFExK?=
- =?us-ascii?Q?DVmSo5sz50TDHZ7EDitqHK93MHmWNi+rU106QqAfSamo49uMiMLg9v6KEcv8?=
- =?us-ascii?Q?dq4rz1rRMFiGAyzxaqJpiOoV7TbOHbvkW6OqGo/PQFxZCCXAdS8mFwxh5tOO?=
- =?us-ascii?Q?j/5RZzwh4HNUwbx0nL1bePjgIA7cZEARYyTZRBxioJqJe5nXxXwtYGshWOs9?=
- =?us-ascii?Q?i7U1XvrsXkn8vmBb6N9xUAcR4Ae7umo8xCCmux2POH79ozZ+/PQORv19qZS6?=
- =?us-ascii?Q?J30Siw6ZxNg6IHSci3pb8WJGun/3Da3/7uK4ZEzPfPzGybplOK2O54JrmHqn?=
- =?us-ascii?Q?QJb7BES65ocuLjEvKtkuI2NkbAUGWE6/BKOTN1kQERefmtpWFDiCg47e0l5t?=
- =?us-ascii?Q?DtAMM8dQ6VK5LLJiOvdze53WgWiPDWnjtSsMuevJng5X0faB7cgXiQRxU0xG?=
- =?us-ascii?Q?mJ0KN6wyrWsbBtM79B/2eFYOtKjE6Q/BGARidC6Hy0GXTzvZ9gCCfdMx7gA0?=
- =?us-ascii?Q?f9PJdv3GekUtqEnp9LovnCqljhCAFDstCuIOo4AyjOyWm71mfjaTk9QxyEsN?=
- =?us-ascii?Q?dVINu+Bcg20tmlVmgqFUbM7KarHh2bHD0OhNVHQKf1HRSs+CUoqumBqAxEq/?=
- =?us-ascii?Q?HiM6mJZW7mE1yL3dUXelD40pBHB7BxvGHifsaljySHaOAA7BP/wiypmFCl0l?=
- =?us-ascii?Q?Qoz5tD0RZIYUvwIpdAZfNSy4HBXyAFifuGf2AltuuCNa7HoCq3YQ875mtqNP?=
- =?us-ascii?Q?rsXFKDFMTnUMcl82jpw5skrKqKjkxrXUPpk4TC3L75bPtWeIo8dFXkvJXxKo?=
- =?us-ascii?Q?8yGRo+53I5cZ+caf6XtTZRMnigY+Raw0+JOl6+GJns+13OM/NC4r9L2okJMg?=
- =?us-ascii?Q?ObjBHN1dKqyw++RQlSRlsmD8GchQqVREIqopH32UPqg3CYY+WvXiS1in3VHB?=
- =?us-ascii?Q?5b/wQT6OjcbakRJsz8qLMYvO+Lpb2ugp4t2liADRqePy+b6pNiN4F1nqe2NV?=
- =?us-ascii?Q?GJ8D6+kRLyWuDqJdbYptXv4AsAjLmQuWLqoUpAnsAWpp1KjCc5UuMFrnUA5A?=
- =?us-ascii?Q?VG1zEiQ96tYyA32zJQF5LWLPfvSa1R9Q9zo3vdaD1XgYbCFYCFAXpR8ynjzu?=
- =?us-ascii?Q?bzTCFkgAscjfDnzDLU/XTywuxlFI87y96f7OIZqYVdwover5cQr8ApPjsLfQ?=
- =?us-ascii?Q?U0TOplNnPJXwqyUfk24aZ8vcT1WRt87aK3Vxn95tFntwMuUnxrcoJCaYQKLS?=
- =?us-ascii?Q?pA9JbVYxJWrab4dupSOLe9ERB4BbeZnc8RymX7vQznFHVs4So6HTbRzoqye4?=
- =?us-ascii?Q?81W6BFkyosuaVcp8/FgdNWSNTlm+aTpcALGEzkne74mu9t3Qe/NHngsYuZrc?=
- =?us-ascii?Q?CCXyrndWyQXLphazTcjZzddKOvpdBa7W9vRoyPOdgwWEBc2nAI33FyH/Xdjz?=
- =?us-ascii?Q?17WWJWXr1YmTDKouNMZ3A5qx5yOZhM8=3D?=
-Content-Type: text/plain; charset="us-ascii"
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?AGRSo4puZEGL6+e4Hl6K1Hzy+Q28T8x9EzLK/BgNSadxwoUlP7YTT8kqt+?=
+ =?iso-8859-1?Q?Oc2MMwfvdiT2ZfhGaIl9EAT1JVgzw+v5pAvJqMF4GktlUpEbHfE+jpGHWu?=
+ =?iso-8859-1?Q?pgkj1WN1ou8nrsXbTXnGWx/Ct/v3TX1nNSSuoO2NyskQxHQSeMwat7IecM?=
+ =?iso-8859-1?Q?P0rpZHxR438Os0dN0R4+4ScDFE0OHF6MQIfNhq3E3tt9+FBAvXJr/Jv8OV?=
+ =?iso-8859-1?Q?JJOq+ajjBQxC9qZnEcO8Leb7yTaIxozG4i4XRgx1TwqXBSEQp/VwKM7DI4?=
+ =?iso-8859-1?Q?K7aGm/Eadxe5bcnVThIzmnyBBUGFcCpfs3n29XhCKUxwb+ImHvJk9DdNtS?=
+ =?iso-8859-1?Q?xx5uc00PlHrBrh2vkZ98/zI7SXzOnS8yF+rbN9hxUm0xezHogU6pbiH4ym?=
+ =?iso-8859-1?Q?xItLfi7zrV27TltLu8AJpG4BZjvsIdAvS8cqs8xoiV3oeq0fzXtcophYOB?=
+ =?iso-8859-1?Q?Opk+dRS60GSwg/BXgLdiLvM13NhULMk9Fznwd/cbWCd44EuclEV6qtF+JJ?=
+ =?iso-8859-1?Q?BXHzqOOhPTpTDC2lqXF9aURlZrap9vKlvebF5VJq4AecpukzU9W4h8Om9w?=
+ =?iso-8859-1?Q?HpJXWo859OKwGu+YRY0UswEPP+KUcV9erhkU9PW+oIpoeQmAY34S1ff+q4?=
+ =?iso-8859-1?Q?uV4Yx5weAsh1I/Cp6sNJXr8Za9Vl7aTuB2OMGh45WdmKBLIDbSzrizOaJY?=
+ =?iso-8859-1?Q?Cu8hVEo9seob+BQQwHhfA0AAstkiAa/T2F1g1jYTlmNEiTXW9aQYd/uiWC?=
+ =?iso-8859-1?Q?1Jjt6NjPhCtyDX0rbmhtQMwlz4zd2poXOe38SrsgySwjJXqieJ9yFDxIjG?=
+ =?iso-8859-1?Q?+glniIxkL3ei81iVDJwJTW2mmjMI+CwpTJdRLsnmsYp3wytvRpLHpqgOMl?=
+ =?iso-8859-1?Q?u/ati/4ubHnLJsOtlsRIXiMcbRAbFrdOx1ovh7P3cqX0NOQbTZlzPNL27p?=
+ =?iso-8859-1?Q?j5OIkqPm8FCnqeTcCzS1P/ndri+fCDIK49tLD1Q0kDZsbSFoN2AeLLzT+E?=
+ =?iso-8859-1?Q?I+i9PTneL/NkM/VwbJVUfwhWBNLKWZAxIniQjkBPZSKQB45QgMiKpevh3d?=
+ =?iso-8859-1?Q?2BHnC0PWP+Wx1wKxp5+UAH8buaviX+CMIp4jFasRprkhmiKIcpOy1xVjWt?=
+ =?iso-8859-1?Q?WaTPNTam6ibyaFW0ZAoQJrMbPXh+qMOkqQQEiZg3z7WVRLRqLo8t5U/RXu?=
+ =?iso-8859-1?Q?/I9LXh0S8XZqn/Ft3Yf2IprFzAknPYfllBSPeVsJnr8kehOuu0U1Pfb4j6?=
+ =?iso-8859-1?Q?ngJXxzN8Drq3Fp62btuBNGkJKUw3AAPqt+Iqp/8iZSMlh2wHNMXWTm7ZOE?=
+ =?iso-8859-1?Q?i78inI1V0zwAHVMfi66gxGeQ/tD1HtHj1staXMAnL4YdUaozJor66iC1r9?=
+ =?iso-8859-1?Q?/wGING8/7A9ldOgxA9qN+E7SEAerNdBxNjDd7MvWBvHlIIKzhdCoNFbN/q?=
+ =?iso-8859-1?Q?cOL6NcJUKjp2u7mDBL+FLCkvN9OjwoxRHe9IovQtofL10+3P8V01qeXTd2?=
+ =?iso-8859-1?Q?60TEET/X6OpmpVO8Y0quIujj6a2Pp8qUdZLx8UAHQFfJsUhB+XmGjiyeoq?=
+ =?iso-8859-1?Q?/lBL+2zv7docKc5zAnd164caR0GmmvIXi4zTG9HmzY/z3u6B6jLzAOc/Kp?=
+ =?iso-8859-1?Q?3gXMkcch9x9yxgmdJRgpFg4RD0/K8KYegihQZOTTEHtMwo1bD+/AERUHCL?=
+ =?iso-8859-1?Q?eI7Imvej1fAifF0bhDvUn90vsE0WKGIuUNXUonbBKE0djNqYb4BCnMQUWv?=
+ =?iso-8859-1?Q?Ljy2yhrz7pda9YqHCKx0uKpQpkP53rPXU0+WX0zwxPLYl+hL8doeUzpYPl?=
+ =?iso-8859-1?Q?1w6m6fFMJA=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -145,90 +116,90 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: 5RwobjAKcPBPsyXjAManyCd4D5i6d+ncYIAfoBdznZmCqbx4Eb4uF9Q73oIjuP6u2xg1Gka3emcP6xmURQuKyeBzIzzg2olAjy1bTlp9rnJnxypYGNyN+kis2teQ7iMJKUxFvBinOV6rggshlR7SjUw4PDtz1hKlOmfdfb8UuxT0fU+gDQsByU/p/MV0IddCnN15CsqHH4HBjIdsh1zi9U1pvfV6oz9HiFHAuMe1dhOZJXuFVS99mGHpu8LhgFcodnKSkTudc2/a2eMjdB1pasrYvIyZ0N985/YTqOa2yaaps29V1zjDT/WQwcZoyG8FDzA3wmMnNbqexzlUVl3UTw==
+X-OriginatorOrg: est.tech
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 467d7217-a445-4db5-8988-08df01ba9f70
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Aug 2026 08:35:16.0306
+X-MS-Exchange-CrossTenant-AuthSource: GV1P189MB1988.EURP189.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: e878a8f3-36f1-459e-5eef-08df01bab711
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Aug 2026 08:35:55.6689
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: V1Yz9mJnzVK+PtS+7juV/M8DyhUmQ/YVG1VaUwUSIRzC4ZAvOQBPB6BY5MVRfSVNwMQGktZ+emrMfixbK6eNys6x7//7YRAUM6JghZ9xtVs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5211
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-userprincipalname: eJleHFw4ilYkwey2BKtkNP3FEG5LI8+fxjiWfP5TTWiRWDFol6WBAyTZHyxoEdMRyozBE/tyGOeE/zHjzjoKxSUu42CNgg3dorRvDO63uZg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1P18901MB0653
 
-
-
-> -----Original Message-----
-> From: Jiawen Wu <jiawenwu@trustnetic.com>
-> Sent: Monday, August 24, 2026 9:21 AM
-> To: netdev@vger.kernel.org
-> Cc: Mengyuan Lou <mengyuanlou@net-swift.com>; Andrew Lunn
-> <andrew+netdev@lunn.ch>; David S. Miller <davem@davemloft.net>; Eric
-> Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo
-> Abeni <pabeni@redhat.com>; Keller, Jacob E <jacob.e.keller@intel.com>;
-> Simon Horman <horms@kernel.org>; Loktionov, Aleksandr
-> <aleksandr.loktionov@intel.com>; Fabio Baltieri
-> <fabio.baltieri@gmail.com>; Zaremba, Larysa
-> <larysa.zaremba@intel.com>; Jiawen Wu <jiawenwu@trustnetic.com>
-> Subject: [PATCH net] net: wangxun: use BIT_ULL() to prevent shift
-> overflow on 32-bit archs
->=20
-> The macros TXGBE_INTR_MISC() and WX_INTR_Q() rely on the standard
-> BIT() macro to generate interrupt masks based on the queue vector
-> index.
->=20
-> On 32-bit architectures, BIT() evaluates to a 32-bit `unsigned long`.
-> Since the number of queue vectors can be up to 63 on txgbe devices,
-> performing a left shift of 32 or more results in an integer overflow
-> and undefined behavior. This causes incorrect interrupt masking and
-> unmasking logic for both the queue and miscellaneous interrupts on 32-
-> bit systems.
->=20
-> Fix this by replacing BIT() with BIT_ULL() in these macros. This
-> ensures that the bitwise shift is always performed safely on a 64-bit
-> `unsigned long long` type, regardless of the underlying architecture.
->=20
-> Fixes: e37546ad1f9b ("net: wangxun: revert the adjustment of the IRQ
-> vector sequence")
-> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-> ---
->  drivers/net/ethernet/wangxun/libwx/wx_type.h    | 2 +-
->  drivers/net/ethernet/wangxun/txgbe/txgbe_type.h | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-> b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-> index 65e3e55db1cf..0520288d18ab 100644
-> --- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-> +++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-> @@ -1427,7 +1427,7 @@ struct wx {
->  };
->=20
->  #define WX_INTR_ALL (~0ULL)
-> -#define WX_INTR_Q(i) BIT((i))
-> +#define WX_INTR_Q(i) BIT_ULL((i))
->=20
->  /* register operations */
->  #define wr32(a, reg, value)	writel((value), ((a)->hw_addr +
-> (reg)))
-> diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-> b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-> index 877234e3fdc2..fddcb011fa2f 100644
-> --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-> +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-> @@ -303,7 +303,7 @@ struct txgbe_fdir_filter {
->  #define TXGBE_DEFAULT_RX_WORK           128
->  #endif
->=20
-> -#define TXGBE_INTR_MISC(A)    BIT((A)->num_q_vectors)
-> +#define TXGBE_INTR_MISC(A)    BIT_ULL((A)->num_q_vectors)
->  #define TXGBE_INTR_QALL(A)    (TXGBE_INTR_MISC(A) - 1)
->=20
->  #define TXGBE_MAX_EITR        GENMASK(11, 3)
-> --
-> 2.51.0
-
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-
+> Subject: [PATCH net] tipc: protect node reset trace dump with node lock=
+=0A=
+=0A=
+  >BUG: KASAN: slab-use-after-free in tipc_link_dump+0x10cb/0x16b0=0A=
+  >Read of size 4 by task ksoftirqd/0/14=0A=
+  >Call Trace:=0A=
+  > tipc_link_dump+0x10cb/0x16b0=0A=
+  > tipc_node_dump+0x4bb/0x740=0A=
+  > trace_event_raw_event_tipc_node_class+0x258/0x360=0A=
+  > tipc_node_reset_links+0x14d/0x1a0=0A=
+  > tipc_rcv+0x13f5/0x3030=0A=
+  > tipc_udp_recv+0x4e3/0x670=0A=
+  > Allocated by task 0:=0A=
+  > tipc_link_create+0x1e1/0x1020=0A=
+  > tipc_node_check_dest+0x7d2/0x11a0=0A=
+  > tipc_disc_rcv+0xdbf/0x1430=0A=
+  > Freed by task 89:=0A=
+  >  kfree+0x131/0x3c0=0A=
+  >  tipc_node_link_down+0x267/0x4b0=0A=
+  >  tipc_node_delete_links+0xec/0x160=0A=
+  > bearer_disable+0x107/0x260=0A=
+=0A=
+Please decode above stack trace (using linux/scripts/decode_stacktrace.sh).=
+=0A=
+=0A=
+> Take the node read lock around the trace event. This keeps link pointer=
+=0A=
+> loads and all dump dereferences serialized against link deletion while=0A=
+> preserving the trace contents and reset flow.=0A=
+=0A=
+> Fixes: eb18a510b5cd ("tipc: add trace_events for tipc node")=0A=
+> Cc: stable@vger.kernel.org=0A=
+> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>=0A=
+> ---=0A=
+> net/tipc/node.c | 2 ++=0A=
+> 1 file changed, 2 insertions(+)=0A=
+=0A=
+> diff --git a/net/tipc/node.c b/net/tipc/node.c=0A=
+> index 683a136e53ef..127848e8a644 100644=0A=
+> --- a/net/tipc/node.c=0A=
+> +++ b/net/tipc/node.c=0A=
+> @@ -1333,7 +1333,9 @@ static void tipc_node_reset_links(struct tipc_node =
+*n)=0A=
+=0A=
+>       pr_warn("Resetting all links to %x\n", n->addr);=0A=
+=0A=
+> +       tipc_node_read_lock(n);=0A=
+>        trace_tipc_node_reset_links(n, true, " ");=0A=
+> +       tipc_node_read_unlock(n);=0A=
+=0A=
+It is not correct using read lock because trace_tipc_node_reset_links() acc=
+esses link's queues that tipc_rcv() might access concurrently.=0A=
+Please test this:=0A=
+=0A=
+diff --git a/net/tipc/node.c b/net/tipc/node.c=0A=
+index 683a136e53ef..bd91378b7540 100644=0A=
+--- a/net/tipc/node.c=0A=
++++ b/net/tipc/node.c=0A=
+@@ -1333,7 +1333,9 @@ static void tipc_node_reset_links(struct tipc_node *n=
+)=0A=
+=0A=
+        pr_warn("Resetting all links to %x\n", n->addr);=0A=
+=0A=
++       tipc_node_write_lock(n);=0A=
+        trace_tipc_node_reset_links(n, true, " ");=0A=
++       tipc_node_write_unlock_fast(n);=0A=
+        for (i =3D 0; i < MAX_BEARERS; i++) {=0A=
+                tipc_node_link_down(n, i, false);=0A=
+        }=0A=
+=0A=
+>        for (i =3D 0; i < MAX_BEARERS; i++) {=0A=
+>               tipc_node_link_down(n, i, false);=0A=
+>        }=0A=
+=0A=
+=0A=
