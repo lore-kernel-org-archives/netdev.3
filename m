@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3207386441;
-	Mon, 24 Aug 2026 18:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C5C38655D
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 18:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787597468; cv=none; b=J4G4vcZorA2NpvRbuC0Mw5M1nqX0i4wcbmUTYvGJAu5Kc3RErvplinSLN4MGwXe7lSoupvsx4l//ieDjruz6/3/myxZiPPJdxOxQlkF7JQH7GvWSzVOARAV2HEVFZ5iEukEP7nPZdy9eoWis0fPIuTaI1lIEmNN0RfVH3p4O7SI=
+	t=1787597469; cv=none; b=j+8pYAz5idtStAitiLXr2nBLz2lb8+AbFRJgmx7axngRhkLikL7KgOCYkN/58iYfrMRRZLOWOEAZ1ercVxLPGAqrkIUAbS9DHqSOSdnei7V0nDs6ejnE93a6iYsJ8QMLPEI7Q5+PGt3BxDul/LEHj0gMdldGBtnNjdfLgL5lsWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787597468; c=relaxed/simple;
-	bh=1hROkT1V5Ucj9ohaY38t1hNwXpIlB1dDXOvJqJPOjl4=;
+	s=arc-20240116; t=1787597469; c=relaxed/simple;
+	bh=usq0o++89jzhTHWeF9uOEgu+WEcT4PyzqBKqY6+cVGk=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=mEBoXoeccq40E+5e5kjgn7oo2r58AScOtsQZSOeW9VJFi056eL54o3wcFoXSDiVhSe/OrzbuGJNSKjiMur5CDXDAZdBJxzFy7CCG0OK9G1zjC4hCN2n2cCDp/w46FM6NrorQ/LU81hlweRCrmjhlJ03iOhpOYy9OULJKBfBHvgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LvWw+Hme; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=ow74OBWKzUt8qHu+QBC502SjLtl+MpnyCQuKLI9cN+HBEJNRI191TjuNSacWfQSrLqGVio2AQ9wKm5xGSEjQoK0nIQ3LNjuu/Fljq06b25LBEG8KLjS34LBodiVhPWVqQ44Ja1Jr3kQl2YRKC7v8obw+TS+feSPzIi1T0sYMkR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WFLf23hN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LvWw+Hme"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D5911F000E9;
-	Mon, 24 Aug 2026 18:51:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WFLf23hN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941DC1F00A3A;
+	Mon, 24 Aug 2026 18:51:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787597467;
-	bh=2w6CAD7GZ8KPiIxNBl6OHo1bN7ezeKuQnqKPr1EznCI=;
+	s=k20260515; t=1787597468;
+	bh=pV0pRHkh85Ff9HhCfHZIfVEfYvyq5xEy/SHGr3RHpPo=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=LvWw+HmeHwmRsGpoKRL+iRqFYciM6U25tPhcBaL99ktbnYgpz4J9lALiyfPYBW4Zy
-	 HFwVAMq0a104elUM74StRuaWcMNTAOd+a8sJ14qos8Zw6ZxszMqjMoSoM98yX0HTWJ
-	 qg5HfFeoLjz5db+YAdTNMrSmqrjXGBSaNfNRfO/FsmHUzCMMLJcwQ+p2qOyUmwOMSi
-	 nGM6x1Ixx2mDHlb6/AB4+dCLmWmOr9P9byevx+Jznz0t7mzgQqwULWy9GsRnlIqCGv
-	 FYIMKCv7xIAASOeyMk7hd9b+GZ3fnHmJcDi2j5b4cqTC3+h5f1ohH4UZSJFPahcTHa
-	 0zA520xSLsSzQ==
+	b=WFLf23hNQ5ohUBMekPTltKccmu2Ttu0cj8vgkChvcUU1CirEJiZr+hDiawq4wbK+8
+	 uVMuEGQtEN7sCXQfCYjFltc+eOeemsFFfmiP4Kh4pi4AwiC6uVyq66a93JXCVw277T
+	 fgg5XVcpBkYAWSFZLieJ4TNffHjkjTdDd4VwZEKEQJbOowipesO8/rEBuawcdwNAIM
+	 uhNl8xRoqV6sNZ/U9bIwaC8t5DkQq7xKQcCv4BCKexGjYTlglWCN2jEGG6bCxaGu68
+	 wOA/EkHIxmFIfHmx7If0yywlSlP/yeIrdsl/AJEeoD9BTtjXEI8JnDDSeSVF+zsn0x
+	 u7kJgZOlRH3bA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0AA73924A4C;
-	Mon, 24 Aug 2026 18:50:15 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569B43924A4C;
+	Mon, 24 Aug 2026 18:50:17 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,42 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2 0/2] selftests/net: fixes for fin_ack_lat
+Subject: Re: [PATCH] net: stmmac: fix device node reference leaks in
+ stmmac_mtl_setup()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178759741439.3062482.14384407063404923782.git-patchwork-notify@kernel.org>
-Date: Mon, 24 Aug 2026 18:50:14 +0000
-References: <20260821030922.1123754-1-fffsqian@163.com>
-In-Reply-To: <20260821030922.1123754-1-fffsqian@163.com>
-To: Qingshuang Fu <fffsqian@163.com>
-Cc: apw@canonical.com, joe@perches.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- shuah@kernel.org, sjpark@amazon.de, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- fuqingshuang@kylinos.cn
+ <178759741588.3062482.17874707106135640490.git-patchwork-notify@kernel.org>
+Date: Mon, 24 Aug 2026 18:50:15 +0000
+References: <20260821055718.57-1-rabbanyhmm@gmail.com>
+In-Reply-To: <20260821055718.57-1-rabbanyhmm@gmail.com>
+To: Md Rabbani <rabbanyhmm@gmail.com>
+Cc: maxime.chevallier@bootlin.com, alexandre.torgue@foss.st.com,
+ mcoquelin.stm32@gmail.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 21 Aug 2026 11:09:20 +0800 you wrote:
-> From: Qingshuang Fu <fuqingshuang@kylinos.cn>
-> 
-> This series fixes two bugs in the fin_ack_lat self-test.
-> 
-> Patch 1 fixes the swapped kill() arguments in sig_handler(), so the
-> server actually forwards SIGTERM to the client.  It also makes the
-> wrapper script's cleanup tolerant of ESRCH, since the client may now
-> exit before the kill command reaches its PID.
+On Fri, 21 Aug 2026 11:57:18 +0600 you wrote:
+> In stmmac_mtl_setup(), q_node is shared across the RX and TX queue
+> parsing loops. When the RX queue loop breaks early because the number
+> of parsed queues reaches plat->rx_queues_to_use, q_node retains an
+> acquired reference count. If the error check passes
+> (queue == plat->rx_queues_to_use), execution proceeds directly to the
+> TX queue loop, where of_get_next_child() immediately overwrites q_node
+> with the first TX child, permanently leaking the retained RX child
+> device node reference.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2,1/2] selftests/net: fix kill() argument order and wrapper cleanup in fin_ack_lat
-    https://git.kernel.org/netdev/net/c/2d83aa65dc98
-  - [net,v2,2/2] selftests/net: check fork() return value in fin_ack_lat
-    https://git.kernel.org/netdev/net/c/11e41444a3f6
+  - net: stmmac: fix device node reference leaks in stmmac_mtl_setup()
+    https://git.kernel.org/netdev/net/c/317fe168f4c0
 
 You are awesome, thank you!
 -- 
