@@ -1,263 +1,159 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6005B3A6418
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 08:18:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17C5036197D
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 08:27:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787559536; cv=none; b=lpuZ/nIdZtgcOeBrlX+407WSsXEblpLxYNp/5gqGllEQKpRNETPqF5wW376StBut8ruEeyjrFSCiZk5Op0RVQRd6Xuynxns9aXkJc/iira3OaVKXhVkI7zumZYPqstP9qmtohsVgdZhTKZ1ZZryRpBEjVn5fWItJYLDBvp+a+I0=
+	t=1787560050; cv=none; b=fLZBqsf09gOCIk0CV+i9b6sEThIUnWGobYFGsKKmE4g5JQK4StX08hViy+ujW3Me9j5sRhkIf4xpeDVwrBwNxQgRMkq7D0rlCFTQblxGS71gJwLhQh+xk7DVHGjPIiDQ7a00jo5BbxKGan0z5MA4+JklRf894Wty9zIQzwbvY0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787559536; c=relaxed/simple;
-	bh=yLhHPgd/yh8E2Ja9eAUCpNVcamrYT4itwboX79+K8F8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vCnIxTNQMjxeX+BSzVqTstRPCIxNaUxCacTVGbbmHduJFVJPC6RkwybiIKptpKYm+DijBXPNTf8u9ebqdpMP66Ww7913D66fpotxn1KHDp6gHkoJZ/RzUxm158G6HQvGaxkSNEyXGfERwt0IKupwazAmM+cotCmMLvr0Os6HxwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DduRgjdN; arc=none smtp.client-ip=209.85.215.180
+	s=arc-20240116; t=1787560050; c=relaxed/simple;
+	bh=piVN0vdcGV6FXrgEDztXaMIKO5TM8jHJZPuqr+UKDPA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TGwomOpI9AqqP0R7RBpK+aVQOVMHe4FqtzWlkaMnnjs5TfgRP4Q8ziQ+S/NkWo4mkaNFWWBye3ZKpb/k/b9j9Fct35ZlLRVBc0ofA91U84/WKfV/PiKRwfBc10l+AOs3ud+ShjefuQkS/zGtiVI1Zs92dWbvJCqxTpDHZMWquiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N0OUWFBU; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DduRgjdN"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-cbe6295f05bso2815719a12.1
-        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 01:18:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N0OUWFBU"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-47362928f65so1461753f8f.2
+        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 01:27:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787559535; x=1788164335; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xODi2FrfSQv/ArnvkoarclXsAeWviGOdZYyP3yEE9Do=;
-        b=DduRgjdNw4tFL154PQMMRe1QX7Bo4Aat8pV8JwAp/xnA3NaVaO89JYEyDZpa8Iu1uU
-         ZfdrT+1lFtLeQygXnA6AkNMwg38tmsGOFEQ3dtoN/spvvVgvM7UjM7yHZCCWnzcudXLR
-         rcb+JkWEJslrH0hJaWHflYCGRQjuq2S5jzBjM2rQjHZwl5p7MzorDsUcYCJx6OmmLO7F
-         cSpuS9cYrnyJ9elXBsS7Rm2bKnggVziYdz0alvOo8LUU7rsCBKBv3VO1FkC+PKuTfDXh
-         ThzcUfU1hK+/fbUm2Dtib3lZCYNrVc2adMmk9uomSFppC6Y0i6WvtMLn0bLJLrU8wBv3
-         kpGg==
+        d=gmail.com; s=20251104; t=1787560047; x=1788164847; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=FtuRlJn+ZrLHnX35qATcjzadl2jMeleh8fW+A4zJiD0=;
+        b=N0OUWFBUHTMHBCoZduWa5IRLaPto/ME6zte0hupn0sQUa1GXRdg37DLg5QZKT7jpAl
+         ANfCkvUlFgl8kn4YxbIZiVFSnQdmvmzyL1IMSAVm9Zcfo+z75c1kcDHkO84+O9xhISSw
+         FL4S8OholcfVgLnLVhxMfhyyk1skfPWj/+LDA3Oo3nT8vh0l4jNewTKG7TU6j+IbJ3Mg
+         NattPuC5270gqG79Xn6S4M+DFHGWR0WXBXZi+KC2UkHZhW5i9FDyWQJjWmSUPYllBmSo
+         MMsUkzJhiKo0Y/Yun9bphgZrPwEkKNGGEC/tTBt+2MFCTR0p0Jj4grh1s63kxBQHzvhb
+         clwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787559535; x=1788164335;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xODi2FrfSQv/ArnvkoarclXsAeWviGOdZYyP3yEE9Do=;
-        b=jdOPyQ2P60pXjU/hGECIXYs2hsqNlQmAVbByNRWoaTyQbxFSYIQ3ytfzi6E8qFTAJ3
-         tq+wtninGkDz+581KKIw44Fbh/Nis7bEDQmBLUPBqUOV612SLS4S384R0gsWavbXWQvz
-         N1mEOcSQcFXx5B/mCygG9EkBdEb0qW9qbzrZjJ/7SpqOvRpz38MZD6TkQzkd0uDxwoh5
-         +K7EJKCXa3lrOHIph3fQPmM6lUvs614pNy3AQ9FHm0CGeVsFBHoPZi0IeveHpqNuEWql
-         r3Jq7P2g5mzyb00ZK4vhuXb/eE4ga+UUL2mkZgTpT9Dg8+6eywlC+w8JSOU0SSZYmVt6
-         IlUg==
-X-Forwarded-Encrypted: i=1; AHgh+RruNqbV/0GN/gQtdQknvSx5zGLuskQ46MN9F4C5Chz8OKBtTCriU66l2DRxr6MjAblY/f36Gv4=@vger.kernel.org
-X-Gm-Message-State: AFuF++nmX5L4+87OZCWQ3Yw0pXuAfpzZO8O3JqdQKAbg1s7Ef1UB7tbd
-	Kjj3o+LxCcz9OsHoWM2oAxOzbTlPAOJlC7C9f74GT2VRCHDqCY/wwqWHJkz7If9W3iw=
-X-Gm-Gg: AR+sD120u9mmD/Joj7IzxaHZa/M4Y9IZGh6iAZHhDRo81FDTQHTya99iwtnI1KVvDMA
-	cx+EYa7k7yJRIC6KHt4kke+zP5ckTByNrDL17k1q4LMt+JF2w2WC6yVs+DnKhtKQA++80FRwL5j
-	hsJWK0JzbEtW0XLOwL8XnPyWrTnDLu1P2zGGEShZN/hgzskob2Zzfw/YRUgJXPwaNXS0+E9ijtl
-	+z6a7c57JePVp3Jg+KzL2hJjbgG7o1PjBtBSvre+izD2xW6g+b1rbrFRd8DcGuoYnHjgb0WkdmG
-	YZJy3A7AO4mwuVEIxnldosTaqvnCafMrleE1n6kCX3sa3XmpXN3Q4EfVoSFka7jYXNQshwaILwE
-	h5INCxf6jXmTf4QxBOHGAxHJjBLYAKGWdDf34Fu7u2On5DsNv+T+WvOcRI9QACIwpqq1pTyaf2M
-	wgWpbwP6+HxJMcNa90jomjLJzA6o9z+QUvGqhyq5D6X4cyyZY2aCMJdnu8/wdcDohR+tPxvRTn3
-	/5de4VdtcOBjlskhtGXEVvFvz8=
-X-Received: by 2002:a17:90b:4488:b0:38e:7297:a92e with SMTP id 98e67ed59e1d1-395c5114895mr20160987a91.9.1787559534365;
-        Mon, 24 Aug 2026 01:18:54 -0700 (PDT)
-Received: from JUNVYYANG-MC1.tencent.com ([43.132.141.20])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-395e4999471sm9079775a91.8.2026.08.24.01.18.48
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 24 Aug 2026 01:18:54 -0700 (PDT)
-From: Jun Yang <juny24602@gmail.com>
-To: linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: marcelo.leitner@gmail.com,
-	lucien.xin@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	Jun Yang <junvyyang@tencent.com>,
-	stable@kernel.org,
-	TencentOS Corvus AI <corvus@tencent.com>
-Subject: [PATCH net v4 2/2] sctp: fix stream->outcnt underflow on duplicate RECONF responses
-Date: Mon, 24 Aug 2026 16:18:20 +0800
-Message-ID: <20260824081832.98717-3-juny24602@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260824081832.98717-1-juny24602@gmail.com>
-References: <20260824081832.98717-1-juny24602@gmail.com>
+        d=1e100.net; s=20251104; t=1787560047; x=1788164847;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FtuRlJn+ZrLHnX35qATcjzadl2jMeleh8fW+A4zJiD0=;
+        b=WNfjxShDf7BwjWNyvxF9f9He/xkqzyqffBIp8bwuXzT/gUYJI0JGHws3zHXOf8QFdr
+         XO4xt567S1G0obN1OBz32QYrS60oe61dv0kWK3iKG8tZrMfuPquUbj4xTo7kBa9WWiWh
+         wITWLOQBMCXksTkvDsiy81Kb/SYm2HdiRSac3QBwEFlA5hlq13bs7ESf+POeR29Y272t
+         H/PR6CJS3O1MhId/Lwoe07C4+4Mzmn8YKqztjfPgpf7nEDOQyDljOTjCCIPcPTOt+yq7
+         axYegLAba9SKl+mJzbx1KBfcVVHH8k1WZWt+OrzXTu7Bdp8UmywCSwWx1wNvtDjO1fOk
+         U6nQ==
+X-Forwarded-Encrypted: i=1; AHgh+Ro1cntDBi+4vG12LtX8F5QcQoZFLH83xdsztoXqAHD+W343nMoSghetZ7mxGBir8ivC2lFlFk0=@vger.kernel.org
+X-Gm-Message-State: AFuF++lC9q2Chbb0nDU3oh4wj5ttcoAasqgZqGHpHLEMAC8+TfoEA2C7
+	/1FQxG2NVobcnrzj2s4t4qbzyGUXS2fClGHxpt+ZYZwu56f8gFDQX2co
+X-Gm-Gg: AR+sD10kbm6JUVJVC/xtsPrza1UtXkvQUJiMvYP4KmyyU5J9a/7QatzqmJ4uqec9hOx
+	JBu2aHbrOmL0brKETCy/sKIxIDjXbYorwYJCR1PNv7x8Zi8ZqN1CBMrgwrYgDzlFEMy8P5mQeMf
+	1OXM+r/q0I80tT6n+B36blpaChsyt0YSk+NZ6c4vR5t0C+MwdyXMfL7QWLMxo3HQ2Px4SpdR8w/
+	SLeX27I9G9TNjCHl7J93FiNMs5YmsU9c6YVyVZQliCBxvXDxyqEjNBFg03rv+wqcavYr1P3eS/T
+	HQaf1NW4lbAsQYVA7BIl2EuCPSdHhIQzDPCH7+2dgoVDBr2r+uqI2BrjH9WDWWyfQuDquEA0PSj
+	qNNG/S1A3MJFZj7JGF7aZpzxFz/ZlBaFoUt4G86LVc+I8gyFHZDFTZuW0wwz/K4Wsl6XEFdzdh3
+	yHRjS8+2QhCOBILiONCewmSXPoE2QSG4DimDrD97a4/aEo2bkxEZHgcWcioT1AgUt/WWTRzx09p
+	k44FuAn6d/oF0HosyJLDZVSFA==
+X-Received: by 2002:a05:6000:4608:b0:47d:ee9d:90c8 with SMTP id ffacd0b85a97d-482c0b44af7mr31766089f8f.3.1787560047226;
+        Mon, 24 Aug 2026 01:27:27 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482c9bfd2c6sm7438382f8f.24.2026.08.24.01.27.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2026 01:27:25 -0700 (PDT)
+Date: Mon, 24 Aug 2026 09:27:24 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Mina Almasry <almasrymina@google.com>
+Cc: Pavel Begunkov <asml.silence@gmail.com>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, netdev@vger.kernel.org
+Subject: Re: [PATCH net 1/1] tcp: reject non zerocopy devmem tx
+Message-ID: <20260824092724.1b62af12@pumpkin>
+In-Reply-To: <CAHS8izMLw5EwR8Fr-0F6S8V0dYgyGe6UW0dmy0EurfHU5TswoA@mail.gmail.com>
+References: <ddb2d77e49974232b7f379851dc9809c953a6649.1787396169.git.asml.silence@gmail.com>
+	<CAHS8izMLw5EwR8Fr-0F6S8V0dYgyGe6UW0dmy0EurfHU5TswoA@mail.gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Jun Yang <junvyyang@tencent.com>
+On Sun, 23 Aug 2026 08:58:32 -0700
+Mina Almasry <almasrymina@google.com> wrote:
 
-A cached RECONF chunk may contain more than one request parameter.  A
-duplicate response can therefore find and process the same ADD_OUT request
-again while another parameter is still outstanding, rolling back outcnt
-twice and possibly underflowing it.
-
-Track outstanding request types as bits and clear each bit after its first
-response.  Later responses for the same request are then ignored.
-
-Fixes: 11ae76e67a17 ("sctp: implement receiver-side procedures for the Reconf Response Parameter")
-Cc: stable@kernel.org
-Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-Link: https://lore.kernel.org/netdev/20260730110225.37371-1-juny24602@gmail.com/
-Suggested-by: Xin Long <lucien.xin@gmail.com>
-Assisted-by: tencentos-corvus-ai:kimi-k3
-Signed-off-by: Jun Yang <junvyyang@tencent.com>
----
-v4:
- - Restore the SCTP_STRRESET_SET/CLEAR/TEST() helpers, each of which is
-   used more than once, so open-coding them only adds lines.
-
-v3:
- - Split the response_seq == 0 lookup fix into patch 1 (Simon Horman).
- - Keep the request bit helper local to stream.c.
-
-v2:
- - Track outstanding requests by type instead of sequence (Xin Long).
- - Drop the redundant arithmetic guard (Xin Long).
-
-v1: https://lore.kernel.org/netdev/20260730110225.37371-1-juny24602@gmail.com/
-
- include/net/sctp/structs.h |  2 +-
- net/sctp/stream.c          | 39 +++++++++++++++++++++++++++-----------
- 2 files changed, 29 insertions(+), 12 deletions(-)
-
-diff --git a/include/net/sctp/structs.h b/include/net/sctp/structs.h
-index cccc662561aa..b21f23b736fd 100644
---- a/include/net/sctp/structs.h
-+++ b/include/net/sctp/structs.h
-@@ -2057,7 +2057,7 @@ struct sctp_association {
- 	     force_delay:1;
- 
- 	__u8 strreset_enable;
--	__u8 strreset_outstanding; /* request param count on the fly */
-+	__u8 strreset_outstanding; /* request param bitmask on the fly */
- 
- 	__u32 strreset_outseq; /* Update after receiving response */
- 	__u32 strreset_inseq; /* Update after receiving request */
-diff --git a/net/sctp/stream.c b/net/sctp/stream.c
-index cfca5aa28c1a..9fee0da78845 100644
---- a/net/sctp/stream.c
-+++ b/net/sctp/stream.c
-@@ -22,6 +22,15 @@
- #include <net/sctp/sm.h>
- #include <net/sctp/stream_sched.h>
- 
-+#define SCTP_STRRESET_MASK(type) \
-+	BIT(ntohs(type) - ntohs(SCTP_PARAM_RESET_OUT_REQUEST))
-+#define SCTP_STRRESET_TEST(asoc, type) \
-+	((asoc)->strreset_outstanding & SCTP_STRRESET_MASK(type))
-+#define SCTP_STRRESET_SET(asoc, type) \
-+	((asoc)->strreset_outstanding |= SCTP_STRRESET_MASK(type))
-+#define SCTP_STRRESET_CLEAR(asoc, type) \
-+	((asoc)->strreset_outstanding &= ~SCTP_STRRESET_MASK(type))
-+
- static void sctp_stream_shrink_out(struct sctp_stream *stream, __u16 outcnt)
+> On Sat, Aug 22, 2026 at 3:57=E2=80=AFAM Pavel Begunkov <asml.silence@gmai=
+l.com> wrote:
+> >
+> > Device memory send doesn't work without zero copy, prevent
+> > tcp_sendmsg_locked() from falling back to the copy mode for devmem in
+> > case there is no NETIF_F_SG. Currently, it'd try to copy from iovec
+> > filled with dma-buf offsets, which would normally fail with EFAULT, but
+> > it's still better to handle it more explicitly. A recent net-iov / page
+> > mixing fix also needs this patch.
+> >
+> > Fixes: bd61848900bff ("net: devmem: Implement TX path")
+> > Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+> > ---
+> >  net/ipv4/tcp.c | 4 ++++
+> >  1 file changed, 4 insertions(+)
+> >
+> > diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+> > index 455441f1b694..f403830af65f 100644
+> > --- a/net/ipv4/tcp.c
+> > +++ b/net/ipv4/tcp.c
+> > @@ -1162,6 +1162,10 @@ int tcp_sendmsg_locked(struct sock *sk, struct m=
+sghdr *msg, size_t size)
+> >                                         binding =3D NULL;
+> >                                         goto out_err;
+> >                                 }
+> > +                               if (zc !=3D MSG_ZEROCOPY) {
+> > +                                       err =3D -EOPNOTSUPP;
+> > +                                       goto out_err;
+> > +                               }
+> >                         }
+> >                 }
+> >         } else if (unlikely(msg->msg_flags & MSG_SPLICE_PAGES) && size)=
  {
- 	struct sctp_association *asoc;
-@@ -372,7 +381,10 @@ int sctp_send_reset_streams(struct sctp_association *asoc,
- 		goto out;
- 	}
- 
--	asoc->strreset_outstanding = out + in;
-+	if (out)
-+		SCTP_STRRESET_SET(asoc, SCTP_PARAM_RESET_OUT_REQUEST);
-+	if (in)
-+		SCTP_STRRESET_SET(asoc, SCTP_PARAM_RESET_IN_REQUEST);
- 
- out:
- 	return retval;
-@@ -417,7 +429,7 @@ int sctp_send_reset_assoc(struct sctp_association *asoc)
- 		return retval;
- 	}
- 
--	asoc->strreset_outstanding = 1;
-+	SCTP_STRRESET_SET(asoc, SCTP_PARAM_RESET_TSN_REQUEST);
- 
- 	return 0;
- }
-@@ -474,7 +486,10 @@ int sctp_send_add_streams(struct sctp_association *asoc,
- 		goto out;
- 	}
- 
--	asoc->strreset_outstanding = !!out + !!in;
-+	if (out)
-+		SCTP_STRRESET_SET(asoc, SCTP_PARAM_RESET_ADD_OUT_STREAMS);
-+	if (in)
-+		SCTP_STRRESET_SET(asoc, SCTP_PARAM_RESET_ADD_IN_STREAMS);
- 
- out:
- 	return retval;
-@@ -564,13 +579,14 @@ struct sctp_chunk *sctp_process_strreset_outreq(
- 	if (asoc->strreset_chunk) {
- 		if (!sctp_chunk_lookup_strreset_param(
- 				asoc, outreq->response_seq,
--				SCTP_PARAM_RESET_IN_REQUEST, true)) {
-+				SCTP_PARAM_RESET_IN_REQUEST, true) ||
-+		    !SCTP_STRRESET_TEST(asoc, SCTP_PARAM_RESET_IN_REQUEST)) {
- 			/* same process with outstanding isn't 0 */
- 			result = SCTP_STRRESET_ERR_IN_PROGRESS;
- 			goto out;
- 		}
- 
--		asoc->strreset_outstanding--;
-+		SCTP_STRRESET_CLEAR(asoc, SCTP_PARAM_RESET_IN_REQUEST);
- 		asoc->strreset_outseq++;
- 
- 		if (!asoc->strreset_outstanding) {
-@@ -669,7 +685,7 @@ struct sctp_chunk *sctp_process_strreset_inreq(
- 			SCTP_SO(stream, i)->state = SCTP_STREAM_CLOSED;
- 
- 	asoc->strreset_chunk = chunk;
--	asoc->strreset_outstanding = 1;
-+	SCTP_STRRESET_SET(asoc, SCTP_PARAM_RESET_OUT_REQUEST);
- 	sctp_chunk_hold(asoc->strreset_chunk);
- 
- 	result = SCTP_STRRESET_PERFORMED;
-@@ -816,13 +832,14 @@ struct sctp_chunk *sctp_process_strreset_addstrm_out(
- 
- 	if (asoc->strreset_chunk) {
- 		if (!sctp_chunk_lookup_strreset_param(
--			asoc, 0, SCTP_PARAM_RESET_ADD_IN_STREAMS, false)) {
-+			asoc, 0, SCTP_PARAM_RESET_ADD_IN_STREAMS, false) ||
-+		    !SCTP_STRRESET_TEST(asoc, SCTP_PARAM_RESET_ADD_IN_STREAMS)) {
- 			/* same process with outstanding isn't 0 */
- 			result = SCTP_STRRESET_ERR_IN_PROGRESS;
- 			goto out;
- 		}
- 
--		asoc->strreset_outstanding--;
-+		SCTP_STRRESET_CLEAR(asoc, SCTP_PARAM_RESET_ADD_IN_STREAMS);
- 		asoc->strreset_outseq++;
- 
- 		if (!asoc->strreset_outstanding) {
-@@ -899,7 +916,7 @@ struct sctp_chunk *sctp_process_strreset_addstrm_in(
- 		goto out;
- 
- 	asoc->strreset_chunk = chunk;
--	asoc->strreset_outstanding = 1;
-+	SCTP_STRRESET_SET(asoc, SCTP_PARAM_RESET_ADD_OUT_STREAMS);
- 	sctp_chunk_hold(asoc->strreset_chunk);
- 
- 	stream->outcnt = outcnt;
-@@ -929,7 +946,7 @@ struct sctp_chunk *sctp_process_strreset_resp(
- 
- 	req = sctp_chunk_lookup_strreset_param(asoc, resp->response_seq, 0,
- 					       true);
--	if (!req)
-+	if (!req || !SCTP_STRRESET_TEST(asoc, req->type))
- 		return NULL;
- 
- 	result = ntohl(resp->result);
-@@ -1079,7 +1096,7 @@ struct sctp_chunk *sctp_process_strreset_resp(
- 			nums, 0, GFP_ATOMIC);
- 	}
- 
--	asoc->strreset_outstanding--;
-+	SCTP_STRRESET_CLEAR(asoc, req->type);
- 	asoc->strreset_outseq++;
- 
- 	/* remove everything for this reconf request */
--- 
-2.55.0
+> > --
+> > 2.54.0
+> > =20
+>=20
+> Thanks, I was indeed putting together patches to fix all the
+> pre-existing issues. I think the code assumes devmem send means
+> binding is not NULL, and the fact that we efault on copying is lucky,
+> we should not even attempt copying.
+>=20
+> How about we reduce the complexity of an already-long
+> tcp_sendmsg_locked function by combining this check with the other
+> ones? I was thinking this:
+>=20
+> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+> index b4237d0e994d6..1e34f50770446 100644
+> --- a/net/ipv4/tcp.c
+> +++ b/net/ipv4/tcp.c
+> @@ -1170,7 +1170,8 @@ int tcp_sendmsg_locked(struct sock *sk, struct
+> msghdr *msg, size_t size)
+>         }
+>=20
+>         if (!sockc_err && sockc.dmabuf_id &&
+> -           (!(flags & MSG_ZEROCOPY) || !sock_flag(sk, SOCK_ZEROCOPY))) {
+> +           (!(flags & MSG_ZEROCOPY) || !sock_flag(sk, SOCK_ZEROCOPY) ||
+> +            zc !=3D MSG_ZEROCOPY)) {
+
+That might be more readable with the ! moved outside the ():
+> +           !((flags & MSG_ZEROCOPY) && sock_flag(sk, SOCK_ZEROCOPY) &&
+> +            zc =3D=3D MSG_ZEROCOPY)) {
+
+David
+
+>                 err =3D -EINVAL;
+>                 goto out_err;
+>         }
+>=20
+> It will return EINVAL instead of EOPNOTSUPP but I think that is OK.
+>=20
 
