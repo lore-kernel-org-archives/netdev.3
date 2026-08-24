@@ -1,189 +1,169 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazolkn19013078.outbound.protection.outlook.com [52.103.35.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5CA441B8CD;
-	Mon, 24 Aug 2026 13:08:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787576918; cv=none; b=HcLbwahxmA8lB6MTMeVSPwX/wQIeOwHGmZFRSvEpLYZjvAa9E67M2dUeBTDlLvPy4RMm/NFecdtzk8y7p4KKsNmahbUGGakLhngb8BwfRIGgQYEBIBAIMAi8gM39icUh7Tid5/K04EYWOqQAeb6zZPyNwSm6BIWuiU6j28AcJ08=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787576918; c=relaxed/simple;
-	bh=TQ+i+55YhwB8S/ZFTKAa8Ua+yTjcKuZsjlqGLT7It9g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MxYTM3KvrHnVjEGV8CGWbJvx2pXxWEXV0arslXYgosOqFFfLMuawoVBrjvdWEvBDlAHO86aCifz3z9qpvGkY9ohkN8knPqNujqFvGCGQwOdYaEoNvupy9uMyAwFr8xcddY+fBLdQ+NFs4fFQhedkGNllnapOiliBkR8OcefyKsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=YiXKnvlw; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949B041E6DF
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 13:12:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.35.78
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787577139; cv=fail; b=DM5XoIpteJPh2pDl0HtykRu1xfvYNAljC/n+MChnUbwVqbypdyIqTqE4PMDZSlyl7EFzSB5YiPQWX5qEiSMKckv80sbb7IXDNojRzoHfPhgc4QaAxeJz/aYoSpar52+RtF6/A68rXwineNVNwmpNrFJBjxPhKUYrj0OQQEXJ07E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787577139; c=relaxed/simple;
+	bh=6VKnaxM4itBjUyDWi+1JqpMStFd+HASBpWQe5uYSYi0=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=bGzWQg8tJSwud/0B18K+Dx+16XCIFduIZ4U+U9rKLkQDAhUdrHWzzfxgvlgJf7dWN/Rp7lP1X+bUnq7XwkVbjMlKfxAPSswEYOJO5xzvBp0ozGzxR8cl9Kaq+E0THM8rHUrSErURiChRRkh91/65VsEgTPi2kMf1hPInyqnnfAI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=BjV0xSZP; arc=fail smtp.client-ip=52.103.35.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="YiXKnvlw"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67OD1YVd1957995;
-	Mon, 24 Aug 2026 13:08:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Bfw901
-	k5j8dwju9Lpw50b74wdvY+BAP1/Ct5rALXEm0=; b=YiXKnvlwFPC1ihTwzAKtge
-	J5Y2LDaMgCAjdjyPrU57kXG7bLnBPHYWk+IVeTpeGOuNvmx02GCnD1xmLrMv8hJL
-	JzdnNV6fuSa9cc2g6XlNEIVae/kByQw1CkB6sYilfPF8ZARD0uD1p3kPa3M6S7sD
-	uAtkECMJZzx1j26O6OIZj9WBgZGaj7JpIwoEJYGX5Tw8VCAqdBiuYyrl4soe/ETj
-	2xdfA9NDirB3geB6qznzZNjP42c8mMsNQiPzXYvWXYABjUVxl2+mAbReTNHS7DJQ
-	SJpRrlfe/v8cQIN132s51xL4njVZfPKOFo1de2ElwpG0BPwiSWNHLWtjoSjwg/NQ
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g73g4hef4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Aug 2026 13:08:26 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67OCvHoh016545;
-	Mon, 24 Aug 2026 13:08:25 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g7rsxwsda-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Aug 2026 13:08:24 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67OD8L4n45416900
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 24 Aug 2026 13:08:21 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 54F1D20043;
-	Mon, 24 Aug 2026 13:08:21 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2537920040;
-	Mon, 24 Aug 2026 13:08:21 +0000 (GMT)
-Received: from [9.224.90.36] (unknown [9.224.90.36])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 24 Aug 2026 13:08:21 +0000 (GMT)
-Message-ID: <8b840ef9-6c50-4f0f-a04c-2dca3f5f40c0@linux.ibm.com>
-Date: Mon, 24 Aug 2026 15:08:20 +0200
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="BjV0xSZP"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ri2dM2QJcD0myjGMqQ+NIPE/tWnmdaU3zCQzv9MqfDqH0gjTf4gBwj7xBSk6eLUZR3JyCZXrOqlbl8T5VsGyyzsjWdNTYOsis3U+hs1Cd6noZ14kM8q8ctX8NUQ9KFqLJolYqAZA/Sn9HqIoHtw8aMwisOVzKHE2WzmHFWs/6NuoHRnzkw4TZHjCotwZf3G0AiPrSKPPP1EBChBGsXwzkzjFwNM1EXWpl76Xghu6aO9CTn7c7U92i2eIENjSW7I8mKGjjSl5RUB/SfbvQFH6WClNmjM/Yt4gHS4mdauccbYUndF0GKhLPU+gKt9FEYfEcwGU0F2Y6UJTOfeIUcYZhA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mJ5JPBUQmxbmdCkl9hyoZPg+meHw7ytWch4YowgvYdg=;
+ b=JmOFpCmXfM7gqvmt9Ec88AwGjf8pJhiJOVcgICiVsD2qXTsyrTi8aJvGMOgjwawaCzPoWNhq5jO5Ugb3GnZVNcAgTbfyulAE6EPLduwO0g/GWfRC8KZLWs9ELv5OSjSyrhof/bs6gqBKS1bXY/Qd8svkRumx9KFJKHGh1hsLnc1CQLcHGhqCF16GulMSEUQ9ZwO5dr19zSHkHLKN0kaBVf0K8Cdc9Ng4KwI2jcqP150FvOX5Yg46KdIZ8OQj++PPp6ga55mqkin4zEibhDpzBK9aciHHEj0uKGl8yw0PqBDQTcWQMKLHRs7GojVOrHGGesKtAEHQNB+YZ59y/MlMGg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mJ5JPBUQmxbmdCkl9hyoZPg+meHw7ytWch4YowgvYdg=;
+ b=BjV0xSZPgZt7q8G/fdJNkrgWuWNPHsSoRmlR7cx+7oRNKREJOq1lJp5lDteRO/SvbidGycNaB1bOhJAYp4Gato2BIPrHlJ5pmjasFCh9QnpQLa7tIdLBmvRgFVGJJXn+pdOW5FVMxOatIVRByMp16ZPrhQDQE/z2w0To0DQmVrNVZtrO/2XS4y0HeoOdb55TSKy/U/+NxvYqfpl97TSkxThIEsqZV0fUFmyqXCJeCAR2S3OLm7oZu1hFBf4Wu+z9hrP8Jy8LI6d7S+mX38MdRuoVkEa8Q+kf5kisv/kR4hWXwdeaBrwq//BwF6tboKp+5tsj8pgYTXVar9vapOeGWg==
+Received: from DU0P251MB0699.EURP251.PROD.OUTLOOK.COM (2603:10a6:10:32b::21)
+ by AM9P251MB0096.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:414::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Mon, 24 Aug
+ 2026 13:12:14 +0000
+Received: from DU0P251MB0699.EURP251.PROD.OUTLOOK.COM
+ ([fe80::5d06:7ef9:757a:2816]) by DU0P251MB0699.EURP251.PROD.OUTLOOK.COM
+ ([fe80::5d06:7ef9:757a:2816%6]) with mapi id 15.21.0339.012; Mon, 24 Aug 2026
+ 13:12:14 +0000
+From: Edoardo Pinci <epinci@outlook.com>
+To: netdev@vger.kernel.org
+Cc: Daniel Golle <daniel@makrotopia.org>,
+	Edoardo Pinci <epinci@outlook.com>
+Subject: [PATCH net v2] net: dsa: mxl862xx: enable assisted learning on CPU port
+Date: Mon, 24 Aug 2026 15:11:43 +0200
+Message-ID:
+ <DU0P251MB069949C6DEB4D1D51F31FE87C4A02@DU0P251MB0699.EURP251.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.47.3
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: ZR0P278CA0029.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:1c::16) To DU0P251MB0699.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:10:32b::21)
+X-Microsoft-Original-Message-ID: <20260824131143.889788-1-epinci@outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 0/3] net/iucv: fix the recvmsg window update
-To: hexlabsecurity@proton.me, Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-        Thorsten Winkler <twinkler@linux.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>
-Cc: Hidayath Khan <hidayath@linux.ibm.com>, Simon Horman <horms@kernel.org>,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org, Ursula Braun <ursula.braun@de.ibm.com>
-References: <20260821-b4-disp-3a6e8695-v2-0-37597ff723a8@proton.me>
-Content-Language: en-US
-From: Alexandra Winter <wintera@linux.ibm.com>
-In-Reply-To: <20260821-b4-disp-3a6e8695-v2-0-37597ff723a8@proton.me>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: Cb4QjKkhddu6GuqZePgKZEmR-4wMzYLC
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI0MDEwOSBTYWx0ZWRfX0N7gwjbz6t4s
- KEf6bvg6sJEPVA9Dxmk1/ZiT2s2/wNFnWnQ/FGDOQ69AIZGCbWkydauWjQD9ykXVA1lU6I0LPU+
- coYa3TU71o2FU92tsNTref4QpPiaEMY=
-X-Proofpoint-GUID: Sn4c6IRNtxM-T99fOA10GX4j_SDurrEh
-X-Authority-Analysis: v=2.4 cv=JZyMa0KV c=1 sm=1 tr=0 ts=6a8c424a cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=WiqbPmbkvyWkeHEX9y4A:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI0MDEwOSBTYWx0ZWRfX/c78lCsm+2zk
- Pdxfc6Cgt6I60D8n0Q+J/MQBaIxN8aWkc/bGq1D3EJvUU6OKEBeoWQynaHXWBRB8ZnFqLBCEh20
- pX8ByZT5+QvjStyLWdLZWmzJNgYICgzrXWIibZcmlB15jDtGz8JYgDYoc45qZMokekGWjNOLivF
- WJFwMEkQD7FoY7XnTrBDPCEIoNfo9sJMJRNNsVlBrBoN1KkM5opYYKqetDWa7K0t6LhnvxuLe68
- xsMZHCO9s5hI2Uv95/tFr/cj69Q+8vH393tCupLrhYS8+F3E4N1ILWoFJnZKOo6oWGSLWIgIcEl
- DmcJZ9cS0995b/MOaFjNGR3aZQiXuEO+lPB1ctTkZqeCHYAY3BrgHzhVc+F4MGZN8RBQjOo1GKo
- ty9ajrZFBFsiyPlXBb7EwOwIN/3wIXZcCckq8Mn3+qOSOLzfXvrJDDdh14ZdCIrYrqUrrnflCaV
- UrARgMEsfwBEWJl65Dg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-24_04,2026-08-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 adultscore=0 priorityscore=1501 impostorscore=0
- malwarescore=0 bulkscore=0 lowpriorityscore=0 suspectscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608240109
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0P251MB0699:EE_|AM9P251MB0096:EE_
+X-MS-Office365-Filtering-Correlation-Id: 11963acc-67f5-4951-8a82-08df01e150a5
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|51005399006|15080799012|5062599005|25010399006|19110799012|8060799015|5072599009|41001999006|24021099003|37011999003|23021999003|56899033|12091999003|19061999003|440099028|4302099013|3412199025|40105399003|1602099012|2607281247196008|10035399007|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?AmcaLkAXthLFd32t7uHIMG3CCFbFbGvk7AQOtvzxHn+XV8fG0sZGukmpwnPT?=
+ =?us-ascii?Q?p7Oiu1SAdfSX56QSZnHktl0s8KsvMfmo4HoU7XxNebyRom+zDE7YlG2NrYVJ?=
+ =?us-ascii?Q?IVc6elNmA72Zbxw9IYlB5t76mUVMEos8rkKDBtX9n2joFxaCLPI9Wzk5hqWr?=
+ =?us-ascii?Q?suPf7qb5R3CWEhEJZeTQV170FMxYNl5OpZcmL1y0V3ducu09rOuR3tL3vxjM?=
+ =?us-ascii?Q?t6CdWrN16MbbYFrNh1K5tNCdNboTTp9L4qJF6MgvPq8qIM8r67srt4S2ykMP?=
+ =?us-ascii?Q?rA0r45BtupLEhWAayHBu2sMVEWxQrd1ajUYKn21055H+xQO+2fFYlMGVKzQc?=
+ =?us-ascii?Q?MGD9eQn7itq/JkAXtHjRG3JcAoZE0FiHlL5A3cj7r1B6qxPXuj7HeQ1OPx03?=
+ =?us-ascii?Q?xcV95psHp8TY3AJB/pFPgE2oNtpNXBnuQFeDhAIAqDmk9ojfZ5scNKro7HbA?=
+ =?us-ascii?Q?Y8ywqNAyiV+f7zQT2ImdX/rPm67TTntxksjbcu7ijTTlT3Sh+UHEBVTuq2G0?=
+ =?us-ascii?Q?z/hZTwqMJBREJh0aq9G2foX4PXDF42xc9jAWHGcDxScE3p+qle2CNaszjFYN?=
+ =?us-ascii?Q?XyewHZdPiKeEF81MFzs2/D6uii69ck/Nvg/z9VeL/YmAR2M2aC0t+FTKmjZ6?=
+ =?us-ascii?Q?Lkq8ZPHh2AJLw5cnX4KgRGXDVBesQFmQ9q3mjLOzZatVBjHDnPSHLCR5Qix1?=
+ =?us-ascii?Q?iKW+fonSdiCznonIP4ZAf0dobJyzvdvstHRqz7C2aU7Sx8HfeSmDqgl5OS2l?=
+ =?us-ascii?Q?usgPevtlr5Q+myuqJR82gKW9AgsoNXmr7Edd4yM48vOeI8589+vX0AoU0StW?=
+ =?us-ascii?Q?HvGmiQQCmtNz8Da1Gu06QX50/guz6ckEp9roZyVugzODIcDpC9VvjaGE3pQo?=
+ =?us-ascii?Q?yZSZfIibEQwWqFxR0s8VJAyzyUEUBnGOmNbm5kAWUcQyl9cSQAJad2AX+r1T?=
+ =?us-ascii?Q?2WjpEEupYZCnr+FUo2G0x+2qwcf4knvIRti5zx/rvELT7Rw4/sI30hmyhz2K?=
+ =?us-ascii?Q?ytnx/q+K9oyZezT+8KcsECcaR93VJ7YcL0dgv0UfvPA5fqC4L7rXhBUCnbQZ?=
+ =?us-ascii?Q?MY8VV6gSNGWvUFQtRJ+mH05BnqXqlslewjtVER9opa6DkAJPGmxNMxrs5xac?=
+ =?us-ascii?Q?VPOypNSCiaeDZJzdVnN4cENBI/Z/S+RQNeTjN1wR0SGRZgCbjFxXqZSHgKYv?=
+ =?us-ascii?Q?0LiQTDAVr5MiMJ3J79a1gQlDyQ/FyZlRrQ509g=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?rDrG5o8Su/HCIWTdakjOVCvbngdJiYNWd1phlfhPnM44T0DcGQQutq25KBDo?=
+ =?us-ascii?Q?r3Rs491g6Qi2dKLjsTYemCb7F9o+oRLbXDc6IjpxOlULppGepUJ28xtNACWf?=
+ =?us-ascii?Q?Nbh3BMdJY/0mA83Z8g6w+duC8BQjv9sL/7ejHGr2tIUt2ya1Fp7gZUkgKR/E?=
+ =?us-ascii?Q?/VZ1VT7F99nHNX5DnAOL9mA/dWI3A8BS+mR0dXSHV9jtY/gKJ8jzhDBxaTTV?=
+ =?us-ascii?Q?qJDU4rSixSV4n+pZPCbY52FSHD5JIlrC7zOhlMWC4mMkbNGisr/B6a5p0xag?=
+ =?us-ascii?Q?bWsMZm25tg814q83YFvDhFdua37oZvQLqCPhCLLIpXIqE4lLzPdE9IrYyMhb?=
+ =?us-ascii?Q?a7QpDUn06QTHB/qwfLVfsAo1T+EHcCbKla8cKpea5ihuCYvbzlmBtEi0uvhi?=
+ =?us-ascii?Q?h4VuB6mK/bxR+Y5UDcASdc0S0n4zkVyH6ToaES8297XqUQYx/vlAwdhUKotZ?=
+ =?us-ascii?Q?/oaFpSxB9+yvRDlt9T6SMY6h2u+EPGJp7kMNN1IdVjpUyFJLaJ8v6fIXjpSG?=
+ =?us-ascii?Q?6zT1MwXS2WP4mBmmvIFfJpRwL6zTCfuKWLExc7w5L6PH1/Y9PFzNCtVU5S8N?=
+ =?us-ascii?Q?mF+jypBH9iqtEFRLs6DaLrSrpNmhaXa8s1idXakmo4nWTixRt1AkktOgzI4Z?=
+ =?us-ascii?Q?Cedb6h8OLuFQkVadt0aHi7k9I/jzuspK38BfHSdFqUMK80dWp47PZ8RtbHD1?=
+ =?us-ascii?Q?JApEmapor/e785YtHx+GOoJYLWbnGZ3X3X/jJDaWBKpYcEB+5jMrSJNPyW9Q?=
+ =?us-ascii?Q?Zx49/wyGd5GjO4OtOkoKwrLER/GaBFotNOuGOgNX1lseyMXfJHvXPJkpuC8l?=
+ =?us-ascii?Q?rid/TZJLApU3e0zZ9tq1QiFVOrsIlbCsJnuGvyi6ixeidY2t4q8N/5N4nwyA?=
+ =?us-ascii?Q?vbFJvrI3Zq02Op96ujiOo9FQHYSInQCrUihF18gZta9rp5nocTrKYSP8GDiY?=
+ =?us-ascii?Q?XV6VgnonS7d1GwJt03T8H7z16yGEhStzjWPQE2jUCVlw4lyPj9zRZ/1jwMji?=
+ =?us-ascii?Q?gfpXzJaZD8zHJGlx7MFwytAnSIFaETHrTnbOVffPOQ/uTmDw9eV3Oc8LbPL8?=
+ =?us-ascii?Q?2/Y5WBsFBlcc5iOtKg8qeQXBL8YF9vfldSBRjmaEApG7BRB+xsSAyBk8Tf4j?=
+ =?us-ascii?Q?oWdP+3aFQ5E29vMond+E98nOm0kIvP2l6BgWqhwSAkFaGrOfxCp31OwI9O9o?=
+ =?us-ascii?Q?TfmIo/7DCFzo0/cjyrxvROjiR1rZM0sKnngkNU/Rp+/ecqEm9V6TlQbHK6HK?=
+ =?us-ascii?Q?kgSsRJcCJW/ZJ7XDQOseAzKcn1B/kH7zyB7lLFE+GTCFzmpn7rC9Qa1u1aQ5?=
+ =?us-ascii?Q?G9j7UDICmaPcofGbzK0g/aUZO8G6vZ0ZRVjBffUFJyxqZg+Nde2tVDTHDPMr?=
+ =?us-ascii?Q?o/10jRi7YzUl6/0A5jkyu6Izvyd9?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 11963acc-67f5-4951-8a82-08df01e150a5
+X-MS-Exchange-CrossTenant-AuthSource: DU0P251MB0699.EURP251.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2026 13:12:14.6699
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9P251MB0096
 
+The MxL862xx driver enables FDB isolation but does not enable assisted
+learning on the CPU port. Consequently, MAC addresses learned through a
+physical switch port are not updated in hardware when the corresponding
+station moves to a foreign bridge port, such as a Wi-Fi interface.
 
+The stale hardware FDB entry continues directing return traffic toward
+the original physical port. Traffic entering that same port is then
+filtered instead of being forwarded to the CPU and software bridge. This
+causes downstream unicast traffic, including DHCP OFFER and ACK packets,
+to disappear after a client roams to a local wireless interface. The
+client eventually considers the connection unusable and disconnects.
 
-On 21.08.26 13:17, Bryam Vargas via B4 Relay wrote:
-> v2 answers Jakub's reviews of v1 with changes rather than replies.
-> 
-> 1/3 keeps its hunk and states the impact properly. SO_MSGLIMIT accepts 1,
-> which makes msglimit / 2 zero, and msg_recv never leaves zero on a classic
-> socket, so the NULL read is one recvmsg() away for an unprivileged process
-> on a socket of its own. With relocate_lowcore it faults.
-> 
-> Its Fixes: tag was wrong as well. The unconditional send does date to
-> 3881ac441f64, but iucv_send_ctrl() sized the skb with a constant ETH_HLEN
-> until 238965b71b96, so before that it just returned -ENODEV. Backport
-> window is v5.3, not v3.1.
-> 
-> 2/3 is new. v1 admitted it widened the msg_recv race and left it open,
-> which isn't good enough under Cc: stable. afiucv_hs_send() samples the
-> counter and settles it after dev_queue_xmit(); sendmsg reaches that under
-> lock_sock() and recvmsg reaches it under no socket lock, so the two don't
-> exclude each other and both can subtract the same value. Negative counter,
-> WARN_ON, and the same credit advertised twice to a peer whose
-> afiucv_hs_callback_win() subtracts the wire value from msg_sent unchecked.
-> 
-> Taking the socket lock around the deferred send would close it too, since
-> recvmsg is the only unlocked side. I didn't: recvmsg has never held that
-> lock, and making it do so changes the receive path for every caller. That
-> belongs in the locking rework, not in a stable fix.
-> 
-> The claim sits after the last error exit rather than in the header build,
-> so the counter reads zero only while the transmit is in flight, and a
-> concurrent sender isn't talked out of its own update.
-> 
-> 3/3 is v1's patch, and it must not be applied without 2/3: hoisting the
-> send out of message_q.lock drops the serialisation that lock gave two
-> concurrent recvmsg(). Backported alone it recreates what 2/3 fixes. Both
-> changelogs say so.
-> 
-> Litmus test under LKMM: the counter reaches -2 before 2/3 and cannot after.
-> No hardware run; I have no IBM Z, and CONFIG_AFIUCV is s390-only.
-> 
-> The unlocked hs_dev and sk_shutdown window, the unbounded backlog_skb_q and
-> the WARN_ON a flooding peer can reach are pre-existing and wider than this
-> series. They belong with the locking rework Alexandra has open.
-> 
-> Thanks for the reviews.
-> 
-> ---
-> Bryam Vargas (3):
->       net/iucv: only send the window update on HiperSockets sockets
->       net/iucv: claim the receive credit atomically
->       net/iucv: send the window update outside message_q.lock
-> 
->  net/iucv/af_iucv.c | 42 +++++++++++++++++++++++++-----------------
->  1 file changed, 25 insertions(+), 17 deletions(-)
-> ---
-> base-commit: 746fc0787f616da418ffc04a110296fe95d53491
-> change-id: 20260821-b4-disp-3a6e8695-c1f4a6069169
-> 
-> Best regards,
-> --  
-> Bryam Vargas <hexlabsecurity@proton.me>
-> 
-> 
-> 
+Enable assisted CPU-port learning so DSA installs foreign bridge FDB
+entries on the CPU port. This keeps the hardware FDB synchronized with
+the software bridge and allows return traffic to reach locally attached
+Wi-Fi clients after roaming.
 
-Thank you for the fixes Bryam.
-I have reviewed them and would technically give an R-b to all three.
+Tested on a BPI R4 PRO with a MxL862xx switch and a BE14000 WiFi interface.
+- Without patch, wired uplink on lan6 port (mxl path)
+  Wifi clients connect but roam away not getting DHCP offers
+- Without patch, wired uplink on wan port (no mxl path)
+  Wifi clients connect and roam successfully
+- With this patch, uplink on lan6 (mxl path)
+  Wifi clients connect and roam successfully
 
-However I propose to send them again as one single patch. They are
-really about the same subject: iucv->msg_recv handling and even have
-a dependency, as you rightfully noted.
-It will be much easier to proceed and to backport them, if it is only
-one patch.
+Fixes: 340bdf984613c4a9241d678915e513824f5a9b19 ("net: dsa: mxl862xx: implement bridge offloading")
+Signed-off-by: Edoardo Pinci <epinci@outlook.com>
 
-I know it's a tradeoff, but I think we will do ourselves and the
-upstream maintainers a favor, if we send not too small fragments
-of fixes.
+--- a/drivers/net/dsa/mxl862xx/mxl862xx.c
++++ b/drivers/net/dsa/mxl862xx/mxl862xx.c
+@@ -2111,6 +2111,7 @@ static int mxl862xx_probe(struct mdio_de
+ 	ds->ops = &mxl862xx_switch_ops;
+ 	ds->phylink_mac_ops = &mxl862xx_phylink_mac_ops;
+ 	ds->num_ports = MXL862XX_MAX_PORTS;
++	ds->assisted_learning_on_cpu_port = true;
+ 	ds->fdb_isolation = true;
+ 	ds->max_num_bridges = MXL862XX_MAX_BRIDGES;
 
-
-
-
-
+--
+v2: 
+  - Rebased against net tree
+v1: https://lore.kernel.org/netdev/DU0P251MB0699AAFE65D7D30FE7D4C474C4A42@DU0P251MB0699.EURP251.PROD.OUTLOOK.COM/
