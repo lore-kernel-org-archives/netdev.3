@@ -1,160 +1,153 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518B23EC82C;
-	Mon, 24 Aug 2026 08:45:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF73F339363;
+	Mon, 24 Aug 2026 08:48:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787561134; cv=none; b=tm+dJuwjG9BYmvC0DH9cb9Rjv0Xvio2Vb1i9vPfSlJex+okhj8USiH3YIIDA4VVijWJUrEwZjOieLB/9tM1R+ap+lEnaEsgRf30vxQTaAopIQvwrodMStLYRGHswg9bRLnVsyPyxJvKP7WJ6jYZw2bGu4GMPgw27XaXzezozl9o=
+	t=1787561300; cv=none; b=uot0hCQ00Y0+SRw4ILBDuyzUIeivfEEVb2rNP9vWRu+CYlHmX4d1X3iZ1oEpogML1g9iePxEk3FlXF7yliAE7dymwQGf9PZILCN6Xubpenev+ZIC12ydMVPjToYL/LiJbcG+zXxVXWl42YtXuaim+LfssdIUlNQ/j6Z0ShVZDrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787561134; c=relaxed/simple;
-	bh=lEsVVqNEAkn5YOGDDH4OOniE9yS2v7TaErr6lqFREDc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NGpobNTeGsWzjdcnGeq2mc57y5Jw91BD6VY92UTb4QyojEgTlalSK9R0YRkitvEZYpgpXeVcBITjLK5REXj/GmjEqpMQkhs5vBM70Tr5zTbVqat0pD2YQsb4VHNBDpuU1/Oj9l/gTZJIXFc2ZVK6p05lynabnbDnIZLgM9pKxpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=xE5ndECR; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=5NiaIj+w; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=1KBVPjwf; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=1GbpM6NZ; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1787561300; c=relaxed/simple;
+	bh=T8p2SjRwYf7PMgfremyvAZAvRBqGtDlE+otoS5/RW8k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lRTK0xeQJmj+fvK1q4WlLnJN5PhT4hPC6ptsmtj1KTqR5FPY6wMswiIir6vrZ80/oW94geR8tdXotgJTqQaU2UpJ2jEIv5t0tvQAj1o9cjibKd7fSHvOQgkSwNWmUJMePQu/FOjHxQQDySANwYaPgirsnw8a7Eq3yBuPCcLkJCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=R8BjBtf2; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="xE5ndECR";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="5NiaIj+w";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="1KBVPjwf";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="1GbpM6NZ"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 07E0A867B0;
-	Mon, 24 Aug 2026 08:45:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1787561125; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lEsVVqNEAkn5YOGDDH4OOniE9yS2v7TaErr6lqFREDc=;
-	b=xE5ndECRYzc8WVHdhqhBXpPPRcy7jYoyBdZJsKRSnxvjmJ/AVCBWHp0x0cHH1wL5tFJqYO
-	6U0XwuFmUrGWjQwJzQKkgEJVvjNvjssqybcP348INkA7s5ngCDCOzFcQXAWXs7S2rMMdhe
-	JT45Y5RTHN8sRB7W1EJJHv3nTlV/2Nc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1787561125;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lEsVVqNEAkn5YOGDDH4OOniE9yS2v7TaErr6lqFREDc=;
-	b=5NiaIj+wQPTd+TzN9Vt1X/AnhCYQYrzh2sV65lBS3+N/WVrl382ivw4u8FvTlsKvHl5zQC
-	AjCqMto/rpVFZ9BQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1KBVPjwf;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=1GbpM6NZ
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1787561121; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lEsVVqNEAkn5YOGDDH4OOniE9yS2v7TaErr6lqFREDc=;
-	b=1KBVPjwf230umHTxY8Mzq2uq1UytXQOFvmb7V0rHzhUWouBDf+IPksW9KVcm5Qn0tCU0kj
-	0+F/t4GpTBhhGYgYNImyEl0hUSNKQrtS6i2iQmlUEipRRx9gi35+SrYL2MTKEDUoiHfUUD
-	X+54hVfCFB1TO7f8NvI3qW0Q+rnRnNo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1787561121;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lEsVVqNEAkn5YOGDDH4OOniE9yS2v7TaErr6lqFREDc=;
-	b=1GbpM6NZhkdd+dL7tZs40BuJFHkV1hA65lTkIYmpAae0CWriE0KPYgGZBxfsT1CLmACCtO
-	9hV52Ns2uLDOVCBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AE36113331;
-	Mon, 24 Aug 2026 08:45:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id XdIpKaAEjGobPQAAD6G6ig
-	(envelope-from <tbogendoerfer@suse.de>); Mon, 24 Aug 2026 08:45:20 +0000
-Date: Mon, 24 Aug 2026 10:45:11 +0200
-From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, <intel-wired-lan@lists.osuosl.org>,
- <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Ertman, David M"
- <david.m.ertman@intel.com>
-Subject: Re: [PATCH net-next] ice: rephrase LLDP filter fallback message
-Message-ID: <20260824104511.7a46a136@samweis>
-In-Reply-To: <477734d9-ed8e-4696-8160-382b29e7491c@intel.com>
-References: <20260717084453.9521-1-tbogendoerfer@suse.de>
-	<477734d9-ed8e-4696-8160-382b29e7491c@intel.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-suse-linux-gnu)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="R8BjBtf2"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67O5Vnd3857108;
+	Mon, 24 Aug 2026 08:48:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=0FBft0
+	TNIEbsBqxKfHYP3MdlZqz6UcKc+KyR8+8hrsE=; b=R8BjBtf2KozpNLMALGJHqK
+	kpVHhhJFvp/gDbtB/u8L61bPc068MrV90ZEmesZDjDKXIqcOIRD1N0LmahYQ0QR+
+	4Ggr5AU0K5ouyUffMl2NPTTqUVvq3as3fw60zU1duYW0t4QnidYKKQTJlqY/k+xA
+	aua7R/bSp/mM/cfAvNn5nkJriGpVXsBnJwwjUT8mrDYq2u+/Kd2cpTKB22FvKVbk
+	AcKMomBBD9vwc7MyFWa+QWGKqe3DILGmLBwPUS+TWQibbWKIpwoD2KJApUHvjHAx
+	7ZCGQosPXZkJ9l1NTY2KDIJ4tNBE8yqEyG8VdnTkbw0YsQpZBY+ZeUoznNQwCyxw
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g716hgd7b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Aug 2026 08:48:04 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67O8fL14005756;
+	Mon, 24 Aug 2026 08:48:03 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4g7pfvw05v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Aug 2026 08:48:03 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67O8lx6U34406784
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 24 Aug 2026 08:47:59 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5EC522004D;
+	Mon, 24 Aug 2026 08:47:59 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2DEB720043;
+	Mon, 24 Aug 2026 08:47:59 +0000 (GMT)
+Received: from [9.224.90.36] (unknown [9.224.90.36])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 24 Aug 2026 08:47:59 +0000 (GMT)
+Message-ID: <ac920c76-07db-43f4-ad95-da36073ca45a@linux.ibm.com>
+Date: Mon, 24 Aug 2026 10:47:58 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/2] net/iucv: drop HiperSockets frames from other
+ network namespaces
+To: Bryam Vargas <hexlabsecurity@proton.me>,
+        Thorsten Winkler <twinkler@linux.ibm.com>,
+        Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "David S . Miller" <davem@davemloft.net>
+Cc: Hidayath Khan <hidayath@linux.ibm.com>, Simon Horman <horms@kernel.org>,
+        linux-s390@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20260815-b4-disp-dc82fde4-v1-0-e83b10b22ce9@proton.me>
+ <20260815-b4-disp-dc82fde4-v1-1-e83b10b22ce9@proton.me>
+ <e42b30ee-f7cc-4f65-8fe6-1bc6888829f2@linux.ibm.com>
+ <20260821114210.430509-1-hexlabsecurity@proton.me>
+Content-Language: en-US
+From: Alexandra Winter <wintera@linux.ibm.com>
+In-Reply-To: <20260821114210.430509-1-hexlabsecurity@proton.me>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Score: -2.51
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 07E0A867B0
-X-Spamd-Result: default: False [-2.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TAGGED_RCPT(0.00)[netdev];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	MIME_TRACE(0.00)[0:+];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_TLS_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:dkim];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODI0MDA3NCBTYWx0ZWRfX/TllOLlaStOX
+ qOSA+za1g38+IHZkzGAmlhZm5da/9jgAsIM/rPvlihqFvxLhSpPcK3cATJj/YwSpqaDzr6w8Lk7
+ 5HWza1qiML0icTUIv4GQp58asegvbzQ=
+X-Proofpoint-GUID: ZBhAaM7V1zOytrQjO6s9nXJ4IcYD4Ye2
+X-Proofpoint-ORIG-GUID: QUhjRtkPnKO-pIynFtc_kE4sUpqgjLu8
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI0MDA3NCBTYWx0ZWRfX88NpPBva2I2o
+ Ng3/QnWxpJsIWvF49kj++ItSCMuP8Tt7FmRryZA3bP9OoEBXto0Z7m6VCvViviLfLnzTC1X+WLg
+ SVoSGNb5PXYIax6VFl51yV8mxFOxUAxq/C6RN7G7qPh+DezyAR6BdZw/KnB8YqndAOP7DOP4KkS
+ 3AVIk5iqy/P9JaA6vrp3VV2xmV4xLgL1Uv4fUNxrSKpWiEYiyCZYB0TlAxVHnKgGzpjXpX2deg/
+ YjIXeJoo5LIr2XDzVYvL1E8LJN5w02Nt3NDrmnfY6jzdVwFA8dZymavaNrEaUYHPubxUQmLdYQu
+ fH5eVnMd1vH6ZKWpFFSnbI2ti0b2G9k6kyzrxliZCePfWKq+f6RAJVKdqvMmI3+uDlBRTMxxrZZ
+ HCSZAChalTZuOrqC7V3W0KCwb260oJ0YqPi+NFQg7EnpXvWrA1zPhMKNGFllRVi8ilHZEG2SP9x
+ izr/e15KRPq+BKTm7mA==
+X-Authority-Analysis: v=2.4 cv=H7brBeYi c=1 sm=1 tr=0 ts=6a8c0544 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=NUaoYWLe1u_Qn2jP5V8A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-24_02,2026-08-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0 spamscore=0
+ bulkscore=0 adultscore=0 priorityscore=1501 clxscore=1015 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608240074
 
-On Fri, 21 Aug 2026 13:59:26 -0700
-Tony Nguyen <anthony.l.nguyen@intel.com> wrote:
 
-> On 7/17/2026 1:44 AM, Thomas Bogendoerfer wrote:
-> > Seeing an error message in a logfile triggers scripts/admins thinking of
-> > problems. The LLDP fallback message itself is not an error, it just
-> > indicates it's using a different filter mechanism. So rephrase to a
-> > less "scary" message. =20
->=20
-> Hi Thomas,
->=20
-> I believe this patch [1] will remove the need for this change. Could=20
-> test it and confirm that it will work for you?
->=20
+
+On 21.08.26 13:42, Bryam Vargas wrote:
+> Alexandra,
+> 
+>> I am wondering whether a check of
+>> +		if (iucv_sk(sk)->hs_dev != dev)
+>> +			continue;
+>>
+>> would cover a broader range of issues.
+> 
+> It does, and I'd rather have yours than mine. It covers three things at
+> once: the namespace case, since hs_dev can only come from the init_net scan
+> in iucv_sock_bind(); the transport case the earlier patch went after, since
+> classic sockets have hs_dev == NULL and drop out of the walk; and delivery
+> to a socket bound to a different HiperSockets device.
+> 
+> I went looking for the regression it could carry -- an accept-queue child
+> left without hs_dev, which would break connection setup -- and it isn't
+> there. The child inherits at af_iucv.c:1908.
+> 
+> One thing it doesn't reach, and it's why I'm not dropping both: the check
+> sits after EBCASC() has already rewritten the transport header in place at
+> :2073-2076, and a SYN matching no socket still takes the !iucv branch at
+> :1872-1877, which swaps the frame and hands it to dev_queue_xmit(). So it
+> replaces 1/2 and stays complementary to 2/2.
+> 
+> Send yours and I'll drop 1/2.
+> 
 > Thanks,
-> Tony
->=20
-> [1]=20
-> https://lore.kernel.org/intel-wired-lan/20260811181127.1142095-1-david.m.=
-ertman@intel.com/=20
+> Bryam
+> 
 
-that solves issue, too.
 
-Thomas.
+Thank you very much Bryam, I fully agree.
 
---=20
-SUSE Software Solutions Germany GmbH
-HRB 36809 (AG N=C3=BCrnberg)
-Gesch=C3=A4ftsf=C3=BChrer: Jochen Jaser, Andrew McDonald, Abhinav Puri
+I've sent R-b for 2/2, and propose to take it as it is.
+
+See https://lore.kernel.org/netdev/20260821125501.3718748-1-wintera@linux.ibm.com/
+for my proposal that should supersede 1/2.
+Your review would be highly appreciated.
