@@ -1,375 +1,121 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248873E92B9
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 13:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787579821; cv=pass; b=JWo43cRbhlhtEmEdXLVaQP2P1t4EASXl9y1q/XF6DV2+ohezvNs8ZPUnJX2gX2F5IXzO3SliHiD7fh1xiAVZtyEjK87vD/+dEkmSrD4onrbdKXiGHWOhcrAQwifiB0LMrRyR/BGf0K7JQHGxroVALlOUXMCQpBxMtTGSovsr0pU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787579821; c=relaxed/simple;
-	bh=ptrBJbzpWpAngBx9uK29wzmOHrLEPHq207XdCUMopA8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rlNFXLOkgtAelF6Y87yexc/KJjSI3k843geabjnsXeS/h0bheZytXDRUgbP2Ao6gfDdviwq1D/lCZaPQ89iYCAtI3em/ae7nBWCC1bek64BCPypyEIddLHLJRubwaB3cX5rqPwbH4sq6LaaPTI6YHLhWqqaxRfgN9yweYf1K7GU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TM19ajei; arc=pass smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A6D430CE5
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 14:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787580372; cv=none; b=UhC8Fs+DNFozSTzdx1HaoUm3zQlKtmZAAGKP2uM1ICOTBPl46kIHkIxfc1jCfDEo3Jc8BCelRZ20Qzke+p4zfuCfhie8NpJgf1zNl8TyIKPw1xMFY04Sl2f/eb9qIouGrXY2WsizKXrkLLFhil6CjRh+OHEQN4hFBxR96WptNfw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787580372; c=relaxed/simple;
+	bh=CeSCG++KY9gfAuTkjwpaZQ7t1nE80ziKBJ/jFMAB/TQ=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=mIVsswxYb8vAh0IcYkWp/S70YllUhowNcPHNtDAvIRUP4p+W1YfR5sQz2yHzTRrXPSYSw4fUEm5wNuuzRQ/zZHlPH2SW60bGtTPh4cixnqvaDy1Qg7R27UH8rMp69roj1xTaCE3C/2kS9vXwp9iWP2quxIOOAYGcy2sm5ScPb+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NqwHIK5y; arc=none smtp.client-ip=209.85.128.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TM19ajei"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-848643382fcso3518448b3a.1
-        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 06:56:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787579817; cv=none;
-        d=google.com; s=arc-20260327;
-        b=m57q2RWQlR3DOUj6fzrD2/zLl6hZ8gtiXQBSOP5DMcAwuFzBRZ5MyAnweNs6CFyZDV
-         G1XSgz6sdAv15VghqoO+J9zWzhP0zXXSE0jSqMlERn4WxgBKxXRfe4n9Fpd1Mx6D833E
-         d9bslHw9YH8fUptdpMkOlBqx1LEtkKOMDd6g9UXMUP2YqjSbjV3nWF6Bx9zWyA6KziFE
-         NArON1iLh2oMoViI2mJi9XCOcZ2hw4GUnzLu+6OJSTxv1u5w8jRxiF37ztITZynzc4x+
-         KBQ3+xRH6dV4Lqcg6wE6KbeuBP5Bf3IC0mnzPqTF+7+gN3j4O3XTKpWL+9NM4r0p94qF
-         zuRQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=O/oxl+MiXVt2SSBBcAglfSIGAEcjdFVWwpZPqRaAkNI=;
-        fh=v2dSMgacBgRqHiY3xqwesamGIBNqgB/fiGctN7z1qdk=;
-        b=EHtnrav2yNfmMcdRHG0QChh77OPqzxO1hCdyO5ugpukOjJrXZMQ3pvpovlFIxtkUhY
-         VMwwbkK6xorqI9+0KFrH8nmpIxh7QCEQlWZt9HbXOUbh8KsKgic52r2CnnmzM8iWeKKo
-         zya6dHz0xs859mrD2v0rjnpclFLw2QtOdz2p8cIm1WUN74+nXZUTcr3SlnowFkPu1ly3
-         nHFw21bbcC2y1w2rsknkdqbrJ9iZDAqM8iTy8OBfHv9dkD0flnT7Qwd5ZnoGVqWC+N39
-         fnhpNZOxwOBwXAZAK9A1rXyaR57soI+lt9wxHFrtvak8ahdDdz+e+u1lIlNwVdcZQf9v
-         l8AA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NqwHIK5y"
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-836eac5682bso62586917b3.0
+        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 07:06:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787579817; x=1788184617; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=O/oxl+MiXVt2SSBBcAglfSIGAEcjdFVWwpZPqRaAkNI=;
-        b=TM19ajeimS3PckPdBsmGvHkcokArlN3ClpQwCee61bpkLB/PRhwnqBQyTeSA0CKAvC
-         IS9B93wZYLBiZQVJdu9CLXkZuvim8eh1Y6ULQDcnJiKg0Sl2/YAbNXb5skDetzBl3EIY
-         SrqzVmCNgrZjY47s3c0vN/CbjurBIKY4xS0Ni+h5Qi2FHYNprf86n2+u4f5Uvyy2akNJ
-         d4mOuV8I1zMvpjdWE5102wDpNC/E6UxycrB1LtNwisq9FLgesbdeCduuc4OBXryA7oe0
-         R1ppxyE7Hc6m2ZwRGfn1HmeWnb+ngsDIEaoZKWGVDwtqi4uT33gcpvV6GNq/hNAjxg3a
-         sgtQ==
+        d=gmail.com; s=20251104; t=1787580370; x=1788185170; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=u4t42PIG6VatROh4/IYP2MRikf2/Iy6L8DlGfCTlJyg=;
+        b=NqwHIK5yX46u5XBYKXjoKIrW4SBjobrGkuHMZtlqRJwLb95NTFHf1Cb6qRZEOhP+7q
+         huqHBC0aoN1lQJeR6UBtyUl/mEPexwH/7KJMlky4Hki0N5ds3nt6+4z6UnpO67FU3YyP
+         Kl+06ThVShRkqJqmoG8QhMostQ52/3qqTDw5OjKQCVsYefVlWKIEHU20XQjmPdL7ZEaG
+         dGoaXw6MVbWQj8vYAh/FBwm5L/txLPS+uiao7YfzLgquw6DmMuXt4cHgL8pRY+NIDtH+
+         24gBY8EOOaSdz55poXlg63BhjOp6usF5KuwZoo9hgQxOrDTHkFoglCtrv5+3D27ruWmn
+         QMYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787579817; x=1788184617;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1787580370; x=1788185170;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=O/oxl+MiXVt2SSBBcAglfSIGAEcjdFVWwpZPqRaAkNI=;
-        b=EzpR2PPAf1cSvmM/fewBRUtO3N/MCMDtQnbpxhrc81jWVbTq4/qPfVqOgJqMA4qtc8
-         IwfLB7QYMH2gJ+wbGBTrOyFE0ImVJvvtOhjmTfgTCoIE0PhbiRFxUE8RNTaXVSp5AErj
-         I1la0w8yYCazQslRW+k24cwmLuHaTEqjiM5eZgcTaspIc8lmo4AH2R4JwzIMdM+US5zo
-         LoOQBYvVQY4V0qtVcgMlhCV98eubRKUeyeL5T/68wkz5KFGsi2uilUUSi0guufSTDwty
-         QagA2Zmstl4qor5Qno/52AzgXThhDkAh0eE6r104ZAy7AaQ6f0sW1SY+C/T00pqyG754
-         JaWw==
-X-Gm-Message-State: AFuF++lwv5Os2QFVBVFmUMtV1j3ZbDRgDwdfUY9ajL2VRPTWh2fUMpok
-	bc1NSYjHPps5JT5sD6yNM2hr3mfS1OkfShhwjPs2+9i7Z39ZU0WHAc/9QWTkxxb258qGjdceiBD
-	sDXFSZFPWBEEfvYWf+851GFnBdlZ+o+M3gx4P
-X-Gm-Gg: AR+sD13vBOKA7FWzwOoCeHz1ogejh6iFV7ffX/Iq5H/AAWn5F+v1oURGFuWDIEuJ4pf
-	H0MOWeLHBF0v/BdgzSRN5xqCGm+N7/ufeNACPy03j79uVbk7rLgMB0XczUkTni4jAcurLx4vF9A
-	OLwVTtPzn6BDyOTenf7LKsRXN0YUEmBgwbPtP3kj+lzxmXenyH9zGIkXUKXJ0wN0qxYH6X8ofTR
-	AyxrPLPDbg1KFvui8q8yyb710IDxBdNROgQm1yAZs2i5CZIiDaReailavjUx+xxltMAk8ayjTSW
-	y/EhLIMNjtxFsrZJkFLhgO8gCP6KHbEkjP+H+8p6Y9W1Ql0YxV4mgvw2OtAqLeAEFufn+FjhEU/
-	UhnPHvK5XIE+UcAhgBCGxeAvBu5QE/5rrl226Xrdn4R780g==
-X-Received: by 2002:a05:6a00:4088:b0:842:708f:39be with SMTP id
- d2e1a72fcca58-851f9aa2acfmr47702473b3a.5.1787579817340; Mon, 24 Aug 2026
- 06:56:57 -0700 (PDT)
+        bh=u4t42PIG6VatROh4/IYP2MRikf2/Iy6L8DlGfCTlJyg=;
+        b=JEwCQu8PspQrXo1o2dibfszv/efNq6r7BNzPNjeorbZg0GRigBgE+AyB6kCGVSCbfa
+         R96khjWCC/CXGFqn5t2z8gh1ODECtLXVYT23Px1K1xXgFpqJ1J6B6PJwUqM1VD6hItS8
+         PCQXX1qnLqWBMUWO12FQ9rq7jncygg7ploklOF6eRJJKtFVoKPQQPek1X49WnuCUKGT8
+         a/3RSdpBzMhZTPLpYWk9zwRXDdAVm2D4q2Cj3yjYtOjfX9z8jAiAp137SareARfrQOvV
+         fQlaDizpAihsMH+6aFn6mByTLxaAfbJaHM1hciPupG2Ed9xTrg0N4QIL0XAS0SNXGxBF
+         pXnw==
+X-Forwarded-Encrypted: i=1; AHgh+RpRWJl+RqY16hUCsCTYF/OIbfc/AL+a6fwpipkkzWpFdricsLUw6aGm2MeoHQE+BIcBJo7lBIY=@vger.kernel.org
+X-Gm-Message-State: AFuF++mqs63UERfWWuLyfu5IUuUd/s+QkFOB/NQM0joDOgM9a5DS/ybG
+	ttxtjhfhYwFTR/v3bzIjyxWpmW1urXR2HpM0DeA9+HzAHNLF9kAcFC5wwsMSqA==
+X-Gm-Gg: AR+sD13B818er7L5W9qPmzhVPX0hyQg3c+n9wjS7B5UvMYD0NuyP1ZQLSiabX+IRXYp
+	3+Q/jIVRwSk6eTTr77UJNx0eloO5RN7USt68g4HLkZW2+P5H5RgK6Sn6VsezM0Kmmmd02jfF93H
+	a2wyKTTiZMXP4wjzKcl+OMaIyNwp3t7in4iJcBoPkV8g4y8J9BwmnHosLcYuoCtQ0Bw8wBEyp0r
+	oDtzDC4BD9GtTqWti+7myILeqepQwIdgIwsSruWZMGLnEpw+Pus+mBJ/gLPT714i5aCwa7Ovls0
+	39rPExkBHi7DQ8cTHmAyieBdqP8T6WYjTG1aVDvKgUwbGkOqI8pyWoD6ugVI9Ity2LriTloGpHU
+	mrX4DzZQg3m1Xx6RqfWR1YnCQoKnUMpSwQkybGhmnE5sYWc9PMZYhqEHSz38qKd/fE9pZBZ3HZt
+	Ck0KwlXFQphdrK3XdMu7POBwiLYeWPFs2qKtiFdGAq5bhmDJii1bQmlMejRH6kGA2oiVEMtHO/F
+	ceRO4CXm1hnOwzIA326ks7xbebWA3xCTR4+vWUGKQ==
+X-Received: by 2002:a05:690c:b96:b0:82d:8dc0:9cf with SMTP id 00721157ae682-8470c1665aemr143190037b3.13.1787580369575;
+        Mon, 24 Aug 2026 07:06:09 -0700 (PDT)
+Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-84ca518898fsm34038707b3.7.2026.08.24.07.06.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2026 07:06:08 -0700 (PDT)
+Date: Mon, 24 Aug 2026 10:06:08 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: JR Lanteigne <root@dnim.dev>, 
+ Miroslav Lichvar <mlichvar@redhat.com>
+Cc: Eric Dumazet <edumazet@google.com>, 
+ Kuniyuki Iwashima <kuniyu@google.com>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Willem de Bruijn <willemb@google.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ netdev@vger.kernel.org, 
+ Simon Horman <horms@kernel.org>
+Message-ID: <willemdebruijn.kernel.1e07ba16c4cf4@gmail.com>
+In-Reply-To: <178756707212.4073008.8425791726071449399@dnim.dev>
+References: <178746246095.3786864.2262454553798466512@dnim.dev>
+ <aov5lCT4P_3tmRqR@localhost>
+ <178756707212.4073008.8425791726071449399@dnim.dev>
+Subject: Re: [PATCH net] net: fall back to skb_iif for the timestamping
+ pktinfo if_index
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260823130405.1337444-1-bsdhenrymartin@gmail.com>
-In-Reply-To: <20260823130405.1337444-1-bsdhenrymartin@gmail.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Mon, 24 Aug 2026 09:56:45 -0400
-X-Gm-Features: AcwNN1WGKQdZjvdSBrENMzT516Xi5UxdPcWXuVSDkAnuMQlLwh7I11UF5AQIK68
-Message-ID: <CADvbK_fYpRtP-AQeSh_aRfrP+w4ZX+Nh-WA4KG5ZySMhAnGhPQ@mail.gmail.com>
-Subject: Re: [PATCH net] sctp: fix slab OOB read from oversized AUTH
- parameters in COOKIE-ECHO
-To: Henry Martin <bsdhenrymartin@gmail.com>
-Cc: netdev@vger.kernel.org, linux-sctp@vger.kernel.org, 
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Sun, Aug 23, 2026 at 9:04=E2=80=AFAM Henry Martin <bsdhenrymartin@gmail.=
-com> wrote:
->
-> sctp_unpack_cookie() copies the attacker-supplied sctp_cookie into the
-> new association without validating the length fields of the three
-> embedded AUTH parameters (auth_random, auth_hmacs, auth_chunks) against
-> their fixed in-struct capacities (36/12/20 bytes). When cookie
-> authentication is disabled (net.sctp.cookie_hmac_alg=3Dnone), a remote
-> peer can forge a COOKIE-ECHO with an inflated param_hdr.length.
->
-> The polluted length then drives out-of-bounds reads past the
-> association: n_elt in sctp_auth_asoc_verify_hmac_id() (up to ~64KB of
-> 16-bit probe reads), the key vector memcpy in
-> sctp_auth_make_key_vector() (up to ~64KB source read copied into the
-> HMAC key material), and the chunk-id scan in __sctp_auth_cid().
-> KASAN reports slab-out-of-bounds reads crossing into unrelated slabs.
-> [  552.245703] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> [  552.245873] BUG: KASAN: slab-out-of-bounds in sctp_auth_asoc_verify_hm=
-ac_id+0x105/0x110
-> [  552.246050] Read of size 2 at addr ffff8881012a90f4 by task poc_guest/=
-333
->
-> [  552.246258] CPU: 1 UID: 0 PID: 333 Comm: poc_guest Tainted: G    B    =
-           7.2.0-rc6-dirtyfrag-00017-g848acc8ffe1b-dirty #65 PREEMPT(lazy)
-> [  552.246283] Tainted: [B]=3DBAD_PAGE
-> [  552.246291] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIO=
-S 1.16.2-4.tl4 04/01/2014
-> [  552.246304] Call Trace:
-> [  552.246328]  <IRQ>
-> [  552.246344]  dump_stack_lvl+0x53/0x70
-> [  552.246374]  print_report+0xce/0x620
-> [  552.246395]  ? sctp_auth_asoc_verify_hmac_id+0x105/0x110
-> [  552.246412]  kasan_report+0xce/0x100
-> [  552.246430]  ? sctp_auth_asoc_verify_hmac_id+0x105/0x110
-> [  552.246453]  sctp_auth_asoc_verify_hmac_id+0x105/0x110
-> [  552.246473]  sctp_sf_authenticate+0xd2/0x470
-> [  552.246491]  ? __pfx__raw_spin_lock+0x10/0x10
-> [  552.246508]  sctp_auth_chunk_verify+0x25b/0x380
-> [  552.246526]  ? __pfx_sctp_auth_chunk_verify+0x10/0x10
-> [  552.246558]  ? sctp_auth_asoc_init_active_key+0x1eb/0x810
-> [  552.246576]  ? sctp_auth_asoc_init_active_key+0x163/0x810
-> [  552.246598]  sctp_sf_do_5_1D_ce+0x6cf/0x1b50
-> [  552.246619]  ? __pfx_sctp_sf_do_5_1D_ce+0x10/0x10
-> [  552.246637]  ? stack_depot_save_flags+0x485/0x7f0
-> [  552.246675]  ? __pfx_sctp_sm_lookup_event+0x10/0x10
-> [  552.246696]  sctp_do_sm+0x111/0x5b90
-> [  552.246732]  ? ip_local_deliver_finish+0x31c/0x4a0
-> [  552.246751]  ? ip_rcv+0x2ed/0x360
-> [  552.246768]  ? process_backlog+0x1ea/0x5f0
-> [  552.246785]  ? __napi_poll+0xa1/0x530
-> [  552.246801]  ? net_rx_action+0x944/0xfa0
-> [  552.246816]  ? handle_softirqs+0x1bd/0x620
-> [  552.246831]  ? do_softirq+0x43/0x60
-> [  552.246844]  ? __local_bh_enable_ip+0x6a/0x70
-> [  552.246858]  ? __dev_queue_xmit+0x9f3/0x3470
-> [  552.246874]  ? ip_finish_output2+0x724/0x1900
-> [  552.246889]  ? __pfx_sctp_do_sm+0x10/0x10
-> [  552.246903]  ? raw_sendmsg+0xe72/0x2710
-> [  552.246919]  ? __x64_sys_sendto+0xe0/0x1c0
-> [  552.246938]  ? do_syscall_64+0x102/0x5a0
-> [  552.246955]  ? entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> [  552.246991]  ? __pfx_sctp_epaddr_lookup_transport+0x10/0x10
-> [  552.247013]  sctp_endpoint_bh_rcv+0x2c4/0x8e0
-> [  552.247038]  sctp_rcv+0x1545/0x3980
-> [  552.247063]  ? sock_queue_rcv_skb_reason+0x39/0x70
-> [  552.247081]  ? __pfx_sctp_rcv+0x10/0x10
-> [  552.247105]  ? __pfx_raw_local_deliver+0x10/0x10
-> [  552.247121]  ? lapic_next_event+0x15/0x20
-> [  552.247138]  ? clockevents_program_event+0x2bf/0x860
-> [  552.247159]  ip_protocol_deliver_rcu+0x279/0x2f0
-> [  552.247176]  ? _raw_spin_lock+0x84/0xe0
-> [  552.247192]  ip_local_deliver_finish+0x31c/0x4a0
-> [  552.247211]  ip_local_deliver+0x18b/0x2d0
-> --
-> [  552.247752]  ? __pfx___dev_queue_xmit+0x10/0x10
-> [  552.247769]  ? csum_and_copy_from_iter_full+0x1d9/0x1da0
-> [  552.247788]  ? kasan_save_track+0x14/0x30
-> [  552.247803]  ? __kasan_kmalloc+0x8f/0xa0
-> [  552.247821]  ? __alloc_skb+0x123/0x890
-> [  552.247843]  ? selinux_ip_postroute+0x3fe/0xb00
-> [  552.247863]  ip_finish_output2+0x724/0x1900
-> [  552.247882]  ? __pfx_ip_finish_output2+0x10/0x10
-> [  552.247899]  ? __ip_append_data+0x16ec/0x4150
-> [  552.247925]  __ip_finish_output+0x508/0xa30
-> [  552.247944]  ? __pfx___ip_finish_output+0x10/0x10
-> [  552.247961]  ? nf_hook_slow+0xaa/0x1c0
-> [  552.247981]  ip_output+0x17d/0x2f0
-> [  552.247999]  ? __pfx_ip_output+0x10/0x10
-> [  552.248015]  ? __ip_make_skb+0xe0f/0x2520
-> [  552.248031]  ? __pfx_ip_finish_output+0x10/0x10
-> [  552.248047]  ? ip_append_data+0xcb/0x170
-> [  552.248066]  ip_push_pending_frames+0x15a/0x1a0
-> [  552.248084]  raw_sendmsg+0xe72/0x2710
-> [  552.248107]  ? __pfx_raw_sendmsg+0x10/0x10
-> [  552.248122]  ? mutex_unlock+0x82/0xd0
-> [  552.248137]  ? __pfx_mutex_unlock+0x10/0x10
-> [  552.248157]  ? anon_pipe_write+0xa18/0x1900
-> [  552.248193]  ? selinux_socket_sendmsg+0x91/0x270
-> [  552.248215]  __sys_sendto+0x31b/0x390
-> [  552.248235]  ? __pfx___sys_sendto+0x10/0x10
-> [  552.248278]  ? ksys_write+0x181/0x1d0
-> [  552.248295]  ? __pfx_ksys_write+0x10/0x10
-> [  552.248334]  __x64_sys_sendto+0xe0/0x1c0
-> [  552.248354]  ? fpregs_assert_state_consistent+0x63/0xf0
-> [  552.248379]  do_syscall_64+0x102/0x5a0
-> [  552.248400]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> [  552.248420] RIP: 0033:0x7facd02ef0a7
-> [  552.248442] Code: c7 c0 ff ff ff ff eb be 66 2e 0f 1f 84 00 00 00 00 0=
-0 90 f3 0f 1e fa 80 3d a5 ef 0d 00 00 41 89 ca 74 10 b8 2c 00 00 00 0f 05 <=
-48> 3d 00 f0 ff ff 77 69 c3 55 48 89 e5 53 48 83 ec 38 44 89 4d d0
-> [  552.248461] RSP: 002b:00007ffc9f687208 EFLAGS: 00000202 ORIG_RAX: 0000=
-00000000002c
-> [  552.248489] RAX: ffffffffffffffda RBX: 0000000000000144 RCX: 00007facd=
-02ef0a7
-> [  552.248501] RDX: 0000000000000150 RSI: 00007ffc9f687234 RDI: 000000000=
-0000003
-> [  552.248512] RBP: 000000000100007f R08: 00007ffc9f687210 R09: 000000000=
-0000010
-> [  552.248523] R10: 0000000000000000 R11: 0000000000000202 R12: 000000000=
-000014e
-> [  552.248534] R13: 00007ffc9f688100 R14: 0000000000000144 R15: 000000000=
-0000100
-> [  552.248555]  </TASK>
->
-> [  552.260224] Allocated by task 1:
-> [  552.260304]  kasan_save_stack+0x33/0x60
-> [  552.260410]  kasan_save_track+0x14/0x30
-> [  552.260501]  __kasan_kmalloc+0x8f/0xa0
-> [  552.260588]  __kmalloc_cache_noprof+0x1b6/0x420
-> [  552.260714]  pci_alloc_bus.constprop.0+0x3f/0x300
-> [  552.260847]  pci_register_host_bridge+0xcf/0x15f0
-> [  552.260957]  pci_create_root_bus+0x1e5/0x300
-> [  552.261076]  acpi_pci_root_create+0x42d/0x880
-> [  552.261193]  pci_acpi_scan_root+0x3df/0x5a0
-> [  552.261320]  acpi_pci_root_add+0x369/0x8e0
-> [  552.261453]  acpi_bus_attach+0x4f3/0xa40
-> [  552.261574]  device_for_each_child+0xf8/0x170
-> [  552.261732]  acpi_dev_for_each_child+0x7a/0xa0
-> [  552.261849]  acpi_bus_attach+0x72b/0xa40
-> [  552.261983]  device_for_each_child+0xf8/0x170
-> [  552.262087]  acpi_dev_for_each_child+0x7a/0xa0
-> [  552.262187]  acpi_bus_attach+0x72b/0xa40
-> [  552.262281]  acpi_bus_scan+0xbd/0x3e0
-> [  552.262384]  acpi_scan_init+0x1c9/0x580
-> [  552.262470]  acpi_init+0x2e2/0x6d0
-> [  552.262540]  do_one_initcall+0xa6/0x370
-> [  552.262626]  kernel_init_freeable+0x42d/0x760
-> [  552.262727]  kernel_init+0x1f/0x1e0
-> [  552.262867]  ret_from_fork+0x3af/0x620
-> [  552.262974]  ret_from_fork_asm+0x1a/0x30
->
-> [  552.263133] The buggy address belongs to the object at ffff8881012a880=
-0
->                 which belongs to the cache kmalloc-2k of size 2048
-> [  552.263468] The buggy address is located 1244 bytes to the right of
->                 allocated 1048-byte region [ffff8881012a8800, ffff8881012=
-a8c18)
->
-> [  552.263836] The buggy address belongs to the physical page:
-> [  552.263955] page: refcount:0 mapcount:0 mapping:0000000000000000 index=
-:0x0 pfn:0x1012a8
-> [  552.264112] head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped=
-:0 pincount:0
-> [  552.264255] flags: 0x200000000000040(head|node=3D0|zone=3D2)
-> [  552.264383] page_type: f5(slab)
-> [  552.264460] raw: 0200000000000040 ffff888100043240 ffffea0004044410 ff=
-ffea0004057c10
-> [  552.264616] raw: 0000000000000000 0000000800050005 00000000f5000000 00=
-00000000000000
-> [  552.264850] head: 0200000000000040 ffff888100043240 ffffea0004044410 f=
-fffea0004057c10
-> [  552.264998] head: 0000000000000000 0000000800050005 00000000f5000000 0=
-000000000000000
-> [  552.265145] head: 0200000000000003 fffffffffffffe01 00000000ffffffff 0=
-0000000ffffffff
-> [  552.265288] head: 0000000000000000 0000000000000000 00000000ffffffff 0=
-000000000000008
-> [  552.265437] page dumped because: kasan: bad access detected
->
-> [  552.265575] Memory state around the buggy address:
-> [  552.265660]  ffff8881012a8f80: fc fc fc fc fc fc fc fc fc fc fc fc fc =
-fc fc fc
-> [  552.265881]  ffff8881012a9000: fc fc fc fc fc fc fc fc fc fc fc fc fc =
-fc fc fc
-> [  552.266013] >ffff8881012a9080: fc fc fc fc fc fc fc fc fc fc fc fc fc =
-fc fc fc
-> [  552.266143]                                                           =
-   ^
-> [  552.266272]  ffff8881012a9100: fc fc fc fc fc fc fc fc fc fc fc fc fc =
-fc fc fc
-> [  552.266412]  ffff8881012a9180: fc fc fc fc fc fc fc fc fc fc fc fc fc =
-fc fc fc
-> [  552.266544] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> [  553.517512] systemd[1]: e2scrub_all.service: Deactivated successfully.
-> [  553.545039] systemd[1]: Finished e2scrub_all.service - Online ext4 Met=
-adata Check for All Filesystems.
-> [  553.682216] systemd[1]: systemd-journald.service: Main process exited,=
- code=3Dkilled, status=3D6/ABRT
-> [  553.688936] systemd[1]: systemd-journald.service: Failed with result '=
-watchdog'.
-> [  553.698303] systemd[1]: systemd-journald.service: Consumed 7min 31.125=
-s CPU time.
-> [  553.716114] systemd[1]: systemd-journald.service: Scheduled restart jo=
-b, restart counter is at 1.
-> [  553.849464] systemd[1]: Starting systemd-journald.service - Journal Se=
-rvice...
-> [  554.149027] systemd[1]: systemd-update-utmp-runlevel.service: Deactiva=
-ted successfully.
-> [  554.176031] systemd[1]: Finished systemd-update-utmp-runlevel.service =
-- Record Runlevel Change in UTMP.
-> [  554.675881] systemd-journald[352]: Collecting audit messages is disabl=
-ed.
-> [  554.722954] systemd-journald[352]: File /var/log/journal/650a0aae2d504=
-220b5076f94e1b000de/system.journal corrupted or uncleanly shut down, renami=
-ng and replacing.
-> [  555.046104] systemd[1]: fstrim.service: Deactivated successfully.
-> [  555.053901] systemd[1]: Finished fstrim.service - Discard unused block=
-s on filesystems from /etc/fstab.
-> [  555.063225] systemd[1]: fstrim.service: Consumed 1.297s CPU time.
-> [  555.079769] systemd-journald[352]: /dev/kmsg buffer overrun, some mess=
-ages lost.
-> [  556.021993] systemd[1]: Started systemd-journald.service - Journal Ser=
-vice.
->
-> Reject cookies whose embedded AUTH parameter lengths exceed the
-> struct capacities, the same "malformed" path used for other corrupt
-> cookie fields.
->
-> The issue was found by ZeroHive, a vulnerability hunting agent at
-> Tencent Yunding Lab.
->
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-> ---
->  net/sctp/sm_make_chunk.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
->
-> diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
-> index 5a335c980a7a4..0634241fd6649 100644
-> --- a/net/sctp/sm_make_chunk.c
-> +++ b/net/sctp/sm_make_chunk.c
-> @@ -1855,6 +1855,16 @@ struct sctp_association *sctp_unpack_cookie(
->         /* Populate the association from the cookie.  */
->         memcpy(&retval->c, bear_cookie, sizeof(*bear_cookie));
->
-> +       if (ntohs(((__be16 *)retval->c.auth_random)[1]) >
-> +           sizeof(retval->c.auth_random) ||
-> +           ntohs(((__be16 *)retval->c.auth_hmacs)[1]) >
-> +           sizeof(retval->c.auth_hmacs) ||
-> +           ntohs(((__be16 *)retval->c.auth_chunks)[1]) >
-> +           sizeof(retval->c.auth_chunks)) {
-> +               *error =3D -SCTP_IERROR_MALFORMED;
-> +               goto fail;
-> +       }
-> +
->         if (sctp_assoc_set_bind_addr_from_cookie(retval, bear_cookie,
->                                                  GFP_ATOMIC) < 0) {
->                 *error =3D -SCTP_IERROR_NOMEM;
-> --
-> 2.43.0
-Please check if your kernel has included the commit:
+JR Lanteigne wrote:
+> Miroslav Lichvar wrote:
+> > That would cause applications to receive a wrong index in some cases,
+> > right? If it's possible, it should report the index of the physical
+> > interface, but it should not be guessing.
+> 
+> Right: with the fallback a nonzero if_index is no longer guaranteed
+> to be the physical timestamping device. An application that maps the
+> index to a PHC without validating it could see the aggregating
+> device where it previously saw 0.
+> 
+> Reporting the physical interface does not look implementable in the
+> two failing cases. Without CONFIG_NET_RX_BUSY_POLL there is no napi
+> id recorded at all. For cpsw the napi belongs to a DMA channel
+> shared by both ports, so there is no per-napi net_device to attach;
+> the delivering port is only known per packet, and there skb->dev is
+> set correctly, so skb_iif is exactly the physical interface. The
+> index only becomes an aggregate with bonding or bridging on top,
+> where the napi lookup would have failed anyway.
+> 
+> So the choice for these packets is between 0 and the skb_iif value,
+> which is what IP_PKTINFO already reports. No objection from me if
+> this is dropped; I can respin if there is a form of the fallback
+> worth keeping.
 
-commit 3dbb44d88b1e94dd31fe43588af7437b34b44d56
-Author: J=C3=A9r=C3=A9my Jean <Jeremy.Jean@oss.cyber.gouv.fr>
-Date:   Tue Aug 4 20:00:42 2026 +0000
+It may be possible to detect whether an skb_iif points to a physical
+or aggregate device (e.g., through lower_dev)? If so, then the value
+can still be used in most cases.
 
-    sctp: validate cookie AUTH state before use
 
-and share the PoC with the maintainer if it does include the commit.
-
-Thanks.
