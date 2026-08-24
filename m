@@ -1,175 +1,170 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-133.mta0.migadu.com [91.218.175.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CDA53F0AA7;
-	Mon, 24 Aug 2026 12:20:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CA8331203
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 12:19:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787574002; cv=none; b=FOhmV9+3xDWquxC6lUDJYxESx3h1CjDjrC6dOVyHyDfEJ4otVUO1LiFcnjVMvKZbooJsplcgt0d1EH8Wzy+ZcjUBvtrNETfeyXFeSbVCSQ7LakCAuZezLq48tobXiwdyYNngwTYrLHyJSMLwqH0yNQeHF+7U8HT/G8NgTgbbmYA=
+	t=1787574002; cv=none; b=tZYBX66UHsb7HWYE3sFydgUEpTpHaQ4Qvk+yinoCtt408rARdbXKCrQpEVfTMhaL6QqUu8tY70ELwfn0Ugtr+hIUQUrI+Mtu82L7bJpsEbWPVfiX2DUgYeyAIp8gjTl+rAuc/FrU9WV1Y9udhbm+eNXr6jVQr4B8AMr1tuNacl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1787574002; c=relaxed/simple;
-	bh=opTZ7lVEH+jzvnLB1aiyVzlVVVT5tVhVSbTAsRWRjOQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JmVMC9Ny0pOWc6EIL4hU3sUKBP0vTIPiWByWfUvhgLwcaAZdqNXy+7xXAxUuWMnh6wKCt57Zx25O5qLJEc520Bs+/odVmNpPeqZwROHrPa3VXyKxiYGME4tD11R6YJv3/lYDbyvQ8FH8aY4vmZFBYPa+YxfFHCkhQ2MMoP4sXPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=Z5fYJL54; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	bh=NbaD03yilMmk0puKZ/RanUhxoZrnyNj20MyBlr5dU3c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lGM/YSAiCxXfQ6URNtkpiZUC2c6Vlaq8IZw37pzmRdk3AP8Xgvyzx2fKNyAkPNvWXDx5g/QUF632sDWhriubbEVR7OakkHIbK3XXeSXIBtYw8C4E6z0GvPPwWhmwd5odXLoPPi+uzke53p8GZ+sdHVIziDomvlFt/oE43AvRJ6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=RiKtXVOw; arc=none smtp.client-ip=91.218.175.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="Z5fYJL54"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1787573997;
-	bh=Z9Z9GH+NdlFtTu/QhjEgtWWtmqLQNfpxyiAgkg/Ek2s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Z5fYJL54mxuI+tikpOMcNyNzFEgDubju5MQHDJqwSNDSxemi9XFetmILDrzASBSB8
-	 g0UzqTYWnxeuh1k7QZI3HrPJHXYdx6Zh47nJRQd0mOeXLQN/V43zvSTFLLCEputKQ0
-	 cs29Nvx/6gTtXvvCA8Eo6ebGbYnrGyeruNdFXB344rMUXwDH9IQ75yGPiOpLwSWcmI
-	 yrikjXceAp5/WAREdI1LG1aMDymfwxLCFrLfMRMQhk2spGygYE0RMAu3NuRHTThYX6
-	 yE59YkDLe8ggpYPWaFelQWHgcexvDHNbEPWT5VIFvZCSSc5sTlJsUwd3C1pSLH14sK
-	 /cDfRBm2EOmGw==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 7CA82601C4;
-	Mon, 24 Aug 2026 14:19:57 +0200 (CEST)
-Date: Mon, 24 Aug 2026 14:19:55 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
-	netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
-	horms@kernel.org, fw@strlen.de, ja@ssi.bg
-Subject: Re: [PATCH net 07/10] netfilter: nf_tables: skip double clone set
- expressions on element insert
-Message-ID: <aow26yHSKQONZTt-@chamomile>
-References: <20260821153833.245589-8-pablo@netfilter.org>
- <20260822195228.2202729-1-kuba@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="RiKtXVOw"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=NbaD03yilMmk0puKZ/RanUhxoZrnyNj20MyBlr5dU3c=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787573997; v=1; x=1788178797;
+ b=RiKtXVOwTGCl/j/yMMAEvlYjAB5a8EFG/Xd7waMsm1aa0Js+rLlQEuNLVh4DUQN9kzo9tlsW
+ il4lVvNlzNGci1S49uFIkoBszRWgtjTbqyBTN0ZVWAgAb7R/g82K3flHP710IpzgKa8HRDRczsE
+ Nqtq9Ei8NmHGg5p+LzloOjKY=
+X-Envelope-To: netdev@vger.kernel.org
+Received: from [10.54.25.56] (222.72.143.228)
+	by smtp.migadu.com with ESMTPS id 9a9d63bd1232e71b;
+	Mon, 24 Aug 2026 12:19:57 +0000
+X-Mizu-Trace-ID: 9a9d63bd1232e71b
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <01fd251d-1134-4251-9c11-79943e367ffe@linux.dev>
+Date: Mon, 24 Aug 2026 20:19:44 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260822195228.2202729-1-kuba@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf v2 1/2] bpf, veth: xdp: fix page_pool page leak on
+ skb-backed XDP
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org,
+ syzbot+237bbeed8dfe0699b7f5@syzkaller.appspotmail.com,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Simon Horman <horms@kernel.org>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Andrii Nakryiko
+ <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+ Emil Tsalapatis <emil@etsalapatis.com>,
+ Ihor Solodrai <ihor.solodrai@linux.dev>, Shuah Khan <shuah@kernel.org>,
+ Kuniyuki Iwashima <kuniyu@google.com>, Hangbin Liu <liuhangbin@gmail.com>,
+ Krishna Kumar <krikku@gmail.com>, Martin Karsten <mkarsten@uwaterloo.ca>,
+ =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20260824030257.263179-1-jiayuan.chen@linux.dev>
+ <20260824030705.266049-1-jiayuan.chen@linux.dev> <aowdem3KQVfvocE7@lore-desk>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <aowdem3KQVfvocE7@lore-desk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sat, Aug 22, 2026 at 12:52:28PM -0700, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> netfilter: nf_tables: skip double clone set expressions on element insert
-> 
-> This adds an override_exprs flag so that the dynset and newsetelem paths
-> borrow the set's expressions instead of cloning them when userspace does
-> not supply an override, and releases the expression array only when it
-> really is an override.  The same flag is now used to decide whether the
-> dynset expression override is dumped back to userspace.
-> 
-> > diff --git a/net/netfilter/nft_dynset.c b/net/netfilter/nft_dynset.c
-> > index ee9d3e7b1ecf1..fa4da694e92d8 100644
-> > --- a/net/netfilter/nft_dynset.c
-> > +++ b/net/netfilter/nft_dynset.c
-> > @@ -19,7 +19,8 @@ struct nft_dynset {
-> >  	u8				sreg_key;
-> >  	u8				sreg_data;
-> >  	bool				invert;
-> > -	bool				expr;
-> > +	bool				expr:1,
-> > +					override_exprs:1;
-> >  	u8				num_exprs;
-> >  	u64				timeout;
-> >  	struct nft_expr			*expr_array[NFT_SET_EXPR_MAX];
-> 
-> [ ... ]
-> 
-> > @@ -393,7 +398,7 @@ static int nft_dynset_dump(struct sk_buff *skb,
-> >  			 nf_jiffies64_to_msecs(priv->timeout),
-> >  			 NFTA_DYNSET_PAD))
-> >  		goto nla_put_failure;
-> > -	if (priv->set->num_exprs == 0) {
-> > +	if (priv->set->num_exprs == 0 || priv->override_exprs) {
-> >  		if (priv->num_exprs == 1) {
-> >  			if (nft_expr_dump(skb, NFTA_DYNSET_EXPR,
-> >  					  priv->expr_array[0], reset))
-> 
-> [Severity: Medium]
-> Can the message emitted by nft_dynset_dump() after this change be rejected
-> by nft_dynset_init() when it is replayed?
-> 
-> With the widened condition, a dynset attached to a set that owns
-> expressions (set->num_exprs > 0) now dumps its override.  For
-> priv->num_exprs > 1 that override is emitted as an NFTA_DYNSET_EXPRESSIONS
-> nest:
-> 
-> net/netfilter/nft_dynset.c:nft_dynset_dump() {
-> 	...
-> 	u32 flags = priv->invert ? NFT_DYNSET_F_INV : 0;
-> 	...
-> 	} else if (priv->num_exprs > 1) {
-> 		struct nlattr *nest;
-> 
-> 		nest = nla_nest_start_noflag(skb, NFTA_DYNSET_EXPRESSIONS);
-> 	...
-> 	if (nla_put_be32(skb, NFTA_DYNSET_FLAGS, htonl(flags)))
-> 	...
-> }
-> 
-> The dumped NFTA_DYNSET_FLAGS is computed only from priv->invert, so
-> NFT_DYNSET_F_EXPR is never set, even though priv->expr records that
-> userspace passed it at creation time.  On the parse side the
-> NFTA_DYNSET_EXPRESSIONS branch requires that flag:
-> 
-> net/netfilter/nft_dynset.c:nft_dynset_init() {
-> 	...
-> 	} else if (tb[NFTA_DYNSET_EXPRESSIONS]) {
-> 		...
-> 		if (!priv->expr)
-> 			return -EINVAL;
-> 	...
-> }
-> 
-> So a rule with two override expressions on an NFT_SET_EVAL set that also
-> has two set expressions (for example counter plus quota) appears to be
-> dumped in a form that the kernel's own parser refuses with -EINVAL when the
-> netlink message is sent back (raw netlink echo, or libnftnl parse-then-build
-> restore paths).  Before this patch that configuration emitted no expression
-> attributes at all, so the replay was accepted and silently fell back to the
-> set's expressions.
-> 
-> The missing NFT_DYNSET_F_EXPR in the dump path predates this patch (it is
-> already reachable for priv->set->num_exprs == 0 with more than one
-> expression), but the new condition extends the asymmetry to
-> override-on-eval-set rules that used to round-trip.  Should
-> nft_dynset_dump() also report NFT_DYNSET_F_EXPR when priv->expr is set?
 
-This sounds like a theotical issue:
+On 8/24/26 6:31 PM, Lorenzo Bianconi wrote:
+>> bpf_xdp_shrink_data() frees a released frag via __xdp_return() using
+>> xdp->rxq->mem.type, but that type is wrong for skb-backed XDP: the skb is
+>> cow'd into page_pool memory while the rxq still says MEM_TYPE_PAGE_SHARED,
+>> so the page_pool page is freed with page_frag_free() and we hit
+>> "Bad page state ... page_pool leak".
+>>
+>> Both generic XDP and veth are affected. A non-linear skb is cow'd into
+>> page_pool memory (skb_cow_data_for_xdp() -> skb_pp_cow_data() for generic
+>> XDP, veth_convert_skb_to_xdp_buff() for veth), so its frags become
+>> page_pool pages while the rxq keeps MEM_TYPE_PAGE_SHARED.
+>>
+>> We can't just fix rxq->mem.type in place:
+>> - generic XDP: xdp->rxq is dev->_rx[queue].xdp_rxq (see
+>>    bpf_prog_run_generic_xdp()), a shared rxq that other CPUs may access in
+>>    parallel, so we must not write to it.
+>> - veth: rq->xdp_rxq.mem is shared per-queue state that veth resets on XDP
+>>    teardown, and with GRO that reset runs without stopping in-flight NAPI,
+>>    so a type stashed there can be clobbered under a packet still in flight.
+>>
+>> Adding a check in __xdp_return() or bpf_xdp_shrink_data() itself is not an
+>> option either: without recording it somewhere, both can only guess the
+>> frag's memory type, which quickly gets confusing.
+>>
+>> So record it in the xdp_buff. Add a XDP_FLAGS_FRAGS_PAGE_POOL flag; the two
+>> skb-cow sites set it, and bpf_xdp_shrink_data() frees the frag to the
+>> page_pool when it is set, otherwise it keeps falling back to
+>> xdp->rxq->mem.type unchanged. No other path changes behaviour.
+>>
+>> Fixes: e6d5dbdd20aa ("xdp: add multi-buff support for xdp running in generic mode")
+>> Fixes: 0ebab78cbcbf ("net: veth: add page_pool for page recycling")
+> Hi Jiayuan Chen,
+>
+> thx for fixing it. Can we do something like the patch below instead?
+>
+> Regards,
+> Lorenzo
+>
+> diff --git a/net/core/xdp.c b/net/core/xdp.c
+> index 1d679e8fd649..4ed659b58141 100644
+> --- a/net/core/xdp.c
+> +++ b/net/core/xdp.c
+> @@ -433,16 +433,16 @@ EXPORT_SYMBOL_GPL(xdp_rxq_info_attach_page_pool);
+>   void __xdp_return(netmem_ref netmem, enum xdp_mem_type mem_type,
+>   		  bool napi_direct, struct xdp_buff *xdp)
+>   {
+> +	netmem_ref head_netmem = netmem_compound_head(netmem);
+> +	if (netmem_is_pp(head_netmem))
+> +		mem_type = MEM_TYPE_PAGE_POOL;
+> +
+>   	switch (mem_type) {
+>   	case MEM_TYPE_PAGE_POOL:
+> -		netmem = netmem_compound_head(netmem);
+>   		if (napi_direct && xdp_return_frame_no_direct())
+>   			napi_direct = false;
+> -		/* No need to check netmem_is_pp() as mem->type knows this a
+> -		 * page_pool page
+> -		 */
+> -		page_pool_put_full_netmem(netmem_get_pp(netmem), netmem,
+> -					  napi_direct);
+> +		page_pool_put_full_netmem(netmem_get_pp(head_netmem),
+> +					  head_netmem, napi_direct);
+>   		break;
+>   	case MEM_TYPE_PAGE_SHARED:
+>   		page_frag_free(__netmem_address(netmem));
 
-1) Example with one single expression.
 
-table ip x {
-        set y {
-                typeof ip saddr
-                flags dynamic
-                ct count over 2
-        }
- 
-        chain z {
-                update @y { ip saddr ct count over 3 }
-        }
-}
+Hi Lorenzo,
 
-2) Example with two expressions
+I tried this, but it regresses the bpf selftest with a page_pool ref 
+underflow (0 warns on master, 45 with the patch):
 
-table ip x {
-        set y {
-                typeof ip saddr
-                flags dynamic
-                counter ct count over 2
-        }
- 
-        chain z {
-                update @y { ip saddr counter ct count over 3 }
-        }
-}
+     WARNING: include/net/page_pool/helpers.h:297 at 
+page_pool_alloc_frag_netmem
+     skb_pp_cow_data
+     veth_xdp_rcv_skb
 
-It works fine with userspace 'nft'.
 
-It might be a correctness API issue to guarantee this symmetry, but we
-can follow up.
+On XDP_TX/XDP_REDIRECT veth has to take plain page refs via get_page() 
+(veth_xdp_get()) and then
+consume_skb(): the skb itself must be freed while the data pages stay 
+alive for the frame. consume_skb()
+already returns the skb's page_pool ref, so what the frame holds 
+afterwards is a plain page ref, to be
+dropped with page_frag_free().
+
+netmem_is_pp() can't see that: it only says the page still belongs to a 
+pool (other users may still hold pool refs on the same page),
+not what kind of ref we're dropping. So __xdp_return() turns those 
+plain-ref drops into a second pool
+put and pp_ref goes negative.
+
+That's why I kept the type in the xdp_buff and only override it in the 
+shrink path, where we know the
+frag ref is the cow'd page_pool one.
+
+Regards,
+Jiayuan
+
