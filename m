@@ -1,90 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1A93264F9;
-	Mon, 24 Aug 2026 13:15:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F97E423A85;
+	Mon, 24 Aug 2026 13:18:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787577312; cv=none; b=WIPj6p+xxyE9FxKUoR8imDtlQ5oUOnyZ9MlZjQozDNF3kJH4yTOnuJ0Aj91h9uDTEMKc4QPutvwA7AOJ8yPOFdaKsZJb1tUJNQwC8qu1xZ+yRVfFvM2MlfyD//Iy0KKwo+xuSmHGn/4w8eRH+mmL0+FO6NwFyX2e9NjtR4ltzTc=
+	t=1787577491; cv=none; b=tWvQrAmxr0hSF2YpJzzuEiSpx3lsjpqroRmBElYRtho1y7vk+2vPySy+DeY+fF16wKov+UorXkpRla6TY1qK6ahjdkdMF0smYfnmjRVQji8l4zWErLiRbPmjU8XFxK2qix6gOuEakZsbOkbRs9no+1y2fZVAO3W6hfAkDJwcRt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787577312; c=relaxed/simple;
-	bh=lXIPyvy1X7UvxfR/v5uXpPyN5bsuH8AK8bFTqQeQC+M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=My0LFgc9g9DTX6fydAy+BmwLG/QkBJvSEQmBP4qT4dkRdjyYNoqrNN4GcRJ1ZTOZ0rbsJ/XCv7qs94FnFRetc/TSQ73/v8acpaa1jH9Ayn6pq9IWtnd6yz2sU4tu7YW98RV99LJi96uFODDbYue+7fHkiQD8gMKVEErSe9Rg4oA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VVhogL74; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787577491; c=relaxed/simple;
+	bh=pS9bdie66/LruxFHpoKE7eytML9TkYpKGpinajQOOhA=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BszEggTIsJKtFOqcBl/W+SHTz65/7ms0dWeoiJIQCJAcahyV+qPSEJeEG2LvLlF2/iXUxoR6JGxhroE3qLYFAj3++HGamkLv+4HrvIE5MJXRuyhkqleBCxeGjf2V9vlk00uEAHBHpJz4N/L7qv8I6Mj4azB49CHoNN9+YcEaMDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=e3Qv+3kY; arc=none smtp.client-ip=113.46.200.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VVhogL74"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 280571F000E9;
-	Mon, 24 Aug 2026 13:15:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787577310;
-	bh=huzrhbuEltnFZhsFdMvi18OsDnmKRxLADDVTTKgMQtQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VVhogL74ypzN31xbBU/khmY+YZVSQ40p5fMPtHM9u+svQOoFdvxqtatc9tYy8C8Cg
-	 fN28g6+uV0OFklcMjjosXoIDOlcNLoVMw4h2s1ejJdRH+3/1QPnZR4C9ayjPmvN+M2
-	 +q9FGnLtzoBIlI1jrARAj+4ljLQ2t9kbXy9h8C46GoXNEKyGg6RbY4zI3y9ouA0WHC
-	 lcG6MXKvKZCpmXBPNMQjBjKIHBbvp8oHL+Uvd4Dxutd81QWVDK7EGeUEav+//9zbTZ
-	 I8FpPrlzkG/iwgpgAQ7fSuhPmNvWIkbacLr+lOOj+20aAn2WYRvlwts2HD+HE8azdj
-	 9do/eM5oGt2HQ==
-Date: Mon, 24 Aug 2026 14:15:05 +0100
-From: Simon Horman <horms@kernel.org>
-To: wei.fang@oss.nxp.com
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, Frank.Li@nxp.com,
-	wei.fang@nxp.com, imx@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 net 0/2] net: enetc: restore RX ring congestion mode
- after ring reconfiguration
-Message-ID: <20260824131505.GU265046@horms.kernel.org>
-References: <20260821064140.1315611-1-wei.fang@oss.nxp.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="e3Qv+3kY"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=qfsd8L9bhmC1V1C6GuAqDvfE6+3TNd9aG07fpcq1BZc=;
+	b=e3Qv+3kY58BLKHgAw0U0VQV9rGspUOE/uWlbnlImkf5TtmOeQJJ15WDHVYwmuNEwPKR2+oYHy
+	0FNqhj7n7vg4WGbhWzqkR+7h9rnQf6qw/NmvNncC6v6iEklECq+BQA9txdXm7yJ1xIaXuRtl5JS
+	MLLVwMDk/ebzKkQy03wgRks=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4hTB5Z1CnkzKm5t;
+	Mon, 24 Aug 2026 21:07:14 +0800 (CST)
+Received: from kwepemj500018.china.huawei.com (unknown [7.202.194.48])
+	by mail.maildlp.com (Postfix) with ESMTPS id 4C6B14048B;
+	Mon, 24 Aug 2026 21:18:02 +0800 (CST)
+Received: from huawei.com (10.50.85.128) by kwepemj500018.china.huawei.com
+ (7.202.194.48) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 24 Aug
+ 2026 21:18:01 +0800
+From: Li Xiasong <lixiasong1@huawei.com>
+To: <stable@vger.kernel.org>
+CC: Eric Dumazet <edumazet@google.com>, David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Ido Schimmel <idosch@nvidia.com>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
+	<weiyongjun1@huawei.com>
+Subject: [PATCH linux-6.1.y linux-6.6.y linux-6.12.y 1/1] ndisc: ndisc_send_redirect() cleanup
+Date: Mon, 24 Aug 2026 21:38:52 +0800
+Message-ID: <20260824133852.328978-2-lixiasong1@huawei.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260824133852.328978-1-lixiasong1@huawei.com>
+References: <20260824133852.328978-1-lixiasong1@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260821064140.1315611-1-wei.fang@oss.nxp.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemj500018.china.huawei.com (7.202.194.48)
 
-On Fri, Aug 21, 2026 at 02:41:38PM +0800, wei.fang@oss.nxp.com wrote:
-> From: Wei Fang <wei.fang@nxp.com>
-> 
-> The RX BD ring congestion mode (CM) enables the ENETC MAC to generate
-> PAUSE frames when ingress congestion occurs. It is configured only in
-> the phylink .mac_link_up() callback, which is invoked when the link
-> status changes.
-> 
-> However, enetc_reconfigure() tears down and re-creates the RX BD rings
-> at runtime without any link status change, for example when enabling or
-> disabling PTP RX hardware timestamping. enetc_setup_rxbdr() rebuilds the
-> RBMR register from zero, which clears the CM bit, and since the link
-> status does not change, .mac_link_up() is not called again to restore
-> it. As a result, flow control silently stops working after such a
-> reconfiguration.
-> 
-> To solve this issue, track the desired CM state in a software flag
-> ENETC_RXBDR_CM, which is maintained by the .mac_link_up() /
-> .mac_link_down() callbacks and consulted by enetc_setup_rxbdr() when the
-> RX BD rings are (re)configured. Both ENETC v1 and ENETC v4 are affected
-> and are fixed in the same way.
-> 
-> ---
-> v2:
-> 1. Add a generic helper enetc_set_congestion_mode() to set the
->    congestion mode of the SI's RX BD rings
-> 2. Move the setting of ENETC_RBMR from enetc_setup_rxbdr() to
->    enetc_enable_rxbdr()
-> 3. Add gen_lock to struct enetc_si to prevent concurrent access to
->    ENETC_RBMR and the ENETC_RXBDR_CM bit of priv->flags
-> v1 link: https://lore.kernel.org/imx/20260728023217.2499420-1-wei.fang@oss.nxp.com/
+From: Eric Dumazet <edumazet@google.com>
 
-Thanks for the updates.
+[ Upstream commit 0784d83df3bfc977c13252a0599be924f0afa68d ]
 
-The AI-generated reviews provided by sashiko-bot elsewhere in this
-thread appear to relate to pre-existing issues that I don't believe
-should impact the progress of this patch.
+ndisc_send_redirect() is always called under rcu_read_lock().
 
-For the series:
-Reviewed-by: Simon Horman <horms@kernel.org>
+It can use dev_net_rcu() and avoid one redundant
+rcu_read_lock()/rcu_read_unlock() pair.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250214140705.2105890-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
+---
+ net/ipv6/ndisc.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+index 585a9135cf26..7d703a66c0a3 100644
+--- a/net/ipv6/ndisc.c
++++ b/net/ipv6/ndisc.c
+@@ -1671,7 +1671,7 @@ static void ndisc_fill_redirect_hdr_option(struct sk_buff *skb,
+ void ndisc_send_redirect(struct sk_buff *skb, const struct in6_addr *target)
+ {
+ 	struct net_device *dev = skb->dev;
+-	struct net *net = dev_net(dev);
++	struct net *net = dev_net_rcu(dev);
+ 	struct sock *sk = net->ipv6.ndisc_sk;
+ 	int optlen = 0;
+ 	struct inet_peer *peer;
+@@ -1686,8 +1686,8 @@ void ndisc_send_redirect(struct sk_buff *skb, const struct in6_addr *target)
+ 	   ops_data_buf[NDISC_OPS_REDIRECT_DATA_SPACE], *ops_data = NULL;
+ 	bool ret;
+ 
+-	if (netif_is_l3_master(skb->dev)) {
+-		dev = dev_get_by_index_rcu(dev_net(skb->dev), IPCB(skb)->iif);
++	if (netif_is_l3_master(dev)) {
++		dev = dev_get_by_index_rcu(net, IPCB(skb)->iif);
+ 		if (!dev)
+ 			return;
+ 	}
+@@ -1725,12 +1725,10 @@ void ndisc_send_redirect(struct sk_buff *skb, const struct in6_addr *target)
+ 		goto release;
+ 	}
+ 
+-	rcu_read_lock();
+ 	peer = inet_getpeer_v6(net->ipv6.peers, &ipv6_hdr(skb)->saddr);
+ 	if (!peer)
+ 		goto release;
+ 	ret = inet_peer_xrlim_allow(peer, 1*HZ);
+-	rcu_read_unlock();
+ 
+ 	if (!ret)
+ 		goto release;
+-- 
+2.34.1
+
