@@ -1,147 +1,76 @@
-Received: from mail-ed2-f7.google.com (mail-ed2-f7.google.com [74.125.228.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F63364EB0
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 20:09:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C417E37999D;
+	Mon, 24 Aug 2026 20:11:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787602198; cv=none; b=WrI+mbXaxTOKi2KJqbZtjXDPDNfx7nkcp1QTkj8piezH/bduJMdkxOdHNaeM0OzWWi/JyrKqUFL4vZ0hE22IjeuucGM4YSIaLVd90U6JP6HwJLKRd4u4evHIk/YprVwOJTOVW7WN5YxGKgiUfN+u1rjD9vWWgAdDr9Bryud6vKw=
+	t=1787602274; cv=none; b=fWpryKF0D7IEKkt5HM40c3GOBW3Rc8zRiqZXiAr+ywgoFXZ2hL574tVFPeIpkkwrF664twgr+Tcvcq7aEQ4PbtHbzL+e5zd93YI6n+VgIR30XelMGfwSv85AggsD8hWtnwHGOICCsu6BAy7+5Zv1ixdPYVWK94IvZPrsSm4+ssA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787602198; c=relaxed/simple;
-	bh=O7yhtO3d4iaN174q/gULeCh+5l267X5djaLXQqSRSh4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=p2L9webglUTduJFMV+/bZHJcgIq4lUq6T7+AUP/5souWZMJE3pylihAKmdDjRN9un/McjMGtbzf0vntdqh0Wx2tc4r0ayFP873Y5mjqwR9ImbsrNEqA7M1rWtypttWvyOR56bbjI7XdmcaEarINkwLSbnGkiOUrkXgyjHpppKh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QgVLMsEa; arc=none smtp.client-ip=74.125.228.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787602274; c=relaxed/simple;
+	bh=VKPzb4lI0+YxJ30IVch8jmiiv63fuB/8GY06P7avfhM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=CE3ZK6+JOJhu0k5x8YBoMWKoCGcdIxSR7+knskt/VEKnwnCrXNibaSf/r6cXMiqCTdc6Ro+5mg/W4nFrqq8zgQcqBJEZssAcsqPxavUtCn35KrGYjm4gDXZmAaUXqJVrnGQcXJiE1otpPGhNml01nesmYS1CgE6E61vc6jBrISg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j58FmOhf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QgVLMsEa"
-Received: by mail-ed2-f7.google.com with SMTP id 4fb4d7f45d1cf-6a403027d38so2034665a12.0
-        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 13:09:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787602195; x=1788206995; darn=vger.kernel.org;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=/X6rfEqJVCIYpv2Uz14icNHvczQMxyvZzqtmzqLXxEQ=;
-        b=QgVLMsEazBKz00+GE/qOE/3G+0yJqxF+kTbvH1Zsna4xeM8ZOdnZG/M2keJnlCqxLE
-         CrGrTn5lUvKUxaHrI7ei1jQ2Rog9AqCUIz4wOo/bqtDAwL84d+W8KvJYVHu6GKQoqsB+
-         6AmQ/8NmnBkuYcSH08pSS9ITL6aVY06BSn2LQyFuDKOgZlpXEmZk+M1Rq9UPdh4Flf6Y
-         l8uvJnrS9rJ+mfJnsiynNufnw9xXNQQs0yPSmh5u4FUbc2IHmR9SBM4PmY199O9BFQG8
-         1+UTD6uK07Hh093b0GHfveK4z8bGkwAfXFVtPdDyD86L+xorh4KmOTftiz5XOPbHgcD1
-         dDhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787602195; x=1788206995;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/X6rfEqJVCIYpv2Uz14icNHvczQMxyvZzqtmzqLXxEQ=;
-        b=N0HuRPB62lOpEwNrXiHA3OxQ09BE0XB1gMqi3Au/5Js68LtWBU2FzXIxbr/mZjTvu8
-         KHaBjgy8iO5KzEPvoiYmC1sQoweLW5uSkk3SH9vPyNGo0ZxaGMDVWKcGMJPlyILUxrC8
-         w/OiGeO/ZrrZDAoOZl5lupTES7VRhb5cS+Hr+cX6vPajNrBmuFJT5s7yFg8yeTWCTTkx
-         2pQo+B5B+3RmlzBEj/P+O+2DD9z/h5xVh7EhLZ6KELzDw6xJRgkXA9rRWM+DLYC0ztsd
-         0c+jp/e7EfN1tEg1+fC+8hav/M9XcE2jYhcWEyieJ0vt54PH7C9EuOQKeqvXjXflj14z
-         aSfQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpMHMmaYBq2AJ2m6w+0QdFhR0B7tS7eFYFnsIzat/t41K3dKXPXDidUJYa+1sIsrEC1RU9kecU=@vger.kernel.org
-X-Gm-Message-State: AFuF++kplHto+tbBLpFDMJoOng7SQu/LOazX9cv0cSeHVtL6oF19FFnA
-	kSvvL3n6Dg/QtZpzaaSDXBd3PjTAaiS94x1cIvQAiO83XSEBt9RQhnX8
-X-Gm-Gg: AR+sD11O0agsPsgoGkORtGmeF6M1IYn41ri2bqKOyOdRCGFsbyqWXAqNyvpxIqQIOfU
-	ifttBdUb1F/JkmP7nglLs7pGq+tpTVBAQoAa8Pr0tjNgXFhpQ86HqYIxHtwEOUO1q6/dy64QozN
-	3Zldd+b4RvjZKRbrwqrLjoz9yqtPISK+wWyQX32FJ5q8wtSr5n5Gh+Lq7RocqlqHRLqzN1ljqM5
-	dgI8zWmTX52soPKVDMq29sdCG0PAdl3GsqXkD9FpFRm/u796giSJikcFv6+zS284oxQIeWEZxK+
-	jjn1ZY2jI2F/KyIQ5pYQjJ8ILgvtauHb+HIyhmyK6isdExEWYduiHUdc7ecazxXPX5pXJNfywpc
-	wdpp/xECkBhlRuRHT7k7O867NG4bR+2OLenUtDSCTkBufC165XJEvHr6aVhBQCnOMax8BQnIyLP
-	9qPANUkW1OKHS4C7X8JZ9Ik+i4GUrSi41rrpGX6UuhatXCNMAIRF/uD0BTF0679lneTVYOK81jM
-	3n0+3BOVyJI06GX64zkSiw6JaMZ7O5mjhe2NhEKBfGSlCDGezcPe93uwxsWZR2XQ8RmkHhaEOae
-	X7OYxSr2S1uJtcwnGpASUgKEtRg=
-X-Received: by 2002:a05:6402:2549:b0:698:6620:d988 with SMTP id 4fb4d7f45d1cf-6a582b8cd2emr18739293a12.15.1787602194789;
-        Mon, 24 Aug 2026 13:09:54 -0700 (PDT)
-Received: from localhost (nat-icclus-192-26-29-3.epfl.ch. [192.26.29.3])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a59e001305sm10841718a12.4.2026.08.24.13.09.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Aug 2026 13:09:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j58FmOhf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 637131F000E9;
+	Mon, 24 Aug 2026 20:11:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787602273;
+	bh=vkabXW90V9LyIOL5oAg8rcncVvaMdxmnzoedYkhU+dk=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=j58FmOhfxc7zoYP5VMe9sG0a1iqrYZPuHiDgads88+hKOul8wFBOIbIdPLhRE1Fhw
+	 /lEkP5mrAYipBX7LeTtUgLhHxOvS73gid5FGv6R0+dT6mQMV5AyxHz3koODfw/sL9A
+	 zjCuCRBzvSKvgO8srnE5aSZJvtKYlrKv4fngv18ps2Czb9miFlqq1fj3WPJeIi7LL+
+	 FvhWdQ8HVUBhkrX3Lkkmg/CO4sCU/IvZwt0l6o+yvTB1U1HvSi5zB7Px8ICyAl5s9c
+	 AUSQZ4Df2U9kvrkJJzCrSA3M+2Y0Qx1qSifO82FegS231xzUy+Udqlu/r+CDXrr2ST
+	 6HagHiFnpYeQA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198433924A51;
+	Mon, 24 Aug 2026 20:10:22 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 24 Aug 2026 22:09:52 +0200
-Message-Id: <DKXG3AFFUMEJ.1RDMQ7LNT1D0S@gmail.com>
-To: "Jakub Kicinski" <kuba@kernel.org>, <chia-yu.chang@nokia-bell-labs.com>
-Cc: <john.fastabend@gmail.com>, <jakub@cloudflare.com>,
- <jiayuan.chen@linux.dev>, <netdev@vger.kernel.org>, <bpf@vger.kernel.org>,
- <ast@kernel.org>, <daniel@iogearbox.net>, <andrii@kernel.org>,
- <eddyz87@gmail.com>, <martin.lau@linux.dev>, <song@kernel.org>,
- <yonghong.song@linux.dev>, <jolsa@kernel.org>, <emil@etsalapatis.com>,
- <linux-kselftest@vger.kernel.org>, <shuah@kernel.org>, <horms@kernel.org>,
- <dsahern@kernel.org>, <pabeni@redhat.com>, <jhs@mojatatu.com>,
- <stephen@networkplumber.org>, <davem@davemloft.net>, <edumazet@google.com>,
- <andrew+netdev@lunn.ch>, <donald.hunter@gmail.com>, <kuniyu@google.com>,
- <ij@kernel.org>, <ncardwell@google.com>,
- <koen.de_schepper@nokia-bell-labs.com>, <g.white@cablelabs.com>,
- <ingemar.s.johansson@ericsson.com>, <mirja.kuehlewind@ericsson.com>,
- <cheshire@apple.com>, <rs.ietf@gmx.at>, <Jason_Livingood@comcast.com>,
- <vidhi_goel@apple.com>, <Mike_Rudolph@comcast.com>,
- <Jeff_Howe@comcast.com>, <srichard@netapp.com>
-Subject: Re: [PATCH v8 net-next 0/2] Explicit TSO segment count
-From: "Kumar Kartikeya Dwivedi" <memxor@gmail.com>
-X-Mailer: aerc 0.21.0
-References: <20260824163139.990734-1-chia-yu.chang@nokia-bell-labs.com>
- <20260824130511.2955f30d@kernel.org>
-In-Reply-To: <20260824130511.2955f30d@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [GIT PULL] bluetooth 2026-08-24
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178760222088.3098537.17413307730487098500.git-patchwork-notify@kernel.org>
+Date: Mon, 24 Aug 2026 20:10:20 +0000
+References: <20260824180639.3570348-1-luiz.dentz@gmail.com>
+In-Reply-To: <20260824180639.3570348-1-luiz.dentz@gmail.com>
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: davem@davemloft.net, kuba@kernel.org, linux-bluetooth@vger.kernel.org,
+ netdev@vger.kernel.org
 
-On Mon Aug 24, 2026 at 10:05 PM CEST, Jakub Kicinski wrote:
-> On Mon, 24 Aug 2026 18:31:37 +0200 chia-yu.chang@nokia-bell-labs.com
-> wrote:
->> From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
->>
->> Hello,
->>
->> This series replaces the existing min_tso_segs() congestion control
->> callback with a new tso_segs() callback that allows congestion control
->> algorithms to provide an explicit TSO segment count for each data burst.
->> =C2=A0
->> To support BPF congestion controls, the series also exposes
->> tcp_tso_autosize() as a BPF kfunc, allowing BPF implementations to
->> reuse the kernel TSO autosizing logic while implementing custom
->> tso_segs() callbacks.
->
-> AI CI says:
->
-> The bpf-ci build jobs are failing for this patch on all tested
-> architectures/toolchains (x86-64 gcc-15, x86-64 llvm-21, aarch64 gcc-15,
-> s390x gcc-15), all with the same link-time error:
->
->   net/ipv4/tcp_bbr.o: in function `__BTF_ID__set8__tcp_bbr_check_kfunc_id=
-s':
->   tcp_bbr.c:(.BTF_ids+0x...): undefined reference to `KF_DEPRECATED'
->
-> This comes from the change to net/ipv4/tcp_bbr.c that marks the retained
-> bbr_min_tso_segs() kfunc entry with the KF_DEPRECATED flag:
->
->   BTF_ID_FLAGS(func, bbr_min_tso_segs, KF_DEPRECATED)
->   BTF_ID_FLAGS(func, bbr_tso_segs)
->
-> KF_DEPRECATED does not resolve to a usable symbol/flag in this tree, so
-> the BTF id set for tcp_bbr fails to link into vmlinux on every
-> architecture and toolchain -- it's a straight undefined-reference error,
-> not a per-arch/per-config issue.
->
-> Could you drop the KF_DEPRECATED flag (or use a flag that this kfunc
-> infrastructure actually defines) on bbr_min_tso_segs, and re-verify that
-> the kernel links cleanly? A local `make net/ipv4/tcp_bbr.o vmlinux`
-> build (or the bpf-ci selftest build job) should reproduce this quickly.
->
-> Full build log for reference:
->
->   ld.lld-21: error: undefined symbol: KF_DEPRECATED
->   >>> referenced by usercopy_64.c
->   >>>               vmlinux.o:(__BTF_ID__set8__tcp_bbr_check_kfunc_ids)
+Hello:
 
-I think Chia-Yu's AI is hallucinating, it was a proposed flag but not added=
- yet...
+This pull request was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Mon, 24 Aug 2026 14:06:39 -0400 you wrote:
+> The following changes since commit 7cbfb180945ce529608e4d4e24a6d483699fab1e:
+> 
+>   net/sched: sch_cake: fix autorate reconfiguration throttling (2026-08-22 13:51:40 -0700)
+> 
+> are available in the Git repository at:
+> 
+>   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-08-24
+> 
+> [...]
+
+Here is the summary with links:
+  - [GIT,PULL] bluetooth 2026-08-24
+    https://git.kernel.org/netdev/net/c/b70b7b71561f
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
