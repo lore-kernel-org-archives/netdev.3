@@ -1,42 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC0C343D8F;
-	Mon, 24 Aug 2026 13:39:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0054345EAD;
+	Mon, 24 Aug 2026 13:47:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787578767; cv=none; b=eeTfgM6yy97R5vCb+p69sKQpC92PuJlXR1bEitMKibRlpwfNArXsjgagcyKH5tSjh0idjAeodUtfKIsXWRJ4uiROUiFt0Tx5gqxzn92ss4g3xRSYy5MHpIMKz6r2R07AGb9e3oAm/TNXtc0dNybSg3K4L4gy7s7m3ss826Rs8Pg=
+	t=1787579242; cv=none; b=cIAQ0ceU8Ja3JT0Q+WIXLWxAc0dG4sHOBr1Lp50TLLgsaB0FsBkv2EerL4qhKXoEcdE+UyR81YB/RPjOIDBrT0kXAIrC6UKUdPsQvq0Svu2f96ensw5j/lfw+VwuD3hrWzm2Zmacz6Y3tYul6R/ecl9tMK05l9NYLNYWfCwAtoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787578767; c=relaxed/simple;
-	bh=yKqGWjGp3rHF6omkTB0bqqNoD0qLPY39GgvUNlHrS0s=;
+	s=arc-20240116; t=1787579242; c=relaxed/simple;
+	bh=gsZth2D5w2+FUxwW8I64Md+XCABLbTd3Ip9I+dJOdTA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZNkSoBs5SdimZtd63mBXHW2fPkmNsMb+PnHU/QovwenRvX4zG2MiJ3WGbFvMnslpXyEdrIAUnzF37tTxdcoTFmGt9szQufXYL/q1NIXJ9bqaOgnq4h4E8QGS9KT/SyIPJTRF+E4T+g065XTnKZBAopssMfslu4D19U9Zf1LCvpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nYK35Z7l; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=qNIwppMknUsz4/PVBjiiS9LODSVlTbNgt7dFGfp2OmTdwjJ4TXNMX/TW6bpTVXY10sAHRw7AoLuvGDYwkmfM3L8gD7lGGvowwiZmgWWJOi39U68dUOrxn3UEZCJII5AitQL5NzQ+OtJ/yE+xv2U1ldapd8uMvoFZMkFHEEQr0Eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=lUNgbKWE; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=kEBExeIA; arc=none smtp.client-ip=202.12.124.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nYK35Z7l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99421F000E9;
-	Mon, 24 Aug 2026 13:39:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787578764;
-	bh=XJdIxHVPwuHe/RAOOk/4sfALm/vbkNUDkga0EDq9Tuo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=nYK35Z7lNGTh0d0nwDBjCBsI1Nkk6yolUK0J8ZarFWmWNDQzO4eBAxQxrFisQtuuC
-	 0WNy7Mx6yWNHYmc+9WJo6sLYM6qihWAWEshMYrjExpYuFSBqJOs+o1honvQwCZ+AIF
-	 jmF8xWNV1AjxsCiONmVffNcPE/SvMBBGRrzcnPWSQMJg+gcLUZ698A3Ujk22Y4Ggkn
-	 y5lgr3ZrNDUyxzkWRfQ7WmbUuP+d+77F0kIbC09GV/w58G7bc56uj+haR49CULuWTr
-	 ocKWUthYT/+K1hcLV0G4hbYrgZKUOOv8ywM8hDe4MYia1VGReBK7mIp10f6gWlDSD8
-	 bZ7nDMLrrIM8g==
-Date: Mon, 24 Aug 2026 14:39:20 +0100
-From: Simon Horman <horms@kernel.org>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-Cc: kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	saikrishnag@marvell.com, sbhatta@marvell.com, sgoutham@marvell.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	pabeni@redhat.com
-Subject: Re: [PATCH v2 net] octeontx2-af: fix cn20k mailbox lifetime on
- repeated rvu_mbox_init()
-Message-ID: <20260824133920.GV265046@horms.kernel.org>
-References: <20260821102337.2989169-1-rkannoth@marvell.com>
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="lUNgbKWE";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="kEBExeIA"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailflow.stl.internal (Postfix) with ESMTP id C786F1300075;
+	Mon, 24 Aug 2026 09:47:15 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Mon, 24 Aug 2026 09:47:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1787579235; x=1787586435; bh=v0eOO8mP3K
+	vc+I6zkuxDnQ7yn0ErBoVsdLcBQWhrggM=; b=lUNgbKWEU+TSOAdrRlhzdv2zIB
+	IR/RZtTNW1RSkmZy8TgEcXyVse+i1WIGbr26kod86DfJwn/IW0OtF9x0SjluCQe5
+	P8ZGu5oozI1iVddoWsNP4K0SabJqi9syhn0n7lBtGHQ+jUdeLIJZxnnQd2/ockNt
+	culPcHq5MA49b8XGNX58prG6eICgjj1LOEAfBXZ3SBuCHd5x+4dUjWc3uTEjbQjk
+	4xdtJqMyZ7zv2BIrlb7HKfNCfBOCW5LRL40Bjk8anuqjpNib8FZwNj+DbUmwW9cq
+	Il36zG99CR4LUKQkbVtNnlCSf/ZxdGUKief2D8eWhdH6tjp9zifrjU3Qz23Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1787579235; x=1787586435; bh=v0eOO8mP3Kvc+I6zkuxDnQ7yn0ErBoVsdLc
+	BQWhrggM=; b=kEBExeIAqdjlMDEu3AlSrjSPTXocCpyKyKuodb4tLOeGZxli4ZP
+	o4lU0fnOniSa+vzbx5n54/8qXzJFpxWfOmUDSmZIZAwAi+LepfgEdnIOdev/bmSA
+	1mgv34rv+2qXTFz6Y5tiCvCjN/Hz2YZbDUY+exvThK976WVX0mUWHwY2i7QFcz7z
+	EoIrddz/NJf8rdGozjNKM6qKPpkOVmwtw9MX9nJhSbMTa6KrcYStZUieANhXlvtp
+	JPK8ZHKb9nlprgffrI5Ar4QpwKXE2kXoLb/rlnrmC2Yo811luC00P3bndOs93CLG
+	QIoFNk6lew5S1nVN3TxxOMOPu61ON2lFCSw==
+X-ME-Sender: <xms:YkuMaq6ALhlGHFuHpwfws93_iyMOTSNLYBBIRuhkiUMXUDbvO8kA5g>
+    <xme:YkuMavlr1JlhmNiQVNcNz6PNZtjr8uiOX6Vc6LiIZJDm8xPMnkd8rp6VTk7OaE4uz
+    658-hxl_CICFZyf1rxOYFuvKssY9Pa3H969BdVtu88J2Tt_-f4>
+X-ME-Received: <xmr:YkuMatFMO4p4hb3BwWkVyUL9LcdQoDro1unhkJbk1FkZMPfLUhNB7YDrQqpukTexTSwrls4cQFhJrq9WMdPfDoDJWTBpQr5lW48bwksFAsQ>
+X-ME-Proxy-Cause: dmFkZTEo1+qQ5pn1rPMdWCcaft2bSBaYbe5yoW99KucM5sbb0NM+N53s+3Q8UNHPVUoYEV
+    swGT7AgHtJgWJs3OdNpJRcTo1LPOftAILAXRjyDdSzlJth+JxtnNXUUSGi3ReJRQhxi4bX
+    lrpyjQNVSt5/+Ty/iwQdFIdzFwUqFadTnbVDYZd4Yek9WrgC9tXUMfbP0dS7SQMUHj+SuN
+    Ugh46bDRiOICsRnjFVucUeAre8TZxDqm3i9ClfvaqMqKp8Fo0cJjoxiE/GONj6OLOT0x3f
+    pMRqt5dUlgOvlGtwhXGjvnibfg36qySeC4L4LfWeuqwZb3k0PSFwfjspbWcQ6EKd6I/pH3
+    4aau0ixZF4J/1YZsAKqhM33PzQhEn2erhtTEmyqRq/q/iYRtgOxOUo7zVcVd5rqrLNGLEj
+    5Gt2wWMSbigmAjNGJlgwwB6+o/CRbO8I4r96I8imy3Trz/bjJF7Xvk23bA754Iay4ALhsX
+    YM9AweG6uXx51e4mmqnN6qwXujQjngExUZ0K+Q+FWsv9epvHYRnUq/zKh1ZVr4I+YVFb0a
+    jyagL4+OYQeU04oE0tPQgNlDLziCoWhKN4iAdAnUhb8zbYizp6HmQgCRPfDYRqa4Dc2unw
+    BbtbaIZYMXarPxI5wWuIcVKcBfO66UVykrxciNpJJpLMfI15ezCTH3k81JSw
+X-ME-Proxy: <xmx:YkuManZJ8R071JOU9mDSxBMfV6B2MTWwEsElzm_XoZfBxg7CX8V3KA>
+    <xmx:YkuMasKQqn9gwrS5h3rTcSme0k-A1a2r7AixJ1gFGtjJHUkleYXbWw>
+    <xmx:YkuMagyQtL1HArvfT92UQVds6Qh_EiRjYA2Hhl87Xe0dR1huV3RuRg>
+    <xmx:YkuMak207O2KEwmnxN2A46K_Ay09DIR96YNbrenapmdPE0u9WXIhdw>
+    <xmx:Y0uMaiN8O1Y--Kv4TSWRswfV9XD6_73-1VlymsJewVrmZUAZqsrebZRo>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 24 Aug 2026 09:47:13 -0400 (EDT)
+Date: Mon, 24 Aug 2026 15:47:09 +0200
+From: Greg KH <greg@kroah.com>
+To: "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
+Cc: stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Wei Wang <weiwan@google.com>, Martin KaFai Lau <kafai@fb.com>,
+	Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+	David Ahern <dsahern@kernel.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org
+Subject: Re: [PATCH v6.1.y 4/4] ipv4: start using dst_dev_rcu()
+Message-ID: <2026082454-jacket-gravity-6ddc@gregkh>
+References: <20260821-cve-2025-40074-6-1-v1-0-cad5cf499b76@bootlin.com>
+ <20260821-cve-2025-40074-6-1-v1-4-cad5cf499b76@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,36 +95,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260821102337.2989169-1-rkannoth@marvell.com>
+In-Reply-To: <20260821-cve-2025-40074-6-1-v1-4-cad5cf499b76@bootlin.com>
 
-On Fri, Aug 21, 2026 at 03:53:37PM +0530, Ratheesh Kannoth wrote:
-> From: Sai Krishna <saikrishnag@marvell.com>
+On Fri, Aug 21, 2026 at 03:33:38PM +0200, Miguel Gazquez (Schneider Electric) wrote:
+> From: Eric Dumazet <edumazet@google.com>
 > 
-> rvu_mbox_init() is called separately for AF-PF mailboxes during probe
-> and for AF-VF mailboxes when SR-IOV is enabled.  Each call used to
-> allocate a new ng_rvu object, leaking the first allocation when the
-> pointer was overwritten on the second call.
+> [ Upstream commit 6ad8de3cefdb6ffa6708b21c567df0dbf82c43a8 ]
 > 
-> Sharing one ng_rvu across both paths exposed several teardown bugs:
-> the error path freed all cn20k mailbox DMA and kfree()d ng_rvu even
-> when only the failing init type should be unwound, leaving live AF-PF
-> mailbox memory in use after an AF-VF init failure.  mutex_init() was
-> also re-run on the AF-VF path while AF-PF mailbox handlers could still
-> hold rvu->mbox_lock.  Probe and SR-IOV failure paths did not release
-> cn20k mailbox DMA either, since cleanup only happened in rvu_remove().
+> Change icmpv4_xrlim_allow(), ip_defrag() to prevent possible UAF.
 > 
-> Allocate ng_rvu once with devm_kzalloc(), initialize mbox_lock in the
-> same block, unwind only the mailbox memory for the failing init type,
-> and free cn20k mailbox DMA from the probe and pci_enable_sriov()
-> error paths.
+> Change ipmr_prepare_xmit(), ipmr_queue_fwd_xmit(), ip_mr_output(),
+> ipv4_neigh_lookup() to use lockdep enabled dst_dev_rcu().
 > 
-> Fixes: e53ee4acb220 ("octeontx2-af: CN20k basic mbox operations and structures")
-> Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
-> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-> 
-> ---
-> v1 -> v2: Addressed sashiko comments
-> 	https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260820053656.2614614-1-rkannoth%40marvell.com
+> Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> Reviewed-by: David Ahern <dsahern@kernel.org>
+> Link: https://patch.msgid.link/20250828195823.3958522-9-edumazet@google.com
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> [ minor modifications to fix conflict, added rcu_read_lock and unlock
+> to ip_defrag function ]
+> Signed-off-by: Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+We need a working 6.6.y version first, before we can take this one.
 
+thanks,
+
+greg k-h
