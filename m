@@ -1,156 +1,204 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.amicon.ru (unknown [77.108.111.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88955373BF2
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 10:04:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755C227473;
+	Mon, 24 Aug 2026 10:06:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.108.111.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787565854; cv=none; b=MbtdICT8YA+ICN9CMLGbBvZObcTTFF4vgoM4JTFZinjcSWUiMAr/Mh8hGNcf6QGCpjHYDbSW0uRV05oU7ErE5XTX77kfNByFNk6We1ow0ErfNnf3wxqlk6baQsnnzYit/9s7cx06iGh3Giatj2pqjna45aOiY86NAr2hUKS4NzM=
+	t=1787565998; cv=none; b=RcWA9kKPENewGye/8nzykd0XRu79KF6CkAxfjplmNGfLjWEJsnI71EDy/ut7f0qvGEZM4lnyPqLzg/6lQ3KuNZBGP9NrF1KhHHQEEdtlHEoaOxhT8SjhOAlJLi9R9OzkCqCtCSPIrzFg8gO052UGtR/TcLRwC8fOegOljCdmhGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787565854; c=relaxed/simple;
-	bh=HPvbVjJRAUx2zxnx/2JXbCymsHLLVjGfbuId3zasyvs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jz/kiL6GsoQ4yckUwQ3WX4quG8hzcvn2t5AiCLzorJXMStuDEcig/XHmL/vJUZ+ANLPPCuP6nSwzREKngkyvBwDRse6WZ9d1R93MPi+H9Opv1eCf6U+YeNYj0JzQEDKmlbCwPnGg/JQlc8unzQ4dIn8gT3fTbo1HmmJqEDrlLhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr; spf=pass smtp.mailfrom=snu.ac.kr; dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b=cLKedQEF; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=snu.ac.kr
+	s=arc-20240116; t=1787565998; c=relaxed/simple;
+	bh=H7n0QcARCOOzNO25zmSpYXoaFi9dJd0XMChOCtt24X0=;
+	h=Content-Type:From:To:CC:Subject:Date:Message-ID:MIME-Version; b=mBaeaDcZmOTP+ov6vYy0EaRnzWuwjeawnde+tmJuxykyoA7QJCoJHESB9B6C8G+eImL6z99LWCrW+TdUc+Qic6t/zm6nRIe6RsC6MOQyN/r/qy7BK4vZcJx3jylHbQQORUraFXRmSKjot5o08LE1OLP8oTFEhNMaRYUpYqp+4LM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amicon.ru; spf=pass smtp.mailfrom=amicon.ru; dkim=pass (2048-bit key) header.d=amicon.ru header.i=@amicon.ru header.b=ncvexP7r; arc=none smtp.client-ip=77.108.111.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amicon.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amicon.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b="cLKedQEF"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2d049069377so27273745ad.0
-        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 03:04:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=snu.ac.kr; s=google; t=1787565849; x=1788170649; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=PbN3euIVQaKZlKlCehEGCne8jRWCUQcC3Nf98ImKjAk=;
-        b=cLKedQEFUprgt3TDw8sP6+l5Y1GH6IDMa/x4Smy0a2Ca7aU2NrPUJoQzzFVVktnAf/
-         rW+Gtwt4iqjkJUDitQtjXJ8LusKAFn9oUGmbXjqZs5yoQooASTevMOpSJZqaim5XrxqW
-         YklVGXKOKLk4SOsW5Kntzs0ADoW9yBykqmOrc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787565849; x=1788170649;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PbN3euIVQaKZlKlCehEGCne8jRWCUQcC3Nf98ImKjAk=;
-        b=EozIuzKKTRAxn7uREjO3H7ibhI+x67YftzLmbJz9x6abu1NIiDupojtITyb9gR5dob
-         aY0vUsiQuxCoSJE4FonCfs7Ic/A9BgZhUGIkumPsWrcyLow1qe6n5AHITkTVD9PtBA20
-         1Pgo5+y4ocwKH46eGX1giL/q33mR2sAcqxcskujwFlfTwWlz/0JUld/La4f65tSZq90X
-         Bqi8mjJxGtfHHfOevS9KCyil2J/XJYEddiVJXmqNhMRZT39qqgaSuWP338PyYpkvfHGV
-         LXeykmfhK0fjEJlW185znA0MzgmrF7krNHr23YStcWRVlavDo1yR07VKyAEmfjpvxNaG
-         n6Zw==
-X-Forwarded-Encrypted: i=1; AHgh+RrEQcyuVGoQCi7nFO4MHfgs3JaI/YKmg0z+DYmxowPrkpXXXWW49iVEFrpRc0nKKi1demo2MD8=@vger.kernel.org
-X-Gm-Message-State: AFuF++k7ICd6ZWSHbs1qguaT9JJuT2R/Vvi3tt5+9ERRR6N5Qz0/TLtv
-	Xn8LcBJm5WryU7S8j5/fvHD7h8x6uZzxoKM4rBtiMqgCZp0X/U4cGs/PKIYOMponAQU=
-X-Gm-Gg: AR+sD12gZjt1uukyWmqv87gsILwk8eFeczTTPcbYCpLI0oyQBVz+XNy1h62u3f2ScET
-	NXFHdDuYNq02xoK0PWKSrYtx+hpklfVBRU/JeOX5BRNFIRx771vNhlwmGVA0FQfs/rpAYNTc+RD
-	AkE2ezR2Wu9eRLC6Os8egMmdwBNp2nP9HmmyVCvCGwCRtXqjCedVW3LsQa624Yl9sHNbqvFwat0
-	LJMOPvg69Q6esxEnSkOG5rODb25c7gCIP1YAOf9wAGVozM/5B8YWtPcLLdTT9xc1yMLQk5o9hLh
-	E7JpNAd4tUNw76Zbj5ZagKSqS4v/0QjP3PqzQlmiAyA4Dm4q7nQAXGJo3rLctNLK4SRXH0zBPd8
-	FHM0m9a+FWM5IWVsQqWtW2lz1naEksFl2T4McIOELWjX8eMYyR8/cSmcaaTyLydY5lzCJvGQwgU
-	b2yOgIP+9bhmDQezGN+L7PyUaHNOwlKeNDj3seGMPWCHXesdGleFdetwOKImgeXXjOIixKeGHqs
-	Qza2h+DcvS080ezEILY5dSRPBOSmjLuA/wp1pZz3xQk
-X-Received: by 2002:a17:902:ebc2:b0:2c0:b6c7:227e with SMTP id d9443c01a7336-2d64adea473mr478553465ad.5.1787565848918;
-        Mon, 24 Aug 2026 03:04:08 -0700 (PDT)
-Received: from eulgyu-desktop.localdomain ([147.46.174.223])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d67689639bsm15324615ad.54.2026.08.24.03.04.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 03:04:08 -0700 (PDT)
-From: Eulgyu Kim <eulgyukim@snu.ac.kr>
-To: edumazet@google.com,
-	jiayuan.chen@linux.dev,
-	pabeni@redhat.com
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	byoungyoung@snu.ac.kr,
-	jjy600901@snu.ac.kr
-Subject: Re: [BUG] KASAN: slab-use-after-free Write in sk_skb_reason_drop
-Date: Mon, 24 Aug 2026 19:04:01 +0900
-Message-ID: <20260824100401.272056-1-eulgyukim@snu.ac.kr>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260423134147.1933565-1-eulgyukim@snu.ac.kr>
-References: <20260423134147.1933565-1-eulgyukim@snu.ac.kr>
+	dkim=pass (2048-bit key) header.d=amicon.ru header.i=@amicon.ru header.b="ncvexP7r"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+DKIM-Signature: v=1; a=rsa-sha256; d=amicon.ru; s=mail; c=simple/simple;
+	t=1787565983; h=from:subject:to:date:message-id;
+	bh=H7n0QcARCOOzNO25zmSpYXoaFi9dJd0XMChOCtt24X0=;
+	b=ncvexP7rtJPdNR0DaX9JSn/EhPFi4xaWOJVzM5yaGQl1qR2LuM8n4gbrPlmNOUpWCLBwUrlbrs9
+	EuMsngMGzQAZrolV0TVgjYrkq11u8ji8CTEgfR/rmrKBqkTu/HL7pZIaIO0IWfYfmt7JbZM8xoZQb
+	Aygxh4Cymx18VPWyijH8UGNagBO01ycdlDW7HMZqOuZtQACS0n40GpJqYTTIDMk5G6DTkgg1ecwDy
+	AUQQpS0A7konIFmKq+JbeTHdLh8MXa6YLbTNsgtDI/0n1EmGcytwkyhi78xm2dq8i10eXgXitS5SZ
+	JIoA72CbvpVVS5NRI+IMs2nUQ4xvmd0otUNw==
+Received: from localhost.localdomain (192.168.0.250) by mail.amicon.lan
+ (192.168.0.59) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.27; Mon, 24 Aug
+ 2026 13:06:12 +0300
+From: Aleksandr Khromov <haa@amicon.ru>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>, <rrv@amicon.ru>, <haa@amicon.ru>
+Subject: [PATCH net v2] slip: fix use-after-free in sl_sync()
+Date: Mon, 24 Aug 2026 13:05:47 +0300
+Message-ID: <20260824100547.164773-1-haa@amicon.ru>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: mail.amicon.lan (192.168.0.59) To mail.amicon.lan
+ (192.168.0.59)
 
-Hello,
+slip_devs[] stores bare net_device pointers and takes no reference on
+them.  sl_sync() and sl_alloc() walk that table from slip_open() under
+rtnl_lock(), while an entry is dropped by sl_free_netdev(), which
+sl_setup() installs as dev->priv_destructor.
 
-We have found that the bug still exists in v7.2.
+priv_destructor is called from netdev_run_todo(), which deliberately
+runs with the RTNL semaphore released so that it can sleep while waiting
+for the device refcount to drop:
 
-> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-> index fed9dfdfc..1af529b04 100644
-> --- a/drivers/net/tun.c
-> +++ b/drivers/net/tun.c
-> @@ -289,8 +289,11 @@ static void tun_napi_disable(struct tun_file *tfile)
-> 
->  static void tun_napi_del(struct tun_file *tfile)
->  {
-> -       if (tfile->napi_enabled)
-> +       if (tfile->napi_enabled) {
-> +               mutex_lock(&tfile->napi_mutex);
->                 netif_napi_del(&tfile->napi);
-> +               mutex_unlock(&tfile->napi_mutex);
-> +       }
->  }
-> 
->  static bool tun_napi_frags_enabled(const struct tun_file *tfile)
+	/* Snapshot list, allow later requests */
+	list_replace_init(&net_todo_list, &list);
 
-> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-> index fed9dfdfc..147c80c90 100644
-> --- a/drivers/net/tun.c
-> +++ b/drivers/net/tun.c
-> @@ -289,8 +289,12 @@ static void tun_napi_disable(struct tun_file *tfile)
-> 
->  static void tun_napi_del(struct tun_file *tfile)
->  {
-> -       if (tfile->napi_enabled)
-> -               netif_napi_del(&tfile->napi);
-> +       if (!tfile->napi_enabled)
-> +               return;
-> +
-> +       mutex_lock(&tfile->napi_mutex);
-> +       netif_napi_del(&tfile->napi);
-> +       mutex_unlock(&tfile->napi_mutex);
->  }
-> 
->  static bool tun_napi_frags_enabled(const struct tun_file *tfile)
-> @@ -1783,6 +1787,12 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
-> 
->                 if (frags) {
->                         mutex_lock(&tfile->napi_mutex);
-> +                       if (unlikely(tfile->detached ||
-> +                                    rcu_access_pointer(tfile->tun) != tun)) {
-> +                               err = -EBUSY;
-> +                               mutex_unlock(&tfile->napi_mutex);
-> +                               goto out;
-> +                       }
->                         skb = tun_napi_alloc_frags(tfile, copylen, from);
->                         /* tun_napi_alloc_frags() enforces a layout for the skb.
->                          * If zerocopy is enabled, then this layout will be
-> @@ -1981,6 +1991,7 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
->                 mutex_unlock(&tfile->napi_mutex);
->         }
-> 
-> +out:
->         return err ?: total_len;
->  }
+	__rtnl_unlock();
+	...
+		if (dev->priv_destructor)
+			dev->priv_destructor(dev);	/* slip_devs[i] = NULL */
+		if (dev->needs_free_netdev)
+			free_netdev(dev);
+		...
+		/* Free network device */
+		kobject_put(&dev->dev.kobj);
 
-We have tested the both proposed patches, from Eric and Jiayuan,
-and our reproducer did not trigger any issue.
+So rtnl_lock() does not serialise slip_open() against the teardown at
+all.  sl_sync() can load slip_devs[i] while the entry is still published
+and dereference it after netdev_run_todo() has run the destructor and
+released the device:
 
-It seems that Eric's patch is sufficient to address the reported use-after-free.
-However, we are not sure whether the additional state check proposed by
-Jiayuan is also necessary.
+  CPU0 (slip_open)                 CPU1 (slip_close)
+                                   unregister_netdev()
+                                     rtnl_unlock()
+                                       netdev_run_todo()
+                                         __rtnl_unlock()
+  rtnl_lock()
+  sl_sync()
+    dev = slip_devs[i]
+                                         priv_destructor(dev)
+                                           slip_devs[i] = NULL
+                                         kobject_put(&dev->dev.kobj)
+                                           /* dev is freed */
+    sl = netdev_priv(dev)
+    if (sl->tty || sl->leased)     /* use-after-free */
 
-Thanks!
+  BUG: KASAN: use-after-free in sl_sync drivers/net/slip/slip.c:730 [inline]
+  BUG: KASAN: use-after-free in slip_open+0xef4/0x1210 drivers/net/slip/slip.c:806
+  Read of size 1 at addr ffff8880712dac71 by task syz-executor.2/6506
 
-Best Regards,
-Eulgyu Kim
+  CPU: 2 PID: 6506 Comm: syz-executor.2 Not tainted 6.1.134-syzkaller-00260-g0c8fc3469765 #0
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+  Call Trace:
+   sl_sync drivers/net/slip/slip.c:730 [inline]
+   slip_open+0xef4/0x1210 drivers/net/slip/slip.c:806
+   tty_ldisc_open+0xa2/0x120 drivers/tty/tty_ldisc.c:433
+   tty_set_ldisc+0x324/0x720 drivers/tty/tty_ldisc.c:564
+   tiocsetd drivers/tty/tty_io.c:2428 [inline]
+   tty_ioctl+0x5f0/0x1530 drivers/tty/tty_io.c:2712
+
+  Allocated by task 6502:
+   alloc_netdev_mqs+0x98/0xfe0 net/core/dev.c:10719
+   sl_alloc drivers/net/slip/slip.c:756 [inline]
+   slip_open+0x36d/0x1210 drivers/net/slip/slip.c:817
+   tty_ldisc_open+0xa2/0x120 drivers/tty/tty_ldisc.c:433
+   tty_set_ldisc+0x324/0x720 drivers/tty/tty_ldisc.c:564
+
+  Freed by task 6497:
+   device_release+0xa2/0x240 drivers/base/core.c:2507
+   kobject_put+0x179/0x280 lib/kobject.c:729
+   netdev_run_todo+0x6c8/0xef0 net/core/dev.c:10509
+   slip_close+0x166/0x1c0 drivers/net/slip/slip.c:906
+   tty_ldisc_close+0x113/0x1a0 drivers/tty/tty_ldisc.c:456
+   tty_ldisc_kill+0x94/0x160 drivers/tty/tty_ldisc.c:614
+   tty_ldisc_release+0xe3/0x2b0 drivers/tty/tty_ldisc.c:782
+   tty_release+0xbcc/0xe70 drivers/tty/tty_io.c:1860
+
+Commit e58c19124189 ("slip: Fix use-after-free Read in slip_open") fixed
+a different source of stale entries - a device left in slip_devs[] after
+slip_open() freed it on the registration error path - and does not
+address this race, which is why the report survives it.
+
+Drop the entry from ndo_uninit instead.  unregister_netdevice() calls
+ndo_uninit under RTNL, before the device is queued to netdev_run_todo(),
+so an entry that sl_sync() can still see while holding RTNL belongs to a
+device that cannot be freed until RTNL is dropped.  sl_free_netdev()
+stays only for the slip_open() error path, where register_netdevice()
+may have failed before ndo_init and ndo_uninit is then not called
+either.  Both running for the same device is harmless: they run under
+the same RTNL section, so the slot cannot have been reused in between.
+
+This also removes the second symptom of the missing exclusion: a
+destructor running after sl_alloc() had already handed the slot out to
+another channel used to clear a live entry, so sl_sync() stopped at that
+NULL, sl_alloc() returned the same index again, and
+register_netdevice() failed with -EEXIST because slN was still there.
+
+Reproduced on x86_64 with several threads looping over
+open("/dev/ptmx") + ioctl(TIOCSETD, N_SLIP) + close().
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 5342b77c4123 ("slip: Clean up create and destroy")
+Cc: stable@vger.kernel.org
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Aleksandr Khromov <haa@amicon.ru>
+---
+v2:
+  - drop the slip_devs[] entry from ndo_uninit, under RTNL, instead of
+    adding a dedicated mutex (Jakub Kicinski)
+  - commit message updated accordingly
+v1: https://lore.kernel.org/netdev/20260817070952.1155579-1-haa@amicon.ru/
+---
+ drivers/net/slip/slip.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/slip/slip.c b/drivers/net/slip/slip.c
+index faae711cf793..85b2438e8923 100644
+--- a/drivers/net/slip/slip.c
++++ b/drivers/net/slip/slip.c
+@@ -628,9 +628,15 @@ static void sl_uninit(struct net_device *dev)
+ 	struct slip *sl = netdev_priv(dev);
+ 
+ 	sl_free_bufs(sl);
++	/* Drop the slip_devs[] entry here rather than from the destructor:
++	 * ndo_uninit runs under RTNL, so it cannot race sl_sync().
++	 */
++	slip_devs[dev->base_addr] = NULL;
+ }
+ 
+-/* Hook the destructor so we can free slip devices at the right point in time */
++/* Only for the slip_open() error path: register_netdevice() can fail before
++ * ndo_init, and then ndo_uninit is not called either.
++ */
+ static void sl_free_netdev(struct net_device *dev)
+ {
+ 	int i = dev->base_addr;
+@@ -657,7 +663,6 @@ static void sl_setup(struct net_device *dev)
+ {
+ 	dev->netdev_ops		= &sl_netdev_ops;
+ 	dev->needs_free_netdev	= true;
+-	dev->priv_destructor	= sl_free_netdev;
+ 
+ 	dev->hard_header_len	= 0;
+ 	dev->addr_len		= 0;
+@@ -908,7 +913,7 @@ static void slip_close(struct tty_struct *tty)
+ #endif
+ 	/* Flush network side */
+ 	unregister_netdev(sl->dev);
+-	/* This will complete via sl_free_netdev */
++	/* sl_uninit() has dropped the slip_devs[] entry by now */
+ }
+ 
+ static void slip_hangup(struct tty_struct *tty)
+-- 
+2.48.1
+
