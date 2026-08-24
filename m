@@ -1,216 +1,323 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECDE8374A12
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 03:34:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89823161A1;
+	Mon, 24 Aug 2026 03:58:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787542494; cv=none; b=qSj9YZtJ9lGv6Un6gZa2pRGzRgqvtvmDEUC6II9SncVXc1pa4AMmkuJhPXKvMGPkAzfc1zuroYDwBpXv/xHT0Di6yxHX2pbMHAtPubhR14Sa0IopRU6doC1mLm+8cELwd0yQiHYGx31Z2KdqXxMPouwSFfo43BL7jGFFW/15/vU=
+	t=1787543930; cv=none; b=Wc55+2+IbAJsF/DeFDnVNaPynJKKJaw9m64B8tKxfBa0YefryGyq9AS36raC+ppnGRV09kyL7JJ1Yx7hYImeSNa1He0RBRtaIkIreglncGCrqudszgP6EGVG4kupSzk3o8t4ZTiTr6ji/ACClPcwHPQWwzITFwqxRteTt9IQKkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787542494; c=relaxed/simple;
-	bh=tXbprwIsw4+TnWQEjWhGgnauvC05A6g8kXeB1lZBCK0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qNLHj7hAQIerGYgqk3kDxmPRIkEQjKa+j40Cbm6b1Ud/sWi6V7JM4kyMfNGjI8Xk/YNIDOsUMczIyUOz5IOaC3KTScpXU4JSdnAQQTqwabAHSZ09+udQWytqX5KpRrz9DhTSIcmPOwQK+z1riAqKQishOOQkJC4pLwWUis88/vY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G5rp0jFo; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787543930; c=relaxed/simple;
+	bh=/uePHSPqyuof+YvS4T2QRK/u2ION9xC7HSaI8rKkhXE=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=PnqPaAbg+4sU/urUBsxkCLVAnI1iF+7Mo2E7LJKa1WmGiY3DlpN9nYywUDRvUdwTNJFtvK56EKgQP5THWz03ALxUmHzsT1hizyLTANWacxtIuW9pafDAXHgccyTTlRhTsMVQWwQMNujQ7UoDemdvmatFyLZSlY0I3XrH2ISD20w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GW69CZWD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G5rp0jFo"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-383cb94f742so3063062a91.3
-        for <netdev@vger.kernel.org>; Sun, 23 Aug 2026 20:34:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787542492; x=1788147292; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1ZjZkSQf+Zktufc09rNjCOpfzvoTH5+6Bb0FnK3Vps4=;
-        b=G5rp0jFoCjnG4bg8/dOC+KBVRCWYOQxDWcKFKxH5EWfeg4ji9GHoKUNNNE07W/LluB
-         qD+MvkprQQmp083+qbwWLN51UAwGVaqXaQmw5rMa+LkI9E9Op1CETnumK1pOopshgyuf
-         wROyb0ZdZzzBwGNxvAKpFJqLwD4yy0STfJalC1eNYOpwPeYn4Vbq3gVjt3R8SNSJsCox
-         wgmTfY4lpPhenREZIJTCTBfJRqRb/xDVKKA5lzPs2iBtbXf2RgL/fb6VEdJhIeWDznWk
-         lF85YvoIlfPjs4BVLHB7bvNICwpLeWEQstmdtzsVU71wvzyRdIvyjEoUOP7yt8A3Iqq1
-         HybA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787542492; x=1788147292;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1ZjZkSQf+Zktufc09rNjCOpfzvoTH5+6Bb0FnK3Vps4=;
-        b=fGE+XsaCEUGbbws2rDxfwKAJN3yavOpAJrlTXitXS7bXeMbSMG6UU/g1frFWuqpNDI
-         kVefkJOKPU9gJLHXntsm8Gpq8D/OdeKQ9LVNRTCZOeowFPqmvXPdI9ZR+QasElA2cYhV
-         s+PrNGtsbZngF9aoOACvkcXNrCb2nevXN56egbBRNcJ8NMn+iQZ9tfIM2k0lR2pEEuH1
-         nFNeaIaV+ODEPF0GTzWdQFeJnH9USygGnFNGkfrdVY4p/15LpCSCHfitFqNm0pO4tnU5
-         uyz51g7aaxEZxk1FwH4wbvHnLIfzy7+s1zhhTBrEVM1lb3kiw2d5y8nCb5bEy12LgUlJ
-         +QZw==
-X-Forwarded-Encrypted: i=1; AHgh+RqgfLqovO48+HqdzBbViQUHO/T4JIr2uo/ebN8tYXgGiDMorriy15TDv00jsN5ij2YIl0+ah4g=@vger.kernel.org
-X-Gm-Message-State: AFuF++mBxPCP5R41c6ltuQfkJ05ZvLteKVGxNpBPKU2cDKUy/XfITJWX
-	w2FtqFLThdbVGFIoZ3ok19/zEM9TDlfBNmNQQvzwvyQsMUZcCRLJ3EU3
-X-Gm-Gg: AR+sD12u3zkyYkiLHdJX7fARWaAYLUqRlhUCKHjidRcKDKC8zRB4rZ3UuGdkLx8PUob
-	ldLzrj3Cxsj0NEArZTICdjMb20+y1Z7Ly3n+2nPd+w2hCW0htV1kbpVnJJLn8TMvrc/cEz6tT9h
-	FIxtcz3q3HdnOdxuOQhVVxjzMrsiqDDZz2UcG3Jr57m9VSaCK6Tj1eGZQf/B8LF3XN0db3GshdI
-	Sb48dxksU3jOqhsM3ucEKccFqQDVNfxAM9rnBLUe3L8e2vuyb4+xlnCmfrnj2EFpIrcOORGIz9h
-	wlYehGB3Otuc05rpmWGtI4c7+xgVNYhaITTCqkXgJVqpE4rMwTKkbGlyICVd85flu5YXu/EGBTg
-	YPLanA2JcWhWrpCNlEV09A4kWz83fIj2MTJ1XtWWyeUY/9BibJPxICQ+QPz+Sk2PFjNM7eQM228
-	M4uJ8nrLQx34utc03cbrf8CXcmSGeAnjSN7e+kBEgjcz3aEhuAM7luWWwOWIHTHTpG2Dlofm9bC
-	S8kf3b6p1U=
-X-Received: by 2002:a17:90b:4ac6:b0:38f:18f9:785 with SMTP id 98e67ed59e1d1-395df13ced5mr26345382a91.8.1787542492202;
-        Sun, 23 Aug 2026 20:34:52 -0700 (PDT)
-Received: from v4bel.. ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-395c8fd34d9sm4227256a91.1.2026.08.23.20.34.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Aug 2026 20:34:51 -0700 (PDT)
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	ncardwell@google.com,
-	dsahern@kernel.org,
-	idosch@nvidia.com,
-	kuniyu@google.com,
-	horms@kernel.org,
-	willemb@google.com,
-	andrew+netdev@lunn.ch,
-	kees@kernel.org,
-	jiayuan.chen@linux.dev
-Cc: kerneljasonxing@gmail.com,
-	ij@kernel.org,
-	martin.lau@kernel.org,
-	shakeel.butt@linux.dev,
-	matttbe@kernel.org,
-	martineau@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imv4bel@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH net v2 8/8] tcp: do not inherit retransmit state from parent
-Date: Mon, 24 Aug 2026 12:32:52 +0900
-Message-ID: <20260824033331.1084971-9-imv4bel@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260824033331.1084971-1-imv4bel@gmail.com>
-References: <20260824033331.1084971-1-imv4bel@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GW69CZWD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCCDD1F000E9;
+	Mon, 24 Aug 2026 03:58:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787543928;
+	bh=1epBH5ehabpf23fFeCD0TTWqe8d1T5qQoHCzWJXQ3Hk=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=GW69CZWDSF8lvLjyClWVM3jRw5Sk7PmUtDwVVAypWcS3fYyWGJ0Wo9aLdbNCL9q6M
+	 yPh1mqtjrWX5TMhIDLcKmyXruj6Y0gq03HVC2Cge/tovHwzb66i7H7i4djlKzgtHWA
+	 DdAubzSk8bDTmJkto+kcHqD8vsT+cDsNetDoVLj1ReXApshGxQWUOPQpwDneMyBdNg
+	 CBHMWjfSIGqbqPeorEtJQAxw2//yHJkigAZ0U8/GaXz466zj5T2anPrb+TXydCynp4
+	 2TISveyDW8AuGgMi2zMvdWq9YObf97jL8wnJtpCr1/c84KYdbqMrMv/KLnC6ZChVFd
+	 uGZzt5z68ZhEA==
+Content-Type: multipart/mixed; boundary="===============2375087382389233082=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-Id: <f9fd871da7b91ccb4eb3f6bf4901981fd6b25a5f1f4b931caa42be24b5b28aa3@mail.kernel.org>
+In-Reply-To: <20260824030705.266049-2-jiayuan.chen@linux.dev>
+References: <20260824030705.266049-2-jiayuan.chen@linux.dev>
+Subject: Re: [PATCH bpf v2 2/2] selftests/bpf: add xdp_shrink_frags
+From: bot+bpf-ci@kernel.org
+To: jiayuan.chen@linux.dev,bpf@vger.kernel.org,netdev@vger.kernel.org
+Cc: jiayuan.chen@linux.dev,andrew+netdev@lunn.ch,davem@davemloft.net,edumazet@google.com,kuba@kernel.org,pabeni@redhat.com,ast@kernel.org,daniel@iogearbox.net,hawk@kernel.org,john.fastabend@gmail.com,sdf@fomichev.me,horms@kernel.org,martin.lau@linux.dev,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ihor.solodrai@linux.dev,shuah@kernel.org,kuniyu@google.com,liuhangbin@gmail.com,krikku@gmail.com,mkarsten@uwaterloo.ca,toke@redhat.com,lorenzo.bianconi@oss.qualcomm.com,linux-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Mon, 24 Aug 2026 03:58:47 +0000 (UTC)
 
-A child gets a copy of the parent's retransmit state when it is cloned.
-On a listener it is all zero, which is why commit eb2c80ca87b1 ("tcp: do
-not clear packets_out in tcp_create_openreq_child()") and
-commit 5c701549c9a6 ("tcp: move retrans_out, sacked_out, tlp_high_seq,
-last_oow_ack_time init to tcp_disconnect()") dropped the initialization
-of packets_out, retrans_out and sacked_out here. lost_out,
-retransmit_skb_hint and highest_sack have never been cleared here.
+--===============2375087382389233082==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-The parent can morph from listener to active session while a request is
-still being processed, and connect(AF_UNSPEC) followed by connect()
-gets it there. tcp_check_req() does not hold the listener lock, so
-nothing pins the parent's state between the TCP_LISTEN test and the
-clone. The child then copies the counters and the two pointers into the
-parent's retransmit queue.
+> diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_shrink_frags.c b/tools/testing/selftests/bpf/prog_tests/xdp_shrink_frags.c
+> new file mode 100644
+> index 000000000000..f3d8a84a6dc9
+> --- /dev/null
+> +++ b/tools/testing/selftests/bpf/prog_tests/xdp_shrink_frags.c
+> @@ -0,0 +1,163 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +#include <test_progs.h>
+> +#include <network_helpers.h>
+> +#include <linux/if_tun.h>
+> +#include <linux/if_ether.h>
+> +#include <sys/uio.h>
+> +#include <net/if.h>
+> +#include <arpa/inet.h>
+> +#include "xdp_shrink_frags.skel.h"
+> +
+> +/*
+> + * A generic-XDP program that shrinks into the frags frees a page_pool frag.
+> + * skb-backed XDP first cow's the nonlinear skb into page_pool memory
+> + * (skb_cow_data_for_xdp() for generic XDP, skb_pp_cow_data() for veth), but
+> + * the shared rxq is registered as MEM_TYPE_PAGE_SHARED, so a buggy kernel
+> + * frees the frag with page_frag_free() -> "Bad page state ... page_pool leak".
+> + */
+> +
+> +#define TAP_NAME	"xdp_shrink0"
+> +#define TAP_NETNS	"xdp_shrink_tap"
+> +
+> +#define VETH_LOCAL	"xdp_shrinkA"
+> +#define VETH_PEER	"xdp_shrinkB"
+> +#define VETH_NETNS	"xdp_shrink_veth"
+> +#define VETH_LOCAL_IP	"10.9.9.1"
+> +#define VETH_PEER_IP	"10.9.9.2"
+> +
+> +static int create_tap_napi_frags(const char *ifname)
+> +{
+> +	struct ifreq ifr = {
+> +		.ifr_flags = IFF_TAP | IFF_NO_PI | IFF_NAPI | IFF_NAPI_FRAGS,
+> +	};
+> +	int fd, err;
+> +
+> +	strscpy(ifr.ifr_name, ifname);
+> +
+> +	fd = open("/dev/net/tun", O_RDWR);
+> +	if (fd < 0)
+> +		return -1;
 
-sk_clone() sets sk_send_head to NULL, and tcp_rtx_queue is unioned with
-it, so the child's retransmit queue is empty. That does not help.
-packets_out is set again as soon as the child sends anything, and
-tcp_xmit_retransmit_queue() picks the copied hint over the queue head.
-When the parent disconnects, tcp_write_queue_purge() frees those skbs,
-but the pointers the child copied are left alone. The child then gets
-an ACK, enters the retransmit path and writes into a freed skb.
+A subsystem pattern flags this as potentially concerning:
+create_tap_napi_frags() collapses every failure into -1 and discards
+errno, so the caller's ASSERT_GE(tap_fd, 0, "create_tap") becomes a hard
+test failure with no diagnostic.
 
-In short:
+Two concrete cases where this would happen: /dev/net/tun missing
+(CONFIG_TUN not built or the node absent) gives ENOENT/ENODEV, and
+TUNSETIFF with IFF_NAPI_FRAGS rejected with EPERM when CAP_NET_ADMIN is
+not held in the initial user namespace. Both of these should skip the test
+with a reason rather than fail it. At minimum, would keeping errno make the
+failure diagnosable?
 
-  socket(AF_INET) -> setsockopt(TCP_DEFER_ACCEPT, 30) -> bind -> listen
-      // a client connects and sends one byte. the kernel processes
-      // that segment while the steps below run
-  connect(AF_UNSPEC)              // stop listening
-  connect(peer)                   // become an active session
-  send() repeatedly               // lower IP_TTL so the peer's IP_MINTTL
-                                  // drops most of them, and let one
-                                  // through to get a SACK
-      // parent: packets_out 6, sacked_out 1, lost_out 5, retrans_out 1
-      // retransmit_skb_hint points at an skb in the parent's queue
-      // the leftover request completes and copies this state
-  connect(AF_UNSPEC)              // those skbs are freed
-  listen()                        // or the child is dropped
-  accept()
-      // the child sends data, one segment is lost, and the ACK that
-      // comes back takes the retransmit path to the copied hint
+> +
+> +	err = ioctl(fd, TUNSETIFF, &ifr);
+> +	if (err) {
+> +		close(fd);
+> +		return -1;
+> +	}
+> +
+> +	return fd;
+> +}
+> +
+> +/*
+> + * Similar to flow_dissector.c: writev() an IFF_NAPI_FRAGS tap to build a
+> + * nonlinear skb (sized for 4K pages, like xdp_adjust_tail.c) that tun runs
+> + * through do_xdp_generic().
+> + */
+> +static void test_tun(struct xdp_shrink_frags *skel)
+> +{
+> +	__u8 head[74], frag1[2048], frag2[2048];
+> +	struct ethhdr *eth = (void *)head;
+> +	int tap_fd = -1, ifindex, err;
+> +	struct netns_obj *ns = NULL;
+> +	struct iovec iov[3];
+> +	ssize_t n;
+> +
+> +	ns = netns_new(TAP_NETNS, true);
+> +	if (!ASSERT_OK_PTR(ns, "netns_new"))
+> +		return;
+> +
+> +	tap_fd = create_tap_napi_frags(TAP_NAME);
+> +	if (!ASSERT_GE(tap_fd, 0, "create_tap"))
+> +		goto out;
+> +
+> +	SYS(out, "ip link set dev " TAP_NAME " up");
+> +
+> +	ifindex = if_nametoindex(TAP_NAME);
+> +	if (!ASSERT_GT(ifindex, 0, "if_nametoindex"))
+> +		goto out;
+> +
+> +	skel->bss->shrink_ran = 0;
+> +
+> +	err = bpf_xdp_attach(ifindex, bpf_program__fd(skel->progs.xdp_shrink),
+> +			     0, NULL);
+> +	if (!ASSERT_OK(err, "bpf_xdp_attach"))
+> +		goto out;
+> +
+> +	memset(head, 0, sizeof(head));
+> +	memset(frag1, 0x41, sizeof(frag1));
+> +	memset(frag2, 0x42, sizeof(frag2));
+> +	eth->h_proto = htons(ETH_P_IP);
+> +
+> +	iov[0].iov_base = head;  iov[0].iov_len = sizeof(head);
+> +	iov[1].iov_base = frag1; iov[1].iov_len = sizeof(frag1);
+> +	iov[2].iov_base = frag2; iov[2].iov_len = sizeof(frag2);
+> +
+> +	n = writev(tap_fd, iov, ARRAY_SIZE(iov));
+> +	ASSERT_EQ(n, sizeof(head) + sizeof(frag1) + sizeof(frag2), "writev");
+> +
+> +	usleep(100 * 1000);
+> +	ASSERT_GT(skel->bss->shrink_ran, 0, "xdp_prog_ran");
 
-KASAN log:
+Does this test actually exercise the page_pool frag release it is written
+for? The frame sizes (74 + 2048 + 2048 = 4170 bytes) are picked for 4K
+pages, but skb_pp_cow_data() puts up to SKB_WITH_OVERHEAD(PAGE_SIZE -
+headroom) bytes in the linear head.
 
-  BUG: KASAN: slab-use-after-free in __pskb_trim_head+0x66b/0x900
-  Write of size 16 at addr ffff888008141530 by task repro/76
-  ...
-  Call Trace:
-   __pskb_trim_head+0x66b/0x900
-   tcp_trim_head+0x69/0x540
-   __tcp_retransmit_skb+0x14e/0x26b0
-   tcp_retransmit_skb+0x1b/0x250
-   tcp_xmit_retransmit_queue.part.0+0x3b1/0x970
-   tcp_ack+0x3382/0x7430
-   tcp_rcv_established+0x631/0x3a00
-   tcp_v4_do_rcv+0x449/0x960
-   __release_sock+0x1f2/0x2a0
-   release_sock+0x176/0x1d0
-   tcp_sendmsg+0x30/0x40
-   __sys_sendto+0x316/0x380
-   __x64_sys_sendto+0xdb/0x1b0
-  ...
-  Allocated by task 76:
-   __alloc_skb+0x11e/0x890
-   tcp_stream_alloc_skb+0x2c/0x5c0
-   tcp_sendmsg_locked+0x1377/0x3df0
-   tcp_sendmsg+0x26/0x40
-   __sys_sendto+0x316/0x380
-  ...
-  Freed by task 80:
-   skb_release_data+0x554/0x810
-   __kfree_skb+0x42/0x60
-   tcp_write_queue_purge+0x6ef/0xf40
-   tcp_disconnect+0x2fc/0x1e10
-   __inet_stream_connect+0x6d0/0xdf0
-   inet_stream_connect+0x52/0xa0
-   __sys_connect+0xfc/0x130
-  ...
-  The buggy address belongs to the object at ffff888008141380
-   which belongs to the cache skbuff_small_head of size 704
+On 4K pages with XDP_PACKET_HEADROOM (256), that's ~3520 bytes in the
+head, so the 4170-byte packet gets frags.
 
-We need to make sure this can not happen, by clearing them after socket
-cloning. A listener always has them zero, so an ordinary passive open is
-not affected. Clearing only the pointers is not enough: the counters
-would then describe a retransmit queue the child does not have, and
-tcp_fastretrans_alert() and tcp_retransmit_timer() warn.
+But on 64K pages, the threshold becomes ~64960 bytes, so the entire
+4170-byte packet ends up linear and bpf_xdp_adjust_tail(-3000) never
+reaches bpf_xdp_shrink_data() - it just moves data_end and returns 0.
+shrink_ran still gets incremented, so the ASSERT_GT() passes whether or
+not the fix from the preceding commit is applied.
 
-Very similar to commit 8b485ce69876 ("tcp: do not inherit fastopen_req
-from parent")
+selftests/bpf ships config.ppc64el and config.aarch64, and the existing
+xdp_adjust_tail.c that the sizing comments cite explicitly branches on
+getpagesize() == 65536. Would gating on getpagesize() or asserting
+something that only holds when a whole frag was released (packet length or
+a frag count observed from the program) make the test discriminate a fixed
+kernel from a buggy one on 64K-page systems?
 
-Fixes: 079096f103fa ("tcp/dccp: install syn_recv requests into ehash table")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+> +
+> +	bpf_xdp_detach(ifindex, 0, NULL);
+
+[ ... ]
+
+> +/*
+> + * A large ping builds a nonlinear skb that veth cow's into its page_pool
+> + * (sized for 4K pages, like xdp_adjust_tail.c) before running the program.
+> + */
+> +static void test_veth(struct xdp_shrink_frags *skel)
+> +{
+> +	int ifindex, err;
+> +
+> +	SYS(out, "ip netns add " VETH_NETNS);
+> +	SYS(out_ns, "ip link add %s mtu 8000 type veth peer name %s mtu 8000",
+> +	    VETH_LOCAL, VETH_PEER);
+
+A subsystem pattern flags this as potentially concerning: test_veth
+hand-rolls namespace management with `ip netns add` / `ip netns del`
+instead of the shared netns_new()/netns_free() helpers that test_tun uses
+50 lines earlier in the same file.
+
+It also only puts the peer into a namespace - the local end xdp_shrinkA
+and its address 10.9.9.1/24 are created in whatever namespace test_progs
+is running in (normally the host), so the test mutates the caller's
+network configuration. The cleanup is best-effort SYS_NOFAIL, leaving the
+device and address behind if the process dies between setup and teardown.
+Fixed device/netns names also mean two concurrent test_progs workers
+collide.
+
+prog_tests/test_xdp_veth.c in the same directory keeps even the "local"
+side inside a dedicated ns0 namespace for exactly this reason, and appends
+the TID to the name. Would wrapping test_veth in netns_new() for a local
+namespace and creating both ends inside it make the netns teardown remove
+the veth pair, the address and the XDP program together?
+
+> +	SYS(out_link, "ip link set " VETH_PEER " netns " VETH_NETNS);
+> +	SYS(out_link, "ip addr add " VETH_LOCAL_IP "/24 dev " VETH_LOCAL);
+> +	SYS(out_link, "ip link set " VETH_LOCAL " up");
+> +	SYS(out_link, "ip -n " VETH_NETNS " addr add " VETH_PEER_IP "/24 dev " VETH_PEER);
+> +	SYS(out_link, "ip -n " VETH_NETNS " link set " VETH_PEER " up");
+> +
+> +	ifindex = if_nametoindex(VETH_LOCAL);
+> +	if (!ASSERT_GT(ifindex, 0, "if_nametoindex"))
+> +		goto out_link;
+> +
+> +	skel->bss->shrink_ran = 0;
+> +
+> +	err = bpf_xdp_attach(ifindex, bpf_program__fd(skel->progs.xdp_shrink),
+> +			     0, NULL);
+> +	if (!ASSERT_OK(err, "bpf_xdp_attach"))
+> +		goto out_link;
+> +
+> +	SYS_NOFAIL("ip netns exec " VETH_NETNS
+> +		   " ping -q -s 5000 -c 3 -W 1 " VETH_LOCAL_IP);
+> +
+> +	ASSERT_GT(skel->bss->shrink_ran, 0, "xdp_prog_ran");
+
+This test has the same page-size dependency as test_tun above. The `ping
+-s 5000` produces ~5042 bytes on the wire, which is below the ~64960-byte
+linear threshold on 64K-page kernels, so veth_convert_skb_to_xdp_buff()
+sees nr_frags == 0 and bpf_xdp_adjust_tail() never enters
+bpf_xdp_shrink_data().
+
+> +
+> +	bpf_xdp_detach(ifindex, 0, NULL);
+
+[ ... ]
+
+> diff --git a/tools/testing/selftests/bpf/progs/xdp_shrink_frags.c b/tools/testing/selftests/bpf/progs/xdp_shrink_frags.c
+> new file mode 100644
+> index 000000000000..62e3791ac81d
+> --- /dev/null
+> +++ b/tools/testing/selftests/bpf/progs/xdp_shrink_frags.c
+> @@ -0,0 +1,23 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +#include "vmlinux.h"
+> +#include <bpf/bpf_helpers.h>
+> +
+> +int shrink_ran;
+> +
+> +SEC("xdp.frags")
+> +int xdp_shrink(struct xdp_md *ctx)
+> +{
+> +	/*
+> +	 * The program is loaded with BPF_F_XDP_HAS_FRAGS (xdp.frags), so a
+> +	 * nonlinear skb entering generic XDP is cow'd into page_pool memory
+> +	 * before we run. Shrinking the tail far enough releases at least one
+> +	 * whole frag, which must be returned to its page_pool. Count only a
+> +	 * successful shrink so a too-small frame (e.g. ARP) does not satisfy
+> +	 * the test.
+> +	 */
+
+Does this comment accurately describe what the test guarantees? "Shrinking
+the tail far enough releases at least one whole frag" only holds if the
+cow'd skb has frags at all.
+
+skb_pp_cow_data() puts up to SKB_WITH_OVERHEAD(PAGE_SIZE - headroom) bytes
+in the linear head:
+
+net/core/skbuff.c:skb_pp_cow_data() {
+    max_head_size = SKB_WITH_OVERHEAD(PAGE_SIZE - headroom);
+    size = min_t(u32, skb->len, max_head_size);
+    ...
+    for (i = 0; i < MAX_SKB_FRAGS && off < skb->len; i++)
+}
+
+With PAGE_SIZE == 65536 and headroom == XDP_PACKET_HEADROOM (256),
+max_head_size is ~64960 bytes. The test's frame sizes are 4170 bytes (tun)
+and ~5042 bytes (veth), so on a 64K-page kernel there are zero frags and
+bpf_xdp_adjust_tail() still returns 0 without calling bpf_xdp_shrink_data().
+
+Two smaller mismatches in the same comment block and in the prog_tests
+header comment:
+  - This program is attached on both the generic-XDP (tun) and veth paths,
+    but the comment only describes "a nonlinear skb entering generic XDP".
+  - The prog_tests header says "skb_cow_data_for_xdp() for generic XDP,
+    skb_pp_cow_data() for veth", which reads as two different mechanisms.
+    But skb_cow_data_for_xdp() is just a wrapper that calls
+    skb_pp_cow_data(), and the veth call site is
+    veth_convert_skb_to_xdp_buff() - both paths end up in skb_pp_cow_data().
+
+> +	if (bpf_xdp_adjust_tail(ctx, -3000) == 0)
+> +		__sync_fetch_and_add(&shrink_ran, 1);
+> +	return XDP_PASS;
+> +}
+> +
+> +char _license[] SEC("license") = "GPL";
+
 ---
- net/ipv4/tcp_minisocks.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
-index 7fe318d9e0aed2..2fde196dd302f5 100644
---- a/net/ipv4/tcp_minisocks.c
-+++ b/net/ipv4/tcp_minisocks.c
-@@ -660,6 +660,12 @@ struct sock *tcp_create_openreq_child(const struct sock *sk,
- 	tcp_ecn_openreq_child(newsk, req, skb);
- 	newtp->fastopen_req = NULL;
- 	RCU_INIT_POINTER(newtp->fastopen_rsk, NULL);
-+	newtp->packets_out = 0;
-+	newtp->retrans_out = 0;
-+	newtp->sacked_out = 0;
-+	newtp->lost_out = 0;
-+	newtp->retransmit_skb_hint = NULL;
-+	newtp->highest_sack = NULL;
- 
- 	newtp->bpf_chg_cc_inprogress = 0;
- 	tcp_bpf_clone(sk, newsk);
--- 
-2.43.0
-
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/32686145995
+--===============2375087382389233082==--
