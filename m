@@ -1,130 +1,200 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCB83EDE68;
-	Mon, 24 Aug 2026 09:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF293EDE56;
+	Mon, 24 Aug 2026 09:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787562314; cv=none; b=H7Wx6o6p/YmXzLuPnyIAEYGzdZkgNCf1H1caCB22HZP7f9kIaCQed3fapazTohxvHGl9rsjNn/S3A3fjsQOhXNL/EnxasCGFAJ6MuIzUrvKkcjhVREewF+TO0+Zxk4YcXV4YNCa+Eta02T3Xc1mOPOB3G+BVbN1FE5GObLKfj9Y=
+	t=1787562357; cv=none; b=iZeVoTFzjV5tYID6yywSuVVG5p3sgG473D82VZShm0n/yFtFHfcWvkqPiME3xwYWjTK8q9e5WdpTyqmNSUFhAuwbTrlwjBX7LX3apNLVSwtrbaBFmncFLggEfKdN6cMgADAXH8HRgiEXQltgjzOIxnumNmo/tHAXsmi2x5fObWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787562314; c=relaxed/simple;
-	bh=yRYLXWTdTw42xj1idXvAfl17X4aYo+o509VGHDIx5Wc=;
+	s=arc-20240116; t=1787562357; c=relaxed/simple;
+	bh=oZxCWFuQD6szuHl1pKGylf7564QNTW6TXi3gd9V3HWY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=np9zO5JhXH10xK+TEYWBYCs3yHiqxO+w836dlJnb9zQC6OKt6wF7G+GHqOoixFEuhe68bCel8Ndlk+P35wHXUaFxus/VRfXxHX+YOBXhlGCJ42EsTJz4q3m8uXu3DRqnse4iH6Pa/LfJcGD4BlXbbk9SqjwdSGqQZDG3hYHL5XQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bIqjI0sY; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=EotuGmW3fwXgrS5BKJJwNqWDjiEFoWWipjvLqRwJnYfQ4dGLdwfNWCpCLhLyQGaQWQoYjpk0ovWDbWYygVkY/SzWBgLEE6A7OS7kBVOJ3vRUPHJoHNNCMLsPHAF4/fDGlLYqMOmwI9NBYHlWsC5e0NpsYXFrORzTb4m5G4oz51o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jEe2Ixuk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bIqjI0sY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 764EB1F00ACA;
-	Mon, 24 Aug 2026 09:05:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787562313;
-	bh=KQZI73q5Exni8BU+8wGbesz3YhWlzsOsEvNqr/vzRXY=;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jEe2Ixuk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C7431F000E9;
+	Mon, 24 Aug 2026 09:05:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1787562355;
+	bh=dmNYOyggAsYWtg/mnF83LfjOdjmihcNh48F4hWdUPDs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bIqjI0sYAmyaFUTpNpQZyf7W23Y2EEH5UgfN8f3Nk3XmnegBLOEYH5SksLDdDq7DG
-	 mL18wuC5U5foSBe68y/hyZduAH/P1GsKj/i8A2TbFUyMDj9HwcVssoN67+5wEJCPpb
-	 tMIkpkO5kG4diHAbNYW2ymcYMBfe36t9bv6d04us0Lqcvd93yWfXs52qPactTFR8h2
-	 HueIqjRPGpq/C58IsO389MW1qDaGtYNf1G/Odfg5oZk5tpQE31C8tT0p0jh3wQJlKJ
-	 bojPPxkDhPD4H/cdZieqFYO3tiapgJVOW/FNjcnbBchfbHpOV34AbJcyPMsfhP9X7d
-	 a0U3fwOI1XlLQ==
-Date: Mon, 24 Aug 2026 11:05:10 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Rex Lu =?utf-8?B?KOebp+W7uumKmCk=?= <Rex.Lu@mediatek.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, Shiji Yang <yangshiji66@outlook.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	Felix Fietkau <nbd@nbd.name>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	b=jEe2Ixuk5b+/7QpBLgs0Nc+0uAVNmAKzgLj0/XlI2Dr6aOfYVr2cy+2mbscRYjI98
+	 NRBMaqugh4HXKpFvxmGkEzNmnL1XUFZslrPlB7eHezJEJcMHRsKSsbFKRb3KwlKHPd
+	 d6QcfPgD+BdUXaBNmIKWAsDe3V4lllbYoYeRFPQI=
+Date: Mon, 24 Aug 2026 11:05:52 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
+Cc: stable@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>
-Subject: Re: =?utf-8?B?5Zue6KaGOiBbUEFUQ0hdIG5ldA==?= =?utf-8?Q?=3A?=
- ethernet: mtk_wed: increase WED v2 WDMA RESV_BUFF to 0x80
-Message-ID: <aowJRvfl2E0oYK3k@lore-desk>
-References: <OSZPR01MB779537889255E2F606E47EABBCA52@OSZPR01MB7795.jpnprd01.prod.outlook.com>
- <20260821174121.326f3c49@kernel.org>
- <aoljUFw-rQTLDXg0@lore-qca>
- <aov3TTKBZ68yl50k@lore-desk>
- <SI2PR03MB55456905E3D6E84E2337F6ADF3A02@SI2PR03MB5545.apcprd03.prod.outlook.com>
+	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	Martin KaFai Lau <kafai@fb.com>, Wei Wang <weiwan@google.com>,
+	thomas.petazzoni@bootlin.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.12.y v2] ipv4: start using dst_dev_rcu()
+Message-ID: <2026082420-reanalyze-dehydrate-c386@gregkh>
+References: <20260821-cve-2025-40074-v2-1-7cb3fcb7c3ac@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="6n3KvZE76g7zMrBv"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <SI2PR03MB55456905E3D6E84E2337F6ADF3A02@SI2PR03MB5545.apcprd03.prod.outlook.com>
+In-Reply-To: <20260821-cve-2025-40074-v2-1-7cb3fcb7c3ac@bootlin.com>
 
---6n3KvZE76g7zMrBv
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Fri, Aug 21, 2026 at 11:54:04AM +0200, Miguel Gazquez (Schneider Electric) wrote:
+> From: Eric Dumazet <edumazet@google.com>
+> 
+> [ Upstream commit 6ad8de3cefdb6ffa6708b21c567df0dbf82c43a8 ]
+> 
+> Change icmpv4_xrlim_allow(), ip_defrag() to prevent possible UAF.
+> 
+> Change ipmr_prepare_xmit(), ipmr_queue_fwd_xmit(), ip_mr_output(),
+> ipv4_neigh_lookup() to use lockdep enabled dst_dev_rcu().
+> 
+> [ minor modifications to fix conflict , added rcu_read_lock and unlock
+> to ip_defrag function ]
+> 
+> Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> Reviewed-by: David Ahern <dsahern@kernel.org>
+> Link: https://patch.msgid.link/20250828195823.3958522-9-edumazet@google.com
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> Signed-off-by: Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
+> ---
+> Signed-off-by: Miguel Gazquez <miguel.gazquez@bootlin.com>
+> ---
+> Changes in v2:
+> - Added rcu_read_lock and unlock to ip_defrag function
+> - Link to v1: https://patch.msgid.link/20260820-cve-2025-40074-v1-1-f045d5f74950@bootlin.com
+> ---
+>  net/ipv4/icmp.c        | 6 +++---
+>  net/ipv4/ip_fragment.c | 9 +++++++--
+>  net/ipv4/ipmr.c        | 4 ++--
+>  net/ipv4/route.c       | 4 ++--
+>  4 files changed, 14 insertions(+), 9 deletions(-)
+> 
+> diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+> index c7af8b914e13..1fc967a60bb9 100644
+> --- a/net/ipv4/icmp.c
+> +++ b/net/ipv4/icmp.c
+> @@ -320,17 +320,17 @@ static bool icmpv4_xrlim_allow(struct net *net, struct rtable *rt,
+>  		return true;
+>  
+>  	/* No rate limit on loopback */
+> -	dev = dst_dev(dst);
+> +	rcu_read_lock();
+> +	dev = dst_dev_rcu(dst);
+>  	if (dev && (dev->flags & IFF_LOOPBACK))
+>  		goto out;
+>  
+> -	rcu_read_lock();
+>  	peer = inet_getpeer_v4(net->ipv4.peers, fl4->daddr,
+>  			       l3mdev_master_ifindex_rcu(dev));
+>  	rc = inet_peer_xrlim_allow(peer,
+>  				   READ_ONCE(net->ipv4.sysctl_icmp_ratelimit));
+> -	rcu_read_unlock();
+>  out:
+> +	rcu_read_unlock();
+>  	if (!rc)
+>  		__ICMP_INC_STATS(net, ICMP_MIB_RATELIMITHOST);
+>  	else
+> diff --git a/net/ipv4/ip_fragment.c b/net/ipv4/ip_fragment.c
+> index d3abc84a6c02..f8919b2543e1 100644
+> --- a/net/ipv4/ip_fragment.c
+> +++ b/net/ipv4/ip_fragment.c
+> @@ -483,13 +483,16 @@ static int ip_frag_reasm(struct ipq *qp, struct sk_buff *skb,
+>  /* Process an incoming IP datagram fragment. */
+>  int ip_defrag(struct net *net, struct sk_buff *skb, u32 user)
+>  {
+> -	struct net_device *dev = skb->dev ? : skb_dst_dev(skb);
+> -	int vif = l3mdev_master_ifindex_rcu(dev);
+> +	struct net_device *dev;
+>  	struct ipq *qp;
+> +	int vif;
+>  
+>  	__IP_INC_STATS(net, IPSTATS_MIB_REASMREQDS);
+>  
+>  	/* Lookup (or create) queue header */
+> +	rcu_read_lock();
+> +	dev = skb->dev ? : skb_dst_dev_rcu(skb);
+> +	vif = l3mdev_master_ifindex_rcu(dev);
+>  	qp = ip_find(net, ip_hdr(skb), user, vif);
+>  	if (qp) {
+>  		int ret;
+> @@ -499,9 +502,11 @@ int ip_defrag(struct net *net, struct sk_buff *skb, u32 user)
+>  		ret = ip_frag_queue(qp, skb);
+>  
+>  		spin_unlock(&qp->q.lock);
+> +		rcu_read_unlock();
+>  		ipq_put(qp);
+>  		return ret;
+>  	}
+> +	rcu_read_unlock();
+>  
+>  	__IP_INC_STATS(net, IPSTATS_MIB_REASMFAILS);
+>  	kfree_skb(skb);
+> diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+> index de0d9cc7806a..ad0b922ebc73 100644
+> --- a/net/ipv4/ipmr.c
+> +++ b/net/ipv4/ipmr.c
+> @@ -1906,7 +1906,7 @@ static void ipmr_queue_xmit(struct net *net, struct mr_table *mrt,
+>  		goto out_free;
+>  	}
+>  
+> -	encap += LL_RESERVED_SPACE(dev) + rt->dst.header_len;
+> +	encap += LL_RESERVED_SPACE(dst_dev_rcu(&rt->dst)) + rt->dst.header_len;
+>  
+>  	if (skb_cow(skb, encap)) {
+>  		ip_rt_put(rt);
+> @@ -1943,7 +1943,7 @@ static void ipmr_queue_xmit(struct net *net, struct mr_table *mrt,
+>  	 * result in receiving multiple packets.
+>  	 */
+>  	NF_HOOK(NFPROTO_IPV4, NF_INET_FORWARD,
+> -		net, NULL, skb, skb->dev, dev,
+> +		net, NULL, skb, skb->dev, dst_dev_rcu(&rt->dst),
+>  		ipmr_forward_finish);
+>  	return;
+>  
+> diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+> index 4dce0de6ab89..0f31ae4da3d9 100644
+> --- a/net/ipv4/route.c
+> +++ b/net/ipv4/route.c
+> @@ -413,11 +413,11 @@ static struct neighbour *ipv4_neigh_lookup(const struct dst_entry *dst,
+>  					   const void *daddr)
+>  {
+>  	const struct rtable *rt = container_of(dst, struct rtable, dst);
+> -	struct net_device *dev = dst_dev(dst);
+> +	struct net_device *dev;
+>  	struct neighbour *n;
+>  
+>  	rcu_read_lock();
+> -
+> +	dev = dst_dev_rcu(dst);
+>  	if (likely(rt->rt_gw_family == AF_INET)) {
+>  		n = ip_neigh_gw4(dev, rt->rt_gw4);
+>  	} else if (rt->rt_gw_family == AF_INET6) {
+> 
+> ---
+> base-commit: 7155f3c7a69b8480e785f2a4252d31df95daa8d1
+> change-id: 20260820-cve-2025-40074-b2b8c05342a1
+> 
+> Best regards,
+> --  
+> Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
+> 
+> 
 
-> Hi Lorenzo,
->=20
->     it is only for v2.  v3 changed the hw design and fixed it.  so this R=
-ESV_BUFF register was removed =20
+Doesn't apply to the queue anymore due to me taking this patch series
+from Sasha:
+	https://lore.kernel.org/r/20260821144926.3428433-1-sashal@kernel.org
 
-Hi Rex,
+Can you rebase it on that?
 
-thx for pointing this out. In this case:
+thanks,
 
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-
->=20
-> Thanks
-> Rex Lu
-> ________________________________________
-> =E5=AF=84=E4=BB=B6=E8=80=85: Lorenzo Bianconi
-> =E5=B7=B2=E5=82=B3=E9=80=81: =E6=98=9F=E6=9C=9F=E4=B8=80, 2026 =E5=B9=B4 =
-8 =E6=9C=88 24 =E6=97=A5  =E4=B8=8B=E5=8D=88 03:48
-> =E6=94=B6=E4=BB=B6=E8=80=85: Jakub Kicinski
-> =E5=89=AF=E6=9C=AC: Shiji Yang; netdev@vger.kernel.org; Rex Lu (=E7=9B=A7=
-=E5=BB=BA=E9=8A=98); Felix Fietkau; Andrew Lunn; David S. Miller; Eric Duma=
-zet; Paolo Abeni; Matthias Brugger; AngeloGioacchino Del Regno; linux-kerne=
-l@vger.kernel.org; linux-arm-kernel@lists.infradead.org; linux-mediatek@lis=
-ts.infradead.org
-> =E4=B8=BB=E6=97=A8: Re: [PATCH] net: ethernet: mtk_wed: increase WED v2 W=
-DMA RESV_BUFF to 0x80
->=20
-> > On Aug 21, Jakub Kicinski wrote:
-> > > On Wed, 19 Aug 2026 21:07:07 +0800 Shiji Yang wrote:
-> > > > Change WDMA RESV_BUFF from 0x40 to 0x80 to avoid CDM TX FIFO overfl=
-ow.
-> > > > Without this patch mt7986 and mt7981 may have WDMA TX hang issue. T=
-his
-> > > > patch was pulled from mtk-openwrt-feeds GPL open source project.
-> > >
-> > > Lorenzo, could you TAL? (incl. Simon's suggestion of the Fixes tag)
->=20
-> I am wondering if this is necessary for v3 as well.
-> @Rex any input on it?
->=20
-> Regarding Fixes tag, I think cf26df8833cc is the right one.
->=20
-> Regards,
-> Lorenzo
->=20
-> >
-> > sure, I am AFK now, I will review it next week.
-> >
-> > Regards,
-> > Lorenzo
->=20
->=20
-
---6n3KvZE76g7zMrBv
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaowJRgAKCRA6cBh0uS2t
-rOKOAQCrUxXhlq2/GicDy3cYv/kixByf4XwJGX6woI2YjRSeIAEAoPpH97TupPNm
-u1YKwGOwPcA2t7USs374lgneUPvYPA8=
-=XhAn
------END PGP SIGNATURE-----
-
---6n3KvZE76g7zMrBv--
+greg k-h
