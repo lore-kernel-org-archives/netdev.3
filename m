@@ -1,89 +1,90 @@
-Received: from smtp.uniroma2.it (smtp-2015.uniroma2.it [160.80.4.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842013E1D08
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 16:10:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882CF261B71;
+	Mon, 24 Aug 2026 16:17:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787587864; cv=none; b=fkOEN10q413SmnhbeiDMUv9t1foay1zTYJObkbTFMq+2yiVPnwUFpt9unomAhTUD77H4NCrBGZijj0MIgdtlAaSPUfmZauxgvfx2byOQUHMmG1053R8cP8eGbE9cjchI36PkiLzqYDl+TlBsBR+TP60RCn+UYxJM+MSx2kifJQ4=
+	t=1787588226; cv=none; b=MIqsjnksKOCe/P7GBXtIty0SmafG+EBhvkEfmZ2Fk2PahpgdTeExgggOa50qzHmVHMeyskHvQw0JsG7Jt4uCiWgGWLjZ35rNTp1JcPk66Jl3tJ6ihoHwF35hDRjCO3589LNFKPxwI5DrsRr5KePWXKVIR/cBnNw+183rViZRbh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787587864; c=relaxed/simple;
-	bh=FrEfntmov+qQYXmwQeVp3dUpPvqE/1AIuY8xpE0ovqc=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=KfU3sAF7usY6JycZI91NuoRN4DGHw7eRB0rX21rB1cS/FWH72uwncYifJw7jDIyt6AftnsHWFG/Mk/HhraNwNqVTA/ZcfNBq6H4fN4bRlNmOt54o9JT8nx0mZbrGKYCUJ5WDxUY+d4KVaZR8NbdVDNYEMFEyYA1eHgEJv+mds+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=Rda9eMxH; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=emUJ4cpq; arc=none smtp.client-ip=160.80.4.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+	s=arc-20240116; t=1787588226; c=relaxed/simple;
+	bh=8dEj8LePs+Jjsfl/Wf7Ly8uQwZrYDvmNeWM/yRINtHc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iNagQOtVy2GqKYoVwOYypAiJdOv1dxWEcw+4iLCsYTVAyZgVSXomCRzH1scgTUE1lngGKIC0iJMiORxcAkQfBgFqIDtyeb3TdW3kfsBn14cn90824MxY0S72fZngH4NUsTJwcQWBFGsy2iS/ah5jTZCkNXoUMGC969IFhA4CAZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NZz6bZQw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="Rda9eMxH";
-	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="emUJ4cpq"
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth-2019-1.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 67OGAWtw011285;
-	Mon, 24 Aug 2026 18:10:38 +0200
-Received: from lubuntu-18.04 (host-80-183-189-234.business.telecomitalia.it [80.183.189.234])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 6C2E41200C8;
-	Mon, 24 Aug 2026 18:10:27 +0200 (CEST)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1787587828; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DFXlZN8zHF3Fzl0G8SrGyFYEvW2MP+6LQ6StNQzwJ6k=;
-	b=Rda9eMxHDhogBf1nFZvzUNuiJjGmcuj1g+WR0gSvw5e36vIa9EBLVq/Ng0rQgJ+c+uIWRc
-	Okke7yRpaBfwgaDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1787587828; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DFXlZN8zHF3Fzl0G8SrGyFYEvW2MP+6LQ6StNQzwJ6k=;
-	b=emUJ4cpqjQEXJ1QnwpT0ixdUrU1XRNVQy5rHETON5Tat3/PpoPXlncMc28q7ym8DXKhXq+
-	xgOg53rODBK2xb3jfTUheO7Elu7kXEu94XzBRrrhSLsJCd5vzsw+dSpKatVlePoVC47pQK
-	Q0yD+kHBW9p8h5oVt1z8fD+JoLDfxiBvH0rDkuumRZmMsxYx8D/6Z1gFS+rjlzhdRa9ahv
-	QzwL2ImC9otaND4JH3awtd6ZLs5Oav5OfnWksM1YUGG8wa6tomVUTNN6BVUPSO8vSjSoqY
-	dmcLX7dRJmaMZ/iMihYUKP9o3AJdDvzLErkeeWmzxWIdLL/ncZFSAwCNcxv6DA==
-Date: Mon, 24 Aug 2026 18:10:26 +0200
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: Zhiling Zou <zhilinz@nebusec.ai>
-Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-        davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-        horms@kernel.org, david.lebrun@uclouvain.be, vega@nebusec.ai,
-        zhilinz@nebusec.ai, stefano.salsano@uniroma2.it,
-        Andrea Mayer
- <andrea.mayer@uniroma2.it>
-Subject: Re: [PATCH net v2 1/1] seg6: reset IP6CB after IPv6 decapsulation
-Message-Id: <20260824181026.83a27650269be8b6d06878fd@uniroma2.it>
-In-Reply-To: <83541e78b0eb0d5adc169a318a51e3055f6bf820.1787388261.git.zhilinz@nebusec.ai>
-References: <cover.1787388261.git.zhilinz@nebusec.ai>
-	<83541e78b0eb0d5adc169a318a51e3055f6bf820.1787388261.git.zhilinz@nebusec.ai>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NZz6bZQw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F313C1F000E9;
+	Mon, 24 Aug 2026 16:17:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787588225;
+	bh=ZAIjcODyQgZxYb92fmjrfGJfnu8GCL4CUSvPv8gPEKQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=NZz6bZQw2xjeH5QN/yO0MTqGyHSdDoIR09XRlgWqTY9Awo+ypQr/PCgRJKOQTjc/d
+	 YMyXF63/2yTjLyY2ba8EesGqHawjdc7o6ycnhDDQRhxczPqvE4uC4zbb1nYpyPc09i
+	 6Us4UNuUlx/JJ4AxNKrqQKigJu1XAc2+vnHAwnmwI/hGgKbm3ohAd0lBACTGA4F4Sq
+	 HcqT+i9fObz2sIbQLVKCQkZuJEYl6wtfTFT35pb31QZPF/S51BspEf/tD0oZXlsat4
+	 Bde5HMrWnkgTNpBLBtJlcC/hRPpPmTVmGnMPYUg9RRXEchOT9xIz5sTBotNQUsbE7I
+	 nMkp/10yjq4hA==
+Date: Mon, 24 Aug 2026 17:16:58 +0100
+From: Simon Horman <horms@kernel.org>
+To: Long Li <longli@microsoft.com>
+Cc: Konstantin Taranov <kotaranov@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	shradhagupta@linux.microsoft.com, ernis@linux.microsoft.com,
+	stephen@networkplumber.org, netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: mana: Cap MSI-X vectors to the device MSI-X
+ table size
+Message-ID: <20260824161658.GY265046@horms.kernel.org>
+References: <20260821183736.733296-1-longli@microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260821183736.733296-1-longli@microsoft.com>
 
-On Sat, 22 Aug 2026 16:49:27 +0800
-Zhiling.Zou.zhilinz@nebusec.ai wrote:
+On Fri, Aug 21, 2026 at 11:37:36AM -0700, Long Li wrote:
+> mana_gd_query_max_resources() sizes gc->num_msix_usable from resp.max_msix
+> and the CPU count, but never from the device MSI-X table. On a 1792 vCPU
+> M-series VM that yields 1793 while the table has 1024 entries, and
+> mana_gd_setup_remaining_irqs() then walks indices 1..1792, running off the
+> end of the region mapped by msix_map_region():
+> 
+>   BUG: unable to handle page fault for address: ff8e347f8b99800c
+>   RIP: 0010:msix_prepare_msi_desc+0x7a/0x90
+>   RAX: 0000000000004000 RBX: ff4330cb164ea780 RCX: ff8e347f8b998000
+>   Call Trace:
+>    <TASK>
+>    __msi_domain_alloc_irqs+0x13a/0x440
+>    msi_domain_alloc_irq_at+0x149/0x1b0
+>    mana_gd_setup+0x351/0x890
+>    mana_gd_probe+0x274/0x390
+>    </TASK>
+> 
+> RAX is index 1024 * PCI_MSIX_ENTRY_SIZE, one entry past the table.
+> 
+> msi_insert_desc() does range check the index, but only against the MSI
+> domain hwsize, which matches the table only for devices on an MSI parent
+> domain. With a global PCI/MSI domain hwsize is MSI_XA_DOMAIN_SIZE, so
+> nothing bounds the request.
+> 
+> Cap num_msix_usable with pci_msix_vec_count().
+> 
+> Fixes: 755391121038 ("net: mana: Allocate MSI-X vectors dynamically")
+> Signed-off-by: Long Li <longli@microsoft.com>
 
-> From: Zhiling Zou <zhilinz@nebusec.ai>
-> [snip]
-> ---
-> changes in v2:
-> [snip]
-> - v1 Link: https://lore.kernel.org/all/6a236dcc43d141a9105e8ee1b84bcccc628d83b0.1786894895.git.zhilinz@nebusec.ai/
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-Forgot to mention this in my previous mail.
-
-The v1 Link in the changelog points at a message-id I cannot find.
-The correct one is at:
-
-  https://lore.kernel.org/all/cb0b571546147162dd63bd3a93952144734b1503.1786896221.git.zhilinz@nebusec.ai/
-
-Thanks,
-Andrea
