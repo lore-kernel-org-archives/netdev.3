@@ -1,170 +1,69 @@
-Received: from mta0.migadu.com (out-133.mta0.migadu.com [91.218.175.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CA8331203
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 12:19:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B533AA4F1;
+	Mon, 24 Aug 2026 12:27:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787574002; cv=none; b=tZYBX66UHsb7HWYE3sFydgUEpTpHaQ4Qvk+yinoCtt408rARdbXKCrQpEVfTMhaL6QqUu8tY70ELwfn0Ugtr+hIUQUrI+Mtu82L7bJpsEbWPVfiX2DUgYeyAIp8gjTl+rAuc/FrU9WV1Y9udhbm+eNXr6jVQr4B8AMr1tuNacl0=
+	t=1787574431; cv=none; b=li5xGZUTHLYDPtnU955venwHaj8nXtYWJhD4ro7JFDdCLBbW95vFnOVl4lycK625g5HFvfprrkPh4smtjGwiDoxG0Sw2BEOCXv0qJ4OLy59OXnGJsq22H7t8JyFAsB3jky40EQKR2IUCb8D7iFfge2RBPBhfRYQFwrOLSkYqcoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787574002; c=relaxed/simple;
-	bh=NbaD03yilMmk0puKZ/RanUhxoZrnyNj20MyBlr5dU3c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lGM/YSAiCxXfQ6URNtkpiZUC2c6Vlaq8IZw37pzmRdk3AP8Xgvyzx2fKNyAkPNvWXDx5g/QUF632sDWhriubbEVR7OakkHIbK3XXeSXIBtYw8C4E6z0GvPPwWhmwd5odXLoPPi+uzke53p8GZ+sdHVIziDomvlFt/oE43AvRJ6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=RiKtXVOw; arc=none smtp.client-ip=91.218.175.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1787574431; c=relaxed/simple;
+	bh=bAut4G7jqv6Ba5BlqX5Diq9ileAQKm02OyD/Y1R5N0E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nc+RGLT39AhniYwO9VWsDiJq7HTYpH3JYFa2ln4i8mWZO4hgPWYLYb8olSJx8M0Uhh2fS9CGGTgLqZ0x5/RFo6gnEP5AvgWT8LpoNkLwDQvbPdQTXFOXvLDLWhazuWFsLm+85mWPuDa3rtRHf3E1SuHWe6M318DH3yUOV+CTkGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f8xlhEQQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="RiKtXVOw"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=NbaD03yilMmk0puKZ/RanUhxoZrnyNj20MyBlr5dU3c=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787573997; v=1; x=1788178797;
- b=RiKtXVOwTGCl/j/yMMAEvlYjAB5a8EFG/Xd7waMsm1aa0Js+rLlQEuNLVh4DUQN9kzo9tlsW
- il4lVvNlzNGci1S49uFIkoBszRWgtjTbqyBTN0ZVWAgAb7R/g82K3flHP710IpzgKa8HRDRczsE
- Nqtq9Ei8NmHGg5p+LzloOjKY=
-X-Envelope-To: netdev@vger.kernel.org
-Received: from [10.54.25.56] (222.72.143.228)
-	by smtp.migadu.com with ESMTPS id 9a9d63bd1232e71b;
-	Mon, 24 Aug 2026 12:19:57 +0000
-X-Mizu-Trace-ID: 9a9d63bd1232e71b
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <01fd251d-1134-4251-9c11-79943e367ffe@linux.dev>
-Date: Mon, 24 Aug 2026 20:19:44 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f8xlhEQQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93F801F00A3A;
+	Mon, 24 Aug 2026 12:27:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787574430;
+	bh=2KppF6BsjrXoiiB1CDGyfYgfQe2GP4/90TbLnIHY5fA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=f8xlhEQQdyuxOTGOxIMPFkQV1ICcWlMUDMXn56ev/JQAOo0t1NNfbfx4vWu8Rfibc
+	 CEsHmj60y7cvRmzsWxc0ubhdZkuRtot8GWZmKVEPWvTEKBmcuneu0HCA18tdXE2qlI
+	 sjoFYatmewNjAiv7e77Yuoz7gfXp3vkL+lpgVv8Wwm9TcmvUf0a/PoBBOfqQQDOk2Q
+	 PpTGPkpu2fbj39cdj/yE+fT/W4Csgf4ua9xHh+O10QzwblxiP2B/RDAJH+p2pmht9K
+	 ah5cZMGo/zKdVFEo+EnegJ41l+kylEUfNoMD8vB/5kzSW3zvRzlMKifGn7nIsYhsTf
+	 ool1ki6masarA==
+Date: Mon, 24 Aug 2026 13:27:06 +0100
+From: Simon Horman <horms@kernel.org>
+To: =?utf-8?B?SsOpcsOpbXk=?= Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: gue: reject invalid REMCSUM offsets
+Message-ID: <20260824122706.GR265046@horms.kernel.org>
+References: <20260820220210.3122690-2-Jeremy.Jean@oss.cyber.gouv.fr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf v2 1/2] bpf, veth: xdp: fix page_pool page leak on
- skb-backed XDP
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org,
- syzbot+237bbeed8dfe0699b7f5@syzkaller.appspotmail.com,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Simon Horman <horms@kernel.org>,
- Martin KaFai Lau <martin.lau@linux.dev>, Andrii Nakryiko
- <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Emil Tsalapatis <emil@etsalapatis.com>,
- Ihor Solodrai <ihor.solodrai@linux.dev>, Shuah Khan <shuah@kernel.org>,
- Kuniyuki Iwashima <kuniyu@google.com>, Hangbin Liu <liuhangbin@gmail.com>,
- Krishna Kumar <krikku@gmail.com>, Martin Karsten <mkarsten@uwaterloo.ca>,
- =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20260824030257.263179-1-jiayuan.chen@linux.dev>
- <20260824030705.266049-1-jiayuan.chen@linux.dev> <aowdem3KQVfvocE7@lore-desk>
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <aowdem3KQVfvocE7@lore-desk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260820220210.3122690-2-Jeremy.Jean@oss.cyber.gouv.fr>
 
+On Thu, Aug 20, 2026 at 10:02:10PM +0000, Jérémy Jean wrote:
+> The REMCSUM option carries an absolute checksum start and checksum field
+> offset. gue_remcsum() passes them to skb_remcsum_process(), whose
+> partial path stores offset - start in the u16 skb->csum_offset. If
+> offset is less than start, this underflows (for example, 1/0 becomes
+> 0xffff).
+> 
+> A forwarded packet can retain CHECKSUM_PARTIAL and reach a
+> NETIF_F_HW_CSUM driver which trusts the metadata, leading
+> skb_copy_and_csum_dev() to write two bytes about 64 KiB beyond the
+> destination buffer.
+> 
+> Reject reversed tuples in both normal and GRO receive paths.
+> 
+> Fixes: fe881ef11cf0 ("gue: Use checksum partial with remote checksum offload")
+> Assisted-by: Codex:gpt-5
+> Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
 
-On 8/24/26 6:31 PM, Lorenzo Bianconi wrote:
->> bpf_xdp_shrink_data() frees a released frag via __xdp_return() using
->> xdp->rxq->mem.type, but that type is wrong for skb-backed XDP: the skb is
->> cow'd into page_pool memory while the rxq still says MEM_TYPE_PAGE_SHARED,
->> so the page_pool page is freed with page_frag_free() and we hit
->> "Bad page state ... page_pool leak".
->>
->> Both generic XDP and veth are affected. A non-linear skb is cow'd into
->> page_pool memory (skb_cow_data_for_xdp() -> skb_pp_cow_data() for generic
->> XDP, veth_convert_skb_to_xdp_buff() for veth), so its frags become
->> page_pool pages while the rxq keeps MEM_TYPE_PAGE_SHARED.
->>
->> We can't just fix rxq->mem.type in place:
->> - generic XDP: xdp->rxq is dev->_rx[queue].xdp_rxq (see
->>    bpf_prog_run_generic_xdp()), a shared rxq that other CPUs may access in
->>    parallel, so we must not write to it.
->> - veth: rq->xdp_rxq.mem is shared per-queue state that veth resets on XDP
->>    teardown, and with GRO that reset runs without stopping in-flight NAPI,
->>    so a type stashed there can be clobbered under a packet still in flight.
->>
->> Adding a check in __xdp_return() or bpf_xdp_shrink_data() itself is not an
->> option either: without recording it somewhere, both can only guess the
->> frag's memory type, which quickly gets confusing.
->>
->> So record it in the xdp_buff. Add a XDP_FLAGS_FRAGS_PAGE_POOL flag; the two
->> skb-cow sites set it, and bpf_xdp_shrink_data() frees the frag to the
->> page_pool when it is set, otherwise it keeps falling back to
->> xdp->rxq->mem.type unchanged. No other path changes behaviour.
->>
->> Fixes: e6d5dbdd20aa ("xdp: add multi-buff support for xdp running in generic mode")
->> Fixes: 0ebab78cbcbf ("net: veth: add page_pool for page recycling")
-> Hi Jiayuan Chen,
->
-> thx for fixing it. Can we do something like the patch below instead?
->
-> Regards,
-> Lorenzo
->
-> diff --git a/net/core/xdp.c b/net/core/xdp.c
-> index 1d679e8fd649..4ed659b58141 100644
-> --- a/net/core/xdp.c
-> +++ b/net/core/xdp.c
-> @@ -433,16 +433,16 @@ EXPORT_SYMBOL_GPL(xdp_rxq_info_attach_page_pool);
->   void __xdp_return(netmem_ref netmem, enum xdp_mem_type mem_type,
->   		  bool napi_direct, struct xdp_buff *xdp)
->   {
-> +	netmem_ref head_netmem = netmem_compound_head(netmem);
-> +	if (netmem_is_pp(head_netmem))
-> +		mem_type = MEM_TYPE_PAGE_POOL;
-> +
->   	switch (mem_type) {
->   	case MEM_TYPE_PAGE_POOL:
-> -		netmem = netmem_compound_head(netmem);
->   		if (napi_direct && xdp_return_frame_no_direct())
->   			napi_direct = false;
-> -		/* No need to check netmem_is_pp() as mem->type knows this a
-> -		 * page_pool page
-> -		 */
-> -		page_pool_put_full_netmem(netmem_get_pp(netmem), netmem,
-> -					  napi_direct);
-> +		page_pool_put_full_netmem(netmem_get_pp(head_netmem),
-> +					  head_netmem, napi_direct);
->   		break;
->   	case MEM_TYPE_PAGE_SHARED:
->   		page_frag_free(__netmem_address(netmem));
-
-
-Hi Lorenzo,
-
-I tried this, but it regresses the bpf selftest with a page_pool ref 
-underflow (0 warns on master, 45 with the patch):
-
-     WARNING: include/net/page_pool/helpers.h:297 at 
-page_pool_alloc_frag_netmem
-     skb_pp_cow_data
-     veth_xdp_rcv_skb
-
-
-On XDP_TX/XDP_REDIRECT veth has to take plain page refs via get_page() 
-(veth_xdp_get()) and then
-consume_skb(): the skb itself must be freed while the data pages stay 
-alive for the frame. consume_skb()
-already returns the skb's page_pool ref, so what the frame holds 
-afterwards is a plain page ref, to be
-dropped with page_frag_free().
-
-netmem_is_pp() can't see that: it only says the page still belongs to a 
-pool (other users may still hold pool refs on the same page),
-not what kind of ref we're dropping. So __xdp_return() turns those 
-plain-ref drops into a second pool
-put and pp_ref goes negative.
-
-That's why I kept the type in the xdp_buff and only override it in the 
-shrink path, where we know the
-frag ref is the cow'd page_pool one.
-
-Regards,
-Jiayuan
+Reviewed-by: Simon Horman <horms@kernel.org>
 
