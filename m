@@ -1,430 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93153E5A01;
-	Mon, 24 Aug 2026 06:15:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEC923909F;
+	Mon, 24 Aug 2026 06:29:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787552111; cv=none; b=NIBsvs61RFH4yWfjZbBv1QjRNoR+znAC1rQfiJBCmEMRbsvOQddE0JH2OdgT91susZeHfMrvKQIVzUIeoY4VtdpS08gDgs4uY5ZHWfUglAEbl8PsN3vmc4KxKHOQNFdmaO5drwRYEHqBCA3KLK7J9bPhXsb1ifKC4RDG+Xgzh8o=
+	t=1787552957; cv=none; b=MQ8dmzHQAByqHkFkiHQJqyUqIUCxXo2Jl3hnovSms9uWsmOzmQPPDUYcmaVudT9UFojcDLiO3gt1P/8QA4BV/nKna2e07fX4T43891n11gZEgBLuqqzGjbN5vwJ46Ezm22NYyO+bpALgLzA9wXk1iXDFW/9SaB4CHIHK4e+bNgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787552111; c=relaxed/simple;
-	bh=X5m53fEjiCLQUHwbyO6HUdCjFfSdafZX1sAdv/zfC/M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dmrulb9hb9qDdQiHqtSuDI3ffxmZN0e1BYZt2aYwjfaUUUNLlx+a/7fIzKGshq8IxUITVz6SFIGW9SKHlYJgRYzPiYtG/eUc3JbkdWs8AqK8Vb8wV0AIj+gY/Eh/KuB4rTOQ/scEm0bJKADJMz3JBfliemlgc9ajRs4RgCYMAtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pG1BOiGk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1787552957; c=relaxed/simple;
+	bh=5p7GH1VNohR3cBj6DwO9gI7XqTuwOX2BewNsmW3b4Bo=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KFhBFb6Zzfu65HnSewRTEe0qwMZ9RVaJFt5cf4VcAZ67OKjntR885G5EoBLDVcZ/kVr1MrPZ4DUsbomk+LUvEMmJwUky7+0WXBTVmzc3V4/lUNIYhapL7tLTbgDC8wzDGn2Cclw1RXMiCuyrVNLOG/M9LIlKcMBBhzUTbbuWTG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=dAN//Ng9; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pG1BOiGk"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 80A93C4AF15;
-	Mon, 24 Aug 2026 06:15:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1787552111;
-	bh=X5m53fEjiCLQUHwbyO6HUdCjFfSdafZX1sAdv/zfC/M=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=pG1BOiGkqkdHlRvvF9FpLdWT8t0rM1iHdg6/2tNfs/3bbYoBuIVgwAn+BDQe5rmJI
-	 Q6BxWf+Xyqwj75XnIKRZZUda/AbvOU9G6a8Ev/JNkhfvnrabQ6Eq4yeGgfwOWCiHpt
-	 ToDtKcZBz5GWkMwAgbeRr/0Byx1P8viX4n8F03J/FKqbZ6hmTXBBGWxz8aTAVQKbb/
-	 uQwcsZol/ct6w/w556uovCzqkXapHNWh/AuRgU945yySQ8s6jjGxoZzt4rNl328M5+
-	 lBJ0gHnWXutmdjc4bdWAtHNcCORfnRNJC6OyJep01nhgt2ri0uuomyrkZgcj+p6z2W
-	 mjPNhfrYWwl5A==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6911EC61CE2;
-	Mon, 24 Aug 2026 06:15:11 +0000 (UTC)
-From: Jia Wang via B4 Relay <devnull+wangjia.ultrarisc.com@kernel.org>
-Date: Mon, 24 Aug 2026 13:54:25 +0800
-Subject: [PATCH 12/12] riscv: dts: ultrarisc: Add Milk-V Titan board device
- tree
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="dAN//Ng9"
+Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67O5V0vi3164014;
+	Sun, 23 Aug 2026 23:28:54 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=nalZ5CDNrJOW5qezdOt2zJL9p
+	aLi5ESfKa0RfspD3T4=; b=dAN//Ng96zKnnnz+4bnoxIwtOig6b0DqwgsSMz7vO
+	Vzc89pIsT1zMi7KwJr/0plkOBNOWwSC+2/I+3W+LObSbPzrUyc/kf4xm6nbsOyik
+	4g2Sv4vCyIO3CMisxFHGm3k7zdepKaEGjdJcA/BO6LUPF0HHEonT8NvKZyfttfzQ
+	hTQtM0qmjjJ4g8oTFNQG+BhVfCNEFYNAbClcefH2BkgrPkdeTgWSEQ+Wgnsu3+m6
+	4QkjK1rNYA8GD1lm+T5HcW5eOYWJx+vrbYG3yHmbA0VEd0UAcE1c9RIl1NeUt+XO
+	2yTY8rfmNySeNNaOSWvwvAX3Io//UIqSh82foroGSxFpA==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4g7vh72bbu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 23 Aug 2026 23:28:53 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Sun, 23 Aug 2026 23:28:53 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Sun, 23 Aug 2026 23:28:53 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id 21D733F704A;
+	Sun, 23 Aug 2026 23:28:49 -0700 (PDT)
+Date: Mon, 24 Aug 2026 11:58:48 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <davem@davemloft.net>, <gakula@marvell.com>,
+        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <sgoutham@marvell.com>
+CC: <andrew+netdev@lunn.ch>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>
+Subject: Re: [PATCH net] octeontx2: use GFP_ATOMIC for QMEM dma_alloc_attrs
+Message-ID: <aovkoPmDb3rZXDTA@rkannoth-OptiPlex-7090>
+References: <20260820085347.2672889-1-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260824-ultrarisc-dts-v1-12-61ab7aebe9e5@ultrarisc.com>
-References: <20260824-ultrarisc-dts-v1-0-61ab7aebe9e5@ultrarisc.com>
-In-Reply-To: <20260824-ultrarisc-dts-v1-0-61ab7aebe9e5@ultrarisc.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Alexandre Ghiti <alex@ghiti.fr>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
- Thomas Gleixner <tglx@kernel.org>, 
- Samuel Holland <samuel.holland@sifive.com>, 
- Anup Patel <anup@brainfault.org>, Mark Brown <broonie@kernel.org>, 
- Andi Shyti <andi.shyti@kernel.org>, 
- Mika Westerberg <mika.westerberg@linux.intel.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
- Jose Abreu <joabreu@synopsys.com>, 
- Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>, 
- Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@sifive.com>, Conor Dooley <conor@kernel.org>, 
- devicetree@vger.kernel.org, linux-riscv@lists.infradead.org, 
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, 
- linux-i2c@vger.kernel.org, netdev@vger.kernel.org, 
- dmaengine@vger.kernel.org, Jia Wang <wangjia@ultrarisc.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787552108; l=7355;
- i=wangjia@ultrarisc.com; s=20260515; h=from:subject:message-id;
- bh=zBhtRfmKKWpJufh5JQfrWxerGCRdaDPbp3rtX+6ZO1c=;
- b=3jzES90pfxMiJBYWUQ6MSAJXJiiH4BhSUaV6y79VZz5pBaLoIzpUeePKM0sYg7t1D9FUKxt0+
- iVoJ+mii09BB7enwkirZz2y1AzNIJIH1c1zy6xwP5iEgeJTyo+k19RX
-X-Developer-Key: i=wangjia@ultrarisc.com; a=ed25519;
- pk=wGVm18siRScehKOkOz0WKxgxDy7IezHEszhnN4/TUCY=
-X-Endpoint-Received: by B4 Relay for wangjia@ultrarisc.com/20260515 with
- auth_id=779
-X-Original-From: Jia Wang <wangjia@ultrarisc.com>
-Reply-To: wangjia@ultrarisc.com
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260820085347.2672889-1-rkannoth@marvell.com>
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODI0MDA1NSBTYWx0ZWRfX9mzuGBXndbcj
+ 38bKvPf7Ziy4wMUOR9zYxNv7w/BNzHhkluoPHIxbupCqgypPfawViHvhEWkQkWa8NuaeahmM391
+ FHRJmLWuPNvI4kkl5GnBN96UlxEO9ZA=
+X-Authority-Analysis: v=2.4 cv=QJJYgALL c=1 sm=1 tr=0 ts=6a8be4a5 cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=qit2iCtTFQkLgVSMPQTB:22 a=M5GUcnROAAAA:8
+ a=1hHV0BX2vR0Rk4jNmwkA:9 a=CjuIK1q_8ugA:10 a=OBjm3rFKGHvpk9ecZwUJ:22
+ a=Oh551-UHZqmTy8JkqTUo:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI0MDA1NSBTYWx0ZWRfX9Xh/+QBVq2u2
+ 1KpGJno20yvcEpw7tzyjSLhOWehTokhYeT3Cxm+HCbhDO1DrhuCx5XeyFGcVegTQVKSSUfh8Mmq
+ PzN4tGoTmiwGHPJVPNYvcUv+XCd/08JTqhUHBoRon+B7If7q7jxqwrT7jm25NdV+ebwzx71BmhQ
+ J2UeOsslLsVzaD5GXV3B7szmuF17VbiQo76X7+h5PTqs8DFRnmcQ8OxBf9SaKXD1Us1nli3kONS
+ poQXVv1nXtvkPhHUczQGdCnMDIZZarlEIf3rdWvDIHhG3quLIUO2T8mw1nnNGEUv91FintosUJY
+ 1N+dw8RCffDUyAd8kDYiNSamjlr1Bcx4ua57tcdfCL7ENwhGSTgnHW06yM3nj0+ia9K+bzMzm1V
+ kHIDSziN+UmlRh0fDj7e9j2E6E93ZN8ajv+JEGT7vPQID3WwpQKLQyd2Ku9qqb0GpzkBukAVjgo
+ bi0WlUClukkrJ78wlJQ==
+X-Proofpoint-GUID: ZCJ881N3uofvIPsyQP2LfHpCtP51MB-b
+X-Proofpoint-ORIG-GUID: ZCJ881N3uofvIPsyQP2LfHpCtP51MB-b
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-24_02,2026-08-21_02,2025-10-01_01
 
-From: Jia Wang <wangjia@ultrarisc.com>
+On 2026-08-20 at 14:23:47, Ratheesh Kannoth (rkannoth@marvell.com) wrote:
+> From: Sunil Goutham <sgoutham@marvell.com>
+>
+> Queue context memory for NIX/NPA and other qmem_alloc() users in the
+> AF and NIC drivers is allocated via dma_alloc_attrs() with
+> GFP_KERNEL. On platforms with CMA enabled, each attached interface can
+> consume a large contiguous allocation from the CMA pool, making CMA
+> sizing grow with the number of enabled interfaces.
+>
+> Use GFP_ATOMIC for the DMA backing allocation in qmem_alloc() to reduce
+> pressure on the CMA pool when many interfaces are enabled.
+>
+> Fixes: 73d33dbc0723 ("octeontx2-af: Use DMA_ATTR_FORCE_CONTIGUOUS attribute in DMA alloc")
+> Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
+> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+> ---
+>  drivers/net/ethernet/marvell/octeontx2/af/common.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/common.h b/drivers/net/ethernet/marvell/octeontx2/af/common.h
+> index 779413a383b7..ff5d66dd10f3 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/common.h
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/common.h
+> @@ -61,7 +61,7 @@ static inline int qmem_alloc(struct device *dev, struct qmem **q,
+>  	qmem->entry_sz = entry_sz;
+>  	qmem->alloc_sz = (qsize * entry_sz) + OTX2_ALIGN;
+>  	qmem->base = dma_alloc_attrs(dev, qmem->alloc_sz, &qmem->iova,
+> -				     GFP_KERNEL, DMA_ATTR_FORCE_CONTIGUOUS);
+> +				     GFP_ATOMIC, DMA_ATTR_FORCE_CONTIGUOUS);
+>  	if (!qmem->base)
+>  		return -ENOMEM;
+>
+> --
+> 2.43.0
+>
 
-Milk-V Titan is an ITX motherboard based on the UltraRISC DP1000 SoC.
+Will address sashiko comments in v2
 
-Link: https://milkv.io/docs/titan/overview
-Signed-off-by: Jia Wang <wangjia@ultrarisc.com>
----
- arch/riscv/boot/dts/ultrarisc/Makefile             |   1 +
- .../dts/ultrarisc/dp1000-milkv-titan-pinctrl.dtsi  | 108 +++++++++++
- .../boot/dts/ultrarisc/dp1000-milkv-titan.dts      | 203 +++++++++++++++++++++
- 3 files changed, 312 insertions(+)
-
-diff --git a/arch/riscv/boot/dts/ultrarisc/Makefile b/arch/riscv/boot/dts/ultrarisc/Makefile
-index 454d849a6ce4..dfd15c064d07 100644
---- a/arch/riscv/boot/dts/ultrarisc/Makefile
-+++ b/arch/riscv/boot/dts/ultrarisc/Makefile
-@@ -1,2 +1,3 @@
- # SPDX-License-Identifier: GPL-2.0
-+dtb-$(CONFIG_ARCH_ULTRARISC) += dp1000-milkv-titan.dtb
- dtb-$(CONFIG_ARCH_ULTRARISC) += dp1000-shenrongda-m0.dtb
-diff --git a/arch/riscv/boot/dts/ultrarisc/dp1000-milkv-titan-pinctrl.dtsi b/arch/riscv/boot/dts/ultrarisc/dp1000-milkv-titan-pinctrl.dtsi
-new file mode 100644
-index 000000000000..7a812e40a249
---- /dev/null
-+++ b/arch/riscv/boot/dts/ultrarisc/dp1000-milkv-titan-pinctrl.dtsi
-@@ -0,0 +1,108 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright(C) 2026 UltraRISC Technology (Shanghai) Co., Ltd.
-+ */
-+
-+#include "dp1000.dtsi"
-+#include "dp1000-pinctrl.h"
-+
-+&pinctrl {
-+	i2c0_pins: i2c0-pins {
-+		pins = <PA12 PA13>;
-+		function = "i2c";
-+		bias-pull-up;
-+		drive-strength = <33>;
-+	};
-+
-+	i2c1_pins: i2c1-pins {
-+		pins = <PB6 PB7>;
-+		function = "i2c";
-+		bias-pull-up;
-+		drive-strength = <33>;
-+	};
-+
-+	i2c2_pins: i2c2-pins {
-+		pins = <PC0 PC1>;
-+		function = "i2c";
-+		bias-pull-up;
-+		drive-strength = <33>;
-+	};
-+
-+	i2c3_pins: i2c3-pins {
-+		pins = <PC2 PC3>;
-+		function = "i2c";
-+		bias-pull-up;
-+		drive-strength = <33>;
-+	};
-+
-+	io_pins: io-pins {
-+		pins = <PA10 PA15 PB0 PB1 PB2 PD6 PD7>;
-+		function = "gpio";
-+		bias-pull-up;
-+		drive-strength = <33>;
-+	};
-+
-+	gpio_keys_pins: gpio-keys-pins {
-+		pins = <PA4 PA11 PA14>;
-+		function = "gpio";
-+		bias-pull-up;
-+		drive-strength = <33>;
-+	};
-+
-+	mux_dcdc_i2c_pins: mux-dcdc-i2c-pins {
-+		pins = <PA5>;
-+		function = "gpio";
-+	};
-+
-+	mux_i2c3_pins: mux-i2c3-pins {
-+		pins = <PA6>;
-+		function = "gpio";
-+	};
-+
-+	mux_uart0_pins: mux-uart0-pins {
-+		pins = <PA7>;
-+		function = "gpio";
-+	};
-+
-+	spi0_pins: spi0-pins {
-+		pins = <PD0 PD1 PD2 PD3 PD4 PD5>;
-+		function = "spi";
-+		bias-pull-up;
-+		drive-strength = <33>;
-+	};
-+
-+	spi1_pins: spi1-pins {
-+		pins = <PA0 PA1 PA2 PA3>;
-+		function = "spi";
-+		bias-pull-up;
-+		drive-strength = <33>;
-+	};
-+
-+	uart0_pins: uart0-pins {
-+		pins = <PA8 PA9>;
-+		function = "uart";
-+		bias-pull-up;
-+		drive-strength = <33>;
-+	};
-+
-+	uart1_pins: uart1-pins {
-+		pins = <PB4 PB5>;
-+		function = "uart";
-+		bias-pull-up;
-+		drive-strength = <33>;
-+	};
-+
-+	uart2_pins: uart2-pins {
-+		pins = <PC4 PC5>;
-+		function = "uart";
-+		bias-pull-up;
-+		drive-strength = <33>;
-+	};
-+
-+	uart3_pins: uart3-pins {
-+		pins = <PC6 PC7>;
-+		function = "uart";
-+		bias-pull-up;
-+		drive-strength = <33>;
-+	};
-+};
-diff --git a/arch/riscv/boot/dts/ultrarisc/dp1000-milkv-titan.dts b/arch/riscv/boot/dts/ultrarisc/dp1000-milkv-titan.dts
-new file mode 100644
-index 000000000000..f1a0efee3d74
---- /dev/null
-+++ b/arch/riscv/boot/dts/ultrarisc/dp1000-milkv-titan.dts
-@@ -0,0 +1,203 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright(C) 2026 UltraRISC Technology (Shanghai) Co., Ltd.
-+ */
-+
-+#include "dp1000-milkv-titan-pinctrl.dtsi"
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/input/input.h>
-+#include <dt-bindings/input/gpio-keys.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
-+#include <dt-bindings/leds/common.h>
-+
-+/ {
-+	model = "Milk-V Titan";
-+	compatible = "milkv,titan", "ultrarisc,dp1000";
-+
-+	aliases {
-+		serial0 = &uart0;
-+		serial1 = &uart1;
-+		serial2 = &uart2;
-+		serial3 = &uart3;
-+	};
-+
-+	chosen {
-+		stdout-path = "serial0:115200n8";
-+	};
-+
-+	gpio-keys {
-+		compatible = "gpio-keys";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&gpio_keys_pins>;
-+
-+		key-wakeup-0 {
-+			label = "Wake-Up";
-+			gpios = <&gpio_a 14 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_WAKEUP>;
-+			linux,input-type = <EV_KEY>;
-+			debounce-interval = <10>;
-+			wakeup-source;
-+			wakeup-event-action = <EV_ACT_ASSERTED>;
-+		};
-+
-+		key-wakeup-1 {
-+			label = "Power";
-+			gpios = <&gpio_a 11 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_POWER>;
-+			linux,input-type = <EV_KEY>;
-+			debounce-interval = <10>;
-+			wakeup-source;
-+			wakeup-event-action = <EV_ACT_ASSERTED>;
-+		};
-+
-+		key-wakeup-2 {
-+			label = "Wake-Up-by-USB";
-+			interrupts-extended = <&gpio_a 4 IRQ_TYPE_EDGE_FALLING>;
-+			linux,code = <KEY_WAKEUP>;
-+			linux,input-type = <EV_KEY>;
-+			debounce-interval = <10>;
-+			wakeup-source;
-+		};
-+	};
-+};
-+
-+&i2c0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&i2c0_pins>;
-+};
-+
-+&i2c1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&i2c1_pins>;
-+};
-+
-+&i2c2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&i2c2_pins>;
-+
-+	rtc@68 {
-+		compatible = "st,m41t11";
-+		reg = <0x68>;
-+	};
-+};
-+
-+&i2c3 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&i2c3_pins>;
-+};
-+
-+&spi0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&spi0_pins>;
-+};
-+
-+&spi1 {
-+	num-cs = <1>;
-+
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&spi1_pins>;
-+};
-+
-+&uart0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&uart0_pins>;
-+};
-+
-+&uart1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&uart1_pins>;
-+};
-+
-+&uart2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&uart2_pins>;
-+};
-+
-+&uart3 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&uart3_pins>;
-+};
-+
-+&pcie_x16 {
-+	status = "okay";
-+};
-+
-+&pcie_x4a {
-+	status = "okay";
-+};
-+
-+&pcie_x4b {
-+	status = "okay";
-+};
-+
-+&gpio {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&io_pins &mux_dcdc_i2c_pins &mux_i2c3_pins &mux_uart0_pins>;
-+};
-+
-+&gpio_a {
-+	dcdc-i2c-mux-hog {
-+		gpio-hog;
-+		gpios = <5 GPIO_ACTIVE_HIGH>;
-+		output-low;
-+		line-name = "dcdc-i2c-mux";
-+	};
-+
-+	i2c3-mux-hog {
-+		gpio-hog;
-+		gpios = <6 GPIO_ACTIVE_HIGH>;
-+		output-low;
-+		line-name = "i2c3-mux";
-+	};
-+
-+	uart0-mux-hog {
-+		gpio-hog;
-+		gpios = <7 GPIO_ACTIVE_HIGH>;
-+		output-high;
-+		line-name = "uart0-mux";
-+	};
-+};
-+
-+&ethernet {
-+	phy-handle = <&phy0>;
-+	/*
-+	 * RTL8211F: board timing uses PHY strap delays; keep plain "rgmii".
-+	 * Enabling PHY internal delays via "rgmii-id" breaks Ethernet traffic.
-+	 */
-+	phy-mode = "rgmii";
-+
-+	status = "okay";
-+
-+	mdio {
-+		compatible = "snps,dwmac-mdio";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		phy0: phy@0 {
-+			reg = <0>;
-+
-+			leds {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				led@1 {
-+					label = "eth-link";
-+					reg = <1>;
-+					color = <LED_COLOR_ID_YELLOW>;
-+					function = LED_FUNCTION_INDICATOR;
-+					default-state = "keep";
-+					linux,default-trigger = "netdev";
-+				};
-+
-+				led@2 {
-+					label = "eth-activity";
-+					reg = <2>;
-+					color = <LED_COLOR_ID_GREEN>;
-+					function = LED_FUNCTION_ACTIVITY;
-+					default-state = "keep";
-+					linux,default-trigger = "netdev";
-+				};
-+			};
-+		};
-+	};
-+};
-
--- 
-2.34.1
-
-
+pw-bot: changes-requested
