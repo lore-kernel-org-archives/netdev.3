@@ -1,120 +1,335 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B977C3F927B
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 10:37:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BE031F986
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 10:37:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787567843; cv=none; b=Idb9oeYSELkpSqVAFwpDvjbVWJpB84r7EH87qwGX13fRmXH45WCynnf4cXm/JWd4W838bpspvZKfd9P9fRdWm4I28VH9ovueLIMRMFYoZz1VfPfxpgCj2KrC9QV/6Xsm3HQOssN40BRGr1FUx3IPhyhgti7DjrjieT3trY6lcu4=
+	t=1787567843; cv=none; b=N3kx+GeebUzCgLt7BKn1WuYHJfv12JR+XJ2FEZY7rP8ri8MOCGJOVULgSDI8f+tzCydBlcwXKPiagr7Otz2J9RT2ySvrye82ZSJu0nySHVwZBz24icpZhbRh3L0T+Au8PdUtW59e1KUwbwra/xw+wPGEBhL3Ua1NepDE6vPra0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1787567843; c=relaxed/simple;
-	bh=J19TaZpjBFKFpKQddWptge89fLyuS77fbLqrx4LT1p8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VL7OsuSM0L0EjTKHxSkpzMEXqRbcfYWY872dE0oLktFmlQ4mQbK8YztTcfBBhYYMBxxGB9jh5cwZDaTEDY3DJVFuAziY2xoD7TgASXmXBa05naXxbWzsFhbzVjhwvMtuADSft2PFpVqU+J0qXqQTZ/zZ3ti4tr+xpRsnQdNyIc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rFzkTkvP; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rFzkTkvP"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-4765eec32e1so269434f8f.1
-        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 03:37:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787567840; x=1788172640; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZIXvGRqZDv1pZyUfC6Atrs4lIO+NNS5+uMrqd4f/BwE=;
-        b=rFzkTkvPA3/EppNWkYBTKqpHBlE2APdLndcyISwev/m1pt39ZexLehOTNlKRFmtkDO
-         Xgz0mqpnWwX1rkWr/PMm8kRLMGMVjYMp125u8OHqjDME92e/Q41e0R4XejAAXR1Duf+E
-         aj2Up+sEMA1WATBaYonQQ2PgB1/kLbx+LFnUdBVjttt9uslWanoOEic9ueJ5NJqChH+j
-         WJa8LoBlAjyWPHpFortvbAuk5vxw2y/3AXDjwHSjg9g9fpHMPzBZqxVaq+9KIiryKuM6
-         wgylsrgtqhwvybzWd68E3o36zVfqU6+VU0o6Fyv92ReN1NojKzzY5aRxZTN7YZe+MLI1
-         vSuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787567840; x=1788172640;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZIXvGRqZDv1pZyUfC6Atrs4lIO+NNS5+uMrqd4f/BwE=;
-        b=V67HYhxoYOFsiEPbdvN8bO5MC3FI5Yl7bCtgZh4zoxngpApVR5VJi9BlYdkZ8y4Zl8
-         vWrcbwVgzYPC9T8gaXafLbnFTg83rzsl7S2AMRdGcHcvZzssyPAyPsZ1j9haYf3o4dHE
-         /lIQhvedEFhjZa+lbysncOGoZOUD13NJdsXVNMcJ3vFHjo2aj/aRrujECokOSPDMQbnV
-         KgloflpOWPqqmC7DjC27RHiH81X9BeIwr7OPpD5OmaxCKf/HjSTsMWLiUsjKPIfFZS5b
-         UJ+7FyIyD9UWZgeIBfYB5mUij2HMbJ9DEuvdiuInRWHuS4rSoIj+lzHtmixdVgxL5jzC
-         YcSw==
-X-Gm-Message-State: AFuF++kqi4ky0KeRit7uIDwWR//xF53NfL3GPQoEugeZ0r6syvWqfL16
-	5DLTU6D/Xcv8SM6ivVllAW39lpolyp+R1pOt3ZM4TtAI7RZFRFurr08Q
-X-Gm-Gg: AR+sD13Zsegu3dw93S9fZKFI+4lOnUP8yqa2OU7A0KN0QP+Khx31SZnX4bap0HEoThf
-	0CG/lCWKWKqaBaKu6KteXGffEx/yigE2sLIM98erObfeCeDP3HhOFMylxHyp/Yon8uwbV2tCgtW
-	E640fBCwfzXiy72ZuDLCUp3C7YsZtKgc/9aLCYk1iOC7E4GvzH1st9978qQnr5hwHK4aswnvq9J
-	udGyaHl753pQMDewSUUu2zlhl4Wv0sNSytC4W8WlTWpt0CvMgEdZG7oQQvV8mIEMZgnKe/bDzKC
-	FofJy8H7V0rQtNIL2i3zgyHRSWFbl8Jdh+EbH3ObbuLP9UiIauq5hnypHn1xyiD+ECPkM1t3n9w
-	uSObqlrgB41SZxl1rihDVlOeCb8kVVktXL4f88UW7DrvLwvmfXfm+ArJZ70ERNyY2riJhffkX7d
-	hiKkidSmSronqVZKZClXp8DBeZ+zHKpx1oXI1qEHjW0LMXWKsAjbKxzzqEaJdE/MXLng==
-X-Received: by 2002:a05:600c:548c:b0:499:5b0f:72b with SMTP id 5b1f17b1804b1-499b835251emr145411275e9.1.1787567839702;
-        Mon, 24 Aug 2026 03:37:19 -0700 (PDT)
-Received: from dkdwn-fedora ([2a01:e0a:354:c290:491:87c7:45df:9c03])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482c9bfcc31sm7675717f8f.17.2026.08.24.03.37.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 03:37:19 -0700 (PDT)
-From: Lucas Poupeau <lucasp.linux@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Lucas <lucasp.linux@gmail.com>
-Subject: [PATCH] net: 8139too: use unaligned helpers when setting MAC address
-Date: Mon, 24 Aug 2026 12:37:09 +0200
-Message-ID: <20260824103709.98373-1-lucasp.linux@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	bh=kECWN0/pzXScznSeThBwo3vnkzeXw/lV52803oEcMbE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=jOGiqzQ2IACtyT5kqD2+2SnBymwKrMR4rLCFVfmXUf43iN6cRLjvLHkxqxVifsK0WNMuYAD1IHegEpvB/y+SqMGcoBtw+qaze+Ci1QsUrqsH+uyxMOtdRRuvDBoro68ZnoXpJxJdhI0xTIB0IBfdWp0d8w5PJFDRMsePele+zSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.207.22.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
+X-QQ-mid: zesmtpgz6t1787567775te9b9befc
+X-QQ-Originating-IP: 6l6kkU4gKuNMLPs8CNFcn9w5nubiblB/T/a1T/hgW8Q=
+Received: from localhost.localdomain ( [122.233.170.62])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 24 Aug 2026 18:36:11 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 12417051061719465739
+EX-QQ-RecipientCnt: 10
+From: Mengyuan Lou <mengyuanlou@net-swift.com>
+To: netdev@vger.kernel.org
+Cc: jiawenwu@trustnetic.com,
+	duanqiangwen@net-swift.com,
+	linglingzhang@net-swift.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	Mengyuan Lou <mengyuanlou@net-swift.com>
+Subject: [PATCH net v3] net: libwx: protect ring accesses with RCU
+Date: Mon, 24 Aug 2026 18:36:06 +0800
+Message-Id: <20260824103606.303-1-mengyuanlou@net-swift.com>
+X-Mailer: git-send-email 2.30.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
+X-QQ-XMAILINFO: M0B+OzpJUlV88F42ld9q9gaLhn8qIhqljojRdVsOe7BHrE4E/Tlpmcma
+	Kb5qiZeNMfHKqAcH7RyVKbcZvdEFZghYeebDesniUnf5tQO03Kr7wnyJ6QSjDupITP0iHGy
+	awoqn/LdR9PzWZXWU7Vs7PPscWbThI8jasDKIzcls5HoKYQa2xE9bv3KigKgpPOi0fAFHal
+	BFE/5RYjDLVx74yVDkaD7jceuTZk6MGx8RUi8hQz8EUIU4pUk5HMWde0+XGpXLYLD1Yo/0d
+	33U9xEMEJmEluMsHxflVtMInI2Kvnunh6PmhrxGY3mID+osCUiMBOO66dizpf0UkX8UeLen
+	kg75Y53oap4f0V/aWRN/rJ9L1UVV7ihjhJpmy48g97UHlBazgBr+Yo2vV/NonXsjVvPCWur
+	LL+XyycbkKI1/D7JzFnw9wj/PnZxA3332Jd8KjSZE8Piu/Zv/sHDP8rPjG8mf98hlK7Tn1O
+	5TvOhUpa7LDQVFu8CCNNZ6UemBZa2n+qF0CIxrcm2fK8A4o6x4Rt0H7eQJW620QMGC72qSr
+	xUI/KbCpOcQojEQ/vaxLSICxPJoTFsLEl/dEDBLU7sAj4cl2p79fJLsuNBTG4npb5YkNMsR
+	UHbNwcrmjtvvinKaRbxo/Nr5RoDz1RiMQuv5ocIXnZ4FXOcECsNDtyiQhMdQ6+cawZcpRUW
+	vA3qYtvf7HOBsARTIFpHWrOmeQLWC4O7XyFvIOExLzwBuTDqUDV2GcWppjXRxTGCYfFygNf
+	WGMZmpdCfgqRZ6s4CvAuiKrqdiyWB4/dU7ELmiWEe2ovSDerBXYoNaff2nM6EguE4diiHpS
+	27UUM7oeQWx48uFzxueXzSN1gCry4JdAmxjSQCaArrkuurGl3E7H1UQpLmrBPP8xmICHpT/
+	W+u0faGz9HrBLrHO93F4Hr+myQJ8u+jdn9F+zn7vTE71hWTojmEA53t1/VHA6jv72Z0zpmI
+	dZIWdL89OEFIzGP12b4vY1PLkBulhxD6FoPoxO0J4m156rSzkiNtotFfMZ0uJ6NjaLFJvb1
+	z11c+oglz513AQS0OoLmQatpz33FLNNHcagi1eHLqKA2SuJbAv2NoDUgXYquUBd7Fh+OnQ2
+	eOvTBe3Kyczs2sqEcvXaMP3RQBb8a6N2w==
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
+X-QQ-RECHKSPAM: 0
 
-From: Lucas <lucasp.linux@gmail.com>
+During queue teardown or channel reconfiguration (e.g. via ethtool -L),
+ring pointers in wx->rx_ring[] and wx->tx_ring[] can be cleared to NULL
+and freed asynchronously via kfree_rcu().
 
-rtl8139_set_mac_address() accesses dev->dev_addr by casting it to u32
-pointers. Besides potentially performing unaligned accesses, the second
-read starts at offset 4 and reads 32 bits even though only two bytes
-remain in the Ethernet address.
+Concurrency between interface reconfiguration and background tasks (such
+as service tasks or dev_get_stats) can result in NULL pointer dereferences
+or Use-After-Free (UAF) issues when accessing per-queue structures.
+Specifically:
+1. wx_update_stats() accesses per-queue Rx, RSC, and Tx rings without RCU
+   read-side protection, and lacked NULL checks in the RSC accumulation
+   loop.
+2. wx_update_xoff_rx_lfc() walks wx->tx_ring[] and modifies ring->state
+   without RCU protection or NULL checks, risking a kernel panic when flow
+   control pause frames are received during queue teardown.
+3. Queue status checks in wx_err.c and PTP watchdog in wx_ptp.c dereference
+   ring pointers without RCU read-side critical sections or NULL checks.
+4. Queue assignment in wx_alloc_q_vector() used plain stores without
+   release barrier semantics needed for lockless RCU readers.
 
-Use get_unaligned_le32() and get_unaligned_le16() to read the address
-with the appropriate width and endianness. This also fixes the Sparse
-type warnings caused by passing __le32 values to iowrite32().
+Fix these by:
+1. Enclosing queue statistics gathering in wx_update_stats(),
+   xoff processing in wx_update_xoff_rx_lfc(), error handling in wx_err.c,
+   and PTP status checks in wx_ptp.c inside
+   rcu_read_lock() / rcu_read_unlock() sections.
+2. Replacing unprotected accesses with rcu_dereference() and adding NULL
+   checks when traversing wx->rx_ring[] and wx->tx_ring[].
+3. Using rcu_assign_pointer() when publishing or clearing ring pointers in
+   wx_alloc_q_vector() and wx_free_q_vector().
 
-Signed-off-by: Lucas Poupeau <lucasp.linux@gmail.com>
+Fixes: 46b92e10d631 ("net: libwx: support hardware statistics")
+Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
 ---
- drivers/net/ethernet/realtek/8139too.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Changelogs:
+v3:
+- Replaced READ_ONCE() with rcu_dereference() when reading __rcu annotated
+  rx_ring and tx_ring pointers to fix Sparse static checker warnings and
+  enable Lockdep runtime validation.
+- Wrapped wx_update_xoff_rx_lfc() with its own rcu_read_lock() and
+  rcu_read_unlock() section to ensure self-contained protection regardless
+  of caller context.
+- Extended RCU read-side critical sections and NULL pointer checks to other
+  background tasks accessing ring arrays, including wx_ring_tx_pending(),
+  wx_detect_tx_hang() in wx_err.c, and wx_ptp_rx_hang() in wx_ptp.c.
+- Updated commit message to accurately reflect the use of rcu_dereference()
+  and the expanded scope of protected functions.
+v2: https://lore.kernel.org/netdev/20260818100841.37483-1-mengyuanlou@net-swift.com/
+- Moved rcu_read_unlock() after wx_update_xoff_rx_lfc() in wx_update_stats()
+  to ensure flow control processing remains fully protected within the RCU
+  read-side critical section.
+- Replaced WRITE_ONCE() with rcu_assign_pointer() when assigning and clearing
+  ring pointers in wx_alloc_q_vector() and wx_free_q_vector(), providing
+  proper release memory barrier semantics for lockless RCU readers.
+- Added __rcu annotations to tx_ring and rx_ring in struct wx (wx_type.h) to
+  align with Linux kernel RCU coding standards and fix Sparse warnings.
+v1: https://lore.kernel.org/netdev/20260813095141.88227-1-mengyuanlou@net-swift.com/
+---
+ drivers/net/ethernet/wangxun/libwx/wx_err.c  | 20 ++++++++++---
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c   | 31 ++++++++++++++++----
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c  | 12 ++++----
+ drivers/net/ethernet/wangxun/libwx/wx_ptp.c  |  6 +++-
+ drivers/net/ethernet/wangxun/libwx/wx_type.h |  4 +--
+ 5 files changed, 54 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/ethernet/realtek/8139too.c b/drivers/net/ethernet/realtek/8139too.c
-index 8241bcf76664..1736599d7244 100644
---- a/drivers/net/ethernet/realtek/8139too.c
-+++ b/drivers/net/ethernet/realtek/8139too.c
-@@ -112,6 +112,7 @@
- #include <linux/gfp.h>
- #include <linux/if_vlan.h>
- #include <asm/irq.h>
-+#include <linux/unaligned.h>
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.c b/drivers/net/ethernet/wangxun/libwx/wx_err.c
+index b56fbdc959de..8eadb4d3abcf 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_err.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_err.c
+@@ -201,12 +201,18 @@ static bool wx_ring_tx_pending(struct wx *wx)
+ {
+ 	int i;
  
- /* Default Message level */
- #define RTL8139_DEF_MSG_ENABLE   (NETIF_MSG_DRV   | \
-@@ -2230,8 +2231,8 @@ static int rtl8139_set_mac_address(struct net_device *dev, void *p)
- 	spin_lock_irq(&tp->lock);
++	rcu_read_lock();
+ 	for (i = 0; i < wx->num_tx_queues; i++) {
+-		struct wx_ring *tx_ring = wx->tx_ring[i];
++		struct wx_ring *tx_ring = rcu_dereference(wx->tx_ring[i]);
  
- 	RTL_W8_F(Cfg9346, Cfg9346_Unlock);
--	RTL_W32_F(MAC0 + 0, cpu_to_le32 (*(u32 *) (dev->dev_addr + 0)));
--	RTL_W32_F(MAC0 + 4, cpu_to_le32 (*(u32 *) (dev->dev_addr + 4)));
-+	RTL_W32_F(MAC0 + 0, get_unaligned_le32(dev->dev_addr));
-+	RTL_W32_F(MAC0 + 4, get_unaligned_le16(dev->dev_addr + 4));
- 	RTL_W8_F(Cfg9346, Cfg9346_Lock);
+-		if (tx_ring->next_to_use != tx_ring->next_to_clean)
++		if (!tx_ring)
++			continue;
++		if (tx_ring->next_to_use != tx_ring->next_to_clean) {
++			rcu_read_unlock();
+ 			return true;
++		}
+ 	}
++	rcu_read_unlock();
  
- 	spin_unlock_irq(&tp->lock);
+ 	return false;
+ }
+@@ -264,8 +270,14 @@ static void wx_detect_tx_hang(struct wx *wx)
+ 
+ 	/* Force detection of hung controller */
+ 	if (netif_carrier_ok(wx->netdev)) {
+-		for (i = 0; i < wx->num_tx_queues; i++)
+-			set_bit(WX_TX_DETECT_HANG, wx->tx_ring[i]->state);
++		rcu_read_lock();
++		for (i = 0; i < wx->num_tx_queues; i++) {
++			struct wx_ring *tx_ring = rcu_dereference(wx->tx_ring[i]);
++
++			if (tx_ring)
++				set_bit(WX_TX_DETECT_HANG, tx_ring->state);
++		}
++		rcu_read_unlock();
+ 	}
+ }
+ 
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+index 122c4952d203..96ce3a4bbec7 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+@@ -2870,8 +2870,15 @@ static void wx_update_xoff_rx_lfc(struct wx *wx)
+ 	if (!data)
+ 		return;
+ 
+-	for (i = 0; i < wx->num_tx_queues; i++)
+-		clear_bit(WX_HANG_CHECK_ARMED, wx->tx_ring[i]->state);
++	rcu_read_lock();
++	for (i = 0; i < wx->num_tx_queues; i++) {
++		struct wx_ring *tx_ring = rcu_dereference(wx->tx_ring[i]);
++
++		if (!tx_ring)
++			continue;
++		clear_bit(WX_HANG_CHECK_ARMED, tx_ring->state);
++	}
++	rcu_read_unlock();
+ }
+ 
+ /**
+@@ -2893,10 +2900,13 @@ void wx_update_stats(struct wx *wx)
+ 
+ 	spin_lock(&wx->hw_stats_lock);
+ 
++	rcu_read_lock();
+ 	/* gather some stats to the wx struct that are per queue */
+ 	for (i = 0; i < wx->num_rx_queues; i++) {
+-		struct wx_ring *rx_ring = wx->rx_ring[i];
++		struct wx_ring *rx_ring = rcu_dereference(wx->rx_ring[i]);
+ 
++		if (!rx_ring)
++			continue;
+ 		non_eop_descs += rx_ring->rx_stats.non_eop_descs;
+ 		alloc_rx_buff_failed += rx_ring->rx_stats.alloc_rx_buff_failed;
+ 		hw_csum_rx_good += rx_ring->rx_stats.csum_good_cnt;
+@@ -2912,19 +2922,28 @@ void wx_update_stats(struct wx *wx)
+ 		u64 rsc_flush = 0;
+ 
+ 		for (i = 0; i < wx->num_rx_queues; i++) {
+-			rsc_count += wx->rx_ring[i]->rx_stats.rsc_count;
+-			rsc_flush += wx->rx_ring[i]->rx_stats.rsc_flush;
++			struct wx_ring *rx_ring = rcu_dereference(wx->rx_ring[i]);
++
++			if (!rx_ring)
++				continue;
++
++			rsc_count += rx_ring->rx_stats.rsc_count;
++			rsc_flush += rx_ring->rx_stats.rsc_flush;
+ 		}
+ 		wx->rsc_count = rsc_count;
+ 		wx->rsc_flush = rsc_flush;
+ 	}
+ 
+ 	for (i = 0; i < wx->num_tx_queues; i++) {
+-		struct wx_ring *tx_ring = wx->tx_ring[i];
++		struct wx_ring *tx_ring = rcu_dereference(wx->tx_ring[i]);
++
++		if (!tx_ring)
++			continue;
+ 
+ 		restart_queue += tx_ring->tx_stats.restart_queue;
+ 		tx_busy += tx_ring->tx_stats.tx_busy;
+ 	}
++	rcu_read_unlock();
+ 	wx->restart_queue = restart_queue;
+ 	wx->tx_busy = tx_busy;
+ 
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+index ed5aad7857bd..423b14c56949 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+@@ -2191,7 +2191,7 @@ static int wx_alloc_q_vector(struct wx *wx,
+ 		ring->queue_index = txr_idx;
+ 
+ 		/* assign ring to wx */
+-		wx->tx_ring[txr_idx] = ring;
++		rcu_assign_pointer(wx->tx_ring[txr_idx], ring);
+ 
+ 		/* update count and index */
+ 		txr_count--;
+@@ -2217,7 +2217,7 @@ static int wx_alloc_q_vector(struct wx *wx,
+ 		ring->queue_index = rxr_idx;
+ 
+ 		/* assign ring to wx */
+-		wx->rx_ring[rxr_idx] = ring;
++		rcu_assign_pointer(wx->rx_ring[rxr_idx], ring);
+ 
+ 		/* update count and index */
+ 		rxr_count--;
+@@ -2245,10 +2245,10 @@ static void wx_free_q_vector(struct wx *wx, int v_idx)
+ 	struct wx_ring *ring;
+ 
+ 	wx_for_each_ring(ring, q_vector->tx)
+-		wx->tx_ring[ring->queue_index] = NULL;
++		rcu_assign_pointer(wx->tx_ring[ring->queue_index], NULL);
+ 
+ 	wx_for_each_ring(ring, q_vector->rx)
+-		wx->rx_ring[ring->queue_index] = NULL;
++		rcu_assign_pointer(wx->rx_ring[ring->queue_index], NULL);
+ 
+ 	wx->q_vector[v_idx] = NULL;
+ 	netif_napi_del(&q_vector->napi);
+@@ -3097,7 +3097,7 @@ void wx_get_stats64(struct net_device *netdev,
+ 
+ 	rcu_read_lock();
+ 	for (i = 0; i < wx->num_rx_queues; i++) {
+-		struct wx_ring *ring = READ_ONCE(wx->rx_ring[i]);
++		struct wx_ring *ring = rcu_dereference(wx->rx_ring[i]);
+ 		u64 bytes, packets;
+ 		unsigned int start;
+ 
+@@ -3113,7 +3113,7 @@ void wx_get_stats64(struct net_device *netdev,
+ 	}
+ 
+ 	for (i = 0; i < wx->num_tx_queues; i++) {
+-		struct wx_ring *ring = READ_ONCE(wx->tx_ring[i]);
++		struct wx_ring *ring = rcu_dereference(wx->tx_ring[i]);
+ 		u64 bytes, packets;
+ 		unsigned int start;
+ 
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
+index 3eea647c4742..47b1599a1afa 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
+@@ -274,11 +274,15 @@ static void wx_ptp_rx_hang(struct wx *wx)
+ 
+ 	/* determine the most recent watchdog or rx_timestamp event */
+ 	rx_event = wx->last_rx_ptp_check;
++	rcu_read_lock();
+ 	for (n = 0; n < wx->num_rx_queues; n++) {
+-		rx_ring = wx->rx_ring[n];
++		rx_ring = rcu_dereference(wx->rx_ring[n]);
++		if (!rx_ring)
++			continue;
+ 		if (time_after(rx_ring->last_rx_timestamp, rx_event))
+ 			rx_event = rx_ring->last_rx_timestamp;
+ 	}
++	rcu_read_unlock();
+ 
+ 	/* only need to read the high RXSTMP register to clear the lock */
+ 	if (time_is_before_jiffies(rx_event + 5 * HZ)) {
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+index 2eba5ab59925..ec75ca116979 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+@@ -1359,8 +1359,8 @@ struct wx {
+ 	u32 tx_ring_count;
+ 	u32 rx_ring_count;
+ 
+-	struct wx_ring *tx_ring[64] ____cacheline_aligned_in_smp;
+-	struct wx_ring *rx_ring[64];
++	struct wx_ring __rcu *tx_ring[64] ____cacheline_aligned_in_smp;
++	struct wx_ring __rcu *rx_ring[64];
+ 	struct wx_q_vector *q_vector[64];
+ 	int num_rx_pools;
+ 	int num_rx_queues_per_pool;
 -- 
-2.55.0
+2.30.1
 
