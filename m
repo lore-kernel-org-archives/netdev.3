@@ -1,82 +1,45 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6D325A642
-	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 07:20:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E4234D916
+	for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 07:21:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.132.163.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787556009; cv=none; b=G8P5gqDh9XV3vKumnzAsvG7guqWQigajXyKoSOtLR0DR0sAkyK4xWFbNCNlMXV7WazV8lUCNKlX7gR8mz4BRsWYq68nU7rhLdbMXM0q5wdUYuJfcbAHJFIqetua10TyQ+Fppj8hW6LHXJh6RB/kVOBe5gnAaEzenqAiB5BJMvgk=
+	t=1787556111; cv=none; b=RxDKjioHqRIDiWF7Je/rjnd/dx/53/XVqBkOfg4Zv5rirDIh2rnWNdatzYDOZA55TxopEH1+0y6Z4bxzdnwj2FvChB9fzEccOO2Ra9QWpKBZZ2C5PJHZ29lIWpcYWR2mYKBkuljs9A3+Fcyc8qQxdSKisVzsTpKCNZm239krf2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787556009; c=relaxed/simple;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zrohn5nyo5Cn9nHeVhfFMxQqoKNmXPBkiZQxmUQb65SJAXXD6NwpGZg2MW7uPlOuTNTtYTkBF2EKtjCyYzqeP3G+hBmNphPv6Hx6iqhM0fvDkd9eniLOp7chCRU/s1z7g2C9Rr8155s+lKaqPMkE1NC5ELKfT63IQOSpcvlzfQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aronleigh.au; spf=fail smtp.mailfrom=aronleigh.au; dkim=pass (2048-bit key) header.d=aronleigh.au header.i=@aronleigh.au header.b=NQzBpmj5; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aronleigh.au
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=aronleigh.au
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aronleigh.au header.i=@aronleigh.au header.b="NQzBpmj5"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38101f85591so3383460a91.1
-        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 00:20:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=aronleigh.au; s=google; t=1787556008; x=1788160808; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        b=NQzBpmj5e2ufVKvJJaoPPITr67fPfF8luZiUkdlHSdOPS+6QJLW7ChVmZ7qCRgSEDJ
-         7zb8g0Q460O6R3XGnCeXF6Qk17bhYAeuIEOeH8UaQKp4LXbwXHlRjx2hsQQwQWlRjsvX
-         07xiBGIkaIAQB/O9GBVLoDg1k5UGdQpdDGSZyJu8ZxKrnx5UrQggkWZtx2CMuECFTox/
-         h0ABTOch/ZGlQ5ix4sZEZswtNTPgfmiRLF0KNKHmqUshX0BRHT99oog4jkuEOofpFx1e
-         iFonubHRj3q1bhduTCLbwoF4wDLdjkNxCsI1EML1mtq11HpnigVAYmTUD+8vrWdkvKQq
-         Xtcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787556008; x=1788160808;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        b=aZwdGCGtwDYv+kGtbtWmCBZxv7r68+xb3rgWyUJT/JO9WSv4nK4Kpt58bySt5CVpI1
-         StETanYDu8tLsZccGug4AmYQ+4u2bHrw/n9dTA2dAI6jDbaVy4gXqVf3S+MnF5vAAVhf
-         cwya9humnBMa34INlr2AA+4G3b/qhqYPwXkja87DwiiuDLjJM6ub3VKqZTAwgtOfy2k9
-         6Vqel/OqYZ3PEHuINch2xbagDF5E4dejbh265rGEx4lXm0NdczQHQAuS7XLkB/1ujWTC
-         C4eLQLcCpVzVCXdYSGrNaKyNUrKTsGTX/9JIvAaPBgk214XUIzPaKdVlZBLggjj+P+qI
-         H9cg==
-X-Forwarded-Encrypted: i=1; AHgh+RoPmWFWjEXmyg9KVAVMH3WLaMajXX0h4PJSpZyx9T+aqz/eFY8OB7aggZVSsm2yDqcAQVM78Bc=@vger.kernel.org
-X-Gm-Message-State: AFuF++ntZC5EuFNeUYJ+TnWST41u6AGdHi1wrSkVxc2iQTiwLy+8in9v
-	o44HH39mzkDNsao9wX42cv6yOhqj8l8GZUAM92KmOkKfIGu9cmt/Hnoi5l8NFEWGHFvd
-X-Gm-Gg: AR+sD10BUO+Ai2agDQXPoIakJlljVliNrmYsaVFYOj/6AWsLQExZPvgVSCdG6AXI9gt
-	j2JxzyvEjZUkxIgHGRAW6gdh2NteIfB2eJtnd5TecCVHQYzbfWID/5d5Yoe6V7S2DO10ds1NIjp
-	eGkt/sW1WPpeJqVl8XPyst4TPfnpwSMCv0FpI0XUxnCt3cGeywxTlVd5ZHTvC3VJGvgjoR3McPG
-	VfFmE/KkHISYOttDIXC8loeImHDsLJASReNKi1mGvB2vpPCsQHuGz7juvsAdJkqFQH6blPFLxW0
-	Z8v4GIb9H8jg7GnGf8yLSUBF23ocmMkRZZQKyCMDG5NYPIHxYvXm4/ZOZOouWz6cP5HBFS7ocAr
-	wDKnPSIauvm7nSOtOE8Pqwl5afc0tEpfXSo/aISyYrdJIllaLQgbrfhpzULvSI3UxvgYQmiOB1M
-	8YMaBm+pF5POXsVTS1efCvhJVPaapT+//wLHLGM6gp1ftPQs54pckQbiofOBdUtJapLTyyxsxzG
-	ToPxxHmE1yisxPbne184zQZyMYS
-X-Received: by 2002:a17:90b:57c3:b0:395:8124:ac53 with SMTP id 98e67ed59e1d1-395c4fa443fmr21606911a91.6.1787556007825;
-        Mon, 24 Aug 2026 00:20:07 -0700 (PDT)
-Received: from ghostoverflow.. ([1.145.153.192])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-395e4af750esm9003810a91.11.2026.08.24.00.20.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 00:20:07 -0700 (PDT)
-From: Lilly Aronleigh <lilly@aronleigh.au>
-To: lilly@aronleigh.au
-Cc: chopps@labn.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	herbert@gondor.apana.org.au,
-	horms@kernel.org,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	steffen.klassert@secunet.com
-Subject: Formatting error, apologies
-Date: Mon, 24 Aug 2026 17:19:47 +1000
-Message-ID: <20260824071947.297893-1-lilly@aronleigh.au>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CAFrrV-NeRaP=0k5a1b+6oNOCz0qBUuFwCo2xxC3bDc6XR+wmsA@mail.gmail.com>
-References: <CAFrrV-NeRaP=0k5a1b+6oNOCz0qBUuFwCo2xxC3bDc6XR+wmsA@mail.gmail.com>
+	s=arc-20240116; t=1787556111; c=relaxed/simple;
+	bh=KZLL9l7vBSgzHCJ4Pzxm9xVyGvQf3zaSoWNYHRdZzK8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NHpaKKs/6+zNEVXshtOA0Qjw1z15TphaymilIpHFBsRzOwRccVfy1bZylLh2Ls/KBQyFRJ2t8ajP1BirQYGGx50kzgtiqxL8iHe7iYJfwqs1FA08JMp64fDCvKLgtd14nKwKHfaQDh+T3O1swhmlLvjRUV87f4BWEMxt7g51DKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=18.132.163.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: esmtpsz11t1787556090t775b4900
+X-QQ-Originating-IP: odfNvXbq3q4F+a6Ae+gUqcQnu5FVHHDO1Oztdp2ddH4=
+Received: from w-MS-7E16.trustnetic.com ( [122.233.170.62])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 24 Aug 2026 15:21:23 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 3996461450332086053
+EX-QQ-RecipientCnt: 13
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org
+Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Fabio Baltieri <fabio.baltieri@gmail.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net] net: wangxun: use BIT_ULL() to prevent shift overflow on 32-bit archs
+Date: Mon, 24 Aug 2026 15:21:19 +0800
+Message-ID: <45F5565CE6AC4329+20260824072119.48399-1-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,4 +47,75 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: NhdiEwnVOUqESVJ3VD6pDQ2Br+to/uSEuWCAqosAQUcEft4JVXQI/I9g
+	kBEEG0ZSvZoT+BcZG3eF5RynzB3jNACYOfa0d/L5bcw7lclsKokOE6IEq2xcCUV20okp+Fm
+	7OfvzJFzFj965Cd4FTjB13CDRW9DEzB0IMKtdy2xOXSwLrYJowJiIhAa4mGz/+4lrGf7Ckj
+	ivbguXghh+83czSy10BIgfkX5BJn5UaIbJBjhf2qxuwsLXCfWp9blQBE9ziZJij15W4x/rQ
+	qpBrb/m0BozPl20JhL4GSnJWejHkJsEhU+Y+2f+oJMqJhxPMKaQnX/VOEwGV8aEU7SDV+Hq
+	M6z85nDkrRUCxfHvn97/NvRkpVU1tPu+JfITkcGhzF29pepN97saAVR+3fj1IDMia3pisSH
+	kT6VRwJE1xhqE3e9IzOKvSnt8VxpKx6DTMVVdGx8Jkp0Hzn46hbC172Bb6+IRDHb7Tn2Cih
+	gNmm+37N7JXTOl5Xm6dnixSjdzqM8ZsgrH+jLfOHLoFfYm7YuZfHIahEwMabUkfY4sIjU31
+	yjqGAfh7a0mhK7Gs7H7ggd1TnH9Px9V11dYr2yZViKqXCiHq/wqc0122/btVUoV1fTafInD
+	TSPHVj4wacy6I+1bsxFPQ7RIre8sXBnTdeTtjATlZSCZvUgF4xpQIMDzNahjAxgMSPZNyN0
+	DbJHR23Mf/8ReYPr4TQbbwimOCersrNqUqe4a+fb8jncczaY8E+HdxfdrtZjdEASEpyI/dD
+	wSFYwqckb0udayfsiJ50jtW5j4bXYxCAEKqADLRXGlj5HIKl7o/l5jHSJT9wtl16F7GX3WF
+	Mq0zzmqOJS1J/q/Xm+KTAGSTSDge8xMz5i8VICGTk7BMch1qflj7i2Ov2MPAaFXf2fTrP7Y
+	eR4+60za1muEP3XxI5atNMfoRN9vr9f0iIK7lPM0Xm/HhRh+jQDc0zwR02KTQw6pwB8VaWp
+	BkY+OSFH/CMdjQA1Aa3PJV8vvuawKsJBLmuDnnTYJVHhE5ucHYvGfBP3932WgkPZhX4/s6I
+	N4HvmCz5tg0Lum9r1rnMY8/cZph6Tvhh/G1CSCj7mNX/yt9nEjL7jK44Q4GTv0lfsU4eYEe
+	g==
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+X-QQ-RECHKSPAM: 0
+
+The macros TXGBE_INTR_MISC() and WX_INTR_Q() rely on the standard BIT()
+macro to generate interrupt masks based on the queue vector index.
+
+On 32-bit architectures, BIT() evaluates to a 32-bit `unsigned long`.
+Since the number of queue vectors can be up to 63 on txgbe devices,
+performing a left shift of 32 or more results in an integer overflow
+and undefined behavior. This causes incorrect interrupt masking and
+unmasking logic for both the queue and miscellaneous interrupts on
+32-bit systems.
+
+Fix this by replacing BIT() with BIT_ULL() in these macros. This
+ensures that the bitwise shift is always performed safely on a 64-bit
+`unsigned long long` type, regardless of the underlying architecture.
+
+Fixes: e37546ad1f9b ("net: wangxun: revert the adjustment of the IRQ vector sequence")
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+---
+ drivers/net/ethernet/wangxun/libwx/wx_type.h    | 2 +-
+ drivers/net/ethernet/wangxun/txgbe/txgbe_type.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+index 65e3e55db1cf..0520288d18ab 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+@@ -1427,7 +1427,7 @@ struct wx {
+ };
+ 
+ #define WX_INTR_ALL (~0ULL)
+-#define WX_INTR_Q(i) BIT((i))
++#define WX_INTR_Q(i) BIT_ULL((i))
+ 
+ /* register operations */
+ #define wr32(a, reg, value)	writel((value), ((a)->hw_addr + (reg)))
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+index 877234e3fdc2..fddcb011fa2f 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+@@ -303,7 +303,7 @@ struct txgbe_fdir_filter {
+ #define TXGBE_DEFAULT_RX_WORK           128
+ #endif
+ 
+-#define TXGBE_INTR_MISC(A)    BIT((A)->num_q_vectors)
++#define TXGBE_INTR_MISC(A)    BIT_ULL((A)->num_q_vectors)
+ #define TXGBE_INTR_QALL(A)    (TXGBE_INTR_MISC(A) - 1)
+ 
+ #define TXGBE_MAX_EITR        GENMASK(11, 3)
+-- 
+2.51.0
 
