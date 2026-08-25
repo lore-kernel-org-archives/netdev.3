@@ -1,256 +1,92 @@
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FE624028C0;
-	Tue, 25 Aug 2026 12:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDCA4028E2;
+	Tue, 25 Aug 2026 12:13:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787660015; cv=none; b=cDJjwiVXuicQrlg6dUx+QJ8s7O7KgF+g6X+1BglgVgmYn31MpoIWtHXWycIFahJCcN6Paagvy7AkW7Nks86mN8Dfqlei2HqvcVUIeKdn8BFxMP78cHKJEejX4TTwWTB60EGxRFM8a5AjnPTC1Cm2/sSisgxJh/rfEHKyNu7fkrI=
+	t=1787660026; cv=none; b=tIw0dxudbBP0V21I/Q0+iHYIBWGYxkRVd2IMz0VuENwV/TA7BVRwpo+nWXWGzNdX2eacrAINF4O5mq+/0LtAmTeWodrKBWP0qgPALEsaqKQkEXAlfd5WZoVQsTcxVSid690P+/WbS/r+PjAttuQipf9lBiY68GLz8O82/cJBHsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787660015; c=relaxed/simple;
-	bh=yhKLfzID1f/dA9Xk/1pmQH6YYuXV9c5I6vqhpAJ1P+E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gvVHb5syyXJzYrj0NUmtZvcniGVehEBeAgXvVsG+/zSbmVIANrpLUAy1q4KYGNbGZw+gL8GbingDESvHVXBH5c+FJO7EE5dvo9v1GumQaYlANDVdRS9kkQ+phXp2wgyJir04itfuJiacmJbnLbcf8WAafT48m2PzY9T7RaBVM50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-c45ff70000001609-66-6a8d86e2f8a5
-Date: Tue, 25 Aug 2026 21:13:22 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, max.byungchul.park@gmail.com,
-	kernel_team@skhynix.com, torvalds@linux-foundation.org,
-	damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
-	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
-	mingo@redhat.com, peterz@infradead.org, will@kernel.org,
-	tglx@linutronix.de, rostedt@goodmis.org, joel@joelfernandes.org,
-	sashal@kernel.org, daniel.vetter@ffwll.ch, duyuyang@gmail.com,
-	johannes.berg@intel.com, tj@kernel.org, tytso@mit.edu,
-	willy@infradead.org, david@fromorbit.com, amir73il@gmail.com,
-	gregkh@linuxfoundation.org, kernel-team@lge.com, linux-mm@kvack.org,
-	akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
-	hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
-	jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
-	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
-	ngupta@vflare.org, linux-block@vger.kernel.org,
-	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
-	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
-	djwong@kernel.org, dri-devel@lists.freedesktop.org,
-	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
-	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
-	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
-	boqun.feng@gmail.com, longman@redhat.com, yunseong.kim@ericsson.com,
-	ysk@kzalloc.com, yeoreum.yun@arm.com, netdev@vger.kernel.org,
-	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
-	catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
-	hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
-	gustavo@padovan.org, christian.koenig@amd.com,
-	andi.shyti@kernel.org, arnd@arndb.de, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
-	mcgrof@kernel.org, petr.pavlu@suse.com, da.gomez@kernel.org,
-	samitolvanen@google.com, paulmck@kernel.org, frederic@kernel.org,
-	neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
-	josh@joshtriplett.org, urezki@gmail.com,
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
-	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
-	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
-	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
-	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
-	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
-	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
-	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
-	yuzhao@google.com, baolin.wang@linux.alibaba.com,
-	usamaarif642@gmail.com, joel.granados@kernel.org,
-	richard.weiyang@gmail.com, geert+renesas@glider.be,
-	tim.c.chen@linux.intel.com, linux@treblig.org,
-	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
-	chenhuacai@kernel.org, francesco@valla.it,
-	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
-	masahiroy@kernel.org, brauner@kernel.org,
-	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
-	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
-	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org,
-	miguel.ojeda.sandonis@gmail.com, neilb@ownmail.net,
-	bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
-	dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v19 00/40] DEPT(DEPendency Tracker)
-Message-ID: <20260825121322.GA23086@system.software.com>
-References: <20260706061928.66713-1-byungchul@sk.com>
- <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
- <20260821042143.GA40890@system.software.com>
- <825134a8-ceae-430c-b2fc-d1d0c7240f39@kernel.org>
+	s=arc-20240116; t=1787660026; c=relaxed/simple;
+	bh=BPqTzFySuXaMGgmAsoD7CPkggXOSjTbdKBOovyqrngE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hNTDa/JEwYJtbtbBWyO4tj2jaGZY1JBmbKadgKTO6fjkhIQCJ7h64iy7p25LnJRGGBREyA0cptZelpAWTnmYT2jNsBz9Bj5tX40Haw1RoUDX3Bim3WyeNmm5jnbK+t+zepkJsk23ZXPPafQLn0px5uQO3TCOZgWxnXv3Uk6Sru4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IHUo30jq; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IHUo30jq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787660024; x=1819196024;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=BPqTzFySuXaMGgmAsoD7CPkggXOSjTbdKBOovyqrngE=;
+  b=IHUo30jq/tPOe/Q+F3AfAUvNoXFgUEIlP+IN5h7xYQe0VCwLPiqESd7a
+   yN45mZjgu1wKFo+hs0RbtDCOd2dZkMeexq6idO/FZ0+yeKuQo3rL4m5F6
+   gSUJhinJ/qDSyrh2c4sDEOLKFALEvhA37XOrjRybpowSoXB2dYCLkrfGQ
+   XBm6juES9czrj3pmyKHBSBvW1K5s5X5vo4kjggmzmQgBnYAzQK7V85NzL
+   fr3+l0NlwCCn+ABiT1ZHgBfaH5j6a1Yq1C7uqgjxc2R/Br37zn9WYrKsB
+   1CZc2P6B4oCqdxTJg9dh1hU0KzXcuqSQz6eKBae3jFa6Dmmtqn+jtA9ZX
+   w==;
+X-CSE-ConnectionGUID: UZ4f3WTOQGKN1okn5sybzA==
+X-CSE-MsgGUID: SZrp7jbSS6iQwU8VGvJOWQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="88327262"
+X-IronPort-AV: E=Sophos;i="6.25,242,1779174000"; 
+   d="scan'208";a="88327262"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 05:13:43 -0700
+X-CSE-ConnectionGUID: EiOGuw5fQraGTHU7MR3K0A==
+X-CSE-MsgGUID: /3VGv8cIQ4iCr/3zvvu75w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,242,1779174000"; 
+   d="scan'208";a="272512677"
+Received: from junjie-desk-dev.bj.intel.com (HELO junjie-desk-dev.tail2c02c1.ts.net) ([10.238.152.71])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 05:13:41 -0700
+From: Junjie Cao <junjie.cao@intel.com>
+To: Fernando Fernandez Mancera <fmancera@suse.de>
+Cc: netdev@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	dsahern@kernel.org,
+	idosch@nvidia.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: dropreason: add SKB_DROP_REASON_IP_TTL_EXCEEDED
+Date: Tue, 25 Aug 2026 20:13:30 +0800
+Message-ID: <20260825121330.338380-1-junjie.cao@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <9abd7020-90b3-45e3-84ef-ca31b760feaf@suse.de>
+References: <9abd7020-90b3-45e3-84ef-ca31b760feaf@suse.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <825134a8-ceae-430c-b2fc-d1d0c7240f39@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0ybVRiHPd+9dV0+KsrZcM5UUbPJxbnEN0aXSTT54hJjdCZGzVgnn1Is
-	sLUbjs0pg5UUxgwru0g7WBnXUdxYR10tNDoc7diKUIimItCMYauWuogClrJhCzHyz8mT8/7y
-	e96cHI6UO5i1nCp/r6jJV6oVjJSShlfVp94uO5ab4RlIhFH/JA13TVdY0FtraPDP6BHMRU0k
-	/B35mYVFpwvBKa+BhL867jEQ9nfRsDgWJCDaP0BC/a0xEjpd4wiCtnkEztYSBn6pspEwPLka
-	zCVOGryeEIJakwFBYMRJQGnDRQa8oQUC/M0BCm5WnSMg0tzGgqdhlAJT/zANLkuQhQvhARr6
-	xn+kIRQwMOB3l9HQXhkgQe+YocA5shFq6kYZcNknCBh2nGFgvH2RhmLTHA1DlkEKLgZ9BFzu
-	95AwePwYDdV/BBD8dHqKheaZOywEfigjwGV+CDqOGFkoa7xEQFNrmIagsZaA72amCKgeMjMw
-	39KLQFcZYcHipeDkgp6Bo7pTFOivzcZex9LGbH1JmNN9Tgm6obuM0F7XjgRdVexoujnFCM5Z
-	MyXcOIeFxvJ5Qjjenyp8bRxjBbN1n3C5dYPQ0P0bIVjbyhnBOm1ghfror+TrinekL2SLalWh
-	qEnfslOac3h6++7Tj+932PxkMTr8cAXiOMxvxu4raRVIsoTD33xJxJniU/C13lImzgz/JPb5
-	ImScE/kMHLxeEstIOZK3PIJP+N1sfPAA/xzuHD3KxDtlPODrkTXxjJz3IBxuWS6S8Qm4r2aS
-	ijMZK12oGyLjeZJPxi33uOXr9bjUZlpySfgteMR2Zqn+Qf4x/O1X7iUv5mcluLs8SiwvvQZf
-	bfVRVSjBuEJhXKEw/q8wrlCYEdWG5Kr8wjylSr05LacoX7U/7f2CPCuK/ejmQwvv2tH04Js9
-	iOeQYpVs52uVuXJaWagtyutBmCMVibKDhypy5bJsZdEBUVOQpdmnFrU9KJmjFEmyTbMfZ8v5
-	D5V7xY9Ecbeo+W9KcJK1xSgjuic5K5Tq7Es5b/iz6dJbm9DG7trVnx3IzAzwXV88cX/9P4nV
-	jjdSz+5yNbpe/P68r/p2kna9/ZXnn+3NfHqROvnerj2BdUlHBmSdngveSbv1k1s3pOu2TtgL
-	Jh49MXa14+DbT7nmd3zw+313Xv5UapjIUqdPpfQ0hJj0Dsmr7oRtXTsUCkqbo3xmA6nRKv8F
-	QULAa80DAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxbZRTHfZ7n9umlsctd7cbdZmasW1iW7C2ReXSGqF96NZkuZkpijKOR
-	u1HKy2wnDnUZpdbVMSdrbAktTMStW1bGECiOLc2QSQcDwptzDAoF7UBCEYeUhXdvtxj5cvI/
-	5/zP75wPhyUqB13P6rOOiMYsXYaGKhjFm3ss237/8uv0neHoFrBZj0MwFJbBb+YGBqLTNgZK
-	rlRQWHT/JAdbdbEMmu/mM9BZ6UUQitoQPJx3E7DWLzOwaA/IYXq2Xw4OM4JlfwCBs8tOoLfz
-	BoGKWjOGf6qWKIzfnELgGA5TKBozMzDpOYXANeKWw1iTFiZC12WwPDCK4e5MBIEnvIQh3HAC
-	waLTAN+V10jjzr8pzLd3EChydCL4fniAwNTYEILawCCCUd8cAv/FfAr3C30EesKr4NfoJIUW
-	RwGFia4SDH9VUSjL98ugq20cQanbjmCkz4/B8sMVCs7Sagbqh67JoWt8AUPQacfgrd4LIc8I
-	A62F5Vi6WXL9GA/uIguWwp8YHJev41c8SHhoPc0Il2rqsGDtXqRCxdkKJMzP2ZEwfd5CBGuh
-	lN6MTBLhi5pPhPOtESrMRe9QwT9Txgi3y3nh3FdzWDjTvk2odw3I9736nuLlVDFDnyMadySl
-	KNLMU/sPF206es0XInnI/PRJFMfy3PN8z43LOKYZbjP/S5OFxjTlEvje3lkS02puJz/anC95
-	FCzhvBv5b0O35LHGU9wLfG2wQBpgWSUHfPPsuphHxbUhfuLCY5CSW823FIeZmCYSdOFsN4n5
-	CbeBv7DEPi4/w1t87ke74rgkvs9X8gi/hnuOb6i7hQvRKtcKkmsFyfU/ybWCVIaYS0itz8rJ
-	1OkzErebDGm5Wfqj2z/MzqxG0rN6ji2cuYqme7SNiGOR5kll2jun0lUyXY4pN7MR8SzRqJWf
-	HTuZrlKm6nI/FY3ZB4wfZ4imRrSBZTTxyjeSxRQVd0h3RDSI4mHR+F8Xs3Hr89ATDbuzK5Pb
-	f276aIipTeHeUree02SXvuY9UWC6c7vyj6RgYgLZMd4hnt61721D1drXg5tn8o7vTh38QBb0
-	NiUm39ubu/9FXHwxsGbw3lDbg2cPft4iFrwUGL5qflC21r6Rvrunv3FhXbnNrXp/a117h1aj
-	jnRCt+wb7f2+eK0hoT+iYUxpul1bidGk+xf0qtPwqAMAAA==
-X-CFilter-Loop: Reflected
 
-On Fri, Aug 21, 2026 at 09:56:05AM +0200, David Hildenbrand (Arm) wrote:
+On Tue, Aug 25, 2026 at 11:36 AM Fernando Fernandez Mancera
+<fmancera@suse.de> wrote:
+> The patch is sound but isn't this drop reason a bit redundant? I mean, a
+> simple check on traffic should have shown to the user that TTL is been
+> exceeded.
 
-[...]
+Checking traffic for TTL presumes TTL is already the suspect. The reason
+string is what points the investigation: in the linked bug, IP_INHDR read
+as a broken header and the capture time went to checksums -- RX offload,
+tc csum actions, both libvirt firewall backends. Nobody filters on TTL
+while the kernel is saying the header is bad.
 
-> >>> Q. Why not build DEPT into lockdep?
-> >>>
-> >>> A. Lockdep is stable, battle-tested code. I chose separation because
-> >>>    while DEPT borrows BFS and hashing ideas, the wait/event model
-> >>>    requires rebuilding from scratch. Lockdep was designed for lock
-> >>>    acquisition order — retrofitting it would risk its stability.
-> >>
-> >> Why can't this just be some configurable extension to lockdep
-> >> (CONFIG_LOCKDEP_XYZ) until the feature is stable and can unconditionally be
-> >> enabled along with it?
-> >
-> > Answered?
-> 
-> Not quite. I don't understand why this must be a completely separate machinery,
-> even if, conceptually, it would do more than traditional lockdep.
-> 
-> Is it either DEPT or LOCKDEP in current configurations? Can both run at the same
-> time?
+dropwatch and perf report the reason without a capture; that only helps
+if the string is precise. IPV6_NDISC_HOP_LIMIT and TCP_MINTTL are as
+visible in a capture as this one, and both have their own reason.
 
-Yes.
+The exthdrs.c hunks also cover three drops that report no reason at all.
 
-> >
-> >> I don't quite buy the "would risk its stability" argument. A lot of stuff we do
-> >> "risks stability", every day :)
-> >
-> > That's awsome anyway :)
-> >
-> >> Is there another good reason (incompatible with X, dangerous with Y, cinfusing
-> >> Z) why this really must be a separate thing?
-> >
-> > Roughly:
-> >
-> >    1. Similar or less effort is needed for the new one - retrofitting
-> >       lockdep is not easy and big changes are required since the
-> >       reusable parts are not that big.
-> >
-> >    2. Even though you didn't agree, retrofitting it would risk its
-> >       stability.
-> 
-> Well, I don't buy the stability argument, really :)
-> 
-> Retrofitting effort for lockdep is an interesting point, though. Lockdep
-> maintainers would have to make the call here regarding direction and feasibility.
-> 
-> [...]
-> 
-> >> But I am not a locking maintainer. I think there was plenty of discussion in the
-> >> past, so I might just be raising points that were already discussed in the past,
-> >> but I really just read some random pieces of earlier discussions. (ideally
-> >> previous discussions would be summarized here)
-> >>
-> >> Long story short: we are now in v19 and I think there was pushback in the past.
-> >> Did the opinion of locking maintainers change, or is there a way forward to
-> >> integrate this in a way that would make locking maintainers accept this?
-> >
-> > One of locking maintainers who I met in an LPC told me that he agrees
-> > with the direction of DEPT and supports DEPT, not officially tho.
-> 
-> Hm.
-> 
-> >
-> > What he and other people are concerning w.r.t DEPT the most is, false
-> > positives, which is the most important issue for now.
-> 
-> Thanks for highlighting that. What's the main reason for false positives? Is it
-> something conceptual that is mostly impossible to solve, or rather just
-> implementation work to cover all edge cases?
+> In any case, net-next is currently closed [1]. Please send this after it
+> re-opens.
 
-It's because of lack of annotations for proper classification.  As Willy
-mentioned, different call paths for various usages should be annotated
-with different classes throughout the kernel.
-
-> > At the same time, I think the most important thing is to make DEPT
-> > useful in practice especially with folio locks involved.  Actually, I'm
-> > planning to share DEPT's true reports periodically to LKML and work with
-> > people who believe DEPT can make things better.
-> >
-> > Any advices will be welcome.  Thanks for your opinions.
-> 
-> I think we must come to some conclusion on how to proceed with DEPT. I see the
-> following options:
-> 
-> (1) Don't merge it and carry it OOT. Shame if it delivers real value.
-> 
-> (2) Merge it (after proper review and acks from relevant maintainers ;) ),
->     keeping it entirely separate from lockdep.
-> 
-> (3) Integrate it with lockdep on a high level, giving us a single locking
->     dependency checker, but mostly letting dept have a separate implementation.
->     Look into possible merging afterwards.
-> 
-> (4) Retrofit and extend lockdep to really have one mechanism.
-> 
-> As the saying goes, it's hard to teach old dogs new tricks, but in the end
-> taking care of two dogs is likely harder than only a single dog? :)
-
-Or it's better to train a unmatured hunting dog than to teach a pet dog,
-how to hunt, for better hunting, even though the pet dog might
-eventually become able to.
-
-> I tend to favor (4) (or 3 with possible future work to achieve 4), but I am not
-> a locking maintainer, so really they have to voice what to do.
-
-Right.  However, thanks for your opinion.
-
-> I do see value in DEPT (even if the folio lock might be handled differently).
-
-Thanks!
-
-	Byungchul
-> 
-> --
-> Cheers,
-> 
-> David
+Will repost when it reopens.
