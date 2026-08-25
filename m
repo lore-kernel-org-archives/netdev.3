@@ -1,164 +1,174 @@
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv2-f0.google.com (mail-qv2-f0.google.com [74.125.230.128])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE72184524;
-	Tue, 25 Aug 2026 07:21:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787642479; cv=none; b=Rt/Z5LleUHqaipVM/+44ktJbU6zb6ji3jXD/RtrHAZSq0EwnM/LpvpNkO3A8a700CrK9DaB33jxpBYkEKYI0+7on+6exhvEtZ37eMdqYjnwaPnhWwY4Fw0eJ/U7RJlmDFooVx+ayxDPHSlDrAbOhfsL8mbUK4I7dyWn/X5RDucc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787642479; c=relaxed/simple;
-	bh=5Kl2jQjO9cECsTxKcLbbCtTyLed0eNcKwzR7VgPB6rQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cUrN5V1t1MRgkZxGjeVuM87atFv895MAvyL5o9zmBZVzVWzmU62VtVG+Yrr3BDwEa4DxESe6mt9/UppKpEGLWldbfCdSxsPDQOIXcp3XNv/3bYWcZxGe8zIvHuGzpzzj+1TlDKd1EjxRHZFleJ+7jzMJEFjAphVcBtRvZ85BsuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=XrFuUPIb; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=SFWvNA3j; arc=none smtp.client-ip=80.241.56.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE6B23507B
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 07:23:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.128
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787642636; cv=pass; b=t6oIRmZCqWuHwYL1THZ8UFsSUJpeXYdFs0a1mNk0bsUY6VAcJIC1RLgar3BnTgmFfLKwHzXH2/ziBM/N0seH3VkNJBF/GMtErLJWrhA0R3+7FRdTQOSn59xrxvhmYzMkBQ6UlIi49q1rKypHQ2uODqm84phVTTJ1n6BjrEDfcSM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787642636; c=relaxed/simple;
+	bh=LKEk+XM9h7fe2kCkYfRVhZVfEixMcq8nCj3l9CLhCnI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Lv6YtcsLCgk+kCI0sNHdOz7VwlOmtHLVTedl3MAIAXg69X9IczvPSdAlFHmtrg5kIUhiKmd6OCuswd3PIRL2fHiVotT1UINJzogI5H1AfVQohsW5KrHIYUV3vHuC6p8Kfs6y3m8fq+NXNLMMGC5BxuCDDm4LmFz28a+C6G+6N68=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m7TW0Oiw; arc=pass smtp.client-ip=74.125.230.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="XrFuUPIb";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="SFWvNA3j"
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4hTfMt6MC1zMlGP;
-	Tue, 25 Aug 2026 09:21:14 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1787642474;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=wMnwRlqtnUgyBUhAfXE3j+Zlk5aWVxnyqISZrf06fZk=;
-	b=XrFuUPIbGQYlsW2mqjnSjSQ+ID7cnb5QSOqdkRhv/7zX9Po37Yqmnhg8xoS94LRBJwTVo/
-	+CWURboN10BMt8iQ4iIwYbwN9jkPBaOR4kx+TIssPlaZaNeeZnF17W3VmJ1NH0Ksh2l9i5
-	TeetnxSdqmXwJg2sj+MZ+KfmQ4FR+E0XWR8tb6Ir2wxLroAkq3HrW81+/dnKoQCSMIDh7H
-	bZoK9OwF0w/eFTDUvdllcx9to7SFW4Dgxw7+1HFZG7ruQ1fOrWirqmEM7F8IBwq9WTh/r3
-	0EW0SfmUPpo/u3M80Z7Y85a1iPmHyVT4w/0mu7h8iykbgU5tJcwLtA8jio/S9A==
-From: Qing Ming <a0yami@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1787642472;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=wMnwRlqtnUgyBUhAfXE3j+Zlk5aWVxnyqISZrf06fZk=;
-	b=SFWvNA3j3nSLSXoqDjES+eJR9qLjgbssO3KM2V2xWHym5+fX+ekJZYasHFGgSi6u1zJnFT
-	i6AtDMowGvwqOe4OLmjIp7fXTl5hkoMT8K+pznUnyWd931dNI0dZ0MwMVFIG+uxjPOjlLo
-	C3zXdB9JYLSI0on5T1NbVQ7N5oj+rkOllvvJHb3wHFtU5N/OhSVSk9/drZNZnEAmbUou3K
-	xyP56XkW6+N7vJB/s06WAonjVkMVbCu67etoDM/GahKYm2q/wKvku7WP3QeFCA/m7iKAlT
-	w9fnNiqvpaEwjXlNc9mafZ+Zp7Fcddwzk2jdZmIZkG7tDD3zX8M1XXm8C5nenw==
-To: Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Dmitry Safonov <0x7f454c46@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Qing Ming <a0yami@mailbox.org>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] tcp: fix AO info use-after-free in tcp_ao_connect_init()
-Date: Tue, 25 Aug 2026 15:20:33 +0800
-Message-ID: <20260825072033.6921-1-a0yami@mailbox.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m7TW0Oiw"
+Received: by mail-qv2-f0.google.com with SMTP id 6a1803df08f44-908600e9d17so12013386d6.0
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 00:23:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787642634; cv=none;
+        d=google.com; s=arc-20260327;
+        b=CWQOQmFwyrtQVQb0LQAUJA3Wyu4KtTv8Oci6oSikv40u9M5Lp+4pdVViiDiwPaF43E
+         IdphzmuTU7T6I+vY5rURNK5uG9GxmHf0q/ruHXMMZf4qKPvpOpSY6I0Vm2zNPIocYRtk
+         RS2XUgIgKzdfBfcaT1d3ou8JhO0b/Uz5hBDWYVC08cq2wOr70udXUhNOR9JaNF0h4nJ3
+         NZbL80hd1k8d/od7eDXVbrn9KQQVIUWvMOXNgB8lIghMgngajvA11ZJl05MTQ5YJ6xW8
+         QdEtpW5E5IZ/t2gMyCEX8KvdJdpzI+GQ6WYCY58ylhrjeOXwEOSgd7BHDamOaCZ5s4Sx
+         CaDw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5MF/MBTrCfSXWzKNdT3Bf9ZX+eb/bc/7p3w8ZeuQtQM=;
+        fh=iInzLF7b+nlVP/BHWYHJ5C/qHE0dgNX6Ghuy5Ra7ODA=;
+        b=hLCvtWXpEI1Ocy4eACjaUbVkd29SEzfdZASgYZUunUeTm7heIZvL8RWdjVEa34gYSw
+         WBslVB22pneJyAntniUKsKYu26UzQ74nk3WCkCCsVgWH+BkngHFnE/9KHf34kKB2kNNR
+         uQRrbrrE3KxWW/Gb0Fn51IRHOpLeMj/lHzbd6Z+e1kvmcR64Y9CX5/bdzd6gw1zgvMVl
+         mQRynFvO605GRCQ9Rj3HQgWTbNG9DDirdYlvxYWPqXwAmsnFST6obks0YJDqZz8xO3DV
+         qmACqZYlcaUZHwnZbZjqr3uVn2NH8hwCPFrehWrC2CWIOM/8F9+mB8huSLDaFMimfY1g
+         ZMhQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787642634; x=1788247434; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5MF/MBTrCfSXWzKNdT3Bf9ZX+eb/bc/7p3w8ZeuQtQM=;
+        b=m7TW0OiwC2hjbVgQ6wqioYKsc2iP0J1bwn3brUdbzWGFgvI+dh21kh124OUGDV0GcT
+         S5SKm4y7Km0UXwmSAKl5/dUFRB4hIK2a7kGyF/dWD25wX5eYVidQ6/AEbB5CEP8l0BFz
+         dwM9pX06jwLP70qYxaU9xTXsr3hR5Bp2iHr1WC0KwAP+X9g0sxkoKmLEdyqCc825E0nb
+         ZKPpImuciDojHrSLIcB0UAKgHAAiLi5hhUYmLRx//WG2+YsvHVc01ICG/E7VlMkYsfvg
+         ZGB8gEL7lDPrnsrmH02KhEySq30wN60dGg6tYJ9PvL+GI9gijIrspDGFrulgYylca45u
+         UxPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787642634; x=1788247434;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5MF/MBTrCfSXWzKNdT3Bf9ZX+eb/bc/7p3w8ZeuQtQM=;
+        b=CU3Dk7T4wWGhKY6Ha/nqXmOH2C5VSGMpJmqM7SJj4zq73w1IM5RfpPFzzy8g6p8YiL
+         GGNh3xO53B15ynRLW4yMKD78l4bTI7aP+ZNWMExF+fPDirOJ6N4yZkbub+9VCuK+og/r
+         fLGbMtNHJrr8xts3G0oENzNxxVGl2ovF5xDTJZVkaAGt/eIg27MtLe7J+Wi0HqyTV3Xm
+         bZQn4XgJmC0zXw9ibS575ugK0QOChXDij47/VW7BoratMZhZvw9c9Fo6sobo8zu0k+B9
+         7KcGHt5v/jAn24SEWOxgGvJrAj2AY3Q5vUKJqqKMl5X/CpcuG2i4KKyg7p/HYv0TTMLA
+         kBlQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rp4uF2/d9IN8ES7DQZVqJ7mWfA7UUh0fQZKTg3+nXNpb3K0w5sLTvaEc33qAyXKK7jXwZQjrq4=@vger.kernel.org
+X-Gm-Message-State: AFuF++mcj3AoyvnJsxIGWO00B6W5Vb+mR49K/n3r20/bYB7+TlkUuCVJ
+	XV52A/ksatHNsjmpXmfVXahPiSydF8tG0p0NmHy9R5FiAqJrqxlcANfjqPw7XfQmZJnfrGvbPEe
+	XVXZyHWLowkNG+u7xQ5viRXrkuJ1knKA=
+X-Gm-Gg: AR+sD13zXgzBT9CiofVMJ9o0nI3NZMhoOuO+xNsWUMgDhvlUkr3894Wnfyl2dfXXnq2
+	sOThn+V53FswR2VpiFmBM5WqcEizzr+0F5VN2Qrl9Db6vLNKzueZ4uSCTyHUCEMnznaYj3x9g6k
+	WlgfxINRam16L7TLtRHeh2f4ee4E9zN5UioNxht+RZx7VjOJVE24IeLMVSIuJbhhG7OS8mAVrqK
+	G+yBanyXiz6IInNhSc4KvXe5aFTBvbP0sDQ9SXgcijcyE1Wu76EDPnGnuOgW6qyy/l3AgZDF+Re
+	yoi538orfSN2MJ3B2Iwh8PuWQ/MjLgAT44P+dNuPinnP8w==
+X-Received: by 2002:a05:6214:d6e:b0:8e8:7de7:ec20 with SMTP id
+ 6a1803df08f44-90cb77fb882mr44584586d6.4.1787642633883; Tue, 25 Aug 2026
+ 00:23:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MBO-RS-ID: 713e056c3bd2c8fd8c1
-X-MBO-RS-META: frbpemzubkhbkf7qz8nybgci1d84p3kq
+References: <cover.1786088695.git.petalzu987@gmail.com> <b58876297f7d45de008f2e94b6ecab8b2ed84d21.1786088695.git.petalzu987@gmail.com>
+ <20260808194001.853434-1-kuniyu@google.com> <20260809123335.GA2443083@shredder>
+ <20260824194741.215979-1-iprintercanon@gmail.com>
+In-Reply-To: <20260824194741.215979-1-iprintercanon@gmail.com>
+From: Zixuan Chai <petalzu987@gmail.com>
+Date: Tue, 25 Aug 2026 15:23:42 +0800
+X-Gm-Features: AcwNN1V7fPWMZRWXGdq9p6gRwqiXR-NY1tN3vV0gO8XykdUJsoEnFBXTgKeFLNg
+Message-ID: <CADTzadL++bLiuYUrzDYmTbEf+bb=hkT-bxBQYCtxZscF5Z6oxA@mail.gmail.com>
+Subject: Re: [PATCH net v2 1/1] ip6_tunnel: snapshot encap in xmit
+To: Artem Lytkin <iprintercanon@gmail.com>
+Cc: Ido Schimmel <idosch@nvidia.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Eric Dumazet <edumazet@google.com>, Ren Wei <weir@nebusec.ai>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-tcp_v4_connect() adds a SYN-SENT socket to the ehash before calling
-tcp_connect().  If TCP-AO is configured, tcp_connect() first verifies that
-a key matches the peer and the bound device's current L3 master.
-tcp_ao_connect_init() later resolves the L3 master again and removes keys
-which do not match it.
+Dear Artem,
 
-The socket lock does not stabilize the bound device's VRF membership.
-Detaching the device from its VRF between the initial validation and the
-L3-master calculation in tcp_ao_connect_init() can therefore make the
-validation succeed while initialization observes the default L3 domain and
-removes the only key.  The subsequent AO lookup then fails, so the no-key
-path clears tp->ao_info and frees it directly.
+Thanks for the detailed feedback.
 
-The receive path can find the socket in the ehash and load tp->ao_info
-under RCU before acquiring the socket lock.  A reader which loaded the old
-pointer can thus continue into tcp_inbound_ao_hash() after the direct free.
+I agree that the RCU-protected config object is the better long-term
+direction, and it also addresses the control-plane issue where a
+rejected changelink can leave encapsulation partially applied.
 
-The issue was found during a static audit of TCP-AO object lifetime.  An
-unprivileged reproducer in self-created user and network namespaces raced
-connect() with detaching a veth from its VRF while sending TCP-AO segments.
-It triggered the same KASAN report on two fresh boots:
+For the immediate bug, my intent with v3 is only to keep a minimal fix
+for the transmit-side crash that seems suitable for net:
+one packet uses one consistent encapsulation snapshot in xmit, without
+trying to solve the larger config / lookup / synchronize_net() questions
+in the same patch.
 
-  BUG: KASAN: slab-use-after-free in tcp_inbound_ao_hash+0x585/0x19f0
-  Write of size 8 at addr ffff88800bf88128 by task tcp_ao_vrf_race/232
+I have already dropped the headroom change around t->hlen, so v3 keeps
+that line unchanged and only fixes the xmit-side inconsistency that can
+lead to skb_under_panic().
 
-  Call Trace:
-   tcp_inbound_ao_hash+0x585/0x19f0
-   tcp_inbound_hash+0x677/0xa80
-   tcp_v4_rcv+0x1c3e/0x3ab0
+At this point, it seems there are two possible ways forward:
+1. take this minimal fix through net for the crash, and do the RCU config
+   conversion separately in net-next; or
+2. follow your proposed approach and address this as part of the RCU
+   config conversion.
 
-  Allocated by task 235:
-   tcp_ao_alloc_info+0x43/0xf0
-   tcp_ao_add_cmd+0xdf7/0x13b0
-   do_tcp_setsockopt+0x168c/0x2640
+Please feel free to choose whichever approach you think is the most
+appropriate and elegant.
 
-  Freed by task 235:
-   kfree+0x1b8/0x550
-   tcp_connect+0x252/0x4f00
-   tcp_v4_connect+0x1114/0x1720
+If we go with your approach, could you also please keep the following
+attribution tags?
 
-The bad address is 40 bytes inside the freed 128-byte object, matching the
-tcp_ao_info counters.key_not_found field.  The two runs used 1000 attempts
-each, reached the no-key path 366 and 411 times, and produced one and two
-KASAN reports respectively.  With this change, the same reproducer reached
-the no-key path 366 times in 1000 attempts without a KASAN report or oops.
+Reported-by: Zixuan Chai <petalzu987@gmail.com>
+Reported-by: Vega <vega@nebusec.ai>
 
-Use tcp_ao_destroy_sock() for the no-key path.  It unpublishes the AO info,
-updates the socket memory and static-key accounting, and defers the free
-until after an RCU grace period.
+Thank you for your time and review.
 
-Also drop the WARN_ON_ONCE() and its stale comment.  The VRF detach race
-makes the no-key state reachable during normal operation, so it is a
-handled condition rather than an impossible assertion.  On panic_on_warn
-kernels the WARN would turn this handled race into a kernel panic.
+Best regards,
+Zixuan Chai
 
-Fixes: 248411b8cb89 ("net/tcp: Wire up l3index to TCP-AO")
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-5
-Signed-off-by: Qing Ming <a0yami@mailbox.org>
----
-v2:
-- Drop the no-key WARN_ON_ONCE(1) and its stale comment.
-
-v1:
-https://lore.kernel.org/netdev/20260818162108.11456-1-a0yami@mailbox.org/
- net/ipv4/tcp_ao.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
-
-diff --git a/net/ipv4/tcp_ao.c b/net/ipv4/tcp_ao.c
-index 5094267447ae..cc2fb643119e 100644
---- a/net/ipv4/tcp_ao.c
-+++ b/net/ipv4/tcp_ao.c
-@@ -1196,12 +1196,7 @@ void tcp_ao_connect_init(struct sock *sk)
- 		ao_info->lisn = htonl(tp->write_seq);
- 		ao_info->snd_sne = 0;
- 	} else {
--		/* Can't happen: tcp_connect() verifies that there's
--		 * at least one tcp-ao key that matches the remote peer.
--		 */
--		WARN_ON_ONCE(1);
--		rcu_assign_pointer(tp->ao_info, NULL);
--		kfree(ao_info);
-+		tcp_ao_destroy_sock(sk, false);
- 	}
- }
- 
-
-base-commit: b70b7b71561f2be1183b6046964d950c2b203bfc
--- 
-2.53.0
-
+Artem Lytkin <iprintercanon@gmail.com> =E4=BA=8E2026=E5=B9=B48=E6=9C=8825=
+=E6=97=A5=E5=91=A8=E4=BA=8C 03:47=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Sun, Aug 09, 2026 at 03:33:35PM +0300, Ido Schimmel wrote:
+> > It's on my TODO list since last week, but I don't have the time to work
+> > on it right now. It's a very large change (see the geneve change) that
+> > is needed across all the IP tunnels, not something that I consider
+> > suitable for net.
+>
+> I'd like to pick this up for net-next, unless you have already started.
+>
+> The shape I have in mind follows the geneve conversion: a separately
+> allocated config struct hanging off the tunnel under an __rcu pointer,
+> holding encap together with encap_hlen, tun_hlen and hlen. xmit
+> dereferences it once and passes the pointer down to ip6_tnl_encap() and
+> the header length helpers. changelink builds a new one, validates it,
+> and only then publishes it with rcu_assign_pointer(). That also stops a
+> rejected changelink from leaving the encap half applied, which is what
+> happens today when ip6_tnl_encap_setup() runs before the collect_md and
+> duplicate checks.
+>
+> The synchronize_net() in ip6_tnl_update() and its siblings is a
+> separate question. It is there for hash coherence: ip6_tnl_lookup()
+> matches on parms.laddr, raddr and link while walking the bucket. It
+> does nothing for the header geometry xmit reads, so it can only go once
+> parms is in the config as well and the lookups dereference it.
+>
+> Two things I'd settle before writing code. Header geometry only in a
+> first series, with parms following, or everything at once? And the
+> order: ip6_tunnel first, since that is where the report landed and
+> ip6_gre builds on it, then ip_tunnel.c for ipip and gre, and sit's own
+> copy in net/ipv6/sit.c after that. vti has no encap and no hlen, so it
+> needs nothing.
+>
+> If you have notes or a half-done branch I'd gladly build on them.
+>
+> Artem
