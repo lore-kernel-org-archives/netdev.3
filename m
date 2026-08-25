@@ -1,232 +1,193 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mta1.migadu.com (out-38.mta1.migadu.com [95.215.58.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0783D3955CF
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 12:01:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018E13FA5FC
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 12:06:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787659303; cv=none; b=CFD3PTCxdNS0nUN9ULJVHuJ1HMjPZcB6UhRUTdIftWhUSNyxC3mrVd3hD87oWBPsnsgdtznSCt/7ULqGtxQtP+YizjlItKoS3N+naTm49miTrypyAbCxnjso9rQTz3egfWD0F3mb2e0fVQyGXAte2z/Q29QqP1f7TrJdsuQiPP0=
+	t=1787659582; cv=none; b=QBS145iCAdvT5Nklm2RYBeXHZyqqhqqZSbKn7GsclcR7U0+RZJb+LaY0e9Fheu9UwmrzzEWg1+PDdIIGrIvfd/pgRLxqQMdoo5UouzA8ckH+tyf5HvLdSBAAeis8MJ99CVrtC9zLPVEga1fzDInMLRTl3KBvqnraWl/xEVRHODQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787659303; c=relaxed/simple;
-	bh=OjXtOGl7YkY2Xqii5oTkMzXhJi4K525HjwElrZGr9t4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YQl7TfeeeeuEBRpl+mCN43xZEBtHddD7vM7fRUSK9Ec2+pVGG8IdJiK8UKla51JNYbHDSRgEMJNmi+2O6vMnYCTgSsedaxhRQSix4AkZKyjrsv1jljpSfTmrHWYlFmba8nTmvE0EYyLFbBORnSW5182CF/OHB0HM4sixJaepZiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bynar.io; spf=pass smtp.mailfrom=bynar.io; dkim=pass (2048-bit key) header.d=bynar.io header.i=@bynar.io header.b=QcesUw5p; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bynar.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bynar.io
+	s=arc-20240116; t=1787659582; c=relaxed/simple;
+	bh=5FDrETB7i2p17cGvyhsvkJzpk3GIkWjNBDAAcmzdn5E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BYRyZz2uI2gzQvctufQK5Xi37BVgrOLfTJ+LJ9hafdzpVomWXEditjqK54Bhk6O4qAwKy2qmXU28gx7792KppmSvadSX4Eyayy4X4ySGPWfc6ehGeVms027SCu5SIsO4eKz6IIYLwX4VsjsrqOXmuvV7wCbaM1Vn/PJvj4H+CjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FhWJhFv4; arc=none smtp.client-ip=95.215.58.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bynar.io header.i=@bynar.io header.b="QcesUw5p"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-69c600f76ccso7913220a12.0
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 05:01:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bynar.io; s=google; t=1787659300; x=1788264100; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rERM0Vs5Xf8JcQg7lXP/QBLbgNVt1jtxOkK+TRQufS4=;
-        b=QcesUw5pTJRHULvlFNXVKTVvROqMG+SWjysSvahk6BG5zQZ1E5F6xN9F3ZVSqRgQ3I
-         HJiesGiObWqdF4yR7ckguwH/E5ZDyvuY/CbGPgILQUMr98kGnWzs0KwTNGDk5j6MqZSc
-         oL+LfHmGQqEw8KP0HlzGJzmuj0JqboZhNodWvrkKuwKaY9j8yP15TXPmrKQt49WaeTbp
-         7EGIU32jZxP/YJws1Row8iQseuNWOXuyiNGk1AAqUjK98Jh7c8WB3pjkF2WxzIL9QPmG
-         rl/habOBh1gLAMwzOS2mwaveaXaCk38dZnNnC1uO2OqrSiif+L2YR88cZ62oCSlAEWBG
-         El6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787659300; x=1788264100;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rERM0Vs5Xf8JcQg7lXP/QBLbgNVt1jtxOkK+TRQufS4=;
-        b=O2tasUgkgec12Zr+BKXFIgUA/q6YKFTFppSvs2FJmqXnn/G3IQeJdFq+s8qiQhcNiG
-         JvFX2j8FHTIelZNQnelgOvrNL/bdI40LBmIPZSYnsxfmnZOdZlvQOV5J8ut/tWPTcWCW
-         ZSSK33mgC5iZsXIGJ209lleUItVvH01wVvziB171uVLDV94OEJGDIGByo15b4jDGH766
-         yMO8ZJoAo8feZXH1DA1cx8AafUEWtL1vxtYV9a080a/sqNbzGe7RM/VkkolM/Ns7B1ef
-         3Ioo4KNUxrgEJLzJrdjIK1Cbyy9LWHaJMOovrU/IlKv12aanjMpc1XQFDoYRsptQwj4r
-         XGQQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoE/PPTPPjgCPHVoTrt3hREU3zTnN91GlGMpEDPFx/2NFQ7Ysvr3nRoLYjyunJ23pzvM99Oeq0=@vger.kernel.org
-X-Gm-Message-State: AFuF++k1EiMcFrVdgyPi4Wj/qFswtl8258DYm6U39P/O0Bzqpv3p78DY
-	ni3PAXWyC+Teb6kHNWYdJm2yVtw8kZY2zVe7zRQ1VXaGi8VIM2o1bpeGacq2k2Ln9UtJ
-X-Gm-Gg: AR+sD10tdeQ0oeHW8XMjfVh83W1ev6HF+ze+92Q9XkqX7sH/jJnZzkgwSK07n3T18jP
-	/Ek1c/+5l9LymNUV5fLO9XLOfqSdURm8psu7p0wNvycwvlv3HDwWkWkGPNlYMCKTPijepCt+1Ky
-	aWl2VcGBKmKFSX2ucxKp22v1tl0h90q3jQLZrT/HY5zd0L57U3hisYqxbeE/aihy5rnKtumCB0N
-	ZpqZRE3GG+olM7J7vatjD+OgZxmsT/nssbLV93icNqa9TgeoPPpJJizknQM0czY9s+bgUeRVk07
-	BZV+mJG4h9lC5Mnn8IMmNL96x0iuRfiHod1ing3MpleiQoZoefNpWk6NCpMUip17o90RV5DcAk8
-	iAv1bcK/gQmtWbySBiF6SGSFBHEB1oJjGxPFVcqAw7IqYUP6egAXK2T6TO55GOO190ox9AfI9/4
-	VoJalc/FX8l/dxJXLyJZQa/+4H0dfZUEnRaunltoqbRgmm80+xYMr+57bEMbErAgj02yHCiitD0
-	8fEMcxgAY3pdchJfYUS2KQqsaZkQmCplfND1nAgrzOrwV84cflLy3YNNYEouUEZh7st
-X-Received: by 2002:a17:907:8e86:b0:c1c:4db0:8314 with SMTP id a640c23a62f3a-c24e5b55335mr630228966b.13.1787659299395;
-        Tue, 25 Aug 2026 05:01:39 -0700 (PDT)
-Received: from localhost.localdomain (cpc69057-oxfd26-2-0-cust39.4-3.cable.virginm.net. [82.6.0.40])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c249629929dsm1808384966b.23.2026.08.25.05.01.37
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 25 Aug 2026 05:01:38 -0700 (PDT)
-From: pamoutaf <paula@bynar.io>
-X-Google-Original-From: pamoutaf <pamoutafpro@gmail.com>
-To: achender@kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	rds-devel@oss.oracle.com,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 net] net/rds: fix out-of-bounds write in rds_conn_peer_gen_update()
-Date: Tue, 25 Aug 2026 13:01:32 +0100
-Message-ID: <20260825120132.51636-1-pamoutafpro@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FhWJhFv4"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=5FDrETB7i2p17cGvyhsvkJzpk3GIkWjNBDAAcmzdn5E=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787659577; v=1; x=1788264377;
+ b=FhWJhFv4OlJirn4S1DauoqveTBR2lxGfZbHS/5lIJgW0oQg99S3nDVP4rjgWFEhAdIUdNKwH
+ f6nZd9UIGb3YfQDLOmPb8/vcycbL0DqoWII1pS6AZX7qd8DP0RxCAOoX/7IehjTtp6PSf7s8PqH
+ wJo4ZTETvm63utZY68d2Bv/s=
+X-Envelope-To: netdev@vger.kernel.org
+Received: from [10.54.25.56] (210.22.144.162)
+	by smtp.migadu.com with ESMTPS id 35d1a3b9679a3320;
+	Tue, 25 Aug 2026 12:06:17 +0000
+X-Mizu-Trace-ID: 35d1a3b9679a3320
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <41a76b0b-b65a-4607-81b1-05b003151b09@linux.dev>
+Date: Tue, 25 Aug 2026 20:06:07 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf v2 1/2] bpf, veth: xdp: fix page_pool page leak on
+ skb-backed XDP
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org,
+ syzbot+237bbeed8dfe0699b7f5@syzkaller.appspotmail.com,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Simon Horman <horms@kernel.org>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Andrii Nakryiko
+ <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+ Emil Tsalapatis <emil@etsalapatis.com>,
+ Ihor Solodrai <ihor.solodrai@linux.dev>, Shuah Khan <shuah@kernel.org>,
+ Kuniyuki Iwashima <kuniyu@google.com>, Hangbin Liu <liuhangbin@gmail.com>,
+ Krishna Kumar <krikku@gmail.com>, Martin Karsten <mkarsten@uwaterloo.ca>,
+ =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20260824030257.263179-1-jiayuan.chen@linux.dev>
+ <20260824030705.266049-1-jiayuan.chen@linux.dev> <aowdem3KQVfvocE7@lore-desk>
+ <01fd251d-1134-4251-9c11-79943e367ffe@linux.dev> <aoxaNy4ep6ntUyR7@lore-desk>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <aoxaNy4ep6ntUyR7@lore-desk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-From: Paula Moutafian <paula@bynar.io>
 
-rds_conn_peer_gen_update(), rds_start_mprds() and rds_check_all_paths()
-all iterate conn->c_path[] up to RDS_MPATH_WORKERS (8) or conn->c_npaths,
-but c_path is allocated with only
+On 8/24/26 10:50 PM, Lorenzo Bianconi wrote:
+>> On 8/24/26 6:31 PM, Lorenzo Bianconi wrote:
+>>>> bpf_xdp_shrink_data() frees a released frag via __xdp_return() using
+>>>> xdp->rxq->mem.type, but that type is wrong for skb-backed XDP: the skb is
+>>>> cow'd into page_pool memory while the rxq still says MEM_TYPE_PAGE_SHARED,
+>>>> so the page_pool page is freed with page_frag_free() and we hit
+>>>> "Bad page state ... page_pool leak".
+>>>>
+>>>> Both generic XDP and veth are affected. A non-linear skb is cow'd into
+>>>> page_pool memory (skb_cow_data_for_xdp() -> skb_pp_cow_data() for generic
+>>>> XDP, veth_convert_skb_to_xdp_buff() for veth), so its frags become
+>>>> page_pool pages while the rxq keeps MEM_TYPE_PAGE_SHARED.
+>>>>
+>>>> We can't just fix rxq->mem.type in place:
+>>>> - generic XDP: xdp->rxq is dev->_rx[queue].xdp_rxq (see
+>>>>     bpf_prog_run_generic_xdp()), a shared rxq that other CPUs may access in
+>>>>     parallel, so we must not write to it.
+>>>> - veth: rq->xdp_rxq.mem is shared per-queue state that veth resets on XDP
+>>>>     teardown, and with GRO that reset runs without stopping in-flight NAPI,
+>>>>     so a type stashed there can be clobbered under a packet still in flight.
+>>>>
+>>>> Adding a check in __xdp_return() or bpf_xdp_shrink_data() itself is not an
+>>>> option either: without recording it somewhere, both can only guess the
+>>>> frag's memory type, which quickly gets confusing.
+>>>>
+>>>> So record it in the xdp_buff. Add a XDP_FLAGS_FRAGS_PAGE_POOL flag; the two
+>>>> skb-cow sites set it, and bpf_xdp_shrink_data() frees the frag to the
+>>>> page_pool when it is set, otherwise it keeps falling back to
+>>>> xdp->rxq->mem.type unchanged. No other path changes behaviour.
+>>>>
+>>>> Fixes: e6d5dbdd20aa ("xdp: add multi-buff support for xdp running in generic mode")
+>>>> Fixes: 0ebab78cbcbf ("net: veth: add page_pool for page recycling")
+>>> Hi Jiayuan Chen,
+>>>
+>>> thx for fixing it. Can we do something like the patch below instead?
+>>>
+>>> Regards,
+>>> Lorenzo
+>>>
+>>> diff --git a/net/core/xdp.c b/net/core/xdp.c
+>>> index 1d679e8fd649..4ed659b58141 100644
+>>> --- a/net/core/xdp.c
+>>> +++ b/net/core/xdp.c
+>>> @@ -433,16 +433,16 @@ EXPORT_SYMBOL_GPL(xdp_rxq_info_attach_page_pool);
+>>>    void __xdp_return(netmem_ref netmem, enum xdp_mem_type mem_type,
+>>>    		  bool napi_direct, struct xdp_buff *xdp)
+>>>    {
+>>> +	netmem_ref head_netmem = netmem_compound_head(netmem);
+>>> +	if (netmem_is_pp(head_netmem))
+>>> +		mem_type = MEM_TYPE_PAGE_POOL;
+>>> +
+>>>    	switch (mem_type) {
+>>>    	case MEM_TYPE_PAGE_POOL:
+>>> -		netmem = netmem_compound_head(netmem);
+>>>    		if (napi_direct && xdp_return_frame_no_direct())
+>>>    			napi_direct = false;
+>>> -		/* No need to check netmem_is_pp() as mem->type knows this a
+>>> -		 * page_pool page
+>>> -		 */
+>>> -		page_pool_put_full_netmem(netmem_get_pp(netmem), netmem,
+>>> -					  napi_direct);
+>>> +		page_pool_put_full_netmem(netmem_get_pp(head_netmem),
+>>> +					  head_netmem, napi_direct);
+>>>    		break;
+>>>    	case MEM_TYPE_PAGE_SHARED:
+>>>    		page_frag_free(__netmem_address(netmem));
+>>
+>> Hi Lorenzo,
+>>
+>> I tried this, but it regresses the bpf selftest with a page_pool ref
+>> underflow (0 warns on master, 45 with the patch):
+>>
+>>      WARNING: include/net/page_pool/helpers.h:297 at
+>> page_pool_alloc_frag_netmem
+>>      skb_pp_cow_data
+>>      veth_xdp_rcv_skb
+>>
+>>
+>> On XDP_TX/XDP_REDIRECT veth has to take plain page refs via get_page()
+>> (veth_xdp_get()) and then
+>> consume_skb(): the skb itself must be freed while the data pages stay alive
+>> for the frame. consume_skb()
+>> already returns the skb's page_pool ref, so what the frame holds afterwards
+>> is a plain page ref, to be
+>> dropped with page_frag_free().
+>>
+>> netmem_is_pp() can't see that: it only says the page still belongs to a pool
+>> (other users may still hold pool refs on the same page),
+>> not what kind of ref we're dropping. So __xdp_return() turns those plain-ref
+>> drops into a second pool
+>> put and pp_ref goes negative.
+>>
+>> That's why I kept the type in the xdp_buff and only override it in the
+>> shrink path, where we know the
+>> frag ref is the cow'd page_pool one.
+>>
+>> Regards,
+>> Jiayuan
+>>
+> Right. I can see the point now :). IIUC we are currently able to trigger
+> the issue just on xdp fragments running bpf_xdp_shrink_data() but the problem
+> theoretically occurs even for the xdp->data, right? (it is rallocated using the
+> page_pool in skb_pp_cow_data()). Is it better to always set this new flag when
+> the buffers are reallocated via skb_pp_cow_data()? (Maybe renaming it in
+> something like XDP_FLAGS_DATA_FROM_PP).
+>
+> Regards,
+> Lorenzo
 
-	npaths = (trans->t_mp_capable ? RDS_MPATH_WORKERS : 1)
 
-entries in __rds_conn_create() (net/rds/connection.c).  Only the TCP
-transport sets t_mp_capable, so for the IB/RDMA transport (and the loop
-transport) exactly one rds_conn_path is allocated.
+Hi Lorenzo,
 
-c_npaths is derived from the peer via the RDS_EXTHDR_NPATHS handshake
-extension header and is only clamped to RDS_MPATH_WORKERS, never to the
-transport's actual allocation.  A remote peer on an RDS/IB (RoCE) fabric
-can therefore complete the unauthenticated handshake and, by sending a
-second RDS_EXTHDR_GEN_NUM with a changed generation number, drive
-rds_conn_peer_gen_update() to walk c_path[1..7] past the end of a
-one-element allocation -- taking cp_lock, writing cp_next_tx_seq /
-cp_next_rx_seq and walking cp_retrans on neighbouring slab objects.
-rds_start_mprds() and rds_check_all_paths() are reachable the same way
-via a peer-supplied c_npaths > 1; note rds_check_all_paths() is a
-do/while and dereferences c_path[0] before testing the bound.
-
-Reproduced against an unmodified 7.2.0 KASAN build, triggered from a
-hand-rolled RDS/IB peer completing the handshake and sending two probes
-with differing RDS_EXTHDR_GEN_NUM:
-
-BUG: KASAN: slab-out-of-bounds in do_raw_spin_lock+0x55/0x9a
-Write of size 4 at addr ff1100000425a624 by task ksoftirqd/0/13
-Call Trace:
- do_raw_spin_lock+0x55/0x9a
- _raw_spin_lock_irqsave+0x12/0x18
- rds_recv_hs_exthdrs+0x34a/0x52a
- rds_recv_incoming+0x5a8/0xb33
- rds_ib_recv_cqe_handler+0xda1/0x12b6
- poll_rcq+0x8e/0xb1
- rds_ib_tasklet_fn_recv+0x1c4/0x348
-Allocated by task 10:
- __rds_conn_create+0x5b3/0x168f
- rds_conn_create+0x18/0x1b
- rds_ib_cm_handle_connect+0x486/0xa35
-The buggy address is located 44 bytes to the right of
- allocated 504-byte region, cache kmalloc-512
-
-The corrupted neighbour's cp_retrans.next is then dereferenced on the
-next line, producing a fatal GPF (RIP: rds_recv_hs_exthdrs+0x3ba/0x52a,
-KASAN: null-ptr-deref) -- a crash, not merely a detected access.
-
-Fix conn->c_npaths at the source instead of guarding every reader: in
-rds_recv_hs_exthdrs() (net/rds/recv.c), clamp the peer-supplied
-RDS_EXTHDR_NPATHS value to the transport's actual per-connection
-allocation rather than to the fixed RDS_MPATH_WORKERS ceiling. c_npaths
-can then never exceed the number of rds_conn_path entries
-__rds_conn_create() allocated, which takes care of rds_start_mprds()
-and rds_check_all_paths() -- both already bound their loops by
-conn->c_npaths -- with no change at either call site.
-
-rds_conn_peer_gen_update() is different: its loop is bound by the fixed
-RDS_MPATH_WORKERS constant, not by conn->c_npaths, so the c_npaths fix
-above does not reach it. It still needs its own bound, computed the same
-way as the allocation site and mirroring the sibling pattern already used
-in rds_conn_destroy() (net/rds/connection.c).
-
-rds_conn_peer_gen_update() and rds_start_mprds() (net/rds/recv.c) were
-both correct when written, with c_path still a fixed
-RDS_MPATH_WORKERS-element array:
-
-commit 905dd4184e07 ("RDS: TCP: Track peer's connection generation number")
-commit 5916e2c1554f ("RDS: TCP: Enable multipath RDS for TCP")
-
-They became wrong when the allocation was made conditional on
-t_mp_capable without updating either loop or the RDS_EXTHDR_NPATHS clamp:
-
-commit 840df162b3eb ("rds: reduce memory footprint for RDS when transport is RDMA")
-
-rds_check_all_paths() (net/rds/connection.c) is unrelated to that
-regression: it was added new, three years later, and was unbounded
-from the moment it was written, but is fixed by the same c_npaths clamp:
-
-commit 9ef845f894c9 ("rds: If one path needs re-connection, check all and re-connect")
-
-Fixes: 840df162b3eb ("rds: reduce memory footprint for RDS when transport is RDMA")
-Fixes: 9ef845f894c9 ("rds: If one path needs re-connection, check all and re-connect")
-Cc: stable@vger.kernel.org
-Assisted-by: Bynario AI
-Signed-off-by: Paula Moutafian <paula@bynar.io>
----
-v2:
-- Per Allison Henderson's review, clamp conn->c_npaths itself at the
-  point it is set from the peer's RDS_EXTHDR_NPATHS in
-  rds_recv_hs_exthdrs(), instead of adding a second bound check at
-  each of its readers. This covers rds_start_mprds() and
-  rds_check_all_paths() with no further change at either site;
-  net/rds/connection.c is unchanged from v1.
-- rds_conn_peer_gen_update()'s loop is bound by RDS_MPATH_WORKERS
-  directly, not by conn->c_npaths, so it is unaffected by the above
-  and keeps its own bound from v1.
-
-[v1] https://lore.kernel.org/netdev/213829b7380f1fe12aed2f2ae9ba33c2870addd5.camel@kernel.org/T/#t
-
- net/rds/recv.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/net/rds/recv.c b/net/rds/recv.c
-index cf3884d87931..c7f575bad91c 100644
---- a/net/rds/recv.c
-+++ b/net/rds/recv.c
-@@ -133,15 +133,16 @@ static void rds_recv_rcvbuf_delta(struct rds_sock *rs, struct sock *sk,
- static void rds_conn_peer_gen_update(struct rds_connection *conn,
- 				     u32 peer_gen_num)
- {
--	int i;
-+	int npaths = (conn->c_trans->t_mp_capable ? RDS_MPATH_WORKERS : 1);
- 	struct rds_message *rm, *tmp;
- 	unsigned long flags;
-+	int i;
- 
- 	WARN_ON(conn->c_trans->t_type != RDS_TRANS_TCP);
- 	if (peer_gen_num != 0) {
- 		if (conn->c_peer_gen_num != 0 &&
- 		    peer_gen_num != conn->c_peer_gen_num) {
--			for (i = 0; i < RDS_MPATH_WORKERS; i++) {
-+			for (i = 0; i < npaths; i++) {
- 				struct rds_conn_path *cp;
- 
- 				cp = &conn->c_path[i];
-@@ -210,6 +211,7 @@ static void rds_recv_hs_exthdrs(struct rds_header *hdr,
- 	u32 new_peer_gen_num = 0;
- 	int new_npaths;
- 	bool fan_out;
-+	int npaths = (conn->c_trans->t_mp_capable ? RDS_MPATH_WORKERS : 1);
- 
- 	new_npaths = conn->c_npaths;
- 
-@@ -221,7 +223,7 @@ static void rds_recv_hs_exthdrs(struct rds_header *hdr,
- 		/* Process extension header here */
- 		switch (type) {
- 		case RDS_EXTHDR_NPATHS:
--			new_npaths = min_t(int, RDS_MPATH_WORKERS,
-+			new_npaths = min_t(int, npaths,
- 					   be16_to_cpu(buffer.rds_npaths));
- 			break;
- 		case RDS_EXTHDR_GEN_NUM:
-
-base-commit: 564973a259ec76f2dad0853420e7034cc43994c4
--- 
-2.50.1 (Apple Git-155)
+Theoretically you are right, the linear part has the same issue.
+But in practice the head is always freed via consume_skb()/kfree_skb(), 
+which are pp-aware.
+If we really want to go that way, we'd probably have to touch quite a 
+few function signatures.
+As a fix that also needs backporting, I think the current change is the 
+minimal one that covers
+all the reachable cases(happy to hear a better idea.).
 
