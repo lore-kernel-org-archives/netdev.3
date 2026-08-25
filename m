@@ -1,171 +1,160 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35054570FF;
-	Tue, 25 Aug 2026 13:18:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2038A3F8234;
+	Tue, 25 Aug 2026 13:19:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787663896; cv=none; b=txLYUOdt6hu/ovo9TMRXss1V8K1lAgZFX3YaHov+C+Xy5B1ZxVlEf54QkgHgoDGWzW1c8fNnwwwixUhUSHNBJzKzAY3JVGnqeDHgUpVCBceh8Kv4+4yN290MmBp+xmMEVgvdNvKf9QewFKJTiigtab3dvLL9QIPNMKxWB5h6Jok=
+	t=1787663954; cv=none; b=IwG6QUtDeJS4YCYlVmGeR6wcRTMZbP90WUjPgubRwlV/SPUCqJvPIQJw2zu8q8n0pEyNsOyrm0KI5SdjVqJyfKdYoL8qZZc3qVzFYiYseukAUwehvDeQnx90yoNFRsRCdpmm0jbWBjelkilJ8b9h/pvHITOn0oezuooPJuDJWxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787663896; c=relaxed/simple;
-	bh=0gOON3ItOmuveT/fW/8lchZVPwBeCSUBxPOsMCTo7js=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FBVK6eSi11UAdf88rY9eroM/tIoLYnX68zuIcoyKWzoUXzxesODM3V7i0mDA5Og8I6nCdciptphNgAh1A2iCFVQJbN7zjE3/wgSCglYs+dH8xvzd5DAhJfZwCj13evA3bKToNo1yJM+JbnoVzSXVdjIpJaV8vP4yOmoF3PgRaiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ZytsgtAj; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ZytsgtAj"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67PB1hcf542716;
-	Tue, 25 Aug 2026 13:18:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=dQpWIo
-	RQGHQH8oA/J97xzxPdQHCjguckfCEAVqaXb9Q=; b=ZytsgtAjGrcGwPdZ84qNqy
-	SoZ9EI1Kbj1+GTq7LI1+wAezxvIfDxNq6/4Gm/ZXyOqNMqe48znQT3T7MhmxFWuS
-	7Jw9uNnYdg8R4uGobLzNLF+VosTkl2Glv4PHYrnxWq6UoJv5VHJL34vqa8Y5ouTO
-	huz9OA8VNH//AXkVNd2X9au7CEDuWLLhUVJSn/icqWekGR6cjzew/jHzn4vzYIYo
-	bNnAXWXPHsVIJisomt3yysw1JzbCQQNkqNBv/AamgyQb8zAHmqbwVN5M2Ao6z8Q3
-	XhKNbTtlSrjUlkoO2Pf4OUr6bW2gsusUG+97SiL93csKkAoI9ecx2LsRicqsOMUA
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4g716hrfj3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Aug 2026 13:18:04 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 67PDBGT3019949;
-	Tue, 25 Aug 2026 13:18:04 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4g7p3q4ku6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Aug 2026 13:18:04 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67PDI0A745351212
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 25 Aug 2026 13:18:00 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2A0432004F;
-	Tue, 25 Aug 2026 13:18:00 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B695320040;
-	Tue, 25 Aug 2026 13:17:56 +0000 (GMT)
-Received: from [9.39.20.186] (unknown [9.39.20.186])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 25 Aug 2026 13:17:56 +0000 (GMT)
-Message-ID: <f34135fd-ff30-4e9d-84ed-cf4cedbbcd78@linux.ibm.com>
-Date: Tue, 25 Aug 2026 18:47:55 +0530
+	s=arc-20240116; t=1787663954; c=relaxed/simple;
+	bh=5TVEsS2ZrICCGdu5fHn5ixwm1NzymOIz9G67H0t4KAU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sS5yxDhceynggZz4nDlKvnshPEPOhqnyzdUwKYchoGdZ8IxDMNSfJ3sEtqCNz1eNBiCJN+u0SSYd6guAXg8/I1XHs7O9DCkdxOfAq7IMiD14XsckXL2xYnKQ5ZhX676VN6CgA6lKbweyfedRLEo/eXXapbPKo4tVX8dRYmqbvVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-c45ff70000001609-0b-6a8d964b2220
+Date: Tue, 25 Aug 2026 22:19:06 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, max.byungchul.park@gmail.com,
+	kernel_team@skhynix.com, torvalds@linux-foundation.org,
+	damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
+	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
+	mingo@redhat.com, peterz@infradead.org, will@kernel.org,
+	tglx@linutronix.de, rostedt@goodmis.org, joel@joelfernandes.org,
+	sashal@kernel.org, daniel.vetter@ffwll.ch, duyuyang@gmail.com,
+	johannes.berg@intel.com, tj@kernel.org, tytso@mit.edu,
+	willy@infradead.org, david@fromorbit.com, amir73il@gmail.com,
+	gregkh@linuxfoundation.org, kernel-team@lge.com, linux-mm@kvack.org,
+	akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
+	hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
+	jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+	ngupta@vflare.org, linux-block@vger.kernel.org,
+	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
+	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
+	djwong@kernel.org, dri-devel@lists.freedesktop.org,
+	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
+	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
+	boqun.feng@gmail.com, longman@redhat.com, yunseong.kim@ericsson.com,
+	ysk@kzalloc.com, yeoreum.yun@arm.com, netdev@vger.kernel.org,
+	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
+	catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
+	hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
+	gustavo@padovan.org, christian.koenig@amd.com,
+	andi.shyti@kernel.org, arnd@arndb.de, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
+	mcgrof@kernel.org, petr.pavlu@suse.com, da.gomez@kernel.org,
+	samitolvanen@google.com, paulmck@kernel.org, frederic@kernel.org,
+	neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
+	josh@joshtriplett.org, urezki@gmail.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
+	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
+	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
+	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
+	yuzhao@google.com, baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com, joel.granados@kernel.org,
+	richard.weiyang@gmail.com, geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com, linux@treblig.org,
+	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+	chenhuacai@kernel.org, francesco@valla.it,
+	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
+	masahiroy@kernel.org, brauner@kernel.org,
+	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
+	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org,
+	miguel.ojeda.sandonis@gmail.com, neilb@ownmail.net,
+	bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
+	dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v19 00/40] DEPT(DEPendency Tracker)
+Message-ID: <20260825131906.GC23086@system.software.com>
+References: <20260706061928.66713-1-byungchul@sk.com>
+ <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
+ <20260821042143.GA40890@system.software.com>
+ <825134a8-ceae-430c-b2fc-d1d0c7240f39@kernel.org>
+ <20260825121322.GA23086@system.software.com>
+ <e0c589d0-d17b-48c2-8e1b-d41b69ecaadc@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 0/3] net/iucv: fix the recvmsg window update
-To: hexlabsecurity@proton.me, Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-        Alexandra Winter <wintera@linux.ibm.com>,
-        Thorsten Winkler <twinkler@linux.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>
-Cc: Hidayath Khan <hidayath@linux.ibm.com>, Simon Horman <horms@kernel.org>,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org, Ursula Braun <ursula.braun@de.ibm.com>
-References: <20260821-b4-disp-3a6e8695-v2-0-37597ff723a8@proton.me>
-Content-Language: en-US
-From: Aswin Karuvally <aswin@linux.ibm.com>
-In-Reply-To: <20260821-b4-disp-3a6e8695-v2-0-37597ff723a8@proton.me>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI1MDExMSBTYWx0ZWRfXxTLOkfaNMFj5
- 1cemYu/kZ6bpmDwFyC5XlZEDP3mKFYQ2zsDp/CzvEWLFT7ydYG4Qv8vpv32fVZSsXwK403/d6pR
- k7ozKYm97rVWRy2reE+Ud2OhxzpVaEA=
-X-Proofpoint-GUID: vSEVgRebmgPG2Joiy-NMpQABeXCs6UWq
-X-Proofpoint-ORIG-GUID: ymgsZEEDQQX3VsvAaDaCSLL_FGGCQrPS
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI1MDExMSBTYWx0ZWRfX9l4DFAapfelw
- vrlvtoBMTuyV1iZFfKPPZ+0+Z+Ki7Lry+B8JlIQsWR2a3FbgYzfvWWo4dDSBQbBI4AUr/QVWgpx
- gy1euejpG9WAQw8GgH5lpylm11HetX0TMAIQixAnhpY1mPYMm1UUOblEl5gAGu//0ry6B6G91VQ
- XptEY7fEJ7vfXGunzDvJJaWp+yT8xopu7LzIgOgXcS64Zdbti356awSFGzGkxqyxjHCIJdDxv0v
- 6h5qGaEQU7ICKJAvNKUiQzryYeWewDBbPJc3meqaUh8WtSGm6YFy4yf6Nhc9fvGLYT6Ij1uYMkd
- 1b8OV2VtiSgnQgJcNQ71E0TveSMEVktuft7CMQZmyFdx0ZpId2Zw53Q7yImnyoZMXOzNnNbflLA
- PBOLCIzyjNbETo5sDppNSp+//JVNv+ndXg3zLo5woe3oezFlb3pn4f2S4hbp8iCPK4H6XrNHswO
- OtDrDFThgia8PWLKYvA==
-X-Authority-Analysis: v=2.4 cv=H7brBeYi c=1 sm=1 tr=0 ts=6a8d960d cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=hpx9BEuE4PY9g35JE8AA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-25_03,2026-08-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0 spamscore=0
- bulkscore=0 adultscore=0 priorityscore=1501 clxscore=1011 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608250111
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e0c589d0-d17b-48c2-8e1b-d41b69ecaadc@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Sa0ybZRjN+13e76Oh8bPD+W4k/qghS9BtzGzuibqL8YefITEm/tsStbHN
+	KIOytYCgISvILhQ2RpHiisxyq0DLIAWmVLpVhIIOQgsOStOGLtIicpk2ATJwQ4pZ3L+Tc85z
+	zpM8D0/LLHgvr9bkqrQaRZYcSxjJcmLj/nTT1cy08sDrcOXiBZgqdjMwMl3CwPpmHQ0X+7YY
+	eGz0cFBTjGDL5UFg8hlp8Hvv0mDvKaZg8ecYgpoHcxgeWiu2LaF5CqbXlhDMuS8jeGw6C982
+	dmOILYQRuFpLMESu99Lw2+pDDCtdGHyjiwjq64wIogEXBV82dWIw1TsYCJqMFMxaowzUdPxI
+	wSNrOwejTUEGrPoUqBubZMFjm+fg1vI4C4tRI4bZ4UssfK8Pc+CYGUJwxbnKgCvwCjRcamZg
+	0vkNhoquXhb0desseN33WJiweRkYd3aw0DLto+BB2M9C99goDWvXksFbdZWFjpVGDNUrUQQz
+	tUscTLgtFLT+XctCm2sMg8eyG7pKzdxJpWi/aUfi5oYRiS33lrC4sXofi81lG5RYNbZf7DOH
+	OLH0ToATLY48sXRwmRW7W1PFpv4FSmyIrbKio70Miw2bf9BicKoff/DqKclbSlWWOl+lPXj8
+	E0lGqLKFPediC26HKzk9qmIMKIEnwmFSHSjDT3Gfy04bEM8zQgqJRk7EaSzsI37/IzqOk4Q0
+	Mj9SQhmQhKcF20vkq9lhLi7sEo6SnmA5js9KBSDjvz4X98iETooY7/fseKTC8+SXG3M7vbSQ
+	SvxPFqi4nxaSyXdP+DidIBwn9jtzO10vCC8T9+3hnS4iRBPIn5dbqP/23EN+avUz15FgfibW
+	/Eys+f9YC6LbkUytyc9WqLMOH8go1KgLDnyak+1A239rLfrn9A8o5v1wAAk8kidKt8+VKWMV
+	+brC7AFEeFqeJP2iyJApkyoVhZ+rtDkfa/OyVLoBlMwz8helr619ppQJZxS5qrMq1TmV9qlK
+	8Ql79ej0SLCzYejgKec+U9vb1pjDkH6sVlNReyw0GAmvVVZEnYGpa56NdXSo62tbSvWRPl3B
+	ewtvvDNJH2mLsEn6MxdsStNQUFFkfdMuD5a/m3j+hO+vUGKe7EZ/80pp0u7ffQOZ79ffnE0b
+	hPSPttDd85tcnm9msHfP0dSJnJNCbkQvZ3QZikOptFan+BcD5aJdswMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SfUxTZxTGfd/39vbS2O3aod6IWUxl0ZD4lWg8m4sf2RbvNDOaLEFnnHbj
+	RgqlaqsgW4xSaAZ1alttCa0ogq1M6mDlw3WujGAEUYitH6NRsJhciwQQo1QjUFhLYuY/J+c8
+	5/nlOX8chihiknmMWntQ0GlVGiUto2Rb1hQu2Ww/kbW82s5AsfEo9IRFCfxb0EJBdLSYgrO1
+	HhpizqtSKPaWSeBmt4GCwO81CMLRYgRvxp0EjL4pCmLWNimMvn0kBVsBgil/GwJ70EogFPiH
+	gKehAMOrukkaBq+/RGB7ItJQOlBAwYj7VwSOiFMKAzc2wnD4mgSmevsxdL8eQuAWJzGILb8g
+	iNmz4XxlfRy3v6BhvOsOgVJbAMGFJ70EXg70IWhoe4ygv3EMgb/aQMNTcyOBe+IHcD86QkOH
+	7TgNw8GzGJ7X0VBh8Esg2DmIoNxpRRB56MdQWFVLg73cS4Gv7y8pBAcnMPTYrRhqvN9A2B2h
+	4La5Esdvjrv+mAvO0kIcL88w2K5cw+vdiH9jPEnxl+ubMG+8G6N5zzkP4sfHrIgfdRUS3miO
+	j9eHRghfVJ/Hu24P0fxY9AHN+19XUPytSo6/WDKGeUvXEt7n6JVu3fCd7PMMQaPOFXTL1u6R
+	Zfaeckn2+yWHm/pOSY8hC2VCSQzHruR8fg8xIYah2E+4yNN1CZlmF3Gh0FuS6JPZ5Vz/TQM2
+	IRlD2JqPuTPhdmli8RG7mmvoOU4nWDkL3J1bHyY8CrYWc9YHDdMeOTuL6ygTp7MIm8aFJgdw
+	wk/YFO7SJJOQk9i1nKdZnM6azS7kWprasRnJHe/Rjvdox/90BSKXUbJam5ujUmtWLdVnZ+Zr
+	1YeX/rgvx4viT+k+MmH5E43e29iKWAYpZ8oDlhNZCokqV5+f04o4hiiT5T8fMWUp5Bmq/J8E
+	3b7dukMaQd+KUhhKOVe+KV3Yo2D3qg4K2YKwX9C922Imad4xZG4v2TX/i5IFXak7872z1Zlf
+	Pg6EijTN5KTPtmOoSL/z+23LtKldaYcaXdVKU2k0b05VimgNlnV7A2dM4WrX1XLVloX2Hzqp
+	zzIu8es76hbvdVZ9Onzh24ruPEPqb191bp+RHli3Rvza0pceOdCcc9r899SMzQvuh3J3Tww+
+	G+/A55WUPlO1Io3o9Kr/AKCz9huQAwAA
+X-CFilter-Loop: Reflected
 
-On 21/08/26 16:47, Bryam Vargas via B4 Relay wrote:
-> v2 answers Jakub's reviews of v1 with changes rather than replies.
+On Tue, Aug 25, 2026 at 03:10:28PM +0200, David Hildenbrand (Arm) wrote:
+> >> As the saying goes, it's hard to teach old dogs new tricks, but in the end
+> >> taking care of two dogs is likely harder than only a single dog? :)
+> >
+> > Or it's better to train a unmatured hunting dog than to teach a pet dog,
+> > how to hunt, for better hunting, even though the pet dog might
+> > eventually become able to.
 > 
-> 1/3 keeps its hunk and states the impact properly. SO_MSGLIMIT accepts 1,
-> which makes msglimit / 2 zero, and msg_recv never leaves zero on a classic
-> socket, so the NULL read is one recvmsg() away for an unprivileged process
-> on a socket of its own. With relocate_lowcore it faults.
-> 
-> Its Fixes: tag was wrong as well. The unconditional send does date to
-> 3881ac441f64, but iucv_send_ctrl() sized the skb with a constant ETH_HLEN
-> until 238965b71b96, so before that it just returned -ENODEV. Backport
-> window is v5.3, not v3.1.
-> 
-> 2/3 is new. v1 admitted it widened the msg_recv race and left it open,
-> which isn't good enough under Cc: stable. afiucv_hs_send() samples the
-> counter and settles it after dev_queue_xmit(); sendmsg reaches that under
-> lock_sock() and recvmsg reaches it under no socket lock, so the two don't
-> exclude each other and both can subtract the same value. Negative counter,
-> WARN_ON, and the same credit advertised twice to a peer whose
-> afiucv_hs_callback_win() subtracts the wire value from msg_sent unchecked.
-> 
-> Taking the socket lock around the deferred send would close it too, since
-> recvmsg is the only unlocked side. I didn't: recvmsg has never held that
-> lock, and making it do so changes the receive path for every caller. That
-> belongs in the locking rework, not in a stable fix.
-> 
-> The claim sits after the last error exit rather than in the header build,
-> so the counter reads zero only while the transmit is in flight, and a
-> concurrent sender isn't talked out of its own update.
-> 
-> 3/3 is v1's patch, and it must not be applied without 2/3: hoisting the
-> send out of message_q.lock drops the serialisation that lock gave two
-> concurrent recvmsg(). Backported alone it recreates what 2/3 fixes. Both
-> changelogs say so.
-> 
-> Litmus test under LKMM: the counter reaches -2 before 2/3 and cannot after.
-> No hardware run; I have no IBM Z, and CONFIG_AFIUCV is s390-only.
-> 
-> The unlocked hs_dev and sk_shutdown window, the unbounded backlog_skb_q and
-> the WARN_ON a flooding peer can reach are pre-existing and wider than this
-> series. They belong with the locking rework Alexandra has open.
-> 
-> Thanks for the reviews.
-> 
-> ---
-> Bryam Vargas (3):
->       net/iucv: only send the window update on HiperSockets sockets
->       net/iucv: claim the receive credit atomically
->       net/iucv: send the window update outside message_q.lock
-> 
->  net/iucv/af_iucv.c | 42 +++++++++++++++++++++++++-----------------
->  1 file changed, 25 insertions(+), 17 deletions(-)
-> ---
-> base-commit: 746fc0787f616da418ffc04a110296fe95d53491
-> change-id: 20260821-b4-disp-3a6e8695-c1f4a6069169
-> 
-> Best regards,
-> --  
-> Bryam Vargas <hexlabsecurity@proton.me>
+> I'm not sure whether "pet dog" is the right analogy to lockdep in that scenario,
+> though ;)
 
-Thank you for the fixes Bryam!
+Ah.  Okay.  I will be careful in using terms.
 
-Tested-by: Aswin Karuvally <aswin@linux.ibm.com>
+I wanted to tell DEPT has its strength, lockdep has its own, and they
+are different.
+
+	Byungchul
+
+> 
+> --
+> Cheers,
+> 
+> David
