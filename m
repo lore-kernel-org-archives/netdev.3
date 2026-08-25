@@ -1,156 +1,161 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE483019D8
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 02:12:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0DF5309F08
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 02:17:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787623951; cv=none; b=FEe5ewIXNP9OVL+sHCyjaVrtUYqb2k+WzO4llFrVprQXPK+ByJBIgGFrVbJP7uJpq62DCZ2H5eh7eEIL/eFTA8ox/yjqtNc6Q8Ivk3TTZToF4qanGnLOSYQv3D5dSdktXNK/qLBLTRc2s33c72ZenB3Y38bUsp1B8FAMDT0C8L0=
+	t=1787624280; cv=none; b=mQnJfUnPmlIGOLcVYxAnf6keLACergW4FZUutI5gLHjHPR2lcRTn58jZwKN7s23+Z6lZAl+s/B4tMije8dTRLFyozE3d7lhC7P0j0EcVse9ID3dU+naLPhoD1xkStaO1abFnqw5RaeN7LWlSv4CwUNUIKs2BDEPgVFEwzBajFQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787623951; c=relaxed/simple;
-	bh=umCgMUKPQPll6S43CofHLcyYoPkxfOBRKdMbZYySOTM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VKTNhD1sUFOVcvgD1u6qv5EPLRElLvrFuNx1NTYij07KZ3dmjIi5WHG3Q21t1rLZEcLhx4i3xcc6OT/pCtPvR/aE0H50/9f0dMQpu/tN1GlQNim/ITGVupRNa6hpipU50OTI+FJI1KN8jXDsDfjrY6OZ9e6VthV2v5fSz62RnpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ful83ZpO; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ful83ZpO"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c9d1fff21edso3454460a12.1
-        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 19:12:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787623949; x=1788228749; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=DuFfc3mYGtCYXOj2mOxxwwBg8bUodS6/wtLWaXsVGqs=;
-        b=ful83ZpO12cbUqyRo4o1fJbLdDzuLvz7iiueFvgSOT2WQi1X1qBTBv9hTMsCe5/xKD
-         R+2W1p+85PZH/PPVRVl9MDThxP/RWiHB6KLpx6dwsN5cY0RK7scgCKjQd1aXFvCXcBA4
-         unavskMoZ6VpbHOiWewV3dpbmgAVL6oz4vau5ZyLPLiEu6Qshj11TwNKBL2A4C9exRja
-         ujVjcQA/YWdkwiaESjYABLCJN1/xC/Y+7bn4a6KBvX74Hwgf2MM7UxP7B+IRV5cAA4Kg
-         5SYLX7SNTI5pgCaT3WKlXwIs3etdSQznQh6wtdfbbdcLhheYAHyVJdfH78RtZTmoEx2v
-         FE5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787623949; x=1788228749;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=DuFfc3mYGtCYXOj2mOxxwwBg8bUodS6/wtLWaXsVGqs=;
-        b=lJ6H/GJhwtHIPVRkB5Cyf6XAe/pIFpBkJ/5f2CbwzCupE2lJ0V5u1cbkoVS6Hk/yMR
-         OUGfx2I6Rm3ge79rlgehr/HatswLcNMubaUmFTsTNpPWot6Wo8DpxvOl79Kp3LeBN0fb
-         mcaYXj4S4Go6NQA4odhv1KuY4YalqoXI4hmE8l73KaPoi+QH9L/zeoPl02wLM5B40bVG
-         uLCJws/pDzAojL/CFBGQuXuwpTDD2wfk0uGNPPsASeRZEkpFdwCnNtB2K4QTDvFmAzgZ
-         2VHpqVfuGlDYZldyTt5BBdAutri3X1vbEm4dSXr7LsE+LrHBzJcVfZCSmbI57Adjlghg
-         tTow==
-X-Gm-Message-State: AFuF++lL7Ee4Eh60sig8FPZW3vrBI/6wk5JADsbH7y04/AhWDtHFcIPz
-	AAvZjlSy5OToTztbod+i4XK49J3V5n8yVi+nF0kCAK9fK6dNXqhTkEY12iyNL2c0/UzSpA==
-X-Gm-Gg: AR+sD122Fu/tYk7A9/s+Q24uTN/py6IoNDxX/s5gXYP9kfdoSj/o35e0genPJjSlwAz
-	VhFbFpgf0E2375vrT/6qawsgHWLVpRjTMFBJnjh2yzYMBjti+tlY5v737WTUfS+G0yhJI2k8OAF
-	fHi5QjnWulmZw3YAYXyVZRrM0ZMPwMiicar9iyPPlld6y4faaXFq0Gh1MtGMi5wZ/SmYBET0KJe
-	AYkujn3RjBOnQYAg17Txx3MLZE22S6rLooysVpfZUtXd5RfZtxkRCFIp1bpgpV5N5ldFtGDoHKZ
-	EZrMFlytbnBqFN1ncJGKb0AGh0EFFKKx832C9CkzWdj9IksmcedUnqab55ZEEvAoCn+rG8oE9kT
-	nPhgFuYL2pBSrp1cGWlZFxJLkB8qwRX4eKNA7xecyXIH7jRXCAzlmmP0r20nSZIwIyW8N6jL17Y
-	O5EDAIU21bVMjJo3/UF47Ue6QEouqJ+dsLD2SHVbhKbuGetPm7qVTFYXt3f/IjyBQMf/tioA4Y7
-	Kohi0PQ/7iDc+w9S9jrDP0CAw==
-X-Received: by 2002:a17:90b:55cc:b0:37c:6910:5758 with SMTP id 98e67ed59e1d1-395c334042emr62141979a91.1.1787623949022;
-        Mon, 24 Aug 2026 19:12:29 -0700 (PDT)
-Received: from localhost.localdomain ([117.88.121.72])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39645b7ff6dsm1706996a91.10.2026.08.24.19.12.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 19:12:28 -0700 (PDT)
-From: Aohan Mei <ljp1205831794@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Allison Henderson <achender@kernel.org>,
-	linux-rdma@vger.kernel.org,
-	rds-devel@oss.oracle.com,
-	linux-kernel@vger.kernel.org,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Aohan Mei <henrymei@tencent.com>,
-	TencentOS Corvus AI <corvus@tencent.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] net: rds: fix uninitialized trans dereference in CM event handler
-Date: Tue, 25 Aug 2026 10:12:23 +0800
-Message-ID: <20260825021223.3483044-1-ljp1205831794@gmail.com>
-X-Mailer: git-send-email 2.43.7
+	s=arc-20240116; t=1787624280; c=relaxed/simple;
+	bh=3OA1/xixfyppJthmSg4mc3vejG0dxTu9z8eAvuYaOA8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DLULTOcaP72bnH+lITnDiH+awCxPBhT4cTBgGFx4JQSMlurRmra/5zmmpEkC+91NaFIfzoTDO+eUiYIGTJo9S88qwsOnZjTiOe1SWyGCEDoBgUvmlNq+rBpJLu5o9+0tmpQcyWgCl/y006SIK2toV2GRssgGAigHth2IxDN9AgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 2e17daeea02b11f19a56ed5b684f684d-20260825
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:8ea89c65-1019-40ef-b576-17bda8d562c0,IP:0,U
+	RL:0,TC:0,Content:3,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:3
+X-CID-META: VersionHash:7db8b62,CLOUDID:40307ff2581ad035ccd0d2e3ec1965b2,BulkI
+	D:nil,BulkQuantity:0,SF:80|81|82|83|102|865|898,TC:nil,Content:4|15|50,EDM
+	:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0
+	,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 2e17daeea02b11f19a56ed5b684f684d-20260825
+X-User: weirongguang@kylinos.cn
+Received: from [10.42.124.137] [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <weirongguang@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
+	with ESMTP id 2126084261; Tue, 25 Aug 2026 10:17:54 +0800
+Message-ID: <3e0b03d4-ddd7-4952-bb5e-f73881bfec95@kylinos.cn>
+Date: Tue, 25 Aug 2026 10:17:51 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v1] vsock: validate buffer min/max size in setsockopt
+To: David Laight <david.laight.linux@gmail.com>,
+ Rongguang Wei <clementwei90@163.com>
+Cc: sgarzare@redhat.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ virtualization@lists.linux.dev, netdev@vger.kernel.org
+References: <20260824091257.136269-1-clementwei90@163.com>
+ <20260824131632.2d325c42@pumpkin>
+Content-Language: en-US
+From: weirongguang <weirongguang@kylinos.cn>
+In-Reply-To: <20260824131632.2d325c42@pumpkin>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Aohan Mei <henrymei@tencent.com>
 
-rds_rdma_cm_event_handler_cmn() assigns trans only when the RDMA
-device is an InfiniBand CA (RDMA_NODE_IB_CA).  On any other device
-type, e.g. an iWARP RNIC such as siw, trans stays uninitialized, but
-the event switch dereferences it: unconditionally in the
-RDMA_CM_EVENT_CONNECT_REQUEST case via trans->cm_handle_connect(),
-and (with a connection context) in the ROUTE_RESOLVED and
-ESTABLISHED cases.
 
-An RDS listener on an iWARP device therefore crashes the kernel as
-soon as a connect request arrives: with CONFIG_INIT_STACK_ALL_ZERO
-the wild load becomes a NULL dereference at offset 0xa0
-(&trans->cm_handle_connect) in the iw_cm_wq workqueue.
+On 2026/8/24 20:16, David Laight wrote:
+> On Mon, 24 Aug 2026 17:12:57 +0800
+> Rongguang Wei <clementwei90@163.com> wrote:
+> 
+>> From: Rongguang Wei <weirongguang@kylinos.cn>
+>>
+>> SO_VM_SOCKETS_BUFFER_MIN_SIZE and SO_VM_SOCKETS_BUFFER_MAX_SIZE
+>> do not cross-validate against each other, allowing userspace to
+>> set buffer_min_size > buffer_max_size.
+>> When min > max, buffer_size is silently clamped to an incorrect
+>> value. For example, setting min=512KB then max=128 results in
+>> buffer_size=128 despite the user requesting much larger buffers
+>> via SO_VM_SOCKETS_BUFFER_SIZE.
+>>
+>> Reproduced with a test program:
+>> setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_MIN_SIZE,
+>> 	   512 * 1024, sizeof(int));
+>> setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_MAX_SIZE,
+>> 	   128, sizeof(int));
+>> // User asked for 1MB but got 128 bytes silently
+>> setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_SIZE,
+>> 	   1024 * 1024, sizeof(int));
+>>
+>> After that use getsockopt to get the buffer_size = 128 and
+>> buffer_min_size = 524288, buffer_max_size = 128.
+>> The buffer_min_size > buffer_max_size and the kernel accepted
+>> contradictory values without error.
+>>
+>> Add value check to fix this issue. Return -EINVAL to userspace
+>> when setting MAX_SIZE to a value smaller than the current MIN_SIZE
+>> or setting MIN_SIZE to a value larger than the current MAX_SIZE.
+> 
+> That is going to break userspace that sets the minimum before the maximum
+> when the new minimum is larger than the old maximum.
+> 
+> David
+> 
+Hi, David.
+Thanks for pointing out the issue.
 
-GCC masks the bug in default builds by folding the uninitialized
-load into &rds_ib_transport; Clang-built kernels take the real
-uninitialized path and oops.
-
-The iWARP transport was dropped long ago and IB is the only
-transport left, so make that explicit: initialize trans to
-&rds_ib_transport at declaration, drop the conditional assignment,
-and reject events from non-IB devices before the event switch.
-
-Fixes: dcdede0406d3 ("RDS: Drop stale iWARP RDMA transport")
-Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-Cc: stable@vger.kernel.org
-Assisted-by: CodeBuddy:Kimi-K3
-Signed-off-by: Aohan Mei <henrymei@tencent.com>
+Here is an alternative approach:
+instead of returning -EINVAL, automatically adjust the other value to preserve buffer_min_size <= buffer_max_size.
+The trade-off is that setting one parameter may implicitly adjust the other, but this is preferable to breaking existing applications.
+Does this approach look reasonable?
 ---
-v2:
-- Enforce the IB transport directly instead of NULL-guarding trans,
-  as suggested by Allison Henderson.
-v1: https://lore.kernel.org/netdev/20260824111701.2979194-1-ljp1205831794@gmail.com
- net/rds/rdma_transport.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
-
-diff --git a/net/rds/rdma_transport.c b/net/rds/rdma_transport.c
-index b15cf316b23a..2c5481f1fcb4 100644
---- a/net/rds/rdma_transport.c
-+++ b/net/rds/rdma_transport.c
-@@ -52,7 +52,7 @@ static int rds_rdma_cm_event_handler_cmn(struct rdma_cm_id *cm_id,
- {
- 	/* this can be null in the listening path */
- 	struct rds_connection *conn = cm_id->context;
--	struct rds_transport *trans;
-+	struct rds_transport *trans = &rds_ib_transport;
- 	int ret = 0;
- 	int *err;
- 	u8 len;
-@@ -60,9 +60,6 @@ static int rds_rdma_cm_event_handler_cmn(struct rdma_cm_id *cm_id,
- 	rdsdebug("conn %p id %p handling event %u (%s)\n", conn, cm_id,
- 		 event->event, rdma_event_msg(event->event));
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index a33b2a2d381d..bd4646115af5 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -2050,12 +2050,18 @@ static int vsock_connectible_setsockopt(struct socket *sock,
  
--	if (cm_id->device->node_type == RDMA_NODE_IB_CA)
--		trans = &rds_ib_transport;
--
- 	/* Prevent shutdown from tearing down the connection
- 	 * while we're executing. */
- 	if (conn) {
-@@ -80,6 +77,12 @@ static int rds_rdma_cm_event_handler_cmn(struct rdma_cm_id *cm_id,
- 		}
- 	}
+        case SO_VM_SOCKETS_BUFFER_MAX_SIZE:
+                COPY_IN(val);
++               /* If the new max is less than current min, shrink min to match. */
++               if (val < vsk->buffer_min_size)
++                       vsk->buffer_min_size = val;
+                vsk->buffer_max_size = val;
+                vsock_update_buffer_size(vsk, transport, vsk->buffer_size);
+                break;
  
-+	/* Only the IB transport is supported. */
-+	if (cm_id->device->node_type != RDMA_NODE_IB_CA) {
-+		ret = 1;
-+		goto out;
-+	}
-+
- 	switch (event->event) {
- 	case RDMA_CM_EVENT_CONNECT_REQUEST:
- 		ret = trans->cm_handle_connect(cm_id, event, isv6);
--- 
-2.43.7
+        case SO_VM_SOCKETS_BUFFER_MIN_SIZE:
+                COPY_IN(val);
++               /* If the new min is greater than current max, expand max to match. */
++               if (val > vsk->buffer_max_size)
++                       vsk->buffer_max_size = val;
+                vsk->buffer_min_size = val;
+                vsock_update_buffer_size(vsk, transport, vsk->buffer_size);
+                break;                                                           
 
+>>
+>> Fixes: b9f2b0ffde0c ("vsock: handle buffer_size sockopts in the core")
+>> Signed-off-by: Rongguang Wei <weirongguang@kylinos.cn>
+>> ---
+>>  net/vmw_vsock/af_vsock.c | 8 ++++++++
+>>  1 file changed, 8 insertions(+)
+>>
+>> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+>> index a33b2a2d381d..5faa30ee8745 100644
+>> --- a/net/vmw_vsock/af_vsock.c
+>> +++ b/net/vmw_vsock/af_vsock.c
+>> @@ -2050,12 +2050,20 @@ static int vsock_connectible_setsockopt(struct socket *sock,
+>>  
+>>  	case SO_VM_SOCKETS_BUFFER_MAX_SIZE:
+>>  		COPY_IN(val);
+>> +		if (val < vsk->buffer_min_size) {
+>> +			err = -EINVAL;
+>> +			goto exit;
+>> +		}
+>>  		vsk->buffer_max_size = val;
+>>  		vsock_update_buffer_size(vsk, transport, vsk->buffer_size);
+>>  		break;
+>>  
+>>  	case SO_VM_SOCKETS_BUFFER_MIN_SIZE:
+>>  		COPY_IN(val);
+>> +		if (val > vsk->buffer_max_size) {
+>> +			err = -EINVAL;
+>> +			goto exit;
+>> +		}
+>>  		vsk->buffer_min_size = val;
+>>  		vsock_update_buffer_size(vsk, transport, vsk->buffer_size);
+>>  		break;
