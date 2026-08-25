@@ -1,133 +1,116 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA0439479B;
-	Tue, 25 Aug 2026 10:35:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E93E3932C8;
+	Tue, 25 Aug 2026 10:37:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787654158; cv=none; b=QOb/I0fYTtWyHMvyUHbvxRz05Uf+Wzgoqk3WcV+c3mop4lsU8Kr/rQ7bRzB+zcyT5DoLLUE5w6/fxKI0Y/NDBdyLo3Jq/XURiUkDPHoYxPU7KGLvmwxHCHuTeh+dQioGOv9s21+gDH8C82DaEnPdEC+8yKVAWnpy4uHpAL6p7Ro=
+	t=1787654227; cv=none; b=aXzSYGXz9hUnvCeX5Ty/QHix54cl4JInh27+VdTV69EpxzX+XyXTqMt3m5Xbu6/d8iwDmDwhpASZMtZvcOLqJYHuWf83+i/Yw7gkQMIsvV02apVDTsW06Uvpf/LOajEUwkAC61YOBUTGlk9zOXB2iYAKHtMvXXRuhiXQyhLD7qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787654158; c=relaxed/simple;
-	bh=zM+UWTmbccd041ge3CNoM7JhSXgFO5eDHpVidNkX8WA=;
-	h=Message-ID:Subject:From:To:CC:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EyXImChtGLVJkWDSDWyFzrxyQQI8+2SHGn/9p2E4cYFw3m1H/API45Cx3P9Ap2R1Oq2NUULTjRGI5nXe3oI2/0s70+FOcEgNuB+F5smRR0EfFN+Iih0dsw/05muV4n61uAxY11e/EgsZPDscZEmZR10xOV/rk2SmHUG1+eZT00Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=PjM/Y4St; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1787654227; c=relaxed/simple;
+	bh=TzE/qZDQjWmMK2nKObW7NKxRq3DLrv7cvwB5ACNPEhI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o/L2G5637PmdJs255SuliVDx0Vbuzi+9s6g+cfWyXIaDCpAZEoCFfJqhEAvptpep1G0J2cd9/hjkxm5uU6VnyIUHlTga0+exV0rgu0Nf1vnQFfuZtcpsuzV1RCIEdpSNqBua8BqtMbk2XZxY55y/bYxgdB5ydglJ7cCHG32sEag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=uYuWeT0N; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="PjM/Y4St"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1787654156; x=1819190156;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=zM+UWTmbccd041ge3CNoM7JhSXgFO5eDHpVidNkX8WA=;
-  b=PjM/Y4St1PflDdcyjWmzOHzSI92vHMxqIGMAUpni5GONOLLDFQtABNrL
-   6hlB302vQoJe/kRHlgOWn84Nx2pW8LWvffKFEzEq6jgnngjmuFr8SF0in
-   RwPJEGF1sB88YDmvO6bNUjSHdHhwb5vm4JZck87/DHTAX/8O+Kt7drH3p
-   5rMerqlEQTeyhA5Hu6VpXT3mfzGfl8GLsdAnFP4DqtRqfgpVfr+U4dJ/F
-   ONEHSzVu0KUErQZCl5co3kRgQtrywlC+tAJK/uOqOAnuvaGrRZPYvUEfa
-   Wpa07jR27qri5Ambtz2b5kAkc8AoiyGLJsU/xxPRrEH9EvaftO0151nND
-   Q==;
-X-CSE-ConnectionGUID: rxAGNm6IQ8eohggFuPa45A==
-X-CSE-MsgGUID: pF6qGJetT+OCwW7ep9hU+Q==
-X-IronPort-AV: E=Sophos;i="6.25,242,1779174000"; 
-   d="scan'208";a="62615109"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 03:35:50 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
- chn-vm-ex1.mchp-main.com (10.10.87.30) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.45; Tue, 25 Aug 2026 03:35:49 -0700
-Received: from DEN-DL-M77643.microsemi.net (10.10.85.11) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Tue, 25 Aug 2026 03:35:46 -0700
-Message-ID: <daecc0252ffc5502391be729c11c3a663fe5030a.camel@microchip.com>
-Subject: Re: [PATCH net-next v2 3/9] net: microchip: vcap: make vcap
- actionset decoding type_id aware
-From: Jens Emil Schulz Ostergaard <jensemil.schulzostergaard@microchip.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: <horatiu.vultur@microchip.com>, <UNGLinuxDriver@microchip.com>,
-	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<pabeni@redhat.com>, <daniel.machon@microchip.com>,
-	<Steen.Hegelund@microchip.com>, <kees@kernel.org>, <gustavoars@kernel.org>,
-	<robert.marko@sartura.hr>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-hardening@vger.kernel.org>
-Date: Tue, 25 Aug 2026 12:35:46 +0200
-In-Reply-To: <20260817211353.3633288-1-kuba@kernel.org>
-References: <20260810-sparx5_l3_routing-v2-3-59e68cc8c8ca@microchip.com>
-	 <20260817211353.3633288-1-kuba@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2.1 
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="uYuWeT0N"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=+WeqyAoN4PwVARBGRrg9cd0bZ+XLeTX2CqqweZNfuiQ=; b=uYuWeT0NmdNqXtDkIUiXLycZa+
+	CHsmnDBIV4R/6NsN9SbNLY1yXKjHg4Qa2DVco2izRji2JaCi264eFbOcdzI/cmFDN5ZnAQGEwlr3/
+	+DKxUPI3MyclEBUUpxlMwBS4dWyhLwBymutg85QlqzAlZS+MAHq84Yt4dnPF3lrduOJgjPUXQtuGK
+	uHA/p9llyF1dSyVvzd3tKZLvHAtpaIhO5t3agj7XEoLpqVfE0kTIL9Q9qPybzTxV6epV9Dd6+GMMe
+	rZ+2DrhtcM/epqyFDPKAE5oq9OisfYS9BxnV39btrW//AyJmUiRh5XoR5QLkX8ijIocPfbN/52kx2
+	87xFwjVg==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wyoWF-00ENXg-0m;
+	Tue, 25 Aug 2026 10:36:39 +0000
+Date: Tue, 25 Aug 2026 03:36:32 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Florian Westphal <fw@strlen.de>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel-team@meta.com, stable@vger.kernel.org
+Subject: Re: [PATCH net] net: fix spurious TX timeout after dev_activate()
+Message-ID: <ao1bBrMlSGfmpkYp@gmail.com>
+References: <20260824-trans_start-v1-1-0419cc427ed9@debian.org>
+ <4f3857029d855ed4e513ae01a2e8f018@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4f3857029d855ed4e513ae01a2e8f018@tipi-net.de>
+X-Debian-User: leitao
 
-On Mon, 2026-08-17 at 14:13 -0700, Jakub Kicinski wrote:
-> EXTERNAL EMAIL: Do not click links or open attachments unless you know th=
-e content is safe
->=20
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> net: microchip: vcap: make vcap actionset decoding type_id aware
->=20
-> This adds a helper, vcap_find_stream_type_id(), that pulls the type_id
-> bits out of stream[0] just after the typegroup bits, and uses it in
-> vcap_verify_actionstream_actionset() to compare the decoded type_id
-> against info->type_id instead of always returning true.  The code change
-> itself looks fine; the comment below is only about the commit message.
->=20
-> > net: microchip: vcap: make vcap actionset decoding type_id aware
-> >=20
-> > When reading a rule back from hardware, decoding has to identify which
-> > actionset the rule was written as. The existing logic was only aware of
-> > the actionset subword length, which cannot distinguish actionsets that
-> > share a subword length but differ in their type_id field. The LPM VCAP
-> > added in a following patch introduces this case: ARP_PTR, L3MC_PTR and
-> > ARP_ENTRY all occupy one subword and differ only by type_id.
->=20
-> [Severity: Low]
-> Should the sentence "The LPM VCAP added in a following patch introduces
-> this case: ARP_PTR, L3MC_PTR and ARP_ENTRY all occupy one subword and
-> differ only by type_id" be reworded?
->=20
-> Two details don't seem to match the tree.  First, there is no L3MC_PTR
-> symbol anywhere at this commit; grepping for L3MC under
-> drivers/net/ethernet/microchip/ only matches the unrelated register name
-> GA_ANA_L3_VLAN_ARP_L3MC_STICKY.  The one-subword LPM actionsets that do
-> exist are just these two, in sparx5_vcap_ag_api.c:
->=20
-> static const struct vcap_set lpm_actionfield_set[] =3D {
->         [VCAP_AFS_ARP_PTR] =3D {
->                 .type_id =3D 0,
->                 .sw_per_item =3D 1,
->                 .sw_cnt =3D 12,
->         },
->         [VCAP_AFS_ARP_ENTRY] =3D {
->                 .type_id =3D 2,
->                 .sw_per_item =3D 1,
->                 .sw_cnt =3D 12,
->         },
-> };
->=20
-> Second, the colliding actionset metadata is not added in a following
-> patch; lpm_actionfield_set, lpm_actionfield_set_map and the
-> sparx5_vcaps[VCAP_TYPE_LPM] entry that references them are already
-> present at this commit, added by the preceding "net: microchip: vcap: add
-> lpm vcap to autogen vcap api".  Only the sparx5/lan969x LPM driver
-> enablement lands later.
->=20
-> Could the message say the LPM actionset model is added by the preceding
-> patch, and drop the L3MC_PTR reference?  The premise that two actionsets
-> share sw_per_item =3D 1 and differ only in type_id does hold, so the chan=
-ge
-> itself still looks justified.
+Hello Nicolai,
 
-Yes I will update the message, and remove the stale remarks.
+On Mon, Aug 24, 2026 at 05:13:13PM +0200, Nicolai Buchwitz wrote:
+> On 24.8.2026 13:45, Breno Leitao wrote:
+> > While debugging another issue today, I found out that my TX queue is
+> > stopped for 136.07 years (4294907392 ms).
+> 
+> nit: 4294907392 ms is ~49.7 days
+
+Lol, let me fix update it.
+
+> >     bnxt_en 0002:01:00.0 eth0: NETDEV WATCHDOG: CPU: 28: transmit queue
+> > 23 timed out 4294907392 ms
+> > 
+> > 4294907392 is not an elapsed time. It is the value of jiffies at that
+> > moment: INITIAL_JIFFIES is 4294667296.
+> > 
+> > dev_activate() runs transition_one_qdisc() over every TX queue, which
+> > resets trans_start to 0, and then stamps only queue 0 through
+> > netif_trans_update().
+> > 
+> > Stamp jiffies instead. A queue stopped across dev_activate() now gets a
+> > full watchdog_timeo of grace, and is still reported if it is stopped
+> > that long.
+> > 
+> > Fixes: 9b36627acecd ("net: remove dev->trans_start")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Breno Leitao <leitao@debian.org>
+> > ---
+> >  net/sched/sch_generic.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+> > index ef2b4bf515641..4539dc2c6d380 100644
+> > --- a/net/sched/sch_generic.c
+> > +++ b/net/sched/sch_generic.c
+> > @@ -1278,7 +1278,7 @@ static void transition_one_qdisc(struct net_device
+> > *dev,
+> > 
+> >  	rcu_assign_pointer(dev_queue->qdisc, new_qdisc);
+> >  	if (need_watchdog_p) {
+> > -		WRITE_ONCE(dev_queue->trans_start, 0);
+> > +		WRITE_ONCE(dev_queue->trans_start, jiffies);
+> >  		*need_watchdog_p = 1;
+> >  	}
+> >  }
+> 
+> Follow up or v2: netif_trans_update() in dev_activate() now seems redundant?
+
+Yea, good point, we can get rid of netif_trans_update(), given we have
+updated all the trans_start in here.
+
+I will respin this one.
+
+Thanks for the review,
+--breno
+
+--
+pw-bot: cr
