@@ -1,86 +1,49 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F093A4F50
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 08:47:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563A430C168;
+	Tue, 25 Aug 2026 08:52:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787647641; cv=none; b=pcinT/3TsnmwWhREBKg33Ku9NTSrtF47iolcGOP41g6Z68PA+SkT7PAIG1palxx+DHIZg7OorRT6O1LJgWDBiHT5LjAl38SE8pncBgWZRpio6gZ4noiGOJ4Q9z8O/u+dCVWQkGBCbsRp1yBXrV2k7JWQEYbbt9Ia+lzwoTr7b0c=
+	t=1787647940; cv=none; b=EQIOYte0vjC5cSdQMHUGvfZsEBo+gUMjHQ1JIXAUiASBWU8YIZIX/clkMXrS+V8+zipxscIlsv+glPsWxxfzAMiJcH30Fj7pZ9ZDMt67jbYIgSDSI5sSA9YpaSp1+V9XUF2xVA8w0TndjjsX1tFm/5yhBV3cnMg7QJOdlMIov2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787647641; c=relaxed/simple;
-	bh=jQmRjKS3+vMFIIdVez2XmwoympGUXadkF7Jjo3Uyo1I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TboMWh+KLc4d3wTxjYInmBkbpE5HymrnpBgsQ7yHJdkewI1lMPX1O0hx09aQ/KMxX6beJMp0YmwaRYOtX3gzi1hhWiT1YKT1nK+QPHsbvK5LjkIEepoGKZWX1L1DsmwF3zFZ/xvevfWF1cbylUvVAnqYyB5SVgffJ+IztW2CprU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UlmTSvR8; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=PkY4+IoZ; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1787647940; c=relaxed/simple;
+	bh=BUFZ7yGiwJ0cBn6OQPgCuyV0hU1Wzfhyt2tGD8HOMwY=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=pgAX2RgQsehZCKEjman+Bb+X4LpKixw8N7MXHUmWHUSTh5HhiYSzxCwJQ6Eqm7DaGQdp8IAcmvLFT1WJSCCUZ+jpFY45ucAAvv4gwIWg6AV/NW2gIwisxB7UiLxz4EVCwRsPvE4DYLRa9HEitN3fyYt1Sl2jtJ4Jvnv2aLw3IcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=ncE0duPl; arc=none smtp.client-ip=162.62.58.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UlmTSvR8";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="PkY4+IoZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787647638;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RTpkfInV+KzHo/KAHdT9LTZrdvGy13iGVgmGM9DUQIA=;
-	b=UlmTSvR8LTkokXaVseUsR4b2RVJ2nsGT/NVtX2qxD+l9nIAc35ffsz4BOe21X2Wb3nY955
-	+aaKnJItPzsATAkWmU5UXXSuw+QvXptuSr02tMZT4UrP8No/f784UiLZ+ErSxLClTfTE2M
-	AuwMB5dzZ4RYgAty17BXUPxRUSij/EY=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-492-YDAxYSsuMvWT0YutYzfAQw-1; Tue, 25 Aug 2026 04:47:17 -0400
-X-MC-Unique: YDAxYSsuMvWT0YutYzfAQw-1
-X-Mimecast-MFC-AGG-ID: YDAxYSsuMvWT0YutYzfAQw_1787647636
-Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-6a0fab609c4so605293a12.1
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 01:47:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1787647636; x=1788252436; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RTpkfInV+KzHo/KAHdT9LTZrdvGy13iGVgmGM9DUQIA=;
-        b=PkY4+IoZIOMR087l4ddJSXUPqUezsfy5X7fSnqezuvjnexUhXMuDn2SVgK2FVEzDDU
-         tnp+Up5cXySCJ/ONp9LYICi/BnRrdxI3bu1cVBQwP5VRZFue/AdgE48YQd0WkgaQ+Oat
-         mMqxkw+EvJKRal/MSZtUMU4IJKrjLhD/mqrg+K8Ji0C1g620w2QrD4zplte2I5k0/Cas
-         lJYnwDFJFeJ/X7BQCEi1A3IxfH3TNt1P4zDlCm0ZQ6mhYwA1N0S0HrjKsbbQkAna/UAV
-         WEUdmjbLMgP+v/3JmEelllZR4w6NsGK7bm7RupUY1sVKQW718fVfoBFQM1rzxYKGtK6y
-         qGbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787647636; x=1788252436;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=RTpkfInV+KzHo/KAHdT9LTZrdvGy13iGVgmGM9DUQIA=;
-        b=jfvo/MaG5aQiOt1KHa+sD34CniKPKyfuOuQhYcALrKQd8d2xEyWzeUEDnqodqtkgMm
-         pK2z7RMwW8mf9XmhFamuzippebJgFTCYcmJW/nJHYpVQ5lScjXWPRksgAOUslClcSvM6
-         LLWF3zRzyN86MRnaqz8GL+sBBMsJ/4hw2I7dCdYQzQ4g8IEgKOvE0d4kPGhMiHdN2Ewn
-         63bCxG2cqKIElyBfBlPpf8nArtkMjST0XQ6jBZZXx3PAWKQ0+sdaBGiFQpB5pjJ8/nP/
-         FjLTDoX8HQ0lBj5GweSo6LJs0+zCSIdMn1NdU8ChcN/P2hCZPhcZuKQ4P6CoqPl7tK37
-         gxzQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqAHj6Ssxi+YjaEXeWJ/fAqYl6DloDuxwySPE4QLu24o+yBJlxa+49qQzrFBLkN1ASlWlO/rz4=@vger.kernel.org
-X-Gm-Message-State: AFuF++lNV6K7kCHG2CRH2d5FnChVbOI6MFdXuTKDMFfLFsGy6HcpzEFu
-	tUS4gsf03qrVPWyxE2b+43NTbJCxzbhLxsdirHM4gIfgUqzWqw6KcaEq96BseDSD3zcZiacbufu
-	MFHOVoNsKzk+1Oay2T3JgNaSl1QTX1JTR5EOEDdMSHuIEr4RFviF5PNPCzg==
-X-Gm-Gg: AR+sD10t5Beadg8kUvM+lvofICvrHcT5HDUFEbQKxnlnu/axMnPdXQOMUPHt9VbGrqX
-	kO3bnFp0ELU4TMkCpuH9xqy+eH1nRipTm+uw+u7bBuiI+FaxQKXyNERMRam7dyQp37Ls00PCNBk
-	9FBc7sctpFOaX+k4+Hp7ba+VgiCzenYQp4j9yMOE12vvJPJnkbY2iNRnZrDYWKSqT7bsPyOykd5
-	5gC7zVIKcOCq4B9L1FSls2+62LzLNXuMhoxWewNiu8l+cBv2yaDsyRvrcitLdGYcs7jpc2F5MjC
-	7xOmujMOf5XEyjvAcxRou2a7obOaICcMLe3At86mTIFNRj9z/z5O7VC0LDZpjNDV+JzHiK+3F09
-	S6MGSFXBrjuSgbje3yVUV0dVq5grlgEl1o3W1ir7dSbdjlLgYYnwlN+VfOTk2HKJO9wB24nn2
-X-Received: by 2002:aa7:d60c:0:b0:6a1:f3b5:f7dc with SMTP id 4fb4d7f45d1cf-6a5c3e88bcbmr3787911a12.4.1787647635897;
-        Tue, 25 Aug 2026 01:47:15 -0700 (PDT)
-X-Received: by 2002:aa7:d60c:0:b0:6a1:f3b5:f7dc with SMTP id 4fb4d7f45d1cf-6a5c3e88bcbmr3787879a12.4.1787647635491;
-        Tue, 25 Aug 2026 01:47:15 -0700 (PDT)
-Received: from [192.168.188.103] (ip46-47-231-195.pool-bba.aruba.it. [195.231.47.46])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a59e2ddad2sm12297384a12.30.2026.08.25.01.47.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Aug 2026 01:47:14 -0700 (PDT)
-Message-ID: <7aed7185-d48c-4013-9a85-a8b27cf7eae3@redhat.com>
-Date: Tue, 25 Aug 2026 10:47:13 +0200
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="ncE0duPl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1787647933; bh=BUFZ7yGiwJ0cBn6OQPgCuyV0hU1Wzfhyt2tGD8HOMwY=;
+	h=Date:To:Cc:From:Subject;
+	b=ncE0duPlt5c0bAQKzrxcgr8EyO4MiNY+u1LhjMGEZh5/Zx/ts6dRnFqY1lpftMJ0z
+	 oW8nogYXZVUqhbrxcjfiVsZgYHaMoZjmK5F9xFtwf0n6XLdeXjQO2PWabNsWzWKnIo
+	 ucCbkLnT0vh4iB1SzBmQA/668wfWa2l7t5tbkOTI=
+Received: from [192.168.255.10] ([111.206.96.148])
+	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
+	id CB836E11; Tue, 25 Aug 2026 16:50:56 +0800
+X-QQ-mid: xmsmtpt1787647856tegi32475
+Message-ID: <tencent_6653AA61B6BB17B8D845A89977D199C08C06@qq.com>
+X-QQ-XMAILINFO: MllZffuBkEb5HHYVy7S7dRjicBmhV2/sPORkXt7fGVN7J2vGNeGM1d5uRvXptf
+	 bGAMnPnD6qx/gLOeZyJ1A7rnH5mpAX3r4ZoqKQxyKheT6W/W5CLOwee7davmn9S+M92geaV8gfxa
+	 Ic2UShZIOfhuaLL+fz8XrMSXJE/Ao6klL3+Xct8DnKQ6bmXyZ4HYqXhPBMS2pUdz3SbFaHrYOV8M
+	 SdrMNfsbw1paFsdtBaAnjSteQuPLSdEURRjm9zrEkBI++YcuXj99T4dQr9GRmeVaCwo1p1Xf+OTd
+	 50ARyqkqZEF2rLf8pr5YPHRzuMTwewVhfAlXNbmFJidpy2pWkTtxZ9TxYZUSTg+myIX/yz8RlorP
+	 LrmM8E4RrA19wCI5WFY/8crtt4Ms+/XR69/NGGoyPOFPdHO6Z/i7nlXoUL/O+7m9TnlJLVcOBpPM
+	 4+uDC2k7Uax9QqdomG6k5aVTS2ehSVS1UCVJBQlGVCDIthubxl2PO5jz1ucB4L4CY6AwuUkI1jn1
+	 kNbhO5fqNd5zMm7D321TspalqgaAbu5R79JxxjjmqHTv9kwHexLLelaEyEKEQMsoGBbHZI+kVZq7
+	 URsKrMjWZsxvkTqBY5jK1HMvUzvhXYLe8FCr2E+OCDhzYzCJUStJqCx60Yf8vkdOy9zLrhrKoyP/
+	 0tILihJ1l/9J7Zmga4drwKRWECDdqOFUAHzmMf0rrIt88JY5tPqpV0uKKWwU3cOwBHUHtiq/d5Uh
+	 4PfWynEVEfYcPcfiWslxHmrGLY5b6yJnX8hvVMoGXf3hOw7bgi6RyIZpsTKNrHMAvjysACBme+SQ
+	 Gv4rIYX1qj2nDSVclD6F6CqsFhRfg55YmRAGcse9YKWyaqsdkXlE2/P7y8yDWbypRHPSzDTOqPuj
+	 IiGb9mRLkupsKoNvtPNp1XZSpnKkblVG02ZpqJqTdg27/owDO33qA2ni2eAFCS01bTms/GY3IJLp
+	 9H8Mcvfu9YmVOOMYk1Z9Dk4b/hpYhsI1ukhA3H1LqZXMe52KES7E0oZyMq9MqMUjBFMgJbVNBM4M
+	 4EHVQ++ofDZMpBqEVjdFDwstfWGQxp4JzrOl1PfooI+A3iUkk+
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+X-OQ-MSGID: <f5f1d8dd-0305-47e2-a659-5f67aeac8ffa@qq.com>
+Date: Tue, 25 Aug 2026 16:50:55 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,41 +51,71 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: fix spurious TX timeout after dev_activate()
-To: Nicolai Buchwitz <nb@tipi-net.de>, Breno Leitao <leitao@debian.org>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
- Florian Westphal <fw@strlen.de>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com, stable@vger.kernel.org
-References: <20260824-trans_start-v1-1-0419cc427ed9@debian.org>
- <4f3857029d855ed4e513ae01a2e8f018@tipi-net.de>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <4f3857029d855ed4e513ae01a2e8f018@tipi-net.de>
+To: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com
+Cc: andrew+netdev@lunn.ch, kees@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+From: Yang Zi <2959243019@qq.com>
+Subject: [PATCH] net: liquidio: avoid sleeping allocation under
+ octeon_devices_lock
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 8/24/26 5:13 PM, Nicolai Buchwitz wrote:
->> diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
->> index ef2b4bf515641..4539dc2c6d380 100644
->> --- a/net/sched/sch_generic.c
->> +++ b/net/sched/sch_generic.c
->> @@ -1278,7 +1278,7 @@ static void transition_one_qdisc(struct 
->> net_device *dev,
->>
->>  	rcu_assign_pointer(dev_queue->qdisc, new_qdisc);
->>  	if (need_watchdog_p) {
->> -		WRITE_ONCE(dev_queue->trans_start, 0);
->> +		WRITE_ONCE(dev_queue->trans_start, jiffies);
->>  		*need_watchdog_p = 1;
->>  	}
->>  }
-> 
-> Follow up or v2: netif_trans_update() in dev_activate() now seems 
-> redundant?
+octeon_allocate_device() holds the spinlock octeon_devices_lock while
+calling octeon_allocate_device_mem(), which uses vzalloc(). vzalloc()
+can sleep, so this is a "scheduling while atomic" bug that can trigger a
+sleeping-in-atomic warning (or deadlock on a preemptible kernel).
 
-IMHO should be a follow-up.
+The memory allocation does not touch octeon_device[], octeon_device_count
+or the free-slot search, so it does not need the lock. Move the
+octeon_allocate_device_mem() call ahead of the lock: allocate the device
+memory first, then take the lock only to find a free slot and register
+the new device in the octeon_device[] array. If no slot is available
+(all MAX_OCTEON_DEVICES slots in use), free the freshly allocated memory
+and return NULL as before.
 
-/P
+The lock therefore continues to protect exactly the data it documents:
+the octeon_device[] array and octeon_device_count.
+
+Signed-off-by: Yang Zi <2959243019@qq.com>
+---
+diff --git a/drivers/net/ethernet/cavium/liquidio/octeon_device.c b/drivers/net/ethernet/cavium/liquidio/octeon_device.c
+index e98118e7b9fd..405ce14d46f5 100644
+--- a/drivers/net/ethernet/cavium/liquidio/octeon_device.c
++++ b/drivers/net/ethernet/cavium/liquidio/octeon_device.c
+@@ -723,6 +723,10 @@ struct octeon_device *octeon_allocate_device(u32 pci_id,
+     u32 oct_idx = 0;
+     struct octeon_device *oct = NULL;
+ 
++    oct = octeon_allocate_device_mem(pci_id, priv_size);
++    if (!oct)
++        return NULL;
++
+     spin_lock(&octeon_devices_lock);
+ 
+     for (oct_idx = 0; oct_idx < MAX_OCTEON_DEVICES; oct_idx++)
+@@ -730,16 +734,16 @@ struct octeon_device *octeon_allocate_device(u32 pci_id,
+             break;
+ 
+     if (oct_idx < MAX_OCTEON_DEVICES) {
+-        oct = octeon_allocate_device_mem(pci_id, priv_size);
+-        if (oct) {
+-            octeon_device_count++;
+-            octeon_device[oct_idx] = oct;
+-        }
++        octeon_device_count++;
++        octeon_device[oct_idx] = oct;
+     }
+ 
+     spin_unlock(&octeon_devices_lock);
+-    if (!oct)
++
++    if (oct_idx == MAX_OCTEON_DEVICES) {
++        vfree(oct);
+         return NULL;
++    }
+ 
+     spin_lock_init(&oct->pci_win_lock);
+     spin_lock_init(&oct->mem_access_lock);
+
 
