@@ -1,154 +1,241 @@
-Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF403F822A;
-	Tue, 25 Aug 2026 11:13:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9792F6586;
+	Tue, 25 Aug 2026 11:18:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787656432; cv=none; b=XixIytTkEFWm3QU3yRxiAl9kVB7S9n0hbckyPx5afi/63FaaBh0WnBqp0/852pRPCSlLGPxpZ+w5IyB3liiRnH+i93tqk6/AgUpKRUfMSpXmF8YqVKjBpf6jx4FErzNH0xQe+7dVpxv2xoSj5RXoFmiiw2oy7BeqD/Sw0WM+sy8=
+	t=1787656710; cv=none; b=b/0ZVPfOMaPlx03ngnuryXQk4n1NcN0MytiFX8OYtOYxpPkrjB/Hzuy5mv+1UwsolNjZ6BIVqiFLDpbvO5VeNcP7HEPsxjn/uOpJG8ZTLWVJxlc87A/yhVKXGPImExQyBZNmpv6zKYno0UAVoPh4xqIXh0YVh9eVxpmmvG4DmKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787656432; c=relaxed/simple;
-	bh=PP9geZqEW9Oi9mFRsdmlutX7jJ4DIYxjjzbStESXTQQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nXwmtbcvVEFrkndV8gjKTRYtZDOykhIWjPiwo7SY4ScWgnaBu/P+0lr/U6DzRSDRhb0kRdCNDatyXNPhs0HTeYfQdgwwG/MAfZq+betthA9K+3TcMgXMop2v95aRzivCyhBM9cUBfLsOESOxDpWu4OuZQsUbcnp3QfswFNUNZBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.pku.edu.cn; spf=pass smtp.mailfrom=stu.pku.edu.cn; dkim=pass (1024-bit key) header.d=stu.pku.edu.cn header.i=@stu.pku.edu.cn header.b=TSBK2eda; arc=none smtp.client-ip=101.71.155.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.pku.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stu.pku.edu.cn
+	s=arc-20240116; t=1787656710; c=relaxed/simple;
+	bh=kBhdER13jAp6MxknuAJUTIZC71E/Zc5bUmUHnqda1uo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y3sJGBDS0TqVtyzNiqAqVb5ujYUGwaObDbdnQWXK5ZK++1RL6PjaWDKcnDbQKEvvEsJlVE/Q8VA+CY/XT7OGS5rYOvaM9DZvxegHdpZrPc7lBoBzdP0XTi1s4o288VP7BKcb5/iE4AO4575xP3DXFBFyw03GN0mfstu0+FHGHO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YGEZC8Fp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=stu.pku.edu.cn header.i=@stu.pku.edu.cn header.b="TSBK2eda"
-Received: from localhost.localdomain (unknown [106.120.124.5])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 4b4138eec;
-	Tue, 25 Aug 2026 19:13:35 +0800 (GMT+08:00)
-From: Chunfeng Song <springbreeze@stu.pku.edu.cn>
-To: rust-for-linux@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	fujita.tomonori@gmail.com,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH net v3] rust: net: phy: fix off-by-one bit positions in device status accessors
-Date: Tue, 25 Aug 2026 11:13:33 +0000
-Message-ID: <20260825111334.795732-1-springbreeze@stu.pku.edu.cn>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YGEZC8Fp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D2851F00A3A;
+	Tue, 25 Aug 2026 11:18:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787656708;
+	bh=W05Dx/VZMWvzT1SSodsvq4ca5CdFdSoDwnfBlPLV4jk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YGEZC8FpPuaGJTkbj+O22U5UJ5eHCoQdZKhpk0mREl2Yhk1RMhKjSQpZVNe31G3m+
+	 YlAF98rAHthuPnCeEeP2BDBRfWFYWrhFCZSj+FQ012T9VJ1eTTtm8QPVK7syzOLegH
+	 V9ZiVnNdgicGC8JEfJxGAVgabPWhYKdwE/FTOoMtBnJtXlOq6HM00gzfgnm0ePGNyT
+	 bdQx6Ohwqgi0e5QDnLrTGTLLnSBNt+v7tVseSXE2lVvvw6LR7b4r2lfLpcpG/CikO0
+	 0JE1rSzDikmxz0iMjjpw5PlAkn59CAORWeqRN3yCOvyMc0pM7RMZU6Byhgi7nSFckA
+	 cGJv4dRxlzK0A==
+Date: Tue, 25 Aug 2026 12:18:20 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Daehyeon Ko <4ncienth@gmail.com>, stable@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, James Bottomley <James.Bottomley@hansenpartnership.com>, 
+	Hagen Paul Pfeifer <hagen@jauu.net>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [PATCH v2] mm/secretmem: properly account locked pages
+Message-ID: <ao13TmFVVpsv0zO4@gremlin>
+References: <20260822-secretmem-accounting-v2-1-fe445a7c6eb1@kernel.org>
+ <17e9f7d6-d095-44ee-9997-8dc10646f3f8@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0aa038a024c103a1kunm89dfbb18255bc9
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDS0tLVktOTkNOSxlJTkNCGVYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlKS01VSklLVUpJT1VOWVdZFhoPEhUdFFlBWU9LSFVKS0lITk
-	NDVUpLS1VLWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=TSBK2eda+wJa6k6HCOKHK9cZ4g2JDNzztEhNm9hHhR7KHzfdWzUSVgrsprNKndvY5M/htDlHrhn9f60W6Xu6EXzERDAf1dMgKeVrRXXbsFgOTFfWqbLhyf9+bDyDETqDPKLUZoNWLhj5yWXcDOAYRtw0GGFH0Y/hFlbR4rZPkrU=; c=relaxed/relaxed; s=default; d=stu.pku.edu.cn; v=1;
-	bh=xiSz919X5LkFjc0KTZrpLq1Z3y+8WAeioSuB5xG3Y/Q=;
-	h=date:mime-version:subject:message-id:from;
+In-Reply-To: <17e9f7d6-d095-44ee-9997-8dc10646f3f8@kernel.org>
 
-The hand-written bitfield offsets in is_link_up(), is_autoneg_enabled()
-and is_autoneg_completed() were correct when the abstraction was
-merged: at that time autoneg, link, and autoneg_complete were at bits
-13, 14, and 15 of struct phy_device's first bitfield unit. Commit
-2796ff1e3dca ("net: phy: add flag is_genphy_driven to struct
-phy_device") later inserted is_genphy_driven just before autoneg,
-shifting the three fields up by one, so the accessors now read:
+On Tue, Aug 25, 2026 at 12:50:57PM +0200, David Hildenbrand (Arm) wrote:
+> On 8/22/26 21:14, Lorenzo Stoakes (ARM) wrote:
+> > secretmem has a relatively laissez-faire attitude to accounting the folios
+> > it allocates.
+> >
+> > The intention is that the memory is treated as if it were mlock()'d and
+> > thus is limited by the RLIMIT_MEMLOCK limit if the CAP_IPC_LOCK capability
+> > is not in place (which broadly allows unlimited ranges of mlock()'d
+> > memory).
+> >
+> > The lifecycle for memfd accounting against this limit is - account on map,
+> > unaccount on unmap but the lifecycle of memfd folios is allocate on fault,
+> > deallocate on inode eviction.
+> >
+> > This mismatch is problematic because the folios are unevictable and remain
+> > so until the inode is evicted (set using mapping_set_unevictable()).
+> >
+> > This is problematic as it eliminates usual mlock() semantics - mapping
+> > folios then unmapping them does not clear their unevictable state, since it
+> > depends on AS_UNEVICTABLE, not PG_mlocked.
+> >
+> > A user can therefore easily work around the RLIMIT_MEMLOCK limit - simply
+> > map then unmap and VmLck no longer counts the secretmem range (or more
+> > involved - fork which also achieves the same thing).
+> >
+> > Worse - they are not accounted in the process's RSS even if mapped again,
+> > meaning the OOM killer won't know to kill the process.
+> >
+> > A user without the CAP_IPC_LOCK capability can therefore repeatedly
+> > map/unmap (or map/fork) and consume all available system memory with
+> > unevictable folios and cause system instability.
+> >
+> > A secretmem fd can be passed between processes and over fork so a
+> > per-process limit simply does not make sense.
+> >
+> > So follow the precedent set by io_uring, perf, skbuff, iommufd and xdp -
+> > track the number of locked pages in user_struct->locked_vm.
+> >
+> > Since the scope tracked is actually inode lifetime, the RLIMIT_MEMLOCK
+> > applies per-user not per-process. Also given the change in scope it doesn't
+> > make sense to bypass for users with CAP_IPC_LOCK, so remove it.
+> >
+> > There is simply no reason to carry on marking the mapping as mlock()'d
+> > since it's misleading and the lifecycle is now correctly handled, so remove
+> > this too.
+> >
+> > Additionally, fix the selftest which checks the limit as this now must
+> > assert SIGBUS on limit violation on fault-in.
+> >
+> > __secretmem_account_pages() is more or less a duplicate of the code that
+> > io_uring etc. use, but since this is a bug fix that needs backporting,
+> > defer any de-duplication efforts to a follow-up.
+> >
+> > Reported-by: Daehyeon Ko <4ncienth@gmail.com>
+> > Closes: https://lore.kernel.org/linux-mm/20260813225328.2010303-1-4ncienth@gmail.com/
+> > Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>
+> Can we split off the selftest changes? This stable patch is already pretty big.
 
-  is_link_up()           reads bit 14 = autoneg
-  is_autoneg_enabled()   reads bit 13 = is_genphy_driven
-  is_autoneg_completed() reads bit 15 = link
+Yeah I can do! I seem to recall people wanting tests backported too hence
+the change.
 
-The official ax88796b Rust driver uses all three accessors in its
-link-change handling, so it inherits the bug. On genphy-driven devices
-is_genphy_driven is always 1, which masks the broken
-is_autoneg_enabled() check.
+>
+> I'd assume the changes to the selftests are not required just to get if fixed,
+> because the changes should not be breaking existing user space (and cosnequently
+> existing selftests).
 
-Hard-coded offsets will silently break again on the next layout
-change, so use the bindgen-generated accessors (link(), autoneg(),
-autoneg_complete()), which are always consistent with the C layout,
-and drop the hand-written numbers together with the TODO comment that
-marked them as a stopgap.
+Yup confirmed locally that the changes don't break the tests.
 
-Found by a static equivalence audit (C2RustDrv, a C-to-Rust driver
-migration tool) that compares hand-written bitfield offsets against
-the bindgen layout of struct phy_device. Verified by building the
-bindings and checking the generated accessors; no runtime testing was
-possible without PHY hardware.
+>
+> [...]
+>
+> > v1:
+> > https://patch.msgid.link/20260814-secretmem-accounting-v1-1-d2f8c677980b@kernel.org
+> >
+> > To: Andrew Morton <akpm@linux-foundation.org>
+> > To: Mike Rapoport <rppt@kernel.org>
+> > To: David Hildenbrand <david@kernel.org>
+> > To: "Liam R. Howlett" <liam@infradead.org>
+> > To: Vlastimil Babka <vbabka@kernel.org>
+> > To: Suren Baghdasaryan <surenb@google.com>
+> > To: Michal Hocko <mhocko@suse.com>
+> > To: Shuah Khan <shuah@kernel.org>
+> > To: Alexei Starovoitov <ast@kernel.org>
+> > To: Daniel Borkmann <daniel@iogearbox.net>
+> > To: "David S. Miller" <davem@davemloft.net>
+> > To: Jakub Kicinski <kuba@kernel.org>
+> > To: Jesper Dangaard Brouer <hawk@kernel.org>
+> > To: John Fastabend <john.fastabend@gmail.com>
+> > To: Stanislav Fomichev <sdf@fomichev.me>
+> > To: James Bottomley <James.Bottomley@HansenPartnership.com>
+> > To: Hagen Paul Pfeifer <hagen@jauu.net>
+> > Cc: ljs@kernel.org
+> > Cc: linux-kernel@vger.kernel.org
+> > Cc: linux-mm@kvack.org
+> > Cc: linux-kselftest@vger.kernel.org
+> > Cc: netdev@vger.kernel.org
+> > Cc: bpf@vger.kernel.org
+> > ---
+>
+> [...]
+>
+> > +
+> > +static bool secretmem_account_folio(struct secretmem_inode_state *state,
+> > +		const struct folio *folio)
+> > +{
+> > +	unsigned long nr_pages;
+>
+> Nit:
+>
+> const unsinged long nr_pages = folio_nr_pages(folio);
 
-Fixes: 2796ff1e3dca ("net: phy: add flag is_genphy_driven to struct phy_device")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chunfeng Song <springbreeze@stu.pku.edu.cn>
----
-v2 -> v3:
-  - Drop the links to previous versions from the commit message
-    (Miguel Ojeda).
-  - Keep the changelog here, after the separator, as is customary.
+Ack
 
-v1 -> v2:
-  - Use the bindgen-generated accessors (link(), autoneg(),
-    autoneg_complete()) instead of the hard-coded bit numbers, as
-    suggested by Andrew Lunn, since the offsets drift whenever the
-    layout changes.
-  - Update the Fixes: tag to 2796ff1e3dca, the commit that inserted
-    is_genphy_driven and shifted the fields (the offsets were correct
-    when the abstraction was merged in v6.8).
-  - Add the net tree prefix to the subject.
+>
+> > +
+> > +	nr_pages = folio_nr_pages(folio);
+> > +	if (!__secretmem_account_pages(state->user, nr_pages))
+> > +		return false;
+> > +
+> > +	atomic_long_add(nr_pages, &state->nr_pages_accounted);
+> > +	return true;
+> > +}
+> > +
+> > +static void __secretmem_unaccount_pages(struct secretmem_inode_state *state,
+> > +		unsigned long nr_pages)
+> > +{
+> > +	atomic_long_sub(nr_pages, &state->user->locked_vm);
+> > +	atomic_long_sub(nr_pages, &state->nr_pages_accounted);
+> > +}
+> > +
+> > +static void secretmem_unaccount_folio(struct secretmem_inode_state *state,
+> > +		struct folio *folio)
+> > +{
+> > +	__secretmem_unaccount_pages(state, folio_nr_pages(folio));
+> > +}
+> > +
+> > +static void secretmem_unaccount_all_folios(struct secretmem_inode_state *state)
+> > +{
+> > +	unsigned long nr_pages_accounted;
+> > +
+> > +	nr_pages_accounted = atomic_long_read(&state->nr_pages_accounted);
+> > +	__secretmem_unaccount_pages(state, nr_pages_accounted);
+> > +}
+> > +
+> >  static vm_fault_t secretmem_fault(struct vm_fault *vmf)
+> >  {
+> >  	struct address_space *mapping = vmf->vma->vm_file->f_mapping;
+> >  	struct inode *inode = file_inode(vmf->vma->vm_file);
+> > +	struct secretmem_inode_state *state = inode->i_private;
+> >  	pgoff_t offset = vmf->pgoff;
+> >  	gfp_t gfp = vmf->gfp_mask;
+> >  	unsigned long addr;
+> > @@ -72,8 +134,15 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
+> >  			goto out;
+> >  		}
+> >
+> > +		if (!secretmem_account_folio(state, folio)) {
+> > +			folio_put(folio);
+> > +			ret = VM_FAULT_SIGBUS;
+> > +			goto out;
+> > +		}
+> > +
+> Okay, that works because secretmem does not support any form of truncate, in
+> particular, no FALLOC_FL_PUNCH_HOLE.
 
-rust/kernel/net/phy.rs | 20 ++++++--------------
- 1 file changed, 6 insertions(+), 14 deletions(-)
+Yeah exactly. I think I covered that off somewhere in my essay-length
+commit msg but if not but yeah that is a thing that I noted.
 
-diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-index 956cda573ddb..14dd1e6cb380 100644
---- a/rust/kernel/net/phy.rs
-+++ b/rust/kernel/net/phy.rs
-@@ -124,38 +124,30 @@ pub fn state(&self) -> DeviceState {
-     ///
-     /// It returns true if the link is up.
-     pub fn is_link_up(&self) -> bool {
--        const LINK_IS_UP: u64 = 1;
--        // TODO: the code to access to the bit field will be replaced with automatically
--        // generated code by bindgen when it becomes possible.
-+        let phydev = self.0.get();
-         // SAFETY: The struct invariant ensures that we may access
-         // this field without additional synchronization.
--        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
--        bit_field.get(14, 1) == LINK_IS_UP
-+        unsafe { (*phydev).link() == 1 }
-     }
- 
-     /// Gets the current auto-negotiation configuration.
-     ///
-     /// It returns true if auto-negotiation is enabled.
-     pub fn is_autoneg_enabled(&self) -> bool {
--        // TODO: the code to access to the bit field will be replaced with automatically
--        // generated code by bindgen when it becomes possible.
-+        let phydev = self.0.get();
-         // SAFETY: The struct invariant ensures that we may access
-         // this field without additional synchronization.
--        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
--        bit_field.get(13, 1) == u64::from(bindings::AUTONEG_ENABLE)
-+        unsafe { (*phydev).autoneg() == bindings::AUTONEG_ENABLE }
-     }
- 
-     /// Gets the current auto-negotiation state.
-     ///
-     /// It returns true if auto-negotiation is completed.
-     pub fn is_autoneg_completed(&self) -> bool {
--        const AUTONEG_COMPLETED: u64 = 1;
--        // TODO: the code to access to the bit field will be replaced with automatically
--        // generated code by bindgen when it becomes possible.
-+        let phydev = self.0.get();
-         // SAFETY: The struct invariant ensures that we may access
-         // this field without additional synchronization.
--        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
--        bit_field.get(15, 1) == AUTONEG_COMPLETED
-+        unsafe { (*phydev).autoneg_complete() == 1 }
-     }
- 
-     /// Sets the speed of the PHY.
--- 
-2.43.0
+>
+> Overall, the idea sounds good to me. Nothing jumped at me.
 
+Thanks! So in a way you kinda... Ack it right? :P If only there were a tag
+for that 🤔 ;)
+
+>
+> --
+> Cheers,
+>
+> David
+
+--
+Cheers, Lorenzo
