@@ -1,160 +1,198 @@
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2038A3F8234;
-	Tue, 25 Aug 2026 13:19:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228BC4734CC
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 13:21:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.181.97.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787663954; cv=none; b=IwG6QUtDeJS4YCYlVmGeR6wcRTMZbP90WUjPgubRwlV/SPUCqJvPIQJw2zu8q8n0pEyNsOyrm0KI5SdjVqJyfKdYoL8qZZc3qVzFYiYseukAUwehvDeQnx90yoNFRsRCdpmm0jbWBjelkilJ8b9h/pvHITOn0oezuooPJuDJWxs=
+	t=1787664115; cv=none; b=JzJYdtnwc/pTgKIf956qOo+6irRK0rvMtPF56KQ1rYdXt9Mc/N7nkMphpSrHe9Z9nUtHNsUXwuZSA8qX7SFK3J1p/cpUKcRocUAzUBVd/mZmgi8JtpFjZgRuLEt+UlgQ2Ty1DnH1o8gRiH7+JEpQAGf0QRd0yT7XIlbIc2ZI9WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787663954; c=relaxed/simple;
-	bh=5TVEsS2ZrICCGdu5fHn5ixwm1NzymOIz9G67H0t4KAU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sS5yxDhceynggZz4nDlKvnshPEPOhqnyzdUwKYchoGdZ8IxDMNSfJ3sEtqCNz1eNBiCJN+u0SSYd6guAXg8/I1XHs7O9DCkdxOfAq7IMiD14XsckXL2xYnKQ5ZhX676VN6CgA6lKbweyfedRLEo/eXXapbPKo4tVX8dRYmqbvVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-c45ff70000001609-0b-6a8d964b2220
-Date: Tue, 25 Aug 2026 22:19:06 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, max.byungchul.park@gmail.com,
-	kernel_team@skhynix.com, torvalds@linux-foundation.org,
-	damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
-	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
-	mingo@redhat.com, peterz@infradead.org, will@kernel.org,
-	tglx@linutronix.de, rostedt@goodmis.org, joel@joelfernandes.org,
-	sashal@kernel.org, daniel.vetter@ffwll.ch, duyuyang@gmail.com,
-	johannes.berg@intel.com, tj@kernel.org, tytso@mit.edu,
-	willy@infradead.org, david@fromorbit.com, amir73il@gmail.com,
-	gregkh@linuxfoundation.org, kernel-team@lge.com, linux-mm@kvack.org,
-	akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
-	hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
-	jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
-	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
-	ngupta@vflare.org, linux-block@vger.kernel.org,
-	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
-	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
-	djwong@kernel.org, dri-devel@lists.freedesktop.org,
-	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
-	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
-	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
-	boqun.feng@gmail.com, longman@redhat.com, yunseong.kim@ericsson.com,
-	ysk@kzalloc.com, yeoreum.yun@arm.com, netdev@vger.kernel.org,
-	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
-	catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
-	hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
-	gustavo@padovan.org, christian.koenig@amd.com,
-	andi.shyti@kernel.org, arnd@arndb.de, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
-	mcgrof@kernel.org, petr.pavlu@suse.com, da.gomez@kernel.org,
-	samitolvanen@google.com, paulmck@kernel.org, frederic@kernel.org,
-	neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
-	josh@joshtriplett.org, urezki@gmail.com,
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
-	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
-	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
-	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
-	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
-	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
-	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
-	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
-	yuzhao@google.com, baolin.wang@linux.alibaba.com,
-	usamaarif642@gmail.com, joel.granados@kernel.org,
-	richard.weiyang@gmail.com, geert+renesas@glider.be,
-	tim.c.chen@linux.intel.com, linux@treblig.org,
-	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
-	chenhuacai@kernel.org, francesco@valla.it,
-	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
-	masahiroy@kernel.org, brauner@kernel.org,
-	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
-	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
-	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org,
-	miguel.ojeda.sandonis@gmail.com, neilb@ownmail.net,
-	bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
-	dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v19 00/40] DEPT(DEPendency Tracker)
-Message-ID: <20260825131906.GC23086@system.software.com>
-References: <20260706061928.66713-1-byungchul@sk.com>
- <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
- <20260821042143.GA40890@system.software.com>
- <825134a8-ceae-430c-b2fc-d1d0c7240f39@kernel.org>
- <20260825121322.GA23086@system.software.com>
- <e0c589d0-d17b-48c2-8e1b-d41b69ecaadc@kernel.org>
+	s=arc-20240116; t=1787664115; c=relaxed/simple;
+	bh=kiobPkwGozes30ZahVyQZIjm/97Bqbne03JNSWW3aLc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gsFV4SWbxT6z/aDUtAhX3Sb07Yfu0g8SAY/iv25EsjxC0OXEyN/zLauzxoS9d7cOTmawpUotnvIGIPGC0hLdtpLiM3satig4mCSwKJ1YlPa9M8icczK/j9odK4SPF9zr//DXSbsxHG4G68Y43ZmbERinchBvetl2Rh9lOFyzYJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=I-love.SAKURA.ne.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp
+Received: from www262.sakura.ne.jp (localhost [127.0.0.1])
+	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 67PDLM1x029125;
+	Tue, 25 Aug 2026 22:21:22 +0900 (JST)
+	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from [192.168.1.6] (M106072072000.v4.enabler.ne.jp [106.72.72.0])
+	(authenticated bits=0)
+	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 67PDLMfP029122
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+	Tue, 25 Aug 2026 22:21:22 +0900 (JST)
+	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Message-ID: <96f33d10-558f-49d5-a95d-ec1e29feea0b@I-love.SAKURA.ne.jp>
+Date: Tue, 25 Aug 2026 22:21:20 +0900
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e0c589d0-d17b-48c2-8e1b-d41b69ecaadc@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA01Sa0ybZRjN+13e76Oh8bPD+W4k/qghS9BtzGzuibqL8YefITEm/tsStbHN
-	KIOytYCgISvILhQ2RpHiisxyq0DLIAWmVLpVhIIOQgsOStOGLtIicpk2ATJwQ4pZ3L+Tc85z
-	zpM8D0/LLHgvr9bkqrQaRZYcSxjJcmLj/nTT1cy08sDrcOXiBZgqdjMwMl3CwPpmHQ0X+7YY
-	eGz0cFBTjGDL5UFg8hlp8Hvv0mDvKaZg8ecYgpoHcxgeWiu2LaF5CqbXlhDMuS8jeGw6C982
-	dmOILYQRuFpLMESu99Lw2+pDDCtdGHyjiwjq64wIogEXBV82dWIw1TsYCJqMFMxaowzUdPxI
-	wSNrOwejTUEGrPoUqBubZMFjm+fg1vI4C4tRI4bZ4UssfK8Pc+CYGUJwxbnKgCvwCjRcamZg
-	0vkNhoquXhb0desseN33WJiweRkYd3aw0DLto+BB2M9C99goDWvXksFbdZWFjpVGDNUrUQQz
-	tUscTLgtFLT+XctCm2sMg8eyG7pKzdxJpWi/aUfi5oYRiS33lrC4sXofi81lG5RYNbZf7DOH
-	OLH0ToATLY48sXRwmRW7W1PFpv4FSmyIrbKio70Miw2bf9BicKoff/DqKclbSlWWOl+lPXj8
-	E0lGqLKFPediC26HKzk9qmIMKIEnwmFSHSjDT3Gfy04bEM8zQgqJRk7EaSzsI37/IzqOk4Q0
-	Mj9SQhmQhKcF20vkq9lhLi7sEo6SnmA5js9KBSDjvz4X98iETooY7/fseKTC8+SXG3M7vbSQ
-	SvxPFqi4nxaSyXdP+DidIBwn9jtzO10vCC8T9+3hnS4iRBPIn5dbqP/23EN+avUz15FgfibW
-	/Eys+f9YC6LbkUytyc9WqLMOH8go1KgLDnyak+1A239rLfrn9A8o5v1wAAk8kidKt8+VKWMV
-	+brC7AFEeFqeJP2iyJApkyoVhZ+rtDkfa/OyVLoBlMwz8helr619ppQJZxS5qrMq1TmV9qlK
-	8Ql79ej0SLCzYejgKec+U9vb1pjDkH6sVlNReyw0GAmvVVZEnYGpa56NdXSo62tbSvWRPl3B
-	ewtvvDNJH2mLsEn6MxdsStNQUFFkfdMuD5a/m3j+hO+vUGKe7EZ/80pp0u7ffQOZ79ffnE0b
-	hPSPttDd85tcnm9msHfP0dSJnJNCbkQvZ3QZikOptFan+BcD5aJdswMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SfUxTZxTGfd/39vbS2O3aod6IWUxl0ZD4lWg8m4sf2RbvNDOaLEFnnHbj
-	RgqlaqsgW4xSaAZ1alttCa0ogq1M6mDlw3WujGAEUYitH6NRsJhciwQQo1QjUFhLYuY/J+c8
-	5/nlOX8chihiknmMWntQ0GlVGiUto2Rb1hQu2Ww/kbW82s5AsfEo9IRFCfxb0EJBdLSYgrO1
-	HhpizqtSKPaWSeBmt4GCwO81CMLRYgRvxp0EjL4pCmLWNimMvn0kBVsBgil/GwJ70EogFPiH
-	gKehAMOrukkaBq+/RGB7ItJQOlBAwYj7VwSOiFMKAzc2wnD4mgSmevsxdL8eQuAWJzGILb8g
-	iNmz4XxlfRy3v6BhvOsOgVJbAMGFJ70EXg70IWhoe4ygv3EMgb/aQMNTcyOBe+IHcD86QkOH
-	7TgNw8GzGJ7X0VBh8Esg2DmIoNxpRRB56MdQWFVLg73cS4Gv7y8pBAcnMPTYrRhqvN9A2B2h
-	4La5Esdvjrv+mAvO0kIcL88w2K5cw+vdiH9jPEnxl+ubMG+8G6N5zzkP4sfHrIgfdRUS3miO
-	j9eHRghfVJ/Hu24P0fxY9AHN+19XUPytSo6/WDKGeUvXEt7n6JVu3fCd7PMMQaPOFXTL1u6R
-	Zfaeckn2+yWHm/pOSY8hC2VCSQzHruR8fg8xIYah2E+4yNN1CZlmF3Gh0FuS6JPZ5Vz/TQM2
-	IRlD2JqPuTPhdmli8RG7mmvoOU4nWDkL3J1bHyY8CrYWc9YHDdMeOTuL6ygTp7MIm8aFJgdw
-	wk/YFO7SJJOQk9i1nKdZnM6azS7kWprasRnJHe/Rjvdox/90BSKXUbJam5ujUmtWLdVnZ+Zr
-	1YeX/rgvx4viT+k+MmH5E43e29iKWAYpZ8oDlhNZCokqV5+f04o4hiiT5T8fMWUp5Bmq/J8E
-	3b7dukMaQd+KUhhKOVe+KV3Yo2D3qg4K2YKwX9C922Imad4xZG4v2TX/i5IFXak7872z1Zlf
-	Pg6EijTN5KTPtmOoSL/z+23LtKldaYcaXdVKU2k0b05VimgNlnV7A2dM4WrX1XLVloX2Hzqp
-	zzIu8es76hbvdVZ9Onzh24ruPEPqb191bp+RHli3Rvza0pceOdCcc9r899SMzQvuh3J3Tww+
-	G+/A55WUPlO1Io3o9Kr/AKCz9huQAwAA
-X-CFilter-Loop: Reflected
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: make sure final 'struct net' free in
+ net_complete_free() is always deferred
+To: Eric Dumazet <edumazet@google.com>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Network Development <netdev@vger.kernel.org>
+References: <34f44e8a-9fa4-4cb3-822e-5db54fb6df44@I-love.SAKURA.ne.jp>
+ <CAAVpQUC672LJN_8KQ5BzadS26FnUrh4ayjyu-n5x=W7U69u7fA@mail.gmail.com>
+ <CANn89iJd-s+mocDFXgt2rtFQVBGNJ7xEy=tUMKa5Da+brptXzA@mail.gmail.com>
+ <7d6d4139-4389-4083-8569-ab2b7265ce3c@I-love.SAKURA.ne.jp>
+ <CANn89iKwWFwRxEDvw7eUPD-tKL_dvYrZeye_3be37q6qYzQ15w@mail.gmail.com>
+Content-Language: en-US
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+In-Reply-To: <CANn89iKwWFwRxEDvw7eUPD-tKL_dvYrZeye_3be37q6qYzQ15w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Virus-Status: clean
+X-Anti-Virus-Server: fsav114.rs.sakura.ne.jp
 
-On Tue, Aug 25, 2026 at 03:10:28PM +0200, David Hildenbrand (Arm) wrote:
-> >> As the saying goes, it's hard to teach old dogs new tricks, but in the end
-> >> taking care of two dogs is likely harder than only a single dog? :)
-> >
-> > Or it's better to train a unmatured hunting dog than to teach a pet dog,
-> > how to hunt, for better hunting, even though the pet dog might
-> > eventually become able to.
+On 2026/08/17 23:00, Eric Dumazet wrote:
+> However, the observation regarding the copy_net_ns() error path is valid:
+> because failed namespaces never go through __put_net(), net_cleanup_work
+> is not queued, so a failed net structure can stay on defer_free_list until
+> another namespace is destroyed.
 > 
-> I'm not sure whether "pet dog" is the right analogy to lockdep in that scenario,
-> though ;)
+> The proper fix for that benign issue would be to directly free the
+> struct net in the
+> copy_net_ns() error path (since it was never active and does not need deferred
+> freeing), rather than modifying cleanup_net().
 
-Ah.  Okay.  I will be careful in using terms.
+Now that "net: fix a resource leak in copy_net_ns() error handling path"
+handed over to net_passive_dec() (instead of calling kmem_cache_free() from
+copy_net_ns()), it is time to fix the last problem which sashiko repeatedly mentions
+due to commit 0f6ede9fbc74 ("net: defer final 'struct net' free in netns dismantle").
 
-I wanted to tell DEPT has its strength, lockdep has its own, and they
-are different.
+My understanding is that we need to wait for RCU grace period before
+calling kmem_cache_free(). Then, I think we can simplify like shown below (either
+pattern A or pattern B). Which pattern do you like?
 
-	Byungchul
 
-> 
-> --
-> Cheers,
-> 
-> David
+
+Pattern A:
+
+ net/core/net_namespace.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
+
+diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+index da5f881fbd3b..421398149bc2 100644
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -511,19 +511,20 @@ static struct net *net_alloc(void)
+ 
+ static LLIST_HEAD(defer_free_list);
+ 
+-static void net_complete_free(void)
++static void net_complete_free(struct work_struct *work)
+ {
+ 	struct llist_node *kill_list;
+ 	struct net *net, *next;
+ 
+-	/* Get the list of namespaces to free from last round. */
+ 	kill_list = llist_del_all(&defer_free_list);
+-
++	/* Wait for an extra rcu_barrier() before final free. */
++	rcu_barrier();
+ 	llist_for_each_entry_safe(net, next, kill_list, defer_free_list)
+ 		kmem_cache_free(net_cachep, net);
+-
+ }
+ 
++static DECLARE_WORK(net_complete_free_work, net_complete_free);
++
+ void net_passive_dec(struct net *net)
+ {
+ 	if (refcount_dec_and_test(&net->passive)) {
+@@ -536,8 +537,8 @@ void net_passive_dec(struct net *net)
+ 			ref_tracker_dir_exit(&net->refcnt_tracker);
+ #endif
+ 
+-		/* Wait for an extra rcu_barrier() before final free. */
+ 		llist_add(&net->defer_free_list, &defer_free_list);
++		queue_work(system_long_wq, &net_complete_free_work);
+ 	}
+ }
+ 
+@@ -712,8 +713,6 @@ static void cleanup_net(struct work_struct *work)
+ 	 */
+ 	rcu_barrier();
+ 
+-	net_complete_free();
+-
+ 	/* Finally it is safe to free my network namespace structure */
+ 	list_for_each_entry_safe(net, tmp, &net_exit_list, exit_list) {
+ 		list_del_init(&net->exit_list);
+-- 
+
+
+
+Pattern B:
+
+ include/net/net_namespace.h |  2 +-
+ net/core/net_namespace.c    | 18 ++++--------------
+ 2 files changed, 5 insertions(+), 15 deletions(-)
+
+diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
+index e5ee673b9fcf..9419a198faf7 100644
+--- a/include/net/net_namespace.h
++++ b/include/net/net_namespace.h
+@@ -81,7 +81,7 @@ struct net {
+ 						 * or to unregister pernet ops
+ 						 * (pernet_ops_rwsem write locked).
+ 						 */
+-	struct llist_node	defer_free_list;
++	struct rcu_head		complete_free_rcu;
+ 	struct llist_node	cleanup_list;	/* namespaces on death row */
+ 
+ 	struct list_head ptype_all;
+diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+index da5f881fbd3b..2ce0f281922d 100644
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -509,18 +509,11 @@ static struct net *net_alloc(void)
+ 	goto out;
+ }
+ 
+-static LLIST_HEAD(defer_free_list);
+-
+-static void net_complete_free(void)
++static void net_complete_free(struct rcu_head *rcu)
+ {
+-	struct llist_node *kill_list;
+-	struct net *net, *next;
+-
+-	/* Get the list of namespaces to free from last round. */
+-	kill_list = llist_del_all(&defer_free_list);
++	struct net *net = container_of(rcu, struct net, complete_free_rcu);
+ 
+-	llist_for_each_entry_safe(net, next, kill_list, defer_free_list)
+-		kmem_cache_free(net_cachep, net);
++	kmem_cache_free(net_cachep, net);
+ 
+ }
+ 
+@@ -536,8 +529,7 @@ void net_passive_dec(struct net *net)
+ 			ref_tracker_dir_exit(&net->refcnt_tracker);
+ #endif
+ 
+-		/* Wait for an extra rcu_barrier() before final free. */
+-		llist_add(&net->defer_free_list, &defer_free_list);
++		call_rcu(&net->complete_free_rcu, net_complete_free);
+ 	}
+ }
+ 
+@@ -712,8 +704,6 @@ static void cleanup_net(struct work_struct *work)
+ 	 */
+ 	rcu_barrier();
+ 
+-	net_complete_free();
+-
+ 	/* Finally it is safe to free my network namespace structure */
+ 	list_for_each_entry_safe(net, tmp, &net_exit_list, exit_list) {
+ 		list_del_init(&net->exit_list);
+-- 
