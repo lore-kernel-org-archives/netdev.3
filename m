@@ -1,132 +1,116 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+Received: from mail-ed2-f6.google.com (mail-ed2-f6.google.com [74.125.228.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F7740096C
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 15:27:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787671647; cv=pass; b=SvPWVmjdUBDebvUMRKjMkS6lu5MYcf8XHm7SdUuRpNQEB5BW8IJ/a+JEw/GrKuUZM7vuMbZaVyJrWWIp+gOvAyhHTiiXU/sE0fTV7Zh9dXSYma1mYE+05Lhr276JVvexJcp4uvlbGrhrBBpnD7BE+9yXucyqvQmtz8A/TaWVPzc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787671647; c=relaxed/simple;
-	bh=P3UPOlvZlh3GuZ35VcNZ1W1dyaFhn8s8hYU0KFPZ3jI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sbk2NPruTGAUhUsCx+/IU11MpzI9HgmIi5FxX4SCyDoU2GhPW03/3gut/yvb7QqGGHMWlAVvFf9yLd2gMBFD0hCKklNAyDPRvBnxYTo92kC6+8H/NwHWGM2oD+1wcTaAZBHSVVd6d33fTJh2IvfJcNd9Wnc98sYHNM7MtO6MhyQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MPagUQuX; arc=pass smtp.client-ip=209.85.222.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MPagUQuX"
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-92e5b048375so223563285a.1
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 08:27:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787671645; cv=none;
-        d=google.com; s=arc-20260327;
-        b=jL/u/Xjkkb0MRdlEBRfBIdt7/u6yD9ssLDk/cJZ+m6QM12d+oONFfflD/qeAl/P7lh
-         BjI5+zZmwkHQiYaaTM7oMrZPnJW6M5QJktnAKQyv/1BRD2S5P0CpIUA9i6kIwXKtCNBC
-         usQEP5Yln+TpA6eiQXMug8EkEH1FHMMHDiblQyR7SBnBw0xZ2Fdah5Tu+oD0r8+nMr7b
-         folczTCTiuni2WVbclJF6W2/TeIttn92bNH4/kXNBO+Br830p+T2U6i+uA5Y//QTyI+C
-         ha6IUtsvcIfMT8NHyehb2YJbQAPwjulfIK/e9M25uYzVvSSKCpEos8AjPiYkPQMTdyrg
-         y5sQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=X3Z1RwE9Pulx6lUVcnRl5ysQQDH57FtFv8Mr3dUHZ8g=;
-        fh=BrVrfElvWGNGbbwZXRr301FccjPaqGtLPdSlBQaxk40=;
-        b=U6iW2XEU6Fvzi78ETYXBYqmj6ZRp9aF926uswYhfU9/ItVIu+YkclPWjOyCKCbH8sA
-         xfT0HGndbtwzpmCpAc7XQdJsihN3+5rzkIGM1bgM87dSLq3heHOWFfVtLAth4WOXRO62
-         hiY6woBXeiWGLWlYtNHiHefbGHMuaeC2OUqo4p0K7uYrikVZNrZpmh+1imiSGex3QV7V
-         CaXpySGbgmtiVeGx3kzm0BUwv+wVQOSP9KCJSUfh7xB6bh+4eGDpqJ1SPy/jN7acBsLm
-         VyMKuGBWGSJWPdw5l5nMG+9k0TNabnftJF30ImWEWfstHLNGbeat3hOETqXXjK94/Gbg
-         y6RQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787671645; x=1788276445; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=X3Z1RwE9Pulx6lUVcnRl5ysQQDH57FtFv8Mr3dUHZ8g=;
-        b=MPagUQuXrXhqhQYp1EaiPvATXc2L3u0NBgkxcmNl48eyEi8tO3kKFj3EHjSa1oU0Is
-         bZa1nGg8oljpqe6KAKK/EQZvxtc2JwfxDRYIO96aJJD340Nn+2axZtSMnJclhd/T0ya5
-         XjjvUw1HQQzFOSRftKr8ICNu3h+n/BmMp7mamKa5ippovRQKE78a4IwUIuH3tpMIG73W
-         jRUdEjhTcXhT0s033ERSkbKttKDMqLmyqFkdEXUPUYtBeiNZG4eqLG8ITgo0lqdCxlAK
-         /DqWeFSxSoFSqPLy+cs8KgKOLlItK1LKy24vThKNsbmeUtbZICMLmPWz8G4yWjD9fBl0
-         g0Vg==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7D040096C
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 15:27:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.70
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787671654; cv=none; b=sP4LO1emSTLp7kl6TVIBDxfav3VNmd0p0ADvZAD96O+sYd67EpQlRnNoaEKlIIREarC6wq0zpONDEW6lItSMbgBPM3llcHAET2nE3wYIWdKaqfPwBvSNlRuuCciJOL3rEBceS66bcYIiePpfKRpHWvRsBOV8lnGI1n0DMFbqHw8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787671654; c=relaxed/simple;
+	bh=uQVz+K1/tiwkasTG+w79z8H2afc5AsmIftpAEk5RMkY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uR5Bhfx3fS5VeI8jbrIUUdKptzQK1KFRWL8A8m5ngSI88pX6ee0HeeuaQnacGRAC0IoCZHrdnqe6bM3R3/tc2d1F9oXOmPC3cSjMiFY6AxcIMOObqy3VlsKI6K5n2OlgtrhbV9HdFLw8iyvYegA5m4m05V9NBlO6ERkFqBpjVmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.228.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed2-f6.google.com with SMTP id 4fb4d7f45d1cf-6a5d790cce1so255886a12.1
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 08:27:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787671645; x=1788276445;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=X3Z1RwE9Pulx6lUVcnRl5ysQQDH57FtFv8Mr3dUHZ8g=;
-        b=s/yJwf2qsKdX3iUepUDPJJMi0FXVrurWfrrDeQtpKICnbZ9T2wUCIqX4+nwg3SU53J
-         EbjK6Y43RX0pZqtUAMfKo/ed8HqzqmRry4DFAk2zOBt2MG+LWoA95L9wHSTZsjqupLNU
-         /Y/6BW1jQoJARQ+QGvWUByDbOFSJ8roYSeoZlUimgp4sd4dSsMKI5/DaBAkYVUVh0kov
-         wsA9hmpkSltZKC1P5WisrPgicImFi1/rGI4uSeiXryGYFcSqhsQfxlUPrj8qcZL56w0V
-         023PfOKUopE5bdTcXDabjQOJvHzZAesqGL0v39S8fJ4Ay6n4Es7jXekEnHEI/4orLw5P
-         V0RA==
-X-Forwarded-Encrypted: i=1; AHgh+RoJG0U8Mu6fa4N4Ti0jzFX+Gb9nwNiYNQMByLH8XReenikt2XJcITlXE4OSovbMWSkmh4pIGDE=@vger.kernel.org
-X-Gm-Message-State: AFuF++kATY1+iXyFzBlexWGiBFuUnSyzSD7zMdQ16OyzoUMhS0DH0uq5
-	syf3dEusftsYQxSeehbhPkFlAcGOcnQivKM6m89+KDUBA860ivyASeqOqlRsC4ONtwObToXTzU5
-	ywk3lMM6ZtEGiAlUtbdzIXgXvk4N1HbehU+wZUeEp
-X-Gm-Gg: AR+sD11fEqI4ho7kBsc0L8iJ6KCqgvUcOVyJwiRGeY1bBwG2IOYxG745CC+xzu+5JBH
-	9Lo2ltiCrw0OFSPIRVxkxXU2OniGUFZ/Yiztr/NlNmBfZ5+5h5N90Ka7au6uZm48vqjYoYakDYv
-	Q3eu5V/vOr2oHoUR0qTQ1h9e5oO34scB2n2Tn8a6dff0v28/MLFp49IbLapPve0h/Sy706TF0rH
-	Uf6Z+AOIubEiashwT3Qwvu4K27z6bV/CIKKAAsdcIca0Xd3CRWmPQGNMfECKrFFNsPC5QrMxkjU
-	CNZGyxZbcobXH6cWKDlRSKWGiGUHkCUm22WW+Zz+h9oR5M9VK9zKefrRcuog1qkcufMFoprAufF
-	IbuK4h0GFP1FlnPjeWrLUAIIZ6sVNoMfNqSNFQ1PYILiD/AbVmKI2FzEkOJ9HPfapf28=
-X-Received: by 2002:a05:620a:72d1:20b0:934:9011:596c with SMTP id
- af79cd13be357-9373952c96emr2573783185a.24.1787671643474; Tue, 25 Aug 2026
- 08:27:23 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787671651; x=1788276451;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+5k9HBpOvCsTp3v94rUbWHBbfWVbyD8PJy/u/PILaBw=;
+        b=Idkt3ErQZOBJxYfK3PeyH27kWXSNfF9rKFEGyruri36FTH51dozo51nltlr5mvmOiO
+         PwCbpQEQK7lpQz8Tjt/eVqCuELQNs95nXT5AZrRZ5swM2qjMQffaHQelYpwUqsr6OFrd
+         XEPuPKf/FMMEwiaYX2na787tAkHMNurk4VeRwSdKnVkF2P8D7gQbSDeERo39+7T6igiR
+         VrHeTrAcsIxen/eQk7qgzcjRzG34/8bTGhkag3yzEaUXpHTvinkQ0JZ3t5WRve0BDOmD
+         IX2hXK/0qkrzHYvmaRZANXGVFgCEsvMl+0Zqv6pNYhqt9jhYXs9ULwd2PxvXMHGYFjGg
+         O7hA==
+X-Forwarded-Encrypted: i=1; AHgh+Rrueo4lrTqvKoIReRFdy9RLEqtwtwrf5GuhHXbIyR+KlKzgyvEbfONmuLxhihHVvo4uP/+vPTk=@vger.kernel.org
+X-Gm-Message-State: AFuF++m1nJmfrJw2ILsq3WrEq9WQ8RYh3+AlCU4UhwgcCv6MQvMpb50i
+	qw7X/5fmpqSDSrSF/XQoHuqQ05qiieROQOGHSIJ1/U9eaPyzf80Gl3vt
+X-Gm-Gg: AR+sD12XgNnYkOh7/REiUFBSsggwSsVQij4TfpCElrP+f2eS9EmXZuJHsMrZHVrnLlS
+	aCvZqkAY3YHNkJmqBY9ldjmznjlEh5MAuQz4ODym5u4LT68EjpqgNXAoiD3jRb8ReO4tUYsx8/U
+	1AhadSmmHm/PtsBz8ALHtzs0vlBwOek9kk0nqnFbSbY38/WW+cHsTpYFmex4PKX4steXmo1wDgc
+	rYCiSyRqu8HvKLF9eOCEhi7f1E3xmWTHvhsQK6A3ebtt3yG/8ZBz69EBG6CdNLV3r4caO+ofX99
+	cCWI1qg/2IW4kqW5hXZ2NGg2TP69bDi42Zib6midyNelB//0HdbfYQjliMoup2FLSBxvbBuDT5e
+	W/XjT9OQkxX3rqj83Qlylwwi3bJY/I0EPCMIsCOoJZ4BmfmfL2VBwSfD/XsYGFC9UpKHTKmSwwW
+	KlZWlUDpHX4BKqb5JdUNemnhtGrRMrhiaMQ9Sw7wqH4T0Oaq6ZxFgNQJd8A5ikdqJEF4NF3ni83
+	S1SJzJFRcP3yFFNMroOIfQ5NGEXKbg=
+X-Received: by 2002:a17:906:f591:b0:c24:6045:2a94 with SMTP id a640c23a62f3a-c24e5c8ad60mr1019878166b.4.1787671650465;
+        Tue, 25 Aug 2026 08:27:30 -0700 (PDT)
+Received: from im-t490s.redhat.com (89-24-33-32.nat.epc.tmcz.cz. [89.24.33.32])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c250a9ef996sm1808866b.62.2026.08.25.08.27.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Aug 2026 08:27:29 -0700 (PDT)
+From: Ilya Maximets <i.maximets@ovn.org>
+To: netfilter-devel@vger.kernel.org
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Romain Bellan <romain.bellan@wifirst.fr>,
+	Florent Fourcot <florent.fourcot@wifirst.fr>,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ilya Maximets <i.maximets@ovn.org>,
+	stable@vger.kernel.org
+Subject: [PATCH nf] net: netfilter: report NLM_F_DUMP_FILTERED when all is filtered out
+Date: Tue, 25 Aug 2026 17:27:24 +0200
+Message-ID: <20260825152725.3678225-1-i.maximets@ovn.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260825150655.1450271-1-jjy600901@snu.ac.kr>
-In-Reply-To: <20260825150655.1450271-1-jjy600901@snu.ac.kr>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 25 Aug 2026 17:27:11 +0200
-X-Gm-Features: AcwNN1VUm2LbEWIXFxI3xJLdgHzOEpfApI2ivNqT_Ae_ueLbqRxAFNE5cTjujos
-Message-ID: <CANn89iJE_HosLBRhZGM-GVpgPCSNtHiS9vnCc3tEmTVaamcJ9g@mail.gmail.com>
-Subject: Re: [BUG] KASAN: slab-use-after-free Read in slip_receive_buf
-To: Jaeyoung Chung <jjy600901@snu.ac.kr>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, 726ksm@gmail.com, kees@kernel.org, 
-	linux-kernel@vger.kernel.org, eulgyukim@snu.ac.kr
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 25, 2026 at 5:07=E2=80=AFPM Jaeyoung Chung <jjy600901@snu.ac.kr=
-> wrote:
->
-> Hello,
->
-> We found a "KASAN: slab-use-after-free Read in slip_receive_buf" on Linux=
- v7.2.
-> The issue was found by our own race fuzzer. We have not analyzed the root=
- cause,
-> so we do not have a proposed fix to offer.
->
-> To reproduce the race reliably, we applied the delay patch below to the
-> kernel and ran the C reproducer as root inside an x86_64 QEMU guest. The
-> crash log we observed, the delay patch and the reproducer are all include=
-d
-> below.
->
-> The following kernel config options are required to reproduce the issue:
->     CONFIG_SLIP=3Dy
->     CONFIG_LEGACY_TIOCSTI=3Dy
->     CONFIG_UNIX98_PTYS=3Dy
->     CONFIG_TTY=3Dy
->     CONFIG_KASAN=3Dy
->
-> We hope this report is useful. Please let us know if any further
-> information would help.
->
-> Reported-by: Eulgyu Kim <eulgyukim@snu.ac.kr>
-> Reported-by: Jaeyoung Chung <jjy600901@snu.ac.kr>
+NLM_F_DUMP_FILTERED is only set on data elements in the conntrack dump.
+But when everything is filtered out it is confusing for the user space,
+since the flag is not reported anymore and it looks like the table was
+empty, which may or may not be the case.
 
-This rings a bell; I had a local syzbot report for this issue a while back.
+'answer_flags' were introduced precisely for this use case, and the
+conntrack dump should set the flag in there in case the filtering was
+applied.
 
-I think we should remove slip_hangup().
+This is important, for example, to be able to tell if the filters are
+supported or not by the kernel without modifying the kernel state.
+
+With the proper reporting of NLM_F_DUMP_FILTERED on NLMSG_DONE, an
+application in user space can just try and dump with an arbitrary
+filter without worrying that there could be no matching entry.  The
+reported flag will signal that the filtering was applied and therefore
+supported.
+
+Fixes: cb8aa9a3affb ("netfilter: ctnetlink: add kernel side filtering for dump")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+---
+ net/netfilter/nf_conntrack_netlink.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index 9b4e29557ec3..579ada063b1b 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -1077,6 +1077,8 @@ static int ctnetlink_start(struct netlink_callback *cb)
+ 	}
+ 
+ 	cb->data = filter;
++	if (filter)
++		cb->answer_flags = NLM_F_DUMP_FILTERED;
+ 	return 0;
+ }
+ 
+-- 
+2.55.0
+
