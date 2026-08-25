@@ -1,48 +1,74 @@
-Received: from mta-64-225.siemens.flowmailer.net (mta-64-225.siemens.flowmailer.net [185.136.64.225])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECAAE39446D
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 09:19:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFDE3E9F93
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 09:19:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787649566; cv=none; b=lWYz4hsHhxb8XvGL3rESS+zPly3uaEtcZfGgIE8MZx4mPP1hnSj/g/RpjIuRgzLH2oUqp2lWpwEpXaz0dwUOPCErl8tJQzJ/VssfpJQkXv7QsW9L87yf5CeCYrLqIMEuSwIPV48wlSHFeGwtQsR8n6OIVzdFklnsrxcBqCO6qkg=
+	t=1787649583; cv=none; b=Ngkn3FlAN1Tuv4gAUrc8gwM/3txgGWoxYLYoNqIdvq8CbPePpGTySbsG137NU1GRGE/DtaWdtCXDD5aJ76/7Zfm7uWsC1ZHQlRaP2XGNbrvrLAC/ti5UtUGQKrLfSvaLQv4ADl8uuRuTVrMnRYlfZkcs6hj77BgczJGJTaTVphU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787649566; c=relaxed/simple;
-	bh=Vn3AKbB8ZvbzsvjI/cHUjpWdEhpZxCDoaRUSFh7u5PQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gDql4h7dbUvd4lLhv7yd2vgl0ejD2ahjwCXT6Pd5C4PZUuuRUJiEgKYAFWVTrwFKl6Pr6kUnv4PAywfW5IiIpK2o38A036nTunBq5s9TraQtmx+X0SRO2eP1bY6pfvPjUx/RaoPCTHbIVqMB58mylOY9F+GAFDBcOx06e995IoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=XV4Oc1qK; arc=none smtp.client-ip=185.136.64.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+	s=arc-20240116; t=1787649583; c=relaxed/simple;
+	bh=Pm4PUWeW2L1To4s2otVLTBJ5/BTIITsknwFytr+zxUA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TK+vjwvgL99hlXnze3d8SgCOq5iDOdYMIVXd0rdg3wAeII5m24tRG7CHr+8zSaoIqWStXfRDgA2IlYUsfnkBIhXh3ZQFeMXmb6E0EFoALJ+Fk1g9ySxk5NQ551l8vduoCmuGiIcMOKnxo983hTq+T/FF5pTLKMVDKSszUPFbOqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XjJrGnm/; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="XV4Oc1qK"
-Received: by mta-64-225.siemens.flowmailer.net with ESMTPSA id 202608250919132599736b0e00020705
-        for <netdev@vger.kernel.org>;
-        Tue, 25 Aug 2026 11:19:13 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
- d=siemens.com; i=alexander.sverdlin@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
- bh=u3r/oMrLHrFnt131fALCYPtJfXT5iOrA4SwySm4Z15A=;
- b=XV4Oc1qKGpKnTsoiE85NG/Ub+XAvD6aaBDzvVgqtaUYEfaa+w3fMnqhibFfrMeQVem2jey
- +XBxKbilCNhqQ9n85Epc11342Um0IIsE3YAE8QLEBzvRfX9qbGj6RQa2NANC5lG9f7/vY93k
- G+sHvy6BZLiPcn9oS9CdtZNSUeZmwl50eHA3lWbOa3XWVERwBBqdLmE0PV+uC5+zmwm02u45
- 6/YL/5O6opoDvlPNt5g4McVwTKpEcfqyvD55B9XAXS3ddN36nJ3EEXfibEWU2b65IbxTCjrK
- R8pcaafqOxLsEk4hdaXH1De75OZM4HLq+HdT6Lh/BUw6bZHqzTnoU2JA==;
-From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
-To: netdev@vger.kernel.org
-Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Frank Li <frank.li@nxp.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] net: fec: support RX flushing via an ethtool private flag
-Date: Tue, 25 Aug 2026 11:19:06 +0200
-Message-ID: <20260825091908.1362677-1-alexander.sverdlin@siemens.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XjJrGnm/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787649580;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cmi+Rp+tDcGWO2/8+NKpz2hFhBNW78Pt0j3naNDc5pc=;
+	b=XjJrGnm/hq5a7Yu2zyTJpQgiGZZg/A1wG6fcRBvgIry7oXW7fCWbe8qlJU0bzNeFdz4Qq5
+	QgFey213C+udmj0F0eArVbARVeOjpL22gb7mCL14lEgcY/eoF96C8Moyhbxit7RqkSS1MN
+	McYA+rIrDKZntojq4cfg4A0+QystnBs=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-110-M-Aid7pYN-K2AZ7R06Kolw-1; Tue,
+ 25 Aug 2026 05:19:34 -0400
+X-MC-Unique: M-Aid7pYN-K2AZ7R06Kolw-1
+X-Mimecast-MFC-AGG-ID: M-Aid7pYN-K2AZ7R06Kolw_1787649572
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3C9BC195608F;
+	Tue, 25 Aug 2026 09:19:32 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.44.48.127])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BEEDC195604A;
+	Tue, 25 Aug 2026 09:19:25 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: 4ncienth@gmail.com
+Cc: netdev@vger.kernel.org,
+	sgarzare@redhat.com,
+	stefanha@redhat.com,
+	bobbyeshleman@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	mst@redhat.com,
+	jasowangio@gmail.com,
+	xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com,
+	bryan-bt.tan@broadcom.com,
+	vishnu.dasa@broadcom.com,
+	bcm-kernel-feedback-list@broadcom.com,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	sashiko-bot@kernel.org
+Subject: Re: [PATCH net v3 2/2] vsock/vmci: validate packet source for connected sockets
+Date: Tue, 25 Aug 2026 11:19:21 +0200
+Message-ID: <20260825091921.105436-1-pabeni@redhat.com>
+In-Reply-To: <20260823175858.351431-3-4ncienth@gmail.com>
+References: <20260823175858.351431-3-4ncienth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,291 +76,154 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-456497:519-21489:flowmailer
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-
-The FEC controller can flush the RX FIFO of an individual receive queue
-through the RX_FLUSHn bits of the FEC_QOS_SCHEME (ENET_QOS) register.
-
-RX flushing prevents frames in the RX FIFO from being blocked. Blocking
-can occur when the frame at the head of the RX FIFO cannot be forwarded
-because the ring it is associated with cannot accept it, i.e. when the
-ring's RxBD[EMPTY] is not set or ENET_RDARn is not set. When RX flushing
-is enabled for a ring, such a blocking frame is flushed (discarded)
-instead of stalling the FIFO and holding up the other rings.
-
-Expose this per-queue capability as a runtime ethtool private flag
-("rx-flush-qN").
-
-Due to erratum ERR050395 (observed e.g. on i.MX8QXP), enabling RX flushing
-on more than one queue at a time can lock up the receive path, so only a
-single queue may have flushing enabled.
-
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/
 ---
-Initial attempt to provide the same functionality has been DT-based (and
-can be considered a v1):
-https://lore.kernel.org/all/20260814090906.2225075-1-alexander.sverdlin@siemens.com/
+vsock/vmci: validate packet source for connected sockets
 
- .../device_drivers/ethernet/freescale/fec.rst | 55 ++++++++++++++
- .../device_drivers/ethernet/index.rst         |  1 +
- MAINTAINERS                                   |  1 +
- drivers/net/ethernet/freescale/fec.h          |  9 +++
- drivers/net/ethernet/freescale/fec_main.c     | 74 +++++++++++++++++++
- 5 files changed, 140 insertions(+)
- create mode 100644 Documentation/networking/device_drivers/ethernet/freescale/fec.rst
+This adds a vsock_check_source() test to the VMCI stream receive paths so
+that a non-listening socket found by the destination-only bound-table
+lookup no longer processes packets from a context other than its stored
+peer. The check is applied both under bh_lock_sock() in
+vmci_transport_recv_stream_cb() and after lock_sock() in
+vmci_transport_recv_pkt_work().
 
-diff --git a/Documentation/networking/device_drivers/ethernet/freescale/fec.rst b/Documentation/networking/device_drivers/ethernet/freescale/fec.rst
-new file mode 100644
-index 0000000000000..502261f517e05
---- /dev/null
-+++ b/Documentation/networking/device_drivers/ethernet/freescale/fec.rst
-@@ -0,0 +1,55 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+========================================
-+Freescale Fast Ethernet Controller (FEC)
-+========================================
-+
-+The Fast Ethernet Controller (FEC), also known as ENET, is the Ethernet MAC
-+found on many Freescale/NXP SoCs, including the i.MX and Vybrid families. This
-+document describes driver-specific configuration that is not covered by the
-+generic networking documentation.
-+
-+Ethtool private flags
-+======================
-+
-+Some hardware features that are specific to the FEC and have no generic ethtool
-+control are exposed as ethtool private flags. The set of available flags depends
-+on the SoC and on the driver configuration (for example, the number of receive
-+queues), so the flags are enumerated at runtime::
-+
-+	$ ethtool --show-priv-flags ethX
-+
-+	$ ethtool --set-priv-flags ethX <flag> on|off
-+
-+rx-flush-qN
-+-----------
-+
-+On multi-queue capable controllers the driver exposes one ``rx-flush-qN``
-+private flag per receive queue (``rx-flush-q0``, ``rx-flush-q1``, ...), which
-+enables RX flushing for that queue. RX flushing is disabled by default.
-+
-+The controller uses a single RX FIFO that is shared by all receive queues. A
-+received frame is only removed from the head of the FIFO once it has been
-+copied into the buffer descriptor ring of the queue it is destined for. If that
-+ring cannot currently accept the frame - i.e. its next buffer descriptor is not
-+marked empty (``RxBD[EMPTY]`` is clear) or the ring has not been (re)activated
-+(``ENET_RDARn`` is clear) - the frame stays at the head of the FIFO and blocks
-+all subsequent frames, including those destined for other, non-congested queues.
-+
-+When RX flushing is enabled for a queue, a frame that would otherwise block the
-+FIFO in this way is instead discarded (flushed), so that frames for the other
-+queues can keep flowing. This is controlled through the ``RX_FLUSHn`` bits of
-+the ``FEC_QOS_SCHEME`` (``ENET_QOS``) register; see the "Receive flush" and
-+"ENET_QOS field descriptions" sections of the SoC reference manual (for example
-+the i.MX 8DualX/8DualXPlus/8QuadXPlus Applications Processor Reference Manual,
-+IMX8DQXPRM).
-+
-+.. note::
-+
-+   Due to erratum ERR050395 (see the applicable Mask Set Errata document, e.g.
-+   IMX8X_0N99Z for the i.MX 8QuadXPlus), enabling RX flushing on more than one
-+   receive queue at a time can, under certain traffic conditions, lock up the
-+   receive path instead of flushing the blocking frame. To avoid triggering the
-+   erratum the driver rejects (with ``-EINVAL``) any attempt to enable
-+   ``rx-flush-qN`` on more than one queue simultaneously; only a single queue
-+   may have RX flushing enabled.
-diff --git a/Documentation/networking/device_drivers/ethernet/index.rst b/Documentation/networking/device_drivers/ethernet/index.rst
-index d9980c84487a5..0a304b158ef70 100644
---- a/Documentation/networking/device_drivers/ethernet/index.rst
-+++ b/Documentation/networking/device_drivers/ethernet/index.rst
-@@ -24,6 +24,7 @@ Contents:
-    dec/dmfe
-    freescale/dpaa
-    freescale/dpaa2/index
-+   freescale/fec
-    freescale/gianfar
-    google/gve
-    huawei/hinic
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 460cb72688450..80e412c1283c7 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -10375,6 +10375,7 @@ L:	imx@lists.linux.dev
- L:	netdev@vger.kernel.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/net/fsl,fec.yaml
-+F:	Documentation/networking/device_drivers/ethernet/freescale/fec.rst
- F:	drivers/net/ethernet/freescale/fec.h
- F:	drivers/net/ethernet/freescale/fec_main.c
- F:	drivers/net/ethernet/freescale/fec_ptp.c
-diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
-index 7176803146f3d..f3dbad8db769f 100644
---- a/drivers/net/ethernet/freescale/fec.h
-+++ b/drivers/net/ethernet/freescale/fec.h
-@@ -322,6 +322,10 @@ struct bufdesc_ex {
- #define RCMR_CMP(X)		(((X) == 1) ? RCMR_CMP_1 : RCMR_CMP_2)
- #define FEC_TX_BD_FTYPE(X)	(((X) & 0xf) << 20)
- 
-+/* FEC_QOS_SCHEME bits */
-+#define QOS_RX_FLUSH(X)		BIT(3 + (X))
-+#define QOS_RX_FLUSH_MASK	(QOS_RX_FLUSH(0) | QOS_RX_FLUSH(1) | QOS_RX_FLUSH(2))
-+
- /* The number of Tx and Rx buffers.  These are allocated from the page
-  * pool.  The code may assume these are power of two, so it is best
-  * to keep them that size.
-@@ -604,6 +608,11 @@ struct fec_enet_private {
- 	unsigned int num_tx_queues;
- 	unsigned int num_rx_queues;
- 
-+	/* Bitmask of RX queues with receive flushing enabled */
-+	u32 rx_flush_mask;
-+	/* Serializes the FEC_QOS_SCHEME read-modify-write */
-+	spinlock_t qos_lock;
-+
- 	struct fec_enet_priv_tx_q *tx_queue[FEC_ENET_MAX_TX_QS];
- 	struct fec_enet_priv_rx_q *rx_queue[FEC_ENET_MAX_RX_QS];
- 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index ced4dbf8cd90f..c45282defb0c3 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1072,6 +1072,20 @@ static void fec_enet_active_rxring(struct net_device *ndev)
- 		writel(0, fep->rx_queue[i]->bd.reg_desc_active);
- }
- 
-+/* Program the per-queue RX flushing bits in FEC_QOS_SCHEME */
-+static void fec_enet_set_rx_flush(struct fec_enet_private *fep)
-+{
-+#if !defined(CONFIG_M5272)
-+	u32 val;
-+
-+	/* ethtool can race with fec_enet_adjust_link() (no RTNL) */
-+	guard(spinlock)(&fep->qos_lock);
-+	val = readl(fep->hwp + FEC_QOS_SCHEME);
-+	val &= ~QOS_RX_FLUSH_MASK;
-+	writel(val | fep->rx_flush_mask, fep->hwp + FEC_QOS_SCHEME);
-+#endif
-+}
-+
- static void fec_enet_enable_ring(struct net_device *ndev)
- {
- 	struct fec_enet_private *fep = netdev_priv(ndev);
-@@ -1090,6 +1104,8 @@ static void fec_enet_enable_ring(struct net_device *ndev)
- 			       fep->hwp + FEC_RCMR(i));
- 	}
- 
-+	fec_enet_set_rx_flush(fep);
-+
- 	for (i = 0; i < fep->num_tx_queues; i++) {
- 		txq = fep->tx_queue[i];
- 		writel(txq->bd.dma, fep->hwp + FEC_X_DES_START(i));
-@@ -3546,6 +3562,7 @@ static void fec_enet_get_ethtool_stats(struct net_device *dev,
- static void fec_enet_get_strings(struct net_device *netdev,
- 	u32 stringset, u8 *data)
- {
-+	struct fec_enet_private *fep = netdev_priv(netdev);
- 	int i;
- 	switch (stringset) {
- 	case ETH_SS_STATS:
-@@ -3561,11 +3578,18 @@ static void fec_enet_get_strings(struct net_device *netdev,
- 	case ETH_SS_TEST:
- 		net_selftest_get_strings(data);
- 		break;
-+	case ETH_SS_PRIV_FLAGS:
-+		for (i = 0; i < fep->num_rx_queues; i++) {
-+			snprintf(data, ETH_GSTRING_LEN, "rx-flush-q%d", i);
-+			data += ETH_GSTRING_LEN;
-+		}
-+		break;
- 	}
- }
- 
- static int fec_enet_get_sset_count(struct net_device *dev, int sset)
- {
-+	struct fec_enet_private *fep = netdev_priv(dev);
- 	int count;
- 
- 	switch (sset) {
-@@ -3576,11 +3600,58 @@ static int fec_enet_get_sset_count(struct net_device *dev, int sset)
- 
- 	case ETH_SS_TEST:
- 		return net_selftest_get_count();
-+	case ETH_SS_PRIV_FLAGS:
-+		return fep->num_rx_queues;
- 	default:
- 		return -EOPNOTSUPP;
- 	}
- }
- 
-+static u32 fec_enet_get_priv_flags(struct net_device *ndev)
-+{
-+	struct fec_enet_private *fep = netdev_priv(ndev);
-+	u32 flags = 0;
-+	int i;
-+
-+	for (i = 0; i < fep->num_rx_queues; i++)
-+		if (fep->rx_flush_mask & QOS_RX_FLUSH(i))
-+			flags |= BIT(i);
-+
-+	return flags;
-+}
-+
-+static int fec_enet_set_priv_flags(struct net_device *ndev, u32 flags)
-+{
-+	struct fec_enet_private *fep = netdev_priv(ndev);
-+	u32 mask = 0;
-+	int i;
-+
-+	if (flags & ~(BIT(fep->num_rx_queues) - 1))
-+		return -EINVAL;
-+
-+	/* Erratum ERR050395 */
-+	if (hweight32(flags) > 1) {
-+		netdev_err(ndev, "RX flush is supported on a single queue only\n");
-+		return -EINVAL;
-+	}
-+
-+	for (i = 0; i < fep->num_rx_queues; i++)
-+		if (flags & BIT(i))
-+			mask |= QOS_RX_FLUSH(i);
-+
-+	if (mask == fep->rx_flush_mask)
-+		return 0;
-+
-+	fep->rx_flush_mask = mask;
-+
-+	if (!netif_running(ndev))
-+		return 0;
-+
-+	fec_enet_set_rx_flush(fep);
-+
-+	return 0;
-+}
-+
- static void fec_enet_clear_ethtool_stats(struct net_device *dev)
- {
- 	struct fec_enet_private *fep = netdev_priv(dev);
-@@ -3800,6 +3871,8 @@ static const struct ethtool_ops fec_enet_ethtool_ops = {
- 	.get_strings		= fec_enet_get_strings,
- 	.get_ethtool_stats	= fec_enet_get_ethtool_stats,
- 	.get_sset_count		= fec_enet_get_sset_count,
-+	.get_priv_flags		= fec_enet_get_priv_flags,
-+	.set_priv_flags		= fec_enet_set_priv_flags,
- #endif
- 	.get_ts_info		= fec_enet_get_ts_info,
- 	.get_wol		= fec_enet_get_wol,
-@@ -5323,6 +5396,7 @@ fec_probe(struct platform_device *pdev)
- 
- 	fep->ptp_clk_on = false;
- 	mutex_init(&fep->ptp_clk_mutex);
-+	spin_lock_init(&fep->qos_lock);
- 
- 	/* clk_ref is optional, depends on board */
- 	fep->clk_ref = devm_clk_get_optional(&pdev->dev, "enet_clk_ref");
+Closes: https://lore.kernel.org/netdev/20260814121255.6B5001F000E9@smtp.kernel.org/
+
+> diff --git a/net/vmw_vsock/vmci_transport.c b/net/vmw_vsock/vmci_transport.c
+> index 1c4ee039c1662..b612a9893856a 100644
+> --- a/net/vmw_vsock/vmci_transport.c
+> +++ b/net/vmw_vsock/vmci_transport.c
+
+[ ... ]
+
+> @@ -765,17 +767,26 @@ static int vmci_transport_recv_stream_cb(void *data, struct vmci_datagram *dg)
+>  	bh_lock_sock(sk);
+>  
+>  	if (!sock_owned_by_user(sk)) {
+> -		/* The local context ID may be out of date, update it. */
+> -		vsk->local_addr.svm_cid = dst.svm_cid;
+> +		if (sk->sk_state != TCP_LISTEN &&
+> +		    !vsock_check_source(vsk, &vmci_transport, &src)) {
+> +			drop_pkt = true;
+> +			err = VMCI_ERROR_NO_ACCESS;
+> +		} else {
+> +			/* The local context ID may be out of date, update it. */
+> +			vsk->local_addr.svm_cid = dst.svm_cid;
+>  
+> -		if (sk->sk_state == TCP_ESTABLISHED)
+> -			vmci_trans(vsk)->notify_ops->handle_notify_pkt(
+> -					sk, pkt, true, &dst, &src,
+> -					&bh_process_pkt);
+> +			if (sk->sk_state == TCP_ESTABLISHED)
+> +				vmci_trans(vsk)->notify_ops->handle_notify_pkt(sk, pkt, true,
+> +									       &dst, &src,
+> +									       &bh_process_pkt);
+> +		}
+>  	}
+>  
+>  	bh_unlock_sock(sk);
+>  
+> +	if (drop_pkt)
+> +		goto out;
+> +
+
+[Severity: Medium]
+Should these two new exits still emit an RST before dropping the packet?
+
+Consider a stream socket that called bind() but never listen().
+__vsock_bind_connectible() puts it in the bound table with sk_state
+TCP_CLOSE, remote_addr left as {VMADDR_CID_ANY, VMADDR_PORT_ANY}, and
+vsk->transport still NULL, because vsock_assign_transport() is only
+called for connectible sockets from vsock_connect() (and at create time
+for SOCK_DGRAM).
+
+A REQUEST from a remote context to that port misses
+vsock_find_connected_socket(), is matched by vsock_find_bound_socket(),
+and then reaches the new check.  vsock_check_source() fails on its very
+first test:
+
+net/vmw_vsock/af_vsock.c:vsock_check_source() {
+	if (vsk->transport != transport)
+		return false;
+	...
+}
+
+So drop_pkt is set and "goto out" skips the kmalloc/schedule_work()
+handoff entirely.  vmci_transport_send_reset_bh() is only reached on the
+"no socket found" and allocation-failure paths, so nothing is sent back.
+
+The same happens on the deferred path below, where the new "goto out"
+jumps over the whole sk_state switch, including the default: arm whose
+in-tree comment says the reset is required:
+
+> @@ -908,6 +920,10 @@ static void vmci_transport_recv_pkt_work(struct work_struct *work)
+>  	pkt = &recv_pkt_info->pkt;
+>  
+>  	lock_sock(sk);
+> +	vsock_addr_init(&src, pkt->dg.src.context, pkt->src_port);
+> +	if (sk->sk_state != TCP_LISTEN &&
+> +	    !vsock_check_source(vsock_sk(sk), &vmci_transport, &src))
+> +		goto out;
+>  
+>  	/* The local context ID may be out of date. */
+>  	vsock_sk(sk)->local_addr.svm_cid = pkt->dg.dst.context;
+
+net/vmw_vsock/vmci_transport.c:vmci_transport_recv_pkt_work() {
+	...
+	default:
+		/* Because this function does not run in the same context as
+		 * vmci_transport_recv_stream_cb it is possible that the
+		 * socket has closed. We need to let the other side know or it
+		 * could be sitting in a connect and hang forever. Send a
+		 * reset to prevent that.
+		 */
+		vmci_transport_send_reset(sk, pkt);
+		break;
+	}
+
+Before this change that arm did transmit an RST for exactly this case,
+since vmci_transport_send_reset() handles an unbound remote_addr by
+replying to the packet's own source:
+
+net/vmw_vsock/vmci_transport.c:vmci_transport_send_reset() {
+	...
+	if (vsock_addr_bound(&vsk->remote_addr)) {
+		dst_ptr = &vsk->remote_addr;
+	} else {
+		vsock_addr_init(&dst, pkt->dg.src.context,
+				pkt->src_port);
+		dst_ptr = &dst;
+	}
+	...
+}
+
+With the reply gone, does the remote connect() now block for
+vsk->connect_timeout and return -ETIMEDOUT instead of -ECONNRESET?  The
+same loss of the reply would apply to a socket disconnected via
+connect(AF_UNSPEC), which resets remote_addr to {VMADDR_CID_ANY,
+VMADDR_PORT_ANY}.
+
+Returning VMCI_ERROR_NO_ACCESS from the datagram callback does not turn
+into a protocol reply, so is there anything left that notifies the peer?
+
+For comparison, the virtio side runs the same source test but resets the
+sender before dropping:
+
+net/vmw_vsock/virtio_transport_common.c:virtio_transport_recv_pkt() {
+	...
+	if (sock_flag(sk, SOCK_DONE) ||
+	    (sk->sk_state != TCP_LISTEN &&
+	     !vsock_check_source(vsk, &t->transport, &src))) {
+		(void)virtio_transport_reset_no_sock(t, skb, net);
+	...
+}
+
+Would it make sense to follow that convention here, and to mention the
+new drop-without-reply semantics in the changelog?
 -- 
-2.55.0
+This is an AI-generated review.
 
