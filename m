@@ -1,164 +1,199 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3310F405F7
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 07:52:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4023D6CD8
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 08:03:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787644326; cv=none; b=bDhx4YuuFczxqq9jMSWYIJlh3BZGnqiMvZ3sf/DJwQwLJ9A/wakjxEhkJnVzaALIb/+8eKX+dxvarr8UYCgJXCKsEMq1HtH6CLB0dSCL5t3fOG9hyCHmYdGHKkKoDwcCPWaCnu7PtTxH6wgA5uF7Oto3bAbEiqyL1nAer189Ag0=
+	t=1787645032; cv=none; b=sOkjBdq0zB2w8iwHgEUPxft2Vm8xyyhwCtIwH04KmqfJKrAyR4DfGweiBJT3Q/D2PNV0/20dBazg7VudaWN+bcThJKnyf2Q/EuCgrvG6WoK7G0pm5RyB9VKZWnfBmLGbKJ3p7tgK2HMXpmK3IX3wKzfG+9rNy0dk1wxQffJ/w70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787644326; c=relaxed/simple;
-	bh=MMXU2a+i7Yf7Ak7S7Zb+3DIBXEpJYrncAgbLF9rqRNo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UbJJs2PFy0CM8LdzEQhwcceAlfjWbeICQKaWz5zWFf+vm7k7QpfK/S/fKglXbJ2+5rLjYv5+Nz40xGljzSAIAt2nJ+GIDcNe/e8qcqmz8EbMhjodpTyEFUsFC4067ePODLblwPLcw+9nr3xfaNPkrM8EeA6UMm6t7vZR23jHc9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fueZUl8B; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fueZUl8B"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787644323;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hmXhnBSMTGUrH5O1ANS4et/RxLazQMcA0Z+Dk2f/vxQ=;
-	b=fueZUl8B0owiv2akiMV8SSe0aYg8Vt96gand62pp4FteXgezArng6+8WxMP9isRoY0rJRo
-	8rUuobi71Uzrm4m4hJ6Shd9e4DNhJrcCTqGmMnmZAEQpzVVOGPkwpkoBY3bQowRjJwiulk
-	/welmfvmxeEsWF7jRrDVenB0KG/Lfco=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-141-fhSZXN0aM5-gbGu2ELL5Jw-1; Tue,
- 25 Aug 2026 03:51:59 -0400
-X-MC-Unique: fhSZXN0aM5-gbGu2ELL5Jw-1
-X-Mimecast-MFC-AGG-ID: fhSZXN0aM5-gbGu2ELL5Jw_1787644317
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 15755187E5C6;
-	Tue, 25 Aug 2026 07:51:56 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.48.127])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D152F3000239;
-	Tue, 25 Aug 2026 07:51:49 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: maxime.chevallier@bootlin.com
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux@armlinux.org.uk,
-	hkallweit1@gmail.com,
-	alexis.lothore@bootlin.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	thomas.petazzoni@bootlin.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	muhammad.nazim.amirul.nazle.asmade@altera.com
-Subject: Re: [PATCH net] net: stmmac: selftests: Pass the IP proto mask in the TC selftest
-Date: Tue, 25 Aug 2026 09:51:45 +0200
-Message-ID: <20260825075145.34118-1-pabeni@redhat.com>
-In-Reply-To: <20260822153245.423259-1-maxime.chevallier@bootlin.com>
-References: <20260822153245.423259-1-maxime.chevallier@bootlin.com>
+	s=arc-20240116; t=1787645032; c=relaxed/simple;
+	bh=zE/6PpAbFwbSHzEnUEO8gwXvJ5QKAZ5ylc2eCikFt+w=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=ZtoqdML5qLXLOU97Vl5MEoUrW90fnXKbUPt2z7O2QB7zXmqMVyoS1wjAcPwy6Pscy4juWj6Y+gcl7BFCS43MYc8f18z+wE9hhfS/NUNPD50l7uW2Y+rRIp6UzN51jjnkUgAH9pVnOODVAmZQ983fnFgNC8BET/XYadxFOHDglL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4b3319233c2so3893353b6e.0
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 01:03:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787645030; x=1788249830;
+        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=AtGfEt5fG2go9z5Op71wQEx7a+tRBKr+1KtptibDM+E=;
+        b=E1XLR3+vVZqWJo0PLUchUkFIXeOA1ZaSY/QEcKk5hiQKQcZDdYOMZizkVIimMqueOv
+         7y83uirKJVuRgBS7nQ5jqiM2uWUTqFO48K6Em8nbqtDpCWPefBQ3GovCrfvmkhwF/3X9
+         G5JTBAN4Z6zYSMl8BlhEK9tRyKT3EDhivmLFuhuaZXp2xe7ORs9cvoSa4EjJmxlNxnNp
+         NEJzXr0huqVUcgqFT/ZNp07uYn1QuXTMFLig2jLzXxW+XJ6l8JUmwxzz6g1U3Go9QJNW
+         davxQqzp8sm8SM07J0iiOgk1RM5NHXi5N84oADCODeQTQxm5Mk9tRpq0E2N6TMD6H/4c
+         Q0tg==
+X-Forwarded-Encrypted: i=1; AHgh+RoUqerP0UdMhDccBHpa9b+WEmyQkVeNbrN420b3ZaowiPWxG8xSyntmJh8x5CYN9E1SxRWjmRU=@vger.kernel.org
+X-Gm-Message-State: AFuF++lR2V4fCok8apz+6GpddGaqCTR9F1eo0XYAvyDyypblTFJf3rkZ
+	9Y7EB+NqvKknUO/qulzVFEyAc7Nr5EQJGkFa0N/pZLrcmxQ65flZgNrW1SDwtzn2bOA+d4FVzVM
+	yLFQow0QOUSchBNOuqcshgr1iW/SXAO6X4OAm6/i1fm3TQAR3j3P0wJxNCTQ=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Received: by 2002:a05:6808:1c09:b0:496:a36:b5e5 with SMTP id
+ 5614622812f47-4b35089c71bmr4724901b6e.17.1787645029903; Tue, 25 Aug 2026
+ 01:03:49 -0700 (PDT)
+Date: Tue, 25 Aug 2026 01:03:49 -0700
+In-Reply-To: <20260824152932.1583506-1-lrizzo@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a8d4c65.a5a502ce.31d34.0049.GAE@google.com>
+Subject: [syzbot ci] Re: swiotlb: avoid swiotlb copy on network sockets
+From: syzbot ci <syzbot+ci194162eefbbbb459@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, davem@davemloft.net, david@kernel.org, 
+	driver-core@lists.linux.dev, dtatulea@nvidia.com, edumazet@google.com, 
+	gregkh@linuxfoundation.org, iommu@lists.linux.dev, kuba@kernel.org, 
+	kuniyu@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	lrizzo@google.com, m.szyprowski@samsung.com, netdev@vger.kernel.org, 
+	pabeni@redhat.com, rafael@kernel.org, rizzo.unipi@gmail.com, 
+	robin.murphy@arm.com, willemb@google.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+syzbot ci has tested the following series
+
+[v2] swiotlb: avoid swiotlb copy on network sockets
+https://lore.kernel.org/all/20260824152932.1583506-1-lrizzo@google.com
+* [PATCH v2 1/5] swiotlb: enforce pool nareas and nslabs invariants
+* [PATCH v2 2/5] swiotlb/mm: Implement SWIOTLB nocopy page allocator
+* [PATCH v2 3/5] net/swiotlb: Track bounce device per socket
+* [PATCH v2 4/5] net: Divert socket allocations to SWIOTLB for nocopy TX
+* [PATCH v2 5/5] swiotlb: Implement RX nocopy with fast recycling eviction
+
+and found the following issue:
+general protection fault in page_pool_put_unrefed_netmem
+
+Full report is available here:
+https://ci.syzbot.org/series/b17756c4-983f-4d7a-8415-3da06c0dda99
+
+***
+
+general protection fault in page_pool_put_unrefed_netmem
+
+tree:      torvalds
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux
+base:      0a0d1d55dad570724bf8c7ea83409639cfb4be9b
+arch:      amd64
+compiler:  Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+config:    https://ci.syzbot.org/builds/20e51ca2-88da-4674-9797-a62c64743095/config
+syz repro: https://ci.syzbot.org/findings/4385dd7f-d1fc-4627-ad19-6862c780a90c/syz_repro
+
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000082: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000410-0x0000000000000417]
+CPU: 0 UID: 0 PID: 5836 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:swiotlb_addr_in_default_pool include/linux/swiotlb.h:177 [inline]
+RIP: 0010:swiotlb_is_nocopy_addr include/linux/swiotlb.h:184 [inline]
+RIP: 0010:__page_pool_put_page net/core/page_pool.c:851 [inline]
+RIP: 0010:page_pool_put_unrefed_netmem+0x22a/0xd20 net/core/page_pool.c:930
+Code: 5c 63 00 00 89 c5 31 ff 89 c6 e8 61 17 04 f8 85 ed 0f 84 07 08 00 00 e8 54 12 04 f8 49 81 c4 10 04 00 00 4c 89 e0 48 c1 e8 03 <42> 80 3c 28 00 74 08 4c 89 e7 e8 37 c7 73 f8 4d 8b 24 24 4d 85 e4
+RSP: 0018:ffffc900039df230 EFLAGS: 00010206
+RAX: 0000000000000082 RBX: 0000000000000000 RCX: ffff888160efda00
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
+RBP: 0000000000000001 R08: ffffffff89c3aca5 R09: 0000000000000000
+R10: 0000000000000000 R11: ffffffff8ed5a4e0 R12: 0000000000000410
+R13: dffffc0000000000 R14: ffffea0004450300 R15: 0000000004450300
+FS:  00007f08f83e86c0(0000) GS:ffff88818d6fc000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffd455a8fe8 CR3: 00000001134ac000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ page_pool_put_netmem include/net/page_pool/helpers.h:343 [inline]
+ page_pool_put_full_netmem include/net/page_pool/helpers.h:373 [inline]
+ napi_pp_put_page+0x133/0x1e0 net/core/skbuff.c:1036
+ skb_pp_recycle net/core/skbuff.c:1047 [inline]
+ skb_free_head net/core/skbuff.c:1091 [inline]
+ skb_release_data+0x8c3/0xab0 net/core/skbuff.c:1122
+ skb_release_all net/core/skbuff.c:1197 [inline]
+ __kfree_skb+0x5d/0x210 net/core/skbuff.c:1211
+ llc_rcv+0x77a/0xcb0 net/llc/llc_input.c:-1
+ __netif_receive_skb_list_ptype net/core/dev.c:6312 [inline]
+ __netif_receive_skb_list_core+0x784/0x830 net/core/dev.c:6354
+ __netif_receive_skb_list net/core/dev.c:6406 [inline]
+ netif_receive_skb_list_internal+0x995/0xcf0 net/core/dev.c:6497
+ netif_receive_skb_list+0x67/0x480 net/core/dev.c:6549
+ xdp_recv_frames net/bpf/test_run.c:268 [inline]
+ xdp_test_run_batch net/bpf/test_run.c:349 [inline]
+ bpf_test_run_xdp_live+0x1875/0x1c20 net/bpf/test_run.c:378
+ bpf_prog_test_run_xdp+0x7d8/0x11d0 net/bpf/test_run.c:1463
+ bpf_prog_test_run+0x2c5/0x340 kernel/bpf/syscall.c:4804
+ __sys_bpf+0xa22/0xd90 kernel/bpf/syscall.c:6385
+ __do_sys_bpf kernel/bpf/syscall.c:6486 [inline]
+ __se_sys_bpf kernel/bpf/syscall.c:6483 [inline]
+ __x64_sys_bpf+0xba/0xd0 kernel/bpf/syscall.c:6483
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f08f759e0d9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f08f83e8028 EFLAGS: 00000246 ORIG_RAX: 0000000000000141
+RAX: ffffffffffffffda RBX: 00007f08f7825fa0 RCX: 00007f08f759e0d9
+RDX: 0000000000000048 RSI: 0000200000000600 RDI: 000000000000000a
+RBP: 00007f08f7635024 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f08f7826038 R14: 00007f08f7825fa0 R15: 00007fffc4c69778
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:swiotlb_addr_in_default_pool include/linux/swiotlb.h:177 [inline]
+RIP: 0010:swiotlb_is_nocopy_addr include/linux/swiotlb.h:184 [inline]
+RIP: 0010:__page_pool_put_page net/core/page_pool.c:851 [inline]
+RIP: 0010:page_pool_put_unrefed_netmem+0x22a/0xd20 net/core/page_pool.c:930
+Code: 5c 63 00 00 89 c5 31 ff 89 c6 e8 61 17 04 f8 85 ed 0f 84 07 08 00 00 e8 54 12 04 f8 49 81 c4 10 04 00 00 4c 89 e0 48 c1 e8 03 <42> 80 3c 28 00 74 08 4c 89 e7 e8 37 c7 73 f8 4d 8b 24 24 4d 85 e4
+RSP: 0018:ffffc900039df230 EFLAGS: 00010206
+RAX: 0000000000000082 RBX: 0000000000000000 RCX: ffff888160efda00
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
+RBP: 0000000000000001 R08: ffffffff89c3aca5 R09: 0000000000000000
+R10: 0000000000000000 R11: ffffffff8ed5a4e0 R12: 0000000000000410
+R13: dffffc0000000000 R14: ffffea0004450300 R15: 0000000004450300
+FS:  00007f08f83e86c0(0000) GS:ffff88818d6fc000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffd455a8fe8 CR3: 00000001134ac000 CR4: 00000000000006f0
+----------------
+Code disassembly (best guess), 2 bytes skipped:
+   0:	00 00                	add    %al,(%rax)
+   2:	89 c5                	mov    %eax,%ebp
+   4:	31 ff                	xor    %edi,%edi
+   6:	89 c6                	mov    %eax,%esi
+   8:	e8 61 17 04 f8       	call   0xf804176e
+   d:	85 ed                	test   %ebp,%ebp
+   f:	0f 84 07 08 00 00    	je     0x81c
+  15:	e8 54 12 04 f8       	call   0xf804126e
+  1a:	49 81 c4 10 04 00 00 	add    $0x410,%r12
+  21:	4c 89 e0             	mov    %r12,%rax
+  24:	48 c1 e8 03          	shr    $0x3,%rax
+* 28:	42 80 3c 28 00       	cmpb   $0x0,(%rax,%r13,1) <-- trapping instruction
+  2d:	74 08                	je     0x37
+  2f:	4c 89 e7             	mov    %r12,%rdi
+  32:	e8 37 c7 73 f8       	call   0xf873c76e
+  37:	4d 8b 24 24          	mov    (%r12),%r12
+  3b:	4d 85 e4             	test   %r12,%r12
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
 ---
-net: stmmac: selftests: Pass the IP proto mask in the TC selftest
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
-This adds an ip_proto mask to the match data used by the L4 filtering
-selftests in __stmmac_test_l4filt(), so that the new mask sanity checks in
-tc_add_basic_flow() accept the rule.  The commit message reports tests 23-26
-going from -22 to 0 on imx8mp.
+To test a fix for this bug, please reply with `#syz test`
+(on a separate line) and attach the patch to the email.
 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-> index 1df26c217f9a..e9be4d7cbb82 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-> @@ -1489,6 +1489,8 @@ static int __stmmac_test_l4filt(struct stmmac_priv *priv, u32 dst, u32 src,
->  	keys.bkey.ip_proto = udp ? IPPROTO_UDP : IPPROTO_TCP;
->  	keys.key.src = htons(src);
->  	keys.key.dst = htons(dst);
-> +	/* Match the full IP proto field */
-> +	masks.bmask.ip_proto = 0xff;
->  	masks.mask.src = src_mask;
->  	masks.mask.dst = dst_mask;
->  
-
-[Severity: Medium]
-
-Is the n_proto half of the basic key still left uninitialized here?  In
-__stmmac_test_l4filt() both structs are declared without an initializer:
-
-	struct {
-		struct flow_dissector_key_basic bkey;
-		struct flow_dissector_key_ports key;
-	} __aligned(BITS_PER_LONG / 8) keys;
-	struct {
-		struct flow_dissector_key_basic bmask;
-		struct flow_dissector_key_ports mask;
-	} __aligned(BITS_PER_LONG / 8) masks;
-
-The function then only assigns keys.bkey.ip_proto, keys.key.src,
-keys.key.dst, and now masks.bmask.ip_proto, masks.mask.src, masks.mask.dst.
-Since dissector->offset[FLOW_DISSECTOR_KEY_BASIC] is 0,
-flow_rule_match_basic() hands tc_add_basic_flow() pointers straight at
-keys.bkey / masks.bmask, so match.mask->n_proto and match.key->n_proto are
-whatever was on the stack.
-
-tc_add_basic_flow() in stmmac_tc.c makes decisions on exactly those fields:
-
-	if ((match.mask->n_proto && match.mask->n_proto != ETHER_TYPE_FULL_MASK) ||
-	    (match.mask->ip_proto && match.mask->ip_proto != IP_PROTO_FULL_MASK)) {
-		NL_SET_ERR_MSG_MOD(cls->common.extack,
-				   "only full protocol mask is supported");
-		return -EOPNOTSUPP;
-	}
-
-	/* Network proto is present in the key and is not IPv4 */
-	if (match.mask->n_proto && match.key->n_proto != cpu_to_be16(ETH_P_IP)) {
-		NL_SET_ERR_MSG_MOD(cls->common.extack,
-				   "only IPv4 network protocol is supported");
-		return -EOPNOTSUPP;
-	}
-
-So if the stack slot for masks.bmask.n_proto happens to be non-zero and not
-0xffff, does the rule get rejected with -EOPNOTSUPP again?  With
-CONFIG_INIT_STACK_ALL_PATTERN the slot holds the 0xAA pattern, which is
-neither 0 nor ETHER_TYPE_FULL_MASK.
-
-From there tc_add_flow_cls() falls back:
-
-	ret = tc_add_flow(priv, cls);
-	if (!ret)
-		return ret;
-
-	ret = tc_add_ethtype_flow(priv, cls);
-	if (!ret)
-		return ret;
-
-	return tc_add_vlan_flow(priv, cls);
-
-and with cls->classid == 0 those fallbacks return -EINVAL, which is the same
--22 that tests 23-26 report in the commit message.  Would zero-initializing
-both structs ("= { }", as attr already does in the same function), and
-setting keys.bkey.n_proto = htons(ETH_P_IP) together with
-masks.bmask.n_proto = ETHER_TYPE_FULL_MASK given the injected frames are
-IPv4, make the result independent of the stack contents?
--- 
-This is an AI-generated review.
-
+Notes:
+- The patch will be applied on top of the tested series (as an
+  incremental fix).
+- To test a new version of the whole series, please send it directly
+  to syzbot@lists.linux.dev.
+- Arguments like custom git repos and branches are not supported.
