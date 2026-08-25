@@ -1,53 +1,52 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89DBF3FFACC;
-	Tue, 25 Aug 2026 11:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28A83FC5AA;
+	Tue, 25 Aug 2026 11:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787658582; cv=none; b=toiMzbddy9jJ8iI2Pkwledu8ZCgZxKmYzDhHJh/GGLpLh/TIpbOPAzAVLrSkiZfwZkoEljs2MGWnpsND/xh+WwoS7hlLX70yhRDTv7PrGw4m0HG+h8OP5P+3Wadi62/U6/ryNY2f/74KY9RS2Z7t2waSF7BXvOmBrzxAQvp+AZs=
+	t=1787658586; cv=none; b=u0UEx//hNxlu8u1iDik57L2hRxBMif9kZTQUkVGwaobkl5wr7t1beSvMXzNdGvJajcQLlS2M6FZaf8SBG6SGNjxm1/tWn1J/fNOrvtntkk2sQr7+z/37+rOTHIXbq9pvE1NUryemGpcaGBoH8SBxU4+pBsGBs53DylmGnWliMkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787658582; c=relaxed/simple;
-	bh=6AeKEmAbglrYMuTQDcgryyRF8OFnCwxkKDCoXKGt4+g=;
+	s=arc-20240116; t=1787658586; c=relaxed/simple;
+	bh=4S0A7/13HCGF4fPVBfOUMmHfwgxkkafzniXugPY3fXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P+tb5Y3njtqt48SCO1+MCsa4O47DgvSdXI9/0LoLLeUehUswYhsJMlez70p0+lI0sAy85TjK+X4LHBGrIZHcuuhEYpLTW5FqrzpNBf4l+0uyKq4oojn7XJId01SqWvtHOeIriVCix63acp+9v7lU5r5ibVjTD1vAglwt/45JD9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kz7psXWl; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=nwDy8FcwmQ8/u6z/LxLsujou8f6kDRfzF1EfUCEMjjXYUyUDKoo5Yu82wiVWU7jIocv3p2NACYh0H+OUkOOmuv6zrdo+i4dz+mRwbSY7Ls3PdQ39oyf37NvDV2JqH4+LGRTeL7/crXA46C5DWVgxnbH/SP/6hm49BvPlo7XMkpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UCxYP/QL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kz7psXWl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC4581F00A3F;
-	Tue, 25 Aug 2026 11:49:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UCxYP/QL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E841F00A3A;
+	Tue, 25 Aug 2026 11:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787658581;
-	bh=fW3Uz/X24qHx+oUgJ0jCrQNRCEkUirr3meKSn7X1+3U=;
+	s=k20260515; t=1787658583;
+	bh=pjt8gl4GYLlpu22byK/2WFcLjiAT+IRY47fwyBZp64U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Kz7psXWleF6u08Y5fhW1+PAhI2ABQ/6znyEBZOKQ7NA+ATiNuEbcwjLO1VpBgx0Dk
-	 ElChkumr9p2CxdXsVW6C+rtkxoV1Ylc5lz/+MisYhwI9mSpvxJQsNvVTA1nZxmXkFo
-	 tJJyVoRspGOcRtxvZqiSGx1YoHxPVFRmA/XQRX444nbW05rRB40hBr9zTyVT4G/g1R
-	 fNRalzuTCylLoNeIwvb0SNP6tdE2nZ4a+U9C5QDiKcKwjkOALUzMdS8TwfEvwDTlzk
-	 J5OkdOuFzNxcQy13FF07ijcXuZQ6ih7UOYlvw4QBKjWh3hGf9kcmVZrExToEBNdWFL
-	 ojKl0m8PLewug==
+	b=UCxYP/QLgFZ7ZM6a3Uv+2Gofg27Fs+Vg+xf7JWSMZWTJI5piIcrPp0+QUfCnLgxzp
+	 8P76KsSNJynby33RaTQqLvaK6Z5eyoK7JVHNJuV83zV+XXYpGtrrAA55u57kebea5d
+	 guBpWoxtEp8Mq5xbaGhEnD0YhDYLRrOT0wbH/YPNHgzFHiaMPdeubjfr2doAqrjuyN
+	 K1NABelzBGaZwBWqlp3ZrNn1jvXB9LqIcCwbsTcZuX4pBwZ+ZixqYQqn94N8ht/Yk2
+	 L6vyAyUH9mNaOoGO2hPh3g8gTEIpfvx6nFUB8YzVE7ZvcoTWB3s8SJiFHBdEFSWhsg
+	 1gBZqRbOmNT0A==
 From: Sasha Levin <sashal@kernel.org>
-To: "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
+To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>,
-	stable@vger.kernel.org,
 	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
 	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	Martin KaFai Lau <kafai@fb.com>,
-	Wei Wang <weiwan@google.com>,
-	thomas.petazzoni@bootlin.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 6.12.y v2] ipv4: start using dst_dev_rcu()
-Date: Tue, 25 Aug 2026 07:49:24 -0400
-Message-ID: <202608250002.b8a90eb369f250bc@kernel.org>
+	yuehaibing@huawei.com,
+	zhangchangzhong@huawei.com,
+	weiyongjun1@huawei.com,
+	Li Xiasong <lixiasong1@huawei.com>
+Subject: Re: [PATCH linux-6.1.y linux-6.6.y linux-6.12.y 0/1] ndisc: backport ndisc_send_redirect() cleanup
+Date: Tue, 25 Aug 2026 07:49:26 -0400
+Message-ID: <202608250004.f3480d029dbf1b67@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026082420-reanalyze-dehydrate-c386@gregkh>
-References: <2026082420-reanalyze-dehydrate-c386@gregkh>
+In-Reply-To: <20260824133852.328978-1-lixiasong1@huawei.com>
+References: <20260824133852.328978-1-lixiasong1@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,15 +55,17 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 24, 2026 at 11:05:52AM +0200, Greg KH wrote:
-> Doesn't apply to the queue anymore due to me taking this patch series
-> from Sasha:
-> 	https://lore.kernel.org/r/20260821144926.3428433-1-sashal@kernel.org
->
-> Can you rebase it on that?
+On Mon, Aug 24, 2026 at 09:38:51PM +0800, Li Xiasong wrote:
+> dbc3791e3b24 adds "if (!peer) goto release;" inside
+> rcu_read_lock()/rcu_read_unlock() in ndisc_send_redirect(),
+> which seems to leak the read lock on the NULL-peer path on
+> these trees. This cleanup drops the pair (callers already hold
+> rcu_read_lock()), so the leak would go away.
 
-Miguel, no need to respin - I've already redone the backport on top of
-that series. Queued for 6.12, thanks.
+Correct, and confirmed here - ip6_forward() already wraps the call in
+rcu_read_lock() on all three trees.
+
+Queued for 6.12, 6.6 and 6.1, thanks.
 
 -- 
 Thanks,
