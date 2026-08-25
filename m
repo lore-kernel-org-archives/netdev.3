@@ -1,118 +1,165 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26EAB3A4F50;
-	Tue, 25 Aug 2026 15:18:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A9A463B7A
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 15:22:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787671097; cv=none; b=jFfQPN5yqtAuPfrKDSKtNN8YqfWBVrs2ytZZZmE/3N6GriEQK+R7FF567rJht9rtRCigXSsFAgAHEEtoDivy49cbIppDdclvgvugG+RfSDsllqxzGNItbx0p9kwOie+rSyJEJ4DlyrYFGo56TWtSO5+XMRowCyliFAkgesf2inI=
+	t=1787671322; cv=none; b=HsWDFQrwAoup5iknxlBoY1WwePYNvPFvFjZEloo+Lvg3GHza5Ht2VB4CvOnnf8LSDp+zIiRcQt5O7DjEEF/pVsIfAEF2+FuAi9kWPwxcfJMgMJexsqcATpQCwXOMb7tTa4Hmsq6V5lELt0Ro3oPwxOa9oSLYiIj0cjgCv3pHk38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787671097; c=relaxed/simple;
-	bh=npgZoPCsvXA/jh1+JnEqd3XtEC+lPaJtAyQSWuC8u5Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=my7BMHGrbD77TMmK+yE2mg33nI48b3xVu5CoG9LRpVAcHHxvW+895nHzJ9Jdj79+vVUfyrwlqQVYcea5npL1MyD/crUnOqn3ZkvWbrItz1+JdMvgRYR5g5RZ0JjQXWMHXmBGGODk/5lmnaY3RFS3O69mkAomwzJWdB6aOY5mLRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Gq82Z/Ly; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xKGYC7H5; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1787671322; c=relaxed/simple;
+	bh=4PoPYG2K42mgciAjX9Rt4iKz0r6GaC4A0xnXs67guIg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YYu79qQEMktQH9B+EKqZn7wVYXMpEK+2o8GwVpupyT6XBAn84X2bs8iKZHZB3ThD0heErdIXxLkUqDC9VD6t37TILHohQRAzx44asOj+2HUYm3bFJFpjDRVP1ilGWsph8v19yPHhMUJnk78pkVno5aF9NBqNDEBgb6YWnOr6w0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iidRA+cs; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Gq82Z/Ly";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xKGYC7H5"
-Date: Tue, 25 Aug 2026 17:18:12 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1787671093;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dsJ1+OuR6QB2L873ffkYbq+WpmuwWk6zhvfXZRn54n4=;
-	b=Gq82Z/Ly4X5NfZjO5d14YPENObGXO/r8C63dmMoomYrGB6B6fn/wInoYaAg9tpWdCKOdWp
-	3JoWytu7x+WenxFF+AanPcE/MJe2GhpVDXJmDRvxhXLlJgwLU4DwR97RI9t6sUE7ucuTmm
-	2QyfKj4kt8yle/lGtaTsT6YhhBQBq4KYajWzQJheT9ZACKpzV6T7ikfrQDlltkSMbHy5Jl
-	DRiXpb0rBuOJzUDbyOSBRQFiTjT9BXBi7/pz3++PEkl1d5OC/PhE0anEtkank01kYbGs+3
-	iyZp0avaNMzmpDsI5pvK/jlBYyvkcaZ6awFEb2/ttKaXn9pR+i5cIDixLr+wLQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1787671093;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dsJ1+OuR6QB2L873ffkYbq+WpmuwWk6zhvfXZRn54n4=;
-	b=xKGYC7H5LxToZ4FZKXekev9IczdRULeVZye2c2mzyGOPFfFYVy32GvW6mYRcNCl0OCIB6b
-	IfpXD7UmkprSTJBg==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Oliver Neukum <oneukum@suse.com>
-Cc: Marco Crivellari <marco.crivellari@suse.com>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Michal Hocko <mhocko@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Petko Manolov <petkan@nucleusys.com>, linux-usb@vger.kernel.org
-Subject: Re: [PATCH v3 net-next 5/6] net: usb: pegasus: Move long delayed
- work on system_dfl_long_wq
-Message-ID: <20260825151812.4aJyFUgE@linutronix.de>
-References: <20260720100902.155605-1-marco.crivellari@suse.com>
- <20260720100902.155605-6-marco.crivellari@suse.com>
- <f972b514-87ef-45bc-8258-db199a4cc0b8@suse.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iidRA+cs"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2d6b5aa7535so21913835ad.2
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 08:22:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787671320; x=1788276120; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vc0aZw4w9FJVpAPDqzy/8czgK3vByXWj1yC+3VTKlDs=;
+        b=iidRA+csNi8GFxFapmvdN+z5e9hQYaQW+bfl52Yk1LnnDz1hI+4fdgOr0CJzA6TQ3p
+         2wbrkgD5sGbrU9FLArGmRLNXS2vzJi0j6+lj6SAuUNZPh4JeE8Zmk75TeT0GpMiuKdFk
+         Ne1oOSHUJic46GMkJdDd9d91jdBOrG1qMA+ZxAmDYdgqFML7uxgvqQI9bxI8KFXanKSV
+         hPeiDNnZpbf5DGiN9pkjfzt6gC1vZ381alng6ZdERktLijR5R+MQh95ACyP4tOsnbq+f
+         mYm52xvMSFMor6veGoyF4F4ZJSHxjOtWMkgK+LoPppfQAvn7rbARRZiGMZ2f/91dOj2t
+         t1Kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787671320; x=1788276120;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vc0aZw4w9FJVpAPDqzy/8czgK3vByXWj1yC+3VTKlDs=;
+        b=fEI2L1CuW1e54wzG+ebZtpBMA3ZmKLQvR6d2dKHvke+zhA82+caJQfl+3KibI6sQEs
+         HdzKspl9yLcTnK6kJisby8MsghXBv3jd7b80ewh5Th2m5q5fk3jYlOyt6gkKAdW4PXKS
+         6ALmLZCDBpv78FPisRfe3HLdHBvx+f4AaSrdrZ1Ctbu5T2ihtqLVZ0tKUuICUec4tpoS
+         1s3Yoqh4SxCBXYWAZWQeOWWcUHHFhZRHeQFAMvJidw0m/YVBJoKWunyWrNW6OLBjM8DI
+         Luj7aS66KLs/0BlJyF9HpSjH8OO6y+fPzJkbCT9CoFSxz4NDH80hNJvobX9MqS/+PIiq
+         GQiQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpvkSkPdWdZ9jyluWCHyZWP/WUIuG2KpBRVlJ63JneJKAclj44jUygYGXSsoQFVrEEZ0TW4eyo=@vger.kernel.org
+X-Gm-Message-State: AFuF++mfMiBYo1NJeNBmmZWlPCKQQFDiOEuJ5gbq5yczLoQKU8VQikHO
+	rFwhXeo3vEP0phTnXoeCv0sj1GQvMyz2Ti4p59XEn2kM6/539Q5XCtrn
+X-Gm-Gg: AR+sD13PuRZzScUHYhuJfVxBlaL6w1WRWQLbGSZbx4ze+axZcRHZHfxWkXNgfL7IerR
+	q0FKwCl9SE5wlsdeSxFNjttts7td8+KHNWh1vHNLU5xPtfmLDGSV3GQD84AQbErFcYE/01Ws/5L
+	qVmnSS4WfdQbh2RY5ZUhQTgETmnYRt5oKBiZMSYHyI3uylZx6wR67sk9fIWuwBboEVCVRX98D7c
+	kxmiDBiJ7pA6t/nO6pvEfQvMIrNBQI6yA6KLHP5WR4+FA4IMRA5PgJNmMMt1+D/tn/aSjL63HXi
+	XQanCfCmQ+hxXO1dOtFpScot5GDydUXb1CBBKwZAVIZXM+Z97ApurAZIEolGc4sP4HrQFVueHnS
+	Bqd66kgHy9T6JQmcvuqcUgwhk3G7fnF71PO442guxlyH4G00C27UQLbW/8yXL+e2NZRIPKVQVuG
+	j7jSqVjTMrOqXPBLdsERsZLsfkoCpRKKf9KLXykPv//hZrUC9y3lfQJkuXirvb+Tq6TfqfLq0W5
+	UlUVkLkkfGQYTV4JNQXHtUz86E1
+X-Received: by 2002:a17:902:ec87:b0:2cf:8131:75e8 with SMTP id d9443c01a7336-2d64b11893amr553802935ad.13.1787671320277;
+        Tue, 25 Aug 2026 08:22:00 -0700 (PDT)
+Received: from localhost.localdomain ([103.210.91.42])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327f9236166sm37282967eec.28.2026.08.25.08.21.55
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 25 Aug 2026 08:21:59 -0700 (PDT)
+From: Khawar Ahemad <ahemadkhawar123@gmail.com>
+To: bpf@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	magnus.karlsson@intel.com,
+	maciej.fijalkowski@intel.com,
+	sdf@fomichev.me,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	syzbot+aa48b5fe7bfda62d1682@syzkaller.appspotmail.com,
+	ahemadkhawar123@gmail.com
+Subject: [PATCH bpf-next] xsk: Fix circular locking dependency in xsk_bind
+Date: Tue, 25 Aug 2026 20:51:52 +0530
+Message-ID: <20260825152152.86092-1-ahemadkhawar123@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <f972b514-87ef-45bc-8258-db199a4cc0b8@suse.com>
+Content-Transfer-Encoding: 8bit
 
-On 2026-07-22 10:29:50 [+0200], Oliver Neukum wrote:
-> On 20.07.26 12:08, Marco Crivellari wrote:
-> Hi,
-Hi Oliver,
+syzbot reported a circular locking dependency involving &net->xdp.lock,
+&xs->mutex, and netdev_lock_ops():
 
-> > Since the workqueue work doesn't rely on per-cpu variables, there is no
-> > obvious reason that justify the use of a per-cpu workqueue. So change
-> > system_long_wq with system_dfl_long_wq so that the work may benefit from
-> > scheduler task placement.
-> 
-> these changes are problematic, although they look like a good cleanup
-> in first place. But the test you are using to determine whether USB
-> devices need their own work queue is incomplete because you are not
-> considering the reason they allocate their own work queues.
+-> #3 (&net->xdp.lock):
+       xsk_notifier
+       unregister_netdevice_many_notify
+       rtnl_dellink
 
-This driver does not using its own workqueue.
+-> #2 (&port->pnodes_lock / netdev_lock):
+       ipvlan_device_event / bond / netdev_change_features
 
-> These drivers have their own work queues because they are part of the block layer.
-> USB devices can share a device with a block device (storage & UAS) and
-> USB devices have common, per device operations, in particular reset
-> and runtime power management and disconnect handling. Because these operations
-> can be necessary to complete block IO neither they nor anything
-> they depend on can use IO to allocate memory. That is they need to
-> perform any memory allocation with GFP_NOIO or GFP_ATOMIC.
+-> #1 (netdev_lock_ops):
+       xsk_bind (holds xs->mutex, takes netdev_lock_ops(dev))
 
-This is a networking driver. It has nothing to do with storage and UAS.
-It uses USB, yes.
+-> #0 (&xs->mutex):
+       xsk_diag_dump (holds net->xdp.lock, takes xs->mutex)
 
-> That is also true for any operation on a work queue they need to wait
-> for to make progress. That means you cannot limit your check to per-cpu
-> variables. You also need to check for such dependencies. In particular
-> any usage of flush_work() on such queues can deadlock, if you use
-> common queues.
+In xsk_bind(), xs->mutex was acquired before dev_get_by_index() and
+netdev_lock_ops(dev). However, in netdev notifier callbacks like
+xsk_notifier(), netdev_lock_ops(dev) is held by the netdev core while
+taking net->xdp.lock and then xs->mutex, creating an ABBA lock
+inversion between xs->mutex and netdev_lock_ops(dev).
 
-It has nothing to do with per-CPU variables. In fact its
-queue_delayed_work(,, CARRIER_CHECK_DELAY) usage already ensures that it
-can be executed on a random and not on the submitting CPU.
+Fix this by looking up the target net_device and acquiring
+netdev_lock_ops(dev) before acquiring xs->mutex in xsk_bind(). This
+aligns xsk_bind() with the global lock hierarchy:
+rtnl_lock -> netdev_lock_ops(dev) -> net->xdp.lock -> xs->mutex.
 
-> Please refrain from making such changes unless you have fully analyzed
-> the dependencies.
+Fixes: 978939c08db1 ("xsk: use netdev_lock_ops in xsk_bind")
+Reported-by: syzbot+aa48b5fe7bfda62d1682@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=aa48b5fe7bfda62d1682
+Signed-off-by: Khawar Ahemad <ahemadkhawar123@gmail.com>
+---
+ net/xdp/xsk.c | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-Did you refer to the wrong patch? As far as this patch goes I can not
-reason why you assume Marco did not fully analyze the dependencies. I
-don't see anything wrong with this patch.
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index 7855ee09c4..d2fbbeb7b6 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -1612,19 +1612,18 @@ static int xsk_bind(struct socket *sock, struct sockaddr_unsized *addr, int addr
+ 		return -EINVAL;
+ 
+ 	rtnl_lock();
+-	mutex_lock(&xs->mutex);
+-	if (xs->state != XSK_READY) {
+-		err = -EBUSY;
+-		goto out_release;
+-	}
+-
+ 	dev = dev_get_by_index(sock_net(sk), sxdp->sxdp_ifindex);
+ 	if (!dev) {
+ 		err = -ENODEV;
+-		goto out_release;
++		goto out_rtnl_unlock;
+ 	}
+ 
+ 	netdev_lock_ops(dev);
++	mutex_lock(&xs->mutex);
++	if (xs->state != XSK_READY) {
++		err = -EBUSY;
++		goto out_unlock;
++	}
+ 
+ 	if (!xs->rx && !xs->tx) {
+ 		err = -EINVAL;
+@@ -1771,9 +1770,9 @@ static int xsk_bind(struct socket *sock, struct sockaddr_unsized *addr, int addr
+ 		smp_wmb();
+ 		WRITE_ONCE(xs->state, XSK_BOUND);
+ 	}
+-	netdev_unlock_ops(dev);
+-out_release:
+ 	mutex_unlock(&xs->mutex);
++	netdev_unlock_ops(dev);
++out_rtnl_unlock:
+ 	rtnl_unlock();
+ 	return err;
+ }
+-- 
+2.54.0 (Apple Git-157)
 
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-
-> 	Regards
-> 		Oliver
-> 
-
-Sebastian
