@@ -1,141 +1,196 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF539443AB1;
-	Tue, 25 Aug 2026 14:53:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42562485CC3;
+	Tue, 25 Aug 2026 15:04:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787669624; cv=none; b=dDEpTsWAF6n/YHSJ5i64gkVlH2REBlXusUjZnaHPZX9fq2duoOHlsZ99joAR0x+cmSCwON1Rz8CbKfOY8uJM/UgjIg+hcDImy4Mgbpn0t0UmhiLCIP4/T9uFfwj5lAVQ/e420bkGB7l7sb86+OVZcJba0wJ8ZjTHczdXvCBUTus=
+	t=1787670276; cv=none; b=WHwIOERqRkQAXm/Q9rghNQ6Bg8GGZBUCv1UYb0hF1nkjn6clFvKXT6i67YnGfT9eRqbJ1XKP0eogv34wfv6Y+K1PH/0hFO+1+ae+tQXlmMfL5JbjxUBg2Ran5icZX+gTCqGyfy+g3dAGctjhU3BcECOFlXuFg3rzwK1rR7o+StE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787669624; c=relaxed/simple;
-	bh=3QIsQ5eZqQnioGIToeXXGGZTZ+yEs/DQ2YG7s+mb23k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=INErE3R/VuxoeF/OqE/MYqM0AF8s1VYd/O569qmTyGbCuW627HAihv5jRFtyz5atsZFCpkWGxvcPVoc/1gl4my/WpljXYep90aJA6wWIbtJHQHG0ellOTENCllsZAZ7MZO8PRIgL8QXc5jWQ5QSgbk5tSXqwH8N4C6dSH/U96dY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PoeVvY7G; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787670276; c=relaxed/simple;
+	bh=oM4dSbkkMqU45DCiETA2sg0BS3SJpCkREXR7ZaubRrI=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=MZU24cqzrXQXljEGEYdwSNWMZcqEYaQ6v5yAeAIOyau3u0ohkZU1j7Y0w4fLyYRz6TbOjOM8FV/K8ih4BD7Rp2EqCMvYjbgMmeo7m+FMSN4mvTrw2MKIGTTj/N+GXV6EnrI2N9Y6L6dR3Ch5C8kH+S6An2Js+VuKXegmjgVi3jM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=VrzU2FS9; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PoeVvY7G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F561F000E9;
-	Tue, 25 Aug 2026 14:53:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787669612;
-	bh=8ID+n5mSv/6J4izi4tkAEQBrN5TDuETaoYqtBV59JEs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=PoeVvY7GLYyxKUaclBtC8oy9Ps22NUBXQrE/m8gwRBRaLdpTHfmX0OMiCxxxNxTHk
-	 qLvy4hL/CAH7VNRPm1hON4oWzMZh5nJR024ricVkCXuZHIiJG7C/3V+BVtHaytVB08
-	 jsItdcp79VcCgXlu9X1lVOXM99sYeedApBNlOMt40m1guW8BxsUpBOw1jZvc/4uKVX
-	 ijvDshMk4A5/wu/XQ4QJbbLgmN8gqJ0I8/uOI/pGsoPr1iR89twBLBTMWGfPWygFbM
-	 jrhvqbr+tJX0Eet+x5Aq1SSZ09yhfc9c3u5oumc28o7KHm6of9qY7RY7V4E8rap01M
-	 X1EQo8IxDiPRA==
-Message-ID: <90a3231f-663b-4d24-b08a-28ea87a2c148@kernel.org>
-Date: Tue, 25 Aug 2026 16:53:25 +0200
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="VrzU2FS9"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D8B05A3A02;
+	Tue, 25 Aug 2026 17:04:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1787670257; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=54Wje8N0OCytnmZ5gfVOInlcNWNNV3F/Vi3MUHcqPco=;
+	b=VrzU2FS90DDJSSQTHE8ieco8hFLyj9HD7td9BI07GFV0acj5XiCJPA8D6tN4ryQ691sJv6
+	OszMuclOHsjcFn/2kRKtswFt1Txa1RPrfFwdlLveQn6yvQW8FlvMzK8F5aTCR240BpqiXe
+	UXzbhWoUDC0Zp/gctnt6OAP6DAS70pfe6EihPXZu+9qPkAzznSbxul1fIls/OMAteu2ujl
+	Fyhpcj9sbkkYn7PxSSLMenaUp+m9h/T88oDmCImW3NfK7j4KOghSyk4kopquQc/r0GcHm9
+	ADuSLxOJHLqyNCXxVjlyczWR3Dm8EwNCnLj0GZHF2E2aX9YcLjPzBS7npqR1IQ==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net v2 0/4] Improve stability of big_tcp_tunnels.sh
- selftest
-Content-Language: fr
-To: Paolo Abeni <pabeni@redhat.com>,
- Alice Mikityanska <alice.kernel@fastmail.im>,
- Jakub Kicinski <kuba@kernel.org>
-Cc: Eric Dumazet <edumazet@google.com>, "David S. Miller"
- <davem@davemloft.net>, Simon Horman <horms@kernel.org>,
- Shuah Khan <shuah@kernel.org>, Nikolay Aleksandrov <razor@blackwall.org>,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- Alice Mikityanska <alice@isovalent.com>
-References: <20260822120308.1165200-1-alice.kernel@fastmail.im>
- <2fe7208a-7bc9-4004-907b-75f283360ec9@redhat.com>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <2fe7208a-7bc9-4004-907b-75f283360ec9@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+Date: Tue, 25 Aug 2026 17:04:14 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Cc: Conor Dooley <conor.dooley@microchip.com>, Claudiu Beznea
+ <claudiu.beznea@tuxon.dev>, Jonathan Bell <jonathan@raspberrypi.com>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 1/2] net: macb: exclude software FCS from TX byte
+ statistics
+In-Reply-To: <20260824134703.766708-2-nb@tipi-net.de>
+References: <20260824134703.766708-1-nb@tipi-net.de>
+ <20260824134703.766708-2-nb@tipi-net.de>
+Message-ID: <d1f02ab923c0464fa73cafa75a21943d@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Paolo,
+Replying to netdev's sashiko
+https://netdev-ai.bots.linux.dev/sashiko/#/message/20260824134703.766708-2-nb%40tipi-net.de:
 
-On 25/08/2026 15:21, Paolo Abeni wrote:
-> On 8/22/26 2:03 PM, Alice Mikityanska wrote:
->> From: Alice Mikityanska <alice@isovalent.com>
->>
->> This series addresses flakiness of big_tcp_tunnels.sh discussed at:
->>
->> https://lore.kernel.org/netdev/349c582c-73e3-468c-91cd-ad6cc3562700@app.fastmail.com/
->>
->> Lower the thresholds to avoid failures like this (number of packets
->> below the threshold):
->>
->> https://netdev-ctrl.bots.linux.dev/logview.html?f=/logs/vmksft/net-dbg/results/754376/28-big-tcp-tunnels-sh/stdout
->>
->> Tweak tcp_min_tso_segs and initcwnd to avoid failures like this (BIG TCP
->> doesn't kick in in slow configurations):
->>
->> https://netdev-ctrl.bots.linux.dev/logview.html?f=/logs/vmksft/net-dbg/results/751124/21-big-tcp-tunnels-sh/stdout
->>
->> v2 changes: Use $KSFT_MACHINE_SLOW instead of probing kernel config.
->>
->> v1: https://lore.kernel.org/netdev/20260814194124.3102581-1-alice.kernel@fastmail.im/
-> Any special reason for moving the target tree to 'net'? Selftests
-> stability improvements should go via the net-next tree (without the
-> fixes tag).
+> --- Patch [1]: [PATCH net 1/2] net: macb: exclude software FCS from TX 
+> byte statistics ---
+> commit 24acee751440b1a44c9e16688554df0848ab621a
+> Author: Nicolai Buchwitz <nb@tipi-net.de>
+> 
+>     net: macb: exclude software FCS from TX byte statistics
+> 
+>     Frames going through macb_pad_and_fcs() get padded and four FCS
+>     bytes appended, and TX completion then accounts the grown skb->len.
+>     tx_bytes is supposed to exclude the FCS, and frames padded by the
+>     hardware are counted without the padding anyway, so these frames
+>     show up too large in the statistics.
+> 
+> > diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+> > index 76ee4f5060335..623d072a271d0 100644
+> > --- a/drivers/net/ethernet/cadence/macb_main.c
+> > +++ b/drivers/net/ethernet/cadence/macb_main.c
+> > @@ -1322,8 +1322,8 @@ static void macb_tx_error_task(struct work_struct *work)
+> >  				bp->netdev->stats.tx_packets++;
+> >  				queue->stats.tx_packets++;
+> >  				packets++;
+> > -				bp->netdev->stats.tx_bytes += skb->len;
+> > -				queue->stats.tx_bytes += skb->len;
+> > +				bp->netdev->stats.tx_bytes += tx_skb->skb_len;
+> > +				queue->stats.tx_bytes += tx_skb->skb_len;
+> >  				bytes += skb->len;
+> >  			}
+> >  		} else {
+> 
+> This is a pre-existing issue, but does macb_tx_error_task() leak BQL 
+> bytes for
+> dropped pending packets?
+> 
+> When recovering from a TX error, macb_tx_error_task() iterates through 
+> the TX
+> ring. For pending descriptors that did not successfully transmit, the 
+> code calls
+> macb_tx_unmap(bp, tx_skb, 0) which frees the SKB.
+> 
+> However, it appears to fail to accumulate the freed SKB's length into 
+> the bytes
+> accumulator. When netdev_tx_completed_queue() is subsequently called, 
+> these
+> leaked bytes are never reported to BQL, which could permanently retain 
+> these
+> charged bytes and stall the TX queue.
 
-Sorry, I suggested to switch the target tree now that the selftest being
-fixed here has landed there. TBH, I think it is unclear what to do in
-this case: I agree that these modifications are not critical fixes, but
-they do help other people validating changes, plus they don't introduce
-regressions in the kernel code. If they go to net-next, that means other
-CIs (and developers) will potentially see false positives for ~2 months.
+Looks like it. The dropped frames never get a completion credit, and DQL
+only gets reset on close. This is independent of the statistics change,
+so I would address it in a follow-up fix. Objections?
 
-Personnaly, I think such fixes should go to net, but that's fine if the
-stable team don't backport them.
+> This is another pre-existing issue, but does macb_tx_error_task() 
+> modify the TX
+> ring pointers without holding the appropriate lock?
+> 
+> macb_tx_error_task() acquires bp->lock and issues a non-blocking stop 
+> to the
+> queues via netif_tx_stop_all_queues(). It then manipulates the ring 
+> pointers
+> queue->tx_head and queue->tx_tail.
+> 
+> However, the fast-path macb_start_xmit() protects these identical 
+> pointers
+> using queue->tx_ptr_lock.
+> 
+> Since netif_tx_stop_all_queues() does not wait for an already-running
+> macb_start_xmit() to complete, could macb_tx_error_task() zero out the 
+> ring
+> pointers while macb_start_xmit() is concurrently populating descriptors 
+> on
+> another CPU?
 
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
+AFAIU yes, stopping the queues doesn't wait for a start_xmit that's
+already running. Taking tx_ptr_lock there before bp->lock, in the same
+order as start_xmit, should fix that. I would handle this together with 
+the
+BQL issue in a follow-up series.
 
+> [ ... ]
+> > @@ -2485,6 +2487,7 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb,
+> >  		return ret;
+> >  	}
+> >
+> > +	skb_len = skb->len;
+> > 	if (macb_pad_and_fcs(&skb, netdev)) {
+> 
+> This isn't a bug introduced by this patch, but does macb_pad_and_fcs() 
+> append
+> an FCS before verifying TX ring space, which could corrupt the SKB upon 
+> retry?
+> 
+> [ ... ]
+> 
+> Because the network stack will subsequently retry transmitting this 
+> identical
+> SKB, and its length is now larger, will macb_pad_and_fcs() compute a 
+> new CRC
+> over the old FCS and append a second, duplicate FCS, eventually 
+> corrupting the
+> payload once tailroom is exhausted?
+
+Yes, and the copy path looks worse: the stack can requeue an skb the 
+driver already
+consumed. I'll do the ring space check before touching the skb at all. 
+After that
+point the driver never returns NETDEV_TX_BUSY, so swapping the skb 
+should be fine.
+
+> This is also a pre-existing issue, but does macb_pad_and_fcs() modify 
+> shared SKB
+> data for cloned packets and break nonlinear SKB layouts?
+> 
+> If an SKB is cloned (e.g., multicast, TCP retransmissions) or nonlinear 
+> (paged
+> fragments), and its length is already >= ETH_ZLEN (60 bytes) so padlen 
+> <= 0,
+> and it has at least 4 bytes of tailroom, the code skips the 
+> reallocation check:
+> 
+> 	if (padlen <= 0) {
+> 		/* FCS could be appeded to tailroom. */
+> 		if (tailroom >= ETH_FCS_LEN)
+> 			goto add_fcs;
+> 
+> It then directly appends 4 bytes of FCS via skb_put_u8(). For cloned 
+> SKBs, this
+> modifies shared memory data. For nonlinear SKBs, skb_put() illegally 
+> extends the
+> linear part, which could trigger a panic in skb_panic().
+
+The cloned part looks right. The nonlinear case IMHO can't trigger 
+today:
+skb_tailroom() is 0 for nonlinear skbs, so they go down 
+skb_copy_expand(),
+which linearizes them anyway.
+
+I'll order the cloned check before the in-place FCS path.
