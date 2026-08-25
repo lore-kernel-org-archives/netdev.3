@@ -1,239 +1,129 @@
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDEC43C0637
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 20:07:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4BC22FDE6;
+	Tue, 25 Aug 2026 21:18:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787688458; cv=none; b=nGiqLdGVC8GTo9bpBPpZbqDf4LVExN1VVeuiKrpyc53DTKQoi0fsbObaF8TgZyQsHcPgm55E7RFcAolimlso6f3ufBWfaFLM9++zdWaHSmWqn0IghFLgox7v9SovgVOjT+rLp3K24l+IdZ7vQmzZZ/db/ATgzfvAf7Mo8yOXxHo=
+	t=1787692688; cv=none; b=h2dfN2GmfExeFxWX8HPQZALWrQkcsu6m/MPT7nxqFmWAx0Op8diC/4MG2R2mrUemXhZUi4C881exKpudM9bozUVl9yO/aw7IjWDj4/5LEGtbocHFqDGh4qDdkPAT9hKLZhTa7vx2qn6kS4PLc8d0hUo+a5w5mUp2VUwsdbQQ+2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787688458; c=relaxed/simple;
-	bh=IqUPtS1OrVVKgQDl+JiFu/y4TbwemwqEKa/UGKCWMWE=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=U/3htXMN7nzHrBZLxj85inVIghfBBESte8FSQiH1Ph/bsuZoJSKYx5KdUGoJCnPLOkFGaWESnVzxtMAUNojZrjOUvpRyxVR3tJocCY4gN2yp5yzLN39seQE0pBdYETBP13IoPE5tYbZ6/gp5l/+nTar16dI5F+c90RnmIce3fHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-485ebc5706cso2279070b6e.0
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 13:07:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787688456; x=1788293256;
-        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=pV1WjeHgrdLhIcvemmYEAIzR81INpamnbzvykyKd8bI=;
-        b=s0xRF7m4i7pCGeRAvGmR8Gf3/PeWfKp7zCz4tohDioLt6DibUUb/9IGsCKj2Im1rYU
-         DYFiMab2P7vi0GBlzhdpLveBrYT6jAlQNP6Aaw39ksNClUnG21zOF2UV6OfsT740WsJW
-         2a5Bx0VgM4LE9LJj92cyzjv6MiJ40sA0m5GcwRnFLjEtKtfzyWUs54ilBjpSpKjSjWUs
-         ItYQziFmNSXi0ZxkpupOOftYfjFhQ/tHqEF/s0eFCUABrU2Y1LdFfx7N2lpJqMvRw4fb
-         LceB+aGxXlEpZzvE7TbyelkW39olx54IRr373rXRi8oD82j8OXbyh8VmonbIwRjFhQ7x
-         5vjw==
-X-Forwarded-Encrypted: i=1; AHgh+Rq3eMUEVrxuH+iamVwufiziatiPbr2Dy54zR/VZkl7Ad4QqFV4o4b6np7dircCcZt+wphH2cGs=@vger.kernel.org
-X-Gm-Message-State: AFuF++ktHds3Tk7P/ZWP7zdWycumRsia66vbxm+rI9v8Mv/g/FY/g/MM
-	wsrskoPGEYsp9+PZPqyJ7vraUIJ+ngrESIw7eJrRecRc3G1hbJd7AIqnhs3vOafgARst15iDeoM
-	1AMyoXDWQHOqpSkmnRTm8oww+sWOHT+ttc4UN0+IBWEl0eMGLZDcKuhL6w1I=
+	s=arc-20240116; t=1787692688; c=relaxed/simple;
+	bh=62UeTtH3azXNyttGN1ho5LDFsCIaK1FADd7/0qkVzW8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b75zptD6CD7XxiVSQnuKhmUtsA7JEcuCFhaDmY6woB7uJYHDW8Nj0afaGHjxLpY9EMUTukct+fAu0Up6L20T1Dw+8ZSfrBIf2h2m+4hQm+UCe/o/w953w7UySEPI/rK7o7jVXkM7Q19Di1K8PvkC0FTOIQOiN4IqOdA9fZSnfJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=InTOlJtr; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="InTOlJtr"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id D2DCB1A1824;
+	Tue, 25 Aug 2026 21:18:02 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 8D35A604C4;
+	Tue, 25 Aug 2026 21:18:02 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 590C511C7A346;
+	Tue, 25 Aug 2026 23:17:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1787692677; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=WEAPghw2V8FwZFDzIv86krQ5odb//lbOQ2ObiCLEC1A=;
+	b=InTOlJtrPp/dS5U6KdgdcRJIjxmQ80uyE2tEVykWMb+uY2KzEEWzgtmV2E7mYouQ63g/eK
+	fVK2j6w3P5+o9Qj8WQe+lrbxSyexGFtdBXVasRudU/K1BTI5aQqwBJp1bPMWO0dr3ld1x0
+	3OkWL599vz7TCPejRGcotuObV5mHh2dllwInLasraiXcmo5WsGNShpyfSGHHYDxLMd5tp6
+	vWxXt/963xV1p121WUQftbijMxQ8ja8VTHneC5WuBsRdjZItYHvrfOxcwXYAEUgRVeXx3j
+	JayRQEFPOfglZpnLDRUlseAJJi5+YocCqZ2+Zex4MRAgBsRc4zW/9pQiKb29Pg==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	thomas.petazzoni@bootlin.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>,
+	Andrew Lunn <andrew@lunn.ch>
+Subject: [PATCH net v2] net: stmmac: selftests: Pass the IP proto mask in the TC selftest
+Date: Tue, 25 Aug 2026 23:17:46 +0200
+Message-ID: <20260825211748.360935-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:3090:b0:495:ca1b:7865 with SMTP id
- 5614622812f47-4b3504b104amr7078694b6e.11.1787688455876; Tue, 25 Aug 2026
- 13:07:35 -0700 (PDT)
-Date: Tue, 25 Aug 2026 13:07:35 -0700
-In-Reply-To: <20260825152152.86092-1-ahemadkhawar123@gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a8df607.dbb3a75c.7844.002c.GAE@google.com>
-Subject: [syzbot ci] Re: xsk: Fix circular locking dependency in xsk_bind
-From: syzbot ci <syzbot+ci9230f67b2f9ec34f@syzkaller.appspotmail.com>
-To: ahemadkhawar123@gmail.com, ast@kernel.org, bpf@vger.kernel.org, 
-	daniel@iogearbox.net, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	maciej.fijalkowski@intel.com, magnus.karlsson@intel.com, 
-	netdev@vger.kernel.org, pabeni@redhat.com, sdf@fomichev.me, 
-	syzbot@syzkaller.appspotmail.com
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-syzbot ci has tested the following series
+The stmmac TC filtering rules have recently gained sanity checks to make
+sure the passed keys and their respective masks are aligned with the HW
+filtering abilities.
 
-[v1] xsk: Fix circular locking dependency in xsk_bind
-https://lore.kernel.org/all/20260825152152.86092-1-ahemadkhawar123@gmail.com
-* [PATCH bpf-next] xsk: Fix circular locking dependency in xsk_bind
+The stmmac selftests failed to pass the mask in the match data for L4
+filtering tests, and are now failing consistently with -EINVAL :
 
-and found the following issue:
-possible deadlock in xp_clear_dev
+$ ethtool -t eth1
+[...]
+23. L4 DA TCP Filtering          -22
+24. L4 SA TCP Filtering          -22
+25. L4 DA UDP Filtering          -22
+26. L4 SA UDP Filtering          -22
 
-Full report is available here:
-https://ci.syzbot.org/series/6f095c15-0f05-4d2e-a9eb-8d4d85f669a6
+Let's pass the ip_proto mask in the l4 filtering tests match data. Found
+on imx8mp, which now have passing L4 tests :
 
-***
+$ ethtool -t eth1
+[...]
+23. L4 DA TCP Filtering          0
+24. L4 SA TCP Filtering          0
+25. L4 DA UDP Filtering          0
+26. L4 SA UDP Filtering          0
 
-possible deadlock in xp_clear_dev
+While at it, initialize the masks and keys to avoid re-using whatever
+was on the stack.
 
-tree:      bpf-next
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/bpf/bpf-next.git
-base:      5e289c5a4a526e870efac0ca658635c47138593a
-arch:      amd64
-compiler:  Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-config:    https://ci.syzbot.org/builds/cde9ebbb-b104-4fe4-8779-17786d4f4336/config
-syz repro: https://ci.syzbot.org/findings/bb56c4f2-d20c-4177-a137-583624105374/syz_repro
-
-netlink: 14 bytes leftover after parsing attributes in process `syz.0.17'.
-======================================================
-WARNING: possible circular locking dependency detected
-syzkaller #0 Not tainted
-------------------------------------------------------
-syz.0.17/5789 is trying to acquire lock:
-ffff88816f80ee70 (&dev_instance_lock_key#3){+.+.}-{4:4}, at: netdev_lock include/linux/netdevice.h:2861 [inline]
-ffff88816f80ee70 (&dev_instance_lock_key#3){+.+.}-{4:4}, at: netdev_lock_ops include/net/netdev_lock.h:42 [inline]
-ffff88816f80ee70 (&dev_instance_lock_key#3){+.+.}-{4:4}, at: xp_clear_dev+0x13b/0x340 net/xdp/xsk_buff_pool.c:297
-
-but task is already holding lock:
-ffff8881741d06b8 (&xs->mutex){+.+.}-{4:4}, at: xsk_notifier+0xcd/0x230 net/xdp/xsk.c:2109
-
-which lock already depends on the new lock.
-
-
-the existing dependency chain (in reverse order) is:
-
--> #1 (&xs->mutex){+.+.}-{4:4}:
-       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
-       __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
-       xsk_bind+0x2c0/0x1370 net/xdp/xsk.c:1622
-       __sys_bind_socket net/socket.c:1945 [inline]
-       __sys_bind+0x2e3/0x410 net/socket.c:1976
-       __do_sys_bind net/socket.c:1981 [inline]
-       __se_sys_bind net/socket.c:1979 [inline]
-       __x64_sys_bind+0x7a/0x90 net/socket.c:1979
-       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-       do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
--> #0 (&dev_instance_lock_key#3){+.+.}-{4:4}:
-       check_prev_add kernel/locking/lockdep.c:3181 [inline]
-       check_prevs_add kernel/locking/lockdep.c:3300 [inline]
-       validate_chain kernel/locking/lockdep.c:3924 [inline]
-       __lock_acquire+0x1520/0x2cf0 kernel/locking/lockdep.c:5253
-       lock_acquire+0x106/0x350 kernel/locking/lockdep.c:5886
-       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
-       __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
-       netdev_lock include/linux/netdevice.h:2861 [inline]
-       netdev_lock_ops include/net/netdev_lock.h:42 [inline]
-       xp_clear_dev+0x13b/0x340 net/xdp/xsk_buff_pool.c:297
-       xsk_notifier+0x1a1/0x230 net/xdp/xsk.c:2118
-       notifier_call_chain+0x1a5/0x3d0 kernel/notifier.c:85
-       call_netdevice_notifiers_extack net/core/dev.c:2313 [inline]
-       call_netdevice_notifiers net/core/dev.c:2327 [inline]
-       unregister_netdevice_many_notify+0x17f9/0x2140 net/core/dev.c:12518
-       rtnl_delete_link net/core/rtnetlink.c:3652 [inline]
-       rtnl_dellink+0x5be/0x810 net/core/rtnetlink.c:3694
-       rtnetlink_rcv_msg+0x802/0xc00 net/core/rtnetlink.c:7132
-       netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
-       netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
-       netlink_unicast+0x7bd/0x940 net/netlink/af_netlink.c:1345
-       netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
-       sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
-       __sock_sendmsg net/socket.c:815 [inline]
-       ____sys_sendmsg+0x54e/0x850 net/socket.c:2713
-       ___sys_sendmsg+0x2a5/0x360 net/socket.c:2767
-       __sys_sendmsg net/socket.c:2799 [inline]
-       __do_sys_sendmsg net/socket.c:2804 [inline]
-       __se_sys_sendmsg net/socket.c:2802 [inline]
-       __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2802
-       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-       do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-other info that might help us debug this:
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  lock(&xs->mutex);
-                               lock(&dev_instance_lock_key#3);
-                               lock(&xs->mutex);
-  lock(&dev_instance_lock_key#3);
-
- *** DEADLOCK ***
-
-locks held by syz.0.17/5789: 3, last CPU#1:
- #0: ffffffff90036040 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock net/core/rtnetlink.c:80 [inline]
- #0: ffffffff90036040 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_net_lock include/linux/rtnetlink.h:134 [inline]
- #0: ffffffff90036040 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_dellink+0x41b/0x810 net/core/rtnetlink.c:3686
- #1: ffff88801d81eed0 (&net->xdp.lock){+.+.}-{4:4}, at: xsk_notifier+0x89/0x230 net/xdp/xsk.c:2105
- #2: ffff8881741d06b8 (&xs->mutex){+.+.}-{4:4}, at: xsk_notifier+0xcd/0x230 net/xdp/xsk.c:2109
-
-stack backtrace:
-CPU: 1 UID: 0 PID: 5789 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- print_circular_bug+0x2e1/0x300 kernel/locking/lockdep.c:2059
- check_noncircular+0x12e/0x150 kernel/locking/lockdep.c:2191
- check_prev_add kernel/locking/lockdep.c:3181 [inline]
- check_prevs_add kernel/locking/lockdep.c:3300 [inline]
- validate_chain kernel/locking/lockdep.c:3924 [inline]
- __lock_acquire+0x1520/0x2cf0 kernel/locking/lockdep.c:5253
- lock_acquire+0x106/0x350 kernel/locking/lockdep.c:5886
- __mutex_lock_common kernel/locking/mutex.c:646 [inline]
- __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
- netdev_lock include/linux/netdevice.h:2861 [inline]
- netdev_lock_ops include/net/netdev_lock.h:42 [inline]
- xp_clear_dev+0x13b/0x340 net/xdp/xsk_buff_pool.c:297
- xsk_notifier+0x1a1/0x230 net/xdp/xsk.c:2118
- notifier_call_chain+0x1a5/0x3d0 kernel/notifier.c:85
- call_netdevice_notifiers_extack net/core/dev.c:2313 [inline]
- call_netdevice_notifiers net/core/dev.c:2327 [inline]
- unregister_netdevice_many_notify+0x17f9/0x2140 net/core/dev.c:12518
- rtnl_delete_link net/core/rtnetlink.c:3652 [inline]
- rtnl_dellink+0x5be/0x810 net/core/rtnetlink.c:3694
- rtnetlink_rcv_msg+0x802/0xc00 net/core/rtnetlink.c:7132
- netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
- netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
- netlink_unicast+0x7bd/0x940 net/netlink/af_netlink.c:1345
- netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
- sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
- __sock_sendmsg net/socket.c:815 [inline]
- ____sys_sendmsg+0x54e/0x850 net/socket.c:2713
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2767
- __sys_sendmsg net/socket.c:2799 [inline]
- __do_sys_sendmsg net/socket.c:2804 [inline]
- __se_sys_sendmsg net/socket.c:2802 [inline]
- __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2802
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f2ec039e0d9
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f2ec1214028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007f2ec0625fa0 RCX: 00007f2ec039e0d9
-RDX: 0000000004048004 RSI: 00002000000001c0 RDI: 0000000000000005
-RBP: 00007f2ec0435024 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f2ec0626038 R14: 00007f2ec0625fa0 R15: 00007ffca00aa538
- </TASK>
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
+Fixes: 5536d7c84363 ("net: stmmac: fix l3l4 filter rejecting unsupported offload requests")
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+ drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-To test a fix for this bug, please reply with `#syz test`
-(on a separate line) and attach the patch to the email.
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+index 1df26c217f9a..a2b917dd60e5 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+@@ -1432,11 +1432,11 @@ static int __stmmac_test_l4filt(struct stmmac_priv *priv, u32 dst, u32 src,
+ 	struct {
+ 		struct flow_dissector_key_basic bkey;
+ 		struct flow_dissector_key_ports key;
+-	} __aligned(BITS_PER_LONG / 8) keys;
++	} __aligned(BITS_PER_LONG / 8) keys = { };
+ 	struct {
+ 		struct flow_dissector_key_basic bmask;
+ 		struct flow_dissector_key_ports mask;
+-	} __aligned(BITS_PER_LONG / 8) masks;
++	} __aligned(BITS_PER_LONG / 8) masks = { };
+ 	unsigned long dummy_cookie = 0xdeadbeef;
+ 	struct stmmac_packet_attrs attr = { };
+ 	struct flow_dissector *dissector;
+@@ -1489,6 +1489,8 @@ static int __stmmac_test_l4filt(struct stmmac_priv *priv, u32 dst, u32 src,
+ 	keys.bkey.ip_proto = udp ? IPPROTO_UDP : IPPROTO_TCP;
+ 	keys.key.src = htons(src);
+ 	keys.key.dst = htons(dst);
++	/* Match the full IP proto field */
++	masks.bmask.ip_proto = 0xff;
+ 	masks.mask.src = src_mask;
+ 	masks.mask.dst = dst_mask;
+ 
+-- 
+2.55.0
 
-Notes:
-- The patch will be applied on top of the tested series (as an
-  incremental fix).
-- To test a new version of the whole series, please send it directly
-  to syzbot@lists.linux.dev.
-- Arguments like custom git repos and branches are not supported.
