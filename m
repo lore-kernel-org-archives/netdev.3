@@ -1,180 +1,164 @@
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C6733A6F7
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 13:43:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B6D47A863
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 13:53:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787665392; cv=pass; b=u7cDXPL85SuZsgUNZYXPKxn2zPuxjDIWsaNwWiUHCru5OUTvirhD8cwVP9L2EG/t3VMaEjz05vUx97G8zEoyQWHN4w+VlTyHmhWmmGGnrII+i/Iau71/U2bGnIvF3NenZX9Twfz0opnwTGGQCi8Ff0GRJo3b5x7j2U2b4S8ifCI=
+	t=1787666018; cv=pass; b=kCnbFWnWDEfJaHs+eW5zzI4rILzo3LpBYJN7K31UjQwHmjR+8elWajaFRnDKYV3bkn0Sf8KiUPQF32o/UBAPoqOr2CdQoAGT9F07VUaYIhQIeJKrfw+FLdCxwk7AHDaZMAaP3OZkBBCmSK/3c5/wYNq+A8+tFNOHJWSEiEB/I7k=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787665392; c=relaxed/simple;
-	bh=C1iC81hsjhmQUxLq/1lUBia0ESHJlxC8Sw3i6Bble+g=;
+	s=arc-20240116; t=1787666018; c=relaxed/simple;
+	bh=UUURwoB9+Pevcje/tzHBVZWY/DSyQqR08FkBIcnYADI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=N2/QXVSTmXQy/ahh+VVQ6J2FlQhqQxwC2q8K9Tm9GHyOw0JhMGJ4DMUCKUmav2c7WV01lsr5gftv3DrOOYt9eJDZlYXlOJJoGauPzLkD8sHGvwg4B7HnyBs7KPf3BH0J813tv+lqWrI/PuI8kIBeCScClHsR5mir/3qYtGutzzU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jtz0O+bx; arc=pass smtp.client-ip=209.85.219.50
+	 To:Cc:Content-Type; b=l6W5UUmRisg/B1EBsLpUZ1RcCFwibzUvCyCRXWy8W8s/Y0kCb//7T+At9xHPqAO3golxbZJuirOwljOz15UeRx3XcXq1936Kk4YcI52m6FnyoLL7LifxkvG2mHJUk1uL6x9EGnfyKGsbHMAzUZdrRMjrKHShWodVyP88P9ql0dc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZXv5ND3n; arc=pass smtp.client-ip=209.85.160.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jtz0O+bx"
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8f186025973so45582486d6.0
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 06:43:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787665390; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZXv5ND3n"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-51c149c5722so6663031cf.0
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 06:53:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787666016; cv=none;
         d=google.com; s=arc-20260327;
-        b=DQl7CarUox+SmcHzBwPLq7BxMDfOSYo3iLp/EgkYaX79+wxXYkvwyfKc49JMilmJK/
-         iGt5rOy8YeaSffokCDHqRisoaIRhfbLTW/8d3D8cBi8y0E5XykcuLQ/7jYY5DYmfUuc3
-         x4RJkMkZlTa718TkoZX4IUDcQ0GuE+wd+og/bAI0/gDP+oOFiXm33syTB4ut5euKiX6W
-         yFGZOEUkUoY36Qa1lb/wh8StV4a8qPzXTgz0vT/3sMdCrlzIr9tZLOzLGYXLBbJ04vED
-         fOydfGyWpSlti7/UhzhJOivbw0ccwwgrqRkIsBZlVcEC2u4NOSa82JCNFWa9/Ow8ZQHj
-         r35g==
+        b=Ndxfz/zpEYDTm+hnYUTa1CaCnXQgzPx7ypxB2irELrYA80A79DHJY4YcNBFFj9ildY
+         zwiJpjI4b8mwzAhj9G2JIUXwnT6yJX/3FxLZnKPQvuH3LTjc8F3tf2Se/k3AU6rGzjBh
+         3PGN8j+Ueus5Iy6m+VATHm4UCbFYkAg+Jqvh0eiuQqmKo2kFeWlxJzruj8rFkITqWwss
+         ZCuWo0K3pPFMEN+xaOmWUun17WQZ+ewWFD4pZGOuFL7jD3mrk1t5Prg7jAnDAc4dlzS7
+         DZOuHDWOY6EjbYCerGVfJ1JZlNr7zHJzV2QYNigCvpIHceZW2uqnRg2y4t6qLgRsK/8k
+         ey1A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=JWDAzYZFEkZgn9JQSwJnfdgSRZDMe0Wi+uaB7qB4Hcs=;
-        fh=r30K7udsA/iOTZSV42YjBYWqXGpK7rISk6myshXZSOc=;
-        b=E8O6oQLebaW65s6vHIygtmrSoHLA4cIDqRzS8bs+e7eVc7EsItAnfuvmNm3QqDdh0/
-         SOpHxPfg04xhrgu3tE6ZqMFNd6jUHOBuegtKmLK/JcAWWjWhLXaxZK267QSHq/qbvgvu
-         94ME7IUEvrQbm1MArRBJ3hoUl+uyY9adeBhI8xK58wlE1XePTNjjnJRRuX6UpaE/unEK
-         /gTeGyQRm6B9/0thmLL4ro+62jlXhctRTL0ccx8XAK37WiYQXbWuBPETshnbys7Btw+p
-         Pm3DKQg+b8hhYX+osd4lg9eq/QkP0yIX/yL5DP3nKT/xgpSCSbnQDq0AXA77PJ0mZn3i
-         mvjg==;
+        bh=UUURwoB9+Pevcje/tzHBVZWY/DSyQqR08FkBIcnYADI=;
+        fh=y+1H8+vrIQK2T5Q6u7BatEO9S871EQqkFMG+VqmGFAw=;
+        b=c/7VwhZY+uqLMjGHfnrf2lBMK1r6V3cqfkjokpoyCLlItTsMQaaHkW5Geh5tqzMAxf
+         IWPWQtT+ijG2ia4MXUXNYqtIWMIHhtwtzZLDmUMbRohaX23fi3jeyvPpBRMiOqn27faD
+         T0j8Lx1VSYwPP/B02R7Q8vhkPUhlQK61jGpeC8OflBT71CaTjYTiW8QeDwtcxbFUwxsF
+         P4q9KQcr0qFqeT9y7wl+fVGv2g2Q0KQepZEeXsYd5uI87ZPAesKX/H7KEENylYGvyC6S
+         TIxAcf61rGSNOsFtI52z4ryKyly8PuYgY+j8OpZ+4AQwcSwoNfFc61jVY7AftYawsfrk
+         Grew==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787665390; x=1788270190; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1787666016; x=1788270816; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=JWDAzYZFEkZgn9JQSwJnfdgSRZDMe0Wi+uaB7qB4Hcs=;
-        b=jtz0O+bxi0ZsJ6YCHJcYumouCAB8orwfw/a/RJ8Sa2O55YipjtYK6CMcGmHBncsNEY
-         FyWwE2Vz58E7Kn75S8PIwevVTftw35RmiQbBy80Oz6ckPfBPT+7GWU+FDMGRviKI6TNh
-         iLZWJFfttHvrocuN9ZJOahWnwtSszlBBB1rTeg8x26UwaeXVUw0xr7Kgyg2GnGzhpgp9
-         B92Jre12G/+9UTIoP4UZIWJ8enSikUtwXfdafGOCgdXP8zKLjeIylV09ULnOBkvYM6Ah
-         YD3BKVdnuOzWwf6NvzJ36cI/VAxN791tuURU1909D1DnJhIYRT5Q4ptYQ14VnlWGbpX7
-         T3hw==
+        bh=UUURwoB9+Pevcje/tzHBVZWY/DSyQqR08FkBIcnYADI=;
+        b=ZXv5ND3nyHaIHYlmIiom8qMBP8LCfFTqHTW4WSukE3mLtZ34t4Br0Osh22Z+bHtpdc
+         m/V8vdBUtZbpk/RGF5vxUfgrkVOH6sj2lsq8y24xTGvIfP9diKeGKqI/eYroSutTszYS
+         Nrr/RHDm5SwLkWT6GRJB+ZeH3CizG5m+SnCqFPmXGno5TiTgYJ2AVLoeYrGGzaV0eN1h
+         3HKGPI6DVPHvCSq0fcl/nLjp204rutakwoPNVPimWBvkC0guW6RSuk1BWt0cEFnHibHb
+         1dGJZWKzkll+4WyQ6B4J56BQ38/pGQd2oHeJAnKVvOKudCev/oXGNM/pFhWhqRzAM/1L
+         /Qeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787665390; x=1788270190;
+        d=1e100.net; s=20251104; t=1787666016; x=1788270816;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=JWDAzYZFEkZgn9JQSwJnfdgSRZDMe0Wi+uaB7qB4Hcs=;
-        b=DVBbsMB6MTwdJTykfvWfm2gHEHkA+k9f46+d2S2LfatjkfMKBuFTOPlYIcRR9DDkVL
-         MUfu2gC8m0fji322d4wR80lC4zkcFEqgYyPy2apyOGq9CnDU6v/M8vK9nloKDR2lj3Dd
-         f1FuSDkrwC+GRZTPm7pCsfD71NN6lfnwdRO6Dn08hKS5OLgq51UtMwmjY8p79oVo+qt/
-         Mb7+nnuUgOxODPCCvRb/MihCDM4kfVv44dYaQZLWqsxB3D2kl7bqaHz1eoP37ttO5X6B
-         wMink8y6vT6pUv5jLKKdfA3ljdq0Fao3NtQTTC8YQzH9/Xj2ezmhkw6ngNK9DyvsAOCI
-         yNCA==
-X-Forwarded-Encrypted: i=1; AHgh+Rof58YsDg5RgtLDp33g7IuMYV5XRuCEvVdIqe/unWzASLpc38CwLLrw4UU5aEzW96tcgxQM/LA=@vger.kernel.org
-X-Gm-Message-State: AFuF++nTWcV+7qevFfw/ULu+/abUfo0OuA/75EmwDAMRtu0kBey17Snz
-	3vmDwtTxgjw4VyL0pZYzXEfw21R6EmCB+OhTNZzgJkQNDK/shce14lWZvmopV49ZXicladCd+CX
-	3ashPpaKp5Ljb2A9vFymT3tW/IzXfDthkPIqAEsKo
-X-Gm-Gg: AR+sD13EWPXi1J61KE1ZaUG5n3UMQgCtQTglgAwooUUcnFP829IWkfFY2/HLWXi4qOf
-	UBVbzHTEoE8DfFglYNeMSkHW2yTDXWwH5iztrdZhv4mbhhGMC6I6sjKw3wDMccK+plvx2reW1Jr
-	qvoVs2TxNxDWum2LzmdokCvjoWq/LtIQ5/ZPsUNueN7dX4+dUdY+XtpYrkCmGcWKICpgZWRrFBx
-	/QJ2lxBcMCWR56rXSc9SuOXk8KV3zhj2El6t+CW6c4yUxuv8iKlmtCxCGYhmbtNZJQjanWzWvez
-	XcWvnFUUJGhXuGym9DQsiFpO5L0ZK46/kCyyFpL6iNEd5x2fVmY+1Ro91FCDvn4GVY42HqnaNIo
-	0/lqxIqyqNDyFt/YDRWSMpH1+ShDHv+JOoq6kUuh2RONyqTeuBpBXeMvt
-X-Received: by 2002:ac8:5a4e:0:b0:51c:61a:50fa with SMTP id
- d75a77b69052e-52e09d26e41mr265645011cf.39.1787665388804; Tue, 25 Aug 2026
- 06:43:08 -0700 (PDT)
+        bh=UUURwoB9+Pevcje/tzHBVZWY/DSyQqR08FkBIcnYADI=;
+        b=a15/jeTIQlC7vZ6LM521UNsqI+AOD7EGR1oiCdOxWWnkzMZl//wkvmSrxejM6HYrq9
+         9x5FvQj6O6VslbreJegK41+qSiTgVnxTd4focx6PZ5ybLiq88ypTCs2XOq36SbsW02GM
+         F4xzOYXQwNy5ocHQt00AcPAVerEvHUiGejqDfX1kKah1QTkjRt2Bvu1lYJXEpOwe7S0s
+         nMZJH1Iw+qZVcKrOLH01byiUe8pSjizi2yksB8o733cJGsAURm7oC210GUKU6v+MNWjK
+         N/Z9UnI01tUDs3aP6WVlX3bIye2DjXR90/Ul014L0x/ft3CyR0NLpTrJJQQax5uIZ2Ho
+         0Sew==
+X-Forwarded-Encrypted: i=1; AHgh+RqXAUfEEQvVyQalqLtAdahAlmIVfqnitAp5rB49CtjZSc/253aJ/vVBLuEARakYRfnXMFI3bOg=@vger.kernel.org
+X-Gm-Message-State: AFuF++mYc1/4AVqRa5p7MFVKZhTCzzKfG6hMhhcbKstgHjLLFvE+n7ol
+	tAziI/A3XfcFt3B0dOxZGf4tzxf2EbAfAVp6AJmxRAPZ9N5i3ohfVk/DByeKEuT/sSUemupDHqn
+	6nxUBN5sa+0UdIdF/lxkyUh6vAgPbOGq3FLM/tEvA
+X-Gm-Gg: AR+sD10KcTGi3mcoOZFWrvXyeDDVNRtXF7smByH91WT2jrpivSg0PszpPFHeGwIUktD
+	ggfrk2sCdNtslF560pDEgMojEzxlcbyn5BKdwypdor86WOzCihKRPHBl9HbWfuz5BIMgQeTVUy9
+	HEnksih4awPmiWzSiUSvMbWvVrk/1aq8RpXdajANQkY4gTdSXmdILWYWw5lbg12VnBmnjCRUesY
+	ABghdpZs/0+siugVAwWtfI38U0fjAdfZJLlHCDv21/7yVX6WWwH3JGU9RwA5K+KaiAzbwWsnSh1
+	ZKJ9Hb4CmLClccMVsTyejrnE9C8ZvOf3xR2Lv5hd9FHHfMytNMe4aO4dpLcBLleIOtCGjL3RCHg
+	BkSUh3Mo+ozeX0tPOd+sYCBBDSZa3g5Kvg2Mv9sUVYqGtJpmIf0Ud+Opq
+X-Received: by 2002:a05:622a:2446:b0:51b:ef78:4062 with SMTP id
+ d75a77b69052e-52e2ec997a8mr79461571cf.10.1787666015109; Tue, 25 Aug 2026
+ 06:53:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <34f44e8a-9fa4-4cb3-822e-5db54fb6df44@I-love.SAKURA.ne.jp>
- <CAAVpQUC672LJN_8KQ5BzadS26FnUrh4ayjyu-n5x=W7U69u7fA@mail.gmail.com>
- <CANn89iJd-s+mocDFXgt2rtFQVBGNJ7xEy=tUMKa5Da+brptXzA@mail.gmail.com>
- <7d6d4139-4389-4083-8569-ab2b7265ce3c@I-love.SAKURA.ne.jp>
- <CANn89iKwWFwRxEDvw7eUPD-tKL_dvYrZeye_3be37q6qYzQ15w@mail.gmail.com> <96f33d10-558f-49d5-a95d-ec1e29feea0b@I-love.SAKURA.ne.jp>
-In-Reply-To: <96f33d10-558f-49d5-a95d-ec1e29feea0b@I-love.SAKURA.ne.jp>
+References: <ao0mwtt8ePAINFni@shinhome> <20260825064507.1499-1-hdanton@sina.com>
+ <ao2WptQpM2zSQHDt@shinhome>
+In-Reply-To: <ao2WptQpM2zSQHDt@shinhome>
 From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 25 Aug 2026 15:42:56 +0200
-X-Gm-Features: AcwNN1UAE-HhiRv43gFYMkUMIHvY3piRTIXDAKhqj-t9ywvd4sSPRs494hhUUjE
-Message-ID: <CANn89iKLYk6vF6hJSgSTCndOJLZtr7EO7D8sue9YDLmVW+MxQw@mail.gmail.com>
-Subject: Re: [PATCH] net: make sure final 'struct net' free in
- net_complete_free() is always deferred
-To: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Network Development <netdev@vger.kernel.org>
+Date: Tue, 25 Aug 2026 15:53:23 +0200
+X-Gm-Features: AcwNN1UrB308zS0PjRlBna6WG2jbl1iwdt1gEtx06xm9PB63XHUiHc0HHnkviSQ
+Message-ID: <CANn89i+-PHiqn+yKUi=PbwN+qCd6Lr8KY1T6tL7pKPRPmi_67g@mail.gmail.com>
+Subject: Re: [syzbot] [net?] WARNING: locking bug in tcp_tsq_handler
+To: "Shin'ichiro Kawasaki" <shinichiro.kawasaki@wdc.com>
+Cc: Hillf Danton <hdanton@sina.com>, 
+	syzbot <syzbot+2d770620059281e225a4@syzkaller.appspotmail.com>, 
+	Nilay Shroff <nilay@linux.ibm.com>, Keith Busch <kbusch@kernel.org>, boqun@kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, peterz@infradead.org, 
+	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 25, 2026 at 3:21=E2=80=AFPM Tetsuo Handa
-<penguin-kernel@i-love.sakura.ne.jp> wrote:
+On Tue, Aug 25, 2026 at 3:26=E2=80=AFPM Shin'ichiro Kawasaki
+<shinichiro.kawasaki@wdc.com> wrote:
 >
-> On 2026/08/17 23:00, Eric Dumazet wrote:
-> > However, the observation regarding the copy_net_ns() error path is vali=
-d:
-> > because failed namespaces never go through __put_net(), net_cleanup_wor=
-k
-> > is not queued, so a failed net structure can stay on defer_free_list un=
-til
-> > another namespace is destroyed.
+> On Aug 25, 2026 / 14:45, Hillf Danton wrote:
+> > On Tue, 25 Aug 2026 14:44:35 +0900 Shin'ichiro Kawasaki wrote:
+> > > On Aug 25, 2026 / 03:50, Eric Dumazet wrote:
+> > > >
+> > > > I think 19bdb70c77d3 should be reverted.
+> > >
+> > > Just reverting the commit will reintroduce the other lockdep WARN tha=
+t the
+> > > commit addressed. I hope to have another fix to avoid the WARN.
+> > >
+> > I do not think you know the root cause of that lockdep warn, so reverti=
+ng
+> > 19bdb70c77d3 is the right thing to do because of [11, 12].
 > >
-> > The proper fix for that benign issue would be to directly free the
-> > struct net in the
-> > copy_net_ns() error path (since it was never active and does not need d=
-eferred
-> > freeing), rather than modifying cleanup_net().
+> > [11] ffa1e7ada456 ("block: Make request_queue lockdep splats show up ea=
+rlier")
+> > [12] Subject: Re: [PATCH] nbd: don't warn when reclassifying a busy soc=
+ket lock
+> > https://lore.kernel.org/lkml/20260816014906.1149-1-hdanton@sina.com/
 >
-> Now that "net: fix a resource leak in copy_net_ns() error handling path"
-> handed over to net_passive_dec() (instead of calling kmem_cache_free() fr=
-om
-> copy_net_ns()), it is time to fix the last problem which sashiko repeated=
-ly mentions
-> due to commit 0f6ede9fbc74 ("net: defer final 'struct net' free in netns =
-dismantle").
->
-> My understanding is that we need to wait for RCU grace period before
-> calling kmem_cache_free(). Then, I think we can simplify like shown below=
- (either
-> pattern A or pattern B). Which pattern do you like?
->
+> I took a look in the commit [11] and the discussion [12], but couldn't fo=
+llow
+> why the commit 19bdb70c77d3 should be reverted. Could you elaborate a bit=
+ more
+> about the reason you suggest the revert?
 
-Hi Tetsuo,
+I think you missed one problem in lib/once.c
 
-Neither Pattern A nor Pattern B is acceptable.
+Revert commit e8eef69a99f1 (or restore once_disable_jump(once_key,
+mod) inside __do_once_sleepable_done())
+so static_branch_disable() is never called synchronously under caller locks=
+.
 
-1. Pattern B fundamentally breaks the fix in commit 0f6ede9fbc74
-   ("net: defer final 'struct net' free in netns dismantle") and reopens
-   CVE-2024-56658:
-   - A single RCU grace period (via call_rcu) is NOT sufficient.
-   - dst_destroy() (and xfrm_dst referencing net->xfrm.xfrm[46]_dst_ops)
-     can be invoked by RCU callbacks queued during dismantle or in
-     cascading callbacks.
-   - With call_rcu(), net_complete_free() would run in the same grace
-     period as other dismantle callbacks, with no ordering guarantee across
-     CPUs, resulting in kmem_cache_free() being called while callbacks
-     are still accessing net fields.
-   - If call_rcu() had been sufficient, we would not have introduced
-     defer_free_list and cross-round deferral in the first place.
+Previously, once_disable_jump() deferred static_branch_disable() to a
+worker thread via schedule_work().
 
-2. Pattern A introduces severe performance regressions:
-   - rcu_barrier() is an expensive, synchronous system-wide operation.
-   - cleanup_net() already runs rcu_barrier(). Spawning a worker on
-     system_long_wq that runs an extra rcu_barrier() on every netns teardow=
-n
-     would cause unacceptable latency spikes and CPU stalls on systems
-     with frequent container creation and destruction.
+Commit e8eef69a99f1 made it run synchronously in the caller's context.
+Because __inet_hash_connect() is called under lock_sock(sk), calling
+static_branch_disable() directly inside DO_ONCE_SLEEPABLE() takes
+cpus_read_lock() (cpu_hotplug_lock) while holding lock_sock(sk).
 
-3. Regarding Sashiko's report:
-   - This is a false positive from an automated tool lacking full
-     architectural context.
-   - cleanup_net() runs exclusively on the single-threaded netns_wq.
-   - In cleanup_net(), net_complete_free() (llist_del_all) is executed
-     strictly before net_passive_dec() (llist_add). A namespace being
-     dismantled in round N is guaranteed to be placed on defer_free_list
-     AFTER llist_del_all has completed, and will only be freed in round N+1
-     or later after another full dismantle pass and rcu_barrier().
-   - For external passive ref holders (e.g. kernel sockets), cleanup_net()
-     and its rcu_barrier() already finished long ago, so freeing the
-     structure once the last socket drops its reference is safe.
+This created the bogus lock dependency sk_lock -> cpu_hotplug_lock.
 
-4. If you want to address failed namespaces in copy_net_ns(), the right fix
-   is to directly free the struct net in the copy_net_ns() error path
-   (since it was never published and never had active traffic/dst entries),
-   not by changing net_passive_dec() or the dismantle path.
+Every other storage/networking client (sunrpc, nbd, cifs, iscsi_tcp,
+rxe, siw) uses static lockdep keys (static struct lock_class_key
+...[2]) without issue.
 
-Thanks.
+Use my pending TCP patch, which is a no brainer :
+https://lore.kernel.org/netdev/20260825023614.1228551-1-edumazet@google.com=
+/
+
+Revert 19bdb70c77d3 in drivers/nvme/host/tcp.c : Restore static
+lockdep keys nvme_tcp_sk_key[2] and nvme_tcp_slock_key[2].
+
+And we should be good.
+
+If you think each nvme-tcp socket MUST have its own LOCKDEP class,
+please elaborate, because I have no idea
+why this would be needed.
