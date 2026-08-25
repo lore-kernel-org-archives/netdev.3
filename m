@@ -1,81 +1,120 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828EF3DB63D
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 08:14:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+Received: from ultrarisc.com (unknown [218.76.62.146])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 340053DD85A;
+	Tue, 25 Aug 2026 08:17:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.76.62.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787645675; cv=none; b=YYrkvTMCuFa8zaucCHCDJEb2kInrvXKNsF2MT8AZTR0+P7zj7sycK5VFwCZ+5rYOWh3SoPw0PgrvIW6G96ASzaGflXzosDL5DhNzkf8UPRLlz1FSGUGakV3abuGgaD+UMw1J8rp2L4LcNmbEOuUDCFNaWfM4W39AGqDe1jVevP8=
+	t=1787645856; cv=none; b=NADFmHFCq/46ZOMiDa8abr9IQApW06awUX6J94CFV2hN88UpJ7yi7T3+YkHXcS2wtM3MyVuzx57vJpqzdqLQGRLE1nZKA1XBHJK8Nl4fjEWb/4tWL6gGSOFXBEDzx++SikEgncTKUhBDoV1AUSdGaK3dXEK6OIT8HKdcHzfa2Mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787645675; c=relaxed/simple;
-	bh=vmeagQmHgmqDHl8uivB7+4iX27w03s0n3GIWhsfm/74=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=LG2g1vVx9kS0DlUhEulLE3Rlb4CGBBvC/5PyKmR1BxqjZMSa3NyqyV40pOMytj2wm5dmd+aOqe29TAZVX9sl2UkBkw2VUz61MuTjpZUaIlWJygEyg90bTWarb4SpcgMhSTY5vv4Jj1YPlly4WuiSHxU5nAEO5OBIwbMfPhdttSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=INLxCGra; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1787645856; c=relaxed/simple;
+	bh=0hpWzS3PdWuCRi4RZYRntaKveNrBF4SmvRWcDQCtP3k=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=XX5GUMvJ59OI3ShyNEblPwxcbexIgx0hXiQkpUfepHdy+7Rmtda+CIsEGDIj/4+L8H4X51QjbY+/fOEJPfnOq91SwehHH17MDO5cjnIPSYFRda4srbsRYJssotcqzTPaNAEvo98r7eeKZ6PWpqpwkaF3vplfF67BrnYAXyzYmqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com; spf=none smtp.mailfrom=ultrarisc.com; dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b=LjxcuRYV; arc=none smtp.client-ip=218.76.62.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ultrarisc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="INLxCGra"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=vmeagQmHgmqDHl8uivB7+4iX27w03s0n3GIWhsfm/74=; b=I
-	NLxCGra9hbCS+gqxSrumDKMHO21KhwCXx/VQJkt7z30b+UUceFrIjGCJsq5bLyU3
-	vCOoyyY8Mw0XpJl5H153+mlw3FGqtoLn9web9yNBy0b4U+MOiXd9ruxiEnkusXyv
-	wSB8LxL7KHTLIh84Xhj+Mrq1jhvncsbtuy1qIwNZwA=
-Received: from lange_tang$163.com ( [116.128.244.169] ) by
- ajax-webmail-wmsvr-40-143 (Coremail) ; Tue, 25 Aug 2026 16:13:44 +0800
- (CST)
-Date: Tue, 25 Aug 2026 16:13:44 +0800 (CST)
-From: "Lange Tang" <lange_tang@163.com>
-To: "Jakub Kicinski" <kuba@kernel.org>
-Cc: "mst@redhat.com" <mst@redhat.com>,
-	"jasowangio@gmail.com" <jasowangio@gmail.com>,
-	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
-	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"Tang Longjun" <tanglongjun@kylinos.cn>
-Subject: Re:Re: [PATCH v2] virtio_net: add rx-alloc-fail counter
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
-In-Reply-To: <20260824112050.02623327@kernel.org>
-References: <20260820060929.69576-1-lange_tang@163.com>
- <20260824112050.02623327@kernel.org>
-X-NTES-SC: AL_Qu2TBfqfuk4p4iaYYukfmUgRg+c/XsK4svUj24VVOJF8jC/r2DghekBCPHTT4v2hKSq0sRGoVgBV4edDU4lKergrdrroI039T0SXu0yFrclJYw==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b="LjxcuRYV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=ultrarisc.com; s=dkim; h=Received:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:
+	References:Date:Message-Id; bh=jKmOi58Wr3b5f+F/9FpwPS2Jg5KNAZPky
+	cymvsKAjYQ=; b=LjxcuRYV+4I6VgLE/Jg1XSPthF3bOfnPzSI04oqlaYMduwUzF
+	H8i/jO0R9ovfEbi2XsZbHBJyjRe8pY/BtEmN2YDXF+juAUmxSb1aYd9N3x2krlyp
+	ubwn1gA/QbIAIqFyYM9T47pPaqDX8jVUzorSsmcQJG67uc6qXm0F8on3b0=
+Received: from [127.0.0.1] (unknown [192.168.100.1])
+	by localhost.localdomain (Coremail) with SMTP id AQAAfwB3V855T41qhDABAA--.310S2;
+	Tue, 25 Aug 2026 16:16:58 +0800 (CST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <60cd1569.6b2c.1a037fb8129.Coremail.lange_tang@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:jygvCgDn_4K5To1qpFE4AA--.4873W
-X-CM-SenderInfo: 5odqwvxbwd0wi6rwjhhfrp/xtbC-Rm-7WqNTrmjxwAA3C
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 06/12] spi: dt-bindings: snps,dw-apb-ssi: Add
+ compatible for UltraRISC DP1000 SoC
+From: Jia Wang <wangjia@ultrarisc.com>
+To: Conor Dooley <conor@kernel.org>
+Cc: wangjia@ultrarisc.com, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Alexandre Ghiti <alex@ghiti.fr>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
+ Thomas Gleixner <tglx@kernel.org>, 
+ Samuel Holland <samuel.holland@sifive.com>, 
+ Anup Patel <anup@brainfault.org>, Mark Brown <broonie@kernel.org>, 
+ Andi Shyti <andi.shyti@kernel.org>, 
+ Mika Westerberg <mika.westerberg@linux.intel.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+ Jose Abreu <joabreu@synopsys.com>, 
+ Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>, 
+ Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>, 
+ Paul Walmsley <paul.walmsley@sifive.com>, 
+ Palmer Dabbelt <palmer@sifive.com>, devicetree@vger.kernel.org, 
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-spi@vger.kernel.org, linux-i2c@vger.kernel.org, 
+ netdev@vger.kernel.org, dmaengine@vger.kernel.org
+In-Reply-To: <20260824-slouchy-displace-c3f65dd5a2d1@spud>
+References: <20260824-ultrarisc-dts-v1-0-61ab7aebe9e5@ultrarisc.com>
+ <20260824-ultrarisc-dts-v1-6-61ab7aebe9e5@ultrarisc.com>
+ <20260824-paycheck-luridness-6de48a00a262@spud>
+ <20260824-slouchy-displace-c3f65dd5a2d1@spud>
+Date: Tue, 25 Aug 2026 16:16:43 +0800
+Message-Id: <178764580385.744215.13946157072907729813.b4-reply@b4>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787645804; l=702;
+ i=wangjia@ultrarisc.com; s=20260515; h=from:subject:message-id;
+ bh=0hpWzS3PdWuCRi4RZYRntaKveNrBF4SmvRWcDQCtP3k=;
+ b=Hvrsvrt29JUGTBu6KLS8IK0cY1rMPmjhr7TUcqlYA9ahnLnnFyvhsZgRwuV92ABGHtof/sETT
+ LdV0zz1NV3kCa+JjpnKJscHrcMKqnVTEepOmSB0vtoCYdzm+tl+sOts
+X-Developer-Key: i=wangjia@ultrarisc.com; a=ed25519;
+ pk=wGVm18siRScehKOkOz0WKxgxDy7IezHEszhnN4/TUCY=
+X-CM-TRANSID:AQAAfwB3V855T41qhDABAA--.310S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7GF1rXr4kCFy8uw13uF1kAFb_yoWxZFb_ur
+	WDJFyIyw4UtFW2gw43AF4YqrZagF4kGr98X3ykXFZagr95JFWkAwnrXr1Svw13XFWYvrya
+	kr1Fvw17ur1a9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb6kYjsxI4VW3JwAYFVCjjxCrM7AC8VAFwI0_Wr0E3s1l1xkIjI8I
+	6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM2
+	8CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0
+	cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4j6F4UM28EF7xvwVC2z2
+	80aVCY1x0267AKxVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
+	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26rWY6Fy7MxkIecxEwVCm-w
+	CF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j
+	6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Wrv_Gr1UMIIYrxkI7V
+	AKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42
+	IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvj4i_HU7UUUUU
+X-CM-SenderInfo: pzdqwylld63zxwud2x1vfou0bp/1tbiAQAHEWqJFPsACQAss+
 
-QXQgMjAyNi0wOC0yNSAwMjoyMDo1MCwgIkpha3ViIEtpY2luc2tpIiA8a3ViYUBrZXJuZWwub3Jn
-PiB3cm90ZToKPk9uIFRodSwgMjAgQXVnIDIwMjYgMTQ6MDk6MjkgKzA4MDAgTG9uZ2p1biBUYW5n
-IHdyb3RlOgo+PiBDb3VudCB0aGUgY2FzZXMgd2hlcmUgdGhlIGRyaXZlciBmYWlscyB0byBhbGxv
-Y2F0ZSBhIGJ1ZmZlciBvciBhbiBza2IsCj4+IHN1Y2ggYXMgd2hlbiB0cnlfZmlsbF9yZWN2KCkg
-ZmFpbHMgd2l0aCBFTk9NRU0sIGFuZCByZXBvcnQgdGhlbSB2aWEgdGhlCj4+IHJ4LWFsbG9jLWZh
-aWwgcXN0YXQuCj4+IAo+PiBQbHVtYiBhbGxvYy1mYWlsIGludG8gdmlydG5ldF9nZXRfYmFzZV9z
-dGF0cygpIHRvIGtlZXAgdGhpcyBuZXcgc3RhdAo+PiByZXBvcnRlZCBjb25zaXN0ZW50bHkgYXQg
-Ym90aCBxdWV1ZSBhbmQgZGV2aWNlIHNjb3BlLCBtYXRjaGluZyBob3cKPj4gcGFja2V0cywgYnl0
-ZXMsIHN0b3AgYW5kIHdha2UgYXJlIGhhbmRsZWQuCj4KPlRoZSBzdGF0cyBoYW5kbGluZyBpbiB2
-aXJ0aW9fbmV0IGlzIHN1cGVyIGNvbnZvbHV0ZWQgYnV0IEFGQUlDVAo+eW91ciBwYXRjaCBpcyBn
-b29kLiBVbmZvcnR1bmF0ZWx5LCBuZXQtbmV4dCBpcyBjbG9zZWQgcmlnaHQgbm93Cj4obWVyZ2Ug
-d2luZG93KSB0byB5b3Ugd2lsbCBoYXZlIHRvIHJlcG9zdCBuZXh0IHdlZWsuCj4KPk1heWJlIHlv
-dSBjYW4gdHJ5IHRvIGNvdmVyIG1vcmUgYWxsb2NhdGlvbiBmYWlsdXJlcyBwZXI6Cj5odHRwczov
-L25ldGRldi1haS5ib3RzLmxpbnV4LmRldi9zYXNoaWtvLyMvcGF0Y2hzZXQvMjAyNjA4MjAwNjA5
-MjkuNjk1NzYtMS1sYW5nZV90YW5nQDE2My5jb20KPk9yIGFkZCBhIHNlbnRlbmNlIG9yIHR3byB0
-byB0aGUgY29tbWl0IG1lc3NhZ2UgdGhhdCB3ZSBkbyBub3QgaW50ZW5kCj50byBjb3ZlciAxMDAl
-IG9mIGNhc2VzIHdoZXJlIHBhY2tldCBpcyBkcm9wcGVkLgoKVGhhbmsgeW91IGZvciB5b3VyIHJl
-dmlldyBhbmQgcmVwbHkuCkkgd2lsbCByZXBvc3QgdjMgbmV4dCB3ZWVrIGFuZCBhZGQgc29tZSBk
-ZXNjcmlwdGlvbiB0byB0aGUgY29tbWl0IG1lc3NhZ2U6ClRoaXMgY291bnRlciBkb2VzIG5vdCBj
-b3ZlciBldmVyeSBhbGxvY2F0aW9uIGZhaWx1cmUgaW4gYWxsIFJYIHBhdGhzLgpJdCBpcyBpbnRl
-bnRpb25hbGx5IGxpbWl0ZWQgdG8gdGhlIGNvbW1vbiBza2IgYW5kIFJYIGJ1ZmZlciBhbGxvY2F0
-aW9uCnBhdGhzIHRvIGtlZXAgaXRzIG1lYW5pbmcgY2xlYXIuCgp0aGFua3MuCkxvbmdqdW4gVGFu
-Zw==
+On 2026-08-24 18:15 +0100, Conor Dooley wrote:
+> On Mon, Aug 24, 2026 at 06:07:07PM +0100, Conor Dooley wrote:
+> > Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> > pw-bot: not-applicable
+> 
+> And another case of being too hasty, same applies here. Please add some
+> constraints for your device.
+>
+
+Thanks for the review.
+
+In the next version, I will add DP1000-specific constraints requiring
+each SPI controller to have one register range, two clocks, and the
+corresponding clock names.
+
+The num-cs property will remain optional because the native chip-select
+count differs between instances and can be detected by the driver. 
+
+> Thanks,
+> Conor.
+
+Best regards,
+Jia Wang
+
+
