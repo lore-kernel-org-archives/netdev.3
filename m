@@ -1,118 +1,126 @@
-Received: from mail-pj2-f6.google.com (mail-pj2-f6.google.com [74.125.227.134])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE68356779
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 22:07:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E406490C14
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 22:19:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787695630; cv=none; b=qzph/BRQ95E/9CLF2O+sNDLl54RdLnAXkaSbfCRdDBu13xKLqojGNVf9mjjkZJkjEOxDYAqEYInnVy6OPbSLtN4aG5F9fKKOhTr2hxSqeYFKZIwLgZlzqGshUywYkR90V5Z7J52mBXdOAgKsQ682oiNW7gYKalZePoPPm2O+8Zw=
+	t=1787696372; cv=none; b=MclwqH1779BUSjs+63UyqNHoBCAjSrVFYXW/QGWxmdRCdqdQzhEkPD3or3WGPgdlREhZChhV+HV3DNyUUX5C5crfGgkAU2LH4o3XEsMTwDG35cZM5FI4lSqhBFGfQQ/NEOtm3rfWbbUkLQATiv+KW6di+bbSFFlICz4SQQqINHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787695630; c=relaxed/simple;
-	bh=63qI2K79bcm4cDczUBl3jeHM3xipML3Gz7DLpnr04Gg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Het3t4PBfPiOWDNr2l2wF8a36/jA0PPVS0dQdnlUzFSnUgystNMyMdR3ey2PMWXpZfvkt1bZIX+WxdTLPWdyoq/E+felebYAXVtO0HeB0ke0tD+RH3gssbo60t/onVcBKgujBFe97qRJi+dGVgQaCfIU4VAoinKecr11L+OEN6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yd59fMiL; arc=none smtp.client-ip=74.125.227.134
+	s=arc-20240116; t=1787696372; c=relaxed/simple;
+	bh=mEdR2tx1LHDyaqyyS/X36JdZWYUI1LR1QvNX1VgVojE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TDoEr0JJQA/Lfzwne/0gqBlPg+sJ94kcKomt/XUvoCujMDcGiUL99BPqrDlAkl7P/Mw7NWK0UClsmvaMXemPtZ8Ip0d9C6zeVTgxrA/qYvtDWUZ6ndcOn3i/fF24286RlY5e6ijxBUJykLxgNCOebGnOrjl7eK0M9cxUtjkcIUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sWAVvyOS; arc=none smtp.client-ip=209.85.210.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yd59fMiL"
-Received: by mail-pj2-f6.google.com with SMTP id 98e67ed59e1d1-39655e2a1d9so106175a91.1
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 15:07:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sWAVvyOS"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-84874b52eabso463420b3a.0
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 15:19:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787695628; x=1788300428; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=E2HRqo0BNmOG+wvSL71FMHVkpYIR+F5v9R73Mp72HJs=;
-        b=Yd59fMiLkFIJFSaPsIB3sDLIkOhLNFFSJ2OohGDo2kEp+Mb7bBfjkPhbYzXsKoDtEc
-         FaYfC+TL965X0LUTYCDhIDa36EfNtR9+jpwimN1ufte8eJSU82m765RVGEXCcLF1iNvr
-         +84R+0SeJ0oEC8f0mLCRlZ/PFjelJ84y3Iw0SepbLLH7NUfwhNK2Q4Pmtmib1bhF+aE5
-         4awltP8HYAr1IldJ4ip5GO8ANpYtn8dq4nAXzbPufhc38milbbM/HQh2hrxR0QsEwD8G
-         Oye1PCF41GB17nFHF1WxRpSFCg1VH8tHC+XWKOJ00JSEJiy7F779FWtSYWPw90kn/ViJ
-         QCcA==
+        d=gmail.com; s=20251104; t=1787696371; x=1788301171; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=HbRd4C72E6Tx1zFpSce3Z+MgqbEl1YisqbhWXwpdJmA=;
+        b=sWAVvyOS1JtnoIepHNqmeYx9f9gkVTqUmjNtvkN9UZgl31pYe4egO14ko3ZZ4xSSNS
+         /YRRDU0hNEBRHWXuRhFglZFiq4WsFMw9IXfMKCmtEYSV2RhixnRPuPa+vM8MFGXFfhRX
+         spEGH1eEal70NS3qeGYkywU8v46h+YLJeERvy1qH38ndRAq1D+jHoHE/JNmDZTP4OSP1
+         ugsSgGMKMp06klddFJBRTVo/wymCQGRx7M/UequCDTLe8hegWxenZGd0kntYVm8T8IhZ
+         VjWjzY88JCx2M/F3f5qab7tpTdKdHvjMSOI5NJgDt/jJoLr2foUQtXG4JRCtvpe9EChV
+         WmJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787695628; x=1788300428;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=E2HRqo0BNmOG+wvSL71FMHVkpYIR+F5v9R73Mp72HJs=;
-        b=M8aC4wWTvds4Zd25/yWlNelvZkqhnQoibiA7RiRKM99on2v3qD8M2QlIThaDLfaSVh
-         UsMt58pvfeHItCclnzr6TyZbZZxNyRZWtumAfCJjrj3ivtE46DgW13KyaJ1FNBHLdFqY
-         NSy63NpniqX/UGTirh2z1oeVrAH6QfrK0LNquQYkIMkKMvqAdnNZhL5SlAamAg6zOj38
-         m3VASYAVVcPusnX0Q2jegumcFAtr2mPg2I5awYLE2mc0FBG4pwQfRcJa8yPcLMiuHMr8
-         PCN/EdQNJgto3qpOVEH3w9fTISLywqrulmYjhgJMxrY9YRk4Ngfl+V/DSYzaGaRWKtkY
-         Cr5w==
-X-Forwarded-Encrypted: i=1; AHgh+RqOo5je/Io89IeDlzqw4x9ym8FV1L+MTZUkwOr61pel3JIK8DyeuFjPhBCJkizSNhRxXXzzxY8=@vger.kernel.org
-X-Gm-Message-State: AFuF++mFVw8tpyPquqS3JZzBg4xHK+FPP28DxQzTiNzpWllsL6XKNkUP
-	hV9JobArs+fl8ij1zP4Ip4lV90mITYhJpRmGbLQMimEJ17ZA5eGAg9Wp
-X-Gm-Gg: AR+sD100J/94ry26jFYAjbf9f3cEo2q2+EmjokDCo2JYHe0/X60x9fbtmkDC0ELtXx3
-	CZ6//QiUpI8TttS++/GGjh3mxAA7TynSVC9WulsOercwkFQa8QFZ6mPFl78oj3PF3dnFlZzZCLF
-	QxHt8nGxfqVzlu3gAAC77uYkdAvZUkyO8y6peQAifmB8R8K7CdgaYd/MIaXOcbTVxI1lL+lTXRf
-	ZeuhiK146UouJdrlFKjn6McFBDbC0rihOBRgsUxZnTqKDl3kvT/JCmB94Wot7D2x7L3P2tyrFTp
-	901BJOWJJSgv3BRJHpON6KzZiBSCw1vm0+OpF8j63sDwtKCc5GsQ8gxhjwrJ5MOOl5l8D8xu9hg
-	XwTbZ30oC7iPqjWsD62ccoDhbxW2+Z/Vna4clGaTPRuqZPc9IsAFlHyVUq46cldphDwrL5nezPh
-	UBtW+uHPSB1ZHDlsrbVwkXo0nACxr+CwkNiuyH6Wqw9FmuE49WzUyk2gXPiPFOkwwg
-X-Received: by 2002:a17:90b:3b4b:b0:381:11eb:d78e with SMTP id 98e67ed59e1d1-3966d8b6295mr4351538a91.14.1787695628197;
-        Tue, 25 Aug 2026 15:07:08 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:46::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39668a57396sm1314425a91.13.2026.08.25.15.07.07
+        d=1e100.net; s=20251104; t=1787696371; x=1788301171;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=HbRd4C72E6Tx1zFpSce3Z+MgqbEl1YisqbhWXwpdJmA=;
+        b=eYQEbMhUpE4xH6bJ3co+L1vWx5U6xgezjlQcTxrRf23lJZZ26P3fS/h6iDXqhyXxWh
+         hfa9zXdTcdQX81RvQoAXV346KWouarF66rSF208yHYpD21pXL6KRBLxoluXXuyK1V2t2
+         5R2K5hqMootf8VgIe8fi4uK0NGSi3AU+JHZacnbfH37YFYhPK0P7Ir9FyTdvhR+1w0p8
+         lqzB4PIBE+xCN1FXzQSlJYEYUG+5ymd9SmNqj121G5Szhzz5UnjxGUtUs8VibUP+4sgi
+         Pyx3XBuZXxYjvJRrCJ19M9QciAO1k+DbxcZAEe+vffDMEMzI8lVVmFMv+0Ls0ldoiRBo
+         ACiw==
+X-Gm-Message-State: AFuF++nupG62rmVzys6d/Lqk1+F/9iMJctc6HfqmWdjYUol4fb+JDpP2
+	GN3C0xPt5jOUIjYype90gipTfPzgeFcDZhEUfOknDyARRsfbGV6xywbrVlhzjw==
+X-Gm-Gg: AR+sD11afAb/kFkRPyLMA5i/W/AwTPxKxjPPknVuXMzgspj3fEKQSRyy5OhCX6tai9+
+	0xOm4+Q4a0ZYANRAE0TmKjqSTIlh0JOibJLmmYcFzQtPPgugIj2z0HGAl5b747iTDHPrc/pv+Ro
+	nRS8FYO7bV16kts1jTMkuDOy0ss+VPz2MW32UkM88lqZRHb9QRSBPk+Yi4aTc4esuANBbsX+AIX
+	z9YqGWURdxS9M4+wZYTRMmmkx/gJ6hSnLCwK28wvF0r6QeA0Yn5fOFJc7OoCW+dtNhSPleAeaGf
+	A0G24Lm2V9D4i792zwGcIfIJf//oTEB17Y+iK4TdGZwKH/21JyhWBlmeagMgMadV4avoccGf18N
+	3C0BnUQst2gBitpMBaWaYAvyoNXMcMdYmrUsK45IMEskDIAYsUF2scE0qr98w+Hqj34lgniwIkS
+	r5HlSTHgnG3Mp0OV3c/M55jLcAOeK2MoCUd/XNfYWMODLx0d6WgXEVIRPlf3mBAOW1hx8OWiuz
+X-Received: by 2002:a05:6a00:1f17:b0:848:2c2e:c7a3 with SMTP id d2e1a72fcca58-8537648a353mr3388101b3a.16.1787696370760;
+        Tue, 25 Aug 2026 15:19:30 -0700 (PDT)
+Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8535acc39a7sm276934b3a.23.2026.08.25.15.19.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2026 15:07:07 -0700 (PDT)
-Date: Tue, 25 Aug 2026 15:05:46 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
-	netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, 
-	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, 
-	saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com, 
-	maxime.chevallier@bootlin.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, 
-	aleksander.lobakin@intel.com, horms@kernel.org, magnus.karlsson@intel.com, sdf@fomichev.me, 
-	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com, 
-	guoren@kernel.org, dtatulea@nvidia.com, witu@nvidia.com, martin.lau@kernel.org, 
-	yoong.siang.song@intel.com, intel-wired-lan@lists.osuosl.org, linux-kernel@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org, linux-csky@vger.kernel.org, leon@kernel.org
-Subject: Re: [PATCH net v3 3/3] net: stmmac: document oversized AF_XDP frame
- handling
-Message-ID: <ao4RsulsnIEMOmiG@devvm7509.cco0.facebook.com>
-References: <20260819160535.1472459-1-sdf@fomichev.me>
- <20260819160535.1472459-4-sdf@fomichev.me>
- <aoceSoSFMx69Z9up@boxer>
- <aoeoJ6-njBxcWs4w@devvm7509.cco0.facebook.com>
- <aogpDsa8hz6CPpD3@boxer>
- <aoiIarzdjk92RkCN@devvm7509.cco0.facebook.com>
- <20260824111443.34bffe04@kernel.org>
+        Tue, 25 Aug 2026 15:19:30 -0700 (PDT)
+From: Daehyeon Ko <4ncienth@gmail.com>
+To: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Subject: [PATCH net] ip: skip IPv4 cmsgs for non-IPv4 packets
+Date: Wed, 26 Aug 2026 07:19:22 +0900
+Message-ID: <20260825221922.85651-1-4ncienth@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260824111443.34bffe04@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On 08/24, Jakub Kicinski wrote:
-> On Fri, 21 Aug 2026 10:28:47 -0700 Stanislav Fomichev wrote:
-> > > > I do agree that a better idea is to probably do these checks during control
-> > > > paths, but it's a bit more involved (and not sure if it's possible? if we
-> > > > have a bunch of xsk sockets and we change that max_sdu, do we go over all
-> > > > sockets on the system somehow?). My main motivation with this patch was
-> > > > to make our LLM reviewers less chatty about preexisting issues.  
-> > > 
-> > > I hear you, however I feel like we do not know this driver too much and
-> > > probably we don't have a HW to test out such changes, so maybe let us try
-> > > to fix existing behavior?  
-> > 
-> > Let's definitely fix it properly if you have better ideas. But since we
-> > don't have HW, I'm not super confident doing anything sophisticated
-> > myself :-D
-> 
-> Let me take the first 2 patches and leave the stmmac for later.
-> I don't think anyone involved care particularly deeply here.
-> 
-> Maxime said he bought a bunch of relevant HW. If we finally wrap 
-> the AF_XDP tests into driver runtime he should be able to help us...
+IPV6_ADDRFORM can convert an IPv6 UDP socket while a native IPv6 packet
+is still queued for reception.  The converted socket then receives the
+packet through udp_recvmsg(), which passes it to ip_cmsg_recv_offset() as
+if it were IPv4.
 
-Sounds fair, thanks!
+This makes the IPv4 ancillary-data code interpret inet6_skb_parm as
+inet_skb_parm.  In particular, IP_RETOPTS can take the IPv6 lastopt and
+nhoff offsets as an IPv4 option length and RR offset.  A destination
+options header can then make __ip_options_echo() copy more than the
+40-byte stack option buffer.
+
+KASAN reported a 152-byte write on 3/3 fresh v6.12.105 boots and 3/3
+fresh v7.2 boots.  A production-shaped v6.12.105 build instead reached a
+hardened-usercopy BUG followed by a fatal-exception panic on 3/3 boots.
+
+Check the skb protocol before parsing SOL_IP control messages.  This
+preserves the queued payload while omitting incompatible ancillary data,
+and also protects callers processing a stale non-IPv4 error-queue skb.
+With this change the trigger returned its payload without a control
+message or a target KASAN report on 3/3 fresh boots; both controls passed.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+---
+ net/ipv4/ip_sockglue.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/net/ipv4/ip_sockglue.c b/net/ipv4/ip_sockglue.c
+index a55ef327ec932c..24cb74c3d62025 100644
+--- a/net/ipv4/ip_sockglue.c
++++ b/net/ipv4/ip_sockglue.c
+@@ -22,6 +22,7 @@
+ #include <linux/skbuff.h>
+ #include <linux/ip.h>
+ #include <linux/icmp.h>
++#include <linux/if_ether.h>
+ #include <linux/inetdevice.h>
+ #include <linux/netdevice.h>
+ #include <linux/slab.h>
+@@ -171,6 +172,9 @@ void ip_cmsg_recv_offset(struct msghdr *msg, struct sock *sk,
+ {
+ 	unsigned long flags = inet_cmsg_flags(inet_sk(sk));
+ 
++	if (unlikely(skb->protocol != htons(ETH_P_IP)))
++		return;
++
+ 	if (!flags)
+ 		return;
+ 
+-- 
+2.54.0
+
