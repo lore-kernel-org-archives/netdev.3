@@ -1,82 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1687437858;
-	Tue, 25 Aug 2026 12:31:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E630C43E092
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 12:32:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787661072; cv=none; b=ZZhCoeprOdQa5dvDbvyHM5GiT5DgXd5Go6Cho4HhefICs4o45YCoX7PDUWrb6k8q9VMiNCaxQv0jqFnLkEzCX7lmwxc/iMmoc+UyeU9HYJ2WaXA5Z3KTsdorZg/wHbSy9EXHmX3i9B0ZPlxe5WM5kVYCOPm1risW117MPtPieSU=
+	t=1787661166; cv=none; b=PB4Et/+GbX78BSQoH+UEU6DqCdez4q47d6nW9GzUS1YV1SeacpNLKN9LK5Jha80AT/XSumvGKZ+HT3eczF/RyyBPoJ9TQmSbyClOFedTh+Tf3MF+zMoshpMZlCYHvd3ISMQybF2xNz424sU5zLivxinW6PweoiXioMcdqv2Via4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787661072; c=relaxed/simple;
-	bh=8uwfoixJT3xBCN3Xhh+sDdkplxxTKwBDPJRg89wCmFo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=kIFfzYPJB6ih9s9MvztMo0EGM7sOrAkMBRCZltI6Rl+WiQFF6+aPvWlAeChqBgyaINIP9qA5z8EDd/YlnIgCmgJtyfVHQ1qJq4MeVcaUE1SGVOQNJIt37a7o1tYFZUri2lZbWHifkd6+9KycjH5z+ZcTkfAlJXF9elt79iEidq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hGJr9Sov; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hGJr9Sov"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E282E1F000E9;
-	Tue, 25 Aug 2026 12:31:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787661061;
-	bh=0Jp5d2j+Dly4Qlbl54/NNZxMqGajMtiaXj9h6j4r+L4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=hGJr9SovVt5Wq/l8mzZmKzO15P8bTSEdrb4wdRMBmvUo/pV5BTB9Ka4Z7MxMi9NVE
-	 REy7ZrZ8BV8sYNFEMLtzS48IJJBhFPb8pQ7HIWJ+Q0m9oiYRaIU5VZZa6dZamuvaco
-	 VH9f50rDl6fMAEhvd+th/C+JUgx7+cKB777hSWqWisLIg/gfzvSAb4G5SiXXUeluEZ
-	 h5pTuGOZAkrXXwa5I2pSDEUMqhBFTWrqG8+cskAnz7NC/jDMm+R+6bI8zEVn9eXhqo
-	 ZKw+tk9Idx1ckiDXYCt4pbx3sgilf50xlTsOEiYd9QxdMKMTk+h3niq4qHR4L6c2h4
-	 +an+8rQ2uVanA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198363924FD7;
-	Tue, 25 Aug 2026 12:30:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1787661166; c=relaxed/simple;
+	bh=GsuhjXvEvgKKsoMT4Zb7JbWgSo1Q7J+qdUTL3ZMtEx8=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=M24k4PcyT7ZPrsHJbiLyGVnh0QEwT0dbbTC14qIfzJM7tZhUB2wljScxGVfGBxonw9JoQk19HBAQYxSmpgTncpWaGqdZhuUgDpguKliaeaGWmHSFwSKqYKPkSGta7fdGrMr1+R79xB7Qn0a5VAEm267khHGyrtytg+VPZSMRE2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-4afa222912eso3877915b6e.2
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 05:32:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787661164; x=1788265964;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Pgjm35CfSUvHB0XuQYogdQXr+1CSCB3SqYC2eCifbi0=;
+        b=FHr8yNA1vuqvzEv+ThIINB5aZ2Z4Nix+oudtGMHkW2iOIJcEGETZYGhzcRbLTG+N94
+         loKrmdbhMcCnZ7qtvzcxMPZKnlReZLPEEkvU4TTEK20nZLOc9YPh8Gix0mposSIeDuhX
+         Odq3AbDqiWvGbQw7pjfDCLKsPaJIvjJVyH98UgLLFKDdNS+9OXzYc0DBQLKUebHJcAKv
+         M/AEnL01YUiBx6jykBsPZpXVQczwJ233sjlY7/eJztczF8sD9xCvGQCtR8oBkI45Nm30
+         8uz6YVWO1Z/GnfTSss82XxgBJE/0x7urD7JW8IEhPU2EcYGNpBvmuK2/ZPZaPsCvnB+m
+         D4lg==
+X-Forwarded-Encrypted: i=1; AHgh+Rq9jPoT8uoxWPvb7Qhy5jYU8w/6OXygGgLeCGIh+OND0Qh8tKyaCikwkipo1h0isN+kT0oXVUs=@vger.kernel.org
+X-Gm-Message-State: AFuF++mumtyDyN2+Z7uap/ZoyEJIS9tLGd1iQAbtpHbXPocogV30X+ya
+	DuLB8LJk7LYjiz34XSuwbspW4oj34ZM+T50PAko6ErdTQMzJKVvA2fYiUiOAGA9jv2zcHsVg+Kq
+	Sb/4s4vZ/pICWCRkALQYc5RQvRA4qJwvtk47x2micJoydEyX3Rtx4lopajBI=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v4 0/2] sctp: handle wrapped and duplicate RECONF
- responses
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178766100864.3428215.18068978210796260872.git-patchwork-notify@kernel.org>
-Date: Tue, 25 Aug 2026 12:30:08 +0000
-References: <20260824081832.98717-1-juny24602@gmail.com>
-In-Reply-To: <20260824081832.98717-1-juny24602@gmail.com>
-To: Jun Yang <juny24602@gmail.com>
-Cc: linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
- marcelo.leitner@gmail.com, lucien.xin@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- junvyyang@tencent.com
+X-Received: by 2002:a05:6808:1994:b0:4b2:8e1c:5920 with SMTP id
+ 5614622812f47-4b309ac88e2mr26818798b6e.9.1787661163751; Tue, 25 Aug 2026
+ 05:32:43 -0700 (PDT)
+Date: Tue, 25 Aug 2026 05:32:43 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a8d8b6b.a5a502ce.31d34.0066.GAE@google.com>
+Subject: [syzbot] Monthly net report (Aug 2026)
+From: syzbot <syzbot+listd8012b43158f09bd0fcd@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hello:
+Hello net maintainers/developers,
 
-This series was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+This is a 31-day syzbot report for the net subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/net
 
-On Mon, 24 Aug 2026 16:18:18 +0800 you wrote:
-> From: Jun Yang <junvyyang@tencent.com>
-> 
-> Fix response sequence zero lookup first, then make RECONF response
-> handling idempotent with an outstanding-request bitmask.
-> 
-> Jun Yang (2):
->   sctp: distinguish sequence zero from wildcard in reconf lookup
->   sctp: fix stream->outcnt underflow on duplicate RECONF responses
-> 
-> [...]
+During the period, 16 new issues were detected and 9 were fixed.
+In total, 61 issues are still open and 1772 have already been fixed.
+There are also 33 low-priority issues.
 
-Here is the summary with links:
-  - [net,v4,1/2] sctp: distinguish sequence zero from wildcard in reconf lookup
-    https://git.kernel.org/netdev/net/c/63f44178f0a0
-  - [net,v4,2/2] sctp: fix stream->outcnt underflow on duplicate RECONF responses
-    https://git.kernel.org/netdev/net/c/3faf13aff243
+Some of the still happening issues:
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Ref  Crashes Repro Title
+<1>  6308    Yes   unregister_netdevice: waiting for DEV to become free (9)
+                   https://syzkaller.appspot.com/bug?extid=e2af46126e0644cbebdd
+<2>  4380    Yes   INFO: task hung in synchronize_rcu (4)
+                   https://syzkaller.appspot.com/bug?extid=222aa26d0a5dbc2e84fe
+<3>  703     Yes   INFO: task hung in tun_chr_close (5)
+                   https://syzkaller.appspot.com/bug?extid=b0ae8f1abf7d891e0426
+<4>  501     No    possible deadlock in __ipv6_dev_mc_inc
+                   https://syzkaller.appspot.com/bug?extid=afbcf622635e98bf40d2
+<5>  454     Yes   INFO: task hung in nsim_destroy (4)
+                   https://syzkaller.appspot.com/bug?extid=8141dcbd23a8f857798a
+<6>  28      Yes   WARNING in dev_shutdown (7)
+                   https://syzkaller.appspot.com/bug?extid=c9ecf60a8adb7629821e
+<7>  20      Yes   KASAN: slab-use-after-free Read in rxrpc_destroy_all_peers
+                   https://syzkaller.appspot.com/bug?extid=c876adfab6362679008c
+<8>  19      Yes   KASAN: slab-out-of-bounds Read in __dynamic_pr_debug
+                   https://syzkaller.appspot.com/bug?extid=1e3df0852e82c21ca418
+<9>  12      Yes   INFO: task hung in inet6_rtm_newaddr (2)
+                   https://syzkaller.appspot.com/bug?extid=101224300649c3eb8af4
+<10> 3       Yes   BUG: using smp_processor_id() in preemptible code in tx_complete
+                   https://syzkaller.appspot.com/bug?extid=04cd90bb99c6ef81a65d
 
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
