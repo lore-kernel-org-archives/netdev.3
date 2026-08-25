@@ -1,110 +1,118 @@
-Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60572C11FA;
-	Tue, 25 Aug 2026 22:03:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
+Received: from mail-pj2-f6.google.com (mail-pj2-f6.google.com [74.125.227.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE68356779
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 22:07:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787695402; cv=none; b=GYzn/elaWob1PVRIoq3/jg0Qb5iSOXrlNQSl/l0E5NBkgjMYuMbqose/O4uz2SkgzoMt7WgSQGBm4+QRNJVmojwPnKx+3FSmb5dvBycFJ5sbfJ/dp+/STea7u3jzxkvZByJ0JfING156imgwoJy+HnEcnDwRY6wUClW1NlLR5P0=
+	t=1787695630; cv=none; b=qzph/BRQ95E/9CLF2O+sNDLl54RdLnAXkaSbfCRdDBu13xKLqojGNVf9mjjkZJkjEOxDYAqEYInnVy6OPbSLtN4aG5F9fKKOhTr2hxSqeYFKZIwLgZlzqGshUywYkR90V5Z7J52mBXdOAgKsQ682oiNW7gYKalZePoPPm2O+8Zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787695402; c=relaxed/simple;
-	bh=DkYkLePONybg/EJrYQU5DiPk+Ngmq2wQx2E3o7a1RSg=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=BDquzD3rGYxWkZkTQ5Hcu2DcU5bVyTf5EESBnEuGyf8e0zv4PQ2fpCVtV1grIBjYMiu8CLzaYbsV86snWZLbxnqgWDTPTub/kZMyqfBYamRJucJMtn/TY1oXzFIqi3jzVKUkPrRLRxTdVZ7D1GjAeRym8Fw3vCSnNdnhlBpmig0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=mhnUJ0Lb; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=aSRK/Gyp; arc=none smtp.client-ip=160.80.4.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+	s=arc-20240116; t=1787695630; c=relaxed/simple;
+	bh=63qI2K79bcm4cDczUBl3jeHM3xipML3Gz7DLpnr04Gg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Het3t4PBfPiOWDNr2l2wF8a36/jA0PPVS0dQdnlUzFSnUgystNMyMdR3ey2PMWXpZfvkt1bZIX+WxdTLPWdyoq/E+felebYAXVtO0HeB0ke0tD+RH3gssbo60t/onVcBKgujBFe97qRJi+dGVgQaCfIU4VAoinKecr11L+OEN6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yd59fMiL; arc=none smtp.client-ip=74.125.227.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="mhnUJ0Lb";
-	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="aSRK/Gyp"
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 67PM22oP020405;
-	Wed, 26 Aug 2026 00:02:08 +0200
-Received: from lubuntu-18.04 (host-80-183-189-234.pool80183.interbusiness.it [80.183.189.234])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 1CDC212045C;
-	Wed, 26 Aug 2026 00:01:58 +0200 (CEST)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1787695319; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7H0B2MCYltjUAOnmnO0aIX9bDCYE3lzj+iNrf07w/tg=;
-	b=mhnUJ0Lbii777Zy9OFz0E5sPPZ00Nyxnwfk2MN/rSRxc71o1PLuoBPtWPqoNrS7pAYxX+n
-	xrS/sisEVnnhC3Bw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1787695319; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7H0B2MCYltjUAOnmnO0aIX9bDCYE3lzj+iNrf07w/tg=;
-	b=aSRK/Gyp0Pp+iwoOxBOSKGtRIWvPB47En+bUn3kNOaUnxnmdZL2plCqPLOOY+Kqv7ME7AM
-	AxC/mNetWLh78xnMpPSgIphEIzNJNWRfIrVwNKKwYgongc+F72tze67MQxN+2QjJ8AEpxB
-	8kSdImftiBstSt0nNpdl+nLO+WN3qMe74h7g0RN/UKZ95YAcsbcO9CUs+m3WSKH6qnIfEp
-	dBTd2Txzb3NfxwN+J1KWIrHyyEbDlsafMoyznUpMc4bjUWPv3Ghe5wH4p+7u7JJsGBsyea
-	xIzHPmJ33SezBm9I9Oalv6YYD/gSSbGQ6qrU5pgjBkC5GwHVC0dweHNTtzh3jA==
-Date: Wed, 26 Aug 2026 00:01:56 +0200
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: Alessio Faina <alessio.faina@canonical.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
-        netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-kernel@vger.kernel.org, hangbin.liu@linux.dev,
-        stefano.salsano@uniroma2.it, Andrea Mayer <andrea.mayer@uniroma2.it>
-Subject: Re: [PATCH net] selftest/net: skip srv6_end_d[t/x][4/6]_*_test.sh
- if iproute2 too old
-Message-Id: <20260826000156.bdaa71db68dbdc9c13907205@uniroma2.it>
-In-Reply-To: <20260824091537.2305107-1-alessio.faina@canonical.com>
-References: <20260824091537.2305107-1-alessio.faina@canonical.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yd59fMiL"
+Received: by mail-pj2-f6.google.com with SMTP id 98e67ed59e1d1-39655e2a1d9so106175a91.1
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 15:07:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787695628; x=1788300428; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=E2HRqo0BNmOG+wvSL71FMHVkpYIR+F5v9R73Mp72HJs=;
+        b=Yd59fMiLkFIJFSaPsIB3sDLIkOhLNFFSJ2OohGDo2kEp+Mb7bBfjkPhbYzXsKoDtEc
+         FaYfC+TL965X0LUTYCDhIDa36EfNtR9+jpwimN1ufte8eJSU82m765RVGEXCcLF1iNvr
+         +84R+0SeJ0oEC8f0mLCRlZ/PFjelJ84y3Iw0SepbLLH7NUfwhNK2Q4Pmtmib1bhF+aE5
+         4awltP8HYAr1IldJ4ip5GO8ANpYtn8dq4nAXzbPufhc38milbbM/HQh2hrxR0QsEwD8G
+         Oye1PCF41GB17nFHF1WxRpSFCg1VH8tHC+XWKOJ00JSEJiy7F779FWtSYWPw90kn/ViJ
+         QCcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787695628; x=1788300428;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=E2HRqo0BNmOG+wvSL71FMHVkpYIR+F5v9R73Mp72HJs=;
+        b=M8aC4wWTvds4Zd25/yWlNelvZkqhnQoibiA7RiRKM99on2v3qD8M2QlIThaDLfaSVh
+         UsMt58pvfeHItCclnzr6TyZbZZxNyRZWtumAfCJjrj3ivtE46DgW13KyaJ1FNBHLdFqY
+         NSy63NpniqX/UGTirh2z1oeVrAH6QfrK0LNquQYkIMkKMvqAdnNZhL5SlAamAg6zOj38
+         m3VASYAVVcPusnX0Q2jegumcFAtr2mPg2I5awYLE2mc0FBG4pwQfRcJa8yPcLMiuHMr8
+         PCN/EdQNJgto3qpOVEH3w9fTISLywqrulmYjhgJMxrY9YRk4Ngfl+V/DSYzaGaRWKtkY
+         Cr5w==
+X-Forwarded-Encrypted: i=1; AHgh+RqOo5je/Io89IeDlzqw4x9ym8FV1L+MTZUkwOr61pel3JIK8DyeuFjPhBCJkizSNhRxXXzzxY8=@vger.kernel.org
+X-Gm-Message-State: AFuF++mFVw8tpyPquqS3JZzBg4xHK+FPP28DxQzTiNzpWllsL6XKNkUP
+	hV9JobArs+fl8ij1zP4Ip4lV90mITYhJpRmGbLQMimEJ17ZA5eGAg9Wp
+X-Gm-Gg: AR+sD100J/94ry26jFYAjbf9f3cEo2q2+EmjokDCo2JYHe0/X60x9fbtmkDC0ELtXx3
+	CZ6//QiUpI8TttS++/GGjh3mxAA7TynSVC9WulsOercwkFQa8QFZ6mPFl78oj3PF3dnFlZzZCLF
+	QxHt8nGxfqVzlu3gAAC77uYkdAvZUkyO8y6peQAifmB8R8K7CdgaYd/MIaXOcbTVxI1lL+lTXRf
+	ZeuhiK146UouJdrlFKjn6McFBDbC0rihOBRgsUxZnTqKDl3kvT/JCmB94Wot7D2x7L3P2tyrFTp
+	901BJOWJJSgv3BRJHpON6KzZiBSCw1vm0+OpF8j63sDwtKCc5GsQ8gxhjwrJ5MOOl5l8D8xu9hg
+	XwTbZ30oC7iPqjWsD62ccoDhbxW2+Z/Vna4clGaTPRuqZPc9IsAFlHyVUq46cldphDwrL5nezPh
+	UBtW+uHPSB1ZHDlsrbVwkXo0nACxr+CwkNiuyH6Wqw9FmuE49WzUyk2gXPiPFOkwwg
+X-Received: by 2002:a17:90b:3b4b:b0:381:11eb:d78e with SMTP id 98e67ed59e1d1-3966d8b6295mr4351538a91.14.1787695628197;
+        Tue, 25 Aug 2026 15:07:08 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:46::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39668a57396sm1314425a91.13.2026.08.25.15.07.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Aug 2026 15:07:07 -0700 (PDT)
+Date: Tue, 25 Aug 2026 15:05:46 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
+	netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, 
+	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, 
+	saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com, 
+	maxime.chevallier@bootlin.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, 
+	aleksander.lobakin@intel.com, horms@kernel.org, magnus.karlsson@intel.com, sdf@fomichev.me, 
+	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com, 
+	guoren@kernel.org, dtatulea@nvidia.com, witu@nvidia.com, martin.lau@kernel.org, 
+	yoong.siang.song@intel.com, intel-wired-lan@lists.osuosl.org, linux-kernel@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org, linux-csky@vger.kernel.org, leon@kernel.org
+Subject: Re: [PATCH net v3 3/3] net: stmmac: document oversized AF_XDP frame
+ handling
+Message-ID: <ao4RsulsnIEMOmiG@devvm7509.cco0.facebook.com>
+References: <20260819160535.1472459-1-sdf@fomichev.me>
+ <20260819160535.1472459-4-sdf@fomichev.me>
+ <aoceSoSFMx69Z9up@boxer>
+ <aoeoJ6-njBxcWs4w@devvm7509.cco0.facebook.com>
+ <aogpDsa8hz6CPpD3@boxer>
+ <aoiIarzdjk92RkCN@devvm7509.cco0.facebook.com>
+ <20260824111443.34bffe04@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260824111443.34bffe04@kernel.org>
 
-On Mon, 24 Aug 2026 11:15:37 +0200
-Alessio Faina <alessio.faina@canonical.com> wrote:
-
-Hi Alessio,
-
-Thanks for the patch.
-
-> In case iproute2 is older than version 5.14.0, released ~Sept 1, 2021,
-> the End.DT4/DT6/DX4/DX6 support are not available and the tests
-> contained in the following 4 test files
->  - srv6_end_dt4_l3vpn_test.sh
->  - srv6_end_dt6_l3vpn_test.sh
->  - srv6_end_dx4_netfilter_test.sh
->  - srv6_end_dx6_netfilter_test.sh
-> are failing in some kernel backports.
-> This is the result of one those tests in an unsupported environment:
+On 08/24, Jakub Kicinski wrote:
+> On Fri, 21 Aug 2026 10:28:47 -0700 Stanislav Fomichev wrote:
+> > > > I do agree that a better idea is to probably do these checks during control
+> > > > paths, but it's a bit more involved (and not sure if it's possible? if we
+> > > > have a bunch of xsk sockets and we change that max_sdu, do we go over all
+> > > > sockets on the system somehow?). My main motivation with this patch was
+> > > > to make our LLM reviewers less chatty about preexisting issues.  
+> > > 
+> > > I hear you, however I feel like we do not know this driver too much and
+> > > probably we don't have a HW to test out such changes, so maybe let us try
+> > > to fix existing behavior?  
+> > 
+> > Let's definitely fix it properly if you have better ideas. But since we
+> > don't have HW, I'm not super confident doing anything sophisticated
+> > myself :-D
 > 
-> \################################################################################
-> \TEST SECTION: SRv6 VPN connectivity test among hosts in the same tenant
-> \################################################################################
-> \
-> \    TEST: Hosts connectivity: hs-t100-1 -> hs-t100-2 (tenant 100)       [FAIL]
-> \
-> \    TEST: Hosts connectivity: hs-t100-2 -> hs-t100-1 (tenant 100)       [FAIL]
-> \
-> \    TEST: Hosts connectivity: hs-t200-3 -> hs-t200-4 (tenant 200)       [FAIL]
-> \
-> \    TEST: Hosts connectivity: hs-t200-4 -> hs-t200-3 (tenant 200)       [FAIL]
-> \
+> Let me take the first 2 patches and leave the stmmac for later.
+> I don't think anyone involved care particularly deeply here.
 > 
-> To amend this, check the current running iproute2 supports the required
-> feature and, if not, just skip the entire test to avoid a failure.
-> 
+> Maxime said he bought a bunch of relevant HW. If we finally wrap 
+> the AF_XDP tests into driver runtime he should be able to help us...
 
-Which kernel were you running when you saw these failures?
-
-Did the ip route add commands that install the seg6local routes fail
-there, and if so, with which error?
-
-Ciao
-Andrea
+Sounds fair, thanks!
