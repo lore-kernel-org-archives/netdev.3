@@ -1,72 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CABB23EAAA
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 18:55:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787684121; cv=none; b=mSAcwTFqS1Xp/yaOSWMtQSM3niVmli5+dsrS4pT/fYLXKKwIYnR/rC/mVv/o+G8ewMpsMJBpSKWZF42gVFfOWSahhNpxkQ4wpQVVvXaQnFX6UKcO4Ji3h4Kw8cXAXP9y7pEAS8vXovAs85slhWRtPDwNAZ+4Wj1f6SqOzAScerU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787684121; c=relaxed/simple;
-	bh=EVddpeTgM/HpCNw2l6UpEh+upuzQpghioF82iUe/+ws=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N8Uxudj0UxPJS/I48wAyjCoPY0pOvIMKhe7eWpqTkPWaGQIxGdzqUPfAq/0/uxRNl1OhL3SYXwkhRw5V5l7B1NXNm3JpyitAWYHsXrNTGdZi3TsXzcrD27uLRhup+5eSZdN2xBcBCgLI8X7uWmiFu5dYzpvDKdok0lOKwWfc1yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fpXr4S4P; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571F43B6BFE
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 18:55:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787684158; cv=pass; b=HvcTu5riPWpt1kUKb8kB7gqIEKZ5WU1+U16qhWZwU5GqQrpHH9/aqPYpBxfQ6qIaTay78szWtPwk3C3X8oQ3Tgpd3Lton0OIqkDJIrdYj3xMcFyiaouNpAkrYQ0gDgXIZcZKxN+hagWn4QwI3MuhS3r6orHp+gRb45VjVciDnrI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787684158; c=relaxed/simple;
+	bh=Oafa7a3hagVsWS8SJ/kkvtcYmScAQTKcHCN+MR5JqiY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ew8WEXXH7DiFqkkWxC6fUvrvKkv8VjrwWH5mXgg+7FdFAcI3IS3Dr/sLNZp7VfHW8ZgBSyrdSnK5TtmSEHp8U5ufNh2CPzHyjKcyt1ght7Z7DrOzE0GjTMWOPHrri9bixXoGoRd1cHNGRctRywf5pAtBUzggLecGHRorviZlL/E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jf1QPyWi; arc=pass smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fpXr4S4P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C950D1F000E9;
-	Tue, 25 Aug 2026 18:55:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787684119;
-	bh=3k1hKTehrUpVvtiwu9YTDweDyGAdzznlCuy7rBA31ak=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=fpXr4S4P3Wc7hixNMvMcZVyBiOqSCdoP+kJRPAmluH1PFHnDBXvn7ZT2QNBYGxT7v
-	 X251aoeqjUGYnJQAIDrGYIYjKQlr8EEfnYL4+cgAiMAkHnYQ7tuFsxAsV253R4M6gj
-	 dcbvsBxouWo9VNjE/0mSDZtRAa+kQwx0X53xoXqeHVnX4ykbbRXn0dyUz2lzRO1Q4/
-	 NSa2Ejz7OKo97+8xb/ld88BofSrdU4T8adFb+DYFM07FbZkI0TINbutWKdB9m9MpgO
-	 xKP84Fv5agF9omLSexZnrATk5/I4RcXWiHkAY2YelAoQ2TXPmJ0NZvVsIXdNcK/xbo
-	 Rd4e7UAwyCBMg==
-Date: Tue, 25 Aug 2026 11:55:18 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Cosmin Ratiu <cratiu@nvidia.com>
-Cc: "daniel.zahka@gmail.com" <daniel.zahka@gmail.com>,
- "willemdebruijn.kernel@gmail.com" <willemdebruijn.kernel@gmail.com>,
- "edumazet@google.com" <edumazet@google.com>, Boris Pismenny
- <borisp@nvidia.com>, "kuniyu@google.com" <kuniyu@google.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [RFC net-next 0/6] psp: use virt cookie as Rx steering hint
-Message-ID: <20260825115518.2b925e90@kernel.org>
-In-Reply-To: <7bddbd246387fe4dfdc1e638b50d44a73aecdc83.camel@nvidia.com>
-References: <20260822225524.2328465-1-kuba@kernel.org>
-	<willemdebruijn.kernel.1157fb673940e@gmail.com>
-	<9d75871db36b1801eb381f5445c10fd29e2ad8a8.camel@nvidia.com>
-	<7bddbd246387fe4dfdc1e638b50d44a73aecdc83.camel@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jf1QPyWi"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6a5d24ae3ddso13960a12.0
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 11:55:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787684153; cv=none;
+        d=google.com; s=arc-20260327;
+        b=rW/bizRWXSE0RdS4i1154aaIAEyw5fiMtCowOrsQia1nv2vk10YxMbHqiKBdPRZHRc
+         rGYYPFQlqu8xjcbRYFqMj4dYurbOwVI8kbH5AdjckCJRIbd126rK50PCfv6JWCVgg0wc
+         0KnUua7DD9DVK1kFvuZYM+tXqrjrQvd4O92BoiIWWlcVr/8hNt9Izs3MayRdoGK6N4CL
+         DmNtmMleY/OQGCqBKTQK9vAfYXnI7PIxthgbGuxaZmSJEMntrPGm826VwMUNR0R1M9pt
+         aE/DbUZdvqKmUQEUScBLjEuPptXVFcDogMCtQtWy+wZTFTuRaluId8LIIUMZE19eyYMB
+         Rm2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Oafa7a3hagVsWS8SJ/kkvtcYmScAQTKcHCN+MR5JqiY=;
+        fh=S4WAcTjKr24hCgjH/KMAefVLWPBbRLqV8UWsqIXPNbI=;
+        b=eeTVG6ykDiAaxisNEDzVgP/TPBs4wU0Y64P9OzNvvHY4vP2SWT1eNVaugl9wQWPfvp
+         vWbS2MSqOv0vBzTTQzHAO472MfCtK0J7P21AcGeAVEpW7eVFDSv1GS3BZWIFIiVLRSkP
+         oz8DyDAWzSUPZGZBOlZQzX7tAHm3x2eT9uyhD/gNtYCCnJ/yCqRhK3NlN6DsETsAjMz8
+         c4PuVSv/xkKJXzJdBrIR6Q3mv155LbqRan1IlXaIrH3stKGbHQVt7oiOSAINVCZjftHe
+         AQoVvfkjMsS0dnGe6u5JTpIU/4Kwp7JFOXet5PIf5xiLeUsDO/IteZWBh2lLQE2zith+
+         eAfQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787684153; x=1788288953; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Oafa7a3hagVsWS8SJ/kkvtcYmScAQTKcHCN+MR5JqiY=;
+        b=Jf1QPyWisWyPIttRGdPTtNtUYSp/tutRZ6N4mek/Z5dvf3sZgfh//tluk1J2uJRAKp
+         TybJdLXZev09NrkfYz3OnTUpKujRjuZtdlWOlSJ0lUsKO+Z6gwwLt3fOLBcn9a5Vnv07
+         R+G3lSn3/QsMPHTOTri+zYE/iZh6hE9IsKB9ztUjByf1x9ojJbcPUcLL6u2oV76kggsw
+         PHBumlhwklx/XDt9jnpvL8SGS9nHUDY+8CCnNHJQhT+D6WH9zXdztrJMmIXXtU5a9+Sc
+         uB9kd5FvFGmaooiBKZv06VkSYCkAZ5WoTGd+tjBexljWx+mB0XdIOkixWvDx+llUnPdp
+         KD2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787684153; x=1788288953;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Oafa7a3hagVsWS8SJ/kkvtcYmScAQTKcHCN+MR5JqiY=;
+        b=dSnmvdbfOW2gjXzILOt/9clBPixpioQ4c4hEzoryoVrMnQzrviAOTF0Z07CGfvBODk
+         SJmjZglumxg/mjN/RETQUi//490TzcVgOfLO7WnxhdW9Q1ZF4Mk0zb+W9HY9Xxkh4DvR
+         tKCMM/Du/j9ckKXohXdgv1XVe70NkS0N6k/i/YfqXU5a0yxlJaDOlYsgzO4WHIdCrnoO
+         GC8+qjVPWKavS5R/jEqdOGKJZbPQN4nkgRziWVFSU+h+jqp9SOMO2UkdvRszmMML8p92
+         fEgpiS8+bNjr85gwngnr9bcJ6Z+54deBPutYp8QgVApROjjYoI4Rk5pwXpGfG5GjuG4k
+         +9XA==
+X-Forwarded-Encrypted: i=1; AHgh+RqNk+hTVeX7a1MnDmKrTvuQaIzLl/F8nosD+q4f3nSENvLtuw3QcYZse9zvgdY8ru8uv4pQQqw=@vger.kernel.org
+X-Gm-Message-State: AFuF++nr+BJQfYPbfAxPRKqtgKaS4Gbl/XKNrLsreBe0mxvvbEpopkEy
+	dpNGyWcUg9urPObkK91DdozXnVmvyU7tbAkNrBcBw8tXaONOkPmersTubE/qL/11YlZcf/ZG1MK
+	LtDdIsGNbS5XmKc9mEkV3VRbL8x//j0c=
+X-Gm-Gg: AR+sD10PPsku/mT1zrpM7JoObnsdon9t0fvCtEgbvIfCJxJP8QVh7n+GqrQMSXAKFdt
+	y4w1oWYxp0lkxeTU2tcYqmrQalwIU+RwXNEG8v6+//OQaBQnuJmFKwT1iSC+CXsAKl1nhWEMoJR
+	06DFe+tp7LLJ9zSqXd2gwbNK0YRlr0DSncYS/GzJIB9FljRnUZHvShvocjpNHYjAjpOnxJbh+vx
+	G5Ygl4Z9Bd7eJzC6wn8B5yxwkqEJlH8y4Vhx1TJiAFABjlOH+pnvcox6MnW1xSBltp7v8AHueZ2
+	4xUBa3Vx0oRvDZC1DlWn5JS1UQv8020VyQYn8EvGc/5UblhBGq9SDzKA/MppuIiWi5fgCywY+Lk
+	=
+X-Received: by 2002:a05:6402:1f0d:b0:68e:4c0:f59a with SMTP id
+ 4fb4d7f45d1cf-6a5df61ebbamr630339a12.2.1787684152982; Tue, 25 Aug 2026
+ 11:55:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20260824152331.216494-1-nicoyip.dev@gmail.com> <f3a9dd1f-43a7-4644-bf1a-45dcd422abcb@redhat.com>
+In-Reply-To: <f3a9dd1f-43a7-4644-bf1a-45dcd422abcb@redhat.com>
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+Date: Wed, 26 Aug 2026 02:55:40 +0800
+X-Gm-Features: AcwNN1W9SWDArcmcz5-thOMAtgRTEFgcxQnTTIg0FVU6UltdC2HdRtGhOn0lr5k
+Message-ID: <CAAo+4rUG_Y_d28bLbQdcmHY5-vtBrhV+D6rzbd3Mb6B3iTSuHQ@mail.gmail.com>
+Subject: Re: [PATCH net] net: pktgen: keep device lookup under RCU protection
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
+	Willem de Bruijn <willemb@google.com>, Nikolay Aleksandrov <razor@blackwall.org>, 
+	Qi Zhang <marsy12010123@gmail.com>, Randy Dunlap <rdunlap@infradead.org>, 
+	Alice Mikityanska <alice.kernel@fastmail.im>, Florian Westphal <fw@strlen.de>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 25 Aug 2026 09:52:09 +0000 Cosmin Ratiu wrote:
-> Option 1 would be to only set req_qid on _changes_ (edge transitions)
-> and keep it 0 otherwise. Also make it mean queue = req_qid - 1 to allow
-> the use of queue 0. Ideally, only the first packet in each direction
-> would have req_qid != 0. These packets cannot be decapped and cannot go
-> through HW GRO, but all subsequent ones with req_qid == 0 may. dst_qid
-> is of course != 0 in all packets and is honored.
-> 
-> But then you need to make sure those packets aren't lost, and maybe
-> retransmit req_qid until it gets received. I thought about it a bit,
-> maybe using TCP acks as an indication? Or just trying best-effort a
-> couple of times...
-> 
-> Option 2 would be to just disallow HW GRO with req_qid.
+On Tue, Aug 25, 2026 at 6:45=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> wro=
+te:
+> Side note: returning the RCU protected ptr outside the RCU read lock
+> safe, as the caller never deference it, but quite confusing.
+>
+> It would be nice to follow-up on net-next replacing the return type here
+> with a bool.
+>
+> /P
+>
 
-I'd go with Option 2 FWIW and revisit it later if we find out that more
-NICs need some sort of workaround.
+No problem, the follow-up patch is just sent.
 
-> And option 3: sport selection to get the desired RSS result makes this
-> interaction non-existent.
+Best Regards,
+Chengfeng
