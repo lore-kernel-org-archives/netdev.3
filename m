@@ -1,63 +1,63 @@
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6A43A7F5F
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 05:24:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6619E3A782B
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 05:24:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787635452; cv=none; b=jdv3+quCNhYMNBt7mRKRZDBos2TGwuY/wfglOj1oBEcrm0B5N8nnb7c62lZRuk2zseTs1lTXdzQjWGqMajxb8nMspChYBahJqLOfRJyTqLTurOrFccDz2Y63KSoMac80jtvEc7b/ERPDcMY87wMhtgDRyHswitI+wXnFkS6/Uq0=
+	t=1787635456; cv=none; b=LiqTmGccUYTRdTYm2FByPRSaZhgvle/eRtsqzAawYXlgPn684bPz7s4tQ3HrAjT4BLf0aX223R082ZJEN1hwkA4ddliTDNwXCF6VKMK4Ck5gfB8/Gp7YhYMTS4OWGha4DrwqGed4RZ5UB6LO0rhhrtWmmYTjFq8ks2xYoh2qAWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787635452; c=relaxed/simple;
-	bh=Cnm0NvLDpK5WEjqJZeD0ehir/4mK4rZsV7l3bVzQ9B8=;
+	s=arc-20240116; t=1787635456; c=relaxed/simple;
+	bh=fgiov7i7HJO2EfKcekMHZouZ7euWlEPIRfF43TXbQWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eD9RGYGyB4qq2eInbJnRGzRxW0GWwXoDwpEAaik0D/9sx2Fv3u34w2D1nwOJb/NLGq9moMYJG4hExaEtR+EhCgkOuMV4NyBoWNnzxQXxCGSeuY4kW8BwYgYc7TajLWBLfkB3xnDoJCw9MvgdeUmJyViQCGAk+M4qcrNI433hVS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cwXLSHJ0; arc=none smtp.client-ip=209.85.128.170
+	 MIME-Version; b=qo1jjqcKlEzk199Yg77MpAqFJFFq2Vo/7Yiug5ikT+8Vb4wtw8EIRkjTSdqqTn/gGTZx7QN4rMDikJCfimB67bMEyRnE4RE0YnqKLmPC8idnYY0WUcmBFsw9fQXmVAVJvwvcB2PqXMxXFXMFe1CcRLQzopyjhuDV9bdlMEao7Bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z4UA8tCG; arc=none smtp.client-ip=209.85.128.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cwXLSHJ0"
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-855a66e5b5dso1347147b3.0
-        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 22:24:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z4UA8tCG"
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-854f9c32c76so6131707b3.0
+        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 22:24:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787635449; x=1788240249; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1787635451; x=1788240251; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=/5Oa7EYj+aGHCCFiWFn1S8ybUNVYzm4EISFL7x7oRPk=;
-        b=cwXLSHJ0efW4KQF1jeDDBzznneKFGkSkptYat4lriUwoSgYG1P9KUnDHOx5s56mKLj
-         LqeDLWWZiv49D1BgRuxQJKme1oHCJFU/aahOKSy5G5WW1a7u5CJM0+vLXons54zEiDIH
-         5sDlMmcklty0XeB8QXLXQh9xBalQzK7Rt3suVUHpXELxMAf7YsWah8uITih+jchvmWLs
-         MPSMH841VqI654xL/QFJWPOc3vUPwh7xpXkWClPrZnX/Kvf5bufZ7T2jKJ2GKxxQylsL
-         U73lfix5pxMOzC4ETU3RZldM46bHbh/udoziCi7TK2mqwRN+P17ygwk2Xv6bAjzBGWHf
-         2gNw==
+        bh=xy0SFkuKWMMtc/SL4g2KE02VlB2M1q8Q/oPABrDzF+4=;
+        b=Z4UA8tCGGowAEDQWpWNIO5FQEarvuY6oYrodo0mvJos7msHnNodRrS043QHU0RNhBc
+         OePERMBnCH9VUkztYYKaJXiBlOBqwCPVUgLwLXyqkgjVNlVgiEjYW1U3tT2ih3dZri75
+         URMpCTHrijfzDbda3KvWgUlJNdKjRpzLZSE1cNBn32NTofvzp3G9ssWeCAjHmTwu6VHr
+         nKiuwGtEvabmBhUuRmU4BmEeNXBaZf1Mj8qOlOQIESa87+WE6OOE2jVbB46D2iT+vDqN
+         6c+OcOFFxDgr5U8K4bbPnwWxINwoIl0tPWxazzr6F/t/0fByFYurjWdZw7bxbHLgyAmY
+         oW3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787635449; x=1788240249;
+        d=1e100.net; s=20251104; t=1787635451; x=1788240251;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/5Oa7EYj+aGHCCFiWFn1S8ybUNVYzm4EISFL7x7oRPk=;
-        b=d3OGM5vr0nQKxj+y63H4g4y0AcGDVUK5hrottuq2JiQd3OeYjgJcvqPpfH8vtQkNf4
-         ynvnkkY0O4XCtnjkHMkB1iUV5d0Hz98wpyoncBAXSy9vHmC3tHuB7QNczDwKeElUyyDM
-         9bev1o/wT9ngHsYnfkooG7uiPZ3FoCRUcatHP5eYarM7RGvlJ9FTuSaJywGlGPgCVBVV
-         uTfVZkeCSG4kM8jV9XpI4Ulz+oxZfKeTAXBm7F7BwPR080vgjIK5R22H0O+leLpsNdP3
-         uor/wM/jkZP+t84VvH8QxDp5zVIJ5DT71Rxr9jC8APbzvES3InMkNGI4292ndftljkNl
-         w5gQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpzGyRI7t+bMg3ov+tTmZdl5NHwoWywq2a/EfKWquGWMfj9KfyY3N8hzA7Ugjm/mBmdTJrv2yM=@vger.kernel.org
-X-Gm-Message-State: AFuF++lhDkHGK9z461Ox0sbJP+LFQriaUyyP6eVnluDE2uIFmoLCxA7C
-	o/BtbtExCILKuQllPOwioqlV85k0SXwhC4bjlthv6vHfWX6TdufUdBoN
-X-Gm-Gg: AR+sD13fzo0oA5H8zMbbgYmSKxJzUefcNVtQfCu5eSDMIXw4Y7SaY/1P2c6FDSqPbWp
-	bv/uKbAQd3YBSwcJLPw+HhXFcQBentipG5OJi8+X+R3t6N+j+Tk3yD1DpEPFm9kjLJofpihRR9w
-	biaCeYWdSdgLqWWeC5K13qMFJY6ohk5zbeKt5ZyHmfC5i+hCGx6Qd2IaTe0J/kqmZE2bJDDrcFF
-	iSywAbYXE6yPbm2CO0ubL5CspBD0CIw01wRAcMu/rL7h9T+P+gRGamBtDFmxsqSNsxLKjYo6yWP
-	/8eqMrerKdynpeYvZAV+X/aOFgp7e6iSFzVAAAxpFKICVZr3ttTsiqWfbXtUQQ6wn7aoevyBHXF
-	+FuCY4ZnFw1l77dnrSvTySGBX56DjBNgKu2muohlG507wpzuZPh/himNquFa4iaQ1S3t8pS9U8m
-	nomHP38puN9nS3SD5KOkNSR59LKWiDrd348CjqjLesGtp0lDo0GXGvlE7Cw67aO8o7nRY=
-X-Received: by 2002:a05:690c:c15:b0:81d:75b4:925f with SMTP id 00721157ae682-849f4c6ffd3mr130520957b3.19.1787635449512;
-        Mon, 24 Aug 2026 22:24:09 -0700 (PDT)
+        bh=xy0SFkuKWMMtc/SL4g2KE02VlB2M1q8Q/oPABrDzF+4=;
+        b=spCp7sNYse/Hhn25MNJfc3uk7jgnoxo56DgTzTWb6RYf/wV6s4xRdzFuK7qCteitDC
+         kK4W/rLs0ravJTEdi07o8ecLkLj0EQuJ/muGmSe4K6d1QJxdFgat9jwTIufB/amzRvFm
+         eJ7wMZOgeVyVk+heOyWdsef61l0/XXW+Mqou2e3Rx3Zxl3k5AwV3ho08giS2I2FleDVM
+         KNCDbCTJNH4sDf8AvbXmTmEEJPBCfmWQ84LiDCYaYO1tMyJ51aGAvDdn2/dTTfuP1hZd
+         h6UMZRMx//Z6HCNYCfi6aSJsnUn0dUtL+TFzO19/2MqTsfiegN3PeKRMO3JLKvr3xfS+
+         A5BQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpzU4kWq8geTWBce61Htm/UkCyndeVMEFA25FPD/mAPEB+DLbTLZzYjfGFzbywMjzLWERXNLRQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++n9CHye+Mr6+S8zkldKEvaFjYWRzZ4N1sBqeswvP8rVCW2niffv
+	aGtXoW2MxRUzWA9yJut7fjZCg0mZ2W8zqo8fZfXNfMkB2omkjAcie0yC
+X-Gm-Gg: AR+sD13CR3gnXuEXvwNU9QEYSAf8CHzk2sfbEfmtPP5Ldv69Ulm8WHXTdUdES06cW5D
+	5C4uWiaCwo4Z//NpDKUIKKTpjlZSZdskMh0z2X8AMKA1dUVcDYCvNBiJU7FCMq8jdjijIkxgTQn
+	zaa0JL8D6i/SXCHwfTlF9FO3Kx0A7tr9HjJVvk7Bmk+nB9dkX2lId2qwYYqvgRxwivkzztYdZLr
+	H4o0+kAjsp/rByPzs6VsFNPrbg++JG5TJgutXP5dQm+ancvi1CYnWCaTmHNeYHdetl8TrI26iXU
+	fYe5NP0s1BeJsZGxR228ePjApbcu7ljLDoT1LwllecTko8k4KoReE78SmhjJybRm0guGCfGi4ck
+	SG/I8Ul1pQUB4pIyB21lxcgJ1oV4vX3yMWi3IlZun4EKYXWQDs5QBrT2CGVN9bxjN5e9QShYA+Y
+	Z+yzlsVEpGhfrbbLdFwGdRGuYkco5iN4d+70MgNpKiqM+lPmpGJs4k5aCkOhB9Prj/aG4=
+X-Received: by 2002:a05:690c:e299:10b0:820:10f1:d501 with SMTP id 00721157ae682-85470beb3d0mr14076457b3.6.1787635451332;
+        Mon, 24 Aug 2026 22:24:11 -0700 (PDT)
 Received: from mac.lan ([136.55.173.105])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-851e1419e0bsm21767747b3.26.2026.08.24.22.24.08
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-851e1419e0bsm21767747b3.26.2026.08.24.22.24.10
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 24 Aug 2026 22:24:08 -0700 (PDT)
+        Mon, 24 Aug 2026 22:24:10 -0700 (PDT)
 From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
 To: pablo@netfilter.org,
 	laforge@gnumonks.org,
@@ -77,9 +77,9 @@ Cc: horms@kernel.org,
 	tgopinath@linux.microsoft.com,
 	kys@microsoft.com,
 	blbllhy@gmail.com
-Subject: [PATCH net v2 1/2] gtp: fix sk_created publication race in gtp_create_sockets()
-Date: Tue, 25 Aug 2026 01:24:03 -0400
-Message-ID: <20260825052404.45665-2-blbllhy@gmail.com>
+Subject: [PATCH net v2 2/2] gtp: fix use-after-free during GTP device teardown
+Date: Tue, 25 Aug 2026 01:24:04 -0400
+Message-ID: <20260825052404.45665-3-blbllhy@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260825052404.45665-1-blbllhy@gmail.com>
 References: <20260825052404.45665-1-blbllhy@gmail.com>
@@ -91,114 +91,174 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In gtp_create_sockets(), gtp->sk_created is set to true before gtp->sk0
-and gtp->sk1u are assigned. Without memory ordering guarantees, a
-concurrent GTP Echo packet on another CPU can observe sk_created == true
-while gtp->sk0 is still NULL, causing a kernel panic.
+gtp_encap_disable() releases the kernel-created sockets while
+sk_created is still true and without waiting for in-flight readers.
+This allows two concurrent use-after-free scenarios:
 
-  KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
-  RIP: 0010:gtp_encap_recv  (drivers/net/gtp.c:542 gtp0_handle_echo_resp)
-  Call Trace:
-   <IRQ>
-   udp_queue_rcv_one_skb
-   ip_protocol_deliver_rcu
-   ip_local_deliver
-  Kernel panic - not syncing: Fatal exception in interrupt
+1. A softirq packet handler that already observed sk_created == true
+   via smp_load_acquire() can dereference sk0/sk1u after they have
+   been freed.
 
-Use smp_store_release() when publishing sk_created and
-smp_load_acquire() on every lockless read. This ensures that all prior
-stores (sk0, sk1u assignments) are visible before any reader can observe
-the flag as true, on all architectures. Annotate all remaining lockless
-sk_created accesses with smp_store_release()/smp_load_acquire().
+2. gtp_genl_send_echo_req() runs in process context without RTNL.
+   synchronize_net() waits for RCU-protected softirq handlers but
+   does not cover this non-RCU generic netlink reader, which can
+   dereference freed sk0/sk1u during concurrent teardown:
 
-Suggested-by: Simon Horman <horms@kernel.org>
+     RIP: 0010:ip4_route_output_gtp  (drivers/net/gtp.c)
+     gtp_genl_send_echo_req
+     Kernel panic - not syncing: Fatal exception
+
+Reorder gtp_encap_disable() to clear sk_created first, then call
+synchronize_net() to wait for in-flight softirq handlers before
+releasing the sockets. Hold RTNL in gtp_genl_send_echo_req() to
+serialize with teardown for the process-context path. Under RTNL,
+the smp_load_acquire() from patch 1/2 becomes redundant and is
+replaced with a plain read.
+
 Fixes: b20dc3c68458 ("gtp: Allow to create GTP device without FDs")
+Fixes: d33bd757d362 ("gtp: Implement GTP echo request")
 Reported-by: AutonomousCodeSecurity@microsoft.com
-Reported-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
 Reported-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
 Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
 ---
-v2: Use smp_store_release()/smp_load_acquire() to provide proper memory
-    ordering as suggested by Simon Horman.
+v2: New patch. Fix teardown race with synchronize_net() for softirq
+    paths and rtnl_lock() for the process-context genl echo path.
 v1: https://lore.kernel.org/netdev/20260816035205.57966-1-blbllhy@gmail.com/
 ---
- drivers/net/gtp.c | 29 ++++++++++++++++++++++-------
- 1 file changed, 22 insertions(+), 7 deletions(-)
+ drivers/net/gtp.c | 61 ++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 39 insertions(+), 22 deletions(-)
 
 diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-index 298efc76a56b..ead519ee18d1 100644
+index ead519ee18d1..7ac9764696f2 100644
 --- a/drivers/net/gtp.c
 +++ b/drivers/net/gtp.c
-@@ -603,10 +603,12 @@ static int gtp0_udp_encap_recv(struct gtp_dev *gtp, struct sk_buff *skb)
- 	 * there is no daemon running in userspace which would
- 	 * handle echo request.
- 	 */
--	if (gtp0->type == GTP_ECHO_REQ && gtp->sk_created)
-+	/* Pairs with smp_store_release() in gtp_create_sockets(). */
-+	if (gtp0->type == GTP_ECHO_REQ && smp_load_acquire(&gtp->sk_created))
- 		return gtp0_send_echo_resp(gtp, skb);
- 
--	if (gtp0->type == GTP_ECHO_RSP && gtp->sk_created)
-+	/* Pairs with smp_store_release() in gtp_create_sockets(). */
-+	if (gtp0->type == GTP_ECHO_RSP && smp_load_acquire(&gtp->sk_created))
- 		return gtp0_handle_echo_resp(gtp, skb);
- 
- 	if (gtp0->type != GTP_TPDU)
-@@ -811,10 +813,12 @@ static int gtp1u_udp_encap_recv(struct gtp_dev *gtp, struct sk_buff *skb)
- 	 * there is no daemon running in userspace which would
- 	 * handle echo request.
- 	 */
--	if (gtp1->type == GTP_ECHO_REQ && gtp->sk_created)
-+	/* Pairs with smp_store_release() in gtp_create_sockets(). */
-+	if (gtp1->type == GTP_ECHO_REQ && smp_load_acquire(&gtp->sk_created))
- 		return gtp1u_send_echo_resp(gtp, skb);
- 
--	if (gtp1->type == GTP_ECHO_RSP && gtp->sk_created)
-+	/* Pairs with smp_store_release() in gtp_create_sockets(). */
-+	if (gtp1->type == GTP_ECHO_RSP && smp_load_acquire(&gtp->sk_created))
- 		return gtp1u_handle_echo_resp(gtp, skb);
- 
- 	if (gtp1->type != GTP_TPDU)
-@@ -894,7 +898,10 @@ static void gtp_encap_disable(struct gtp_dev *gtp)
+@@ -896,12 +896,14 @@ static void gtp_encap_disable_sock(struct sock *sk)
+ static void gtp_encap_disable(struct gtp_dev *gtp)
+ {
  	if (gtp->sk_created) {
- 		udp_tunnel_sock_release(gtp->sk0);
- 		udp_tunnel_sock_release(gtp->sk1u);
--		gtp->sk_created = false;
-+		/* Pairs with smp_load_acquire() in the RX and
-+		 * genl echo paths.
-+		 */
-+		smp_store_release(&gtp->sk_created, false);
+-		udp_tunnel_sock_release(gtp->sk0);
+-		udp_tunnel_sock_release(gtp->sk1u);
+-		/* Pairs with smp_load_acquire() in the RX and
+-		 * genl echo paths.
++		/* Prevent new readers from entering echo handlers,
++		 * then wait for in-flight softirq readers to complete
++		 * before releasing the sockets.
+ 		 */
+ 		smp_store_release(&gtp->sk_created, false);
++		synchronize_net();
++		udp_tunnel_sock_release(gtp->sk0);
++		udp_tunnel_sock_release(gtp->sk1u);
  		gtp->sk0 = NULL;
  		gtp->sk1u = NULL;
  	} else {
-@@ -1462,10 +1469,15 @@ static int gtp_create_sockets(struct gtp_dev *gtp, const struct nlattr *nla,
- 		return PTR_ERR(sk1u);
- 	}
- 
--	gtp->sk_created = true;
- 	gtp->sk0 = sk0;
+@@ -1473,8 +1475,7 @@ static int gtp_create_sockets(struct gtp_dev *gtp, const struct nlattr *nla,
  	gtp->sk1u = sk1u;
  
-+	/* Ensure sk0/sk1u are visible before sk_created is set.
-+	 * Pairs with smp_load_acquire() in the RX and genl
-+	 * echo paths.
-+	 */
-+	smp_store_release(&gtp->sk_created, true);
+ 	/* Ensure sk0/sk1u are visible before sk_created is set.
+-	 * Pairs with smp_load_acquire() in the RX and genl
+-	 * echo paths.
++	 * Pairs with smp_load_acquire() in the RX echo paths.
+ 	 */
+ 	smp_store_release(&gtp->sk_created, true);
+ 
+@@ -2362,6 +2363,7 @@ static int gtp_genl_send_echo_req(struct sk_buff *skb, struct genl_info *info)
+ 	struct sock *sk;
+ 	__be16 port;
+ 	int len;
++	int ret;
+ 
+ 	if (!info->attrs[GTPA_VERSION] ||
+ 	    !info->attrs[GTPA_LINK] ||
+@@ -2373,17 +2375,22 @@ static int gtp_genl_send_echo_req(struct sk_buff *skb, struct genl_info *info)
+ 	dst_ip = nla_get_be32(info->attrs[GTPA_PEER_ADDRESS]);
+ 	src_ip = nla_get_be32(info->attrs[GTPA_MS_ADDRESS]);
+ 
++	rtnl_lock();
 +
- 	return 0;
+ 	gtp = gtp_find_dev(sock_net(skb->sk), info->attrs);
+-	if (!gtp)
+-		return -ENODEV;
++	if (!gtp) {
++		ret = -ENODEV;
++		goto out_unlock;
++	}
+ 
+-	/* Pairs with smp_store_release() in gtp_create_sockets()
+-	 * and gtp_encap_disable().
+-	 */
+-	if (!smp_load_acquire(&gtp->sk_created))
+-		return -EOPNOTSUPP;
+-	if (!(gtp->dev->flags & IFF_UP))
+-		return -ENETDOWN;
++	if (!gtp->sk_created) {
++		ret = -EOPNOTSUPP;
++		goto out_unlock;
++	}
++	if (!(gtp->dev->flags & IFF_UP)) {
++		ret = -ENETDOWN;
++		goto out_unlock;
++	}
+ 
+ 	if (version == GTP_V0) {
+ 		struct gtp0_header *gtp0_h;
+@@ -2392,8 +2399,10 @@ static int gtp_genl_send_echo_req(struct sk_buff *skb, struct genl_info *info)
+ 			sizeof(struct iphdr) + sizeof(struct udphdr);
+ 
+ 		skb_to_send = netdev_alloc_skb_ip_align(gtp->dev, len);
+-		if (!skb_to_send)
+-			return -ENOMEM;
++		if (!skb_to_send) {
++			ret = -ENOMEM;
++			goto out_unlock;
++		}
+ 
+ 		sk = gtp->sk0;
+ 		port = htons(GTP0_PORT);
+@@ -2409,8 +2418,10 @@ static int gtp_genl_send_echo_req(struct sk_buff *skb, struct genl_info *info)
+ 			sizeof(struct iphdr) + sizeof(struct udphdr);
+ 
+ 		skb_to_send = netdev_alloc_skb_ip_align(gtp->dev, len);
+-		if (!skb_to_send)
+-			return -ENOMEM;
++		if (!skb_to_send) {
++			ret = -ENOMEM;
++			goto out_unlock;
++		}
+ 
+ 		sk = gtp->sk1u;
+ 		port = htons(GTP1U_PORT);
+@@ -2420,7 +2431,8 @@ static int gtp_genl_send_echo_req(struct sk_buff *skb, struct genl_info *info)
+ 		memset(gtp1u_h, 0, sizeof(struct gtp1_header_long));
+ 		gtp1u_build_echo_msg(gtp1u_h, GTP_ECHO_REQ);
+ 	} else {
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto out_unlock;
+ 	}
+ 
+ 	rt = ip4_route_output_gtp(&fl4, sk, dst_ip, src_ip);
+@@ -2428,7 +2440,8 @@ static int gtp_genl_send_echo_req(struct sk_buff *skb, struct genl_info *info)
+ 		netdev_dbg(gtp->dev, "no route for echo request to %pI4\n",
+ 			   &dst_ip);
+ 		kfree_skb(skb_to_send);
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto out_unlock;
+ 	}
+ 
+ 	local_bh_disable();
+@@ -2442,7 +2455,11 @@ static int gtp_genl_send_echo_req(struct sk_buff *skb, struct genl_info *info)
+ 				    dev_net(gtp->dev)),
+ 			    false, 0);
+ 	local_bh_enable();
+-	return 0;
++	ret = 0;
++
++out_unlock:
++	rtnl_unlock();
++	return ret;
  }
  
-@@ -2365,7 +2377,10 @@ static int gtp_genl_send_echo_req(struct sk_buff *skb, struct genl_info *info)
- 	if (!gtp)
- 		return -ENODEV;
- 
--	if (!gtp->sk_created)
-+	/* Pairs with smp_store_release() in gtp_create_sockets()
-+	 * and gtp_encap_disable().
-+	 */
-+	if (!smp_load_acquire(&gtp->sk_created))
- 		return -EOPNOTSUPP;
- 	if (!(gtp->dev->flags & IFF_UP))
- 		return -ENETDOWN;
+ static const struct nla_policy gtp_genl_policy[GTPA_MAX + 1] = {
 -- 
 2.55.0
