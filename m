@@ -1,166 +1,170 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013019.outbound.protection.outlook.com [52.101.83.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960592F746D
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 01:50:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2A32DB798;
+	Tue, 25 Aug 2026 02:04:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.19
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787622641; cv=pass; b=Y6TOTsebSwnhZpIUt/opmbNO1wDRIzUBEUxdmeMeRzmXShRtnFuePDqncKxkitbLcGQcWAW7NxZra8Xr5ng+OXaOqdV2SthKR7RyOvDGD2S/v8FqQf8TYtGowJYOGOUzTF56ow5zWyuEPl+Ce7HqiP8e1p1+Cw3IH/iwGuGSzpM=
+	t=1787623444; cv=fail; b=bSALoZL/kQbV+YSnkoBNrMJ2KFptdkKT5ZeZUa8Y5dpm5RwmUIafTgA1L8be9a1dhvDyF5TiF+J8qo3pkIJWlvH+7+knLsCIP9+2WHUt2Dr/GwSopNwzusppc2Bb7TOaFRCM9/okmYk/Xu5Mt7YZBsZETygrnzB5HfU5x/BLa0Y=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787622641; c=relaxed/simple;
-	bh=ciEOebO9usFeN1jndYGcI5ipjRfv5JDoC4wVn6B2fSk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=s6hSTMX3kSueZKqNtq1BTqdVkFwo+lRuaSajAwdLwTXlF+M+JOCZ2B+2tyapoB5SMOt8qDF4E6RIr8szWAhnXoFSBdE/kpsn6b1lXJqsCVV+FRsKwORS98tWdDYZDKop7yMmIRtFG+edQe9ypotyeXxTfcQ14iF5+MDVrZgxPe0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dpcm7yXY; arc=pass smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1787623444; c=relaxed/simple;
+	bh=q2X/nAp2Ht2/ucRD4EzGJQ3AdffRU+R4wAnjQ/634XY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ZFw3ckhdHHD0+RxIa+lKJBgnmICEy4mrNwY3mKL6oDzfdFLAjoNhMZprdx33NWm3LhUrvz09J5C2c1lxwuVnF8pFy3/LUhbDqjZZUyzUZs1cbHE1HZ312/QBhQFtLt847ZzDAYH64NXdtrl2m6Rk9zqP2lGCP4O8TzsKvmxVWhM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=mO7yYDqe; arc=fail smtp.client-ip=52.101.83.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dpcm7yXY"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-51c149c5722so2297351cf.0
-        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 18:50:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787622638; cv=none;
-        d=google.com; s=arc-20260327;
-        b=KkrJ4P9atDDmvVCc3OsUDULx8lVuhS9pnKOrxKKzF2b7iyX7JJHdVN6IEk2bSTHg9S
-         8fruH6Wfq4oLRSylPYbFuRSQV1Sg4/NnCeQ6V3yubuWfEMJ/Flx+2YW5iEUkh8FTKQjz
-         j6+0mXoL/xmiN0WcxNGz+55nG1ANuGnZL1xjJlbgm98/fJMCYjUeOAGEvUJfpUL5R+B0
-         BvdRzRag5IUxVZaS2U2sA1uphcHc/7/FdEpmt7J9SXH20RdBiozfxm4FwppjMB56uFiU
-         7lN9xpCbgTXUB+k1QVPDFOoVzjmJ31vcNyoZwyXhKvdIOy/DGnR/tiKrpmnRlTCXOL0L
-         9OXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ot9cZETZ+9/Bl94L9bOTpG2Vp4bOKUeZwFxEm+rMm4s=;
-        fh=/YcMW4L65pOkCFDuNjjhQZQwTh4sAFRTT33afBOKJ1s=;
-        b=VPzNn79tsF2ZfBupYlpRKgA9qWjK9jeQsYPKzHyyluCFVlE6OSegswVD7FKumWEYOg
-         dseFgmXf0+2BdZZqAmvKGwf/BShnowPxG9S0mYubTcNI1L8vjpLxLK0qnJQawdgSWNw6
-         HdySGmO0X8+8IShIHczBApRDpB8o/qL9MoQ11iziP0R/DJpMJtLQBYrElrq8uzvXxNGG
-         ON5YIgrB4aka57Sn7ruSWiMF98GCTWgM4/tNkZYuHEVs/f9ZsLxl3TYvPuXkEmNlrWrl
-         OewfIUPZRSF0+LzbxmfUWM1ANJa/BWlg5suAncepc5bSDmUM+LLPiSdzZauad9xS/+Yh
-         XyzQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787622638; x=1788227438; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ot9cZETZ+9/Bl94L9bOTpG2Vp4bOKUeZwFxEm+rMm4s=;
-        b=dpcm7yXYLFPBLiIvvecralQ0s8sNT48RVHUxrDrKDx4fSFhgVIIlUEoD0wB51sA5qQ
-         yTb+AECnd9y6P/Iu0Hm+jWG6ltrEEKqQz98zKy9CQwS7SY5AmyxgoGl245Ci+iZqKk4W
-         s1bd74qIweT+Rb4nEt5/xZqA+KzL+B58RKdMlhJ8Q9l6QvYazeXcOwZXavU3fOjIugP/
-         NRuddiZp/PUDJHwbOlIUBV5rw167IhRp4z9l9fu5RfPd5wox695pGgulXe2yxQYL/pl1
-         RPvVSvZhth/tfCVeuyDdLwpjKb6+2lP0HH2mewfOd+shBjaXJ9oSZ9EczwHyY/M/KCSC
-         jxvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787622638; x=1788227438;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ot9cZETZ+9/Bl94L9bOTpG2Vp4bOKUeZwFxEm+rMm4s=;
-        b=ZlVwm54ve8T4OdUAQUfmnMH9bstfn5TCHhPEq7gdQpzcp/X3o7oAyFdaIsy/oODYBP
-         PT0kEtR/mQ5ApzmonIiCbajUPntYCGO5uY2M6EqzxYpD5Exr6E9/pwB8eUKRKNV0Rix0
-         ajon0XIv9tV3FI1zmOHJ/yVnZiLLBG4NuNA1rpVirMRBql68uPiF6q4URREkp1sQhwFY
-         WyeJ4U91TJs+4rx3DV8Sk7P5pNIdsARjoKz8m2xwr393CXSb14+EIuIdyKVVbcCUpP9C
-         JnxOx84U3Bf0kCl0zSRxIXH7sup719eKzckq2E2HBwdViePk6g35fr4eEhDFVg7t+fuE
-         QZag==
-X-Forwarded-Encrypted: i=1; AHgh+RpA90XhkoM5gfm7ahxmUUbPriz0au9DQATpYmShcfbD2zt52CvKyyhQN7pWFwY6y3OJarUAXkI=@vger.kernel.org
-X-Gm-Message-State: AFuF++nFekVrlV4u81ZPTrjHY+twFPsIVBXFXeq2FAXhXCynijizUHiG
-	77EHyrUNf8zEw4sCbxbhjUyF5+MP2OHe/AzNwFg2QcZmhmuPELheZEvpTtOAf0GsjucLpomYCtz
-	7Amdjt7Jxp1qO+OSFuDJLPAh84QSGgp0IPFTBlZ/i
-X-Gm-Gg: AR+sD12MoZALxT6VnMYUsvZP6/l9pLHF6psegu3U5bDmDTJNmTX+U5c8pd8T1fd0QFa
-	dzN/x4/POEwYD3usWiJyYQPc6++EKhM/hhyqDusy2G6cRZYIP9RZaIaKDwI1bJf99nM1X4U2Sss
-	DCrCouJgrMTNEJRgrnNB1yl986e8JEIe5u2prK6LBgB8g6X2b3RqBUu395l+MxPQeXMDx1e//Vt
-	GI2DQQWdDtXd5GzTwPwAHb3kGvFVT8L+h/C+OCoKe6dZSAvjX81skZaP9rxV210QzKxv0MQ4Obf
-	FWWspVhEz4fbQMyv37DwpSZg6Hqu2xIBclGhzC7yy6NAPsoZigWVOJCOEpQx1U6l6A7MtLWGH8q
-	wdRkFVtXfwX/I0CIM6FsH4XrrGdmx8BX14xraBFUIXiOz+XI5ZB9Na2EV
-X-Received: by 2002:a05:622a:2446:b0:51b:ef78:4062 with SMTP id
- d75a77b69052e-52e2ec997a8mr43708131cf.10.1787622637783; Mon, 24 Aug 2026
- 18:50:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="mO7yYDqe"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FhenBisV34nFnya1VCRSIR2kCEXuvPcb5iSZDPZ4Dl/JtwlSHTGVvg2QKQaTEFzHHRQTLX37MfXeyZbEg3z/12kqXCfHDD4CCD6Oaj6qPdg9gq++ais/BBTp6cpHNrLDoZfFAaHb0DMfiYtReDdnoY9mjuiQ/yzYD8Avfxkgl1s8yZY5JAPNHGu9jdJ+039uOQW2F1rIHjdkEICgUin95donJqSLApm+aDHGivI3Y5IPk/Lbj9nsL5uXF9V538kVXlTI1DmaeXLWG4cfJUihlJ0MBr4T8JlXq7zHwPsVgxSDn6nTsCMREdHHvl69k/o+Df7ROS1asDnLSdfKg9TLtQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/LNmTxWUHQJSQI27pBX/GAVxn37VTPNge6+6l5n/yh0=;
+ b=iU/PSvL6wq8btIRhidLB33Vo/ZdGAsr7gB7EK9/olVFrYzf4Za+nAnNJJOh6ACLWSVVNe6ly6RSiG2Vt0Cd+53KVKTsLXJAVfJfZ22flxEZ6d5Estk4/NkdDk8E0ELv1EWnu5nit7fAvRbTkBN00/tKSJU7lY77Z4FDoF6nZUwB543RawtHTkPvoGw9hKt+Saly0P+cfdRyGa2/2+h9dUrMu8WdqxAoWpEZQFMyDcoWSHE10UvNIyBLyv4jnQ0n0dXfMnIYVn5ZI8GW6KFRTvwBjpfkDW/6xiCdl74/X5WEoVtF8WCPbN+8COrHCeuWMDdRbMiIfJ+lbFyXTK/bPug==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/LNmTxWUHQJSQI27pBX/GAVxn37VTPNge6+6l5n/yh0=;
+ b=mO7yYDqe2eEXRoOuak/UzS3nMCs+kjfgnQzvHxm4pfoZe8mNv02+kgWDR1MvezuQnJWyeFzzNfIcee22K892PIpGYbI4iPc+UJvVg0UTGb7oJuUjnWJjUGAMg2OOvBUHq6oqGChV+cerAQE8zYXrUDDcIq5Hp/26cyZG3QrkdR2kTiXgNCmuHyWfH7aGmzAzJf0DzYfEqzxDklrqPDjmzatdB3V9k66aL83t3idu4C8O9Wa6g3TaVgBaNR1blhjeN1fCXEAm5NBDjq+hsvIsRB139T4mVjjDm810FSAAM5VqtVbjUVTpOYIvhtSuRUwDMbEmqEUj9q2fgrkpprIHYA==
+Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
+ (2603:10a6:150:2fc::18) by AM8PR04MB7283.eurprd04.prod.outlook.com
+ (2603:10a6:20b:1c7::7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Tue, 25 Aug
+ 2026 02:03:59 +0000
+Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
+ ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
+ ([fe80::71c2:937b:d466:174a%6]) with mapi id 15.21.0339.012; Tue, 25 Aug 2026
+ 02:03:59 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: "phucduc.bui@gmail.com" <phucduc.bui@gmail.com>, Frank Li
+	<frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>
+CC: Andrew Lunn <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Richard Cochran
+	<richardcochran@gmail.com>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: RE: [PATCH net] net: fec: only stop PTP if it was initialized
+Thread-Topic: [PATCH net] net: fec: only stop PTP if it was initialized
+Thread-Index: AQHdM7CT11Cgo/bQ90GlTvYIf1N7nrauBFoQ
+Date: Tue, 25 Aug 2026 02:03:59 +0000
+Message-ID:
+ <GV2PR04MB11739802F62258CA8CB02BAE088AF2@GV2PR04MB11739.eurprd04.prod.outlook.com>
+References: <20260824100834.31655-1-phucduc.bui@gmail.com>
+In-Reply-To: <20260824100834.31655-1-phucduc.bui@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Enabled=True;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SiteId=686ea1d3-bc2b-4c6f-a92c-d99c5c301635;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_SetDate=2026-08-25T02:03:04.0000000Z;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Name=NXP
+ Confidential;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_ContentBits=3;MSIP_Label_0d9c909a-577b-4ba2-96de-69ada94b137a_Method=Standard
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|AM8PR04MB7283:EE_
+x-ms-office365-filtering-correlation-id: 6aff9964-def8-4b73-4e98-08df024d20ae
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|7416014|23010399003|18002099003|22082099003|11063799006|56012099006|38070700021|10067099003;
+x-microsoft-antispam-message-info:
+ hwVowtX6UjqspkPMnHsHbsrbMLBuRDJfdlqvzen6PpLCmXx28kqMkNxQ6I1k8U5MVMFwNt6i5KjC1md4soqvU7i0Ag0FL+SkXwR1Xi2pi1K7OBl6kbO6zLmlfV0uhQeJcFAlMGXL7OXxyuHTy/CbZa6pnE5IY+QFs0teTTJoh88xTkmKA9X4pzVGd++pWyNTMh0ZgHuqD3zA9Tn80AyCaB92iuByop58wlC9ILmnJaZrXwip6vtPfhcuV/xQy62vScP1xaYgHqfgAPc6K03dGvBGKhW0SidFoqTW1I6MieHMinRXuwbte/pw3S+yaytL2iWCgz/0Q7npFcxPEqoi2SPRFNAOIFHZ3XdqM2j7HZ/+l8P4VIYQdpBwnyBp6jOqy+jTfif9xfdGZAsmRCVUleZPR+VghALnucRlW8a/PbML13sjJ//bVp9qdcfmUySZq56cHz2LiGfRy46TROtOmBS9QlAo44jTIWW9n3HUuGqyRbdKOqYcPRSIGXIkzk63INGPm8hgJ0Qk/NNaNrPsRnXx2fCvDh3UljvaM9UVpW08M23s/WajCLVfk75iVLes3ZjZ1ltHuuIMZEBsdoqu/qhrNlm54L8b/Q9QMpzv7yL8aPIlADECdQVfIu2YQGE+TNBEFh/bPf40aovBcUEz1rw6QP41NtsfIA8qs59Zz6rQVLM4ekFkoGR5EzEmacvGH/tIumNrEX7JNP4KHLaTaL8nk7lFoCUZA2EUG3hgJkw=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(7416014)(23010399003)(18002099003)(22082099003)(11063799006)(56012099006)(38070700021)(10067099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?106HRr0hKhATNMM8yD2VJvAIwN2WDy8Xx5NrJie6coC/9z+gEhyUxfo8Lr1w?=
+ =?us-ascii?Q?/wM3RF8//s/EmpPbB3+3cLNeddenIyWZ8DlkEMue+/4fI6dvXrQxa6hdOcVc?=
+ =?us-ascii?Q?4tu4Le+d3By2i1gWkaS8VaKXgzC6EZ4PnZMOP1ZDYTMt+fTU6PCXgtx6e3uy?=
+ =?us-ascii?Q?uz+3JDWuEol4cbAuDuLi+EvB7JIud2mINxrn8/EHkoaPf+0tmwMhTd5cvGzG?=
+ =?us-ascii?Q?BkC4A9Kh+C+2Krt7MpK8jcMJchSnG++EMxoJVuUYu4S7fCfVXECNfC0qtSb6?=
+ =?us-ascii?Q?LIi2m0NE8v00+QJ/c2AMLiCGgYWvdIthcMuvGGcAc++BN3EefUJWgKhfqg54?=
+ =?us-ascii?Q?5LvrHkFv+FXNU2ZhCq2ix8wA9bVeFTH1jxcjQsXtIc1zLUcWapf7F0x439Co?=
+ =?us-ascii?Q?eZ/7DaVGZoSgT49GHsINUzVboCdAcmOYhmGtnVGZvvMr7TgWdX2yvZlWO+7O?=
+ =?us-ascii?Q?xIEONZLtI7bb9XX40cEEgZb7GXGRlYj8SfWsa3ZkKEqe9wyRn+T2/1bt/zD3?=
+ =?us-ascii?Q?YITi+sQYOr9ASIykTyr6Ltv9HI6h16c4lPBq2SWRjIYBCCpPLAK4WEERJNsW?=
+ =?us-ascii?Q?CnRjWPeKP2/V6SB8B3+w7h7ZKFi190DvvFJl1lo3ern/mGCIW/xU6APAPwvn?=
+ =?us-ascii?Q?R0/JANQJUiML+roU3J1nSBXJswH6rbYZXntEBRYTOcN86Rzv1LcB25elmFlP?=
+ =?us-ascii?Q?03cTMpvcPNiNuoA3kct3KAdQG05to5b6o8Ep8w004kJ514P6Haeuuj+UhkPC?=
+ =?us-ascii?Q?gYFmFs7sQ1p0ExiO/UMDQkTeTAv2bf4u0BhyJig5IWRaog8DjqWhSheEdg8j?=
+ =?us-ascii?Q?aI54troRKjv6BZXCk+z494wynRAZPIeUM4R6op24FXXkazpm9md0CpL95qmy?=
+ =?us-ascii?Q?QQJQRgNbmJRYz7oYXgdeB39EIUyHfnqDGMGgo/cu7E9JB49N0vbMcKXPQ2MA?=
+ =?us-ascii?Q?Snmhz6lXUh2mGDWBEVUkhfDyEIIk0qefAvzHI+Wz0kTQyUJUAaAQeh+wl/Af?=
+ =?us-ascii?Q?AlQRBVTRICkrew5/YI2R5vfuU91lq5EwI0sGSAeamlUyzyWHoL3w9X1TGJQY?=
+ =?us-ascii?Q?bV1PbdFxgdG31lEaM6ssrcpyjb9zWF0esCVCN4+40lYv6gsO2S2KGukfUftX?=
+ =?us-ascii?Q?TmjAj/DzWDzeKYdfdd7xg/238MwoP4/4/oDlXMUs4uBcdLt02uc31XVeTqmk?=
+ =?us-ascii?Q?hL6IGvO2YHf4AJ5YC46ZyGqyfQqFGTrzKUg1P6rXz+7/fT9O7wetN/c0nDAb?=
+ =?us-ascii?Q?SxP2GEvUT/h+oMBzetbblJBQFn0SELVX7TNugxousFP1W2jEiYlid1onzxag?=
+ =?us-ascii?Q?V1I7CvQx3BgJSMdtqBW1Y49BAg0WCBZgABgpgP2URJj13attyKGsSM0sIWxv?=
+ =?us-ascii?Q?f/eHkdZXqvXkCKOSJdvJuWgSbCvqjegKNBAqlg/Tlp9fqOEk8gmNM6ZZj9jd?=
+ =?us-ascii?Q?Dia4Y/ioIbCGBqFd6X6TJi6/KCC5ttZw+CPmrzBvS74Pt16+KqKmhF9un8T/?=
+ =?us-ascii?Q?KLT880DqKxdU5GbYlWSpcJRU63kZosb7iW4+L2/nXgMLqC1k2zN9M6NHbxLR?=
+ =?us-ascii?Q?A71HDsOw33yG8OJBx9Is1k7bxkWfPfBBrGgaQfJPZvDInB5LwUHRrBzPeAdG?=
+ =?us-ascii?Q?Cuk97ldtsq0Zmug520LxmuMqYIgzCto/DQQT1KOOcrx4lVIDqJR25VTZBzo6?=
+ =?us-ascii?Q?ufCE1VPGo6ugEi7cVim2LRVt13NFwaR1ThJSqxjawbYR5q/1?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260825002924.1439-1-hdanton@sina.com> <6a8ce8d5.dbb3a75c.7844.0018.GAE@google.com>
- <CANn89i+wnTLC==UnXCpjsS4YxvEfhe5oK0N7fttbqr1zKyqdug@mail.gmail.com>
-In-Reply-To: <CANn89i+wnTLC==UnXCpjsS4YxvEfhe5oK0N7fttbqr1zKyqdug@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 25 Aug 2026 03:50:26 +0200
-X-Gm-Features: AcwNN1XCfbByz4pMJzFYqBmv4sXNr2uQ7bjS0dHlC04llrDhK7Yc292mFqw2WxU
-Message-ID: <CANn89iJ01nSttn66xfaM+AOa4U-nvw=pSeqKxzvU64426-ZJrw@mail.gmail.com>
-Subject: Re: [syzbot] [net?] WARNING: locking bug in tcp_tsq_handler
-To: syzbot <syzbot+2d770620059281e225a4@syzkaller.appspotmail.com>, 
-	"Shin'ichiro Kawasaki" <shinichiro.kawasaki@wdc.com>, Nilay Shroff <nilay@linux.ibm.com>, 
-	Keith Busch <kbusch@kernel.org>
-Cc: boqun@kernel.org, hdanton@sina.com, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, peterz@infradead.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6aff9964-def8-4b73-4e98-08df024d20ae
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Aug 2026 02:03:59.3397
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: vvZpu9HalXT0cdyFwJceCByOUBUcpwfn4+WlMD4PfoKzIVLjx7DuBBZxhO5Ar5T3VPxLtXAKhiTtr3OMyBO76g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7283
 
-On Tue, Aug 25, 2026 at 3:27=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
-wrote:
+> fec_ptp_init() is only called when fep->bufdesc_ex is available.
+> However, fec_probe() unconditionally calls fec_ptp_stop() on the failed_i=
+nit
+> path.
 >
-> On Tue, Aug 25, 2026 at 2:59=E2=80=AFAM syzbot
-> <syzbot+2d770620059281e225a4@syzkaller.appspotmail.com> wrote:
-> >
-> > Hello,
-> >
-> > syzbot has tested the proposed patch but the reproducer is still trigge=
-ring an issue:
-> > WARNING in tcp_tsq_handler
-> >
-> > ------------[ cut here ]------------
-> > !lockdep_sock_is_held(sk) && debug_locks
-> > WARNING: ./include/net/sock.h:1799 at sock_owned_by_me include/net/sock=
-.h:1799 [inline], CPU#1: kworker/1:0/24
-> > WARNING: ./include/net/sock.h:1799 at sock_owned_by_user include/net/so=
-ck.h:1812 [inline], CPU#1: kworker/1:0/24
-> > WARNING: ./include/net/sock.h:1799 at tcp_tsq_handler+0x1a6/0x200 net/i=
-pv4/tcp_output.c:1292, CPU#1: kworker/1:0/24
+> Check fep->bufdesc_ex before calling fec_ptp_stop() to avoid stopping PTP=
+ when
+> it was not initialized.
 >
-> Note this is a different warning.
+> Fixes: 32cba57ba74b ("net: fec: introduce fec_ptp_stop and use in probe f=
+ail
+> path")
+> Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
+> ---
+>  drivers/net/ethernet/freescale/fec_main.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 >
-> This one might have been added in nvme-tcp in commit
->
-> commit 19bdb70c77d3b24239a453291299b64040bdba86
-> Author: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-> Date:   Thu Jun 4 11:32:08 2026 +0900
->
->     nvme-tcp: lockdep: use dynamic lockdep keys per socket instance
->
-> The authors assumed that __fput_sync(queue->sock->file) in
-> nvme_tcp_free_queue() synchronously destroys the socket, so they
-> unregistered the keys immediately:
->
-> __fput_sync(queue->sock->file);
-> queue->sock =3D NULL;
-> ...
-> #ifdef CONFIG_DEBUG_LOCK_ALLOC
-> lockdep_unregister_key(&queue->nvme_tcp_sk_key);
-> lockdep_unregister_key(&queue->nvme_tcp_slock_key);
-> #endif
->
-> However, a TCP socket's lifetime is asynchronous:
-> in-flight skbs (e.g. buffered in a qdisc or device ring) hold
-> references on sk->sk_wmem_alloc.
->
-> When those packets are freed later, tcp_wfree() puts sk on TSQ and
-> tcp_tsq_handler(sk)
-> acquires bh_lock_sock(sk) on a socket whose lockdep key has already
-> been unregistered and zapped.
->
-> All other kernel storage/networking clients (sunrpc, nbd, cifs,
-> iscsi_tcp, rxe, siw) use static lockdep keys without issue.
->
+> diff --git a/drivers/net/ethernet/freescale/fec_main.c
+> b/drivers/net/ethernet/freescale/fec_main.c
+> index ced4dbf8cd90..7a87f40d12d9 100644
+> --- a/drivers/net/ethernet/freescale/fec_main.c
+> +++ b/drivers/net/ethernet/freescale/fec_main.c
+> @@ -5457,7 +5457,8 @@ fec_probe(struct platform_device *pdev)
+>  failed_irq:
+>       fec_enet_deinit(ndev);
+>  failed_init:
+> -     fec_ptp_stop(pdev);
+> +     if (fep->bufdesc_ex)
+> +             fec_ptp_stop(pdev);
+>  failed_reset:
+>       pm_runtime_put_noidle(&pdev->dev);
+>       pm_runtime_disable(&pdev->dev);
+> --
+> 2.43.0
 
-I think 19bdb70c77d3 should be reverted.
+Thanks for fixing this issue.
 
-We can change TCP to use sk_gfp_mask(sk, GFP_ATOMIC) instead of
-gfp_any() in tcp_disconnect()
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
 
-This ensures tcp_disconnect() respects sk->sk_allocation =3D GFP_ATOMIC
-and never acquires fs_reclaim under sk_lock.
 
-WDYT?
+NXP Confidential
