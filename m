@@ -1,222 +1,306 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171DE49365C;
-	Tue, 25 Aug 2026 00:03:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787616198; cv=none; b=lyCG/Vy80Gy51V2wKAAUtD+IXG6FZA1qUGvtF33MMZ0yciWL18wsQHfgwuSzpRfk9Qaqa1paHmt49d+A37EquYd1FHc//t3HQHRTzoTS3SdbnBBNoB4v3NFKUMatPBtrd0QCUEVhdXXyVKdPWWx3JOHnL4vB49oTSgrKUCSmTCs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787616198; c=relaxed/simple;
-	bh=xuDKjA1RbPYEMVqyCBaG1bMYHLdbqEZqRmuiSD6hffg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=O0mFYfZygNhb8OagckZILAjd0PLbSkUtWlpWGT4tsRfk9WgT3v8tHJsUtlLpOJYkj3SRI3HaDaULNBR/59VB4gWi9iKZmYcojRmOhHCtj0Q5EYBBcLyQl51Qcfc65vz1umt0lRwJCFmSBtSXRWB80xfQ1RBrOlToUbSRrOKfa/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nVt4JgZO; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F32EAC2EA
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 00:09:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787616572; cv=fail; b=Pz9YbMb3hySMBY6OW4Rl/fcqMIuJtrCTI1ePyDGFlElfTEMX+hkeuXu7QmkqOYr2B0k1tKtjy/XWr1eRGJRoXwYlkHoZ3O+G6uWfmyxqdyqqpB8bZamq8gAYL5cyJuhkXxS2HLY+6JJ5djNjlCaWzN/NH69JmW4epRSI0MNuLcE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787616572; c=relaxed/simple;
+	bh=NiuED2kVJLAZsNM2PrPC+Gl+U5y2YooLxAdbC3cGxaY=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=BJ/pONfiv/S91ojyzjLHH1LNzTh1PmUaDqGx95YLvvdTe/AiHt9e1YKWOXjtPJBob+fC6qYrAaoJJ2Wtq7Juf2Xs0pSesnLrrWe72mot6Oos18preNQc36mwrTtqMZtYMKUk/Ho53iHa3frDhc6e92IuZxJo9Y9SrA1zYMTyEN8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iLtXDja4; arc=fail smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nVt4JgZO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 341301F000E9;
-	Tue, 25 Aug 2026 00:03:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787616196;
-	bh=2wmTac7FK68VNzciVgHIm+9utbcnTYWipob5ykg8eDQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=nVt4JgZOulZ7DzyfmOKkW3CVnta3bOyQI7rnqIbGFAo4nlnP5CGOjnmMM2zpQ1RlO
-	 hEvrfdNuQcRuDesiblK63G1M71NYNv43gglgbNjS0xcDW7p1ZGQfjsXwA4MfOgrMUN
-	 MgYIDOTXAZeC7JHRrYbwciVYky7o2ArICUtudZYG2tnZpd2q9dJ2EWHH9FxlqenbZ8
-	 QwNtq/RsUTc4KvWONXQG3DUJiwsxCLqn91ey14ReUq6/852XY9jqK+PJYOccDWdQs0
-	 dcEDr2/GbV+wMhcVY/83YB38ODZ4NC6kUhNfxcoP5607zytjTQbNPtjJX5oavgUpbS
-	 ZXZ5D6r0ioLcA==
-Message-ID: <213829b7380f1fe12aed2f2ae9ba33c2870addd5.camel@kernel.org>
-Subject: Re: [PATCH net] net/rds: fix out-of-bounds write in
- rds_conn_peer_gen_update()
-From: Allison Henderson <achender@kernel.org>
-To: Paula Moutafian <paula@bynar.io>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com,  horms@kernel.org, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org,  rds-devel@oss.oracle.com,
- linux-kernel@vger.kernel.org
-Date: Mon, 24 Aug 2026 17:03:15 -0700
-In-Reply-To: <20260824144124.64756-1-paula@bynar.io>
-References: <20260824144124.64756-1-paula@bynar.io>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iLtXDja4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787616571; x=1819152571;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=NiuED2kVJLAZsNM2PrPC+Gl+U5y2YooLxAdbC3cGxaY=;
+  b=iLtXDja4ruKzL7plpV0UB4cJd1ZQSiBjk6yrpXngzZqmiq8Lj19fol0j
+   I5/T5WAI9bZYln7Dlrif7Kr6e1tho8e6gCXKsuh9q+ShVnUrpBQGW3GeV
+   1cyDAjAs/q6m/XZd6EQ2fWy4/8Hio0XjQQ0kFnpT4V+qGEQI+hVBQMyDA
+   CsepR9+vGW60vijupfczP33bVT1hbxkAszqM7doqL7WwBqUNbPbBxMeY7
+   gupyNQzLMIZ+DU21EeRt0gauY3nNCjnbbP8cQxyJNcuf0dWP1tB68mc5s
+   ed2/w0OC0DooQFB/9rg/b4AcQA6DQsXDkCpqc4P5BK4MdZ2+isHUKSu7b
+   Q==;
+X-CSE-ConnectionGUID: qptmJUTdToOX/KZOgT45lA==
+X-CSE-MsgGUID: 8o8+LBz2SqS6HG/spdfioQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="99427675"
+X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
+   d="scan'208";a="99427675"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 17:09:30 -0700
+X-CSE-ConnectionGUID: 58arPPBvTSKDRVL8fMCVvQ==
+X-CSE-MsgGUID: kGrbIh4ORvaMxFeZT0sisw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
+   d="scan'208";a="267719007"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 17:09:30 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Mon, 24 Aug 2026 17:09:29 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Mon, 24 Aug 2026 17:09:29 -0700
+Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.56) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Mon, 24 Aug 2026 17:09:29 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xVMLjlhDT01AuFePXLjgcvMoBJeIksqjdutMzf4jh2jn1t36xtXaf+o6qAM5HL/qusT36nYxp77/MW447YtBErOLnMdNdxxGFZOjyXqJxbi8P9gi2lyDl9GqK/Is/Hd0MliOoSz+oXwWS59Ut/PXUAEXvF7bkW2SEyd6WG7lwBPnEytjK3/BnYHjKIdoOnMwzPOtzpVILpJ+9c7DOWK8WCEhDqSXsC43FjJYO7RPmrW4UYLcoNqG7NB9xUSz/QUxtaLz+dK4bqOnnA1T4gyEzaN5R6xQM+907kC80BuZN3wCkCpPK4LDDdb126oOzgCkdJrY/2pnqrGV/aMKvtpAWg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=i73ENW3yyrZZPk2QqWpCQ7r4/9cEKT7777BVbVWIcsA=;
+ b=NhPsFuVM5Su0H5tmjE6GWiBLIDMsTqKCvf8NeI96JWO7ntkst2x9X0g17sNNtiMMgCMqFBuDzNqFHm6rSvcWRVU0lSZNKNZdPguMIfYQDOago+XL0gfRUyICN+3/wbJ9zbTPK3d/XUFNaI2RtmiPWlNdIH7L9UcKcD3IRcvOaRG//5swg8X5jSNKPCGPR14SaoqdJVr1pjsWuBTB3QX1eCntET6rlQgg+0lrcp+Hb5bgqu/pi4R+S5s5UwhUp4QhuuZuseDxR6xKG9Duj2zdU8Yfad8eQhwsFSlux6JdAewK+i31qO7AWVX2O61nOCp3qasham0J5JQFGBmyIJpyBQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
+ by PH0PR11MB7635.namprd11.prod.outlook.com (2603:10b6:510:28e::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Tue, 25 Aug
+ 2026 00:09:25 +0000
+Received: from DS0PR11MB7381.namprd11.prod.outlook.com
+ ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
+ ([fe80::4c39:dfe6:d6dc:6f58%6]) with mapi id 15.21.0339.012; Tue, 25 Aug 2026
+ 00:09:25 +0000
+Message-ID: <943347fa-f386-4cab-aad6-9d1914aea76d@intel.com>
+Date: Mon, 24 Aug 2026 17:09:23 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwl-net 08/12] ice: wait for in-flight Tx timestamps
+ before flushing the tracker
+To: Intel Wired LAN <intel-wired-lan@lists.osuosl.org>
+CC: <netdev@vger.kernel.org>, Maciej Machnikowski
+	<maciej.machnikowski@intel.com>, Anthony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemyslaw Korba <przemyslaw.korba@intel.com>, Grzegorz Nitka
+	<grzegorz.nitka@intel.com>, Petr Oros <poros@redhat.com>,
+	<alexander.nowlin@intel.com>, <kevin.bross@intel.com>,
+	<ranjit.cavatur@intel.com>
+References: <20260821-jk-e825c-minimized-fixes-v1-0-9d0731eb4858@intel.com>
+ <20260821-jk-e825c-minimized-fixes-v1-8-9d0731eb4858@intel.com>
+Content-Language: en-US
+From: Jacob Keller <jacob.e.keller@intel.com>
+In-Reply-To: <20260821-jk-e825c-minimized-fixes-v1-8-9d0731eb4858@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR04CA0142.namprd04.prod.outlook.com
+ (2603:10b6:303:84::27) To DS0PR11MB7381.namprd11.prod.outlook.com
+ (2603:10b6:8:134::14)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|PH0PR11MB7635:EE_
+X-MS-Office365-Filtering-Correlation-Id: 376a9b25-fe4b-498a-0c0e-08df023d1f34
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|6133799003|10067099003|56012099006|11063799006|4143699003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: AXzqP6PuizwsyG36DeAia14qjb+zKiVfFRJBIXUm9D9D7p6TJ5eZnx8ncsgevASSq4twMvyOJCwsmm51RSTmUrvPjxMThd7qxEqZ0DWLlbAoTuK+1MjhCXad1AhnHHGHfY7wLGFnB4iX2eYiRtdSKjBn0Fk6hmZxdAONLwOOH20GxkB/fsBx4FA6xyZbbvxd/aoDHa60ICfrXv8/sflL28ZqLZZe72kbm/AjHuz56A/wQdqZYYZEUsCDt5zz6hdyw8juUOynXL0uXLex76nSM3d+1AsiWJ7LlMKM0gs6sSnmUZX3K6bC+mFEU3YAX1oCCro6UG4pxGGqTcwiknEWl0T/HsLvV6TDSc/MbQutM96bYJq5ybMoV8+g2Xr6iJJoLJt7UAJSuXutMwJLElmgULTGy4Jvhjvzyzp0a8OxTFACEjZdxo0eUhogoU3poTJPyFQywsgcImqzY14yNjCpMgda8LeoXwe+I0Ab0Mpy3l1iEQDgmYeK/HFGTA1Oz199PVStVi1Dj4IvXKBrDauCeTKBlCZnzqERJI1PxNOAS2IxIycSKurURXqJrgkPvZVPo+7kBNzBB75lxna847bWoMaAp9HhrfdplsQfhLYo30oihrtyxBrvtQiQTNU5Uw2DP04bIYkgp/f4GTX7Lz1QcqrNBIv6H38hvCJJpk+MK5k=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(6133799003)(10067099003)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NE5WWjBoVVAxWmU5eEJEalVyMVd2b2ZqUnNSdjZUcE1TRVVQandIWmVDT3cz?=
+ =?utf-8?B?UWR0YjlMVXhJMTBmb3pyd0Qzdk9wc3lrT2dsYXBzUmVXZGVvUWlYWTBiVm9j?=
+ =?utf-8?B?Z3VlL1NhV2dYUCtNMXZkQTFzT2ZBWVFLOUZQMjFIeFNrMFRCakVjazlNdTB5?=
+ =?utf-8?B?aS9KSlUvZ2NvSkRudmJwYmhXa3R5MVFTY1RoOEhXWGVMWGluMWZGVXBIb2cx?=
+ =?utf-8?B?T3Vyd2xIMEc2WGFQbmFqMkJUMzVGRmxLeGNhK0RUWmdvUHM4TXVhek9yTzdu?=
+ =?utf-8?B?ZGFvT3VaaUE1a1c1cGVLNU4xU3hZOEJhRys2OWt5cmFWc3QxbDVXTHBVOTk3?=
+ =?utf-8?B?TDhWVzNqbzJkVGtQNGtyTGoyeVJjWWtVbWdSUlRJdTFCZ1IzWnNlRk1nS0hQ?=
+ =?utf-8?B?QzRualdpaVdxOWltM3FuMGFRcVBDUTNCTUQ0N0hWRzFERFBHUFJ5OHozQ3Y2?=
+ =?utf-8?B?U1A0WUhhVlN4THhaUFpOdzdNK2N1NDVnYUlvTno2bVJ2OVVTRS9JelpMWFBx?=
+ =?utf-8?B?NXMzdzNKVUxaYm1RRXhsM1VDalRVamdLakpRVGRHM045WVdwdEhHd1pLMzhT?=
+ =?utf-8?B?Z2JOMEJZbE4ra3NXWXpEM3R0MjBBWk1ObktZaXVHcVpXOEV4b0s1TUFEeWQ4?=
+ =?utf-8?B?ZDZYSUNNRVZqaXhhUitlRjlDMHdXOUFyWWJhQktPbTVKcmVtZ1NUWHBYNDdJ?=
+ =?utf-8?B?VnB3RisySHJyWVNQYkVaUUl6L2Z3akpWeGcwNVgxdysrbkYxeldNbkp0bmtr?=
+ =?utf-8?B?eUJGNm5Pcld5VUNaUEwwZWNMWUVHWnJyeWtMb2NtMklyTzRVSTZ3bnZGeWVp?=
+ =?utf-8?B?dVo4SGZYeEdlOWwxclVJemlrY29jQTBZanJWRk5xQ0puNkNLSUdFK3ZBT2RU?=
+ =?utf-8?B?bDlMa2g4cVJvb0tzT0hEamRJL2RvM3plSWVLTitGemEzWlFVSTl4cW1EM1Rr?=
+ =?utf-8?B?bm9ya2RpNHJmQWFhOFVhaks1OXlkTStWY3lEK0FIaXBVMWdvTlhkTDRpRmR3?=
+ =?utf-8?B?eDBmd0dLWld5U09XOXczeDRQcGNpZWZMdzBuT1dGejVCZWt4TUU2dGpDU3p5?=
+ =?utf-8?B?a0ZHbnV0d0Vwek9ZMnhtMzkzSE1WSCtHMjNxRk56VW0zOXM2WU4vVlpVZjNB?=
+ =?utf-8?B?RFdtVDVuakZaN21ZTVlCSFBLaWluT1U3NnJXWlZqeExPeGllb2tSa1RjaUta?=
+ =?utf-8?B?a2t6eG9mVlJzRGNsT3ozMGZRbVorK0kxVkFrQWZNUENNM2JacEF6cDRoVEY2?=
+ =?utf-8?B?T0NpREcxMFkvZ0pYM3ExMEhGZTc3cEMzaHI3dHJvZ3I4RldVUnpxZzlLeGh3?=
+ =?utf-8?B?NFhETVdTMjJldmZ6WWRsNFRDQ05PZUFpSGVRY2ZUdXRLeFJTMVBGOU5NWWhG?=
+ =?utf-8?B?Tm1WakpIWEorT1lnTGRpaDVUbitaQjFqNWhSKzMrdmk1Kzd1dlNqWlBldUNj?=
+ =?utf-8?B?SEFkOGRNUFA0dzF6NGVRcVl5c01nUVdhZHA2V1dNRk5RcXE4LzB2bmh6TEdp?=
+ =?utf-8?B?aGhYTWZyMkhxMCtqQndtWGVod250dU1BVkxBSk9HZk9kNzdrM3JGMldOVU56?=
+ =?utf-8?B?MDZKNmE1R3FsUWxiajE3S1dtWVU5cDlkOGJWMUlKcFdUeGVpSlZNVmRGNnFT?=
+ =?utf-8?B?THpwaUtJOVFNUGRVeDg5cndocXo2WFVFNWJGY0g4NG90Q094QWpJeDlQZXp2?=
+ =?utf-8?B?OVpMNkVnczlBVTUxSndKZkpQSzRHekp0RVZmd1cvVmRTSkJhL29UWkJUVGpy?=
+ =?utf-8?B?NHpSNWg3SkQ3RTMzRUhKTm5XTnRzU3JQYW41NHJMRGVidTVoWUZnUU9icHNa?=
+ =?utf-8?B?WWdqWVczSU1vS1pjQzM3amZwQ0U0ME0ya0xVMXJJNU52c24wOFNEeXNQb1Na?=
+ =?utf-8?B?MDdmQlYwRHhEblhjWXZmV2JSbG5CdTBFaXV2a1Q4eGpha1RvZTkwTzhlN3h2?=
+ =?utf-8?B?cTR2NlNIR0RRY0xtaGZmTEdLMGZjYkhOdzZrT1J2V3AyMnd4ZzhLRGhCWUdo?=
+ =?utf-8?B?ZXlNK3c2dHEwcnA3cFdMbkZ1bEczMDB0Nkt1M2xSWHVabk9XUzF4SHZoWnBo?=
+ =?utf-8?B?aWh1ZmpzYkpSR3lNZ0tBMWRhcmZHMlBhZlhXMEZOZ1JzOGx5MWhEQmVqTGJF?=
+ =?utf-8?B?bWF3R00xakE1Vk42WXRoNklhd3dmdm9uUUtwaGpjZ0RyRDhNWXBzYzZUTXVQ?=
+ =?utf-8?B?OUZnRm1iaXVGbDlFOUZYMkptazU3ZlplaTQ3MVN1Z1RtWjFtQ1hXWEZ0djNE?=
+ =?utf-8?B?YVJSaEdvTEdPTzJHYWU4TWJKQTZveFlWbXBwbVpkdDBlMzhBdUM2YXAxSGY1?=
+ =?utf-8?B?MEthWU81T0RHYzZEa2pFYXBsYkE1LzFJVkM0c3Fhdk40bTdESTBCdz09?=
+X-Exchange-RoutingPolicyChecked: xBvHBJUw2AwRz1ht2+mLXxezf8y7s1QBnw/3Qm6cK6U8YPzVu8kPUrfUqnYA5roWghxAHfiUH1eS/Yuc3ygBnt1H5acjknBbyV2KSf/d8D5rFyza5v3YmLpAwy2w2P+cwHSvrzsGUz8QEmJ2k0nYBpf87vxxCBOkMQ73rT1USt+g9Mw1RiE3AfbSsKe+1g3EdeVZXsibQZnEtlLYUALEfUJKrr+a8D3dqSRr6nE3DulYRxIDi8LMwCFct95A4LyoGCNpVfDZ6OhTcsPW1WbuB4xYi72zjgAWx2NUhp03I9fJeex4wHuoohQO4gA4rMlJLtsjUMA+EdEgX4VrVtZNyQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 376a9b25-fe4b-498a-0c0e-08df023d1f34
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2026 00:09:25.1151
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: a6OApZlebdRwFMKWnvUsmTIYDKwZ5D38FJ7p6u5aF0tX1kHNRdrsMGM0rh1F7Dkm4KSukKND6EvnMHboyrRSQYyC3grHbhiU0HYvhCA7YVs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB7635
+X-OriginatorOrg: intel.com
 
-On Mon, 2026-08-24 at 15:41 +0100, Paula Moutafian wrote:
-> rds_conn_peer_gen_update(), rds_start_mprds() and rds_check_all_paths()
-> all iterate conn->c_path[] up to RDS_MPATH_WORKERS (8) or conn->c_npaths,
-> but c_path is allocated with only
->=20
-> 	npaths =3D (trans->t_mp_capable ? RDS_MPATH_WORKERS : 1)
->=20
-> entries in __rds_conn_create() (net/rds/connection.c).  Only the TCP
-> transport sets t_mp_capable, so for the IB/RDMA transport (and the loop
-> transport) exactly one rds_conn_path is allocated.
->=20
-> c_npaths is derived from the peer via the RDS_EXTHDR_NPATHS handshake
-> extension header and is only clamped to RDS_MPATH_WORKERS, never to the
-> transport's actual allocation.  A remote peer on an RDS/IB (RoCE) fabric
-> can therefore complete the unauthenticated handshake and, by sending a
-> second RDS_EXTHDR_GEN_NUM with a changed generation number, drive
-> rds_conn_peer_gen_update() to walk c_path[1..7] past the end of a
-> one-element allocation -- taking cp_lock, writing cp_next_tx_seq /
-> cp_next_rx_seq and walking cp_retrans on neighbouring slab objects.
-> rds_start_mprds() and rds_check_all_paths() are reachable the same way
-> via a peer-supplied c_npaths > 1; note rds_check_all_paths() is a
-> do/while and dereferences c_path[0] before testing the bound.
->=20
-> Reproduced against an unmodified 7.2.0 KASAN build, triggered from a
-> hand-rolled RDS/IB peer completing the handshake and sending two probes
-> with differing RDS_EXTHDR_GEN_NUM:
->=20
-> BUG: KASAN: slab-out-of-bounds in do_raw_spin_lock+0x55/0x9a
-> Write of size 4 at addr ff1100000425a624 by task ksoftirqd/0/13
-> Call Trace:
->  do_raw_spin_lock+0x55/0x9a
->  _raw_spin_lock_irqsave+0x12/0x18
->  rds_recv_hs_exthdrs+0x34a/0x52a
->  rds_recv_incoming+0x5a8/0xb33
->  rds_ib_recv_cqe_handler+0xda1/0x12b6
->  poll_rcq+0x8e/0xb1
->  rds_ib_tasklet_fn_recv+0x1c4/0x348
-> Allocated by task 10:
->  __rds_conn_create+0x5b3/0x168f
->  rds_conn_create+0x18/0x1b
->  rds_ib_cm_handle_connect+0x486/0xa35
-> The buggy address is located 44 bytes to the right of
->  allocated 504-byte region, cache kmalloc-512
->=20
-> The corrupted neighbour's cp_retrans.next is then dereferenced on the
-> next line, producing a fatal GPF (RIP: rds_recv_hs_exthdrs+0x3ba/0x52a,
-> KASAN: null-ptr-deref) -- a crash, not merely a detected access.
->=20
-> Bound every loop by the number of paths actually allocated, mirroring
-> the npaths computation already used in rds_conn_destroy() and
-> rds_conn_message_info_cmn() (net/rds/connection.c).  For t_mp_capable
-> transports the behaviour is unchanged; for single-path transports the
-> loops now stay within the one allocated rds_conn_path.
->=20
-> rds_conn_peer_gen_update() and rds_start_mprds() (net/rds/recv.c) were
-> both correct when written, with c_path still a fixed
-> RDS_MPATH_WORKERS-element array:
->=20
-> commit 905dd4184e07 ("RDS: TCP: Track peer's connection generation number=
-")
-> commit 5916e2c1554f ("RDS: TCP: Enable multipath RDS for TCP")
->=20
-> They became wrong when the allocation was made conditional on
-> t_mp_capable without updating either loop:
->=20
-> commit 840df162b3eb ("rds: reduce memory footprint for RDS when transport=
- is RDMA")
->=20
-> rds_check_all_paths() (net/rds/connection.c) is unrelated to that
-> regression: it was added new, three years later, and was unbounded
-> from the moment it was written:
->=20
-> commit 9ef845f894c9 ("rds: If one path needs re-connection, check all and=
- re-connect")
->=20
-> Fixes: 840df162b3eb ("rds: reduce memory footprint for RDS when transport=
- is RDMA")
-> Fixes: 9ef845f894c9 ("rds: If one path needs re-connection, check all and=
- re-connect")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Bynario AI
-> Signed-off-by: Paula Moutafian <paula@bynar.io>
+On 8/21/2026 5:13 PM, Jacob Keller wrote:
+> From: Petr Oros <poros@redhat.com>
+> 
+> ice_ptp_flush_tx_tracker() frees every tracked request, but a request
+> whose timestamp is still being captured by the PHY at that moment is
+> freed without touching the PHY entry. The ready bit published shortly
+> after has no tracked owner, and the PHY does not raise another Tx
+> timestamp interrupt until every outstanding ready bit is read, so
+> delivery for the whole quad degrades to the periodic work.
+> 
+> Wait up to 10 ms for in-flight captures to publish their ready bits
+> before flushing, so the flush clears them together with the rest.
+> 
+> Fixes: ea9b847cda64 ("ice: enable transmit timestamps for E810 devices")
+> Signed-off-by: Petr Oros <poros@redhat.com>
+> Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+> Reviewed-by: Maciek Machnikowski <maciej.machnikowski@intel.com>
 > ---
->  net/rds/connection.c |  3 ++-
->  net/rds/recv.c       | 10 ++++++----
->  2 files changed, 8 insertions(+), 5 deletions(-)
->=20
-> diff --git a/net/rds/connection.c b/net/rds/connection.c
-> index 7c8ab8e973e1..282e320516f5 100644
-> --- a/net/rds/connection.c
-> +++ b/net/rds/connection.c
-> @@ -976,11 +976,12 @@ EXPORT_SYMBOL_GPL(rds_conn_path_connect_if_down);
->   */
->  void rds_check_all_paths(struct rds_connection *conn)
->  {
-> +	int npaths =3D (conn->c_trans->t_mp_capable ? RDS_MPATH_WORKERS : 1);
->  	int i =3D 0;
-> =20
->  	do {
->  		rds_conn_path_connect_if_down(&conn->c_path[i]);
-> -	} while (++i < conn->c_npaths);
-> +	} while (++i < conn->c_npaths && i < npaths);
-
-Hi Paula,
-
-Thanks for catching this!  I think we can tighten this patch a little bit b=
-y correcting conn->c_npaths itself rather
-than adding a second check everywhere conn->c_npaths is used.  conn->c_npat=
-hs is set in rds_recv_hs_exthdrs().  So
-applying the same fix pattern there will take care of any site where conn->=
-c_npaths is used.  Just add your npaths
-variable at the top, and apply it in the switch in rds_recv_hs_exthdrs():
-
-                case RDS_EXTHDR_NPATHS:
-                       new_npaths =3D min_t(int, npaths,   <----- use npath=
-s here instead of RDS_MPATH_WORKERS
-                                          be16_to_cpu(buffer.rds_npaths));
-
-That should take care of the both uses in rds_start_mprds() and rds_check_a=
-ll_paths() without further changes.  Other
-than that I think this patch looks pretty good.
-
-Thank you!
-Allison
-
-
+>  drivers/net/ethernet/intel/ice/ice_ptp.c | 33 ++++++++++++++++++++++++++++++++
+>  1 file changed, 33 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+> index 8aa49dda90a2..a049dc7a2241 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+> @@ -740,6 +740,37 @@ ice_ptp_alloc_tx_tracker(struct ice_ptp_tx *tx)
+>  	return 0;
 >  }
-> =20
->  void rds_conn_connect_if_down(struct rds_connection *conn)
-> diff --git a/net/rds/recv.c b/net/rds/recv.c
-> index cf3884d87931..3813aa323731 100644
-> --- a/net/rds/recv.c
-> +++ b/net/rds/recv.c
-> @@ -133,15 +133,16 @@ static void rds_recv_rcvbuf_delta(struct rds_sock *=
-rs, struct sock *sk,
->  static void rds_conn_peer_gen_update(struct rds_connection *conn,
->  				     u32 peer_gen_num)
->  {
-> -	int i;
-> +	int npaths =3D (conn->c_trans->t_mp_capable ? RDS_MPATH_WORKERS : 1);
->  	struct rds_message *rm, *tmp;
->  	unsigned long flags;
-> +	int i;
-> =20
->  	WARN_ON(conn->c_trans->t_type !=3D RDS_TRANS_TCP);
->  	if (peer_gen_num !=3D 0) {
->  		if (conn->c_peer_gen_num !=3D 0 &&
->  		    peer_gen_num !=3D conn->c_peer_gen_num) {
-> -			for (i =3D 0; i < RDS_MPATH_WORKERS; i++) {
-> +			for (i =3D 0; i < npaths; i++) {
->  				struct rds_conn_path *cp;
-> =20
->  				cp =3D &conn->c_path[i];
-> @@ -285,12 +286,13 @@ static void rds_recv_hs_exthdrs(struct rds_header *=
-hdr,
->   */
->  static void rds_start_mprds(struct rds_connection *conn)
->  {
-> -	int i;
-> +	int npaths =3D (conn->c_trans->t_mp_capable ? RDS_MPATH_WORKERS : 1);
->  	struct rds_conn_path *cp;
-> +	int i;
-> =20
->  	if (conn->c_npaths > 1 &&
->  	    rds_addr_cmp(&conn->c_laddr, &conn->c_faddr) < 0) {
-> -		for (i =3D 0; i < conn->c_npaths; i++) {
-> +		for (i =3D 0; i < conn->c_npaths && i < npaths; i++) {
->  			cp =3D &conn->c_path[i];
->  			rds_conn_path_connect_if_down(cp);
->  		}
->=20
-> base-commit: 564973a259ec76f2dad0853420e7034cc43994c4
+>  
+> +static void
+> +ice_ptp_wait_for_tracker_drain(struct ice_pf *pf, struct ice_ptp_tx *tx)
+> +{
+> +	unsigned long deadline = jiffies + msecs_to_jiffies(10);
+> +	struct ice_hw *hw = &pf->hw;
+> +	u64 tstamp_ready;
+> +	bool pending;
+> +	u8 idx;
+> +
+> +	if (hw->reset_ongoing)
+> +		return;
+> +
+> +	do {
+> +		if (ice_get_phy_tx_tstamp_ready(hw, tx->block, &tstamp_ready))
+> +			return;
+> +
+> +		pending = false;
+> +		for_each_set_bit(idx, tx->in_use, tx->len) {
+> +			if (!(tstamp_ready & BIT_ULL(idx + tx->offset)))
+> +				pending = true;
+
+
+Sashiko says:
+
+> 
+> This isn't a bug introduced by this patch, but does this loop risk a NULL
+> pointer dereference if tx->in_use is NULL?
+> If ice_ptp_alloc_tx_tracker() fails due to memory pressure, it leaves
+> tx->in_use as NULL while tx->len > 0.
+> If a concurrent PF rebuild then calls ice_ptp_flush_all_tx_tracker(), it
+> will iterate over the list, find this partially initialized port, and call
+> ice_ptp_flush_tx_tracker(). This now calls ice_ptp_wait_for_tracker_drain()
+> which would dereference tx->in_use here.
+
+
+I am not sure about this one. I think if we fail to allocate the in_use
+array we check and bail out and fail to initialize PTP, leaving the PTP
+state in ICE_PTP_UNINIT.
+
+ice_ptp_rebuild_owner does iterate the port list.. And if we fail to
+initialize the PTP port it will get removed from the list. I guess it
+may be that there is a small window where a concurrent rebuild could
+cause a problem before it gets out of the teardown?
+
+We could possibly delay inserting the port into the list until a later
+step or have the loop check of PTP initialized before continuing here. Hmm.
+
+I'll try to address this in v2, likely as part of the first patch with
+the kref and RCU.
+
+> +		}
+> +		if (!pending)
+> +			return;
+> +
+> +		usleep_range(500, 1000);
+> +	} while (time_before(jiffies, deadline));
+> +
+
+Sashiko says:
+
+> This is a pre-existing issue, but does adding this sleep here exacerbate an
+> RCU use-after-free when iterating PTP ports during teardown?
+> In ice_ptp_flush_all_tx_tracker(), the code drops rcu_read_lock(), calls
+> ice_ptp_flush_tx_tracker() (which now sleeps here for up to 10ms), and calls
+> kref_put() on the current port.
+> If the last reference is dropped, a blocked teardown thread could wake up,
+> complete synchronize_rcu(), and free the port.
+> When ice_ptp_flush_all_tx_tracker() re-acquires the lock, it will evaluate
+> port->list_node.next and dereference the freed port.
+
+I think this will be fixed by correcting the locking and kref use of the
+first patch, ensuring that we can't release the port in this way.
+
+
+> +	dev_dbg(ice_pf_to_dev(pf), "Timed out waiting for in-flight Tx timestamps on block %u\n",
+> +		tx->block);
+> +}
+> +
+>  /**
+>   * ice_ptp_flush_tx_tracker - Flush any remaining timestamps from the tracker
+>   * @pf: Board private structure
+> @@ -756,6 +787,8 @@ ice_ptp_flush_tx_tracker(struct ice_pf *pf, struct ice_ptp_tx *tx)
+>  	int err;
+>  	u8 idx;
+>  
+> +	ice_ptp_wait_for_tracker_drain(pf, tx);
+> +
+>  	err = ice_get_phy_tx_tstamp_ready(hw, tx->block, &tstamp_ready);
+>  	if (err) {
+>  		dev_dbg(ice_pf_to_dev(pf), "Failed to get the Tx tstamp ready bitmap for block %u, err %d\n",
+> 
+
+Finally, sashiko says:
+
+> This is a pre-existing issue, but does Tx timestamping get permanently
+> disabled after a non-PFR reset?
+> When a non-PFR reset (like CORER or GLOBR) is triggered,
+> ice_ptp_prepare_for_reset() calls ice_ptp_release_tx_tracker(). This frees
+> tx->tstamps, tx->in_use, and tx->stale, setting tx->len = 0.
+> However, the rebuild function ice_ptp_rebuild() doesn't seem to call
+> ice_ptp_init_tx() to reallocate these resources, meaning subsequent Tx
+> timestamp requests would silently fail.
+
+This is a bug in commit 7a25fe5cd5fb ("ice: stop destroying and
+reinitalizing Tx tracker during reset") which tried to remove the
+destruction of the Tx tracker during reset. Unfortunately it looks like
+that commit didn't actually remove the actual destruction of the tracker.
+
+I'll include a fix for this in v2.
