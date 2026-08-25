@@ -1,323 +1,211 @@
-Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB6C4908A8
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 23:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3482E2EEE;
+	Tue, 25 Aug 2026 23:16:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787699612; cv=none; b=QBLNysqdll0KnHjwmc7dAUcdKNuHY09RmM/gw4P68Xm/v4G5ezUpDpn0M62vWy1rlW7vQgbc5NqjyIRlvCHw0AB7fI1bjbmiwjKbVxbTENKJxbnQbEwJNoNXCaZtOs9jT2LPnPuTnCZhEoxyFbOVvFtrt3po+kZa83SGkmgdh1U=
+	t=1787699765; cv=none; b=fZLDpIyWrPUyk+W1HCBSzcPUq/WAZOptutgbM+dMBRLR8jcBdfDI7dTf+YfkuHTpKiHdPMEHY3oUooSL376SgbF1Amzayz9i5/zeUQoeYoqRR1e4/0+hbOjcsHp6v6juHiwWwTBvbl+Sn4jt47IFIhSKU5Nb7fuGHAjQckhTAWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787699612; c=relaxed/simple;
-	bh=+8kyxbzRSdlKPFyXc2RnYu6fLUalD0ATNGrknbK33Zs=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=HbXKyZ2L50e+fXfmBBb5nZKMSA96v45B5MVDPtNavReSNXcak7AilBb45F8or/TZGyAQ2WqAmA3CS2ZCE69ZYCJQ8Q0gE8WpZnUlTm03QpneljgiS2+63J0MGpURM8nvtojCntNlckR8xMplpday/+PETjASJ0yTLxJYx5N6oIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=HRMy/tYw; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=YENeyYXR; arc=none smtp.client-ip=202.12.124.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
+	s=arc-20240116; t=1787699765; c=relaxed/simple;
+	bh=yXPRHTpNE/+r66oOJ+ybxt/YZRDn7LfNAZ1LzkF10I0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=NH3rbeV+jz+D27XKJQBf+uDXEi4EzqF8gfAftUtJowGKeb53GQhmIuMNaX4HCnP+FSsdRbyuMB+6tfV2bdjSHZB8YYxLNXxceD0lK16qeYZHc343oaIhAPxG/9Ue7dTGuIkn0W0hJ4Be/CrbdjPtlja4/qYks5z4wBBtsPtvOjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AAeDkljO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="HRMy/tYw";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="YENeyYXR"
-Received: from ams-compute-01.internal (ams-compute-01.internal [10.64.2.61])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 767437A01B4;
-	Tue, 25 Aug 2026 19:13:27 -0400 (EDT)
-Received: from ams-imap-19 ([10.64.2.39])
-  by ams-compute-01.internal (MEProxy); Tue, 25 Aug 2026 19:13:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1787699606;
-	 x=1787786006; bh=9Ie+8tI5rV38pr+8jhODV7bmnON6qshNelvLTCVxfk4=; b=
-	HRMy/tYwPLArhdh44gcmiqIzjanE9jqafIfHCOq1QzmgOps0BnYPhAfyHs9lo1Oi
-	xFdmNf8DW2WsmIlP7z1orJFwJc5v32PhuMnVMML1fxXfJeebkZDz+Ob9sKr11xfm
-	TznnSUoBGJ4bD4D52Sl2XIWac1LnZboeS4yf18zlZja/mMohhwSN99tmTwZSVKLk
-	uMCuvoSGPxpHv+JztXIDk1m6LRiZPJP0f1N7apgsuozu1YMWt/Ftva/bRDHxbqxG
-	TCjRRPY0Ra42FA4JZfRa6tCuGKkDs3PidRjEUcBe0lhdjJjX3QwYCORIQ+XdgEGt
-	ENB0ynU25lrH5w/ZtQ7g8A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1787699606; x=
-	1787786006; bh=9Ie+8tI5rV38pr+8jhODV7bmnON6qshNelvLTCVxfk4=; b=Y
-	ENeyYXRYLo+XeN/sItZQWaFc6jX/4OoMnRlI3bs9Ek/HofctTs/Lvbs0NySXzkxW
-	gaYjyzen5yvRsI7fGUnXR+x010uImNWrbwz2Il8IpOY0JLXRgF9THXB63lJrVqlY
-	25cBK3DgemMvS6BQmC3biEdb0l2eT0Miqa9DGhJTOs+ZoxXi6Go10fDOFSt2DhNR
-	wIr5lzOLyibkNWIsgiGjmL0qESFlcNj8Qq4diOjNK/G0CG5hLraQEc4E5cfxrqMy
-	1rMFAqXOsAI82/QvGdE1MFdnKiITicTtn+lVC7KCk6aflksuv72qoUVBn3qaJ6Wg
-	WxRlNkONpGd2pzmjQ2yIA==
-X-ME-Sender: <xms:kCGOanh7ArIWhIaOkLlpHD4qBSM-8-tibltf0Tj9j4h2yiyM_m3_mg>
-    <xme:kCGOau01K8Tn85w_vZDEfxa-Y3RTEdrdZFBrItn-z5kMVXmb-sTFJOnd-KpIzFXZD
-    yuOx2fczKQoRwkQXDCOPQlv6hHppEAZllWaO-xtjF1nGz7QIArnCkg>
-X-ME-Proxy-Cause: dmFkZTFLP25i3xTdpiJ71K88LK8N3kdnnBHPsKW41zeoXzslnDZ/6THlVcRovMiSzf56TE
-    NisIrQpYenyw/Y1NJQFv+lrdLZ7YN6SohPVHrTVukycWXE8gRRpG5n46kubOw2KbrwdI/7
-    MnSmv0nSHzhLfQJ1LpZwVxPOc1P4zqZyi6QWWxoh5Kryu3a5yPIrK52NUlgrR7+Bk2ByFL
-    t/jswnba1kOPiUGfqyEJ1WV5sugNFU/bqIanb+37icj97OUthhpM1RdnEwiJc5l98bzhQF
-    S+7EvI1zc2iULH3V++PYuc6HybKhq7gDcE9ShVJrFn0Mw1esON3lq7wy1usMXybxB8FYCE
-    T2O93nOssrjd5gII7LhkBGC4LaeO0/4YBLKOoV/GZ7jlSp1Fkp6Z5vKGLk1yNOImHbgrZE
-    RhMR0vYzJ1JTZwI95ptELfrhYgseNENVe9xspwUZvNjyN2aZ980H45iyMN0mzYF9IhhCco
-    2nYHImXqCXSiqmDetJeVA50VY6Dd7rDl1nr7HAi/UzFkuNVKwhioCwgOiDhIBRiBjW0dOl
-    m2xGz1Lilm52VKUVjAG+MOn2VXjH7AEifsuwX/0wX6VGFz02xVVAvXJ+Jwn/ejrcQJi4gU
-    IFZ8lv/C4rRFQCNiaBWvQn9Fhra2FkdoqY0qSliPbc8cgQ+g+ftKdt3ufLXg
-X-ME-Proxy: <xmx:kyGOagzLHzq5mCDXlXtwXKdZ3Sm9St5THTaVrWfEDF2oyya4BXzU4w>
-    <xmx:kyGOaqzbc0yeBk_1FSnrqO4qZ5azXErmmFYA7cOvhgI2HO-9vOvu1g>
-    <xmx:kyGOagUbK-gLBR8rs841c3k0CZEhjWPyJ9t2bBLiqtTH2Xm71ltbJQ>
-    <xmx:kyGOahRL5-BZJjMt6jYphQ4A6T1WVvZrtZW0uMfhiOiKeIvrV9naUA>
-    <xmx:liGOai9YwieFuIwrS8Xtjx1NqYbUU0BnHSNqRtCWSxC8udtqBimXZQSU>
-Feedback-ID: i559e4809:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 7FDCF2F81646; Tue, 25 Aug 2026 19:13:20 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AAeDkljO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5021F000E9;
+	Tue, 25 Aug 2026 23:16:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787699764;
+	bh=/cNmmNvhGlkxS7SZv8G19FI0tngiieRaSNNGyFvAoN8=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=AAeDkljOs34jOG2uw25vckPNe9JYWAino/q7dBjlAZtrOwBkvXxStswpwzSBXETrg
+	 YCsBeMyPRBJRwDKq+2WK9RjZfPYPLqD66PvwK0vYGy8pJ6hi4NtFjxKYdzBMogIByO
+	 aeXMY7tLL3ey3YC0m17co/MapgPSd8NqSCQU2D0sNwJHuu3YJ/kUV6cPZB+0MIIxyS
+	 HfYRsHkaqk9V3xvmL/5VQAXFOxUTUqkW30OqT5jZd9NRqCiXepAZkfxP/CyKcrphmg
+	 BCulmzTO8VDpggeiBL5dfS815XGqsFQBdqEQN97LY9lboiVAo2mCY98p1C3ciUk6dB
+	 x4nvXrBBCXUtg==
+Message-ID: <9898c771fb10d2a9b774f6ec4c7c94bc7b0129f7.camel@kernel.org>
+Subject: Re: [PATCH v2 net] net/rds: fix out-of-bounds write in
+ rds_conn_peer_gen_update()
+From: Allison Henderson <achender@kernel.org>
+To: pamoutaf <paula@bynar.io>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com,  horms@kernel.org, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org,  rds-devel@oss.oracle.com,
+ linux-kernel@vger.kernel.org
+Date: Tue, 25 Aug 2026 16:16:03 -0700
+In-Reply-To: <20260825120132.51636-1-pamoutafpro@gmail.com>
+References: <20260825120132.51636-1-pamoutafpro@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 26 Aug 2026 02:13:00 +0300
-From: "Alice Mikityanska" <alice.kernel@fastmail.im>
-To: "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>,
- "David Ahern" <dsahern@kernel.org>, "Ido Schimmel" <idosch@nvidia.com>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Simon Horman" <horms@kernel.org>,
- "Shuah Khan" <shuah@kernel.org>,
- "Hannes Frederic Sowa" <hannes@stressinduktion.org>,
- "Vadim Fedorenko" <vadim.fedorenko@linux.dev>, netdev@vger.kernel.org,
- "Alice Mikityanska" <alice@isovalent.com>
-Message-Id: <a4fb63c7-4d1a-42bd-97ba-1f5c6bb0ad69@app.fastmail.com>
-In-Reply-To: <willemdebruijn.kernel.351b61ea6fb41@gmail.com>
-References: <20260822115717.1161782-1-alice.kernel@fastmail.im>
- <20260822115717.1161782-4-alice.kernel@fastmail.im>
- <willemdebruijn.kernel.351b61ea6fb41@gmail.com>
-Subject: Re: [PATCH net v3 3/4] selftests: net: Test UDP length overflow with PMTU
- discover and big MTU
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Aug 22, 2026, at 21:50, Willem de Bruijn wrote:
-> Alice Mikityanska wrote:
->> From: Alice Mikityanska <alice@isovalent.com>
->>=20
->> Two previous commits fixed overflow of UDP length when setsockopt
->> IP(V6)_MTU_DISCOVER is set to IPV6_PMTUDISC_DO or IP(V6)_PMTUDISC_PRO=
-BE,
->> and a large packet is sent over a netdev with an unusually large MTU.
->>=20
->> This commit adds the selftests that replicate the described steps to
->> reproduce for IPv6 and IPv4, and also one more test that ensures that
->> sending UDP jumbograms over a raw socket is still possible after the
->> fix.
->>=20
->> Signed-off-by: Alice Mikityanska <alice@isovalent.com>
->> ---
->>  tools/testing/selftests/net/Makefile         |   1 +
->>  tools/testing/selftests/net/cork_fragsize.py | 130 +++++++++++++++++=
-++
->>  2 files changed, 131 insertions(+)
->>  create mode 100755 tools/testing/selftests/net/cork_fragsize.py
->>=20
->> diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/sel=
-ftests/net/Makefile
->> index 0f5c178bc224..c6d332c90a54 100644
->> --- a/tools/testing/selftests/net/Makefile
->> +++ b/tools/testing/selftests/net/Makefile
->> @@ -25,6 +25,7 @@ TEST_PROGS :=3D \
->>  	cmsg_so_mark.sh \
->>  	cmsg_so_priority.sh \
->>  	cmsg_time.sh \
->> +	cork_fragsize.py \
->>  	double_udp_encap.sh \
->>  	drop_monitor_tests.sh \
->>  	ecmp_rehash.sh \
->> diff --git a/tools/testing/selftests/net/cork_fragsize.py b/tools/tes=
-ting/selftests/net/cork_fragsize.py
->> new file mode 100755
->> index 000000000000..d89ef9892329
->> --- /dev/null
->> +++ b/tools/testing/selftests/net/cork_fragsize.py
->> @@ -0,0 +1,130 @@
->> +#!/usr/bin/env python3
->> +# SPDX-License-Identifier: GPL-2.0
->> +
->> +# Test possible UDP length overflow in udp_send_skb/udp_v6_send_skb.
->> +
->> +from lib.py import ksft_run, ksft_exit, ksft_true, KsftSkipEx
->> +from lib.py import ip, NetNS, NetNSEnter
->> +import errno
->> +import gzip
->> +import os
->> +import socket
->> +import struct
->> +import subprocess
->
-> Various pylint and ruff issues, such as ordering imports
+On Tue, 2026-08-25 at 13:01 +0100, pamoutaf wrote:
+> From: Paula Moutafian <paula@bynar.io>
+>=20
+> rds_conn_peer_gen_update(), rds_start_mprds() and rds_check_all_paths()
+> all iterate conn->c_path[] up to RDS_MPATH_WORKERS (8) or conn->c_npaths,
+> but c_path is allocated with only
+>=20
+> 	npaths =3D (trans->t_mp_capable ? RDS_MPATH_WORKERS : 1)
+>=20
+> entries in __rds_conn_create() (net/rds/connection.c).  Only the TCP
+> transport sets t_mp_capable, so for the IB/RDMA transport (and the loop
+> transport) exactly one rds_conn_path is allocated.
+>=20
+> c_npaths is derived from the peer via the RDS_EXTHDR_NPATHS handshake
+> extension header and is only clamped to RDS_MPATH_WORKERS, never to the
+> transport's actual allocation.  A remote peer on an RDS/IB (RoCE) fabric
+> can therefore complete the unauthenticated handshake and, by sending a
+> second RDS_EXTHDR_GEN_NUM with a changed generation number, drive
+> rds_conn_peer_gen_update() to walk c_path[1..7] past the end of a
+> one-element allocation -- taking cp_lock, writing cp_next_tx_seq /
+> cp_next_rx_seq and walking cp_retrans on neighbouring slab objects.
+> rds_start_mprds() and rds_check_all_paths() are reachable the same way
+> via a peer-supplied c_npaths > 1; note rds_check_all_paths() is a
+> do/while and dereferences c_path[0] before testing the bound.
+>=20
+> Reproduced against an unmodified 7.2.0 KASAN build, triggered from a
+> hand-rolled RDS/IB peer completing the handshake and sending two probes
+> with differing RDS_EXTHDR_GEN_NUM:
+>=20
+> BUG: KASAN: slab-out-of-bounds in do_raw_spin_lock+0x55/0x9a
+> Write of size 4 at addr ff1100000425a624 by task ksoftirqd/0/13
+> Call Trace:
+>  do_raw_spin_lock+0x55/0x9a
+>  _raw_spin_lock_irqsave+0x12/0x18
+>  rds_recv_hs_exthdrs+0x34a/0x52a
+>  rds_recv_incoming+0x5a8/0xb33
+>  rds_ib_recv_cqe_handler+0xda1/0x12b6
+>  poll_rcq+0x8e/0xb1
+>  rds_ib_tasklet_fn_recv+0x1c4/0x348
+> Allocated by task 10:
+>  __rds_conn_create+0x5b3/0x168f
+>  rds_conn_create+0x18/0x1b
+>  rds_ib_cm_handle_connect+0x486/0xa35
+> The buggy address is located 44 bytes to the right of
+>  allocated 504-byte region, cache kmalloc-512
+>=20
+> The corrupted neighbour's cp_retrans.next is then dereferenced on the
+> next line, producing a fatal GPF (RIP: rds_recv_hs_exthdrs+0x3ba/0x52a,
+> KASAN: null-ptr-deref) -- a crash, not merely a detected access.
+>=20
+> Fix conn->c_npaths at the source instead of guarding every reader: in
+> rds_recv_hs_exthdrs() (net/rds/recv.c), clamp the peer-supplied
+> RDS_EXTHDR_NPATHS value to the transport's actual per-connection
+> allocation rather than to the fixed RDS_MPATH_WORKERS ceiling. c_npaths
+> can then never exceed the number of rds_conn_path entries
+> __rds_conn_create() allocated, which takes care of rds_start_mprds()
+> and rds_check_all_paths() -- both already bound their loops by
+> conn->c_npaths -- with no change at either call site.
+>=20
+> rds_conn_peer_gen_update() is different: its loop is bound by the fixed
+> RDS_MPATH_WORKERS constant, not by conn->c_npaths, so the c_npaths fix
+> above does not reach it. It still needs its own bound, computed the same
+> way as the allocation site and mirroring the sibling pattern already used
+> in rds_conn_destroy() (net/rds/connection.c).
+>=20
+> rds_conn_peer_gen_update() and rds_start_mprds() (net/rds/recv.c) were
+> both correct when written, with c_path still a fixed
+> RDS_MPATH_WORKERS-element array:
+>=20
+> commit 905dd4184e07 ("RDS: TCP: Track peer's connection generation number=
+")
+> commit 5916e2c1554f ("RDS: TCP: Enable multipath RDS for TCP")
+>=20
+> They became wrong when the allocation was made conditional on
+> t_mp_capable without updating either loop or the RDS_EXTHDR_NPATHS clamp:
+>=20
+> commit 840df162b3eb ("rds: reduce memory footprint for RDS when transport=
+ is RDMA")
+>=20
+> rds_check_all_paths() (net/rds/connection.c) is unrelated to that
+> regression: it was added new, three years later, and was unbounded
+> from the moment it was written, but is fixed by the same c_npaths clamp:
+>=20
+> commit 9ef845f894c9 ("rds: If one path needs re-connection, check all and=
+ re-connect")
+>=20
+> Fixes: 840df162b3eb ("rds: reduce memory footprint for RDS when transport=
+ is RDMA")
+> Fixes: 9ef845f894c9 ("rds: If one path needs re-connection, check all and=
+ re-connect")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Bynario AI
+> Signed-off-by: Paula Moutafian <paula@bynar.io>
 
-I'll make sure to run pylint and ruff before submitting Python.
+Ok, this looks good to me.  Thanks Paula!
+Reviewed-by: Allison Henderson <achender@kernel.org>
 
-For the imports: I'll reorder them as needed, but ruff also suggests to
-squash all lib.py imports into a single line. I see that other
-selftests also separate lib.py imports into meaningful groups that I'm
-planning to keep.
+> ---
+> v2:
+> - Per Allison Henderson's review, clamp conn->c_npaths itself at the
+>   point it is set from the peer's RDS_EXTHDR_NPATHS in
+>   rds_recv_hs_exthdrs(), instead of adding a second bound check at
+>   each of its readers. This covers rds_start_mprds() and
+>   rds_check_all_paths() with no further change at either site;
+>   net/rds/connection.c is unchanged from v1.
+> - rds_conn_peer_gen_update()'s loop is bound by RDS_MPATH_WORKERS
+>   directly, not by conn->c_npaths, so it is unaffected by the above
+>   and keeps its own bound from v1.
+>=20
+> [v1] https://lore.kernel.org/netdev/213829b7380f1fe12aed2f2ae9ba33c2870ad=
+dd5.camel@kernel.org/T/#t
+>=20
+>  net/rds/recv.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/net/rds/recv.c b/net/rds/recv.c
+> index cf3884d87931..c7f575bad91c 100644
+> --- a/net/rds/recv.c
+> +++ b/net/rds/recv.c
+> @@ -133,15 +133,16 @@ static void rds_recv_rcvbuf_delta(struct rds_sock *=
+rs, struct sock *sk,
+>  static void rds_conn_peer_gen_update(struct rds_connection *conn,
+>  				     u32 peer_gen_num)
+>  {
+> -	int i;
+> +	int npaths =3D (conn->c_trans->t_mp_capable ? RDS_MPATH_WORKERS : 1);
+>  	struct rds_message *rm, *tmp;
+>  	unsigned long flags;
+> +	int i;
+> =20
+>  	WARN_ON(conn->c_trans->t_type !=3D RDS_TRANS_TCP);
+>  	if (peer_gen_num !=3D 0) {
+>  		if (conn->c_peer_gen_num !=3D 0 &&
+>  		    peer_gen_num !=3D conn->c_peer_gen_num) {
+> -			for (i =3D 0; i < RDS_MPATH_WORKERS; i++) {
+> +			for (i =3D 0; i < npaths; i++) {
+>  				struct rds_conn_path *cp;
+> =20
+>  				cp =3D &conn->c_path[i];
+> @@ -210,6 +211,7 @@ static void rds_recv_hs_exthdrs(struct rds_header *hd=
+r,
+>  	u32 new_peer_gen_num =3D 0;
+>  	int new_npaths;
+>  	bool fan_out;
+> +	int npaths =3D (conn->c_trans->t_mp_capable ? RDS_MPATH_WORKERS : 1);
+> =20
+>  	new_npaths =3D conn->c_npaths;
+> =20
+> @@ -221,7 +223,7 @@ static void rds_recv_hs_exthdrs(struct rds_header *hd=
+r,
+>  		/* Process extension header here */
+>  		switch (type) {
+>  		case RDS_EXTHDR_NPATHS:
+> -			new_npaths =3D min_t(int, RDS_MPATH_WORKERS,
+> +			new_npaths =3D min_t(int, npaths,
+>  					   be16_to_cpu(buffer.rds_npaths));
+>  			break;
+>  		case RDS_EXTHDR_GEN_NUM:
+>=20
+> base-commit: 564973a259ec76f2dad0853420e7034cc43994c4
 
-For the missing docstrings: I see that other selftests don't have
-them either.
-
-I'll fix the rest (and probably use context manager for the dummy
-device).
-
->> +
->> +
->> +IP_MTU_DISCOVER =3D 10
->> +IP_PMTUDISC_PROBE =3D 3
->> +IPV6_MTU_DISCOVER =3D 23
->> +IPV6_PMTUDISC_DO =3D 2
->> +IPV6_PMTUDISC_PROBE =3D 3
->> +IPV6_TLV_JUMBO =3D 194
->> +
->> +
->> +def check_kernel_config(option) -> bool | None:
->> +    for filename, method in [
->> +        ('/proc/config.gz', gzip.open),
->> +        (f'/boot/config-{os.uname().release}', open),
->> +    ]:
->> +        try:
->> +            with method(filename, 'rt') as config:
->> +                for line in config:
->> +                    if line.rstrip() =3D=3D f'{option}=3Dy':
->> +                        return True
->> +                return False
->> +        except OSError:
->> +            continue
->> +
->> +
->> +def assert_debug_kernel() -> None:
->> +    res =3D check_kernel_config('CONFIG_DEBUG_NET')
->> +    if res is None:
->> +        print("WARN: Can't read kernel config; assuming debug kernel=
-, and running the test")
->> +    elif not res:
->> +        raise KsftSkipEx('CONFIG_DEBUG_NET is not set')
->> +
->> +
->> +def check_dmesg_clean(func) -> bool:
->> +    dmesg =3D subprocess.Popen(['dmesg'], stdout=3Dsubprocess.PIPE)
->> +    result =3D subprocess.run(['grep', '-q', f'WARNING:.*{func}'], s=
-tdin=3Ddmesg.stdout)
->> +    dmesg.wait()
->> +    return result.returncode !=3D 0 and dmesg.returncode =3D=3D 0
->> +
->> +
->> +def ip_setup(ns: NetNS, mtu: int, ipv6: bool) -> None:
->> +    ip('link add dummy type dummy', ns=3Dns)
->> +    ip(f'link set dummy mtu {mtu}', ns=3Dns)
->> +    ip('link set dummy up', ns=3Dns)
->> +    flag =3D '-6' if ipv6 else ''
->> +    nodad =3D 'nodad' if ipv6 else ''
->> +    addr_local =3D 'fd00::1/64' if ipv6 else '10.0.0.1/24'
->> +    addr_remote =3D 'fd00::2' if ipv6 else '10.0.0.2'
->> +    ip(f'{flag} addr add {addr_local} dev dummy {nodad}', ns=3Dns)
->> +    ip(f'{flag} neigh add {addr_remote} lladdr 02:00:00:00:00:02 dev=
- dummy nud permanent', ns=3Dns)
->> +
->> +
->> +def test_ipv6() -> None:
->> +    assert_debug_kernel()
->> +
->> +    with NetNS() as ns:
->> +        ip_setup(ns, 65576, True)
->> +
->> +        with NetNSEnter(ns):
->> +            with socket.socket(socket.AF_INET6, socket.SOCK_DGRAM) a=
-s fd:
->> +                fd.setsockopt(socket.IPPROTO_IPV6, IPV6_MTU_DISCOVER=
-, IPV6_PMTUDISC_DO)
->> +                try:
->> +                    fd.sendto(b' ' * 65528, ('fd00::2', 1234))
->> +                except OSError as e:
->> +                    # Ignore EMSGSIZE: it happens on kernels with th=
-e fix.
->> +                    if e.errno !=3D errno.EMSGSIZE:
->> +                        raise
->> +
->> +        ip('link del dummy', ns=3Dns)
->> +
->> +    ksft_true(check_dmesg_clean('udp_v6_send_skb'), 'WARNING detecte=
-d in dmesg')
->> +
->> +
->> +def test_ipv4() -> None:
->> +    assert_debug_kernel()
->> +
->> +    with NetNS() as ns:
->> +        ip_setup(ns, 65556, False)
->> +
->> +        with NetNSEnter(ns):
->> +            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as=
- fd:
->> +                fd.setsockopt(socket.IPPROTO_IP, IP_MTU_DISCOVER, IP=
-_PMTUDISC_PROBE)
->> +                try:
->> +                    fd.sendto(b' ' * 65528, ('10.0.0.2', 1234))
->> +                except OSError as e:
->> +                    # Ignore EMSGSIZE: the check happens after the W=
-ARN is printed.
->> +                    if e.errno !=3D errno.EMSGSIZE:
->> +                        raise
->> +
->> +        ip('link del dummy', ns=3Dns)
->> +
->> +    ksft_true(check_dmesg_clean('udp_send_skb'), 'WARNING detected i=
-n dmesg')
->
-> These two are identical apart from 7 constants.
->
-> Dedup and use @ksft_variants decorators?
-
-Tried to balance readability vs deduplication when introducing
-ip_setup... But OK, I can go all the way. Thanks for the suggestion of
-@ksft_variants!
-
->> +def test_ipv6_jumbo() -> None:
->> +    with NetNS() as ns:
->> +        ip_setup(ns, 65584, True)
->> +
->> +        with NetNSEnter(ns):
->> +            with socket.socket(socket.AF_INET6, socket.SOCK_RAW, soc=
-ket.IPPROTO_UDP) as fd:
->> +                hopopts =3D struct.pack('!BBBBI', 0, 0, IPV6_TLV_JUM=
-BO, 4, 65544)
->> +                fd.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_HOPOP=
-TS, hopopts)
->> +                fd.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_CHECK=
-SUM, 6)
->> +                fd.setsockopt(socket.IPPROTO_IPV6, IPV6_MTU_DISCOVER=
-, IPV6_PMTUDISC_PROBE)
->> +                udp =3D struct.pack('!HHHH', 1234, 1234, 0, 0) + b' =
-' * 65528
->> +                fd.sendto(udp, ('fd00::2', 0))
->> +
->> +        ip('link del dummy', ns=3Dns)
->
-> Should this have some test at the end? check_dmesg_clean or perhaps
-> a socket receiving the data.
-
-No =E2=80=94 when the test fails, sendto() raises an exception with EMSG=
-SIZE.
-There is nothing in dmesg on failure (hence no assert_debug_kernel
-either). The successful return from sendto is the criterion.
-
-Thanks for the review!
-
->> +
->> +
->> +if __name__ =3D=3D "__main__":
->> +    ksft_run([
->> +        test_ipv6,
->> +        test_ipv4,
->> +        test_ipv6_jumbo,
->> +    ])
->> +    ksft_exit()
->> --=20
->> 2.55.0
->>
