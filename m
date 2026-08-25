@@ -1,185 +1,236 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 407BE322C73
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 16:08:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787674099; cv=pass; b=Ito5a9bzas62P1bAc3s+iF4og0lCglAW3Xyt+0tVWz4etMJD0RUnQAdaz+CrW8SNB7zZ2XGF3Efp9HTncjD+LKKp0cSm/bx7Di51sLOzhbVDqcEuPk8Vab9FdFT3/bLfbrwYUH2YoZkz1Ox4QZE9wmi3llEjZGhiLyKXozrf89o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787674099; c=relaxed/simple;
-	bh=dGqiAelMi3j+OBeMLnEKDn93G/jB0JDZpRAJXM72wUo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VAdRF8jaYwOX+FGnHPfJju7JugQHM1cBbKIYrMKlrFoOhUt/zanhWg4YI6SPdh1TvANj2SP3sOn+cPKQnUievJvnZnFQnp5YMbaH9ZuPxuV2TY7viElhJvHOgMw6bDFdHne1HaNBrd8ikktKYKvMsxQ4qHYLT1iJ4WCXwTGuXdc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=UFhY6V2Y; arc=pass smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3188033D6FC
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 16:12:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787674348; cv=none; b=cwejlNByjBt7tu00fvMs2Ld8xOoLRmcZXyZyLLzAsVS/GToX/Z8qafgZ/V/lZkq8fCezsb4CZ9CwHgK9YIlfqDcopLR0YBVsyGArGpYi8u4tUW5zJDUhmeQZ8X7t0LuRN2jOx+e6DAGEZSyhkMmzSLkhv2cvRGd+XbiyUXi0Pdc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787674348; c=relaxed/simple;
+	bh=wXrgHy62T0tNDn8P/4NZ8q+YEMGB8yHeI1pf6IWRHTM=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=dFbl891y+bJGydfCfN2P6s+rm8PjvUcgOtDBfz8ATT5/cRxCA5Vgx3wjaK0Bk62k4wpOJkjW0DE0z48i0MnIbzIscVsWRjyhQ78L1dRlvPKfrqpxYvzW3WMYxCdazFHZ30Utxb1p5erD4HUY59dlhl0mKcq3UQsG0TOxvhg97eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jgBoyzun; arc=none smtp.client-ip=209.85.128.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="UFhY6V2Y"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8534d507f59so33254b3a.0
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 09:08:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787674096; cv=none;
-        d=google.com; s=arc-20260327;
-        b=f/mWgFW455LkqQ8xC46sxAq6d0BcNd4nqICWWyMuWaDB/IhhzAPUZGFUgnPW4VTjxq
-         r/IbTqGfkyy82z1YeU99AH7km0IKzBS9X7lnDnq039QxdoZArFqjwP0LPg5o9fKzGppB
-         eLa3YYBCDjnFhyKcBVCSCWhaxrznbKHod4KKiBaFK/vR5N0WIRODFXOc4kigjYhhM2aJ
-         fiZeDTmFz+uuaCASHvs7SInyvIlxsq+iRrogilzAP1cacJeAeOB8VosXuCCOxjCN9Jwn
-         XObrQKYsW9vzcCoVLxu9JdVUlNCqnloWfsNUWiFjL1/PWwfMuMiORA4ExBKnd5p9jmmA
-         USMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2ZLowbj6pZcMppFHbOVdGIJyzEqMnEa6iqrdQcAQ/VY=;
-        fh=4N5FssHd/Gfyz1e29NYp9PS4UyorIoqzPqGhCOG7doY=;
-        b=RzvnVnJvRuTkRjE928OWqaOgh+/ONsADOPJaQnoygYY9Qd0BMp3iDcyqcH4lELMVNo
-         xSDjyPy3tAsoaR1wuCYiBTfb2vibt4wl1yFya22HWJi/6CGyfbRoDhDgvrf9m5gq+6GP
-         rlJ4JKPsua6+x4832WXXLzYwlWZ673/5SMp0Fo9yIAeovTV7Xl4FF//YLt5Rgg69bg+g
-         ynn9TZ25Hpjo+GHkvRDq4w+vHEBYfmJrgOZFZcWd/RFpGwICr94D09LGgwELmEU37lgj
-         CgRfEemL9MADYFFIjsGN0oXGB7xYPSVCNktJemyVgaLuNNiGyIDryfOOjU6TqbJms1TL
-         MzKQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jgBoyzun"
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-836cde02992so60168017b3.2
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 09:12:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787674096; x=1788278896; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=2ZLowbj6pZcMppFHbOVdGIJyzEqMnEa6iqrdQcAQ/VY=;
-        b=UFhY6V2YaSXTehNNJjFn4l41ePBoR8UlPOKHj5w3M4/MatP3KAXsNNLcE4pOvcexw+
-         Lq+uvtutLQbsp5ReMkA+XgMaiqfLKS8y1hzemu7kvGkVlusLkbwQzSzlFKLktY3CIEMC
-         SD8if/k1ClDUcb5ekJ2FiIZVfeX9KMP0zc2xw=
+        d=gmail.com; s=20251104; t=1787674346; x=1788279146; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=01+frOfya8cSKRerweuTqMaNxLlq2qDmJSW1y4jWqwo=;
+        b=jgBoyzun7CojyfCESxsmmfgmuzwEnU+tjz4NyZnY7GinVGXAoUF2uhZ72sP3oWsWki
+         Sjcmmm0RL7ITTZs/EnwNw+8cp/AtNenU3vDc3D6mTNfOutYLFz8Pe1HKtO54EzTrMkwv
+         zM3MLWCeoJ7TvoqG43U9aSG2Kh6LjuolvPUsMdcVUuYo+1JFx25VrRHNQI1rOUYIUSre
+         e8pkOk91xVuL5mBbgxKn/T7Du1QsBG2mFvG73XFcwSjZV5RUMR52GCKDGOktZYGad5+e
+         NZPmIrHc3ggtLSmpWx10VKsos2RoIsy6saPk/yninUkosU2T9tVvi+AB28EXy2tyRNkX
+         4nxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787674096; x=1788278896;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1787674346; x=1788279146;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=2ZLowbj6pZcMppFHbOVdGIJyzEqMnEa6iqrdQcAQ/VY=;
-        b=atmm/73x9fz1HTUDvokEfbNmtBjXBrEx9pZaz/xPFid9odb/1rMU0JlLMKQfchzfFG
-         1R1PdavZVFeogyJbAK/FSIPfkRv/+Aic1u4tqvac/CifYqdiYaEPX8YK/9EjBNIsJ6/C
-         wlw3n0kwO8pJoxCICeNv3MyLAxA6EHTa3oJ9UAtXXLLOWsk4szlvG/A4GoGPfCswYRxW
-         cKrPU/eeiTxOycaGRwkZ81jbSQTOykwufIbZBwhRs+XuVnEzGA1ulmQDWaqg0awSyLG6
-         unLkLIHs6obNwyDMV7gfkLHdXTWFZ8hunKMQmwuhpcZXkRGOUui8Co6Zv7/tRFg7mWhp
-         l1eg==
-X-Gm-Message-State: AFuF++k5Z4at7w+vfqxtcoaCaja4SBzIwoaYRzZPigInpC7FkUnM643O
-	c27y1AZ0KRE+qqdky01mgpgayMxvMGqd09l6+yQxi0wdqKdQNZI5+l0lvQ23YjOKmDRQR/brPAZ
-	Eu71hor5os+iIg0gIkQuJyZXrieVy+mVof9uCBBN5ZstCbH48iaqQUvH/
-X-Gm-Gg: AR+sD11raBkmsalKEEuCoDjqP+3i0PheFSedFkfs5Q7hpNRbzd+3Af0Kp+H4CHimJ1I
-	16Ji2HVtm1Pt9yVdgDM11vXlf+hVwzWKoouoQPvqN4aDT9YvmYCEwrCPYSjrtOIDquqaShLRsLu
-	mJUjqfzSfKzh5fj/sUH8zCgWxFxibnY+48hBwX/zI4qR8rsnLoquM9obYiiPljPIY4v7TSWbGKu
-	/+Hzz4YvdVL5T7IeLgWaXjV8CrEdgD2OoTUMpqeQGSnpbQYqa7KBzPYCLo1Le5iZmZN0wrIpl9p
-	sZD+iq4Zrxb/i453R+y028QhML53xNdr3aXAenhxGrBuJEKe+MbK
-X-Received: by 2002:a05:6a00:858f:b0:853:5152:a3e9 with SMTP id
- d2e1a72fcca58-8535152ac57mr1163052b3a.11.1787674095878; Tue, 25 Aug 2026
- 09:08:15 -0700 (PDT)
+        bh=01+frOfya8cSKRerweuTqMaNxLlq2qDmJSW1y4jWqwo=;
+        b=e1zHXHQ/EcMjZYFX+PoGsCfUZacZBw0r1nzlHVHSeOCvicILf2H8wWEY9+O8TGPFw+
+         62bvapmNAepsNqZGbWf2EMX29lbdFxVVE0YDm9cORBF1SM+F6JIqu1wIGQz5KUjMs1+N
+         TB164Zkgofmdtww/TnrVHMrnIjS7fN0FKkKSb+ZGPk/exZiEta6DHkudImG3/atRyFsK
+         SXCnZNyjzIZx75k2GgkIvjzsDH7sqw4k41k4ebNF9swH37vptuKv5cFNU0d/QrivF7S8
+         vKFGChvyjw9Eh1Sq2z3tmIPSJ/3WqUcIbzQ5J5W8kcmzBhlfPAaeHqueUfcuqUUU/q+Q
+         3E4Q==
+X-Forwarded-Encrypted: i=1; AHgh+RpeNYrkNv+dPDMVAupXN2A/+SUNGRMdQsAg5VC/IeBivTocI2C43ulEjEHwIwZisLpSDCa6Ly4=@vger.kernel.org
+X-Gm-Message-State: AFuF++kKaoiK6X985F+OGm9Gl176pkrVFSoCtlGVocAvSuWDWOo6Tp8/
+	20xoxmxXfr1743az03Azf+ra1A+yDHZN0YMqbxykk53yKR9fHrpmhYs+
+X-Gm-Gg: AR+sD10ua0mR1+y08Cg4OcOYvNSMssb0hBXjvXWnQoa0zHEAfNGh6j0Yg+RpOPNHNEO
+	76P3i1yTtyTx+0+tHO1LLILZIgfSly+0HSuvH1yU4sVqsMiGsng9ssAgaZ1VuOcIk+X+bZmOFGD
+	rnrKC9gKcgQf26xOOja48Xk7cqbnJNaaDvG5q7YJdBSJc56bsqc4nlN9JR+GZ8xBfXd8eTVeg9T
+	jDIyjbizgzpaDO7PzwqJ2BUts040tCUsTbjyTbBMkqqwAeg/4yDI14+YZ1EaculLzM/GYQOJ++m
+	S8hIkU6gVE1s4TCTtwxUabYQNG1WcZoM9rsCFVh3OXt181ETctz7h++rf0iRqlEL43dMHKFgCMk
+	1C+hVBjXJczHQ3BrQUdBrKvgMhavLnWV2JsNSRYoga+uDqszCV7NauvRZKizatAEnzQZq9QPRei
+	dgnwH0gy9gWieuI6qiMcP1FzpFCkJUVRwxyjpl1KPXllI+NMa1nl7Pvv1hBwHYoQkwbHhpO+2x+
+	9q6OHNEknLrjEp/wcrgkdgCduBiIdyzD2ktQrT+BhV7f8i99OU3
+X-Received: by 2002:a05:690c:e1d7:20b0:80e:5236:b944 with SMTP id 00721157ae682-85473d9e59amr26963037b3.10.1787674345937;
+        Tue, 25 Aug 2026 09:12:25 -0700 (PDT)
+Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-85705387614sm2221077b3.2.2026.08.25.09.12.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Aug 2026 09:12:25 -0700 (PDT)
+Date: Tue, 25 Aug 2026 12:12:24 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: "Chia-Yu Chang (Nokia)" <chia-yu.chang@nokia-bell-labs.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Jakub Kicinski <kuba@kernel.org>
+Cc: Mirja Kuehlewind <mirja.kuehlewind@ericsson.com>, 
+ "shaojijie@huawei.com" <shaojijie@huawei.com>, 
+ "shenjian15@huawei.com" <shenjian15@huawei.com>, 
+ "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>, 
+ "eperezma@redhat.com" <eperezma@redhat.com>, 
+ "jasowang@redhat.com" <jasowang@redhat.com>, 
+ "virtualization@lists.linux.dev" <virtualization@lists.linux.dev>, 
+ "mst@redhat.com" <mst@redhat.com>, 
+ "xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>, 
+ "pabeni@redhat.com" <pabeni@redhat.com>, 
+ "edumazet@google.com" <edumazet@google.com>, 
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
+ "corbet@lwn.net" <corbet@lwn.net>, 
+ "horms@kernel.org" <horms@kernel.org>, 
+ "dsahern@kernel.org" <dsahern@kernel.org>, 
+ "kuniyu@google.com" <kuniyu@google.com>, 
+ "bpf@vger.kernel.org" <bpf@vger.kernel.org>, 
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
+ "dave.taht@gmail.com" <dave.taht@gmail.com>, 
+ "jhs@mojatatu.com" <jhs@mojatatu.com>, 
+ "stephen@networkplumber.org" <stephen@networkplumber.org>, 
+ "xiyou.wangcong@gmail.com" <xiyou.wangcong@gmail.com>, 
+ "jiri@resnulli.us" <jiri@resnulli.us>, 
+ "davem@davemloft.net" <davem@davemloft.net>, 
+ "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, 
+ "donald.hunter@gmail.com" <donald.hunter@gmail.com>, 
+ "ast@fiberby.net" <ast@fiberby.net>, 
+ "liuhangbin@gmail.com" <liuhangbin@gmail.com>, 
+ "shuah@kernel.org" <shuah@kernel.org>, 
+ "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, 
+ "ij@kernel.org" <ij@kernel.org>, 
+ "ncardwell@google.com" <ncardwell@google.com>, 
+ "Koen De Schepper (Nokia)" <koen.de_schepper@nokia-bell-labs.com>, 
+ "g.white@cablelabs.com" <g.white@cablelabs.com>, 
+ Ingemar Johansson S <ingemar.s.johansson@ericsson.com>, 
+ "cheshire@apple.com" <cheshire@apple.com>, 
+ "rs.ietf@gmx.at" <rs.ietf@gmx.at>, 
+ "Jason_Livingood@comcast.com" <Jason_Livingood@comcast.com>, 
+ "vidhi_goel@apple.com" <vidhi_goel@apple.com>, 
+ Parav Pandit <parav@nvidia.com>, 
+ Willem de Bruijn <willemb@google.com>, 
+ ij@kernel.org
+Message-ID: <willemdebruijn.kernel.28ce4bc2544df@gmail.com>
+In-Reply-To: <PAXPR07MB7984F0C072220066856DD8ACA3AF2@PAXPR07MB7984.eurprd07.prod.outlook.com>
+References: <20260804213510.673084-1-chia-yu.chang@nokia-bell-labs.com>
+ <20260804213510.673084-2-chia-yu.chang@nokia-bell-labs.com>
+ <20260811173017.3d18dfdc@kernel.org>
+ <PAXPR07MB79849A3F1724DBB2DA8EA20AA3DC2@PAXPR07MB7984.eurprd07.prod.outlook.com>
+ <20260812155430.6ec81eec@kernel.org>
+ <PAXPR07MB7984E3E73868BF8966821C27A3DB2@PAXPR07MB7984.eurprd07.prod.outlook.com>
+ <CAF=yD-LQbndjPZiXcfA6fMp6msza_+YdzqqwyeUDVTdOCOHhDw@mail.gmail.com>
+ <47BE8A8A-F80C-4C30-BC95-C85FEBFFB606@ericsson.com>
+ <PAXPR07MB7984ED42ED0849D3A9AB8C19A3DA2@PAXPR07MB7984.eurprd07.prod.outlook.com>
+ <willemdebruijn.kernel.c248a28f9c86@gmail.com>
+ <20260814120121.50e61d01@kernel.org>
+ <CAF=yD-L1-Sxz9uyP_4WqtNRJHnwTVMhQba_KF-=Eiy=d9Jf-qA@mail.gmail.com>
+ <PAXPR07MB7984F0C072220066856DD8ACA3AF2@PAXPR07MB7984.eurprd07.prod.outlook.com>
+Subject: RE: [PATCH v5 net-next 1/2] net: update comments for SKB_GSO_TCP_ECN
+ and SKB_GSO_TCP_ACCECN
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260820095742.68511-1-jhs@mojatatu.com> <20260822134401.6545e4eb@kernel.org>
- <CAM0EoMnLnc2dtzRyaJs+V6Niq=39OQ=p-XC7M+FMTQ0ctSvmyw@mail.gmail.com>
- <20260822160234.7115ccdc@kernel.org> <CAM0EoMm0orPkSuMLrpGMNkUATjmBPCvqWmKMEPQoYuYAEvCAQg@mail.gmail.com>
-In-Reply-To: <CAM0EoMm0orPkSuMLrpGMNkUATjmBPCvqWmKMEPQoYuYAEvCAQg@mail.gmail.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Tue, 25 Aug 2026 12:08:02 -0400
-X-Gm-Features: AcwNN1UfZeiVD0YzBqdqd_6Ugr5w6_aaDqOKIPnHzTlvPeR1fBSFdGBvHs3fFDo
-Message-ID: <CAM0EoMk8fAACt11fe1pUsFeG9np3SdsV0YUNmEevLu=i=b+xKg@mail.gmail.com>
-Subject: Re: [PATCH net 1/2] net/sched: pfifo_fast: cap ring size and account
- to memcg
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, stable@vger.kernel.org, vega@nebusec.ai, 
-	Victor Nogueira <victor@mojatatu.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 24, 2026 at 8:37=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.com>=
- wrote:
->
-> On Sat, Aug 22, 2026 at 7:02=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> =
-wrote:
-> >
-> > On Sat, 22 Aug 2026 18:14:49 -0400 Jamal Hadi Salim wrote:
-> > > > On Thu, 20 Aug 2026 05:57:41 -0400 Jamal Hadi Salim wrote:
-> > > > > +     if (qlen > 65535) {
-> > > > > +             pr_warn_ratelimited("pfifo_fast: capping ring size =
-%u to 65535 for dev %s\n",
-> > > > > +                                 qlen, qdisc_dev(qdisc)->name);
-> > > > > +             qlen =3D 65535;
-> > > > > +     }
+> > > On Fri, 14 Aug 2026 09:34:01 -0400 Willem de Bruijn wrote:
+> > > > > Current SW GRO sets SKB_GSO_TCP_ACCECN when the flushed skb carries CWR in tcp_gro_complete():
+> > > > > if (th->cwr)
+> > > > >     shinfo->gso_type |= SKB_GSO_TCP_ACCECN;
 > > > >
-> > > > Why not a hard cap?
+> > > > And I suppose it follows correct AccECN rules for coalescing.
+> > > >
+> > > > That is a performance regression from RFC 3168 ECN, as it allows for 
+> > > > less effective coalescing. I have no intuition how much it will 
+> > > > differ in practice.
+> > > >
+> > > > > For HW GRO of a legacy device that implementing RFC3168 semantics, setting SKB_GSO_TCP_ECN seems reasonable.
+> > > > > However, such a device would not be able to preserve ACCECN signaling across the GRO/GSO.
+> > > > > In that case, if preserving AccECN signaling is required, disabling HW GRO may indeed be necessary.
+> > > >
+> > > > Right.
 > > >
-> > > sorry, where to put the hard cap and what would it be?
-> > > Or maybe you misspoke and intended to say "why put a hardcap"?
+> > > I'm still not following.. Maybe Willem can ELI5 what the problem is.
 > > >
-> > > Or maybe in this case probably safer to just reject the change if > h=
-ard cap?
-> >
-> > The latter, I'm asking why not:
-> >
-> > if (qlen > 64k)
-> >         return -EINVAL;
-> >
-> > To be clear I didn't dig into the code, just read the commit msg, so
-> > maybe you have a reason. But the "normal behavior" for out of range
-> > params should be to return an error rather than silently clamp() into
-> > the allowed range?
+> > > _SW_ GRO follows only the AccECN rules.
+> > > But if HW GRO follows RFC 3168 and we mark the aggregate as 
+> > > SKB_GSO_TCP_ECN - TSO will also abide, and segmented output will be 
+> > > identical to pre-GRO input.
+> > 
+> > +1
+> > 
+> > > Are we trying to ban RFC 3168 behavior in HW purely to match SW?
+> > 
+> > I think that's the intent here?
+> Hi Willem,
+> 
+> I think we can still change SKB_GSO_TCP_ECN into SKB_GSO_TCP_ACCECN on the RX path, even if HW GRO and SW GRO use different aggregation rules.
+> Currently, SW GRO flushes when the CWR state changes and sets SKB_GSO_TCP_ACCECN when the resulting skb carries CWR=1.
 >
-> No real concreate reason other than the thought that it's a device
-> param as opposed to a pfifo one.
->
-> I am going to send a v2. Will switch to similar to what virtio does:
->
->   if (qlen > S16) {
->       //extack here
->       return -E2BIG;
->   }
->
-> The followup as identified by sashikos is on tun/tap - i have a rough
-> patch, untested but there are others ahead of that i need to send out
-> first.
+> 
+> For HW GRO, if the device flushes immediately when a CWR=1 packet arrives, there is no need to set either SKB_GSO_TCP_ECN or SKB_GSO_TCP_ACCECN.
+> In that case, each CWR=1 packet is emitted separately, and there is no need to preserve multiple CWR indications through GSO.
+> So, if the HW can be confirmed to always flush CWR-marked packets without coalescing them, preserving multiple CWR indications through GSO is not required.
+> In that case, using SKB_GSO_TCP_ACCECN would not provide any additional benefit.
 
-Although i have submitted v2 - i may have a small change of heart.
-I was trying to document sashiko's famous "pre-existing issue" rant
-for this bug so we can followup later; sashiko correctly pointed out
-that tun, tap/macvtap have the same issue and i was going to do those
-as followups.
-Although i had this approach below as an option earlier - i didnt want
-to go with it because the goal was to isolate the pfifo changes to
-net/sched. The option was to make this change:
+I agree.
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 38336858c168..ab6b44b67be2 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -9985,6 +9985,9 @@ int netif_change_tx_queue_len(struct net_device
-*dev, unsigned long new_len)
-        if (new_len !=3D (unsigned int)new_len)
-                return -ERANGE;
+The difference on transmit is that SKB_GSO_TCP_ACCECN will copy the
+ECN bits to every segment, whereas SKB_GSO_TCP_ECN will only set the
+bits on the first segment.
 
-+       if (new_len > S16_MAX)
-+               return -ERANGE;
-+
-        if (new_len !=3D orig_len) {
-                WRITE_ONCE(dev->tx_queue_len, new_len);
-                res =3D call_netdevice_notifiers(NETDEV_CHANGE_TX_QUEUE_LEN=
-, dev);
+From commit 023af5a72ab1 ("gso: AccECN support") that introduced
+SKB_GSO_TCP_ACCECN:
 
+    With RFC 3168 ECN aware TSO (NETIF_F_TSO_ECN) CWR flag is cleared
+    starting from 2nd segment which is incompatible how AccECN handles
+    the CWR flag. Such super-segments are indicated by SKB_GSO_TCP_ECN.
+    With AccECN, CWR flag (or more accurately, the ACE field that also
+    includes ECE & AE flags) changes only when new packet(s) with CE
+    mark arrives so the flag should not be changed within a super-skb.
 
-This is a bit controversial with S16_MAX as the upper bound, although
-no device i could find had anything that caps other than virtio (u16
-max: 32768).
-I have tested this with all 3 issues(pfifo, tun and tap) and it fixes all 3=
-.
+Makes me wonder what SKB_GS_TCP_ACCECN adds. Copying bits
+from the GSO skb to all segments is the default. SKB_GSO_TCP_ECN is
+an indication that the NIC knows how to diverge from this default for
+these specific bits.
 
-If this is acceptable as a fix i am going to withdraw v2
-(I dont see much of a downside even for buffer bloat needy folks like
-satellite links and given virtio there is precedence)
+That commit confirms this:
 
-cheers,
-jamal
+    If NIC is completely unaware of RFC3168 ECN (doesn't support
+    NETIF_F_TSO_ECN) or its TSO engine can be set to not touch CWR flag
+    despite supporting also NETIF_F_TSO_ECN, TSO could be safely used
+    with AccECN on such NIC. This should be evaluated per NIC basis
+    (not done in this patch series for any NICs).`
+
+> 
+> The problematic case is when a HW GRO aggregates multiple packets carrying CWR=1 and only sets SKB_GSO_TCP_ECN.
+
+The driver of such a device could be updated to set SKB_GSO_TCP_ACCECN
+or not set any such ECN GSO flag.
+
+The driver of other devices that do follow RFC 3168 semantics will
+continue to have to set SKB_GSO_TCP_ECN on the GSO skb. It is quite
+plausible that few or no devices currently support ECN in their HW-GRO
+coalescing.
+
+> During GSO, only the first output segment would carry CWR=1, which loses the remaining CWR signaling information required by AccECN.
+> In that case, changing from SKB_GSO_TCP_ECN to SKB_GSO_TCP_ACCECN would preserve the original signaling by ensuring that the segmented packets carry the correct CWR information.
+> As I understand RFC3168, receiving additional CWR-marked packets is harmless, because once a valid CWR has been received, the receiver already stops echoing ECE.
+
+Agreed.
+
+> Additional CWR indications do not change the receiver state.
+> This would have a performance impact since it disables HW TSO for the skb and falls back to software segmentation.
+
+You mean if the device advertises NETIF_F_TSO_ECN, and GSO skbs may
+contain AccECN signals, the host must downgrade from TSO to GSO to
+avoid corrupting the signal?
+
+The cost of that would be significant. Not something to do for
+established environments. But technically seemingly correct, at least
+for packets with non-zero ECN bits.
+
+> But IMO it preserves correctness for both RFC3168 ECN and AccECN.
+
+Side-note: this thread probably has way too many Cc: for this narrow topic.
