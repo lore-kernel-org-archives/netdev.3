@@ -1,86 +1,57 @@
-Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472DF32B109
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 04:56:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D14323EA94;
+	Tue, 25 Aug 2026 05:17:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787633805; cv=none; b=A3Om6x9mY1Z5jLAW/iS27Ur5UcIoL6pndz1sWZrppbGzjXNaw3PFCUjLUUi3DtxD8qvTW2kGX6DjgB3MoulA9XAL40tN7I3izPukelekwKaTo2p8/G0iWf2Zvfv85fiJr/dr+2Sru/utiF1V2vWozlrfWUEtyfcUntVTlwT7TWM=
+	t=1787635067; cv=none; b=UC6Tw5/OkWS5NOV6tZhZxCcKLIKUqIcIo6k3igWOzSW07uLiR9UB3kchbtbZXJwe+yp3Oiqu2IoP1ODaeW76LSJmjNMgQHGq2RiFHJdu/Mni8IpQkUyeh/ZTR7Z4sON9rJfOL2Gz0k+wM0/AdjO/j42UVbs11XFlKdzKBPBsNaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787633805; c=relaxed/simple;
-	bh=xh8zMmJjjGXC6wtiuYUFUCvEzj2uoVqq+mklBD7siOY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KkdFnFYr7lZj0uJk2tqpB6oCGXrWsyCylQvME+6D7Fxxydt25vTKstFy4pN8TTYYXncaFL1/P39KLu8loLjfy9KGI42Mk6hM/gT9m6CwqDFoPEg4P1dd16gzpxt2AZj1j4i+YbP2k9zAs1q90KgExtxg2aXXBk3+oPTWkCRGIhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V549B50A; arc=none smtp.client-ip=74.125.224.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787635067; c=relaxed/simple;
+	bh=jH9fYfWlkDEQqqsWAsPKJkxMavb+V8lZrBplK7PH4Pc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MFJTgjTMYIITLV0x/LVNJ2zbnJI0XC3/bRX/ddADkMS7ejfjJm3GaBVAGt8F9qEQbnixScxgdP+2OsNHSw3/t0TUPnASbLJtth/eGGzF1Ra1paqu4D47IVk3ez0B22+zjA36HCKy6ZvetZA+gs1gSSav002mRLS24kMmPKlVOOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=MjSLgBD0; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V549B50A"
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-66c82b32121so6444867d50.1
-        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 21:56:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787633803; x=1788238603; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xh8zMmJjjGXC6wtiuYUFUCvEzj2uoVqq+mklBD7siOY=;
-        b=V549B50AskZb/pSEw2NWzpGu0EPN7QJCl3ht+YXroBFnoAAKKO0jmaWcEv9i2neCiq
-         D7kIv2XX23XLEJ8nq4tj88sGdJfKSsUSKtrVybrQqfVyhaU8CMAIxUN9iiPvR9r+Z0U0
-         U+H1BuOZkW1cLCEJf3JxK+p173H3rH5s4GyJHl7Z1Xsb19vevNqL6xq3nN8MmWBTBtM7
-         qucMchabZCLuoP/3a5XaBVGvYHArT1SRuW8mqVx/bFiO7qZ3yX+ZH5nj+cpt8BhAPnZl
-         ftnnSW2LJbObrGN0CqSqHBcU6ARP9yIa/OZ4SCWRvYpcSJtX2VYyQeplb4eFB+VeYmuf
-         WjHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787633803; x=1788238603;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xh8zMmJjjGXC6wtiuYUFUCvEzj2uoVqq+mklBD7siOY=;
-        b=iKKYI3Y0lFwW1yRlksxYPisBY1rCf6crXmLDxwysrXBWl1LjdGS+qUvWipznYEhW9A
-         Kivwrme++oj42YivQGngBmCy2p/tEVM6/CiwZFp2x6jltGEbk2ye+6KyD3hgNZv/Bm8K
-         QqXK3gCoWCdZXqcMrWCvgJ+jl2wkeoKv9Tr4zdR74pM3SEOlIxOGWvMEUx7d0CTP2UMb
-         86B1Utww/aw3LBBgJgQR+tiV+wWQ84Riz7bGOb0qsAmfEOxreur6U6/BIgD0QriB0ctk
-         BEnFXk+hiF7D96NIWMZtbT0wy9gx/E5L0crYVsRMa8P9GSpsVvJo+rhrHJmTEUzbcE5l
-         QOcg==
-X-Forwarded-Encrypted: i=1; AHgh+RpTbomD4WAuSx/wLH8HyqeL7xcq/NmzLh1ClO5elBXesO+m2n1YLchevEM/r1SJKXLY5oRrShY=@vger.kernel.org
-X-Gm-Message-State: AFuF++k+FKmAMvSWBGqDwaPhRM7tXPlJUEYEuEVB8tqH/AQZG+i/Qa6M
-	FXNvjx23JNv1zI75XCAcS06hz8KuTIRjYLw/c/zsgPzOpaeBWO1yPMXk
-X-Gm-Gg: AR+sD10O0AgzdtkvWmcZmx6od8nS0Eg/gYiy84+2hgjUquNU0HvnIk7Lo9Z2J/U+kMC
-	Or79GECNtWpVRL8Dxn0avqJj/Msc82lAkgRhBdF+V7BCqEkRbWRB1XlvX168lUUWF4tRpe+vCpx
-	3rFNBuhBQrMk1C27EXePh/04ofU0sG7dEv0YCcmAuJuuQJS6IoUDf67I2uJ9YxXmyNk+DUXUECC
-	4TZXtiewQz6DNDoIDBtMfqDs3BMwulcdqJQ9R7MKHrSjtcPSHCEasZcWeiZJwm2ahGgc9uw+pST
-	pdzadq751ZdnV4B7ji6BUtVa4otLyt2hxwyvBJ9j2GDfeisPOdzZ8OuMIO0jlQlaxvqn8apeR1K
-	etXPJ2A4rJPlQChIVLuB3HLn7Dl5MJb2yMT+ncRxcQKuqCaw23zPrTRlDco3gTZYXAKc4b80UBm
-	XoujoAS9fQT4t4epBlSUfbqWhXxu41W+S2VNZkSUdrZBmnuAS5/W3l2EBmnM0HvajRurs=
-X-Received: by 2002:a53:b3c3:0:b0:66c:486c:aa07 with SMTP id 956f58d0204a3-66cf21bd42amr5572435d50.35.1787633803283;
-        Mon, 24 Aug 2026 21:56:43 -0700 (PDT)
-Received: from mac.lan ([136.55.173.105])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-84ca62f6799sm43525737b3.19.2026.08.24.21.56.42
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 24 Aug 2026 21:56:42 -0700 (PDT)
-From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-To: horms@kernel.org
-Cc: AutonomousCodeSecurity@microsoft.com,
-	andrew+netdev@lunn.ch,
-	blbllhy@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	kys@microsoft.com,
-	laforge@gnumonks.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	osmocom-net-gprs@lists.osmocom.org,
-	pabeni@redhat.com,
-	pablo@netfilter.org,
-	tgopinath@linux.microsoft.com,
-	xmei5@asu.edu
-Subject: Re: [PATCH net] gtp: fix NULL pointer dereference in gtp0_handle_echo_resp()
-Date: Tue, 25 Aug 2026 00:56:40 -0400
-Message-ID: <20260825045640.39522-1-blbllhy@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260819124820.GR265046@horms.kernel.org>
-References: <20260819124820.GR265046@horms.kernel.org>
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="MjSLgBD0"
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67P2PpWW1298915;
+	Mon, 24 Aug 2026 22:17:36 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=C4QKkOWY2/zM1Uc2xPRR8wL
+	sp+RCkHLCURmw4zQueFo=; b=MjSLgBD0qNBjbbdbw33690RPXOaQkMBR0AltLic
+	uKiNMI9KSLwm2rcdAzuk3Y+ruWa6FqruYWDJB5ZQWS4tgmVFpvCq1rsNvllrnpcV
+	cEP9L4XEAZ46HHYlyFEbuK+UkUH6XPHfw32netXvn2tHxpo5H7ns3nIFhoqrA+y8
+	qRKzurLOgBa5Kl4doawziZJdjSHD/XLxdsGGcSk5ewXI+btxrPFC2bZAYBd1CAbn
+	nheC6uprUBY8HqfX5VCfzY+/mtwd1V8L8+ap8vqJ20oFAcqf137M5xwdAEKfL2vr
+	3yutr3/DuOdIPLe0NI33FSvQulFKsnE29TluF+BSlhcnA6w==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4g8pdx341j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Aug 2026 22:17:36 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 24 Aug 2026 22:17:35 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Mon, 24 Aug 2026 22:17:35 -0700
+Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with ESMTP id 430123F7099;
+	Mon, 24 Aug 2026 22:17:32 -0700 (PDT)
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <kuba@kernel.org>, <linux-kernel@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <rkannoth@marvell.com>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <pabeni@redhat.com>, <sgoutham@marvell.com>,
+        Kiran Kumar K
+	<kirankumark@marvell.com>
+Subject: [PATCH net] octeontx2-af: fix CN20K default MCAM rule removal on port cleanup
+Date: Tue, 25 Aug 2026 10:47:25 +0530
+Message-ID: <20260825051725.3732440-1-rkannoth@marvell.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,44 +59,63 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=BomtB4X5 c=1 sm=1 tr=0 ts=6a8d2570 cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=EAYMVhzMl8SCOHhVQcBL:22 a=M5GUcnROAAAA:8 a=a3bFawCxOckcWzoCgeEA:9
+ a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI1MDA0MiBTYWx0ZWRfX8wbRvQzH/gEa
+ fTZNpSuER7evIU5jgLmAd3lj9k8AuGr06SQqkdKaRomRvOsqC5O9IBUjH8jnMQ3xg2lsj7HQlTT
+ eeypWeQ8BnLccZGVcPSoUelYZ6PRN0GXgrcM2lILir8oJlUg0O5XE1zToTlL+0ikutZQC3KjZYP
+ 9EI8Iq/KmV6sSUWyZIn3An9OQXENmOPof+eIjE3fW9gdncrVyhaNJiJ8r0ZhWamuUcQJE9mlr3k
+ 9FnywirvPvK+5J3CULJkf4p6Eb2WMDNwzUUJxxXZbfbqPfMLDE4aj16ggOVCXjwdWgXiCawlH4J
+ EVvSfsSo3Z2FzdQGGa6uyt9rT9eVf5GIzRfVDoxCuhpiSUdaOoL0RQNxkyyT4VGz7hlvzxWqwC4
+ oUtyvwyJyADes1eXOaK8c2EFNWQx6eO6dBcRu4GFdgYVQiN2Olip+w8AGbHJUFAio96kfXNPfNO
+ V81pHzDcEbOp+9dGgng==
+X-Proofpoint-ORIG-GUID: Ka0y1KNtxwG0jBTQUkhj08vdEK2te5RH
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODI1MDA0MiBTYWx0ZWRfX+V7FCa5nj7x4
+ suc7in1L/4cVVEt6A33BZpEY7AIhsbMrlyzLVC6TkuhWsN6LTJK5jQNecuKfYWnxazh66DsNMXU
+ 11TP5PFLbDbANn71jxVEmGDBfnE5ug8=
+X-Proofpoint-GUID: Ka0y1KNtxwG0jBTQUkhj08vdEK2te5RH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-25_01,2026-08-24_01,2025-10-01_01
 
-On Wed, Aug 19, 2026 at 01:48:20PM +0100, Simon Horman wrote:
-> I don't believe that this is sufficient to address the problem described as
-> there is no synchronisation between the reader and writer of sk_created.
->
-> I wonder if this might be addressed using smp_store_release/smp_load_acquire.
+From: Kiran Kumar K <kirankumark@marvell.com>
 
-Thanks. v2 uses smp_store_release()/smp_load_acquire() as suggested.
+npc_mcam_free_all_entries() disables every MCAM entry mapped to a
+port before freeing it.  On CN20K, that also disables the default
+broadcast, multicast, promiscuous, and unicast rules, which causes
+packet drops when all rules are removed per port.
 
-While reviewing all sk_created access points, we also found a teardown
-race in gtp_encap_disable() and a missing RTNL lock in
-gtp_genl_send_echo_req(). These are addressed in a new patch 2/2.
+Only disable and free non-default entries.  Leave CN20K default rules
+enabled when freeing the remaining port entries.
 
-Regarding the Sashiko review:
-https://sashiko.dev/#/patchset/20260816035205.57966-1-blbllhy@gmail.com
+Fixes: 013717353c03 ("octeontx2-af: npc: cn20k: Tear down default MCAM rules explicitly on free")
+Signed-off-by: Kiran Kumar K <kirankumark@marvell.com>
+Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+---
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-> Could a concurrent RX softirq checking gtp->sk_created without
-> smp_load_acquire() still observe it as true while gtp->sk0
-> remains NULL?
-
-Addressed in v2 patch 1/2.
-
-> Does the error path in gtp_create_sockets() properly synchronize
-> with concurrent RX softirqs? Could this lead to a Use-After-Free?
-
-Independent pre-existing issue.
-
-> Could the KASAN null pointer dereference actually be caused by the
-> teardown path? Does this path need synchronization to wait for
-> concurrent softirqs before clearing the pointers?
-
-We reproduced this and addressed it with another teardown path issue
-in v2 patch 2/2.
-
-> Does modifying the RX SKB in place during an echo response corrupt
-> data for concurrent readers (tcpdump)?
-
-Independent pre-existing issue.
-
-Cen
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+index 60922944675b..c34f8d86cc8a 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+@@ -2957,10 +2957,9 @@ static void npc_mcam_free_all_entries(struct rvu *rvu, struct npc_mcam *mcam,
+ 			}
+ 		}
+ 
+-		/* Disable the entry */
+-		npc_enable_mcam_entry(rvu, mcam, blkaddr, index, false);
+-
+ 		if (!cn20k_dft_rl) {
++			/* Disable the entry */
++			npc_enable_mcam_entry(rvu, mcam, blkaddr, index, false);
+ 			mcam->entry2pfvf_map[index] = NPC_MCAM_INVALID_MAP;
+ 			/* Free the entry in bitmap */
+ 			npc_mcam_clear_bit(mcam, index);
+-- 
+2.43.0
 
