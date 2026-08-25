@@ -1,52 +1,52 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7C14908A0
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 22:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B061B4908D4
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 22:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787698517; cv=none; b=uEK9jh13thIy87hB27X930DBXL4EPve7IVVLSrFf8XDWwfhi1TfB0MofKFJ6aIwq8wn/JJ0wG0sOYd2WXB2oY0vo3S1BnoP/CPUm665MQxQxveTa0Tkdsc4feZ4HXfhDQNXgZCj6P267Xv/9cW39ZK+e0X8WHGunZL+Bp7vPWpw=
+	t=1787698519; cv=none; b=bBRg6LwycsFSEozvDk0UHxU+OyCfsENvnfBhlzhK2RUBxhjiK21yAbDz73IuVZS+FwhpOVtckcQ/NC5PFoNJ64Djf8zlQsr8EoHaBXK1Szy/bV0ibyzV4nXIY0JHRfRTE8PQeI9IM1Tzc5tvw39PNlbCHyKAdRfwTgo0h8WpPPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787698517; c=relaxed/simple;
-	bh=SYQ638ls0iaQ5NOJX73+AOiJst5sa1nueiULyMyePR4=;
+	s=arc-20240116; t=1787698519; c=relaxed/simple;
+	bh=iRbwGApC4tmQ0aGWGh+Q2tqfhGKKtnkcYis151rAsVs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=H0+ceCptXSMTuzaKkpoPnLMt2NjDI5ABTCcPIRStbDcgZm6UD7QsuTsyLHQol9FOw+N7mLC/xxmCHLTbqtvOS0+RmXNUP+3F6kRBV8zW+uuTGpfBvqcEXe6TgeBlpRjJE1u83/TsDozCZZAHvY1MYWRfFXCIk3S45ujrYObbLpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f9G90Aoi; arc=none smtp.client-ip=192.198.163.19
+	 In-Reply-To:To:Cc; b=KFrGbU8m4dhuegll3yxpAejKhpaeJOLQndA5os4OVjJxNWyhZIaMD2GpdHNiZxyxb+/x3Y7HiXm6ibAgIcxsYwGej1GO3sgu4UCl7w44XXlqNzuUAUzZYQ0r2/6v7voE0+5Bxshg6fXb5bAue7nFKNmEMXRap4M8C1HbYx4r0hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Tv7M4+RY; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f9G90Aoi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Tv7M4+RY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787698516; x=1819234516;
+  t=1787698518; x=1819234518;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=SYQ638ls0iaQ5NOJX73+AOiJst5sa1nueiULyMyePR4=;
-  b=f9G90AoiiZPP/rCNnWeqIqT42ZAVAtzxwenrKvA63kESoRud335jANnG
-   Wl4535lhBkq1abgGS/PZ7R0osByGiSag06NAHO0rkEzLk2eB7fuOtuVZ2
-   Ni2JhR9H6lo+reF4G1pV/laSnk5IZGhbYz8KnXAJxqACDr9aVCi7WPiVq
-   qT74+MB3eoaoKuvaLFQjTDpQmOTwrSUYCwyMMLboMDTTYDHhaqm7j5f8m
-   n3iRT5XIO0NlBx7nFo1qYxsymJh7u3g4z5AQrM4yDPz/5i+2jp1MT36Iu
-   C3N3kyAM66RoPtSIdjGzT7ERvBQujnl82C/jy38V/C4HgqY2G/6z3Z9p2
+  bh=iRbwGApC4tmQ0aGWGh+Q2tqfhGKKtnkcYis151rAsVs=;
+  b=Tv7M4+RYmjU2hXIGpDH/Jm+zaWiKJQSbbi/y03EAAgDPKfI5qN3D1GQp
+   aTiki3pU2xfh5DwOi5kEa9tkPPS+xz7XT0WGkzPv27KHn7ORpjPpNj0ra
+   5jZBuV2bpSM0Je6b31JdaSIqBCy121f47NQ6+62Z5GHQNDv6mUpT4sPGR
+   1ibcMDfdEVOQ0IzmefT/KLVQrKtA7pfHN/B4Ta7wJlDW2uGw5Tv+ATv/q
+   lFj7rI4Xv0xLCk0cTxYr9msXkm3Lca5s2ikIaqZC2+AAbn6dAsjmuGLI5
+   GabLVCjMbN9j7rtPgxYhLO+Zh3mv6BIFC69Od9FjpsJQApKUdFavFdEMg
    g==;
-X-CSE-ConnectionGUID: qGffBMNURquIMbZV8IooUg==
-X-CSE-MsgGUID: WfxFT6FZTT2hxzmeC3DYqQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="87120442"
+X-CSE-ConnectionGUID: ZHDvxprvQ+KhsbWBJD2Aqw==
+X-CSE-MsgGUID: 7ysvQ4gaTEy2kqZE8nDC6Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="87120448"
 X-IronPort-AV: E=Sophos;i="6.25,243,1779174000"; 
-   d="scan'208";a="87120442"
+   d="scan'208";a="87120448"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
   by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 15:55:07 -0700
-X-CSE-ConnectionGUID: O4HLaHlfSRq/HW4HRfkCHg==
-X-CSE-MsgGUID: RDPRJnq2RPe+oSvXB0806g==
+X-CSE-ConnectionGUID: sbDQ7b/ARTmkbuzrP4ZIGQ==
+X-CSE-MsgGUID: fXZGoVnhSjScuNeAXtMCtw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,243,1779174000"; 
-   d="scan'208";a="264789692"
+   d="scan'208";a="264789700"
 Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
   by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 15:55:07 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Tue, 25 Aug 2026 15:53:34 -0700
-Subject: [PATCH iwl-net v2 10/14] ice: wait for in-flight Tx timestamps
- before flushing the tracker
+Date: Tue, 25 Aug 2026 15:53:36 -0700
+Subject: [PATCH iwl-net v2 12/14] ice: remove unnecessary discarding of
+ timestamps after clock adjust
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260825-jk-e825c-minimized-fixes-v2-10-8223f95d26e3@intel.com>
+Message-Id: <20260825-jk-e825c-minimized-fixes-v2-12-8223f95d26e3@intel.com>
 References: <20260825-jk-e825c-minimized-fixes-v2-0-8223f95d26e3@intel.com>
 In-Reply-To: <20260825-jk-e825c-minimized-fixes-v2-0-8223f95d26e3@intel.com>
 To: Intel Wired LAN <intel-wired-lan@lists.osuosl.org>
@@ -68,88 +68,96 @@ Cc: netdev@vger.kernel.org,
  Jacob Keller <jacob.e.keller@intel.com>, 
  Maciek Machnikowski <maciej.machnikowski@intel.com>
 X-Mailer: b4 0.17-dev-c276d
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2534;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4065;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=nw+J/yGspiIlrSItsx0RtBZBWcC8KghOWywDHXUUTYY=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhqw+WdtNi47fzL4VIMQ3/UG6H+/Z9w2blXh3sQVI331UL
- LgnRuh3RykLgxgXg6yYIouCQ8jK68YTwrTeOMvBzGFlAhnCwMUpABMximNk+H5L9DjH1FdHHhZa
- zHZmtdp/0NMxX1cz4I3m+unPDkQrBDEyrMhaEqw8k1mLY1P2vpdFrTahG27Yx+rpHp60fgdLHgc
- rFwA=
+ bh=iRbwGApC4tmQ0aGWGh+Q2tqfhGKKtnkcYis151rAsVs=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhqw+WbtS1QLpW2rWMhPORVo+nlPrceCP/anC66XZqr3f1
+ 2p/M17UUcrCIMbFICumyKLgELLyuvGEMK03znIwc1iZQIYwcHEKwEReFjMynOWPnXWi/vmCySvL
+ 0rPa265412hv598S9yHbRb74y5cdjQz/lPsC03ovbjm8Kmn97bwb+3fFxHEIv+ed/83oe3PVX0d
+ ORgA=
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-From: Petr Oros <poros@redhat.com>
+The ice driver currently discards any outstanding timestamps that are
+happening very near to a .adjtime or .settime callback. This was originally
+add by commit d40fd6009332 ("ice: handle flushing stale Tx timestamps in
+ice_ptp_tx_tstamp").
 
-ice_ptp_flush_tx_tracker() frees every tracked request, but a request
-whose timestamp is still being captured by the PHY at that moment is
-freed without touching the PHY entry. The ready bit published shortly
-after has no tracked owner, and the PHY does not raise another Tx
-timestamp interrupt until every outstanding ready bit is read, so
-delivery for the whole quad degrades to the periodic work.
+The original motivation for discarding timestamps was that extending an old
+timestamp using the new cached value of PHC was a problem, as it could
+produce incorrect results. The change did not describe what such "incorrect
+results" were.
 
-Wait up to 10 ms for in-flight captures to publish their ready bits
-before flushing, so the flush clears them together with the rest.
+There are no such incorrect results. Extending the 32 bit timestamp with
+the new time value just means that the timestamp is reported in terms of
+the newly updated and adjusted system clock. This won't produce incorrect
+results or problematic timestamps to applications. Either the timestamp
+will be extended with the value of the PHC just prior to the time
+adjustment (if the timestamp completes prior to the adjust callback), or it
+will be extended using the new PHC value after the adjustment. In either
+case, the resulting extended timestamp value makes sense.
 
-Fixes: ea9b847cda64 ("ice: enable transmit timestamps for E810 devices")
-Signed-off-by: Petr Oros <poros@redhat.com>
+The timestamp extension logic is very similar to the logic found in
+timecounter_cyc2time, the primary difference being that the ice hardware
+maintains the full 64 bits of nanoseconds in the MAC rather than being
+maintained purely by software as in the timecounter case.
+
+Indeed, I couldn't find an example of a driver using timecounter_cyc2time
+which does discard timestamps that occur nearby a time adjustment. The ice
+driver behavior of discarding such timestamps just results in failure to
+deliver a Tx timestamp to userspace, resulting in applications such as
+ptp4l to timeout and enter a fault state. Reporting the extended timestamp
+based on the updated PHC value isn't producing "garbage" results, and
+doesn't lead to incorrect behavior.
+
+This effectively reverts commit d40fd6009332 ("ice: handle flushing stale
+Tx timestamps in ice_ptp_tx_tstamp"). However, the stale logic remains, as
+we now use it to inform the driver to drop timestamps which might fail due
+to link down.
+
+Fixes: d40fd6009332 ("ice: handle flushing stale Tx timestamps in ice_ptp_tx_tstamp")
 Reviewed-by: Maciek Machnikowski <maciej.machnikowski@intel.com>
 Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_ptp.c | 33 ++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_ptp.c | 17 ++++-------------
+ 1 file changed, 4 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-index c535658b30fb..59972de1eda2 100644
+index f8ef054ca966..8500e9a5b047 100644
 --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
 +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-@@ -740,6 +740,37 @@ ice_ptp_alloc_tx_tracker(struct ice_ptp_tx *tx)
- 	return 0;
+@@ -826,12 +826,10 @@ ice_ptp_flush_tx_tracker(struct ice_pf *pf, struct ice_ptp_tx *tx)
+  * ice_ptp_mark_tx_tracker_stale - Mark unfinished timestamps as stale
+  * @tx: the tracker to mark
+  *
+- * Mark currently outstanding Tx timestamps as stale. This prevents sending
+- * their timestamp value to the stack. This is required to prevent extending
+- * the 40bit hardware timestamp incorrectly.
+- *
+- * This should be called when the PTP clock is modified such as after a set
+- * time request.
++ * Mark currently outstanding Tx timestamps as stale. This prevents the driver
++ * from reporting the timestamp to the stack. This is called to inform the
++ * driver that a timestamp is expected to fail if it was initiated as the link
++ * went down.
+  */
+ static void
+ ice_ptp_mark_tx_tracker_stale(struct ice_ptp_tx *tx)
+@@ -1049,13 +1047,6 @@ static void ice_ptp_reset_cached_phctime(struct ice_pf *pf)
+ 		kthread_queue_delayed_work(pf->ptp.kworker, &pf->ptp.work,
+ 					   msecs_to_jiffies(10));
+ 	}
+-
+-	/* Mark any outstanding timestamps as stale, since they might have
+-	 * been captured in hardware before the time update. This could lead
+-	 * to us extending them with the wrong cached value resulting in
+-	 * incorrect timestamp values.
+-	 */
+-	ice_ptp_mark_tx_tracker_stale(&pf->ptp.port.tx);
  }
  
-+static void
-+ice_ptp_wait_for_tracker_drain(struct ice_pf *pf, struct ice_ptp_tx *tx)
-+{
-+	unsigned long deadline = jiffies + msecs_to_jiffies(10);
-+	struct ice_hw *hw = &pf->hw;
-+	u64 tstamp_ready;
-+	bool pending;
-+	u8 idx;
-+
-+	if (hw->reset_ongoing)
-+		return;
-+
-+	do {
-+		if (ice_get_phy_tx_tstamp_ready(hw, tx->block, &tstamp_ready))
-+			return;
-+
-+		pending = false;
-+		for_each_set_bit(idx, tx->in_use, tx->len) {
-+			if (!(tstamp_ready & BIT_ULL(idx + tx->offset)))
-+				pending = true;
-+		}
-+		if (!pending)
-+			return;
-+
-+		usleep_range(500, 1000);
-+	} while (time_before(jiffies, deadline));
-+
-+	dev_dbg(ice_pf_to_dev(pf), "Timed out waiting for in-flight Tx timestamps on block %u\n",
-+		tx->block);
-+}
-+
  /**
-  * ice_ptp_flush_tx_tracker - Flush any remaining timestamps from the tracker
-  * @pf: Board private structure
-@@ -756,6 +787,8 @@ ice_ptp_flush_tx_tracker(struct ice_pf *pf, struct ice_ptp_tx *tx)
- 	int err;
- 	u8 idx;
- 
-+	ice_ptp_wait_for_tracker_drain(pf, tx);
-+
- 	err = ice_get_phy_tx_tstamp_ready(hw, tx->block, &tstamp_ready);
- 	if (err) {
- 		dev_dbg(ice_pf_to_dev(pf), "Failed to get the Tx tstamp ready bitmap for block %u, err %d\n",
 
 -- 
 2.55.0.814.gc42f45431d0f
