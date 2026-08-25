@@ -1,58 +1,60 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F23381EA7
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 08:18:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62ED33DD51D
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 08:18:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787645890; cv=none; b=USBGLNh0amVBxWlyFmqebb9+cGl0AFATIKRF252X37a7jtu4fdq4CO+IW/CsPUdLuUL3QzIp5BlxhUj2FYLuJQ7Pv2BIyb01CNlVD0gd98r8naBe7ZhuqQ2TC8JU9uo7mTCoIZwhO4E/4RljtMsN07j51gRdpWXkxlg2GZSanBE=
+	t=1787645891; cv=none; b=qblrXqouw8JkQXYIDOnqoLT+Me4mzc8vXzD2o0FpXrXpb+VLqTM7dG+EO8+oTycj4HEjYtCFopgzZULpOXl2f6QRVD5jMHRoKoWRZlyl69rZRZ1oMDqNVuCQEw28kYv3tuD2xS2crkT7XgRamprb5Dpe3OAXG5LuASOlpKVr4bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787645890; c=relaxed/simple;
-	bh=2wca9jiUZpoFjMcimeII6bdLA+Yz8eGkHT39Out8KPA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sO7mh2u1W6MTfj2Rtc0yG2PnUfsddiOjr6sULAu0uvMQ6DsecPnNn7alcgRXYNqwyK/nYQXskFFB1t9GEO//ym+xODlD3Z+58INAPNxGbviu+akqRDWoHM3cym5fQLgl8DtVcPkzqvoq59tYitVMPVRF5tu+h3/yoSjir11JPhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=Miket/0A; arc=none smtp.client-ip=209.85.160.182
+	s=arc-20240116; t=1787645891; c=relaxed/simple;
+	bh=74hYJU9tKgBECgZIocH+tgF9kNxduqXS/vlaXeVly/U=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ta0tlS5d6/mwi4sFV66xEvSyMF4VQjxAmKX7ceKcow0WeuH/dgwGGlng/L4JzSjDETodUoZB9y3HVRzluxqsUzx0db0cx3KsrDd9Oi3uHzEjjTUaSfjS62rwveFp+WvJy0HLr03REVXAfd/27Lok83jRNFIDQeQxxfVr7xP+Gsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=Wq2j7wfF; arc=none smtp.client-ip=209.85.160.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="Miket/0A"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-51c2a76536bso48284661cf.1
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 01:18:08 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="Wq2j7wfF"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-52b3934af3fso48793111cf.1
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 01:18:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787645887; x=1788250687; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3MGsld5jCXIuE1ZQHccQwWJT/ZObyzhHpKhPa7xQCWQ=;
-        b=Miket/0APIFZdfNFWHsh0rNXUo8BCoY0H6mkS1BmUMOrL6Ong77iziG4Cm6ZBd2IpL
-         7ZMU6Pm4T5WeD6+EENp7+0QD8awVY7szIEejlwX7UgtHaZcpYZ8J6kzUaGwHpr9Ra/N8
-         Tu0fEcj01vV8HrE/n6y0T1qRHPKdvwa20+2SQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787645887; x=1788250687;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=mojatatu.com; s=google; t=1787645889; x=1788250689; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=3MGsld5jCXIuE1ZQHccQwWJT/ZObyzhHpKhPa7xQCWQ=;
-        b=D56HNt1LK4E1E/qq6xOoJP1jB2tY7qDCPzop7/q1T+GSXFDC/J9mhHP6ZcN3dWQbMY
-         rbgInNl98aY5R0chWhT3dq14R2BtaHyC4lyWpjqqb3dN1kL1MVQORfJEqSh3VfDWtJyL
-         hBeKcfuVsS2q9NYi7qS35Ubk1j+EEsTFVBjGwajW18zZIHTmqKktOC+wqIfv9DJxGfuP
-         vY8gJzR5IWviosOzPXD2yXFGPeVq9QDT2v/fnqAM3qwzSXvjjndokTn1izuzRIJkM+r4
-         wcPzlBPrY/T6ffOuO9OijgNst/WK/8twuC7sEMqt//ndveMsjC10eWWNhqulCXI6XVaD
-         Rv3w==
-X-Gm-Message-State: AFuF++nhHNwokIZLJsVWQOqyXiIzdqf+/xrAvhY4sqKjxXKpvuYeS9C/
-	tAVmCsAOoVf7+qTTChyH1PTmsxxD5o1BoTGiZFg+2jUV1K+q5xJr33SNHq2PcKVkEn1R/moKD4m
-	ibyOMNA==
-X-Gm-Gg: AR+sD11sFl2fIqZ3nQlbpL9QSM8fYyvilJGOiAULrZYOGP1cIgtV8zw45k3qiEikmFx
-	VeMK+sQRfQSWsQe6THP+HGtXTmsJ6QDsC3pLWPHKim0gXfHm7oAWLWNyue6AxqLKcLOzzMjhitf
-	AUgiN8Og5fLDHxYcNyQQLbz/sjaXfh7PWoez/G1xARycm9dam9bnhpEjSZfDroTQr+wgZtsDUvU
-	4JG8Ccj1yb5rbLzpvLzcUGiHwWzb7HYMCN0w4DMSXuVuHzbvsQDpjkKdbMSY032oeWI4GiwBoW6
-	AzAVInuFb1mpzPAlBUnLI488+MGxvaSGVTlX0fSi+6kNk9wepgqOIYG8W3Y3x/5lr6shzEUWS2v
-	T5OD1fkJZGPaErtCi1nyECFlsSKuZyTv7NIbPFZlFulbZ1iU4/2RfWpNlniIbFO0cNhMN/28Lez
-	H1K+RF4zeQZqAkZwv1CiU9j1Nyc1mUHvoQ+Wzx3wTiZ4Lc8ZFD0mfa
-X-Received: by 2002:ac8:5f52:0:b0:517:875a:d634 with SMTP id d75a77b69052e-52e09bad973mr258346751cf.2.1787645887168;
-        Tue, 25 Aug 2026 01:18:07 -0700 (PDT)
+        bh=zRsvL/a7RmIm5+NW0n8opbLtTlM8Z82pvRtrMLB8Wr4=;
+        b=Wq2j7wfFhyQ7VL6CTZxy7nusYhJlfC8dmBB2hngfGgETWJ/11DSgSLqnLZBm6Ok5bq
+         L/tumair1YNzpxR34Vqsc33n7ajRBFaXLWv4Ye4A05SQ/13rm3YJugxy2erB6EUb/Daw
+         0VKMGcPyvwObI0FmkSX1Q6pTVXbTdWERlCvqQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787645889; x=1788250689;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zRsvL/a7RmIm5+NW0n8opbLtTlM8Z82pvRtrMLB8Wr4=;
+        b=nEEbLrK8RCR6Oo0b1mFBnQLl0NMCFhYJ01hLoGTgA3B6BHgSHKTdk+StHDkXlYqB7f
+         qrimbY5xird8lXrTP8JnoiqaOaTi2k7SboacTksCBS1boKZ467hM2SeN7eCcBkN02M7u
+         sNwyVAMNr2PxShnPQKTMZHt7BvkFnZ4ZFB2elKLkqNQl2ntpZ7rT9pR5/pxeuGcEkRQE
+         Xvuf8LTqrCAs0oE9BFHiPx0VZxaP1gZ6VNCOa6QKiiv9BpL6wWq5cGdII8Ge07WGtu6q
+         +fK7OoE5aEIBLRqcPeJNjHumf1SUWBpMm/vpRyTGjrTIU1l/gnJI37BKxbG0nVGK6Vsr
+         h5ZQ==
+X-Gm-Message-State: AFuF++lQZOvude9138pD+onX9i2gFkqtTzcXwRd3sbydIO8PaIXAHfxo
+	t+KIUsheKis1w0AA+c9mD3H2ZVwCnx0ykn40COcJThVp6peTOjfI+PfzJaRUwhJ2V9rMaObJwm/
+	m7eyGdg==
+X-Gm-Gg: AR+sD12BaJN62PUUKJunGY4hbGWSvRYegNRs8TSD23R6v2Mb4JA/3XmsHO550CusvFU
+	arhjqrg6GoUW1iSp+kNhVKJ1hiZhkyAPbKwyV5BJlmvVb2bcfh9aLnXIT8BUK/+HQW5n73edrMf
+	rpZU4couEE+2mJEpTWpgT+eN5q8CUrfl0wZcQmTiHJzqUG4xHO5V1C7HOooxb5bRdpM9MV27nZI
+	TpXV3Tu1aX/sRJBVZB8Po5j8t14EKGJGxEp9PYs6Ig+h3/EUA0fH4kD5DtHW5cVWUfANrbdVkA8
+	YngBAFKf9aSJeh/VQS2IlcMyKJkelGvBKquzVlx51xQu+xhY/+oWB4hoPhImiRnG6u5R1oTN3k8
+	U4F7UB8ASDlWOW1r8BBi3PsTAZbVHYLmZSNZUMF0O0r+3DdA/JiuXjGsByzTmEHpbCeLfbybyZ2
+	zLTWbfC9we0Yf8hxEo1tamPTE/NasF55qvi9fA6fiAi5G1KRsJdk5/
+X-Received: by 2002:a05:622a:3cc:b0:51c:22c5:daf5 with SMTP id d75a77b69052e-52e2f175c1amr51042421cf.38.1787645889381;
+        Tue, 25 Aug 2026 01:18:09 -0700 (PDT)
 Received: from majuu.waya ([184.144.29.222])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52e09975f5asm65387341cf.2.2026.08.25.01.18.05
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52e09975f5asm65387341cf.2.2026.08.25.01.18.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2026 01:18:06 -0700 (PDT)
+        Tue, 25 Aug 2026 01:18:08 -0700 (PDT)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
@@ -63,13 +65,14 @@ Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	John Fastabend <john.fastabend@gmail.com>,
-	stable@vger.kernel.org,
 	vega@nebusec.ai,
 	Victor Nogueira <victor@mojatatu.com>
-Subject: [PATCH net v2 1/2] net/sched: pfifo_fast: reject oversized ring and account to memcg
-Date: Tue, 25 Aug 2026 04:17:50 -0400
-Message-Id: <20260825081751.134086-1-jhs@mojatatu.com>
+Subject: [PATCH net v2 2/2] selftests: tc-testing: add pfifo_fast ring size cap regression tests
+Date: Tue, 25 Aug 2026 04:17:51 -0400
+Message-Id: <20260825081751.134086-2-jhs@mojatatu.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260825081751.134086-1-jhs@mojatatu.com>
+References: <20260825081751.134086-1-jhs@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,93 +81,113 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-pfifo_fast_init() and pfifo_fast_change_tx_queue_len() allocate skb
-ring arrays sized by dev->tx_queue_len with GFP_KERNEL and no upper
-bound. An unprivileged user (via unshare -Urn) can set a huge
-tx_queue_len and attach many pfifo_fast qdiscs to exhaust global
-memory, causing a system-wide OOM.
+Add two test cases for the pfifo_fast ring size cap:
 
-Reject tx_queue_len values exceeding S16_MAX (32767) with -ERANGE
-in both pfifo_fast_init() and pfifo_fast_change_tx_queue_len().
-Note: For the init path, NL_SET_ERR_MSG_FMT_MOD reports the error
-via extack whereas for the resize path, the error propagates to
-netif_change_tx_queue_len() which rolls back dev->tx_queue_len to
-the original value. Use GFP_KERNEL_ACCOUNT so the ring allocations
-are charged to the allocating process's memory cgroup.
+1. Init path: set txqueuelen to 100000000, attempt to attach pfifo_fast.
+   On a fixed kernel the qdisc add is rejected with -ERANGE (exit code 2).
+   On an unfixed kernel the allocation either succeeds or triggers OOM.
 
-S16_MAX is the virtio virtqueue size limit: the virtio specification
-stores the queue size as a u16 with a maximum of 32768, so 32767 is
-the largest tx_queue_len any in-tree driver can meaningfully use.
+2. Resize path: attach pfifo_fast with default txqueuelen, then raise
+   txqueuelen to 100000000. On a fixed kernel the resize is rejected
+   with -ERANGE and txqueuelen rolls back to the original value (1000).
+   On an unfixed kernel the ring is resized to the oversized value.
 
-Conditions to recreate the bug:
-- CONFIG_NET_SCHED=y, CONFIG_VETH=y, CONFIG_USER_NS=y, CONFIG_NET_NS=y.
-- Unprivileged user in a fresh user+net namespace (unshare -Urn).
-- Create a veth pair, set tx_queue_len to a huge value (e.g. 500000)
-  while the devices are down.
-- Attach mq at root, then replace each child queue with pfifo_fast:
-    tc qdisc replace dev veth0 root handle 1: mq
-    tc qdisc replace dev veth0 parent 1:1 pfifo_fast
-    tc qdisc replace dev veth0 parent 1:2 pfifo_fast ...
-- Repeat across many veth pairs. Each pfifo_fast allocates 3 skb_array
-  rings of tx_queue_len entries (~12MB per qdisc at QLEN=500000).
-- On the unfixed kernel this exhausts global memory in ~28 iterations
-  on a 2GB guest -> OOM panic. On the fixed kernel the oversized
-  tx_queue_len is rejected with -ERANGE.
-
-Fixes: c5ad119fb6c0 ("net: sched: pfifo_fast use skb_array")
-Reported-by: vega@nebusec.ai
-Tested-by: Victor Nogueira <victor@mojatatu.com>
 Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 ---
-v1 -> v2:
-- Replaced silent clamp + pr_warn_ratelimited with reject (-ERANGE) (Jakub)
-- Changed cap from 65535 to S16_MAX (32767), matching virtio's
-  virtio16 ring size limit.
-- Dropped the doubled module prefix in extack (NL_SET_ERR_MSG_FMT_MOD
-  already prepends KBUILD_MODNAME).
-- Added resize-path tdc test case (Sashiko nipa gpt-5-6-sol-1-2).
-- Fixed tdc teardown to use JSON list form for acceptable exit codes.
----
- net/sched/sch_generic.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ .../tc-tests/qdiscs/pfifo_fast.json           | 60 +++++++++++++++++--
+ 1 file changed, 54 insertions(+), 6 deletions(-)
 
-diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
-index ef2b4bf51564..eb5c0d3f67c2 100644
---- a/net/sched/sch_generic.c
-+++ b/net/sched/sch_generic.c
-@@ -910,11 +910,18 @@ static int pfifo_fast_init(struct Qdisc *qdisc, struct nlattr *opt,
- 	if (!qlen)
- 		return -EINVAL;
- 
-+	if (qlen > S16_MAX) {
-+		NL_SET_ERR_MSG_FMT_MOD(extack,
-+				       "ring size %u too large (max %d)",
-+				       qlen, S16_MAX);
-+		return -ERANGE;
-+	}
-+
- 	for (prio = 0; prio < PFIFO_FAST_BANDS; prio++) {
- 		struct skb_array *q = band2list(priv, prio);
- 		int err;
- 
--		err = skb_array_init(q, qlen, GFP_KERNEL);
-+		err = skb_array_init(q, qlen, GFP_KERNEL_ACCOUNT);
- 		if (err)
- 			return -ENOMEM;
- 	}
-@@ -957,8 +964,11 @@ static int pfifo_fast_change_tx_queue_len(struct Qdisc *sch,
- 		bands[prio] = q;
- 	}
- 
-+	if (new_len > S16_MAX)
-+		return -ERANGE;
-+
- 	return skb_array_resize_multiple_bh(bands, PFIFO_FAST_BANDS, new_len,
--					    GFP_KERNEL);
-+					    GFP_KERNEL_ACCOUNT);
- }
- 
- struct Qdisc_ops pfifo_fast_ops __read_mostly = {
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json
+index 30da27fe8806..46b54ae37a91 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json
+@@ -9,8 +9,7 @@
+         "plugins": {
+             "requires": "nsPlugin"
+         },
+-        "setup": [
+-        ],
++        "setup": [],
+         "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root pfifo_fast",
+         "expExitCode": "0",
+         "verifyCmd": "$TC qdisc show dev $DUMMY",
+@@ -30,8 +29,7 @@
+         "plugins": {
+             "requires": "nsPlugin"
+         },
+-        "setup": [
+-        ],
++        "setup": [],
+         "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root pfifo_fast",
+         "expExitCode": "0",
+         "verifyCmd": "$TC -s qdisc show dev $DUMMY",
+@@ -81,8 +79,7 @@
+         "verifyCmd": "$TC qdisc show dev $DUMMY",
+         "matchPattern": "qdisc pfifo_fast 1: root refcnt [0-9]+ bands 3 priomap",
+         "matchCount": "0",
+-        "teardown": [
+-        ]
++        "teardown": []
+     },
+     {
+         "id": "4385",
+@@ -105,5 +102,56 @@
+         "teardown": [
+             "$TC qdisc del dev $DUMMY handle 1: root"
+         ]
++    },
++    {
++        "id": "7d12",
++        "name": "Reject pfifo_fast init with tx_queue_len exceeding S16_MAX",
++        "category": [
++            "qdisc",
++            "pfifo_fast"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "$IP link set dev $DUMMY txqueuelen 100000000"
++        ],
++        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root pfifo_fast",
++        "expExitCode": "2",
++        "verifyCmd": "$TC qdisc show dev $DUMMY",
++        "matchPattern": "qdisc pfifo_fast 1: root",
++        "matchCount": "0",
++        "teardown": [
++            "$IP link set dev $DUMMY txqueuelen 1000",
++            [
++                "$TC qdisc del dev $DUMMY handle 1: root",
++                0,
++                1,
++                2,
++                255
++            ]
++        ]
++    },
++    {
++        "id": "d09b",
++        "name": "Reject pfifo_fast resize when tx_queue_len exceeds S16_MAX",
++        "category": [
++            "qdisc",
++            "pfifo_fast"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "$TC qdisc add dev $DUMMY handle 1: root pfifo_fast"
++        ],
++        "cmdUnderTest": "$IP link set dev $DUMMY txqueuelen 100000000",
++        "expExitCode": "2",
++        "verifyCmd": "$IP link show dev $DUMMY",
++        "matchPattern": "qlen 1000$",
++        "matchCount": "1",
++        "teardown": [
++            "$TC qdisc del dev $DUMMY handle 1: root"
++        ]
+     }
+ ]
 -- 
 2.43.0
 
