@@ -1,198 +1,129 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28EA51E5B68
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 09:48:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787651300; cv=pass; b=U84nq5zLy6v4uEwt2pmWIcmZXcamavzbt8wEUeZY0cnCean1LFViNytimQkDIdhxRmqMRG+L7gTtRDJN4Zf5FYmjecFJ5Rg4mPDCClcb5FTHy9ucC2xMv3TlSBkcGqeGKRMzbUvG/DmYJi8868GZcS9KC5sKHyP11285A1I3XfM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787651300; c=relaxed/simple;
-	bh=4t+j/BXBalwXPmR+JwRXFZWRqKHcAW3hueUDjIbFXHs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DwMS9dVuvN3Soi34DonfYLoaiPh7Xi7ahYGvYyH2lLptuHupBN/Hp7+NL8KnRxPYblv62ZSV0am1H4EGlix7zlNrQvPzo5o5FOj26RG6Ie/8xt/uuJQOsTPbOukZGoXwGJ6CWrGJ3YGlTSu4fRkk7HSzbrqw16pEVG5TaS/C/kE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=GTSc92Tc; arc=pass smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953493EB0FA
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 09:50:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787651405; cv=none; b=CpB0GZuW/tnSD5O3f5VzgWXPhCc3XGQN4c6AE8Ais0BWntpYye/7gjLpRWIjDtIEu94QMYr3Nx/wwJjcm+cWbD+tI8KFNLyJJQdIQ31YHoxkREPEKsJQ+3Y7fzcS0gOOdYRzNJzaS61XNh4Xhp3QWT6hmsVzYosyu2E/Rhmmn5o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787651405; c=relaxed/simple;
+	bh=/V06hOjEBqJ5VaajoDDmcKwxjFuqY4c6vD4MhLEdaGg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bF97TdBWP4MV17qLYwZLc9rExun4eSM3XUN8O2Bm13iXC8+Ftl30yNUXbB5XERWeeNhiqXutbPRxz8gEExegSxwLj6OALdtNrkIkjtz9dNDt4I2pHCRTzhVLlo205vNlxhjWKk2z4/51UCVDiJjE8pl55pv+5erXO0NYiN7pivA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VFpM1iqk; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=erzyVfUR; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="GTSc92Tc"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8485ef63b68so4503173b3a.1
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 02:48:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787651297; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Kml4V5s/z+SlnfHTNd8LG7Fi1jyr47HzrcpUrwK1TptLMNzkmXJjLUb+AKZmIah+Pz
-         enG3fYEKnara/HpTSc8fGMb2INn2RkX6Uqxfc5WDwgy9tLxMISoMK6NGZwvhW77FQpXS
-         oFHal9HM5WcdJ+lfASihKCxfHvtRB6kANPyR7vSTxk8G7MW/9P2gu34BdF+OL2FdNGqA
-         8oxZAfMVi24V3Cr8TbfVbABGC+MpTEAXy9DWzVIfPFGRzuQ1dklqAZAOt1D28WCG97b1
-         yUrw3ilOjyCVvW3dRg2n1bjKYSWP8vAZcAtF4tWKLBX+SaJWmEoDrZJkSJNE08Zsgbbo
-         dxVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=T8fFFd3lt0SIhR5vWK+5bEPh01zQk6FDjhM30fVLQew=;
-        fh=+0/985afELwKkaajT9e+T2qoswK/Rz37tvSCu8LAOdI=;
-        b=VaQG7U29YJdmb8cSP4TjPp+K2dg1XLo6AjUDg2qgJFubhEt2vYxn+olQOaXc64UfQU
-         uglnYOayXaoQlK5n5FXpffMIwSCx6CL3vSPM8N4Bw7qV8zaTqrBP49Otfdrh4a8Qd3Yf
-         r5PSznWH8wpgGDEshvVs7jHbUhoI06vHI1w1e2hNJLX2Bs2XVSIRtE5PU1h/25/JH3l3
-         6PbAj9ItKezaYdxh1Xbx09vIj4N+kEdvp6zDps9KNp6qHX3mn6FsB+yXfKFLQDV+ZezW
-         fwBa8rVxNZsKXMICLKvNiafcSHO4YPuZbYEoclBaELXqo9XOiDmctJ0p1aoWYX4VTof/
-         hKOA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VFpM1iqk";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="erzyVfUR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787651402;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+tpyj8dIw3CBXmhU3ta0FkLHroDi4PulumPCufqq2tc=;
+	b=VFpM1iqksANoZ+wCSekyf6uMC4GlQSeOFbPXzhVAVzRelvYye//rhBatkVdUNgFlqtTJOg
+	tAKk6CNeOxS+JIjeJwpFZsZ8u59X6p2ePCYEJS/hzdQySDDLPW8nQhV9JwxleNQchlXqnq
+	+4zSTwXee033tjsz2egx9K/JOCeNV+E=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-658-4x6xiTimOJugEmF-7ljHkw-1; Tue, 25 Aug 2026 05:49:58 -0400
+X-MC-Unique: 4x6xiTimOJugEmF-7ljHkw-1
+X-Mimecast-MFC-AGG-ID: 4x6xiTimOJugEmF-7ljHkw_1787651397
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-6a3e6916a5eso2625069a12.0
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 02:49:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787651297; x=1788256097; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=T8fFFd3lt0SIhR5vWK+5bEPh01zQk6FDjhM30fVLQew=;
-        b=GTSc92Tc+E5z0mmzXiJpL9PIsw2+YRSGDHMWEa8PWYNbVHtOFjKtDd4mpphj7RDVOQ
-         Ci8aLxb/PWbRRONWrkNT0twBFOCsQi0tjjmlzStv6z3O97FuHG3G1xtvLY6ROg3kqT+N
-         8R35QxRxSVs9pgGHaeUdW3pMRuK4S9jDtvfOc=
+        d=redhat.com; s=google; t=1787651397; x=1788256197; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+tpyj8dIw3CBXmhU3ta0FkLHroDi4PulumPCufqq2tc=;
+        b=erzyVfURvGRooxhjR8kvpK8y0IDRkUVIGuCihAC6DS5jBwapXVu0Pho42LZBUetneN
+         CSpvp3tVgnXxH6TzWWGjf1Ct/EpXncr83jGP/gTUyuwmj1WOnr4dVnxVTDgsqyWP7nQu
+         AznOpfvKAVhYUlGOSM0p13IbxU2LK8eSw3XKhty497mOArV2amqF3GromzMjXs3Ktrmw
+         p1DEeMKyVYgZxSDtyUGrshlAwBXd6QGRXENbtEj42yQYg2UvkvL/jabcK+doRnwmupGG
+         ZKdSohLUisL2I6olZT3Zah3RVnkeRcn3RprHDzdD1jIjSHjsYH8qe6B0TfN6wj12fX2T
+         IXaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787651297; x=1788256097;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=T8fFFd3lt0SIhR5vWK+5bEPh01zQk6FDjhM30fVLQew=;
-        b=RL7GgGVvdjDtQdkxLJejbGjZkDjeolBX4mCUptIlXWPWnUOtMBoTvfIN6JogHvJSAt
-         c2k84WKShUIyXw8g1MN64gwSnJ9vxlgxa7bPJKr0wjwsfLztVXh5bXg2Aknk9abnn4mY
-         o5DHa50/DMzzHx/CDQocVaaQYwOx+l3EIs5wq9r7E6bg6YHpoCdTRrTvu5/Y+vFgbMwT
-         /4IWddCf4bSnlZoRxi425Fulwb+xE7wc5roxzl/RmAKAc8yvbng6Flelis7gJuGml2ks
-         d9RVBdUExGhKDLZBxwI9QwBdQVTPJQy54V7T2datfczXPZIxKWUNDvlDMuokcwA7vD7e
-         nAgg==
-X-Gm-Message-State: AFuF++kmfbgTlogEmcVR2Aa2R426cuY/KKu4dxrXAkGLklNjI2USO69T
-	1lejFnWXDtbYwwlbYHUyYiwsVoe54HCPwdXDFnUfKOtvV7+S/eSZ/GKKZj3nezAUYuStsZEEdOR
-	l4dpqEsNqD9jGjzVU4el1l+4sL3tVx4mbUD5HSxBZEHxaxurRN0WTyw==
-X-Gm-Gg: AR+sD13XGnXRqRY23D3mcWKBAHr5ahrnFZwArshM3scaxmK/vMMFWjA0oP+P+3ca1wM
-	BQxAfHco09WK0HqKDfLVMtXtxTKT2DdyZuDMo6lTiP36g96Xj+hZTgEXwJn0IFC3scYM08fHOqM
-	nwR7a811cSctsAS8agVQKkkpmH1NDS5lHw1GA8niDDx/KQ085OSnuNXgNoV2uD+ynPn5iuZkNsZ
-	R9L8oYaUEQz6/O86f3ghkeVudWwtioVMP4RoE2gltxNdon0R3Eff283KmVu7ZGN4ACtfAqZyq5c
-	XecmGw1SwhOBSKh2oXlymeO0C5JqmNKKvj1r1IqV6f1Q+0w=
-X-Received: by 2002:a05:6a00:4501:b0:84e:e741:174f with SMTP id
- d2e1a72fcca58-851f9cd577dmr55115904b3a.7.1787651297483; Tue, 25 Aug 2026
- 02:48:17 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787651397; x=1788256197;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+tpyj8dIw3CBXmhU3ta0FkLHroDi4PulumPCufqq2tc=;
+        b=k2xePbIqXft0P6O4kudEgrQI+rkYZsQm5bL3sLYSwAgSmHr4EpxIT4xnxRuCiiNp0Q
+         biXSCR8vct9zey2cy+IHAaE4tEi3rKhkSTaNUS8/FJfTXIcfosrDb7JnGQQoX1vBXYst
+         Bbqle220wsk03OnUixn+XEjo0IxGsZ4N+GvaTxJdYtMlnIJFriP+H773mUVoMSyQjVJX
+         lsIu1Y9NNTJnjwXA9/jN1Gw7xbYHzKvjPr88bruRw0rrosxqvb3tmpvagET8frly0XFA
+         qHRoXSdcKWJijTEuYba9jyMcEUuKoNlGH63WRV8gWXxoZF4oiOB202lxr2vyvQgnz8nv
+         uX9A==
+X-Forwarded-Encrypted: i=1; AHgh+RriFBip4an7Z/xXXPnVnr+yARW6svnYsVx+JABCnP7pWl/tL9ptjoNXI6xnPOzhRcMVODhVgE8=@vger.kernel.org
+X-Gm-Message-State: AFuF++mGBMmyQwFkERxVQL8UO0UtTJaHrn+QfRHQoyKg8FgUc6z6XDbn
+	NNbo85tpIzm85nsA2fztWpKAmi6DZV59+NxIMrUS1965Cs1i/UDqmwsyD+/B0Zf51aqB07LAYdv
+	TsnEzjX3+f97CrjY/U5BLO6iyzfnTiLWr4cPs+VhydBfeSPIaS2hfPYJOcA==
+X-Gm-Gg: AR+sD12FgLe+h6QDpkZ7OZ0d/wa5xh2brtidK+nPmckBoZBvLD/dheDr51Yvq0Ej0bF
+	3iBgI2qJNUDkVPJbgV3YQfJO4jy1ZzCjJOxC/KX/Vi+xYN+qyzjpyGfHmOPcVNWR8LXqv3h+lah
+	cUgZTaE2LQkwwPJZxufnQBfa6n4ihxWW+hHwQBfFymuMd67Mwm63jDifrLsye3zCyYHa4Ep2n+8
+	dzT0fTQV/ezLOIri8o2c4eIJoO7HcbhmT2aDjJCN3FkMGtlTlhsInrIi6LzGB3tNqqL+hWYFgRC
+	VqHpBOQdf88/LVxrzT3JG7co25iwT/+i4S03Y3SGA/Ez87XofhZWrxBRRY0kk50qhq4ZmsWx542
+	mDxs8WRFS4K3wIM29gF4/dQv1uyFILN9No9Ip7KuUr3YtmLP7tslRQ+VDobkP5rLb3qGWJuNS
+X-Received: by 2002:a05:6402:274a:b0:6a1:f95b:8cef with SMTP id 4fb4d7f45d1cf-6a582b1476emr29509922a12.4.1787651397245;
+        Tue, 25 Aug 2026 02:49:57 -0700 (PDT)
+X-Received: by 2002:a05:6402:274a:b0:6a1:f95b:8cef with SMTP id 4fb4d7f45d1cf-6a582b1476emr29509821a12.4.1787651396750;
+        Tue, 25 Aug 2026 02:49:56 -0700 (PDT)
+Received: from [192.168.188.103] (ip46-47-231-195.pool-bba.aruba.it. [195.231.47.46])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a59e00108asm19468925a12.2.2026.08.25.02.49.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Aug 2026 02:49:55 -0700 (PDT)
+Message-ID: <fa099131-8ef8-4586-b9d2-b6ac287caca3@redhat.com>
+Date: Tue, 25 Aug 2026 11:49:53 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260822195509.112717-1-jhs@mojatatu.com> <20260822195509.112717-5-jhs@mojatatu.com>
- <62618ef6-28f1-4d0d-916a-96fc54dfc2e3@redhat.com> <CAM0EoMkwr5idTgLSfB3azrfbBasGVGXrOPSJMUpyQKkgCgZgTw@mail.gmail.com>
- <4d9d542e-e25d-4ba4-b7c4-e51c82f3732d@redhat.com>
-In-Reply-To: <4d9d542e-e25d-4ba4-b7c4-e51c82f3732d@redhat.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Tue, 25 Aug 2026 05:48:05 -0400
-X-Gm-Features: AcwNN1Ubn3mXrXd74Gl8HB_9tEsOtT67tVDajCH4VoPlfAPCyeZa98UYpBCm0kA
-Message-ID: <CAM0EoMnCC4p-nk-VxR_ard2E6na3_fZYd165iOyXQM35QKz_OQ@mail.gmail.com>
-Subject: Re: [PATCH net v3 4/6] net/sched: fq_pie: clamp default quantum to
- avoid signed overflow
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
-	"Mohit P. Tahiliani" <tahiliani@nitk.edu.in>, "Sachin D . Patil" <sdp.sachin@gmail.com>, 
-	"V. Saicharan" <vsaicharan1998@gmail.com>, Mohit Bhasi <mohitbhasi1998@gmail.com>, 
-	Leslie Monis <lesliemonis@gmail.com>, Gautam Ramakrishnan <gautamramk@gmail.com>, stable@vger.kernel.org, 
-	vega@nebusec.ai, Victor Nogueira <victor@mojatatu.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v14] net: phy: Add driver for Motorcomm Quad
+ 2.5GbE phy
+To: Kyle Switch <kyle.switch@motor-comm.com>, Frank.Sae@motor-comm.com,
+ andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
+ jianmin.wang@motor-comm.com, jie.han@motor-comm.com
+References: <20260824025625.2688693-1-kyle.switch@motor-comm.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260824025625.2688693-1-kyle.switch@motor-comm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 25, 2026 at 5:43=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
-te:
->
-> On 8/25/26 11:16 AM, Jamal Hadi Salim wrote:
-> > On Tue, Aug 25, 2026 at 4:33=E2=80=AFAM Paolo Abeni <pabeni@redhat.com>=
- wrote:
-> >> On 8/22/26 9:55 PM, Jamal Hadi Salim wrote:
-> >>> fq_pie_init() sets q->quantum =3D psched_mtu(qdisc_dev(sch)) without
-> >>> clamping. A device with a huge MTU (e.g. dummy with max_mtu =3D=3D 0
-> >>> accepting MTU 2147483634) makes psched_mtu() return 0x80000000, which
-> >>> overflows the signed flow->deficit to INT_MIN in fq_pie_qdisc_dequeue=
-(),
-> >>> causing an infinite loop and soft lockup. Emulate fq_pie_policy which
-> >>> is already bounded to [1, 1 << 20]; clamp the default to [256, 1 << 2=
-0].
-> >>> 256 matches fq_codel's floor and is a sane minimum for a DRR quantum.
-> >>>
-> >>> Conditions to recreate the bug: a device whose MTU (plus
-> >>> hard_header_len) wraps psched_mtu() into the sign bit (e.g. a dummy
-> >>> device with max_mtu =3D=3D 0 accepting MTU 2147483634). Requires
-> >>> CAP_NET_ADMIN in a user namespace.
-> >>>
-> >>> Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet scheduler=
-")
-> >>> Reported-by: vega@nebusec.ai
-> >>> Tested-by: Victor Nogueira <victor@mojatatu.com>
-> >>> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> >>> ---
-> >>>  net/sched/sch_fq_pie.c | 3 ++-
-> >>>  1 file changed, 2 insertions(+), 1 deletion(-)
-> >>>
-> >>> diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
-> >>> index 069e1facd413..b27d95418707 100644
-> >>> --- a/net/sched/sch_fq_pie.c
-> >>> +++ b/net/sched/sch_fq_pie.c
-> >>> @@ -427,7 +427,8 @@ static int fq_pie_init(struct Qdisc *sch, struct =
-nlattr *opt,
-> >>>       pie_params_init(&q->p_params);
-> >>>       sch->limit =3D 10 * 1024;
-> >>>       q->p_params.limit =3D sch->limit;
-> >>> -     q->quantum =3D psched_mtu(qdisc_dev(sch));
-> >>> +     q->quantum =3D clamp_t(u32, psched_mtu(qdisc_dev(sch)),
-> >>> +                          256, 1 << 20);
-> >>
-> >> Sashiko thinks that the soft lookup is still reachable via pie_change:
-> >>
-> >> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260822195509.112=
-717-1-jhs%40mojatatu.com
-> >>
-> >> and has similar concerns for patch 6/6, too. It marks the issues as
-> >> pre-existing, but AFAICS they overlap with the things addressed here.
-> >>
-> >> WDYT?
-> >
-> > You are right, they overlap. I had them as followups (with a few
-> > others derived from the sashiko feedback with justification that the
-> > v3 init-path clamps are independently correct and the stab cap already
-> > mitigates the change-path worst case to a stall; but those two a
-> > (adding max(256U, ...) to both fq_pie_change() and sfq_change(),
-> > matching the fq_codel_change()) are more serious.
-> > So if you'd prefer a v4 respin of the whole series, I can do that.
->
-> I initially did not notice that the _change path would lead to
-> "upper-bounded" stall, I think a follow-up is fine.
+On 8/24/26 4:56 AM, Kyle Switch wrote:
+> Add support for Motorcomm YT8824 quad-port 2.5G PHY to the existing
+> motorcomm driver, using the phy_package helpers for the shared top
+> extended register space.
+> It also adds a new exported phylib helper,genphy_c45_template_testmode(),
+> plus two new definitions in the MDIO uAPI header.
+> 
+> Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
+## Form letter - net-next-closed
 
-I will prioritize moving those two i mentioned as a followup as soon
-as this patchset goes in.
+net-next pull request for v7.3 has already been merged, and therefore
+the net-next tree is closed for new drivers, features, code refactoring
+and optimizations. We are currently accepting bug fixes only.
 
-> > Sashiko is a double edge sword - i think code quality is improving but
-> > it feels like the work load has doubled ;->
->
-> FWIW, I agree with the "double edge" assessment.
-> A reference we must keep in mind is that there is no way back, so we
-> need to adapt somehow.
->
+Please repost when net-next reopens after Aug 31st.
 
-Agreed ;-> Will take a while to adopt...
+RFC patches sent for review only are obviously welcome at any time.
 
-cheers,
-jamal
-> > Here's what i had as followups (some still to be vetted, just noting
-> > what sashiko is stating to be reviewed later when cycles available and
-> > potential followup patches sent):
-> > - sch_dualpi2 unclamped psched_mtu
-> > - sch_pie unclamped psched_mtu =E2=86=92 AQM disable / div-by-zero
-> > - hhf TCA_HHF_HH_FLOWS_LIMIT unbounded
-> > - fq_pie_change() / sfq_change() 256 floor missing (one that you bring =
-up here)
-> > - DRR/ETS quantum=3D0 spin (have a patch, was reported already as a bug=
- by vega@)
-> > - Consider two separate clamps for fq_codel/sch_codel (nipa
-> > gpt-5-6-sol-3-15): quantum in [256, FQ_CODEL_QUANTUM_MAX], mtubounded
-> > separately (no 256 floor on mtu)
-> FWIW, LGTM!
->
-> /P
->
+See:
+https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
+-- 
+pw-bot: defer
+pv-bot: closed
+
+
