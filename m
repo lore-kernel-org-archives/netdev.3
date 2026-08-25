@@ -1,71 +1,134 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.auroraos.dev (unknown [95.181.193.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E58283FD9;
-	Tue, 25 Aug 2026 19:41:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A88C3446AD;
+	Tue, 25 Aug 2026 19:58:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.181.193.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787686909; cv=none; b=SCOpB7w9WJ7ypIhrhXr16Ni03INNpn/p1u6sWM/TjRit+s+RuQaU9J7veKg8Ok0E5q1jV8ZIOSS+ApO1RAwPcwcawl8kImW7jw0Z7SgUGBWQqus06MAYAORqBNiwY+iqBSjQjTUulDNpnMzKPDm5tYYRHugogvPNC49H2r+123g=
+	t=1787687900; cv=none; b=HhZ9DhJ3/S3Ts3W0MUdGv1aUq+3IVaaMX2TVuqiMILeHCs3819YlAcqRljq4DZv5eSnMJ/5X4pGMnacU0Ylxh+wlElh/iTioNn52HsF8TLdJ0aBq0POVbnOPxP5kMAtC+uN8I6pOaoPdw8gfTNg5wfZljk60yo7mquDEjjPeqQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787686909; c=relaxed/simple;
-	bh=tRImxGGwEw/b5IRFHRQ07pLw4FyyPD7cSMvsouuds7Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qD2aieNEQgSaFxRgS8wlhWXJUhA3Qbl3O72NZvckq/rwVVVOIHnw0ICAuKkZvH+BE8WQCEBT7MTI5fXq7/sTYig4VgaTIAJ0j0p11ilDB7lSe6o7TjmSmRc3QPoUQPAnoYRPKBOwKQOPF8wvNbWWwI8PhjZPjllZusUbTQ6GCuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=4YFhZUK0; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="4YFhZUK0"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=/d/XiaZLLKv+vI0B4miB6NRoNYuVfQaCGlqHEYGWIuU=; b=4YFhZUK0eI4ur0yv9gJdwPmjyR
-	4vMUTdTgXiaYg7JZGn1wDU0Wdeh7Ug3cDd5m2RRmFen2AOMTdYheuprh+e/SWX0PAzpzxGNMxOATx
-	25mRanfOgPdoEbTH3E7SkBiByj8iOJyp3Bd7MuqXvIRMiPJxkCJ4px27NL/WG4il9Egg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wyx1a-001QDG-2d; Tue, 25 Aug 2026 21:41:34 +0200
-Date: Tue, 25 Aug 2026 21:41:34 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Caleb James DeLisle <cjd@cjdns.fr>
-Cc: Christian Marangi <ansuelsmth@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Qingfang Deng <dqfext@gmail.com>,
-	SkyLake Huang <SkyLake.Huang@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net-next v2 5/6] net: phy: mediatek: add calibration
- logic for AN7581
-Message-ID: <53415965-602e-4638-98db-43e0b899f837@lunn.ch>
-References: <20260724190811.198339-1-ansuelsmth@gmail.com>
- <20260724190811.198339-6-ansuelsmth@gmail.com>
- <d18d84e4-af86-405e-aadd-bd9a8dfe8742@cjdns.fr>
+	s=arc-20240116; t=1787687900; c=relaxed/simple;
+	bh=Vjj6oayBhOBd5PFC7i7R009f/ucKF+GNdanNAaDGQuE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=I3/sVXYJWX5cv/of+Ifg/QPZiPyLFUf145mC//A5NRIMSRlEaKHP0VE/Dk4HXa4188Vpp6GPI0WxsUfDDa644D5HVKKwE716NKMdzHWLu18M8sX1Mk9MjHrbHY8sWwf4V6zW8JTYBN+GfG5aWUmSrngTAAgzY20twa8Qll333MA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=auroraos.dev; spf=pass smtp.mailfrom=auroraos.dev; arc=none smtp.client-ip=95.181.193.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=auroraos.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=auroraos.dev
+Received: from wasted (91.79.41.14) by exch16.corp.auroraos.dev
+ (10.189.209.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1847.3; Tue, 25 Aug
+ 2026 22:58:04 +0300
+From: Sergey Shtylyov <s.shtylyov@auroraos.dev>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	<linux-usb@vger.kernel.org>, <netdev@vger.kernel.org>
+CC: Sergey Shtylyov <s.shtylyov@auroraos.dev>, Michal Pecio
+	<michal.pecio@gmail.com>
+Subject: [RFC net-next v2] r8152: simplify loops in generic_ocp_{read,write}()
+Date: Tue, 25 Aug 2026 22:57:35 +0300
+Message-ID: <20260825195736.56257-1-s.shtylyov@auroraos.dev>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d18d84e4-af86-405e-aadd-bd9a8dfe8742@cjdns.fr>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: exch16.corp.auroraos.dev (10.189.209.38) To
+ exch16.corp.auroraos.dev (10.189.209.38)
 
-> > +	ret = devm_phy_package_join(&phydev->mdio.dev, phydev, 0,
-> 
-> 
-> This should use AIROHA_DEFAULT_PORT0_ADDR as the base_addr to avoid a
-> collision if another PHY driver also uses devm_phy_package_join().
+In generic_ocp_{read,write}(), the *while* loops look very strange:
+the last iteration is implemented differently to the previous ones
+(doing some useless assignments before *break*) for no good reason.
+Merge the different iterations into one, using the local variables
+in the loop bodies...
 
-Please trim the text when replying, otherwise comments get lost.
+Found by Linux Verification Center (linuxtesting.org) with the Svace
+static analysis tool.
 
-       Andrew
+Suggested-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Sergey Shtylyov <s.shtylyov@auroraos.dev>
+
+---
+ drivers/net/usb/r8152.c | 55 +++++++++++++----------------------------
+ 1 file changed, 17 insertions(+), 38 deletions(-)
+
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index f61686433031..af3d7dcb2f14 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -1432,24 +1432,15 @@ static int generic_ocp_read(struct r8152 *tp, u16 index, u16 size,
+ 		return -EPERM;
+ 
+ 	while (size) {
+-		if (size > limit) {
+-			ret = get_registers(tp, index, type, limit, data);
+-			if (ret < 0)
+-				break;
+-
+-			index += limit;
+-			data += limit;
+-			size -= limit;
+-		} else {
+-			ret = get_registers(tp, index, type, size, data);
+-			if (ret < 0)
+-				break;
++		u16 n = min(size, limit);
+ 
+-			index += size;
+-			data += size;
+-			size = 0;
++		ret = get_registers(tp, index, type, n, data);
++		if (ret < 0)
+ 			break;
+-		}
++
++		index += n;
++		data += n;
++		size -= n;
+ 	}
+ 
+ 	if (ret == -ENODEV)
+@@ -1499,28 +1490,16 @@ static int generic_ocp_write(struct r8152 *tp, u16 index, u16 byteen,
+ 			size -= 4;
+ 
+ 		while (size) {
+-			if (size > limit) {
+-				ret = set_registers(tp, index,
+-						    type | BYTE_EN_DWORD,
+-						    limit, data);
+-				if (ret < 0)
+-					goto error1;
+-
+-				index += limit;
+-				data += limit;
+-				size -= limit;
+-			} else {
+-				ret = set_registers(tp, index,
+-						    type | BYTE_EN_DWORD,
+-						    size, data);
+-				if (ret < 0)
+-					goto error1;
+-
+-				index += size;
+-				data += size;
+-				size = 0;
+-				break;
+-			}
++			u16 n = min(size, limit);
++
++			ret = set_registers(tp, index, type | BYTE_EN_DWORD,
++					    n, data);
++			if (ret < 0)
++				goto error1;
++
++			index += n;
++			data += n;
++			size -= n;
+ 		}
+ 
+ 		/* Set the last DWORD */
+-- 
+2.55.0
