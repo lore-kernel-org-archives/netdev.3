@@ -1,171 +1,239 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8D4387378
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 20:02:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDEC43C0637
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 20:07:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787688180; cv=none; b=Uc8jMkPvkN1/8tWVgMdJ5Zolk7e6hJdRdUntEzhTU0BExG4GTbn98p3utP7X/HUK8/INlhgailSCpUGDpI3V6j6UkfHxXyXS5diBLK5PUksOdIMI/pcrjZiLO5QQ0JX1TvBjkQ39PQ+Ogeu+40npTPfEBAqp/Hr5sNwuZCk98lk=
+	t=1787688458; cv=none; b=nGiqLdGVC8GTo9bpBPpZbqDf4LVExN1VVeuiKrpyc53DTKQoi0fsbObaF8TgZyQsHcPgm55E7RFcAolimlso6f3ufBWfaFLM9++zdWaHSmWqn0IghFLgox7v9SovgVOjT+rLp3K24l+IdZ7vQmzZZ/db/ATgzfvAf7Mo8yOXxHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787688180; c=relaxed/simple;
-	bh=wSj/Bziwj2nKmZlwT90+vNBfPdmMDOGVBjj/fVWpTQE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rvmoULg2PU2zO8fI05MTZILi/TGiB8EEZVRnsvo3/m8a1zXcxTCx8AwQgQb4/NMykXkSPtSavCkd0LWeaXS4ZntYP7OQPf+Zosyp/zj+bhUYpJWr9+byhp/ciRXmfSyzcOpiJ0ND5r/dGLedo+1vifCLR/xgRy/koTXMMEMcf10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iznWfC13; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iznWfC13"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38759bcd877so368732a91.2
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 13:02:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787688178; x=1788292978; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=B3Pi1LU2yqNrQy/N3chmYaA7JCHAIIMXZlkkYLifKOw=;
-        b=iznWfC13XjXB4QayCT0wCmxdnlnZbrZbkCPeNS6DUZIyJ25ozilf9yA17tOSp8qto7
-         b40Zu0DmVXmKz178Xl1ZEWrDpES6xrHHCZumhAfFShwTv3Eg0Vof7HvHI/ia/RH9e3k7
-         q6Kw9Ncu7Wge8Pw9quPK6Pz5+xrOeiw4psG28g4wr54c7d5G+4fg5OmmYzDu9wqYkJLx
-         ZW4Y4IxUt9n68+/j5R0KxzloRTqc4GwGRAa0FgIyjmqfmltqeVajY8SmlD7jG3k+AuUV
-         OUxUXk//ir0CEDBc3Vauer6sNNz+S5Xz87WHShDZzj5Q5vMGDBJuaqeNzQquBlNnllPK
-         FWng==
+	s=arc-20240116; t=1787688458; c=relaxed/simple;
+	bh=IqUPtS1OrVVKgQDl+JiFu/y4TbwemwqEKa/UGKCWMWE=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=U/3htXMN7nzHrBZLxj85inVIghfBBESte8FSQiH1Ph/bsuZoJSKYx5KdUGoJCnPLOkFGaWESnVzxtMAUNojZrjOUvpRyxVR3tJocCY4gN2yp5yzLN39seQE0pBdYETBP13IoPE5tYbZ6/gp5l/+nTar16dI5F+c90RnmIce3fHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-485ebc5706cso2279070b6e.0
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 13:07:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787688178; x=1788292978;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=B3Pi1LU2yqNrQy/N3chmYaA7JCHAIIMXZlkkYLifKOw=;
-        b=TIQ9VSYnB5DaP///+qEYZ3Hzu5zu+ld1SaPfeRVW8Vd7Xh67JykkGyJ06JQHeARirH
-         VPnvy9Y3ArPPbnpUccCX5YsUlsJWvUYkYUI8z+EG4ZnfYB0SeyNQVJ6Y/ZPVV0vyUzi3
-         S7C6ChSlkGWFrfUNXltdevInnkL1fC/GPdWerYBSjDgrcR2/bk+7DZbUhzrYNQzj+Ux9
-         HqpVSHCMF69866T61/J7dp+SKvIqMqooUpd3/Khy+VLnJbKPwTTNH8QP9PcKbma8lNih
-         SlJQ5TLKpAJWfPs+qGgtKMsUZb9bxQbacVVQUfaPWu7TWcenR6wHMfZjnOhbXl7OOE2J
-         QnIw==
-X-Forwarded-Encrypted: i=1; AHgh+RpHMe8kCPMV19gmhxdVt8L0Avamjz/9gwCVsC3NuXlYzI5xSx5/2W1X2njw3XqdpKjH26WHDec=@vger.kernel.org
-X-Gm-Message-State: AFuF++lDNs2KakfQcI2CQC5AZMvwBFWBf35gTOH9BbmlGX96tZKQj4ti
-	lsROD3qrMnpa+w1mhPAKA/0ivUuTGvtJihYUHkIPyx7bWuA5OKq/IqMV
-X-Gm-Gg: AR+sD11SEnTjUMsLBP+aZLhHLH4I9WDzaNK6R6JOKKc6GrJhvwIaMzbwkKLHySXpPEP
-	iLNAnqD5EzEf3pQzZUWsCTXipXTjF2qM7G/1LajrLLJINFArGq0t72Uh0CLdfxtvniFlpWthxkM
-	/JqD92GIBHHFV6Dgj6fcpPIey0CCGPbF31VML5aqTSf17sleXmJYYQVBMXEnChfzXNW+OKjyBYB
-	GQIdHWFMV8jbISgdlG4jrnAZBeHKBg1xxoyLHFDdfTF34ipnFNegeJfuWMozDd+xeqjDhYPz6QY
-	40fX8acFM3r2jNo7V0uq9rO3DMUSRgCFLWiB5CR7cF1GGBDlPLpfjjkhVVbs87mfUC4CRSHNMg5
-	MmzQC/IdFLFvmBI3WUTk/KYr6kadpAHInse/pZQ+qiPSnjkHjYoWDAW7c6KSjmix+JQDq0vxR+K
-	7o9J+ZHwp80eVRYJEp0h9RHv53D3YlDqDOHXctHiNOm8VZB1hKNClJcoLBC5fW8sA+s4vFc79f6
-	jZK4uzoZBQpkY3+wTedbA==
-X-Received: by 2002:a17:90b:1d46:b0:396:5fce:8e24 with SMTP id 98e67ed59e1d1-3966d197b6dmr3482328a91.4.1787688178216;
-        Tue, 25 Aug 2026 13:02:58 -0700 (PDT)
-Received: from localhost.localdomain ([2001:4898:a800:1012:54d7:ed:5a29:eac3])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396686e840bsm952049a91.2.2026.08.25.13.02.55
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 25 Aug 2026 13:02:57 -0700 (PDT)
-From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
-To: pablo@netfilter.org,
-	fw@strlen.de,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: phil@nwl.cc,
-	horms@kernel.org,
-	xuanqiang.luo@linux.dev,
-	kadlec@netfilter.org,
-	kees@kernel.org,
-	enrico.pozzobon@dissecto.com,
-	sbrivio@redhat.com,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	AutonomousCodeSecurity@microsoft.com,
-	xmei5@asu.edu,
-	tgopinath@linux.microsoft.com,
-	kys@microsoft.com,
-	blbllhy@gmail.com
-Subject: [PATCH net v2] netfilter: ipset: add synchronize_rcu() in destroy to close use-after-free race
-Date: Tue, 25 Aug 2026 16:02:43 -0400
-Message-ID: <20260825200243.23077-1-blbllhy@gmail.com>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20251104; t=1787688456; x=1788293256;
+        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=pV1WjeHgrdLhIcvemmYEAIzR81INpamnbzvykyKd8bI=;
+        b=s0xRF7m4i7pCGeRAvGmR8Gf3/PeWfKp7zCz4tohDioLt6DibUUb/9IGsCKj2Im1rYU
+         DYFiMab2P7vi0GBlzhdpLveBrYT6jAlQNP6Aaw39ksNClUnG21zOF2UV6OfsT740WsJW
+         2a5Bx0VgM4LE9LJj92cyzjv6MiJ40sA0m5GcwRnFLjEtKtfzyWUs54ilBjpSpKjSjWUs
+         ItYQziFmNSXi0ZxkpupOOftYfjFhQ/tHqEF/s0eFCUABrU2Y1LdFfx7N2lpJqMvRw4fb
+         LceB+aGxXlEpZzvE7TbyelkW39olx54IRr373rXRi8oD82j8OXbyh8VmonbIwRjFhQ7x
+         5vjw==
+X-Forwarded-Encrypted: i=1; AHgh+Rq3eMUEVrxuH+iamVwufiziatiPbr2Dy54zR/VZkl7Ad4QqFV4o4b6np7dircCcZt+wphH2cGs=@vger.kernel.org
+X-Gm-Message-State: AFuF++ktHds3Tk7P/ZWP7zdWycumRsia66vbxm+rI9v8Mv/g/FY/g/MM
+	wsrskoPGEYsp9+PZPqyJ7vraUIJ+ngrESIw7eJrRecRc3G1hbJd7AIqnhs3vOafgARst15iDeoM
+	1AMyoXDWQHOqpSkmnRTm8oww+sWOHT+ttc4UN0+IBWEl0eMGLZDcKuhL6w1I=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6808:3090:b0:495:ca1b:7865 with SMTP id
+ 5614622812f47-4b3504b104amr7078694b6e.11.1787688455876; Tue, 25 Aug 2026
+ 13:07:35 -0700 (PDT)
+Date: Tue, 25 Aug 2026 13:07:35 -0700
+In-Reply-To: <20260825152152.86092-1-ahemadkhawar123@gmail.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a8df607.dbb3a75c.7844.002c.GAE@google.com>
+Subject: [syzbot ci] Re: xsk: Fix circular locking dependency in xsk_bind
+From: syzbot ci <syzbot+ci9230f67b2f9ec34f@syzkaller.appspotmail.com>
+To: ahemadkhawar123@gmail.com, ast@kernel.org, bpf@vger.kernel.org, 
+	daniel@iogearbox.net, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	maciej.fijalkowski@intel.com, magnus.karlsson@intel.com, 
+	netdev@vger.kernel.org, pabeni@redhat.com, sdf@fomichev.me, 
+	syzbot@syzkaller.appspotmail.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-The child set refcount decrement in list_set_del() was moved from an RCU
-callback to the synchronous path, so that userspace sees accurate
-reference counts immediately. However, this broke an implicit invariant:
-previously ref could only reach zero after an RCU grace period,
-guaranteeing all RCU readers had finished before destroy could proceed.
-Now ref can hit zero while readers still hold a stale index, and
-ip_set_destroy() NULLs the slot out from under them:
+syzbot ci has tested the following series
 
-  CPU 0 (softirq)                CPU 1 (control path)
-  ---                            ---
-  rcu_read_lock()
-  index = e->id
-                                 list_set_del():
-                                   list_del_rcu(e)
-                                   ip_set_put_byindex(index) // ref->0
-                                 ip_set_destroy():
-                                   ip_set_list[index] = NULL
-  ip_set_rcu_get(index) -> NULL
-  BUG_ON(!set)                   // crash
+[v1] xsk: Fix circular locking dependency in xsk_bind
+https://lore.kernel.org/all/20260825152152.86092-1-ahemadkhawar123@gmail.com
+* [PATCH bpf-next] xsk: Fix circular locking dependency in xsk_bind
 
-  kernel BUG at net/netfilter/ipset/ip_set_core.c:754!
-    ip_set_test  <- list_set_kadt <- ip_set_test <- set_match_v1
+and found the following issue:
+possible deadlock in xp_clear_dev
 
-Insert synchronize_rcu() in ip_set_destroy() after confirming ref == 0
-but before NULLing the slot, so it only pays the RCU wait cost when
-actually destroying. Because synchronize_rcu() sleeps, ip_set_ref_lock
-must be dropped first, which splits the critical section in two. A
-recheck of ref/ref_netlink is therefore needed in the second section,
-since a concurrent netlink dump continuation (which does not hold
-nfnl_lock) may have incremented ref_netlink in the interim.
+Full report is available here:
+https://ci.syzbot.org/series/6f095c15-0f05-4d2e-a9eb-8d4d85f669a6
 
-The bulk _destroy_all_sets() path does not need this recheck because
-its is_destroyed flag prevents dump from taking new references.
+***
 
-Fixes: 439cd39ea136 ("netfilter: ipset: list:set: Decrease refcount synchronously on deletion and replace")
-Reported-by: AutonomousCodeSecurity@microsoft.com
-Reported-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
-Reported-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
-Closes: https://lore.kernel.org/all/20260820010617.46851-1-blbllhy@gmail.com/
-Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
+possible deadlock in xp_clear_dev
+
+tree:      bpf-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/bpf/bpf-next.git
+base:      5e289c5a4a526e870efac0ca658635c47138593a
+arch:      amd64
+compiler:  Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+config:    https://ci.syzbot.org/builds/cde9ebbb-b104-4fe4-8779-17786d4f4336/config
+syz repro: https://ci.syzbot.org/findings/bb56c4f2-d20c-4177-a137-583624105374/syz_repro
+
+netlink: 14 bytes leftover after parsing attributes in process `syz.0.17'.
+======================================================
+WARNING: possible circular locking dependency detected
+syzkaller #0 Not tainted
+------------------------------------------------------
+syz.0.17/5789 is trying to acquire lock:
+ffff88816f80ee70 (&dev_instance_lock_key#3){+.+.}-{4:4}, at: netdev_lock include/linux/netdevice.h:2861 [inline]
+ffff88816f80ee70 (&dev_instance_lock_key#3){+.+.}-{4:4}, at: netdev_lock_ops include/net/netdev_lock.h:42 [inline]
+ffff88816f80ee70 (&dev_instance_lock_key#3){+.+.}-{4:4}, at: xp_clear_dev+0x13b/0x340 net/xdp/xsk_buff_pool.c:297
+
+but task is already holding lock:
+ffff8881741d06b8 (&xs->mutex){+.+.}-{4:4}, at: xsk_notifier+0xcd/0x230 net/xdp/xsk.c:2109
+
+which lock already depends on the new lock.
+
+
+the existing dependency chain (in reverse order) is:
+
+-> #1 (&xs->mutex){+.+.}-{4:4}:
+       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
+       __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
+       xsk_bind+0x2c0/0x1370 net/xdp/xsk.c:1622
+       __sys_bind_socket net/socket.c:1945 [inline]
+       __sys_bind+0x2e3/0x410 net/socket.c:1976
+       __do_sys_bind net/socket.c:1981 [inline]
+       __se_sys_bind net/socket.c:1979 [inline]
+       __x64_sys_bind+0x7a/0x90 net/socket.c:1979
+       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+       do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #0 (&dev_instance_lock_key#3){+.+.}-{4:4}:
+       check_prev_add kernel/locking/lockdep.c:3181 [inline]
+       check_prevs_add kernel/locking/lockdep.c:3300 [inline]
+       validate_chain kernel/locking/lockdep.c:3924 [inline]
+       __lock_acquire+0x1520/0x2cf0 kernel/locking/lockdep.c:5253
+       lock_acquire+0x106/0x350 kernel/locking/lockdep.c:5886
+       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
+       __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
+       netdev_lock include/linux/netdevice.h:2861 [inline]
+       netdev_lock_ops include/net/netdev_lock.h:42 [inline]
+       xp_clear_dev+0x13b/0x340 net/xdp/xsk_buff_pool.c:297
+       xsk_notifier+0x1a1/0x230 net/xdp/xsk.c:2118
+       notifier_call_chain+0x1a5/0x3d0 kernel/notifier.c:85
+       call_netdevice_notifiers_extack net/core/dev.c:2313 [inline]
+       call_netdevice_notifiers net/core/dev.c:2327 [inline]
+       unregister_netdevice_many_notify+0x17f9/0x2140 net/core/dev.c:12518
+       rtnl_delete_link net/core/rtnetlink.c:3652 [inline]
+       rtnl_dellink+0x5be/0x810 net/core/rtnetlink.c:3694
+       rtnetlink_rcv_msg+0x802/0xc00 net/core/rtnetlink.c:7132
+       netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
+       netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+       netlink_unicast+0x7bd/0x940 net/netlink/af_netlink.c:1345
+       netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
+       sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
+       __sock_sendmsg net/socket.c:815 [inline]
+       ____sys_sendmsg+0x54e/0x850 net/socket.c:2713
+       ___sys_sendmsg+0x2a5/0x360 net/socket.c:2767
+       __sys_sendmsg net/socket.c:2799 [inline]
+       __do_sys_sendmsg net/socket.c:2804 [inline]
+       __se_sys_sendmsg net/socket.c:2802 [inline]
+       __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2802
+       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+       do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+other info that might help us debug this:
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(&xs->mutex);
+                               lock(&dev_instance_lock_key#3);
+                               lock(&xs->mutex);
+  lock(&dev_instance_lock_key#3);
+
+ *** DEADLOCK ***
+
+locks held by syz.0.17/5789: 3, last CPU#1:
+ #0: ffffffff90036040 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock net/core/rtnetlink.c:80 [inline]
+ #0: ffffffff90036040 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_net_lock include/linux/rtnetlink.h:134 [inline]
+ #0: ffffffff90036040 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_dellink+0x41b/0x810 net/core/rtnetlink.c:3686
+ #1: ffff88801d81eed0 (&net->xdp.lock){+.+.}-{4:4}, at: xsk_notifier+0x89/0x230 net/xdp/xsk.c:2105
+ #2: ffff8881741d06b8 (&xs->mutex){+.+.}-{4:4}, at: xsk_notifier+0xcd/0x230 net/xdp/xsk.c:2109
+
+stack backtrace:
+CPU: 1 UID: 0 PID: 5789 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_circular_bug+0x2e1/0x300 kernel/locking/lockdep.c:2059
+ check_noncircular+0x12e/0x150 kernel/locking/lockdep.c:2191
+ check_prev_add kernel/locking/lockdep.c:3181 [inline]
+ check_prevs_add kernel/locking/lockdep.c:3300 [inline]
+ validate_chain kernel/locking/lockdep.c:3924 [inline]
+ __lock_acquire+0x1520/0x2cf0 kernel/locking/lockdep.c:5253
+ lock_acquire+0x106/0x350 kernel/locking/lockdep.c:5886
+ __mutex_lock_common kernel/locking/mutex.c:646 [inline]
+ __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
+ netdev_lock include/linux/netdevice.h:2861 [inline]
+ netdev_lock_ops include/net/netdev_lock.h:42 [inline]
+ xp_clear_dev+0x13b/0x340 net/xdp/xsk_buff_pool.c:297
+ xsk_notifier+0x1a1/0x230 net/xdp/xsk.c:2118
+ notifier_call_chain+0x1a5/0x3d0 kernel/notifier.c:85
+ call_netdevice_notifiers_extack net/core/dev.c:2313 [inline]
+ call_netdevice_notifiers net/core/dev.c:2327 [inline]
+ unregister_netdevice_many_notify+0x17f9/0x2140 net/core/dev.c:12518
+ rtnl_delete_link net/core/rtnetlink.c:3652 [inline]
+ rtnl_dellink+0x5be/0x810 net/core/rtnetlink.c:3694
+ rtnetlink_rcv_msg+0x802/0xc00 net/core/rtnetlink.c:7132
+ netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
+ netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+ netlink_unicast+0x7bd/0x940 net/netlink/af_netlink.c:1345
+ netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
+ sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
+ __sock_sendmsg net/socket.c:815 [inline]
+ ____sys_sendmsg+0x54e/0x850 net/socket.c:2713
+ ___sys_sendmsg+0x2a5/0x360 net/socket.c:2767
+ __sys_sendmsg net/socket.c:2799 [inline]
+ __do_sys_sendmsg net/socket.c:2804 [inline]
+ __se_sys_sendmsg net/socket.c:2802 [inline]
+ __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2802
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f2ec039e0d9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f2ec1214028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007f2ec0625fa0 RCX: 00007f2ec039e0d9
+RDX: 0000000004048004 RSI: 00002000000001c0 RDI: 0000000000000005
+RBP: 00007f2ec0435024 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f2ec0626038 R14: 00007f2ec0625fa0 R15: 00007ffca00aa538
+ </TASK>
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
 ---
- net/netfilter/ipset/ip_set_core.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
-index 0a86a170ba90..1295bea7944a 100644
---- a/net/netfilter/ipset/ip_set_core.c
-+++ b/net/netfilter/ipset/ip_set_core.c
-@@ -1225,6 +1225,8 @@ _destroy_all_sets(struct ip_set_net *inst)
- 	/* Must wait for flush to be really finished  */
- 	if (need_wait)
- 		rcu_barrier();
-+	/* Wait for RCU readers before NULLing slots */
-+	synchronize_rcu();
- 	for (i = 0; i < inst->ip_set_max; i++) {
- 		set = ip_set(inst, i);
- 		if (set) {
-@@ -1286,6 +1288,17 @@ static int ip_set_destroy(struct sk_buff *skb, const struct nfnl_info *info,
- 			ret = -IPSET_ERR_BUSY;
- 			goto out;
- 		}
-+		read_unlock_bh(&ip_set_ref_lock);
-+
-+		/* Wait for RCU readers before NULLing slot */
-+		synchronize_rcu();
-+
-+		read_lock_bh(&ip_set_ref_lock);
-+		/* Dump may have taken a ref while lock was dropped */
-+		if (s->ref || s->ref_netlink) {
-+			ret = -IPSET_ERR_BUSY;
-+			goto out;
-+		}
- 		features = s->type->features;
- 		ip_set(inst, i) = NULL;
- 		read_unlock_bh(&ip_set_ref_lock);
--- 
-2.55.0
+To test a fix for this bug, please reply with `#syz test`
+(on a separate line) and attach the patch to the email.
+
+Notes:
+- The patch will be applied on top of the tested series (as an
+  incremental fix).
+- To test a new version of the whole series, please send it directly
+  to syzbot@lists.linux.dev.
+- Arguments like custom git repos and branches are not supported.
