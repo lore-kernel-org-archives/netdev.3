@@ -1,176 +1,94 @@
-Received: from out198-22.us.a.mail.aliyun.com (out198-22.us.a.mail.aliyun.com [47.90.198.22])
+Received: from out28-219.mail.aliyun.com (out28-219.mail.aliyun.com [115.124.28.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE541377EC6;
-	Tue, 25 Aug 2026 06:15:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8E730BB8A;
+	Tue, 25 Aug 2026 06:16:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787638512; cv=none; b=Ww5njllrFTucxk+K9tq8bQoGIUpCFZVciGmWtBgDIwVnoSumbIx9CemTPpKY9l22i6Lr+SE67DDR4O3a3eoG54KQ0lj61ryFk9QBXUWMjGzzo3VeRoIl8gmlj56UuGewuW0YSXySEVWCnf03vMVb5PF/e/eSo2cRYUS4IG9Ng6A=
+	t=1787638599; cv=none; b=Vxq/PK4IPiyQ4Gd36ctTY2VTkKPX0yJvlZO7THZRemp+DNt5px079yjhdxFGUbwDT9XC6pPOb1IE5agUZvltwa1eah5jt8qw/sklQcmGqQ42Gz+GePfAcnSlAU2KBqhnAwGgzaMvElSIKm7NPJEjEyu14UisMlJto8wIydNyZg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787638512; c=relaxed/simple;
-	bh=iJQWDSBF+rOsnO+1lqeBE04DjIHpmEqaDT1h5sc4FTU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SPd6fUr8FX1yoZcZA79Lo3OirNj4qGCspkJxjTuYW2gA2TU5jSOXTiY9yzCUhTjWzaU3Se2QLh9lwqI9/3JQDz6KLCpz0jREZtwTdbME63+WAUmFOl/hnbudawQUMrLLMYwALNU2cFv425alNCX6e55jDmbiee8dUlz47wIZ6ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=47.90.198.22
+	s=arc-20240116; t=1787638599; c=relaxed/simple;
+	bh=4EJis+KqYVqsKy+M4k35yK5euUhRM8xuSDSoWqjT6cU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ARB3QLZQb+ioqQ6aysiaUTUYPSw0ENqSZlxQtU4BarUAUwohWyqDKNsEJ04uQkEj0SQrik9AOExrZq8iVIOp2ATRkDAE73vGmHUY+7h/6jR0y+JshIevNeezI4d+CPX0n4vWg88voZPmrebw88XpQPIbAS3VOWSzUBy0l7iwxqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.219
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07438824|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0288566-0.000202217-0.970941;FP=14618550908345816610|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam011083013073;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=14;RT=14;SR=0;TI=SMTPD_---.iwhZPHN_1787638489;
-Received: from 10.10.26.192(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.iwhZPHN_1787638489 cluster:ay29)
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.4488758|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.09851-0.00159882-0.899891;FP=7309375702676577681|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037017159;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=14;RT=14;SR=0;TI=SMTPD_---.iwcg8yS_1787638580;
+Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.iwcg8yS_1787638580 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Tue, 25 Aug 2026 14:14:52 +0800
-Message-ID: <3e87da63-420b-4582-956c-2ecd853b0619@motor-comm.com>
-Date: Tue, 25 Aug 2026 14:14:48 +0800
+          Tue, 25 Aug 2026 14:16:28 +0800
+From: Kyle Switch <kyle.switch@motor-comm.com>
+To: andrew@lunn.ch,
+	olteanv@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	mmyangfl@gmail.com,
+	horms@kernel.org,
+	linux@armlinux.org.uk,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: ming.xu@motor-comm.com,
+	xiaolin.xu@motor-comm.com,
+	jianmin.wang@motor-comm.com
+Subject: [PATCH v3 net-next 0/2] net: dsa: yt922x: Add support for Motorcomm YT922x
+Date: Tue, 25 Aug 2026 14:16:08 +0800
+Message-Id: <20260825061610.3116673-1-kyle.switch@motor-comm.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC net-next v2] net:dsa:yt922x: Add support for Motorcomm
- YT922x
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, mmyangfl@gmail.com, horms@kernel.org,
- linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
- jianmin.wang@motor-comm.com
-References: <20260820080542.2017118-1-kyle.switch@motor-comm.com>
- <10c23416-dce1-4ec6-91bd-3e9eda9b18a3@lunn.ch>
-Content-Language: en-US
-From: Kyle Switch <kyle.switch@motor-comm.com>
-In-Reply-To: <10c23416-dce1-4ec6-91bd-3e9eda9b18a3@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+Motorcomm YT922x is a series of ethernet switches including:
 
-On 8/20/26 22:47, Andrew Lunn wrote:
->>   drivers/net/dsa/Kconfig  |   7 +-
->>   drivers/net/dsa/Makefile |   2 +-
->>   drivers/net/dsa/yt921x.c | 819 ++++++++++++++++++++++++++++++++++++++-
-> That is a lot of new code. Please try to break it up into a number of
-> smaller patches, with good commit messages, which are obviously
-> correct.
->
-> Since this is a new device, it does not need to work with a big
-> bang. You can slowly add the needed bits, such that when the last
-> patch is merged the device is functional.
+ - YT9224: 4 * 2.5G UTPs and 2 serdes interface
 
-Ans: I have now split the original patch into two separate patches
+This patch just add basic func for a working DSA switch.
 
-        — one for the tag and the other for the YT922x DSA switch.
+v3:
+1. Post the driver as a patchset.
+2. Remove unnecessary macros.
+3. Add mib_working to indicate whether the MIB has been initialized.
+4. Fix any errors found
 
->> +#define YT922X_INTERNAL_SDS1_PHYADDR 0
->> +#define YT922X_INTERNAL_UTP0_PHYADDR 4
->> +#define YT922X_INTERNAL_UTP1_PHYADDR 5
->> +#define YT922X_INTERNAL_UTP2_PHYADDR 6
->> +#define YT922X_INTERNAL_UTP3_PHYADDR 7
->> +#define YT922X_INTERNAL_SDS0_PHYADDR 8
-> These don't seem to be used. Generally, a MAC driver does not need to
-> know the mapping to PHY addresses, the phandles in the DT indicates
-> it.
-Ans: fix done in v3 to remove the unnecessary macros.
->>   static int yt921x_mbus_int_read(struct mii_bus *mbus, int port, int reg)
->>   {
->>   	struct yt921x_priv *priv = mbus->priv;
->> +	int max_ports;
->>   	u16 val;
->>   	int res;
->>   
->> -	if (port >= YT921X_PORT_NUM)
->> +	max_ports = priv->series_info->ports;
->> +	if (port >= max_ports)
-> This sort of code change would make a nice simple patch. Change all
-> current instances of YT921X_PORT_NUM to priv->series_info->ports. Easy
-> to review.
->
->> @@ -4748,6 +4766,13 @@ static int yt921x_dsa_setup(struct dsa_switch *ds)
->>   	struct device_node *child;
->>   	int res;
->>   
->> +	for (size_t i = 0; i < ARRAY_SIZE(priv->ports); i++) {
->> +		struct yt921x_port *pp = &priv->ports[i];
->> +
->> +		pp->index = i;
->> +		INIT_DELAYED_WORK(&pp->mib_read, yt921x_poll_mib);
->> +	}
-> This should be a patch, with an explanation why it is needed. Also
-> please take a look at ethtool -c stats-block-usecs, which indicates
-> how out of date the statistics are. It is currently not well
-> supported, i only learned of it recently, but setting it will help you
-> get the self tests passing.
+v2: https://lore.kernel.org/all/20260820080542.2017118-1-kyle.switch@motor-comm.com
+1. Seperate tag_yt922x into an individual file.
+2. Fix the issues from the previous version. 
+3. Optimize the code style to keep it consistent with the existing code style.
 
-Ans: The initialization logic was already there. I've moved it from probe()
+v1: https://lore.kernel.org/all/20260813104137.55550-1-kyle.switch@motor-comm.com
+1. Add basic functional interfaces for the YT922X DSA driver.
+2. Although the DSA driver supports both YT922X and YT921X simultaneously,
+   the original file names are still maintained for now; 
+   the file naming may be optimized in the future.
+3. Currently, the dsa_switch_ops structure is employed as the operational interface. 
+   In future phases, as functionality expands, the architecture will be refactored 
+   to introduce yt922x_dsa_ops, where chip-specific operations will be distinguished 
+   between YT922X and YT921X, following a design pattern commonly adopted by other
+   existing multi-series DSA drivers.
+4. A new thread(patch series) is created. Although a previous version was submitted, 
+   the changes are substantial, so the old version is not relevant for reference.
 
-         to yt921x_dsa_setup() because the YT922x doesn't support MIB stats
+Kyle Switch (2):
+  net: dsa: tag_yt922x: add support for Motorcomm YT922x tags
+  net: dsa: Add support for Motorcomm YT922x
 
-         in this series, and the MIB support between the two chips is 
-different.
+ drivers/net/dsa/Kconfig  |   7 +-
+ drivers/net/dsa/Makefile |   2 +-
+ drivers/net/dsa/yt921x.c | 821 ++++++++++++++++++++++++++++++++++++++-
+ drivers/net/dsa/yt921x.h | 104 +++++
+ include/net/dsa.h        |   2 +
+ net/dsa/Kconfig          |   6 +
+ net/dsa/Makefile         |   1 +
+ net/dsa/tag_yt922x.c     | 111 ++++++
+ 8 files changed, 1035 insertions(+), 19 deletions(-)
+ create mode 100644 net/dsa/tag_yt922x.c
 
->> +static void
->> +yt922x_phylink_mac_link_down(struct phylink_config *config, unsigned int mode,
->> +			     phy_interface_t interface)
->> +{
->> +	struct dsa_port *dp = dsa_phylink_to_port(config);
->> +	struct yt921x_priv *priv = to_yt921x_priv(dp->ds);
->> +	int port = dp->index;
->> +	int res;
->> +
->> +	mutex_lock(&priv->reg_lock);
->> +	res = yt922x_port_down(priv, port);
->> +	mutex_unlock(&priv->reg_lock);
->> +
->> +	if (res)
->> +		dev_err(dp->ds->dev, "Failed to %s port %d: %i\n", "bring down",
->> +			port, res);
->> +}
-> This appears to be a cut/paste of
-> yt921x_phylink_mac_link_down(). Don't do that. Refactor existing
-> functions to make them generic.
->
->> +static int yt922x_port_sds_init(struct yt921x_priv *priv, int port,
->> +				phy_interface_t interface)
->> +{
->> +	int addr;
->> +	u16 data;
->> +	int res;
->> +
->> +	addr = yt922x_sds_phyaddr_get(port,
->> +				      YT922X_PHY_REG_TYPE_SDS_COMMON_EXT,
->> +				      YT922X_PHY_REG_SPACE_SGMII);
->> +	if (addr < 0)
->> +		return -EINVAL;
->> +	/* write protect */
->> +	res = yt921x_intif_ext_write(priv, addr, 0x4be, 0xd);
->> +	if (res)
->> +		return res;
->> +	/* CDR */
->> +	if (interface == PHY_INTERFACE_MODE_100BASEX) {
->> +		res = yt921x_intif_ext_write(priv, addr, 0x406, 0x0);
->> +		if (res)
->> +			return res;
->> +		res = yt921x_intif_ext_write(priv, addr, 0x416, 0x3458);
->> +		if (res)
->> +			return res;
->> +	} else {
->> +		res = yt921x_intif_ext_write(priv, addr, 0x406, 0x800);
->> +		if (res)
->> +			return res;
->> +		res = yt921x_intif_ext_write(priv, addr, 0x416, 0x4558);
->> +		if (res)
->> +			return res;
->> +	}
->> +	/* PLL */
->> +	if (interface == PHY_INTERFACE_MODE_USXGMII) {
->> +		res = yt921x_intif_ext_write(priv, addr, 0x43a, 0x1006);
->> +		if (res)
->> +			return res;
->> +		res = yt921x_intif_ext_write(priv, addr, 0x43f, 0x3029);
->> +		if (res)
-> What is this function doing?
-Ans: Complete some init configuration according to serdes interface mode.
->
->      Andrew
->
-> ---
-> pw-bot: cr
+-- 
+2.25.1
+
