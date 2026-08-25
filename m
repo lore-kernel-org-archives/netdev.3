@@ -1,131 +1,193 @@
-Received: from mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11011044.outbound.protection.outlook.com [40.107.74.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65325357CFC
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 16:38:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787675891; cv=none; b=CTF1VI6VyygbPx0BDI90xhuSfMi8BPoNSePhe1mq4MrNJ1Hny0urogP55ZsFs4cQOpYvCEVrq9xbdXzopaeY68XELxRG5sGQ8Z8Z/W4CtmkPX4BY6iK0OpRJu7+M2oNxs+OCmiKesQep5PEET3TKB23XDexOdfnQNuTYaaBh/M4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787675891; c=relaxed/simple;
-	bh=MkUNQA/yksKCC3jjEFhp3OpzbEjgIqUw+pL+P+grodk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Akp+rR1YRvAV1SrGUxuyDnKf0vYbR1JEhwiCGoInXcjZBeFNcbk9vyDJQ52ynOUPxQgAg2SJycvcOupMdbckFfqr/nzBSJd1RSyIodelBDqnmCiCqj7kmEX5VcTTYSqUv4VxU1kb/GZvlcFe4D6sWO/UCKH4jYCfqT6HnSlfcrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=lOOd4f2S; arc=none smtp.client-ip=91.218.175.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A830A2931F5;
+	Tue, 25 Aug 2026 16:46:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787676371; cv=fail; b=vDNzzb//VyfKGRTZrsEJhpfxkYJJlCFhDAKP1xDyq1hXHh3GLbkBSjolZWRoxcG9qGHDVByLwmeWNgGzlOZuGElBTMVR4JftYe/3LbkdDYeWBKvBJRXczA8Dn83JwHune6r/4AyeDWVDtyQ/IVGyc9nbJDoR2pyj8dWveVDJRhs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787676371; c=relaxed/simple;
+	bh=vLPU1FiX1J+qMpzzz4RiIL51lMmH3BuAkFxHYh+2du8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Zg0tQlL7fjQ58SdnKkPV/npVrAMC4GtV2O7sYoDTkxkm3j/avXQQzBzwcaMJFFTPZ2Gj/hR04w1B7FIeXOgBEl9OiNi7HGftKBvpWHGXFkbIbtaoESFKkat5OJXXgFU3WbicfD/yUAIG9TnJQaoGIHUqypJuAKs9gEabmx/DV8I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=Fbmqjdxx; arc=fail smtp.client-ip=40.107.74.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="lOOd4f2S"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=MkUNQA/yksKCC3jjEFhp3OpzbEjgIqUw+pL+P+grodk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787675888; v=1; x=1788280688;
- b=lOOd4f2SfhygoSFf8Dm2qUpN6kyfrvLbM0XHGT4qHiJ7x1uNNO1QlUazBLl1/nBmYI394IeS
- Xg4uP44YUO4TVr8o4g8po9VX7tk8ckIFYes6BIEP7QF43Ovvp3D8qe5DKGVRs8L1KFXUfAgP4EG
- SpHNhli6ON4WKle/If+18R3k=
-X-Envelope-To: netdev@vger.kernel.org
-Received: from [IPV6:2a03:83e0:111e:2:c6:2f62:38ca:59d8] (2620:10d:c092:500::7:692)
-	by smtp.migadu.com with ESMTPS id 76f75ebeae15f9e3;
-	Tue, 25 Aug 2026 16:38:08 +0000
-X-Mizu-Trace-ID: 76f75ebeae15f9e3
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <8c5c1254-34b9-4d38-8cd4-71b3c13e00e4@linux.dev>
-Date: Tue, 25 Aug 2026 17:38:03 +0100
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="Fbmqjdxx"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZeRppCJba9q2yAHaAtntxZMoqO3WpDHgSlIHFTWtosut+VbEo22LZJ3h2oK+sgTzwYc19c3QJ2hBihMRK1Ef9/05ptf28fv8zvX4Fawy7AAFnWkgrlFxl3c8o9EpH5hedivsbcWPjNyF5ueteTZJWRvanW16hY0qhMdnnk4bDUXryGHRTiAkmiH5UonP72Q0I/Ur/yYG/PoV3Av1xRLGu0DYxQmD5GBmnZGOHX80Y8ZItsgOUqQ8CLf7cAPhHz6B8NrMN8mDA13U99MQb70k6VOV7z1I1q2Oc9k+4VsdMhYHi1tyJ/u3FcogZCLPRb8CZTyvD4bW5cxY7+iuNFexCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=q8dPIM4A/v95p+QMQCVEpCH7GAGaiR7HlheeCmMpr1c=;
+ b=Lo66nocPLVNq9n12rxr1muCApQTos21JlRdMF0YrreEl9k5sFZK+xx5kKTinv0DEKPebn9stUb8goCnJoSI288VbHXYsk5y+DW5hUQjjPb1CvR0dLDCoizmwlSELICYeKR95C234VoidzFuSIgoO3n6MzFQbwwhNkiefvZ5tjsJ5JQJ9JSSDE2TVGpcQB8QWVlpP252Mur0BoKzu+YznMfPiXebwlnJaGwIQO53q+mw8nJ6hirIAVBoBqkyetd/oVX+doJpjoOIpO2wesUkKi9eBClLBmZlYsQ7w5pz3SfMn4p+bgNTyrarsYlXE6vm7GlQHmc0+msoEue2DCMm3/w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 8.62.32.50) smtp.rcpttodomain=bootlin.com smtp.mailfrom=renesas.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=renesas.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=q8dPIM4A/v95p+QMQCVEpCH7GAGaiR7HlheeCmMpr1c=;
+ b=FbmqjdxxGg+srizMz4GnkWQwdFN/oWH2ZsiTE6u1T/nNeAM8QzVDoApttYBDil/w+s+PZpo5urLeDitJMObuvQyFIMA6Amr+VLTMXOrM9Y1cBUTiR8pAGtMzHQyPIkE0I37jV6NAbHuSo6JlN634XSSxkyoeKOFTD5ThOuLbq/4=
+Received: from OSTPR01CA0056.jpnprd01.prod.outlook.com (2603:1096:604:222::20)
+ by TYCPR01MB18448.jpnprd01.prod.outlook.com (2603:1096:405:391::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Tue, 25 Aug
+ 2026 16:46:06 +0000
+Received: from OS1PEPF0000D20E.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:604:222:cafe::27) by OSTPR01CA0056.outlook.office365.com
+ (2603:1096:604:222::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.7 via Frontend Transport; Tue, 25
+ Aug 2026 16:46:06 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 8.62.32.50)
+ smtp.mailfrom=renesas.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=renesas.com;
+Received-SPF: Pass (protection.outlook.com: domain of renesas.com designates
+ 8.62.32.50 as permitted sender) receiver=protection.outlook.com;
+ client-ip=8.62.32.50; helo=ejcrelay005p.adwin.renesas.com; pr=E
+Received: from ejcrelay005p.adwin.renesas.com (8.62.32.50) by
+ OS1PEPF0000D20E.mail.protection.outlook.com (10.167.240.37) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.3
+ via Frontend Transport; Tue, 25 Aug 2026 16:46:05 +0000
+Received: from vm01.adwin.renesas.com (DEU-5CG20946WF.adwin.renesas.com [10.226.92.185])
+	by ejcrelay005p.adwin.renesas.com (Postfix) with ESMTP id 2F3F130001CA;
+	Wed, 26 Aug 2026 01:45:59 +0900 (JST)
+From: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+To: maxime.chevallier@bootlin.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	shuah@kernel.org,
+	joabreu@synopsys.com,
+	jun.ann.lai@intel.com,
+	yi.fang.gan@intel.com
+Cc: linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kselftest@vger.kernel.org,
+	Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Subject: [PATCH net v3 0/5] net: stmmac: Fix double VLAN 802.1ad tag handling
+Date: Tue, 25 Aug 2026 16:45:17 +0000
+Message-ID: <20260825164522.4244-1-ovidiu.panait.rb@renesas.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] ptp: ocp: exposing the TimeCard X2 AXI Ethernet port -
- which approach?
-To: Sagi Maimon <maimon.sagi@gmail.com>, Netdev <netdev@vger.kernel.org>
-Cc: Jonathan Lemon <jonathan.lemon@gmail.com>,
- Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
- linux-kernel@vger.kernel.org
-References: <CAMuE1bHr84n5LKcj02HmMR5XefPtvQ-UEJAx7+UKfYvRgS0eDg@mail.gmail.com>
-Content-Language: en-US
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <CAMuE1bHr84n5LKcj02HmMR5XefPtvQ-UEJAx7+UKfYvRgS0eDg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: OS1PEPF0000D20E:EE_|TYCPR01MB18448:EE_
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: bc75787f-e49d-4152-f4fa-08df02c85b60
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|7416014|376014|23010399003|36860700016|1800799024|921020|6133799003|10067099003|56012099006|11063799006|18002099003|3023799007|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	zRWmB2PX0DLMc2S1JoR3rELfarcVJMb3B6aZBB2GffjDQp9I6LSWuDkw2IGOb93qYyDSz5S9TGXaOzSFGNKKHKCOw3JCaEqiDTTAV8N/+VqMtfTRPXSWBxi35c20/2FJfjr34vqCnkV06JwwxSkTB594pTmCjtG8NAVGZphc1SCyIkrH+3xsvgkYJTAL953nfsOCcDEo70CDuIcany/NGCatyTnPE/q1/HTYz7MW8KF2mamngSvT9IyNCPXsob8I3Hw2QS62IensYsiSmfYtoOq/LZk+H4EfSqedtYe/eY/0E5aVaQBafszeUc8DYT9NcbzU196qQNcbE2KORoSSFChy5Csa06OsW5tjIaPjBvNAO7W5RUpgCMsVfn0wvWAtTXrw92Ccco3RjrTPhyyARd+mt7XzVagR+8NF8V0RuCqTkt55WzgAyZo7LQ5jBM3+kGRJ2fKVbxdfUfSJ3qRF6oOEDCNRB2L34dVWIM7+g/2h5LvTyr7tUUxGU/rGjh+7qG5WLjiVhHI7PSGw+PmHKyQYRSecBod3fGr/r1SM1xg6uoiWDdFOiZ63MAYShhlb6oz2I3ceuPuGCaghxasqLKqXlaA0oKDV77hNJ60SpU3o/Idv+f8v9YHOT+LtDn7oiSUyZSVWQr7IIkAkrNcW0Snjo1BUl3lgrokT2tEt2OsrV3daznfnjXRtvPSCYGMcaGiT59vMS2+JvHAmihLQJPP+bDSaLscDZLBuC7znwbIzhYV9NIYyKnBxhR2XePTE
+X-Forefront-Antispam-Report:
+	CIP:8.62.32.50;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ejcrelay005p.adwin.renesas.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(23010399003)(36860700016)(1800799024)(921020)(6133799003)(10067099003)(56012099006)(11063799006)(18002099003)(3023799007)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	OgmnabQKhRHZ9aepcLXzcdIs4EmrJMZVVR/X9OJ7ZDja28WyZrnz8Ueb4L+h4VgTo4MAXme29kyxO0IXCAmBi8x3MXZxl/ziJD6ZfgZpEIyN4bxx/t+UdEBEx6ywtv3RseVADmQ7jnVmIAjLZOhueUPRMosafa5TnLk8CelIX2ZMCQ9BjRQmgilGb9HCQZ+xAkOuQHEB/qHlCUAOxRPBfhQyMRJL/kvJEDj1v07ZatgAmF4CaH6YepgTw5iSh8vUqcRqzMZDRMcVccRqXXDJcCcarOV85XLqh9IQaTqGVQXomTJ0cPha7FJXmFv7gN4KBSczJCmFRKpSQARM4eBWn3iS2KmRXWR644W5orDvKya1kXIc8QIjPhf064GMfh/wiVY/I/v37oN5agJ1DAFpzNx3yKyXOhsJiv8pgHDrut18Z9dcRUifOFY/OuGsd8zx
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2026 16:46:05.9082
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: bc75787f-e49d-4152-f4fa-08df02c85b60
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=53d82571-da19-47e4-9cb4-625a166a4a2a;Ip=[8.62.32.50];Helo=[ejcrelay005p.adwin.renesas.com]
+X-MS-Exchange-CrossTenant-AuthSource: OS1PEPF0000D20E.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB18448
 
-On 20/08/2026 16:01, Sagi Maimon wrote:
-> Hi,
-> 
-> Before posting patches I would like to check which of two approaches you would
-> prefer, since they differ a lot in how much code lands and where.
-> 
-> The ADVA TimeCard X2 is a PCIe card whose FPGA image contains a Xilinx AXI
-> Ethernet MAC and an AXI DMA engine alongside the timing blocks ptp_ocp already
-> supports. We want to expose that Ethernet port as a netdevice.
-> 
-> Approach A - let xilinx_axienet drive it.
-> 
-> ptp_ocp creates a platform device describing the two register windows and the
-> three MSI-X vectors, and xilinx_axienet binds to it. This is what ptp_ocp
-> already does for the Xilinx SPI and I2C cores on the same card, see
-> ptp_ocp_i2c_bus() and ptp_ocp_register_spi().
-> 
-> There is no device tree, so a software node stands in for one: "phy-mode"
-> replaces a phy-handle, since the MAC is wired to the fabric internally with no
-> MDIO and no PHY, and a "fixed-link" child node pins the link at 1 Gbit/s full
-> duplex.
-> 
-> This needs two things from xilinx_axienet:
-> 
->    1. Read its configuration through the generic device property API instead of
->       the OF-specific one, so it can be described by a software node. On a
->       device-tree system dev_fwnode() resolves to the OF fwnode and the reads
->       land in the same OF code as today, so this is a no-op for existing users.
->       It is also in line with the wider move from of_* to
->       device_property_*/fwnode_*.
-> 
->    2. A dma_dev in struct axienet_local. Descriptors and buffers must be mapped
->       against the device that masters the bus, which for a platform device
->       created by a PCIe parent is that parent - a platform device does not
->       inherit its parent's DMA ops or IOMMU domain. For every existing user
->       dma_dev would equal dev, so no behavioural change.
-> 
-> That comes to about 50 changed lines in xilinx_axienet and about 180 new lines
-> in ptp_ocp.
-> 
-> Approach B - a separate driver under drivers/ptp.
-> 
-> Reimplement the descriptor rings, NAPI and ethtool support against the same IP,
-> roughly 2500 lines, and share xilinx_axienet's register definitions out of
-> drivers/net/ethernet/xilinx/.
-> 
-> We have both working. Approach A is tested on 7.0.0-rc1 with the card:
-> 
->    xilinx_axienet xilinx_axienet.512 eth0: configuring for
-> fixed/internal link mode
->    xilinx_axienet xilinx_axienet.512 eth0: Link is Up - 1Gbps/Full -
-> flow control off
-> 
-> ping at 0% loss, a 90 s bulk TCP transfer moving ~9000 packets each way with
-> zero errors and no TX timeouts, ethtool -S/-g/-c/-a all working, and clean
-> module unload and reload.
-> 
-> We would much rather do A than maintain a duplicate of an existing driver, so
-> the questions are:
-> 
->    1. Is instantiating xilinx_axienet from a PCIe parent as a platform device
->       acceptable, or would you prefer the driver split so the device can be
->       created on the auxiliary bus? The platform device route keeps the change
->       to xilinx_axienet small and matches what ptp_ocp already does for the SPI
->       and I2C cores, but auxiliary bus is the more usual choice for sub-devices
->       of a PCIe function and would make the DMA parent explicit.
-> 
->    2. For the dma_dev, we currently infer it by testing whether the parent is a
->       PCI device. That is concise but implicit; we are happy to pass it in
->       explicitly if you would prefer it were not inferred.
-> 
-> I can post the series straight away if you would rather look at the code.
+Currently, hardware VLAN stripping is broken for 802.1ad tags. vlan_rx_hw()
+hardcodes ETH_P_8021Q when putting the hardware tag into the skb, rather
+than using the actual protocol from the packet. Because of this, packets
+that contain an 802.1ad outer tag are incorrectly passed up the stack as
+having an 802.1Q tag.
 
-Well, we definitely don't want to copy code but rather reuse existing as
-much as possible. Looks like platform device is the way to go. Let's
-discuss the code.
+This issue was observed on the Renesas RZ/V2H platform (which has a dwmac4
+IP), when testing QinQ ping:
+
+  # DUT
+  ip link add link end0 name end0.100 type vlan proto 802.1ad id 100
+  ip link add link end0.100 name end0.100.200 type vlan proto 802.1q id 200
+  ip addr add 172.16.3.2/24 dev end0.100.200
+  ip link set end0 up
+  ip link set end0.100 up
+  ip link set end0.100.200 up
+
+  # Peer
+  ip link add link eth0 name eth0.100 type vlan proto 802.1ad id 100
+  ip link add link eth0.100 name eth0.100.200 type vlan proto 802.1q id 200
+  ip addr add 172.16.3.1/24 dev eth0.100.200
+  ip link set eth0 up
+  ip link set eth0.100 up
+  ip link set eth0.100.200 up
+  ping 172.16.3.2
+    -- FAIL --
+
+Note that this series only fixes the issue on dwmac4. dwxgmac2 has the same
+issue but I do not have access to hw to test on.
+
+Since dwmac4 does not expose the tag type in the RDES3 descriptor, it
+cannot support hardware double VLAN stripping correctly. This series
+disables double VLAN stripping for it, so the 802.1ad tags are left in
+place and are handled by the software VLAN path.
+
+v3:
+- Dropped patch "net: stmmac: Enable double VLAN processing only when
+  supported" from this series, as Joseph reported that double VLAN and
+  S-Tag are separate features, so it would not be correct to gate
+  everything behind dma_cap.dvlan.
+- Moved the selftest to drivers/net/hw, as the _hw test variants couldn't
+  be run with netdevsim.
+- Fixed "ruff check" and "pylint --disable=R" for the VLAN selftest.
+- Picked up "Reviewed-by" tags from Maxime.
+
+v2: https://lore.kernel.org/all/20260821170959.79708-1-ovidiu.panait.rb@renesas.com/
+- Added a net selftest for VLAN.
+- Dropped patch "net: stmmac: Fix double VLAN stripping on dwxgmac2" from
+  this series, as it was compile tested only and Nazim reported that it
+  doesn't actually fix the issue on his board. More investigation is
+  needed on dwxgmac2, but it should not block this series.
+- Addressed some issues reported by Sashiko, to fix the advertised STAG
+  offload features mismatch.
+
+v1: https://lore.kernel.org/all/20260729095110.164157-1-ovidiu.panait.rb@renesas.com/
+
+Ovidiu Panait (5):
+  net: stmmac: Remove VLAN perfect matching dead code
+  net: stmmac: Move double VLAN handling to a dedicated op
+  net: stmmac: Disable double VLAN handling on dwmac4
+  selftests: drv-net: Move _set_ethtool_feat() into lib
+  selftests: drv-net: Add VLAN test
+
+ drivers/net/ethernet/stmicro/stmmac/hwif.h    |   6 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c |  23 ++--
+ .../net/ethernet/stmicro/stmmac/stmmac_vlan.c |  81 +++----------
+ tools/testing/selftests/drivers/net/gro.py    |  65 ++++-------
+ .../testing/selftests/drivers/net/hw/Makefile |   1 +
+ tools/testing/selftests/drivers/net/hw/config |   1 +
+ .../drivers/net/hw/lib/py/__init__.py         |   3 +-
+ .../testing/selftests/drivers/net/hw/vlan.py  | 109 ++++++++++++++++++
+ .../selftests/drivers/net/lib/py/__init__.py  |   3 +-
+ .../selftests/drivers/net/lib/py/feat.py      |  35 ++++++
+ 10 files changed, 200 insertions(+), 127 deletions(-)
+ create mode 100755 tools/testing/selftests/drivers/net/hw/vlan.py
+ create mode 100644 tools/testing/selftests/drivers/net/lib/py/feat.py
+
+-- 
+2.34.1
 
