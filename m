@@ -1,120 +1,170 @@
-Received: from ultrarisc.com (unknown [218.76.62.146])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 340053DD85A;
-	Tue, 25 Aug 2026 08:17:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.76.62.146
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F23381EA7
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 08:18:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787645856; cv=none; b=NADFmHFCq/46ZOMiDa8abr9IQApW06awUX6J94CFV2hN88UpJ7yi7T3+YkHXcS2wtM3MyVuzx57vJpqzdqLQGRLE1nZKA1XBHJK8Nl4fjEWb/4tWL6gGSOFXBEDzx++SikEgncTKUhBDoV1AUSdGaK3dXEK6OIT8HKdcHzfa2Mw=
+	t=1787645890; cv=none; b=USBGLNh0amVBxWlyFmqebb9+cGl0AFATIKRF252X37a7jtu4fdq4CO+IW/CsPUdLuUL3QzIp5BlxhUj2FYLuJQ7Pv2BIyb01CNlVD0gd98r8naBe7ZhuqQ2TC8JU9uo7mTCoIZwhO4E/4RljtMsN07j51gRdpWXkxlg2GZSanBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787645856; c=relaxed/simple;
-	bh=0hpWzS3PdWuCRi4RZYRntaKveNrBF4SmvRWcDQCtP3k=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=XX5GUMvJ59OI3ShyNEblPwxcbexIgx0hXiQkpUfepHdy+7Rmtda+CIsEGDIj/4+L8H4X51QjbY+/fOEJPfnOq91SwehHH17MDO5cjnIPSYFRda4srbsRYJssotcqzTPaNAEvo98r7eeKZ6PWpqpwkaF3vplfF67BrnYAXyzYmqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com; spf=none smtp.mailfrom=ultrarisc.com; dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b=LjxcuRYV; arc=none smtp.client-ip=218.76.62.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ultrarisc.com
+	s=arc-20240116; t=1787645890; c=relaxed/simple;
+	bh=2wca9jiUZpoFjMcimeII6bdLA+Yz8eGkHT39Out8KPA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sO7mh2u1W6MTfj2Rtc0yG2PnUfsddiOjr6sULAu0uvMQ6DsecPnNn7alcgRXYNqwyK/nYQXskFFB1t9GEO//ym+xODlD3Z+58INAPNxGbviu+akqRDWoHM3cym5fQLgl8DtVcPkzqvoq59tYitVMPVRF5tu+h3/yoSjir11JPhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=Miket/0A; arc=none smtp.client-ip=209.85.160.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b="LjxcuRYV"
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="Miket/0A"
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-51c2a76536bso48284661cf.1
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 01:18:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=ultrarisc.com; s=dkim; h=Received:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:
-	References:Date:Message-Id; bh=jKmOi58Wr3b5f+F/9FpwPS2Jg5KNAZPky
-	cymvsKAjYQ=; b=LjxcuRYV+4I6VgLE/Jg1XSPthF3bOfnPzSI04oqlaYMduwUzF
-	H8i/jO0R9ovfEbi2XsZbHBJyjRe8pY/BtEmN2YDXF+juAUmxSb1aYd9N3x2krlyp
-	ubwn1gA/QbIAIqFyYM9T47pPaqDX8jVUzorSsmcQJG67uc6qXm0F8on3b0=
-Received: from [127.0.0.1] (unknown [192.168.100.1])
-	by localhost.localdomain (Coremail) with SMTP id AQAAfwB3V855T41qhDABAA--.310S2;
-	Tue, 25 Aug 2026 16:16:58 +0800 (CST)
+        d=mojatatu.com; s=google; t=1787645887; x=1788250687; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3MGsld5jCXIuE1ZQHccQwWJT/ZObyzhHpKhPa7xQCWQ=;
+        b=Miket/0APIFZdfNFWHsh0rNXUo8BCoY0H6mkS1BmUMOrL6Ong77iziG4Cm6ZBd2IpL
+         7ZMU6Pm4T5WeD6+EENp7+0QD8awVY7szIEejlwX7UgtHaZcpYZ8J6kzUaGwHpr9Ra/N8
+         Tu0fEcj01vV8HrE/n6y0T1qRHPKdvwa20+2SQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787645887; x=1788250687;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3MGsld5jCXIuE1ZQHccQwWJT/ZObyzhHpKhPa7xQCWQ=;
+        b=D56HNt1LK4E1E/qq6xOoJP1jB2tY7qDCPzop7/q1T+GSXFDC/J9mhHP6ZcN3dWQbMY
+         rbgInNl98aY5R0chWhT3dq14R2BtaHyC4lyWpjqqb3dN1kL1MVQORfJEqSh3VfDWtJyL
+         hBeKcfuVsS2q9NYi7qS35Ubk1j+EEsTFVBjGwajW18zZIHTmqKktOC+wqIfv9DJxGfuP
+         vY8gJzR5IWviosOzPXD2yXFGPeVq9QDT2v/fnqAM3qwzSXvjjndokTn1izuzRIJkM+r4
+         wcPzlBPrY/T6ffOuO9OijgNst/WK/8twuC7sEMqt//ndveMsjC10eWWNhqulCXI6XVaD
+         Rv3w==
+X-Gm-Message-State: AFuF++nhHNwokIZLJsVWQOqyXiIzdqf+/xrAvhY4sqKjxXKpvuYeS9C/
+	tAVmCsAOoVf7+qTTChyH1PTmsxxD5o1BoTGiZFg+2jUV1K+q5xJr33SNHq2PcKVkEn1R/moKD4m
+	ibyOMNA==
+X-Gm-Gg: AR+sD11sFl2fIqZ3nQlbpL9QSM8fYyvilJGOiAULrZYOGP1cIgtV8zw45k3qiEikmFx
+	VeMK+sQRfQSWsQe6THP+HGtXTmsJ6QDsC3pLWPHKim0gXfHm7oAWLWNyue6AxqLKcLOzzMjhitf
+	AUgiN8Og5fLDHxYcNyQQLbz/sjaXfh7PWoez/G1xARycm9dam9bnhpEjSZfDroTQr+wgZtsDUvU
+	4JG8Ccj1yb5rbLzpvLzcUGiHwWzb7HYMCN0w4DMSXuVuHzbvsQDpjkKdbMSY032oeWI4GiwBoW6
+	AzAVInuFb1mpzPAlBUnLI488+MGxvaSGVTlX0fSi+6kNk9wepgqOIYG8W3Y3x/5lr6shzEUWS2v
+	T5OD1fkJZGPaErtCi1nyECFlsSKuZyTv7NIbPFZlFulbZ1iU4/2RfWpNlniIbFO0cNhMN/28Lez
+	H1K+RF4zeQZqAkZwv1CiU9j1Nyc1mUHvoQ+Wzx3wTiZ4Lc8ZFD0mfa
+X-Received: by 2002:ac8:5f52:0:b0:517:875a:d634 with SMTP id d75a77b69052e-52e09bad973mr258346751cf.2.1787645887168;
+        Tue, 25 Aug 2026 01:18:07 -0700 (PDT)
+Received: from majuu.waya ([184.144.29.222])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52e09975f5asm65387341cf.2.2026.08.25.01.18.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Aug 2026 01:18:06 -0700 (PDT)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	stable@vger.kernel.org,
+	vega@nebusec.ai,
+	Victor Nogueira <victor@mojatatu.com>
+Subject: [PATCH net v2 1/2] net/sched: pfifo_fast: reject oversized ring and account to memcg
+Date: Tue, 25 Aug 2026 04:17:50 -0400
+Message-Id: <20260825081751.134086-1-jhs@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 06/12] spi: dt-bindings: snps,dw-apb-ssi: Add
- compatible for UltraRISC DP1000 SoC
-From: Jia Wang <wangjia@ultrarisc.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: wangjia@ultrarisc.com, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Alexandre Ghiti <alex@ghiti.fr>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
- Thomas Gleixner <tglx@kernel.org>, 
- Samuel Holland <samuel.holland@sifive.com>, 
- Anup Patel <anup@brainfault.org>, Mark Brown <broonie@kernel.org>, 
- Andi Shyti <andi.shyti@kernel.org>, 
- Mika Westerberg <mika.westerberg@linux.intel.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
- Jose Abreu <joabreu@synopsys.com>, 
- Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>, 
- Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>, 
- Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@sifive.com>, devicetree@vger.kernel.org, 
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-spi@vger.kernel.org, linux-i2c@vger.kernel.org, 
- netdev@vger.kernel.org, dmaengine@vger.kernel.org
-In-Reply-To: <20260824-slouchy-displace-c3f65dd5a2d1@spud>
-References: <20260824-ultrarisc-dts-v1-0-61ab7aebe9e5@ultrarisc.com>
- <20260824-ultrarisc-dts-v1-6-61ab7aebe9e5@ultrarisc.com>
- <20260824-paycheck-luridness-6de48a00a262@spud>
- <20260824-slouchy-displace-c3f65dd5a2d1@spud>
-Date: Tue, 25 Aug 2026 16:16:43 +0800
-Message-Id: <178764580385.744215.13946157072907729813.b4-reply@b4>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787645804; l=702;
- i=wangjia@ultrarisc.com; s=20260515; h=from:subject:message-id;
- bh=0hpWzS3PdWuCRi4RZYRntaKveNrBF4SmvRWcDQCtP3k=;
- b=Hvrsvrt29JUGTBu6KLS8IK0cY1rMPmjhr7TUcqlYA9ahnLnnFyvhsZgRwuV92ABGHtof/sETT
- LdV0zz1NV3kCa+JjpnKJscHrcMKqnVTEepOmSB0vtoCYdzm+tl+sOts
-X-Developer-Key: i=wangjia@ultrarisc.com; a=ed25519;
- pk=wGVm18siRScehKOkOz0WKxgxDy7IezHEszhnN4/TUCY=
-X-CM-TRANSID:AQAAfwB3V855T41qhDABAA--.310S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7GF1rXr4kCFy8uw13uF1kAFb_yoWxZFb_ur
-	WDJFyIyw4UtFW2gw43AF4YqrZagF4kGr98X3ykXFZagr95JFWkAwnrXr1Svw13XFWYvrya
-	kr1Fvw17ur1a9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb6kYjsxI4VW3JwAYFVCjjxCrM7AC8VAFwI0_Wr0E3s1l1xkIjI8I
-	6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM2
-	8CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0
-	cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4j6F4UM28EF7xvwVC2z2
-	80aVCY1x0267AKxVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJw
-	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
-	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26rWY6Fy7MxkIecxEwVCm-w
-	CF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j
-	6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Wrv_Gr1UMIIYrxkI7V
-	AKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42
-	IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvj4i_HU7UUUUU
-X-CM-SenderInfo: pzdqwylld63zxwud2x1vfou0bp/1tbiAQAHEWqJFPsACQAss+
+Content-Transfer-Encoding: 8bit
 
-On 2026-08-24 18:15 +0100, Conor Dooley wrote:
-> On Mon, Aug 24, 2026 at 06:07:07PM +0100, Conor Dooley wrote:
-> > Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> > pw-bot: not-applicable
-> 
-> And another case of being too hasty, same applies here. Please add some
-> constraints for your device.
->
+pfifo_fast_init() and pfifo_fast_change_tx_queue_len() allocate skb
+ring arrays sized by dev->tx_queue_len with GFP_KERNEL and no upper
+bound. An unprivileged user (via unshare -Urn) can set a huge
+tx_queue_len and attach many pfifo_fast qdiscs to exhaust global
+memory, causing a system-wide OOM.
 
-Thanks for the review.
+Reject tx_queue_len values exceeding S16_MAX (32767) with -ERANGE
+in both pfifo_fast_init() and pfifo_fast_change_tx_queue_len().
+Note: For the init path, NL_SET_ERR_MSG_FMT_MOD reports the error
+via extack whereas for the resize path, the error propagates to
+netif_change_tx_queue_len() which rolls back dev->tx_queue_len to
+the original value. Use GFP_KERNEL_ACCOUNT so the ring allocations
+are charged to the allocating process's memory cgroup.
 
-In the next version, I will add DP1000-specific constraints requiring
-each SPI controller to have one register range, two clocks, and the
-corresponding clock names.
+S16_MAX is the virtio virtqueue size limit: the virtio specification
+stores the queue size as a u16 with a maximum of 32768, so 32767 is
+the largest tx_queue_len any in-tree driver can meaningfully use.
 
-The num-cs property will remain optional because the native chip-select
-count differs between instances and can be detected by the driver. 
+Conditions to recreate the bug:
+- CONFIG_NET_SCHED=y, CONFIG_VETH=y, CONFIG_USER_NS=y, CONFIG_NET_NS=y.
+- Unprivileged user in a fresh user+net namespace (unshare -Urn).
+- Create a veth pair, set tx_queue_len to a huge value (e.g. 500000)
+  while the devices are down.
+- Attach mq at root, then replace each child queue with pfifo_fast:
+    tc qdisc replace dev veth0 root handle 1: mq
+    tc qdisc replace dev veth0 parent 1:1 pfifo_fast
+    tc qdisc replace dev veth0 parent 1:2 pfifo_fast ...
+- Repeat across many veth pairs. Each pfifo_fast allocates 3 skb_array
+  rings of tx_queue_len entries (~12MB per qdisc at QLEN=500000).
+- On the unfixed kernel this exhausts global memory in ~28 iterations
+  on a 2GB guest -> OOM panic. On the fixed kernel the oversized
+  tx_queue_len is rejected with -ERANGE.
 
-> Thanks,
-> Conor.
+Fixes: c5ad119fb6c0 ("net: sched: pfifo_fast use skb_array")
+Reported-by: vega@nebusec.ai
+Tested-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+---
+v1 -> v2:
+- Replaced silent clamp + pr_warn_ratelimited with reject (-ERANGE) (Jakub)
+- Changed cap from 65535 to S16_MAX (32767), matching virtio's
+  virtio16 ring size limit.
+- Dropped the doubled module prefix in extack (NL_SET_ERR_MSG_FMT_MOD
+  already prepends KBUILD_MODNAME).
+- Added resize-path tdc test case (Sashiko nipa gpt-5-6-sol-1-2).
+- Fixed tdc teardown to use JSON list form for acceptable exit codes.
+---
+ net/sched/sch_generic.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-Best regards,
-Jia Wang
-
+diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+index ef2b4bf51564..eb5c0d3f67c2 100644
+--- a/net/sched/sch_generic.c
++++ b/net/sched/sch_generic.c
+@@ -910,11 +910,18 @@ static int pfifo_fast_init(struct Qdisc *qdisc, struct nlattr *opt,
+ 	if (!qlen)
+ 		return -EINVAL;
+ 
++	if (qlen > S16_MAX) {
++		NL_SET_ERR_MSG_FMT_MOD(extack,
++				       "ring size %u too large (max %d)",
++				       qlen, S16_MAX);
++		return -ERANGE;
++	}
++
+ 	for (prio = 0; prio < PFIFO_FAST_BANDS; prio++) {
+ 		struct skb_array *q = band2list(priv, prio);
+ 		int err;
+ 
+-		err = skb_array_init(q, qlen, GFP_KERNEL);
++		err = skb_array_init(q, qlen, GFP_KERNEL_ACCOUNT);
+ 		if (err)
+ 			return -ENOMEM;
+ 	}
+@@ -957,8 +964,11 @@ static int pfifo_fast_change_tx_queue_len(struct Qdisc *sch,
+ 		bands[prio] = q;
+ 	}
+ 
++	if (new_len > S16_MAX)
++		return -ERANGE;
++
+ 	return skb_array_resize_multiple_bh(bands, PFIFO_FAST_BANDS, new_len,
+-					    GFP_KERNEL);
++					    GFP_KERNEL_ACCOUNT);
+ }
+ 
+ struct Qdisc_ops pfifo_fast_ops __read_mostly = {
+-- 
+2.43.0
 
