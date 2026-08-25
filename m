@@ -1,120 +1,200 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF6C2931F5
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 22:21:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D083A9639
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 22:32:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787696472; cv=none; b=Jx77KY3wEqPMj0ulz5G4CuTs9dVFkHZoW3f1drev+hph3g48yaLdl4T+PVeGVMGiKdPS6fCiI2NsRFodfxdJidnHbe9SSXQJ1wiEzlwIXj4o1yoFs7COmUbmTYLmWkKAYWS6nl0hLmJO4E3kue9TWt7h4TDTNA3m9GQvXqpGXSk=
+	t=1787697165; cv=none; b=YdZ9tj6CfDm7R1BhPIMwyM3o5liGXXM8vJW36l0R2TSUXb8ZNoGj33fCdpyQ4UVNmzvVFSUTTY2ycgyO/WYAn0VxXSeFBwi4/FfD8XWU0nlTWHBX2Uv0YZD5+YywixAOPDMyZb6O6NZU/sRzWztQ3rrCGahe8EFIC47JJxv3KUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787696472; c=relaxed/simple;
-	bh=foON8w2BXwgTkz25IulWSyqmpatz6vUJ0ov4ZkYDheE=;
+	s=arc-20240116; t=1787697165; c=relaxed/simple;
+	bh=4iqJpbtutOm4R3XsSRye/BVM3lSHQyMhCGLpVeYI+dk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cVfszxhD08zfqvIYtLZE4UkPhfuJybt2d0r0vPhKPjxGhxa0DsBpsPtVM0fPM9mq5JC4EmqjRU5VsbljDONWVS39E5RnwyNo28lLpqihusbb18bvLiRaufmVF+wx8FS3g2Q4vBEuW80aj3IvYXvQHSEU/JzUzTs/00HarPbAHmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=cnwLKy/O; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=GwXi46KoX676bs1EoVg8r7VaGgqnyjzGRa9iZdaHdw/+Zn9Lh6+yJT6iHDokRgp0simhc6unanxlB1pBBtqT+GrirMKCYmQ/nE4f4tpG3bdAiSr2FIHwR1kzE29HdLWOW1DP8y0grsv5qJZgrGjB+DlP2fjFkJMXHb2CDpSrpOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ImXdyWx7; arc=none smtp.client-ip=209.85.210.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="cnwLKy/O"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1787696461;
-	bh=seHYojO4zctnClsc1uQ+nVDx9aEcAQUJZNaT8oCMIwQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cnwLKy/Ow+5zwCDEfKGzgVZtnjZ1KSqLmylPLWarDIN/cKUnSFOOEPrGNeuNxvzH2
-	 yQ9ebw4sGrA6qzL4aF8cc9B1soFXkP1EtCpZ9SuNPWzuU18WLF5RT68vI+KP/HykK4
-	 NkQoF78vSuppsnr5AikkP7+SQBiZh6+5rR/aJQ0kirQ6NxYpKX4RDLUmqE9jONKWBU
-	 qz3sOS5DM9ARMFGZbuFlF7UfbCtc1gu+nFYqCk6DC8oheMXQJhS/w75nUgVtPvlSYE
-	 LKTXyDQc6fy/95q2myPBUcS6cIg2ecQVrTMRQz8R1e54HsxxS81uNJ4apD84O8YnCi
-	 CUkSxPy6c59Dw==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id EA6EF6005E;
-	Wed, 26 Aug 2026 00:21:00 +0200 (CEST)
-Date: Wed, 26 Aug 2026 00:20:58 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Eric Dumazet <edumazet@google.com>
-Cc: Dong Chenchen <dongchenchen2@huawei.com>, laforge@gnumonks.org,
-	andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
-	kees@kernel.org, netdev@vger.kernel.org,
-	osmocom-net-gprs@lists.osmocom.org, zhangchangzhong@huawei.com,
-	syzbot+83181a31faf9455499c5@syzkaller.appspotmail.com
-Subject: Re: [PATCH net v2] net: iptunnel: fix stale transport header during
- tunnel decapsulation
-Message-ID: <ao4VSt1Vzmj6XBfE@chamomile>
-References: <20260825095000.1461124-1-dongchenchen2@huawei.com>
- <CANn89iJwWL9NdC19XbSFq7sf_tsZS96PTXWgO3oUMGJRkA0g-w@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ImXdyWx7"
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-7eb787dec99so300565a34.0
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 15:32:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787697161; x=1788301961; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=oAPCDDssQLWXyDbqpT5diYKMULhijQjsUnk18J2kiPw=;
+        b=ImXdyWx7hNcruRjnJH+9eAer6ZxupYdZpK5hXn22o/uTqjKdygExOylpiLmiAMKVis
+         E/f2mzl2MJb6y9AJ0LODYCbwkF6hJz/JFrBNVJ3I8bjydJRgOA17V5RBOFtZrGt4/HJM
+         DmsLCLXtuEfrdmlmdUlgXFBsu2NDkz1thF000P0siZj9WyU+hjjlnMvGjcvOKBIYyPH9
+         pEIJ/YcZZCoIjUu9i6xQDg1Tvb+Gr9hsVSjsMMkkU6QfyoxqEnjVwQ05qmMe2LW+BROB
+         CE4wNoF6U0gupW14NuAS3rjBzvwZjoxYuqYzLdyC0h7q+OQhghRaELTrIHTGwU8cn0wh
+         Ehbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787697161; x=1788301961;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oAPCDDssQLWXyDbqpT5diYKMULhijQjsUnk18J2kiPw=;
+        b=S28mD4Ok9TEpQCjEPqDXkBysJjWzepF0nbg7U2ExETMrYOkU6KiyQkqp0yWtCidjgs
+         a+uR+TagFkRoqbTIuT79E/XptE1JCRnBA5TLLJbPsViNcJIGxyj594HZ05MocAYBwdJg
+         YTrxE2DGIPhPkxW8fTOxe+tqxynD1M2TNXYI2Kq76y0QUSGINMazWFEhzxAGipzu9+3g
+         pozzKWa5N9xzf8i3TxqrPu6ClNPTXOSQGOnWkvPY2w0L9rQ78fR+0QCoF+y8OWj20x33
+         L0Cq9+Qa6kIwuy814UBlVSFo5mnmFUK4eczH4aaBJ8J++yerZwjLha4/2JxYiIKATMq4
+         iJZg==
+X-Gm-Message-State: AFuF++mL+0UPThajMLQJF/wu/Hi3QttqHMG4bhkG2nEJ2mIVqW91s/zI
+	rgj41vt5xZ9h7xFQCqfPj6TUN1EY3ZxXQzXtNBpKVjQD+7dr4h/ibFFO
+X-Gm-Gg: AR+sD105NqOM7xDeJaHQCdnMe9YVo1pSOvClFgjGgJiVl5UVVzsjPuEGokC5dDF8k/4
+	8yIj+by0VoGp6B4/o7IWLduqSlcrdxFCOuAZRV/9bYIMf2hIdscHbbX+kctvx07TxfgoCGBMKR/
+	R3UfzgEPReqyb9iETPGzloSKfmEirxgkshgL/Ck2RdKapO1TAOr2PFgEuSUi3IxClSNluSCeFL4
+	kjNQRUX9M2pOksUudJ/rbZC8vgwoGjtklyzaGjuTVSi0TU1JKT1rl1AutIrEqL7me0fBR8XfrkY
+	A56H5Re3uC+lob7hdfcjlcV+a7WmrwfBThJ+h8nCtBLcPKLyVSmGxt9qzyPoJMLg3+ERWq0+Ul+
+	3/KBkeJ2Dz6L8/VYluVicJBei1Aas7wsLk2CeRU92P703K1Q2LG2c38xEx4t9k/D69kWEfOliw+
+	V3uklsVDUgn8uB9x608wgYMoUyDjqnMC3PPsy6orfmThMevuF8+HZCfyOyQfgVZvaLiBv+9JBxS
+	snYvre4BQ==
+X-Received: by 2002:a05:6820:2016:b0:6ac:9729:6710 with SMTP id 006d021491bc7-6b1a049e03bmr2588322eaf.18.1787697160680;
+        Tue, 25 Aug 2026 15:32:40 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:4d::])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6b1a24bdb31sm194474eaf.2.2026.08.25.15.32.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Aug 2026 15:32:40 -0700 (PDT)
+Date: Tue, 25 Aug 2026 15:32:36 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Daehyeon Ko <4ncienth@gmail.com>
+Cc: netdev@vger.kernel.org, sgarzare@redhat.com, stefanha@redhat.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, mst@redhat.com,
+	jasowangio@gmail.com, xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com, bryan-bt.tan@broadcom.com,
+	vishnu.dasa@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
+	virtualization@lists.linux.dev, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v3 1/2] vsock/virtio: validate packet source for
+ connected sockets
+Message-ID: <ao4YBNYwQ9PGC0CN@devvm29614.prn0.facebook.com>
+References: <20260823175858.351431-1-4ncienth@gmail.com>
+ <20260823175858.351431-2-4ncienth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANn89iJwWL9NdC19XbSFq7sf_tsZS96PTXWgO3oUMGJRkA0g-w@mail.gmail.com>
+In-Reply-To: <20260823175858.351431-2-4ncienth@gmail.com>
 
-On Tue, Aug 25, 2026 at 11:59:53AM +0200, Eric Dumazet wrote:
-> On Tue, Aug 25, 2026 at 11:41 AM Dong Chenchen <dongchenchen2@huawei.com> wrote:
-> >
-> > Syzbot reported a crash in qdisc_pkt_len_segs_init() caused by a stale
-> > transport_header offset after tunnel decapsulation.
-> >
-> >
-> > The issue is completely latent until qdisc read transport header in
-> > commit 7fb4c1967011 ("net: pull headers in qdisc_pkt_len_segs_init()").
-> > The crash requires four conditions to line up:
-> >
-> > 1. The incoming packet is encapsulated and carries GSO metadata. The outer
-> >    transport header offset is stored in skb->transport_header while the
-> >    packet is still in the outer tunnel context.
-> > 2. The tunnel receiver strips the outer headers. skb->data is advanced to
-> >    the inner frame, but skb->transport_header is left pointing to the
-> >    now-removed outer L4 header, so it becomes a negative offset relative to
-> >    the new data.
-> > 3. The inner frame is not delivered to the local IP stack. Instead, it
-> >    is forwarded at L2 by a bridge or HSR, so ip_rcv_core() never runs and
-> >    the transport header is not reset to the inner L4 offset.
-> > 4. The forwarding path calls __dev_queue_xmit(), which enters
-> >    qdisc_pkt_len_segs_init(). That function computes the GSO header length
-> >    from skb_transport_offset(skb). Because the offset is negative, the
-> >    unsigned cast overflows and pskb_may_pull(skb, hdr_len +
-> >    sizeof(struct tcphdr)) reads past the end of the skb, triggering a
-> >    KASAN fault or page fault.
-> >
-> > The issue specifically requires GSO packets (shinfo->gso_size != 0), which
-> > are processed/aggregated through gro_cells. Fix this by clearing
-> > transport_header to the ~0U sentinel in gro_cell for all tunnnel driver.
-> > GTP does not support GRO/GSO, drop the evil GSO packets in GTP directly.
-> >
-> > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> > Reported-by: syzbot+83181a31faf9455499c5@syzkaller.appspotmail.com
-> > Closes: https://lore.kernel.org/all/69de2bee.a00a0220.475f0.0041.GAE@google.com/T/
-> > Suggested-by: Eric Dumazet <edumazet@google.com>
-> > Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
-> > ---
-> >  drivers/net/gtp.c      | 5 +++++
-> >  include/linux/skbuff.h | 5 +++++
-> >  net/core/gro_cells.c   | 2 ++
-> >  3 files changed, 12 insertions(+)
-> >
-> > diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-> > index 9a12cc53da00..fbf617b1acc9 100644
-> > --- a/drivers/net/gtp.c
-> > +++ b/drivers/net/gtp.c
-> > @@ -312,6 +312,11 @@ static int gtp_inner_proto(struct sk_buff *skb, unsigned int hdrlen,
-> >  static int gtp_rx(struct pdp_ctx *pctx, struct sk_buff *skb,
-> >                   unsigned int hdrlen, unsigned int role, __u16 inner_proto)
-> >  {
-> > +       if (skb_is_gso(skb)) {
-> > +               netdev_dbg(pctx->dev, "GSO is not support in GTP\n");
+On Mon, Aug 24, 2026 at 02:58:57AM +0900, Daehyeon Ko wrote:
+> virtio_transport_recv_pkt() looks up sockets first by the full source and
+> destination tuple, then by destination only in the bound table. The
+> fallback is needed for listening and connecting sockets, but sockets remain
+> in the bound table after connect(), so it can also return a non-listening
+> socket.
 > 
-> Patch looks good to me but there is a small typo here.
+> The fallback does not validate the source address. In TCP_SYN_SENT, a
+> RESPONSE from an unrelated source can transition the victim socket to
+> TCP_ESTABLISHED while its stored remote address remains unchanged.
+> Subsequent RW packets from that source are delivered through the same
+> destination-only fallback.
 > 
->                     netdev_dbg(pctx->dev, "GSO is not supported in GTP\n");
+> This was reproduced with capability-empty processes under different UIDs.
+> The attacker discovered the target tuple through unprivileged AF_VSOCK
+> sock_diag and caused the victim socket to read 16 attacker-chosen bytes;
+> the intended peer-side socket read 0 of those 16 bytes.
 > 
-> Reviewed-by: Eric Dumazet <edumazet@google.com>
+> Add vsock_check_source() to validate the transport, source port and source
+> CID against the peer stored in a non-listening socket. The local transport
+> is the CID exception because its packets are generated internally with
+> VMADDR_CID_LOCAL as their source, including connections using CID aliases.
+> 
+> Use the helper after lock_sock() in the virtio receive path.
+> 
+> Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
+> Closes: https://lore.kernel.org/netdev/20260813121236.2328599-1-4ncienth@gmail.com/
+> Cc: stable@vger.kernel.org
+> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+> Assisted-by: Codex:gpt-5.6-sol
+> Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+> ---
+>  include/net/af_vsock.h                  |  3 +++
+>  net/vmw_vsock/af_vsock.c                | 32 +++++++++++++++++++++++++
+>  net/vmw_vsock/virtio_transport_common.c |  3 ++-
+>  3 files changed, 37 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
+> index 3357ee62d..5549298c1 100644
+> --- a/include/net/af_vsock.h
+> +++ b/include/net/af_vsock.h
+> @@ -229,6 +229,9 @@ struct sock *vsock_find_bound_socket_net(struct sockaddr_vm *addr,
+>  struct sock *vsock_find_connected_socket_net(struct sockaddr_vm *src,
+>  					     struct sockaddr_vm *dst,
+>  					     struct net *net);
+> +bool vsock_check_source(const struct vsock_sock *vsk,
+> +			const struct vsock_transport *transport,
+> +			const struct sockaddr_vm *src);
+>  void vsock_remove_sock(struct vsock_sock *vsk);
+>  void vsock_for_each_connected_socket(struct vsock_transport *transport,
+>  				     void (*fn)(struct sock *sk));
+> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+> index a33b2a2d3..f840498b5 100644
+> --- a/net/vmw_vsock/af_vsock.c
+> +++ b/net/vmw_vsock/af_vsock.c
+> @@ -438,6 +438,38 @@ struct sock *vsock_find_connected_socket(struct sockaddr_vm *src,
+>  }
+>  EXPORT_SYMBOL_GPL(vsock_find_connected_socket);
+>  
+> +/**
+> + * vsock_check_source - validate a packet source against a socket peer
+> + * @vsk: socket receiving the packet
+> + * @transport: transport receiving the packet
+> + * @src: source address from the packet
+> + *
+> + * Return: true if the packet arrived on the socket's assigned transport and
+> + * its source matches the stored peer. Loopback packets are generated
+> + * internally and always use the local CID as their source, including
+> + * connections using a valid CID alias.
+> + *
+> + * The caller must hold the socket lock and must not call this for listening
+> + * sockets, which accept packets from any source and have no assigned
+> + * transport.
+> + */
+> +bool vsock_check_source(const struct vsock_sock *vsk,
+> +			const struct vsock_transport *transport,
+> +			const struct sockaddr_vm *src)
+> +{
+> +	if (vsk->transport != transport)
+> +		return false;
+> +
+> +	if (src->svm_port != vsk->remote_addr.svm_port)
+> +		return false;
+> +
+> +	if (src->svm_cid == vsk->remote_addr.svm_cid)
+> +		return true;
+> +
+> +	return transport->get_local_cid() == VMADDR_CID_LOCAL;
+> +}
+> +EXPORT_SYMBOL_GPL(vsock_check_source);
+> +
+>  void vsock_remove_sock(struct vsock_sock *vsk)
+>  {
+>  	/* Transport reassignment must not remove the binding. */
+> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+> index e4ebaa70f..6301c108a 100644
+> --- a/net/vmw_vsock/virtio_transport_common.c
+> +++ b/net/vmw_vsock/virtio_transport_common.c
+> @@ -1823,7 +1823,8 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
+>  	 * lock_sock (note: listener sockets are not assigned to any transport)
+>  	 */
+>  	if (sock_flag(sk, SOCK_DONE) ||
+> -	    (sk->sk_state != TCP_LISTEN && vsk->transport != &t->transport)) {
+> +	    (sk->sk_state != TCP_LISTEN &&
+> +	     !vsock_check_source(vsk, &t->transport, &src))) {
+>  		(void)virtio_transport_reset_no_sock(t, skb, net);
+>  		release_sock(sk);
+>  		sock_put(sk);
+> -- 
+> 2.54.0
+> 
 
-Ouch, may I have a chance to fix GSO in this driver?
-
-Thanks!
+Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
