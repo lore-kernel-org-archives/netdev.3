@@ -1,192 +1,219 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f226.google.com (mail-pl1-f226.google.com [209.85.214.226])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2C2175A7B;
-	Tue, 25 Aug 2026 01:36:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BCB9463
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 01:45:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787621770; cv=none; b=CUg+2AWZ/XNe6EdfqnLcDpwKNJ36nM+iNCC0bbmG5rNnQ3T7yNLKO9rCKavZQbOyEJTWgL1RqfyjvcT0H3pvDzf0XuwtuZDHgfM4BwcU+YCBVH3x62Jmz3N1RLX567thhj2X6Zf5uL1AOs8JW2YU191bvwP3ZdwIPRFY+cHBeQw=
+	t=1787622334; cv=none; b=AIVnLTpRZdO5BARQUvW4xDATVQo5/8FE1EXeYITtuXQKD5s1qabtVW587y7UKwMGMBhcRw1CW28wyF/tI/eg9XfANW1/5iNk3CqBjZ5Xt9fGTHq01pAx4ft4qRemktjosiuZ6CLGbzCy+wOewnFW2FQdb2im5zsze/xECQdF9RA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787621770; c=relaxed/simple;
-	bh=AY5GOXzINHi8gN/NizRRTAFFntrf+A+oI1/TpzeF20g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bKX/euHZPVbhmPPit6WuW6qZk3Ei3sheIDgT2Y5aL8JXvlNH3keXnd3VpVGYCzQfWvQ7Gh/FW4nuzqUJgAt5/BrdHA2IEFn9kvSIcc2A73QKZXFkC1PQ/Dnr0chfIPJgLlN9tvadpQcjC3SCT+tpM/C4eJoxIXjvgzSEKp2NjOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TZ0KMAbg; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787622334; c=relaxed/simple;
+	bh=YMUVq8FgVNeZFg1V0axy4vuGq6GrNDYnKCHOmiCDc1A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PLHtkuVZrKJQaJ9/84lrlxgxfelYCOVKmh4V5ajgiFFrU9rleoEp3q0rm9ZIUr+TM/7IOPVowO3C/hnyaJOydwQUoxUKUxe+FD5zoaswlD0zvDEEhJbl98LCN48omW1jQM1XWwDplb5maW+PMeWFD4MrBoFWFh8WO0VlAMXTnNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=D0v7M+Ah; arc=none smtp.client-ip=209.85.214.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TZ0KMAbg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0428F1F00A3A;
-	Tue, 25 Aug 2026 01:36:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787621769;
-	bh=BfE7viPV8FJfAYGP3HgNPcGDfJ3eDE0bViABvssmfiI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TZ0KMAbg69e78nABHT8mWrWdmCrhy6G+X1ls6fmrx77r7eXGSkq0/631Cqm0d0m/d
-	 A3yYU3AwZHNQ0A8wxACEfpyaiLH8iUEQ8QdlSzKO5uNSFuRopo4QN6wpX7C6hk04sB
-	 UX4hyfiBPtnvckgeJ8BEz3L79PDJv30JzTrJ7P8z1CSszamWonKVSl2IS7NC8G3U+c
-	 9cwjKezCHMQ1yWjL5ZuVRI43fK6zHxaJSNp7fj9sb8hVnm7lQLWcbEPgC/3nByxUud
-	 iQ+swB3PSd4yx/zEqf1tt0GCuBk0U/3oihroro3xCk5I5RaJK89nYOCVkHjg0GKs0O
-	 BnValdbpJ6LvA==
-From: Jakub Kicinski <kuba@kernel.org>
-To: hilalrahmatullah11@gmail.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	donald.hunter@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] net: ynl: allow u8 sub-type for indexed array
-Date: Mon, 24 Aug 2026 18:36:08 -0700
-Message-ID: <20260825013608.2932927-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260821-work-v1-2-6a4ca4a92ee6@gmail.com>
-References: <20260821-work-v1-2-6a4ca4a92ee6@gmail.com>
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="D0v7M+Ah"
+Received: by mail-pl1-f226.google.com with SMTP id d9443c01a7336-2d6b5aa7535so15465185ad.2
+        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 18:45:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787622332; x=1788227132;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=YMUVq8FgVNeZFg1V0axy4vuGq6GrNDYnKCHOmiCDc1A=;
+        b=H53tiGmtIYkq5tmlahmRU+rGXcvUmwNGq3npB0h2HtqKIRQeJb1b9ZJ3/cLgfOYyOv
+         ljQzE/rxQTdODRlbkPfGD9y5M2ZMtd7uZD39Sz0oZtZ5hyXoWV10YOmM5IeGlpULwzla
+         F8jIgbDvXr3kOjInZyjVoKRbeW7ZQV4JdVz2az/mp9g6UMDqGehkWTvIDzFoMXyNdO3E
+         gQw5YkFgVmlSNMUPJFdl6PCRPGSxiiYGNAW8qyC1jRbtRQvNTvdmgtgWYe0B59XfPJvL
+         jF9vqXg31EEMEXSAFdMsGmevSJbTLjXOuS9EDb3VZ8hfhAuQNybquHsmm56LetobR8Cq
+         gZVA==
+X-Gm-Message-State: AFuF++lXhV/TmvdP8F4jDrhnQbs/y4Udj8Li57entkmoII0ExIO86Ya9
+	KqADKUm2CBX/l8lzBKtfOCnuwETuzXWjAD5DV7p9rHKERZpT5zVpdqnjZ4a/NyuLZZXvUNQe84P
+	xG62mwl+RsBO0w67BsIEG4opGvXEwQRwGpX5ifFCImwnzAZeKvPPC5NAQqEYulb0Kbu5kgx6dEl
+	OBQA/PraokISx8xKR5tIXpI1KegkOKvbAAt/ufaBhOLVdWfoY6HLF/+H2smpJ3V8MmMIWyvapkX
+	MC59qX+0A8=
+X-Gm-Gg: AR+sD13V7UHcNk/syRhy/8KYAC+y5AN2LZ25zfdtWxjvKWXCsXyPbl1GwCuLe7xefYl
+	ALI7be2VYYz12b88gKnpxIW2psL05eziDvQ8BSSVX3MHrYzS5m5n9lg3GvjaGWrCN5Fi/+mGoK7
+	IEzUZa+spUIJKMcXoD41nmJHsoDB3pMVTSkm8UVAU0s7xuRB15AN9r+rNGneIdK1rGqhKHEWMp7
+	PYIAICKyaDywH2Tykwt3nlNWgUMvibjqxooCt5OZnOCfwMoNPVqGrfX8gd3ggvgrz2s5E51Epu5
+	3+k1t+LcxOtvg8jIYVST4kPAYI5jXf/DvAQHE+Sqy5g1VSR01WMpeJ3dRL3g/AaFJ86f0ggKF/x
+	sqCwI4KRt0eCvhu6twS1UK+JAseYzrcjWQ5NEKB331eNQzRwccRlBKherJ679sAcice9nMuWqsM
+	HNoKeCvu8d/vAqK3LOWf3NxQ//O5ueyb+gyvo=
+X-Received: by 2002:a17:90b:5288:b0:37f:e326:6557 with SMTP id 98e67ed59e1d1-395c3368e30mr61016212a91.4.1787622331904;
+        Mon, 24 Aug 2026 18:45:31 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-20.dlp.protect.broadcom.com. [144.49.247.20])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-39645cadcfesm578959a91.11.2026.08.24.18.45.31
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 24 Aug 2026 18:45:31 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c210c66672eso498033466b.2
+        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 18:45:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1787622330; x=1788227130; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YMUVq8FgVNeZFg1V0axy4vuGq6GrNDYnKCHOmiCDc1A=;
+        b=D0v7M+AhqnVf2QSuJM9BrsUlNYPnfNTpJXzKHt9BBo4CgUc/2i1VQRE2XvNq94DKd5
+         6NxqpblInxPFNyCr/qCYEGUiQsGqGYUxZ9lu1Tgl6Jtvh0kJQvlwE+r72s3WMGpRaalq
+         A5LOn858uhdRkOW43zPRSV3M3kIpyxkckcG98=
+X-Received: by 2002:a05:6402:5d5:b0:6a1:c4f:3153 with SMTP id 4fb4d7f45d1cf-6a42f13bea1mr38351615a12.2.1787622330032;
+        Mon, 24 Aug 2026 18:45:30 -0700 (PDT)
+X-Received: by 2002:a05:6402:5d5:b0:6a1:c4f:3153 with SMTP id
+ 4fb4d7f45d1cf-6a42f13bea1mr38351591a12.2.1787622329681; Mon, 24 Aug 2026
+ 18:45:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260825001842.2501798-1-joe@dama.to>
+In-Reply-To: <20260825001842.2501798-1-joe@dama.to>
+From: Michael Chan <michael.chan@broadcom.com>
+Date: Mon, 24 Aug 2026 18:45:16 -0700
+X-Gm-Features: AcwNN1WSxBHjXT9BpEZ1iZITcGhmQDe6SU3r6_mRvJYyGjRbfWpMFvwWfjjD2ug
+Message-ID: <CACKFLimMbDGDfLXchSNyi06UEfaTBh9m+GN8=rcWRCFJopbaqw@mail.gmail.com>
+Subject: Re: [PATCH net v2] bnxt_en: Bound SW TPA IDs to prevent crashes
+To: Joe Damato <joe@dama.to>
+Cc: netdev@vger.kernel.org, Pavan Chebbi <pavan.chebbi@broadcom.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	Colin Winegarden <colin.winegarden@broadcom.com>, 
+	Rukhsana Ansari <rukhsana.ansari@broadcom.com>, horms@kernel.org, 
+	kalesh-anakkur.purayil@broadcom.com, linux-kernel@vger.kernel.org, 
+	raphaelcf@meta.com, stable@vger.kernel.org, llvm@lists.linux.dev
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="000000000000fc816d0659d541d0"
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-net: ynl: allow u8 sub-type for indexed array
+--000000000000fc816d0659d541d0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This adds u8 to the list of sub-types accepted by AttrSet.new_attr() for
-indexed-array attributes in tools/net/ynl/pyynl/ynl_gen_c.py, so that the
-nl80211 chain-signal attributes can be described in the YAML spec.  Without
-it the generator rejects the sub-type outright.
+On Mon, Aug 24, 2026 at 5:18=E2=80=AFPM Joe Damato <joe@dama.to> wrote:
+> Fix this by allocating rx_tpa with bp->max_tpa rounded up to the next
+> power of 2 (bp->max_tpa_roundup_size) entries and masking the FW TPA ID
+> with that size, so the wrapped ID can never index past the end of the
+> array.
+>
+> Fixes: 54c28fab2fa5 ("bnxt_en: Set bp->max_tpa according to what the FW s=
+upports")
+> Reported-by: Raphael Cardoso Fernandes <raphaelcf@meta.com>
+> Suggested-by: Michael Chan <michael.chan@broadcom.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Joe Damato <joe@dama.to>
 
-> diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-> index cdc3646f2642c..7373a48d5516a 100755
-> --- a/tools/net/ynl/pyynl/ynl_gen_c.py
-> +++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-> @@ -1158,7 +1158,7 @@ class AttrSet(SpecAttrSet):
->          elif elem['type'] == 'nest':
->              t = TypeNest(self.family, self, elem, value)
->          elif elem['type'] == 'indexed-array' and 'sub-type' in elem:
-> -            if elem["sub-type"] in ['binary', 'nest', 'u32']:
-> +            if elem["sub-type"] in ['binary', 'nest', 'u32', 'u8']:
+Thanks.
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
 
-[Severity: Medium]
-Should this patch come before the spec change in the series?
+--000000000000fc816d0659d541d0
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-The preceding commit cb06a9dc93de ("wifi: nl80211: add sta-info nested
-attribute") already adds chain-signal and chain-signal-avg to
-Documentation/netlink/specs/nl80211.yaml:
-
-      -
-        name: chain-signal
-        type: indexed-array
-        sub-type: u8
-
-SpecAttrSet.__init__() in tools/net/ynl/pyynl/lib/nlspec.py calls
-new_attr() for every attribute of every attribute set at spec parse time,
-regardless of which ops or generation mode are requested:
-
-    for elem in self.yaml['attributes']:
-        ...
-        attr = self.new_attr(elem, val)
-
-so at the intermediate commit AttrSet.new_attr() takes the else branch and
-raises 'new_attr: unsupported sub-type u8'.
-
-nl80211 is part of GENS in tools/net/ynl/generated/Makefile, which globs all
-specs and only filters out conntrack and nftables:
-
-    SPECS_PATHS=$(wildcard $(SPECS_DIR)/*.yaml)
-    GENS_UNSUP=conntrack nftables
-    GENS=$(filter-out ${GENS_UNSUP},$(patsubst $(SPECS_DIR)/%.yaml,%,${SPECS_PATHS}))
-
-Does that mean make -C tools/net/ynl and ynl-regen.sh fail for anyone who
-lands on or bisects to cb06a9dc93de?  Reordering so the generator support
-lands first, or squashing the two, would avoid that.
-
-[Severity: Medium]
-Does the scalar indexed-array path lose the entry index that
-NL80211_STA_INFO_CHAIN_SIGNAL relies on?
-
-Documentation/userspace-api/netlink/genetlink-legacy.rst describes the entry
-attribute type as the index:
-
-    The ``ENTRY`` nests are special and have the index of the entry as
-    their type instead of normal attribute type.
-
-nl80211_put_signal() keys each u8 on the chain number and skips chains that
-are not in the mask, so the emitted index sequence can be sparse:
-
-    for (i = 0; i < IEEE80211_MAX_CHAINS; i++) {
-            if (!(mask & BIT(i)))
-                    continue;
-            if (nla_put_u8(msg, i, signal[i]))
-
-Sparse masks do occur in practice, for example ath10k_htt_rx_h_signal()
-sets each bit of status->chains independently based on per-chain RSSI
-validity.
-
-The generated parser for scalar sub-types in _multi_parse() stores entries
-densely and drops ynl_attr_type(attr):
-
-    elif aspec.sub_type in scalars:
-        ri.cw.p(f"dst->{aspec.c_name}[i] = ynl_attr_get_{aspec.sub_type}(attr);")
-    ri.cw.p('i++;')
-
-So a message carrying chains 0 and 2 is reported as _count.chain_signal = 2
-with the chain-2 value sitting at index 1, and TypeIndexedArray.attr_put()
-would then re-serialize it as index 1:
-
-    for (i = 0; i < {var}->_count.{c_name}; i++)
-        ynl_attr_put_u8(nlh, i, {var}->{c_name}[i]);
-
-YnlFamily._decode_array_attr() in tools/net/ynl/pyynl/lib/ynl.py has the
-same loss since it appends item.as_scalar() to a plain list without
-recording item.type.
-
-The lossy path predates this patch, since only u32 indexed arrays were
-allowed and the in-tree u32 user arp-ip-target is dense.  Is it worth
-carrying the index alongside the value before routing nl80211 chain-signal
-through this path, so per-chain values are not attributed to the wrong
-chain?
-
->              else:
->                  raise Exception(f'new_attr: unsupported sub-type {elem["sub-type"]}')
-
-[Severity: Medium]
-One more thing on the spec added by the preceding commit of this series, in
-Documentation/netlink/specs/nl80211.yaml.  The new eht-ru-alloc enum
-declares the HE name prefix:
-
-    name: eht-ru-alloc
-    type: enum
-    name-prefix: nl80211-rate-info-he-ru-alloc-
-
-while include/uapi/linux/nl80211.h names these values with the EHT prefix:
-
-    enum nl80211_eht_ru_alloc {
-            NL80211_RATE_INFO_EHT_RU_ALLOC_26,
-            NL80211_RATE_INFO_EHT_RU_ALLOC_52,
-            NL80211_RATE_INFO_EHT_RU_ALLOC_52P26,
-
-The same patch adds he-ru-alloc with that identical prefix:
-
-    name: he-ru-alloc
-    type: enum
-    name-prefix: nl80211-rate-info-he-ru-alloc-
-
-The generator builds the C enumerators straight from that prefix:
-
-    self.value_pfx = yaml.get('name-prefix', f"{family.ident_name}-{yaml['name']}-")
-    self.c_name = c_upper(self.enum_set.value_pfx + self.name)
-    cw.p(entry.c_name + suffix)   /* render_uapi() */
-
-so uapi generation from this spec emits
-NL80211_RATE_INFO_HE_RU_ALLOC_26/52/106/242/484/2x996 twice, and the
-EHT-only entries (52p26, 106p26, 484p242, 996p484, 996p484p242, 2x996p484,
-3x996, 3x996p484, 4x996) come out under NL80211_RATE_INFO_HE_RU_ALLOC_*
-names that do not exist in the UAPI header.  No in-tree build runs
---mode uapi for nl80211 today, so nothing breaks right now.
-
-Should the eht-ru-alloc prefix be nl80211-rate-info-eht-ru-alloc- instead?
+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
+DPVtLUtep/P3evQuAtTQRaKedjamBcUpJ7qUhBuv/Z07LlLIlB/vfNSPWe1V+njTezc8m3VfvNEC
+qEpXasPSfDgfcuUhcPR+7++oUDaTt9iqGFOjwiURxx08pL6ogSuiT41O4Xu7msabnUE6RY0O0xR5
+5UGwbpC1QSmnBq7TAy8oQg/nNw4vowEh3S2lmjdHCOdR270Ygd7jet8WQKa5ia4ZK4QdkS8+5uLt
+rMMRyM3QurndiZZJBipjPvEWJR/+jod8867f3n0CAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
+oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
+Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
+BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
+IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
+FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
+hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
+BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
+HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUJbO/Fi7RhZHYmATVQf6NlAH2
+qUcwDQYJKoZIhvcNAQELBQADggIBABcLQEF8mPE9o6GHJd52vmHFsKsf8vRmdMEouFxrW+GhXXzg
+2/AqqhXeeFZki82D6/5VAPkeVcgDeGZ43Bv89GHnjh/Vv0iCUGHgClZezpWdKCAXkn698xoh1+Wx
+K/c/SHMqGWfBSVm1ygKAWkmzJLF/rd4vUE0pjvZVBpNSVkjXgc80dTZcs7OvoFnt14UgvjuYe+Ia
+H/ux6819kbi0Tmmj5LwSZW8GXw3zcPmAyEYc0ZDCZk9QckL5yPzMlTAsy0Q+NMVpJ8onLj/mHgTk
+Ev8zt1OUE8MlXZj2+wgVY+az2T8rGmqRU2iOzRlJnc86qVwuwjL9AA9v4R13Yt8zYyA7jL0NiBNP
+WaOSajKBB5Z/4ZVtcvOMILD1+G+CVZX7GUWERT9NRXw/SyIEMU59lFbuvy4zxe3+RbOleCgp3pze
+q8HE2p9rkOJT3MkCNLxe+ij4RytIvPQXACsZeLdfTDUnjeXCDDJ9KugVhuqMelAZc4NissPz8FOn
+2NK++r5/QamlFqYRhsFxSBIvhkh2Q/hD3/zy4j17Yf/FUje5uyg03FblSBOk2WYpRpXEuCpyn5pb
+bYVIzfhQJgwGfO+L8BAeZIFjO1QL3s/zzn+RBlTl4wdDzh8L9eS+QEDhMcSsqb4fFRDbsoVuRjpx
+R5MunSUzk4GcmmM19m7oHhPGeKwIMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
+ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
+MjAyMwIMZh03KTi4m/vsqWZxMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCDVl3qC
+vlUi364Mg23Rreik4jpXBi7J7lZ6MMqfuUqx/TAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
+CSqGSIb3DQEJBTEPFw0yNjA4MjUwMTQ1MzBaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
+MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
+SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQAP+Db4P6SUNSzSlm6fVN34IEXKRLMf2Jcn/e3tWvEd
+Dx+mMpEgM0soebZpmEoiUWj7VYj7ageR+z+4mamsWjNHaKm0WaJNZv7OrlGnXn1M06rg7Whc2sj6
+eJBRksd1NOuV+fWKqVOUC0XMwUbxjireqg433l2JwNTI3td+duXXdunejbrwnmjSxuYf/xpuuFOb
+6ADm5XGUi2MucS6AYhcG4S7QqkPf7Mg9OkgeZJoyg5tbAScZuAYHLRKYaMbpc9nV27A+a8tcRIpS
+K4Q9t5DRXxvtDugpcHnEsuCjx+ag+G9ou4wQS3xmGwB+GOHILix+QO1ruDJ5wJvKyhjaYzm/
+--000000000000fc816d0659d541d0--
