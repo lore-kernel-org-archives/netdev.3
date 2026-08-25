@@ -1,193 +1,179 @@
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62ED33DD51D
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 08:18:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DC33DDDCB
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 08:24:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787645891; cv=none; b=qblrXqouw8JkQXYIDOnqoLT+Me4mzc8vXzD2o0FpXrXpb+VLqTM7dG+EO8+oTycj4HEjYtCFopgzZULpOXl2f6QRVD5jMHRoKoWRZlyl69rZRZ1oMDqNVuCQEw28kYv3tuD2xS2crkT7XgRamprb5Dpe3OAXG5LuASOlpKVr4bs=
+	t=1787646260; cv=none; b=a2IN5gouwh59QPiLhPvLSVAVM5w6QIEGWHpfxN43LeOaYrG8MdAzb1v2ne/2ik9O43vIalCTKx7FAoQ01wJ14PkooWYrLhKjoDZqxe5Ez4waRtmuKOOj75rdZ1wxgz5FUjh8+5tNxFvBsOnl6dj3tKcBeDNrLWUpESivETfioKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787645891; c=relaxed/simple;
-	bh=74hYJU9tKgBECgZIocH+tgF9kNxduqXS/vlaXeVly/U=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ta0tlS5d6/mwi4sFV66xEvSyMF4VQjxAmKX7ceKcow0WeuH/dgwGGlng/L4JzSjDETodUoZB9y3HVRzluxqsUzx0db0cx3KsrDd9Oi3uHzEjjTUaSfjS62rwveFp+WvJy0HLr03REVXAfd/27Lok83jRNFIDQeQxxfVr7xP+Gsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=Wq2j7wfF; arc=none smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1787646260; c=relaxed/simple;
+	bh=DZQvgMF9MtoSMKn9/xxgPT3t+kYxUHeBLkPFZwmxGy0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RYWa2HC3r+LZAhZmp5WNOjmTu6+EBVFXIcrPD62XfSdZWFKM06uFX9VJbzlfzvfdZSwlYTd/onNGQIeYL1WqpDrblJK2yFZFBMZR5ALu8Hq3gn5ie4azgh58CrO1wb0IKvF2ryBYdwk/IW+ksqDvpFpqeQ7AXt/8QG/CTw9z8DM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=BFeqlQ0q; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="Wq2j7wfF"
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-52b3934af3fso48793111cf.1
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 01:18:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="BFeqlQ0q"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c1c50c1e29bso719084366b.3
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 01:24:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787645889; x=1788250689; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zRsvL/a7RmIm5+NW0n8opbLtTlM8Z82pvRtrMLB8Wr4=;
-        b=Wq2j7wfFhyQ7VL6CTZxy7nusYhJlfC8dmBB2hngfGgETWJ/11DSgSLqnLZBm6Ok5bq
-         L/tumair1YNzpxR34Vqsc33n7ajRBFaXLWv4Ye4A05SQ/13rm3YJugxy2erB6EUb/Daw
-         0VKMGcPyvwObI0FmkSX1Q6pTVXbTdWERlCvqQ=
+        d=baylibre.com; s=google; t=1787646255; x=1788251055; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DZQvgMF9MtoSMKn9/xxgPT3t+kYxUHeBLkPFZwmxGy0=;
+        b=BFeqlQ0q/iI/Y9xCCyZW9DcLrNuxdKfN+Y+//0GtDmUjYy2yEe/So/1C91iOhFggaa
+         w+PoJMpJllcqUOV1XX00bD7B84xNhMcsllE/0Nmh9dN8tZqJJBTNzbShKDQnxPsEmaEB
+         ADAFZ+g3kLKRuXMS8OJko/112mNWDH4sfjFIo4ughfQq/cnFDH/p9Dc0K0AtS70+B4FM
+         F9fsHPDaiztrmyZ3lyUZT3jElm9oP2eZVU4cOzQu3ucYmiskPZDEWm9d/KJQ6ZtJ4Xeu
+         uIa0swNl0ttsWWPbGXJPM6SHTBQ7jF+5mcgT6fWzV+zAaPzszidX3t44XfJa0Wfi3HSP
+         gdqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787645889; x=1788250689;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zRsvL/a7RmIm5+NW0n8opbLtTlM8Z82pvRtrMLB8Wr4=;
-        b=nEEbLrK8RCR6Oo0b1mFBnQLl0NMCFhYJ01hLoGTgA3B6BHgSHKTdk+StHDkXlYqB7f
-         qrimbY5xird8lXrTP8JnoiqaOaTi2k7SboacTksCBS1boKZ467hM2SeN7eCcBkN02M7u
-         sNwyVAMNr2PxShnPQKTMZHt7BvkFnZ4ZFB2elKLkqNQl2ntpZ7rT9pR5/pxeuGcEkRQE
-         Xvuf8LTqrCAs0oE9BFHiPx0VZxaP1gZ6VNCOa6QKiiv9BpL6wWq5cGdII8Ge07WGtu6q
-         +fK7OoE5aEIBLRqcPeJNjHumf1SUWBpMm/vpRyTGjrTIU1l/gnJI37BKxbG0nVGK6Vsr
-         h5ZQ==
-X-Gm-Message-State: AFuF++lQZOvude9138pD+onX9i2gFkqtTzcXwRd3sbydIO8PaIXAHfxo
-	t+KIUsheKis1w0AA+c9mD3H2ZVwCnx0ykn40COcJThVp6peTOjfI+PfzJaRUwhJ2V9rMaObJwm/
-	m7eyGdg==
-X-Gm-Gg: AR+sD12BaJN62PUUKJunGY4hbGWSvRYegNRs8TSD23R6v2Mb4JA/3XmsHO550CusvFU
-	arhjqrg6GoUW1iSp+kNhVKJ1hiZhkyAPbKwyV5BJlmvVb2bcfh9aLnXIT8BUK/+HQW5n73edrMf
-	rpZU4couEE+2mJEpTWpgT+eN5q8CUrfl0wZcQmTiHJzqUG4xHO5V1C7HOooxb5bRdpM9MV27nZI
-	TpXV3Tu1aX/sRJBVZB8Po5j8t14EKGJGxEp9PYs6Ig+h3/EUA0fH4kD5DtHW5cVWUfANrbdVkA8
-	YngBAFKf9aSJeh/VQS2IlcMyKJkelGvBKquzVlx51xQu+xhY/+oWB4hoPhImiRnG6u5R1oTN3k8
-	U4F7UB8ASDlWOW1r8BBi3PsTAZbVHYLmZSNZUMF0O0r+3DdA/JiuXjGsByzTmEHpbCeLfbybyZ2
-	zLTWbfC9we0Yf8hxEo1tamPTE/NasF55qvi9fA6fiAi5G1KRsJdk5/
-X-Received: by 2002:a05:622a:3cc:b0:51c:22c5:daf5 with SMTP id d75a77b69052e-52e2f175c1amr51042421cf.38.1787645889381;
-        Tue, 25 Aug 2026 01:18:09 -0700 (PDT)
-Received: from majuu.waya ([184.144.29.222])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52e09975f5asm65387341cf.2.2026.08.25.01.18.07
+        d=1e100.net; s=20251104; t=1787646255; x=1788251055;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DZQvgMF9MtoSMKn9/xxgPT3t+kYxUHeBLkPFZwmxGy0=;
+        b=r8df8eHDcZ12o7DvaAhqbpjnSnKPB3pn6Nz2nvedecwkD1+9MGEizjgIJXjj6GvtVR
+         vrQQalploTrGx+JQZILAdNfyZUWP4rxOcpnUO6El194kx4H0AMyAk8eYykY7DXeziO0+
+         jMPNFd7FDzmfpNVQGkX13rqrMi1owtQyh4rUFFWhGJ3de2WAO5G/GR0VjF26hIWQ8DUO
+         737aRglrkAKhWxhPuC+nuRSJlH6uXShJTdnB2hLMeyELoe4VPrAOt8Qv03SsH1ZyrmRX
+         gDgVne+Po27SEWd2ullw88CVU6ju6dk6jB2IcWm5hJ7ns6cUnpV/a+av3LP0GKOSXikz
+         GmwA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp3aJmejHMfAhxlJcq15zXY/on5Z1bzic3D0XCmP2u3Bhii2TA5R3TNY1AlcixGEgxr/ge3azs=@vger.kernel.org
+X-Gm-Message-State: AFuF++mD8Nj+4bndEoj2iGZuqzU3Cs2dUKWaJcaDxJnwkWzMFpKxCUsC
+	ZrUP12cFzkPt61bAqVv1uOogHcZFZYZ/g9ys7FHPyugYYifsRsD7ke9+xpTZ3ItNZ3ywM+/jpPn
+	wUzLUIGg=
+X-Gm-Gg: AR+sD13fL1mBbZbIFdr9APASYhNeZx3Hqf95P9vtCK1zC6NfFmuxqtYfH9s7ppkOJ7R
+	uwDzIiUYjpclt+nz069LsArHnIxwZeG5UHn8543mjicvbVmNIY+lCikkC2bd+o8vFyRolZ8sHjv
+	ndphsFsDVcgNyCBjCNwseIyv97iOkPw/TMXAUgsCjrGjPlg3gytjDJ+4nbWJ3doR2WPijt50jba
+	/Ew4U3KfQSJW+Ik+GyH6FdOSDhmkXVlgrHPjYm6ppqcu30IzscAXfYFWsBehaE9dyHarvhLT6RI
+	ijEbGzS7QjaGjyz3G53P6JhAKH6YltlCUytTV9C+oFJM1KwM801zV/IXa4WATMxXWMhvUai3SAH
+	cShedr5rYZ85L0oBzWNQKPR7OOvBI6MNRgRGvamX5mCslZoMewMt2eR4JoUAm+K0Q8b3WaKDldh
+	dXA9DKNnt1R96dPhooWL9YBVzJMLcx5x8I5foeMAGkd/IwJMZShmc6MzntbtFxuCk4WqjzvQPm8
+	LG1TgfD+yJF4B7d1BLFI+PzZrbkWpp6i+scZTGxAxDlBXhbVw==
+X-Received: by 2002:a17:907:1c07:b0:c15:f26a:3438 with SMTP id a640c23a62f3a-c24e5c1ffd3mr497229766b.24.1787646255345;
+        Tue, 25 Aug 2026 01:24:15 -0700 (PDT)
+Received: from localhost (p200300f65f19a904037016a565660d5e.dip0.t-ipconnect.de. [2003:f6:5f19:a904:370:16a5:6566:d5e])
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-c24966f9cbcsm1874351966b.29.2026.08.25.01.24.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2026 01:18:08 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	vega@nebusec.ai,
-	Victor Nogueira <victor@mojatatu.com>
-Subject: [PATCH net v2 2/2] selftests: tc-testing: add pfifo_fast ring size cap regression tests
-Date: Tue, 25 Aug 2026 04:17:51 -0400
-Message-Id: <20260825081751.134086-2-jhs@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260825081751.134086-1-jhs@mojatatu.com>
-References: <20260825081751.134086-1-jhs@mojatatu.com>
+        Tue, 25 Aug 2026 01:24:14 -0700 (PDT)
+Date: Tue, 25 Aug 2026 10:24:12 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Mauricio Faria de Oliveira <mfo@igalia.com>
+Cc: Kees Cook <kees@kernel.org>, Joel Granados <joel.granados@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	kernel-dev@igalia.com, linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	fsverity@lists.linux.dev, keyrings@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kbuild@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-wpan@vger.kernel.org, lvs-devel@vger.kernel.org, netfilter-devel@vger.kernel.org, 
+	coreteam@netfilter.org, linux-sctp@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	linux-s390@vger.kernel.org, bridge@lists.linux.dev, mptcp@lists.linux.dev, 
+	rds-devel@oss.oracle.com, virtualization@lists.linux.dev
+Subject: Re: [PATCH RFC v3 03/13] sysctl, mod_devicetable: add macro
+ MODULE_SYSCTL_TABLE
+Message-ID: <ao1P_mEJdyRExG3v@monoceros>
+References: <20260819-sysctl-module-aliases-v3-0-aab90569365d@igalia.com>
+ <20260819-sysctl-module-aliases-v3-3-aab90569365d@igalia.com>
+ <aomlfGJM61qZKxx2@monoceros>
+ <4e3eaf1d3419e808be046035f114bf6c@igalia.com>
+ <aotteDcc588iwC6g@monoceros>
+ <4aa22e41e8ff4bab6638cf0baaa9d07b@igalia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ajsyed3ibfmsggn6"
+Content-Disposition: inline
+In-Reply-To: <4aa22e41e8ff4bab6638cf0baaa9d07b@igalia.com>
 
-Add two test cases for the pfifo_fast ring size cap:
 
-1. Init path: set txqueuelen to 100000000, attempt to attach pfifo_fast.
-   On a fixed kernel the qdisc add is rejected with -ERANGE (exit code 2).
-   On an unfixed kernel the allocation either succeeds or triggers OOM.
+--ajsyed3ibfmsggn6
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH RFC v3 03/13] sysctl, mod_devicetable: add macro
+ MODULE_SYSCTL_TABLE
+MIME-Version: 1.0
 
-2. Resize path: attach pfifo_fast with default txqueuelen, then raise
-   txqueuelen to 100000000. On a fixed kernel the resize is rejected
-   with -ERANGE and txqueuelen rolls back to the original value (1000).
-   On an unfixed kernel the ring is resized to the oversized value.
+Hello,
 
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
- .../tc-tests/qdiscs/pfifo_fast.json           | 60 +++++++++++++++++--
- 1 file changed, 54 insertions(+), 6 deletions(-)
+On Mon, Aug 24, 2026 at 06:04:03PM -0300, Mauricio Faria de Oliveira wrote:
+> On 2026-08-23 19:12, Uwe Kleine-K=F6nig wrote:
+> > On Sat, Aug 22, 2026 at 01:57:24PM -0300, Mauricio Faria de Oliveira wr=
+ote:
+> >> On 2026-08-22 10:41, Uwe Kleine-K=F6nig wrote:
+> >> > On Wed, Aug 19, 2026 at 03:16:16PM -0300, Mauricio Faria de Oliveira=
+ wrote:
+> >> >> The MODULE_SYSCTL_TABLE macro emits a struct module_sysctl_table va=
+riable
+> >> >> with pointers to a sysctl table's path and entries, and table/entry=
+ sizes.
+> >> >=20
+> >> > That new struct doesn't seem to contain any pointer?
+> >>=20
+> >> The struct module_sysctl_table fields .path and .table are pointers,
+> >> although with kernel_ulong_t type so that the same 32/64-bit size is
+> >> used in file2alias.c based on KERNEL_ELFCLASS (and not on the host,
+> >> which might differ with CROSS_COMPILE).
+> >=20
+> > Cross compilation isn't an issue for the already existing device id
+> > structures; many of them also contain pointers.
+> > (While modpost doesn't use the pointers, the size of the structures must
+> > be known to correctly interpret the arrays.)
+>=20
+> Indeed. I missed some device_id structures with pointers, and that
+> devicetable-offsets.c is cross-compiled to generate
+> devicetable-offsets.h for file2alias.c to use offsets and sizes of the
+> target architecture.
+>=20
+> I'll change .path and .table to pointers in the next version.
 
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json
-index 30da27fe8806..46b54ae37a91 100644
---- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json
-+++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/pfifo_fast.json
-@@ -9,8 +9,7 @@
-         "plugins": {
-             "requires": "nsPlugin"
-         },
--        "setup": [
--        ],
-+        "setup": [],
-         "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root pfifo_fast",
-         "expExitCode": "0",
-         "verifyCmd": "$TC qdisc show dev $DUMMY",
-@@ -30,8 +29,7 @@
-         "plugins": {
-             "requires": "nsPlugin"
-         },
--        "setup": [
--        ],
-+        "setup": [],
-         "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root pfifo_fast",
-         "expExitCode": "0",
-         "verifyCmd": "$TC -s qdisc show dev $DUMMY",
-@@ -81,8 +79,7 @@
-         "verifyCmd": "$TC qdisc show dev $DUMMY",
-         "matchPattern": "qdisc pfifo_fast 1: root refcnt [0-9]+ bands 3 priomap",
-         "matchCount": "0",
--        "teardown": [
--        ]
-+        "teardown": []
-     },
-     {
-         "id": "4385",
-@@ -105,5 +102,56 @@
-         "teardown": [
-             "$TC qdisc del dev $DUMMY handle 1: root"
-         ]
-+    },
-+    {
-+        "id": "7d12",
-+        "name": "Reject pfifo_fast init with tx_queue_len exceeding S16_MAX",
-+        "category": [
-+            "qdisc",
-+            "pfifo_fast"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+            "$IP link set dev $DUMMY txqueuelen 100000000"
-+        ],
-+        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root pfifo_fast",
-+        "expExitCode": "2",
-+        "verifyCmd": "$TC qdisc show dev $DUMMY",
-+        "matchPattern": "qdisc pfifo_fast 1: root",
-+        "matchCount": "0",
-+        "teardown": [
-+            "$IP link set dev $DUMMY txqueuelen 1000",
-+            [
-+                "$TC qdisc del dev $DUMMY handle 1: root",
-+                0,
-+                1,
-+                2,
-+                255
-+            ]
-+        ]
-+    },
-+    {
-+        "id": "d09b",
-+        "name": "Reject pfifo_fast resize when tx_queue_len exceeds S16_MAX",
-+        "category": [
-+            "qdisc",
-+            "pfifo_fast"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+            "$TC qdisc add dev $DUMMY handle 1: root pfifo_fast"
-+        ],
-+        "cmdUnderTest": "$IP link set dev $DUMMY txqueuelen 100000000",
-+        "expExitCode": "2",
-+        "verifyCmd": "$IP link show dev $DUMMY",
-+        "matchPattern": "qlen 1000$",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$TC qdisc del dev $DUMMY handle 1: root"
-+        ]
-     }
- ]
--- 
-2.43.0
+I *think* the existing device-id structs use char[] for strings that are
+relevant for modpost. I look forward to you finding out if there is
+still a justification for that :-D
 
+> > I would be great if your series didn't introduce a new obstacle for
+> > [CHERI].
+>=20
+> Absolutely. I'll be happy to adjust the series and testing for that.
+>=20
+> Could you please confirm one should just follow [1], which uses [2] to
+> build the LLVM toolchain, and use it to build the kernel [3]?
+>=20
+> [1] https://github.com/cheri-linux#building-and-running
+> [2] https://github.com/cheri-linux/buildroot
+> [3] https://github.com/CHERI-Alliance/linux/tree/codasip-cheri-riscv-7.1
+
+I used
+https://github.com/CHERI-Alliance/meta-cheri/tree/codasip-scarthgap and
+didn't care about toolchain and rootfs. It also has qemu integrated, so
+you can actually test it.
+
+Best regards
+Uwe
+
+--ajsyed3ibfmsggn6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmqNUSoACgkQj4D7WH0S
+/k5rHwf/eQKyjSm4dfYOnpO+kyESzhGSDXacrU0BK/nrQ7Z3BN+QipNdHe9BZ4f7
+k+3uxaB8pZmyHeh98alfg/5Bq9HBt62YSsVo0f1LrxdEuw+otojZstZ5BajlC1fB
+uCZWsGYJ1lROqcGUkm3WTuwmO+VkI4no1e0+OMnKjMkIdarwm+SRxroNmGXPxjFS
+0c5XzO8ufI4T330xBhTtUCfIGtmOib0XeyZT/dCtT8wNoKlznA36ojMl4ZOArWgW
+VYBN9/JdmoDGTZxdbWqXoETzY//dT0yaCQF2J8+eM7vMW+ay0vkBIpxXkR9QmIGF
+KIDH4l3txv82X35T5GJP5y9myooT6g==
+=Ph6i
+-----END PGP SIGNATURE-----
+
+--ajsyed3ibfmsggn6--
