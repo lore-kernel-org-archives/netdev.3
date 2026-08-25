@@ -1,39 +1,39 @@
-Received: from mta1.migadu.com (out-165.mta1.migadu.com [95.215.58.165])
+Received: from mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8AB1D63F3
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 01:01:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.165
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615001D63F3
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 01:02:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787619718; cv=none; b=X/0s2PCyYH4HXJ5sV08uepaIEYkH6Va2UbOHxQcygt2aVQ6NvSUIom1/wcgb9tyT/iq7qLFwTR0uSB1Pi1mZg5E6Ljx1i+DRSSj2WaiH2imDgTniCbts5TeqCDntXfvGLxieW7NjyIZXg+dlKmZpXwrDL9gA2cEYgmI3DWEVZlE=
+	t=1787619728; cv=none; b=FmwNYbV7HGD31pOjp4xqSYyhUMp0A7AfQhK155l7gt9NmVg5jPew/5zp3j3bZMgYmfEasTByJ5R6XmXhPNpZzB/K1KZAdrdulgfzQy0hWFWGr26dNQ8Bn1+d1nWQJRnhebndidizkEja25yM2zxUOM+TeKgIT3VGYCR74mIrZW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787619718; c=relaxed/simple;
-	bh=NVX1ZBpi6232FV9WxF89B9i9CGM7/OiA9bbT2esFE/A=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=OgXXH+1Nhj9CC0fJpx/jp155DBSGuXcpDiUNdugpvfNRj7QfEPD+5SUjiksETX7PPHyCwCrGqalINcnanVRmF2NNbc1EJ8/40zmQDHpJciG74Sid5+5d+GBAhPgAXYVtrGzI5xr9qFnoOUdqm5/gcnZEjz+cenCWcCXbLh8St1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ad/+lXVn; arc=none smtp.client-ip=95.215.58.165
+	s=arc-20240116; t=1787619728; c=relaxed/simple;
+	bh=Yyt0kO2zJ1JirMOwK56pHnm/TWr/UmxyxweM7ZJg9/s=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=IHLJ6decDdtGB9L/MfCI5Xz7RAvhJ/fuTpgoGHsLJ0rl+1a16eJwoMgPSD6aCDn8UNbXq7C+EvUEHBASzzbzykc7IN7wqvo+augBIsO30IauuQ3Bv2NKzWmW5nC5FOdI6LKv0uv+Zj3/Q/wJ0MtypXxMVcjPOTF962vU1yjNrSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MahRiDOr; arc=none smtp.client-ip=95.215.58.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ad/+lXVn"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MahRiDOr"
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=NVX1ZBpi6232FV9WxF89B9i9CGM7/OiA9bbT2esFE/A=;
+DKIM-Signature: a=rsa-sha256; bh=Yyt0kO2zJ1JirMOwK56pHnm/TWr/UmxyxweM7ZJg9/s=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1787619713; v=1; x=1788224513;
- b=ad/+lXVnJcRxh/tMhYWyaxo2qKal1TD+Hg9dDsmy/kV9yR33luUYQw/SyZLZ5gPjY4oVC36L
- 5LyyUIzeiieTA4lEo+EmeCThJPso2fkTcZTjyuiDj5lJpAHa/yRf5CeP41iwwZFwLU5Xy2UJeuS
- eOKP8GovHRCldgJWJs+dOkA0=
+ t=1787619724; v=1; x=1788224524;
+ b=MahRiDOrnIHYYuJkcNOrqhElUgHV03dQNxUzz7xUJgt60wGFDQvoMoRoW248ys3eVu24xEzy
+ S6ZcfsE684bRx+B+5uYj7DoRwffxn3gUsga3v2HAoI+q4Tu7Y6IjamKytcm8wK9ZUEvlTLBIjmo
+ d1+MxkJACDvp8ghYLMo3VSqM=
 X-Envelope-To: netdev@vger.kernel.org
 Received: from [192.168.110.119] (216.236.36.147)
-	by smtp.migadu.com with ESMTPS id 33d4ce9755b67d8f;
-	Tue, 25 Aug 2026 01:01:53 +0000
-X-Mizu-Trace-ID: 33d4ce9755b67d8f
+	by smtp.migadu.com with ESMTPS id 1a78be79355e13a0;
+	Tue, 25 Aug 2026 01:02:04 +0000
+X-Mizu-Trace-ID: 1a78be79355e13a0
 X-Migadu-Flow: FLOW_OUT
 From: Hangbin Liu <hangbin.liu@linux.dev>
-Subject: [PATCH net v5 0/2] bonding: fix TLB load-tracking overflow on
- high-speed NICs
-Date: Tue, 25 Aug 2026 09:01:28 +0800
-Message-Id: <20260825-bond_overflow-v5-0-7a800de133f1@kylinos.cn>
+Date: Tue, 25 Aug 2026 09:01:29 +0800
+Subject: [PATCH net v5 1/2] bonding: convert unbalanced_load to per-cpu
+ state
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,12 +42,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2XOwW7DIAwG4FepOI/KkARoT32PqZoINitaBRVUr
- FWVdx9KL1ly/G19v/1ihXKgwo67F8tUQwkptjB87Ji72PhNPGDLTIJUYEDxMUX8SpWyv6Zfbp2
- yymqDygJr5pbJh8fc98ki3dm5DS+h3FN+zjeqmFfvOgGruiq44O7gvTygVlrD6ed5DTGVvYtzV
- ZVL3q+5bBw7T4MxFoXSG94tuVnzjgMnGLDH0UmPZsP7BZeb5/vGDQyjBezIj+ofn6bpD/HRoC9
- tAQAA
-X-Change-ID: 20260806-bond_overflow-ac6a6a78d6a0
+Message-Id: <20260825-bond_overflow-v5-1-7a800de133f1@kylinos.cn>
+References: <20260825-bond_overflow-v5-0-7a800de133f1@kylinos.cn>
+In-Reply-To: <20260825-bond_overflow-v5-0-7a800de133f1@kylinos.cn>
 To: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -56,64 +53,129 @@ Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
 X-Mailer: b4 0.14.3
 
-The bonding TLB (Transmit Load Balancing) mode tracks per-slave and
-per-client transmit byte counts in u32 fields. At sustained throughput
-above ~3.2 Gbit/s over the 10-second rebalance interval these counters
-wrap, causing compute_gap() to produce incorrect gap values and
-mis-select transmit slaves. Such speeds are routine on modern NICs
-under heavy traffic.
+From: Hangbin Liu <liuhangbin@kylinos.cn>
 
-This two-patch series fixes the overflow by widening the relevant
-fields to u64.
+A later patch widens the bonding TLB tx counters from u32 to u64. The
+unbalanced_load counter sits in the transmit hot path, and cross-CPU
+synchronization of a u64 would introduce measurable overhead. Convert
+unbalanced_load to a per-cpu counter first so that the subsequent
+widening only touches per-cpu data local to each CPU.
 
-Patch 1 converts the unbalanced_load counter to per-cpu state as a
-preparatory step. The counter sits in the transmit hot path, so
-converting it to per-cpu before widening avoids introducing cross-CPU
-synchronization overhead for a u64. Also use a prev_total_unbalanced
-to store the previous total load to avoid reset per-cpu data.
-
-Patch 2 widens tx_bytes, load_history, load, and the per-cpu
-unbalanced_load tx_bytes from u32 to u64. It adds u64_stats_sync
-protection for the per-cpu counter to prevent tearing on 32-bit
-architectures, and reworks compute_gap() to use s64 arithmetic with
-READ_ONCE() on slave->speed.
+Introduce struct unbalanced_load_stats to hold the per-cpu counter,
+and move the aggregation into a helper, reset_unbalanced_load(), which
+sums all per-cpu instances. Use the delta of current total load vs
+variable prev_total_unbalanced to calculate the loading.
 
 Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
 ---
-Changes in v5:
-- use s64 as the return value for compute_gap, so we can compute the
-  difference when NICs are overload. (Nikolay Aleksandrov)
-- Link to v4: https://lore.kernel.org/r/20260820-bond_overflow-v4-0-805ba0d3efb6@kylinos.cn
+ drivers/net/bonding/bond_alb.c | 37 ++++++++++++++++++++++++++++++-------
+ include/net/bond_alb.h         |  7 ++++++-
+ 2 files changed, 36 insertions(+), 8 deletions(-)
 
-Changes in v4:
-- move per-cpu allocation to tlb_initialize/tlb_deinitialize (Nikolay Aleksandrov)
-- use an extra prev_total_unbalanced to avoid reset per-cpu data (Nikolay Aleksandrov)
-- Link to v3: https://lore.kernel.org/r/20260818-bond_overflow-v3-0-e05d4dbc2fd8@kylinos.cn
+diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
+index 839f7482dc18..0afed2c39231 100644
+--- a/drivers/net/bonding/bond_alb.c
++++ b/drivers/net/bonding/bond_alb.c
+@@ -133,6 +133,10 @@ static int tlb_initialize(struct bonding *bond)
+ 	if (!new_hashtbl)
+ 		return -ENOMEM;
+ 
++	bond_info->unbalanced_load = alloc_percpu(struct unbalanced_load_stats);
++	if (!bond_info->unbalanced_load)
++		goto out;
++
+ 	spin_lock_bh(&bond->mode_lock);
+ 
+ 	bond_info->tx_hashtbl = new_hashtbl;
+@@ -143,6 +147,10 @@ static int tlb_initialize(struct bonding *bond)
+ 	spin_unlock_bh(&bond->mode_lock);
+ 
+ 	return 0;
++
++out:
++	kfree(new_hashtbl);
++	return -ENOMEM;
+ }
+ 
+ /* Must be called only after all slaves have been released */
+@@ -154,6 +162,8 @@ static void tlb_deinitialize(struct bonding *bond)
+ 
+ 	kfree(bond_info->tx_hashtbl);
+ 	bond_info->tx_hashtbl = NULL;
++	free_percpu(bond_info->unbalanced_load);
++	bond_info->prev_total_unbalanced = 0;
+ 
+ 	spin_unlock_bh(&bond->mode_lock);
+ }
+@@ -1345,7 +1355,7 @@ static netdev_tx_t bond_do_alb_xmit(struct sk_buff *skb, struct bonding *bond,
+ 		/* unbalanced or unassigned, send through primary */
+ 		tx_slave = rcu_dereference(bond->curr_active_slave);
+ 		if (bond->params.tlb_dynamic_lb)
+-			bond_info->unbalanced_load += skb->len;
++			this_cpu_add(bond_info->unbalanced_load->tx_bytes, skb->len);
+ 	}
+ 
+ 	if (tx_slave && bond_slave_can_tx(tx_slave)) {
+@@ -1529,6 +1539,23 @@ netdev_tx_t bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
+ 	return bond_do_alb_xmit(skb, bond, tx_slave);
+ }
+ 
++static u32 reset_unbalanced_load(struct alb_bond_info *bond_info)
++{
++	struct unbalanced_load_stats *p;
++	u32 delta, total_bytes = 0;
++	int i;
++
++	for_each_possible_cpu(i) {
++		p = per_cpu_ptr(bond_info->unbalanced_load, i);
++		total_bytes += READ_ONCE(p->tx_bytes);
++	}
++
++	delta = total_bytes - bond_info->prev_total_unbalanced;
++	bond_info->prev_total_unbalanced = total_bytes;
++
++	return delta / BOND_TLB_REBALANCE_INTERVAL;
++}
++
+ void bond_alb_monitor(struct work_struct *work)
+ {
+ 	struct bonding *bond = container_of(work, struct bonding,
+@@ -1570,12 +1597,8 @@ void bond_alb_monitor(struct work_struct *work)
+ 	if (atomic_read(&bond_info->tx_rebalance_counter) >= BOND_TLB_REBALANCE_TICKS) {
+ 		bond_for_each_slave_rcu(bond, slave, iter) {
+ 			tlb_clear_slave(bond, slave, 1);
+-			if (slave == rcu_access_pointer(bond->curr_active_slave)) {
+-				SLAVE_TLB_INFO(slave).load =
+-					bond_info->unbalanced_load /
+-						BOND_TLB_REBALANCE_INTERVAL;
+-				bond_info->unbalanced_load = 0;
+-			}
++			if (slave == rcu_access_pointer(bond->curr_active_slave))
++				SLAVE_TLB_INFO(slave).load = reset_unbalanced_load(bond_info);
+ 		}
+ 		atomic_set(&bond_info->tx_rebalance_counter, 0);
+ 	}
+diff --git a/include/net/bond_alb.h b/include/net/bond_alb.h
+index e5945427f38d..6fb09b4fc7e2 100644
+--- a/include/net/bond_alb.h
++++ b/include/net/bond_alb.h
+@@ -123,9 +123,14 @@ struct tlb_slave_info {
+ 			 */
+ };
+ 
++struct unbalanced_load_stats {
++	u32			tx_bytes;
++};
++
+ struct alb_bond_info {
+ 	struct tlb_client_info	*tx_hashtbl; /* Dynamically allocated */
+-	u32			unbalanced_load;
++	struct unbalanced_load_stats __percpu	*unbalanced_load;
++	u32			prev_total_unbalanced;
+ 	atomic_t		tx_rebalance_counter;
+ 	int			lp_counter;
+ 	/* -------- rlb parameters -------- */
 
-Changes in v3:
-- Add a preparatory patch to convert unbalanced_load to per-cpu first
-- widens tlb counters to u64 and add helpers to prevent tearing on 32-bit
-- Link to v2: https://lore.kernel.org/r/20260814-bond_overflow-v2-1-d3fe588ad167@kylinos.cn
-
-Changes in v2:
-- update comment description, including AI-detected info.
-- fix tx_bytes/load type detected by sashiko
-- cast SPEED_UNKNOWN to 0 before shift, detected by sashiko
-- Link to v1: https://lore.kernel.org/r/20260810-bond_overflow-v1-1-c9ff29d76770@kylinos.cn
-
----
-Hangbin Liu (2):
-      bonding: convert unbalanced_load to per-cpu state
-      bonding: fix u32 overflow in compute_gap()
-
- drivers/net/bonding/bond_alb.c | 69 +++++++++++++++++++++++++++++++++++-------
- include/net/bond_alb.h         | 14 ++++++---
- 2 files changed, 68 insertions(+), 15 deletions(-)
----
-base-commit: 564973a259ec76f2dad0853420e7034cc43994c4
-change-id: 20260806-bond_overflow-ac6a6a78d6a0
-
-Best regards,
 -- 
-Hangbin Liu <liuhangbin@kylinos.cn>
+2.55.0
 
