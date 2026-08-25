@@ -1,199 +1,195 @@
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4023D6CD8
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 08:03:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8913D79E9
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 08:03:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787645032; cv=none; b=sOkjBdq0zB2w8iwHgEUPxft2Vm8xyyhwCtIwH04KmqfJKrAyR4DfGweiBJT3Q/D2PNV0/20dBazg7VudaWN+bcThJKnyf2Q/EuCgrvG6WoK7G0pm5RyB9VKZWnfBmLGbKJ3p7tgK2HMXpmK3IX3wKzfG+9rNy0dk1wxQffJ/w70=
+	t=1787645034; cv=none; b=kpQ79Bo7IsmxSBXRfeRwhMMUHYsaAeeuaH01BbLeLvNmkXsi36M2jd+wpTzOzG/rZGaQ4PekGDskeVzPMcLrBOwQ3n7cZxtZJPHeQI1lxMN5RLHvdUbJA+ziKocVuPmCNaeKq+Xh6xmIpz9xP3E2NrPrYsszqYJxrhbHA86N7R4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787645032; c=relaxed/simple;
-	bh=zE/6PpAbFwbSHzEnUEO8gwXvJ5QKAZ5ylc2eCikFt+w=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=ZtoqdML5qLXLOU97Vl5MEoUrW90fnXKbUPt2z7O2QB7zXmqMVyoS1wjAcPwy6Pscy4juWj6Y+gcl7BFCS43MYc8f18z+wE9hhfS/NUNPD50l7uW2Y+rRIp6UzN51jjnkUgAH9pVnOODVAmZQ983fnFgNC8BET/XYadxFOHDglL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4b3319233c2so3893353b6e.0
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 01:03:50 -0700 (PDT)
+	s=arc-20240116; t=1787645034; c=relaxed/simple;
+	bh=h6jeY6kUt05J87fFLVEavDXhYt+yiXHgVOp+BHg7Xuc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Za5uVM04BE13+TThxY8HIgDxy0mOeWMC6+rsjaPfWa1x7p7S4a3sBeRNN3sw/vdwY3+wMOZOHn+hYoh8nDRxP2sFDvE77GHtjtpbuFOVC55e3VvCxdM4zpqqCaiv71wrgyi6QykCToG9uDhAisA1W/pUQRdNqFfyp5k3T89V9KU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hF/VtgxY; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=IbEk0HSZ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hF/VtgxY";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="IbEk0HSZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787645031;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4t5HTh+6lmJKuFy4RSIDMrUEkIcD/jxh7XivmoZM5sU=;
+	b=hF/VtgxYRzaSfzkIZ33A1y30JIJoJqa2djVyCCsnzZQX9UPEDirm/Kvry5so7b2gzzPbbm
+	LdmUTq/3SJ94HBX9/3whTmo8Pwur7tpyL4tk4UOn2gJOXP/JVKvcD6751GsNWMNv8n5xkh
+	wN+ruCLI3mp11cxSXENXO79iZTKvMZ4=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-150-IZZYD0BMNuumV5seRJ0Lag-1; Tue, 25 Aug 2026 04:03:45 -0400
+X-MC-Unique: IZZYD0BMNuumV5seRJ0Lag-1
+X-Mimecast-MFC-AGG-ID: IZZYD0BMNuumV5seRJ0Lag_1787645024
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c15e555a164so49943966b.1
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 01:03:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1787645024; x=1788249824; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=4t5HTh+6lmJKuFy4RSIDMrUEkIcD/jxh7XivmoZM5sU=;
+        b=IbEk0HSZv3WUK7S6137xw+H9HYR4S/dRu/l+C6U1h//F6PWg1W4LvbTkJ0QH0Pg9MK
+         wq4CWu9H2+FGhScBhYs3nCnJEvpr+I0qQ9Cjj5+zO6bCPJ8ae5s9JM2JiixhEJnkiQmv
+         FtpyKifMuKVMj5Lc86OIVt+iBij5FiI7rf0905UDH/CTGjzvvVk6mhQAz8uNDdmDvRlb
+         OhOgrF4RIWS1ks3yGgfCBOF0CYaPdC5UygXZpmOVTHkRahDkgLwUZGMkUVnO7GwtXfgF
+         Gd7LHPTJA39QTAGFBR2ppaGVLDWf8UQfCXbYwhV5UkO+bR4WEz4bN8SBJ/zy24ZymCnT
+         aVUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787645030; x=1788249830;
-        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=AtGfEt5fG2go9z5Op71wQEx7a+tRBKr+1KtptibDM+E=;
-        b=E1XLR3+vVZqWJo0PLUchUkFIXeOA1ZaSY/QEcKk5hiQKQcZDdYOMZizkVIimMqueOv
-         7y83uirKJVuRgBS7nQ5jqiM2uWUTqFO48K6Em8nbqtDpCWPefBQ3GovCrfvmkhwF/3X9
-         G5JTBAN4Z6zYSMl8BlhEK9tRyKT3EDhivmLFuhuaZXp2xe7ORs9cvoSa4EjJmxlNxnNp
-         NEJzXr0huqVUcgqFT/ZNp07uYn1QuXTMFLig2jLzXxW+XJ6l8JUmwxzz6g1U3Go9QJNW
-         davxQqzp8sm8SM07J0iiOgk1RM5NHXi5N84oADCODeQTQxm5Mk9tRpq0E2N6TMD6H/4c
-         Q0tg==
-X-Forwarded-Encrypted: i=1; AHgh+RoUqerP0UdMhDccBHpa9b+WEmyQkVeNbrN420b3ZaowiPWxG8xSyntmJh8x5CYN9E1SxRWjmRU=@vger.kernel.org
-X-Gm-Message-State: AFuF++lR2V4fCok8apz+6GpddGaqCTR9F1eo0XYAvyDyypblTFJf3rkZ
-	9Y7EB+NqvKknUO/qulzVFEyAc7Nr5EQJGkFa0N/pZLrcmxQ65flZgNrW1SDwtzn2bOA+d4FVzVM
-	yLFQow0QOUSchBNOuqcshgr1iW/SXAO6X4OAm6/i1fm3TQAR3j3P0wJxNCTQ=
+        d=1e100.net; s=20251104; t=1787645024; x=1788249824;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4t5HTh+6lmJKuFy4RSIDMrUEkIcD/jxh7XivmoZM5sU=;
+        b=hKt+tWW6u3Ewhc4354QgojckZxObReU0mFiakAMq5QVZ8ZWurAMEFA4d9xKft+tdHj
+         4A4CpaTA5pn9/EfguAcsF1Gm5cQs8AlAn21+nQOmrzep7/5atVKYJ8obLYoGHPXHlduS
+         e3WNL1PUGcW1sErsCbSuzBVRPNMGymztbnu29tbPbLC2bTlGL+XSK9s0QJfk2Qn4qRmA
+         SBGlcpx8asWSQVE013wkZpXajc3YXZ/yhwajvDv1nGhUUi7PVjM/y32vzozX/OEBrNp1
+         hsjYK0wtCecoayQ37hD5xQ+bKu2TSK62PR0N+M2J+Nd2j7/2Gk9XIKoqKlmik4WmPSBk
+         q/1A==
+X-Forwarded-Encrypted: i=1; AHgh+RqkOPbx5jbEyTDV52TSk+J5GyBQFdzoYdIYbpWUusnaNH0vfzWzf5JF3yeCBX5rrz58OF2HSkw=@vger.kernel.org
+X-Gm-Message-State: AFuF++kdZxAYEwL0JvdZEbHm7VlN2+/dqn42xVddiWezFNWYgKNSd5m2
+	zsCPIlngsIMwrZ2Dn7TX0/w7odc3JlNIg12WnsI3mGl0g3IxrNQg8g+pEU0SphJyZNER8ojn6uI
+	wqnSHELmf/cBMwaov4WJX9ibGt+xrdrA8W3+P/LRMHn4w9+Tkdxwlif+HfQ==
+X-Gm-Gg: AR+sD13or3LPZ0kE3vgYa2ZYyRIGnBiszzMWbiw+QOlWpc9+5KTnEC2IU5ePxCgJrbw
+	Dc9rVSIRhml4FXRen7vCKnPtlz4aVcEukL25KsbqUtBzcR5na1ebswK93hzqI/X6OZO8LjpDEGa
+	766q34os1vxaHXDPYqK9Np2ti6q18/QOFF9VdmXFo4/kei84yUZgkoGtDexd2MbzRckjWzfJmZ7
+	EvSpmnxPrvqTnJZ3zR85Wio/wzg0LiKBIBMv30baMZqy+TTo+JBcVOUwe36iZpdjK06wYzM2qXi
+	9LJxpf6dhUkfIwOPF0ykrv5746UJ55TIkLY+LCoXjUWWhzqTiNF83TE4+3MMqdNRFylZpxkV1Q4
+	XOSdwH1/OOK4CEOnglJqU0vtysHHSPvgIcaRYotQAnakuhcCB6xXgdgXfkaFRkkNbdHc/8Ea7
+X-Received: by 2002:a17:907:e98a:b0:c20:7cb0:f33c with SMTP id a640c23a62f3a-c24e3005531mr482562666b.16.1787645023570;
+        Tue, 25 Aug 2026 01:03:43 -0700 (PDT)
+X-Received: by 2002:a17:907:e98a:b0:c20:7cb0:f33c with SMTP id a640c23a62f3a-c24e3005531mr482547766b.16.1787645022908;
+        Tue, 25 Aug 2026 01:03:42 -0700 (PDT)
+Received: from [192.168.188.103] (ip46-47-231-195.pool-bba.aruba.it. [195.231.47.46])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a59e19a05bsm18230076a12.17.2026.08.25.01.03.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Aug 2026 01:03:39 -0700 (PDT)
+Message-ID: <b1ede30d-5c03-4514-980f-c656acf3bc13@redhat.com>
+Date: Tue, 25 Aug 2026 10:03:37 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:1c09:b0:496:a36:b5e5 with SMTP id
- 5614622812f47-4b35089c71bmr4724901b6e.17.1787645029903; Tue, 25 Aug 2026
- 01:03:49 -0700 (PDT)
-Date: Tue, 25 Aug 2026 01:03:49 -0700
-In-Reply-To: <20260824152932.1583506-1-lrizzo@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a8d4c65.a5a502ce.31d34.0049.GAE@google.com>
-Subject: [syzbot ci] Re: swiotlb: avoid swiotlb copy on network sockets
-From: syzbot ci <syzbot+ci194162eefbbbb459@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, davem@davemloft.net, david@kernel.org, 
-	driver-core@lists.linux.dev, dtatulea@nvidia.com, edumazet@google.com, 
-	gregkh@linuxfoundation.org, iommu@lists.linux.dev, kuba@kernel.org, 
-	kuniyu@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	lrizzo@google.com, m.szyprowski@samsung.com, netdev@vger.kernel.org, 
-	pabeni@redhat.com, rafael@kernel.org, rizzo.unipi@gmail.com, 
-	robin.murphy@arm.com, willemb@google.com
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v1] tls: device: fix out-of-bounds write in
+ tls_append_frag()
+To: Jiayuan Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org
+Cc: stable@vger.kernel.org, John Fastabend <john.fastabend@gmail.com>,
+ Jakub Kicinski <kuba@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Simon Horman <horms@kernel.org>, Ilya Lesokhin <ilyal@mellanox.com>,
+ Aviad Yehezkel <aviadye@mellanox.com>, Boris Pismenny <borisp@mellanox.com>,
+ linux-kernel@vger.kernel.org
+References: <20260823084758.20936-1-jiayuan.chen@linux.dev>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20260823084758.20936-1-jiayuan.chen@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-syzbot ci has tested the following series
+On 8/23/26 10:47 AM, Jiayuan Chen wrote:
+> Found with syzkaller and a local syzbot instance running on top of a
+> netdevsim TLS offload emulation; tls_device.c is otherwise only reachable
+> on a machine with a NIC that implements the offload.
+> 
+> tls_push_data() only checks whether the open record still has room for
+> another frag at the bottom of its loop, and the MSG_MORE early break
+> skips that check.  The record survives to the next syscall with the frag
+> count it already had, and tls_append_frag() does not check either, so
+> with TLS_TX_ZEROCOPY_RO every splice(SPLICE_F_MORE) of a byte or two adds
+> a non-coalescing pipe page and num_frags walks off the end of
+> tls_record_info.frags[MAX_SKB_FRAGS].  Once the record is pushed,
+> tls_push_record() runs the same index over sg_tx_data[MAX_SKB_FRAGS] and
+> the sg_set_page() writes land on the destruct_work that follows it, which
+> the workqueue then calls.
+> 
+> The byte limit is fine because copy drops to 0 and the loop falls through
+> to the same check; the frag count has no such feedback.
+> 
+> Push the record rather than keep a full one open, which is what a plain
+> TCP socket does - tcp_sendmsg_locked() uses tcp_mark_push() and
+> new_segment in both the copy and the MSG_SPLICE_PAGES paths, and tls_sw
+> already sets full_record when the sk_msg ring fills up, MSG_MORE or not.
+> 
+>   BUG: KASAN: slab-out-of-bounds in tls_append_frag ( net/tls/tls_device.c:269)
+>   Write of size 8 at addr ffff8881104d1530 by task tls_oob/450
+> 
+>   CPU: 2 UID: 0 PID: 450 Comm: tls_oob Not tainted 7.2.0-rc7+ #329 PREEMPT
+>   Call Trace:
+>    <TASK>
+>    dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)
+>    print_report (mm/kasan/report.c:378 mm/kasan/report.c:482)
+>    kasan_report (mm/kasan/report.c:595)
+>    tls_append_frag (net/tls/tls_device.c:269)
+>    tls_push_data (net/tls/tls_device.c:518)
+>    tls_device_sendmsg (net/tls/tls_device.c:583)
+>    inet_sendmsg (net/ipv4/af_inet.c:865)
+>    sock_sendmsg (net/socket.c:775 net/socket.c:790 net/socket.c:813)
+>    splice_to_socket (fs/splice.c:884)
+>    do_splice (fs/splice.c:936 fs/splice.c:1349)
+>    __do_splice (fs/splice.c:1431)
+>    __x64_sys_splice (fs/splice.c:1634 fs/splice.c:1616)
+>    do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
+>    entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+>    </TASK>
+> 
+> and, once the record is pushed:
+> 
+>   UBSAN: array-index-out-of-bounds in net/tls/tls_device.c:300:24
+>   index 18 is out of range for type 'skb_frag_t [17]'
+>   UBSAN: array-index-out-of-bounds in net/tls/tls_device.c:301:41
+>   index 18 is out of range for type 'scatterlist [17]'
+>   UBSAN: array-index-out-of-bounds in net/tls/tls_device.c:302:39
+>   index 18 is out of range for type 'scatterlist [17]'
+>   UBSAN: array-index-out-of-bounds in net/tls/tls_device.c:307:38
+>   index 26 is out of range for type 'scatterlist [17]'
+> 
+>   kernel tried to execute NX-protected page - exploit attempt? (uid: 0)
+>   BUG: unable to handle page fault for address: ffffea000411a680
+>   #PF: supervisor instruction fetch in kernel mode
+>   #PF: error_code(0x0011) - permissions violation
+>   Oops: Oops: 0011 [#1] SMP KASAN PTI
+>   Workqueue: ktls_device_destruct 0xffffea000411a680
+>   RIP: 0010:0xffffea000411a680
+>   Call Trace:
+>    <TASK>
+>    worker_thread (kernel/workqueue.c:3405 kernel/workqueue.c:3486)
+>    kthread (kernel/kthread.c:436)
+>    ret_from_fork (arch/x86/kernel/process.c:158)
+>    ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
+>    </TASK>
+> 
+> Fixes: e8f69799810c ("net/tls: Add generic NIC offload infrastructure")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> 
+> ---
+> Hope to get capture attention
+> 
+> netdevsim + tls (revised a lot locally):
+> https://lore.kernel.org/netdev/20260728125658.390500-1-jiayuan.chen@linux.dev/
+I must admit that RFC series have low chances of getting full attention
+these days, due to constant flood situation.
 
-[v2] swiotlb: avoid swiotlb copy on network sockets
-https://lore.kernel.org/all/20260824152932.1583506-1-lrizzo@google.com
-* [PATCH v2 1/5] swiotlb: enforce pool nareas and nslabs invariants
-* [PATCH v2 2/5] swiotlb/mm: Implement SWIOTLB nocopy page allocator
-* [PATCH v2 3/5] net/swiotlb: Track bounce device per socket
-* [PATCH v2 4/5] net: Divert socket allocations to SWIOTLB for nocopy TX
-* [PATCH v2 5/5] swiotlb: Implement RX nocopy with fast recycling eviction
+Could you please re-submit that series formally?
 
-and found the following issue:
-general protection fault in page_pool_put_unrefed_netmem
+Thanks,
 
-Full report is available here:
-https://ci.syzbot.org/series/b17756c4-983f-4d7a-8415-3da06c0dda99
+Paolo
 
-***
-
-general protection fault in page_pool_put_unrefed_netmem
-
-tree:      torvalds
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux
-base:      0a0d1d55dad570724bf8c7ea83409639cfb4be9b
-arch:      amd64
-compiler:  Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-config:    https://ci.syzbot.org/builds/20e51ca2-88da-4674-9797-a62c64743095/config
-syz repro: https://ci.syzbot.org/findings/4385dd7f-d1fc-4627-ad19-6862c780a90c/syz_repro
-
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000082: 0000 [#1] SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000410-0x0000000000000417]
-CPU: 0 UID: 0 PID: 5836 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:swiotlb_addr_in_default_pool include/linux/swiotlb.h:177 [inline]
-RIP: 0010:swiotlb_is_nocopy_addr include/linux/swiotlb.h:184 [inline]
-RIP: 0010:__page_pool_put_page net/core/page_pool.c:851 [inline]
-RIP: 0010:page_pool_put_unrefed_netmem+0x22a/0xd20 net/core/page_pool.c:930
-Code: 5c 63 00 00 89 c5 31 ff 89 c6 e8 61 17 04 f8 85 ed 0f 84 07 08 00 00 e8 54 12 04 f8 49 81 c4 10 04 00 00 4c 89 e0 48 c1 e8 03 <42> 80 3c 28 00 74 08 4c 89 e7 e8 37 c7 73 f8 4d 8b 24 24 4d 85 e4
-RSP: 0018:ffffc900039df230 EFLAGS: 00010206
-RAX: 0000000000000082 RBX: 0000000000000000 RCX: ffff888160efda00
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
-RBP: 0000000000000001 R08: ffffffff89c3aca5 R09: 0000000000000000
-R10: 0000000000000000 R11: ffffffff8ed5a4e0 R12: 0000000000000410
-R13: dffffc0000000000 R14: ffffea0004450300 R15: 0000000004450300
-FS:  00007f08f83e86c0(0000) GS:ffff88818d6fc000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffd455a8fe8 CR3: 00000001134ac000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- page_pool_put_netmem include/net/page_pool/helpers.h:343 [inline]
- page_pool_put_full_netmem include/net/page_pool/helpers.h:373 [inline]
- napi_pp_put_page+0x133/0x1e0 net/core/skbuff.c:1036
- skb_pp_recycle net/core/skbuff.c:1047 [inline]
- skb_free_head net/core/skbuff.c:1091 [inline]
- skb_release_data+0x8c3/0xab0 net/core/skbuff.c:1122
- skb_release_all net/core/skbuff.c:1197 [inline]
- __kfree_skb+0x5d/0x210 net/core/skbuff.c:1211
- llc_rcv+0x77a/0xcb0 net/llc/llc_input.c:-1
- __netif_receive_skb_list_ptype net/core/dev.c:6312 [inline]
- __netif_receive_skb_list_core+0x784/0x830 net/core/dev.c:6354
- __netif_receive_skb_list net/core/dev.c:6406 [inline]
- netif_receive_skb_list_internal+0x995/0xcf0 net/core/dev.c:6497
- netif_receive_skb_list+0x67/0x480 net/core/dev.c:6549
- xdp_recv_frames net/bpf/test_run.c:268 [inline]
- xdp_test_run_batch net/bpf/test_run.c:349 [inline]
- bpf_test_run_xdp_live+0x1875/0x1c20 net/bpf/test_run.c:378
- bpf_prog_test_run_xdp+0x7d8/0x11d0 net/bpf/test_run.c:1463
- bpf_prog_test_run+0x2c5/0x340 kernel/bpf/syscall.c:4804
- __sys_bpf+0xa22/0xd90 kernel/bpf/syscall.c:6385
- __do_sys_bpf kernel/bpf/syscall.c:6486 [inline]
- __se_sys_bpf kernel/bpf/syscall.c:6483 [inline]
- __x64_sys_bpf+0xba/0xd0 kernel/bpf/syscall.c:6483
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f08f759e0d9
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f08f83e8028 EFLAGS: 00000246 ORIG_RAX: 0000000000000141
-RAX: ffffffffffffffda RBX: 00007f08f7825fa0 RCX: 00007f08f759e0d9
-RDX: 0000000000000048 RSI: 0000200000000600 RDI: 000000000000000a
-RBP: 00007f08f7635024 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f08f7826038 R14: 00007f08f7825fa0 R15: 00007fffc4c69778
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:swiotlb_addr_in_default_pool include/linux/swiotlb.h:177 [inline]
-RIP: 0010:swiotlb_is_nocopy_addr include/linux/swiotlb.h:184 [inline]
-RIP: 0010:__page_pool_put_page net/core/page_pool.c:851 [inline]
-RIP: 0010:page_pool_put_unrefed_netmem+0x22a/0xd20 net/core/page_pool.c:930
-Code: 5c 63 00 00 89 c5 31 ff 89 c6 e8 61 17 04 f8 85 ed 0f 84 07 08 00 00 e8 54 12 04 f8 49 81 c4 10 04 00 00 4c 89 e0 48 c1 e8 03 <42> 80 3c 28 00 74 08 4c 89 e7 e8 37 c7 73 f8 4d 8b 24 24 4d 85 e4
-RSP: 0018:ffffc900039df230 EFLAGS: 00010206
-RAX: 0000000000000082 RBX: 0000000000000000 RCX: ffff888160efda00
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
-RBP: 0000000000000001 R08: ffffffff89c3aca5 R09: 0000000000000000
-R10: 0000000000000000 R11: ffffffff8ed5a4e0 R12: 0000000000000410
-R13: dffffc0000000000 R14: ffffea0004450300 R15: 0000000004450300
-FS:  00007f08f83e86c0(0000) GS:ffff88818d6fc000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffd455a8fe8 CR3: 00000001134ac000 CR4: 00000000000006f0
-----------------
-Code disassembly (best guess), 2 bytes skipped:
-   0:	00 00                	add    %al,(%rax)
-   2:	89 c5                	mov    %eax,%ebp
-   4:	31 ff                	xor    %edi,%edi
-   6:	89 c6                	mov    %eax,%esi
-   8:	e8 61 17 04 f8       	call   0xf804176e
-   d:	85 ed                	test   %ebp,%ebp
-   f:	0f 84 07 08 00 00    	je     0x81c
-  15:	e8 54 12 04 f8       	call   0xf804126e
-  1a:	49 81 c4 10 04 00 00 	add    $0x410,%r12
-  21:	4c 89 e0             	mov    %r12,%rax
-  24:	48 c1 e8 03          	shr    $0x3,%rax
-* 28:	42 80 3c 28 00       	cmpb   $0x0,(%rax,%r13,1) <-- trapping instruction
-  2d:	74 08                	je     0x37
-  2f:	4c 89 e7             	mov    %r12,%rdi
-  32:	e8 37 c7 73 f8       	call   0xf873c76e
-  37:	4d 8b 24 24          	mov    (%r12),%r12
-  3b:	4d 85 e4             	test   %r12,%r12
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
-
-To test a fix for this bug, please reply with `#syz test`
-(on a separate line) and attach the patch to the email.
-
-Notes:
-- The patch will be applied on top of the tested series (as an
-  incremental fix).
-- To test a new version of the whole series, please send it directly
-  to syzbot@lists.linux.dev.
-- Arguments like custom git repos and branches are not supported.
