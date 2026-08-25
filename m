@@ -1,60 +1,58 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7123DB330
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 08:11:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966B23DB997
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 08:14:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787645477; cv=none; b=qKWSRv3D9sHbcRwfJqZh7r8oZ7cx3TXrhJPMP2Fvj/JvvMhS25UA+tQWbir5UaVdGJw8ZMEOBF+L7gX5CcMaVHxhdTn69q+55r0Z/QahJk9/8S7e4da00PyzK5rKDl86vyZKlEzzawcyk19Unz/i2d+9ua6QzqZ1fi/eZKWMQLU=
+	t=1787645663; cv=none; b=ITCkMZG57lv4n5fHBLcjVy18fTs5dfABgyjacGarRWht3pP46DzBOOioRqbBW/FpusQe5Xb8JSMAXrnkfrVEjCUXmF/skAWXcXAf6K86DKze+tWiu/3XQL7iYh/DNX4cduoIRAR5JdHySLOWgzrSqb6/IfSB5z/L24ea5wl9lmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787645477; c=relaxed/simple;
-	bh=mnbE3j/y4uO7KufvsLA0IDbzqt4v69YBS9OJCvg4IxI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SU5uN2kzAUqwZho9JB8DyqQC678AOto35nzQySTkCctJW0iM4LTZcDepM5OYjPynexlnwS7hWghUmWuesk3KbZ6nOdBEeq8lci6IwGhhFA9wb2o5bRiqtElIo4z6TCqOsjtF3Wnzt/aQ2Rpz7V9JN9ZRJhb8BzMXMcmHRpBM7Lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=Q+9AS6F1; arc=none smtp.client-ip=209.85.160.169
+	s=arc-20240116; t=1787645663; c=relaxed/simple;
+	bh=7I3oqNx3l1a0EQoUpbTQHwQBA40Y4bL8moO3e9riplo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=n5GyYtCQqhJsDV08Yo82Gaho+fTwwxXkAgY7Vn53A4BAuFSlAgGd0U7ZIqNeScyD9qM75GWaUZVMAWPSXzJsIIDMAQek0Kw3xzqdgaMZf/zOWqjjYRkKqHNJVklwglhUb/s9agB/+CfzvdwSUzW7ttwwwF1oIPCgkksNSN7RmFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=KoCJ+4Jy; arc=none smtp.client-ip=209.85.160.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="Q+9AS6F1"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-52d5bfa4bafso41687151cf.3
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 01:11:15 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="KoCJ+4Jy"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-51c04bf4711so38720621cf.2
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 01:14:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787645475; x=1788250275; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jKMiyC4HcRQYT7jQVt8eOBnM5eFZOvYZ0UfVOnbROiQ=;
-        b=Q+9AS6F1o/WgqhOk8pIe9tqDq1IPb8qhqoLklALIER3iXPQoKUSFruVvcLLd7Yx0R+
-         ibGwsJ4LMG/b9oAo2sc/XzlerJpSr3L/7yiygfO1u5srerOcZ/pqwJ8Wdd5bxg0qwnVt
-         GacpWMUQUcd+Xss1ZQqoHAw21I+v/PakaDn2s=
+        d=mojatatu.com; s=google; t=1787645660; x=1788250460; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gwfxD6bJBOWO+LowhgDnFJHm0TT2/hBcMgOzrlGwEbc=;
+        b=KoCJ+4JyW+ZPgfN0h2PBclbCRT5kc4YO2qHXNrEmfGxxWqwTBlJjJXvgZi3usdmNZX
+         ds5mG1YEF0q3WLD5LckUukKRwW/oxPDkj0Q33WIn6F0TbjqXgX5VSJf2raeo7qKzPZ3c
+         x1/NYwQHid2ZAJ0dADZS9Tt6i1JIrfDN3I/Gg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787645475; x=1788250275;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jKMiyC4HcRQYT7jQVt8eOBnM5eFZOvYZ0UfVOnbROiQ=;
-        b=gbzmd+mL86oJmDhgYaHAjT8Yl4G+ETn7ArSueat34tNMFvui7IQmtxpyLWbwqLkV7M
-         GnSqeQwEOthkYyBn4gk6lslVStBiqicxiRGNY6q4iBDKeht4JVEykKsV/WpKPMIQJtbt
-         kPA9MfiZZ575RlJDOVs0E+M3hzyOiAiTn6elbIpHqnnkQ0preOjr87+hgCJDigd/Ty5h
-         GflnbIGKWrmQ/y96Y8RpA1pjc55o14ZfRS95hYyvNL3n5YCoc8qOF+UuOkGa1OBH+byy
-         4eYw8fwE6QDDT1CpE3CVsyHl9kYLMFIAfsUSSYpq0AoRl22NW+keJ5A50f+GWl4GQDTb
-         1JGw==
-X-Gm-Message-State: AFuF++m0OjWeQPe3o7wSl0zhsS6CRi+FIV+ctVfA25FZCw0fgeDKEh/l
-	vueEkiQreU5Q8QNpuuGCpacDQ2CVanm/hUUH17zexzmoMMfk2tJbhhS06YnR/9YUDF4N8qvwn7G
-	4IS9T5Q==
-X-Gm-Gg: AR+sD137YhV2DvAirCiIQy4jym6eVHQ/ksKWAg7vxlgbpKOSGFuZ5ueHtPyquo2wg4b
-	tDL6ZIBFNLJgT8vev/mYcsUXjDqaXUxMJwKNhe67DGAmtnL4fAgm/cdBifzhJryAk+qpcHKR82R
-	lBy1stEWEavdTrXHom+w7m8Wz2mSjNuyk4E4XmN00gn+HtX16PVVlG7AIxYXZ4hwNZimD9pHavw
-	BA67ZF0meTgG1utwkAIhJfEufeYD81MJRQi8Q28Xo/QZTjPSBd5eNgnJQqclFkw6zPDFqqLbheC
-	7o9OPv3mdiPEwtdUpe9v9FmSKNZwBE71CO8YRAsR+sLtjA8K2pp5mvEg3GQWPXXOr63UCjSzGcX
-	pf3bFqTDxQpMPWj/ZNT1jCsqy/0mNBuKcVodyc7Gp2whXv3OS1i2DFyzf5W5l69qTeXbkBTPrlc
-	3KUYhwlxucru/8/U9wNDE4jLnPkJsxJ1gUauVtohxfuJpYfEcacv7L
-X-Received: by 2002:a05:622a:5a14:b0:51c:1568:3a53 with SMTP id d75a77b69052e-52e2f09277bmr56123431cf.16.1787645475038;
-        Tue, 25 Aug 2026 01:11:15 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787645660; x=1788250460;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gwfxD6bJBOWO+LowhgDnFJHm0TT2/hBcMgOzrlGwEbc=;
+        b=hVBVkv0PICkotzxmxi1JVwyFZ0EOlgX0bssgmESPVh37lNAHsuXKDK97Vf0f1euCwH
+         OMx6cGpv4/WEPmEiV037PIS78v42fGIF4ZB0ipqjk/7OqbnQxyMkS+/UqwzuMjNIZmE8
+         GN3vexnlhwCQAkjEumWAw3DMUO5hhx4OhkYL0oo4PsN4533mYahOBViBhlMmIZKZSgrY
+         IJDzs3efgCVTIJ9yOcvxXydbBNNMKtK3qWUZ8oK/hH/tZsnNnKQHxH2aWyg/JAUQkFTX
+         7BqS8cUJ+lJjUj7kXJ/YKpEvnuaTg/IK9XqXSgymveCiY/8YckGjbeeBFgwwH42SpcCR
+         jTyQ==
+X-Gm-Message-State: AFuF++mhqxMOn1tX6kFIrl7hRJXxIKs5unA8liEeIQfdPYEgYZaiDaVH
+	VtGtl+UcEI/oTxlNjF+TvuY5ydCNNziH0rzjjxdlYZr/n966EjBulg1QIuWEZknSTMJGA5gHy5Q
+	p7obz1w==
+X-Gm-Gg: AR+sD13LPoKImcs8ROyc+5S7ODvrQ7kJ4A5pw1bEbuSn2yxojwGx5Vi46TPpu35pkSr
+	tgPShHXVpiwjAxXbxqPOF6GwF1jZTnhbmDdNFJ4mc7wvr1i6UET8i8VhCEZ2Y1cLaYY+2sU7OyX
+	QOwZGCFvtsXk5NXh6W649GjTdmBZNxzt/5cqxux/Oxxn5m2WHy+S0A8x4fxzmrip45rE79aTnpH
+	ucEFRF1V23SUMTKNLYKkHb8/WzvCXAtPILeBS9biXQUPMDGv8e3UYfHtmZAiSE9EHg1NzeszFod
+	TTUtpcyzLmuhbW44gq2xNqh4MBQMfN7nNWvJgKlDI1WDyw4EU9v23Mvy05qrsX3yGq2iOqBIeWl
+	7w6HaBB+TTI72O+WGZ/w/vP5xfNv4j9iBXu3iGeIO9BmhV7JxwQ+yapM1j77LXbn7mo7B7W7XX6
+	bbyqH1jBMqOtzHyAaxF5tCwdQ0057q3Raff8PcmvrwOXCTbAqA3j8u
+X-Received: by 2002:a05:622a:1352:b0:52d:8679:ba94 with SMTP id d75a77b69052e-52e09aa1528mr236192961cf.0.1787645660427;
+        Tue, 25 Aug 2026 01:14:20 -0700 (PDT)
 Received: from majuu.waya ([184.144.29.222])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52e09aae6f4sm64715251cf.16.2026.08.25.01.11.11
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52e0996b4a2sm64777831cf.3.2026.08.25.01.14.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2026 01:11:12 -0700 (PDT)
+        Tue, 25 Aug 2026 01:14:19 -0700 (PDT)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
@@ -64,14 +62,13 @@ Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
+	stable@vger.kernel.org,
 	vega@nebusec.ai,
 	Victor Nogueira <victor@mojatatu.com>
-Subject: [PATCH net v3 2/2] selftests: tc-testing: add u32 node ID pool exhaustion test
-Date: Tue, 25 Aug 2026 04:10:52 -0400
-Message-Id: <20260825081052.133898-2-jhs@mojatatu.com>
+Subject: [PATCH net v2] net/sched: bound qdisc_pkt_len to prevent qdisc soft lockup
+Date: Tue, 25 Aug 2026 04:14:03 -0400
+Message-Id: <20260825081403.133992-1-jhs@mojatatu.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260825081052.133898-1-jhs@mojatatu.com>
-References: <20260825081052.133898-1-jhs@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,64 +77,88 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a tdc test case that fills the u32 node ID space with 4095
-auto-generated handles, then attempts to add a 4096th. On the fixed
-kernel the 4096th filter is rejected with ENOSPC (exit 2). On the
-unfixed kernel it silently succeeds with a duplicate handle.
+qdisc_get_stab() accepts a user-supplied size table, and
+__qdisc_calculate_pkt_len() amplifies qdisc_pkt_len() through the
+overhead, the size-table data (u16), and size_log (up to
+STAB_SIZE_LOG_MAX). A crafted stab can therefore set qdisc_pkt_len()
+to ~1 GiB for an ordinary skb. Per-flow deficit schedulers such as
+DRR and ETS replenish one quantum per loop iteration; with a tiny
+quantum (1) they spin billions of times under the qdisc lock,
+producing a soft lockup / RCU stall as illustrated by vega@nebusec.ai.
 
-The setup pipes the 4095 add commands directly into `tc -b -` inside a
-single bash -c (matching the existing test id 1234 pattern), avoiding
-any temp file.
+Cap the final qdisc_pkt_len() to QDISC_PKT_LEN_MAX so the size-table
+amplification cannot drive deficit schedulers into an unbounded loop.
+A legitimate size table (e.g. qfq's overhead 999999999, which is
+handled by dropping) is still accepted.
 
+Introduce cap QDISC_PKT_LEN_MAX (1 << 20) = 1 MiB which is well above
+any legitimate single-skb wire length: the largest current skb->len
+is GSO_MAX_SIZE (524280), and an ATM-style size table (53/48 cell tax)
+amplifies that to ~578 KB, both comfortably below 1 MiB. At the same
+time, 1 MiB bounds the deficit refill loop to ~1M iterations per
+packet with quantum=1, which completes in a few milliseconds well
+under the demonstrated softlockup threshold (~10^9 iterations).
+
+Conditions to recreate the bug:
+- CONFIG_NET_SCHED=y, CONFIG_NET_SCH_DRR=y (or CONFIG_NET_SCH_ETS=y).
+- Attach a DRR (or ETS) root qdisc with a crafted TCA_STAB that
+  amplifies qdisc_pkt_len to ~1 GiB (e.g. size_log=15, data=[32768]).
+- Add a class with a tiny quantum of 1 and send one small packet; the
+  deficit loop spins billions of times under the qdisc lock and trips
+  the softlockup detector (panic with kernel.softlockup_panic=1).
+- Reachable as root or from an unprivileged user in a fresh user+net
+  namespace (unshare -Urn) with namespace-local CAP_NET_ADMIN.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: vega@nebusec.ai
+Tested-by: Victor Nogueira <victor@mojatatu.com>
 Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 ---
-v2 -> v3:
-- Dropped the /tmp/u32_batch.txt temp file. The setup now pipes the
-  4095 add commands directly into `$TC -b -` inside a single bash -c
-  (matching the existing test id 1234 pattern), eliminating the
-  symlink/TOCTOU risk and the leftover-file cleanup gap flagged by
-  both Sashikos (gemini Medium + nipa gpt-5-6-sol-6-9, gpt-5-6-sol-4-7).
-  New auto-generated tdc id: 70fd.
-
 v1 -> v2:
-- Renewed tdc test (v1 tdc failed in long-running sweep, prompting v2).
+- Use a dedicated QDISC_PKT_LEN_MAX define in include/net/pkt_sched.h
+  instead of GSO_MAX_SIZE (Jakub Kicinski, Eric Dumazet).
+  __qdisc_calculate_pkt_len() deals with single-skb wire-length
+  accounting, not GSO segments; GSO_MAX_SIZE is semantically wrong.
+  QDISC_PKT_LEN_MAX = (1 << 20) = 1 MiB avoids truncating legitimate
+  stab accounting (BIG TCP + ATM-style 53/48 table ~ 578 KB) while
+  still bounding the deficit loop to ~1M iterations at quantum=1
+  (completes in a few ms, well under the softlockup threshold of
+  ~10^9 iterations).
 ---
- .../tc-testing/tc-tests/filters/u32.json      | 23 +++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ include/net/pkt_sched.h | 1 +
+ net/sched/sch_api.c     | 7 +++++--
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/filters/u32.json b/tools/testing/selftests/tc-testing/tc-tests/filters/u32.json
-index b2ca9d4e991b..e2b03f2b5e89 100644
---- a/tools/testing/selftests/tc-testing/tc-tests/filters/u32.json
-+++ b/tools/testing/selftests/tc-testing/tc-tests/filters/u32.json
-@@ -353,5 +353,28 @@
-         "teardown": [
-             "$TC qdisc del dev $DEV1 parent root drr"
-         ]
-+    },
-+    {
-+        "id": "70fd",
-+        "name": "Add u32 filter when node ID pool is exhausted (4096th filter rejected)",
-+        "category": [
-+            "filter",
-+            "u32"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+            "$TC qdisc add dev $DUMMY clsact",
-+            "bash -c 'for i in {1..4095}; do echo filter add dev $DUMMY ingress prio 1 protocol ip u32 match u8 0 0 at 0; done | $TC -b -'"
-+        ],
-+        "cmdUnderTest": "$TC filter add dev $DUMMY ingress prio 1 protocol ip u32 match u8 0 0 at 0",
-+        "expExitCode": "2",
-+        "verifyCmd": "$TC -d filter show dev $DUMMY ingress",
-+        "matchPattern": "fh 800::",
-+        "matchCount": "4095",
-+        "teardown": [
-+            "$TC qdisc del dev $DUMMY clsact"
-+        ]
-     }
- ]
+diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
+index 18a419cd9d94..90d3e7943b19 100644
+--- a/include/net/pkt_sched.h
++++ b/include/net/pkt_sched.h
+@@ -12,6 +12,7 @@
+ 
+ #define DEFAULT_TX_QUEUE_LEN	1000
+ #define STAB_SIZE_LOG_MAX	30
++#define QDISC_PKT_LEN_MAX	(1 << 20)	/* 1 MiB */
+ 
+ struct qdisc_walker {
+ 	int	stop;
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index 65b35528d125..90503e59e6e3 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -610,8 +610,11 @@ void __qdisc_calculate_pkt_len(struct sk_buff *skb,
+ 
+ 	pkt_len <<= stab->szopts.size_log;
+ out:
+-	if (unlikely(pkt_len < 1))
+-		pkt_len = 1;
++	/* A size table can inflate qdisc_pkt_len() beyond any real packet
++	 * (via overhead, the data table, or size_log); cap it so deficit
++	 * schedulers such as DRR/ETS terminate their refill loops.
++	 */
++	pkt_len = clamp_t(int, pkt_len, 1, QDISC_PKT_LEN_MAX);
+ 	qdisc_skb_cb(skb)->pkt_len = pkt_len;
+ }
+ 
 -- 
 2.43.0
 
