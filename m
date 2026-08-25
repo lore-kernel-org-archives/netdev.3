@@ -1,176 +1,227 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F0925A640;
-	Tue, 25 Aug 2026 02:40:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787625641; cv=none; b=Xm6mkBjRJ6tuuHOTva0Lqw+k1HWKjkRaZSkos067FCuNl1ZofVFhQbQAdIKREzhqvPZv65Rn7rU1cZRIF2+vYzb309xXXfFiw9cZ2bU17NZo6mAXnCEnu5O0NzzXUfYLk77WDuEddqB6r8IxR+brS3lNhPGIiicXxXXvKWcbWFI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787625641; c=relaxed/simple;
-	bh=grmr8ShzbmokeeZM8GJP7va3jRxjvHZ4u/qI8TrYDQ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r0GvZ4K+sWj+29sHFYdaDzrHKzkBQB/Hwvl+qDGQA2gA5zfwWU+Vq2VmlLsVB/g1b+JKSQITlE80D1sdjAyOmHi+SeG5lUIbzMw7LcRskG6WvPSvYlBdOzTBYdA+/lpE3zLpahIkiwtviCBx1ZwyQefUSuZ+VyWj+UmtE9+fO5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=hzGqzCFd; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7C22EEE90
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 03:14:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787627669; cv=pass; b=syXIWxEm9h1vmtLajU9T1WpNa6J6XOk5lOKYmI1P34HpKiqg1pi+tvazXte1EYGKUunozysyXkgi76gitm3kLptVFb0jYkuPWPTi5dYDsVY/DnoiEjtbT1OfhhXYIzyMCU8Dtf7/NKrlAkTQ0IAUgTWMGXH4Tl07FL7PQo6ByQA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787627669; c=relaxed/simple;
+	bh=dRs+t2C5DM0FBnIBiCSm+EGEkYKjoAyRCd6uSWWyGYQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PlCZDiuptSP3Qfz7WIdUHZP+p2Y7ugptxe2YuvEF9dzU8C6mQmc1jDpZUOMZq0cHVmr4xvRHus+sFnHWG8Ghz30aunngha5sthqkQ9HI6sxCLMll6e4A9rzFsyQA8aGAgu6DVLvmqwD6aDzIObCwH5DZYqYKlfKooGyqAdyG8j0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KNnlL7Ou; arc=pass smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="hzGqzCFd"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=cMhE1zLIBEfW8ce0tgca2Z8WQ504QioXQyvOVgDlw9s=; b=hzGqzCFd/Zil7siDD7txgS0PkI
-	0btYf2KcGF4Jt5LTpvtm3rcvqgdEJSmZrUdBF9aqMpMYUh9Wx2DIzUj8xdR3ux2f0ydIJjgu6/GP/
-	GCGCI2Cu8TlWQosSPGxvlQtgSVvTwAmUUZIpR/2u1oLk4ZJts6jT8AMgHc7WKf4EmDelDxaZNwldB
-	bwuBAzBiHPtS2yBO9dgBLMH1854Fm9Yq579Rygv7X8gtmLlRanmAfRNHAJH+8I1bkHkoV2E7aBA/w
-	Rmforme87QTE7Bp3x5xKUtL/ppwt4PjCQFG+iz4NzVNJh7Q9S88tpLt+noBixClVZE+hH5oiywcdZ
-	NRPAIH+Q==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyh57-00000008BRG-20Ss;
-	Tue, 25 Aug 2026 02:40:09 +0000
-Date: Tue, 25 Aug 2026 03:40:09 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: NeilBrown <neil@brown.name>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Byungchul Park <byungchul@sk.com>, linux-kernel@vger.kernel.org,
-	max.byungchul.park@gmail.com, kernel_team@skhynix.com,
-	torvalds@linux-foundation.org, linux-ide@vger.kernel.org,
-	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
-	mingo@redhat.com, peterz@infradead.org, will@kernel.org,
-	tglx@linutronix.de, rostedt@goodmis.org, joel@joelfernandes.org,
-	sashal@kernel.org, daniel.vetter@ffwll.ch, duyuyang@gmail.com,
-	johannes.berg@intel.com, tj@kernel.org, tytso@mit.edu,
-	david@fromorbit.com, amir73il@gmail.com, gregkh@linuxfoundation.org,
-	kernel-team@lge.com, linux-mm@kvack.org, akpm@linux-foundation.org,
-	mhocko@kernel.org, minchan@kernel.org, hannes@cmpxchg.org,
-	vdavydov.dev@gmail.com, sj@kernel.org, jglisse@redhat.com,
-	dennis@kernel.org, cl@linux.com, penberg@kernel.org,
-	rientjes@google.com, vbabka@suse.cz, ngupta@vflare.org,
-	linux-block@vger.kernel.org, josef@toxicpanda.com,
-	linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
-	hch@infradead.org, djwong@kernel.org,
-	dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
-	melissa.srw@gmail.com, hamohammed.sa@gmail.com,
-	harry.yoo@oracle.com, chris.p.wilson@intel.com,
-	gwan-gyeong.mun@intel.com, boqun.feng@gmail.com, longman@redhat.com,
-	yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com,
-	netdev@vger.kernel.org, matthew.brost@intel.com,
-	her0gyugyu@gmail.com, corbet@lwn.net, catalin.marinas@arm.com,
-	bp@alien8.de, x86@kernel.org, hpa@zytor.com, luto@kernel.org,
-	sumit.semwal@linaro.org, gustavo@padovan.org,
-	christian.koenig@amd.com, andi.shyti@kernel.org, arnd@arndb.de,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	rppt@kernel.org, surenb@google.com, mcgrof@kernel.org,
-	petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
-	paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
-	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
-	chuck.lever@oracle.com, okorniev@redhat.com, Dai.Ngo@oracle.com,
-	tom@talpey.com, trondmy@kernel.org, anna@kernel.org,
-	kees@kernel.org, bigeasy@linutronix.de, clrkwllms@kernel.org,
-	mark.rutland@arm.com, ada.coupriediaz@arm.com,
-	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
-	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
-	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
-	yuzhao@google.com, baolin.wang@linux.alibaba.com,
-	usamaarif642@gmail.com, joel.granados@kernel.org,
-	richard.weiyang@gmail.com, geert+renesas@glider.be,
-	tim.c.chen@linux.intel.com, linux@treblig.org,
-	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
-	chenhuacai@kernel.org, francesco@valla.it,
-	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
-	masahiroy@kernel.org, brauner@kernel.org,
-	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
-	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
-	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org,
-	miguel.ojeda.sandonis@gmail.com, bagasdotme@gmail.com,
-	wsa+renesas@sang-engineering.com, dave.hansen@intel.com,
-	geert@linux-m68k.org, ojeda@kernel.org, alex.gaynor@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v19 00/40] DEPT(DEPendency Tracker)
-Message-ID: <ao0AieB7zg5FKD39@casper.infradead.org>
-References: <20260706061928.66713-1-byungchul@sk.com>
- <359ea967-9b97-4584-88e6-bddb4044de2e@kernel.org>
- <20260821042143.GA40890@system.software.com>
- <825134a8-ceae-430c-b2fc-d1d0c7240f39@kernel.org>
- <178730572084.2852630.7732425311008244683@noble.neil.brown.name>
- <3d58eb3c-7a9d-4183-907b-46172664631c@kernel.org>
- <178761465493.3510150.12380729360578969391@noble.neil.brown.name>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KNnlL7Ou"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2caed617615so42192765ad.3
+        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 20:14:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787627666; cv=none;
+        d=google.com; s=arc-20260327;
+        b=GIfINHyxyGcs+yHv+E4ml+9e2yu7l/+M/I8qyzwGXetdluV02Sq0JrVDwQZ3Kcj1xO
+         c6pdm49ymBPmZUWNpAYKee0VtN1BDHATwJywq4ugWdpQF5HeKXp6Bgk8D0ycGiMFSRID
+         qJKHUwDT+eWusmyVSixSkrBBJDRwC2uSxoOMl1ix5Bp2UnmsC2tS1Awnd8+BTlIJ4e/2
+         rh6bMHR8JVAVuHK6NYPTZ/XYu2pEFNXoVlcI6AVMy8g+3RyvvnEgiwSp14JXnfRgNRDd
+         CxdwCR4XQijMYyKeaVi3+Y5KAARVAmAq2FqgbP9CV8osciOO7xlBghZZCedK1hzENhp1
+         W0wQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=pZxO2sG1DQdNWx9TFCDx4er2A5vWGIT8+jMZybDf1LU=;
+        fh=V+KsS58puCqvEDMciHL6tS5dK8wr8GB5Cw7OQPCPUcc=;
+        b=pc1Bf7FXgm6U5en2GsvNU2Eqm9p1bkhjSF/Pb0zOSuXI5cLCiKeslFTlyvrP2LLir3
+         OJ22qf+Vw+QdhqGFpbkTPRu+ElmMotAhwq6dAdOI/YS28jcDya1+2hwu45SXfuFxrcF9
+         2xZwy7swVSAcpo7gm5TGfbbqtN2Y2gNYOc15RgTlE2Nvun3IZmhBuZEa26B39cOowHO3
+         9JPYJPi+RWK9GQ0uyP6f1V5NL5UuQWPNXnlyqlOw7jiEhBcklVZj5b11v/t3FbxmaxDb
+         gcOC28GKQboUr1mOG6tLPFaqHlT/o6040gHVBo+GPSuM+I0b9iJlHPLiQFw5xCJHL1j8
+         +XPg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787627666; x=1788232466; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=pZxO2sG1DQdNWx9TFCDx4er2A5vWGIT8+jMZybDf1LU=;
+        b=KNnlL7Ouu1DiXnnwxJ+1HRr6sKhAbNyYkQXQEYPQ1Cpc4Apuz4cVc6X2mLXL3t+6fa
+         fP/JyJSNZREY2T18afSkHf2DzOEMO/NrwhKcisH7b8PBLG6PkTHN8WQv9fMuN6mGNirg
+         r3NuYEJqKKJevi2hNXMPOMqtGi5K0DrjEZvkMSe6CWoHXDxsKDkcGckYSaendrM/kBwI
+         WO1B3SYJYIjCq31ckTgIv/uhFB6e/ISiediw4pfpj6E5VUsCUBBNOEEF2g7DmtiKr1w7
+         ZWS4dRuPkhoOmMZGzzdZFc477epNOP0gs+wGE+9l4voQy8QA9aKTllFkABDrkIRhF2Zv
+         1vSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787627666; x=1788232466;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pZxO2sG1DQdNWx9TFCDx4er2A5vWGIT8+jMZybDf1LU=;
+        b=kw+/VwGaakAgXD+8xOeDT2Mvv3qRVxcZ2R7uyIgbJHgg+xmfRrDqlEUCBMd/gFnECz
+         hlGBlXNJHy56TC9TdIHJq5QSQyntbqtH3e+ahezbsP2L2nIU3zY+Tvsb3OdA4D9033A/
+         SlmlG3v4QP/FL+EQycqPHg5PAZUIu3bLsqKbBvMjV8WgK8LXnWxVVQe7NIv3vAz3BBsy
+         OAVrKvkzR1xAJ6OU79Nm1FVzg6Yqji2cR8NtcymU6RFR4UZNj0V3gAggCYXBcLTa/+sR
+         OZhVC0YT8rZq4SLd0CMXhCqQ+KYK8wAumigi8Kor+xOVIaugTa4M4akzgYqlacy4LERm
+         BvJQ==
+X-Gm-Message-State: AFuF++kZc503eTD3LI6SnXhvfVkwE3D2s0DZT9diU4tf2eHuz4HSmST3
+	aHTzlPFE4jzykz4HqYMBBGhqqcf4WXg3QsK+XsPCYI6v+Cpamb2SG86HMqGEeVB5mXYyaLVynqE
+	iGXmkxyjTqqLcWqqdGuEpTROtTUPSu7Y=
+X-Gm-Gg: AR+sD13tqgHjS4rxxkhOaXSSLJzYFSruLql7qNMI6bTVYQEjvyqd0KHW56MKSA+4arB
+	kMrmekxw3GUnNsUo+tup/b8/bIcV42oAP8v3BxqqD5WzHxbNrm3ybUvd8Wgrwabc84HHq9SiLTu
+	1SKZWVJjDSmDizG9lX8rY0jCZiFTBdsBjrl3a0MTDqEtyQW4Aw5MuM7c8gsO1MSO6Kjc43YGddS
+	OolZsNWG4U2Ev/DtuRGGA7C5FuzpJ7pb+9hr605DawygEthMpDVDn40XNcbMKnb7nYPAcygtGqj
+	bwSgXFFHn7OXhgHIHmW1NssKliIXNhuLozivIGWmjMgs9EPGyEv4FtZQmnQC
+X-Received: by 2002:a17:903:a90:b0:2c0:a555:80d6 with SMTP id
+ d9443c01a7336-2d670b60ceemr444455745ad.2.1787627666097; Mon, 24 Aug 2026
+ 20:14:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <178761465493.3510150.12380729360578969391@noble.neil.brown.name>
+References: <20260820141034.1400439-1-xuziyougm@gmail.com> <20260824185043.2701718-1-kuba@kernel.org>
+In-Reply-To: <20260824185043.2701718-1-kuba@kernel.org>
+From: js node <xuziyougm@gmail.com>
+Date: Tue, 25 Aug 2026 11:14:13 +0800
+X-Gm-Features: AcwNN1VxbJzVE2V05L28ezCK6b_JXEDxc0VipP-5b32B7Wmg-aKUKM5V_yzkGqs
+Message-ID: <CAF2gcSXK6H76A5Z6-k-D04VaCR4QXNiWLmbQmcCBpsW=L+Hwyw@mail.gmail.com>
+Subject: Re: [PATCH net] net: phy: air_en8811h: restore LED GPIO output after
+ MCU restart
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com, 
+	linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com, 
+	pabeni@redhat.com, ericwouds@gmail.com, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 25, 2026 at 09:37:34AM +1000, NeilBrown wrote:
-> > For readahead, I think that queues / lru are not involved. We submit the I/O,
-> > and once the I/O is done, we unlock the folio from interrupt context.
-> 
-> "submit the I/O" means "attach the page to a "struct bio" (or similar)
-> and attach the struct bio to a transmit queue for the device (or
-> similar).  So there really is a queue.
-> 
-> > 
-> > end_buffer_async_read() / iomap_finish_folio_read() end up calling
-> > folio_end_read(), where we do the magic
-> > 
-> > 	folio_wake_bit(folio, PG_locked);
-> 
-> Exactly where the lock ownership should be reclaimed is not immediately
-> clear to me.  bio_endio() might be early enough but there are probably
-> better points.
-> 
-> A small difficulty here is that a bio has multiple folios and they are
-> all locked.  I cannot see that lockdep has a concept of holding an
-> arbitrarily large set of related locks.
-> We could just tell lockdep 
->   "I have some folios locked" 
-> or maybe enhance lockdep to allow
->   "I have N folios locked"
-> or even
->   "I have N folios in address-space A with the highest offset being O".
-> 
-> This would allow lockdep to check the validity of locking another folio
-> - only allowed if the address space is the same and the offset is larger
-> than the previous largest.
+Thanks for the review.
 
-It's more complex than that; see my other emails on the subject.
+I don't have AN8811HB hardware, so I can't confirm whether the MCU
+restart clears AN8811HB_GPIO_OUTPUT in the same way.
 
-I think we need the ability for lockdep to call a function which says "I
-hold this lock, is that lock OK to acquire".  But the devil is in the
-details.
+Looking at the register layout, I agree it is very likely affected.
+However, I'd prefer to keep this patch scoped to EN8811H where the
+fix is verified, rather than extend it to AN8811HB based on
+speculation.
 
-> > 
-> > It's interesting, that for writeback we never unlock the folio on the I/O path,
-> > but instead have the dedicated page flag to tell us when writeback is complete.
-> 
-> PG_locked and PG_writeback are two different lock-bits with two
-> different meanings.
-> When a folio is PG_locked the content is invalid and shouldn't be accessed.
-> When a folio is in PG_writeback its data is not safe even though
-> PG_dirty has been cleared (if I remember correctly).
-> 
-> So these are two separate, though related, lock bits that would both
-> need to be tracked.  lockdep would detect how they are related.
+If someone with AN8811HB hardware can confirm, a follow-up patch
+adding the same restore to an8811hb_config_init() would make sense.
 
-Some history ... before we had PG_writeback, we held PG_locked
-throughout the writeback process.  People argued convincingly that it
-was fine to map a page into a process's address space (which requires
-PG_locked) while it was being written back.  And so PG_locked was
-split.  Now we take PG_locked at the beginning of the writeback process
-and downgrade to PG_writeback at some point.
 
+Jakub Kicinski <kuba@kernel.org> =E4=BA=8E2026=E5=B9=B48=E6=9C=8825=E6=97=
+=A5=E5=91=A8=E4=BA=8C 02:50=E5=86=99=E9=81=93=EF=BC=9A
+>
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> Verified. Report follows.
+>
+> commit 90353ad40d9c49a8f67a9cf009916549d394f63d
+> Author: Ziyou Xu <xuziyougm@gmail.com>
+>
+> net: phy: air_en8811h: restore LED GPIO output after MCU restart
+>
+> The LED GPIO3/4/5 output-enable write is moved out of en8811h_probe() and
+> into en8811h_config_init(), just before air_leds_init(), so the pads are
+> re-enabled after every MD32 restart.
+>
+> > diff --git a/drivers/net/phy/air_en8811h.c b/drivers/net/phy/air_en8811=
+h.c
+> > index edd49c193e476..fbd87fc712bfb 100644
+> > --- a/drivers/net/phy/air_en8811h.c
+> > +++ b/drivers/net/phy/air_en8811h.c
+>
+> [ ... ]
+>
+> > @@ -1317,6 +1310,16 @@ static int en8811h_config_init(struct phy_device=
+ *phydev)
+> >       if (ret < 0)
+> >               return ret;
+> >
+> > +     /*
+> > +      * Restarting MD32 clears the GPIO3/4/5 output enable bits. Resto=
+re
+> > +      * them after every restart, before enabling the corresponding LE=
+Ds.
+> > +      */
+> > +     ret =3D air_phy_buckpbus_reg_modify(phydev, EN8811H_GPIO_OUTPUT,
+> > +                                       EN8811H_GPIO_OUTPUT_345,
+> > +                                       EN8811H_GPIO_OUTPUT_345);
+> > +     if (ret < 0)
+> > +             return ret;
+> > +
+>
+> [Severity: Medium]
+> This isn't a bug introduced by this patch, but should the sibling AN8811H=
+B
+> path in the same file get the same treatment?
+>
+> AN8811HB_GPIO_OUTPUT_345 is written in exactly one place, an8811hb_probe(=
+):
+>
+>         /* Configure led gpio pins as output */
+>         ret =3D air_phy_buckpbus_reg_modify(phydev, AN8811HB_GPIO_OUTPUT,
+>                                           AN8811HB_GPIO_OUTPUT_345,
+>                                           AN8811HB_GPIO_OUTPUT_345);
+>
+> an8811hb_config_init() then restarts the MCU on every call after the firs=
+t
+> and goes straight to the LEDs without touching that register:
+>
+>         if (priv->mcu_needs_restart) {
+>                 ret =3D en8811h_restart_mcu(phydev);
+>                 ...
+>         }
+>         ret =3D an8811hb_config_serdes_polarity(phydev);
+>         ...
+>         ret =3D air_leds_init(phydev, EN8811H_LED_COUNT, AIR_PHY_LED_DUR,
+>                             AIR_LED_MODE_USER_DEFINE);
+>
+> For AN8811HB, en8811h_restart_mcu() does a superset of the EN8811H
+> sequence:
+>
+>         if (phy_id_compare_model(phydev->phy_id, AN8811HB_PHY_ID)) {
+>                 ret =3D an8811hb_mcu_assert(phydev);
+>                 ...
+>                 ret =3D an8811hb_mcu_deassert(phydev);
+>                 ...
+>         }
+>         ret =3D air_phy_buckpbus_reg_write(phydev, EN8811H_FW_CTRL_1,
+>                                          EN8811H_FW_CTRL_1_START);
+>
+> If the premise stated in the new comment ("Restarting MD32 clears the
+> GPIO3/4/5 output enable bits") holds for this device family, do the
+> AN8811HB LEDs also go dark on the second and later .config_init() call
+> (ifdown/ifup, or a repeated phy_init_hw())?
+>
+> After this patch the two peer paths in the file disagree: en8811h_config_=
+init()
+> restores the pad output-enable bits on every restart, while
+> an8811hb_config_init() still assumes they survive it.
+>
+> Would it make sense to place the restore in the shared en8811h_restart_mc=
+u()
+> or air_leds_init() path so both models are covered, or duplicate it in
+> an8811hb_config_init()? If AN8811HB is genuinely unaffected, could the co=
+mmit
+> message say why?
+>
+> Note this concern is based on the register definitions rather than measur=
+ed
+> hardware behaviour: AN8811HB_GPIO_OUTPUT is the same 0xcf8b8 offset withi=
+n
+> the AN8811HB PBUS window with an identical BIT(3) | BIT(4) | BIT(5) mask,=
+ and
+> commit 6b9c9def95cb ("net: phy: air_en8811h: Introduce resume/suspend and
+> clk_restore_context...") notes that PHY reinitialisation reverts chip-con=
+fig
+> registers such as CKO to their initial values.
+>
+> >       ret =3D air_leds_init(phydev, EN8811H_LED_COUNT, AIR_PHY_LED_DUR,
+> >                           AIR_LED_MODE_USER_DEFINE);
+> >       if (ret < 0) {
+> --
+> pw-bot: cr
