@@ -1,133 +1,221 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6F9270EDF;
-	Tue, 25 Aug 2026 10:51:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787655097; cv=none; b=NYiCnU+0tg1XqXyltgU1VB0spFftmhYQv5LD0FBMiLsTiO4e+4msXQu7Cd4KTJP/92ABGsyobG+gqYqL+CTotGZ+jDEWzeTdRxgtjDwpYm7bQMif/MQJUBw8ZMIko86fY7gtvUnGjs+ixZA5tB3suAhia9g/PGRHFwHYQYpaPg0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787655097; c=relaxed/simple;
-	bh=fdFP3wC1fOQFHW1FA1xNTBhFjVz5KPeC/RA/brLqifw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=p3BeFMtHfygW8rMxNXE28Rk7fDOr5lRdzz2xzGR4ColRf3RShBiBR3WB2avB8M3mKwIfu7SeSeN6bEtdZjNwBW7uf1FroGwpu/LwMDZY+BVJfyv932JTCaP/b2dkSLFM/wkYriUhK+zSsYS9T/KGStyPgTKqJePGhzLCiYrlAs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=HySWiWuy; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1623FB7EB
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 11:02:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787655771; cv=pass; b=PESsic+dG/B4SnRUDwV9oe05GO7TFlkURfa/mqCObZOq8ryrbiPAAKWYXYtnSwblD6R1ooDVZzA7uXmQ3XsaJ0Q3SmzGmLQcz8m9Ey0lAZbcgqEdVIai+kOuA8UApJhFRSDYAv2zNGf98IblyHa4arCQvmOiS/ZGzEXqKnOViW8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787655771; c=relaxed/simple;
+	bh=O7oN+5ypnrgvnpz+DAdTMI/+5pdrmXGSddGlMOUk4ho=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fXYRQO1CRbrdpcOBLriwgtQyTrOlfmaahqEcH1BI/3qyw9rRKj6FocXOafbj/PhmarUUJOs4uaS5+R8/4LwYPpmtlVeILRKdMetT4Sue8Mja4B3Ll4atu6UYHT+oS4LkvPtrNk5TBXl+0m4NgEWkagcPK0sU2npCwLv9BCLZgHo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=ADaEVmAo; arc=pass smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="HySWiWuy"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=ikAYs2pwcbpHInM8XsxAP8vYsZneA6/qPI55oerVaA8=; b=HySWiWuyzMATnK+BqhNRmn8Ll0
-	3ogS2PF/KGgMHbnMum4JHT+qNpWMWgebXdckgjExJiyx9WGspcCQF6b3XRhpBvhrmNu7drRFg2YdF
-	ik0nYY9fP8CkBEENDJtdvhoKZ/WlKx7n1Qfsq8D+CyzK1+/xnakVDu/URVxNYML1s7vGxFhAHlwhG
-	jD7eied/vEZLUmscdP+fGPWmdFAaz79QqATLuPxJnX87tyyESCnV3IB8685I+aGLx8W3GZLIcVJkB
-	O/2VEmuJBEUilTKaQlqnMAH6FRZEuEXY/MbLaXhJ/OAoMFbr23XQdN4+RbQyvGjVkdnfq/7V8Tykg
-	yLBTRibg==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wyokW-00EO1H-01;
-	Tue, 25 Aug 2026 10:51:25 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Tue, 25 Aug 2026 03:50:10 -0700
-Subject: [PATCH net v2] net: fix spurious TX timeout after dev_activate()
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="ADaEVmAo"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-84f38f3b36eso3268196b3a.1
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 04:02:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787655768; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ehS4DbL3tzw4ezwYh5604T75rqAyq8bJjMDiLTbpBQQvvQ0zSx5NyPZ6ISdBI6hUd+
+         BsXw4xBQxj2UVz6ergV5+RsfW0lrWxUh9Md9xT1p7odtjLOaJ8Esqn027rZ3q7yST/yc
+         QOnkN7E8F+/jKbFoahsZhohO19J+b4omJcHvXk1URvQUl/unx/foLxVvE1XWUofoGQlO
+         wjVXJWh05bvJZew42385GMII13ku+kvupOoeqK7fIXBOrmvmFzU4IJbJPi2cWWatjqFk
+         ocsFkZrfd1Fmw8+UKx6lmFMvscon8DxDCkGQ70+fzZcbfJBverKfwaREejiEhnoCc++Q
+         gXgw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=wuxkasmS4758DhsbvfWN+PcQaFQqwlSEUUCXzsCOmhY=;
+        fh=M7oqS4dhWck/l2Fu3NRPAuwjyyua/Nnn2TtGiZ7CsYo=;
+        b=faXKu7EZZ3aKQYnFfJmzS3PN350DD7qVD1TdW3jK9UIMv9D9jSWDWDa2jBB8cf/zzo
+         x6XnQ4uNQvXyTKFGaageI+brz2yo35GkoRle8RP+XsvaBItqN72vfBXNwfTEHbAqeXx0
+         OJO6tUMPXWBzCgOK4qtqhEsn/HbolRaUFgx9CXts0pa4ipCnMTPnnawRghNkuM5DA2NQ
+         vdqsunaRojqkxiXjPRpq1Mn8HfEf7opD3l4wlijK3BZB+MLid5B6t/e950z5s0R1+/PR
+         ATe4IGQFz+OdvI0uFjE/mVcrvAeR0qVPFb50ZD/FCwjQU3dzh9ThRs0iCKiWRTcN9lH7
+         eAXw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1787655768; x=1788260568; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wuxkasmS4758DhsbvfWN+PcQaFQqwlSEUUCXzsCOmhY=;
+        b=ADaEVmAoLzWdpkKNXOGCLOonT6xjw7BtMvGLVp1ZkwMFfLTkKDEDWidTIpzS6aJ93a
+         IkBxPFYGiGkiSN7HcMcZghn4zqGeG+5jzvH4/BCqiehiBkLw1KTvWeLTLAbgLdEHYMC6
+         2AVRKpSMKjmF+97j1EdL8dCy3ZwyWMuqR9qUo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787655768; x=1788260568;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=wuxkasmS4758DhsbvfWN+PcQaFQqwlSEUUCXzsCOmhY=;
+        b=N1fy2vDRe8Pa3dUrsuKVkyXv6KJ6kbbd8zi4W+B3FQHHX16AaSIdaY68vgMGMRDcH+
+         r+M0cmcaycOX4c3AGz/ChKLzvS2J3dx6QHgpCr6qy6tpvOBt2n3VEjVEbtmtddMHqSE7
+         3sXPFQB9gcykt14NOnmxAofMpnHWTOfhif4ArYqtLenf0aTxfBYFoJSzdEm6KwwOgllz
+         e8p5s6OPC4XprorQatjfb0xRrlG0f8474rLfspWngOdLlNF7V/1mhOQp9dHftAXzAxq5
+         zb72lYjlO8vISLmC45iTFH8yc8z+7S5Ws2fVRcDvAFQ4IGf7BKbjKYAIiQONSL/rI/dX
+         GTFg==
+X-Gm-Message-State: AFuF++mnBpODl9Tb3aaEyUfXx3m8mjRXVT/Bt/zxOT0dDrpD2HWUR3ls
+	PoXGJHbhewVtAY4kWsfVcvYuj75fsucVIsKMHvy3kgg9Pz/II4JK4zP13A/4a+x+ztC0GrcAnUE
+	7rxE6ZQnA9YbUVyBUztpCxhE6e/eFhiSJUkms3WG0a81E33WLgmruIA==
+X-Gm-Gg: AR+sD13xADQmEUXuPKbFx2pYR8oznNruk+aizl16ZLf5uUntOnH8u68iK1l+q87KWY9
+	78frlZG2OVOLYK9ec2snJqCevgpLepGuzKZIL2liXifkJNSvym0RQI9ALcZDVsJIhfK4g0vx+NR
+	R1NCmFATLgdZYmFK3mbNRCbQDq0wWaLBWU4mgkZHJ7uk1PG34FbjevsZ+MOPe/Hwj0su9/UPsbj
+	prjGmagpCfacGJlmcYG0Vcdj0niDz5MLYvUt3CXChu8JpnKv0UMm2ohtO3kiNIctUjXttWfWK9y
+	do75hfHAm99EFoAn2mi/qzC5hfjVIQT68XtqxMs6a1cT7g==
+X-Received: by 2002:a05:6a00:420c:b0:845:dfef:75b8 with SMTP id
+ d2e1a72fcca58-8523c9972damr11759279b3a.15.1787655767497; Tue, 25 Aug 2026
+ 04:02:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260825-trans_start-v2-1-286b4d6d70cb@debian.org>
-X-B4-Tracking: v=1; b=H4sIAGFzjWoC/23NSwqDMBRG4a2Ef2yKCfE5ch9FSprc6p3EchOkR
- dx7wXHHB75zIJMwZYzqgNDOmbeEUdlKIaw+LaQ5YlSwtW3r3jpdxKf8yMVL0U3TUYgu9H3bolJ
- 4C734c2l3JCqYK4WVc9nkex12c6W/2G600bUzQwjOdhSHKdKTfbptsmA+z/MHqEtUGqwAAAA=
-X-Change-ID: 20260824-trans_start-557ecd4c8866
-To: Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Florian Westphal <fw@strlen.de>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- kernel-team@meta.com, stable@vger.kernel.org, 
- Breno Leitao <leitao@debian.org>, Nicolai Buchwitz <nb@tipi-net.de>
-X-Mailer: b4 0.16-dev-f8e9d
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2136; i=leitao@debian.org;
- h=from:subject:message-id; bh=fdFP3wC1fOQFHW1FA1xNTBhFjVz5KPeC/RA/brLqifw=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqjXOnwKkCfwGy5himkx2H4YOP7SjprhUveA+kN
- TP02v1GGxiJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCao1zpwAKCRA1o5Of/Hh3
- bScVEACeWQaYR/NOX1MCxCoWPBQN5PJnQ+OOFjTyCuUHf6t5rgSsjAS0HyPxiHww03lLtXTcbXl
- RVD4X/hl4d/xlV448lof+Kkc2AkWUXYVtDnCu5LBz2lcwXEi8is4NFC0DRyiFtbqygXa4Iljv6d
- RxVOzq/81ZEO+8nwVXivHY8Bl6sSMaHts4fVrcz9VKlKs4cLaed1ZY7Jry9e5R2D746t6n9V/j7
- n8aH9YdaGDXfAyfiFWJ1/xXWn09QLTtqBID4uWqOMxq6CKgw15v2u/qphD/MaWzHA+3I4S/qLvi
- RBuSQgPf99qjO0k2DKFEm9mdRw8WxyKqJHWx+TE5SHxkYrknEi4glF2jx8qNXiIMBapms/pF+US
- X0uE1dxhpngyB0MnIkVz6tx0z9+AtM9J+7w1Ya9GQaKInB30myyaMiR96EBJBV2WzMhKtyxjYoi
- a0lTu3WpigqHJzhwGWnd4Eb81FOWQLizf4LmdZDOKPYQpLnVph4PU8nj4H9m6r1KdbfHP6XAlzx
- pLGudG1TRC24/y+jXgcbXcRA5XKo6HricPNh2C8rMXhCqaAvG/dvWgKcWxNKc0n+HhZmEe1b25J
- 15Ph5MyQAfbUtqUvnKAM0xUpt1RxKAhaEAgBMBTH/l13h9V6Ov7ZpBWyogyM5DQWyZJRTskAG0T
- AKF76AgA74TTn4Q==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+References: <20260822195509.112717-1-jhs@mojatatu.com> <20260822195509.112717-2-jhs@mojatatu.com>
+ <CANn89iKYg5YzY1QhU7D8mETW6avf4K-yoCwPNGiSrxRhdswbCg@mail.gmail.com> <CAM0EoM=bNoXFP5ub9gBopJ_-1GxSB68s65pZGvYjGwifuOsBTA@mail.gmail.com>
+In-Reply-To: <CAM0EoM=bNoXFP5ub9gBopJ_-1GxSB68s65pZGvYjGwifuOsBTA@mail.gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Tue, 25 Aug 2026 07:02:32 -0400
+X-Gm-Features: AcwNN1VdJsI5lGXQ9Qej1pldtXtix4LTgC7bWChSobF7rmBsTQFAw5hreuWVIPI
+Message-ID: <CAM0EoMkYJZFsb13B_gxMQCmQBKpV3BpqKwETgAJBAAVAyU06VA@mail.gmail.com>
+Subject: Re: [PATCH net v3 1/6] net/sched: fq: add overflow bounds to quantum
+ and initial quantum
+To: Eric Dumazet <edumazet@google.com>
+Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, stable@vger.kernel.org, vega@nebusec.ai, 
+	Victor Nogueira <victor@mojatatu.com>
+Content-Type: multipart/mixed; boundary="00000000000000cee30659dd0bc1"
 
-While debugging another issue today, I found out that my TX queue is
-reported as stopped for 4294907392 ms (49.7 days), on a machine that
-had been up for four minutes.
+--00000000000000cee30659dd0bc1
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-    bnxt_en 0002:01:00.0 eth0: NETDEV WATCHDOG: CPU: 28: transmit queue 23 timed out 4294907392 ms
+On Tue, Aug 25, 2026 at 6:43=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.com>=
+ wrote:
+>
+> On Tue, Aug 25, 2026 at 6:03=E2=80=AFAM Eric Dumazet <edumazet@google.com=
+> wrote:
+> >
+> > On Sat, Aug 22, 2026 at 9:55=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.=
+com> wrote:
+> > >
+> > > fq_init() computes quantum =3D 2 * psched_mtu() and initial_quantum =
+=3D 10 *
+> > > psched_mtu() with no overflow check. A device with a huge MTU (e.g. d=
+ummy
+> > > with max_mtu =3D=3D 0 accepting MTU 2147483634) makes psched_mtu() re=
+turn
+> > > 0x80000000; the 2 * and 10 * multiplications wrap to 0 in 32-bit
+> > > arithmetic, so q->quantum =3D=3D 0. Then in fq_dequeue() the credit-r=
+efill
+> > > loop adds 0 to f->credit (which stays <=3D 0) and goto begin loops
+> > > forever under the qdisc lock, creating a soft lockup.
+> > >
+> > > Clamp psched_mtu() to [1, 1 << 20] before multiplying so the product
+> > > cannot wrap, then cap the result at 1 << 20, matching the bound alrea=
+dy
+> > > enforced on TCA_FQ_QUANTUM in fq_change().
+> > >
+> > > Conditions to recreate the bug: a device whose MTU (plus
+> > > hard_header_len) is large enough that 2 * psched_mtu() wraps (e.g. a
+> > > dummy device with max_mtu =3D=3D 0 accepting MTU 2147483634). Require=
+s
+> > > CAP_NET_ADMIN in a user namespace.
+> > >
+> > > Fixes: afe4fd062416 ("pkt_sched: fq: Fair Queue packet scheduler")
+> > > Reported-by: vega@nebusec.ai
+> > > Tested-by: Victor Nogueira <victor@mojatatu.com>
+> > > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> > > ---
+> > >  net/sched/sch_fq.c | 6 ++++--
+> > >  1 file changed, 4 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
+> > > index 7cae082a9847..8a071c35b869 100644
+> > > --- a/net/sched/sch_fq.c
+> > > +++ b/net/sched/sch_fq.c
+> > > @@ -1222,12 +1222,14 @@ static int fq_init(struct Qdisc *sch, struct =
+nlattr *opt,
+> > >                    struct netlink_ext_ack *extack)
+> > >  {
+> > >         struct fq_sched_data *q =3D qdisc_priv(sch);
+> > > +       u32 mtu;
+> > >         int i, err;
+> > >
+> > >         sch->limit              =3D 10000;
+> > >         q->flow_plimit          =3D 100;
+> > > -       q->quantum              =3D 2 * psched_mtu(qdisc_dev(sch));
+> > > -       q->initial_quantum      =3D 10 * psched_mtu(qdisc_dev(sch));
+> > > +       mtu =3D clamp_t(u32, psched_mtu(qdisc_dev(sch)), 1, 1 << 20);
+> > > +       q->quantum              =3D min_t(u32, 2 * mtu, 1 << 20);
+> > > +       q->initial_quantum      =3D min_t(u32, 10 * mtu, 1 << 20);
+> > >         q->flow_refill_delay    =3D msecs_to_jiffies(40);
+> > >         q->flow_max_rate        =3D ~0UL;
+> > >         q->time_next_delayed_flow =3D ~0ULL;
+> >
+> > Note that after FQ qdisc has been created, it can be changed, and
+> > fq_change() and/or iq_range
+> > need to be fixed.
+>
+> Right. TCA_FQ_QUANTUM is already bounded to (0, 1<<20] in fq_change(),
+> but TCA_FQ_INITIAL_QUANTUM goes through iq_range which has .max =3D
+> INT_MAX =E2=80=94 so fq_change() accepts values up to INT_MAX while init =
+now
+> clamps to 1<<20.
+>
+> I'll fold that into the follow-up patch I'm preparing for the
+> fq_pie_change()/sfq_change() 256-floor gaps Paolo flagged =E2=80=94 same
+> pattern (init clamped, change path not). Narrowing iq_range.max to
+> 1<<20 will reject at parse time, matching the init clamp.
+>
 
-4294907392 is not an elapsed time. It is the value of jiffies at that
-moment: INITIAL_JIFFIES is 4294667296, which leaves jiffies 59 seconds
-short of wrapping.
+Something like attached - untested. Sigh, i think i had what you are
+asking for in v2 but lost it in translation to v3.
 
-dev_activate() runs transition_one_qdisc() over every TX queue, which
-resets trans_start to 0, and then stamps only queue 0 through
-netif_trans_update().
+cheers,
+jamal
 
-Stamp jiffies instead. A queue stopped across dev_activate() now gets a
-full watchdog_timeo of grace, and is still reported if it is stopped
-that long.
 
-Fixes: 9b36627acecd ("net: remove dev->trans_start")
-Cc: stable@vger.kernel.org
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
----
-The redundant netif_trans_update() in dev_activate() that Nicolai
-spotted is a separate cleanup, and will be sent against net-next.
+> cheers,
+> jamal
 
-Changes in v2:
-- Fix the unit error in the changelog: 4294907392 ms is 49.7 days, not
-  136 years. Also note the machine had only been up four minutes, which
-  makes the bogus delta obvious (Nicolai Buchwitz).
-- Collect Reviewed-by from Nicolai Buchwitz.
-- Link to v1: https://patch.msgid.link/20260824-trans_start-v1-1-0419cc427ed9@debian.org
----
- net/sched/sch_generic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--00000000000000cee30659dd0bc1
+Content-Type: application/octet-stream; name=p1
+Content-Disposition: attachment; filename=p1
+Content-Transfer-Encoding: base64
+Content-ID: <f_mt8k2syy0>
+X-Attachment-Id: f_mt8k2syy0
 
-diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
-index ef2b4bf515641..4539dc2c6d380 100644
---- a/net/sched/sch_generic.c
-+++ b/net/sched/sch_generic.c
-@@ -1278,7 +1278,7 @@ static void transition_one_qdisc(struct net_device *dev,
- 
- 	rcu_assign_pointer(dev_queue->qdisc, new_qdisc);
- 	if (need_watchdog_p) {
--		WRITE_ONCE(dev_queue->trans_start, 0);
-+		WRITE_ONCE(dev_queue->trans_start, jiffies);
- 		*need_watchdog_p = 1;
- 	}
- }
-
----
-base-commit: 0a0d1d55dad570724bf8c7ea83409639cfb4be9b
-change-id: 20260824-trans_start-557ecd4c8866
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
-
+ZGlmZiAtLWdpdCBhL25ldC9zY2hlZC9zY2hfZnEuYyBiL25ldC9zY2hlZC9zY2hfZnEuYwppbmRl
+eCA2MTQ0YjU2ODZmMTMuLmFiOGU3YzZhZTIwMyAxMDA2NDQKLS0tIGEvbmV0L3NjaGVkL3NjaF9m
+cS5jCisrKyBiL25ldC9zY2hlZC9zY2hfZnEuYwpAQCAtOTgwLDcgKzk4MCw3IEBAIHN0YXRpYyBp
+bnQgZnFfcmVzaXplKHN0cnVjdCBRZGlzYyAqc2NoLCB1MzIgbG9nKQogfQogCiBzdGF0aWMgY29u
+c3Qgc3RydWN0IG5ldGxpbmtfcmFuZ2VfdmFsaWRhdGlvbiBpcV9yYW5nZSA9IHsKLQkubWF4ID0g
+SU5UX01BWCwKKwkubWF4ID0gMSA8PCAyMCwKIH07CiAKIHN0YXRpYyBjb25zdCBzdHJ1Y3Qgbmxh
+X3BvbGljeSBmcV9wb2xpY3lbVENBX0ZRX01BWCArIDFdID0gewpkaWZmIC0tZ2l0IGEvbmV0L3Nj
+aGVkL3NjaF9mcV9waWUuYyBiL25ldC9zY2hlZC9zY2hfZnFfcGllLmMKaW5kZXggYjI3ZDk1NDE4
+NzA3Li41OTgyODQ3ZGY4ZjggMTAwNjQ0Ci0tLSBhL25ldC9zY2hlZC9zY2hfZnFfcGllLmMKKysr
+IGIvbmV0L3NjaGVkL3NjaF9mcV9waWUuYwpAQCAtMzQxLDcgKzM0MSw4IEBAIHN0YXRpYyBpbnQg
+ZnFfcGllX2NoYW5nZShzdHJ1Y3QgUWRpc2MgKnNjaCwgc3RydWN0IG5sYXR0ciAqb3B0LAogCQkJ
+ICAgbmxhX2dldF91MzIodGJbVENBX0ZRX1BJRV9CRVRBXSkpOwogCiAJaWYgKHRiW1RDQV9GUV9Q
+SUVfUVVBTlRVTV0pCi0JCVdSSVRFX09OQ0UocS0+cXVhbnR1bSwgbmxhX2dldF91MzIodGJbVENB
+X0ZRX1BJRV9RVUFOVFVNXSkpOworCQlXUklURV9PTkNFKHEtPnF1YW50dW0sCisJCQkgICBtYXgo
+MjU2VSwgbmxhX2dldF91MzIodGJbVENBX0ZRX1BJRV9RVUFOVFVNXSkpKTsKIAogCWlmICh0YltU
+Q0FfRlFfUElFX01FTU9SWV9MSU1JVF0pCiAJCVdSSVRFX09OQ0UocS0+bWVtb3J5X2xpbWl0LApk
+aWZmIC0tZ2l0IGEvbmV0L3NjaGVkL3NjaF9zZnEuYyBiL25ldC9zY2hlZC9zY2hfc2ZxLmMKaW5k
+ZXggMTg3ZDNlZDU3OGYyLi45MzJhNzZiY2Y4MDggMTAwNjQ0Ci0tLSBhL25ldC9zY2hlZC9zY2hf
+c2ZxLmMKKysrIGIvbmV0L3NjaGVkL3NjaF9zZnEuYwpAQCAtNjg4LDcgKzY4OCw3IEBAIHN0YXRp
+YyBpbnQgc2ZxX2NoYW5nZShzdHJ1Y3QgUWRpc2MgKnNjaCwgc3RydWN0IG5sYXR0ciAqb3B0LAog
+CiAJLyogdXBkYXRlIGFuZCB2YWxpZGF0ZSBjb25maWd1cmF0aW9uICovCiAJaWYgKGN0bC0+cXVh
+bnR1bSkKLQkJcXVhbnR1bSA9IGN0bC0+cXVhbnR1bTsKKwkJcXVhbnR1bSA9IG1heCgyNTZVLCBj
+dGwtPnF1YW50dW0pOwogCWlmIChjdGwtPmZsb3dzKQogCQltYXhmbG93cyA9IG1pbl90KHUzMiwg
+Y3RsLT5mbG93cywgU0ZRX01BWF9GTE9XUyk7CiAJaWYgKGN0bC0+ZGl2aXNvcikgewotLSAKMi40
+My4wCgo=
+--00000000000000cee30659dd0bc1--
