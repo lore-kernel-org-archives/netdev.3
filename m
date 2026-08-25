@@ -1,391 +1,125 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4083403F4
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 16:02:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD5F322C73
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 16:06:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787673728; cv=none; b=kUte5lmrR3Z33XRy8USCysYkekEKoI3kZOh+BG/7MpnPqCmHN2uYEnW+yUizA/ShAciuELcZphpn1dospzdXM4ZwsCbiam9pV3ediY0FVWqMDv12JH4lF8//vikdRmeZu8UH9hzxewepEhHm8AevmyrsfQnGj3IreHsjVAhdFLI=
+	t=1787674003; cv=none; b=NVfGIoNqJpfK6rfd+O+y1gexrJHebhSonK/UsfzLViyQ1C9MIZvX/Ny27/AzAVAzqdcmDKe5I0Tf8uRa8/xAvrd1H/wuVLPQol3UqHroOaWAaaT7n/whS9sdz82eoxSHz7xH5Mtl3d3opEzzruDWwDTDDskfESRj5m+GbPUdksc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787673728; c=relaxed/simple;
-	bh=pY5j+Vq+5LkAJlmQoSIKrUXCOS3FlYHbpzp5tKBSp8M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=EZWJNepfodRQ/QdEhsXcm2+x1WxGsbya/uqzMgSJTuTaTqqoT+tP8Hwzn0dPgbZx7cps+ppvaoK4iCL0Tgytzuo4oFmx/Xn5GodAGty1v5UWJSDSsHf+9xPdVIuI2HyixmBca9i9vkj2nKE4JG0Mc7z2fx5PjtKFavGwHC8ZpX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=LWWaNvD5; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1787674003; c=relaxed/simple;
+	bh=NacG5cTLZnMoTFMKGkXUWS21Go8psLbEQUGq1hcBAqo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eVj2Ej0MgYt/zz1yYiEM9KZ91qkjbkMttzWTZPnakI4PdE9RuEP+LCJVxSqRQfVDqJrt9MKoumQHfoXfOmjPSz2Nilt1FJpK19YRCfrNysiCQJqEPc+qAQHlPLBRIxMTSKt95ZlbBcuEmzYetC6NotFM8/UOIKGYjQzdxs4/u9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=acv8midS; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="LWWaNvD5"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c20fb91ed0fso770685666b.3
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 09:02:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="acv8midS"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2d6fe26ef1cso157555ad.2
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 09:06:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1787673724; x=1788278524; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=fKeiEayzkO9Rp9j6kUWzKZyRL+GV+bNNS+hHBCkwNcM=;
-        b=LWWaNvD5y/ZQv3fqAtPNP1AhmftS8HoXjvjnv5DAsJXOawsXjJa16DjqQZm9rEWIpb
-         kUeRKNgP++snh49E4m5RwJGW67d/rMplctAxV/CPKsv3tSmM2qgTpN6rmegXQ3bfIvLb
-         twpgMEsR609g/YXcRLzOpFQLGSHStr6s+fHSxxlFTRe4LShcQpLVIU94nS/ruH7B7pE4
-         3Dz3D+O7uz7uI6W6AvzqDgLYRfmDeTnit8j/jxxI4SnkMqceHsWFoA6PEgChTjxiGRiZ
-         /FRac9X7FIomzrGXEyBC79kYgsXlFYwV7ZpZb7UYaAZP4J48jFRBJcuHEEFqMKeG/iq7
-         ENjw==
+        d=gmail.com; s=20251104; t=1787674001; x=1788278801; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=K+LvS30Zd8SOHdLDywqVL5DIS5PmAcQafkk5iXhWMGs=;
+        b=acv8midSTSYQpaIJNaC3X3n9MVIh/yqTMq+I7rqHNXWJ+3zmp6tLcNqgulfN1rzEfZ
+         CFFipcHnc+uMyV+Ay2KHX9veRL1URwvTz6orHtAM5l//9vs5+YYAOT84J4RBk0fZSDt2
+         YuQtLc2v3A5HgncWNdOnDcMnG+6lhXR/MTeC9497N3RkpW27wIQLQfd6S3HtggDbeCVk
+         Dt8g19UTdN9w761u7YcqmXbc5vrHMRCR9/aDCl1mlJ39UGeFzsNGsPGacxkJNZgPXlUH
+         g0r1LPC4wLC32VFOm0VJFCk8XR27+S/7z0DDmC57kCt7kWA7xzZwFXyQ2g4/okB9i6kq
+         Clyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787673724; x=1788278524;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=fKeiEayzkO9Rp9j6kUWzKZyRL+GV+bNNS+hHBCkwNcM=;
-        b=B+4gnHQI9kY7JpgOWXE5fKs8GKwWpatT3pbQVnJy88JmYBS6rNKzh1i9ezjtWbMxPE
-         pHu6KIFXZjK7FuEEgFw17o7HrWOr8FVg1zlwWJc6m2qd6Jk0Bq8AwYhBv5TeYI98i8y9
-         kndMjQlGs6NCVShjRG8zokepjy0X6Fa8Jx8AqN6Yf+nhNanHbA1wt2DZ85u3pbb0VBf/
-         1Ltllo7LMSNBSMcc80NylTJx1PSKkD6A6SN6I87AbMYByl9UStydIzRh27HWuOoA/MQT
-         wbWhPwGlCy92MQRNCoZSGSCMv50zyt74VqryLxvkJ+qc60CuVJFsg6DhBHJFgIZqQITu
-         Q+Aw==
-X-Gm-Message-State: AFuF++lJbMrUzS2JMZz5+IeUiksHWIFvFk/d8TqF1kGOCaOrcPa9zL+8
-	s6U8VgeII3TYiYppBJ/A7Ff4mlhb4RwzDoQ1ifladmSplf8DlNBwKO/GKq4egctWZ18Xe/vZygV
-	96+2JhLQ=
-X-Gm-Gg: AR+sD12HxoerwCztIRCpXcX4UIpx3dGmfEYnuLGloJb3QSA4zC7uB3+gog6zBKCMIMD
-	LUDWdFFHYvo8bArioBSNSONnpapyLPTZxz07CI4nVqu2UlJGI1z8XvUyJodjuTdmFV+VTCUuaV+
-	Sd3fIp5+weLtQOSqiAMzc1572ucvlXmuWPz8EjnWryN2M/LjXk9fc/EJQA7YpusLrxp/wJG7wW7
-	om4taY6ic160nOrn/sB9LukpfywNLOVahSKo2At6urruUmINZu91D5d5Fp9c6jMxJxDeQi8EUW7
-	ubiEqY2/esXNMuA5A2EwemV4juJnjgHhAQ6L5+P50CGTkzqBLPOrltWjtVQ3cvp7Z3vxdc69M4l
-	aLEkJC7pqMiIoGa2ha74OHyHWiMxJ+XDBrHmZWoOCa4FMU73Oo6Qmw5EdCpbWPjpMtRpWTEDBVX
-	Z5la97vxAcG4u6k34ytvQYQiRNzS05CfhK2VgOkOf0ebIa0Pqvos6YOHvPVjD4bTmtnqi1OswXO
-	WDIekZFi7vWvRog2ccIUuPqEbVzUEbj5A7ATy2m
-X-Received: by 2002:a17:906:a353:10b0:c1c:5c90:1bb0 with SMTP id a640c23a62f3a-c246a353d2emr2883200466b.8.1787673724141;
-        Tue, 25 Aug 2026 09:02:04 -0700 (PDT)
-Received: from cloudflare.com (79.184.120.97.ipv4.supernova.orange.pl. [79.184.120.97])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a5dea8388fsm337390a12.19.2026.08.25.09.02.03
+        d=1e100.net; s=20251104; t=1787674001; x=1788278801;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=K+LvS30Zd8SOHdLDywqVL5DIS5PmAcQafkk5iXhWMGs=;
+        b=XYrazHy2ORHKP4cG2dcMwLoZDHwCNUVYr3LyQkSPDNCJNRcLWtmiKxmWrUjKPJ6sJq
+         VReJByibim8ktlzNAMNwOpQ9x7h3sY5WlnGzfqZEZV5kRVY6IIsJD4Q9L2mAAxDKnCUm
+         DswbTWelnzdogu+dZUm5M5W9fKfJt0KRgO9wkBSpd7xWV6eyYJbxmPgq/dmzoiVwCClm
+         xbIOfT++a3eh2AaYqprwcGKAl8ZMZHdmu6CRkCgDr6lmXm4vWLNvpTmnqhzmrnIbRBvA
+         GixiF3CaSm7kKGg2DSA/Nsc3qPhdsSzo1BiTFfQc9UccvCQflUPxmZlDNASsZrZ6Aq0v
+         +SCQ==
+X-Gm-Message-State: AFuF++muK+cfBRLLgljDrfNq98Bmz3zF+k99zHFypECkHeHsFt19gV2H
+	cDBa24DfxjunuhRSbeRh/A2zUzxUu+TifoG144TsYMiDnBPsQB71kSjT+F4CJg==
+X-Gm-Gg: AR+sD10uHUkQ14r35WIEwD3zqnav59VHfNRkawGxZqUenrNfAL0dVnhN/+rj1vEGXJz
+	7mFkdoY/OFfurUgMTXvms79ggBJq+UCnrzjCCGImaAT4WkHAWmKrIe7LsupSk6P855JhxQIZQOs
+	cTzhW7++fYZyYYT58zVJIkxLtNysBWFDSu0D+3BU4xfrQ59KIToLvFJlwbzUabvOexeq/vHVU3c
+	ATzbBN1Vvv9Whd1MKlvHDjddC6+EIpkOlXwmZofVFHmtEGTNC8kKMmvzBp3BDyn63tTQoyUewv6
+	wwfi80zzHVFVE7fxSzU0lGoRawwN6yqDbr7IAyh/SWcQfQU09KcYTp+FVRNOwPxpswHY856Lr3A
+	nKPHgbiuV1WQ70suTGAGO7jR4PUTsWBFNk5K7twtfGmBos56Erwy29IOVmxwCA1PWbbwIp3gUH5
+	Iw6fGEIJHf8hURH2XwU9yVI7/VlzGYAAALXcO5291i+FNTls4y/JQ/R0b2YoTfHpPbNPEzOR2G
+X-Received: by 2002:a17:903:986:b0:2d6:f988:398f with SMTP id d9443c01a7336-2d6f9883a06mr82994505ad.12.1787674001396;
+        Tue, 25 Aug 2026 09:06:41 -0700 (PDT)
+Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d704c25c2asm387245ad.70.2026.08.25.09.06.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2026 09:02:03 -0700 (PDT)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-Date: Tue, 25 Aug 2026 18:01:50 +0200
-Subject: [PATCH RFC net-next] net: Use fixed slots for skb extensions
+        Tue, 25 Aug 2026 09:06:40 -0700 (PDT)
+From: Daehyeon Ko <4ncienth@gmail.com>
+To: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Subject: [PATCH net] udp: revalidate socket family before publishing an IPv6 cork
+Date: Wed, 26 Aug 2026 01:06:30 +0900
+Message-ID: <20260825160630.1888866-1-4ncienth@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260825-rfc-skb-ext-fixed-offsets-v1-1-8050ff33bec9@cloudflare.com>
-X-B4-Tracking: v=1; b=H4sIAG28jWoC/yWMQQrCMBRErxL+2g81tNG6FTyA2+LCpBONQir5s
- RRK726Cy8fMeysJUoDQSa2UMAcJUyyw3ylyz3t8gMNYmHSjTXPUHSfvWN6WsWT2YcHIk/eCLOz
- aVhtrukOPnor/SaiH2h7oejmriMyxeHT7r/K1L7hc87RtP7VnrWuLAAAA
-X-Change-ID: 20260825-rfc-skb-ext-fixed-offsets-c4426b6579e9
-To: netdev@vger.kernel.org
-Cc: Florian Westphal <fw@strlen.de>, 
- Steffen Klassert <steffen.klassert@secunet.com>, kernel-team@cloudflare.com
-X-Mailer: b4 0.16.0
+Content-Transfer-Encoding: 8bit
 
-Replace the dynamic skb extension allocator (->chunks + per-object offset[]
-array) with fixed per-id slots with offsets computed at compile time.
+udpv6_sendmsg() prepares the IPv6 flow and route before taking the socket
+lock when a datagram is corked.  IPV6_ADDRFORM takes the same lock, but it
+can convert the socket to AF_INET while the send path is doing that
+lockless preparation because no cork has been published yet.
 
-The runtime-computed offsets seem to be a leftover from the initial
-posting [1], where skb_ext memory was reallocated when a new extension was
-activated.
+If the conversion wins the race, udpv6_sendmsg() later publishes an
+AF_INET6 cork on an AF_INET socket.  Uncorking through the IPv4 socket
+operations then interprets the IPv6 cork as IPv4 state.  The IPv4
+finalizer writes a 20-byte IPv4 header into the 40-byte IPv6 header
+reservation while the retained IPv6 dst routes the skb through
+ip6_output().  ip6_finish_output2() consequently consumes the unwritten
+20-byte tail.
 
-This can make extension delete-then-re-add unsafe, as pointed out by
-Sashiko [2]: with bump allocation, re-adding an extension appends a second
-copy, eventually overflowing the skb_ext chunks area.
+An unprivileged reproducer triggered the mixed state on 12 of 10,000
+sockets.  KMSAN reported an uninitialized-value read in
+ip6_finish_output2() on three fresh boots, with the allocation origin in
+__alloc_skb() through __ip6_append_data().  The same process recovered the
+20-byte region from the TX timestamp error queue; one of three fresh boots
+contained recognizable stale heap data.
 
-While this does not happen today, because all extensions get dropped on skb
-scrub, the BPF metadata skb extension work aims to preserve an extension
-across skb scrubbing, which opens the door to this scenario.
+After taking the lock, revalidate that IPV6_ADDRFORM has not changed the
+socket family before publishing the cork.  The existing error path releases
+the prepared dst, flowlabel, and transmit-option references.  With this
+change, the serialized controls retain their existing results and the
+forbidden mixed state occurred zero times across 20,000 sockets.
 
-[1] https://lore.kernel.org/all/20181210145006.19098-3-fw@strlen.de/
-[2] https://lore.kernel.org/all/20260815081452.0DB521F00A3E@smtp.kernel.org/
-
-Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+Fixes: 03485f2adcde ("udpv6: Add lockless sendmsg() support")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
 ---
-I'm not sure if there is another easy alternative. Moving the skb ext
-chunks around to close the gaps would involve making sure that nobody is
-holding a pointer to them. Looking for feedback & ideas.
----
- include/linux/skbuff.h | 72 ++++++++++++++++++++++++++++++++-----------
- net/core/skbuff.c      | 83 +++++++++++++++++++-------------------------------
- 2 files changed, 85 insertions(+), 70 deletions(-)
+ net/ipv6/udp.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index 95184183180f..5a5143e47b30 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -5011,45 +5011,81 @@ static inline void skb_set_nfct(struct sk_buff *skb, unsigned long nfct)
- }
- 
- #ifdef CONFIG_SKB_EXTENSIONS
--enum skb_ext_id {
-+
- #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
--	SKB_EXT_BRIDGE_NF,
-+#define SKB_EXT_X_BRIDGE_NF	X(SKB_EXT_BRIDGE_NF, struct nf_bridge_info)
-+#else
-+#define SKB_EXT_X_BRIDGE_NF
- #endif
--#ifdef CONFIG_XFRM
--	SKB_EXT_SEC_PATH,
-+
-+#if IS_ENABLED(CONFIG_XFRM)
-+#define SKB_EXT_X_SEC_PATH	X(SKB_EXT_SEC_PATH, struct sec_path)
-+#else
-+#define SKB_EXT_X_SEC_PATH
- #endif
-+
- #if IS_ENABLED(CONFIG_NET_TC_SKB_EXT)
--	TC_SKB_EXT,
-+#define SKB_EXT_X_TC		X(TC_SKB_EXT, struct tc_skb_ext)
-+#else
-+#define SKB_EXT_X_TC
- #endif
-+
- #if IS_ENABLED(CONFIG_MPTCP)
--	SKB_EXT_MPTCP,
-+#define SKB_EXT_X_MPTCP		X(SKB_EXT_MPTCP, struct mptcp_ext)
-+#else
-+#define SKB_EXT_X_MPTCP
- #endif
-+
- #if IS_ENABLED(CONFIG_MCTP_FLOWS)
--	SKB_EXT_MCTP,
-+#define SKB_EXT_X_MCTP		X(SKB_EXT_MCTP, struct mctp_flow)
-+#else
-+#define SKB_EXT_X_MCTP
- #endif
-+
- #if IS_ENABLED(CONFIG_INET_PSP)
--	SKB_EXT_PSP,
-+#define SKB_EXT_X_PSP		X(SKB_EXT_PSP, struct psp_skb_ext)
-+#else
-+#define SKB_EXT_X_PSP
- #endif
-+
- #if IS_ENABLED(CONFIG_CAN)
--	SKB_EXT_CAN,
-+#define SKB_EXT_X_CAN		X(SKB_EXT_CAN, struct can_skb_ext)
-+#else
-+#define SKB_EXT_X_CAN
- #endif
--	SKB_EXT_NUM, /* must be last */
-+
-+#define SKB_EXT_FOREACH(X)	\
-+	SKB_EXT_X_BRIDGE_NF	\
-+	SKB_EXT_X_SEC_PATH	\
-+	SKB_EXT_X_TC		\
-+	SKB_EXT_X_MPTCP		\
-+	SKB_EXT_X_MCTP		\
-+	SKB_EXT_X_PSP		\
-+	SKB_EXT_X_CAN
-+
-+enum skb_ext_id {
-+#define X(id, type)	id,
-+	SKB_EXT_FOREACH(X)
-+#undef X
-+	SKB_EXT_NUM,
- };
- 
-+extern const u8 skb_ext_offset[SKB_EXT_NUM];
-+
- /**
-  *	struct skb_ext - sk_buff extensions
-  *	@refcnt: 1 on allocation, deallocated on 0
-- *	@offset: offset to add to @data to obtain extension address
-- *	@chunks: size currently allocated, stored in SKB_EXT_ALIGN_SHIFT units
-+ *	@present_extensions: bitmap of extensions stored in @data
-  *	@data: start of extension data, variable sized
-  *
-- *	Note: offsets/lengths are stored in chunks of 8 bytes, this allows
-- *	to use 'u8' types while allowing up to 2kb worth of extension data.
-+ *	Each extension id occupies a fixed slot within @data, located at
-+ *	skb_ext_offset[id] chunks of 8 bytes. Storing offsets/lengths
-+ *	in 8-byte chunks allows 'u8' types while allowing up to 2kb worth
-+ *	of extension data.
-  */
- struct skb_ext {
- 	refcount_t refcnt;
--	u8 offset[SKB_EXT_NUM]; /* in chunks of 8 bytes */
--	u8 chunks;		/* same */
-+	u8 present_extensions;
- 	char data[] __aligned(8);
- };
- 
-@@ -5087,7 +5123,7 @@ static inline void skb_ext_copy(struct sk_buff *dst, const struct sk_buff *src)
- 
- static inline bool __skb_ext_exist(const struct skb_ext *ext, enum skb_ext_id i)
- {
--	return !!ext->offset[i];
-+	return ext->present_extensions & (1 << i);
- }
- 
- static inline bool skb_ext_exist(const struct sk_buff *skb, enum skb_ext_id id)
-@@ -5106,7 +5142,7 @@ static inline void *skb_ext_find(const struct sk_buff *skb, enum skb_ext_id id)
- 	if (skb_ext_exist(skb, id)) {
- 		struct skb_ext *ext = skb->extensions;
- 
--		return (void *)ext + (ext->offset[id] << 3);
-+		return (void *)ext + (skb_ext_offset[id] << 3);
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index fd875908ac0c66..566c634a5a5945 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -1716,6 +1716,11 @@ int udpv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
  	}
  
- 	return NULL;
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index c82a1472a5ea..8e5db579725d 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -5134,47 +5134,32 @@ EXPORT_SYMBOL_GPL(skb_segment);
- #define SKB_EXT_CHUNKSIZEOF(x)	(ALIGN((sizeof(x)), SKB_EXT_ALIGN_VALUE) / SKB_EXT_ALIGN_VALUE)
- 
- static const u8 skb_ext_type_len[] = {
--#if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
--	[SKB_EXT_BRIDGE_NF] = SKB_EXT_CHUNKSIZEOF(struct nf_bridge_info),
--#endif
--#ifdef CONFIG_XFRM
--	[SKB_EXT_SEC_PATH] = SKB_EXT_CHUNKSIZEOF(struct sec_path),
--#endif
--#if IS_ENABLED(CONFIG_NET_TC_SKB_EXT)
--	[TC_SKB_EXT] = SKB_EXT_CHUNKSIZEOF(struct tc_skb_ext),
--#endif
--#if IS_ENABLED(CONFIG_MPTCP)
--	[SKB_EXT_MPTCP] = SKB_EXT_CHUNKSIZEOF(struct mptcp_ext),
--#endif
--#if IS_ENABLED(CONFIG_MCTP_FLOWS)
--	[SKB_EXT_MCTP] = SKB_EXT_CHUNKSIZEOF(struct mctp_flow),
--#endif
--#if IS_ENABLED(CONFIG_INET_PSP)
--	[SKB_EXT_PSP] = SKB_EXT_CHUNKSIZEOF(struct psp_skb_ext),
--#endif
--#if IS_ENABLED(CONFIG_CAN)
--	[SKB_EXT_CAN] = SKB_EXT_CHUNKSIZEOF(struct can_skb_ext),
--#endif
-+#define X(id, type)	[id] = SKB_EXT_CHUNKSIZEOF(type),
-+	SKB_EXT_FOREACH(X)
-+#undef X
- };
- 
--static __always_inline __no_profile unsigned int skb_ext_total_length(void)
--{
--	unsigned int l = SKB_EXT_CHUNKSIZEOF(struct skb_ext);
--	int i;
--
--	for (i = 0; i < ARRAY_SIZE(skb_ext_type_len); i++)
--		l += skb_ext_type_len[i];
-+struct skb_ext_layout {
-+	u8	header[sizeof(struct skb_ext)] __aligned(SKB_EXT_ALIGN_VALUE);
-+#define X(id, type)	type f_##id __aligned(SKB_EXT_ALIGN_VALUE);
-+	SKB_EXT_FOREACH(X)
-+#undef X
-+};
- 
--	return l;
--}
-+const u8 skb_ext_offset[SKB_EXT_NUM] = {
-+#define X(id, type)	[id] = offsetof(struct skb_ext_layout, f_##id) / SKB_EXT_ALIGN_VALUE,
-+	SKB_EXT_FOREACH(X)
-+#undef X
-+};
-+EXPORT_SYMBOL(skb_ext_offset);
- 
- static noinline void __init __no_profile skb_extensions_init(void)
- {
- 	BUILD_BUG_ON(SKB_EXT_NUM > 8);
--	BUILD_BUG_ON(skb_ext_total_length() > 255);
-+	BUILD_BUG_ON(sizeof(struct skb_ext_layout) > 255 * SKB_EXT_ALIGN_VALUE);
- 
- 	skbuff_ext_cache = kmem_cache_create("skbuff_ext_cache",
--					     SKB_EXT_ALIGN_VALUE * skb_ext_total_length(),
-+					     sizeof(struct skb_ext_layout),
- 					     0,
- 					     SLAB_HWCACHE_ALIGN|SLAB_PANIC,
- 					     NULL);
-@@ -7083,7 +7068,7 @@ EXPORT_SYMBOL(skb_condense);
- #ifdef CONFIG_SKB_EXTENSIONS
- static void *skb_ext_get_ptr(struct skb_ext *ext, enum skb_ext_id id)
- {
--	return (void *)ext + (ext->offset[id] * SKB_EXT_ALIGN_VALUE);
-+	return (void *)ext + (skb_ext_offset[id] * SKB_EXT_ALIGN_VALUE);
- }
- 
- /**
-@@ -7100,7 +7085,7 @@ struct skb_ext *__skb_ext_alloc(gfp_t flags)
- 	struct skb_ext *new = kmem_cache_alloc(skbuff_ext_cache, flags);
- 
- 	if (new) {
--		memset(new->offset, 0, sizeof(new->offset));
-+		new->present_extensions = 0;
- 		refcount_set(&new->refcnt, 1);
- 	}
- 
-@@ -7111,6 +7096,7 @@ static struct skb_ext *skb_ext_maybe_cow(struct skb_ext *old,
- 					 unsigned int old_active)
- {
- 	struct skb_ext *new;
-+	int i;
- 
- 	if (refcount_read(&old->refcnt) == 1)
- 		return old;
-@@ -7119,7 +7105,12 @@ static struct skb_ext *skb_ext_maybe_cow(struct skb_ext *old,
- 	if (!new)
- 		return NULL;
- 
--	memcpy(new, old, old->chunks * SKB_EXT_ALIGN_VALUE);
-+	memcpy(new, old, SKB_EXT_CHUNKSIZEOF(*old) * SKB_EXT_ALIGN_VALUE);
-+	for (i = 0; i < SKB_EXT_NUM; i++) {
-+		if (old->present_extensions & (1 << i))
-+			memcpy(skb_ext_get_ptr(new, i), skb_ext_get_ptr(old, i),
-+			       skb_ext_type_len[i] * SKB_EXT_ALIGN_VALUE);
+ 	lock_sock(sk);
++	if (unlikely(sk->sk_family != AF_INET6)) {
++		release_sock(sk);
++		err = -EAFNOSUPPORT;
++		goto out;
 +	}
- 	refcount_set(&new->refcnt, 1);
- 
- #ifdef CONFIG_XFRM
-@@ -7156,12 +7147,8 @@ static struct skb_ext *skb_ext_maybe_cow(struct skb_ext *old,
- void *__skb_ext_set(struct sk_buff *skb, enum skb_ext_id id,
- 		    struct skb_ext *ext)
- {
--	unsigned int newlen, newoff = SKB_EXT_CHUNKSIZEOF(*ext);
--
- 	skb_ext_put(skb);
--	newlen = newoff + skb_ext_type_len[id];
--	ext->chunks = newlen;
--	ext->offset[id] = newoff;
-+	ext->present_extensions = 1 << id;
- 	skb->extensions = ext;
- 	skb->active_extensions = 1 << id;
- 	return skb_ext_get_ptr(ext, id);
-@@ -7184,31 +7171,23 @@ EXPORT_SYMBOL_NS_GPL(__skb_ext_set, "NETDEV_INTERNAL");
-  */
- void *skb_ext_add(struct sk_buff *skb, enum skb_ext_id id)
- {
--	struct skb_ext *new, *old = NULL;
--	unsigned int newlen, newoff;
-+	struct skb_ext *new;
- 
- 	if (skb->active_extensions) {
--		old = skb->extensions;
--
--		new = skb_ext_maybe_cow(old, skb->active_extensions);
-+		new = skb_ext_maybe_cow(skb->extensions,
-+					skb->active_extensions);
- 		if (!new)
- 			return NULL;
- 
- 		if (__skb_ext_exist(new, id))
- 			goto set_active;
--
--		newoff = new->chunks;
- 	} else {
--		newoff = SKB_EXT_CHUNKSIZEOF(*new);
--
- 		new = __skb_ext_alloc(GFP_ATOMIC);
- 		if (!new)
- 			return NULL;
- 	}
- 
--	newlen = newoff + skb_ext_type_len[id];
--	new->chunks = newlen;
--	new->offset[id] = newoff;
-+	new->present_extensions |= 1 << id;
- set_active:
- 	skb->slow_gro = 1;
- 	skb->extensions = new;
-
-
+ 	if (unlikely(up->pending)) {
+ 		/* The socket is already corked while preparing it. */
+ 		/* ... which is an evident application bug. --ANK */
+-- 
+2.54.0
 
