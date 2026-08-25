@@ -1,200 +1,262 @@
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D083A9639
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 22:32:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5523382FC
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 22:55:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787697165; cv=none; b=YdZ9tj6CfDm7R1BhPIMwyM3o5liGXXM8vJW36l0R2TSUXb8ZNoGj33fCdpyQ4UVNmzvVFSUTTY2ycgyO/WYAn0VxXSeFBwi4/FfD8XWU0nlTWHBX2Uv0YZD5+YywixAOPDMyZb6O6NZU/sRzWztQ3rrCGahe8EFIC47JJxv3KUg=
+	t=1787698508; cv=none; b=ixG016JGEe71dGbLZ2a9Cu3vU5RebiOzBglP8ospUgr+Vcm1NnllpAo841ee8FFOPggxcrL4qCGgNF4lByqsdaGYA8rHE++NHDr3OJBIaOgbphx7RBEgAgi278ysikb0u+5LnFrH99xqtvzYJ1JmW5EG4jXzHsd32FXoGuwldjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787697165; c=relaxed/simple;
-	bh=4iqJpbtutOm4R3XsSRye/BVM3lSHQyMhCGLpVeYI+dk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GwXi46KoX676bs1EoVg8r7VaGgqnyjzGRa9iZdaHdw/+Zn9Lh6+yJT6iHDokRgp0simhc6unanxlB1pBBtqT+GrirMKCYmQ/nE4f4tpG3bdAiSr2FIHwR1kzE29HdLWOW1DP8y0grsv5qJZgrGjB+DlP2fjFkJMXHb2CDpSrpOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ImXdyWx7; arc=none smtp.client-ip=209.85.210.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787698508; c=relaxed/simple;
+	bh=50a6BKc2T+uRXcttwH/a1UGf/K05PlGLRxjS+0bkiOs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=fPBvGVVRxT56QhsgQCO8fxn7a+1FSuAI2IjoGkEkKbBM/G/kzjWIIl2Guz3fEdUuQgUGTKnRbfDdYhv6PvUpC3Tj8URbRnSwVvOL3c5Ckf4axSrHpOnG38XHbiO+avnlw64nIkMFutW2cmpAkPMUxo2Ry6qOUlCSBUE/zlojOzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IgT6ajAP; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ImXdyWx7"
-Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-7eb787dec99so300565a34.0
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 15:32:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787697161; x=1788301961; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=oAPCDDssQLWXyDbqpT5diYKMULhijQjsUnk18J2kiPw=;
-        b=ImXdyWx7hNcruRjnJH+9eAer6ZxupYdZpK5hXn22o/uTqjKdygExOylpiLmiAMKVis
-         E/f2mzl2MJb6y9AJ0LODYCbwkF6hJz/JFrBNVJ3I8bjydJRgOA17V5RBOFtZrGt4/HJM
-         DmsLCLXtuEfrdmlmdUlgXFBsu2NDkz1thF000P0siZj9WyU+hjjlnMvGjcvOKBIYyPH9
-         pEIJ/YcZZCoIjUu9i6xQDg1Tvb+Gr9hsVSjsMMkkU6QfyoxqEnjVwQ05qmMe2LW+BROB
-         CE4wNoF6U0gupW14NuAS3rjBzvwZjoxYuqYzLdyC0h7q+OQhghRaELTrIHTGwU8cn0wh
-         Ehbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787697161; x=1788301961;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oAPCDDssQLWXyDbqpT5diYKMULhijQjsUnk18J2kiPw=;
-        b=S28mD4Ok9TEpQCjEPqDXkBysJjWzepF0nbg7U2ExETMrYOkU6KiyQkqp0yWtCidjgs
-         a+uR+TagFkRoqbTIuT79E/XptE1JCRnBA5TLLJbPsViNcJIGxyj594HZ05MocAYBwdJg
-         YTrxE2DGIPhPkxW8fTOxe+tqxynD1M2TNXYI2Kq76y0QUSGINMazWFEhzxAGipzu9+3g
-         pozzKWa5N9xzf8i3TxqrPu6ClNPTXOSQGOnWkvPY2w0L9rQ78fR+0QCoF+y8OWj20x33
-         L0Cq9+Qa6kIwuy814UBlVSFo5mnmFUK4eczH4aaBJ8J++yerZwjLha4/2JxYiIKATMq4
-         iJZg==
-X-Gm-Message-State: AFuF++mL+0UPThajMLQJF/wu/Hi3QttqHMG4bhkG2nEJ2mIVqW91s/zI
-	rgj41vt5xZ9h7xFQCqfPj6TUN1EY3ZxXQzXtNBpKVjQD+7dr4h/ibFFO
-X-Gm-Gg: AR+sD105NqOM7xDeJaHQCdnMe9YVo1pSOvClFgjGgJiVl5UVVzsjPuEGokC5dDF8k/4
-	8yIj+by0VoGp6B4/o7IWLduqSlcrdxFCOuAZRV/9bYIMf2hIdscHbbX+kctvx07TxfgoCGBMKR/
-	R3UfzgEPReqyb9iETPGzloSKfmEirxgkshgL/Ck2RdKapO1TAOr2PFgEuSUi3IxClSNluSCeFL4
-	kjNQRUX9M2pOksUudJ/rbZC8vgwoGjtklyzaGjuTVSi0TU1JKT1rl1AutIrEqL7me0fBR8XfrkY
-	A56H5Re3uC+lob7hdfcjlcV+a7WmrwfBThJ+h8nCtBLcPKLyVSmGxt9qzyPoJMLg3+ERWq0+Ul+
-	3/KBkeJ2Dz6L8/VYluVicJBei1Aas7wsLk2CeRU92P703K1Q2LG2c38xEx4t9k/D69kWEfOliw+
-	V3uklsVDUgn8uB9x608wgYMoUyDjqnMC3PPsy6orfmThMevuF8+HZCfyOyQfgVZvaLiBv+9JBxS
-	snYvre4BQ==
-X-Received: by 2002:a05:6820:2016:b0:6ac:9729:6710 with SMTP id 006d021491bc7-6b1a049e03bmr2588322eaf.18.1787697160680;
-        Tue, 25 Aug 2026 15:32:40 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:4d::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6b1a24bdb31sm194474eaf.2.2026.08.25.15.32.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2026 15:32:40 -0700 (PDT)
-Date: Tue, 25 Aug 2026 15:32:36 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Daehyeon Ko <4ncienth@gmail.com>
-Cc: netdev@vger.kernel.org, sgarzare@redhat.com, stefanha@redhat.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, mst@redhat.com,
-	jasowangio@gmail.com, xuanzhuo@linux.alibaba.com,
-	eperezma@redhat.com, bryan-bt.tan@broadcom.com,
-	vishnu.dasa@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
-	virtualization@lists.linux.dev, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v3 1/2] vsock/virtio: validate packet source for
- connected sockets
-Message-ID: <ao4YBNYwQ9PGC0CN@devvm29614.prn0.facebook.com>
-References: <20260823175858.351431-1-4ncienth@gmail.com>
- <20260823175858.351431-2-4ncienth@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IgT6ajAP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787698506; x=1819234506;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=50a6BKc2T+uRXcttwH/a1UGf/K05PlGLRxjS+0bkiOs=;
+  b=IgT6ajAPw/7FLnXcff0D8e3eQNQflvU3U0fY8TNfXkblypULft8yakWt
+   S274IWmqdm8FBkQLA4t+sLpPVRJBTX1ZLBP3v0nHLJh/rOy/tMPzlfVa6
+   ithzMDKGUMYFOY+Ru271+8q/nfuN7xGAzpjo5azsS5F3zoe4Om+JdZOMZ
+   sbZGyDjGtHMIJ21HM2PiGw6MnajXsvRLSzLmGKQpKxBLERZhYWlZSebz4
+   8bHmpkfsqkNELSIZjBQdhWgFVlAgBwxG4JgpwD/FujW3LszVfwqwkHJyZ
+   ABMWMxTNhaE6Y9DMuFHKC+Dv8kJdUXFyaDl4S9m2rwJrhMZVBoAVjqkPV
+   Q==;
+X-CSE-ConnectionGUID: FuBIBHzKSCOulWl94qWlrg==
+X-CSE-MsgGUID: QejEppvXTxuon34Uxl0b2w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="87120410"
+X-IronPort-AV: E=Sophos;i="6.25,243,1779174000"; 
+   d="scan'208";a="87120410"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 15:55:05 -0700
+X-CSE-ConnectionGUID: BF8UC2lkRmqDu2Hd+prZuQ==
+X-CSE-MsgGUID: HLDFnR/jS6iwnuaT9L+qzw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,243,1779174000"; 
+   d="scan'208";a="264789644"
+Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 15:55:04 -0700
+From: Jacob Keller <jacob.e.keller@intel.com>
+Subject: [PATCH iwl-net v2 00/14] ice: E82x: timestamp processing logic
+ fixes
+Date: Tue, 25 Aug 2026 15:53:24 -0700
+Message-Id: <20260825-jk-e825c-minimized-fixes-v2-0-8223f95d26e3@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260823175858.351431-2-4ncienth@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WOzQ6CMBCEX8Xs2TVtFSmefA/DAdpVFqGYFvGH8
+ O4WOHuczHwzM0IgzxTgtBnB08CBOxeF2m7AVIW7EbKNGpRQR6FlhvUdSavEYMuOW/6SxSu/KaB
+ OkqywloxMFUT84WkxIn0BfjXoqId8NcKzrMn0c/EcrTj0nf8sJwa5AOuekv/3BokCMyvSvaTyo
+ BN9ZtdTszNdC/k0TT9E3TC+2wAAAA==
+X-Change-ID: 20260819-jk-e825c-minimized-fixes-8559addec172
+To: Intel Wired LAN <intel-wired-lan@lists.osuosl.org>
+Cc: netdev@vger.kernel.org, 
+ Maciej Machnikowski <maciej.machnikowski@intel.com>, 
+ Anthony Nguyen <anthony.l.nguyen@intel.com>, 
+ Przemyslaw Korba <przemyslaw.korba@intel.com>, 
+ Grzegorz Nitka <grzegorz.nitka@intel.com>, Petr Oros <poros@redhat.com>, 
+ alexander.nowlin@intel.com, kevin.bross@intel.com, ranjit.cavatur@intel.com, 
+ Jacob Keller <jacob.e.keller@intel.com>, 
+ Maciek Machnikowski <maciej.machnikowski@intel.com>, 
+ Karol Kolacinski <karol.kolacinski@intel.com>, 
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, 
+ Przemyslaw Korba <przemyslaw.korba@intel.com>
+X-Mailer: b4 0.17-dev-c276d
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9440;
+ i=jacob.e.keller@intel.com; h=from:subject:message-id;
+ bh=50a6BKc2T+uRXcttwH/a1UGf/K05PlGLRxjS+0bkiOs=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhqw+WZ3oBTmX7GKP272X0pCfbbrR+Oxdpm9OLEL6lrXfJ
+ G8k5X3uKGVhEONikBVTZFFwCFl53XhCmNYbZzmYOaxMIEMYuDgFYCLqLgz/U6N+z/xSsTU+uMqM
+ 4VfdjUTxedEMjUfYnvXGfnsYXq1uz/C//NCjHYG/stYslV+x5L/Ooe+PV3pJefc9lihapLHLqkO
+ VAQA=
+X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
+ fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-On Mon, Aug 24, 2026 at 02:58:57AM +0900, Daehyeon Ko wrote:
-> virtio_transport_recv_pkt() looks up sockets first by the full source and
-> destination tuple, then by destination only in the bound table. The
-> fallback is needed for listening and connecting sockets, but sockets remain
-> in the bound table after connect(), so it can also return a non-listening
-> socket.
-> 
-> The fallback does not validate the source address. In TCP_SYN_SENT, a
-> RESPONSE from an unrelated source can transition the victim socket to
-> TCP_ESTABLISHED while its stored remote address remains unchanged.
-> Subsequent RW packets from that source are delivered through the same
-> destination-only fallback.
-> 
-> This was reproduced with capability-empty processes under different UIDs.
-> The attacker discovered the target tuple through unprivileged AF_VSOCK
-> sock_diag and caused the victim socket to read 16 attacker-chosen bytes;
-> the intended peer-side socket read 0 of those 16 bytes.
-> 
-> Add vsock_check_source() to validate the transport, source port and source
-> CID against the peer stored in a non-listening socket. The local transport
-> is the CID exception because its packets are generated internally with
-> VMADDR_CID_LOCAL as their source, including connections using CID aliases.
-> 
-> Use the helper after lock_sock() in the virtio receive path.
-> 
-> Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
-> Closes: https://lore.kernel.org/netdev/20260813121236.2328599-1-4ncienth@gmail.com/
-> Cc: stable@vger.kernel.org
-> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
-> Assisted-by: Codex:gpt-5.6-sol
-> Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
-> ---
->  include/net/af_vsock.h                  |  3 +++
->  net/vmw_vsock/af_vsock.c                | 32 +++++++++++++++++++++++++
->  net/vmw_vsock/virtio_transport_common.c |  3 ++-
->  3 files changed, 37 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
-> index 3357ee62d..5549298c1 100644
-> --- a/include/net/af_vsock.h
-> +++ b/include/net/af_vsock.h
-> @@ -229,6 +229,9 @@ struct sock *vsock_find_bound_socket_net(struct sockaddr_vm *addr,
->  struct sock *vsock_find_connected_socket_net(struct sockaddr_vm *src,
->  					     struct sockaddr_vm *dst,
->  					     struct net *net);
-> +bool vsock_check_source(const struct vsock_sock *vsk,
-> +			const struct vsock_transport *transport,
-> +			const struct sockaddr_vm *src);
->  void vsock_remove_sock(struct vsock_sock *vsk);
->  void vsock_for_each_connected_socket(struct vsock_transport *transport,
->  				     void (*fn)(struct sock *sk));
-> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-> index a33b2a2d3..f840498b5 100644
-> --- a/net/vmw_vsock/af_vsock.c
-> +++ b/net/vmw_vsock/af_vsock.c
-> @@ -438,6 +438,38 @@ struct sock *vsock_find_connected_socket(struct sockaddr_vm *src,
->  }
->  EXPORT_SYMBOL_GPL(vsock_find_connected_socket);
->  
-> +/**
-> + * vsock_check_source - validate a packet source against a socket peer
-> + * @vsk: socket receiving the packet
-> + * @transport: transport receiving the packet
-> + * @src: source address from the packet
-> + *
-> + * Return: true if the packet arrived on the socket's assigned transport and
-> + * its source matches the stored peer. Loopback packets are generated
-> + * internally and always use the local CID as their source, including
-> + * connections using a valid CID alias.
-> + *
-> + * The caller must hold the socket lock and must not call this for listening
-> + * sockets, which accept packets from any source and have no assigned
-> + * transport.
-> + */
-> +bool vsock_check_source(const struct vsock_sock *vsk,
-> +			const struct vsock_transport *transport,
-> +			const struct sockaddr_vm *src)
-> +{
-> +	if (vsk->transport != transport)
-> +		return false;
-> +
-> +	if (src->svm_port != vsk->remote_addr.svm_port)
-> +		return false;
-> +
-> +	if (src->svm_cid == vsk->remote_addr.svm_cid)
-> +		return true;
-> +
-> +	return transport->get_local_cid() == VMADDR_CID_LOCAL;
-> +}
-> +EXPORT_SYMBOL_GPL(vsock_check_source);
-> +
->  void vsock_remove_sock(struct vsock_sock *vsk)
->  {
->  	/* Transport reassignment must not remove the binding. */
-> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> index e4ebaa70f..6301c108a 100644
-> --- a/net/vmw_vsock/virtio_transport_common.c
-> +++ b/net/vmw_vsock/virtio_transport_common.c
-> @@ -1823,7 +1823,8 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
->  	 * lock_sock (note: listener sockets are not assigned to any transport)
->  	 */
->  	if (sock_flag(sk, SOCK_DONE) ||
-> -	    (sk->sk_state != TCP_LISTEN && vsk->transport != &t->transport)) {
-> +	    (sk->sk_state != TCP_LISTEN &&
-> +	     !vsock_check_source(vsk, &t->transport, &src))) {
->  		(void)virtio_transport_reset_no_sock(t, skb, net);
->  		release_sock(sk);
->  		sock_put(sk);
-> -- 
-> 2.54.0
-> 
+This series contains several related fixes for the ice driver PTP logic
+relating to timestamp handling and device (re)initialization.
 
-Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+Of particular note is some changes around the handling of timestamps that
+are requested near device state changes such as administrative up/down
+cycles and link change events.
+
+The E825 device logic in the PHY has an internal counter which is used as
+part of the "threshold" logic which determines when the device will trigger
+an interrupt signal from a given PHY port to the MAC. This internal counter
+requires some precise handling to ensure that the internal device state
+remains in sync with software expectations. Otherwise, the device can be
+finagled into a state where the PHY stops producing new timestamp interrupt
+notifications to the MAC indefinitely. This in turn degrades the timestamp
+processing latency and results in application failures for common
+timestamping applications such as ptp4l.
+
+There are four major categories of problem resolved by this series:
+
+ * Timestamp requests made while the PHY_REG_TX_OFFSET_READY bit is cleared
+   will increment the internal counter, but leave their valid bit set to 0.
+   Upon read, the counter is not decremented. This leads to a desync of the
+   counter and blocks the PHY interrupt.
+
+ * Software logic for tracking timestamps incorrectly cleared in-use bits
+   without waiting for completion in certain cases. If the timestamp *does*
+   later complete, it leaves an "orphaned" ready bit which is not
+   tracked by software. This results in the internal counter becoming
+   desynced if that index is re-used.
+
+ * The PHY timestamp memory region lacks pull-down zero-initialization at
+   power on, resulting in uninitialized random data in the memory region.
+   If software reads these values, an entry with its valid bit set to 1 can
+   trigger a counter decrement and cause an underflow which results in the
+   counter becoming desynced.
+
+ * Timestamp request which complete near the beginning of the PHY losing
+   link can become "stuck" such that the hardware logic triggered by a
+   timestamp read does not activate. The memory status bit and the valid
+   bit in the the timestamp index are not cleared. This window where this
+   may occur begins *before* the firmware notifies the driver of link loss.
+   When this occurs, the driver may accidentally re-use a stale timestamp,
+   and the IRQ re-trigger logic triggers a repeated IRQ "storm" that can
+   consume significant excess CPU time.
+
+The series' primary focus is towards preventing driver flows that can
+trigger the above sequences. It is based on work from Przemyslaw Korba which
+was previously posted at [1]. During that series development, Petr from
+RedHat reported the 3rd issue mentioned above. While attempting to root
+cause that issue, several other issues were uncovered and those fixes have
+also been included in this series.
+
+First, the locking around the PTP ports list in the adapter structure is
+converted to use RCU primitives and a spinlock, resolving a couple of
+reports from Petr about places where the original list was accessed without
+lock protection. Note that an older version of this fix used an xarray
+instead of the list. The xarray has more overhead and results in an
+increase of ~25 microseconds to the average latency for processing Tx
+timestamps. The list is simpler and avoids this overhead.
+
+Next, the PTP reset flow is fixed to stop tearing down the Tx tracker
+during a CORE or GLOBAL reset. This avoids causing Tx timestamps to break
+permanently after such a reset. This issue was found by Sashiko during
+review of a previous version of this series.
+
+Next, the ice_ptp_request_ts() function is updated to sequence the marking
+of the in_use bitmap in order to work properly with the lockless reader in
+the IRQ thread. This issue was reported by Sashiko during review of a
+previous version of this series.
+
+Next, come two fixes for E822 hardware that were originally posted as part
+of Przemyslaw Korba's work [1]. The E822-only "vernier" offset validation
+work task is properly canceled during device reset, and new timestamp
+requests are kept disabled until the validation task completes.
+
+Next, Arkadiusz modifies the driver to stop pretending that the link has
+gone down during ice_down(). This removes "virtual" PTP link changes that
+occurred on several flows including MTU change, Eswitch setup, and others.
+Now, the driver only triggers a PTP PHY timer reinitialization when the
+physical PHY link has changed instead of during many other actions.
+
+Next, the driver is modified to stop clearing the PHY_REG_TX_OFFSET_READY
+bit. This bits only purpose is to tell hardware to mark any captured
+timestamps as invalid. Since this also disables the necessary side effects
+on read it is problematic to have cleared. According to hardware engineers,
+keeping it enabled should not have any other side effects.
+
+Next, the driver is modified to clear the PHY_REG_TX_MEMORY_STATUS by
+reading each index *prior* to the PHY soft reset. This ensures that any
+stale or invalid data left in the memory array is cleared, followed by the
+counter being reset via the PHY soft reset procedure.
+
+Next, the E825 timer start procedure is modified to first include a soft
+reset. This ensures that upon link up the device is reconfigured from a
+known-good state with its internal counter reset and everything cleared.
+
+Next, Petr modifies the ice_ptp_flush_tx_tracker() function to wait a little
+bit for any outstanding timestamps before flushing.
+
+Next, Petr modifies the ice_ptp_process_tx_tstamp() function to avoid
+releasing any index from software unless either a) it is actually completed
+by hardware or b) it is timed out waiting for a full two seconds. This
+closes the final gap from the second issue mentioned above. Instead of
+immediately releasing the index, the software now waits until hardware has
+completed it or the driver has waited long enough to be sufficiently sure
+that no such timestamp will be done.
+
+Next, the driver is modified to no longer mark timestamps as "stale" during
+a clock adjust event. This avoids marking timestamps as stale unnecessarily.
+
+Finally, the ice_ptp_process_tx_tstamp() function is modified to verify
+that hardware actually cleared the ready bitmap. This ensures that we do
+not report false timestamps near a link down event.
+
+Link: [1] https://lore.kernel.org/intel-wired-lan/20260720120151.2675206-1-przemyslaw.korba@intel.com/
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+---
+Changes in v2:
+- Two new fixes based on feedback from Sashiko review, including a reset
+  issue surfaced by a CORE or GLOBAL reset, as well as a subtle issue with
+  sequencing of the in_use bitmap.
+- Fix the sequencing of kref_put when iterating the port list.
+- Add kref_get/kref_put on ice_ptp_link_change to ensure that a link change
+  happening concurrently with a teardown won't trigger use-after-free
+  accesses.
+- Avoid re-enabling Tx timestamps for E822 devices when the
+  ice_start_phy_timer_e82x() function fails.
+- Always trigger a link state refresh in ice_rebuild() instead of only
+  conditionally, ensuring that after a reset the device is always
+  reconfigured appropriately.
+- Return the error if ice_clear_ptp_tstamp_eth56g() fails to read the PHY
+  register, instead of silently ignoring it.
+- Mark timestamps stale if we fail to read the ice_get_phy_tx_tstamp_ready
+  bitmap, in addition to if the bitmap fails to clear.
+- Check the return value of ice_check_phy_tx_tstamp_ready() to avoid
+  triggering an IRQ if we fail to access the PHY.
+- Link to v1: https://patch.msgid.link/20260821-jk-e825c-minimized-fixes-v1-0-9d0731eb4858@intel.com
+
+---
+Arkadiusz Kubalewski (1):
+      ice: call PTP link change only from link events
+
+Jacob Keller (9):
+      ice: use reference counting and RCU for PTP port access
+      ice: fix removal of PTP timestamp tracker during reset
+      ice: set in_use only after preparing Tx timestamp index
+      ice: E825: stop clearing PHY_REG_TX_OFFSET_READY
+      ice: E825: clear PHY_REG_TX_MEMORY_STATUS prior to soft reset
+      ice: E825: perform a soft reset when starting the PHY timer
+      ice: remove unnecessary discarding of timestamps after clock adjust
+      ice: skip reading Tx ready bitmap on ports with no timestamps
+      ice: don't clear in_use until HW clears ready bitmap
+
+Karol Kolacinski (2):
+      ice: E822: keep Tx timestamps disabled during offset calibration
+      ice: E822: cancel offset verification work during reset preparation
+
+Petr Oros (2):
+      ice: wait for in-flight Tx timestamps before flushing the tracker
+      ice: keep Tx timestamp slots tracked until completion or timeout
+
+ drivers/net/ethernet/intel/ice/ice_adapter.h |   6 +-
+ drivers/net/ethernet/intel/ice/ice_ptp.h     |  12 +-
+ drivers/net/ethernet/intel/ice/ice_adapter.c |   7 +-
+ drivers/net/ethernet/intel/ice/ice_main.c    |  12 +-
+ drivers/net/ethernet/intel/ice/ice_ptp.c     | 363 ++++++++++++++++++---------
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c  | 104 ++++----
+ 6 files changed, 328 insertions(+), 176 deletions(-)
+---
+base-commit: dc4b95b8fee95113587e93ca116356032d271371
+change-id: 20260819-jk-e825c-minimized-fixes-8559addec172
+
+Best regards,
+--  
+Jacob Keller <jacob.e.keller@intel.com>
+
