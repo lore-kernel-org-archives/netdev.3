@@ -1,168 +1,131 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496B137CD2C
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 16:33:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65325357CFC
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 16:38:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787675609; cv=none; b=BWu7Wy6A6Ar/dtkPDk+UURn/gjQPjhX4kCssy8HzJSChgxl9RVlcWuVOMwXEWJQjM2hoW/rw51CM/rjWbJYsoWQHK9/nGM6AEphMyXA5NLohEvaamQBNzhCH9LV8h6LsYRy2oQS7WMSPSJQNmHy7sujEt/qYOl4diXZfDHkkZFc=
+	t=1787675891; cv=none; b=CTF1VI6VyygbPx0BDI90xhuSfMi8BPoNSePhe1mq4MrNJ1Hny0urogP55ZsFs4cQOpYvCEVrq9xbdXzopaeY68XELxRG5sGQ8Z8Z/W4CtmkPX4BY6iK0OpRJu7+M2oNxs+OCmiKesQep5PEET3TKB23XDexOdfnQNuTYaaBh/M4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787675609; c=relaxed/simple;
-	bh=B0G9v6BhBY4Fuj6Zio2PzdtQEPK77b2tYVyr2I4VYEA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O9JeBYjrCfHZjq3En+xjZDirVwUNPoHnAQldySYEgFVod9RDKZDfkKDiaA3bIedzitKWK0HSgTJc9xphUPnxS3+8jFl/X/ERRsGaAAg9YR7jjIJW8Q5EHb5eaMa813/0PBUdKIteexeImfOyuzlk71IKimzPWDKO8Yhdahfx0Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KDd/qEWG; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1787675891; c=relaxed/simple;
+	bh=MkUNQA/yksKCC3jjEFhp3OpzbEjgIqUw+pL+P+grodk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Akp+rR1YRvAV1SrGUxuyDnKf0vYbR1JEhwiCGoInXcjZBeFNcbk9vyDJQ52ynOUPxQgAg2SJycvcOupMdbckFfqr/nzBSJd1RSyIodelBDqnmCiCqj7kmEX5VcTTYSqUv4VxU1kb/GZvlcFe4D6sWO/UCKH4jYCfqT6HnSlfcrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=lOOd4f2S; arc=none smtp.client-ip=91.218.175.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KDd/qEWG"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4996e2575dbso67445e9.0
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 09:33:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787675604; x=1788280404; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=SkuHlshzOD+AxFcfYa+qONyS5a/GbEXwYVTwh7Zfzc8=;
-        b=KDd/qEWGhDvEPOieRLxzIHmbNPoUWC80DsbNQlSfeQu6Wkz+/ObtT0FCEZfS1lgS8r
-         /PpeFW7PdWH09J7u5QWeNykrtvTsW9LM87ldGaBCS0D2eQ/EFiAstWLYcstO8UDzivA1
-         yKBK477wqZcKJm8REhL4M5LHbNDU8dixqklHRFh0RxeaBn6NTE5dBH3B8hYcQpuI5GXR
-         DuqUk91ET3nuqpmVB7cy3oiXQZjTxTV4PesQru2i+4sAtwdc+QrO6JMMhfmAlXPoZPri
-         Lp0UrS113aniefYlxl+vsbIeQLx5Xb4GVVhcmyEWPJ4xZuY7Zp8dSFNpGJbjxia3XuMu
-         t2HA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787675604; x=1788280404;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=SkuHlshzOD+AxFcfYa+qONyS5a/GbEXwYVTwh7Zfzc8=;
-        b=Sc2+dfwypB06dzhcR+o5EwJyibWukIpmodlwWjrBtU6JRt/7SZwxKIJEUQh8vN3XmM
-         Km4/gT7pZzpI6oYSAvfu8xMxQ9EhCQcsmLfYb+Kk2DeUHOwyOJyHHxjmqsfzow/RHt5n
-         hEnC2+e7Boz3oQiuc9ofzl8IBQnR3Zvk58bckobxWy7ms8rS9qAu/TcNaVDol9HinLYd
-         TRpgqoC0QRceVX508rdHurkz1y25akpXaq7O2n+3G4AcI5w3rt9PuEDFF12ontwurj99
-         o54RxnXNyEq/JuDQhKbTIF7fYOirZuJN0uMLAkLmD9QD0azp5OTZNAWFhXRnXKvYrqXo
-         qqyA==
-X-Forwarded-Encrypted: i=1; AHgh+RrojN5l9zkw4Mc8+G4/qQ0QJKEWdebz5lE9AWgBIGpMw1oxAnInK3siNx98ysu8WVZ2NoKyEyI=@vger.kernel.org
-X-Gm-Message-State: AFuF++kMM9k4p7LeDwDa1yuVQ6+5SQAlYngFvSXDsr4eFNKFKa3Vemqw
-	Yvvo9F8Lb1oCWAefxODgEYt790dcl3xgskQvWm6szw85y3yjrcrX1eaErw3Jwq+Hbw==
-X-Gm-Gg: AR+sD11PF450puulOdCS/4+BEWiMJBWHtMW+qYsqZDvLkmZ1Q4HI1r0P5Hbm4a1zoyX
-	kZypLcI9v/y/5ttYb/hvZCOR8WqbrZbjVq8sajo0XSTGW6tdUAoZ2Wg7PkE/Rn+FArzg3jRIPCh
-	YSUa+6rGfSMWTYUJqKqvX+8hQElTa/vxYR6yOKkmaq3pMRsahsayaXuXcPaUnwbAtH67cRc1eDW
-	/YIdfqnsoNCvMaTvj/SAdHUU7mzNovpthFbifkYu0trNpK3gcH8ubXp53mocZjzzSKzWqAcDLE8
-	vv+P/d/82R9XHIHgGTSi5KDN6m4Bjd+Z/ZlyRdY68gnjIXm7yqTRudIMWDrMRdWFrDw9bASfDHB
-	4LcZ4RYf80B/k9INDvSr1BzcgDG4ZvyM7vCRpezdEsQ0PhN5SknAKUTGTMlXFR842nC3nquDYM2
-	jmzJ+YWPTw8ZHRqCYbmsGSkIm/XIx42DadQfpof6Q/SsjEBzceX/TCih3aR7PTRuDGTATcGXEuK
-	U7PyOumgp23rkKR3vNlcU1QCS54uQ==
-X-Received: by 2002:a05:600c:a31c:b0:499:7da3:dd0c with SMTP id 5b1f17b1804b1-499d867c424mr1003585e9.0.1787675603950;
-        Tue, 25 Aug 2026 09:33:23 -0700 (PDT)
-Received: from google.com (250.192.189.35.bc.googleusercontent.com. [35.189.192.250])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499dc960f24sm217945e9.3.2026.08.25.09.33.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2026 09:33:23 -0700 (PDT)
-Date: Tue, 25 Aug 2026 16:33:19 +0000
-From: Mostafa Saleh <smostafa@google.com>
-To: Dragos Tatulea <dtatulea@nvidia.com>
-Cc: Luigi Rizzo <lrizzo@google.com>, Jakub Kicinski <kuba@kernel.org>,
-	rizzo.unipi@gmail.com, m.szyprowski@samsung.com,
-	robin.murphy@arm.com, willemb@google.com, kuniyu@google.com,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	gregkh@linuxfoundation.org, rafael@kernel.org,
-	akpm@linux-foundation.org, david@kernel.org, netdev@vger.kernel.org,
-	linux-mm@kvack.org, iommu@lists.linux.dev,
-	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] swiotlb: avoid double copy with swiotlb on tx socket
-Message-ID: <ao3DzzFIVPdtL7MX@google.com>
-References: <20260615234220.3946885-1-lrizzo@google.com>
- <20260615172535.080cf94f@kernel.org>
- <CAMOZA0KAHKsvA9yRcdrjG13S+=rJhw-Cvnw2WdLjGGY0azG0kw@mail.gmail.com>
- <ajEuUZMgS_NRmDcp@google.com>
- <ac473a83-c77f-4a41-bc86-8a857d2d6e36@nvidia.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="lOOd4f2S"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=MkUNQA/yksKCC3jjEFhp3OpzbEjgIqUw+pL+P+grodk=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1787675888; v=1; x=1788280688;
+ b=lOOd4f2SfhygoSFf8Dm2qUpN6kyfrvLbM0XHGT4qHiJ7x1uNNO1QlUazBLl1/nBmYI394IeS
+ Xg4uP44YUO4TVr8o4g8po9VX7tk8ckIFYes6BIEP7QF43Ovvp3D8qe5DKGVRs8L1KFXUfAgP4EG
+ SpHNhli6ON4WKle/If+18R3k=
+X-Envelope-To: netdev@vger.kernel.org
+Received: from [IPV6:2a03:83e0:111e:2:c6:2f62:38ca:59d8] (2620:10d:c092:500::7:692)
+	by smtp.migadu.com with ESMTPS id 76f75ebeae15f9e3;
+	Tue, 25 Aug 2026 16:38:08 +0000
+X-Mizu-Trace-ID: 76f75ebeae15f9e3
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <8c5c1254-34b9-4d38-8cd4-71b3c13e00e4@linux.dev>
+Date: Tue, 25 Aug 2026 17:38:03 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ac473a83-c77f-4a41-bc86-8a857d2d6e36@nvidia.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC] ptp: ocp: exposing the TimeCard X2 AXI Ethernet port -
+ which approach?
+To: Sagi Maimon <maimon.sagi@gmail.com>, Netdev <netdev@vger.kernel.org>
+Cc: Jonathan Lemon <jonathan.lemon@gmail.com>,
+ Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+ linux-kernel@vger.kernel.org
+References: <CAMuE1bHr84n5LKcj02HmMR5XefPtvQ-UEJAx7+UKfYvRgS0eDg@mail.gmail.com>
+Content-Language: en-US
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <CAMuE1bHr84n5LKcj02HmMR5XefPtvQ-UEJAx7+UKfYvRgS0eDg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 24, 2026 at 10:59:21AM +0200, Dragos Tatulea wrote:
+On 20/08/2026 16:01, Sagi Maimon wrote:
+> Hi,
 > 
+> Before posting patches I would like to check which of two approaches you would
+> prefer, since they differ a lot in how much code lands and where.
 > 
-> On 16.06.26 13:06, Mostafa Saleh wrote:
-> > On Tue, Jun 16, 2026 at 02:33:52AM +0200, Luigi Rizzo wrote:
-> >> On Tue, Jun 16, 2026 at 2:25 AM Jakub Kicinski <kuba@kernel.org> wrote:
-> >>>
-> >>> On Mon, 15 Jun 2026 23:42:20 +0000 Luigi Rizzo wrote:
-> >>>> The use of swiotlb causes an extra data copy on I/O.  For tx sockets,
-> >>>> especially with greedy senders, this has a high chance of happening in
-> >>>> the softirq handler for tx network interrupts, creating a significant
-> >>>> performance bottleneck.
-> >>>
-> >>> What's the use case? I associate swiotlb with debug / testing mostly,
-> >>> so it'd be useful for people like me to explain why you care.
-> >>
-> >> Ah sorry, I forgot to mention.
-> >> swiotlb is used in guest kernels for confidential computing VMs.
-> >> Ordinary memory pages are encrypted and the host or devices
-> >> have no way to decrypt them, so the kernel must use
-> >> unencrypted bounce buffers to exchange data with I/O devices.
-> > 
-> > I started looking into the same problem recently, to reduce the
-> > bouncing in protected KVM (pKVM) confidential guests.
-> > My first attempt was to update dma_direct_map_phys() to skip
-> > bouncing and do inline memory decryption (for pKVM that is a hypercall
-> > which updates the stage-2 page tables), however, that was really slow
-> > compared to the memcpy in bouncing even for massive pages.
-> > My conclusion was similar that we need to solve this at construction
-> > by making this memory allocated from a pre-decrypted pool (which
-> > does not have to be part of the SWIOTLB)
-> > My initial idea was to teach some of the kernel subsystems (SKB,
-> > BLK, SLAB) about "CoCo allocators" that allocate decrypted memory,
-> > as this is not a net specific problem.
-> > 
-> An example of this is Jiri's system_cc_shared heap which is a dma-buf
-> heap with decrypted memory for userspace.
+> The ADVA TimeCard X2 is a PCIe card whose FPGA image contains a Xilinx AXI
+> Ethernet MAC and an AXI DMA engine alongside the timing blocks ptp_ocp already
+> supports. We want to expose that Ethernet port as a netdevice.
 > 
-> > I am still looking into this, I was planning to bring this up in the
-> > upcoming LPC.
-> > I will give this patch a try. However, I believe that we need a more
-> > generalised concept for CoCo pre-decrypted allocators in the kernel.
-> > 
-> There is a talk at LPC in the networking track about this [2]. This is
-> exactly the type of discussion that I was hoping to have there.
+> Approach A - let xilinx_axienet drive it.
+> 
+> ptp_ocp creates a platform device describing the two register windows and the
+> three MSI-X vectors, and xilinx_axienet binds to it. This is what ptp_ocp
+> already does for the Xilinx SPI and I2C cores on the same card, see
+> ptp_ocp_i2c_bus() and ptp_ocp_register_spi().
+> 
+> There is no device tree, so a software node stands in for one: "phy-mode"
+> replaces a phy-handle, since the MAC is wired to the fabric internally with no
+> MDIO and no PHY, and a "fixed-link" child node pins the link at 1 Gbit/s full
+> duplex.
+> 
+> This needs two things from xilinx_axienet:
+> 
+>    1. Read its configuration through the generic device property API instead of
+>       the OF-specific one, so it can be described by a software node. On a
+>       device-tree system dev_fwnode() resolves to the OF fwnode and the reads
+>       land in the same OF code as today, so this is a no-op for existing users.
+>       It is also in line with the wider move from of_* to
+>       device_property_*/fwnode_*.
+> 
+>    2. A dma_dev in struct axienet_local. Descriptors and buffers must be mapped
+>       against the device that masters the bus, which for a platform device
+>       created by a PCIe parent is that parent - a platform device does not
+>       inherit its parent's DMA ops or IOMMU domain. For every existing user
+>       dma_dev would equal dev, so no behavioural change.
+> 
+> That comes to about 50 changed lines in xilinx_axienet and about 180 new lines
+> in ptp_ocp.
+> 
+> Approach B - a separate driver under drivers/ptp.
+> 
+> Reimplement the descriptor rings, NAPI and ethtool support against the same IP,
+> roughly 2500 lines, and share xilinx_axienet's register definitions out of
+> drivers/net/ethernet/xilinx/.
+> 
+> We have both working. Approach A is tested on 7.0.0-rc1 with the card:
+> 
+>    xilinx_axienet xilinx_axienet.512 eth0: configuring for
+> fixed/internal link mode
+>    xilinx_axienet xilinx_axienet.512 eth0: Link is Up - 1Gbps/Full -
+> flow control off
+> 
+> ping at 0% loss, a 90 s bulk TCP transfer moving ~9000 packets each way with
+> zero errors and no TX timeouts, ethtool -S/-g/-c/-a all working, and clean
+> module unload and reload.
+> 
+> We would much rather do A than maintain a duplicate of an existing driver, so
+> the questions are:
+> 
+>    1. Is instantiating xilinx_axienet from a PCIe parent as a platform device
+>       acceptable, or would you prefer the driver split so the device can be
+>       created on the auxiliary bus? The platform device route keeps the change
+>       to xilinx_axienet small and matches what ptp_ocp already does for the SPI
+>       and I2C cores, but auxiliary bus is the more usual choice for sub-devices
+>       of a PCIe function and would make the DMA parent explicit.
+> 
+>    2. For the dma_dev, we currently infer it by testing whether the parent is a
+>       PCI device. That is concise but implicit; we are happy to pass it in
+>       explicitly if you would prefer it were not inferred.
+> 
+> I can post the series straight away if you would rather look at the code.
 
-I see, thanks for point that. I plan to be in LPC, so I will aim to
-attend this talk.
+Well, we definitely don't want to copy code but rather reuse existing as
+much as possible. Looks like platform device is the way to go. Let's
+discuss the code.
 
-> 
-> Besides the issues mentioned in this thread we've also found that a lot
-> of overhead can come only from swiotlb allocations when running many queues.
-> 
-> I will add information about this series in my talk. Hopefully I will also
-> have time to add some numbers for comparison.
-
-I had a quick look, I am not sure how that will shape at the end, but I
-think we need a general solution beyond NICs. For example in pKVM the
-bouncing is used with virtio devices, so doing this per-driver won't
-really work and is not possible in some scenarios where memory is
-allocated from the core kernel and then passed to the driver.
-So, I was thinking the kernel relying on
-CC_ATTR_MEM_ENCRYPT/force_dma_unencrypted() could detect that and
-allocate pre-shared memory for those cases.
-
-Thanks,
-Mostafa
-
-> 
-> Sorry for the late reply but I spotted this thread only now by
-> accident.
-> 
-> [1] https://lore.kernel.org/all/20260325192352.437608-3-jiri@resnulli.us/
-> [2] https://lpc.events/event/20/contributions/2464
-> 
-> Thanks,
-> Dragos
