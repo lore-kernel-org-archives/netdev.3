@@ -1,94 +1,89 @@
-Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239713B5E08
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 20:02:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8D4387378
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 20:02:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787688172; cv=none; b=JwL4lRTEq+q2GBWckDvm4IJtS8GgTrsPM1b7wctVLEEuihVye8idrouvAwhIwWvRGCa4PlgwuD7Da5Q7mt1GuSS+Abyt4hH5HCMNgNV+m6t+TYfvut6nAL46q6UfmDfXjNJ3JrQR/uT4MaY3jOYW25PSxSLPYK/8MsC5u1r1xz4=
+	t=1787688180; cv=none; b=Uc8jMkPvkN1/8tWVgMdJ5Zolk7e6hJdRdUntEzhTU0BExG4GTbn98p3utP7X/HUK8/INlhgailSCpUGDpI3V6j6UkfHxXyXS5diBLK5PUksOdIMI/pcrjZiLO5QQ0JX1TvBjkQ39PQ+Ogeu+40npTPfEBAqp/Hr5sNwuZCk98lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787688172; c=relaxed/simple;
-	bh=h5g19SztFkEyFkjk0/cKFCbVHJ2HbodvOjb/zahKntc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vBv7E2ou0tbtai6xle6KWh3qMv079PFDdmc/F7yhoLNGX43t2/KwDqB+zWo2U4mOOuDx9J51B4wF2cJExN079alROo97HY+Vo7vO++zXcm2R1jpGu6XvZhDQnoJ//z8a1gW/D4ybIcNWWCMvnjAZmEOCvJz8b9D48u8UVMLEpJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=t9QjF8Kt; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ahJH0Zh1; arc=none smtp.client-ip=202.12.124.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
+	s=arc-20240116; t=1787688180; c=relaxed/simple;
+	bh=wSj/Bziwj2nKmZlwT90+vNBfPdmMDOGVBjj/fVWpTQE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rvmoULg2PU2zO8fI05MTZILi/TGiB8EEZVRnsvo3/m8a1zXcxTCx8AwQgQb4/NMykXkSPtSavCkd0LWeaXS4ZntYP7OQPf+Zosyp/zj+bhUYpJWr9+byhp/ciRXmfSyzcOpiJ0ND5r/dGLedo+1vifCLR/xgRy/koTXMMEMcf10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iznWfC13; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="t9QjF8Kt";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ahJH0Zh1"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 1C2957A00A2;
-	Tue, 25 Aug 2026 16:02:50 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Tue, 25 Aug 2026 16:02:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1787688169; x=
-	1787774569; bh=LeYtaEEhyDnwQ2HLainJO/J0XK6yonvKpQawt9qdEhY=; b=t
-	9QjF8Ktct36mPjCXKve2X9TqK8DX7HEVTDzc6Wfk3yP8PhiKZ4U5gQ3Wg6x64zfj
-	sYnjVxq4gkWUfsCNBVUZ9uULfzXYC8baCDM6DISbI95oySZTUXJWXeZbh9sgLD7e
-	AkLL2NwuIDlQmLM4Jb8ZZEi44VmXJ5b5+mgx1X/Rm1U6Bo7dlPeefGEyaAcN9181
-	KlhkZKYfZ0/O6zmvqrkGkRKQOzv6TvWtGh+71QEgkdwLmT4v/lp/xBSgipcdefS5
-	aD5NbdLeZwwvzj3V82ac7hrwoazx9vW9a53lDOl1izbqOQpNalxIc07+yo/aV7pM
-	97gNE8VaQUtMQWz7/D2uA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1787688169; x=1787774569; bh=L
-	eYtaEEhyDnwQ2HLainJO/J0XK6yonvKpQawt9qdEhY=; b=ahJH0Zh1JHIrJ/skW
-	viOcd1Tq5bgazVKt5scBqLqlsKTiZ5citCXhVKRlNQV1O28bEKbzcWI+eFt5oSZY
-	zqDAMbzwvOAidFQ4I5+bRdKs5q5eKLMdq9sDn2AzgQhwBDkipX8cNc+LwJ8YFkKE
-	6NW9cnsifL8hnL8t6FkHQsUsJX5Z7HPe3iOBC7ElVlkYmlQJC92bwnNFwMTpAlj6
-	n2oPyOO9r8h9z2FfMxbT2X0449hpxrDoyoQ4ZU364lGJEn1/1hFn4BaaAMVohplG
-	OKItEONHcs3DLD9EJU2nQI47bDO9NZMPaSgzOqxU0i3ewIw495BwBCWr03FzEZGE
-	xIAtA==
-X-ME-Sender: <xms:6fSNakPddEg42ek3GZTydTyuhX6RhHcuyrQTtLpcz7S3rsh6KRKnKA>
-    <xme:6fSNaupaFoqKHptxI--lMZRKOeW9ByDwOL7PidzGAar-WEyDepE5toAVf5sxXmlIY
-    11IMuq_0qCBwGGwnw8IS5CX-f3VF5xQhX0HeXghC7-Ih0g8gu6rLgrO>
-X-ME-Received: <xmr:6fSNaj4_YmRlYBNThCIatllZ-aM23PjzlUR4TGc9bNcjW8weUa-BYKCT1lv_mLQ1RE_A3RYy4kGo6iS58RA>
-X-ME-Proxy-Cause: dmFkZTE6AsBOqUYkenY0emn/Fq4qEwYrPiWZq/SKM7OOltKyjJU1ddYxOZRv4WQfFxq20S
-    1VlUzvl7XNbPVOcArkBbp2gHqwweDSLzRHjv2EOGuH0hysdiIOGkC03n1cUuAMvz3Fq+N8
-    gisasUsyQZ2IU0khHS/gYke8ReMsMr33YxphEdxSTOhGpJ0IbGtDZp+dU75TM0bSGAsNZi
-    D5cJ75MsU2QUe15OuzopCFAdZeN7YAishYw4mjLqEY66af+RGKq2G1cIw5aV1CjfVA0x4l
-    24voEZLqOdoF+r2xK4GlfuduBUxjJkLGiNKsKXMctuJDpz6f+Uuq9zBgacIbGix+V67OPw
-    D/ikMLHeaiwCdXTQzMwyBispSU7wWWTDJSFTE4dkkl/F/l+UlcYLmIvueWTC/x8mrNCqy6
-    nqssUtPRLbiyQM9CYQeCNPvmnPcmsGfGMz96Key68m7Y72IaLeJEzJ0ujb7jkCVIwmN8zN
-    T2wGESGOse2dv33WScXvuopUms2XKDqiAkhtpaxiOtEukq0j0siimHlj2l+hcDu5m8tdAN
-    pT57S/g2lxkzLaWFpst8ponpIb7VwP3KZQMC0opsoAL1L1AHA/U3n2kWyhPl+liaAkmpne
-    06pxu+aWzdypwOusvO+NtRPz6FmPVRckEyuVEhvnQ5mFOhn8RaDFBy39DvCg
-X-ME-Proxy: <xmx:6fSNauHoTkS1hWIXffaagKKswwSYh6cLodIwAkLb3v4F3TmLXm408Q>
-    <xmx:6fSNat3Vqed00suMz3yIStKqI_75mnZczZkWUI4VnIKGiGopK3rDyg>
-    <xmx:6fSNajrcTqUchABcd25AsD7CwExIQCHszw6iWZxYT9uyXR2wiGihiA>
-    <xmx:6fSNaiN0Y3D9TJyIQs6yawuIgWWXA4IAE9KEtRh3j1iY__3SDU8ZTg>
-    <xmx:6fSNaqwR7aisQUijBXYYGXBBhmM-ANUtJS3h5OAnqMPHzKxjx4sm8zrp>
-Feedback-ID: i559e4809:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 25 Aug 2026 16:02:49 -0400 (EDT)
-From: Alice Mikityanska <alice.kernel@fastmail.im>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Hannes Frederic Sowa <hannes@stressinduktion.org>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iznWfC13"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38759bcd877so368732a91.2
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 13:02:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787688178; x=1788292978; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=B3Pi1LU2yqNrQy/N3chmYaA7JCHAIIMXZlkkYLifKOw=;
+        b=iznWfC13XjXB4QayCT0wCmxdnlnZbrZbkCPeNS6DUZIyJ25ozilf9yA17tOSp8qto7
+         b40Zu0DmVXmKz178Xl1ZEWrDpES6xrHHCZumhAfFShwTv3Eg0Vof7HvHI/ia/RH9e3k7
+         q6Kw9Ncu7Wge8Pw9quPK6Pz5+xrOeiw4psG28g4wr54c7d5G+4fg5OmmYzDu9wqYkJLx
+         ZW4Y4IxUt9n68+/j5R0KxzloRTqc4GwGRAa0FgIyjmqfmltqeVajY8SmlD7jG3k+AuUV
+         OUxUXk//ir0CEDBc3Vauer6sNNz+S5Xz87WHShDZzj5Q5vMGDBJuaqeNzQquBlNnllPK
+         FWng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787688178; x=1788292978;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=B3Pi1LU2yqNrQy/N3chmYaA7JCHAIIMXZlkkYLifKOw=;
+        b=TIQ9VSYnB5DaP///+qEYZ3Hzu5zu+ld1SaPfeRVW8Vd7Xh67JykkGyJ06JQHeARirH
+         VPnvy9Y3ArPPbnpUccCX5YsUlsJWvUYkYUI8z+EG4ZnfYB0SeyNQVJ6Y/ZPVV0vyUzi3
+         S7C6ChSlkGWFrfUNXltdevInnkL1fC/GPdWerYBSjDgrcR2/bk+7DZbUhzrYNQzj+Ux9
+         HqpVSHCMF69866T61/J7dp+SKvIqMqooUpd3/Khy+VLnJbKPwTTNH8QP9PcKbma8lNih
+         SlJQ5TLKpAJWfPs+qGgtKMsUZb9bxQbacVVQUfaPWu7TWcenR6wHMfZjnOhbXl7OOE2J
+         QnIw==
+X-Forwarded-Encrypted: i=1; AHgh+RpHMe8kCPMV19gmhxdVt8L0Avamjz/9gwCVsC3NuXlYzI5xSx5/2W1X2njw3XqdpKjH26WHDec=@vger.kernel.org
+X-Gm-Message-State: AFuF++lDNs2KakfQcI2CQC5AZMvwBFWBf35gTOH9BbmlGX96tZKQj4ti
+	lsROD3qrMnpa+w1mhPAKA/0ivUuTGvtJihYUHkIPyx7bWuA5OKq/IqMV
+X-Gm-Gg: AR+sD11SEnTjUMsLBP+aZLhHLH4I9WDzaNK6R6JOKKc6GrJhvwIaMzbwkKLHySXpPEP
+	iLNAnqD5EzEf3pQzZUWsCTXipXTjF2qM7G/1LajrLLJINFArGq0t72Uh0CLdfxtvniFlpWthxkM
+	/JqD92GIBHHFV6Dgj6fcpPIey0CCGPbF31VML5aqTSf17sleXmJYYQVBMXEnChfzXNW+OKjyBYB
+	GQIdHWFMV8jbISgdlG4jrnAZBeHKBg1xxoyLHFDdfTF34ipnFNegeJfuWMozDd+xeqjDhYPz6QY
+	40fX8acFM3r2jNo7V0uq9rO3DMUSRgCFLWiB5CR7cF1GGBDlPLpfjjkhVVbs87mfUC4CRSHNMg5
+	MmzQC/IdFLFvmBI3WUTk/KYr6kadpAHInse/pZQ+qiPSnjkHjYoWDAW7c6KSjmix+JQDq0vxR+K
+	7o9J+ZHwp80eVRYJEp0h9RHv53D3YlDqDOHXctHiNOm8VZB1hKNClJcoLBC5fW8sA+s4vFc79f6
+	jZK4uzoZBQpkY3+wTedbA==
+X-Received: by 2002:a17:90b:1d46:b0:396:5fce:8e24 with SMTP id 98e67ed59e1d1-3966d197b6dmr3482328a91.4.1787688178216;
+        Tue, 25 Aug 2026 13:02:58 -0700 (PDT)
+Received: from localhost.localdomain ([2001:4898:a800:1012:54d7:ed:5a29:eac3])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-396686e840bsm952049a91.2.2026.08.25.13.02.55
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 25 Aug 2026 13:02:57 -0700 (PDT)
+From: "Cen Zhang (Microsoft)" <blbllhy@gmail.com>
+To: pablo@netfilter.org,
+	fw@strlen.de,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: phil@nwl.cc,
+	horms@kernel.org,
+	xuanqiang.luo@linux.dev,
+	kadlec@netfilter.org,
+	kees@kernel.org,
+	enrico.pozzobon@dissecto.com,
+	sbrivio@redhat.com,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
 	netdev@vger.kernel.org,
-	Alice Mikityanska <alice@isovalent.com>,
-	Willem de Bruijn <willemb@google.com>
-Subject: [PATCH net v4 4/4] net: ipv6: Clamp to IP6_MAX_MTU in ip6_dst_mtu_maybe_forward
-Date: Tue, 25 Aug 2026 23:02:15 +0300
-Message-ID: <20260825200215.90326-5-alice.kernel@fastmail.im>
+	linux-kernel@vger.kernel.org,
+	AutonomousCodeSecurity@microsoft.com,
+	xmei5@asu.edu,
+	tgopinath@linux.microsoft.com,
+	kys@microsoft.com,
+	blbllhy@gmail.com
+Subject: [PATCH net v2] netfilter: ipset: add synchronize_rcu() in destroy to close use-after-free race
+Date: Tue, 25 Aug 2026 16:02:43 -0400
+Message-ID: <20260825200243.23077-1-blbllhy@gmail.com>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260825200215.90326-1-alice.kernel@fastmail.im>
-References: <20260825200215.90326-1-alice.kernel@fastmail.im>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -97,37 +92,80 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Alice Mikityanska <alice@isovalent.com>
+The child set refcount decrement in list_set_del() was moved from an RCU
+callback to the synchronous path, so that userspace sees accurate
+reference counts immediately. However, this broke an implicit invariant:
+previously ref could only reach zero after an RCU grace period,
+guaranteeing all RCU readers had finished before destroy could proceed.
+Now ref can hit zero while readers still hold a stale index, and
+ip_set_destroy() NULLs the slot out from under them:
 
-Commit 427faee167bc ("net: ipv6: introduce ip6_dst_mtu_maybe_forward")
-dropped the IP6_MAX_MTU clamp that used to be present in ip6_mtu(). A
-similar IPv4 commit ac6627a28dbf ("net: ipv4: Consolidate ipv4_mtu and
-ip_dst_mtu_maybe_forward") preserves the IP_MAX_MTU clamp.
+  CPU 0 (softirq)                CPU 1 (control path)
+  ---                            ---
+  rcu_read_lock()
+  index = e->id
+                                 list_set_del():
+                                   list_del_rcu(e)
+                                   ip_set_put_byindex(index) // ref->0
+                                 ip_set_destroy():
+                                   ip_set_list[index] = NULL
+  ip_set_rcu_get(index) -> NULL
+  BUG_ON(!set)                   // crash
 
-Restore the upper bound in the IPv6 flow to avoid potential 16-bit
-overflows in forwarding paths.
+  kernel BUG at net/netfilter/ipset/ip_set_core.c:754!
+    ip_set_test  <- list_set_kadt <- ip_set_test <- set_match_v1
 
-Fixes: 427faee167bc ("net: ipv6: introduce ip6_dst_mtu_maybe_forward")
-Signed-off-by: Alice Mikityanska <alice@isovalent.com>
-Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+Insert synchronize_rcu() in ip_set_destroy() after confirming ref == 0
+but before NULLing the slot, so it only pays the RCU wait cost when
+actually destroying. Because synchronize_rcu() sleeps, ip_set_ref_lock
+must be dropped first, which splits the critical section in two. A
+recheck of ref/ref_netlink is therefore needed in the second section,
+since a concurrent netlink dump continuation (which does not hold
+nfnl_lock) may have incremented ref_netlink in the interim.
+
+The bulk _destroy_all_sets() path does not need this recheck because
+its is_destroyed flag prevents dump from taking new references.
+
+Fixes: 439cd39ea136 ("netfilter: ipset: list:set: Decrease refcount synchronously on deletion and replace")
+Reported-by: AutonomousCodeSecurity@microsoft.com
+Reported-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
+Reported-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
+Closes: https://lore.kernel.org/all/20260820010617.46851-1-blbllhy@gmail.com/
+Signed-off-by: Cen Zhang (Microsoft) <blbllhy@gmail.com>
 ---
- include/net/ip6_route.h | 2 ++
- 1 file changed, 2 insertions(+)
+ net/netfilter/ipset/ip_set_core.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/include/net/ip6_route.h b/include/net/ip6_route.h
-index c69f1c871922..b9e8d2b759e9 100644
---- a/include/net/ip6_route.h
-+++ b/include/net/ip6_route.h
-@@ -384,6 +384,8 @@ static inline unsigned int ip6_dst_mtu_maybe_forward(const struct dst_entry *dst
- 	rcu_read_unlock();
- 
- out:
-+	mtu = min_t(unsigned int, mtu, IP6_MAX_MTU);
+diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
+index 0a86a170ba90..1295bea7944a 100644
+--- a/net/netfilter/ipset/ip_set_core.c
++++ b/net/netfilter/ipset/ip_set_core.c
+@@ -1225,6 +1225,8 @@ _destroy_all_sets(struct ip_set_net *inst)
+ 	/* Must wait for flush to be really finished  */
+ 	if (need_wait)
+ 		rcu_barrier();
++	/* Wait for RCU readers before NULLing slots */
++	synchronize_rcu();
+ 	for (i = 0; i < inst->ip_set_max; i++) {
+ 		set = ip_set(inst, i);
+ 		if (set) {
+@@ -1286,6 +1288,17 @@ static int ip_set_destroy(struct sk_buff *skb, const struct nfnl_info *info,
+ 			ret = -IPSET_ERR_BUSY;
+ 			goto out;
+ 		}
++		read_unlock_bh(&ip_set_ref_lock);
 +
- 	return mtu - lwtunnel_headroom(dst->lwtstate, mtu);
- }
- 
++		/* Wait for RCU readers before NULLing slot */
++		synchronize_rcu();
++
++		read_lock_bh(&ip_set_ref_lock);
++		/* Dump may have taken a ref while lock was dropped */
++		if (s->ref || s->ref_netlink) {
++			ret = -IPSET_ERR_BUSY;
++			goto out;
++		}
+ 		features = s->type->features;
+ 		ip_set(inst, i) = NULL;
+ 		read_unlock_bh(&ip_set_ref_lock);
 -- 
 2.55.0
-
