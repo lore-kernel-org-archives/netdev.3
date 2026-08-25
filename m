@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07D23D8122;
-	Tue, 25 Aug 2026 10:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AEBE3D6463;
+	Tue, 25 Aug 2026 10:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787654462; cv=none; b=Ue5n1+dtzf8e8onPp6q0Z77PsOQ2n5rWcxmd6C5AuL2SP33nyDZFccCKQHzpb1Fyt+f5KTVqbH+p7Zo1AzRCKTEkiDU+Q3X88400XZub5gCPdZ7OZnGxxSP7IJqCAl7VnRqsSf5RDkLbkXLOuW1/OXARu6vIuSYeL8Zj3/o1mE8=
+	t=1787654464; cv=none; b=EwcnUOLL/Z1pbqB2w3gdPmiLweEKkXp09HdYrb/EWRTicJrwxwg+j0lWGARQXghRixzNIyKcrH5nWQO+Opj+o4YAO9nnNsSlrVO+uLEszT2Hf42os2L82NMdeFPpbKTvWkbgjARvTsL0fld3lVE6LmpAldpvb7ThetiMhBoE+g4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787654462; c=relaxed/simple;
-	bh=+zpRH85+sAhfTt9EQMlHrIaoyUL0LBo/ll0Y22TeK1k=;
+	s=arc-20240116; t=1787654464; c=relaxed/simple;
+	bh=vSGiLL4GmELsxBqiXvsVZc9fxDRAEizVhRq2hvUDlBA=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ZURatbcL7eWwnJzi22aAwkzKpu+7rIFXgTudEcdOR3rWaqKD/+SBWqsZMHRGlmvjxbg/ikdKnXSIi+xMkn8Bes6Jb3b9uY1o4yzg1F5QGLBa2ptpWuJpi++QpWbSr7h/7S0IBiSYLRysY9vG06sFjCiuX0jS6FRusCIPB6P+XN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=or9bE07A; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=uqPuNnkKCi+sstwEb1ouaLQRmAyl4vA4Xi50LrxAVpZavSUj8IyqHRZfpS3TZevSwECx+7eQxv+/9et8E3k+nas9OpImuLMynjZ3ulZhaLERRV2y0/dUYRxh63I8Bw7caAqb+Jq7sCCbMrjPnmgrjgQjqWkLr13n1WuJiw7yih0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D37VT5wJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="or9bE07A"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9193B1F000E9;
-	Tue, 25 Aug 2026 10:41:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D37VT5wJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 037321F00A3D;
+	Tue, 25 Aug 2026 10:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787654461;
-	bh=1X7G8zBp06e+0PyVhCy6ixlu+CAbl1w2N9HeCduh66I=;
+	s=k20260515; t=1787654463;
+	bh=mo+PunfX2JOx/2nBETdz9r/0T8eYVhgV4/c2fAP0KA8=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=or9bE07AVT1eFuLgmd0jUJZILA8W5Sh475hj7ATWS5HRODQM2EUoitDOTqvOlSiYT
-	 Tmd2AJIuEg7HsMX2uGB+4+yuIg+qZ3gGD052eQ5iH+B5mOyaprj+Fh6roqW9kjNZ+r
-	 ZyEpBaTjw0kEZ5ig12x+PpKdPSJm8xRr/TON9jfKTgXBY0ToZbMy3KoP1Szjl+IsGl
-	 h33kcP4tTd7xs7asn7XMXYQRvpWXd1/lMfh/BOxZRr3zCdkQtJCn7mdh9wFn2mL7yy
-	 lrbXG+yniuGW5kH+O3CeCSnQe2pVgz+LQyFlve/UZa9gK1iIIqKPlfhCvr2eWvzrgj
-	 m8PixrwFp+TQA==
+	b=D37VT5wJqHPraHGCyw6muLOcpJX7XMAQgkGsBBwl1wVGJhmR8d5sfP89jciUHUVHy
+	 79a9tBkg/Iyim9COVFIyFKO2BajyxGVz0YhNY92k3C7WEgffXOg+9V8KWntf9cjh7v
+	 KQnngUUX0vrU8H/iDp/vlQtoxA7pScpXbdVhw4tinvcnYhaErFKAquJM1M4a6u1R01
+	 fKhufyqbgN6mx9JMNkJ4ai3PIbxUzE5i3W2LRgxy+zS9aqXQvDuBhw0ncFtIbmJv1+
+	 c4TrSPQvUargFWZQsoIbjs8BIKoAc16BXApCQg+dj93GeygTdq8aA+WguCQso1vdsi
+	 JUxuRqP8+Elug==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D094A3924A7F;
-	Tue, 25 Aug 2026 10:40:09 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 465273924A7F;
+	Tue, 25 Aug 2026 10:40:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,43 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] vsock/virtio: flush works in dependency order
+Subject: Re: [PATCH net] net: fix a resource leak in copy_net_ns() error
+ handling
+ path
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178765440842.3381513.12080866327704897722.git-patchwork-notify@kernel.org>
-Date: Tue, 25 Aug 2026 10:40:08 +0000
-References: <20260822164556.3750959-1-nicoyip.dev@gmail.com>
-In-Reply-To: <20260822164556.3750959-1-nicoyip.dev@gmail.com>
-To: Chengfeng Ye <nicoyip.dev@gmail.com>
-Cc: stefanha@redhat.com, sgarzare@redhat.com, mst@redhat.com,
- jasowangio@gmail.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, asias@redhat.com, kvm@vger.kernel.org,
- virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+ <178765440989.3381513.18011374580267192341.git-patchwork-notify@kernel.org>
+Date: Tue, 25 Aug 2026 10:40:09 +0000
+References: <c182cf90-1ed7-435b-88f7-9f00e88a0487@I-love.SAKURA.ne.jp>
+In-Reply-To: <c182cf90-1ed7-435b-88f7-9f00e88a0487@I-love.SAKURA.ne.jp>
+To: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Sun, 23 Aug 2026 00:45:56 +0800 you wrote:
-> virtio_vsock_remove() stops the virtqueues and then flushes each work
-> item before freeing the enclosing virtio_vsock.  The current order does
-> not account for dependencies between those items: tx_work may queue
-> send_pkt_work, and send_pkt_work may queue rx_work.
+On Sat, 22 Aug 2026 17:18:31 +0900 you wrote:
+> Currently, preinit_net() does two things:
 > 
-> In particular, send_pkt_work can set restart_rx and release tx_lock.
-> The remove path can then stop the queues and flush rx_work before
-> send_pkt_work queues it.  Although the later send_pkt_work flush waits
-> for that producer to finish, nothing waits for the newly queued rx_work,
-> so kfree(vsock) can race with it.
+>   (1) call ns_common_init() which might fail
+>   (2) initialize resources which does not fail
+> 
+> However, preinit_net() is returning early when (1) fails, and copy_net_ns()
+> is jumping to the dec_ucounts: label. As a result, resources allocated by
+> net_alloc() are leaking. We need to call key_remove_domain() and
+> net_passive_dec() in order to release resources allocated by net_alloc().
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] vsock/virtio: flush works in dependency order
-    https://git.kernel.org/netdev/net/c/728836ebca23
+  - [net] net: fix a resource leak in copy_net_ns() error handling path
+    https://git.kernel.org/netdev/net/c/3220b62fbb8a
 
 You are awesome, thank you!
 -- 
