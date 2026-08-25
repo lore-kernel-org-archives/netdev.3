@@ -1,147 +1,126 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932FC3515E8
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 09:31:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787650302; cv=pass; b=C55ofCoBL4yJqXJshAZikYUcbZ76bRK3xAjOCUANbO4RUI+ESEvqXSfnFW3+XCFWIwApHCxT6uw5zZasen1ZkwaBomNCcSjpYGIp2E2oyt0IQIgg/kzT2rURSuNkyrB/WMPLQoSOc7JuPj19fEn+IdCS8kHfHV4SRD2C2yQlTBY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787650302; c=relaxed/simple;
-	bh=CMEzlB4ZaonET/uJcOWybrvEkigqtlDxLiPB6jIDVRw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CZg++NufzXbw2TbKlPzrMXRCI5IlwLL732j/T3u0f9/lV/g5K5sLMqolVffYtvblrXWXLU/TBiCvOCEEj7OHjv/vsFAn0TcNnsYONs0q5r1EUHo4mBtlWFSc5ApagvQN/N+jcZZKKhWcjudffS6ZIQDrQtKTadMXFZZ8P4H1F00=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=e2U4eB7u; arc=pass smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B156D3D9DB1
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 09:36:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787650623; cv=none; b=eLeOmHJDEN37bEuQFMt+O0h5TRRu9x1rsQfgIhV9CeRUu3qY7BsQakZX53HuE4gBY/jZCVJloj7Pg4sHa80JP8NaqlBVU9BHdsonreZyG8b3JjQmUMDcvj36EZfKbmgMnJS5AzNN6irIBSkiH7LAkRsmMo2YC503iRPyAhQZfXg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787650623; c=relaxed/simple;
+	bh=Xglf5FE+8Rt8nGlLhWHDfoV8ey79pOok1vvMISLr+pY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=X9iU4qj1YUWrn1oNUOrRZWD+JNoMk+M+nhjy4u5Rk7r1YCscq2cm0Vi62fhTme9eYeOrVea17MqVhaPKBJUvxVsrJ2vxKPt4umYQ1NXXoh/d6tRvg3LuulvN7xkqmD/7S3G1F72U7y6aiqKyTcalv5cYtfFS+T+bsQdBG8QwJ5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=uAnF4C3t; arc=none smtp.client-ip=113.46.200.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="e2U4eB7u"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-84830c774a0so5020075b3a.1
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 02:31:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787650300; cv=none;
-        d=google.com; s=arc-20260327;
-        b=IGENDkibkp8M+5uKxjCaobsc+FoIn1I2PLVg0BElM4YuYFQT106iNl3kUCiJ0HXDUf
-         TSUlimFA5TRNLb1uXe6i113kB70t+5z7Rd2cjDWU7qEm6ZeIqfhU8U4XUBtm/HPWOsKI
-         KNTtvW+PmPHMWkCAFjtQrqV+aVf6Z7ZQM4AFusP/eRAdmvOK2maLp/GSZGD4F7P+/e65
-         pHehB/mE27bWflvuBkMTxjqNTm0uI2ntU1ieRwU/7N4U6SBw1Z5oNO8G9RebC7HT0V0g
-         N3+oJXVCa52Eapy7fRvRaRhfyP4kHGR6FyoBskw1BklGeUwfDn2hyM9bMG0VXUX9B3NR
-         +ePA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CMEzlB4ZaonET/uJcOWybrvEkigqtlDxLiPB6jIDVRw=;
-        fh=iqd+DubFVZ9g08SjqsRYBFtrnrkoI7Y7XGL3dtRv1Mw=;
-        b=QwHEwBsGhc5YINtm8xGmHv/49YTkODT0xr4cl+5nxkqWlEWUbsfhTbsDhvM/PP8z7m
-         VlS+XoRyEKToggWaEdzKaVc0eyQaWkABWlCORFm2s3THGHjjcE2gnqP/eJ1B+JTsW8f3
-         qHFQNoOHAF5E9LiI/7pVsTRIRzlAlJRA3khdhiCHKY5m+xn2fDDCi9CV34FJWmrPiZR+
-         8s1znkuJN+vlggNW0IMflCOOnImAhAuuLJJbpFCo6oZBmrw2BrgCgs/I6y9WVS0+EZ7E
-         FR1n7q9Wo6mEeEM2fgKQdeC44h6qzHUbI542auXZG40AmKDspu7J0r79cCZqyUO2UsoD
-         8bVQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787650300; x=1788255100; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CMEzlB4ZaonET/uJcOWybrvEkigqtlDxLiPB6jIDVRw=;
-        b=e2U4eB7uOq+XrBUO1s9tv1VCp3dAvscjbqwctCZ5d2ietARdHh5g1WTatffh26DSBX
-         Z40vm6rFi8z3s3Y7REXx5QrEPbwEoaQaAXmRFbdHToxzSfvgiClAzMhAD2gord9HhCs0
-         E3BdX/ChlN4R7Ano0LCbkZa1rpX4+nFXwPyWY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787650300; x=1788255100;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CMEzlB4ZaonET/uJcOWybrvEkigqtlDxLiPB6jIDVRw=;
-        b=Ys2KaVkX1k71ogEmyT5DXhIZACDBdrkQ9Cg87kI+jIq1xcuMfJWAbzMjR3H95Y0t0P
-         7wBqZWOoMds3ciwXlrfQtNefv/8qa4lUrEKM9ZDuG3PslHpJ1M5tZWBgYF4EUR9jo8N5
-         m6UTZFo1i6wIwvQisLOR7GFkckiCcSDocWON+YrJL/pZyYWdrMWTzHXbMsnsc/zOI1cj
-         DTDQGmJXO1OQBHpxmktx3tR1xndiOm6u3QnxyTicpg8/GRtOl5BVy/EEvpicjsghTTMD
-         ShuGQ3Mv8J8TGG3iiAa6GNLQvXYBDgX7kCbnDSqwM/w/J8RY2ogAhH7yARtGMdEHLdPi
-         GkYg==
-X-Forwarded-Encrypted: i=1; AHgh+Ro5Ta7CHQortE/0hlIkpd+duNhb5c3w4WM0E4jkWtLfmOQbfs1EeS9GO/Ek6LekWThmu2BINZ8=@vger.kernel.org
-X-Gm-Message-State: AFuF++n4rtAPqXoEpDwt23SZ20tAM6FwRXd/xa/nmjGPbQgS5YzDcV9m
-	j65JZ8Q6RctFETuBLvP5bKKpW8SrRld56/H8RlnQWLXZshw+UBIdnIKhTA3g2A/Zhfr2/olGdXN
-	XAlebv4c2/CBwwT1NzeiN2v2mir7ON2fOOwxyrB+BQ20PptbtNiinBfeX
-X-Gm-Gg: AR+sD100Lq3ODUpauv8+SvTPnQ+xCJBEUB/B4AMHIo0O6JJxIVv0q6VB4Ynmxwfx/Ac
-	XNSzZS3yVlRHSA+XWwx8/DnZIMPm/uQXUHSqFbh8V7s3p3avYRIGEsBWm5Ek9waNIvNSzdPXoCn
-	cUdmAdtUZRkYAT7U4+cde4iI4gO2868+y/9qcqYLEqTJxz08z8v5MdYch/imIpWIcbdGXZvC7Hy
-	kZ8OBlonVJa6TVz+g12g6BClr62a/UcGuQBNOHG0UMve3g6AHJgHDwXgtK23l9WiwTDvoG3VW+Y
-	kusiWgPevnxNGAYo9PGoSNmVOOuRXqLDxgynhyaIIYkLgA==
-X-Received: by 2002:a05:6a00:2ea0:b0:847:99bb:b6d0 with SMTP id
- d2e1a72fcca58-8523c9474b5mr8271340b3a.15.1787650299952; Tue, 25 Aug 2026
- 02:31:39 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="uAnF4C3t"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=RSNxJ21s4/P8k8rWp2B6fntRNm/PG2x/fX4BNACTwvs=;
+	b=uAnF4C3tYF7ZkfpeYTO3AtKEgZk3aXqnBpnw0Wr/jb8AAouO1vy/kFkT3Y9XjR1+RPkRzBZVa
+	RWstoXzld3lUeqefh+WDe98ZBLvaYe1ovLFyQO2Bx0TVruke/obh5TmsfgxDp4wgkip1uSEkHaF
+	Qw/oWsjR3I/sKqGv3oJwp6A=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4hTj7r52D1z1prM0;
+	Tue, 25 Aug 2026 17:26:00 +0800 (CST)
+Received: from whupemk200012.china.huawei.com (unknown [7.152.185.169])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9BE5C4058C;
+	Tue, 25 Aug 2026 17:36:47 +0800 (CST)
+Received: from localhost.localdomain (10.50.85.175) by
+ whupemk200012.china.huawei.com (7.152.185.169) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Tue, 25 Aug 2026 17:36:46 +0800
+From: Dong Chenchen <dongchenchen2@huawei.com>
+To: <dsahern@kernel.org>, <idosch@nvidia.com>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<horms@kernel.org>, <herbert@gondor.apana.org.au>
+CC: <netdev@vger.kernel.org>, <zhangchangzhong@huawei.com>, Dong Chenchen
+	<dongchenchen2@huawei.com>
+Subject: [PATCH net v3] ipv4: icmp: reject RTN_UNREACHABLE input routes in icmp_route_lookup
+Date: Tue, 25 Aug 2026 17:45:23 +0800
+Message-ID: <20260825094523.1461020-1-dongchenchen2@huawei.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAM0EoMmHMFQ+mATPoHv-5uyN9++Lch7MDjHsC7eu=NVapRB2bQ@mail.gmail.com>
- <tencent_F7A4E81EEE16CD5078266CFC2E396F8C940A@qq.com>
-In-Reply-To: <tencent_F7A4E81EEE16CD5078266CFC2E396F8C940A@qq.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Tue, 25 Aug 2026 05:31:28 -0400
-X-Gm-Features: AcwNN1VWdkDx9dWOFx3pZjPP8y6SFe_tWqO9NYvifaz2LxZvXKLi1-Qnqd5Ktfs
-Message-ID: <CAM0EoM=+X_aiWqmfOETA+NJr1kT8_T6rK1_dj-topdzxRAS6+g@mail.gmail.com>
-Subject: Re: [PATCH v2] net/sched: act_gate: Limit the max value for cycletime
-To: Edward Adam Davis <eadavis@qq.com>
-Cc: Po.Liu@nxp.com, davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
-	jiri@resnulli.us, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, 
-	syzbot+0054fed3dc9085390f51@syzkaller.appspotmail.com, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ whupemk200012.china.huawei.com (7.152.185.169)
 
-On Tue, Aug 25, 2026 at 5:01=E2=80=AFAM Edward Adam Davis <eadavis@qq.com> =
-wrote:
->
-> On Tue, 25 Aug 2026 04:25:04 -0400, Jamal Hadi Salim <jhs@mojatatu.com> w=
-rote:
-> > On Sun, Aug 23, 2026 at 12:07 AM Edward Adam Davis <eadavis@qq.com> wro=
-te:
-> > >
-> > > If the user passes a cycletime value of 0xFFFFFFFFFFFFFFFFULL,
-> > > an overflow occurs during the assignment of cycle in gate_timer_func(=
-):
-> > >
-> > > cycle =3D p->tcfg_cycletime; // overflow, cycle =3D -1
-> > >
-> > > Since the local variable cycle is declared as ktime_t (i.e., s64),
-> > > the assignment overflows.
-> > >
-> >
-> > Review the sashiko feedback. At least two of those concerns look legit
-> > and need to be addressed:
-> > 1) complaint about timer disarm on replace 2) INT_MAX being too narrow
-> I haven't received any feedback regarding sashiko, and I didn't quite
-> understand the points made in item 1); could you please provide more
-> details?
+When the forward output route cannot be used in icmp_route_lookup(),
+it enters the "reverse path" and calls ip_route_input() on fl4_dec.daddr,
+the original packet's source address.
 
-You should always look at patchwork for reviews from the AIs - i just
-happened to have cycles and peeked and even my responses are best
-effort. Some maintainers forward AI reviews on a best-effort basis
-(Jakub forwarded you the v1 review), so you may end up getting radio
-silence if nobody has time. So, going forward, the first line of
-defense is to look at patchwork 24 hours + after you post your patch.
-Address those by sending a new version or rebut them on the list.
-> Regarding item 2), if INT_MAX is too narrow, do you have a suitable value
-> to recommend? S64_MAX?
+ip_route_input() only returns an error for truly invalid packets. For
+unreachable addresses it will succeed and return an input route whose
+dst.output is set to ip_rt_bug(). The existing check only rejects
+RTN_LOCAL routes, so the RTN_UNREACHABLE route types can still be returned
+and later used for output, syzkaller triggering a WARN_ON_ONCE()
+in ip_rt_bug() as bellow:
 
-Handwave: The safe bound is one that keeps base + cycletime <=3D KTIME_MAX.
-To be verbose per sashiko:
-cycletime is an unrestricted NLA_U64 consumed as ktime_t (s64). A 200
-s cycle time does not overflow any s64 arithmetic, but your v2 rejects
-it. tdc test a721
-(tools/testing/selftests/tc-testing/tc-tests/actions/gate.json) uses
-cycle-time 200000000000ns and expects success; your v2 breaks it.
-sch_taprio uses INT_MAX but its semantics/tests differ. S64_MAX is the
-actual overflow boundary (U64_MAX is what makes the s64 go negative);
-but even S64_MAX + a non-zero basetime wraps in base + (n+1)*cycle
+ ------------[ cut here ]------------
+ WARNING: net/ipv4/route.c:1273 at ip_rt_bug+0x14/0x20
+ RIP: 0010:ip_rt_bug+0x14/0x20
+ Call Trace:
+  ip_push_pending_frames+0xfa/0x100
+  __icmp_send+0x905/0xf10
+  ip_options_compile+0xc0/0xd0
+  ip_rcv_finish_core+0x321/0xae0
+  ip_rcv+0x1de/0x260
+  __netif_receive_skb_one_core+0x11a/0x130
+  netif_receive_skb+0x7b/0x260
+  tun_get_user+0x11bf/0x1c10
+ ------------[ cut here ]------------
 
-> cheers,
-> Edward
->
+Reject input route that is RTN_UNREACHABLE to fix it.
+
+Fixes: 8b7817f3a959 ("[IPSEC]: Add ICMP host relookup support")
+Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
+---
+v2:
+- RTN_UNICAST judgement will reject bforward packet. Only reject RTN_UNREACHABLE
+v3:
+- Modify the comments to make them more accurate.
+- RTN_UNREACHABLE dont need warn log. 
+---
+ net/ipv4/icmp.c | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
+
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index 0caedfc7ca92..7350f0380be1 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -581,16 +581,15 @@ static struct rtable *icmp_route_lookup(struct net *net, struct flowi4 *fl4,
+ 		skb_dstref_restore(skb_in, orefdst);
+ 
+ 		/*
+-		 * At this point, fl4_dec.daddr should NOT be local (we
+-		 * checked fl4_dec.saddr above). However, a race condition
+-		 * may occur if the address is added to the interface
+-		 * concurrently. In that case, ip_route_input() returns a
+-		 * LOCAL route with dst.output=ip_rt_bug, which must not
+-		 * be used for output.
++		 * At this point, fl4_dec.daddr should NOT be local (the
++		 * address can be added to the interface concurrently) or unroutable.
++		 * In that case, ip_route_input() returns a LOCAL or UNREACHABLE
++		 * route with dst.output=ip_rt_bug, which must not be used for output.
+ 		 */
+-		if (!err && rt2 && rt2->rt_type == RTN_LOCAL) {
+-			net_warn_ratelimited("detected local route for %pI4 during ICMP sending, src %pI4\n",
+-					     &fl4_dec.daddr, &fl4_dec.saddr);
++		if (!err && rt2 && (rt2->rt_type == RTN_LOCAL || rt2->rt_type == RTN_UNREACHABLE)) {
++			if (rt2->rt_type == RTN_LOCAL)
++				net_warn_ratelimited("detected local route for %pI4 during ICMP sending, src %pI4\n",
++						     &fl4_dec.daddr, &fl4_dec.saddr);
+ 			dst_release(&rt2->dst);
+ 			err = -EINVAL;
+ 		}
+-- 
+2.25.1
+
