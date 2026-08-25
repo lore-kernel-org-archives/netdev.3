@@ -1,52 +1,52 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B061B4908D4
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 22:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D254B4908C5
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 22:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787698519; cv=none; b=bBRg6LwycsFSEozvDk0UHxU+OyCfsENvnfBhlzhK2RUBxhjiK21yAbDz73IuVZS+FwhpOVtckcQ/NC5PFoNJ64Djf8zlQsr8EoHaBXK1Szy/bV0ibyzV4nXIY0JHRfRTE8PQeI9IM1Tzc5tvw39PNlbCHyKAdRfwTgo0h8WpPPc=
+	t=1787698519; cv=none; b=MrmSBiG3wgnXl+U5eJ/j5FHr9BTwlLz+O6AC9uzZxCFjHMXLzoIB96AeNRdvwnidma0Y95+8ayYy9xtOCUPi1S9w4PRBTpk4rzDfDbWuGL1IeAt/MXADFK+m8EHr6PXVUZQD5XR2ElimOOva1woB+MoI4cTyLt5STB6S1kl2JOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1787698519; c=relaxed/simple;
-	bh=iRbwGApC4tmQ0aGWGh+Q2tqfhGKKtnkcYis151rAsVs=;
+	bh=gp68+MsmxXzuKFhQM3kfQ/SCm+ed53o7YtzjMKI5O+A=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KFrGbU8m4dhuegll3yxpAejKhpaeJOLQndA5os4OVjJxNWyhZIaMD2GpdHNiZxyxb+/x3Y7HiXm6ibAgIcxsYwGej1GO3sgu4UCl7w44XXlqNzuUAUzZYQ0r2/6v7voE0+5Bxshg6fXb5bAue7nFKNmEMXRap4M8C1HbYx4r0hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Tv7M4+RY; arc=none smtp.client-ip=192.198.163.19
+	 In-Reply-To:To:Cc; b=hnVHGe7xu13EgfaXqwKkaaldPqooQxrQoJRm2GkNdc3txFJPbqGNRhizAtsUNfR09OFLQic8VHpmpcWFH6hzP1zSa33bfNyeKLrdF7Xk5eBdyGamJto/hzQAP0vqK7aeABMby65NG+y2OSQIfrxy6ZXO0ik8GhWp4lsiDrNhNUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H39hWgqa; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Tv7M4+RY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H39hWgqa"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787698518; x=1819234518;
+  t=1787698517; x=1819234517;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=iRbwGApC4tmQ0aGWGh+Q2tqfhGKKtnkcYis151rAsVs=;
-  b=Tv7M4+RYmjU2hXIGpDH/Jm+zaWiKJQSbbi/y03EAAgDPKfI5qN3D1GQp
-   aTiki3pU2xfh5DwOi5kEa9tkPPS+xz7XT0WGkzPv27KHn7ORpjPpNj0ra
-   5jZBuV2bpSM0Je6b31JdaSIqBCy121f47NQ6+62Z5GHQNDv6mUpT4sPGR
-   1ibcMDfdEVOQ0IzmefT/KLVQrKtA7pfHN/B4Ta7wJlDW2uGw5Tv+ATv/q
-   lFj7rI4Xv0xLCk0cTxYr9msXkm3Lca5s2ikIaqZC2+AAbn6dAsjmuGLI5
-   GabLVCjMbN9j7rtPgxYhLO+Zh3mv6BIFC69Od9FjpsJQApKUdFavFdEMg
+  bh=gp68+MsmxXzuKFhQM3kfQ/SCm+ed53o7YtzjMKI5O+A=;
+  b=H39hWgqa82d+KXXGI3CiYPVV85tUbvwmAMOH9tFGo/UDJemwI5xNo5ir
+   Tep3Xf3cYf7exVIBY0AhF8gIsPFq/bIzW6VCViT6184WSakQoWY4Lpncb
+   L4yWM9owPWevU15WNy1HrypCMM7BSNs6BOSfqwqDz7492dYj7XtlDbYf0
+   fde9oDM0706DqEgIxwE9BkOUXSLkpttveIYwJ+Ok5WnCdCMLWMMJg7jBR
+   stm6n/UpdZxo+L8FckgnK4RqTAstQtBIoGDOV5VkTtB9SlvpFh6Zg8eyF
+   /UPWhUoXL1ObocqBArSyz3JLpkG8s3J4NXz5U9ST0kzbUS05wdqQTDFle
    g==;
-X-CSE-ConnectionGUID: ZHDvxprvQ+KhsbWBJD2Aqw==
-X-CSE-MsgGUID: 7ysvQ4gaTEy2kqZE8nDC6Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="87120448"
+X-CSE-ConnectionGUID: 6w+O5hs4R3OpiBIi9XJ5Iw==
+X-CSE-MsgGUID: kEmsnGNFSUeYK+WG67mrmw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="87120445"
 X-IronPort-AV: E=Sophos;i="6.25,243,1779174000"; 
-   d="scan'208";a="87120448"
+   d="scan'208";a="87120445"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
   by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 15:55:07 -0700
-X-CSE-ConnectionGUID: sbDQ7b/ARTmkbuzrP4ZIGQ==
-X-CSE-MsgGUID: fXZGoVnhSjScuNeAXtMCtw==
+X-CSE-ConnectionGUID: Ryo7rXOYTq6JjkoYWe65pw==
+X-CSE-MsgGUID: aBeHNkbsQm6FeaSbSVUhVA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,243,1779174000"; 
-   d="scan'208";a="264789700"
+   d="scan'208";a="264789695"
 Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
   by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 15:55:07 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Tue, 25 Aug 2026 15:53:36 -0700
-Subject: [PATCH iwl-net v2 12/14] ice: remove unnecessary discarding of
- timestamps after clock adjust
+Date: Tue, 25 Aug 2026 15:53:35 -0700
+Subject: [PATCH iwl-net v2 11/14] ice: keep Tx timestamp slots tracked
+ until completion or timeout
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260825-jk-e825c-minimized-fixes-v2-12-8223f95d26e3@intel.com>
+Message-Id: <20260825-jk-e825c-minimized-fixes-v2-11-8223f95d26e3@intel.com>
 References: <20260825-jk-e825c-minimized-fixes-v2-0-8223f95d26e3@intel.com>
 In-Reply-To: <20260825-jk-e825c-minimized-fixes-v2-0-8223f95d26e3@intel.com>
 To: Intel Wired LAN <intel-wired-lan@lists.osuosl.org>
@@ -68,96 +68,244 @@ Cc: netdev@vger.kernel.org,
  Jacob Keller <jacob.e.keller@intel.com>, 
  Maciek Machnikowski <maciej.machnikowski@intel.com>
 X-Mailer: b4 0.17-dev-c276d
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4065;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8559;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=iRbwGApC4tmQ0aGWGh+Q2tqfhGKKtnkcYis151rAsVs=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhqw+WbtS1QLpW2rWMhPORVo+nlPrceCP/anC66XZqr3f1
- 2p/M17UUcrCIMbFICumyKLgELLyuvGEMK03znIwc1iZQIYwcHEKwEReFjMynOWPnXWi/vmCySvL
- 0rPa265412hv598S9yHbRb74y5cdjQz/lPsC03ovbjm8Kmn97bwb+3fFxHEIv+ed/83oe3PVX0d
- ORgA=
+ bh=UEuuzM/e7sR6Zz4wop8zGxd5s/V9G8bSlWRjyMusUzI=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhqw+Wdt9tudyTsyv/3f33sNfqp9Oz5Nec1eUZ13YLZH0s
+ mbDTsuijlIWBjEuBlkxRRYFh5CV140nhGm9cZaDmcPKBDKEgYtTACZiFMHwz9DseqvTz12eXsYi
+ +Sw872zsv1bX3Sns3DZpv8iWywsO7mf4w9d5eu6CJM3KqpBy0YMfNhV+fxRaX97DX/eliT1sz+r
+ 1/AA=
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-The ice driver currently discards any outstanding timestamps that are
-happening very near to a .adjtime or .settime callback. This was originally
-add by commit d40fd6009332 ("ice: handle flushing stale Tx timestamps in
-ice_ptp_tx_tstamp").
+From: Petr Oros <poros@redhat.com>
 
-The original motivation for discarding timestamps was that extending an old
-timestamp using the new cached value of PHC was a problem, as it could
-produce incorrect results. The change did not describe what such "incorrect
-results" were.
+When the link goes down the processing loop drops every outstanding
+request, and a request whose timestamp is not ready yet is freed
+without reading the PHY slot. The hardware completes the capture a
+moment later, the orphaned ready bit blocks the port interrupt until
+the next link-up sweep, and the freed index can meanwhile be reused
+by a new request whose slot the hardware then overwrites. Captured on
+a reproducer as ready bits with no in_use owner right after a link
+bounce.
 
-There are no such incorrect results. Extending the 32 bit timestamp with
-the new time value just means that the timestamp is reported in terms of
-the newly updated and adjusted system clock. This won't produce incorrect
-results or problematic timestamps to applications. Either the timestamp
-will be extended with the value of the PHC just prior to the time
-adjustment (if the timestamp completes prior to the adjust callback), or it
-will be extended using the new PHC value after the adjustment. In either
-case, the resulting extended timestamp value makes sense.
+Stop dropping on link down. Mark the outstanding requests stale so
+their completions are read and discarded, reject new requests while
+the link is down, and free a not yet ready slot only after the two
+second timeout. This way an index is never reused while the hardware
+can still write it and never left untracked while a completion can
+still arrive.
 
-The timestamp extension logic is very similar to the logic found in
-timecounter_cyc2time, the primary difference being that the ice hardware
-maintains the full 64 bits of nanoseconds in the MAC rather than being
-maintained purely by software as in the timecounter case.
+To avoid an IRQ storm in the event that we really do have a stale packet
+that is not timestamped, modify ice_ptp_tx_tstamps_pending() to ignore
+stale timestamps when checking for whether to re-arm the IRQ from the
+miscellaneous thread function. Instead, only check for stale packets in the
+auxiliary work thread. This way we do not check in a tight loop waiting for
+a timestamp that may never come.
 
-Indeed, I couldn't find an example of a driver using timecounter_cyc2time
-which does discard timestamps that occur nearby a time adjustment. The ice
-driver behavior of discarding such timestamps just results in failure to
-deliver a Tx timestamp to userspace, resulting in applications such as
-ptp4l to timeout and enter a fault state. Reporting the extended timestamp
-based on the updated PHC value isn't producing "garbage" results, and
-doesn't lead to incorrect behavior.
+This effectively reverts commit fcc2cef37fed ("ice/ptp: fix the PTP worker
+retrying indefinitely if the link went down"), which tried to release an
+index before this 2 second wait period.
 
-This effectively reverts commit d40fd6009332 ("ice: handle flushing stale
-Tx timestamps in ice_ptp_tx_tstamp"). However, the stale logic remains, as
-we now use it to inform the driver to drop timestamps which might fail due
-to link down.
-
-Fixes: d40fd6009332 ("ice: handle flushing stale Tx timestamps in ice_ptp_tx_tstamp")
-Reviewed-by: Maciek Machnikowski <maciej.machnikowski@intel.com>
-Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
+Fixes: fcc2cef37fed ("ice/ptp: fix the PTP worker retrying indefinitely if the link went down")
+Suggested-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Petr Oros <poros@redhat.com>
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Maciek Machnikowski <maciej.machnikowski@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_ptp.c | 17 ++++-------------
- 1 file changed, 4 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ptp.h  |  8 ++++--
+ drivers/net/ethernet/intel/ice/ice_main.c |  2 +-
+ drivers/net/ethernet/intel/ice/ice_ptp.c  | 44 +++++++++++++++----------------
+ 3 files changed, 28 insertions(+), 26 deletions(-)
 
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.h b/drivers/net/ethernet/intel/ice/ice_ptp.h
+index da2003ba3bb0..13158a9319fb 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp.h
++++ b/drivers/net/ethernet/intel/ice/ice_ptp.h
+@@ -132,6 +132,9 @@ struct ice_ptp_tx {
+ #define INDEX_PER_PORT_E82X		16
+ #define INDEX_PER_PORT			64
+ 
++/* Maximum number of timestamp indexes across all devices */
++#define INDEX_PER_PORT_MAX              INDEX_PER_PORT
++
+ /**
+  * struct ice_ptp_port - data used to initialize an external port for PTP
+  *
+@@ -316,7 +319,7 @@ void ice_ptp_req_tx_single_tstamp(struct ice_ptp_tx *tx, u8 idx);
+ void ice_ptp_complete_tx_single_tstamp(struct ice_ptp_tx *tx);
+ void ice_ptp_process_ts(struct ice_pf *pf);
+ irqreturn_t ice_ptp_ts_irq(struct ice_pf *pf);
+-bool ice_ptp_tx_tstamps_pending(struct ice_pf *pf);
++bool ice_ptp_tx_tstamps_pending(struct ice_pf *pf, bool in_irq);
+ u64 ice_ptp_read_src_clk_reg(struct ice_pf *pf,
+ 			     struct ptp_system_timestamp *sts);
+ 
+@@ -364,7 +367,8 @@ static inline irqreturn_t ice_ptp_ts_irq(struct ice_pf *pf)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static inline bool ice_ptp_tx_tstamps_pending(struct ice_pf *pf)
++static inline bool
++ice_ptp_tx_tstamps_pending(struct ice_pf *pf, bool in_irq)
+ {
+ 	return false;
+ }
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index f32041dd8b27..d12952171a99 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -3248,7 +3248,7 @@ static irqreturn_t ice_misc_intr_thread_fn(int __always_unused irq, void *data)
+ 	ice_irq_dynamic_ena(hw, NULL, NULL);
+ 	ice_flush(hw);
+ 
+-	if (ice_ptp_tx_tstamps_pending(pf)) {
++	if (ice_ptp_tx_tstamps_pending(pf, true)) {
+ 		/* If any new Tx timestamps happened while in interrupt,
+ 		 * re-arm the interrupt to trigger it again.
+ 		 */
 diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-index f8ef054ca966..8500e9a5b047 100644
+index 59972de1eda2..f8ef054ca966 100644
 --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
 +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-@@ -826,12 +826,10 @@ ice_ptp_flush_tx_tracker(struct ice_pf *pf, struct ice_ptp_tx *tx)
-  * ice_ptp_mark_tx_tracker_stale - Mark unfinished timestamps as stale
-  * @tx: the tracker to mark
-  *
-- * Mark currently outstanding Tx timestamps as stale. This prevents sending
-- * their timestamp value to the stack. This is required to prevent extending
-- * the 40bit hardware timestamp incorrectly.
-- *
-- * This should be called when the PTP clock is modified such as after a set
-- * time request.
-+ * Mark currently outstanding Tx timestamps as stale. This prevents the driver
-+ * from reporting the timestamp to the stack. This is called to inform the
-+ * driver that a timestamp is expected to fail if it was initiated as the link
-+ * went down.
-  */
- static void
- ice_ptp_mark_tx_tracker_stale(struct ice_ptp_tx *tx)
-@@ -1049,13 +1047,6 @@ static void ice_ptp_reset_cached_phctime(struct ice_pf *pf)
- 		kthread_queue_delayed_work(pf->ptp.kworker, &pf->ptp.work,
- 					   msecs_to_jiffies(10));
- 	}
--
--	/* Mark any outstanding timestamps as stale, since they might have
--	 * been captured in hardware before the time update. This could lead
--	 * to us extending them with the wrong cached value resulting in
--	 * incorrect timestamp values.
--	 */
--	ice_ptp_mark_tx_tracker_stale(&pf->ptp.port.tx);
+@@ -364,9 +364,12 @@ static u64 ice_ptp_extend_40b_ts(struct ice_pf *pf, u64 in_tstamp)
+ static bool
+ ice_ptp_is_tx_tracker_up(struct ice_ptp_tx *tx)
+ {
++	struct ice_ptp_port *ptp_port =
++		container_of(tx, struct ice_ptp_port, tx);
++
+ 	lockdep_assert_held(&tx->lock);
+ 
+-	return tx->init && !tx->calibrating;
++	return tx->init && !tx->calibrating && ptp_port->link_up;
  }
  
  /**
+@@ -563,7 +566,6 @@ static void ice_ptp_process_tx_tstamp(struct ice_ptp_tx *tx)
+ 	struct ice_pf *pf;
+ 	struct ice_hw *hw;
+ 	u64 tstamp_ready;
+-	bool link_up;
+ 	int err;
+ 	u8 idx;
+ 
+@@ -581,14 +583,11 @@ static void ice_ptp_process_tx_tstamp(struct ice_ptp_tx *tx)
+ 			return;
+ 	}
+ 
+-	/* Drop packets if the link went down */
+-	link_up = ptp_port->link_up;
+-
+ 	for_each_set_bit(idx, tx->in_use, tx->len) {
+ 		struct skb_shared_hwtstamps shhwtstamps = {};
+ 		u8 phy_idx = idx + tx->offset;
+ 		u64 raw_tstamp = 0, tstamp;
+-		bool drop_ts = !link_up;
++		bool drop_ts = false;
+ 		struct sk_buff *skb;
+ 
+ 		/* Drop packets which have waited for more than 2 seconds */
+@@ -1371,6 +1370,9 @@ void ice_ptp_link_change(struct ice_pf *pf, bool linkup)
+ 	if (pf->hw.reset_ongoing)
+ 		goto exit_kref_put;
+ 
++	if (!linkup)
++		ice_ptp_mark_tx_tracker_stale(&ptp_port->tx);
++
+ 	if (hw->mac_type == ICE_MAC_GENERIC_3K_E825 &&
+ 	    test_bit(ICE_FLAG_DPLL, pf->flags)) {
+ 		int pin, err;
+@@ -2767,28 +2769,29 @@ void ice_ptp_process_ts(struct ice_pf *pf)
+ 	}
+ }
+ 
+-static bool ice_port_has_timestamps(struct ice_ptp_tx *tx)
++static bool ice_port_has_timestamps(struct ice_ptp_tx *tx, bool in_irq)
+ {
+-	bool more_timestamps;
++	DECLARE_BITMAP(tstamps, INDEX_PER_PORT_MAX) = {};
+ 
+ 	scoped_guard(spinlock_irqsave, &tx->lock) {
+ 		if (!tx->init)
+ 			return false;
+ 
+-		more_timestamps = !bitmap_empty(tx->in_use, tx->len);
++		if (in_irq)
++			return bitmap_andnot(tstamps, tx->in_use, tx->stale, tx->len);
++		else
++			return !bitmap_empty(tx->in_use, tx->len);
+ 	}
+-
+-	return more_timestamps;
+ }
+ 
+-static bool ice_any_port_has_timestamps(struct ice_pf *pf)
++static bool ice_any_port_has_timestamps(struct ice_pf *pf, bool in_irq)
+ {
+ 	bool have_tstamps = false;
+ 	struct ice_ptp_port *port;
+ 
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(port, &pf->adapter->ports.list, list_node) {
+-		if (ice_port_has_timestamps(&port->tx)) {
++		if (ice_port_has_timestamps(&port->tx, in_irq)) {
+ 			have_tstamps = true;
+ 			break;
+ 		}
+@@ -2798,7 +2801,7 @@ static bool ice_any_port_has_timestamps(struct ice_pf *pf)
+ 	return have_tstamps;
+ }
+ 
+-bool ice_ptp_tx_tstamps_pending(struct ice_pf *pf)
++bool ice_ptp_tx_tstamps_pending(struct ice_pf *pf, bool in_irq)
+ {
+ 	struct ice_hw *hw = &pf->hw;
+ 	int ret;
+@@ -2808,11 +2811,11 @@ bool ice_ptp_tx_tstamps_pending(struct ice_pf *pf)
+ 	case ICE_PTP_TX_INTERRUPT_NONE:
+ 		return false;
+ 	case ICE_PTP_TX_INTERRUPT_SELF:
+-		if (ice_port_has_timestamps(&pf->ptp.port.tx))
++		if (ice_port_has_timestamps(&pf->ptp.port.tx, in_irq))
+ 			return true;
+ 		break;
+ 	case ICE_PTP_TX_INTERRUPT_ALL:
+-		if (ice_any_port_has_timestamps(pf))
++		if (ice_any_port_has_timestamps(pf, in_irq))
+ 			return true;
+ 		break;
+ 	default:
+@@ -2888,7 +2891,7 @@ irqreturn_t ice_ptp_ts_irq(struct ice_pf *pf)
+ 		/* E830 can read timestamps in the top half using rd32() */
+ 		ice_ptp_process_ts(pf);
+ 
+-		if (ice_ptp_tx_tstamps_pending(pf)) {
++		if (ice_ptp_tx_tstamps_pending(pf, true)) {
+ 			/* Process outstanding Tx timestamps. If there
+ 			 * is more work, re-arm the interrupt to trigger again.
+ 			 */
+@@ -2918,7 +2921,6 @@ static void ice_ptp_maybe_trigger_tx_interrupt(struct ice_pf *pf)
+ {
+ 	struct device *dev = ice_pf_to_dev(pf);
+ 	struct ice_hw *hw = &pf->hw;
+-	int ret;
+ 
+ 	if (!pf->ptp.port.tx.has_ready_bitmap)
+ 		return;
+@@ -2926,11 +2928,7 @@ static void ice_ptp_maybe_trigger_tx_interrupt(struct ice_pf *pf)
+ 	if (!ice_pf_src_tmr_owned(pf))
+ 		return;
+ 
+-	ret = ice_check_phy_tx_tstamp_ready(hw);
+-	if (ret < 0) {
+-		dev_dbg(dev, "PTP periodic task unable to read PHY timestamp ready bitmap, err %d\n",
+-			ret);
+-	} else if (ret) {
++	if (ice_ptp_tx_tstamps_pending(pf, false)) {
+ 		dev_dbg(dev, "PTP periodic task detected waiting timestamps. Triggering Tx timestamp interrupt now.\n");
+ 
+ 		wr32(hw, PFINT_OICR, PFINT_OICR_TSYN_TX_M);
 
 -- 
 2.55.0.814.gc42f45431d0f
