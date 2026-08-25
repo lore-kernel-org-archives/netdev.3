@@ -1,121 +1,143 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AFBC3CF02D
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 07:44:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0432F12CE
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 07:46:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.170
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787643871; cv=pass; b=VjRnzDW5mURZMSGTn65/CAc6KHeiAYSLQW6JtzjRbw02K1yLNXK/A1HxqWP13XYnlP04JBaMVyOI1hiWGzcvuwmgaE3iNoy2nV/nz+R7Az6rr2GR64mspwZXNuSOM7eZrij3UZ9GHZp02jaZizr93y31Z/S3FN3DU/a4PuZqWz0=
+	t=1787644012; cv=pass; b=NYhnBA2qCS6IiobBI8NTLhtBfYiBWzC0W0QE4fCTGdFHQXlrbbfLr7VNt1+HPhJSZREKtsQDLCcDAmuPkoTy5yeR4CENNvXjU29OoKiimDHfiD+k2wqV5P5MBtJKv8bNMJDzV6ulIJb777Un+vhRRIVlk86RDBvN+/JPOYNIqiQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787643871; c=relaxed/simple;
-	bh=X04DIHMZxw6/5xtn5gumEmBjGtO0g/1ZdeYvU0NA1jQ=;
+	s=arc-20240116; t=1787644012; c=relaxed/simple;
+	bh=ttxtJzAnZ23ah23t+GTv0gffKT+rgBXkbjdDED4PoMI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QVHtcfnqb2YFcHZMcAJEM2K4tOZDqckiNHEuIeso46CrxF1FtqivnDUhKlJhkgasXSR27mlVImcBtuMkGSjDDnSVG75KSHIC43R5e6hrsVM2IRCbuMuX4ARWYyPLIOC1pHhXtHrwZdxs0EFbdUlknp+VGef1DV+0TUA1140f+nk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sOopyrHO; arc=pass smtp.client-ip=209.85.160.178
+	 To:Cc:Content-Type; b=Q4lR1yUPxKJdzjerA9AYyPZnCoas/1506HOM66c9lsTcRtrOhOVQsrTy/kbPmdkQq1wVT0EVk+u6KRPOYVgWF1HiqVx1kKH119gQrb0Sf0eVU57aHlSaAIPk7p0F6iA6FIwr/ljUuUx3OjE0NsxIkgVgWa84AA2bBwBsAq/S7/8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VEqW8x8j; arc=pass smtp.client-ip=209.85.160.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sOopyrHO"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-52d590ce5cdso30733751cf.1
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 00:44:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787643869; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VEqW8x8j"
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-51c4436d02cso23426421cf.1
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 00:46:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787644010; cv=none;
         d=google.com; s=arc-20260327;
-        b=XfaKzhQQmu8eOqaxlCEjHavK0ZX1bMYa2oTYwkaJc1PftmFmVhDhb7tJJ0NrmKLgyU
-         DjDWbokwjw4mK9urzeAum01OzKYLGGx+FCeTVC0DHskBySQOcOJVMsXlOFyV1Yamh22A
-         8394W96hoxT99GwRe7M/83Cwo+v4poPvQHb0yUCi03j4Vrb974lKEQuQjcxyhVTjrEEP
-         BV14jF2S+uyOgY5JR+sVL+kixmDRqQGL7RHR5Ge6iHUySoZLajbzOFaSKXUALflYXPj1
-         3nHA3FxpQYqR1+aVo9ohIE2zZ1AZjYTPDpnG5NkTEkSSK04gFY8J9OvdjLpEJZlelL7x
-         sbBw==
+        b=EJ1nQfCvyMWvtBZsTQqB75RX2+SqhOe/GPYHj4Lx6mYhyj7RCnYnmFZiaLqzoz4dV+
+         VnzgfwouE4L1yoe/zLay401VzY+7c0LPKireW4ltHiMw+c64wZFtOlwUOt5jO9uTTA31
+         Wkv8JaBEVcjlajF7velAAecjtkf1csRC9fj102W5LnMfI/+YPQxGQUOAVZydfGHU9T/t
+         zdvm4hulYe3l7g6a21abKtCgjFk1KM+rCpTTWEScvErgl2lTvKaHFxU5FXYs7svxG+RI
+         iTUf3hJB17Si14vBDFQMQ0WKmFPG1N7fwMmCuQaT9WbUPTUTMxIuw+qVgsKG6d4l0aDZ
+         Yq2g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=icSIZLjmkJhUkdPFsKLS4ShrJUnEK0Co35qci0jNz2c=;
-        fh=NwIO3k2crFV/B+OMG8RytN+VgvsPlWX1wehtVlBQ1gE=;
-        b=GIgXYihwOOLBV6eb4aHSOrvAjXqIxSEOiZiB3+i5kdTwiwwzVGXgrKKXArxYLb7aUp
-         wPGvmL01ORhnQ6RGsPZKGMLXnZP6rTrrQRT9TUt3ZHcIW1UrB214LfhQ/6LrFcjBZ8vg
-         g/hCR13EDbNJpjzYGtmMEILuWFTetoGsQD86Frp8hlQExj9kEXy0DCh9esvX3ePiRc62
-         YdiaBUB6xqJN9C0scNtdaOOAIZGY7Qsv9KmwrsR4Hwd10/OolPm0xuzZ6iDB0ES3G19A
-         ufF/8d5n7jsBlFRXQ1wvmIugTZZ3ff8W59Ne8cdQ2S5a2ZguM3LA67lOEN2cHiEECOBv
-         S0fg==;
+        bh=ttxtJzAnZ23ah23t+GTv0gffKT+rgBXkbjdDED4PoMI=;
+        fh=zrpTQTG/ql6ZmcFrGczv713GT3L8maXQxocegSbXyDY=;
+        b=gqdzDmeOwb9K2NWmlenVc/lCNdXLnjleZidONhEBareY1LHHsj8zXtJ/jmbnO/6M1q
+         /oXZ+/Z630A+fiY+E6Wfc0AsVUkMein5nfAZik0W/wLNGWgwOihDS1VCNeS4J38fBaa2
+         JxmFZUg/7V7CKL3Bo8wPakcA9bjIWlbl36mozvm6hRxCroI2ApHnlJrE0bluNABAzQA3
+         eHVlq4AFicUz5R+JhCfg7fAQmM3lBP3xTq5MvqYkQrHtwJ6Lj4onuWGbrKkSgIrBSBA9
+         1KMOlg2U8zrQ7RDJdN6aYApcW9sBmbBpiA6OFXhrsC2PsXH6OLS0m3lKckwvt8Enh2LS
+         a0OQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787643869; x=1788248669; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1787644010; x=1788248810; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=icSIZLjmkJhUkdPFsKLS4ShrJUnEK0Co35qci0jNz2c=;
-        b=sOopyrHOyJkRuIaWuQZ9hlyT5xTiuPC8iFLvpriJUBJnzvueHngMFl4SY4VK8sjCye
-         uBxPlOuT8MQv6Z8Q5RuMkMHvwJ9jYWr2j2GAtX++k2vVtXh7LOHLHN3tE8iDrsdMJk84
-         bq+jJZZRK+hVsQrv94RNXx7jSLtmPWsEsuX56EtGAqjr5qLmKtC8WVZ6FsVQJq6ASuEZ
-         M2IF1JZhN8glAc4yCTJHmWvQ0h+ICAWDE4A3JwnezEdO7SQ7cvmuHf8RLSVyy+8WJEnu
-         NTtyOQIFDClq3iRSqWojMydy2LfGdl4rJ/k23RjDQ3Bi9av9q4cBooyGUvZrmZqDrYT9
-         mAbw==
+        bh=ttxtJzAnZ23ah23t+GTv0gffKT+rgBXkbjdDED4PoMI=;
+        b=VEqW8x8jA/2jl2ZE6VPkhkx9TgbfKwAStvxp7/rQSV8TuGPkwxTfXtq7h18R7tcPUn
+         2wGWzvd9/k6ZHRYLEoeiaTL/o0dqPIt7nHQKPfYZelUmOL3gYyZcqxpowxFqbj60d8RI
+         LmqkmY3rnpDMMgZfzTjJOPZiepVaCAWCw/4EfJxKZCO3RXv6MsM5dHx3WYOVmu4CDfV8
+         VePkA+U64Cnb+4NwhCMbKs2LHHfmtz39W4OVQ2siO/76owm1tyXDe8kKwE5JiIyJllER
+         wlc37LyLj85LUeU7kwCnttNVoszoQ3zSaap6InfESlYgsfrubWcf563PfHF7xE65svCY
+         JQjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787643869; x=1788248669;
+        d=1e100.net; s=20251104; t=1787644010; x=1788248810;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=icSIZLjmkJhUkdPFsKLS4ShrJUnEK0Co35qci0jNz2c=;
-        b=Mi8Bh93VbAfGBBIvF/95ZeENJtnfotim5LoU5KKr+Uzx8O1kU2tEsAAqorL71eg0jF
-         pCozVfxiCkbsg1aMuTI3PqTKJdFjojF9voNp98CI4w4AHC5GD586Zzs3ICWs9rJzq2oW
-         fL55AoDV+gFh25ZkU76+/cAEhPsRZRrJX/RCKRtz86s3fIau12WUu3Y0mLnXroVAa18X
-         7LKkjpmB/BXYmNyUft16PKRyhazYeUhR+SZgGXEqpw+ZzVsY9Wep5HJGv5o82sJkGeYn
-         sXs4CahSomcrK3ct8Lh7882UIAVUKVcsvqewXG628Q9u9CinJxGpQhlUskgav6U1gUjr
-         5TZQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoZmTA7uGpDNmFn5c/S5qumlJyMPMq9k71oBPd7eqzPFJm0hm7ZqdQmdcOJ6T8KIZltTORbaP4=@vger.kernel.org
-X-Gm-Message-State: AFuF++kke1arNGapg1DMCmROJubeFHzejZKwWL2/9oq56Ge5ueN7oZdz
-	+isKrfQPr2ONh7cSbA9CP383c4pNtvWvvqrpvX0vy/uEqImaATc0J7SCnY3w/IYMqg+T2/p61Ef
-	xxMbOD2ShmTjYyuiyePSELGgv48oJv4hvImHt9Z+Q
-X-Gm-Gg: AR+sD13wTLdSBrtGlHrfyzKRzb40upXP5tvc6nqAB4g7SQFmI4stlXVe+N7xcPjcANH
-	myi1bonz46lhHILp6hmRZOkbvXbFcD0HY3RVMafRbdkuvfH8C+a5iihfR+ooqh9/cFaDoqcgquz
-	/8PCcU9qMwaJSqkRHxAPpBRmVR+3PIdKX4TgbfnbKps1wlFDeXDjbWgpltVW4SkNNF3GDNuBB/V
-	4bWCRA1/hEjTzbHZwiawxj+7toISxQ0Gvp1eZifmXI3+5cRu2gvONqBILk8vX84Q+als3AyfRxm
-	GnPRTOYcKksG50b8FFnP1Ty+TNONkK9XyXCxlzbwjziJXpBik91bkZFEonTpX/84V0uLdFl7Zn0
-	zQ8zY0l0hO8sLqEnZRKEW9qQO/aSV3A5yyTwkLkPshAigNlFkcFgWEh9c
-X-Received: by 2002:a05:622a:4d03:b0:515:189c:e0f8 with SMTP id
- d75a77b69052e-52df573a231mr353332591cf.17.1787643868848; Tue, 25 Aug 2026
- 00:44:28 -0700 (PDT)
+        bh=ttxtJzAnZ23ah23t+GTv0gffKT+rgBXkbjdDED4PoMI=;
+        b=OrdXJX8zs4uTDpd4l5e1dw1+mOxJYDxv/AgLvpdswVCmyINB1s8u4MRmacAv/wnB2/
+         Wiy2i5EVedOUwpeL/J7KHv/PnVKgOA4Qsnv+b4B8JxtaSX3FCwRqaIvcPMc75mBNcFu5
+         fibVWVnVc3Xmi/w2prXP93yznkGs3eGlsb0ZWP2Q3KQMAAQVLiDtUx9myqTMTjP1cL40
+         gpD1d3MzBztkzLNGgLlGgCTLNJbvBTwtE25u9Vi9Igzz3mqdsAzuypErAhe/2zIbmh+/
+         MkWe8XQVDL600G/BRvYbAlcw5MFGrj+Yaax77BwAR3r555gfy21ltsDbaUZ3W5I5u8Ht
+         XxKw==
+X-Gm-Message-State: AFuF++kSs4+sEeBefuU0zzYfzoWydBPPnlatVGIf/pI7oGWfOO21fuiM
+	+Ijft0rTh5K4twLJWk8+iw6DJ+xP7qbdj+iC56pEQfSsXfr5dIndhWPDJ4IcoFYqVRIHnxOe+J6
+	1P1D760D0YxZFSz6OyKKjEUNtXcmL4bsxYVjE7x8e
+X-Gm-Gg: AR+sD11QIyWlbZv3c3LXjNPPLRpo7tSg/S8EbQCqDXOMoveWvsXnleEdse8eo/YPBzm
+	/nGk12l6jfPuCIu3i3jmN9hB+uurKnBbMwXfBjkz6tpYIWh6c6MJ1cDKg6MmGi4Qj7IEumP1nYg
+	ko7UrDLkO7sMeW7/VKK4taYDveOAjh3zfdHj8HvfQcDNd93dOobZ6hGeQ7t4oJXiOjDgNItAS88
+	9OBT1zis/CCImKwE+OcWNgnGWvs3jIN/0tNFQ/nRnkMjN5x88yzOEd49G8Ja4UhFlR5i/ncog5L
+	uhuyozgpLm+e0NXlUi6mC6gEmktqG5uL3nDbeDyrHg2U9KcUreFsLM5hMZdnbG2oqrMwJq83cg6
+	1tMDrQgaRS2+09JM7YDPr3wbgZzfY1qZXa4FBtDTLxbDSUVdJ0IQSc3Ze
+X-Received: by 2002:ac8:5d53:0:b0:52d:4f43:d5b0 with SMTP id
+ d75a77b69052e-52e2f127d41mr46851271cf.22.1787644009638; Tue, 25 Aug 2026
+ 00:46:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260825072033.6921-1-a0yami@mailbox.org>
-In-Reply-To: <20260825072033.6921-1-a0yami@mailbox.org>
+References: <20260825073906.336072-1-junjie.cao@intel.com>
+In-Reply-To: <20260825073906.336072-1-junjie.cao@intel.com>
 From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 25 Aug 2026 09:44:16 +0200
-X-Gm-Features: AcwNN1V08EdLmukE1q3m4sOYEto-IGNkL2x9GXUdsJBRGl4YLU1wMSpMA79x4oo
-Message-ID: <CANn89iJMhLgnMjhRp6RKBZxhAQrtWqJB9s7wNcshjJ3derCOdQ@mail.gmail.com>
-Subject: Re: [PATCH net v2] tcp: fix AO info use-after-free in tcp_ao_connect_init()
-To: Qing Ming <a0yami@mailbox.org>
-Cc: Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
-	Dmitry Safonov <0x7f454c46@gmail.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
+Date: Tue, 25 Aug 2026 09:46:38 +0200
+X-Gm-Features: AcwNN1XiLbiOvHuA3q6xV8JUEzswX2XPmVf7AnoIH9VKzNo5sG77hMVOJSW990A
+Message-ID: <CANn89iJgKaJHmhG9f2UVV2VbQLaLE50VEpu03xSdEY-OucrgeA@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: dropreason: add SKB_DROP_REASON_IP_TTL_EXCEEDED
+To: Junjie Cao <junjie.cao@intel.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org, idosch@nvidia.com, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 25, 2026 at 9:21=E2=80=AFAM Qing Ming <a0yami@mailbox.org> wrot=
-e:
+On Tue, Aug 25, 2026 at 9:39=E2=80=AFAM Junjie Cao <junjie.cao@intel.com> w=
+rote:
 >
-> tcp_v4_connect() adds a SYN-SENT socket to the ehash before calling
-> tcp_connect().  If TCP-AO is configured, tcp_connect() first verifies tha=
-t
-> a key matches the peer and the bound device's current L3 master.
-> tcp_ao_connect_init() later resolves the L3 master again and removes keys
-> which do not match it.
+> The forwarding paths report an expired TTL or hop limit as
+> SKB_DROP_REASON_IP_INHDR, the reason otherwise used for a header that is
+> malformed (ip_input.c, exthdrs.c, br_netfilter). Nothing else in the drop
+> path separates the two: IPSTATS_MIB_INHDRERRORS covers both, and the TTL
+> check runs before NF_INET_FORWARD, so netfilter tracing stops at
+> PREROUTING and never sees the drop.
+>
+> The Fedora bug linked below shows how that reads in practice. The
+> reporter took kfree_skb(reason=3DIP_INHDR, loc=3Dip_forward) to mean the
+> software header checksum check had failed, and worked through RX checksum
+> offload, tc csum actions and both libvirt firewall backends before the
+> drops turned out to be replies arriving with TTL 1. ip_forward() never
+> verifies the header checksum; that runs earlier, in ip_rcv_core(), and
+> reports IP_CSUM.
+>
+> TTL expiry is not a corner case -- every traceroute through a Linux
+> router goes through too_many_hops.
+>
+> The three loopback hop limit checks in exthdrs.c drop with no reason at
+> all; give them the new one.
+>
+> IPSTATS_MIB_INHDRERRORS stays as it is: RFC 1213 counts time-to-live
+> exceeded under ipInHdrErrors. The drop reason has no such constraint.
+>
+> Link: https://bugzilla.redhat.com/show_bug.cgi?id=3D2517131
+> Signed-off-by: Junjie Cao <junjie.cao@intel.com>
 
-...
+## Form letter - net-next-closed
 
-> Fixes: 248411b8cb89 ("net/tcp: Wire up l3index to TCP-AO")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Codex:gpt-5
-> Signed-off-by: Qing Ming <a0yami@mailbox.org>
+net-next pull request for v7.3 has already been merged, and therefore
+the net-next tree is closed for new drivers, features, code refactoring
+and optimizations. We are currently accepting bug fixes only.
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+Please repost when net-next reopens after Aug 31st.
 
-Thanks!
+RFC patches sent for review only are obviously welcome at any time.
+
+See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#de=
+velopment-cycle
+--
+pw-bot: defer
+pv-bot: closed
