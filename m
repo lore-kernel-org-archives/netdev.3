@@ -1,104 +1,110 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9160A19E839
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 04:17:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD521A23A6
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 04:37:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787631466; cv=none; b=BbjeBgo7zPDaCM9iG7K1Kc/z/gBiJU7i/ZgCSy4TOmE5yYpjmwoRp4zCYsm22V5DI9+ZXjOIymVVYxHZbJPPYvbq3dmERtej8yDkOX59kkg9sXeUPxrc9qVgmX/EbJz9BWNmKGIJ9WQ3vBuF10mWuhEmfMwWxahf5QEikKcvbr4=
+	t=1787632633; cv=none; b=oikHXhN/ZrjGxAIw1xN62rne45JTzLQofZLk3/SjTswBJ4Eok0skXWldfVC22dVkLzFJwFhrJfEUZW1mtZ1vqSw4KhbawiTz6enEbKx0YWPmvIQZNsESwp0iGIyEAkXocMG7VGc+dfj81RPi7OOjIyQEHp8oKVjf8LNc/IV3D2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787631466; c=relaxed/simple;
-	bh=Y/LQ9QUzVJau31l/U7V390n8iZaDBGfOee9VFpzvhhw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A3nIumI2nvuujxsa0d0kZTIl15IsfnVls2VsQKE1VujCwhjWcAkN0nl4DW3V9uPVS50AxtbmcblGHZ9RzumECHhMH4+j8CoOhXDabFQwiy2GhiAxRhHhuhYueiH9GYahNVDHgBFveJQ30L1BgziKXOdGiwVvYJjGDbTWmX2R7l4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=O/8gCMIy; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	s=arc-20240116; t=1787632633; c=relaxed/simple;
+	bh=hN0ccrB5kxvEcNpBHc4VO3mVvNz403UkgPYLDeDGAmk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MDmhLk7Qse9ZZp3rHjYnRF9rjyRgbFv05PAs996okn8EEhgHxal/42pU7Hcs3bixG7UIDRg7a8YKbDXeAQdVo3h8WT7jb+S2F2n7XkppxrGBBSMy2MqaQEFiQdPYz2FY2xUu1QHOQGjBigq1Ymgx9vPt8RE6cj/Pg5rZpeZwQ/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T4KYMvPl; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="O/8gCMIy"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2d6efd73032so1143525ad.0
-        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 21:17:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1787631464; x=1788236264; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=XKarJQ7v4knMK/2oTM7TFn9XyjAlR/5IO2Gpes7WPQE=;
-        b=O/8gCMIyJCIsoFoCDXUXB5T84yKaJ+mr3fvn+ymX+JUlilwzrq/pbY+144C/dkEQc0
-         4DsEMLK7n9Shn9QnAMIMqwoE8dOYjrq3UEfUdqjcNrUW3CQ8aCJn1JR245JMrG3X+Hz6
-         zmOQYQMrZYzwlCwcX20zNBhDNUkH+4iJoeLJVcmJPUj43sVb/QRrz0UNPKJs+HlcXISc
-         WI0Euix0GeWCvRq9zYd9K0pHY5mbRJdgEa4fXKJUiE5Rz/AJotvFzwSwxqRJbeCvIdqY
-         xwxgOWmjN72f8hX2aZDWDpKFRr57YiNFnVEKiqw4fbf+3MHRDi6yOKu1h6hIwqKZJyWV
-         /xgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787631464; x=1788236264;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XKarJQ7v4knMK/2oTM7TFn9XyjAlR/5IO2Gpes7WPQE=;
-        b=ZCZ9mV9sNspBngRk5ZqQISjz+JJkulNH2Yxq7HjKVeXGGVvGqAllfKJ8w4WKRT7HEj
-         U1NJBACpVSTNhdGhr3IO5jINyt8o/AwN+Tu6ERFEhNW9jZWbnffcEcyGim844HYaWnRs
-         +y62PJwfluHepg7g6ODMtqMhENd+LYPx29kr+m3MUa30/rk+XHYrTBetlNHB9X4zmQgq
-         W+6ufKEzhlKhIEk0r78hdaheD7WAPlLiqWp0Lewp34d8tAKVTcNR1U9las6rYIuZctK4
-         beyS9FvIH1alpAHyh4VymO0jEvXLoSIBOKw8lpMENgv/UF45gUeLpHGzN/l5Q2ONrKXT
-         sGtQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoWz069a4E9qDInkAAG436aCy0wLW1nth6KazxGb2S7jM4uxyEI9WMl7wGGr6WMvBqbbZIXKr4=@vger.kernel.org
-X-Gm-Message-State: AFuF++mPVO0tbPHHWA+HCMICKlml7awTEQ/Ql1ZcWHs0oggGaGp6wWWl
-	YCzWMdBRQuYB4VhhKV8/fJNVu7NyEmKN/2XkibY0pni3w3aHuVEERU2lTHrLuNMgLu/s1GC7tgD
-	bhmtE
-X-Gm-Gg: AR+sD10XVakbJjrS96B5ECRsXhjx09ONkhD4uHwKJFO8zKCAkO+gt8MDH0GcKsVMiRf
-	qua/JygP7G0bQrGc/NJzSrXWyOP9mkmind68HGrrcGXxI5EH/BwLw4EvSmTTHqDXyEuQ+uAzhiY
-	sTZS61ImPds4lq7FEYXJ6NoKcnfpLhGWLLt6X69EO+NMeHr5AM88nWSpf+3ocEyL9jLUUDOQ/6t
-	yJtjOdt/aiw7TDlrUgy9XibPr1rrUDxZWUe/P9usF0l5ShRdDIKjv6JmxO9Mi3z66G1RD7dpySk
-	wKRKMR7jc7lBq+2pwh4XshKzaVWAVCCPYaoQKO4/5nVwkNWI/IKm40rJOA1XHEYC7MKO6vG0yzb
-	/huQ32a7X4jcaifofKi8psmzwK3/8Kb+Zxt+WUcuOOLk4aSMxqBPa20cL0RBNi22iADrA1MGKFk
-	lpF0Vx5MwQZaJnPmLMjMoodyFoexv/sNX7VUxrbdAlbHS0rsogeQ72LP49bSlulOwSGGJGqNm39
-	Ilu3i9Ae5azTw92bBPo/MQ9Qdw25w==
-X-Received: by 2002:a17:90b:540d:b0:38d:eaed:4adb with SMTP id 98e67ed59e1d1-39645b66b45mr5426902a91.20.1787631463767;
-        Mon, 24 Aug 2026 21:17:43 -0700 (PDT)
-Received: from phoenix.local (204-195-96-226.wavecable.com. [204.195.96.226])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-141861732f8sm30143744c88.10.2026.08.24.21.17.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 21:17:43 -0700 (PDT)
-Date: Mon, 24 Aug 2026 21:16:45 -0700
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: Luigi Leonardi <leonardi@redhat.com>
-Cc: Stefano Garzarella <sgarzare@redhat.com>, Stefan Hajnoczi
- <stefanha@redhat.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH iproute2 v2 1/2] ss: move lport and rport in struct
- sockstat from int to long
-Message-ID: <20260824211628.41e464f5@phoenix.local>
-In-Reply-To: <20260817-fix_vsock-v2-1-47e544221eae@redhat.com>
-References: <20260817-fix_vsock-v2-0-47e544221eae@redhat.com>
-	<20260817-fix_vsock-v2-1-47e544221eae@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T4KYMvPl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1787632632; x=1819168632;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=hN0ccrB5kxvEcNpBHc4VO3mVvNz403UkgPYLDeDGAmk=;
+  b=T4KYMvPlBhxajJhz4DuL7C9Lf9QRqDAFRAk7yl3wQIvgB6d9Yu4eqz/5
+   j3PsDep3qc3nUGGUmwM1SdI6kxdjN9NONid6EIbjoux1hOS+RaL9G33wO
+   9Y1abR+29ylp/2bzGdSvTy6b0H9bfFZNL9IDLGcZkikPZpsmr/fyX2tyw
+   FxI2JOLTgYHC0avgU7R/oW353OCGqh+Oyj+0gy4enF0HAu0ESPRRXuFDm
+   i4WuQwyJLB41mVzko4F6iBmbgor+kKdwCw7QwghKzBrs9uoIgkP71Cbfg
+   8zap+Ma/Mx8S4SelAzTpeVghinR/+cQ+EN+q+9Zl+5BYmkcf1W4BSepNF
+   w==;
+X-CSE-ConnectionGUID: eteMj6wtQ6CrVNF5ajLS6g==
+X-CSE-MsgGUID: OBp7rfhLSSGW4nuDJUQMdA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="105622519"
+X-IronPort-AV: E=Sophos;i="6.25,242,1779174000"; 
+   d="scan'208";a="105622519"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 21:37:11 -0700
+X-CSE-ConnectionGUID: CRXZRvTvTQSt2eeotUiuiw==
+X-CSE-MsgGUID: dkKeM28GTgCD92LbW0fROg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,242,1779174000"; 
+   d="scan'208";a="262871909"
+Received: from txa-pn-adk06.an.intel.com ([10.123.72.220])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 21:37:10 -0700
+From: Shubham Das <shubham.das@intel.com>
+To: netdev@vger.kernel.org,
+	andrew@lunn.ch,
+	maxime.chevallier@bootlin.com,
+	alexander.duyck@gmail.com,
+	lee@trager.us
+Cc: siddaraju.dh@intel.com,
+	balaji.chintalapalle@intel.com,
+	dasshubhamk@gmail.com,
+	magnus.k.lindberg@ericsson.com,
+	jonas.wirandi@ericsson.com,
+	Shubham Das <shubham.das@intel.com>
+Subject: [RFC PATCH net-next 0/2] ethtool: add interface capabilities and PHY test
+Date: Mon, 24 Aug 2026 23:37:06 -0500
+Message-Id: <20260825043708.1512634-1-shubham.das@intel.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Mon, 17 Aug 2026 14:54:20 +0200
-Luigi Leonardi <leonardi@redhat.com> wrote:
+This series adds two new ethtool netlink commands:
 
-> Commit 012cb515 ("ss: change aafilter port from int to long (inode
-> support)") widened aafilter.port to long so that unix socket inode
-> numbers larger than INT_MAX can be used as port filter values, but left
-> sockstat.lport and sockstat.rport as int. This means large u32 values
-> (e.g. vsock ports or unix inodes > INT_MAX) are truncated on the
-> socket-stat side, making the comparison against aafilter.port always
-> fail.
-> 
-> Widen lport and rport to long and update the sscanf format specifiers
-> in proc_parse_inet_addr() and unix_show() accordingly.
-> 
-> Fixes: 012cb515 ("ss: change aafilter port from int to long (inode support)")
-> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
-> Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
-> ---
+1. intf-caps-get: Discovers the functional block layout of a network
+   interface. Each block represents a hardware point (MAC/PHY/MODULE)
+   at a specific 802.3 sublayer (RS/PCS/FEC/PMA/PMD) with its
+   supported capabilities (loopback, test patterns, BERT, error
+   injection).
 
-Applied to iproute2 but I had to fix the snprintf() warning and condense
-the overly verbose AI slop of a commit message.
+2. phy-test-get / phy-test-act: Per-block, per-lane PHY testing using
+   test patterns, BERT (Bit Error Ratio Test), and error injection.
+   The block_id from intf-caps-get identifies which hardware point
+   to test.
+
+The block model uses:
+  - component: which hardware entity (MAC, PHY, MODULE)
+  - sublayer: which 802.3 layer (RS, PCS, FEC, PMA, PMD)
+  - instance: identifies multiple instances of the same component
+    (e.g., internal vs external PHY)
+  - depth: host-side vs line-side within the same sublayer
+
+Prior discussion on this proposal:
+Link: https://lore.kernel.org/netdev/SN7PR11MB810923BBDEC398E860099150FF1B2@SN7PR11MB8109.namprd11.prod.outlook.com/
+
+Shubham Das (2):
+  ethtool: add interface capabilities query (intf-caps-get)
+  ethtool: add PHY test framework (phy-test-get, phy-test-act)
+
+ Documentation/netlink/specs/ethtool.yaml      | 206 ++++++++++++++++++
+ include/linux/ethtool.h                       |  92 ++++++++
+ .../uapi/linux/ethtool_netlink_generated.h    | 104 +++++++++
+ net/ethtool/Makefile                          |   2 +-
+ net/ethtool/intf_caps.c                       | 130 +++++++++++
+ net/ethtool/netlink.c                         |  24 ++
+ net/ethtool/netlink.h                         |   7 +
+ net/ethtool/phytest.c                         | 171 +++++++++++++++
+ 8 files changed, 735 insertions(+), 1 deletion(-)
+ create mode 100644 net/ethtool/intf_caps.c
+ create mode 100644 net/ethtool/phytest.c
+
+-- 
+2.25.1
+
