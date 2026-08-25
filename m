@@ -1,84 +1,33 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93993FA5CA
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 10:45:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0884D33A70A;
+	Tue, 25 Aug 2026 10:51:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787654711; cv=none; b=H1ENKdIGOBNezt92DcJ23NZwdC6slRnTv07kPbcShuI5YdJJY20zSqHFoYvHfmtOUgKeQzCeDVIeY96M2yITjTjehVj8LdoFMAvK1J3TiLbdlvGBkn/v5hYwZkbVfjReZCyXuhYRh2UUl8l/+he/MHx8OxU11YFnUQkIBgfJOYM=
+	t=1787655068; cv=none; b=r2TgaMv6Y0rH994Zf8qbDXKP6m3wHAlmnI9PhJsYyVsIMd9sOEASLPhriNY3qOHZLKHfMfYeOKoswCIP7G93DuyI1U4zQDHiwKAUVdFTsESWeuUWwjBtqAgRkHZoP2sdHp5IwIONuGTWcgRetcNNRjSiyUcOyar9z7lSriusrLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787654711; c=relaxed/simple;
-	bh=+7UsDaBxxxafnbkxKKMkg9R+c8fO/Urc0EWFqkAWnpk=;
+	s=arc-20240116; t=1787655068; c=relaxed/simple;
+	bh=QMJp/8yGBxO4YI1i1A5XdUSc2vFmLkXPV/JY9qAuZ48=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XfFDl9Sc/SW5cFCztNP/LOC93nyXbwGfrdee97iUDXuRWcELZUnXvxveeYmOKXsOk033NXVab2H9y6PwMRuUimVcblZLTXIec4SxsqrYDC6JMGfvHZKvgNZ7C9Nqw2ojV87fT/aK0z22ApPGLftRTwYD7yUP10QzKdSZDP/HCow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=g7EoLZ2F; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Fjz6bi6P; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=dT5iEUYZcgYtLsZZUnoico574W3V3ux73Yq2Et/nNNCH2oI9iuGgE8Q/pR4xAMl3L1RqYJoFddje5RoQ80xSmqi0gzfvW3ogxkuTgxuwOuaqUajlN2o1p3PoAgKiZHp16UBQmoN8SprsDmFyNHN/FKkPhIBy6AW2D1/DU7e35xI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RQPZds2K; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="g7EoLZ2F";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Fjz6bi6P"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787654708;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zHh69naUUhgZLYqy6vySMehZGmJxGjn0KXcTrxIyxOs=;
-	b=g7EoLZ2FdzKxMoxVs815jbbQDAFWe9dZdiePB5H53E8fcT3gPntSMRIzAGLKz33D06eJkb
-	Od5DGAoA7/1OQjfry0v4sNtxCid7XqG7Mx7cQYIky2fY3mYMlfC6VeuzIVhDVn4hxcOi+2
-	d77Vb3Bdg1Bp5h458Yoi7xWN+zdyyJY=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-695-UxEXx4AtPZWMCidIErnZuw-1; Tue, 25 Aug 2026 06:45:07 -0400
-X-MC-Unique: UxEXx4AtPZWMCidIErnZuw-1
-X-Mimecast-MFC-AGG-ID: UxEXx4AtPZWMCidIErnZuw_1787654706
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-69c20d1d150so3821317a12.0
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 03:45:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1787654706; x=1788259506; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zHh69naUUhgZLYqy6vySMehZGmJxGjn0KXcTrxIyxOs=;
-        b=Fjz6bi6PKVougUERPCW5WfZtzECM5sA0fIv1lBcZ4rm1YE6eGJxBzSgqB+gxSr0DQH
-         do0PXwk5GHPObwHD8p9J2jOAnjUsRi53QeWiLt7pXBOK0Um3Qk/3f51UBKF6QUZI5dcV
-         eo3hNXc/0GgMkqN/DIOMjkpyA0p29zxPh2On5zEmIEylNsc+SElO7I6zNyyDsrE/028D
-         TeOTYlsSnH1lvZ0D/FpmJp2DVXe9av07W6V9e6DljO2mvhOOGxQO0BYmqsz2/NvDl3Cd
-         pWq+PYb889cpnFjicbFIEglJYB9r/CvTPptqWs+IphiFGFUkampqyZ6EjhgD1Lt48lgV
-         xZqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787654706; x=1788259506;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zHh69naUUhgZLYqy6vySMehZGmJxGjn0KXcTrxIyxOs=;
-        b=YH9AiSzyz/SZEP72J5+tJjPUaTy0VKdRDGYHYqkNA4eCszlLKDAtCcU/rEREFNzdS4
-         V0OhkqIreC+w7cu9z5zGjc9CO2N1huzVaMELWJglb8Sws/eXt7aStwkv77t0832+6O5W
-         jESzliNlvzBO0fwR9Qsw8AkzEpt8Zzj7QV7HRXz9kIW4OWXKgxUwBXiNC8oyB8elf7sP
-         hwa0laiY6otx/QBhOB/+JJG9uOgd1UtXbA7b0wTo+oBFj5gvW9knT9ApQ/BVx1IJLA8u
-         OLFzU1URvRB/J6jPFPEnOokw/ZWv+l4JWoXg9ZPwRxBmN+4zjDTlmLUT9+Kkr0sHSy48
-         54JQ==
-X-Gm-Message-State: AFuF++n8Xcg/icUV2c7VbMM0DliAlJtkBEfEKgqVmvprLboXJRAKQJz+
-	3bLBudPuET+vk5N3DfAdsf15jW63lhoscTqSDtVt2+6SGzgoc/xG0xKsINCiWaDY2Urd3Swo1ND
-	WIx5WBRTjUaN2QnuNnBNmV9/sPcGK8q1sONQdlTDBWUU+i6NyDlSeFhd+/w==
-X-Gm-Gg: AR+sD10G06vR9iMPUsmOEpeIZ4fVIanUwPmAKfyxIZUtGXOvW9i1v1c60habWwSQ/Fn
-	ESwZHl8vkWZs5FnhGl+5W8q2wtQOL2Y+ViRx+UIGPjR1I9hMP+hXlVoH3cMWBqYGaC/8YiQ0SfO
-	qw74NgwcbAToqwH9d9Mm0NUWxx6TpKM7qEwCq6I3XV0le3/uR++INuiqgqM8Qt8jH5je5sB3usm
-	tNU4P2Cgg761fhUmE+Oh+VOm13cUprchoQzxKp1emLiD3kymSFz3RgYyazanYOF+zms2h8lpz2U
-	EsJh0e8xkX8zbpTqZG8NuXvTKDgi9atYSTG5/g8JI39B1rSJz4tYGxKbUFecRU0RN1f8pSdHZ23
-	IU3+5P5yx9KG1UKMAkJ5aGU/k5QGUAsFYavsZzBFP99adEQYbeGnt6gcENZjLMI97bsEaIYjN
-X-Received: by 2002:a05:6402:52d0:b0:6a3:fdb0:c374 with SMTP id 4fb4d7f45d1cf-6a5c414ce78mr6312914a12.13.1787654706167;
-        Tue, 25 Aug 2026 03:45:06 -0700 (PDT)
-X-Received: by 2002:a05:6402:52d0:b0:6a3:fdb0:c374 with SMTP id 4fb4d7f45d1cf-6a5c414ce78mr6312834a12.13.1787654705668;
-        Tue, 25 Aug 2026 03:45:05 -0700 (PDT)
-Received: from [192.168.188.103] (ip46-47-231-195.pool-bba.aruba.it. [195.231.47.46])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a59e001305sm13901866a12.4.2026.08.25.03.45.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Aug 2026 03:45:04 -0700 (PDT)
-Message-ID: <f3a9dd1f-43a7-4644-bf1a-45dcd422abcb@redhat.com>
-Date: Tue, 25 Aug 2026 12:45:02 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RQPZds2K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB6B1F000E9;
+	Tue, 25 Aug 2026 10:50:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787655066;
+	bh=4dWbDNh7SefaqEmDQxom8V4ar9Vn3mt6p/4U2QAZfh0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=RQPZds2KrGv64fSlv8dfSkfENvn4AkQ4dJQWtdOG2edngpo35SmYXFrizNznv4LV+
+	 ic67xjuq6VP5prYkXjr0s8IxgPnlclWoPxLynljPP6LKP1BcO7lZlLEXoN2Kt0hWzv
+	 1Sk+SF+I7mFzbhWGeATiKlPQKof1b/Y4Oh59E5hY7U9WnpNj0vNIrwzHoGGCUCr6Ck
+	 4qiPIgXHyb4zStAeqqjPPk3On9pQzfWy7qE8rRplrF0gq/UrhIT8kqQjR1XAkJ3+7O
+	 eHgJbbX3uv4GLKohzTnK4Z/2e4AePT6sGvIIzZqZA698rKIWhBNc+vzC/YOe0makdC
+	 HWP/uVH5WTeRQ==
+Message-ID: <17e9f7d6-d095-44ee-9997-8dc10646f3f8@kernel.org>
+Date: Tue, 25 Aug 2026 12:50:57 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,99 +35,233 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: pktgen: keep device lookup under RCU protection
-To: Chengfeng Ye <nicoyip.dev@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
- Willem de Bruijn <willemb@google.com>,
- Nikolay Aleksandrov <razor@blackwall.org>, Qi Zhang
- <marsy12010123@gmail.com>, Randy Dunlap <rdunlap@infradead.org>,
- Alice Mikityanska <alice.kernel@fastmail.im>, Florian Westphal
- <fw@strlen.de>, Jesper Dangaard Brouer <hawk@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260824152331.216494-1-nicoyip.dev@gmail.com>
-From: Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH v2] mm/secretmem: properly account locked pages
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Daehyeon Ko <4ncienth@gmail.com>, stable@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, "David S. Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>,
+ James Bottomley <James.Bottomley@HansenPartnership.com>,
+ Hagen Paul Pfeifer <hagen@jauu.net>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org, netdev@vger.kernel.org,
+ bpf@vger.kernel.org
+References: <20260822-secretmem-accounting-v2-1-fe445a7c6eb1@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20260824152331.216494-1-nicoyip.dev@gmail.com>
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260822-secretmem-accounting-v2-1-fe445a7c6eb1@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 8/24/26 5:23 PM, Chengfeng Ye wrote:
-> pktgen_find_dev() releases its RCU read-side critical section before
-> returning pkt_dev. __pktgen_NN_threads() then sets removal_mark through
-> that unprotected pointer.
+On 8/22/26 21:14, Lorenzo Stoakes (ARM) wrote:
+> secretmem has a relatively laissez-faire attitude to accounting the folios
+> it allocates.
 > 
-> The worker can concurrently remove the device and queue it for RCU
-> freeing:
+> The intention is that the memory is treated as if it were mlock()'d and
+> thus is limited by the RLIMIT_MEMLOCK limit if the CAP_IPC_LOCK capability
+> is not in place (which broadly allows unlimited ranges of mlock()'d
+> memory).
 > 
->   CPU 0 (netdevice unregister)     CPU 1 (kpktgend)
->   rcu_read_lock()
->   find pkt_dev
->   rcu_read_unlock()
->                                    list_del_rcu(&pkt_dev->list)
->                                    kfree_rcu(pkt_dev, rcu)
->                                    RCU grace period ends
->   pkt_dev->removal_mark = 1
+> The lifecycle for memfd accounting against this limit is - account on map,
+> unaccount on unmap but the lifecycle of memfd folios is allocate on fault,
+> deallocate on inode eviction.
 > 
-> The mutex held by CPU 0 does not cover the worker and does not delay an
-> RCU grace period, so the final write can access freed memory. KASAN
-> reported:
+> This mismatch is problematic because the folios are unevictable and remain
+> so until the inode is evicted (set using mapping_set_unevictable()).
 > 
->   BUG: KASAN: slab-use-after-free in __pktgen_NN_threads+0x241/0x280
->   Write of size 4 at addr ffff88810dab804c
->   Call Trace:
->    __pktgen_NN_threads+0x241/0x280
->    pktgen_device_event+0x24e/0x3d0
->    unregister_netdevice_many_notify+0xde8/0x1ec0
->    rtnl_dellink+0x35d/0xa90
->   Allocated by task 92:
->    __kasan_kmalloc+0x8f/0xa0
->    pktgen_thread_write+0x498/0x14e0
->   Freed by task 0:
->    __kasan_slab_free+0x43/0x70
->    rcu_core+0x50a/0x1850
+> This is problematic as it eliminates usual mlock() semantics - mapping
+> folios then unmapping them does not clear their unevictable state, since it
+> depends on AS_UNEVICTABLE, not PG_mlocked.
 > 
-> Move the existing RCU read lock into the sole caller and release it only
-> after setting removal_mark. The object therefore remains alive through
-> the dereference, while lookup order and control handling remain
-> unchanged.
+> A user can therefore easily work around the RLIMIT_MEMLOCK limit - simply
+> map then unmap and VmLck no longer counts the secretmem range (or more
+> involved - fork which also achieves the same thing).
 > 
-> Fixes: 8788370a1d4b ("pktgen: RCU-ify "if_list" to remove lock in next_to_run()")
+> Worse - they are not accounted in the process's RSS even if mapped again,
+> meaning the OOM killer won't know to kill the process.
+> 
+> A user without the CAP_IPC_LOCK capability can therefore repeatedly
+> map/unmap (or map/fork) and consume all available system memory with
+> unevictable folios and cause system instability.
+> 
+> A secretmem fd can be passed between processes and over fork so a
+> per-process limit simply does not make sense.
+> 
+> So follow the precedent set by io_uring, perf, skbuff, iommufd and xdp -
+> track the number of locked pages in user_struct->locked_vm.
+> 
+> Since the scope tracked is actually inode lifetime, the RLIMIT_MEMLOCK
+> applies per-user not per-process. Also given the change in scope it doesn't
+> make sense to bypass for users with CAP_IPC_LOCK, so remove it.
+> 
+> There is simply no reason to carry on marking the mapping as mlock()'d
+> since it's misleading and the lifecycle is now correctly handled, so remove
+> this too.
+> 
+> Additionally, fix the selftest which checks the limit as this now must
+> assert SIGBUS on limit violation on fault-in.
+> 
+> __secretmem_account_pages() is more or less a duplicate of the code that
+> io_uring etc. use, but since this is a bug fix that needs backporting,
+> defer any de-duplication efforts to a follow-up.
+> 
+> Reported-by: Daehyeon Ko <4ncienth@gmail.com>
+> Closes: https://lore.kernel.org/linux-mm/20260813225328.2010303-1-4ncienth@gmail.com/
+> Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
-> ---
->  net/core/pktgen.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+Can we split off the selftest changes? This stable patch is already pretty big.
+
+I'd assume the changes to the selftests are not required just to get if fixed,
+because the changes should not be breaking existing user space (and cosnequently
+existing selftests).
+
+[...]
+
+> v1:
+> https://patch.msgid.link/20260814-secretmem-accounting-v1-1-d2f8c677980b@kernel.org
 > 
-> diff --git a/net/core/pktgen.c b/net/core/pktgen.c
-> index 7f81aed46672..4fb1853589b3 100644
-> --- a/net/core/pktgen.c
-> +++ b/net/core/pktgen.c
-> @@ -2032,14 +2032,17 @@ static struct pktgen_dev *__pktgen_NN_threads(const struct pktgen_net *pn,
->  	bool exact = (remove == FIND);
->  
->  	list_for_each_entry(t, &pn->pktgen_threads, th_list) {
-> +		rcu_read_lock();
->  		pkt_dev = pktgen_find_dev(t, ifname, exact);
->  		if (pkt_dev) {
->  			if (remove) {
->  				pkt_dev->removal_mark = 1;
->  				t->control |= T_REMDEV;
->  			}
-> -			break;
+> To: Andrew Morton <akpm@linux-foundation.org>
+> To: Mike Rapoport <rppt@kernel.org>
+> To: David Hildenbrand <david@kernel.org>
+> To: "Liam R. Howlett" <liam@infradead.org>
+> To: Vlastimil Babka <vbabka@kernel.org>
+> To: Suren Baghdasaryan <surenb@google.com>
+> To: Michal Hocko <mhocko@suse.com>
+> To: Shuah Khan <shuah@kernel.org>
+> To: Alexei Starovoitov <ast@kernel.org>
+> To: Daniel Borkmann <daniel@iogearbox.net>
+> To: "David S. Miller" <davem@davemloft.net>
+> To: Jakub Kicinski <kuba@kernel.org>
+> To: Jesper Dangaard Brouer <hawk@kernel.org>
+> To: John Fastabend <john.fastabend@gmail.com>
+> To: Stanislav Fomichev <sdf@fomichev.me>
+> To: James Bottomley <James.Bottomley@HansenPartnership.com>
+> To: Hagen Paul Pfeifer <hagen@jauu.net>
+> Cc: ljs@kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> Cc: linux-kselftest@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> Cc: bpf@vger.kernel.org
+> ---
+
+[...]
+
+> +
+> +static bool secretmem_account_folio(struct secretmem_inode_state *state,
+> +		const struct folio *folio)
+> +{
+> +	unsigned long nr_pages;
+
+Nit:
+
+const unsinged long nr_pages = folio_nr_pages(folio);
+
+> +
+> +	nr_pages = folio_nr_pages(folio);
+> +	if (!__secretmem_account_pages(state->user, nr_pages))
+> +		return false;
+> +
+> +	atomic_long_add(nr_pages, &state->nr_pages_accounted);
+> +	return true;
+> +}
+> +
+> +static void __secretmem_unaccount_pages(struct secretmem_inode_state *state,
+> +		unsigned long nr_pages)
+> +{
+> +	atomic_long_sub(nr_pages, &state->user->locked_vm);
+> +	atomic_long_sub(nr_pages, &state->nr_pages_accounted);
+> +}
+> +
+> +static void secretmem_unaccount_folio(struct secretmem_inode_state *state,
+> +		struct folio *folio)
+> +{
+> +	__secretmem_unaccount_pages(state, folio_nr_pages(folio));
+> +}
+> +
+> +static void secretmem_unaccount_all_folios(struct secretmem_inode_state *state)
+> +{
+> +	unsigned long nr_pages_accounted;
+> +
+> +	nr_pages_accounted = atomic_long_read(&state->nr_pages_accounted);
+> +	__secretmem_unaccount_pages(state, nr_pages_accounted);
+> +}
+> +
+>  static vm_fault_t secretmem_fault(struct vm_fault *vmf)
+>  {
+>  	struct address_space *mapping = vmf->vma->vm_file->f_mapping;
+>  	struct inode *inode = file_inode(vmf->vma->vm_file);
+> +	struct secretmem_inode_state *state = inode->i_private;
+>  	pgoff_t offset = vmf->pgoff;
+>  	gfp_t gfp = vmf->gfp_mask;
+>  	unsigned long addr;
+> @@ -72,8 +134,15 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
+>  			goto out;
 >  		}
-> +		rcu_read_unlock();
-> +		if (pkt_dev)
-> +			break;
->  	}
->  	return pkt_dev;
+>  
+> +		if (!secretmem_account_folio(state, folio)) {
+> +			folio_put(folio);
+> +			ret = VM_FAULT_SIGBUS;
+> +			goto out;
+> +		}
+> +
+Okay, that works because secretmem does not support any form of truncate, in
+particular, no FALLOC_FL_PUNCH_HOLE.
 
-Side note: returning the RCU protected ptr outside the RCU read lock
-safe, as the caller never deference it, but quite confusing.
+Overall, the idea sounds good to me. Nothing jumped at me.
 
-It would be nice to follow-up on net-next replacing the return type here
-with a bool.
+-- 
+Cheers,
 
-/P
-
+David
