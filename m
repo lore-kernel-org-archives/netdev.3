@@ -1,413 +1,172 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D65640DB4E;
-	Tue, 25 Aug 2026 12:19:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84DD2427F8A
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 12:30:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787660366; cv=none; b=krN9gqVT4VABi9Vc5WipE6+s29nT+HnR04vtGQavy4FXQD0F0teliaWp77NI8mvvltdmCYw3Xu55J1KZZYEsUyuLzHUYPYjUQzYpnak18sjuTU2o7FLweQ7tKs58PHjI5U90UUK4+3r3aGI1e1rYLR4Bym1KCWPDE0MKRRmIkzo=
+	t=1787661035; cv=none; b=JFoUiM4u2zkhhtag1CCeM2TBEnafOUBmmGL0Etmzys3dfvRaNqK5/WRbzXJ6SkWerVikTn99Y+o6NgZX6FTOHjl+972GAxmiwCNju7Syor0PpQ6cqc07Mys4uPgxMIvbI3pi9Wr10J3v5f0ENdb0mYCjd8ttaUBqAEUn86kvYyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787660366; c=relaxed/simple;
-	bh=FYsC8DgA1Qcwkk9W6T0ZLz8LdTRaGegCt9uOsbAu+X8=;
-	h=Message-ID:Subject:From:To:CC:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bYLa3MT6ltTYWXHIDPQgi+mDCpK/j9cFERGyM23FsnzG+GqXSOas6J9WWvJ9rrMUNdjGtYSVReJWeWgwS/7Vi/hh7usFg1LTm368IwJDTocp5zIA5UsVZduDvXuzzp3owTgGela0/NWQWA1hLKKWAc8D5sWp2qqrs44KMPjC+ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=ZkuFgPGM; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1787661035; c=relaxed/simple;
+	bh=a8EPHDovNdr9v1GAxMcHOVtgR2HPuR4ANhbtJk6vicU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pCy1nVkiY7Hg9QEXddm7iVvvCwUUrcGN8Io7/f1+eoHXngnQX7dojVPCKH07C1Xh/rKnbFuYqlSlfj1XW3uJjFT1PHqcCdQRn9iByFeb9GoeznsOap6tLzFgIl+ZfmtwBYDkql1/x0QR3/aEsiaxuIzY1wDnd/2xQ69/M5fqFMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=qHGmlnBv; arc=none smtp.client-ip=113.46.200.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="ZkuFgPGM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1787660365; x=1819196365;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=FYsC8DgA1Qcwkk9W6T0ZLz8LdTRaGegCt9uOsbAu+X8=;
-  b=ZkuFgPGMP9As1TCE8Tl3/qELCeTt3S5SvwlzLIqEmsPkO0Ka9R1O8Co6
-   pkTs2opwH7tb3g+Qiwz3Y5+m36DsRtmpRweR8Nm1vafyhw6/JjoZnfwcH
-   YRVAYf/uLZgJ+eZd+F2qRxJCN2UwYDOcgOCCfd9Ls0Y63phNPFh53MaQS
-   HdPFBhmLAX9MgngcLX5usgenvy5bJryTSlS7qeAkaiZ2HH1USux4zOu56
-   cJocJ85a91p+uTyj2ehtGbQcFlukkxauI5PlED2Ah77+2Z+KvXo3RPwZA
-   fLYvbHq/xj71ABiQJNDfWE+oS7MGpEQzLjHNY16IAmjXABfOR0z4BPBcP
-   g==;
-X-CSE-ConnectionGUID: OcoNAIp0QwWYCGmy14uCdw==
-X-CSE-MsgGUID: dCGvZRqeTJqqUvgshV0JHQ==
-X-IronPort-AV: E=Sophos;i="6.25,242,1779174000"; 
-   d="scan'208";a="294005104"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2026 05:19:21 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
- chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.45; Tue, 25 Aug 2026 05:19:16 -0700
-Received: from DEN-DL-M77643.microsemi.net (10.10.85.11) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Tue, 25 Aug 2026 05:19:13 -0700
-Message-ID: <53617f6db747ad7eab76fedc806abd1968bfa7aa.camel@microchip.com>
-Subject: Re: [PATCH net-next v2 6/9] net: sparx5: vcap: add lpm vcap
- implementation
-From: Jens Emil Schulz Ostergaard <jensemil.schulzostergaard@microchip.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: <horatiu.vultur@microchip.com>, <UNGLinuxDriver@microchip.com>,
-	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<pabeni@redhat.com>, <daniel.machon@microchip.com>,
-	<Steen.Hegelund@microchip.com>, <kees@kernel.org>, <gustavoars@kernel.org>,
-	<robert.marko@sartura.hr>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-hardening@vger.kernel.org>
-Date: Tue, 25 Aug 2026 14:19:12 +0200
-In-Reply-To: <20260817211356.3633381-1-kuba@kernel.org>
-References: <20260810-sparx5_l3_routing-v2-6-59e68cc8c8ca@microchip.com>
-	 <20260817211356.3633381-1-kuba@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2.1 
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="qHGmlnBv"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=l4loxFLmfmsyqONA4TXe0I11CswAY72NbBtwSiNDd8A=;
+	b=qHGmlnBv+KxgvPd/WIITMH9zGgFjcgWJFBXu9YwBLHRkInmQmMEoyCo+azZs5efTQ1uwzOJSX
+	80/8LrV6jFeWtkRG1FHQRk4gg05DDWM+USXHXqM/3cn9ArkV9DLbcc6eRjBGJCDXnRUSOEm9rj/
+	cWmVkEW599BUSNnuBShG5rE=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4hTn0J6XYkzRhR0;
+	Tue, 25 Aug 2026 20:19:44 +0800 (CST)
+Received: from whupemk200012.china.huawei.com (unknown [7.152.185.169])
+	by mail.maildlp.com (Postfix) with ESMTPS id 12F6E4057D;
+	Tue, 25 Aug 2026 20:30:28 +0800 (CST)
+Received: from localhost.localdomain (10.50.85.175) by
+ whupemk200012.china.huawei.com (7.152.185.169) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Tue, 25 Aug 2026 20:30:26 +0800
+From: Dong Chenchen <dongchenchen2@huawei.com>
+To: <pablo@netfilter.org>, <laforge@gnumonks.org>, <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <horms@kernel.org>
+CC: <dsahern@kernel.org>, <kees@kernel.org>, <netdev@vger.kernel.org>,
+	<zhangchangzhong@huawei.com>, Dong Chenchen <dongchenchen2@huawei.com>,
+	<syzbot+83181a31faf9455499c5@syzkaller.appspotmail.com>
+Subject: [PATCH net v3] net: iptunnel: fix stale transport header during tunnel decapsulation
+Date: Tue, 25 Aug 2026 20:39:09 +0800
+Message-ID: <20260825123909.1463121-1-dongchenchen2@huawei.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ whupemk200012.china.huawei.com (7.152.185.169)
 
-On Mon, 2026-08-17 at 14:13 -0700, Jakub Kicinski wrote:
-> EXTERNAL EMAIL: Do not click links or open attachments unless you know th=
-e content is safe
->=20
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> net: sparx5: vcap: add lpm vcap implementation
->=20
-> This adds a VCAP_TYPE_LPM instance to the sparx5 and lan969x VCAP instanc=
-e
-> tables and extends the per-vtype switches in sparx5_vcap_impl.c so the LP=
-M
-> VCAP reuses the Super VCAP cache, update and move helpers.  On sparx5 the
-> IS0 CLM-0 instance drops from two Super VCAP blocks to one to make room.
->=20
-> A few questions below.
->=20
-> > diff --git a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_vcap=
-_impl.c b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_vcap_impl.c
-> > index 543a1f2bf6bd9..6e6a1f833deac 100644
-> > --- a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_vcap_impl.c
-> > +++ b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x_vcap_impl.c
-> > @@ -82,4 +82,16 @@ const struct sparx5_vcap_inst lan969x_vcap_inst_cfg[=
-] =3D {
-> >               .count =3D 1024,
-> >               .ingress =3D false,
-> >       },
-> > +     {
-> > +             .vtype =3D VCAP_TYPE_LPM,
-> > +             .vinst =3D 0,
-> > +             .map_id =3D 6,
-> > +             .lookups =3D SPARX5_LPM_LOOKUPS,
-> > +             .lookups_per_instance =3D SPARX5_LPM_LOOKUPS,
-> > +             .first_cid =3D SPARX5_VCAP_CID_LPM_L0,
-> > +             .last_cid =3D SPARX5_VCAP_CID_LPM_MAX,
-> > +             .blockno =3D 5,
-> > +             .blocks =3D 1,
-> > +             .ingress =3D true,
-> > +     },
-> >  };
->=20
-> [Severity: Low]
-> Does the commit message match what happens on lan969x?  The message says:
->=20
->     "The LPM VCAP is allocated from the Super VCAP Blocks, which is share=
-d
->      amongst different VCAPs. All blocks are used, so we steal a block fr=
-om
->      IS0, which had 2 assigned."
->=20
-> The lan969x hunk here is purely additive.  Before the patch
-> lan969x_vcap_inst_cfg[] used blocks 0-4 (IS2-0 =3D 0, IS2-1 =3D 1, IS0-0 =
-=3D 2,
-> IS0-1 =3D 3, IS0-2 =3D 4), each with .blocks =3D 1, and this new entry ta=
-kes
-> block 5 without reducing anything.
->=20
-> So nothing is stolen from IS0 on lan969x, and "all blocks are used" does
-> not hold for that platform.  Could the message say where lan969x block 5
-> comes from?
->=20
-> Related to that: sparx5_vcap_block_alloc() derives the address range
-> directly from blockno without ever consulting VCAP_SUPER_CORE_CNT:
->=20
->         admin->first_valid_addr =3D cfg->blockno * SUPER_VCAP_BLK_SIZE;
->         admin->last_used_addr =3D admin->first_valid_addr +
->                 cfg->blocks * SUPER_VCAP_BLK_SIZE;
->=20
-> so for lan969x this maps addresses 15360..18431.  Is block 5 actually
-> present in the lan969x Super VCAP?  I could not confirm the lan969x core
-> count from the tree.
+Syzbot reported a crash in qdisc_pkt_len_segs_init() caused by a stale
+transport_header offset after tunnel decapsulation.
 
-You are right on both counts, and the block accounting is correct even thou=
-gh
-the changelog describing it is not.
+BUG: unable to handle page fault for address: ffffed102091a42e
+Oops: Oops: 0000 [#1] SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 340 Comm: qdisc_uaf_repro Not tainted 7.2.0-rc4-00061-g248951ddc14d #256 PREEMPT(full)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:__asan_load2
+<IRQ>
+qdisc_pkt_len_segs_init (net/core/dev.c:4145)
+__dev_queue_xmit (net/core/dev.c:4787)
+br_dev_queue_push_xmit (net/bridge/br_forward.c:53)
+br_handle_frame_finish (net/bridge/br_input.c:229)
+br_handle_frame (net/bridge/br_input.c:315)
+__netif_receive_skb_core.constprop.0 (net/core/dev.c:6099)
+__netif_receive_skb_list_core (net/core/dev.c:6287)
+netif_receive_skb_list_internal (net/core/dev.c:6445)
+napi_complete_done (net/core/dev.c:6813)
+gro_cell_poll (net/core/gro_cells.c:74)
+__napi_poll (net/core/dev.c:7735)
+net_rx_action (net/core/dev.c:7798 net/core/dev.c:7955)
+handle_softirqs (kernel/softirq.c:622)
+do_softirq (kernel/softirq.c:523  kernel/softirq.c:510 )
+__local_bh_enable_ip (kernel/softirq.c:450)
+tun_get_user (drivers/net/tun.c:1986 (discriminator 1))
+tun_chr_write_iter (drivers/net/tun.c:2032)
 
-The two platforms differ in a way the message flattens into one story:
+The issue is completely latent until qdisc read transport header in
+commit 7fb4c1967011 ("net: pull headers in qdisc_pkt_len_segs_init()").
+The crash requires four conditions to line up:
 
-  platform   Super VCAP blocks   assigned before   LPM block   IS0 loses
-  sparx5     10                  0-9, 2 per inst   9           yes
-  lan969x    6                   0-4, 1 per inst   5           no
+1. The incoming packet is encapsulated and carries GSO metadata. The outer
+   transport header offset is stored in skb->transport_header while the
+   packet is still in the outer tunnel context.
+2. The tunnel receiver strips the outer headers. skb->data is advanced to
+   the inner frame, but skb->transport_header is left pointing to the
+   now-removed outer L4 header, so it becomes a negative offset relative to
+   the new data.
+3. The inner frame is not delivered to the local IP stack. Instead, it
+   is forwarded at L2 by a bridge or HSR, so ip_rcv_core() never runs and
+   the transport header is not reset to the inner L4 offset.
+4. The forwarding path calls __dev_queue_xmit(), which enters
+   qdisc_pkt_len_segs_init(). That function computes the GSO header length
+   from skb_transport_offset(skb). Because the offset is negative, the
+   unsigned cast overflows and pskb_may_pull(skb, hdr_len +
+   sizeof(struct tcphdr)) reads past the end of the skb, triggering a
+   KASAN fault or page fault.
 
-I will update the commit message to reflect the state of things on both spa=
-rx5
-and lan969x.
+The issue specifically requires GSO packets (shinfo->gso_size != 0), which
+are processed/aggregated through gro_cells. Fix this by clearing
+transport_header to the ~0U sentinel in gro_cell for all tunnnel driver.
+GTP does not support GRO/GSO, drop the evil GSO packets in GTP directly.
 
->=20
-> > diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_vcap_impl.c b=
-/drivers/net/ethernet/microchip/sparx5/sparx5_vcap_impl.c
-> > index cf332de6bf736..20450462e2d80 100644
-> > --- a/drivers/net/ethernet/microchip/sparx5/sparx5_vcap_impl.c
-> > +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_vcap_impl.c
-> > @@ -54,8 +54,8 @@ const struct sparx5_vcap_inst sparx5_vcap_inst_cfg[] =
-=3D {
-> >               .lookups_per_instance =3D SPARX5_IS0_LOOKUPS / 3,
-> >               .first_cid =3D SPARX5_VCAP_CID_IS0_L0,
-> >               .last_cid =3D SPARX5_VCAP_CID_IS0_L2 - 1,
-> > -             .blockno =3D 8, /* Maps block 8-9 */
-> > -             .blocks =3D 2,
-> > +             .blockno =3D 8, /* Maps block 8 */
-> > +             .blocks =3D 1,
-> >               .ingress =3D true,
-> >       },
-> >       {
->=20
-> [Severity: Low]
-> The message also says:
->=20
->     "Since we statically assign blocks, this means IS0 has half the
->      available address space for vcap rules, compared to before."
->=20
-> Is "IS0" the right scope here?  Only the CLM-0 instance changes; CLM-1
-> (blocks 6-7) and CLM-2 (blocks 4-5) keep two blocks each, so IS0 loses 1
-> of 6 blocks in total.
->=20
-> What actually halves is the address space of chains
-> SPARX5_VCAP_CID_IS0_L0..SPARX5_VCAP_CID_IS0_L2 - 1 (1000000-1199999),
-> which goes from 6144 to 3072 rule addresses.  Could the message be
-> narrowed to that range?
->=20
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+83181a31faf9455499c5@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69de2bee.a00a0220.475f0.0041.GAE@google.com/T/
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+---
+v2: Consolidate scattered modifications into a common path.
+v3: Correct spelling errors
+---
+ drivers/net/gtp.c      | 5 +++++
+ include/linux/skbuff.h | 5 +++++
+ net/core/gro_cells.c   | 2 ++
+ 3 files changed, 12 insertions(+)
 
-Correct, "IS0" is too broad and the numbers you give are exact. Only the CL=
-M-0
-instance changes; CLM-1 keeps blocks 6-7 and CLM-2 keeps blocks 4-5, so IS0
-goes from six blocks to five rather than losing half of anything.
-
-The affected range is CLM-0's, first_cid SPARX5_VCAP_CID_IS0_L0 through
-last_cid SPARX5_VCAP_CID_IS0_L2 - 1, so chains 1000000-1199999. With
-SPARX5_IS0_LOOKUPS at 6 and lookups_per_instance at 6 / 3, that instance co=
-vers
-IS0 lookups 0 and 1, and its address space goes from 6144 to 3072.
-
-I will fold this into the commit message as well.
-
-
-> > @@ -124,6 +124,18 @@ const struct sparx5_vcap_inst sparx5_vcap_inst_cfg=
-[] =3D {
-> >               .count =3D 12288, /* Addresses according to datasheet */
-> >               .ingress =3D false,
-> >       },
-> > +     {
-> > +             .vtype =3D VCAP_TYPE_LPM,
-> > +             .vinst =3D 0,
-> > +             .map_id =3D 6,
-> > +             .lookups =3D SPARX5_LPM_LOOKUPS,
-> > +             .lookups_per_instance =3D SPARX5_LPM_LOOKUPS,
-> > +             .first_cid =3D SPARX5_VCAP_CID_LPM_L0,
-> > +             .last_cid =3D SPARX5_VCAP_CID_LPM_MAX,
-> > +             .blockno =3D 9,
-> > +             .blocks =3D 1,
-> > +             .ingress =3D true,
-> > +     },
-> >  };
->=20
-> [Severity: Medium]
-> This registers chain ids VCAP_CID_PREROUTING_L0 (6000000) through
-> SPARX5_VCAP_CID_LPM_MAX (6099999) as an ingress VCAP admin on both
-> platforms, but the per-vtype switches in sparx5_tc_flower.c were not
-> given a VCAP_TYPE_LPM arm.  Is that intentional?
->=20
-> Before the patch, sparx5_tc_flower() rejected chain 6000000 because no
-> admin matched:
->=20
->         admin =3D vcap_find_admin(vctrl, fco->common.chain_index);
->         if (!admin) {
->                 NL_SET_ERR_MSG_MOD(fco->common.extack, "Invalid chain");
->=20
-> Now the same request resolves to the LPM admin and continues into
-> sparx5_tc_flower_replace(), where sparx5_tc_add_rule_counter() falls
-> into its default arm:
->=20
->         default:
->                 pr_err("%s:%d: vcap type: %d not supported\n",
->                        __func__, __LINE__, admin->vtype);
->                 break;
->=20
-> That arm still returns 0, so does the rule end up being built without a
-> counter id?  And for an "action pass" filter, sparx5_tc_set_actionset()
-> hits its default arm and returns -EINVAL with a bare pr_err() and no
-> extack.  sparx5_tc_action_trap() has no LPM arm either.
->=20
-> So something like:
->=20
->         tc filter add dev eth0 ingress chain 6000000 protocol ip \
->             flower dst_ip 10.0.0.0/8 action pass
->=20
-> now reaches those pr_err() calls from a netlink request, unratelimited,
-> and reports an opaque -EINVAL.  Should the tc-flower path reject the LPM
-> chain explicitly instead?  I checked at 010230ef1142 and VCAP_TYPE_LPM
-> never appears in sparx5_tc_flower.c, so nothing later in the series adds
-> these arms.
->=20
-
-Not intentional, and yes, the tc-flower path should reject the LPM chain
-explicitly. The LPM VCAP is meant to be system-only, owned by the router, a=
-nd
-not reachable from tc at all. v3 does that.
-
-Rather than add VCAP_TYPE_LPM arms to those switches, v3 rejects the chain =
-up
-front, which also means the LPM range stays indistinguishable from a chain =
-that
-maps to no VCAP.
-
-> [Severity: Medium]
-> This isn't a bug introduced by this patch, but the new entry adds an
-> eighth iteration to a loop that leaks on failure.  In
-> sparx5_vcap_init(), sparx5->vcap_ctrl =3D ctrl is stored before the loop
-> and an allocation failure just returns:
->=20
->         admin =3D sparx5_vcap_admin_alloc(sparx5, ctrl, cfg);
->         if (IS_ERR(admin)) {
->                 err =3D PTR_ERR(admin);
->                 pr_err("%s:%d: vcap allocation failed: %d\n", __func__, _=
-_LINE__, err);
->                 return err;
->         }
->=20
-> ctrl is not freed, mutex_destroy(&ctrl->lock) is not called, and the
-> vcap_admin objects already put on ctrl->list (each with three
-> STREAMSIZE cache buffers) are not unwound.
->=20
-> The caller cannot clean up either, because cleanup_ports sits below the
-> cleanup_vcap label in sparx5_main.c:
->=20
->         err =3D sparx5_vcap_init(sparx5);
->         if (err) {
->                 dev_err(sparx5->dev, "Failed to initialize VCAP\n");
->                 goto cleanup_ports;
->         }
->         ...
->         cleanup_vcap:
->                 sparx5_vcap_deinit(sparx5);
->         cleanup_ports:
->                 sparx5_destroy_netdevs(sparx5);
->=20
-> so sparx5_vcap_deinit() never runs for this failure.  Should the failure
-> path unwind the admins allocated so far, or should the goto target be
-> cleanup_vcap?
->=20
-
-Confirmed. The goto target should be cleanup_vcap. No extra unwind code is
-needed, because sparx5_vcap_deinit() already does the right thing: it
-NULL-guards ctrl, iterates ctrl->list with list_for_each_entry_safe so
-a partial list is fine, frees all three cache buffers plus the admin via
-sparx5_vcap_admin_free(), then destroys the mutex and frees ctrl. There is
-no double-free risk either, since the admin that failed is already freed in=
-side
-sparx5_vcap_admin_alloc() before it returns ERR_PTR. And cleanup_vcap falls
-through to cleanup_ports, so the netdevs are still destroyed.
-
-I would rather not carry that in this series. It is a memory leak on a prob=
-e
-error path with nothing to do with L3 routing, it is pre-existing and belon=
-gs
-in the net tree.
-
-
-> [ ... ]
->=20
-> > @@ -195,6 +213,7 @@ static void _sparx5_vcap_range_init(struct sparx5 *=
-sparx5,
-> >       u32 size =3D count - 1;
-> >=20
-> >       switch (admin->vtype) {
-> > +     case VCAP_TYPE_LPM:
-> >       case VCAP_TYPE_IS0:
-> >       case VCAP_TYPE_IS2:
-> >               spx5_wr(VCAP_SUPER_CFG_MV_NUM_POS_SET(0) |
->=20
-> [Severity: Medium]
-> This is a pre-existing issue, but the new LPM block now inherits it.
-> sparx5_vcap_block_init() calls this helper with one less than the number
-> of addresses in the range:
->=20
->         _sparx5_vcap_range_init(sparx5, admin, admin->first_valid_addr,
->                                 admin->last_valid_addr -
->                                         admin->first_valid_addr);
->=20
-> The range is inclusive, as set up in sparx5_vcap_block_alloc():
->=20
->         admin->first_valid_addr =3D cfg->blockno * SUPER_VCAP_BLK_SIZE;
->         admin->last_used_addr =3D admin->first_valid_addr +
->                 cfg->blocks * SUPER_VCAP_BLK_SIZE;
->         admin->last_valid_addr =3D admin->last_used_addr - 1;
->=20
-> and here size =3D count - 1 is programmed into VCAP_SUPER_CFG_MV_SIZE, so
-> the INITIALIZE shot clears MV_SIZE + 1 =3D=3D count addresses.
->=20
-> That count is an address count is visible from the other user of the same
-> callback in vcap_api.c:
->=20
->         vctrl->ops->init(ri->ndev, admin, ri->addr, ri->size);
->=20
-> where ri->size of 1 erases exactly one address.
->=20
-> Does this leave the address equal to admin->last_valid_addr uninitialized
-> at probe, even though it is handed out as a usable rule address?  For the
-> LPM instance that would be 30719 on sparx5 and 18431 on lan969x, i.e. a
-> row of the longest-prefix-match table used by the router in the later
-> "net: sparx5: add L3 FIB, nexthop and neighbour entry management" patch.
->=20
-> Would passing admin->last_valid_addr - admin->first_valid_addr + 1 (or
-> cfg->blocks * SUPER_VCAP_BLK_SIZE) be correct here?
->=20
-> [ ... ]
-
-Yes on all of it, and the +1 form is the one to use. The range is inclusive=
- so
-its length is last_valid_addr - first_valid_addr + 1, the helper clears
-MV_SIZE + 1 addresses as you say, and the result is that first_valid_addr
-through last_valid_addr - 1 get cleared while last_valid_addr does not. 307=
-19
-on sparx5 and 18431 on lan969x are right.
-
-Prefer last_valid_addr - first_valid_addr + 1 over
-cfg->blocks * SUPER_VCAP_BLK_SIZE. The latter is only correct for the three
-Super VCAP types and would be wrong for ES0 and ES2, which derive the range
-from cfg->count, and sparx5_vcap_block_init() has no cfg argument anyway. N=
-o
-overflow risk from the +1 either: MV_SIZE is 16 bits and the widest instanc=
-e is
-two Super VCAP blocks, 6144 addresses.
-
-
-The scope is wider than LPM or even sparx5. Every VCAP instance on both
-platforms is affected, since the ES0 and ES2 arms reach the same helper thr=
-ough
-the same block_init. And lan966x_vcap_block_init() has the identical expres=
-sion
-feeding a __lan966x_vcap_range_init() that also does MV_SIZE_SET(count - 1)=
-, so
-lan966x has the same bug.
-
-
-As with the sparx5_vcap_init() leak, I would rather not carry this in the
-series. It is pre-existing, it affects lan966x as well as sparx5, and it wa=
-nts
-a fixes tag and the net tree.
-
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index 9a12cc53da00..f6e47c369d62 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -312,6 +312,11 @@ static int gtp_inner_proto(struct sk_buff *skb, unsigned int hdrlen,
+ static int gtp_rx(struct pdp_ctx *pctx, struct sk_buff *skb,
+ 		  unsigned int hdrlen, unsigned int role, __u16 inner_proto)
+ {
++	if (skb_is_gso(skb)) {
++		netdev_dbg(pctx->dev, "GSO is not supported in GTP\n");
++		goto err;
++	}
++
+ 	if (!gtp_check_ms(skb, pctx, hdrlen, role, inner_proto)) {
+ 		netdev_dbg(pctx->dev, "No PDP ctx for this MS\n");
+ 		return 1;
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 22eda1d54a0e..626bbb9bae1a 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -3082,6 +3082,11 @@ static inline bool skb_transport_header_was_set(const struct sk_buff *skb)
+ 	return skb->transport_header != (typeof(skb->transport_header))~0U;
+ }
+ 
++static inline void skb_unset_transport_header(struct sk_buff *skb)
++{
++	skb->transport_header = (typeof(skb->transport_header))~0U;
++}
++
+ static inline unsigned char *skb_transport_header(const struct sk_buff *skb)
+ {
+ 	DEBUG_NET_WARN_ON_ONCE(!skb_transport_header_was_set(skb));
+diff --git a/net/core/gro_cells.c b/net/core/gro_cells.c
+index 1b84385c04bd..d8c0a2867120 100644
+--- a/net/core/gro_cells.c
++++ b/net/core/gro_cells.c
+@@ -22,6 +22,8 @@ int gro_cells_receive(struct gro_cells *gcells, struct sk_buff *skb)
+ 	if (unlikely(!(dev->flags & IFF_UP)))
+ 		goto drop;
+ 
++	skb_unset_transport_header(skb);
++
+ 	if (!gcells->cells || skb_cloned(skb) || netif_elide_gro(dev)) {
+ 		res = netif_rx(skb);
+ 		goto unlock;
+-- 
+2.25.1
 
