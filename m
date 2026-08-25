@@ -1,98 +1,112 @@
-Received: from out203-205-221-191.mail.qq.com (out203-205-221-191.mail.qq.com [203.205.221.191])
+Received: from out203-205-221-209.mail.qq.com (out203-205-221-209.mail.qq.com [203.205.221.209])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE3038736E;
-	Tue, 25 Aug 2026 09:01:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB073D6461;
+	Tue, 25 Aug 2026 09:02:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.209
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787648483; cv=none; b=MjT5O3yzQelJ5U7dNNzcBqoTQqxxExt3kNpuJC3S6EsBobm2OVHRtw1fpj3C/JAo7cWOrYgyStUKbKi/gQ4xelZPZrOiRr7rVi+f3CWGN04dLniGrQlt72pqiKgsz4rlmvUGi77wJELT+5BY75HRcTolmd2+ununL7iLoampT70=
+	t=1787648564; cv=none; b=ZgVk9rDOoV84o46H+PLaaGkTlScVjmwP/SdNsT9AA8OIeH5tl/l4WZEicwn0VTWulr1mWL9MUn+dDqt/j8Tf7CICHNmoz9T1/FLqsfUl/cS3MSkqaUEBQZGSjEaDNV85yVCpZVwCDmKmqN/7l03TvMtKHn3aoqPprfcsB68Ietg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787648483; c=relaxed/simple;
-	bh=EtIg01LaNBNQflNfivlxVDBqFs5XWLOUiWj6zEAukhc=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=aWjDsUWaiMV+PxSbHVzkqAibsvTEBLftdRibetJMAEckzyuCH6qlCc0/gY25k/bD28a1Kja8G++XdS8keCMLe1+RvTPtYPwG0sK3VaGnS6k/AuRKWopeLSetdQ4wpkiCLuvpnIowFLQACyGX8EFd6R61O1ITDRkLyn5A22rCPkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=hvaJ7GWN; arc=none smtp.client-ip=203.205.221.191
+	s=arc-20240116; t=1787648564; c=relaxed/simple;
+	bh=ceikmrp4PuoVjfBKyLj9IWYeFjcuj+0SapmTsotWv8o=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=BctZjuRUXTbcP3YjHdwme03QMq9hzTEKawPglSLv9YETnhrFm0joiL7r+AidCZe7EX77DMYSpRsB/IMkAeF5Sb0eKr9WFrNLnOZXCv74Cc34BzPbo22VMUID5yZYTsDRg4Qy6mIk2gO5AnYbuRYbmEDeGQaQ7zJnqLKvth89m28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=aYxo3Ttk; arc=none smtp.client-ip=203.205.221.209
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="hvaJ7GWN"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="aYxo3Ttk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1787648470; bh=rKGz4VrG3l8VTDavSuZn0tyxha5an2wdcen9Us3BOqc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hvaJ7GWN10+tf5uzlnXIpz/rqrfSuWyEw/7vsWcgo80iLUo2DlUd+RmLp7BoNnF6+
-	 /FJA6YqBNn3sC29cQAB1ruLyjMRBamZQ6QIs0jPJJJqGhrxK2pqkzbhouczxijLBxf
-	 UIKNnfrHg93LzcglykuXNy2evV+4EhhNSiTonDl8=
-Received: from lxu-ped-host.. ([111.198.231.89])
-	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
-	id 463F8B6; Tue, 25 Aug 2026 17:01:06 +0800
-X-QQ-mid: xmsmtpt1787648466trukzz202
-Message-ID: <tencent_F7A4E81EEE16CD5078266CFC2E396F8C940A@qq.com>
-X-QQ-XMAILINFO: MZtEYADUG4AgUxCqNVx+p6rrNQXn7KDRIyfn7WizF4Qu3k7XsXj0VypnH+kL23
-	 2T4aDDzHXZ55gpOTxi9Tagagp8WEuy0n0jJ5IoLnbPCnJTzl0w9nfT+DfxB4wYpVIRIxJrzvl02x
-	 RVzGGiDjIk5xHxPKyhLNNGB05NqYzhlpHsmQPEfZSS0ChIMZmMRC3F3K0ijWdixQ7kv0INeRTSRs
-	 OjlACWv0A3+HguGc5ySIsmLLW6UIGveynyTadrwrZZfO4TUwwxgXft/fGH9cje6CmIq0StPtZmbR
-	 vn1vc2FWtadsS+Glvwx4aP3oHug+AjuOXOjkGs4AUwzgtFB2qFakTENtMqudzgkGTzafndsDAuco
-	 PmsG/3WqfwNM5d2/5vSDl2t147BV3E54SV0PyEaJz53B11tp0/J5tJyidC2qoLSV1459Y/nFKQG1
-	 8QyoSz6jcHP72PChieWX16fVnTG5q+TDghHkG/Sey9gLM+fDNm1z/pRA0tmy4X3tUFP9exAghjfe
-	 pp4+wQEMZVBZ00IT/M3jtK9LoJTL2LDahAjM+AtxjpTzbB+rjnyoHw8G43NeP78MzTwPdlp7okVc
-	 gPeUEnLFvp3+zZy0V9eFEZl0m/kgbIiPsbGgdw7hcno7YfwdP4xy4JujUauR9arrjvyas5H4Na/B
-	 PNV9iAwaxUjUPVh+8w6a36i4FZSyZtPFtXTp9JJIrtbwnGbAWOhGHJ7bSd01uWes5+zWvDDfFHjO
-	 vpQcMh82TQJhdU4VCfltd3Oy4slBUKKcPFjiEn7BkLgkfJSSRdUDCNkBQdIki3erzzppJ0vlameJ
-	 LE0CBrYeNqAE/84MsPa7deFF2Jx8WxHk4mtr+pZfnPBi3oykkT/2dq2ezD+deV7ZMdeS/gffa0QX
-	 OmRJFuoqss/wibm9ihVQMA0DYqkbKXc9lvB63b01RCB0eLWgBHotbBUV/3hhvDi2pkN/w4RolGCS
-	 qRpJHcqCpLVZF/Rb6ztbkvsx+JLhUIFW8SkVxGWqaxzoRj50+7Fn1L39tM3KAW+ZWJzmy0RJBdeX
-	 KXwPpwLPlalbxLpvbw
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
-From: Edward Adam Davis <eadavis@qq.com>
-To: jhs@mojatatu.com
-Cc: Po.Liu@nxp.com,
-	davem@davemloft.net,
-	eadavis@qq.com,
-	edumazet@google.com,
-	horms@kernel.org,
-	jiri@resnulli.us,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	syzbot+0054fed3dc9085390f51@syzkaller.appspotmail.com,
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [PATCH v2] net/sched: act_gate: Limit the max value for cycletime
-Date: Tue, 25 Aug 2026 17:01:06 +0800
-X-OQ-MSGID: <20260825090105.48266-2-eadavis@qq.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CAM0EoMmHMFQ+mATPoHv-5uyN9++Lch7MDjHsC7eu=NVapRB2bQ@mail.gmail.com>
-References: <CAM0EoMmHMFQ+mATPoHv-5uyN9++Lch7MDjHsC7eu=NVapRB2bQ@mail.gmail.com>
+	t=1787648554; bh=ceikmrp4PuoVjfBKyLj9IWYeFjcuj+0SapmTsotWv8o=;
+	h=Date:To:Cc:From:Subject;
+	b=aYxo3TtkzbiilMyaWcU4tHToyLAmHsa/ABqDzTlrUyG5eOzmgEdCCjMpUYgjKTqaV
+	 1PinUjZUscObEsK4wKHgMumkiueicTSyeDoC3uUzexrps8FcHJIr8FesEHGBuBQg5X
+	 gJbn9xKzDfgCWjrEz4DB+M7B1WeWnJo7EGRXiNhw=
+Received: from [192.168.255.10] ([111.206.145.19])
+	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
+	id 9F0C875; Tue, 25 Aug 2026 17:02:31 +0800
+X-QQ-mid: xmsmtpt1787648551tw6126cy3
+Message-ID: <tencent_AFD4DC7BE2EC61C628B53A3BCF4B558C2105@qq.com>
+X-QQ-XMAILINFO: NwU6Bou9okj/7D1mn5+0obpbSba8rNBYpS+u7BDIdCdW1Fx51rKkew5xht/a+x
+	 /9jtPiKMN0/nkzAHV+fKrV/XI0AVQwmG2gm3hM4BBHvCC7tGqLwG/c5I11koYB/TjYi3B4/HrEUq
+	 OVZbNRkF8SqSnnesyl1cxv08RDL58q/B4Yz9wGgkxR/TKw5+KtmEj1MhzgPhPy8JzFRTbd+pP5E4
+	 z3aIkgXk8KSJ/vHM2Zf7hES4V/tTXVYAA9swGxmmbsskD3BVV2EK9baQidji3Uncf5YdXpVSfEFP
+	 OFYut6MGbOB78Is/OFB9jQEQJcNc+FrO01MtrSgY2Yjnilax01y9BLD4fooRnR9kTTY7V6DQTiIV
+	 dhPO7xsSsPg3lIWbRRpoSl46ygCRgm+0Rqvse85u2vT1RUhxp+e9Nc+kC+wMAL54DgCnPvVQ5hDT
+	 TFGq4qBBcbHvwUqa1A0rqPkviA6h8e3bWpfNBeuh6nwQCAqvLSP/YzgB8CH6M7viEj/iJ3TthTsc
+	 Bsov1nOMVlBxkFpqOAt3/2IZlT39GzvDZEec+MErgfa8mixAEN3tzhy9GckjvQARyefcGZEuuFMy
+	 cUIHRdact1/xNkuKlKH1H1RBq6l7XcsTjtooo1g2wBAmKbp0lYHYjOT21B9Gy1O+WB9jsdT9vZn+
+	 TmwFTT62FhagjWzOsDCek4gz2NGU1c35puS1z3neAU0W5XF+tYdEsupbQv3hoHRf4DKxifb2Y8+w
+	 AjYGKQeLa5YFEsFFa6VkfqPELv88jFPXF4xP5qe8AsOGJ/3wvJDtzSKkvFDy/F47kyq1L1kFGZIr
+	 ck1YOLjHn/S9t697zHFmVJN2EIJo+vXPl31LvcdticdOuV5dqDH1CnX7Be00Rzr8sLUj6Wx5wFCP
+	 C0tP4HOkWL4qH4PwQWTY0za/Eh1x1Lr4Xe9PMZGrGavyPoGW8YaCGXWaECqj9vGG/IdfZCOdAwKy
+	 hClezAbHqy9wANuXRdzr8uOyPMsyiPIMgBfe/7YcD/ETUt3Sxp4DiDhLDXjgGddRjcYZTsDiHFV2
+	 s+MHenTJMzpovH8GlmfIdwwLO5X9/XfY6GKMB56WcX+FRaFNR87tTZJnz/FhvP+pypPe9iajwfrj
+	 S9srjS
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+X-OQ-MSGID: <c08b83d9-1cc3-4887-bda8-10bb53af887e@qq.com>
+Date: Tue, 25 Aug 2026 17:02:30 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: justinlai0215@realtek.com, larry.chiu@realtek.com, netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org
+From: Yang Zi <2959243019@qq.com>
+Subject: [PATCH] net: rtase: Fix NULL pointer dereference in NAPI cleanup on
+ probe failure
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On Tue, 25 Aug 2026 04:25:04 -0400, Jamal Hadi Salim <jhs@mojatatu.com> wrote:
-> On Sun, Aug 23, 2026 at 12:07 AM Edward Adam Davis <eadavis@qq.com> wrote:
-> >
-> > If the user passes a cycletime value of 0xFFFFFFFFFFFFFFFFULL,
-> > an overflow occurs during the assignment of cycle in gate_timer_func():
-> >
-> > cycle = p->tcfg_cycletime; // overflow, cycle = -1
-> >
-> > Since the local variable cycle is declared as ktime_t (i.e., s64),
-> > the assignment overflows.
-> >
-> 
-> Review the sashiko feedback. At least two of those concerns look legit
-> and need to be addressed:
-> 1) complaint about timer disarm on replace 2) INT_MAX being too narrow
-I haven't received any feedback regarding sashiko, and I didn't quite
-understand the points made in item 1); could you please provide more
-details?
+rtase_init_napi() (which adds the NAPI contexts and sets napi->dev) is
+called after rtase_alloc_interrupt().  If interrupt allocation fails,
+rtase_init_one() jumps to err_out_del_napi and calls netif_napi_del() on
+NAPI contexts that were never added, so napi->dev is still NULL.
+netif_napi_del() -> __netif_napi_del() -> netdev_lock(napi->dev)
+dereferences that NULL pointer.
 
-Regarding item 2), if INT_MAX is too narrow, do you have a suitable value
-to recommend? S64_MAX?
+KASAN report:
 
-cheers,
-Edward
+    BUG: KASAN: null-ptr-deref in __mutex_lock_common kernel/locking/mutex.c:625 [inline]
+    BUG: KASAN: null-ptr-deref in __mutex_lock+0x8f/0xce0 kernel/locking/mutex.c:820
+    Read of size 8 at addr 0000000000000cd8 by task syz.0.1/1147
+
+    __mutex_lock+0x8f/0xce0 kernel/locking/mutex.c:820
+    netdev_lock include/linux/netdevice.h:2818 [inline] [rtase]
+    __netif_napi_del include/linux/netdevice.h:2942 [inline] [rtase]
+    netif_napi_del include/linux/netdevice.h:2961 [inline] [rtase]
+    rtase_init_one+0x5c3d/0x5fd0 drivers/net/ethernet/realtek/rtase/rtase_main.c:2295 [rtase]
+
+Only call netif_napi_del() on NAPI contexts that were actually added
+(napi->dev != NULL), so the interrupt-allocation failure path skips them
+while the post-napi-init failure paths still remove them.
+
+Signed-off-by: Yang Zi <2959243019@qq.com>
+---
+ drivers/net/ethernet/realtek/rtase/rtase_main.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/realtek/rtase/rtase_main.c b/drivers/net/ethernet/realtek/rtase/rtase_main.c
+index e3cd4f7c1380..b4d8828ca87d 100644
+--- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
++++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
+@@ -2493,9 +2493,14 @@ static int rtase_init_one(struct pci_dev *pdev,
+     }
+ 
+ err_out_del_napi:
++    /* rtase_init_napi() runs after rtase_alloc_interrupt(); if interrupt
++     * allocation failed the NAPI contexts were never added and napi->dev is
++     * still NULL, so netif_napi_del() must not be called on them.
++     */
+     for (i = 0; i < tp->int_nums; i++) {
+         ivec = &tp->int_vector[i];
+-        netif_napi_del(&ivec->napi);
++        if (ivec->napi.dev)
++            netif_napi_del(&ivec->napi);
+     }
+ 
+ err_out_release_board:
 
