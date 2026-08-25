@@ -1,35 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39DE3EAC6D;
-	Tue, 25 Aug 2026 09:11:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567F43DEFFB
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 09:12:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787649063; cv=none; b=OhRmLtottHeapd2oqZGRXcYzMHpRNjFhqHxFyCUUUj2Gd1xPbJZ8we+PUStnxL7649IuPm3i815CLX/NbT/lbXs2H5j98DdjNvg8i42PYlb2k+Gd7TYfR8iubHa7aNJS3E3awJZk3CAO6kL9cuUydAEiYT1TnHAhUcN6sWGHxTU=
+	t=1787649136; cv=none; b=Tw7YHGgfjH5gbMNrIxywuObQfb+09kkkIjZfQw46BhDFVgZvk3+d+XEorqlQlxI7caoFtmRjHq3Mq0AIe+xkw1AIqmndXHHzKz4Og4dZvJrmFXViIUoaVd3XmzzpGkPgICSw4HeYcXrbaZfdbw3yYaUqkLvMvMhP/cNx7IXovjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787649063; c=relaxed/simple;
-	bh=y2o0OnwC6jrVGWgzIXGqD1iIKejFda1MtFL2bWoaKvI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Df/vKVBy9VuA2UndoOFgcVH1UpVc/P6czNi2z8a3NcvyeRv1ier6rtqsiHR8f9raZgt+MlRJivCsS2YArdT0orG3exFj9sOM6yUW6izOpxC8tdZhCNDtzYURlzDOFvcuZGU+jO5JM0rizlbO5S35brxzM0PgPpP9i+9/ib5vXxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kDx7MRtQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787649136; c=relaxed/simple;
+	bh=RYTgmNzbCcdgdZixJPJV1jW7mvKJmZX2kwBDmBpozhc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ClJmlt4Ud4aCvpFtpri/buuE9Zfs30XTSQRnJXVhqu/yyw7YMEepiJTynAhoYJpw2eKkHSDIBXP040WVWJYhb6EWixpT21viLDr3fOklDydoUxzpGN8h+UeYQT/WmstEWtQO92qqd4gqW+8kaE1rJvdPrl4aL8k637OOgjVzrTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CJjuxRTm; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kDx7MRtQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 850651F000E9;
-	Tue, 25 Aug 2026 09:11:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787649062;
-	bh=z3dMN3TWHIZI8df4I6nsAXJ3q+Cd8tMxiRx2fIyjOKY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=kDx7MRtQVQ7knhiTvQSjWUsnQfHJX77W91pHnIKK9vKKei3V2uMcMaFDVPl1HvSBc
-	 pSkgc3IZkTKYWCYWr0SXNKOYFQzB8WKxoq4TXIWp4dlo2MOCOnJqZrv3CMEnDTo1AT
-	 JVw7G8UefWBhP+Q7rs3MQXXBwTU3BuyM0jniJjKBtMdinkgH/sCQ0QUvMYYSxhgBZs
-	 UVbpu4wJTNWEW1hWtmxrhCuHmqck/Gk92zOurrktPKaBy3exlshZgAQClRq2KSCjPh
-	 OTfAJLxAWSvBuNNtpK/PQBjle/htfA5e4fICj2AyuP00Fkwr4qiWK6HZSGGyaFeG/t
-	 2OWR+AKKJ04Iw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A8D3924A77;
-	Tue, 25 Aug 2026 09:10:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CJjuxRTm"
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5aec6360133so3712672e87.1
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 02:12:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787649133; x=1788253933; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=mMBLO7CL+KFPWweenYms5rwiRJoiwPTDdcMzsEXMcSQ=;
+        b=CJjuxRTmJa6BACni4cbSGdC4RzjSu/NX/B3UMY6MWL6bdhUtn7pgE3dh85NyAAt7UF
+         VMtumdjhwzlQsnKjH8bVdtE813jxM+Me54hM3Z8fI//16BoKfE1SiWmj+LRlkr8cWh48
+         UpDuZTT+VxvszPkVhsmf26m1+8c6GgoIFio3GjhoW3JlnuZJLiDDvu6JBmoXKkFaYUou
+         r8x2U8X9VKErYeX5WxIR+l32txnhRnODuKaMMrrU3G1ES/0o0YFpV1Y48n0m5+3SBSw4
+         CKfvktUwpD7g7IuDr/xcmQSQSG56O3HvRIGYCO+jzqoR9oxWrufPlvEM56ZRN+WT46l5
+         CqlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787649133; x=1788253933;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=mMBLO7CL+KFPWweenYms5rwiRJoiwPTDdcMzsEXMcSQ=;
+        b=FRoc1dFUOzfg6jT0fAD+S43d2hMiuZ7Y0ZVf9rVXFSZnMiG2hyHK0fxLbDa5TTqyDW
+         VvoFNYY7gnpTiGn4K21Izq5L0iLqrC/wGi8tMcbYoKc4JE2HdaggY7ioeQoA6gCj9yL1
+         xFwpiPZa9oQ2uADLMrwHpVRnwv9aaPkwrpLde4NIk7TDG39ppbAsU5AzcNmnUUbOdVKU
+         xLttDinWOctiEG0X3ya3bCW2j68q3HwcGI/dhG6vd9XTak5ogU76ZMsp/u16Glz5gNpy
+         O1srgnbwErIv8TbGR9BTXh/f5bsJ2N2q1+2EboGH2Bq6/M9PC2slDrG9UMEWJzWbZlc4
+         2U9g==
+X-Forwarded-Encrypted: i=1; AHgh+Rq98AnQt8ZRTVE5IB8ZXwg4ZwCGwvuMNuBSpQC3E9WekACuiCNoOEdpev7ApVhh4oUa4qUSgQA=@vger.kernel.org
+X-Gm-Message-State: AFuF++kbWHYXc1B8eXw7RnO21U5+ocDSIaoCH8NVRGroDdA7FlXR1OOj
+	k97cep1P1aq7E3k04qF4wsqEnMtPfO0B9+HZFO3oNJ3V3CxGCmrHrMs0
+X-Gm-Gg: AR+sD10xYFHVbAuVlXeocmjvdECN6cCbH8rAHwfeT2kAkd+VhvZfqkDFvW+vsI0hSSV
+	7/rZDMIMleoy7IwbDerbB12PnrqeNojVkGdFAGIVL0ipQslO5EabkFan0I7qvTTJUOce1baQ/8X
+	/LYCQ5nI0C0Ymio3LSK8fjkQaE8EbGwsdAQ81FqpjfqwcJac81dfs2c693PY8zAEye+wmgtW6TZ
+	ES0sISfDYULoiF+yeKU6mswtnJMEy0xEr6MYg7Ebgw7uU0gK9jGIbtc+tDe9gp28KIDyQbRNKs2
+	Svc73gGzhNvxnzpN7wrPq6+EmwgwjzcfGLNLAtorLvc99rt0lUkBNV3llneRx3QuTBw/K0tiwXk
+	mfrl5lSFxc/MGvPbkUF3xc2YJ9LvdgXa8M0tusr9f+6LAxVqybrLon43ZB1utvUZ3Bl6uQMf6jZ
+	VyQyOSR5rnIvPqcNkdLn3HKn0CTEnnB8gNdvj11kPMWZvAATGm5LtiXNJCoI+PB1xoNQ8EfeBxa
+	w==
+X-Received: by 2002:a05:6512:3b90:b0:5b4:5846:d925 with SMTP id 2adb3069b0e04-5b484233905mr9784308e87.21.1787649132506;
+        Tue, 25 Aug 2026 02:12:12 -0700 (PDT)
+Received: from theodors-laptop.. ([81.95.140.58])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b4995cb5a7sm570794e87.62.2026.08.25.02.12.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Aug 2026 02:12:12 -0700 (PDT)
+From: Theodor Arsenij Larionov Trichkine <theodorlarionov@gmail.com>
+To: netfilter-devel@vger.kernel.org
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	netdev@vger.kernel.org,
+	Theodor Arsenij Larionov Trichkine <theodorlarionov@gmail.com>
+Subject: [PATCH] netfilter: nft_nat: fully initialise new_addr in netmap setup
+Date: Tue, 25 Aug 2026 12:10:56 +0300
+Message-Id: <20260825091056.253147-1-theodorlarionov@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,43 +74,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] sctp: fix NULL deref on untransmitted RECONF
- completion
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178764900938.3343118.190077942408834584.git-patchwork-notify@kernel.org>
-Date: Tue, 25 Aug 2026 09:10:09 +0000
-References: <20260823172857.896146-2-bestswngs@gmail.com>
-In-Reply-To: <20260823172857.896146-2-bestswngs@gmail.com>
-To: Weiming Shi <bestswngs@gmail.com>
-Cc: marcelo.leitner@gmail.com, lucien.xin@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, xmei5@asu.edu, stable@vger.kernel.org
 
-Hello:
+nft_nat_setup_netmap() builds the mapped address in an on-stack
+union nf_inet_addr. For an IPv4 mapping it writes only the 4-byte .ip
+member and the loop runs a single 32-bit iteration, but it then copies
+the whole 16-byte union into range->min_addr and range->max_addr, so the
+upper 12 bytes reach nf_nat_setup_info() uninitialised.
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+KMSAN reports an uninit-value in nf_nat_setup_info() reached from
+nft_nat_eval(). The IPv6 path fills all 16 bytes and is not affected.
 
-On Mon, 24 Aug 2026 01:28:58 +0800 you wrote:
-> sctp_process_strreset_outreq(), sctp_process_strreset_addstrm_out() and
-> sctp_process_strreset_resp() complete a pending stream reconfiguration
-> request by stopping the reconf timer on the transport it was sent on:
-> 
-> 	t = asoc->strreset_chunk->transport;
-> 	if (timer_delete(&t->reconf_timer))
-> 		sctp_transport_put(t);
-> 
-> [...]
+Zero-initialise new_addr.
 
-Here is the summary with links:
-  - [net,v3] sctp: fix NULL deref on untransmitted RECONF completion
-    https://git.kernel.org/netdev/net/c/2db9bfa3e27b
+Fixes: 3ff7ddb1353d ("netfilter: nft_nat: add netmap support")
+Signed-off-by: Theodor Arsenij Larionov Trichkine <theodorlarionov@gmail.com>
+---
+ net/netfilter/nft_nat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-You are awesome, thank you!
+diff --git a/net/netfilter/nft_nat.c b/net/netfilter/nft_nat.c
+index e32cd9fbc7c2e..7b026305b5fea 100644
+--- a/net/netfilter/nft_nat.c
++++ b/net/netfilter/nft_nat.c
+@@ -65,7 +65,7 @@ static void nft_nat_setup_netmap(struct nf_nat_range2 *range,
+ 				 const struct nft_nat *priv)
+ {
+ 	struct sk_buff *skb = pkt->skb;
+-	union nf_inet_addr new_addr;
++	union nf_inet_addr new_addr = {};
+ 	__be32 netmask;
+ 	int i, len = 0;
+ 
+
+base-commit: 7cbfb180945ce529608e4d4e24a6d483699fab1e
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.34.1
 
