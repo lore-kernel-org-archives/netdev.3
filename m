@@ -1,291 +1,278 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76524156F45
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 00:17:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787617064; cv=fail; b=TeKhhP5DLw/QDtfqD0ZV6nlbeBlZsBRFbH3Y2QkqzlxhlbbyB32x8I8nPuUlDX6Q3uqiH8yvGbHb/HRlmr2CpsZaGhJnMyiZb9EMYsnU1po+L9dGvnSBLRoUBi3xFrzcWTgyJeedMDXLau69NpSeqKFX5riHJHzJq62pXZ1FqhI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787617064; c=relaxed/simple;
-	bh=dj54Qhk4C6HqgKaiZPC4tro2HTNftlFsajRVGq3NxLA=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=U4LU/xDqMPLFdGHcU3jj/K28bbNXULe2gTHaA+FYxGjLqnCjqLJUw/zvA+GyJVOE+zNYVfpjFj6e/icfUd7WkXpN+isxanJ+Rkj1zQHZSihwkNduWt2SbUnIKcw5M8R2gE9/5L2zTTThox2ZSBrmX6kU3/FjWEw54ERh/MCSWK0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CjFE74hT; arc=fail smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60CD2264B0
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 00:18:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787617137; cv=none; b=eU65W1Q+JiJxQhpySefm2tWwNi3uU3GaOoT/Yhukc3EgGzyQLjtM97ljPQ7KQsBdsJ7sy7CAI+xNC1oOICpz3CHCT3mfRFqfgaTQ8M0wKoGHdqQDk08A4NfXS4etXmkAgdAiwiZTPUKZyqLRz1mVAmVpg5nvWfch+aPkN6VhfzE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787617137; c=relaxed/simple;
+	bh=xGgE8fRb2F6SeuN2setpjtGggTxd2X5TU4Mo5JMO92Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nt1eJDTp7IIzQbpurKrHVZ16uAtxpaDRAQj9ZBBMhKIvPnRUWs+13Edoy91kYMUY4sKUtyxXhSa2qT52WNkgxzYiqu2gOmtn/5tGhxY2AZ393gt4jZIZa4tgjRODCOW5CcHy6aZCXxBJRSWIx/K9ty5DtqMvWaOsWzRtrbM+OOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=Kmu63tSR; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CjFE74hT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787617062; x=1819153062;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=dj54Qhk4C6HqgKaiZPC4tro2HTNftlFsajRVGq3NxLA=;
-  b=CjFE74hTQCMjfvwAAT3SOtQM7gIRCBAOyrIc4edZcajHODWZr5valxHD
-   qSLjPx0aMSPtGN2zRpS/9YT5PSmQTC62k2uVQ05Y/sBEJPud4a/+EO53A
-   98bJBTsXOM+3HJ8RG9RM8CfQmcAr+jMiPu5FL+5C2mPJhtGiLVGD80ZVk
-   IBHL48zSPcKKxzULll+EJHfaXr0YrGJwAWgCjGdZrYrfT6O2BM/4M38GZ
-   2HZRsG/46eFpKyXPyeTy2Utjwi1UBx6qfq8C8+qKee4eUmPdp/yQ7inoF
-   rtMvwJOeHMuHG3oBy5pyX6a9IxboERvUnXQCT0gjauEkJo5vDyFhZyins
-   Q==;
-X-CSE-ConnectionGUID: ak8UUoTeR62lrqMr0d46sw==
-X-CSE-MsgGUID: HGCdinS/S0iTejKs5OyfZA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="87204738"
-X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
-   d="scan'208";a="87204738"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 17:17:41 -0700
-X-CSE-ConnectionGUID: HG3uXFO9TaSe+MLFNuSajw==
-X-CSE-MsgGUID: Y5k15f8CSi6K52YJW3Qo+Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; 
-   d="scan'208";a="262837335"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 17:17:41 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 24 Aug 2026 17:17:41 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Mon, 24 Aug 2026 17:17:41 -0700
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.53) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 24 Aug 2026 17:17:41 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZysUodLVRNXQcy4ZeneAqjO6JpHQDin7hp7RWIAL3JzbRPD2iqw3XWes1IgYDxRoQ/OZU8cV/vMZwbIzLtkKri6oEtf2bfsULQOAbttkpT5M9Z+9wocSlWIQMquKtUqLN3z+488m8Ti5dryCEvd+1DCb+6dS3j3pvjGT71nwXwaoXMqYqMYC7yY1hKqFVlsx+IRM81oF4JtzgHyzjHyZsT+jNlBA7FyyjhzBnpBVA+LkKhyzsF50ChV6l9Qozg80VfC4KnBERI91Qo7qHpWuluKiVJcWUu7I3insbzm4YvRs0DjrHs+siZkbT4UanZ5G3Ot9etByUEAfOuoZzBskOw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=chkDZ42P8bP0lb+RYEcrDyntz6eyh4CFt13QWhq6Rc8=;
- b=jm1gekNJMtdo7VU2XA12z1aVFJ4AwwlUgXQ4XLL55feaDHfuGW35FPxoiBVIs51UF8ptwDLpPjyFvj1FWeAIZQEygQKsIawBxQrw7hFzptbzHYl5qXw/n5wfa/hjVyjfxjrkLYX1CHaosiMMYKaxQEiq2Ne6/4ze2hCaTJcGkeWfvFrK5vqRQDYUeJrgloo7xJbSasgxBhcFblzmN6AsCm0PO+YBiqAQesphHrjreYhq57Usy1aPtqnjBOaEEmAWRrLF/GdEpdtuSsUpgy18/DpaDGsL4KPF4pLzBIcYTc9N5VV4Vih8e9LZ8nwtih1QUvj+vnr8774xaUzna0m5Pw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
- by DSWPR11MB9763.namprd11.prod.outlook.com (2603:10b6:8:355::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Tue, 25 Aug
- 2026 00:17:39 +0000
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58%6]) with mapi id 15.21.0339.012; Tue, 25 Aug 2026
- 00:17:39 +0000
-Message-ID: <9773d301-867a-418c-bc9c-719ab51b4023@intel.com>
-Date: Mon, 24 Aug 2026 17:17:37 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-net 10/12] ice: remove unnecessary discarding of
- timestamps after clock adjust
-To: Intel Wired LAN <intel-wired-lan@lists.osuosl.org>
-CC: <netdev@vger.kernel.org>, Maciej Machnikowski
-	<maciej.machnikowski@intel.com>, Anthony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemyslaw Korba <przemyslaw.korba@intel.com>, Grzegorz Nitka
-	<grzegorz.nitka@intel.com>, Petr Oros <poros@redhat.com>,
-	<alexander.nowlin@intel.com>, <kevin.bross@intel.com>,
-	<ranjit.cavatur@intel.com>
-References: <20260821-jk-e825c-minimized-fixes-v1-0-9d0731eb4858@intel.com>
- <20260821-jk-e825c-minimized-fixes-v1-10-9d0731eb4858@intel.com>
-Content-Language: en-US
-From: Jacob Keller <jacob.e.keller@intel.com>
-In-Reply-To: <20260821-jk-e825c-minimized-fixes-v1-10-9d0731eb4858@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR04CA0153.namprd04.prod.outlook.com
- (2603:10b6:303:85::8) To DS0PR11MB7381.namprd11.prod.outlook.com
- (2603:10b6:8:134::14)
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="Kmu63tSR"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-cbedbaba5fdso2464368a12.0
+        for <netdev@vger.kernel.org>; Mon, 24 Aug 2026 17:18:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1787617134; x=1788221934; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=RarC5x4RvvpR7j/hUnvljw8BjrRQB7FIPxU5ozvxHYk=;
+        b=Kmu63tSRJfsGg7dBm81rvA8GmD1wLWtCAvxTD1ip/pS2ij9YxmFw8WlK1lxzXZBfgS
+         7U5XQpFZH93Cn10CVAq6b6lh7V1ky6ju7A7GhYtQnTcD0mMc/ynDI/D9jy5vFJH5b8AN
+         lgJzYx25fLOlp6L5fUhJRFlyR8vKLMEuF9NsndU0f9yTsGWkGKF45EKHmkze3KEv/lr/
+         SUISUberyTamVlgq6v8dsNF+12lhqTe3cUKEv3hWFkYKMkMrDd6t2M3SHvxt6DAsrji9
+         GlJaRtvYxb0xcbucxUWM5zEwa+0r21TRQzsNDPfpxPJ7345BngGQk0rxUwr1wP02Qfe1
+         lgFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787617134; x=1788221934;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=RarC5x4RvvpR7j/hUnvljw8BjrRQB7FIPxU5ozvxHYk=;
+        b=fMBOHBMA5ijdUY7K0dpntsCW4CEP9ZHaWzE3rbDK8nROi8degNDc8uBXmeTdARSgnQ
+         iod5bVDKqQaHpqZNluipx9Qm8yMdobPrx4haShqt0LNXM0IGKGH04yjAR0D9TVmAI8Sh
+         k6Uhm1HtiztYj7iO+vpYmwOQQvu1dPeRGD2J6z/hKVXrn/pVLwRejPNA5K0k4cDCXIYb
+         ImNQMdA/qEOLWxW+IwnlSZ2L3J8ULT6LCh69diufTqizn1cIBVq8OkVcTDV2RqZE9Z3s
+         pKz9wain1+L/5+nrl+13W7Zg9kd8862mmDb4sqsUg/JYBnrl7HUfwga644Qv1EQ3XJ6p
+         RhWA==
+X-Gm-Message-State: AFuF++kazF5dqWLokyfVs/co7I2krsWtC6zKP6d637BzGC9WNl2b7WE9
+	f4P8CFuQvyTXH2I5jBRpR5VT2a06Yr/LUqgyEdmmqUZd2U3ESO9UVIDUkm8TKLhsERJpO8JE1Fx
+	LdJkT+zk=
+X-Gm-Gg: AR+sD11FdBZc1ggT+qLFJY4nAA7rIvJRsF99JjBiXeGvUFu/Sz2u1hs/2FUBRBQzx1z
+	aKnz/igimnfZVf+E30Z5Gp4o/9sCn4fmVT88yW/4rRjFUvGMR4rYURneL65GXPfYOy1/WkT7hOG
+	fDo0GKbdX/uVHe+G/adU7pYkI2u80zSLKfIyGr+mNq9AHMvUkMUbRROpxxYrDLgyog8pD/6kr9Q
+	jdo67RuQg5ngpx4qwlseYD33/GkplKSMTE3Mg/5ugQZywYkEbKgWVvE8SnO2Lb5M5cQ7zhonzPi
+	9p4KwYqSm0/Qcs+qA23SYfVML/SbLF8EBMXomhVKbGhidvszGEjsE+WKmptButKmuSIHdQfD6vY
+	H+B0W0ayVVSQGKtjuA+mnWG+TlRyZMzuNYQwtH2XotUfvhi8EXAk0ZJch4heTTHRCK5ktC5Sabe
+	kYg70KQa3XDLfd3DZokTOAmmhhjZ/ulXORc15Uvg==
+X-Received: by 2002:a17:90b:3902:b0:395:bbfe:fc6f with SMTP id 98e67ed59e1d1-395c333710emr50382365a91.3.1787617133932;
+        Mon, 24 Aug 2026 17:18:53 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3965547159asm31323a91.12.2026.08.24.17.18.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2026 17:18:53 -0700 (PDT)
+From: Joe Damato <joe@dama.to>
+To: netdev@vger.kernel.org,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Colin Winegarden <colin.winegarden@broadcom.com>,
+	Rukhsana Ansari <rukhsana.ansari@broadcom.com>
+Cc: horms@kernel.org,
+	kalesh-anakkur.purayil@broadcom.com,
+	linux-kernel@vger.kernel.org,
+	raphaelcf@meta.com,
+	Joe Damato <joe@dama.to>,
+	stable@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH net v2] bnxt_en: Bound SW TPA IDs to prevent crashes
+Date: Mon, 24 Aug 2026 17:18:40 -0700
+Message-ID: <20260825001842.2501798-1-joe@dama.to>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|DSWPR11MB9763:EE_
-X-MS-Office365-Filtering-Correlation-Id: edf9f69c-7c0b-4825-16d6-08df023e45a1
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|23010399003|366016|10063799003|10067099003|4143699003|56012099006|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: 7CTYodTTHKKxz3WYe18NBDcy5q8gRqrPqnYpGiGTPx6LDEz03G0oVYSvFYO9VeExmVv5zCUzCkO3aHNWDe/ILLWrjDAhCmgNu+ayOakViXQr+f5BcrRglZUt9rvplFYDLfQZN4TjJvtQyBD3KifNnNOFDcpuXOKysZQ24ascSaLzk1TNFJ8M1OmcN7bt+IHkbQ4CwUAeRHbvEhyJOpniBYVRGl/Zr8dVwqW/so1hq5/Np6odCDlutRTqf+nP6x4elqj6epEHkkWwkak5V/dPQYpEMhq3cm09kgogHLUmRzLpR49HB2c4YXslrkvwDIQz4EM9IO8Vm7N9d663nwXuOX315BNLNGcxay0RAqr85GRTSws5PUCgAwscWaKhdstCveP8HI/e6kHmdH7kKXYhcmIEoN8dSwHh6axAjkQW8+P+jD6we1hT9/CCFoScciGI9kAtjseBRb9Qcz+20rPjY3tgTAWqJnJo1WYV8TR9EHb+AwWNSYY3raI5osJvAJO0mFklqz84GpXbLY/NEothLPjipLc3/xuOkP87g2LUsXvpza+jgb2DZtXnzB5e5Bqto6TwBtdjJSVOhF84q8o9tMYN/k3FbfOy1mKGCNkj9l5PV+Tnh/7944aRBPafaT2srfSJp0nmrCrifOk/nkhEbArkS6w+dd8RQFwOhome6ls=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(366016)(10063799003)(10067099003)(4143699003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q2tmUXZza0VhNEZ0dHpmTG5jRURRV2VoQnpRTTBucUEvT0NpdjJLYzZvQ0JD?=
- =?utf-8?B?TEJFNk54NFVabTMxLytoYUxVdHFSWmYxT2JLY1dpenVoWFk3REVzNlJtejNU?=
- =?utf-8?B?WVEzR05KOHRUVE9NclJGR1puMnZCVzZpZUxCc3lSSnlncTVaK21wV3ExZDlF?=
- =?utf-8?B?L294cVZRT053ZHBVRVlUL0ZPU1F2K2FIVGQ2Vm4zSWY3c3NXM1JZRTVXaFZj?=
- =?utf-8?B?OTBjalpnV2JDbUliakxZSkFRM2pvdE95eWtTK2JIWHhyM0hVMjExKzRBS2dv?=
- =?utf-8?B?NEozYkp2Z1hGaGkrdG1aYmpTZWlvb1Mva2RLNmJKQjI0ck1IS0NCWVZ0T2hF?=
- =?utf-8?B?U28rV21wckZjYTB6SG83MXlmd0QxRjB5ZUVaUHh5ZjRHU1BIUVo0L3g1M1V4?=
- =?utf-8?B?cXE2c3g2NHRtaWRwWStQbE1wa3JJb3ZQT2hDYlppak84WkE2enVuWjViZDZC?=
- =?utf-8?B?Z0RXOHl6V3NmYkYyOUQ2SFY1MXdUSVZoUk1HYnhVK2ZmZVlUdGw3QTRVZTJi?=
- =?utf-8?B?ODRGbXpKNUJNQ09HdmM1SkJ1dDlwajhQV1M5WThzWW9VSlk1Y1krQTd6T1hk?=
- =?utf-8?B?akFMTzBnOGgwMU5GbkxmdFV6dlBSU0diZHdIRXVIamFyOTNjcGJnL216VVJD?=
- =?utf-8?B?L0ZrZzRUME9ZcEYzdHFWcjdjWW82MHcwSlhELzV3Mmduc3pYZDRoOFh3Z0dz?=
- =?utf-8?B?SHBQQTlKV2VLTlJvVEFlbFZnYzBrMGRqa2VDNXp4QlBTNXllOVVxN1dIOVBw?=
- =?utf-8?B?R2lYZ2U2Nm9hcm55M0h5OUp0TUpxQTdkeUFZK0RYOTRVSlN5amtBdUJNYlJ5?=
- =?utf-8?B?S1lVRHBWa0R4bWorbUtqVktuYWdUZmdCSkRYL05tS2FLcVFjMFVvck83UXFo?=
- =?utf-8?B?QTc0amV5S1RYZmRkN2JtZGM0R0lIT2RTZFVMSG5HRnkvb1ZpNUhucisySlVl?=
- =?utf-8?B?ZEJuaHhEcFlTMW1NVjEwbHl5N3Q1TWNSemttVzVWL1lJSVlSbkVVMjRQZlFR?=
- =?utf-8?B?ZFp5dkhMQThRVGhWYTdKWXJPS1hEZFdlUVRIVmc2MFlHSjVpQWc5K3gzN2hE?=
- =?utf-8?B?ZnpYM1Q0bE5xdmV1UVJQVGNTdkJaWStoMEpaNGRscVNYNFplRWNmSmdYMkg1?=
- =?utf-8?B?anQ4K3hsRHdDV1B3SVVCakxMUk9iOEdzY3N0WWlZemFSN2QzMHpnbWhwaW5R?=
- =?utf-8?B?MVZRTlBSeVNjMWF3czIzNk03OVltZzhZRSsrVk84RDhQZ0l6VnhVNzdXV1A0?=
- =?utf-8?B?ZVg0Z1pmRURoYWxnN3I2NWpBSmNvMWQrdlIxVzA0czNtVGs1dlpxYmhLL2cz?=
- =?utf-8?B?RFkvdHBGMGNyUnFVNzZ2RGJJVDhWeUd6NE9kMDVwRXFpemk2bk9UM0hsNVMy?=
- =?utf-8?B?NVZxaFpjbEhhU0hrVE1YTHNPZ3dDZlFNUnptdkNmdVFGeTVGbTR0ZlR4YThN?=
- =?utf-8?B?KzBGcG9QNngyZjVEeVhHNDBsc2ROUDJNTTFXWTdwQmNzZWVRb2F0a2hYT01y?=
- =?utf-8?B?ZEk2K0h0Q2tOVFhQTnBGNDlwdFl6SXd0c2NNVGNWT1kvRGNTY3hiZUwvMXJ1?=
- =?utf-8?B?aWhKTU11WVMvSmxaK3p6Z3A2UytLT1ovNEJKUjlUZnBQVWYvWncvZTltZk9X?=
- =?utf-8?B?S3BuZE1odFFRTTMyK2lNdVNIbnV1MFdlaXZqUFFNNzdXT1FRQk9LV01HTU1W?=
- =?utf-8?B?NXRWM1I4d3loT003VWtLdFltRDNoZUNPL25vTzVPcFBTS2RuQ0w3QnlwT25C?=
- =?utf-8?B?NGpqTVhtbmNoV1VwVmR0QUpWOEkycW9RQ1A3dDRJekMvYkVVaGxRN3NaTXda?=
- =?utf-8?B?MEd0TUJGcmdLV1BESXFMZ1o0QUV2NDRxUzhMenZNczAwdTNmditMVnpBWWlB?=
- =?utf-8?B?Uk14QnVUQTNPbUR5ZTMvalV4VDkySDAweC9yNUpLNHk0SVZoTDg1TGJtUTlv?=
- =?utf-8?B?aTlEVEpQeVJmUEFWSnBKQ2lDM01LeFFveDhqTVR3bVNJQ01JUUNmZFlYYnVT?=
- =?utf-8?B?Q3VTQ1FtT252S1VpWmNTMEZpR0MxQ1pGQVBadzBBQ2x1WWZXZkRCY1BBUlU0?=
- =?utf-8?B?QWVCU3dleGRJU1VGZFFrQklxSEdwc1A5anBZS1ZIc1BESGhUeTFwTHg4YXJm?=
- =?utf-8?B?bEI3MVk0UDNMbUI2V21jcXVoVCtCMy9Sbzc3WVpPS0s4T2pXODNjd29VU1hr?=
- =?utf-8?B?NEVIbElET3VrVDZUNjZZei82aWdHaThtaFRZVHYzZ2VnN1ZtMzZJdXZRS0x1?=
- =?utf-8?B?ZVRpSS84QVVQaEFnMlVndFZ2ek82QzNQMGRCNk4rbHNRemxLYXBESDRVV3pn?=
- =?utf-8?B?Umppb29wRXkxcHd3WmZ2VGM1bi9KMDEycVBXU29PL0hidXBDQy84Zz09?=
-X-Exchange-RoutingPolicyChecked: WwAFg14wuN5tNGJNU8Y18RGk7yKnYlOWybxqDPnU3ZKGRabYum0CsG2dJUGCB3U4IXPtl0F737qicFBGlOfe/G9/v+e8sCZ4TvECcAVpu3cQ931enNpIop8+xjWRZiDOzsPIMRGYJYrpG6/rf7KER9NnLLGgyl1FS91/ZvRfkSwijIC5iz4hmidBiQl6vPahAj2OQwPDNWHR6TJZKHnEI3uutQiGm+Nfnz/5FuXglbSxFsbHX2RvlzIobFs/cALplQtIeqF0/laeEh995MBr7sD5B0tlCfTA9L56TEF978AW0Eil1+K5pShhoyrzLeUsJdL/emB+FgR07msaJCVeQw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: edf9f69c-7c0b-4825-16d6-08df023e45a1
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2026 00:17:39.0847
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KGytyFlQqOb+tbDAoVTjiWcbWMhsJcEiXQt+y+KwV6wNRrNGfg9ln5TeQ2qIbwLGWNB7ZAuaBm0N3Ejn7mSHRgctt2TVWdui5F/8NadVRuQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DSWPR11MB9763
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 
-On 8/21/2026 5:13 PM, Jacob Keller wrote:
-> The ice driver currently discards any outstanding timestamps that are
-> happening very near to a .adjtime or .settime callback. This was originally
-> add by commit d40fd6009332 ("ice: handle flushing stale Tx timestamps in
-> ice_ptp_tx_tstamp").
-> 
-> The original motivation for discarding timestamps was that extending an old
-> timestamp using the new cached value of PHC was a problem, as it could
-> produce incorrect results. The change did not describe what such "incorrect
-> results" were.
-> 
-> There are no such incorrect results. Extending the 32 bit timestamp with
-> the new time value just means that the timestamp is reported in terms of
-> the newly updated and adjusted system clock. This won't produce incorrect
-> results or problematic timestamps to applications. Either the timestamp
-> will be extended with the value of the PHC just prior to the time
-> adjustment (if the timestamp completes prior to the adjust callback), or it
-> will be extended using the new PHC value after the adjustment. In either
-> case, the resulting extended timestamp value makes sense.
-> 
+TPA IDs are generated by FW and can be up to 1024. bnxt_alloc_agg_idx is
+intended to wrap the FW ID to a value in the range of [0, 255] and
+generate a mapping between FW IDs and the wrapped software ID.
 
-Sashiko says:
+On a 57608 with firmware version 233, the firmware advertises 32
+concurrent TPAs. As of the commit under fixes, bp->max_tpa on this NIC
+is set to 32.
 
-> Could removing the stale flush logic actually lead to corrupted timestamps if
-> the time jumps by more than 2.14 seconds?
-> Looking at ice_ptp_extend_32b_ts():
-> ice_ptp_extend_32b_ts() {
->         ...
->         phc_time_lo = (u32)cached_phc_time;
->         delta = (in_tstamp - phc_time_lo);
->         ...
-> }
-> If a time adjustment exceeds 2.14 seconds while a Tx timestamp is in flight,
-> won't the 32-bit modulo math wrap? It appears reconstructing the old hardware
-> timestamp using the post-jump cached_phc_time would produce a meaningless
-> value rather than a correctly extended one.
+If the software ID from bnxt_alloc_agg_idx is above 31, this results in
+an invalid address being loaded on this line:
 
-I no longer believe that result would be incorrect. I don't see other
-users of similar logic around struct timecounter needing any similar
-logic. The users of timecounter are very similar with the only
-difference being that they maintain the "upper" bits entirely in
-software, while the ice driver has hardware maintain them, effectively.
-Perhaps I am wrong and missing something? If others agree I can drop
-this from the series.
+  tpa_info = &rxr->rx_tpa[agg_id];
 
-> The timestamp extension logic is very similar to the logic found in
-> timecounter_cyc2time, the primary difference being that the ice hardware
-> maintains the full 64 bits of nanoseconds in the MAC rather than being
-> maintained purely by software as in the timecounter case.
-> 
-> Indeed, I couldn't find an example of a driver using timecounter_cyc2time
-> which does discard timestamps that occur nearby a time adjustment. The ice
-> driver behavior of discarding such timestamps just results in failure to
-> deliver a Tx timestamp to userspace, resulting in applications such as
-> ptp4l to timeout and enter a fault state. Reporting the extended timestamp
-> based on the updated PHC value isn't producing "garbage" results, and
-> doesn't lead to incorrect behavior.
-> 
-> This effectively reverts commit d40fd6009332 ("ice: handle flushing stale
-> Tx timestamps in ice_ptp_tx_tstamp"). However, the stale logic remains, as
-> we now use it to inform the driver to drop timestamps which might fail due
-> to link down.
-> 
-> Fixes: d40fd6009332 ("ice: handle flushing stale Tx timestamps in ice_ptp_tx_tstamp")
-> Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-> Reviewed-by: Maciek Machnikowski <maciej.machnikowski@intel.com>
-> ---
->  drivers/net/ethernet/intel/ice/ice_ptp.c | 17 ++++-------------
->  1 file changed, 4 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> index 1a9bf8839404..8c2dd83d8d6c 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> @@ -826,12 +826,10 @@ ice_ptp_flush_tx_tracker(struct ice_pf *pf, struct ice_ptp_tx *tx)
->   * ice_ptp_mark_tx_tracker_stale - Mark unfinished timestamps as stale
->   * @tx: the tracker to mark
->   *
-> - * Mark currently outstanding Tx timestamps as stale. This prevents sending
-> - * their timestamp value to the stack. This is required to prevent extending
-> - * the 40bit hardware timestamp incorrectly.
-> - *
-> - * This should be called when the PTP clock is modified such as after a set
-> - * time request.
-> + * Mark currently outstanding Tx timestamps as stale. This prevents the driver
-> + * from reporting the timestamp to the stack. This is called to inform the
-> + * driver that a timestamp is expected to fail if it was initiated as the link
-> + * went down.
->   */
->  static void
->  ice_ptp_mark_tx_tracker_stale(struct ice_ptp_tx *tx)
-> @@ -1049,13 +1047,6 @@ static void ice_ptp_reset_cached_phctime(struct ice_pf *pf)
->  		kthread_queue_delayed_work(pf->ptp.kworker, &pf->ptp.work,
->  					   msecs_to_jiffies(10));
->  	}
+because rx_tpa is allocated with only bp->max_tpa (32) entries. Writes
+to tpa_info later in the code are out of bounds.
 
+This bug results in a crash at boot:
 
-Sashiko says:
+Oops: general protection fault, kernel NULL pointer dereference 0x8: 0000 [#1] SMP NOPTI
+RIP: 0010:bnxt_rx_pkt+0xc0/0x1560
+RSP: 0018:ffffc900009b8c78 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 0000000000000048 RCX: 0000000206682516
+RDX: ffffc900009b8db4 RSI: 0000000000000000 RDI: 01ffffff038fe1c0
+RBP: ffffc9006e687480 R08: ffffc9006e687000 R09: 0000000000003048
+R10: 0000000000000480 R11: ffff8881c6083900 R12: 0000000006682516
+R13: ffff8881c6095400 R14: 0000000000000016 R15: ffff8881c6b66680
+FS:  0000000000000000(0000) GS:ffff88fef3c77000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fc8bda40584 CR3: 000000807c812001 CR4: 0000000008772ef0
+PKRU: 55555554
+Call Trace:
+ <IRQ>
+ ? __netif_receive_skb_list_core+0x1ca/0x250
+ __bnxt_poll_work+0x152/0x280
+ bnxt_poll_p5+0x1cd/0x480
+ __napi_poll+0x30/0x180
+ net_rx_action+0x20b/0x3b0
+ ? note_gp_changes+0x53/0xe0
+ ? tick_setup_sched_timer+0x180/0x180
+ ? __napi_schedule+0x9a/0xb0
+ ? bnxt_msix+0x24/0x30
+ handle_softirqs+0xdd/0x2c0
+ __irq_exit_rcu.llvm.3171231171502365008+0x47/0xf0
+ common_interrupt+0x85/0x90
+ </IRQ>
+ <TASK>
+ asm_common_interrupt+0x22/0x40
 
+This stack trace is from a crash triggered when an out of bounds rx_tpa
+is dereferenced. The invalid write mentioned above is silent in this
+particular crash.
 
-> This is a pre-existing issue, but is it possible for pf->ptp.kworker to be
-> NULL here during driver teardown?
-> Looking at ice_ptp_release(), it destroys the kworker before unregistering
-> the PTP clock:
-> ice_ptp_release() {
->         if (pf->ptp.kworker) {
->                 kthread_destroy_worker(pf->ptp.kworker);
->                 pf->ptp.kworker = NULL;
->         }
->         if (!pf->ptp.clock)
->                 return;
->         ...
->         ptp_clock_unregister(pf->ptp.clock);
-> }
-> If userspace calls adjtime or settime concurrently during this window, it
-> would unconditionally call ice_ptp_reset_cached_phctime(). If the update
-> fails and falls back to queuing work, could this dereference the NULL
-> pf->ptp.kworker pointer?
+Fix this by allocating rx_tpa with bp->max_tpa rounded up to the next
+power of 2 (bp->max_tpa_roundup_size) entries and masking the FW TPA ID
+with that size, so the wrapped ID can never index past the end of the
+array.
 
+Fixes: 54c28fab2fa5 ("bnxt_en: Set bp->max_tpa according to what the FW supports")
+Reported-by: Raphael Cardoso Fernandes <raphaelcf@meta.com>
+Suggested-by: Michael Chan <michael.chan@broadcom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Joe Damato <joe@dama.to>
+---
+v2:
+  - Followed Michael's suggestion on the v1 to increase the size of the tpa
+    array so that wrapping indexes into the array is a simple mask.
+  - Add Suggested-by because the approach was suggested by Micahel.
+  - Add a Reported-by so that Raphael gets credit for reporting this bug.
+  - Boot tested on a machine with a 57608 and the crash did not reproduce.
 
-I will check this. I think the correct answer is to kref on the port
-access to ensure that we don't finish teardown until the function exits,
-which would be included as part of the first patch of the series.
+v1: https://lore.kernel.org/netdev/20260821233549.3134699-1-joe@dama.to/
+
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 25 ++++++++++++++---------
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h |  2 +-
+ 2 files changed, 16 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 9c2cc50276a5..ba710704b192 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -1517,14 +1517,16 @@ static int bnxt_discard_rx(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
+ 	return 0;
+ }
+ 
+-static u16 bnxt_alloc_agg_idx(struct bnxt_rx_ring_info *rxr, u16 agg_id)
++static u16 bnxt_alloc_agg_idx(struct bnxt *bp, struct bnxt_rx_ring_info *rxr,
++			      u16 agg_id)
+ {
+ 	struct bnxt_tpa_idx_map *map = rxr->rx_tpa_idx_map;
+-	u16 idx = agg_id & MAX_TPA_P5_MASK;
++	u16 idx = agg_id & (bp->max_tpa_roundup_size - 1);
+ 
+ 	if (test_bit(idx, map->agg_idx_bmap)) {
+-		idx = find_first_zero_bit(map->agg_idx_bmap, MAX_TPA_P5);
+-		if (idx >= MAX_TPA_P5)
++		idx = find_first_zero_bit(map->agg_idx_bmap,
++					  bp->max_tpa_roundup_size);
++		if (idx >= bp->max_tpa_roundup_size)
+ 			return INVALID_HW_RING_ID;
+ 	}
+ 	__set_bit(idx, map->agg_idx_bmap);
+@@ -1589,7 +1591,7 @@ static void bnxt_tpa_start(struct bnxt *bp, struct bnxt_rx_ring_info *rxr,
+ 
+ 	if (bp->flags & BNXT_FLAG_CHIP_P5_PLUS) {
+ 		agg_id = TPA_START_AGG_ID_P5(tpa_start);
+-		agg_id = bnxt_alloc_agg_idx(rxr, agg_id);
++		agg_id = bnxt_alloc_agg_idx(bp, rxr, agg_id);
+ 		if (unlikely(agg_id == INVALID_HW_RING_ID)) {
+ 			netdev_warn(bp->dev, "Unable to allocate agg ID for ring %d, agg 0x%x\n",
+ 				    rxr->bnapi->index,
+@@ -3587,7 +3589,7 @@ static void bnxt_free_one_tpa_info_data(struct bnxt *bp,
+ {
+ 	int i;
+ 
+-	for (i = 0; i < bp->max_tpa; i++) {
++	for (i = 0; i < bp->max_tpa_roundup_size; i++) {
+ 		struct bnxt_tpa_info *tpa_info = &rxr->rx_tpa[i];
+ 		u8 *data = tpa_info->data;
+ 
+@@ -3784,7 +3786,7 @@ static void bnxt_free_one_tpa_info(struct bnxt *bp,
+ 	kfree(rxr->rx_tpa_idx_map);
+ 	rxr->rx_tpa_idx_map = NULL;
+ 	if (rxr->rx_tpa) {
+-		for (i = 0; i < bp->max_tpa; i++) {
++		for (i = 0; i < bp->max_tpa_roundup_size; i++) {
+ 			kfree(rxr->rx_tpa[i].agg_arr);
+ 			rxr->rx_tpa[i].agg_arr = NULL;
+ 		}
+@@ -3810,13 +3812,14 @@ static int bnxt_alloc_one_tpa_info(struct bnxt *bp,
+ 	struct rx_agg_cmp *agg;
+ 	int i;
+ 
+-	rxr->rx_tpa = kzalloc_objs(struct bnxt_tpa_info, bp->max_tpa);
++	rxr->rx_tpa = kzalloc_objs(struct bnxt_tpa_info,
++				   bp->max_tpa_roundup_size);
+ 	if (!rxr->rx_tpa)
+ 		return -ENOMEM;
+ 
+ 	if (!(bp->flags & BNXT_FLAG_CHIP_P5_PLUS))
+ 		return 0;
+-	for (i = 0; i < bp->max_tpa; i++) {
++	for (i = 0; i < bp->max_tpa_roundup_size; i++) {
+ 		agg = kzalloc_objs(*agg, MAX_SKB_FRAGS);
+ 		if (!agg)
+ 			return -ENOMEM;
+@@ -3843,6 +3846,8 @@ static int bnxt_alloc_tpa_info(struct bnxt *bp)
+ 			bp->max_tpa = MAX_TPA_P5;
+ 	}
+ 
++	bp->max_tpa_roundup_size = roundup_pow_of_two(bp->max_tpa);
++
+ 	for (i = 0; i < bp->rx_nr_rings; i++) {
+ 		struct bnxt_rx_ring_info *rxr = &bp->rx_ring[i];
+ 
+@@ -4554,7 +4559,7 @@ static int bnxt_alloc_one_tpa_info_data(struct bnxt *bp,
+ 	u8 *data;
+ 	int i;
+ 
+-	for (i = 0; i < bp->max_tpa; i++) {
++	for (i = 0; i < bp->max_tpa_roundup_size; i++) {
+ 		data = __bnxt_alloc_rx_frag(bp, &mapping, rxr,
+ 					    GFP_KERNEL);
+ 		if (!data)
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+index ab894f8addef..de46b42d7c98 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+@@ -789,7 +789,6 @@ struct nqe_cn {
+ 
+ #define MAX_TPA		64
+ #define MAX_TPA_P5	256
+-#define MAX_TPA_P5_MASK	(MAX_TPA_P5 - 1)
+ #define MAX_TPA_SEGS_P5	0x3f
+ 
+ #if (BNXT_PAGE_SHIFT == 16)
+@@ -2380,6 +2379,7 @@ struct bnxt {
+ 
+ 	u16			max_tpa_v2;
+ 	u16			max_tpa;
++	u16			max_tpa_roundup_size;
+ 	u32			rx_buf_size;
+ 	u32			rx_buf_use_size;	/* useable size */
+ 	u16			rx_offset;
+-- 
+2.53.0-Meta
+
