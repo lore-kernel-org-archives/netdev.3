@@ -1,171 +1,136 @@
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0113EE1E9
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 10:00:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787652008; cv=pass; b=eepNaePEU8B6Hvf1mJ9VmbFN3NxLnyVJe8mK8/ulnGiJ8a8U2axezcpH66Pw+IDudtgUIsDaANTPWCcxfP6ExxKOhYicjI7gdGlkhnrTx98sNwg0Q/hsULmkw76No13Tn89r3JocbxaSs4vD5HrcrsyMJOGM2x1fo4BXntpmqn4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787652008; c=relaxed/simple;
-	bh=5ROAdHa4nzefJ9mYhwr+Ia/QmWrTRWexR+i/fU5s+nA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mznu6TyI8g5z7tf0sqiKVBPRxjIaF7yYhHIagybeooyoYoyKG8iMH/vmFJTCwUy8RKwcA8e4mHPeHEYcYHvNqZZ9U6qYrPsMyhjtnbI2VXnMTiyRADj6s3B18MarCxtdoIFqBmVLQBJ02EVuy8r/+9fcSso+TgTrr50D4lldVek=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fOcArFGb; arc=pass smtp.client-ip=209.85.222.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 344403F1AC6
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 10:00:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787652054; cv=none; b=eTih2e+tF3p/Amplu7Xl623de5x6jJ3+cKzdfWvRVOVCnsFjTVp/41JjW89wL0eYFc6d15NvefbUVLODc8UEhSvbrzjwVvio1ctPxcrcm/vYY3sJDLPJrugCQwoqlIWebOZSLrrhYPNoqhR91byx2VfZbbbxSvKFNHt4AQmMai8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787652054; c=relaxed/simple;
+	bh=MTeY5Wj2A537PcAl8w2zs34Vdv6IeLJI4cMm7fLYNhQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dIFlVOrqi5aIT7WQwc2TP9Y4OKtsE10yDxCRX9U40HsGSoNByF+SXyUxIBjaGQleDaaxYNY7u03+xyLptNl1cMWxm4QzRD3ScYFhQCQTvJ2aXelk8EJ0fp8rtbss14CCICvHnKc3jb8nasLOGX3Ggcxb+0UytiYG45mUHJs9zTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=e9uHHK4t; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=HnPAuatw; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fOcArFGb"
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-936dfd009d1so43864885a.1
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 03:00:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787652006; cv=none;
-        d=google.com; s=arc-20260327;
-        b=LtRtsEUhczYyF6PlBl9MNJpdZFbhk2+6ei+fPntpvNZ+chAaGeQaqVuDhDKQVbT0jw
-         OLiH8gnZ8U8RrabBG1TIOdg3kT7fyWJqDL0Zsphdiwv7YWivHX73sgCcAMUu5/Vif7fW
-         LOoh6AOQUvwpopDYddRmYdtIBUtzgxm1IFjIa+tiYpMSvK+YDXbul4sRU3vm+lOeAHOo
-         O746YB1eQUq8QaOnapjdBGycdhQzgfz5zx1OjgY/Bd7Zujb2stnFRpoKrEqiTBzqmKFM
-         zN00qWNIGnWu+CBnd2XrGZmtC5+peVRzzlr1NnipybGI4xaQpJbuM1n/Dy9O0mHu43s+
-         9pnA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=D6L9LKYeqLuIff+0D2Zo0By9WXhwnZquMWzgRyncd9Y=;
-        fh=DXXPBA99u0iD+88CFXEaLrB2SMz+Ghn1223wCiClb44=;
-        b=ca+5kpYchPCyf1dwjzVll3hIGy7bWPSyLZN9Imdyzsy7IOrLCpnvtit1RrMHB20NTW
-         lZ7Yw4AZm7UCHfBH1T8siZgNHICHIZyy84MLoYae+GxDCEvURYKLsHG0FRBQsvnpTGLX
-         hA2YJuvfdHLu2zSxX0OI3rSiBojFjvTVSlS4GMzqK2qOojLDg0VA4ESS1SVSh/GsP+U2
-         75RmDJJcFFYXCBYQoI5TyiPoIKxHtD8rFHZpoZOEewbfXoI8sSJTgW4/ZCM3MUQkEfj/
-         60yAtgPP0TfoGd4Po07RVilWJvXAAFmDlPZi4C2fv4s0Pm6LbOXynPo5vVZR1UuWNaMh
-         sf8w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="e9uHHK4t";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="HnPAuatw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787652052;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0NU7zn4NpIx/9n/bcxiTGmb+4zsi3/IUQL8xFBOWNFE=;
+	b=e9uHHK4tpAUztde200jkMS+VvpfRn+CtRkbBUXD34ctBYIrdQrUGyGkojGLJpLSaFy/rOk
+	47iHvAYcwA9709HfdstS4swZeTEnkznLuLxodsFqKDWU84PjTUxidOV0tczSXDDiqKJuPW
+	dl45cVJe25Xzc7aGEpnnT57R2BLwHOc=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-465-r2BrrbdwNJ2t-ggILZ7awA-1; Tue, 25 Aug 2026 06:00:50 -0400
+X-MC-Unique: r2BrrbdwNJ2t-ggILZ7awA-1
+X-Mimecast-MFC-AGG-ID: r2BrrbdwNJ2t-ggILZ7awA_1787652049
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c167e032f03so358279366b.1
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 03:00:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1787652006; x=1788256806; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=D6L9LKYeqLuIff+0D2Zo0By9WXhwnZquMWzgRyncd9Y=;
-        b=fOcArFGbOv4miYN/HydsLoNTHHN5CmlmQD8fxQxzhQeLHXV2Q5g97Pdl5W/NWJDXwE
-         sO9XCyvXRuQX3Rwb+ODJvxD1k2Sz3PXzufcg3etHk/FhlbZM9kGYJWiJ+PClpuqBOp/H
-         gl10ov3hm9Kl8vteC2OdBnLrx+Vw8QkhTzhfZ0ww0C6GowlMJdOk1tQoPyUJcg9fkObe
-         NeFnfLGMWK4M/23qsHGiY8bgGDDOcbHbWz+s6x0y3z8AdHSFlQVGlH2IwoDjkOv/ZFPF
-         H2wLbPkpRGvY+LD978Za1x2JBMpl3023u3LNKuBRnJgsSQByN1ElxBVE/U1SMY+NaiKk
-         vn9w==
+        d=redhat.com; s=google; t=1787652049; x=1788256849; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0NU7zn4NpIx/9n/bcxiTGmb+4zsi3/IUQL8xFBOWNFE=;
+        b=HnPAuatw78phIBulEqiJKX+M2ZfFEiezwN6tmuQYu//Nc7M9ycufOypVAbsKHwHH0s
+         jiXUnm3Rpmbh7n0bpFP8G9rtIax1axIxRh+dzxNG/2r4/UlI54Og3NyV/Mdcn304T14H
+         bfiBBQuGduY9/ltImzPS6IhhFReufZtxkx6s9W3R2+vwVxwV6S9NFN3LZP1huSufwUbB
+         BLgq2PXkwi331j/KHalp+7FCF+2dMkQLgvd9vnsbHd1HNuQMJlnSA0Tq+wfiyvrjbzTB
+         rAAURdq3oa12YQJwyuGPLdaNbul4+qAo7Bqda9qpJACc4t9lrrMYcqOAte+5nc6N+4pj
+         8zlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787652006; x=1788256806;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=D6L9LKYeqLuIff+0D2Zo0By9WXhwnZquMWzgRyncd9Y=;
-        b=btIAwBvJJGxykdwhCpuFJk44/kIUQuHze6wVFr8sxOjx1hwnVY6Vlk2GRSJz2L548p
-         FIVgQ1Dyeoq99CVacblOPrMN4EkCZIxGPJwIxQY7Lu/h0N+wZirQ3mht3Lt9YWZeWYRA
-         uRwKmA3+NfqmKK+slQieQZ5eX51j4mB+tljtRL7XZz357AgFs5oftCpjVM+KUQkKVKyk
-         5FqVVLt2fLknE7GA2hNJv9fezU/817LAZCGU7LlwGj44oLF17wtLt7dqwGCbtoNxJMTD
-         cAmEGzhHrLVIjroMNCO8co7Bb1Ayeic1tTMV1LwwinNO1r8pdb+/i4Ku7nkLjdvEuykQ
-         fUhw==
-X-Forwarded-Encrypted: i=1; AHgh+RrFSBSgvRqjcBfiJ9h8INgjCm8yR2AEfPo7dtL6036MlLPsTbcrqwq2QnnWALcR4SXaEYQjrA8=@vger.kernel.org
-X-Gm-Message-State: AFuF++kx0O57g95VmiUzri820tvXeVnE2NszScoNLL28d2jFFOkX7UWw
-	zViWWuwGMsju4vQGS7k3CYqJ58b4eXvPKKh/l44hlSPZSmLgpWZSBLco/v8z6jlqUgctlvfaqA2
-	LbDscYDe3t1yzN4B74XaElAp0d14RIN0Cj4zDcTbH
-X-Gm-Gg: AR+sD11VR4DESxl6Sa8ypwDA1fI4YTM8Tb5ADiRn3N39Svvk4rHOhWapHFUtf7cUw/E
-	Te0OnBFHcABWWD6G/v/Q/hWfRB+YNnB0SD0rVdTvfMZk8yTnW8iefrR8kh5Hzza2Nl8DB7aWm38
-	dWw0934QTi7KfNeBDW16iw9YoanPvwa+e0tDP9V98a8GXjVciLUvsS3i5uKCr41pVT9WzIWJwv/
-	1XgkQ3vdXfOf9o03Qzys3aJV9m79E1RzCdEBvtgrDhFFzkB8UeYH9ID74/8Hbagd/QWj9Gm9TLR
-	JhznpuYP9JF0HHQJ65qWbxYkuEwp+5KuNAyP2Qz3jb0sonFtcXg5X+H4dy0KRZb7TDNsKnCk+AQ
-	HLuoVcTuSK425Hap77oI8iDssfokl5TA+hZZGH4mC/5tA1Fy403tP6/TVkhs6FrGnLMQ=
-X-Received: by 2002:ac8:594b:0:b0:517:6fc2:4760 with SMTP id
- d75a77b69052e-52e2ec51d8emr50698261cf.9.1787652005170; Tue, 25 Aug 2026
- 03:00:05 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787652049; x=1788256849;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0NU7zn4NpIx/9n/bcxiTGmb+4zsi3/IUQL8xFBOWNFE=;
+        b=g/j1MgE025Rvs8edmrdEAot6R3Wo8AkmdjiT0v6if6Al7GBw28+0uDpy4bP1u0E7LO
+         /js501JsYcNGA/SQk1AfnPGQoa6H8yF6eFUc4Jnboryn11mU0Wxstya9XYZhLcWw4I9V
+         KkkiAC8HwirfwcGFfJSYweVTXMNBrYtCYV6XZdUcXf6DVJqkPKFfO1VAtCrk6wQuw1NB
+         0MZy+dzPXtrw3Pot4rzmXq0+opAufv3WWD0wIr5kVuaCSc5AuN6sBIrILyN46eIUg1IP
+         N07i7SWYIv3w5+0EdmZ9+wdD2jPyBvEFUl8yoEFKUEjiJA+dm9vgACZ5e3TmwGBHgd0A
+         aMJg==
+X-Forwarded-Encrypted: i=1; AHgh+RoiZM75zzKkiJ1KXacjWkKMYuwjrQ1bWUk6NLG/JGbY7mGIp3xog8lOiUeb8omWvIa/w9QYTkw=@vger.kernel.org
+X-Gm-Message-State: AFuF++lP08kumG1XdvrtnCi/5mCgjlimCXB5vSWbAsEoAEKrzXNlupph
+	aErDzYp74/aJK8x0eLhuprqWaTzvN7N3XaTzDWA/AokQdbn9z8RHfevDii5MbBD04dahmV6Rt07
+	EKAqN+NUeMBuCXTU4PZDr8FV77TyxFLlXeJvjfE3hcIBtUVSyff+zFft3zg==
+X-Gm-Gg: AR+sD10s4SO4adC92Abb0PU2oUud0CMYnUC7buPD98VS7ocEQTE57zWwHQG2jucsc+6
+	CZVpGPCNgVVY8jRxpFvIJjLPxcHu6TGH0QL5aFAv70Gp/b8orSvx5Dy+pz4UJsyVewxep3cr5OA
+	jC5EnaDBm1ZyITYLsC4cyQW1lIl2gao7m7iXYgRqu97BPoLKeTf0LUHdLArr+xORVZYvK+N9G9b
+	YNODHcjEg7956DJBtZLr9uCNIXviARRSZSsDgRIo1iK9MwTsYKcOAN7MEZNnLZgnQWeeiGVr6Kz
+	4JGKk6PZKyAnmvQShQ3p4swVobbdaTA/Es3xyexE6QJyJLNnTJ8W3dogauTCuxf/gzl5+PHkDXz
+	icQThx+fCeSZD2y3BQ/uczcnoCOTLB8xE9LfELhbV2zPuYyS03oUQQFDiGQYbu3HBbG+cV5VY
+X-Received: by 2002:a17:907:72c3:b0:c20:2d38:e518 with SMTP id a640c23a62f3a-c249238c382mr2862369966b.2.1787652049117;
+        Tue, 25 Aug 2026 03:00:49 -0700 (PDT)
+X-Received: by 2002:a17:907:72c3:b0:c20:2d38:e518 with SMTP id a640c23a62f3a-c249238c382mr2862359166b.2.1787652048499;
+        Tue, 25 Aug 2026 03:00:48 -0700 (PDT)
+Received: from [192.168.188.103] (ip46-47-231-195.pool-bba.aruba.it. [195.231.47.46])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c249606b683sm1842658666b.5.2026.08.25.03.00.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Aug 2026 03:00:46 -0700 (PDT)
+Message-ID: <d595961e-0d7f-4fe8-a483-f2fb7ca7111a@redhat.com>
+Date: Tue, 25 Aug 2026 12:00:42 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260825095000.1461124-1-dongchenchen2@huawei.com>
-In-Reply-To: <20260825095000.1461124-1-dongchenchen2@huawei.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 25 Aug 2026 11:59:53 +0200
-X-Gm-Features: AcwNN1V-EzXrRmRaWmO_0qe4nSLjbdvGCIYz9Uef9t0_vVUJEyYq_ib2BfxP0Sw
-Message-ID: <CANn89iJwWL9NdC19XbSFq7sf_tsZS96PTXWgO3oUMGJRkA0g-w@mail.gmail.com>
-Subject: Re: [PATCH net v2] net: iptunnel: fix stale transport header during
- tunnel decapsulation
-To: Dong Chenchen <dongchenchen2@huawei.com>
-Cc: pablo@netfilter.org, laforge@gnumonks.org, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	dsahern@kernel.org, kees@kernel.org, netdev@vger.kernel.org, 
-	osmocom-net-gprs@lists.osmocom.org, zhangchangzhong@huawei.com, 
-	syzbot+83181a31faf9455499c5@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] net: mana: remove unreachable dead code in
+ mana_bpf()
+To: Muhammad Falak R Wani <falakreyaz@gmail.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>
+Cc: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+References: <DKWZHHOFA1F3.1EL2DMFNGMP0Y@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <DKWZHHOFA1F3.1EL2DMFNGMP0Y@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 25, 2026 at 11:41=E2=80=AFAM Dong Chenchen <dongchenchen2@huawe=
-i.com> wrote:
->
-> Syzbot reported a crash in qdisc_pkt_len_segs_init() caused by a stale
-> transport_header offset after tunnel decapsulation.
->
->
-> The issue is completely latent until qdisc read transport header in
-> commit 7fb4c1967011 ("net: pull headers in qdisc_pkt_len_segs_init()").
-> The crash requires four conditions to line up:
->
-> 1. The incoming packet is encapsulated and carries GSO metadata. The oute=
-r
->    transport header offset is stored in skb->transport_header while the
->    packet is still in the outer tunnel context.
-> 2. The tunnel receiver strips the outer headers. skb->data is advanced to
->    the inner frame, but skb->transport_header is left pointing to the
->    now-removed outer L4 header, so it becomes a negative offset relative =
-to
->    the new data.
-> 3. The inner frame is not delivered to the local IP stack. Instead, it
->    is forwarded at L2 by a bridge or HSR, so ip_rcv_core() never runs and
->    the transport header is not reset to the inner L4 offset.
-> 4. The forwarding path calls __dev_queue_xmit(), which enters
->    qdisc_pkt_len_segs_init(). That function computes the GSO header lengt=
-h
->    from skb_transport_offset(skb). Because the offset is negative, the
->    unsigned cast overflows and pskb_may_pull(skb, hdr_len +
->    sizeof(struct tcphdr)) reads past the end of the skb, triggering a
->    KASAN fault or page fault.
->
-> The issue specifically requires GSO packets (shinfo->gso_size !=3D 0), wh=
-ich
-> are processed/aggregated through gro_cells. Fix this by clearing
-> transport_header to the ~0U sentinel in gro_cell for all tunnnel driver.
-> GTP does not support GRO/GSO, drop the evil GSO packets in GTP directly.
->
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Reported-by: syzbot+83181a31faf9455499c5@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/all/69de2bee.a00a0220.475f0.0041.GAE@goog=
-le.com/T/
-> Suggested-by: Eric Dumazet <edumazet@google.com>
-> Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
-> ---
->  drivers/net/gtp.c      | 5 +++++
->  include/linux/skbuff.h | 5 +++++
->  net/core/gro_cells.c   | 2 ++
->  3 files changed, 12 insertions(+)
->
-> diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-> index 9a12cc53da00..fbf617b1acc9 100644
-> --- a/drivers/net/gtp.c
-> +++ b/drivers/net/gtp.c
-> @@ -312,6 +312,11 @@ static int gtp_inner_proto(struct sk_buff *skb, unsi=
-gned int hdrlen,
->  static int gtp_rx(struct pdp_ctx *pctx, struct sk_buff *skb,
->                   unsigned int hdrlen, unsigned int role, __u16 inner_pro=
-to)
->  {
-> +       if (skb_is_gso(skb)) {
-> +               netdev_dbg(pctx->dev, "GSO is not support in GTP\n");
+On 8/24/26 9:09 AM, Muhammad Falak R Wani wrote:
+> mana_bpf() declares an uninitialized 'ret' and falls through to a
+> trailing 'return ret;' after a switch statement whose every case
+> (XDP_SETUP_PROG and default) already returns unconditionally. This
+> statement is therefore unreachable dead code left over from an
+> earlier refactor, and it would return an uninitialized value if it
+> were ever reached.
+> 
+> Drop the unused variable and the unreachable return.
+> 
+> Signed-off-by: Muhammad Falak R Wani <falakreyaz@gmail.com>
+## Form letter - net-next-closed
 
-Patch looks good to me but there is a small typo here.
+net-next pull request for v7.3 has already been merged, and therefore
+the net-next tree is closed for new drivers, features, code refactoring
+and optimizations. We are currently accepting bug fixes only.
 
-                    netdev_dbg(pctx->dev, "GSO is not supported in GTP\n");
+Please repost when net-next reopens after Aug 31st.
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+RFC patches sent for review only are obviously welcome at any time.
 
-Thanks.
+See:
+https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
+-- 
+pw-bot: defer
+pv-bot: closed
+
+
+
