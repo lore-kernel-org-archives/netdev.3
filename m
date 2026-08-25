@@ -1,179 +1,168 @@
-Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754AC351C25
-	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 16:26:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496B137CD2C
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 16:33:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787675197; cv=none; b=cXS6qrEvy7ezqyQpbjpZxGvFNdpeZ33EW7Z4FLgQvHg3GyXY+NNLXoiNRv4jaLUsW4JQswQJOTOCkT0yETD3/z81LJGV2UiHb/VxWaFxR6O2wQkmOKASkCVZ2bwfZ5W1lqD5wmWcYe3dZ/uScL20GwSKGIlfMtvuHKW77AE+XKM=
+	t=1787675609; cv=none; b=BWu7Wy6A6Ar/dtkPDk+UURn/gjQPjhX4kCssy8HzJSChgxl9RVlcWuVOMwXEWJQjM2hoW/rw51CM/rjWbJYsoWQHK9/nGM6AEphMyXA5NLohEvaamQBNzhCH9LV8h6LsYRy2oQS7WMSPSJQNmHy7sujEt/qYOl4diXZfDHkkZFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787675197; c=relaxed/simple;
-	bh=hUVt5X1WwR9vSGlMHdu9iOHRAOi/uatXuwsdCkP5nFc=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=Hbyp66R84dhM2tZaJNIzO1mAvSqwsGF/qPDtHMWgnbgJzUAoGWfns/QyJfeAi5LPqrSFfnhDa2L65w67jpW6rkbOPK/naGW1HJqMAhmIJoRmzyVnxrnuXsTIdlU6YaYn0cf/LueKAm3DBnCfGaL8rw7VgeNNLkEx00iM5xd3Seo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WCRxvFwx; arc=none smtp.client-ip=74.125.224.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1787675609; c=relaxed/simple;
+	bh=B0G9v6BhBY4Fuj6Zio2PzdtQEPK77b2tYVyr2I4VYEA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O9JeBYjrCfHZjq3En+xjZDirVwUNPoHnAQldySYEgFVod9RDKZDfkKDiaA3bIedzitKWK0HSgTJc9xphUPnxS3+8jFl/X/ERRsGaAAg9YR7jjIJW8Q5EHb5eaMa813/0PBUdKIteexeImfOyuzlk71IKimzPWDKO8Yhdahfx0Xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KDd/qEWG; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WCRxvFwx"
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-66d14734b9fso1670038d50.0
-        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 09:26:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KDd/qEWG"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4996e2575dbso67445e9.0
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 09:33:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787675195; x=1788279995; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=abwfvPGDYkGjwGbBLKqedUFOZOoEMQvzYxlYlmb7AD8=;
-        b=WCRxvFwxXA+869wD5/kPzG4KGlxhdFYPD47zbCjaqH6k57MJMj5Z3pbErznSPkb2fE
-         qoLsomtegSpFMzrLSV9S/kDLdyRDXeediCruiGr24w7UpTkp2z17zlzBGjHqvMj4pvj/
-         jxFH/9Lmafky7HEF1UgjDueBuu2vz7ylTzT0NYq/Lirdog+2d0QiEhTmXp1c9caVv4hA
-         tU5IvsUY57SDolZ8gKdViAKvSxz6/26QkMLy/tmQbNv+F7VRGtsMlVV/f7ZXOfekOF5U
-         htnj3FI+eCWxk0noUDfILDHU0hZjFlLLhG/ir0ChU4z9I7bXiR/5VNaEJ+FNUlrr2sfI
-         YqYQ==
+        d=google.com; s=20251104; t=1787675604; x=1788280404; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=SkuHlshzOD+AxFcfYa+qONyS5a/GbEXwYVTwh7Zfzc8=;
+        b=KDd/qEWGhDvEPOieRLxzIHmbNPoUWC80DsbNQlSfeQu6Wkz+/ObtT0FCEZfS1lgS8r
+         /PpeFW7PdWH09J7u5QWeNykrtvTsW9LM87ldGaBCS0D2eQ/EFiAstWLYcstO8UDzivA1
+         yKBK477wqZcKJm8REhL4M5LHbNDU8dixqklHRFh0RxeaBn6NTE5dBH3B8hYcQpuI5GXR
+         DuqUk91ET3nuqpmVB7cy3oiXQZjTxTV4PesQru2i+4sAtwdc+QrO6JMMhfmAlXPoZPri
+         Lp0UrS113aniefYlxl+vsbIeQLx5Xb4GVVhcmyEWPJ4xZuY7Zp8dSFNpGJbjxia3XuMu
+         t2HA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787675195; x=1788279995;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=abwfvPGDYkGjwGbBLKqedUFOZOoEMQvzYxlYlmb7AD8=;
-        b=gtkm5M2O2kVqDNOiiZRbxtuqM40g2ZgKRY0zZQge4a6ZnXUQPHp63FbdK2VKXAmenS
-         On8QCj4ykNcG7xbEJOyRdhwgj3/w/rOQe2f5Kvp45AbdCCl28W/iyzDblzWL+o6/tU0s
-         Yp7v2KQleDlNWwlCC9Ck0/uVNl6DV0dNJsWwq0QbugdxKEJ9swrUnWRcIgBALGMOOCtV
-         eqJfRF91j8jJT5VN8lO5otnd0dqc5VtUxzEN+wV4d46Ec6ceattpE+KC2fn/Yrm+CmEz
-         VY8XEEq5hzVNJqYCDZL/ahOgn2JGOusagtL96hMsbPEH80S99sEep+1qeoV2xLLEpSBo
-         J1KQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqM6ltAcXt9K/BJ5u5ZgpWMzG/bUPpMjV/u0yOgoMRGbvz8ZfkTm57e99Yq2z33abMDR6eYYKQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++nUVrOTCe193odqj8YbyiAPaJ4bG7cCINIwsz4WGufUkIygnCqE
-	3+WYQLz/GMkjQE4GO7HcAD2LdQCLlZvl4D5Q0dNZimK5gSTTFVCGUcTJ
-X-Gm-Gg: AR+sD11+WRpss3FEM5c8L8ChN6Z2LqGr6OIJbRdu/+yAaIB6isBlA3EwgujNsO8IMho
-	v8F0IL3WOmq2T8hV4M0nCGYDZ+Lbr+r2RjWExnVan4QFl/xR5jZmF6c7byQZNqpSbkS6lYgMyoq
-	lhm2qYtFIksorWK6/K5TSJQ8mRfpHkVW0rMQoCBRUU/itRxvdJ0l45JRQKTfpGDDaaGgjXK6N+9
-	q/845pKxhJCSZ5E0iX44FlQJGWN9A8BdRUKYrBKQJwH/9Fo2B2AOu1VX9wXWgVYewtukxtk9EvR
-	gXO1zZIwKmqvwPIJN91ljnGEfGG8UZNHTp04r8Umy4Tp6F2bkC1yDhByow2Gu4CMrJLERVhtQu3
-	iAyj5jldvG2cnjydnS0Cei6TWoPzObuBc9PpCqVsbae/k732uK7kWPaxWkuvhgc9VfLpm9iiEFn
-	cNof06pb7IYPW7X6pKOCD4nme8BSQXltn76WJGCbTeS3AWBI2exQcg5FMhYlNvEwEkisRQ3swOW
-	ylcsyHaipkDIWMGmMMIVVZirbk7cmEjoXDWeFHJgw==
-X-Received: by 2002:a53:d00a:0:b0:66c:7ea5:ef34 with SMTP id 956f58d0204a3-66d250efa0fmr79329d50.9.1787675195238;
-        Tue, 25 Aug 2026 09:26:35 -0700 (PDT)
-Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66d2454d92asm236158d50.3.2026.08.25.09.26.34
+        d=1e100.net; s=20251104; t=1787675604; x=1788280404;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=SkuHlshzOD+AxFcfYa+qONyS5a/GbEXwYVTwh7Zfzc8=;
+        b=Sc2+dfwypB06dzhcR+o5EwJyibWukIpmodlwWjrBtU6JRt/7SZwxKIJEUQh8vN3XmM
+         Km4/gT7pZzpI6oYSAvfu8xMxQ9EhCQcsmLfYb+Kk2DeUHOwyOJyHHxjmqsfzow/RHt5n
+         hEnC2+e7Boz3oQiuc9ofzl8IBQnR3Zvk58bckobxWy7ms8rS9qAu/TcNaVDol9HinLYd
+         TRpgqoC0QRceVX508rdHurkz1y25akpXaq7O2n+3G4AcI5w3rt9PuEDFF12ontwurj99
+         o54RxnXNyEq/JuDQhKbTIF7fYOirZuJN0uMLAkLmD9QD0azp5OTZNAWFhXRnXKvYrqXo
+         qqyA==
+X-Forwarded-Encrypted: i=1; AHgh+RrojN5l9zkw4Mc8+G4/qQ0QJKEWdebz5lE9AWgBIGpMw1oxAnInK3siNx98ysu8WVZ2NoKyEyI=@vger.kernel.org
+X-Gm-Message-State: AFuF++kMM9k4p7LeDwDa1yuVQ6+5SQAlYngFvSXDsr4eFNKFKa3Vemqw
+	Yvvo9F8Lb1oCWAefxODgEYt790dcl3xgskQvWm6szw85y3yjrcrX1eaErw3Jwq+Hbw==
+X-Gm-Gg: AR+sD11PF450puulOdCS/4+BEWiMJBWHtMW+qYsqZDvLkmZ1Q4HI1r0P5Hbm4a1zoyX
+	kZypLcI9v/y/5ttYb/hvZCOR8WqbrZbjVq8sajo0XSTGW6tdUAoZ2Wg7PkE/Rn+FArzg3jRIPCh
+	YSUa+6rGfSMWTYUJqKqvX+8hQElTa/vxYR6yOKkmaq3pMRsahsayaXuXcPaUnwbAtH67cRc1eDW
+	/YIdfqnsoNCvMaTvj/SAdHUU7mzNovpthFbifkYu0trNpK3gcH8ubXp53mocZjzzSKzWqAcDLE8
+	vv+P/d/82R9XHIHgGTSi5KDN6m4Bjd+Z/ZlyRdY68gnjIXm7yqTRudIMWDrMRdWFrDw9bASfDHB
+	4LcZ4RYf80B/k9INDvSr1BzcgDG4ZvyM7vCRpezdEsQ0PhN5SknAKUTGTMlXFR842nC3nquDYM2
+	jmzJ+YWPTw8ZHRqCYbmsGSkIm/XIx42DadQfpof6Q/SsjEBzceX/TCih3aR7PTRuDGTATcGXEuK
+	U7PyOumgp23rkKR3vNlcU1QCS54uQ==
+X-Received: by 2002:a05:600c:a31c:b0:499:7da3:dd0c with SMTP id 5b1f17b1804b1-499d867c424mr1003585e9.0.1787675603950;
+        Tue, 25 Aug 2026 09:33:23 -0700 (PDT)
+Received: from google.com (250.192.189.35.bc.googleusercontent.com. [35.189.192.250])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499dc960f24sm217945e9.3.2026.08.25.09.33.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2026 09:26:34 -0700 (PDT)
-Date: Tue, 25 Aug 2026 12:26:33 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Junnan Zhang <zhangjn_dev@163.com>, 
- willemdebruijn.kernel@gmail.com
-Cc: davem@davemloft.net, 
- edumazet@google.com, 
- horms@kernel.org, 
- kuba@kernel.org, 
- linux-kernel@vger.kernel.org, 
- liuhangbin@gmail.com, 
- mst@redhat.com, 
- netdev@vger.kernel.org, 
- pabeni@redhat.com, 
- sunshx@chinatelecom.cn, 
- zhangjn11@chinatelecom.cn, 
- zhangjn_dev@163.com
-Message-ID: <willemdebruijn.kernel.388b632cadf16@gmail.com>
-In-Reply-To: <20260824173745.16757-1-zhangjn_dev@163.com>
-References: <willemdebruijn.kernel.2d3e4407199d8@gmail.com>
- <20260824173745.16757-1-zhangjn_dev@163.com>
-Subject: Re: [PATCH] net/packet: fix network header offset-VLAN raw packets on
- VLAN subinterfaces
+        Tue, 25 Aug 2026 09:33:23 -0700 (PDT)
+Date: Tue, 25 Aug 2026 16:33:19 +0000
+From: Mostafa Saleh <smostafa@google.com>
+To: Dragos Tatulea <dtatulea@nvidia.com>
+Cc: Luigi Rizzo <lrizzo@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	rizzo.unipi@gmail.com, m.szyprowski@samsung.com,
+	robin.murphy@arm.com, willemb@google.com, kuniyu@google.com,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	gregkh@linuxfoundation.org, rafael@kernel.org,
+	akpm@linux-foundation.org, david@kernel.org, netdev@vger.kernel.org,
+	linux-mm@kvack.org, iommu@lists.linux.dev,
+	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] swiotlb: avoid double copy with swiotlb on tx socket
+Message-ID: <ao3DzzFIVPdtL7MX@google.com>
+References: <20260615234220.3946885-1-lrizzo@google.com>
+ <20260615172535.080cf94f@kernel.org>
+ <CAMOZA0KAHKsvA9yRcdrjG13S+=rJhw-Cvnw2WdLjGGY0azG0kw@mail.gmail.com>
+ <ajEuUZMgS_NRmDcp@google.com>
+ <ac473a83-c77f-4a41-bc86-8a857d2d6e36@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ac473a83-c77f-4a41-bc86-8a857d2d6e36@nvidia.com>
 
-Junnan Zhang wrote:
-> Hi Willem,
+On Mon, Aug 24, 2026 at 10:59:21AM +0200, Dragos Tatulea wrote:
 > 
-> Thank you for the review.
 > 
-> > > AF_PACKET SOCK_RAW reserves dev->hard_header_len bytes of headroom. For
-> > > VLAN subinterfaces, hard_header_len VLAN tag space (18 bytes)
-> >
-> > Does it?
-> >
-> > vlan_dev_init:
-> >
-> >         dev->hard_header_len = real_dev->hard_header_len;
+> On 16.06.26 13:06, Mostafa Saleh wrote:
+> > On Tue, Jun 16, 2026 at 02:33:52AM +0200, Luigi Rizzo wrote:
+> >> On Tue, Jun 16, 2026 at 2:25 AM Jakub Kicinski <kuba@kernel.org> wrote:
+> >>>
+> >>> On Mon, 15 Jun 2026 23:42:20 +0000 Luigi Rizzo wrote:
+> >>>> The use of swiotlb causes an extra data copy on I/O.  For tx sockets,
+> >>>> especially with greedy senders, this has a high chance of happening in
+> >>>> the softirq handler for tx network interrupts, creating a significant
+> >>>> performance bottleneck.
+> >>>
+> >>> What's the use case? I associate swiotlb with debug / testing mostly,
+> >>> so it'd be useful for people like me to explain why you care.
+> >>
+> >> Ah sorry, I forgot to mention.
+> >> swiotlb is used in guest kernels for confidential computing VMs.
+> >> Ordinary memory pages are encrypted and the host or devices
+> >> have no way to decrypt them, so the kernel must use
+> >> unencrypted bounce buffers to exchange data with I/O devices.
+> > 
+> > I started looking into the same problem recently, to reduce the
+> > bouncing in protected KVM (pKVM) confidential guests.
+> > My first attempt was to update dma_direct_map_phys() to skip
+> > bouncing and do inline memory decryption (for pKVM that is a hypercall
+> > which updates the stage-2 page tables), however, that was really slow
+> > compared to the memcpy in bouncing even for massive pages.
+> > My conclusion was similar that we need to solve this at construction
+> > by making this memory allocated from a pre-decrypted pool (which
+> > does not have to be part of the SWIOTLB)
+> > My initial idea was to teach some of the kernel subsystems (SKB,
+> > BLK, SLAB) about "CoCo allocators" that allocate decrypted memory,
+> > as this is not a net specific problem.
+> > 
+> An example of this is Jiri's system_cc_shared heap which is a dma-buf
+> heap with decrypted memory for userspace.
 > 
-> You are right that this is only true when VLAN hardware offloading is
-> available, i.e. vlan_hw_offload_capable() returns true and vlan_dev_init()
-> takes the first branch. The bug I am fixing only happens in the else
-> branch:
-> 
->         dev->hard_header_len = real_dev->hard_header_len + VLAN_HLEN;
-> 
-> I observed it on a virtio_net device, which advertises
-> NETIF_F_HW_VLAN_CTAG_FILTER but not IF_F_HW_VLAN_CTAG_TX. So any VLAN
-> subinterface created on top of it uses software VLAN tag insertion and
-> has hard_header_len = 18 while min_header_len stays at 14.
-> 
-> > > while min_header_len is the real Ethernet header length (14 bytes). When
-> >
-> > Which device did you observe this with?
-> 
-> virtio_net (in a KVM/QEMU guest).
-> 
-> > > userspace sends a standard untagged Ethernet frame through a VLAN
-> > > subinterface, packet_parse_headers() only correct_header for
-> > > VLAN-tagged frames. For non-VLAN frames it leaves network_header at
-> > > hard_header_len, so the IP header is found 4 bytes too late and
-> > > inet_gso_segment() fails with -EINVAL.
-> >
-> > Which path did you observe generating these untagged packets through
-> > a VLAN interface?
-> 
-> The reproducer is an AF_PACKET SOCK_RAW socket bound to the VLAN
-> subinterface, with PACKET_VNET_HDR enabled. Userspace sends a large
-> IPv4/TCP frame that exceeds the path MTU; the virtio-net header in the
-> packet sets gso_type, so the skb goes through GSO. The userspace frame
-> contains a plain Ethernet + IP + TCP layout, without a VLAN tag. The VLAN
-> sub inserts the 802.1Q tag in vlan_dev_hard_start_xmit().
-> 
-> Before the fix, packet_snd() leaves network_header at base +
-> hard_header_len (18), while the real IP header starts at base + 14 + 14 =
-> base + 28. network_header points 4 bytes past the IP header, so
-> inet_gso_segment() gets a misaligned ip_hdr(skb) and returns -EINVAL.
+> > I am still looking into this, I was planning to bring this up in the
+> > upcoming LPC.
+> > I will give this patch a try. However, I believe that we need a more
+> > generalised concept for CoCo pre-decrypted allocators in the kernel.
+> > 
+> There is a talk at LPC in the networking track about this [2]. This is
+> exactly the type of discussion that I was hoping to have there.
 
-Why is the real length 14 + 14 == 28?
-Where does the second 14 come from?
+I see, thanks for point that. I plan to be in LPC, so I will aim to
+attend this talk.
 
-> > > +	bool has_vlan;
-> >
-> > nit: confusing variable, combining test on packet and device.
 > 
-> Ag. In v2 I will restructure the function to test dev->type once and
-> use a clearly packet-only variable. For example:
+> Besides the issues mentioned in this thread we've also found that a lot
+> of overhead can come only from swiotlb allocations when running many queues.
 > 
->         if (likely(skb->dev->type == ARPHRD_ETHER)) {
->                 bool is_vlan = eth_type_vlan(skb->protocol);
-> 
->                 if (!is_vlan && sock->type == SOCK_RAW &&
->                     skb->dev->min_header_len < skb->dev->hard_header_len)
+> I will add information about this series in my talk. Hopefully I will also
+> have time to add some numbers for comparison.
 
-This is the hint that this is a vlan device with software VLAN tag
-insertion? Technically, it might apply to other variable length
-header devices too.
->                         skb_set_network_header(skb, skb->dev->min_header_len);
+I had a quick look, I am not sure how that will shape at the end, but I
+think we need a general solution beyond NICs. For example in pKVM the
+bouncing is used with virtio devices, so doing this per-driver won't
+really work and is not possible in some scenarios where memory is
+allocated from the core kernel and then passed to the driver.
+So, I was thinking the kernel relying on
+CC_ATTR_MEM_ENCRYPT/force_dma_unencrypted() could detect that and
+allocate pre-shared memory for those cases.
+
+Thanks,
+Mostafa
+
 > 
->                 skb_probe_transport_header(skb);
+> Sorry for the late reply but I spotted this thread only now by
+> accident.
 > 
->                 if (is_vlan &&
->                     vlan_get_protocol_and_depth(skb, skb->protocol, &depth) != 0)
->                         skb_set_network_header(skb, depth);
->         } else {
->                 skb_probe_transport_header(skb);
->         }
+> [1] https://lore.kernel.org/all/20260325192352.437608-3-jiri@resnulli.us/
+> [2] https://lpc.events/event/20/contributions/2464
 > 
-> > > +	    likely(skb->dev->type == ARPHRD_ETHER) &&
-> >
+> Thanks,
+> Dragos
