@@ -1,121 +1,179 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB3541A8F;
-	Tue, 25 Aug 2026 16:21:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754AC351C25
+	for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 16:26:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787674893; cv=none; b=s5Cku0quQzDN/eDBOop3+KfJFiTHBdXUtz1UpLqphoW0Gd1fLwWfQop3nsyPh1RuV4LrMjpV+Q3ENIypqzxIP/VYSSFq2BJiI4eA2Hg4qZIMLcR6d0mdBbDm5MEXnqWBp8A27mb2gMW5emyddeJtjVkU9oV/2thxRMylLtXgbDI=
+	t=1787675197; cv=none; b=cXS6qrEvy7ezqyQpbjpZxGvFNdpeZ33EW7Z4FLgQvHg3GyXY+NNLXoiNRv4jaLUsW4JQswQJOTOCkT0yETD3/z81LJGV2UiHb/VxWaFxR6O2wQkmOKASkCVZ2bwfZ5W1lqD5wmWcYe3dZ/uScL20GwSKGIlfMtvuHKW77AE+XKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787674893; c=relaxed/simple;
-	bh=clERYCIS6groPkZRJaU4BKs2iWmTqbzVTorVPwgBYj0=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=j5F+medlnfwSYbzA1eZvYpm6VEIyHpyyLA8i5597jlCIEirxfLZJeD/o5rDhn0JwYGpHuYfmZs7t9HZQn2uGwkHdhs743oMXS0aSy9OCBuaLg7K9hS54oeMlsFaNAVQSiATKawd3kXlYnL2Mn0EzxaBa+PL0yh4Cr258MMqv8JE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PTg9kIFx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787675197; c=relaxed/simple;
+	bh=hUVt5X1WwR9vSGlMHdu9iOHRAOi/uatXuwsdCkP5nFc=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=Hbyp66R84dhM2tZaJNIzO1mAvSqwsGF/qPDtHMWgnbgJzUAoGWfns/QyJfeAi5LPqrSFfnhDa2L65w67jpW6rkbOPK/naGW1HJqMAhmIJoRmzyVnxrnuXsTIdlU6YaYn0cf/LueKAm3DBnCfGaL8rw7VgeNNLkEx00iM5xd3Seo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WCRxvFwx; arc=none smtp.client-ip=74.125.224.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PTg9kIFx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A1D1F000E9;
-	Tue, 25 Aug 2026 16:21:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787674891;
-	bh=vR7nDKAqpDVijosQMKINm9SJwa8xLdCYsoMVgCDX+aA=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=PTg9kIFxyOz+XmnNOfx/u9htnV9LAdivK6mB1hOtmTw9d0rkdAXUe5vEGIITEQsuy
-	 hr8YjXqzr5j+QFsMgOO4TeGbiD5bGNk14oJmEVTDmIOY5dTMrOCFbhZ1yvR4KSEpkE
-	 FXUV0RycZve+u7g/3LYrgPUhK8KAxcCQpCPYJe4ViGoXOnb6itgP0i2q/UZ0ke0E9S
-	 J5v1UZ9Cu83nGnVggGQxbcu5/bImVBwUs9Aa5VpMG42ZA53pjUScmZjg8uRKqb+FaR
-	 WD5uD4KwzUSAFLkA0E8eNr7pcJ8m5SyZ5LT7dRvlL5nVRzQTopSk3MxqUa95HGl3hR
-	 G0KDYzwoUFO3g==
-Content-Type: multipart/mixed; boundary="===============2599008689546417396=="
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WCRxvFwx"
+Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-66d14734b9fso1670038d50.0
+        for <netdev@vger.kernel.org>; Tue, 25 Aug 2026 09:26:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787675195; x=1788279995; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=abwfvPGDYkGjwGbBLKqedUFOZOoEMQvzYxlYlmb7AD8=;
+        b=WCRxvFwxXA+869wD5/kPzG4KGlxhdFYPD47zbCjaqH6k57MJMj5Z3pbErznSPkb2fE
+         qoLsomtegSpFMzrLSV9S/kDLdyRDXeediCruiGr24w7UpTkp2z17zlzBGjHqvMj4pvj/
+         jxFH/9Lmafky7HEF1UgjDueBuu2vz7ylTzT0NYq/Lirdog+2d0QiEhTmXp1c9caVv4hA
+         tU5IvsUY57SDolZ8gKdViAKvSxz6/26QkMLy/tmQbNv+F7VRGtsMlVV/f7ZXOfekOF5U
+         htnj3FI+eCWxk0noUDfILDHU0hZjFlLLhG/ir0ChU4z9I7bXiR/5VNaEJ+FNUlrr2sfI
+         YqYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787675195; x=1788279995;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=abwfvPGDYkGjwGbBLKqedUFOZOoEMQvzYxlYlmb7AD8=;
+        b=gtkm5M2O2kVqDNOiiZRbxtuqM40g2ZgKRY0zZQge4a6ZnXUQPHp63FbdK2VKXAmenS
+         On8QCj4ykNcG7xbEJOyRdhwgj3/w/rOQe2f5Kvp45AbdCCl28W/iyzDblzWL+o6/tU0s
+         Yp7v2KQleDlNWwlCC9Ck0/uVNl6DV0dNJsWwq0QbugdxKEJ9swrUnWRcIgBALGMOOCtV
+         eqJfRF91j8jJT5VN8lO5otnd0dqc5VtUxzEN+wV4d46Ec6ceattpE+KC2fn/Yrm+CmEz
+         VY8XEEq5hzVNJqYCDZL/ahOgn2JGOusagtL96hMsbPEH80S99sEep+1qeoV2xLLEpSBo
+         J1KQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqM6ltAcXt9K/BJ5u5ZgpWMzG/bUPpMjV/u0yOgoMRGbvz8ZfkTm57e99Yq2z33abMDR6eYYKQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++nUVrOTCe193odqj8YbyiAPaJ4bG7cCINIwsz4WGufUkIygnCqE
+	3+WYQLz/GMkjQE4GO7HcAD2LdQCLlZvl4D5Q0dNZimK5gSTTFVCGUcTJ
+X-Gm-Gg: AR+sD11+WRpss3FEM5c8L8ChN6Z2LqGr6OIJbRdu/+yAaIB6isBlA3EwgujNsO8IMho
+	v8F0IL3WOmq2T8hV4M0nCGYDZ+Lbr+r2RjWExnVan4QFl/xR5jZmF6c7byQZNqpSbkS6lYgMyoq
+	lhm2qYtFIksorWK6/K5TSJQ8mRfpHkVW0rMQoCBRUU/itRxvdJ0l45JRQKTfpGDDaaGgjXK6N+9
+	q/845pKxhJCSZ5E0iX44FlQJGWN9A8BdRUKYrBKQJwH/9Fo2B2AOu1VX9wXWgVYewtukxtk9EvR
+	gXO1zZIwKmqvwPIJN91ljnGEfGG8UZNHTp04r8Umy4Tp6F2bkC1yDhByow2Gu4CMrJLERVhtQu3
+	iAyj5jldvG2cnjydnS0Cei6TWoPzObuBc9PpCqVsbae/k732uK7kWPaxWkuvhgc9VfLpm9iiEFn
+	cNof06pb7IYPW7X6pKOCD4nme8BSQXltn76WJGCbTeS3AWBI2exQcg5FMhYlNvEwEkisRQ3swOW
+	ylcsyHaipkDIWMGmMMIVVZirbk7cmEjoXDWeFHJgw==
+X-Received: by 2002:a53:d00a:0:b0:66c:7ea5:ef34 with SMTP id 956f58d0204a3-66d250efa0fmr79329d50.9.1787675195238;
+        Tue, 25 Aug 2026 09:26:35 -0700 (PDT)
+Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66d2454d92asm236158d50.3.2026.08.25.09.26.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Aug 2026 09:26:34 -0700 (PDT)
+Date: Tue, 25 Aug 2026 12:26:33 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Junnan Zhang <zhangjn_dev@163.com>, 
+ willemdebruijn.kernel@gmail.com
+Cc: davem@davemloft.net, 
+ edumazet@google.com, 
+ horms@kernel.org, 
+ kuba@kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ liuhangbin@gmail.com, 
+ mst@redhat.com, 
+ netdev@vger.kernel.org, 
+ pabeni@redhat.com, 
+ sunshx@chinatelecom.cn, 
+ zhangjn11@chinatelecom.cn, 
+ zhangjn_dev@163.com
+Message-ID: <willemdebruijn.kernel.388b632cadf16@gmail.com>
+In-Reply-To: <20260824173745.16757-1-zhangjn_dev@163.com>
+References: <willemdebruijn.kernel.2d3e4407199d8@gmail.com>
+ <20260824173745.16757-1-zhangjn_dev@163.com>
+Subject: Re: [PATCH] net/packet: fix network header offset-VLAN raw packets on
+ VLAN subinterfaces
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Message-Id: <928bcf2c81a02eb3f44dcc84e978a13e7d7e65a650692e5a83ed48231960a2ff@mail.kernel.org>
-In-Reply-To: <20260825152152.86092-1-ahemadkhawar123@gmail.com>
-References: <20260825152152.86092-1-ahemadkhawar123@gmail.com>
-Subject: Re: [PATCH bpf-next] xsk: Fix circular locking dependency in xsk_bind
-From: bot+bpf-ci@kernel.org
-To: ahemadkhawar123@gmail.com,bpf@vger.kernel.org,netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,magnus.karlsson@intel.com,maciej.fijalkowski@intel.com,sdf@fomichev.me,ast@kernel.org,daniel@iogearbox.net,kuba@kernel.org,pabeni@redhat.com,syzbot+aa48b5fe7bfda62d1682@syzkaller.appspotmail.com,ahemadkhawar123@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Tue, 25 Aug 2026 16:21:31 +0000 (UTC)
-
---===============2599008689546417396==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 7bit
 
-> diff --git net/xdp/xsk.c net/xdp/xsk.c
-> index 7855ee09c4b6..d2fbbeb7b6d7 100644
-> --- net/xdp/xsk.c
-> +++ net/xdp/xsk.c
-> @@ -1612,19 +1612,18 @@ static int xsk_bind(struct socket *sock, struct sockaddr_unsized *addr, int addr
->  		return -EINVAL;
->
->  	rtnl_lock();
-> -	mutex_lock(&xs->mutex);
-> -	if (xs->state != XSK_READY) {
-> -		err = -EBUSY;
-> -		goto out_release;
-> -	}
-> -
->  	dev = dev_get_by_index(sock_net(sk), sxdp->sxdp_ifindex);
->  	if (!dev) {
->  		err = -ENODEV;
-> -		goto out_release;
-> +		goto out_rtnl_unlock;
->  	}
->
->  	netdev_lock_ops(dev);
-> +	mutex_lock(&xs->mutex);
-> +	if (xs->state != XSK_READY) {
-> +		err = -EBUSY;
-> +		goto out_unlock;
-> +	}
+Junnan Zhang wrote:
+> Hi Willem,
+> 
+> Thank you for the review.
+> 
+> > > AF_PACKET SOCK_RAW reserves dev->hard_header_len bytes of headroom. For
+> > > VLAN subinterfaces, hard_header_len VLAN tag space (18 bytes)
+> >
+> > Does it?
+> >
+> > vlan_dev_init:
+> >
+> >         dev->hard_header_len = real_dev->hard_header_len;
+> 
+> You are right that this is only true when VLAN hardware offloading is
+> available, i.e. vlan_hw_offload_capable() returns true and vlan_dev_init()
+> takes the first branch. The bug I am fixing only happens in the else
+> branch:
+> 
+>         dev->hard_header_len = real_dev->hard_header_len + VLAN_HLEN;
+> 
+> I observed it on a virtio_net device, which advertises
+> NETIF_F_HW_VLAN_CTAG_FILTER but not IF_F_HW_VLAN_CTAG_TX. So any VLAN
+> subinterface created on top of it uses software VLAN tag insertion and
+> has hard_header_len = 18 while min_header_len stays at 14.
+> 
+> > > while min_header_len is the real Ethernet header length (14 bytes). When
+> >
+> > Which device did you observe this with?
+> 
+> virtio_net (in a KVM/QEMU guest).
+> 
+> > > userspace sends a standard untagged Ethernet frame through a VLAN
+> > > subinterface, packet_parse_headers() only correct_header for
+> > > VLAN-tagged frames. For non-VLAN frames it leaves network_header at
+> > > hard_header_len, so the IP header is found 4 bytes too late and
+> > > inet_gso_segment() fails with -EINVAL.
+> >
+> > Which path did you observe generating these untagged packets through
+> > a VLAN interface?
+> 
+> The reproducer is an AF_PACKET SOCK_RAW socket bound to the VLAN
+> subinterface, with PACKET_VNET_HDR enabled. Userspace sends a large
+> IPv4/TCP frame that exceeds the path MTU; the virtio-net header in the
+> packet sets gso_type, so the skb goes through GSO. The userspace frame
+> contains a plain Ethernet + IP + TCP layout, without a VLAN tag. The VLAN
+> sub inserts the 802.1Q tag in vlan_dev_hard_start_xmit().
+> 
+> Before the fix, packet_snd() leaves network_header at base +
+> hard_header_len (18), while the real IP header starts at base + 14 + 14 =
+> base + 28. network_header points 4 bytes past the IP header, so
+> inet_gso_segment() gets a misaligned ip_hdr(skb) and returns -EINVAL.
 
-Does this reordering change the errno precedence userspace sees?
+Why is the real length 14 + 14 == 28?
+Where does the second 14 come from?
 
-Before the patch, bind() on an already-bound socket (state != XSK_READY)
-returned -EBUSY regardless of whether the ifindex was valid. After the
-patch, the same call returns -ENODEV if the ifindex lookup fails, because
-dev_get_by_index() is now checked before the state test.
+> > > +	bool has_vlan;
+> >
+> > nit: confusing variable, combining test on packet and device.
+> 
+> Ag. In v2 I will restructure the function to test dev->type once and
+> use a clearly packet-only variable. For example:
+> 
+>         if (likely(skb->dev->type == ARPHRD_ETHER)) {
+>                 bool is_vlan = eth_type_vlan(skb->protocol);
+> 
+>                 if (!is_vlan && sock->type == SOCK_RAW &&
+>                     skb->dev->min_header_len < skb->dev->hard_header_len)
 
-If preserving the -EBUSY precedence matters for userspace compatibility,
-would the state check need to stay ahead of dev_get_by_index()?
-
-[ ... ]
-
-> @@ -1771,9 +1770,9 @@ static int xsk_bind(struct socket *sock, struct sockaddr_unsized *addr, int addr
->  		smp_wmb();
->  		WRITE_ONCE(xs->state, XSK_BOUND);
->  	}
-> -	netdev_unlock_ops(dev);
-> -out_release:
->  	mutex_unlock(&xs->mutex);
-> +	netdev_unlock_ops(dev);
-> +out_rtnl_unlock:
->  	rtnl_unlock();
->  	return err;
->  }
-
-Looking at the commit message:
-
->     Fixes: 978939c08db1 ("xsk: use netdev_lock_ops in xsk_bind")
-
-The Fixes tag references commit 978939c08db1, but this commit does not exist
-in this repository. Running git log and searching lore shows no commit with
-this SHA or subject line. The tag appears to be fabricated.
-
-The buggy locking pattern was actually introduced in commit 975b11ae9077
-when net/xdp/xsk.c was first added to this repository. Should the Fixes
-tag reference that commit instead?
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/32867683423
---===============2599008689546417396==--
+This is the hint that this is a vlan device with software VLAN tag
+insertion? Technically, it might apply to other variable length
+header devices too.
+>                         skb_set_network_header(skb, skb->dev->min_header_len);
+> 
+>                 skb_probe_transport_header(skb);
+> 
+>                 if (is_vlan &&
+>                     vlan_get_protocol_and_depth(skb, skb->protocol, &depth) != 0)
+>                         skb_set_network_header(skb, depth);
+>         } else {
+>                 skb_probe_transport_header(skb);
+>         }
+> 
+> > > +	    likely(skb->dev->type == ARPHRD_ETHER) &&
+> >
