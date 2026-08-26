@@ -1,271 +1,613 @@
-Received: from mail-oa2-f11.google.com (mail-oa2-f11.google.com [74.125.231.75])
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDACB17BCA
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 11:55:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4B93C0A09
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 11:59:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787745335; cv=none; b=Gj+IL01AlVHSRAg/9+1gFwBABM/87O0iEfgZX8mScui33awtsjW7F6ZtJ0KvvaaKF5ih9w0IuhifV5oEtbK7qeW2rA2P3IekWuYVuu7RHtLxzw/Pblclg2ynQG2rnjzBfni3CxLktf+xlne6HCL6GLfCLR2j/NKXBohRb5Jewic=
+	t=1787745558; cv=none; b=NX5PVqV7tkZ5IKlG9o2QSr5yOgnXiODe+Nn4D/ixhfLX2UgG0ZHBsB/fu3CXM4ThbzV6+Nhb01VQiquhNz109ZXPc6Ip8kagid00t6eMayHTjrJxS/vgidOJzwABATtYXaFYRhxVHWjMZcNBdHXuIUHvpvMZwfnHKq+jw/D0cRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787745335; c=relaxed/simple;
-	bh=WQOg1GVIOHW5KRCh3gpzmCsFm/tWYnoVt2bAdpgllkg=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=jqGdJmuQ41YairYS7ZTjpv4osCWquAoXqn2dbdYa9pePXp7kONuiPGr2b3KakoDPHXzDnqaF4FD0cUm9LAO6HRjU3Dgc6WhnHxrGzAccAP3tTonKhZ5r3IYDIyg4tpaCin1W3mpHVkM0NM99pCMnrlR+GHs7NGyVS9nMH/yeBaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oa2-f11.google.com with SMTP id 586e51a60fabf-45958a0c7c4so279260fac.0
-        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 04:55:33 -0700 (PDT)
+	s=arc-20240116; t=1787745558; c=relaxed/simple;
+	bh=V0lkkd2SLnjXkXHmscA4oZWJ6JRTnfmKDzQurpj273w=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=jdLzJjVpigChZFTpDuEv4S04tYjo1QZ4nj90WVHgQptExCykU7yNbXcwSMO62J8RG7PeqoqgzKdDHHIGQCTIUb0sDsJgh2HD5oE4pWYhpP0RoXJWsv8NXNJCTuUPmC68l8zBlBrxra24zUHd/0hKD7snCxc1+lzVtcAorsNKu4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JSFdvbCl; arc=none smtp.client-ip=209.85.222.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JSFdvbCl"
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-92e5e38fbc5so85264185a.2
+        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 04:59:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1787745555; x=1788350355; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=srMG3e9/9HNSscOpo47zsqJQ+5Gyqnn1dFwcQ5rd78A=;
+        b=JSFdvbClYrguB7g0r09GP1L1DNpAtHbpW47a7ZOfs3m4XyKwHEWW3wKfPI0O4SOkcU
+         RMklOrkxaA3922CJh43ZKQn6yeUeSAKlEYUgVS9goLRYTSTpUXsuAzOc9Sj1gp2D4frS
+         2WQEPy21CtXkcrtYRXcIuH4FcePLQqpXJn8JF52cYxcNe/unPT0DbttdXV7UnzXODp6i
+         2pLCw8i1x4OmQEfyy9Yo3OSoYIPsA3wXiU0Ax+TIvng6XrR7EPGYh7OVGKq3lEJRWDkQ
+         /iIhgnihOuYDrF/YzAOoHdy4JEPsyrgvJvV02rqwfM/EAvBozjEXkktIwIZcvUE/GcsU
+         yJ7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787745333; x=1788350133;
-        h=content-type:to:from:subject:message-id:date:mime-version
+        d=1e100.net; s=20251104; t=1787745555; x=1788350355;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=BFYWTRqsZ+S1YPbAJm/ppesJOdbaQUOz76T2WSP5MLs=;
-        b=MaHl21+ZLD9mYw2vsE7nYooE75oTN4HnDDDTCAwk55LriO96bf2ttvhaSjSsgazE0k
-         xfQSyqK1o7quF6a00gsCHwMpvsdFFaWOCV9t5mPFbHLeTVReOt2D93gdGYVWjZOMhnxy
-         d3Us1QjQE8HDgD7YIazFKfujVIGnlaD3FNPaQt3BHJ9uAJqhCp+IKW9thfHGUfyQLsX/
-         F1fuk8UoqKqrrTlVFjXwWp+ElUWwpLqkrMyramGIMTwfvF9s9CQDNP4Rvi0D+HhCEoVN
-         MZ8Bt9OU9DFOjphHnCUMpYQeb6rxFc/HtsQbY1ubCdymcEv8zYe2fle8bJDI0zqw98w6
-         TISA==
-X-Forwarded-Encrypted: i=1; AHgh+RoNxyWDiJNRL8cQqU32b22Lpb0MgPxirArfQ8nceu1+ARr+MCBVpFHKqZ2ulezsRt9Sexf11uA=@vger.kernel.org
-X-Gm-Message-State: AFuF++nBFE3riIrUM7K0NkzIg/hKrFLjLIFCmpUELGqL3rUURAgS682B
-	w7cT3ovxHqIAxcm4PAF11tpNyNu98mLF2jShAbqSyUJ6EMVPBAoJCEnAE1mNY24+jVI1Ol/Z8DW
-	IxDM2bZwnq3eCX5Dbu1nNaSY1jFsLaZQUWeoWPICbtjpT49txljm1r7yqMTc=
+        bh=srMG3e9/9HNSscOpo47zsqJQ+5Gyqnn1dFwcQ5rd78A=;
+        b=tRXiik+MJz67svkSoWTJV52jag3KiTC2CzJ4XDYU0NfpdvJ9TMcW4oUljNc20hIjnk
+         APJaWyvERJnsMsWtXDk2POU2tQD7dDprBt4mE5cTGMVn/2vKSP3GtduVvVjrccDJwAV1
+         pKF7hSd7s9BE9ldzrbDWFMAweSZaJbuDswWTEJZOPs0NCz9qJ2VfzSyeIN2I5LiWV/79
+         fVOpzCz8dNWvtrb7UwiaieJ5LfD1AK//nk9n9rZWv7degnzbeQf2273rE+FiS/g47HAP
+         x+cFmm33k4nOhg7eNkFDy4ZEvGRbT8gWBJYgpBnw3W/nBCA3jE4rcFKEq7l4fXhLeBbz
+         9D+w==
+X-Forwarded-Encrypted: i=1; AHgh+RphWeFjYQ0m6suokWoR4liDaNjfxv0h3cIq7zY8TLwychNScJ0JdrP+pDxm2C9y9Vu0101KVgA=@vger.kernel.org
+X-Gm-Message-State: AFuF++mni/5x5BDIqJdPropNFoaYB7rY3gJdQNDteZVho3ZO1yHftitD
+	H7mX8o7TVdJVL7DulQKV4MSNKdAsepJ/B2c9T5cdln+ARralF+jFugzuRd+Puq2KgjJvC0fpPU4
+	EsviTmcqP+qc42g==
+X-Received: from qkog2.prod.google.com ([2002:a05:620a:40c2:b0:92e:4e8d:f405])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:17a3:b0:915:688b:aba with SMTP id af79cd13be357-93780446b43mr484612685a.35.1787745554334;
+ Wed, 26 Aug 2026 04:59:14 -0700 (PDT)
+Date: Wed, 26 Aug 2026 11:59:13 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Received: by 2002:a05:6820:a28f:10b0:6ae:a950:9faa with SMTP id
- 006d021491bc7-6b1a03c51c4mr4179543eaf.10.1787745332788; Wed, 26 Aug 2026
- 04:55:32 -0700 (PDT)
-Date: Wed, 26 Aug 2026 04:55:32 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a8ed434.1d9ded08.62e62.00a9.GAE@google.com>
-Subject: [syzbot] [net?] possible deadlock in ip_check_mc_rcu
-From: syzbot <syzbot+a5a07d2f6a71972dc5ed@syzkaller.appspotmail.com>
-To: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
-	horms@kernel.org, idosch@nvidia.com, kuba@kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
-	syzkaller-bugs@googlegroups.com
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.860.g4b6b3295ed-goog
+Message-ID: <20260826115913.3381537-1-edumazet@google.com>
+Subject: [PATCH net] igmp: convert struct ip_sf_list to RCU
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, syzbot+a5a07d2f6a71972dc5ed@syzkaller.appspotmail.com
 Content-Type: text/plain; charset="UTF-8"
 
-Hello,
+Commit 23d2b94043ca ("igmp: Add ip_mc_list lock in ip_check_mc_rcu")
+added spin_lock_bh(&im->lock) to ip_check_mc_rcu() to prevent a
+use-after-free while iterating im->sources during concurrent deletions.
 
-syzbot found the following issue on:
+However, ip_check_mc_rcu() is called from RCU read-side critical
+sections in packet receive and route lookup fast paths (e.g.
+__mkroute_output(), ip_route_input_rcu(), and __udp4_lib_rcv()).
 
-HEAD commit:    f6f3b36c15ed net: ethernet: qualcomm: remove unneeded 'fas..
-git tree:       net-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=15de4b46580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5c4196ba0e33631d
-dashboard link: https://syzkaller.appspot.com/bug?extid=a5a07d2f6a71972dc5ed
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+When igmpv3_send_cr() or igmpv3_send_report() holds &pmc->lock and
+calls add_grec() -> igmpv3_newpack() -> ip_route_output_ports(),
+an XFRM policy matching a multicast destination triggers
+xfrm_tmpl_resolve_one() -> xfrm4_get_saddr() -> __mkroute_output() ->
+ip_check_mc_rcu(). This attempts to acquire &im->lock while &pmc->lock
+is already held on the same CPU, triggering a lockdep recursive locking
+warning / deadlock.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Fix this by converting IPv4 struct ip_sf_list to RCU, mirroring the
+IPv6 implementation in net/ipv6/mcast.c:
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/47ae09206bf6/disk-f6f3b36c.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/9e3daf94ae30/vmlinux-f6f3b36c.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/c266cfd24092/bzImage-f6f3b36c.xz
+1. Add struct rcu_head to struct ip_sf_list and annotate sf_next,
+   sources, and tomb as __rcu pointers.
+2. Use rcu_assign_pointer() and kfree_rcu() for list updates and
+   deletions.
+3. Remove spin_lock_bh(&im->lock) from ip_check_mc_rcu() and traverse
+   im->sources locklessly with for_each_psf_rcu(), reading and writing
+   counter fields with READ_ONCE() and WRITE_ONCE().
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Note: RCU conversion of /proc/net/mcfilter will be done in a
+separate patch.
+
+Fixes: 23d2b94043ca ("igmp: Add ip_mc_list lock in ip_check_mc_rcu")
 Reported-by: syzbot+a5a07d2f6a71972dc5ed@syzkaller.appspotmail.com
-
-============================================
-WARNING: possible recursive locking detected
-syzkaller #0 Not tainted
---------------------------------------------
-syz.4.3416/18916 is trying to acquire lock:
-ffff888042dfe6b0 (&im->lock){+.-.}-{3:3}, at: spin_lock_bh include/linux/spinlock.h:348 [inline]
-ffff888042dfe6b0 (&im->lock){+.-.}-{3:3}, at: ip_check_mc_rcu+0x448/0x670 net/ipv4/igmp.c:2869
-
-but task is already holding lock:
-ffff8880331d08b0 (&im->lock){+.-.}-{3:3}, at: spin_lock_bh include/linux/spinlock.h:348 [inline]
-ffff8880331d08b0 (&im->lock){+.-.}-{3:3}, at: igmpv3_send_cr net/ipv4/igmp.c:727 [inline]
-ffff8880331d08b0 (&im->lock){+.-.}-{3:3}, at: igmp_ifc_timer_expire+0x852/0x10b0 net/ipv4/igmp.c:843
-
-other info that might help us debug this:
- Possible unsafe locking scenario:
-
-       CPU0
-       ----
-  lock(&im->lock);
-  lock(&im->lock);
-
- *** DEADLOCK ***
-
- May be due to missing lock nesting notation
-
-9 locks held by syz.4.3416/18916:
- #0: ffffffff9057afc0 (&ops->srcu#2){.+.+}-{0:0}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
- #0: ffffffff9057afc0 (&ops->srcu#2){.+.+}-{0:0}, at: rcu_read_lock include/linux/rcupdate.h:840 [inline]
- #0: ffffffff9057afc0 (&ops->srcu#2){.+.+}-{0:0}, at: rtnl_link_ops_get+0x23/0x250 net/core/rtnetlink.c:595
- #1: ffffffff9002c240 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock net/core/rtnetlink.c:80 [inline]
- #1: ffffffff9002c240 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_nets_lock net/core/rtnetlink.c:366 [inline]
- #1: ffffffff9002c240 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_newlink+0xc10/0x1c30 net/core/rtnetlink.c:4194
- #2: ffffffff8eb4bfa0 (console_lock){+.+.}-{0:0}, at: console_trylock_spinning kernel/printk/printk.c:2026 [inline]
- #2: ffffffff8eb4bfa0 (console_lock){+.+.}-{0:0}, at: vprintk_emit+0x2cf/0x560 kernel/printk/printk.c:2478
- #3: ffffffff8ea33838 (console_srcu){....}-{0:0}, at: rcu_try_lock_acquire include/linux/rcupdate.h:305 [inline]
- #3: ffffffff8ea33838 (console_srcu){....}-{0:0}, at: srcu_read_lock_nmisafe include/linux/srcu.h:428 [inline]
- #3: ffffffff8ea33838 (console_srcu){....}-{0:0}, at: console_srcu_read_lock kernel/printk/printk.c:291 [inline]
- #3: ffffffff8ea33838 (console_srcu){....}-{0:0}, at: console_flush_one_record kernel/printk/printk.c:3246 [inline]
- #3: ffffffff8ea33838 (console_srcu){....}-{0:0}, at: console_flush_all+0x123/0xaf0 kernel/printk/printk.c:3343
- #4: ffffc90000a08cc0 ((&in_dev->mr_ifc_timer)){+.-.}-{0:0}, at: call_timer_fn+0xd4/0x5e0 kernel/time/timer.c:1745
- #5: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
- #5: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:840 [inline]
- #5: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: igmpv3_send_cr net/ipv4/igmp.c:689 [inline]
- #5: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: igmp_ifc_timer_expire+0x28/0x10b0 net/ipv4/igmp.c:843
- #6: ffff8880331d08b0 (&im->lock){+.-.}-{3:3}, at: spin_lock_bh include/linux/spinlock.h:348 [inline]
- #6: ffff8880331d08b0 (&im->lock){+.-.}-{3:3}, at: igmpv3_send_cr net/ipv4/igmp.c:727 [inline]
- #6: ffff8880331d08b0 (&im->lock){+.-.}-{3:3}, at: igmp_ifc_timer_expire+0x852/0x10b0 net/ipv4/igmp.c:843
- #7: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
- #7: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:840 [inline]
- #7: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: xfrm_policy_get_afinfo+0x30/0x1b0 net/xfrm/xfrm_policy.c:263
- #8: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:300 [inline]
- #8: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:840 [inline]
- #8: ffffffff8eb59c60 (rcu_read_lock){....}-{1:3}, at: ip_route_output_key_hash+0xd8/0x2a0 net/ipv4/route.c:2701
-
-stack backtrace:
-CPU: 1 UID: 0 PID: 18916 Comm: syz.4.3416 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/25/2026
-Call Trace:
- <IRQ>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- print_deadlock_bug+0x279/0x290 kernel/locking/lockdep.c:3041
- check_deadlock kernel/locking/lockdep.c:3093 [inline]
- validate_chain kernel/locking/lockdep.c:3895 [inline]
- __lock_acquire+0x24df/0x2cf0 kernel/locking/lockdep.c:5237
- lock_acquire+0x106/0x350 kernel/locking/lockdep.c:5868
- __raw_spin_lock_bh include/linux/spinlock_api_smp.h:150 [inline]
- _raw_spin_lock_bh+0x36/0x50 kernel/locking/spinlock.c:182
- spin_lock_bh include/linux/spinlock.h:348 [inline]
- ip_check_mc_rcu+0x448/0x670 net/ipv4/igmp.c:2869
- __mkroute_output net/ipv4/route.c:2600 [inline]
- ip_route_output_key_hash_rcu+0xe7f/0x2720 net/ipv4/route.c:2872
- ip_route_output_key_hash+0x18d/0x2a0 net/ipv4/route.c:2702
- xfrm4_get_saddr+0xb6/0x170 net/ipv4/xfrm4_policy.c:57
- xfrm_get_saddr net/xfrm/xfrm_policy.c:2472 [inline]
- xfrm_tmpl_resolve_one net/xfrm/xfrm_policy.c:2508 [inline]
- xfrm_tmpl_resolve net/xfrm/xfrm_policy.c:2567 [inline]
- xfrm_resolve_and_create_bundle+0x6df/0x3070 net/xfrm/xfrm_policy.c:2865
- xfrm_bundle_lookup net/xfrm/xfrm_policy.c:3100 [inline]
- xfrm_lookup_with_ifid+0x576/0x1b40 net/xfrm/xfrm_policy.c:3231
- xfrm_lookup net/xfrm/xfrm_policy.c:3330 [inline]
- xfrm_lookup_route+0x3c/0x1c0 net/xfrm/xfrm_policy.c:3341
- ip_route_output_ports include/net/route.h:213 [inline]
- igmpv3_newpack+0x2a7/0x1190 net/ipv4/igmp.c:402
- add_grhead+0x70/0x340 net/ipv4/igmp.c:473
- add_grec+0x1123/0x13e0 net/ipv4/igmp.c:607
- igmpv3_send_cr net/ipv4/igmp.c:744 [inline]
- igmp_ifc_timer_expire+0x93e/0x10b0 net/ipv4/igmp.c:843
- call_timer_fn+0x192/0x5e0 kernel/time/timer.c:1748
- expire_timers kernel/time/timer.c:1799 [inline]
- __run_timers kernel/time/timer.c:2374 [inline]
- __run_timer_base+0x652/0x8b0 kernel/time/timer.c:2386
- run_timer_base kernel/time/timer.c:2395 [inline]
- run_timer_softirq+0xb7/0x170 kernel/time/timer.c:2405
- handle_softirqs+0x225/0x840 kernel/softirq.c:622
- __do_softirq kernel/softirq.c:656 [inline]
- invoke_softirq kernel/softirq.c:496 [inline]
- __irq_exit_rcu+0xca/0x220 kernel/softirq.c:735
- irq_exit_rcu+0x9/0x30 kernel/softirq.c:752
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1062 [inline]
- sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1062
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:674
-RIP: 0010:console_flush_one_record arch/x86/include/asm/irqflags.h:-1 [inline]
-RIP: 0010:console_flush_all+0x7d2/0xaf0 kernel/printk/printk.c:3343
-Code: ff ff e8 71 2d 21 00 90 0f 0b 90 e9 9c fc ff ff e8 63 2d 21 00 e8 3e b0 29 0a 48 85 db 74 c0 e8 54 2d 21 00 fb 48 8b 5c 24 18 <48> 8b 44 24 28 42 80 3c 20 00 4d 8d 77 58 74 08 4c 89 f7 e8 e6 b9
-RSP: 0018:ffffc90002fe6840 EFLAGS: 00000283
-RAX: ffffffff81a544ec RBX: ffffc90002fe69a0 RCX: 0000000000080000
-RDX: ffffc9000db64000 RSI: 0000000000043066 RDI: 0000000000043067
-RBP: ffffc90002fe6950 R08: ffffffff905775f7 R09: 1ffffffff20aeebe
-R10: dffffc0000000000 R11: fffffbfff20aeebf R12: dffffc0000000000
-R13: 0000000000000001 R14: 0000000000000000 R15: ffffffff8f46ec20
- __console_flush_and_unlock kernel/printk/printk.c:3373 [inline]
- console_unlock+0xd1/0x1c0 kernel/printk/printk.c:3413
- vprintk_emit+0x485/0x560 kernel/printk/printk.c:2479
- _printk+0xdd/0x130 kernel/printk/printk.c:2504
- vlan_vid0_add net/8021q/vlan.c:347 [inline]
- vlan_device_event+0x13e6/0x1580 net/8021q/vlan.c:388
- notifier_call_chain+0x1a5/0x3d0 kernel/notifier.c:85
- call_netdevice_notifiers_extack net/core/dev.c:2291 [inline]
- call_netdevice_notifiers net/core/dev.c:2305 [inline]
- __dev_notify_flags+0x31e/0x510 net/core/dev.c:9798
- rtnl_configure_link+0x2f5/0x510 net/core/rtnetlink.c:3712
- rtnl_newlink_create+0x343/0x7b0 net/core/rtnetlink.c:3957
- __rtnl_newlink net/core/rtnetlink.c:4078 [inline]
- rtnl_newlink+0x166d/0x1c30 net/core/rtnetlink.c:4195
- rtnetlink_rcv_msg+0x802/0xc00 net/core/rtnetlink.c:7112
- netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
- netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
- netlink_unicast+0x7bb/0x940 net/netlink/af_netlink.c:1345
- netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
- sock_sendmsg_nosec+0x13a/0x180 net/socket.c:775
- __sock_sendmsg net/socket.c:790 [inline]
- ____sys_sendmsg+0x54e/0x850 net/socket.c:2684
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2738
- __sys_sendmsg net/socket.c:2770 [inline]
- __do_sys_sendmsg net/socket.c:2775 [inline]
- __se_sys_sendmsg net/socket.c:2773 [inline]
- __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2773
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7ff1f559de59
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ff1f37f6028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007ff1f5825fa0 RCX: 00007ff1f559de59
-RDX: 0000000000000000 RSI: 0000200000000080 RDI: 0000000000000006
-RBP: 00007ff1f5633e6f R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007ff1f5826038 R14: 00007ff1f5825fa0 R15: 00007ffdfbb2bc38
- </TASK>
-GRED: Unable to relocate VQ 0x0 after dequeue, screwing up backlog
-----------------
-Code disassembly (best guess), 1 bytes skipped:
-   0:	ff                   	ljmp   (bad)
-   1:	e8 71 2d 21 00       	call   0x212d77
-   6:	90                   	nop
-   7:	0f 0b                	ud2
-   9:	90                   	nop
-   a:	e9 9c fc ff ff       	jmp    0xfffffcab
-   f:	e8 63 2d 21 00       	call   0x212d77
-  14:	e8 3e b0 29 0a       	call   0xa29b057
-  19:	48 85 db             	test   %rbx,%rbx
-  1c:	74 c0                	je     0xffffffde
-  1e:	e8 54 2d 21 00       	call   0x212d77
-  23:	fb                   	sti
-  24:	48 8b 5c 24 18       	mov    0x18(%rsp),%rbx
-* 29:	48 8b 44 24 28       	mov    0x28(%rsp),%rax <-- trapping instruction
-  2e:	42 80 3c 20 00       	cmpb   $0x0,(%rax,%r12,1)
-  33:	4d 8d 77 58          	lea    0x58(%r15),%r14
-  37:	74 08                	je     0x41
-  39:	4c 89 f7             	mov    %r14,%rdi
-  3c:	e8                   	.byte 0xe8
-  3d:	e6 b9                	out    %al,$0xb9
-
-
+Closes: https://lore.kernel.org/netdev/6a8ed434.1d9ded08.62e62.00a9.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ include/linux/igmp.h |   7 +-
+ net/ipv4/igmp.c      | 204 +++++++++++++++++++++++++++----------------
+ 2 files changed, 132 insertions(+), 79 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/include/linux/igmp.h b/include/linux/igmp.h
+index 3a2d35a9f3078f12213f49cba90bd59582c134fc..a0cf0398519fd7fc8b05bc625a7f099a1ed6b82a 100644
+--- a/include/linux/igmp.h
++++ b/include/linux/igmp.h
+@@ -57,20 +57,21 @@ struct ip_mc_socklist {
+ };
+ 
+ struct ip_sf_list {
+-	struct ip_sf_list	*sf_next;
++	struct ip_sf_list __rcu	*sf_next;
+ 	unsigned long		sf_count[2];	/* include/exclude counts */
+ 	__be32			sf_inaddr;
+ 	unsigned char		sf_gsresp;	/* include in g & s response? */
+ 	unsigned char		sf_oldin;	/* change state */
+ 	unsigned char		sf_crcount;	/* retrans. left to send */
++	struct rcu_head		rcu;
+ };
+ 
+ struct ip_mc_list {
+ 	struct in_device	*interface;
+ 	__be32			multiaddr;
+ 	unsigned int		sfmode;
+-	struct ip_sf_list	*sources;
+-	struct ip_sf_list	*tomb;
++	struct ip_sf_list __rcu	*sources;
++	struct ip_sf_list __rcu	*tomb;
+ 	unsigned long		sfcount[2];
+ 	union {
+ 		struct ip_mc_list *next;
+diff --git a/net/ipv4/igmp.c b/net/ipv4/igmp.c
+index b80b8a92f46e5f3dc4b9f906bec0a4035e4fbf70..5516329c9caa5f6f3ec7a2f633bda5d1a16eb4ec 100644
+--- a/net/ipv4/igmp.c
++++ b/net/ipv4/igmp.c
+@@ -188,6 +188,10 @@ static void ip_ma_put(struct ip_mc_list *im)
+ 	}
+ }
+ 
++#define pmc_dereference(e, pmc) \
++	rcu_dereference_protected(e, lockdep_is_held(&(pmc)->lock) || \
++				     lockdep_is_held(&(pmc)->interface->mc_tomb_lock))
++
+ #define for_each_pmc_rcu(in_dev, pmc)				\
+ 	for (pmc = rcu_dereference(in_dev->mc_list);		\
+ 	     pmc != NULL;					\
+@@ -198,13 +202,28 @@ static void ip_ma_put(struct ip_mc_list *im)
+ 	     pmc != NULL;					\
+ 	     pmc = rtnl_dereference(pmc->next_rcu))
+ 
++#define for_each_psf_mclock(pmc, psf)				\
++	for (psf = pmc_dereference((pmc)->sources, pmc);	\
++	     psf;						\
++	     psf = pmc_dereference(psf->sf_next, pmc))
++
++#define for_each_psf_rcu(im, psf)				\
++	for (psf = rcu_dereference((im)->sources);		\
++	     psf;						\
++	     psf = rcu_dereference(psf->sf_next))
++
++#define for_each_psf_tomb(pmc, psf)				\
++	for (psf = pmc_dereference((pmc)->tomb, pmc);		\
++	     psf;						\
++	     psf = pmc_dereference(psf->sf_next, pmc))
++
+ static void ip_sf_list_clear_all(struct ip_sf_list *psf)
+ {
+ 	struct ip_sf_list *next;
+ 
+ 	while (psf) {
+-		next = psf->sf_next;
+-		kfree(psf);
++		next = rcu_dereference_protected(psf->sf_next, 1);
++		kfree_rcu(psf, rcu);
+ 		psf = next;
+ 	}
+ }
+@@ -349,7 +368,7 @@ igmp_scount(struct ip_mc_list *pmc, int type, int gdeleted, int sdeleted)
+ 	struct ip_sf_list *psf;
+ 	int scount = 0;
+ 
+-	for (psf = pmc->sources; psf; psf = psf->sf_next) {
++	for_each_psf_mclock(pmc, psf) {
+ 		if (!is_in(pmc, psf, type, gdeleted, sdeleted))
+ 			continue;
+ 		scount++;
+@@ -494,7 +513,8 @@ static struct sk_buff *add_grec(struct sk_buff *skb, struct ip_mc_list *pmc,
+ 	struct net *net = dev_net(dev);
+ 	struct igmpv3_report *pih;
+ 	struct igmpv3_grec *pgr = NULL;
+-	struct ip_sf_list *psf, *psf_next, *psf_prev, **psf_list;
++	struct ip_sf_list *psf, *psf_next, *psf_prev;
++	struct ip_sf_list __rcu **psf_list;
+ 	int scount, stotal, first, isquery, truncate;
+ 	unsigned int mtu;
+ 
+@@ -517,7 +537,7 @@ static struct sk_buff *add_grec(struct sk_buff *skb, struct ip_mc_list *pmc,
+ 
+ 	psf_list = sdeleted ? &pmc->tomb : &pmc->sources;
+ 
+-	if (!*psf_list)
++	if (!rcu_access_pointer(*psf_list))
+ 		goto empty_source;
+ 
+ 	pih = skb ? igmpv3_report_hdr(skb) : NULL;
+@@ -533,10 +553,12 @@ static struct sk_buff *add_grec(struct sk_buff *skb, struct ip_mc_list *pmc,
+ 	}
+ 	first = 1;
+ 	psf_prev = NULL;
+-	for (psf = *psf_list; psf; psf = psf_next) {
++	for (psf = pmc_dereference(*psf_list, pmc);
++	     psf;
++	     psf = psf_next) {
+ 		__be32 *psrc;
+ 
+-		psf_next = psf->sf_next;
++		psf_next = pmc_dereference(psf->sf_next, pmc);
+ 
+ 		if (!is_in(pmc, psf, type, gdeleted, sdeleted)) {
+ 			psf_prev = psf;
+@@ -583,10 +605,12 @@ static struct sk_buff *add_grec(struct sk_buff *skb, struct ip_mc_list *pmc,
+ 			psf->sf_crcount--;
+ 			if ((sdeleted || gdeleted) && psf->sf_crcount == 0) {
+ 				if (psf_prev)
+-					psf_prev->sf_next = psf->sf_next;
++					rcu_assign_pointer(psf_prev->sf_next,
++							   psf_next);
+ 				else
+-					*psf_list = psf->sf_next;
+-				kfree(psf);
++					rcu_assign_pointer(*psf_list,
++							   psf_next);
++				kfree_rcu(psf, rcu);
+ 				continue;
+ 			}
+ 		}
+@@ -655,28 +679,29 @@ static int igmpv3_send_report(struct in_device *in_dev, struct ip_mc_list *pmc)
+ /*
+  * remove zero-count source records from a source filter list
+  */
+-static void igmpv3_clear_zeros(struct ip_sf_list **ppsf)
++static void igmpv3_clear_zeros(struct ip_sf_list __rcu **ppsf)
+ {
+ 	struct ip_sf_list *psf_prev, *psf_next, *psf;
+ 
+ 	psf_prev = NULL;
+-	for (psf = *ppsf; psf; psf = psf_next) {
+-		psf_next = psf->sf_next;
++	for (psf = rcu_dereference_protected(*ppsf, 1); psf; psf = psf_next) {
++		psf_next = rcu_dereference_protected(psf->sf_next, 1);
+ 		if (psf->sf_crcount == 0) {
+ 			if (psf_prev)
+-				psf_prev->sf_next = psf->sf_next;
++				rcu_assign_pointer(psf_prev->sf_next, psf_next);
+ 			else
+-				*ppsf = psf->sf_next;
+-			kfree(psf);
+-		} else
++				rcu_assign_pointer(*ppsf, psf_next);
++			kfree_rcu(psf, rcu);
++		} else {
+ 			psf_prev = psf;
++		}
+ 	}
+ }
+ 
+ static void kfree_pmc(struct ip_mc_list *pmc)
+ {
+-	ip_sf_list_clear_all(pmc->sources);
+-	ip_sf_list_clear_all(pmc->tomb);
++	ip_sf_list_clear_all(rcu_dereference_protected(pmc->sources, 1));
++	ip_sf_list_clear_all(rcu_dereference_protected(pmc->tomb, 1));
+ 	kfree(pmc);
+ }
+ 
+@@ -710,7 +735,8 @@ static void igmpv3_send_cr(struct in_device *in_dev)
+ 				igmpv3_clear_zeros(&pmc->sources);
+ 			}
+ 		}
+-		if (pmc->crcount == 0 && !pmc->tomb && !pmc->sources) {
++		if (pmc->crcount == 0 && !rcu_access_pointer(pmc->tomb) &&
++		    !rcu_access_pointer(pmc->sources)) {
+ 			if (pmc_prev)
+ 				pmc_prev->next = pmc_next;
+ 			else
+@@ -896,7 +922,7 @@ static int igmp_xmarksources(struct ip_mc_list *pmc, int nsrcs, __be32 *srcs)
+ 	int i, scount;
+ 
+ 	scount = 0;
+-	for (psf = pmc->sources; psf; psf = psf->sf_next) {
++	for_each_psf_mclock(pmc, psf) {
+ 		if (scount == nsrcs)
+ 			break;
+ 		for (i = 0; i < nsrcs; i++) {
+@@ -927,7 +953,7 @@ static int igmp_marksources(struct ip_mc_list *pmc, int nsrcs, __be32 *srcs)
+ 
+ 	/* mark INCLUDE-mode sources */
+ 	scount = 0;
+-	for (psf = pmc->sources; psf; psf = psf->sf_next) {
++	for_each_psf_mclock(pmc, psf) {
+ 		if (scount == nsrcs)
+ 			break;
+ 		for (i = 0; i < nsrcs; i++)
+@@ -1228,11 +1254,12 @@ static void igmpv3_add_delrec(struct in_device *in_dev, struct ip_mc_list *im,
+ 	if (pmc->sfmode == MCAST_INCLUDE) {
+ 		struct ip_sf_list *psf;
+ 
++		for_each_psf_mclock(im, psf)
++			psf->sf_crcount = pmc->crcount;
+ 		pmc->tomb = im->tomb;
+ 		pmc->sources = im->sources;
+-		im->tomb = im->sources = NULL;
+-		for (psf = pmc->sources; psf; psf = psf->sf_next)
+-			psf->sf_crcount = pmc->crcount;
++		RCU_INIT_POINTER(im->tomb, NULL);
++		RCU_INIT_POINTER(im->sources, NULL);
+ 	}
+ 	spin_unlock_bh(&im->lock);
+ 
+@@ -1271,9 +1298,18 @@ static void igmpv3_del_delrec(struct in_device *in_dev, struct ip_mc_list *im)
+ 	if (pmc) {
+ 		im->interface = pmc->interface;
+ 		if (im->sfmode == MCAST_INCLUDE) {
+-			swap(im->tomb, pmc->tomb);
+-			swap(im->sources, pmc->sources);
+-			for (psf = im->sources; psf; psf = psf->sf_next)
++			struct ip_sf_list *sources, *tomb;
++
++			tomb = rcu_replace_pointer(im->tomb,
++						   rcu_dereference_protected(pmc->tomb, 1),
++						   lockdep_is_held(&im->lock));
++			rcu_assign_pointer(pmc->tomb, tomb);
++
++			sources = rcu_replace_pointer(im->sources,
++						      rcu_dereference_protected(pmc->sources, 1),
++						      lockdep_is_held(&im->lock));
++			rcu_assign_pointer(pmc->sources, sources);
++			for_each_psf_mclock(im, psf)
+ 				psf->sf_crcount = in_dev->mr_qrv ?:
+ 					READ_ONCE(net->ipv4.sysctl_igmp_qrv);
+ 		} else {
+@@ -1310,8 +1346,8 @@ static void igmpv3_clear_delrec(struct in_device *in_dev)
+ 		struct ip_sf_list *psf;
+ 
+ 		spin_lock_bh(&pmc->lock);
+-		psf = pmc->tomb;
+-		pmc->tomb = NULL;
++		psf = pmc_dereference(pmc->tomb, pmc);
++		RCU_INIT_POINTER(pmc->tomb, NULL);
+ 		spin_unlock_bh(&pmc->lock);
+ 		ip_sf_list_clear_all(psf);
+ 	}
+@@ -1990,7 +2026,7 @@ static int ip_mc_del1_src(struct ip_mc_list *pmc, int sfmode,
+ 	int rv = 0;
+ 
+ 	psf_prev = NULL;
+-	for (psf = pmc->sources; psf; psf = psf->sf_next) {
++	for_each_psf_mclock(pmc, psf) {
+ 		if (psf->sf_inaddr == *psfsrc)
+ 			break;
+ 		psf_prev = psf;
+@@ -1999,7 +2035,7 @@ static int ip_mc_del1_src(struct ip_mc_list *pmc, int sfmode,
+ 		/* source filter not found, or count wrong =>  bug */
+ 		return -ESRCH;
+ 	}
+-	psf->sf_count[sfmode]--;
++	WRITE_ONCE(psf->sf_count[sfmode], psf->sf_count[sfmode] - 1);
+ 	if (psf->sf_count[sfmode] == 0) {
+ 		ip_rt_multicast_event(pmc->interface);
+ 	}
+@@ -2011,19 +2047,28 @@ static int ip_mc_del1_src(struct ip_mc_list *pmc, int sfmode,
+ 
+ 		/* no more filters for this source */
+ 		if (psf_prev)
+-			psf_prev->sf_next = psf->sf_next;
++			rcu_assign_pointer(psf_prev->sf_next,
++					   pmc_dereference(psf->sf_next, pmc));
+ 		else
+-			pmc->sources = psf->sf_next;
++			rcu_assign_pointer(pmc->sources,
++					   pmc_dereference(psf->sf_next, pmc));
+ #ifdef CONFIG_IP_MULTICAST
+ 		if (psf->sf_oldin &&
+ 		    !IGMP_V1_SEEN(in_dev) && !IGMP_V2_SEEN(in_dev)) {
+-			psf->sf_crcount = in_dev->mr_qrv ?: READ_ONCE(net->ipv4.sysctl_igmp_qrv);
+-			psf->sf_next = pmc->tomb;
+-			pmc->tomb = psf;
+-			rv = 1;
+-		} else
++			struct ip_sf_list *dpsf = kmalloc_obj(*dpsf, GFP_ATOMIC);
++
++			if (dpsf) {
++				*dpsf = *psf;
++				dpsf->sf_crcount = in_dev->mr_qrv ?:
++					READ_ONCE(net->ipv4.sysctl_igmp_qrv);
++				rcu_assign_pointer(dpsf->sf_next,
++						   pmc_dereference(pmc->tomb, pmc));
++				rcu_assign_pointer(pmc->tomb, dpsf);
++				rv = 1;
++			}
++		}
+ #endif
+-			kfree(psf);
++		kfree_rcu(psf, rcu);
+ 	}
+ 	return rv;
+ }
+@@ -2060,7 +2105,7 @@ static int ip_mc_del_src(struct in_device *in_dev, __be32 *pmca, int sfmode,
+ 		err = -EINVAL;
+ 		if (!pmc->sfcount[sfmode])
+ 			goto out_unlock;
+-		pmc->sfcount[sfmode]--;
++		WRITE_ONCE(pmc->sfcount[sfmode], pmc->sfcount[sfmode] - 1);
+ 	}
+ 	err = 0;
+ 	for (i = 0; i < sfcount; i++) {
+@@ -2083,7 +2128,7 @@ static int ip_mc_del_src(struct in_device *in_dev, __be32 *pmca, int sfmode,
+ #ifdef CONFIG_IP_MULTICAST
+ 		pmc->crcount = in_dev->mr_qrv ?: READ_ONCE(net->ipv4.sysctl_igmp_qrv);
+ 		WRITE_ONCE(in_dev->mr_ifc_count, pmc->crcount);
+-		for (psf = pmc->sources; psf; psf = psf->sf_next)
++		for_each_psf_mclock(pmc, psf)
+ 			psf->sf_crcount = 0;
+ 		igmp_ifc_event(pmc->interface);
+ 	} else if (sf_setstate(pmc) || changerec) {
+@@ -2104,7 +2149,7 @@ static int ip_mc_add1_src(struct ip_mc_list *pmc, int sfmode,
+ 	struct ip_sf_list *psf, *psf_prev;
+ 
+ 	psf_prev = NULL;
+-	for (psf = pmc->sources; psf; psf = psf->sf_next) {
++	for_each_psf_mclock(pmc, psf) {
+ 		if (psf->sf_inaddr == *psfsrc)
+ 			break;
+ 		psf_prev = psf;
+@@ -2114,12 +2159,12 @@ static int ip_mc_add1_src(struct ip_mc_list *pmc, int sfmode,
+ 		if (!psf)
+ 			return -ENOBUFS;
+ 		psf->sf_inaddr = *psfsrc;
+-		if (psf_prev) {
+-			psf_prev->sf_next = psf;
+-		} else
+-			pmc->sources = psf;
++		if (psf_prev)
++			rcu_assign_pointer(psf_prev->sf_next, psf);
++		else
++			rcu_assign_pointer(pmc->sources, psf);
+ 	}
+-	psf->sf_count[sfmode]++;
++	WRITE_ONCE(psf->sf_count[sfmode], psf->sf_count[sfmode] + 1);
+ 	if (psf->sf_count[sfmode] == 1) {
+ 		ip_rt_multicast_event(pmc->interface);
+ 	}
+@@ -2132,13 +2177,15 @@ static void sf_markstate(struct ip_mc_list *pmc)
+ 	struct ip_sf_list *psf;
+ 	int mca_xcount = pmc->sfcount[MCAST_EXCLUDE];
+ 
+-	for (psf = pmc->sources; psf; psf = psf->sf_next)
++	for_each_psf_mclock(pmc, psf) {
+ 		if (pmc->sfcount[MCAST_EXCLUDE]) {
+ 			psf->sf_oldin = mca_xcount ==
+ 				psf->sf_count[MCAST_EXCLUDE] &&
+ 				!psf->sf_count[MCAST_INCLUDE];
+-		} else
++		} else {
+ 			psf->sf_oldin = psf->sf_count[MCAST_INCLUDE] != 0;
++		}
++	}
+ }
+ 
+ static int sf_setstate(struct ip_mc_list *pmc)
+@@ -2149,27 +2196,31 @@ static int sf_setstate(struct ip_mc_list *pmc)
+ 	int new_in, rv;
+ 
+ 	rv = 0;
+-	for (psf = pmc->sources; psf; psf = psf->sf_next) {
++	for_each_psf_mclock(pmc, psf) {
+ 		if (pmc->sfcount[MCAST_EXCLUDE]) {
+ 			new_in = mca_xcount == psf->sf_count[MCAST_EXCLUDE] &&
+ 				!psf->sf_count[MCAST_INCLUDE];
+-		} else
++		} else {
+ 			new_in = psf->sf_count[MCAST_INCLUDE] != 0;
++		}
+ 		if (new_in) {
+ 			if (!psf->sf_oldin) {
+ 				struct ip_sf_list *prev = NULL;
+ 
+-				for (dpsf = pmc->tomb; dpsf; dpsf = dpsf->sf_next) {
++				for_each_psf_tomb(pmc, dpsf) {
+ 					if (dpsf->sf_inaddr == psf->sf_inaddr)
+ 						break;
+ 					prev = dpsf;
+ 				}
+ 				if (dpsf) {
++					struct ip_sf_list *dpsf_next;
++
++					dpsf_next = pmc_dereference(dpsf->sf_next, pmc);
+ 					if (prev)
+-						prev->sf_next = dpsf->sf_next;
++						rcu_assign_pointer(prev->sf_next, dpsf_next);
+ 					else
+-						pmc->tomb = dpsf->sf_next;
+-					kfree(dpsf);
++						rcu_assign_pointer(pmc->tomb, dpsf_next);
++					kfree_rcu(dpsf, rcu);
+ 				}
+ 				psf->sf_crcount = qrv;
+ 				rv++;
+@@ -2181,17 +2232,19 @@ static int sf_setstate(struct ip_mc_list *pmc)
+ 			 * add or update "delete" records if an active filter
+ 			 * is now inactive
+ 			 */
+-			for (dpsf = pmc->tomb; dpsf; dpsf = dpsf->sf_next)
++			for_each_psf_tomb(pmc, dpsf) {
+ 				if (dpsf->sf_inaddr == psf->sf_inaddr)
+ 					break;
++			}
+ 			if (!dpsf) {
+ 				dpsf = kmalloc_obj(*dpsf, GFP_ATOMIC);
+ 				if (!dpsf)
+ 					continue;
+ 				*dpsf = *psf;
+ 				/* pmc->lock held by callers */
+-				dpsf->sf_next = pmc->tomb;
+-				pmc->tomb = dpsf;
++				rcu_assign_pointer(dpsf->sf_next,
++						   pmc_dereference(pmc->tomb, pmc));
++				rcu_assign_pointer(pmc->tomb, dpsf);
+ 			}
+ 			dpsf->sf_crcount = qrv;
+ 			rv++;
+@@ -2231,7 +2284,7 @@ static int ip_mc_add_src(struct in_device *in_dev, __be32 *pmca, int sfmode,
+ #endif
+ 	isexclude = pmc->sfmode == MCAST_EXCLUDE;
+ 	if (!delta)
+-		pmc->sfcount[sfmode]++;
++		WRITE_ONCE(pmc->sfcount[sfmode], pmc->sfcount[sfmode] + 1);
+ 	err = 0;
+ 	for (i = 0; i < sfcount; i++) {
+ 		err = ip_mc_add1_src(pmc, sfmode, &psfsrc[i]);
+@@ -2242,7 +2295,7 @@ static int ip_mc_add_src(struct in_device *in_dev, __be32 *pmca, int sfmode,
+ 		int j;
+ 
+ 		if (!delta)
+-			pmc->sfcount[sfmode]--;
++			WRITE_ONCE(pmc->sfcount[sfmode], pmc->sfcount[sfmode] - 1);
+ 		for (j = 0; j < i; j++)
+ 			(void) ip_mc_del1_src(pmc, sfmode, &psfsrc[j]);
+ 	} else if (isexclude != (pmc->sfcount[MCAST_EXCLUDE] != 0)) {
+@@ -2262,7 +2315,7 @@ static int ip_mc_add_src(struct in_device *in_dev, __be32 *pmca, int sfmode,
+ 
+ 		pmc->crcount = in_dev->mr_qrv ?: READ_ONCE(net->ipv4.sysctl_igmp_qrv);
+ 		WRITE_ONCE(in_dev->mr_ifc_count, pmc->crcount);
+-		for (psf = pmc->sources; psf; psf = psf->sf_next)
++		for_each_psf_mclock(pmc, psf)
+ 			psf->sf_crcount = 0;
+ 		igmp_ifc_event(in_dev);
+ 	} else if (sf_setstate(pmc)) {
+@@ -2278,13 +2331,13 @@ static void ip_mc_clear_src(struct ip_mc_list *pmc)
+ 	struct ip_sf_list *tomb, *sources;
+ 
+ 	spin_lock_bh(&pmc->lock);
+-	tomb = pmc->tomb;
+-	pmc->tomb = NULL;
+-	sources = pmc->sources;
+-	pmc->sources = NULL;
++	tomb = pmc_dereference(pmc->tomb, pmc);
++	RCU_INIT_POINTER(pmc->tomb, NULL);
++	sources = pmc_dereference(pmc->sources, pmc);
++	RCU_INIT_POINTER(pmc->sources, NULL);
+ 	pmc->sfmode = MCAST_EXCLUDE;
+-	pmc->sfcount[MCAST_INCLUDE] = 0;
+-	pmc->sfcount[MCAST_EXCLUDE] = 1;
++	WRITE_ONCE(pmc->sfcount[MCAST_INCLUDE], 0);
++	WRITE_ONCE(pmc->sfcount[MCAST_EXCLUDE], 1);
+ 	spin_unlock_bh(&pmc->lock);
+ 
+ 	ip_sf_list_clear_all(tomb);
+@@ -2866,20 +2919,19 @@ int ip_check_mc_rcu(struct in_device *in_dev, __be32 mc_addr, __be32 src_addr, u
+ 		rv = 1;
+ 	} else if (im) {
+ 		if (src_addr) {
+-			spin_lock_bh(&im->lock);
+-			for (psf = im->sources; psf; psf = psf->sf_next) {
++			for_each_psf_rcu(im, psf) {
+ 				if (psf->sf_inaddr == src_addr)
+ 					break;
+ 			}
+ 			if (psf)
+-				rv = psf->sf_count[MCAST_INCLUDE] ||
+-					psf->sf_count[MCAST_EXCLUDE] !=
+-					im->sfcount[MCAST_EXCLUDE];
++				rv = READ_ONCE(psf->sf_count[MCAST_INCLUDE]) ||
++					READ_ONCE(psf->sf_count[MCAST_EXCLUDE]) !=
++					READ_ONCE(im->sfcount[MCAST_EXCLUDE]);
+ 			else
+-				rv = im->sfcount[MCAST_EXCLUDE] != 0;
+-			spin_unlock_bh(&im->lock);
+-		} else
++				rv = READ_ONCE(im->sfcount[MCAST_EXCLUDE]) != 0;
++		} else {
+ 			rv = 1; /* unspecified source; tentatively allow */
++		}
+ 	}
+ 	return rv;
+ }
+-- 
+2.55.0.860.g4b6b3295ed-goog
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
