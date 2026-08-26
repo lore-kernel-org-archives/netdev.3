@@ -1,267 +1,179 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011056.outbound.protection.outlook.com [52.101.52.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0285643E08D
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 14:37:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787755059; cv=none; b=L5kWxPQOGe9rjkGztZPPD8QlMuB+VRWJujHxmi149Rv3WNC/vopAj4jSPKwxMAU1SIW/GJGCazUXGC3Hx0CUKkdhMD5hZ96Czm0bGBbysRDY0Nhgmr3VF/SblqQwsBGiK335csHeoHL5NvVZCONYSEdXahGZvoAjdqUNoeYVZhY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787755059; c=relaxed/simple;
-	bh=TC0OkRhjUUdFeNQ+mtm8uAHBZtV7OvjOvchH+vTv8fM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=csenEVo+yhKx9WLO5D7wbNgmKY79R5t49nYRMnxJ53p7oPmQ9fZPLYOIcK22SJsmcjTIYRuEWlW6NXDltkVkXC4osV3ZzafhX+1b4xomuILk66k5AkV+oazC23Pcei0mg669HTUOGCGHEaPaX3ZibAlrP9bhDX19wyxYz8Scd+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DF/ofe9g; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6E04398EB
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 14:38:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.56
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787755139; cv=fail; b=VNuY/UpBeXBfovkZ/s18307blkz9Wq+2b1Pxc1dB3gULU2FjwLZ3qj/CGzN6qtNmDDvlw9OPOfD0ihUF8m3E0t0KXrHSWq7Ni9NNop1f0EkK23lVpKHxJakbmX21x0Jk9JDVYDH6wP31XaGl1rvDx4gFRKcUW0BVjvl65aVSsvk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787755139; c=relaxed/simple;
+	bh=kRtfp3scK7Kq0fssESP21guaBzyf0SCPxMPjfWOxgYI=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=NpCHnJvaXJZkYDAMFYXiNJLOMxRsXaD6jgV5cOnVNrEoxY1y942gBfUftKVjfZXV1s6XRyipKX1RT8U7ARMt1y920yTtYQqjIO344cPj8dQEx9e2hoZuH0Ot/JZQ/095A2Kp5jLc78RiLhsJzdCYRsBxNO2petSzO51KzgyOYJE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=YLnw4uy4; arc=fail smtp.client-ip=52.101.52.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DF/ofe9g"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787755057; x=1819291057;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=TC0OkRhjUUdFeNQ+mtm8uAHBZtV7OvjOvchH+vTv8fM=;
-  b=DF/ofe9geAYf4/UtVJ35jFuR7UfvE+JFdp4Ju3PPqtVPfJRlt6zYye3x
-   rcmeFN1oCUmhhNhQeRfKFlUaZXN/YYO85eWzeDqx5ChQVM5SHwHvJiKHT
-   D3BnRmH/dTaNYkTtxfKI8LFYf1poUhdKQbT7D/blm0hoD6RsrIQarx1SK
-   ekiY4cpfcyIc+HNscwe0IQ0G7WcwsBMMr0FSThsKntHqSqLCThpQ7JC6r
-   wLYQNtvdorIzxwJEM7qWBsGM6A1kMBkWZU2D7sUNteterOZuDSJgKs6gu
-   D7QZTf5HWG+FCNWFoh7VPe6RpPGvHbdDLuWFKBxO/C7kC9dB5ToQi0ZQp
-   Q==;
-X-CSE-ConnectionGUID: pNVGq2YLReujhxFsyq546Q==
-X-CSE-MsgGUID: k3hsKHyESsiKEcl9sazDsQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="99398626"
-X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
-   d="scan'208";a="99398626"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 07:37:37 -0700
-X-CSE-ConnectionGUID: w4u+Dbg+Si+4jd/oNNqvmg==
-X-CSE-MsgGUID: PR2O1Gc8TeC4k/eU3TvEJg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
-   d="scan'208";a="291117041"
-Received: from linux.intel.com ([10.54.29.200])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 07:37:36 -0700
-Received: from [10.102.88.131] (soc-5CG4396XFD.clients.intel.com [10.102.88.131])
-	by linux.intel.com (Postfix) with ESMTP id 6F5D020BF394;
-	Wed, 26 Aug 2026 07:37:35 -0700 (PDT)
-Message-ID: <b164ae67-2874-43ed-aa32-66ca42ae90cc@linux.intel.com>
-Date: Wed, 26 Aug 2026 16:37:34 +0200
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="YLnw4uy4"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZuHsB4/O/J5LaZvxhW5JKe3M+lflM9SSuZnMRozGkyPxVq5Q/xqptbQtU0qv5Ise+LkGhSHl+MBP8YEfrR+/KfgLBfmxy17LwEhonTNz3sxepWEo9HSzTyBJM23PjVSsG4NNaduqSNx0Q8rwt+J9MqWs7YjWJG21ebv1g1zt37AFkC9iKFhfqf8y/NRdcN+Cp6QPZ0a6vFRJgF6lcZqN8rUssySSxnNuuVeoZ8Wicb4y3jJi6bbO4sVvNCtvRDyMVqvl70e+o2rsx5QyDPBWAum6aKcOiPWtaSMvcbPd5bTaY+VQNR0rH6THMkUy8Dgo0eKnNVkacQgiIts+OxNmWg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QSgrNABNc2q8SV8P+aURQ4iIOCDrEvpLjwX2mckq0O8=;
+ b=H7KhKlHmamJYB/5Cr20Nw+Gr5YhC2pBv1/JpOcieKrVp8g1PlaJhzvk4kzMZXkw9EbiUpHKGEkTSCCTDVxnBfcXFfgtttR5YBpYvv3CeOwz0A+RzhjC352TcPy0eoS01OyS0HsP2nrH2zCM5vjuxQKbbaA2Wy+PR932nj814GVl7yxCYA7fJEWfHpx3t8EHMwe57zrYs/fcxRRBW5xQaiojhwYRkKn90G+8cxykwnPmZlXKrSGGemVj0Pu6kfxb7IRvfwtfs9Mmi/yMEtWJLjTgdXpcEmtAqoT9rWYCuN4G0dbDZGEF1oNrbEXI0qp0EjgiKFUn7FhQYNyz8oV9T2Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QSgrNABNc2q8SV8P+aURQ4iIOCDrEvpLjwX2mckq0O8=;
+ b=YLnw4uy4lhL9QIx5vCh+uAM9k5DTDVPTlPvh9KiZF2sGS51gmeptnRSlnp+lH/XZe580ieOP02G6tUPG+6UHdqf0uR3mVvw3MOsCdu76AE1HMsGHY/u5jl9msuNeqmm7J+4zy9vXovrwlDKu4BkoRisV5GWzbSFHifHym0OamOVMA4r19Ok5mTZXNG76H9pQM5WPRUFFOcnRwyzvBztPXP+G1LjB7TSKzMWdvLHg5MrHcUgB61lthpin0RXc8Vvp7Csteyh/XByiNTzxHfDrOGZX8IHiGuCB7qLHm4Qy9ixcI91IsZyxc319tBfkVfXpOfrmwyiWFBjtSUsCvjA7Cg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
+ by SA3PR12MB8809.namprd12.prod.outlook.com (2603:10b6:806:31f::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.7; Wed, 26 Aug
+ 2026 14:38:54 +0000
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2%5]) with mapi id 15.21.0360.006; Wed, 26 Aug 2026
+ 14:38:54 +0000
+From: Ido Schimmel <idosch@nvidia.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	dsahern@kernel.org,
+	horms@kernel.org,
+	willemdebruijn.kernel@gmail.com,
+	aksecurity@gmail.com,
+	noam.caspi@mail.huji.ac.il,
+	Ido Schimmel <idosch@nvidia.com>
+Subject: [PATCH net 0/4] Mitigate a side channel in routing exception caches
+Date: Wed, 26 Aug 2026 17:37:31 +0300
+Message-ID: <20260826143735.1819315-1-idosch@nvidia.com>
+X-Mailer: git-send-email 2.55.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: FR2P281CA0137.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:9e::12) To SA3PR12MB7901.namprd12.prod.outlook.com
+ (2603:10b6:806:306::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-net v4] ixgbevf: fix link speed reporting for Hyper-V
- E610 VFs
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org, Marcin Szycik <marcin.szycik@linux.intel.com>
-References: <20260824110834.2364407-1-tomasz.lichwala@linux.intel.com>
-Content-Language: pl
-From: Tomasz Lichwala <tomasz.lichwala@linux.intel.com>
-In-Reply-To: <20260824110834.2364407-1-tomasz.lichwala@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|SA3PR12MB8809:EE_
+X-MS-Office365-Filtering-Correlation-Id: 337d92d6-a8f1-460f-dc91-08df037fc08e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|23010399003|1800799024|10067099003|56012099006|11063799006|6133799003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	NRtmsVdu2ci6fsZkT6ZpDuUgdv0XOgvDM7KZHkYUPEA9E3skq9gBobVXIMPJZdJJXr4i6klPhEJPjRoNyA0bWGhbt5UWd4j/4Z9Q5VjZeFwJ7S8rraziIyZguqhQ6tXcKOWyzpK8b2nw9Yo1RqWCKbsA0u5L+H7XAuPFLy44PmqZcrJe4SV93yDKYjkXB1EBNNdv6cWlxO9a0UTZGszIxoCvlZZqofi50S9NS4WfXdyv6NSxSrk54+MUuEwYkVahCfqfX6DVt+mf2OC0DkcU1pjUxYyx1WIa1aXx9NSjcI/v8iiAsouW4OPyr9Zi+snaidcQwc6nbz3Xx9VmKto5yydGXEPG0mNcLW3lOOE+yhpIzqUrqGLFv5kcxPn8+Zl0guFk9n6ozS0EY7J+1TEXkMEvovV0wGHSkpPdBD7tLvbYsxkYcfWJfRtNZBU3Rzby66ddWx1LCpVUHLElTFgvws8Lr1Xu8ETvAYU7rkfdhhfFklMBkhnMxwO6sE1VkcgZO2W/zmvWGaqEGFBDjDz0HfDaUfgONaowV2RpU7utcFD6h3KsagZ67RuTD4ly+IyFAi8ih6uJo1qv6w99ccYOxyEwTGYGTr0gK/eSune3/lfll4rUsYAlEvauUseguP0wTScqCgJTjr0kDYZcQui+IZ6qn+V2wc4CUz7aOMo8928=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(23010399003)(1800799024)(10067099003)(56012099006)(11063799006)(6133799003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?jvw5ZhmOtlndPVaoaV16paInU9/Zsr0pgISsR1YgSgKjjk19dPHlJ6Ugp0TG?=
+ =?us-ascii?Q?oCQR6zq0HvPY5Yr/m8UyjY5YuyInzd8Hw00sDGfJce6vFTo7+17KsDb0cJGl?=
+ =?us-ascii?Q?+DWNCVk1731AX2Eld8jS3BZ1Maf5vzt23ZCV+XARU3QriO8BoTLu76QWlFWJ?=
+ =?us-ascii?Q?7a4ofW1oyVpdAJ4bEWcvBbyzJEWfVwzjNY5I0LQrNTyJDOQha1kmh26P+yUq?=
+ =?us-ascii?Q?lCU5/wDHpcHyiF2ZgQgGEUtQkky4HFIHRJJi/EbCp6PfdRazKT0J7ow4mxgB?=
+ =?us-ascii?Q?wf6mXpWrXTmnrev80vmpXfoPI+KqS5EUxX/eWycEaU5kFxiwSawWO3leZFh3?=
+ =?us-ascii?Q?096zsSoWDhHYblszMzP8bBq7CCjU3K+e/L55YCcl/ckoW1Ac+UadcAbvTljG?=
+ =?us-ascii?Q?ev8xXQPuQRbV0C1eIACCRDufdofjAxBWarQe5vNe271Osqlu/RiDV0xnQ8G2?=
+ =?us-ascii?Q?BcwNe765r4IobLAWZBkuk7OhFc8KjBEJarSBhMVFU0eDosqcFY+F3mp8Wdwi?=
+ =?us-ascii?Q?2CpuqUnk4H62PRDopamhA95hiIg0UWwIB9ALvBudaP6n6FRzZTcc9GU5fUwv?=
+ =?us-ascii?Q?sYGcVftlpB2AJPmPEoom1ckNSajUxkZFpJgn4EKV0kuvQBls9VC4SB8D23t3?=
+ =?us-ascii?Q?4EUA+fnWMr4GsyAq83swnIk6KY4ibb5cUB5ruBi+mbZXYA+Z6wA/kjQcUad4?=
+ =?us-ascii?Q?dzaulDy+i+6EjdLh/WLMfpySzJHlImxQl/euhgArLF0K8GO+yqiwx2kRk7Gn?=
+ =?us-ascii?Q?h9g4fNL87H9LQsDGwizcMq75z6bpV8He8rNI9DvLVZ+w9UkAXp6xAouFXmDM?=
+ =?us-ascii?Q?f8pQlG9TIkAcdeUyQeySfXC1g1DthIIFQ9ZjAuZ1KRdDMGCvEvNX8ho6m2yq?=
+ =?us-ascii?Q?ZdRF7TDg+yS7dmP6R9NkyZA+04FmHGhQaEEWTQJuPiwwClfELQPiT/1jQkuK?=
+ =?us-ascii?Q?mxENAS2SB2eTK/NHKbZ3o4ABI4yRpGo2L524CtsyRvJlYNqHHB5ECP7ItTsU?=
+ =?us-ascii?Q?CvlCcU8LHcwhsPlI2o9RIN01eZoJUO8YtLrTMfmNni0SmsIWUpnZr+Ik/+F6?=
+ =?us-ascii?Q?DbCAxv6hhW7YSIOKS5AQST7Dw0ryUt71tOLdJ+2Afg233E/ncb92OrqZun3M?=
+ =?us-ascii?Q?lD0HlUHy+NXhefKQebh9L1+5u7LM6znaEXMgOmXFENdFob8Bidi5eN1TN1ww?=
+ =?us-ascii?Q?j09iEagNZEsrFod50DcHAtoN0diqqYXxPSVYyYEsxKdcz0o+rrs9gDaU3L4y?=
+ =?us-ascii?Q?XHCmyTw3Cy070diy2DfUxcb+kSs7HlXx0DPQU1fyC0vevDucEkE5V2h03+VU?=
+ =?us-ascii?Q?ux8p8kpDRmr+VZb0HJXq7RqNJLwzkvF7PVHWX2UYkj8UBRmJKWQaMXoTpFky?=
+ =?us-ascii?Q?YK4s8G5V3+maldg95IqBL01o4q5Ie44rmFLZylT4hPOt037B8re04HUKeQCG?=
+ =?us-ascii?Q?KHcGOwYsvi5SE4P7nMQ2uXXPPdloWkAk24ZNVwu8C4oMTxb74qMgNNmu9EVV?=
+ =?us-ascii?Q?V+W1m+khU4/AGsDClj0hLyF3guUVSCE3XPaRVN/V+S3QWCxRDr4Vg4o8daB4?=
+ =?us-ascii?Q?p2a/JIlN94eeeyqM33/yPTrglE9NJMw0jbMBSlV+kd8jtQ79c3GGKdurEcL/?=
+ =?us-ascii?Q?SC2qid3X028I2i2x5Rmmtq2F1Db+RtEVtsK+iIaPRl0klGF4+LZpNZjGdxfv?=
+ =?us-ascii?Q?bzPGRxBbI1X+xN3eMMAhcwXHc/S9lJlccwVoo8GIodsF8vsnK0KC06Xi3pKY?=
+ =?us-ascii?Q?U/9zoEfU7A=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 337d92d6-a8f1-460f-dc91-08df037fc08e
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 14:38:54.0097
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fR+ODRLCuoyw8xkqTThaiB6A2Lceg8C0FUIHMDkKDrmPi3BjDjX2rTwCDeHgGtc96gbgIQhYXG+4/Qmi7Z4kiQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB8809
 
-This email covers the Sashiko review for this patch.
+When an ICMP error that quotes a UDP packet is locally delivered, the
+kernel only creates a routing exception if the quoted packet matches a
+socket. This allows an off-path attacker to conduct a side-channel
+attack on the routing exception caches in order to discover the
+ephemeral ports used by connected UDP sockets.
 
-On 24.08.2026 13:08, Tomasz Lichwala wrote:
-> When an E610 VF is running under Hyper-V, the VFLINKS register does not
-> carry valid link speed. The existing code reads speed from VFLINKS, which
-> does not reflect the actual negotiated speed. This results in ethtool
-> reporting a stale or incorrect link speed.
-> 
-> The Hyper-V synthetic NIC exposes the actual link status through
-> emulated PCI config space at offset 0x209 in VFLINKS register format.
-> Read and decode link status from there when checking link on E610 VFs.
-> 
-> To avoid generating unnecessary VMBus transactions on every watchdog
-> cycle, read the PCI config register on demand when ethtool or sysfs
-> queries link speed, rather than polling it periodically. The cached
-> value is used by the watchdog and link state notifications as before.
-> 
-> Guard the PCI config space read with IS_ENABLED(CONFIG_PCI_MMCONFIG),
-> since accessing offsets above 256 requires MMCONFIG support.
-> 
-> Fixes: 4c44b450c69b ("ixgbevf: Add support for Intel(R) E610 device")
-> Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-> Signed-off-by: Tomasz Lichwala <tomasz.lichwala@linux.intel.com>
-> ---
-> v4:
->  - Read link speed on demand from ethtool/sysfs query instead of polling
->    every watchdog cycle to avoid unnecessary VMBus transactions (ethtool.c)
->  - Restore get_link_status caching for E610 VFs in check_link
->  - Add IS_ENABLED(CONFIG_PCI_MMCONFIG) guard for PCI config reads above
->    offset 256
->  - Add CC netdev@vger.kernel.org
-> v3:
->  - Remove #if IS_ENABLED(CONFIG_PCI_MMCONFIG) preprocessor guard
->  - Replace goto decode label with if/else control flow
->  - Move get_link_status check into else branch (non-E610 path only)
->  - Expand commit message with problem description
-> v2:
->  - Simplify error path: return 0 with link_up=false instead of
->    propagating PCI read error code
->  - Fix alignment in macro definitions
->  - Update comment describing Hyper-V PCI config offsets
->  drivers/net/ethernet/intel/ixgbevf/ethtool.c | 12 ++++
->  drivers/net/ethernet/intel/ixgbevf/vf.c      | 68 +++++++++++++++++---
->  2 files changed, 72 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/ixgbevf/ethtool.c b/drivers/net/ethernet/intel/ixgbevf/ethtool.c
-> index 537a60d5276f..2463fccffd4d 100644
-> --- a/drivers/net/ethernet/intel/ixgbevf/ethtool.c
-> +++ b/drivers/net/ethernet/intel/ixgbevf/ethtool.c
-> @@ -83,6 +83,18 @@ static int ixgbevf_get_link_ksettings(struct net_device *netdev,
->  				      struct ethtool_link_ksettings *cmd)
->  {
->  	struct ixgbevf_adapter *adapter = netdev_priv(netdev);
-> +	struct ixgbe_hw *hw = &adapter->hw;
-> +
-> +	/* E610 Hyper-V VFs: read current link speed from PCI config space
-> +	 * on every link speed query.
-> +	 */
-> +	if (hw->mac.type == ixgbe_mac_e610_vf) {
+Previous mitigations tried to make it harder for attackers to find hash
+collisions in these caches and make the eviction of exceptions less
+predictable. Amit Klein and Noam Caspi demonstrated that both of these
+mitigations can be bypassed.
 
-The mac type check matches both Hyper-V and bare-metal E610 VFs. On bare-metal, forcing get_link_status=true and calling ixgbevf_check_mac_link_vf() would indeed corrupt the link state — the CTS mailbox read fails (no pending CTS), causing a false link-down report.
+This patchset tries to mitigate such attacks by always creating an
+exception, even if UDP socket matching failed. The exception is created
+by the same helpers that are used when the quoted packet did not
+originate from a socket, so that neither the occupancy of the cache nor
+the contents of the exception are indicative of the success or failure
+of UDP socket matching.
 
-Fixed in v5 by checking the subsystem device ID (IXGBE_SUBDEV_ID_E610_VF_HV) instead of the mac type.  This is the same identifier used in the PCI ID table to select Hyper-V mac_ops during probe, so the on-demand read now only triggers for Hyper-V VFs where hw->mac.ops.check_link points to ixgbevf_hv_check_mac_link_vf().
+Note that this mitigation does not make it easier for attackers to fill
+these caches, since they can already create exceptions with little to no
+validation. For example, by sending an ICMP error that quotes an ICMP
+Echo Reply or one that quotes a UDP source port that matches a wildcard
+socket.
 
-> +		spin_lock_bh(&adapter->mbx_lock);
-> +		hw->mac.get_link_status = true;
-> +		hw->mac.ops.check_link(hw, &adapter->link_speed,
-> +				       &adapter->link_up, false);
+Patch #1 fixes a pre-existing bug in the handling of ICMPv6 Redirect
+Message packets. Discovered while writing the selftest.
 
-This is not a race introduced by this patch. The watchdog's pattern of caching adapter->link_speed into a local variable before taking mbx_lock is pre-existing for all Hyper-V VF types. The ethtool response is always correct because it reads adapter->link_speed immediately after check_link returns within the same function call. The mbx_lock serializes concurrent check_link calls - ethtool and watchdog cannot execute check_link simultaneously.
+Patch #2 creates an exception from the IPv4 UDP code when socket
+matching failed. Other socket types do not need this: raw sockets have
+no ports, and for TCP the ICMP error is discarded unless the quoted
+sequence number is in window.
 
-> +		spin_unlock_bh(&adapter->mbx_lock);
-> +	}
->  
->  	ethtool_link_ksettings_zero_link_mode(cmd, supported);
->  	ethtool_link_ksettings_add_link_mode(cmd, supported, 10000baseT_Full);
-> diff --git a/drivers/net/ethernet/intel/ixgbevf/vf.c b/drivers/net/ethernet/intel/ixgbevf/vf.c
-> index f6df86d124b9..a84b62641e9b 100644
-> --- a/drivers/net/ethernet/intel/ixgbevf/vf.c
-> +++ b/drivers/net/ethernet/intel/ixgbevf/vf.c
-> @@ -1,14 +1,17 @@
->  // SPDX-License-Identifier: GPL-2.0
->  /* Copyright(c) 1999 - 2024 Intel Corporation. */
->  
-> +#include <linux/unaligned.h>
-> +
->  #include "vf.h"
->  #include "ixgbevf.h"
->  
-> -/* On Hyper-V, to reset, we need to read from this offset
-> - * from the PCI config space. This is the mechanism used on
-> - * Hyper-V to support PF/VF communication.
-> +/* On Hyper-V the PF/VF communication is through emulated PCI config
-> + * space. The reset and link status are exposed at the offsets below.
->   */
-> -#define IXGBE_HV_RESET_OFFSET           0x201
-> +#define IXGBE_HV_RESET_OFFSET		0x201
-> +#define IXGBE_HV_LINK_STATUS_OFFSET	0x209
-> +#define IXGBE_HV_LINK_STATUS_SIZE	4
->  
->  static inline s32 ixgbevf_write_msg_read_ack(struct ixgbe_hw *hw, u32 *msg,
->  					     u32 *retmsg, u16 size)
-> @@ -901,6 +904,40 @@ static s32 ixgbevf_check_mac_link_vf(struct ixgbe_hw *hw,
->  	return ret_val;
->  }
->  
-> +/**
-> + * ixgbevf_hv_read_links_e610 - read link status from PCI config space
-> + * @hw: pointer to hardware structure
-> + * @links_reg: pointer to store read value
-> + *
-> + * On Hyper-V E610 VFs the VFLINKS register does not carry valid link speed.
-> + * Instead, link status is exposed through emulated PCI config space at offset
-> + * 0x209 in VFLINKS register format.
-> + *
-> + * Return: 0 on success, negative error code on failure.
-> + */
-> +static s32 ixgbevf_hv_read_links_e610(struct ixgbe_hw *hw, u32 *links_reg)
-> +{
-> +	struct ixgbevf_adapter *adapter = hw->back;
-> +	u8 data[IXGBE_HV_LINK_STATUS_SIZE];
-> +
-> +	if (!IS_ENABLED(CONFIG_PCI_MMCONFIG)) {
+Patch #3 does the same for IPv6.
 
+Patch #4 adds a selftest.
 
-The IS_ENABLED(CONFIG_PCI_MMCONFIG) guard is intentionally kept for consistency with  xgbevf_hv_reset_hw_vf(), which uses the same pattern to access emulated PCI config space at offset  x201. Both functions read from extended config space offsets (>256) that require MMCONFIG on x86. In practice, Hyper-V E610 VFs are only deployed on x86 hosts where CONFIG_PCI_MMCONFIG is always enabled. If ARM64 Hyper-V support becomes relevant, both functions would need to be updated together.
+Ido Schimmel (4):
+  ipv6: Fix redirect exception creation for UDP/RAW sockets
+  ipv4: udp: Create exceptions when socket matching failed
+  ipv6: udp: Create exceptions when socket matching failed
+  selftests: net: Add exception cache tests
 
-> +		dev_err_once(&adapter->pdev->dev,
-> +			     "cannot read link status, PCI_MMCONFIG is required for Hyper-V\n");
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-> +	for (int i = 0; i < IXGBE_HV_LINK_STATUS_SIZE; i++) {
-> +		int ret = pci_read_config_byte(adapter->pdev,
-> +					       IXGBE_HV_LINK_STATUS_OFFSET + i,
-> +					       &data[i]);
-> +		if (ret)
-> +			return pcibios_err_to_errno(ret);
-> +	}
-> +
-> +	*links_reg = get_unaligned_le32(data);
-> +	return 0;
-> +}
-> +
->  /**
->   * ixgbevf_hv_check_mac_link_vf - check link
->   * @hw: pointer to private hardware struct
-> @@ -909,6 +946,7 @@ static s32 ixgbevf_check_mac_link_vf(struct ixgbe_hw *hw,
->   * @autoneg_wait_to_complete: unused
->   *
->   * Hyper-V variant; there is no mailbox communication.
-> + * For E610 VFs, link status is read from emulated PCI config space.
->   */
->  static s32 ixgbevf_hv_check_mac_link_vf(struct ixgbe_hw *hw,
->  					ixgbe_link_speed *speed,
-> @@ -926,8 +964,16 @@ static s32 ixgbevf_hv_check_mac_link_vf(struct ixgbe_hw *hw,
->  	if (!mac->get_link_status)
->  		goto out;
->  
-> -	/* if link status is down no point in checking to see if pf is up */
-> -	links_reg = IXGBE_READ_REG(hw, IXGBE_VFLINKS);
-> +	if (mac->type == ixgbe_mac_e610_vf) {
-> +		if (ixgbevf_hv_read_links_e610(hw, &links_reg)) {
-> +			*link_up = false;
-> +			*speed = IXGBE_LINK_SPEED_UNKNOWN;
-> +			return 0;
-> +		}
-> +	} else {
-> +		links_reg = IXGBE_READ_REG(hw, IXGBE_VFLINKS);
-> +	}
-> +
->  	if (!(links_reg & IXGBE_LINKS_UP))
->  		goto out;
->  
-> @@ -941,8 +987,11 @@ static s32 ixgbevf_hv_check_mac_link_vf(struct ixgbe_hw *hw,
->  			udelay(100);
->  			links_reg = IXGBE_READ_REG(hw, IXGBE_VFLINKS);
->  
-> -			if (!(links_reg & IXGBE_LINKS_UP))
-> -				goto out;
-> +			if (!(links_reg & IXGBE_LINKS_UP)) {
-> +				*link_up = false;
-> +				*speed = IXGBE_LINK_SPEED_UNKNOWN;
-> +				return 0;
-> +			}
->  		}
->  	}
->  
-> @@ -956,6 +1005,9 @@ static s32 ixgbevf_hv_check_mac_link_vf(struct ixgbe_hw *hw,
->  	case IXGBE_LINKS_SPEED_100_82599:
->  		*speed = IXGBE_LINK_SPEED_100_FULL;
->  		break;
-> +	default:
-> +		*speed = IXGBE_LINK_SPEED_UNKNOWN;
-> +		break;
->  	}
->  
->  	/* if we passed all the tests above then the link is up and we no
+ net/ipv4/route.c                              |   8 +-
+ net/ipv4/udp.c                                |  10 +
+ net/ipv6/route.c                              |   2 +-
+ net/ipv6/udp.c                                |  17 +-
+ tools/testing/selftests/net/Makefile          |   1 +
+ .../testing/selftests/net/exception_cache.sh  | 501 ++++++++++++++++++
+ 6 files changed, 534 insertions(+), 5 deletions(-)
+ create mode 100755 tools/testing/selftests/net/exception_cache.sh
+
+-- 
+2.55.0
 
