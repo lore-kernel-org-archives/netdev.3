@@ -1,157 +1,233 @@
-Received: from mail-ej2-f10.google.com (mail-ej2-f10.google.com [74.125.228.138])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FC63DA5B3
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 18:38:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41250472558;
+	Wed, 26 Aug 2026 18:46:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787769513; cv=none; b=RbtZdzyacpumX+RaISwgwinmebQm4Y5pzNgtLb9L+8wzwAt1R46KqFruRZtiydWXvqWuRpcu79ztCaTi31bgB1ZIuluJeCkL6lF3NsO1DrCWSc3b9chxQtM7nvdQhSPwZPU9LCPQAqxOXfRuCYo5HknO2GPMskMtcFhSNyAOGdU=
+	t=1787769971; cv=none; b=CjUwaxMYhIZ2MAm7G25B/EzexPt/OgYNl/GqPwRs9eiCCM6vjuEgySkYI0f+g/JFFrCmyTXUpTVOG2A4XSx4x1YcXIax4kLy1punDwyxcGXzMPfV2Oi/+nGbfZXK57CLULtcOj/uM/ap3lj47tlAflfMCMkAB6BXrE3OsfZ5CwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787769513; c=relaxed/simple;
-	bh=rvhP7RaXDz6UJcdy0LpafQ28K6Jx0UmNaixps3g6iSk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nliU0piHA+KyB2H2UYyx2oh0b6O3nUH71crHCDEMmCn5CX99SEevZNofN8U3Lbjj24WwnTJ5ivdp5OrfJ1J/wH6Z9NPoWOYfvbdz0mOoeoTObmEHO6ZbY0qz84nxA21ttr3qUj4GztcslFzDhb+tunGckGdSZq8QYn9UTvkqVfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.228.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej2-f10.google.com with SMTP id a640c23a62f3a-c213bf6ad5bso53252566b.1
-        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 11:38:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787769498; x=1788374298;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uQAJ6HWMnaptEaDKWJ2YFOon5oDggMOJCWfPqpLuh7Y=;
-        b=mMn3Mx//KgY+Vhz+9dwuxcciu1iV4dVlzwEUUo147bV+hMEWK5dwtpyx1mqD1BUqtz
-         5/D/ejvcblEo/G4BIdHUndcRf+WQ2qtqoAE8OwOhGQOZYtHr2A4V5bGLI36YX0SMo8PR
-         WAuea1i13yDfDtqY1tfDvkaPkJpWFD8eYK8N3XIt616Wkz5TEShtLTqh2vw30/eztBmS
-         ivLsHKcG40XA6iyjYoM6UzSDvvryU0h0HR1rWDAIQLE3iT0vOxbWThlV/yxyWSvYQe2M
-         4Y7zWppv/rnGo2Wcz+ww1EpPDUzSV2dZD8yK3OhrP7PcQNHpPODTbK3Zf7fdeHZyoxuv
-         xULg==
-X-Forwarded-Encrypted: i=1; AHgh+RqmBRR29lONgZoCk2P4znmjJFcE94VGFROjJWCTmhFdYv+rKWLEsJ2ThS50qAlNGWhDfwZk+Oo=@vger.kernel.org
-X-Gm-Message-State: AFuF++nlcMrB63F/ZXUpAFiSkmqpuda/YsgVR9V7FRWrrHuBE7tsKJqw
-	M8QoVz8JefcKiby/xxKgcuvgiyU6ezDTe+89qyBB7NamJj4/jQkd5aCO
-X-Gm-Gg: AR+sD12stxWZTatVjt/ORrf9+QbKytUwGw6U7sEFo+P5kvadjbtPh/OtLhXj7ZNA6O9
-	v4ON5bl3lFSjjLMeYxIR6OdyiITkXIr6b5LEOaufgxb3HM3bndfyDW+TvJ58gL+qwAuXKoRGnRI
-	3+ZqrwehJymvjUfoh5o2a6OpOZL/GPJFZ07AmtjVmJkuTXDIwyR0IYUr8NvbL7okxh+SvuUCuzL
-	zCG6/2vNaXfVprfhd1tVk7uxpxEf4igAlciyde23Zb1DG/Z5T/mdl5B/qrgjpAhPFJw1LgFJlLE
-	ucJnRpAScM53TxLIoShJFCJxP2a3wHpeQ4zq0mxrvSLBuKsQJkzY0kJlpq6lYamsU2xuEFFZkp+
-	GNyzcSu0GVEqZ2Ggu8d9FaVjm09h8UEYL0r9p9DIa59ewwO7mW0zEier0GjAUxKT5WUfML6TaQU
-	txrUH34cxgzDA0vlMLw3hBxNDfnkgT1ajRdjjC6bLV1Ts9T4r/5+J7/0wDS0D8SLnoBtBOPTCoU
-	os2EI4vlJAjAOk=
-X-Received: by 2002:a17:907:d07:b0:c19:5572:d234 with SMTP id a640c23a62f3a-c250bb3791amr1150758066b.1.1787769497364;
-        Wed, 26 Aug 2026 11:38:17 -0700 (PDT)
-Received: from [192.168.88.241] (37-48-53-4.nat.epc.tmcz.cz. [37.48.53.4])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a5de8ea655sm5491581a12.12.2026.08.26.11.38.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Aug 2026 11:38:16 -0700 (PDT)
-Message-ID: <7b1f615f-d435-4b83-a180-67cf9a4223a0@ovn.org>
-Date: Wed, 26 Aug 2026 20:38:15 +0200
+	s=arc-20240116; t=1787769971; c=relaxed/simple;
+	bh=AsepdhN1RsBaCUpz9eFfex8cNoi5pLH6AlU758Hn9vs=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=F8yFTveouHgmNbaFEXk0mSbAsNopXPi4MxfE5xEsNyxX92EelQG3GYsIlbdkgyAWKDITAonOIDgApreFvCmXEL99AzwfLOB51oKZ45gxepFO08xEZ7/NhIvbBIulPh8oCwKOc753iQU4OaosrfQuS8oLHj4Onk2rI8Z52Q8vKHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bFGaKigG; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bFGaKigG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4035F1F000E9;
+	Wed, 26 Aug 2026 18:45:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1787769957;
+	bh=sITK5OG7WYyPuuL5MRxyV2besFmgE210GaCLeGuIDfo=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=bFGaKigGKB3xaZsXPOzxPLQUdjVIPx2mCocJpGx41hBZmhb3pVKyEgCckTg0X/LCF
+	 tHuE+cPqt+pGoKPN9xo6P8CAZHz7DOP2IU0i93f4NKfyZNwWw0SjxOlyWBEBQp3Jfo
+	 HJyY2ARR44kGdKSAniVvL/1Agba8+MkpVHn1DqjPTDV0JLrlGwpy9fJDqmooow74BN
+	 vWaeMScxNRftFXx8eRp31/tqUBbSg6uFyADwtxBiNpNAtiEKCLCc/8WCoAn7t7vEux
+	 nR7B5x7KQHrNRjhCcYkqF0LqFGD7EPUj0mFwsixkqZkfUPAPR2EgYFAAPSaeqDYD/m
+	 lUT8UtXw5zzeA==
+Content-Type: multipart/mixed; boundary="===============5601978857442439063=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] netlink: specs: fix the conntrack filter type
-To: =?UTF-8?Q?Asbj=C3=B8rn_Sloth_T=C3=B8nnesen?= <ast@fiberby.net>,
- Ilya Maximets <i.maximets@ovn.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Donald Hunter <donald.hunter@gmail.com>,
- "Remy D. Farley" <one-d-wide@protonmail.com>,
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
- Florian Westphal <fw@strlen.de>, linux-kernel@vger.kernel.org,
- netfilter-devel@vger.kernel.org, stable@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20260825155832.3685714-1-i.maximets@ovn.org>
- <94842eea-a296-4ab9-a026-2475757a82b8@fiberby.net>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <94842eea-a296-4ab9-a026-2475757a82b8@fiberby.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Message-Id: <4489c39227135e5da2d0801bc811069b126f70d10f4b154f3083484c10759341@mail.kernel.org>
+In-Reply-To: <20260826174744.3394-1-ahemadkhawar123@gmail.com>
+References: <20260826174744.3394-1-ahemadkhawar123@gmail.com>
+Subject: Re: [PATCH bpf-next v4] xsk: Fix circular locking dependency between &net->xdp.lock, &xs->mutex, and netdev_lock_ops
+From: bot+bpf-ci@kernel.org
+To: ahemadkhawar123@gmail.com,bpf@vger.kernel.org,netdev@vger.kernel.org,linux-kernel@vger.kernel.org,magnus.karlsson@intel.com,maciej.fijalkowski@intel.com,sdf@fomichev.me,ast@kernel.org,daniel@iogearbox.net,hawk@kernel.org,john.fastabend@gmail.com,kuba@kernel.org,pabeni@redhat.com,edumazet@google.com,horms@kernel.org,syzbot+aa48b5fe7bfda62d1682@syzkaller.appspotmail.com
+Cc: ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Wed, 26 Aug 2026 18:45:57 +0000 (UTC)
 
-On 8/26/26 7:20 PM, Asbjørn Sloth Tønnesen wrote:
-> On 8/25/26 3:58 PM, Ilya Maximets wrote:
->> The CTA_FILTER doesn't contain nested tuple attributes, instead it
->> contains bit masks that specify which tuple attributes to filter on.
->> The values for filtering are taken from the top-level CTA_TUPLE_ORIG
->> and CTA_TUPLE_REPLY.
-> 
-> As identified by Sashiko-NIPA[1], then CTA_TUPLE_ORIG and CTA_TUPLE_REPLY
-> are both absent from the GET DUMP request attribute list.
-> 
-> However this doesn't prevent ynl CLI from sending the attributes:
-> 
-> $ sudo ./tools/net/ynl/pyynl/cli.py --family conntrack --dump get --json \
->    '{"nfgen-family": 2, "filter": {"orig-flags": 1}}'
-> Netlink error: Invalid argument
-> 
-> $ sudo ./tools/net/ynl/pyynl/cli.py --family conntrack --dump get --json \
-> '{"nfgen-family": 2, "filter": {"orig-flags": 1}, "tuple-orig": {"tuple-ip": {"ip-v4-src": "192.255.0.255", "ip-v4-dst": 
-> "192.255.255.0"}}}'
-> []
-> 
-> Otherwise, LGTM.
-> 
-> [1] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260825155832.3685714-1-i.maximets%40ovn.org
+--===============5601978857442439063==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-The reported issue is preexisting and a little orthogonal to the goal of
-this patch.  I.e. missing dump attributes vs wrong type of attributes that
-are specified.
+> syzbot reported a circular locking dependency involving &net->xdp.lock,
+> &port->pnodes_lock, netdev_lock_ops(), and &xs->mutex:
+>
+> -> #3 (&net->xdp.lock):
+>        xsk_notifier+0x3d/0x2c0 net/xdp/xsk.c:2106
+>        ipvlan_device_event+0x310/0x4e0 drivers/net/ipvlan/ipvlan_main.c:834
+>        unregister_netdevice_many_notify+0x808/0x18b0 net/core/dev.c:12518
 
-I can add all the missing attributes: tuple-orig, tuple-reply, mark-mask
-and status-mask.  Either as a separate patch, or fold the change into this
-one, but rename it into something like:
-  "netlink: specs: fix conntrack filtering attributes and types"
+The quoted lockdep trace has fabricated symbol offsets. The real syzbot
+report (Message-ID 6a8c9fd9.dbb3a75c.7844.000c.GAE@google.com) shows
+completely different offsets:
 
-WDYT?
+  xsk_notifier+0x89/0x230 (not +0x3d/0x2c0)
+  ipvlan_device_event+0x310/0x4e0 becomes +0xf1f/0xfb0 (rx path) and +0x489/0xfb0 (tx path)
+  unregister_netdevice_many_notify+0x17fa/0x2130 (not +0x808/0x18b0)
 
-Best regrads, Ilya Maximets.
+The function sizes were also altered: xsk_notifier is 0x230 bytes in the
+real report, not 0x2c0; ipvlan_device_event is 0xfb0, not 0x4e0. Even
+the function size cannot change when re-quoting the same lockdep report,
+because lockdep emits addr2line output with consistent objdump-derived
+function boundaries. Only xsk_bind+0x331/0x11d0 was copied verbatim from
+the real report.
+
+Can a quoted lockdep excerpt be paraphrased this way? A maintainer
+reading this cannot verify the trace against the syzbot report without
+noticing the discrepancy.
+
+[ ... ]
+
+> diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+> index 7855ee09c4b64..e72344fccbf26 100644
+> --- a/net/xdp/xsk.c
+> +++ b/net/xdp/xsk.c
+
+[ ... ]
+
+> @@ -2114,13 +2116,21 @@ static int xsk_notifier(struct notifier_block *this,
+>  					sk_error_report(sk);
+>
+>  				xsk_unbind_dev(xs);
+> -
+> -				/* Clear device references. */
+> -				xp_clear_dev(xs->pool);
+>  			}
+>  			mutex_unlock(&xs->mutex);
+>  		}
+>  		mutex_unlock(&net->xdp.lock);
+> +
+> +		/* Clear device references outside AF_XDP locks to avoid
+> +		 * lock inversion with netdev_lock_ops().
+> +		 */
+> +		max_queues = max(dev->real_num_rx_queues, dev->real_num_tx_queues);
+> +		for (qid = 0; qid < max_queues; qid++) {
+> +			struct xsk_buff_pool *pool = xsk_get_pool_from_qid(dev, qid);
+> +
+> +			if (pool)
+> +				xp_clear_dev(pool);
+> +		}
+
+Does this introduce a race on pool->netdev between the sweep and
+xsk_diag_put_umem()? With a leased RX queue the pool sits in the
+physical device's queue array while pool->netdev points to the leasee.
+The physical device can reach NETDEV_UNREGISTER with the lease still
+active (netdev_rx_queue_lease only holds a reference on the physical
+device, not the leasee). The socket loop skips the socket (xs->dev ==
+leasee != physical_dev), so the sweep finds the pool at
+physical_dev->_rx[hw_qid] and calls xp_clear_dev(pool), which writes
+pool->netdev = NULL and drops the leasee reference, even though the
+socket is still bound and alive.
+
+The old code held &xs->mutex across xp_clear_dev(), which serialised
+the write against xsk_diag_put_umem(). After the patch xsk_notifier()
+holds only RTNL, and xsk_diag_dump() takes neither RTNL nor
+&net->xdp.lock around xsk_diag_fill(). That leaves this check-then-use
+in xsk_diag_put_umem() (net/xdp/xsk_diag.c:62):
+
+    du.ifindex = (pool && pool->netdev) ? pool->netdev->ifindex : 0;
+
+racing with the sweep's pool->netdev = NULL; dev_put(netdev). The
+XSK_UNBOUND check at the top of xsk_diag_fill() does not cover this,
+because the socket was never unbound by the loop.
+
+Can the reader pass the pool->netdev test, reload after the store, and
+dereference NULL, or dereference pool->netdev->ifindex after the sweep
+dropped the last device reference?
+
+> diff --git a/net/xdp/xsk_diag.c b/net/xdp/xsk_diag.c
+> index 0170363eb542c..bad0b13064f8b 100644
+> --- a/net/xdp/xsk_diag.c
+> +++ b/net/xdp/xsk_diag.c
+> @@ -111,8 +112,10 @@ static int xsk_diag_fill(struct sock *sk, struct sk_buff *nlskb,
+>  	sock_diag_save_cookie(sk, msg->xdiag_cookie);
+>
+>  	mutex_lock(&xs->mutex);
+> -	if (READ_ONCE(xs->state) == XSK_UNBOUND)
+> +	if (READ_ONCE(xs->state) == XSK_UNBOUND) {
+> +		err = -ENOENT;
+>  		goto out_nlmsg_trim;
+> +	}
+
+[ ... ]
+
+> @@ -153,28 +156,48 @@ static int xsk_diag_dump(struct sk_buff *nlskb, struct netlink_callback *cb)
+>  	struct xdp_diag_req *req = nlmsg_data(cb->nlh);
+>  	struct net *net = sock_net(nlskb->sk);
+>  	int num = 0, s_num = cb->args[0];
+> -	struct sock *sk;
+> -
+> -	mutex_lock(&net->xdp.lock);
+> -
+> -	sk_for_each(sk, &net->xdp.list) {
+> -		if (!net_eq(sock_net(sk), net))
+> -			continue;
+> -		if (num++ < s_num)
+> -			continue;
+> -
+> -		if (xsk_diag_fill(sk, nlskb, req,
+> -				  sk_user_ns(NETLINK_CB(cb->skb).sk),
+> -				  NETLINK_CB(cb->skb).portid,
+> -				  cb->nlh->nlmsg_seq, NLM_F_MULTI,
+> -				  sock_i_ino(sk)) < 0) {
+> -			num--;
+> -			break;
+> +	struct sock *sk, *target_sk;
+> +	int err;
+> +
+> +	for (;;) {
+> +		target_sk = NULL;
+> +		num = 0;
+> +
+> +		mutex_lock(&net->xdp.lock);
+> +		sk_for_each(sk, &net->xdp.list) {
+> +			if (!net_eq(sock_net(sk), net))
+> +				continue;
+> +			if (num++ == s_num) {
+> +				sock_hold(sk);
+> +				target_sk = sk;
+> +				break;
+> +			}
+>  		}
+> +		mutex_unlock(&net->xdp.lock);
+> +
+> +		if (!target_sk)
+> +			break;
+> +
+> +		err = xsk_diag_fill(target_sk, nlskb, req,
+> +				    sk_user_ns(NETLINK_CB(cb->skb).sk),
+> +				    NETLINK_CB(cb->skb).portid,
+> +				    cb->nlh->nlmsg_seq, NLM_F_MULTI,
+> +				    sock_i_ino(target_sk));
+> +		sock_put(target_sk);
+
+Does sock_hold() protect xs->rx and xs->tx from being freed? Before the
+patch xsk_diag_fill() ran with &net->xdp.lock held, which serialised it
+against xsk_release() taking that lock before sk_del_node_init_rcu().
+After the patch the lock is dropped before xsk_diag_fill().
+
+xsk_release() calls xskq_destroy(xs->rx) and xskq_destroy(xs->tx)
+outside &xs->mutex (net/xdp/xsk.c:1555-1556) and never clears the
+pointers. For a socket that was never bound, xsk_unbind_dev() returns
+early without changing xs->state (it checks xs->state != XSK_BOUND at
+net/xdp/xsk.c:1474), so xs->state stays XSK_READY and the XSK_UNBOUND
+check in xsk_diag_fill() does not take the new -ENOENT branch.
+
+A socket created with socket(AF_XDP, SOCK_RAW, 0) starts at XSK_READY,
+and setsockopt(XDP_RX_RING)/setsockopt(XDP_TX_RING) allocates xs->rx /
+xs->tx while still XSK_READY. If close() runs concurrently with a dump:
+
+  T1 (ss --xdp): finds sk, sock_hold(sk), mutex_unlock(&net->xdp.lock)
+  T2 (close):    sk_del_node_init_rcu(); xsk_unbind_dev() (early return);
+                 xskq_destroy(xs->rx); xskq_destroy(xs->tx);
+  T1:            xsk_diag_fill(): READ_ONCE(xs->state) == XSK_READY,
+                 xsk_diag_put_ring(xs->rx, ...) -> dr.entries = queue->nentries;
+
+Can this dereference freed memory and leak the freed ring contents to
+userspace in the netlink attributes?
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/32997090240
+--===============5601978857442439063==--
