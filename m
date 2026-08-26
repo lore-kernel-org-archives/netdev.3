@@ -1,331 +1,226 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBFE33065D
-	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 07:41:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787730067; cv=none; b=Ws81OrxDyi20a1v6Kh005JledyvDDKlJ65QS6NNeWeDTlNl0oJxcfLIL0E0MOljaiXJDEMkYfuctIHhreSBrzBeetNSolVN6c+h//zLrzUv7VM3ZN0gnVhPvhfEPRzJw0hjTMduWduTzHYPwlMRD76CJ1Aeets3mjHLS2Cml2tc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787730067; c=relaxed/simple;
-	bh=cWQrMIxfLsjiSKyZlSnSQ4Se4+A/Iq8h/2uu4oxSA+o=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=MwT8N0Kcqnma7ZlaeVqKCadHZRQXn5JDTX1kwIlYJQEADYru2hwzXJY3VJV0dPnwoH0b5fmd/y2k3NOCs0DqR5bPZbWdJP4SxWYxtlG7zwAv14rYbVqQePMCXmrAztbDFmuJveFeWbrmS5hjsqGvKwmVVfJRVm7TY6VpZ2TbiaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=O+Z4wrA6; arc=none smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBFD137DE8A
+	for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 07:42:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787730125; cv=pass; b=k36EIuLqnljC8XRiamFXTrZE0SKqBqDNXqp7Z3zR8ifNHxUG4rswim2Kdr0g1OFHexwSxaicSjJXpKVHGJTfE6lNiAzCx9l5PKqrzVQp+Mn1ppfKSRZN0cQ+axnQ8n74dkmGRVpXaXdXqtKGsl/xc/JO1eDL+t4W+TDD06vWoeI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787730125; c=relaxed/simple;
+	bh=hDSV9kYRnClQT0/UtSIMuCnfMynQ/JdLc2TuMDFAfNk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FByKLQ6oP4mtYZIwmcAoNoDdZX+frxbjKkEJ5x3S2mbBhtll7yiHsm8NCnkw0Dc2w9VIVbvyPXkyyIxsDA6ICa4VpBp56QteEMUG6C9z6naHQeaUqwJFTL7QYnHwGlkV+sQMoNhUsB7uiyVwjB85uMgs9WpPZeZYUUXmY1xdkUQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gAztmUQu; arc=pass smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="O+Z4wrA6"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-51bfa429aa6so10244051cf.0
-        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 00:41:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gAztmUQu"
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5b4adcce4b1so38664e87.1
+        for <netdev@vger.kernel.org>; Wed, 26 Aug 2026 00:42:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787730122; cv=none;
+        d=google.com; s=arc-20260327;
+        b=i5gzYPmkLD4AHk0C2HDvBAIcgjB4TqoC1FMH47FFH3r5c33C+o/4p6nyy5LmB2ChIR
+         1bdd0ffqGd6GmcKGZdnljW2B/tT8Z+f7urayru/3l3UtfW1AlOA8cx5Q/SQODuvkrXjj
+         KEAJ/YYy0WaJAWZXpG4ynzkX+scYBAFKDcNK/z1oGCjXv+gKAARdXiB2+Lv9Ij4mz7Id
+         K/huV2u06GnBFjalK9XWjAkcXHMc4Ro81hxfMsScnsWKaFtpujIdvJaOUTrZf72D7LGT
+         5M0mY9MrKcLZhAbHLy5ngmLpmpX77lc8hlPdrDYZ20vtzWuKBG6DTUwdD6c8ptjYlD3f
+         /QgQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=alztsT2KgekdZvK+g7Utkxk63l7An1Uspdk9OA2Rpfg=;
+        fh=nqxMl7021qNehG5Qo1H3xLrbp9W8MVPLOEUHyJuV1SY=;
+        b=D1y91KHUvzR30ZBYWBd65LTJvm2ksFaDPB5NPKxdhol30VuYwrdb3YH+bLBqdy426O
+         cV5H09C6qdSB2wqfo9Rf1cpBBnTl94WKL9QAPn3Ox5XiV60FqBzYxzaNpIOAPy3PGyqT
+         1MFSvw3Yk4+kn9ddy6SUw0aaBd+UmmgS7/y8GYHkEzxYVFIIWM9XFu2lfqYMUEHclpQ8
+         9ChTVv97F0qKNHZ0eFgR6UUOfz0ilJhKxt6haawYegIJbCuKdM/v6UAjt99a4tDlNWL8
+         w3a1DCliHql6yIsla9+TremeIB54tIMkyXrbTjAfhHtrfPPkXHkj4jmqOsVrNIdqpeqc
+         6B+g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1787730062; x=1788334862; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=C4DYIQHvMuYiODFDHPpNrtzb9aCp3wc4z9I9Y2wOhUg=;
-        b=O+Z4wrA6HS9ziVtnvwjgmfFJMZXUXivfr0Sn7KwsOT8EcO3aU0fNRAM1kXNVkYxBeN
-         P44XJP5eB/upQPYo9LDMgR/m+1kXfO0JRz3sT0yaeNrZ1s+pycWYDyV8g258N/pIufFO
-         KgD+kCWGAWTGlDkaLv0cFvZh2cqmyU0VIfZ44=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787730062; x=1788334862;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1787730122; x=1788334922; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=C4DYIQHvMuYiODFDHPpNrtzb9aCp3wc4z9I9Y2wOhUg=;
-        b=Lc24ZmvdixU6JTUivvyo5wnY5YKn0nxjgMM51u8WEWeeWezWMTIL/Roq1rB8YBOzlj
-         OKI8kxavbwXN/F+xK9taOQ9JuNPqlvJ6Oo4Bg8eMWXASdnT+gXpcKD9GzIsQYKpr9B+X
-         446UjC4wsgq9Ze46UxLtZ3gvmKcNSmFivw2FqHml4ozYv8SZlqfoZ6BwgIyJXMsa6zA1
-         pIxIuZSCTDpl85DUx9GTn/jZHPYfusaMg9TrR7ULXMnEul1fJryDaahIlAPrbhFoj/zY
-         2dti5/1NU2q7F+DdAudAQEPhcx2dLqHH7gkPqrdS/muE0fWg3ENAYf7LqkpN2qkHoa5i
-         ISxg==
-X-Gm-Message-State: AFuF++kC2njsFgD9g6WglGfPIWcWERk8PI/rc8Xl3ZyoTHouZMkXSWtL
-	kU3s3AyuI1hjfS3G1u94tJV3Y+PEzYREEOFik/vKEBYtWdNt556jIF8h6YaR7s7alMJwX/biZCs
-	68IE3vg==
-X-Gm-Gg: AR+sD136aTU9CylWQoxr4wTuMiEGTCYUFexYcg9T1Mk3/LQ475x5lfKxFlTADqJBGAx
-	NdqQoD5CPJk3JwBC8Bu42hjVWXEAftzEtnLxbjtIDgZiaRJXTwkuhgzZrlZ5U0IGMsEWw3bAMU9
-	By7SSRxS+miAD4H7vD/4PtH/MdD3kEaUYY9FtJT5gnOzjBuwuRVTQhOlJKCEfY45ZFETcAz3KBT
-	hFFKFD8vYVIQafDRD1S37gEBRBFRVreRJmaIA9SuYa9V/lTJvA0u4u8Emuyq1o+4ADd7O3gojFF
-	6xfocVP9uf4qOzd4qbJ75wEIZMoCo5DjMZ9Ts6vUL7v5C9rczTrFAuqgPzwQyxkaRfZfex2zz7y
-	TqEaPHlEg0BTyWjD1odep6r4MLf2QpbACYAis/n/QN1gCOwWSoHxbz6+SbCapYv2yjDlxYDYLAA
-	abKhMa0kVjk/bK+UMnG6IPOh39SVOpGZa0ay7Ixifdb/E4ANMBheatjv5xCBzc0ILHwZE9iwY4o
-	CrpOC12l0PyFXvuQejbWt7eASQFMh6f/NNSlZBDzjBhMw==
-X-Received: by 2002:a05:622a:8c6:b0:52e:3820:a23c with SMTP id d75a77b69052e-52e41ba9abcmr49201351cf.13.1787730061817;
-        Wed, 26 Aug 2026 00:41:01 -0700 (PDT)
-Received: from majuu.waya (bras-base-kntaon1621w-grc-04-184-144-29-222.dsl.bell.ca. [184.144.29.222])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-52e42573987sm11809031cf.1.2026.08.26.00.40.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2026 00:41:01 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Victor Nogueira <victor@mojatatu.com>,
-	vtahiliani@nitk.edu.in,
-	toke@redhat.com,
-	chia-yu.chang@nokia-bell-labs.com,
-	subramanian.vijay@gmail.com,
-	vega@nebusec.ai,
-	stable@vger.kernel.org
-Subject: [PATCH net] net/sched: clamp quantum and psched_mtu in change paths and missed siblings
-Date: Wed, 26 Aug 2026 03:40:56 -0400
-Message-Id: <20260826074056.7873-1-jhs@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
+        bh=alztsT2KgekdZvK+g7Utkxk63l7An1Uspdk9OA2Rpfg=;
+        b=gAztmUQu0l9r8YyQMG4NUKR4WN3pUrxY8Jrj5/SnhCu4GzIOpAXA0GpZPyTQZWy/4N
+         1awb+sseZ19+pPhgQ9vUvDFkFpAkj2KXHYbE0KlJ1KlRj3qAOKyTjLnomP/S93io0dOM
+         2dan8K0YIobLcfKctPG7QYsUEp5icKkm0jTSxadlc2oY4DaTlOPzpksMlKMIOEodobL6
+         g9yxP791y769xAW70As0BDxjVFAbvAfU9EFl9BvzFLfezptOAW1QzTKj6BZPn0N5gJsc
+         pKFgiaxHiX/1/2MWfAwuaYAhrdYjeaeomTQYFBT3cKllOt0J9QhONspR4P0TUNKn9nKP
+         2xLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787730122; x=1788334922;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=alztsT2KgekdZvK+g7Utkxk63l7An1Uspdk9OA2Rpfg=;
+        b=PhCIbqOeYYSAmvq4pch31sxm4uPo/HpTO8yy7u5/uz6YdTTsuVZooHI7Tmt218/qSs
+         1tJb2U8MIC/Ps2sRH4Y5V6d2orC9PTuhtEo9L8CdgIVRi8qna6Q7yVWAPQ78rOc1z5Qz
+         ig6UKrbsxWqrxbTyViM/qge+Ao0Wjvc0djeHONW20fGxD4if5f3oL+FbNqIm6mAkX5yE
+         3omZb+5y/HesKQmyDCXkWvxteZhcPfLKb9CHuU0mJ1lsbGSaQyyRbpE/4+cQ8oIWZ+Xb
+         bwOHy6wUpS2JXq9lH5OqYG0VlkY0H36bhpmTr1cIo30D4B3Atpt5wd/VjN5ULFfjkW8b
+         f7AA==
+X-Gm-Message-State: AFuF++mA6yrkzmt/KO/lsSupvD7guHbiUT1EFVp77EJhTcvXSeZ65kvf
+	nh68H/VeRB9gUi8FGc65fZ0vHCcxDTEE25KdrY8gn4d4iY9t0ha9EVUdLE5WVLGZ/iMw0e73QGQ
+	oAzfUKuLAqWvyhZxxi88UVWHKQ5ktpGQfU1GP
+X-Gm-Gg: AR+sD12x5rinY0aaoWbN2vlw0YHMFu92pOV2ZMbB01jAlUIQOQx34ur6SA/T0LQolt9
+	tLEFH2VSsnYrXFf6iateItywxauWj09a7jZFvtbu6695zn68gY/SWBBjTpv4UwdhEva232CTNGs
+	iJhNT3Gc7nC0oqDmy6zFLnCgVc37e+srGOULuJWujGPyYPxkP+m1tjBxa1WpJZWKfiI+KkmhqG2
+	CVHbHnl+ggNdjbKa2vbJBJyOm19qaaYtd4+fXKrxZQ+u+gbbKLdhxxRp0M3vxbm4ZC1DpknEDEx
+	iAgYbvKB2HkD8pWABEl7TrzcQZyDXpQMNmtFgbmLuqQ=
+X-Received: by 2002:a05:6512:15a5:b0:5b0:23b4:be97 with SMTP id
+ 2adb3069b0e04-5b4a8ff419dmr1184130e87.6.1787730121387; Wed, 26 Aug 2026
+ 00:42:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <CAMuE1bHr84n5LKcj02HmMR5XefPtvQ-UEJAx7+UKfYvRgS0eDg@mail.gmail.com>
+ <8c5c1254-34b9-4d38-8cd4-71b3c13e00e4@linux.dev>
+In-Reply-To: <8c5c1254-34b9-4d38-8cd4-71b3c13e00e4@linux.dev>
+From: Sagi Maimon <maimon.sagi@gmail.com>
+Date: Wed, 26 Aug 2026 10:41:34 +0300
+X-Gm-Features: AcwNN1WJJ8gFy09JXDzL_bQPcA4XomYA4ziY7KkAQtiAYWuV87e7vZ5bXMwm7XY
+Message-ID: <CAMuE1bGoYCh8cZZRMiA_TJ58p+QeXxmNh=brEVrV3UyAEJw5aA@mail.gmail.com>
+Subject: Re: [RFC] ptp: ocp: exposing the TimeCard X2 AXI Ethernet port -
+ which approach?
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: Netdev <netdev@vger.kernel.org>, Jonathan Lemon <jonathan.lemon@gmail.com>, 
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is a followup to commit 709f34f7c28d ("net/sched: fq: add
-overflow bounds to quantum and initial quantum").
-The quantum_backlog_overflow series and the five siblings that followed
-clamped the init-path quantum to in fq, fq_codel, fq_pie, hhf, sfq.
-The change() paths with the same pattern, same writer of q->quantum,
-same privilege level (CAP_NET_ADMIN in a user namespace) were not clamped.
-A user can override the init clamp via tc qdisc change, restoring the
-small-quantum deficit spin that the init clamp was meant to prevent.
+On Tue, Aug 25, 2026 at 7:38=E2=80=AFPM Vadim Fedorenko
+<vadim.fedorenko@linux.dev> wrote:
+>
+> On 20/08/2026 16:01, Sagi Maimon wrote:
+> > Hi,
+> >
+> > Before posting patches I would like to check which of two approaches yo=
+u would
+> > prefer, since they differ a lot in how much code lands and where.
+> >
+> > The ADVA TimeCard X2 is a PCIe card whose FPGA image contains a Xilinx =
+AXI
+> > Ethernet MAC and an AXI DMA engine alongside the timing blocks ptp_ocp =
+already
+> > supports. We want to expose that Ethernet port as a netdevice.
+> >
+> > Approach A - let xilinx_axienet drive it.
+> >
+> > ptp_ocp creates a platform device describing the two register windows a=
+nd the
+> > three MSI-X vectors, and xilinx_axienet binds to it. This is what ptp_o=
+cp
+> > already does for the Xilinx SPI and I2C cores on the same card, see
+> > ptp_ocp_i2c_bus() and ptp_ocp_register_spi().
+> >
+> > There is no device tree, so a software node stands in for one: "phy-mod=
+e"
+> > replaces a phy-handle, since the MAC is wired to the fabric internally =
+with no
+> > MDIO and no PHY, and a "fixed-link" child node pins the link at 1 Gbit/=
+s full
+> > duplex.
+> >
+> > This needs two things from xilinx_axienet:
+> >
+> >    1. Read its configuration through the generic device property API in=
+stead of
+> >       the OF-specific one, so it can be described by a software node. O=
+n a
+> >       device-tree system dev_fwnode() resolves to the OF fwnode and the=
+ reads
+> >       land in the same OF code as today, so this is a no-op for existin=
+g users.
+> >       It is also in line with the wider move from of_* to
+> >       device_property_*/fwnode_*.
+> >
+> >    2. A dma_dev in struct axienet_local. Descriptors and buffers must b=
+e mapped
+> >       against the device that masters the bus, which for a platform dev=
+ice
+> >       created by a PCIe parent is that parent - a platform device does =
+not
+> >       inherit its parent's DMA ops or IOMMU domain. For every existing =
+user
+> >       dma_dev would equal dev, so no behavioural change.
+> >
+> > That comes to about 50 changed lines in xilinx_axienet and about 180 ne=
+w lines
+> > in ptp_ocp.
+> >
+> > Approach B - a separate driver under drivers/ptp.
+> >
+> > Reimplement the descriptor rings, NAPI and ethtool support against the =
+same IP,
+> > roughly 2500 lines, and share xilinx_axienet's register definitions out=
+ of
+> > drivers/net/ethernet/xilinx/.
+> >
+> > We have both working. Approach A is tested on 7.0.0-rc1 with the card:
+> >
+> >    xilinx_axienet xilinx_axienet.512 eth0: configuring for
+> > fixed/internal link mode
+> >    xilinx_axienet xilinx_axienet.512 eth0: Link is Up - 1Gbps/Full -
+> > flow control off
+> >
+> > ping at 0% loss, a 90 s bulk TCP transfer moving ~9000 packets each way=
+ with
+> > zero errors and no TX timeouts, ethtool -S/-g/-c/-a all working, and cl=
+ean
+> > module unload and reload.
+> >
+> > We would much rather do A than maintain a duplicate of an existing driv=
+er, so
+> > the questions are:
+> >
+> >    1. Is instantiating xilinx_axienet from a PCIe parent as a platform =
+device
+> >       acceptable, or would you prefer the driver split so the device ca=
+n be
+> >       created on the auxiliary bus? The platform device route keeps the=
+ change
+> >       to xilinx_axienet small and matches what ptp_ocp already does for=
+ the SPI
+> >       and I2C cores, but auxiliary bus is the more usual choice for sub=
+-devices
+> >       of a PCIe function and would make the DMA parent explicit.
+> >
+> >    2. For the dma_dev, we currently infer it by testing whether the par=
+ent is a
+> >       PCI device. That is concise but implicit; we are happy to pass it=
+ in
+> >       explicitly if you would prefer it were not inferred.
+> >
+> > I can post the series straight away if you would rather look at the cod=
+e.
+>
+> Well, we definitely don't want to copy code but rather reuse existing as
+> much as possible. Looks like platform device is the way to go. Let's
+> discuss the code.
+>
 
-This follow-up also covers two siblings that were missed entirely by
-the original series: sch_dualpi2 and sch_pie call psched_mtu() without
-any clamp at all. With a crafted size table qdisc_pkt_len reaches ~2
-GiB, so quantum=1 (or a zero psched_mtu on a headerless device) makes
-the deficit-refill loop spin ~2^31 times under the qdisc lock (a soft
-lockup / denial of service).
+Thanks - agreed on reusing the existing driver rather than duplicating
+it, and good to hear the platform device approach looks acceptable.
 
-Fixes based on review of 709f34f7c28d:
+On timing: the X2 Ethernet support depends on X2 board support in
+ptp_ocp, which doesn't exist yet, and that in turn builds on the CPLD
+programming work I currently have in flight for X1.  So the order will
+be: finish the X1 CPLD series, then X2 board support, then the Ethernet
+series - the axienet property/dma_dev changes together with the ptp_ocp
+patch that uses them, as one series since it is all net-next.
 
-1. fq_pie_change() accepts quantum=1 (NLA policy fq_pie_q_range.min=1).
-   Add max(256U, ...) matching fq_codel_change()
-   (Sashiko nipa gpt-5-6-sol-3-8 and gpt-5-6-sol-6-7)
+I'd rather send them in that order than post Ethernet patches against a
+board the driver doesn't know about yet.  Happy to share the Ethernet
+code early as an RFC if it's useful for the architecture discussion in
+the meantime.
 
-2. sfq_change() accepts any non-negative quantum (only rejects
-   (int)ctl->quantum < 0). Add max(256U, ...) matching fq_codel_change().
-   Reject quantum > 1<<20 with -EINVAL, matching fq_codel_change() and
-   the init clamp.
-   (Internal review noticing same pattern)
-
-3. hhf_change() accepts quantum=1 (only checks non_hh_quantum product).
-   Add max(256U, ...) matching fq_codel_change()
-   (Sashiko nipa v1 review + vega@nebusec.ai independent bug)
-
-4. fq_change() accepts TCA_FQ_INITIAL_QUANTUM up to INT_MAX (iq_range.max
-   = INT_MAX) while fq_init() now clamps to 1<<20.  Narrow iq_range.max
-   to 1<<20, rejecting at parse time.  (Eric Dumazet)
-
-5. sch_dualpi2: dualpi2_calculate_c_protection() and get_memory_limit()
-   call psched_mtu() with no clamp. A huge MTU makes (s32)psched_mtu()
-   overflow in the signed multiply for c_protection_init, and 2 *
-   psched_mtu() wraps in get_memory_limit(). Clamp to [1, 1<<20] at
-   all three call sites. (Sashiko nipa main-6-4)
-
-6. sch_pie: pie_drop_early() calls psched_mtu() with no clamp.  With
-   mtu=0x80000000 the bytemode divide silently zeroes the drop
-   probability, disabling AQM. Clamp to [1, 1<<20] (Sashiko gemini)
-
-7. sch_drr: drr_change_class() rejects explicit quantum==0 but falls
-   back to psched_mtu() with no floor. Add max(256U, ...) after the
-   zero reject and on the fallback path
-  (vega@nebusec.ai independent bug)
-
-8. sch_ets: ets_qdisc_change() falls back to psched_mtu() with no floor
-   for bands without an explicit quantum.  Add max(256U, ...) on the
-   fallback path (vega@nebusec.ai independent bug)
-
-The init paths of fq_pie, sfq, and hhf delegate to their _change() when
-opt is present, so the floor covers tc qdisc add ... quantum 1 as well
-as change. The zero-quantum-from-psched_mtu case on a headerless device
-(mtu==0) is also covered by the 256 floor in drr and ets; the
-explicit-zero reject in drr_change_class() is preserved.
-
-The sfq_change() silent clamp is user-visible: sfq_dump() reports the
-clamped quantum, so a previously accepted quantum < 256 now reads back
-as 256. Idempotent config managers that read back and compare will
-see drift. fq_codel_change() made the same trade, so this is consistent.
-
-Conditions to recreate the bug: create a fq_pie, sfq, hhf, dualpi2, or
-pie qdisc (or a drr class / ets band), then tc qdisc change ... quantum 1
-with a STAB size table inflating qdisc_pkt_len, e.g.:
-
-  tc qdisc add dev dummy0 root fq_pie
-  tc qdisc change dev dummy0 root fq_pie quantum 1 \
-    stab data 32768 size_log 15 cell_log 0
-
-Requires CAP_NET_ADMIN in a user namespace (unshare -Urn).
-
-Fixes: 709f34f7c28d ("net/sched: fq: add overflow bounds to quantum and initial quantum")
-Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet scheduler")
-Fixes: e4650d7ae425 ("net_sched: sch_sfq: handle bigger packets")
-Fixes: 10239edf86f1 ("net-qdisc-hhf: Heavy-Hitter Filter (HHF) qdisc")
-Fixes: 320d031ad6e4 ("sched: Struct definition and parsing of dualpi2 qdisc")
-Fixes: d4b36210c2e6 ("net: pkt_sched: PIE AQM scheme")
-Fixes: 13d2a1d2b032 ("pkt_sched: add DRR scheduler")
-Reported-by: vega@nebusec.ai
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: stable@vger.kernel.org
----
- net/sched/sch_drr.c     |  3 ++-
- net/sched/sch_dualpi2.c | 10 +++++++---
- net/sched/sch_ets.c     |  2 +-
- net/sched/sch_fq.c      |  2 +-
- net/sched/sch_fq_pie.c  |  3 ++-
- net/sched/sch_hhf.c     |  2 +-
- net/sched/sch_pie.c     |  2 +-
- net/sched/sch_sfq.c     |  7 ++++++-
- 8 files changed, 21 insertions(+), 10 deletions(-)
-
-diff --git a/net/sched/sch_drr.c b/net/sched/sch_drr.c
-index 91b1ef824afa..0ffdab27bae4 100644
---- a/net/sched/sch_drr.c
-+++ b/net/sched/sch_drr.c
-@@ -82,8 +82,9 @@ static int drr_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
- 			NL_SET_ERR_MSG(extack, "Specified DRR quantum cannot be zero");
- 			return -EINVAL;
- 		}
-+		quantum = max(256U, quantum);
- 	} else
--		quantum = psched_mtu(qdisc_dev(sch));
-+		quantum = max(256U, (u32)psched_mtu(qdisc_dev(sch)));
- 
- 	if (cl != NULL) {
- 		if (tca[TCA_RATE]) {
-diff --git a/net/sched/sch_dualpi2.c b/net/sched/sch_dualpi2.c
-index 4f678d4ff10e..4947def7c49e 100644
---- a/net/sched/sch_dualpi2.c
-+++ b/net/sched/sch_dualpi2.c
-@@ -208,9 +208,11 @@ static void dualpi2_reset_c_protection(struct dualpi2_sched_data *q)
- static void dualpi2_calculate_c_protection(struct Qdisc *sch,
- 					   struct dualpi2_sched_data *q, u32 wc)
- {
-+	u32 mtu = clamp_t(u32, psched_mtu(qdisc_dev(sch)), 1, 1 << 20);
-+
- 	q->c_protection_wc = wc;
- 	q->c_protection_wl = MAX_WC - wc;
--	q->c_protection_init = (s32)psched_mtu(qdisc_dev(sch)) *
-+	q->c_protection_init = (s32)mtu *
- 		((int)q->c_protection_wc - (int)q->c_protection_wl);
- 	dualpi2_reset_c_protection(q);
- }
-@@ -285,8 +287,9 @@ static bool must_drop(struct Qdisc *sch, struct dualpi2_sched_data *q,
- 	u64 local_l_prob;
- 	bool overload;
- 	u32 prob;
-+	u32 mtu = clamp_t(u32, psched_mtu(qdisc_dev(sch)), 1, 1 << 20);
- 
--	if (sch->qstats.backlog < 2 * psched_mtu(qdisc_dev(sch)))
-+	if (sch->qstats.backlog < 2 * mtu)
- 		return false;
- 
- 	prob = READ_ONCE(q->pi2_prob);
-@@ -712,7 +715,8 @@ static u32 get_memory_limit(struct Qdisc *sch, u32 limit)
- 	/* Apply rule of thumb, i.e., doubling the packet length,
- 	 * to further include per packet overhead in memory_limit.
- 	 */
--	u64 memlim = mul_u32_u32(limit, 2 * psched_mtu(qdisc_dev(sch)));
-+	u64 memlim = mul_u32_u32(limit, 2 * clamp_t(u32, psched_mtu(qdisc_dev(sch)),
-+						     1, 1 << 20));
- 
- 	if (upper_32_bits(memlim))
- 		return U32_MAX;
-diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
-index 25fcf4079fec..f23c8dc68f8c 100644
---- a/net/sched/sch_ets.c
-+++ b/net/sched/sch_ets.c
-@@ -636,7 +636,7 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
- 	 */
- 	for (i = nstrict; i < nbands; i++) {
- 		if (!quanta[i])
--			quanta[i] = psched_mtu(qdisc_dev(sch));
-+			quanta[i] = max(256U, (u32)psched_mtu(qdisc_dev(sch)));
- 	}
- 
- 	/* Before commit, make sure we can allocate all new qdiscs */
-diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
-index 6144b5686f13..ab8e7c6ae203 100644
---- a/net/sched/sch_fq.c
-+++ b/net/sched/sch_fq.c
-@@ -980,7 +980,7 @@ static int fq_resize(struct Qdisc *sch, u32 log)
- }
- 
- static const struct netlink_range_validation iq_range = {
--	.max = INT_MAX,
-+	.max = 1 << 20,
- };
- 
- static const struct nla_policy fq_policy[TCA_FQ_MAX + 1] = {
-diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
-index b27d95418707..5982847df8f8 100644
---- a/net/sched/sch_fq_pie.c
-+++ b/net/sched/sch_fq_pie.c
-@@ -341,7 +341,8 @@ static int fq_pie_change(struct Qdisc *sch, struct nlattr *opt,
- 			   nla_get_u32(tb[TCA_FQ_PIE_BETA]));
- 
- 	if (tb[TCA_FQ_PIE_QUANTUM])
--		WRITE_ONCE(q->quantum, nla_get_u32(tb[TCA_FQ_PIE_QUANTUM]));
-+		WRITE_ONCE(q->quantum,
-+			   max(256U, nla_get_u32(tb[TCA_FQ_PIE_QUANTUM])));
- 
- 	if (tb[TCA_FQ_PIE_MEMORY_LIMIT])
- 		WRITE_ONCE(q->memory_limit,
-diff --git a/net/sched/sch_hhf.c b/net/sched/sch_hhf.c
-index 96acab6a8da0..bb8e8952f555 100644
---- a/net/sched/sch_hhf.c
-+++ b/net/sched/sch_hhf.c
-@@ -551,7 +551,7 @@ static int hhf_change(struct Qdisc *sch, struct nlattr *opt,
- 		return err;
- 
- 	if (tb[TCA_HHF_QUANTUM])
--		new_quantum = nla_get_u32(tb[TCA_HHF_QUANTUM]);
-+		new_quantum = max(256U, nla_get_u32(tb[TCA_HHF_QUANTUM]));
- 
- 	if (tb[TCA_HHF_NON_HH_WEIGHT])
- 		new_hhf_non_hh_weight = nla_get_u32(tb[TCA_HHF_NON_HH_WEIGHT]);
-diff --git a/net/sched/sch_pie.c b/net/sched/sch_pie.c
-index b41f2def2e2c..3b7863ffd284 100644
---- a/net/sched/sch_pie.c
-+++ b/net/sched/sch_pie.c
-@@ -35,7 +35,7 @@ bool pie_drop_early(struct Qdisc *sch, struct pie_params *params,
- {
- 	u64 rnd;
- 	u64 local_prob = vars->prob;
--	u32 mtu = psched_mtu(qdisc_dev(sch));
-+	u32 mtu = clamp_t(u32, psched_mtu(qdisc_dev(sch)), 1, 1 << 20);
- 
- 	/* If there is still burst allowance left skip random early drop */
- 	if (vars->burst_time > 0)
-diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
-index 187d3ed578f2..8bbcfc9e85d9 100644
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -660,6 +660,11 @@ static int sfq_change(struct Qdisc *sch, struct nlattr *opt,
- 		return -EINVAL;
- 	}
- 
-+	if (ctl->quantum > 1 << 20) {
-+		NL_SET_ERR_MSG_MOD(extack, "quantum too large");
-+		return -EINVAL;
-+	}
-+
- 	if (ctl->perturb_period < 0 ||
- 	    ctl->perturb_period > INT_MAX / HZ) {
- 		NL_SET_ERR_MSG_MOD(extack, "invalid perturb period");
-@@ -688,7 +693,7 @@ static int sfq_change(struct Qdisc *sch, struct nlattr *opt,
- 
- 	/* update and validate configuration */
- 	if (ctl->quantum)
--		quantum = ctl->quantum;
-+		quantum = max(256U, ctl->quantum);
- 	if (ctl->flows)
- 		maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
- 	if (ctl->divisor) {
--- 
-2.43.0
-
+Thanks,
+Sagi
